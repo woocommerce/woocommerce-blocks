@@ -80,7 +80,15 @@ function wgpb_extra_gutenberg_scripts() {
 		WGPB_VERSION
 	);
 }
-add_action( 'enqueue_block_editor_assets', 'wgpb_extra_gutenberg_scripts' );
+
+/**
+ * Check to make sure WooCommerce is active before enqueuing editor assets.
+ *
+ * @todo Remove this check when merging into core because it won't be necessary.
+ */
+if ( function_exists( 'woocommerce' ) ) {
+	add_action( 'enqueue_block_editor_assets', 'wgpb_extra_gutenberg_scripts' );
+}
 
 /**
  * Register extra API routes with functionality not available in WC core yet.
