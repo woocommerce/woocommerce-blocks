@@ -16,6 +16,8 @@ defined( 'ABSPATH' ) || die();
 
 define( 'WGPB_VERSION', '1.1.2' );
 
+define( 'WGPB_DEVELOPMENT_MODE', true );
+
 /**
  * Load up the assets if Gutenberg is active.
  */
@@ -25,9 +27,22 @@ function wgpb_initialize() {
 		add_action( 'init', 'wgpb_register_products_block' );
 		add_action( 'rest_api_init', 'wgpb_register_api_routes' );
 	}
+	
+	if ( defined( 'WGPB_DEVELOPMENT_MODE' ) && WGPB_DEVELOPMENT_MODE && ! file_exists( plugin_dir_path( __FILE__ ) . '/build/products-block.js' ) ) {
+		add_action( 'admin_notices', 'wgpb_plugins_notice' );
+	}
 
 }
 add_action( 'woocommerce_loaded', 'wgpb_initialize' );
+
+/**
+ * Display a warning about building files.
+ */
+function wgpb_plugins_notice() {
+	echo '<div class="error"><p>';
+	echo __( 'WooCommerce Product Blocks development mode requires files to be built. Run <code>npm install</code> to install dependencies, <code>npm run build</code> to build the files or <code>npm start</code> to build the files and watch for changes.', 'woocommerce' );
+	echo '</p></div>';
+}
 
 /**
  * Register the Products block and its scripts.
