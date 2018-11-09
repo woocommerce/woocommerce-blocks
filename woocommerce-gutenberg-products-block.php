@@ -47,6 +47,7 @@ function wgpb_extra_gutenberg_scripts() {
 		return;
 	}
 
+	// @todo Remove this dependency (as it adds a separate react instance).
 	wp_enqueue_script(
 		'react-transition-group',
 		plugins_url( 'assets/js/vendor/react-transition-group.js', __FILE__ ),
@@ -56,9 +57,9 @@ function wgpb_extra_gutenberg_scripts() {
 
 	wp_register_script(
 		'woocommerce-products-block-editor',
-		plugins_url( 'assets/js/products-block.js', __FILE__ ),
+		plugins_url( 'build/products-block.js', __FILE__ ),
 		array( 'wp-api-fetch', 'wp-element', 'wp-components', 'wp-blocks', 'wp-editor', 'wp-i18n', 'react-transition-group' ),
-		WGPB_VERSION
+		defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( plugin_dir_path( __FILE__ ) . '/build/products-block.js' ) : WGPB_VERSION
 	);
 
 	$product_block_data = array(
@@ -75,9 +76,9 @@ function wgpb_extra_gutenberg_scripts() {
 
 	wp_enqueue_style(
 		'woocommerce-products-block-editor',
-		plugins_url( 'assets/css/gutenberg-products-block.css', __FILE__ ),
+		plugins_url( 'build/products-block.css', __FILE__ ),
 		array( 'wp-edit-blocks' ),
-		WGPB_VERSION
+		defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( plugin_dir_path( __FILE__ ) . '/build/products-block.css' ) : WGPB_VERSION
 	);
 }
 add_action( 'enqueue_block_editor_assets', 'wgpb_extra_gutenberg_scripts' );
