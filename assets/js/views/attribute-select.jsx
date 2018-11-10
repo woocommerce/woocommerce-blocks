@@ -1,4 +1,5 @@
 const { __ } = wp.i18n;
+const { Component } = wp.element;
 const { Toolbar, Dropdown, Dashicon } = wp.components;
 const { apiFetch } = wp;
 
@@ -36,7 +37,7 @@ export function getAttributeID( identifier ) {
 /**
  * When the display mode is 'Attribute' search for and select product attributes to pull products from.
  */
-export class ProductsAttributeSelect extends React.Component {
+export class ProductsAttributeSelect extends Component {
 	/**
 	 * Constructor.
 	 */
@@ -158,7 +159,7 @@ const ProductAttributeFilter = ( props ) => {
 /**
  * List of attributes.
  */
-class ProductAttributeList extends React.Component {
+class ProductAttributeList extends Component {
 	/**
 	 * Constructor
 	 */
@@ -268,7 +269,7 @@ class ProductAttributeList extends React.Component {
 /**
  * One product attribute.
  */
-class ProductAttributeElement extends React.Component {
+class ProductAttributeElement extends Component {
 	constructor( props ) {
 		super( props );
 
@@ -343,7 +344,7 @@ class ProductAttributeElement extends React.Component {
 /**
  * The list of terms in an attribute.
  */
-class AttributeTerms extends React.Component {
+class AttributeTerms extends Component {
 	/**
 	 * Constructor
 	 */

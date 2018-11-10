@@ -1,5 +1,5 @@
 const { __ } = wp.i18n;
-const { RawHTML } = wp.element;
+const { Component, RawHTML } = wp.element;
 const { registerBlockType } = wp.blocks;
 const { InspectorControls, BlockControls } = wp.editor;
 const { Toolbar, Dropdown, Dashicon, RangeControl, Tooltip, SelectControl } = wp.components;
@@ -85,7 +85,7 @@ function supportsOrderby( display ) {
 /**
  * One option from the list of all available ways to display products.
  */
-class ProductsBlockSettingsEditorDisplayOption extends React.Component {
+class ProductsBlockSettingsEditorDisplayOption extends Component {
 	render() {
 		let icon = 'arrow-right-alt2';
 
@@ -119,7 +119,7 @@ class ProductsBlockSettingsEditorDisplayOption extends React.Component {
 /**
  * A list of all available ways to display products.
  */
-class ProductsBlockSettingsEditorDisplayOptions extends React.Component {
+class ProductsBlockSettingsEditorDisplayOptions extends Component {
 	/**
 	 * Constructor.
 	 */
@@ -201,7 +201,7 @@ class ProductsBlockSettingsEditorDisplayOptions extends React.Component {
 /**
  * The products block when in Edit mode.
  */
-class ProductsBlockSettingsEditor extends React.Component {
+class ProductsBlockSettingsEditor extends Component {
 	/**
 	 * Constructor.
 	 */
@@ -343,7 +343,7 @@ class ProductsBlockSettingsEditor extends React.Component {
 /**
  * One product in the product block preview.
  */
-class ProductPreview extends React.Component {
+class ProductPreview extends Component {
 	render() {
 		const { attributes, product } = this.props;
 
@@ -366,7 +366,7 @@ class ProductPreview extends React.Component {
 /**
  * Renders a preview of what the block will look like with current settings.
  */
-class ProductsBlockPreview extends React.Component {
+class ProductsBlockPreview extends Component {
 	/**
 	 * Constructor
 	 */
@@ -499,7 +499,7 @@ class ProductsBlockPreview extends React.Component {
 /**
  * Information about current block settings rendered in the sidebar.
  */
-class ProductsBlockSidebarInfo extends React.Component {
+class ProductsBlockSidebarInfo extends Component {
 	/**
 	 * Constructor
 	 */
@@ -669,7 +669,7 @@ class ProductsBlockSidebarInfo extends React.Component {
 /**
  * The main products block UI.
  */
-class ProductsBlock extends React.Component {
+class ProductsBlock extends Component {
 	/**
 	 * Constructor.
 	 */

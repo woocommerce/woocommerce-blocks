@@ -1,4 +1,5 @@
 const { __ } = wp.i18n;
+const { Component } = wp.element;
 const { Toolbar, Dropdown, Dashicon } = wp.components;
 const { apiFetch } = wp;
 
@@ -11,7 +12,7 @@ const PRODUCT_DATA = {};
 /**
  * When the display mode is 'Specific products' search for and add products to the block.
  */
-export class ProductsSpecificSelect extends React.Component {
+export class ProductsSpecificSelect extends Component {
 	/**
 	 * Constructor.
 	 */
@@ -73,7 +74,7 @@ export class ProductsSpecificSelect extends React.Component {
 /**
  * Product search area
  */
-class ProductsSpecificSearchField extends React.Component {
+class ProductsSpecificSearchField extends Component {
 	/**
 	 * Constructor.
 	 */
@@ -173,7 +174,7 @@ class ProductsSpecificSearchField extends React.Component {
 /**
  * Render product search results based on the text entered into the textbox.
  */
-class ProductSpecificSearchResults extends React.Component {
+class ProductSpecificSearchResults extends Component {
 	/**
 	 * Constructor.
 	 */
@@ -277,7 +278,7 @@ class ProductSpecificSearchResults extends React.Component {
 /**
  * The dropdown of search results.
  */
-class ProductSpecificSearchResultsDropdown extends React.Component {
+class ProductSpecificSearchResultsDropdown extends Component {
 	/**
 	 * Set the state of the dropdown to open.
 	 */
@@ -323,7 +324,7 @@ class ProductSpecificSearchResultsDropdown extends React.Component {
 /**
  * One search result.
  */
-class ProductSpecificSearchResultsDropdownElement extends React.Component {
+class ProductSpecificSearchResultsDropdownElement extends Component {
 	/**
 	 * Constructor.
 	 */
@@ -360,7 +361,7 @@ class ProductSpecificSearchResultsDropdownElement extends React.Component {
 /**
  * List preview of selected products.
  */
-class ProductSpecificSelectedProducts extends React.Component {
+class ProductSpecificSelectedProducts extends Component {
 	/**
 	 * Constructor
 	 */

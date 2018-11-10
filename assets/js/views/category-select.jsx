@@ -1,11 +1,12 @@
 const { __ } = wp.i18n;
+const { Component } = wp.element;
 const { Toolbar, Dropdown, Dashicon } = wp.components;
 const { apiFetch } = wp;
 
 /**
  * When the display mode is 'Product category' search for and select product categories to pull products from.
  */
-export class ProductsCategorySelect extends React.Component {
+export class ProductsCategorySelect extends Component {
 	/**
 	 * Constructor.
 	 */
@@ -124,7 +125,7 @@ const ProductCategoryFilter = ( { filterResults } ) => {
 /**
  * Fetch and build a tree of product categories.
  */
-class ProductCategoryList extends React.Component {
+class ProductCategoryList extends Component {
 	/**
 	 * Constructor
 	 */
