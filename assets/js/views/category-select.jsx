@@ -1,6 +1,6 @@
 const { __ } = wp.i18n;
 const { Component } = wp.element;
-const { Toolbar, Dropdown, Dashicon } = wp.components;
+const { Dashicon } = wp.components;
 const { apiFetch } = wp;
 
 /**
@@ -235,8 +235,8 @@ class ProductCategoryList extends Component {
 			}
 
 			// Has children?
-			const children = getCategoryChildren( category, categories ).map( ( category ) => {
-				return category.id;
+			const children = getCategoryChildren( category, categories ).map( ( cat ) => {
+				return cat.id;
 			} );
 
 			for ( const child of children ) {

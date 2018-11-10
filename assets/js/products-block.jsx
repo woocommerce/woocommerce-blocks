@@ -2,7 +2,7 @@ const { __ } = wp.i18n;
 const { Component, RawHTML } = wp.element;
 const { registerBlockType } = wp.blocks;
 const { InspectorControls, BlockControls } = wp.editor;
-const { Toolbar, Dropdown, Dashicon, RangeControl, Tooltip, SelectControl } = wp.components;
+const { Toolbar, Button, Dashicon, RangeControl, Tooltip, SelectControl } = wp.components;
 const { apiFetch } = wp;
 
 import '../css/products-block.scss';
@@ -100,9 +100,13 @@ class ProductsBlockSettingsEditorDisplayOption extends Component {
 			classes += ' wc-products-display-options__option--current';
 		}
 
+		/* eslint-disable jsx-a11y/click-events-have-key-events */
+		/* eslint-disable jsx-a11y/no-static-element-interactions */
 		return (
 			<div className={ classes } onClick={ () => {
-				this.props.current !== this.props.value && this.props.update_display_callback( this.props.value );
+				if ( this.props.current !== this.props.value ) {
+					this.props.update_display_callback( this.props.value );
+				}
 			} } >
 				<div className="wc-products-display-options__option-content">
 					<span className="wc-products-display-options__option-title">{ this.props.title }</span>
@@ -113,6 +117,7 @@ class ProductsBlockSettingsEditorDisplayOption extends Component {
 				</div>
 			</div>
 		);
+		/* eslint-enable */
 	}
 }
 
@@ -160,7 +165,7 @@ class ProductsBlockSettingsEditorDisplayOptions extends Component {
 	/**
 	 * Close the menu when user clicks outside the search area.
 	 */
-	handleClickOutside( evt ) {
+	handleClickOutside( event ) {
 		if ( this.wrapperRef && ! this.wrapperRef.contains( event.target ) && 'wc-products-settings-heading__change-button button-link' !== event.target.getAttribute( 'class' ) ) {
 			this.props.closeMenu();
 		}
@@ -345,11 +350,11 @@ class ProductsBlockSettingsEditor extends Component {
  */
 class ProductPreview extends Component {
 	render() {
-		const { attributes, product } = this.props;
+		const { product } = this.props;
 
 		let image = null;
 		if ( product.images.length ) {
-			image = <img src={ product.images[ 0 ].src } />;
+			image = <img src={ product.images[ 0 ].src } alt="" />;
 		}
 
 		return (
@@ -532,8 +537,8 @@ class ProductsBlockSidebarInfo extends Component {
 		const queries = this.getQueries();
 
 		if ( this.state.categoriesQuery !== queries.categories ||
-			 this.state.attributeQuery !== queries.attribute ||
-			 this.state.termsQuery !== queries.terms ) {
+			this.state.attributeQuery !== queries.attribute ||
+			this.state.termsQuery !== queries.terms ) {
 			this.updateInfo();
 		}
 	}
@@ -658,8 +663,8 @@ class ProductsBlockSidebarInfo extends Component {
 
 		return (
 			<div>
-				{ descriptions.map( ( description ) => (
-					<div className="scope-description">{ description }</div>
+				{ descriptions.map( ( description, i ) => (
+					<div className="scope-description" key={ i }>{ description }</div>
 				) ) }
 			</div>
 		);
@@ -690,7 +695,7 @@ class ProductsBlock extends Component {
 	 */
 	getInspectorControls() {
 		const { attributes, setAttributes } = this.props;
-		const { rows, columns, display, display_setting, orderby, edit_mode } = attributes;
+		const { rows, columns, display, orderby } = attributes;
 
 		const columnControl = (
 			<RangeControl
@@ -801,7 +806,7 @@ class ProductsBlock extends Component {
 	 */
 	getBlockDescription() {
 		const { attributes, setAttributes } = this.props;
-		const { display, display_setting, edit_mode } = attributes;
+		const { display } = attributes;
 
 		if ( ! display.length ) {
 			return null;
@@ -819,7 +824,7 @@ class ProductsBlock extends Component {
 		if ( ! attributes.edit_mode ) {
 			editQuickLink = (
 				<div className="wc-products-scope-description--edit-quicklink">
-					<a onClick={ editQuicklinkHandler }>{ __( 'Edit' ) }</a>
+					<Button isLink onClick={ editQuicklinkHandler }>{ __( 'Edit' ) }</Button>
 				</div>
 			);
 		}

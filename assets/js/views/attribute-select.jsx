@@ -1,6 +1,6 @@
 const { __ } = wp.i18n;
 const { Component } = wp.element;
-const { Toolbar, Dropdown, Dashicon } = wp.components;
+const { Dashicon } = wp.components;
 const { apiFetch } = wp;
 
 /**
@@ -323,12 +323,14 @@ class ProductAttributeElement extends Component {
 			cssClasses.push( 'wc-products-list-card__accordion-open' );
 		}
 
+		const valueId = getAttributeIdentifier( this.props.attribute.slug, this.props.attribute.id );
 		return (
 			<div className={ cssClasses.join( ' ' ) }>
 				<div>
-					<label className="wc-products-list-card__content">
+					<label className="wc-products-list-card__content" htmlFor={ `attribute-${ valueId }` }>
 						<input type="radio"
-							value={ getAttributeIdentifier( this.props.attribute.slug, this.props.attribute.id ) }
+							id={ `attribute-${ valueId }` }
+							value={ valueId }
 							onChange={ this.handleAttributeChange }
 							checked={ isSelected }
 						/>
@@ -412,7 +414,7 @@ class AttributeTerms extends Component {
 	 * Render.
 	 */
 	render() {
-		const { selectedTerms, attribute, addTerm, removeTerm } = this.props;
+		const { selectedTerms, addTerm, removeTerm } = this.props;
 
 		if ( ! this.state.loaded ) {
 			return ( <ul><li>{ __( 'Loading' ) }</li></ul> );
@@ -437,10 +439,11 @@ class AttributeTerms extends Component {
 
 		return (
 			<ul>
-				{ this.state.terms.map( ( term ) => (
-					<li className="wc-products-list-card__item">
-						<label className="wc-products-list-card__content">
+				{ this.state.terms.map( ( term, i ) => (
+					<li className="wc-products-list-card__item" key={ i }>
+						<label className="wc-products-list-card__content" htmlFor={ `term-${ term.id }` }>
 							<input type="checkbox"
+								id={ `term-${ term.id }` }
 								value={ term.id }
 								onChange={ handleTermChange }
 								checked={ selectedTerms.includes( String( term.id ) ) }

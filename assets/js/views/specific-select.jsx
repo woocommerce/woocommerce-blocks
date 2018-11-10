@@ -1,6 +1,6 @@
 const { __ } = wp.i18n;
 const { Component } = wp.element;
-const { Toolbar, Dropdown, Dashicon } = wp.components;
+const { Dashicon } = wp.components;
 const { apiFetch } = wp;
 
 /**
@@ -118,10 +118,10 @@ class ProductsSpecificSearchField extends Component {
 	/**
 	 * Close the menu when user clicks outside the search area.
 	 */
-	handleClickOutside( evt ) {
+	handleClickOutside( event ) {
 		if ( this.wrapperRef && ! this.wrapperRef.contains( event.target ) ) {
 			this.setState( {
-            	searchText: '',
+				searchText: '',
 			} );
 		}
 	}
@@ -348,13 +348,17 @@ class ProductSpecificSearchResultsDropdownElement extends Component {
 		const product = this.props.product;
 		const icon = this.props.selected ? <Dashicon icon="yes" /> : null;
 
+		/* eslint-disable jsx-a11y/click-events-have-key-events */
+		/* eslint-disable jsx-a11y/no-static-element-interactions */
+		/* reason: This interface will be deprecated, the new component is accessible. */
 		return (
 			<div className={ 'wc-products-list-card__content' + ( this.props.selected ? ' wc-products-list-card__content--added' : '' ) } onClick={ this.handleClick }>
-				<img src={ product.images[ 0 ].src } />
+				<img src={ product.images[ 0 ].src } alt="" />
 				<span className="wc-products-list-card__content-item-name">{ product.name }</span>
 				{ icon }
 			</div>
 		);
+		/* eslint-enable */
 	}
 }
 
@@ -457,7 +461,7 @@ class ProductSpecificSelectedProducts extends Component {
 			productElements.push(
 				<li className="wc-products-list-card__item" key={ productData.id + '-specific-select-edit' } >
 					<div className="wc-products-list-card__content">
-						<img src={ productData.images[ 0 ].src } />
+						<img src={ productData.images[ 0 ].src } alt="" />
 						<span className="wc-products-list-card__content-item-name">{ productData.name }</span>
 						<button
 							type="button"
