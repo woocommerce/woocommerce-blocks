@@ -20,54 +20,54 @@ import { ProductsAttributeSelect, getAttributeSlug, getAttributeID } from './vie
  *    no_orderby - (optional) If set the setting does not allow orderby settings.
  */
 const PRODUCTS_BLOCK_DISPLAY_SETTINGS = {
-	'specific' : {
+	specific: {
 		title: __( 'Individual products' ),
 		description: __( 'Hand-pick which products to display' ),
 		value: 'specific',
 	},
-	'category' : {
+	category: {
 		title: __( 'Product category' ),
 		description: __( 'Display products from a specific category or multiple categories' ),
 		value: 'category',
 	},
-	'filter' : {
+	filter: {
 		title: __( 'Filter products' ),
 		description: __( 'E.g. featured products, or products with a specific attribute like size or color' ),
 		value: 'filter',
-		group_container: 'filter'
+		group_container: 'filter',
 	},
-	'featured' : {
+	featured: {
 		title: __( 'Featured products' ),
 		description: '',
 		value: 'featured',
 	},
-	'on_sale' : {
+	on_sale: {
 		title: __( 'On sale' ),
 		description: '',
 		value: 'on_sale',
 	},
-	'best_selling' : {
+	best_selling: {
 		title: __( 'Best sellers' ),
 		description: '',
 		value: 'best_selling',
 		no_orderby: true,
 	},
-	'top_rated' : {
+	top_rated: {
 		title: __( 'Top rated' ),
 		description: '',
 		value: 'top_rated',
 		no_orderby: true,
 	},
-	'attribute' : {
+	attribute: {
 		title: __( 'Attribute' ),
 		description: '',
 		value: 'attribute',
 	},
-	'all' : {
+	all: {
 		title: __( 'All products' ),
 		description: __( 'Display all products ordered chronologically, alphabetically, by price, by rating or by sales' ),
 		value: 'all',
-	}
+	},
 };
 
 /**
@@ -77,9 +77,9 @@ const PRODUCTS_BLOCK_DISPLAY_SETTINGS = {
  * @return bool
  */
 function supportsOrderby( display ) {
-	return ! ( PRODUCTS_BLOCK_DISPLAY_SETTINGS.hasOwnProperty( display )
-	&& PRODUCTS_BLOCK_DISPLAY_SETTINGS[ display ].hasOwnProperty( 'no_orderby' )
-	&& PRODUCTS_BLOCK_DISPLAY_SETTINGS[ display ].no_orderby );
+	return ! ( PRODUCTS_BLOCK_DISPLAY_SETTINGS.hasOwnProperty( display ) &&
+	PRODUCTS_BLOCK_DISPLAY_SETTINGS[ display ].hasOwnProperty( 'no_orderby' ) &&
+	PRODUCTS_BLOCK_DISPLAY_SETTINGS[ display ].no_orderby );
 }
 
 /**
@@ -96,12 +96,14 @@ class ProductsBlockSettingsEditorDisplayOption extends React.Component {
 		let classes = 'wc-products-display-options__option wc-products-display-options__option--' + this.props.value;
 
 		if ( this.props.current === this.props.value ) {
-			icon    = 'yes';
+			icon = 'yes';
 			classes += ' wc-products-display-options__option--current';
 		}
 
 		return (
-			<div className={ classes } onClick={ () => { this.props.current !== this.props.value && this.props.update_display_callback( this.props.value ) } } >
+			<div className={ classes } onClick={ () => {
+				this.props.current !== this.props.value && this.props.update_display_callback( this.props.value );
+			} } >
 				<div className="wc-products-display-options__option-content">
 					<span className="wc-products-display-options__option-title">{ this.props.title }</span>
 					<p className="wc-products-display-options__option-description">{ this.props.description }</p>
@@ -118,7 +120,6 @@ class ProductsBlockSettingsEditorDisplayOption extends React.Component {
  * A list of all available ways to display products.
  */
 class ProductsBlockSettingsEditorDisplayOptions extends React.Component {
-
 	/**
 	 * Constructor.
 	 */
@@ -160,9 +161,9 @@ class ProductsBlockSettingsEditorDisplayOptions extends React.Component {
 	 * Close the menu when user clicks outside the search area.
 	 */
 	handleClickOutside( evt ) {
-        if ( this.wrapperRef && ! this.wrapperRef.contains( event.target ) && 'wc-products-settings-heading__change-button button-link' !== event.target.getAttribute( 'class' ) ) {
-            this.props.closeMenu();
-        }
+		if ( this.wrapperRef && ! this.wrapperRef.contains( event.target ) && 'wc-products-settings-heading__change-button button-link' !== event.target.getAttribute( 'class' ) ) {
+			this.props.closeMenu();
+		}
 	}
 
 	/**
@@ -179,13 +180,13 @@ class ProductsBlockSettingsEditorDisplayOptions extends React.Component {
 			classes += ' wc-products-display-options--popover';
 		}
 
-		let display_settings = [];
-		for ( var setting_key in PRODUCTS_BLOCK_DISPLAY_SETTINGS ) {
+		const display_settings = [];
+		for ( const setting_key in PRODUCTS_BLOCK_DISPLAY_SETTINGS ) {
 			display_settings.push( <ProductsBlockSettingsEditorDisplayOption { ...PRODUCTS_BLOCK_DISPLAY_SETTINGS[ setting_key ] } update_display_callback={ this.props.update_display_callback } extended={ this.props.extended } current={ this.props.current } /> );
 		}
 
-		let arrow = <span className="wc-products-display-options--popover__arrow"></span>;
-		let description = <p className="wc-products-block-description">{ __( 'Choose which products you\'d like to display:' ) }</p>;
+		const arrow = <span className="wc-products-display-options--popover__arrow"></span>;
+		const description = <p className="wc-products-block-description">{ __( 'Choose which products you\'d like to display:' ) }</p>;
 
 		return (
 			<div className={ classes } ref={ this.setWrapperRef }>
@@ -201,7 +202,6 @@ class ProductsBlockSettingsEditorDisplayOptions extends React.Component {
  * The products block when in Edit mode.
  */
 class ProductsBlockSettingsEditor extends React.Component {
-
 	/**
 	 * Constructor.
 	 */
@@ -211,7 +211,7 @@ class ProductsBlockSettingsEditor extends React.Component {
 			display: props.selected_display,
 			menu_visible: props.selected_display ? false : true,
 			expanded_group: '',
-		}
+		};
 
 		this.updateDisplay = this.updateDisplay.bind( this );
 		this.closeMenu = this.closeMenu.bind( this );
@@ -223,7 +223,6 @@ class ProductsBlockSettingsEditor extends React.Component {
 	 * @param value String
 	 */
 	updateDisplay( value ) {
-
 		// If not a group update display.
 		let new_state = {
 			display: value,
@@ -238,7 +237,7 @@ class ProductsBlockSettingsEditor extends React.Component {
 			new_state = {
 				menu_visible: true,
 				expanded_group: value,
-			}
+			};
 
 			// If the group has already been expanded, collapse it.
 			if ( this.state.expanded_group === PRODUCTS_BLOCK_DISPLAY_SETTINGS[ value ].group_container ) {
@@ -270,16 +269,29 @@ class ProductsBlockSettingsEditor extends React.Component {
 		} else if ( 'category' === this.state.display ) {
 			extra_settings = <ProductsCategorySelect { ...this.props } />;
 		} else if ( 'attribute' === this.state.display ) {
-			extra_settings = <ProductsAttributeSelect { ...this.props } />
+			extra_settings = <ProductsAttributeSelect { ...this.props } />;
 		}
 
 		const menu = this.state.menu_visible ? <ProductsBlockSettingsEditorDisplayOptions extended={ this.state.expanded_group ? true : false } existing={ this.state.display ? true : false } current={ this.state.display } closeMenu={ this.closeMenu } update_display_callback={ this.updateDisplay } /> : null;
 
 		let heading = null;
 		if ( this.state.display ) {
-			const group_options     = [ 'featured', 'on_sale', 'attribute', 'best_selling', 'top_rated' ];
-			let should_group_expand = group_options.includes( this.state.display ) ? this.state.display : '';
-			let menu_link           = <button type="button" className="wc-products-settings-heading__change-button button-link" onClick={ () => { this.setState( { menu_visible: ! this.state.menu_visible, expanded_group: should_group_expand } ) } }>{ __( 'Display different products' ) }</button>;
+			const group_options = [ 'featured', 'on_sale', 'attribute', 'best_selling', 'top_rated' ];
+			const should_group_expand = group_options.includes( this.state.display ) ? this.state.display : '';
+			const menu_link = (
+				<button
+					type="button"
+					className="wc-products-settings-heading__change-button button-link"
+					onClick={ () => {
+						this.setState( {
+							menu_visible: ! this.state.menu_visible,
+							expanded_group: should_group_expand,
+						} );
+					} }
+				>
+					{ __( 'Display different products' ) }
+				</button>
+			);
 
 			heading = (
 				<div className="wc-products-settings-heading">
@@ -295,13 +307,13 @@ class ProductsBlockSettingsEditor extends React.Component {
 		}
 
 		let done_button = <button type="button" className="button wc-products-settings__footer-button" onClick={ this.props.done_callback }>{ __( 'Done' ) }</button>;
-		if ( ['', 'specific', 'category', 'attribute'].includes( this.state.display ) && ! this.props.selected_display_setting.length ) {
+		if ( [ '', 'specific', 'category', 'attribute' ].includes( this.state.display ) && ! this.props.selected_display_setting.length ) {
 			const done_tooltips = {
 				'': __( 'Please select which products you\'d like to display' ),
 				specific: __( 'Please search for and select products to display' ),
 				category: __( 'Please select at least one category to display' ),
 				attribute: __( 'Please select an attribute' ),
-			}
+			};
 
 			done_button = (
 				<Tooltip text={ done_tooltips[ this.state.display ] } >
@@ -309,7 +321,6 @@ class ProductsBlockSettingsEditor extends React.Component {
 				</Tooltip>
 			);
 		}
-
 
 		return (
 			<div className={ 'wc-products-settings ' + ( this.state.expanded_group ? 'expanded-group-' + this.state.expanded_group : '' ) }>
@@ -333,13 +344,12 @@ class ProductsBlockSettingsEditor extends React.Component {
  * One product in the product block preview.
  */
 class ProductPreview extends React.Component {
-
 	render() {
 		const { attributes, product } = this.props;
 
 		let image = null;
 		if ( product.images.length ) {
-			image = <img src={ product.images[0].src } />
+			image = <img src={ product.images[ 0 ].src } />;
 		}
 
 		return (
@@ -357,7 +367,6 @@ class ProductPreview extends React.Component {
  * Renders a preview of what the block will look like with current settings.
  */
 class ProductsBlockPreview extends React.Component {
-
 	/**
 	 * Constructor
 	 */
@@ -397,7 +406,7 @@ class ProductsBlockPreview extends React.Component {
 	getQuery() {
 		const { columns, rows, display, display_setting, orderby } = this.props.attributes;
 
-		let query = {
+		const query = {
 			per_page: rows * columns,
 		};
 
@@ -407,7 +416,7 @@ class ProductsBlockPreview extends React.Component {
 		} else if ( 'category' === display ) {
 			query.category = display_setting.join( ',' );
 		} else if ( 'attribute' === display && display_setting.length ) {
-			query.attribute = getAttributeSlug( display_setting[0] );
+			query.attribute = getAttributeSlug( display_setting[ 0 ] );
 
 			if ( display_setting.length > 1 ) {
 				query.attribute_term = display_setting.slice( 1 ).join( ',' );
@@ -451,13 +460,13 @@ class ProductsBlockPreview extends React.Component {
 
 		self.setState( {
 			loaded: false,
-			query: query
+			query: query,
 		} );
 
-		apiFetch( { path: query } ).then( products => {
+		apiFetch( { path: query } ).then( ( products ) => {
 			self.setState( {
 				products: products,
-				loaded: true
+				loaded: true,
 			} );
 		} );
 	}
@@ -474,7 +483,7 @@ class ProductsBlockPreview extends React.Component {
 			return __( 'No products found' );
 		}
 
-		const classes = "wc-products-block-preview cols-" + this.props.attributes.columns;
+		const classes = 'wc-products-block-preview cols-' + this.props.attributes.columns;
 		const self = this;
 
 		return (
@@ -487,12 +496,10 @@ class ProductsBlockPreview extends React.Component {
 	}
 }
 
-
 /**
  * Information about current block settings rendered in the sidebar.
  */
 class ProductsBlockSidebarInfo extends React.Component {
-
 	/**
 	 * Constructor
 	 */
@@ -507,7 +514,7 @@ class ProductsBlockSidebarInfo extends React.Component {
 			attributeQuery: '',
 
 			termsInfo: [],
-			termsQuery: ''
+			termsQuery: '',
 		};
 
 		this.updateInfo = this.updateInfo.bind( this );
@@ -541,12 +548,12 @@ class ProductsBlockSidebarInfo extends React.Component {
 		const endpoints = {
 			attribute: '',
 			terms: '',
-			categories: ''
+			categories: '',
 		};
 
 		if ( 'attribute' === display && display_setting.length ) {
-			const ID        = getAttributeID( display_setting[0] );
-			const terms     = display_setting.slice( 1 ).join( ', ' );
+			const ID = getAttributeID( display_setting[ 0 ] );
+			const terms = display_setting.slice( 1 ).join( ', ' );
 
 			endpoints.attribute = '/wc/v2/products/attributes/' + ID;
 
@@ -570,11 +577,11 @@ class ProductsBlockSidebarInfo extends React.Component {
 		this.setState( {
 			categoriesQuery: queries.categories,
 			attributeQuery: queries.attribute,
-			termsQuery: queries.terms
+			termsQuery: queries.terms,
 		} );
 
 		if ( queries.categories.length ) {
-			apiFetch( { path: queries.categories } ).then( categories => {
+			apiFetch( { path: queries.categories } ).then( ( categories ) => {
 				self.setState( {
 					categoriesInfo: categories,
 				} );
@@ -586,7 +593,7 @@ class ProductsBlockSidebarInfo extends React.Component {
 		}
 
 		if ( queries.attribute.length ) {
-			apiFetch( { path: queries.attribute } ).then( attribute => {
+			apiFetch( { path: queries.attribute } ).then( ( attribute ) => {
 				self.setState( {
 					attributeInfo: attribute,
 				} );
@@ -598,7 +605,7 @@ class ProductsBlockSidebarInfo extends React.Component {
 		}
 
 		if ( queries.terms.length ) {
-			apiFetch( { path: queries.terms } ).then( terms => {
+			apiFetch( { path: queries.terms } ).then( ( terms ) => {
 				self.setState( {
 					termsInfo: terms,
 				} );
@@ -615,31 +622,32 @@ class ProductsBlockSidebarInfo extends React.Component {
 	 */
 	render() {
 		let descriptions = [
+
 			// Standard description of selected scope.
-			PRODUCTS_BLOCK_DISPLAY_SETTINGS[ this.props.attributes.display ].title
+			PRODUCTS_BLOCK_DISPLAY_SETTINGS[ this.props.attributes.display ].title,
 		];
 
 		if ( this.state.categoriesInfo.length ) {
 			let descriptionText = __( 'Product categories: ' );
 			const categories = [];
-			for ( let category of this.state.categoriesInfo ) {
+			for ( const category of this.state.categoriesInfo ) {
 				categories.push( category.name );
 			}
 			descriptionText += categories.join( ', ' );
 
 			descriptions = [
-				descriptionText
+				descriptionText,
 			];
 
 			// Description of attributes selected scope.
 		} else if ( this.state.attributeInfo ) {
 			descriptions = [
-				__( 'Attribute: ' ) + this.state.attributeInfo.name
+				__( 'Attribute: ' ) + this.state.attributeInfo.name,
 			];
 
 			if ( this.state.termsInfo.length ) {
-				let termDescriptionText = __( "Terms: " );
-				const terms = []
+				let termDescriptionText = __( 'Terms: ' );
+				const terms = [];
 				for ( const term of this.state.termsInfo ) {
 					terms.push( term.name );
 				}
@@ -656,13 +664,12 @@ class ProductsBlockSidebarInfo extends React.Component {
 			</div>
 		);
 	}
-};
+}
 
 /**
  * The main products block UI.
  */
 class ProductsBlock extends React.Component {
-
 	/**
 	 * Constructor.
 	 */
@@ -685,7 +692,7 @@ class ProductsBlock extends React.Component {
 		const { attributes, setAttributes } = this.props;
 		const { rows, columns, display, display_setting, orderby, edit_mode } = attributes;
 
-		let columnControl = (
+		const columnControl = (
 			<RangeControl
 				label={ __( 'Columns' ) }
 				value={ columns }
@@ -764,18 +771,18 @@ class ProductsBlock extends React.Component {
 	 * @return Component
 	 */
 	getToolbarControls() {
-		let props = this.props;
+		const props = this.props;
 		const { attributes, setAttributes } = props;
 		const { display, display_setting, edit_mode } = attributes;
 
 		// Edit button should not do anything if valid product selection has not been made.
-		const shouldDisableEditButton = ['', 'specific', 'category', 'attribute'].includes( display ) && ! display_setting.length;
+		const shouldDisableEditButton = [ '', 'specific', 'category', 'attribute' ].includes( display ) && ! display_setting.length;
 
 		const editButton = [
 			{
 				icon: 'edit',
 				title: __( 'Edit' ),
-				onClick: shouldDisableEditButton ? function(){} : () => setAttributes( { edit_mode: ! edit_mode } ),
+				onClick: shouldDisableEditButton ? function() {} : () => setAttributes( { edit_mode: ! edit_mode } ),
 				isActive: edit_mode,
 			},
 		];
@@ -847,7 +854,6 @@ class ProductsBlock extends React.Component {
 		const { display, display_setting } = attributes;
 
 		const update_display_callback = ( value ) => {
-
 			// These options have setting screens that need further input from the user, so keep edit mode open.
 			const needsFurtherSettings = [ 'specific', 'attribute', 'category' ];
 
@@ -948,7 +954,7 @@ registerBlockType( 'woocommerce/products', {
 	 * Renders and manages the block.
 	 */
 	edit( props ) {
-		return <ProductsBlock { ...props } />
+		return <ProductsBlock { ...props } />;
 	},
 
 	/**
@@ -959,7 +965,7 @@ registerBlockType( 'woocommerce/products', {
 	save( props ) {
 		const { rows, columns, display, display_setting, orderby } = props.attributes;
 
-		let shortcode_atts = new Map();
+		const shortcode_atts = new Map();
 		if ( 'specific' !== display ) {
 			shortcode_atts.set( 'limit', rows * columns );
 		}
@@ -978,7 +984,7 @@ registerBlockType( 'woocommerce/products', {
 		} else if ( 'top_rated' === display ) {
 			shortcode_atts.set( 'top_rated', '1' );
 		} else if ( 'attribute' === display ) {
-			const attribute = display_setting.length ? getAttributeSlug( display_setting[0] ) : '';
+			const attribute = display_setting.length ? getAttributeSlug( display_setting[ 0 ] ) : '';
 			const terms = display_setting.length > 1 ? display_setting.slice( 1 ).join( ',' ) : '';
 
 			shortcode_atts.set( 'attribute', attribute );
@@ -990,13 +996,13 @@ registerBlockType( 'woocommerce/products', {
 		if ( supportsOrderby( display ) ) {
 			if ( 'price_desc' === orderby ) {
 				shortcode_atts.set( 'orderby', 'price' );
-				shortcode_atts.set( 'order', 'DESC' )
+				shortcode_atts.set( 'order', 'DESC' );
 			} else if ( 'price_asc' === orderby ) {
 				shortcode_atts.set( 'orderby', 'price' );
-				shortcode_atts.set( 'order', 'ASC' )
+				shortcode_atts.set( 'order', 'ASC' );
 			} else if ( 'date' === orderby ) {
 				shortcode_atts.set( 'orderby', 'date' );
-				shortcode_atts.set( 'order', 'DESC' )
+				shortcode_atts.set( 'order', 'DESC' );
 			} else {
 				shortcode_atts.set( 'orderby', orderby );
 			}
@@ -1004,7 +1010,7 @@ registerBlockType( 'woocommerce/products', {
 
 		// Build the shortcode string out of the set shortcode attributes.
 		let shortcode = '[products';
-		for ( let [key, value] of shortcode_atts ) {
+		for ( const [ key, value ] of shortcode_atts ) {
 			shortcode += ' ' + key + '="' + value + '"';
 		}
 		shortcode += ']';

@@ -12,7 +12,6 @@ const PRODUCT_DATA = {};
  * When the display mode is 'Specific products' search for and add products to the block.
  */
 export class ProductsSpecificSelect extends React.Component {
-
 	/**
 	 * Constructor.
 	 */
@@ -21,7 +20,7 @@ export class ProductsSpecificSelect extends React.Component {
 
 		this.state = {
 			selectedProducts: props.selected_display_setting || [],
-		}
+		};
 	}
 
 	/**
@@ -35,11 +34,11 @@ export class ProductsSpecificSelect extends React.Component {
 		if ( ! selectedProducts.includes( id ) ) {
 			selectedProducts.push( id );
 		} else {
-			selectedProducts = selectedProducts.filter( product => product !== id );
+			selectedProducts = selectedProducts.filter( ( product ) => product !== id );
 		}
 
 		this.setState( {
-			selectedProducts: selectedProducts
+			selectedProducts: selectedProducts,
 		} );
 
 		/**
@@ -75,7 +74,6 @@ export class ProductsSpecificSelect extends React.Component {
  * Product search area
  */
 class ProductsSpecificSearchField extends React.Component {
-
 	/**
 	 * Constructor.
 	 */
@@ -85,7 +83,7 @@ class ProductsSpecificSearchField extends React.Component {
 		this.state = {
 			searchText: '',
 			dropdownOpen: false,
-		}
+		};
 
 		this.updateSearchResults = this.updateSearchResults.bind( this );
 		this.setWrapperRef = this.setWrapperRef.bind( this );
@@ -120,11 +118,11 @@ class ProductsSpecificSearchField extends React.Component {
 	 * Close the menu when user clicks outside the search area.
 	 */
 	handleClickOutside( evt ) {
-        if ( this.wrapperRef && ! this.wrapperRef.contains( event.target ) ) {
-            this.setState( {
+		if ( this.wrapperRef && ! this.wrapperRef.contains( event.target ) ) {
+			this.setState( {
             	searchText: '',
-            } );
-        }
+			} );
+		}
 	}
 
 	isDropdownOpen( isOpen ) {
@@ -176,7 +174,6 @@ class ProductsSpecificSearchField extends React.Component {
  * Render product search results based on the text entered into the textbox.
  */
 class ProductSpecificSearchResults extends React.Component {
-
 	/**
 	 * Constructor.
 	 */
@@ -185,7 +182,7 @@ class ProductSpecificSearchResults extends React.Component {
 		this.state = {
 			products: [],
 			query: '',
-			loaded: false
+			loaded: false,
 		};
 
 		this.updateResults = this.updateResults.bind( this );
@@ -230,23 +227,23 @@ class ProductSpecificSearchResults extends React.Component {
 
 		self.setState( {
 			query: query,
-			loaded: false
+			loaded: false,
 		} );
 
 		if ( query.length ) {
-			apiFetch( { path: query } ).then( products => {
+			apiFetch( { path: query } ).then( ( products ) => {
 				// Only update the results if they are for the latest query.
 				if ( query === self.getQuery() ) {
 					self.setState( {
 						products: products,
-						loaded: true
+						loaded: true,
 					} );
 				}
 			} );
 		} else {
 			self.setState( {
 				products: [],
-				loaded: true
+				loaded: true,
 			} );
 		}
 	}
@@ -264,7 +261,7 @@ class ProductSpecificSearchResults extends React.Component {
 		}
 
 		// Populate the cache.
-		for ( let product of this.state.products ) {
+		for ( const product of this.state.products ) {
 			PRODUCT_DATA[ product.id ] = product;
 		}
 
@@ -273,8 +270,7 @@ class ProductSpecificSearchResults extends React.Component {
 			addOrRemoveProductCallback={ this.props.addOrRemoveProductCallback }
 			selectedProducts={ this.props.selectedProducts }
 			isDropdownOpenCallback={ this.props.isDropdownOpenCallback }
-		/>
-
+		/>;
 	}
 }
 
@@ -282,7 +278,6 @@ class ProductSpecificSearchResults extends React.Component {
  * The dropdown of search results.
  */
 class ProductSpecificSearchResultsDropdown extends React.Component {
-
 	/**
 	 * Set the state of the dropdown to open.
 	 */
@@ -303,12 +298,12 @@ class ProductSpecificSearchResultsDropdown extends React.Component {
 	render() {
 		const { products, addOrRemoveProductCallback, selectedProducts } = this.props;
 
-		let productElements = [];
+		const productElements = [];
 
-		for ( let product of products ) {
+		for ( const product of products ) {
 			productElements.push(
 				<ProductSpecificSearchResultsDropdownElement
-					product={product}
+					product={ product }
 					addOrRemoveProductCallback={ addOrRemoveProductCallback }
 					selected={ selectedProducts.includes( product.id ) }
 				/>
@@ -329,7 +324,6 @@ class ProductSpecificSearchResultsDropdown extends React.Component {
  * One search result.
  */
 class ProductSpecificSearchResultsDropdownElement extends React.Component {
-
 	/**
 	 * Constructor.
 	 */
@@ -351,11 +345,11 @@ class ProductSpecificSearchResultsDropdownElement extends React.Component {
 	 */
 	render() {
 		const product = this.props.product;
-		let icon = this.props.selected ? <Dashicon icon="yes" /> : null;
+		const icon = this.props.selected ? <Dashicon icon="yes" /> : null;
 
 		return (
 			<div className={ 'wc-products-list-card__content' + ( this.props.selected ? ' wc-products-list-card__content--added' : '' ) } onClick={ this.handleClick }>
-				<img src={ product.images[0].src } />
+				<img src={ product.images[ 0 ].src } />
 				<span className="wc-products-list-card__content-item-name">{ product.name }</span>
 				{ icon }
 			</div>
@@ -367,7 +361,6 @@ class ProductSpecificSearchResultsDropdownElement extends React.Component {
  * List preview of selected products.
  */
 class ProductSpecificSelectedProducts extends React.Component {
-
 	/**
 	 * Constructor
 	 */
@@ -380,7 +373,6 @@ class ProductSpecificSelectedProducts extends React.Component {
 
 		this.updateProductCache = this.updateProductCache.bind( this );
 		this.getQuery = this.getQuery.bind( this );
-
 	}
 
 	/**
@@ -408,8 +400,8 @@ class ProductSpecificSelectedProducts extends React.Component {
 		}
 
 		// Determine which products are not already in the cache and only fetch uncached products.
-		let uncachedProducts = [];
-		for( const productId of this.props.productIds ) {
+		const uncachedProducts = [];
+		for ( const productId of this.props.productIds ) {
 			if ( ! PRODUCT_DATA.hasOwnProperty( productId ) ) {
 				uncachedProducts.push( productId );
 			}
@@ -432,7 +424,7 @@ class ProductSpecificSelectedProducts extends React.Component {
 
 		// Add new products to cache.
 		if ( query.length ) {
-			apiFetch( { path: query } ).then( products => {
+			apiFetch( { path: query } ).then( ( products ) => {
 				if ( products.length ) {
 					for ( const product of products ) {
 						PRODUCT_DATA[ product.id ] = product;
@@ -454,7 +446,6 @@ class ProductSpecificSelectedProducts extends React.Component {
 		const productElements = [];
 
 		for ( const productId of this.props.productIds ) {
-
 			// Skip products that aren't in the cache yet or failed to fetch.
 			if ( ! PRODUCT_DATA.hasOwnProperty( productId ) ) {
 				continue;
@@ -465,13 +456,15 @@ class ProductSpecificSelectedProducts extends React.Component {
 			productElements.push(
 				<li className="wc-products-list-card__item" key={ productData.id + '-specific-select-edit' } >
 					<div className="wc-products-list-card__content">
-						<img src={ productData.images[0].src } />
+						<img src={ productData.images[ 0 ].src } />
 						<span className="wc-products-list-card__content-item-name">{ productData.name }</span>
 						<button
 							type="button"
 							id={ 'product-' + productData.id }
-							onClick={ function() { self.props.addOrRemoveProduct( productData.id ) } } >
-								<Dashicon icon="no-alt" />
+							onClick={ function() {
+								self.props.addOrRemoveProduct( productData.id );
+							} } >
+							<Dashicon icon="no-alt" />
 						</button>
 					</div>
 				</li>

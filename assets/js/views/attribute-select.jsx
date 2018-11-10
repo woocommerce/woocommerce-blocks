@@ -20,7 +20,7 @@ export function getAttributeIdentifier( slug, id ) {
  * @return string
  */
 export function getAttributeSlug( identifier ) {
-	return identifier.split( ',' )[0];
+	return identifier.split( ',' )[ 0 ];
 }
 
 /**
@@ -30,14 +30,13 @@ export function getAttributeSlug( identifier ) {
  * @return numeric string
  */
 export function getAttributeID( identifier ) {
-	return identifier.split( ',' )[1];
+	return identifier.split( ',' )[ 1 ];
 }
 
 /**
  * When the display mode is 'Attribute' search for and select product attributes to pull products from.
  */
 export class ProductsAttributeSelect extends React.Component {
-
 	/**
 	 * Constructor.
 	 */
@@ -50,14 +49,14 @@ export class ProductsAttributeSelect extends React.Component {
 		 * The rest of the elements in selected_display_setting are the term ids for any selected terms.
 		 */
 		this.state = {
-			selectedAttribute: props.selected_display_setting.length ? props.selected_display_setting[0] : '',
+			selectedAttribute: props.selected_display_setting.length ? props.selected_display_setting[ 0 ] : '',
 			selectedTerms: props.selected_display_setting.length > 1 ? props.selected_display_setting.slice( 1 ) : [],
 			filterQuery: '',
-		}
+		};
 
 		this.setSelectedAttribute = this.setSelectedAttribute.bind( this );
-		this.addTerm              = this.addTerm.bind( this );
-		this.removeTerm           = this.removeTerm.bind( this );
+		this.addTerm = this.addTerm.bind( this );
+		this.removeTerm = this.removeTerm.bind( this );
 	}
 
 	/**
@@ -80,7 +79,7 @@ export class ProductsAttributeSelect extends React.Component {
 	 * @param id int Term id.
 	 */
 	addTerm( id ) {
-		let terms = this.state.selectedTerms;
+		const terms = this.state.selectedTerms;
 		terms.push( id );
 		this.setState( {
 			selectedTerms: terms,
@@ -97,8 +96,8 @@ export class ProductsAttributeSelect extends React.Component {
 	 * @param id int Term id.
 	 */
 	removeTerm( id ) {
-		let newTerms = [];
-		for ( let termId of this.state.selectedTerms ) {
+		const newTerms = [];
+		for ( const termId of this.state.selectedTerms ) {
 			if ( termId !== id ) {
 				newTerms.push( termId );
 			}
@@ -154,13 +153,12 @@ const ProductAttributeFilter = ( props ) => {
 			<input className="wc-products-list-card__search" type="search" placeholder={ __( 'Search for attributes' ) } onChange={ props.updateFilter } />
 		</div>
 	);
-}
+};
 
 /**
  * List of attributes.
  */
 class ProductAttributeList extends React.Component {
-
 	/**
 	 * Constructor
 	 */
@@ -212,14 +210,14 @@ class ProductAttributeList extends React.Component {
 		const query = this.getQuery();
 
 		self.setState( {
-			loaded: false
+			loaded: false,
 		} );
 
-		apiFetch( { path: query } ).then( attributes => {
+		apiFetch( { path: query } ).then( ( attributes ) => {
 			self.setState( {
 				attributes: attributes,
 				loaded: true,
-				query: query
+				query: query,
 			} );
 		} );
 	}
@@ -239,9 +237,9 @@ class ProductAttributeList extends React.Component {
 		}
 
 		const filter = filterQuery.toLowerCase();
-		let attributeElements = [];
+		const attributeElements = [];
 
-		for ( let attribute of this.state.attributes ) {
+		for ( const attribute of this.state.attributes ) {
 			// Filter out attributes that don't match the search query.
 			if ( filter.length && -1 === attribute.name.toLowerCase().indexOf( filter ) ) {
 				continue;
@@ -252,7 +250,7 @@ class ProductAttributeList extends React.Component {
 					attribute={ attribute }
 					selectedAttribute={ selectedAttribute }
 					selectedTerms={ selectedTerms }
-					setSelectedAttribute={ setSelectedAttribute}
+					setSelectedAttribute={ setSelectedAttribute }
 					addTerm={ addTerm }
 					removeTerm={ removeTerm }
 				/>
@@ -271,12 +269,11 @@ class ProductAttributeList extends React.Component {
  * One product attribute.
  */
 class ProductAttributeElement extends React.Component {
-
 	constructor( props ) {
 		super( props );
 
 		this.handleAttributeChange = this.handleAttributeChange.bind( this );
-		this.handleTermChange      = this.handleTermChange.bind( this );
+		this.handleTermChange = this.handleTermChange.bind( this );
 	}
 
 	/**
@@ -310,15 +307,17 @@ class ProductAttributeElement extends React.Component {
 
 		let attributeTerms = null;
 		if ( isSelected ) {
-			attributeTerms = <AttributeTerms
-								attribute={ this.props.attribute }
-								selectedTerms={ this.props.selectedTerms }
-								addTerm={ this.props.addTerm }
-								removeTerm={ this.props.removeTerm }
-							/>
+			attributeTerms = (
+				<AttributeTerms
+					attribute={ this.props.attribute }
+					selectedTerms={ this.props.selectedTerms }
+					addTerm={ this.props.addTerm }
+					removeTerm={ this.props.removeTerm }
+				/>
+			);
 		}
 
-		let cssClasses = [ 'wc-products-list-card--taxonomy-atributes__atribute' ];
+		const cssClasses = [ 'wc-products-list-card--taxonomy-atributes__atribute' ];
 		if ( isSelected ) {
 			cssClasses.push( 'wc-products-list-card__accordion-open' );
 		}
@@ -345,7 +344,6 @@ class ProductAttributeElement extends React.Component {
  * The list of terms in an attribute.
  */
 class AttributeTerms extends React.Component {
-
 	/**
 	 * Constructor
 	 */
@@ -397,14 +395,14 @@ class AttributeTerms extends React.Component {
 		const query = this.getQuery();
 
 		self.setState( {
-			loaded: false
+			loaded: false,
 		} );
 
-		apiFetch( { path: query } ).then( terms => {
+		apiFetch( { path: query } ).then( ( terms ) => {
 			self.setState( {
 				terms: terms,
 				loaded: true,
-				query: query
+				query: query,
 			} );
 		} );
 	}
