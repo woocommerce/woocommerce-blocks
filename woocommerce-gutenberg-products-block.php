@@ -57,7 +57,7 @@ function wgpb_extra_gutenberg_scripts() {
 	wp_register_script(
 		'woocommerce-products-block-editor',
 		plugins_url( 'assets/js/products-block.js', __FILE__ ),
-		array( 'wp-element', 'wp-components', 'wp-blocks', 'wp-editor', 'wp-i18n', 'react-transition-group' ),
+		array( 'wp-api-fetch', 'wp-element', 'wp-components', 'wp-blocks', 'wp-editor', 'wp-i18n', 'react-transition-group' ),
 		WGPB_VERSION
 	);
 
