@@ -22,13 +22,15 @@ define( 'WGPB_DEVELOPMENT_MODE', true );
  * Load up the assets if Gutenberg is active.
  */
 function wgpb_initialize() {
+	$files_exist = file_exists( plugin_dir_path( __FILE__ ) . '/build/products-block.js' );
 
-	if ( function_exists( 'register_block_type' ) ) {
+	if ( $files_exist && function_exists( 'register_block_type' ) ) {
 		add_action( 'init', 'wgpb_register_products_block' );
 		add_action( 'rest_api_init', 'wgpb_register_api_routes' );
+		add_action( 'enqueue_block_editor_assets', 'wgpb_extra_gutenberg_scripts' );
 	}
 	
-	if ( defined( 'WGPB_DEVELOPMENT_MODE' ) && WGPB_DEVELOPMENT_MODE && ! file_exists( plugin_dir_path( __FILE__ ) . '/build/products-block.js' ) ) {
+	if ( defined( 'WGPB_DEVELOPMENT_MODE' ) && WGPB_DEVELOPMENT_MODE && ! $files_exist ) {
 		add_action( 'admin_notices', 'wgpb_plugins_notice' );
 	}
 
@@ -96,7 +98,6 @@ function wgpb_extra_gutenberg_scripts() {
 		defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( plugin_dir_path( __FILE__ ) . '/build/products-block.css' ) : WGPB_VERSION
 	);
 }
-add_action( 'enqueue_block_editor_assets', 'wgpb_extra_gutenberg_scripts' );
 
 /**
  * Register extra API routes with functionality not available in WC core yet.
