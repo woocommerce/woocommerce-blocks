@@ -76,7 +76,6 @@ module.exports = {
 		'no-unused-vars': 'error',
 		'no-useless-return': 'error',
 		'no-whitespace-before-property': 'error',
-		'react/prop-types': 'warn',
 		'object-curly-spacing': [ 'error', 'always' ],
 		'padded-blocks': [ 'error', 'never' ],
 		quotes: [ 'error', 'single', { allowTemplateLiterals: true, avoidEscape: true } ],
