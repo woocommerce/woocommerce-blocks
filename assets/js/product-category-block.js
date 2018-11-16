@@ -21,26 +21,79 @@ import { registerBlockType } from '@wordpress/blocks';
 import '../css/product-category-block.scss';
 import sharedAttributes from './shared-attributes';
 
+function getQuery( attributes ) {
+	const { categories, columns, orderby, rows } = attributes;
+
+	const query = {
+		category: categories.join( ',' ),
+		per_page: rows * columns,
+	};
+
+	if ( 'price_desc' === orderby ) {
+		query.orderby = 'price';
+		query.order = 'desc';
+	} else if ( 'price_asc' === orderby ) {
+		query.orderby = 'price';
+		query.order = 'asc';
+	} else if ( 'title' === orderby ) {
+		query.orderby = 'title';
+		query.order = 'asc';
+	} else {
+		query.orderby = orderby;
+	}
+
+	return query;
+}
+
 /**
- * `ChartPlaceholder` displays a large loading indiciator for use in place of a `Chart` while data is loading.
+ * Component to handle edit mode of "Products by Category".
  */
 class ProductByCategoryBlock extends Component {
 	constructor() {
 		super( ...arguments );
 		this.state = {
 			categoriesList: [],
+			products: [],
+			loaded: false,
 		};
 	}
 
 	componentDidMount() {
 		apiFetch( {
-			path: addQueryArgs( `/wc/v3/products/categories`, { per_page: -1 } ),
+			path: addQueryArgs( '/wc/v3/products/categories', { per_page: -1 } ),
 		} )
 			.then( ( categoriesList ) => {
 				this.setState( { categoriesList } );
 			} )
 			.catch( () => {
 				this.setState( { categoriesList: [] } );
+			} );
+		if ( this.props.attributes.categories ) {
+			this.getProducts();
+		}
+	}
+
+	componentDidUpdate( prevProps ) {
+		const hasChange = [ 'rows', 'columns', 'orderby', 'categories' ].reduce(
+			( acc, key ) => {
+				return acc || prevProps.attributes[ key ] !== this.props.attributes[ key ];
+			},
+			false
+		);
+		if ( hasChange ) {
+			this.getProducts();
+		}
+	}
+
+	getProducts() {
+		apiFetch( {
+			path: addQueryArgs( '/wgbp/v3/products', getQuery( this.props.attributes ) ),
+		} )
+			.then( ( products ) => {
+				this.setState( { products, loaded: true } );
+			} )
+			.catch( () => {
+				this.setState( { products: [], loaded: true } );
 			} );
 	}
 
@@ -120,15 +173,13 @@ class ProductByCategoryBlock extends Component {
 	}
 
 	render() {
-		const { columns, orderby, rows } = this.props.attributes;
+		const { loaded, products } = this.state;
 
 		return (
 			<Fragment>
 				{ this.getInspectorControls() }
 				<div className="woocommerce-products-category">
-					<p>Columns: { columns }</p>
-					<p>Rows: { rows }</p>
-					<p>Order By: { orderby }</p>
+					{ loaded ? products.length : 'Loading…' }
 				</div>
 			</Fragment>
 		);
