@@ -22,6 +22,7 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 import '../css/product-category-block.scss';
 import getQuery from './utils/get-query';
+import getShortcode from './utils/get-shortcode';
 import ProductPreview from './components/product-preview';
 import sharedAttributes from './utils/shared-attributes';
 
@@ -221,7 +222,7 @@ registerBlockType( 'woocommerce/product-category', {
 	 *
 	 * @return string
 	 */
-	save() {
-		return <RawHTML>Products in a category!</RawHTML>;
+	save( props ) {
+		return <RawHTML>{ getShortcode( props ) }</RawHTML>;
 	},
 } );
