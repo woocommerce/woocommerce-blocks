@@ -21,32 +21,9 @@ import { registerBlockType } from '@wordpress/blocks';
  * Internal dependencies
  */
 import '../css/product-category-block.scss';
+import getQuery from './utils/get-query';
 import ProductPreview from './components/product-preview';
 import sharedAttributes from './utils/shared-attributes';
-
-function getQuery( attributes ) {
-	const { categories, columns, orderby, rows } = attributes;
-
-	const query = {
-		category: categories.join( ',' ),
-		per_page: rows * columns,
-	};
-
-	if ( 'price_desc' === orderby ) {
-		query.orderby = 'price';
-		query.order = 'desc';
-	} else if ( 'price_asc' === orderby ) {
-		query.orderby = 'price';
-		query.order = 'asc';
-	} else if ( 'title' === orderby ) {
-		query.orderby = 'title';
-		query.order = 'asc';
-	} else {
-		query.orderby = orderby;
-	}
-
-	return query;
-}
 
 /**
  * Component to handle edit mode of "Products by Category".
