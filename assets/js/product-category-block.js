@@ -177,12 +177,13 @@ class ProductByCategoryBlock extends Component {
 	}
 
 	render() {
+		const { columns } = this.props.attributes;
 		const { loaded, products } = this.state;
 
 		return (
 			<Fragment>
 				{ this.getInspectorControls() }
-				<div className="woocommerce-products-category">
+				<div className={ `wc-block-products-category cols-${ columns }` }>
 					{ products.length ? (
 						products.map( ( product ) => (
 							<ProductPreview product={ product } key={ product.id } />

@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-// import './style.scss';
+import './style.scss';
 
 /**
  * Display a preview for a given product.
@@ -19,11 +19,16 @@ const ProductPreview = ( { product } ) => {
 	}
 
 	return (
-		<div className="product-preview">
+		<div className="wc-product-preview">
 			{ image }
-			<div className="product-title">{ product.name }</div>
-			<div className="product-price" dangerouslySetInnerHTML={ { __html: product.price_html } } />
-			<span className="product-add-to-cart">{ __( 'Add to cart', 'woocommerce' ) }</span>
+			<div className="wc-product-preview__title">{ product.name }</div>
+			<div
+				className="wc-product-preview__price"
+				dangerouslySetInnerHTML={ { __html: product.price_html } }
+			/>
+			<span className="wc-product-preview__add-to-cart">
+				{ __( 'Add to cart', 'woocommerce' ) }
+			</span>
 		</div>
 	);
 };
