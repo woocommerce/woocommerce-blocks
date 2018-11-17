@@ -1,5 +1,12 @@
 export default {
 	/**
+	 * Alignment of product grid
+	 */
+	align: {
+		type: 'string',
+	},
+
+	/**
 	 * Number of columns.
 	 */
 	columns: {

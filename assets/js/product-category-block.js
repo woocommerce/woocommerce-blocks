@@ -5,7 +5,11 @@ import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
 import { Component, Fragment, RawHTML } from '@wordpress/element';
-import { InspectorControls } from '@wordpress/editor';
+import {
+	BlockAlignmentToolbar,
+	BlockControls,
+	InspectorControls,
+} from '@wordpress/editor';
 import {
 	PanelBody,
 	Placeholder,
@@ -25,6 +29,9 @@ import getQuery from './utils/get-query';
 import getShortcode from './utils/get-shortcode';
 import ProductPreview from './components/product-preview';
 import sharedAttributes from './utils/shared-attributes';
+
+// Only enable center, wide, and full alignments
+const validAlignments = [ 'center', 'wide', 'full' ];
 
 /**
  * Component to handle edit mode of "Products by Category".
@@ -155,11 +162,19 @@ class ProductByCategoryBlock extends Component {
 	}
 
 	render() {
-		const { columns } = this.props.attributes;
+		const { setAttributes } = this.props;
+		const { columns, align } = this.props.attributes;
 		const { loaded, products } = this.state;
 
 		return (
 			<Fragment>
+				<BlockControls>
+					<BlockAlignmentToolbar
+						controls={ validAlignments }
+						value={ align }
+						onChange={ ( nextAlign ) => setAttributes( { align: nextAlign } ) }
+					/>
+				</BlockControls>
 				{ this.getInspectorControls() }
 				<div className={ `wc-block-products-category cols-${ columns }` }>
 					{ products.length ? (
@@ -210,6 +225,13 @@ registerBlockType( 'woocommerce/product-category', {
 		},
 	},
 
+	getEditWrapperProps( attributes ) {
+		const { align } = attributes;
+		if ( -1 !== validAlignments.indexOf( align ) ) {
+			return { 'data-align': align };
+		}
+	},
+
 	/**
 	 * Renders and manages the block.
 	 */
@@ -223,6 +245,7 @@ registerBlockType( 'woocommerce/product-category', {
 	 * @return string
 	 */
 	save( props ) {
-		return <RawHTML>{ getShortcode( props ) }</RawHTML>;
+		const { align } = props.attributes; /* eslint-disable-line react/prop-types */
+		return <RawHTML className={ `align${ align }` }>{ getShortcode( props ) }</RawHTML>;
 	},
 } );
