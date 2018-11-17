@@ -8,8 +8,10 @@ import { Component, Fragment, RawHTML } from '@wordpress/element';
 import { InspectorControls } from '@wordpress/editor';
 import {
 	PanelBody,
+	Placeholder,
 	RangeControl,
 	SelectControl,
+	Spinner,
 	TreeSelect,
 } from '@wordpress/components';
 import PropTypes from 'prop-types';
@@ -19,6 +21,7 @@ import { registerBlockType } from '@wordpress/blocks';
  * Internal dependencies
  */
 import '../css/product-category-block.scss';
+import ProductPreview from './components/product-preview';
 import sharedAttributes from './shared-attributes';
 
 function getQuery( attributes ) {
@@ -86,6 +89,7 @@ class ProductByCategoryBlock extends Component {
 	}
 
 	getProducts() {
+		this.setState( { products: [], loaded: false } );
 		apiFetch( {
 			path: addQueryArgs( '/wgbp/v3/products', getQuery( this.props.attributes ) ),
 		} )
@@ -179,7 +183,15 @@ class ProductByCategoryBlock extends Component {
 			<Fragment>
 				{ this.getInspectorControls() }
 				<div className="woocommerce-products-category">
-					{ loaded ? products.length : 'Loading…' }
+					{ products.length ? (
+						products.map( ( product ) => (
+							<ProductPreview product={ product } key={ product.id } />
+						) )
+					) : (
+						<Placeholder icon="category" label={ __( 'Products by Category' ) }>
+							{ ! loaded ? <Spinner /> : __( 'No posts found.' ) }
+						</Placeholder>
+					) }
 				</div>
 			</Fragment>
 		);
