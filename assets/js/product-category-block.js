@@ -22,7 +22,7 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 import '../css/product-category-block.scss';
 import ProductPreview from './components/product-preview';
-import sharedAttributes from './shared-attributes';
+import sharedAttributes from './utils/shared-attributes';
 
 function getQuery( attributes ) {
 	const { categories, columns, orderby, rows } = attributes;
