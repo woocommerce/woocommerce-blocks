@@ -15,6 +15,9 @@ export default function getQuery( attributes ) {
 	} else if ( 'title' === orderby ) {
 		query.orderby = 'title';
 		query.order = 'asc';
+	} else if ( 'menu_order' === orderby ) {
+		query.orderby = 'menu_order';
+		query.order = 'asc';
 	} else {
 		query.orderby = orderby;
 	}
