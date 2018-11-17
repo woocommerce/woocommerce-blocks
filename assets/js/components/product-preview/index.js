@@ -37,7 +37,12 @@ ProductPreview.propTypes = {
 	/**
 	 * The product object as returned from the API.
 	 */
-	product: PropTypes.object.isRequired,
+	product: PropTypes.shape( {
+		id: PropTypes.number,
+		images: PropTypes.array,
+		name: PropTypes.string,
+		price_html: PropTypes.string,
+	} ).isRequired,
 };
 
 export default ProductPreview;
