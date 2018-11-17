@@ -99,6 +99,8 @@ function wgpb_extra_gutenberg_scripts() {
 	);
 	wp_localize_script( 'woocommerce-products-block-editor', 'wc_product_block_data', $product_block_data );
 
+	wp_set_script_translations( 'woocommerce-products-category-block', 'woocommerce' );
+
 	wp_enqueue_script( 'woocommerce-products-block-editor' );
 	wp_enqueue_script( 'woocommerce-products-category-block' );
 
@@ -121,12 +123,18 @@ function wgpb_extra_gutenberg_scripts() {
  * Output the wcSettings global before printing any script tags.
  */
 function wgpb_print_script_settings() {
+	$code = get_woocommerce_currency();
+
 	// Settings and variables can be passed here for access in the app.
 	$settings = array(
 		'adminUrl'         => admin_url(),
 		'wcAssetUrl'       => plugins_url( 'assets/', WC_PLUGIN_FILE ),
 		'siteLocale'       => esc_attr( get_bloginfo( 'language' ) ),
-		'currency'         => wc_admin_currency_settings(),
+		'currency'         => array(
+			'code'      => $code,
+			'precision' => wc_get_price_decimals(),
+			'symbol'    => get_woocommerce_currency_symbol( $code ),
+		),
 		'date'             => array(
 			'dow' => get_option( 'start_of_week', 0 ),
 		),
