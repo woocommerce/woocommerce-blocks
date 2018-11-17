@@ -2,9 +2,12 @@ export default function getQuery( attributes ) {
 	const { categories, columns, orderby, rows } = attributes;
 
 	const query = {
-		category: categories.join( ',' ),
 		per_page: rows * columns,
 	};
+
+	if ( categories ) {
+		query.category = categories.join( ',' );
+	}
 
 	if ( 'price_desc' === orderby ) {
 		query.orderby = 'price';
