@@ -9,7 +9,7 @@
  * Text Domain:  woocommerce
  * Domain Path:  /languages
  * WC requires at least: 3.3
- * WC tested up to: 3.4
+ * WC tested up to: 3.5
  */
 
 defined( 'ABSPATH' ) || die();
@@ -29,7 +29,7 @@ function wgpb_initialize() {
 		add_action( 'rest_api_init', 'wgpb_register_api_routes' );
 		add_action( 'enqueue_block_editor_assets', 'wgpb_extra_gutenberg_scripts' );
 	}
-	
+
 	if ( defined( 'WGPB_DEVELOPMENT_MODE' ) && WGPB_DEVELOPMENT_MODE && ! $files_exist ) {
 		add_action( 'admin_notices', 'wgpb_plugins_notice' );
 	}
