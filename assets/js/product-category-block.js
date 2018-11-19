@@ -2,8 +2,8 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
+import apiFetch from '@wordpress/api-fetch';
 import { Component, Fragment, RawHTML } from '@wordpress/element';
 import {
 	BlockAlignmentToolbar,
@@ -18,7 +18,6 @@ import {
 	SelectControl,
 	Spinner,
 	Toolbar,
-	TreeSelect,
 } from '@wordpress/components';
 import PropTypes from 'prop-types';
 import { registerBlockType } from '@wordpress/blocks';
@@ -29,6 +28,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import '../css/product-category-block.scss';
 import getQuery from './utils/get-query';
 import getShortcode from './utils/get-shortcode';
+import ProductCategoryControl from './components/product-category-control';
 import ProductPreview from './components/product-preview';
 import sharedAttributes from './utils/shared-attributes';
 
@@ -42,22 +42,12 @@ class ProductByCategoryBlock extends Component {
 	constructor() {
 		super( ...arguments );
 		this.state = {
-			categoriesList: [],
 			products: [],
 			loaded: false,
 		};
 	}
 
 	componentDidMount() {
-		apiFetch( {
-			path: addQueryArgs( '/wc/v3/products/categories', { per_page: -1 } ),
-		} )
-			.then( ( categoriesList ) => {
-				this.setState( { categoriesList } );
-			} )
-			.catch( () => {
-				this.setState( { categoriesList: [] } );
-			} );
 		if ( this.props.attributes.categories ) {
 			this.getProducts();
 		}
@@ -88,23 +78,29 @@ class ProductByCategoryBlock extends Component {
 			} );
 	}
 
+	getListControl() {
+		const { attributes, setAttributes } = this.props;
+		const { categories } = attributes;
+
+		return (
+			<ProductCategoryControl
+				label={ __( 'Product Category', 'woocommerce' ) }
+				selected={ categories }
+				onChange={ ( value ) => {
+					setAttributes( { categories: value ? value : [] } );
+				} }
+			/>
+		);
+	}
+
 	getInspectorControls() {
 		const { attributes, setAttributes } = this.props;
-		const { columns, orderby, rows, categories } = attributes;
-		const { categoriesList } = this.state;
+		const { columns, orderby, rows } = attributes;
 
 		return (
 			<InspectorControls key="inspector">
 				<PanelBody title={ __( 'Product Category', 'woocommerce' ) } initialOpen>
-					<TreeSelect
-						label={ __( 'Product Category', 'woocommerce' ) }
-						tree={ categoriesList }
-						selectedId={ categories }
-						multiple
-						onChange={ ( value ) => {
-							setAttributes( { categories: value ? value : [] } );
-						} }
-					/>
+					{ this.getListControl() }
 				</PanelBody>
 				<PanelBody title={ __( 'Layout', 'woocommerce' ) } initialOpen={ false }>
 					<RangeControl
@@ -165,8 +161,6 @@ class ProductByCategoryBlock extends Component {
 
 	renderEditMode() {
 		const { setAttributes } = this.props;
-		const { categories } = this.props.attributes;
-		const { categoriesList } = this.state;
 
 		return (
 			<Placeholder
@@ -177,29 +171,15 @@ class ProductByCategoryBlock extends Component {
 					'Display a grid of products from your selected categories',
 					'woocommerce'
 				) }
-				{ categoriesList.length ? (
-					<div className="wc-block-products-category__selection">
-						<TreeSelect
-							label={ __( 'Product Category', 'woocommerce' ) }
-							tree={ categoriesList }
-							selectedId={ categories }
-							multiple
-							onChange={ ( value ) => {
-								setAttributes( { categories: value ? value : [] } );
-							} }
-						/>
-						<Button
-							isDefault
-							onClick={ () => setAttributes( { editMode: false } ) }
-						>
-							{ __( 'Done', 'woocommerce' ) }
-						</Button>
-					</div>
-				) : (
-					<div className="wc-block-products-category__selection">
-						<Spinner />
-					</div>
-				) }
+				<div className="wc-block-products-category__selection">
+					{ this.getListControl() }
+					<Button
+						isDefault
+						onClick={ () => setAttributes( { editMode: false } ) }
+					>
+						{ __( 'Done', 'woocommerce' ) }
+					</Button>
+				</div>
 			</Placeholder>
 		);
 	}
