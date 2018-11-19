@@ -315,6 +315,6 @@ registerBlockType( 'woocommerce/product-category', {
 		const {
 			align,
 		} = props.attributes; /* eslint-disable-line react/prop-types */
-		return <RawHTML className={ `align${ align }` }>{ getShortcode( props ) }</RawHTML>;
+		return <RawHTML className={ align ? `align${ align }` : '' }>{ getShortcode( props ) }</RawHTML>;
 	},
 } );
