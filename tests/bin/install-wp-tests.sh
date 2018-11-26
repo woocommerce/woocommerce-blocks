@@ -13,8 +13,10 @@ DB_HOST=${4-localhost}
 WP_VERSION=${5-latest}
 SKIP_DB_CREATE=${6-false}
 
-WP_TESTS_DIR=${WP_TESTS_DIR-/tmp/wordpress-tests-lib}
-WP_CORE_DIR=${WP_CORE_DIR-/tmp/wordpress/}
+TMPDIR=${TMPDIR-/tmp}
+TMPDIR=$(echo $TMPDIR | sed -e "s/\/$//")
+WP_TESTS_DIR=${WP_TESTS_DIR-$TMPDIR/wordpress-tests-lib}
+WP_CORE_DIR=${WP_CORE_DIR-$TMPDIR/wordpress/}
 
 download() {
     if [ `which curl` ]; then
@@ -151,10 +153,9 @@ install_deps() {
 	cd "wp-content/plugins/"
 	# As zip file does not include tests, we have to get it from git repo.
 	git clone --depth 1 https://github.com/woocommerce/woocommerce.git
-	ls
-	php wp-cli.phar plugin list
 	cd "$WP_CORE_DIR"
 	php wp-cli.phar plugin activate woocommerce
+	php wp-cli.phar plugin list
 
 	if [ "$TRAVIS_PULL_REQUEST_BRANCH" != "" ]; then
 		# Install wc-admin, the correct branch, if running from Travis CI.
