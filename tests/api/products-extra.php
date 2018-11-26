@@ -27,7 +27,6 @@ class WC_Tests_API_Products_Controller extends WC_REST_Unit_Test_Case {
 				'role' => 'administrator',
 			)
 		);
-
 		$this->author = $this->factory->user->create(
 			array(
 				'role' => 'author',
