@@ -155,7 +155,6 @@ install_deps() {
 	git clone --depth 1 https://github.com/woocommerce/woocommerce.git
 	cd "$WP_CORE_DIR"
 	php wp-cli.phar plugin activate woocommerce
-	php wp-cli.phar plugin list
 
 	if [ "$BRANCH" != "" ]; then
 		# Install the correct branch of the plugin, if running from Travis CI.
