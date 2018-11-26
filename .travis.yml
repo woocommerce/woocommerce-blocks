@@ -14,7 +14,6 @@ before_script:
   - bash tests/bin/install-wp-tests.sh wgpb_admin root '' localhost $WP_VERSION
   - node --version
   - npm --version
-  - npm install
   - timedatectl
 
 jobs:
@@ -23,6 +22,7 @@ jobs:
       env: WP_VERSION=latest WP_MULTISITE=0 WP_CORE_DIR=/tmp/wordpress
       php: 7.1
       script:
+        - npm install
         - npm run lint
         - npm run build
         - npm test
