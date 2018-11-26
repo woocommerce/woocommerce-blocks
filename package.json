@@ -61,8 +61,8 @@
     "webpack-cli": "3.1.2"
   },
   "engines": {
-    "node": ">=8.9.3",
-    "npm": ">=5.5.1"
+    "node": "10.13.0",
+    "npm": "6.4.1"
   },
   "dependencies": {
     "@woocommerce/components": "1.0.1"
