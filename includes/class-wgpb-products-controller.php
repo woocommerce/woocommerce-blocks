@@ -264,14 +264,18 @@ class WGPB_Products_Controller extends WC_REST_Products_Controller {
 	 */
 	public function get_item_schema() {
 		$raw_schema = parent::get_item_schema();
-		$schema     = array();
+		$schema     = array(
+			'$schema'    => 'http://json-schema.org/draft-04/schema#',
+			'title'      => 'product_block_product',
+			'type'       => 'object',
+			'properties' => array(),
+		);
 
-		$schema['id']         = $raw_schema['id'];
-		$schema['name']       = $raw_schema['name'];
-		$schema['price_html'] = $raw_schema['price_html'];
-		$schema['images']     = $raw_schema['images'];
+		$schema['properties']['id']         = $raw_schema['properties']['id'];
+		$schema['properties']['name']       = $raw_schema['properties']['name'];
+		$schema['properties']['price_html'] = $raw_schema['properties']['price_html'];
+		$schema['properties']['images']     = $raw_schema['properties']['images'];
 
 		return $this->add_additional_fields_schema( $schema );
 	}
-
 }
