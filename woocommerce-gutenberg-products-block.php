@@ -28,14 +28,13 @@ function wgpb_initialize() {
 
 	if ( $files_exist && function_exists( 'register_block_type' ) ) {
 		add_action( 'init', 'wgpb_register_products_block' );
-		add_action( 'rest_api_init', 'wgpb_register_api_routes' );
+		add_action( 'rest_api_init', 'wgpb_register_api_routes', 20 );
 		add_action( 'enqueue_block_editor_assets', 'wgpb_extra_gutenberg_scripts' );
 	}
 
 	if ( defined( 'WGPB_DEVELOPMENT_MODE' ) && WGPB_DEVELOPMENT_MODE && ! $files_exist ) {
 		add_action( 'admin_notices', 'wgpb_plugins_notice' );
 	}
-
 }
 add_action( 'woocommerce_loaded', 'wgpb_initialize' );
 
@@ -161,8 +160,13 @@ add_action( 'admin_print_footer_scripts', 'wgpb_print_script_settings', 1 );
  */
 function wgpb_register_api_routes() {
 	include_once dirname( __FILE__ ) . '/includes/class-wgpb-products-controller.php';
-	$controller = new WGPB_Products_Controller();
-	$controller->register_routes();
+	include_once dirname( __FILE__ ) . '/includes/class-wgpb-product-categories-controller.php';
+
+	$products = new WGPB_Products_Controller();
+	$products->register_routes();
+
+	$categories = new WGPB_Product_Categories_Controller();
+	$categories->register_routes();
 }
 
 /**
