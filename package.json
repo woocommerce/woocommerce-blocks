@@ -47,7 +47,9 @@
     "eslint-plugin-jsx-a11y": "6.1.2",
     "eslint-plugin-react": "7.11.1",
     "eslint-plugin-wordpress": "git://github.com/WordPress-Coding-Standards/eslint-plugin-wordpress.git#1774343f6226052a46b081e01db3fca8793cc9f1",
+    "husky": "^1.2.0",
     "interpolate-components": "^1.1.1",
+    "lint-staged": "^8.1.0",
     "mini-css-extract-plugin": "0.4.4",
     "node-sass": "4.10.0",
     "postcss-loader": "3.0.0",
@@ -65,5 +67,22 @@
   },
   "dependencies": {
     "@woocommerce/components": "1.0.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "linters": {
+      "*.php": [
+        "php -d display_errors=1 -l",
+        "composer run-script phpcs"
+      ]
+    },
+    "ignore": [
+      "*.min.js",
+      "*.css"
+    ]
   }
 }
