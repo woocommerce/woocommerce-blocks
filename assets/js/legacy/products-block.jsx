@@ -561,10 +561,10 @@ class ProductsBlockSidebarInfo extends Component {
 			const ID = getAttributeID( display_setting[ 0 ] );
 			const terms = display_setting.slice( 1 ).join( ', ' );
 
-			endpoints.attribute = '/wc/v2/products/attributes/' + ID;
+			endpoints.attribute = '/wc-pb/v3/products/attributes/' + ID;
 
 			if ( terms.length ) {
-				endpoints.terms = '/wc/v2/products/attributes/' + ID + '/terms?include=' + terms;
+				endpoints.terms = '/wc-pb/v3/products/attributes/' + ID + '/terms?include=' + terms;
 			}
 		} else if ( 'category' === display && display_setting.length ) {
 			endpoints.categories = '/wc-pb/v3/products/categories?include=' + display_setting.join( ',' );

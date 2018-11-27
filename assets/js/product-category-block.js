@@ -50,7 +50,7 @@ class ProductByCategoryBlock extends Component {
 
 	componentDidMount() {
 		apiFetch( {
-			path: addQueryArgs( '/wc-pb/products/categories', { per_page: -1 } ),
+			path: addQueryArgs( '/wc-pb/v3/products/categories', { per_page: -1 } ),
 		} )
 			.then( ( categoriesList ) => {
 				this.setState( { categoriesList } );
