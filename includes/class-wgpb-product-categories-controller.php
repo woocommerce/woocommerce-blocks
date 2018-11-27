@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * REST API Products controller class.
+ * REST API Product Categories controller class.
  *
  * @package WooCommerce/API
  */
