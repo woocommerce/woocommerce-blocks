@@ -160,6 +160,7 @@ function wgpb_register_api_routes() {
 	include_once dirname( __FILE__ ) . '/includes/class-wgpb-products-controller.php';
 	include_once dirname( __FILE__ ) . '/includes/class-wgpb-product-categories-controller.php';
 	include_once dirname( __FILE__ ) . '/includes/class-wgpb-product-attributes-controller.php';
+	include_once dirname( __FILE__ ) . '/includes/class-wgpb-product-attribute-terms-controller.php';
 
 	$products = new WGPB_Products_Controller();
 	$products->register_routes();
@@ -169,6 +170,9 @@ function wgpb_register_api_routes() {
 
 	$attributes = new WGPB_Product_Attributes_Controller();
 	$attributes->register_routes();
+
+	$attribute_terms = new WGPB_Product_Attribute_Terms_Controller();
+	$attribute_terms->register_routes();
 }
 
 /**
