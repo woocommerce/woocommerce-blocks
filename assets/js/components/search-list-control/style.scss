@@ -1,0 +1,44 @@
+.woocommerce-search-list {
+	margin-bottom: $gap-large;
+}
+
+.woocommerce-search-list__search {
+	.components-base-control__field {
+		margin-bottom: $gap;
+	}
+}
+
+.woocommerce-search-list__list {
+	max-height: 20em;
+	overflow-x: scroll;
+	list-style: none;
+	border: 1px solid $core-grey-light-500;
+	border-bottom: none;
+
+	.woocommerce-search-list__item {
+		display: flex;
+		align-items: flex-start;
+		margin-bottom: 0;
+		padding: $gap;
+		background: $white;
+		// !important to keep the border around on hover
+		border-bottom: 1px solid $core-grey-light-500 !important;
+		color: $core-grey-dark-500;
+	}
+
+	.woocommerce-search-list__item-input {
+		flex: 0;
+	}
+
+	.woocommerce-search-list__item-name {
+		flex: 1;
+	}
+
+	.woocommerce-search-list__item-count {
+		flex: 0;
+		padding: 0 $gap-smaller;
+		border: 1px solid $core-grey-light-500;
+		border-radius: 30%;
+		color: $core-grey-dark-300;
+	}
+}
