@@ -23,7 +23,7 @@ class WGPB_Products_Controller extends WC_REST_Products_Controller {
 	 *
 	 * @var string
 	 */
-	protected $namespace = 'wgbp/v3';
+	protected $namespace = 'wc-pb/v3';
 
 	/**
 	 * Register the routes for products.

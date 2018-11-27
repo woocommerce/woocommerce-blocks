@@ -453,7 +453,7 @@ class ProductsBlockPreview extends Component {
 			query_string += key + '=' + query[ key ] + '&';
 		}
 
-		const endpoint = '/wgbp/v3/products' + query_string;
+		const endpoint = '/wc-pb/v3/products' + query_string;
 		return endpoint;
 	}
 
@@ -567,7 +567,7 @@ class ProductsBlockSidebarInfo extends Component {
 				endpoints.terms = '/wc/v2/products/attributes/' + ID + '/terms?include=' + terms;
 			}
 		} else if ( 'category' === display && display_setting.length ) {
-			endpoints.categories = '/wgbp/v3/products/categories?include=' + display_setting.join( ',' );
+			endpoints.categories = '/wc-pb/v3/products/categories?include=' + display_setting.join( ',' );
 		}
 
 		return endpoints;

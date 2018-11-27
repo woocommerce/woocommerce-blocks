@@ -154,9 +154,7 @@ function wgpb_print_script_settings() {
 add_action( 'admin_print_footer_scripts', 'wgpb_print_script_settings', 1 );
 
 /**
- * Register extra API routes with functionality not available in WC core yet.
- *
- * @todo Remove this function when merging into core because it won't be necessary.
+ * Register extra API routes with functionality specific for product blocks.
  */
 function wgpb_register_api_routes() {
 	include_once dirname( __FILE__ ) . '/includes/class-wgpb-products-controller.php';
