@@ -28,13 +28,14 @@ function wgpb_initialize() {
 
 	if ( $files_exist && function_exists( 'register_block_type' ) ) {
 		add_action( 'init', 'wgpb_register_products_block' );
-		add_action( 'rest_api_init', 'wgpb_register_api_routes', 20 );
 		add_action( 'enqueue_block_editor_assets', 'wgpb_extra_gutenberg_scripts' );
 	}
 
 	if ( defined( 'WGPB_DEVELOPMENT_MODE' ) && WGPB_DEVELOPMENT_MODE && ! $files_exist ) {
 		add_action( 'admin_notices', 'wgpb_plugins_notice' );
 	}
+
+	add_action( 'rest_api_init', 'wgpb_register_api_routes', 20 );
 }
 add_action( 'woocommerce_loaded', 'wgpb_initialize' );
 
@@ -80,7 +81,18 @@ function wgpb_extra_gutenberg_scripts() {
 	wp_register_script(
 		'woocommerce-products-category-block',
 		plugins_url( 'build/product-category-block.js', __FILE__ ),
-		array( 'wp-element', 'wp-blocks', 'wp-i18n' ),
+		array(
+			'wp-api-fetch',
+			'wp-blocks',
+			'wp-components',
+			'wp-compose',
+			'wp-data',
+			'wp-element',
+			'wp-editor',
+			'wp-i18n',
+			'wp-url',
+			'lodash',
+		),
 		defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( plugin_dir_path( __FILE__ ) . '/build/product-category-block.js' ) : WGPB_VERSION,
 		true
 	);
