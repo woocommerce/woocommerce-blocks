@@ -189,18 +189,39 @@ class WGPB_Products_Controller extends WC_REST_Products_Controller {
 			}
 
 			$images[] = array(
-				'id'                => (int) $attachment_id,
-				'date_created'      => wc_rest_prepare_date_response( $attachment_post->post_date, false ),
-				'date_created_gmt'  => wc_rest_prepare_date_response( strtotime( $attachment_post->post_date_gmt ) ),
-				'date_modified'     => wc_rest_prepare_date_response( $attachment_post->post_modified, false ),
-				'date_modified_gmt' => wc_rest_prepare_date_response( strtotime( $attachment_post->post_modified_gmt ) ),
-				'src'               => current( $attachment ),
-				'name'              => get_the_title( $attachment_id ),
-				'alt'               => get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ),
+				'id'   => (int) $attachment_id,
+				'src'  => current( $attachment ),
+				'name' => get_the_title( $attachment_id ),
+				'alt'  => get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ),
 			);
 		}
 
 		return $images;
+	}
+
+	/**
+	 * Prepare a single product output for response.
+	 *
+	 * @deprecated 3.0.0
+	 *
+	 * @param WP_Post         $post    Post object.
+	 * @param WP_REST_Request $request Request object.
+	 * @return WP_REST_Response
+	 */
+	public function prepare_item_for_response( $post, $request ) {
+		$product = wc_get_product( $post );
+		$data    = $this->get_product_data( $product );
+
+		$context = ! empty( $request['context'] ) ? $request['context'] : 'view';
+		$data    = $this->add_additional_fields_to_object( $data, $request );
+		$data    = $this->filter_response_by_context( $data, $context );
+
+		// Wrap the data in a response object.
+		$response = rest_ensure_response( $data );
+
+		$response->add_links( $this->prepare_links( $product, $request ) );
+
+		return $response;
 	}
 
 	/**
@@ -274,7 +295,22 @@ class WGPB_Products_Controller extends WC_REST_Products_Controller {
 		$schema['properties']['id']         = $raw_schema['properties']['id'];
 		$schema['properties']['name']       = $raw_schema['properties']['name'];
 		$schema['properties']['price_html'] = $raw_schema['properties']['price_html'];
-		$schema['properties']['images']     = $raw_schema['properties']['images'];
+		$schema['properties']['images']     = array(
+			'description' => $raw_schema['properties']['images']['description'],
+			'type'        => 'object',
+			'context'     => array( 'view', 'edit' ),
+			'items'       => array(
+				'type'       => 'object',
+				'properties' => array(),
+			),
+		);
+
+		$images_schema = $raw_schema['properties']['images']['items']['properties'];
+
+		$schema['properties']['images']['items']['properties']['id']   = $images_schema['id'];
+		$schema['properties']['images']['items']['properties']['src']  = $images_schema['src'];
+		$schema['properties']['images']['items']['properties']['name'] = $images_schema['name'];
+		$schema['properties']['images']['items']['properties']['alt']  = $images_schema['alt'];
 
 		return $this->add_additional_fields_schema( $schema );
 	}
