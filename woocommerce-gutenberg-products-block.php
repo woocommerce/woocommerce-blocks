@@ -6,10 +6,12 @@
  * Version: 1.1.2
  * Author: Automattic
  * Author URI: https://woocommerce.com
- * Text Domain:  woocommerce
- * Domain Path:  /languages
+ * Text Domain: woo-gutenberg-products-block
+ * Domain Path: /languages
  * WC requires at least: 3.3
  * WC tested up to: 3.5
+ *
+ * @package WooCommerce\Blocks\Products
  */
 
 defined( 'ABSPATH' ) || die();
@@ -42,7 +44,7 @@ add_action( 'woocommerce_loaded', 'wgpb_initialize' );
  */
 function wgpb_plugins_notice() {
 	echo '<div class="error"><p>';
-	echo __( 'WooCommerce Product Blocks development mode requires files to be built. From the plugin directory, run <code>npm install</code> to install dependencies, <code>npm run build</code> to build the files or <code>npm start</code> to build the files and watch for changes.', 'woocommerce' );
+	echo wp_kses_post( __( 'WooCommerce Product Blocks development mode requires files to be built. From the plugin directory, run <code>npm install</code> to install dependencies, <code>npm run build</code> to build the files or <code>npm start</code> to build the files and watch for changes.', 'woo-gutenberg-products-block' ) );
 	echo '</p></div>';
 }
 
@@ -50,10 +52,13 @@ function wgpb_plugins_notice() {
  * Register the Products block and its scripts.
  */
 function wgpb_register_products_block() {
-	register_block_type( 'woocommerce/products', array(
-		'editor_script' => 'woocommerce-products-block-editor',
-		'editor_style'  => 'woocommerce-products-block-editor',
-	) );
+	register_block_type(
+		'woocommerce/products',
+		array(
+			'editor_script' => 'woocommerce-products-block-editor',
+			'editor_style'  => 'woocommerce-products-block-editor',
+		)
+	);
 }
 
 /**
@@ -90,12 +95,12 @@ function wgpb_extra_gutenberg_scripts() {
 	);
 
 	$product_block_data = array(
-		'min_columns' => wc_get_theme_support( 'product_grid::min_columns', 1 ),
-		'max_columns' => wc_get_theme_support( 'product_grid::max_columns', 6 ),
+		'min_columns'     => wc_get_theme_support( 'product_grid::min_columns', 1 ),
+		'max_columns'     => wc_get_theme_support( 'product_grid::max_columns', 6 ),
 		'default_columns' => wc_get_default_products_per_row(),
-		'min_rows' => wc_get_theme_support( 'product_grid::min_rows', 1 ),
-		'max_rows' => wc_get_theme_support( 'product_grid::max_rows', 6 ),
-		'default_rows' => wc_get_default_product_rows_per_page(),
+		'min_rows'        => wc_get_theme_support( 'product_grid::min_rows', 1 ),
+		'max_rows'        => wc_get_theme_support( 'product_grid::max_rows', 6 ),
+		'default_rows'    => wc_get_default_product_rows_per_page(),
 	);
 	wp_localize_script( 'woocommerce-products-block-editor', 'wc_product_block_data', $product_block_data );
 
@@ -129,21 +134,21 @@ function wgpb_print_script_settings() {
 
 	// Settings and variables can be passed here for access in the app.
 	$settings = array(
-		'adminUrl'         => admin_url(),
-		'wcAssetUrl'       => plugins_url( 'assets/', WC_PLUGIN_FILE ),
-		'siteLocale'       => esc_attr( get_bloginfo( 'language' ) ),
-		'currency'         => array(
+		'adminUrl'   => admin_url(),
+		'wcAssetUrl' => plugins_url( 'assets/', WC_PLUGIN_FILE ),
+		'siteLocale' => esc_attr( get_bloginfo( 'language' ) ),
+		'currency'   => array(
 			'code'      => $code,
 			'precision' => wc_get_price_decimals(),
 			'symbol'    => get_woocommerce_currency_symbol( $code ),
 		),
-		'date'             => array(
+		'date'       => array(
 			'dow' => get_option( 'start_of_week', 0 ),
 		),
 	);
 	?>
 	<script type="text/javascript">
-		var wcSettings = <?php echo json_encode( $settings ); ?>;
+		var wcSettings = <?php echo wp_json_encode( $settings ); ?>;
 	</script>
 	<?php
 }
@@ -155,7 +160,7 @@ add_action( 'admin_print_footer_scripts', 'wgpb_print_script_settings', 1 );
  * @todo Remove this function when merging into core because it won't be necessary.
  */
 function wgpb_register_api_routes() {
-	include_once( dirname( __FILE__ ) . '/includes/class-wgpb-products-controller.php' );
+	include_once dirname( __FILE__ ) . '/includes/class-wgpb-products-controller.php';
 	$controller = new WGPB_Products_Controller();
 	$controller->register_routes();
 }
@@ -165,8 +170,8 @@ function wgpb_register_api_routes() {
  *
  * @todo Remove this function when merging into core because it won't be necessary.
  *
- * @param array $args WP_Query args.
- * @param array $attributes Shortcode attributes.
+ * @param array  $args WP_Query args.
+ * @param array  $attributes Shortcode attributes.
  * @param string $type Type of shortcode currently processing.
  */
 function wgpb_extra_shortcode_features( $args, $attributes, $type ) {
@@ -180,7 +185,7 @@ function wgpb_extra_shortcode_features( $args, $attributes, $type ) {
 		$field      = 'slug';
 
 		if ( empty( $args['tax_query'] ) ) {
-			$args['tax_query'] = array();
+			$args['tax_query'] = array(); // WPCS: slow query ok.
 		}
 
 		// Unset old category tax query.
@@ -209,7 +214,7 @@ function wgpb_extra_shortcode_features( $args, $attributes, $type ) {
 		$field    = 'slug';
 
 		if ( empty( $args['tax_query'] ) ) {
-			$args['tax_query'] = array();
+			$args['tax_query'] = array(); // WPCS: slow query ok.
 		}
 
 		// Unset old attribute tax query.
