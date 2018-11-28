@@ -89,7 +89,11 @@ export class SearchListControl extends Component {
 									selected.length
 								) }
 							</strong>
-							<Button isLink onClick={ this.onClear }>
+							<Button
+								isLink
+								onClick={ this.onClear }
+								aria-label={ __( 'Clear all product categories', 'woocommerce' ) }
+							>
 								{ __( 'Clear all', 'woocommerce' ) }
 							</Button>
 						</div>
