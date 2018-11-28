@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { _n, sprintf } from '@wordpress/i18n';
+import { __, _n, sprintf } from '@wordpress/i18n';
 import { addQueryArgs } from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
 import { Component } from '@wordpress/element';
@@ -68,12 +68,32 @@ class ProductCategoryControl extends Component {
 	render() {
 		const { list } = this.state;
 		const { selected, onChange } = this.props;
+
+		const messages = {
+			clear: __( 'Clear all product categories', 'woocommerce' ),
+			list: __( 'Product Categories', 'woocommerce' ),
+			search: __( 'Search for product categories', 'woocommerce' ),
+			selected: ( n ) =>
+				sprintf(
+					_n(
+						'%d category selected',
+						'%d categories selected',
+						n,
+						'woocommerce'
+					),
+					n
+				),
+			updated: __( 'Category search results updated.', 'woocommerce' ),
+		};
+
 		return (
 			<SearchListControl
 				className="woocommerce-product-categories"
 				list={ list }
 				selected={ selected.map( ( id ) => find( list, { id } ) ).filter( Boolean ) }
 				onChange={ onChange }
+				renderListItem={ this.renderListItem }
+				messages={ messages }
 			/>
 		);
 	}

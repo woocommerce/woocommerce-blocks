@@ -7,6 +7,7 @@ import {
 	MenuItem,
 	MenuGroup,
 	TextControl,
+	withSpokenMessages,
 } from '@wordpress/components';
 import { Component } from '@wordpress/element';
 import { compose, withInstanceId, withState } from '@wordpress/compose';
@@ -18,6 +19,18 @@ import { Tag } from '@woocommerce/components';
  * Internal dependencies
  */
 import './style.scss';
+
+const defaultMessages = {
+	clear: __( 'Clear all selected items', 'woocommerce' ),
+	list: __( 'Results', 'woocommerce' ),
+	search: __( 'Search for items', 'woocommerce' ),
+	selected: ( n ) =>
+		sprintf(
+			_n( '%d item selected', '%d items selected', n, 'woocommerce' ),
+			n
+		),
+	updated: __( 'Search results updated.', 'woocommerce' ),
+};
 
 /**
  * Component to display a searchable, selectable list of items.
@@ -56,7 +69,12 @@ export class SearchListControl extends Component {
 	}
 
 	getFilteredList( list, search ) {
+		if ( ! search ) {
+			return list.filter( ( item ) => item && ! this.isSelected( item ) );
+		}
+		const messages = { ...defaultMessages, ...this.props.messages };
 		const re = new RegExp( escapeRegExp( search ), 'i' );
+		this.props.debouncedSpeak( messages.updated );
 		return list
 			.map( ( item ) => ( re.test( item.name ) ? item : false ) )
 			.filter( ( item ) => item && ! this.isSelected( item ) );
@@ -89,30 +107,18 @@ export class SearchListControl extends Component {
 
 	render() {
 		const { className, search, selected, setState } = this.props;
+		const messages = { ...defaultMessages, ...this.props.messages };
 		const list = this.getFilteredList( this.props.list, search );
-		const renderListItem = this.props.renderListItem || this.fallbackRenderListItem;
+		const renderListItem =
+			this.props.renderListItem || this.fallbackRenderListItem;
 
 		return (
 			<div className={ `woocommerce-search-list ${ className }` }>
 				{ selected.length ? (
 					<div className="woocommerce-search-list__selected">
 						<div className="woocommerce-search-list__selected-header">
-							<strong>
-								{ sprintf(
-									_n(
-										'%d category selected',
-										'%d categories selected',
-										selected.length,
-										'woocommerce'
-									),
-									selected.length
-								) }
-							</strong>
-							<Button
-								isLink
-								onClick={ this.onClear }
-								aria-label={ __( 'Clear all product categories', 'woocommerce' ) }
-							>
+							<strong>{ messages.selected( selected.length ) }</strong>
+							<Button isLink onClick={ this.onClear } aria-label={ messages.clear }>
 								{ __( 'Clear all', 'woocommerce' ) }
 							</Button>
 						</div>
@@ -129,14 +135,14 @@ export class SearchListControl extends Component {
 
 				<div className="woocommerce-search-list__search">
 					<TextControl
-						label={ __( 'Search for product categories', 'woocommerce' ) }
+						label={ messages.search }
 						value={ search }
 						onChange={ ( value ) => setState( { search: value } ) }
 					/>
 				</div>
 
 				<MenuGroup
-					label={ __( 'Product Categories', 'woocommerce' ) }
+					label={ messages.list }
 					className="woocommerce-search-list__list"
 				>
 					{ list.map( ( item ) =>
@@ -146,7 +152,7 @@ export class SearchListControl extends Component {
 							onSelect: this.onSelect,
 							search,
 						} )
-							) }
+					) }
 				</MenuGroup>
 			</div>
 		);
@@ -156,11 +162,21 @@ export class SearchListControl extends Component {
 SearchListControl.propTypes = {
 	className: PropTypes.string,
 	list: PropTypes.array,
+	messages: PropTypes.shape( {
+		clear: PropTypes.string,
+		list: PropTypes.string,
+		search: PropTypes.string,
+		selected: PropTypes.func, // Function so we can handle plurals
+		updated: PropTypes.string,
+	} ),
 	onChange: PropTypes.func,
+	renderListItem: PropTypes.func,
 	selected: PropTypes.array,
 	// from withState
 	search: PropTypes.string,
 	setState: PropTypes.func,
+	// from withSpokenMessages
+	debouncedSpeak: PropTypes.func,
 	// from withInstanceId
 	instanceId: PropTypes.string,
 };
@@ -169,5 +185,6 @@ export default compose( [
 	withState( {
 		search: '',
 	} ),
+	withSpokenMessages,
 	withInstanceId,
 ] )( SearchListControl );
