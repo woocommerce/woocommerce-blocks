@@ -110,10 +110,6 @@ class WGPB_Products_Controller extends WC_REST_Products_Controller {
 
 		$objects = array();
 		foreach ( $query_results['objects'] as $object ) {
-			if ( ! current_user_can( 'edit_posts' ) ) {
-				continue;
-			}
-
 			$data      = $this->prepare_object_for_response( $object, $request );
 			$objects[] = $this->prepare_response_for_collection( $data );
 		}
