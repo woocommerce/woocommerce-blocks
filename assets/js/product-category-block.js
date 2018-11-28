@@ -18,6 +18,7 @@ import {
 	SelectControl,
 	Spinner,
 	Toolbar,
+	withSpokenMessages,
 } from '@wordpress/components';
 import PropTypes from 'prop-types';
 import { registerBlockType } from '@wordpress/blocks';
@@ -38,7 +39,7 @@ const validAlignments = [ 'center', 'wide', 'full' ];
 /**
  * Component to handle edit mode of "Products by Category".
  */
-class ProductByCategoryBlock extends Component {
+export default class ProductByCategoryBlock extends Component {
 	constructor() {
 		super( ...arguments );
 		this.state = {
@@ -159,7 +160,11 @@ class ProductByCategoryBlock extends Component {
 	}
 
 	renderEditMode() {
-		const { setAttributes } = this.props;
+		const { debouncedSpeak, setAttributes } = this.props;
+		const onDone = () => {
+			setAttributes( { editMode: false } );
+			debouncedSpeak( __( 'Showing product block preview.', 'woocommerce' ) );
+		};
 
 		return (
 			<Placeholder
@@ -174,7 +179,7 @@ class ProductByCategoryBlock extends Component {
 					{ this.getProductCategoryControl() }
 					<Button
 						isDefault
-						onClick={ () => setAttributes( { editMode: false } ) }
+						onClick={ onDone }
 					>
 						{ __( 'Done', 'woocommerce' ) }
 					</Button>
@@ -244,9 +249,11 @@ ProductByCategoryBlock.propTypes = {
 	 * A callback to update attributes
 	 */
 	setAttributes: PropTypes.func.isRequired,
+	// from withSpokenMessages
+	debouncedSpeak: PropTypes.func.isRequired,
 };
 
-export default ProductByCategoryBlock;
+const WrappedProductByCategoryBlock = withSpokenMessages( ProductByCategoryBlock );
 
 /**
  * Register and run the "Products by Category" block.
@@ -282,7 +289,7 @@ registerBlockType( 'woocommerce/product-category', {
 	 * Renders and manages the block.
 	 */
 	edit( props ) {
-		return <ProductByCategoryBlock { ...props } />;
+		return <WrappedProductByCategoryBlock { ...props } />;
 	},
 
 	/**
