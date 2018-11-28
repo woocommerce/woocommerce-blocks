@@ -84,8 +84,9 @@ class ProductByCategoryBlock extends Component {
 		return (
 			<ProductCategoryControl
 				selected={ categories }
-				onChange={ ( value ) => {
-					setAttributes( { categories: value ? value : [] } );
+				onChange={ ( value = [] ) => {
+					const ids = value.map( ( { id } ) => id );
+					setAttributes( { categories: ids } );
 				} }
 			/>
 		);

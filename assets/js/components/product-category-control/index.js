@@ -4,6 +4,7 @@
 import { addQueryArgs } from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
 import { Component } from '@wordpress/element';
+import { find } from 'lodash';
 import PropTypes from 'prop-types';
 
 /**
@@ -17,7 +18,6 @@ class ProductCategoryControl extends Component {
 		super( ...arguments );
 		this.state = {
 			list: [],
-			selected: [],
 		};
 	}
 
@@ -34,13 +34,13 @@ class ProductCategoryControl extends Component {
 	}
 
 	render() {
-		const { list, selected } = this.state;
-		const onChange = ( newList ) => this.setState( { selected: newList } );
+		const { list } = this.state;
+		const { selected, onChange } = this.props;
 		return (
 			<SearchListControl
 				className="woocommerce-product-categories"
 				list={ list }
-				selected={ selected }
+				selected={ selected.map( ( id ) => find( list, { id } ) ).filter( Boolean ) }
 				onChange={ onChange }
 			/>
 		);
@@ -48,7 +48,8 @@ class ProductCategoryControl extends Component {
 }
 
 ProductCategoryControl.propTypes = {
-	className: PropTypes.string,
+	onChange: PropTypes.func.isRequired,
+	selected: PropTypes.array.isRequired,
 };
 
 export default ProductCategoryControl;
