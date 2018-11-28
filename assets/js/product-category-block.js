@@ -79,20 +79,6 @@ export default class ProductByCategoryBlock extends Component {
 			} );
 	}
 
-	getProductCategoryControl() {
-		const { attributes, setAttributes } = this.props;
-		const { categories } = attributes;
-		return (
-			<ProductCategoryControl
-				selected={ categories }
-				onChange={ ( value = [] ) => {
-					const ids = value.map( ( { id } ) => id );
-					setAttributes( { categories: ids } );
-				} }
-			/>
-		);
-	}
-
 	getInspectorControls() {
 		const { attributes, setAttributes } = this.props;
 		const { columns, orderby, rows } = attributes;
@@ -100,7 +86,13 @@ export default class ProductByCategoryBlock extends Component {
 		return (
 			<InspectorControls key="inspector">
 				<PanelBody title={ __( 'Product Category', 'woocommerce' ) } initialOpen>
-					{ this.getProductCategoryControl() }
+					<ProductCategoryControl
+						selected={ attributes.categories }
+						onChange={ ( value = [] ) => {
+							const ids = value.map( ( { id } ) => id );
+							setAttributes( { categories: ids } );
+						} }
+					/>
 				</PanelBody>
 				<PanelBody title={ __( 'Layout', 'woocommerce' ) } initialOpen={ false }>
 					<RangeControl
@@ -160,7 +152,7 @@ export default class ProductByCategoryBlock extends Component {
 	}
 
 	renderEditMode() {
-		const { debouncedSpeak, setAttributes } = this.props;
+		const { attributes, debouncedSpeak, setAttributes } = this.props;
 		const onDone = () => {
 			setAttributes( { editMode: false } );
 			debouncedSpeak( __( 'Showing product block preview.', 'woocommerce' ) );
@@ -176,7 +168,13 @@ export default class ProductByCategoryBlock extends Component {
 					'woocommerce'
 				) }
 				<div className="wc-block-products-category__selection">
-					{ this.getProductCategoryControl() }
+					<ProductCategoryControl
+						selected={ attributes.categories }
+						onChange={ ( value = [] ) => {
+							const ids = value.map( ( { id } ) => id );
+							setAttributes( { categories: ids } );
+						} }
+					/>
 					<Button
 						isDefault
 						onClick={ onDone }
