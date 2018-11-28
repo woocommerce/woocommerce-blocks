@@ -58,7 +58,7 @@ export class SearchListControl extends Component {
 		const re = new RegExp( escapeRegExp( search ), 'i' );
 		return list
 			.map( ( item ) => ( re.test( item.name ) ? item : false ) )
-			.filter( Boolean );
+			.filter( ( item ) => item && ! this.isSelected( item ) );
 	}
 
 	getHighlightName( name, search ) {
@@ -116,36 +116,33 @@ export class SearchListControl extends Component {
 					label={ __( 'Product Categories', 'woocommerce' ) }
 					className="woocommerce-search-list__list"
 				>
-					{ list.map(
-						( item ) =>
-							this.isSelected( item ) ? null : (
-								<MenuItem
-									key={ item.id }
-									className="woocommerce-search-list__item"
-									onClick={ this.onSelect( item ) }
-									aria-label={ sprintf(
-										_n(
-											'%s, has %d item',
-											'%s, has %d items',
-											item.count,
-											'woocommerce'
-										),
-										item.name,
-										item.count
-									) }
-								>
-									<span
-										className="woocommerce-search-list__item-name"
-										dangerouslySetInnerHTML={ {
-											__html: this.getHighlightName( item.name, search ),
-										} }
-									/>
-									<span className="woocommerce-search-list__item-count">
-										{ item.count }
-									</span>
-								</MenuItem>
-							)
-					) }
+					{ list.map( ( item ) => (
+						<MenuItem
+							key={ item.id }
+							className="woocommerce-search-list__item"
+							onClick={ this.onSelect( item ) }
+							aria-label={ sprintf(
+								_n(
+									'%s, has %d item',
+									'%s, has %d items',
+									item.count,
+									'woocommerce'
+								),
+								item.name,
+								item.count
+							) }
+						>
+							<span
+								className="woocommerce-search-list__item-name"
+								dangerouslySetInnerHTML={ {
+									__html: this.getHighlightName( item.name, search ),
+								} }
+							/>
+							<span className="woocommerce-search-list__item-count">
+								{ item.count }
+							</span>
+						</MenuItem>
+					) ) }
 				</MenuGroup>
 			</div>
 		);
