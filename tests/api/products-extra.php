@@ -44,7 +44,6 @@ class WC_Tests_API_Products_Controller extends WC_REST_Unit_Test_Case {
 
 		$this->assertArrayHasKey( '/wc-pb/v3/products', $routes );
 		$this->assertArrayHasKey( '/wc-pb/v3/products/(?P<id>[\d]+)', $routes );
-		$this->assertArrayHasKey( '/wc-pb/v3/products/batch', $routes );
 	}
 
 	/**
