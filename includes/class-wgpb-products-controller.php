@@ -257,6 +257,7 @@ class WGPB_Products_Controller extends WC_REST_Products_Controller {
 
 		$data['id']         = $raw_data['id'];
 		$data['name']       = $raw_data['name'];
+		$data['price']      = $raw_data['price'];
 		$data['price_html'] = $raw_data['price_html'];
 		$data['images']     = $raw_data['images'];
 
@@ -290,6 +291,7 @@ class WGPB_Products_Controller extends WC_REST_Products_Controller {
 
 		$schema['properties']['id']         = $raw_schema['properties']['id'];
 		$schema['properties']['name']       = $raw_schema['properties']['name'];
+		$schema['properties']['price']      = $raw_schema['properties']['price'];
 		$schema['properties']['price_html'] = $raw_schema['properties']['price_html'];
 		$schema['properties']['images']     = array(
 			'description' => $raw_schema['properties']['images']['description'],
