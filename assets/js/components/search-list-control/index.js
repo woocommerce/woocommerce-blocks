@@ -10,7 +10,7 @@ import {
 } from '@wordpress/components';
 import { Component } from '@wordpress/element';
 import { compose, withInstanceId, withState } from '@wordpress/compose';
-import { findIndex } from 'lodash';
+import { escapeRegExp, findIndex } from 'lodash';
 import PropTypes from 'prop-types';
 import { Tag } from '@woocommerce/components';
 
@@ -54,8 +54,25 @@ export class SearchListControl extends Component {
 		return -1 !== findIndex( this.props.selected, { id: item.id } );
 	}
 
+	getFilteredList( list, search ) {
+		const re = new RegExp( escapeRegExp( search ), 'i' );
+		return list
+			.map( ( item ) => ( re.test( item.name ) ? item : false ) )
+			.filter( Boolean );
+	}
+
+	getHighlightName( name, search ) {
+		if ( ! search ) {
+			return name;
+		}
+		const re = new RegExp( escapeRegExp( search ), 'ig' );
+		return name.replace( re, '<strong>$&</strong>' );
+	}
+
 	render() {
-		const { className, list, search, selected, setState } = this.props;
+		const { className, search, selected, setState } = this.props;
+
+		const list = this.getFilteredList( this.props.list, search );
 		return (
 			<div className={ `woocommerce-search-list ${ className }` }>
 				{ selected.length ? (
@@ -106,10 +123,23 @@ export class SearchListControl extends Component {
 									key={ item.id }
 									className="woocommerce-search-list__item"
 									onClick={ this.onSelect( item ) }
+									aria-label={ sprintf(
+										_n(
+											'%s, has %d item',
+											'%s, has %d items',
+											item.count,
+											'woocommerce'
+										),
+										item.name,
+										item.count
+									) }
 								>
-									<span className="woocommerce-search-list__item-name">
-										{ item.name }
-									</span>
+									<span
+										className="woocommerce-search-list__item-name"
+										dangerouslySetInnerHTML={ {
+											__html: this.getHighlightName( item.name, search ),
+										} }
+									/>
 									<span className="woocommerce-search-list__item-count">
 										{ item.count }
 									</span>
