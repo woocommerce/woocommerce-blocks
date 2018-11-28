@@ -24,12 +24,17 @@ class WC_Tests_API_Products_Controller extends WC_REST_Unit_Test_Case {
 
 		$this->user = $this->factory->user->create(
 			array(
-				'role' => 'administrator',
+				'role' => 'author',
 			)
 		);
-		$this->author = $this->factory->user->create(
+		$this->contributor = $this->factory->user->create(
 			array(
-				'role' => 'author',
+				'role' => 'contributor',
+			)
+		);
+		$this->subscriber = $this->factory->user->create(
+			array(
+				'role' => 'subscriber',
 			)
 		);
 	}
@@ -69,12 +74,24 @@ class WC_Tests_API_Products_Controller extends WC_REST_Unit_Test_Case {
 	}
 
 	/**
-	 * Test getting products as an author.
+	 * Test getting products as an contributor.
 	 *
 	 * @since 1.2.0
 	 */
-	public function test_get_products_as_author() {
-		wp_set_current_user( $this->author );
+	public function test_get_products_as_contributor() {
+		wp_set_current_user( $this->contributor );
+		WC_Helper_Product::create_simple_product();
+		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc-pb/v3/products' ) );
+		$this->assertEquals( 200, $response->get_status() );
+	}
+
+	/**
+	 * Test getting products as an subscriber.
+	 *
+	 * @since 1.2.0
+	 */
+	public function test_get_products_as_subscriber() {
+		wp_set_current_user( $this->subscriber );
 		WC_Helper_Product::create_simple_product();
 		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc-pb/v3/products' ) );
 		$this->assertEquals( 403, $response->get_status() );
