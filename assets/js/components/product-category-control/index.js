@@ -1,10 +1,12 @@
 /**
  * External dependencies
  */
+import { _n, sprintf } from '@wordpress/i18n';
 import { addQueryArgs } from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
 import { Component } from '@wordpress/element';
 import { find } from 'lodash';
+import { MenuItem } from '@wordpress/components';
 import PropTypes from 'prop-types';
 
 /**
@@ -18,6 +20,7 @@ class ProductCategoryControl extends Component {
 		this.state = {
 			list: [],
 		};
+		this.renderListItem = this.renderListItem.bind( this );
 	}
 
 	componentDidMount() {
@@ -30,6 +33,36 @@ class ProductCategoryControl extends Component {
 			.catch( () => {
 				this.setState( { list: [] } );
 			} );
+	}
+
+	renderListItem( { getHighlightedName, item, onSelect, search } ) {
+		return (
+			<MenuItem
+				key={ item.id }
+				className="woocommerce-search-list__item"
+				onClick={ onSelect( item ) }
+				aria-label={ sprintf(
+					_n(
+						'%s, has %d product',
+						'%s, has %d products',
+						item.count,
+						'woocommerce'
+					),
+					item.name,
+					item.count
+				) }
+			>
+				<span
+					className="woocommerce-search-list__item-name"
+					dangerouslySetInnerHTML={ {
+						__html: getHighlightedName( item.name, search ),
+					} }
+				/>
+				<span className="woocommerce-search-list__item-count">
+					{ item.count }
+				</span>
+			</MenuItem>
+		);
 	}
 
 	render() {

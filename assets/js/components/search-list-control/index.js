@@ -29,6 +29,7 @@ export class SearchListControl extends Component {
 		this.onSelect = this.onSelect.bind( this );
 		this.onRemove = this.onRemove.bind( this );
 		this.onClear = this.onClear.bind( this );
+		this.fallbackRenderListItem = this.fallbackRenderListItem.bind( this );
 	}
 
 	onRemove( id ) {
@@ -61,7 +62,7 @@ export class SearchListControl extends Component {
 			.filter( ( item ) => item && ! this.isSelected( item ) );
 	}
 
-	getHighlightName( name, search ) {
+	getHighlightedName( name, search ) {
 		if ( ! search ) {
 			return name;
 		}
@@ -69,10 +70,28 @@ export class SearchListControl extends Component {
 		return name.replace( re, '<strong>$&</strong>' );
 	}
 
+	fallbackRenderListItem( { getHighlightedName, item, onSelect, search } ) {
+		return (
+			<MenuItem
+				key={ item.id }
+				className="woocommerce-search-list__item"
+				onClick={ onSelect( item ) }
+			>
+				<span
+					className="woocommerce-search-list__item-name"
+					dangerouslySetInnerHTML={ {
+						__html: getHighlightedName( item.name, search ),
+					} }
+				/>
+			</MenuItem>
+		);
+	}
+
 	render() {
 		const { className, search, selected, setState } = this.props;
-
 		const list = this.getFilteredList( this.props.list, search );
+		const renderListItem = this.props.renderListItem || this.fallbackRenderListItem;
+
 		return (
 			<div className={ `woocommerce-search-list ${ className }` }>
 				{ selected.length ? (
@@ -120,33 +139,14 @@ export class SearchListControl extends Component {
 					label={ __( 'Product Categories', 'woocommerce' ) }
 					className="woocommerce-search-list__list"
 				>
-					{ list.map( ( item ) => (
-						<MenuItem
-							key={ item.id }
-							className="woocommerce-search-list__item"
-							onClick={ this.onSelect( item ) }
-							aria-label={ sprintf(
-								_n(
-									'%s, has %d item',
-									'%s, has %d items',
-									item.count,
-									'woocommerce'
-								),
-								item.name,
-								item.count
+					{ list.map( ( item ) =>
+						renderListItem( {
+							getHighlightedName: this.getHighlightedName,
+							item,
+							onSelect: this.onSelect,
+							search,
+						} )
 							) }
-						>
-							<span
-								className="woocommerce-search-list__item-name"
-								dangerouslySetInnerHTML={ {
-									__html: this.getHighlightName( item.name, search ),
-								} }
-							/>
-							<span className="woocommerce-search-list__item-count">
-								{ item.count }
-							</span>
-						</MenuItem>
-					) ) }
 				</MenuGroup>
 			</div>
 		);
