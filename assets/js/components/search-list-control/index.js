@@ -1,11 +1,16 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
-import { Component, Fragment } from '@wordpress/element';
+import { __, _n, sprintf } from '@wordpress/i18n';
+import {
+	Button,
+	MenuItem,
+	MenuGroup,
+	TextControl,
+} from '@wordpress/components';
+import { Component } from '@wordpress/element';
 import { compose, withInstanceId, withState } from '@wordpress/compose';
 import { findIndex } from 'lodash';
-import { MenuItem, MenuGroup, TextControl } from '@wordpress/components';
 import PropTypes from 'prop-types';
 import { Tag } from '@woocommerce/components';
 
@@ -23,6 +28,7 @@ export class SearchListControl extends Component {
 
 		this.onSelect = this.onSelect.bind( this );
 		this.onRemove = this.onRemove.bind( this );
+		this.onClear = this.onClear.bind( this );
 	}
 
 	onRemove( id ) {
@@ -40,6 +46,10 @@ export class SearchListControl extends Component {
 		};
 	}
 
+	onClear() {
+		this.props.onChange( [] );
+	}
+
 	isSelected( item ) {
 		return -1 !== findIndex( this.props.selected, { id: item.id } );
 	}
@@ -49,19 +59,32 @@ export class SearchListControl extends Component {
 		return (
 			<div className={ `woocommerce-search-list ${ className }` }>
 				{ selected.length ? (
-					<Fragment>
-						<div className="woocommerce-search-list__selected">
-							{ selected.map( ( item, i ) => (
-								<Tag
-									key={ i }
-									label={ item.name }
-									id={ item.id }
-									remove={ this.onRemove }
-								/>
-							) ) }
+					<div className="woocommerce-search-list__selected">
+						<div className="woocommerce-search-list__selected-header">
+							<strong>
+								{ sprintf(
+									_n(
+										'%d category selected',
+										'%d categories selected',
+										selected.length,
+										'woocommerce'
+									),
+									selected.length
+								) }
+							</strong>
+							<Button isLink onClick={ this.onClear }>
+								{ __( 'Clear all', 'woocommerce' ) }
+							</Button>
 						</div>
-						<hr />
-					</Fragment>
+						{ selected.map( ( item, i ) => (
+							<Tag
+								key={ i }
+								label={ item.name }
+								id={ item.id }
+								remove={ this.onRemove }
+							/>
+						) ) }
+					</div>
 				) : null }
 
 				<div className="woocommerce-search-list__search">
