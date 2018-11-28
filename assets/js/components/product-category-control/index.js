@@ -20,7 +20,7 @@ class ProductCategoryControl extends Component {
 		this.state = {
 			list: [],
 		};
-		this.renderListItem = this.renderListItem.bind( this );
+		this.renderItem = this.renderItem.bind( this );
 	}
 
 	componentDidMount() {
@@ -35,7 +35,7 @@ class ProductCategoryControl extends Component {
 			} );
 	}
 
-	renderListItem( { getHighlightedName, item, onSelect, search } ) {
+	renderItem( { getHighlightedName, item, onSelect, search } ) {
 		return (
 			<MenuItem
 				key={ item.id }
@@ -92,7 +92,7 @@ class ProductCategoryControl extends Component {
 				list={ list }
 				selected={ selected.map( ( id ) => find( list, { id } ) ).filter( Boolean ) }
 				onChange={ onChange }
-				renderListItem={ this.renderListItem }
+				renderItem={ this.renderItem }
 				messages={ messages }
 			/>
 		);
@@ -100,7 +100,13 @@ class ProductCategoryControl extends Component {
 }
 
 ProductCategoryControl.propTypes = {
+	/**
+	 * Callback to update the selected product categories.
+	 */
 	onChange: PropTypes.func.isRequired,
+	/**
+	 * The list of currently selected category IDs.
+	 */
 	selected: PropTypes.array.isRequired,
 };
 

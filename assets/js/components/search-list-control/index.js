@@ -23,12 +23,10 @@ import './style.scss';
 const defaultMessages = {
 	clear: __( 'Clear all selected items', 'woocommerce' ),
 	list: __( 'Results', 'woocommerce' ),
+	noResults: __( 'No results for %s', 'woocommerce' ),
 	search: __( 'Search for items', 'woocommerce' ),
 	selected: ( n ) =>
-		sprintf(
-			_n( '%d item selected', '%d items selected', n, 'woocommerce' ),
-			n
-		),
+		sprintf( _n( '%d item selected', '%d items selected', n, 'woocommerce' ), n ),
 	updated: __( 'Search results updated.', 'woocommerce' ),
 };
 
@@ -42,7 +40,7 @@ export class SearchListControl extends Component {
 		this.onSelect = this.onSelect.bind( this );
 		this.onRemove = this.onRemove.bind( this );
 		this.onClear = this.onClear.bind( this );
-		this.fallbackRenderListItem = this.fallbackRenderListItem.bind( this );
+		this.fallbackrenderItem = this.fallbackrenderItem.bind( this );
 	}
 
 	onRemove( id ) {
@@ -88,7 +86,7 @@ export class SearchListControl extends Component {
 		return name.replace( re, '<strong>$&</strong>' );
 	}
 
-	fallbackRenderListItem( { getHighlightedName, item, onSelect, search } ) {
+	fallbackrenderItem( { getHighlightedName, item, onSelect, search } ) {
 		return (
 			<MenuItem
 				key={ item.id }
@@ -109,8 +107,9 @@ export class SearchListControl extends Component {
 		const { className, search, selected, setState } = this.props;
 		const messages = { ...defaultMessages, ...this.props.messages };
 		const list = this.getFilteredList( this.props.list, search );
-		const renderListItem =
-			this.props.renderListItem || this.fallbackRenderListItem;
+		const renderItem = this.props.renderItem || this.fallbackrenderItem;
+
+		const noResults = search ? sprintf( messages.noResults, search ) : null;
 
 		return (
 			<div className={ `woocommerce-search-list ${ className }` }>
@@ -136,42 +135,93 @@ export class SearchListControl extends Component {
 				<div className="woocommerce-search-list__search">
 					<TextControl
 						label={ messages.search }
+						type="search"
 						value={ search }
 						onChange={ ( value ) => setState( { search: value } ) }
 					/>
 				</div>
 
-				<MenuGroup
-					label={ messages.list }
-					className="woocommerce-search-list__list"
-				>
-					{ list.map( ( item ) =>
-						renderListItem( {
-							getHighlightedName: this.getHighlightedName,
-							item,
-							onSelect: this.onSelect,
-							search,
-						} )
-					) }
-				</MenuGroup>
+				{ ! list.length ? (
+					noResults
+				) : (
+					<MenuGroup
+						label={ messages.list }
+						className="woocommerce-search-list__list"
+					>
+						{ list.map( ( item ) =>
+							renderItem( {
+								getHighlightedName: this.getHighlightedName,
+								item,
+								onSelect: this.onSelect,
+								search,
+							} )
+						) }
+					</MenuGroup>
+				) }
 			</div>
 		);
 	}
 }
 
 SearchListControl.propTypes = {
+	/**
+	 * Additional CSS classes.
+	 */
 	className: PropTypes.string,
-	list: PropTypes.array,
+	/**
+	 * A complete list of item objects, each with id, name properties. This is displayed as a
+	 * clickable/keyboard-able list, and possibly filtered by the search term (searches name).
+	 */
+	list: PropTypes.arrayOf(
+		PropTypes.shape( {
+			id: PropTypes.number,
+			name: PropTypes.string,
+		} )
+	),
+	/**
+	 * Messages displayed or read to the user. Configure these to reflect your object type.
+	 * See `defaultMessages` above for examples.
+	 */
 	messages: PropTypes.shape( {
+		/**
+		 * A more detailed label for the "Clear all" button, read to screen reader users.
+		 */
 		clear: PropTypes.string,
+		/**
+		 * Label for the list of selectable items, only read to screen reader users.
+		 */
 		list: PropTypes.string,
+		/**
+		 * Message to display when no matching results are found. %s is the search term.
+		 */
+		noResults: PropTypes.string,
+		/**
+		 * Label for the search input
+		 */
 		search: PropTypes.string,
-		selected: PropTypes.func, // Function so we can handle plurals
+		/**
+		 * Label for the selected items. This is actually a function, so that we can pass
+		 * through the count of currently selected items.
+		 */
+		selected: PropTypes.func,
+		/**
+		 * Label indicating that search results have changed, read to screen reader users.
+		 */
 		updated: PropTypes.string,
 	} ),
-	onChange: PropTypes.func,
-	renderListItem: PropTypes.func,
-	selected: PropTypes.array,
+	/**
+	 * Callback fired when selected items change, whether added, cleared, or removed.
+	 * Passed an array of item objects (as passed in via props.list).
+	 */
+	onChange: PropTypes.func.isRequired,
+	/**
+	 * Callback to render each item in the selection list, allows any custom object-type rendering.
+	 */
+	renderItem: PropTypes.func,
+	/**
+	 * The list of currently selected items.
+	 */
+	selected: PropTypes.array.isRequired,
 	// from withState
 	search: PropTypes.string,
 	setState: PropTypes.func,
