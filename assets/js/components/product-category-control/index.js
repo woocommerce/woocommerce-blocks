@@ -10,7 +10,6 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import './style.scss';
 import SearchListControl from '../search-list-control';
 
 class ProductCategoryControl extends Component {

@@ -11,6 +11,9 @@
 }
 
 .components-panel {
+	.woocommerce-search-list {
+		padding: 0;
+	}
 	.woocommerce-search-list__selected {
 		margin: 0 0 $gap;
 		padding: 0;
