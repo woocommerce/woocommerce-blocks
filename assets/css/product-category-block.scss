@@ -4,6 +4,10 @@
 
 .wc-block-products-category {
 	overflow: hidden;
+
+	&.components-placeholder {
+		padding: 2em 1em;
+	}
 }
 
 .wc-block-products-category__selection {

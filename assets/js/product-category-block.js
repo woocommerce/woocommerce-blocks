@@ -162,6 +162,7 @@ export default class ProductByCategoryBlock extends Component {
 			<Placeholder
 				icon="category"
 				label={ __( 'Products by Category', 'woocommerce' ) }
+				className="wc-block-products-category"
 			>
 				{ __(
 					'Display a grid of products from your selected categories',
