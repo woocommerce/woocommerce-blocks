@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { groupBy } from 'lodash';
+import { forEach, groupBy } from 'lodash';
 
 /**
  * Returns terms in a tree form.
@@ -15,6 +15,7 @@ export function buildTermsTree( flatTerms ) {
 	const fillWithChildren = ( terms ) => {
 		return terms.map( ( term ) => {
 			const children = termsByParent[ term.id ];
+			delete termsByParent[ term.id ];
 			return {
 				...term,
 				children: children && children.length ?
@@ -24,5 +25,14 @@ export function buildTermsTree( flatTerms ) {
 		} );
 	};
 
-	return fillWithChildren( termsByParent[ '0' ] || [] );
+	// return fillWithChildren( termsByParent[ '0' ] || [] );
+	const tree = fillWithChildren( termsByParent[ '0' ] || [] );
+	delete termsByParent[ '0' ];
+
+	// anything left in termsByParent has no visible parent
+	forEach( termsByParent, ( terms ) => {
+		tree.push( ...fillWithChildren( terms || [] ) );
+	} );
+
+	return tree;
 }
