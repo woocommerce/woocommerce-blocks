@@ -9,7 +9,7 @@ import {
 	TextControl,
 	withSpokenMessages,
 } from '@wordpress/components';
-import { Component } from '@wordpress/element';
+import { Component, Fragment } from '@wordpress/element';
 import { compose, withInstanceId, withState } from '@wordpress/compose';
 import { escapeRegExp, findIndex } from 'lodash';
 import PropTypes from 'prop-types';
@@ -19,6 +19,7 @@ import { Tag } from '@woocommerce/components';
  * Internal dependencies
  */
 import './style.scss';
+import { buildTermsTree } from './hierarchy';
 
 const defaultMessages = {
 	clear: __( 'Clear all selected items', 'woocommerce' ),
@@ -41,6 +42,7 @@ export class SearchListControl extends Component {
 		this.onRemove = this.onRemove.bind( this );
 		this.onClear = this.onClear.bind( this );
 		this.defaultRenderItem = this.defaultRenderItem.bind( this );
+		this.renderList = this.renderList.bind( this );
 	}
 
 	onRemove( id ) {
@@ -67,15 +69,21 @@ export class SearchListControl extends Component {
 	}
 
 	getFilteredList( list, search ) {
-		if ( ! search ) {
+		const { isHierarchical } = this.props;
+		if ( ! search && isHierarchical ) {
+			return buildTermsTree(
+				list.filter( ( item ) => item && ! this.isSelected( item ) )
+			);
+		} else if ( ! search ) {
 			return list.filter( ( item ) => item && ! this.isSelected( item ) );
 		}
 		const messages = { ...defaultMessages, ...this.props.messages };
 		const re = new RegExp( escapeRegExp( search ), 'i' );
 		this.props.debouncedSpeak( messages.updated );
-		return list
+		const filteredList = list
 			.map( ( item ) => ( re.test( item.name ) ? item : false ) )
 			.filter( ( item ) => item && ! this.isSelected( item ) );
+		return isHierarchical ? buildTermsTree( filteredList ) : filteredList;
 	}
 
 	getHighlightedName( name, search ) {
@@ -103,12 +111,28 @@ export class SearchListControl extends Component {
 		);
 	}
 
+	renderList( list, depth = 0 ) {
+		const { search } = this.props;
+		const renderItem = this.props.renderItem || this.defaultRenderItem;
+		return list.map( ( item ) => (
+			<Fragment key={ item.id }>
+				{ renderItem( {
+					getHighlightedName: this.getHighlightedName,
+					item,
+					onSelect: this.onSelect,
+					search,
+					depth,
+				} ) }
+				{ this.renderList( item.children, depth + 1 ) }
+			</Fragment>
+		) );
+	}
+
 	render() {
 		const { className = '', search, selected, setState } = this.props;
 		const messages = { ...defaultMessages, ...this.props.messages };
 		const list = this.getFilteredList( this.props.list, search );
 		const noResults = search ? sprintf( messages.noResults, search ) : null;
-		const renderItem = this.props.renderItem || this.defaultRenderItem;
 		const selectedCount = selected.length;
 
 		return (
@@ -117,7 +141,12 @@ export class SearchListControl extends Component {
 					<div className="woocommerce-search-list__selected">
 						<div className="woocommerce-search-list__selected-header">
 							<strong>{ messages.selected( selectedCount ) }</strong>
-							<Button isLink isDestructive onClick={ this.onClear } aria-label={ messages.clear }>
+							<Button
+								isLink
+								isDestructive
+								onClick={ this.onClear }
+								aria-label={ messages.clear }
+							>
 								{ __( 'Clear all', 'woocommerce' ) }
 							</Button>
 						</div>
@@ -148,14 +177,7 @@ export class SearchListControl extends Component {
 						label={ messages.list }
 						className="woocommerce-search-list__list"
 					>
-						{ list.map( ( item ) =>
-							renderItem( {
-								getHighlightedName: this.getHighlightedName,
-								item,
-								onSelect: this.onSelect,
-								search,
-							} )
-						) }
+						{ this.renderList( list ) }
 					</MenuGroup>
 				) }
 			</div>
@@ -168,6 +190,11 @@ SearchListControl.propTypes = {
 	 * Additional CSS classes.
 	 */
 	className: PropTypes.string,
+	/**
+	 * Whether the list of items is hierarchical or not. If true, each list item is expected to
+	 * have a parent property.
+	 */
+	isHierarchical: PropTypes.string,
 	/**
 	 * A complete list of item objects, each with id, name properties. This is displayed as a
 	 * clickable/keyboard-able list, and possibly filtered by the search term (searches name).

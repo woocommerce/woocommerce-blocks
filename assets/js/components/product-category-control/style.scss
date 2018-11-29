@@ -8,6 +8,22 @@
 		flex: 1;
 	}
 
+	.depth-1 .woocommerce-product-categories__item-name {
+		padding-left: $gap-small;
+	}
+
+	.depth-2 .woocommerce-product-categories__item-name {
+		padding-left: $gap-small * 2;
+	}
+
+	.depth-3 .woocommerce-product-categories__item-name {
+		padding-left: $gap-small * 3;
+	}
+
+	.depth-4 .woocommerce-product-categories__item-name {
+		padding-left: $gap-small * 4;
+	}
+
 	.woocommerce-product-categories__item-count {
 		flex: 0;
 		padding: $gap-smallest/2 $gap-smaller;

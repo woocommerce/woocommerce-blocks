@@ -36,11 +36,17 @@ class ProductCategoryControl extends Component {
 			} );
 	}
 
-	renderItem( { getHighlightedName, item, onSelect, search } ) {
+	renderItem( { getHighlightedName, item, onSelect, search, depth = 0 } ) {
+		const classes = [
+			'woocommerce-search-list__item',
+			'woocommerce-product-categories__item',
+			`depth-${ depth }`,
+		];
+
 		return (
 			<MenuItem
 				key={ item.id }
-				className="woocommerce-product-categories__item woocommerce-search-list__item"
+				className={ classes.join( ' ' ) }
 				onClick={ onSelect( item ) }
 				aria-label={ sprintf(
 					_n(
@@ -95,6 +101,7 @@ class ProductCategoryControl extends Component {
 				onChange={ onChange }
 				renderItem={ this.renderItem }
 				messages={ messages }
+				isHierarchical
 			/>
 		);
 	}
