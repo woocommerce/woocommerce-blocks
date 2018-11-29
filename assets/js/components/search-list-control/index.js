@@ -40,7 +40,7 @@ export class SearchListControl extends Component {
 		this.onSelect = this.onSelect.bind( this );
 		this.onRemove = this.onRemove.bind( this );
 		this.onClear = this.onClear.bind( this );
-		this.fallbackrenderItem = this.fallbackrenderItem.bind( this );
+		this.defaultRenderItem = this.defaultRenderItem.bind( this );
 	}
 
 	onRemove( id ) {
@@ -86,7 +86,7 @@ export class SearchListControl extends Component {
 		return name.replace( re, '<strong>$&</strong>' );
 	}
 
-	fallbackrenderItem( { getHighlightedName, item, onSelect, search } ) {
+	defaultRenderItem( { getHighlightedName, item, onSelect, search } ) {
 		return (
 			<MenuItem
 				key={ item.id }
@@ -107,7 +107,7 @@ export class SearchListControl extends Component {
 		const { className, search, selected, setState } = this.props;
 		const messages = { ...defaultMessages, ...this.props.messages };
 		const list = this.getFilteredList( this.props.list, search );
-		const renderItem = this.props.renderItem || this.fallbackrenderItem;
+		const renderItem = this.props.renderItem || this.defaultRenderItem;
 
 		const noResults = search ? sprintf( messages.noResults, search ) : null;
 
