@@ -107,16 +107,16 @@ export class SearchListControl extends Component {
 		const { className, search, selected, setState } = this.props;
 		const messages = { ...defaultMessages, ...this.props.messages };
 		const list = this.getFilteredList( this.props.list, search );
-		const renderItem = this.props.renderItem || this.defaultRenderItem;
-
 		const noResults = search ? sprintf( messages.noResults, search ) : null;
+		const renderItem = this.props.renderItem || this.defaultRenderItem;
+		const selectedCount = selected.length;
 
 		return (
 			<div className={ `woocommerce-search-list ${ className }` }>
-				{ selected.length ? (
+				{ selectedCount > 0 ? (
 					<div className="woocommerce-search-list__selected">
 						<div className="woocommerce-search-list__selected-header">
-							<strong>{ messages.selected( selected.length ) }</strong>
+							<strong>{ messages.selected( selectedCount ) }</strong>
 							<Button isLink onClick={ this.onClear } aria-label={ messages.clear }>
 								{ __( 'Clear all', 'woocommerce' ) }
 							</Button>
