@@ -56,6 +56,10 @@
 		border-bottom: 1px solid $core-grey-light-500 !important;
 		color: $core-grey-dark-500;
 
+		@include hover-state {
+			background: $core-grey-light-100;
+		}
+
 		&:last-of-type {
 			border-bottom: none !important;
 		}
