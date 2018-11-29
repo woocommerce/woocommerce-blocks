@@ -228,7 +228,7 @@ SearchListControl.propTypes = {
 	// from withSpokenMessages
 	debouncedSpeak: PropTypes.func,
 	// from withInstanceId
-	instanceId: PropTypes.string,
+	instanceId: PropTypes.number,
 };
 
 export default compose( [

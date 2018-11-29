@@ -49,8 +49,6 @@
 	}
 
 	.woocommerce-search-list__item {
-		display: flex;
-		align-items: center;
 		margin-bottom: 0;
 		padding: $gap;
 		background: $white;
@@ -61,22 +59,5 @@
 		&:last-of-type {
 			border-bottom: none !important;
 		}
-	}
-
-	.woocommerce-search-list__item-input {
-		flex: 0;
-	}
-
-	.woocommerce-search-list__item-name {
-		flex: 1;
-	}
-
-	.woocommerce-search-list__item-count {
-		flex: 0;
-		padding: $gap-smallest/2 $gap-smaller;
-		border: 1px solid $core-grey-light-500;
-		border-radius: 12px;
-		line-height: 1.4;
-		color: $core-grey-dark-300;
 	}
 }

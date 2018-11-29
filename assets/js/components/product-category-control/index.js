@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
+import './style.scss';
 import SearchListControl from '../search-list-control';
 
 class ProductCategoryControl extends Component {
@@ -39,7 +40,7 @@ class ProductCategoryControl extends Component {
 		return (
 			<MenuItem
 				key={ item.id }
-				className="woocommerce-search-list__item"
+				className="woocommerce-product-categories__item woocommerce-search-list__item"
 				onClick={ onSelect( item ) }
 				aria-label={ sprintf(
 					_n(
@@ -53,12 +54,12 @@ class ProductCategoryControl extends Component {
 				) }
 			>
 				<span
-					className="woocommerce-search-list__item-name"
+					className="woocommerce-product-categories__item-name"
 					dangerouslySetInnerHTML={ {
 						__html: getHighlightedName( item.name, search ),
 					} }
 				/>
-				<span className="woocommerce-search-list__item-count">
+				<span className="woocommerce-product-categories__item-count">
 					{ item.count }
 				</span>
 			</MenuItem>
