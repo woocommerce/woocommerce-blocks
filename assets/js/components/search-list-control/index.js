@@ -117,7 +117,7 @@ export class SearchListControl extends Component {
 					<div className="woocommerce-search-list__selected">
 						<div className="woocommerce-search-list__selected-header">
 							<strong>{ messages.selected( selectedCount ) }</strong>
-							<Button isLink onClick={ this.onClear } aria-label={ messages.clear }>
+							<Button isLink isDestructive onClick={ this.onClear } aria-label={ messages.clear }>
 								{ __( 'Clear all', 'woocommerce' ) }
 							</Button>
 						</div>
