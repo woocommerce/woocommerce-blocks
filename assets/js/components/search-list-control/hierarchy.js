@@ -6,7 +6,8 @@ import { forEach, groupBy, keyBy } from 'lodash';
 /**
  * Returns terms in a tree form.
  *
- * @param {Array} flatTerms  Array of terms in flat format.
+ * @param {Array} filteredList  Array of terms, possibly a subset of all terms, in flat format.
+ * @param {Array} list  Array of the full list of terms, defaults to the filteredList.
  *
  * @return {Array} Array of terms in tree format.
  */
@@ -35,7 +36,6 @@ export function buildTermsTree( filteredList, list = filteredList ) {
 		} );
 	};
 
-	// return fillWithChildren( termsByParent[ '0' ] || [] );
 	const tree = fillWithChildren( termsByParent[ '0' ] || [] );
 	delete termsByParent[ '0' ];
 
