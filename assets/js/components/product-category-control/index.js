@@ -46,6 +46,10 @@ class ProductCategoryControl extends Component {
 			classes.push( 'is-searching' );
 		}
 
+		const accessibleName = ! item.breadcrumbs.length ?
+			item.name :
+			`${ item.breadcrumbs.join( ', ' ) }, ${ item.name }`;
+
 		return (
 			<MenuItem
 				key={ item.id }
@@ -58,7 +62,7 @@ class ProductCategoryControl extends Component {
 						item.count,
 						'woocommerce'
 					),
-					item.name,
+					accessibleName,
 					item.count
 				) }
 			>
