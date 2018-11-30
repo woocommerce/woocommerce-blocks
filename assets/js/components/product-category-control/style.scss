@@ -36,11 +36,7 @@
 		color: $core-grey-dark-300;
 	}
 
-	&.is-searching {
-		.woocommerce-product-categories__item-name {
-			color: $core-grey-dark-900;
-		}
-
+	&.is-searching, &.is-skip-level {
 		.woocommerce-product-categories__item-prefix {
 			display: inline-block;
 			margin-right: $gap-smallest;
@@ -48,6 +44,12 @@
 			&:after {
 				content: ' ›';
 			}
+		}
+	}
+
+	&.is-searching {
+		.woocommerce-product-categories__item-name {
+			color: $core-grey-dark-900;
 		}
 	}
 

@@ -45,6 +45,9 @@ class ProductCategoryControl extends Component {
 		if ( search.length ) {
 			classes.push( 'is-searching' );
 		}
+		if ( depth === 0 && item.parent !== 0 ) {
+			classes.push( 'is-skip-level' );
+		}
 
 		const accessibleName = ! item.breadcrumbs.length ?
 			item.name :
