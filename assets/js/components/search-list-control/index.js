@@ -95,11 +95,18 @@ export class SearchListControl extends Component {
 		return name.replace( re, '<strong>$&</strong>' );
 	}
 
-	defaultRenderItem( { getHighlightedName, item, onSelect, search } ) {
+	defaultRenderItem( { depth = 0, getHighlightedName, item, onSelect, search = '' } ) {
+		const classes = [
+			'woocommerce-search-list__item',
+		];
+		if ( this.props.isHierarchical ) {
+			classes.push( `depth-${ depth }` );
+		}
+
 		return (
 			<MenuItem
 				key={ item.id }
-				className="woocommerce-search-list__item"
+				className={ classes.join( ' ' ) }
 				onClick={ onSelect( item ) }
 			>
 				<span
@@ -115,6 +122,9 @@ export class SearchListControl extends Component {
 	renderList( list, depth = 0 ) {
 		const { search } = this.props;
 		const renderItem = this.props.renderItem || this.defaultRenderItem;
+		if ( ! list ) {
+			return null;
+		}
 		return list.map( ( item ) => (
 			<Fragment key={ item.id }>
 				{ renderItem( {
