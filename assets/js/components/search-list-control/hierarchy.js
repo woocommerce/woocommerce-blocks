@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { forEach, groupBy } from 'lodash';
+import { forEach, groupBy, keyBy } from 'lodash';
 
 /**
  * Returns terms in a tree form.
@@ -10,17 +10,27 @@ import { forEach, groupBy } from 'lodash';
  *
  * @return {Array} Array of terms in tree format.
  */
-export function buildTermsTree( flatTerms ) {
-	const termsByParent = groupBy( flatTerms, 'parent' );
+export function buildTermsTree( filteredList, list = filteredList ) {
+	const termsByParent = groupBy( filteredList, 'parent' );
+	const listById = keyBy( list, 'id' );
+
+	const getParentsName = ( term = {} ) => {
+		if ( ! term.parent ) {
+			return term.name ? [ term.name ] : [];
+		}
+
+		const parentName = getParentsName( listById[ term.parent ] );
+		return [ ...parentName, term.name ];
+	};
+
 	const fillWithChildren = ( terms ) => {
 		return terms.map( ( term ) => {
 			const children = termsByParent[ term.id ];
 			delete termsByParent[ term.id ];
 			return {
 				...term,
-				children: children && children.length ?
-					fillWithChildren( children ) :
-					[],
+				breadcrumbs: getParentsName( listById[ term.parent ] ),
+				children: children && children.length ? fillWithChildren( children ) : [],
 			};
 		} );
 	};

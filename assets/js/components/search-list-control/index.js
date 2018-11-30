@@ -72,7 +72,8 @@ export class SearchListControl extends Component {
 		const { isHierarchical } = this.props;
 		if ( ! search && isHierarchical ) {
 			return buildTermsTree(
-				list.filter( ( item ) => item && ! this.isSelected( item ) )
+				list.filter( ( item ) => item && ! this.isSelected( item ) ),
+				list
 			);
 		} else if ( ! search ) {
 			return list.filter( ( item ) => item && ! this.isSelected( item ) );
@@ -83,7 +84,7 @@ export class SearchListControl extends Component {
 		const filteredList = list
 			.map( ( item ) => ( re.test( item.name ) ? item : false ) )
 			.filter( ( item ) => item && ! this.isSelected( item ) );
-		return isHierarchical ? buildTermsTree( filteredList ) : filteredList;
+		return isHierarchical ? buildTermsTree( filteredList, list ) : filteredList;
 	}
 
 	getHighlightedName( name, search ) {
