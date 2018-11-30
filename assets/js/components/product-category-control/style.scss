@@ -9,6 +9,15 @@
 	display: flex;
 	flex: 1;
 
+	// Anything deeper than 5 levels will use this fallback depth
+	[class*="depth-"] & {
+		padding-left: $gap-small * 5;
+	}
+
+	.depth-0 & {
+		padding-left: 0;
+	}
+
 	.depth-1 & {
 		padding-left: $gap-small;
 	}
