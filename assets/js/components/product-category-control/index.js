@@ -5,7 +5,7 @@ import { __, _n, sprintf } from '@wordpress/i18n';
 import { addQueryArgs } from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
 import { Component } from '@wordpress/element';
-import { find } from 'lodash';
+import { find, last } from 'lodash';
 import { MenuItem } from '@wordpress/components';
 import PropTypes from 'prop-types';
 
@@ -42,6 +42,9 @@ class ProductCategoryControl extends Component {
 			'woocommerce-product-categories__item',
 			`depth-${ depth }`,
 		];
+		if ( search.length ) {
+			classes.push( 'is-searching' );
+		}
 
 		return (
 			<MenuItem
@@ -59,12 +62,20 @@ class ProductCategoryControl extends Component {
 					item.count
 				) }
 			>
-				<span
-					className="woocommerce-product-categories__item-name"
-					dangerouslySetInnerHTML={ {
-						__html: getHighlightedName( item.name, search ),
-					} }
-				/>
+				<span className="woocommerce-product-categories__item-label">
+					{ !! item.breadcrumbs.length && (
+						<span className="woocommerce-product-categories__item-prefix">
+							{ item.breadcrumbs.length > 1 ? '… ' : null }
+							{ last( item.breadcrumbs ) }
+						</span>
+					) }
+					<span
+						className="woocommerce-product-categories__item-name"
+						dangerouslySetInnerHTML={ {
+							__html: getHighlightedName( item.name, search ),
+						} }
+					/>
+				</span>
 				<span className="woocommerce-product-categories__item-count">
 					{ item.count }
 				</span>
