@@ -205,7 +205,7 @@ SearchListControl.propTypes = {
 	 * Whether the list of items is hierarchical or not. If true, each list item is expected to
 	 * have a parent property.
 	 */
-	isHierarchical: PropTypes.string,
+	isHierarchical: PropTypes.bool,
 	/**
 	 * A complete list of item objects, each with id, name properties. This is displayed as a
 	 * clickable/keyboard-able list, and possibly filtered by the search term (searches name).
