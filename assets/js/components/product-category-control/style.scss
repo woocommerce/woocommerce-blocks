@@ -32,8 +32,7 @@
 	}
 
 	.woocommerce-product-categories__item-prefix {
-		display: inline-block;
-		@include visually-hidden;
+		display: none;
 		color: $core-grey-dark-300;
 	}
 
@@ -43,7 +42,7 @@
 		}
 
 		.woocommerce-product-categories__item-prefix {
-			@include visually-shown;
+			display: inline-block;
 			margin-right: $gap-smallest;
 
 			&:after {
