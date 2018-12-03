@@ -42,7 +42,7 @@ add_action( 'woocommerce_loaded', 'wgpb_initialize' );
  */
 function wgpb_plugins_notice() {
 	echo '<div class="error"><p>';
-	echo __( 'WooCommerce Product Blocks development mode requires files to be built. From the plugin directory, run <code>npm install</code> to install dependencies, <code>npm run build</code> to build the files or <code>npm start</code> to build the files and watch for changes.', 'woocommerce' );
+	echo __( 'WooCommerce Product Blocks development mode requires files to be built. From the plugin directory, run <code>npm install</code> to install dependencies, <code>npm run build</code> to build the files or <code>npm start</code> to build the files and watch for changes.', 'woo-gutenberg-products-block' );
 	echo '</p></div>';
 }
 
@@ -111,7 +111,7 @@ function wgpb_extra_gutenberg_scripts() {
 	wp_localize_script( 'woocommerce-products-block-editor', 'wc_product_block_data', $product_block_data );
 
 	if ( function_exists( 'wp_set_script_translations' ) ) {
-		wp_set_script_translations( 'woocommerce-products-category-block', 'woocommerce' );
+		wp_set_script_translations( 'woocommerce-products-category-block', 'woo-gutenberg-products-block' );
 	}
 
 	wp_enqueue_script( 'woocommerce-products-block-editor' );
