@@ -27,7 +27,6 @@ class ProductCategoryControl extends Component {
 	}
 
 	componentDidMount() {
-		this.setState( { loading: true } );
 		apiFetch( {
 			path: addQueryArgs( '/wc-pb/v3/products/categories', { per_page: -1 } ),
 		} )
