@@ -107,9 +107,9 @@ $color__alt-background: #fdfdfd;
 	.editor-block-preview & {
 		min-width: 5em;
 
-		.wc-product-preview__title,
-		.wc-product-preview__price,
-		.wc-product-preview__add-to-cart {
+		.product-title,
+		.product-price,
+		.product-add-to-cart {
 			font-size: 0.6em !important;
 		}
 
