@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || die();
 
 define( 'WGPB_VERSION', '1.1.2' );
 
-define( 'WGPB_DEVELOPMENT_MODE', true );
+define( 'WGPB_DEVELOPMENT_MODE', false );
 
 /**
  * Load up the assets if Gutenberg is active.
