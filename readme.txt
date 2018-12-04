@@ -1,7 +1,7 @@
 === WooCommerce Product Blocks ===
 Contributors: automattic, claudiulodro, tiagonoronha, jameskoster, ryelle, levinmedia
 Tags: gutenberg, woocommerce, woo commerce, products
-Requires at least: 4.7
+Requires at least: 4.9
 Tested up to: 5.0
 Requires PHP: 5.2
 Stable tag: 1.2.0
