@@ -103,6 +103,22 @@ $color__alt-background: #fdfdfd;
 		margin-top: 0.5em;
 		margin-bottom: 1em;
 	}
+
+	.editor-block-preview & {
+		min-width: 5em;
+
+		.wc-product-preview__title,
+		.wc-product-preview__price,
+		.wc-product-preview__add-to-cart {
+			font-size: 0.6em !important;
+		}
+
+		&.cols-2 { min-width: 2 * 5em; }
+		&.cols-3 { min-width: 3 * 5em; }
+		&.cols-4 { min-width: 4 * 5em; }
+		&.cols-5 { min-width: 5 * 5em; }
+		&.cols-6 { min-width: 6 * 5em; }
+	}
 }
 
 /**
