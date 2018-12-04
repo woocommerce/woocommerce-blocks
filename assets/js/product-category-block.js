@@ -218,7 +218,7 @@ export default class ProductByCategoryBlock extends Component {
 		if ( columns ) {
 			classes.push( `cols-${ columns }` );
 		}
-		if ( ! products.length ) {
+		if ( products && ! products.length ) {
 			if ( ! loaded ) {
 				classes.push( 'is-loading' );
 			} else {
