@@ -6,8 +6,7 @@
  * Version: 1.1.2
  * Author: Automattic
  * Author URI: https://woocommerce.com
- * Text Domain:  woocommerce
- * Domain Path:  /languages
+ * Text Domain:  woo-gutenberg-products-block
  * WC requires at least: 3.3
  * WC tested up to: 3.5
  */
