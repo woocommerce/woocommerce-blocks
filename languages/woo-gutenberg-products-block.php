@@ -1,47 +1,53 @@
 <?php
 /* THIS IS A GENERATED FILE. DO NOT EDIT DIRECTLY. */
 $generated_i18n_strings = array(
-	// Reference: assets/js/components/product-category-control/index.js:114
+	// Reference: assets/js/components/product-category-control/index.js:115
 	__( 'Clear all product categories', 'woo-gutenberg-products-block' ),
 
-	// Reference: assets/js/components/product-category-control/index.js:115
+	// Reference: assets/js/components/product-category-control/index.js:116
 	__( 'Product Categories', 'woo-gutenberg-products-block' ),
 
-	// Reference: assets/js/components/product-category-control/index.js:116
+	// Reference: assets/js/components/product-category-control/index.js:117
+	__( 'Your store doesn\'t have any product categories.', 'woo-gutenberg-products-block' ),
+
+	// Reference: assets/js/components/product-category-control/index.js:118
 	__( 'Search for product categories', 'woo-gutenberg-products-block' ),
 
-	// Reference: assets/js/components/product-category-control/index.js:119
+	// Reference: assets/js/components/product-category-control/index.js:121
 	_n_noop( '%d category selected', '%d categories selected', 'woo-gutenberg-products-block' ),
 
-	// Reference: assets/js/components/product-category-control/index.js:127
+	// Reference: assets/js/components/product-category-control/index.js:129
 	__( 'Category search results updated.', 'woo-gutenberg-products-block' ),
 
-	// Reference: assets/js/components/product-category-control/index.js:76
+	// Reference: assets/js/components/product-category-control/index.js:77
 	_n_noop( '%s, has %d product', '%s, has %d products', 'woo-gutenberg-products-block' ),
 
 	// Reference: assets/js/components/product-preview/index.js:30
 	// Reference: assets/js/legacy/products-block.jsx:365
 	__( 'Add to cart', 'woo-gutenberg-products-block' ),
 
-	// Reference: assets/js/components/search-list-control/index.js:173
+	// Reference: assets/js/components/search-list-control/index.js:215
 	__( 'Clear all', 'woo-gutenberg-products-block' ),
 
-	// Reference: assets/js/components/search-list-control/index.js:26
+	// Reference: assets/js/components/search-list-control/index.js:28
 	__( 'Clear all selected items', 'woo-gutenberg-products-block' ),
 
-	// Reference: assets/js/components/search-list-control/index.js:27
+	// Reference: assets/js/components/search-list-control/index.js:29
 	__( 'Results', 'woo-gutenberg-products-block' ),
 
-	// Reference: assets/js/components/search-list-control/index.js:28
-	__( 'No results for %s', 'woo-gutenberg-products-block' ),
-
-	// Reference: assets/js/components/search-list-control/index.js:29
-	__( 'Search for items', 'woo-gutenberg-products-block' ),
+	// Reference: assets/js/components/search-list-control/index.js:30
+	__( 'No items found.', 'woo-gutenberg-products-block' ),
 
 	// Reference: assets/js/components/search-list-control/index.js:31
-	_n_noop( '%d item selected', '%d items selected', 'woo-gutenberg-products-block' ),
+	__( 'No results for %s', 'woo-gutenberg-products-block' ),
 
 	// Reference: assets/js/components/search-list-control/index.js:32
+	__( 'Search for items', 'woo-gutenberg-products-block' ),
+
+	// Reference: assets/js/components/search-list-control/index.js:34
+	_n_noop( '%d item selected', '%d items selected', 'woo-gutenberg-products-block' ),
+
+	// Reference: assets/js/components/search-list-control/index.js:35
 	__( 'Search results updated.', 'woo-gutenberg-products-block' ),
 
 	// Reference: assets/js/legacy/products-block.jsx:194
@@ -224,6 +230,9 @@ $generated_i18n_strings = array(
 	__( 'Products by Category', 'woo-gutenberg-products-block' ),
 
 	// Reference: assets/js/product-category-block.js:264
+	__( 'WooCommerce', 'woo-gutenberg-products-block' ),
+
+	// Reference: assets/js/product-category-block.js:265
 	__( 'Display a grid of products from your selected categories.', 'woo-gutenberg-products-block' ),
 
 	// Reference: assets/js/product-category-block.js:88
