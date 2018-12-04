@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) || die();
 
-define( 'WGPB_VERSION', '1.1.2' );
+define( 'WGPB_VERSION', '1.2.0' );
 
 define( 'WGPB_DEVELOPMENT_MODE', false );
 
