@@ -60,9 +60,8 @@ class ProductByCategoryBlock extends Component {
 	}
 
 	getProducts() {
-		this.setState( { products: [], loaded: false } );
 		apiFetch( {
-			path: addQueryArgs( '/wc-pb/v3/products', getQuery( this.props.attributes ) ),
+			path: addQueryArgs( '/wc-pb/v3/products', getQuery( this.props.attributes, this.props.name ) ),
 		} )
 			.then( ( products ) => {
 				this.setState( { products, loaded: true } );
@@ -277,6 +276,10 @@ ProductByCategoryBlock.propTypes = {
 	 * The attributes for this block
 	 */
 	attributes: PropTypes.object.isRequired,
+	/**
+	 * The register block name.
+	 */
+	name: PropTypes.string.isRequired,
 	/**
 	 * A callback to update attributes
 	 */
