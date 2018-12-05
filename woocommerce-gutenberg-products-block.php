@@ -104,16 +104,6 @@ function wgpb_extra_gutenberg_scripts() {
 		true
 	);
 
-	$product_block_data = array(
-		'min_columns'     => wc_get_theme_support( 'product_grid::min_columns', 1 ),
-		'max_columns'     => wc_get_theme_support( 'product_grid::max_columns', 6 ),
-		'default_columns' => wc_get_default_products_per_row(),
-		'min_rows'        => wc_get_theme_support( 'product_grid::min_rows', 1 ),
-		'max_rows'        => wc_get_theme_support( 'product_grid::max_rows', 6 ),
-		'default_rows'    => wc_get_default_product_rows_per_page(),
-	);
-	wp_localize_script( 'woocommerce-products-block-editor', 'wc_product_block_data', $product_block_data );
-
 	if ( function_exists( 'wp_set_script_translations' ) ) {
 		wp_set_script_translations( 'woocommerce-blocks', 'woo-gutenberg-products-block' );
 	}
@@ -134,6 +124,8 @@ function wgpb_extra_gutenberg_scripts() {
 		array( 'wp-edit-blocks' ),
 		defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( plugin_dir_path( __FILE__ ) . '/build/blocks.css' ) : WGPB_VERSION
 	);
+
+	add_action( 'admin_print_footer_scripts', 'wgpb_print_script_settings', 1 );
 }
 
 /**
@@ -156,13 +148,23 @@ function wgpb_print_script_settings() {
 			'dow' => get_option( 'start_of_week', 0 ),
 		),
 	);
+
+	// Global settings used in each block.
+	$block_settings = array(
+		'min_columns'     => wc_get_theme_support( 'product_grid::min_columns', 1 ),
+		'max_columns'     => wc_get_theme_support( 'product_grid::max_columns', 6 ),
+		'default_columns' => wc_get_default_products_per_row(),
+		'min_rows'        => wc_get_theme_support( 'product_grid::min_rows', 1 ),
+		'max_rows'        => wc_get_theme_support( 'product_grid::max_rows', 6 ),
+		'default_rows'    => wc_get_default_product_rows_per_page(),
+	);
 	?>
 	<script type="text/javascript">
 		var wcSettings = <?php echo wp_json_encode( $settings ); ?>;
+		var wc_product_block_data = <?php echo wp_json_encode( $block_settings ); ?>;
 	</script>
 	<?php
 }
-add_action( 'admin_print_footer_scripts', 'wgpb_print_script_settings', 1 );
 
 /**
  * Register extra API routes with functionality specific for product blocks.
