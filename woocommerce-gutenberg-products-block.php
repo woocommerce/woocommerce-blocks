@@ -53,6 +53,7 @@ function wgpb_plugins_notice() {
 function wgpb_register_products_block() {
 	register_block_type( 'woocommerce/products' );
 	register_block_type( 'woocommerce/product-category' );
+	register_block_type( 'woocommerce/product-best-sellers' );
 }
 
 /**
