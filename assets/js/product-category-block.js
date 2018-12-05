@@ -206,7 +206,7 @@ class ProductByCategoryBlock extends Component {
 		const { setAttributes } = this.props;
 		const { columns, align, editMode } = this.props.attributes;
 		const { loaded, products } = this.state;
-		const classes = [ 'wc-block-products-category' ];
+		const classes = [ 'wc-block-products-grid', 'wc-block-products-category' ];
 		if ( columns ) {
 			classes.push( `cols-${ columns }` );
 		}
