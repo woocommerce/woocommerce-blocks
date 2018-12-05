@@ -45,6 +45,7 @@ class WGPB_Block_Library {
 		if ( function_exists( 'register_block_type' ) ) {
 			add_action( 'init', array( 'WGPB_Block_Library', 'register_blocks' ) );
 			add_action( 'init', array( 'WGPB_Block_Library', 'register_assets' ) );
+			add_action( 'init', array( 'WGPB_Block_Library', 'register_shared_blocks' ) );
 			add_filter( 'block_categories', array( 'WGPB_Block_Library', 'add_block_category' ) );
 			add_action( 'admin_print_footer_scripts', array( 'WGPB_Block_Library', 'print_script_settings' ), 1 );
 		}
@@ -53,10 +54,11 @@ class WGPB_Block_Library {
 	/**
 	 * Get the file modified time as a cache buster if we're in dev mode.
 	 *
-	 * @param string $file Local path to the file.
+	 * @param string $src Full URL to the file, used to get path.
 	 * @return string The cache buster value to use for the given file.
 	 */
-	protected static function get_file_version( $file ) {
+	protected static function get_file_version( $src ) {
+		$file = str_replace( plugins_url( '/', WGPB_PLUGIN_FILE ), '', $src );
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 			$file = trim( $file, '/' );
 			return filemtime( WGPB_ABSPATH . $file );
@@ -75,8 +77,7 @@ class WGPB_Block_Library {
 	 * @param bool   $has_i18n  Optional. Whether to add a script translation call to this file. Default 'true'.
 	 */
 	protected static function register_script( $handle, $src, $deps = array(), $has_i18n = true ) {
-		$filename = str_replace( plugins_url( '/', WGPB_PLUGIN_FILE ), '', $src );
-		$ver      = self::get_file_version( $filename );
+		$ver = self::get_file_version( $src );
 		wp_register_script( $handle, $src, $deps, $ver, true );
 		if ( $has_i18n && function_exists( 'wp_set_script_translations' ) ) {
 			wp_set_script_translations( $handle, 'woo-gutenberg-products-block', WGPB_ABSPATH . 'languages' );
@@ -95,8 +96,7 @@ class WGPB_Block_Library {
 	 *                       'all', 'print' and 'screen', or media queries like '(orientation: portrait)' and '(max-width: 640px)'.
 	 */
 	protected static function register_style( $handle, $src, $deps = array(), $media = 'all' ) {
-		$filename = str_replace( plugins_url( '/', WGPB_PLUGIN_FILE ), '', $src );
-		$ver      = self::get_file_version( $filename );
+		$ver = self::get_file_version( $src );
 		wp_register_style( $handle, $src, $deps, $ver, $media );
 	}
 
@@ -296,6 +296,60 @@ class WGPB_Block_Library {
 			var wc_product_block_data = JSON.parse( decodeURIComponent( '<?php echo rawurlencode( wp_json_encode( $block_settings ) ); ?>' ) );
 		</script>
 		<?php
+	}
+
+	/**
+	 * Enqueue shared blocks, which are built into build by the Jetpack build process.
+	 * Use this command to build from the jetpack repo (run in jetpack folder, assuming jetpack
+	 * and woo-blocks are sibling directories)
+	 * BLOCKS_ENV=woocommerce yarn build-extensions --output-path=../woocommerce-gutenberg-products-block/build/shared
+	 */
+	public static function register_shared_blocks() {
+		$rtl        = is_rtl() ? '.rtl' : '';
+		$blocks_dir = 'build/shared/';
+
+		$editor_script = plugins_url( "{$blocks_dir}editor.js", WGPB_PLUGIN_FILE );
+		$editor_style  = plugins_url( "{$blocks_dir}editor{$rtl}.css", WGPB_PLUGIN_FILE );
+
+		$editor_deps_path = dirname( WGPB_PLUGIN_FILE ) . "/{$blocks_dir}editor.deps.json";
+		$editor_deps      = file_exists( $editor_deps_path )
+			? json_decode( file_get_contents( $editor_deps_path ) ) // phpcs:ignore
+			: array();
+		$editor_deps[]    = 'wp-polyfill';
+
+		wp_enqueue_script(
+			'shared-blocks-editor',
+			$editor_script,
+			$editor_deps,
+			self::get_file_version( $editor_script ),
+			false
+		);
+		// @todo translations.
+		wp_localize_script(
+			'shared-blocks-editor',
+			'Jetpack_Block_Assets_Base_Url',
+			plugins_url( $blocks_dir . '/', WGPB_PLUGIN_FILE )
+		);
+
+		wp_localize_script(
+			'shared-blocks-editor',
+			'Jetpack_Editor_Initial_State',
+			array(
+				// @todo this could be automated from the json file?
+				'available_blocks' => array(
+					'gif' => array(
+						'available' => true,
+					),
+				),
+			)
+		);
+
+		wp_enqueue_style(
+			'shared-blocks-editor',
+			$editor_style,
+			array(),
+			self::get_file_version( $editor_style )
+		);
 	}
 }
 
