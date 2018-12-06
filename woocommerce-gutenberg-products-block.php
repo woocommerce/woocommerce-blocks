@@ -51,13 +51,8 @@ function wgpb_plugins_notice() {
  * Register the Products block and its scripts.
  */
 function wgpb_register_products_block() {
-	register_block_type(
-		'woocommerce/products',
-		array(
-			'editor_script' => 'woocommerce-products-block-editor',
-			'editor_style'  => 'woocommerce-products-block-editor',
-		)
-	);
+	register_block_type( 'woocommerce/products' );
+	register_block_type( 'woocommerce/product-category' );
 }
 
 /**
