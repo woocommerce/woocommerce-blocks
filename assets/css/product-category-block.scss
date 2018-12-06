@@ -10,8 +10,8 @@
 .wc-block-products-category {
 	overflow: hidden;
 	display: grid;
+	grid-template: 1fr / auto;
 	grid-gap: $gap;
-	align-items: flex-start;
 
 	&.is-loading,
 	&.is-not-found,
@@ -28,7 +28,6 @@
 	&.components-placeholder {
 		// Reset from the grid of the preview.
 		display: flex;
-		align-items: center;
 		padding: 2em 1em;
 	}
 
