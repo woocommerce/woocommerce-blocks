@@ -1,12 +1,19 @@
 .wc-product-preview {
 	text-align: center;
+	margin-bottom: $gap;
 
-	// wc-product-preview__title
-	// wc-product-preview__price
+	.wc-product-preview__title,
+	.wc-product-preview__price {
+		margin-top: $gap-smallest;
+	}
+
+	.wp-block-button {
+		margin-bottom: 0;
+	}
 
 	.wc-product-preview__add-to-cart {
 		cursor: text;
-		margin: 0.5em 0 1em;
+		margin: $gap-small 0 0;
 	}
 
 	.cols-4 &,
