@@ -9,9 +9,9 @@
 
 .wc-block-products-category {
 	overflow: hidden;
-	display: grid;
-	grid-template: 1fr / auto;
-	grid-gap: $gap;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
 
 	&.is-loading,
 	&.is-not-found,
@@ -19,9 +19,15 @@
 		display: block;
 	}
 
+	.wc-product-preview {
+		flex: 1;
+		margin-bottom: $gap-large;
+	}
+
 	@for $i from 2 to 7 {
-		&.cols-#{$i} {
-			grid-template-columns: repeat($i, 1fr);
+		&.cols-#{$i} .wc-product-preview {
+			max-width: calc( #{ 100% / $i } - #{$gap} );
+			flex: 1 0 calc( #{ 100% / $i } - #{$gap} );
 		}
 	}
 
