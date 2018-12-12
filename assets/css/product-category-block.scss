@@ -26,8 +26,8 @@
 
 	@for $i from 2 to 7 {
 		&.cols-#{$i} .wc-product-preview {
-			max-width: calc( #{ 100% / $i } );
-			min-width: calc( #{ 100% / $i } );
+			max-width: calc(#{ 100% / $i });
+			min-width: calc(#{ 100% / $i });
 			flex: 1;
 		}
 	}
