@@ -11,7 +11,7 @@
 	overflow: hidden;
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-between;
+	justify-content: flex-start;
 
 	&.is-loading,
 	&.is-not-found,
@@ -21,13 +21,14 @@
 
 	.wc-product-preview {
 		flex: 1;
-		margin-bottom: $gap-large;
+		padding: $gap/2;
 	}
 
 	@for $i from 2 to 7 {
 		&.cols-#{$i} .wc-product-preview {
-			max-width: calc( #{ 100% / $i } - #{$gap} );
-			flex: 1 0 calc( #{ 100% / $i } - #{$gap} );
+			max-width: calc( #{ 100% / $i } );
+			min-width: calc( #{ 100% / $i } );
+			flex: 1;
 		}
 	}
 
