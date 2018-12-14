@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, _n } from '@wordpress/i18n';
 import { addQueryArgs } from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
 import { Component, Fragment } from '@wordpress/element';
@@ -159,7 +159,7 @@ class ProductByCategoryBlock extends Component {
 
 	render() {
 		const { setAttributes } = this.props;
-		const { columns, align, editMode } = this.props.attributes;
+		const { align, categories, columns, editMode } = this.props.attributes;
 		const { loaded, products } = this.state;
 		const classes = [ 'wc-block-products-grid', 'wc-block-products-category' ];
 		if ( columns ) {
@@ -212,8 +212,10 @@ class ProductByCategoryBlock extends Component {
 								{ ! loaded ? (
 									<Spinner />
 								) : (
-									__(
+									_n(
 										'No products in this category.',
+										'No products in these categories.',
+										categories.length,
 										'woo-gutenberg-products-block'
 									)
 								) }
