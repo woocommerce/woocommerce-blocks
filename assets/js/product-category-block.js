@@ -73,7 +73,7 @@ class ProductByCategoryBlock extends Component {
 
 	getInspectorControls() {
 		const { attributes, setAttributes } = this.props;
-		const { columns, orderby, rows } = attributes;
+		const { columns, catOperator, orderby, rows } = attributes;
 
 		return (
 			<InspectorControls key="inspector">
@@ -87,6 +87,8 @@ class ProductByCategoryBlock extends Component {
 							const ids = value.map( ( { id } ) => id );
 							setAttributes( { categories: ids } );
 						} }
+						operator={ catOperator }
+						onOperatorChange={ ( value = 'any' ) => setAttributes( { catOperator: value } ) }
 					/>
 				</PanelBody>
 				<PanelBody
@@ -144,6 +146,8 @@ class ProductByCategoryBlock extends Component {
 							const ids = value.map( ( { id } ) => id );
 							setAttributes( { categories: ids } );
 						} }
+						operator={ attributes.catOperator }
+						onOperatorChange={ ( value = 'any' ) => setAttributes( { catOperator: value } ) }
 					/>
 					<Button isDefault onClick={ onDone }>
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }
