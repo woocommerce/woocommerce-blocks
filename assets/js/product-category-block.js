@@ -48,7 +48,7 @@ class ProductByCategoryBlock extends Component {
 	}
 
 	componentDidUpdate( prevProps ) {
-		const hasChange = [ 'rows', 'columns', 'orderby', 'categories' ].reduce(
+		const hasChange = [ 'categories', 'catOperator', 'columns', 'orderby', 'rows' ].reduce(
 			( acc, key ) => {
 				return acc || prevProps.attributes[ key ] !== this.props.attributes[ key ];
 			},
