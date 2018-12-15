@@ -29,7 +29,7 @@ import ProductPreview from './components/product-preview';
 /**
  * Component to handle edit mode of "Newest Products".
  */
-class ProductTopRatedBlock extends Component {
+class ProductNewestBlock extends Component {
 	constructor() {
 		super( ...arguments );
 		this.state = {

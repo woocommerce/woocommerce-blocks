@@ -206,8 +206,8 @@ registerBlockType( 'woocommerce/product-on-sale', {
 } );
 
 registerBlockType( 'woocommerce/product-new', {
-	title: __( 'Top Rated Products', 'woo-gutenberg-products-block' ),
-	icon: <Gridicon icon="notice-outline" />,
+	title: __( 'Newest Products', 'woo-gutenberg-products-block' ),
+	icon: <Gridicon icon="notice" />,
 	category: 'widgets',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
@@ -223,7 +223,7 @@ registerBlockType( 'woocommerce/product-new', {
 	 * Renders and manages the block.
 	 */
 	edit( props ) {
-		return <ProductTopRatedBlock { ...props } />;
+		return <ProductNewestBlock { ...props } />;
 	},
 
 	/**
