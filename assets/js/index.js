@@ -15,6 +15,7 @@ import ProductBestSellersBlock from './product-best-sellers';
 import ProductByCategoryBlock from './product-category-block';
 import ProductTopRatedBlock from './product-top-rated';
 import ProductOnSaleBlock from './product-on-sale';
+import ProductNewestBlock from './product-new';
 import sharedAttributes from './utils/shared-attributes';
 
 const validAlignments = [ 'wide', 'full' ];
@@ -199,6 +200,44 @@ registerBlockType( 'woocommerce/product-on-sale', {
 		return (
 			<RawHTML className={ align ? `align${ align }` : '' }>
 				{ getShortcode( props, 'woocommerce/product-on-sale' ) }
+			</RawHTML>
+		);
+	},
+} );
+
+registerBlockType( 'woocommerce/product-new', {
+	title: __( 'Top Rated Products', 'woo-gutenberg-products-block' ),
+	icon: <Gridicon icon="notice-outline" />,
+	category: 'widgets',
+	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
+	description: __(
+		'Display a grid of your newest products.',
+		'woo-gutenberg-products-block'
+	),
+	attributes: {
+		...sharedAttributes,
+	},
+	getEditWrapperProps,
+
+	/**
+	 * Renders and manages the block.
+	 */
+	edit( props ) {
+		return <ProductTopRatedBlock { ...props } />;
+	},
+
+	/**
+	 * Save the block content in the post content. Block content is saved as a products shortcode.
+	 *
+	 * @return string
+	 */
+	save( props ) {
+		const {
+			align,
+		} = props.attributes; /* eslint-disable-line react/prop-types */
+		return (
+			<RawHTML className={ align ? `align${ align }` : '' }>
+				{ getShortcode( props, 'woocommerce/product-new' ) }
 			</RawHTML>
 		);
 	},
