@@ -37,6 +37,7 @@ export default function getShortcode( { attributes }, name ) {
 			break;
 		case 'woocommerce/product-new':
 			shortcodeAtts.set( 'orderby', 'date' );
+			shortcodeAtts.set( 'order', 'DESC' );
 			break;
 	}
 
