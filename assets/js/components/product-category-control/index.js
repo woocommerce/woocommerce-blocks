@@ -160,7 +160,7 @@ class ProductCategoryControl extends Component {
 				{ ( !! onOperatorChange ) && (
 					<SelectControl
 						className="woocommerce-product-categories__operator"
-						label={ __( 'Display items matching', 'woo-gutenberg-products-block' ) }
+						label={ __( 'Display products matching', 'woo-gutenberg-products-block' ) }
 						value={ operator }
 						onChange={ onOperatorChange }
 						options={ [
