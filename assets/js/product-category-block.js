@@ -26,6 +26,7 @@ import PropTypes from 'prop-types';
  * Internal dependencies
  */
 import getQuery from './utils/get-query';
+import ProductAttributeControl from './components/product-attribute-control';
 import ProductCategoryControl from './components/product-category-control';
 import ProductOrderbyControl from './components/product-orderby-control';
 import ProductPreview from './components/product-preview';
@@ -100,6 +101,18 @@ class ProductByCategoryBlock extends Component {
 						onOperatorChange={ ( value = 'any' ) =>
 							setAttributes( { catOperator: value } )
 						}
+					/>
+				</PanelBody>
+				<PanelBody
+					title={ __( 'Product Attributes', 'woo-gutenberg-products-block' ) }
+					initialOpen={ false }
+				>
+					<ProductAttributeControl
+						selected={ attributes.attributes }
+						onChange={ ( value = [] ) => {
+							const ids = value.map( ( { id, attr_slug } ) => ( { id, attr_slug } ) ); // eslint-disable-line camelcase
+							setAttributes( { attributes: ids } );
+						} }
 					/>
 				</PanelBody>
 				<PanelBody
