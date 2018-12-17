@@ -33,7 +33,7 @@ const getEditWrapperProps = ( attributes ) => {
 registerBlockType( 'woocommerce/product-category', {
 	title: __( 'Products by Category', 'woo-gutenberg-products-block' ),
 	icon: 'category',
-	category: 'widgets',
+	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
 		'Display a grid of products from your selected categories.',
@@ -87,7 +87,7 @@ registerBlockType( 'woocommerce/product-category', {
 registerBlockType( 'woocommerce/product-best-sellers', {
 	title: __( 'Best Selling Products', 'woo-gutenberg-products-block' ),
 	icon: <Gridicon icon="stats-up-alt" />,
-	category: 'widgets',
+	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
 		'Display a grid of your all-time best selling products.',
@@ -125,7 +125,7 @@ registerBlockType( 'woocommerce/product-best-sellers', {
 registerBlockType( 'woocommerce/product-top-rated', {
 	title: __( 'Top Rated Products', 'woo-gutenberg-products-block' ),
 	icon: <Gridicon icon="trophy" />,
-	category: 'widgets',
+	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
 		'Display a grid of your top rated products.',
@@ -163,7 +163,7 @@ registerBlockType( 'woocommerce/product-top-rated', {
 registerBlockType( 'woocommerce/product-on-sale', {
 	title: __( 'On Sale Products', 'woo-gutenberg-products-block' ),
 	icon: <Gridicon icon="tag" />,
-	category: 'widgets',
+	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
 		'Display a grid of on sale products.',
@@ -208,7 +208,7 @@ registerBlockType( 'woocommerce/product-on-sale', {
 registerBlockType( 'woocommerce/product-new', {
 	title: __( 'Newest Products', 'woo-gutenberg-products-block' ),
 	icon: <Gridicon icon="notice" />,
-	category: 'widgets',
+	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
 		'Display a grid of your newest products.',
