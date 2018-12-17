@@ -54,15 +54,12 @@ function wgpb_plugins_notice() {
 }
 
 /**
- * Adds a WooCommerce category to the block inserter
+ * Adds a WooCommerce category to the block inserter.
  *
- * @param array  $categories Array of categories.
- * @param object $post WP_Post object.
+ * @param array $categories Array of categories.
+ * @return array Array of block categories.
  */
-function woocommerce_block_categories( $categories, $post ) {
-	if ( 'post' !== $post->post_type && 'page' !== $post->post_type ) {
-		return $categories;
-	}
+function wgpb_add_block_category( $categories ) {
 	return array_merge(
 		$categories,
 		array(
@@ -74,8 +71,7 @@ function woocommerce_block_categories( $categories, $post ) {
 		)
 	);
 }
-add_filter( 'block_categories', 'woocommerce_block_categories', 10, 2 );
-
+add_filter( 'block_categories', 'wgpb_add_block_category' );
 
 /**
  * Register the Products block and its scripts.
