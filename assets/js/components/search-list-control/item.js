@@ -42,6 +42,8 @@ const SearchListItem = ( {
 	const classes = [ className, 'woocommerce-search-list__item' ];
 	classes.push( `depth-${ depth }` );
 
+	const hasBreadcrumbs = item.breadcrumbs && item.breadcrumbs.length;
+
 	return (
 		<MenuItem
 			key={ item.id }
@@ -56,11 +58,11 @@ const SearchListItem = ( {
 			</span>
 
 			<span className="woocommerce-search-list__item-label">
-				{ !! item.breadcrumbs.length && (
+				{ hasBreadcrumbs ? (
 					<span className="woocommerce-search-list__item-prefix">
 						{ getBreadcrumbsForDisplay( item.breadcrumbs ) }
 					</span>
-				) }
+				) : null }
 				<span
 					className="woocommerce-search-list__item-name"
 					dangerouslySetInnerHTML={ {
