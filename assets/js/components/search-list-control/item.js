@@ -46,7 +46,6 @@ const SearchListItem = ( {
 
 	return (
 		<MenuItem
-			key={ item.id }
 			role="menuitemcheckbox"
 			className={ classes.join( ' ' ) }
 			onClick={ onSelect( item ) }

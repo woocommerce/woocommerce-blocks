@@ -55,7 +55,6 @@ class ProductCategoryControl extends Component {
 
 		return (
 			<SearchListItem
-				key={ item.id }
 				className={ classes.join( ' ' ) }
 				{ ...args }
 				showCount

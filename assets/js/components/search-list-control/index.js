@@ -91,9 +91,8 @@ export class SearchListControl extends Component {
 	}
 
 	defaultRenderItem( args ) {
-		const { item } = args;
 		return (
-			<SearchListItem key={ item.id } { ...args } />
+			<SearchListItem { ...args } />
 		);
 	}
 
