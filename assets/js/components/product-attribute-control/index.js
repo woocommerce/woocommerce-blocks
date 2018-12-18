@@ -124,7 +124,7 @@ class ProductAttributeControl extends Component {
 				className="woocommerce-product-attributes"
 				list={ list }
 				isLoading={ loading }
-				selected={ selected.map( ( id ) => find( list, { id } ) ).filter( Boolean ) }
+				selected={ selected.map( ( { id } ) => find( list, { id } ) ).filter( Boolean ) }
 				onChange={ onChange }
 				renderItem={ this.renderItem }
 				messages={ messages }
