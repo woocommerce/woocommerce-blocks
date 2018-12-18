@@ -57,7 +57,7 @@ class ProductAttributeControl extends Component {
 
 	renderItem( args ) {
 		const { item, search, depth = 0 } = args;
-		const classes = [ 'woocommerce-product-attributes__item' ];
+		const classes = [ 'woocommerce-product-attributes__item', 'woocommerce-search-list__item' ];
 		if ( search.length ) {
 			classes.push( 'is-searching' );
 		}
@@ -65,15 +65,25 @@ class ProductAttributeControl extends Component {
 			classes.push( 'is-skip-level' );
 		}
 
-		const accessibleName = ! item.breadcrumbs.length ?
-			item.name :
-			`${ item.breadcrumbs[ 0 ] }: ${ item.name }`;
+		if ( ! item.breadcrumbs.length ) {
+			classes.push( 'is-not-active' );
+			return (
+				<div className={ classes.join( ' ' ) }>
+					<span className="woocommerce-search-list__item-label">
+						<span className="woocommerce-search-list__item-name">
+							{ item.name }
+						</span>
+					</span>
+				</div>
+			);
+		}
 
 		return (
 			<SearchListItem
 				className={ classes.join( ' ' ) }
 				{ ...args }
-				aria-label={ accessibleName }
+				showCount
+				aria-label={ `${ item.breadcrumbs[ 0 ] }: ${ item.name }` }
 			/>
 		);
 	}

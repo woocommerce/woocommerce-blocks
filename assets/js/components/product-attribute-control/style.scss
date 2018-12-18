@@ -5,4 +5,10 @@
 			content: ":";
 		}
 	}
+
+	&.is-not-active {
+		@include hover-state {
+			background: transparent;
+		}
+	}
 }
