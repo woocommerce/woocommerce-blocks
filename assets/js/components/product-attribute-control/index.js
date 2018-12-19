@@ -136,11 +136,11 @@ class ProductAttributeControl extends Component {
 
 ProductAttributeControl.propTypes = {
 	/**
-	 * Callback to update the selected product categories.
+	 * Callback to update the selected product attributes.
 	 */
 	onChange: PropTypes.func.isRequired,
 	/**
-	 * The list of currently selected category IDs.
+	 * The list of currently selected attribute slug/ID pairs.
 	 */
 	selected: PropTypes.array.isRequired,
 };
