@@ -1,4 +1,5 @@
 {
+  "preset": "@wordpress/jest-preset-default",
   "rootDir": "../../",
   "collectCoverageFrom": [
     "assets/js/**/*.js",
@@ -11,6 +12,8 @@
     "<rootDir>/node_modules/@wordpress/jest-preset-default/scripts/setup-globals.js",
     "<rootDir>/tests/js/setup-globals"
   ],
-  "preset": "@wordpress/jest-preset-default",
+  "transformIgnorePatterns": [
+    "node_modules/(?!(simple-html-tokenizer)/)"
+  ],
   "verbose": true
 }
