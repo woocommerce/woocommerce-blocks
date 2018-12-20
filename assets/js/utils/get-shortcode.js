@@ -43,6 +43,9 @@ export default function getShortcode( { attributes }, name ) {
 			shortcodeAtts.set( 'order', 'DESC' );
 			break;
 		case 'woocommerce/handpicked-products':
+			if ( ! products.length ) {
+				return '';
+			}
 			shortcodeAtts.set( 'ids', products.join( ',' ) );
 			shortcodeAtts.set( 'limit', products.length );
 			break;
