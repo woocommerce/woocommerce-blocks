@@ -50,7 +50,7 @@ class ProductsBlock extends Component {
 	}
 
 	componentDidUpdate( prevProps ) {
-		const hasChange = [ 'products', 'columns', 'orderby', 'rows' ].reduce(
+		const hasChange = [ 'products', 'columns', 'orderby' ].reduce(
 			( acc, key ) => {
 				return acc || prevProps.attributes[ key ] !== this.props.attributes[ key ];
 			},
@@ -83,7 +83,7 @@ class ProductsBlock extends Component {
 
 	getInspectorControls() {
 		const { attributes, setAttributes } = this.props;
-		const { columns, orderby, rows } = attributes;
+		const { columns, orderby } = attributes;
 
 		return (
 			<InspectorControls key="inspector">
@@ -97,13 +97,6 @@ class ProductsBlock extends Component {
 						onChange={ ( value ) => setAttributes( { columns: value } ) }
 						min={ wc_product_block_data.min_columns }
 						max={ wc_product_block_data.max_columns }
-					/>
-					<RangeControl
-						label={ __( 'Rows', 'woo-gutenberg-products-block' ) }
-						value={ rows }
-						onChange={ ( value ) => setAttributes( { rows: value } ) }
-						min={ wc_product_block_data.min_rows }
-						max={ wc_product_block_data.max_rows }
 					/>
 				</PanelBody>
 				<PanelBody
