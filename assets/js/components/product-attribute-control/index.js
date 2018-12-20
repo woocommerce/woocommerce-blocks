@@ -25,24 +25,20 @@ class ProductAttributeControl extends Component {
 	}
 
 	componentDidMount() {
+		const getTermsInAttribute = ( { id } ) => {
+			return apiFetch( {
+				path: addQueryArgs( `/wc-pb/v3/products/attributes/${ id }/terms`, {
+					per_page: -1,
+				} ),
+			} ).then( ( terms ) => terms.map( ( t ) => ( { ...t, parent: id } ) ) );
+		};
+
 		apiFetch( {
 			path: addQueryArgs( '/wc-pb/v3/products/attributes', { per_page: -1 } ),
 		} )
 			.then( ( attributes ) => {
-				Promise.all(
-					attributes.map( ( attribute ) =>
-						apiFetch( {
-							path: addQueryArgs(
-								`/wc-pb/v3/products/attributes/${ attribute.id }/terms`,
-								{
-									per_page: -1,
-								}
-							),
-						} ).then( ( terms ) =>
-							terms.map( ( t ) => ( { ...t, parent: attribute.id } ) )
-						)
-					)
-				).then( ( results ) => {
+				// Fetch the terms list for each attribute group, then flatten them into one list.
+				Promise.all( attributes.map( getTermsInAttribute ) ).then( ( results ) => {
 					const list = attributes.map( ( a ) => ( { ...a, parent: 0 } ) );
 					results.forEach( ( terms ) => {
 						list.push( ...terms );
@@ -57,7 +53,10 @@ class ProductAttributeControl extends Component {
 
 	renderItem( args ) {
 		const { item, search, depth = 0 } = args;
-		const classes = [ 'woocommerce-product-attributes__item', 'woocommerce-search-list__item' ];
+		const classes = [
+			'woocommerce-product-attributes__item',
+			'woocommerce-search-list__item',
+		];
 		if ( search.length ) {
 			classes.push( 'is-searching' );
 		}
