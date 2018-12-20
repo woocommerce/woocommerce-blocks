@@ -104,18 +104,6 @@ class ProductByCategoryBlock extends Component {
 					/>
 				</PanelBody>
 				<PanelBody
-					title={ __( 'Product Attributes', 'woo-gutenberg-products-block' ) }
-					initialOpen={ false }
-				>
-					<ProductAttributeControl
-						selected={ attributes.attributes }
-						onChange={ ( value = [] ) => {
-							const selected = value.map( ( { id, attr_slug } ) => ( { id, attr_slug } ) ); // eslint-disable-line camelcase
-							setAttributes( { attributes: selected } );
-						} }
-					/>
-				</PanelBody>
-				<PanelBody
 					title={ __( 'Layout', 'woo-gutenberg-products-block' ) }
 					initialOpen
 				>
@@ -141,6 +129,18 @@ class ProductByCategoryBlock extends Component {
 					<ProductOrderbyControl
 						setAttributes={ setAttributes }
 						value={ orderby }
+					/>
+				</PanelBody>
+				<PanelBody
+					title={ __( 'Filter by Attribute', 'woo-gutenberg-products-block' ) }
+					initialOpen={ false }
+				>
+					<ProductAttributeControl
+						selected={ attributes.attributes }
+						onChange={ ( value = [] ) => {
+							const selected = value.map( ( { id, attr_slug } ) => ( { id, attr_slug } ) ); // eslint-disable-line camelcase
+							setAttributes( { attributes: selected } );
+						} }
 					/>
 				</PanelBody>
 			</InspectorControls>
