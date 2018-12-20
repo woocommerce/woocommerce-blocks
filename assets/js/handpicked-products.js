@@ -46,9 +46,7 @@ class ProductsBlock extends Component {
 	}
 
 	componentDidMount() {
-		if ( this.props.attributes.products ) {
-			this.getProducts();
-		}
+		this.getProducts();
 	}
 
 	componentDidUpdate( prevProps ) {
@@ -64,6 +62,11 @@ class ProductsBlock extends Component {
 	}
 
 	getProducts() {
+		if ( ! this.props.attributes.products.length ) {
+			// We've removed all selected products, or products haven't been selected yet.
+			this.setState( { products: [], loaded: true } );
+			return;
+		}
 		apiFetch( {
 			path: addQueryArgs(
 				'/wc-pb/v3/products',
