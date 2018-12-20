@@ -26,6 +26,7 @@ import PropTypes from 'prop-types';
  * Internal dependencies
  */
 import getQuery from './utils/get-query';
+import { IconWidgets } from './components/icons';
 import ProductsControl from './components/products-control';
 import ProductOrderbyControl from './components/product-orderby-control';
 import ProductPreview from './components/product-preview';
@@ -138,7 +139,7 @@ class ProductsBlock extends Component {
 
 		return (
 			<Placeholder
-				icon="category"
+				icon={ <IconWidgets /> }
 				label={ __( 'Hand-picked Products', 'woo-gutenberg-products-block' ) }
 				className="wc-block-products-grid wc-block-handpicked-products"
 			>
@@ -208,7 +209,7 @@ class ProductsBlock extends Component {
 							) )
 						) : (
 							<Placeholder
-								icon="category"
+								icon={ <IconWidgets /> }
 								label={ __(
 									'Hand-picked Products',
 									'woo-gutenberg-products-block'

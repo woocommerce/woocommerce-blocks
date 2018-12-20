@@ -11,6 +11,7 @@ import { RawHTML } from '@wordpress/element';
  */
 import '../css/product-category-block.scss';
 import getShortcode from './utils/get-shortcode';
+import { IconNewReleases, IconWidgets } from './components/icons';
 import ProductBestSellersBlock from './product-best-sellers';
 import ProductByCategoryBlock from './product-category-block';
 import ProductTopRatedBlock from './product-top-rated';
@@ -208,7 +209,7 @@ registerBlockType( 'woocommerce/product-on-sale', {
 
 registerBlockType( 'woocommerce/product-new', {
 	title: __( 'Newest Products', 'woo-gutenberg-products-block' ),
-	icon: <Gridicon icon="notice" />,
+	icon: <IconNewReleases />,
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
@@ -249,7 +250,7 @@ registerBlockType( 'woocommerce/product-new', {
  */
 registerBlockType( 'woocommerce/handpicked-products', {
 	title: __( 'Hand-picked Products', 'woo-gutenberg-products-block' ),
-	icon: 'category',
+	icon: <IconWidgets />,
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
