@@ -274,14 +274,6 @@ registerBlockType( 'woocommerce/handpicked-products', {
 		},
 
 		/**
-		 * Number of rows.
-		 */
-		rows: {
-			type: 'number',
-			default: wc_product_block_data.default_rows,
-		},
-
-		/**
 		 * Toggle for edit mode in the block preview.
 		 */
 		editMode: {
