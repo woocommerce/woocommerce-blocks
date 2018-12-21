@@ -163,11 +163,12 @@ class ProductsBlock extends Component {
 		const { setAttributes } = this.props;
 		const { align, columns, editMode } = this.props.attributes;
 		const { loaded, products } = this.state;
+		const hasSelectedProducts = products && products.length;
 		const classes = [ 'wc-block-products-grid', 'wc-block-handpicked-products' ];
 		if ( columns ) {
 			classes.push( `cols-${ columns }` );
 		}
-		if ( products && ! products.length ) {
+		if ( ! hasSelectedProducts ) {
 			if ( ! loaded ) {
 				classes.push( 'is-loading' );
 			} else {
@@ -199,7 +200,7 @@ class ProductsBlock extends Component {
 					this.renderEditMode()
 				) : (
 					<div className={ classes.join( ' ' ) }>
-						{ products.length ? (
+						{ hasSelectedProducts ? (
 							products.map( ( product ) => (
 								<ProductPreview product={ product } key={ product.id } />
 							) )
