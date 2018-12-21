@@ -129,7 +129,7 @@ class ProductsBlock extends Component {
 		const onDone = () => {
 			setAttributes( { editMode: false } );
 			debouncedSpeak(
-				__( 'Showing product block preview.', 'woo-gutenberg-products-block' )
+				__( 'Showing Hand-picked Products block preview.', 'woo-gutenberg-products-block' )
 			);
 		};
 

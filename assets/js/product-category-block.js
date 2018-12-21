@@ -139,7 +139,7 @@ class ProductByCategoryBlock extends Component {
 		const onDone = () => {
 			setAttributes( { editMode: false } );
 			debouncedSpeak(
-				__( 'Showing product block preview.', 'woo-gutenberg-products-block' )
+				__( 'Showing Products by Category block preview.', 'woo-gutenberg-products-block' )
 			);
 		};
 
