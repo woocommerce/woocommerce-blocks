@@ -67,6 +67,11 @@ class ProductByCategoryBlock extends Component {
 	}
 
 	getProducts() {
+		if ( ! this.props.attributes.categories.length ) {
+			// We've removed all selected categories, or no categories have been selected yet.
+			this.setState( { products: [], loaded: true } );
+			return;
+		}
 		apiFetch( {
 			path: addQueryArgs(
 				'/wc-pb/v3/products',
