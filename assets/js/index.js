@@ -246,7 +246,7 @@ registerBlockType( 'woocommerce/product-new', {
 } );
 
 /**
- * Register and run the "Products by Category" block.
+ * Register and run the "Hand-picked Products" block.
  */
 registerBlockType( 'woocommerce/handpicked-products', {
 	title: __( 'Hand-picked Products', 'woo-gutenberg-products-block' ),

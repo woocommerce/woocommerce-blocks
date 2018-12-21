@@ -31,7 +31,7 @@ export default function getQuery( attributes, name ) {
 		}
 	}
 
-	// Toggle shortcode atts depending on block type.
+	// Toggle query parameters depending on block type.
 	switch ( name ) {
 		case 'woocommerce/product-best-sellers':
 			query.orderby = 'popularity';
