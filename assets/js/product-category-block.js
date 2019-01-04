@@ -184,7 +184,7 @@ class ProductByCategoryBlock extends Component {
 						}
 					/>
 					<Button isDefault onClick={ onDone }>
-						{ __( 'Insert Block', 'woo-gutenberg-products-block' ) }
+						{ __( 'Done', 'woo-gutenberg-products-block' ) }
 					</Button>
 				</div>
 			</Placeholder>
