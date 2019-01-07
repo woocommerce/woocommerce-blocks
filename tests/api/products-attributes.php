@@ -152,7 +152,7 @@ class WC_Tests_API_Products_By_Attributes_Controller extends WC_REST_Unit_Test_C
 	 *
 	 * @since 1.2.0
 	 */
-	public function xtest_get_products_by_multiple_terms_multiple_attrs_any() {
+	public function test_get_products_by_multiple_terms_multiple_attrs_any() {
 		wp_set_current_user( $this->user );
 		$request = new WP_REST_Request( 'GET', $this->endpoint . '/products' );
 		$request->set_param(
@@ -175,7 +175,7 @@ class WC_Tests_API_Products_By_Attributes_Controller extends WC_REST_Unit_Test_C
 	 *
 	 * @since 1.2.0
 	 */
-	public function xtest_get_products_by_multiple_terms_multiple_attrs_all() {
+	public function test_get_products_by_multiple_terms_multiple_attrs_all() {
 		wp_set_current_user( $this->user );
 		$request = new WP_REST_Request( 'GET', $this->endpoint . '/products' );
 		$request->set_param(
@@ -190,7 +190,7 @@ class WC_Tests_API_Products_By_Attributes_Controller extends WC_REST_Unit_Test_C
 		$response          = $this->server->dispatch( $request );
 		$response_products = $response->get_data();
 		$this->assertEquals( 200, $response->get_status() );
-		$this->assertEquals( 1, count( $response_products ) );
+		$this->assertEquals( 2, count( $response_products ) );
 	}
 
 	/**
