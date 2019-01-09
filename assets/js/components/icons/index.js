@@ -4,4 +4,5 @@ export { default as IconCheckUnchecked } from './checkbox-unchecked';
 export { default as IconNewReleases } from './new-releases';
 export { default as IconRadioSelected } from './radio-selected';
 export { default as IconRadioUnselected } from './radio-unselected';
+export { default as IconStar } from './star';
 export { default as IconWidgets } from './widgets';
