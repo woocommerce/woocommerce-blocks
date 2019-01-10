@@ -105,7 +105,7 @@ class FeaturedProduct extends Component {
 				className="wc-block-featured-product"
 			>
 				{ __(
-					'Visually highlight a product and encourage promt action',
+					'Visually highlight a product and encourage prompt action',
 					'woo-gutenberg-products-block'
 				) }
 				<div className="wc-block-handpicked-products__selection">

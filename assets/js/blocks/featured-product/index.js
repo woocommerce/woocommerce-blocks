@@ -19,7 +19,7 @@ registerBlockType( 'woocommerce/featured-product', {
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
-		'Display a selection of hand-picked products in a grid.',
+		'Visually highlight a product and encourage prompt action.',
 		'woo-gutenberg-products-block'
 	),
 	supports: {
