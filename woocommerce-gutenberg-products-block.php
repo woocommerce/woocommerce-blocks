@@ -248,6 +248,13 @@ function wgpb_register_scripts() {
 	}
 
 	wp_register_style(
+		'wc-vendors',
+		plugins_url( 'build/vendors.css', __FILE__ ),
+		array(),
+		wgpb_get_file_version( '/build/vendors.css' )
+	);
+
+	wp_register_style(
 		'wc-products-grid',
 		plugins_url( 'build/products-grid.css', __FILE__ ),
 		array(),
@@ -257,56 +264,56 @@ function wgpb_register_scripts() {
 	wp_register_style(
 		'wc-handpicked-products-editor',
 		plugins_url( 'build/handpicked-products.css', __FILE__ ),
-		array( 'wp-edit-blocks', 'wc-products-grid' ),
+		array( 'wc-vendors', 'wp-edit-blocks', 'wc-products-grid' ),
 		wgpb_get_file_version( '/build/handpicked-products.css' )
 	);
 
 	wp_register_style(
 		'wc-product-best-sellers-editor',
 		plugins_url( 'build/product-best-sellers.css', __FILE__ ),
-		array( 'wp-edit-blocks', 'wc-products-grid' ),
+		array( 'wc-vendors', 'wp-edit-blocks', 'wc-products-grid' ),
 		wgpb_get_file_version( '/build/product-best-sellers.css' )
 	);
 
 	wp_register_style(
 		'wc-product-category-editor',
 		plugins_url( 'build/product-category.css', __FILE__ ),
-		array( 'wp-edit-blocks', 'wc-products-grid' ),
+		array( 'wc-vendors', 'wp-edit-blocks', 'wc-products-grid' ),
 		wgpb_get_file_version( '/build/product-category.css' )
 	);
 
 	wp_register_style(
 		'wc-product-new-editor',
 		plugins_url( 'build/product-new.css', __FILE__ ),
-		array( 'wp-edit-blocks', 'wc-products-grid' ),
+		array( 'wc-vendors', 'wp-edit-blocks', 'wc-products-grid' ),
 		wgpb_get_file_version( '/build/product-new.css' )
 	);
 
 	wp_register_style(
 		'wc-product-on-sale-editor',
 		plugins_url( 'build/product-on-sale.css', __FILE__ ),
-		array( 'wp-edit-blocks', 'wc-products-grid' ),
+		array( 'wc-vendors', 'wp-edit-blocks', 'wc-products-grid' ),
 		wgpb_get_file_version( '/build/product-on-sale.css' )
 	);
 
 	wp_register_style(
 		'wc-product-top-rated-editor',
 		plugins_url( 'build/product-top-rated.css', __FILE__ ),
-		array( 'wp-edit-blocks', 'wc-products-grid' ),
+		array( 'wc-vendors', 'wp-edit-blocks', 'wc-products-grid' ),
 		wgpb_get_file_version( '/build/product-top-rated.css' )
 	);
 
 	wp_register_style(
 		'woocommerce-products-block-editor',
 		plugins_url( 'build/products-block.css', __FILE__ ),
-		array( 'wp-edit-blocks' ),
+		array( 'wc-vendors', 'wp-edit-blocks' ),
 		wgpb_get_file_version( '/build/products-block.css' )
 	);
 
 	wp_register_style(
 		'wc-featured-product-editor',
 		plugins_url( 'build/featured-product.css', __FILE__ ),
-		array( 'wp-edit-blocks' ),
+		array( 'wc-vendors', 'wp-edit-blocks' ),
 		wgpb_get_file_version( '/build/featured-product.css' )
 	);
 
@@ -321,6 +328,7 @@ function wgpb_register_scripts() {
  */
 function wgpb_get_file_version( $file ) {
 	if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+		$file = trim( $file, '/' );
 		return filemtime( plugin_dir_path( __FILE__ ) . $file );
 	}
 	return WGPB_VERSION;
