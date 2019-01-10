@@ -159,6 +159,7 @@ function wgpb_register_scripts() {
 		'wp-i18n',
 		'wp-url',
 		'lodash',
+		'wc-vendors',
 	);
 
 	// @todo Remove this dependency (as it adds a separate react instance).
@@ -167,6 +168,14 @@ function wgpb_register_scripts() {
 		plugins_url( 'assets/js/vendor/react-transition-group.js', __FILE__ ),
 		array(),
 		'2.2.1',
+		true
+	);
+
+	wp_register_script(
+		'wc-vendors',
+		plugins_url( 'build/vendors.js', __FILE__ ),
+		array(),
+		wgpb_get_file_version( '/build/vendors.js' ),
 		true
 	);
 
