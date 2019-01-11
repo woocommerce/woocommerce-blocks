@@ -10,6 +10,7 @@
 	align-items: center;
 	overflow: hidden;
 	flex-wrap: wrap;
+	align-content: center;
 
 	&.has-background-dim {
 		background-color: $black;
@@ -45,7 +46,7 @@
 		line-height: 1.25;
 		z-index: 1;
 		margin-bottom: 0;
-		max-width: $content-width;
+		width: 100%;
 		padding: $block-padding;
 		text-align: center;
 
@@ -54,6 +55,14 @@
 		a:focus,
 		a:active {
 			color: $white;
+		}
+	}
+
+	.wc-block-featured-product__title {
+		margin-top: 0;
+
+		&:before {
+			display: none;
 		}
 	}
 
