@@ -146,10 +146,6 @@ class WC_Block_Featured_Product {
 			}
 		}
 
-		if ( ! $image && $placeholder ) {
-			$image = wc_placeholder_img( $size );
-		}
-
 		return $image;
 	}
 }
