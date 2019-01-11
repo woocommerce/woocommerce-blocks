@@ -1,5 +1,6 @@
 .wc-block-featured-product {
 	position: relative;
+	background-color: $black;
 	background-size: cover;
 	background-position: center center;
 	min-height: 430px;
@@ -12,8 +13,9 @@
 	flex-wrap: wrap;
 	align-content: center;
 
-	&.has-background-dim {
-		background-color: $black;
+	&.components-placeholder {
+		// Reset the background for the placeholders.
+		background-color: rgba( 139, 139, 150, .1 );
 	}
 
 	&.has-left-content {
