@@ -16,6 +16,7 @@ import {
 	Placeholder,
 	RangeControl,
 	Spinner,
+	ToggleControl,
 	Toolbar,
 	withSpokenMessages,
 } from '@wordpress/components';
@@ -110,9 +111,20 @@ class FeaturedProduct extends Component {
 						} }
 					/>
 				</PanelBody>
+				<PanelBody title={ __( 'Content', 'woo-gutenberg-products-block' ) }>
+					<ToggleControl
+						label="Show description"
+						checked={ attributes.showDesc }
+						onChange={ () => setAttributes( { showDesc: ! attributes.showDesc } ) }
+					/>
+					<ToggleControl
+						label="Show price"
+						checked={ attributes.showPrice }
+						onChange={ () => setAttributes( { showPrice: ! attributes.showPrice } ) }
+					/>
+				</PanelBody>
 				<PanelColorSettings
 					title={ __( 'Overlay', 'woo-gutenberg-products-block' ) }
-					initialOpen={ true }
 					colorSettings={ [
 						{
 							value: overlayColor.color,
@@ -174,7 +186,13 @@ class FeaturedProduct extends Component {
 
 	render() {
 		const { attributes, setAttributes, overlayColor } = this.props;
-		const { contentAlign, dimRatio, editMode } = attributes;
+		const {
+			contentAlign,
+			dimRatio,
+			editMode,
+			showDesc,
+			showPrice,
+		} = attributes;
 		const { loaded, product } = this.state;
 		const classes = classnames(
 			'wc-block-featured-product',
@@ -184,7 +202,7 @@ class FeaturedProduct extends Component {
 				'has-background-dim': dimRatio !== 0,
 			},
 			dimRatioToClass( dimRatio ),
-			contentAlign !== 'center' && `has-${ contentAlign }-content`,
+			contentAlign !== 'center' && `has-${ contentAlign }-content`
 		);
 
 		const style = !! product ? backgroundImageStyles( product ) : {};
@@ -222,17 +240,21 @@ class FeaturedProduct extends Component {
 								<h2 className="wc-block-featured-product__title">
 									{ product.name }
 								</h2>
-								<div
-									className="wc-block-featured-product__description"
-									dangerouslySetInnerHTML={ {
-										__html:
-											'<p>Black cotton top with matching striped skirt. </p>\n',
-									} }
-								/>
-								<div
-									className="wc-block-featured-product__price"
-									dangerouslySetInnerHTML={ { __html: product.price_html } }
-								/>
+								{ showDesc && (
+									<div
+										className="wc-block-featured-product__description"
+										dangerouslySetInnerHTML={ {
+											__html:
+												'<p>Black cotton top with matching striped skirt. </p>\n',
+										} }
+									/>
+								) }
+								{ showPrice && (
+									<div
+										className="wc-block-featured-product__price"
+										dangerouslySetInnerHTML={ { __html: product.price_html } }
+									/>
+								) }
 							</div>
 						) : (
 							<Placeholder

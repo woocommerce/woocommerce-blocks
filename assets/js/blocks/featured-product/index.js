@@ -65,10 +65,26 @@ registerBlockType( 'woocommerce/featured-product', {
 		},
 
 		/**
-		 * The product ID to display
+		 * The product ID to display.
 		 */
 		productId: {
 			type: 'number',
+		},
+
+		/**
+		 * Show the product description.
+		 */
+		showDesc: {
+			type: 'boolean',
+			default: true,
+		},
+
+		/**
+		 * Show the product price.
+		 */
+		showPrice: {
+			type: 'boolean',
+			default: true,
 		},
 	},
 
