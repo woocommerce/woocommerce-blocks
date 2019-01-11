@@ -7,6 +7,7 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
+import './style.scss';
 import Block from './block';
 import { IconStar } from '../../components/icons';
 

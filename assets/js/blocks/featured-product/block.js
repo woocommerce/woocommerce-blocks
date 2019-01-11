@@ -12,6 +12,7 @@ import {
 	Toolbar,
 	withSpokenMessages,
 } from '@wordpress/components';
+import classnames from 'classnames';
 import { Component, Fragment } from '@wordpress/element';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
@@ -21,7 +22,15 @@ import PropTypes from 'prop-types';
  */
 import { IconStar } from '../../components/icons';
 import ProductControl from '../../components/product-control';
-import ProductPreview from '../../components/product-preview';
+
+// Copied from core/cover, updated for product.
+function backgroundImageStyles( { images = [] } ) {
+	if ( images.length ) {
+		const url = images[ 0 ].src;
+		return { backgroundImage: `url(${ url })` };
+	}
+	return {};
+}
 
 /**
  * Component to handle edit mode of "Featured Product".
@@ -128,14 +137,15 @@ class FeaturedProduct extends Component {
 		const { attributes, setAttributes } = this.props;
 		const { editMode } = attributes;
 		const { loaded, product } = this.state;
-		const classes = [ 'wc-block-featured-product' ];
-		if ( ! product ) {
-			if ( ! loaded ) {
-				classes.push( 'is-loading' );
-			} else {
-				classes.push( 'is-not-found' );
-			}
-		}
+		const classes = classnames(
+			'wc-block-featured-product',
+			{
+				'is-loading': ! product && ! loaded,
+				'is-not-found': ! product && loaded,
+			},
+		);
+
+		const style = backgroundImageStyles( product );
 
 		return (
 			<Fragment>
@@ -155,9 +165,19 @@ class FeaturedProduct extends Component {
 				{ editMode ? (
 					this.renderEditMode()
 				) : (
-					<div className={ classes.join( ' ' ) }>
+					<div className={ classes }>
 						{ !! product ? (
-							<ProductPreview product={ product } key={ product.id } />
+							<div className="wc-block-featured-product__container" style={ style }>
+								<h2 className="wc-block-featured-product__title">{ product.name }</h2>
+								<div
+									className="wc-block-featured-product__description"
+									dangerouslySetInnerHTML={ { __html: '<p>Black cotton top with matching striped skirt. <\/p>\n' } }
+								/>
+								<div
+									className="wc-block-featured-product__price"
+									dangerouslySetInnerHTML={ { __html: product.price_html } }
+								/>
+							</div>
 						) : (
 							<Placeholder
 								icon={ <IconStar /> }
