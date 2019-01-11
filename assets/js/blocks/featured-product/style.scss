@@ -71,6 +71,10 @@
 		}
 	}
 
+	.wc-block-featured-product__description p {
+		@include font-size( 18 );
+	}
+
 	&.has-background-dim::before {
 		content: "";
 		position: absolute;
