@@ -161,7 +161,7 @@ class FeaturedProduct extends Component {
 						] }
 					/>
 				</BlockControls>
-				{ this.getInspectorControls() }
+				{ ! attributes.editMode && this.getInspectorControls() }
 				{ editMode ? (
 					this.renderEditMode()
 				) : (
