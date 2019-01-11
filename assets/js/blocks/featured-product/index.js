@@ -28,6 +28,13 @@ registerBlockType( 'woocommerce/featured-product', {
 	},
 	attributes: {
 		/**
+		 * Alignment of content inside block.
+		 */
+		contentAlign: {
+			type: 'string',
+			default: 'center',
+		},
+		/**
 		 * Percentage opacity of overlay.
 		 */
 		dimRatio: {

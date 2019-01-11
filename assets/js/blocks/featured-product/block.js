@@ -3,7 +3,13 @@
  */
 import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
-import { BlockControls, InspectorControls, PanelColorSettings, withColors } from '@wordpress/editor';
+import {
+	AlignmentToolbar,
+	BlockControls,
+	InspectorControls,
+	PanelColorSettings,
+	withColors,
+} from '@wordpress/editor';
 import {
 	Button,
 	PanelBody,
@@ -83,7 +89,12 @@ class FeaturedProduct extends Component {
 	}
 
 	getInspectorControls() {
-		const { attributes, setAttributes, overlayColor, setOverlayColor } = this.props;
+		const {
+			attributes,
+			setAttributes,
+			overlayColor,
+			setOverlayColor,
+		} = this.props;
 
 		return (
 			<InspectorControls key="inspector">
@@ -102,11 +113,13 @@ class FeaturedProduct extends Component {
 				<PanelColorSettings
 					title={ __( 'Overlay', 'woo-gutenberg-products-block' ) }
 					initialOpen={ true }
-					colorSettings={ [ {
-						value: overlayColor.color,
-						onChange: setOverlayColor,
-						label: __( 'Overlay Color', 'woo-gutenberg-products-block' ),
-					} ] }
+					colorSettings={ [
+						{
+							value: overlayColor.color,
+							onChange: setOverlayColor,
+							label: __( 'Overlay Color', 'woo-gutenberg-products-block' ),
+						},
+					] }
 				>
 					<RangeControl
 						label={ __( 'Background Opacity', 'woo-gutenberg-products-block' ) }
@@ -161,7 +174,7 @@ class FeaturedProduct extends Component {
 
 	render() {
 		const { attributes, setAttributes, overlayColor } = this.props;
-		const { dimRatio, editMode } = attributes;
+		const { contentAlign, dimRatio, editMode } = attributes;
 		const { loaded, product } = this.state;
 		const classes = classnames(
 			'wc-block-featured-product',
@@ -171,6 +184,7 @@ class FeaturedProduct extends Component {
 				'has-background-dim': dimRatio !== 0,
 			},
 			dimRatioToClass( dimRatio ),
+			contentAlign !== 'center' && `has-${ contentAlign }-content`,
 		);
 
 		const style = !! product ? backgroundImageStyles( product ) : {};
@@ -181,6 +195,12 @@ class FeaturedProduct extends Component {
 		return (
 			<Fragment>
 				<BlockControls>
+					<AlignmentToolbar
+						value={ contentAlign }
+						onChange={ ( nextAlign ) => {
+							setAttributes( { contentAlign: nextAlign } );
+						} }
+					/>
 					<Toolbar
 						controls={ [
 							{
@@ -199,10 +219,15 @@ class FeaturedProduct extends Component {
 					<Fragment>
 						{ !! product ? (
 							<div className={ classes } style={ style }>
-								<h2 className="wc-block-featured-product__title">{ product.name }</h2>
+								<h2 className="wc-block-featured-product__title">
+									{ product.name }
+								</h2>
 								<div
 									className="wc-block-featured-product__description"
-									dangerouslySetInnerHTML={ { __html: '<p>Black cotton top with matching striped skirt. <\/p>\n' } }
+									dangerouslySetInnerHTML={ {
+										__html:
+											'<p>Black cotton top with matching striped skirt. </p>\n',
+									} }
 								/>
 								<div
 									className="wc-block-featured-product__price"
