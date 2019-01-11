@@ -1,6 +1,5 @@
-.wc-block-featured-product__container {
+.wc-block-featured-product {
 	position: relative;
-	background-color: $black;
 	background-size: cover;
 	background-position: center center;
 	min-height: 430px;
@@ -12,6 +11,10 @@
 	overflow: hidden;
 	flex-wrap: wrap;
 
+	&.has-background-dim {
+		background-color: $black;
+	}
+
 	&.has-left-content {
 		justify-content: flex-start;
 
@@ -21,7 +24,7 @@
 			margin-left: 0;
 			text-align: left;
 		}
-		}
+	}
 
 	&.has-right-content {
 		justify-content: flex-end;
@@ -51,6 +54,24 @@
 		a:focus,
 		a:active {
 			color: $white;
+		}
+	}
+
+	&.has-background-dim::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		background-color: inherit;
+		opacity: 0.5;
+		z-index: 1;
+	}
+
+	@for $i from 1 through 10 {
+		&.has-background-dim.has-background-dim-#{ $i * 10 }::before {
+			opacity: $i * 0.1;
 		}
 	}
 

@@ -28,11 +28,33 @@ registerBlockType( 'woocommerce/featured-product', {
 	},
 	attributes: {
 		/**
+		 * Percentage opacity of overlay.
+		 */
+		dimRatio: {
+			type: 'number',
+			default: 50,
+		},
+
+		/**
 		 * Toggle for edit mode in the block preview.
 		 */
 		editMode: {
 			type: 'boolean',
 			default: true,
+		},
+
+		/**
+		 * The overlay color, from the color list.
+		 */
+		overlayColor: {
+			type: 'string',
+		},
+
+		/**
+		 * The overlay color, if a custom color value.
+		 */
+		customOverlayColor: {
+			type: 'string',
 		},
 
 		/**

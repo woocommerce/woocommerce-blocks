@@ -3,17 +3,19 @@
  */
 import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
-import { BlockControls, InspectorControls } from '@wordpress/editor';
+import { BlockControls, InspectorControls, PanelColorSettings, withColors } from '@wordpress/editor';
 import {
 	Button,
 	PanelBody,
 	Placeholder,
+	RangeControl,
 	Spinner,
 	Toolbar,
 	withSpokenMessages,
 } from '@wordpress/components';
 import classnames from 'classnames';
 import { Component, Fragment } from '@wordpress/element';
+import { compose } from '@wordpress/compose';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
 
@@ -30,6 +32,12 @@ function backgroundImageStyles( { images = [] } ) {
 		return { backgroundImage: `url(${ url })` };
 	}
 	return {};
+}
+
+function dimRatioToClass( ratio ) {
+	return ratio === 0 || ratio === 50 ?
+		null :
+		`has-background-dim-${ 10 * Math.round( ratio / 10 ) }`;
 }
 
 /**
@@ -75,7 +83,7 @@ class FeaturedProduct extends Component {
 	}
 
 	getInspectorControls() {
-		const { attributes, setAttributes } = this.props;
+		const { attributes, setAttributes, overlayColor, setOverlayColor } = this.props;
 
 		return (
 			<InspectorControls key="inspector">
@@ -91,6 +99,24 @@ class FeaturedProduct extends Component {
 						} }
 					/>
 				</PanelBody>
+				<PanelColorSettings
+					title={ __( 'Overlay', 'woo-gutenberg-products-block' ) }
+					initialOpen={ true }
+					colorSettings={ [ {
+						value: overlayColor.color,
+						onChange: setOverlayColor,
+						label: __( 'Overlay Color', 'woo-gutenberg-products-block' ),
+					} ] }
+				>
+					<RangeControl
+						label={ __( 'Background Opacity', 'woo-gutenberg-products-block' ) }
+						value={ attributes.dimRatio }
+						onChange={ ( ratio ) => setAttributes( { dimRatio: ratio } ) }
+						min={ 0 }
+						max={ 100 }
+						step={ 10 }
+					/>
+				</PanelColorSettings>
 			</InspectorControls>
 		);
 	}
@@ -134,18 +160,23 @@ class FeaturedProduct extends Component {
 	}
 
 	render() {
-		const { attributes, setAttributes } = this.props;
-		const { editMode } = attributes;
+		const { attributes, setAttributes, overlayColor } = this.props;
+		const { dimRatio, editMode } = attributes;
 		const { loaded, product } = this.state;
 		const classes = classnames(
 			'wc-block-featured-product',
 			{
 				'is-loading': ! product && ! loaded,
 				'is-not-found': ! product && loaded,
+				'has-background-dim': dimRatio !== 0,
 			},
+			dimRatioToClass( dimRatio ),
 		);
 
-		const style = backgroundImageStyles( product );
+		const style = !! product ? backgroundImageStyles( product ) : {};
+		if ( overlayColor.color ) {
+			style.backgroundColor = overlayColor.color;
+		}
 
 		return (
 			<Fragment>
@@ -165,9 +196,9 @@ class FeaturedProduct extends Component {
 				{ editMode ? (
 					this.renderEditMode()
 				) : (
-					<div className={ classes }>
+					<Fragment>
 						{ !! product ? (
-							<div className="wc-block-featured-product__container" style={ style }>
+							<div className={ classes } style={ style }>
 								<h2 className="wc-block-featured-product__title">{ product.name }</h2>
 								<div
 									className="wc-block-featured-product__description"
@@ -180,6 +211,7 @@ class FeaturedProduct extends Component {
 							</div>
 						) : (
 							<Placeholder
+								className="wc-block-featured-product"
 								icon={ <IconStar /> }
 								label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
 							>
@@ -190,7 +222,7 @@ class FeaturedProduct extends Component {
 								) }
 							</Placeholder>
 						) }
-					</div>
+					</Fragment>
 				) }
 			</Fragment>
 		);
@@ -210,8 +242,14 @@ FeaturedProduct.propTypes = {
 	 * A callback to update attributes
 	 */
 	setAttributes: PropTypes.func.isRequired,
+	// from withColors
+	overlayColor: PropTypes.object,
+	setOverlayColor: PropTypes.func.isRequired,
 	// from withSpokenMessages
 	debouncedSpeak: PropTypes.func.isRequired,
 };
 
-export default withSpokenMessages( FeaturedProduct );
+export default compose( [
+	withColors( { overlayColor: 'background-color' } ),
+	withSpokenMessages,
+] )( FeaturedProduct );
