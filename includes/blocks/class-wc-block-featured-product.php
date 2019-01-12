@@ -108,12 +108,11 @@ class WC_Block_Featured_Product {
 			$classes[] = "align{$attributes['align']}";
 		}
 
-		if ( isset( $attributes['dimRatio'] ) ) {
-			if ( 0 !== $attributes['dimRatio'] ) {
-				$classes[] = 'has-background-dim';
-				if ( 50 !== $attributes['dimRatio'] ) {
-					$classes[] = 'has-background-dim-' . 10 * round( $attributes['dimRatio'] / 10 );
-				}
+		if ( isset( $attributes['dimRatio'] ) && ( 0 !== $attributes['dimRatio'] ) ) {
+			$classes[] = 'has-background-dim';
+
+			if ( 50 !== $attributes['dimRatio'] ) {
+				$classes[] = 'has-background-dim-' . 10 * round( $attributes['dimRatio'] / 10 );
 			}
 		}
 
