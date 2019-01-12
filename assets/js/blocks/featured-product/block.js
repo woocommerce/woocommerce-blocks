@@ -8,6 +8,7 @@ import {
 	BlockControls,
 	InspectorControls,
 	PanelColorSettings,
+	RichText,
 	withColors,
 } from '@wordpress/editor';
 import {
@@ -190,6 +191,7 @@ class FeaturedProduct extends Component {
 			contentAlign,
 			dimRatio,
 			editMode,
+			linkText,
 			showDesc,
 			showPrice,
 		} = attributes;
@@ -255,6 +257,15 @@ class FeaturedProduct extends Component {
 										dangerouslySetInnerHTML={ { __html: product.price_html } }
 									/>
 								) }
+								<div className="wc-block-featured-product__link">
+									<RichText
+										value={ linkText }
+										onChange={ ( value ) => setAttributes( { linkText: value } ) }
+										formattingControls={ [ 'bold', 'italic', 'strikethrough' ] }
+										className="wp-block-button__link"
+										keepPlaceholderOnFocus
+									/>
+								</div>
 							</div>
 						) : (
 							<Placeholder
