@@ -42,12 +42,11 @@
 	.wc-block-featured-product__description,
 	.wc-block-featured-product__price {
 		color: $white;
-		font-size: 2em;
 		line-height: 1.25;
 		z-index: 1;
 		margin-bottom: 0;
 		width: 100%;
-		padding: $block-padding;
+		padding: 0 48px 16px 48px;
 		text-align: center;
 
 		a,
@@ -63,6 +62,12 @@
 
 		&:before {
 			display: none;
+		}
+	}
+
+	.wc-block-featured-product__description {
+		p {
+			margin: 0;
 		}
 	}
 
