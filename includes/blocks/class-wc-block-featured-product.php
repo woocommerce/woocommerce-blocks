@@ -68,7 +68,7 @@ class WC_Block_Featured_Product {
 		);
 
 		$link_str = sprintf(
-			'<div class="wc-block-featured-product__link"><a class="wp-block-button__link" href="%1$s" aria-label="%2$s">%3$s</a></div>',
+			'<div class="wc-block-featured-product__link wp-block-button"><a class="wp-block-button__link" href="%1$s" aria-label="%2$s">%3$s</a></div>',
 			$product->get_permalink(),
 			/* translators: %s is product name */
 			sprintf( __( 'View product %s', 'woo-gutenberg-products-block' ), $product->get_name() ),

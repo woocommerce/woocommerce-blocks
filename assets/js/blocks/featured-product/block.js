@@ -257,7 +257,7 @@ class FeaturedProduct extends Component {
 										dangerouslySetInnerHTML={ { __html: product.price_html } }
 									/>
 								) }
-								<div className="wc-block-featured-product__link">
+								<div className="wc-block-featured-product__link wp-block-button">
 									<RichText
 										value={ linkText }
 										onChange={ ( value ) => setAttributes( { linkText: value } ) }
