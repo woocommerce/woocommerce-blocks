@@ -34,6 +34,7 @@ registerBlockType( 'woocommerce/featured-product', {
 			type: 'string',
 			default: 'center',
 		},
+
 		/**
 		 * Percentage opacity of overlay.
 		 */
@@ -62,6 +63,14 @@ registerBlockType( 'woocommerce/featured-product', {
 		 */
 		customOverlayColor: {
 			type: 'string',
+		},
+
+		/**
+		 * Text for the product link.
+		 */
+		linkText: {
+			type: 'string',
+			default: __( 'Shop now', 'woo-gutenberg-products-block' ),
 		},
 
 		/**

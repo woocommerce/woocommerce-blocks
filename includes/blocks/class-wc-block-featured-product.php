@@ -29,6 +29,7 @@ class WC_Block_Featured_Product {
 		'align'        => 'none',
 		'contentAlign' => 'center',
 		'dimRatio'     => 50,
+		'linkText'     => false,
 		'showDesc'     => true,
 		'showPrice'    => true,
 	);
@@ -47,6 +48,9 @@ class WC_Block_Featured_Product {
 			return '';
 		}
 		$attributes = wp_parse_args( $attributes, self::$defaults );
+		if ( ! $attributes['linkText'] ) {
+			$attributes['linkText'] = __( 'Shop now', 'woo-gutenberg-products-block' );
+		}
 
 		$title = sprintf(
 			'<h2 class="wc-block-featured-product__title">%s</h2>',
@@ -63,6 +67,14 @@ class WC_Block_Featured_Product {
 			$product->get_price_html()
 		);
 
+		$link_str = sprintf(
+			'<div class="wc-block-featured-product__link wp-block-button"><a class="wp-block-button__link" href="%1$s" aria-label="%2$s">%3$s</a></div>',
+			$product->get_permalink(),
+			/* translators: %s is product name */
+			sprintf( __( 'View product %s', 'woo-gutenberg-products-block' ), $product->get_name() ),
+			$attributes['linkText']
+		);
+
 		$output = sprintf( '<div class="%1$s" style="%2$s">', self::get_classes( $attributes ), self::get_styles( $attributes, $product ) );
 
 		$output .= $title;
@@ -72,6 +84,7 @@ class WC_Block_Featured_Product {
 		if ( $attributes['showPrice'] ) {
 			$output .= $price_str;
 		}
+		$output .= $link_str;
 		$output .= '</div>';
 
 		return $output;

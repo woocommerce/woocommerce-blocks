@@ -23,7 +23,8 @@
 
 		.wc-block-featured-product__title,
 		.wc-block-featured-product__description,
-		.wc-block-featured-product__price {
+		.wc-block-featured-product__price,
+		.wc-block-featured-product__link {
 			margin-left: 0;
 			text-align: left;
 		}
@@ -34,7 +35,8 @@
 
 		.wc-block-featured-product__title,
 		.wc-block-featured-product__description,
-		.wc-block-featured-product__price {
+		.wc-block-featured-product__price,
+		.wc-block-featured-product__link {
 			margin-right: 0;
 			text-align: right;
 		}
@@ -42,7 +44,8 @@
 
 	.wc-block-featured-product__title,
 	.wc-block-featured-product__description,
-	.wc-block-featured-product__price {
+	.wc-block-featured-product__price,
+	.wc-block-featured-product__link {
 		color: $white;
 		line-height: 1.25;
 		z-index: 1;
