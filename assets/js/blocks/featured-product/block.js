@@ -128,7 +128,7 @@ class FeaturedProduct extends Component {
 						selected={ attributes.productId || 0 }
 						onChange={ ( value = [] ) => {
 							const id = value[ 0 ] ? value[ 0 ].id : 0;
-							setAttributes( { productId: id } );
+							setAttributes( { productId: id, mediaId: 0, mediaSrc: '' } );
 						} }
 					/>
 				</PanelBody>
@@ -194,7 +194,7 @@ class FeaturedProduct extends Component {
 						selected={ attributes.productId || 0 }
 						onChange={ ( value = [] ) => {
 							const id = value[ 0 ] ? value[ 0 ].id : 0;
-							setAttributes( { productId: id } );
+							setAttributes( { productId: id, mediaId: 0, mediaSrc: '' } );
 						} }
 					/>
 					<Button isDefault onClick={ onDone }>
