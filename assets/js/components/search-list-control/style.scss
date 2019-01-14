@@ -85,7 +85,7 @@
 		display: flex;
 		align-items: center;
 		margin-bottom: 0;
-		padding: $gap;
+		padding: $gap*0.75 $gap;
 		background: $white;
 		// !important to keep the border around on hover
 		border-bottom: 1px solid $core-grey-light-500 !important;
