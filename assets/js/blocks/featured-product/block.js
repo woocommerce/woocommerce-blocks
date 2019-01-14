@@ -13,7 +13,6 @@ import {
 } from '@wordpress/editor';
 import {
 	Button,
-	Icon,
 	PanelBody,
 	Placeholder,
 	RangeControl,
@@ -161,7 +160,7 @@ class FeaturedProduct extends Component {
 
 		return (
 			<Placeholder
-				icon={ "star-filled" }
+				icon="star-filled"
 				label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
 				className="wc-block-featured-product"
 			>
@@ -270,7 +269,7 @@ class FeaturedProduct extends Component {
 						) : (
 							<Placeholder
 								className="wc-block-featured-product"
-								icon={ "star-filled" }
+								icon="star-filled"
 								label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
 							>
 								{ ! loaded ? (
