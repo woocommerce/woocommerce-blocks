@@ -102,6 +102,7 @@
 		.woocommerce-search-list__item-state {
 			flex: 0 0 16px;
 			margin-right: $gap-smaller;
+			// Set an explicit height to ensure vertical alignment
 			height: 24px;
 		}
 

@@ -161,7 +161,7 @@ class FeaturedProduct extends Component {
 
 		return (
 			<Placeholder
-				icon={ <Icon icon="star-filled" /> }
+				icon={ "star-filled" }
 				label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
 				className="wc-block-featured-product"
 			>
@@ -270,7 +270,7 @@ class FeaturedProduct extends Component {
 						) : (
 							<Placeholder
 								className="wc-block-featured-product"
-								icon={ <Icon icon="star-filled" /> }
+								icon={ "star-filled" }
 								label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
 							>
 								{ ! loaded ? (
