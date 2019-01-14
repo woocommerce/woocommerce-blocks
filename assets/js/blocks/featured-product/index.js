@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -16,7 +15,7 @@ import Block from './block';
  */
 registerBlockType( 'woocommerce/featured-product', {
 	title: __( 'Featured Product', 'woo-gutenberg-products-block' ),
-	icon: <Icon icon="star-filled" />,
+	icon: 'star-filled',
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
