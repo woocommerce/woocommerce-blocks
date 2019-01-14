@@ -4,7 +4,7 @@ Tags: gutenberg, woocommerce, woo commerce, products
 Requires at least: 4.9
 Tested up to: 5.0
 Requires PHP: 5.2
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -63,6 +63,23 @@ Yes you can! Join in on our [GitHub repository](https://github.com/woocommerce/w
 4. New: Stand-alone Product Category block
 
 == Changelog ==
+
+== 1.3.0 - 2019-01-15 =
+
+- Feature: Added new blocks: "Featured Product", "Hand-picked Products", "Best Selling Products", "Newest Products", "On Sale Products", "Top Rated Products"
+- Enhancement: Create new "WooCommerce" block category, all blocks are found there now
+- Enhancement: Added a control to "Products by Category" block to control whether products need to match any selected categories or all selected categories
+- Fix: Fixed a bug in "Products by Category" block where all products would display if no category was selected
+- Legacy block: Remove legacy "Products" block from being shown in the block inserter (still loading the block for an existing uses)
+- Legacy block: Fix an issue with imageless products in the legacy "Products" block.
+- Components: Add new Control components `ProductControl`, `ProductsControl`, `ProductOrderbyControl`
+- Components: Update `SearchListControl` to allow selecting a single item
+- API: Add `cat_operator` support to products endpoint
+- API: Add product `description` & `short_description` to each product
+- API: Add attribute group names to each attribute
+- Build: Update packages
+- Build: Add cssnano to minify CSS
+- Build: Split out node_modules code into separate vendors files
 
 == 1.2.0 - 2018-12-04 =
 * Feature - Stand-alone product category block with improved category selection interface.
