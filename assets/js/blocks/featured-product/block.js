@@ -13,6 +13,7 @@ import {
 } from '@wordpress/editor';
 import {
 	Button,
+	Icon,
 	PanelBody,
 	Placeholder,
 	RangeControl,
@@ -30,7 +31,6 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import { IconStar } from '../../components/icons';
 import ProductControl from '../../components/product-control';
 
 // Copied from core/cover, updated for product.
@@ -161,7 +161,7 @@ class FeaturedProduct extends Component {
 
 		return (
 			<Placeholder
-				icon={ <IconStar /> }
+				icon={ <Icon icon="star-filled" /> }
 				label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
 				className="wc-block-featured-product"
 			>
@@ -270,7 +270,7 @@ class FeaturedProduct extends Component {
 						) : (
 							<Placeholder
 								className="wc-block-featured-product"
-								icon={ <IconStar /> }
+								icon={ <Icon icon="star-filled" /> }
 								label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
 							>
 								{ ! loaded ? (

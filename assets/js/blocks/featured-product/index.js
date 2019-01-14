@@ -3,20 +3,20 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
+import { Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
 import Block from './block';
-import { IconStar } from '../../components/icons';
 
 /**
  * Register and run the "Featured Product" block.
  */
 registerBlockType( 'woocommerce/featured-product', {
 	title: __( 'Featured Product', 'woo-gutenberg-products-block' ),
-	icon: <IconStar />,
+	icon: <Icon icon="star-filled" />,
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
