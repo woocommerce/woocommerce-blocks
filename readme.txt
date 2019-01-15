@@ -69,7 +69,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/woocommerce/w
 - Feature: Added new blocks: "Featured Product", "Hand-picked Products", "Best Selling Products", "Newest Products", "On Sale Products", "Top Rated Products"
 - Enhancement: Create new "WooCommerce" block category, all blocks are found there now
 - Enhancement: Added a control to "Products by Category" block to control whether products need to match any selected categories or all selected categories
-- Fix: Fixed a bug in "Products by Category" block where all products would display if no category was selected
+- Fix: A "Products by Category" block with no category selected will no longer show all products
 - Legacy block: Remove legacy "Products" block from being shown in the block inserter (still loading the block for an existing uses)
 - Legacy block: Fix an issue with imageless products in the legacy "Products" block.
 - Components: Add new Control components `ProductControl`, `ProductsControl`, `ProductOrderbyControl`
