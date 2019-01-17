@@ -318,7 +318,7 @@ function wgpb_register_scripts() {
 	wp_register_style(
 		'wc-featured-product-editor',
 		plugins_url( 'build/featured-product.css', __FILE__ ),
-		array( 'wc-vendors', 'wp-edit-blocks' ),
+		array( 'wc-vendors' ),
 		wgpb_get_file_version( '/build/featured-product.css' )
 	);
 
