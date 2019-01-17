@@ -88,6 +88,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+== 1.3.1 - 2019-01-17 =
+
+- Fix: A CSS conflict was causing the core columns style to reset, this has been fixed and columns will display as expected now.
+- Fix: A version conflict with a JS package was causing the blocks to be broken in non-English locales. The package was updated.
+- Fix: Translations were not being loaded correctly for the JS files. We now bundle the Danish, Spanish, and French translations so that these can be used.
+
 == 1.3.0 - 2019-01-15 =
 
 - Feature: Added new blocks: "Featured Product", "Hand-picked Products", "Best Selling Products", "Newest Products", "On Sale Products", "Top Rated Products"
