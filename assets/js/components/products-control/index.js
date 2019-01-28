@@ -2,8 +2,6 @@
  * External dependencies
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { addQueryArgs } from '@wordpress/url';
-import apiFetch from '@wordpress/api-fetch';
 import { Component, Fragment } from '@wordpress/element';
 import { find } from 'lodash';
 import PropTypes from 'prop-types';
@@ -23,15 +21,7 @@ class ProductsControl extends Component {
 	}
 
 	componentDidMount() {
-		apiFetch( {
-			path: addQueryArgs( '/wc-pb/v3/products', { per_page: -1, status: 'publish' } ),
-		} )
-			.then( ( list ) => {
-				this.setState( { list, loading: false } );
-			} )
-			.catch( () => {
-				this.setState( { list: [], loading: false } );
-			} );
+		this.props.mountHandler.bind( this )();
 	}
 
 	render() {
@@ -89,6 +79,10 @@ ProductsControl.propTypes = {
 	 * The list of currently selected IDs.
 	 */
 	selected: PropTypes.array.isRequired,
+	/**
+	 * Mount handler usually intended to initialize 'list'.
+	 */
+	mountHandler: PropTypes.func.isRequired,
 };
 
 export default ProductsControl;

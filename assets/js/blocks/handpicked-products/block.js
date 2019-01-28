@@ -41,6 +41,18 @@ class ProductsBlock extends Component {
 		this.debouncedGetProducts = debounce( this.getProducts.bind( this ), 200 );
 	}
 
+	productsMountHandler() {
+		apiFetch( {
+			path: addQueryArgs( '/wc-pb/v3/products', { per_page: -1, status: 'publish' } ),
+		} )
+			.then( ( list ) => {
+				this.setState( { list, loading: false } );
+			} )
+			.catch( () => {
+				this.setState( { list: [], loading: false } );
+			} );
+	}
+
 	componentDidMount() {
 		this.getProducts();
 	}
@@ -106,6 +118,7 @@ class ProductsBlock extends Component {
 					initialOpen={ false }
 				>
 					<ProductsControl
+						mountHandler={ this.productsMountHandler }
 						selected={ attributes.products }
 						onChange={ ( value = [] ) => {
 							const ids = value.map( ( { id } ) => id );
@@ -141,6 +154,7 @@ class ProductsBlock extends Component {
 				) }
 				<div className="wc-block-handpicked-products__selection">
 					<ProductsControl
+						mountHandler={ this.productsMountHandler }
 						selected={ attributes.products }
 						onChange={ ( value = [] ) => {
 							const ids = value.map( ( { id } ) => id );
