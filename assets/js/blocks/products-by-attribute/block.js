@@ -4,18 +4,19 @@
 import { __ } from '@wordpress/i18n';
 import { addQueryArgs } from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
+import { BlockControls, InspectorControls } from '@wordpress/editor';
 import {
 	Button,
 	PanelBody,
 	Placeholder,
 	RangeControl,
 	Spinner,
+	Toolbar,
 	withSpokenMessages,
 } from '@wordpress/components';
 import { Component, Fragment } from '@wordpress/element';
 import { debounce } from 'lodash';
 import Gridicon from 'gridicons';
-import { InspectorControls } from '@wordpress/editor';
 import PropTypes from 'prop-types';
 
 /**
@@ -179,6 +180,7 @@ class ProductsByAttributeBlock extends Component {
 	}
 
 	render() {
+		const { setAttributes } = this.props;
 		const { columns, editMode } = this.props.attributes;
 		const { loaded, products } = this.state;
 		const classes = [ 'wc-block-products-grid', 'wc-block-products-attribute' ];
@@ -195,6 +197,18 @@ class ProductsByAttributeBlock extends Component {
 
 		return (
 			<Fragment>
+				<BlockControls>
+					<Toolbar
+						controls={ [
+							{
+								icon: 'edit',
+								title: __( 'Edit' ),
+								onClick: () => setAttributes( { editMode: ! editMode } ),
+								isActive: editMode,
+							},
+						] }
+					/>
+				</BlockControls>
 				{ this.getInspectorControls() }
 				{ editMode ? (
 					this.renderEditMode()
