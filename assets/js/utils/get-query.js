@@ -50,8 +50,9 @@ export default function getQuery( blockAttributes, name ) {
 			return accumulator;
 		}, {} );
 
-		if ( attrOperator && 'all' === attrOperator ) {
-			query.attr_operator = 'AND';
+		if ( attrOperator ) {
+			query.attr_operator = 'all' === attrOperator ? 'AND' : 'IN';
+			query.tax_relation = 'all' === attrOperator ? 'AND' : 'OR';
 		}
 	}
 
