@@ -4,16 +4,18 @@
 import { __ } from '@wordpress/i18n';
 import { addQueryArgs } from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
-import Gridicon from 'gridicons';
-import { InspectorControls } from '@wordpress/editor';
-import { Component, Fragment } from '@wordpress/element';
-import { debounce } from 'lodash';
 import {
+	Button,
 	PanelBody,
 	Placeholder,
 	RangeControl,
 	Spinner,
+	withSpokenMessages,
 } from '@wordpress/components';
+import { Component, Fragment } from '@wordpress/element';
+import { debounce } from 'lodash';
+import Gridicon from 'gridicons';
+import { InspectorControls } from '@wordpress/editor';
 import PropTypes from 'prop-types';
 
 /**
@@ -59,10 +61,16 @@ class ProductsByAttributeBlock extends Component {
 	}
 
 	getProducts() {
+		const blockAttributes = this.props.attributes;
+		if ( ! blockAttributes.attributes.length ) {
+			// We've removed all selected attributes, or no attributes have been selected yet.
+			this.setState( { products: [], loaded: true } );
+			return;
+		}
 		apiFetch( {
 			path: addQueryArgs(
 				'/wc-pb/v3/products',
-				getQuery( this.props.attributes, this.props.name )
+				getQuery( blockAttributes, this.props.name )
 			),
 		} )
 			.then( ( products ) => {
@@ -124,8 +132,54 @@ class ProductsByAttributeBlock extends Component {
 		);
 	}
 
+	renderEditMode() {
+		const { debouncedSpeak, setAttributes } = this.props;
+		const blockAttributes = this.props.attributes;
+		const onDone = () => {
+			setAttributes( { editMode: false } );
+			debouncedSpeak(
+				__(
+					'Showing Products by Attribute block preview.',
+					'woo-gutenberg-products-block'
+				)
+			);
+		};
+
+		return (
+			<Placeholder
+				icon={ <Gridicon icon="custom-post-type" /> }
+				label={ __( 'Products by Attribute', 'woo-gutenberg-products-block' ) }
+				className="wc-block-products-grid wc-block-products-attribute"
+			>
+				{ __(
+					'Display a grid of products from your selected attributes.',
+					'woo-gutenberg-products-block'
+				) }
+				<div className="wc-block-products-attribute__selection">
+					<ProductAttributeControl
+						selected={ blockAttributes.attributes }
+						onChange={ ( value = [] ) => {
+							const result = value.map( ( { id, attr_slug } ) => ( { // eslint-disable-line camelcase
+								id,
+								attr_slug,
+							} ) );
+							setAttributes( { attributes: result } );
+						} }
+						operator={ blockAttributes.attrOperator }
+						onOperatorChange={ ( value = 'any' ) =>
+							setAttributes( { attrOperator: value } )
+						}
+					/>
+					<Button isDefault onClick={ onDone }>
+						{ __( 'Done', 'woo-gutenberg-products-block' ) }
+					</Button>
+				</div>
+			</Placeholder>
+		);
+	}
+
 	render() {
-		const { columns } = this.props.attributes;
+		const { columns, editMode } = this.props.attributes;
 		const { loaded, products } = this.state;
 		const classes = [ 'wc-block-products-grid', 'wc-block-products-attribute' ];
 		if ( columns ) {
@@ -142,27 +196,31 @@ class ProductsByAttributeBlock extends Component {
 		return (
 			<Fragment>
 				{ this.getInspectorControls() }
-				<div className={ classes.join( ' ' ) }>
-					{ products.length ? (
-						products.map( ( product ) => (
-							<ProductPreview product={ product } key={ product.id } />
-						) )
-					) : (
-						<Placeholder
-							icon={ <Gridicon icon="custom-post-type" /> }
-							label={ __(
-								'Products by Attribute',
-								'woo-gutenberg-products-block'
-							) }
-						>
-							{ ! loaded ? (
-								<Spinner />
-							) : (
-								__( 'No products found.', 'woo-gutenberg-products-block' )
-							) }
-						</Placeholder>
-					) }
-				</div>
+				{ editMode ? (
+					this.renderEditMode()
+				) : (
+					<div className={ classes.join( ' ' ) }>
+						{ products.length ? (
+							products.map( ( product ) => (
+								<ProductPreview product={ product } key={ product.id } />
+							) )
+						) : (
+							<Placeholder
+								icon={ <Gridicon icon="custom-post-type" /> }
+								label={ __(
+									'Products by Attribute',
+									'woo-gutenberg-products-block'
+								) }
+							>
+								{ ! loaded ? (
+									<Spinner />
+								) : (
+									__( 'No products found.', 'woo-gutenberg-products-block' )
+								) }
+							</Placeholder>
+						) }
+					</div>
+				) }
 			</Fragment>
 		);
 	}
@@ -181,6 +239,8 @@ ProductsByAttributeBlock.propTypes = {
 	 * A callback to update attributes
 	 */
 	setAttributes: PropTypes.func.isRequired,
+	// from withSpokenMessages
+	debouncedSpeak: PropTypes.func.isRequired,
 };
 
-export default ProductsByAttributeBlock;
+export default withSpokenMessages( ProductsByAttributeBlock );

@@ -8,6 +8,7 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
+import './style.scss';
 import Block from './block';
 
 registerBlockType( 'woocommerce/products-by-attribute', {
