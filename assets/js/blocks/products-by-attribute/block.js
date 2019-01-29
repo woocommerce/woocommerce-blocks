@@ -24,6 +24,7 @@ import PropTypes from 'prop-types';
  */
 import getQuery from '../../utils/get-query';
 import ProductAttributeControl from '../../components/product-attribute-control';
+import ProductOrderbyControl from '../../components/product-orderby-control';
 import ProductPreview from '../../components/product-preview';
 
 /**
@@ -51,7 +52,7 @@ class ProductsByAttributeBlock extends Component {
 			'attributes',
 			'attrOperator',
 			'columns',
-			'orderBy',
+			'orderby',
 			'rows',
 		].reduce( ( acc, key ) => {
 			return acc || prevProps.attributes[ key ] !== this.props.attributes[ key ];
@@ -84,7 +85,7 @@ class ProductsByAttributeBlock extends Component {
 
 	getInspectorControls() {
 		const { setAttributes } = this.props;
-		const { attributes, attrOperator, columns, rows } = this.props.attributes;
+		const { attributes, attrOperator, columns, orderby, rows } = this.props.attributes;
 
 		return (
 			<InspectorControls key="inspector">
@@ -127,6 +128,15 @@ class ProductsByAttributeBlock extends Component {
 						onOperatorChange={ ( value = 'any' ) =>
 							setAttributes( { attrOperator: value } )
 						}
+					/>
+				</PanelBody>
+				<PanelBody
+					title={ __( 'Order By', 'woo-gutenberg-products-block' ) }
+					initialOpen={ false }
+				>
+					<ProductOrderbyControl
+						setAttributes={ setAttributes }
+						value={ orderby }
 					/>
 				</PanelBody>
 			</InspectorControls>
