@@ -401,19 +401,20 @@ function wgpb_print_script_settings() {
 	// Will need `orderStatuses` if the OrderStatus component is used.
 	// Deliberately excluding: `embedBreadcrumbs`, `trackingEnabled`.
 	$settings = array(
-		'adminUrl'      => admin_url(),
-		'wcAssetUrl'    => plugins_url( 'assets/', WC_PLUGIN_FILE ),
-		'siteLocale'    => esc_attr( get_bloginfo( 'language' ) ),
-		'currency'      => array(
+		'adminUrl'          => admin_url(),
+		'wcAssetUrl'        => plugins_url( 'assets/', WC_PLUGIN_FILE ),
+		'siteLocale'        => esc_attr( get_bloginfo( 'language' ) ),
+		'currency'          => array(
 			'code'      => $code,
 			'precision' => wc_get_price_decimals(),
 			'symbol'    => get_woocommerce_currency_symbol( $code ),
 			'position'  => get_option( 'woocommerce_currency_pos' ),
 		),
-		'stockStatuses' => wc_get_product_stock_status_options(),
-		'siteTitle'     => get_bloginfo( 'name' ),
-		'dataEndpoints' => array(),
-		'l10n'          => array(
+		'stockStatuses'     => wc_get_product_stock_status_options(),
+		'siteTitle'         => get_bloginfo( 'name' ),
+		'placeholderImgSrc' => wc_placeholder_img_src(),
+		'dataEndpoints'     => array(),
+		'l10n'              => array(
 			'userLocale'    => get_user_locale(),
 			'weekdaysShort' => array_values( $wp_locale->weekday_abbrev ),
 		),

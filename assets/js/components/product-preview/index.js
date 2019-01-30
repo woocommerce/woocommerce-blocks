@@ -13,9 +13,16 @@ import './style.scss';
  * Display a preview for a given product.
  */
 const ProductPreview = ( { product } ) => {
+	const { placeholderImgSrc } = window.wcSettings;
+
 	let image = null;
 	if ( product.images.length ) {
 		image = <img src={ product.images[ 0 ].src } alt="" />;
+	} else {
+		image = <img
+			src={ placeholderImgSrc }
+			alt={ __( 'Placeholder Image', 'woo-gutenberg-products-block' ) }
+		/>;
 	}
 
 	return (
