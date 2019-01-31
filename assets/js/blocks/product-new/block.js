@@ -14,8 +14,8 @@ import PropTypes from 'prop-types';
  * Internal dependencies
  */
 import getQuery from '../../utils/get-query';
+import GridLayoutControl from '../../components/grid-layout-control';
 import { IconNewReleases } from '../../components/icons';
-import LayoutControl from '../../components/layout-control';
 import ProductCategoryControl from '../../components/product-category-control';
 import ProductPreview from '../../components/product-preview';
 
@@ -73,7 +73,7 @@ class ProductNewestBlock extends Component {
 					title={ __( 'Layout', 'woo-gutenberg-products-block' ) }
 					initialOpen
 				>
-					<LayoutControl
+					<GridLayoutControl
 						columns={ columns }
 						rows={ rows }
 						setAttributes={ setAttributes }

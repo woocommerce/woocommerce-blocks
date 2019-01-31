@@ -10,7 +10,7 @@ import { RangeControl } from '@wordpress/components';
 /**
  * A combination of range controls for product grid layout settings.
  */
-const LayoutControl = ( { columns, rows, setAttributes } ) => {
+const GridLayoutControl = ( { columns, rows, setAttributes } ) => {
 	return (
 		<Fragment>
 			<RangeControl
@@ -45,7 +45,7 @@ const LayoutControl = ( { columns, rows, setAttributes } ) => {
 	);
 };
 
-LayoutControl.propTypes = {
+GridLayoutControl.propTypes = {
 	/**
 	 * The current columns count.
 	 */
@@ -60,4 +60,4 @@ LayoutControl.propTypes = {
 	setAttributes: PropTypes.func.isRequired,
 };
 
-export default LayoutControl;
+export default GridLayoutControl;

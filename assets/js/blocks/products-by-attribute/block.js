@@ -22,7 +22,7 @@ import PropTypes from 'prop-types';
  * Internal dependencies
  */
 import getQuery from '../../utils/get-query';
-import LayoutControl from '../../components/layout-control';
+import GridLayoutControl from '../../components/grid-layout-control';
 import ProductAttributeControl from '../../components/product-attribute-control';
 import ProductOrderbyControl from '../../components/product-orderby-control';
 import ProductPreview from '../../components/product-preview';
@@ -93,7 +93,7 @@ class ProductsByAttributeBlock extends Component {
 					title={ __( 'Layout', 'woo-gutenberg-products-block' ) }
 					initialOpen
 				>
-					<LayoutControl
+					<GridLayoutControl
 						columns={ columns }
 						rows={ rows }
 						setAttributes={ setAttributes }
