@@ -7,12 +7,7 @@ import apiFetch from '@wordpress/api-fetch';
 import { InspectorControls } from '@wordpress/editor';
 import { Component, Fragment } from '@wordpress/element';
 import { debounce } from 'lodash';
-import {
-	PanelBody,
-	Placeholder,
-	RangeControl,
-	Spinner,
-} from '@wordpress/components';
+import { PanelBody, Placeholder, Spinner } from '@wordpress/components';
 import PropTypes from 'prop-types';
 
 /**
@@ -20,6 +15,7 @@ import PropTypes from 'prop-types';
  */
 import getQuery from '../../utils/get-query';
 import { IconNewReleases } from '../../components/icons';
+import LayoutControl from '../../components/layout-control';
 import ProductCategoryControl from '../../components/product-category-control';
 import ProductPreview from '../../components/product-preview';
 
@@ -77,19 +73,10 @@ class ProductNewestBlock extends Component {
 					title={ __( 'Layout', 'woo-gutenberg-products-block' ) }
 					initialOpen
 				>
-					<RangeControl
-						label={ __( 'Columns', 'woo-gutenberg-products-block' ) }
-						value={ columns }
-						onChange={ ( value ) => setAttributes( { columns: value } ) }
-						min={ wc_product_block_data.min_columns }
-						max={ wc_product_block_data.max_columns }
-					/>
-					<RangeControl
-						label={ __( 'Rows', 'woo-gutenberg-products-block' ) }
-						value={ rows }
-						onChange={ ( value ) => setAttributes( { rows: value } ) }
-						min={ wc_product_block_data.min_rows }
-						max={ wc_product_block_data.max_rows }
+					<LayoutControl
+						columns={ columns }
+						rows={ rows }
+						setAttributes={ setAttributes }
 					/>
 				</PanelBody>
 				<PanelBody
