@@ -37,6 +37,9 @@ exports[`ProductPreview should render a single product preview without an image 
 <div
   className="wc-product-preview"
 >
+  <img
+    alt=""
+  />
   <div
     className="wc-product-preview__title"
   >
