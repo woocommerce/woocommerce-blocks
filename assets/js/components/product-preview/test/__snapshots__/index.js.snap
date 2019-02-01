@@ -39,6 +39,7 @@ exports[`ProductPreview should render a single product preview without an image 
 >
   <img
     alt=""
+    src="placeholder.png"
   />
   <div
     className="wc-product-preview__title"
