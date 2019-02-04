@@ -19,6 +19,7 @@ import {
 	PanelBody,
 	Placeholder,
 	RangeControl,
+	ResizableBox,
 	Spinner,
 	ToggleControl,
 	Toolbar,
@@ -38,6 +39,11 @@ import {
 	getImageSrcFromProduct,
 	getImageIdFromProduct,
 } from '../../utils/products';
+
+/**
+ * The min-height for the block content.
+ */
+const MIN_HEIGHT = 500;
 
 /**
  * Generate a style object given either a product object or URL to an image.
@@ -206,11 +212,12 @@ class FeaturedProduct extends Component {
 	}
 
 	render() {
-		const { attributes, setAttributes, overlayColor } = this.props;
+		const { attributes, isSelected, overlayColor, setAttributes } = this.props;
 		const {
 			contentAlign,
 			dimRatio,
 			editMode,
+			height,
 			linkText,
 			showDesc,
 			showPrice,
@@ -219,6 +226,7 @@ class FeaturedProduct extends Component {
 		const classes = classnames(
 			'wc-block-featured-product',
 			{
+				'is-selected': isSelected,
 				'is-loading': ! product && ! loaded,
 				'is-not-found': ! product && loaded,
 				'has-background-dim': dimRatio !== 0,
@@ -234,6 +242,10 @@ class FeaturedProduct extends Component {
 		if ( overlayColor.color ) {
 			style.backgroundColor = overlayColor.color;
 		}
+
+		const onResizeStop = ( event, direction, elt ) => {
+			setAttributes( { height: parseInt( elt.style.height ) } );
+		};
 
 		return (
 			<Fragment>
@@ -280,7 +292,14 @@ class FeaturedProduct extends Component {
 				) : (
 					<Fragment>
 						{ !! product ? (
-							<div className={ classes } style={ style }>
+							<ResizableBox
+								className={ classes }
+								size={ { height } }
+								minHeight={ MIN_HEIGHT }
+								enable={ { bottom: true } }
+								onResizeStop={ onResizeStop }
+								style={ style }
+							>
 								<h2 className="wc-block-featured-product__title">
 									{ product.name }
 								</h2>
@@ -307,7 +326,7 @@ class FeaturedProduct extends Component {
 										keepPlaceholderOnFocus
 									/>
 								</div>
-							</div>
+							</ResizableBox>
 						) : (
 							<Placeholder
 								className="wc-block-featured-product"
@@ -330,15 +349,19 @@ class FeaturedProduct extends Component {
 
 FeaturedProduct.propTypes = {
 	/**
-	 * The attributes for this block
+	 * The attributes for this block.
 	 */
 	attributes: PropTypes.object.isRequired,
+	/**
+	 * Whether this block is currently active.
+	 */
+	isSelected: PropTypes.bool.isRequired,
 	/**
 	 * The register block name.
 	 */
 	name: PropTypes.string.isRequired,
 	/**
-	 * A callback to update attributes
+	 * A callback to update attributes.
 	 */
 	setAttributes: PropTypes.func.isRequired,
 	// from withColors
