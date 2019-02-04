@@ -13,9 +13,17 @@
 	flex-wrap: wrap;
 	align-content: center;
 
+	&.components-resizable-box__container {
+		overflow: visible;
+	}
+
 	&.components-placeholder {
 		// Reset the background for the placeholders.
 		background-color: rgba( 139, 139, 150, .1 );
+	}
+
+	.components-resizable-box__handle {
+		z-index: 10;
 	}
 
 	&.has-left-content {
