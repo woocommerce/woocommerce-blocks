@@ -29,6 +29,7 @@ class WC_Block_Featured_Product {
 		'align'        => 'none',
 		'contentAlign' => 'center',
 		'dimRatio'     => 50,
+		'height'       => 500,
 		'linkText'     => false,
 		'mediaId'      => 0,
 		'mediaSrc'     => '',
@@ -100,7 +101,11 @@ class WC_Block_Featured_Product {
 	 * @return string
 	 */
 	public static function get_styles( $attributes, $product ) {
-		$image_size = ( 'none' !== $attributes['align'] ) ? 'full' : 'large';
+		$image_size = 'large';
+		if ( 'none' !== $attributes['align'] || $attributes['height'] > 800 ) {
+			$image_size = 'full';
+		}
+
 		if ( $attributes['mediaId'] ) {
 			$image = wp_get_attachment_image_url( $attributes['mediaId'], $image_size );
 		} else {
@@ -113,6 +118,10 @@ class WC_Block_Featured_Product {
 
 		if ( isset( $attributes['customOverlayColor'] ) ) {
 			$style .= sprintf( 'background-color:%s;', esc_attr( $attributes['customOverlayColor'] ) );
+		}
+
+		if ( isset( $attributes['height'] ) ) {
+			$style .= sprintf( 'height:%dpx;', intval( $attributes['height'] ) );
 		}
 
 		return $style;
