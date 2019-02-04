@@ -328,7 +328,7 @@ class FeaturedProduct extends Component {
 													},
 												],
 											] }
-											templateLock={ true }
+											templateLock="all"
 										/>
 									</div>
 								</div>
