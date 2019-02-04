@@ -324,7 +324,7 @@ class FeaturedProduct extends Component {
 													'core/button',
 													{
 														text: __( 'Shop now', 'woo-gutenberg-products-block' ),
-														url: 'https://vagrant.local/marketplace/imageless-product/',
+														url: product.permalink,
 													},
 												],
 											] }
