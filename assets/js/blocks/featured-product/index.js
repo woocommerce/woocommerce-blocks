@@ -55,7 +55,7 @@ registerBlockType( 'woocommerce/featured-product', {
 		 */
 		height: {
 			type: 'number',
-			default: 500,
+			default: wc_product_block_data.default_height,
 		},
 
 		/**

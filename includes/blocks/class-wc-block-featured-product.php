@@ -29,7 +29,7 @@ class WC_Block_Featured_Product {
 		'align'        => 'none',
 		'contentAlign' => 'center',
 		'dimRatio'     => 50,
-		'height'       => 500,
+		'height'       => false,
 		'linkText'     => false,
 		'mediaId'      => 0,
 		'mediaSrc'     => '',
@@ -53,6 +53,9 @@ class WC_Block_Featured_Product {
 		$attributes = wp_parse_args( $attributes, self::$defaults );
 		if ( ! $attributes['linkText'] ) {
 			$attributes['linkText'] = __( 'Shop now', 'woo-gutenberg-products-block' );
+		}
+		if ( ! $attributes['height'] ) {
+			$attributes['height'] = wc_get_theme_support( 'featured_block::default_height', 500 );
 		}
 
 		$title = sprintf(

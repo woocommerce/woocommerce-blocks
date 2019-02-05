@@ -43,7 +43,7 @@ import {
 /**
  * The min-height for the block content.
  */
-const MIN_HEIGHT = 500;
+const MIN_HEIGHT = wc_product_block_data.min_height;
 
 /**
  * Generate a style object given either a product object or URL to an image.
