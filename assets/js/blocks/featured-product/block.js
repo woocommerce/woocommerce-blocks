@@ -325,6 +325,7 @@ class FeaturedProduct extends Component {
 													{
 														text: __( 'Shop now', 'woo-gutenberg-products-block' ),
 														url: product.permalink,
+														align: 'center',
 													},
 												],
 											] }
