@@ -8,12 +8,17 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	overflow: hidden;
 	flex-wrap: wrap;
 	align-content: center;
 
-	&.components-resizable-box__container {
-		overflow: visible;
+	.wc-block-featured-product__wrapper {
+		overflow: hidden;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-wrap: wrap;
+		align-content: center;
 	}
 
 	&.components-placeholder {

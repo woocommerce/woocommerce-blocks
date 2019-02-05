@@ -300,31 +300,33 @@ class FeaturedProduct extends Component {
 								onResizeStop={ onResizeStop }
 								style={ style }
 							>
-								<h2 className="wc-block-featured-product__title">
-									{ product.name }
-								</h2>
-								{ showDesc && (
-									<div
-										className="wc-block-featured-product__description"
-										dangerouslySetInnerHTML={ {
-											__html: product.short_description,
-										} }
-									/>
-								) }
-								{ showPrice && (
-									<div
-										className="wc-block-featured-product__price"
-										dangerouslySetInnerHTML={ { __html: product.price_html } }
-									/>
-								) }
-								<div className="wc-block-featured-product__link wp-block-button">
-									<RichText
-										value={ linkText }
-										onChange={ ( value ) => setAttributes( { linkText: value } ) }
-										formattingControls={ [ 'bold', 'italic', 'strikethrough' ] }
-										className="wp-block-button__link"
-										keepPlaceholderOnFocus
-									/>
+								<div className="wc-block-featured-product__wrapper">
+									<h2 className="wc-block-featured-product__title">
+										{ product.name }
+									</h2>
+									{ showDesc && (
+										<div
+											className="wc-block-featured-product__description"
+											dangerouslySetInnerHTML={ {
+												__html: product.short_description,
+											} }
+										/>
+									) }
+									{ showPrice && (
+										<div
+											className="wc-block-featured-product__price"
+											dangerouslySetInnerHTML={ { __html: product.price_html } }
+										/>
+									) }
+									<div className="wc-block-featured-product__link wp-block-button">
+										<RichText
+											value={ linkText }
+											onChange={ ( value ) => setAttributes( { linkText: value } ) }
+											formattingControls={ [ 'bold', 'italic', 'strikethrough' ] }
+											className="wp-block-button__link"
+											keepPlaceholderOnFocus
+										/>
+									</div>
 								</div>
 							</ResizableBox>
 						) : (
