@@ -124,7 +124,7 @@ class WC_Block_Featured_Product {
 		}
 
 		if ( isset( $attributes['height'] ) ) {
-			$style .= sprintf( 'height:%dpx;', intval( $attributes['height'] ) );
+			$style .= sprintf( 'min-height:%dpx;', intval( $attributes['height'] ) );
 		}
 
 		return $style;
