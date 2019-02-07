@@ -124,6 +124,18 @@ class ProductAttributeControl extends Component {
 					isSelected={ attribute === item.id }
 					onSelect={ this.onSelectAttribute }
 					isSingle
+					showCount
+					aria-expanded={ attribute === item.id }
+					aria-label={ sprintf(
+						_n(
+							'%s, has %d term',
+							'%s, has %d terms',
+							item.count,
+							'woo-gutenberg-products-block'
+						),
+						item.name,
+						item.count
+					) }
 				/>,
 				attribute === item.id && termsLoading && (
 					<div
@@ -143,7 +155,6 @@ class ProductAttributeControl extends Component {
 			<SearchListItem
 				className={ classes.join( ' ' ) }
 				{ ...args }
-				showCount
 				aria-label={ `${ item.breadcrumbs[ 0 ] }: ${ item.name }` }
 			/>
 		);
