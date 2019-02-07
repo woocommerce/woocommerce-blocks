@@ -230,10 +230,13 @@ class WGPB_Products_Controller extends WC_REST_Products_Controller {
 	protected function prepare_objects_query( $request ) {
 		$args = parent::prepare_objects_query( $request );
 
-		$orderby       = $request->get_param( 'orderby' );
-		$order         = $request->get_param( 'order' );
-		$cat_operator  = $request->get_param( 'cat_operator' );
-		$attr_operator = $request->get_param( 'attr_operator' );
+		$orderby            = $request->get_param( 'orderby' );
+		$order              = $request->get_param( 'order' );
+		$cat_operator       = $request->get_param( 'cat_operator' );
+		$attr_operator      = $request->get_param( 'attr_operator' );
+		$attributes         = $request->get_param( 'attributes' );
+		$tax_relation       = $request->get_param( 'tax_relation' );
+		$catalog_visibility = $request->get_param( 'catalog_visibility' );
 
 		$ordering_args   = WC()->query->get_catalog_ordering_args( $orderby, $order );
 		$args['orderby'] = $ordering_args['orderby'];
@@ -257,6 +260,15 @@ class WGPB_Products_Controller extends WC_REST_Products_Controller {
 					$args['tax_query'][ $i ]['operator'] = $attr_operator;
 				}
 			}
+		}
+
+		if ( 'visible' === $catalog_visibility ) {
+			$args['tax_query'][] = array(
+				'taxonomy' => 'product_visibility',
+				'field'    => 'term_id',
+				'terms'    => array( 'exclude-from-catalog' ),
+				'operator' => 'NOT IN',
+			);
 		}
 
 		return $args;

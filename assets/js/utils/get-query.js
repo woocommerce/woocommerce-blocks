@@ -69,5 +69,8 @@ export default function getQuery( blockAttributes, name ) {
 			break;
 	}
 
+	// Always only show visible products.
+	query.catalog_visibility = 'visible';
+
 	return query;
 }
