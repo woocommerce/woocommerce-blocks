@@ -5,9 +5,9 @@ import { __, _n, sprintf } from '@wordpress/i18n';
 import { addQueryArgs } from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
 import { Component, Fragment } from '@wordpress/element';
-import { debounce, filter, find, uniqBy } from 'lodash';
+import { debounce, filter, find } from 'lodash';
 import PropTypes from 'prop-types';
-import { SelectControl } from '@wordpress/components';
+import { SelectControl, Spinner } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -23,6 +23,7 @@ class ProductAttributeControl extends Component {
 			list: [],
 			loading: true,
 			attribute: 0,
+			termsList: {},
 			termsLoading: true,
 		};
 
@@ -58,9 +59,12 @@ class ProductAttributeControl extends Component {
 	}
 
 	getTerms() {
-		const { attribute } = this.state;
+		const { attribute, termsList } = this.state;
 		if ( ! attribute ) {
 			return;
+		}
+		if ( ! termsList[ attribute ] ) {
+			this.setState( { termsLoading: true } );
 		}
 
 		apiFetch( {
@@ -70,8 +74,8 @@ class ProductAttributeControl extends Component {
 		} )
 			.then( ( terms ) => {
 				terms = terms.map( ( term ) => ( { ...term, parent: attribute } ) );
-				this.setState( ( { list } ) => ( {
-					list: uniqBy( [ ...list, ...terms ], 'id' ),
+				this.setState( ( prevState ) => ( {
+					termsList: { ...prevState.termsList, [ attribute ]: terms },
 					termsLoading: false,
 				} ) );
 			} )
@@ -99,7 +103,7 @@ class ProductAttributeControl extends Component {
 
 	renderItem( args ) {
 		const { item, search, depth = 0 } = args;
-		const { attribute } = this.state;
+		const { attribute, termsLoading } = this.state;
 		const classes = [
 			'woocommerce-product-attributes__item',
 			'woocommerce-search-list__item',
@@ -112,16 +116,27 @@ class ProductAttributeControl extends Component {
 		}
 
 		if ( ! item.breadcrumbs.length ) {
-			classes.push( 'is-not-active' );
-			return (
+			return [
 				<SearchListItem
+					key={ `attr-${ item.id }` }
 					{ ...args }
 					className={ classes.join( ' ' ) }
-					isSingle
 					isSelected={ attribute === item.id }
 					onSelect={ this.onSelectAttribute }
-				/>
-			);
+					isSingle
+				/>,
+				attribute === item.id && termsLoading && (
+					<div
+						key="loading"
+						className={
+							'woocommerce-search-list__item woocommerce-product-attributes__item' +
+							'depth-1 is-loading is-not-active'
+						}
+					>
+						<Spinner />
+					</div>
+				),
+			];
 		}
 
 		return (
@@ -135,8 +150,10 @@ class ProductAttributeControl extends Component {
 	}
 
 	render() {
-		const { list, loading } = this.state;
+		const { attribute, list, loading, termsList } = this.state;
 		const { onChange, onOperatorChange, operator, selected } = this.props;
+		const currentTerms = termsList[ attribute ] || [];
+		const currentList = [ ...list, ...currentTerms ];
 
 		const messages = {
 			clear: __( 'Clear all product attributes', 'woo-gutenberg-products-block' ),
@@ -169,10 +186,10 @@ class ProductAttributeControl extends Component {
 			<Fragment>
 				<SearchListControl
 					className="woocommerce-product-attributes"
-					list={ list }
+					list={ currentList }
 					isLoading={ loading }
 					selected={ selected
-						.map( ( { id } ) => find( list, { id } ) )
+						.map( ( { id } ) => find( currentList, { id } ) )
 						.filter( Boolean ) }
 					onChange={ onChange }
 					renderItem={ this.renderItem }

@@ -25,7 +25,15 @@
 
 	&.is-not-active {
 		@include hover-state {
-			background: transparent;
+			background: $white;
+		}
+	}
+
+	&.is-loading {
+		justify-content: center;
+
+		.components-spinner {
+			margin-bottom: $gap-small;
 		}
 	}
 }
