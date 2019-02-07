@@ -5,7 +5,7 @@ import { __, _n, sprintf } from '@wordpress/i18n';
 import { addQueryArgs } from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
 import { Component, Fragment } from '@wordpress/element';
-import { debounce, filter, find } from 'lodash';
+import { debounce, find } from 'lodash';
 import PropTypes from 'prop-types';
 import { SelectControl, Spinner } from '@wordpress/components';
 
@@ -86,17 +86,9 @@ class ProductAttributeControl extends Component {
 
 	onSelectAttribute( item ) {
 		return () => {
-			if ( item.id === this.state.attribute ) {
-				return;
-			}
 			this.props.onChange( [] );
-			this.setState( ( { list } ) => {
-				// Remove all other attribute terms from the list.
-				const updatedList = filter( list, { parent: 0 } );
-				return {
-					list: updatedList,
-					attribute: item.id,
-				};
+			this.setState( {
+				attribute: item.id === this.state.attribute ? 0 : item.id,
 			} );
 		};
 	}
