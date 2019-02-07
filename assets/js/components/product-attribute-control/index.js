@@ -116,6 +116,7 @@ class ProductAttributeControl extends Component {
 					isSelected={ attribute === item.id }
 					onSelect={ this.onSelectAttribute }
 					isSingle
+					disabled={ '0' === item.count }
 					showCount
 					aria-expanded={ attribute === item.id }
 					aria-label={ sprintf(
