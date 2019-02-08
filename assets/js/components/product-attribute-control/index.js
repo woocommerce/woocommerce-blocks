@@ -117,7 +117,6 @@ class ProductAttributeControl extends Component {
 					onSelect={ this.onSelectAttribute }
 					isSingle
 					disabled={ '0' === item.count }
-					showCount
 					aria-expanded={ attribute === item.id }
 					aria-label={ sprintf(
 						_n(
@@ -148,6 +147,7 @@ class ProductAttributeControl extends Component {
 			<SearchListItem
 				className={ classes.join( ' ' ) }
 				{ ...args }
+				showCount
 				aria-label={ `${ item.breadcrumbs[ 0 ] }: ${ item.name }` }
 			/>
 		);
