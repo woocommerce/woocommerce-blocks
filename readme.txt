@@ -95,6 +95,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 - Feature: Added new block: "Products by Attribute"
 - Enhancement: Added the ability to resize the Featured Product block
+- Enhancement: Updated button on Featured Product block to match core button block behavior
 - Components: Added new control component `GridLayoutControl` to manage row/column layout values
 - Components: Updated `ProductAttributeControl` to list only attribute types, then once selected, list terms in that attribute
 - Fix: A product without an image will now use the placeholder image in grid-layout block previews
