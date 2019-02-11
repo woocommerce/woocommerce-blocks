@@ -234,8 +234,6 @@ class WGPB_Products_Controller extends WC_REST_Products_Controller {
 		$order              = $request->get_param( 'order' );
 		$cat_operator       = $request->get_param( 'cat_operator' );
 		$attr_operator      = $request->get_param( 'attr_operator' );
-		$attributes         = $request->get_param( 'attributes' );
-		$tax_relation       = $request->get_param( 'tax_relation' );
 		$catalog_visibility = $request->get_param( 'catalog_visibility' );
 
 		$ordering_args   = WC()->query->get_catalog_ordering_args( $orderby, $order );
@@ -262,12 +260,15 @@ class WGPB_Products_Controller extends WC_REST_Products_Controller {
 			}
 		}
 
-		if ( 'visible' === $catalog_visibility ) {
+		if ( in_array( $catalog_visibility, array_keys( wc_get_product_visibility_options() ), true ) ) {
+			$exclude_from_catalog = 'search' === $catalog_visibility ? '' : 'exclude-from-catalog';
+			$exclude_from_search  = 'catalog' === $catalog_visibility ? '' : 'exclude-from-search';
+
 			$args['tax_query'][] = array(
 				'taxonomy' => 'product_visibility',
-				'field'    => 'term_id',
-				'terms'    => array( 'exclude-from-catalog', 'exclude-from-search' ),
-				'operator' => 'NOT IN',
+				'field'    => 'name',
+				'terms'    => array( $exclude_from_catalog, $exclude_from_search ),
+				'operator' => 'hidden' === $catalog_visibility ? 'AND' : 'NOT IN',
 			);
 		}
 
