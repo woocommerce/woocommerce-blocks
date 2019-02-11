@@ -134,4 +134,33 @@ class WC_Tests_API_Products_Controller extends WC_REST_Unit_Test_Case {
 		$this->assertEquals( '10', $products[0]['price'] );
 		$this->assertEquals( '15', $products[1]['price'] );
 	}
+
+	/**
+	 * Test getting only products that are visible in catalog and search.
+	 *
+	 * @since 1.3.1
+	 */
+	public function test_get_products_visible() {
+		wp_set_current_user( $this->user );
+		$product1 = WC_Helper_Product::create_simple_product( true );
+		$product2 = WC_Helper_Product::create_simple_product( true );
+		$product3 = WC_Helper_Product::create_simple_product( true );
+		$product4 = WC_Helper_Product::create_simple_product( true );
+
+		wp_set_post_terms( $product3->get_id(), 'exclude-from-catalog', 'product_visibility' );
+		wp_set_post_terms( $product4->get_id(), 'exclude-from-search', 'product_visibility' );
+
+		$request = new WP_REST_REQUEST( 'GET', '/wc-pb/v3/products' );
+		$request->set_param( 'catalog_visibility', 'visible' );
+		$request->set_param( 'orderby', 'id' );
+		$request->set_param( 'order', 'asc' );
+		$response = $this->server->dispatch( $request );
+		$products = $response->get_data();
+
+		$this->assertEquals( 200, $response->get_status() );
+		$this->assertEquals( 2, count( $products ) );
+
+		$this->assertEquals( $product1->get_id(), $products[0]['id'] );
+		$this->assertEquals( $product2->get_id(), $products[1]['id'] );
+	}
 }

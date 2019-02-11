@@ -266,7 +266,7 @@ class WGPB_Products_Controller extends WC_REST_Products_Controller {
 			$args['tax_query'][] = array(
 				'taxonomy' => 'product_visibility',
 				'field'    => 'term_id',
-				'terms'    => array( 'exclude-from-catalog' ),
+				'terms'    => array( 'exclude-from-catalog', 'exclude-from-search' ),
 				'operator' => 'NOT IN',
 			);
 		}
