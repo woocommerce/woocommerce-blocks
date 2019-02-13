@@ -94,13 +94,14 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 == 1.4.0 - 2019-02-12 =
 
 - Feature: Added new block: "Products by Attribute"
-- Enhancement: Added the ability to resize the Featured Product block
+- Enhancement: Added the ability to resize the Featured Product block (a default and minimum height can be set by your theme)
 - Enhancement: Updated button on Featured Product block to match core button block behavior
 - Components: Added new control component `GridLayoutControl` to manage row/column layout values
 - Components: Updated `ProductAttributeControl` to list only attribute types, then once selected, list terms in that attribute
 - UX: Remove ability to change selected product in Featured Product block, to prevent "sticky" product links.
 - Fix: A product without an image will now use the placeholder image in grid-layout block previews
 - Fix: Previously, there was a PHP notice when a Featured Product has no background image
+- Fix: There is now an enforced limit on column and row counts (which can be set by your theme)
 - API: Added `attr_operator` support to products endpoint to compare product attribute terms
 - Build: Update packages
 - Build: Remove unnecessary internationalization build step
