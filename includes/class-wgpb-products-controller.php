@@ -307,19 +307,26 @@ class WGPB_Products_Controller extends WC_REST_Products_Controller {
 	 * @return array
 	 */
 	public function get_collection_params() {
-		$params                    = parent::get_collection_params();
-		$params['orderby']['enum'] = array_merge( $params['orderby']['enum'], array( 'price', 'popularity', 'rating', 'menu_order' ) );
-		$params['cat_operator']    = array(
+		$params                       = parent::get_collection_params();
+		$params['orderby']['enum']    = array_merge( $params['orderby']['enum'], array( 'price', 'popularity', 'rating', 'menu_order' ) );
+		$params['cat_operator']       = array(
 			'description'       => __( 'Operator to compare product category terms.', 'woo-gutenberg-products-block' ),
 			'type'              => 'string',
 			'enum'              => array( 'IN', 'NOT IN', 'AND' ),
 			'sanitize_callback' => 'sanitize_text_field',
 			'validate_callback' => 'rest_validate_request_arg',
 		);
-		$params['attr_operator']   = array(
+		$params['attr_operator']      = array(
 			'description'       => __( 'Operator to compare product attribute terms.', 'woo-gutenberg-products-block' ),
 			'type'              => 'string',
 			'enum'              => array( 'IN', 'NOT IN', 'AND' ),
+			'sanitize_callback' => 'sanitize_text_field',
+			'validate_callback' => 'rest_validate_request_arg',
+		);
+		$params['catalog_visibility'] = array(
+			'description'       => __( 'Determines if hidden or visible catalog products are shown.', 'woo-gutenberg-products-block' ),
+			'type'              => 'string',
+			'enum'              => array( 'visible', 'catalog', 'search', 'hidden' ),
 			'sanitize_callback' => 'sanitize_text_field',
 			'validate_callback' => 'rest_validate_request_arg',
 		);

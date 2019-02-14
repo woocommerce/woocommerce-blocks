@@ -13,6 +13,7 @@ export default function getQuery( blockAttributes, name ) {
 	const query = {
 		status: 'publish',
 		per_page: rows * columns,
+		catalog_visibility: 'visible',
 	};
 
 	if ( categories && categories.length ) {
@@ -68,9 +69,6 @@ export default function getQuery( blockAttributes, name ) {
 			query.per_page = products.length;
 			break;
 	}
-
-	// Always only show visible products.
-	query.catalog_visibility = 'visible';
 
 	return query;
 }
