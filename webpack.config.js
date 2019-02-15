@@ -22,6 +22,15 @@ const externals = {
 	lodash: 'lodash',
 };
 
+function findModuleMatch( module, match ) {
+	if ( module.request && match.test( module.request ) ) {
+		return true;
+	} else if ( module.issuer ) {
+		return findModuleMatch( module.issuer, match );
+	}
+	return false;
+}
+
 /**
  * Config for compiling Gutenberg blocks JS.
  */
@@ -39,7 +48,8 @@ const GutenbergBlocksConfig = {
 		'product-top-rated': './assets/js/blocks/product-top-rated/index.js',
 		'products-attribute': './assets/js/blocks/products-by-attribute/index.js',
 		'featured-product': './assets/js/blocks/featured-product/index.js',
-		'products-grid': './assets/css/products-grid.scss',
+		// Global styles
+		styles: [ './assets/css/style.scss', './assets/css/editor.scss' ],
 	},
 	output: {
 		path: path.resolve( __dirname, './build/' ),
@@ -54,6 +64,24 @@ const GutenbergBlocksConfig = {
 					test: /[\\/]node_modules[\\/]/,
 					name: 'vendors',
 					chunks: 'all',
+				},
+				editor: {
+					// Capture all `editor` stylesheets and the components stylesheets.
+					test: ( module = {} ) =>
+						module.constructor.name === 'CssModule' &&
+						( findModuleMatch( module, /editor\.scss$/ ) ||
+							findModuleMatch( module, /[\\/]components[\\/]/ ) ),
+					name: 'editor',
+					chunks: 'all',
+					enforce: true,
+					priority: 10,
+				},
+				style: {
+					test: /style\.scss$/,
+					name: 'style',
+					chunks: 'all',
+					enforce: true,
+					priority: 5,
 				},
 			},
 		},
@@ -94,8 +122,8 @@ const GutenbergBlocksConfig = {
 		} ),
 		new DeleteFilesPlugin( [
 			'build/editor.js',
-			'build/products-grid.js',
 			'build/style.js',
+			'build/styles.js',
 		] ),
 	],
 };
