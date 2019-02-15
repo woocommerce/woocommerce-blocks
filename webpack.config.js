@@ -2,6 +2,7 @@
  * External dependencies
  */
 const path = require( 'path' );
+const DeleteFilesPlugin = require( './bin/delete-files-webpack-plugin' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const CleanWebpackPlugin = require( 'clean-webpack-plugin' );
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -91,6 +92,11 @@ const GutenbergBlocksConfig = {
 		new MiniCssExtractPlugin( {
 			filename: '[name].css',
 		} ),
+		new DeleteFilesPlugin( [
+			'build/editor.js',
+			'build/products-grid.js',
+			'build/style.js',
+		] ),
 	],
 };
 
