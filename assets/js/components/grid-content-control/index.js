@@ -15,19 +15,19 @@ const GridContentControl = ( { onChange, settings } ) => {
 		<Fragment>
 			<ToggleControl
 				label={ __( 'Product title', 'woo-gutenberg-products-block' ) }
-				help={ title ? 'Product title is hidden.' : 'Product title is visible.' }
+				help={ title ? 'Product title is visible.' : 'Product title is hidden.' }
 				checked={ title }
 				onChange={ () => onChange( { ...settings, title: ! title } ) }
 			/>
 			<ToggleControl
 				label={ __( 'Product price', 'woo-gutenberg-products-block' ) }
-				help={ price ? 'Product price is hidden.' : 'Product price is visible.' }
+				help={ price ? 'Product price is visible.' : 'Product price is hidden.' }
 				checked={ price }
 				onChange={ () => onChange( { ...settings, price: ! price } ) }
 			/>
 			<ToggleControl
 				label={ __( 'Add to Cart button', 'woo-gutenberg-products-block' ) }
-				help={ button ? 'Add to Cart button is hidden.' : 'Add to Cart button is visible.' }
+				help={ button ? 'Add to Cart button is visible.' : 'Add to Cart button is hidden.' }
 				checked={ button }
 				onChange={ () => onChange( { ...settings, button: ! button } ) }
 			/>
