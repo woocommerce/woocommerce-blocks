@@ -25,6 +25,10 @@ MergeExtractFilesPlugin.prototype.apply = function( compiler ) {
 	}
 	compiler.hooks.afterEmit.tap( 'afterEmit', () => {
 		this.files.forEach( ( f ) => {
+			// If we're watching, we might not have created all the file stubs.
+			if ( ! fs.existsSync( path.resolve( rootPath, f ) ) ) {
+				return;
+			}
 			const content = fs.readFileSync( path.resolve( rootPath, f ) );
 			try {
 				fs.appendFileSync(
