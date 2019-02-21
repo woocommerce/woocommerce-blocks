@@ -12,6 +12,7 @@ import { RawHTML } from '@wordpress/element';
 import Block from './block';
 import getShortcode from '../../utils/get-shortcode';
 import { IconNewReleases } from '../../components/icons';
+import { makeSharedAttributesTransform } from '../../utils/transforms';
 import sharedAttributes from '../../utils/shared-attributes';
 
 registerBlockType( 'woocommerce/product-new', {
@@ -28,6 +29,20 @@ registerBlockType( 'woocommerce/product-new', {
 	},
 	attributes: {
 		...sharedAttributes,
+	},
+	transforms: {
+		from: [
+			{
+				type: 'block',
+				blocks: [
+					'woocommerce/product-best-sellers',
+					'woocommerce/product-category',
+					'woocommerce/product-on-sale',
+					'woocommerce/product-top-rated',
+				],
+				transform: makeSharedAttributesTransform( 'woocommerce/product-new' ),
+			},
+		],
 	},
 
 	/**

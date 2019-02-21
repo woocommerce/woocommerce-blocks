@@ -12,6 +12,7 @@ import { RawHTML } from '@wordpress/element';
  */
 import Block from './block';
 import getShortcode from '../../utils/get-shortcode';
+import { makeSharedAttributesTransform } from '../../utils/transforms';
 import sharedAttributes from '../../utils/shared-attributes';
 
 registerBlockType( 'woocommerce/product-best-sellers', {
@@ -28,6 +29,20 @@ registerBlockType( 'woocommerce/product-best-sellers', {
 	},
 	attributes: {
 		...sharedAttributes,
+	},
+	transforms: {
+		from: [
+			{
+				type: 'block',
+				blocks: [
+					'woocommerce/product-category',
+					'woocommerce/product-new',
+					'woocommerce/product-on-sale',
+					'woocommerce/product-top-rated',
+				],
+				transform: makeSharedAttributesTransform( 'woocommerce/product-best-sellers' ),
+			},
+		],
 	},
 
 	/**
