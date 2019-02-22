@@ -77,7 +77,7 @@ function wgpb_add_block_category( $categories ) {
  * Register the Products block and its scripts.
  */
 function wgpb_register_blocks() {
-	include_once dirname( __FILE__ ) . '/includes/blocks/class-wc-block-featured-product.php';
+	include_once dirname( __FILE__ ) . '/assets/php/class-wc-block-featured-product.php';
 
 	register_block_type(
 		'woocommerce/handpicked-products',
