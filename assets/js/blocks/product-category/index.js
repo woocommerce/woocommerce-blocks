@@ -3,7 +3,8 @@
  */
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
-import { registerBlockType } from '@wordpress/blocks';
+import { createBlock, registerBlockType } from '@wordpress/blocks';
+import { difference } from 'lodash';
 import { RawHTML } from '@wordpress/element';
 
 /**
@@ -12,7 +13,7 @@ import { RawHTML } from '@wordpress/element';
 import './editor.scss';
 import Block from './block';
 import getShortcode from '../../utils/get-shortcode';
-import { makeSharedAttributesTransform } from '../../utils/transforms';
+import { rowColumnBlockTypes } from '../';
 import sharedAttributes from '../../utils/shared-attributes';
 
 /**
@@ -53,15 +54,10 @@ registerBlockType( 'woocommerce/product-category', {
 		from: [
 			{
 				type: 'block',
-				blocks: [
-					'woocommerce/product-best-sellers',
-					'woocommerce/product-new',
-					'woocommerce/product-on-sale',
-					'woocommerce/product-top-rated',
-				],
-				transform: makeSharedAttributesTransform(
+				blocks: difference( rowColumnBlockTypes, [ 'woocommerce/product-category' ] ),
+				transform: ( attributes ) => createBlock(
 					'woocommerce/product-category',
-					{ editMode: false },
+					{ ...attributes, editMode: false }
 				),
 			},
 		],

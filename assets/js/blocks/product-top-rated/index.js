@@ -3,8 +3,9 @@
  */
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
+import { createBlock, registerBlockType } from '@wordpress/blocks';
+import { difference } from 'lodash';
 import Gridicon from 'gridicons';
-import { registerBlockType } from '@wordpress/blocks';
 import { RawHTML } from '@wordpress/element';
 
 /**
@@ -12,7 +13,7 @@ import { RawHTML } from '@wordpress/element';
  */
 import Block from './block';
 import getShortcode from '../../utils/get-shortcode';
-import { makeSharedAttributesTransform } from '../../utils/transforms';
+import { rowColumnBlockTypes } from '../';
 import sharedAttributes from '../../utils/shared-attributes';
 
 registerBlockType( 'woocommerce/product-top-rated', {
@@ -34,13 +35,11 @@ registerBlockType( 'woocommerce/product-top-rated', {
 		from: [
 			{
 				type: 'block',
-				blocks: [
-					'woocommerce/product-best-sellers',
-					'woocommerce/product-category',
-					'woocommerce/product-new',
-					'woocommerce/product-on-sale',
-				],
-				transform: makeSharedAttributesTransform( 'woocommerce/product-top-rated' ),
+				blocks: difference( rowColumnBlockTypes, [ 'woocommerce/product-top-rated' ] ),
+				transform: ( attributes ) => createBlock(
+					'woocommerce/product-top-rated',
+					attributes
+				),
 			},
 		],
 	},
