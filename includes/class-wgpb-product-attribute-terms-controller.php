@@ -115,9 +115,9 @@ class WGPB_Product_Attribute_Terms_Controller extends WC_REST_Product_Attribute_
 			'slug'      => $item->slug,
 			'count'     => (int) $item->count,
 			'attribute' => array(
-				'id'    => $attribute->id,
-				'name'  => $attribute->name,
-				'slug'  => $attribute->slug,
+				'id'   => $attribute->id,
+				'name' => $attribute->name,
+				'slug' => $attribute->slug,
 			),
 		);
 
@@ -155,8 +155,8 @@ class WGPB_Product_Attribute_Terms_Controller extends WC_REST_Product_Attribute_
 			'type'        => 'object',
 			'context'     => array( 'view', 'edit' ),
 			'readonly'    => true,
-			'properties' => array(
-				'id' => array(
+			'properties'  => array(
+				'id'   => array(
 					'description' => __( 'Attribute ID.', 'woo-gutenberg-products-block' ),
 					'type'        => 'integer',
 					'context'     => array( 'view', 'edit' ),
