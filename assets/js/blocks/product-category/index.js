@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { createBlock, registerBlockType } from '@wordpress/blocks';
-import { difference } from 'lodash';
+import { without } from 'lodash';
 import { RawHTML } from '@wordpress/element';
 
 /**
@@ -13,8 +13,7 @@ import { RawHTML } from '@wordpress/element';
 import './editor.scss';
 import Block from './block';
 import getShortcode from '../../utils/get-shortcode';
-import { rowColumnBlockTypes } from '../';
-import sharedAttributes from '../../utils/shared-attributes';
+import sharedAttributes, { sharedAttributeBlockTypes } from '../../utils/shared-attributes';
 
 /**
  * Register and run the "Products by Category" block.
@@ -54,7 +53,7 @@ registerBlockType( 'woocommerce/product-category', {
 		from: [
 			{
 				type: 'block',
-				blocks: difference( rowColumnBlockTypes, [ 'woocommerce/product-category' ] ),
+				blocks: without( sharedAttributeBlockTypes, 'woocommerce/product-category' ),
 				transform: ( attributes ) => createBlock(
 					'woocommerce/product-category',
 					{ ...attributes, editMode: false }
