@@ -3,6 +3,7 @@
  * Display the featured product block in the content.
  *
  * @package WooCommerce\Blocks
+ * @version 3.6.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Wrapper class for Featured Product callback.
  */
-class WC_Block_Featured_Product {
+class WGPB_Block_Featured_Product {
 	/**
 	 * Block name.
 	 *
