@@ -95,6 +95,8 @@
   "files": [
     "assets/**/*.{js,scss,php}",
     "build/**/*.{js,css}",
+    "includes/**/*.php",
+    "languages/**/*.json",
     "license.txt",
     "woocommerce-gutenberg-products-block.php"
   ]
