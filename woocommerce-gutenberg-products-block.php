@@ -23,7 +23,7 @@ define( 'WGPB_ABSPATH', dirname( WGPB_PLUGIN_FILE ) . '/' );
  * Load up the assets if Gutenberg is active.
  */
 function wgpb_initialize() {
-	require_once plugin_dir_path( __FILE__ ) . 'assets/php/class-wc-block-library.php';
+	require_once plugin_dir_path( __FILE__ ) . 'assets/php/class-wgpb-block-library.php';
 
 	// Remove core hooks in favor of our local feature plugin handlers.
 	remove_action( 'init', array( 'WC_Block_Library', 'register_blocks' ) );

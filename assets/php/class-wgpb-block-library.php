@@ -104,7 +104,7 @@ class WGPB_Block_Library {
 	 * Register blocks, hooking up assets and render functions as needed.
 	 */
 	public static function register_blocks() {
-		require_once dirname( __FILE__ ) . '/class-wc-block-featured-product.php';
+		require_once dirname( __FILE__ ) . '/class-wgpb-block-featured-product.php';
 
 		register_block_type(
 			'woocommerce/handpicked-products',
