@@ -91,7 +91,7 @@ class ProductByCategoryBlock extends Component {
 			<InspectorControls key="inspector">
 				<PanelBody
 					title={ __( 'Product Category', 'woo-gutenberg-products-block' ) }
-					initialOpen={ false }
+					initialOpen={ ! attributes.categories.length }
 				>
 					<ProductCategoryControl
 						selected={ attributes.categories }
