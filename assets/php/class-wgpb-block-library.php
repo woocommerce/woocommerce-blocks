@@ -234,6 +234,8 @@ class WGPB_Block_Library {
 				'weekdaysShort' => array_values( $wp_locale->weekday_abbrev ),
 			),
 		);
+		// NOTE: wcSettings is not used directly, it's only for @woocommerce/components.
+		$settings = apply_filters( 'woocommerce_components_settings', $settings );
 
 		// Global settings used in each block.
 		$block_settings = array(
@@ -249,9 +251,8 @@ class WGPB_Block_Library {
 		);
 		?>
 		<script type="text/javascript">
-			<?php // Use the wcSettings from wc-admin if already present. ?>
-			var wcSettings = wcSettings || <?php echo wp_json_encode( $settings ); ?>;
-			var wc_product_block_data = <?php echo wp_json_encode( $block_settings ); ?>;
+			var wcSettings = wcSettings || JSON.parse( decodeURIComponent( '<?php echo rawurlencode( wp_json_encode( $settings ) ); ?>' ) );
+			var wc_product_block_data = JSON.parse( decodeURIComponent( '<?php echo rawurlencode( wp_json_encode( $block_settings ) ); ?>' ) );
 		</script>
 		<?php
 	}
