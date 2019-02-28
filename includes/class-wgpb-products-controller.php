@@ -228,7 +228,7 @@ class WGPB_Products_Controller extends WC_REST_Products_Controller {
 	 * @return array
 	 */
 	protected function prepare_objects_query( $request ) {
-		$args = parent::prepare_objects_query( $request );
+		$args             = parent::prepare_objects_query( $request );
 		$operator_mapping = array(
 			'in'     => 'IN',
 			'not_in' => 'NOT IN',
