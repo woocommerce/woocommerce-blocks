@@ -17,6 +17,35 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WGPB_Block_Library {
 
 	/**
+	 * Class instance.
+	 *
+	 * @var WGPB_Block_Library instance
+	 */
+	protected static $instance = null;
+
+	/**
+	 * Get class instance
+	 */
+	public static function get_instance() {
+		if ( ! self::$instance ) {
+			self::$instance = new self();
+		}
+		return self::$instance;
+	}
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		if ( function_exists( 'register_block_type' ) ) {
+			add_action( 'init', array( 'WGPB_Block_Library', 'register_blocks' ) );
+			add_action( 'init', array( 'WGPB_Block_Library', 'register_assets' ) );
+			add_filter( 'block_categories', array( 'WGPB_Block_Library', 'add_block_category' ) );
+			add_action( 'admin_print_footer_scripts', array( 'WGPB_Block_Library', 'print_script_settings' ), 1 );
+		}
+	}
+
+	/**
 	 * Get the file modified time as a cache buster if we're in dev mode.
 	 *
 	 * @param string $file Local path to the file.
@@ -258,9 +287,4 @@ class WGPB_Block_Library {
 	}
 }
 
-if ( function_exists( 'register_block_type' ) ) {
-	add_action( 'init', array( 'WGPB_Block_Library', 'register_blocks' ) );
-	add_action( 'init', array( 'WGPB_Block_Library', 'register_assets' ) );
-	add_filter( 'block_categories', array( 'WGPB_Block_Library', 'add_block_category' ) );
-	add_action( 'admin_print_footer_scripts', array( 'WGPB_Block_Library', 'print_script_settings' ), 1 );
-}
+WGPB_Block_Library::get_instance();
