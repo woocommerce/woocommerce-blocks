@@ -84,6 +84,12 @@
 		}
 	}
 
+	.is-hidden-rating & {
+		.wc-product-preview__rating {
+			display: none;
+		}
+	}
+
 	.is-hidden-button & {
 		.wp-block-button {
 			display: none;
