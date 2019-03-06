@@ -28,7 +28,6 @@
   },
   "devDependencies": {
     "@babel/core": "7.3.4",
-    "@wordpress/babel-plugin-import-jsx-pragma": "2.0.0",
     "@wordpress/babel-preset-default": "4.0.0",
     "@wordpress/blocks": "6.1.0",
     "@wordpress/components": "7.1.0",
