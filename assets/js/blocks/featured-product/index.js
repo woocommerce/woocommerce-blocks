@@ -91,14 +91,6 @@ registerBlockType( 'woocommerce/featured-product', {
 		},
 
 		/**
-		 * Text for the product link.
-		 */
-		linkText: {
-			type: 'string',
-			default: __( 'Shop now', 'woo-gutenberg-products-block' ),
-		},
-
-		/**
 		 * The product ID to display.
 		 */
 		productId: {
