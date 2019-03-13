@@ -270,7 +270,7 @@ class WGPB_Block_Library {
 		$block_settings = array(
 			'min_columns'       => wc_get_theme_support( 'product_blocks::min_columns', 1 ),
 			'max_columns'       => wc_get_theme_support( 'product_blocks::max_columns', 6 ),
-			'default_columns'   => wc_get_theme_support( 'product_blocks::default_columns', 1 ),
+			'default_columns'   => wc_get_theme_support( 'product_blocks::default_columns', 3 ),
 			'min_rows'          => wc_get_theme_support( 'product_blocks::min_rows', 1 ),
 			'max_rows'          => wc_get_theme_support( 'product_blocks::max_rows', 6 ),
 			'default_rows'      => wc_get_theme_support( 'product_blocks::default_rows', 1 ),
