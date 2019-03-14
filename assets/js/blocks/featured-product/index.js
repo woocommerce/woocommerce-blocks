@@ -2,8 +2,9 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { createBlock, registerBlockType } from '@wordpress/blocks';
+import { find } from 'lodash';
 import { InnerBlocks } from '@wordpress/editor';
-import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -11,6 +12,66 @@ import { registerBlockType } from '@wordpress/blocks';
 import './style.scss';
 import './editor.scss';
 import Block from './block';
+import {
+	getImageIdFromProduct,
+	getImageSrcFromProduct,
+} from '../../utils/products';
+
+const transformToCover = {
+	type: 'block',
+	blocks: [ 'core/cover' ],
+	transform: ( attributes, innerBlocks ) => {
+		const { dimRatio, overlayColor, showDesc, showPrice } = attributes;
+		// @todo transforms don't support async/await functions, so we
+		// can't get the product via API 😩 Eventually we want to use
+		// attributes.productId to get the correct data with apiFetch.
+		const product = {
+			name: 'Product Name',
+			short_description: 'This is my short description',
+			price_html: '$30.00',
+			images: [
+				{
+					src:
+						'https://vagrant.local/content/uploads/2018/09/beanie-with-logo-1.jpg',
+				},
+			],
+		};
+		// Pull media from product, unless we have a custom image set.
+		const mediaId = attributes.mediaId || getImageIdFromProduct( product );
+		const mediaSrc = attributes.mediaSrc || getImageSrcFromProduct( product );
+
+		const title = createBlock( 'core/heading', { content: product.name } );
+		const description = createBlock( 'core/paragraph', {
+			content: product.short_description,
+		} );
+		const price = createBlock( 'core/paragraph', {
+			content: product.price_html,
+		} );
+
+		// The button is already an innerBlock, so we don't need to re-create it.
+		const button = find( innerBlocks, { name: 'core/button' }, false );
+
+		// Build the inner blocks based on the content settings.
+		const newInnerBlocks = [
+			title,
+			showDesc && description,
+			showPrice && price,
+			button,
+		].filter( Boolean );
+
+		return createBlock(
+			'core/cover',
+			{
+				backgroundType: 'image',
+				dimRatio,
+				overlayColor,
+				id: mediaId,
+				url: mediaSrc,
+			},
+			newInnerBlocks
+		);
+	},
+};
 
 /**
  * Register and run the "Featured Product" block.
@@ -112,6 +173,10 @@ registerBlockType( 'woocommerce/featured-product', {
 			type: 'boolean',
 			default: true,
 		},
+	},
+
+	transforms: {
+		to: [ transformToCover ],
 	},
 
 	/**
