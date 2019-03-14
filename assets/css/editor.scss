@@ -17,29 +17,31 @@
 	overflow: hidden;
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: flex-start;
+	justify-content: space-between;
+
+	&.components-placeholder {
+		padding: 2em 1em;
+	}
 
 	&.is-loading,
-	&.is-not-found,
-	&.cols-1 {
+	&.is-not-found {
 		display: block;
 	}
 
-	.wc-product-preview {
-		flex: 1;
-		padding: $gap/2;
+	&.cols-1 {
+		justify-content: space-around;
 	}
 
 	@for $i from 2 to 7 {
 		&.cols-#{$i} .wc-product-preview {
-			max-width: calc(#{ 100% / $i });
-			min-width: calc(#{ 100% / $i });
-			flex: 1;
+			flex: 1 0 calc(#{ 100% / $i });
 		}
 	}
 
-	&.components-placeholder {
-		padding: 2em 1em;
+	.wc-product-preview {
+		flex: 1;
+		max-width: 300px;
+		padding: $gap/2;
 	}
 
 	// Styles for "resuable block" preview.
