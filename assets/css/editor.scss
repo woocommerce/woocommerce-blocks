@@ -17,7 +17,7 @@
 	overflow: hidden;
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-between;
+	justify-content: flex-start;
 
 	&.components-placeholder {
 		padding: 2em 1em;
@@ -29,17 +29,19 @@
 	}
 
 	&.cols-1 {
-		justify-content: space-around;
+		display: block;
+
+		.wc-product-preview {
+			margin-left: auto;
+			margin-right: auto;
+		}
 	}
 
 	@for $i from 2 to 7 {
 		&.cols-#{$i} .wc-product-preview {
 			flex: 1 0 calc(#{ 100% / $i });
+			max-width: 100% / $i !important;
 		}
-	}
-
-	.wc-product-preview {
-		flex: 1;
 	}
 
 	// Styles for "resuable block" preview.
