@@ -29,7 +29,10 @@ const ProductPreview = ( { product } ) => {
 	}
 
 	return (
-		<div className="wc-product-preview">
+		<div
+			className="wc-product-preview"
+			style={ { maxWidth: `${ wc_product_block_data.thumbnail_size }px` } }
+		>
 			{ image }
 			<div
 				className="wc-product-preview__title"
