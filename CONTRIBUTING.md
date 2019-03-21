@@ -2,6 +2,8 @@
 
 Thanks for your interest in contributing to WooCommerce Blocks! Below are some developer docs for working with the project.
 
+To get started, first run `npm install` and `composer install`.
+
 ## npm scripts
 
 We have a set of scripts in npm to handle repeated developer tasks.
