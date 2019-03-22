@@ -39,7 +39,7 @@ To release a new version, there are 3 basic steps. Prepare and test the release,
 
 ### Prepare and test the release
 
-- Manually change the versions in `package.json` and `woocommerce-gutenberg-products-block.php` (once in the plugin header, and `WGPB_VERSION`).
+- Manually change the versions in `package.json` and `woocommerce-gutenberg-products-block.php` (once in the plugin header, and `WGPB_VERSION`). [See an example PR with these changes.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/478/commits/725c43fe0362044c953728cb3391095a43e66bb5)
 - Run `npm pack` to prep a `.tgz` file.
 - Optionally test the package by uploading this onto a test site.
 
