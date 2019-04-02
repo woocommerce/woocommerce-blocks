@@ -5,12 +5,13 @@ import { __, _n, sprintf } from '@wordpress/i18n';
 import { addQueryArgs } from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
 import { Component, Fragment } from '@wordpress/element';
-import { find } from 'lodash';
+import { debounce, find, flatten, uniqBy } from 'lodash';
 import PropTypes from 'prop-types';
 import { SearchListControl } from '@woocommerce/components';
 
+const isLargeCatalog = wc_product_block_data.catalogSize > 200;
 const path = addQueryArgs( '/wc-blocks/v1/products', {
-	per_page: -1,
+	per_page: isLargeCatalog ? 100 : -1,
 	catalog_visibility: 'visible',
 	status: 'publish',
 } );
@@ -22,13 +23,40 @@ class ProductsControl extends Component {
 			list: [],
 			loading: true,
 		};
+
+		this.debouncedOnSearch = debounce( this.onSearch.bind( this ), 400 );
 	}
 
 	componentDidMount() {
-		apiFetch( {
-			path,
-		} )
-			.then( ( list ) => {
+		const { selected } = this.props;
+		const requests = [ apiFetch( { path } ) ];
+		// If we have a large catalog, we might not get all selected products in the first page.
+		if ( isLargeCatalog ) {
+			requests.push(
+				apiFetch( {
+					path: addQueryArgs( path, { include: selected } ),
+				} )
+			);
+		}
+
+		Promise.all( requests )
+			.then( ( data ) => {
+				const list = uniqBy( flatten( data ), 'id' );
+				this.setState( { list, loading: false } );
+			} )
+			.catch( () => {
+				this.setState( { list: [], loading: false } );
+			} );
+	}
+
+	onSearch( search ) {
+		const { selected } = this.props;
+		Promise.all( [
+			apiFetch( { path: addQueryArgs( path, { search } ) } ),
+			apiFetch( { path: addQueryArgs( path, { include: selected } ) } ),
+		] )
+			.then( ( data ) => {
+				const list = uniqBy( flatten( data ), 'id' );
 				this.setState( { list, loading: false } );
 			} )
 			.catch( () => {
@@ -74,6 +102,7 @@ class ProductsControl extends Component {
 					list={ list }
 					isLoading={ loading }
 					selected={ selected.map( ( id ) => find( list, { id } ) ).filter( Boolean ) }
+					onSearch={ isLargeCatalog && this.debouncedOnSearch }
 					onChange={ onChange }
 					messages={ messages }
 				/>
