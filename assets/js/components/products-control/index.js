@@ -9,6 +9,12 @@ import { find } from 'lodash';
 import PropTypes from 'prop-types';
 import { SearchListControl } from '@woocommerce/components';
 
+const path = addQueryArgs( '/wc-blocks/v1/products', {
+	per_page: -1,
+	catalog_visibility: 'visible',
+	status: 'publish',
+} );
+
 class ProductsControl extends Component {
 	constructor() {
 		super( ...arguments );
@@ -20,11 +26,7 @@ class ProductsControl extends Component {
 
 	componentDidMount() {
 		apiFetch( {
-			path: addQueryArgs( '/wc-blocks/v1/products', {
-				per_page: -1,
-				catalog_visibility: 'visible',
-				status: 'publish',
-			} ),
+			path,
 		} )
 			.then( ( list ) => {
 				this.setState( { list, loading: false } );
