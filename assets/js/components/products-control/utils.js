@@ -18,7 +18,7 @@ const getProductsRequests = ( { selected = [], search } ) => {
 	];
 
 	// If we have a large catalog, we might not get all selected products in the first page.
-	if ( isLargeCatalog ) {
+	if ( isLargeCatalog && selected.length ) {
 		requests.push(
 			addQueryArgs( '/wc-blocks/v1/products', {
 				catalog_visibility: 'visible',
