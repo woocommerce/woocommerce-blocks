@@ -84,7 +84,7 @@ class ProductsControl extends Component {
 					list={ list }
 					isLoading={ loading }
 					selected={ selected.map( ( id ) => find( list, { id } ) ).filter( Boolean ) }
-					onSearch={ isLargeCatalog && this.debouncedOnSearch }
+					onSearch={ isLargeCatalog ? this.debouncedOnSearch : null }
 					onChange={ onChange }
 					messages={ messages }
 				/>
