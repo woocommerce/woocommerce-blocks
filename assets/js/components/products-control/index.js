@@ -2,19 +2,15 @@
  * External dependencies
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { addQueryArgs } from '@wordpress/url';
-import apiFetch from '@wordpress/api-fetch';
 import { Component, Fragment } from '@wordpress/element';
-import { debounce, find, flatten, uniqBy } from 'lodash';
+import { debounce, find } from 'lodash';
 import PropTypes from 'prop-types';
 import { SearchListControl } from '@woocommerce/components';
 
-const isLargeCatalog = wc_product_block_data.catalogSize > 200;
-const path = addQueryArgs( '/wc-blocks/v1/products', {
-	per_page: isLargeCatalog ? 100 : -1,
-	catalog_visibility: 'visible',
-	status: 'publish',
-} );
+/**
+ * Internal dependencies
+ */
+import { isLargeCatalog, getProducts } from './utils';
 
 class ProductsControl extends Component {
 	constructor() {
@@ -29,19 +25,9 @@ class ProductsControl extends Component {
 
 	componentDidMount() {
 		const { selected } = this.props;
-		const requests = [ apiFetch( { path } ) ];
-		// If we have a large catalog, we might not get all selected products in the first page.
-		if ( isLargeCatalog ) {
-			requests.push(
-				apiFetch( {
-					path: addQueryArgs( path, { include: selected } ),
-				} )
-			);
-		}
 
-		Promise.all( requests )
-			.then( ( data ) => {
-				const list = uniqBy( flatten( data ), 'id' );
+		getProducts( { selected } )
+			.then( ( list ) => {
 				this.setState( { list, loading: false } );
 			} )
 			.catch( () => {
@@ -51,12 +37,8 @@ class ProductsControl extends Component {
 
 	onSearch( search ) {
 		const { selected } = this.props;
-		Promise.all( [
-			apiFetch( { path: addQueryArgs( path, { search } ) } ),
-			apiFetch( { path: addQueryArgs( path, { include: selected } ) } ),
-		] )
-			.then( ( data ) => {
-				const list = uniqBy( flatten( data ), 'id' );
+		getProducts( { selected, search } )
+			.then( ( list ) => {
 				this.setState( { list, loading: false } );
 			} )
 			.catch( () => {
