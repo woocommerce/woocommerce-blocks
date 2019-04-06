@@ -53,6 +53,7 @@ const GutenbergBlocksConfig = {
 		path: path.resolve( __dirname, './build/' ),
 		filename: '[name].js',
 		libraryTarget: 'this',
+		jsonpFunction: 'wooJsonp',
 	},
 	externals,
 	optimization: {
