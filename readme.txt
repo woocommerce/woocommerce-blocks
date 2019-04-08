@@ -94,6 +94,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Fix: Product titles render HTML correctly in preview
 - Fix: Icons are now aligned correctly in placeholders
 - Fix: Grid block preview column width now matches the front-end
+- Fix: Webpack now builds using a custom jsonp callback, fixing possible collisions with other projects
 - API: Change namespace, endpoints now accessed at `/wc-blocks/v1/*`
 - API: Add `catalog_visibility` parameter for fetching products
 - API: Update structure of attribute term endpoint to return `attribute.slug`, `attribute.name` etc
