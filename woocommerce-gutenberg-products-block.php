@@ -7,7 +7,7 @@
  * Author: Automattic
  * Author URI: https://woocommerce.com
  * Text Domain:  woo-gutenberg-products-block
- * WC requires at least: 3.5
+ * WC requires at least: 3.6
  * WC tested up to: 3.6
  *
  * @package WooCommerce\Blocks
