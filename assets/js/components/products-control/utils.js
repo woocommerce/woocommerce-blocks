@@ -5,7 +5,7 @@ import { addQueryArgs } from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
 import { flatten, uniqBy } from 'lodash';
 
-export const isLargeCatalog = wc_product_block_data.catalogSize > 200;
+export const isLargeCatalog = wc_product_block_data.isLargeCatalog || false;
 
 const getProductsRequests = ( { selected = [], search } ) => {
 	const requests = [
