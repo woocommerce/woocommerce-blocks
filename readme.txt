@@ -2,7 +2,7 @@
 Contributors: automattic, claudiulodro, tiagonoronha, jameskoster, ryelle, levinmedia
 Tags: gutenberg, woocommerce, woo commerce, products
 Requires at least: 5.0
-Tested up to: 5.1
+Tested up to: 5.2
 Requires PHP: 5.2
 Stable tag: 1.4.0
 License: GPLv3
@@ -83,9 +83,9 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
-= 2.0.0 - TBD =
+= 2.0.0 - 2019-04-18 =
 
-- **BREAKING:** Requires WordPress 5.0+, WooCommerce 3.5+
+- **BREAKING:** Requires WordPress 5.0+, WooCommerce 3.6+
 - **BREAKING:** Remove the legacy block entirely
 - **BREAKING:** Remove the `wc-pb/v3/*` endpoints in favor of new core `wc-blocks/v1/*` endpoints
 - Feature: Add content visibility settings to show/hide title, price, rating, button
