@@ -12,7 +12,7 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 WooCommerce Blocks are the easiest, most flexible way to display your products on posts and pages!
 
-**NEW: Products by Attribute Block**
+**Products by Attribute Block**
 Display a grid of products from your selected attributes.
 
 **Featured Product Block**
@@ -43,7 +43,7 @@ We've also improved the category selection filter. If you select two or more cat
 = Minimum Requirements =
 
 * WordPress 5.0
-* WooCommerce 3.5.1 or greater
+* WooCommerce 3.6 or greater
 * PHP version 5.2.4 or greater (PHP 7.2 or greater is recommended)
 * MySQL version 5.0 or greater (MySQL 5.6 or greater is recommended)
 
