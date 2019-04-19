@@ -83,6 +83,10 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 2.0.1 - 2019-04-19 =
+
+- Fix: Fix a conflict with WooCommerce 3.6 and WooCommerce Blocks 1.4 (this change only applies to the version of blocks bundled with WooCommerce core).
+
 = 2.0.0 - 2019-04-18 =
 
 - **BREAKING:** Requires WordPress 5.0+, WooCommerce 3.6+
