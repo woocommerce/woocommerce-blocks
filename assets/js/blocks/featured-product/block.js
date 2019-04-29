@@ -274,6 +274,7 @@ class FeaturedProduct extends Component {
 										label={ __( 'Edit media' ) }
 										icon="format-image"
 										onClick={ open }
+										disabled={ ! this.state.product }
 									/>
 								) }
 							/>
