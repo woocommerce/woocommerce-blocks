@@ -127,6 +127,7 @@ class FeaturedProduct extends Component {
 
 		const url =
 			attributes.mediaSrc || getImageSrcFromProduct( this.state.product );
+		const { focalPoint = { x: 0.5, y: 0.5 } } = attributes;
 
 		return (
 			<InspectorControls key="inspector">
@@ -160,11 +161,11 @@ class FeaturedProduct extends Component {
 						max={ 100 }
 						step={ 10 }
 					/>
-					{ url &&
+					{ !! FocalPointPicker && !! url &&
 						<FocalPointPicker
 							label={ __( 'Focal Point Picker' ) }
 							url={ url }
-							value={ attributes.focalPoint }
+							value={ focalPoint }
 							onChange={ ( value ) => setAttributes( { focalPoint: value } ) }
 						/>
 					}
