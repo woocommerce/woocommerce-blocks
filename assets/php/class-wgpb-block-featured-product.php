@@ -119,7 +119,7 @@ class WGPB_Block_Featured_Product {
 			$style .= sprintf( 'min-height:%dpx;', intval( $attributes['height'] ) );
 		}
 
-		if ( isset( $attributes['focalPoint'] ) && 2 === count( $attributes['focalPoint'] ) ) {
+		if ( is_array( $attributes['focalPoint'] ) && 2 === count( $attributes['focalPoint'] ) ) {
 			$style .= sprintf(
 				'background-position: %s%% %s%%',
 				$attributes['focalPoint']['x'] * 100,
