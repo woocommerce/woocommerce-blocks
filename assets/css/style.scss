@@ -4,7 +4,8 @@
 .wp-block-woocommerce-product-new,
 .wp-block-woocommerce-product-on-sale,
 .wp-block-woocommerce-product-top-rated,
-.wp-block-woocommerce-products-by-attribute {
+.wp-block-woocommerce-products-by-attribute,
+.wp-block-woocommerce-products-by-tag {
 	&.is-hidden-title {
 		.woocommerce-loop-product__title {
 			display: none !important;

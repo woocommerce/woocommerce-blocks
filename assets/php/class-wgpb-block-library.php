@@ -144,6 +144,7 @@ class WGPB_Block_Library {
 		self::register_script( 'wc-product-top-rated', plugins_url( 'build/product-top-rated.js', WGPB_PLUGIN_FILE ), $block_dependencies );
 		self::register_script( 'wc-products-attribute', plugins_url( 'build/products-attribute.js', WGPB_PLUGIN_FILE ), $block_dependencies );
 		self::register_script( 'wc-featured-product', plugins_url( 'build/featured-product.js', WGPB_PLUGIN_FILE ), $block_dependencies );
+		self::register_script( 'wc-product-tag', plugins_url( 'build/product-tag.js', WGPB_PLUGIN_FILE ), $block_dependencies );
 	}
 
 	/**
@@ -217,6 +218,14 @@ class WGPB_Block_Library {
 				'editor_script'   => 'wc-featured-product',
 				'editor_style'    => 'wc-block-editor',
 				'style'           => 'wc-block-style',
+			)
+		);
+		register_block_type(
+			'woocommerce/products-by-tag',
+			array(
+				'editor_script' => 'wc-product-tag',
+				'editor_style'  => 'wc-block-editor',
+				'style'         => 'wc-block-style',
 			)
 		);
 	}
@@ -296,6 +305,7 @@ class WGPB_Block_Library {
 			'min_height'        => wc_get_theme_support( 'featured_block::min_height', 500 ),
 			'default_height'    => wc_get_theme_support( 'featured_block::default_height', 500 ),
 			'isLargeCatalog'    => $product_counts->publish > 200,
+			'limitTags'         => wp_count_terms( 'product_tag' ) > 20,
 		);
 		?>
 		<script type="text/javascript">
