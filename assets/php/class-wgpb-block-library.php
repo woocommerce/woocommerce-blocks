@@ -305,7 +305,7 @@ class WGPB_Block_Library {
 			'min_height'        => wc_get_theme_support( 'featured_block::min_height', 500 ),
 			'default_height'    => wc_get_theme_support( 'featured_block::default_height', 500 ),
 			'isLargeCatalog'    => $product_counts->publish > 200,
-			'limitTags'         => wp_count_terms( 'product_tag' ) > 20,
+			'limitTags'         => wp_count_terms( 'product_tag' ) > 100,
 		);
 		?>
 		<script type="text/javascript">
