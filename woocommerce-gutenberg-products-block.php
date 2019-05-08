@@ -24,6 +24,7 @@ define( 'WGPB_ABSPATH', dirname( WGPB_PLUGIN_FILE ) . '/' );
  */
 function wgpb_initialize() {
 	require_once plugin_dir_path( __FILE__ ) . 'assets/php/class-wgpb-block-library.php';
+	require_once plugin_dir_path( __FILE__ ) . 'assets/php/class-wgpb-extend-core.php';
 
 	// Remove core hook in favor of our local feature plugin handler.
 	remove_action( 'init', array( 'WC_Block_Library', 'init' ) );
