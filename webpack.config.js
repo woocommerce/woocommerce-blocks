@@ -137,6 +137,18 @@ const GutenbergBlocksConfig = {
 			format: chalk.blue( 'Build' ) + ' [:bar] ' + chalk.green( ':percent' ) + ' :msg (:elapsed seconds)',
 		} ),
 	],
+	performance: {
+		hints: false,
+	},
+	stats: {
+		all: false,
+		assets: true,
+		builtAt: true,
+		colors: true,
+		errors: true,
+		hash: true,
+		timings: true,
+	},
 };
 
 module.exports = [ GutenbergBlocksConfig ];
