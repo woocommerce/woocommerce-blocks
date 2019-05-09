@@ -99,7 +99,7 @@ const GutenbergBlocksConfig = {
 			{
 				test: /\.jsx?$/,
 				exclude: /node_modules/,
-				loader: 'babel-loader',
+				loader: 'babel-loader?cacheDirectory',
 			},
 			{
 				test: /\.s[c|a]ss$/,
