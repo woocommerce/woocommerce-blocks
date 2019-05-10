@@ -183,9 +183,10 @@ class WGPB_Block_Library {
 		register_block_type(
 			'woocommerce/product-new',
 			array(
-				'editor_script' => 'wc-product-new',
-				'editor_style'  => 'wc-block-editor',
-				'style'         => 'wc-block-style',
+				'render_callback' => 'wgpb_block_render_product_new',
+				'editor_script'   => 'wc-product-new',
+				'editor_style'    => 'wc-block-editor',
+				'style'           => 'wc-block-style',
 			)
 		);
 		register_block_type(
