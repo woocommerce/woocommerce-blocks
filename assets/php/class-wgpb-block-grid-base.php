@@ -234,27 +234,16 @@ abstract class WGPB_Block_Grid_Base {
 			wp_kses_post( $product->get_title() )
 		);
 
+		$rating_str = $this->get_rating( $product );
+
 		$price_str = sprintf(
 			'<div class="wc-block-grid__product-price">%s</div>',
 			$product->get_price_html()
 		);
 
-		$rating_count = $product->get_rating_count();
-		$review_count = $product->get_review_count();
-		$average      = $product->get_average_rating();
-		$rating_str   = '';
-
-		if ( $rating_count > 0 ) {
-			$rating_str = sprintf(
-				'<div class="woocommerce-product-rating wc-block-grid__product-rating">%s</div>',
-				wc_get_rating_html( $average, $rating_count )
-			);
-		}
-
 		$button_str = sprintf(
-			'<div class="wc-block-grid__product-button"><a href="%s" class="button">%s</a></div>',
-			esc_url( $product->get_permalink() ),
-			esc_html( $product->single_add_to_cart_text() )
+			'<div class="wc-block-grid__product-add-to-cart">%s</div>',
+			$this->get_add_to_cart( $product )
 		);
 
 		$content = sprintf(
@@ -276,5 +265,52 @@ abstract class WGPB_Block_Grid_Base {
 		}
 
 		return sprintf( '<li class="wc-block-grid__product">%1$s</li>', $content );
+	}
+
+	/**
+	 * Render the "add to cart" button
+	 *
+	 * @param WC_Product $product Product.
+	 * @return string Rendered product output.
+	 */
+	public function get_add_to_cart( $product ) {
+		if ( $product->supports( 'ajax_add_to_cart' ) ) {
+			return sprintf(
+				'<a href="%1$s" data-quantity="1" data-product_id="%2$s" data-product_sku="%3$s" class="button add_to_cart_button ajax_add_to_cart" rel="nofollow" aria-label="%4$s">%5$s</a>',
+				esc_url( $product->add_to_cart_url() ),
+				esc_attr( $product->get_id() ),
+				esc_attr( $product->get_sku() ),
+				esc_attr( $product->add_to_cart_description() ),
+				esc_html( $product->add_to_cart_text() )
+			);
+		}
+
+		return sprintf(
+			'<a href="%1$s" class="button add_to_cart_button" rel="nofollow" aria-label="%2$s">%3$s</a>',
+			esc_url( $product->add_to_cart_url() ),
+			esc_attr( $product->add_to_cart_description() ),
+			esc_html( $product->add_to_cart_text() )
+		);
+	}
+
+	/**
+	 * Render the rating icons.
+	 *
+	 * @param WC_Product $product Product.
+	 * @return string Rendered product output.
+	 */
+	public function get_rating( $product ) {
+		$rating_count = $product->get_rating_count();
+		$review_count = $product->get_review_count();
+		$average      = $product->get_average_rating();
+
+		if ( $rating_count > 0 ) {
+			return sprintf(
+				'<div class="woocommerce-product-rating wc-block-grid__product-rating">%s</div>',
+				wc_get_rating_html( $average, $rating_count )
+			);
+		}
+
+		return '';
 	}
 }
