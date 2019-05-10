@@ -265,11 +265,11 @@ abstract class WGPB_Block_Grid_Base {
 		if ( $this->attributes['contentVisibility']['title'] ) {
 			$content .= $title;
 		}
-		if ( $this->attributes['contentVisibility']['price'] ) {
-			$content .= $price_str;
-		}
 		if ( $this->attributes['contentVisibility']['rating'] ) {
 			$content .= $rating_str;
+		}
+		if ( $this->attributes['contentVisibility']['price'] ) {
+			$content .= $price_str;
 		}
 		if ( $this->attributes['contentVisibility']['button'] ) {
 			$content .= $button_str;
