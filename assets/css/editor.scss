@@ -44,3 +44,45 @@
 		}
 	}
 }
+
+// @todo Remove this once all grid blocks are switched to dynamic.
+.wc-block-products-grid {
+	display: flex;
+	flex-wrap: wrap;
+
+	&.cols-1 {
+		display: block;
+
+		.wc-block-grid__product {
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+
+	@for $i from 2 to 9 {
+		&.cols-#{$i} .wc-block-grid__product {
+			flex: 1 0 calc(#{ 100% / $i });
+			max-width: 100% / $i !important;
+		}
+	}
+
+	&.cols-4:not(.alignwide):not(.alignfull),
+	&.cols-5:not(.alignfull),
+	&.cols-6:not(.alignfull),
+	&.cols-7,
+	&.cols-8 {
+
+		.wc-block-grid__product-title {
+			font-size: 0.9em;
+		}
+
+		.wc-block-grid__product-price {
+			font-size: 0.8em;
+		}
+
+		.wc-block-grid__product-add-to-cart {
+			font-size: 0.8em !important;
+			line-height: 1.4 !important;
+		}
+	}
+}
