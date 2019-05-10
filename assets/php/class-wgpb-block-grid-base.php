@@ -212,7 +212,13 @@ abstract class WGPB_Block_Grid_Base {
 			"wp-block-{$this->block_name}",
 			"wc-block-{$this->block_name}",
 			"has-{$this->attributes['columns']}-columns",
+			'products',
 		);
+
+		if ( isset( $this->attributes['align'] ) ) {
+			$classes[] = "align{$this->attributes['align']}";
+		}
+
 		return implode( ' ', $classes );
 	}
 
@@ -237,7 +243,7 @@ abstract class WGPB_Block_Grid_Base {
 		$rating_str = $this->get_rating( $product );
 
 		$price_str = sprintf(
-			'<div class="wc-block-grid__product-price">%s</div>',
+			'<div class="wc-block-grid__product-price price">%s</div>',
 			$product->get_price_html()
 		);
 
@@ -271,7 +277,7 @@ abstract class WGPB_Block_Grid_Base {
 			$content .= $button_str;
 		}
 
-		return sprintf( '<li class="wc-block-grid__product">%1$s</li>', $content );
+		return sprintf( '<li class="wc-block-grid__product product">%1$s</li>', $content );
 	}
 
 	/**
