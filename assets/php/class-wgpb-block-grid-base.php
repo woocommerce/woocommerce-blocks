@@ -251,6 +251,11 @@ abstract class WGPB_Block_Grid_Base {
 			$product->get_price_html()
 		);
 
+		ob_start();
+		woocommerce_show_product_sale_flash();
+		$on_sale_flag = ob_get_contents();
+		ob_end_clean();
+
 		$button_str = sprintf(
 			'<div class="wc-block-grid__product-add-to-cart">%s</div>',
 			$this->get_add_to_cart( $product )
@@ -273,7 +278,7 @@ abstract class WGPB_Block_Grid_Base {
 			$content .= $rating_str;
 		}
 		if ( $this->attributes['contentVisibility']['price'] ) {
-			$content .= $price_str;
+			$content .= $on_sale_flag . $price_str;
 		}
 		// Close the content link before we output the button.
 		$content .= '</a>';
