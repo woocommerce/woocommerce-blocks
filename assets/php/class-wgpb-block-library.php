@@ -155,6 +155,7 @@ class WGPB_Block_Library {
 		require_once dirname( __FILE__ ) . '/class-wgpb-block-grid-base.php';
 		require_once dirname( __FILE__ ) . '/class-wgpb-block-featured-product.php';
 		require_once dirname( __FILE__ ) . '/class-wgpb-block-product-new.php';
+		require_once dirname( __FILE__ ) . '/class-wgpb-block-product-on-sale.php';
 
 		register_block_type(
 			'woocommerce/handpicked-products',
@@ -192,9 +193,10 @@ class WGPB_Block_Library {
 		register_block_type(
 			'woocommerce/product-on-sale',
 			array(
-				'editor_script' => 'wc-product-on-sale',
-				'editor_style'  => 'wc-block-editor',
-				'style'         => 'wc-block-style',
+				'render_callback' => 'wgpb_block_render_product_on_sale',
+				'editor_script'   => 'wc-product-on-sale',
+				'editor_style'    => 'wc-block-editor',
+				'style'           => 'wc-block-style',
 			)
 		);
 		register_block_type(
