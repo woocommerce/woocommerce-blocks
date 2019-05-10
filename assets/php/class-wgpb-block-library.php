@@ -152,7 +152,9 @@ class WGPB_Block_Library {
 	 * @since 2.0.0
 	 */
 	public static function register_blocks() {
+		require_once dirname( __FILE__ ) . '/class-wgpb-block-grid-base.php';
 		require_once dirname( __FILE__ ) . '/class-wgpb-block-featured-product.php';
+		require_once dirname( __FILE__ ) . '/class-wgpb-block-product-new.php';
 
 		register_block_type(
 			'woocommerce/handpicked-products',
