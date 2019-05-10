@@ -90,6 +90,8 @@ abstract class WGPB_Block_Grid_Base {
 			'post_status'         => 'publish',
 			'ignore_sticky_posts' => true,
 			'no_found_rows'       => false,
+			'orderby'             => '',
+			'order'               => '',
 		);
 
 		if ( isset( $this->attributes['orderby'] ) ) {
