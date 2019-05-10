@@ -247,6 +247,11 @@ abstract class WGPB_Block_Grid_Base {
 		);
 
 		$content = sprintf(
+			'<a href="%s" class="wc-block-grid__product-link">',
+			$product->get_permalink()
+		);
+
+		$content .= sprintf(
 			'<div class="wc-block-grid__product-image">%s</div>',
 			woocommerce_get_product_thumbnail()
 		);
@@ -260,6 +265,8 @@ abstract class WGPB_Block_Grid_Base {
 		if ( $this->attributes['contentVisibility']['price'] ) {
 			$content .= $price_str;
 		}
+		// Close the content link before we output the button.
+		$content .= '</a>';
 		if ( $this->attributes['contentVisibility']['button'] ) {
 			$content .= $button_str;
 		}
