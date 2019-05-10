@@ -33,7 +33,8 @@
 		min-width: 5em;
 
 		@for $i from 1 to 7 {
-			&.cols-#{$i} {
+			&.cols-#{$i},
+			&.has-#{$i}-columns {
 				min-width: $i * 5em;
 			}
 		}
