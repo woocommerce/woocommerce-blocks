@@ -147,20 +147,19 @@ abstract class WGPB_Block_Grid_Base {
 	 */
 	protected function set_categories_query_args( &$query_args ) {
 		if ( ! empty( $this->attributes['categories'] ) ) {
-			$field      = 'term_id';
-			$categories = array_map( 'absint', $categories );
+			$categories = array_map( 'absint', $this->attributes['categories'] );
 
 			$query_args['tax_query'][] = array(
 				'taxonomy'         => 'product_cat',
 				'terms'            => $categories,
-				'field'            => $field,
-				'operator'         => $this->attributes['catOperator'],
+				'field'            => 'term_id',
+				'operator'         => 'all' === $this->attributes['catOperator'] ? 'AND' : 'IN',
 
 				/*
 				 * When cat_operator is AND, the children categories should be excluded,
 				 * as only products belonging to all the children categories would be selected.
 				 */
-				'include_children' => 'AND' === $this->attributes['catOperator'] ? false : true,
+				'include_children' => 'all' === $this->attributes['catOperator'] ? false : true,
 			);
 		}
 	}
