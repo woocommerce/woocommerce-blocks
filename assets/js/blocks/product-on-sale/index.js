@@ -11,7 +11,9 @@ import Gridicon from 'gridicons';
  */
 import Block from './block';
 import { deprecatedGridSave } from '../../utils/deprecations';
-import sharedAttributes, { sharedAttributeBlockTypes } from '../../utils/shared-attributes';
+import sharedAttributes, {
+	sharedAttributeBlockTypes,
+} from '../../utils/shared-attributes';
 
 registerBlockType( 'woocommerce/product-on-sale', {
 	title: __( 'On Sale Products', 'woo-gutenberg-products-block' ),
@@ -40,18 +42,25 @@ registerBlockType( 'woocommerce/product-on-sale', {
 		from: [
 			{
 				type: 'block',
-				blocks: without( sharedAttributeBlockTypes, 'woocommerce/product-on-sale' ),
-				transform: ( attributes ) => createBlock(
-					'woocommerce/product-on-sale',
-					attributes
+				blocks: without(
+					sharedAttributeBlockTypes,
+					'woocommerce/product-on-sale'
 				),
+				transform: ( attributes ) =>
+					createBlock( 'woocommerce/product-on-sale', attributes ),
 			},
 		],
 	},
 
 	deprecated: [
 		{
-			attributes: sharedAttributes,
+			attributes: {
+				...sharedAttributes,
+				orderby: {
+					type: 'string',
+					default: 'date',
+				},
+			},
 			save: deprecatedGridSave( 'woocommerce/product-on-sale' ),
 		},
 	],
