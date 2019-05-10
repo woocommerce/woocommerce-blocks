@@ -215,6 +215,10 @@ abstract class WGPB_Block_Grid_Base {
 			'products',
 		);
 
+		if ( $this->attributes['rows'] > 1 ) {
+			$classes[] = 'has-multiple-rows';
+		}
+
 		if ( isset( $this->attributes['align'] ) ) {
 			$classes[] = "align{$this->attributes['align']}";
 		}

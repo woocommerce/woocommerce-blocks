@@ -32,11 +32,9 @@
 
 .wc-block-grid {
 	display: flex;
+	flex-wrap: wrap;
 	list-style: none;
 	padding-left: 0;
-
-	// Responsiveness: Allow wrapping on mobile.
-	flex-wrap: wrap;
 
 	&.has-1-columns {
 		display: block;
@@ -73,29 +71,40 @@
 		}
 
 		.wc-block-grid__product-add-to-cart {
-			font-size: 0.7em !important;
+			font-size: 0.8em !important;
 			line-height: 1.4 !important;
 		}
 	}
-}
 
-.wc-block-grid__product {
-	margin-bottom: $gap;
-	padding-left: $gap/2;
-	padding-right: $gap/2;
+	.wc-block-grid__product {
+		padding-left: $gap/2;
+		padding-right: $gap/2;
 
-	.wc-block-grid__product-image img {
-		vertical-align: middle;
+		.wc-block-grid__product-image img {
+			vertical-align: middle;
+		}
+
+		.wc-block-grid__product-image,
+		.wc-block-grid__product-title,
+		.wc-block-grid__product-price,
+		.wc-block-grid__product-rating {
+			margin-bottom: $gap-small;
+		}
+
+		.wc-block-grid__product-add-to-cart a {
+			word-break: break-word;
+		}
 	}
 
-	.wc-block-grid__product-image,
-	.wc-block-grid__product-title,
-	.wc-block-grid__product-price,
-	.wc-block-grid__product-rating {
-		margin-bottom: $gap-small;
+	&.has-multiple-rows .wc-block-grid__product {
+		margin-bottom: $gap-large;
 	}
 
-	.wc-block-grid__product-add-to-cart a {
-		word-break: break-word;
+	// Remove some default storefront styles.
+	.site-main &.products li.product {
+		float: none;
+		width: auto;
+		margin-right: 0;
+		margin-top: 0;
 	}
 }
