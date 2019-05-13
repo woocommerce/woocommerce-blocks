@@ -9,7 +9,7 @@ import { without } from 'lodash';
  * Internal dependencies
  */
 import Block from './block';
-import { deprecatedGridSave } from '../../utils/deprecations';
+import { deprecatedConvertToShortcode } from '../../utils/deprecations';
 import { IconNewReleases } from '../../components/icons';
 import sharedAttributes, {
 	sharedAttributeBlockTypes,
@@ -43,8 +43,9 @@ registerBlockType( 'woocommerce/product-new', {
 
 	deprecated: [
 		{
+			// Deprecate shortcode save method in favor of dynamic rendering.
 			attributes: sharedAttributes,
-			save: deprecatedGridSave( 'woocommerce/product-new' ),
+			save: deprecatedConvertToShortcode( 'woocommerce/product-new' ),
 		},
 	],
 

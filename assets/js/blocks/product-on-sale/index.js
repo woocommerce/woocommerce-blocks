@@ -10,7 +10,7 @@ import Gridicon from 'gridicons';
  * Internal dependencies
  */
 import Block from './block';
-import { deprecatedGridSave } from '../../utils/deprecations';
+import { deprecatedConvertToShortcode } from '../../utils/deprecations';
 import sharedAttributes, {
 	sharedAttributeBlockTypes,
 } from '../../utils/shared-attributes';
@@ -54,6 +54,7 @@ registerBlockType( 'woocommerce/product-on-sale', {
 
 	deprecated: [
 		{
+			// Deprecate shortcode save method in favor of dynamic rendering.
 			attributes: {
 				...sharedAttributes,
 				orderby: {
@@ -61,7 +62,7 @@ registerBlockType( 'woocommerce/product-on-sale', {
 					default: 'date',
 				},
 			},
-			save: deprecatedGridSave( 'woocommerce/product-on-sale' ),
+			save: deprecatedConvertToShortcode( 'woocommerce/product-on-sale' ),
 		},
 	],
 
