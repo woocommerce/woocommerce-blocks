@@ -46,7 +46,7 @@
     "babel-loader": "8.0.5",
     "chalk": "^2.4.2",
     "classnames": "2.2.6",
-    "clean-webpack-plugin": "2.0.1",
+    "clean-webpack-plugin": "2.0.2",
     "core-js": "2.6.5",
     "cross-env": "5.2.0",
     "css-loader": "2.1.1",
@@ -73,8 +73,8 @@
     "style-loader": "0.23.1",
     "stylelint": "10.0.1",
     "stylelint-config-wordpress": "14.0.0",
-    "webpack": "4.30.0",
-    "webpack-cli": "3.3.1",
+    "webpack": "4.31.0",
+    "webpack-cli": "3.3.2",
     "yargs": "13.2.2"
   },
   "engines": {
