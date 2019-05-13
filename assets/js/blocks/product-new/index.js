@@ -26,6 +26,7 @@ registerBlockType( 'woocommerce/product-new', {
 	),
 	supports: {
 		align: [ 'wide', 'full' ],
+		html: false,
 	},
 	attributes: {
 		...sharedAttributes,
