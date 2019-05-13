@@ -110,7 +110,7 @@ abstract class WGPB_Block_Grid_Base {
 		}
 
 		if ( ! empty( $this->attributes['rows'] ) ) {
-			$this->attributes['limit'] = $this->attributes['columns'] * $this->attributes['rows'];
+			$this->attributes['limit'] = intval( $this->attributes['columns'] ) * intval( $this->attributes['rows'] );
 		}
 
 		$query_args['posts_per_page'] = intval( $this->attributes['limit'] );
@@ -183,6 +183,11 @@ abstract class WGPB_Block_Grid_Base {
 
 		$results = wp_parse_id_list( $query->posts );
 
+		// Prime caches to reduce future queries.
+		if ( is_callable( '_prime_post_caches' ) ) {
+			_prime_post_caches( $results );
+		}
+
 		// Remove ordering query arguments which may have been added by get_catalog_ordering_args.
 		WC()->query->remove_ordering_args();
 
@@ -196,11 +201,11 @@ abstract class WGPB_Block_Grid_Base {
 	 */
 	public function render() {
 		$products = $this->get_products();
-		$classes  = $this->get_classes();
+		$classes  = $this->get_container_classes();
 
 		$output = implode( '', array_map( array( $this, 'render_product' ), $products ) );
 
-		return sprintf( '<ul class="%s">%s</ul>', $classes, $output );
+		return sprintf( '<ul class="%s">%s</ul>', esc_attr( $classes ), $output );
 	}
 
 	/**
@@ -208,7 +213,7 @@ abstract class WGPB_Block_Grid_Base {
 	 *
 	 * @return string space-separated list of classes.
 	 */
-	public function get_classes() {
+	protected function get_container_classes() {
 		$classes = array(
 			'wc-block-grid',
 			"wp-block-{$this->block_name}",
@@ -288,7 +293,7 @@ abstract class WGPB_Block_Grid_Base {
 			$content .= $button_str;
 		}
 
-		return sprintf( '<li class="wc-block-grid__product product">%1$s</li>', $content );
+		return '<li class="wc-block-grid__product product">' . $content . '</li>';
 	}
 
 	/**
@@ -297,7 +302,7 @@ abstract class WGPB_Block_Grid_Base {
 	 * @param WC_Product $product Product.
 	 * @return string Rendered product output.
 	 */
-	public function get_add_to_cart( $product ) {
+	protected function get_add_to_cart( $product ) {
 		if ( $product->supports( 'ajax_add_to_cart' ) ) {
 			return sprintf(
 				'<a href="%1$s" data-quantity="1" data-product_id="%2$s" data-product_sku="%3$s" class="button add_to_cart_button ajax_add_to_cart" rel="nofollow" aria-label="%4$s">%5$s</a>',
