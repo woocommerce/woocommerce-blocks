@@ -31,15 +31,3 @@ class WGPB_Block_Product_On_Sale extends WGPB_Block_Grid_Base {
 		$query_args['post__in'] = array_merge( array( 0 ), wc_get_product_ids_on_sale() );
 	}
 }
-
-/**
- * Render the On Sale Products block.
- *
- * @param array  $attributes Block attributes. Default empty array.
- * @param string $content    Block content. Default empty string.
- * @return string Rendered block type output.
- */
-function wgpb_block_render_product_on_sale( $attributes, $content ) {
-	$block = new WGPB_Block_Product_On_Sale( $attributes, $content );
-	return $block->render();
-}

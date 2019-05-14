@@ -154,8 +154,6 @@ class WGPB_Block_Library {
 	public static function register_blocks() {
 		require_once dirname( __FILE__ ) . '/class-wgpb-block-grid-base.php';
 		require_once dirname( __FILE__ ) . '/class-wgpb-block-featured-product.php';
-		require_once dirname( __FILE__ ) . '/class-wgpb-block-product-new.php';
-		require_once dirname( __FILE__ ) . '/class-wgpb-block-product-on-sale.php';
 
 		register_block_type(
 			'woocommerce/handpicked-products',
@@ -184,7 +182,7 @@ class WGPB_Block_Library {
 		register_block_type(
 			'woocommerce/product-new',
 			array(
-				'render_callback' => 'wgpb_block_render_product_new',
+				'render_callback' => array( __CLASS__, 'render_product_new' ),
 				'editor_script'   => 'wc-product-new',
 				'editor_style'    => 'wc-block-editor',
 				'style'           => 'wc-block-style',
@@ -193,7 +191,7 @@ class WGPB_Block_Library {
 		register_block_type(
 			'woocommerce/product-on-sale',
 			array(
-				'render_callback' => 'wgpb_block_render_product_on_sale',
+				'render_callback' => array( __CLASS__, 'render_product_on_sale' ),
 				'editor_script'   => 'wc-product-on-sale',
 				'editor_style'    => 'wc-block-editor',
 				'style'           => 'wc-block-style',
@@ -308,6 +306,34 @@ class WGPB_Block_Library {
 			var wc_product_block_data = JSON.parse( decodeURIComponent( '<?php echo rawurlencode( wp_json_encode( $block_settings ) ); ?>' ) );
 		</script>
 		<?php
+	}
+
+	/**
+	 * New products: Include and render the dynamic block.
+	 *
+	 * @param array  $attributes Block attributes. Default empty array.
+	 * @param string $content    Block content. Default empty string.
+	 * @return string Rendered block type output.
+	 */
+	public static function render_product_new( $attributes, $content ) {
+		require_once dirname( __FILE__ ) . '/class-wgpb-block-product-new.php';
+
+		$block = new WGPB_Block_Product_New( $attributes, $content );
+		return $block->render();
+	}
+
+	/**
+	 * Sale products: Include and render the dynamic block.
+	 *
+	 * @param array  $attributes Block attributes. Default empty array.
+	 * @param string $content    Block content. Default empty string.
+	 * @return string Rendered block type output.
+	 */
+	public static function render_product_on_sale( $attributes, $content ) {
+		require_once dirname( __FILE__ ) . '/class-wgpb-block-product-on-sale.php';
+
+		$block = new WGPB_Block_Product_On_Sale( $attributes, $content );
+		return $block->render();
 	}
 }
 

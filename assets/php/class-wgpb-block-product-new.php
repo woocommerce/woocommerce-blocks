@@ -32,15 +32,3 @@ class WGPB_Block_Product_New extends WGPB_Block_Grid_Base {
 		$query_args['order']   = 'DESC';
 	}
 }
-
-/**
- * Render the Newest Products block.
- *
- * @param array  $attributes Block attributes. Default empty array.
- * @param string $content    Block content. Default empty string.
- * @return string Rendered block type output.
- */
-function wgpb_block_render_product_new( $attributes, $content ) {
-	$block = new WGPB_Block_Product_New( $attributes, $content );
-	return $block->render();
-}
