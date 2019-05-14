@@ -89,7 +89,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Fix: Improved fetching products from API, so searching for products in Featured Product & Hand-picked Products is faster for stores with over 200 products.
 - Fix: It might be possible to request over 100 products for the editor preview, but this would cause an API error - we now limit the preview request to 100 products.
 - Build: Update build script to show visual progress indicator.
-- Build: Update packages
+- Build: Update packages.
 
 = 2.0.1 - 2019-04-22 =
 
