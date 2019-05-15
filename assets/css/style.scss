@@ -2,26 +2,31 @@
 .wp-block-woocommerce-product-best-sellers,
 .wp-block-woocommerce-product-category,
 .wp-block-woocommerce-product-top-rated,
-.wp-block-woocommerce-products-by-attribute {
+.wp-block-woocommerce-products-by-attribute,
+.wc-block-grid {
 	&.is-hidden-title {
+		.wc-block-grid__product-title,
 		.woocommerce-loop-product__title {
 			display: none !important;
 		}
 	}
 
 	&.is-hidden-price {
+		.wc-block-grid__product-price,
 		.price {
 			display: none !important;
 		}
 	}
 
 	&.is-hidden-rating {
+		.wc-block-grid__product-rating,
 		.star-rating {
 			display: none;
 		}
 	}
 
 	&.is-hidden-button {
+		.wc-block-grid__product-button,
 		.add_to_cart_button {
 			display: none !important;
 		}
