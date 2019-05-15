@@ -42,11 +42,11 @@
 		height: 1.618em;
 		line-height: 1.618;
 		font-size: 1em;
-		font-family: star;
+		font-family: star; /* stylelint-disable-line */
 		font-weight: 400;
 
 		&::before {
-			content: '\53\53\53\53\53';
+			content: "\53\53\53\53\53";
 			top: 0;
 			left: 0;
 			right: 0;
@@ -64,7 +64,7 @@
 		}
 
 		span::before {
-			content: '\53\53\53\53\53';
+			content: "\53\53\53\53\53";
 			top: 0;
 			left: 0;
 			right: 0;
