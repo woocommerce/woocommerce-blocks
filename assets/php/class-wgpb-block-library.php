@@ -342,12 +342,24 @@ class WGPB_Block_Library {
 				'default' => 'any',
 			),
 			'contentVisibility' => array(
-				'type'    => 'object',
-				'default' => array(
-					'title'  => true,
-					'price'  => true,
-					'rating' => true,
-					'button' => true,
+				'type'       => 'object',
+				'properties' => array(
+					'title'  => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'price'  => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'rating' => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'button' => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
 				),
 			),
 		);
