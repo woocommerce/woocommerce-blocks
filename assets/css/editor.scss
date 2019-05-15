@@ -13,7 +13,14 @@
 	fill: currentColor;
 }
 
-.wc-block-products-grid {
+// Remove the list styling, which is added back by core GB styles.
+.editor-styles-wrapper .wc-block-grid {
+	list-style: none;
+	margin-left: 0;
+}
+
+.wc-block-products-grid,
+.wc-block-grid {
 	overflow: hidden;
 	display: flex;
 	flex-wrap: wrap;
