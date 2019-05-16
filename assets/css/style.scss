@@ -46,7 +46,7 @@
 	@for $i from 2 to 9 {
 		&.has-#{$i}-columns .wc-block-grid__product {
 			flex: 1 0 calc(#{ 100% / $i });
-			max-width: 100% / $i !important;
+			max-width: 100% / $i;
 		}
 	}
 
@@ -69,8 +69,8 @@
 		}
 
 		.wc-block-grid__product-add-to-cart {
-			font-size: 0.8em !important;
-			line-height: 1.4 !important;
+			font-size: 0.8em;
+			line-height: 1.4;
 		}
 	}
 
