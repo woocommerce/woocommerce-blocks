@@ -201,10 +201,9 @@ abstract class WGPB_Block_Grid_Base {
 	public function render() {
 		$products = $this->get_products();
 		$classes  = $this->get_container_classes();
+		$output   = implode( '', array_map( array( $this, 'render_product' ), $products ) );
 
-		$output = implode( '', array_map( array( $this, 'render_product' ), $products ) );
-
-		return sprintf( '<div class="woocommerce"><ul class="%s">%s</ul></div>', esc_attr( $classes ), $output );
+		return sprintf( '<div class="%s"><ul class="wc-block-grid__products products">%s</ul></div>', esc_attr( $classes ), $output );
 	}
 
 	/**
@@ -218,7 +217,7 @@ abstract class WGPB_Block_Grid_Base {
 			"wc-block-{$this->block_name}",
 			"wp-block-{$this->block_name}",
 			"has-{$this->attributes['columns']}-columns",
-			'products',
+			'woocommerce',
 		);
 
 		if ( $this->attributes['rows'] > 1 ) {
