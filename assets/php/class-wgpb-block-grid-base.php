@@ -228,22 +228,6 @@ abstract class WGPB_Block_Grid_Base {
 			$classes[] = "align{$this->attributes['align']}";
 		}
 
-		if ( empty( $this->attributes['contentVisibility']['title'] ) ) {
-			$classes[] = 'is-hidden-title';
-		}
-
-		if ( empty( $this->attributes['contentVisibility']['price'] ) ) {
-			$classes[] = 'is-hidden-price';
-		}
-
-		if ( empty( $this->attributes['contentVisibility']['rating'] ) ) {
-			$classes[] = 'is-hidden-rating';
-		}
-
-		if ( empty( $this->attributes['contentVisibility']['button'] ) ) {
-			$classes[] = 'is-hidden-button';
-		}
-
 		return implode( ' ', $classes );
 	}
 
