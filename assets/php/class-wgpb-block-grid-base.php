@@ -216,6 +216,7 @@ abstract class WGPB_Block_Grid_Base {
 		$classes = array(
 			'wc-block-grid',
 			"wc-block-{$this->block_name}",
+			"wp-block-{$this->block_name}",
 			"has-{$this->attributes['columns']}-columns",
 			'products',
 		);
