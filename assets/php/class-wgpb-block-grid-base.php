@@ -244,41 +244,108 @@ abstract class WGPB_Block_Grid_Base {
 			return '';
 		}
 
-		// Get escaped data to insert into template.
 		$data = (object) array(
-			'permalink'  => $product->get_permalink(),
-			'image'      => $product->get_image( 'woocommerce_thumbnail' ),
-			'title'      => $product->get_title(),
-			'rating'     => $this->get_rating( $product ),
-			'sale_badge' => $this->get_sale_badge( $product ),
-			'price'      => $product->get_price_html(),
-			'button'     => $this->get_add_to_cart( $product ),
+			'permalink' => $product->get_permalink(),
+			'image'     => $this->get_image_html( $product ),
+			'title'     => $this->get_title_html( $product ),
+			'rating'    => $this->get_rating_html( $product ),
+			'price'     => $this->get_price_html( $product ),
+			'button'    => $this->get_button_html( $product ),
 		);
 
 		return "
-		<li class=\"wc-block-grid__product product\">
-			<a href=\"{$data->permalink}\" class=\"wc-block-grid__product-link\">
-				<div class=\"wc-block-grid__product-image\">{$data->image}</div>
-				<div class=\"wc-block-grid__product-title\">{$data->title}</div>
-				<div class=\"wc-block-grid__product-rating\">{$data->rating}</div>
-				<div class=\"wc-block-grid__product-on-sale\">{$data->sale_badge}</div>
-				<div class=\"wc-block-grid__product-price\">{$data->price}</div>
-			</a>
-			<div class=\"wc-block-grid__product-add-to-cart\">{$data->button}</div>
-		</li>";
+			<li class=\"wc-block-grid__product product\">
+				<a href=\"{$data->permalink}\" class=\"wc-block-grid__product-link\">
+					{$data->image}
+					{$data->title}
+					{$data->rating}
+					{$data->price}
+				</a>
+				{$data->button}
+			</li>
+		";
 	}
 
 	/**
-	 * Get the sale badge.
+	 * Get the product image.
+	 *
+	 * @param WC_Product $product Product.
+	 * @return string
+	 */
+	protected function get_image_html( $product ) {
+		return '<div class="wc-block-grid__product-image">' . $product->get_image( 'woocommerce_thumbnail' ) . '</div>';
+	}
+
+	/**
+	 * Get the product title.
+	 *
+	 * @param WC_Product $product Product.
+	 * @return string
+	 */
+	protected function get_title_html( $product ) {
+		if ( empty( $this->attributes['contentVisibility']['title'] ) ) {
+			return '';
+		}
+		return '<div class="wc-block-grid__product-title">' . $product->get_title() . '</div>';
+	}
+
+	/**
+	 * Render the rating icons.
 	 *
 	 * @param WC_Product $product Product.
 	 * @return string Rendered product output.
 	 */
-	protected function get_sale_badge( $product ) {
-		if ( $product->is_on_sale() ) {
-			return '<span class="onsale">' . esc_html__( 'Sale!', 'woo-gutenberg-products-block' ) . '</span>';
+	protected function get_rating_html( $product ) {
+		if ( empty( $this->attributes['contentVisibility']['rating'] ) ) {
+			return '';
+		}
+		$rating_count = $product->get_rating_count();
+		$review_count = $product->get_review_count();
+		$average      = $product->get_average_rating();
+
+		if ( $rating_count > 0 ) {
+			return sprintf(
+				'<div class="wc-block-grid__product-rating woocommerce-product-rating">%s</div>',
+				wc_get_rating_html( $average, $rating_count )
+			);
 		}
 		return '';
+	}
+
+	/**
+	 * Get the price.
+	 *
+	 * @param WC_Product $product Product.
+	 * @return string Rendered product output.
+	 */
+	protected function get_price_html( $product ) {
+		if ( empty( $this->attributes['contentVisibility']['price'] ) ) {
+			return '';
+		}
+		$badge = '';
+
+		if ( $product->is_on_sale() ) {
+			$badge = '<span class="wc-block-grid__product-onsale onsale">' . esc_html__( 'Sale!', 'woo-gutenberg-products-block' ) . '</span>';
+		}
+
+		return sprintf(
+			'<div class="wc-block-grid__product-price">%s%s</div>',
+			$product->get_price_html(),
+			$badge
+		);
+	}
+
+	/**
+	 * Get the button.
+	 *
+	 * @param WC_Product $product Product.
+	 * @return string Rendered product output.
+	 */
+	protected function get_button_html( $product ) {
+		if ( empty( $this->attributes['contentVisibility']['button'] ) ) {
+			return '';
+		}
+		return '<div class="wc-block-grid__product-add-to-cart">' . $this->get_add_to_cart( $product ) . '</div>';
 	}
 
 	/**
@@ -305,26 +372,5 @@ abstract class WGPB_Block_Grid_Base {
 			esc_attr( $product->add_to_cart_description() ),
 			esc_html( $product->add_to_cart_text() )
 		);
-	}
-
-	/**
-	 * Render the rating icons.
-	 *
-	 * @param WC_Product $product Product.
-	 * @return string Rendered product output.
-	 */
-	public function get_rating( $product ) {
-		$rating_count = $product->get_rating_count();
-		$review_count = $product->get_review_count();
-		$average      = $product->get_average_rating();
-
-		if ( $rating_count > 0 ) {
-			return sprintf(
-				'<div class="woocommerce-product-rating wc-block-grid__product-rating">%s</div>',
-				wc_get_rating_html( $average, $rating_count )
-			);
-		}
-
-		return '';
 	}
 }
