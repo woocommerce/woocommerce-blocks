@@ -250,6 +250,7 @@ abstract class WGPB_Block_Grid_Base {
 			'title'     => $this->get_title_html( $product ),
 			'rating'    => $this->get_rating_html( $product ),
 			'price'     => $this->get_price_html( $product ),
+			'badge'     => $this->get_sale_badge_html( $product ),
 			'button'    => $this->get_button_html( $product ),
 		);
 
@@ -261,6 +262,7 @@ abstract class WGPB_Block_Grid_Base {
 					{$data->title}
 				</a>
 				{$data->price}
+				{$data->badge}
 				{$data->rating}
 				{$data->button}
 			</li>",
@@ -332,10 +334,27 @@ abstract class WGPB_Block_Grid_Base {
 		}
 
 		return sprintf(
-			'<div class="wc-block-grid__product-price price">%s%s</div>',
-			$product->get_price_html(),
-			$badge
+			'<div class="wc-block-grid__product-price price">%s</div>',
+			$product->get_price_html()
 		);
+	}
+
+	/**
+	 * Get the sale badge.
+	 *
+	 * @param WC_Product $product Product.
+	 * @return string Rendered product output.
+	 */
+	protected function get_sale_badge_html( $product ) {
+		if ( empty( $this->attributes['contentVisibility']['price'] ) ) {
+			return '';
+		}
+
+		if ( ! $product->is_on_sale() ) {
+			return;
+		}
+
+		return '<span class="wc-block-grid__product-onsale onsale">' . esc_html__( 'Sale!', 'woo-gutenberg-products-block' ) . '</span>';
 	}
 
 	/**
