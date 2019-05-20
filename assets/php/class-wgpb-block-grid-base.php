@@ -253,17 +253,20 @@ abstract class WGPB_Block_Grid_Base {
 			'button'    => $this->get_button_html( $product ),
 		);
 
-		return "
-			<li class=\"wc-block-grid__product product\">
+		return apply_filters(
+			'woocommerce_blocks_product_grid_item_html',
+			"<li class=\"wc-block-grid__product product\">
 				<a href=\"{$data->permalink}\" class=\"wc-block-grid__product-link\">
 					{$data->image}
 					{$data->title}
-					{$data->rating}
-					{$data->price}
 				</a>
+				{$data->price}
+				{$data->rating}
 				{$data->button}
-			</li>
-		";
+			</li>",
+			$data,
+			$product
+		);
 	}
 
 	/**
