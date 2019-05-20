@@ -245,7 +245,7 @@ abstract class WGPB_Block_Grid_Base {
 		}
 
 		$data = (object) array(
-			'permalink' => $product->get_permalink(),
+			'permalink' => esc_url( $product->get_permalink() ),
 			'image'     => $this->get_image_html( $product ),
 			'title'     => $this->get_title_html( $product ),
 			'rating'    => $this->get_rating_html( $product ),
