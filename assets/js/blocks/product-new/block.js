@@ -142,22 +142,24 @@ class ProductNewestBlock extends Component {
 			<Fragment>
 				{ this.getInspectorControls() }
 				<div className={ classes }>
-					{ products.length ? (
-						products.map( ( product ) => (
-							<ProductPreview product={ product } key={ product.id } />
-						) )
-					) : (
-						<Placeholder
-							icon={ <IconNewReleases /> }
-							label={ __( 'Newest Products', 'woo-gutenberg-products-block' ) }
-						>
-							{ ! loaded ? (
-								<Spinner />
-							) : (
-								__( 'No products found.', 'woo-gutenberg-products-block' )
-							) }
-						</Placeholder>
-					) }
+					<div className="wc-block-grid__products">
+						{ products.length ? (
+							products.map( ( product ) => (
+								<ProductPreview product={ product } key={ product.id } />
+							) )
+						) : (
+							<Placeholder
+								icon={ <IconNewReleases /> }
+								label={ __( 'Newest Products', 'woo-gutenberg-products-block' ) }
+							>
+								{ ! loaded ? (
+									<Spinner />
+								) : (
+									__( 'No products found.', 'woo-gutenberg-products-block' )
+								) }
+							</Placeholder>
+						) }
+					</div>
 				</div>
 			</Fragment>
 		);
