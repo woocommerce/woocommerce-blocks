@@ -18,8 +18,8 @@ const WooLogo = ( { size = 20, className } ) => (
 );
 
 WooLogo.propTypes = {
-	size: PropTypes.string,
-	className: PropTypes.array,
+	size: PropTypes.number,
+	className: PropTypes.string,
 };
 
 export default WooLogo;
