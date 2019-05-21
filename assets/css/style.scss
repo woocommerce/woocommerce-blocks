@@ -71,8 +71,14 @@
 				display: block;
 			}
 
+			.wp-block-button {
+				margin: 0;
+			}
+
 			.wc-block-grid__product-add-to-cart {
 				margin: $gap 0 0 0;
+				word-break: break-word;
+				white-space: normal;
 
 				a {
 					word-break: break-word;
@@ -113,6 +119,7 @@
 			font-size: 0.8em;
 		}
 
+		.wp-block-button span.wc-block-grid__product-add-to-cart,
 		.wc-block-grid__product-add-to-cart a {
 			font-size: 0.8em;
 			line-height: 1.4;
