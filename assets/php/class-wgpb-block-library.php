@@ -53,7 +53,6 @@ class WGPB_Block_Library {
 		}
 		self::register_blocks();
 		self::register_assets();
-		add_filter( 'block_categories', array( 'WGPB_Block_Library', 'add_block_category' ) );
 		add_action( 'admin_print_footer_scripts', array( 'WGPB_Block_Library', 'print_script_settings' ), 1 );
 	}
 
@@ -220,27 +219,6 @@ class WGPB_Block_Library {
 				'editor_script'   => 'wc-featured-product',
 				'editor_style'    => 'wc-block-editor',
 				'style'           => 'wc-block-style',
-			)
-		);
-	}
-
-	/**
-	 * Adds a WooCommerce category to the block inserter.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @param array $categories Array of categories.
-	 * @return array Array of block categories.
-	 */
-	public static function add_block_category( $categories ) {
-		return array_merge(
-			$categories,
-			array(
-				array(
-					'slug'  => 'woocommerce',
-					'title' => __( 'WooCommerce', 'woo-gutenberg-products-block' ),
-					'icon'  => 'woocommerce',
-				),
 			)
 		);
 	}
