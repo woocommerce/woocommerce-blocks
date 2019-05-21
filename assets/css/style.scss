@@ -40,7 +40,7 @@
 		.wc-block-grid__product,
 		li.product {
 			padding: 0 $gap 0 0;
-			margin: 0;
+			margin: 0 0 $gap-large 0;
 			float: none;
 			width: auto;
 			position: relative;
@@ -127,18 +127,6 @@
 
 		.wc-block-grid__products {
 			font-size: 0.8em;
-		}
-	}
-
-	&.has-multiple-rows {
-
-		.wc-block-grid__products,
-		ul.products {
-
-			.wc-block-grid__product,
-			li.product {
-				margin-bottom: $gap-large;
-			}
 		}
 	}
 }
