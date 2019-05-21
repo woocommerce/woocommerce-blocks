@@ -355,7 +355,7 @@ class WGPB_Block_Library {
 	 * @return array Modified array of CSS classnames.
 	 */
 	public static function add_theme_body_class( $classes = array() ) {
-		$classes[] = 'theme-' . get_stylesheet();
+		$classes[] = 'theme-' . get_template();
 		return $classes;
 	}
 }
