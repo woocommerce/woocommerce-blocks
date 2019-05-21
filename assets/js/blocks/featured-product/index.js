@@ -10,6 +10,7 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 import './style.scss';
 import './editor.scss';
+import '../../utils/block-category';
 import Block from './block';
 
 /**

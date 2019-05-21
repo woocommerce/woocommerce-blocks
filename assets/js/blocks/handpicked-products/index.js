@@ -10,6 +10,7 @@ import { RawHTML } from '@wordpress/element';
  * Internal dependencies
  */
 import './editor.scss';
+import '../../utils/block-category';
 import Block from './block';
 import getShortcode from '../../utils/get-shortcode';
 import { IconWidgets } from '../../components/icons';

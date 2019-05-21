@@ -8,6 +8,7 @@ import { without } from 'lodash';
 /**
  * Internal dependencies
  */
+import '../../utils/block-category';
 import Block from './block';
 import { deprecatedConvertToShortcode } from '../../utils/deprecations';
 import { IconNewReleases } from '../../components/icons';
