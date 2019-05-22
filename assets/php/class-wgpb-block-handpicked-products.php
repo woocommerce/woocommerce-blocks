@@ -28,6 +28,9 @@ class WGPB_Block_Handpicked_Products extends WGPB_Block_Grid_Base {
 	 * @param array $query_args Query args.
 	 */
 	protected function set_block_query_args( &$query_args ) {
-		$query_args['post__in'] = array_map( 'absint', $this->attributes['products'] );
+		$ids = array_map( 'absint', $this->attributes['products'] );
+
+		$query_args['post__in']       = $ids;
+		$query_args['posts_per_page'] = count( $ids );
 	}
 }
