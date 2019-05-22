@@ -335,6 +335,35 @@ class WGPB_Block_Library {
 	}
 
 	/**
+	 * Get the schema for the contentVisibility attribute
+	 *
+	 * @return array List of block attributes with type and defaults.
+	 */
+	public static function get_schema_content_visibility() {
+		return array(
+			'type'       => 'object',
+			'properties' => array(
+				'title'  => array(
+					'type'    => 'boolean',
+					'default' => true,
+				),
+				'price'  => array(
+					'type'    => 'boolean',
+					'default' => true,
+				),
+				'rating' => array(
+					'type'    => 'boolean',
+					'default' => true,
+				),
+				'button' => array(
+					'type'    => 'boolean',
+					'default' => true,
+				),
+			),
+		);
+	}
+
+	/**
 	 * Get a set of attributes shared across most of the grid blocks.
 	 *
 	 * @return array List of block attributes with type and defaults.
@@ -360,27 +389,7 @@ class WGPB_Block_Library {
 				'type'    => 'string',
 				'default' => 'any',
 			),
-			'contentVisibility' => array(
-				'type'       => 'object',
-				'properties' => array(
-					'title'  => array(
-						'type'    => 'boolean',
-						'default' => true,
-					),
-					'price'  => array(
-						'type'    => 'boolean',
-						'default' => true,
-					),
-					'rating' => array(
-						'type'    => 'boolean',
-						'default' => true,
-					),
-					'button' => array(
-						'type'    => 'boolean',
-						'default' => true,
-					),
-				),
-			),
+			'contentVisibility' => self::get_schema_content_visibility(),
 		);
 	}
 
