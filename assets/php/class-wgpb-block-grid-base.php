@@ -203,7 +203,7 @@ abstract class WGPB_Block_Grid_Base {
 		$classes  = $this->get_container_classes();
 		$output   = implode( '', array_map( array( $this, 'render_product' ), $products ) );
 
-		return sprintf( '<div class="%s"><ul class="wc-block-grid__products products">%s</ul></div>', esc_attr( $classes ), $output );
+		return sprintf( '<div class="%s"><ul class="wc-block-grid__products">%s</ul></div>', esc_attr( $classes ), $output );
 	}
 
 	/**
@@ -217,7 +217,6 @@ abstract class WGPB_Block_Grid_Base {
 			"wp-block-{$this->block_name}",
 			"wc-block-{$this->block_name}",
 			"has-{$this->attributes['columns']}-columns",
-			'woocommerce',
 		);
 
 		if ( $this->attributes['rows'] > 1 ) {
@@ -256,7 +255,7 @@ abstract class WGPB_Block_Grid_Base {
 
 		return apply_filters(
 			'woocommerce_blocks_product_grid_item_html',
-			"<li class=\"wc-block-grid__product product\">
+			"<li class=\"wc-block-grid__product\">
 				<a href=\"{$data->permalink}\" class=\"wc-block-grid__product-link\">
 					{$data->image}
 					{$data->title}
@@ -310,7 +309,7 @@ abstract class WGPB_Block_Grid_Base {
 
 		if ( $rating_count > 0 ) {
 			return sprintf(
-				'<div class="wc-block-grid__product-rating woocommerce-product-rating">%s</div>',
+				'<div class="wc-block-grid__product-rating">%s</div>',
 				wc_get_rating_html( $average, $rating_count )
 			);
 		}
@@ -327,12 +326,6 @@ abstract class WGPB_Block_Grid_Base {
 		if ( empty( $this->attributes['contentVisibility']['price'] ) ) {
 			return '';
 		}
-		$badge = '';
-
-		if ( $product->is_on_sale() ) {
-			$badge = '<span class="wc-block-grid__product-onsale onsale">' . esc_html__( 'Sale!', 'woo-gutenberg-products-block' ) . '</span>';
-		}
-
 		return sprintf(
 			'<div class="wc-block-grid__product-price price">%s</div>',
 			$product->get_price_html()
@@ -354,7 +347,7 @@ abstract class WGPB_Block_Grid_Base {
 			return;
 		}
 
-		return '<span class="wc-block-grid__product-onsale onsale">' . esc_html__( 'Sale!', 'woo-gutenberg-products-block' ) . '</span>';
+		return '<span class="wc-block-grid__product-onsale">' . esc_html__( 'Sale!', 'woo-gutenberg-products-block' ) . '</span>';
 	}
 
 	/**

@@ -1,3 +1,5 @@
+@import "shared.scss";
+
 .wp-block-woocommerce-handpicked-products,
 .wp-block-woocommerce-product-best-sellers,
 .wp-block-woocommerce-product-category,
@@ -28,115 +30,7 @@
 	}
 }
 
-.wc-block-grid {
 
-	.wc-block-grid__products,
-	ul.products {
-		display: flex;
-		flex-wrap: wrap;
-		list-style: none;
-		padding-left: 0;
-
-		.wc-block-grid__product,
-		li.product {
-			padding: 0 $gap 0 0;
-			margin: 0 0 $gap-large 0;
-			float: none;
-			width: auto;
-			position: relative;
-
-			.wc-block-grid__product-link {
-				text-decoration: none;
-			}
-
-			.wc-block-grid__product-image {
-				text-decoration: none;
-				margin-bottom: $gap;
-				display: block;
-
-				img {
-					vertical-align: middle;
-				}
-			}
-
-			.wc-block-grid__product-title {
-				line-height: 1.2;
-				font-weight: 700;
-			}
-
-			.wc-block-grid__product-title,
-			.wc-block-grid__product-price,
-			.wc-block-grid__product-rating {
-				margin-bottom: $gap-small;
-				display: block;
-			}
-
-			.wp-block-button {
-				margin: 0;
-			}
-
-			.wc-block-grid__product-add-to-cart {
-				margin: $gap 0 0 0;
-				word-break: break-word;
-				white-space: normal;
-
-				a {
-					word-break: break-word;
-					white-space: normal;
-					margin: 0;
-				}
-			}
-		}
-	}
-
-	&.has-1-columns {
-
-		.wc-block-grid__products {
-			display: block;
-		}
-
-		.wc-block-grid__product {
-			margin-left: auto;
-			margin-right: auto;
-		}
-	}
-
-	@for $i from 2 to 9 {
-		&.has-#{$i}-columns .wc-block-grid__product {
-			flex: 1 0 calc(#{ 100% / $i });
-			max-width: 100% / $i;
-		}
-	}
-
-	.wc-block-grid__products {
-		font-size: 1em;
-
-		.wc-block-grid__product-title {
-			font-size: 1em;
-		}
-
-		.wc-block-grid__product-price {
-			font-size: 0.8em;
-		}
-
-		.wp-block-button span.wc-block-grid__product-add-to-cart,
-		.wc-block-grid__product-add-to-cart a {
-			font-size: 0.8em;
-			line-height: 1.4;
-		}
-	}
-
-	&.has-4-columns:not(.alignwide):not(.alignfull),
-	&.has-5-columns:not(.alignfull),
-	&.has-6-columns:not(.alignfull),
-	&.has-7-columns,
-	&.has-8-columns {
-
-		.wc-block-grid__products {
-			font-size: 0.8em;
-		}
-	}
-}
 
 // Theme specific styles.
 .theme-storefront {
