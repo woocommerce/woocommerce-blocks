@@ -6,13 +6,6 @@
 	overflow: hidden;
 }
 
-// Change the color of WooCommerce block icons.
-button[class*="editor-block-list-item-woocommerce-"] {
-	.block-editor-block-types-list__item-icon {
-		color: #96588a;
-	}
-}
-
 // Align the block icons in edit mode
 .components-placeholder__label .gridicon,
 .components-placeholder__label .material-icon {
