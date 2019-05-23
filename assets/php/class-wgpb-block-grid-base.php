@@ -370,21 +370,23 @@ abstract class WGPB_Block_Grid_Base {
 	 * @return string Rendered product output.
 	 */
 	protected function get_add_to_cart( $product ) {
+		$attributes = array(
+			'aria-label'       => $product->add_to_cart_description(),
+			'data-quantity'    => '1',
+			'data-product_id'  => $product->get_id(),
+			'data-product_sku' => $product->get_sku(),
+			'rel'              => 'nofollow',
+			'class'            => 'wp-block-button__link add_to_cart_button',
+		);
+
 		if ( $product->supports( 'ajax_add_to_cart' ) ) {
-			return sprintf(
-				'<a href="%1$s" data-quantity="1" data-product_id="%2$s" data-product_sku="%3$s" class="wp-block-button__link add_to_cart_button ajax_add_to_cart" rel="nofollow" aria-label="%4$s">%5$s</a>',
-				esc_url( $product->add_to_cart_url() ),
-				esc_attr( $product->get_id() ),
-				esc_attr( $product->get_sku() ),
-				esc_attr( $product->add_to_cart_description() ),
-				esc_html( $product->add_to_cart_text() )
-			);
+			$attributes['class'] .= ' ajax_add_to_cart';
 		}
 
 		return sprintf(
-			'<a href="%1$s" class="wp-block-button__link add_to_cart_button" rel="nofollow" aria-label="%2$s">%3$s</a>',
+			'<a href="%s" %s>%s</a>',
 			esc_url( $product->add_to_cart_url() ),
-			esc_attr( $product->add_to_cart_description() ),
+			wc_implode_html_attributes( $attributes ),
 			esc_html( $product->add_to_cart_text() )
 		);
 	}

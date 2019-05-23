@@ -1,58 +1,7 @@
 @import "shared.scss";
 
-.wp-block-woocommerce-handpicked-products,
-.wp-block-woocommerce-product-best-sellers,
-.wp-block-woocommerce-product-category,
-.wp-block-woocommerce-product-top-rated,
-.wp-block-woocommerce-products-by-attribute {
-	&.is-hidden-title {
-		.woocommerce-loop-product__title {
-			display: none !important;
-		}
-	}
-
-	&.is-hidden-price {
-		.price {
-			display: none !important;
-		}
-	}
-
-	&.is-hidden-rating {
-		.star-rating {
-			display: none;
-		}
-	}
-
-	&.is-hidden-button {
-		.add_to_cart_button {
-			display: none !important;
-		}
-	}
-}
-
-
-
-// Theme specific styles.
-.theme-storefront {
-	.site-main .wc-block-grid ul.products li.product {
-		margin-right: 0;
-		margin-top: 0;
-	}
-}
-.theme-twentyfifteen {
-	.wc-block-grid {
-		// Align sale image to correct position due to flexbox padding.
-		ul.products li.product .wc-block-grid__product-onsale {
-			right: $gap;
-		}
-	}
-}
 .theme-twentysixteen {
 	.wc-block-grid {
-		// Align sale image to correct position due to flexbox padding.
-		ul.products li.product .wc-block-grid__product-onsale {
-			right: $gap;
-		}
 		// Prevent white theme styles.
 		.price ins {
 			color: #77a464;
@@ -61,7 +10,8 @@
 }
 .theme-twentynineteen {
 	// Change the title font to match headings.
-	.wc-block-grid__product-title {
+	.wc-block-grid__product-title,
+	.wc-block-grid__product-onsale {
 		font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 	}
 }
