@@ -54,28 +54,8 @@ class WGPB_Block_Library {
 		self::register_blocks();
 		self::register_assets();
 		add_filter( 'block_categories', array( 'WGPB_Block_Library', 'add_block_category' ) );
-		add_filter( 'woocommerce_enqueue_styles', array( 'WGPB_Block_Library', 'enqueue_styles' ), 20 );
 		add_action( 'admin_print_footer_scripts', array( 'WGPB_Block_Library', 'print_script_settings' ), 1 );
 		add_action( 'body_class', array( 'WGPB_Block_Library', 'add_theme_body_class' ), 1 );
-	}
-
-	/**
-	 * Add block styles to WooCommmerce.
-	 *
-	 * @internal This is here instead of register_block_type so styles can be unhooked, and so they are loaded after Woo core styles.
-	 *
-	 * @param array $styles Array of Woo core stylesheets.
-	 * @return array
-	 */
-	public static function enqueue_styles( $styles ) {
-		$styles['woocommerce-blocks'] = array(
-			'src'     => plugins_url( 'build/style.css', WGPB_PLUGIN_FILE ),
-			'deps'    => array(),
-			'version' => self::get_file_version( 'build/style.css' ),
-			'media'   => 'all',
-			'has_rtl' => false,
-		);
-		return $styles;
 	}
 
 	/**
@@ -135,6 +115,7 @@ class WGPB_Block_Library {
 	 */
 	public static function register_assets() {
 		self::register_style( 'wc-block-editor', plugins_url( 'build/editor.css', WGPB_PLUGIN_FILE ), array( 'wp-edit-blocks' ) );
+		self::register_style( 'wc-block-style', plugins_url( 'build/style.css', WGPB_PLUGIN_FILE ), array() );
 
 		// Shared libraries and components across all blocks.
 		self::register_script( 'wc-vendors', plugins_url( 'build/vendors.js', WGPB_PLUGIN_FILE ), array(), false );
@@ -180,6 +161,7 @@ class WGPB_Block_Library {
 			array(
 				'editor_script' => 'wc-handpicked-products',
 				'editor_style'  => 'wc-block-editor',
+				'style'         => 'wc-block-style',
 			)
 		);
 		register_block_type(
@@ -187,6 +169,7 @@ class WGPB_Block_Library {
 			array(
 				'editor_script' => 'wc-product-best-sellers',
 				'editor_style'  => 'wc-block-editor',
+				'style'         => 'wc-block-style',
 			)
 		);
 		register_block_type(
@@ -194,6 +177,7 @@ class WGPB_Block_Library {
 			array(
 				'editor_script' => 'wc-product-category',
 				'editor_style'  => 'wc-block-editor',
+				'style'         => 'wc-block-style',
 			)
 		);
 		register_block_type(
@@ -202,6 +186,7 @@ class WGPB_Block_Library {
 				'render_callback' => array( __CLASS__, 'render_product_new' ),
 				'editor_script'   => 'wc-product-new',
 				'editor_style'    => 'wc-block-editor',
+				'style'           => 'wc-block-style',
 				'attributes'      => self::get_shared_attributes(),
 			)
 		);
@@ -211,6 +196,7 @@ class WGPB_Block_Library {
 				'render_callback' => array( __CLASS__, 'render_product_on_sale' ),
 				'editor_script'   => 'wc-product-on-sale',
 				'editor_style'    => 'wc-block-editor',
+				'style'           => 'wc-block-style',
 				'attributes'      => array_merge(
 					self::get_shared_attributes(),
 					array(
@@ -227,6 +213,7 @@ class WGPB_Block_Library {
 			array(
 				'editor_script' => 'wc-product-top-rated',
 				'editor_style'  => 'wc-block-editor',
+				'style'         => 'wc-block-style',
 			)
 		);
 		register_block_type(
@@ -234,6 +221,7 @@ class WGPB_Block_Library {
 			array(
 				'editor_script' => 'wc-products-attribute',
 				'editor_style'  => 'wc-block-editor',
+				'style'         => 'wc-block-style',
 			)
 		);
 		register_block_type(
@@ -242,6 +230,7 @@ class WGPB_Block_Library {
 				'render_callback' => array( 'WGPB_Block_Featured_Product', 'render' ),
 				'editor_script'   => 'wc-featured-product',
 				'editor_style'    => 'wc-block-editor',
+				'style'           => 'wc-block-style',
 			)
 		);
 	}
