@@ -64,7 +64,7 @@
 						padding-right: 2.618em;
 
 						&::after {
-							font-family: "WooCommerce";
+							font-family: WooCommerce; /* stylelint-disable-line */
 							content: "\e01c";
 							vertical-align: top;
 							font-weight: 400;
@@ -76,7 +76,7 @@
 					}
 
 					&.added::after {
-						font-family: "WooCommerce";
+						font-family: WooCommerce; /* stylelint-disable-line */
 						content: "\e017";
 						margin-left: 0.53em;
 						vertical-align: bottom;
@@ -100,7 +100,7 @@
 				display: inline-block;
 				font-size: 0.75em;
 				line-height: 1;
-				padding: .5em;
+				padding: 0.5em;
 				z-index: 9;
 				text-transform: uppercase;
 			}
