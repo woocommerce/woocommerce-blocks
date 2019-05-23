@@ -11,7 +11,6 @@ import { RawHTML } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import '../../utils/block-category';
 import Block from './block';
 import getShortcode from '../../utils/get-shortcode';
 import sharedAttributes, { sharedAttributeBlockTypes } from '../../utils/shared-attributes';

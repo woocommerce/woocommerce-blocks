@@ -116,6 +116,7 @@ class WGPB_Block_Library {
 		self::register_style( 'wc-block-style', plugins_url( 'build/style.css', WGPB_PLUGIN_FILE ), array() );
 
 		// Shared libraries and components across all blocks.
+		self::register_script( 'wc-blocks', plugins_url( 'build/blocks.js', WGPB_PLUGIN_FILE ), array(), false );
 		self::register_script( 'wc-vendors', plugins_url( 'build/vendors.js', WGPB_PLUGIN_FILE ), array(), false );
 
 		$block_dependencies = array(
@@ -132,6 +133,7 @@ class WGPB_Block_Library {
 			'wp-i18n',
 			'wp-url',
 			'lodash',
+			'wc-blocks',
 			'wc-vendors',
 		);
 

@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { IconWoo } from '../components/icons';
+import { IconWoo } from './components/icons';
 
 setCategories( [
 	...getCategories().filter( ( { slug } ) => slug !== 'woocommerce' ),
