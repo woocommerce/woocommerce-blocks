@@ -31,6 +31,7 @@ const GutenbergBlocksConfig = {
 		'handpicked-products': './assets/js/blocks/handpicked-products/index.js',
 		'product-best-sellers': './assets/js/blocks/product-best-sellers/index.js',
 		'product-category': './assets/js/blocks/product-category/index.js',
+		'product-categories': './assets/js/blocks/product-categories/index.js',
 		'product-new': './assets/js/blocks/product-new/index.js',
 		'product-on-sale': './assets/js/blocks/product-on-sale/index.js',
 		'product-top-rated': './assets/js/blocks/product-top-rated/index.js',
