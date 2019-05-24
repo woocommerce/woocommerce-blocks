@@ -283,11 +283,11 @@ class WGPB_Block_Library {
 							),
 						),
 					),
-					'editMode' => array(
+					'editMode'          => array(
 						'type'    => 'boolean',
 						'default' => true,
 					),
-					'orderby'  => array(
+					'orderby'           => array(
 						'type'    => 'string',
 						'enum'    => array( 'date', 'popularity', 'price_asc', 'price_desc', 'rating', 'title' ),
 						'default' => 'date',
