@@ -86,8 +86,9 @@ class ProductCategoriesBlock extends Component {
 
 	renderList( items ) {
 		const { hasCount } = this.props.attributes;
+		const parentKey = 'parent-' + items[ 0 ].term_id;
 		return (
-			<ul>
+			<ul key={ parentKey }>
 				{ items.map( ( cat ) => {
 					const count = hasCount ? <span>({ cat.count })</span> : null;
 					return [
@@ -106,7 +107,6 @@ class ProductCategoriesBlock extends Component {
 		return (
 			<SelectControl
 				label={ __( 'Select a category', 'woo-gutenberg-products-block' ) }
-				value={ null }
 				options={ items.map( ( cat ) => ( {
 					label: hasCount ? `${ cat.name } (${ cat.count })` : cat.name,
 					value: cat.term_id,
