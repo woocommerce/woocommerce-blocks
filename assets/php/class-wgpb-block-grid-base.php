@@ -163,17 +163,32 @@ abstract class WGPB_Block_Grid_Base {
 	 * @return array List of product IDs
 	 */
 	protected function get_products() {
-		$query = new WP_Query( $this->get_products_query_args() );
+		$query_hash        = md5( wp_json_encode( $this->attributes ) . __CLASS__ );
+		$transient_name    = 'wc_block_' . $query_hash;
+		$transient_value   = get_transient( $transient_name );
+		$transient_version = WC_Cache_Helper::get_transient_version( 'product_query' );
+
+		if ( isset( $transient_value['value'], $transient_value['version'] ) && $transient_value['version'] === $transient_version ) {
+			$results = $transient_value['value'];
+		} else {
+			$query           = new WP_Query( $this->get_products_query_args() );
+			$results         = wp_parse_id_list( $query->posts );
+			$transient_value = array(
+				'version' => $transient_version,
+				'value'   => $results,
+			);
+			set_transient( $transient_name, $transient_value, DAY_IN_SECONDS * 30 );
+
+			// Remove ordering query arguments which may have been added by get_catalog_ordering_args.
+			WC()->query->remove_ordering_args();
+		}
 
 		// Prime caches to reduce future queries.
 		if ( is_callable( '_prime_post_caches' ) ) {
-			_prime_post_caches( $query->posts );
+			_prime_post_caches( $results );
 		}
 
-		// Remove ordering query arguments which may have been added by get_catalog_ordering_args.
-		WC()->query->remove_ordering_args();
-
-		return wp_parse_id_list( $query->posts );
+		return $results;
 	}
 
 	/**
