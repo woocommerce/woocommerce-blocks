@@ -79,6 +79,14 @@ registerBlockType( 'woocommerce/handpicked-products', {
 			type: 'array',
 			default: [],
 		},
+
+		/**
+		 * How to align cart buttons.
+		 */
+		alignButtons: {
+			type: 'boolean',
+			default: false,
+		},
 	},
 
 	deprecated: [
@@ -112,6 +120,10 @@ registerBlockType( 'woocommerce/handpicked-products', {
 				products: {
 					type: 'array',
 					default: [],
+				},
+				alignButtons: {
+					type: 'boolean',
+					default: false,
 				},
 			},
 			save: deprecatedConvertToShortcode( 'woocommerce/handpicked-products' ),
