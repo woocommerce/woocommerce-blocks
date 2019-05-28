@@ -17,7 +17,10 @@ const blockTypeName = 'woocommerce/product-top-rated';
 
 registerBlockType( blockTypeName, {
 	title: __( 'Top Rated Products', 'woo-gutenberg-products-block' ),
-	icon: <Gridicon icon="trophy" />,
+	icon: {
+		src: <Gridicon icon="trophy" />,
+		foreground: '#96588a',
+	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(

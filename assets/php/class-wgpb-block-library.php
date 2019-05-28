@@ -53,8 +53,8 @@ class WGPB_Block_Library {
 		}
 		self::register_blocks();
 		self::register_assets();
-		add_filter( 'block_categories', array( 'WGPB_Block_Library', 'add_block_category' ) );
 		add_action( 'admin_print_footer_scripts', array( 'WGPB_Block_Library', 'print_script_settings' ), 1 );
+		add_action( 'body_class', array( 'WGPB_Block_Library', 'add_theme_body_class' ), 1 );
 	}
 
 	/**
@@ -117,6 +117,7 @@ class WGPB_Block_Library {
 		self::register_style( 'wc-block-style', plugins_url( 'build/style.css', WGPB_PLUGIN_FILE ), array() );
 
 		// Shared libraries and components across all blocks.
+		self::register_script( 'wc-blocks', plugins_url( 'build/blocks.js', WGPB_PLUGIN_FILE ), array(), false );
 		self::register_script( 'wc-vendors', plugins_url( 'build/vendors.js', WGPB_PLUGIN_FILE ), array(), false );
 
 		$block_dependencies = array(
@@ -133,6 +134,7 @@ class WGPB_Block_Library {
 			'wp-i18n',
 			'wp-url',
 			'lodash',
+			'wc-blocks',
 			'wc-vendors',
 		);
 
@@ -158,17 +160,43 @@ class WGPB_Block_Library {
 		register_block_type(
 			'woocommerce/handpicked-products',
 			array(
-				'editor_script' => 'wc-handpicked-products',
-				'editor_style'  => 'wc-block-editor',
-				'style'         => 'wc-block-style',
+				'render_callback' => array( __CLASS__, 'render_handpicked_products' ),
+				'editor_script'   => 'wc-handpicked-products',
+				'editor_style'    => 'wc-block-editor',
+				'style'           => 'wc-block-style',
+				'attributes'      => array(
+					'columns'           => array(
+						'type'    => 'number',
+						'default' => wc_get_theme_support( 'product_blocks::default_columns', 3 ),
+					),
+					'editMode'          => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'orderby'           => array(
+						'type'    => 'string',
+						'enum'    => array( 'date', 'popularity', 'price_asc', 'price_desc', 'rating', 'title' ),
+						'default' => 'date',
+					),
+					'products'          => array(
+						'type'    => 'array',
+						'items'   => array(
+							'type' => 'number',
+						),
+						'default' => array(),
+					),
+					'contentVisibility' => self::get_schema_content_visibility(),
+				),
 			)
 		);
 		register_block_type(
 			'woocommerce/product-best-sellers',
 			array(
-				'editor_script' => 'wc-product-best-sellers',
-				'editor_style'  => 'wc-block-editor',
-				'style'         => 'wc-block-style',
+				'render_callback' => array( __CLASS__, 'render_product_best_sellers' ),
+				'editor_script'   => 'wc-product-best-sellers',
+				'editor_style'    => 'wc-block-editor',
+				'style'           => 'wc-block-style',
+				'attributes'      => self::get_shared_attributes(),
 			)
 		);
 		register_block_type(
@@ -253,27 +281,6 @@ class WGPB_Block_Library {
 	}
 
 	/**
-	 * Adds a WooCommerce category to the block inserter.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @param array $categories Array of categories.
-	 * @return array Array of block categories.
-	 */
-	public static function add_block_category( $categories ) {
-		return array_merge(
-			$categories,
-			array(
-				array(
-					'slug'  => 'woocommerce',
-					'title' => __( 'WooCommerce', 'woo-gutenberg-products-block' ),
-					'icon'  => 'woocommerce',
-				),
-			)
-		);
-	}
-
-	/**
 	 * Output useful globals before printing any script tags.
 	 *
 	 * These are used by @woocommerce/components & the block library to set up defaults
@@ -337,6 +344,35 @@ class WGPB_Block_Library {
 	}
 
 	/**
+	 * Get the schema for the contentVisibility attribute
+	 *
+	 * @return array List of block attributes with type and defaults.
+	 */
+	public static function get_schema_content_visibility() {
+		return array(
+			'type'       => 'object',
+			'properties' => array(
+				'title'  => array(
+					'type'    => 'boolean',
+					'default' => true,
+				),
+				'price'  => array(
+					'type'    => 'boolean',
+					'default' => true,
+				),
+				'rating' => array(
+					'type'    => 'boolean',
+					'default' => true,
+				),
+				'button' => array(
+					'type'    => 'boolean',
+					'default' => true,
+				),
+			),
+		);
+	}
+
+	/**
 	 * Get a set of attributes shared across most of the grid blocks.
 	 *
 	 * @return array List of block attributes with type and defaults.
@@ -362,27 +398,7 @@ class WGPB_Block_Library {
 				'type'    => 'string',
 				'default' => 'any',
 			),
-			'contentVisibility' => array(
-				'type'       => 'object',
-				'properties' => array(
-					'title'  => array(
-						'type'    => 'boolean',
-						'default' => true,
-					),
-					'price'  => array(
-						'type'    => 'boolean',
-						'default' => true,
-					),
-					'rating' => array(
-						'type'    => 'boolean',
-						'default' => true,
-					),
-					'button' => array(
-						'type'    => 'boolean',
-						'default' => true,
-					),
-				),
-			),
+			'contentVisibility' => self::get_schema_content_visibility(),
 		);
 	}
 
@@ -440,6 +456,45 @@ class WGPB_Block_Library {
 
 		$block = new WGPB_Block_Product_Top_Rated( $attributes, $content );
 		return $block->render();
+	}
+
+	/**
+	 * Best Selling Products: Include and render the dynamic block.
+	 *
+	 * @param array  $attributes Block attributes. Default empty array.
+	 * @param string $content    Block content. Default empty string.
+	 * @return string Rendered block type output.
+	 */
+	public static function render_product_best_sellers( $attributes, $content ) {
+		require_once dirname( __FILE__ ) . '/class-wgpb-block-product-best-sellers.php';
+
+		$block = new WGPB_Block_Product_Best_Sellers( $attributes, $content );
+		return $block->render();
+	}
+
+	/**
+	 * Hand-picked Products: Include and render the dynamic block.
+	 *
+	 * @param array  $attributes Block attributes. Default empty array.
+	 * @param string $content    Block content. Default empty string.
+	 * @return string Rendered block type output.
+	 */
+	public static function render_handpicked_products( $attributes, $content ) {
+		require_once dirname( __FILE__ ) . '/class-wgpb-block-handpicked-products.php';
+
+		$block = new WGPB_Block_Handpicked_Products( $attributes, $content );
+		return $block->render();
+	}
+
+	/**
+	 * Add body classes.
+	 *
+	 * @param array $classes Array of CSS classnames.
+	 * @return array Modified array of CSS classnames.
+	 */
+	public static function add_theme_body_class( $classes = array() ) {
+		$classes[] = 'theme-' . get_template();
+		return $classes;
 	}
 }
 
