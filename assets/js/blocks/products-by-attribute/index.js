@@ -90,6 +90,14 @@ registerBlockType( blockTypeName, {
 			type: 'number',
 			default: wc_product_block_data.default_rows,
 		},
+
+		/**
+		 * How to align cart buttons.
+		 */
+		alignButtons: {
+			type: 'boolean',
+			default: false,
+		},
 	},
 
 	deprecated: [
@@ -128,6 +136,10 @@ registerBlockType( blockTypeName, {
 				rows: {
 					type: 'number',
 					default: wc_product_block_data.default_rows,
+				},
+				alignButtons: {
+					type: 'boolean',
+					default: false,
 				},
 			},
 			save: deprecatedConvertToShortcode( blockTypeName ),
