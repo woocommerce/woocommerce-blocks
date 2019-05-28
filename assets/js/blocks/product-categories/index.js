@@ -45,6 +45,14 @@ registerBlockType( 'woocommerce/product-categories', {
 		},
 
 		/**
+		 * Whether to display product categories as a dropdown (true) or list (false).
+		 */
+		isDropdown: {
+			type: 'boolean',
+			default: false,
+		},
+
+		/**
 		 * Whether the product categories should display with hierarchy.
 		 */
 		isHierarchical: {
