@@ -16,8 +16,19 @@ import { buildTermsTree } from './hierarchy';
  * Component to handle edit mode of "On Sale Products".
  */
 class ProductCategoriesBlock extends Component {
+	getCategories() {
+		const { isHierarchical, hasEmpty } = this.props.attributes;
+		const categories = wc_product_block_data.productCategories.filter(
+			( cat ) => hasEmpty || !! cat.count
+		);
+		return isHierarchical ? buildTermsTree( categories ) : categories;
+	}
+
 	getInspectorControls() {
-		const { attributes: { hasCount, isHierarchical }, setAttributes } = this.props;
+		const {
+			attributes: { hasCount, hasEmpty, isHierarchical },
+			setAttributes,
+		} = this.props;
 
 		return (
 			<InspectorControls key="inspector">
@@ -34,6 +45,16 @@ class ProductCategoriesBlock extends Component {
 						}
 						checked={ isHierarchical }
 						onChange={ () => setAttributes( { isHierarchical: ! isHierarchical } ) }
+					/>
+					<ToggleControl
+						label={ __( 'Show empty categories', 'woo-gutenberg-products-block' ) }
+						help={
+							hasEmpty ?
+								__( 'Empty categories are visible.', 'woo-gutenberg-products-block' ) :
+								__( 'Empty categories are hidden.', 'woo-gutenberg-products-block' )
+						}
+						checked={ hasEmpty }
+						onChange={ () => setAttributes( { hasEmpty: ! hasEmpty } ) }
 					/>
 					<ToggleControl
 						label={ __( 'Show product count', 'woo-gutenberg-products-block' ) }
@@ -58,7 +79,9 @@ class ProductCategoriesBlock extends Component {
 					const count = hasCount ? <span>({ cat.count })</span> : null;
 					return [
 						<li key={ cat.term_id }><a>{ cat.name }</a> { count }</li>, // eslint-disable-line
-						!! cat.children && !! cat.children.length && this.renderList( cat.children ),
+						!! cat.children &&
+							!! cat.children.length &&
+							this.renderList( cat.children ),
 					];
 				} ) }
 			</ul>
@@ -66,15 +89,10 @@ class ProductCategoriesBlock extends Component {
 	}
 
 	render() {
-		const { isHierarchical } = this.props.attributes;
-		const categories = isHierarchical ?
-			buildTermsTree( wc_product_block_data.productCategories ) :
-			wc_product_block_data.productCategories;
-
 		return (
 			<div className="wc-block-product-categories">
 				{ this.getInspectorControls() }
-				{ this.renderList( categories ) }
+				{ this.renderList( this.getCategories() ) }
 			</div>
 		);
 	}

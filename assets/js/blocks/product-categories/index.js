@@ -37,6 +37,14 @@ registerBlockType( 'woocommerce/product-categories', {
 		},
 
 		/**
+		 * Whether to show empty categories in the list.
+		 */
+		hasEmpty: {
+			type: 'boolean',
+			default: false,
+		},
+
+		/**
 		 * Whether the product categories should display with hierarchy.
 		 */
 		isHierarchical: {
