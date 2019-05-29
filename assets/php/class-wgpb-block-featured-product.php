@@ -59,12 +59,14 @@ class WGPB_Block_Featured_Product {
 
 		$title = sprintf(
 			'<h2 class="wc-block-featured-product__title">%s</h2>',
-			wp_kses_post( $product->get_title() )
+			wp_kses_post( $product->get_name() )
 		);
+
+		$description = $product->get_short_description() ? $product->get_short_description() : $product->get_description();
 
 		$desc_str = sprintf(
 			'<div class="wc-block-featured-product__description">%s</div>',
-			apply_filters( 'woocommerce_short_description', $product->get_short_description() )
+			apply_filters( 'woocommerce_short_description', $description )
 		);
 
 		$price_str = sprintf(
