@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { Component, Fragment } from '@wordpress/element';
 import { debounce, find } from 'lodash';
 import PropTypes from 'prop-types';
-import { SearchListControl } from '@woocommerce/components';
+import ProductSearchListControl from '../../components/product-search-list-control';
 
 /**
  * Internal dependencies
@@ -68,7 +68,7 @@ class ProductControl extends Component {
 		// Note: selected prop still needs to be array for SearchListControl.
 		return (
 			<Fragment>
-				<SearchListControl
+				<ProductSearchListControl
 					className="woocommerce-products"
 					list={ list }
 					isLoading={ loading }
