@@ -173,11 +173,7 @@ class WGPB_Block_Library {
 						'type'    => 'boolean',
 						'default' => true,
 					),
-					'orderby'           => array(
-						'type'    => 'string',
-						'enum'    => array( 'date', 'popularity', 'price_asc', 'price_desc', 'rating', 'title' ),
-						'default' => 'date',
-					),
+					'orderby'           => self::get_schema_orderby(),
 					'products'          => array(
 						'type'    => 'array',
 						'items'   => array(
@@ -209,11 +205,7 @@ class WGPB_Block_Library {
 				'attributes'      => array_merge(
 					self::get_shared_attributes(),
 					array(
-						'orderby'  => array(
-							'type'    => 'string',
-							'enum'    => array( 'date', 'popularity', 'price_asc', 'price_desc', 'rating', 'title' ),
-							'default' => 'date',
-						),
+						'orderby'  => self::get_schema_orderby(),
 						'editMode' => array(
 							'type'    => 'boolean',
 							'default' => true,
@@ -242,11 +234,7 @@ class WGPB_Block_Library {
 				'attributes'      => array_merge(
 					self::get_shared_attributes(),
 					array(
-						'orderby' => array(
-							'type'    => 'string',
-							'enum'    => array( 'date', 'popularity', 'price_asc', 'price_desc', 'rating', 'title' ),
-							'default' => 'date',
-						),
+						'orderby' => self::get_schema_orderby(),
 					)
 				),
 			)
@@ -292,36 +280,12 @@ class WGPB_Block_Library {
 						'type'    => 'number',
 						'default' => wc_get_theme_support( 'product_blocks::default_columns', 3 ),
 					),
-					'contentVisibility' => array(
-						'type'       => 'object',
-						'properties' => array(
-							'title'  => array(
-								'type'    => 'boolean',
-								'default' => true,
-							),
-							'price'  => array(
-								'type'    => 'boolean',
-								'default' => true,
-							),
-							'rating' => array(
-								'type'    => 'boolean',
-								'default' => true,
-							),
-							'button' => array(
-								'type'    => 'boolean',
-								'default' => true,
-							),
-						),
-					),
+					'contentVisibility' => self::get_schema_content_visibility(),
 					'editMode'          => array(
 						'type'    => 'boolean',
 						'default' => true,
 					),
-					'orderby'           => array(
-						'type'    => 'string',
-						'enum'    => array( 'date', 'popularity', 'price_asc', 'price_desc', 'rating', 'title' ),
-						'default' => 'date',
-					),
+					'orderby'           => self::get_schema_orderby(),
 					'rows'              => array(
 						'type'    => 'number',
 						'default' => wc_get_theme_support( 'product_blocks::default_rows', 1 ),
@@ -430,6 +394,19 @@ class WGPB_Block_Library {
 					'default' => true,
 				),
 			),
+		);
+	}
+
+	/**
+	 * Get the schema for the orderby attribute.
+	 *
+	 * @return array Property definition of `orderby` attribute.
+	 */
+	public static function get_schema_orderby() {
+		return array(
+			'type'    => 'string',
+			'enum'    => array( 'date', 'popularity', 'price_asc', 'price_desc', 'rating', 'title' ),
+			'default' => 'date',
 		);
 	}
 
