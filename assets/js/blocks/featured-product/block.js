@@ -307,7 +307,7 @@ class FeaturedProduct extends Component {
 										<div
 											className="wc-block-featured-product__description"
 											dangerouslySetInnerHTML={ {
-												__html: product.short_description ? product.short_description : product.description,
+												__html: 'variation' === product.type ? product.description : product.short_description,
 											} }
 										/>
 									) }

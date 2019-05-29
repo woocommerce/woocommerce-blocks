@@ -62,7 +62,7 @@ class WGPB_Block_Featured_Product {
 			wp_kses_post( $product->get_name() )
 		);
 
-		$description = $product->get_short_description() ? $product->get_short_description() : $product->get_description();
+		$description = $product->is_type( 'variation' ) ? $product->get_description() : $product->get_short_description();
 
 		$desc_str = sprintf(
 			'<div class="wc-block-featured-product__description">%s</div>',
