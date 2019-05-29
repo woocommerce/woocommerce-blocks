@@ -38,7 +38,7 @@ class WGPB_Block_Library {
 	 */
 	public function __construct() {
 		if ( function_exists( 'register_block_type' ) ) {
-			add_action( 'init', array( 'WGPB_Block_Library', 'init' ) );
+			add_action( 'init', array( __CLASS__, 'init' ) );
 		}
 	}
 
@@ -53,8 +53,9 @@ class WGPB_Block_Library {
 		}
 		self::register_blocks();
 		self::register_assets();
-		add_action( 'admin_print_footer_scripts', array( 'WGPB_Block_Library', 'print_script_settings' ), 1 );
-		add_action( 'body_class', array( 'WGPB_Block_Library', 'add_theme_body_class' ), 1 );
+		add_action( 'admin_print_footer_scripts', array( __CLASS__, 'print_script_settings' ), 1 );
+		add_action( 'body_class', array( __CLASS__, 'add_theme_body_class' ), 1 );
+		add_filter( 'woocommerce_rest_prepare_product_variation_object', array( __CLASS__, 'rest_api_variation_response' ), 10, 2 );
 	}
 
 	/**
@@ -570,6 +571,20 @@ class WGPB_Block_Library {
 	public static function add_theme_body_class( $classes = array() ) {
 		$classes[] = 'theme-' . get_template();
 		return $classes;
+	}
+
+	/**
+	 * Ensure variation name is returned by the API. This is only missing in v3, not v4.
+	 *
+	 * @param WP_REST_Response $response The response object.
+	 * @param WC_Data          $object   Object data.
+	 * @return array
+	 */
+	public static function rest_api_variation_response( $response, $object ) {
+		if ( ! isset( $response->data['name'] ) ) {
+			$response->data['name'] = $object->get_name();
+		}
+		return $response;
 	}
 }
 

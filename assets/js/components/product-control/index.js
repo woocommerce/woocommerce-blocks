@@ -89,7 +89,7 @@ class ProductControl extends Component {
 
 		apiFetch( {
 			// Use v4 which returns variation names.
-			path: addQueryArgs( `/wc/v4/products/${ product }/variations`, {
+			path: addQueryArgs( `/wc/v3/products/${ product }/variations`, {
 				per_page: -1,
 			} ),
 		} )
