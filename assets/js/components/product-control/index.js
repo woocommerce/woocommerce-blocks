@@ -11,7 +11,7 @@ import {
 	SearchListControl,
 	SearchListItem,
 } from '@woocommerce/components';
-import { Spinner, MenuItem, Button } from '@wordpress/components';
+import { Spinner, MenuItem } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -48,8 +48,8 @@ class ProductControl extends Component {
 
 		this.debouncedOnSearch = debounce( this.onSearch.bind( this ), 400 );
 		this.debouncedGetVariations = debounce( this.getVariations.bind( this ), 200 );
-		this.onSelectProduct = this.onSelectProduct.bind( this );
 		this.renderItem = this.renderItem.bind( this );
+		this.onProductSelect = this.onProductSelect.bind( this );
 	}
 
 	componentDidMount() {
@@ -105,15 +105,6 @@ class ProductControl extends Component {
 			} );
 	}
 
-	onSelectProduct( item ) {
-		return () => {
-			this.props.onChange( [] );
-			this.setState( {
-				product: item.id === this.state.product ? 0 : item.id,
-			} );
-		};
-	}
-
 	onSearch( search ) {
 		const { selected } = this.props;
 		getProducts( { selected, search } )
@@ -125,8 +116,16 @@ class ProductControl extends Component {
 			} );
 	}
 
+	onProductSelect( item ) {
+		return () => {
+			this.setState( {
+				product: item.id,
+			} );
+		};
+	}
+
 	renderItem( args ) {
-		const { item, search, depth = 0 } = args;
+		const { item, search, depth = 0, isSelected, onSelect } = args;
 		const { product, variationsLoading } = this.state;
 		const classes = [
 			'woocommerce-search-product__item',
@@ -150,14 +149,17 @@ class ProductControl extends Component {
 				<MenuItem // eslint-disable-line
 					key={ `product-${ item.id }` }
 					{ ...args }
-					className={ classes.join( ' ' ) }
 					isSelected
-					onClick={ this.onSelectProduct( item ) }
+					className={ classes.join( ' ' ) }
+					onClick={ () => {
+						onSelect( item )();
+						this.onProductSelect( item )();
+					} }
 					role={ 'menuitemradio' }
-					aria-expanded={ product === item.id }
+					aria-expanded={ isSelected }
 				>
 					<span className="woocommerce-search-list__item-state">
-						{ getInteractionIcon( product === item.id ) }
+						{ getInteractionIcon( isSelected ) }
 					</span>
 
 					<span className="woocommerce-search-list__item-label">
@@ -240,7 +242,6 @@ class ProductControl extends Component {
 					selected={ [ find( currentList, { id: selected } ) ] }
 					onChange={ onChange }
 					onSearch={ isLargeCatalog ? this.debouncedOnSearch : null }
-					onSelect={ this.onSelectProduct }
 					messages={ messages }
 					renderItem={ this.renderItem }
 					isHierarchical
