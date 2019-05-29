@@ -11,7 +11,7 @@ import {
 	SearchListControl,
 	SearchListItem,
 } from '@woocommerce/components';
-import { Spinner, MenuItem } from '@wordpress/components';
+import { Spinner, MenuItem, Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -21,6 +21,7 @@ import {
 	IconRadioSelected,
 	IconRadioUnselected,
 } from '../icons';
+import './style.scss';
 
 function getHighlightedName( name, search ) {
 	if ( ! search ) {
@@ -41,7 +42,7 @@ class ProductControl extends Component {
 			products: [],
 			product: 0,
 			variationsList: {},
-			variationsLoading: true,
+			variationsLoading: false,
 			loading: true,
 		};
 
@@ -140,26 +141,20 @@ class ProductControl extends Component {
 		if ( depth === 0 && item.parent !== 0 ) {
 			classes.push( 'is-skip-level' );
 		}
+		if ( item.count ) {
+			classes.push( 'is-variable' );
+		}
 
 		if ( ! item.breadcrumbs.length ) {
 			return [
-				<MenuItem
+				<MenuItem // eslint-disable-line
 					key={ `product-${ item.id }` }
 					{ ...args }
 					className={ classes.join( ' ' ) }
 					isSelected
 					onClick={ this.onSelectProduct( item ) }
 					role={ 'menuitemradio' }
-					aria-label={ sprintf(
-						_n(
-							'%s, has %d variation',
-							'%s, has %d variations',
-							item.count,
-							'woo-gutenberg-products-block'
-						),
-						item.name,
-						item.count
-					) }
+					aria-expanded={ product === item.id }
 				>
 					<span className="woocommerce-search-list__item-state">
 						{ getInteractionIcon( product === item.id ) }
@@ -174,17 +169,22 @@ class ProductControl extends Component {
 						/>
 					</span>
 
-					<span className="woocommerce-search-list__item-count">
-						{ sprintf(
-							_n(
-								'%d variation',
-								'%d variations',
-								item.count,
-								'woo-gutenberg-products-block'
-							),
-							item.count
-						) }
-					</span>
+					{ item.count ? (
+						<span
+							className="woocommerce-search-list__item-variation-count"
+							isTertiary
+						>
+							{ sprintf(
+								_n(
+									'%d variation',
+									'%d variations',
+									item.count,
+									'woo-gutenberg-products-block'
+								),
+								item.count
+							) }
+						</span>
+					) : null }
 				</MenuItem>,
 				product === item.id && item.count > 0 && variationsLoading && (
 					<div
