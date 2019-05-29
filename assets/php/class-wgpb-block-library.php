@@ -165,22 +165,11 @@ class WGPB_Block_Library {
 				'editor_style'    => 'wc-block-editor',
 				'style'           => 'wc-block-style',
 				'attributes'      => array(
-					'columns'           => array(
-						'type'    => 'number',
-						'default' => wc_get_theme_support( 'product_blocks::default_columns', 3 ),
-					),
-					'editMode'          => array(
-						'type'    => 'boolean',
-						'default' => true,
-					),
+					'align'             => self::get_schema_align(),
+					'columns'           => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
+					'editMode'          => self::get_schema_boolean( true ),
 					'orderby'           => self::get_schema_orderby(),
-					'products'          => array(
-						'type'    => 'array',
-						'items'   => array(
-							'type' => 'number',
-						),
-						'default' => array(),
-					),
+					'products'          => self::get_schema_list_ids(),
 					'contentVisibility' => self::get_schema_content_visibility(),
 				),
 			)
@@ -206,10 +195,7 @@ class WGPB_Block_Library {
 					self::get_shared_attributes(),
 					array(
 						'orderby'  => self::get_schema_orderby(),
-						'editMode' => array(
-							'type'    => 'boolean',
-							'default' => true,
-						),
+						'editMode' => self::get_schema_boolean( true ),
 					)
 				),
 			)
@@ -257,6 +243,7 @@ class WGPB_Block_Library {
 				'editor_style'    => 'wc-block-editor',
 				'style'           => 'wc-block-style',
 				'attributes'      => array(
+					'align'             => self::get_schema_align(),
 					'attributes'        => array(
 						'type'    => 'array',
 						'items'   => array(
@@ -276,21 +263,11 @@ class WGPB_Block_Library {
 						'type'    => 'string',
 						'default' => 'any',
 					),
-					'columns'           => array(
-						'type'    => 'number',
-						'default' => wc_get_theme_support( 'product_blocks::default_columns', 3 ),
-					),
+					'columns'           => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
 					'contentVisibility' => self::get_schema_content_visibility(),
-					'editMode'          => array(
-						'type'    => 'boolean',
-						'default' => true,
-					),
+					'editMode'          => self::get_schema_boolean( true ),
 					'orderby'           => self::get_schema_orderby(),
-					'rows'              => array(
-						'type'    => 'number',
-						'default' => wc_get_theme_support( 'product_blocks::default_rows', 1 ),
-					),
-
+					'rows'              => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_rows', 3 ) ),
 				),
 			)
 		);
@@ -377,22 +354,10 @@ class WGPB_Block_Library {
 		return array(
 			'type'       => 'object',
 			'properties' => array(
-				'title'  => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'price'  => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'rating' => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'button' => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
+				'title'  => self::get_schema_boolean( true ),
+				'price'  => self::get_schema_boolean( true ),
+				'rating' => self::get_schema_boolean( true ),
+				'button' => self::get_schema_boolean( true ),
 			),
 		);
 	}
@@ -411,32 +376,74 @@ class WGPB_Block_Library {
 	}
 
 	/**
+	 * Get the schema for the alignment property.
+	 *
+	 * @return array Property definition for align.
+	 */
+	public static function get_schema_align() {
+		return array(
+			'type' => 'string',
+			'enum' => array( 'left', 'center', 'right', 'wide', 'full' ),
+		);
+	}
+
+	/**
+	 * Get the schema for a list of IDs.
+	 *
+	 * @return array Property definition for a list of numeric ids.
+	 */
+	public static function get_schema_list_ids() {
+		return array(
+			'type'    => 'array',
+			'items'   => array(
+				'type' => 'number',
+			),
+			'default' => array(),
+		);
+	}
+
+	/**
+	 * Get the schema for a boolean value.
+	 *
+	 * @param  string $default  The default value.
+	 * @return array Property definition.
+	 */
+	public static function get_schema_boolean( $default = true ) {
+		return array(
+			'type'    => 'boolean',
+			'default' => $default,
+		);
+	}
+
+	/**
+	 * Get the schema for a numeric value.
+	 *
+	 * @param  string $default  The default value.
+	 * @return array Property definition.
+	 */
+	public static function get_schema_number( $default ) {
+		return array(
+			'type'    => 'number',
+			'default' => $default,
+		);
+	}
+
+	/**
 	 * Get a set of attributes shared across most of the grid blocks.
 	 *
 	 * @return array List of block attributes with type and defaults.
 	 */
 	public static function get_shared_attributes() {
 		return array(
-			'columns'           => array(
-				'type'    => 'number',
-				'default' => wc_get_theme_support( 'product_blocks::default_columns', 3 ),
-			),
-			'rows'              => array(
-				'type'    => 'number',
-				'default' => wc_get_theme_support( 'product_blocks::default_rows', 1 ),
-			),
-			'categories'        => array(
-				'type'    => 'array',
-				'items'   => array(
-					'type' => 'number',
-				),
-				'default' => array(),
-			),
+			'columns'           => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
+			'rows'              => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_rows', 3 ) ),
+			'categories'        => self::get_schema_list_ids(),
 			'catOperator'       => array(
 				'type'    => 'string',
 				'default' => 'any',
 			),
 			'contentVisibility' => self::get_schema_content_visibility(),
+			'align'             => self::get_schema_align(),
 		);
 	}
 
