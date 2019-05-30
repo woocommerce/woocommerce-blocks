@@ -8,7 +8,7 @@ import { registerBlockType } from '@wordpress/blocks';
  * Internal dependencies
  */
 import './editor.scss';
-import Block from './block.js';
+import edit from './edit.js';
 import { IconFolder } from '../../components/icons';
 
 registerBlockType( 'woocommerce/product-categories', {
@@ -34,6 +34,9 @@ registerBlockType( 'woocommerce/product-categories', {
 		hasCount: {
 			type: 'boolean',
 			default: true,
+			source: 'attribute',
+			selector: 'ul',
+			attribute: 'data-has-count',
 		},
 
 		/**
@@ -42,6 +45,9 @@ registerBlockType( 'woocommerce/product-categories', {
 		hasEmpty: {
 			type: 'boolean',
 			default: false,
+			source: 'attribute',
+			selector: 'ul',
+			attribute: 'data-has-empty',
 		},
 
 		/**
@@ -50,6 +56,9 @@ registerBlockType( 'woocommerce/product-categories', {
 		isDropdown: {
 			type: 'boolean',
 			default: false,
+			source: 'attribute',
+			selector: 'ul',
+			attribute: 'data-is-dropdown',
 		},
 
 		/**
@@ -58,15 +67,26 @@ registerBlockType( 'woocommerce/product-categories', {
 		isHierarchical: {
 			type: 'boolean',
 			default: true,
+			source: 'attribute',
+			selector: 'ul',
+			attribute: 'data-is-hierarchical',
 		},
 	},
 
-	/**
-	 * Renders and manages the block.
-	 */
-	edit( props ) {
-		return <Block { ...props } />;
-	},
+	edit,
 
-	save() {},
+	/**
+	 * Save the props to post content.
+	 */
+	save( { attributes } ) {
+		const {
+			hasCount,
+			hasEmpty,
+			isDropdown,
+			isHierarchical,
+		} = attributes;
+		return (
+			<ul data-has-count={ hasCount } data-has-empty={ hasEmpty } data-is-dropdown={ isDropdown } data-is-hierarchical={ isHierarchical } />
+		);
+	},
 } );

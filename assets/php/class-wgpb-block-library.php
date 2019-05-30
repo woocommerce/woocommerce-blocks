@@ -53,6 +53,7 @@ class WGPB_Block_Library {
 		self::register_blocks();
 		self::register_assets();
 		add_action( 'admin_print_footer_scripts', array( 'WGPB_Block_Library', 'print_script_settings' ), 1 );
+		add_action( 'wp_print_footer_scripts', array( 'WGPB_Block_Library', 'print_script_settings' ), 1 );
 		add_action( 'body_class', array( 'WGPB_Block_Library', 'add_theme_body_class' ), 1 );
 	}
 
@@ -120,8 +121,20 @@ class WGPB_Block_Library {
 		self::register_style( 'wc-block-style', plugins_url( 'build/style.css', WGPB_PLUGIN_FILE ), array() );
 
 		// Shared libraries and components across all blocks.
-		self::register_script( 'wc-blocks', plugins_url( 'build/blocks.js', WGPB_PLUGIN_FILE ), array(), false );
+		self::register_script( 'wc-blocks', plugins_url( 'build/blocks.js', WGPB_PLUGIN_FILE ), array( 'wp-blocks', 'wp-i18n' ), false );
 		self::register_script( 'wc-vendors', plugins_url( 'build/vendors.js', WGPB_PLUGIN_FILE ), array(), false );
+
+		self::register_script(
+			'wc-frontend',
+			plugins_url( 'build/frontend.js', WGPB_PLUGIN_FILE ),
+			array(
+				'wc-vendors',
+				'wp-components',
+				'wp-element',
+				'wp-i18n',
+				'lodash',
+			)
+		);
 
 		// Individual blocks.
 		self::register_script( 'wc-handpicked-products', plugins_url( 'build/handpicked-products.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-blocks' ) );
@@ -345,6 +358,7 @@ class WGPB_Block_Library {
 				'editor_script' => 'wc-product-categories',
 				'editor_style'  => 'wc-block-editor',
 				'style'         => 'wc-block-style',
+				'script'        => 'wc-frontend',
 			)
 		);
 	}

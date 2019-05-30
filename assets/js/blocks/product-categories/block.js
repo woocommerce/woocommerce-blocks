@@ -3,9 +3,8 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Component } from '@wordpress/element';
-import { InspectorControls } from '@wordpress/editor';
 import { noop } from 'lodash';
-import { PanelBody, SelectControl, ToggleControl } from '@wordpress/components';
+import { SelectControl } from '@wordpress/components';
 import PropTypes from 'prop-types';
 
 /**
@@ -23,65 +22,6 @@ class ProductCategoriesBlock extends Component {
 			( cat ) => hasEmpty || !! cat.count
 		);
 		return ! isDropdown && isHierarchical ? buildTermsTree( categories ) : categories;
-	}
-
-	getInspectorControls() {
-		const {
-			attributes: { hasCount, hasEmpty, isDropdown, isHierarchical },
-			setAttributes,
-		} = this.props;
-
-		return (
-			<InspectorControls key="inspector">
-				<PanelBody
-					title={ __( 'Content', 'woo-gutenberg-products-block' ) }
-					initialOpen
-				>
-					<ToggleControl
-						label={ __( 'Show as dropdown', 'woo-gutenberg-products-block' ) }
-						help={
-							isDropdown ?
-								__( 'Categories are shown in a dropdown.', 'woo-gutenberg-products-block' ) :
-								__( 'Categories are shown in a list.', 'woo-gutenberg-products-block' )
-						}
-						checked={ isDropdown }
-						onChange={ () => setAttributes( { isDropdown: ! isDropdown } ) }
-					/>
-					<ToggleControl
-						label={ __( 'Show product count', 'woo-gutenberg-products-block' ) }
-						help={
-							hasCount ?
-								__( 'Product count is visible.', 'woo-gutenberg-products-block' ) :
-								__( 'Product count is hidden.', 'woo-gutenberg-products-block' )
-						}
-						checked={ hasCount }
-						onChange={ () => setAttributes( { hasCount: ! hasCount } ) }
-					/>
-					{ ! isDropdown && (
-						<ToggleControl
-							label={ __( 'Show hierarchy', 'woo-gutenberg-products-block' ) }
-							help={
-								isHierarchical ?
-									__( 'Hierarchy is visible.', 'woo-gutenberg-products-block' ) :
-									__( 'Hierarchy is hidden.', 'woo-gutenberg-products-block' )
-							}
-							checked={ isHierarchical }
-							onChange={ () => setAttributes( { isHierarchical: ! isHierarchical } ) }
-						/>
-					) }
-					<ToggleControl
-						label={ __( 'Show empty categories', 'woo-gutenberg-products-block' ) }
-						help={
-							hasEmpty ?
-								__( 'Empty categories are visible.', 'woo-gutenberg-products-block' ) :
-								__( 'Empty categories are hidden.', 'woo-gutenberg-products-block' )
-						}
-						checked={ hasEmpty }
-						onChange={ () => setAttributes( { hasEmpty: ! hasEmpty } ) }
-					/>
-				</PanelBody>
-			</InspectorControls>
-		);
 	}
 
 	renderList( items ) {
@@ -121,7 +61,6 @@ class ProductCategoriesBlock extends Component {
 		const categories = this.getCategories();
 		return (
 			<div className="wc-block-product-categories">
-				{ this.getInspectorControls() }
 				{ isDropdown ? this.renderDropdown( categories ) : this.renderList( categories ) }
 			</div>
 		);
@@ -133,14 +72,6 @@ ProductCategoriesBlock.propTypes = {
 	 * The attributes for this block
 	 */
 	attributes: PropTypes.object.isRequired,
-	/**
-	 * The register block name.
-	 */
-	name: PropTypes.string.isRequired,
-	/**
-	 * A callback to update attributes
-	 */
-	setAttributes: PropTypes.func.isRequired,
 };
 
 export default ProductCategoriesBlock;
