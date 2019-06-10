@@ -98,6 +98,10 @@
       ]
     }
   },
+  "browserslist": [
+    "last 1 version",
+    "not dead"
+  ],
   "files": [
     "assets/**/*.{js,scss,php}",
     "build/**/*.{js,css}",
