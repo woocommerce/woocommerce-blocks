@@ -350,7 +350,7 @@ class WGPB_Block_Library {
 	 *
 	 * @return array List of block attributes with type and defaults.
 	 */
-	public static function get_schema_content_visibility() {
+	protected static function get_schema_content_visibility() {
 		return array(
 			'type'       => 'object',
 			'properties' => array(
@@ -367,7 +367,7 @@ class WGPB_Block_Library {
 	 *
 	 * @return array Property definition of `orderby` attribute.
 	 */
-	public static function get_schema_orderby() {
+	protected static function get_schema_orderby() {
 		return array(
 			'type'    => 'string',
 			'enum'    => array( 'date', 'popularity', 'price_asc', 'price_desc', 'rating', 'title' ),
@@ -380,7 +380,7 @@ class WGPB_Block_Library {
 	 *
 	 * @return array Property definition for align.
 	 */
-	public static function get_schema_align() {
+	protected static function get_schema_align() {
 		return array(
 			'type' => 'string',
 			'enum' => array( 'left', 'center', 'right', 'wide', 'full' ),
@@ -392,7 +392,7 @@ class WGPB_Block_Library {
 	 *
 	 * @return array Property definition for a list of numeric ids.
 	 */
-	public static function get_schema_list_ids() {
+	protected static function get_schema_list_ids() {
 		return array(
 			'type'    => 'array',
 			'items'   => array(
@@ -408,7 +408,7 @@ class WGPB_Block_Library {
 	 * @param  string $default  The default value.
 	 * @return array Property definition.
 	 */
-	public static function get_schema_boolean( $default = true ) {
+	protected static function get_schema_boolean( $default = true ) {
 		return array(
 			'type'    => 'boolean',
 			'default' => $default,
@@ -421,7 +421,7 @@ class WGPB_Block_Library {
 	 * @param  string $default  The default value.
 	 * @return array Property definition.
 	 */
-	public static function get_schema_number( $default ) {
+	protected static function get_schema_number( $default ) {
 		return array(
 			'type'    => 'number',
 			'default' => $default,
@@ -433,7 +433,7 @@ class WGPB_Block_Library {
 	 *
 	 * @return array List of block attributes with type and defaults.
 	 */
-	public static function get_shared_attributes() {
+	protected static function get_shared_attributes() {
 		return array(
 			'columns'           => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
 			'rows'              => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_rows', 3 ) ),
