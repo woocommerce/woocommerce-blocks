@@ -52,8 +52,9 @@ class WGPB_Block_Library {
 		}
 		self::register_blocks();
 		self::register_assets();
-		add_action( 'admin_print_footer_scripts', array( 'WGPB_Block_Library', 'print_script_settings' ), 1 );
-		add_action( 'wp_print_footer_scripts', array( 'WGPB_Block_Library', 'print_script_settings' ), 1 );
+		add_action( 'admin_print_footer_scripts', array( 'WGPB_Block_Library', 'print_script_wc_settings' ), 1 );
+		add_action( 'admin_print_footer_scripts', array( 'WGPB_Block_Library', 'print_script_block_data' ), 1 );
+		add_action( 'wp_print_footer_scripts', array( 'WGPB_Block_Library', 'print_script_block_data' ), 1 );
 		add_action( 'body_class', array( 'WGPB_Block_Library', 'add_theme_body_class' ), 1 );
 	}
 
@@ -149,25 +150,12 @@ class WGPB_Block_Library {
 	}
 
 	/**
-	 * Output useful globals before printing any script tags.
-	 *
 	 * These are used by @woocommerce/components & the block library to set up defaults
-	 * based on user-controlled settings from WordPress.
-	 *
-	 * @since 2.0.0
+	 * based on user-controlled settings from WordPress. Only use this in wp-admin.
 	 */
-	public static function print_script_settings() {
+	public static function print_script_wc_settings() {
 		global $wp_locale;
-		$code           = get_woocommerce_currency();
-		$product_counts = wp_count_posts( 'product' );
-
-		$product_categories = get_terms(
-			'product_cat',
-			array(
-				'hide_empty' => false,
-				'pad_counts' => true,
-			)
-		);
+		$code = get_woocommerce_currency();
 
 		// NOTE: wcSettings is not used directly, it's only for @woocommerce/components
 		//
@@ -196,7 +184,29 @@ class WGPB_Block_Library {
 		);
 		// NOTE: wcSettings is not used directly, it's only for @woocommerce/components.
 		$settings = apply_filters( 'woocommerce_components_settings', $settings );
+		?>
+		<script type="text/javascript">
+			var wcSettings = wcSettings || JSON.parse( decodeURIComponent( '<?php echo rawurlencode( wp_json_encode( $settings ) ); ?>' ) );
+		</script>
+		<?php
+	}
 
+	/**
+	 * Output block-related data on a global object.
+	 *
+	 * This is used to map site settings & data into JS-accessible variables.
+	 *
+	 * @since 2.0.0
+	 */
+	public static function print_script_block_data() {
+		$product_counts     = wp_count_posts( 'product' );
+		$product_categories = get_terms(
+			'product_cat',
+			array(
+				'hide_empty' => false,
+				'pad_counts' => true,
+			)
+		);
 		// Global settings used in each block.
 		$block_settings = array(
 			'min_columns'       => wc_get_theme_support( 'product_blocks::min_columns', 1 ),
@@ -214,7 +224,6 @@ class WGPB_Block_Library {
 		);
 		?>
 		<script type="text/javascript">
-			var wcSettings = wcSettings || JSON.parse( decodeURIComponent( '<?php echo rawurlencode( wp_json_encode( $settings ) ); ?>' ) );
 			var wc_product_block_data = JSON.parse( decodeURIComponent( '<?php echo rawurlencode( wp_json_encode( $block_settings ) ); ?>' ) );
 		</script>
 		<?php
