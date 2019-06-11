@@ -124,18 +124,19 @@ class WGPB_Block_Library {
 		// Shared libraries and components across all blocks.
 		self::register_script( 'wc-blocks', plugins_url( 'build/blocks.js', WGPB_PLUGIN_FILE ), array(), false );
 		self::register_script( 'wc-vendors', plugins_url( 'build/vendors.js', WGPB_PLUGIN_FILE ), array(), false );
+		self::register_script( 'wc-packages', plugins_url( 'build/packages.js', WGPB_PLUGIN_FILE ), array(), false );
 		self::register_script( 'wc-frontend', plugins_url( 'build/frontend.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors' ) );
 
 		// Individual blocks.
-		self::register_script( 'wc-handpicked-products', plugins_url( 'build/handpicked-products.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-blocks' ) );
-		self::register_script( 'wc-product-best-sellers', plugins_url( 'build/product-best-sellers.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-blocks' ) );
-		self::register_script( 'wc-product-category', plugins_url( 'build/product-category.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-blocks' ) );
-		self::register_script( 'wc-product-new', plugins_url( 'build/product-new.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-blocks' ) );
-		self::register_script( 'wc-product-on-sale', plugins_url( 'build/product-on-sale.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-blocks' ) );
-		self::register_script( 'wc-product-top-rated', plugins_url( 'build/product-top-rated.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-blocks' ) );
-		self::register_script( 'wc-products-attribute', plugins_url( 'build/products-attribute.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-blocks' ) );
-		self::register_script( 'wc-featured-product', plugins_url( 'build/featured-product.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-blocks' ) );
-		self::register_script( 'wc-product-categories', plugins_url( 'build/product-categories.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-blocks' ) );
+		self::register_script( 'wc-handpicked-products', plugins_url( 'build/handpicked-products.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
+		self::register_script( 'wc-product-best-sellers', plugins_url( 'build/product-best-sellers.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
+		self::register_script( 'wc-product-category', plugins_url( 'build/product-category.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
+		self::register_script( 'wc-product-new', plugins_url( 'build/product-new.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
+		self::register_script( 'wc-product-on-sale', plugins_url( 'build/product-on-sale.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
+		self::register_script( 'wc-product-top-rated', plugins_url( 'build/product-top-rated.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
+		self::register_script( 'wc-products-attribute', plugins_url( 'build/products-attribute.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
+		self::register_script( 'wc-featured-product', plugins_url( 'build/featured-product.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
+		self::register_script( 'wc-product-categories', plugins_url( 'build/product-categories.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
 	}
 
 	/**
