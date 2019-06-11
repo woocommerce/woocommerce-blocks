@@ -35,7 +35,7 @@ registerBlockType( 'woocommerce/product-categories', {
 			type: 'boolean',
 			default: true,
 			source: 'attribute',
-			selector: 'ul',
+			selector: 'div',
 			attribute: 'data-has-count',
 		},
 
@@ -46,7 +46,7 @@ registerBlockType( 'woocommerce/product-categories', {
 			type: 'boolean',
 			default: false,
 			source: 'attribute',
-			selector: 'ul',
+			selector: 'div',
 			attribute: 'data-has-empty',
 		},
 
@@ -57,7 +57,7 @@ registerBlockType( 'woocommerce/product-categories', {
 			type: 'boolean',
 			default: false,
 			source: 'attribute',
-			selector: 'ul',
+			selector: 'div',
 			attribute: 'data-is-dropdown',
 		},
 
@@ -68,7 +68,7 @@ registerBlockType( 'woocommerce/product-categories', {
 			type: 'boolean',
 			default: true,
 			source: 'attribute',
-			selector: 'ul',
+			selector: 'div',
 			attribute: 'data-is-hierarchical',
 		},
 	},
@@ -79,14 +79,20 @@ registerBlockType( 'woocommerce/product-categories', {
 	 * Save the props to post content.
 	 */
 	save( { attributes } ) {
-		const {
-			hasCount,
-			hasEmpty,
-			isDropdown,
-			isHierarchical,
-		} = attributes;
-		return (
-			<ul data-has-count={ hasCount } data-has-empty={ hasEmpty } data-is-dropdown={ isDropdown } data-is-hierarchical={ isHierarchical } />
-		);
+		const { hasCount, hasEmpty, isDropdown, isHierarchical } = attributes;
+		const props = {};
+		if ( hasCount ) {
+			props[ 'data-has-count' ] = true;
+		}
+		if ( hasEmpty ) {
+			props[ 'data-has-empty' ] = true;
+		}
+		if ( isDropdown ) {
+			props[ 'data-is-dropdown' ] = true;
+		}
+		if ( isHierarchical ) {
+			props[ 'data-is-hierarchical' ] = true;
+		}
+		return <div { ...props }>LOADING</div>;
 	},
 } );
