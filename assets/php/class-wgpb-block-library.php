@@ -329,7 +329,7 @@ class WGPB_Block_Library {
 					'contentVisibility' => self::get_schema_content_visibility(),
 					'editMode'          => self::get_schema_boolean( true ),
 					'orderby'           => self::get_schema_orderby(),
-					'rows'              => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_rows', 3 ) ),
+					'rows'              => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_rows', 1 ) ),
 				),
 			)
 		);
@@ -435,7 +435,7 @@ class WGPB_Block_Library {
 	protected static function get_shared_attributes() {
 		return array(
 			'columns'           => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
-			'rows'              => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_rows', 3 ) ),
+			'rows'              => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_rows', 1 ) ),
 			'categories'        => self::get_schema_list_ids(),
 			'catOperator'       => array(
 				'type'    => 'string',
