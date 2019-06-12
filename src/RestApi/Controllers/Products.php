@@ -120,6 +120,7 @@ class Products extends WC_REST_Products_Controller {
 		);
 
 		$category_operator  = $operator_mapping[ $request->get_param( 'category_operator' ) ];
+		$tag_operator       = $operator_mapping[ $request->get_param( 'tag_operator' ) ];
 		$attribute_operator = $operator_mapping[ $request->get_param( 'attribute_operator' ) ];
 		$catalog_visibility = $request->get_param( 'catalog_visibility' );
 
@@ -128,6 +129,14 @@ class Products extends WC_REST_Products_Controller {
 				if ( 'product_cat' === $tax_query['taxonomy'] ) {
 					$args['tax_query'][ $i ]['operator']         = $category_operator;
 					$args['tax_query'][ $i ]['include_children'] = 'AND' === $category_operator ? false : true;
+				}
+			}
+		}
+
+		if ( $tag_operator && isset( $args['tax_query'] ) ) {
+			foreach ( $args['tax_query'] as $i => $tax_query ) {
+				if ( 'product_tag' === $tax_query['taxonomy'] ) {
+					$args['tax_query'][ $i ]['operator'] = $tag_operator;
 				}
 			}
 		}
@@ -234,6 +243,14 @@ class Products extends WC_REST_Products_Controller {
 		$params['orderby']['enum']    = array_merge( $params['orderby']['enum'], array( 'price', 'popularity', 'rating', 'menu_order' ) );
 		$params['category_operator']  = array(
 			'description'       => __( 'Operator to compare product category terms.', 'woo-gutenberg-products-block' ),
+			'type'              => 'string',
+			'enum'              => array( 'in', 'not_in', 'and' ),
+			'default'           => 'in',
+			'sanitize_callback' => 'sanitize_key',
+			'validate_callback' => 'rest_validate_request_arg',
+		);
+		$params['tag_operator']       = array(
+			'description'       => __( 'Operator to compare product tags.', 'woo-gutenberg-products-block' ),
 			'type'              => 'string',
 			'enum'              => array( 'in', 'not_in', 'and' ),
 			'default'           => 'in',
