@@ -25,5 +25,8 @@
       "phpcs": "Analyze code against the WordPress coding standards with PHP_CodeSniffer",
       "phpcbf": "Fix coding standards warnings/errors automatically with PHP Code Beautifier"
     }
+  },
+  "autoload": {
+    "psr-4": {"WooCommerce\\Blocks\\": "src/"}
   }
 }
