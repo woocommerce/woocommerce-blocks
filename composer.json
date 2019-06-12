@@ -10,6 +10,7 @@
     "composer/installers": "1.6.0"
   },
   "require-dev": {
+    "phpunit/phpunit": "6.5.14",
     "woocommerce/woocommerce-sniffs": "0.0.6"
   },
   "scripts": {
@@ -27,6 +28,9 @@
     }
   },
   "autoload": {
-    "psr-4": {"WooCommerce\\Blocks\\": "src/"}
+    "psr-4": {
+      "WooCommerce\\Blocks\\": "src/",
+      "WooCommerce\\Blocks\\Tests\\": "tests/php/"
+    }
   }
 }
