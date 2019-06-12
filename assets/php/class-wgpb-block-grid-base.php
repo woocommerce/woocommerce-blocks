@@ -229,7 +229,7 @@ abstract class WGPB_Block_Grid_Base {
 		}
 
 		if ( ! empty( $this->attributes['alignButtons'] ) ) {
-			$classes[] = 'align-cart-buttons';
+			$classes[] = 'has-aligned-buttons';
 		}
 
 		return implode( ' ', $classes );
