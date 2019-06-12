@@ -121,10 +121,6 @@ registerBlockType( 'woocommerce/handpicked-products', {
 					type: 'array',
 					default: [],
 				},
-				alignButtons: {
-					type: 'boolean',
-					default: false,
-				},
 			},
 			save: deprecatedConvertToShortcode( 'woocommerce/handpicked-products' ),
 		},

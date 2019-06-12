@@ -137,10 +137,6 @@ registerBlockType( blockTypeName, {
 					type: 'number',
 					default: wc_product_block_data.default_rows,
 				},
-				alignButtons: {
-					type: 'boolean',
-					default: false,
-				},
 			},
 			save: deprecatedConvertToShortcode( blockTypeName ),
 		},
