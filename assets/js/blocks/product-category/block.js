@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { BlockControls, InspectorControls, ServerSideRender } from '@wordpress/editor';
+import {
+	BlockControls,
+	InspectorControls,
+	ServerSideRender,
+} from '@wordpress/editor';
 import {
 	Button,
 	Disabled,
@@ -132,7 +136,7 @@ class ProductByCategoryBlock extends Component {
 	}
 
 	render() {
-		const { attributes, setAttributes } = this.props;
+		const { attributes, name, setAttributes } = this.props;
 		const { editMode } = attributes;
 
 		return (
@@ -154,10 +158,7 @@ class ProductByCategoryBlock extends Component {
 					this.renderEditMode()
 				) : (
 					<Disabled>
-						<ServerSideRender
-							block="woocommerce/product-category"
-							attributes={ attributes }
-						/>
+						<ServerSideRender block={ name } attributes={ attributes } />
 					</Disabled>
 				) }
 			</Fragment>

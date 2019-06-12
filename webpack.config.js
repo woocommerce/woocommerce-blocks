@@ -4,7 +4,7 @@
 const path = require( 'path' );
 const MergeExtractFilesPlugin = require( './bin/merge-extract-files-webpack-plugin' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
-const CleanWebpackPlugin = require( 'clean-webpack-plugin' );
+const { CleanWebpackPlugin } = require( 'clean-webpack-plugin' );
 const ProgressBarPlugin = require( 'progress-bar-webpack-plugin' );
 const chalk = require( 'chalk' );
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -53,8 +53,6 @@ const GutenbergBlocksConfig = {
 		'product-top-rated': './assets/js/blocks/product-top-rated/index.js',
 		'products-attribute': './assets/js/blocks/products-by-attribute/index.js',
 		'featured-product': './assets/js/blocks/featured-product/index.js',
-		// Global styles
-		styles: [ './assets/css/style.scss', './assets/css/editor.scss' ],
 	},
 	output: {
 		path: path.resolve( __dirname, './build/' ),
@@ -134,7 +132,6 @@ const GutenbergBlocksConfig = {
 		new MergeExtractFilesPlugin( [
 			'build/editor.js',
 			'build/style.js',
-			'build/styles.js',
 		], 'build/vendors.js' ),
 		new ProgressBarPlugin( {
 			format: chalk.blue( 'Build' ) + ' [:bar] ' + chalk.green( ':percent' ) + ' :msg (:elapsed seconds)',
