@@ -71,7 +71,7 @@ GridLayoutControl.propTypes = {
 	 */
 	rows: PropTypes.oneOfType( [ PropTypes.number, PropTypes.string ] ).isRequired,
 	/**
-	 * The current rows count.
+	 * Whether or not buttons are aligned horizontally across items.
 	 */
 	alignButtons: PropTypes.bool.isRequired,
 	/**
