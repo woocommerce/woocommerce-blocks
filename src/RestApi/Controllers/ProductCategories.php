@@ -5,7 +5,7 @@
  * Handles requests to the /products/categories endpoint. These endpoints allow read-only access to editors.
  *
  * @internal This API is used internally by the block post editor--it is still in flux. It should not be used outside of wc-blocks.
- * @package WooCommerce/Blocks/RestApi
+ * @package WooCommerce/Blocks
  */
 
 namespace WooCommerce\Blocks\RestApi\Controllers;
@@ -75,7 +75,7 @@ class ProductCategories extends WC_REST_Product_Categories_Controller {
 	 * Check permissions.
 	 *
 	 * @param \WP_REST_Request $request Full details about the request.
-	 * @param string          $context Request context.
+	 * @param string           $context Request context.
 	 * @return bool|\WP_Error
 	 */
 	protected function check_permissions( $request, $context = 'read' ) {

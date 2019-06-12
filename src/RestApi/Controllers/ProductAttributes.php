@@ -5,7 +5,7 @@
  * Handles requests to the /products/attributes endpoint. These endpoints allow read-only access to editors.
  *
  * @internal This API is used internally by the block post editor--it is still in flux. It should not be used outside of wc-blocks.
- * @package WooCommerce/Blocks/RestApi
+ * @package WooCommerce/Blocks
  */
 
 namespace WooCommerce\Blocks\RestApi\Controllers;

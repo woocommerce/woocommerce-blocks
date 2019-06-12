@@ -55,13 +55,7 @@ class WGPB_Block_Library {
 		self::register_assets();
 		add_action( 'admin_print_footer_scripts', array( 'WGPB_Block_Library', 'print_script_settings' ), 1 );
 		add_action( 'body_class', array( 'WGPB_Block_Library', 'add_theme_body_class' ), 1 );
-		add_filter(
-			'woocommerce_rest_api_get_rest_namespaces',
-			function( $namespaces ) {
-				$namespaces['wc/blocks'] = '\WooCommerce\Blocks\RestApi\Controllers';
-				return $namespaces;
-			}
-		);
+		add_action( 'rest_api_init', array( WooCommerce\Blocks\RestApi::instance(), 'register_rest_routes' ), 10 );
 	}
 
 	/**

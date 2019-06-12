@@ -5,7 +5,7 @@
  * Handles requests to the /products endpoint. These endpoints allow read-only access to editors.
  *
  * @internal This API is used internally by the block post editor--it is still in flux. It should not be used outside of wc-blocks.
- * @package WooCommerce/Blocks/RestApi
+ * @package WooCommerce/Blocks
  */
 
 namespace WooCommerce\Blocks\RestApi\Controllers;
@@ -233,7 +233,7 @@ class Products extends WC_REST_Products_Controller {
 		$params                       = parent::get_collection_params();
 		$params['orderby']['enum']    = array_merge( $params['orderby']['enum'], array( 'price', 'popularity', 'rating', 'menu_order' ) );
 		$params['category_operator']  = array(
-			'description'       => __( 'Operator to compare product category terms.', 'woocommerce' ),
+			'description'       => __( 'Operator to compare product category terms.', 'woo-gutenberg-products-block' ),
 			'type'              => 'string',
 			'enum'              => array( 'in', 'not_in', 'and' ),
 			'default'           => 'in',
@@ -241,7 +241,7 @@ class Products extends WC_REST_Products_Controller {
 			'validate_callback' => 'rest_validate_request_arg',
 		);
 		$params['attribute_operator'] = array(
-			'description'       => __( 'Operator to compare product attribute terms.', 'woocommerce' ),
+			'description'       => __( 'Operator to compare product attribute terms.', 'woo-gutenberg-products-block' ),
 			'type'              => 'string',
 			'enum'              => array( 'in', 'not_in', 'and' ),
 			'default'           => 'in',
@@ -249,7 +249,7 @@ class Products extends WC_REST_Products_Controller {
 			'validate_callback' => 'rest_validate_request_arg',
 		);
 		$params['catalog_visibility'] = array(
-			'description'       => __( 'Determines if hidden or visible catalog products are shown.', 'woocommerce' ),
+			'description'       => __( 'Determines if hidden or visible catalog products are shown.', 'woo-gutenberg-products-block' ),
 			'type'              => 'string',
 			'enum'              => array( 'visible', 'catalog', 'search', 'hidden' ),
 			'sanitize_callback' => 'sanitize_key',

@@ -5,7 +5,7 @@
  * Handles requests to the /products/attributes/<attribute_id/terms endpoint. These endpoints allow read-only access to editors.
  *
  * @internal This API is used internally by the block post editor--it is still in flux. It should not be used outside of wc-blocks.
- * @package WooCommerce/Blocks/RestApi
+ * @package WooCommerce/Blocks
  */
 
 namespace WooCommerce\Blocks\RestApi\Controllers;
@@ -156,7 +156,7 @@ class ProductAttributeTerms extends WC_REST_Product_Attribute_Terms_Controller {
 			'context'     => array( 'view', 'edit' ),
 			'readonly'    => true,
 			'properties'  => array(
-				'id' => array(
+				'id'   => array(
 					'description' => __( 'Attribute ID.', 'woo-gutenberg-products-block' ),
 					'type'        => 'integer',
 					'context'     => array( 'view', 'edit' ),
