@@ -162,7 +162,7 @@ install_deps() {
 	cd "wp-content/plugins/woocommerce-gutenberg-products-block"
 
 	# Run composer in plugin dir.
-	composer install
+	composer install --no-dev
 
 	# Back to original dir
 	cd "$WORKING_DIR"
