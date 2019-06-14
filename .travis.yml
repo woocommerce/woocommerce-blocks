@@ -10,11 +10,11 @@ before_install:
 
 before_script:
   - phpenv config-rm xdebug.ini
+  - composer install
+  - composer dump-autoload
   - bash tests/bin/install-wp-tests.sh wgpb_admin root '' localhost $WP_VERSION
   - node --version
   - npm --version
-  - composer install
-  - composer dump-autoload
   - timedatectl
 
 jobs:
