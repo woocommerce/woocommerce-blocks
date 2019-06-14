@@ -159,11 +159,13 @@ install_deps() {
 		php wp-cli.phar plugin install https://github.com/$REPO/archive/$BRANCH.zip --activate
 	fi
 
-	# Back to original dir
-	cd "$WORKING_DIR"
+	cd "wp-content/plugins/woocommerce-gutenberg-products-block"
 
 	# Run composer in plugin dir.
 	composer install
+
+	# Back to original dir
+	cd "$WORKING_DIR"
 }
 
 install_wp
