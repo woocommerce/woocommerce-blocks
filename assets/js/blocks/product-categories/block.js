@@ -33,10 +33,10 @@ const ProductCategoriesBlock = ( { attributes, isPreview = false } ) => {
 			{ items.map( ( cat ) => {
 				const count = hasCount ? <span>({ cat.count })</span> : null;
 				return [
-					<li key={ cat.term_id }><a>{ cat.name }</a> { count }</li>, // eslint-disable-line
-					!! cat.children &&
-						!! cat.children.length &&
-						renderList( cat.children ),
+					<li key={ cat.term_id }>
+						<a href={ isPreview ? null : cat.link }>{ cat.name }</a> { count } { /* eslint-disable-line */ }
+					</li>,
+					!! cat.children && !! cat.children.length && renderList( cat.children ),
 				];
 			} ) }
 		</ul>
