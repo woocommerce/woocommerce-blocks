@@ -13,9 +13,21 @@
     "phpunit/phpunit": "6.5.14",
     "woocommerce/woocommerce-sniffs": "0.0.6"
   },
+  "scripts": {
+    "post-install-cmd": [
+      "composer dump-autoload"
+    ],
+    "post-update-cmd": [
+      "composer dump-autoload"
+    ]
+  },
   "autoload": {
     "psr-4": {
-      "WooCommerce\\Blocks\\": "src/",
+      "WooCommerce\\Blocks\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
       "WooCommerce\\Blocks\\Tests\\": "tests/php/"
     }
   }
