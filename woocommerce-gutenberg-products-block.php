@@ -49,7 +49,10 @@ function wgpb_initialize() {
 	remove_filter( 'block_categories', array( 'WC_Block_Library', 'add_block_category' ) );
 	remove_action( 'admin_print_footer_scripts', array( 'WC_Block_Library', 'print_script_settings' ), 1 );
 
-	require_once __DIR__ . '/vendor/autoload.php';
+	if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+		require __DIR__ . '/vendor/autoload.php';
+	}
+
 	\WooCommerce\Blocks\Library::instance()->init();
 }
 add_action( 'woocommerce_loaded', 'wgpb_initialize' );
