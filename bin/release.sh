@@ -43,7 +43,7 @@ echo
 output 2 "BLOCKS RELEASE SCRIPT"
 output 2 "====================="
 echo
-printf "This script will build files and create a tag on Github based on your local branch."
+printf "This script will build files and create a tag on GitHub based on your local branch."
 echo
 echo
 printf "The /build/ directory will also be pushed to the tag."
@@ -99,12 +99,13 @@ if [ "$(echo "${PROCEED:-n}" | tr "[:upper:]" "[:lower:]")" != "y" ]; then
   exit 1
 fi
 
-# Ask info
-output 2 "Starting release..."
+output 2 "Starting release to GitHub..."
 echo
 
+CURRENTBRANCH="$(git rev-parse --abbrev-ref HEAD)"
+
 # Create a release branch.
-BRANCH="release/${VERSION}"
+BRANCH="build/${VERSION}"
 git checkout -b $BRANCH
 
 # Force add build directory and commit.
@@ -115,11 +116,18 @@ git commit -m "Adding /build directory to release"
 # Push branch upstream
 git push origin $BRANCH
 
+MESSAGE="$VERSION
+
+Release of version $VERSION.
+"
+
 # Create the new release.
 if [ $IS_PRE_RELEASE ]; then
-	hub release create -m "Release of version $VERSION" --commitish $BRANCH --prerelease "v${VERSION}"
+	hub release create -m $MESSAGE --commitish $BRANCH --prerelease "v${VERSION}"
 else
-	hub release create -m "Release of version $VERSION" --commitish $BRANCH "v${VERSION}"
+	hub release create -m $MESSAGE --commitish $BRANCH "v${VERSION}"
 fi
 
-output 2 "Github release complete."
+git checkout -b CURRENTBRANCH
+
+output 2 "GitHub release complete."
