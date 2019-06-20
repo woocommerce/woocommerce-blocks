@@ -123,7 +123,7 @@ else
 	hub release create -m $MESSAGE -m "Release of version $VERSION. See readme.txt for details." -t $BRANCH "v${VERSION}"
 fi
 
-git checkout -b $CURRENTBRANCH
+git checkout $CURRENTBRANCH
 git branch -d $BRANCH
 git push origin --delete $BRANCH
 
