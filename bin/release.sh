@@ -124,7 +124,7 @@ else
 fi
 
 git checkout $CURRENTBRANCH
-git branch -d $BRANCH
+git branch -D $BRANCH
 git push origin --delete $BRANCH
 
 output 2 "GitHub release complete."
