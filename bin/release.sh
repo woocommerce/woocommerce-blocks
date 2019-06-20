@@ -72,6 +72,10 @@ if is_substring "-" "${VERSION}"; then
 fi
 
 if [ -d "build" ]; then
+	rm -R build
+fi
+
+if [ -d "build" ]; then
 	output 3 "Build directory could not be removed. Aborting."
 	exit 1
 fi
@@ -105,6 +109,7 @@ git checkout -b $BRANCH
 
 # Force add build directory and commit.
 git add build/. --force
+git add .
 git commit -m "Adding /build directory to release"
 
 # Push branch upstream
