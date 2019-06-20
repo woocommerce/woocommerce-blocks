@@ -128,7 +128,7 @@ else
 	hub release create -m $MESSAGE --commitish $BRANCH "v${VERSION}"
 fi
 
-git checkout -b CURRENTBRANCH
+git checkout -b $CURRENTBRANCH
 git branch -d $BRANCH
 git push origin --delete $BRANCH
 
