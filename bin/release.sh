@@ -116,16 +116,11 @@ git commit -m "Adding /build directory to release"
 # Push branch upstream
 git push origin $BRANCH
 
-MESSAGE="$VERSION
-
-Release of version $VERSION.
-"
-
 # Create the new release.
 if [ $IS_PRE_RELEASE ]; then
-	hub release create -m $MESSAGE --commitish $BRANCH --prerelease "v${VERSION}"
+	hub release create -m $VERSION -m "Release of version $VERSION. See readme.txt for details." -t $BRANCH --prerelease "v${VERSION}"
 else
-	hub release create -m $MESSAGE --commitish $BRANCH "v${VERSION}"
+	hub release create -m $MESSAGE -m "Release of version $VERSION. See readme.txt for details." -t $BRANCH "v${VERSION}"
 fi
 
 git checkout -b $CURRENTBRANCH
