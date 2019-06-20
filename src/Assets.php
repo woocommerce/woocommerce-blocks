@@ -141,8 +141,6 @@ class Assets {
 		$code           = get_woocommerce_currency();
 		$product_counts = wp_count_posts( 'product' );
 
-		// NOTE: wcSettings is not used directly, it's only for @woocommerce/components
-		//
 		// Settings and variables can be passed here for access in the app.
 		// Will need `wcAdminAssetUrl` if the ImageAsset component is used.
 		// Will need `dataEndpoints.countries` if Search component is used with 'country' type.
