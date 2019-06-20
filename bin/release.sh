@@ -100,7 +100,7 @@ output 2 "Starting release..."
 echo
 
 # Create a release branch.
-BRANCH = "release/${VERSION}"
+BRANCH="release/${VERSION}"
 git checkout -b $BRANCH
 
 # Force add build directory and commit.
