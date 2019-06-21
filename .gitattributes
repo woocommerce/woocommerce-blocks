@@ -8,3 +8,8 @@
 /phpcs.xml export-ignore
 /phpunit.* export-ignore
 /renovate.json export-ignore
+/webpack.config.js export-ignore
+/postcss.config.js export-ignore
+/package.json export-ignore
+/package-lock.json export-ignore
+/babel-config.js export-ignore
