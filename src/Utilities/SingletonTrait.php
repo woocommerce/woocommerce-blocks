@@ -5,7 +5,7 @@
  * @package WooCommerce/Blocks
  */
 
-namespace WooCommerce\Blocks\Utilities;
+namespace Automattic\WooCommerce\Blocks\Utilities;
 
 /**
  * Singleton trait.

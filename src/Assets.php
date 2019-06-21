@@ -5,11 +5,11 @@
  * @package WooCommerce/Blocks
  */
 
-namespace WooCommerce\Blocks;
+namespace Automattic\WooCommerce\Blocks;
 
 defined( 'ABSPATH' ) || exit;
 
-use WooCommerce\Blocks\Utilities\SingletonTrait;
+use Automattic\WooCommerce\Blocks\Utilities\SingletonTrait;
 
 /**
  * Assets class.

@@ -5,7 +5,7 @@
  * @package WooCommerce/Blocks
  */
 
-namespace WooCommerce\Blocks\BlockTypes;
+namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 defined( 'ABSPATH' ) || exit;
 
