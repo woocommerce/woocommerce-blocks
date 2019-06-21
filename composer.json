@@ -7,13 +7,26 @@
   "prefer-stable": true,
   "minimum-stability": "dev",
   "require": {
-    "composer/installers": "1.6.0"
+    "composer/installers": "1.6.0",
+    "automattic/jetpack-autoloader": "^1"
   },
   "require-dev": {
     "phpunit/phpunit": "6.5.14",
     "woocommerce/woocommerce-sniffs": "0.0.6"
   },
+  "autoload": {
+    "psr-4": {
+      "Automattic\\WooCommerce\\Blocks\\": "src/",
+      "Automattic\\WooCommerce\\Blocks\\Tests\\": "tests/php/"
+    }
+  },
   "scripts": {
+    "post-install-cmd": [
+      "composer dump-autoload"
+    ],
+    "post-update-cmd": [
+      "composer dump-autoload"
+    ],
     "phpcs": [
       "phpcs --extensions=php -s -p"
     ],
@@ -25,12 +38,6 @@
     "scripts-description": {
       "phpcs": "Analyze code against the WordPress coding standards with PHP_CodeSniffer",
       "phpcbf": "Fix coding standards warnings/errors automatically with PHP Code Beautifier"
-    }
-  },
-  "autoload": {
-    "psr-4": {
-      "WooCommerce\\Blocks\\": "src/",
-      "WooCommerce\\Blocks\\Tests\\": "tests/php/"
     }
   }
 }
