@@ -9,13 +9,10 @@ namespace Automattic\WooCommerce\Blocks;
 
 defined( 'ABSPATH' ) || exit;
 
-use Automattic\WooCommerce\Blocks\Utilities\SingletonTrait;
-
 /**
  * RestApi class.
  */
 class RestApi {
-	use SingletonTrait;
 
 	/**
 	 * REST API controllers.

@@ -9,13 +9,10 @@ namespace Automattic\WooCommerce\Blocks;
 
 defined( 'ABSPATH' ) || exit;
 
-use Automattic\WooCommerce\Blocks\Utilities\SingletonTrait;
-
 /**
  * Assets class.
  */
 class Assets {
-	use SingletonTrait;
 
 	/**
 	 * Initialize class features.
