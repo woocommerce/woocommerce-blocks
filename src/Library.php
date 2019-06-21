@@ -18,13 +18,6 @@ class Library {
 	use SingletonTrait;
 
 	/**
-	 * Version of the blocks package/plugin.
-	 *
-	 * @const string
-	 */
-	const VERSION = '2.2.0-dev';
-
-	/**
 	 * Assets class instance.
 	 *
 	 * @var Assets
@@ -39,27 +32,29 @@ class Library {
 	protected $rest_api;
 
 	/**
-	 * Stores if init has ran.
-	 *
-	 * @var boolean
-	 */
-	protected $did_init = false;
-
-	/**
 	 * Initialize block library features.
 	 */
 	public function init() {
-		if ( true === $this->did_init ) {
+		if ( ! $this->is_built() ) {
+			$this->add_build_notice();
 			return;
 		}
-		$this->define_constants();
+
 		$this->add_hooks();
+		$this->unhook_core_blocks();
 
 		$this->assets   = new Assets();
 		$this->rest_api = new RestApi();
+
 		$this->assets->init();
 		$this->rest_api->init();
-		$this->did_init = true;
+	}
+
+	/**
+	 * Hook into WP.
+	 */
+	protected function add_hooks() {
+		add_action( 'init', array( $this, 'register_blocks' ) );
 	}
 
 	/**
@@ -85,17 +80,43 @@ class Library {
 	}
 
 	/**
-	 * Hook into WP.
+	 * See if files have been built or not.
+	 *
+	 * @return bool
 	 */
-	protected function add_hooks() {
-		add_action( 'init', array( $this, 'register_blocks' ) );
+	protected function is_built() {
+		return file_exists( dirname( __DIR__ ) . '/build/featured-product.js' );
 	}
 
 	/**
-	 * Define constants in global scope.
+	 * Add a notice stating that the build has not been done yet.
 	 */
-	protected function define_constants() {
-		define( 'WGPB_VERSION', self::VERSION );
-		define( 'WGPB_ABSPATH', dirname( __DIR__ ) . '/' );
+	protected function add_build_notice() {
+		add_action(
+			'admin_notices',
+			function() {
+				echo '<div class="error"><p>';
+				printf(
+					/* Translators: %1$s is the install command, %2$s is the build command, %3$s is the watch command. */
+					esc_html__( 'WooCommerce Blocks development mode requires files to be built. From the plugin directory, run %1$s to install dependencies, %2$s to build the files or %3$s to build the files and watch for changes.', 'woo-gutenberg-products-block' ),
+					'<code>npm install</code>',
+					'<code>npm run build</code>',
+					'<code>npm start</code>'
+				);
+				echo '</p></div>';
+			}
+		);
+	}
+
+	/**
+	 * Remove core blocks (for 3.6 and below).
+	 */
+	protected function unhook_core_blocks() {
+		// Remove core blocks (for 3.6 and below).
+		remove_action( 'init', array( 'WC_Block_Library', 'init' ) );
+		remove_action( 'init', array( 'WC_Block_Library', 'register_blocks' ) );
+		remove_action( 'init', array( 'WC_Block_Library', 'register_assets' ) );
+		remove_filter( 'block_categories', array( 'WC_Block_Library', 'add_block_category' ) );
+		remove_action( 'admin_print_footer_scripts', array( 'WC_Block_Library', 'print_script_settings' ), 1 );
 	}
 }
