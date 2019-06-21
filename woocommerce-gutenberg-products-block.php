@@ -69,10 +69,6 @@ if ( is_readable( $autoloader ) ) {
 	return;
 }
 
-define( 'WGPB_VERSION', '2.2.0-dev' );
-define( 'WGPB_PLUGIN_FILE', __FILE__ );
-define( 'WGPB_ABSPATH', dirname( WGPB_PLUGIN_FILE ) . '/' );
-
 /**
  * Load up the assets if Gutenberg is active.
  */

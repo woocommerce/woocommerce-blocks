@@ -43,12 +43,12 @@ class Assets {
 	 * @since 2.0.0
 	 */
 	public function register_assets() {
-		$this->register_style( 'wc-block-editor', plugins_url( 'build/editor.css', WGPB_PLUGIN_FILE ), array( 'wp-edit-blocks' ) );
-		$this->register_style( 'wc-block-style', plugins_url( 'build/style.css', WGPB_PLUGIN_FILE ), array() );
+		$this->register_style( 'wc-block-editor', plugins_url( 'build/editor.css', WGPB_ABSPATH ), array( 'wp-edit-blocks' ) );
+		$this->register_style( 'wc-block-style', plugins_url( 'build/style.css', WGPB_ABSPATH ), array() );
 
 		// Shared libraries and components across all blocks.
-		$this->register_script( 'wc-blocks', plugins_url( 'build/blocks.js', WGPB_PLUGIN_FILE ), array(), false );
-		$this->register_script( 'wc-vendors', plugins_url( 'build/vendors.js', WGPB_PLUGIN_FILE ), array(), false );
+		$this->register_script( 'wc-blocks', plugins_url( 'build/blocks.js', WGPB_ABSPATH ), array(), false );
+		$this->register_script( 'wc-vendors', plugins_url( 'build/vendors.js', WGPB_ABSPATH ), array(), false );
 
 		$block_dependencies = array(
 			'wp-api-fetch',
@@ -68,14 +68,14 @@ class Assets {
 			'wc-vendors',
 		);
 
-		$this->register_script( 'wc-handpicked-products', plugins_url( 'build/handpicked-products.js', WGPB_PLUGIN_FILE ), $block_dependencies );
-		$this->register_script( 'wc-product-best-sellers', plugins_url( 'build/product-best-sellers.js', WGPB_PLUGIN_FILE ), $block_dependencies );
-		$this->register_script( 'wc-product-category', plugins_url( 'build/product-category.js', WGPB_PLUGIN_FILE ), $block_dependencies );
-		$this->register_script( 'wc-product-new', plugins_url( 'build/product-new.js', WGPB_PLUGIN_FILE ), $block_dependencies );
-		$this->register_script( 'wc-product-on-sale', plugins_url( 'build/product-on-sale.js', WGPB_PLUGIN_FILE ), $block_dependencies );
-		$this->register_script( 'wc-product-top-rated', plugins_url( 'build/product-top-rated.js', WGPB_PLUGIN_FILE ), $block_dependencies );
-		$this->register_script( 'wc-products-by-attribute', plugins_url( 'build/products-attribute.js', WGPB_PLUGIN_FILE ), $block_dependencies );
-		$this->register_script( 'wc-featured-product', plugins_url( 'build/featured-product.js', WGPB_PLUGIN_FILE ), $block_dependencies );
+		$this->register_script( 'wc-handpicked-products', plugins_url( 'build/handpicked-products.js', WGPB_ABSPATH ), $block_dependencies );
+		$this->register_script( 'wc-product-best-sellers', plugins_url( 'build/product-best-sellers.js', WGPB_ABSPATH ), $block_dependencies );
+		$this->register_script( 'wc-product-category', plugins_url( 'build/product-category.js', WGPB_ABSPATH ), $block_dependencies );
+		$this->register_script( 'wc-product-new', plugins_url( 'build/product-new.js', WGPB_ABSPATH ), $block_dependencies );
+		$this->register_script( 'wc-product-on-sale', plugins_url( 'build/product-on-sale.js', WGPB_ABSPATH ), $block_dependencies );
+		$this->register_script( 'wc-product-top-rated', plugins_url( 'build/product-top-rated.js', WGPB_ABSPATH ), $block_dependencies );
+		$this->register_script( 'wc-products-by-attribute', plugins_url( 'build/products-attribute.js', WGPB_ABSPATH ), $block_dependencies );
+		$this->register_script( 'wc-featured-product', plugins_url( 'build/featured-product.js', WGPB_ABSPATH ), $block_dependencies );
 	}
 
 	/**
@@ -103,7 +103,7 @@ class Assets {
 	 * @param bool   $has_i18n  Optional. Whether to add a script translation call to this file. Default 'true'.
 	 */
 	protected function register_script( $handle, $src, $deps = array(), $has_i18n = true ) {
-		$filename = str_replace( plugins_url( '/', WGPB_PLUGIN_FILE ), '', $src );
+		$filename = str_replace( plugins_url( '/', WGPB_ABSPATH ), '', $src );
 		$ver      = $this->get_file_version( $filename );
 		wp_register_script( $handle, $src, $deps, $ver, true );
 		if ( $has_i18n && function_exists( 'wp_set_script_translations' ) ) {
@@ -123,7 +123,7 @@ class Assets {
 	 *                       'all', 'print' and 'screen', or media queries like '(orientation: portrait)' and '(max-width: 640px)'.
 	 */
 	protected function register_style( $handle, $src, $deps = array(), $media = 'all' ) {
-		$filename = str_replace( plugins_url( '/', WGPB_PLUGIN_FILE ), '', $src );
+		$filename = str_replace( plugins_url( '/', WGPB_ABSPATH ), '', $src );
 		$ver      = $this->get_file_version( $filename );
 		wp_register_style( $handle, $src, $deps, $ver, $media );
 	}

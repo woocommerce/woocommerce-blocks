@@ -17,14 +17,35 @@ use Automattic\WooCommerce\Blocks\Utilities\SingletonTrait;
 class Library {
 	use SingletonTrait;
 
+	const VERSION = '2.2.0-dev';
+
+	/**
+	 * Assets class instance.
+	 *
+	 * @var Assets
+	 */
+	protected $assets;
+
+	/**
+	 * API class instance.
+	 *
+	 * @var RestApi
+	 */
+	protected $rest_api;
+
 	/**
 	 * Initialize block library features.
 	 */
 	public function init() {
 		add_action( 'init', array( $this, 'register_blocks' ) );
 
-		Assets::instance()->init();
-		RestApi::instance()->init();
+		$this->define_constants();
+
+		$this->assets   = new Assets();
+		$this->rest_api = new RestApi();
+
+		$this->assets->init();
+		$this->rest_api->init();
 	}
 
 	/**
@@ -47,5 +68,13 @@ class Library {
 			$block = new $class();
 			$block->register_block_type();
 		}
+	}
+
+	/**
+	 * Define constants in global scope.
+	 */
+	protected function define_constants() {
+		define( 'WGPB_VERSION', self::VERSION );
+		define( 'WGPB_ABSPATH', dirname( __DIR__ ) . '/' );
 	}
 }
