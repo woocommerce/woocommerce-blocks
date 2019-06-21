@@ -17,6 +17,11 @@ use Automattic\WooCommerce\Blocks\Utilities\SingletonTrait;
 class Library {
 	use SingletonTrait;
 
+	/**
+	 * Version of the blocks package/plugin.
+	 *
+	 * @const string
+	 */
 	const VERSION = '2.2.0-dev';
 
 	/**
@@ -34,18 +39,27 @@ class Library {
 	protected $rest_api;
 
 	/**
+	 * Stores if init has ran.
+	 *
+	 * @var boolean
+	 */
+	protected $did_init = false;
+
+	/**
 	 * Initialize block library features.
 	 */
 	public function init() {
-		add_action( 'init', array( $this, 'register_blocks' ) );
-
+		if ( true === $this->did_init ) {
+			return;
+		}
 		$this->define_constants();
+		$this->add_hooks();
 
 		$this->assets   = new Assets();
 		$this->rest_api = new RestApi();
-
 		$this->assets->init();
 		$this->rest_api->init();
+		$this->did_init = true;
 	}
 
 	/**
@@ -68,6 +82,13 @@ class Library {
 			$block = new $class();
 			$block->register_block_type();
 		}
+	}
+
+	/**
+	 * Hook into WP.
+	 */
+	protected function add_hooks() {
+		add_action( 'init', array( $this, 'register_blocks' ) );
 	}
 
 	/**

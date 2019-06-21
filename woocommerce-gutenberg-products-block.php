@@ -102,4 +102,4 @@ function wgpb_initialize() {
 	// Init the feature plugin.
 	\Automattic\WooCommerce\Blocks\Library::instance()->init();
 }
-add_action( 'woocommerce_loaded', 'wgpb_initialize' );
+add_action( 'plugins_loaded', 'wgpb_initialize' );
