@@ -28,7 +28,9 @@ class RestApi {
 	 * Initialize class features.
 	 */
 	public function init() {
-		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ), 10 );
+		if ( ! has_action( 'rest_api_init', array( $this, 'register_rest_routes' ) ) ) {
+			add_action( 'rest_api_init', array( $this, 'register_rest_routes' ), 10 );
+		}
 	}
 
 	/**

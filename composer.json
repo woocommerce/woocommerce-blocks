@@ -22,10 +22,10 @@
   },
   "scripts": {
     "post-install-cmd": [
-      "composer dump-autoload"
+      "composer dump-autoload --no-dev"
     ],
     "post-update-cmd": [
-      "composer dump-autoload"
+      "composer dump-autoload --no-dev"
     ],
     "phpcs": [
       "phpcs --extensions=php -s -p"

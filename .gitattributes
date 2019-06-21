@@ -12,4 +12,3 @@ phpunit.* export-ignore
 postcss.config.js export-ignore
 renovate.json export-ignore
 webpack.config.js export-ignore
-woocommerce-gutenberg-products-block.php export-ignore

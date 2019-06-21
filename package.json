@@ -16,8 +16,8 @@
   },
   "license": "GPL-3.0+",
   "scripts": {
-    "prebuild": "composer install",
-    "prestart": "composer install",
+    "prebuild": "composer install --no-dev",
+    "prestart": "composer install --no-dev",
     "prepack": "npm install && npm run lint && npm run test && npm run build",
     "build": "cross-env BABEL_ENV=default NODE_ENV=production webpack",
     "start": "cross-env BABEL_ENV=default webpack --watch --info-verbosity none",

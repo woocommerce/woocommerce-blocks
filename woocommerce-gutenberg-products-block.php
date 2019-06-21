@@ -9,11 +9,65 @@
  * Text Domain:  woo-gutenberg-products-block
  * WC requires at least: 3.6
  * WC tested up to: 3.6
+ * Requires PHP: 5.6
  *
  * @package WooCommerce\Blocks
+ * @internal This file is only used when running the REST API as a feature plugin.
  */
 
-defined( 'ABSPATH' ) || die();
+defined( 'ABSPATH' ) || exit;
+
+if ( version_compare( PHP_VERSION, '5.6.0', '<' ) ) {
+	return;
+}
+
+/**
+ * Autoload packages.
+ *
+ * The package autoloader includes version information which prevents classes in this feature plugin
+ * conflicting with WooCommerce core.
+ *
+ * We want to fail gracefully if `composer install` has not been executed yet, so we are checking for the autoloader.
+ * If the autoloader is not present, let's log the failure and display a nice admin notice.
+ */
+$autoloader = __DIR__ . '/vendor/autoload_packages.php';
+if ( is_readable( $autoloader ) ) {
+	require $autoloader;
+} else {
+	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		error_log(  // phpcs:ignore
+			sprintf(
+				/* translators: 1: composer command. 2: plugin directory */
+				esc_html__( 'Your installation of the WooCommerce Blocks feature plugin is incomplete. Please run %1$s within the %2$s directory.', 'woo-gutenberg-products-block' ),
+				'`composer install`',
+				'`' . esc_html( str_replace( ABSPATH, '', __DIR__ ) ) . '`'
+			)
+		);
+	}
+	/**
+	 * Outputs an admin notice if composer install has not been ran.
+	 */
+	add_action(
+		'admin_notices',
+		function() {
+			?>
+			<div class="notice notice-error">
+				<p>
+					<?php
+					printf(
+						/* translators: 1: composer command. 2: plugin directory */
+						esc_html__( 'Your installation of the WooCommerce Blocks feature plugin is incomplete. Please run %1$s within the %2$s directory.', 'woo-gutenberg-products-block' ),
+						'<code>composer install</code>',
+						'<code>' . esc_html( str_replace( ABSPATH, '', __DIR__ ) ) . '</code>'
+					);
+					?>
+				</p>
+			</div>
+			<?php
+		}
+	);
+	return;
+}
 
 define( 'WGPB_VERSION', '2.2.0-dev' );
 define( 'WGPB_PLUGIN_FILE', __FILE__ );
@@ -42,14 +96,14 @@ function wgpb_initialize() {
 		return;
 	}
 
-	// Remove this once blocks removed from core.
+	// Remove core blocks (for 3.6 and below).
 	remove_action( 'init', array( 'WC_Block_Library', 'init' ) );
 	remove_action( 'init', array( 'WC_Block_Library', 'register_blocks' ) );
 	remove_action( 'init', array( 'WC_Block_Library', 'register_assets' ) );
 	remove_filter( 'block_categories', array( 'WC_Block_Library', 'add_block_category' ) );
 	remove_action( 'admin_print_footer_scripts', array( 'WC_Block_Library', 'print_script_settings' ), 1 );
 
-	require_once __DIR__ . '/vendor/autoload.php';
-	\WooCommerce\Blocks\Library::instance()->init();
+	// Init the feature plugin.
+	\Automattic\WooCommerce\Blocks\Library::instance()->init();
 }
 add_action( 'woocommerce_loaded', 'wgpb_initialize' );
