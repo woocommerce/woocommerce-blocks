@@ -3,12 +3,8 @@ node_modules* export-ignore
 tests export-ignore
 vendor export-ignore
 bin export-ignore
-babel.config.js export-ignore
 CONTRIBUTING.md export-ignore
-package.json export-ignore
-package-lock.json export-ignore
+README.md export-ignore
 phpcs.xml export-ignore
 phpunit.* export-ignore
-postcss.config.js export-ignore
 renovate.json export-ignore
-webpack.config.js export-ignore
