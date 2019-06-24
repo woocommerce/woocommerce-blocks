@@ -2,7 +2,9 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Component, Fragment } from '@wordpress/element';
+import classnames from 'classnames';
+import { Component, createRef, Fragment } from '@wordpress/element';
+import { IconButton } from '@wordpress/components';
 import { repeat } from 'lodash';
 import PropTypes from 'prop-types';
 import { withInstanceId } from '@wordpress/compose';
@@ -27,14 +29,18 @@ function getCategories( { hasEmpty, isHierarchical } ) {
 class ProductCategoriesBlock extends Component {
 	constructor() {
 		super( ...arguments );
+		this.select = createRef();
 		this.onNavigate = this.onNavigate.bind( this );
 		this.renderList = this.renderList.bind( this );
 		this.renderOptions = this.renderOptions.bind( this );
 	}
 
-	onNavigate( event ) {
+	onNavigate() {
 		const { isPreview = false } = this.props;
-		const url = event.target.value;
+		const url = this.select.current.value;
+		if ( 'false' === url ) {
+			return;
+		}
 		const home = wc_product_block_data.homeUrl;
 
 		if ( ! isPreview && 0 === url.indexOf( home ) ) {
@@ -80,19 +86,34 @@ class ProductCategoriesBlock extends Component {
 		const { attributes, instanceId } = this.props;
 		const { isDropdown } = attributes;
 		const categories = getCategories( attributes );
+		const classes = classnames( {
+			'wc-block-product-categories': true,
+			'is-dropdown': isDropdown,
+			'is-list': ! isDropdown,
+		} );
 
 		const selectId = `prod-categories-${ instanceId }`;
 
 		return (
-			<div className="wc-block-product-categories">
+			<div className={ classes }>
 				{ isDropdown ? (
 					<Fragment>
-						<label htmlFor={ selectId }>
-							{ __( 'Select a category', 'woo-gutenberg-products-block' ) }
-						</label>
-						<select id={ selectId } onChange={ this.onNavigate }>
-							{ this.renderOptions( categories ) }
-						</select>
+						<div className="wc-block-product-categories__dropdown">
+							<label className="screen-reader-text" htmlFor={ selectId }>
+								{ __( 'Select a category', 'woo-gutenberg-products-block' ) }
+							</label>
+							<select id={ selectId } ref={ this.select }>
+								<option value="false">
+									{ __( 'Select a category', 'woo-gutenberg-products-block' ) }
+								</option>
+								{ this.renderOptions( categories ) }
+							</select>
+						</div>
+						<IconButton
+							icon="arrow-right-alt2"
+							label={ __( 'Go to category', 'woo-gutenberg-products-block' ) }
+							onClick={ this.onNavigate }
+						/>
 					</Fragment>
 				) : (
 					this.renderList( categories )
