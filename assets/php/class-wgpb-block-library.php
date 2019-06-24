@@ -215,6 +215,7 @@ class WGPB_Block_Library {
 			'default_height'    => wc_get_theme_support( 'featured_block::default_height', 500 ),
 			'isLargeCatalog'    => $product_counts->publish > 200,
 			'productCategories' => $product_categories,
+			'homeUrl'           => esc_js( home_url( '/' ) ),
 		);
 		?>
 		<script type="text/javascript">

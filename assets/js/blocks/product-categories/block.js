@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Component, Fragment } from '@wordpress/element';
-import { noop, repeat } from 'lodash';
+import { repeat } from 'lodash';
 import PropTypes from 'prop-types';
 import { withInstanceId } from '@wordpress/compose';
 
@@ -27,8 +27,19 @@ function getCategories( { hasEmpty, isHierarchical } ) {
 class ProductCategoriesBlock extends Component {
 	constructor() {
 		super( ...arguments );
+		this.onNavigate = this.onNavigate.bind( this );
 		this.renderList = this.renderList.bind( this );
 		this.renderOptions = this.renderOptions.bind( this );
+	}
+
+	onNavigate( event ) {
+		const { isPreview = false } = this.props;
+		const url = event.target.value;
+		const home = wc_product_block_data.homeUrl;
+
+		if ( ! isPreview && 0 === url.indexOf( home ) ) {
+			document.location.href = url;
+		}
 	}
 
 	renderList( items, depth = 0 ) {
@@ -57,7 +68,7 @@ class ProductCategoriesBlock extends Component {
 		return items.map( ( cat ) => {
 			const count = hasCount ? `(${ cat.count })` : null;
 			return [
-				<option key={ cat.term_id } value={ cat.term_id }>
+				<option key={ cat.term_id } value={ cat.link }>
 					{ repeat( '–', depth ) } { cat.name } { count }
 				</option>,
 				!! cat.children && !! cat.children.length && this.renderOptions( cat.children, depth + 1 ),
@@ -79,7 +90,7 @@ class ProductCategoriesBlock extends Component {
 						<label htmlFor={ selectId }>
 							{ __( 'Select a category', 'woo-gutenberg-products-block' ) }
 						</label>
-						<select id={ selectId } onBlur={ noop }>
+						<select id={ selectId } onChange={ this.onNavigate }>
 							{ this.renderOptions( categories ) }
 						</select>
 					</Fragment>
