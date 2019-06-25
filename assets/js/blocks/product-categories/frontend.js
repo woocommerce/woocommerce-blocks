@@ -22,6 +22,7 @@ if ( containers.length ) {
 			isDropdown: data.isDropdown === 'true',
 			isHierarchical: data.isHierarchical === 'true',
 		};
+		el.className = el.className.replace( 'is-loading', '' );
 
 		render( <Block attributes={ attributes } />, el );
 	} );
