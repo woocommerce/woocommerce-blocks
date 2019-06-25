@@ -103,7 +103,7 @@ class ProductCategoriesBlock extends Component {
 								{ __( 'Select a category', 'woo-gutenberg-products-block' ) }
 							</label>
 							<select id={ selectId } ref={ this.select }>
-								<option value="false">
+								<option value="false" hidden>
 									{ __( 'Select a category', 'woo-gutenberg-products-block' ) }
 								</option>
 								{ this.renderOptions( categories ) }
