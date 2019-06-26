@@ -105,7 +105,7 @@
   ],
   "files": [
     "assets/**/*.{js,scss,php}",
-    "build/**/*.{js,css}",
+    "build/**/*.{js,json,css}",
     "includes/**/*.php",
     "languages/**/*.json",
     "license.txt",
