@@ -138,6 +138,7 @@ class WGPB_Block_Library {
 		self::register_script( 'wc-products-attribute', plugins_url( 'build/products-attribute.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
 		self::register_script( 'wc-featured-product', plugins_url( 'build/featured-product.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
 		self::register_script( 'wc-product-categories', plugins_url( 'build/product-categories.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
+		self::register_script( 'wc-reviews-by-product', plugins_url( 'build/reviews-by-product.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
 	}
 
 	/**
@@ -368,6 +369,25 @@ class WGPB_Block_Library {
 				'script'        => 'wc-frontend',
 			)
 		);
+		register_block_type(
+			'woocommerce/reviews-by-product',
+			array(
+				'render_callback' => array( __CLASS__, 'render_reviews_by_product' ),
+				'editor_script'   => 'wc-reviews-by-product',
+				'editor_style'    => 'wc-block-editor',
+				'style'           => 'wc-block-style',
+				'attributes'      => array(
+					'editMode'            => self::get_schema_boolean( true ),
+					'orderby'             => self::get_schema_reviews_orderby(),
+					'reviewsShown'        => self::get_schema_number( 10 ),
+					'showProductRating'   => self::get_schema_boolean( true ),
+					'showReviewerName'    => self::get_schema_boolean( true ),
+					'showReviewerPicture' => self::get_schema_boolean( true ),
+					'showReviewDate'      => self::get_schema_boolean( true ),
+					'productId'           => self::get_schema_number( 0 ),
+				),
+			)
+		);
 	}
 
 	/**
@@ -397,6 +417,19 @@ class WGPB_Block_Library {
 			'type'    => 'string',
 			'enum'    => array( 'date', 'popularity', 'price_asc', 'price_desc', 'rating', 'title', 'menu_order' ),
 			'default' => 'date',
+		);
+	}
+
+	/**
+	 * Get the schema for the reviews' orderby attribute.
+	 *
+	 * @return array Property definition of `orderby` attribute.
+	 */
+	protected static function get_schema_reviews_orderby() {
+		return array(
+			'type'    => 'string',
+			'enum'    => array( 'comment_date-DESC', 'comment_date-ASC' ),
+			'default' => 'recent',
 		);
 	}
 
@@ -568,6 +601,20 @@ class WGPB_Block_Library {
 		require_once dirname( __FILE__ ) . '/class-wgpb-block-handpicked-products.php';
 
 		$block = new WGPB_Block_Handpicked_Products( $attributes, $content );
+		return $block->render();
+	}
+
+	/**
+	 * Reviews by Product: Include and render the dynamic block.
+	 *
+	 * @param array  $attributes Block attributes. Default empty array.
+	 * @param string $content    Block content. Default empty string.
+	 * @return string Rendered block type output.
+	 */
+	public static function render_reviews_by_product( $attributes, $content ) {
+		require_once dirname( __FILE__ ) . '/class-wgpb-block-reviews-by-product.php';
+
+		$block = new WGPB_Block_Reviews_By_Product( $attributes, $content );
 		return $block->render();
 	}
 
