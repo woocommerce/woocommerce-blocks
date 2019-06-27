@@ -20,11 +20,6 @@
       "Automattic\\WooCommerce\\Blocks\\": "src/"
     }
   },
-  "autoload-dev": {
-    "psr-4": {
-      "Automattic\\WooCommerce\\Blocks\\Tests\\": "tests/php/"
-    }
-  },
   "scripts": {
     "phpcs": [
       "phpcs --extensions=php -s -p"
