@@ -39,13 +39,13 @@ class HandpickedProducts extends AbstractProductGrid {
 	 */
 	protected function get_attributes() {
 		return array(
-			'align'             => self::get_schema_align(),
-			'alignButtons'      => self::get_schema_boolean( false ),
-			'columns'           => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
-			'editMode'          => self::get_schema_boolean( true ),
-			'orderby'           => self::get_schema_orderby(),
-			'products'          => self::get_schema_list_ids(),
-			'contentVisibility' => self::get_schema_content_visibility(),
+			'align'             => $this->get_schema_align(),
+			'alignButtons'      => $this->get_schema_boolean( false ),
+			'columns'           => $this->get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
+			'editMode'          => $this->get_schema_boolean( true ),
+			'orderby'           => $this->get_schema_orderby(),
+			'products'          => $this->get_schema_list_ids(),
+			'contentVisibility' => $this->get_schema_content_visibility(),
 		);
 	}
 }

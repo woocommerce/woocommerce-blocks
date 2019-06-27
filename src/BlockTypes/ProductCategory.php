@@ -37,7 +37,7 @@ class ProductCategory extends AbstractProductGrid {
 			parent::get_attributes(),
 			array(
 				'orderby'  => $this->get_schema_orderby(),
-				'editMode' => self::get_schema_boolean( true ),
+				'editMode' => $this->get_schema_boolean( true ),
 			)
 		);
 	}

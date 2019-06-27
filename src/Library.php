@@ -26,29 +26,20 @@ class Library {
 	 */
 	public static function register_blocks() {
 		$blocks = [
+			'FeaturedProduct',
 			'HandpickedProducts',
 			'ProductBestSellers',
+			'ProductCategories',
 			'ProductCategory',
 			'ProductNew',
 			'ProductOnSale',
-			'ProductTopRated',
 			'ProductsByAttribute',
-			'FeaturedProduct',
+			'ProductTopRated',
 		];
 		foreach ( $blocks as $class ) {
 			$class    = __NAMESPACE__ . '\\BlockTypes\\' . $class;
 			$instance = new $class();
 			$instance->register_block_type();
 		}
-
-		register_block_type(
-			'woocommerce/product-categories',
-			array(
-				'editor_script' => 'wc-product-categories',
-				'editor_style'  => 'wc-block-editor',
-				'style'         => 'wc-block-style',
-				'script'        => 'wc-frontend',
-			)
-		);
 	}
 }

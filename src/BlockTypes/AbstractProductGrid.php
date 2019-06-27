@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * AbstractProductGrid class.
  */
-abstract class AbstractProductGrid extends AbstractBlock {
+abstract class AbstractProductGrid extends AbstractDynamicBlock {
 
 	/**
 	 * Attributes.
@@ -42,16 +42,16 @@ abstract class AbstractProductGrid extends AbstractBlock {
 	 */
 	protected function get_attributes() {
 		return array(
-			'columns'           => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
-			'rows'              => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_rows', 1 ) ),
-			'categories'        => self::get_schema_list_ids(),
+			'columns'           => $this->get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
+			'rows'              => $this->get_schema_number( wc_get_theme_support( 'product_blocks::default_rows', 1 ) ),
+			'categories'        => $this->get_schema_list_ids(),
 			'catOperator'       => array(
 				'type'    => 'string',
 				'default' => 'any',
 			),
-			'contentVisibility' => self::get_schema_content_visibility(),
-			'align'             => self::get_schema_align(),
-			'alignButtons'      => self::get_schema_boolean( false ),
+			'contentVisibility' => $this->get_schema_content_visibility(),
+			'align'             => $this->get_schema_align(),
+			'alignButtons'      => $this->get_schema_boolean( false ),
 		);
 	}
 
@@ -78,14 +78,14 @@ abstract class AbstractProductGrid extends AbstractBlock {
 	 *
 	 * @return array List of block attributes with type and defaults.
 	 */
-	protected static function get_schema_content_visibility() {
+	protected function get_schema_content_visibility() {
 		return array(
 			'type'       => 'object',
 			'properties' => array(
-				'title'  => self::get_schema_boolean( true ),
-				'price'  => self::get_schema_boolean( true ),
-				'rating' => self::get_schema_boolean( true ),
-				'button' => self::get_schema_boolean( true ),
+				'title'  => $this->get_schema_boolean( true ),
+				'price'  => $this->get_schema_boolean( true ),
+				'rating' => $this->get_schema_boolean( true ),
+				'button' => $this->get_schema_boolean( true ),
 			),
 		);
 	}
@@ -95,7 +95,7 @@ abstract class AbstractProductGrid extends AbstractBlock {
 	 *
 	 * @return array Property definition of `orderby` attribute.
 	 */
-	protected static function get_schema_orderby() {
+	protected function get_schema_orderby() {
 		return array(
 			'type'    => 'string',
 			'enum'    => array( 'date', 'popularity', 'price_asc', 'price_desc', 'rating', 'title', 'menu_order' ),
@@ -222,7 +222,7 @@ abstract class AbstractProductGrid extends AbstractBlock {
 		$query_hash        = md5( wp_json_encode( $this->query_args ) . __CLASS__ );
 		$transient_name    = 'wc_block_' . $query_hash;
 		$transient_value   = get_transient( $transient_name );
-		$transient_version = WC_Cache_Helper::get_transient_version( 'product_query' );
+		$transient_version = \WC_Cache_Helper::get_transient_version( 'product_query' );
 
 		if ( isset( $transient_value['value'], $transient_value['version'] ) && $transient_value['version'] === $transient_version ) {
 			$results = $transient_value['value'];

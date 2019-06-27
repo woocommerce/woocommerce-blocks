@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * FeaturedProduct class.
  */
-class FeaturedProduct extends AbstractBlock {
+class FeaturedProduct extends AbstractDynamicBlock {
 	/**
 	 * Block name.
 	 *

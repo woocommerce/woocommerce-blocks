@@ -47,8 +47,8 @@ class ProductsByAttribute extends AbstractProductGrid {
 	 */
 	protected function get_attributes() {
 		return array(
-			'align'             => self::get_schema_align(),
-			'alignButtons'      => self::get_schema_boolean( false ),
+			'align'             => $this->get_schema_align(),
+			'alignButtons'      => $this->get_schema_boolean( false ),
 			'attributes'        => array(
 				'type'    => 'array',
 				'items'   => array(
@@ -68,11 +68,11 @@ class ProductsByAttribute extends AbstractProductGrid {
 				'type'    => 'string',
 				'default' => 'any',
 			),
-			'columns'           => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
-			'contentVisibility' => self::get_schema_content_visibility(),
-			'editMode'          => self::get_schema_boolean( true ),
-			'orderby'           => self::get_schema_orderby(),
-			'rows'              => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_rows', 1 ) ),
+			'columns'           => $this->get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
+			'contentVisibility' => $this->get_schema_content_visibility(),
+			'editMode'          => $this->get_schema_boolean( true ),
+			'orderby'           => $this->get_schema_orderby(),
+			'rows'              => $this->get_schema_number( wc_get_theme_support( 'product_blocks::default_rows', 1 ) ),
 		);
 	}
 }
