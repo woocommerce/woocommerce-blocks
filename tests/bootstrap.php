@@ -38,15 +38,10 @@ function wgpb_admin_install() {
 
 	// Initialize the WC API extensions.
 	require_once dirname( dirname( __FILE__ ) ) . '/woocommerce-gutenberg-products-block.php';
-	wgpb_initialize();
 
 	// Reload capabilities after install, see https://core.trac.wordpress.org/ticket/28374.
-	if ( version_compare( $GLOBALS['wp_version'], '4.7', '<' ) ) {
-		$GLOBALS['wp_roles']->reinit();
-	} else {
-		$GLOBALS['wp_roles'] = null; // WPCS: override ok.
-		wp_roles();
-	}
+	$GLOBALS['wp_roles'] = null; // WPCS: override ok.
+	wp_roles();
 
 	echo esc_html( 'Loaded WooCommerce Gutenberg Products Block plugin' . PHP_EOL );
 }
