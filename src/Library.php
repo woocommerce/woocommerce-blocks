@@ -25,6 +25,22 @@ class Library {
 	 * Register blocks, hooking up assets and render functions as needed.
 	 */
 	public static function register_blocks() {
+		$blocks = [
+			'HandpickedProducts',
+			'ProductBestSellers',
+			'ProductCategory',
+			'ProductNew',
+			'ProductOnSale',
+			'ProductTopRated',
+			'ProductsByAttribute',
+			'FeaturedProduct',
+		];
+		foreach ( $blocks as $class ) {
+			$class    = __NAMESPACE__ . '\\BlockTypes\\' . $class;
+			$instance = new $class();
+			$instance->register_block_type();
+		}
+
 		require_once dirname( __DIR__ ) . '/assets/php/class-wgpb-block-grid-base.php';
 		require_once dirname( __DIR__ ) . '/assets/php/class-wgpb-block-featured-product.php';
 
@@ -161,109 +177,6 @@ class Library {
 				'style'         => 'wc-block-style',
 				'script'        => 'wc-frontend',
 			)
-		);
-	}
-
-	/**
-	 * Get the schema for the contentVisibility attribute
-	 *
-	 * @return array List of block attributes with type and defaults.
-	 */
-	protected static function get_schema_content_visibility() {
-		return array(
-			'type'       => 'object',
-			'properties' => array(
-				'title'  => self::get_schema_boolean( true ),
-				'price'  => self::get_schema_boolean( true ),
-				'rating' => self::get_schema_boolean( true ),
-				'button' => self::get_schema_boolean( true ),
-			),
-		);
-	}
-
-	/**
-	 * Get the schema for the orderby attribute.
-	 *
-	 * @return array Property definition of `orderby` attribute.
-	 */
-	protected static function get_schema_orderby() {
-		return array(
-			'type'    => 'string',
-			'enum'    => array( 'date', 'popularity', 'price_asc', 'price_desc', 'rating', 'title', 'menu_order' ),
-			'default' => 'date',
-		);
-	}
-
-	/**
-	 * Get the schema for the alignment property.
-	 *
-	 * @return array Property definition for align.
-	 */
-	protected static function get_schema_align() {
-		return array(
-			'type' => 'string',
-			'enum' => array( 'left', 'center', 'right', 'wide', 'full' ),
-		);
-	}
-
-	/**
-	 * Get the schema for a list of IDs.
-	 *
-	 * @return array Property definition for a list of numeric ids.
-	 */
-	protected static function get_schema_list_ids() {
-		return array(
-			'type'    => 'array',
-			'items'   => array(
-				'type' => 'number',
-			),
-			'default' => array(),
-		);
-	}
-
-	/**
-	 * Get the schema for a boolean value.
-	 *
-	 * @param  string $default  The default value.
-	 * @return array Property definition.
-	 */
-	protected static function get_schema_boolean( $default = true ) {
-		return array(
-			'type'    => 'boolean',
-			'default' => $default,
-		);
-	}
-
-	/**
-	 * Get the schema for a numeric value.
-	 *
-	 * @param  string $default  The default value.
-	 * @return array Property definition.
-	 */
-	protected static function get_schema_number( $default ) {
-		return array(
-			'type'    => 'number',
-			'default' => $default,
-		);
-	}
-
-	/**
-	 * Get a set of attributes shared across most of the grid blocks.
-	 *
-	 * @return array List of block attributes with type and defaults.
-	 */
-	protected static function get_shared_attributes() {
-		return array(
-			'columns'           => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
-			'rows'              => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_rows', 1 ) ),
-			'categories'        => self::get_schema_list_ids(),
-			'catOperator'       => array(
-				'type'    => 'string',
-				'default' => 'any',
-			),
-			'contentVisibility' => self::get_schema_content_visibility(),
-			'align'             => self::get_schema_align(),
-			'alignButtons'      => self::get_schema_boolean( false ),
 		);
 	}
 

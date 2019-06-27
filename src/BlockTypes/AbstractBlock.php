@@ -61,4 +61,57 @@ abstract class AbstractBlock {
 	protected function get_attributes() {
 		return array();
 	}
+
+	/**
+	 * Get the schema for the alignment property.
+	 *
+	 * @return array Property definition for align.
+	 */
+	protected static function get_schema_align() {
+		return array(
+			'type' => 'string',
+			'enum' => array( 'left', 'center', 'right', 'wide', 'full' ),
+		);
+	}
+
+	/**
+	 * Get the schema for a list of IDs.
+	 *
+	 * @return array Property definition for a list of numeric ids.
+	 */
+	protected static function get_schema_list_ids() {
+		return array(
+			'type'    => 'array',
+			'items'   => array(
+				'type' => 'number',
+			),
+			'default' => array(),
+		);
+	}
+
+	/**
+	 * Get the schema for a boolean value.
+	 *
+	 * @param  string $default  The default value.
+	 * @return array Property definition.
+	 */
+	protected static function get_schema_boolean( $default = true ) {
+		return array(
+			'type'    => 'boolean',
+			'default' => $default,
+		);
+	}
+
+	/**
+	 * Get the schema for a numeric value.
+	 *
+	 * @param  string $default  The default value.
+	 * @return array Property definition.
+	 */
+	protected static function get_schema_number( $default ) {
+		return array(
+			'type'    => 'number',
+			'default' => $default,
+		);
+	}
 }
