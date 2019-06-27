@@ -1,6 +1,6 @@
 <?php
 /**
- * Hand-picked Products block.
+ * Product category block.
  *
  * @package WooCommerce/Blocks
  */
@@ -10,27 +10,22 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * HandpickedProducts class.
+ * ProductCategory class.
  */
-class HandpickedProducts extends AbstractProductGrid {
+class ProductCategory extends AbstractProductGrid {
 	/**
 	 * Block name.
 	 *
 	 * @var string
 	 */
-	protected $block_name = 'handpicked-products';
+	protected $block_name = 'product-category';
 
 	/**
-	 * Set args specific to this block
+	 * This function is not necessary in this block.
 	 *
 	 * @param array $query_args Query args.
 	 */
-	protected function set_block_query_args( &$query_args ) {
-		$ids = array_map( 'absint', $this->attributes['products'] );
-
-		$query_args['post__in']       = $ids;
-		$query_args['posts_per_page'] = count( $ids );
-	}
+	protected function set_block_query_args( &$query_args ) {}
 
 	/**
 	 * Get block attributes.
@@ -41,6 +36,7 @@ class HandpickedProducts extends AbstractProductGrid {
 		return array_merge(
 			parent::get_attributes(),
 			array(
+				'orderby'  => $this->get_schema_orderby(),
 				'editMode' => self::get_schema_boolean( true ),
 			)
 		);
