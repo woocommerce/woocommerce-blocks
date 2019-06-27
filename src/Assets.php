@@ -15,37 +15,24 @@ defined( 'ABSPATH' ) || exit;
 class Assets {
 
 	/**
-	 * Initialize class features.
+	 * Initialize class features on init.
 	 */
-	public function init() {
-		add_action( 'init', array( $this, 'register_assets' ) );
-		add_action( 'body_class', array( $this, 'add_theme_body_class' ), 1 );
-		add_action( 'admin_print_footer_scripts', array( $this, 'print_script_settings' ), 1 );
-	}
-
-	/**
-	 * Add body classes.
-	 *
-	 * @param array $classes Array of CSS classnames.
-	 * @return array Modified array of CSS classnames.
-	 */
-	public function add_theme_body_class( $classes = array() ) {
-		$classes[] = 'theme-' . get_template();
-		return $classes;
+	public static function init() {
+		add_action( 'init', array( __CLASS__, 'register_assets' ) );
+		add_action( 'body_class', array( __CLASS__, 'add_theme_body_class' ), 1 );
+		add_action( 'admin_print_footer_scripts', array( __CLASS__, 'print_script_settings' ), 1 );
 	}
 
 	/**
 	 * Register block scripts & styles.
-	 *
-	 * @since 2.0.0
 	 */
-	public function register_assets() {
-		$this->register_style( 'wc-block-editor', plugins_url( 'build/editor.css', __DIR__ ), array( 'wp-edit-blocks' ) );
-		$this->register_style( 'wc-block-style', plugins_url( 'build/style.css', __DIR__ ), array() );
+	public static function register_assets() {
+		self::register_style( 'wc-block-editor', plugins_url( 'build/editor.css', __DIR__ ), array( 'wp-edit-blocks' ) );
+		self::register_style( 'wc-block-style', plugins_url( 'build/style.css', __DIR__ ), array() );
 
 		// Shared libraries and components across all blocks.
-		$this->register_script( 'wc-blocks', plugins_url( 'build/blocks.js', __DIR__ ), array(), false );
-		$this->register_script( 'wc-vendors', plugins_url( 'build/vendors.js', __DIR__ ), array(), false );
+		self::register_script( 'wc-blocks', plugins_url( 'build/blocks.js', __DIR__ ), array(), false );
+		self::register_script( 'wc-vendors', plugins_url( 'build/vendors.js', __DIR__ ), array(), false );
 
 		$block_dependencies = array(
 			'wp-api-fetch',
@@ -65,64 +52,25 @@ class Assets {
 			'wc-vendors',
 		);
 
-		$this->register_script( 'wc-handpicked-products', plugins_url( 'build/handpicked-products.js', __DIR__ ), $block_dependencies );
-		$this->register_script( 'wc-product-best-sellers', plugins_url( 'build/product-best-sellers.js', __DIR__ ), $block_dependencies );
-		$this->register_script( 'wc-product-category', plugins_url( 'build/product-category.js', __DIR__ ), $block_dependencies );
-		$this->register_script( 'wc-product-new', plugins_url( 'build/product-new.js', __DIR__ ), $block_dependencies );
-		$this->register_script( 'wc-product-on-sale', plugins_url( 'build/product-on-sale.js', __DIR__ ), $block_dependencies );
-		$this->register_script( 'wc-product-top-rated', plugins_url( 'build/product-top-rated.js', __DIR__ ), $block_dependencies );
-		$this->register_script( 'wc-products-by-attribute', plugins_url( 'build/products-attribute.js', __DIR__ ), $block_dependencies );
-		$this->register_script( 'wc-featured-product', plugins_url( 'build/featured-product.js', __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-handpicked-products', plugins_url( 'build/handpicked-products.js', __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-product-best-sellers', plugins_url( 'build/product-best-sellers.js', __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-product-category', plugins_url( 'build/product-category.js', __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-product-new', plugins_url( 'build/product-new.js', __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-product-on-sale', plugins_url( 'build/product-on-sale.js', __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-product-top-rated', plugins_url( 'build/product-top-rated.js', __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-products-by-attribute', plugins_url( 'build/products-attribute.js', __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-featured-product', plugins_url( 'build/featured-product.js', __DIR__ ), $block_dependencies );
 	}
 
 	/**
-	 * Get the file modified time as a cache buster if we're in dev mode.
+	 * Add body classes.
 	 *
-	 * @param string $file Local path to the file.
-	 * @return string The cache buster value to use for the given file.
+	 * @param array $classes Array of CSS classnames.
+	 * @return array Modified array of CSS classnames.
 	 */
-	protected function get_file_version( $file ) {
-		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
-			$file = trim( $file, '/' );
-			return filemtime( WGPB_ABSPATH . $file );
-		}
-		return WGPB_VERSION;
-	}
-
-	/**
-	 * Registers a script according to `wp_register_script`, additionally loading the translations for the file.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @param string $handle    Name of the script. Should be unique.
-	 * @param string $src       Full URL of the script, or path of the script relative to the WordPress root directory.
-	 * @param array  $deps      Optional. An array of registered script handles this script depends on. Default empty array.
-	 * @param bool   $has_i18n  Optional. Whether to add a script translation call to this file. Default 'true'.
-	 */
-	protected function register_script( $handle, $src, $deps = array(), $has_i18n = true ) {
-		$filename = str_replace( plugins_url( '/', __DIR__ ), '', $src );
-		$ver      = $this->get_file_version( $filename );
-		wp_register_script( $handle, $src, $deps, $ver, true );
-		if ( $has_i18n && function_exists( 'wp_set_script_translations' ) ) {
-			wp_set_script_translations( $handle, 'woo-gutenberg-products-block', WGPB_ABSPATH . 'languages' );
-		}
-	}
-
-	/**
-	 * Registers a style according to `wp_register_style`.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @param string $handle Name of the stylesheet. Should be unique.
-	 * @param string $src    Full URL of the stylesheet, or path of the stylesheet relative to the WordPress root directory.
-	 * @param array  $deps   Optional. An array of registered stylesheet handles this stylesheet depends on. Default empty array.
-	 * @param string $media  Optional. The media for which this stylesheet has been defined. Default 'all'. Accepts media types like
-	 *                       'all', 'print' and 'screen', or media queries like '(orientation: portrait)' and '(max-width: 640px)'.
-	 */
-	protected function register_style( $handle, $src, $deps = array(), $media = 'all' ) {
-		$filename = str_replace( plugins_url( '/', __DIR__ ), '', $src );
-		$ver      = $this->get_file_version( $filename );
-		wp_register_style( $handle, $src, $deps, $ver, $media );
+	public static function add_theme_body_class( $classes = array() ) {
+		$classes[] = 'theme-' . get_template();
+		return $classes;
 	}
 
 	/**
@@ -133,7 +81,7 @@ class Assets {
 	 *
 	 * @since 2.0.0
 	 */
-	public function print_script_settings() {
+	public static function print_script_settings() {
 		global $wp_locale;
 		$code           = get_woocommerce_currency();
 		$product_counts = wp_count_posts( 'product' );
@@ -184,5 +132,55 @@ class Assets {
 			var wc_product_block_data = JSON.parse( decodeURIComponent( '<?php echo rawurlencode( wp_json_encode( $block_settings ) ); ?>' ) );
 		</script>
 		<?php
+	}
+
+	/**
+	 * Get the file modified time as a cache buster if we're in dev mode.
+	 *
+	 * @param string $file Local path to the file.
+	 * @return string The cache buster value to use for the given file.
+	 */
+	protected static function get_file_version( $file ) {
+		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+			$file = trim( $file, '/' );
+			return filemtime( WGPB_ABSPATH . $file );
+		}
+		return WGPB_VERSION;
+	}
+
+	/**
+	 * Registers a script according to `wp_register_script`, additionally loading the translations for the file.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string $handle    Name of the script. Should be unique.
+	 * @param string $src       Full URL of the script, or path of the script relative to the WordPress root directory.
+	 * @param array  $deps      Optional. An array of registered script handles this script depends on. Default empty array.
+	 * @param bool   $has_i18n  Optional. Whether to add a script translation call to this file. Default 'true'.
+	 */
+	protected static function register_script( $handle, $src, $deps = array(), $has_i18n = true ) {
+		$filename = str_replace( plugins_url( '/', __DIR__ ), '', $src );
+		$ver      = self::get_file_version( $filename );
+		wp_register_script( $handle, $src, $deps, $ver, true );
+		if ( $has_i18n && function_exists( 'wp_set_script_translations' ) ) {
+			wp_set_script_translations( $handle, 'woo-gutenberg-products-block', WGPB_ABSPATH . 'languages' );
+		}
+	}
+
+	/**
+	 * Registers a style according to `wp_register_style`.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string $handle Name of the stylesheet. Should be unique.
+	 * @param string $src    Full URL of the stylesheet, or path of the stylesheet relative to the WordPress root directory.
+	 * @param array  $deps   Optional. An array of registered stylesheet handles this stylesheet depends on. Default empty array.
+	 * @param string $media  Optional. The media for which this stylesheet has been defined. Default 'all'. Accepts media types like
+	 *                       'all', 'print' and 'screen', or media queries like '(orientation: portrait)' and '(max-width: 640px)'.
+	 */
+	protected static function register_style( $handle, $src, $deps = array(), $media = 'all' ) {
+		$filename = str_replace( plugins_url( '/', __DIR__ ), '', $src );
+		$ver      = self::get_file_version( $filename );
+		wp_register_style( $handle, $src, $deps, $ver, $media );
 	}
 }
