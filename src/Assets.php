@@ -48,7 +48,7 @@ class Assets {
 		self::register_script( 'wc-products-by-attribute', plugins_url( 'build/products-by-attribute.js', __DIR__ ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
 		self::register_script( 'wc-featured-product', plugins_url( 'build/featured-product.js', __DIR__ ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
 		self::register_script( 'wc-product-categories', plugins_url( 'build/product-categories.js', __DIR__ ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
-		self::register_script( 'wc-product-tag', plugins_url( 'build/product-tag.js', WGPB_PLUGIN_FILE ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
+		self::register_script( 'wc-product-tag', plugins_url( 'build/product-tag.js', __DIR__ ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
 	}
 
 	/**

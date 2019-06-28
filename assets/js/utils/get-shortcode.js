@@ -86,11 +86,6 @@ export default function getShortcode( props, name ) {
 				return '';
 			}
 			break;
-		case 'woocommerce/products-by-tag':
-			if ( ! tags || ! tags.length ) {
-				return '';
-			}
-			break;
 	}
 
 	// Build the shortcode string out of the set shortcode attributes.

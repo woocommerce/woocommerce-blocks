@@ -55,14 +55,6 @@ registerBlockType( blockTypeName, {
 		},
 
 		/**
-		 * Toggle for edit mode in the block preview.
-		 */
-		editMode: {
-			type: 'boolean',
-			default: true,
-		},
-
-		/**
 		 * Content visibility setting
 		 */
 		contentVisibility: {
@@ -115,10 +107,6 @@ registerBlockType( blockTypeName, {
 				columns: {
 					type: 'number',
 					default: wc_product_block_data.default_columns,
-				},
-				editMode: {
-					type: 'boolean',
-					default: true,
 				},
 				contentVisibility: {
 					type: 'object',
