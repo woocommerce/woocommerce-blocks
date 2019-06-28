@@ -58,6 +58,36 @@ class WGPB_Block_Reviews_By_Product {
 	}
 
 	/**
+	 * Render the Reviews by Product meta (author and date).
+	 *
+	 * @param array $comment Comment attributes.
+	 */
+	public function reviews_display_meta( $comment ) {
+		$verified = wc_review_is_from_verified_owner( $comment->comment_ID );
+
+		if ( ! $this->attributes['showReviewerName'] && ! $this->attributes['showReviewDate'] ) {
+			return;
+		}
+
+		$html = '<p class="meta">';
+		if ( $this->attributes['showReviewerName'] ) {
+			$html .= '<strong class="woocommerce-review__author">' . get_comment_author() . '</strong>';
+			if ( 'yes' === get_option( 'woocommerce_review_rating_verification_label' ) && $verified ) {
+				$html .= '<em class="woocommerce-review__verified verified">(' . esc_attr__( 'verified owner', 'woo-gutenberg-products-block' ) . ')</em> ';
+			}
+		}
+		if ( $this->attributes['showReviewerName'] && $this->attributes['showReviewDate'] ) {
+			$html .= '<span class="woocommerce-review__dash">&ndash;</span>';
+		}
+		if ( $this->attributes['showReviewDate'] ) {
+			$html .= '<time class="woocommerce-review__published-date" datetime="' . esc_attr( get_comment_date( 'c' ) ) . '">' . esc_html( get_comment_date( wc_date_format() ) ) . '</time>';
+		}
+		$html .= '</p>';
+
+		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+	/**
 	 * Render the Reviews by Product.
 	 *
 	 * @return string Rendered block type output.
@@ -85,7 +115,23 @@ class WGPB_Block_Reviews_By_Product {
 			'callback' => 'woocommerce_comments',
 			'echo'     => false,
 		);
-
-		return '<div id="reviews"><ol class="commentlist">' . wp_list_comments( apply_filters( 'woocommerce_product_review_list_args', $args ), $comments ) . '</ol></div>';
+		remove_action( 'woocommerce_review_meta', 'woocommerce_review_display_meta', 10 );
+		add_action( 'woocommerce_review_meta', array( $this, 'reviews_display_meta' ), 10 );
+		if ( ! $this->attributes['showProductRating'] ) {
+			remove_action( 'woocommerce_review_before_comment_meta', 'woocommerce_review_display_rating', 10 );
+		}
+		if ( ! $this->attributes['showReviewerPicture'] ) {
+			remove_action( 'woocommerce_review_before', 'woocommerce_review_display_gravatar', 10 );
+		}
+		$list_comments = wp_list_comments( apply_filters( 'woocommerce_product_review_list_args', $args ), $comments );
+		add_action( 'woocommerce_review_meta', 'woocommerce_review_display_meta', 10 );
+		remove_action( 'woocommerce_review_meta', array( $this, 'reviews_display_meta' ), 10 );
+		if ( ! $this->attributes['showProductRating'] ) {
+			add_action( 'woocommerce_review_before_comment_meta', 'woocommerce_review_display_rating', 10 );
+		}
+		if ( ! $this->attributes['showReviewerPicture'] ) {
+			add_action( 'woocommerce_review_before', 'woocommerce_review_display_gravatar', 10 );
+		}
+		return '<div id="reviews"><ol class="commentlist">' . $list_comments . '</ol></div>';
 	}
 }
