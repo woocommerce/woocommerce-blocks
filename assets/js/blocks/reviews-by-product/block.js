@@ -136,7 +136,7 @@ class ReviewsByProduct extends Component {
 					'Show reviews of your product to build trust',
 					'woo-gutenberg-products-block'
 				) }
-				<div className="wc-block-handpicked-products__selection">
+				<div className="wc-block-reviews-by-product__selection">
 					<ProductControl
 						selected={ attributes.productId || 0 }
 						onChange={ ( value = [] ) => {
