@@ -55,6 +55,14 @@ registerBlockType( blockTypeName, {
 		},
 
 		/**
+		 * Toggle for edit mode in the block preview.
+		 */
+		editMode: {
+			type: 'boolean',
+			default: true,
+		},
+
+		/**
 		 * Content visibility setting
 		 */
 		contentVisibility: {
@@ -116,6 +124,10 @@ registerBlockType( blockTypeName, {
 						rating: true,
 						button: true,
 					},
+				},
+				editMode: {
+					type: 'boolean',
+					default: true,
 				},
 				orderby: {
 					type: 'string',
