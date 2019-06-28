@@ -116,6 +116,10 @@ registerBlockType( blockTypeName, {
 					type: 'number',
 					default: wc_product_block_data.default_columns,
 				},
+				editMode: {
+					type: 'boolean',
+					default: true,
+				},
 				contentVisibility: {
 					type: 'object',
 					default: {
@@ -124,10 +128,6 @@ registerBlockType( blockTypeName, {
 						rating: true,
 						button: true,
 					},
-				},
-				editMode: {
-					type: 'boolean',
-					default: true,
 				},
 				orderby: {
 					type: 'string',
