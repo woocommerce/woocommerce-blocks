@@ -2,7 +2,7 @@
 /**
  * PHPUnit bootstrap file
  *
- * @package Sample_Plugin
+ * @package WooCommerce\Blocks
  */
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
