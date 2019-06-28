@@ -2,89 +2,35 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { addQueryArgs } from '@wordpress/url';
-import apiFetch from '@wordpress/api-fetch';
-import { BlockControls, InspectorControls } from '@wordpress/editor';
+import {
+	BlockControls,
+	InspectorControls,
+	ServerSideRender,
+} from '@wordpress/editor';
 import {
 	Button,
+	Disabled,
 	PanelBody,
 	Placeholder,
-	Spinner,
 	Toolbar,
 	withSpokenMessages,
 } from '@wordpress/components';
-import classnames from 'classnames';
 import { Component, Fragment } from '@wordpress/element';
-import { debounce } from 'lodash';
 import Gridicon from 'gridicons';
 import PropTypes from 'prop-types';
 
 /**
  * Internal dependencies
  */
-import getQuery from '../../utils/get-query';
 import GridContentControl from '../../components/grid-content-control';
 import GridLayoutControl from '../../components/grid-layout-control';
 import ProductAttributeControl from '../../components/product-attribute-control';
 import ProductOrderbyControl from '../../components/product-orderby-control';
-import ProductPreview from '../../components/product-preview';
 
 /**
  * Component to handle edit mode of "Products by Attribute".
  */
 class ProductsByAttributeBlock extends Component {
-	constructor() {
-		super( ...arguments );
-		this.state = {
-			products: [],
-			loaded: false,
-		};
-
-		this.debouncedGetProducts = debounce( this.getProducts.bind( this ), 200 );
-	}
-
-	componentDidMount() {
-		if ( this.props.attributes.attributes ) {
-			this.getProducts();
-		}
-	}
-
-	componentDidUpdate( prevProps ) {
-		const hasChange = [
-			'attributes',
-			'attrOperator',
-			'columns',
-			'orderby',
-			'rows',
-		].reduce( ( acc, key ) => {
-			return acc || prevProps.attributes[ key ] !== this.props.attributes[ key ];
-		}, false );
-		if ( hasChange ) {
-			this.debouncedGetProducts();
-		}
-	}
-
-	getProducts() {
-		const blockAttributes = this.props.attributes;
-		if ( ! blockAttributes.attributes.length ) {
-			// We've removed all selected attributes, or no attributes have been selected yet.
-			this.setState( { products: [], loaded: true } );
-			return;
-		}
-		apiFetch( {
-			path: addQueryArgs(
-				'/wc-blocks/v1/products',
-				getQuery( blockAttributes, this.props.name )
-			),
-		} )
-			.then( ( products ) => {
-				this.setState( { products, loaded: true } );
-			} )
-			.catch( () => {
-				this.setState( { products: [], loaded: true } );
-			} );
-	}
-
 	getInspectorControls() {
 		const { setAttributes } = this.props;
 		const {
@@ -94,6 +40,7 @@ class ProductsByAttributeBlock extends Component {
 			contentVisibility,
 			orderby,
 			rows,
+			alignButtons,
 		} = this.props.attributes;
 
 		return (
@@ -105,6 +52,7 @@ class ProductsByAttributeBlock extends Component {
 					<GridLayoutControl
 						columns={ columns }
 						rows={ rows }
+						alignButtons={ alignButtons }
 						setAttributes={ setAttributes }
 					/>
 				</PanelBody>
@@ -169,13 +117,13 @@ class ProductsByAttributeBlock extends Component {
 			<Placeholder
 				icon={ <Gridicon icon="custom-post-type" /> }
 				label={ __( 'Products by Attribute', 'woo-gutenberg-products-block' ) }
-				className="wc-block-products-grid wc-block-products-attribute"
+				className="wc-block-products-grid wc-block-products-by-attribute"
 			>
 				{ __(
 					'Display a grid of products from your selected attributes.',
 					'woo-gutenberg-products-block'
 				) }
-				<div className="wc-block-products-attribute__selection">
+				<div className="wc-block-products-by-attribute__selection">
 					<ProductAttributeControl
 						selected={ blockAttributes.attributes }
 						onChange={ ( value = [] ) => {
@@ -199,20 +147,8 @@ class ProductsByAttributeBlock extends Component {
 	}
 
 	render() {
-		const { setAttributes } = this.props;
-		const { columns, editMode, contentVisibility } = this.props.attributes;
-		const { loaded, products = [] } = this.state;
-		const classes = classnames( {
-			'wc-block-products-grid': true,
-			'wc-block-products-attribute': true,
-			[ `cols-${ columns }` ]: columns,
-			'is-loading': ! loaded,
-			'is-not-found': loaded && ! products.length,
-			'is-hidden-title': ! contentVisibility.title,
-			'is-hidden-price': ! contentVisibility.price,
-			'is-hidden-rating': ! contentVisibility.rating,
-			'is-hidden-button': ! contentVisibility.button,
-		} );
+		const { attributes, name, setAttributes } = this.props;
+		const { editMode } = attributes;
 
 		return (
 			<Fragment>
@@ -232,27 +168,9 @@ class ProductsByAttributeBlock extends Component {
 				{ editMode ? (
 					this.renderEditMode()
 				) : (
-					<div className={ classes }>
-						{ products.length ? (
-							products.map( ( product ) => (
-								<ProductPreview product={ product } key={ product.id } />
-							) )
-						) : (
-							<Placeholder
-								icon={ <Gridicon icon="custom-post-type" /> }
-								label={ __(
-									'Products by Attribute',
-									'woo-gutenberg-products-block'
-								) }
-							>
-								{ ! loaded ? (
-									<Spinner />
-								) : (
-									__( 'No products found.', 'woo-gutenberg-products-block' )
-								) }
-							</Placeholder>
-						) }
-					</div>
+					<Disabled>
+						<ServerSideRender block={ name } attributes={ attributes } />
+					</Disabled>
 				) }
 			</Fragment>
 		);

@@ -13,50 +13,25 @@
 	fill: currentColor;
 }
 
-.wc-block-products-grid {
-	overflow: hidden;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: flex-start;
+// Remove the list styling, which is added back by core GB styles.
+.editor-styles-wrapper {
+	.wc-block-grid {
+		.wc-block-grid__products {
+			list-style: none;
+			margin: 0;
 
-	&.components-placeholder {
-		padding: 2em 1em;
-	}
-
-	&.is-loading,
-	&.is-not-found {
-		display: block;
-	}
-
-	&.cols-1 {
-		display: block;
-
-		.wc-product-preview {
-			margin-left: auto;
-			margin-right: auto;
-		}
-	}
-
-	@for $i from 2 to 7 {
-		&.cols-#{$i} .wc-product-preview {
-			flex: 1 0 calc(#{ 100% / $i });
-			max-width: 100% / $i !important;
-		}
-	}
-
-	// Styles for "resuable block" preview.
-	.editor-block-preview & {
-		min-width: 5em;
-
-		@for $i from 1 to 7 {
-			&.cols-#{$i} {
-				min-width: $i * 5em;
+			.wp-block-button__link {
+				color: inherit;
 			}
+		}
+
+		&.components-placeholder {
+			padding: 2em 1em;
 		}
 
 		&.is-loading,
 		&.is-not-found {
-			min-width: auto;
+			display: block;
 		}
 	}
 }

@@ -10,7 +10,7 @@ export const limitTags = wc_product_block_data.limitTags || false;
 
 const getProductsRequests = ( { selected = [], search } ) => {
 	const requests = [
-		addQueryArgs( '/wc-blocks/v1/products', {
+		addQueryArgs( '/wc/blocks/products', {
 			per_page: isLargeCatalog ? 100 : -1,
 			catalog_visibility: 'visible',
 			status: 'publish',
@@ -21,7 +21,7 @@ const getProductsRequests = ( { selected = [], search } ) => {
 	// If we have a large catalog, we might not get all selected products in the first page.
 	if ( isLargeCatalog && selected.length ) {
 		requests.push(
-			addQueryArgs( '/wc-blocks/v1/products', {
+			addQueryArgs( '/wc/blocks/products', {
 				catalog_visibility: 'visible',
 				status: 'publish',
 				include: selected,
