@@ -119,7 +119,8 @@ class WGPB_Block_Library {
 	 * @since 2.0.0
 	 */
 	public static function register_assets() {
-		self::register_style( 'wc-block-editor', plugins_url( 'build/editor.css', WGPB_PLUGIN_FILE ), array( 'wp-edit-blocks' ) );
+		self::register_style( 'wc-packages', plugins_url( 'build/packages.css', WGPB_PLUGIN_FILE ) );
+		self::register_style( 'wc-block-editor', plugins_url( 'build/editor.css', WGPB_PLUGIN_FILE ), array( 'wp-edit-blocks', 'wc-packages' ) );
 		self::register_style( 'wc-block-style', plugins_url( 'build/style.css', WGPB_PLUGIN_FILE ), array( 'wp-components' ) );
 
 		// Shared libraries and components across all blocks.
