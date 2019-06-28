@@ -7,8 +7,6 @@ export default function getShortcode( props, name ) {
 		catOperator,
 		orderby,
 		products,
-		tags,
-		tagOperator,
 	} = blockAttributes;
 	const columns = blockAttributes.columns || wc_product_block_data.default_columns;
 	const rows = blockAttributes.rows || wc_product_block_data.default_rows;
@@ -29,13 +27,6 @@ export default function getShortcode( props, name ) {
 		shortcodeAtts.set( 'attribute', attributes[ 0 ].attr_slug );
 		if ( attrOperator && 'all' === attrOperator ) {
 			shortcodeAtts.set( 'terms_operator', 'AND' );
-		}
-	}
-
-	if ( tags && tags.length ) {
-		shortcodeAtts.set( 'tag_ids', tags.join( ',' ) );
-		if ( tagOperator && 'all' === tagOperator ) {
-			shortcodeAtts.set( 'tag_operator', 'AND' );
 		}
 	}
 
