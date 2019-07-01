@@ -73,11 +73,11 @@ class ReviewsByProduct extends AbstractDynamicBlock {
 	}
 
 	/**
-	 * Render the Reviews by Product meta (author and date).
+	 * Render the review meta (author and date).
 	 *
 	 * @param array $comment Comment attributes.
 	 */
-	public function reviews_display_meta( $comment ) {
+	public function review_display_meta( $comment ) {
 		$verified = wc_review_is_from_verified_owner( $comment->comment_ID );
 
 		if ( ! $this->attributes['showReviewerName'] && ! $this->attributes['showReviewDate'] ) {
@@ -103,7 +103,7 @@ class ReviewsByProduct extends AbstractDynamicBlock {
 	}
 
 	/**
-	 * Render the Reviews by Product.
+	 * Render the Reviews by Product block.
 	 *
 	 * @param array  $attributes Block attributes. Default empty array.
 	 * @param string $content    Block content. Default empty string.
@@ -135,7 +135,7 @@ class ReviewsByProduct extends AbstractDynamicBlock {
 			'echo'     => false,
 		);
 		remove_action( 'woocommerce_review_meta', 'woocommerce_review_display_meta', 10 );
-		add_action( 'woocommerce_review_meta', array( $this, 'reviews_display_meta' ), 10 );
+		add_action( 'woocommerce_review_meta', array( $this, 'review_display_meta' ), 10 );
 		if ( ! $this->attributes['showProductRating'] ) {
 			remove_action( 'woocommerce_review_before_comment_meta', 'woocommerce_review_display_rating', 10 );
 		}
@@ -144,7 +144,7 @@ class ReviewsByProduct extends AbstractDynamicBlock {
 		}
 		$list_comments = wp_list_comments( apply_filters( 'woocommerce_product_review_list_args', $args ), $comments );
 		add_action( 'woocommerce_review_meta', 'woocommerce_review_display_meta', 10 );
-		remove_action( 'woocommerce_review_meta', array( $this, 'reviews_display_meta' ), 10 );
+		remove_action( 'woocommerce_review_meta', array( $this, 'review_display_meta' ), 10 );
 		if ( ! $this->attributes['showProductRating'] ) {
 			add_action( 'woocommerce_review_before_comment_meta', 'woocommerce_review_display_rating', 10 );
 		}
