@@ -112,14 +112,6 @@ class ReviewsByProduct extends AbstractDynamicBlock {
 	public function render( $attributes = array(), $content = '' ) {
 		$this->attributes = $this->parse_attributes( $attributes );
 
-		$product = wc_get_product( $this->attributes['productId'] );
-		if ( ! $product ) {
-			return '<h2>No product found</h2>';
-		}
-		$review_count = $product->get_review_count();
-		if ( 0 === $review_count ) {
-			return '<h2>Product with no reviews</h2>';
-		}
 		$comments = get_comments(
 			array(
 				'number'   => $this->attributes['reviewsShown'],
