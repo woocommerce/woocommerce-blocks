@@ -272,6 +272,10 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			$classes[] = 'has-aligned-buttons';
 		}
 
+		if ( ! empty( $this->attributes['className'] ) ) {
+			$classes[] = $this->attributes['className'];
+		}
+
 		return implode( ' ', $classes );
 	}
 
