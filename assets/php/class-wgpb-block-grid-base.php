@@ -224,6 +224,10 @@ abstract class WGPB_Block_Grid_Base {
 			$classes[] = "align{$this->attributes['align']}";
 		}
 
+		if ( ! empty( $this->attributes['className'] ) ) {
+			$classes[] = $this->attributes['className'];
+		}
+
 		return implode( ' ', $classes );
 	}
 
