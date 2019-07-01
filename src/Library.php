@@ -38,6 +38,7 @@ class Library {
 				'attributes'      => array(
 					'align'             => self::get_schema_align(),
 					'alignButtons'      => self::get_schema_boolean( false ),
+					'className'         => self::get_schema_string(),
 					'columns'           => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
 					'editMode'          => self::get_schema_boolean( true ),
 					'orderby'           => self::get_schema_orderby(),
@@ -66,8 +67,9 @@ class Library {
 				'attributes'      => array_merge(
 					self::get_shared_attributes(),
 					array(
-						'orderby'  => self::get_schema_orderby(),
-						'editMode' => self::get_schema_boolean( true ),
+						'className' => self::get_schema_string(),
+						'orderby'   => self::get_schema_orderby(),
+						'editMode'  => self::get_schema_boolean( true ),
 					)
 				),
 			)
@@ -92,7 +94,8 @@ class Library {
 				'attributes'      => array_merge(
 					self::get_shared_attributes(),
 					array(
-						'orderby' => self::get_schema_orderby(),
+						'className' => self::get_schema_string(),
+						'orderby'   => self::get_schema_orderby(),
 					)
 				),
 			)
@@ -136,6 +139,7 @@ class Library {
 						'type'    => 'string',
 						'default' => 'any',
 					),
+					'className'         => self::get_schema_string(),
 					'columns'           => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
 					'contentVisibility' => self::get_schema_content_visibility(),
 					'editMode'          => self::get_schema_boolean( true ),
@@ -248,12 +252,26 @@ class Library {
 	}
 
 	/**
+	 * Get the schema for a string value.
+	 *
+	 * @param  string $default  The default value.
+	 * @return array Property definition.
+	 */
+	protected static function get_schema_string( $default = '' ) {
+		return array(
+			'type'    => 'string',
+			'default' => $default,
+		);
+	}
+
+	/**
 	 * Get a set of attributes shared across most of the grid blocks.
 	 *
 	 * @return array List of block attributes with type and defaults.
 	 */
 	protected static function get_shared_attributes() {
 		return array(
+			'className'         => self::get_schema_string(),
 			'columns'           => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
 			'rows'              => self::get_schema_number( wc_get_theme_support( 'product_blocks::default_rows', 1 ) ),
 			'categories'        => self::get_schema_list_ids(),
