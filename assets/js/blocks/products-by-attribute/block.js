@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { BlockControls, InspectorControls, ServerSideRender } from '@wordpress/editor';
+import {
+	BlockControls,
+	InspectorControls,
+	ServerSideRender,
+} from '@wordpress/editor';
 import {
 	Button,
 	Disabled,
@@ -36,6 +40,7 @@ class ProductsByAttributeBlock extends Component {
 			contentVisibility,
 			orderby,
 			rows,
+			alignButtons,
 		} = this.props.attributes;
 
 		return (
@@ -47,6 +52,7 @@ class ProductsByAttributeBlock extends Component {
 					<GridLayoutControl
 						columns={ columns }
 						rows={ rows }
+						alignButtons={ alignButtons }
 						setAttributes={ setAttributes }
 					/>
 				</PanelBody>
@@ -111,13 +117,13 @@ class ProductsByAttributeBlock extends Component {
 			<Placeholder
 				icon={ <Gridicon icon="custom-post-type" /> }
 				label={ __( 'Products by Attribute', 'woo-gutenberg-products-block' ) }
-				className="wc-block-products-grid wc-block-products-attribute"
+				className="wc-block-products-grid wc-block-products-by-attribute"
 			>
 				{ __(
 					'Display a grid of products from your selected attributes.',
 					'woo-gutenberg-products-block'
 				) }
-				<div className="wc-block-products-attribute__selection">
+				<div className="wc-block-products-by-attribute__selection">
 					<ProductAttributeControl
 						selected={ blockAttributes.attributes }
 						onChange={ ( value = [] ) => {

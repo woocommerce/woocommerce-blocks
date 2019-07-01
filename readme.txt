@@ -4,7 +4,7 @@ Tags: gutenberg, woocommerce, woo commerce, products
 Requires at least: 5.0
 Tested up to: 5.2
 Requires PHP: 5.2
-Stable tag: 2.1.0
+Stable tag: 2.2.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -83,6 +83,14 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 2.2.0 - 2019-06-26 =
+
+- Feature: Add Product Categories List navigation block for showing a list of categories on your site.
+- Enhancement: All grid blocks are now rendered directly by the blocks code, not using the shortcode.
+- Enhancement: Brand the WooCommerce Blocks for better discoverability in the block inserter.
+- Build: Update build process to dynamically generate required WordPress dependencies.
+- Build: Update packages.
+
 = 2.1.0 - 2019-05-14 =
 
 - Feature: Add focal point picker to the Featured Product block, so you can adjust the background image position (only available on WP 5.2+ or with Gutenberg plugin).
@@ -108,7 +116,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Fix: Icons are now aligned correctly in placeholders
 - Fix: Grid block preview column width now matches the front-end
 - Fix: Webpack now builds using a custom jsonp callback, fixing possible collisions with other projects
-- API: Change namespace, endpoints now accessed at `/wc-blocks/v1/*`
+- API: Change namespace, endpoints now accessed at `/wc/blocks/*`
 - API: Add `catalog_visibility` parameter for fetching products
 - API: Update structure of attribute term endpoint to return `attribute.slug`, `attribute.name` etc
 - API: Update parameters to use full names, `category_operator`, `attribute_operator`

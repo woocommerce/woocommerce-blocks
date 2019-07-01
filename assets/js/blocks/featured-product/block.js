@@ -107,7 +107,7 @@ class FeaturedProduct extends Component {
 			return;
 		}
 		apiFetch( {
-			path: `/wc/v3/products/${ productId }`,
+			path: `/wc/blocks/products/${ productId }`,
 		} )
 			.then( ( product ) => {
 				this.setState( { product, loaded: true } );
@@ -215,6 +215,7 @@ class FeaturedProduct extends Component {
 	render() {
 		const { attributes, isSelected, overlayColor, setAttributes } = this.props;
 		const {
+			className,
 			contentAlign,
 			dimRatio,
 			editMode,
@@ -233,7 +234,8 @@ class FeaturedProduct extends Component {
 				'has-background-dim': dimRatio !== 0,
 			},
 			dimRatioToClass( dimRatio ),
-			contentAlign !== 'center' && `has-${ contentAlign }-content`
+			contentAlign !== 'center' && `has-${ contentAlign }-content`,
+			className,
 		);
 		const mediaId = attributes.mediaId || getImageIdFromProduct( product );
 

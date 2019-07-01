@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { BlockControls, InspectorControls, ServerSideRender } from '@wordpress/editor';
+import {
+	BlockControls,
+	InspectorControls,
+	ServerSideRender,
+} from '@wordpress/editor';
 import {
 	Button,
 	Disabled,
@@ -11,6 +15,7 @@ import {
 	RangeControl,
 	Toolbar,
 	withSpokenMessages,
+	ToggleControl,
 } from '@wordpress/components';
 import { Component, Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
@@ -29,7 +34,7 @@ import ProductOrderbyControl from '../../components/product-orderby-control';
 class ProductsBlock extends Component {
 	getInspectorControls() {
 		const { attributes, setAttributes } = this.props;
-		const { columns, contentVisibility, orderby } = attributes;
+		const { columns, contentVisibility, orderby, alignButtons } = attributes;
 
 		return (
 			<InspectorControls key="inspector">
@@ -43,6 +48,22 @@ class ProductsBlock extends Component {
 						onChange={ ( value ) => setAttributes( { columns: value } ) }
 						min={ wc_product_block_data.min_columns }
 						max={ wc_product_block_data.max_columns }
+					/>
+					<ToggleControl
+						label={ __( 'Align Add to Cart buttons', 'woo-gutenberg-products-block' ) }
+						help={
+							alignButtons ?
+								__(
+									'Buttons are aligned vertically.',
+									'woo-gutenberg-products-block'
+								) :
+								__(
+									'Buttons follow content.',
+									'woo-gutenberg-products-block'
+								)
+						}
+						checked={ alignButtons }
+						onChange={ () => setAttributes( { alignButtons: ! alignButtons } ) }
 					/>
 				</PanelBody>
 				<PanelBody
@@ -118,7 +139,7 @@ class ProductsBlock extends Component {
 	}
 
 	render() {
-		const { attributes, setAttributes } = this.props;
+		const { attributes, name, setAttributes } = this.props;
 		const { editMode } = attributes;
 
 		return (
@@ -140,7 +161,7 @@ class ProductsBlock extends Component {
 					this.renderEditMode()
 				) : (
 					<Disabled>
-						<ServerSideRender block="woocommerce/handpicked-products" attributes={ attributes } />
+						<ServerSideRender block={ name } attributes={ attributes } />
 					</Disabled>
 				) }
 			</Fragment>
