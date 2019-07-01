@@ -177,7 +177,6 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			$query_args['meta_key'] = $ordering_args['meta_key']; // phpcs:ignore WordPress.DB.SlowDBQuery
 		}
 
-		// Categories.
 		$this->set_categories_query_args( $query_args );
 
 		return $query_args;
