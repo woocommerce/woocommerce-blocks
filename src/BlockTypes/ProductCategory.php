@@ -36,8 +36,9 @@ class ProductCategory extends AbstractProductGrid {
 		return array_merge(
 			parent::get_attributes(),
 			array(
-				'orderby'  => $this->get_schema_orderby(),
-				'editMode' => $this->get_schema_boolean( true ),
+				'className' => $this->get_schema_string(),
+				'orderby'   => $this->get_schema_orderby(),
+				'editMode'  => $this->get_schema_boolean( true ),
 			)
 		);
 	}

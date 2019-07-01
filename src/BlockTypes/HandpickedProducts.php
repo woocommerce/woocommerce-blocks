@@ -41,6 +41,7 @@ class HandpickedProducts extends AbstractProductGrid {
 		return array(
 			'align'             => $this->get_schema_align(),
 			'alignButtons'      => $this->get_schema_boolean( false ),
+			'className'         => $this->get_schema_string(),
 			'columns'           => $this->get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
 			'editMode'          => $this->get_schema_boolean( true ),
 			'orderby'           => $this->get_schema_orderby(),
