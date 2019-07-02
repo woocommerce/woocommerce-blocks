@@ -306,7 +306,7 @@ class Products extends WC_REST_Products_Controller {
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,
 				),
-				'summary'        => array(
+				'description'    => array(
 					'description' => __( 'Short description or excerpt from description.', 'woo-gutenberg-products-block' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit', 'embed' ),
