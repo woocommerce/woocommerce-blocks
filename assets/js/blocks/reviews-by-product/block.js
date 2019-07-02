@@ -26,6 +26,7 @@ import PropTypes from 'prop-types';
  * Internal dependencies
  */
 import ProductControl from '../../components/product-control';
+import ReviewsByProductIcon from '../../components/icons/reviews-by-product';
 
 /**
  * Component to handle edit mode of "Reviews by Product".
@@ -128,7 +129,7 @@ class ReviewsByProduct extends Component {
 
 		return (
 			<Placeholder
-				icon="star-filled"
+				icon={ <ReviewsByProductIcon className="block-editor-block-icon" /> }
 				label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
 				className="wc-block-reviews-by-product"
 			>

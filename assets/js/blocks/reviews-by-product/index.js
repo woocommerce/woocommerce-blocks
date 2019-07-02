@@ -9,16 +9,16 @@ import { registerBlockType } from '@wordpress/blocks';
  * Internal dependencies
  */
 import Block from './block';
+import ReviewsByProductIcon from '../../components/icons/reviews-by-product';
 
 /**
  * Register and run the "Reviews by Product" block.
  */
 registerBlockType( 'woocommerce/reviews-by-product', {
 	title: __( 'Reviews by Product', 'woo-gutenberg-products-block' ),
-	icon: {
-		src: 'star-filled',
-		foreground: '#96588a',
-	},
+	icon: (
+		<ReviewsByProductIcon fillColor="#96588a" />
+	),
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
