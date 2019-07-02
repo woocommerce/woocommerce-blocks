@@ -149,7 +149,7 @@ class ProductControl extends Component {
 				<MenuItem // eslint-disable-line
 					key={ `product-${ item.id }` }
 					{ ...args }
-					isSelected
+					isSelected={ isSelected }
 					className={ classes.join( ' ' ) }
 					onClick={ () => {
 						onSelect( item )();
