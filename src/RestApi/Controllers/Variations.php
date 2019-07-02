@@ -73,8 +73,9 @@ class Variations extends WC_REST_Product_Variations_Controller {
 	 */
 	public function prepare_object_for_response( $object, $request ) {
 		$data = array(
-			'id'   => $object->get_id(),
-			'name' => $object->get_formatted_name(),
+			'id'        => $object->get_id(),
+			'name'      => $object->get_title(),
+			'variation' => wc_get_formatted_variation( $object, true, true, false ),
 		);
 
 		$context  = ! empty( $request['context'] ) ? $request['context'] : 'view';
@@ -97,14 +98,19 @@ class Variations extends WC_REST_Product_Variations_Controller {
 			'title'      => 'product_block_variation',
 			'type'       => 'object',
 			'properties' => array(
-				'id'   => array(
+				'id'        => array(
 					'description' => __( 'Unique identifier for the resource.', 'woo-gutenberg-products-block' ),
 					'type'        => 'integer',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,
 				),
-				'name' => array(
-					'description' => __( 'Variation name.', 'woo-gutenberg-products-block' ),
+				'name'      => array(
+					'description' => __( 'Product name.', 'woo-gutenberg-products-block' ),
+					'type'        => 'string',
+					'context'     => array( 'view', 'edit', 'embed' ),
+				),
+				'variation' => array(
+					'description' => __( 'Product variation attributes, if applicable.', 'woo-gutenberg-products-block' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit', 'embed' ),
 				),

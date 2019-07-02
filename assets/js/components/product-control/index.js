@@ -5,7 +5,7 @@ import { __, _n, sprintf } from '@wordpress/i18n';
 import { Component, Fragment } from '@wordpress/element';
 import { addQueryArgs } from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
-import { debounce, find, escapeRegExp } from 'lodash';
+import { debounce, find, escapeRegExp, isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import {
 	SearchListControl,
@@ -148,9 +148,12 @@ class ProductControl extends Component {
 		}
 
 		const a11yProps = {
-			isSelected: isSelected,
 			role: 'menuitemradio',
 		};
+
+		if ( item.breadcrumbs.length ) {
+			a11yProps[ 'aria-label' ] = `${ item.breadcrumbs[ 0 ] }: ${ item.name }`;
+		}
 
 		if ( item.count ) {
 			a11yProps[ 'aria-expanded' ] = item.id === product;
@@ -161,6 +164,7 @@ class ProductControl extends Component {
 			return [
 				<MenuItem
 					key={ `product-${ item.id }` }
+					isSelected={ isSelected }
 					{ ...args }
 					{ ...a11yProps }
 					className={ classes.join( ' ' ) }
@@ -212,11 +216,15 @@ class ProductControl extends Component {
 			];
 		}
 
+		if ( ! isEmpty( item.variation ) ) {
+			item.name = item.variation;
+		}
+
 		return (
 			<SearchListItem
 				className={ classes.join( ' ' ) }
 				{ ...args }
-				aria-label={ `${ item.breadcrumbs[ 0 ] }: ${ item.name }` }
+				{ ...a11yProps }
 			/>
 		);
 	}

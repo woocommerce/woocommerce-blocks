@@ -175,7 +175,7 @@ class Products extends WC_REST_Products_Controller {
 		return array(
 			'id'             => $product->get_id(),
 			'name'           => $product->get_title(),
-			'variation'      => $product->is_type( 'variation' ) ? wc_get_formatted_variation( $product, true, false, false ) : '',
+			'variation'      => $product->is_type( 'variation' ) ? wc_get_formatted_variation( $product, true, true, false ) : '',
 			'permalink'      => $product->get_permalink(),
 			'sku'            => $product->get_sku(),
 			'description'    => apply_filters( 'woocommerce_short_description', $product->get_short_description() ? $product->get_short_description() : wc_trim_string( $product->get_description(), 400 ) ),

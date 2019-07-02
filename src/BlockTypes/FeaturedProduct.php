@@ -63,7 +63,7 @@ class FeaturedProduct extends AbstractDynamicBlock {
 		if ( $product->is_type( 'variation' ) ) {
 			$title .= sprintf(
 				'<h3 class="wc-block-featured-product__variation">%s</h3>',
-				wc_get_formatted_variation( $product, true, false, false )
+				wc_get_formatted_variation( $product, true, true, false )
 			);
 		}
 
