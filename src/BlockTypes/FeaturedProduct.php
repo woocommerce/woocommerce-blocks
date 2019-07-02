@@ -157,6 +157,10 @@ class FeaturedProduct extends AbstractDynamicBlock {
 			$classes[] = "has-{$attributes['overlayColor']}-background-color";
 		}
 
+		if ( isset( $attributes['className'] ) ) {
+			$classes[] = $attributes['className'];
+		}
+
 		return implode( $classes, ' ' );
 	}
 

@@ -68,6 +68,7 @@ class ProductsByAttribute extends AbstractProductGrid {
 				'type'    => 'string',
 				'default' => 'any',
 			),
+			'className'         => $this->get_schema_string(),
 			'columns'           => $this->get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
 			'contentVisibility' => $this->get_schema_content_visibility(),
 			'editMode'          => $this->get_schema_boolean( true ),

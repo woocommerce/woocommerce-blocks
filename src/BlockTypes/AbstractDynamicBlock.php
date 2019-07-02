@@ -114,4 +114,17 @@ abstract class AbstractDynamicBlock {
 			'default' => $default,
 		);
 	}
+
+	/**
+	 * Get the schema for a string value.
+	 *
+	 * @param  string $default  The default value.
+	 * @return array Property definition.
+	 */
+	protected function get_schema_string( $default = '' ) {
+		return array(
+			'type'    => 'string',
+			'default' => $default,
+		);
+	}
 }
