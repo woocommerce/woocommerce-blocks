@@ -27,6 +27,8 @@ class ReviewsByProduct extends AbstractDynamicBlock {
 	 */
 	protected function get_attributes() {
 		return array(
+			'className'           => $this->get_schema_string(),
+			'editMode'            => $this->get_schema_boolean( true ),
 			'editMode'            => $this->get_schema_boolean( true ),
 			'orderby'             => $this->get_schema_reviews_orderby(),
 			'reviewsShown'        => $this->get_schema_number( 10 ),
@@ -163,6 +165,6 @@ class ReviewsByProduct extends AbstractDynamicBlock {
 		if ( ! $this->attributes['showReviewerPicture'] ) {
 			add_action( 'woocommerce_review_before', 'woocommerce_review_display_gravatar', 10 );
 		}
-		return '<div id="reviews"><ol class="commentlist">' . $list_comments . '</ol></div>';
+		return '<div class="' . $this->attributes['className'] . '"><ul>' . $list_comments . '</ul></div>';
 	}
 }
