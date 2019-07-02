@@ -99,8 +99,9 @@ class ReviewsByProduct extends Component {
 						label={ __( 'Order Product Reviews by', 'woo-gutenberg-products-block' ) }
 						value={ attributes.orderby }
 						options={ [
-							{ label: 'Most recent', value: 'comment_date-DESC' },
-							{ label: 'Oldest', value: 'comment_date-ASC' },
+							{ label: 'Most recent', value: 'most-recent' },
+							{ label: 'Highest Rating', value: 'highest-rating' },
+							{ label: 'Lowest Rating', value: 'lowest-rating' },
 						] }
 						onChange={ ( orderby ) => setAttributes( { orderby } ) }
 					/>

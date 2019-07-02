@@ -47,16 +47,34 @@ class ReviewsByProduct extends AbstractDynamicBlock {
 	 */
 	protected function parse_attributes( $attributes ) {
 		if ( array_key_exists( 'orderby', $attributes ) ) {
-			$order                 = explode( '-', $attributes['orderby'] );
-			$attributes['orderby'] = $order[0];
-			if ( count( $order ) > 1 ) {
-				$attributes['order'] = $order[1];
-			} else {
-				$attributes['order'] = 'DESC';
+			if ( 'highest-rating' === $attributes['orderby'] ) {
+				return array_merge(
+					$attributes,
+					array(
+						'orderby'  => 'meta_value_num',
+						'meta_key' => 'rating', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+						'order'    => 'ASC',
+					)
+				);
+			} elseif ( 'lowest-rating' === $attributes['orderby'] ) {
+				return array_merge(
+					$attributes,
+					array(
+						'orderby'  => 'meta_value_num',
+						'meta_key' => 'rating', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+						'order'    => 'DESC',
+					)
+				);
 			}
 		}
 
-		return $attributes;
+		return array_merge(
+			$attributes,
+			array(
+				'orderby' => 'comment_date',
+				'order'   => 'DESC',
+			)
+		);
 	}
 
 	/**
@@ -67,7 +85,7 @@ class ReviewsByProduct extends AbstractDynamicBlock {
 	protected static function get_schema_reviews_orderby() {
 		return array(
 			'type'    => 'string',
-			'enum'    => array( 'comment_date-DESC', 'comment_date-ASC' ),
+			'enum'    => array( 'most-recent', 'highest-rating', 'lowest-rating' ),
 			'default' => 'recent',
 		);
 	}
@@ -112,16 +130,18 @@ class ReviewsByProduct extends AbstractDynamicBlock {
 	public function render( $attributes = array(), $content = '' ) {
 		$this->attributes = $this->parse_attributes( $attributes );
 
-		$comments = get_comments(
-			array(
-				'number'   => $this->attributes['reviewsShown'],
-				'order_by' => $this->attributes['orderby'],
-				'order'    => $this->attributes['order'],
-				'post_id'  => $this->attributes['productId'],
-				'status'   => 'approve',
-				'type'     => 'review',
-			)
+		$get_comments_args = array(
+			'number'   => $this->attributes['reviewsShown'],
+			'order_by' => $this->attributes['orderby'],
+			'order'    => $this->attributes['order'],
+			'post_id'  => $this->attributes['productId'],
+			'status'   => 'approve',
+			'type'     => 'review',
 		);
+		if ( array_key_exists( 'meta_key', $this->attributes ) ) {
+			$get_comments_args['meta_key'] = $this->attributes['meta_key']; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+		}
+		$comments = get_comments( $get_comments_args );
 		$args     = array(
 			'callback' => 'woocommerce_comments',
 			'echo'     => false,

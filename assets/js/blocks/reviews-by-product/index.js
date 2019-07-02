@@ -39,7 +39,7 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 		 */
 		orderby: {
 			type: 'string',
-			default: 'comment_date-DESC',
+			default: 'most-recent',
 		},
 
 		/**
