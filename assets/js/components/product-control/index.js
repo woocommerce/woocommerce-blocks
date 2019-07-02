@@ -81,6 +81,10 @@ class ProductControl extends Component {
 	getVariations() {
 		const { product, variationsList } = this.state;
 		if ( ! product ) {
+			this.setState( {
+				variationsList: {},
+				variationsLoading: false,
+			} );
 			return;
 		}
 		if ( ! variationsList[ product ] ) {
@@ -115,10 +119,10 @@ class ProductControl extends Component {
 			} );
 	}
 
-	onProductSelect( item ) {
+	onProductSelect( item, isSelected ) {
 		return () => {
 			this.setState( {
-				product: item.id,
+				product: isSelected ? 0 : item.id,
 			} );
 		};
 	}
@@ -149,9 +153,10 @@ class ProductControl extends Component {
 		};
 
 		if ( item.count ) {
-			a11yProps[ 'aria-expanded' ] = isSelected;
+			a11yProps[ 'aria-expanded' ] = item.id === product;
 		}
 
+		// Top level items custom rendering based on SearchListItem.
 		if ( ! item.breadcrumbs.length ) {
 			return [
 				<MenuItem
@@ -161,7 +166,7 @@ class ProductControl extends Component {
 					className={ classes.join( ' ' ) }
 					onClick={ () => {
 						onSelect( item )();
-						this.onProductSelect( item )();
+						this.onProductSelect( item, isSelected )();
 					} }
 				>
 					<span className="woocommerce-search-list__item-state">
@@ -236,6 +241,7 @@ class ProductControl extends Component {
 				'woo-gutenberg-products-block'
 			),
 		};
+		const selectedListItems = selected ? [ find( currentList, { id: selected } ) ] : [];
 
 		return (
 			<Fragment>
@@ -244,7 +250,7 @@ class ProductControl extends Component {
 					list={ currentList }
 					isLoading={ loading }
 					isSingle
-					selected={ [ find( currentList, { id: selected } ) ] }
+					selected={ selectedListItems }
 					onChange={ onChange }
 					onSearch={ isLargeCatalog ? this.debouncedOnSearch : null }
 					messages={ messages }

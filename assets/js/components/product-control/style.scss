@@ -1,4 +1,10 @@
 .woocommerce-search-product__item {
+	.woocommerce-search-list__item-name {
+		.description {
+			display: block;
+		}
+	}
+
 	&.is-searching,
 	&.is-skip-level {
 		.woocommerce-search-list__item-prefix:after {
