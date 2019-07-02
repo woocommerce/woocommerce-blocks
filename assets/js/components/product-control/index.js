@@ -144,19 +144,26 @@ class ProductControl extends Component {
 			classes.push( 'is-variable' );
 		}
 
+		const a11yProps = {
+			isSelected: isSelected,
+			role: 'menuitemradio',
+		};
+
+		if ( item.count ) {
+			a11yProps[ 'aria-expanded' ] = isSelected;
+		}
+
 		if ( ! item.breadcrumbs.length ) {
 			return [
 				<MenuItem // eslint-disable-line
 					key={ `product-${ item.id }` }
 					{ ...args }
-					isSelected={ isSelected }
+					{ ...a11yProps }
 					className={ classes.join( ' ' ) }
 					onClick={ () => {
 						onSelect( item )();
 						this.onProductSelect( item )();
 					} }
-					role={ 'menuitemradio' }
-					aria-expanded={ isSelected }
 				>
 					<span className="woocommerce-search-list__item-state">
 						{ getInteractionIcon( isSelected ) }
