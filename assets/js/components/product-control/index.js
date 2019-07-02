@@ -154,7 +154,7 @@ class ProductControl extends Component {
 
 		if ( ! item.breadcrumbs.length ) {
 			return [
-				<MenuItem // eslint-disable-line
+				<MenuItem
 					key={ `product-${ item.id }` }
 					{ ...args }
 					{ ...a11yProps }
@@ -180,7 +180,6 @@ class ProductControl extends Component {
 					{ item.count ? (
 						<span
 							className="woocommerce-search-list__item-variation-count"
-							isTertiary
 						>
 							{ sprintf(
 								_n(
