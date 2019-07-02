@@ -186,6 +186,7 @@ class Products extends WC_REST_Products_Controller {
 		$data['price_html']        = $raw_data['price_html'];
 		$data['images']            = $raw_data['images'];
 		$data['average_rating']    = $raw_data['average_rating'];
+		$data['rating_count']      = $raw_data['rating_count'];
 
 		return $data;
 	}
@@ -335,6 +336,12 @@ class Products extends WC_REST_Products_Controller {
 				'average_rating'    => array(
 					'description' => __( 'Reviews average rating.', 'woo-gutenberg-products-block' ),
 					'type'        => 'string',
+					'context'     => array( 'view', 'edit' ),
+					'readonly'    => true,
+				),
+				'rating_count'      => array(
+					'description' => __( 'Number of ratings.', 'woo-gutenberg-products-block' ),
+					'type'        => 'integer',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
