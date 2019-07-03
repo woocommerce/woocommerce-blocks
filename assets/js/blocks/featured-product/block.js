@@ -235,7 +235,7 @@ class FeaturedProduct extends Component {
 		return (
 			<Placeholder
 				icon={ <Gridicon icon="notice" /> }
-				label={ __( 'Sorry, an error occured' ) }
+				label={ __( 'Sorry, an error occurred', 'woo-gutenberg-products-block' ) }
 				className="wc-block-error"
 			>
 				<div
