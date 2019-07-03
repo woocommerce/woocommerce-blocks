@@ -11,6 +11,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import './style.scss';
 import './editor.scss';
 import Block from './block';
+import { IconFolderStar } from '../../components/icons';
 
 /**
  * Register and run the "Featured Product Category" block.
@@ -18,7 +19,7 @@ import Block from './block';
 registerBlockType( 'woocommerce/featured-category', {
 	title: __( 'Featured Category', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: 'star-filled',
+		src: <IconFolderStar />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',

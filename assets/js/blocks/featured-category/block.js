@@ -31,6 +31,7 @@ import { Component, Fragment } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 import { debounce, isObject } from 'lodash';
 import PropTypes from 'prop-types';
+import { IconFolderStar } from '../../components/icons';
 
 /**
  * Internal dependencies
@@ -201,7 +202,7 @@ class FeaturedCategory extends Component {
 
 		return (
 			<Placeholder
-				icon="star-filled"
+				icon={ <IconFolderStar /> }
 				label={ __( 'Featured Product Category', 'woo-gutenberg-products-block' ) }
 				className="wc-block-featured-category"
 			>
@@ -349,7 +350,7 @@ class FeaturedCategory extends Component {
 						) : (
 							<Placeholder
 								className="wc-block-featured-category"
-								icon="star-filled"
+								icon={ <IconFolderStar /> }
 								label={ __( 'Featured Product Category', 'woo-gutenberg-products-block' ) }
 							>
 								{ ! loaded ? (
