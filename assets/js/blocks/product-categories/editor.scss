@@ -1,3 +1,13 @@
 .wc-block-product-categories.wc-block-product-categories ul {
 	margin-left: 20px;
 }
+.wc-block-product-categories {
+	&.components-placeholder {
+		// Reset the background for the placeholders.
+		background-color: rgba( 139, 139, 150, .1 );
+	}
+	svg {
+		margin-right: 1ch;
+		fill: currentColor;
+	}
+}
