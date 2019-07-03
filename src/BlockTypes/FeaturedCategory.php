@@ -164,7 +164,7 @@ class FeaturedCategory extends AbstractDynamicBlock {
 	 */
 	public function get_image( $category, $size = 'full' ) {
 		$image    = '';
-		$image_id = get_term_meta( $item->term_id, 'thumbnail_id', true );
+		$image_id = get_term_meta( $category->term_id, 'thumbnail_id', true );
 
 		if ( $image_id ) {
 			$image = wp_get_attachment_image_url( $image_id, $size );
