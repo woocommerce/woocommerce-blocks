@@ -2,12 +2,12 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-// import { InnerBlocks } from '@wordpress/editor';
 import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
+import './style.scss';
 import Block from './block';
 import ReviewsByProductIcon from '../../components/icons/reviews-by-product';
 

@@ -93,33 +93,148 @@ class ReviewsByProduct extends AbstractDynamicBlock {
 	}
 
 	/**
-	 * Render the review meta (author and date).
+	 * Loads the reviews
 	 *
-	 * @param array $comment Comment attributes.
+	 * @return array Array of comments.
 	 */
-	public function review_display_meta( $comment ) {
-		$verified = wc_review_is_from_verified_owner( $comment->comment_ID );
-
-		if ( ! $this->attributes['showReviewerName'] && ! $this->attributes['showReviewDate'] ) {
-			return;
+	protected function get_reviews() {
+		$args = array(
+			'number'   => $this->attributes['reviewsShown'],
+			'order_by' => $this->attributes['orderby'],
+			'order'    => $this->attributes['order'],
+			'post_id'  => $this->attributes['productId'],
+			'status'   => 'approve',
+			'type'     => 'review',
+		);
+		if ( array_key_exists( 'meta_key', $this->attributes ) ) {
+			$args['meta_key'] = $this->attributes['meta_key']; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 		}
 
-		$html = '<p class="meta">';
+		return get_comments( $args );
+	}
+
+	/**
+	 * Render the reviewer picture
+	 *
+	 * @param object $comment Comment.
+	 * @return string HTML code of the reviewer picture.
+	 */
+	protected function get_reviewer_picture_html( $comment ) {
+		if ( ! $this->attributes['showReviewerPicture'] ) {
+			return '';
+		}
+
+		return get_avatar( $comment, apply_filters( 'woocommerce_review_gravatar_size', '60' ), '' );
+	}
+
+	/**
+	 * Render the reviewer name
+	 *
+	 * @param integer $comment_id Id of the comment.
+	 * @return string HTML code of the reviewer name.
+	 */
+	protected function get_reviewer_name_html( $comment_id ) {
+		if ( ! $this->attributes['showReviewerName'] ) {
+			return '';
+		}
+
+		$author = get_comment_author( $comment_id );
+
+		return "<strong class=\"wc-block-reviews-by-product__author\">{$author}</strong>";
+	}
+
+	/**
+	 * Render the review rating
+	 *
+	 * @param integer $comment_id Id of the comment.
+	 * @return string HTML code of the review rating.
+	 */
+	protected function get_review_rating_html( $comment_id ) {
+		$rating = intval( get_comment_meta( $comment_id, 'rating', true ) );
+
+		if ( ! $this->attributes['showProductRating'] || ! $rating || ! wc_review_ratings_enabled() ) {
+			return '';
+		}
+
+		$rating_html = wc_get_rating_html( $rating );
+
+		return "<div class=\"wc-block-reviews-by-product__rating\">{$rating_html}</div>";
+	}
+
+	/**
+	 * Render the review date
+	 *
+	 * @param integer $comment_id Id of the comment.
+	 * @return string HTML code of the review date.
+	 */
+	protected function get_review_date_html( $comment_id ) {
+		if ( ! $this->attributes['showReviewDate'] ) {
+			return '';
+		}
+
+		$datetime = esc_attr( get_comment_date( 'c', $comment_id ) );
+		$date     = esc_html( get_comment_date( wc_date_format(), $comment_id ) );
+		return "<time class=\"wc-block-reviews-by-product__published-date\" datetime=\"{$datetime}\">{$date}</time>";
+	}
+
+	/**
+	 * Render the review date
+	 *
+	 * @param object $comment Comment.
+	 * @return string HTML code of the review info.
+	 */
+	protected function get_review_info_html( $comment ) {
+		$review_info = $this->get_reviewer_picture_html( $comment );
+		if ( $this->attributes['showReviewerName'] || $this->attributes['showProductRating'] ) {
+			$reviewer_name   = $this->get_reviewer_name_html( $comment->comment_ID );
+			$reviewer_rating = $this->get_review_rating_html( $comment->comment_ID );
+			$review_info    .= "<div class=\"wc-block-reviews-by-product__meta\">{$reviewer_name}{$reviewer_rating}</div>";
+		}
+		$review_info .= $this->get_review_date_html( $comment->comment_ID );
+
+		return $review_info;
+	}
+
+	/**
+	 * Render a single review.
+	 *
+	 * @param object $comment Comment.
+	 * @return string HTML code of the review.
+	 */
+	protected function get_review_html( $comment ) {
+		$text = get_comment_text( $comment->comment_ID );
+		$info = $this->get_review_info_html( $comment );
+
+		return "<li class=\"wc-block-reviews-by-product__item\">{$text}<div class=\"wc-block-reviews-by-product__info\">{$info}</div></li>";
+	}
+
+	/**
+	 * Get the list of classes to apply to this block.
+	 *
+	 * @return string space-separated list of classes.
+	 */
+	protected function get_container_classes() {
+		$classes = array(
+			'wc-block-reviews-by-product',
+		);
+
+		if ( $this->attributes['showReviewerPicture'] ) {
+			$classes[] = 'has-picture';
+		}
+
 		if ( $this->attributes['showReviewerName'] ) {
-			$html .= '<strong class="woocommerce-review__author">' . get_comment_author() . '</strong>';
-			if ( 'yes' === get_option( 'woocommerce_review_rating_verification_label' ) && $verified ) {
-				$html .= '<em class="woocommerce-review__verified verified">(' . esc_attr__( 'verified owner', 'woo-gutenberg-products-block' ) . ')</em> ';
-			}
+			$classes[] = 'has-name';
 		}
-		if ( $this->attributes['showReviewerName'] && $this->attributes['showReviewDate'] ) {
-			$html .= '<span class="woocommerce-review__dash">&ndash;</span>';
-		}
-		if ( $this->attributes['showReviewDate'] ) {
-			$html .= '<time class="woocommerce-review__published-date" datetime="' . esc_attr( get_comment_date( 'c' ) ) . '">' . esc_html( get_comment_date( wc_date_format() ) ) . '</time>';
-		}
-		$html .= '</p>';
 
-		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		if ( $this->attributes['showProductRating'] ) {
+			$classes[] = 'has-rating';
+		}
+
+		if ( $this->attributes['showReviewDate'] ) {
+			$classes[] = 'has-date';
+		}
+
+		return implode( ' ', $classes );
 	}
 
 	/**
@@ -131,40 +246,10 @@ class ReviewsByProduct extends AbstractDynamicBlock {
 	 */
 	public function render( $attributes = array(), $content = '' ) {
 		$this->attributes = $this->parse_attributes( $attributes );
+		$reviews          = $this->get_reviews();
+		$reviews_html     = implode( '', array_map( array( $this, 'get_review_html' ), $reviews ) );
+		$classes          = $this->get_container_classes();
 
-		$get_comments_args = array(
-			'number'   => $this->attributes['reviewsShown'],
-			'order_by' => $this->attributes['orderby'],
-			'order'    => $this->attributes['order'],
-			'post_id'  => $this->attributes['productId'],
-			'status'   => 'approve',
-			'type'     => 'review',
-		);
-		if ( array_key_exists( 'meta_key', $this->attributes ) ) {
-			$get_comments_args['meta_key'] = $this->attributes['meta_key']; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
-		}
-		$comments = get_comments( $get_comments_args );
-		$args     = array(
-			'callback' => 'woocommerce_comments',
-			'echo'     => false,
-		);
-		remove_action( 'woocommerce_review_meta', 'woocommerce_review_display_meta', 10 );
-		add_action( 'woocommerce_review_meta', array( $this, 'review_display_meta' ), 10 );
-		if ( ! $this->attributes['showProductRating'] ) {
-			remove_action( 'woocommerce_review_before_comment_meta', 'woocommerce_review_display_rating', 10 );
-		}
-		if ( ! $this->attributes['showReviewerPicture'] ) {
-			remove_action( 'woocommerce_review_before', 'woocommerce_review_display_gravatar', 10 );
-		}
-		$list_comments = wp_list_comments( apply_filters( 'woocommerce_product_review_list_args', $args ), $comments );
-		add_action( 'woocommerce_review_meta', 'woocommerce_review_display_meta', 10 );
-		remove_action( 'woocommerce_review_meta', array( $this, 'review_display_meta' ), 10 );
-		if ( ! $this->attributes['showProductRating'] ) {
-			add_action( 'woocommerce_review_before_comment_meta', 'woocommerce_review_display_rating', 10 );
-		}
-		if ( ! $this->attributes['showReviewerPicture'] ) {
-			add_action( 'woocommerce_review_before', 'woocommerce_review_display_gravatar', 10 );
-		}
-		return '<div class="' . $this->attributes['className'] . '"><ul>' . $list_comments . '</ul></div>';
+		return '<div class="' . $classes . '"><ul class="wc-block-reviews-by-product__list ' . $this->attributes['className'] . '">' . $reviews_html . '</ul></div>';
 	}
 }
