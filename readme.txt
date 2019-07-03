@@ -87,6 +87,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 - Feature: Added a button alignment option to product grid blocks to align buttons horizontally across the row.
 - Feature: Added a cancel button to the product category block editor to discard unsaved changes.
+- Enhancement: Change the toggle for list type in Product Category List block to a button toggle component for clarity.
 - Build: Updated build process and plugin structure to follow modern best practices. Minimum PHP version bumped to 5.6.
 
 = 2.2.0 - 2019-06-26 =
