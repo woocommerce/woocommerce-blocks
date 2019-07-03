@@ -37,10 +37,10 @@ class ProductsByTagBlock extends Component {
 			isEditing: false,
 		};
 
-		this.startEditing         = this.startEditing.bind( this );
-		this.stopEditing          = this.stopEditing.bind( this );
+		this.startEditing = this.startEditing.bind( this );
+		this.stopEditing = this.stopEditing.bind( this );
 		this.setChangedAttributes = this.setChangedAttributes.bind( this );
-		this.save                 = this.save.bind( this );
+		this.save = this.save.bind( this );
 	}
 
 	componentDidMount() {
