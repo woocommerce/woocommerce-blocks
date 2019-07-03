@@ -31,6 +31,7 @@ import { Component, Fragment } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 import { debounce, isObject } from 'lodash';
 import PropTypes from 'prop-types';
+import Gridicon from 'gridicons';
 
 /**
  * Internal dependencies
@@ -84,6 +85,7 @@ class FeaturedProduct extends Component {
 		this.state = {
 			product: false,
 			loaded: false,
+			error: false,
 		};
 
 		this.debouncedGetProduct = debounce( this.getProduct.bind( this ), 200 );
@@ -103,17 +105,28 @@ class FeaturedProduct extends Component {
 		const { productId } = this.props.attributes;
 		if ( ! productId ) {
 			// We've removed the selected product, or no product is selected yet.
-			this.setState( { product: false, loaded: true } );
+			this.setState( { product: false, loaded: true, error: false } );
 			return;
 		}
 		apiFetch( {
 			path: `/wc/blocks/products/${ productId }`,
 		} )
 			.then( ( product ) => {
-				this.setState( { product, loaded: true } );
+				this.setState( { product, loaded: true, error: false } );
 			} )
-			.catch( () => {
-				this.setState( { product: false, loaded: true } );
+			.catch( ( apiError ) => {
+				const error = {
+					retry: this.debouncedGetProduct,
+					retrying: false,
+				};
+
+				if ( isObject( apiError ) ) {
+					error.message = __( 'The following error was returned from the API', 'woo-gutenberg-products-block' ) + ': <br/><code>' + apiError.message + '</code>';
+				} else {
+					error.message = __( 'An unknown error occured which prevented the block from being updated.', 'woo-gutenberg-products-block' );
+				}
+
+				this.setState( { product: false, loaded: true, error: error } );
 			} );
 	}
 
@@ -212,7 +225,40 @@ class FeaturedProduct extends Component {
 		);
 	}
 
+	renderApiError() {
+		const { error } = this.state;
+		const onRetry = () => {
+			error.retrying = true;
+			this.setState( { error: error } );
+			error.retry();
+		};
+		return (
+			<Placeholder
+				icon={ <Gridicon icon="notice" /> }
+				label={ __( 'Sorry, an error occured' ) }
+				className="wc-block-error"
+			>
+				<div
+					className="wc-block-error__message"
+					dangerouslySetInnerHTML={ { __html: error.message } }
+				/>
+				{ error.retry && (
+					<Fragment>
+						{ !! error.retrying ? (
+							<Spinner />
+						) : (
+							<Button isDefault onClick={ onRetry }>
+								{ __( 'Retry', 'woo-gutenberg-products-block' ) }
+							</Button>
+						) }
+					</Fragment>
+				) }
+			</Placeholder>
+		);
+	}
+
 	render() {
+		const { loaded, product, error } = this.state;
 		const { attributes, isSelected, overlayColor, setAttributes } = this.props;
 		const {
 			className,
@@ -224,7 +270,12 @@ class FeaturedProduct extends Component {
 			showDesc,
 			showPrice,
 		} = attributes;
-		const { loaded, product } = this.state;
+
+		// If there was an API error, render it.
+		if ( isObject( error ) ) {
+			return this.renderApiError();
+		}
+
 		const classes = classnames(
 			'wc-block-featured-product',
 			{

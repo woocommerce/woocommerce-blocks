@@ -101,7 +101,7 @@ class Products extends WC_REST_Products_Controller {
 		if ( ! \current_user_can( 'edit_posts' ) ) {
 			return new \WP_Error( 'woocommerce_rest_cannot_view', __( 'Sorry, you cannot view this resource.', 'woo-gutenberg-products-block' ), array( 'status' => \rest_authorization_required_code() ) );
 		}
-		return true;
+		return new \WP_Error( 'DERP', 'You cannot read products.' ); // phpcs:ignore TODO remove this!
 	}
 
 	/**
