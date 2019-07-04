@@ -48,7 +48,7 @@ printf "This script prepares a GitHub tag/release for WordPress.org SVN."
 echo
 echo
 echo "Before proceeding:"
-echo " • Ensure you have already created the release on GitHub using the ./bin/github-deploy.sh script."
+echo " • Ensure you have already created the release on GitHub. You can use `$ npm run deploy`."
 echo
 output 3 "Do you want to continue? [y/N]: "
 read -r PROCEED
@@ -153,7 +153,7 @@ output 2 "Copying project files to SVN trunk..."
 copy_dest_files "trunk" "$GIT_PATH" "$SVN_PATH"
 
 # Update stable tag on trunk/readme.txt
-if ! $IS_PRE_RELEASE; then
+if [ $IS_PRE_RELEASE = false ]; then
 	output 2 "Updating \"Stable tag\" to ${VERSION} on trunk/readme.txt..."
 	perl -i -pe"s/Stable tag: .*/Stable tag: ${VERSION}/" trunk/readme.txt
 fi
