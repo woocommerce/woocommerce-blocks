@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { Component, createRef, Fragment } from '@wordpress/element';
 import { IconButton, Placeholder } from '@wordpress/components';
-import { repeat, isEmpty } from 'lodash';
+import { repeat } from 'lodash';
 import PropTypes from 'prop-types';
 import { withInstanceId } from '@wordpress/compose';
 
@@ -100,7 +100,7 @@ class ProductCategoriesBlock extends Component {
 
 		return (
 			<Fragment>
-				{ ! isEmpty( categories ) ? (
+				{ categories.length > 0 ? (
 					<div className={ classes }>
 						{ isDropdown ? (
 							<Fragment>
