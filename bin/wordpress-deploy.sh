@@ -1,8 +1,9 @@
 #!/bin/sh
 
 RELEASER_PATH=$(pwd)
-PLUGIN_SLUG="woocommerce-gutenberg-products-block"
+PLUGIN_SLUG="woo-gutenberg-products-block"
 GITHUB_ORG="woocommerce"
+GITHUB_SLUG="woocommerce-gutenberg-products-block"
 IS_PRE_RELEASE=false
 BUILD_PATH="${HOME}/blocks-deployment"
 
@@ -39,6 +40,30 @@ output_list() {
   echo "$(tput setaf "$1") • $2:$(tput sgr0) \"$3\""
 }
 
+# Sync dest files
+copy_dest_files() {
+  cd "$2" || exit
+  rsync ./ "$3"/"$1"/ --recursive --delete --delete-excluded \
+    --exclude=".*/" \
+    --exclude="*.md" \
+    --exclude=".*" \
+    --exclude="composer.*" \
+    --exclude="*.lock" \
+    --exclude=bin/ \
+	--exclude=node_modules/ \
+	--exclude=tests/ \
+    --exclude=phpcs.xml \
+    --exclude=phpunit.xml.dist \
+	--exclude=renovate.json \
+	--exclude="*.config.js" \
+	--exclude="*-config.js" \
+	--exclude=package.json \
+    --exclude=package-lock.json \
+	--exclude=none \
+  output 2 "Done copying files!"
+  cd "$3" || exit
+}
+
 # Release script
 echo
 output 4 "BLOCKS->WordPress.org RELEASE SCRIPT"
@@ -59,46 +84,34 @@ if [ "$(echo "${PROCEED:-n}" | tr "[:upper:]" "[:lower:]")" != "y" ]; then
   exit 1
 fi
 echo
-
-# Set deploy variables
-SVN_REPO="http://plugins.svn.wordpress.org/${PLUGIN_SLUG}/"
-GIT_REPO="https://github.com/${GITHUB_ORG}/${PLUGIN_SLUG}.git"
-SVN_PATH="${BUILD_PATH}/${PLUGIN_SLUG}-svn"
-GIT_PATH="${BUILD_PATH}/${PLUGIN_SLUG}-git"
-
-# Set deploy variables
-SVN_REPO="http://plugins.svn.wordpress.org/${PLUGIN_SLUG}/"
-GIT_REPO="https://github.com/${GITHUB_ORG}/${PLUGIN_SLUG}.git"
-SVN_PATH="${BUILD_PATH}/${PLUGIN_SLUG}-svn"
-GIT_PATH="${BUILD_PATH}/${PLUGIN_SLUG}-git"
-
-# Ask info
-output 2 "Starting release..."
-echo
-printf "VERSION: "
+output 3 "Please enter the version number to tag, for example, 1.0.0:"
 read -r VERSION
-
-BRANCH="v$VERSION"
+echo
 
 # Check if is a pre-release.
 if is_substring "-" "${VERSION}"; then
     IS_PRE_RELEASE=true
-	echo
 	output 2 "Detected pre-release version!"
 fi
+
+# Set deploy variables
+SVN_REPO="http://plugins.svn.wordpress.org/${PLUGIN_SLUG}/"
+GIT_REPO="https://github.com/${GITHUB_ORG}/${GITHUB_SLUG}.git"
+SVN_PATH="${BUILD_PATH}/${PLUGIN_SLUG}-svn"
+GIT_PATH="${BUILD_PATH}/${PLUGIN_SLUG}-git"
+BRANCH="v$VERSION"
 
 echo
 echo "-------------------------------------------"
 echo
 echo "Review all data before proceeding:"
 echo
-output_list 3 "Plugin slug" "${PLUGIN_SLUG}"
 output_list 3 "Version to release" "${VERSION}"
 output_list 3 "GIT tag to release" "${BRANCH}"
 output_list 3 "GIT repository" "${GIT_REPO}"
 output_list 3 "wp.org repository" "${SVN_REPO}"
 echo
-printf "Are you sure? [y/N]: "
+output 3 "Do you want to continue? [y/N]: "
 read -r PROCEED
 echo
 
@@ -106,8 +119,6 @@ if [ "$(echo "${PROCEED:-n}" | tr "[:upper:]" "[:lower:]")" != "y" ]; then
   output 1 "Release cancelled!"
   exit 1
 fi
-
-output 2 "Confirmed! Starting process..."
 
 # Create build directory if does not exists
 if [ ! -d "$BUILD_PATH" ]; then
