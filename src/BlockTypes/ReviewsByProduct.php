@@ -88,7 +88,7 @@ class ReviewsByProduct extends AbstractDynamicBlock {
 		return array(
 			'type'    => 'string',
 			'enum'    => array( 'most-recent', 'highest-rating', 'lowest-rating' ),
-			'default' => 'recent',
+			'default' => 'most-recent',
 		);
 	}
 
