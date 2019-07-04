@@ -24,9 +24,9 @@ class ProductControl extends Component {
 	}
 
 	componentDidMount() {
-		const { selected } = this.props;
+		const { selected, queryArgs } = this.props;
 
-		getProducts( { selected } )
+		getProducts( { selected, queryArgs } )
 			.then( ( list ) => {
 				this.setState( { list, loading: false } );
 			} )
@@ -36,8 +36,8 @@ class ProductControl extends Component {
 	}
 
 	onSearch( search ) {
-		const { selected } = this.props;
-		getProducts( { selected, search } )
+		const { selected, queryArgs } = this.props;
+		getProducts( { selected, search, queryArgs } )
 			.then( ( list ) => {
 				this.setState( { list, loading: false } );
 			} )
@@ -92,6 +92,10 @@ ProductControl.propTypes = {
 	 * The ID of the currently selected product.
 	 */
 	selected: PropTypes.number.isRequired,
+	/**
+	 * Query args to pass to getProducts.
+	 */
+	queryArgs: PropTypes.object,
 };
 
 export default ProductControl;

@@ -145,6 +145,10 @@ class ReviewsByProduct extends Component {
 							const id = value[ 0 ] ? value[ 0 ].id : 0;
 							setAttributes( { productId: id } );
 						} }
+						queryArgs={ {
+							orderby: 'comment_count',
+							order: 'desc',
+						} }
 					/>
 					<Button isDefault onClick={ onDone }>
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }
