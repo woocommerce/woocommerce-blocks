@@ -59,7 +59,7 @@ copy_dest_files() {
 	--exclude="*-config.js" \
 	--exclude=package.json \
     --exclude=package-lock.json \
-	--exclude=none \
+	--exclude=none
   output 2 "Done copying files!"
   cd "$3" || exit
 }
@@ -187,6 +187,8 @@ rm -rf "$GIT_PATH"
 
 # SVN commit messsage
 output 2 "Ready to commit into WordPress.org Plugin's Directory!"
-echo "Run the follow commads to commit:"
-echo "cd ${SVN_PATH}"
-echo "svn ci -m \"Release ${VERSION}, see readme.txt for changelog.\""
+echo
+echo "-------------------------------------------"
+echo
+output 3 "Run the following command to commit to SVN:"
+echo "cd ${SVN_PATH} && svn ci -m \"Release ${VERSION}, see readme.txt for changelog.\""
