@@ -44,21 +44,21 @@ output_list() {
 copy_dest_files() {
   cd "$2" || exit
   rsync ./ "$3"/"$1"/ --recursive --delete --delete-excluded \
-    --exclude=".*/" \
-    --exclude="*.md" \
-    --exclude=".*" \
-    --exclude="composer.*" \
-    --exclude="*.lock" \
-    --exclude=bin/ \
+	--exclude=".*/" \
+	--exclude="*.md" \
+	--exclude=".*" \
+	--exclude="composer.*" \
+	--exclude="*.lock" \
+	--exclude=bin/ \
 	--exclude=node_modules/ \
 	--exclude=tests/ \
-    --exclude=phpcs.xml \
-    --exclude=phpunit.xml.dist \
+	--exclude=phpcs.xml \
+	--exclude=phpunit.xml.dist \
 	--exclude=renovate.json \
 	--exclude="*.config.js" \
 	--exclude="*-config.js" \
 	--exclude=package.json \
-    --exclude=package-lock.json \
+	--exclude=package-lock.json \
 	--exclude=none
   output 2 "Done copying files!"
   cd "$3" || exit
