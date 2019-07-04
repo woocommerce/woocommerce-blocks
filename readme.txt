@@ -83,6 +83,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 2.2.1 - 2019-07-04 =
+
+- Fix: Allow custom CSS classes on grid blocks.
+- Fix: Allow custom CSS classes on featured product block.
+- Fix: Allow custom CSS classes on product categories list.
+
 = 2.2.0 - 2019-06-26 =
 
 - Feature: Add Product Categories List navigation block for showing a list of categories on your site.
