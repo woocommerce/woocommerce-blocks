@@ -48,7 +48,7 @@ printf "This script prepares a GitHub tag/release for WordPress.org SVN."
 echo
 echo
 echo "Before proceeding:"
-echo " • Ensure you have already created the release on GitHub. You can use `$ npm run deploy`."
+echo " • Ensure you have already created the release on GitHub. You can use '$ npm run deploy'."
 echo
 output 3 "Do you want to continue? [y/N]: "
 read -r PROCEED
