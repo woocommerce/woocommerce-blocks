@@ -1,7 +1,8 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
+import { escapeHTML } from '@wordpress/escape-html';
 import {
 	BlockControls,
 	InspectorControls,
@@ -21,6 +22,8 @@ import {
 import { Component, Fragment } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 import PropTypes from 'prop-types';
+import apiFetch from '@wordpress/api-fetch';
+import { debounce } from 'lodash';
 
 /**
  * Internal dependencies
@@ -32,6 +35,45 @@ import ReviewsByProductIcon from '../../components/icons/reviews-by-product';
  * Component to handle edit mode of "Reviews by Product".
  */
 class ReviewsByProduct extends Component {
+
+	constructor() {
+		super( ...arguments );
+		this.state = {
+			product: false,
+			loaded: false,
+		};
+
+		this.debouncedGetProduct = debounce( this.getProduct.bind( this ), 200 );
+	}
+
+	componentDidMount() {
+		this.getProduct();
+	}
+
+	componentDidUpdate( prevProps ) {
+		if ( prevProps.attributes.productId !== this.props.attributes.productId ) {
+			this.debouncedGetProduct();
+		}
+	}
+
+	getProduct() {
+		const { productId } = this.props.attributes;
+		if ( ! productId ) {
+			// We've removed the selected product, or no product is selected yet.
+			this.setState( { product: false, loaded: true } );
+			return;
+		}
+		apiFetch( {
+			path: `/wc/blocks/products/${ productId }`,
+		} )
+			.then( ( product ) => {
+				this.setState( { product, loaded: true } );
+			} )
+			.catch( () => {
+				this.setState( { product: false, loaded: true } );
+			} );
+	}
+
 	getInspectorControls() {
 		const {
 			attributes,
@@ -161,6 +203,7 @@ class ReviewsByProduct extends Component {
 	render() {
 		const { attributes, name, setAttributes } = this.props;
 		const { editMode } = attributes;
+		const { product } = this.state;
 
 		return (
 			<Fragment>
@@ -177,12 +220,32 @@ class ReviewsByProduct extends Component {
 					/>
 				</BlockControls>
 				{ this.getInspectorControls() }
-				{ editMode ? (
+				{ ! product || editMode ? (
 					this.renderEditMode()
 				) : (
-					<Disabled>
-						<ServerSideRender block={ name } attributes={ attributes } className="wc-block-reviews-by-product" />
-					</Disabled>
+					<Fragment>
+						{ !! product.rating_count ? (
+							<Disabled>
+								<ServerSideRender block={ name } attributes={ attributes } className="wc-block-reviews-by-product" />
+							</Disabled>
+						) : (
+							<Placeholder
+								className="wc-block-reviews-by-product"
+								icon={ <ReviewsByProductIcon className="block-editor-block-icon" /> }
+								label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
+							>
+								<div dangerouslySetInnerHTML={ {
+									__html: sprintf(
+										__(
+											"This block lists reviews for a selected product. %s doesn't have any reviews yet, but they will show up here when it does.",
+											'woo-gutenberg-products-block'
+										),
+										'<strong>' + escapeHTML( product.name ) + '</strong>'
+									),
+								} } />
+							</Placeholder>
+						) }
+					</Fragment>
 				) }
 			</Fragment>
 		);
