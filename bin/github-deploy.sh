@@ -108,7 +108,7 @@ git push origin $BRANCH
 if [ $IS_PRE_RELEASE = true ]; then
 	hub release create -m $VERSION -m "Release of version $VERSION. See readme.txt for details." -t $BRANCH --prerelease "v${VERSION}"
 else
-	hub release create -m $MESSAGE -m "Release of version $VERSION. See readme.txt for details." -t $BRANCH "v${VERSION}"
+	hub release create -m $VERSION -m "Release of version $VERSION. See readme.txt for details." -t $BRANCH "v${VERSION}"
 fi
 
 git checkout $CURRENTBRANCH
