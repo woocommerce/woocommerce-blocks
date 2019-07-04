@@ -25,6 +25,7 @@
     "lint:php": "composer run-script phpcs .",
     "lint:css": "stylelint assets/css",
     "lint:js": "eslint assets/js --ext=js,jsx",
+    "package-plugin": "./bin/build-plugin-zip.sh",
     "test": "wp-scripts test-unit-js --config tests/js/jest.config.json",
     "test:help": "wp-scripts test-unit-js --help",
     "test:update": "wp-scripts test-unit-js --updateSnapshot --config tests/js/jest.config.json",
