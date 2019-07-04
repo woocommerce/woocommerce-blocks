@@ -40,17 +40,19 @@ fi
 
 # Release script
 echo
-output 2 "BLOCKS RELEASE SCRIPT"
-output 2 "====================="
+output 5 "BLOCKS->GitHub RELEASE SCRIPT"
+output 5 "============================="
 echo
 printf "This script will build files and create a tag on GitHub based on your local branch."
 echo
 echo
-printf "The /build/ directory will also be pushed to the tag."
+printf "The /build/ directory will also be pushed to the tagged release."
 echo
 echo
-printf "Before proceeding, ensure you have checked out the correct branch you wish to release, and have committed/pushed all local changes."
-echo
+echo "Before proceeding:"
+echo " • Ensure you have checked out the branch you wish to release"
+echo " • Ensure you have committed/pushed all local changes"
+echo " • Did you remember to update versions, changelogs, and stable tags in the readme and plugin files?"
 echo
 output 3 "Do you want to continue? [y/N]: "
 read -r PROCEED
