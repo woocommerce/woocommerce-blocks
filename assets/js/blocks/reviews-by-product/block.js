@@ -120,21 +120,29 @@ class ReviewsByProduct extends Component {
 
 	renderProductControlItem( args ) {
 		const { item = 0 } = args;
-		item.count = item.rating_count;
 
 		return (
 			<SearchListItem
 				{ ...args }
+				countLabel={ sprintf(
+					_n(
+						'%d Review',
+						'%d Reviews',
+						item.rating_count,
+						'woo-gutenberg-products-block'
+					),
+					item.rating_count
+				) }
 				showCount
 				aria-label={ sprintf(
 					_n(
 						'%s, has %d review',
 						'%s, has %d reviews',
-						item.count,
+						item.rating_count,
 						'woo-gutenberg-products-block'
 					),
 					item.name,
-					item.count
+					item.rating_count
 				) }
 			/>
 		);
