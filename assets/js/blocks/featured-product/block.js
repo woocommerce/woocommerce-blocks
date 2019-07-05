@@ -31,12 +31,12 @@ import { Component, Fragment } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 import { debounce, isObject } from 'lodash';
 import PropTypes from 'prop-types';
-import Gridicon from 'gridicons';
 
 /**
  * Internal dependencies
  */
 import ProductControl from '../../components/product-control';
+import ApiErrorPlaceholder from '../../components/api-error-placeholder';
 import {
 	getImageSrcFromProduct,
 	getImageIdFromProduct,
@@ -117,7 +117,6 @@ class FeaturedProduct extends Component {
 			.catch( ( apiError ) => {
 				const error = {
 					retry: this.debouncedGetProduct,
-					retrying: false,
 				};
 
 				if ( isObject( apiError ) ) {
@@ -126,6 +125,7 @@ class FeaturedProduct extends Component {
 					error.message = __( 'An unknown error occured which prevented the block from being updated.', 'woo-gutenberg-products-block' );
 				}
 
+				this.setState( { error: false } ); // Force update if error stays same.
 				this.setState( { product: false, loaded: true, error: error } );
 			} );
 	}
@@ -200,82 +200,108 @@ class FeaturedProduct extends Component {
 		};
 
 		return (
-			<Placeholder
-				icon="star-filled"
-				label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
-				className="wc-block-featured-product"
-			>
-				{ __(
-					'Visually highlight a product and encourage prompt action',
-					'woo-gutenberg-products-block'
-				) }
-				<div className="wc-block-handpicked-products__selection">
-					<ProductControl
-						selected={ attributes.productId || 0 }
-						onChange={ ( value = [] ) => {
-							const id = value[ 0 ] ? value[ 0 ].id : 0;
-							setAttributes( { productId: id, mediaId: 0, mediaSrc: '' } );
-						} }
-					/>
-					<Button isDefault onClick={ onDone }>
-						{ __( 'Done', 'woo-gutenberg-products-block' ) }
-					</Button>
-				</div>
-			</Placeholder>
+			<Fragment>
+				{ this.getBlockControls() }
+				<Placeholder
+					icon="star-filled"
+					label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
+					className="wc-block-featured-product"
+				>
+					{ __(
+						'Visually highlight a product and encourage prompt action',
+						'woo-gutenberg-products-block'
+					) }
+					<div className="wc-block-handpicked-products__selection">
+						<ProductControl
+							selected={ attributes.productId || 0 }
+							onChange={ ( value = [] ) => {
+								const id = value[ 0 ] ? value[ 0 ].id : 0;
+								setAttributes( { productId: id, mediaId: 0, mediaSrc: '' } );
+							} }
+						/>
+						<Button isDefault onClick={ onDone }>
+							{ __( 'Done', 'woo-gutenberg-products-block' ) }
+						</Button>
+					</div>
+				</Placeholder>
+			</Fragment>
 		);
 	}
 
 	renderApiError() {
 		const { error } = this.state;
-		const onRetry = () => {
-			error.retrying = true;
-			this.setState( { error: error } );
+		const onRetryCallback = () => {
 			error.retry();
 		};
 		return (
-			<Placeholder
-				icon={ <Gridicon icon="notice" /> }
-				label={ __( 'Sorry, an error occurred', 'woo-gutenberg-products-block' ) }
-				className="wc-block-error"
-			>
-				<div
-					className="wc-block-error__message"
-					dangerouslySetInnerHTML={ { __html: error.message } }
-				/>
-				{ error.retry && (
-					<Fragment>
-						{ !! error.retrying ? (
-							<Spinner />
-						) : (
-							<Button isDefault onClick={ onRetry }>
-								{ __( 'Retry', 'woo-gutenberg-products-block' ) }
-							</Button>
-						) }
-					</Fragment>
-				) }
-			</Placeholder>
+			<ApiErrorPlaceholder
+				onRetry={ onRetryCallback }
+				errorMessage={ error.message }
+				className="wc-block-featured-product-error"
+			/>
 		);
 	}
 
-	render() {
-		const { loaded, product, error } = this.state;
+	getBlockControls() {
+		const { attributes, setAttributes } = this.props;
+		const { product } = this.state;
+		const { contentAlign, editMode } = attributes;
+		const mediaId = attributes.mediaId || getImageIdFromProduct( product );
+
+		return (
+			<BlockControls>
+				<AlignmentToolbar
+					value={ contentAlign }
+					onChange={ ( nextAlign ) => {
+						setAttributes( { contentAlign: nextAlign } );
+					} }
+				/>
+				<MediaUploadCheck>
+					<Toolbar>
+						<MediaUpload
+							onSelect={ ( media ) => {
+								setAttributes( { mediaId: media.id, mediaSrc: media.url } );
+							} }
+							allowedTypes={ [ 'image' ] }
+							value={ mediaId }
+							render={ ( { open } ) => (
+								<IconButton
+									className="components-toolbar__control"
+									label={ __( 'Edit media' ) }
+									icon="format-image"
+									onClick={ open }
+									disabled={ ! this.state.product }
+								/>
+							) }
+						/>
+					</Toolbar>
+				</MediaUploadCheck>
+				<Toolbar
+					controls={ [
+						{
+							icon: 'edit',
+							title: __( 'Edit' ),
+							onClick: () => setAttributes( { editMode: ! editMode } ),
+							isActive: editMode,
+						},
+					] }
+				/>
+			</BlockControls>
+		);
+	}
+
+	renderProduct() {
 		const { attributes, isSelected, overlayColor, setAttributes } = this.props;
+		const { loaded, product } = this.state;
 		const {
 			className,
 			contentAlign,
 			dimRatio,
-			editMode,
 			focalPoint,
 			height,
 			showDesc,
 			showPrice,
 		} = attributes;
-
-		// If there was an API error, render it.
-		if ( error ) {
-			return this.renderApiError();
-		}
-
 		const classes = classnames(
 			'wc-block-featured-product',
 			{
@@ -288,11 +314,9 @@ class FeaturedProduct extends Component {
 			contentAlign !== 'center' && `has-${ contentAlign }-content`,
 			className,
 		);
-		const mediaId = attributes.mediaId || getImageIdFromProduct( product );
 
-		const style = !! product ?
-			backgroundImageStyles( attributes.mediaSrc || product ) :
-			{};
+		const style = backgroundImageStyles( attributes.mediaSrc || product );
+
 		if ( overlayColor.color ) {
 			style.backgroundColor = overlayColor.color;
 		}
@@ -306,104 +330,99 @@ class FeaturedProduct extends Component {
 		};
 
 		return (
-			<Fragment>
-				<BlockControls>
-					<AlignmentToolbar
-						value={ contentAlign }
-						onChange={ ( nextAlign ) => {
-							setAttributes( { contentAlign: nextAlign } );
+			<ResizableBox
+				className={ classes }
+				size={ { height } }
+				minHeight={ MIN_HEIGHT }
+				enable={ { bottom: true } }
+				onResizeStop={ onResizeStop }
+				style={ style }
+			>
+				<div className="wc-block-featured-product__wrapper">
+					<h2
+						className="wc-block-featured-product__title"
+						dangerouslySetInnerHTML={ {
+							__html: product.name,
 						} }
 					/>
-					<MediaUploadCheck>
-						<Toolbar>
-							<MediaUpload
-								onSelect={ ( media ) => {
-									setAttributes( { mediaId: media.id, mediaSrc: media.url } );
-								} }
-								allowedTypes={ [ 'image' ] }
-								value={ mediaId }
-								render={ ( { open } ) => (
-									<IconButton
-										className="components-toolbar__control"
-										label={ __( 'Edit media' ) }
-										icon="format-image"
-										onClick={ open }
-										disabled={ ! this.state.product }
-									/>
-								) }
-							/>
-						</Toolbar>
-					</MediaUploadCheck>
-				</BlockControls>
-				{ ! attributes.editMode && this.getInspectorControls() }
-				{ editMode ? (
-					this.renderEditMode()
+					{ showDesc && (
+						<div
+							className="wc-block-featured-product__description"
+							dangerouslySetInnerHTML={ {
+								__html: product.short_description,
+							} }
+						/>
+					) }
+					{ showPrice && (
+						<div
+							className="wc-block-featured-product__price"
+							dangerouslySetInnerHTML={ { __html: product.price_html } }
+						/>
+					) }
+					<div className="wc-block-featured-product__link">
+						<InnerBlocks
+							template={ [
+								[
+									'core/button',
+									{
+										text: __(
+											'Shop now',
+											'woo-gutenberg-products-block'
+										),
+										url: product.permalink,
+										align: 'center',
+									},
+								],
+							] }
+							templateLock="all"
+						/>
+					</div>
+				</div>
+			</ResizableBox>
+		);
+	}
+
+	renderNoProduct() {
+		const { loaded } = this.state;
+		return (
+			<Placeholder
+				className="wc-block-featured-product"
+				icon="star-filled"
+				label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
+			>
+				{ ! loaded ? (
+					<Spinner />
 				) : (
-					<Fragment>
-						{ !! product ? (
-							<ResizableBox
-								className={ classes }
-								size={ { height } }
-								minHeight={ MIN_HEIGHT }
-								enable={ { bottom: true } }
-								onResizeStop={ onResizeStop }
-								style={ style }
-							>
-								<div className="wc-block-featured-product__wrapper">
-									<h2
-										className="wc-block-featured-product__title"
-										dangerouslySetInnerHTML={ {
-											__html: product.name,
-										} }
-									/>
-									{ showDesc && (
-										<div
-											className="wc-block-featured-product__description"
-											dangerouslySetInnerHTML={ {
-												__html: product.short_description,
-											} }
-										/>
-									) }
-									{ showPrice && (
-										<div
-											className="wc-block-featured-product__price"
-											dangerouslySetInnerHTML={ { __html: product.price_html } }
-										/>
-									) }
-									<div className="wc-block-featured-product__link">
-										<InnerBlocks
-											template={ [
-												[
-													'core/button',
-													{
-														text: __(
-															'Shop now',
-															'woo-gutenberg-products-block'
-														),
-														url: product.permalink,
-														align: 'center',
-													},
-												],
-											] }
-											templateLock="all"
-										/>
-									</div>
-								</div>
-							</ResizableBox>
-						) : (
-							<Placeholder
-								className="wc-block-featured-product"
-								icon="star-filled"
-								label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
-							>
-								{ ! loaded ? (
-									<Spinner />
-								) : (
-									__( 'No product is selected.', 'woo-gutenberg-products-block' )
-								) }
-							</Placeholder>
-						) }
-					</Fragment>
+					__( 'No product is selected.', 'woo-gutenberg-products-block' )
+				) }
+			</Placeholder>
+		);
+	}
+
+	render() {
+		const { product, error } = this.state;
+		const { attributes } = this.props;
+		const { editMode } = attributes;
+
+		// If there was an API error, render it.
+		if ( error ) {
+			return this.renderApiError();
+		}
+
+		// If editing, show edit controls.
+		if ( editMode ) {
+			return this.renderEditMode();
+		}
+
+		// Otherwise render the selected product!
+		return (
+			<Fragment>
+				{ this.getBlockControls() }
+				{ this.getInspectorControls() }
+				{ !! product ? (
+					this.renderProduct()
+				) : (
+					this.renderNoProduct()
 				) }
 			</Fragment>
 		);
