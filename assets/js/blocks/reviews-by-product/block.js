@@ -1,8 +1,8 @@
 /**
  * External dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
 import { escapeHTML } from '@wordpress/escape-html';
+import { __, _n, sprintf } from '@wordpress/i18n';
 import {
 	BlockControls,
 	InspectorControls,
@@ -18,6 +18,7 @@ import {
 	ToggleControl,
 	Toolbar,
 	withSpokenMessages,
+	SearchListItem,
 } from '@wordpress/components';
 import { Component, Fragment } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
@@ -92,6 +93,7 @@ class ReviewsByProduct extends Component {
 							const id = value[ 0 ] ? value[ 0 ].id : 0;
 							setAttributes( { productId: id } );
 						} }
+						renderItem={ this.renderProductControlItem }
 					/>
 				</PanelBody>
 				<PanelBody title={ __( 'Content', 'woo-gutenberg-products-block' ) }>
@@ -158,6 +160,36 @@ class ReviewsByProduct extends Component {
 		);
 	}
 
+	renderProductControlItem( args ) {
+		const { item = 0 } = args;
+
+		return (
+			<SearchListItem
+				{ ...args }
+				countLabel={ sprintf(
+					_n(
+						'%d Review',
+						'%d Reviews',
+						item.rating_count,
+						'woo-gutenberg-products-block'
+					),
+					item.rating_count
+				) }
+				showCount
+				aria-label={ sprintf(
+					_n(
+						'%s, has %d review',
+						'%s, has %d reviews',
+						item.rating_count,
+						'woo-gutenberg-products-block'
+					),
+					item.name,
+					item.rating_count
+				) }
+			/>
+		);
+	}
+
 	renderEditMode() {
 		const { attributes, debouncedSpeak, setAttributes } = this.props;
 		const onDone = () => {
@@ -191,6 +223,7 @@ class ReviewsByProduct extends Component {
 							orderby: 'comment_count',
 							order: 'desc',
 						} }
+						renderItem={ this.renderProductControlItem }
 					/>
 					<Button isDefault onClick={ onDone }>
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }

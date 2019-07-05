@@ -48,7 +48,7 @@ class ProductControl extends Component {
 
 	render() {
 		const { list, loading } = this.state;
-		const { onChange, selected } = this.props;
+		const { onChange, renderItem, selected } = this.props;
 		const messages = {
 			list: __( 'Products', 'woo-gutenberg-products-block' ),
 			noItems: __(
@@ -75,6 +75,7 @@ class ProductControl extends Component {
 					isSingle
 					selected={ [ find( list, { id: selected } ) ] }
 					onChange={ onChange }
+					renderItem={ renderItem }
 					onSearch={ isLargeCatalog ? this.debouncedOnSearch : null }
 					messages={ messages }
 				/>
@@ -88,6 +89,10 @@ ProductControl.propTypes = {
 	 * Callback to update the selected products.
 	 */
 	onChange: PropTypes.func.isRequired,
+	/**
+	 * Callback to render each item in the selection list, allows any custom object-type rendering.
+	 */
+	renderItem: PropTypes.func.isRequired,
 	/**
 	 * The ID of the currently selected product.
 	 */
