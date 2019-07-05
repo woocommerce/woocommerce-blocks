@@ -1,0 +1,12 @@
+div.wc-block-product-search__field {
+	-webkit-appearance: textfield;
+	color: #828B96 !important;
+	line-height: 1.8;
+}
+.wc-block-product-search {
+	.wc-block-product-search__fields {
+		.block-editor-rich-text {
+			flex-grow: 1;
+		}
+	}
+}

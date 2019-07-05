@@ -1,0 +1,13 @@
+.wc-block-product-search {
+	.wc-block-product-search__fields {
+		display: flex;
+	}
+	.wc-block-product-search__field {
+		padding: 6px 8px;
+		line-height: 1.8;
+		flex-grow: 1;
+	}
+	.wc-block-product-search__button {
+		margin-left: 6px;
+	}
+}
