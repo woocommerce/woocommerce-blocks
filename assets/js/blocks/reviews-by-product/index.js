@@ -11,6 +11,7 @@ import './style.scss';
 import './editor.scss';
 import Block from './block';
 import ReviewsByProductIcon from '../../components/icons/reviews-by-product';
+import { renderReviewsByProductPlaceholder } from './utils';
 
 /**
  * Register and run the "Reviews by Product" block.
@@ -99,9 +100,9 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 	},
 
 	/**
-	 * Block content is rendered in PHP, not via save function.
+	 * Save the props to post content.
 	 */
-	save() {
-		return null;
+	save( { attributes } ) {
+		return renderReviewsByProductPlaceholder( attributes );
 	},
 } );

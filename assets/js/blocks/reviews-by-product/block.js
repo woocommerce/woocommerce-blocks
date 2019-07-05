@@ -6,11 +6,9 @@ import { __, _n, sprintf } from '@wordpress/i18n';
 import {
 	BlockControls,
 	InspectorControls,
-	ServerSideRender,
 } from '@wordpress/editor';
 import {
 	Button,
-	Disabled,
 	PanelBody,
 	Placeholder,
 	SelectControl,
@@ -31,6 +29,7 @@ import { debounce } from 'lodash';
  */
 import ProductControl from '../../components/product-control';
 import ReviewsByProductIcon from '../../components/icons/reviews-by-product';
+import { renderReviewsByProductPlaceholder } from './utils';
 
 /**
  * Component to handle edit mode of "Reviews by Product".
@@ -234,7 +233,7 @@ class ReviewsByProduct extends Component {
 	}
 
 	render() {
-		const { attributes, name, setAttributes } = this.props;
+		const { attributes, setAttributes } = this.props;
 		const { editMode } = attributes;
 		const { product } = this.state;
 
@@ -258,9 +257,7 @@ class ReviewsByProduct extends Component {
 				) : (
 					<Fragment>
 						{ product.rating_count > 0 ? (
-							<Disabled>
-								<ServerSideRender block={ name } attributes={ attributes } className="wc-block-reviews-by-product" />
-							</Disabled>
+							renderReviewsByProductPlaceholder( attributes )
 						) : (
 							<Placeholder
 								className="wc-block-reviews-by-product"

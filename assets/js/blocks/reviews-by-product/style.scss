@@ -1,4 +1,38 @@
 .wc-block-reviews-by-product {
+	&.is-loading {
+		.wc-block-reviews-by-product__text {
+			@include placeholder();
+			display: block;
+			width: 60%;
+		}
+
+		.wc-block-reviews-by-product__info {
+			> .avatar {
+				@include placeholder();
+			}
+
+			.wc-block-reviews-by-product__meta {
+				.wc-block-reviews-by-product__author {
+					@include placeholder();
+					font-size: 1em;
+					width: 80px;
+				}
+
+				.wc-block-reviews-by-product__rating {
+					.star-rating > span {
+						display: none;
+					}
+				}
+			}
+
+			.wc-block-reviews-by-product__published-date {
+				@include placeholder();
+				height: 1em;
+				width: 120px;
+			}
+		}
+	}
+
 	.wc-block-reviews-by-product__list {
 		list-style: none;
 		margin: 0;
@@ -11,6 +45,7 @@
 	.wc-block-reviews-by-product__info {
 		display: grid;
 		grid-template-columns: 1fr;
+		grid-template-rows: 1fr 0.65fr;
 		margin-top: $gap-small;
 
 		> .avatar {
@@ -19,6 +54,8 @@
 		}
 
 		.wc-block-reviews-by-product__meta {
+			align-items: center;
+			display: flex;
 			grid-column: 1;
 			grid-row: 1;
 
@@ -35,7 +72,7 @@
 
 				> .star-rating {
 					display: inline-block;
-					top: 5px;
+					top: 3px;
 					overflow: hidden;
 					position: relative;
 					height: 1.618em;
@@ -75,6 +112,7 @@
 		}
 
 		.wc-block-reviews-by-product__published-date {
+			align-self: center;
 			color: #808080;
 			font-size: 0.9em;
 			grid-column: 1;
@@ -82,21 +120,21 @@
 		}
 	}
 
-  &.has-picture {
-    .wc-block-reviews-by-product__info {
-  		grid-template-columns: #{60px + $gap-small} 1fr;
-    }
+	&.has-picture {
+		.wc-block-reviews-by-product__info {
+			grid-template-columns: #{60px + $gap-small} 1fr;
+		}
 
-    .wc-block-reviews-by-product__meta,
-    .wc-block-reviews-by-product__published-date {
-      grid-column: 2;
-    }
-  }
+		.wc-block-reviews-by-product__meta,
+		.wc-block-reviews-by-product__published-date {
+			grid-column: 2;
+		}
+	}
 
-  &.has-name,
-  &.has-rating {
-    .wc-block-reviews-by-product__published-date {
-      grid-row: 2;
-    }
-  }
+	&.has-name,
+	&.has-rating {
+		.wc-block-reviews-by-product__published-date {
+			grid-row: 2;
+		}
+	}
 }
