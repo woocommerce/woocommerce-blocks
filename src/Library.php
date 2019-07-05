@@ -35,6 +35,7 @@ class Library {
 			'ProductOnSale',
 			'ProductsByAttribute',
 			'ProductTopRated',
+			'ProductSearch',
 		];
 		foreach ( $blocks as $class ) {
 			$class    = __NAMESPACE__ . '\\BlockTypes\\' . $class;
