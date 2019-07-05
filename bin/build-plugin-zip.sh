@@ -44,26 +44,6 @@ if [ -z "$NO_CHECKS" ]; then
 		Commit your changes and try again."
 		exit 1
 	fi
-
-	# Do a dry run of the repository reset. Prompting the user for a list of all
-	# files that will be removed should prevent them from losing important files!
-	status "Resetting the repository to pristine condition. ✨"
-	to_clean=$(git clean -xdf --dry-run)
-	if [ ! -z "$to_clean" ]; then
-		echo $to_clean
-		warning "🚨 About to delete everything above! Is this okay? 🚨"
-		echo -n "[y]es/[N]o: "
-		read answer
-		if [ "$answer" != "${answer#[Yy]}" ]; then
-			# Remove ignored files to reset repository to pristine condition. Previous
-			# test ensures that changed files abort the plugin build.
-			status "Cleaning working directory... 🛀"
-			git clean -xdf
-		else
-			error "Fair enough; aborting. Tidy up your repo and try again. 🙂"
-			exit 1
-		fi
-	fi
 fi
 
 # Run the build.
@@ -82,16 +62,13 @@ build_files=$(ls build/*.{js,css})
 
 # Generate the plugin zip file.
 status "Creating archive... 🎁"
-zip -r woocommerce-gutenberg-products-block.zip \
-	$build_files \
-	languages/ \
-	images/ \
-	includes/ \
-	src/ \
-	readme.txt \
-	woocommerce-gutenberg-products-block.php
+mkdir zip-file
+mkdir zip-file/build
+cp -r $build_files zip-file/build
+cp -r {languages/,src/,vendor/,readme.txt,woocommerce-gutenberg-products-block.php} zip-file
+cd zip-file
+zip -r ../woocommerce-gutenberg-products-block.zip ./
+cd ..
+rm -r zip-file
 
-# Reset `woocommerce-gutenberg-products-block.php`.
-git checkout woocommerce-gutenberg-products-block.php
-
-success "Done. You've built WooCommerce Blocks! 🎉 "
+success "Done. You've built WooCommerce Blocks! 🎉"
