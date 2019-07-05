@@ -3,18 +3,24 @@
  */
 import { addQueryArgs } from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
-import { flatten, uniqBy } from 'lodash';
+import { flatten, uniqBy, merge } from 'lodash';
 
 export const isLargeCatalog = wc_product_block_data.isLargeCatalog || false;
 
-const getProductsRequests = ( { selected = [], search } ) => {
+const getProductsRequests = ( { selected = [], search = '', queryArgs = [] } ) => {
+	const defaultArgs = {
+		per_page: isLargeCatalog ? 100 : -1,
+		catalog_visibility: 'visible',
+		status: 'publish',
+		search,
+		orderby: 'title',
+		order: 'asc',
+	};
 	const requests = [
-		addQueryArgs( '/wc/blocks/products', {
-			per_page: isLargeCatalog ? 100 : -1,
-			catalog_visibility: 'visible',
-			status: 'publish',
-			search,
-		} ),
+		addQueryArgs(
+			'/wc/blocks/products',
+			{ ...defaultArgs, ...queryArgs }
+		),
 	];
 
 	// If we have a large catalog, we might not get all selected products in the first page.
@@ -36,8 +42,8 @@ const getProductsRequests = ( { selected = [], search } ) => {
  *
  * @param {object} - A query object with the list of selected products and search term.
  */
-export const getProducts = ( { selected = [], search } ) => {
-	const requests = getProductsRequests( { selected, search } );
+export const getProducts = ( { selected = [], search = '', queryArgs = [] } ) => {
+	const requests = getProductsRequests( { selected, search, queryArgs } );
 
 	return Promise.all( requests.map( ( path ) => apiFetch( { path } ) ) ).then( ( data ) => {
 		return uniqBy( flatten( data ), 'id' );

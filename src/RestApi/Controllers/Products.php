@@ -241,7 +241,7 @@ class Products extends WC_REST_Products_Controller {
 	 */
 	public function get_collection_params() {
 		$params                       = parent::get_collection_params();
-		$params['orderby']['enum']    = array_merge( $params['orderby']['enum'], array( 'price', 'popularity', 'rating', 'menu_order' ) );
+		$params['orderby']['enum']    = array_merge( $params['orderby']['enum'], array( 'menu_order', 'comment_count' ) );
 		$params['category_operator']  = array(
 			'description'       => __( 'Operator to compare product category terms.', 'woo-gutenberg-products-block' ),
 			'type'              => 'string',
@@ -340,7 +340,7 @@ class Products extends WC_REST_Products_Controller {
 					'readonly'    => true,
 				),
 				'rating_count'      => array(
-					'description' => __( 'Number of ratings.', 'woo-gutenberg-products-block' ),
+					'description' => __( 'Amount of reviews that the product has.', 'woo-gutenberg-products-block' ),
 					'type'        => 'integer',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
