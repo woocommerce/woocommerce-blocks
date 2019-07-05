@@ -272,7 +272,7 @@ class FeaturedProduct extends Component {
 		} = attributes;
 
 		// If there was an API error, render it.
-		if ( isObject( error ) ) {
+		if ( error ) {
 			return this.renderApiError();
 		}
 
