@@ -36,7 +36,6 @@ import ReviewsByProductIcon from '../../components/icons/reviews-by-product';
  * Component to handle edit mode of "Reviews by Product".
  */
 class ReviewsByProduct extends Component {
-
 	constructor() {
 		super( ...arguments );
 		this.state = {

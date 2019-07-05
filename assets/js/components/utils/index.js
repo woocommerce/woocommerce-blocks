@@ -3,7 +3,7 @@
  */
 import { addQueryArgs } from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
-import { flatten, uniqBy, merge } from 'lodash';
+import { flatten, uniqBy } from 'lodash';
 
 export const isLargeCatalog = wc_product_block_data.isLargeCatalog || false;
 
