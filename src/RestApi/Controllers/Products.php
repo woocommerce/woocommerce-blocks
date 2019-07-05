@@ -340,7 +340,7 @@ class Products extends WC_REST_Products_Controller {
 					'readonly'    => true,
 				),
 				'rating_count'      => array(
-					'description' => __( 'Amount of reviews that the product have.', 'woo-gutenberg-products-block' ),
+					'description' => __( 'Amount of reviews that the product has.', 'woo-gutenberg-products-block' ),
 					'type'        => 'integer',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
