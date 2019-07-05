@@ -224,7 +224,7 @@ class ReviewsByProduct extends Component {
 					this.renderEditMode()
 				) : (
 					<Fragment>
-						{ !! product.rating_count ? (
+						{ product.rating_count > 0 ? (
 							<Disabled>
 								<ServerSideRender block={ name } attributes={ attributes } className="wc-block-reviews-by-product" />
 							</Disabled>
