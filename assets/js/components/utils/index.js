@@ -19,7 +19,7 @@ const getProductsRequests = ( { selected = [], search = '', queryArgs = [] } ) =
 	const requests = [
 		addQueryArgs(
 			'/wc/blocks/products',
-			merge( defaultArgs, queryArgs )
+			{ ...defaultArgs, ...queryArgs }
 		),
 	];
 
