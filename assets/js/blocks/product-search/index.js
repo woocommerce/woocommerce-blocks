@@ -38,7 +38,7 @@ registerBlockType( 'woocommerce/product-search', {
 			type: 'boolean',
 			default: true,
 			source: 'attribute',
-			selector: 'div',
+			selector: 'form',
 			attribute: 'data-has-label',
 		},
 
@@ -110,11 +110,6 @@ registerBlockType( 'woocommerce/product-search', {
 	 * Save the props to post content.
 	 */
 	save( attributes ) {
-		const { hasLabel } = attributes;
-		const data = {};
-		if ( hasLabel ) {
-			data[ 'data-has-label' ] = true;
-		}
-		return <Block { ...attributes } { ...data } />;
+		return <Block { ...attributes } />;
 	},
 } );

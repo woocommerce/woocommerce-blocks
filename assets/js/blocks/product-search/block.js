@@ -34,12 +34,17 @@ class ProductSearchBlock extends Component {
 			'wc-block-product-search',
 			className,
 		);
+		const data = {};
+
+		if ( hasLabel ) {
+			data[ 'data-has-label' ] = true;
+		}
 
 		return (
-			<form className={ classes } role="search" method="get" action={ home } data-form-id={ formId }>
+			<form className={ classes } { ...data } role="search" method="get" action={ home } data-form-id={ formId }>
 				<label
 					htmlFor={ formId }
-					className={ hasLabel ? 'wc-block-product-search__label' : 'wc-block-product-search__label screen-reader-text' }
+					className={ !! hasLabel ? 'wc-block-product-search__label' : 'wc-block-product-search__label screen-reader-text' }
 				>
 					{ label }
 				</label>
@@ -77,7 +82,7 @@ class ProductSearchBlock extends Component {
 
 		return (
 			<form className={ classes }>
-				{ hasLabel && (
+				{ !! hasLabel && (
 					<RichText
 						tagName="label"
 						className="wc-block-product-search__label"
