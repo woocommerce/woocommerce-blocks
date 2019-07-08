@@ -3,7 +3,9 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { InnerBlocks } from '@wordpress/editor';
+import { Fragment } from '@wordpress/element';
+import { InspectorControls } from '@wordpress/editor';
+import { PanelBody, ToggleControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -29,6 +31,16 @@ registerBlockType( 'woocommerce/product-search', {
 	},
 
 	attributes: {
+		/**
+		 * Whether to show the field label.
+		 */
+		hasLabel: {
+			type: 'boolean',
+			default: true,
+			source: 'attribute',
+			selector: 'div',
+			attribute: 'data-has-label',
+		},
 
 		/**
 		 * Search field label.
@@ -36,6 +48,8 @@ registerBlockType( 'woocommerce/product-search', {
 		label: {
 			type: 'string',
 			default: __( 'Search', 'woo-gutenberg-products-block' ),
+			source: 'text',
+			selector: 'label',
 		},
 
 		/**
@@ -44,6 +58,20 @@ registerBlockType( 'woocommerce/product-search', {
 		placeholder: {
 			type: 'string',
 			default: __( 'Search products...', 'woo-gutenberg-products-block' ),
+			source: 'attribute',
+			selector: 'input.wc-block-product-search__field',
+			attribute: 'placeholder',
+		},
+
+		/**
+		 * Store the instance ID.
+		 */
+		formId: {
+			type: 'string',
+			default: '',
+			source: 'attribute',
+			selector: 'form',
+			attribute: 'data-form-id',
 		},
 	},
 
@@ -51,13 +79,42 @@ registerBlockType( 'woocommerce/product-search', {
 	 * Renders and manages the block.
 	 */
 	edit( props ) {
-		return <Block { ...props } isPreview />;
+		const { attributes, setAttributes } = props;
+		const { hasLabel } = attributes;
+		return (
+			<Fragment>
+				<InspectorControls key="inspector">
+					<PanelBody
+						title={ __( 'Content', 'woo-gutenberg-products-block' ) }
+						initialOpen
+					>
+
+						<ToggleControl
+							label={ __( 'Show search field label', 'woo-gutenberg-products-block' ) }
+							help={
+								hasLabel ?
+									__( 'Label is visible.', 'woo-gutenberg-products-block' ) :
+									__( 'Label is hidden.', 'woo-gutenberg-products-block' )
+							}
+							checked={ hasLabel }
+							onChange={ () => setAttributes( { hasLabel: ! hasLabel } ) }
+						/>
+					</PanelBody>
+				</InspectorControls>
+				<Block { ...props } isPreview />
+			</Fragment>
+		);
 	},
 
 	/**
-	 * Block content is rendered in PHP, not via save function.
+	 * Save the props to post content.
 	 */
-	save( props ) {
-		return <Block { ...props } />;
+	save( attributes ) {
+		const { hasLabel } = attributes;
+		const data = {};
+		if ( hasLabel ) {
+			data[ 'data-has-label' ] = true;
+		}
+		return <Block { ...attributes } { ...data } />;
 	},
 } );

@@ -20,27 +20,64 @@ import './style.scss';
  */
 class ProductSearchBlock extends Component {
 	render() {
-		const { attributes, instanceId, isPreview = false, setAttributes } = this.props;
-		const { label, placeholder } = attributes;
-		const { className } = attributes;
+		if ( this.props.isPreview ) {
+			return this.renderEdit();
+		}
+
+		return this.renderView();
+	}
+
+	renderView() {
+		const { attributes: { label, placeholder, formId, className, hasLabel } } = this.props;
+		const home = wc_product_block_data.homeUrl;
 		const classes = classnames(
 			'wc-block-product-search',
 			className,
 		);
 
-		const formId = `wc-block-product-search-${ instanceId }`;
-		const formAction = '';
+		return (
+			<form className={ classes } role="search" method="get" action={ home } data-form-id={ formId }>
+				<label
+					htmlFor={ formId }
+					className={ hasLabel ? 'wc-block-product-search__label' : 'wc-block-product-search__label screen-reader-text' }
+				>
+					{ label }
+				</label>
+				<div className="wc-block-product-search__fields">
+					<input
+						type="search"
+						id={ formId }
+						className="wc-block-product-search__field"
+						placeholder={ placeholder }
+						name="s"
+					/>
+					<input type="hidden" name="post_type" value="product" />
+					<IconButton
+						icon="arrow-right-alt2"
+						className="wc-block-product-search__button"
+						label={ __( 'Search', 'woo-gutenberg-products-block' ) }
+						type="submit"
+					/>
+				</div>
+			</form>
+		);
+	}
+
+	renderEdit() {
+		const { attributes, setAttributes, instanceId } = this.props;
+		const { label, placeholder, formId, className, hasLabel } = attributes;
+		const classes = classnames(
+			'wc-block-product-search',
+			className,
+		);
+
+		if ( ! formId ) {
+			setAttributes( { formId: `wc-block-product-search-${ instanceId }` } );
+		}
 
 		return (
-			<form role="search" method="get" className={ classes } action={ formAction }>
-				{ ! isPreview ? (
-					<label
-						htmlFor={ formId }
-						className="wc-block-product-search__label"
-					>
-						{ label }
-					</label>
-				) : (
+			<form className={ classes }>
+				{ hasLabel && (
 					<RichText
 						tagName="label"
 						className="wc-block-product-search__label"
@@ -50,24 +87,14 @@ class ProductSearchBlock extends Component {
 					/>
 				) }
 				<div className="wc-block-product-search__fields">
-					{ ! isPreview ? (
-						<input
-							type="search"
-							id={ formId }
-							className="wc-block-product-search__field"
-							placeholder={ placeholder }
-							name="s"
-						/>
-					) : (
-						<RichText
-							tagName="div"
-							className="wc-block-product-search__field input-control"
-							value={ placeholder }
-							onChange={ ( value ) => setAttributes( { placeholder: value } ) }
-							multiline={ false }
-							formattingControls={ [] }
-						/>
-					) }
+					<RichText
+						tagName="div"
+						className="wc-block-product-search__field input-control"
+						value={ placeholder }
+						onChange={ ( value ) => setAttributes( { placeholder: value } ) }
+						multiline={ false }
+						formattingControls={ [] }
+					/>
 					<IconButton
 						icon="arrow-right-alt2"
 						className="wc-block-product-search__button"
@@ -95,7 +122,7 @@ ProductSearchBlock.propTypes = {
 	/**
 	 * A callback to update attributes.
 	 */
-	setAttributes: PropTypes.func.isRequired,
+	setAttributes: PropTypes.func,
 };
 
 export default compose( [
