@@ -7,7 +7,7 @@
 
 	&.is-searching,
 	&.is-skip-level {
-		.woocommerce-search-list__item-prefix:after {
+		.woocommerce-search-list__item-prefix::after {
 			content: ":";
 		}
 	}
