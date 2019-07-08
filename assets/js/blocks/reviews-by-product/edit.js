@@ -16,8 +16,8 @@ import {
 	ToggleControl,
 	Toolbar,
 	withSpokenMessages,
-	SearchListItem,
 } from '@wordpress/components';
+import { SearchListItem } from '@woocommerce/components';
 import { Component, Fragment } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 import { debounce } from 'lodash';
@@ -88,7 +88,7 @@ class ReviewsByProductEditor extends Component {
 							const id = value[ 0 ] ? value[ 0 ].id : 0;
 							setAttributes( { productId: id } );
 						} }
-						// renderItem={ this.renderProductControlItem }
+						renderItem={ this.renderProductControlItem }
 					/>
 				</PanelBody>
 				<PanelBody title={ __( 'Content', 'woo-gutenberg-products-block' ) }>
@@ -218,7 +218,7 @@ class ReviewsByProductEditor extends Component {
 							orderby: 'comment_count',
 							order: 'desc',
 						} }
-						// renderItem={ this.renderProductControlItem }
+						renderItem={ this.renderProductControlItem }
 					/>
 					<Button isDefault onClick={ onDone }>
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }
