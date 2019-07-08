@@ -142,7 +142,7 @@ class ProductControl extends Component {
 			}
 		);
 
-		const itemArgs = Object.assign({}, args );
+		const itemArgs = Object.assign( {}, args );
 		delete itemArgs.isSingle;
 
 		const a11yProps = {
