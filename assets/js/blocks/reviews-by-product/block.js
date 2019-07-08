@@ -4,6 +4,7 @@
 import apiFetch from '@wordpress/api-fetch';
 import classNames from 'classnames';
 import { Component } from '@wordpress/element';
+import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
 import { stringifyQuery } from '@woocommerce/navigation';
 
@@ -22,6 +23,10 @@ class ReviewsByProduct extends Component {
 			reviews: [],
 		};
 
+		this.debouncedGetReviews = debounce( this.getReviews.bind( this ), 200 );
+	}
+
+	componentDidMount() {
 		this.getReviews();
 	}
 
