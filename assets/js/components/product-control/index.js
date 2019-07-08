@@ -12,6 +12,7 @@ import {
 	SearchListItem,
 } from '@woocommerce/components';
 import { Spinner, MenuItem } from '@wordpress/components';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -130,22 +131,16 @@ class ProductControl extends Component {
 	renderItem( args ) {
 		const { item, search, depth = 0, isSelected, onSelect } = args;
 		const { product, variationsLoading } = this.state;
-		const classes = [
+		const classes = classnames(
 			'woocommerce-search-product__item',
 			'woocommerce-search-list__item',
-		];
-		classes.push( `depth-${ depth }` );
-		classes.push( 'is-radio-button' );
-
-		if ( search.length ) {
-			classes.push( 'is-searching' );
-		}
-		if ( depth === 0 && item.parent !== 0 ) {
-			classes.push( 'is-skip-level' );
-		}
-		if ( item.count ) {
-			classes.push( 'is-variable' );
-		}
+			`depth-${ depth }`,
+			{
+				'is-searching': search.length > 0,
+				'is-skip-level': depth === 0 && item.parent !== 0,
+				'is-variable': item.count > 0,
+			}
+		);
 
 		const a11yProps = {
 			role: 'menuitemradio',
@@ -167,7 +162,7 @@ class ProductControl extends Component {
 					isSelected={ isSelected }
 					{ ...args }
 					{ ...a11yProps }
-					className={ classes.join( ' ' ) }
+					className={ classes }
 					onClick={ () => {
 						onSelect( item )();
 						this.onProductSelect( item, isSelected )();
@@ -222,7 +217,7 @@ class ProductControl extends Component {
 
 		return (
 			<SearchListItem
-				className={ classes.join( ' ' ) }
+				className={ classes }
 				{ ...args }
 				{ ...a11yProps }
 			/>
