@@ -142,6 +142,9 @@ class ProductControl extends Component {
 			}
 		);
 
+		const itemArgs = Object.assign({}, args );
+		delete itemArgs.isSingle;
+
 		const a11yProps = {
 			role: 'menuitemradio',
 		};
@@ -160,7 +163,7 @@ class ProductControl extends Component {
 				<MenuItem
 					key={ `product-${ item.id }` }
 					isSelected={ isSelected }
-					{ ...args }
+					{ ...itemArgs }
 					{ ...a11yProps }
 					className={ classes }
 					onClick={ () => {
