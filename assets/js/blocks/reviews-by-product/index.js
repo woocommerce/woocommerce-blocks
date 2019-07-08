@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import classNames from 'classnames';
 import { registerBlockType } from '@wordpress/blocks';
 
 /**
@@ -9,9 +10,9 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 import './style.scss';
 import './editor.scss';
-import Block from './block';
+import Editor from './edit';
 import ReviewsByProductIcon from '../../components/icons/reviews-by-product';
-import { renderReviewsByProductPlaceholder } from './utils';
+import { renderReview } from './utils';
 
 /**
  * Register and run the "Reviews by Product" block.
@@ -45,18 +46,18 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 		},
 
 		/**
+		 * Number of reviews to display per page.
+		 */
+		perPage: {
+			type: 'number',
+			default: 10,
+		},
+
+		/**
 		 * The product ID to display.
 		 */
 		productId: {
 			type: 'number',
-		},
-
-		/**
-		 * Number of reviews to display.
-		 */
-		reviewsShown: {
-			type: 'number',
-			default: 10,
 		},
 
 		/**
@@ -96,13 +97,28 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 	 * Renders and manages the block.
 	 */
 	edit( props ) {
-		return <Block { ...props } />;
+		return <Editor { ...props } />;
 	},
 
 	/**
 	 * Save the props to post content.
 	 */
 	save( { attributes } ) {
-		return renderReviewsByProductPlaceholder( attributes );
+		const { className, orderby, perPage, productId, showProductRating, showReviewerName, showReviewerPicture, showReviewDate } = attributes;
+
+		const classes = classNames( 'wc-block-reviews-by-product', className, {
+			'has-picture': showReviewerPicture,
+			'has-name': showReviewerName,
+			'has-rating': showProductRating,
+			'has-date': showReviewDate,
+		} );
+
+		return (
+			<div data-product-id={ productId } data-order-by={ orderby } data-per-page={ perPage } className={ classes }>
+				<ul className="wc-block-reviews-by-product__list">
+					{ renderReview( attributes ) }
+				</ul>
+			</div>
+		);
 	},
 } );

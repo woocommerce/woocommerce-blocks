@@ -36,7 +36,7 @@ class Assets {
 		self::register_script( 'wc-blocks', plugins_url( 'build/blocks.js', __DIR__ ), array(), false );
 		self::register_script( 'wc-vendors', plugins_url( 'build/vendors.js', __DIR__ ), array(), false );
 		self::register_script( 'wc-packages', plugins_url( 'build/packages.js', __DIR__ ), array(), false );
-		self::register_script( 'wc-frontend', plugins_url( 'build/frontend.js', __DIR__ ), array( 'wc-vendors' ) );
+		self::register_script( 'wc-frontend', plugins_url( 'build/frontend.js', __DIR__ ), array( 'wc-vendors', 'wc-packages' ) );
 
 		// Individual blocks.
 		self::register_script( 'wc-handpicked-products', plugins_url( 'build/handpicked-products.js', __DIR__ ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
