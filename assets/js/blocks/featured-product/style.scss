@@ -71,7 +71,7 @@
 	.wc-block-featured-product__title {
 		margin-top: 0;
 
-		&:before {
+		&::before {
 			display: none;
 		}
 	}
