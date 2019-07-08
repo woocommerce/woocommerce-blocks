@@ -27,7 +27,10 @@ const GutenbergBlocksConfig = {
 	entry: {
 		// Shared blocks code
 		blocks: './assets/js/index.js',
-		frontend: [ './assets/js/blocks/product-categories/frontend.js' ],
+		frontend: [
+			'./assets/js/blocks/product-categories/frontend.js',
+			'./assets/js/blocks/reviews-by-product/frontend.js',
+		],
 		// Blocks
 		'handpicked-products': './assets/js/blocks/handpicked-products/index.js',
 		'product-best-sellers': './assets/js/blocks/product-best-sellers/index.js',
