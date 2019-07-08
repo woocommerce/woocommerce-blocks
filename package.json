@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.4.5",
+    "@woocommerce/navigation": "^2.1.1",
     "@wordpress/babel-preset-default": "4.3.0",
     "@wordpress/blocks": "6.4.0",
     "@wordpress/components": "8.0.0",

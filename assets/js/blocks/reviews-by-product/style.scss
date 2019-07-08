@@ -1,5 +1,5 @@
 .wc-block-reviews-by-product {
-	&.is-loading {
+	.is-loading {
 		.wc-block-reviews-by-product__text {
 			@include placeholder();
 			display: block;
@@ -7,7 +7,7 @@
 		}
 
 		.wc-block-reviews-by-product__info {
-			> .avatar {
+			.wc-block-reviews-by-product__avatar {
 				@include placeholder();
 			}
 
@@ -19,7 +19,7 @@
 				}
 
 				.wc-block-reviews-by-product__rating {
-					.star-rating > span {
+					.wc-block-reviews-by-product__rating__stars > span {
 						display: none;
 					}
 				}
@@ -48,9 +48,11 @@
 		grid-template-rows: 1fr 0.65fr;
 		margin-top: $gap-small;
 
-		> .avatar {
+		.wc-block-reviews-by-product__avatar {
+			height: 48px;
 			grid-column: 1;
 			grid-row: 1 / 3;
+			width: 48px;
 		}
 
 		.wc-block-reviews-by-product__meta {
@@ -59,20 +61,17 @@
 			grid-column: 1;
 			grid-row: 1;
 
-			.wc-block-reviews-by-product__author {
-				font-size: 1.4em;
-			}
-
 			.wc-block-reviews-by-product__author + .wc-block-reviews-by-product__rating {
 				margin-left: $gap-smaller;
 			}
 
 			.wc-block-reviews-by-product__rating {
 				display: inline;
+				height: 1em;
 
-				> .star-rating {
+				> .wc-block-reviews-by-product__rating__stars {
 					display: inline-block;
-					top: 3px;
+					top: -5px;
 					overflow: hidden;
 					position: relative;
 					height: 1.618em;
@@ -83,7 +82,7 @@
 					font-weight: 400;
 				}
 
-				> .star-rating::before {
+				> .wc-block-reviews-by-product__rating__stars::before {
 					content: '\53\53\53\53\53';
 					opacity: .25;
 					float: left;
@@ -92,7 +91,7 @@
 					position: absolute;
 				}
 
-				> .star-rating span {
+				> .wc-block-reviews-by-product__rating__stars span {
 					overflow: hidden;
 					float: left;
 					top: 0;
@@ -101,7 +100,7 @@
 					padding-top: 1.5em;
 				}
 
-				> .star-rating span::before {
+				> .wc-block-reviews-by-product__rating__stars span::before {
 					content: '\53\53\53\53\53';
 					top: 0;
 					position: absolute;
@@ -114,7 +113,7 @@
 		.wc-block-reviews-by-product__published-date {
 			align-self: center;
 			color: #808080;
-			font-size: 0.9em;
+			font-size: 0.875em;
 			grid-column: 1;
 			grid-row: 1;
 		}
@@ -122,7 +121,7 @@
 
 	&.has-picture {
 		.wc-block-reviews-by-product__info {
-			grid-template-columns: #{60px + $gap-small} 1fr;
+			grid-template-columns: #{48px + $gap-small} 1fr;
 		}
 
 		.wc-block-reviews-by-product__meta,
