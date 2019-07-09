@@ -42,6 +42,7 @@ class ProductTagControl extends Component {
 
 	onSearch( search ) {
 		const { selected } = this.props;
+		this.setState( { loading: true } );
 
 		getProductTags( { selected, search } )
 			.then( ( list ) => {
