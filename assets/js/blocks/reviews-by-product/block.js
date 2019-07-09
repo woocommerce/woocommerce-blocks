@@ -52,7 +52,7 @@ class ReviewsByProduct extends Component {
 		const payload = stringifyQuery( { order_by: orderby, per_page: perPage, product: productId } );
 
 		apiFetch( {
-			path: `/wc/v3/products/reviews${ payload }`,
+			path: `/wc/blocks/products/reviews${ payload }`,
 		} )
 			.then( ( reviews ) => {
 				this.setState( { reviews } );
