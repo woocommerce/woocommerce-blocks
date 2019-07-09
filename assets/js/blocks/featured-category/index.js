@@ -11,20 +11,21 @@ import { registerBlockType } from '@wordpress/blocks';
 import './style.scss';
 import './editor.scss';
 import Block from './block';
+import { IconFolderStar } from '../../components/icons';
 
 /**
- * Register and run the "Featured Product" block.
+ * Register and run the "Featured Category" block.
  */
-registerBlockType( 'woocommerce/featured-product', {
-	title: __( 'Featured Product', 'woo-gutenberg-products-block' ),
+registerBlockType( 'woocommerce/featured-category', {
+	title: __( 'Featured Category', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: 'star-filled',
+		src: <IconFolderStar />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
-		'Visually highlight a product or variation and encourage prompt action.',
+		'Visually highlight a product category and encourage prompt action.',
 		'woo-gutenberg-products-block'
 	),
 	supports: {
@@ -101,7 +102,7 @@ registerBlockType( 'woocommerce/featured-product', {
 		},
 
 		/**
-		 * Text for the product link.
+		 * Text for the category link.
 		 */
 		linkText: {
 			type: 'string',
@@ -109,24 +110,16 @@ registerBlockType( 'woocommerce/featured-product', {
 		},
 
 		/**
-		 * The product ID to display.
+		 * The category ID to display.
 		 */
-		productId: {
+		categoryId: {
 			type: 'number',
 		},
 
 		/**
-		 * Show the product description.
+		 * Show the category description.
 		 */
 		showDesc: {
-			type: 'boolean',
-			default: true,
-		},
-
-		/**
-		 * Show the product price.
-		 */
-		showPrice: {
 			type: 'boolean',
 			default: true,
 		},

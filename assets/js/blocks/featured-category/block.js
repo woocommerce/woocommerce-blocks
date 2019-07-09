@@ -29,17 +29,14 @@ import {
 import classnames from 'classnames';
 import { Component, Fragment } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
-import { debounce, isObject, isEmpty } from 'lodash';
+import { debounce, isObject } from 'lodash';
 import PropTypes from 'prop-types';
+import { IconFolderStar } from '../../components/icons';
 
 /**
  * Internal dependencies
  */
-import ProductControl from '../../components/product-control';
-import {
-	getImageSrcFromProduct,
-	getImageIdFromProduct,
-} from '../../utils/products';
+import ProductCategoryControl from '../../components/product-category-control';
 
 /**
  * The min-height for the block content.
@@ -47,16 +44,38 @@ import {
 const MIN_HEIGHT = wc_product_block_data.min_height;
 
 /**
- * Generate a style object given either a product object or URL to an image.
+ * Get the src from a category object, unless null (no image).
  *
- * @param {object|string} url A product object as returned from the API, or an image URL.
+ * @param {object|null} category A product category object from the API.
+ * @return {string}
+ */
+function getCategoryImageSrc( category ) {
+	if ( isObject( category.image ) ) {
+		return category.image.src;
+	}
+	return '';
+}
+
+/**
+ * Get the attachment ID from a category object, unless null (no image).
+ *
+ * @param {object|null} category A product category object from the API.
+ * @return {int}
+ */
+function getCategoryImageID( category ) {
+	if ( isObject( category.image ) ) {
+		return category.image.id;
+	}
+	return 0;
+}
+
+/**
+ * Generate a style object given either a product category image from the API or URL to an image.
+ *
+ * @param {string} url An image URL.
  * @return {object} A style object with a backgroundImage set (if a valid image is provided).
  */
 function backgroundImageStyles( url ) {
-	// If `url` is an object, it's actually a product.
-	if ( isObject( url ) ) {
-		url = getImageSrcFromProduct( url );
-	}
 	if ( url ) {
 		return { backgroundImage: `url(${ url })` };
 	}
@@ -76,44 +95,44 @@ function dimRatioToClass( ratio ) {
 }
 
 /**
- * Component to handle edit mode of "Featured Product".
+ * Component to handle edit mode of "Featured Category".
  */
-class FeaturedProduct extends Component {
+class FeaturedCategory extends Component {
 	constructor() {
 		super( ...arguments );
 		this.state = {
-			product: false,
+			category: false,
 			loaded: false,
 		};
 
-		this.debouncedGetProduct = debounce( this.getProduct.bind( this ), 200 );
+		this.debouncedGetCategory = debounce( this.getCategory.bind( this ), 200 );
 	}
 
 	componentDidMount() {
-		this.getProduct();
+		this.getCategory();
 	}
 
 	componentDidUpdate( prevProps ) {
-		if ( prevProps.attributes.productId !== this.props.attributes.productId ) {
-			this.debouncedGetProduct();
+		if ( prevProps.attributes.categoryId !== this.props.attributes.categoryId ) {
+			this.debouncedGetCategory();
 		}
 	}
 
-	getProduct() {
-		const { productId } = this.props.attributes;
-		if ( ! productId ) {
+	getCategory() {
+		const { categoryId } = this.props.attributes;
+		if ( ! categoryId ) {
 			// We've removed the selected product, or no product is selected yet.
-			this.setState( { product: false, loaded: true } );
+			this.setState( { category: false, loaded: true } );
 			return;
 		}
 		apiFetch( {
-			path: `/wc/blocks/products/${ productId }`,
+			path: `/wc/blocks/products/categories/${ categoryId }`,
 		} )
-			.then( ( product ) => {
-				this.setState( { product, loaded: true } );
+			.then( ( category ) => {
+				this.setState( { category, loaded: true } );
 			} )
 			.catch( () => {
-				this.setState( { product: false, loaded: true } );
+				this.setState( { category: false, loaded: true } );
 			} );
 	}
 
@@ -126,7 +145,7 @@ class FeaturedProduct extends Component {
 		} = this.props;
 
 		const url =
-			attributes.mediaSrc || getImageSrcFromProduct( this.state.product );
+			attributes.mediaSrc || getCategoryImageSrc( this.state.category );
 		const { focalPoint = { x: 0.5, y: 0.5 } } = attributes;
 
 		return (
@@ -136,11 +155,6 @@ class FeaturedProduct extends Component {
 						label={ __( 'Show description', 'woo-gutenberg-products-block' ) }
 						checked={ attributes.showDesc }
 						onChange={ () => setAttributes( { showDesc: ! attributes.showDesc } ) }
-					/>
-					<ToggleControl
-						label={ __( 'Show price', 'woo-gutenberg-products-block' ) }
-						checked={ attributes.showPrice }
-						onChange={ () => setAttributes( { showPrice: ! attributes.showPrice } ) }
 					/>
 				</PanelBody>
 				<PanelColorSettings
@@ -188,21 +202,22 @@ class FeaturedProduct extends Component {
 
 		return (
 			<Placeholder
-				icon="star-filled"
-				label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
-				className="wc-block-featured-product"
+				icon={ <IconFolderStar /> }
+				label={ __( 'Featured Category', 'woo-gutenberg-products-block' ) }
+				className="wc-block-featured-category"
 			>
 				{ __(
-					'Visually highlight a product or variation and encourage prompt action',
+					'Visually highlight a product category and encourage prompt action',
 					'woo-gutenberg-products-block'
 				) }
-				<div className="wc-block-featured-product__selection">
-					<ProductControl
-						selected={ attributes.productId || 0 }
+				<div className="wc-block-featured-category__selection">
+					<ProductCategoryControl
+						selected={ [ attributes.categoryId ] }
 						onChange={ ( value = [] ) => {
 							const id = value[ 0 ] ? value[ 0 ].id : 0;
-							setAttributes( { productId: id, mediaId: 0, mediaSrc: '' } );
+							setAttributes( { categoryId: id, mediaId: 0, mediaSrc: '' } );
 						} }
+						multiple={ false }
 					/>
 					<Button isDefault onClick={ onDone }>
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }
@@ -222,25 +237,24 @@ class FeaturedProduct extends Component {
 			focalPoint,
 			height,
 			showDesc,
-			showPrice,
 		} = attributes;
-		const { loaded, product } = this.state;
+		const { loaded, category } = this.state;
 		const classes = classnames(
-			'wc-block-featured-product',
+			'wc-block-featured-category',
 			{
 				'is-selected': isSelected,
-				'is-loading': ! product && ! loaded,
-				'is-not-found': ! product && loaded,
+				'is-loading': ! category && ! loaded,
+				'is-not-found': ! category && loaded,
 				'has-background-dim': dimRatio !== 0,
 			},
 			dimRatioToClass( dimRatio ),
 			contentAlign !== 'center' && `has-${ contentAlign }-content`,
 			className,
 		);
-		const mediaId = attributes.mediaId || getImageIdFromProduct( product );
-
-		const style = !! product ?
-			backgroundImageStyles( attributes.mediaSrc || product ) :
+		const mediaId = attributes.mediaId || getCategoryImageID( category );
+		const mediaSrc = attributes.mediaSrc || getCategoryImageSrc( this.state.category );
+		const style = !! category ?
+			backgroundImageStyles( mediaSrc ) :
 			{};
 		if ( overlayColor.color ) {
 			style.backgroundColor = overlayColor.color;
@@ -277,7 +291,7 @@ class FeaturedProduct extends Component {
 										label={ __( 'Edit media' ) }
 										icon="format-image"
 										onClick={ open }
-										disabled={ ! this.state.product }
+										disabled={ ! this.state.category }
 									/>
 								) }
 							/>
@@ -289,7 +303,7 @@ class FeaturedProduct extends Component {
 					this.renderEditMode()
 				) : (
 					<Fragment>
-						{ !! product ? (
+						{ !! category ? (
 							<ResizableBox
 								className={ classes }
 								size={ { height } }
@@ -298,36 +312,22 @@ class FeaturedProduct extends Component {
 								onResizeStop={ onResizeStop }
 								style={ style }
 							>
-								<div className="wc-block-featured-product__wrapper">
+								<div className="wc-block-featured-category__wrapper">
 									<h2
-										className="wc-block-featured-product__title"
+										className="wc-block-featured-category__title"
 										dangerouslySetInnerHTML={ {
-											__html: product.name,
+											__html: category.name,
 										} }
 									/>
-									{ ! isEmpty( product.variation ) && (
-										<h3
-											className="wc-block-featured-product__variation"
-											dangerouslySetInnerHTML={ {
-												__html: product.variation,
-											} }
-										/>
-									) }
 									{ showDesc && (
 										<div
-											className="wc-block-featured-product__description"
+											className="wc-block-featured-category__description"
 											dangerouslySetInnerHTML={ {
-												__html: product.description,
+												__html: category.description,
 											} }
 										/>
 									) }
-									{ showPrice && (
-										<div
-											className="wc-block-featured-product__price"
-											dangerouslySetInnerHTML={ { __html: product.price_html } }
-										/>
-									) }
-									<div className="wc-block-featured-product__link">
+									<div className="wc-block-featured-category__link">
 										<InnerBlocks
 											template={ [
 												[
@@ -337,7 +337,7 @@ class FeaturedProduct extends Component {
 															'Shop now',
 															'woo-gutenberg-products-block'
 														),
-														url: product.permalink,
+														url: category.permalink,
 														align: 'center',
 													},
 												],
@@ -349,14 +349,14 @@ class FeaturedProduct extends Component {
 							</ResizableBox>
 						) : (
 							<Placeholder
-								className="wc-block-featured-product"
-								icon="star-filled"
-								label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
+								className="wc-block-featured-category"
+								icon={ <IconFolderStar /> }
+								label={ __( 'Featured Category', 'woo-gutenberg-products-block' ) }
 							>
 								{ ! loaded ? (
 									<Spinner />
 								) : (
-									__( 'No product is selected.', 'woo-gutenberg-products-block' )
+									__( 'No product category is selected.', 'woo-gutenberg-products-block' )
 								) }
 							</Placeholder>
 						) }
@@ -367,7 +367,7 @@ class FeaturedProduct extends Component {
 	}
 }
 
-FeaturedProduct.propTypes = {
+FeaturedCategory.propTypes = {
 	/**
 	 * The attributes for this block.
 	 */
@@ -394,4 +394,4 @@ FeaturedProduct.propTypes = {
 export default compose( [
 	withColors( { overlayColor: 'background-color' } ),
 	withSpokenMessages,
-] )( FeaturedProduct );
+] )( FeaturedCategory );

@@ -42,6 +42,7 @@ const GutenbergBlocksConfig = {
 		'products-by-attribute': './assets/js/blocks/products-by-attribute/index.js',
 		'featured-product': './assets/js/blocks/featured-product/index.js',
 		'reviews-by-product': './assets/js/blocks/reviews-by-product/index.js',
+		'featured-category': './assets/js/blocks/featured-category/index.js',
 	},
 	output: {
 		path: path.resolve( __dirname, './build/' ),
