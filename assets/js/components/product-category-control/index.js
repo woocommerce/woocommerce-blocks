@@ -74,7 +74,7 @@ class ProductCategoryControl extends Component {
 
 	render() {
 		const { list, loading } = this.state;
-		const { onChange, onOperatorChange, operator, selected, multiple } = this.props;
+		const { onChange, onOperatorChange, operator, selected, isSingle } = this.props;
 
 		const messages = {
 			clear: __( 'Clear all product categories', 'woo-gutenberg-products-block' ),
@@ -114,7 +114,7 @@ class ProductCategoryControl extends Component {
 					renderItem={ this.renderItem }
 					messages={ messages }
 					isHierarchical
-					isSingle={ ! multiple }
+					isSingle={ isSingle }
 				/>
 				{ ( !! onOperatorChange ) && (
 					<div className={ selected.length < 2 ? 'screen-reader-text' : '' }>
@@ -160,14 +160,14 @@ ProductCategoryControl.propTypes = {
 	 */
 	selected: PropTypes.array.isRequired,
 	/**
-	 * Allow multiple selection. Defaults to true.
+	 * Allow only a single selection. Defaults to false.
 	 */
-	multiple: PropTypes.bool,
+	isSingle: PropTypes.bool,
 };
 
 ProductCategoryControl.defaultProps = {
 	operator: 'any',
-	multiple: true,
+	isSingle: false,
 };
 
 export default ProductCategoryControl;
