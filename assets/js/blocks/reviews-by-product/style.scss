@@ -78,13 +78,13 @@
 					line-height: 1.618;
 					font-size: 1em;
 					width: 5.3em;
-					font-family: star;
+					font-family: star; /* stylelint-disable-line */
 					font-weight: 400;
 				}
 
 				> .wc-block-reviews-by-product__rating__stars::before {
-					content: '\53\53\53\53\53';
-					opacity: .25;
+					content: "\53\53\53\53\53";
+					opacity: 0.25;
 					float: left;
 					top: 0;
 					left: 0;
@@ -101,7 +101,7 @@
 				}
 
 				> .wc-block-reviews-by-product__rating__stars span::before {
-					content: '\53\53\53\53\53';
+					content: "\53\53\53\53\53";
 					top: 0;
 					position: absolute;
 					left: 0;
