@@ -19,10 +19,10 @@ if ( containers.length ) {
 			orderby: el.dataset.orderby,
 			perPage: el.dataset.perPage,
 			productId: el.dataset.productId,
-			showReviewerPicture: el.classList.contains( 'has-picture' ),
-			showReviewerName: el.classList.contains( 'has-name' ),
+			showAvatar: el.classList.contains( 'has-avatar' ),
 			showProductRating: el.classList.contains( 'has-rating' ),
 			showReviewDate: el.classList.contains( 'has-date' ),
+			showReviewerName: el.classList.contains( 'has-name' ),
 		};
 
 		render( <Block attributes={ attributes } />, el );

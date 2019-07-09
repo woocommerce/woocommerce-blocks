@@ -14,7 +14,7 @@ import classNames from 'classnames';
  * @return {Object} React JSx nodes of the block
  */
 export function renderReview( attributes, review = {} ) {
-	const { showProductRating, showReviewerName, showReviewerPicture, showReviewDate } = attributes;
+	const { showAvatar, showProductRating, showReviewDate, showReviewerName } = attributes;
 	const { id = null, date_created: dateCreated, rating, review: text = '', reviewer = '', reviewer_avatar_urls: avatarUrls = {} } = review;
 	const isLoading = ! Object.keys( review ).length > 0;
 
@@ -36,9 +36,9 @@ export function renderReview( attributes, review = {} ) {
 					__html: text || '',
 				} }
 			/>
-			{ ( showReviewerPicture || showReviewerName || showProductRating || showReviewDate ) && (
+			{ ( showAvatar || showReviewerName || showProductRating || showReviewDate ) && (
 				<div className="wc-block-reviews-by-product__info">
-					{ showReviewerPicture && (
+					{ showAvatar && (
 						isLoading ? (
 							<div className="wc-block-reviews-by-product__avatar" width="48" height="48" />
 						) : (

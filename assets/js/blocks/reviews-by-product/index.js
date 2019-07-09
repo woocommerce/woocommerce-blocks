@@ -61,6 +61,14 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 		},
 
 		/**
+		 * Show the reviewer avatar.
+		 */
+		showAvatar: {
+			type: 'boolean',
+			default: true,
+		},
+
+		/**
 		 * Show the product rating.
 		 */
 		showProductRating: {
@@ -69,25 +77,17 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 		},
 
 		/**
-		 * Show the reviewer name.
-		 */
-		showReviewerName: {
-			type: 'boolean',
-			default: true,
-		},
-
-		/**
-		 * Show the reviewer picture.
-		 */
-		showReviewerPicture: {
-			type: 'boolean',
-			default: true,
-		},
-
-		/**
 		 * Show the review date.
 		 */
 		showReviewDate: {
+			type: 'boolean',
+			default: true,
+		},
+
+		/**
+		 * Show the reviewer name.
+		 */
+		showReviewerName: {
 			type: 'boolean',
 			default: true,
 		},
@@ -104,13 +104,13 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 	 * Save the props to post content.
 	 */
 	save( { attributes } ) {
-		const { className, orderby, perPage, productId, showProductRating, showReviewerName, showReviewerPicture, showReviewDate } = attributes;
+		const { className, orderby, perPage, productId, showAvatar, showProductRating, showReviewDate, showReviewerName } = attributes;
 
 		const classes = classNames( 'wc-block-reviews-by-product', className, {
-			'has-picture': showReviewerPicture,
+			'has-avatar': showAvatar,
+			'has-date': showReviewDate,
 			'has-name': showReviewerName,
 			'has-rating': showProductRating,
-			'has-date': showReviewDate,
 		} );
 
 		return (

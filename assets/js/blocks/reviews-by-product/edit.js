@@ -113,14 +113,14 @@ class ReviewsByProductEditor extends Component {
 						onChange={ () => setAttributes( { showReviewerName: ! attributes.showReviewerName } ) }
 					/>
 					<ToggleControl
-						label={ __( 'Reviewer picture', 'woo-gutenberg-products-block' ) }
+						label={ __( 'Avatar', 'woo-gutenberg-products-block' ) }
 						help={
-							attributes.showReviewerPicture ?
-								__( 'Reviewer picture is visible.', 'woo-gutenberg-products-block' ) :
-								__( 'Reviewer picture is hidden.', 'woo-gutenberg-products-block' )
+							attributes.showAvatar ?
+								__( 'Avatar is visible.', 'woo-gutenberg-products-block' ) :
+								__( 'Avatar is hidden.', 'woo-gutenberg-products-block' )
 						}
-						checked={ attributes.showReviewerPicture }
-						onChange={ () => setAttributes( { showReviewerPicture: ! attributes.showReviewerPicture } ) }
+						checked={ attributes.showAvatar }
+						onChange={ () => setAttributes( { showAvatar: ! attributes.showAvatar } ) }
 					/>
 					<ToggleControl
 						label={ __( 'Review date', 'woo-gutenberg-products-block' ) }
