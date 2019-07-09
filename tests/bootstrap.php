@@ -25,7 +25,7 @@ tests_add_filter(
 		echo esc_html( 'Installing WooCommerce...' . PHP_EOL );
 		WC_Install::install();
 		$GLOBALS['wp_roles'] = null; // WPCS: override ok.
-			wp_roles();
+		wp_roles();
 	}
 );
 
