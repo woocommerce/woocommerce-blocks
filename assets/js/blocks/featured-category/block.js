@@ -95,7 +95,7 @@ function dimRatioToClass( ratio ) {
 }
 
 /**
- * Component to handle edit mode of "Featured Product Category".
+ * Component to handle edit mode of "Featured Category".
  */
 class FeaturedCategory extends Component {
 	constructor() {
@@ -203,7 +203,7 @@ class FeaturedCategory extends Component {
 		return (
 			<Placeholder
 				icon={ <IconFolderStar /> }
-				label={ __( 'Featured Product Category', 'woo-gutenberg-products-block' ) }
+				label={ __( 'Featured Category', 'woo-gutenberg-products-block' ) }
 				className="wc-block-featured-category"
 			>
 				{ __(
@@ -351,7 +351,7 @@ class FeaturedCategory extends Component {
 							<Placeholder
 								className="wc-block-featured-category"
 								icon={ <IconFolderStar /> }
-								label={ __( 'Featured Product Category', 'woo-gutenberg-products-block' ) }
+								label={ __( 'Featured Category', 'woo-gutenberg-products-block' ) }
 							>
 								{ ! loaded ? (
 									<Spinner />

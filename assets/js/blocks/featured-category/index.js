@@ -14,7 +14,7 @@ import Block from './block';
 import { IconFolderStar } from '../../components/icons';
 
 /**
- * Register and run the "Featured Product Category" block.
+ * Register and run the "Featured Category" block.
  */
 registerBlockType( 'woocommerce/featured-category', {
 	title: __( 'Featured Category', 'woo-gutenberg-products-block' ),
