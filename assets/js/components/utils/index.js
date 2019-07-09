@@ -48,7 +48,7 @@ export const getProducts = ( { selected = [], search } ) => {
 
 const getProductTagsRequests = ( { selected = [], search } ) => {
 	const requests = [
-		addQueryArgs( '/wc/v3/products/tags', {
+		addQueryArgs( '/wc/blocks/products/tags', {
 			per_page: limitTags ? 100 : -1,
 			orderby: limitTags ? 'count' : 'name',
 			order: limitTags ? 'desc' : 'asc',
@@ -59,7 +59,7 @@ const getProductTagsRequests = ( { selected = [], search } ) => {
 	// If we have a large catalog, we might not get all selected products in the first page.
 	if ( limitTags && selected.length ) {
 		requests.push(
-			addQueryArgs( '/wc/v3/products/tags', {
+			addQueryArgs( '/wc/blocks/products/tags', {
 				include: selected,
 			} )
 		);
