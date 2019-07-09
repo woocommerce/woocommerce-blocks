@@ -21,7 +21,7 @@ class ProductTag extends AbstractProductGrid {
 	protected $block_name = 'product-tag';
 
 	/**
-	 * This function is not necessary in this block.
+	 * Set args specific to this block.
 	 *
 	 * @param array $query_args Query args.
 	 */
