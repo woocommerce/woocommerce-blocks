@@ -2,11 +2,11 @@
  * External dependencies
  */
 import apiFetch from '@wordpress/api-fetch';
+import { addQueryArgs } from '@wordpress/url';
 import classNames from 'classnames';
 import { Component } from '@wordpress/element';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
-import { stringifyQuery } from '@woocommerce/navigation';
 
 /**
  * Internal dependencies
@@ -49,10 +49,12 @@ class ReviewsByProduct extends Component {
 			return;
 		}
 
-		const payload = stringifyQuery( { order_by: orderby, per_page: perPage, product: productId } );
-
 		apiFetch( {
-			path: `/wc/v3/products/reviews${ payload }`,
+			path: addQueryArgs( `/wc/v3/products/reviews`, {
+				order_by: orderby,
+				per_page: perPage,
+				product: productId,
+			} ),
 		} )
 			.then( ( reviews ) => {
 				this.setState( { reviews } );
