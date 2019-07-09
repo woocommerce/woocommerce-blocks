@@ -86,6 +86,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 = 2.3.0 - 2019-xx-xx =
 
 - Feature: Added a new Featured Category Block; feature a category and show a link to it's archive.
+- Feature: Added a new Products by Tag(s) block.
 - Feature: Allow individual variations to be selected in the Featured Product block.
 - Feature: Added a button alignment option to product grid blocks to align buttons horizontally across the row.
 - Feature: Added a cancel button to the product category block editor to discard unsaved changes.
