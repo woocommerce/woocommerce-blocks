@@ -192,7 +192,7 @@ class ProductsByTagBlock extends Component {
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }
 					</Button>
 					<Button
-						className="wc-block-product-tag-button"
+						className="wc-block-product-tag__cancel-button"
 						isTertiary
 						onClick={ onCancel }
 					>
