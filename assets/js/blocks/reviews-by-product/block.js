@@ -65,12 +65,12 @@ class ReviewsByProduct extends Component {
 	render() {
 		const { attributes } = this.props;
 		const { reviews } = this.state;
-		const { className, showProductRating, showReviewerName, showReviewerPicture, showReviewDate } = attributes;
+		const { className, showAvatar, showProductRating, showReviewDate, showReviewerName } = attributes;
 		const classes = classNames( 'wc-block-reviews-by-product', className, {
-			'has-picture': showReviewerPicture,
+			'has-avatar': showAvatar,
+			'has-date': showReviewDate,
 			'has-name': showReviewerName,
 			'has-rating': showProductRating,
-			'has-date': showReviewDate,
 		} );
 
 		return (
