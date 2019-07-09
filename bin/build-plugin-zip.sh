@@ -49,6 +49,7 @@ copy_dest_files() {
 		--exclude=package.json \
 		--exclude=package-lock.json \
 		--exclude=none \
+		--exclude=woocommerce-gutenberg-products-block.zip \
 		--exclude="zip-file/"
 	status "Done copying files!"
 	cd "$CURRENT_DIR" || exit
