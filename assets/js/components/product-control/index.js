@@ -81,6 +81,7 @@ class ProductControl extends Component {
 
 	getVariations() {
 		const { product, variationsList } = this.state;
+
 		if ( ! product ) {
 			this.setState( {
 				variationsList: {},
@@ -88,6 +89,13 @@ class ProductControl extends Component {
 			} );
 			return;
 		}
+
+		const productDetails = this.state.products.find( ( findProduct ) => findProduct.id === product );
+
+		if ( ! productDetails.variations || productDetails.variations.length === 0 ) {
+			return;
+		}
+
 		if ( ! variationsList[ product ] ) {
 			this.setState( { variationsLoading: true } );
 		}
