@@ -3,6 +3,9 @@
 # Exit if any command fails.
 set -e
 
+# Store paths
+SOURCE_PATH=$(pwd)
+
 # Change to the expected directory.
 cd "$(dirname "$0")"
 cd ..
@@ -24,6 +27,31 @@ success () {
 }
 warning () {
 	echo -e "\n${YELLOW_BOLD}$1${COLOR_RESET}\n"
+}
+
+copy_dest_files() {
+	CURRENT_DIR=$(pwd)
+	cd "$1" || exit
+	rsync ./ "$2"/ --recursive --delete --delete-excluded \
+		--exclude=".*/" \
+		--exclude="*.md" \
+		--exclude=".*" \
+		--exclude="composer.*" \
+		--exclude="*.lock" \
+		--exclude=bin/ \
+		--exclude=node_modules/ \
+		--exclude=tests/ \
+		--exclude=phpcs.xml \
+		--exclude=phpunit.xml.dist \
+		--exclude=renovate.json \
+		--exclude="*.config.js" \
+		--exclude="*-config.js" \
+		--exclude=package.json \
+		--exclude=package-lock.json \
+		--exclude=none \
+		--exclude="zip-file/"
+	status "Done copying files!"
+	cd "$CURRENT_DIR" || exit
 }
 
 status "💃 Time to release WooCommerce Blocks 🕺"
@@ -58,14 +86,11 @@ npm run build
 status "==========================="
 npm list webpack
 
-build_files=$(ls build/*.{js,css})
-
 # Generate the plugin zip file.
 status "Creating archive... 🎁"
 mkdir zip-file
 mkdir zip-file/build
-cp -r $build_files zip-file/build
-cp -r {languages/,src/,vendor/,readme.txt,woocommerce-gutenberg-products-block.php} zip-file
+copy_dest_files $SOURCE_PATH "$SOURCE_PATH/zip-file"
 cd zip-file
 zip -r ../woocommerce-gutenberg-products-block.zip ./
 cd ..
