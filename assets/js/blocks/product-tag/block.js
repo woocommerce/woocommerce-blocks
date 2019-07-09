@@ -212,10 +212,14 @@ class ProductsByTagBlock extends Component {
 				{ hasTags ? (
 					<ServerSideRender block={ name } attributes={ attributes } />
 				) : (
-					__(
-						'Select at least one tag to display its products.',
-						'woo-gutenberg-products-block'
-					)
+					<Placeholder
+						icon="tag"
+						label={ __( 'Products by Tag', 'woo-gutenberg-products-block' ) }
+						className="wc-block-products-grid wc-block-product-tag"
+					>
+						{ __( 'This block displays products from selected tags. Select at least one tag to display its products.', 'woo-gutenberg-products-block' ) }
+
+					</Placeholder>
 				) }
 			</Disabled>
 		);
