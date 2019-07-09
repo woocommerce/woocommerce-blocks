@@ -112,6 +112,7 @@ class Assets {
 	 * @since 2.0.0
 	 */
 	public static function print_script_block_data() {
+		$tag_count          = wp_count_terms( 'product_tag' );
 		$product_counts     = wp_count_posts( 'product' );
 		$product_categories = get_terms(
 			'product_cat',
@@ -137,7 +138,8 @@ class Assets {
 			'min_height'        => wc_get_theme_support( 'featured_block::min_height', 500 ),
 			'default_height'    => wc_get_theme_support( 'featured_block::default_height', 500 ),
 			'isLargeCatalog'    => $product_counts->publish > 200,
-			'limitTags'         => wp_count_terms( 'product_tag' ) > 100,
+			'limitTags'         => $tag_count > 100,
+			'hasTags'           => $tag_count > 0,
 			'productCategories' => $product_categories,
 			'homeUrl'           => esc_js( home_url( '/' ) ),
 		);

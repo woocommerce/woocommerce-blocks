@@ -25,6 +25,7 @@ import GridContentControl from '../../components/grid-content-control';
 import GridLayoutControl from '../../components/grid-layout-control';
 import ProductTagControl from '../../components/product-tag-control';
 import ProductOrderbyControl from '../../components/product-orderby-control';
+import { hasTags } from '../../components/utils';
 
 /**
  * Component to handle edit mode of "Products by Tag".
@@ -205,11 +206,11 @@ class ProductsByTagBlock extends Component {
 
 	renderViewMode() {
 		const { attributes, name } = this.props;
-		const hasTags = attributes.tags.length;
+		const selectedTags = attributes.tags.length;
 
 		return (
 			<Disabled>
-				{ hasTags ? (
+				{ selectedTags ? (
 					<ServerSideRender block={ name } attributes={ attributes } />
 				) : (
 					<Placeholder
@@ -230,23 +231,36 @@ class ProductsByTagBlock extends Component {
 
 		return (
 			<Fragment>
-				<BlockControls>
-					<Toolbar
-						controls={ [
-							{
-								icon: 'edit',
-								title: __( 'Edit' ),
-								onClick: () => isEditing ? this.stopEditing() : this.startEditing(),
-								isActive: isEditing,
-							},
-						] }
-					/>
-				</BlockControls>
-				{ this.getInspectorControls() }
-				{ isEditing ? (
-					this.renderEditMode()
+				{ hasTags ? (
+					<Fragment>
+						<BlockControls>
+							<Toolbar
+								controls={ [
+									{
+										icon: 'edit',
+										title: __( 'Edit' ),
+										onClick: () => isEditing ? this.stopEditing() : this.startEditing(),
+										isActive: isEditing,
+									},
+								] }
+							/>
+						</BlockControls>
+						{ this.getInspectorControls() }
+						{ isEditing ? (
+							this.renderEditMode()
+						) : (
+							this.renderViewMode()
+						) }
+					</Fragment>
 				) : (
-					this.renderViewMode()
+					<Placeholder
+						icon="tag"
+						label={ __( 'Products by Tag', 'woo-gutenberg-products-block' ) }
+						className="wc-block-products-grid wc-block-product-tag"
+					>
+						{ __( "This block displays products from selected tags. In order to preview this you'll first need to create a product and assign it some tags.", 'woo-gutenberg-products-block' ) }
+
+					</Placeholder>
 				) }
 			</Fragment>
 		);
