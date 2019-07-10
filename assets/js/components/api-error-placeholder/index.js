@@ -41,10 +41,7 @@ class ApiErrorPlaceholder extends Component {
 				label={ __( 'Sorry, an error occurred', 'woo-gutenberg-products-block' ) }
 				className={ classNames( 'wc-block-api-error', className ) }
 			>
-				<div
-					className="wc-block-error__message"
-					dangerouslySetInnerHTML={ { __html: errorMessage } }
-				/>
+				<div className="wc-block-error__message">{ errorMessage }</div>
 				{ onRetry && (
 					<Fragment>
 						{ !! retrying ? (

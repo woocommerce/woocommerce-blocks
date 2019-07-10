@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { escapeHTML } from '@wordpress/escape-html';
 import apiFetch from '@wordpress/api-fetch';
 import {
 	AlignmentToolbar,
@@ -120,9 +121,15 @@ class FeaturedProduct extends Component {
 				};
 
 				if ( isObject( apiError ) ) {
-					error.message = __( 'The following error was returned from the API', 'woo-gutenberg-products-block' ) + ': <br/><code>' + apiError.message + '</code>';
+					error.message = (
+						<span dangerouslySetInnerHTML={
+							{
+								__html: escapeHTML( __( 'The following error was returned from the API', 'woo-gutenberg-products-block' ) ) + ': <br/><code>' + escapeHTML( apiError.message ) + '</code>',
+							}
+						} />
+					);
 				} else {
-					error.message = __( 'An unknown error occured which prevented the block from being updated.', 'woo-gutenberg-products-block' );
+					error.message = escapeHTML( __( 'An unknown error occured which prevented the block from being updated.', 'woo-gutenberg-products-block' ) );
 				}
 
 				this.setState( { error: false } ); // Force update if error stays same.
