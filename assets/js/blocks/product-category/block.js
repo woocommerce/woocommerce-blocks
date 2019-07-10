@@ -212,17 +212,37 @@ class ProductByCategoryBlock extends Component {
 		const { attributes, name } = this.props;
 		const hasCategories = attributes.categories.length;
 
-		return (
-			<Disabled>
-				{ hasCategories ? (
-					<ServerSideRender block={ name } attributes={ attributes } />
-				) : (
-					__(
+		if ( ! hasCategories ) {
+			return (
+				<Placeholder
+					icon="category"
+					label={ __( 'Products by Category', 'woo-gutenberg-products-block' ) }
+					className="wc-block-products-grid wc-block-products-category"
+				>
+					{ __(
 						'Select at least one category to display its products.',
 						'woo-gutenberg-products-block'
-					)
-				) }
+					) }
+				</Placeholder>
+			);
+		}
+
+		return (
+			<Disabled>
+				<ServerSideRender block={ name } attributes={ attributes } onEmptyResponse={ this.onEmptyResponse } />
 			</Disabled>
+		);
+	}
+
+	onEmptyResponse() {
+		return (
+			<Placeholder
+				icon="category"
+				label={ __( 'Products by Category', 'woo-gutenberg-products-block' ) }
+				className="wc-block-products-grid wc-block-products-category"
+			>
+				{ __( 'No products were found that matched your selection.', 'woo-gutenberg-products-block' ) }
+			</Placeholder>
 		);
 	}
 
