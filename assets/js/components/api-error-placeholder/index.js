@@ -66,7 +66,7 @@ ApiErrorPlaceholder.propTypes = {
 	/**
 	 * The error message to display from the API.
 	 */
-	errorMessage: PropTypes.string,
+	errorMessage: PropTypes.node,
 	/**
 	 * Classname to add to placeholder in addition to the defaults.
 	 */
