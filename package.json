@@ -2,7 +2,7 @@
   "name": "@woocommerce/block-library",
   "title": "WooCommerce Blocks",
   "author": "Automattic",
-  "version": "2.3.0-dev",
+  "version": "2.3.0-beta",
   "description": "WooCommerce blocks for the Gutenberg editor.",
   "homepage": "https://github.com/woocommerce/woocommerce-gutenberg-products-block/",
   "keywords": [
@@ -17,20 +17,24 @@
   "license": "GPL-3.0+",
   "scripts": {
     "deploy": "npm run build --loglevel error && sh ./bin/github-deploy.sh",
+    "release": "sh ./bin/wordpress-deploy.sh",
     "prepack": "npm install && npm run lint && npm run test && npm run build",
     "build": "cross-env BABEL_ENV=default NODE_ENV=production webpack",
     "start": "cross-env BABEL_ENV=default webpack --watch --info-verbosity none",
     "lint": "npm run lint:php && npm run lint:css && npm run lint:js",
     "lint:php": "composer run-script phpcs .",
-    "lint:css": "stylelint assets/css",
+    "lint:css": "stylelint 'assets/**/*.scss'",
+    "lint:css-fix": "stylelint 'assets/**/*.scss' --fix",
     "lint:js": "eslint assets/js --ext=js,jsx",
+    "lint:js-fix": "eslint assets/js --ext=js,jsx --fix",
+    "package-plugin": "./bin/build-plugin-zip.sh",
     "test": "wp-scripts test-unit-js --config tests/js/jest.config.json",
     "test:help": "wp-scripts test-unit-js --help",
     "test:update": "wp-scripts test-unit-js --updateSnapshot --config tests/js/jest.config.json",
     "test:watch": "npm run test -- --watch"
   },
   "devDependencies": {
-    "@babel/core": "7.4.5",
+    "@babel/core": "7.5.4",
     "@wordpress/babel-preset-default": "4.3.0",
     "@wordpress/blocks": "6.4.0",
     "@wordpress/components": "8.0.0",
@@ -42,7 +46,7 @@
     "@wordpress/jest-preset-default": "4.2.0",
     "@wordpress/rich-text": "3.4.0",
     "@wordpress/scripts": "3.3.0",
-    "autoprefixer": "9.6.0",
+    "autoprefixer": "9.6.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.0.2",
     "babel-loader": "8.0.6",
@@ -55,7 +59,7 @@
     "cssnano": "4.1.10",
     "eslint": "6.0.1",
     "eslint-config-wordpress": "2.0.0",
-    "eslint-plugin-jest": "22.7.1",
+    "eslint-plugin-jest": "22.7.2",
     "eslint-plugin-jsx-a11y": "6.2.3",
     "eslint-plugin-react": "7.14.2",
     "eslint-plugin-wordpress": "git://github.com/WordPress-Coding-Standards/eslint-plugin-wordpress.git#1774343f6226052a46b081e01db3fca8793cc9f1",
@@ -63,7 +67,7 @@
     "husky": "2.4.1",
     "interpolate-components": "1.1.1",
     "js-md5": "0.7.3",
-    "lint-staged": "9.0.2",
+    "lint-staged": "9.1.0",
     "mini-css-extract-plugin": "0.7.0",
     "node-sass": "4.12.0",
     "po2json": "1.0.0-alpha",
@@ -75,16 +79,16 @@
     "style-loader": "0.23.1",
     "stylelint": "10.1.0",
     "stylelint-config-wordpress": "14.0.0",
-    "webpack": "4.35.2",
+    "webpack": "4.35.3",
     "webpack-cli": "3.3.5",
     "yargs": "13.2.4"
   },
   "engines": {
     "node": "10.16.0",
-    "npm": "6.9.2"
+    "npm": "6.10.0"
   },
   "dependencies": {
-    "@woocommerce/components": "2.0.0",
+    "@woocommerce/components": "3.1.0",
     "gridicons": "3.3.1"
   },
   "husky": {
@@ -93,12 +97,16 @@
     }
   },
   "lint-staged": {
-    "linters": {
-      "*.php": [
-        "php -d display_errors=1 -l",
-        "composer run-script phpcs"
-      ]
-    }
+    "*.scss": [
+      "npm run lint:css"
+    ],
+    "*.js": [
+      "npm run lint:js"
+    ],
+    "*.php": [
+      "php -d display_errors=1 -l",
+      "composer run-script phpcs"
+    ]
   },
   "browserslist": [
     "last 1 version",

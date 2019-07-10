@@ -1,6 +1,6 @@
 <?php
 /**
- * Featured products block.
+ * Featured category block.
  *
  * @package WooCommerce\Blocks
  */
@@ -10,15 +10,15 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * FeaturedProduct class.
+ * FeaturedCategory class.
  */
-class FeaturedProduct extends AbstractDynamicBlock {
+class FeaturedCategory extends AbstractDynamicBlock {
 	/**
 	 * Block name.
 	 *
 	 * @var string
 	 */
-	protected $block_name = 'featured-product';
+	protected $block_name = 'featured-category';
 
 	/**
 	 * Default attribute values, should match what's set in JS `registerBlockType`.
@@ -34,20 +34,19 @@ class FeaturedProduct extends AbstractDynamicBlock {
 		'mediaId'      => 0,
 		'mediaSrc'     => '',
 		'showDesc'     => true,
-		'showPrice'    => true,
 	);
 
 	/**
-	 * Render the Featured Product block.
+	 * Render the Featured Category block.
 	 *
 	 * @param array  $attributes Block attributes. Default empty array.
 	 * @param string $content    Block content. Default empty string.
 	 * @return string Rendered block type output.
 	 */
 	public function render( $attributes = array(), $content = '' ) {
-		$id      = isset( $attributes['productId'] ) ? (int) $attributes['productId'] : 0;
-		$product = wc_get_product( $id );
-		if ( ! $product ) {
+		$id       = isset( $attributes['categoryId'] ) ? (int) $attributes['categoryId'] : 0;
+		$category = get_term( $id, 'product_cat' );
+		if ( ! $category ) {
 			return '';
 		}
 		$attributes = wp_parse_args( $attributes, $this->defaults );
@@ -56,37 +55,22 @@ class FeaturedProduct extends AbstractDynamicBlock {
 		}
 
 		$title = sprintf(
-			'<h2 class="wc-block-featured-product__title">%s</h2>',
-			wp_kses_post( $product->get_title() )
+			'<h2 class="wc-block-featured-category__title">%s</h2>',
+			wp_kses_post( $category->name )
 		);
-
-		if ( $product->is_type( 'variation' ) ) {
-			$title .= sprintf(
-				'<h3 class="wc-block-featured-product__variation">%s</h3>',
-				wc_get_formatted_variation( $product, true, true, false )
-			);
-		}
 
 		$desc_str = sprintf(
-			'<div class="wc-block-featured-product__description">%s</div>',
-			apply_filters( 'woocommerce_short_description', $product->get_short_description() ? $product->get_short_description() : wc_trim_string( $product->get_description(), 400 ) )
+			'<div class="wc-block-featured-category__description">%s</div>',
+			wc_format_content( $category->description )
 		);
 
-		$price_str = sprintf(
-			'<div class="wc-block-featured-product__price">%s</div>',
-			$product->get_price_html()
-		);
-
-		$output = sprintf( '<div class="%1$s" style="%2$s">', $this->get_classes( $attributes ), $this->get_styles( $attributes, $product ) );
+		$output = sprintf( '<div class="%1$s" style="%2$s">', $this->get_classes( $attributes ), $this->get_styles( $attributes, $category ) );
 
 		$output .= $title;
 		if ( $attributes['showDesc'] ) {
 			$output .= $desc_str;
 		}
-		if ( $attributes['showPrice'] ) {
-			$output .= $price_str;
-		}
-		$output .= '<div class="wc-block-featured-product__link">' . $content . '</div>';
+		$output .= '<div class="wc-block-featured-category__link">' . $content . '</div>';
 		$output .= '</div>';
 
 		return $output;
@@ -95,11 +79,11 @@ class FeaturedProduct extends AbstractDynamicBlock {
 	/**
 	 * Get the styles for the wrapper element (background image, color).
 	 *
-	 * @param array       $attributes Block attributes. Default empty array.
-	 * @param \WC_Product $product Product object.
+	 * @param array    $attributes Block attributes. Default empty array.
+	 * @param \WP_Term $category Term object.
 	 * @return string
 	 */
-	public function get_styles( $attributes, $product ) {
+	public function get_styles( $attributes, $category ) {
 		$style      = '';
 		$image_size = 'large';
 		if ( 'none' !== $attributes['align'] || $attributes['height'] > 800 ) {
@@ -109,7 +93,7 @@ class FeaturedProduct extends AbstractDynamicBlock {
 		if ( $attributes['mediaId'] ) {
 			$image = wp_get_attachment_image_url( $attributes['mediaId'], $image_size );
 		} else {
-			$image = $this->get_image( $product, $image_size );
+			$image = $this->get_image( $category, $image_size );
 		}
 
 		if ( ! empty( $image ) ) {
@@ -174,19 +158,16 @@ class FeaturedProduct extends AbstractDynamicBlock {
 	/**
 	 * Returns the main product image URL.
 	 *
-	 * @param \WC_Product $product Product object.
-	 * @param string      $size    Image size, defaults to 'full'.
+	 * @param \WP_Term $category Term object.
+	 * @param string   $size    Image size, defaults to 'full'.
 	 * @return string
 	 */
-	public function get_image( $product, $size = 'full' ) {
-		$image = '';
-		if ( $product->get_image_id() ) {
-			$image = wp_get_attachment_image_url( $product->get_image_id(), $size );
-		} elseif ( $product->get_parent_id() ) {
-			$parent_product = wc_get_product( $product->get_parent_id() );
-			if ( $parent_product ) {
-				$image = wp_get_attachment_image_url( $parent_product->get_image_id(), $size );
-			}
+	public function get_image( $category, $size = 'full' ) {
+		$image    = '';
+		$image_id = get_term_meta( $category->term_id, 'thumbnail_id', true );
+
+		if ( $image_id ) {
+			$image = wp_get_attachment_image_url( $image_id, $size );
 		}
 
 		return $image;

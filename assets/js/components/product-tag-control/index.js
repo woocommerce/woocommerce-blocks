@@ -2,10 +2,8 @@
  * External dependencies
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { addQueryArgs } from '@wordpress/url';
-import apiFetch from '@wordpress/api-fetch';
 import { Component, Fragment } from '@wordpress/element';
-import { find } from 'lodash';
+import { debounce, find } from 'lodash';
 import PropTypes from 'prop-types';
 import { SearchListControl, SearchListItem } from '@woocommerce/components';
 import { SelectControl } from '@wordpress/components';
@@ -14,8 +12,12 @@ import { SelectControl } from '@wordpress/components';
  * Internal dependencies
  */
 import './style.scss';
+import { limitTags, getProductTags } from '../utils';
 
-class ProductCategoryControl extends Component {
+/**
+ * Component to handle searching and selecting product tags.
+ */
+class ProductTagControl extends Component {
 	constructor() {
 		super( ...arguments );
 		this.state = {
@@ -23,12 +25,26 @@ class ProductCategoryControl extends Component {
 			loading: true,
 		};
 		this.renderItem = this.renderItem.bind( this );
+		this.debouncedOnSearch = debounce( this.onSearch.bind( this ), 400 );
 	}
 
 	componentDidMount() {
-		apiFetch( {
-			path: addQueryArgs( '/wc/blocks/products/categories', { per_page: -1 } ),
-		} )
+		const { selected } = this.props;
+
+		getProductTags( { selected } )
+			.then( ( list ) => {
+				this.setState( { list, loading: false } );
+			} )
+			.catch( () => {
+				this.setState( { list: [], loading: false } );
+			} );
+	}
+
+	onSearch( search ) {
+		const { selected } = this.props;
+		this.setState( { loading: true } );
+
+		getProductTags( { selected, search } )
 			.then( ( list ) => {
 				this.setState( { list, loading: false } );
 			} )
@@ -40,7 +56,7 @@ class ProductCategoryControl extends Component {
 	renderItem( args ) {
 		const { item, search, depth = 0 } = args;
 		const classes = [
-			'woocommerce-product-categories__item',
+			'woocommerce-product-tags__item',
 		];
 		if ( search.length ) {
 			classes.push( 'is-searching' );
@@ -60,13 +76,13 @@ class ProductCategoryControl extends Component {
 				showCount
 				aria-label={ sprintf(
 					_n(
-						'%s, has %d product',
-						'%s, has %d products',
+						'%d product tagged as %s',
+						'%d products tagged as %s',
 						item.count,
 						'woo-gutenberg-products-block'
 					),
+					item.count,
 					accessibleName,
-					item.count
 				) }
 			/>
 		);
@@ -74,31 +90,31 @@ class ProductCategoryControl extends Component {
 
 	render() {
 		const { list, loading } = this.state;
-		const { onChange, onOperatorChange, operator, selected, isSingle } = this.props;
+		const { onChange, onOperatorChange, operator, selected } = this.props;
 
 		const messages = {
-			clear: __( 'Clear all product categories', 'woo-gutenberg-products-block' ),
-			list: __( 'Product Categories', 'woo-gutenberg-products-block' ),
+			clear: __( 'Clear all product tags', 'woo-gutenberg-products-block' ),
+			list: __( 'Product Tags', 'woo-gutenberg-products-block' ),
 			noItems: __(
-				"Your store doesn't have any product categories.",
+				"Your store doesn't have any product tags.",
 				'woo-gutenberg-products-block'
 			),
 			search: __(
-				'Search for product categories',
+				'Search for product tags',
 				'woo-gutenberg-products-block'
 			),
 			selected: ( n ) =>
 				sprintf(
 					_n(
-						'%d category selected',
-						'%d categories selected',
+						'%d tag selected',
+						'%d tags selected',
 						n,
 						'woo-gutenberg-products-block'
 					),
 					n
 				),
 			updated: __(
-				'Category search results updated.',
+				'Tag search results updated.',
 				'woo-gutenberg-products-block'
 			),
 		};
@@ -106,31 +122,31 @@ class ProductCategoryControl extends Component {
 		return (
 			<Fragment>
 				<SearchListControl
-					className="woocommerce-product-categories"
+					className="woocommerce-product-tags"
 					list={ list }
 					isLoading={ loading }
 					selected={ selected.map( ( id ) => find( list, { id } ) ).filter( Boolean ) }
 					onChange={ onChange }
+					onSearch={ limitTags ? this.debouncedOnSearch : null }
 					renderItem={ this.renderItem }
 					messages={ messages }
 					isHierarchical
-					isSingle={ isSingle }
 				/>
 				{ ( !! onOperatorChange ) && (
 					<div className={ selected.length < 2 ? 'screen-reader-text' : '' }>
 						<SelectControl
-							className="woocommerce-product-categories__operator"
+							className="woocommerce-product-tags__operator"
 							label={ __( 'Display products matching', 'woo-gutenberg-products-block' ) }
-							help={ __( 'Pick at least two categories to use this setting.', 'woo-gutenberg-products-block' ) }
+							help={ __( 'Pick at least two tags to use this setting.', 'woo-gutenberg-products-block' ) }
 							value={ operator }
 							onChange={ onOperatorChange }
 							options={ [
 								{
-									label: __( 'Any selected categories', 'woo-gutenberg-products-block' ),
+									label: __( 'Any selected tags', 'woo-gutenberg-products-block' ),
 									value: 'any',
 								},
 								{
-									label: __( 'All selected categories', 'woo-gutenberg-products-block' ),
+									label: __( 'All selected tags', 'woo-gutenberg-products-block' ),
 									value: 'all',
 								},
 							] }
@@ -142,7 +158,7 @@ class ProductCategoryControl extends Component {
 	}
 }
 
-ProductCategoryControl.propTypes = {
+ProductTagControl.propTypes = {
 	/**
 	 * Callback to update the selected product categories.
 	 */
@@ -156,18 +172,13 @@ ProductCategoryControl.propTypes = {
 	 */
 	operator: PropTypes.oneOf( [ 'all', 'any' ] ),
 	/**
-	 * The list of currently selected category IDs.
+	 * The list of currently selected tags.
 	 */
 	selected: PropTypes.array.isRequired,
-	/**
-	 * Allow only a single selection. Defaults to false.
-	 */
-	isSingle: PropTypes.bool,
 };
 
-ProductCategoryControl.defaultProps = {
+ProductTagControl.defaultProps = {
 	operator: 'any',
-	isSingle: false,
 };
 
-export default ProductCategoryControl;
+export default ProductTagControl;

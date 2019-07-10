@@ -26,6 +26,7 @@ class Library {
 	 */
 	public static function register_blocks() {
 		$blocks = [
+			'FeaturedCategory',
 			'FeaturedProduct',
 			'HandpickedProducts',
 			'ProductBestSellers',
@@ -35,6 +36,7 @@ class Library {
 			'ProductOnSale',
 			'ProductsByAttribute',
 			'ProductTopRated',
+			'ProductTag',
 		];
 		foreach ( $blocks as $class ) {
 			$class    = __NAMESPACE__ . '\\BlockTypes\\' . $class;

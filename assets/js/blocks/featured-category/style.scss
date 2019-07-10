@@ -1,4 +1,4 @@
-.wc-block-featured-product {
+.wc-block-featured-category {
 	position: relative;
 	background-color: $black;
 	background-size: cover;
@@ -11,7 +11,7 @@
 	flex-wrap: wrap;
 	align-content: center;
 
-	.wc-block-featured-product__wrapper {
+	.wc-block-featured-category__wrapper {
 		overflow: hidden;
 		height: 100%;
 		display: flex;
@@ -24,10 +24,9 @@
 	&.has-left-content {
 		justify-content: flex-start;
 
-		.wc-block-featured-product__title,
-		.wc-block-featured-product__variation,
-		.wc-block-featured-product__description,
-		.wc-block-featured-product__price {
+		.wc-block-featured-category__title,
+		.wc-block-featured-category__description,
+		.wc-block-featured-category__price {
 			margin-left: 0;
 			text-align: left;
 		}
@@ -36,19 +35,17 @@
 	&.has-right-content {
 		justify-content: flex-end;
 
-		.wc-block-featured-product__title,
-		.wc-block-featured-product__variation,
-		.wc-block-featured-product__description,
-		.wc-block-featured-product__price {
+		.wc-block-featured-category__title,
+		.wc-block-featured-category__description,
+		.wc-block-featured-category__price {
 			margin-right: 0;
 			text-align: right;
 		}
 	}
 
-	.wc-block-featured-product__title,
-	.wc-block-featured-product__variation,
-	.wc-block-featured-product__description,
-	.wc-block-featured-product__price {
+	.wc-block-featured-category__title,
+	.wc-block-featured-category__description,
+	.wc-block-featured-category__price {
 		color: $white;
 		line-height: 1.25;
 		margin-bottom: 0;
@@ -62,35 +59,26 @@
 		}
 	}
 
-	.wc-block-featured-product__title,
-	.wc-block-featured-product__variation,
-	.wc-block-featured-product__description,
-	.wc-block-featured-product__price,
-	.wc-block-featured-product__link {
+	.wc-block-featured-category__title,
+	.wc-block-featured-category__description,
+	.wc-block-featured-category__price,
+	.wc-block-featured-category__link {
 		width: 100%;
-		padding: 16px 48px 0 48px;
+		padding: 0 48px 16px 48px;
 		z-index: 1;
 	}
 
-	.wc-block-featured-product__title,
-	.wc-block-featured-product__variation {
+	.wc-block-featured-category__title {
 		margin-top: 0;
-		border: 0;
 
 		&::before {
 			display: none;
 		}
 	}
 
-	.wc-block-featured-product__variation {
-		font-style: italic;
-		padding-top: 0;
-	}
-
-	.wc-block-featured-product__description {
+	.wc-block-featured-category__description {
 		p {
 			margin: 0;
-			line-height: 1.5em;
 		}
 	}
 
