@@ -207,28 +207,31 @@ class FeaturedProduct extends Component {
 		};
 
 		return (
-			<Placeholder
-				icon="star-filled"
-				label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
-				className="wc-block-featured-product"
-			>
-				{ __(
-					'Visually highlight a product or variation and encourage prompt action',
-					'woo-gutenberg-products-block'
-				) }
-				<div className="wc-block-featured-product__selection">
-					<ProductControl
-						selected={ attributes.productId || 0 }
-						onChange={ ( value = [] ) => {
-							const id = value[ 0 ] ? value[ 0 ].id : 0;
-							setAttributes( { productId: id, mediaId: 0, mediaSrc: '' } );
-						} }
-					/>
-					<Button isDefault onClick={ onDone }>
-						{ __( 'Done', 'woo-gutenberg-products-block' ) }
-					</Button>
-				</div>
-			</Placeholder>
+			<Fragment>
+				{ this.getBlockControls() }
+				<Placeholder
+					icon="star-filled"
+					label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
+					className="wc-block-featured-product"
+				>
+					{ __(
+						'Visually highlight a product or variation and encourage prompt action',
+						'woo-gutenberg-products-block'
+					) }
+					<div className="wc-block-featured-product__selection">
+						<ProductControl
+							selected={ attributes.productId || 0 }
+							onChange={ ( value = [] ) => {
+								const id = value[ 0 ] ? value[ 0 ].id : 0;
+								setAttributes( { productId: id, mediaId: 0, mediaSrc: '' } );
+							} }
+						/>
+						<Button isDefault onClick={ onDone }>
+							{ __( 'Done', 'woo-gutenberg-products-block' ) }
+						</Button>
+					</div>
+				</Placeholder>
+			</Fragment>
 		);
 	}
 
