@@ -232,6 +232,20 @@ class FeaturedProduct extends Component {
 		);
 	}
 
+	renderApiError() {
+		const { error } = this.state;
+		const onRetryCallback = () => {
+			error.retry();
+		};
+		return (
+			<ApiErrorPlaceholder
+				onRetry={ onRetryCallback }
+				errorMessage={ error.message }
+				className="wc-block-featured-product-error"
+			/>
+		);
+	}
+
 	getBlockControls() {
 		const { attributes, setAttributes } = this.props;
 		const { product } = this.state;
@@ -423,20 +437,6 @@ class FeaturedProduct extends Component {
 					this.renderNoProduct()
 				) }
 			</Fragment>
-		);
-	}
-
-	renderApiError() {
-		const { error } = this.state;
-		const onRetryCallback = () => {
-			error.retry();
-		};
-		return (
-			<ApiErrorPlaceholder
-				onRetry={ onRetryCallback }
-				errorMessage={ error.message }
-				className="wc-block-featured-product-error"
-			/>
 		);
 	}
 }
