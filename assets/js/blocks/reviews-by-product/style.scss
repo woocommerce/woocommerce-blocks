@@ -33,6 +33,15 @@
 		}
 	}
 
+	.wc-block-reviews-by-product__orderby {
+		margin-bottom: $gap-larger;
+		text-align: right;
+	}
+
+	.wc-block-reviews-by-product__orderby__label {
+		margin-right: $gap-small;
+	}
+
 	.wc-block-reviews-by-product__list {
 		list-style: none;
 		margin: 0;
@@ -117,6 +126,11 @@
 			grid-column: 1;
 			grid-row: 1;
 		}
+	}
+
+	.wc-block-reviews-by-product__load-more {
+		display: block;
+		margin: 0 auto;
 	}
 
 	&.has-avatar {

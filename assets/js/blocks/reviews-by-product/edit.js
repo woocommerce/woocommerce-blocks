@@ -147,7 +147,7 @@ class ReviewsByProductEditor extends Component {
 					<TextControl
 						label={ __( 'Reviews shown on page load', 'woo-gutenberg-products-block' ) }
 						value={ attributes.perPage }
-						onChange={ ( perPage ) => setAttributes( { perPage } ) }
+						onChange={ ( perPage ) => setAttributes( { perPage: parseInt( perPage, 10 ) } ) }
 						type="number"
 					/>
 				</PanelBody>
@@ -253,7 +253,7 @@ class ReviewsByProductEditor extends Component {
 				) : (
 					<Fragment>
 						{ product.rating_count > 0 ? (
-							<Block attributes={ attributes } />
+							<Block attributes={ attributes } isPreview />
 						) : (
 							<Placeholder
 								className="wc-block-reviews-by-product"
