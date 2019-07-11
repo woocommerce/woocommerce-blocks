@@ -50,7 +50,7 @@ class ReviewsByProduct extends Component {
 		}
 
 		apiFetch( {
-			path: addQueryArgs( `/wc/v3/products/reviews`, {
+			path: addQueryArgs( `/wc/blocks/products/reviews`, {
 				order_by: orderby,
 				per_page: perPage,
 				product: productId,
