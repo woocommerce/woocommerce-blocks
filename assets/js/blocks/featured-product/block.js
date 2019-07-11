@@ -122,14 +122,14 @@ class FeaturedProduct extends Component {
 
 				if ( isObject( apiError ) ) {
 					error.message = (
-						<span dangerouslySetInnerHTML={
-							{
-								__html: escapeHTML( __( 'The following error was returned from the API', 'woo-gutenberg-products-block' ) ) + ': <br/><code>' + escapeHTML( apiError.message ) + '</code>',
-							}
-						} />
+						<span>
+							{ __( 'The following error was returned from the API', 'woo-gutenberg-products-block' ) }
+							<br />
+							<code>{ escapeHTML( apiError.message ) }</code>
+						</span>
 					);
 				} else {
-					error.message = escapeHTML( __( 'An unknown error occured which prevented the block from being updated.', 'woo-gutenberg-products-block' ) );
+					error.message = __( 'An unknown error occurred which prevented the block from being updated.', 'woo-gutenberg-products-block' );
 				}
 
 				this.setState( { error: false } ); // Force update if error stays same.
