@@ -11,7 +11,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import './style.scss';
 import './editor.scss';
 import Editor from './edit';
-import ReviewsByProductIcon from '../../components/icons/reviews-by-product';
+import { IconReviewsByProduct } from '../../components/icons';
 import { renderReview } from './utils';
 
 /**
@@ -20,7 +20,7 @@ import { renderReview } from './utils';
 registerBlockType( 'woocommerce/reviews-by-product', {
 	title: __( 'Reviews by Product', 'woo-gutenberg-products-block' ),
 	icon: (
-		<ReviewsByProductIcon fillColor="#96588a" />
+		<IconReviewsByProduct fillColor="#96588a" />
 	),
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
