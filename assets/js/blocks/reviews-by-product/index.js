@@ -114,7 +114,7 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 		} );
 
 		return (
-			<div data-product-id={ productId } data-order-by={ orderby } data-per-page={ perPage } className={ classes }>
+			<div data-product-id={ productId } data-orderby={ orderby } data-per-page={ perPage } className={ classes }>
 				<ul className="wc-block-reviews-by-product__list">
 					{ renderReview( attributes ) }
 				</ul>

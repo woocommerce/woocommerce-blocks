@@ -1,12 +1,14 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
 import classNames from 'classnames';
 import { Component } from '@wordpress/element';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
+import { withInstanceId } from '@wordpress/compose';
 
 /**
  * Internal dependencies
@@ -19,15 +21,25 @@ import { renderReview } from './utils';
 class ReviewsByProduct extends Component {
 	constructor() {
 		super( ...arguments );
+		const { attributes } = this.props;
 		this.state = {
+			order: attributes.orderby,
 			reviews: [],
+			totalReviews: 0,
 		};
 
 		this.debouncedGetReviews = debounce( this.getReviews.bind( this ), 200 );
+		this.onChangeOrderby = this.onChangeOrderby.bind( this );
+		this.getReviews = this.getReviews.bind( this );
+		this.appendReviews = this.appendReviews.bind( this );
 	}
 
 	componentDidMount() {
 		this.getReviews();
+	}
+
+	componentWillUnmount() {
+		this.debouncedGetReviews.cancel();
 	}
 
 	componentDidUpdate( prevProps ) {
@@ -40,13 +52,18 @@ class ReviewsByProduct extends Component {
 		}
 	}
 
-	componentWillUnmount() {
-		this.debouncedGetReviews.cancel();
+	onChangeOrderby( event ) {
+		this.setState( {
+			order: event.target.value,
+		} );
+		this.getReviews( event.target.value );
 	}
 
-	getReviews() {
+	getReviews( order, page = 1 ) {
 		const { attributes } = this.props;
-		const { orderby, perPage, productId } = attributes;
+		const { perPage, productId } = attributes;
+		const { reviews } = this.state;
+		const orderby = order || this.state.order || attributes.orderby;
 
 		if ( ! productId ) {
 			// We've removed the selected product, or no product is selected yet.
@@ -56,21 +73,40 @@ class ReviewsByProduct extends Component {
 		apiFetch( {
 			path: addQueryArgs( `/wc/blocks/products/reviews`, {
 				order_by: orderby,
+				page,
 				per_page: perPage,
 				product: productId,
 			} ),
-		} )
-			.then( ( reviews ) => {
-				this.setState( { reviews } );
-			} )
-			.catch( () => {
+			parse: false,
+		} ).then( ( response ) => {
+			if ( response.json ) {
+				response.json().then( ( newReviews ) => {
+					const totalReviews = parseInt( response.headers.get( 'x-wp-total' ), 10 );
+					if ( page === 1 ) {
+						this.setState( { reviews: newReviews, totalReviews } );
+					} else {
+						this.setState( { reviews: reviews.concat( newReviews ), totalReviews } );
+					}
+				} ).catch( () => {
+					this.setState( { reviews: [] } );
+				} );
+			} else {
 				this.setState( { reviews: [] } );
-			} );
+			}
+		} ).catch( () => {
+			this.setState( { reviews: [] } );
+		} );
+	}
+
+	appendReviews() {
+		const page = Math.round( this.state.reviews.length / this.props.attributes.perPage ) + 1;
+
+		this.getReviews( null, page );
 	}
 
 	render() {
-		const { attributes } = this.props;
-		const { reviews } = this.state;
+		const { attributes, instanceId, isPreview } = this.props;
+		const { order, reviews, totalReviews } = this.state;
 		const { className, showAvatar, showProductRating, showReviewDate, showReviewerName } = attributes;
 		const classes = classNames( 'wc-block-reviews-by-product', className, {
 			'has-avatar': showAvatar,
@@ -79,8 +115,33 @@ class ReviewsByProduct extends Component {
 			'has-rating': showProductRating,
 		} );
 
+		const selectId = `wc-block-reviews-by-product__orderby__select-${ instanceId }`;
+		const selectProps = isPreview ? {
+			readOnly: true,
+			value: attributes.orderby,
+		} : {
+			defaultValue: order,
+			onBlur: this.onChangeOrderby,
+		};
+
 		return (
 			<div className={ classes }>
+				<p className="wc-block-reviews-by-product__orderby">
+					<label className="wc-block-reviews-by-product__orderby__label" htmlFor={ selectId }>
+						{ __( 'Order by', 'woo-gutenberg-products-block' ) }
+					</label>
+					<select id={ selectId } className="wc-block-reviews-by-product__orderby__select" { ...selectProps }>
+						<option value="most-recent">
+							{ __( 'Most recent', 'woo-gutenberg-products-block' ) }
+						</option>
+						<option value="highest-rating">
+							{ __( 'Highest rating', 'woo-gutenberg-products-block' ) }
+						</option>
+						<option value="lowest-rating">
+							{ __( 'Lowest rating', 'woo-gutenberg-products-block' ) }
+						</option>
+					</select>
+				</p>
 				<ul className="wc-block-reviews-by-product__list">
 					{ reviews.length === 0 ?
 						(
@@ -90,6 +151,14 @@ class ReviewsByProduct extends Component {
 						)
 					}
 				</ul>
+				{ totalReviews > reviews.length && (
+					<button
+						className="wc-block-reviews-by-product__load-more"
+						onClick={ isPreview ? null : this.appendReviews }
+					>
+						{ __( 'Load more', 'woo-gutenberg-products-block' ) }
+					</button>
+				) }
 			</div>
 		);
 	}
@@ -100,6 +169,14 @@ ReviewsByProduct.propTypes = {
 	 * The attributes for this block.
 	 */
 	attributes: PropTypes.object.isRequired,
+	/**
+	 * A unique ID for identifying the label for the select dropdown.
+	 */
+	instanceId: PropTypes.number,
+	/**
+	 * Whether this is the block preview or frontend display.
+	 */
+	isPreview: PropTypes.bool,
 };
 
-export default ReviewsByProduct;
+export default withInstanceId( ReviewsByProduct );
