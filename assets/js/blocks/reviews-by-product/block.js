@@ -38,13 +38,17 @@ class ReviewsByProduct extends Component {
 		this.getReviews();
 	}
 
+	componentWillUnmount() {
+		this.debouncedGetReviews.cancel();
+	}
+
 	componentDidUpdate( prevProps ) {
 		if (
 			prevProps.attributes.orderby !== this.props.attributes.orderby ||
 			prevProps.attributes.perPage !== this.props.attributes.perPage ||
 			prevProps.attributes.productId !== this.props.attributes.productId
 		) {
-			this.getReviews();
+			this.debouncedGetReviews();
 		}
 	}
 
@@ -67,7 +71,7 @@ class ReviewsByProduct extends Component {
 		}
 
 		apiFetch( {
-			path: addQueryArgs( `/wc/v3/products/reviews`, {
+			path: addQueryArgs( `/wc/blocks/products/reviews`, {
 				order_by: orderby,
 				page,
 				per_page: perPage,

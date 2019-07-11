@@ -36,10 +36,14 @@ class ReviewsByProductEditor extends Component {
 		super( ...arguments );
 		this.state = {
 			product: false,
-			loaded: false,
 		};
 
-		this.debouncedGetProduct = debounce( this.getProduct.bind( this ), 200 );
+		this.getProduct = this.getProduct.bind( this );
+		this.debouncedGetProduct = debounce( this.getProduct, 200 );
+	}
+
+	componentWillUnmount() {
+		this.debouncedGetProduct.cancel();
 	}
 
 	componentDidMount() {
@@ -54,19 +58,20 @@ class ReviewsByProductEditor extends Component {
 
 	getProduct() {
 		const { productId } = this.props.attributes;
+
 		if ( ! productId ) {
 			// We've removed the selected product, or no product is selected yet.
-			this.setState( { product: false, loaded: true } );
+			this.setState( { product: false } );
 			return;
 		}
 		apiFetch( {
 			path: `/wc/blocks/products/${ productId }`,
 		} )
 			.then( ( product ) => {
-				this.setState( { product, loaded: true } );
+				this.setState( { product } );
 			} )
 			.catch( () => {
-				this.setState( { product: false, loaded: true } );
+				this.setState( { product: false } );
 			} );
 	}
 
@@ -230,7 +235,7 @@ class ReviewsByProductEditor extends Component {
 
 	render() {
 		const { attributes, setAttributes } = this.props;
-		const { editMode } = attributes;
+		const { editMode, productId } = attributes;
 		const { product } = this.state;
 
 		return (
@@ -248,13 +253,11 @@ class ReviewsByProductEditor extends Component {
 					/>
 				</BlockControls>
 				{ this.getInspectorControls() }
-				{ ! product || editMode ? (
+				{ ! productId || editMode ? (
 					this.renderEditMode()
 				) : (
 					<Fragment>
-						{ product.rating_count > 0 ? (
-							<Block attributes={ attributes } isPreview />
-						) : (
+						{ product.rating_count === 0 ? (
 							<Placeholder
 								className="wc-block-reviews-by-product"
 								icon={ <ReviewsByProductIcon className="block-editor-block-icon" /> }
@@ -270,6 +273,8 @@ class ReviewsByProductEditor extends Component {
 									),
 								} } />
 							</Placeholder>
+						) : (
+							<Block attributes={ attributes } />
 						) }
 					</Fragment>
 				) }
