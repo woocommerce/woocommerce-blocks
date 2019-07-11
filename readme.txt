@@ -92,6 +92,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Feature: Added a cancel button to the product category block editor to discard unsaved changes.
 - Enhancement: Change the toggle for list type in Product Category List block to a button toggle component for clarity.
 - Build: Updated build process and plugin structure to follow modern best practices. Minimum PHP version bumped to 5.6.
+- Fix - Correctly hide products from grids when visibility is hidden.
 
 = 2.2.1 - 2019-07-04 =
 
