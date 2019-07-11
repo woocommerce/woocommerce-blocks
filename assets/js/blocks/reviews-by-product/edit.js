@@ -29,7 +29,7 @@ import PropTypes from 'prop-types';
  */
 import Block from './block.js';
 import ProductControl from '../../components/product-control';
-import ReviewsByProductIcon from '../../components/icons/reviews-by-product';
+import { IconReviewsByProduct } from '../../components/icons';
 
 class ReviewsByProductEditor extends Component {
 	constructor() {
@@ -199,7 +199,7 @@ class ReviewsByProductEditor extends Component {
 
 		return (
 			<Placeholder
-				icon={ <ReviewsByProductIcon className="block-editor-block-icon" /> }
+				icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
 				label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
 				className="wc-block-reviews-by-product"
 			>
@@ -257,7 +257,7 @@ class ReviewsByProductEditor extends Component {
 						) : (
 							<Placeholder
 								className="wc-block-reviews-by-product"
-								icon={ <ReviewsByProductIcon className="block-editor-block-icon" /> }
+								icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
 								label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
 							>
 								<div dangerouslySetInnerHTML={ {
