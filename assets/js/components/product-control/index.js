@@ -53,6 +53,11 @@ class ProductControl extends Component {
 		this.onProductSelect = this.onProductSelect.bind( this );
 	}
 
+	componentWillUnmount() {
+		this.debouncedOnSearch.cancel();
+		this.debouncedGetVariations.cancel();
+	}
+
 	componentDidMount() {
 		const { selected, queryArgs } = this.props;
 
@@ -80,7 +85,7 @@ class ProductControl extends Component {
 	}
 
 	getVariations() {
-		const { product, variationsList } = this.state;
+		const { product, products, variationsList } = this.state;
 
 		if ( ! product ) {
 			this.setState( {
@@ -90,7 +95,7 @@ class ProductControl extends Component {
 			return;
 		}
 
-		const productDetails = this.state.products.find( ( findProduct ) => findProduct.id === product );
+		const productDetails = products.find( ( findProduct ) => findProduct.id === product );
 
 		if ( ! productDetails.variations || productDetails.variations.length === 0 ) {
 			return;

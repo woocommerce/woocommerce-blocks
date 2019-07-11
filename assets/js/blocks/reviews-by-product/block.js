@@ -36,8 +36,12 @@ class ReviewsByProduct extends Component {
 			prevProps.attributes.perPage !== this.props.attributes.perPage ||
 			prevProps.attributes.productId !== this.props.attributes.productId
 		) {
-			this.getReviews();
+			this.debouncedGetReviews();
 		}
+	}
+
+	componentWillUnmount() {
+		this.debouncedGetReviews.cancel();
 	}
 
 	getReviews() {
