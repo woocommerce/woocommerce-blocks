@@ -84,7 +84,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 == Changelog ==
 
 = 2.4.0 =
--
+- Enhancement: Add error handling for API requests to the featured product block.
 
 = 2.3.0 - 2019-07-10 =
 
