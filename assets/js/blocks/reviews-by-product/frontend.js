@@ -10,7 +10,7 @@ import { render } from '@wordpress/element';
 import Block from './block.js';
 
 const containers = document.querySelectorAll(
-	'.wc-block-reviews-by-product'
+	'.wp-block-woocommerce-reviews-by-product'
 );
 
 if ( containers.length ) {
@@ -19,10 +19,10 @@ if ( containers.length ) {
 			orderby: el.dataset.orderby,
 			perPage: el.dataset.perPage,
 			productId: el.dataset.productId,
-			showAvatar: el.classList.contains( 'has-avatar' ),
-			showProductRating: el.classList.contains( 'has-rating' ),
-			showReviewDate: el.classList.contains( 'has-date' ),
-			showReviewerName: el.classList.contains( 'has-name' ),
+			showAvatar: el.dataset.hasAvatar === 'true',
+			showProductRating: el.dataset.hasRating === 'true',
+			showReviewDate: el.dataset.hasReview === 'true',
+			showReviewerName: el.dataset.hasName === 'true',
 		};
 
 		render( <Block attributes={ attributes } />, el );
