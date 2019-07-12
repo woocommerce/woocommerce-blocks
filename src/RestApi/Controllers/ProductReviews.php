@@ -83,10 +83,10 @@ class ProductReviews extends WC_REST_Controller {
 		 * present in $registered will be set.
 		 */
 		$parameter_mappings = array(
-			'offset'   => 'offset',
-			'order'    => 'order',
-			'per_page' => 'number',
-			'product'  => 'post__in',
+			'offset'     => 'offset',
+			'order'      => 'order',
+			'per_page'   => 'number',
+			'product_id' => 'post__in',
 		);
 
 		$prepared_args = array(
@@ -103,6 +103,21 @@ class ProductReviews extends WC_REST_Controller {
 			if ( isset( $registered[ $api_param ], $request[ $api_param ] ) ) {
 				$prepared_args[ $wp_param ] = $request[ $api_param ];
 			}
+		}
+
+		/**
+		 * Map category id to list of product ids.
+		 */
+		if ( isset( $registered['category_id'] ) && ! empty( $request['category_id'] ) ) {
+			$category_ids = wp_parse_id_list( $request['category_id'] );
+			$child_ids    = [];
+			foreach ( $category_ids as $category_id ) {
+				$child_ids = array_merge( $child_ids, get_term_children( $category_id, 'product_cat' ) );
+			}
+			$category_ids = array_unique( array_merge( $category_ids, $child_ids ) );
+			$product_ids  = get_objects_in_term( $category_ids, 'product_cat' );
+
+			$prepared_args['product_id'] = isset( $prepared_args['product_id'] ) ? array_merge( $prepared_args['product_id'], $product_ids ) : $product_ids;
 		}
 
 		if ( isset( $registered['orderby'] ) ) {
@@ -352,9 +367,18 @@ class ProductReviews extends WC_REST_Controller {
 			),
 		);
 
-		$params['product'] = array(
+		$params['product_id'] = array(
 			'default'     => array(),
 			'description' => __( 'Limit result set to reviews assigned to specific product IDs.', 'woo-gutenberg-products-block' ),
+			'type'        => 'array',
+			'items'       => array(
+				'type' => 'integer',
+			),
+		);
+
+		$params['category_id'] = array(
+			'default'     => array(),
+			'description' => __( 'Limit result set to reviews from products within specific category IDs.', 'woo-gutenberg-products-block' ),
 			'type'        => 'array',
 			'items'       => array(
 				'type' => 'integer',
