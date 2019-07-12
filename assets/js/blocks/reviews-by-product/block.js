@@ -74,7 +74,7 @@ class ReviewsByProduct extends Component {
 			path: addQueryArgs( `/wc/blocks/products/reviews`, {
 				order_by: orderby,
 				page,
-				per_page: perPage,
+				per_page: parseInt( perPage, 10 ) || 1,
 				product: productId,
 			} ),
 			parse: false,

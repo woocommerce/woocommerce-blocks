@@ -80,6 +80,8 @@ class ReviewsByProductEditor extends Component {
 			attributes,
 			setAttributes,
 		} = this.props;
+		const minPerPage = 1;
+		const maxPerPage = 100;
 
 		return (
 			<InspectorControls key="inspector">
@@ -152,7 +154,11 @@ class ReviewsByProductEditor extends Component {
 					<TextControl
 						label={ __( 'Reviews shown on page load', 'woo-gutenberg-products-block' ) }
 						value={ attributes.perPage }
-						onChange={ ( perPage ) => setAttributes( { perPage: parseInt( perPage, 10 ) } ) }
+						onChange={ ( perPage ) => setAttributes( {
+							perPage: Math.max( Math.min( parseInt( perPage, 10 ), maxPerPage ), minPerPage ),
+						} ) }
+						max={ maxPerPage }
+						min={ minPerPage }
 						type="number"
 					/>
 				</PanelBody>
