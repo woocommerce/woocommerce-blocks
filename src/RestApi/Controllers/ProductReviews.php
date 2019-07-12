@@ -117,7 +117,7 @@ class ProductReviews extends WC_REST_Controller {
 			$category_ids = array_unique( array_merge( $category_ids, $child_ids ) );
 			$product_ids  = get_objects_in_term( $category_ids, 'product_cat' );
 
-			$prepared_args['product_id'] = isset( $prepared_args['product_id'] ) ? array_merge( $prepared_args['product_id'], $product_ids ) : $product_ids;
+			$prepared_args['post__in'] = isset( $prepared_args['post__in'] ) ? array_merge( $prepared_args['post__in'], $product_ids ) : $product_ids;
 		}
 
 		if ( isset( $registered['orderby'] ) ) {
