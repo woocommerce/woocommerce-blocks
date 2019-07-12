@@ -106,6 +106,9 @@ class ProductReviews extends WC_REST_Controller {
 		}
 
 		if ( isset( $registered['orderby'] ) ) {
+			if ( 'rating' === $request['orderby'] ) {
+				$prepared_args['meta_key'] = 'rating'; // phpcs:ignore
+			}
 			$prepared_args['orderby'] = $this->normalize_query_param( $request['orderby'] );
 		}
 
@@ -178,6 +181,9 @@ class ProductReviews extends WC_REST_Controller {
 				break;
 			case 'product':
 				$normalized = $prefix . 'post_ID';
+				break;
+			case 'rating':
+				$normalized = 'meta_value_num';
 				break;
 			default:
 				$normalized = $prefix . $query_param;
@@ -341,7 +347,7 @@ class ProductReviews extends WC_REST_Controller {
 				'date',
 				'date_gmt',
 				'id',
-				'include',
+				'rating',
 				'product',
 			),
 		);
