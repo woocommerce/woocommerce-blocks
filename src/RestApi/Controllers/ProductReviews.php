@@ -13,12 +13,12 @@ namespace Automattic\WooCommerce\Blocks\RestApi\Controllers;
 
 defined( 'ABSPATH' ) || exit;
 
-use \WC_REST_Product_Reviews_Controller;
+use \WC_REST_Controller;
 
 /**
  * REST API Product Reviews controller class.
  */
-class ProductReviews extends WC_REST_Product_Reviews_Controller {
+class ProductReviews extends WC_REST_Controller {
 
 	/**
 	 * Endpoint namespace.
@@ -26,6 +26,13 @@ class ProductReviews extends WC_REST_Product_Reviews_Controller {
 	 * @var string
 	 */
 	protected $namespace = 'wc/blocks';
+
+	/**
+	 * Route base.
+	 *
+	 * @var string
+	 */
+	protected $rest_base = 'products/reviews';
 
 	/**
 	 * Register the routes for product reviews.
@@ -36,7 +43,7 @@ class ProductReviews extends WC_REST_Product_Reviews_Controller {
 			'/' . $this->rest_base,
 			array(
 				array(
-					'methods'             => \WP_REST_Server::READABLE,
+					'methods'             => 'GET',
 					'callback'            => array( $this, 'get_items' ),
 					'permission_callback' => array( $this, 'get_items_permissions_check' ),
 					'args'                => $this->get_collection_params(),
@@ -57,6 +64,127 @@ class ProductReviews extends WC_REST_Product_Reviews_Controller {
 			return new WP_Error( 'rest_forbidden_context', __( 'Sorry, you are not allowed to edit resources.', 'woo-gutenberg-products-block' ), array( 'status' => rest_authorization_required_code() ) );
 		}
 		return true;
+	}
+
+	/**
+	 * Get all reviews.
+	 *
+	 * @param WP_REST_Request $request Full details about the request.
+	 * @return array|WP_Error
+	 */
+	public function get_items( $request ) {
+		// Retrieve the list of registered collection query parameters.
+		$registered = $this->get_collection_params();
+
+		/*
+		 * This array defines mappings between public API query parameters whose
+		 * values are accepted as-passed, and their internal WP_Query parameter
+		 * name equivalents (some are the same). Only values which are also
+		 * present in $registered will be set.
+		 */
+		$parameter_mappings = array(
+			'offset'   => 'offset',
+			'order'    => 'order',
+			'per_page' => 'number',
+			'product'  => 'post__in',
+		);
+
+		$prepared_args = array(
+			'type'          => 'review',
+			'status'        => 'approve',
+			'no_found_rows' => false,
+		);
+
+		/*
+		 * For each known parameter which is both registered and present in the request,
+		 * set the parameter's value on the query $prepared_args.
+		 */
+		foreach ( $parameter_mappings as $api_param => $wp_param ) {
+			if ( isset( $registered[ $api_param ], $request[ $api_param ] ) ) {
+				$prepared_args[ $wp_param ] = $request[ $api_param ];
+			}
+		}
+
+		if ( isset( $registered['orderby'] ) ) {
+			$prepared_args['orderby'] = $this->normalize_query_param( $request['orderby'] );
+		}
+
+		if ( isset( $registered['page'] ) && empty( $request['offset'] ) ) {
+			$prepared_args['offset'] = $prepared_args['number'] * ( absint( $request['page'] ) - 1 );
+		}
+
+		$query        = new \WP_Comment_Query();
+		$query_result = $query->query( $prepared_args );
+		$reviews      = array();
+
+		foreach ( $query_result as $review ) {
+			$data      = $this->prepare_item_for_response( $review, $request );
+			$reviews[] = $this->prepare_response_for_collection( $data );
+		}
+
+		$total_reviews = (int) $query->found_comments;
+		$max_pages     = (int) $query->max_num_pages;
+
+		if ( $total_reviews < 1 ) {
+			// Out-of-bounds, run the query again without LIMIT for total count.
+			unset( $prepared_args['number'], $prepared_args['offset'] );
+
+			$query                  = new \WP_Comment_Query();
+			$prepared_args['count'] = true;
+
+			$total_reviews = $query->query( $prepared_args );
+			$max_pages     = ceil( $total_reviews / $request['per_page'] );
+		}
+
+		$response = rest_ensure_response( $reviews );
+		$response->header( 'X-WP-Total', $total_reviews );
+		$response->header( 'X-WP-TotalPages', $max_pages );
+
+		$base = add_query_arg( $request->get_query_params(), rest_url( sprintf( '%s/%s', $this->namespace, $this->rest_base ) ) );
+
+		if ( $request['page'] > 1 ) {
+			$prev_page = $request['page'] - 1;
+
+			if ( $prev_page > $max_pages ) {
+				$prev_page = $max_pages;
+			}
+
+			$prev_link = add_query_arg( 'page', $prev_page, $base );
+			$response->link_header( 'prev', $prev_link );
+		}
+
+		if ( $max_pages > $request['page'] ) {
+			$next_page = $request['page'] + 1;
+			$next_link = add_query_arg( 'page', $next_page, $base );
+
+			$response->link_header( 'next', $next_link );
+		}
+
+		return $response;
+	}
+
+	/**
+	 * Prepends internal property prefix to query parameters to match our response fields.
+	 *
+	 * @param string $query_param Query parameter.
+	 * @return string
+	 */
+	protected function normalize_query_param( $query_param ) {
+		$prefix = 'comment_';
+
+		switch ( $query_param ) {
+			case 'id':
+				$normalized = $prefix . 'ID';
+				break;
+			case 'product':
+				$normalized = $prefix . 'post_ID';
+				break;
+			default:
+				$normalized = $prefix . $query_param;
+				break;
+		}
+
+		return $normalized;
 	}
 
 	/**
@@ -178,5 +306,55 @@ class ProductReviews extends WC_REST_Product_Reviews_Controller {
 		}
 
 		return $schema;
+	}
+
+	/**
+	 * Get the query params for collections.
+	 *
+	 * @return array
+	 */
+	public function get_collection_params() {
+		$params = parent::get_collection_params();
+
+		$params['context']['default'] = 'view';
+
+		$params['offset'] = array(
+			'description' => __( 'Offset the result set by a specific number of items.', 'woo-gutenberg-products-block' ),
+			'type'        => 'integer',
+		);
+
+		$params['order'] = array(
+			'description' => __( 'Order sort attribute ascending or descending.', 'woo-gutenberg-products-block' ),
+			'type'        => 'string',
+			'default'     => 'desc',
+			'enum'        => array(
+				'asc',
+				'desc',
+			),
+		);
+
+		$params['orderby'] = array(
+			'description' => __( 'Sort collection by object attribute.', 'woo-gutenberg-products-block' ),
+			'type'        => 'string',
+			'default'     => 'date_gmt',
+			'enum'        => array(
+				'date',
+				'date_gmt',
+				'id',
+				'include',
+				'product',
+			),
+		);
+
+		$params['product'] = array(
+			'default'     => array(),
+			'description' => __( 'Limit result set to reviews assigned to specific product IDs.', 'woo-gutenberg-products-block' ),
+			'type'        => 'array',
+			'items'       => array(
+				'type' => 'integer',
+			),
+		);
+
+		return $params;
 	}
 }
