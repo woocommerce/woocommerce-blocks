@@ -75,7 +75,7 @@ class ReviewsByProduct extends Component {
 				order_by: orderby,
 				page,
 				per_page: parseInt( perPage, 10 ) || 1,
-				product: productId,
+				product_id: productId,
 			} ),
 			parse: false,
 		} ).then( ( response ) => {
