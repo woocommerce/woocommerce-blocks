@@ -23,7 +23,7 @@ class ReviewsByProduct extends Component {
 		super( ...arguments );
 		const { attributes } = this.props;
 		this.state = {
-			order: attributes.orderby,
+			orderby: attributes.orderby,
 			reviews: [],
 			totalReviews: 0,
 		};
@@ -54,16 +54,41 @@ class ReviewsByProduct extends Component {
 
 	onChangeOrderby( event ) {
 		this.setState( {
-			order: event.target.value,
+			orderby: event.target.value,
 		} );
 		this.getReviews( event.target.value );
 	}
 
-	getReviews( order, page = 1 ) {
+	getOrderParams( orderValue ) {
+		const { attributes, isPreview } = this.props;
+		const selectedOrder = isPreview ? attributes.orderby :
+			orderValue || this.state.orderby || attributes.orderby;
+
+		switch ( selectedOrder ) {
+			case 'lowest-rating':
+				return {
+					order: 'asc',
+					orderby: 'rating',
+				};
+			case 'highest-rating':
+				return {
+					order: 'desc',
+					orderby: 'rating',
+				};
+			case 'most-recent':
+			default:
+				return {
+					order: 'desc',
+					orderby: 'date_gmt',
+				};
+		}
+	}
+
+	getReviews( orderValue, page = 1 ) {
 		const { attributes } = this.props;
 		const { perPage, productId } = attributes;
 		const { reviews } = this.state;
-		const orderby = order || this.state.order || attributes.orderby;
+		const { order, orderby } = this.getOrderParams( orderValue );
 
 		if ( ! productId ) {
 			// We've removed the selected product, or no product is selected yet.
@@ -72,7 +97,8 @@ class ReviewsByProduct extends Component {
 
 		apiFetch( {
 			path: addQueryArgs( `/wc/blocks/products/reviews`, {
-				order_by: orderby,
+				order,
+				orderby,
 				page,
 				per_page: parseInt( perPage, 10 ) || 1,
 				product_id: productId,
@@ -106,7 +132,7 @@ class ReviewsByProduct extends Component {
 
 	render() {
 		const { attributes, instanceId, isPreview } = this.props;
-		const { order, reviews, totalReviews } = this.state;
+		const { orderby, reviews, totalReviews } = this.state;
 		const { className, showProductRating, showReviewDate, showReviewerName } = attributes;
 		const showAvatar = wc_product_block_data.showAvatars && attributes.showAvatar;
 		const classes = classNames( 'wc-block-reviews-by-product', className, {
@@ -125,7 +151,7 @@ class ReviewsByProduct extends Component {
 			readOnly: true,
 			value: attributes.orderby,
 		} : {
-			defaultValue: order,
+			defaultValue: orderby,
 			onBlur: this.onChangeOrderby,
 		};
 

@@ -282,7 +282,7 @@ class ReviewsByProductEditor extends Component {
 								} } />
 							</Placeholder>
 						) : (
-							<Block attributes={ attributes } />
+							<Block attributes={ attributes } isPreview />
 						) }
 					</Fragment>
 				) }
