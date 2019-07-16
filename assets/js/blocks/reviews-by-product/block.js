@@ -130,21 +130,13 @@ class ReviewsByProduct extends Component {
 		this.getReviews( null, page );
 	}
 
-	render() {
+	renderOrderBySelect() {
+		if ( wc_product_block_data.enableReviewRating ) {
+			return null;
+		}
+
 		const { attributes, instanceId, isPreview } = this.props;
-		const { orderby, reviews, totalReviews } = this.state;
-		const { className, showProductRating, showReviewDate, showReviewerName } = attributes;
-		const showAvatar = wc_product_block_data.showAvatars && attributes.showAvatar;
-		const classes = classNames( 'wc-block-reviews-by-product', className, {
-			'has-avatar': showAvatar,
-			'has-date': showReviewDate,
-			'has-name': showReviewerName,
-			'has-rating': showProductRating,
-		} );
-		const attrs = {
-			...attributes,
-			showAvatar,
-		};
+		const { orderby } = this.state;
 
 		const selectId = `wc-block-reviews-by-product__orderby__select-${ instanceId }`;
 		const selectProps = isPreview ? {
@@ -156,40 +148,82 @@ class ReviewsByProduct extends Component {
 		};
 
 		return (
+			<p className="wc-block-reviews-by-product__orderby">
+				<label className="wc-block-reviews-by-product__orderby__label" htmlFor={ selectId }>
+					{ __( 'Order by', 'woo-gutenberg-products-block' ) }
+				</label>
+				<select id={ selectId } className="wc-block-reviews-by-product__orderby__select" { ...selectProps }>
+					<option value="most-recent">
+						{ __( 'Most recent', 'woo-gutenberg-products-block' ) }
+					</option>
+					<option value="highest-rating">
+						{ __( 'Highest rating', 'woo-gutenberg-products-block' ) }
+					</option>
+					<option value="lowest-rating">
+						{ __( 'Lowest rating', 'woo-gutenberg-products-block' ) }
+					</option>
+				</select>
+			</p>
+		);
+	}
+
+	renderReviewsList( showAvatar, showProductRating ) {
+		const { attributes } = this.props;
+		const { reviews } = this.state;
+		const attrs = {
+			...attributes,
+			showAvatar,
+			showProductRating,
+		};
+
+		return (
+			<ul className="wc-block-reviews-by-product__list">
+				{ reviews.length === 0 ?
+					(
+						renderReview( attrs )
+					) : (
+						reviews.map( ( review ) => renderReview( attrs, review ) )
+					)
+				}
+			</ul>
+		);
+	}
+
+	renderLoadMoreButton() {
+		const { isPreview } = this.props;
+		const { reviews, totalReviews } = this.state;
+
+		if ( totalReviews <= reviews.length ) {
+			return null;
+		}
+
+		return (
+			<button
+				className="wc-block-reviews-by-product__load-more"
+				onClick={ isPreview ? null : this.appendReviews }
+			>
+				{ __( 'Load more', 'woo-gutenberg-products-block' ) }
+			</button>
+		);
+	}
+
+	render() {
+		const { attributes } = this.props;
+		const { className, showReviewDate, showReviewerName } = attributes;
+		const showAvatar = wc_product_block_data.showAvatars && attributes.showAvatar;
+		const showProductRating = wc_product_block_data.enableReviewRating && attributes.showProductRating;
+		const classes = classNames( 'wc-block-reviews-by-product', className, {
+			'has-avatar': showAvatar,
+			'has-date': showReviewDate,
+			'has-name': showReviewerName,
+			'has-rating': showProductRating,
+		} );
+
+		return (
 			<div className={ classes }>
-				<p className="wc-block-reviews-by-product__orderby">
-					<label className="wc-block-reviews-by-product__orderby__label" htmlFor={ selectId }>
-						{ __( 'Order by', 'woo-gutenberg-products-block' ) }
-					</label>
-					<select id={ selectId } className="wc-block-reviews-by-product__orderby__select" { ...selectProps }>
-						<option value="most-recent">
-							{ __( 'Most recent', 'woo-gutenberg-products-block' ) }
-						</option>
-						<option value="highest-rating">
-							{ __( 'Highest rating', 'woo-gutenberg-products-block' ) }
-						</option>
-						<option value="lowest-rating">
-							{ __( 'Lowest rating', 'woo-gutenberg-products-block' ) }
-						</option>
-					</select>
-				</p>
-				<ul className="wc-block-reviews-by-product__list">
-					{ reviews.length === 0 ?
-						(
-							renderReview( attrs )
-						) : (
-							reviews.map( ( review ) => renderReview( attrs, review ) )
-						)
-					}
-				</ul>
-				{ totalReviews > reviews.length && (
-					<button
-						className="wc-block-reviews-by-product__load-more"
-						onClick={ isPreview ? null : this.appendReviews }
-					>
-						{ __( 'Load more', 'woo-gutenberg-products-block' ) }
-					</button>
-				) }
+				{ this.renderOrderBySelect() }
+				{ this.renderReviewsList( showAvatar, showProductRating ) }
+				{ this.renderLoadMoreButton() }
 			</div>
 		);
 	}
