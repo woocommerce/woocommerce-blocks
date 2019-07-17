@@ -36,7 +36,6 @@ class Assets {
 		self::register_script( 'wc-blocks', plugins_url( 'build/blocks.js', __DIR__ ), array(), false );
 		self::register_script( 'wc-vendors', plugins_url( 'build/vendors.js', __DIR__ ), array(), false );
 		self::register_script( 'wc-packages', plugins_url( 'build/packages.js', __DIR__ ), array(), false );
-		self::register_script( 'wc-frontend', plugins_url( 'build/frontend.js', __DIR__ ), array( 'wc-vendors' ) );
 
 		// Individual blocks.
 		self::register_script( 'wc-handpicked-products', plugins_url( 'build/handpicked-products.js', __DIR__ ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
@@ -186,6 +185,19 @@ class Assets {
 		if ( $has_i18n && function_exists( 'wp_set_script_translations' ) ) {
 			wp_set_script_translations( $handle, 'woo-gutenberg-products-block', dirname( __DIR__ ) . '/languages' );
 		}
+	}
+
+	/**
+	 * Queues a scripts when required.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param string $name Name of the script used to identify the file inside build folder.
+	 */
+	public static function load_script_as_required( $name ) {
+		$filename = 'build/' . $name . '.js';
+		$ver      = self::get_file_version( $filename );
+		wp_enqueue_script( $name, plugins_url( $filename, __DIR__ ), array( 'wc-vendors' ), $ver, true );
 	}
 
 	/**
