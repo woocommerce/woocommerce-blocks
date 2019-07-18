@@ -19,11 +19,27 @@ function findModuleMatch( module, match ) {
 	return false;
 }
 
+const baseConfig = {
+	mode: NODE_ENV,
+	performance: {
+		hints: false,
+	},
+	stats: {
+		all: false,
+		assets: true,
+		builtAt: true,
+		colors: true,
+		errors: true,
+		hash: true,
+		timings: true,
+	},
+};
+
 /**
  * Config for compiling Gutenberg blocks JS.
  */
 const GutenbergBlocksConfig = {
-	mode: NODE_ENV,
+	...baseConfig,
 	entry: {
 		// Shared blocks code
 		blocks: './assets/js/index.js',
@@ -122,22 +138,10 @@ const GutenbergBlocksConfig = {
 		} ),
 		new DependencyExtractionWebpackPlugin( { injectPolyfill: true } ),
 	],
-	performance: {
-		hints: false,
-	},
-	stats: {
-		all: false,
-		assets: true,
-		builtAt: true,
-		colors: true,
-		errors: true,
-		hash: true,
-		timings: true,
-	},
 };
 
 const BlocksFrontendConfig = {
-	mode: NODE_ENV,
+	...baseConfig,
 	entry: './assets/js/blocks/product-categories/frontend.js',
 	output: {
 		path: path.resolve( __dirname, './build/' ),
@@ -159,18 +163,6 @@ const BlocksFrontendConfig = {
 		} ),
 		new DependencyExtractionWebpackPlugin( { injectPolyfill: true } ),
 	],
-	performance: {
-		hints: false,
-	},
-	stats: {
-		all: false,
-		assets: true,
-		builtAt: true,
-		colors: true,
-		errors: true,
-		hash: true,
-		timings: true,
-	},
 };
 
 module.exports = [ GutenbergBlocksConfig, BlocksFrontendConfig ];
