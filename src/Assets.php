@@ -188,7 +188,7 @@ class Assets {
 	}
 
 	/**
-	 * Queues a scripts when required.
+	 * Queues a script when required.
 	 *
 	 * @since 2.3.0
 	 *
