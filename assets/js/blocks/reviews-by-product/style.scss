@@ -134,7 +134,7 @@
 		margin: 0 auto;
 	}
 
-	&.has-avatar {
+	.has-avatar {
 		.wc-block-reviews-by-product__info {
 			grid-template-columns: #{48px + $gap-small} 1fr;
 		}
@@ -145,8 +145,8 @@
 		}
 	}
 
-	&.has-name,
-	&.has-rating {
+	.has-name,
+	.has-rating {
 		.wc-block-reviews-by-product__published-date {
 			grid-row: 2;
 		}

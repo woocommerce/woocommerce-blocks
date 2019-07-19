@@ -80,7 +80,7 @@ class ReviewsByProduct extends Component {
 				order_by: orderby,
 				page,
 				per_page: parseInt( perPage, 10 ) || 1,
-				product: productId,
+				product_id: productId,
 			} ),
 			parse: false,
 		} ).then( ( response ) => {
@@ -121,13 +121,18 @@ class ReviewsByProduct extends Component {
 	render() {
 		const { attributes, instanceId, isPreview } = this.props;
 		const { order, reviews, totalReviews } = this.state;
-		const { className, showAvatar, showProductRating, showReviewDate, showReviewerName } = attributes;
+		const { className, showProductRating, showReviewDate, showReviewerName } = attributes;
+		const showAvatar = wc_product_block_data.showAvatars && attributes.showAvatar;
 		const classes = classNames( 'wc-block-reviews-by-product', className, {
 			'has-avatar': showAvatar,
 			'has-date': showReviewDate,
 			'has-name': showReviewerName,
 			'has-rating': showProductRating,
 		} );
+		const attrs = {
+			...attributes,
+			showAvatar,
+		};
 
 		const selectId = `wc-block-reviews-by-product__orderby__select-${ instanceId }`;
 		const selectProps = isPreview ? {
@@ -159,9 +164,9 @@ class ReviewsByProduct extends Component {
 				<ul className="wc-block-reviews-by-product__list">
 					{ reviews.length === 0 ?
 						(
-							renderReview( attributes )
+							renderReview( attrs )
 						) : (
-							reviews.map( ( review, i ) => renderReview( attributes, review, i ) )
+							reviews.map( ( review, i ) => renderReview( attrs, review, i ) )
 						)
 					}
 				</ul>

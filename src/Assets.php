@@ -140,6 +140,7 @@ class Assets {
 			'isLargeCatalog'    => $product_counts->publish > 200,
 			'productCategories' => $product_categories,
 			'homeUrl'           => esc_js( home_url( '/' ) ),
+			'showAvatars'       => '1' === get_option( 'show_avatars' ),
 		);
 		?>
 		<script type="text/javascript">

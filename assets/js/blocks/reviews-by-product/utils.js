@@ -19,6 +19,10 @@ export function renderReview( attributes, review = {}, i = 0 ) {
 	const isLoading = ! Object.keys( review ).length > 0;
 
 	const classes = classNames( 'wc-block-reviews-by-product__item', {
+		'has-avatar': showAvatar,
+		'has-date': showReviewDate,
+		'has-name': showReviewerName,
+		'has-rating': showProductRating,
 		'is-loading': isLoading,
 	} );
 	const starStyle = {
