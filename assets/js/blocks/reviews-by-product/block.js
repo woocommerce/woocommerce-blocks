@@ -53,7 +53,12 @@ class ReviewsByProduct extends Component {
 	}
 
 	onChangeOrderby( event ) {
+		const { attributes } = this.props;
+		const { perPage } = attributes;
+		const { totalReviews } = this.state;
+		const newReviews = Math.min( totalReviews, perPage );
 		this.setState( {
+			reviews: Array( newReviews ).fill( {} ),
 			order: event.target.value,
 		} );
 		this.getReviews( event.target.value );
@@ -85,7 +90,10 @@ class ReviewsByProduct extends Component {
 					if ( page === 1 ) {
 						this.setState( { reviews: newReviews, totalReviews } );
 					} else {
-						this.setState( { reviews: reviews.concat( newReviews ), totalReviews } );
+						this.setState( {
+							reviews: reviews.filter( ( review ) => Object.keys( review ).length ).concat( newReviews ),
+							totalReviews,
+						} );
 					}
 				} ).catch( () => {
 					this.setState( { reviews: [] } );
@@ -99,8 +107,14 @@ class ReviewsByProduct extends Component {
 	}
 
 	appendReviews() {
-		const page = Math.round( this.state.reviews.length / this.props.attributes.perPage ) + 1;
+		const { attributes } = this.props;
+		const { perPage } = attributes;
+		const { reviews, totalReviews } = this.state;
 
+		const newReviews = Math.min( totalReviews - reviews.length, perPage );
+		this.setState( { reviews: reviews.concat( Array( newReviews ).fill( {} ) ) } );
+
+		const page = Math.round( reviews.length / perPage ) + 1;
 		this.getReviews( null, page );
 	}
 
@@ -152,7 +166,7 @@ class ReviewsByProduct extends Component {
 						(
 							renderReview( attrs )
 						) : (
-							reviews.map( ( review ) => renderReview( attrs, review ) )
+							reviews.map( ( review, i ) => renderReview( attrs, review, i ) )
 						)
 					}
 				</ul>

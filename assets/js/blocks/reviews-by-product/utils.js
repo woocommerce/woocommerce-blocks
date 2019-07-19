@@ -13,7 +13,7 @@ import classNames from 'classnames';
  *
  * @return {Object} React JSx nodes of the block
  */
-export function renderReview( attributes, review = {} ) {
+export function renderReview( attributes, review = {}, i = 0 ) {
 	const { showAvatar, showProductRating, showReviewDate, showReviewerName } = attributes;
 	const { id = null, date_created: dateCreated, rating, review: text = '', reviewer = '', reviewer_avatar_urls: avatarUrls = {} } = review;
 	const isLoading = ! Object.keys( review ).length > 0;
@@ -30,7 +30,7 @@ export function renderReview( attributes, review = {} ) {
 	};
 
 	return (
-		<li className={ classes } key={ id } aria-hidden={ isLoading }>
+		<li className={ classes } key={ id || i } aria-hidden={ isLoading }>
 			<span
 				className="wc-block-reviews-by-product__text"
 				dangerouslySetInnerHTML={ {
