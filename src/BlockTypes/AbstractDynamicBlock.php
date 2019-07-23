@@ -158,8 +158,9 @@ abstract class AbstractDynamicBlock {
 	 */
 	protected function filter_template_part( $name, $html, $placeholders, $args ) {
 		$filter_args = $args;
-		$filter_args = array_unshift( $filter_args, $html );
-		$filter_args = array_push( $filter_args, $placeholders );
+
+		array_unshift( $filter_args, $html );
+		array_push( $filter_args, $placeholders );
 
 		/**
 		 * Filter the template part.
