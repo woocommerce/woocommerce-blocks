@@ -69,24 +69,25 @@ class ReviewsByProduct extends Component {
 		const selectedOrder = isPreview ? attributes.orderby :
 			orderValue || this.state.orderby || attributes.orderby;
 
-		switch ( selectedOrder ) {
-			case 'lowest-rating':
+		if ( wc_product_block_data.enableReviewRating ) {
+			if ( selectedOrder === 'lowest-rating' ) {
 				return {
 					order: 'asc',
 					orderby: 'rating',
 				};
-			case 'highest-rating':
+			}
+			if ( selectedOrder === 'highest-rating' ) {
 				return {
 					order: 'desc',
 					orderby: 'rating',
 				};
-			case 'most-recent':
-			default:
-				return {
-					order: 'desc',
-					orderby: 'date_gmt',
-				};
+			}
 		}
+
+		return {
+			order: 'desc',
+			orderby: 'date_gmt',
+		};
 	}
 
 	getReviews( orderValue, page = 1 ) {
@@ -145,7 +146,7 @@ class ReviewsByProduct extends Component {
 	}
 
 	renderOrderBySelect() {
-		if ( wc_product_block_data.enableReviewRating ) {
+		if ( ! wc_product_block_data.enableReviewRating ) {
 			return null;
 		}
 
