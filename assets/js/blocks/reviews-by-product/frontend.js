@@ -21,7 +21,7 @@ if ( containers.length ) {
 			productId: el.dataset.productId,
 			showAvatar: el.dataset.hasAvatar === 'true',
 			showProductRating: el.dataset.hasRating === 'true',
-			showReviewDate: el.dataset.hasReview === 'true',
+			showReviewDate: el.dataset.hasDate === 'true',
 			showReviewerName: el.dataset.hasName === 'true',
 		};
 

@@ -1,5 +1,7 @@
 .wc-block-reviews-by-product {
 	.is-loading {
+		color: transparent;
+
 		.wc-block-reviews-by-product__text {
 			@include placeholder();
 			display: block;
