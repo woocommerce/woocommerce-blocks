@@ -166,7 +166,7 @@ class ReviewsByProduct extends Component {
 			value: attributes.orderby,
 		} : {
 			defaultValue: orderby,
-			onBlur: this.onChangeOrderby,
+			onChange: this.onChangeOrderby,
 		};
 
 		return (
