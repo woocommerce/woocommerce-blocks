@@ -78,7 +78,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			'product_grid'                 => $this->render_products(),
 		];
 
-		return $this->render_template_part( 'product_grid', $template, $placeholders, [ $this, $this->attributes ] );
+		return $this->render_template_part( 'product_grid', $template, $placeholders, [ $this->attributes, $this ] );
 	}
 
 	/**
