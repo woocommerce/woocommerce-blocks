@@ -66,12 +66,30 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	public function render( $attributes = array(), $content = '' ) {
 		$this->attributes = $this->parse_attributes( $attributes );
 		$this->content    = $content;
-		$this->query_args = $this->parse_query_args();
-		$products         = $this->get_products();
-		$classes          = $this->get_container_classes();
-		$output           = implode( '', array_map( array( $this, 'render_product' ), $products ) );
 
-		return sprintf( '<div class="%s"><ul class="wc-block-grid__products">%s</ul></div>', esc_attr( $classes ), $output );
+		$template = '
+			<div class="{{ product_grid_container_class }}"><ul class="wc-block-grid__products">
+				{{ product_grid }}
+			</ul></div>
+		';
+
+		$placeholders = [
+			'product_grid_container_class' => $this->get_container_classes(),
+			'product_grid'                 => $this->render_products(),
+		];
+
+		return $this->render_template_part( 'product_grid', $template, $placeholders, [ $this, $this->attributes ] );
+	}
+
+	/**
+	 * Get rendered products.
+	 *
+	 * @return string
+	 */
+	protected function render_products() {
+		$products = $this->get_products();
+
+		return implode( '', array_map( array( $this, 'render_product' ), $products ) );
 	}
 
 	/**
@@ -255,6 +273,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 * @return array List of product IDs
 	 */
 	protected function get_products() {
+		$this->query_args  = $this->parse_query_args();
 		$query_hash        = md5( wp_json_encode( $this->query_args ) . __CLASS__ );
 		$transient_name    = 'wc_block_' . $query_hash;
 		$transient_value   = get_transient( $transient_name );
@@ -328,7 +347,20 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			return '';
 		}
 
-		$data = (object) array(
+		$template = '
+			<li class="wc-block-grid__product">
+				<a href="{{ permalink }}" class="wc-block-grid__product-link">
+					{{ image }}
+					{{ title }}
+				</a>
+				{{ price }}
+				{{ badge }}
+				{{ rating }}
+				{{ button }}
+			</li>
+		';
+
+		$placeholders = [
 			'permalink' => esc_url( $product->get_permalink() ),
 			'image'     => $this->get_image_html( $product ),
 			'title'     => $this->get_title_html( $product ),
@@ -336,21 +368,12 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			'price'     => $this->get_price_html( $product ),
 			'badge'     => $this->get_sale_badge_html( $product ),
 			'button'    => $this->get_button_html( $product ),
-		);
+		];
 
 		return apply_filters(
 			'woocommerce_blocks_product_grid_item_html',
-			"<li class=\"wc-block-grid__product\">
-				<a href=\"{$data->permalink}\" class=\"wc-block-grid__product-link\">
-					{$data->image}
-					{$data->title}
-				</a>
-				{$data->price}
-				{$data->badge}
-				{$data->rating}
-				{$data->button}
-			</li>",
-			$data,
+			$this->render_template_part( 'product_grid_item', $template, $placeholders, [ $product, $this ] ),
+			(object) $placeholders,
 			$product
 		);
 	}
@@ -362,7 +385,12 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 * @return string
 	 */
 	protected function get_image_html( $product ) {
-		return '<div class="wc-block-grid__product-image">' . $product->get_image( 'woocommerce_thumbnail' ) . '</div>';
+		return $this->render_template_part(
+			'product_grid_item_image',
+			'<div class="wc-block-grid__product-image">{{ image }}</div>',
+			[ 'image' => $product->get_image( 'woocommerce_thumbnail' ) ],
+			[ $product, $this ]
+		);
 	}
 
 	/**
@@ -375,7 +403,13 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		if ( empty( $this->attributes['contentVisibility']['title'] ) ) {
 			return '';
 		}
-		return '<div class="wc-block-grid__product-title">' . $product->get_title() . '</div>';
+
+		return $this->render_template_part(
+			'product_grid_item_title',
+			'<div class="wc-block-grid__product-title">{{ title }}</div>',
+			[ 'title' => $product->get_title() ],
+			[ $product, $this ]
+		);
 	}
 
 	/**
@@ -393,9 +427,11 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		$average      = $product->get_average_rating();
 
 		if ( $rating_count > 0 ) {
-			return sprintf(
-				'<div class="wc-block-grid__product-rating">%s</div>',
-				wc_get_rating_html( $average, $rating_count )
+			return $this->render_template_part(
+				'product_grid_item_rating',
+				'<div class="wc-block-grid__product-rating">{{ rating }}</div>',
+				[ 'rating' => wc_get_rating_html( $average, $rating_count ) ],
+				[ $product, $this ]
 			);
 		}
 		return '';
@@ -411,9 +447,12 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		if ( empty( $this->attributes['contentVisibility']['price'] ) ) {
 			return '';
 		}
-		return sprintf(
-			'<div class="wc-block-grid__product-price price">%s</div>',
-			$product->get_price_html()
+
+		return $this->render_template_part(
+			'product_grid_item_price',
+			'<div class="wc-block-grid__product-price price">{{ price }}</div>',
+			[ 'price' => $product->get_price_html() ],
+			[ $product, $this ]
 		);
 	}
 
@@ -432,7 +471,12 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			return;
 		}
 
-		return '<span class="wc-block-grid__product-onsale">' . esc_html__( 'Sale!', 'woo-gutenberg-products-block' ) . '</span>';
+		return $this->render_template_part(
+			'product_grid_item_sale_badge',
+			'<span class="wc-block-grid__product-onsale">' . esc_html__( 'Sale!', 'woo-gutenberg-products-block' ) . '</span>',
+			[],
+			[ $product, $this ]
+		);
 	}
 
 	/**
@@ -445,7 +489,13 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		if ( empty( $this->attributes['contentVisibility']['button'] ) ) {
 			return '';
 		}
-		return '<div class="wp-block-button wc-block-grid__product-add-to-cart">' . $this->get_add_to_cart( $product ) . '</div>';
+
+		return $this->render_template_part(
+			'product_grid_item_button',
+			'<div class="wp-block-button wc-block-grid__product-add-to-cart">{{ add_to_cart }}</div>',
+			[ 'add_to_cart' => $this->get_add_to_cart( $product ) ],
+			[ $product, $this ]
+		);
 	}
 
 	/**
@@ -468,11 +518,6 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			$attributes['class'] .= ' ajax_add_to_cart';
 		}
 
-		return sprintf(
-			'<a href="%s" %s>%s</a>',
-			esc_url( $product->add_to_cart_url() ),
-			wc_implode_html_attributes( $attributes ),
-			esc_html( $product->add_to_cart_text() )
-		);
+		return '<a href="' . esc_url( $product->add_to_cart_url() ) . '" ' . wc_implode_html_attributes( $attributes ) . '>' . esc_html( $product->add_to_cart_text() ) . '</a>';
 	}
 }
