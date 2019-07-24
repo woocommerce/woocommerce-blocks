@@ -9,6 +9,8 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 defined( 'ABSPATH' ) || exit;
 
+use Automattic\WooCommerce\Blocks\BlockTypes\Templates\Template;
+
 /**
  * AbstractProductGrid class.
  */
@@ -67,29 +69,48 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		$this->attributes = $this->parse_attributes( $attributes );
 		$this->content    = $content;
 
-		$template = '
-			<div class="{{ product_grid_container_class }}"><ul class="wc-block-grid__products">
-				{{ product_grid }}
-			</ul></div>
-		';
+		$template = new Template( 'product-grid' );
+		$template->set_context( $this->attributes );
+		$template->set_template_args(
+			[
+				'container_class'    => $this->get_container_classes(),
+				'product_grid_items' => array_map( array( $this, 'render_product' ), $this->get_products() ),
+			]
+		);
 
-		$placeholders = [
-			'product_grid_container_class' => $this->get_container_classes(),
-			'product_grid'                 => $this->render_products(),
-		];
-
-		return $this->render_template_part( 'product_grid', $template, $placeholders, [ $this->attributes, $this ] );
+		return $template->render();
 	}
 
 	/**
-	 * Get rendered products.
+	 * Render a single products.
 	 *
-	 * @return string
+	 * @param int $id Product ID.
+	 * @return string Rendered product output.
 	 */
-	protected function render_products() {
-		$products = $this->get_products();
+	public function render_product( $id ) {
+		$product = wc_get_product( $id );
 
-		return implode( '', array_map( array( $this, 'render_product' ), $products ) );
+		if ( ! $product ) {
+			return '';
+		}
+
+		$template = new Template( 'product-grid-item' );
+		$template->set_visibility( $this->attributes['contentVisibility'] );
+		$template->set_context( $product );
+		$template->set_template_args(
+			[
+				'product'   => $product,
+				'permalink' => $product->get_permalink(),
+				'on_sale'   => $product->is_on_sale(),
+				'image'     => $product->get_image( 'woocommerce_thumbnail' ),
+				'title'     => $product->get_title(),
+				'price'     => $product->get_price_html(),
+				'rating'    => $this->get_rating_html( $product ),
+				'button'    => $this->get_button_html( $product ),
+			]
+		);
+
+		return $template->render();
 	}
 
 	/**
@@ -335,125 +356,20 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	}
 
 	/**
-	 * Render a single products.
-	 *
-	 * @param int $id Product ID.
-	 * @return string Rendered product output.
-	 */
-	public function render_product( $id ) {
-		$product = wc_get_product( $id );
-
-		if ( ! $product ) {
-			return '';
-		}
-
-		$template = '
-			<li class="wc-block-grid__product">
-				<a href="{{ permalink }}" class="wc-block-grid__product-link">
-					{{ image }}
-					{{ title }}
-				</a>
-				{{ price }}
-				{{ badge }}
-				{{ rating }}
-				{{ button }}
-			</li>
-		';
-
-		$placeholders = [
-			'permalink' => esc_url( $product->get_permalink() ),
-			'image'     => $this->get_image_html( $product ),
-			'title'     => $this->get_title_html( $product ),
-			'rating'    => $this->get_rating_html( $product ),
-			'price'     => $this->get_price_html( $product ),
-			'badge'     => $this->get_sale_badge_html( $product ),
-			'button'    => $this->get_button_html( $product ),
-		];
-
-		return apply_filters(
-			'woocommerce_blocks_product_grid_item_html',
-			$this->render_template_part( 'product_grid_item', $template, $placeholders, [ $product, $this ] ),
-			(object) $placeholders,
-			$product
-		);
-	}
-
-	/**
-	 * Get the product image.
-	 *
-	 * @param \WC_Product $product Product.
-	 * @return string
-	 */
-	protected function get_image_html( $product ) {
-		return $this->render_template_part(
-			'product_grid_item_image',
-			'<div class="wc-block-grid__product-image">{{ image }}</div>',
-			[ 'image' => $product->get_image( 'woocommerce_thumbnail' ) ],
-			[ $product, $this ]
-		);
-	}
-
-	/**
-	 * Get the product title.
-	 *
-	 * @param \WC_Product $product Product.
-	 * @return string
-	 */
-	protected function get_title_html( $product ) {
-		if ( empty( $this->attributes['contentVisibility']['title'] ) ) {
-			return '';
-		}
-
-		return $this->render_template_part(
-			'product_grid_item_title',
-			'<div class="wc-block-grid__product-title">{{ title }}</div>',
-			[ 'title' => $product->get_title() ],
-			[ $product, $this ]
-		);
-	}
-
-	/**
 	 * Render the rating icons.
 	 *
 	 * @param WC_Product $product Product.
 	 * @return string Rendered product output.
 	 */
 	protected function get_rating_html( $product ) {
-		if ( empty( $this->attributes['contentVisibility']['rating'] ) ) {
-			return '';
-		}
 		$rating_count = $product->get_rating_count();
 		$review_count = $product->get_review_count();
 		$average      = $product->get_average_rating();
 
 		if ( $rating_count > 0 ) {
-			return $this->render_template_part(
-				'product_grid_item_rating',
-				'<div class="wc-block-grid__product-rating">{{ rating }}</div>',
-				[ 'rating' => wc_get_rating_html( $average, $rating_count ) ],
-				[ $product, $this ]
-			);
+			return wc_get_rating_html( $average, $rating_count );
 		}
 		return '';
-	}
-
-	/**
-	 * Get the price.
-	 *
-	 * @param \WC_Product $product Product.
-	 * @return string Rendered product output.
-	 */
-	protected function get_price_html( $product ) {
-		if ( empty( $this->attributes['contentVisibility']['price'] ) ) {
-			return '';
-		}
-
-		return $this->render_template_part(
-			'product_grid_item_price',
-			'<div class="wc-block-grid__product-price price">{{ price }}</div>',
-			[ 'price' => $product->get_price_html() ],
-			[ $product, $this ]
-		);
 	}
 
 	/**
@@ -471,12 +387,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			return;
 		}
 
-		return $this->render_template_part(
-			'product_grid_item_sale_badge',
-			'<span class="wc-block-grid__product-onsale">' . esc_html__( 'Sale!', 'woo-gutenberg-products-block' ) . '</span>',
-			[],
-			[ $product, $this ]
-		);
+		return '<span class="wc-block-grid__product-onsale">' . esc_html__( 'Sale!', 'woo-gutenberg-products-block' ) . '</span>';
 	}
 
 	/**
@@ -486,25 +397,6 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 * @return string Rendered product output.
 	 */
 	protected function get_button_html( $product ) {
-		if ( empty( $this->attributes['contentVisibility']['button'] ) ) {
-			return '';
-		}
-
-		return $this->render_template_part(
-			'product_grid_item_button',
-			'<div class="wp-block-button wc-block-grid__product-add-to-cart">{{ add_to_cart }}</div>',
-			[ 'add_to_cart' => $this->get_add_to_cart( $product ) ],
-			[ $product, $this ]
-		);
-	}
-
-	/**
-	 * Get the "add to cart" button.
-	 *
-	 * @param \WC_Product $product Product.
-	 * @return string Rendered product output.
-	 */
-	protected function get_add_to_cart( $product ) {
 		$attributes = array(
 			'aria-label'       => $product->add_to_cart_description(),
 			'data-quantity'    => '1',

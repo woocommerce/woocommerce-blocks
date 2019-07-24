@@ -9,6 +9,8 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 defined( 'ABSPATH' ) || exit;
 
+use Automattic\WooCommerce\Blocks\BlockTypes\Templates\Template;
+
 /**
  * FeaturedProduct class.
  */
@@ -47,49 +49,38 @@ class FeaturedProduct extends AbstractDynamicBlock {
 	public function render( $attributes = array(), $content = '' ) {
 		$id      = isset( $attributes['productId'] ) ? (int) $attributes['productId'] : 0;
 		$product = wc_get_product( $id );
+
 		if ( ! $product ) {
 			return '';
 		}
+
 		$attributes = wp_parse_args( $attributes, $this->defaults );
+
 		if ( ! $attributes['height'] ) {
 			$attributes['height'] = wc_get_theme_support( 'featured_block::default_height', 500 );
 		}
 
-		$title = sprintf(
-			'<h2 class="wc-block-featured-product__title">%s</h2>',
-			wp_kses_post( $product->get_title() )
+		$template = new Template( 'featured-product' );
+		$template->set_visibility(
+			[
+				'description' => $attributes['showDesc'],
+				'price'       => $attributes['showPrice'],
+			]
+		);
+		$template->set_context( $product, $attributes, $content );
+		$template->set_template_args(
+			[
+				'container_class' => $this->get_classes( $attributes ),
+				'container_style' => $this->get_styles( $attributes, $product ),
+				'title'           => $product->get_title(),
+				'variation'       => $product->is_type( 'variation' ) ? wc_get_formatted_variation( $product, true, true, false ) : '',
+				'description'     => apply_filters( 'woocommerce_short_description', $product->get_short_description() ? $product->get_short_description() : wc_trim_string( $product->get_description(), 400 ) ),
+				'price'           => $product->get_price_html(),
+				'content'         => $content,
+			]
 		);
 
-		if ( $product->is_type( 'variation' ) ) {
-			$title .= sprintf(
-				'<h3 class="wc-block-featured-product__variation">%s</h3>',
-				wc_get_formatted_variation( $product, true, true, false )
-			);
-		}
-
-		$desc_str = sprintf(
-			'<div class="wc-block-featured-product__description">%s</div>',
-			apply_filters( 'woocommerce_short_description', $product->get_short_description() ? $product->get_short_description() : wc_trim_string( $product->get_description(), 400 ) )
-		);
-
-		$price_str = sprintf(
-			'<div class="wc-block-featured-product__price">%s</div>',
-			$product->get_price_html()
-		);
-
-		$output = sprintf( '<div class="%1$s" style="%2$s">', $this->get_classes( $attributes ), $this->get_styles( $attributes, $product ) );
-
-		$output .= $title;
-		if ( $attributes['showDesc'] ) {
-			$output .= $desc_str;
-		}
-		if ( $attributes['showPrice'] ) {
-			$output .= $price_str;
-		}
-		$output .= '<div class="wc-block-featured-product__link">' . $content . '</div>';
-		$output .= '</div>';
-
-		return $output;
+		return $template->render();
 	}
 
 	/**
