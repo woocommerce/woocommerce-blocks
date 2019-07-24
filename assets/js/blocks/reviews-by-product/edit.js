@@ -99,16 +99,18 @@ class ReviewsByProductEditor extends Component {
 					/>
 				</PanelBody>
 				<PanelBody title={ __( 'Content', 'woo-gutenberg-products-block' ) }>
-					<ToggleControl
-						label={ __( 'Product rating', 'woo-gutenberg-products-block' ) }
-						help={
-							attributes.showProductRating ?
-								__( 'Product rating is visible.', 'woo-gutenberg-products-block' ) :
-								__( 'Product rating is hidden.', 'woo-gutenberg-products-block' )
-						}
-						checked={ attributes.showProductRating }
-						onChange={ () => setAttributes( { showProductRating: ! attributes.showProductRating } ) }
-					/>
+					{ wc_product_block_data.enableReviewRating && (
+						<ToggleControl
+							label={ __( 'Product rating', 'woo-gutenberg-products-block' ) }
+							help={
+								attributes.showProductRating ?
+									__( 'Product rating is visible.', 'woo-gutenberg-products-block' ) :
+									__( 'Product rating is hidden.', 'woo-gutenberg-products-block' )
+							}
+							checked={ attributes.showProductRating }
+							onChange={ () => setAttributes( { showProductRating: ! attributes.showProductRating } ) }
+						/>
+					) }
 					<ToggleControl
 						label={ __( 'Reviewer name', 'woo-gutenberg-products-block' ) }
 						help={

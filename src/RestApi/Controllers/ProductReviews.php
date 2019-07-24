@@ -217,6 +217,7 @@ class ProductReviews extends WC_REST_Controller {
 	 */
 	public function prepare_item_for_response( $review, $request ) {
 		$context = ! empty( $request['context'] ) ? $request['context'] : 'view';
+		$rating  = get_comment_meta( $review->comment_ID, 'rating', true ) === '' ? null : (int) get_comment_meta( $review->comment_ID, 'rating', true );
 		$data    = array(
 			'id'                   => (int) $review->comment_ID,
 			'date_created'         => wc_rest_prepare_date_response( $review->comment_date ),
@@ -224,7 +225,7 @@ class ProductReviews extends WC_REST_Controller {
 			'product_id'           => (int) $review->comment_post_ID,
 			'reviewer'             => $review->comment_author,
 			'review'               => $review->comment_content,
-			'rating'               => (int) get_comment_meta( $review->comment_ID, 'rating', true ),
+			'rating'               => $rating,
 			'verified'             => wc_review_is_from_verified_owner( $review->comment_ID ),
 			'reviewer_avatar_urls' => rest_get_avatar_urls( $review->comment_author_email ),
 		);
