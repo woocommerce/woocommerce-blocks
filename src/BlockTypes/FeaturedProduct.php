@@ -9,7 +9,7 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 defined( 'ABSPATH' ) || exit;
 
-use Automattic\WooCommerce\Blocks\BlockTypes\Templates\Template;
+use Automattic\WooCommerce\Blocks\Template;
 
 /**
  * FeaturedProduct class.
@@ -61,12 +61,6 @@ class FeaturedProduct extends AbstractDynamicBlock {
 		}
 
 		$template = new Template( 'featured-product' );
-		$template->set_visibility(
-			[
-				'description' => $attributes['showDesc'],
-				'price'       => $attributes['showPrice'],
-			]
-		);
 		$template->set_context( $product, $attributes, $content );
 		$template->set_template_args(
 			[
@@ -74,8 +68,8 @@ class FeaturedProduct extends AbstractDynamicBlock {
 				'container_style' => $this->get_styles( $attributes, $product ),
 				'title'           => $product->get_title(),
 				'variation'       => $product->is_type( 'variation' ) ? wc_get_formatted_variation( $product, true, true, false ) : '',
-				'description'     => apply_filters( 'woocommerce_short_description', $product->get_short_description() ? $product->get_short_description() : wc_trim_string( $product->get_description(), 400 ) ),
-				'price'           => $product->get_price_html(),
+				'description'     => $attributes['showDesc'] ? apply_filters( 'woocommerce_short_description', $product->get_short_description() ? $product->get_short_description() : wc_trim_string( $product->get_description(), 400 ) ) : '',
+				'price'           => $attributes['showPrice'] ? $product->get_price_html() : '',
 				'content'         => $content,
 			]
 		);

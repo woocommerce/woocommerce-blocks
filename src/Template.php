@@ -5,7 +5,7 @@
  * @package WooCommerce/Blocks
  */
 
-namespace Automattic\WooCommerce\Blocks\BlockTypes\Templates;
+namespace Automattic\WooCommerce\Blocks;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -20,13 +20,6 @@ class Template {
 	 * @var string
 	 */
 	protected $name = '';
-
-	/**
-	 * Content visibility.
-	 *
-	 * @var array
-	 */
-	protected $visibility = array();
 
 	/**
 	 * Args to pass through to the template file.
@@ -52,15 +45,6 @@ class Template {
 	}
 
 	/**
-	 * Set content visibility.
-	 *
-	 * @param array $visibility Name/value pairs which define what content is visible.
-	 */
-	public function set_visibility( $visibility = array() ) {
-		$this->visibility = (array) $visibility;
-	}
-
-	/**
 	 * Set template args.
 	 *
 	 * @param array $template_args Name/value pairs of args to pass to template files.
@@ -74,16 +58,6 @@ class Template {
 	 */
 	public function set_context() {
 		$this->context = (array) func_get_args();
-	}
-
-	/**
-	 * Is content visible?
-	 *
-	 * @param string $name Name of content to check.
-	 * @return boolean
-	 */
-	public function is_visible( $name ) {
-		return ! isset( $this->visibility[ $name ] ) || false !== $this->visibility[ $name ];
 	}
 
 	/**
@@ -113,7 +87,7 @@ class Template {
 		 */
 		$template_path = apply_filters_ref_array(
 			$this->get_hook_prefix() . '_template_path',
-			$this->prepare_ref_array( __DIR__ . '/' . $this->name . '.html.php', $this->context )
+			$this->prepare_ref_array( __DIR__ . '/Templates/' . $this->name . '.php', $this->context )
 		);
 
 		/**
@@ -178,7 +152,6 @@ class Template {
 	protected function get_template_html( $file, $args ) {
 		if ( file_exists( $file ) ) {
 			ob_start();
-			$template = $this;
 			extract( $args, EXTR_SKIP ); // phpcs:ignore
 			include $file;
 			return ob_get_clean();

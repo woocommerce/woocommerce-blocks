@@ -9,7 +9,7 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 defined( 'ABSPATH' ) || exit;
 
-use Automattic\WooCommerce\Blocks\BlockTypes\Templates\Template;
+use Automattic\WooCommerce\Blocks\Template;
 
 /**
  * AbstractProductGrid class.
@@ -95,7 +95,6 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		}
 
 		$template = new Template( 'product-grid-item' );
-		$template->set_visibility( $this->attributes['contentVisibility'] );
 		$template->set_context( $product );
 		$template->set_template_args(
 			[
@@ -103,10 +102,10 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 				'permalink' => $product->get_permalink(),
 				'on_sale'   => $product->is_on_sale(),
 				'image'     => $product->get_image( 'woocommerce_thumbnail' ),
-				'title'     => $product->get_title(),
-				'price'     => $product->get_price_html(),
-				'rating'    => $this->get_rating_html( $product ),
-				'button'    => $this->get_button_html( $product ),
+				'title'     => ! empty( $this->attributes['contentVisibility']['title'] ) ? $product->get_title() : '',
+				'price'     => ! empty( $this->attributes['contentVisibility']['price'] ) ? $product->get_price_html() : '',
+				'rating'    => ! empty( $this->attributes['contentVisibility']['rating'] ) ? $this->get_rating_html( $product ) : '',
+				'button'    => ! empty( $this->attributes['contentVisibility']['button'] ) ? $this->get_button_html( $product ) : '',
 			]
 		);
 

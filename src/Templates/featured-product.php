@@ -14,11 +14,11 @@ defined( 'ABSPATH' ) || exit;
 		<h3 class="wc-block-featured-product__variation"><?php echo wp_kses_post( $variation ); ?></h3>
 	<?php endif; ?>
 
-	<?php if ( $template::is_visible( 'description' ) ) : ?>
+	<?php if ( $description ) : ?>
 		<div class="wc-block-featured-product__description"><?php echo wp_kses_post( $description ); ?></div>
 	<?php endif; ?>
 
-	<?php if ( $template::is_visible( 'price' ) ) : ?>
+	<?php if ( $price ) : ?>
 		<div class="wc-block-featured-product__price"><?php echo wp_kses_post( $price ); ?></div>
 	<?php endif; ?>
 
