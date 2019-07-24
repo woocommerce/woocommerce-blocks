@@ -112,6 +112,10 @@ class FeaturedCategory extends Component {
 		this.getCategory();
 	}
 
+	componentWillUnmount() {
+		this.debouncedGetCategory.cancel();
+	}
+
 	componentDidUpdate( prevProps ) {
 		if ( prevProps.attributes.categoryId !== this.props.attributes.categoryId ) {
 			this.debouncedGetCategory();
@@ -217,7 +221,7 @@ class FeaturedCategory extends Component {
 							const id = value[ 0 ] ? value[ 0 ].id : 0;
 							setAttributes( { categoryId: id, mediaId: 0, mediaSrc: '' } );
 						} }
-						multiple={ false }
+						isSingle
 					/>
 					<Button isDefault onClick={ onDone }>
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }
