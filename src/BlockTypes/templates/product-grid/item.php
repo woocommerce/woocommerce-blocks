@@ -6,26 +6,32 @@
  */
 
 defined( 'ABSPATH' ) || exit;
+
+use Automattic\WooCommerce\Blocks\Template;
 ?>
 <li class="wc-block-grid__product">
-	<a class="wc-block-grid__product-link" href="<?php echo esc_url( $permalink ); ?>">
-		<div class="wc-block-grid__product-image"><?php echo wp_kses_post( $image ); ?></div>
-		<div class="wc-block-grid__product-title"><?php echo wp_kses_post( $title ); ?></div>
-	</a>
+	<?php do_action( $hook_prefix . '_before_product', $template_args ); ?>
+
+	<?php Template::render( '<a class="wc-block-grid__product-link" href="' . esc_url( $permalink ) . '">', 'product_link', $hook_prefix, $template_args ); ?>
+		<?php Template::render( '<div class="wc-block-grid__product-image">' . wp_kses_post( $image ) . '</div>', 'image', $hook_prefix, $template_args ); ?>
+		<?php Template::render( '<div class="wc-block-grid__product-title">' . wp_kses_post( $title ) . '</div>', 'title', $hook_prefix, $template_args ); ?>
+	<?php Template::render( '</a>', 'product_link_close', $hook_prefix, $template_args ); ?>
 
 	<?php if ( $price ) : ?>
-		<div class="wc-block-grid__product-price price"><?php echo wp_kses_post( $price ); ?></div>
+		<?php Template::render( '<div class="wc-block-grid__product-price price">' . wp_kses_post( $price ) . '</div>', 'price', $hook_prefix, $template_args ); ?>
 	<?php endif; ?>
 
 	<?php if ( $on_sale ) : ?>
-		<span class="wc-block-grid__product-onsale"><?php esc_html_e( 'Sale!', 'woo-gutenberg-products-block' ); ?></span>
+		<?php Template::render( '<span class="wc-block-grid__product-onsale">' . esc_html__( 'Sale!', 'woo-gutenberg-products-block' ) . '</span>', 'onsale', $hook_prefix, $template_args ); ?>
 	<?php endif; ?>
 
 	<?php if ( $rating ) : ?>
-		<div class="wc-block-grid__product-rating"><?php echo wp_kses_post( $rating ); ?></div>
+		<?php Template::render( '<div class="wc-block-grid__product-rating">' . wp_kses_post( $rating ) . '</div>', 'rating', $hook_prefix, $template_args ); ?>
 	<?php endif; ?>
 
 	<?php if ( $button ) : ?>
-		<div class="wc-block-grid__product-add-to-cart wp-block-button"><?php echo wp_kses_post( $button ); ?></div>
+		<?php Template::render( '<div class="wc-block-grid__product-add-to-cart wp-block-button">' . wp_kses_post( $button ) . '</div>', 'add_to_cart', $hook_prefix, $template_args ); ?>
 	<?php endif; ?>
+
+	<?php do_action( $hook_prefix . '_after_product', $template_args ); ?>
 </li>

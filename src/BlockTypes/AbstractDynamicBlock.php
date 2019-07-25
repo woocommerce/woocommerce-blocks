@@ -57,10 +57,10 @@ abstract class AbstractDynamicBlock {
 	 * Return the prefix for filter and action hooks.
 	 *
 	 * @param string $hook Hook name to prefix.
-	 * @return string Hook name, in the format: NAMESPACE_BLOCK_block_HOOK, lowercase.
+	 * @return string Hook name, lowercase, hyphens replaced with underscores.
 	 */
-	protected function get_prefixed_hook( $hook ) {
-		return implode( '_', array_map( 'strtolower', [ $this->namespace, $this->block_name, 'block', $hook ] ) );
+	protected function get_prefixed_hook( $hook = '' ) {
+		return implode( '_', str_replace( '-', '_', array_map( 'strtolower', [ 'woocommerce_block_template', $hook ] ) ) );
 	}
 
 	/**
@@ -72,13 +72,18 @@ abstract class AbstractDynamicBlock {
 	 * @return string The HTML from the file.
 	 */
 	protected function get_template_html( $template_name, $template_path, $template_args ) {
-		$template_path = apply_filters( $this->get_prefixed_hook( 'template_path' ), $template_path, $template_name, $this );
-		$template_args = apply_filters( $this->get_prefixed_hook( 'template_args' ), $template_args, $template_name, $this );
 		$template_html = '';
+		$template_path = apply_filters( $this->get_prefixed_hook( 'path' ), $template_path, $template_name, $this );
+
+		// Prepare variables to pass to template file.
+		$hook_prefix            = $this->get_prefixed_hook( $template_name );
+		$template_args['block'] = $this;
+		$template_args          = apply_filters( $this->get_prefixed_hook( 'args' ), $template_args, $template_name, $this );
+
+		extract( $template_args, EXTR_SKIP ); // phpcs:ignore
 
 		if ( file_exists( $template_path ) ) {
 			ob_start();
-			extract( $template_args, EXTR_SKIP ); // phpcs:ignore
 			include $template_path;
 			$template_html = ob_get_clean();
 		}
@@ -93,7 +98,7 @@ abstract class AbstractDynamicBlock {
 		 * @param object $this The block class.
 		 * @return string
 		 */
-		return apply_filters( $this->get_prefixed_hook( 'template_html' ), $template_html, $template_name, $template_path, $template_args, $this );
+		return apply_filters( $this->get_prefixed_hook( 'html' ), $template_html, $template_name, $template_path, $template_args, $this );
 	}
 
 	/**

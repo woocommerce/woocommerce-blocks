@@ -6,13 +6,19 @@
  */
 
 defined( 'ABSPATH' ) || exit;
+
+use Automattic\WooCommerce\Blocks\Template;
 ?>
 <div class="<?php echo esc_attr( $container_class ); ?>" style="<?php echo esc_attr( $container_style ); ?>">
-	<h2 class="wc-block-featured-category__title"><?php echo wp_kses_post( $title ); ?></h2>
+	<?php do_action( $hook_prefix . '_before_featured_category', $template_args ); ?>
+
+	<?php Template::render( '<h2 class="wc-block-featured-category__title">' . wp_kses_post( $title ) . '</h2>', 'title', $hook_prefix, $template_args ); ?>
 
 	<?php if ( $description ) : ?>
-		<div class="wc-block-featured-category__description"><?php echo wp_kses_post( $description ); ?></div>
+		<?php Template::render( '<div class="wc-block-featured-category__description">' . wp_kses_post( $description ) . '</div>', 'description', $hook_prefix, $template_args ); ?>
 	<?php endif; ?>
 
-	<div class="wc-block-featured-category__link"><?php echo wp_kses_post( $content ); ?></div>
+	<?php Template::render( '<div class="wc-block-featured-category__link">' . wp_kses_post( $content ) . '</div>', 'link', $hook_prefix, $template_args ); ?>
+
+	<?php do_action( $hook_prefix . '_after_featured_category', $template_args ); ?>
 </div>
