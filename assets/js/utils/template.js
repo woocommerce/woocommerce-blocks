@@ -2,7 +2,7 @@
 /**
  * External dependencies
  */
-import { applyFilters } from '@wordpress/hooks';
+import { applyFilters, doAction } from '@wordpress/hooks';
 
 export class Template {
 	constructor( args ) {
@@ -21,6 +21,10 @@ export class Template {
 			applyFilters( `woocommerce-blocks-${ this.name }-template`, this.template, filteredTemplateArgs, this.context ) :
 			this.template;
 
-		return filteredTemplate( filteredTemplateArgs, this.context, this.allowExtensibility );
+		doAction( `woocommerce-blocks-before-${ this.name }`, filteredTemplate, filteredTemplateArgs, this.context );
+		const template = filteredTemplate( filteredTemplateArgs, this.context, this.allowExtensibility );
+		doAction( `woocommerce-blocks-after-${ this.name }`, filteredTemplate, filteredTemplateArgs, this.context );
+
+		return template;
 	}
 }
