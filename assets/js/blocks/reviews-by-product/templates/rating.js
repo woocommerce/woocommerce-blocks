@@ -7,6 +7,7 @@ const ratingTemplate = ( { rating } ) => {
 	const starStyle = {
 		width: ( rating / 5 * 100 ) + '%',
 	};
+
 	return (
 		<div className="wc-block-reviews-by-product__rating">
 			<div className="wc-block-reviews-by-product__rating__stars" role="img">

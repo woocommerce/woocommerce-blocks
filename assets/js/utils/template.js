@@ -16,6 +16,6 @@ export class Template {
 		const filteredTemplateArgs = applyFilters( `woocommerce-blocks-${ this.name }-args`, this.templateArgs, this.context );
 		const filteredTemplate = applyFilters( `woocommerce-blocks-${ this.name }-template`, this.template, filteredTemplateArgs, this.context );
 
-		return filteredTemplate( filteredTemplateArgs );
+		return filteredTemplate( filteredTemplateArgs, this.context );
 	}
 }
