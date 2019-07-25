@@ -10,12 +10,17 @@ export class Template {
 		this.templateArgs = args.templateArgs;
 		this.context = args.context;
 		this.template = args.template;
+		this.allowExtensibility = args.allowExtensibility;
 	}
 
 	render() {
-		const filteredTemplateArgs = applyFilters( `woocommerce-blocks-${ this.name }-args`, this.templateArgs, this.context );
-		const filteredTemplate = applyFilters( `woocommerce-blocks-${ this.name }-template`, this.template, filteredTemplateArgs, this.context );
+		const filteredTemplateArgs = this.allowExtensibility ?
+			applyFilters( `woocommerce-blocks-${ this.name }-args`, this.templateArgs, this.context ) :
+			this.templateArgs;
+		const filteredTemplate = this.allowExtensibility ?
+			applyFilters( `woocommerce-blocks-${ this.name }-template`, this.template, filteredTemplateArgs, this.context ) :
+			this.template;
 
-		return filteredTemplate( filteredTemplateArgs, this.context );
+		return filteredTemplate( filteredTemplateArgs, this.context, this.allowExtensibility );
 	}
 }

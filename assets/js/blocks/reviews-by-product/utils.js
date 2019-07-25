@@ -12,7 +12,7 @@ import reviewTemplate from './templates/review';
  *
  * @return {Object} React JSx nodes of the block
  */
-export function renderReview( attributes, review = {}, i = 0 ) {
+export function renderReview( attributes, review = {}, i = 0, allowExtensibility = true ) {
 	const { productId, showAvatar, showProductRating, showReviewDate, showReviewerName } = attributes;
 	const { id = null, date_created: dateCreated, rating, review: text = '', reviewer = '', reviewer_avatar_urls: avatarUrls = {} } = review;
 	const isLoading = ! Object.keys( review ).length > 0;
@@ -42,6 +42,7 @@ export function renderReview( attributes, review = {}, i = 0 ) {
 		templateArgs,
 		context,
 		template: reviewTemplate,
+		allowExtensibility,
 	} );
 
 	return ReviewTemplate.render();

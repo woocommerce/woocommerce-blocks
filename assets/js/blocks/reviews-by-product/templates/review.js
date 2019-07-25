@@ -13,7 +13,8 @@ import ratingTemplate from './rating';
 import reviewerTemplate from './reviewer';
 import reviewTextTemplate from './review-text';
 
-const reviewTemplate = ( { className, id, i, isLoading, avatarUrls, dateCreated, rating, reviewer, text, showAvatar, showReviewerName, showProductRating, showReviewDate }, context ) => {
+const reviewTemplate = ( args, context, allowExtensibility ) => {
+	const { className, id, i, isLoading, avatarUrls, dateCreated, rating, reviewer, text, showAvatar, showReviewerName, showProductRating, showReviewDate } = args;
 	const classes = classNames( className, {
 		'has-avatar': showAvatar,
 		'has-date': showReviewDate,
@@ -27,6 +28,7 @@ const reviewTemplate = ( { className, id, i, isLoading, avatarUrls, dateCreated,
 		templateArgs: { text },
 		context,
 		template: reviewTextTemplate,
+		allowExtensibility,
 	} );
 	const reviewText = ReviewTextTemplate.render();
 
@@ -37,6 +39,7 @@ const reviewTemplate = ( { className, id, i, isLoading, avatarUrls, dateCreated,
 			templateArgs: { avatarUrls, isLoading },
 			context,
 			template: avatarTemplate,
+			allowExtensibility,
 		} );
 		reviewAvatar = AvatarTemplate.render();
 	}
@@ -46,6 +49,7 @@ const reviewTemplate = ( { className, id, i, isLoading, avatarUrls, dateCreated,
 		templateArgs: { reviewer },
 		context,
 		template: reviewerTemplate,
+		allowExtensibility,
 	} );
 	const reviewReviewer = ReviewerTemplate.render();
 
@@ -56,6 +60,7 @@ const reviewTemplate = ( { className, id, i, isLoading, avatarUrls, dateCreated,
 			templateArgs: { rating },
 			context,
 			template: ratingTemplate,
+			allowExtensibility,
 		} );
 		reviewRating = RatingTemplate.render();
 	}
@@ -65,6 +70,7 @@ const reviewTemplate = ( { className, id, i, isLoading, avatarUrls, dateCreated,
 		templateArgs: { date: dateCreated },
 		context,
 		template: dateTemplate,
+		allowExtensibility,
 	} );
 	const reviewDate = DateTemplate.render();
 

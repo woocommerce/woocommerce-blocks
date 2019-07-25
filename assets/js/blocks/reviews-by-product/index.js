@@ -120,7 +120,7 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 		return (
 			<div className={ classes } { ...data }>
 				<ul className="wc-block-reviews-by-product__list">
-					{ renderReview( attributes ) }
+					{ renderReview( attributes, {}, 0, false ) }
 				</ul>
 			</div>
 		);
