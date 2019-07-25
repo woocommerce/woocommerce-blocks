@@ -9,8 +9,6 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 defined( 'ABSPATH' ) || exit;
 
-use Automattic\WooCommerce\Blocks\Template;
-
 /**
  * FeaturedProduct class.
  */
@@ -60,21 +58,18 @@ class FeaturedProduct extends AbstractDynamicBlock {
 			$attributes['height'] = wc_get_theme_support( 'featured_block::default_height', 500 );
 		}
 
-		$template = new Template( 'featured-product' );
-		$template->set_context( $product, $attributes, $content );
-		$template->set_template_args(
-			[
-				'container_class' => $this->get_classes( $attributes ),
-				'container_style' => $this->get_styles( $attributes, $product ),
-				'title'           => $product->get_title(),
-				'variation'       => $product->is_type( 'variation' ) ? wc_get_formatted_variation( $product, true, true, false ) : '',
-				'description'     => $attributes['showDesc'] ? apply_filters( 'woocommerce_short_description', $product->get_short_description() ? $product->get_short_description() : wc_trim_string( $product->get_description(), 400 ) ) : '',
-				'price'           => $attributes['showPrice'] ? $product->get_price_html() : '',
-				'content'         => $content,
-			]
-		);
+		$template_args = [
+			'product'         => $product,
+			'content'         => $content,
+			'container_class' => $this->get_classes( $attributes ),
+			'container_style' => $this->get_styles( $attributes, $product ),
+			'title'           => $product->get_title(),
+			'variation'       => $product->is_type( 'variation' ) ? wc_get_formatted_variation( $product, true, true, false ) : '',
+			'description'     => $attributes['showDesc'] ? apply_filters( 'woocommerce_short_description', $product->get_short_description() ? $product->get_short_description() : wc_trim_string( $product->get_description(), 400 ) ) : '',
+			'price'           => $attributes['showPrice'] ? $product->get_price_html() : '',
+		];
 
-		return $template->render();
+		return $this->get_template_html( 'featured_product', __DIR__ . '/templates/featured-product.php', $template_args );
 	}
 
 	/**

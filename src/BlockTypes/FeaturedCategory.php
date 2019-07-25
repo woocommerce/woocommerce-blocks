@@ -46,34 +46,27 @@ class FeaturedCategory extends AbstractDynamicBlock {
 	public function render( $attributes = array(), $content = '' ) {
 		$id       = isset( $attributes['categoryId'] ) ? (int) $attributes['categoryId'] : 0;
 		$category = get_term( $id, 'product_cat' );
+
 		if ( ! $category ) {
 			return '';
 		}
+
 		$attributes = wp_parse_args( $attributes, $this->defaults );
+
 		if ( ! $attributes['height'] ) {
 			$attributes['height'] = wc_get_theme_support( 'featured_block::default_height', 500 );
 		}
 
-		$title = sprintf(
-			'<h2 class="wc-block-featured-category__title">%s</h2>',
-			wp_kses_post( $category->name )
-		);
+		$template_args = [
+			'category'        => $category,
+			'content'         => $content,
+			'container_class' => $this->get_classes( $attributes ),
+			'container_style' => $this->get_styles( $attributes, $category ),
+			'title'           => $category->name,
+			'description'     => $attributes['showDesc'] ? wc_format_content( $category->description ) : '',
+		];
 
-		$desc_str = sprintf(
-			'<div class="wc-block-featured-category__description">%s</div>',
-			wc_format_content( $category->description )
-		);
-
-		$output = sprintf( '<div class="%1$s" style="%2$s">', $this->get_classes( $attributes ), $this->get_styles( $attributes, $category ) );
-
-		$output .= $title;
-		if ( $attributes['showDesc'] ) {
-			$output .= $desc_str;
-		}
-		$output .= '<div class="wc-block-featured-category__link">' . $content . '</div>';
-		$output .= '</div>';
-
-		return $output;
+		return $this->get_template_html( 'featured_category', __DIR__ . '/templates/featured-category.php', $template_args );
 	}
 
 	/**

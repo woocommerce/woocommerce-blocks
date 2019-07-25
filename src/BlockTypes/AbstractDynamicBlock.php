@@ -54,6 +54,49 @@ abstract class AbstractDynamicBlock {
 	abstract public function render( $attributes = array(), $content = '' );
 
 	/**
+	 * Return the prefix for filter and action hooks.
+	 *
+	 * @param string $hook Hook name to prefix.
+	 * @return string Hook name, in the format: NAMESPACE_BLOCK_block_HOOK, lowercase.
+	 */
+	protected function get_prefixed_hook( $hook ) {
+		return implode( '_', array_map( 'strtolower', [ $this->namespace, $this->block_name, 'block', $hook ] ) );
+	}
+
+	/**
+	 * Get template HTML from a template file.
+	 *
+	 * @param string $template_name Name of the template file. Used in filters.
+	 * @param string $template_path Path to template file.
+	 * @param array  $template_args array of args to extract and pass to the template file.
+	 * @return string The HTML from the file.
+	 */
+	protected function get_template_html( $template_name, $template_path, $template_args ) {
+		$template_path = apply_filters( $this->get_prefixed_hook( 'template_path' ), $template_path, $template_name, $this );
+		$template_args = apply_filters( $this->get_prefixed_hook( 'template_args' ), $template_args, $template_name, $this );
+		$template_html = '';
+
+		if ( file_exists( $template_path ) ) {
+			ob_start();
+			extract( $template_args, EXTR_SKIP ); // phpcs:ignore
+			include $template_path;
+			$template_html = ob_get_clean();
+		}
+
+		/**
+		 * Filter the rendered template part.
+		 *
+		 * @param string $template_html HTML that was generated from the template.
+		 * @param string $template_name Name of the template part.
+		 * @param string $template_path Path to template file.
+		 * @param array  $template_args Args that will be passed to the template file.
+		 * @param object $this The block class.
+		 * @return string
+		 */
+		return apply_filters( $this->get_prefixed_hook( 'template_html' ), $template_html, $template_name, $template_path, $template_args, $this );
+	}
+
+	/**
 	 * Get block attributes.
 	 *
 	 * @return array
