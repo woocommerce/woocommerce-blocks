@@ -17,6 +17,7 @@ import {
 	Toolbar,
 	withSpokenMessages,
 } from '@wordpress/components';
+import classNames from 'classnames';
 import { SearchListItem } from '@woocommerce/components';
 import { Component, Fragment } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
@@ -248,6 +249,16 @@ class ReviewsByProductEditor extends Component {
 		const { editMode, productId } = attributes;
 		const { product } = this.state;
 
+		const { className, showReviewDate, showReviewerName } = attributes;
+		const showAvatar = wc_product_block_data.showAvatars && attributes.showAvatar;
+		const showProductRating = wc_product_block_data.enableReviewRating && attributes.showProductRating;
+		const classes = classNames( 'wc-block-reviews-by-product', className, {
+			'has-avatar': showAvatar,
+			'has-date': showReviewDate,
+			'has-name': showReviewerName,
+			'has-rating': showProductRating,
+		} );
+
 		return (
 			<Fragment>
 				<BlockControls>
@@ -284,7 +295,9 @@ class ReviewsByProductEditor extends Component {
 								} } />
 							</Placeholder>
 						) : (
-							<Block attributes={ attributes } isPreview />
+							<div className={ classes }>
+								<Block attributes={ attributes } isPreview />
+							</div>
 						) }
 					</Fragment>
 				) }
