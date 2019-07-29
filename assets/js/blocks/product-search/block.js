@@ -44,7 +44,7 @@ class ProductSearchBlock extends Component {
 			<form className={ classes } { ...data } role="search" method="get" action={ home } data-form-id={ formId }>
 				<label
 					htmlFor={ formId }
-					className={ !! hasLabel ? 'wc-block-product-search__label' : 'wc-block-product-search__label screen-reader-text' }
+					className={ hasLabel ? 'wc-block-product-search__label' : 'wc-block-product-search__label screen-reader-text' }
 				>
 					{ label }
 				</label>
