@@ -17,13 +17,10 @@ class ProductCategoriesBlock extends Component {
 	constructor() {
 		super( ...arguments );
 		this.select = createRef();
+		this.id = uniqueID( '', 'wc-block-product-categories' );
 		this.onNavigate = this.onNavigate.bind( this );
 		this.renderList = this.renderList.bind( this );
 		this.renderOptions = this.renderOptions.bind( this );
-	}
-
-	componentWillMount() {
-		this.id = uniqueID( '', 'wc-block-product-categories' );
 	}
 
 	onNavigate() {
