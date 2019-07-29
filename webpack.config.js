@@ -19,15 +19,30 @@ function findModuleMatch( module, match ) {
 	return false;
 }
 
+const baseConfig = {
+	mode: NODE_ENV,
+	performance: {
+		hints: false,
+	},
+	stats: {
+		all: false,
+		assets: true,
+		builtAt: true,
+		colors: true,
+		errors: true,
+		hash: true,
+		timings: true,
+	},
+};
+
 /**
  * Config for compiling Gutenberg blocks JS.
  */
 const GutenbergBlocksConfig = {
-	mode: NODE_ENV,
+	...baseConfig,
 	entry: {
 		// Shared blocks code
 		blocks: './assets/js/index.js',
-		frontend: [ './assets/js/blocks/product-categories/frontend.js' ],
 		// Blocks
 		'handpicked-products': './assets/js/blocks/handpicked-products/index.js',
 		'product-best-sellers': './assets/js/blocks/product-best-sellers/index.js',
@@ -39,6 +54,8 @@ const GutenbergBlocksConfig = {
 		'products-by-attribute': './assets/js/blocks/products-by-attribute/index.js',
 		'featured-product': './assets/js/blocks/featured-product/index.js',
 		'product-search': './assets/js/blocks/product-search/index.js',
+		'product-tag': './assets/js/blocks/product-tag/index.js',
+		'featured-category': './assets/js/blocks/featured-category/index.js',
 	},
 	output: {
 		path: path.resolve( __dirname, './build/' ),
@@ -53,13 +70,6 @@ const GutenbergBlocksConfig = {
 	optimization: {
 		splitChunks: {
 			cacheGroups: {
-				packages: {
-					test: /[\\/]node_modules[\\/]@woocommerce/,
-					name: 'packages',
-					chunks: 'all',
-					enforce: true,
-					priority: 10, // Higher priority to ensure @woocommerce/* packages are caught here.
-				},
 				commons: {
 					test: /[\\/]node_modules[\\/]/,
 					name: 'vendors',
@@ -92,7 +102,12 @@ const GutenbergBlocksConfig = {
 			{
 				test: /\.jsx?$/,
 				exclude: /node_modules/,
-				loader: 'babel-loader?cacheDirectory',
+				use: {
+					loader: 'babel-loader?cacheDirectory',
+					options: {
+						presets: [ '@wordpress/default' ],
+					},
+				},
 			},
 			{
 				test: /\.s[c|a]ss$/,
@@ -117,7 +132,6 @@ const GutenbergBlocksConfig = {
 		],
 	},
 	plugins: [
-		new CleanWebpackPlugin(),
 		new MiniCssExtractPlugin( {
 			filename: '[name].css',
 		} ),
@@ -130,18 +144,42 @@ const GutenbergBlocksConfig = {
 		} ),
 		new DependencyExtractionWebpackPlugin( { injectPolyfill: true } ),
 	],
-	performance: {
-		hints: false,
-	},
-	stats: {
-		all: false,
-		assets: true,
-		builtAt: true,
-		colors: true,
-		errors: true,
-		hash: true,
-		timings: true,
-	},
 };
 
-module.exports = [ GutenbergBlocksConfig ];
+const BlocksFrontendConfig = {
+	...baseConfig,
+	entry: './assets/js/blocks/product-categories/frontend.js',
+	output: {
+		path: path.resolve( __dirname, './build/' ),
+		filename: 'frontend.js',
+	},
+	module: {
+		rules: [
+			{
+				test: /\.jsx?$/,
+				exclude: /node_modules/,
+				use: {
+					loader: 'babel-loader?cacheDirectory',
+					options: {
+						...require( '@wordpress/babel-preset-default' ),
+						plugins: [
+							'@babel/plugin-transform-react-jsx',
+							'@babel/plugin-transform-runtime',
+							'transform-object-rest-spread',
+							'transform-async-generator-functions',
+						],
+					},
+				},
+			},
+		],
+	},
+	plugins: [
+		new CleanWebpackPlugin(),
+		new ProgressBarPlugin( {
+			format: chalk.blue( 'Build frontend scripts' ) + ' [:bar] ' + chalk.green( ':percent' ) + ' :msg (:elapsed seconds)',
+		} ),
+		new DependencyExtractionWebpackPlugin( { injectPolyfill: true } ),
+	],
+};
+
+module.exports = [ GutenbergBlocksConfig, BlocksFrontendConfig ];

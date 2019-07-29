@@ -30,25 +30,25 @@ class Assets {
 	 */
 	public static function register_assets() {
 		self::register_style( 'wc-block-editor', plugins_url( 'build/editor.css', __DIR__ ), array( 'wp-edit-blocks' ) );
-		self::register_style( 'wc-block-style', plugins_url( 'build/style.css', __DIR__ ), array( 'wp-components' ) );
+		self::register_style( 'wc-block-style', plugins_url( 'build/style.css', __DIR__ ), array() );
 
 		// Shared libraries and components across all blocks.
 		self::register_script( 'wc-blocks', plugins_url( 'build/blocks.js', __DIR__ ), array(), false );
 		self::register_script( 'wc-vendors', plugins_url( 'build/vendors.js', __DIR__ ), array(), false );
-		self::register_script( 'wc-packages', plugins_url( 'build/packages.js', __DIR__ ), array(), false );
-		self::register_script( 'wc-frontend', plugins_url( 'build/frontend.js', __DIR__ ), array( 'wc-vendors' ) );
 
 		// Individual blocks.
-		self::register_script( 'wc-handpicked-products', plugins_url( 'build/handpicked-products.js', __DIR__ ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
-		self::register_script( 'wc-product-best-sellers', plugins_url( 'build/product-best-sellers.js', __DIR__ ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
-		self::register_script( 'wc-product-category', plugins_url( 'build/product-category.js', __DIR__ ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
-		self::register_script( 'wc-product-new', plugins_url( 'build/product-new.js', __DIR__ ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
-		self::register_script( 'wc-product-on-sale', plugins_url( 'build/product-on-sale.js', __DIR__ ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
-		self::register_script( 'wc-product-top-rated', plugins_url( 'build/product-top-rated.js', __DIR__ ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
-		self::register_script( 'wc-products-by-attribute', plugins_url( 'build/products-by-attribute.js', __DIR__ ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
-		self::register_script( 'wc-featured-product', plugins_url( 'build/featured-product.js', __DIR__ ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
-		self::register_script( 'wc-product-categories', plugins_url( 'build/product-categories.js', __DIR__ ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
-		self::register_script( 'wc-product-search', plugins_url( 'build/product-search.js', __DIR__ ), array( 'wc-vendors', 'wc-packages', 'wc-blocks' ) );
+		self::register_script( 'wc-handpicked-products', plugins_url( 'build/handpicked-products.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
+		self::register_script( 'wc-product-best-sellers', plugins_url( 'build/product-best-sellers.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
+		self::register_script( 'wc-product-category', plugins_url( 'build/product-category.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
+		self::register_script( 'wc-product-new', plugins_url( 'build/product-new.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
+		self::register_script( 'wc-product-on-sale', plugins_url( 'build/product-on-sale.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
+		self::register_script( 'wc-product-top-rated', plugins_url( 'build/product-top-rated.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
+		self::register_script( 'wc-products-by-attribute', plugins_url( 'build/products-by-attribute.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
+		self::register_script( 'wc-featured-product', plugins_url( 'build/featured-product.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
+		self::register_script( 'wc-featured-category', plugins_url( 'build/featured-category.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
+		self::register_script( 'wc-product-categories', plugins_url( 'build/product-categories.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
+		self::register_script( 'wc-product-tag', plugins_url( 'build/product-tag.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
+		self::register_script( 'wc-product-search', plugins_url( 'build/product-search.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
 	}
 
 	/**
@@ -112,6 +112,7 @@ class Assets {
 	 * @since 2.0.0
 	 */
 	public static function print_script_block_data() {
+		$tag_count          = wp_count_terms( 'product_tag' );
 		$product_counts     = wp_count_posts( 'product' );
 		$product_categories = get_terms(
 			'product_cat',
@@ -137,6 +138,8 @@ class Assets {
 			'min_height'        => wc_get_theme_support( 'featured_block::min_height', 500 ),
 			'default_height'    => wc_get_theme_support( 'featured_block::default_height', 500 ),
 			'isLargeCatalog'    => $product_counts->publish > 200,
+			'limitTags'         => $tag_count > 100,
+			'hasTags'           => $tag_count > 0,
 			'productCategories' => $product_categories,
 			'homeUrl'           => esc_js( home_url( '/' ) ),
 		);
@@ -156,9 +159,9 @@ class Assets {
 	protected static function get_file_version( $file ) {
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 			$file = trim( $file, '/' );
-			return filemtime( WGPB_ABSPATH . $file );
+			return filemtime( \Automattic\WooCommerce\Blocks\Package::get_path() . '/' . $file );
 		}
-		return WGPB_VERSION;
+		return \Automattic\WooCommerce\Blocks\Package::get_version();
 	}
 
 	/**
@@ -182,6 +185,19 @@ class Assets {
 		if ( $has_i18n && function_exists( 'wp_set_script_translations' ) ) {
 			wp_set_script_translations( $handle, 'woo-gutenberg-products-block', dirname( __DIR__ ) . '/languages' );
 		}
+	}
+
+	/**
+	 * Queues a block script.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param string $name Name of the script used to identify the file inside build folder.
+	 */
+	public static function register_block_script( $name ) {
+		$filename = 'build/' . $name . '.js';
+		self::register_script( 'wc-' . $name, plugins_url( $filename, __DIR__ ) );
+		wp_enqueue_script( 'wc-' . $name );
 	}
 
 	/**
