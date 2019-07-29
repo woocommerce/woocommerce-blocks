@@ -84,11 +84,12 @@ class ProductSearchBlock extends Component {
 			<form className={ classes }>
 				{ !! hasLabel && (
 					<RichText
-						tagName="label"
+						tagName="span"
 						className="wc-block-product-search__label"
 						value={ label }
 						onChange={ ( value ) => setAttributes( { label: value } ) }
 						multiline={ false }
+						formattingControls={ [] }
 					/>
 				) }
 				<div className="wc-block-product-search__fields">
