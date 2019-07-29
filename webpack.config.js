@@ -160,14 +160,7 @@ const BlocksFrontendConfig = {
 				use: {
 					loader: 'babel-loader?cacheDirectory',
 					options: {
-						presets: [
-							[ '@babel/preset-env', {
-								modules: false,
-								targets: {
-									browsers: [ 'extends @wordpress/browserslist-config' ],
-								},
-							} ],
-						],
+						...require( '@wordpress/babel-preset-default' ),
 						plugins: [
 							'@babel/plugin-transform-react-jsx',
 							'@babel/plugin-transform-runtime',
