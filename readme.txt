@@ -83,7 +83,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
-= 2.3.0 - 2019-07-25 =
+= 2.3.0 - 2019-07-29 =
 
 - Feature: Added a new Featured Category Block; feature a category and show a link to it's archive.
 - Feature: Added a new Products by Tag(s) block.
