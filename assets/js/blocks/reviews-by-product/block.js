@@ -4,8 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
-import classNames from 'classnames';
-import { Component } from '@wordpress/element';
+import { Component, Fragment } from '@wordpress/element';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
 import { withInstanceId } from '@wordpress/compose';
@@ -182,9 +181,11 @@ class ReviewsByProduct extends Component {
 		);
 	}
 
-	renderReviewsList( showAvatar, showProductRating ) {
+	renderReviewsList() {
 		const { attributes } = this.props;
 		const { reviews } = this.state;
+		const showAvatar = wc_product_block_data.showAvatars && attributes.showAvatar;
+		const showProductRating = wc_product_block_data.enableReviewRating && attributes.showProductRating;
 		const attrs = {
 			...attributes,
 			showAvatar,
@@ -223,23 +224,12 @@ class ReviewsByProduct extends Component {
 	}
 
 	render() {
-		const { attributes } = this.props;
-		const { className, showReviewDate, showReviewerName } = attributes;
-		const showAvatar = wc_product_block_data.showAvatars && attributes.showAvatar;
-		const showProductRating = wc_product_block_data.enableReviewRating && attributes.showProductRating;
-		const classes = classNames( 'wc-block-reviews-by-product', className, {
-			'has-avatar': showAvatar,
-			'has-date': showReviewDate,
-			'has-name': showReviewerName,
-			'has-rating': showProductRating,
-		} );
-
 		return (
-			<div className={ classes }>
+			<Fragment>
 				{ this.renderOrderBySelect() }
-				{ this.renderReviewsList( showAvatar, showProductRating ) }
+				{ this.renderReviewsList() }
 				{ this.renderLoadMoreButton() }
-			</div>
+			</Fragment>
 		);
 	}
 }

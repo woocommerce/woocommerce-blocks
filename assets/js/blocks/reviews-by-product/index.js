@@ -106,12 +106,13 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 	save( { attributes } ) {
 		const { className, orderby, perPage, productId, showAvatar, showProductRating, showReviewDate, showReviewerName } = attributes;
 
-		const classes = classNames( 'wc-block-reviews-by-product', className );
+		const classes = classNames( 'wc-block-reviews-by-product', className, {
+			'has-avatar': showAvatar,
+			'has-date': showReviewDate,
+			'has-name': showReviewerName,
+			'has-rating': showProductRating,
+		} );
 		const data = {
-			'data-has-avatar': showAvatar,
-			'data-has-date': showReviewDate,
-			'data-has-name': showReviewerName,
-			'data-has-rating': showProductRating,
 			'data-orderby': orderby,
 			'data-per-page': perPage,
 			'data-product-id': productId,
