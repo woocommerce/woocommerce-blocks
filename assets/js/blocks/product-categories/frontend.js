@@ -14,7 +14,7 @@ const containers = document.querySelectorAll(
 );
 
 if ( containers.length ) {
-	containers.forEach( function( el ) {
+	Array.prototype.forEach.call( containers, ( el ) => {
 		const data = JSON.parse( JSON.stringify( el.dataset ) );
 		const attributes = {
 			hasCount: data.hasCount === 'true',
