@@ -103,7 +103,7 @@ class ProductCategoriesBlock extends Component {
 								</div>
 								<button
 									type="button"
-									className="components-button components-icon-button"
+									className="wc-block-product-categories__button"
 									aria-label={ __( 'Go to category', 'woo-gutenberg-products-block' ) }
 									icon="arrow-right-alt2"
 									onClick={ this.onNavigate }
