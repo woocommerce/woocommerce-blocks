@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { forEach } from 'lodash';
 import { render } from '@wordpress/element';
 
 /**
@@ -14,7 +13,8 @@ const containers = document.querySelectorAll(
 );
 
 if ( containers.length ) {
-	forEach( containers, ( el ) => {
+	// Use Array.forEach for IE11 compatibility
+	Array.prototype.forEach.call( containers, ( el ) => {
 		const attributes = {
 			orderby: el.dataset.orderby,
 			perPage: el.dataset.perPage,

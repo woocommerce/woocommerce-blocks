@@ -3,16 +3,15 @@
  */
 import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
-import { addQueryArgs } from '@wordpress/url';
-import { Component, Fragment } from '@wordpress/element';
+import { Component } from '@wordpress/element';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
-import { withInstanceId } from '@wordpress/compose';
 
 /**
  * Internal dependencies
  */
 import { renderReview } from './utils';
+import uniqueID from '../../utils/uniqueid';
 
 /**
  * Component to handle edit mode of "Reviews by Product".
@@ -31,6 +30,7 @@ class ReviewsByProduct extends Component {
 		this.onChangeOrderby = this.onChangeOrderby.bind( this );
 		this.getReviews = this.getReviews.bind( this );
 		this.appendReviews = this.appendReviews.bind( this );
+		this.id = uniqueID( '', 'wc-block-reviews-by-product' );
 	}
 
 	componentDidMount() {
@@ -100,14 +100,15 @@ class ReviewsByProduct extends Component {
 			return;
 		}
 
+		const args = {
+			order,
+			orderby,
+			page,
+			per_page: parseInt( perPage, 10 ) || 1,
+			product_id: productId,
+		};
 		apiFetch( {
-			path: addQueryArgs( `/wc/blocks/products/reviews`, {
-				order,
-				orderby,
-				page,
-				per_page: parseInt( perPage, 10 ) || 1,
-				product_id: productId,
-			} ),
+			path: '/wc/blocks/products/reviews?' + Object.entries( args ).map( ( arg ) => arg.join( '=' ) ).join( '&' ),
 			parse: false,
 		} ).then( ( response ) => {
 			if ( response.json ) {
@@ -149,10 +150,10 @@ class ReviewsByProduct extends Component {
 			return null;
 		}
 
-		const { attributes, instanceId, isPreview } = this.props;
+		const { attributes, isPreview } = this.props;
 		const { orderby } = this.state;
 
-		const selectId = `wc-block-reviews-by-product__orderby__select-${ instanceId }`;
+		const selectId = `wc-block-reviews-by-product__orderby__select-${ this.id }`;
 		const selectProps = isPreview ? {
 			readOnly: true,
 			value: attributes.orderby,
@@ -224,13 +225,11 @@ class ReviewsByProduct extends Component {
 	}
 
 	render() {
-		return (
-			<Fragment>
-				{ this.renderOrderBySelect() }
-				{ this.renderReviewsList() }
-				{ this.renderLoadMoreButton() }
-			</Fragment>
-		);
+		return [
+			this.renderOrderBySelect(),
+			this.renderReviewsList(),
+			this.renderLoadMoreButton(),
+		];
 	}
 }
 
@@ -240,13 +239,9 @@ ReviewsByProduct.propTypes = {
 	 */
 	attributes: PropTypes.object.isRequired,
 	/**
-	 * A unique ID for identifying the label for the select dropdown.
-	 */
-	instanceId: PropTypes.number,
-	/**
 	 * Whether this is the block preview or frontend display.
 	 */
 	isPreview: PropTypes.bool,
 };
 
-export default withInstanceId( ReviewsByProduct );
+export default ReviewsByProduct;

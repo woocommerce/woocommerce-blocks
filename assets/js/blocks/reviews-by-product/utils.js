@@ -2,9 +2,16 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { format } from '@wordpress/date';
-import classNames from 'classnames';
 
+function getReviewClasses( isLoading ) {
+	const classArray = [ 'wc-block-reviews-by-product__item' ];
+
+	if ( isLoading ) {
+		classArray.push( 'is-loading' );
+	}
+
+	return classArray.join( ' ' );
+}
 /**
  * Render a review for the Reviews by Product block
  *
@@ -15,13 +22,10 @@ import classNames from 'classnames';
  */
 export function renderReview( attributes, review = {}, i = 0 ) {
 	const { showAvatar, showProductRating: showProductRatingAttr, showReviewDate, showReviewerName } = attributes;
-	const { id = null, date_created: dateCreated, rating, review: text = '', reviewer = '', reviewer_avatar_urls: avatarUrls = {} } = review;
+	const { id = null, date_created: dateCreated, formatted_date_created: formattedDateCreated, rating, review: text = '', reviewer = '', reviewer_avatar_urls: avatarUrls = {} } = review;
 	const isLoading = ! Object.keys( review ).length > 0;
 	const showProductRating = Number.isFinite( rating ) && showProductRatingAttr;
-
-	const classes = classNames( 'wc-block-reviews-by-product__item', {
-		'is-loading': isLoading,
-	} );
+	const classes = getReviewClasses( isLoading );
 	const starStyle = {
 		width: ( rating / 5 * 100 ) + '%',
 	};
@@ -61,7 +65,7 @@ export function renderReview( attributes, review = {}, i = 0 ) {
 						</div>
 					) }
 					{ showReviewDate && (
-						<time className="wc-block-reviews-by-product__published-date" dateTime={ dateCreated }>{ format( 'F j, Y', dateCreated ) }</time>
+						<time className="wc-block-reviews-by-product__published-date" dateTime={ dateCreated }>{ formattedDateCreated }</time>
 					) }
 				</div>
 			) }
