@@ -8,7 +8,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import uniqueID from '../../utils/uniqueid';
+import withComponentID from '../../utils/with-component-id';
 
 /**
  * Component displaying the categories as dropdown or list.
@@ -17,7 +17,6 @@ class ProductCategoriesBlock extends Component {
 	constructor() {
 		super( ...arguments );
 		this.select = createRef();
-		this.id = uniqueID( '', 'wc-block-product-categories' );
 		this.onNavigate = this.onNavigate.bind( this );
 		this.renderList = this.renderList.bind( this );
 		this.renderOptions = this.renderOptions.bind( this );
@@ -71,7 +70,7 @@ class ProductCategoriesBlock extends Component {
 	}
 
 	render() {
-		const { attributes, categories } = this.props;
+		const { attributes, categories, componentID } = this.props;
 		const { className, isDropdown } = attributes;
 		const classes = classnames(
 			'wc-block-product-categories',
@@ -82,7 +81,7 @@ class ProductCategoriesBlock extends Component {
 			}
 		);
 
-		const selectId = `prod-categories-${ this.id }`;
+		const selectId = `prod-categories-${ componentID }`;
 
 		return (
 			<Fragment>
@@ -123,4 +122,4 @@ class ProductCategoriesBlock extends Component {
 	}
 }
 
-export default ProductCategoriesBlock;
+export default withComponentID( ProductCategoriesBlock );
