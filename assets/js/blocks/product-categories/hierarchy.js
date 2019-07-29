@@ -6,7 +6,7 @@
  * @return {Array} Array of terms in tree format.
  */
 export function buildTermsTree( list = [] ) {
-	// Use reduce instead of lodash groupBy.
+	// Group terms by the parent ID.
 	const termsByParent = list.reduce( ( r, v, i, a, k = v.parent ) => ( ( r[ k ] || ( r[ k ] = [] ) ).push( v ), r ), {} );
 
 	const fillWithChildren = ( terms ) => {
@@ -23,7 +23,6 @@ export function buildTermsTree( list = [] ) {
 	const tree = fillWithChildren( termsByParent[ '0' ] || [] );
 	delete termsByParent[ '0' ];
 
-	// anything left in termsByParent has no visible parent. Native JS instead of lodash forEach.
 	Object.keys( termsByParent ).forEach( function( terms ) {
 		tree.push( ...fillWithChildren( terms || [] ) );
 	} );
