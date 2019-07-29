@@ -8,7 +8,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import withComponentID from '../../utils/with-component-id';
+import withComponentId from '../../utils/with-component-id';
 
 /**
  * Component displaying the categories as dropdown or list.
@@ -70,7 +70,7 @@ class ProductCategoriesBlock extends Component {
 	}
 
 	render() {
-		const { attributes, categories, componentID } = this.props;
+		const { attributes, categories, ComponentId } = this.props;
 		const { className, isDropdown } = attributes;
 		const classes = classnames(
 			'wc-block-product-categories',
@@ -81,7 +81,7 @@ class ProductCategoriesBlock extends Component {
 			}
 		);
 
-		const selectId = `prod-categories-${ componentID }`;
+		const selectId = `prod-categories-${ ComponentId }`;
 
 		return (
 			<Fragment>
@@ -122,4 +122,4 @@ class ProductCategoriesBlock extends Component {
 	}
 }
 
-export default withComponentID( ProductCategoriesBlock );
+export default withComponentId( ProductCategoriesBlock );
