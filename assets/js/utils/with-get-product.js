@@ -1,12 +1,10 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
 import { Component } from '@wordpress/element';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { debounce, isObject } from 'lodash';
-import { escapeHTML } from '@wordpress/escape-html';
 
 const withGetProduct = createHigherOrderComponent(
 	( OriginalComponent ) => {
@@ -41,19 +39,13 @@ const withGetProduct = createHigherOrderComponent(
 						this.setState( { product, loading: false, error: false } );
 					} )
 					.catch( ( apiError ) => {
-						const error = {};
-
-						if ( isObject( apiError ) ) {
-							error.message = (
-								<span>
-									{ __( 'The following error was returned from the API', 'woo-gutenberg-products-block' ) }
-									<br />
-									<code>{ escapeHTML( apiError.message ) }</code>
-								</span>
-							);
-						} else {
-							error.message = __( 'An unknown error occurred which prevented the block from being updated.', 'woo-gutenberg-products-block' );
-						}
+						const error = isObject( apiError ) ? {
+							apiMessage: apiError.message,
+						} : {
+							// If we can't get any message from the API, set it to null and
+							// let <ApiErrorPlaceholder /> handle the message to display.
+							apiMessage: null,
+						};
 
 						this.setState( { product: false, loading: false, error } );
 					} );

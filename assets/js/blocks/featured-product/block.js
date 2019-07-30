@@ -194,13 +194,17 @@ class FeaturedProduct extends Component {
 
 	renderApiError() {
 		const { error, debouncedGetProduct, isLoading } = this.props;
+		const { productId } = this.props.attributes;
+		const onRetry = () => {
+			debouncedGetProduct( productId );
+		};
 
 		return (
 			<ApiErrorPlaceholder
 				className="wc-block-featured-product-error"
-				errorMessage={ error.message }
+				error={ error }
 				isLoading={ isLoading }
-				onRetry={ debouncedGetProduct }
+				onRetry={ onRetry }
 			/>
 		);
 	}
