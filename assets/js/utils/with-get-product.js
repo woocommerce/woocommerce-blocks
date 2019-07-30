@@ -58,9 +58,9 @@ const withGetProduct = createHigherOrderComponent(
 					{ ...this.props }
 					debouncedGetProduct={ this.debouncedGetProduct }
 					error={ error }
+					getProduct={ this.getProduct }
 					isLoading={ loading }
 					product={ product }
-					getProduct={ this.getProduct }
 				/>;
 			}
 		};
