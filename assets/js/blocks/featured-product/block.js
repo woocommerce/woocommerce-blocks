@@ -140,7 +140,7 @@ class FeaturedProduct extends Component {
 					error.message = __( 'An unknown error occurred which prevented the block from being updated.', 'woo-gutenberg-products-block' );
 				}
 
-				this.setState( { product: false, loaded: true, error: error } );
+				this.setState( { product: false, loaded: true, error } );
 			} );
 	}
 
@@ -244,12 +244,10 @@ class FeaturedProduct extends Component {
 
 	renderApiError() {
 		const { error } = this.state;
-		const onRetryCallback = () => {
-			error.retry();
-		};
+
 		return (
 			<ApiErrorPlaceholder
-				onRetry={ onRetryCallback }
+				onRetry={ error.retry }
 				errorMessage={ error.message }
 				className="wc-block-featured-product-error"
 			/>
@@ -406,6 +404,7 @@ class FeaturedProduct extends Component {
 
 	renderNoProduct() {
 		const { loaded } = this.state;
+
 		return (
 			<Placeholder
 				className="wc-block-featured-product"
