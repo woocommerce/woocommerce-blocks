@@ -108,11 +108,15 @@ class FeaturedProduct extends Component {
 
 	getProduct() {
 		const { productId } = this.props.attributes;
+
 		if ( ! productId ) {
 			// We've removed the selected product, or no product is selected yet.
 			this.setState( { product: false, loaded: true, error: false } );
 			return;
 		}
+
+		this.setState( { loaded: false } );
+
 		apiFetch( {
 			path: `/wc/blocks/products/${ productId }`,
 		} )
@@ -136,7 +140,6 @@ class FeaturedProduct extends Component {
 					error.message = __( 'An unknown error occurred which prevented the block from being updated.', 'woo-gutenberg-products-block' );
 				}
 
-				this.setState( { error: false } ); // Force update if error stays same.
 				this.setState( { product: false, loaded: true, error: error } );
 			} );
 	}

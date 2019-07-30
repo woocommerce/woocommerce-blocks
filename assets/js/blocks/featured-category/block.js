@@ -124,11 +124,15 @@ class FeaturedCategory extends Component {
 
 	getCategory() {
 		const { categoryId } = this.props.attributes;
+
 		if ( ! categoryId ) {
 			// We've removed the selected product, or no product is selected yet.
 			this.setState( { category: false, loaded: true } );
 			return;
 		}
+
+		this.setState( { loaded: false } );
+
 		apiFetch( {
 			path: `/wc/blocks/products/categories/${ categoryId }`,
 		} )
