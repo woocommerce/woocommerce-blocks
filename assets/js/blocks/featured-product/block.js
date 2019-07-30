@@ -2,8 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { escapeHTML } from '@wordpress/escape-html';
-import apiFetch from '@wordpress/api-fetch';
 import {
 	AlignmentToolbar,
 	BlockControls,
@@ -30,7 +28,7 @@ import {
 import classnames from 'classnames';
 import { Component, Fragment } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
-import { debounce, isObject, isEmpty } from 'lodash';
+import { isObject, isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 
 /**
@@ -42,6 +40,7 @@ import {
 	getImageSrcFromProduct,
 	getImageIdFromProduct,
 } from '../../utils/products';
+import withGetProduct from '../../utils/with-get-product';
 
 /**
  * The min-height for the block content.
@@ -81,65 +80,18 @@ function dimRatioToClass( ratio ) {
  * Component to handle edit mode of "Featured Product".
  */
 class FeaturedProduct extends Component {
-	constructor() {
-		super( ...arguments );
-		this.state = {
-			product: false,
-			loaded: false,
-			error: false,
-		};
-
-		this.debouncedGetProduct = debounce( this.getProduct.bind( this ), 200 );
-	}
-
 	componentDidMount() {
-		this.getProduct();
-	}
-
-	componentWillUnmount() {
-		this.debouncedGetProduct.cancel();
+		const { getProduct } = this.props;
+		const { productId } = this.props.attributes;
+		getProduct( productId );
 	}
 
 	componentDidUpdate( prevProps ) {
-		if ( prevProps.attributes.productId !== this.props.attributes.productId ) {
-			this.debouncedGetProduct();
-		}
-	}
-
-	getProduct() {
+		const { debouncedGetProduct } = this.props;
 		const { productId } = this.props.attributes;
-
-		if ( ! productId ) {
-			// We've removed the selected product, or no product is selected yet.
-			this.setState( { product: false, loaded: true, error: false } );
-			return;
+		if ( prevProps.attributes.productId !== productId ) {
+			debouncedGetProduct( productId );
 		}
-
-		this.setState( { loaded: false } );
-
-		apiFetch( {
-			path: `/wc/blocks/products/${ productId }`,
-		} )
-			.then( ( product ) => {
-				this.setState( { product, loaded: true, error: false } );
-			} )
-			.catch( ( apiError ) => {
-				const error = {};
-
-				if ( isObject( apiError ) ) {
-					error.message = (
-						<span>
-							{ __( 'The following error was returned from the API', 'woo-gutenberg-products-block' ) }
-							<br />
-							<code>{ escapeHTML( apiError.message ) }</code>
-						</span>
-					);
-				} else {
-					error.message = __( 'An unknown error occurred which prevented the block from being updated.', 'woo-gutenberg-products-block' );
-				}
-
-				this.setState( { product: false, loaded: true, error } );
-			} );
 	}
 
 	getInspectorControls() {
@@ -147,11 +99,11 @@ class FeaturedProduct extends Component {
 			attributes,
 			setAttributes,
 			overlayColor,
+			product,
 			setOverlayColor,
 		} = this.props;
 
-		const url =
-			attributes.mediaSrc || getImageSrcFromProduct( this.state.product );
+		const url = attributes.mediaSrc || getImageSrcFromProduct( product );
 		const { focalPoint = { x: 0.5, y: 0.5 } } = attributes;
 
 		return (
@@ -241,21 +193,20 @@ class FeaturedProduct extends Component {
 	}
 
 	renderApiError() {
-		const { error, loaded } = this.state;
+		const { error, debouncedGetProduct, isLoading } = this.props;
 
 		return (
 			<ApiErrorPlaceholder
 				className="wc-block-featured-product-error"
 				errorMessage={ error.message }
-				isLoading={ ! loaded }
-				onRetry={ this.debouncedGetProduct }
+				isLoading={ isLoading }
+				onRetry={ debouncedGetProduct }
 			/>
 		);
 	}
 
 	getBlockControls() {
-		const { attributes, setAttributes } = this.props;
-		const { product } = this.state;
+		const { attributes, product, setAttributes } = this.props;
 		const { contentAlign, editMode } = attributes;
 		const mediaId = attributes.mediaId || getImageIdFromProduct( product );
 
@@ -281,7 +232,7 @@ class FeaturedProduct extends Component {
 									label={ __( 'Edit media' ) }
 									icon="format-image"
 									onClick={ open }
-									disabled={ ! this.state.product }
+									disabled={ ! product }
 								/>
 							) }
 						/>
@@ -302,8 +253,7 @@ class FeaturedProduct extends Component {
 	}
 
 	renderProduct() {
-		const { attributes, isSelected, overlayColor, setAttributes } = this.props;
-		const { loaded, product } = this.state;
+		const { attributes, isLoading, isSelected, overlayColor, product, setAttributes } = this.props;
 		const {
 			className,
 			contentAlign,
@@ -317,8 +267,8 @@ class FeaturedProduct extends Component {
 			'wc-block-featured-product',
 			{
 				'is-selected': isSelected,
-				'is-loading': ! product && ! loaded,
-				'is-not-found': ! product && loaded,
+				'is-loading': ! product && isLoading,
+				'is-not-found': ! product && ! isLoading,
 				'has-background-dim': dimRatio !== 0,
 			},
 			dimRatioToClass( dimRatio ),
@@ -402,7 +352,7 @@ class FeaturedProduct extends Component {
 	}
 
 	renderNoProduct() {
-		const { loaded } = this.state;
+		const { isLoading } = this.props;
 
 		return (
 			<Placeholder
@@ -410,7 +360,7 @@ class FeaturedProduct extends Component {
 				icon="star-filled"
 				label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
 			>
-				{ ! loaded ? (
+				{ isLoading ? (
 					<Spinner />
 				) : (
 					__( 'No product is selected.', 'woo-gutenberg-products-block' )
@@ -420,8 +370,7 @@ class FeaturedProduct extends Component {
 	}
 
 	render() {
-		const { product, error } = this.state;
-		const { attributes } = this.props;
+		const { attributes, error, product } = this.props;
 		const { editMode } = attributes;
 
 		// If there was an API error, render it.
@@ -474,6 +423,7 @@ FeaturedProduct.propTypes = {
 };
 
 export default compose( [
+	withGetProduct,
 	withColors( { overlayColor: 'background-color' } ),
 	withSpokenMessages,
 ] )( FeaturedProduct );
