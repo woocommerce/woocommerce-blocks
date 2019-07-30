@@ -178,6 +178,10 @@ const BlocksFrontendConfig = {
 					},
 				},
 			},
+			{
+				test: /\.s[c|a]ss$/,
+				loader: 'ignore-loader',
+			},
 		],
 	},
 	plugins: [

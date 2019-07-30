@@ -7,7 +7,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import PriceSlider from '../../components/frontend/price-slider';
+import PriceSlider from '../../frontend-components/price-slider';
 
 /**
  * Component displaying a price filter.
