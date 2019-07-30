@@ -415,6 +415,18 @@ FeaturedProduct.propTypes = {
 	 * A callback to update attributes.
 	 */
 	setAttributes: PropTypes.func.isRequired,
+	// from withGetProduct
+	debouncedGetProduct: PropTypes.func,
+	error: PropTypes.object,
+	getProduct: PropTypes.func,
+	isLoading: PropTypes.bool,
+	product: PropTypes.shape( {
+		name: PropTypes.node,
+		variation: PropTypes.node,
+		description: PropTypes.node,
+		price_html: PropTypes.node,
+		permalink: PropTypes.string,
+	} ),
 	// from withColors
 	overlayColor: PropTypes.object,
 	setOverlayColor: PropTypes.func.isRequired,
