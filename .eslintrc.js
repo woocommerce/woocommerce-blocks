@@ -22,6 +22,7 @@ module.exports = {
 		window: true,
 		document: true,
 		wc_product_block_data: true,
+		wcSettings: true,
 	},
 	plugins: [
 		'wordpress',

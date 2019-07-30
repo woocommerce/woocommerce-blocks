@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-// import { __ } from '@wordpress/i18n';
+import { sprintf } from '@wordpress/i18n';
 import { Component, createRef } from 'react';
 
 /**
@@ -9,13 +9,20 @@ import { Component, createRef } from 'react';
  */
 import './style.scss';
 
+const get = ( obj, path, defaultValue ) => {
+	const result = String.prototype.split.call( path, /[,[\].]+?/ )
+		.filter( Boolean )
+		.reduce( ( res, key ) => ( res !== null && res !== undefined ) ? res[ key ] : res, obj );
+	return ( result === undefined || result === obj ) ? defaultValue : result;
+};
+
 class PriceSlider extends Component {
 	constructor() {
 		super( ...arguments );
 		this.state = {
 			currentMin: 0,
 			currentMax: 100,
-			step: 10,
+			step: 1,
 			min: 0,
 			max: 100,
 		};
@@ -25,7 +32,9 @@ class PriceSlider extends Component {
 		this.maxRange = createRef();
 		this.onChangeMin = this.onChangeMin.bind( this );
 		this.onChangeMax = this.onChangeMax.bind( this );
-		this.onInputChange = this.onInputChange.bind( this );
+		this.onInputMin = this.onInputMin.bind( this );
+		this.onInputMax = this.onInputMax.bind( this );
+		this.formatCurrencyForInput = this.formatCurrencyForInput.bind( this );
 	}
 
 	onChangeMin() {
@@ -46,11 +55,60 @@ class PriceSlider extends Component {
 		} );
 	}
 
-	onInputChange() {
+	onInputMin() {
+		const { min, max } = this.state;
+
+		let value = this.minInput.current.value.replace( /[^0-9.-]+/g, '' );
+
+		if ( min > value ) {
+			value = min;
+		}
+
+		if ( max < value ) {
+			value = max;
+		}
+
 		this.setState( {
-			currentMin: this.minInput.current.value,
-			currentMax: this.maxInput.current.value,
+			currentMin: value ? parseInt( value, 10 ) : '',
+			currentMax: Math.min( max, Math.max( parseInt( value, 10 ), this.maxRange.current.value ) ),
 		} );
+	}
+
+	onInputMax() {
+		const { min, max } = this.state;
+
+		let value = this.maxInput.current.value.replace( /[^0-9.-]+/g, '' );
+
+		if ( min > value ) {
+			value = min;
+		}
+
+		if ( max < value ) {
+			value = max;
+		}
+
+		this.setState( {
+			currentMin: Math.max( min, Math.min( this.minRange.current.value, parseInt( value, 10 ) ) ),
+			currentMax: value ? parseInt( value, 10 ) : '',
+		} );
+	}
+
+	formatCurrencyForInput( value ) {
+		if ( '' === value ) {
+			return '';
+		}
+		const formattedNumber = parseInt( value, 10 );
+		const currencySymbol = get( wcSettings, [ 'currency', 'symbol' ], '$' );
+		const priceFormat = get( wcSettings, [ 'currency', 'price_format' ], '%1$s%2$s' );
+
+		if ( '' === formattedNumber ) {
+			return formattedNumber;
+		}
+
+		const formattedValue = sprintf( priceFormat, currencySymbol, formattedNumber );
+		const txt = document.createElement( 'textarea' );
+		txt.innerHTML = formattedValue;
+		return txt.value;
 	}
 
 	render() {
@@ -61,11 +119,11 @@ class PriceSlider extends Component {
 		const maxProgress = ( max - ( currentMax / max ) * 100 );
 		return (
 			<div className="wc-block-price-filter__slider_group">
-				<input type="text" onInput={ this.onInputChange } ref={ this.minInput } className="wc-block-price-filter__amount wc-block-price-filter__amount--min" value={ currentMin } size="5" />
-				<input type="text" onInput={ this.onInputChange } ref={ this.maxInput } className="wc-block-price-filter__amount wc-block-price-filter__amount--max" value={ currentMax } size="5" />
+				<input type="text" onInput={ this.onInputMin } ref={ this.minInput } className="wc-block-price-filter__amount wc-block-price-filter__amount--min" value={ this.formatCurrencyForInput( currentMin ) } size="5" />
+				<input type="text" onInput={ this.onInputMax } ref={ this.maxInput } className="wc-block-price-filter__amount wc-block-price-filter__amount--max" value={ this.formatCurrencyForInput( currentMax ) } size="5" />
 				<div className="wc-block-price-filter__slider_range">
-					<input type="range" ref={ this.minRange } onChange={ this.onChangeMin } className="wc-block-price-filter__slider wc-block-price-filter__slider--min" value={ currentMin } step={ step } min={ min } max={ max } />
-					<input type="range" ref={ this.maxRange } onChange={ this.onChangeMax } className="wc-block-price-filter__slider wc-block-price-filter__slider--max" value={ currentMax } step={ step } min={ min } max={ max } />
+					<input type="range" ref={ this.minRange } onChange={ this.onChangeMin } className="wc-block-price-filter__slider wc-block-price-filter__slider--min" value={ currentMin ? currentMin : 0 } step={ step } min={ min } max={ max } />
+					<input type="range" ref={ this.maxRange } onChange={ this.onChangeMax } className="wc-block-price-filter__slider wc-block-price-filter__slider--max" value={ currentMax ? currentMax : max } step={ step } min={ min } max={ max } />
 					<div className="wc-block-price-filter__slider_range_progress wc-block-price-filter__slider_range_progress--start" style={ {
 						width: 'calc(' + minProgress + '% - 7px ',
 					} } />

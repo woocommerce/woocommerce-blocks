@@ -20,6 +20,7 @@ class Assets {
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'register_assets' ) );
 		add_action( 'body_class', array( __CLASS__, 'add_theme_body_class' ), 1 );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'print_script_wc_settings' ), 1 );
 		add_action( 'admin_print_footer_scripts', array( __CLASS__, 'print_script_wc_settings' ), 1 );
 		add_action( 'admin_print_footer_scripts', array( __CLASS__, 'print_script_block_data' ), 1 );
 		add_action( 'wp_print_footer_scripts', array( __CLASS__, 'print_script_block_data' ), 1 );
