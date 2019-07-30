@@ -1,6 +1,6 @@
 <?php
 /**
- * Product categories block.
+ * Price filter block.
  *
  * @package WooCommerce/Blocks
  */
@@ -10,16 +10,16 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * ProductCategories class.
+ * PriceFilter class.
  */
-class ProductCategories extends AbstractBlock {
+class PriceFilter extends AbstractBlock {
 
 	/**
 	 * Block name.
 	 *
 	 * @var string
 	 */
-	protected $block_name = 'product-categories';
+	protected $block_name = 'price-filter';
 
 	/**
 	 * Registers the block type with WordPress.
@@ -46,7 +46,6 @@ class ProductCategories extends AbstractBlock {
 	 */
 	public function render( $attributes = array(), $content = '' ) {
 		\Automattic\WooCommerce\Blocks\Assets::register_block_script( $this->block_name . '-frontend' );
-
 		return $content;
 	}
 }

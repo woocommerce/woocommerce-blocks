@@ -55,6 +55,7 @@ const GutenbergBlocksConfig = {
 		'featured-product': './assets/js/blocks/featured-product/index.js',
 		'product-tag': './assets/js/blocks/product-tag/index.js',
 		'featured-category': './assets/js/blocks/featured-category/index.js',
+		'price-filter': './assets/js/blocks/price-filter/index.js',
 	},
 	output: {
 		path: path.resolve( __dirname, './build/' ),
@@ -147,10 +148,17 @@ const GutenbergBlocksConfig = {
 
 const BlocksFrontendConfig = {
 	...baseConfig,
-	entry: './assets/js/blocks/product-categories/frontend.js',
+	entry: {
+		'product-categories': './assets/js/blocks/product-categories/frontend.js',
+		'price-filter': './assets/js/blocks/price-filter/frontend.js',
+	},
 	output: {
 		path: path.resolve( __dirname, './build/' ),
-		filename: 'frontend.js',
+		filename: '[name]-frontend.js',
+		// This fixes an issue with multiple webpack projects using chunking
+		// overwriting each other's chunk loader function.
+		// See https://webpack.js.org/configuration/output/#outputjsonpfunction
+		jsonpFunction: 'webpackWcBlocksJsonp',
 	},
 	module: {
 		rules: [
