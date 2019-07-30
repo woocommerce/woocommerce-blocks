@@ -124,9 +124,7 @@ class FeaturedProduct extends Component {
 				this.setState( { product, loaded: true, error: false } );
 			} )
 			.catch( ( apiError ) => {
-				const error = {
-					retry: this.debouncedGetProduct,
-				};
+				const error = {};
 
 				if ( isObject( apiError ) ) {
 					error.message = (
@@ -243,13 +241,14 @@ class FeaturedProduct extends Component {
 	}
 
 	renderApiError() {
-		const { error } = this.state;
+		const { error, loaded } = this.state;
 
 		return (
 			<ApiErrorPlaceholder
-				onRetry={ error.retry }
-				errorMessage={ error.message }
 				className="wc-block-featured-product-error"
+				errorMessage={ error.message }
+				isLoading={ ! loaded }
+				onRetry={ this.debouncedGetProduct }
 			/>
 		);
 	}
