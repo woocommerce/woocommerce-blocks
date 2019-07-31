@@ -26,9 +26,9 @@ import {
 	withSpokenMessages,
 } from '@wordpress/components';
 import classnames from 'classnames';
-import { Component, Fragment } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
-import { isObject, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 
 /**
@@ -36,6 +36,10 @@ import PropTypes from 'prop-types';
  */
 import ProductControl from '../../components/product-control';
 import ApiErrorPlaceholder from '../../components/api-error-placeholder';
+import {
+	dimRatioToClass,
+	getBackgroundImageStyles,
+} from './utils';
 import {
 	getImageSrcFromProduct,
 	getImageIdFromProduct,
@@ -48,47 +52,105 @@ import withProduct from '../../utils/with-product';
 const MIN_HEIGHT = wc_product_block_data.min_height;
 
 /**
- * Generate a style object given either a product object or URL to an image.
- *
- * @param {object|string} url A product object as returned from the API, or an image URL.
- * @return {object} A style object with a backgroundImage set (if a valid image is provided).
- */
-function backgroundImageStyles( url ) {
-	// If `url` is an object, it's actually a product.
-	if ( isObject( url ) ) {
-		url = getImageSrcFromProduct( url );
-	}
-	if ( url ) {
-		return { backgroundImage: `url(${ url })` };
-	}
-	return {};
-}
-
-/**
- * Convert the selected ratio to the correct background class.
- *
- * @param {number} ratio Selected opacity from 0 to 100.
- * @return {string} The class name, if applicable (not used for ratio 0 or 50).
- */
-function dimRatioToClass( ratio ) {
-	return ratio === 0 || ratio === 50 ?
-		null :
-		`has-background-dim-${ 10 * Math.round( ratio / 10 ) }`;
-}
-
-/**
  * Component to handle edit mode of "Featured Product".
  */
-class FeaturedProduct extends Component {
-	getInspectorControls() {
-		const {
-			attributes,
-			setAttributes,
-			overlayColor,
-			product,
-			setOverlayColor,
-		} = this.props;
+const FeaturedProduct = ( { attributes, debouncedSpeak, error, getProduct, isLoading, isSelected, overlayColor, product, setAttributes, setOverlayColor } ) => {
+	const renderApiError = () => (
+		<ApiErrorPlaceholder
+			className="wc-block-featured-product-error"
+			error={ error }
+			isLoading={ isLoading }
+			onRetry={ getProduct }
+		/>
+	);
 
+	const renderEditMode = () => {
+		const onDone = () => {
+			setAttributes( { editMode: false } );
+			debouncedSpeak(
+				__(
+					'Showing Featured Product block preview.',
+					'woo-gutenberg-products-block'
+				)
+			);
+		};
+
+		return (
+			<Fragment>
+				{ this.getBlockControls() }
+				<Placeholder
+					icon="star-filled"
+					label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
+					className="wc-block-featured-product"
+				>
+					{ __(
+						'Visually highlight a product or variation and encourage prompt action',
+						'woo-gutenberg-products-block'
+					) }
+					<div className="wc-block-featured-product__selection">
+						<ProductControl
+							selected={ attributes.productId || 0 }
+							onChange={ ( value = [] ) => {
+								const id = value[ 0 ] ? value[ 0 ].id : 0;
+								setAttributes( { productId: id, mediaId: 0, mediaSrc: '' } );
+							} }
+						/>
+						<Button isDefault onClick={ onDone }>
+							{ __( 'Done', 'woo-gutenberg-products-block' ) }
+						</Button>
+					</div>
+				</Placeholder>
+			</Fragment>
+		);
+	};
+
+	const getBlockControls = () => {
+		const { contentAlign, editMode } = attributes;
+		const mediaId = attributes.mediaId || getImageIdFromProduct( product );
+
+		return (
+			<BlockControls>
+				<AlignmentToolbar
+					value={ contentAlign }
+					onChange={ ( nextAlign ) => {
+						setAttributes( { contentAlign: nextAlign } );
+					} }
+				/>
+				<MediaUploadCheck>
+					<Toolbar>
+						<MediaUpload
+							onSelect={ ( media ) => {
+								setAttributes( { mediaId: media.id, mediaSrc: media.url } );
+							} }
+							allowedTypes={ [ 'image' ] }
+							value={ mediaId }
+							render={ ( { open } ) => (
+								<IconButton
+									className="components-toolbar__control"
+									label={ __( 'Edit media' ) }
+									icon="format-image"
+									onClick={ open }
+									disabled={ ! product }
+								/>
+							) }
+						/>
+					</Toolbar>
+				</MediaUploadCheck>
+				<Toolbar
+					controls={ [
+						{
+							icon: 'edit',
+							title: __( 'Edit' ),
+							onClick: () => setAttributes( { editMode: ! editMode } ),
+							isActive: editMode,
+						},
+					] }
+				/>
+			</BlockControls>
+		);
+	};
+
+	const getInspectorControls = () => {
 		const url = attributes.mediaSrc || getImageSrcFromProduct( product );
 		const { focalPoint = { x: 0.5, y: 0.5 } } = attributes;
 
@@ -135,111 +197,9 @@ class FeaturedProduct extends Component {
 				</PanelColorSettings>
 			</InspectorControls>
 		);
-	}
+	};
 
-	renderEditMode() {
-		const { attributes, debouncedSpeak, setAttributes } = this.props;
-		const onDone = () => {
-			setAttributes( { editMode: false } );
-			debouncedSpeak(
-				__(
-					'Showing Featured Product block preview.',
-					'woo-gutenberg-products-block'
-				)
-			);
-		};
-
-		return (
-			<Fragment>
-				{ this.getBlockControls() }
-				<Placeholder
-					icon="star-filled"
-					label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
-					className="wc-block-featured-product"
-				>
-					{ __(
-						'Visually highlight a product or variation and encourage prompt action',
-						'woo-gutenberg-products-block'
-					) }
-					<div className="wc-block-featured-product__selection">
-						<ProductControl
-							selected={ attributes.productId || 0 }
-							onChange={ ( value = [] ) => {
-								const id = value[ 0 ] ? value[ 0 ].id : 0;
-								setAttributes( { productId: id, mediaId: 0, mediaSrc: '' } );
-							} }
-						/>
-						<Button isDefault onClick={ onDone }>
-							{ __( 'Done', 'woo-gutenberg-products-block' ) }
-						</Button>
-					</div>
-				</Placeholder>
-			</Fragment>
-		);
-	}
-
-	renderApiError() {
-		const { error, getProduct, isLoading } = this.props;
-
-		return (
-			<ApiErrorPlaceholder
-				className="wc-block-featured-product-error"
-				error={ error }
-				isLoading={ isLoading }
-				onRetry={ getProduct }
-			/>
-		);
-	}
-
-	getBlockControls() {
-		const { attributes, product, setAttributes } = this.props;
-		const { contentAlign, editMode } = attributes;
-		const mediaId = attributes.mediaId || getImageIdFromProduct( product );
-
-		return (
-			<BlockControls>
-				<AlignmentToolbar
-					value={ contentAlign }
-					onChange={ ( nextAlign ) => {
-						setAttributes( { contentAlign: nextAlign } );
-					} }
-				/>
-				<MediaUploadCheck>
-					<Toolbar>
-						<MediaUpload
-							onSelect={ ( media ) => {
-								setAttributes( { mediaId: media.id, mediaSrc: media.url } );
-							} }
-							allowedTypes={ [ 'image' ] }
-							value={ mediaId }
-							render={ ( { open } ) => (
-								<IconButton
-									className="components-toolbar__control"
-									label={ __( 'Edit media' ) }
-									icon="format-image"
-									onClick={ open }
-									disabled={ ! product }
-								/>
-							) }
-						/>
-					</Toolbar>
-				</MediaUploadCheck>
-				<Toolbar
-					controls={ [
-						{
-							icon: 'edit',
-							title: __( 'Edit' ),
-							onClick: () => setAttributes( { editMode: ! editMode } ),
-							isActive: editMode,
-						},
-					] }
-				/>
-			</BlockControls>
-		);
-	}
-
-	renderProduct() {
-		const { attributes, isLoading, isSelected, overlayColor, product, setAttributes } = this.props;
+	const renderProduct = () => {
 		const {
 			className,
 			contentAlign,
@@ -262,7 +222,7 @@ class FeaturedProduct extends Component {
 			className,
 		);
 
-		const style = backgroundImageStyles( attributes.mediaSrc || product );
+		const style = getBackgroundImageStyles( attributes.mediaSrc || product );
 
 		if ( overlayColor.color ) {
 			style.backgroundColor = overlayColor.color;
@@ -335,54 +295,44 @@ class FeaturedProduct extends Component {
 				</div>
 			</ResizableBox>
 		);
+	};
+
+	const renderNoProduct = () => (
+		<Placeholder
+			className="wc-block-featured-product"
+			icon="star-filled"
+			label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
+		>
+			{ isLoading ? (
+				<Spinner />
+			) : (
+				__( 'No product is selected.', 'woo-gutenberg-products-block' )
+			) }
+		</Placeholder>
+	);
+
+	const { editMode } = attributes;
+
+	if ( error ) {
+		return renderApiError();
 	}
 
-	renderNoProduct() {
-		const { isLoading } = this.props;
-
-		return (
-			<Placeholder
-				className="wc-block-featured-product"
-				icon="star-filled"
-				label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
-			>
-				{ isLoading ? (
-					<Spinner />
-				) : (
-					__( 'No product is selected.', 'woo-gutenberg-products-block' )
-				) }
-			</Placeholder>
-		);
+	if ( editMode ) {
+		return renderEditMode();
 	}
 
-	render() {
-		const { attributes, error, product } = this.props;
-		const { editMode } = attributes;
-
-		// If there was an API error, render it.
-		if ( error ) {
-			return this.renderApiError();
-		}
-
-		// If editing, show edit controls.
-		if ( editMode ) {
-			return this.renderEditMode();
-		}
-
-		// Otherwise render the selected product!
-		return (
-			<Fragment>
-				{ this.getBlockControls() }
-				{ this.getInspectorControls() }
-				{ !! product ? (
-					this.renderProduct()
-				) : (
-					this.renderNoProduct()
-				) }
-			</Fragment>
-		);
-	}
-}
+	return (
+		<Fragment>
+			{ getBlockControls() }
+			{ getInspectorControls() }
+			{ product ? (
+				renderProduct()
+			) : (
+				renderNoProduct()
+			) }
+		</Fragment>
+	);
+};
 
 FeaturedProduct.propTypes = {
 	/**
