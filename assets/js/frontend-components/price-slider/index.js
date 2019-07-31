@@ -118,16 +118,16 @@ class PriceSlider extends Component {
 		// eslint-disable-next-line no-mixed-operators
 		const maxProgress = ( max - ( currentMax / max ) * 100 );
 		return (
-			<div className="wc-block-price-filter__slider_group">
+			<div className="wc-block-price-filter">
 				<input type="text" onInput={ this.onInputMin } ref={ this.minInput } className="wc-block-price-filter__amount wc-block-price-filter__amount--min" value={ this.formatCurrencyForInput( currentMin ) } size="5" />
 				<input type="text" onInput={ this.onInputMax } ref={ this.maxInput } className="wc-block-price-filter__amount wc-block-price-filter__amount--max" value={ this.formatCurrencyForInput( currentMax ) } size="5" />
-				<div className="wc-block-price-filter__slider_range">
-					<input type="range" ref={ this.minRange } onChange={ this.onChangeMin } className="wc-block-price-filter__slider wc-block-price-filter__slider--min" value={ currentMin ? currentMin : 0 } step={ step } min={ min } max={ max } />
-					<input type="range" ref={ this.maxRange } onChange={ this.onChangeMax } className="wc-block-price-filter__slider wc-block-price-filter__slider--max" value={ currentMax ? currentMax : max } step={ step } min={ min } max={ max } />
-					<div className="wc-block-price-filter__slider_range_progress wc-block-price-filter__slider_range_progress--start" style={ {
+				<div className="wc-block-price-filter__range-input-wrapper">
+					<input type="range" ref={ this.minRange } onChange={ this.onChangeMin } className="wc-block-price-filter__range-input wc-block-price-filter__range-input--min" value={ currentMin ? currentMin : 0 } step={ step } min={ min } max={ max } />
+					<input type="range" ref={ this.maxRange } onChange={ this.onChangeMax } className="wc-block-price-filter__range-input wc-block-price-filter__range-input--max" value={ currentMax ? currentMax : max } step={ step } min={ min } max={ max } />
+					<div className="wc-block-price-filter__progress wc-block-price-filter__progress--lower" style={ {
 						width: 'calc(' + minProgress + '% - 7px ',
 					} } />
-					<div className="wc-block-price-filter__slider_range_progress wc-block-price-filter__slider_range_progress--end" style={ {
+					<div className="wc-block-price-filter__progress wc-block-price-filter__progress--upper" style={ {
 						width: 'calc(' + maxProgress + '% - 7px ',
 					} } />
 				</div>
