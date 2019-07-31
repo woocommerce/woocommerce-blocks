@@ -40,7 +40,7 @@ import {
 	getImageSrcFromProduct,
 	getImageIdFromProduct,
 } from '../../utils/products';
-import withGetProduct from '../../utils/with-get-product';
+import withProduct from '../../utils/with-product';
 
 /**
  * The min-height for the block content.
@@ -80,20 +80,6 @@ function dimRatioToClass( ratio ) {
  * Component to handle edit mode of "Featured Product".
  */
 class FeaturedProduct extends Component {
-	componentDidMount() {
-		const { getProduct } = this.props;
-		const { productId } = this.props.attributes;
-		getProduct( productId );
-	}
-
-	componentDidUpdate( prevProps ) {
-		const { debouncedGetProduct } = this.props;
-		const { productId } = this.props.attributes;
-		if ( prevProps.attributes.productId !== productId ) {
-			debouncedGetProduct( productId );
-		}
-	}
-
 	getInspectorControls() {
 		const {
 			attributes,
@@ -193,18 +179,14 @@ class FeaturedProduct extends Component {
 	}
 
 	renderApiError() {
-		const { debouncedGetProduct, error, isLoading } = this.props;
-		const { productId } = this.props.attributes;
-		const onRetry = () => {
-			debouncedGetProduct( productId );
-		};
+		const { error, getProduct, isLoading } = this.props;
 
 		return (
 			<ApiErrorPlaceholder
 				className="wc-block-featured-product-error"
 				error={ error }
 				isLoading={ isLoading }
-				onRetry={ onRetry }
+				onRetry={ getProduct }
 			/>
 		);
 	}
@@ -419,8 +401,7 @@ FeaturedProduct.propTypes = {
 	 * A callback to update attributes.
 	 */
 	setAttributes: PropTypes.func.isRequired,
-	// from withGetProduct
-	debouncedGetProduct: PropTypes.func,
+	// from withProduct
 	error: PropTypes.object,
 	getProduct: PropTypes.func,
 	isLoading: PropTypes.bool,
@@ -439,7 +420,7 @@ FeaturedProduct.propTypes = {
 };
 
 export default compose( [
-	withGetProduct,
+	withProduct,
 	withColors( { overlayColor: 'background-color' } ),
 	withSpokenMessages,
 ] )( FeaturedProduct );
