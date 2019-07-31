@@ -70,7 +70,7 @@ class PriceSlider extends Component {
 
 		this.setState( {
 			currentMin: value ? parseInt( value, 10 ) : '',
-			currentMax: Math.min( max, Math.max( parseInt( value, 10 ), this.maxRange.current.value ) ),
+			currentMax: Math.min( max, Math.max( parseInt( value, 10 ) || 0, this.maxRange.current.value ) ),
 		} );
 	}
 
@@ -88,7 +88,7 @@ class PriceSlider extends Component {
 		}
 
 		this.setState( {
-			currentMin: Math.max( min, Math.min( this.minRange.current.value, parseInt( value, 10 ) ) ),
+			currentMin: Math.max( min, Math.min( this.minRange.current.value, parseInt( value, 10 ) || 0 ) ),
 			currentMax: value ? parseInt( value, 10 ) : '',
 		} );
 	}
