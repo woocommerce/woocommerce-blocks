@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { render } from '@wordpress/element';
+import { render } from 'react-dom';
 
 /**
  * Internal dependencies
