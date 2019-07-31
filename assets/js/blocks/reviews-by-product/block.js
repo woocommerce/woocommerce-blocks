@@ -236,7 +236,7 @@ ReviewsByProduct.propTypes = {
 	 */
 	isPreview: PropTypes.bool,
 	// from withComponentId
-	componentId: PropTypes.string,
+	componentId: PropTypes.number,
 };
 
 export default withComponentId( ReviewsByProduct );
