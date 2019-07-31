@@ -156,7 +156,10 @@ class ReviewsByProduct extends Component {
 		};
 
 		return (
-			<p className="wc-block-reviews-by-product__orderby">
+			<p
+				key={ `wc-block-reviews-by-product__orderby-${ componentId }` }
+				className="wc-block-reviews-by-product__orderby"
+			>
 				<label className="wc-block-reviews-by-product__orderby__label" htmlFor={ selectId }>
 					{ __( 'Order by', 'woo-gutenberg-products-block' ) }
 				</label>
@@ -176,7 +179,7 @@ class ReviewsByProduct extends Component {
 	}
 
 	renderReviewsList() {
-		const { attributes } = this.props;
+		const { attributes, componentId } = this.props;
 		const { reviews } = this.state;
 		const showAvatar = wc_product_block_data.showAvatars && attributes.showAvatar;
 		const showProductRating = wc_product_block_data.enableReviewRating && attributes.showProductRating;
@@ -187,7 +190,10 @@ class ReviewsByProduct extends Component {
 		};
 
 		return (
-			<ul className="wc-block-reviews-by-product__list">
+			<ul
+				key={ `wc-block-reviews-by-product__reviews-list-${ componentId }` }
+				className="wc-block-reviews-by-product__list"
+			>
 				{ reviews.length === 0 ?
 					(
 						renderReview( attrs )
@@ -200,7 +206,7 @@ class ReviewsByProduct extends Component {
 	}
 
 	renderLoadMoreButton() {
-		const { isPreview } = this.props;
+		const { componentId, isPreview } = this.props;
 		const { reviews, totalReviews } = this.state;
 
 		if ( totalReviews <= reviews.length ) {
@@ -209,6 +215,7 @@ class ReviewsByProduct extends Component {
 
 		return (
 			<button
+				key={ `wc-block-reviews-by-product__rload-more-${ componentId }` }
 				className="wc-block-reviews-by-product__load-more"
 				onClick={ isPreview ? null : this.appendReviews }
 			>
