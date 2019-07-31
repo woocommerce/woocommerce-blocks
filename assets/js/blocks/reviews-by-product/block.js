@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
-import { Component } from '@wordpress/element';
+import { Component } from 'react';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
 
@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
  * Internal dependencies
  */
 import { renderReview } from './utils';
-import uniqueID from '../../utils/uniqueid';
+import withComponentId from '../../utils/with-component-id';
 
 /**
  * Component to handle edit mode of "Reviews by Product".
@@ -30,7 +30,6 @@ class ReviewsByProduct extends Component {
 		this.onChangeOrderby = this.onChangeOrderby.bind( this );
 		this.getReviews = this.getReviews.bind( this );
 		this.appendReviews = this.appendReviews.bind( this );
-		this.id = uniqueID( '', 'wc-block-reviews-by-product' );
 	}
 
 	componentDidMount() {
@@ -150,10 +149,10 @@ class ReviewsByProduct extends Component {
 			return null;
 		}
 
-		const { attributes, isPreview } = this.props;
+		const { attributes, componentId, isPreview } = this.props;
 		const { orderby } = this.state;
 
-		const selectId = `wc-block-reviews-by-product__orderby__select-${ this.id }`;
+		const selectId = `wc-block-reviews-by-product__orderby__select-${ componentId }`;
 		const selectProps = isPreview ? {
 			readOnly: true,
 			value: attributes.orderby,
@@ -242,6 +241,8 @@ ReviewsByProduct.propTypes = {
 	 * Whether this is the block preview or frontend display.
 	 */
 	isPreview: PropTypes.bool,
+	// from withComponentId
+	componentId: PropTypes.string,
 };
 
-export default ReviewsByProduct;
+export default withComponentId( ReviewsByProduct );
