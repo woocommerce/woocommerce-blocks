@@ -252,37 +252,43 @@ class ProductReviews extends WC_REST_Controller {
 			'title'      => 'product_block_review',
 			'type'       => 'object',
 			'properties' => array(
-				'id'               => array(
+				'id'                     => array(
 					'description' => __( 'Unique identifier for the resource.', 'woo-gutenberg-products-block' ),
 					'type'        => 'integer',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
-				'date_created'     => array(
+				'date_created'           => array(
 					'description' => __( "The date the review was created, in the site's timezone.", 'woo-gutenberg-products-block' ),
 					'type'        => 'date-time',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
-				'date_created_gmt' => array(
+				'formatted_date_created' => array(
+					'description' => __( "The date the review was created, in the site's timezone in human-readable format.", 'woo-gutenberg-products-block' ),
+					'type'        => 'string',
+					'context'     => array( 'view', 'edit' ),
+					'readonly'    => true,
+				),
+				'date_created_gmt'       => array(
 					'description' => __( 'The date the review was created, as GMT.', 'woo-gutenberg-products-block' ),
 					'type'        => 'date-time',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
-				'product_id'       => array(
+				'product_id'             => array(
 					'description' => __( 'Unique identifier for the product that the review belongs to.', 'woo-gutenberg-products-block' ),
 					'type'        => 'integer',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
-				'reviewer'         => array(
+				'reviewer'               => array(
 					'description' => __( 'Reviewer name.', 'woo-gutenberg-products-block' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
-				'review'           => array(
+				'review'                 => array(
 					'description' => __( 'The content of the review.', 'woo-gutenberg-products-block' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
@@ -291,13 +297,13 @@ class ProductReviews extends WC_REST_Controller {
 					),
 					'readonly'    => true,
 				),
-				'rating'           => array(
+				'rating'                 => array(
 					'description' => __( 'Review rating (0 to 5).', 'woo-gutenberg-products-block' ),
 					'type'        => 'integer',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
-				'verified'         => array(
+				'verified'               => array(
 					'description' => __( 'Shows if the reviewer bought the product or not.', 'woo-gutenberg-products-block' ),
 					'type'        => 'boolean',
 					'context'     => array( 'view', 'edit' ),
