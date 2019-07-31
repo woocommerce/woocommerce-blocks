@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
 import { Component } from 'react';
-import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
 
 /**
@@ -26,7 +25,6 @@ class ReviewsByProduct extends Component {
 			totalReviews: 0,
 		};
 
-		this.debouncedGetReviews = debounce( this.getReviews.bind( this ), 200 );
 		this.onChangeOrderby = this.onChangeOrderby.bind( this );
 		this.getReviews = this.getReviews.bind( this );
 		this.appendReviews = this.appendReviews.bind( this );
@@ -36,17 +34,13 @@ class ReviewsByProduct extends Component {
 		this.getReviews();
 	}
 
-	componentWillUnmount() {
-		this.debouncedGetReviews.cancel();
-	}
-
 	componentDidUpdate( prevProps ) {
 		if (
 			prevProps.attributes.orderby !== this.props.attributes.orderby ||
 			prevProps.attributes.perPage !== this.props.attributes.perPage ||
 			prevProps.attributes.productId !== this.props.attributes.productId
 		) {
-			this.debouncedGetReviews();
+			this.getReviews();
 		}
 	}
 
