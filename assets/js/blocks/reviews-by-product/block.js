@@ -3,16 +3,14 @@
  */
 import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
-import { addQueryArgs } from '@wordpress/url';
-import { Component, Fragment } from '@wordpress/element';
-import { debounce } from 'lodash';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withInstanceId } from '@wordpress/compose';
 
 /**
  * Internal dependencies
  */
 import { renderReview } from './utils';
+import withComponentId from '../../utils/with-component-id';
 
 /**
  * Component to handle edit mode of "Reviews by Product".
@@ -27,7 +25,6 @@ class ReviewsByProduct extends Component {
 			totalReviews: 0,
 		};
 
-		this.debouncedGetReviews = debounce( this.getReviews.bind( this ), 200 );
 		this.onChangeOrderby = this.onChangeOrderby.bind( this );
 		this.getReviews = this.getReviews.bind( this );
 		this.appendReviews = this.appendReviews.bind( this );
@@ -37,17 +34,13 @@ class ReviewsByProduct extends Component {
 		this.getReviews();
 	}
 
-	componentWillUnmount() {
-		this.debouncedGetReviews.cancel();
-	}
-
 	componentDidUpdate( prevProps ) {
 		if (
 			prevProps.attributes.orderby !== this.props.attributes.orderby ||
 			prevProps.attributes.perPage !== this.props.attributes.perPage ||
 			prevProps.attributes.productId !== this.props.attributes.productId
 		) {
-			this.debouncedGetReviews();
+			this.getReviews();
 		}
 	}
 
@@ -100,14 +93,15 @@ class ReviewsByProduct extends Component {
 			return;
 		}
 
+		const args = {
+			order,
+			orderby,
+			page,
+			per_page: parseInt( perPage, 10 ) || 1,
+			product_id: productId,
+		};
 		apiFetch( {
-			path: addQueryArgs( `/wc/blocks/products/reviews`, {
-				order,
-				orderby,
-				page,
-				per_page: parseInt( perPage, 10 ) || 1,
-				product_id: productId,
-			} ),
+			path: '/wc/blocks/products/reviews?' + Object.entries( args ).map( ( arg ) => arg.join( '=' ) ).join( '&' ),
 			parse: false,
 		} ).then( ( response ) => {
 			if ( response.json ) {
@@ -149,10 +143,10 @@ class ReviewsByProduct extends Component {
 			return null;
 		}
 
-		const { attributes, instanceId, isPreview } = this.props;
+		const { attributes, componentId, isPreview } = this.props;
 		const { orderby } = this.state;
 
-		const selectId = `wc-block-reviews-by-product__orderby__select-${ instanceId }`;
+		const selectId = `wc-block-reviews-by-product__orderby__select-${ componentId }`;
 		const selectProps = isPreview ? {
 			readOnly: true,
 			value: attributes.orderby,
@@ -162,7 +156,10 @@ class ReviewsByProduct extends Component {
 		};
 
 		return (
-			<p className="wc-block-reviews-by-product__orderby">
+			<p
+				key={ `wc-block-reviews-by-product__orderby-${ componentId }` }
+				className="wc-block-reviews-by-product__orderby"
+			>
 				<label className="wc-block-reviews-by-product__orderby__label" htmlFor={ selectId }>
 					{ __( 'Order by', 'woo-gutenberg-products-block' ) }
 				</label>
@@ -182,7 +179,7 @@ class ReviewsByProduct extends Component {
 	}
 
 	renderReviewsList() {
-		const { attributes } = this.props;
+		const { attributes, componentId } = this.props;
 		const { reviews } = this.state;
 		const showAvatar = wc_product_block_data.showAvatars && attributes.showAvatar;
 		const showProductRating = wc_product_block_data.enableReviewRating && attributes.showProductRating;
@@ -193,7 +190,10 @@ class ReviewsByProduct extends Component {
 		};
 
 		return (
-			<ul className="wc-block-reviews-by-product__list">
+			<ul
+				key={ `wc-block-reviews-by-product__reviews-list-${ componentId }` }
+				className="wc-block-reviews-by-product__list"
+			>
 				{ reviews.length === 0 ?
 					(
 						renderReview( attrs )
@@ -206,7 +206,7 @@ class ReviewsByProduct extends Component {
 	}
 
 	renderLoadMoreButton() {
-		const { isPreview } = this.props;
+		const { componentId, isPreview } = this.props;
 		const { reviews, totalReviews } = this.state;
 
 		if ( totalReviews <= reviews.length ) {
@@ -215,6 +215,7 @@ class ReviewsByProduct extends Component {
 
 		return (
 			<button
+				key={ `wc-block-reviews-by-product__rload-more-${ componentId }` }
 				className="wc-block-reviews-by-product__load-more"
 				onClick={ isPreview ? null : this.appendReviews }
 			>
@@ -224,13 +225,11 @@ class ReviewsByProduct extends Component {
 	}
 
 	render() {
-		return (
-			<Fragment>
-				{ this.renderOrderBySelect() }
-				{ this.renderReviewsList() }
-				{ this.renderLoadMoreButton() }
-			</Fragment>
-		);
+		return [
+			this.renderOrderBySelect(),
+			this.renderReviewsList(),
+			this.renderLoadMoreButton(),
+		];
 	}
 }
 
@@ -240,13 +239,11 @@ ReviewsByProduct.propTypes = {
 	 */
 	attributes: PropTypes.object.isRequired,
 	/**
-	 * A unique ID for identifying the label for the select dropdown.
-	 */
-	instanceId: PropTypes.number,
-	/**
 	 * Whether this is the block preview or frontend display.
 	 */
 	isPreview: PropTypes.bool,
+	// from withComponentId
+	componentId: PropTypes.number,
 };
 
-export default withInstanceId( ReviewsByProduct );
+export default withComponentId( ReviewsByProduct );

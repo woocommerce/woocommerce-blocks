@@ -219,15 +219,16 @@ class ProductReviews extends WC_REST_Controller {
 		$context = ! empty( $request['context'] ) ? $request['context'] : 'view';
 		$rating  = get_comment_meta( $review->comment_ID, 'rating', true ) === '' ? null : (int) get_comment_meta( $review->comment_ID, 'rating', true );
 		$data    = array(
-			'id'                   => (int) $review->comment_ID,
-			'date_created'         => wc_rest_prepare_date_response( $review->comment_date ),
-			'date_created_gmt'     => wc_rest_prepare_date_response( $review->comment_date_gmt ),
-			'product_id'           => (int) $review->comment_post_ID,
-			'reviewer'             => $review->comment_author,
-			'review'               => $review->comment_content,
-			'rating'               => $rating,
-			'verified'             => wc_review_is_from_verified_owner( $review->comment_ID ),
-			'reviewer_avatar_urls' => rest_get_avatar_urls( $review->comment_author_email ),
+			'id'                     => (int) $review->comment_ID,
+			'date_created'           => wc_rest_prepare_date_response( $review->comment_date ),
+			'formatted_date_created' => get_comment_date( 'F j, Y', $review->comment_ID ),
+			'date_created_gmt'       => wc_rest_prepare_date_response( $review->comment_date_gmt ),
+			'product_id'             => (int) $review->comment_post_ID,
+			'reviewer'               => $review->comment_author,
+			'review'                 => $review->comment_content,
+			'rating'                 => $rating,
+			'verified'               => wc_review_is_from_verified_owner( $review->comment_ID ),
+			'reviewer_avatar_urls'   => rest_get_avatar_urls( $review->comment_author_email ),
 		);
 
 		if ( 'view' === $context ) {
