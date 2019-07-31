@@ -21,10 +21,10 @@ function getReviewClasses( isLoading ) {
  * @return {Object} React JSx nodes of the block
  */
 export function renderReview( attributes, review = {}, i = 0 ) {
-	const { showAvatar, showProductRating: showProductRatingAttr, showReviewDate, showReviewerName } = attributes;
+	const { showReviewDate, showReviewerName, showReviewImage, showReviewRating: showReviewRatingAttr } = attributes;
 	const { id = null, date_created: dateCreated, formatted_date_created: formattedDateCreated, rating, review: text = '', reviewer = '', reviewer_avatar_urls: avatarUrls = {} } = review;
 	const isLoading = ! Object.keys( review ).length > 0;
-	const showProductRating = Number.isFinite( rating ) && showProductRatingAttr;
+	const showReviewRating = Number.isFinite( rating ) && showReviewRatingAttr;
 	const classes = getReviewClasses( isLoading );
 	const starStyle = {
 		width: ( rating / 5 * 100 ) + '%',
@@ -41,21 +41,21 @@ export function renderReview( attributes, review = {}, i = 0 ) {
 					__html: text || '',
 				} }
 			/>
-			{ ( showAvatar || showReviewerName || showProductRating || showReviewDate ) && (
+			{ ( showReviewDate || showReviewerName || showReviewImage || showReviewRating ) && (
 				<div className="wc-block-reviews-by-product__info">
-					{ showAvatar && (
+					{ showReviewImage && (
 						isLoading ? (
 							<div className="wc-block-reviews-by-product__avatar" width="48" height="48" />
 						) : (
 							<img alt="" src={ avatarUrls[ '48' ] } srcSet={ avatarUrls[ '96' ] + ' 2x' } className="wc-block-reviews-by-product__avatar" width="48" height="48" />
 						)
 					) }
-					{ ( showReviewerName || showProductRating ) && (
+					{ ( showReviewerName || showReviewRating ) && (
 						<div className="wc-block-reviews-by-product__meta">
 							{ showReviewerName && (
 								<strong className="wc-block-reviews-by-product__author">{ reviewer }</strong>
 							) }
-							{ showProductRating && (
+							{ showReviewRating && (
 								<div className="wc-block-reviews-by-product__rating">
 									<div className="wc-block-reviews-by-product__rating__stars" role="img">
 										<span style={ starStyle }>{ sprintf( __( 'Rated %d out of 5', 'woo-gutenberg-products-block' ), rating ) }</span>

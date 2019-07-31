@@ -31,29 +31,31 @@ class ReviewsByProduct extends Component {
 	}
 
 	componentDidMount() {
-		this.getReviews();
+		this.getReviews( this.props.attributes.reviewsOnPageLoad );
 	}
 
 	componentDidUpdate( prevProps ) {
 		if (
 			prevProps.attributes.orderby !== this.props.attributes.orderby ||
-			prevProps.attributes.perPage !== this.props.attributes.perPage ||
-			prevProps.attributes.productId !== this.props.attributes.productId
+			prevProps.attributes.productId !== this.props.attributes.productId ||
+			prevProps.attributes.reviewsOnPageLoad !== this.props.attributes.reviewsOnPageLoad
 		) {
-			this.getReviews();
+			this.getReviews( this.props.attributes.reviewsOnPageLoad );
 		}
 	}
 
 	onChangeOrderby( event ) {
 		const { attributes } = this.props;
-		const { perPage } = attributes;
+		const { reviewsOnPageLoad } = attributes;
 		const { totalReviews } = this.state;
-		const newReviews = Math.min( totalReviews, perPage );
+		const newReviews = Math.min( totalReviews, reviewsOnPageLoad );
+
 		this.setState( {
 			reviews: Array( newReviews ).fill( {} ),
 			orderby: event.target.value,
 		} );
-		this.getReviews( event.target.value );
+
+		this.getReviews( reviewsOnPageLoad, event.target.value );
 	}
 
 	getOrderParams( orderValue ) {
@@ -82,9 +84,9 @@ class ReviewsByProduct extends Component {
 		};
 	}
 
-	getReviews( orderValue, page = 1 ) {
+	getReviews( reviewsToLoad, orderValue, offset = 0 ) {
 		const { attributes } = this.props;
-		const { perPage, productId } = attributes;
+		const { productId } = attributes;
 		const { reviews } = this.state;
 		const { order, orderby } = this.getOrderParams( orderValue );
 
@@ -94,10 +96,10 @@ class ReviewsByProduct extends Component {
 		}
 
 		const args = {
+			offset,
 			order,
 			orderby,
-			page,
-			per_page: parseInt( perPage, 10 ) || 1,
+			per_page: parseInt( reviewsToLoad, 10 ) || 1,
 			product_id: productId,
 		};
 		apiFetch( {
@@ -107,7 +109,7 @@ class ReviewsByProduct extends Component {
 			if ( response.json ) {
 				response.json().then( ( newReviews ) => {
 					const totalReviews = parseInt( response.headers.get( 'x-wp-total' ), 10 );
-					if ( page === 1 ) {
+					if ( offset === 0 ) {
 						this.setState( { reviews: newReviews, totalReviews } );
 					} else {
 						this.setState( {
@@ -128,23 +130,22 @@ class ReviewsByProduct extends Component {
 
 	appendReviews() {
 		const { attributes } = this.props;
-		const { perPage } = attributes;
+		const { reviewsOnLoadMore } = attributes;
 		const { reviews, totalReviews } = this.state;
 
-		const newReviews = Math.min( totalReviews - reviews.length, perPage );
+		const newReviews = Math.min( totalReviews - reviews.length, reviewsOnLoadMore );
 		this.setState( { reviews: reviews.concat( Array( newReviews ).fill( {} ) ) } );
 
-		const page = Math.round( reviews.length / perPage ) + 1;
-		this.getReviews( null, page );
+		this.getReviews( reviewsOnLoadMore, null, reviews.length );
 	}
 
 	renderOrderBySelect() {
-		if ( ! wc_product_block_data.enableReviewRating ) {
-			return null;
-		}
-
 		const { attributes, componentId, isPreview } = this.props;
 		const { orderby } = this.state;
+
+		if ( ! attributes.showOrderby || ! wc_product_block_data.enableReviewRating ) {
+			return null;
+		}
 
 		const selectId = `wc-block-reviews-by-product__orderby__select-${ componentId }`;
 		const selectProps = isPreview ? {
@@ -181,12 +182,12 @@ class ReviewsByProduct extends Component {
 	renderReviewsList() {
 		const { attributes, componentId } = this.props;
 		const { reviews } = this.state;
-		const showAvatar = wc_product_block_data.showAvatars && attributes.showAvatar;
-		const showProductRating = wc_product_block_data.enableReviewRating && attributes.showProductRating;
+		const showReviewImage = ( wc_product_block_data.showAvatars || attributes.imageType === 'product' ) && attributes.showReviewImage;
+		const showReviewRating = wc_product_block_data.enableReviewRating && attributes.showReviewRating;
 		const attrs = {
 			...attributes,
-			showAvatar,
-			showProductRating,
+			showReviewImage,
+			showReviewRating,
 		};
 
 		return (
@@ -206,10 +207,10 @@ class ReviewsByProduct extends Component {
 	}
 
 	renderLoadMoreButton() {
-		const { componentId, isPreview } = this.props;
+		const { attributes, componentId, isPreview } = this.props;
 		const { reviews, totalReviews } = this.state;
 
-		if ( totalReviews <= reviews.length ) {
+		if ( ! attributes.showLoadMore || totalReviews <= reviews.length ) {
 			return null;
 		}
 

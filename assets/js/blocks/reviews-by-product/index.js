@@ -38,6 +38,14 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 		},
 
 		/**
+		 * Whether to display the reviewer or product image.
+		 */
+		imageType: {
+			type: 'string',
+			default: 'reviewer',
+		},
+
+		/**
 		 * Order to use for the reviews listing.
 		 */
 		orderby: {
@@ -46,32 +54,40 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 		},
 
 		/**
-		 * Number of reviews to display per page.
-		 */
-		perPage: {
-			type: 'number',
-			default: 10,
-		},
-
-		/**
-		 * The product ID to display.
+		 * The id of the product to load reviews for.
 		 */
 		productId: {
 			type: 'number',
 		},
 
 		/**
-		 * Show the reviewer avatar.
+		 * Number of reviews to add when clicking on load more.
 		 */
-		showAvatar: {
+		reviewsOnLoadMore: {
+			type: 'number',
+			default: 10,
+		},
+
+		/**
+		 * Number of reviews to display on page load.
+		 */
+		reviewsOnPageLoad: {
+			type: 'number',
+			default: 10,
+		},
+
+		/**
+		 * Show the load more button.
+		 */
+		showLoadMore: {
 			type: 'boolean',
 			default: true,
 		},
 
 		/**
-		 * Show the product rating.
+		 * Show the order by selector.
 		 */
-		showProductRating: {
+		showOrderby: {
 			type: 'boolean',
 			default: true,
 		},
@@ -91,6 +107,22 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 			type: 'boolean',
 			default: true,
 		},
+
+		/**
+		 * Show the review image..
+		 */
+		showReviewImage: {
+			type: 'boolean',
+			default: true,
+		},
+
+		/**
+		 * Show the product rating.
+		 */
+		showReviewRating: {
+			type: 'boolean',
+			default: true,
+		},
 	},
 
 	/**
@@ -104,18 +136,22 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 	 * Save the props to post content.
 	 */
 	save( { attributes } ) {
-		const { className, orderby, perPage, productId, showAvatar, showProductRating, showReviewDate, showReviewerName } = attributes;
+		const { className, imageType, orderby, productId, reviewsOnPageLoad, reviewsOnLoadMore, showLoadMore, showOrderby, showReviewDate, showReviewerName, showReviewImage, showReviewRating } = attributes;
 
 		const classes = classNames( 'wc-block-reviews-by-product', className, {
-			'has-avatar': showAvatar,
 			'has-date': showReviewDate,
 			'has-name': showReviewerName,
-			'has-rating': showProductRating,
+			'has-image': showReviewImage,
+			'has-rating': showReviewRating,
 		} );
 		const data = {
-			'data-orderby': orderby,
-			'data-per-page': perPage,
+			'data-image-type': imageType,
 			'data-product-id': productId,
+			'data-orderby': orderby,
+			'data-reviews-on-page-load': reviewsOnPageLoad,
+			'data-reviews-on-load-more': reviewsOnLoadMore,
+			'data-show-load-more': showLoadMore,
+			'data-show-orderby': showOrderby,
 		};
 
 		return (
