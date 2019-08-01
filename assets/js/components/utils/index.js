@@ -48,6 +48,17 @@ export const getProducts = ( { selected = [], search } ) => {
 	} );
 };
 
+/**
+ * Get a promise that resolves to a product object from the API.
+ *
+ * @param {object} - Id of the product to retrieve.
+ */
+export const getProduct = ( productId ) => {
+	return apiFetch( {
+		path: `${ NAMESPACE }/${ productId }`,
+	} );
+};
+
 const getProductTagsRequests = ( { selected = [], search } ) => {
 	const requests = [
 		addQueryArgs( `${ NAMESPACE }/tags`, {

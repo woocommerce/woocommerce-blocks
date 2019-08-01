@@ -1,9 +1,13 @@
 /**
  * External dependencies
  */
-import apiFetch from '@wordpress/api-fetch';
 import { Component } from '@wordpress/element';
 import { createHigherOrderComponent } from '@wordpress/compose';
+
+/**
+ * Internal dependencies
+ */
+import { getProduct } from '../components/utils';
 
 const withProduct = createHigherOrderComponent(
 	( OriginalComponent ) => {
@@ -15,20 +19,20 @@ const withProduct = createHigherOrderComponent(
 					loading: false,
 					product: false,
 				};
-				this.getProduct = this.getProduct.bind( this );
+				this.loadProduct = this.loadProduct.bind( this );
 			}
 
 			componentDidMount() {
-				this.getProduct();
+				this.loadProduct();
 			}
 
 			componentDidUpdate( prevProps ) {
 				if ( prevProps.attributes.productId !== this.props.attributes.productId ) {
-					this.getProduct();
+					this.loadProduct();
 				}
 			}
 
-			getProduct() {
+			loadProduct() {
 				const { productId } = this.props.attributes;
 
 				if ( ! productId ) {
@@ -38,23 +42,19 @@ const withProduct = createHigherOrderComponent(
 
 				this.setState( { loading: true } );
 
-				apiFetch( {
-					path: `/wc/blocks/products/${ productId }`,
-				} )
-					.then( ( product ) => {
-						this.setState( { product, loading: false, error: false } );
-					} )
-					.catch( ( apiError ) => {
-						const error = typeof apiError === 'object' && apiError.hasOwnProperty( 'message' ) ? {
-							apiMessage: apiError.message,
-						} : {
-							// If we can't get any message from the API, set it to null and
-							// let <ApiErrorPlaceholder /> handle the message to display.
-							apiMessage: null,
-						};
+				getProduct( productId ).then( ( product ) => {
+					this.setState( { product, loading: false, error: false } );
+				} ).catch( ( apiError ) => {
+					const error = typeof apiError === 'object' && apiError.hasOwnProperty( 'message' ) ? {
+						apiMessage: apiError.message,
+					} : {
+						// If we can't get any message from the API, set it to null and
+						// let <ApiErrorPlaceholder /> handle the message to display.
+						apiMessage: null,
+					};
 
-						this.setState( { product: false, loading: false, error } );
-					} );
+					this.setState( { product: false, loading: false, error } );
+				} );
 			}
 
 			render() {
@@ -63,7 +63,7 @@ const withProduct = createHigherOrderComponent(
 				return <OriginalComponent
 					{ ...this.props }
 					error={ error }
-					getProduct={ this.getProduct }
+					getProduct={ this.loadProduct }
 					isLoading={ loading }
 					product={ product }
 				/>;
