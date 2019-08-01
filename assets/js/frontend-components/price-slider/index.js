@@ -40,23 +40,35 @@ class PriceSlider extends Component {
 	onChangeMin() {
 		const { step, max } = this.state;
 
+		let value = this.minRange.current.value;
+
+		if ( max <= value ) {
+			value = max - step;
+		}
+
 		this.setState( {
-			currentMin: this.minRange.current.value,
-			currentMax: Math.min( max, Math.max( parseInt( this.minRange.current.value, 10 ) + step, this.maxRange.current.value ) ),
+			currentMin: value,
+			currentMax: Math.min( max, Math.max( this.maxRange.current.value, parseInt( value, 10 ) + step ) ),
 		} );
 	}
 
 	onChangeMax() {
 		const { step, min } = this.state;
 
+		let value = this.maxRange.current.value;
+
+		if ( min >= value ) {
+			value = min + step;
+		}
+
 		this.setState( {
-			currentMin: Math.max( min, Math.min( this.minRange.current.value, parseInt( this.maxRange.current.value, 10 ) - step ) ),
-			currentMax: this.maxRange.current.value,
+			currentMin: Math.max( min, Math.min( this.minRange.current.value, parseInt( value, 10 ) - step ) ),
+			currentMax: value,
 		} );
 	}
 
 	onInputMin() {
-		const { min, max } = this.state;
+		const { min, max, step } = this.state;
 
 		let value = this.minInput.current.value.replace( /[^0-9.-]+/g, '' );
 
@@ -64,23 +76,23 @@ class PriceSlider extends Component {
 			value = min;
 		}
 
-		if ( max < value ) {
-			value = max;
+		if ( max <= value ) {
+			value = max - step;
 		}
 
 		this.setState( {
 			currentMin: value ? parseInt( value, 10 ) : '',
-			currentMax: Math.min( max, Math.max( parseInt( value, 10 ) || 0, this.maxRange.current.value ) ),
+			currentMax: Math.min( max, Math.max( ( parseInt( value, 10 ) || 0 ) + step, this.maxRange.current.value ) ),
 		} );
 	}
 
 	onInputMax() {
-		const { min, max } = this.state;
+		const { min, max, step } = this.state;
 
 		let value = this.maxInput.current.value.replace( /[^0-9.-]+/g, '' );
 
-		if ( min > value ) {
-			value = min;
+		if ( min >= value ) {
+			value = min + step;
 		}
 
 		if ( max < value ) {
@@ -88,7 +100,7 @@ class PriceSlider extends Component {
 		}
 
 		this.setState( {
-			currentMin: Math.max( min, Math.min( this.minRange.current.value, parseInt( value, 10 ) || 0 ) ),
+			currentMin: Math.max( min, Math.min( ( parseInt( value, 10 ) || 0 ) - step ), this.minRange.current.value ),
 			currentMax: value ? parseInt( value, 10 ) : '',
 		} );
 	}
@@ -114,22 +126,41 @@ class PriceSlider extends Component {
 	render() {
 		const { min, max, step, currentMin, currentMax } = this.state;
 
-		const minProgress = ( ( currentMin / max ) * 100 );
-		// eslint-disable-next-line no-mixed-operators
-		const maxProgress = ( max - ( currentMax / max ) * 100 );
+		const low = Math.round( 100 * ( ( currentMin - min ) / ( max - min ) ) ) + 0.5;
+		const high = Math.round( 100 * ( ( currentMax - min ) / ( max - min ) ) ) + 0.5;
+
 		return (
 			<div className="wc-block-price-filter">
 				<input type="text" onInput={ this.onInputMin } ref={ this.minInput } className="wc-block-price-filter__amount wc-block-price-filter__amount--min" value={ this.formatCurrencyForInput( currentMin ) } size="5" />
 				<input type="text" onInput={ this.onInputMax } ref={ this.maxInput } className="wc-block-price-filter__amount wc-block-price-filter__amount--max" value={ this.formatCurrencyForInput( currentMax ) } size="5" />
 				<div className="wc-block-price-filter__range-input-wrapper">
-					<input type="range" ref={ this.minRange } onChange={ this.onChangeMin } className="wc-block-price-filter__range-input wc-block-price-filter__range-input--min" value={ currentMin ? currentMin : 0 } step={ step } min={ min } max={ max } />
-					<input type="range" ref={ this.maxRange } onChange={ this.onChangeMax } className="wc-block-price-filter__range-input wc-block-price-filter__range-input--max" value={ currentMax ? currentMax : max } step={ step } min={ min } max={ max } />
-					<div className="wc-block-price-filter__progress wc-block-price-filter__progress--lower" style={ {
-						width: 'calc(' + minProgress + '% - 7px ',
-					} } />
-					<div className="wc-block-price-filter__progress wc-block-price-filter__progress--upper" style={ {
-						width: 'calc(' + maxProgress + '% - 7px ',
-					} } />
+					<div className="wc-block-price-filter__range-input-progress" style={
+						{
+							'--low': low + '%',
+							'--high': high + '%',
+						}
+					} />
+					<input
+						type="range"
+						className="wc-block-price-filter__range-input wc-block-price-filter__range-input--min"
+						ref={ this.minRange }
+						onChange={ this.onChangeMin }
+						value={ currentMin ? currentMin : 0 }
+						step={ step }
+						min={ min }
+						max={ max }
+					/>
+					<input
+						type="range"
+						className="wc-block-price-filter__range-input wc-block-price-filter__range-input--max"
+						ref={ this.maxRange }
+						onMouseDown={ this.onMouseOver }
+						onChange={ this.onChangeMax }
+						value={ currentMax ? currentMax : max }
+						step={ step }
+						min={ min }
+						max={ max }
+					/>
 				</div>
 			</div>
 		);
