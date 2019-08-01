@@ -44,7 +44,7 @@ import {
 	getImageSrcFromProduct,
 	getImageIdFromProduct,
 } from '../../utils/products';
-import withProduct from '../../utils/with-product';
+import withProduct from '../../hocs/with-product';
 
 /**
  * The min-height for the block content.
@@ -77,7 +77,7 @@ const FeaturedProduct = ( { attributes, debouncedSpeak, error, getProduct, isLoa
 
 		return (
 			<Fragment>
-				{ this.getBlockControls() }
+				{ getBlockControls() }
 				<Placeholder
 					icon="star-filled"
 					label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
