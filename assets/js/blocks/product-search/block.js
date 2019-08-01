@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { Component } from '@wordpress/element';
-import { IconButton } from '@wordpress/components';
 import PropTypes from 'prop-types';
 import { withInstanceId, compose } from '@wordpress/compose';
 import { RichText } from '@wordpress/editor';
@@ -49,12 +48,16 @@ class ProductSearchBlock extends Component {
 						name="s"
 					/>
 					<input type="hidden" name="post_type" value="product" />
-					<IconButton
-						icon="arrow-right-alt2"
+					<button
+						type="submit"
 						className="wc-block-product-search__button"
 						label={ __( 'Search', 'woo-gutenberg-products-block' ) }
-						type="submit"
-					/>
+						onClick={ this.onNavigate }
+					>
+						<svg aria-hidden="true" role="img" focusable="false" className="dashicon dashicons-arrow-right-alt2" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+							<path d="M6 15l5-5-5-5 1-2 7 7-7 7z"></path>
+						</svg>
+					</button>
 				</div>
 			</form>
 		);
@@ -93,11 +96,15 @@ class ProductSearchBlock extends Component {
 						multiline={ false }
 						formattingControls={ [] }
 					/>
-					<IconButton
-						icon="arrow-right-alt2"
+					<button
+						type="submit"
 						className="wc-block-product-search__button"
 						label={ __( 'Search', 'woo-gutenberg-products-block' ) }
-					/>
+					>
+						<svg aria-hidden="true" role="img" focusable="false" className="dashicon dashicons-arrow-right-alt2" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+							<path d="M6 15l5-5-5-5 1-2 7 7-7 7z"></path>
+						</svg>
+					</button>
 				</div>
 			</form>
 		);
