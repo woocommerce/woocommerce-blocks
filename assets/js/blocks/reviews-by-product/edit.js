@@ -12,8 +12,8 @@ import {
 	Notice,
 	PanelBody,
 	Placeholder,
+	RangeControl,
 	SelectControl,
-	TextControl,
 	ToggleControl,
 	Toolbar,
 	withSpokenMessages,
@@ -85,7 +85,7 @@ class ReviewsByProductEditor extends Component {
 			setAttributes,
 		} = this.props;
 		const minPerPage = 1;
-		const maxPerPage = 100;
+		const maxPerPage = 20;
 
 		return (
 			<InspectorControls key="inspector">
@@ -167,30 +167,24 @@ class ReviewsByProductEditor extends Component {
 						] }
 						onChange={ ( orderby ) => setAttributes( { orderby } ) }
 					/>
-					<TextControl
+					<RangeControl
 						label={ __( 'Starting Number of Reviews', 'woo-gutenberg-products-block' ) }
 						value={ attributes.reviewsOnPageLoad }
-						onChange={ ( reviewsOnPageLoad ) => setAttributes( {
-							reviewsOnPageLoad: Math.max( Math.min( parseInt( reviewsOnPageLoad, 10 ), maxPerPage ), minPerPage ),
-						} ) }
+						onChange={ ( reviewsOnPageLoad ) => setAttributes( { reviewsOnPageLoad } ) }
 						max={ maxPerPage }
 						min={ minPerPage }
-						type="number"
 					/>
 					<ToggleControl
 						label={ __( 'Load more', 'woo-gutenberg-products-block' ) }
 						checked={ attributes.showLoadMore }
 						onChange={ () => setAttributes( { showLoadMore: ! attributes.showLoadMore } ) }
 					/>
-					<TextControl
+					<RangeControl
 						label={ __( 'Load More Reviews', 'woo-gutenberg-products-block' ) }
 						value={ attributes.reviewsOnLoadMore }
-						onChange={ ( reviewsOnPageLoad ) => setAttributes( {
-							reviewsOnLoadMore: Math.max( Math.min( parseInt( reviewsOnPageLoad, 10 ), maxPerPage ), minPerPage ),
-						} ) }
+						onChange={ ( reviewsOnLoadMore ) => setAttributes( { reviewsOnLoadMore } ) }
 						max={ maxPerPage }
 						min={ minPerPage }
-						type="number"
 					/>
 				</PanelBody>
 			</InspectorControls>
