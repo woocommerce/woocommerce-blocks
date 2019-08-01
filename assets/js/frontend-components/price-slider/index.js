@@ -59,36 +59,6 @@ class PriceSlider extends Component {
 		return txt.value;
 	}
 
-	onChangeMin() {
-		const { step, max } = this.state;
-
-		let value = this.minRange.current.value;
-
-		if ( max <= value ) {
-			value = max - step;
-		}
-
-		this.setState( {
-			currentMin: value,
-			currentMax: Math.min( max, Math.max( this.maxRange.current.value, parseInt( value, 10 ) + step ) ),
-		} );
-	}
-
-	onChangeMax() {
-		const { step, min } = this.state;
-
-		let value = this.maxRange.current.value;
-
-		if ( min >= value ) {
-			value = min + step;
-		}
-
-		this.setState( {
-			currentMin: Math.max( min, Math.min( this.minRange.current.value, parseInt( value, 10 ) - step ) ),
-			currentMax: value,
-		} );
-	}
-
 	validateValues( values, isMin ) {
 		const { min, max, step } = this.state;
 
