@@ -3,6 +3,7 @@
  */
 import { sprintf, __ } from '@wordpress/i18n';
 import { Component, createRef } from 'react';
+import PropTypes from 'prop-types';
 
 /**
  * Internal dependencies
@@ -17,16 +18,14 @@ const get = ( obj, path, defaultValue ) => {
 };
 
 class PriceSlider extends Component {
-	constructor() {
+	constructor( props ) {
+		const { min, max } = props;
 		super( ...arguments );
 		this.state = {
-			currentMin: 0,
-			currentMax: 100,
-			inputMin: this.formatCurrencyForInput( 0 ),
-			inputMax: this.formatCurrencyForInput( 100 ),
-			step: 1,
-			min: 0,
-			max: 100,
+			currentMin: min,
+			currentMax: max,
+			inputMin: this.formatCurrencyForInput( min ),
+			inputMax: this.formatCurrencyForInput( max ),
 		};
 		this.minInput = createRef();
 		this.maxInput = createRef();
@@ -39,6 +38,17 @@ class PriceSlider extends Component {
 		this.validateValues = this.validateValues.bind( this );
 		this.getProgressStyle = this.getProgressStyle.bind( this );
 		this.formatCurrencyForInput = this.formatCurrencyForInput.bind( this );
+	}
+
+	componentDidUpdate( prevProps, prevState ) {
+		if ( prevState.currentMin !== this.state.currentMin || prevState.currentMax !== this.state.currentMax ) {
+			const { onChange } = this.props;
+
+			onChange( {
+				min: this.state.currentMin,
+				max: this.state.currentMax,
+			} );
+		}
 	}
 
 	formatCurrencyForInput( value ) {
@@ -60,7 +70,7 @@ class PriceSlider extends Component {
 	}
 
 	validateValues( values, isMin ) {
-		const { min, max, step } = this.state;
+		const { min, max, step } = this.props;
 
 		let minValue = parseInt( values[ 0 ], 10 ) || min;
 		let maxValue = parseInt( values[ 1 ], 10 ) || step;
@@ -145,7 +155,7 @@ class PriceSlider extends Component {
 	 * @param {obj} event event data.
 	 */
 	findClosestRange( event ) {
-		const { max } = this.state;
+		const { max } = this.props;
 		const bounds = event.target.getBoundingClientRect();
 		const x = event.clientX - bounds.left;
 		const minWidth = this.minRange.current.offsetWidth;
@@ -169,7 +179,8 @@ class PriceSlider extends Component {
 	}
 
 	getProgressStyle() {
-		const { min, max, currentMin, currentMax } = this.state;
+		const { min, max } = this.props;
+		const { currentMin, currentMax } = this.state;
 
 		const low = Math.round( 100 * ( ( currentMin - min ) / ( max - min ) ) ) + 0.5;
 		const high = Math.round( 100 * ( ( currentMax - min ) / ( max - min ) ) ) + 0.5;
@@ -181,7 +192,8 @@ class PriceSlider extends Component {
 	}
 
 	render() {
-		const { min, max, step, currentMin, currentMax } = this.state;
+		const { min, max, step } = this.props;
+		const { currentMin, currentMax } = this.state;
 		return (
 			<div className="wc-block-price-filter">
 				<input
@@ -237,5 +249,29 @@ class PriceSlider extends Component {
 		);
 	}
 }
+
+PriceSlider.propTypes = {
+	/**
+	 * Callback fired when prices changes.
+	 */
+	onChange: PropTypes.func.isRequired,
+	/**
+	 * Minimum allowed price.
+	 */
+	min: PropTypes.number,
+	/**
+	 * Maximum allowed price.
+	 */
+	max: PropTypes.number.isRequired,
+	/**
+	 * Step for slider inputs.
+	 */
+	step: PropTypes.number,
+};
+
+PriceSlider.defaultProps = {
+	min: 0,
+	step: 1,
+};
 
 export default PriceSlider;
