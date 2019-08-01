@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { sprintf } from '@wordpress/i18n';
+import { sprintf, __ } from '@wordpress/i18n';
 import { Component, createRef } from 'react';
 
 /**
@@ -37,6 +37,7 @@ class PriceSlider extends Component {
 		this.onInputBlur = this.onInputBlur.bind( this );
 		this.findClosestRange = this.findClosestRange.bind( this );
 		this.validateValues = this.validateValues.bind( this );
+		this.getProgressStyle = this.getProgressStyle.bind( this );
 		this.formatCurrencyForInput = this.formatCurrencyForInput.bind( this );
 	}
 
@@ -197,30 +198,52 @@ class PriceSlider extends Component {
 		}
 	}
 
-	render() {
-		const { min, max, step, currentMin, currentMax } = this.state;
+	getProgressStyle() {
+		const { min, max, currentMin, currentMax } = this.state;
 
 		const low = Math.round( 100 * ( ( currentMin - min ) / ( max - min ) ) ) + 0.5;
 		const high = Math.round( 100 * ( ( currentMax - min ) / ( max - min ) ) ) + 0.5;
 
+		return {
+			'--low': low + '%',
+			'--high': high + '%',
+		};
+	}
+
+	render() {
+		const { min, max, step, currentMin, currentMax } = this.state;
 		return (
 			<div className="wc-block-price-filter">
-				<input type="text" onChange={ this.onInputChange } onBlur={ this.onInputBlur } ref={ this.minInput } className="wc-block-price-filter__amount wc-block-price-filter__amount--min" value={ this.state.inputMin } size="5" />
-				<input type="text" onChange={ this.onInputChange } onBlur={ this.onInputBlur } ref={ this.maxInput } className="wc-block-price-filter__amount wc-block-price-filter__amount--max" value={ this.state.inputMax } size="5" />
+				<input
+					type="text"
+					className="wc-block-price-filter__amount wc-block-price-filter__amount--min"
+					aria-label={ __( 'Filter products by minimum price', 'woo-gutenberg-products-block' ) }
+					size="5"
+					ref={ this.minInput }
+					value={ this.state.inputMin }
+					onChange={ this.onInputChange }
+					onBlur={ this.onInputBlur }
+				/>
+				<input
+					type="text"
+					className="wc-block-price-filter__amount wc-block-price-filter__amount--max"
+					aria-label={ __( 'Filter products by maximum price', 'woo-gutenberg-products-block' ) }
+					size="5"
+					ref={ this.maxInput }
+					value={ this.state.inputMax }
+					onChange={ this.onInputChange }
+					onBlur={ this.onInputBlur }
+				/>
 				<div
 					className="wc-block-price-filter__range-input-wrapper"
 					onMouseMove={ this.findClosestRange }
 					onFocus={ this.findClosestRange }
 				>
-					<div className="wc-block-price-filter__range-input-progress" style={
-						{
-							'--low': low + '%',
-							'--high': high + '%',
-						}
-					} />
+					<div className="wc-block-price-filter__range-input-progress" style={ this.getProgressStyle() } />
 					<input
 						type="range"
 						className="wc-block-price-filter__range-input wc-block-price-filter__range-input--min"
+						aria-label={ __( 'Filter products by minimum price', 'woo-gutenberg-products-block' ) }
 						ref={ this.minRange }
 						onChange={ this.onDrag }
 						value={ currentMin ? currentMin : 0 }
@@ -231,6 +254,7 @@ class PriceSlider extends Component {
 					<input
 						type="range"
 						className="wc-block-price-filter__range-input wc-block-price-filter__range-input--max"
+						aria-label={ __( 'Filter products by maximum price', 'woo-gutenberg-products-block' ) }
 						ref={ this.maxRange }
 						onChange={ this.onDrag }
 						value={ currentMax ? currentMax : max }
