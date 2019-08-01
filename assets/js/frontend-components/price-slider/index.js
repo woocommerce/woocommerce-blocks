@@ -167,8 +167,34 @@ class PriceSlider extends Component {
 		} );
 	}
 
-	findClosestRange() {
+	/**
+	 * Works around an IE issue where only one range selector is visible by changing the display order
+	 * based on the mouse position.
+	 *
+	 * @param {obj} event event data.
+	 */
+	findClosestRange( event ) {
+		const { max } = this.state;
+		const bounds = event.target.getBoundingClientRect();
+		const x = event.clientX - bounds.left;
+		const minWidth = this.minRange.current.offsetWidth;
+		const minValue = this.minRange.current.value;
+		const maxWidth = this.maxRange.current.offsetWidth;
+		const maxValue = this.maxRange.current.value;
 
+		const minX = minWidth * ( minValue / max );
+		const maxX = maxWidth * ( maxValue / max );
+
+		const minXDiff = Math.abs( x - minX );
+		const maxXDiff = Math.abs( x - maxX );
+
+		if ( minXDiff > maxXDiff ) {
+			this.minRange.current.style.zIndex = 10;
+			this.maxRange.current.style.zIndex = 20;
+		} else {
+			this.minRange.current.style.zIndex = 20;
+			this.maxRange.current.style.zIndex = 10;
+		}
 	}
 
 	render() {
@@ -181,7 +207,11 @@ class PriceSlider extends Component {
 			<div className="wc-block-price-filter">
 				<input type="text" onChange={ this.onInputChange } onBlur={ this.onInputBlur } ref={ this.minInput } className="wc-block-price-filter__amount wc-block-price-filter__amount--min" value={ this.state.inputMin } size="5" />
 				<input type="text" onChange={ this.onInputChange } onBlur={ this.onInputBlur } ref={ this.maxInput } className="wc-block-price-filter__amount wc-block-price-filter__amount--max" value={ this.state.inputMax } size="5" />
-				<div className="wc-block-price-filter__range-input-wrapper">
+				<div
+					className="wc-block-price-filter__range-input-wrapper"
+					onMouseMove={ this.findClosestRange }
+					onFocus={ this.findClosestRange }
+				>
 					<div className="wc-block-price-filter__range-input-progress" style={
 						{
 							'--low': low + '%',
@@ -193,8 +223,6 @@ class PriceSlider extends Component {
 						className="wc-block-price-filter__range-input wc-block-price-filter__range-input--min"
 						ref={ this.minRange }
 						onChange={ this.onDrag }
-						onMouseOver={ this.findClosestRange }
-						onFocus={ this.findClosestRange }
 						value={ currentMin ? currentMin : 0 }
 						step={ step }
 						min={ min }
@@ -204,8 +232,6 @@ class PriceSlider extends Component {
 						type="range"
 						className="wc-block-price-filter__range-input wc-block-price-filter__range-input--max"
 						ref={ this.maxRange }
-						onMouseOver={ this.findClosestRange }
-						onFocus={ this.findClosestRange }
 						onChange={ this.onDrag }
 						value={ currentMax ? currentMax : max }
 						step={ step }

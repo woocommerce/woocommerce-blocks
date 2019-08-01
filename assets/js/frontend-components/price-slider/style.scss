@@ -160,7 +160,10 @@
 			box-shadow: none;
 			height: 24px;
 			.wc-block-price-filter__range-input-progress {
-				display: none;
+				background: #a8739d;
+				box-shadow: 0 0 0 1px inset #95588a;
+				width: 100%;
+				top: 7px;
 			}
 		}
 		.wc-block-price-filter__range-input {
@@ -202,8 +205,7 @@
 				box-shadow: 0 0 0 1px inset #b8b8b8;
 			}
 			&::-ms-fill-lower {
-				background: #a8739d;
-				box-shadow: 0 0 0 1px inset #95588a;
+				background: transparent;
 			}
 		}
 	}
