@@ -9,6 +9,7 @@ import {
 } from '@wordpress/editor';
 import {
 	Button,
+	Notice,
 	PanelBody,
 	Placeholder,
 	SelectControl,
@@ -19,11 +20,12 @@ import {
 } from '@wordpress/components';
 import classNames from 'classnames';
 import { SearchListItem } from '@woocommerce/components';
-import { Component, Fragment } from '@wordpress/element';
+import { Component, Fragment, RawHTML } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 import { debounce } from 'lodash';
 import { escapeHTML } from '@wordpress/escape-html';
 import PropTypes from 'prop-types';
+import { getAdminLink } from '@woocommerce/navigation';
 
 /**
  * Internal dependencies
@@ -103,62 +105,55 @@ class ReviewsByProductEditor extends Component {
 				<PanelBody title={ __( 'Content', 'woo-gutenberg-products-block' ) }>
 					<ToggleControl
 						label={ __( 'Product rating', 'woo-gutenberg-products-block' ) }
-						help={
-							attributes.showProductRating ?
-								__( 'Product rating is visible.', 'woo-gutenberg-products-block' ) :
-								__( 'Product rating is hidden.', 'woo-gutenberg-products-block' )
-						}
-						checked={ attributes.showProductRating }
-						onChange={ () => setAttributes( { showProductRating: ! attributes.showProductRating } ) }
+						checked={ attributes.showReviewRating }
+						onChange={ () => setAttributes( { showReviewRating: ! attributes.showReviewRating } ) }
 					/>
+					{ ( attributes.showReviewRating && ! wc_product_block_data.enableReviewRating ) && (
+						<Notice className="wc-block-reviews-by-product__notice">
+							<RawHTML>
+								{ sprintf( __( 'Product rating is disabled in your %sstore settings%s.', 'woo-gutenberg-products-block' ), `<a href="${ getAdminLink( 'admin.php?page=wc-settings&tab=products' ) }" target="_blank">`, '</a>' ) }
+							</RawHTML>
+						</Notice>
+					) }
 					<ToggleControl
 						label={ __( 'Reviewer name', 'woo-gutenberg-products-block' ) }
-						help={
-							attributes.showReviewerName ?
-								__( 'Reviewer name is visible.', 'woo-gutenberg-products-block' ) :
-								__( 'Reviewer name is hidden.', 'woo-gutenberg-products-block' )
-						}
 						checked={ attributes.showReviewerName }
 						onChange={ () => setAttributes( { showReviewerName: ! attributes.showReviewerName } ) }
 					/>
 					<ToggleControl
 						label={ __( 'Image', 'woo-gutenberg-products-block' ) }
-						help={
-							attributes.showReviewImage ?
-								__( 'Image is visible.', 'woo-gutenberg-products-block' ) :
-								__( 'Image is hidden.', 'woo-gutenberg-products-block' )
-						}
 						checked={ attributes.showReviewImage }
 						onChange={ () => setAttributes( { showReviewImage: ! attributes.showReviewImage } ) }
 					/>
 					<ToggleControl
 						label={ __( 'Review date', 'woo-gutenberg-products-block' ) }
-						help={
-							attributes.showReviewDate ?
-								__( 'Review date is visible.', 'woo-gutenberg-products-block' ) :
-								__( 'Review date is hidden.', 'woo-gutenberg-products-block' )
-						}
 						checked={ attributes.showReviewDate }
 						onChange={ () => setAttributes( { showReviewDate: ! attributes.showReviewDate } ) }
 					/>
-					<ToggleButtonControl
-						label={ __( 'Review image', 'woo-gutenberg-products-block' ) }
-						value={ attributes.imageType }
-						options={ [
-							{ label: __( "Reviewer's photo", 'woo-gutenberg-products-block' ), value: 'reviewer' },
-							{ label: __( 'Product', 'woo-gutenberg-products-block' ), value: 'product' },
-						] }
-						onChange={ ( value ) => setAttributes( { imageType: value } ) }
-					/>
+					{ attributes.showReviewImage && (
+						<Fragment>
+							<ToggleButtonControl
+								label={ __( 'Review image', 'woo-gutenberg-products-block' ) }
+								value={ attributes.imageType }
+								options={ [
+									{ label: __( 'Reviewer photo', 'woo-gutenberg-products-block' ), value: 'reviewer' },
+									{ label: __( 'Product', 'woo-gutenberg-products-block' ), value: 'product' },
+								] }
+								onChange={ ( value ) => setAttributes( { imageType: value } ) }
+							/>
+							{ ( attributes.imageType === 'reviewer' && ! wc_product_block_data.showAvatars ) && (
+								<Notice className="wc-block-reviews-by-product__notice">
+									<RawHTML>
+										{ sprintf( __( 'Reviewer photo is disabled in your %ssite settings%s.', 'woo-gutenberg-products-block' ), `<a href="${ getAdminLink( 'options-discussion.php' ) }" target="_blank">`, '</a>' ) }
+									</RawHTML>
+								</Notice>
+							) }
+						</Fragment>
+					) }
 				</PanelBody>
 				<PanelBody title={ __( 'List Settings', 'woo-gutenberg-products-block' ) }>
 					<ToggleControl
 						label={ __( 'Order by', 'woo-gutenberg-products-block' ) }
-						help={
-							attributes.showOrderby ?
-								__( 'Order by selector is visible.', 'woo-gutenberg-products-block' ) :
-								__( 'Order by selector is hidden.', 'woo-gutenberg-products-block' )
-						}
 						checked={ attributes.showOrderby }
 						onChange={ () => setAttributes( { showOrderby: ! attributes.showOrderby } ) }
 					/>
@@ -184,11 +179,6 @@ class ReviewsByProductEditor extends Component {
 					/>
 					<ToggleControl
 						label={ __( 'Load more', 'woo-gutenberg-products-block' ) }
-						help={
-							attributes.showLoadMore ?
-								__( 'Load more is visible.', 'woo-gutenberg-products-block' ) :
-								__( 'Load more is hidden.', 'woo-gutenberg-products-block' )
-						}
 						checked={ attributes.showLoadMore }
 						onChange={ () => setAttributes( { showLoadMore: ! attributes.showLoadMore } ) }
 					/>
@@ -285,12 +275,12 @@ class ReviewsByProductEditor extends Component {
 		const { className, editMode, productId, showReviewDate, showReviewerName } = attributes;
 		const { product } = this.state;
 		const showReviewImage = ( wc_product_block_data.showAvatars || attributes.imageType === 'product' ) && attributes.showReviewImage;
-		const showProductRating = wc_product_block_data.enableReviewRating && attributes.showProductRating;
+		const showReviewRating = wc_product_block_data.enableReviewRating && attributes.showReviewRating;
 		const classes = classNames( 'wc-block-reviews-by-product', className, {
 			'has-image': showReviewImage,
 			'has-name': showReviewerName,
 			'has-date': showReviewDate,
-			'has-rating': showProductRating,
+			'has-rating': showReviewRating,
 		} );
 
 		return (
