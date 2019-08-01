@@ -19,14 +19,6 @@ import './style.scss';
  * Component displaying a product search form.
  */
 class ProductSearchBlock extends Component {
-	render() {
-		if ( this.props.isPreview ) {
-			return this.renderEdit();
-		}
-
-		return this.renderView();
-	}
-
 	renderView() {
 		const { attributes: { label, placeholder, formId, className, hasLabel } } = this.props;
 		const home = wc_product_block_data.homeUrl;
@@ -109,6 +101,14 @@ class ProductSearchBlock extends Component {
 				</div>
 			</form>
 		);
+	}
+
+	render() {
+		if ( this.props.isPreview ) {
+			return this.renderEdit();
+		}
+
+		return this.renderView();
 	}
 }
 
