@@ -37,9 +37,16 @@ class ReviewsByProduct extends Component {
 	componentDidUpdate( prevProps ) {
 		if (
 			prevProps.attributes.orderby !== this.props.attributes.orderby ||
-			prevProps.attributes.productId !== this.props.attributes.productId ||
-			prevProps.attributes.reviewsOnPageLoad !== this.props.attributes.reviewsOnPageLoad
+			prevProps.attributes.productId !== this.props.attributes.productId
 		) {
+			this.getReviews( this.props.attributes.reviewsOnPageLoad );
+		} else if ( prevProps.attributes.reviewsOnPageLoad !== this.props.attributes.reviewsOnPageLoad ) {
+			const isIncreasing = this.props.attributes.reviewsOnPageLoad > prevProps.attributes.reviewsOnPageLoad;
+			const allReviewsWereAlreadyLoaded = this.state.reviews.length >= this.state.totalReviews && this.state.totalReviews > 0;
+
+			if ( isIncreasing && allReviewsWereAlreadyLoaded ) {
+				return;
+			}
 			this.getReviews( this.props.attributes.reviewsOnPageLoad );
 		}
 	}
