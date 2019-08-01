@@ -189,11 +189,11 @@ class PriceSlider extends Component {
 		const maxXDiff = Math.abs( x - maxX );
 
 		if ( minXDiff > maxXDiff ) {
-			this.minRange.current.style.zIndex = 10;
-			this.maxRange.current.style.zIndex = 20;
-		} else {
 			this.minRange.current.style.zIndex = 20;
-			this.maxRange.current.style.zIndex = 10;
+			this.maxRange.current.style.zIndex = 21;
+		} else {
+			this.minRange.current.style.zIndex = 21;
+			this.maxRange.current.style.zIndex = 20;
 		}
 	}
 
