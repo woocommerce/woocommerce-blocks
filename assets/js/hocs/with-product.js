@@ -15,9 +15,9 @@ const withProduct = createHigherOrderComponent(
 			constructor() {
 				super( ...arguments );
 				this.state = {
-					error: false,
+					error: null,
 					loading: false,
-					product: false,
+					product: null,
 				};
 				this.loadProduct = this.loadProduct.bind( this );
 			}
@@ -36,14 +36,14 @@ const withProduct = createHigherOrderComponent(
 				const { productId } = this.props.attributes;
 
 				if ( ! productId ) {
-					this.setState( { product: false, loading: false, error: false } );
+					this.setState( { product: null, loading: false, error: null } );
 					return;
 				}
 
 				this.setState( { loading: true } );
 
 				getProduct( productId ).then( ( product ) => {
-					this.setState( { product, loading: false, error: false } );
+					this.setState( { product, loading: false, error: null } );
 				} ).catch( ( apiError ) => {
 					const error = typeof apiError === 'object' && apiError.hasOwnProperty( 'message' ) ? {
 						apiMessage: apiError.message,
@@ -53,7 +53,7 @@ const withProduct = createHigherOrderComponent(
 						apiMessage: null,
 					};
 
-					this.setState( { product: false, loading: false, error } );
+					this.setState( { product: null, loading: false, error } );
 				} );
 			}
 
