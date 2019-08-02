@@ -12,6 +12,23 @@ function getReviewClasses( isLoading ) {
 
 	return classArray.join( ' ' );
 }
+
+function getReviewImage( review, imageType, isLoading ) {
+	if ( isLoading || ! review ) {
+		return (
+			<div className="wc-block-reviews-by-product__image" width="48" height="48" />
+		);
+	}
+
+	return (
+		imageType === 'product' ? (
+			<img alt="" src={ review.product_picture } className="wc-block-reviews-by-product__image" width="48" height="48" />
+		) : (
+			<img alt="" src={ review.reviewer_avatar_urls[ '48' ] } srcSet={ review.reviewer_avatar_urls[ '96' ] + ' 2x' } className="wc-block-reviews-by-product__image" width="48" height="48" />
+		)
+	);
+}
+
 /**
  * Render a review for the Reviews by Product block
  *
@@ -21,8 +38,8 @@ function getReviewClasses( isLoading ) {
  * @return {Object} React JSx nodes of the block
  */
 export function renderReview( attributes, review = {}, i = 0 ) {
-	const { showReviewDate, showReviewerName, showReviewImage, showReviewRating: showReviewRatingAttr } = attributes;
-	const { id = null, date_created: dateCreated, formatted_date_created: formattedDateCreated, rating, review: text = '', reviewer = '', reviewer_avatar_urls: avatarUrls = {} } = review;
+	const { imageType, showReviewDate, showReviewerName, showReviewImage, showReviewRating: showReviewRatingAttr } = attributes;
+	const { id = null, date_created: dateCreated, formatted_date_created: formattedDateCreated, rating, review: text = '', reviewer = '' } = review;
 	const isLoading = ! Object.keys( review ).length > 0;
 	const showReviewRating = Number.isFinite( rating ) && showReviewRatingAttr;
 	const classes = getReviewClasses( isLoading );
@@ -43,13 +60,7 @@ export function renderReview( attributes, review = {}, i = 0 ) {
 			/>
 			{ ( showReviewDate || showReviewerName || showReviewImage || showReviewRating ) && (
 				<div className="wc-block-reviews-by-product__info">
-					{ showReviewImage && (
-						isLoading ? (
-							<div className="wc-block-reviews-by-product__avatar" width="48" height="48" />
-						) : (
-							<img alt="" src={ avatarUrls[ '48' ] } srcSet={ avatarUrls[ '96' ] + ' 2x' } className="wc-block-reviews-by-product__avatar" width="48" height="48" />
-						)
-					) }
+					{ showReviewImage && getReviewImage( review, imageType, isLoading ) }
 					{ ( showReviewerName || showReviewRating ) && (
 						<div className="wc-block-reviews-by-product__meta">
 							{ showReviewerName && (

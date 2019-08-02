@@ -7,7 +7,7 @@
 		}
 
 		.wc-block-reviews-by-product__info {
-			.wc-block-reviews-by-product__avatar {
+			.wc-block-reviews-by-product__image {
 				@include placeholder();
 			}
 
@@ -57,7 +57,7 @@
 		grid-template-rows: 1fr 0.65fr;
 		margin-top: $gap-small;
 
-		.wc-block-reviews-by-product__avatar {
+		.wc-block-reviews-by-product__image {
 			height: 48px;
 			grid-column: 1;
 			grid-row: 1 / 3;
