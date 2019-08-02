@@ -9,18 +9,6 @@ export const isLargeCatalog = wc_product_block_data.isLargeCatalog || false;
 export const limitTags = wc_product_block_data.limitTags || false;
 export const hasTags = wc_product_block_data.hasTags || false;
 
-export const getReviews = ( args ) => {
-	return apiFetch( {
-		path: '/wc/blocks/products/reviews?' + Object.entries( args ).map( ( arg ) => arg.join( '=' ) ).join( '&' ),
-		parse: false,
-	} ).then( ( response ) => {
-		return response.json().then( ( reviews ) => {
-			const totalReviews = parseInt( response.headers.get( 'x-wp-total' ), 10 );
-			return { reviews, totalReviews };
-		} );
-	} );
-};
-
 const getProductsRequests = ( { selected = [], search = '', queryArgs = [] } ) => {
 	const defaultArgs = {
 		per_page: isLargeCatalog ? 100 : -1,
