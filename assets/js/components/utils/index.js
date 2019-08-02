@@ -5,11 +5,14 @@ import { addQueryArgs } from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
 import { flatten, uniqBy } from 'lodash';
 
+/**
+ * Internal dependencies
+ */
+import { NAMESPACE } from '../../constants';
+
 export const isLargeCatalog = wc_product_block_data.isLargeCatalog || false;
 export const limitTags = wc_product_block_data.limitTags || false;
 export const hasTags = wc_product_block_data.hasTags || false;
-
-const NAMESPACE = '/wc/blocks/products';
 
 const getProductsRequests = ( { selected = [], search } ) => {
 	const requests = [
