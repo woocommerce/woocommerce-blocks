@@ -2,27 +2,14 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import apiFetch from '@wordpress/api-fetch';
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 /**
  * Internal dependencies
  */
-import { renderReview } from './utils';
+import { getReviews, renderReview } from './utils';
 import withComponentId from '../../utils/with-component-id';
-
-export const getReviews = ( args ) => {
-	return apiFetch( {
-		path: '/wc/blocks/products/reviews?' + Object.entries( args ).map( ( arg ) => arg.join( '=' ) ).join( '&' ),
-		parse: false,
-	} ).then( ( response ) => {
-		return response.json().then( ( reviews ) => {
-			const totalReviews = parseInt( response.headers.get( 'x-wp-total' ), 10 );
-			return { reviews, totalReviews };
-		} );
-	} );
-};
 
 /**
  * Component to handle edit mode of "Reviews by Product".

@@ -2,6 +2,19 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
+import apiFetch from '@wordpress/api-fetch';
+
+export const getReviews = ( args ) => {
+	return apiFetch( {
+		path: '/wc/blocks/products/reviews?' + Object.entries( args ).map( ( arg ) => arg.join( '=' ) ).join( '&' ),
+		parse: false,
+	} ).then( ( response ) => {
+		return response.json().then( ( reviews ) => {
+			const totalReviews = parseInt( response.headers.get( 'x-wp-total' ), 10 );
+			return { reviews, totalReviews };
+		} );
+	} );
+};
 
 function getReviewClasses( isLoading ) {
 	const classArray = [ 'wc-block-reviews-by-product__item' ];
