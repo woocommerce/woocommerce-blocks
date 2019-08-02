@@ -95,8 +95,7 @@
 			margin: -6px 0 0 0;
 		}
 		&::-webkit-slider-progress {
-			background: #a8739d;
-			box-shadow: 0 0 0 1px inset #95588a;
+			@include reset;
 		}
 
 		&::-moz-focus-outer {
