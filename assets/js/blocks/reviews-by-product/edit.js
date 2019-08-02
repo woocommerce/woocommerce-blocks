@@ -179,13 +179,15 @@ class ReviewsByProductEditor extends Component {
 						checked={ attributes.showLoadMore }
 						onChange={ () => setAttributes( { showLoadMore: ! attributes.showLoadMore } ) }
 					/>
-					<RangeControl
-						label={ __( 'Load More Reviews', 'woo-gutenberg-products-block' ) }
-						value={ attributes.reviewsOnLoadMore }
-						onChange={ ( reviewsOnLoadMore ) => setAttributes( { reviewsOnLoadMore } ) }
-						max={ maxPerPage }
-						min={ minPerPage }
-					/>
+					{ attributes.showLoadMore && (
+						<RangeControl
+							label={ __( 'Load More Reviews', 'woo-gutenberg-products-block' ) }
+							value={ attributes.reviewsOnLoadMore }
+							onChange={ ( reviewsOnLoadMore ) => setAttributes( { reviewsOnLoadMore } ) }
+							max={ maxPerPage }
+							min={ minPerPage }
+						/>
+					) }
 				</PanelBody>
 			</InspectorControls>
 		);
