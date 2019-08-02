@@ -44,7 +44,7 @@ import {
 	getImageSrcFromProduct,
 	getImageIdFromProduct,
 } from '../../utils/products';
-import withProduct from '../../hocs/with-product';
+import { withProduct } from '../../hocs';
 
 /**
  * The min-height for the block content.
