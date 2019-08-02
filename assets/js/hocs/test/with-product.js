@@ -11,9 +11,7 @@ import * as mockUtils from '../../components/utils';
 
 // Mock the getProduct functions for tests.
 jest.mock( '../../components/utils', () => ( {
-	getProduct: jest.fn().mockImplementation(
-		() => Promise.resolve()
-	),
+	getProduct: jest.fn(),
 } ) );
 
 const mockProduct = { name: 'T-Shirt' };
@@ -35,35 +33,45 @@ const render = () => {
 };
 
 describe( 'withProduct Component', () => {
+	let renderer;
 	afterEach( () => {
-		mockUtils.getProduct.mockClear();
+		mockUtils.getProduct.mockReset();
 	} );
 
 	describe( 'lifecycle events', () => {
-		const renderer = render();
-
-		it( 'getProduct is called on mount with passed in product id', () => {
-			const { getProduct } = mockUtils;
-
-			expect( getProduct ).toHaveBeenCalledWith( attributes.productId );
-			expect( getProduct ).toHaveBeenCalledTimes( 1 );
+		beforeEach( () => {
+			mockUtils.getProduct.mockImplementation( () => Promise.resolve() );
+			renderer = render();
 		} );
 
-		it( 'getProduct is hooked to the prop', () => {
-			const { getProduct } = mockUtils;
-			const props = renderer.root.findByType( 'div' ).props;
+		describe( 'test', () => {
+			it( 'getProduct is called on mount with passed in product id', () => {
+				const { getProduct } = mockUtils;
 
-			props.getProduct();
+				expect( getProduct ).toHaveBeenCalledWith( attributes.productId );
+				expect( getProduct ).toHaveBeenCalledTimes( 1 );
+			} );
+		} );
 
-			expect( getProduct ).toHaveBeenCalledTimes( 1 );
+		describe( 'test', () => {
+			it( 'getProduct is hooked to the prop', () => {
+				const { getProduct } = mockUtils;
+				const props = renderer.root.findByType( 'div' ).props;
+
+				props.getProduct();
+
+				expect( getProduct ).toHaveBeenCalledTimes( 2 );
+			} );
 		} );
 	} );
 
 	describe( 'when the API returns product data', () => {
-		mockUtils.getProduct.mockImplementation(
-			( productId ) => Promise.resolve( { ...mockProduct, id: productId } )
-		);
-		const renderer = render();
+		beforeEach( () => {
+			mockUtils.getProduct.mockImplementation(
+				( productId ) => Promise.resolve( { ...mockProduct, id: productId } )
+			);
+			renderer = render();
+		} );
 
 		it( 'sets the product props', () => {
 			const props = renderer.root.findByType( 'div' ).props;
@@ -73,15 +81,15 @@ describe( 'withProduct Component', () => {
 			expect( props.isLoading ).toBe( false );
 			expect( props.product ).toEqual( { ...mockProduct, id: attributes.productId } );
 		} );
-
-		mockUtils.getProduct.mockReset();
 	} );
 
 	describe( 'when the API returns an error', () => {
-		mockUtils.getProduct.mockImplementation(
-			() => Promise.reject( { message: 'There was an error.' } )
-		);
-		const renderer = render();
+		beforeEach( () => {
+			mockUtils.getProduct.mockImplementation(
+				() => Promise.reject( { message: 'There was an error.' } )
+			);
+			renderer = render();
+		} );
 
 		it( 'sets the error prop', () => {
 			const props = renderer.root.findByType( 'div' ).props;
