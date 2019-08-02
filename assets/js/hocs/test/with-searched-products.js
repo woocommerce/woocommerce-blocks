@@ -12,7 +12,9 @@ import * as mockedUtils from '../../components/utils';
 
 // Mock the getProducts and isLargeCatalog values for tests.
 mockedUtils.getProducts = jest.fn().mockImplementation(
-	( { selected } ) => Promise.resolve( selected )
+	() => Promise.resolve(
+		[ { id: 10, name: 'foo' }, { id: 20, name: 'bar' } ]
+	)
 );
 mockedUtils.isLargeCatalog = true;
 
@@ -52,7 +54,7 @@ describe( 'withSearchedProducts Component', () => {
 		/>;
 	} );
 	describe( 'lifecycle tests', () => {
-		const selected = [ { id: 10, name: 'foo' } ];
+		const selected = [ 10 ];
 		const renderer = TestRenderer.create(
 			<TestComponent
 				selected={ selected }
@@ -66,8 +68,10 @@ describe( 'withSearchedProducts Component', () => {
 		} );
 		it( 'has expected values for props', () => {
 			props = renderer.root.findByType( 'div' ).props;
-			expect( props.selected ).toEqual( selected );
-			expect( props.products ).toEqual( selected );
+			expect( props.selected ).toEqual( [ { id: 10, name: 'foo' } ] );
+			expect( props.products ).toEqual(
+				[ { id: 10, name: 'foo' }, { id: 20, name: 'bar' } ]
+			);
 		} );
 		it( 'debounce and getProducts is called on search event', () => {
 			props = renderer.root.findByType( 'div' ).props;
