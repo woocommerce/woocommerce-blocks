@@ -53,8 +53,7 @@ class ReviewsByProduct extends Component {
 			prevProps.attributes.orderby !== this.props.attributes.orderby ||
 			prevProps.attributes.productId !== this.props.attributes.productId
 		) {
-			const { order, orderby } = this.getOrderArgs( this.props.attributes.orderby );
-			this.loadFirstReviews( { order, orderby } );
+			this.loadFirstReviews();
 		} else if ( prevProps.attributes.reviewsOnPageLoad !== this.props.attributes.reviewsOnPageLoad ) {
 			const isIncreasing = this.props.attributes.reviewsOnPageLoad > prevProps.attributes.reviewsOnPageLoad;
 			const allReviewsWereAlreadyLoaded = this.state.reviews.length >= this.state.totalReviews && this.state.totalReviews > 0;
@@ -67,8 +66,8 @@ class ReviewsByProduct extends Component {
 	}
 
 	getDefaultArgs() {
-		const { attributes } = this.props;
-		const { order, orderby } = this.state;
+		const { attributes, isPreview } = this.props;
+		const { order, orderby } = isPreview ? this.getOrderArgs( attributes.orderby ) : this.state;
 		const { productId, reviewsOnPageLoad } = attributes;
 
 		return {
