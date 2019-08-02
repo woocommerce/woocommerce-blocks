@@ -182,7 +182,7 @@ class PriceSlider extends Component {
 		const { min, max } = this.props;
 		const { currentMin, currentMax } = this.state;
 
-		const low = Math.round( 100 * ( ( currentMin - min ) / ( max - min ) ) ) + 0.5;
+		const low = Math.round( 100 * ( ( currentMin - min ) / ( max - min ) ) ) - 0.5;
 		const high = Math.round( 100 * ( ( currentMax - min ) / ( max - min ) ) ) + 0.5;
 
 		return {
