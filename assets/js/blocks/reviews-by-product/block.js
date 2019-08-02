@@ -79,7 +79,7 @@ class ReviewsByProduct extends Component {
 		};
 	}
 
-	loadFirstReviews( argsAttr ) {
+	loadFirstReviews( argsAttr = {} ) {
 		const args = {
 			...this.getDefaultArgs(),
 			...argsAttr,
@@ -92,27 +92,24 @@ class ReviewsByProduct extends Component {
 		} );
 	}
 
-	onChangeOrderby( event ) {
+	appendReviews() {
 		const { attributes } = this.props;
-		const { reviewsOnPageLoad } = attributes;
-		const { totalReviews } = this.state;
-		const { order, orderby } = this.getOrderArgs( event.target.value );
-		const newReviews = Math.min( totalReviews, reviewsOnPageLoad );
+		const { reviewsOnLoadMore } = attributes;
+		const { reviews, totalReviews } = this.state;
 
-		this.setState( {
-			reviews: Array( newReviews ).fill( {} ),
-			order,
-			orderby,
-		} );
+		const reviewsToLoad = Math.min( totalReviews - reviews.length, reviewsOnLoadMore );
+		this.setState( { reviews: reviews.concat( Array( reviewsToLoad ).fill( {} ) ) } );
 
 		const args = {
 			...this.getDefaultArgs(),
-			order,
-			orderby,
-			per_page: reviewsOnPageLoad,
+			offset: reviews.length,
+			per_page: reviewsOnLoadMore,
 		};
-		getReviews( args ).then( ( { reviews, totalReviews: newTotalReviews } ) => {
-			this.setState( { reviews, totalReviews: newTotalReviews } );
+		getReviews( args ).then( ( { reviews: newReviews, totalReviews: newTotalReviews } ) => {
+			this.setState( {
+				reviews: reviews.filter( ( review ) => Object.keys( review ).length ).concat( newReviews ),
+				totalReviews: newTotalReviews,
+			} );
 		} ).catch( () => {
 			this.setState( { reviews: [] } );
 		} );
@@ -140,24 +137,27 @@ class ReviewsByProduct extends Component {
 		};
 	}
 
-	appendReviews() {
+	onChangeOrderby( event ) {
 		const { attributes } = this.props;
-		const { reviewsOnLoadMore } = attributes;
-		const { reviews, totalReviews } = this.state;
+		const { reviewsOnPageLoad } = attributes;
+		const { totalReviews } = this.state;
+		const { order, orderby } = this.getOrderArgs( event.target.value );
+		const newReviews = Math.min( totalReviews, reviewsOnPageLoad );
 
-		const reviewsToLoad = Math.min( totalReviews - reviews.length, reviewsOnLoadMore );
-		this.setState( { reviews: reviews.concat( Array( reviewsToLoad ).fill( {} ) ) } );
+		this.setState( {
+			reviews: Array( newReviews ).fill( {} ),
+			order,
+			orderby,
+		} );
 
 		const args = {
 			...this.getDefaultArgs(),
-			offset: reviews.length,
-			per_page: reviewsOnLoadMore,
+			order,
+			orderby,
+			per_page: reviewsOnPageLoad,
 		};
-		getReviews( args ).then( ( { reviews: newReviews, totalReviews: newTotalReviews } ) => {
-			this.setState( {
-				reviews: reviews.filter( ( review ) => Object.keys( review ).length ).concat( newReviews ),
-				totalReviews: newTotalReviews,
-			} );
+		getReviews( args ).then( ( { reviews, totalReviews: newTotalReviews } ) => {
+			this.setState( { reviews, totalReviews: newTotalReviews } );
 		} ).catch( () => {
 			this.setState( { reviews: [] } );
 		} );
