@@ -19,54 +19,53 @@ import './style.scss';
  */
 class ProductSearchBlock extends Component {
 	renderView() {
-		const { attributes: { label, placeholder, formId, className, hasLabel } } = this.props;
+		const { attributes: { label, placeholder, formId, className, hasLabel, align } } = this.props;
 		const home = wc_product_block_data.homeUrl;
 		const classes = classnames(
 			'wc-block-product-search',
+			align ? 'align' + align : '',
 			className,
 		);
-		const data = {};
-
-		if ( hasLabel ) {
-			data[ 'data-has-label' ] = true;
-		}
 
 		return (
-			<form className={ classes } { ...data } role="search" method="get" action={ home } data-form-id={ formId }>
-				<label
-					htmlFor={ formId }
-					className={ hasLabel ? 'wc-block-product-search__label' : 'wc-block-product-search__label screen-reader-text' }
-				>
-					{ label }
-				</label>
-				<div className="wc-block-product-search__fields">
-					<input
-						type="search"
-						id={ formId }
-						className="wc-block-product-search__field"
-						placeholder={ placeholder }
-						name="s"
-					/>
-					<input type="hidden" name="post_type" value="product" />
-					<button
-						type="submit"
-						className="wc-block-product-search__button"
-						label={ __( 'Search', 'woo-gutenberg-products-block' ) }
+			<div className={ classes }>
+				<form role="search" method="get" action={ home }>
+					<label
+						htmlFor={ formId }
+						className={ hasLabel ? 'wc-block-product-search__label' : 'wc-block-product-search__label screen-reader-text' }
 					>
-						<svg aria-hidden="true" role="img" focusable="false" className="dashicon dashicons-arrow-right-alt2" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-							<path d="M6 15l5-5-5-5 1-2 7 7-7 7z"></path>
-						</svg>
-					</button>
-				</div>
-			</form>
+						{ label }
+					</label>
+					<div className="wc-block-product-search__fields">
+						<input
+							type="search"
+							id={ formId }
+							className="wc-block-product-search__field"
+							placeholder={ placeholder }
+							name="s"
+						/>
+						<input type="hidden" name="post_type" value="product" />
+						<button
+							type="submit"
+							className="wc-block-product-search__button"
+							label={ __( 'Search', 'woo-gutenberg-products-block' ) }
+						>
+							<svg aria-hidden="true" role="img" focusable="false" className="dashicon dashicons-arrow-right-alt2" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+								<path d="M6 15l5-5-5-5 1-2 7 7-7 7z"></path>
+							</svg>
+						</button>
+					</div>
+				</form>
+			</div>
 		);
 	}
 
 	renderEdit() {
 		const { attributes, setAttributes, instanceId } = this.props;
-		const { label, placeholder, formId, className, hasLabel } = attributes;
+		const { label, placeholder, formId, className, hasLabel, align } = attributes;
 		const classes = classnames(
 			'wc-block-product-search',
+			align ? 'align' + align : '',
 			className,
 		);
 
@@ -75,7 +74,7 @@ class ProductSearchBlock extends Component {
 		}
 
 		return (
-			<form className={ classes }>
+			<div className={ classes }>
 				{ !! hasLabel && (
 					<PlainText
 						className="wc-block-product-search__label"
@@ -100,7 +99,7 @@ class ProductSearchBlock extends Component {
 						</svg>
 					</button>
 				</div>
-			</form>
+			</div>
 		);
 	}
 

@@ -3,9 +3,9 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { Fragment } from '@wordpress/element';
 import { InspectorControls } from '@wordpress/editor';
 import { PanelBody, ToggleControl } from '@wordpress/components';
+import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -37,9 +37,6 @@ registerBlockType( 'woocommerce/product-search', {
 		hasLabel: {
 			type: 'boolean',
 			default: true,
-			source: 'attribute',
-			selector: 'form',
-			attribute: 'data-has-label',
 		},
 
 		/**
@@ -69,9 +66,6 @@ registerBlockType( 'woocommerce/product-search', {
 		formId: {
 			type: 'string',
 			default: '',
-			source: 'attribute',
-			selector: 'form',
-			attribute: 'data-form-id',
 		},
 	},
 
@@ -110,6 +104,10 @@ registerBlockType( 'woocommerce/product-search', {
 	 * Save the props to post content.
 	 */
 	save( attributes ) {
-		return <Block { ...attributes } />;
+		return (
+			<div>
+				<Block { ...attributes } />
+			</div>
+		);
 	},
 } );
