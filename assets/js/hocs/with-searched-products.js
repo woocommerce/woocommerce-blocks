@@ -67,7 +67,7 @@ const withSearchedProducts = createHigherOrderComponent( ( OriginalComponent ) =
 					products={ list }
 					isLoading={ loading }
 					selected={ selected
-						.map( ( { id } ) => find( list, { id } ) )
+						.map( ( id ) => find( list, { id } ) )
 						.filter( Boolean ) }
 					onSearch={ isLargeCatalog ? this.debouncedOnSearch : null }
 				/>
