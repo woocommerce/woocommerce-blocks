@@ -113,23 +113,19 @@ class ReviewsByProduct extends Component {
 			path: '/wc/blocks/products/reviews?' + Object.entries( args ).map( ( arg ) => arg.join( '=' ) ).join( '&' ),
 			parse: false,
 		} ).then( ( response ) => {
-			if ( response.json ) {
-				response.json().then( ( newReviews ) => {
-					const totalReviews = parseInt( response.headers.get( 'x-wp-total' ), 10 );
-					if ( offset === 0 ) {
-						this.setState( { reviews: newReviews, totalReviews } );
-					} else {
-						this.setState( {
-							reviews: reviews.filter( ( review ) => Object.keys( review ).length ).concat( newReviews ),
-							totalReviews,
-						} );
-					}
-				} ).catch( () => {
-					this.setState( { reviews: [] } );
-				} );
-			} else {
+			response.json().then( ( newReviews ) => {
+				const totalReviews = parseInt( response.headers.get( 'x-wp-total' ), 10 );
+				if ( offset === 0 ) {
+					this.setState( { reviews: newReviews, totalReviews } );
+				} else {
+					this.setState( {
+						reviews: reviews.filter( ( review ) => Object.keys( review ).length ).concat( newReviews ),
+						totalReviews,
+					} );
+				}
+			} ).catch( () => {
 				this.setState( { reviews: [] } );
-			}
+			} );
 		} ).catch( () => {
 			this.setState( { reviews: [] } );
 		} );
