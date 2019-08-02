@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import { withSearchedProducts } from '../../hocs/with-searched-products';
+import { withSearchedProducts } from '../../hocs';
 
 /**
  * The products control exposes a custom selector for searching and selecting
