@@ -78,7 +78,7 @@ ProductsControl.propTypes = {
 	onSearch: PropTypes.func,
 	selected: PropTypes.array,
 	products: PropTypes.array,
-	isLoading: PropTypes.boolean,
+	isLoading: PropTypes.bool,
 };
 
 ProductsControl.defaultProps = {
