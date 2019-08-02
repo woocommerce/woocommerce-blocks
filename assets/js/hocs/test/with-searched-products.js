@@ -70,6 +70,7 @@ describe( 'withSearchedProducts Component', () => {
 			expect( props.products ).toEqual( selected );
 		} );
 		it( 'debounce and getProducts is called on search event', () => {
+			props = renderer.root.findByType( 'div' ).props;
 			props.onSearch();
 			expect( debouncedAction ).toHaveBeenCalled();
 			expect( getProducts ).toHaveBeenCalledTimes( 1 );
