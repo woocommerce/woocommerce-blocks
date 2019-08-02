@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { Component } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import { withInstanceId, compose } from '@wordpress/compose';
-import { RichText } from '@wordpress/editor';
+import { PlainText } from '@wordpress/editor';
 
 /**
  * Internal dependencies
@@ -77,23 +77,17 @@ class ProductSearchBlock extends Component {
 		return (
 			<form className={ classes }>
 				{ !! hasLabel && (
-					<RichText
-						tagName="span"
+					<PlainText
 						className="wc-block-product-search__label"
 						value={ label }
 						onChange={ ( value ) => setAttributes( { label: value } ) }
-						multiline={ false }
-						formattingControls={ [] }
 					/>
 				) }
 				<div className="wc-block-product-search__fields">
-					<RichText
-						tagName="div"
+					<PlainText
 						className="wc-block-product-search__field input-control"
 						value={ placeholder }
 						onChange={ ( value ) => setAttributes( { placeholder: value } ) }
-						multiline={ false }
-						formattingControls={ [] }
 					/>
 					<button
 						type="submit"
