@@ -15,7 +15,7 @@ const getProductsRequests = ( { selected = [], search } ) => {
 	const requests = [
 		addQueryArgs( NAMESPACE, {
 			per_page: isLargeCatalog ? 100 : -1,
-			catalog_visibility: 'visible',
+			catalog_visibility: 'any',
 			status: 'publish',
 			search,
 		} ),
@@ -25,7 +25,7 @@ const getProductsRequests = ( { selected = [], search } ) => {
 	if ( isLargeCatalog && selected.length ) {
 		requests.push(
 			addQueryArgs( NAMESPACE, {
-				catalog_visibility: 'visible',
+				catalog_visibility: 'any',
 				status: 'publish',
 				include: selected,
 			} )

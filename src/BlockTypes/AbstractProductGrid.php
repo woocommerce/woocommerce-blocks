@@ -237,6 +237,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			);
 		}
 	}
+
 	/**
 	 * Works out the item limit based on rows and columns, or returns default.
 	 *
