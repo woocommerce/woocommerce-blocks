@@ -17,7 +17,7 @@ import { renderReview } from './utils';
 /**
  * Register and run the "Reviews by Product" block.
  */
-registerBlockType( 'woocommerce/reviews-by-product', {
+registerBlockType( 'woocommerce/reviews-by-category', {
 	title: __( 'Reviews by Category', 'woo-gutenberg-products-block' ),
 	icon: (
 		<IconReviewsByCategory fillColor="#96588a" />
@@ -25,7 +25,7 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
-		'Show product reviews from a specific category.',
+		'Show product reviews from a specific category',
 		'woo-gutenberg-products-block'
 	),
 	attributes: {

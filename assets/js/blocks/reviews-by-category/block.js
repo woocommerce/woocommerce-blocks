@@ -23,6 +23,7 @@ class ReviewsByProduct extends Component {
 			orderby: attributes.orderby,
 			reviews: [],
 			totalReviews: 0,
+			loading: true,
 		};
 
 		this.onChangeOrderby = this.onChangeOrderby.bind( this );
@@ -38,7 +39,7 @@ class ReviewsByProduct extends Component {
 		if (
 			prevProps.attributes.orderby !== this.props.attributes.orderby ||
 			prevProps.attributes.perPage !== this.props.attributes.perPage ||
-			prevProps.attributes.productId !== this.props.attributes.productId
+			prevProps.attributes.categoryId !== this.props.attributes.categoryId
 		) {
 			this.getReviews();
 		}
@@ -84,12 +85,12 @@ class ReviewsByProduct extends Component {
 
 	getReviews( orderValue, page = 1 ) {
 		const { attributes } = this.props;
-		const { perPage, productId } = attributes;
+		const { perPage, categoryId } = attributes;
 		const { reviews } = this.state;
 		const { order, orderby } = this.getOrderParams( orderValue );
 
-		if ( ! productId ) {
-			// We've removed the selected product, or no product is selected yet.
+		if ( ! categoryId ) {
+			// We've removed the selected category, or no category is selected yet.
 			return;
 		}
 
@@ -98,8 +99,11 @@ class ReviewsByProduct extends Component {
 			orderby,
 			page,
 			per_page: parseInt( perPage, 10 ) || 1,
-			product_id: productId,
+			category_id: categoryId,
 		};
+
+		this.setState( { loading: true } );
+
 		apiFetch( {
 			path: '/wc/blocks/products/reviews?' + Object.entries( args ).map( ( arg ) => arg.join( '=' ) ).join( '&' ),
 			parse: false,
@@ -108,21 +112,22 @@ class ReviewsByProduct extends Component {
 				response.json().then( ( newReviews ) => {
 					const totalReviews = parseInt( response.headers.get( 'x-wp-total' ), 10 );
 					if ( page === 1 ) {
-						this.setState( { reviews: newReviews, totalReviews } );
+						this.setState( { reviews: newReviews, totalReviews, loading: false } );
 					} else {
 						this.setState( {
 							reviews: reviews.filter( ( review ) => Object.keys( review ).length ).concat( newReviews ),
 							totalReviews,
+							loading: false,
 						} );
 					}
 				} ).catch( () => {
-					this.setState( { reviews: [] } );
+					this.setState( { reviews: [], loading: false } );
 				} );
 			} else {
-				this.setState( { reviews: [] } );
+				this.setState( { reviews: [], loading: false } );
 			}
 		} ).catch( () => {
-			this.setState( { reviews: [] } );
+			this.setState( { reviews: [], loading: false } );
 		} );
 	}
 
@@ -225,6 +230,14 @@ class ReviewsByProduct extends Component {
 	}
 
 	render() {
+		const { reviews, loading } = this.state;
+		const { onNoReviews } = this.props;
+
+		// If no results are found, maybe fire a callback.
+		if ( reviews.length === 0 && ! loading && onNoReviews ) {
+			return onNoReviews();
+		}
+
 		return [
 			this.renderOrderBySelect(),
 			this.renderReviewsList(),
@@ -242,8 +255,16 @@ ReviewsByProduct.propTypes = {
 	 * Whether this is the block preview or frontend display.
 	 */
 	isPreview: PropTypes.bool,
+	/**
+	 * Optional callback to fire when no reviews are found.
+	 */
+	onNoReviews: PropTypes.func,
 	// from withComponentId
 	componentId: PropTypes.number,
+};
+
+ReviewsByProduct.defaultProps = {
+	onNoReviews: () => {},
 };
 
 export default withComponentId( ReviewsByProduct );

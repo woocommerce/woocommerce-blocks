@@ -17,62 +17,62 @@ import {
 	Toolbar,
 	withSpokenMessages,
 } from '@wordpress/components';
+import debounce from 'lodash';
 import classNames from 'classnames';
 import { SearchListItem } from '@woocommerce/components';
 import { Component, Fragment } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
-import { debounce } from 'lodash';
 import { escapeHTML } from '@wordpress/escape-html';
 import PropTypes from 'prop-types';
 
 /**
  * Internal dependencies
  */
-import Block from './block.js.js';
-import ProductControl from '../../components/product-control';
-import { IconReviewsByProduct } from '../../components/icons';
+import Block from './block.js';
+import ProductCategoryControl from '../../components/product-category-control';
+import { IconReviewsByCategory } from '../../components/icons';
 
 class ReviewsByProductEditor extends Component {
 	constructor() {
 		super( ...arguments );
 		this.state = {
-			product: false,
+			category: false,
+			loaded: false,
 		};
 
-		this.getProduct = this.getProduct.bind( this );
-		this.debouncedGetProduct = debounce( this.getProduct, 200 );
-	}
-
-	componentWillUnmount() {
-		this.debouncedGetProduct.cancel();
+		this.debouncedGetCategory = debounce( this.getCategory.bind( this ), 200 );
+		this.renderNoReviewsFound = this.renderNoReviewsFound.bind( this );
 	}
 
 	componentDidMount() {
-		this.getProduct();
+		this.getCategory();
+	}
+
+	componentWillUnmount() {
+		this.debouncedGetCategory.cancel();
 	}
 
 	componentDidUpdate( prevProps ) {
-		if ( prevProps.attributes.productId !== this.props.attributes.productId ) {
-			this.debouncedGetProduct();
+		if ( prevProps.attributes.categoryId !== this.props.attributes.categoryId ) {
+			this.debouncedGetCategory();
 		}
 	}
 
-	getProduct() {
-		const { productId } = this.props.attributes;
-
-		if ( ! productId ) {
+	getCategory() {
+		const { categoryId } = this.props.attributes;
+		if ( ! categoryId ) {
 			// We've removed the selected product, or no product is selected yet.
-			this.setState( { product: false } );
+			this.setState( { category: false, loaded: true } );
 			return;
 		}
 		apiFetch( {
-			path: `/wc/blocks/products/${ productId }`,
+			path: `/wc/blocks/products/categories/${ categoryId }`,
 		} )
-			.then( ( product ) => {
-				this.setState( { product } );
+			.then( ( category ) => {
+				this.setState( { category, loaded: true } );
 			} )
 			.catch( () => {
-				this.setState( { product: false } );
+				this.setState( { category: false, loaded: true } );
 			} );
 	}
 
@@ -90,13 +90,12 @@ class ReviewsByProductEditor extends Component {
 					title={ __( 'Product', 'woo-gutenberg-products-block' ) }
 					initialOpen={ false }
 				>
-					<ProductControl
-						selected={ attributes.productId || 0 }
+					<ProductCategoryControl
+						selected={ attributes.categoryId || 0 }
 						onChange={ ( value = [] ) => {
 							const id = value[ 0 ] ? value[ 0 ].id : 0;
-							setAttributes( { productId: id } );
+							setAttributes( { categoryId: id } );
 						} }
-						renderItem={ this.renderProductControlItem }
 					/>
 				</PanelBody>
 				<PanelBody title={ __( 'Content', 'woo-gutenberg-products-block' ) }>
@@ -171,31 +170,36 @@ class ReviewsByProductEditor extends Component {
 		);
 	}
 
-	renderProductControlItem( args ) {
-		const { item = 0 } = args;
+	renderProductCategoryControlItem( args ) {
+		const { item, search, depth = 0 } = args;
+		const classes = [
+			'woocommerce-product-categories__item',
+		];
+		if ( search.length ) {
+			classes.push( 'is-searching' );
+		}
+		if ( depth === 0 && item.parent !== 0 ) {
+			classes.push( 'is-skip-level' );
+		}
+
+		const accessibleName = ! item.breadcrumbs.length ?
+			item.name :
+			`${ item.breadcrumbs.join( ', ' ) }, ${ item.name }`;
 
 		return (
 			<SearchListItem
+				className={ classes.join( ' ' ) }
 				{ ...args }
-				countLabel={ sprintf(
-					_n(
-						'%d Review',
-						'%d Reviews',
-						item.rating_count,
-						'woo-gutenberg-products-block'
-					),
-					item.rating_count
-				) }
 				showCount
 				aria-label={ sprintf(
 					_n(
-						'%s, has %d review',
-						'%s, has %d reviews',
-						item.rating_count,
+						'%s, has %d product',
+						'%s, has %d products',
+						item.count,
 						'woo-gutenberg-products-block'
 					),
-					item.name,
-					item.rating_count
+					accessibleName,
+					item.count
 				) }
 			/>
 		);
@@ -207,7 +211,7 @@ class ReviewsByProductEditor extends Component {
 			setAttributes( { editMode: false } );
 			debouncedSpeak(
 				__(
-					'Showing Reviews by Product block preview.',
+					'Showing Reviews by Category block preview.',
 					'woo-gutenberg-products-block'
 				)
 			);
@@ -215,26 +219,22 @@ class ReviewsByProductEditor extends Component {
 
 		return (
 			<Placeholder
-				icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
-				label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
+				icon={ <IconReviewsByCategory className="block-editor-block-icon" /> }
+				label={ __( 'Reviews by Category', 'woo-gutenberg-products-block' ) }
 				className="wc-block-reviews-by-category"
 			>
 				{ __(
-					'Show reviews of your product to build trust',
+					'Show product reviews from a specific category',
 					'woo-gutenberg-products-block'
 				) }
 				<div className="wc-block-reviews-by-category__selection">
-					<ProductControl
-						selected={ attributes.productId || 0 }
+					<ProductCategoryControl
+						selected={ [ attributes.categoryId ] }
 						onChange={ ( value = [] ) => {
 							const id = value[ 0 ] ? value[ 0 ].id : 0;
-							setAttributes( { productId: id } );
+							setAttributes( { categoryId: id } );
 						} }
-						queryArgs={ {
-							orderby: 'comment_count',
-							order: 'desc',
-						} }
-						renderItem={ this.renderProductControlItem }
+						isSingle
 					/>
 					<Button isDefault onClick={ onDone }>
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }
@@ -244,10 +244,31 @@ class ReviewsByProductEditor extends Component {
 		);
 	}
 
+	renderNoReviewsFound() {
+		const { category } = this.state;
+
+		return (
+			<Placeholder
+				className="wc-block-reviews-by-category"
+				icon={ <IconReviewsByCategory className="block-editor-block-icon" /> }
+				label={ __( 'Reviews by Category', 'woo-gutenberg-products-block' ) }
+			>
+				<div dangerouslySetInnerHTML={ {
+					__html: sprintf(
+						__(
+							"This block lists reviews for products from a selected category. %s doesn't have any reviews yet, but they will show up here when it does.",
+							'woo-gutenberg-products-block'
+						),
+						category ? '<strong>' + escapeHTML( category.name ) + '</strong>' : __( 'The category', 'woo-gutenberg-products-block' )
+					),
+				} } />
+			</Placeholder>
+		);
+	}
+
 	render() {
 		const { attributes, setAttributes } = this.props;
-		const { editMode, productId } = attributes;
-		const { product } = this.state;
+		const { editMode, categoryId } = attributes;
 
 		const { className, showReviewDate, showReviewerName } = attributes;
 		const showAvatar = wc_product_block_data.showAvatars && attributes.showAvatar;
@@ -274,32 +295,12 @@ class ReviewsByProductEditor extends Component {
 					/>
 				</BlockControls>
 				{ this.getInspectorControls() }
-				{ ! productId || editMode ? (
+				{ ! categoryId || editMode ? (
 					this.renderEditMode()
 				) : (
-					<Fragment>
-						{ product.rating_count === 0 ? (
-							<Placeholder
-								className="wc-block-reviews-by-category"
-								icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
-								label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
-							>
-								<div dangerouslySetInnerHTML={ {
-									__html: sprintf(
-										__(
-											"This block lists reviews for a selected product. %s doesn't have any reviews yet, but they will show up here when it does.",
-											'woo-gutenberg-products-block'
-										),
-										'<strong>' + escapeHTML( product.name ) + '</strong>'
-									),
-								} } />
-							</Placeholder>
-						) : (
-							<div className={ classes }>
-								<Block attributes={ attributes } isPreview />
-							</div>
-						) }
-					</Fragment>
+					<div className={ classes }>
+						<Block attributes={ attributes } onNoReviews={ this.renderNoReviewsFound } isPreview />
+					</div>
 				) }
 			</Fragment>
 		);

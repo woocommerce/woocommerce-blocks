@@ -18,7 +18,7 @@ if ( containers.length ) {
 		const attributes = {
 			orderby: el.dataset.orderby,
 			perPage: el.dataset.perPage,
-			productId: el.dataset.productId,
+			categoryId: el.dataset.categoryId,
 			showAvatar: el.classList.contains( 'has-avatar' ),
 			showProductRating: el.classList.contains( 'has-rating' ),
 			showReviewDate: el.classList.contains( 'has-date' ),
