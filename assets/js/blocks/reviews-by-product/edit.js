@@ -109,7 +109,7 @@ class ReviewsByProductEditor extends Component {
 						onChange={ () => setAttributes( { showReviewRating: ! attributes.showReviewRating } ) }
 					/>
 					{ ( attributes.showReviewRating && ! wc_product_block_data.enableReviewRating ) && (
-						<Notice className="wc-block-reviews-by-product__notice">
+						<Notice className="wc-block-reviews-by-product__notice" isDismissible={ false }>
 							<RawHTML>
 								{ sprintf( __( 'Product rating is disabled in your %sstore settings%s.', 'woo-gutenberg-products-block' ), `<a href="${ getAdminLink( 'admin.php?page=wc-settings&tab=products' ) }" target="_blank">`, '</a>' ) }
 							</RawHTML>
@@ -142,7 +142,7 @@ class ReviewsByProductEditor extends Component {
 								onChange={ ( value ) => setAttributes( { imageType: value } ) }
 							/>
 							{ ( attributes.imageType === 'reviewer' && ! wc_product_block_data.showAvatars ) && (
-								<Notice className="wc-block-reviews-by-product__notice">
+								<Notice className="wc-block-reviews-by-product__notice" isDismissible={ false }>
 									<RawHTML>
 										{ sprintf( __( 'Reviewer photo is disabled in your %ssite settings%s.', 'woo-gutenberg-products-block' ), `<a href="${ getAdminLink( 'options-discussion.php' ) }" target="_blank">`, '</a>' ) }
 									</RawHTML>
