@@ -1,4 +1,5 @@
 .wc-block-reviews-by-product {
+
 	.is-loading {
 		.wc-block-reviews-by-product__text {
 			@include placeholder();
@@ -34,121 +35,112 @@
 	}
 
 	.wc-block-reviews-by-product__orderby {
-		margin-bottom: $gap-larger;
+		margin-bottom: $gap-small;
 		text-align: right;
 	}
 
 	.wc-block-reviews-by-product__orderby__label {
 		margin-right: $gap-small;
+		display: inline-block;
+		font-weight: normal;
 	}
 
 	.wc-block-reviews-by-product__list {
-		list-style: none;
+		list-style: none outside;
 		margin: 0;
 	}
 
 	.wc-block-reviews-by-product__item {
-		margin-bottom: $gap-larger;
+		margin: 0 0 $gap-largest;
+		list-style: none outside;
 	}
 
 	.wc-block-reviews-by-product__info {
 		display: grid;
 		grid-template-columns: 1fr;
-		grid-template-rows: 1fr 0.65fr;
-		margin-top: $gap-small;
-
-		.wc-block-reviews-by-product__image {
-			height: 48px;
-			grid-column: 1;
-			grid-row: 1 / 3;
-			width: 48px;
-		}
-
-		.wc-block-reviews-by-product__meta {
-			align-items: center;
-			display: flex;
-			grid-column: 1;
-			grid-row: 1;
-
-			.wc-block-reviews-by-product__author + .wc-block-reviews-by-product__rating {
-				margin-left: $gap-smaller;
-			}
-
-			.wc-block-reviews-by-product__rating {
-				display: inline;
-				height: 1em;
-
-				> .wc-block-reviews-by-product__rating__stars {
-					display: inline-block;
-					top: -5px;
-					overflow: hidden;
-					position: relative;
-					height: 1.618em;
-					line-height: 1.618;
-					font-size: 1em;
-					width: 5.3em;
-					font-family: star; /* stylelint-disable-line */
-					font-weight: 400;
-				}
-
-				> .wc-block-reviews-by-product__rating__stars::before {
-					content: "\53\53\53\53\53";
-					opacity: 0.25;
-					float: left;
-					top: 0;
-					left: 0;
-					position: absolute;
-				}
-
-				> .wc-block-reviews-by-product__rating__stars span {
-					overflow: hidden;
-					float: left;
-					top: 0;
-					left: 0;
-					position: absolute;
-					padding-top: 1.5em;
-				}
-
-				> .wc-block-reviews-by-product__rating__stars span::before {
-					content: "\53\53\53\53\53";
-					top: 0;
-					position: absolute;
-					left: 0;
-					color: #e6a237;
-				}
-			}
-		}
-
-		.wc-block-reviews-by-product__published-date {
-			align-self: center;
-			color: #808080;
-			display: block;
-			font-size: 0.875em;
-			grid-column: 1;
-			grid-row: 1;
-		}
+		margin-bottom: $gap-small;
 	}
 
-	.wc-block-reviews-by-product__load-more {
-		display: block;
-		margin: 0 auto;
+	.wc-block-reviews-by-product__meta {
+		grid-column: 1;
+		grid-row: 1;
 	}
 
 	&.has-image {
 		.wc-block-reviews-by-product__info {
 			grid-template-columns: #{48px + $gap-small} 1fr;
 		}
-
-		.wc-block-reviews-by-product__meta,
-		.wc-block-reviews-by-product__published-date {
+		.wc-block-reviews-by-product__meta {
 			grid-column: 2;
 		}
 	}
 
-	&.has-name,
-	&.has-rating {
-		.wc-block-reviews-by-product__published-date {
-			grid-row: 2;
+	.wc-block-reviews-by-product__image {
+		height: 48px;
+		grid-column: 1;
+		grid-row: 1 / 3;
+		width: 48px;
+	}
+
+	.wc-block-reviews-by-product__author {
+		display: block;
+	}
+
+	.wc-block-reviews-by-product__rating {
+		display: inline-block;
+		vertical-align: middle;
+		margin-right: $gap-smaller;
+		height: 1em;
+
+		> .wc-block-reviews-by-product__rating__stars {
+			display: inline-block;
+			top: -5px;
+			overflow: hidden;
+			position: relative;
+			height: 1.618em;
+			line-height: 1.618;
+			font-size: 1em;
+			width: 5.3em;
+			font-family: star; /* stylelint-disable-line */
+			font-weight: 400;
 		}
+
+		> .wc-block-reviews-by-product__rating__stars::before {
+			content: "\53\53\53\53\53";
+			opacity: 0.25;
+			float: left;
+			top: 0;
+			left: 0;
+			position: absolute;
+		}
+
+		> .wc-block-reviews-by-product__rating__stars span {
+			overflow: hidden;
+			float: left;
+			top: 0;
+			left: 0;
+			position: absolute;
+			padding-top: 1.5em;
+		}
+
+		> .wc-block-reviews-by-product__rating__stars span::before {
+			content: "\53\53\53\53\53";
+			top: 0;
+			position: absolute;
+			left: 0;
+			color: #e6a237;
+		}
+	}
+
+	.wc-block-reviews-by-product__published-date {
+		display: inline-block;
+		vertical-align: middle;
+		color: #808080;
+		font-size: 0.875em;
+	}
+
+	.wc-block-reviews-by-product__load-more {
+		display: block;
+		margin: 0 auto;
 	}
 }

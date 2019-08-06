@@ -62,19 +62,10 @@ export function renderReview( attributes, review = {}, i = 0 ) {
 
 	return (
 		<li className={ classes } key={ id || i } aria-hidden={ isLoading }>
-			<span
-				className="wc-block-reviews-by-product__text"
-				dangerouslySetInnerHTML={ {
-					// `text` is the `review` parameter returned by the `reviews` endpoint.
-					// It's filtered with `wp_filter_post_kses()`, which removes dangerous HTML tags,
-					// so using it inside `dangerouslySetInnerHTML` is safe.
-					__html: text || '',
-				} }
-			/>
 			{ ( showReviewDate || showReviewerName || showReviewImage || showReviewRating ) && (
 				<div className="wc-block-reviews-by-product__info">
 					{ showReviewImage && getReviewImage( review, imageType, isLoading ) }
-					{ ( showReviewerName || showReviewRating ) && (
+					{ ( showReviewerName || showReviewRating || showReviewDate ) && (
 						<div className="wc-block-reviews-by-product__meta">
 							{ showReviewerName && (
 								<strong className="wc-block-reviews-by-product__author">{ reviewer }</strong>
@@ -86,13 +77,22 @@ export function renderReview( attributes, review = {}, i = 0 ) {
 									</div>
 								</div>
 							) }
+							{ showReviewDate && (
+								<time className="wc-block-reviews-by-product__published-date" dateTime={ dateCreated }>{ formattedDateCreated }</time>
+							) }
 						</div>
-					) }
-					{ showReviewDate && (
-						<time className="wc-block-reviews-by-product__published-date" dateTime={ dateCreated }>{ formattedDateCreated }</time>
 					) }
 				</div>
 			) }
+			<span
+				className="wc-block-reviews-by-product__text"
+				dangerouslySetInnerHTML={ {
+					// `text` is the `review` parameter returned by the `reviews` endpoint.
+					// It's filtered with `wp_filter_post_kses()`, which removes dangerous HTML tags,
+					// so using it inside `dangerouslySetInnerHTML` is safe.
+					__html: text || '',
+				} }
+			/>
 		</li>
 	);
 }
