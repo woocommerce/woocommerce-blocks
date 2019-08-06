@@ -71,7 +71,7 @@ const ProductsControl = ( {
 };
 
 ProductsControl.propTypes = {
-	onChange: PropTypes.func,
+	onChange: PropTypes.func.isRequired,
 	onSearch: PropTypes.func,
 	selected: PropTypes.array,
 	products: PropTypes.array,
@@ -79,8 +79,6 @@ ProductsControl.propTypes = {
 };
 
 ProductsControl.defaultProps = {
-	onChange: () => undefined,
-	onSearch: () => undefined,
 	selected: [],
 	products: [],
 	isLoading: true,
