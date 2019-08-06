@@ -97,7 +97,7 @@ class ReadMore extends Component {
 		const buttonText = expanded ? lessText : moreText;
 
 		if ( ! buttonText ) {
-			//return;
+			return;
 		}
 
 		return (
