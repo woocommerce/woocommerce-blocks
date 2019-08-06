@@ -16,13 +16,11 @@ if ( containers.length ) {
 	// Use Array.forEach for IE11 compatibility
 	Array.prototype.forEach.call( containers, ( el ) => {
 		const attributes = {
-			orderby: el.dataset.orderby,
-			perPage: el.dataset.perPage,
-			productId: el.dataset.productId,
-			showAvatar: el.classList.contains( 'has-avatar' ),
-			showProductRating: el.classList.contains( 'has-rating' ),
+			...el.dataset,
 			showReviewDate: el.classList.contains( 'has-date' ),
 			showReviewerName: el.classList.contains( 'has-name' ),
+			showReviewImage: el.classList.contains( 'has-image' ),
+			showReviewRating: el.classList.contains( 'has-rating' ),
 		};
 
 		render( <Block attributes={ attributes } />, el );

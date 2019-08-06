@@ -9,27 +9,30 @@ import {
 } from '@wordpress/editor';
 import {
 	Button,
+	Notice,
 	PanelBody,
 	Placeholder,
+	RangeControl,
 	SelectControl,
-	TextControl,
 	ToggleControl,
 	Toolbar,
 	withSpokenMessages,
 } from '@wordpress/components';
 import classNames from 'classnames';
 import { SearchListItem } from '@woocommerce/components';
-import { Component, Fragment } from '@wordpress/element';
+import { Component, Fragment, RawHTML } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 import { debounce } from 'lodash';
 import { escapeHTML } from '@wordpress/escape-html';
 import PropTypes from 'prop-types';
+import { getAdminLink } from '@woocommerce/navigation';
 
 /**
  * Internal dependencies
  */
 import Block from './block.js';
 import ProductControl from '../../components/product-control';
+import ToggleButtonControl from '../../components/toggle-button-control';
 import { IconReviewsByProduct } from '../../components/icons';
 
 class ReviewsByProductEditor extends Component {
@@ -82,7 +85,7 @@ class ReviewsByProductEditor extends Component {
 			setAttributes,
 		} = this.props;
 		const minPerPage = 1;
-		const maxPerPage = 100;
+		const maxPerPage = 20;
 
 		return (
 			<InspectorControls key="inspector">
@@ -100,52 +103,60 @@ class ReviewsByProductEditor extends Component {
 					/>
 				</PanelBody>
 				<PanelBody title={ __( 'Content', 'woo-gutenberg-products-block' ) }>
-					{ wc_product_block_data.enableReviewRating && (
-						<ToggleControl
-							label={ __( 'Product rating', 'woo-gutenberg-products-block' ) }
-							help={
-								attributes.showProductRating ?
-									__( 'Product rating is visible.', 'woo-gutenberg-products-block' ) :
-									__( 'Product rating is hidden.', 'woo-gutenberg-products-block' )
-							}
-							checked={ attributes.showProductRating }
-							onChange={ () => setAttributes( { showProductRating: ! attributes.showProductRating } ) }
-						/>
+					<ToggleControl
+						label={ __( 'Product rating', 'woo-gutenberg-products-block' ) }
+						checked={ attributes.showReviewRating }
+						onChange={ () => setAttributes( { showReviewRating: ! attributes.showReviewRating } ) }
+					/>
+					{ ( attributes.showReviewRating && ! wc_product_block_data.enableReviewRating ) && (
+						<Notice className="wc-block-reviews-by-product__notice" isDismissible={ false }>
+							<RawHTML>
+								{ sprintf( __( 'Product rating is disabled in your %sstore settings%s.', 'woo-gutenberg-products-block' ), `<a href="${ getAdminLink( 'admin.php?page=wc-settings&tab=products' ) }" target="_blank">`, '</a>' ) }
+							</RawHTML>
+						</Notice>
 					) }
 					<ToggleControl
 						label={ __( 'Reviewer name', 'woo-gutenberg-products-block' ) }
-						help={
-							attributes.showReviewerName ?
-								__( 'Reviewer name is visible.', 'woo-gutenberg-products-block' ) :
-								__( 'Reviewer name is hidden.', 'woo-gutenberg-products-block' )
-						}
 						checked={ attributes.showReviewerName }
 						onChange={ () => setAttributes( { showReviewerName: ! attributes.showReviewerName } ) }
 					/>
-					{ wc_product_block_data.showAvatars && (
-						<ToggleControl
-							label={ __( 'Avatar', 'woo-gutenberg-products-block' ) }
-							help={
-								attributes.showAvatar ?
-									__( 'Avatar is visible.', 'woo-gutenberg-products-block' ) :
-									__( 'Avatar is hidden.', 'woo-gutenberg-products-block' )
-							}
-							checked={ attributes.showAvatar }
-							onChange={ () => setAttributes( { showAvatar: ! attributes.showAvatar } ) }
-						/>
-					) }
+					<ToggleControl
+						label={ __( 'Image', 'woo-gutenberg-products-block' ) }
+						checked={ attributes.showReviewImage }
+						onChange={ () => setAttributes( { showReviewImage: ! attributes.showReviewImage } ) }
+					/>
 					<ToggleControl
 						label={ __( 'Review date', 'woo-gutenberg-products-block' ) }
-						help={
-							attributes.showReviewDate ?
-								__( 'Review date is visible.', 'woo-gutenberg-products-block' ) :
-								__( 'Review date is hidden.', 'woo-gutenberg-products-block' )
-						}
 						checked={ attributes.showReviewDate }
 						onChange={ () => setAttributes( { showReviewDate: ! attributes.showReviewDate } ) }
 					/>
+					{ attributes.showReviewImage && (
+						<Fragment>
+							<ToggleButtonControl
+								label={ __( 'Review image', 'woo-gutenberg-products-block' ) }
+								value={ attributes.imageType }
+								options={ [
+									{ label: __( 'Reviewer photo', 'woo-gutenberg-products-block' ), value: 'reviewer' },
+									{ label: __( 'Product', 'woo-gutenberg-products-block' ), value: 'product' },
+								] }
+								onChange={ ( value ) => setAttributes( { imageType: value } ) }
+							/>
+							{ ( attributes.imageType === 'reviewer' && ! wc_product_block_data.showAvatars ) && (
+								<Notice className="wc-block-reviews-by-product__notice" isDismissible={ false }>
+									<RawHTML>
+										{ sprintf( __( 'Reviewer photo is disabled in your %ssite settings%s.', 'woo-gutenberg-products-block' ), `<a href="${ getAdminLink( 'options-discussion.php' ) }" target="_blank">`, '</a>' ) }
+									</RawHTML>
+								</Notice>
+							) }
+						</Fragment>
+					) }
 				</PanelBody>
 				<PanelBody title={ __( 'List Settings', 'woo-gutenberg-products-block' ) }>
+					<ToggleControl
+						label={ __( 'Order by', 'woo-gutenberg-products-block' ) }
+						checked={ attributes.showOrderby }
+						onChange={ () => setAttributes( { showOrderby: ! attributes.showOrderby } ) }
+					/>
 					<SelectControl
 						label={ __( 'Order Product Reviews by', 'woo-gutenberg-products-block' ) }
 						value={ attributes.orderby }
@@ -156,16 +167,27 @@ class ReviewsByProductEditor extends Component {
 						] }
 						onChange={ ( orderby ) => setAttributes( { orderby } ) }
 					/>
-					<TextControl
-						label={ __( 'Reviews shown on page load', 'woo-gutenberg-products-block' ) }
-						value={ attributes.perPage }
-						onChange={ ( perPage ) => setAttributes( {
-							perPage: Math.max( Math.min( parseInt( perPage, 10 ), maxPerPage ), minPerPage ),
-						} ) }
+					<RangeControl
+						label={ __( 'Starting Number of Reviews', 'woo-gutenberg-products-block' ) }
+						value={ attributes.reviewsOnPageLoad }
+						onChange={ ( reviewsOnPageLoad ) => setAttributes( { reviewsOnPageLoad } ) }
 						max={ maxPerPage }
 						min={ minPerPage }
-						type="number"
 					/>
+					<ToggleControl
+						label={ __( 'Load more', 'woo-gutenberg-products-block' ) }
+						checked={ attributes.showLoadMore }
+						onChange={ () => setAttributes( { showLoadMore: ! attributes.showLoadMore } ) }
+					/>
+					{ attributes.showLoadMore && (
+						<RangeControl
+							label={ __( 'Load More Reviews', 'woo-gutenberg-products-block' ) }
+							value={ attributes.reviewsOnLoadMore }
+							onChange={ ( reviewsOnLoadMore ) => setAttributes( { reviewsOnLoadMore } ) }
+							max={ maxPerPage }
+							min={ minPerPage }
+						/>
+					) }
 				</PanelBody>
 			</InspectorControls>
 		);
@@ -246,17 +268,15 @@ class ReviewsByProductEditor extends Component {
 
 	render() {
 		const { attributes, setAttributes } = this.props;
-		const { editMode, productId } = attributes;
+		const { className, editMode, productId, showReviewDate, showReviewerName } = attributes;
 		const { product } = this.state;
-
-		const { className, showReviewDate, showReviewerName } = attributes;
-		const showAvatar = wc_product_block_data.showAvatars && attributes.showAvatar;
-		const showProductRating = wc_product_block_data.enableReviewRating && attributes.showProductRating;
+		const showReviewImage = ( wc_product_block_data.showAvatars || attributes.imageType === 'product' ) && attributes.showReviewImage;
+		const showReviewRating = wc_product_block_data.enableReviewRating && attributes.showReviewRating;
 		const classes = classNames( 'wc-block-reviews-by-product', className, {
-			'has-avatar': showAvatar,
-			'has-date': showReviewDate,
+			'has-image': showReviewImage,
 			'has-name': showReviewerName,
-			'has-rating': showProductRating,
+			'has-date': showReviewDate,
+			'has-rating': showReviewRating,
 		} );
 
 		return (

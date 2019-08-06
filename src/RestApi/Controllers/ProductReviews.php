@@ -224,6 +224,7 @@ class ProductReviews extends WC_REST_Controller {
 			'formatted_date_created' => get_comment_date( 'F j, Y', $review->comment_ID ),
 			'date_created_gmt'       => wc_rest_prepare_date_response( $review->comment_date_gmt ),
 			'product_id'             => (int) $review->comment_post_ID,
+			'product_picture'        => get_the_post_thumbnail_url( (int) $review->comment_post_ID, 96 ),
 			'reviewer'               => $review->comment_author,
 			'review'                 => $review->comment_content,
 			'rating'                 => $rating,
@@ -279,6 +280,12 @@ class ProductReviews extends WC_REST_Controller {
 				'product_id'             => array(
 					'description' => __( 'Unique identifier for the product that the review belongs to.', 'woo-gutenberg-products-block' ),
 					'type'        => 'integer',
+					'context'     => array( 'view', 'edit' ),
+					'readonly'    => true,
+				),
+				'product_picture'        => array(
+					'description' => __( 'Image of the product that the review belongs to.', 'woo-gutenberg-products-block' ),
+					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
