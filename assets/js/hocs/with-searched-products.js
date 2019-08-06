@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { Component } from '@wordpress/element';
-import { debounce, find } from 'lodash';
+import { debounce } from 'lodash';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import PropTypes from 'prop-types';
 
@@ -66,9 +66,9 @@ const withSearchedProducts = createHigherOrderComponent( ( OriginalComponent ) =
 					{ ...this.props }
 					products={ list }
 					isLoading={ loading }
-					selected={ selected
-						.map( ( id ) => find( list, { id } ) )
-						.filter( Boolean ) }
+					selected={ list.filter(
+						( { id } ) => selected.includes( id )
+					) }
 					onSearch={ isLargeCatalog ? this.debouncedOnSearch : null }
 				/>
 			);
