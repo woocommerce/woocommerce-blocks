@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
 import { SearchListControl } from '@woocommerce/components';
 import PropTypes from 'prop-types';
 
@@ -59,17 +58,15 @@ const ProductsControl = ( {
 		),
 	};
 	return (
-		<Fragment>
-			<SearchListControl
-				className="woocommerce-products"
-				list={ products }
-				isLoading={ isLoading }
-				selected={ selected }
-				onSearch={ onSearch }
-				onChange={ onChange }
-				messages={ messages }
-			/>
-		</Fragment>
+		<SearchListControl
+			className="woocommerce-products"
+			list={ products }
+			isLoading={ isLoading }
+			selected={ selected }
+			onSearch={ onSearch }
+			onChange={ onChange }
+			messages={ messages }
+		/>
 	);
 };
 
