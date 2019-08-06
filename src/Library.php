@@ -37,6 +37,7 @@ class Library {
 			'ProductsByAttribute',
 			'ProductTopRated',
 			'ReviewsByProduct',
+			'ProductSearch',
 			'ProductTag',
 		];
 		foreach ( $blocks as $class ) {
