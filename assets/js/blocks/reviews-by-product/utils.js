@@ -4,6 +4,11 @@
 import { __, sprintf } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
 
+/**
+ * Internal dependencies
+ */
+import ReadMore from '../../components/read-more';
+
 export const getReviews = ( args ) => {
 	return apiFetch( {
 		path: '/wc/blocks/products/reviews?' + Object.entries( args ).map( ( arg ) => arg.join( '=' ) ).join( '&' ),
@@ -47,6 +52,21 @@ function getReviewImage( review, imageType, isLoading ) {
 	);
 }
 
+function getReviewContent( review ) {
+	const text = review.review || '';
+
+	return (
+		<ReadMore
+			content={ text }
+			lines={ 10 }
+			ellipsis="..."
+			moreText={ __( 'Read full review', '' ) }
+			lessText={ __( 'Hide full review', '' ) }
+			className="wc-block-reviews-by-product__text"
+		/>
+	);
+}
+
 /**
  * Render a review for the Reviews by Product block
  *
@@ -57,7 +77,7 @@ function getReviewImage( review, imageType, isLoading ) {
  */
 export function renderReview( attributes, review = {}, i = 0 ) {
 	const { imageType, showReviewDate, showReviewerName, showReviewImage, showReviewRating: showReviewRatingAttr } = attributes;
-	const { id = null, date_created: dateCreated, formatted_date_created: formattedDateCreated, rating, review: text = '', reviewer = '' } = review;
+	const { id = null, date_created: dateCreated, formatted_date_created: formattedDateCreated, rating, reviewer = '' } = review;
 	const isLoading = ! Object.keys( review ).length > 0;
 	const showReviewRating = Number.isFinite( rating ) && showReviewRatingAttr;
 	const classes = getReviewClasses( isLoading );
@@ -89,15 +109,7 @@ export function renderReview( attributes, review = {}, i = 0 ) {
 					) }
 				</div>
 			) }
-			<span
-				className="wc-block-reviews-by-product__text"
-				dangerouslySetInnerHTML={ {
-					// `text` is the `review` parameter returned by the `reviews` endpoint.
-					// It's filtered with `wp_filter_post_kses()`, which removes dangerous HTML tags,
-					// so using it inside `dangerouslySetInnerHTML` is safe.
-					__html: text || '',
-				} }
-			/>
+			{ getReviewContent( review ) }
 		</li>
 	);
 }
