@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
  * Internal dependencies
  */
 import { getReviews, renderReview } from './utils';
-import { withComponentId } from '../../hocs';
+import withComponentId from '../../hocs/with-component-id';
 
 /**
  * Component to handle edit mode of "Reviews by Product".
