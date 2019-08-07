@@ -59,9 +59,8 @@ function getReviewContent( review ) {
 		<ReadMore
 			content={ text }
 			lines={ 10 }
-			ellipsis="..."
-			moreText={ __( 'Read full review', '' ) }
-			lessText={ __( 'Hide full review', '' ) }
+			moreText={ __( 'Read full review', 'woo-gutenberg-products-block' ) }
+			lessText={ __( 'Hide full review', 'woo-gutenberg-products-block' ) }
 			className="wc-block-reviews-by-product__text"
 		/>
 	);

@@ -5,6 +5,7 @@
  */
 import React, { createRef, Component } from 'react';
 import PropTypes from 'prop-types';
+import { __ } from '@wordpress/i18n';
 
 class ReadMore extends Component {
 	constructor( props ) {
@@ -161,12 +162,11 @@ ReadMore.propTypes = {
 };
 
 ReadMore.defaultProps = {
-	content: '',
 	lines: 3,
-	ellipsis: '...',
-	moreText: 'Read more',
-	lessText: 'Read less',
-	className: '',
+	ellipsis: '&hellip;',
+	moreText: __( 'Read more', 'woo-gutenberg-products-block' ),
+	lessText: __( 'Read less', 'woo-gutenberg-products-block' ),
+	className: 'read-more-content',
 };
 
 export default ReadMore;
