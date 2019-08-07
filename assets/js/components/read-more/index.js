@@ -14,7 +14,7 @@ class ReadMore extends Component {
 		this.end = 0;
 		this.original = props.content;
 		this.state = {
-			expanded: true,
+			isExpanded: true,
 			noClamp: false,
 			content: props.content.substring( 0, 20 ),
 		};
@@ -74,7 +74,7 @@ class ReadMore extends Component {
 
 		this.setState( {
 			content: this.original.slice( 0, this.middle - 5 ) + this.getEllipsis(),
-			expanded: false,
+			isExpanded: false,
 		} );
 	}
 
@@ -91,10 +91,10 @@ class ReadMore extends Component {
 	}
 
 	getButton() {
-		const { expanded } = this.state;
+		const { isExpanded } = this.state;
 		const { className, lessText, moreText } = this.props;
 
-		const buttonText = expanded ? lessText : moreText;
+		const buttonText = isExpanded ? lessText : moreText;
 
 		if ( ! buttonText ) {
 			return;
@@ -105,7 +105,7 @@ class ReadMore extends Component {
 				href="#more"
 				className={ className + '__read_more' }
 				onClick={ this.onClick }
-				aria-expanded={ ! expanded }
+				aria-expanded={ ! isExpanded }
 			>
 				{ buttonText }
 			</a>
@@ -113,11 +113,11 @@ class ReadMore extends Component {
 	}
 
 	onClick( e ) {
-		const { expanded } = this.state;
+		const { isExpanded } = this.state;
 
 		e.preventDefault();
 
-		if ( expanded ) {
+		if ( isExpanded ) {
 			this.clampLines();
 		} else {
 			this.setState( {
@@ -125,7 +125,7 @@ class ReadMore extends Component {
 			} );
 		}
 
-		this.setState( { expanded: ! this.state.expanded } );
+		this.setState( { isExpanded: ! this.state.isExpanded } );
 	}
 
 	render() {
