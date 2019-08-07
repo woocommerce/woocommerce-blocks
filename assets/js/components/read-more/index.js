@@ -118,10 +118,9 @@ class ReadMore extends Component {
 		} else {
 			this.setState( {
 				content: this.originalContent,
+				isExpanded: ! isExpanded,
 			} );
 		}
-
-		this.setState( { isExpanded: ! isExpanded } );
 	}
 
 	render() {
