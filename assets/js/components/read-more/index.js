@@ -97,6 +97,7 @@ class ReadMore extends Component {
 				className={ className + '__read_more' }
 				onClick={ this.onClick }
 				aria-expanded={ ! isExpanded }
+				role="button"
 			>
 				{ buttonText }
 			</a>
