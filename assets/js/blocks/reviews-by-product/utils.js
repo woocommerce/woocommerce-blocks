@@ -58,7 +58,7 @@ function getReviewContent( review ) {
 	return (
 		<ReadMore
 			content={ text }
-			lines={ 10 }
+			maxLines={ 10 }
 			moreText={ __( 'Read full review', 'woo-gutenberg-products-block' ) }
 			lessText={ __( 'Hide full review', 'woo-gutenberg-products-block' ) }
 			className="wc-block-reviews-by-product__text"

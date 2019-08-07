@@ -10,60 +10,52 @@ import { __ } from '@wordpress/i18n';
 class ReadMore extends Component {
 	constructor( props ) {
 		super( ...arguments );
+
+		this.state = {
+			isExpanded: true,
+			isClamped: false,
+			content: '.',
+		};
+
+		this.lineHeight = 0;
 		this.start = 0;
 		this.middle = 0;
 		this.end = 0;
-		this.original = props.content;
-		this.state = {
-			isExpanded: true,
-			noClamp: false,
-			content: props.content.substring( 0, 20 ),
-		};
-
+		this.originalContent = props.content;
 		this.element = createRef();
 		this.getButton = this.getButton.bind( this );
 		this.onClick = this.onClick.bind( this );
 		this.clampLines = this.clampLines.bind( this );
 		this.moveMarkers = this.moveMarkers.bind( this );
-		this.getEllipsis = this.getEllipsis.bind( this );
 	}
 
 	componentDidMount() {
 		if ( this.props.content ) {
+			this.lineHeight = this.element.current.clientHeight + 1;
 			this.clampLines();
 		}
 	}
 
-	componentDidUpdate( prevProps ) {
-		if ( prevProps.content !== this.props.content ) {
-			this.original = this.props.content;
-			this.clampLines();
-		}
-	}
-
+	/**
+	 * Clamp lines calculates the height of a line of text and then limits it to the
+	 * value of the lines prop. Content is updated once limited.
+	 */
 	clampLines() {
-		if ( ! this.element ) {
-			return;
-		}
-
-		// Limit length to get lineHeight.
-		this.element.current.innerHTML = this.original.substring( 0, 20 );
-
-		const lineHeight = this.element.current.clientHeight + 1;
-		const maxHeight = ( lineHeight * this.props.lines ) + 1;
+		const { ellipsis, maxLines } = this.props;
+		const maxHeight = ( this.lineHeight * maxLines ) + 1;
 
 		this.start = 0;
 		this.middle = 0;
-		this.end = this.original.length;
+		this.end = this.originalContent.length;
 
 		while ( this.start <= this.end ) {
 			this.middle = Math.floor( ( this.start + this.end ) / 2 );
-			this.element.current.innerHTML = this.original.slice( 0, this.middle );
+			this.element.current.innerHTML = this.originalContent.slice( 0, this.middle );
 
-			if ( this.middle === this.original.length ) {
+			if ( this.middle === this.originalContent.length ) {
 				this.setState( {
-					content: this.original,
-					noClamp: true,
+					content: this.originalContent,
+					isClamped: false,
 				} );
 				return;
 			}
@@ -71,11 +63,12 @@ class ReadMore extends Component {
 			this.moveMarkers( maxHeight );
 		}
 
-		this.element.current.innerHTML = this.original.slice( 0, this.middle - 5 ) + this.getEllipsis();
+		this.element.current.innerHTML = this.originalContent.slice( 0, this.middle - 5 ) + ellipsis;
 
 		this.setState( {
-			content: this.original.slice( 0, this.middle - 5 ) + this.getEllipsis(),
+			content: this.originalContent.slice( 0, this.middle - 5 ) + ellipsis,
 			isExpanded: false,
+			isClamped: true,
 		} );
 	}
 
@@ -87,17 +80,13 @@ class ReadMore extends Component {
 		}
 	}
 
-	getEllipsis() {
-		return this.state.noClamp ? '' : this.props.ellipsis;
-	}
-
 	getButton() {
-		const { isExpanded } = this.state;
+		const { isExpanded, isClamped } = this.state;
 		const { className, lessText, moreText } = this.props;
 
 		const buttonText = isExpanded ? lessText : moreText;
 
-		if ( ! buttonText ) {
+		if ( ! buttonText || ! isClamped ) {
 			return;
 		}
 
@@ -113,6 +102,11 @@ class ReadMore extends Component {
 		);
 	}
 
+	/**
+	 * Handles the click event for the read more/less button.
+	 *
+	 * @param {obj} e event
+	 */
 	onClick( e ) {
 		const { isExpanded } = this.state;
 
@@ -122,11 +116,11 @@ class ReadMore extends Component {
 			this.clampLines();
 		} else {
 			this.setState( {
-				content: this.original,
+				content: this.originalContent,
 			} );
 		}
 
-		this.setState( { isExpanded: ! this.state.isExpanded } );
+		this.setState( { isExpanded: ! isExpanded } );
 	}
 
 	render() {
@@ -146,7 +140,7 @@ class ReadMore extends Component {
 						__html: content,
 					} }
 				/>
-				{ ! this.state.noClamp && this.getButton() }
+				{ this.getButton() }
 			</div>
 		);
 	}
@@ -154,7 +148,7 @@ class ReadMore extends Component {
 
 ReadMore.propTypes = {
 	content: PropTypes.string.isRequired,
-	lines: PropTypes.number,
+	maxLines: PropTypes.number,
 	ellipsis: PropTypes.string,
 	moreText: PropTypes.string,
 	lessText: PropTypes.string,
@@ -162,7 +156,7 @@ ReadMore.propTypes = {
 };
 
 ReadMore.defaultProps = {
-	lines: 3,
+	maxLines: 3,
 	ellipsis: '&hellip;',
 	moreText: __( 'Read more', 'woo-gutenberg-products-block' ),
 	lessText: __( 'Read less', 'woo-gutenberg-products-block' ),
