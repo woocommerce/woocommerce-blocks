@@ -137,7 +137,9 @@ class ReadMore extends Component {
 				<div
 					ref={ this.element }
 					dangerouslySetInnerHTML={ {
-						// You must ensure HTML content is safe for direct rendering.
+						// `content` is the `review` parameter returned by the `reviews` endpoint.
+						// It's filtered with `wp_filter_post_kses()`, which removes dangerous HTML tags,
+						// so using it inside `dangerouslySetInnerHTML` is safe.
 						__html: content,
 					} }
 				/>
