@@ -1,4 +1,5 @@
+const NAMESPACE = '/wc/blocks';
 export const ENDPOINTS = {
-	root: '/wc/blocks',
-	products: '/wc/blocks/products',
+	root: NAMESPACE,
+	products: `${ NAMESPACE }/products`,
 };
