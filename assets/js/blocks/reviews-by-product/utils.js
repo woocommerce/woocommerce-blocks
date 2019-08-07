@@ -53,16 +53,15 @@ function getReviewImage( review, imageType, isLoading ) {
 }
 
 function getReviewContent( review ) {
-	const text = review.review || '';
-
 	return (
 		<ReadMore
-			content={ text }
 			maxLines={ 10 }
 			moreText={ __( 'Read full review', 'woo-gutenberg-products-block' ) }
 			lessText={ __( 'Hide full review', 'woo-gutenberg-products-block' ) }
 			className="wc-block-reviews-by-product__text"
-		/>
+		>
+			{ review.review || '' }
+		</ReadMore>
 	);
 }
 

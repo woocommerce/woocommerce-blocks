@@ -21,7 +21,8 @@ class ReadMore extends Component {
 		this.start = 0;
 		this.middle = 0;
 		this.end = 0;
-		this.originalContent = props.content;
+		this.originalContent = 1 === React.Children.count( props.children ) ? props.children : props.children.join( '' );
+
 		this.element = createRef();
 		this.getButton = this.getButton.bind( this );
 		this.onClick = this.onClick.bind( this );
@@ -30,7 +31,7 @@ class ReadMore extends Component {
 	}
 
 	componentDidMount() {
-		if ( this.props.content ) {
+		if ( this.props.children ) {
 			this.lineHeight = this.element.current.clientHeight + 1;
 			this.clampLines();
 		}
@@ -147,7 +148,7 @@ class ReadMore extends Component {
 }
 
 ReadMore.propTypes = {
-	content: PropTypes.string.isRequired,
+	children: PropTypes.node.isRequired,
 	maxLines: PropTypes.number,
 	ellipsis: PropTypes.string,
 	moreText: PropTypes.string,
