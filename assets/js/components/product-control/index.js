@@ -17,7 +17,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import { NAMESPACE } from '../../constants';
+import { ENDPOINTS } from '../../constants';
 import { isLargeCatalog, getProducts } from '../utils';
 import {
 	IconRadioSelected,
@@ -102,7 +102,7 @@ class ProductControl extends Component {
 		}
 
 		apiFetch( {
-			path: addQueryArgs( `${ NAMESPACE }/${ product }/variations`, {
+			path: addQueryArgs( `${ ENDPOINTS.products }/${ product }/variations`, {
 				per_page: -1,
 			} ),
 		} )

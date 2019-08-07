@@ -36,7 +36,7 @@ import { IconFolderStar } from '../../components/icons';
 /**
  * Internal dependencies
  */
-import { NAMESPACE } from '../../constants';
+import { ENDPOINTS } from '../../constants';
 import ProductCategoryControl from '../../components/product-category-control';
 
 /**
@@ -131,7 +131,7 @@ class FeaturedCategory extends Component {
 			return;
 		}
 		apiFetch( {
-			path: `${ NAMESPACE }/categories/${ categoryId }`,
+			path: `${ ENDPOINTS.products }/categories/${ categoryId }`,
 		} )
 			.then( ( category ) => {
 				this.setState( { category, loaded: true } );

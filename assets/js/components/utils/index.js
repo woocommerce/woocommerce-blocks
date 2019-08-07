@@ -8,7 +8,7 @@ import { flatten, uniqBy } from 'lodash';
 /**
  * Internal dependencies
  */
-import { NAMESPACE } from '../../constants';
+import { ENDPOINTS } from '../../constants';
 
 export const isLargeCatalog = wc_product_block_data.isLargeCatalog || false;
 export const limitTags = wc_product_block_data.limitTags || false;
@@ -16,7 +16,7 @@ export const hasTags = wc_product_block_data.hasTags || false;
 
 const getProductsRequests = ( { selected = [], search } ) => {
 	const requests = [
-		addQueryArgs( NAMESPACE, {
+		addQueryArgs( ENDPOINTS.products, {
 			per_page: isLargeCatalog ? 100 : -1,
 			catalog_visibility: 'visible',
 			status: 'publish',
@@ -27,7 +27,7 @@ const getProductsRequests = ( { selected = [], search } ) => {
 	// If we have a large catalog, we might not get all selected products in the first page.
 	if ( isLargeCatalog && selected.length ) {
 		requests.push(
-			addQueryArgs( NAMESPACE, {
+			addQueryArgs( ENDPOINTS.products, {
 				catalog_visibility: 'visible',
 				status: 'publish',
 				include: selected,
@@ -58,13 +58,13 @@ export const getProducts = ( { selected = [], search } ) => {
  */
 export const getProduct = ( productId ) => {
 	return apiFetch( {
-		path: `${ NAMESPACE }/${ productId }`,
+		path: `${ ENDPOINTS.products }/${ productId }`,
 	} );
 };
 
 const getProductTagsRequests = ( { selected = [], search } ) => {
 	const requests = [
-		addQueryArgs( `${ NAMESPACE }/tags`, {
+		addQueryArgs( `${ ENDPOINTS.products }/tags`, {
 			per_page: limitTags ? 100 : -1,
 			orderby: limitTags ? 'count' : 'name',
 			order: limitTags ? 'desc' : 'asc',
@@ -75,7 +75,7 @@ const getProductTagsRequests = ( { selected = [], search } ) => {
 	// If we have a large catalog, we might not get all selected products in the first page.
 	if ( limitTags && selected.length ) {
 		requests.push(
-			addQueryArgs( `${ NAMESPACE }/tags`, {
+			addQueryArgs( `${ ENDPOINTS.products }/tags`, {
 				include: selected,
 			} )
 		);
