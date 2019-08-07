@@ -153,22 +153,26 @@ class FeaturedProduct extends Component {
 						},
 					] }
 				>
-					<RangeControl
-						label={ __( 'Background Opacity', 'woo-gutenberg-products-block' ) }
-						value={ attributes.dimRatio }
-						onChange={ ( ratio ) => setAttributes( { dimRatio: ratio } ) }
-						min={ 0 }
-						max={ 100 }
-						step={ 10 }
-					/>
-					{ !! FocalPointPicker && !! url &&
-						<FocalPointPicker
-							label={ __( 'Focal Point Picker' ) }
-							url={ url }
-							value={ focalPoint }
-							onChange={ ( value ) => setAttributes( { focalPoint: value } ) }
-						/>
-					}
+					{ !! url && (
+						<Fragment>
+							<RangeControl
+								label={ __( 'Background Opacity', 'woo-gutenberg-products-block' ) }
+								value={ attributes.dimRatio }
+								onChange={ ( ratio ) => setAttributes( { dimRatio: ratio } ) }
+								min={ 0 }
+								max={ 100 }
+								step={ 10 }
+							/>
+							{ !! FocalPointPicker &&
+								<FocalPointPicker
+									label={ __( 'Focal Point Picker' ) }
+									url={ url }
+									value={ focalPoint }
+									onChange={ ( value ) => setAttributes( { focalPoint: value } ) }
+								/>
+							}
+						</Fragment>
+					) }
 				</PanelColorSettings>
 			</InspectorControls>
 		);
