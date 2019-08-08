@@ -168,6 +168,10 @@ class PriceSlider extends Component {
 		const minXDiff = Math.abs( x - minX );
 		const maxXDiff = Math.abs( x - maxX );
 
+		/**
+		 * The default z-index in the stylesheet as 20. 20 vs 21 is just for determining which range
+		 * slider should be at the front and has no meaning beyond this.
+		 */
 		if ( minXDiff > maxXDiff ) {
 			this.minRange.current.style.zIndex = 20;
 			this.maxRange.current.style.zIndex = 21;
