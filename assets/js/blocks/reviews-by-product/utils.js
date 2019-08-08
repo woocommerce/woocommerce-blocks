@@ -4,6 +4,11 @@
 import { __, sprintf } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
 
+/**
+ * Internal dependencies
+ */
+import ReadMore from '../../components/read-more';
+
 export const getReviews = ( args ) => {
 	return apiFetch( {
 		path: '/wc/blocks/products/reviews?' + Object.entries( args ).map( ( arg ) => arg.join( '=' ) ).join( '&' ),
@@ -34,11 +39,29 @@ function getReviewImage( review, imageType, isLoading ) {
 	}
 
 	return (
-		imageType === 'product' ? (
-			<img alt="" src={ review.product_picture } className="wc-block-reviews-by-product__image" width="48" height="48" />
-		) : (
-			<img alt="" src={ review.reviewer_avatar_urls[ '48' ] } srcSet={ review.reviewer_avatar_urls[ '96' ] + ' 2x' } className="wc-block-reviews-by-product__image" width="48" height="48" />
-		)
+		<div className="wc-block-reviews-by-product__image">
+			{ imageType === 'product' ? (
+				<img aria-hidden="true" alt="" src={ review.product_picture } className="wc-block-reviews-by-product__image" width="48" height="48" />
+			) : (
+				<img aria-hidden="true" alt="" src={ review.reviewer_avatar_urls[ '48' ] } srcSet={ review.reviewer_avatar_urls[ '96' ] + ' 2x' } className="wc-block-reviews-by-product__image" width="48" height="48" />
+			) }
+			{ review.verified && (
+				<div className="wc-block-reviews-by-product__verified" title={ __( 'Verified buyer', 'woo-gutenberg-products-block' ) }>{ __( 'Verified buyer', 'woo-gutenberg-products-block' ) }</div>
+			) }
+		</div>
+	);
+}
+
+function getReviewContent( review ) {
+	return (
+		<ReadMore
+			maxLines={ 10 }
+			moreText={ __( 'Read full review', 'woo-gutenberg-products-block' ) }
+			lessText={ __( 'Hide full review', 'woo-gutenberg-products-block' ) }
+			className="wc-block-reviews-by-product__text"
+		>
+			{ review.review || '' }
+		</ReadMore>
 	);
 }
 
@@ -52,7 +75,7 @@ function getReviewImage( review, imageType, isLoading ) {
  */
 export function renderReview( attributes, review = {}, i = 0 ) {
 	const { imageType, showReviewDate, showReviewerName, showReviewImage, showReviewRating: showReviewRatingAttr } = attributes;
-	const { id = null, date_created: dateCreated, formatted_date_created: formattedDateCreated, rating, review: text = '', reviewer = '' } = review;
+	const { id = null, date_created: dateCreated, formatted_date_created: formattedDateCreated, rating, reviewer = '' } = review;
 	const isLoading = ! Object.keys( review ).length > 0;
 	const showReviewRating = Number.isFinite( rating ) && showReviewRatingAttr;
 	const classes = getReviewClasses( isLoading );
@@ -62,19 +85,10 @@ export function renderReview( attributes, review = {}, i = 0 ) {
 
 	return (
 		<li className={ classes } key={ id || i } aria-hidden={ isLoading }>
-			<span
-				className="wc-block-reviews-by-product__text"
-				dangerouslySetInnerHTML={ {
-					// `text` is the `review` parameter returned by the `reviews` endpoint.
-					// It's filtered with `wp_filter_post_kses()`, which removes dangerous HTML tags,
-					// so using it inside `dangerouslySetInnerHTML` is safe.
-					__html: text || '',
-				} }
-			/>
 			{ ( showReviewDate || showReviewerName || showReviewImage || showReviewRating ) && (
 				<div className="wc-block-reviews-by-product__info">
 					{ showReviewImage && getReviewImage( review, imageType, isLoading ) }
-					{ ( showReviewerName || showReviewRating ) && (
+					{ ( showReviewerName || showReviewRating || showReviewDate ) && (
 						<div className="wc-block-reviews-by-product__meta">
 							{ showReviewerName && (
 								<strong className="wc-block-reviews-by-product__author">{ reviewer }</strong>
@@ -86,13 +100,14 @@ export function renderReview( attributes, review = {}, i = 0 ) {
 									</div>
 								</div>
 							) }
+							{ showReviewDate && (
+								<time className="wc-block-reviews-by-product__published-date" dateTime={ dateCreated }>{ formattedDateCreated }</time>
+							) }
 						</div>
-					) }
-					{ showReviewDate && (
-						<time className="wc-block-reviews-by-product__published-date" dateTime={ dateCreated }>{ formattedDateCreated }</time>
 					) }
 				</div>
 			) }
+			{ getReviewContent( review ) }
 		</li>
 	);
 }
