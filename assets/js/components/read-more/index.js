@@ -19,7 +19,7 @@ class ReadMore extends Component {
 			/**
 			 * True if we are clamping content. False if the review is short. Null during init.
 			 */
-			isClamped: null,
+			clampEnabled: null,
 			/**
 			 * Content is passed in via children.
 			 */
@@ -48,18 +48,18 @@ class ReadMore extends Component {
 			const lineHeight = this.reviewSummary.current.clientHeight + 1;
 			const reviewHeight = this.reviewContent.current.clientHeight + 1;
 			const maxHeight = ( lineHeight * maxLines ) + 1;
-			const isClamped = reviewHeight > maxHeight;
+			const clampEnabled = reviewHeight > maxHeight;
 
 			this.setState( {
 				maxHeight: maxHeight,
 				isExpanded: false,
-				isClamped: isClamped,
+				clampEnabled: clampEnabled,
 			} );
 		}
 	}
 
 	componentDidUpdate( prevProps, prevState ) {
-		if ( prevState.isClamped !== this.state.isClamped && this.state.isClamped ) {
+		if ( prevState.clampEnabled !== this.state.clampEnabled && this.state.clampEnabled ) {
 			this.clampLines();
 		}
 	}
@@ -141,13 +141,13 @@ class ReadMore extends Component {
 
 	render() {
 		const { className } = this.props;
-		const { content, summary, isClamped, isExpanded } = this.state;
+		const { content, summary, clampEnabled, isExpanded } = this.state;
 
 		if ( ! content ) {
 			return null;
 		}
 
-		if ( false === isClamped ) {
+		if ( false === clampEnabled ) {
 			return (
 				<div className={ className }>
 					<div ref={ this.reviewContent }>
@@ -163,7 +163,7 @@ class ReadMore extends Component {
 					ref={ this.reviewSummary }
 					aria-hidden={ isExpanded }
 					style={ {
-						display: isExpanded && null !== isClamped ? 'none' : 'inherit',
+						display: isExpanded && null !== clampEnabled ? 'none' : 'inherit',
 					} }
 					dangerouslySetInnerHTML={ {
 						__html: summary,
@@ -173,7 +173,7 @@ class ReadMore extends Component {
 					ref={ this.reviewContent }
 					aria-hidden={ ! isExpanded }
 					style={ {
-						display: ! isExpanded && null !== isClamped ? 'none' : 'inherit',
+						display: ! isExpanded && null !== clampEnabled ? 'none' : 'inherit',
 					} }
 				>
 					{ content }
