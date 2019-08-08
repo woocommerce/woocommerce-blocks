@@ -97,6 +97,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Fix - Use externals for frontend dependencies so they are shared between extensions and blocks. That saves 2.57MB on page weight.
 - Fix - Load frontend scripts dynamically only when the page contains a block that requires them.
 - Fix - Reduce dependencies of JavaScript powered frontend blocks.
+- Fix - Disable HTML editing on dynamic blocks which have no content.
 
 = 2.2.1 - 2019-07-04 =
 
