@@ -12,18 +12,27 @@ class ReadMore extends Component {
 		super( ...arguments );
 
 		this.state = {
-			isExpanded: true,
-			isClamped: false,
-			content: '.',
+			/**
+			 * This is true when read more has been pressed and the full review is shown.
+			 */
+			isExpanded: false,
+			/**
+			 * True if we are clamping content. False if the review is short. Null during init.
+			 */
+			isClamped: null,
+			/**
+			 * Content is passed in via children.
+			 */
+			content: props.children,
+			/**
+			 * Max height for a review.
+			 */
+			maxHeight: 0,
 		};
 
-		this.lineHeight = 0;
-		this.start = 0;
-		this.middle = 0;
-		this.end = 0;
-		this.originalContent = 1 === React.Children.count( props.children ) ? props.children : props.children.join( '' );
-
-		this.element = createRef();
+		this.maxHeight = 0;
+		this.reviewSummary = createRef();
+		this.reviewContent = createRef();
 		this.getButton = this.getButton.bind( this );
 		this.onClick = this.onClick.bind( this );
 		this.clampLines = this.clampLines.bind( this );
@@ -32,7 +41,25 @@ class ReadMore extends Component {
 
 	componentDidMount() {
 		if ( this.props.children ) {
-			this.lineHeight = this.element.current.clientHeight + 1;
+			// Force elements to be displayed so we can get measurements.
+			this.reviewSummary.current.style.display = 'block';
+			this.reviewContent.current.style.display = 'block';
+
+			const { maxLines } = this.props;
+			const lineHeight = this.reviewSummary.current.clientHeight + 1;
+			const reviewHeight = this.reviewContent.current.clientHeight + 1;
+			const maxHeight = ( lineHeight * maxLines ) + 1;
+
+			this.setState( {
+				maxHeight: maxHeight,
+				isExpanded: false,
+				isClamped: reviewHeight > maxHeight,
+			} );
+		}
+	}
+
+	componentDidUpdate( prevProps, prevState ) {
+		if ( prevState.isClamped !== this.state.isClamped && this.state.isClamped ) {
 			this.clampLines();
 		}
 	}
@@ -42,52 +69,49 @@ class ReadMore extends Component {
 	 * value of the lines prop. Content is updated once limited.
 	 */
 	clampLines() {
-		const { ellipsis, maxLines } = this.props;
-		const maxHeight = ( this.lineHeight * maxLines ) + 1;
+		const { ellipsis } = this.props;
+		const { maxHeight } = this.state;
+		const originalContent = this.reviewContent.current.innerHTML;
 
-		this.start = 0;
-		this.middle = 0;
-		this.end = this.originalContent.length;
+		let markers = {
+			start: 0,
+			middle: 0,
+			end: originalContent.length,
+		};
 
-		while ( this.start <= this.end ) {
-			this.middle = Math.floor( ( this.start + this.end ) / 2 );
-			this.element.current.innerHTML = this.originalContent.slice( 0, this.middle );
+		while ( markers.start <= markers.end ) {
+			markers.middle = Math.floor( ( markers.start + markers.end ) / 2 );
+			this.reviewSummary.current.innerHTML = originalContent.slice( 0, markers.middle );
 
-			if ( this.middle === this.originalContent.length ) {
+			if ( markers.middle === originalContent.length ) {
 				this.setState( {
-					content: this.originalContent,
 					isClamped: false,
 				} );
 				return;
 			}
 
-			this.moveMarkers( maxHeight );
+			markers = this.moveMarkers( maxHeight, markers );
 		}
 
-		this.element.current.innerHTML = this.originalContent.slice( 0, this.middle - 5 ) + ellipsis;
-
-		this.setState( {
-			content: this.originalContent.slice( 0, this.middle - 5 ) + ellipsis,
-			isExpanded: false,
-			isClamped: true,
-		} );
+		this.reviewSummary.current.innerHTML = originalContent.slice( 0, markers.middle - 5 ) + ellipsis;
 	}
 
-	moveMarkers( maxHeight ) {
-		if ( this.element.current.clientHeight <= maxHeight ) {
-			this.start = this.middle + 1;
+	moveMarkers( maxHeight, markers ) {
+		if ( this.reviewSummary.current.clientHeight <= maxHeight ) {
+			markers.start = markers.middle + 1;
 		} else {
-			this.end = this.middle - 1;
+			markers.end = markers.middle - 1;
 		}
+		return markers;
 	}
 
 	getButton() {
-		const { isExpanded, isClamped } = this.state;
+		const { isExpanded } = this.state;
 		const { className, lessText, moreText } = this.props;
 
 		const buttonText = isExpanded ? lessText : moreText;
 
-		if ( ! buttonText || ! isClamped ) {
+		if ( ! buttonText ) {
 			return;
 		}
 
@@ -110,39 +134,53 @@ class ReadMore extends Component {
 	 * @param {obj} e event
 	 */
 	onClick( e ) {
-		const { isExpanded } = this.state;
-
 		e.preventDefault();
 
-		if ( isExpanded ) {
-			this.clampLines();
-		} else {
-			this.setState( {
-				content: this.originalContent,
-				isExpanded: ! isExpanded,
-			} );
-		}
+		const { isExpanded } = this.state;
+
+		this.setState( {
+			isExpanded: ! isExpanded,
+		} );
 	}
 
 	render() {
 		const { className } = this.props;
-		const { content } = this.state;
+		const { content, isClamped, isExpanded } = this.state;
 
 		if ( ! content ) {
 			return null;
 		}
 
+		if ( false === isClamped ) {
+			return (
+				<div className={ className }>
+					<div ref={ this.reviewContent }>
+						{ content }
+					</div>
+				</div>
+			);
+		}
+
 		return (
 			<div className={ className }>
 				<div
-					ref={ this.element }
-					dangerouslySetInnerHTML={ {
-						// `content` is the `review` parameter returned by the `reviews` endpoint.
-						// It's filtered with `wp_filter_post_kses()`, which removes dangerous HTML tags,
-						// so using it inside `dangerouslySetInnerHTML` is safe.
-						__html: content,
+					ref={ this.reviewSummary }
+					aria-hidden={ isExpanded }
+					style={ {
+						display: isExpanded ? 'none' : 'inherit',
 					} }
-				/>
+				>
+					.
+				</div>
+				<div
+					ref={ this.reviewContent }
+					aria-hidden={ ! isExpanded }
+					style={ {
+						display: ! isExpanded ? 'none' : 'inherit',
+					} }
+				>
+					{ content }
+				</div>
 				{ this.getButton() }
 			</div>
 		);
