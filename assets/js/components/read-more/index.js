@@ -41,10 +41,6 @@ class ReadMore extends Component {
 
 	componentDidMount() {
 		if ( this.props.children ) {
-			// Force elements to be displayed so we can get measurements.
-			this.reviewSummary.current.style.display = 'block';
-			this.reviewContent.current.style.display = 'block';
-
 			const { maxLines } = this.props;
 			const lineHeight = this.reviewSummary.current.clientHeight + 1;
 			const reviewHeight = this.reviewContent.current.clientHeight + 1;
@@ -167,7 +163,7 @@ class ReadMore extends Component {
 					ref={ this.reviewSummary }
 					aria-hidden={ isExpanded }
 					style={ {
-						display: isExpanded ? 'none' : 'inherit',
+						display: isExpanded && null !== isClamped ? 'none' : 'inherit',
 					} }
 				>
 					.
@@ -176,7 +172,7 @@ class ReadMore extends Component {
 					ref={ this.reviewContent }
 					aria-hidden={ ! isExpanded }
 					style={ {
-						display: ! isExpanded ? 'none' : 'inherit',
+						display: ! isExpanded && null !== isClamped ? 'none' : 'inherit',
 					} }
 				>
 					{ content }
