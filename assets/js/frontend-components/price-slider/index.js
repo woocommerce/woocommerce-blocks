@@ -59,10 +59,6 @@ class PriceSlider extends Component {
 		const currencySymbol = get( wcSettings, [ 'currency', 'symbol' ], '$' );
 		const priceFormat = get( wcSettings, [ 'currency', 'price_format' ], '%1$s%2$s' );
 
-		if ( '' === formattedNumber ) {
-			return formattedNumber;
-		}
-
 		// This uses a textarea to magically decode HTML currency symbols.
 		const formattedValue = sprintf( priceFormat, currencySymbol, formattedNumber );
 		const txt = document.createElement( 'textarea' );
