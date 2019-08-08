@@ -20,7 +20,7 @@ const withSearchedProducts = createHigherOrderComponent( ( OriginalComponent ) =
 	 * A Component wrapping the passed in component.
 	 *
 	 * @class WrappedComponent
-	 * @extends {Component}
+	 * @augments {Component}
 	 */
 	class WrappedComponent extends Component {
 		constructor() {
