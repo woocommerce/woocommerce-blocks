@@ -18,11 +18,9 @@ class ReviewsByProduct extends Component {
 	constructor() {
 		super( ...arguments );
 		const { attributes } = this.props;
-		const { order, orderby } = this.getOrderArgs( attributes.orderby );
 
 		this.state = {
-			order,
-			orderby,
+			orderby: attributes.orderby,
 			reviews: [],
 			totalReviews: 0,
 		};
@@ -54,7 +52,7 @@ class ReviewsByProduct extends Component {
 
 	getDefaultArgs() {
 		const { attributes, isPreview } = this.props;
-		const { order, orderby } = isPreview ? this.getOrderArgs( attributes.orderby ) : this.state;
+		const { order, orderby } = this.getOrderArgs( isPreview ? attributes.orderby : this.state.orderby );
 		const { productId, reviewsOnPageLoad } = attributes;
 
 		return {
@@ -132,8 +130,7 @@ class ReviewsByProduct extends Component {
 
 		this.setState( {
 			reviews: Array( newReviews ).fill( {} ),
-			order,
-			orderby,
+			orderby: event.target.value,
 		} );
 
 		const args = {
