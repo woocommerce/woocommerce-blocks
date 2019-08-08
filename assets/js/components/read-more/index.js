@@ -30,7 +30,6 @@ class ReadMore extends Component {
 			maxHeight: 0,
 		};
 
-		this.maxHeight = 0;
 		this.reviewSummary = createRef();
 		this.reviewContent = createRef();
 		this.getButton = this.getButton.bind( this );
