@@ -75,14 +75,8 @@ class ReadMore extends Component {
 
 		while ( markers.start <= markers.end ) {
 			markers.middle = Math.floor( ( markers.start + markers.end ) / 2 );
-			this.reviewSummary.current.innerHTML = originalContent.slice( 0, markers.middle );
 
-			if ( markers.middle === originalContent.length ) {
-				this.setState( {
-					isClamped: false,
-				} );
-				return;
-			}
+			this.reviewSummary.current.innerHTML = originalContent.slice( 0, markers.middle );
 
 			markers = this.moveMarkers( maxHeight, markers );
 		}
