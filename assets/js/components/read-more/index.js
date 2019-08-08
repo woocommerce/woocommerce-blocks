@@ -44,18 +44,17 @@ class ReadMore extends Component {
 			const lineHeight = this.reviewSummary.current.clientHeight + 1;
 			const reviewHeight = this.reviewContent.current.clientHeight + 1;
 			const maxHeight = ( lineHeight * maxLines ) + 1;
+			const isClamped = reviewHeight > maxHeight;
 
 			this.setState( {
 				maxHeight: maxHeight,
 				isExpanded: false,
-				isClamped: reviewHeight > maxHeight,
+				isClamped: isClamped,
 			} );
-		}
-	}
 
-	componentDidUpdate( prevProps, prevState ) {
-		if ( prevState.isClamped !== this.state.isClamped && this.state.isClamped ) {
-			this.clampLines();
+			if ( isClamped ) {
+				this.clampLines();
+			}
 		}
 	}
 
