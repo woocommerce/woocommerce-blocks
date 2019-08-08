@@ -63,6 +63,7 @@ class PriceSlider extends Component {
 			return formattedNumber;
 		}
 
+		// This uses a textarea to magically decode HTML currency symbols.
 		const formattedValue = sprintf( priceFormat, currencySymbol, formattedNumber );
 		const txt = document.createElement( 'textarea' );
 		txt.innerHTML = formattedValue;
