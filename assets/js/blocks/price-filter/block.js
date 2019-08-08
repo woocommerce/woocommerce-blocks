@@ -8,6 +8,7 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import PriceSlider from '../../frontend-components/price-slider';
+import { currency } from '../../data';
 
 /**
  * Component displaying a price filter.
@@ -40,7 +41,14 @@ class PriceFilterBlock extends Component {
 			<div className={ classes }>
 				<p>Current Min: { min }</p>
 				<p>Current Max: { max }</p>
-				<PriceSlider min={ 0 } max={ 200 } step={ 10 } onChange={ this.onChange } />
+				<PriceSlider
+					min={ 0 }
+					max={ 200 }
+					step={ 10 }
+					onChange={ this.onChange }
+					currencySymbol={ currency.symbol }
+					priceFormat={ currency.price_format }
+				/>
 			</div>
 		);
 	}

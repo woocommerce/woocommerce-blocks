@@ -9,13 +9,7 @@ import PropTypes from 'prop-types';
  * Internal dependencies
  */
 import './style.scss';
-
-const get = ( obj, path, defaultValue ) => {
-	const result = String.prototype.split.call( path, /[,[\].]+?/ )
-		.filter( Boolean )
-		.reduce( ( res, key ) => ( res !== null && res !== undefined ) ? res[ key ] : res, obj );
-	return ( result === undefined || result === obj ) ? defaultValue : result;
-};
+import { constrainRangeSliderValues } from './utils';
 
 class PriceSlider extends Component {
 	constructor( props ) {
@@ -35,7 +29,6 @@ class PriceSlider extends Component {
 		this.onInputChange = this.onInputChange.bind( this );
 		this.onInputBlur = this.onInputBlur.bind( this );
 		this.findClosestRange = this.findClosestRange.bind( this );
-		this.validateValues = this.validateValues.bind( this );
 		this.getProgressStyle = this.getProgressStyle.bind( this );
 		this.formatCurrencyForInput = this.formatCurrencyForInput.bind( this );
 	}
@@ -57,48 +50,15 @@ class PriceSlider extends Component {
 		if ( '' === value ) {
 			return '';
 		}
+		const { currencySymbol, priceFormat } = this.props;
+
 		const formattedNumber = parseInt( value, 10 );
-		const currencySymbol = get( wcSettings, [ 'currency', 'symbol' ], '$' );
-		const priceFormat = get( wcSettings, [ 'currency', 'price_format' ], '%1$s%2$s' );
+		const formattedValue = sprintf( priceFormat, currencySymbol, formattedNumber );
 
 		// This uses a textarea to magically decode HTML currency symbols.
-		const formattedValue = sprintf( priceFormat, currencySymbol, formattedNumber );
 		const txt = document.createElement( 'textarea' );
 		txt.innerHTML = formattedValue;
 		return txt.value;
-	}
-
-	validateValues( values, isMin ) {
-		const { min, max, step } = this.props;
-
-		let minValue = parseInt( values[ 0 ], 10 ) || min;
-		let maxValue = parseInt( values[ 1 ], 10 ) || step;
-
-		if ( min > minValue ) {
-			minValue = min;
-		}
-
-		if ( max <= minValue ) {
-			minValue = max - step;
-		}
-
-		if ( min >= maxValue ) {
-			maxValue = min + step;
-		}
-
-		if ( max < maxValue ) {
-			maxValue = max;
-		}
-
-		if ( ! isMin && minValue >= maxValue ) {
-			minValue = maxValue - step;
-		}
-
-		if ( isMin && maxValue <= minValue ) {
-			maxValue = minValue + step;
-		}
-
-		return [ minValue, maxValue ];
 	}
 
 	onInputChange( event ) {
@@ -112,12 +72,16 @@ class PriceSlider extends Component {
 	}
 
 	onInputBlur( event ) {
+		const { min, max, step } = this.props;
 		const isMin = event.target.classList.contains( 'wc-block-price-filter__amount--min' );
-		const values = this.validateValues(
+		const values = constrainRangeSliderValues(
 			[
 				this.minInput.current.value.replace( /[^0-9.-]+/g, '' ),
 				this.maxInput.current.value.replace( /[^0-9.-]+/g, '' ),
 			],
+			min,
+			max,
+			step,
 			isMin
 		);
 
@@ -130,12 +94,16 @@ class PriceSlider extends Component {
 	}
 
 	onDrag( event ) {
+		const { min, max, step } = this.props;
 		const isMin = event.target.classList.contains( 'wc-block-price-filter__range-input--min' );
-		const values = this.validateValues(
+		const values = constrainRangeSliderValues(
 			[
 				this.minRange.current.value,
 				this.maxRange.current.value,
 			],
+			min,
+			max,
+			step,
 			isMin
 		);
 
@@ -270,11 +238,21 @@ PriceSlider.propTypes = {
 	 * Step for slider inputs.
 	 */
 	step: PropTypes.number,
+	/**
+	 * Currency symbol to use when formatting prices for display.
+	 */
+	currencySymbol: PropTypes.string,
+	/**
+	 * Price format to use when formatting prices for display.
+	 */
+	priceFormat: PropTypes.string,
 };
 
 PriceSlider.defaultProps = {
 	min: 0,
 	step: 1,
+	currencySymbol: '$',
+	priceFormat: '%1$s%2$s',
 };
 
 export default PriceSlider;

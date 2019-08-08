@@ -64,40 +64,36 @@ class Assets {
 	}
 
 	/**
-	 * These are used by @woocommerce/components & the block library to set up defaults
+	 * These are used by @woocommerce/components and the block library to set up defaults
 	 * based on user-controlled settings from WordPress. Only use this in wp-admin.
 	 */
 	public static function print_script_wc_settings() {
 		global $wp_locale;
-		$code = get_woocommerce_currency();
-
-		// NOTE: wcSettings is not used directly, it's only for @woocommerce/components
-		//
-		// Settings and variables can be passed here for access in the app.
-		// Will need `wcAdminAssetUrl` if the ImageAsset component is used.
-		// Will need `dataEndpoints.countries` if Search component is used with 'country' type.
-		// Will need `orderStatuses` if the OrderStatus component is used.
-		// Deliberately excluding: `embedBreadcrumbs`, `trackingEnabled`.
-		$settings = array(
-			'adminUrl'      => admin_url(),
-			'wcAssetUrl'    => plugins_url( 'assets/', WC_PLUGIN_FILE ),
-			'siteLocale'    => esc_attr( get_bloginfo( 'language' ) ),
-			'currency'      => array(
-				'code'      => $code,
-				'precision' => wc_get_price_decimals(),
-				'symbol'    => get_woocommerce_currency_symbol( $code ),
-				'position'  => get_option( 'woocommerce_currency_pos' ),
-			),
-			'stockStatuses' => wc_get_product_stock_status_options(),
-			'siteTitle'     => get_bloginfo( 'name' ),
-			'dataEndpoints' => array(),
-			'l10n'          => array(
-				'userLocale'    => get_user_locale(),
-				'weekdaysShort' => array_values( $wp_locale->weekday_abbrev ),
-			),
+		$code     = get_woocommerce_currency();
+		$settings = apply_filters(
+			'woocommerce_components_settings',
+			array(
+				'adminUrl'      => admin_url(),
+				'wcAssetUrl'    => plugins_url( 'assets/', WC_PLUGIN_FILE ),
+				'siteLocale'    => esc_attr( get_bloginfo( 'language' ) ),
+				'currency'      => array(
+					'code'               => $code,
+					'precision'          => wc_get_price_decimals(),
+					'symbol'             => html_entity_decode( get_woocommerce_currency_symbol( $code ) ),
+					'position'           => get_option( 'woocommerce_currency_pos' ),
+					'decimal_separator'  => wc_get_price_decimal_separator(),
+					'thousand_separator' => wc_get_price_thousand_separator(),
+					'price_format'       => html_entity_decode( get_woocommerce_price_format() ),
+				),
+				'stockStatuses' => wc_get_product_stock_status_options(),
+				'siteTitle'     => get_bloginfo( 'name' ),
+				'dataEndpoints' => array(),
+				'l10n'          => array(
+					'userLocale'    => get_user_locale(),
+					'weekdaysShort' => array_values( $wp_locale->weekday_abbrev ),
+				),
+			)
 		);
-		// NOTE: wcSettings is not used directly, it's only for @woocommerce/components.
-		$settings = apply_filters( 'woocommerce_components_settings', $settings );
 		?>
 		<script type="text/javascript">
 			var wcSettings = wcSettings || JSON.parse( decodeURIComponent( '<?php echo rawurlencode( wp_json_encode( $settings ) ); ?>' ) );
