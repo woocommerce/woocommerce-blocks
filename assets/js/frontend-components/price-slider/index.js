@@ -16,8 +16,8 @@ class PriceSlider extends Component {
 		const { min, max } = props;
 		super( ...arguments );
 		this.state = {
-			currentMin: min,
-			currentMax: max,
+			currentMin: parseInt( min, 10 ),
+			currentMax: parseInt( max, 10 ),
 			inputMin: this.formatCurrencyForInput( min ),
 			inputMax: this.formatCurrencyForInput( max ),
 		};
@@ -86,8 +86,8 @@ class PriceSlider extends Component {
 		);
 
 		this.setState( {
-			currentMin: values[ 0 ],
-			currentMax: values[ 1 ],
+			currentMin: parseInt( values[ 0 ], 10 ),
+			currentMax: parseInt( values[ 1 ], 10 ),
 			inputMin: this.formatCurrencyForInput( values[ 0 ] ),
 			inputMax: this.formatCurrencyForInput( values[ 1 ] ),
 		} );
@@ -108,8 +108,8 @@ class PriceSlider extends Component {
 		);
 
 		this.setState( {
-			currentMin: values[ 0 ],
-			currentMax: values[ 1 ],
+			currentMin: parseInt( values[ 0 ], 10 ),
+			currentMax: parseInt( values[ 1 ], 10 ),
 			inputMin: this.formatCurrencyForInput( values[ 0 ] ),
 			inputMax: this.formatCurrencyForInput( values[ 1 ] ),
 		} );
