@@ -106,10 +106,10 @@ class PriceSlider extends Component {
 		const newValue = event.target.value.replace( /[^0-9.-]+/g, '' );
 		const isMin = event.target.classList.contains( 'wc-block-price-filter__amount--min' );
 		const editing = isMin ? 'inputMin' : 'inputMax';
-		const newState = {};
-		newState[ editing ] = newValue;
 
-		this.setState( newState );
+		this.setState( {
+			[ editing ]: newValue,
+		} );
 	}
 
 	onInputBlur( event ) {
