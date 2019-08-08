@@ -25,6 +25,10 @@ class ReadMore extends Component {
 			 */
 			content: props.children,
 			/**
+			 * Summary content generated from content HTML.
+			 */
+			summary: '.',
+			/**
 			 * Max height for a review.
 			 */
 			maxHeight: 0,
@@ -51,10 +55,12 @@ class ReadMore extends Component {
 				isExpanded: false,
 				isClamped: isClamped,
 			} );
+		}
+	}
 
-			if ( isClamped ) {
-				this.clampLines();
-			}
+	componentDidUpdate( prevProps, prevState ) {
+		if ( prevState.isClamped !== this.state.isClamped && this.state.isClamped ) {
+			this.clampLines();
 		}
 	}
 
@@ -75,13 +81,15 @@ class ReadMore extends Component {
 
 		while ( markers.start <= markers.end ) {
 			markers.middle = Math.floor( ( markers.start + markers.end ) / 2 );
-
-			this.reviewSummary.current.innerHTML = originalContent.slice( 0, markers.middle );
-
 			markers = this.moveMarkers( maxHeight, markers );
+
+			// We set the innerHTML directly in the DOM here so we can reliably check the clientHeight later in moveMarkers.
+			this.reviewSummary.current.innerHTML = originalContent.slice( 0, markers.middle );
 		}
 
-		this.reviewSummary.current.innerHTML = originalContent.slice( 0, markers.middle - 5 ) + ellipsis;
+		this.setState( {
+			summary: originalContent.slice( 0, markers.middle - 5 ) + ellipsis,
+		} );
 	}
 
 	moveMarkers( maxHeight, markers ) {
@@ -133,7 +141,7 @@ class ReadMore extends Component {
 
 	render() {
 		const { className } = this.props;
-		const { content, isClamped, isExpanded } = this.state;
+		const { content, summary, isClamped, isExpanded } = this.state;
 
 		if ( ! content ) {
 			return null;
@@ -157,9 +165,10 @@ class ReadMore extends Component {
 					style={ {
 						display: isExpanded && null !== isClamped ? 'none' : 'inherit',
 					} }
-				>
-					.
-				</div>
+					dangerouslySetInnerHTML={ {
+						__html: summary,
+					} }
+				/>
 				<div
 					ref={ this.reviewContent }
 					aria-hidden={ ! isExpanded }
