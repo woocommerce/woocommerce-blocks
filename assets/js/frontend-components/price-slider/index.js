@@ -41,12 +41,14 @@ class PriceSlider extends Component {
 	}
 
 	componentDidUpdate( prevProps, prevState ) {
-		if ( prevState.currentMin !== this.state.currentMin || prevState.currentMax !== this.state.currentMax ) {
+		const { currentMin, currentMax } = this.state;
+
+		if ( prevState.currentMin !== currentMin || prevState.currentMax !== currentMax ) {
 			const { onChange } = this.props;
 
 			onChange( {
-				min: this.state.currentMin,
-				max: this.state.currentMax,
+				min: currentMin,
+				max: currentMax,
 			} );
 		}
 	}
@@ -190,7 +192,7 @@ class PriceSlider extends Component {
 
 	render() {
 		const { min, max, step } = this.props;
-		const { currentMin, currentMax } = this.state;
+		const { inputMin, inputMax, currentMin, currentMax } = this.state;
 		return (
 			<div className="wc-block-price-filter">
 				<input
@@ -199,7 +201,7 @@ class PriceSlider extends Component {
 					aria-label={ __( 'Filter products by minimum price', 'woo-gutenberg-products-block' ) }
 					size="5"
 					ref={ this.minInput }
-					value={ this.state.inputMin }
+					value={ inputMin }
 					onChange={ this.onInputChange }
 					onBlur={ this.onInputBlur }
 				/>
@@ -209,7 +211,7 @@ class PriceSlider extends Component {
 					aria-label={ __( 'Filter products by maximum price', 'woo-gutenberg-products-block' ) }
 					size="5"
 					ref={ this.maxInput }
-					value={ this.state.inputMax }
+					value={ inputMax }
 					onChange={ this.onInputChange }
 					onBlur={ this.onInputBlur }
 				/>
