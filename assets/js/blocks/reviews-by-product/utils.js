@@ -68,10 +68,11 @@ function getReviewContent( review ) {
 /**
  * Render a review for the Reviews by Product block
  *
- * @param {Object} attributes Block attributes
- * @param {Object} review Object containing review data.
+ * @param {object} attributes Block attributes
+ * @param {object} [review={}] Object containing review data.
+ * @param {number} [i=0] Index of the review in the list.
  *
- * @return {Object} React JSx nodes of the block
+ * @returns {object} React JSx nodes of the block
  */
 export function renderReview( attributes, review = {}, i = 0 ) {
 	const { imageType, showReviewDate, showReviewerName, showReviewImage, showReviewRating: showReviewRatingAttr } = attributes;
