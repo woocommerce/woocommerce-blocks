@@ -19,7 +19,7 @@ import {
 } from '@wordpress/components';
 import classNames from 'classnames';
 import { SearchListItem } from '@woocommerce/components';
-import { Component, Fragment, RawHTML } from '@wordpress/element';
+import { Fragment, RawHTML } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 import { escapeHTML } from '@wordpress/escape-html';
 import PropTypes from 'prop-types';
@@ -34,12 +34,55 @@ import ToggleButtonControl from '../../components/toggle-button-control';
 import { IconReviewsByProduct } from '../../components/icons';
 import { withProduct } from '../../hocs';
 
-class ReviewsByProductEditor extends Component {
-	getInspectorControls() {
-		const {
-			attributes,
-			setAttributes,
-		} = this.props;
+const ReviewsByProductEditor = ( { attributes, debouncedSpeak, product, setAttributes } ) => {
+	const { className, editMode, productId, showReviewDate, showReviewerName } = attributes;
+
+	const getBlockControls = () => (
+		<BlockControls>
+			<Toolbar
+				controls={ [
+					{
+						icon: 'edit',
+						title: __( 'Edit' ),
+						onClick: () => setAttributes( { editMode: ! editMode } ),
+						isActive: editMode,
+					},
+				] }
+			/>
+		</BlockControls>
+	);
+
+	const renderProductControlItem = ( args ) => {
+		const { item = 0 } = args;
+
+		return (
+			<SearchListItem
+				{ ...args }
+				countLabel={ sprintf(
+					_n(
+						'%d Review',
+						'%d Reviews',
+						item.rating_count,
+						'woo-gutenberg-products-block'
+					),
+					item.rating_count
+				) }
+				showCount
+				aria-label={ sprintf(
+					_n(
+						'%s, has %d review',
+						'%s, has %d reviews',
+						item.rating_count,
+						'woo-gutenberg-products-block'
+					),
+					item.name,
+					item.rating_count
+				) }
+			/>
+		);
+	};
+
+	const getInspectorControls = () => {
 		const minPerPage = 1;
 		const maxPerPage = 20;
 
@@ -55,7 +98,7 @@ class ReviewsByProductEditor extends Component {
 							const id = value[ 0 ] ? value[ 0 ].id : 0;
 							setAttributes( { productId: id } );
 						} }
-						renderItem={ this.renderProductControlItem }
+						renderItem={ renderProductControlItem }
 					/>
 				</PanelBody>
 				<PanelBody title={ __( 'Content', 'woo-gutenberg-products-block' ) }>
@@ -147,40 +190,9 @@ class ReviewsByProductEditor extends Component {
 				</PanelBody>
 			</InspectorControls>
 		);
-	}
+	};
 
-	renderProductControlItem( args ) {
-		const { item = 0 } = args;
-
-		return (
-			<SearchListItem
-				{ ...args }
-				countLabel={ sprintf(
-					_n(
-						'%d Review',
-						'%d Reviews',
-						item.rating_count,
-						'woo-gutenberg-products-block'
-					),
-					item.rating_count
-				) }
-				showCount
-				aria-label={ sprintf(
-					_n(
-						'%s, has %d review',
-						'%s, has %d reviews',
-						item.rating_count,
-						'woo-gutenberg-products-block'
-					),
-					item.name,
-					item.rating_count
-				) }
-			/>
-		);
-	}
-
-	renderEditMode() {
-		const { attributes, debouncedSpeak, setAttributes } = this.props;
+	const renderEditMode = () => {
 		const onDone = () => {
 			setAttributes( { editMode: false } );
 			debouncedSpeak(
@@ -212,7 +224,7 @@ class ReviewsByProductEditor extends Component {
 							orderby: 'comment_count',
 							order: 'desc',
 						} }
-						renderItem={ this.renderProductControlItem }
+						renderItem={ renderProductControlItem }
 					/>
 					<Button isDefault onClick={ onDone }>
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }
@@ -220,12 +232,9 @@ class ReviewsByProductEditor extends Component {
 				</div>
 			</Placeholder>
 		);
-	}
+	};
 
-	render() {
-		const { attributes, error, product, setAttributes } = this.props;
-		console.log( product, error );
-		const { className, editMode, productId, showReviewDate, showReviewerName } = attributes;
+	const renderViewMode = () => {
 		const showReviewImage = ( wc_product_block_data.showAvatars || attributes.imageType === 'product' ) && attributes.showReviewImage;
 		const showReviewRating = wc_product_block_data.enableReviewRating && attributes.showReviewRating;
 		const classes = classNames( 'wc-block-reviews-by-product', className, {
@@ -237,50 +246,43 @@ class ReviewsByProductEditor extends Component {
 
 		return (
 			<Fragment>
-				<BlockControls>
-					<Toolbar
-						controls={ [
-							{
-								icon: 'edit',
-								title: __( 'Edit' ),
-								onClick: () => setAttributes( { editMode: ! editMode } ),
-								isActive: editMode,
-							},
-						] }
-					/>
-				</BlockControls>
-				{ this.getInspectorControls() }
-				{ ! productId || editMode ? (
-					this.renderEditMode()
+				{ product.rating_count === 0 ? (
+					<Placeholder
+						className="wc-block-reviews-by-product"
+						icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
+						label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
+					>
+						<div dangerouslySetInnerHTML={ {
+							__html: sprintf(
+								__(
+									"This block lists reviews for a selected product. %s doesn't have any reviews yet, but they will show up here when it does.",
+									'woo-gutenberg-products-block'
+								),
+								'<strong>' + escapeHTML( product.name ) + '</strong>'
+							),
+						} } />
+					</Placeholder>
 				) : (
-					<Fragment>
-						{ product.rating_count === 0 ? (
-							<Placeholder
-								className="wc-block-reviews-by-product"
-								icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
-								label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
-							>
-								<div dangerouslySetInnerHTML={ {
-									__html: sprintf(
-										__(
-											"This block lists reviews for a selected product. %s doesn't have any reviews yet, but they will show up here when it does.",
-											'woo-gutenberg-products-block'
-										),
-										'<strong>' + escapeHTML( product.name ) + '</strong>'
-									),
-								} } />
-							</Placeholder>
-						) : (
-							<div className={ classes }>
-								<Block attributes={ attributes } isPreview />
-							</div>
-						) }
-					</Fragment>
+					<div className={ classes }>
+						<Block attributes={ attributes } isPreview />
+					</div>
 				) }
 			</Fragment>
 		);
+	};
+
+	if ( ! productId || editMode ) {
+		return renderEditMode();
 	}
-}
+
+	return (
+		<Fragment>
+			{ getBlockControls() }
+			{ getInspectorControls() }
+			{ renderViewMode() }
+		</Fragment>
+	);
+};
 
 ReviewsByProductEditor.propTypes = {
 	/**
