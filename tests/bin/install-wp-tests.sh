@@ -165,7 +165,7 @@ install_deps() {
 	# install dependencies
 	cd woocommerce
 	npm install
-	composer install
+	composer install --no-dev
 
 	# Back to original dir
 	cd "$WORKING_DIR"
