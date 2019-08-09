@@ -7,6 +7,11 @@ import React, { createRef, Component } from 'react';
 import PropTypes from 'prop-types';
 import { __ } from '@wordpress/i18n';
 
+/**
+ * Internal dependencies
+ */
+import { clampLines } from './utils';
+
 class ReadMore extends Component {
 	constructor( props ) {
 		super( ...arguments );
@@ -34,13 +39,12 @@ class ReadMore extends Component {
 		this.reviewContent = createRef();
 		this.getButton = this.getButton.bind( this );
 		this.onClick = this.onClick.bind( this );
-		this.clampLines = this.clampLines.bind( this );
-		this.moveMarkers = this.moveMarkers.bind( this );
 	}
 
 	componentDidMount() {
 		if ( this.props.children ) {
-			const { maxLines } = this.props;
+			const { maxLines, ellipsis } = this.props;
+
 			const lineHeight = this.reviewSummary.current.clientHeight + 1;
 			const reviewHeight = this.reviewContent.current.clientHeight + 1;
 			const maxHeight = ( lineHeight * maxLines ) + 1;
@@ -51,45 +55,11 @@ class ReadMore extends Component {
 			} );
 
 			if ( clampEnabled ) {
-				this.clampLines( maxHeight );
+				this.setState( {
+					summary: clampLines( this.reviewContent.current.innerHTML, this.reviewSummary.current, maxHeight, ellipsis ),
+				} );
 			}
 		}
-	}
-
-	/**
-	 * Clamp lines calculates the height of a line of text and then limits it to the
-	 * value of the lines prop. Content is updated once limited.
-	 */
-	clampLines( maxHeight ) {
-		const { ellipsis } = this.props;
-		const originalContent = this.reviewContent.current.innerHTML;
-
-		let markers = {
-			start: 0,
-			middle: 0,
-			end: originalContent.length,
-		};
-
-		while ( markers.start <= markers.end ) {
-			markers.middle = Math.floor( ( markers.start + markers.end ) / 2 );
-			markers = this.moveMarkers( maxHeight, markers );
-
-			// We set the innerHTML directly in the DOM here so we can reliably check the clientHeight later in moveMarkers.
-			this.reviewSummary.current.innerHTML = originalContent.slice( 0, markers.middle );
-		}
-
-		this.setState( {
-			summary: originalContent.slice( 0, markers.middle - 5 ) + ellipsis,
-		} );
-	}
-
-	moveMarkers( maxHeight, markers ) {
-		if ( this.reviewSummary.current.clientHeight <= maxHeight ) {
-			markers.start = markers.middle + 1;
-		} else {
-			markers.end = markers.middle - 1;
-		}
-		return markers;
 	}
 
 	getButton() {
@@ -159,6 +129,7 @@ class ReadMore extends Component {
 					dangerouslySetInnerHTML={ {
 						__html: summary,
 					} }
+					data-testid="summary"
 				/>
 				<div
 					ref={ this.reviewContent }
