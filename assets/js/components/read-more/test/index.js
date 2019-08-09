@@ -2,6 +2,8 @@
  * Internal dependencies
  */
 import { truncateHtml } from '../utils';
+const shortContent =
+	'<p>Lorem ipsum dolor sit amet, <strong>consectetur.</strong>.</p>';
 
 const longContent =
 	'<p>Lorem ipsum dolor sit amet, <strong>consectetur adipiscing elit. Nullam a condimentum diam.</strong> Donec finibus enim eros, et lobortis magna varius quis. Nulla lacinia tellus ac neque aliquet, in porttitor metus interdum. Maecenas vestibulum nisi et auctor vestibulum. Maecenas vehicula, lacus et pellentesque tempor, orci nulla mattis purus, id porttitor augue magna et metus. Aenean hendrerit aliquet massa ac convallis. Mauris vestibulum neque in condimentum porttitor. Donec viverra, orci a accumsan vehicula, dui massa lobortis lorem, et cursus est purus pulvinar elit. Vestibulum vitae tincidunt ex, ut vulputate nisi.</p>' +
@@ -18,6 +20,11 @@ describe( 'ReadMore Component', () => {
 			const truncatedContent = truncateHtml( longContent, 40 );
 
 			expect( truncatedContent ).toEqual( '<p>Lorem ipsum dolor sit amet, <strong>consectetur...</strong></p>' );
+		} );
+		it( 'No need to truncate short HTML content.', async () => {
+			const truncatedContent = truncateHtml( shortContent, 100 );
+
+			expect( truncatedContent ).toEqual( '<p>Lorem ipsum dolor sit amet, <strong>consectetur.</strong>.</p>' );
 		} );
 	} );
 } );
