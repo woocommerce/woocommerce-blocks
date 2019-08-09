@@ -298,12 +298,12 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, error, getProduct
 		return renderApiError();
 	}
 
-	if ( ( productId && ! product ) || isLoading ) {
-		return renderLoadingScreen();
-	}
-
 	if ( ! productId || editMode ) {
 		return renderEditMode();
+	}
+
+	if ( ! product || isLoading ) {
+		return renderLoadingScreen();
 	}
 
 	return (
