@@ -43,7 +43,6 @@
     "@wordpress/dependency-extraction-webpack-plugin": "1.1.0",
     "@wordpress/editor": "9.5.0",
     "@wordpress/element": "2.6.0",
-    "@wordpress/eslint-plugin": "^2.4.0",
     "@wordpress/i18n": "3.6.0",
     "@wordpress/jest-preset-default": "4.3.0",
     "@wordpress/rich-text": "3.5.0",
