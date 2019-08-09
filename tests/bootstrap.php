@@ -47,7 +47,7 @@ function wc_dir() {
 /**
  * Install WC Blocks
  */
-function wc_blocks_install() {// Clean existing install first.
+function wc_blocks_install() {
 	echo esc_html( 'Loading WooCommerce Gutenberg Products Block plugin' . PHP_EOL );
 	require dirname( __DIR__ ) . '/woocommerce-gutenberg-products-block.php';
 }
@@ -112,7 +112,7 @@ tests_add_filter(
 	}
 );
 
-tests_add_filter('setup_theme','wc_install_core');
+tests_add_filter( 'setup_theme','wc_install_core' );
 
 // Start up the WP testing environment.
 require $_tests_dir . '/includes/bootstrap.php';
