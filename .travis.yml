@@ -4,12 +4,12 @@ dist: trusty
 
 sudo: false
 
-cache:
-  directories:
-    - vendor
-    - node_modules
-    - $HOME/.npm
-    - $HOME/.composer/cache
+# cache:
+#   directories:
+#     - vendor
+#     - node_modules
+#     - $HOME/.npm
+#     - $HOME/.composer/cache
 
 before_install:
   - timedatectl
