@@ -1,9 +1,9 @@
 /**
  * Get the src of the first image attached to a product (the featured image).
  *
- * @param {object} product The product object to get the images from.
+ * @param {Object} product The product object to get the images from.
  * @param {Array} product.images The array of images, destructured from the product object.
- * @returns {string} The full URL to the image.
+ * @return {string} The full URL to the image.
  */
 export function getImageSrcFromProduct( product ) {
 	if ( ! product || ! product.images || ! product.images.length ) {
@@ -16,9 +16,9 @@ export function getImageSrcFromProduct( product ) {
 /**
  * Get the ID of the first image attached to a product (the featured image).
  *
- * @param {object} product The product object to get the images from.
+ * @param {Object} product The product object to get the images from.
  * @param {Array} product.images The array of images, destructured from the product object.
- * @returns {number} The ID of the image.
+ * @return {number} The ID of the image.
  */
 export function getImageIdFromProduct( product ) {
 	if ( ! product || ! product.images || ! product.images.length ) {
