@@ -13,6 +13,7 @@ import {
 	Placeholder,
 	RangeControl,
 	SelectControl,
+	Spinner,
 	ToggleControl,
 	Toolbar,
 	withSpokenMessages,
@@ -28,13 +29,14 @@ import { getAdminLink } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
+import ApiErrorPlaceholder from '../../components/api-error-placeholder';
 import Block from './block.js';
 import ProductControl from '../../components/product-control';
 import ToggleButtonControl from '../../components/toggle-button-control';
 import { IconReviewsByProduct } from '../../components/icons';
 import { withProduct } from '../../hocs';
 
-const ReviewsByProductEditor = ( { attributes, debouncedSpeak, product, setAttributes } ) => {
+const ReviewsByProductEditor = ( { attributes, debouncedSpeak, error, getProduct, isLoading, product, setAttributes } ) => {
 	const { className, editMode, productId, showReviewDate, showReviewerName } = attributes;
 
 	const getBlockControls = () => (
@@ -192,6 +194,27 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, product, setAttri
 		);
 	};
 
+	const renderApiError = () => (
+		<ApiErrorPlaceholder
+			className="wc-block-featured-product-error"
+			error={ error }
+			isLoading={ isLoading }
+			onRetry={ getProduct }
+		/>
+	);
+
+	const renderLoadingScreen = () => {
+		return (
+			<Placeholder
+				icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
+				label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
+				className="wc-block-reviews-by-product"
+			>
+				<Spinner />
+			</Placeholder>
+		);
+	};
+
 	const renderEditMode = () => {
 		const onDone = () => {
 			setAttributes( { editMode: false } );
@@ -270,6 +293,14 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, product, setAttri
 			</Fragment>
 		);
 	};
+
+	if ( error ) {
+		return renderApiError();
+	}
+
+	if ( ( productId && ! product ) || isLoading ) {
+		return renderLoadingScreen();
+	}
 
 	if ( ! productId || editMode ) {
 		return renderEditMode();
