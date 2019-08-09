@@ -93,6 +93,11 @@ class Products extends WC_REST_Unit_Test_Case {
 		$this->assertArrayHasKey( '/wc/blocks/products/(?P<id>[\d]+)', $routes );
 	}
 
+	public function test_core_route() {
+		$routes = $this->server->get_routes();
+		$this->assertArrayHasKey( '/wc/v3', $routes );
+	}
+
 	/**
 	 * Test getting products.
 	 *
