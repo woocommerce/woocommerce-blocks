@@ -108,8 +108,6 @@ class Products extends WC_REST_Unit_Test_Case {
 		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/blocks/products' ) );
 		$products = $response->get_data();
 
-		var_dump($products);
-
 		$this->assertEquals( 200, $response->get_status() );
 
 		$this->assertEquals( 6, count( $products ) );
