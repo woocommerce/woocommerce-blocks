@@ -13,12 +13,12 @@ describe( 'ReadMore Component', () => {
 			it( 'Truncate long HTML content to length of 10', async () => {
 				const truncatedContent = truncateHtml( longContent, 10 );
 
-				expect( truncatedContent ).toEqual( '<p>Lorem i' );
+				expect( truncatedContent ).toEqual( '<p>Lorem ipsum...</p>' );
 			} );
 			it( 'Truncate long HTML content, but avoid cutting off HTML tags.', async () => {
-				const truncatedContent = truncateHtml( longContent, 35 );
+				const truncatedContent = truncateHtml( longContent, 40 );
 
-				expect( truncatedContent ).toEqual( '<p>Lorem ipsum dolor sit amet, ' );
+				expect( truncatedContent ).toEqual( '<p>Lorem ipsum dolor sit amet, <strong>consectetur...</strong></p>' );
 			} );
 		} );
 	} );

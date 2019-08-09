@@ -1,11 +1,19 @@
+import trimHtml from 'trim-html';
+
 /**
  * Truncate some HTML content to a given length.
  *
  * @param {string} html HTML that will be truncated.
  * @param {int} length Legth to truncate the string to.
+ * @param {string} ellipsis Character to append to truncated content.
  */
-export const truncateHtml = ( html, length ) => {
-	return html.slice( 0, length );
+export const truncateHtml = ( html, length, ellipsis = '...' ) => {
+	const trimmed = trimHtml( html, {
+		suffix: ellipsis,
+		limit: length,
+	} );
+
+	return trimmed.html;
 };
 
 /**
@@ -18,10 +26,10 @@ export const truncateHtml = ( html, length ) => {
  * @param {string} ellipsis Character to append to clamped content.
  * @return {string} clamped content
  */
-export const clampLines = ( originalContent, targetElement, maxHeight, ellipsis = '&hellip;' ) => {
+export const clampLines = ( originalContent, targetElement, maxHeight, ellipsis ) => {
 	const length = calculateLength( originalContent, targetElement, maxHeight );
 
-	return truncateHtml( originalContent, ( length - ellipsis.length ) ) + ellipsis;
+	return truncateHtml( originalContent, length, ellipsis );
 };
 
 /**
