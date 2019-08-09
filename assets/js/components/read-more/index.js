@@ -28,10 +28,6 @@ class ReadMore extends Component {
 			 * Summary content generated from content HTML.
 			 */
 			summary: '.',
-			/**
-			 * Max height for a review.
-			 */
-			maxHeight: 0,
 		};
 
 		this.reviewSummary = createRef();
@@ -51,16 +47,12 @@ class ReadMore extends Component {
 			const clampEnabled = reviewHeight > maxHeight;
 
 			this.setState( {
-				maxHeight: maxHeight,
-				isExpanded: false,
-				clampEnabled: clampEnabled,
+				clampEnabled,
 			} );
-		}
-	}
 
-	componentDidUpdate( prevProps, prevState ) {
-		if ( prevState.clampEnabled !== this.state.clampEnabled && this.state.clampEnabled ) {
-			this.clampLines();
+			if ( clampEnabled ) {
+				this.clampLines( maxHeight );
+			}
 		}
 	}
 
@@ -68,9 +60,8 @@ class ReadMore extends Component {
 	 * Clamp lines calculates the height of a line of text and then limits it to the
 	 * value of the lines prop. Content is updated once limited.
 	 */
-	clampLines() {
+	clampLines( maxHeight ) {
 		const { ellipsis } = this.props;
-		const { maxHeight } = this.state;
 		const originalContent = this.reviewContent.current.innerHTML;
 
 		let markers = {
