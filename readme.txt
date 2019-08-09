@@ -16,7 +16,7 @@ WooCommerce Blocks are the easiest, most flexible way to display your products o
 Display a grid of products from your selected attributes.
 
 **Featured Product Block**
-Select and display a single product in a new, high impact fashion. Control text alignment, hide or show the price and description, add a color overlay, change the button call to action, and override the product photo. 
+Select and display a single product in a new, high impact fashion. Control text alignment, hide or show the price and description, add a color overlay, change the button call to action, and override the product photo.
 
 **Hand-Picked products Block**
 Display a grid of hand picked products. Products can be ordered in various ways.
@@ -36,7 +36,7 @@ Display a grid of on sale products, filterable by category.
 **Products by Category Block**
 Display a grid of products from your selected category, or categories. Products can be ordered in various ways.
 
-We've also improved the category selection filter. If you select two or more categories, you can now chose to show products that include ANY or ALL selected categories. 
+We've also improved the category selection filter. If you select two or more categories, you can now chose to show products that include ANY or ALL selected categories.
 
 == Getting Started ==
 
@@ -98,6 +98,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Fix - Load frontend scripts dynamically only when the page contains a block that requires them.
 - Fix - Reduce dependencies of JavaScript powered frontend blocks.
 - Fix - Disable HTML editing on dynamic blocks which have no content.
+- Fix - Hide background opacity control in Featured Product settings if there is no background image.
 
 = 2.2.1 - 2019-07-04 =
 
@@ -197,7 +198,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 = 1.1.2 - 2018-09-07 =
 
-* Fix - Refactor to remove withAPIData usage, as the class was removed in Gutenberg 3.7. 
+* Fix - Refactor to remove withAPIData usage, as the class was removed in Gutenberg 3.7.
 
 = 1.1.1 - 2018-08-22 =
 
