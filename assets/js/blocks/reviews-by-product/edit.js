@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
-import apiFetch from '@wordpress/api-fetch';
 import {
 	BlockControls,
 	InspectorControls,
@@ -22,7 +21,6 @@ import classNames from 'classnames';
 import { SearchListItem } from '@woocommerce/components';
 import { Component, Fragment, RawHTML } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
-import { debounce } from 'lodash';
 import { escapeHTML } from '@wordpress/escape-html';
 import PropTypes from 'prop-types';
 import { getAdminLink } from '@woocommerce/navigation';
@@ -34,51 +32,9 @@ import Block from './block.js';
 import ProductControl from '../../components/product-control';
 import ToggleButtonControl from '../../components/toggle-button-control';
 import { IconReviewsByProduct } from '../../components/icons';
+import { withProduct } from '../../hocs';
 
 class ReviewsByProductEditor extends Component {
-	constructor() {
-		super( ...arguments );
-		this.state = {
-			product: false,
-		};
-
-		this.getProduct = this.getProduct.bind( this );
-		this.debouncedGetProduct = debounce( this.getProduct, 200 );
-	}
-
-	componentWillUnmount() {
-		this.debouncedGetProduct.cancel();
-	}
-
-	componentDidMount() {
-		this.getProduct();
-	}
-
-	componentDidUpdate( prevProps ) {
-		if ( prevProps.attributes.productId !== this.props.attributes.productId ) {
-			this.debouncedGetProduct();
-		}
-	}
-
-	getProduct() {
-		const { productId } = this.props.attributes;
-
-		if ( ! productId ) {
-			// We've removed the selected product, or no product is selected yet.
-			this.setState( { product: false } );
-			return;
-		}
-		apiFetch( {
-			path: `/wc/blocks/products/${ productId }`,
-		} )
-			.then( ( product ) => {
-				this.setState( { product } );
-			} )
-			.catch( () => {
-				this.setState( { product: false } );
-			} );
-	}
-
 	getInspectorControls() {
 		const {
 			attributes,
@@ -267,9 +223,9 @@ class ReviewsByProductEditor extends Component {
 	}
 
 	render() {
-		const { attributes, setAttributes } = this.props;
+		const { attributes, error, product, setAttributes } = this.props;
+		console.log( product, error );
 		const { className, editMode, productId, showReviewDate, showReviewerName } = attributes;
-		const { product } = this.state;
 		const showReviewImage = ( wc_product_block_data.showAvatars || attributes.imageType === 'product' ) && attributes.showReviewImage;
 		const showReviewRating = wc_product_block_data.enableReviewRating && attributes.showReviewRating;
 		const classes = classNames( 'wc-block-reviews-by-product', className, {
@@ -339,10 +295,19 @@ ReviewsByProductEditor.propTypes = {
 	 * A callback to update attributes.
 	 */
 	setAttributes: PropTypes.func.isRequired,
+	// from withProduct
+	error: PropTypes.object,
+	getProduct: PropTypes.func,
+	isLoading: PropTypes.bool,
+	product: PropTypes.shape( {
+		name: PropTypes.node,
+		rating_count: PropTypes.number,
+	} ),
 	// from withSpokenMessages
 	debouncedSpeak: PropTypes.func.isRequired,
 };
 
 export default compose( [
+	withProduct,
 	withSpokenMessages,
 ] )( ReviewsByProductEditor );
