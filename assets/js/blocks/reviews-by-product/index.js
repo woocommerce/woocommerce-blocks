@@ -12,7 +12,6 @@ import './style.scss';
 import './editor.scss';
 import Editor from './edit';
 import { IconReviewsByProduct } from '../../components/icons';
-import { renderReview } from './utils';
 
 /**
  * Register and run the "Reviews by Product" block.
@@ -155,11 +154,7 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 		};
 
 		return (
-			<div className={ classes } { ...data }>
-				<ul className="wc-block-reviews-by-product__list">
-					{ renderReview( attributes ) }
-				</ul>
-			</div>
+			<div className={ classes } { ...data } />
 		);
 	},
 } );
