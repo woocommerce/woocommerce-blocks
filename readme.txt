@@ -99,6 +99,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Fix - Reduce dependencies of JavaScript powered frontend blocks.
 - Fix - Disable HTML editing on dynamic blocks which have no content.
 - Fix - Hide background opacity control in Featured Product settings if there is no background image.
+- Fix - Reduce CSS specificity to make styling easier.
 
 = 2.2.1 - 2019-07-04 =
 
