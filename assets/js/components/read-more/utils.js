@@ -29,7 +29,7 @@ export const truncateHtml = ( html, length, ellipsis = '...' ) => {
 export const clampLines = ( originalContent, targetElement, maxHeight, ellipsis ) => {
 	const length = calculateLength( originalContent, targetElement, maxHeight );
 
-	return truncateHtml( originalContent, length, ellipsis );
+	return truncateHtml( originalContent, length - ellipsis.length, ellipsis );
 };
 
 /**

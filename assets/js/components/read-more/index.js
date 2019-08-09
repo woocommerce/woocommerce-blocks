@@ -120,26 +120,23 @@ class ReadMore extends Component {
 
 		return (
 			<div className={ className }>
-				<div
-					ref={ this.reviewSummary }
-					aria-hidden={ isExpanded }
-					style={ {
-						display: isExpanded && null !== clampEnabled ? 'none' : 'inherit',
-					} }
-					dangerouslySetInnerHTML={ {
-						__html: summary,
-					} }
-					data-testid="summary"
-				/>
-				<div
-					ref={ this.reviewContent }
-					aria-hidden={ ! isExpanded }
-					style={ {
-						display: ! isExpanded && null !== clampEnabled ? 'none' : 'inherit',
-					} }
-				>
-					{ content }
-				</div>
+				{ ( ! isExpanded || null === clampEnabled ) && (
+					<div
+						ref={ this.reviewSummary }
+						aria-hidden={ isExpanded }
+						dangerouslySetInnerHTML={ {
+							__html: summary,
+						} }
+					/>
+				) }
+				{ ( isExpanded || null === clampEnabled ) && (
+					<div
+						ref={ this.reviewContent }
+						aria-hidden={ ! isExpanded }
+					>
+						{ content }
+					</div>
+				) }
 				{ this.getButton() }
 			</div>
 		);
