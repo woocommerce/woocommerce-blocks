@@ -112,7 +112,7 @@ tests_add_filter(
 	}
 );
 
-tests_add_filter( 'setup_theme','wc_install_core' );
+tests_add_filter( 'setup_theme', 'wc_install_core' );
 
 // Start up the WP testing environment.
 require $_tests_dir . '/includes/bootstrap.php';
