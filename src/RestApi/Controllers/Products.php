@@ -105,6 +105,30 @@ class Products extends WC_REST_Products_Controller {
 	}
 
 	/**
+	 * Change read permissions to allow author access to this API.
+	 *
+	 * @param array $permissions Array of access permissions.
+	 */
+	public function change_permissions( $permissions ) {
+		$permissions['read'] = 'edit_posts';
+		return $permissions;
+	}
+
+	/**
+	 * Get a collection of posts.
+	 *
+	 * @param WP_REST_Request $request Full details about the request.
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public function get_items( $request ) {
+		add_filter( 'woocommerce_rest_check_permissions', array( $this, 'change_permissions' ) );
+		$response = parent::get_items( $request );
+		remove_filter( 'woocommerce_rest_check_permissions', array( $this, 'change_permissions' ) );
+
+		return $response;
+	}
+
+	/**
 	 * Make extra product orderby features supported by WooCommerce available to the WC API.
 	 * This includes 'price', 'popularity', and 'rating'.
 	 *
@@ -265,7 +289,7 @@ class Products extends WC_REST_Products_Controller {
 		$params['catalog_visibility'] = array(
 			'description'       => __( 'Determines if hidden or visible catalog products are shown.', 'woo-gutenberg-products-block' ),
 			'type'              => 'string',
-			'enum'              => array( 'visible', 'catalog', 'search', 'hidden' ),
+			'enum'              => array( 'any', 'visible', 'catalog', 'search', 'hidden' ),
 			'sanitize_callback' => 'sanitize_key',
 			'validate_callback' => 'rest_validate_request_arg',
 		);
