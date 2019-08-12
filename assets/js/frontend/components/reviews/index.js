@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import Review from './review';
+import Review from '../review';
 
 const Reviews = ( { attributes, componentId, reviews } ) => {
 	const showReviewImage = ( wc_product_block_data.showAvatars || attributes.imageType === 'product' ) && attributes.showReviewImage;

@@ -6,7 +6,7 @@ import { __, sprintf } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ReadMore from '../../../components/read-more';
+import ReadMore from '../read-more';
 
 function getReviewClasses( isLoading ) {
 	const classArray = [ 'wc-block-reviews-by-product__item' ];

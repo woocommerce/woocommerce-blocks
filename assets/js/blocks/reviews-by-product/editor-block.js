@@ -9,10 +9,10 @@ import { debounce } from 'lodash';
  * Internal dependencies
  */
 import { getOrderArgs, getReviews } from './utils';
-import withComponentId from '../../hocs/with-component-id';
-import LoadMoreButton from './components/load-more-button';
-import OrderBySelect from './components/order-by-select';
-import Reviews from './components/reviews';
+import withComponentId from '../../frontend/hocs/with-component-id';
+import LoadMoreButton from '../../frontend/components/load-more-button';
+import OrderBySelect from '../../frontend/components/order-by-select';
+import Reviews from '../../frontend/components/reviews';
 
 /**
  * Block rendered in the editor.
