@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
+import PropTypes from 'prop-types';
 
 /**
  * Internal dependencies
@@ -96,6 +97,11 @@ const Review = ( { attributes, review = {} } ) => {
 			{ getReviewContent( review ) }
 		</li>
 	);
+};
+
+Review.propTypes = {
+	attributes: PropTypes.object.isRequired,
+	review: PropTypes.object,
 };
 
 export default Review;

@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import PropTypes from 'prop-types';
+
+/**
  * Internal dependencies
  */
 import Review from '../review';
@@ -28,6 +33,12 @@ const Reviews = ( { attributes, componentId, reviews } ) => {
 			}
 		</ul>
 	);
+};
+
+Reviews.propTypes = {
+	attributes: PropTypes.object.isRequired,
+	componentId: PropTypes.number.isRequired,
+	reviews: PropTypes.array.isRequired,
 };
 
 export default Reviews;

@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import PropTypes from 'prop-types';
 
 const OrderBySelect = ( { componentId, onChange, readOnly, value } ) => {
 	const selectId = `wc-block-reviews-by-product__orderby__select-${ componentId }`;
@@ -30,6 +31,13 @@ const OrderBySelect = ( { componentId, onChange, readOnly, value } ) => {
 			</select>
 		</p>
 	);
+};
+
+OrderBySelect.propTypes = {
+	componentId: PropTypes.number.isRequired,
+	onChange: PropTypes.func,
+	readOnly: PropTypes.bool,
+	value: PropTypes.oneOf( [ 'most-recent', 'highest-rating', 'lowest-rating' ] ),
 };
 
 export default OrderBySelect;
