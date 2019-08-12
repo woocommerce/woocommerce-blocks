@@ -30,12 +30,15 @@ import { getAdminLink } from '@woocommerce/navigation';
  * Internal dependencies
  */
 import ApiErrorPlaceholder from '../../components/api-error-placeholder';
-import Block from './block.js';
+import EditorBlock from './editor-block.js';
 import ProductControl from '../../components/product-control';
 import ToggleButtonControl from '../../components/toggle-button-control';
 import { IconReviewsByProduct } from '../../components/icons';
 import { withProduct } from '../../hocs';
 
+/**
+ * Component to handle edit mode of "Reviews by Product".
+ */
 const ReviewsByProductEditor = ( { attributes, debouncedSpeak, error, getProduct, isLoading, product, setAttributes } ) => {
 	const { className, editMode, productId, showReviewDate, showReviewerName } = attributes;
 
@@ -287,7 +290,7 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, error, getProduct
 					</Placeholder>
 				) : (
 					<div className={ classes }>
-						<Block attributes={ attributes } isPreview />
+						<EditorBlock attributes={ attributes } />
 					</div>
 				) }
 			</Fragment>
