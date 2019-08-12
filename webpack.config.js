@@ -105,7 +105,7 @@ const GutenbergBlocksConfig = {
 				use: {
 					loader: 'babel-loader?cacheDirectory',
 					options: {
-						presets: [ '@wordpress/default' ],
+						presets: [ '@wordpress/babel-preset-default' ],
 					},
 				},
 			},
