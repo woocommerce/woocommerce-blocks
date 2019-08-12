@@ -14,7 +14,7 @@ import Reviews from '../../frontend/components/reviews';
 import withComponentId from '../../frontend/hocs/with-component-id';
 
 /**
- * Block renderer in the frontend.
+ * Block rendered in the frontend.
  */
 class FrontendBlock extends Component {
 	constructor() {
