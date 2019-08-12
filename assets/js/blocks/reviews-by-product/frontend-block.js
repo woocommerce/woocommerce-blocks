@@ -8,10 +8,10 @@ import PropTypes from 'prop-types';
  * Internal dependencies
  */
 import { getOrderArgs, getReviews } from './utils';
-import withComponentId from '../../frontend/hocs/with-component-id';
 import LoadMoreButton from '../../frontend/components/load-more-button';
 import OrderBySelect from '../../frontend/components/order-by-select';
 import Reviews from '../../frontend/components/reviews';
+import withComponentId from '../../frontend/hocs/with-component-id';
 
 /**
  * Block renderer in the frontend.
