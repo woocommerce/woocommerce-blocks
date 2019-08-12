@@ -1,10 +1,10 @@
 === WooCommerce Blocks ===
-Contributors: automattic, claudiulodro, tiagonoronha, jameskoster, ryelle, levinmedia
-Tags: gutenberg, woocommerce, woo commerce, products
+Contributors: automattic
+Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
 Requires at least: 5.0
 Tested up to: 5.2
 Requires PHP: 5.6
-Stable tag: 2.2.1
+Stable tag: 2.3.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -83,7 +83,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
-= 2.3.0 - 2019-08-01 =
+= 2.3.0 - 2019-08-12 =
 
 - Feature: Added a new Featured Category Block; feature a category and show a link to it's archive.
 - Feature: Added a new Products by Tag(s) block.
@@ -100,6 +100,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Fix - Disable HTML editing on dynamic blocks which have no content.
 - Fix - Hide background opacity control in Featured Product settings if there is no background image.
 - Fix - Reduce CSS specificity to make styling easier.
+- Fix - Fix author access to API for handpicked products block.
 
 = 2.2.1 - 2019-07-04 =
 
