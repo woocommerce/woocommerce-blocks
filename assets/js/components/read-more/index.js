@@ -7,87 +7,68 @@ import React, { createRef, Component } from 'react';
 import PropTypes from 'prop-types';
 import { __ } from '@wordpress/i18n';
 
+/**
+ * Internal dependencies
+ */
+import { clampLines } from './utils';
+
 class ReadMore extends Component {
 	constructor( props ) {
 		super( ...arguments );
 
 		this.state = {
-			isExpanded: true,
-			isClamped: false,
-			content: '.',
+			/**
+			 * This is true when read more has been pressed and the full review is shown.
+			 */
+			isExpanded: false,
+			/**
+			 * True if we are clamping content. False if the review is short. Null during init.
+			 */
+			clampEnabled: null,
+			/**
+			 * Content is passed in via children.
+			 */
+			content: props.children,
+			/**
+			 * Summary content generated from content HTML.
+			 */
+			summary: '.',
 		};
 
-		this.lineHeight = 0;
-		this.start = 0;
-		this.middle = 0;
-		this.end = 0;
-		this.originalContent = 1 === React.Children.count( props.children ) ? props.children : props.children.join( '' );
-
-		this.element = createRef();
+		this.reviewSummary = createRef();
+		this.reviewContent = createRef();
 		this.getButton = this.getButton.bind( this );
 		this.onClick = this.onClick.bind( this );
-		this.clampLines = this.clampLines.bind( this );
-		this.moveMarkers = this.moveMarkers.bind( this );
 	}
 
 	componentDidMount() {
 		if ( this.props.children ) {
-			this.lineHeight = this.element.current.clientHeight + 1;
-			this.clampLines();
-		}
-	}
+			const { maxLines, ellipsis } = this.props;
 
-	/**
-	 * Clamp lines calculates the height of a line of text and then limits it to the
-	 * value of the lines prop. Content is updated once limited.
-	 */
-	clampLines() {
-		const { ellipsis, maxLines } = this.props;
-		const maxHeight = ( this.lineHeight * maxLines ) + 1;
+			const lineHeight = this.reviewSummary.current.clientHeight + 1;
+			const reviewHeight = this.reviewContent.current.clientHeight + 1;
+			const maxHeight = ( lineHeight * maxLines ) + 1;
+			const clampEnabled = reviewHeight > maxHeight;
 
-		this.start = 0;
-		this.middle = 0;
-		this.end = this.originalContent.length;
+			this.setState( {
+				clampEnabled,
+			} );
 
-		while ( this.start <= this.end ) {
-			this.middle = Math.floor( ( this.start + this.end ) / 2 );
-			this.element.current.innerHTML = this.originalContent.slice( 0, this.middle );
-
-			if ( this.middle === this.originalContent.length ) {
+			if ( clampEnabled ) {
 				this.setState( {
-					content: this.originalContent,
-					isClamped: false,
+					summary: clampLines( this.reviewContent.current.innerHTML, this.reviewSummary.current, maxHeight, ellipsis ),
 				} );
-				return;
 			}
-
-			this.moveMarkers( maxHeight );
-		}
-
-		this.element.current.innerHTML = this.originalContent.slice( 0, this.middle - 5 ) + ellipsis;
-
-		this.setState( {
-			content: this.originalContent.slice( 0, this.middle - 5 ) + ellipsis,
-			isExpanded: false,
-			isClamped: true,
-		} );
-	}
-
-	moveMarkers( maxHeight ) {
-		if ( this.element.current.clientHeight <= maxHeight ) {
-			this.start = this.middle + 1;
-		} else {
-			this.end = this.middle - 1;
 		}
 	}
 
 	getButton() {
-		const { isExpanded, isClamped } = this.state;
+		const { isExpanded } = this.state;
 		const { className, lessText, moreText } = this.props;
 
 		const buttonText = isExpanded ? lessText : moreText;
 
-		if ( ! buttonText || ! isClamped ) {
+		if ( ! buttonText ) {
 			return;
 		}
 
@@ -110,39 +91,52 @@ class ReadMore extends Component {
 	 * @param {obj} e event
 	 */
 	onClick( e ) {
-		const { isExpanded } = this.state;
-
 		e.preventDefault();
 
-		if ( isExpanded ) {
-			this.clampLines();
-		} else {
-			this.setState( {
-				content: this.originalContent,
-				isExpanded: ! isExpanded,
-			} );
-		}
+		const { isExpanded } = this.state;
+
+		this.setState( {
+			isExpanded: ! isExpanded,
+		} );
 	}
 
 	render() {
 		const { className } = this.props;
-		const { content } = this.state;
+		const { content, summary, clampEnabled, isExpanded } = this.state;
 
 		if ( ! content ) {
 			return null;
 		}
 
+		if ( false === clampEnabled ) {
+			return (
+				<div className={ className }>
+					<div ref={ this.reviewContent }>
+						{ content }
+					</div>
+				</div>
+			);
+		}
+
 		return (
 			<div className={ className }>
-				<div
-					ref={ this.element }
-					dangerouslySetInnerHTML={ {
-						// `content` is the `review` parameter returned by the `reviews` endpoint.
-						// It's filtered with `wp_filter_post_kses()`, which removes dangerous HTML tags,
-						// so using it inside `dangerouslySetInnerHTML` is safe.
-						__html: content,
-					} }
-				/>
+				{ ( ! isExpanded || null === clampEnabled ) && (
+					<div
+						ref={ this.reviewSummary }
+						aria-hidden={ isExpanded }
+						dangerouslySetInnerHTML={ {
+							__html: summary,
+						} }
+					/>
+				) }
+				{ ( isExpanded || null === clampEnabled ) && (
+					<div
+						ref={ this.reviewContent }
+						aria-hidden={ ! isExpanded }
+					>
+						{ content }
+					</div>
+				) }
 				{ this.getButton() }
 			</div>
 		);

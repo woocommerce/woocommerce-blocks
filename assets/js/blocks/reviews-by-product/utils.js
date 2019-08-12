@@ -60,7 +60,14 @@ function getReviewContent( review ) {
 			lessText={ __( 'Hide full review', 'woo-gutenberg-products-block' ) }
 			className="wc-block-reviews-by-product__text"
 		>
-			{ review.review || '' }
+			<div
+				dangerouslySetInnerHTML={ {
+					// `content` is the `review` parameter returned by the `reviews` endpoint.
+					// It's filtered with `wp_filter_post_kses()`, which removes dangerous HTML tags,
+					// so using it inside `dangerouslySetInnerHTML` is safe.
+					__html: review.review || '',
+				} }
+			/>
 		</ReadMore>
 	);
 }
