@@ -2,23 +2,23 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import apiFetch from '@wordpress/api-fetch';
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 /**
  * Internal dependencies
  */
-import { renderReview } from './utils';
-import { withComponentId } from '../../hocs';
+import { getReviews, renderReview } from './utils';
+import withComponentId from '../../hocs/with-component-id';
 
 /**
- * Component to handle edit mode of "Reviews by Product".
+ * Component to handle edit mode of "Reviews by Category".
  */
-class ReviewsByProduct extends Component {
+class ReviewsByCategory extends Component {
 	constructor() {
 		super( ...arguments );
 		const { attributes } = this.props;
+
 		this.state = {
 			orderby: attributes.orderby,
 			reviews: [],
@@ -27,49 +27,88 @@ class ReviewsByProduct extends Component {
 		};
 
 		this.onChangeOrderby = this.onChangeOrderby.bind( this );
-		this.getReviews = this.getReviews.bind( this );
 		this.appendReviews = this.appendReviews.bind( this );
 	}
 
 	componentDidMount() {
-		this.getReviews();
+		this.loadFirstReviews();
 	}
 
 	componentDidUpdate( prevProps ) {
 		if (
 			prevProps.attributes.orderby !== this.props.attributes.orderby ||
-			prevProps.attributes.perPage !== this.props.attributes.perPage ||
 			prevProps.attributes.categoryId !== this.props.attributes.categoryId
 		) {
-			this.getReviews();
+			this.loadFirstReviews();
+		} else if ( prevProps.attributes.reviewsOnPageLoad !== this.props.attributes.reviewsOnPageLoad ) {
+			const isIncreasing = this.props.attributes.reviewsOnPageLoad > prevProps.attributes.reviewsOnPageLoad;
+			const allReviewsWereAlreadyLoaded = this.state.reviews.length >= this.state.totalReviews && this.state.totalReviews > 0;
+
+			if ( isIncreasing && allReviewsWereAlreadyLoaded ) {
+				return;
+			}
+			this.loadFirstReviews();
 		}
 	}
 
-	onChangeOrderby( event ) {
-		const { attributes } = this.props;
-		const { perPage } = attributes;
-		const { totalReviews } = this.state;
-		const newReviews = Math.min( totalReviews, perPage );
-		this.setState( {
-			reviews: Array( newReviews ).fill( {} ),
-			orderby: event.target.value,
-		} );
-		this.getReviews( event.target.value );
+	getDefaultArgs() {
+		const { attributes, isPreview } = this.props;
+		const { order, orderby } = this.getOrderArgs( isPreview ? attributes.orderby : this.state.orderby );
+		const { categoryId, reviewsOnPageLoad } = attributes;
+
+		return {
+			order,
+			orderby,
+			per_page: reviewsOnPageLoad,
+			category_id: categoryId,
+		};
 	}
 
-	getOrderParams( orderValue ) {
-		const { attributes, isPreview } = this.props;
-		const selectedOrder = isPreview ? attributes.orderby :
-			orderValue || this.state.orderby || attributes.orderby;
+	loadFirstReviews( argsAttr = {} ) {
+		const args = {
+			...this.getDefaultArgs(),
+			...argsAttr,
+		};
 
+		getReviews( args ).then( ( { reviews, totalReviews } ) => {
+			this.setState( { reviews, totalReviews, loading: false } );
+		} ).catch( () => {
+			this.setState( { reviews: [], loading: false } );
+		} );
+	}
+
+	appendReviews() {
+		const { attributes } = this.props;
+		const { reviewsOnLoadMore } = attributes;
+		const { reviews, totalReviews } = this.state;
+
+		const reviewsToLoad = Math.min( totalReviews - reviews.length, reviewsOnLoadMore );
+		this.setState( { reviews: reviews.concat( Array( reviewsToLoad ).fill( {} ) ) } );
+
+		const args = {
+			...this.getDefaultArgs(),
+			offset: reviews.length,
+			per_page: reviewsOnLoadMore,
+		};
+		getReviews( args ).then( ( { reviews: newReviews, totalReviews: newTotalReviews } ) => {
+			this.setState( {
+				reviews: reviews.filter( ( review ) => Object.keys( review ).length ).concat( newReviews ),
+				totalReviews: newTotalReviews,
+			} );
+		} ).catch( () => {
+			this.setState( { reviews: [] } );
+		} );
+	}
+
+	getOrderArgs( orderValue ) {
 		if ( wc_product_block_data.enableReviewRating ) {
-			if ( selectedOrder === 'lowest-rating' ) {
+			if ( orderValue === 'lowest-rating' ) {
 				return {
 					order: 'asc',
 					orderby: 'rating',
 				};
 			}
-			if ( selectedOrder === 'highest-rating' ) {
+			if ( orderValue === 'highest-rating' ) {
 				return {
 					order: 'desc',
 					orderby: 'rating',
@@ -83,73 +122,39 @@ class ReviewsByProduct extends Component {
 		};
 	}
 
-	getReviews( orderValue, page = 1 ) {
+	onChangeOrderby( event ) {
 		const { attributes } = this.props;
-		const { perPage, categoryId } = attributes;
-		const { reviews } = this.state;
-		const { order, orderby } = this.getOrderParams( orderValue );
+		const { reviewsOnPageLoad } = attributes;
+		const { totalReviews } = this.state;
+		const { order, orderby } = this.getOrderArgs( event.target.value );
+		const newReviews = Math.min( totalReviews, reviewsOnPageLoad );
 
-		if ( ! categoryId ) {
-			// We've removed the selected category, or no category is selected yet.
-			return;
-		}
+		this.setState( {
+			reviews: Array( newReviews ).fill( {} ),
+			orderby: event.target.value,
+		} );
 
 		const args = {
+			...this.getDefaultArgs(),
 			order,
 			orderby,
-			page,
-			per_page: parseInt( perPage, 10 ) || 1,
-			category_id: categoryId,
+			per_page: reviewsOnPageLoad,
 		};
-
-		this.setState( { loading: true } );
-
-		apiFetch( {
-			path: '/wc/blocks/products/reviews?' + Object.entries( args ).map( ( arg ) => arg.join( '=' ) ).join( '&' ),
-			parse: false,
-		} ).then( ( response ) => {
-			if ( response.json ) {
-				response.json().then( ( newReviews ) => {
-					const totalReviews = parseInt( response.headers.get( 'x-wp-total' ), 10 );
-					if ( page === 1 ) {
-						this.setState( { reviews: newReviews, totalReviews, loading: false } );
-					} else {
-						this.setState( {
-							reviews: reviews.filter( ( review ) => Object.keys( review ).length ).concat( newReviews ),
-							totalReviews,
-							loading: false,
-						} );
-					}
-				} ).catch( () => {
-					this.setState( { reviews: [], loading: false } );
-				} );
-			} else {
-				this.setState( { reviews: [], loading: false } );
-			}
+		getReviews( args ).then( ( { reviews, totalReviews: newTotalReviews } ) => {
+			this.setState( { reviews, totalReviews: newTotalReviews } );
 		} ).catch( () => {
-			this.setState( { reviews: [], loading: false } );
+			this.setState( { reviews: [] } );
 		} );
 	}
 
-	appendReviews() {
-		const { attributes } = this.props;
-		const { perPage } = attributes;
-		const { reviews, totalReviews } = this.state;
-
-		const newReviews = Math.min( totalReviews - reviews.length, perPage );
-		this.setState( { reviews: reviews.concat( Array( newReviews ).fill( {} ) ) } );
-
-		const page = Math.round( reviews.length / perPage ) + 1;
-		this.getReviews( null, page );
-	}
 
 	renderOrderBySelect() {
-		if ( ! wc_product_block_data.enableReviewRating ) {
-			return null;
-		}
-
 		const { attributes, componentId, isPreview } = this.props;
 		const { orderby } = this.state;
+
+		if ( ! attributes.showOrderby || ! wc_product_block_data.enableReviewRating ) {
+			return null;
+		}
 
 		const selectId = `wc-block-reviews-by-product__orderby__select-${ componentId }`;
 		const selectProps = isPreview ? {
@@ -186,12 +191,12 @@ class ReviewsByProduct extends Component {
 	renderReviewsList() {
 		const { attributes, componentId } = this.props;
 		const { reviews } = this.state;
-		const showAvatar = wc_product_block_data.showAvatars && attributes.showAvatar;
-		const showProductRating = wc_product_block_data.enableReviewRating && attributes.showProductRating;
+		const showReviewImage = ( wc_product_block_data.showAvatars || attributes.imageType === 'product' ) && attributes.showReviewImage;
+		const showReviewRating = wc_product_block_data.enableReviewRating && attributes.showReviewRating;
 		const attrs = {
 			...attributes,
-			showAvatar,
-			showProductRating,
+			showReviewImage,
+			showReviewRating,
 		};
 
 		return (
@@ -211,10 +216,10 @@ class ReviewsByProduct extends Component {
 	}
 
 	renderLoadMoreButton() {
-		const { componentId, isPreview } = this.props;
+		const { attributes, componentId, isPreview } = this.props;
 		const { reviews, totalReviews } = this.state;
 
-		if ( totalReviews <= reviews.length ) {
+		if ( ! attributes.showLoadMore || totalReviews <= reviews.length ) {
 			return null;
 		}
 
@@ -246,7 +251,7 @@ class ReviewsByProduct extends Component {
 	}
 }
 
-ReviewsByProduct.propTypes = {
+ReviewsByCategory.propTypes = {
 	/**
 	 * The attributes for this block.
 	 */
@@ -263,8 +268,8 @@ ReviewsByProduct.propTypes = {
 	componentId: PropTypes.number,
 };
 
-ReviewsByProduct.defaultProps = {
+ReviewsByCategory.defaultProps = {
 	onNoReviews: () => {},
 };
 
-export default withComponentId( ReviewsByProduct );
+export default withComponentId( ReviewsByCategory );

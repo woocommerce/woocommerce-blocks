@@ -32,7 +32,7 @@ import Block from './block.js';
 import ProductCategoryControl from '../../components/product-category-control';
 import { IconReviewsByCategory } from '../../components/icons';
 
-class ReviewsByProductEditor extends Component {
+class ReviewsByCategoryEditor extends Component {
 	constructor() {
 		super( ...arguments );
 		this.state = {
@@ -54,7 +54,7 @@ class ReviewsByProductEditor extends Component {
 
 	componentDidUpdate( prevProps ) {
 		if ( prevProps.attributes.categoryId !== this.props.attributes.categoryId ) {
-			this.debouncedGetCategory();
+			this.getCategory();
 		}
 	}
 
@@ -307,7 +307,7 @@ class ReviewsByProductEditor extends Component {
 	}
 }
 
-ReviewsByProductEditor.propTypes = {
+ReviewsByCategoryEditor.propTypes = {
 	/**
 	 * The attributes for this block.
 	 */
@@ -326,4 +326,4 @@ ReviewsByProductEditor.propTypes = {
 
 export default compose( [
 	withSpokenMessages,
-] )( ReviewsByProductEditor );
+] )( ReviewsByCategoryEditor );
