@@ -17,7 +17,7 @@ export const hasTags = wc_product_block_data.hasTags || false;
 const getProductsRequests = ( { selected = [], search = '', queryArgs = [] } ) => {
 	const defaultArgs = {
 		per_page: isLargeCatalog ? 100 : -1,
-		catalog_visibility: 'visible',
+		catalog_visibility: 'any',
 		status: 'publish',
 		search,
 		orderby: 'title',
@@ -34,7 +34,7 @@ const getProductsRequests = ( { selected = [], search = '', queryArgs = [] } ) =
 	if ( isLargeCatalog && selected.length ) {
 		requests.push(
 			addQueryArgs( ENDPOINTS.products, {
-				catalog_visibility: 'visible',
+				catalog_visibility: 'any',
 				status: 'publish',
 				include: selected,
 			} )
@@ -47,7 +47,7 @@ const getProductsRequests = ( { selected = [], search = '', queryArgs = [] } ) =
 /**
  * Get a promise that resolves to a list of products from the API.
  *
- * @param {object} - A query object with the list of selected products and search term.
+ * @param {Object} - A query object with the list of selected products and search term.
  */
 export const getProducts = ( { selected = [], search = '', queryArgs = [] } ) => {
 	const requests = getProductsRequests( { selected, search, queryArgs } );
@@ -60,7 +60,7 @@ export const getProducts = ( { selected = [], search = '', queryArgs = [] } ) =>
 /**
  * Get a promise that resolves to a product object from the API.
  *
- * @param {object} - Id of the product to retrieve.
+ * @param {Object} productId Id of the product to retrieve.
  */
 export const getProduct = ( productId ) => {
 	return apiFetch( {
@@ -93,7 +93,7 @@ const getProductTagsRequests = ( { selected = [], search } ) => {
 /**
  * Get a promise that resolves to a list of tags from the API.
  *
- * @param {object} - A query object with the list of selected products and search term.
+ * @param {Object} - A query object with the list of selected products and search term.
  */
 export const getProductTags = ( { selected = [], search } ) => {
 	const requests = getProductTagsRequests( { selected, search } );
