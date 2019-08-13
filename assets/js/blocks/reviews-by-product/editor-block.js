@@ -57,9 +57,7 @@ class EditorBlock extends Component {
 	}
 
 	loadFirstReviews() {
-		const args = this.getDefaultArgs();
-
-		getReviews( args ).then( ( { reviews, totalReviews } ) => {
+		getReviews( this.getDefaultArgs() ).then( ( { reviews, totalReviews } ) => {
 			this.setState( { reviews, totalReviews } );
 		} ).catch( () => {
 			this.setState( { reviews: [] } );
