@@ -87,7 +87,6 @@
     "stylelint": "10.1.0",
     "stylelint-config-wordpress": "14.0.0",
     "svg-inline-loader": "^0.8.0",
-    "webpack": "4.38.0",
     "webpack": "4.39.1",
     "webpack-cli": "3.3.6",
     "yargs": "13.3.0"
