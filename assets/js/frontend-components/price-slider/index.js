@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { sprintf, __ } from '@wordpress/i18n';
-import { Component, createRef } from 'react';
+import { Component, createRef, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 /**
@@ -163,30 +163,34 @@ class PriceSlider extends Component {
 	}
 
 	render() {
-		const { min, max, step } = this.props;
+		const { min, max, step, showInputFields } = this.props;
 		const { inputMin, inputMax, currentMin, currentMax } = this.state;
 		return (
 			<div className="wc-block-price-filter">
-				<input
-					type="text"
-					className="wc-block-price-filter__amount wc-block-price-filter__amount--min"
-					aria-label={ __( 'Filter products by minimum price', 'woo-gutenberg-products-block' ) }
-					size="5"
-					ref={ this.minInput }
-					value={ inputMin }
-					onChange={ this.onInputChange }
-					onBlur={ this.onInputBlur }
-				/>
-				<input
-					type="text"
-					className="wc-block-price-filter__amount wc-block-price-filter__amount--max"
-					aria-label={ __( 'Filter products by maximum price', 'woo-gutenberg-products-block' ) }
-					size="5"
-					ref={ this.maxInput }
-					value={ inputMax }
-					onChange={ this.onInputChange }
-					onBlur={ this.onInputBlur }
-				/>
+				{ showInputFields && (
+					<Fragment>
+						<input
+							type="text"
+							className="wc-block-price-filter__amount wc-block-price-filter__amount--min"
+							aria-label={ __( 'Filter products by minimum price', 'woo-gutenberg-products-block' ) }
+							size="5"
+							ref={ this.minInput }
+							value={ inputMin }
+							onChange={ this.onInputChange }
+							onBlur={ this.onInputBlur }
+						/>
+						<input
+							type="text"
+							className="wc-block-price-filter__amount wc-block-price-filter__amount--max"
+							aria-label={ __( 'Filter products by maximum price', 'woo-gutenberg-products-block' ) }
+							size="5"
+							ref={ this.maxInput }
+							value={ inputMax }
+							onChange={ this.onInputChange }
+							onBlur={ this.onInputBlur }
+						/>
+					</Fragment>
+				) }
 				<div
 					className="wc-block-price-filter__range-input-wrapper"
 					onMouseMove={ this.findClosestRange }
@@ -246,6 +250,10 @@ PriceSlider.propTypes = {
 	 * Price format to use when formatting prices for display.
 	 */
 	priceFormat: PropTypes.string,
+	/**
+	 * Whether or not to show input fields above the slider.
+	 */
+	showInputFields: PropTypes.boolean,
 };
 
 PriceSlider.defaultProps = {
@@ -253,6 +261,7 @@ PriceSlider.defaultProps = {
 	step: 1,
 	currencySymbol: '$',
 	priceFormat: '%1$s%2$s',
+	showInputFields: true,
 };
 
 export default PriceSlider;
