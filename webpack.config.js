@@ -35,7 +35,7 @@ const baseConfig = {
 	},
 	resolve: {
 		alias: {
-			Data: path.resolve( __dirname, 'assets/js/data/index.js' ),
+			'@woocommerce/settings': path.resolve( __dirname, 'assets/js/settings/index.js' ),
 		},
 	},
 };
