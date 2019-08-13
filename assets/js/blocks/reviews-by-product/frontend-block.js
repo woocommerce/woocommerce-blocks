@@ -13,6 +13,8 @@ import OrderBySelect from '../../frontend/components/order-by-select';
 import Reviews from '../../frontend/components/reviews';
 import withComponentId from '../../frontend/hocs/with-component-id';
 
+const enableReviewRating = !! ( typeof wc_product_block_data !== 'undefined' && wc_product_block_data.enableReviewRating );
+
 /**
  * Block rendered in the frontend.
  */
@@ -110,7 +112,7 @@ class FrontendBlock extends Component {
 
 		return (
 			<Fragment>
-				{ ( attributes.showOrderby && wc_product_block_data.enableReviewRating ) && (
+				{ ( attributes.showOrderby && enableReviewRating ) && (
 					<OrderBySelect
 						componentId={ componentId }
 						onChange={ this.onChangeOrderby }

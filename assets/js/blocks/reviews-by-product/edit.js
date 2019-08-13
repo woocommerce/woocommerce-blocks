@@ -36,6 +36,9 @@ import ToggleButtonControl from '../../components/toggle-button-control';
 import { IconReviewsByProduct } from '../../components/icons';
 import { withProduct } from '../../hocs';
 
+const enableReviewRating = !! ( typeof wc_product_block_data !== 'undefined' && wc_product_block_data.enableReviewRating );
+const showAvatars = !! ( typeof wc_product_block_data !== 'undefined' && wc_product_block_data.showAvatars );
+
 /**
  * Component to handle edit mode of "Reviews by Product".
  */
@@ -112,7 +115,7 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, error, getProduct
 						checked={ attributes.showReviewRating }
 						onChange={ () => setAttributes( { showReviewRating: ! attributes.showReviewRating } ) }
 					/>
-					{ ( attributes.showReviewRating && ! wc_product_block_data.enableReviewRating ) && (
+					{ ( attributes.showReviewRating && ! enableReviewRating ) && (
 						<Notice className="wc-block-reviews-by-product__notice" isDismissible={ false }>
 							<RawHTML>
 								{ sprintf( __( 'Product rating is disabled in your %sstore settings%s.', 'woo-gutenberg-products-block' ), `<a href="${ getAdminLink( 'admin.php?page=wc-settings&tab=products' ) }" target="_blank">`, '</a>' ) }
@@ -145,7 +148,7 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, error, getProduct
 								] }
 								onChange={ ( value ) => setAttributes( { imageType: value } ) }
 							/>
-							{ ( attributes.imageType === 'reviewer' && ! wc_product_block_data.showAvatars ) && (
+							{ ( attributes.imageType === 'reviewer' && ! showAvatars ) && (
 								<Notice className="wc-block-reviews-by-product__notice" isDismissible={ false }>
 									<RawHTML>
 										{ sprintf( __( 'Reviewer photo is disabled in your %ssite settings%s.', 'woo-gutenberg-products-block' ), `<a href="${ getAdminLink( 'options-discussion.php' ) }" target="_blank">`, '</a>' ) }
@@ -261,8 +264,8 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, error, getProduct
 	};
 
 	const renderViewMode = () => {
-		const showReviewImage = ( wc_product_block_data.showAvatars || attributes.imageType === 'product' ) && attributes.showReviewImage;
-		const showReviewRating = wc_product_block_data.enableReviewRating && attributes.showReviewRating;
+		const showReviewImage = ( showAvatars || attributes.imageType === 'product' ) && attributes.showReviewImage;
+		const showReviewRating = enableReviewRating && attributes.showReviewRating;
 		const classes = classNames( 'wc-block-reviews-by-product', className, {
 			'has-image': showReviewImage,
 			'has-name': showReviewerName,

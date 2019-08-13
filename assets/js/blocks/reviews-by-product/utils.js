@@ -3,8 +3,10 @@
  */
 import apiFetch from '@wordpress/api-fetch';
 
+const enableReviewRating = !! ( typeof wc_product_block_data !== 'undefined' && wc_product_block_data.enableReviewRating );
+
 export const getOrderArgs = ( orderValue ) => {
-	if ( wc_product_block_data.enableReviewRating ) {
+	if ( enableReviewRating ) {
 		if ( orderValue === 'lowest-rating' ) {
 			return {
 				order: 'asc',
