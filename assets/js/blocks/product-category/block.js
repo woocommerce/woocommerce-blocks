@@ -229,12 +229,12 @@ class ProductByCategoryBlock extends Component {
 
 		return (
 			<Disabled>
-				<ServerSideRender block={ name } attributes={ attributes } onEmptyResponse={ this.onEmptyResponse } />
+				<ServerSideRender block={ name } attributes={ attributes } emptyResponsePlaceholder={ this.emptyResponsePlaceholder } />
 			</Disabled>
 		);
 	}
 
-	onEmptyResponse() {
+	emptyResponsePlaceholder() {
 		return (
 			<Placeholder
 				icon="category"
