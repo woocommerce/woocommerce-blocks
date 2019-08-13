@@ -35,7 +35,7 @@ const baseConfig = {
 	},
 	resolve: {
 		alias: {
-			data: './assets/js/data/index.js',
+			Data: path.resolve( __dirname, 'assets/js/data/index.js' ),
 		},
 	},
 };

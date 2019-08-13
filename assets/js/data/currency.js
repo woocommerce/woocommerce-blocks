@@ -3,7 +3,7 @@
  *
  * Only settings used by blocks are defined here. Component settings are left out.
  */
-export const currency = wcSettings.currency || {
+const currency = wcSettings.currency || {
 	code: 'USD',
 	precision: 2,
 	symbol: '$',
@@ -12,3 +12,5 @@ export const currency = wcSettings.currency || {
 	thousand_separator: ',',
 	price_format: '%1$s%2$s',
 };
+
+export default currency;
