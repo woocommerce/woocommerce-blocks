@@ -26,7 +26,12 @@ registerBlockType( 'woocommerce/price-filter', {
 		align: [ 'wide', 'full' ],
 	},
 
-	attributes: {},
+	attributes: {
+		showInputFields: {
+			type: 'boolean',
+			default: true,
+		},
+	},
 
 	edit,
 
