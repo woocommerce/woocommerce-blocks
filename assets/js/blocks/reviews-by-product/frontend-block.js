@@ -9,8 +9,8 @@ import PropTypes from 'prop-types';
  */
 import { getOrderArgs, getReviews } from './utils';
 import LoadMoreButton from '../../base/components/load-more-button';
-import OrderBySelect from '../../base/components/order-by-select';
-import Reviews from '../../base/components/reviews';
+import ReviewOrderSelect from '../../base/components/review-order-select';
+import ReviewList from '../../base/components/review-list';
 import withComponentId from '../../base/hocs/with-component-id';
 
 const enableReviewRating = !! ( typeof wc_product_block_data !== 'undefined' && wc_product_block_data.enableReviewRating );
@@ -113,13 +113,13 @@ class FrontendBlock extends Component {
 		return (
 			<Fragment>
 				{ ( attributes.showOrderby && enableReviewRating ) && (
-					<OrderBySelect
+					<ReviewOrderSelect
 						componentId={ componentId }
 						onChange={ this.onChangeOrderby }
 						value={ orderby }
 					/>
 				) }
-				<Reviews
+				<ReviewList
 					attributes={ attributes }
 					componentId={ componentId }
 					reviews={ reviews }

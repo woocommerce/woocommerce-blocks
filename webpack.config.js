@@ -82,7 +82,7 @@ const GutenbergBlocksConfig = {
 					test: ( module = {} ) =>
 						module.constructor.name === 'CssModule' &&
 						( findModuleMatch( module, /editor\.scss$/ ) ||
-							findModuleMatch( module, /[\\/]components[\\/]/ ) ),
+							findModuleMatch( module, /[\\/]assets[\\/]components[\\/]/ ) ),
 					name: 'editor',
 					chunks: 'all',
 					priority: 10,
@@ -182,6 +182,12 @@ const BlocksFrontendConfig = {
 							require.resolve( '@babel/plugin-transform-runtime' ),
 						].filter( Boolean ),
 					},
+				},
+			},
+			{
+				test: /\.s[c|a]ss$/,
+				use: {
+					loader: 'ignore-loader',
 				},
 			},
 		],

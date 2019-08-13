@@ -6,9 +6,10 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import Review from '../review';
+import ReviewListItem from '../review-list-item';
+import './style.scss';
 
-const Reviews = ( { attributes, componentId, reviews } ) => {
+const ReviewList = ( { attributes, componentId, reviews } ) => {
 	const showReviewImage = ( wc_product_block_data.showAvatars || attributes.imageType === 'product' ) && attributes.showReviewImage;
 	const showReviewRating = wc_product_block_data.enableReviewRating && attributes.showReviewRating;
 	const attrs = {
@@ -19,15 +20,15 @@ const Reviews = ( { attributes, componentId, reviews } ) => {
 
 	return (
 		<ul
-			key={ `wc-block-reviews-by-product__reviews-list-${ componentId }` }
-			className="wc-block-reviews-by-product__list"
+			key={ `wc-block-review-list-${ componentId }` }
+			className="wc-block-review-list"
 		>
 			{ reviews.length === 0 ?
 				(
-					<Review attributes={ attrs } />
+					<ReviewListItem attributes={ attrs } />
 				) : (
 					reviews.map( ( review, i ) => (
-						<Review key={ review.id || i } attributes={ attrs } review={ review } />
+						<ReviewListItem key={ review.id || i } attributes={ attrs } review={ review } />
 					) )
 				)
 			}
@@ -35,10 +36,10 @@ const Reviews = ( { attributes, componentId, reviews } ) => {
 	);
 };
 
-Reviews.propTypes = {
+ReviewList.propTypes = {
 	attributes: PropTypes.object.isRequired,
 	componentId: PropTypes.number.isRequired,
 	reviews: PropTypes.array.isRequired,
 };
 
-export default Reviews;
+export default ReviewList;

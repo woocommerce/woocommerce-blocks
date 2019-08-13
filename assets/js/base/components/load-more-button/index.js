@@ -7,9 +7,11 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
+import './style.scss';
+
 export const LoadMoreButton = ( { onClick } ) => (
 	<button
-		className="wc-block-reviews-by-product__load-more"
+		className="wc-block-load-more"
 		onClick={ onClick }
 	>
 		{ __( 'Load more', 'woo-gutenberg-products-block' ) }

@@ -10,8 +10,8 @@ import { debounce } from 'lodash';
  */
 import { getOrderArgs, getReviews } from './utils';
 import LoadMoreButton from '../../base/components/load-more-button';
-import OrderBySelect from '../../base/components/order-by-select';
-import Reviews from '../../base/components/reviews';
+import ReviewList from '../../base/components/review-list';
+import ReviewOrderSelect from '../../base/components/review-order-select';
 import withComponentId from '../../base/hocs/with-component-id';
 
 const enableReviewRating = !! ( typeof wc_product_block_data !== 'undefined' && wc_product_block_data.enableReviewRating );
@@ -73,13 +73,13 @@ class EditorBlock extends Component {
 		return (
 			<Fragment>
 				{ ( attributes.showOrderby && enableReviewRating ) && (
-					<OrderBySelect
+					<ReviewOrderSelect
 						componentId={ componentId }
 						readOnly
 						value={ attributes.orderby }
 					/>
 				) }
-				<Reviews
+				<ReviewList
 					attributes={ attributes }
 					componentId={ componentId }
 					reviews={ reviews }

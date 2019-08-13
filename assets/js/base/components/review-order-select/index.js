@@ -4,17 +4,22 @@
 import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 
-const OrderBySelect = ( { componentId, onChange, readOnly, value } ) => {
-	const selectId = `wc-block-reviews-by-product__orderby__select-${ componentId }`;
+/**
+ * Internal dependencies
+ */
+import './style.scss';
+
+const ReviewOrderSelect = ( { componentId, onChange, readOnly, value } ) => {
+	const selectId = `wc-block-review-order-select__select-${ componentId }`;
 
 	return (
-		<p className="wc-block-reviews-by-product__orderby">
-			<label className="wc-block-reviews-by-product__orderby__label" htmlFor={ selectId }>
+		<p className="wc-block-review-order-select">
+			<label className="wc-block-review-order-select__label" htmlFor={ selectId }>
 				{ __( 'Order by', 'woo-gutenberg-products-block' ) }
 			</label>
 			<select // eslint-disable-line jsx-a11y/no-onchange
 				id={ selectId }
-				className="wc-block-reviews-by-product__orderby__select"
+				className="wc-block-review-order-select__select"
 				onChange={ onChange }
 				readOnly={ readOnly }
 				value={ value }
@@ -33,11 +38,11 @@ const OrderBySelect = ( { componentId, onChange, readOnly, value } ) => {
 	);
 };
 
-OrderBySelect.propTypes = {
+ReviewOrderSelect.propTypes = {
 	componentId: PropTypes.number.isRequired,
 	onChange: PropTypes.func,
 	readOnly: PropTypes.bool,
 	value: PropTypes.oneOf( [ 'most-recent', 'highest-rating', 'lowest-rating' ] ),
 };
 
-export default OrderBySelect;
+export default ReviewOrderSelect;
