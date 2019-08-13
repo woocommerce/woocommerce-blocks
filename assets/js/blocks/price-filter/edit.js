@@ -4,13 +4,15 @@
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
 import { InspectorControls } from '@wordpress/editor';
-import { Disabled, PanelBody, ToggleControl } from '@wordpress/components';
+import { Placeholder, Disabled, PanelBody, ToggleControl, Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import Block from './block.js';
 import './editor.scss';
+import { IconMoney, IconExternal } from '../../components/icons';
+import { adminUrl } from '@woocommerce/settings';
 
 export default function( { attributes, setAttributes } ) {
 	const getInspectorControls = () => {
@@ -34,8 +36,37 @@ export default function( { attributes, setAttributes } ) {
 		);
 	};
 
+	const noProductsPlaceholder = () => (
+		<Placeholder
+			className="wc-block-price-slider"
+			icon={ <IconMoney /> }
+			label={ __( 'Filter Products by Price', 'woo-gutenberg-products-block' ) }
+			instructions={ __( 'Display a slider to filter products in your store by price.', 'woo-gutenberg-products-block' ) }
+		>
+			<p>
+				{ __( "Products with prices are needed for filtering your products. You haven't created any yet.", 'woo-gutenberg-products-block' ) }
+			</p>
+			<div>
+				<Button
+					isDefault
+					isLarge
+					href={ adminUrl + 'post-new.php?post_type=product' }
+				>
+					{ __( 'Add new product', 'woo-gutenberg-products-block' ) } <IconExternal />
+				</Button>
+				<Button
+					isTertiary
+					href="https://docs.woocommerce.com/document/managing-products/"
+				>
+					{ __( 'Learn more', 'woo-gutenberg-products-block' ) }
+				</Button>
+			</div>
+		</Placeholder>
+	);
+
 	return (
 		<Fragment>
+			{ noProductsPlaceholder() }
 			{ getInspectorControls() }
 			<Disabled>
 				<Block attributes={ attributes } isPreview />

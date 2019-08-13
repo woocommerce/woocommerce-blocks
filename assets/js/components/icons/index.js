@@ -8,3 +8,5 @@ export { default as IconRadioSelected } from './radio-selected';
 export { default as IconRadioUnselected } from './radio-unselected';
 export { default as IconWidgets } from './widgets';
 export { default as IconWoo } from './woo';
+export { default as IconMoney } from './money';
+export { default as IconExternal } from './external';

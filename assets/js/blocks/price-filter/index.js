@@ -8,12 +8,12 @@ import { registerBlockType } from '@wordpress/blocks';
  * Internal dependencies
  */
 import edit from './edit.js';
-import { IconFolder } from '../../components/icons';
+import { IconMoney } from '../../components/icons';
 
 registerBlockType( 'woocommerce/price-filter', {
 	title: __( 'Filter Products by Price', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <IconFolder />,
+		src: <IconMoney />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',
