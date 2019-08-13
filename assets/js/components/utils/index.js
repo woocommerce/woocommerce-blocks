@@ -96,3 +96,14 @@ export const getProductTags = ( { selected = [], search } ) => {
 		return uniqBy( flatten( data ), 'id' );
 	} );
 };
+
+/**
+ * Get a promise that resolves to a category object from the API.
+ *
+ * @param {Object} categoryId Id of the product to retrieve.
+ */
+export const getCategory = ( categoryId ) => {
+	return apiFetch( {
+		path: `${ ENDPOINTS.categories }/${ categoryId }`,
+	} );
+};
