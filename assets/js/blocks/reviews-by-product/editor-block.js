@@ -37,7 +37,7 @@ class EditorBlock extends Component {
 		if (
 			prevProps.attributes.orderby !== this.props.attributes.orderby ||
 			prevProps.attributes.productId !== this.props.attributes.productId ||
-      prevProps.attributes.reviewsOnPageLoad !== this.props.attributes.reviewsOnPageLoad
+			prevProps.attributes.reviewsOnPageLoad !== this.props.attributes.reviewsOnPageLoad
 		) {
 			this.debouncedLoadFirstReviews();
 		}
