@@ -1,0 +1,11 @@
+.components-disabled .wc-block-price-filter__range-input-wrapper .wc-block-price-filter__range-input {
+	&::-webkit-slider-thumb {
+		pointer-events: none !important;
+	}
+	&::-moz-range-thumb {
+		pointer-events: none !important;
+	}
+	&::-ms-thumb {
+		pointer-events: none !important;
+	}
+}

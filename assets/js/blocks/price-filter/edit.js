@@ -1,17 +1,18 @@
 /**
  * External dependencies
  */
-import { Fragment } from '@wordpress/element';
+import { Disabled } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import Block from './block.js';
+import './editor.scss';
 
 export default function( { attributes } ) {
 	return (
-		<Fragment>
+		<Disabled>
 			<Block attributes={ attributes } isPreview />
-		</Fragment>
+		</Disabled>
 	);
 }
