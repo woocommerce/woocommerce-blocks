@@ -22,11 +22,12 @@ registerBlockType( 'woocommerce/product-tag', {
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
-		'Display a grid of products from selected tags.',
+		'Display a grid of products from your selected tags.',
 		'woo-gutenberg-products-block'
 	),
 	supports: {
 		align: [ 'wide', 'full' ],
+		html: false,
 	},
 	attributes: {
 		/**

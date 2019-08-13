@@ -40,7 +40,7 @@ class Package {
 		self::remove_core_blocks();
 
 		if ( ! self::is_built() ) {
-			return self::add_build_notice();
+			self::add_build_notice();
 		}
 
 		Library::init();
@@ -72,7 +72,7 @@ class Package {
 	 * @return boolean
 	 */
 	protected static function has_dependencies() {
-		return class_exists( 'WooCommerce' );
+		return class_exists( 'WooCommerce' ) && function_exists( 'register_block_type' );
 	}
 
 	/**

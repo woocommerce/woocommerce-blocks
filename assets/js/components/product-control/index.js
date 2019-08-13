@@ -17,6 +17,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
+import { ENDPOINTS } from '../../constants';
 import { isLargeCatalog, getProducts } from '../utils';
 import {
 	IconRadioSelected,
@@ -63,7 +64,7 @@ class ProductControl extends Component {
 					return {
 						...product,
 						parent: 0,
-						count: count,
+						count,
 					};
 				} );
 				this.setState( { products, loading: false } );
@@ -101,7 +102,7 @@ class ProductControl extends Component {
 		}
 
 		apiFetch( {
-			path: addQueryArgs( `/wc/blocks/products/${ product }/variations`, {
+			path: addQueryArgs( `${ ENDPOINTS.products }/${ product }/variations`, {
 				per_page: -1,
 			} ),
 		} )

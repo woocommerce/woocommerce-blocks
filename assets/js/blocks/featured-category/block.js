@@ -36,6 +36,7 @@ import { IconFolderStar } from '../../components/icons';
 /**
  * Internal dependencies
  */
+import { ENDPOINTS } from '../../constants';
 import ProductCategoryControl from '../../components/product-category-control';
 
 /**
@@ -47,7 +48,7 @@ const MIN_HEIGHT = wc_product_block_data.min_height;
  * Get the src from a category object, unless null (no image).
  *
  * @param {object|null} category A product category object from the API.
- * @return {string}
+ * @return {string} The src of the category image.
  */
 function getCategoryImageSrc( category ) {
 	if ( isObject( category.image ) ) {
@@ -60,7 +61,7 @@ function getCategoryImageSrc( category ) {
  * Get the attachment ID from a category object, unless null (no image).
  *
  * @param {object|null} category A product category object from the API.
- * @return {int}
+ * @return {number} The id of the category image.
  */
 function getCategoryImageID( category ) {
 	if ( isObject( category.image ) ) {
@@ -73,7 +74,7 @@ function getCategoryImageID( category ) {
  * Generate a style object given either a product category image from the API or URL to an image.
  *
  * @param {string} url An image URL.
- * @return {object} A style object with a backgroundImage set (if a valid image is provided).
+ * @return {Object} A style object with a backgroundImage set (if a valid image is provided).
  */
 function backgroundImageStyles( url ) {
 	if ( url ) {
@@ -130,7 +131,7 @@ class FeaturedCategory extends Component {
 			return;
 		}
 		apiFetch( {
-			path: `/wc/blocks/products/categories/${ categoryId }`,
+			path: `${ ENDPOINTS.products }/categories/${ categoryId }`,
 		} )
 			.then( ( category ) => {
 				this.setState( { category, loaded: true } );
@@ -151,6 +152,9 @@ class FeaturedCategory extends Component {
 		const url =
 			attributes.mediaSrc || getCategoryImageSrc( this.state.category );
 		const { focalPoint = { x: 0.5, y: 0.5 } } = attributes;
+		// FocalPointPicker was introduced in Gutenberg 5.0 (WordPress 5.2),
+		// so we need to check if it exists before using it.
+		const focalPointPickerExists = typeof FocalPointPicker === 'function';
 
 		return (
 			<InspectorControls key="inspector">
@@ -171,22 +175,26 @@ class FeaturedCategory extends Component {
 						},
 					] }
 				>
-					<RangeControl
-						label={ __( 'Background Opacity', 'woo-gutenberg-products-block' ) }
-						value={ attributes.dimRatio }
-						onChange={ ( ratio ) => setAttributes( { dimRatio: ratio } ) }
-						min={ 0 }
-						max={ 100 }
-						step={ 10 }
-					/>
-					{ !! FocalPointPicker && !! url &&
-						<FocalPointPicker
-							label={ __( 'Focal Point Picker' ) }
-							url={ url }
-							value={ focalPoint }
-							onChange={ ( value ) => setAttributes( { focalPoint: value } ) }
-						/>
-					}
+					{ !! url && (
+						<Fragment>
+							<RangeControl
+								label={ __( 'Background Opacity', 'woo-gutenberg-products-block' ) }
+								value={ attributes.dimRatio }
+								onChange={ ( ratio ) => setAttributes( { dimRatio: ratio } ) }
+								min={ 0 }
+								max={ 100 }
+								step={ 10 }
+							/>
+							{ focalPointPickerExists &&
+								<FocalPointPicker
+									label={ __( 'Focal Point Picker' ) }
+									url={ url }
+									value={ focalPoint }
+									onChange={ ( value ) => setAttributes( { focalPoint: value } ) }
+								/>
+							}
+						</Fragment>
+					) }
 				</PanelColorSettings>
 			</InspectorControls>
 		);
@@ -211,7 +219,7 @@ class FeaturedCategory extends Component {
 				className="wc-block-featured-category"
 			>
 				{ __(
-					'Visually highlight a product category and encourage prompt action',
+					'Visually highlight a product category and encourage prompt action.',
 					'woo-gutenberg-products-block'
 				) }
 				<div className="wc-block-featured-category__selection">

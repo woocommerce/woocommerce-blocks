@@ -33,6 +33,11 @@ const baseConfig = {
 		hash: true,
 		timings: true,
 	},
+	resolve: {
+		alias: {
+			'@woocommerce/settings': path.resolve( __dirname, 'assets/js/settings/index.js' ),
+		},
+	},
 };
 
 /**
@@ -53,6 +58,7 @@ const GutenbergBlocksConfig = {
 		'product-top-rated': './assets/js/blocks/product-top-rated/index.js',
 		'products-by-attribute': './assets/js/blocks/products-by-attribute/index.js',
 		'featured-product': './assets/js/blocks/featured-product/index.js',
+		'product-search': './assets/js/blocks/product-search/index.js',
 		'product-tag': './assets/js/blocks/product-tag/index.js',
 		'featured-category': './assets/js/blocks/featured-category/index.js',
 		'price-filter': './assets/js/blocks/price-filter/index.js',
@@ -105,7 +111,10 @@ const GutenbergBlocksConfig = {
 				use: {
 					loader: 'babel-loader?cacheDirectory',
 					options: {
-						presets: [ '@wordpress/default' ],
+						presets: [ '@wordpress/babel-preset-default' ],
+						plugins: [
+							NODE_ENV === 'production' ? require.resolve( 'babel-plugin-transform-react-remove-prop-types' ) : false,
+						].filter( Boolean ),
 					},
 				},
 			},
@@ -181,6 +190,7 @@ const BlocksFrontendConfig = {
 							require.resolve( '@babel/plugin-transform-react-jsx' ),
 							require.resolve( '@babel/plugin-proposal-async-generator-functions' ),
 							require.resolve( '@babel/plugin-transform-runtime' ),
+							NODE_ENV === 'production' ? require.resolve( 'babel-plugin-transform-react-remove-prop-types' ) : false,
 						].filter( Boolean ),
 					},
 				},
