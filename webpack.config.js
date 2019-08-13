@@ -33,6 +33,11 @@ const baseConfig = {
 		hash: true,
 		timings: true,
 	},
+	resolve: {
+		alias: {
+			data: './assets/js/data/index.js',
+		},
+	},
 };
 
 /**
