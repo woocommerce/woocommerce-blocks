@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
@@ -85,7 +86,9 @@ class EditorBlock extends Component {
 					reviews={ reviews }
 				/>
 				{ ( attributes.showLoadMore && totalReviews > reviews.length ) && (
-					<LoadMoreButton />
+					<LoadMoreButton
+						screenReaderLabel={ __( 'Load more reviews', 'woo-gutenberg-products-block' ) }
+					/>
 				) }
 			</Fragment>
 		);

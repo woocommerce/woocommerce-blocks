@@ -1,8 +1,10 @@
 /**
  * External dependencies
  */
+import { __, _n, sprintf } from '@wordpress/i18n';
 import { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { speak } from '@wordpress/a11y';
 
 /**
  * Internal dependencies
@@ -55,6 +57,9 @@ class FrontendBlock extends Component {
 			this.setState( { reviews, totalReviews } );
 		} ).catch( () => {
 			this.setState( { reviews: [] } );
+			speak(
+				__( 'There was an error loading the reviews.', 'woo-gutenberg-products-block' )
+			);
 		} );
 	}
 
@@ -76,8 +81,21 @@ class FrontendBlock extends Component {
 				reviews: reviews.filter( ( review ) => Object.keys( review ).length ).concat( newReviews ),
 				totalReviews: newTotalReviews,
 			} );
+			speak(
+				sprintf(
+					_n(
+						'%d review loaded.',
+						'%d reviews loaded.',
+						'woo-gutenberg-products-block'
+					),
+					newReviews.length
+				)
+			);
 		} ).catch( () => {
 			this.setState( { reviews: [] } );
+			speak(
+				__( 'There was an error loading the reviews.', 'woo-gutenberg-products-block' )
+			);
 		} );
 	}
 
@@ -101,8 +119,12 @@ class FrontendBlock extends Component {
 		};
 		getReviews( args ).then( ( { reviews, totalReviews: newTotalReviews } ) => {
 			this.setState( { reviews, totalReviews: newTotalReviews } );
+			speak( __( 'Reviews order updated.', 'woo-gutenberg-products-block' ) );
 		} ).catch( () => {
 			this.setState( { reviews: [] } );
+			speak(
+				__( 'There was an error loading the reviews.', 'woo-gutenberg-products-block' )
+			);
 		} );
 	}
 
@@ -127,6 +149,7 @@ class FrontendBlock extends Component {
 				{ ( attributes.showLoadMore && totalReviews > reviews.length ) && (
 					<LoadMoreButton
 						onClick={ this.appendReviews }
+						screenReaderLabel={ __( 'Load more reviews', 'woo-gutenberg-products-block' ) }
 					/>
 				) }
 			</Fragment>
