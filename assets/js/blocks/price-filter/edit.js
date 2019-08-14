@@ -46,21 +46,21 @@ export default function( { attributes, setAttributes } ) {
 			<p>
 				{ __( "Products with prices are needed for filtering your products. You haven't created any yet.", 'woo-gutenberg-products-block' ) }
 			</p>
-			<div>
-				<Button
-					isDefault
-					isLarge
-					href={ adminUrl + 'post-new.php?post_type=product' }
-				>
-					{ __( 'Add new product', 'woo-gutenberg-products-block' ) } <IconExternal />
-				</Button>
-				<Button
-					isTertiary
-					href="https://docs.woocommerce.com/document/managing-products/"
-				>
-					{ __( 'Learn more', 'woo-gutenberg-products-block' ) }
-				</Button>
-			</div>
+			<Button
+				className="wc-block-price-slider__add_product_button"
+				isDefault
+				isLarge
+				href={ adminUrl + 'post-new.php?post_type=product' }
+			>
+				{ __( 'Add new product', 'woo-gutenberg-products-block' ) } <IconExternal />
+			</Button>
+			<Button
+				className="wc-block-price-slider__read_more_button"
+				isTertiary
+				href="https://docs.woocommerce.com/document/managing-products/"
+			>
+				{ __( 'Learn more', 'woo-gutenberg-products-block' ) }
+			</Button>
 		</Placeholder>
 	);
 

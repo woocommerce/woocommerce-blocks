@@ -21,24 +21,28 @@
 		margin-right: 1ch;
 	}
 	.components-placeholder__fieldset {
-		font-size: 14px;
-		margin-bottom: 0.5em;
+		display: block !important; /* Disable flex box */
 
 		p {
 			font-size: 14px !important;
 		}
 	}
-	.components-button {
-		margin: 0 0 0.5em;
+	.wc-block-price-slider__add_product_button {
+		margin: 0 0 1em;
 		line-height: 24px;
 		vertical-align: middle;
 		height: auto;
-		font-size: 1em;
+		font-size: 14px;
 		padding: 0.5em 1em;
+
+		svg {
+			fill: currentColor;
+			margin-left: 0.5ch;
+			vertical-align: middle;
+		}
 	}
-	.components-button svg {
-		fill: currentColor;
-		margin-left: 0.5ch;
-		vertical-align: middle;
+	.wc-block-price-slider__read_more_button {
+		display: block;
+		margin-bottom: 1em;
 	}
 }
