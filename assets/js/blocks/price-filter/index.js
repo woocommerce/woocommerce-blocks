@@ -8,7 +8,6 @@ import { registerBlockType } from '@wordpress/blocks';
  * Internal dependencies
  */
 import edit from './edit.js';
-
 import { IconMoney } from '../../components/icons';
 
 registerBlockType( 'woocommerce/price-filter', {

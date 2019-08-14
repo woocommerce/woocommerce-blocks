@@ -140,6 +140,7 @@ class Assets {
 			'hasTags'           => $tag_count > 0,
 			'productCategories' => $product_categories,
 			'homeUrl'           => esc_js( home_url( '/' ) ),
+			'productCount'      => array_sum( (array) $product_counts ),
 		);
 		?>
 		<script type="text/javascript">

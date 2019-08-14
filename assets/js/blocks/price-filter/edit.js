@@ -12,7 +12,7 @@ import { Placeholder, Disabled, PanelBody, ToggleControl, Button } from '@wordpr
 import Block from './block.js';
 import './editor.scss';
 import { IconMoney, IconExternal } from '../../components/icons';
-import { adminUrl } from '@woocommerce/settings';
+import { adminUrl, blockData } from '@woocommerce/settings';
 
 export default function( { attributes, setAttributes } ) {
 	const getInspectorControls = () => {
@@ -54,7 +54,7 @@ export default function( { attributes, setAttributes } ) {
 			instructions={ __( 'Display a slider to filter products in your store by price.', 'woo-gutenberg-products-block' ) }
 		>
 			<p>
-				{ __( "Products with prices are needed for filtering your products. You haven't created any yet.", 'woo-gutenberg-products-block' ) }
+				{ __( "Products with prices are needed for filtering by price. You haven't created any products yet.", 'woo-gutenberg-products-block' ) }
 			</p>
 			<Button
 				className="wc-block-price-slider__add_product_button"
@@ -76,11 +76,14 @@ export default function( { attributes, setAttributes } ) {
 
 	return (
 		<Fragment>
-			{ noProductsPlaceholder() }
-			{ getInspectorControls() }
-			<Disabled>
-				<Block attributes={ attributes } isPreview />
-			</Disabled>
+			{ 0 === blockData.productCount ? noProductsPlaceholder() : (
+				<Fragment>
+					{ getInspectorControls() }
+					<Disabled>
+						<Block attributes={ attributes } isPreview />
+					</Disabled>
+				</Fragment>
+			) }
 		</Fragment>
 	);
 }
