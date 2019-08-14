@@ -16,7 +16,7 @@ import { adminUrl } from '@woocommerce/settings';
 
 export default function( { attributes, setAttributes } ) {
 	const getInspectorControls = () => {
-		const { showInputFields } = attributes;
+		const { showInputFields, showFilterButton } = attributes;
 
 		return (
 			<InspectorControls key="inspector">
@@ -30,6 +30,16 @@ export default function( { attributes, setAttributes } ) {
 						}
 						checked={ showInputFields }
 						onChange={ () => setAttributes( { showInputFields: ! showInputFields } ) }
+					/>
+					<ToggleControl
+						label={ __( 'Show filter button', 'woo-gutenberg-products-block' ) }
+						help={
+							showFilterButton ?
+								__( 'Filter button is visible. Results will only update when the button is pressed.', 'woo-gutenberg-products-block' ) :
+								__( 'Filter button is hidden. Results will update when the slider is used.', 'woo-gutenberg-products-block' )
+						}
+						checked={ showFilterButton }
+						onChange={ () => setAttributes( { showFilterButton: ! showFilterButton } ) }
 					/>
 				</PanelBody>
 			</InspectorControls>

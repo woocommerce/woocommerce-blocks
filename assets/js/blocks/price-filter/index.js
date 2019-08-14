@@ -8,6 +8,7 @@ import { registerBlockType } from '@wordpress/blocks';
  * Internal dependencies
  */
 import edit from './edit.js';
+
 import { IconMoney } from '../../components/icons';
 
 registerBlockType( 'woocommerce/price-filter', {
@@ -31,6 +32,10 @@ registerBlockType( 'woocommerce/price-filter', {
 			type: 'boolean',
 			default: true,
 		},
+		showFilterButton: {
+			type: 'boolean',
+			default: false,
+		},
 	},
 
 	edit,
@@ -38,8 +43,12 @@ registerBlockType( 'woocommerce/price-filter', {
 	/**
 	 * Save the props to post content.
 	 */
-	save() {
-		const data = {};
+	save( { attributes } ) {
+		const { showInputFields, showFilterButton } = attributes;
+		const data = {
+			'data-showinputfields': showInputFields,
+			'data-showfilterbutton': showFilterButton,
+		};
 		return (
 			<div className="is-loading" { ...data }>
 				<span aria-hidden className="wc-block-product-categories__placeholder" />

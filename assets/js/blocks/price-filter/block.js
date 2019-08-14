@@ -16,7 +16,7 @@ import { currency } from '@woocommerce/settings';
 class PriceFilterBlock extends Component {
 	render() {
 		const { attributes } = this.props;
-		const { showInputFields } = attributes;
+		const { showInputFields, showFilterButton } = attributes;
 		const classes = classnames(
 			'wc-block-price-slider',
 		);
@@ -29,6 +29,8 @@ class PriceFilterBlock extends Component {
 					currencySymbol={ currency.symbol }
 					priceFormat={ currency.price_format }
 					showInputFields={ showInputFields }
+					showFilterButton={ showFilterButton }
+					onChange={ () => {} }
 				/>
 			</div>
 		);
