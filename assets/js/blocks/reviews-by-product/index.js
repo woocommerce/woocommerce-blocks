@@ -8,7 +8,6 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import './style.scss';
 import './editor.scss';
 import Editor from './edit';
 import { IconReviewsByProduct } from '../../components/icons';
