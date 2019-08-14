@@ -70,21 +70,21 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, error, getProduct
 					_n(
 						'%d Review',
 						'%d Reviews',
-						item.rating_count,
+						item.review_count,
 						'woo-gutenberg-products-block'
 					),
-					item.rating_count
+					item.review_count
 				) }
 				showCount
 				aria-label={ sprintf(
 					_n(
 						'%s, has %d review',
 						'%s, has %d reviews',
-						item.rating_count,
+						item.review_count,
 						'woo-gutenberg-products-block'
 					),
 					item.name,
-					item.rating_count
+					item.review_count
 				) }
 			/>
 		);
@@ -275,7 +275,7 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, error, getProduct
 
 		return (
 			<Fragment>
-				{ product.rating_count === 0 ? (
+				{ product.review_count === 0 ? (
 					<Placeholder
 						className="wc-block-reviews-by-product"
 						icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
@@ -340,7 +340,7 @@ ReviewsByProductEditor.propTypes = {
 	isLoading: PropTypes.bool,
 	product: PropTypes.shape( {
 		name: PropTypes.node,
-		rating_count: PropTypes.number,
+		review_count: PropTypes.number,
 	} ),
 	// from withSpokenMessages
 	debouncedSpeak: PropTypes.func.isRequired,
