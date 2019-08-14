@@ -122,7 +122,17 @@ class ProductReviews extends WC_REST_Controller {
 
 		if ( isset( $registered['orderby'] ) ) {
 			if ( 'rating' === $request['orderby'] ) {
-				$prepared_args['meta_key'] = 'rating'; // phpcs:ignore
+				$prepared_args['meta_query'] = array( // phpcs:ignore
+					'relation' => 'OR',
+					array(
+						'key'     => 'rating',
+						'compare' => 'EXISTS',
+					),
+					array(
+						'key'     => 'rating',
+						'compare' => 'NOT EXISTS',
+					),
+				);
 			}
 			$prepared_args['orderby'] = $this->normalize_query_param( $request['orderby'] );
 		}
