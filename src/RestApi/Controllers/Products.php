@@ -207,7 +207,7 @@ class Products extends WC_REST_Products_Controller {
 			'price_html'     => $product->get_price_html(),
 			'images'         => $this->get_images( $product ),
 			'average_rating' => $product->get_average_rating(),
-			'rating_count'   => $product->get_rating_count(),
+			'review_count'   => $product->get_review_count(),
 		);
 	}
 
@@ -359,7 +359,7 @@ class Products extends WC_REST_Products_Controller {
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
-				'rating_count'   => array(
+				'review_count'   => array(
 					'description' => __( 'Amount of reviews that the product has.', 'woo-gutenberg-products-block' ),
 					'type'        => 'integer',
 					'context'     => array( 'view', 'edit' ),
