@@ -7,12 +7,17 @@ module.exports = {
 	},
 	globals: {
 		wc_product_block_data: true,
+		wcSettings: true,
 	},
 	plugins: [
 		'jest',
 	],
 	rules: {
 		'@wordpress/dependency-group': 'off',
+		'camelcase': [ 'error', {
+			allow: [ 'wc_product_block_data' ],
+			properties: 'never',
+		} ],
 		'valid-jsdoc': 'off',
 	}
 };
