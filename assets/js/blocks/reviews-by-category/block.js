@@ -147,7 +147,6 @@ class ReviewsByCategory extends Component {
 		} );
 	}
 
-
 	renderOrderBySelect() {
 		const { attributes, componentId, isPreview } = this.props;
 		const { orderby } = this.state;
