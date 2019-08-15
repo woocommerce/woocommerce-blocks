@@ -8,6 +8,7 @@ import {
 } from '@wordpress/editor';
 import {
 	Button,
+	Disabled,
 	Notice,
 	PanelBody,
 	Placeholder,
@@ -292,9 +293,11 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, error, getProduct
 						} } />
 					</Placeholder>
 				) : (
-					<div className={ classes }>
-						<EditorBlock attributes={ attributes } />
-					</div>
+					<Disabled>
+						<div className={ classes }>
+							<EditorBlock attributes={ attributes } />
+						</div>
+					</Disabled>
 				) }
 			</Fragment>
 		);
