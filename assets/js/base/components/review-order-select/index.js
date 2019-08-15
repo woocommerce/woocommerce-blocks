@@ -15,7 +15,12 @@ const ReviewOrderSelect = ( { componentId, onChange, readOnly, value } ) => {
 	return (
 		<p className="wc-block-review-order-select">
 			<label className="wc-block-review-order-select__label" htmlFor={ selectId }>
-				{ __( 'Order by', 'woo-gutenberg-products-block' ) }
+				<span aria-hidden>
+					{ __( 'Order by', 'woo-gutenberg-products-block' ) }
+				</span>
+				<span className="screen-reader-text">
+					{ __( 'Order reviews by', 'woo-gutenberg-products-block' ) }
+				</span>
 			</label>
 			<select // eslint-disable-line jsx-a11y/no-onchange
 				id={ selectId }
