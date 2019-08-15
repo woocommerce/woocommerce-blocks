@@ -33,8 +33,8 @@ export const LoadMoreButton = ( { onClick, label, screenReaderLabel } ) => {
 };
 
 LoadMoreButton.propTypes = {
-	onClick: PropTypes.func.isRequired,
 	label: PropTypes.string,
+	onClick: PropTypes.func,
 	screenReaderLabel: PropTypes.string,
 };
 
