@@ -270,11 +270,11 @@ PriceSlider.propTypes = {
 	/**
 	 * Whether or not to show input fields above the slider.
 	 */
-	showInputFields: PropTypes.boolean,
+	showInputFields: PropTypes.bool,
 	/**
 	 * Whether or not to show filter button above the slider.
 	 */
-	showFilterButton: PropTypes.boolean,
+	showFilterButton: PropTypes.bool,
 };
 
 PriceSlider.defaultProps = {
