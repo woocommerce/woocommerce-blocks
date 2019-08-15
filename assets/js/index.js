@@ -3,6 +3,12 @@
  */
 import { getCategories, setCategories } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
+import { registerStore } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
+import { queryStateStoreConfig } from './data';
 
 /**
  * Internal dependencies
@@ -20,3 +26,5 @@ setCategories( [
 		icon: <IconWoo />,
 	},
 ] );
+
+registerStore( 'wc-blocks/query-state', queryStateStoreConfig );
