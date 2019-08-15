@@ -8,7 +8,6 @@ import {
 } from '@wordpress/editor';
 import {
 	Button,
-	Disabled,
 	Notice,
 	PanelBody,
 	Placeholder,
@@ -23,7 +22,6 @@ import classNames from 'classnames';
 import { SearchListItem } from '@woocommerce/components';
 import { Fragment, RawHTML } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
-import { escapeHTML } from '@wordpress/escape-html';
 import PropTypes from 'prop-types';
 import { getAdminLink } from '@woocommerce/navigation';
 
@@ -44,7 +42,7 @@ const showAvatars = !! ( typeof wc_product_block_data !== 'undefined' && wc_prod
  * Component to handle edit mode of "Reviews by Product".
  */
 const ReviewsByProductEditor = ( { attributes, debouncedSpeak, error, getProduct, isLoading, product, setAttributes } ) => {
-	const { className, editMode, productId, showReviewDate, showReviewerName } = attributes;
+	const { className, editMode, productId, showReviewDate, showReviewerName, showReviewContent } = attributes;
 
 	const getBlockControls = () => (
 		<BlockControls>
@@ -137,6 +135,11 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, error, getProduct
 						label={ __( 'Review date', 'woo-gutenberg-products-block' ) }
 						checked={ attributes.showReviewDate }
 						onChange={ () => setAttributes( { showReviewDate: ! attributes.showReviewDate } ) }
+					/>
+					<ToggleControl
+						label={ __( 'Review content', 'woo-gutenberg-products-block' ) }
+						checked={ attributes.showReviewContent }
+						onChange={ () => setAttributes( { showReviewContent: ! attributes.showReviewContent } ) }
 					/>
 					{ attributes.showReviewImage && (
 						<Fragment>
@@ -267,39 +270,31 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, error, getProduct
 	const renderViewMode = () => {
 		const showReviewImage = ( showAvatars || attributes.imageType === 'product' ) && attributes.showReviewImage;
 		const showReviewRating = enableReviewRating && attributes.showReviewRating;
+
+		if ( ! showReviewContent && ! showReviewRating && ! showReviewDate && ! showReviewerName && ! showReviewImage ) {
+			return (
+				<Placeholder
+					className="wc-block-reviews-by-product"
+					icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
+					label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
+				>
+					{ __( 'The content for this block is hidden due to block settings.', 'woo-gutenberg-products-block' ) }
+				</Placeholder>
+			);
+		}
+
 		const classes = classNames( 'wc-block-reviews-by-product', className, {
 			'has-image': showReviewImage,
 			'has-name': showReviewerName,
 			'has-date': showReviewDate,
 			'has-rating': showReviewRating,
+			'has-content': showReviewContent,
 		} );
 
 		return (
-			<Fragment>
-				{ product.review_count === 0 ? (
-					<Placeholder
-						className="wc-block-reviews-by-product"
-						icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
-						label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
-					>
-						<div dangerouslySetInnerHTML={ {
-							__html: sprintf(
-								__(
-									"This block lists reviews for a selected product. %s doesn't have any reviews yet, but they will show up here when it does.",
-									'woo-gutenberg-products-block'
-								),
-								'<strong>' + escapeHTML( product.name ) + '</strong>'
-							),
-						} } />
-					</Placeholder>
-				) : (
-					<Disabled>
-						<div className={ classes }>
-							<EditorBlock attributes={ attributes } />
-						</div>
-					</Disabled>
-				) }
-			</Fragment>
+			<div className={ classes }>
+				<EditorBlock attributes={ attributes } />
+			</div>
 		);
 	};
 

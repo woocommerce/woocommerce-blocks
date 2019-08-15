@@ -61,8 +61,16 @@ function getReviewContent( review ) {
 	);
 }
 
-const ReviewListItem = ( { attributes, review = {} } ) => {
-	const { imageType, showReviewDate, showReviewerName, showReviewImage, showReviewRating: showReviewRatingAttr } = attributes;
+function getReviewProductName( review ) {
+	return (
+		<div className="wc-block-review-list-item__product">
+			{ review.product_name }
+		</div>
+	);
+}
+
+const ReviewListItem = ( { attributes, review = {}, showProductNames } ) => {
+	const { imageType, showReviewDate, showReviewerName, showReviewImage, showReviewRating: showReviewRatingAttr, showReviewContent } = attributes;
 	const { date_created: dateCreated, formatted_date_created: formattedDateCreated, rating, reviewer = '' } = review;
 	const isLoading = ! Object.keys( review ).length > 0;
 	const showReviewRating = Number.isFinite( rating ) && showReviewRatingAttr;
@@ -75,6 +83,7 @@ const ReviewListItem = ( { attributes, review = {} } ) => {
 		<li className={ classes } aria-hidden={ isLoading }>
 			{ ( showReviewDate || showReviewerName || showReviewImage || showReviewRating ) && (
 				<div className="wc-block-review-list-item__info">
+					{ showProductNames && getReviewProductName( review ) }
 					{ showReviewImage && getReviewImage( review, imageType, isLoading ) }
 					{ ( showReviewerName || showReviewRating || showReviewDate ) && (
 						<div className="wc-block-review-list-item__meta">
@@ -95,7 +104,7 @@ const ReviewListItem = ( { attributes, review = {} } ) => {
 					) }
 				</div>
 			) }
-			{ getReviewContent( review ) }
+			{ showReviewContent && getReviewContent( review ) }
 		</li>
 	);
 };

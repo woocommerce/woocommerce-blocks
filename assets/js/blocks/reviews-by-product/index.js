@@ -121,6 +121,14 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 			type: 'boolean',
 			default: true,
 		},
+
+		/**
+		 * Show the product content.
+		 */
+		showReviewContent: {
+			type: 'boolean',
+			default: true,
+		},
 	},
 
 	/**
@@ -134,13 +142,14 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 	 * Save the props to post content.
 	 */
 	save( { attributes } ) {
-		const { className, imageType, orderby, productId, reviewsOnPageLoad, reviewsOnLoadMore, showLoadMore, showOrderby, showReviewDate, showReviewerName, showReviewImage, showReviewRating } = attributes;
+		const { className, imageType, orderby, productId, reviewsOnPageLoad, reviewsOnLoadMore, showLoadMore, showOrderby, showReviewDate, showReviewerName, showReviewImage, showReviewRating, showReviewContent } = attributes;
 
 		const classes = classNames( 'wc-block-reviews-by-product', className, {
 			'has-date': showReviewDate,
 			'has-name': showReviewerName,
 			'has-image': showReviewImage,
 			'has-rating': showReviewRating,
+			'has-content': showReviewContent,
 		} );
 		const data = {
 			'data-image-type': imageType,

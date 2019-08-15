@@ -16,7 +16,7 @@ import LoadMoreButton from '../../base/components/load-more-button';
 import ReviewList from '../../base/components/review-list';
 import ReviewOrderSelect from '../../base/components/review-order-select';
 import withComponentId from '../../base/hocs/with-component-id';
-import { IconReviewsByProduct } from '../../components/icons';
+import { IconReviewsByCategory } from '../../components/icons';
 
 const enableReviewRating = !! ( typeof wc_product_block_data !== 'undefined' && wc_product_block_data.enableReviewRating );
 
@@ -33,6 +33,7 @@ class EditorBlock extends Component {
 			isLoading: true,
 		};
 
+		this.renderNoReviews = this.renderNoReviews.bind( this );
 		this.debouncedLoadFirstReviews = debounce( this.loadFirstReviews.bind( this ), 400 );
 	}
 
@@ -43,7 +44,7 @@ class EditorBlock extends Component {
 	componentDidUpdate( prevProps ) {
 		if (
 			prevProps.attributes.orderby !== this.props.attributes.orderby ||
-			prevProps.attributes.productId !== this.props.attributes.productId ||
+			prevProps.attributes.categoryId !== this.props.attributes.categoryId ||
 			prevProps.attributes.reviewsOnPageLoad !== this.props.attributes.reviewsOnPageLoad
 		) {
 			this.debouncedLoadFirstReviews();
@@ -53,13 +54,13 @@ class EditorBlock extends Component {
 	getDefaultArgs() {
 		const { attributes } = this.props;
 		const { order, orderby } = getOrderArgs( attributes.orderby );
-		const { productId, reviewsOnPageLoad } = attributes;
+		const { categoryId, reviewsOnPageLoad } = attributes;
 
 		return {
 			order,
 			orderby,
 			per_page: reviewsOnPageLoad,
-			product_id: productId,
+			category_id: categoryId,
 		};
 	}
 
@@ -73,20 +74,20 @@ class EditorBlock extends Component {
 
 	renderNoReviews() {
 		const { attributes } = this.props;
-		const { product } = attributes;
+		const { category } = attributes;
 		return (
 			<Placeholder
-				className="wc-block-reviews-by-product"
-				icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
-				label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
+				className="wc-block-reviews-by-category"
+				icon={ <IconReviewsByCategory className="block-editor-block-icon" /> }
+				label={ __( 'Reviews by Category', 'woo-gutenberg-products-block' ) }
 			>
 				<div dangerouslySetInnerHTML={ {
 					__html: sprintf(
 						__(
-							"This block lists reviews for a selected product. %s doesn't have any reviews yet, but they will show up here when it does.",
+							"This block lists reviews for products from a selected category. %s doesn't have any reviews yet, but they will show up here when it does.",
 							'woo-gutenberg-products-block'
 						),
-						'<strong>' + escapeHTML( product.name ) + '</strong>'
+						category ? '<strong>' + escapeHTML( category.name ) + '</strong>' : __( 'The category', 'woo-gutenberg-products-block' )
 					),
 				} } />
 			</Placeholder>
@@ -114,6 +115,7 @@ class EditorBlock extends Component {
 					attributes={ attributes }
 					componentId={ componentId }
 					reviews={ reviews }
+					showProductNames={ true }
 				/>
 				{ ( attributes.showLoadMore && totalReviews > reviews.length ) && (
 					<LoadMoreButton
@@ -130,7 +132,9 @@ EditorBlock.propTypes = {
 	 * The attributes for this block.
 	 */
 	attributes: PropTypes.object.isRequired,
-	// from withComponentId
+	/**
+	 * From withComponentId.
+	 */
 	componentId: PropTypes.number,
 };
 

@@ -8,13 +8,12 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import './style.scss';
 import './editor.scss';
 import Editor from './edit';
 import { IconReviewsByCategory } from '../../components/icons';
 
 /**
- * Register and run the "Reviews by Product" block.
+ * Register and run the "Reviews by category" block.
  */
 registerBlockType( 'woocommerce/reviews-by-category', {
 	title: __( 'Reviews by Category', 'woo-gutenberg-products-block' ),
@@ -122,6 +121,14 @@ registerBlockType( 'woocommerce/reviews-by-category', {
 			type: 'boolean',
 			default: true,
 		},
+
+		/**
+		 * Show the product content.
+		 */
+		showReviewContent: {
+			type: 'boolean',
+			default: true,
+		},
 	},
 
 	/**
@@ -135,13 +142,14 @@ registerBlockType( 'woocommerce/reviews-by-category', {
 	 * Save the props to post content.
 	 */
 	save( { attributes } ) {
-		const { className, imageType, orderby, categoryId, reviewsOnPageLoad, reviewsOnLoadMore, showLoadMore, showOrderby, showReviewDate, showReviewerName, showReviewImage, showReviewRating } = attributes;
+		const { className, imageType, orderby, categoryId, reviewsOnPageLoad, reviewsOnLoadMore, showLoadMore, showOrderby, showReviewDate, showReviewerName, showReviewImage, showReviewRating, showReviewContent } = attributes;
 
 		const classes = classNames( 'wc-block-reviews-by-category', className, {
 			'has-date': showReviewDate,
 			'has-name': showReviewerName,
 			'has-image': showReviewImage,
 			'has-rating': showReviewRating,
+			'has-content': showReviewContent,
 		} );
 		const data = {
 			'data-image-type': imageType,

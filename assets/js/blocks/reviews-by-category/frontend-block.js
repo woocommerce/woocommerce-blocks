@@ -31,6 +31,7 @@ class FrontendBlock extends Component {
 			totalReviews: 0,
 		};
 
+		this.renderNoReviews = this.renderNoReviews.bind( this );
 		this.onChangeOrderby = this.onChangeOrderby.bind( this );
 		this.appendReviews = this.appendReviews.bind( this );
 	}
@@ -42,13 +43,13 @@ class FrontendBlock extends Component {
 	getDefaultArgs() {
 		const { attributes } = this.props;
 		const { order, orderby } = getOrderArgs( this.state.orderby );
-		const { productId, reviewsOnPageLoad } = attributes;
+		const { categoryId, reviewsOnPageLoad } = attributes;
 
 		return {
 			order,
 			orderby,
 			per_page: reviewsOnPageLoad,
-			product_id: productId,
+			category_id: categoryId,
 		};
 	}
 
