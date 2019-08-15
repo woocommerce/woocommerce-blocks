@@ -86,6 +86,8 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 = 2.4.0 =
 - Feature: Added a new product search block to insert a product search field on a page.
 - Enhancement: Add error handling for API requests to the featured product block.
+- Enhancement: Allow hidden products in handpicked products block.
+- Dev: Introduced higher order components, global data handlers, and refactored some blocks.
 
 = 2.3.0 - 2019-07-10 =
 
