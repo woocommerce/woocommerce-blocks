@@ -95,6 +95,8 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 = 2.3.1 =
 
 - Fix: Fix deprecation notices with PHP 7.4.
+- Fix: Removed unused screen-reader-text css styles for buttons which caused some theme conflicts.
+- Fix: Left align stars to fix alignment in Storefront.
 
 = 2.3.0 - 2019-08-12 =
 
