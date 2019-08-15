@@ -31,6 +31,7 @@ class Library {
 			'HandpickedProducts',
 			'ProductBestSellers',
 			'ProductCategories',
+			'ProductCategoryServerSide',
 			'ProductCategory',
 			'ProductNew',
 			'ProductOnSale',

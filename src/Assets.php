@@ -41,6 +41,7 @@ class Assets {
 		self::register_script( 'wc-handpicked-products', plugins_url( 'build/handpicked-products.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
 		self::register_script( 'wc-product-best-sellers', plugins_url( 'build/product-best-sellers.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
 		self::register_script( 'wc-product-category', plugins_url( 'build/product-category.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
+		self::register_script( 'wc-product-category-server-side', plugins_url( 'build/product-category-server-side.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
 		self::register_script( 'wc-product-new', plugins_url( 'build/product-new.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
 		self::register_script( 'wc-product-on-sale', plugins_url( 'build/product-on-sale.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
 		self::register_script( 'wc-product-top-rated', plugins_url( 'build/product-top-rated.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
@@ -180,11 +181,23 @@ class Assets {
 		$deps_path    = dirname( __DIR__ ) . '/' . str_replace( '.js', '.deps.json', $filename );
 		$dependencies = file_exists( $deps_path ) ? json_decode( file_get_contents( $deps_path ) ) : array(); // phpcs:ignore WordPress.WP.AlternativeFunctions
 		$dependencies = array_merge( $dependencies, $deps );
-
 		wp_register_script( $handle, $src, $dependencies, $ver, true );
 		if ( $has_i18n && function_exists( 'wp_set_script_translations' ) ) {
 			wp_set_script_translations( $handle, 'woo-gutenberg-products-block', dirname( __DIR__ ) . '/languages' );
 		}
+	}
+
+	/**
+	 * Temp access to protected function for registering frontend script.
+	 *
+	 * @param string $handle  The handle for the script.
+	 * @param string $file Path to the file from the plugin root.
+	 * @param array  $dependencies  An array of additional dependencies.
+	 * @return void
+	 */
+	public static function register_frontend_script( $handle, $file, $dependencies = [] ) {
+		$filepath = plugins_url( $file, __DIR__ );
+		self::register_script( $handle, $filepath, $dependencies );
 	}
 
 	/**

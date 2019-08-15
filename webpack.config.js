@@ -53,6 +53,7 @@ const GutenbergBlocksConfig = {
 		'product-best-sellers': './assets/js/blocks/product-best-sellers/index.js',
 		'product-category': './assets/js/blocks/product-category/index.js',
 		'product-categories': './assets/js/blocks/product-categories/index.js',
+		'product-category-server-side': './assets/js/blocks/product-category-server-side/index.js',
 		'product-new': './assets/js/blocks/product-new/index.js',
 		'product-on-sale': './assets/js/blocks/product-on-sale/index.js',
 		'product-top-rated': './assets/js/blocks/product-top-rated/index.js',
@@ -158,6 +159,7 @@ const BlocksFrontendConfig = {
 	entry: {
 		'product-categories': './assets/js/blocks/product-categories/frontend.js',
 		'reviews-by-product': './assets/js/blocks/reviews-by-product/frontend.js',
+		'product-category-server-side': './assets/js/blocks/product-category-server-side/frontend.js'
 	},
 	output: {
 		path: path.resolve( __dirname, './build/' ),
