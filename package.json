@@ -57,18 +57,19 @@
     "babel-plugin-transform-async-generator-functions": "6.24.1",
     "babel-plugin-transform-object-rest-spread": "6.26.0",
     "babel-plugin-transform-react-jsx": "6.24.1",
+    "babel-plugin-transform-react-remove-prop-types": "0.4.24",
     "babel-plugin-transform-runtime": "6.23.0",
     "babel-preset-env": "1.7.0",
     "bundlesize": "0.18.0",
     "chalk": "2.4.2",
     "classnames": "2.2.6",
     "clean-webpack-plugin": "3.0.0",
-    "core-js": "3.2.0",
+    "core-js": "3.2.1",
     "cross-env": "5.2.0",
     "css-loader": "3.2.0",
     "cssnano": "4.1.10",
     "eslint": "6.1.0",
-    "eslint-plugin-jest": "22.15.0",
+    "eslint-plugin-jest": "22.15.1",
     "har-validator": "5.1.3",
     "husky": "2.4.1",
     "ignore-loader": "^0.1.2",
@@ -81,7 +82,7 @@
     "postcss-loader": "3.0.0",
     "progress-bar-webpack-plugin": "1.12.1",
     "react-test-renderer": "16.8.6",
-    "rimraf": "2.6.3",
+    "rimraf": "2.7.1",
     "sass-loader": "7.2.0",
     "style-loader": "1.0.0",
     "stylelint": "10.1.0",
@@ -116,10 +117,6 @@
       "composer run-script phpcs"
     ]
   },
-  "browserslist": [
-    "last 1 version",
-    "not dead"
-  ],
   "files": [
     "assets/**/*.{js,scss,php}",
     "build/**/*.{js,json,css}",

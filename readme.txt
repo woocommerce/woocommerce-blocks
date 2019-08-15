@@ -12,11 +12,11 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 WooCommerce Blocks are the easiest, most flexible way to display your products on posts and pages!
 
-**Products by Attribute Block**
-Display a grid of products from your selected attributes.
-
 **Featured Product Block**
 Select and display a single product in a new, high impact fashion. Control text alignment, hide or show the price and description, add a color overlay, change the button call to action, and override the product photo.
+
+**Featured Category Block**
+Visually highlight a product category to increase traffic to that specific section on your shop.
 
 **Hand-Picked products Block**
 Display a grid of hand picked products. Products can be ordered in various ways.
@@ -35,6 +35,15 @@ Display a grid of on sale products, filterable by category.
 
 **Products by Category Block**
 Display a grid of products from your selected category, or categories. Products can be ordered in various ways.
+
+**Products by Tag Block**
+Show a grid of products based on a specific tag that allows you to highlight products based on finer classification options.
+
+**Products by Attribute Block**
+Display a grid of products from your selected attributes.
+
+**Product Categories List Block**
+Display all your product categories as a list or dropdown and help shoppers to find a specific category.
 
 We've also improved the category selection filter. If you select two or more categories, you can now chose to show products that include ANY or ALL selected categories.
 
@@ -83,6 +92,10 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 2.3.1 =
+
+- Fix: Fix deprecation notices with PHP 7.4.
+
 = 2.3.0 - 2019-08-12 =
 
 - Feature: Added a new Featured Category Block; feature a category and show a link to it's archive.
@@ -92,15 +105,15 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Feature: Added a cancel button to the product category block editor to discard unsaved changes.
 - Enhancement: Change the toggle for list type in Product Category List block to a button toggle component for clarity.
 - Build: Updated build process and plugin structure to follow modern best practices. Minimum PHP version bumped to 5.6.
-- Fix - Correctly hide products from grids when visibility is hidden.
-- Fix - Fix Featured Category block using radio buttons instead of checkboxes.
-- Fix - Use externals for frontend dependencies so they are shared between extensions and blocks. That saves 2.57MB on page weight.
-- Fix - Load frontend scripts dynamically only when the page contains a block that requires them.
-- Fix - Reduce dependencies of JavaScript powered frontend blocks.
-- Fix - Disable HTML editing on dynamic blocks which have no content.
-- Fix - Hide background opacity control in Featured Product settings if there is no background image.
-- Fix - Reduce CSS specificity to make styling easier.
-- Fix - Fix author access to API for handpicked products block.
+- Fix: Correctly hide products from grids when visibility is hidden.
+- Fix: Fix Featured Category block using radio buttons instead of checkboxes.
+- Fix: Use externals for frontend dependencies so they are shared between extensions and blocks. That saves 2.57MB on page weight.
+- Fix: Load frontend scripts dynamically only when the page contains a block that requires them.
+- Fix: Reduce dependencies of JavaScript powered frontend blocks.
+- Fix: Disable HTML editing on dynamic blocks which have no content.
+- Fix: Hide background opacity control in Featured Product settings if there is no background image.
+- Fix: Reduce CSS specificity to make styling easier.
+- Fix: Fix author access to API for handpicked products block.
 
 = 2.2.1 - 2019-07-04 =
 

@@ -33,6 +33,11 @@ const baseConfig = {
 		hash: true,
 		timings: true,
 	},
+	resolve: {
+		alias: {
+			'@woocommerce/settings': path.resolve( __dirname, 'assets/js/settings/index.js' ),
+		},
+	},
 };
 
 /**
@@ -104,7 +109,10 @@ const GutenbergBlocksConfig = {
 				use: {
 					loader: 'babel-loader?cacheDirectory',
 					options: {
-						presets: [ '@wordpress/default' ],
+						presets: [ '@wordpress/babel-preset-default' ],
+						plugins: [
+							NODE_ENV === 'production' ? require.resolve( 'babel-plugin-transform-react-remove-prop-types' ) : false,
+						].filter( Boolean ),
 					},
 				},
 			},
@@ -180,6 +188,7 @@ const BlocksFrontendConfig = {
 							require.resolve( '@babel/plugin-transform-react-jsx' ),
 							require.resolve( '@babel/plugin-proposal-async-generator-functions' ),
 							require.resolve( '@babel/plugin-transform-runtime' ),
+							NODE_ENV === 'production' ? require.resolve( 'babel-plugin-transform-react-remove-prop-types' ) : false,
 						].filter( Boolean ),
 					},
 				},
