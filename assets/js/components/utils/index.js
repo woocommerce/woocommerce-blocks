@@ -54,7 +54,7 @@ export const getProducts = ( { selected = [], search } ) => {
 /**
  * Get a promise that resolves to a product object from the API.
  *
- * @param {Object} productId Id of the product to retrieve.
+ * @param {number} productId Id of the product to retrieve.
  */
 export const getProduct = ( productId ) => {
 	return apiFetch( {
@@ -100,7 +100,7 @@ export const getProductTags = ( { selected = [], search } ) => {
 /**
  * Get a promise that resolves to a category object from the API.
  *
- * @param {Object} categoryId Id of the product to retrieve.
+ * @param {number} categoryId Id of the product to retrieve.
  */
 export const getCategory = ( categoryId ) => {
 	return apiFetch( {
