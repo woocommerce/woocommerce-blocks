@@ -8,7 +8,7 @@ input[type="text"].wc-block-form-text-input {
 	font-weight: normal;
 	text-shadow: none;
 	display: inline-block;
-	-webkit-appearance: none;
+	appearance: none;
 
 	&:focus {
 		outline: 2px solid #9f6893;
