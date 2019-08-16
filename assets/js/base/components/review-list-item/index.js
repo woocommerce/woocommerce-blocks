@@ -64,7 +64,9 @@ function getReviewContent( review ) {
 function getReviewProductName( review ) {
 	return (
 		<div className="wc-block-review-list-item__product">
-			{ review.product_name }
+			<a href={ review.product_permalink }>
+				{ review.product_name }
+			</a>
 		</div>
 	);
 }
