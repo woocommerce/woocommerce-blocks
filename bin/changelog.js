@@ -14,21 +14,12 @@ const headers = {
 	'User-Agent': 'request'
 };
 
-const columnIds = [];
-
 const getPullRequestType = labels => {
-	const typeLabel = labels.find( label => label.name.includes( '[Type]' ) );
+	const typeLabel = labels.find( label => label.name.includes( 'type:' ) );
 	if ( ! typeLabel ) {
-		return 'Dev';
+		return 'dev';
 	}
-	return typeLabel.name.replace( '[Type] ', '' );
-};
-
-const getLabels = labels => {
-	return labels
-		.filter( label => ! /\[.*\]/.test( label.name ) )
-		.map( label => label.name )
-		.join( ', ' );
+	return typeLabel.name.replace( 'type: ', '' );
 };
 
 const isCollaborator = async ( username ) => {
@@ -61,90 +52,49 @@ const isMergedPullRequest = async ( pullRequestUrl ) => {
 		});
 }
 
-const writeEntry = async ( content_url ) => {
-	const options = {
-		url: content_url,
-		headers,
-		json: true
-	}
-	return requestPromise( options )
-		.then( async data => {
-			if ( data.pull_request ) {
-				const isMerged = await isMergedPullRequest( data.pull_request.url );
-				if ( isMerged ) {
-					const collaborator = await isCollaborator( data.user.login );
-					const type = getPullRequestType( data.labels );
-					const labels = getLabels( data.labels );
-					const labelTag = labels.length ? `(${ labels })` : '';
-					const authorTag = collaborator ? '' : `👏 @${ data.user.login }`;
-					let title;
-					if ( /### Changelog Note/.test( data.body ) ) {
-						const bodyParts = data.body.split( '### Changelog Note:' );
-						const note = bodyParts[ bodyParts.length - 1 ];
-						title = note
-							// Remove comment prompt
-							.replace( /<!---(.*)--->/gm, '' )
-							// Remove new lines and whitespace
-							.trim();
-						if ( ! title.length ) {
-							title = `${ type }: ${ data.title }`;
-						}
-					} else {
-						title = `${ type }: ${ data.title }`;
-					}
-					const entry = `- ${ title } #${ data.number } ${ labelTag } ${ authorTag }`;
-					console.log( entry );
-				}
-			}
-		} )
-		.catch( err => {
-			console.log( '🤯' );
-			console.log( err.message );
-		});
-};
-
-const makeChangelog = async column_id => {
-	octokit.paginate(
-		'GET /projects/columns/:column_id/cards',
-		{ headers, column_id },
-		response => response.data.forEach( async card => {
-			await writeEntry( card.content_url );
-		} )
-	).catch( err => {
-		console.log( '🤯' );
-		console.log( err.message );
-	})
-};
-
-const printProjectColumns = async () => {
-	const options = {
-		url: 'https://api.github.com/projects/1492664/columns',
-		headers,
-		json: true,
+const writeEntry = async ( data ) => {
+	if ( ! data.pull_request ) {
+		return;
 	}
 
-	console.log( chalk.yellow( 'Gathering columns from the project board, https://github.com/orgs/woocommerce/projects/2' ) );
+	const isMerged = await isMergedPullRequest( data.pull_request.url );
+	const skipChangelog = data.labels.find( label => label.name === 'skip-changelog' );
 
-	return requestPromise( options )
-		.then( data => {
-			console.log( ' ' );
-			console.log( chalk.yellow( 'The project board contains the following columns:' ) );
-			console.log( ' ' );
-			console.log( '+---------+-----------------------------' );
-			console.log( '| id      | sprint name ' );
-			console.log( '+---------+-----------------------------' );
-			data.forEach( column => {
-				columnIds.push( column.id.toString() );
-				console.log( '| ' + chalk.green( column.id ) + ' | ' + column.name );
-			} );
-			console.log( '+---------+-----------------------------' );
-			console.log( ' ' );
-		} ).catch( err => {
-			console.log( '🤯' );
-			console.log( err.message );
-			exit;
-		});
-}
+	if ( ! isMerged || skipChangelog ) {
+		return;
+	}
+
+	const collaborator = await isCollaborator( data.user.login );
+	const type = getPullRequestType( data.labels );
+	const authorTag = collaborator ? '' : `👏 @${ data.user.login }`;
+	let title;
+	if ( /### Changelog\r\n\r\n> /.test( data.body ) ) {
+		const bodyParts = data.body.split( '### Changelog\r\n\r\n> ' );
+		const note = bodyParts[ bodyParts.length - 1 ];
+		title = note
+			// Remove comment prompt
+			.replace( /<!---(.*)--->/gm, '' )
+			// Remove new lines and whitespace
+			.trim();
+		if ( ! title.length ) {
+			title = `${ type }: ${ data.title }`;
+		}
+	} else {
+		title = `${ type }: ${ data.title }`;
+	}
+	return `- ${ title } #${ data.number } ${ authorTag }`;
+};
+
+const makeChangelog = async version => {
+	const results = await octokit.search.issuesAndPullRequests( {
+		q: `milestone:${ version }+type:pr+repo:woocommerce/woocommerce-gutenberg-products-block`,
+		sort: 'reactions',
+		per_page: 100,
+	} );
+	const entries = await Promise.all( results.data.items.map( async pr => await writeEntry( pr ) ) );
+
+	console.log( entries.filter( Boolean ).join( '\n' ) );
+};
 
 ( async () => {
 	console.log( chalk.yellow( 'This program requires an api token. You can create one here: ' ) + 'https://github.com/settings/tokens' );
@@ -157,20 +107,17 @@ const printProjectColumns = async () => {
 	const ready = await promptly.confirm( 'Are you ready to continue? ' );
 
 	if ( ready ) {
-		await printProjectColumns();
-		const id = await promptly.prompt( chalk.yellow( 'Enter a column id: ' ) );
-
-		if ( columnIds.includes( id ) ) {
-			console.log( '' );
-			console.log( chalk.green( 'Here is the generated changelog. Be sure to remove entries ' +
-				'not intended for a WooCommerce Admin release.' ) );
-			console.log( '' );
-			makeChangelog( id );
-		} else {
-			console.log( '' );
-			console.log( chalk.red( 'Invalid column id' ) );
-			console.log( '' );
-		}
+		console.log( '' );
+		console.log( chalk.yellow( 'In order to generate the changelog, you will have to provide a version number to retrieve the PRs from.' ) );
+		console.log( '' );
+		console.log( chalk.yellow( 'Write it as it appears in the milestones page: ' ) + 'https://github.com/woocommerce/woocommerce-gutenberg-products-block/milestones' );
+		console.log( '' );
+		const version = await promptly.prompt( 'Version number: ' );
+		console.log( '' );
+		console.log( chalk.green( 'Here is the generated changelog. Be sure to remove entries ' +
+			'not intended for a WooCommerce Blocks release.' ) );
+		console.log( '' );
+		makeChangelog( version );
 	} else {
 		console.log( '' );
 		console.log( chalk.yellow( 'Ok, see you soon.' ) );
