@@ -22,6 +22,7 @@ if ( containers.length ) {
 			showReviewImage: el.classList.contains( 'has-image' ),
 			showReviewRating: el.classList.contains( 'has-rating' ),
 			showReviewContent: el.classList.contains( 'has-content' ),
+			showProductName: el.classList.contains( 'has-product-name' ),
 		};
 
 		render( <FrontendBlock attributes={ attributes } />, el );

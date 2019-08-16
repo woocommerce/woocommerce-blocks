@@ -23,7 +23,7 @@ registerBlockType( 'woocommerce/reviews-by-category', {
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
-		'Show product reviews from a specific category',
+		'Show product reviews from specific categories.',
 		'woo-gutenberg-products-block'
 	),
 	attributes: {
@@ -52,10 +52,11 @@ registerBlockType( 'woocommerce/reviews-by-category', {
 		},
 
 		/**
-		 * The id of the category to load reviews for.
+		 * The ids of the categories to load reviews for.
 		 */
-		categoryId: {
-			type: 'number',
+		categoryIds: {
+			type: 'array',
+			default: [],
 		},
 
 		/**
@@ -129,6 +130,14 @@ registerBlockType( 'woocommerce/reviews-by-category', {
 			type: 'boolean',
 			default: true,
 		},
+
+		/**
+		 * Show the product name.
+		 */
+		showProductName: {
+			type: 'boolean',
+			default: true,
+		},
 	},
 
 	/**
@@ -142,7 +151,7 @@ registerBlockType( 'woocommerce/reviews-by-category', {
 	 * Save the props to post content.
 	 */
 	save( { attributes } ) {
-		const { className, imageType, orderby, categoryId, reviewsOnPageLoad, reviewsOnLoadMore, showLoadMore, showOrderby, showReviewDate, showReviewerName, showReviewImage, showReviewRating, showReviewContent } = attributes;
+		const { className, imageType, orderby, categoryIds, reviewsOnPageLoad, reviewsOnLoadMore, showLoadMore, showOrderby, showReviewDate, showReviewerName, showReviewImage, showReviewRating, showReviewContent, showProductName } = attributes;
 
 		const classes = classNames( 'wc-block-reviews-by-category', className, {
 			'has-date': showReviewDate,
@@ -150,10 +159,11 @@ registerBlockType( 'woocommerce/reviews-by-category', {
 			'has-image': showReviewImage,
 			'has-rating': showReviewRating,
 			'has-content': showReviewContent,
+			'has-product-name': showProductName,
 		} );
 		const data = {
 			'data-image-type': imageType,
-			'data-category-id': categoryId,
+			'data-category-ids': categoryIds.join( ',' ),
 			'data-orderby': orderby,
 			'data-reviews-on-page-load': reviewsOnPageLoad,
 			'data-reviews-on-load-more': reviewsOnLoadMore,

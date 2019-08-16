@@ -13,7 +13,6 @@ import {
 	Placeholder,
 	RangeControl,
 	SelectControl,
-	Spinner,
 	ToggleControl,
 	Toolbar,
 	withSpokenMessages,
@@ -28,12 +27,10 @@ import { getAdminLink } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import ApiErrorPlaceholder from '../../components/api-error-placeholder';
 import EditorBlock from './editor-block.js';
 import ProductCategoryControl from '../../components/product-category-control';
 import ToggleButtonControl from '../../components/toggle-button-control';
 import { IconReviewsByCategory } from '../../components/icons';
-import { withCategory } from '../../hocs';
 
 const enableReviewRating = !! ( typeof wc_product_block_data !== 'undefined' && wc_product_block_data.enableReviewRating );
 const showAvatars = !! ( typeof wc_product_block_data !== 'undefined' && wc_product_block_data.showAvatars );
@@ -41,8 +38,8 @@ const showAvatars = !! ( typeof wc_product_block_data !== 'undefined' && wc_prod
 /**
  * Component to handle edit mode of "Reviews by Category".
  */
-const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, error, getCategory, isLoading, category, setAttributes } ) => {
-	const { className, editMode, categoryId, showReviewDate, showReviewerName, showReviewContent } = attributes;
+const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, setAttributes } ) => {
+	const { className, editMode, categoryIds, showReviewDate, showReviewerName, showReviewContent, showProductName } = attributes;
 
 	const getBlockControls = () => (
 		<BlockControls>
@@ -105,10 +102,10 @@ const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, error, getCatego
 					initialOpen={ false }
 				>
 					<ProductCategoryControl
-						selected={ attributes.categoryId || 0 }
+						selected={ attributes.categoryIds }
 						onChange={ ( value = [] ) => {
-							const id = value[ 0 ] ? value[ 0 ].id : 0;
-							setAttributes( { categoryId: id } );
+							const ids = value.map( ( { id } ) => id );
+							setAttributes( { categoryIds: ids } );
 						} }
 						renderItem={ renderCategoryControlItem }
 					/>
@@ -126,6 +123,11 @@ const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, error, getCatego
 							</RawHTML>
 						</Notice>
 					) }
+					<ToggleControl
+						label={ __( 'Product name', 'woo-gutenberg-products-block' ) }
+						checked={ attributes.showProductName }
+						onChange={ () => setAttributes( { showProductName: ! attributes.showProductName } ) }
+					/>
 					<ToggleControl
 						label={ __( 'Reviewer name', 'woo-gutenberg-products-block' ) }
 						checked={ attributes.showReviewerName }
@@ -209,27 +211,6 @@ const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, error, getCatego
 		);
 	};
 
-	const renderApiError = () => (
-		<ApiErrorPlaceholder
-			className="wc-block-featured-product-error"
-			error={ error }
-			isLoading={ isLoading }
-			onRetry={ getCategory }
-		/>
-	);
-
-	const renderLoadingScreen = () => {
-		return (
-			<Placeholder
-				icon={ <IconReviewsByCategory className="block-editor-block-icon" /> }
-				label={ __( 'Reviews by Category', 'woo-gutenberg-products-block' ) }
-				className="wc-block-reviews-by-category"
-			>
-				<Spinner />
-			</Placeholder>
-		);
-	};
-
 	const renderEditMode = () => {
 		const onDone = () => {
 			setAttributes( { editMode: false } );
@@ -248,17 +229,16 @@ const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, error, getCatego
 				className="wc-block-reviews-by-category"
 			>
 				{ __(
-					'Show product reviews from a specific category',
+					'Show product reviews from specific categories.',
 					'woo-gutenberg-products-block'
 				) }
 				<div className="wc-block-reviews-by-category__selection">
 					<ProductCategoryControl
-						selected={ [ attributes.categoryId ] }
+						selected={ attributes.categoryIds }
 						onChange={ ( value = [] ) => {
-							const id = value[ 0 ] ? value[ 0 ].id : 0;
-							setAttributes( { categoryId: id } );
+							const ids = value.map( ( { id } ) => id );
+							setAttributes( { categoryIds: ids } );
 						} }
-						isSingle
 					/>
 					<Button isDefault onClick={ onDone }>
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }
@@ -272,7 +252,7 @@ const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, error, getCatego
 		const showReviewImage = ( showAvatars || attributes.imageType === 'product' ) && attributes.showReviewImage;
 		const showReviewRating = enableReviewRating && attributes.showReviewRating;
 
-		if ( ! showReviewContent && ! showReviewRating && ! showReviewDate && ! showReviewerName && ! showReviewImage ) {
+		if ( ! showReviewContent && ! showReviewRating && ! showReviewDate && ! showReviewerName && ! showReviewImage && ! showProductName ) {
 			return (
 				<Placeholder
 					className="wc-block-reviews-by-category"
@@ -290,6 +270,7 @@ const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, error, getCatego
 			'has-date': showReviewDate,
 			'has-rating': showReviewRating,
 			'has-content': showReviewContent,
+			'has-product-name': showProductName,
 		} );
 
 		return (
@@ -299,16 +280,8 @@ const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, error, getCatego
 		);
 	};
 
-	if ( error ) {
-		return renderApiError();
-	}
-
-	if ( ! categoryId || editMode ) {
+	if ( ! categoryIds || editMode ) {
 		return renderEditMode();
-	}
-
-	if ( ! category || isLoading ) {
-		return renderLoadingScreen();
 	}
 
 	return (
@@ -333,20 +306,10 @@ ReviewsByCategoryEditor.propTypes = {
 	 * A callback to update attributes.
 	 */
 	setAttributes: PropTypes.func.isRequired,
-	// from withCategory
-	error: PropTypes.object,
-	getCategory: PropTypes.func,
-	isLoading: PropTypes.bool,
-	category: PropTypes.shape( {
-		name: PropTypes.node,
-		description: PropTypes.node,
-		permalink: PropTypes.string,
-	} ),
 	// from withSpokenMessages
 	debouncedSpeak: PropTypes.func.isRequired,
 };
 
 export default compose( [
-	withCategory,
 	withSpokenMessages,
 ] )( ReviewsByCategoryEditor );

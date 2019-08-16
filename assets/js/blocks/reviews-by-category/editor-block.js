@@ -1,11 +1,10 @@
 /**
  * External dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
-import { escapeHTML } from '@wordpress/escape-html';
 import { Disabled, Placeholder } from '@wordpress/components';
 
 /**
@@ -44,7 +43,7 @@ class EditorBlock extends Component {
 	componentDidUpdate( prevProps ) {
 		if (
 			prevProps.attributes.orderby !== this.props.attributes.orderby ||
-			prevProps.attributes.categoryId !== this.props.attributes.categoryId ||
+			prevProps.attributes.categoryIds !== this.props.attributes.categoryIds ||
 			prevProps.attributes.reviewsOnPageLoad !== this.props.attributes.reviewsOnPageLoad
 		) {
 			this.debouncedLoadFirstReviews();
@@ -54,13 +53,13 @@ class EditorBlock extends Component {
 	getDefaultArgs() {
 		const { attributes } = this.props;
 		const { order, orderby } = getOrderArgs( attributes.orderby );
-		const { categoryId, reviewsOnPageLoad } = attributes;
+		const { categoryIds, reviewsOnPageLoad } = attributes;
 
 		return {
 			order,
 			orderby,
 			per_page: reviewsOnPageLoad,
-			category_id: categoryId,
+			category_id: categoryIds.join( ',' ),
 		};
 	}
 
@@ -73,23 +72,13 @@ class EditorBlock extends Component {
 	}
 
 	renderNoReviews() {
-		const { attributes } = this.props;
-		const { category } = attributes;
 		return (
 			<Placeholder
 				className="wc-block-reviews-by-category"
 				icon={ <IconReviewsByCategory className="block-editor-block-icon" /> }
 				label={ __( 'Reviews by Category', 'woo-gutenberg-products-block' ) }
 			>
-				<div dangerouslySetInnerHTML={ {
-					__html: sprintf(
-						__(
-							"This block lists reviews for products from a selected category. %s doesn't have any reviews yet, but they will show up here when it does.",
-							'woo-gutenberg-products-block'
-						),
-						category ? '<strong>' + escapeHTML( category.name ) + '</strong>' : __( 'The category', 'woo-gutenberg-products-block' )
-					),
-				} } />
+				{ __( 'This block lists reviews for products from selected categories. The selected categories do not have any reviews yet, but they will show up here when they do.', 'woo-gutenberg-products-block' ) }
 			</Placeholder>
 		);
 	}
@@ -115,7 +104,7 @@ class EditorBlock extends Component {
 					attributes={ attributes }
 					componentId={ componentId }
 					reviews={ reviews }
-					showProductNames={ true }
+					showProductName={ attributes.showProductName }
 				/>
 				{ ( attributes.showLoadMore && totalReviews > reviews.length ) && (
 					<LoadMoreButton

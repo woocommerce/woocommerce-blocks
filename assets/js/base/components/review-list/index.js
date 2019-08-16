@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import ReviewListItem from '../review-list-item';
 import './style.scss';
 
-const ReviewList = ( { attributes, componentId, reviews, showProductNames } ) => {
+const ReviewList = ( { attributes, componentId, reviews, showProductName } ) => {
 	const showReviewImage = ( wc_product_block_data.showAvatars || attributes.imageType === 'product' ) && attributes.showReviewImage;
 	const showReviewRating = wc_product_block_data.enableReviewRating && attributes.showReviewRating;
 	const attrs = {
@@ -28,7 +28,7 @@ const ReviewList = ( { attributes, componentId, reviews, showProductNames } ) =>
 					<ReviewListItem attributes={ attrs } />
 				) : (
 					reviews.map( ( review, i ) => (
-						<ReviewListItem key={ review.id || i } attributes={ attrs } review={ review } showProductNames={ showProductNames } />
+						<ReviewListItem key={ review.id || i } attributes={ attrs } review={ review } showProductName={ showProductName } />
 					) )
 				)
 			}
@@ -40,7 +40,7 @@ ReviewList.propTypes = {
 	attributes: PropTypes.object.isRequired,
 	componentId: PropTypes.number.isRequired,
 	reviews: PropTypes.array.isRequired,
-	showProductNames: PropTypes.bool,
+	showProductName: PropTypes.bool,
 };
 
 export default ReviewList;

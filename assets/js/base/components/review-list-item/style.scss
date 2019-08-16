@@ -17,6 +17,10 @@
 				width: 80px;
 			}
 
+			.wc-block-review-list-item__product {
+				display: none;
+			}
+
 			.wc-block-review-list-item__rating {
 				.wc-block-review-list-item__rating__stars > span {
 					display: none;
@@ -92,15 +96,56 @@
 	}
 }
 
+.wc-block-review-list-item__meta {
+	display: flex;
+	align-items: center;
+	flex-flow: row wrap;
+
+	&::after {
+		// Force wrap after star rating.
+		order: 3;
+		content: "";
+		flex-basis: 100%;
+	}
+}
+
+.wc-block-review-list-item__product {
+	display: block;
+	font-weight: bold;
+	order: 1;
+}
+
 .wc-block-review-list-item__author {
 	display: block;
+	font-weight: bold;
+	order: 1;
+}
+
+.wc-block-review-list-item__product + .wc-block-review-list-item__author {
+	font-weight: normal;
+	color: #808080;
+	order: 4;
+
+	&::after {
+		content: "";
+		display: inline-block;
+		margin-left: $gap/2;
+		margin-right: $gap/2;
+		border-right: 1px solid #ddd;
+		height: 1em;
+		vertical-align: middle;
+	}
+}
+
+.wc-block-review-list-item__published-date {
+	color: #808080;
+	order: 5;
 }
 
 .wc-block-review-list-item__rating {
-	display: inline-block;
-	vertical-align: middle;
-	margin-right: $gap;
+	margin-left: $gap;
 	height: 1em;
+	order: 2;
 
 	> .wc-block-review-list-item__rating__stars {
 		display: inline-block;
@@ -140,11 +185,4 @@
 		left: 0;
 		color: #e6a237;
 	}
-}
-
-.wc-block-review-list-item__published-date {
-	display: inline-block;
-	vertical-align: middle;
-	color: #808080;
-	font-size: 0.875em;
 }

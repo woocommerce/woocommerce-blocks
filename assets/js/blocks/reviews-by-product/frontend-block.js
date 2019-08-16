@@ -133,7 +133,7 @@ class FrontendBlock extends Component {
 		const { orderby, reviews, totalReviews } = this.state;
 
 		if ( 0 === reviews.length ) {
-			return;
+			return null;
 		}
 
 		return (
