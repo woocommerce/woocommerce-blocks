@@ -7,6 +7,8 @@ const chalk = require( 'chalk' );
 const octokit = require( '@octokit/rest' )();
 const promptly = require( 'promptly' );
 
+const REPO = 'woocommerce/woocommerce-gutenberg-products-block';
+
 const headers = {
 	'Content-Type': 'application/json;charset=UTF-8',
 	'Authorization': `token ${process.env.GH_API_TOKEN}`,
@@ -52,7 +54,7 @@ const isMergedPullRequest = async ( pullRequestUrl ) => {
 		});
 }
 
-const writeEntry = async ( data ) => {
+const getEntry = async ( data ) => {
 	if ( ! data.pull_request ) {
 		return;
 	}
@@ -87,13 +89,25 @@ const writeEntry = async ( data ) => {
 
 const makeChangelog = async version => {
 	const results = await octokit.search.issuesAndPullRequests( {
-		q: `milestone:${ version }+type:pr+repo:woocommerce/woocommerce-gutenberg-products-block`,
+		q: `milestone:${ version }+type:pr+repo:${ REPO }`,
 		sort: 'reactions',
 		per_page: 100,
 	} );
-	const entries = await Promise.all( results.data.items.map( async pr => await writeEntry( pr ) ) );
+	const entries = await Promise.all( results.data.items.map( async pr => await getEntry( pr ) ) );
 
-	console.log( entries.filter( Boolean ).join( '\n' ) );
+	if ( ! entries || ! entries.length ) {
+		console.log( chalk.yellow( "This version doesn't have any associated PR." ) );
+		return;
+	}
+
+	const filteredEntries = entries.filter( Boolean );
+
+	if ( ! entries || ! entries.length ) {
+		console.log( chalk.yellow( "None of the PRs of this version are eligible for the changelog." ) );
+		return;
+	}
+
+	console.log( filteredEntries.join( '\n' ) );
 };
 
 ( async () => {
