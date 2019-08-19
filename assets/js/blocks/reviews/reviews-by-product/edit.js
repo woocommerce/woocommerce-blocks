@@ -17,6 +17,7 @@ import {
 import { SearchListItem } from '@woocommerce/components';
 import { Fragment } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
+import { escapeHTML } from '@wordpress/escape-html';
 import PropTypes from 'prop-types';
 
 /**
@@ -186,9 +187,31 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, error, getProduct
 		);
 	};
 
+	const renderNoReviews = () => (
+		<Placeholder
+			className="wc-block-reviews-by-product"
+			icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
+			label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
+		>
+			<div dangerouslySetInnerHTML={ {
+				__html: sprintf(
+					__(
+						"This block lists reviews for a selected product. %s doesn't have any reviews yet, but they will show up here when it does.",
+						'woo-gutenberg-products-block'
+					),
+					'<strong>' + escapeHTML( product.name ) + '</strong>'
+				),
+			} } />
+		</Placeholder>
+	);
+
 	const renderViewMode = () => {
 		if ( ! showReviewContent && ! showReviewRating && ! showReviewDate && ! showReviewerName && ! showReviewImage ) {
 			return renderHiddenContentPlaceholder();
+		}
+
+		if ( product.review_count === 0 ) {
+			return renderNoReviews();
 		}
 
 		return (
