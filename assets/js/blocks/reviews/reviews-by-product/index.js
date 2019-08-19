@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import classNames from 'classnames';
 import { registerBlockType } from '@wordpress/blocks';
 
 /**
@@ -12,6 +11,7 @@ import './editor.scss';
 import Editor from './edit';
 import { IconReviewsByProduct } from '../../../components/icons';
 import sharedAttributes from '../attributes';
+import { getBlockClassName } from '../utils.js';
 
 /**
  * Register and run the "Reviews by Product" block.
@@ -48,15 +48,8 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 	 * Save the props to post content.
 	 */
 	save( { attributes } ) {
-		const { className, imageType, orderby, productId, reviewsOnPageLoad, reviewsOnLoadMore, showLoadMore, showOrderby, showReviewDate, showReviewerName, showReviewImage, showReviewRating, showReviewContent } = attributes;
+		const { imageType, orderby, productId, reviewsOnPageLoad, reviewsOnLoadMore, showLoadMore, showOrderby } = attributes;
 
-		const classes = classNames( 'wc-block-reviews-by-product', className, {
-			'has-date': showReviewDate,
-			'has-name': showReviewerName,
-			'has-image': showReviewImage,
-			'has-rating': showReviewRating,
-			'has-content': showReviewContent,
-		} );
 		const data = {
 			'data-image-type': imageType,
 			'data-product-id': productId,
@@ -68,7 +61,7 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 		};
 
 		return (
-			<div className={ classes } { ...data } />
+			<div className={ getBlockClassName( 'wc-block-reviews-by-product', attributes ) } { ...data } />
 		);
 	},
 } );

@@ -16,8 +16,7 @@ import ReviewList from '../../../base/components/review-list';
 import ReviewOrderSelect from '../../../base/components/review-order-select';
 import withComponentId from '../../../base/hocs/with-component-id';
 import { IconReviewsByCategory } from '../../../components/icons';
-
-const enableReviewRating = !! ( typeof wc_product_block_data !== 'undefined' && wc_product_block_data.enableReviewRating );
+import { ENABLE_REVIEW_RATING } from '../../../constants';
 
 /**
  * Block rendered in the editor.
@@ -93,7 +92,7 @@ class EditorBlock extends Component {
 
 		return (
 			<Disabled>
-				{ ( attributes.showOrderby && enableReviewRating ) && (
+				{ ( attributes.showOrderby && ENABLE_REVIEW_RATING ) && (
 					<ReviewOrderSelect
 						componentId={ componentId }
 						readOnly
