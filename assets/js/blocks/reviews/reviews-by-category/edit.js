@@ -176,7 +176,7 @@ const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, setAttributes } 
 
 		return (
 			<div className={ getBlockClassName( 'wc-block-reviews-by-category', attributes ) }>
-				<EditorBlock attributes={ attributes } delayMethod={ debounce } />
+				<EditorBlock attributes={ attributes } delayFunction={ debounce } />
 			</div>
 		);
 	};

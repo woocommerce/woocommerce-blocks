@@ -194,7 +194,7 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, error, getProduct
 
 		return (
 			<div className={ getBlockClassName( 'wc-block-reviews-by-product', attributes ) }>
-				<EditorBlock attributes={ attributes } delayMethod={ debounce } />
+				<EditorBlock attributes={ attributes } delayFunction={ debounce } />
 			</div>
 		);
 	};

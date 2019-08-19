@@ -29,7 +29,7 @@ const withReviews = ( OriginalComponent ) => {
 			this.onChangeArgs = this.onChangeArgs.bind( this );
 			this.updateListOfReviews = this.updateListOfReviews.bind( this );
 			this.setError = this.setError.bind( this );
-			this.delayedGetReviews = this.props.delayMethod( this.getReviews, 400 );
+			this.delayedGetReviews = this.props.delayFunction( this.getReviews, 400 );
 		}
 
 		componentDidMount() {
@@ -173,11 +173,11 @@ const withReviews = ( OriginalComponent ) => {
 	}
 
 	WrappedComponent.propTypes = {
-		delayMethod: PropTypes.array,
+		delayFunction: PropTypes.array,
 	};
 
 	WrappedComponent.defaultProps = {
-		delayMethod: ( f ) => f,
+		delayFunction: ( f ) => f,
 	};
 
 	return WrappedComponent;
