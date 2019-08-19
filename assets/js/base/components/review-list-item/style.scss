@@ -145,6 +145,7 @@
 	}
 }
 
+.wc-block-review-list-item__author:first-child + .wc-block-review-list-item__published-date,
 .wc-block-review-list-item__rating + .wc-block-review-list-item__author + .wc-block-review-list-item__published-date {
 	&::before {
 		display: none;
