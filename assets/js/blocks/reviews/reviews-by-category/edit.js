@@ -28,9 +28,9 @@ import { getAdminLink } from '@woocommerce/navigation';
  * Internal dependencies
  */
 import EditorBlock from './editor-block.js';
-import ProductCategoryControl from '../../components/product-category-control';
-import ToggleButtonControl from '../../components/toggle-button-control';
-import { IconReviewsByCategory } from '../../components/icons';
+import ProductCategoryControl from '../../../components/product-category-control';
+import ToggleButtonControl from '../../../components/toggle-button-control';
+import { IconReviewsByCategory } from '../../../components/icons';
 
 const enableReviewRating = !! ( typeof wc_product_block_data !== 'undefined' && wc_product_block_data.enableReviewRating );
 const showAvatars = !! ( typeof wc_product_block_data !== 'undefined' && wc_product_block_data.showAvatars );

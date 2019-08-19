@@ -11,11 +11,11 @@ import { Disabled, Placeholder } from '@wordpress/components';
  * Internal dependencies
  */
 import { getOrderArgs, getReviews } from '../utils';
-import LoadMoreButton from '../../base/components/load-more-button';
-import ReviewList from '../../base/components/review-list';
-import ReviewOrderSelect from '../../base/components/review-order-select';
-import withComponentId from '../../base/hocs/with-component-id';
-import { IconReviewsByCategory } from '../../components/icons';
+import LoadMoreButton from '../../../base/components/load-more-button';
+import ReviewList from '../../../base/components/review-list';
+import ReviewOrderSelect from '../../../base/components/review-order-select';
+import withComponentId from '../../../base/hocs/with-component-id';
+import { IconReviewsByCategory } from '../../../components/icons';
 
 const enableReviewRating = !! ( typeof wc_product_block_data !== 'undefined' && wc_product_block_data.enableReviewRating );
 

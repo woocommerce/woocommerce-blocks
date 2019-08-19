@@ -10,7 +10,7 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 import './editor.scss';
 import Editor from './edit';
-import { IconReviewsByCategory } from '../../components/icons';
+import { IconReviewsByCategory } from '../../../components/icons';
 
 /**
  * Register and run the "Reviews by category" block.

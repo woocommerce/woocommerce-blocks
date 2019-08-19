@@ -10,11 +10,11 @@ import { speak } from '@wordpress/a11y';
  * Internal dependencies
  */
 import { getOrderArgs, getReviews } from '../utils';
-import LoadMoreButton from '../../base/components/load-more-button';
-import ReviewOrderSelect from '../../base/components/review-order-select';
-import ReviewList from '../../base/components/review-list';
-import withComponentId from '../../base/hocs/with-component-id';
-import { ENABLE_REVIEW_RATING } from '../../constants';
+import LoadMoreButton from '../../../base/components/load-more-button';
+import ReviewOrderSelect from '../../../base/components/review-order-select';
+import ReviewList from '../../../base/components/review-list';
+import withComponentId from '../../../base/hocs/with-component-id';
+import { ENABLE_REVIEW_RATING } from '../../../constants';
 
 /**
  * Block rendered in the frontend.

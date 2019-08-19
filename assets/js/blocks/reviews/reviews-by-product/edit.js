@@ -28,13 +28,13 @@ import { getAdminLink } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import ApiErrorPlaceholder from '../../components/api-error-placeholder';
+import ApiErrorPlaceholder from '../../../components/api-error-placeholder';
 import EditorBlock from './editor-block.js';
-import ProductControl from '../../components/product-control';
-import ToggleButtonControl from '../../components/toggle-button-control';
-import { IconReviewsByProduct } from '../../components/icons';
-import { withProduct } from '../../hocs';
-import { ENABLE_REVIEW_RATING, SHOW_AVATARS } from '../../constants';
+import ProductControl from '../../../components/product-control';
+import ToggleButtonControl from '../../../components/toggle-button-control';
+import { IconReviewsByProduct } from '../../../components/icons';
+import { withProduct } from '../../../hocs';
+import { ENABLE_REVIEW_RATING, SHOW_AVATARS } from '../../../constants';
 
 /**
  * Component to handle edit mode of "Reviews by Product".
