@@ -1,21 +1,20 @@
 /**
  * External dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
-import { escapeHTML } from '@wordpress/escape-html';
 import { Disabled, Placeholder } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import { getOrderArgs, getReviews } from '../utils';
 import LoadMoreButton from '../../../base/components/load-more-button';
 import ReviewList from '../../../base/components/review-list';
 import ReviewOrderSelect from '../../../base/components/review-order-select';
 import withComponentId from '../../../base/hocs/with-component-id';
+import withReviews from '../../../base/hocs/with-reviews';
 import { IconReviewsByProduct } from '../../../components/icons';
 import { ENABLE_REVIEW_RATING } from '../../../constants';
 /**
@@ -25,53 +24,26 @@ class EditorBlock extends Component {
 	constructor() {
 		super( ...arguments );
 
-		this.state = {
-			reviews: [],
-			totalReviews: 0,
-			isLoading: true,
-		};
-
-		this.debouncedLoadFirstReviews = debounce( this.loadFirstReviews.bind( this ), 400 );
-	}
-
-	componentDidMount() {
-		this.loadFirstReviews();
+		this.debouncedGetReviews = debounce( this.props.getReviews.bind( this ), 400 );
 	}
 
 	componentDidUpdate( prevProps ) {
 		if (
 			prevProps.attributes.orderby !== this.props.attributes.orderby ||
-			prevProps.attributes.productId !== this.props.attributes.productId ||
+			prevProps.attributes.productId !== this.props.attributes.productId
+		) {
+			this.props.getReviews();
+		}
+		if (
 			prevProps.attributes.reviewsOnPageLoad !== this.props.attributes.reviewsOnPageLoad
 		) {
-			this.debouncedLoadFirstReviews();
+			// Since this attribute is controlled with a slider, it's better to debounce it to
+			// avoid making excessive requests.
+			this.debouncedGetReviews();
 		}
 	}
 
-	getDefaultArgs() {
-		const { attributes } = this.props;
-		const { order, orderby } = getOrderArgs( attributes.orderby );
-		const { productId, reviewsOnPageLoad } = attributes;
-
-		return {
-			order,
-			orderby,
-			per_page: reviewsOnPageLoad,
-			product_id: productId,
-		};
-	}
-
-	loadFirstReviews() {
-		getReviews( this.getDefaultArgs() ).then( ( { reviews, totalReviews } ) => {
-			this.setState( { reviews, totalReviews, isLoading: false } );
-		} ).catch( () => {
-			this.setState( { reviews: [], isLoading: false } );
-		} );
-	}
-
 	renderNoReviews() {
-		const { attributes } = this.props;
-		const { product } = attributes;
 		return (
 			<Placeholder
 				className="wc-block-reviews-by-product"
@@ -79,12 +51,9 @@ class EditorBlock extends Component {
 				label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
 			>
 				<div dangerouslySetInnerHTML={ {
-					__html: sprintf(
-						__(
-							"This block lists reviews for a selected product. %s doesn't have any reviews yet, but they will show up here when it does.",
-							'woo-gutenberg-products-block'
-						),
-						'<strong>' + escapeHTML( product.name ) + '</strong>'
+					__html: __(
+						"This block lists reviews for a selected product. The selected product doesn't have any reviews yet, but they will show up here when it does.",
+						'woo-gutenberg-products-block'
 					),
 				} } />
 			</Placeholder>
@@ -92,8 +61,7 @@ class EditorBlock extends Component {
 	}
 
 	render() {
-		const { attributes, componentId } = this.props;
-		const { reviews, totalReviews, isLoading } = this.state;
+		const { attributes, componentId, isLoading, reviews, totalReviews } = this.props;
 
 		if ( 0 === reviews.length && ! isLoading ) {
 			return this.renderNoReviews();
@@ -130,6 +98,10 @@ EditorBlock.propTypes = {
 	attributes: PropTypes.object.isRequired,
 	// from withComponentId
 	componentId: PropTypes.number,
+	//from withReviews
+	getReviews: PropTypes.func,
+	reviews: PropTypes.array,
+	totalReviews: PropTypes.number,
 };
 
-export default withComponentId( EditorBlock );
+export default withComponentId( withReviews( EditorBlock ) );
