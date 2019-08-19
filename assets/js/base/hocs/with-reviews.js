@@ -38,15 +38,24 @@ const withReviews = ( OriginalComponent ) => {
 			const { attributes } = this.props;
 			const { overwrittenArgs } = this.state;
 			const { order, orderby } = getOrderArgs( attributes.orderby );
-			const { productId, reviewsOnPageLoad } = attributes;
+			const { categoryIds, productId, reviewsOnPageLoad } = attributes;
 
-			return {
+			const args = {
 				order,
 				orderby,
 				per_page: reviewsOnPageLoad,
-				product_id: productId,
 				...overwrittenArgs,
 			};
+
+			if ( categoryIds ) {
+				args.category_id = Array.isArray( categoryIds ) ? categoryIds.join( ',' ) : categoryIds;
+			}
+
+			if ( productId ) {
+				args.product_id = productId;
+			}
+
+			return args;
 		}
 
 		getReviews() {

@@ -17,6 +17,7 @@ import withComponentId from '../../../base/hocs/with-component-id';
 import withReviews from '../../../base/hocs/with-reviews';
 import { IconReviewsByProduct } from '../../../components/icons';
 import { ENABLE_REVIEW_RATING } from '../../../constants';
+
 /**
  * Block rendered in the editor.
  */
@@ -29,17 +30,16 @@ class EditorBlock extends Component {
 
 	componentDidUpdate( prevProps ) {
 		if (
-			prevProps.attributes.orderby !== this.props.attributes.orderby ||
-			prevProps.attributes.productId !== this.props.attributes.productId
-		) {
-			this.props.getReviews();
-		}
-		if (
 			prevProps.attributes.reviewsOnPageLoad !== this.props.attributes.reviewsOnPageLoad
 		) {
 			// Since this attribute is controlled with a slider, it's better to debounce it to
 			// avoid making excessive requests.
 			this.debouncedGetReviews();
+		} else if (
+			prevProps.attributes.orderby !== this.props.attributes.orderby ||
+			prevProps.attributes.productId !== this.props.attributes.productId
+		) {
+			this.props.getReviews();
 		}
 	}
 
