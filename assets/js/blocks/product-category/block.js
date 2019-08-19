@@ -229,20 +229,16 @@ class ProductByCategoryBlock extends Component {
 
 		return (
 			<Disabled>
-				<ServerSideRender block={ name } attributes={ attributes } emptyResponsePlaceholder={ this.emptyResponsePlaceholder } />
+				<ServerSideRender block={ name } attributes={ attributes } EmptyResponsePlaceholder={ () => (
+					<Placeholder
+						icon="category"
+						label={ __( 'Products by Category', 'woo-gutenberg-products-block' ) }
+						className="wc-block-products-grid wc-block-products-category"
+						>
+						{ __( 'No products were found that matched your selection.', 'woo-gutenberg-products-block' ) }
+						</Placeholder>
+					) } />
 			</Disabled>
-		);
-	}
-
-	emptyResponsePlaceholder() {
-		return (
-			<Placeholder
-				icon="category"
-				label={ __( 'Products by Category', 'woo-gutenberg-products-block' ) }
-				className="wc-block-products-grid wc-block-products-category"
-			>
-				{ __( 'No products were found that matched your selection.', 'woo-gutenberg-products-block' ) }
-			</Placeholder>
 		);
 	}
 
