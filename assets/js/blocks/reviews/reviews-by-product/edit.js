@@ -10,19 +10,23 @@ import {
 	Button,
 	PanelBody,
 	Placeholder,
+	Spinner,
 	Toolbar,
 	withSpokenMessages,
 } from '@wordpress/components';
 import { SearchListItem } from '@woocommerce/components';
 import { Fragment } from '@wordpress/element';
+import { compose } from '@wordpress/compose';
 import PropTypes from 'prop-types';
 
 /**
  * Internal dependencies
  */
+import ApiErrorPlaceholder from '../../../components/api-error-placeholder';
 import EditorBlock from './editor-block.js';
 import ProductControl from '../../../components/product-control';
 import { IconReviewsByProduct } from '../../../components/icons';
+import { withProduct } from '../../../hocs';
 import { ENABLE_REVIEW_RATING, SHOW_AVATARS } from '../../../constants';
 import { getSharedReviewContentControls, getSharedReviewListControls } from '../edit.js';
 import { getBlockClassName } from '../utils.js';
@@ -30,7 +34,7 @@ import { getBlockClassName } from '../utils.js';
 /**
  * Component to handle edit mode of "Reviews by Product".
  */
-const ReviewsByProductEditor = ( { attributes, debouncedSpeak, setAttributes } ) => {
+const ReviewsByProductEditor = ( { attributes, debouncedSpeak, error, getProduct, isLoading, product, setAttributes } ) => {
 	attributes.showReviewImage = ( SHOW_AVATARS || attributes.imageType === 'product' ) && attributes.showReviewImage;
 	attributes.showReviewRating = ENABLE_REVIEW_RATING && attributes.showReviewRating;
 
@@ -107,6 +111,27 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, setAttributes } )
 		);
 	};
 
+	const renderApiError = () => (
+		<ApiErrorPlaceholder
+			className="wc-block-featured-product-error"
+			error={ error }
+			isLoading={ isLoading }
+			onRetry={ getProduct }
+		/>
+	);
+
+	const renderLoadingScreen = () => {
+		return (
+			<Placeholder
+				icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
+				label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
+				className="wc-block-reviews-by-product"
+			>
+				<Spinner />
+			</Placeholder>
+		);
+	};
+
 	const renderEditMode = () => {
 		const onDone = () => {
 			setAttributes( { editMode: false } );
@@ -173,8 +198,16 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, setAttributes } )
 		);
 	};
 
+	if ( error ) {
+		return renderApiError();
+	}
+
 	if ( ! productId || editMode ) {
 		return renderEditMode();
+	}
+
+	if ( ! product || isLoading ) {
+		return renderLoadingScreen();
 	}
 
 	return (
@@ -199,8 +232,19 @@ ReviewsByProductEditor.propTypes = {
 	 * A callback to update attributes.
 	 */
 	setAttributes: PropTypes.func.isRequired,
+	// from withProduct
+	error: PropTypes.object,
+	getProduct: PropTypes.func,
+	isLoading: PropTypes.bool,
+	product: PropTypes.shape( {
+		name: PropTypes.node,
+		review_count: PropTypes.number,
+	} ),
 	// from withSpokenMessages
 	debouncedSpeak: PropTypes.func.isRequired,
 };
 
-export default withSpokenMessages( ReviewsByProductEditor );
+export default compose( [
+	withProduct,
+	withSpokenMessages,
+] )( ReviewsByProductEditor );
