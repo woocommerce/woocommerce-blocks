@@ -10,7 +10,7 @@ import { Disabled, Placeholder } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import { getOrderArgs, getReviews } from './utils';
+import { getOrderArgs, getReviews } from '../utils';
 import LoadMoreButton from '../../base/components/load-more-button';
 import ReviewList from '../../base/components/review-list';
 import ReviewOrderSelect from '../../base/components/review-order-select';

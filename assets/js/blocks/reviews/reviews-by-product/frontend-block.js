@@ -9,7 +9,7 @@ import { speak } from '@wordpress/a11y';
 /**
  * Internal dependencies
  */
-import { getOrderArgs, getReviews } from './utils';
+import { getOrderArgs, getReviews } from '../utils';
 import LoadMoreButton from '../../base/components/load-more-button';
 import ReviewOrderSelect from '../../base/components/review-order-select';
 import ReviewList from '../../base/components/review-list';
