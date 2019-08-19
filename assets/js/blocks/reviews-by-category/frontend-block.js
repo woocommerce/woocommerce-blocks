@@ -149,7 +149,6 @@ class FrontendBlock extends Component {
 					attributes={ attributes }
 					componentId={ componentId }
 					reviews={ reviews }
-					showProductName={ attributes.showProductName }
 				/>
 				{ ( attributes.showLoadMore && totalReviews > reviews.length ) && (
 					<LoadMoreButton

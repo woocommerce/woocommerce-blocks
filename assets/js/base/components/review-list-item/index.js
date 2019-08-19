@@ -103,8 +103,8 @@ function getReviewRating( review ) {
 	);
 }
 
-const ReviewListItem = ( { attributes, review = {}, showProductName } ) => {
-	const { imageType, showReviewDate, showReviewerName, showReviewImage, showReviewRating: showReviewRatingAttr, showReviewContent } = attributes;
+const ReviewListItem = ( { attributes, review = {} } ) => {
+	const { imageType, showReviewDate, showReviewerName, showReviewImage, showReviewRating: showReviewRatingAttr, showReviewContent, showProductName } = attributes;
 	const { rating } = review;
 	const isLoading = ! Object.keys( review ).length > 0;
 	const showReviewRating = Number.isFinite( rating ) && showReviewRatingAttr;
