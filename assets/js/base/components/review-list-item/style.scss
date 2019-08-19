@@ -153,12 +153,11 @@
 }
 
 .wc-block-review-list-item__rating {
-	height: 1em;
 	order: 2;
 
 	> .wc-block-review-list-item__rating__stars {
 		display: inline-block;
-		top: -5px;
+		top: 0;
 		overflow: hidden;
 		position: relative;
 		height: 1.618em;
@@ -167,6 +166,7 @@
 		width: 5.3em;
 		font-family: star; /* stylelint-disable-line */
 		font-weight: 400;
+		vertical-align: top;
 	}
 
 	> .wc-block-review-list-item__rating__stars::before {
