@@ -15,6 +15,7 @@ import LoadMoreButton from '../../../base/components/load-more-button';
 import ReviewList from '../../../base/components/review-list';
 import ReviewOrderSelect from '../../../base/components/review-order-select';
 import withComponentId from '../../../base/hocs/with-component-id';
+import NoReviewsPlaceholder from './no-reviews-placeholder.js';
 import { ENABLE_REVIEW_RATING } from '../../../constants';
 /**
  * Block rendered in the editor.
@@ -72,7 +73,7 @@ class EditorBlock extends Component {
 		const { reviews, totalReviews, isLoading } = this.state;
 
 		if ( 0 === reviews.length && ! isLoading ) {
-			return this.renderNoReviews();
+			return <NoReviewsPlaceholder attributes={ attributes } />;
 		}
 
 		return (
