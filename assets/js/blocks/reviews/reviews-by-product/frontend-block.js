@@ -70,7 +70,7 @@ FrontendBlock.propTypes = {
 	attributes: PropTypes.object.isRequired,
 	// from withComponentId
 	componentId: PropTypes.number,
-	//from withReviews
+	// from withReviews
 	appendReviews: PropTypes.func,
 	onChangeArgs: PropTypes.func,
 	reviews: PropTypes.array,

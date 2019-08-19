@@ -73,7 +73,7 @@ EditorBlock.propTypes = {
 	 * From withComponentId.
 	 */
 	componentId: PropTypes.number,
-	//from withReviews
+	// from withReviews
 	reviews: PropTypes.array,
 	totalReviews: PropTypes.number,
 };
