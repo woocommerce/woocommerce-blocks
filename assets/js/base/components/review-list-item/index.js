@@ -112,7 +112,7 @@ const ReviewListItem = ( { attributes, review = {} } ) => {
 
 	return (
 		<li className={ classes } aria-hidden={ isLoading }>
-			{ ( showReviewDate || showReviewerName || showReviewImage || showReviewRating ) && (
+			{ ( showProductName || showReviewDate || showReviewerName || showReviewImage || showReviewRating ) && (
 				<div className="wc-block-review-list-item__info">
 					{ showReviewImage && getReviewImage( review, imageType, isLoading ) }
 					{ ( showProductName || showReviewerName || showReviewRating || showReviewDate ) && (
