@@ -71,7 +71,6 @@ FrontendBlock.propTypes = {
 	// from withComponentId
 	componentId: PropTypes.number,
 	//from withReviews
-	getReviews: PropTypes.func,
 	appendReviews: PropTypes.func,
 	onChangeArgs: PropTypes.func,
 	reviews: PropTypes.array,

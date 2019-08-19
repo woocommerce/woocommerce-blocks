@@ -4,6 +4,7 @@
 import { Component } from 'react';
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
+import PropTypes from 'prop-types';
 
 /**
  * Internal dependencies
@@ -11,7 +12,7 @@ import { speak } from '@wordpress/a11y';
 import { getReviews, getOrderArgs } from '../../blocks/reviews/utils';
 
 const withReviews = ( OriginalComponent ) => {
-	return class WrappedComponent extends Component {
+	class WrappedComponent extends Component {
 		constructor() {
 			super( ...arguments );
 
@@ -28,10 +29,27 @@ const withReviews = ( OriginalComponent ) => {
 			this.onChangeArgs = this.onChangeArgs.bind( this );
 			this.updateListOfReviews = this.updateListOfReviews.bind( this );
 			this.setError = this.setError.bind( this );
+			this.delayedGetReviews = this.props.delayMethod( this.getReviews, 400 );
 		}
 
 		componentDidMount() {
 			this.getReviews();
+		}
+
+		componentDidUpdate( prevProps ) {
+			if (
+				prevProps.attributes.reviewsOnPageLoad !== this.props.attributes.reviewsOnPageLoad
+			) {
+				// Since this attribute is controlled with a slider,
+				// it's better not to load the reviews immediately.
+				this.delayedGetReviews();
+			} else if (
+				prevProps.attributes.orderby !== this.props.attributes.orderby ||
+				prevProps.attributes.productId !== this.props.attributes.productId ||
+				prevProps.attributes.categoryIds !== this.props.attributes.categoryIds
+			) {
+				this.getReviews();
+			}
 		}
 
 		getDefaultArgs() {
@@ -145,7 +163,6 @@ const withReviews = ( OriginalComponent ) => {
 			return <OriginalComponent
 				{ ...this.props }
 				error={ error }
-				getReviews={ this.getReviews }
 				appendReviews={ this.appendReviews }
 				onChangeArgs={ this.onChangeArgs }
 				isLoading={ loading }
@@ -153,7 +170,17 @@ const withReviews = ( OriginalComponent ) => {
 				totalReviews={ totalReviews }
 			/>;
 		}
+	}
+
+	WrappedComponent.propTypes = {
+		delayMethod: PropTypes.array,
 	};
+
+	WrappedComponent.defaultProps = {
+		delayMethod: ( f ) => f,
+	};
+
+	return WrappedComponent;
 };
 
 export default withReviews;

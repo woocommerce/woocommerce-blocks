@@ -18,6 +18,7 @@ import { SearchListItem } from '@woocommerce/components';
 import { Fragment } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 import PropTypes from 'prop-types';
+import { debounce } from 'lodash';
 
 /**
  * Internal dependencies
@@ -175,7 +176,7 @@ const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, setAttributes } 
 
 		return (
 			<div className={ getBlockClassName( 'wc-block-reviews-by-category', attributes ) }>
-				<EditorBlock attributes={ attributes } />
+				<EditorBlock attributes={ attributes } delayMethod={ debounce } />
 			</div>
 		);
 	};

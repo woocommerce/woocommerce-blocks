@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { debounce } from 'lodash';
 import { Disabled, Placeholder } from '@wordpress/components';
 
 /**
@@ -22,27 +21,6 @@ import { ENABLE_REVIEW_RATING } from '../../../constants';
  * Block rendered in the editor.
  */
 class EditorBlock extends Component {
-	constructor() {
-		super( ...arguments );
-
-		this.debouncedGetReviews = debounce( this.props.getReviews.bind( this ), 400 );
-	}
-
-	componentDidUpdate( prevProps ) {
-		if (
-			prevProps.attributes.reviewsOnPageLoad !== this.props.attributes.reviewsOnPageLoad
-		) {
-			// Since this attribute is controlled with a slider, it's better to debounce it to
-			// avoid making excessive requests.
-			this.debouncedGetReviews();
-		} else if (
-			prevProps.attributes.orderby !== this.props.attributes.orderby ||
-			prevProps.attributes.categoryIds !== this.props.attributes.categoryIds
-		) {
-			this.props.getReviews();
-		}
-	}
-
 	renderNoReviews() {
 		return (
 			<Placeholder
@@ -96,7 +74,6 @@ EditorBlock.propTypes = {
 	 */
 	componentId: PropTypes.number,
 	//from withReviews
-	getReviews: PropTypes.func,
 	reviews: PropTypes.array,
 	totalReviews: PropTypes.number,
 };
