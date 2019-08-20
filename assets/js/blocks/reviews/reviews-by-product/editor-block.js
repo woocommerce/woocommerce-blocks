@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Disabled, Placeholder } from '@wordpress/components';
@@ -16,12 +16,15 @@ import withComponentId from '../../../base/hocs/with-component-id';
 import withReviews from '../../../base/hocs/with-reviews';
 import { IconReviewsByProduct } from '../../../components/icons';
 import { ENABLE_REVIEW_RATING } from '../../../constants';
+import { escapeHTML } from '@wordpress/escape-html';
 
 /**
  * Block rendered in the editor.
  */
 class EditorBlock extends Component {
 	renderNoReviews() {
+		const { attributes } = this.props;
+		const { product } = attributes;
 		return (
 			<Placeholder
 				className="wc-block-reviews-by-product"
@@ -29,9 +32,12 @@ class EditorBlock extends Component {
 				label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
 			>
 				<div dangerouslySetInnerHTML={ {
-					__html: __(
-						"This block lists reviews for a selected product. The selected product doesn't have any reviews yet, but they will show up here when it does.",
-						'woo-gutenberg-products-block'
+					__html: sprintf(
+						__(
+							"This block lists reviews for a selected product. %s doesn't have any reviews yet, but they will show up here when it does.",
+							'woo-gutenberg-products-block'
+						),
+						'<strong>' + escapeHTML( product.name ) + '</strong>'
 					),
 				} } />
 			</Placeholder>
