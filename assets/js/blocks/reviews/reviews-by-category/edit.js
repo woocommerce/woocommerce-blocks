@@ -130,13 +130,12 @@ const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, setAttributes } 
 			<Placeholder
 				icon={ <IconReviewsByCategory className="block-editor-block-icon" /> }
 				label={ __( 'Reviews by Category', 'woo-gutenberg-products-block' ) }
-				className="wc-block-reviews-by-category"
 			>
 				{ __(
 					'Show product reviews from specific categories.',
 					'woo-gutenberg-products-block'
 				) }
-				<div className="wc-block-reviews-by-category__selection">
+				<div className="wc-block-reviews__selection">
 					<ProductCategoryControl
 						selected={ attributes.categoryIds }
 						onChange={ ( value = [] ) => {
@@ -155,7 +154,6 @@ const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, setAttributes } 
 	const renderHiddenContentPlaceholder = () => {
 		return (
 			<Placeholder
-				className="wc-block-reviews-by-category"
 				icon={ <IconReviewsByCategory className="block-editor-block-icon" /> }
 				label={ __( 'Reviews by Category', 'woo-gutenberg-products-block' ) }
 			>

@@ -118,13 +118,12 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, setAttributes } )
 			<Placeholder
 				icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
 				label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
-				className="wc-block-reviews-by-product"
 			>
 				{ __(
 					'Show reviews of your product to build trust',
 					'woo-gutenberg-products-block'
 				) }
-				<div className="wc-block-reviews-by-product__selection">
+				<div className="wc-block-reviews__selection">
 					<ProductControl
 						selected={ attributes.productId || 0 }
 						onChange={ ( value = [] ) => {
@@ -148,7 +147,6 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, setAttributes } )
 	const renderHiddenContentPlaceholder = () => {
 		return (
 			<Placeholder
-				className="wc-block-reviews-by-product"
 				icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
 				label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
 			>
