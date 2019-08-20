@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { escapeHTML } from '@wordpress/escape-html';
 import { Placeholder, Spinner } from '@wordpress/components';
 import PropTypes from 'prop-types';
 
@@ -34,7 +33,7 @@ const NoReviewsPlaceholder = ( { error, getProduct, isLoading, product } ) => {
 				"This block lists reviews for a selected product. %s doesn't have any reviews yet, but they will show up here when it does.",
 				'woo-gutenberg-products-block'
 			),
-			escapeHTML( product.name )
+			product.name
 		);
 
 	return (
