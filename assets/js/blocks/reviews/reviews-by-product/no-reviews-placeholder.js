@@ -4,7 +4,6 @@
 import { __, sprintf } from '@wordpress/i18n';
 import { escapeHTML } from '@wordpress/escape-html';
 import { Placeholder, Spinner } from '@wordpress/components';
-import { RawHTML } from '@wordpress/element';
 import PropTypes from 'prop-types';
 
 /**
@@ -28,17 +27,15 @@ const NoReviewsPlaceholder = ( { error, getProduct, isLoading, product } ) => {
 		return renderApiError();
 	}
 
-	const content = ( ! product || isLoading ) ? <Spinner /> : (
-		<RawHTML>
-			{ sprintf(
-				__(
-					"This block lists reviews for a selected product. %s doesn't have any reviews yet, but they will show up here when it does.",
-					'woo-gutenberg-products-block'
-				),
-				'<strong>' + escapeHTML( product.name ) + '</strong>'
-			) }
-		</RawHTML>
-	);
+	const content = ( ! product || isLoading ) ?
+		<Spinner /> :
+		sprintf(
+			__(
+				"This block lists reviews for a selected product. %s doesn't have any reviews yet, but they will show up here when it does.",
+				'woo-gutenberg-products-block'
+			),
+			escapeHTML( product.name )
+		);
 
 	return (
 		<Placeholder
