@@ -49,9 +49,6 @@ const NoReviewsPlaceholder = ( { error, getProduct, isLoading, product } ) => {
 };
 
 NoReviewsPlaceholder.propTypes = {
-};
-
-NoReviewsPlaceholder.defaultProps = {
 	// from withProduct
 	error: PropTypes.object,
 	isLoading: PropTypes.bool,
