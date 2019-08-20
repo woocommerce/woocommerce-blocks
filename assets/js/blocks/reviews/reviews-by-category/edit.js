@@ -25,7 +25,6 @@ import PropTypes from 'prop-types';
 import EditorBlock from './editor-block.js';
 import ProductCategoryControl from '../../../components/product-category-control';
 import { IconReviewsByCategory } from '../../../components/icons';
-import { ENABLE_REVIEW_RATING, SHOW_AVATARS } from '../../../constants';
 import { getSharedReviewContentControls, getSharedReviewListControls } from '../edit.js';
 import { getBlockClassName } from '../utils.js';
 
@@ -33,9 +32,6 @@ import { getBlockClassName } from '../utils.js';
  * Component to handle edit mode of "Reviews by Category".
  */
 const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, setAttributes } ) => {
-	attributes.showReviewImage = ( SHOW_AVATARS || attributes.imageType === 'product' ) && attributes.showReviewImage;
-	attributes.showReviewRating = ENABLE_REVIEW_RATING && attributes.showReviewRating;
-
 	const { editMode, categoryIds, showReviewDate, showReviewerName, showReviewContent, showProductName, showReviewImage, showReviewRating } = attributes;
 
 	const getBlockControls = () => (
