@@ -1,5 +1,5 @@
-import { __, sprintf } from '@wordpress/i18n';
-import { Fragment, RawHTML } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
+import { Fragment } from '@wordpress/element';
 import {
 	Notice,
 	ToggleControl,
@@ -24,9 +24,13 @@ export const getSharedReviewContentControls = ( attributes, setAttributes ) => {
 			/>
 			{ ( attributes.showReviewRating && ! ENABLE_REVIEW_RATING ) && (
 				<Notice className="wc-block-reviews-by-category__notice" isDismissible={ false }>
-					<RawHTML>
-						{ sprintf( __( 'Product rating is disabled in your %sstore settings%s.', 'woo-gutenberg-products-block' ), `<a href="${ getAdminLink( 'admin.php?page=wc-settings&tab=products' ) }" target="_blank">`, '</a>' ) }
-					</RawHTML>
+					{ __( 'Product rating is disabled in your ', 'woo-gutenberg-products-block' ) }
+					{ /* eslint-disable react/jsx-no-target-blank */ }
+					<a href={ getAdminLink( 'admin.php?page=wc-settings&tab=products' ) } target="_blank">
+						{ __( 'store settings', 'woo-gutenberg-products-block' ) }
+					</a>
+					{ /* eslint-enable react/jsx-no-target-blank */ }
+					{ '.' }
 				</Notice>
 			) }
 			<ToggleControl
@@ -62,9 +66,13 @@ export const getSharedReviewContentControls = ( attributes, setAttributes ) => {
 					/>
 					{ ( attributes.imageType === 'reviewer' && ! SHOW_AVATARS ) && (
 						<Notice className="wc-block-reviews-by-category__notice" isDismissible={ false }>
-							<RawHTML>
-								{ sprintf( __( 'Reviewer photo is disabled in your %ssite settings%s.', 'woo-gutenberg-products-block' ), `<a href="${ getAdminLink( 'options-discussion.php' ) }" target="_blank">`, '</a>' ) }
-							</RawHTML>
+							{ __( 'Reviewer photo is disabled in your ', 'woo-gutenberg-products-block' ) }
+							{ /* eslint-disable react/jsx-no-target-blank */ }
+							<a href={ getAdminLink( 'options-discussion.php' ) } target="_blank">
+								{ __( 'site settings', 'woo-gutenberg-products-block' ) }
+							</a>
+							{ /* eslint-enable react/jsx-no-target-blank */ }
+							{ '.' }
 						</Notice>
 					) }
 				</Fragment>
