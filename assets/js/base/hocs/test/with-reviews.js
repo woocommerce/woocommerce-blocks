@@ -21,14 +21,7 @@ const mockReviews = [
 	{ reviewer: 'Alice', review: 'Lorem ipsum', rating: 2 },
 	{ reviewer: 'Bob', review: 'Dolor sit amet', rating: 3 },
 	{ reviewer: 'Carol', review: 'Consectetur adipiscing elit', rating: 5 },
-	{ reviewer: 'Dan', review: 'Sed do eiusmod tempor incididunt', rating: 4 },
 ];
-const attributes = {
-	orderby: 'most-recent',
-	productId: 1,
-	reviewsOnPageLoad: 2,
-	reviewsOnLoadMore: 2,
-};
 const defaultArgs = {
 	order: 'desc',
 	orderby: 'date_gmt',
@@ -49,7 +42,10 @@ const TestComponent = withReviews( ( props ) => {
 const render = () => {
 	return TestRenderer.create(
 		<TestComponent
-			attributes={ attributes }
+			order="desc"
+			orderby="date_gmt"
+			productId={ 1 }
+			reviewsToDisplay={ 2 }
 		/>
 	);
 };
@@ -62,7 +58,11 @@ describe( 'withReviews Component', () => {
 
 	describe( 'lifecycle events', () => {
 		beforeEach( () => {
-			mockUtils.getReviews.mockImplementation( () => Promise.resolve() );
+			mockUtils.getReviews.mockImplementationOnce(
+				() => Promise.resolve( { reviews: mockReviews.slice( 0, 2 ), totalReviews: mockReviews.length } )
+			).mockImplementationOnce(
+				() => Promise.resolve( { reviews: mockReviews.slice( 2, 3 ), totalReviews: mockReviews.length } )
+			);
 			renderer = render();
 		} );
 
@@ -73,65 +73,37 @@ describe( 'withReviews Component', () => {
 			expect( getReviews ).toHaveBeenCalledTimes( 1 );
 		} );
 
-		it( 'getReviews is hooked to the prop', () => {
+		it( 'getReviews is called on component update', () => {
 			const { getReviews } = mockUtils;
-			const props = renderer.root.findByType( 'div' ).props;
+			renderer.update(
+				<TestComponent
+					order="desc"
+					orderby="date_gmt"
+					productId={ 1 }
+					reviewsToDisplay={ 3 }
+				/>
+			);
 
-			props.getReviews();
-
+			expect( getReviews ).toHaveBeenNthCalledWith( 2, { ...defaultArgs, offset: 2, per_page: 1 } );
 			expect( getReviews ).toHaveBeenCalledTimes( 2 );
 		} );
 	} );
 
 	describe( 'when the API returns product data', () => {
 		beforeEach( () => {
-			mockUtils.getReviews.mockImplementationOnce(
+			mockUtils.getReviews.mockImplementation(
 				() => Promise.resolve( { reviews: mockReviews.slice( 0, 2 ), totalReviews: mockReviews.length } )
-			).mockImplementationOnce(
-				() => Promise.resolve( { reviews: mockReviews.slice( 2, 4 ), totalReviews: mockReviews.length } )
 			);
 			renderer = render();
 		} );
 
-		it( 'sets reviews on componentDidMount', () => {
+		it( 'sets reviews based on API response', () => {
 			const props = renderer.root.findByType( 'div' ).props;
 
 			expect( props.error ).toBeNull();
-			expect( typeof props.getReviews ).toBe( 'function' );
-			expect( typeof props.appendReviews ).toBe( 'function' );
-			expect( typeof props.onChangeArgs ).toBe( 'function' );
 			expect( props.isLoading ).toBe( false );
 			expect( props.reviews ).toEqual( mockReviews.slice( 0, 2 ) );
 			expect( props.totalReviews ).toEqual( mockReviews.length );
-		} );
-
-		it( 'sets new reviews on onChangeArgs', () => {
-			const { getReviews } = mockUtils;
-			const props = renderer.root.findByType( 'div' ).props;
-
-			props.onChangeArgs( {
-				order: 'desc',
-				orderby: 'rating',
-			} );
-
-			setTimeout( () => {
-				expect( getReviews ).toHaveBeenCalledTimes( 2 );
-				expect( props.reviews ).toEqual( mockReviews.slice( 2, 4 ) );
-				expect( props.totalReviews ).toEqual( mockReviews.length );
-			} );
-		} );
-
-		it( 'appends new reviews on appendReviews', () => {
-			const { getReviews } = mockUtils;
-			const props = renderer.root.findByType( 'div' ).props;
-
-			props.appendReviews();
-
-			setTimeout( () => {
-				expect( getReviews ).toHaveBeenCalledTimes( 2 );
-				expect( props.reviews ).toEqual( mockReviews );
-				expect( props.totalReviews ).toEqual( mockReviews.length );
-			} );
 		} );
 	} );
 
@@ -147,7 +119,6 @@ describe( 'withReviews Component', () => {
 			const props = renderer.root.findByType( 'div' ).props;
 
 			expect( props.error ).toEqual( { apiMessage: 'There was an error.' } );
-			expect( typeof props.getReviews ).toBe( 'function' );
 			expect( props.isLoading ).toBe( false );
 			expect( props.reviews ).toEqual( [] );
 		} );
