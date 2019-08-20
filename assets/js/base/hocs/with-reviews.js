@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import { getReviews, getOrderArgs } from '../../blocks/reviews/utils';
+import { getReviews } from '../../blocks/reviews/utils';
 
 const withReviews = ( OriginalComponent ) => {
 	class WrappedComponent extends Component {
@@ -19,50 +19,38 @@ const withReviews = ( OriginalComponent ) => {
 			this.state = {
 				error: null,
 				loading: false,
-				overwrittenArgs: {},
 				reviews: [],
 				totalReviews: 0,
 			};
 
-			this.getReviews = this.getReviews.bind( this );
-			this.appendReviews = this.appendReviews.bind( this );
-			this.onChangeArgs = this.onChangeArgs.bind( this );
-			this.updateListOfReviews = this.updateListOfReviews.bind( this );
 			this.setError = this.setError.bind( this );
-			this.delayedGetReviews = this.props.delayFunction( this.getReviews, 400 );
+			this.delayedAppendReviews = this.props.delayFunction( this.appendReviews, 400 );
 		}
 
 		componentDidMount() {
-			this.getReviews();
+			this.replaceReviews();
 		}
 
 		componentDidUpdate( prevProps ) {
-			if (
-				prevProps.attributes.reviewsOnPageLoad !== this.props.attributes.reviewsOnPageLoad
-			) {
+			if ( prevProps.reviewsToDisplay < this.props.reviewsToDisplay ) {
 				// Since this attribute is controlled with a slider,
 				// it's better not to load the reviews immediately.
-				this.delayedGetReviews();
+				this.delayedAppendReviews();
 			} else if (
-				prevProps.attributes.orderby !== this.props.attributes.orderby ||
-				prevProps.attributes.productId !== this.props.attributes.productId ||
-				prevProps.attributes.categoryIds !== this.props.attributes.categoryIds
+				prevProps.orderby !== this.props.orderby ||
+				prevProps.order !== this.props.order ||
+				prevProps.productId !== this.props.productId ||
+				prevProps.categoryIds !== this.props.categoryIds
 			) {
-				this.getReviews();
+				this.replaceReviews();
 			}
 		}
 
-		getDefaultArgs() {
-			const { attributes } = this.props;
-			const { overwrittenArgs } = this.state;
-			const { order, orderby } = getOrderArgs( attributes.orderby );
-			const { categoryIds, productId, reviewsOnPageLoad } = attributes;
-
+		getArgs() {
+			const { categoryIds, order, orderby, productId } = this.props;
 			const args = {
 				order,
 				orderby,
-				per_page: reviewsOnPageLoad,
-				...overwrittenArgs,
 			};
 
 			if ( categoryIds ) {
@@ -76,56 +64,57 @@ const withReviews = ( OriginalComponent ) => {
 			return args;
 		}
 
-		getReviews() {
-			const { reviewsOnPageLoad } = this.props.attributes;
-			const args = this.getDefaultArgs();
-
-			this.updateListOfReviews( args, reviewsOnPageLoad );
-		}
-
-		onChangeArgs( newArgs ) {
-			const { reviewsOnPageLoad } = this.props.attributes;
+		replaceReviews() {
+			const { announceUpdates, reviewsToDisplay } = this.props;
 			const args = {
-				...this.getDefaultArgs(),
-				...newArgs,
+				...this.getArgs(),
+				per_page: reviewsToDisplay,
 			};
 
-			this.setState( {
-				overwrittenArgs: newArgs,
-			} );
-
-			this.updateListOfReviews( args, reviewsOnPageLoad ).then( () => {
-				speak( __( 'Reviews order updated.', 'woo-gutenberg-products-block' ) );
+			this.updateListOfReviews( args ).then( () => {
+				if ( announceUpdates ) {
+					speak( __( 'Reviews list updated.', 'woo-gutenberg-products-block' ) );
+				}
 			} );
 		}
 
 		appendReviews() {
-			const { reviewsOnLoadMore } = this.props.attributes;
-			const oldReviews = this.state.reviews;
+			const { announceUpdates, reviewsToDisplay } = this.props;
+			const { reviews } = this.state;
+
+			// Given that this function is delayed, props might have been updated since
+			// it was called so we need to check again if fetching new reviews is necessary.
+			if ( reviewsToDisplay <= reviews.length ) {
+				return;
+			}
+
 			const args = {
-				...this.getDefaultArgs(),
-				offset: oldReviews.length,
-				per_page: reviewsOnLoadMore,
+				...this.getArgs(),
+				per_page: reviewsToDisplay - reviews.length,
+				offset: reviews.length,
 			};
 
-			this.updateListOfReviews( args, reviewsOnLoadMore, oldReviews ).then( ( { newReviews } ) => {
-				speak(
-					sprintf(
-						_n(
-							'%d review loaded.',
-							'%d reviews loaded.',
+			this.updateListOfReviews( args, reviews ).then( ( { newReviews } ) => {
+				if ( announceUpdates ) {
+					speak(
+						sprintf(
+							_n(
+								'%d review loaded.',
+								'%d reviews loaded.',
+								newReviews.length,
+								'woo-gutenberg-products-block'
+							),
 							newReviews.length,
-							'woo-gutenberg-products-block'
-						),
-						newReviews.length,
-					)
-				);
+						)
+					);
+				}
 			} );
 		}
 
-		updateListOfReviews( args, reviewsOnLoad, oldReviews = [] ) {
+		updateListOfReviews( args, oldReviews = [] ) {
+			const { reviewsToDisplay } = this.props;
 			const { totalReviews } = this.state;
-			const reviewsToLoad = Math.min( totalReviews - oldReviews.length, reviewsOnLoad );
+			const reviewsToLoad = Math.min( totalReviews - oldReviews.length, reviewsToDisplay );
 
 			this.setState( {
 				loading: true,
@@ -158,22 +147,30 @@ const withReviews = ( OriginalComponent ) => {
 		}
 
 		render() {
+			const { reviewsToDisplay } = this.props;
 			const { error, loading, reviews, totalReviews } = this.state;
 
 			return <OriginalComponent
 				{ ...this.props }
 				error={ error }
-				appendReviews={ this.appendReviews }
-				onChangeArgs={ this.onChangeArgs }
 				isLoading={ loading }
-				reviews={ reviews }
+				reviews={ reviews.slice( 0, reviewsToDisplay ) }
 				totalReviews={ totalReviews }
 			/>;
 		}
 	}
 
 	WrappedComponent.propTypes = {
-		delayFunction: PropTypes.array,
+		order: PropTypes.oneOf( [ 'asc', 'desc' ] ).isRequired,
+		orderby: PropTypes.string.isRequired,
+		reviewsToDisplay: PropTypes.number.isRequired,
+		categoryIds: PropTypes.array,
+		delayFunction: PropTypes.func,
+		productId: PropTypes.number,
+		// Whether updates in the reviews list must be notified to screen reader
+		// users. Usually you would like this when the block is displayed in the
+		// frontend but not when it's in the editor.
+		announceUpdates: PropTypes.bool,
 	};
 
 	WrappedComponent.defaultProps = {

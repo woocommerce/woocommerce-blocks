@@ -30,7 +30,7 @@ import { IconReviewsByProduct } from '../../../components/icons';
 import { withProduct } from '../../../hocs';
 import { ENABLE_REVIEW_RATING, SHOW_AVATARS } from '../../../constants';
 import { getSharedReviewContentControls, getSharedReviewListControls } from '../edit.js';
-import { getBlockClassName } from '../utils.js';
+import { getBlockClassName, getOrderArgs } from '../utils.js';
 
 /**
  * Component to handle edit mode of "Reviews by Product".
@@ -192,9 +192,19 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, error, getProduct
 			return renderHiddenContentPlaceholder();
 		}
 
+		const { reviewsOnPageLoad } = attributes;
+		const { order, orderby } = getOrderArgs( attributes.orderby );
+
 		return (
 			<div className={ getBlockClassName( 'wc-block-reviews-by-product', attributes ) }>
-				<EditorBlock attributes={ attributes } delayFunction={ debounce } />
+				<EditorBlock
+					attributes={ attributes }
+					delayFunction={ debounce }
+					orderby={ orderby }
+					order={ order }
+					productId={ productId }
+					reviewsToDisplay={ reviewsOnPageLoad }
+				/>
 			</div>
 		);
 	};

@@ -28,7 +28,7 @@ import ProductCategoryControl from '../../../components/product-category-control
 import { IconReviewsByCategory } from '../../../components/icons';
 import { ENABLE_REVIEW_RATING, SHOW_AVATARS } from '../../../constants';
 import { getSharedReviewContentControls, getSharedReviewListControls } from '../edit.js';
-import { getBlockClassName } from '../utils.js';
+import { getBlockClassName, getOrderArgs } from '../utils.js';
 
 /**
  * Component to handle edit mode of "Reviews by Category".
@@ -174,9 +174,19 @@ const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, setAttributes } 
 			return renderHiddenContentPlaceholder();
 		}
 
+		const { reviewsOnPageLoad } = attributes;
+		const { order, orderby } = getOrderArgs( attributes.orderby );
+
 		return (
 			<div className={ getBlockClassName( 'wc-block-reviews-by-category', attributes ) }>
-				<EditorBlock attributes={ attributes } delayFunction={ debounce } />
+				<EditorBlock
+					attributes={ attributes }
+					categoryIds={ categoryIds }
+					delayFunction={ debounce }
+					orderby={ orderby }
+					order={ order }
+					reviewsToDisplay={ reviewsOnPageLoad }
+				/>
 			</div>
 		);
 	};
