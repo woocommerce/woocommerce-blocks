@@ -14,10 +14,9 @@ const containers = document.querySelectorAll(
 
 if ( containers.length ) {
 	Array.prototype.forEach.call( containers, ( el ) => {
-		const data = JSON.parse( JSON.stringify( el.dataset ) );
 		const attributes = {
-			showInputFields: data.showinputfields === 'true',
-			showFilterButton: data.showfilterbutton === 'true',
+			showInputFields: el.dataset.showinputfields === 'true',
+			showFilterButton: el.dataset.showfilterbutton === 'true',
 		};
 		el.classList.remove( 'is-loading' );
 
