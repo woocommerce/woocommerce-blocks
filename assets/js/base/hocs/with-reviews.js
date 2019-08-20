@@ -37,10 +37,10 @@ const withReviews = ( OriginalComponent ) => {
 				// it's better not to load the reviews immediately.
 				this.delayedAppendReviews();
 			} else if (
+				prevProps.categoryIds !== this.props.categoryIds ||
 				prevProps.orderby !== this.props.orderby ||
 				prevProps.order !== this.props.order ||
-				prevProps.productId !== this.props.productId ||
-				prevProps.categoryIds !== this.props.categoryIds
+				prevProps.productId !== this.props.productId
 			) {
 				this.replaceReviews();
 			}
@@ -114,7 +114,7 @@ const withReviews = ( OriginalComponent ) => {
 		updateListOfReviews( args, oldReviews = [] ) {
 			const { reviewsToDisplay } = this.props;
 			const { totalReviews } = this.state;
-			const reviewsToLoad = Math.min( totalReviews - oldReviews.length, reviewsToDisplay );
+			const reviewsToLoad = Math.min( totalReviews, reviewsToDisplay ) - oldReviews.length;
 
 			this.setState( {
 				loading: true,
@@ -134,6 +134,7 @@ const withReviews = ( OriginalComponent ) => {
 		}
 
 		setError( apiError ) {
+			const { announceUpdates } = this.props;
 			const error = typeof apiError === 'object' && apiError.hasOwnProperty( 'message' ) ? {
 				apiMessage: apiError.message,
 			} : {
@@ -141,9 +142,12 @@ const withReviews = ( OriginalComponent ) => {
 			};
 
 			this.setState( { reviews: [], loading: false, error } );
-			speak(
-				__( 'There was an error loading the reviews.', 'woo-gutenberg-products-block' )
-			);
+
+			if ( announceUpdates ) {
+				speak(
+					__( 'There was an error loading the reviews.', 'woo-gutenberg-products-block' )
+				);
+			}
 		}
 
 		render() {

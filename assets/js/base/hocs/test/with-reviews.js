@@ -10,11 +10,11 @@ import withReviews from '../with-reviews';
 import * as mockUtils from '../../../blocks/reviews/utils';
 
 jest.mock( '../../../blocks/reviews/utils', () => ( {
-	getReviews: jest.fn(),
 	getOrderArgs: () => ( {
 		order: 'desc',
 		orderby: 'date_gmt',
 	} ),
+	getReviews: jest.fn(),
 } ) );
 
 const mockReviews = [
