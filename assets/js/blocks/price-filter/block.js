@@ -7,7 +7,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import PriceSlider from '../../frontend-components/price-slider';
+import PriceSlider from '../../base/components/price-slider';
 import { currency } from '@woocommerce/settings';
 
 /**
