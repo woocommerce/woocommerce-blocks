@@ -168,6 +168,9 @@ const withReviews = ( OriginalComponent ) => {
 		delayFunction: ( f ) => f,
 	};
 
+	const { displayName = OriginalComponent.name || 'Component' } = OriginalComponent;
+	WrappedComponent.displayName = `WithReviews( ${ displayName } )`;
+
 	return WrappedComponent;
 };
 
