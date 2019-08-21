@@ -15,6 +15,7 @@ import ReviewOrderSelect from '../../../base/components/review-order-select';
 import withComponentId from '../../../base/hocs/with-component-id';
 import withReviews from '../../../base/hocs/with-reviews';
 import { IconReviewsByProduct } from '../../../components/icons';
+import NoReviewsPlaceholder from './no-reviews-placeholder.js';
 import { ENABLE_REVIEW_RATING } from '../../../constants';
 import { escapeHTML } from '@wordpress/escape-html';
 
@@ -48,7 +49,7 @@ class EditorBlock extends Component {
 		const { attributes, componentId, isLoading, reviews, totalReviews } = this.props;
 
 		if ( 0 === reviews.length && ! isLoading ) {
-			return this.renderNoReviews();
+			return <NoReviewsPlaceholder attributes={ attributes } />;
 		}
 
 		return (
