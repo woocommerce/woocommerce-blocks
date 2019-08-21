@@ -43,7 +43,7 @@ const GridLayoutControl = ( { columns, rows, setAttributes, alignButtons } ) => 
 				max={ MAX_ROWS }
 			/>
 			<ToggleControl
-				label={ __( 'Align Add to Cart buttons', 'woo-gutenberg-products-block' ) }
+				label={ __( 'Align Buttons', 'woo-gutenberg-products-block' ) }
 				help={
 					alignButtons ?
 						__(

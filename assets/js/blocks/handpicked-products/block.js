@@ -51,7 +51,7 @@ class ProductsBlock extends Component {
 						max={ MAX_COLUMNS }
 					/>
 					<ToggleControl
-						label={ __( 'Align Add to Cart buttons', 'woo-gutenberg-products-block' ) }
+						label={ __( 'Align Buttons', 'woo-gutenberg-products-block' ) }
 						help={
 							alignButtons ?
 								__(
