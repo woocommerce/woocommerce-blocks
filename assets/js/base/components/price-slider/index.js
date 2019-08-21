@@ -199,14 +199,6 @@ class PriceSlider extends Component {
 							/>
 						</Fragment>
 					) }
-					{ showFilterButton && (
-						<button
-							type="submit"
-							className="wc-block-price-filter__button wc-block-form-button"
-						>
-							{ __( 'Go', 'woo-gutenberg-products-block' ) }
-						</button>
-					) }
 				</div>
 				<div
 					className="wc-block-price-filter__range-input-wrapper"
@@ -236,6 +228,19 @@ class PriceSlider extends Component {
 						min={ min }
 						max={ max }
 					/>
+				</div>
+				<div className="wc-block-price-filter__range-button-wrapper">
+					<div className="wc-block-price-filter__range-text">
+						{ sprintf( __( 'Price: %s — %s', 'woo-gutenberg-products-block' ), inputMin, inputMax ) }
+					</div>
+					{ showFilterButton && (
+						<button
+							type="submit"
+							className="wc-block-price-filter__button wc-block-form-button"
+						>
+							{ __( 'Go', 'woo-gutenberg-products-block' ) }
+						</button>
+					) }
 				</div>
 			</div>
 		);
