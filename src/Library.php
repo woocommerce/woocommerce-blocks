@@ -36,6 +36,8 @@ class Library {
 			'ProductOnSale',
 			'ProductsByAttribute',
 			'ProductTopRated',
+			'ReviewsByProduct',
+			'ReviewsByCategory',
 			'ProductSearch',
 			'ProductTag',
 			'PriceFilter',

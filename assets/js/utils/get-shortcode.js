@@ -1,3 +1,8 @@
+/**
+ * Internal dependencies
+ */
+import { DEFAULT_COLUMNS, DEFAULT_ROWS } from '../constants';
+
 export default function getShortcode( props, name ) {
 	const blockAttributes = props.attributes;
 	const {
@@ -8,8 +13,8 @@ export default function getShortcode( props, name ) {
 		orderby,
 		products,
 	} = blockAttributes;
-	const columns = blockAttributes.columns || wc_product_block_data.default_columns;
-	const rows = blockAttributes.rows || wc_product_block_data.default_rows;
+	const columns = blockAttributes.columns || DEFAULT_COLUMNS;
+	const rows = blockAttributes.rows || DEFAULT_ROWS;
 
 	const shortcodeAtts = new Map();
 	shortcodeAtts.set( 'limit', rows * columns );
@@ -81,7 +86,7 @@ export default function getShortcode( props, name ) {
 
 	// Build the shortcode string out of the set shortcode attributes.
 	let shortcode = '[products';
-	for ( const [ key, value ] of shortcodeAtts ) {
+	for ( const [ key, value ] of shortcodeAtts ) { /* eslint-disable-line */
 		shortcode += ' ' + key + '="' + value + '"';
 	}
 	shortcode += ']';
