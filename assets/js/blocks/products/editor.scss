@@ -1,0 +1,37 @@
+.wc-block-products {
+	.components-placeholder__instructions {
+		border-bottom: 1px solid #e0e2e6;
+		width: 100%;
+		padding-bottom: 1em;
+		margin-bottom: 2em;
+	}
+	.components-placeholder__label svg {
+		fill: currentColor;
+		margin-right: 1ch;
+	}
+	.components-placeholder__fieldset {
+		display: block; /* Disable flex box */
+
+		p {
+			font-size: 14px;
+		}
+	}
+	.wc-block-products__add_product_button {
+		margin: 0 0 1em;
+		line-height: 24px;
+		vertical-align: middle;
+		height: auto;
+		font-size: 14px;
+		padding: 0.5em 1em;
+
+		svg {
+			fill: currentColor;
+			margin-left: 0.5ch;
+			vertical-align: middle;
+		}
+	}
+	.wc-block-products__read_more_button {
+		display: block;
+		margin-bottom: 1em;
+	}
+}

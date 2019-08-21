@@ -38,20 +38,23 @@ class Assets {
 		self::register_script( 'wc-vendors', plugins_url( 'build/vendors.js', __DIR__ ), array(), false );
 
 		// Individual blocks.
-		self::register_script( 'wc-handpicked-products', plugins_url( 'build/handpicked-products.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
-		self::register_script( 'wc-product-best-sellers', plugins_url( 'build/product-best-sellers.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
-		self::register_script( 'wc-product-category', plugins_url( 'build/product-category.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
-		self::register_script( 'wc-product-new', plugins_url( 'build/product-new.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
-		self::register_script( 'wc-product-on-sale', plugins_url( 'build/product-on-sale.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
-		self::register_script( 'wc-product-top-rated', plugins_url( 'build/product-top-rated.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
-		self::register_script( 'wc-products-by-attribute', plugins_url( 'build/products-by-attribute.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
-		self::register_script( 'wc-featured-product', plugins_url( 'build/featured-product.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
-		self::register_script( 'wc-featured-category', plugins_url( 'build/featured-category.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
-		self::register_script( 'wc-product-categories', plugins_url( 'build/product-categories.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
-		self::register_script( 'wc-product-tag', plugins_url( 'build/product-tag.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
-		self::register_script( 'wc-reviews-by-product', plugins_url( 'build/reviews-by-product.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
-		self::register_script( 'wc-reviews-by-category', plugins_url( 'build/reviews-by-category.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
-		self::register_script( 'wc-product-search', plugins_url( 'build/product-search.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
+		$block_dependencies = array( 'wc-vendors', 'wc-blocks' );
+
+		self::register_script( 'wc-handpicked-products', plugins_url( 'build/handpicked-products.js', __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-product-best-sellers', plugins_url( 'build/product-best-sellers.js', __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-product-category', plugins_url( 'build/product-category.js', __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-product-new', plugins_url( 'build/product-new.js', __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-product-on-sale', plugins_url( 'build/product-on-sale.js', __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-product-top-rated', plugins_url( 'build/product-top-rated.js', __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-products-by-attribute', plugins_url( 'build/products-by-attribute.js', __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-featured-product', plugins_url( 'build/featured-product.js', __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-featured-category', plugins_url( 'build/featured-category.js', __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-product-categories', plugins_url( 'build/product-categories.js', __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-product-tag', plugins_url( 'build/product-tag.js', __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-reviews-by-product', plugins_url( 'build/reviews-by-product.js', __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-reviews-by-category', plugins_url( 'build/reviews-by-category.js', __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-product-search', plugins_url( 'build/product-search.js', __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-all-products', plugins_url( 'build/all-products.js', __DIR__ ), $block_dependencies );
 	}
 
 	/**
@@ -139,6 +142,7 @@ class Assets {
 			'isLargeCatalog'     => $product_counts->publish > 200,
 			'limitTags'          => $tag_count > 100,
 			'hasTags'            => $tag_count > 0,
+			'hasProducts'        => $product_counts->publish > 0,
 			'productCategories'  => $product_categories,
 			'homeUrl'            => esc_js( home_url( '/' ) ),
 			'showAvatars'        => '1' === get_option( 'show_avatars' ),

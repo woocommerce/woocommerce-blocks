@@ -27,5 +27,6 @@ export const THUMBNAIL_SIZE = getConstantFromData( 'thumbnail_size', 300 );
 export const IS_LARGE_CATALOG = getConstantFromData( 'isLargeCatalog' );
 export const LIMIT_TAGS = getConstantFromData( 'limitTags' );
 export const HAS_TAGS = getConstantFromData( 'hasTags', true );
+export const HAS_PRODUCTS = getConstantFromData( 'hasProducts', true );
 export const HOME_URL = getConstantFromData( 'homeUrl ', '' );
 export const PRODUCT_CATEGORIES = getConstantFromData( 'productCategories', [] );
