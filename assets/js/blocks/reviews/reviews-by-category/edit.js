@@ -182,7 +182,7 @@ const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, setAttributes } 
 				<EditorBlock
 					attributes={ attributes }
 					categoryIds={ categoryIds }
-					delayFunction={ debounce }
+					delayFunction={ ( callback ) => debounce( callback, 400 ) }
 					orderby={ orderby }
 					order={ order }
 					reviewsToDisplay={ reviewsOnPageLoad }

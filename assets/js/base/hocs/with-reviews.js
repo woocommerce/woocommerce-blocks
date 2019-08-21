@@ -24,7 +24,7 @@ const withReviews = ( OriginalComponent ) => {
 			};
 
 			this.setError = this.setError.bind( this );
-			this.delayedAppendReviews = this.props.delayFunction( this.appendReviews, 400 );
+			this.delayedAppendReviews = this.props.delayFunction( this.appendReviews );
 		}
 
 		componentDidMount() {

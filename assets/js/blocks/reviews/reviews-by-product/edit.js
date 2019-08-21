@@ -174,7 +174,7 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, setAttributes } )
 			<div className={ getBlockClassName( 'wc-block-reviews-by-product', attributes ) }>
 				<EditorBlock
 					attributes={ attributes }
-					delayFunction={ debounce }
+					delayFunction={ ( callback ) => debounce( callback, 400 ) }
 					orderby={ orderby }
 					order={ order }
 					productId={ productId }
