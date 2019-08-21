@@ -22,21 +22,16 @@ export default function( { attributes, setAttributes } ) {
 			<InspectorControls key="inspector">
 				<PanelBody title={ __( 'Block Settings', 'woo-gutenberg-products-block' ) }>
 					<ToggleControl
-						label={ __( 'Show input fields', 'woo-gutenberg-products-block' ) }
-						help={
-							showInputFields ?
-								__( 'Input fields are visible.', 'woo-gutenberg-products-block' ) :
-								__( 'Input fields are hidden.', 'woo-gutenberg-products-block' )
-						}
+						label={ __( 'Input fields', 'woo-gutenberg-products-block' ) }
 						checked={ showInputFields }
 						onChange={ () => setAttributes( { showInputFields: ! showInputFields } ) }
 					/>
 					<ToggleControl
-						label={ __( 'Show filter button', 'woo-gutenberg-products-block' ) }
+						label={ __( 'Filter button', 'woo-gutenberg-products-block' ) }
 						help={
 							showFilterButton ?
-								__( 'Filter button is visible. Results will only update when the button is pressed.', 'woo-gutenberg-products-block' ) :
-								__( 'Filter button is hidden. Results will update when the slider is used.', 'woo-gutenberg-products-block' )
+								__( 'Results will only update when the button is pressed.', 'woo-gutenberg-products-block' ) :
+								__( 'Results will update when the slider is moved.', 'woo-gutenberg-products-block' )
 						}
 						checked={ showFilterButton }
 						onChange={ () => setAttributes( { showFilterButton: ! showFilterButton } ) }
