@@ -24,7 +24,7 @@ export const getSharedReviewContentControls = ( attributes, setAttributes ) => {
 				onChange={ () => setAttributes( { showReviewRating: ! attributes.showReviewRating } ) }
 			/>
 			{ ( attributes.showReviewRating && ! ENABLE_REVIEW_RATING ) && (
-				<Notice className="wc-block-reviews-by-category__notice" isDismissible={ false }>
+				<Notice className="wc-block-reviews__notice" isDismissible={ false }>
 					<RawHTML>
 						{ sprintf(
 							escapeHTML( __( 'Product rating is disabled in your %sstore settings%s.', 'woo-gutenberg-products-block' ) ),
@@ -65,7 +65,7 @@ export const getSharedReviewContentControls = ( attributes, setAttributes ) => {
 						onChange={ ( value ) => setAttributes( { imageType: value } ) }
 					/>
 					{ ( attributes.imageType === 'reviewer' && ! SHOW_AVATARS ) && (
-						<Notice className="wc-block-reviews-by-category__notice" isDismissible={ false }>
+						<Notice className="wc-block-reviews__notice" isDismissible={ false }>
 							<RawHTML>
 								{ sprintf(
 									escapeHTML( __( 'Reviewer photo is disabled in your %ssite settings%s.', 'woo-gutenberg-products-block' ) ),
