@@ -65,11 +65,13 @@ const withReviews = ( OriginalComponent ) => {
 			return prevCategoryIds !== nextCategoryIds;
 		}
 
-		getArgs() {
-			const { categoryIds, order, orderby, productId } = this.props;
+		getArgs( reviewsToSkip ) {
+			const { categoryIds, order, orderby, productId, reviewsToDisplay } = this.props;
 			const args = {
 				order,
 				orderby,
+				per_page: reviewsToDisplay - reviewsToSkip,
+				offset: reviewsToSkip,
 			};
 
 			if ( categoryIds && categoryIds.length ) {
@@ -84,13 +86,9 @@ const withReviews = ( OriginalComponent ) => {
 		}
 
 		replaceReviews() {
-			const { onReviewsReplaced, reviewsToDisplay } = this.props;
-			const args = {
-				...this.getArgs(),
-				per_page: reviewsToDisplay,
-			};
+			const { onReviewsReplaced } = this.props;
 
-			this.updateListOfReviews( args ).then( onReviewsReplaced );
+			this.updateListOfReviews().then( onReviewsReplaced );
 		}
 
 		appendReviews() {
@@ -103,16 +101,10 @@ const withReviews = ( OriginalComponent ) => {
 				return;
 			}
 
-			const args = {
-				...this.getArgs(),
-				per_page: reviewsToDisplay - reviews.length,
-				offset: reviews.length,
-			};
-
-			this.updateListOfReviews( args, reviews ).then( onReviewsAppended );
+			this.updateListOfReviews( reviews ).then( onReviewsAppended );
 		}
 
-		updateListOfReviews( args, oldReviews = [] ) {
+		updateListOfReviews( oldReviews = [] ) {
 			const { reviewsToDisplay } = this.props;
 			const { totalReviews } = this.state;
 			const reviewsToLoad = Math.min( totalReviews, reviewsToDisplay ) - oldReviews.length;
@@ -122,16 +114,18 @@ const withReviews = ( OriginalComponent ) => {
 				reviews: oldReviews.concat( Array( reviewsToLoad ).fill( {} ) ),
 			} );
 
-			return getReviews( args ).then( ( { reviews: newReviews, totalReviews: newTotalReviews } ) => {
-				this.setState( {
-					reviews: oldReviews.filter( ( review ) => Object.keys( review ).length ).concat( newReviews ),
-					totalReviews: newTotalReviews,
-					loading: false,
-					error: null,
-				} );
+			return getReviews( this.getArgs( oldReviews.length ) )
+				.then( ( { reviews: newReviews, totalReviews: newTotalReviews } ) => {
+					this.setState( {
+						reviews: oldReviews.filter( ( review ) => Object.keys( review ).length ).concat( newReviews ),
+						totalReviews: newTotalReviews,
+						loading: false,
+						error: null,
+					} );
 
-				return { newReviews };
-			} ).catch( this.setError );
+					return { newReviews };
+				} )
+				.catch( this.setError );
 		}
 
 		setError( apiError ) {
