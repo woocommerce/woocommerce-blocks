@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { min } from 'lodash';
+import { DEFAULT_COLUMNS, DEFAULT_ROWS } from '../constants';
 
 export default function getQuery( blockAttributes, name ) {
 	const {
@@ -9,11 +10,13 @@ export default function getQuery( blockAttributes, name ) {
 		attrOperator,
 		categories,
 		catOperator,
+		tags,
+		tagOperator,
 		orderby,
 		products,
 	} = blockAttributes;
-	const columns = blockAttributes.columns || wc_product_block_data.default_columns;
-	const rows = blockAttributes.rows || wc_product_block_data.default_rows;
+	const columns = blockAttributes.columns || DEFAULT_COLUMNS;
+	const rows = blockAttributes.rows || DEFAULT_ROWS;
 	const apiMax = Math.floor( 100 / columns ) * columns; // Prevent uneven final row.
 
 	const query = {
@@ -26,6 +29,13 @@ export default function getQuery( blockAttributes, name ) {
 		query.category = categories.join( ',' );
 		if ( catOperator && 'all' === catOperator ) {
 			query.category_operator = 'and';
+		}
+	}
+
+	if ( tags && tags.length > 0 ) {
+		query.tag = tags.join( ',' );
+		if ( tagOperator && 'all' === tagOperator ) {
+			query.tag_operator = 'and';
 		}
 	}
 

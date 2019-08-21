@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
+import { PLACEHOLDER_IMG_SRC, THUMBNAIL_SIZE } from '../../constants';
 
 /**
  * Internal dependencies
@@ -13,10 +14,6 @@ import './style.scss';
  * Display a preview for a given product.
  */
 const ProductPreview = ( { product } ) => {
-	const {
-		placeholderImgSrc,
-	} = wc_product_block_data; /* eslint-disable-line camelcase */
-
 	let image = null;
 	if ( product.images.length ) {
 		image = (
@@ -24,16 +21,16 @@ const ProductPreview = ( { product } ) => {
 				className="wc-product-preview__image"
 				src={ product.images[ 0 ].src }
 				alt=""
-				style={ { width: `${ wc_product_block_data.thumbnail_size }px` } }
+				style={ { width: `${ THUMBNAIL_SIZE }px` } }
 			/>
 		);
 	} else {
 		image = (
 			<img
 				className="wc-product-preview__image"
-				src={ placeholderImgSrc }
+				src={ PLACEHOLDER_IMG_SRC }
 				alt=""
-				style={ { width: `${ wc_product_block_data.thumbnail_size }px` } }
+				style={ { width: `${ THUMBNAIL_SIZE }px` } }
 			/>
 		);
 	}
@@ -47,7 +44,6 @@ const ProductPreview = ( { product } ) => {
 	return (
 		<div
 			className="wc-product-preview wc-block-grid__product"
-			style={ { maxWidth: `${ wc_product_block_data.thumbnail_size }px` } }
 		>
 			<div className="wc-product-preview__image wc-block-grid__product-image">
 				{ image }
@@ -82,6 +78,7 @@ ProductPreview.propTypes = {
 	 */
 	product: PropTypes.shape( {
 		id: PropTypes.number,
+		average_rating: PropTypes.oneOf( [ 'PropTypes.number', 'PropTypes.string' ] ),
 		images: PropTypes.array,
 		name: PropTypes.string,
 		price_html: PropTypes.string,

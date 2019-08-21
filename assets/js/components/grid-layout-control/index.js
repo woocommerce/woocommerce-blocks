@@ -5,12 +5,13 @@ import { __ } from '@wordpress/i18n';
 import { clamp, isNaN } from 'lodash';
 import { Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
-import { RangeControl } from '@wordpress/components';
+import { RangeControl, ToggleControl } from '@wordpress/components';
+import { MAX_COLUMNS, MIN_COLUMNS, MAX_ROWS, MIN_ROWS } from '../../constants';
 
 /**
  * A combination of range controls for product grid layout settings.
  */
-const GridLayoutControl = ( { columns, rows, setAttributes } ) => {
+const GridLayoutControl = ( { columns, rows, setAttributes, alignButtons } ) => {
 	return (
 		<Fragment>
 			<RangeControl
@@ -19,13 +20,13 @@ const GridLayoutControl = ( { columns, rows, setAttributes } ) => {
 				onChange={ ( value ) => {
 					const newValue = clamp(
 						value,
-						wc_product_block_data.min_columns,
-						wc_product_block_data.max_columns
+						MIN_COLUMNS,
+						MAX_COLUMNS
 					);
 					setAttributes( { columns: isNaN( newValue ) ? '' : newValue } );
 				} }
-				min={ wc_product_block_data.min_columns }
-				max={ wc_product_block_data.max_columns }
+				min={ MIN_COLUMNS }
+				max={ MAX_COLUMNS }
 			/>
 			<RangeControl
 				label={ __( 'Rows', 'woo-gutenberg-products-block' ) }
@@ -33,13 +34,29 @@ const GridLayoutControl = ( { columns, rows, setAttributes } ) => {
 				onChange={ ( value ) => {
 					const newValue = clamp(
 						value,
-						wc_product_block_data.min_rows,
-						wc_product_block_data.max_rows
+						MIN_ROWS,
+						MAX_ROWS
 					);
 					setAttributes( { rows: isNaN( newValue ) ? '' : newValue } );
 				} }
-				min={ wc_product_block_data.min_rows }
-				max={ wc_product_block_data.max_rows }
+				min={ MIN_ROWS }
+				max={ MAX_ROWS }
+			/>
+			<ToggleControl
+				label={ __( 'Align Add to Cart buttons', 'woo-gutenberg-products-block' ) }
+				help={
+					alignButtons ?
+						__(
+							'Buttons are aligned vertically.',
+							'woo-gutenberg-products-block'
+						) :
+						__(
+							'Buttons follow content.',
+							'woo-gutenberg-products-block'
+						)
+				}
+				checked={ alignButtons }
+				onChange={ () => setAttributes( { alignButtons: ! alignButtons } ) }
 			/>
 		</Fragment>
 	);
@@ -54,6 +71,10 @@ GridLayoutControl.propTypes = {
 	 * The current rows count.
 	 */
 	rows: PropTypes.oneOfType( [ PropTypes.number, PropTypes.string ] ).isRequired,
+	/**
+	 * Whether or not buttons are aligned horizontally across items.
+	 */
+	alignButtons: PropTypes.bool.isRequired,
 	/**
 	 * Callback to update the layout settings.
 	 */

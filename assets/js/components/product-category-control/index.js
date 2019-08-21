@@ -13,6 +13,7 @@ import { SelectControl } from '@wordpress/components';
 /**
  * Internal dependencies
  */
+import { ENDPOINTS } from '../../constants';
 import './style.scss';
 
 class ProductCategoryControl extends Component {
@@ -27,7 +28,7 @@ class ProductCategoryControl extends Component {
 
 	componentDidMount() {
 		apiFetch( {
-			path: addQueryArgs( '/wc-blocks/v1/products/categories', { per_page: -1 } ),
+			path: addQueryArgs( `${ ENDPOINTS.products }/categories`, { per_page: -1 } ),
 		} )
 			.then( ( list ) => {
 				this.setState( { list, loading: false } );
@@ -74,7 +75,7 @@ class ProductCategoryControl extends Component {
 
 	render() {
 		const { list, loading } = this.state;
-		const { onChange, onOperatorChange, operator, selected } = this.props;
+		const { onChange, onOperatorChange, operator, selected, isSingle } = this.props;
 
 		const messages = {
 			clear: __( 'Clear all product categories', 'woo-gutenberg-products-block' ),
@@ -114,6 +115,7 @@ class ProductCategoryControl extends Component {
 					renderItem={ this.renderItem }
 					messages={ messages }
 					isHierarchical
+					isSingle={ isSingle }
 				/>
 				{ ( !! onOperatorChange ) && (
 					<div className={ selected.length < 2 ? 'screen-reader-text' : '' }>
@@ -158,10 +160,15 @@ ProductCategoryControl.propTypes = {
 	 * The list of currently selected category IDs.
 	 */
 	selected: PropTypes.array.isRequired,
+	/**
+	 * Allow only a single selection. Defaults to false.
+	 */
+	isSingle: PropTypes.bool,
 };
 
 ProductCategoryControl.defaultProps = {
 	operator: 'any',
+	isSingle: false,
 };
 
 export default ProductCategoryControl;
