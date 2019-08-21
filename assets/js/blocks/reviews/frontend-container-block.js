@@ -1,6 +1,8 @@
 /**
  * External dependencies
  */
+import { __, _n, sprintf } from '@wordpress/i18n';
+import { speak } from '@wordpress/a11y';
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -45,6 +47,28 @@ class FrontendContainerBlock extends Component {
 		} );
 	}
 
+	onReviewsAppended( { newReviews } ) {
+		speak(
+			sprintf(
+				_n(
+					'%d review loaded.',
+					'%d reviews loaded.',
+					newReviews.length,
+					'woo-gutenberg-products-block'
+				),
+				newReviews.length,
+			)
+		);
+	}
+
+	onReviewsReplaced() {
+		speak( __( 'Reviews list updated.', 'woo-gutenberg-products-block' ) );
+	}
+
+	onReviewsLoadError() {
+		speak( __( 'There was an error loading the reviews.', 'woo-gutenberg-products-block' ) );
+	}
+
 	render() {
 		const { attributes } = this.props;
 		const { categoryIds, productId } = attributes;
@@ -57,11 +81,13 @@ class FrontendContainerBlock extends Component {
 				categoryIds={ categoryIds }
 				onAppendReviews={ this.onAppendReviews }
 				onChangeOrderby={ this.onChangeOrderby }
+				onReviewsAppended={ this.onReviewsAppended }
+				onReviewsLoadError={ this.onReviewsLoadError }
+				onReviewsReplaced={ this.onReviewsReplaced }
 				order={ order }
 				orderby={ orderby }
 				productId={ productId }
 				reviewsToDisplay={ reviewsToDisplay }
-				announceUpdates
 			/>
 		);
 	}

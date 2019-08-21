@@ -2,8 +2,6 @@
  * External dependencies
  */
 import { Component } from 'react';
-import { __, _n, sprintf } from '@wordpress/i18n';
-import { speak } from '@wordpress/a11y';
 import PropTypes from 'prop-types';
 
 /**
@@ -66,21 +64,17 @@ const withReviews = ( OriginalComponent ) => {
 		}
 
 		replaceReviews() {
-			const { announceUpdates, reviewsToDisplay } = this.props;
+			const { onReviewsReplaced, reviewsToDisplay } = this.props;
 			const args = {
 				...this.getArgs(),
 				per_page: reviewsToDisplay,
 			};
 
-			this.updateListOfReviews( args ).then( () => {
-				if ( announceUpdates ) {
-					speak( __( 'Reviews list updated.', 'woo-gutenberg-products-block' ) );
-				}
-			} );
+			this.updateListOfReviews( args ).then( onReviewsReplaced );
 		}
 
 		appendReviews() {
-			const { announceUpdates, reviewsToDisplay } = this.props;
+			const { onReviewsAppended, reviewsToDisplay } = this.props;
 			const { reviews } = this.state;
 
 			// Given that this function is delayed, props might have been updated since
@@ -95,21 +89,7 @@ const withReviews = ( OriginalComponent ) => {
 				offset: reviews.length,
 			};
 
-			this.updateListOfReviews( args, reviews ).then( ( { newReviews } ) => {
-				if ( announceUpdates ) {
-					speak(
-						sprintf(
-							_n(
-								'%d review loaded.',
-								'%d reviews loaded.',
-								newReviews.length,
-								'woo-gutenberg-products-block'
-							),
-							newReviews.length,
-						)
-					);
-				}
-			} );
+			this.updateListOfReviews( args, reviews ).then( onReviewsAppended );
 		}
 
 		updateListOfReviews( args, oldReviews = [] ) {
@@ -135,7 +115,7 @@ const withReviews = ( OriginalComponent ) => {
 		}
 
 		setError( apiError ) {
-			const { announceUpdates } = this.props;
+			const { onReviewsLoadError } = this.props;
 			const error = typeof apiError === 'object' && apiError.hasOwnProperty( 'message' ) ? {
 				apiMessage: apiError.message,
 			} : {
@@ -144,11 +124,7 @@ const withReviews = ( OriginalComponent ) => {
 
 			this.setState( { reviews: [], loading: false, error } );
 
-			if ( announceUpdates ) {
-				speak(
-					__( 'There was an error loading the reviews.', 'woo-gutenberg-products-block' )
-				);
-			}
+			onReviewsLoadError();
 		}
 
 		render() {
@@ -172,10 +148,6 @@ const withReviews = ( OriginalComponent ) => {
 		categoryIds: PropTypes.array,
 		delayFunction: PropTypes.func,
 		productId: PropTypes.number,
-		// Whether updates in the reviews list must be notified to screen reader
-		// users. Usually you would like this when the block is displayed in the
-		// frontend but not when it's in the editor.
-		announceUpdates: PropTypes.bool,
 	};
 
 	WrappedComponent.defaultProps = {
