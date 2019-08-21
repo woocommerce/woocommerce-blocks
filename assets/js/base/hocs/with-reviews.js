@@ -36,13 +36,33 @@ const withReviews = ( OriginalComponent ) => {
 				// delaying review fetches via the provided delay function.
 				this.delayedAppendReviews();
 			} else if (
-				prevProps.categoryIds !== this.props.categoryIds ||
-				prevProps.orderby !== this.props.orderby ||
-				prevProps.order !== this.props.order ||
-				prevProps.productId !== this.props.productId
+				this.shouldReplaceReviews( prevProps, this.props )
 			) {
 				this.replaceReviews();
 			}
+		}
+
+		shouldReplaceReviews( prevProps, nextProps ) {
+			if (
+				prevProps.orderby !== nextProps.orderby ||
+				prevProps.order !== nextProps.order ||
+				prevProps.productId !== nextProps.productId
+			) {
+				return true;
+			}
+
+			if ( prevProps.categoryIds === nextProps.categoryIds ) {
+				return false;
+			}
+
+			const prevCategoryIds = Array.isArray( prevProps.categoryIds ) ?
+				prevProps.categoryIds.join( ',' ) :
+				prevProps.categoryIds;
+			const nextCategoryIds = Array.isArray( nextProps.categoryIds ) ?
+				nextProps.categoryIds.join( ',' ) :
+				nextProps.categoryIds;
+
+			return prevCategoryIds !== nextCategoryIds;
 		}
 
 		getArgs() {
@@ -52,7 +72,7 @@ const withReviews = ( OriginalComponent ) => {
 				orderby,
 			};
 
-			if ( categoryIds ) {
+			if ( categoryIds && categoryIds.length ) {
 				args.category_id = Array.isArray( categoryIds ) ? categoryIds.join( ',' ) : categoryIds;
 			}
 
@@ -145,7 +165,7 @@ const withReviews = ( OriginalComponent ) => {
 		order: PropTypes.oneOf( [ 'asc', 'desc' ] ).isRequired,
 		orderby: PropTypes.string.isRequired,
 		reviewsToDisplay: PropTypes.number.isRequired,
-		categoryIds: PropTypes.array,
+		categoryIds: PropTypes.oneOfType( [ PropTypes.string, PropTypes.array ] ),
 		delayFunction: PropTypes.func,
 		productId: PropTypes.number,
 	};
