@@ -33,8 +33,9 @@ const withReviews = ( OriginalComponent ) => {
 
 		componentDidUpdate( prevProps ) {
 			if ( prevProps.reviewsToDisplay < this.props.reviewsToDisplay ) {
-				// Since this attribute is controlled with a slider,
-				// it's better not to load the reviews immediately.
+				// Since this attribute might be controlled via something with
+				// short intervals between value changes, this allows for optionally
+				// delaying review fetches via the provided delay function.
 				this.delayedAppendReviews();
 			} else if (
 				prevProps.categoryIds !== this.props.categoryIds ||
