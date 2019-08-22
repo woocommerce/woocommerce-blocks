@@ -27,7 +27,7 @@ import { renderViewMode, getBlockControls, getSharedReviewContentControls, getSh
  * Component to handle edit mode of "Reviews by Category".
  */
 const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, setAttributes } ) => {
-	const { editMode, categoryIds, showReviewDate, showReviewerName, showReviewContent, showProductName, showReviewImage, showReviewRating } = attributes;
+	const { editMode, categoryIds, showProductName, showReviewDate, showReviewerName, showReviewContent, showReviewImage, showReviewRating } = attributes;
 
 	const renderCategoryControlItem = ( args ) => {
 		const { item, search, depth = 0 } = args;

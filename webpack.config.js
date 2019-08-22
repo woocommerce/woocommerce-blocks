@@ -58,6 +58,7 @@ const GutenbergBlocksConfig = {
 		'product-top-rated': './assets/js/blocks/product-top-rated/index.js',
 		'products-by-attribute': './assets/js/blocks/products-by-attribute/index.js',
 		'featured-product': './assets/js/blocks/featured-product/index.js',
+		'all-reviews': './assets/js/blocks/reviews/all-reviews/index.js',
 		'reviews-by-product': './assets/js/blocks/reviews/reviews-by-product/index.js',
 		'reviews-by-category': './assets/js/blocks/reviews/reviews-by-category/index.js',
 		'product-search': './assets/js/blocks/product-search/index.js',

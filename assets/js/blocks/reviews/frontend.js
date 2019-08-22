@@ -8,9 +8,11 @@ import { render } from 'react-dom';
  */
 import FrontendContainerBlock from './frontend-container-block.js';
 
-const containers = document.querySelectorAll(
-	'.wp-block-woocommerce-reviews-by-product, .wp-block-woocommerce-reviews-by-category'
-);
+const containers = document.querySelectorAll( `
+	.wp-block-woocommerce-all-reviews,
+	.wp-block-woocommerce-reviews-by-product,
+	.wp-block-woocommerce-reviews-by-category
+` );
 
 if ( containers.length ) {
 	// Use Array.forEach for IE11 compatibility
