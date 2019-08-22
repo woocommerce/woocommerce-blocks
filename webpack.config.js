@@ -159,8 +159,7 @@ const BlocksFrontendConfig = {
 	...baseConfig,
 	entry: {
 		'product-categories': './assets/js/blocks/product-categories/frontend.js',
-		'reviews-by-product': './assets/js/blocks/reviews/reviews-by-product/frontend.js',
-		'reviews-by-category': './assets/js/blocks/reviews/reviews-by-category/frontend.js',
+		reviews: './assets/js/blocks/reviews/frontend.js',
 	},
 	output: {
 		path: path.resolve( __dirname, './build/' ),

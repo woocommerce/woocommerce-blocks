@@ -3,16 +3,58 @@ import { Fragment, RawHTML } from '@wordpress/element';
 import {
 	Notice,
 	ToggleControl,
+	Toolbar,
 	RangeControl,
 	SelectControl,
 } from '@wordpress/components';
+import {
+	BlockControls,
+} from '@wordpress/editor';
 import { getAdminLink } from '@woocommerce/navigation';
+import { debounce } from 'lodash';
 
 /**
  * Internal dependencies
  */
+import EditorBlock from './editor-block.js';
 import ToggleButtonControl from '../../components/toggle-button-control';
 import { ENABLE_REVIEW_RATING, SHOW_AVATARS } from '../../constants';
+import { getBlockClassName, getOrderArgs } from './utils.js';
+
+export const renderViewMode = ( className, attributes ) => {
+	const { categoryIds, productId, reviewsOnPageLoad } = attributes;
+
+	const { order, orderby } = getOrderArgs( attributes.orderby );
+
+	return (
+		<div className={ getBlockClassName( className, attributes ) }>
+			<EditorBlock
+				attributes={ attributes }
+				categoryIds={ categoryIds }
+				delayFunction={ ( callback ) => debounce( callback, 400 ) }
+				orderby={ orderby }
+				order={ order }
+				productId={ productId }
+				reviewsToDisplay={ reviewsOnPageLoad }
+			/>
+		</div>
+	);
+};
+
+export const getBlockControls = ( editMode, setAttributes ) => (
+	<BlockControls>
+		<Toolbar
+			controls={ [
+				{
+					icon: 'edit',
+					title: __( 'Edit' ),
+					onClick: () => setAttributes( { editMode: ! editMode } ),
+					isActive: editMode,
+				},
+			] }
+		/>
+	</BlockControls>
+);
 
 export const getSharedReviewContentControls = ( attributes, setAttributes ) => {
 	return (

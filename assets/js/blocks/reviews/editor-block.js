@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Disabled, Placeholder } from '@wordpress/components';
@@ -9,15 +9,14 @@ import { Disabled, Placeholder } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import LoadMoreButton from '../../../base/components/load-more-button';
-import ReviewList from '../../../base/components/review-list';
-import ReviewOrderSelect from '../../../base/components/review-order-select';
-import withComponentId from '../../../base/hocs/with-component-id';
-import withReviews from '../../../base/hocs/with-reviews';
-import { IconReviewsByProduct } from '../../../components/icons';
-import NoReviewsPlaceholder from './no-reviews-placeholder.js';
-import { ENABLE_REVIEW_RATING } from '../../../constants';
-import { escapeHTML } from '@wordpress/escape-html';
+import LoadMoreButton from '../../base/components/load-more-button';
+import ReviewList from '../../base/components/review-list';
+import ReviewOrderSelect from '../../base/components/review-order-select';
+import withComponentId from '../../base/hocs/with-component-id';
+import withReviews from '../../base/hocs/with-reviews';
+import { IconReviewsByCategory } from '../../components/icons';
+import NoReviewsPlaceholder from './reviews-by-product/no-reviews-placeholder.js';
+import { ENABLE_REVIEW_RATING } from '../../constants';
 
 /**
  * Block rendered in the editor.
@@ -25,22 +24,18 @@ import { escapeHTML } from '@wordpress/escape-html';
 class EditorBlock extends Component {
 	renderNoReviews() {
 		const { attributes } = this.props;
-		const { product } = attributes;
+		if ( attributes.productId ) {
+			return (
+				<NoReviewsPlaceholder attributes={ attributes } />
+			);
+		}
 		return (
 			<Placeholder
-				className="wc-block-reviews-by-product"
-				icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
-				label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
+				className="wc-block-reviews-by-category"
+				icon={ <IconReviewsByCategory className="block-editor-block-icon" /> }
+				label={ __( 'Reviews by Category', 'woo-gutenberg-products-block' ) }
 			>
-				<div dangerouslySetInnerHTML={ {
-					__html: sprintf(
-						__(
-							"This block lists reviews for a selected product. %s doesn't have any reviews yet, but they will show up here when it does.",
-							'woo-gutenberg-products-block'
-						),
-						'<strong>' + escapeHTML( product.name ) + '</strong>'
-					),
-				} } />
+				{ __( 'This block lists reviews for products from selected categories. The selected categories do not have any reviews yet, but they will show up here when they do.', 'woo-gutenberg-products-block' ) }
 			</Placeholder>
 		);
 	}
@@ -49,7 +44,7 @@ class EditorBlock extends Component {
 		const { attributes, componentId, isLoading, reviews, totalReviews } = this.props;
 
 		if ( 0 === reviews.length && ! isLoading ) {
-			return <NoReviewsPlaceholder attributes={ attributes } />;
+			return this.renderNoReviews();
 		}
 
 		return (
