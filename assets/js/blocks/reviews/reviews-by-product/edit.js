@@ -24,7 +24,6 @@ import { debounce } from 'lodash';
 import EditorBlock from './editor-block.js';
 import ProductControl from '../../../components/product-control';
 import { IconReviewsByProduct } from '../../../components/icons';
-import { ENABLE_REVIEW_RATING, SHOW_AVATARS } from '../../../constants';
 import { getSharedReviewContentControls, getSharedReviewListControls } from '../edit.js';
 import { getBlockClassName, getOrderArgs } from '../utils.js';
 
@@ -32,9 +31,6 @@ import { getBlockClassName, getOrderArgs } from '../utils.js';
  * Component to handle edit mode of "Reviews by Product".
  */
 const ReviewsByProductEditor = ( { attributes, debouncedSpeak, setAttributes } ) => {
-	attributes.showReviewImage = ( SHOW_AVATARS || attributes.imageType === 'product' ) && attributes.showReviewImage;
-	attributes.showReviewRating = ENABLE_REVIEW_RATING && attributes.showReviewRating;
-
 	const { editMode, productId, showReviewDate, showReviewerName, showReviewContent, showReviewImage, showReviewRating } = attributes;
 
 	const getBlockControls = () => (
@@ -123,13 +119,12 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, setAttributes } )
 			<Placeholder
 				icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
 				label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
-				className="wc-block-reviews-by-product"
 			>
 				{ __(
 					'Show reviews of your product to build trust',
 					'woo-gutenberg-products-block'
 				) }
-				<div className="wc-block-reviews-by-product__selection">
+				<div className="wc-block-reviews__selection">
 					<ProductControl
 						selected={ attributes.productId || 0 }
 						onChange={ ( value = [] ) => {
@@ -153,7 +148,6 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, setAttributes } )
 	const renderHiddenContentPlaceholder = () => {
 		return (
 			<Placeholder
-				className="wc-block-reviews-by-product"
 				icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
 				label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
 			>
