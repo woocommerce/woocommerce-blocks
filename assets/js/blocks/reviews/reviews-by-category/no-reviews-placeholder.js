@@ -9,7 +9,7 @@ import { Placeholder } from '@wordpress/components';
  */
 import { IconReviewsByCategory } from '../../../components/icons';
 
-const NoCategoryReviewsPlaceholder = () => {
+const NoReviewsPlaceholder = () => {
 	return (
 		<Placeholder
 			className="wc-block-reviews-by-category"
@@ -21,4 +21,4 @@ const NoCategoryReviewsPlaceholder = () => {
 	);
 };
 
-export default NoCategoryReviewsPlaceholder;
+export default NoReviewsPlaceholder;

@@ -20,13 +20,15 @@ import PropTypes from 'prop-types';
  */
 import ProductControl from '../../../components/product-control';
 import { IconReviewsByProduct } from '../../../components/icons';
-import { renderViewMode, getBlockControls, getSharedReviewContentControls, getSharedReviewListControls } from '../edit-utils.js';
+import EditorContainerBlock from '../editor-container-block.js';
+import NoReviewsPlaceholder from './no-reviews-placeholder.js';
+import { getBlockControls, getSharedReviewContentControls, getSharedReviewListControls } from '../edit-utils.js';
 
 /**
  * Component to handle edit mode of "Reviews by Product".
  */
 const ReviewsByProductEditor = ( { attributes, debouncedSpeak, setAttributes } ) => {
-	const { editMode, productId, showReviewDate, showReviewerName, showReviewContent, showReviewImage, showReviewRating } = attributes;
+	const { editMode, productId } = attributes;
 
 	const renderProductControlItem = ( args ) => {
 		const { item = 0 } = args;
@@ -125,31 +127,21 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, setAttributes } )
 		);
 	};
 
-	const renderHiddenContentPlaceholder = () => {
-		return (
-			<Placeholder
-				icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
-				label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
-			>
-				{ __( 'The content for this block is hidden due to block settings.', 'woo-gutenberg-products-block' ) }
-			</Placeholder>
-		);
-	};
-
 	if ( ! productId || editMode ) {
 		return renderEditMode();
 	}
-
-	const isAllContentHidden = ! showReviewContent && ! showReviewRating && ! showReviewDate && ! showReviewerName && ! showReviewImage;
 
 	return (
 		<Fragment>
 			{ getBlockControls( editMode, setAttributes ) }
 			{ getInspectorControls() }
-			{ isAllContentHidden ?
-				renderHiddenContentPlaceholder() :
-				renderViewMode( 'wc-block-reviews-by-product', attributes )
-			}
+			<EditorContainerBlock
+				attributes={ attributes }
+				className="wc-block-all-reviews"
+				icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
+				name={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
+				noReviewsPlaceholder={ NoReviewsPlaceholder }
+			/>
 		</Fragment>
 	);
 };

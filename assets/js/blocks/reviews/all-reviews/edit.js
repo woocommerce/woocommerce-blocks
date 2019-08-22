@@ -5,11 +5,7 @@ import { __ } from '@wordpress/i18n';
 import {
 	InspectorControls,
 } from '@wordpress/editor';
-import {
-	PanelBody,
-	Placeholder,
-	ToggleControl,
-} from '@wordpress/components';
+import { PanelBody, ToggleControl } from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
 
@@ -17,14 +13,14 @@ import PropTypes from 'prop-types';
  * Internal dependencies
  */
 import { IconReviewsByCategory } from '../../../components/icons';
-import { renderViewMode, getSharedReviewContentControls, getSharedReviewListControls } from '../edit-utils.js';
+import EditorContainerBlock from '../editor-container-block.js';
+import NoReviewsPlaceholder from './no-reviews-placeholder.js';
+import { getSharedReviewContentControls, getSharedReviewListControls } from '../edit-utils.js';
 
 /**
  * Component to handle edit mode of "All Reviews".
  */
 const AllReviewsEditor = ( { attributes, setAttributes } ) => {
-	const { showProductName, showReviewDate, showReviewerName, showReviewContent, showReviewImage, showReviewRating } = attributes;
-
 	const getInspectorControls = () => {
 		return (
 			<InspectorControls key="inspector">
@@ -43,26 +39,16 @@ const AllReviewsEditor = ( { attributes, setAttributes } ) => {
 		);
 	};
 
-	const renderHiddenContentPlaceholder = () => {
-		return (
-			<Placeholder
-				icon={ <IconReviewsByCategory className="block-editor-block-icon" /> }
-				label={ __( 'All Reviews', 'woo-gutenberg-products-block' ) }
-			>
-				{ __( 'The content for this block is hidden due to block settings.', 'woo-gutenberg-products-block' ) }
-			</Placeholder>
-		);
-	};
-
-	const isAllContentHidden = ! showReviewContent && ! showReviewRating && ! showReviewDate && ! showReviewerName && ! showReviewImage && ! showProductName;
-
 	return (
 		<Fragment>
 			{ getInspectorControls() }
-			{ isAllContentHidden ?
-				renderHiddenContentPlaceholder() :
-				renderViewMode( 'wc-block-all-reviews', attributes )
-			}
+			<EditorContainerBlock
+				attributes={ attributes }
+				className="wc-block-all-reviews"
+				icon={ <IconReviewsByCategory className="block-editor-block-icon" /> }
+				name={ __( 'All Reviews', 'woo-gutenberg-products-block' ) }
+				noReviewsPlaceholder={ NoReviewsPlaceholder }
+			/>
 		</Fragment>
 	);
 };
