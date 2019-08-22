@@ -5,11 +5,6 @@ import { __, sprintf } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-/**
- * Internal dependencies
- */
-import { PLACEHOLDER_IMG_SRC, THUMBNAIL_SIZE } from '../../../constants';
-
 function getProductClassName( isLoading ) {
 	return classNames(
 		'wc-block-grid__product',
@@ -29,31 +24,11 @@ function getProductImage( product, isLoading ) {
 		);
 	}
 
-	let image = null;
-	if ( product.images.length ) {
-		image = (
-			<img
-				className="wc-product-preview__image"
-				src={ product.images[ 0 ].src }
-				alt=""
-				style={ { width: `${ THUMBNAIL_SIZE }px` /* stylelint-disable-line */ } }
-			/>
-		);
-	} else {
-		image = (
-			<img
-				className="wc-product-preview__image"
-				src={ PLACEHOLDER_IMG_SRC }
-				alt=""
-				style={ { width: `${ THUMBNAIL_SIZE }px` /* stylelint-disable-line */ } }
-			/>
-		);
-	}
-
 	return (
-		<div className="wc-block-grid__product-image">
-			{ image }
-		</div>
+		<div
+			className="wc-block-grid__product-image"
+			dangerouslySetInnerHTML={ { __html: product.thumbnail_html } }
+		/>
 	);
 }
 

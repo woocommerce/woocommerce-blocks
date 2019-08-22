@@ -205,6 +205,7 @@ class Products extends WC_REST_Products_Controller {
 			'description'    => apply_filters( 'woocommerce_short_description', $product->get_short_description() ? $product->get_short_description() : wc_trim_string( $product->get_description(), 400 ) ),
 			'price'          => $product->get_price(),
 			'price_html'     => $product->get_price_html(),
+			'thumbnail_html' => $product->get_image( 'woocommerce_thumbnail' ),
 			'images'         => $this->get_images( $product ),
 			'average_rating' => $product->get_average_rating(),
 			'review_count'   => $product->get_review_count(),
@@ -369,6 +370,12 @@ class Products extends WC_REST_Products_Controller {
 				'review_count'   => array(
 					'description' => __( 'Amount of reviews that the product has.', 'woo-gutenberg-products-block' ),
 					'type'        => 'integer',
+					'context'     => array( 'view', 'edit' ),
+					'readonly'    => true,
+				),
+				'thumbnail_html' => array(
+					'description' => __( 'Thumbnail HTML, including srcset and other properties.', 'woo-gutenberg-products-block' ),
+					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),

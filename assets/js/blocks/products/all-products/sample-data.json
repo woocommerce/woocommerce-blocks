@@ -8,6 +8,7 @@
     "description": "<p>This is an external product.<\/p>\n",
     "price": "0",
     "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>0.00<\/span>",
+    "thumbnail_html": "<img width=\"324\" height=\"324\" src=\"http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/pennant-1-324x324.jpg\" class=\"attachment-woocommerce_thumbnail size-woocommerce_thumbnail\" alt=\"\" srcset=\"http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/pennant-1-324x324.jpg 324w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/pennant-1-416x416.jpg 416w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/pennant-1-150x150.jpg 150w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/pennant-1-300x300.jpg 300w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/pennant-1-768x768.jpg 768w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/pennant-1-100x100.jpg 100w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/pennant-1.jpg 800w\" sizes=\"(max-width: 324px) 100vw, 324px\" \/>",
     "images": [
       {
         "id": 60,
@@ -47,6 +48,7 @@
     "description": "<p>This is a grouped product.<\/p>\n",
     "price": "18",
     "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>18.00<\/span> &ndash; <span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>45.00<\/span>",
+    "thumbnail_html": "<img width=\"324\" height=\"324\" src=\"http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/logo-1-324x324.jpg\" class=\"attachment-woocommerce_thumbnail size-woocommerce_thumbnail\" alt=\"\" srcset=\"http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/logo-1-324x324.jpg 324w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/logo-1-416x415.jpg 416w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/logo-1-150x150.jpg 150w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/logo-1-300x300.jpg 300w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/logo-1-768x767.jpg 768w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/logo-1-100x100.jpg 100w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/logo-1.jpg 800w\" sizes=\"(max-width: 324px) 100vw, 324px\" \/>",
     "images": [
       {
         "id": 59,
@@ -109,6 +111,7 @@
     "description": "<p>This is a simple product.<\/p>\n",
     "price": "18",
     "price_html": "<del><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>20.00<\/span><\/del> <ins><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>18.00<\/span><\/ins>",
+    "thumbnail_html": "<img width=\"324\" height=\"324\" src=\"http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/beanie-with-logo-1-324x324.jpg\" class=\"attachment-woocommerce_thumbnail size-woocommerce_thumbnail\" alt=\"\" srcset=\"http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/beanie-with-logo-1-324x324.jpg 324w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/beanie-with-logo-1-416x416.jpg 416w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/beanie-with-logo-1-150x150.jpg 150w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/beanie-with-logo-1-300x300.jpg 300w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/beanie-with-logo-1-768x768.jpg 768w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/beanie-with-logo-1-100x100.jpg 100w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/beanie-with-logo-1.jpg 800w\" sizes=\"(max-width: 324px) 100vw, 324px\" \/>",
     "images": [
       {
         "id": 58,
@@ -148,6 +151,7 @@
     "description": "<p>This is a simple product.<\/p>\n",
     "price": "18",
     "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>18.00<\/span>",
+    "thumbnail_html": "<img width=\"324\" height=\"324\" src=\"http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/t-shirt-with-logo-1-324x324.jpg\" class=\"attachment-woocommerce_thumbnail size-woocommerce_thumbnail\" alt=\"\" srcset=\"http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/t-shirt-with-logo-1-324x324.jpg 324w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/t-shirt-with-logo-1-416x416.jpg 416w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/t-shirt-with-logo-1-150x150.jpg 150w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/t-shirt-with-logo-1-300x300.jpg 300w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/t-shirt-with-logo-1-768x768.jpg 768w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/t-shirt-with-logo-1-100x100.jpg 100w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/t-shirt-with-logo-1.jpg 800w\" sizes=\"(max-width: 324px) 100vw, 324px\" \/>",
     "images": [
       {
         "id": 57,
@@ -187,6 +191,7 @@
     "description": "<p>This is a simple, virtual product.<\/p>\n",
     "price": "2",
     "price_html": "<del><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>3.00<\/span><\/del> <ins><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>2.00<\/span><\/ins>",
+    "thumbnail_html": "<img width=\"324\" height=\"324\" src=\"http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/single-1-324x324.jpg\" class=\"attachment-woocommerce_thumbnail size-woocommerce_thumbnail\" alt=\"\" srcset=\"http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/single-1-324x324.jpg 324w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/single-1-416x416.jpg 416w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/single-1-150x150.jpg 150w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/single-1-300x300.jpg 300w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/single-1-768x768.jpg 768w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/single-1-100x100.jpg 100w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/single-1.jpg 800w\" sizes=\"(max-width: 324px) 100vw, 324px\" \/>",
     "images": [
       {
         "id": 56,
@@ -226,6 +231,7 @@
     "description": "<p>This is a simple, virtual product.<\/p>\n",
     "price": "15",
     "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>15.00<\/span>",
+    "thumbnail_html": "<img width=\"324\" height=\"324\" src=\"http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/album-1-324x324.jpg\" class=\"attachment-woocommerce_thumbnail size-woocommerce_thumbnail\" alt=\"\" srcset=\"http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/album-1-324x324.jpg 324w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/album-1-416x416.jpg 416w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/album-1-150x150.jpg 150w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/album-1-300x300.jpg 300w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/album-1-768x768.jpg 768w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/album-1-100x100.jpg 100w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/album-1.jpg 800w\" sizes=\"(max-width: 324px) 100vw, 324px\" \/>",
     "images": [
       {
         "id": 55,
@@ -265,6 +271,7 @@
     "description": "<p>This is a simple product.<\/p>\n",
     "price": "20",
     "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>20.00<\/span>",
+    "thumbnail_html": "<img width=\"324\" height=\"324\" src=\"http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/polo-2-324x324.jpg\" class=\"attachment-woocommerce_thumbnail size-woocommerce_thumbnail\" alt=\"\" srcset=\"http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/polo-2-324x324.jpg 324w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/polo-2-416x415.jpg 416w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/polo-2-150x150.jpg 150w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/polo-2-300x300.jpg 300w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/polo-2-768x767.jpg 768w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/polo-2-100x100.jpg 100w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/polo-2.jpg 801w\" sizes=\"(max-width: 324px) 100vw, 324px\" \/>",
     "images": [
       {
         "id": 54,
@@ -304,6 +311,7 @@
     "description": "<p>This is a simple product.<\/p>\n",
     "price": "25",
     "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>25.00<\/span>",
+    "thumbnail_html": "<img width=\"324\" height=\"324\" src=\"http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/long-sleeve-tee-2-324x324.jpg\" class=\"attachment-woocommerce_thumbnail size-woocommerce_thumbnail\" alt=\"\" srcset=\"http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/long-sleeve-tee-2-324x324.jpg 324w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/long-sleeve-tee-2-416x416.jpg 416w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/long-sleeve-tee-2-150x150.jpg 150w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/long-sleeve-tee-2-300x300.jpg 300w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/long-sleeve-tee-2-768x768.jpg 768w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/long-sleeve-tee-2-100x100.jpg 100w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/long-sleeve-tee-2.jpg 801w\" sizes=\"(max-width: 324px) 100vw, 324px\" \/>",
     "images": [
       {
         "id": 53,
@@ -343,6 +351,7 @@
     "description": "<p>This is a simple product.<\/p>\n",
     "price": "45",
     "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>45.00<\/span>",
+    "thumbnail_html": "<img width=\"324\" height=\"324\" src=\"http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-zipper-2-324x324.jpg\" class=\"attachment-woocommerce_thumbnail size-woocommerce_thumbnail\" alt=\"\" srcset=\"http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-zipper-2-324x324.jpg 324w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-zipper-2-416x416.jpg 416w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-zipper-2-150x150.jpg 150w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-zipper-2-300x300.jpg 300w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-zipper-2-768x768.jpg 768w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-zipper-2-100x100.jpg 100w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-zipper-2.jpg 800w\" sizes=\"(max-width: 324px) 100vw, 324px\" \/>",
     "images": [
       {
         "id": 52,
@@ -382,6 +391,7 @@
     "description": "<p>This is a simple product.<\/p>\n",
     "price": "35",
     "price_html": "<del><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>45.00<\/span><\/del> <ins><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>35.00<\/span><\/ins>",
+    "thumbnail_html": "<img width=\"324\" height=\"324\" src=\"http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-pocket-2-324x324.jpg\" class=\"attachment-woocommerce_thumbnail size-woocommerce_thumbnail\" alt=\"\" srcset=\"http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-pocket-2-324x324.jpg 324w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-pocket-2-416x416.jpg 416w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-pocket-2-150x150.jpg 150w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-pocket-2-300x300.jpg 300w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-pocket-2-768x768.jpg 768w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-pocket-2-100x100.jpg 100w, http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-pocket-2.jpg 801w\" sizes=\"(max-width: 324px) 100vw, 324px\" \/>",
     "images": [
       {
         "id": 51,
