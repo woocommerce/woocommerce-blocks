@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Disabled, Placeholder } from '@wordpress/components';
+import { Disabled } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -14,8 +14,9 @@ import ReviewList from '../../base/components/review-list';
 import ReviewOrderSelect from '../../base/components/review-order-select';
 import withComponentId from '../../base/hocs/with-component-id';
 import withReviews from '../../base/hocs/with-reviews';
-import { IconReviewsByCategory } from '../../components/icons';
-import NoReviewsPlaceholder from './reviews-by-product/no-reviews-placeholder.js';
+import NoReviewsPlaceholder from './all-reviews/no-reviews-placeholder.js';
+import NoCategoryReviewsPlaceholder from './reviews-by-category/no-category-reviews-placeholder.js';
+import NoProductReviewsPlaceholder from './reviews-by-product/no-product-reviews-placeholder.js';
 import { ENABLE_REVIEW_RATING } from '../../constants';
 
 /**
@@ -24,20 +25,14 @@ import { ENABLE_REVIEW_RATING } from '../../constants';
 class EditorBlock extends Component {
 	renderNoReviews() {
 		const { attributes } = this.props;
+
 		if ( attributes.productId ) {
-			return (
-				<NoReviewsPlaceholder attributes={ attributes } />
-			);
+			return <NoProductReviewsPlaceholder attributes={ attributes } />;
 		}
-		return (
-			<Placeholder
-				className="wc-block-reviews-by-category"
-				icon={ <IconReviewsByCategory className="block-editor-block-icon" /> }
-				label={ __( 'Reviews by Category', 'woo-gutenberg-products-block' ) }
-			>
-				{ __( 'This block lists reviews for products from selected categories. The selected categories do not have any reviews yet, but they will show up here when they do.', 'woo-gutenberg-products-block' ) }
-			</Placeholder>
-		);
+		if ( attributes.categoryIds ) {
+			return <NoCategoryReviewsPlaceholder attributes={ attributes } />;
+		}
+		return <NoReviewsPlaceholder attributes={ attributes } />;
 	}
 
 	render() {
