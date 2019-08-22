@@ -23,6 +23,7 @@ const mockReviews = [
 	{ reviewer: 'Carol', review: 'Consectetur adipiscing elit', rating: 5 },
 ];
 const defaultArgs = {
+	offset: 0,
 	order: 'desc',
 	orderby: 'date_gmt',
 	per_page: 2,
