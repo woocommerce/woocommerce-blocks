@@ -58,6 +58,8 @@ const GutenbergBlocksConfig = {
 		'product-top-rated': './assets/js/blocks/product-top-rated/index.js',
 		'products-by-attribute': './assets/js/blocks/products-by-attribute/index.js',
 		'featured-product': './assets/js/blocks/featured-product/index.js',
+		'reviews-by-product': './assets/js/blocks/reviews/reviews-by-product/index.js',
+		'reviews-by-category': './assets/js/blocks/reviews/reviews-by-category/index.js',
 		'product-search': './assets/js/blocks/product-search/index.js',
 		'product-tag': './assets/js/blocks/product-tag/index.js',
 		'featured-category': './assets/js/blocks/featured-category/index.js',
@@ -87,17 +89,15 @@ const GutenbergBlocksConfig = {
 					test: ( module = {} ) =>
 						module.constructor.name === 'CssModule' &&
 						( findModuleMatch( module, /editor\.scss$/ ) ||
-							findModuleMatch( module, /[\\/]components[\\/]/ ) ),
+							findModuleMatch( module, /[\\/]assets[\\/]components[\\/]/ ) ),
 					name: 'editor',
 					chunks: 'all',
-					enforce: true,
 					priority: 10,
 				},
 				style: {
 					test: /style\.scss$/,
 					name: 'style',
 					chunks: 'all',
-					enforce: true,
 					priority: 5,
 				},
 			},
@@ -114,6 +114,7 @@ const GutenbergBlocksConfig = {
 						presets: [ '@wordpress/babel-preset-default' ],
 						plugins: [
 							NODE_ENV === 'production' ? require.resolve( 'babel-plugin-transform-react-remove-prop-types' ) : false,
+							require.resolve( '@babel/plugin-proposal-class-properties' ),
 						].filter( Boolean ),
 					},
 				},
@@ -160,6 +161,8 @@ const BlocksFrontendConfig = {
 	entry: {
 		'product-categories': './assets/js/blocks/product-categories/frontend.js',
 		'price-filter': './assets/js/blocks/price-filter/frontend.js',
+		'reviews-by-product': './assets/js/blocks/reviews/reviews-by-product/frontend.js',
+		'reviews-by-category': './assets/js/blocks/reviews/reviews-by-category/frontend.js',
 	},
 	output: {
 		path: path.resolve( __dirname, './build/' ),
@@ -190,6 +193,7 @@ const BlocksFrontendConfig = {
 							require.resolve( '@babel/plugin-transform-react-jsx' ),
 							require.resolve( '@babel/plugin-proposal-async-generator-functions' ),
 							require.resolve( '@babel/plugin-transform-runtime' ),
+							require.resolve( '@babel/plugin-proposal-class-properties' ),
 							NODE_ENV === 'production' ? require.resolve( 'babel-plugin-transform-react-remove-prop-types' ) : false,
 						].filter( Boolean ),
 					},
@@ -197,7 +201,9 @@ const BlocksFrontendConfig = {
 			},
 			{
 				test: /\.s[c|a]ss$/,
-				loader: 'ignore-loader',
+				use: {
+					loader: 'ignore-loader',
+				},
 			},
 		],
 	},
