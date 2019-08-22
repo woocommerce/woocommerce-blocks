@@ -161,11 +161,17 @@ const withReviews = ( OriginalComponent ) => {
 		reviewsToDisplay: PropTypes.number.isRequired,
 		categoryIds: PropTypes.oneOfType( [ PropTypes.string, PropTypes.array ] ),
 		delayFunction: PropTypes.func,
+		onReviewsAppended: PropTypes.func,
+		onReviewsLoadError: PropTypes.func,
+		onReviewsReplaced: PropTypes.func,
 		productId: PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
 	};
 
 	WrappedComponent.defaultProps = {
 		delayFunction: ( f ) => f,
+		onReviewsAppended: () => {},
+		onReviewsLoadError: () => {},
+		onReviewsReplaced: () => {},
 	};
 
 	const { displayName = OriginalComponent.name || 'Component' } = OriginalComponent;
