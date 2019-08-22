@@ -8,12 +8,12 @@ import { registerBlockType } from '@wordpress/blocks';
  * Internal dependencies
  */
 import edit from './edit.js';
-import { IconFolder } from '../../components/icons';
+import { IconMoney } from '../../components/icons';
 
 registerBlockType( 'woocommerce/price-filter', {
 	title: __( 'Filter Products by Price', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <IconFolder />,
+		src: <IconMoney />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',
@@ -26,15 +26,28 @@ registerBlockType( 'woocommerce/price-filter', {
 		align: [ 'wide', 'full' ],
 	},
 
-	attributes: {},
+	attributes: {
+		showInputFields: {
+			type: 'boolean',
+			default: true,
+		},
+		showFilterButton: {
+			type: 'boolean',
+			default: false,
+		},
+	},
 
 	edit,
 
 	/**
 	 * Save the props to post content.
 	 */
-	save() {
-		const data = {};
+	save( { attributes } ) {
+		const { showInputFields, showFilterButton } = attributes;
+		const data = {
+			'data-showinputfields': showInputFields,
+			'data-showfilterbutton': showFilterButton,
+		};
 		return (
 			<div className="is-loading" { ...data }>
 				<span aria-hidden className="wc-block-product-categories__placeholder" />

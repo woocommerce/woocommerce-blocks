@@ -14,8 +14,12 @@ const containers = document.querySelectorAll(
 
 if ( containers.length ) {
 	Array.prototype.forEach.call( containers, ( el ) => {
+		const attributes = {
+			showInputFields: el.dataset.showinputfields === 'true',
+			showFilterButton: el.dataset.showfilterbutton === 'true',
+		};
 		el.classList.remove( 'is-loading' );
 
-		render( <Block />, el );
+		render( <Block attributes={ attributes } />, el );
 	} );
 }
