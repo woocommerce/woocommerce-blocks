@@ -17,7 +17,9 @@ import ReviewOrderSelect from '../../../base/components/review-order-select';
 import withComponentId from '../../../base/hocs/with-component-id';
 import withReviews from '../../../base/hocs/with-reviews';
 import { IconReviewsByProduct } from '../../../components/icons';
-import NoReviewsPlaceholder from './no-reviews-placeholder.js';/**
+import NoReviewsPlaceholder from './no-reviews-placeholder.js';
+
+/**
  * Block rendered in the editor.
  */
 class EditorBlock extends Component {
