@@ -37,8 +37,6 @@ class Block extends Component {
 		 */
 		return (
 			<Fragment>
-				Content goes here.
-
 				<ProductGrid products={ products } attributes={ this.props.attributes } componentId={ this.props.componentId } />
 			</Fragment>
 		);

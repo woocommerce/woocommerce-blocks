@@ -70,7 +70,7 @@ function getProductTitle( product ) {
 }
 
 function getProductBadge( product ) {
-	if ( ! product.on_sale ) { // @todo add to api
+	if ( ! product.onsale ) {
 		return null;
 	}
 
@@ -83,22 +83,23 @@ function getProductBadge( product ) {
 
 function getProductPrice( product ) {
 	return (
-		<div className="wc-block-grid__product-price price">
-			{ product.price_html }
-		</div>
+		<div
+			className="wc-block-grid__product-price price"
+			dangerouslySetInnerHTML={ { __html: product.price_html } }
+		/>
 	);
 }
 
 function getProductRating( product ) {
-	const { average_rating: rating } = product;
-
-	const starStyle = {
-		width: ( rating / 5 * 100 ) + '%', /* stylelint-disable-line */
-	};
+	const rating = parseFloat( product.average_rating );
 
 	if ( ! Number.isFinite( rating ) ) {
 		return null;
 	}
+
+	const starStyle = {
+		width: ( rating / 5 * 100 ) + '%', /* stylelint-disable-line */
+	};
 
 	return (
 		<div className="wc-block-grid__product-rating">
@@ -112,10 +113,27 @@ function getProductRating( product ) {
 /**
  * @todo Work out how to do add to cart URLs.
  */
-function getProductButton() {
+function getProductButton( product ) {
+	const classes = classNames(
+		'wp-block-button__link',
+		'add_to_cart_button',
+		{
+			ajax_add_to_cart: true === product.add_to_cart.ajax,
+		}
+	);
 	return (
 		<div className="wp-block-button wc-block-grid__product-add-to-cart">
-			Button
+			<a
+				href={ product.add_to_cart.url }
+				aria-label={ product.add_to_cart.description }
+				className={ classes }
+				rel="nofollow"
+				data-quantity="1"
+				data-product_id={ product.id }
+				data-product_sku={ product.sku }
+			>
+				{ product.add_to_cart.text }
+			</a>
 		</div>
 	);
 }

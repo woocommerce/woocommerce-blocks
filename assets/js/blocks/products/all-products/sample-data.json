@@ -9,26 +9,33 @@
     "price": "0",
     "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>0.00<\/span>",
     "images": [
-    {
-      "id": 60,
-      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/pennant-1.jpg",
-      "name": "pennant-1.jpg",
-      "alt": ""
-    }
+      {
+        "id": 60,
+        "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/pennant-1.jpg",
+        "name": "pennant-1.jpg",
+        "alt": ""
+      }
     ],
     "average_rating": "3.60",
     "review_count": 5,
+    "onsale": false,
+    "add_to_cart": {
+      "url": "\/wp-json\/wc\/blocks\/products?add-to-cart=95",
+      "text": "Add to cart",
+      "description": "Add &ldquo;WordPress Pennant&rdquo; to your cart",
+      "supports_ajax": true
+    },
     "_links": {
-    "self": [
-      {
-      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/95"
-      }
-    ],
-    "collection": [
-      {
-      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
-      }
-    ]
+      "self": [
+        {
+          "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/95"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
+        }
+      ]
     }
   },
   {
@@ -41,49 +48,56 @@
     "price": "18",
     "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>18.00<\/span> &ndash; <span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>45.00<\/span>",
     "images": [
-    {
-      "id": 59,
-      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/logo-1.jpg",
-      "name": "logo-1.jpg",
-      "alt": ""
-    },
-    {
-      "id": 58,
-      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/beanie-with-logo-1.jpg",
-      "name": "beanie-with-logo-1.jpg",
-      "alt": ""
-    },
-    {
-      "id": 57,
-      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/t-shirt-with-logo-1.jpg",
-      "name": "t-shirt-with-logo-1.jpg",
-      "alt": ""
-    },
-    {
-      "id": 45,
-      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-logo-2.jpg",
-      "name": "hoodie-with-logo-2.jpg",
-      "alt": ""
-    }
+      {
+        "id": 59,
+        "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/logo-1.jpg",
+        "name": "logo-1.jpg",
+        "alt": ""
+      },
+      {
+        "id": 58,
+        "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/beanie-with-logo-1.jpg",
+        "name": "beanie-with-logo-1.jpg",
+        "alt": ""
+      },
+      {
+        "id": 57,
+        "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/t-shirt-with-logo-1.jpg",
+        "name": "t-shirt-with-logo-1.jpg",
+        "alt": ""
+      },
+      {
+        "id": 45,
+        "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-logo-2.jpg",
+        "name": "hoodie-with-logo-2.jpg",
+        "alt": ""
+      }
     ],
     "average_rating": "0",
     "review_count": 0,
+    "onsale": true,
+    "add_to_cart": {
+      "url": "http:\/\/local.wordpress.test\/product\/logo-collection\/",
+      "text": "View products",
+      "description": "View products in the &ldquo;Logo Collection&rdquo; group",
+      "supports_ajax": false
+    },
     "grouped_products": [
-    74,
-    75,
-    76
+      74,
+      75,
+      76
     ],
     "_links": {
-    "self": [
-      {
-      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/94"
-      }
-    ],
-    "collection": [
-      {
-      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
-      }
-    ]
+      "self": [
+        {
+          "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/94"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
+        }
+      ]
     }
   },
   {
@@ -96,26 +110,33 @@
     "price": "18",
     "price_html": "<del><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>20.00<\/span><\/del> <ins><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>18.00<\/span><\/ins>",
     "images": [
-    {
-      "id": 58,
-      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/beanie-with-logo-1.jpg",
-      "name": "beanie-with-logo-1.jpg",
-      "alt": ""
-    }
+      {
+        "id": 58,
+        "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/beanie-with-logo-1.jpg",
+        "name": "beanie-with-logo-1.jpg",
+        "alt": ""
+      }
     ],
     "average_rating": "0",
     "review_count": 0,
+    "onsale": true,
+    "add_to_cart": {
+      "url": "\/wp-json\/wc\/blocks\/products?add-to-cart=93",
+      "text": "Add to cart",
+      "description": "Add &ldquo;Beanie with Logo&rdquo; to your cart",
+      "supports_ajax": true
+    },
     "_links": {
-    "self": [
-      {
-      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/93"
-      }
-    ],
-    "collection": [
-      {
-      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
-      }
-    ]
+      "self": [
+        {
+          "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/93"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
+        }
+      ]
     }
   },
   {
@@ -128,26 +149,33 @@
     "price": "18",
     "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>18.00<\/span>",
     "images": [
-    {
-      "id": 57,
-      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/t-shirt-with-logo-1.jpg",
-      "name": "t-shirt-with-logo-1.jpg",
-      "alt": ""
-    }
+      {
+        "id": 57,
+        "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/t-shirt-with-logo-1.jpg",
+        "name": "t-shirt-with-logo-1.jpg",
+        "alt": ""
+      }
     ],
     "average_rating": "0",
     "review_count": 0,
+    "onsale": false,
+    "add_to_cart": {
+      "url": "http:\/\/local.wordpress.test\/product\/t-shirt-with-logo\/",
+      "text": "Read more",
+      "description": "Read more about &ldquo;T-Shirt with Logo&rdquo;",
+      "supports_ajax": true
+    },
     "_links": {
-    "self": [
-      {
-      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/92"
-      }
-    ],
-    "collection": [
-      {
-      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
-      }
-    ]
+      "self": [
+        {
+          "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/92"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
+        }
+      ]
     }
   },
   {
@@ -160,26 +188,33 @@
     "price": "2",
     "price_html": "<del><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>3.00<\/span><\/del> <ins><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>2.00<\/span><\/ins>",
     "images": [
-    {
-      "id": 56,
-      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/single-1.jpg",
-      "name": "single-1.jpg",
-      "alt": ""
-    }
+      {
+        "id": 56,
+        "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/single-1.jpg",
+        "name": "single-1.jpg",
+        "alt": ""
+      }
     ],
     "average_rating": "3.00",
     "review_count": 2,
+    "onsale": true,
+    "add_to_cart": {
+      "url": "\/wp-json\/wc\/blocks\/products?add-to-cart=85",
+      "text": "Add to cart",
+      "description": "Add &ldquo;Single&rdquo; to your cart",
+      "supports_ajax": true
+    },
     "_links": {
-    "self": [
-      {
-      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/85"
-      }
-    ],
-    "collection": [
-      {
-      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
-      }
-    ]
+      "self": [
+        {
+          "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/85"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
+        }
+      ]
     }
   },
   {
@@ -192,26 +227,33 @@
     "price": "15",
     "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>15.00<\/span>",
     "images": [
-    {
-      "id": 55,
-      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/album-1.jpg",
-      "name": "album-1.jpg",
-      "alt": ""
-    }
+      {
+        "id": 55,
+        "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/album-1.jpg",
+        "name": "album-1.jpg",
+        "alt": ""
+      }
     ],
     "average_rating": "0",
     "review_count": 0,
+    "onsale": false,
+    "add_to_cart": {
+      "url": "\/wp-json\/wc\/blocks\/products?add-to-cart=84",
+      "text": "Add to cart",
+      "description": "Add &ldquo;Album&rdquo; to your cart",
+      "supports_ajax": true
+    },
     "_links": {
-    "self": [
-      {
-      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/84"
-      }
-    ],
-    "collection": [
-      {
-      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
-      }
-    ]
+      "self": [
+        {
+          "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/84"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
+        }
+      ]
     }
   },
   {
@@ -224,26 +266,33 @@
     "price": "20",
     "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>20.00<\/span>",
     "images": [
-    {
-      "id": 54,
-      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/polo-2.jpg",
-      "name": "polo-2.jpg",
-      "alt": ""
-    }
+      {
+        "id": 54,
+        "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/polo-2.jpg",
+        "name": "polo-2.jpg",
+        "alt": ""
+      }
     ],
     "average_rating": "0",
     "review_count": 0,
+    "onsale": false,
+    "add_to_cart": {
+      "url": "\/wp-json\/wc\/blocks\/products?add-to-cart=83",
+      "text": "Add to cart",
+      "description": "Add &ldquo;Polo&rdquo; to your cart",
+      "supports_ajax": true
+    },
     "_links": {
-    "self": [
-      {
-      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/83"
-      }
-    ],
-    "collection": [
-      {
-      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
-      }
-    ]
+      "self": [
+        {
+          "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/83"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
+        }
+      ]
     }
   },
   {
@@ -256,26 +305,33 @@
     "price": "25",
     "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>25.00<\/span>",
     "images": [
-    {
-      "id": 53,
-      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/long-sleeve-tee-2.jpg",
-      "name": "long-sleeve-tee-2.jpg",
-      "alt": ""
-    }
+      {
+        "id": 53,
+        "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/long-sleeve-tee-2.jpg",
+        "name": "long-sleeve-tee-2.jpg",
+        "alt": ""
+      }
     ],
     "average_rating": "0",
     "review_count": 0,
+    "onsale": false,
+    "add_to_cart": {
+      "url": "\/wp-json\/wc\/blocks\/products?add-to-cart=82",
+      "text": "Add to cart",
+      "description": "Add &ldquo;Long Sleeve Tee&rdquo; to your cart",
+      "supports_ajax": true
+    },
     "_links": {
-    "self": [
-      {
-      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/82"
-      }
-    ],
-    "collection": [
-      {
-      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
-      }
-    ]
+      "self": [
+        {
+          "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/82"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
+        }
+      ]
     }
   },
   {
@@ -288,26 +344,33 @@
     "price": "45",
     "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>45.00<\/span>",
     "images": [
-    {
-      "id": 52,
-      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-zipper-2.jpg",
-      "name": "hoodie-with-zipper-2.jpg",
-      "alt": ""
-    }
+      {
+        "id": 52,
+        "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-zipper-2.jpg",
+        "name": "hoodie-with-zipper-2.jpg",
+        "alt": ""
+      }
     ],
     "average_rating": "0",
     "review_count": 0,
+    "onsale": false,
+    "add_to_cart": {
+      "url": "\/wp-json\/wc\/blocks\/products?add-to-cart=81",
+      "text": "Add to cart",
+      "description": "Add &ldquo;Hoodie with Zipper&rdquo; to your cart",
+      "supports_ajax": true
+    },
     "_links": {
-    "self": [
-      {
-      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/81"
-      }
-    ],
-    "collection": [
-      {
-      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
-      }
-    ]
+      "self": [
+        {
+          "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/81"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
+        }
+      ]
     }
   },
   {
@@ -320,26 +383,33 @@
     "price": "35",
     "price_html": "<del><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>45.00<\/span><\/del> <ins><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>35.00<\/span><\/ins>",
     "images": [
-    {
-      "id": 51,
-      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-pocket-2.jpg",
-      "name": "hoodie-with-pocket-2.jpg",
-      "alt": ""
-    }
+      {
+        "id": 51,
+        "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-pocket-2.jpg",
+        "name": "hoodie-with-pocket-2.jpg",
+        "alt": ""
+      }
     ],
     "average_rating": "0",
     "review_count": 0,
+    "onsale": true,
+    "add_to_cart": {
+      "url": "\/wp-json\/wc\/blocks\/products?add-to-cart=80",
+      "text": "Add to cart",
+      "description": "Add &ldquo;Hoodie with Pocket&rdquo; to your cart",
+      "supports_ajax": true
+    },
     "_links": {
-    "self": [
-      {
-      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/80"
-      }
-    ],
-    "collection": [
-      {
-      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
-      }
-    ]
+      "self": [
+        {
+          "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/80"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
+        }
+      ]
     }
   }
 ]
