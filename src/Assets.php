@@ -53,7 +53,7 @@ class Assets {
 		// attach data to wc-blocks-settings.
 		wp_add_inline_script(
 			'wc-block-settings',
-			self::wc_settings_data() . "\n" . self::wc_block_data(),
+			self::get_wc_settings_data() . "\n" . self::get_wc_block_data(),
 			'before'
 		);
 	}
@@ -75,7 +75,7 @@ class Assets {
 	 * @return string;
 	 * @since 2.4.0
 	 */
-	protected static function wc_settings_data() {
+	protected static function get_wc_settings_data() {
 		global $wp_locale;
 		$code     = get_woocommerce_currency();
 		$settings = apply_filters(
@@ -113,7 +113,7 @@ class Assets {
 	 *
 	 * @since 2.4.0
 	 */
-	protected static function wc_block_data() {
+	protected static function get_wc_block_data() {
 		$tag_count          = wp_count_terms( 'product_tag' );
 		$product_counts     = wp_count_posts( 'product' );
 		$product_categories = get_terms(
