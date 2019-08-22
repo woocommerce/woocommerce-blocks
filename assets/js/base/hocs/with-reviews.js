@@ -3,6 +3,7 @@
  */
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import isShallowEqual from '@wordpress/is-shallow-equal';
 
 /**
  * Internal dependencies
@@ -43,26 +44,12 @@ const withReviews = ( OriginalComponent ) => {
 		}
 
 		shouldReplaceReviews( prevProps, nextProps ) {
-			if (
+			return (
 				prevProps.orderby !== nextProps.orderby ||
 				prevProps.order !== nextProps.order ||
-				prevProps.productId !== nextProps.productId
-			) {
-				return true;
-			}
-
-			if ( prevProps.categoryIds === nextProps.categoryIds ) {
-				return false;
-			}
-
-			const prevCategoryIds = Array.isArray( prevProps.categoryIds ) ?
-				prevProps.categoryIds.join( ',' ) :
-				prevProps.categoryIds;
-			const nextCategoryIds = Array.isArray( nextProps.categoryIds ) ?
-				nextProps.categoryIds.join( ',' ) :
-				nextProps.categoryIds;
-
-			return prevCategoryIds !== nextCategoryIds;
+				prevProps.productId !== nextProps.productId ||
+				! isShallowEqual( prevProps.categoryIds, nextProps.categoryIds )
+			);
 		}
 
 		getArgs( reviewsToSkip ) {
