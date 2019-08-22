@@ -8,6 +8,7 @@ import {
 import {
 	PanelBody,
 	withSpokenMessages,
+	Disabled,
 } from '@wordpress/components';
 import { Component } from '@wordpress/element';
 import PropTypes from 'prop-types';
@@ -91,7 +92,9 @@ class Editor extends Component {
 				{ this.getInspectorControls() }
 				{ ! HAS_PRODUCTS && renderNoProductsPlaceholder( blockTitle, blockIcon ) }
 				{ ! hasContent && renderHiddenContentPlaceholder( blockTitle, blockIcon ) }
-				{ ( HAS_PRODUCTS && hasContent ) && ( <Block attributes={ attributes } /> ) }
+				<Disabled>
+					{ ( HAS_PRODUCTS && hasContent ) && ( <Block attributes={ attributes } /> ) }
+				</Disabled>
 			</div>
 		);
 	}

@@ -8,6 +8,10 @@ import PropTypes from 'prop-types';
  * Internal dependencies
  */
 import withComponentId from '../../../base/hocs/with-component-id';
+import ProductGrid from '../../../base/components/product-grid';
+
+// Temporary data.
+import products from './sample-data.json';
 
 /**
  * The All Products Block. @todo
@@ -25,9 +29,17 @@ class Block extends Component {
 	}
 
 	render() {
+		/**
+		 * Todo classes
+		 *
+		 * wp-block-{$this->block_name},
+		 * wc-block-{$this->block_name},
+		 */
 		return (
 			<Fragment>
 				Content goes here.
+
+				<ProductGrid products={ products } attributes={ this.props.attributes } componentId={ this.props.componentId } />
 			</Fragment>
 		);
 	}

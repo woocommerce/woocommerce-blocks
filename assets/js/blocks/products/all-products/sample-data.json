@@ -1,0 +1,345 @@
+[
+  {
+    "id": 95,
+    "name": "WordPress Pennant",
+    "variation": "",
+    "permalink": "http:\/\/local.wordpress.test\/product\/wordpress-pennant\/",
+    "sku": "wp-pennant",
+    "description": "<p>This is an external product.<\/p>\n",
+    "price": "0",
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>0.00<\/span>",
+    "images": [
+    {
+      "id": 60,
+      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/pennant-1.jpg",
+      "name": "pennant-1.jpg",
+      "alt": ""
+    }
+    ],
+    "average_rating": "3.60",
+    "review_count": 5,
+    "_links": {
+    "self": [
+      {
+      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/95"
+      }
+    ],
+    "collection": [
+      {
+      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
+      }
+    ]
+    }
+  },
+  {
+    "id": 94,
+    "name": "Logo Collection",
+    "variation": "",
+    "permalink": "http:\/\/local.wordpress.test\/product\/logo-collection\/",
+    "sku": "logo-collection",
+    "description": "<p>This is a grouped product.<\/p>\n",
+    "price": "18",
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>18.00<\/span> &ndash; <span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>45.00<\/span>",
+    "images": [
+    {
+      "id": 59,
+      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/logo-1.jpg",
+      "name": "logo-1.jpg",
+      "alt": ""
+    },
+    {
+      "id": 58,
+      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/beanie-with-logo-1.jpg",
+      "name": "beanie-with-logo-1.jpg",
+      "alt": ""
+    },
+    {
+      "id": 57,
+      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/t-shirt-with-logo-1.jpg",
+      "name": "t-shirt-with-logo-1.jpg",
+      "alt": ""
+    },
+    {
+      "id": 45,
+      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-logo-2.jpg",
+      "name": "hoodie-with-logo-2.jpg",
+      "alt": ""
+    }
+    ],
+    "average_rating": "0",
+    "review_count": 0,
+    "grouped_products": [
+    74,
+    75,
+    76
+    ],
+    "_links": {
+    "self": [
+      {
+      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/94"
+      }
+    ],
+    "collection": [
+      {
+      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
+      }
+    ]
+    }
+  },
+  {
+    "id": 93,
+    "name": "Beanie with Logo",
+    "variation": "",
+    "permalink": "http:\/\/local.wordpress.test\/product\/beanie-with-logo\/",
+    "sku": "Woo-beanie-logo",
+    "description": "<p>This is a simple product.<\/p>\n",
+    "price": "18",
+    "price_html": "<del><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>20.00<\/span><\/del> <ins><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>18.00<\/span><\/ins>",
+    "images": [
+    {
+      "id": 58,
+      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/beanie-with-logo-1.jpg",
+      "name": "beanie-with-logo-1.jpg",
+      "alt": ""
+    }
+    ],
+    "average_rating": "0",
+    "review_count": 0,
+    "_links": {
+    "self": [
+      {
+      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/93"
+      }
+    ],
+    "collection": [
+      {
+      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
+      }
+    ]
+    }
+  },
+  {
+    "id": 92,
+    "name": "T-Shirt with Logo",
+    "variation": "",
+    "permalink": "http:\/\/local.wordpress.test\/product\/t-shirt-with-logo\/",
+    "sku": "Woo-tshirt-logo",
+    "description": "<p>This is a simple product.<\/p>\n",
+    "price": "18",
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>18.00<\/span>",
+    "images": [
+    {
+      "id": 57,
+      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/t-shirt-with-logo-1.jpg",
+      "name": "t-shirt-with-logo-1.jpg",
+      "alt": ""
+    }
+    ],
+    "average_rating": "0",
+    "review_count": 0,
+    "_links": {
+    "self": [
+      {
+      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/92"
+      }
+    ],
+    "collection": [
+      {
+      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
+      }
+    ]
+    }
+  },
+  {
+    "id": 85,
+    "name": "Single",
+    "variation": "",
+    "permalink": "http:\/\/local.wordpress.test\/product\/single\/",
+    "sku": "woo-single",
+    "description": "<p>This is a simple, virtual product.<\/p>\n",
+    "price": "2",
+    "price_html": "<del><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>3.00<\/span><\/del> <ins><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>2.00<\/span><\/ins>",
+    "images": [
+    {
+      "id": 56,
+      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/single-1.jpg",
+      "name": "single-1.jpg",
+      "alt": ""
+    }
+    ],
+    "average_rating": "3.00",
+    "review_count": 2,
+    "_links": {
+    "self": [
+      {
+      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/85"
+      }
+    ],
+    "collection": [
+      {
+      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
+      }
+    ]
+    }
+  },
+  {
+    "id": 84,
+    "name": "Album",
+    "variation": "",
+    "permalink": "http:\/\/local.wordpress.test\/product\/album\/",
+    "sku": "woo-album",
+    "description": "<p>This is a simple, virtual product.<\/p>\n",
+    "price": "15",
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>15.00<\/span>",
+    "images": [
+    {
+      "id": 55,
+      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/album-1.jpg",
+      "name": "album-1.jpg",
+      "alt": ""
+    }
+    ],
+    "average_rating": "0",
+    "review_count": 0,
+    "_links": {
+    "self": [
+      {
+      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/84"
+      }
+    ],
+    "collection": [
+      {
+      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
+      }
+    ]
+    }
+  },
+  {
+    "id": 83,
+    "name": "Polo",
+    "variation": "",
+    "permalink": "http:\/\/local.wordpress.test\/product\/polo\/",
+    "sku": "woo-polo",
+    "description": "<p>This is a simple product.<\/p>\n",
+    "price": "20",
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>20.00<\/span>",
+    "images": [
+    {
+      "id": 54,
+      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/polo-2.jpg",
+      "name": "polo-2.jpg",
+      "alt": ""
+    }
+    ],
+    "average_rating": "0",
+    "review_count": 0,
+    "_links": {
+    "self": [
+      {
+      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/83"
+      }
+    ],
+    "collection": [
+      {
+      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
+      }
+    ]
+    }
+  },
+  {
+    "id": 82,
+    "name": "Long Sleeve Tee",
+    "variation": "",
+    "permalink": "http:\/\/local.wordpress.test\/product\/long-sleeve-tee\/",
+    "sku": "woo-long-sleeve-tee",
+    "description": "<p>This is a simple product.<\/p>\n",
+    "price": "25",
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>25.00<\/span>",
+    "images": [
+    {
+      "id": 53,
+      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/long-sleeve-tee-2.jpg",
+      "name": "long-sleeve-tee-2.jpg",
+      "alt": ""
+    }
+    ],
+    "average_rating": "0",
+    "review_count": 0,
+    "_links": {
+    "self": [
+      {
+      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/82"
+      }
+    ],
+    "collection": [
+      {
+      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
+      }
+    ]
+    }
+  },
+  {
+    "id": 81,
+    "name": "Hoodie with Zipper",
+    "variation": "",
+    "permalink": "http:\/\/local.wordpress.test\/product\/hoodie-with-zipper\/",
+    "sku": "woo-hoodie-with-zipper",
+    "description": "<p>This is a simple product.<\/p>\n",
+    "price": "45",
+    "price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>45.00<\/span>",
+    "images": [
+    {
+      "id": 52,
+      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-zipper-2.jpg",
+      "name": "hoodie-with-zipper-2.jpg",
+      "alt": ""
+    }
+    ],
+    "average_rating": "0",
+    "review_count": 0,
+    "_links": {
+    "self": [
+      {
+      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/81"
+      }
+    ],
+    "collection": [
+      {
+      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
+      }
+    ]
+    }
+  },
+  {
+    "id": 80,
+    "name": "Hoodie with Pocket",
+    "variation": "",
+    "permalink": "http:\/\/local.wordpress.test\/product\/hoodie-with-pocket\/",
+    "sku": "woo-hoodie-with-pocket",
+    "description": "<p>This is a simple product.<\/p>\n",
+    "price": "35",
+    "price_html": "<del><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>45.00<\/span><\/del> <ins><span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;<\/span>35.00<\/span><\/ins>",
+    "images": [
+    {
+      "id": 51,
+      "src": "http:\/\/local.wordpress.test\/wp-content\/uploads\/2019\/07\/hoodie-with-pocket-2.jpg",
+      "name": "hoodie-with-pocket-2.jpg",
+      "alt": ""
+    }
+    ],
+    "average_rating": "0",
+    "review_count": 0,
+    "_links": {
+    "self": [
+      {
+      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products\/80"
+      }
+    ],
+    "collection": [
+      {
+      "href": "http:\/\/local.wordpress.test\/wp-json\/wc\/blocks\/products"
+      }
+    ]
+    }
+  }
+]
