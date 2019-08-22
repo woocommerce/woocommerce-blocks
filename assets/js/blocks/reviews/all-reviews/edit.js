@@ -8,11 +8,11 @@ import {
 import { PanelBody, ToggleControl } from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
+import Gridicon from 'gridicons';
 
 /**
  * Internal dependencies
  */
-import { IconReviewsByCategory } from '../../../components/icons';
 import EditorContainerBlock from '../editor-container-block.js';
 import NoReviewsPlaceholder from './no-reviews-placeholder.js';
 import { getSharedReviewContentControls, getSharedReviewListControls } from '../edit-utils.js';
@@ -45,7 +45,7 @@ const AllReviewsEditor = ( { attributes, setAttributes } ) => {
 			<EditorContainerBlock
 				attributes={ attributes }
 				className="wc-block-all-reviews"
-				icon={ <IconReviewsByCategory className="block-editor-block-icon" /> }
+				icon={ <Gridicon icon="grid" /> }
 				name={ __( 'All Reviews', 'woo-gutenberg-products-block' ) }
 				noReviewsPlaceholder={ NoReviewsPlaceholder }
 			/>

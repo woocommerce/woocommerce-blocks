@@ -3,13 +3,13 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
+import Gridicon from 'gridicons';
 
 /**
  * Internal dependencies
  */
 import '../editor.scss';
 import Editor from './edit';
-import { IconReviewsByCategory } from '../../../components/icons';
 import sharedAttributes from '../attributes';
 import save from '../save.js';
 
@@ -18,9 +18,10 @@ import save from '../save.js';
  */
 registerBlockType( 'woocommerce/all-reviews', {
 	title: __( 'All Reviews', 'woo-gutenberg-products-block' ),
-	icon: (
-		<IconReviewsByCategory fillColor="#96588a" />
-	),
+	icon: {
+		src: <Gridicon icon="grid" />,
+		foreground: '#96588a',
+	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
