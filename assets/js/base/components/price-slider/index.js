@@ -174,32 +174,6 @@ class PriceSlider extends Component {
 		);
 		return (
 			<div className={ classes }>
-				<div className="wc-block-price-filter__controls">
-					{ showInputFields && (
-						<Fragment>
-							<input
-								type="text"
-								className="wc-block-price-filter__amount wc-block-price-filter__amount--min wc-block-form-text-input"
-								aria-label={ __( 'Filter products by minimum price', 'woo-gutenberg-products-block' ) }
-								size="5"
-								ref={ this.minInput }
-								value={ inputMin }
-								onChange={ this.onInputChange }
-								onBlur={ this.onInputBlur }
-							/>
-							<input
-								type="text"
-								className="wc-block-price-filter__amount wc-block-price-filter__amount--max wc-block-form-text-input"
-								aria-label={ __( 'Filter products by maximum price', 'woo-gutenberg-products-block' ) }
-								size="5"
-								ref={ this.maxInput }
-								value={ inputMax }
-								onChange={ this.onInputChange }
-								onBlur={ this.onInputBlur }
-							/>
-						</Fragment>
-					) }
-				</div>
 				<div
 					className="wc-block-price-filter__range-input-wrapper"
 					onMouseMove={ this.findClosestRange }
@@ -229,10 +203,35 @@ class PriceSlider extends Component {
 						max={ max }
 					/>
 				</div>
-				<div className="wc-block-price-filter__range-button-wrapper">
-					<div className="wc-block-price-filter__range-text">
-						{ sprintf( __( 'Price: %s — %s', 'woo-gutenberg-products-block' ), inputMin, inputMax ) }
-					</div>
+				<div className="wc-block-price-filter__controls">
+					{ showInputFields ? (
+						<Fragment>
+							<input
+								type="text"
+								className="wc-block-price-filter__amount wc-block-price-filter__amount--min wc-block-form-text-input"
+								aria-label={ __( 'Filter products by minimum price', 'woo-gutenberg-products-block' ) }
+								size="5"
+								ref={ this.minInput }
+								value={ inputMin }
+								onChange={ this.onInputChange }
+								onBlur={ this.onInputBlur }
+							/>
+							<input
+								type="text"
+								className="wc-block-price-filter__amount wc-block-price-filter__amount--max wc-block-form-text-input"
+								aria-label={ __( 'Filter products by maximum price', 'woo-gutenberg-products-block' ) }
+								size="5"
+								ref={ this.maxInput }
+								value={ inputMax }
+								onChange={ this.onInputChange }
+								onBlur={ this.onInputBlur }
+							/>
+						</Fragment>
+					) : (
+						<div className="wc-block-price-filter__range-text">
+							{ sprintf( __( 'Price: %s — %s', 'woo-gutenberg-products-block' ), inputMin, inputMax ) }
+						</div>
+					) }
 					{ showFilterButton && (
 						<button
 							type="submit"

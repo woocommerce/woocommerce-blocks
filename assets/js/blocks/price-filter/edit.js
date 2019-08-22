@@ -13,6 +13,7 @@ import Block from './block.js';
 import './editor.scss';
 import { IconMoney, IconExternal } from '../../components/icons';
 import { adminUrl, blockData } from '@woocommerce/settings';
+import ToggleButtonControl from '../../components/toggle-button-control';
 
 export default function( { attributes, setAttributes } ) {
 	const getInspectorControls = () => {
@@ -21,10 +22,14 @@ export default function( { attributes, setAttributes } ) {
 		return (
 			<InspectorControls key="inspector">
 				<PanelBody title={ __( 'Block Settings', 'woo-gutenberg-products-block' ) }>
-					<ToggleControl
-						label={ __( 'Input fields', 'woo-gutenberg-products-block' ) }
-						checked={ showInputFields }
-						onChange={ () => setAttributes( { showInputFields: ! showInputFields } ) }
+					<ToggleButtonControl
+						label={ __( 'Price Range', 'woo-gutenberg-products-block' ) }
+						value={ showInputFields ? 'editable' : 'text' }
+						options={ [
+							{ label: __( 'Editable', 'woo-gutenberg-products-block' ), value: 'editable' },
+							{ label: __( 'Text', 'woo-gutenberg-products-block' ), value: 'text' },
+						] }
+						onChange={ ( value ) => setAttributes( { showInputFields: 'editable' === value } ) }
 					/>
 					<ToggleControl
 						label={ __( 'Filter button', 'woo-gutenberg-products-block' ) }
