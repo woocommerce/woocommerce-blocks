@@ -3,21 +3,26 @@
 	flex-wrap: wrap;
 	list-style: none;
 	padding: 0;
-	margin: 0 0 $gap-large;
+	margin: 0 (-$gap/2) $gap;
+	background-clip: padding-box;
 }
 
 .wc-block-grid__product {
-	padding: 0 $gap 0 0;
-	margin: 0 0 $gap-large 0;
+	padding: 0;
+	margin: 0;
 	float: none;
 	width: auto;
 	position: relative;
 	text-align: center;
+	border-left: $gap/2 solid transparent;
+	border-right: $gap/2 solid transparent;
+	border-bottom: $gap solid transparent;
 }
 
 .wc-block-grid__product-link {
 	text-decoration: none;
 	border: 0;
+	box-shadow: none !important;
 }
 
 .wc-block-grid__product-image {
@@ -44,6 +49,25 @@
 	display: block;
 }
 
+.wc-block-grid__product-price {
+	.wc-block-grid__product-price__regular {
+		font-size: 0.8em;
+		line-height: 1;
+		color: #aaa;
+		margin-top: -0.25em;
+		display: block;
+	}
+	.wc-block-grid__product-price__value {
+		letter-spacing: -1px;
+		white-space: nowrap;
+		font-weight: 600;
+		display: block;
+		font-size: 1.25em;
+		line-height: 1.25;
+		color: #000;
+	}
+}
+
 .wc-block-grid__product-add-to-cart {
 	margin: 0;
 	word-break: break-word;
@@ -52,7 +76,7 @@
 	a {
 		word-break: break-word;
 		white-space: normal;
-		margin: 0;
+		margin: 0 !important;
 
 		&.loading {
 			opacity: 0.25;
@@ -84,19 +108,27 @@
 }
 
 .wc-block-grid__product-onsale {
-	font-weight: 700;
-	position: absolute;
+	border: 1px solid #43454b;
+	color: #43454b;
+	background: #fff;
+	padding: 0.202em 0.6180469716em;
+	font-size: 0.875rem;
 	text-align: center;
-	top: 0;
-	left: 0;
-	margin: 0 auto;
-	background-color: #000;
-	color: #fff;
-	display: inline-block;
-	font-size: 0.75em;
-	padding: 0.5em;
-	z-index: 9;
 	text-transform: uppercase;
+	font-weight: 600;
+	display: inline-block;
+	width: auto;
+	border-radius: 3px;
+	z-index: 9;
+	margin: 0 auto $gap;
+}
+
+.has-image {
+	.wc-block-grid__product-onsale {
+		top: $gap-smaller;
+		right: $gap-smaller;
+		position: absolute;
+	}
 }
 
 .wc-block-grid__product-rating {
@@ -110,7 +142,7 @@
 		font-size: 1em;
 		font-family: star; /* stylelint-disable-line */
 		font-weight: 400;
-		display: inline-block;
+		display: -block;
 		margin: 0 auto;
 		text-align: left;
 
@@ -182,14 +214,6 @@
 	}
 }
 
-.theme-twentysixteen {
-	.wc-block-grid {
-		// Prevent white theme styles.
-		.price ins {
-			color: #77a464;
-		}
-	}
-}
 .theme-twentynineteen {
 	.wc-block-grid__product {
 		font-size: 0.88889em;

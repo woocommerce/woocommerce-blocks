@@ -7,7 +7,7 @@ import { __, sprintf } from '@wordpress/i18n';
 const ProductRating = ( { className, product = {} } ) => {
 	const rating = parseFloat( product.average_rating );
 
-	if ( ! Number.isFinite( rating ) ) {
+	if ( ! Number.isFinite( rating ) || 0 === rating ) {
 		return null;
 	}
 

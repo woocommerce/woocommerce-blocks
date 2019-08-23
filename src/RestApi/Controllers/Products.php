@@ -107,11 +107,15 @@ class Products extends WC_REST_Products_Controller {
 	/**
 	 * Change read permissions to allow author access to this API.
 	 *
-	 * @param array $permissions Array of access permissions.
+	 * @param bool   $permission Permission.
+	 * @param string $context Context of the request.
+	 * @return bool
 	 */
-	public function change_permissions( $permissions ) {
-		$permissions['read'] = 'edit_posts';
-		return $permissions;
+	public function change_permissions( $permission, $context ) {
+		if ( 'read' === $context ) {
+			$permission = current_user_can( 'edit_posts' );
+		}
+		return $permission;
 	}
 
 	/**
@@ -121,7 +125,7 @@ class Products extends WC_REST_Products_Controller {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function get_items( $request ) {
-		add_filter( 'woocommerce_rest_check_permissions', array( $this, 'change_permissions' ) );
+		add_filter( 'woocommerce_rest_check_permissions', array( $this, 'change_permissions' ), 10, 2 );
 		$response = parent::get_items( $request );
 		remove_filter( 'woocommerce_rest_check_permissions', array( $this, 'change_permissions' ) );
 
@@ -203,13 +207,13 @@ class Products extends WC_REST_Products_Controller {
 			'permalink'      => $product->get_permalink(),
 			'sku'            => $product->get_sku(),
 			'description'    => apply_filters( 'woocommerce_short_description', $product->get_short_description() ? $product->get_short_description() : wc_trim_string( $product->get_description(), 400 ) ),
+			'onsale'         => $product->is_on_sale(),
 			'price'          => $product->get_price(),
 			'price_html'     => $product->get_price_html(),
-			'thumbnail_html' => $product->get_image( 'woocommerce_thumbnail' ),
+			'prices'         => $this->get_prices( $product ),
 			'images'         => $this->get_images( $product ),
 			'average_rating' => $product->get_average_rating(),
 			'review_count'   => $product->get_review_count(),
-			'onsale'         => $product->is_on_sale(),
 			'add_to_cart'    => [
 				'url'           => $product->add_to_cart_url(),
 				'text'          => $product->add_to_cart_text(),
@@ -217,6 +221,91 @@ class Products extends WC_REST_Products_Controller {
 				'supports_ajax' => $product->supports( 'ajax_add_to_cart' ),
 			],
 		);
+	}
+
+	/**
+	 * Get an array of pricing data.
+	 *
+	 * @param \WC_Product|\WC_Product_Variation $product Product instance.
+	 * @return array
+	 */
+	protected function get_prices( $product ) {
+		$tax_display_mode = get_option( 'woocommerce_tax_display_shop' );
+		$position         = get_option( 'woocommerce_currency_pos' );
+		$symbol           = html_entity_decode( get_woocommerce_currency_symbol() );
+		$prefix           = '';
+		$suffix           = '';
+
+		// No break so symbol is added.
+		switch ( $position ) {
+			case 'left_space':
+				$prefix = $symbol . ' ';
+				break;
+			case 'left':
+				$prefix = $symbol;
+				break;
+			case 'right_space':
+				$suffix = ' ' . $symbol;
+				break;
+			case 'right':
+				$suffix = $symbol;
+				break;
+		}
+
+		$prices = [
+			'currency_code'      => get_woocommerce_currency(),
+			'decimal_separator'  => wc_get_price_decimal_separator(),
+			'thousand_separator' => wc_get_price_thousand_separator(),
+			'decimals'           => wc_get_price_decimals(),
+			'price_prefix'       => $prefix,
+			'price_suffix'       => $suffix,
+		];
+
+		$prices['price']         = 'incl' === $tax_display_mode ? wc_get_price_including_tax( $product ) : wc_get_price_excluding_tax( $product );
+		$prices['regular_price'] = 'incl' === $tax_display_mode ? wc_get_price_including_tax( $product, [ 'price' => $product->get_regular_price() ] ) : wc_get_price_excluding_tax( $product, [ 'price' => $product->get_regular_price() ] );
+		$prices['sale_price']    = 'incl' === $tax_display_mode ? wc_get_price_including_tax( $product, [ 'price' => $product->get_sale_price() ] ) : wc_get_price_excluding_tax( $product, [ 'price' => $product->get_sale_price() ] );
+		$prices['price_range']   = $this->get_price_range( $product );
+
+		return $prices;
+	}
+
+	/**
+	 * Get price range from certain product types.
+	 *
+	 * @param \WC_Product|\WC_Product_Variation $product Product instance.
+	 * @return arary|null
+	 */
+	protected function get_price_range( $product ) {
+		if ( $product->is_type( 'variable' ) ) {
+			$prices = $product->get_variation_prices( true );
+
+			if ( min( $prices['price'] ) !== max( $prices['price'] ) ) {
+				return [
+					'min_amount' => min( $prices['price'] ),
+					'max_amount' => max( $prices['price'] ),
+				];
+			}
+		}
+
+		if ( $product->is_type( 'grouped' ) ) {
+			$tax_display_mode = get_option( 'woocommerce_tax_display_shop' );
+			$children         = array_filter( array_map( 'wc_get_product', $product->get_children() ), 'wc_products_array_filter_visible_grouped' );
+
+			foreach ( $children as $child ) {
+				if ( '' !== $child->get_price() ) {
+					$child_prices[] = 'incl' === $tax_display_mode ? wc_get_price_including_tax( $child ) : wc_get_price_excluding_tax( $child );
+				}
+			}
+
+			if ( ! empty( $child_prices ) ) {
+				return [
+					'min_amount' => min( $child_prices ),
+					'max_amount' => max( $child_prices ),
+				];
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -229,31 +318,29 @@ class Products extends WC_REST_Products_Controller {
 		$images         = array();
 		$attachment_ids = array();
 
-		// Add featured image.
 		if ( $product->get_image_id() ) {
 			$attachment_ids[] = $product->get_image_id();
 		}
 
-		// Add gallery images.
-		$attachment_ids = array_merge( $attachment_ids, $product->get_gallery_image_ids() );
+		$attachment_ids = wp_parse_id_list( array_merge( $attachment_ids, $product->get_gallery_image_ids() ) );
 
-		// Build image data.
 		foreach ( $attachment_ids as $attachment_id ) {
-			$attachment_post = get_post( $attachment_id );
-			if ( is_null( $attachment_post ) ) {
-				continue;
-			}
-
 			$attachment = wp_get_attachment_image_src( $attachment_id, 'full' );
+
 			if ( ! is_array( $attachment ) ) {
 				continue;
 			}
 
+			$thumbnail = wp_get_attachment_image_src( $attachment_id, 'woocommerce_thumbnail' );
+
 			$images[] = array(
-				'id'   => (int) $attachment_id,
-				'src'  => current( $attachment ),
-				'name' => get_the_title( $attachment_id ),
-				'alt'  => get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ),
+				'id'        => $attachment_id,
+				'src'       => current( $attachment ),
+				'thumbnail' => current( $thumbnail ),
+				'srcset'    => wp_get_attachment_image_srcset( $attachment_id, 'full' ),
+				'sizes'     => wp_get_attachment_image_sizes( $attachment_id, 'full' ),
+				'name'      => get_the_title( $attachment_id ),
+				'alt'       => get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ),
 			);
 		}
 
@@ -353,7 +440,100 @@ class Products extends WC_REST_Products_Controller {
 					'description' => __( 'Current product price.', 'woo-gutenberg-products-block' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
+				),
+				'onsale'         => array(
+					'description' => __( 'Is the product on sale?', 'woo-gutenberg-products-block' ),
+					'type'        => 'boolean',
+					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
+				),
+				'prices'         => array(
+					'description' => __( 'Price data.', 'woo-gutenberg-products-block' ),
+					'type'        => 'object',
+					'context'     => array( 'view', 'edit' ),
+					'readonly'    => true,
+					'items'       => array(
+						'type'       => 'object',
+						'properties' => array(
+							'currency_code'      => array(
+								'description' => __( 'Currency code.', 'woo-gutenberg-products-block' ),
+								'type'        => 'string',
+								'context'     => array( 'view', 'edit' ),
+								'readonly'    => true,
+							),
+							'decimal_separator'  => array(
+								'description' => __( 'Decimal separator.', 'woo-gutenberg-products-block' ),
+								'type'        => 'string',
+								'context'     => array( 'view', 'edit' ),
+								'readonly'    => true,
+							),
+							'thousand_separator' => array(
+								'description' => __( 'Thousand separator.', 'woo-gutenberg-products-block' ),
+								'type'        => 'string',
+								'context'     => array( 'view', 'edit' ),
+								'readonly'    => true,
+							),
+							'decimals'           => array(
+								'description' => __( 'Number of decimal places.', 'woo-gutenberg-products-block' ),
+								'type'        => 'string',
+								'context'     => array( 'view', 'edit' ),
+								'readonly'    => true,
+							),
+							'price_prefix'       => array(
+								'description' => __( 'Price prefix, e.g. currency.', 'woo-gutenberg-products-block' ),
+								'type'        => 'string',
+								'context'     => array( 'view', 'edit' ),
+								'readonly'    => true,
+							),
+							'price_suffix'       => array(
+								'description' => __( 'Price prefix, e.g. currency.', 'woo-gutenberg-products-block' ),
+								'type'        => 'string',
+								'context'     => array( 'view', 'edit' ),
+								'readonly'    => true,
+							),
+							'price'              => array(
+								'description' => __( 'Current product price.', 'woo-gutenberg-products-block' ),
+								'type'        => 'string',
+								'context'     => array( 'view', 'edit' ),
+								'readonly'    => true,
+							),
+							'regular_price'      => array(
+								'description' => __( 'Regular product price', 'woo-gutenberg-products-block' ),
+								'type'        => 'string',
+								'context'     => array( 'view', 'edit' ),
+								'readonly'    => true,
+							),
+							'sale_price'         => array(
+								'description' => __( 'Sale product price, if applicable.', 'woo-gutenberg-products-block' ),
+								'type'        => 'string',
+								'context'     => array( 'view', 'edit' ),
+								'readonly'    => true,
+							),
+							'price_range'        => array(
+								'description' => __( 'Price range, if applicable.', 'woo-gutenberg-products-block' ),
+								'type'        => 'object',
+								'context'     => array( 'view', 'edit' ),
+								'readonly'    => true,
+								'items'       => array(
+									'type'       => 'object',
+									'properties' => array(
+										'min_amount' => array(
+											'description' => __( 'Price amount.', 'woo-gutenberg-products-block' ),
+											'type'        => 'string',
+											'context'     => array( 'view', 'edit' ),
+											'readonly'    => true,
+										),
+										'max_amount' => array(
+											'description' => __( 'Price amount.', 'woo-gutenberg-products-block' ),
+											'type'        => 'string',
+											'context'     => array( 'view', 'edit' ),
+											'readonly'    => true,
+										),
+									),
+								),
+							),
+						),
+					),
 				),
 				'price_html'     => array(
 					'description' => __( 'Price formatted in HTML.', 'woo-gutenberg-products-block' ),
@@ -373,12 +553,6 @@ class Products extends WC_REST_Products_Controller {
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
-				'thumbnail_html' => array(
-					'description' => __( 'Thumbnail HTML, including srcset and other properties.', 'woo-gutenberg-products-block' ),
-					'type'        => 'string',
-					'context'     => array( 'view', 'edit' ),
-					'readonly'    => true,
-				),
 				'images'         => array(
 					'description' => __( 'List of images.', 'woo-gutenberg-products-block' ),
 					'type'        => 'object',
@@ -386,35 +560,45 @@ class Products extends WC_REST_Products_Controller {
 					'items'       => array(
 						'type'       => 'object',
 						'properties' => array(
-							'id'   => array(
+							'id'        => array(
 								'description' => __( 'Image ID.', 'woo-gutenberg-products-block' ),
 								'type'        => 'integer',
 								'context'     => array( 'view', 'edit' ),
 							),
-							'src'  => array(
-								'description' => __( 'Image URL.', 'woo-gutenberg-products-block' ),
+							'src'       => array(
+								'description' => __( 'Full size image URL.', 'woo-gutenberg-products-block' ),
 								'type'        => 'string',
 								'format'      => 'uri',
 								'context'     => array( 'view', 'edit' ),
 							),
-							'name' => array(
+							'thumbnail' => array(
+								'description' => __( 'Thumbnail URL.', 'woo-gutenberg-products-block' ),
+								'type'        => 'string',
+								'format'      => 'uri',
+								'context'     => array( 'view', 'edit' ),
+							),
+							'srcset'    => array(
+								'description' => __( 'Thumbnail srcset for responsive images.', 'woo-gutenberg-products-block' ),
+								'type'        => 'string',
+								'context'     => array( 'view', 'edit' ),
+							),
+							'sizes'     => array(
+								'description' => __( 'Thumbnail sizes for responsive images.', 'woo-gutenberg-products-block' ),
+								'type'        => 'string',
+								'context'     => array( 'view', 'edit' ),
+							),
+							'name'      => array(
 								'description' => __( 'Image name.', 'woo-gutenberg-products-block' ),
 								'type'        => 'string',
 								'context'     => array( 'view', 'edit' ),
 							),
-							'alt'  => array(
+							'alt'       => array(
 								'description' => __( 'Image alternative text.', 'woo-gutenberg-products-block' ),
 								'type'        => 'string',
 								'context'     => array( 'view', 'edit' ),
 							),
 						),
 					),
-				),
-				'onsale'         => array(
-					'description' => __( 'Is the product on sale?', 'woo-gutenberg-products-block' ),
-					'type'        => 'boolean',
-					'context'     => array( 'view', 'edit' ),
-					'readonly'    => true,
 				),
 				'add_to_cart'    => array(
 					'description' => __( 'Add to cart button parameters.', 'woo-gutenberg-products-block' ),

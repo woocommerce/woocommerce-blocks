@@ -19,7 +19,6 @@ const ProductGrid = ( { attributes, componentId, products } ) => {
 			'wc-block-grid',
 			className,
 			alignClass,
-			'align' + align,
 			'has-' + columns + '-columns',
 			{
 				'has-multiple-rows': rows > 1,
