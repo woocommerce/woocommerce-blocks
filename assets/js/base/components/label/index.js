@@ -52,10 +52,7 @@ const Label = ( { label, screenReaderLabel, wrapperElement, wrapperProps } ) => 
 Label.propTypes = {
 	label: PropTypes.string,
 	screenReaderLabel: PropTypes.string,
-	wrapperElement: PropTypes.oneOfType( [
-		PropTypes.string,
-		PropTypes.elementType,
-	] ),
+	wrapperElement: PropTypes.elementType,
 	wrapperProps: PropTypes.object,
 };
 
