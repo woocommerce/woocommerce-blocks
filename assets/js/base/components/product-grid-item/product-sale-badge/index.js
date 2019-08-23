@@ -11,7 +11,7 @@ const ProductSaleBadge = ( { className, product = {} } ) => {
 
 	return (
 		<span className={ className }>
-			{ __( 'Sale!', 'woo-gutenberg-products-block' ) }
+			{ __( 'Sale', 'woo-gutenberg-products-block' ) }
 		</span>
 	);
 };
