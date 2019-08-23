@@ -8,10 +8,12 @@ import PropTypes from 'prop-types';
  * Internal dependencies
  */
 import OrderSelect from '../order-select';
+import './style.scss';
 
 const ReviewOrderSelect = ( { componentId, defaultValue, onChange, readOnly, value } ) => {
 	return (
 		<OrderSelect
+			className="wc-block-review-order-select"
 			componentId={ componentId }
 			defaultValue={ defaultValue }
 			label={ __( 'Order by', 'woo-gutenberg-products-block' ) }

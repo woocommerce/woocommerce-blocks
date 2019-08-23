@@ -2,6 +2,7 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 /**
  * Internal dependencies
@@ -9,11 +10,11 @@ import PropTypes from 'prop-types';
 import Label from '../label';
 import './style.scss';
 
-const OrderSelect = ( { componentId, defaultValue, label, onChange, options, screenReaderLabel, readOnly, value } ) => {
+const OrderSelect = ( { className, componentId, defaultValue, label, onChange, options, screenReaderLabel, readOnly, value } ) => {
 	const selectId = `wc-block-order-select__select-${ componentId }`;
 
 	return (
-		<p className="wc-block-order-select">
+		<p className={ classNames( 'wc-block-order-select', className ) }>
 			<Label
 				label={ label }
 				screenReaderLabel={ screenReaderLabel }
