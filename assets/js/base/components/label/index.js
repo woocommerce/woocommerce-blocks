@@ -6,6 +6,11 @@ import elementType from 'prop-types-elementtype';
 import { Fragment } from 'react';
 import classNames from 'classnames';
 
+/**
+ * Component used to render an accessible text given a label and/or a
+ * screenReaderLabel. The wrapper element and wrapper props can also be
+ * specified via props.
+ */
 const Label = ( { label, screenReaderLabel, wrapperElement, wrapperProps } ) => {
 	let Wrapper;
 

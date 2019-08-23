@@ -10,6 +10,10 @@ import classNames from 'classnames';
 import Label from '../label';
 import './style.scss';
 
+/**
+ * Component used for 'Order by' selectors, which renders a label
+ * and a <select> with the options provided in the props.
+ */
 const OrderSelect = ( { className, componentId, defaultValue, label, onChange, options, screenReaderLabel, readOnly, value } ) => {
 	const selectId = `wc-block-order-select__select-${ componentId }`;
 
