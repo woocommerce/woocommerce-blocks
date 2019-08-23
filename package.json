@@ -86,7 +86,6 @@
     "postcss-loader": "3.0.0",
     "progress-bar-webpack-plugin": "1.12.1",
     "promptly": "3.0.3",
-    "prop-types-elementtype": "^1.0.0",
     "react-test-renderer": "16.8.6",
     "request-promise": "4.2.4",
     "rimraf": "2.7.1",

@@ -2,7 +2,6 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import elementType from 'prop-types-elementtype';
 import { Fragment } from 'react';
 import classNames from 'classnames';
 
@@ -55,7 +54,7 @@ Label.propTypes = {
 	screenReaderLabel: PropTypes.string,
 	wrapperElement: PropTypes.oneOfType( [
 		PropTypes.string,
-		elementType,
+		PropTypes.elementType,
 	] ),
 	wrapperProps: PropTypes.object,
 };
