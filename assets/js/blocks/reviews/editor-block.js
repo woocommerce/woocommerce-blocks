@@ -20,6 +20,18 @@ import withReviews from '../../base/hocs/with-reviews';
  * Block rendered in the editor.
  */
 class EditorBlock extends Component {
+	static propTypes = {
+		/**
+		 * The attributes for this block.
+		 */
+		attributes: PropTypes.object.isRequired,
+		// from withComponentId
+		componentId: PropTypes.number,
+		// from withReviews
+		reviews: PropTypes.array,
+		totalReviews: PropTypes.number,
+	}
+
 	render() {
 		const { attributes, componentId, isLoading, noReviewsPlaceholder: NoReviewsPlaceholder, reviews, totalReviews } = this.props;
 
@@ -50,17 +62,5 @@ class EditorBlock extends Component {
 		);
 	}
 }
-
-EditorBlock.propTypes = {
-	/**
-	 * The attributes for this block.
-	 */
-	attributes: PropTypes.object.isRequired,
-	// from withComponentId
-	componentId: PropTypes.number,
-	// from withReviews
-	reviews: PropTypes.array,
-	totalReviews: PropTypes.number,
-};
 
 export default withComponentId( withReviews( EditorBlock ) );

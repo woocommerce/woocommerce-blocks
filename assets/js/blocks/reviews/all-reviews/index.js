@@ -19,13 +19,13 @@ import save from '../save.js';
 registerBlockType( 'woocommerce/all-reviews', {
 	title: __( 'All Reviews', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Gridicon icon="grid" />,
+		src: <Gridicon icon="list" />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
-		'Show product reviews from all products and categories.',
+		'Shows a list of all product reviews.',
 		'woo-gutenberg-products-block'
 	),
 	attributes: {

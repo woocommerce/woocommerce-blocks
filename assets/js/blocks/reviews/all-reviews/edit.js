@@ -45,7 +45,7 @@ const AllReviewsEditor = ( { attributes, setAttributes } ) => {
 			<EditorContainerBlock
 				attributes={ attributes }
 				className="wc-block-all-reviews"
-				icon={ <Gridicon icon="grid" /> }
+				icon={ <Gridicon icon="list" /> }
 				name={ __( 'All Reviews', 'woo-gutenberg-products-block' ) }
 				noReviewsPlaceholder={ NoReviewsPlaceholder }
 			/>

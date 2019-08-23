@@ -22,7 +22,7 @@ export const getBlockControls = ( editMode, setAttributes ) => (
 			controls={ [
 				{
 					icon: 'edit',
-					title: __( 'Edit' ),
+					title: __( 'Edit', 'woo-gutenberg-products-block' ),
 					onClick: () => setAttributes( { editMode: ! editMode } ),
 					isActive: editMode,
 				},
