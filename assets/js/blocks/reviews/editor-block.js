@@ -13,7 +13,6 @@ import { ENABLE_REVIEW_RATING } from '@woocommerce/settings';
 import LoadMoreButton from '../../base/components/load-more-button';
 import ReviewList from '../../base/components/review-list';
 import ReviewOrderSelect from '../../base/components/review-order-select';
-import withComponentId from '../../base/hocs/with-component-id';
 import withReviews from '../../base/hocs/with-reviews';
 
 /**
@@ -25,15 +24,13 @@ class EditorBlock extends Component {
 		 * The attributes for this block.
 		 */
 		attributes: PropTypes.object.isRequired,
-		// from withComponentId
-		componentId: PropTypes.number,
 		// from withReviews
 		reviews: PropTypes.array,
 		totalReviews: PropTypes.number,
 	}
 
 	render() {
-		const { attributes, componentId, isLoading, noReviewsPlaceholder: NoReviewsPlaceholder, reviews, totalReviews } = this.props;
+		const { attributes, isLoading, noReviewsPlaceholder: NoReviewsPlaceholder, reviews, totalReviews } = this.props;
 
 		if ( 0 === reviews.length && ! isLoading ) {
 			return <NoReviewsPlaceholder attributes={ attributes } />;
@@ -43,14 +40,12 @@ class EditorBlock extends Component {
 			<Disabled>
 				{ ( attributes.showOrderby && ENABLE_REVIEW_RATING ) && (
 					<ReviewOrderSelect
-						componentId={ componentId }
 						readOnly
 						value={ attributes.orderby }
 					/>
 				) }
 				<ReviewList
 					attributes={ attributes }
-					componentId={ componentId }
 					reviews={ reviews }
 				/>
 				{ ( attributes.showLoadMore && totalReviews > reviews.length ) && (
@@ -63,4 +58,4 @@ class EditorBlock extends Component {
 	}
 }
 
-export default withComponentId( withReviews( EditorBlock ) );
+export default withReviews( EditorBlock );
