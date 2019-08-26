@@ -44,7 +44,10 @@ export const getSharedReviewContentControls = ( attributes, setAttributes ) => {
 				<Notice className="wc-block-reviews__notice" isDismissible={ false }>
 					<RawHTML>
 						{ sprintf(
-							escapeHTML( __( 'Product rating is disabled in your %sstore settings%s.', 'woo-gutenberg-products-block' ) ),
+							escapeHTML(
+								/* translators: A notice that links to WooCommerce settings. */
+								__( 'Product rating is disabled in your %sstore settings%s.', 'woo-gutenberg-products-block' )
+							),
 							`<a href="${ getAdminLink( 'admin.php?page=wc-settings&tab=products' ) }" target="_blank">`, '</a>'
 						) }
 					</RawHTML>
@@ -85,7 +88,10 @@ export const getSharedReviewContentControls = ( attributes, setAttributes ) => {
 						<Notice className="wc-block-reviews__notice" isDismissible={ false }>
 							<RawHTML>
 								{ sprintf(
-									escapeHTML( __( 'Reviewer photo is disabled in your %ssite settings%s.', 'woo-gutenberg-products-block' ) ),
+									escapeHTML(
+										/* translators: A notice that links to WordPress settings. */
+										__( 'Reviewer photo is disabled in your %ssite settings%s.', 'woo-gutenberg-products-block' )
+									),
 									`<a href="${ getAdminLink( 'options-discussion.php' ) }" target="_blank">`, '</a>'
 								) }
 							</RawHTML>
