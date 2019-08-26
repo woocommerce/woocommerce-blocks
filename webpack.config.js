@@ -33,11 +33,62 @@ const baseConfig = {
 		hash: true,
 		timings: true,
 	},
-	resolve: {
-		alias: {
-			'@woocommerce/settings': path.resolve( __dirname, 'assets/js/settings/index.js' ),
-		},
+};
+
+const requestToExternal = ( request ) => {
+	const wcDepMap = {
+		'@woocommerce/settings': [ 'wc', 'blockSettings' ],
+	};
+	if ( wcDepMap[ request ] ) {
+		return wcDepMap[ request ];
+	}
+};
+
+const requestToHandle = ( request ) => {
+	const wcHandleMap = {
+		'@woocommerce/settings': 'wc-block-settings',
+	};
+	if ( wcHandleMap[ request ] ) {
+		return wcHandleMap[ request ];
+	}
+};
+
+const CoreConfig = {
+	...baseConfig,
+	entry: {
+		'wc-blocks-settings': './assets/js/settings/index.js',
 	},
+	output: {
+		filename: '[name].js',
+		path: path.resolve( __dirname, './build/' ),
+		library: [ 'wc', 'blockSettings' ],
+		libraryTarget: 'this',
+		// This fixes an issue with multiple webpack projects using chunking
+		// overwriting each other's chunk loader function.
+		// See https://webpack.js.org/configuration/output/#outputjsonpfunction
+		jsonpFunction: 'webpackWcBlocksJsonp',
+	},
+	module: {
+		rules: [
+			{
+				test: /\.jsx?$/,
+				exclude: /node_modules/,
+				use: {
+					loader: 'babel-loader?cacheDirectory',
+					options: {
+						presets: [ '@wordpress/babel-preset-default' ],
+					},
+				},
+			},
+		],
+	},
+	plugins: [
+		new CleanWebpackPlugin(),
+		new ProgressBarPlugin( {
+			format: chalk.blue( 'Build core script' ) + ' [:bar] ' + chalk.green( ':percent' ) + ' :msg (:elapsed seconds)',
+		} ),
+		new DependencyExtractionWebpackPlugin( { injectPolyfill: true } ),
+	],
 };
 
 /**
@@ -58,6 +109,7 @@ const GutenbergBlocksConfig = {
 		'product-top-rated': './assets/js/blocks/product-top-rated/index.js',
 		'products-by-attribute': './assets/js/blocks/products-by-attribute/index.js',
 		'featured-product': './assets/js/blocks/featured-product/index.js',
+		'all-reviews': './assets/js/blocks/reviews/all-reviews/index.js',
 		'reviews-by-product': './assets/js/blocks/reviews/reviews-by-product/index.js',
 		'reviews-by-category': './assets/js/blocks/reviews/reviews-by-category/index.js',
 		'product-search': './assets/js/blocks/product-search/index.js',
@@ -113,6 +165,7 @@ const GutenbergBlocksConfig = {
 						presets: [ '@wordpress/babel-preset-default' ],
 						plugins: [
 							NODE_ENV === 'production' ? require.resolve( 'babel-plugin-transform-react-remove-prop-types' ) : false,
+							require.resolve( '@babel/plugin-proposal-class-properties' ),
 						].filter( Boolean ),
 					},
 				},
@@ -150,7 +203,11 @@ const GutenbergBlocksConfig = {
 		new ProgressBarPlugin( {
 			format: chalk.blue( 'Build' ) + ' [:bar] ' + chalk.green( ':percent' ) + ' :msg (:elapsed seconds)',
 		} ),
-		new DependencyExtractionWebpackPlugin( { injectPolyfill: true } ),
+		new DependencyExtractionWebpackPlugin( {
+			injectPolyfill: true,
+			requestToExternal,
+			requestToHandle,
+		} ),
 	],
 };
 
@@ -158,8 +215,7 @@ const BlocksFrontendConfig = {
 	...baseConfig,
 	entry: {
 		'product-categories': './assets/js/blocks/product-categories/frontend.js',
-		'reviews-by-product': './assets/js/blocks/reviews/reviews-by-product/frontend.js',
-		'reviews-by-category': './assets/js/blocks/reviews/reviews-by-category/frontend.js',
+		reviews: './assets/js/blocks/reviews/frontend.js',
 	},
 	output: {
 		path: path.resolve( __dirname, './build/' ),
@@ -190,6 +246,7 @@ const BlocksFrontendConfig = {
 							require.resolve( '@babel/plugin-transform-react-jsx' ),
 							require.resolve( '@babel/plugin-proposal-async-generator-functions' ),
 							require.resolve( '@babel/plugin-transform-runtime' ),
+							require.resolve( '@babel/plugin-proposal-class-properties' ),
 							NODE_ENV === 'production' ? require.resolve( 'babel-plugin-transform-react-remove-prop-types' ) : false,
 						].filter( Boolean ),
 					},
@@ -204,12 +261,15 @@ const BlocksFrontendConfig = {
 		],
 	},
 	plugins: [
-		new CleanWebpackPlugin(),
 		new ProgressBarPlugin( {
 			format: chalk.blue( 'Build frontend scripts' ) + ' [:bar] ' + chalk.green( ':percent' ) + ' :msg (:elapsed seconds)',
 		} ),
-		new DependencyExtractionWebpackPlugin( { injectPolyfill: true } ),
+		new DependencyExtractionWebpackPlugin( {
+			injectPolyfill: true,
+			requestToExternal,
+			requestToHandle,
+		} ),
 	],
 };
 
-module.exports = [ GutenbergBlocksConfig, BlocksFrontendConfig ];
+module.exports = [ CoreConfig, GutenbergBlocksConfig, BlocksFrontendConfig ];

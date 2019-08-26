@@ -4,16 +4,33 @@ import { escapeHTML } from '@wordpress/escape-html';
 import {
 	Notice,
 	ToggleControl,
+	Toolbar,
 	RangeControl,
 	SelectControl,
 } from '@wordpress/components';
+import { BlockControls } from '@wordpress/editor';
 import { getAdminLink } from '@woocommerce/navigation';
+import { ENABLE_REVIEW_RATING, SHOW_AVATARS } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
  */
 import ToggleButtonControl from '../../components/toggle-button-control';
-import { ENABLE_REVIEW_RATING, SHOW_AVATARS } from '../../constants';
+
+export const getBlockControls = ( editMode, setAttributes ) => (
+	<BlockControls>
+		<Toolbar
+			controls={ [
+				{
+					icon: 'edit',
+					title: __( 'Edit', 'woo-gutenberg-products-block' ),
+					onClick: () => setAttributes( { editMode: ! editMode } ),
+					isActive: editMode,
+				},
+			] }
+		/>
+	</BlockControls>
+);
 
 export const getSharedReviewContentControls = ( attributes, setAttributes ) => {
 	return (

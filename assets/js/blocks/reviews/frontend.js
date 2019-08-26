@@ -6,11 +6,13 @@ import { render } from 'react-dom';
 /**
  * Internal dependencies
  */
-import FrontendBlock from './frontend-block.js';
+import FrontendContainerBlock from './frontend-container-block.js';
 
-const containers = document.querySelectorAll(
-	'.wp-block-woocommerce-reviews-by-category'
-);
+const containers = document.querySelectorAll( `
+	.wp-block-woocommerce-all-reviews,
+	.wp-block-woocommerce-reviews-by-product,
+	.wp-block-woocommerce-reviews-by-category
+` );
 
 if ( containers.length ) {
 	// Use Array.forEach for IE11 compatibility
@@ -25,6 +27,6 @@ if ( containers.length ) {
 			showProductName: el.classList.contains( 'has-product-name' ),
 		};
 
-		render( <FrontendBlock attributes={ attributes } />, el );
+		render( <FrontendContainerBlock attributes={ attributes } />, el );
 	} );
 }
