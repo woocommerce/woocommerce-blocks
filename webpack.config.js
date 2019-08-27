@@ -37,7 +37,8 @@ const baseConfig = {
 
 const requestToExternal = ( request ) => {
 	const wcDepMap = {
-		'@woocommerce/block-settings': [ 'wc', 'blockSettings' ],
+		'@woocommerce/settings': [ 'wc', 'wc-shared-settings' ],
+		'@woocommerce/block-settings': [ 'wc', 'wc-block-settings' ],
 	};
 	if ( wcDepMap[ request ] ) {
 		return wcDepMap[ request ];
@@ -63,7 +64,7 @@ const CoreConfig = {
 	output: {
 		filename: '[name].js',
 		path: path.resolve( __dirname, './build/' ),
-		library: [ 'wc', 'blockSettings' ],
+		library: [ 'wc', '[name]' ],
 		libraryTarget: 'this',
 		// This fixes an issue with multiple webpack projects using chunking
 		// overwriting each other's chunk loader function.
