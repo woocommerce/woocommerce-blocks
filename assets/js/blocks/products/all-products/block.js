@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { Component, Fragment } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 /**
@@ -36,9 +36,7 @@ class Block extends Component {
 		 * wc-block-{$this->block_name},
 		 */
 		return (
-			<Fragment>
-				<ProductGrid products={ products } attributes={ this.props.attributes } componentId={ this.props.componentId } />
-			</Fragment>
+			<ProductGrid products={ products } attributes={ this.props.attributes } componentId={ this.props.componentId } />
 		);
 	}
 }

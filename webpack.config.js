@@ -159,6 +159,7 @@ const GutenbergBlocksConfig = {
 const BlocksFrontendConfig = {
 	...baseConfig,
 	entry: {
+		'all-products': './assets/js/blocks/products/all-products/frontend.js',
 		'product-categories': './assets/js/blocks/product-categories/frontend.js',
 		'reviews-by-product': './assets/js/blocks/reviews/reviews-by-product/frontend.js',
 		'reviews-by-category': './assets/js/blocks/reviews/reviews-by-category/frontend.js',
