@@ -19,6 +19,8 @@ class Assets {
 	 */
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'register_assets' ) );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'add_asset_data' ) );
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'add_asset_data' ) );
 		add_action( 'body_class', array( __CLASS__, 'add_theme_body_class' ), 1 );
 	}
 
@@ -50,8 +52,12 @@ class Assets {
 		self::register_script( 'wc-reviews-by-product', plugins_url( 'build/reviews-by-product.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
 		self::register_script( 'wc-reviews-by-category', plugins_url( 'build/reviews-by-category.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
 		self::register_script( 'wc-product-search', plugins_url( 'build/product-search.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
+	}
 
-		// attach data to wc-blocks-settings.
+	/**
+	 * Attach data to registered assets using inline scripts.
+	 */
+	public static function add_asset_data() {
 		wp_add_inline_script(
 			'wc-block-settings',
 			self::get_wc_settings_data() . "\n" . self::get_wc_block_data(),
