@@ -19,8 +19,9 @@ class Assets {
 	 */
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'register_assets' ) );
-		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'add_asset_data' ) );
-		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'add_asset_data' ) );
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_enqueue_scripts' ) );
+		add_action( 'admin_print_scripts', array( __CLASS__, 'add_asset_data' ) );
+		add_action( 'wp_print_scripts', array( __CLASS__, 'add_asset_data' ) );
 		add_action( 'body_class', array( __CLASS__, 'add_theme_body_class' ), 1 );
 	}
 
@@ -29,12 +30,13 @@ class Assets {
 	 */
 	public static function register_assets() {
 		self::register_style( 'wc-block-editor', plugins_url( 'build/editor.css', __DIR__ ), array( 'wp-edit-blocks' ) );
-		self::register_style( 'wc-block-style', plugins_url( 'build/style.css', __DIR__ ), array() );
+		self::register_style( 'wc-block-style', plugins_url( 'build/style.css', __DIR__ ), [] );
 
 		// Shared libraries and components across all blocks.
 		self::register_script( 'wc-shared-settings', plugins_url( 'build/wc-shared-settings.js', __DIR__ ), [], false );
-		self::register_script( 'wc-blocks', plugins_url( 'build/blocks.js', __DIR__ ), array(), false );
-		self::register_script( 'wc-vendors', plugins_url( 'build/vendors.js', __DIR__ ), array(), false );
+		self::register_script( 'wc-block-settings', plugins_url( 'build/wc-block-settings.js', __DIR__ ), [], false );
+		self::register_script( 'wc-blocks', plugins_url( 'build/blocks.js', __DIR__ ), [], false );
+		self::register_script( 'wc-vendors', plugins_url( 'build/vendors.js', __DIR__ ), [], false );
 
 		// Individual blocks.
 		self::register_script( 'wc-handpicked-products', plugins_url( 'build/handpicked-products.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
@@ -55,14 +57,32 @@ class Assets {
 	}
 
 	/**
+	 * Enqueues assets in admin.
+	 *
+	 * In the future, plugins such as wc-admin should enqueue this conditionally.
+	 */
+	public static function admin_enqueue_scripts() {
+		wp_enqueue_script( 'wc-shared-settings' );
+	}
+
+	/**
 	 * Attach data to registered assets using inline scripts.
 	 */
 	public static function add_asset_data() {
-		wp_add_inline_script(
-			'wc-shared-settings',
-			self::get_wc_settings_data() . "\n" . self::get_wc_block_data(),
-			'before'
-		);
+		if ( wp_script_is( 'wc-shared-settings', 'queue' ) ) {
+			wp_add_inline_script(
+				'wc-shared-settings',
+				self::get_wc_settings_data(),
+				'before'
+			);
+		}
+		if ( wp_script_is( 'wc-block-settings', 'queue' ) ) {
+			wp_add_inline_script(
+				'wc-block-settings',
+				self::get_wc_block_data(),
+				'before'
+			);
+		}
 	}
 
 	/**
@@ -71,7 +91,7 @@ class Assets {
 	 * @param array $classes Array of CSS classnames.
 	 * @return array Modified array of CSS classnames.
 	 */
-	public static function add_theme_body_class( $classes = array() ) {
+	public static function add_theme_body_class( $classes = [] ) {
 		$classes[] = 'theme-' . get_template();
 		return $classes;
 	}
@@ -102,7 +122,7 @@ class Assets {
 				),
 				'stockStatuses' => wc_get_product_stock_status_options(),
 				'siteTitle'     => get_bloginfo( 'name' ),
-				'dataEndpoints' => array(),
+				'dataEndpoints' => [],
 				'l10n'          => array(
 					'userLocale'    => get_user_locale(),
 					'weekdaysShort' => array_values( $wp_locale->weekday_abbrev ),
@@ -182,11 +202,11 @@ class Assets {
 	 * @param array  $deps      Optional. An array of registered script handles this script depends on. Default empty array.
 	 * @param bool   $has_i18n  Optional. Whether to add a script translation call to this file. Default 'true'.
 	 */
-	protected static function register_script( $handle, $src, $deps = array(), $has_i18n = true ) {
+	protected static function register_script( $handle, $src, $deps = [], $has_i18n = true ) {
 		$filename     = str_replace( plugins_url( '/', __DIR__ ), '', $src );
 		$ver          = self::get_file_version( $filename );
 		$deps_path    = dirname( __DIR__ ) . '/' . str_replace( '.js', '.deps.json', $filename );
-		$dependencies = file_exists( $deps_path ) ? json_decode( file_get_contents( $deps_path ) ) : array(); // phpcs:ignore WordPress.WP.AlternativeFunctions
+		$dependencies = file_exists( $deps_path ) ? json_decode( file_get_contents( $deps_path ) ) : []; // phpcs:ignore WordPress.WP.AlternativeFunctions
 		$dependencies = array_merge( $dependencies, $deps );
 
 		wp_register_script( $handle, $src, $dependencies, $ver, true );
@@ -219,7 +239,7 @@ class Assets {
 	 * @param string $media  Optional. The media for which this stylesheet has been defined. Default 'all'. Accepts media types like
 	 *                       'all', 'print' and 'screen', or media queries like '(orientation: portrait)' and '(max-width: 640px)'.
 	 */
-	protected static function register_style( $handle, $src, $deps = array(), $media = 'all' ) {
+	protected static function register_style( $handle, $src, $deps = [], $media = 'all' ) {
 		$filename = str_replace( plugins_url( '/', __DIR__ ), '', $src );
 		$ver      = self::get_file_version( $filename );
 		wp_register_style( $handle, $src, $deps, $ver, $media );

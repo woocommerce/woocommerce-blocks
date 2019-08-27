@@ -37,7 +37,7 @@ const baseConfig = {
 
 const requestToExternal = ( request ) => {
 	const wcDepMap = {
-		'@woocommerce/settings': [ 'wc', 'blockSettings' ],
+		'@woocommerce/block-settings': [ 'wc', 'blockSettings' ],
 	};
 	if ( wcDepMap[ request ] ) {
 		return wcDepMap[ request ];
@@ -47,6 +47,7 @@ const requestToExternal = ( request ) => {
 const requestToHandle = ( request ) => {
 	const wcHandleMap = {
 		'@woocommerce/settings': 'wc-shared-settings',
+		'@woocommerce/block-settings': 'wc-block-settings',
 	};
 	if ( wcHandleMap[ request ] ) {
 		return wcHandleMap[ request ];
@@ -56,7 +57,8 @@ const requestToHandle = ( request ) => {
 const CoreConfig = {
 	...baseConfig,
 	entry: {
-		'wc-shared-settings': './assets/js/settings/index.js',
+		'wc-shared-settings': './assets/js/settings/shared/index.js',
+		'wc-block-settings': './assets/js/settings/blocks/index.js',
 	},
 	output: {
 		filename: '[name].js',
