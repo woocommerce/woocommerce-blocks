@@ -32,7 +32,7 @@ class Assets {
 		self::register_style( 'wc-block-style', plugins_url( 'build/style.css', __DIR__ ), array() );
 
 		// Shared libraries and components across all blocks.
-		self::register_script( 'wc-block-settings', plugins_url( 'build/wc-blocks-settings.js', __DIR__ ), [], false );
+		self::register_script( 'wc-shared-settings', plugins_url( 'build/wc-shared-settings.js', __DIR__ ), [], false );
 		self::register_script( 'wc-blocks', plugins_url( 'build/blocks.js', __DIR__ ), array(), false );
 		self::register_script( 'wc-vendors', plugins_url( 'build/vendors.js', __DIR__ ), array(), false );
 
@@ -59,7 +59,7 @@ class Assets {
 	 */
 	public static function add_asset_data() {
 		wp_add_inline_script(
-			'wc-block-settings',
+			'wc-shared-settings',
 			self::get_wc_settings_data() . "\n" . self::get_wc_block_data(),
 			'before'
 		);
@@ -77,7 +77,7 @@ class Assets {
 	}
 
 	/**
-	 * Returns javascript to inject as data for enqueued wc-blocks-settings script.
+	 * Returns javascript to inject as data for enqueued wc-shared-settings script.
 	 *
 	 * @return string;
 	 * @since 2.4.0
@@ -114,7 +114,7 @@ class Assets {
 	}
 
 	/**
-	 * Returns block-related data for enqueued wc-blocks-settings script.
+	 * Returns block-related data for enqueued wc-shared-settings script.
 	 *
 	 * This is used to map site settings & data into JS-accessible variables.
 	 *
