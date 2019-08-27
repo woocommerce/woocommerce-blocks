@@ -19,9 +19,11 @@ class Assets {
 	 */
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'register_assets' ) );
-		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_enqueue_scripts' ) );
-		add_action( 'admin_print_scripts', array( __CLASS__, 'add_asset_data' ) );
-		add_action( 'wp_print_scripts', array( __CLASS__, 'add_asset_data' ) );
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_shared_settings' ) );
+		add_action( 'admin_print_scripts', array( __CLASS__, 'maybe_add_asset_data' ), 1 );
+		add_action( 'admin_print_footer_scripts', array( __CLASS__, 'maybe_add_asset_data' ), 1 );
+		add_action( 'wp_print_scripts', array( __CLASS__, 'maybe_add_asset_data' ), 1 );
+		add_action( 'wp_print_footer_scripts', array( __CLASS__, 'maybe_add_asset_data' ), 1 );
 		add_action( 'body_class', array( __CLASS__, 'add_theme_body_class' ), 1 );
 	}
 
@@ -61,22 +63,22 @@ class Assets {
 	 *
 	 * In the future, plugins such as wc-admin should enqueue this conditionally.
 	 */
-	public static function admin_enqueue_scripts() {
+	public static function enqueue_shared_settings() {
 		wp_enqueue_script( 'wc-shared-settings' );
 	}
 
 	/**
 	 * Attach data to registered assets using inline scripts.
 	 */
-	public static function add_asset_data() {
-		if ( wp_script_is( 'wc-shared-settings', 'queue' ) ) {
+	public static function maybe_add_asset_data() {
+		if ( wp_script_is( 'wc-shared-settings', 'enqueued' ) ) {
 			wp_add_inline_script(
 				'wc-shared-settings',
 				self::get_wc_settings_data(),
 				'before'
 			);
 		}
-		if ( wp_script_is( 'wc-block-settings', 'queue' ) ) {
+		if ( wp_script_is( 'wc-block-settings', 'enqueued' ) ) {
 			wp_add_inline_script(
 				'wc-block-settings',
 				self::get_wc_block_data(),
