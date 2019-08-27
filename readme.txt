@@ -4,7 +4,7 @@ Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
 Requires at least: 5.0
 Tested up to: 5.2
 Requires PHP: 5.6
-Stable tag: 2.3.0
+Stable tag: 2.3.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -92,11 +92,13 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
-= 2.3.1 =
+= 2.3.1 - 2019-08-27 =
 
 - Fix: Fix deprecation notices with PHP 7.4.
 - Fix: Removed unused screen-reader-text css styles for buttons which caused some theme conflicts.
 - Fix: Left align stars to fix alignment in Storefront.
+- Fix: Best-sellers block query results #917
+- Fix: Fix duplicated translatable string #843
 
 = 2.3.0 - 2019-08-12 =
 
