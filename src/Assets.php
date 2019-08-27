@@ -19,7 +19,6 @@ class Assets {
 	 */
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'register_assets' ) );
-		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_shared_settings' ) );
 		add_action( 'admin_print_scripts', array( __CLASS__, 'maybe_add_asset_data' ), 1 );
 		add_action( 'admin_print_footer_scripts', array( __CLASS__, 'maybe_add_asset_data' ), 1 );
 		add_action( 'wp_print_scripts', array( __CLASS__, 'maybe_add_asset_data' ), 1 );
@@ -38,7 +37,7 @@ class Assets {
 		self::register_script( 'wc-shared-settings', plugins_url( 'build/wc-shared-settings.js', __DIR__ ), [], false );
 		self::register_script( 'wc-block-settings', plugins_url( 'build/wc-block-settings.js', __DIR__ ), [], false );
 		self::register_script( 'wc-blocks', plugins_url( 'build/blocks.js', __DIR__ ), [], false );
-		self::register_script( 'wc-vendors', plugins_url( 'build/vendors.js', __DIR__ ), [], false );
+		self::register_script( 'wc-vendors', plugins_url( 'build/vendors.js', __DIR__ ), [ 'wc-shared-settings' ], false );
 
 		// Individual blocks.
 		self::register_script( 'wc-handpicked-products', plugins_url( 'build/handpicked-products.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
@@ -56,15 +55,6 @@ class Assets {
 		self::register_script( 'wc-reviews-by-product', plugins_url( 'build/reviews-by-product.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
 		self::register_script( 'wc-reviews-by-category', plugins_url( 'build/reviews-by-category.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
 		self::register_script( 'wc-product-search', plugins_url( 'build/product-search.js', __DIR__ ), array( 'wc-vendors', 'wc-blocks' ) );
-	}
-
-	/**
-	 * Enqueues assets in admin.
-	 *
-	 * In the future, plugins such as wc-admin should enqueue this conditionally, or it should move to a shared package.
-	 */
-	public static function enqueue_shared_settings() {
-		wp_enqueue_script( 'wc-shared-settings' );
 	}
 
 	/**
