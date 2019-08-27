@@ -61,7 +61,7 @@ class Assets {
 	/**
 	 * Enqueues assets in admin.
 	 *
-	 * In the future, plugins such as wc-admin should enqueue this conditionally.
+	 * In the future, plugins such as wc-admin should enqueue this conditionally, or it should move to a shared package.
 	 */
 	public static function enqueue_shared_settings() {
 		wp_enqueue_script( 'wc-shared-settings' );
