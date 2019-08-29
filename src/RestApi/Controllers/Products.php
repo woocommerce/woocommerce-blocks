@@ -215,12 +215,28 @@ class Products extends WC_REST_Products_Controller {
 			'average_rating' => $product->get_average_rating(),
 			'review_count'   => $product->get_review_count(),
 			'add_to_cart'    => [
-				'url'           => $product->add_to_cart_url(), // @todo this is relative so gives wrong link from API.
 				'text'          => $product->add_to_cart_text(),
 				'description'   => $product->add_to_cart_description(),
 				'supports_ajax' => $product->supports( 'ajax_add_to_cart' ),
 			],
 		);
+	}
+
+	/**
+	 * Get a usable add to cart URL.
+	 *
+	 * @param \WC_Product|\WC_Product_Variation $product Product instance.
+	 * @return array
+	 */
+	protected function get_add_to_cart_url( $product ) {
+		$url = $product->add_to_cart_url();
+
+		// Prevent relative URLs used by simple products.
+		if ( strstr( $url, '/wp-json/wc/' ) ) {
+			$url = '?add-to-cart=' . $product->get_id();
+		}
+
+		return $url;
 	}
 
 	/**
@@ -608,26 +624,19 @@ class Products extends WC_REST_Products_Controller {
 					'items'       => array(
 						'type'       => 'object',
 						'properties' => array(
-							'url'         => array(
-								'description' => __( 'Add to cart URL.', 'woo-gutenberg-products-block' ),
-								'type'        => 'string',
-								'format'      => 'uri',
-								'context'     => array( 'view', 'edit' ),
-								'readonly'    => true,
-							),
-							'text'        => array(
+							'text'         => array(
 								'description' => __( 'Button text.', 'woo-gutenberg-products-block' ),
 								'type'        => 'string',
 								'context'     => array( 'view', 'edit' ),
 								'readonly'    => true,
 							),
-							'description' => array(
+							'description'  => array(
 								'description' => __( 'Button description.', 'woo-gutenberg-products-block' ),
 								'type'        => 'string',
 								'context'     => array( 'view', 'edit' ),
 								'readonly'    => true,
 							),
-							'ajax'        => array(
+							'supports_ajax' => array(
 								'description' => __( 'Whether or not AJAX is supported.', 'woo-gutenberg-products-block' ),
 								'type'        => 'boolean',
 								'context'     => array( 'view', 'edit' ),
