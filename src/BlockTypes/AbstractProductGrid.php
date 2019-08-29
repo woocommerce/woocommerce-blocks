@@ -349,7 +349,8 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 				{$data->button}
 			</li>",
 			$data,
-			$product
+			$product,
+			$this->block_name
 		);
 	}
 
