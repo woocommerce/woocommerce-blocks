@@ -47,7 +47,6 @@ const withCategories = createHigherOrderComponent(
 				return <OriginalComponent
 					{ ...this.props }
 					error={ error }
-					getCategories={ this.loadCategories }
 					isLoading={ loading }
 					categories={ categories }
 				/>;

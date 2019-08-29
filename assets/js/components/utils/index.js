@@ -116,3 +116,15 @@ export const getCategories = () => {
 		path: addQueryArgs( `${ ENDPOINTS.products }/categories`, { per_page: -1 } ),
 	} );
 };
+
+export const getAttributes = () => {
+	return apiFetch( {
+		path: addQueryArgs( `${ ENDPOINTS.products }/attributes`, { per_page: -1 } ),
+	} );
+};
+
+export const getTerms = ( attribute ) => {
+	return apiFetch( {
+		path: addQueryArgs( `${ ENDPOINTS.products }/attributes/${ attribute }/terms`, { per_page: -1 } ),
+	} );
+};
