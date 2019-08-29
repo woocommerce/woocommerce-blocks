@@ -2,40 +2,24 @@
  * External dependencies
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { addQueryArgs } from '@wordpress/url';
-import apiFetch from '@wordpress/api-fetch';
 import { Component, Fragment } from '@wordpress/element';
 import { find } from 'lodash';
 import PropTypes from 'prop-types';
 import { SearchListControl, SearchListItem } from '@woocommerce/components';
 import { SelectControl } from '@wordpress/components';
-import { ENDPOINTS } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
+import { withCategories } from '../../hocs';
+import ErrorMessage from '../api-error-placeholder/error-message.js';
 import './style.scss';
 
 class ProductCategoryControl extends Component {
 	constructor() {
 		super( ...arguments );
-		this.state = {
-			list: [],
-			loading: true,
-		};
-		this.renderItem = this.renderItem.bind( this );
-	}
 
-	componentDidMount() {
-		apiFetch( {
-			path: addQueryArgs( `${ ENDPOINTS.products }/categories`, { per_page: -1 } ),
-		} )
-			.then( ( list ) => {
-				this.setState( { list, loading: false } );
-			} )
-			.catch( () => {
-				this.setState( { list: [], loading: false } );
-			} );
+		this.renderItem = this.renderItem.bind( this );
 	}
 
 	renderItem( args ) {
@@ -74,8 +58,7 @@ class ProductCategoryControl extends Component {
 	}
 
 	render() {
-		const { list, loading } = this.state;
-		const { onChange, onOperatorChange, operator, selected, isSingle } = this.props;
+		const { categories, error, isLoading, onChange, onOperatorChange, operator, selected, isSingle } = this.props;
 
 		const messages = {
 			clear: __( 'Clear all product categories', 'woo-gutenberg-products-block' ),
@@ -104,13 +87,19 @@ class ProductCategoryControl extends Component {
 			),
 		};
 
+		if ( error ) {
+			return (
+				<ErrorMessage error={ error } />
+			);
+		}
+
 		return (
 			<Fragment>
 				<SearchListControl
 					className="woocommerce-product-categories"
-					list={ list }
-					isLoading={ loading }
-					selected={ selected.map( ( id ) => find( list, { id } ) ).filter( Boolean ) }
+					list={ categories }
+					isLoading={ isLoading }
+					selected={ selected.map( ( id ) => find( categories, { id } ) ).filter( Boolean ) }
 					onChange={ onChange }
 					renderItem={ this.renderItem }
 					messages={ messages }
@@ -171,4 +160,4 @@ ProductCategoryControl.defaultProps = {
 	isSingle: false,
 };
 
-export default ProductCategoryControl;
+export default withCategories( ProductCategoryControl );
