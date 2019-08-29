@@ -34,11 +34,12 @@
     ],
     "average_rating": "3.60",
     "review_count": 5,
+    "has_options": false,
+    "is_purchasable": true,
+    "is_in_stock": true,
     "add_to_cart": {
-      "url": "?add-to-cart=95",
       "text": "Add to cart",
-      "description": "Add &ldquo;WordPress Pennant&rdquo; to your cart",
-      "supports_ajax": true
+      "description": "Add &ldquo;WordPress Pennant&rdquo; to your cart"
     },
     "_links": {
       "self": [
@@ -118,11 +119,12 @@
     ],
     "average_rating": "0",
     "review_count": 0,
+    "has_options": false,
+    "is_purchasable": false,
+    "is_in_stock": true,
     "add_to_cart": {
-      "url": "http:\/\/local.wordpress.test\/product\/logo-collection\/",
       "text": "View products",
-      "description": "View products in the &ldquo;Logo Collection&rdquo; group",
-      "supports_ajax": false
+      "description": "View products in the &ldquo;Logo Collection&rdquo; group"
     },
     "grouped_products": [
       74,
@@ -177,11 +179,12 @@
     ],
     "average_rating": "0",
     "review_count": 0,
+    "has_options": false,
+    "is_purchasable": true,
+    "is_in_stock": true,
     "add_to_cart": {
-      "url": "?add-to-cart=93",
       "text": "Add to cart",
-      "description": "Add &ldquo;Beanie with Logo&rdquo; to your cart",
-      "supports_ajax": true
+      "description": "Add &ldquo;Beanie with Logo&rdquo; to your cart"
     },
     "_links": {
       "self": [
@@ -231,11 +234,12 @@
     ],
     "average_rating": "0",
     "review_count": 0,
+    "has_options": false,
+    "is_purchasable": true,
+    "is_in_stock": false,
     "add_to_cart": {
-      "url": "http:\/\/local.wordpress.test\/product\/t-shirt-with-logo\/",
       "text": "Read more",
-      "description": "Read more about &ldquo;T-Shirt with Logo&rdquo;",
-      "supports_ajax": true
+      "description": "Read more about &ldquo;T-Shirt with Logo&rdquo;"
     },
     "_links": {
       "self": [
@@ -285,11 +289,12 @@
     ],
     "average_rating": "3.00",
     "review_count": 2,
+    "has_options": false,
+    "is_purchasable": true,
+    "is_in_stock": true,
     "add_to_cart": {
-      "url": "?add-to-cart=85",
       "text": "Add to cart",
-      "description": "Add &ldquo;Single&rdquo; to your cart",
-      "supports_ajax": true
+      "description": "Add &ldquo;Single&rdquo; to your cart"
     },
     "_links": {
       "self": [
@@ -339,11 +344,12 @@
     ],
     "average_rating": "0",
     "review_count": 0,
+    "has_options": false,
+    "is_purchasable": true,
+    "is_in_stock": true,
     "add_to_cart": {
-      "url": "?add-to-cart=84",
       "text": "Add to cart",
-      "description": "Add &ldquo;Album&rdquo; to your cart",
-      "supports_ajax": true
+      "description": "Add &ldquo;Album&rdquo; to your cart"
     },
     "_links": {
       "self": [
@@ -393,11 +399,12 @@
     ],
     "average_rating": "0",
     "review_count": 0,
+    "has_options": false,
+    "is_purchasable": true,
+    "is_in_stock": true,
     "add_to_cart": {
-      "url": "?add-to-cart=83",
       "text": "Add to cart",
-      "description": "Add &ldquo;Polo&rdquo; to your cart",
-      "supports_ajax": true
+      "description": "Add &ldquo;Polo&rdquo; to your cart"
     },
     "_links": {
       "self": [
@@ -447,11 +454,12 @@
     ],
     "average_rating": "0",
     "review_count": 0,
+    "has_options": false,
+    "is_purchasable": true,
+    "is_in_stock": true,
     "add_to_cart": {
-      "url": "?add-to-cart=82",
       "text": "Add to cart",
-      "description": "Add &ldquo;Long Sleeve Tee&rdquo; to your cart",
-      "supports_ajax": true
+      "description": "Add &ldquo;Long Sleeve Tee&rdquo; to your cart"
     },
     "_links": {
       "self": [
@@ -501,11 +509,12 @@
     ],
     "average_rating": "0",
     "review_count": 0,
+    "has_options": false,
+    "is_purchasable": true,
+    "is_in_stock": true,
     "add_to_cart": {
-      "url": "?add-to-cart=81",
       "text": "Add to cart",
-      "description": "Add &ldquo;Hoodie with Zipper&rdquo; to your cart",
-      "supports_ajax": true
+      "description": "Add &ldquo;Hoodie with Zipper&rdquo; to your cart"
     },
     "_links": {
       "self": [
@@ -555,11 +564,12 @@
     ],
     "average_rating": "0",
     "review_count": 0,
+    "has_options": false,
+    "is_purchasable": true,
+    "is_in_stock": true,
     "add_to_cart": {
-      "url": "?add-to-cart=80",
       "text": "Add to cart",
-      "description": "Add &ldquo;Hoodie with Pocket&rdquo; to your cart",
-      "supports_ajax": true
+      "description": "Add &ldquo;Hoodie with Pocket&rdquo; to your cart"
     },
     "_links": {
       "self": [
@@ -609,11 +619,12 @@
     ],
     "average_rating": "0",
     "review_count": 0,
+    "has_options": false,
+    "is_purchasable": true,
+    "is_in_stock": true,
     "add_to_cart": {
-      "url": "?add-to-cart=79",
       "text": "Add to cart",
-      "description": "Add &ldquo;Sunglasses&rdquo; to your cart",
-      "supports_ajax": true
+      "description": "Add &ldquo;Sunglasses&rdquo; to your cart"
     },
     "_links": {
       "self": [
@@ -663,11 +674,12 @@
     ],
     "average_rating": "0",
     "review_count": 0,
+    "has_options": false,
+    "is_purchasable": true,
+    "is_in_stock": true,
     "add_to_cart": {
-      "url": "?add-to-cart=78",
       "text": "Add to cart",
-      "description": "Add &ldquo;Cap&rdquo; to your cart",
-      "supports_ajax": true
+      "description": "Add &ldquo;Cap&rdquo; to your cart"
     },
     "_links": {
       "self": [
@@ -717,11 +729,12 @@
     ],
     "average_rating": "0",
     "review_count": 0,
+    "has_options": false,
+    "is_purchasable": true,
+    "is_in_stock": true,
     "add_to_cart": {
-      "url": "?add-to-cart=77",
       "text": "Add to cart",
-      "description": "Add &ldquo;Belt&rdquo; to your cart",
-      "supports_ajax": true
+      "description": "Add &ldquo;Belt&rdquo; to your cart"
     },
     "_links": {
       "self": [
@@ -771,11 +784,12 @@
     ],
     "average_rating": "0",
     "review_count": 0,
+    "has_options": false,
+    "is_purchasable": true,
+    "is_in_stock": true,
     "add_to_cart": {
-      "url": "?add-to-cart=76",
       "text": "Add to cart",
-      "description": "Add &ldquo;Beanie&rdquo; to your cart",
-      "supports_ajax": true
+      "description": "Add &ldquo;Beanie&rdquo; to your cart"
     },
     "_links": {
       "self": [
@@ -825,11 +839,12 @@
     ],
     "average_rating": "0",
     "review_count": 0,
+    "has_options": false,
+    "is_purchasable": true,
+    "is_in_stock": true,
     "add_to_cart": {
-      "url": "?add-to-cart=75",
       "text": "Add to cart",
-      "description": "Add &ldquo;T-Shirt&rdquo; to your cart",
-      "supports_ajax": true
+      "description": "Add &ldquo;T-Shirt&rdquo; to your cart"
     },
     "_links": {
       "self": [
@@ -879,11 +894,12 @@
     ],
     "average_rating": "0",
     "review_count": 0,
+    "has_options": false,
+    "is_purchasable": true,
+    "is_in_stock": true,
     "add_to_cart": {
-      "url": "?add-to-cart=74",
       "text": "Add to cart",
-      "description": "Add &ldquo;Hoodie with Logo&rdquo; to your cart",
-      "supports_ajax": true
+      "description": "Add &ldquo;Hoodie with Logo&rdquo; to your cart"
     },
     "_links": {
       "self": [
@@ -963,11 +979,12 @@
     ],
     "average_rating": "0",
     "review_count": 0,
+    "has_options": true,
+    "is_purchasable": true,
+    "is_in_stock": true,
     "add_to_cart": {
-      "url": "http:\/\/local.wordpress.test\/product\/hoodie\/",
       "text": "Select options",
-      "description": "Select options for &ldquo;Hoodie&rdquo;",
-      "supports_ajax": false
+      "description": "Select options for &ldquo;Hoodie&rdquo;"
     },
     "variations": [
       96,
@@ -1044,11 +1061,12 @@
     ],
     "average_rating": "0",
     "review_count": 0,
+    "has_options": true,
+    "is_purchasable": true,
+    "is_in_stock": true,
     "add_to_cart": {
-      "url": "http:\/\/local.wordpress.test\/product\/v-neck-t-shirt\/",
       "text": "Select options",
-      "description": "Select options for &ldquo;V-Neck T-Shirt&rdquo;",
-      "supports_ajax": false
+      "description": "Select options for &ldquo;V-Neck T-Shirt&rdquo;"
     },
     "variations": [
       86,

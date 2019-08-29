@@ -61,7 +61,7 @@ class Cart extends WP_REST_Controller {
 			$this->namespace,
 			'/' . $this->rest_base . '/(?P<id>[\s]+)',
 			[
-				'args' => [
+				'args'   => [
 					'id' => [
 						'description' => __( 'Unique identifier for the resource.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
@@ -125,7 +125,7 @@ class Cart extends WP_REST_Controller {
 					'type'        => 'integer',
 					'context'     => array( 'view', 'edit' ),
 				),
-				'variation' => array(
+				'variation'    => array(
 					'description' => __( 'If this cart item represents a variation, chosen attributes are shown here.', 'woo-gutenberg-products-block' ),
 					'type'        => 'object',
 					'context'     => array( 'view', 'edit' ),
@@ -133,12 +133,12 @@ class Cart extends WP_REST_Controller {
 					'items'       => array(
 						'type'       => 'object',
 						'properties' => array(
-							'attribute'   => array(
+							'attribute' => array(
 								'description' => __( 'Variation attribute.', 'woo-gutenberg-products-block' ),
 								'type'        => 'string',
 								'context'     => array( 'view', 'edit' ),
 							),
-							'value' => array(
+							'value'     => array(
 								'description' => __( 'Attribute value.', 'woo-gutenberg-products-block' ),
 								'type'        => 'string',
 								'context'     => array( 'view', 'edit' ),
@@ -157,8 +157,6 @@ class Cart extends WP_REST_Controller {
 	 * @return \WP_Error|\WP_REST_Response
 	 */
 	public function get_items( $request ) {
-		$this->before_cart_request();
-
 		$cart  = wc()->cart->get_cart();
 		$items = array_filter( array_map( [ $this, 'get_object_for_response' ], array_values( $cart ) ) );
 
@@ -172,8 +170,6 @@ class Cart extends WP_REST_Controller {
 	 * @return \WP_Error|\WP_REST_Response
 	 */
 	public function get_item( $request ) {
-		$this->before_cart_request();
-
 		$cart_item = wc()->cart->get_cart_item( $request['id'] );
 
 		if ( ! $cart_item ) {
@@ -193,8 +189,6 @@ class Cart extends WP_REST_Controller {
 	 * @return \WP_Error|\WP_REST_Response
 	 */
 	public function add_item( $request ) {
-		$this->before_cart_request();
-
 		$product_id   = absint( $request['product_id'] );
 		$variation_id = absint( $request['variation_id'] );
 		$quantity     = wc_stock_amount( $request['quantity'] );
@@ -224,18 +218,6 @@ class Cart extends WP_REST_Controller {
 		$response = rest_ensure_response( $object );
 
 		return $response;
-	}
-
-	/**
-	 * Ensure the cart/sessions are ready for this request.
-	 *
-	 * @todo these require 3.6.4+
-	 */
-	protected function before_cart_request() {
-		wc()->frontend_includes();
-		wc()->initialize_session();
-		wc()->initialize_cart();
-		wc()->cart->get_cart();
 	}
 
 	/**
@@ -318,7 +300,7 @@ class Cart extends WP_REST_Controller {
 		}
 
 		if ( $existing_cart_id ) {
-			wc()->cart->set_quantity( $existing_cart_id, $quantity + wc()->cart->cart_contents[ $existing_cart_id ]['quantity'], false );
+			wc()->cart->set_quantity( $existing_cart_id, $quantity + wc()->cart->cart_contents[ $existing_cart_id ]['quantity'], true );
 
 			return $existing_cart_id;
 		}

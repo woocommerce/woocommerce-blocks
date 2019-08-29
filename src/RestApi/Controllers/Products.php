@@ -214,10 +214,12 @@ class Products extends WC_REST_Products_Controller {
 			'images'         => $this->get_images( $product ),
 			'average_rating' => $product->get_average_rating(),
 			'review_count'   => $product->get_review_count(),
+			'has_options'    => $product->has_options(),
+			'is_purchasable' => $product->is_purchasable(),
+			'is_in_stock'    => $product->is_in_stock(),
 			'add_to_cart'    => [
-				'text'          => $product->add_to_cart_text(),
-				'description'   => $product->add_to_cart_description(),
-				'supports_ajax' => $product->supports( 'ajax_add_to_cart' ),
+				'text'        => $product->add_to_cart_text(),
+				'description' => $product->add_to_cart_description(),
 			],
 		);
 	}
@@ -616,6 +618,24 @@ class Products extends WC_REST_Products_Controller {
 						),
 					),
 				),
+				'has_options'    => array(
+					'description' => __( 'Does the product have options?', 'woo-gutenberg-products-block' ),
+					'type'        => 'boolean',
+					'context'     => array( 'view', 'edit' ),
+					'readonly'    => true,
+				),
+				'is_purchasable' => array(
+					'description' => __( 'Is the product purchasable?', 'woo-gutenberg-products-block' ),
+					'type'        => 'boolean',
+					'context'     => array( 'view', 'edit' ),
+					'readonly'    => true,
+				),
+				'is_in_stock'    => array(
+					'description' => __( 'Is the product in stock?', 'woo-gutenberg-products-block' ),
+					'type'        => 'boolean',
+					'context'     => array( 'view', 'edit' ),
+					'readonly'    => true,
+				),
 				'add_to_cart'    => array(
 					'description' => __( 'Add to cart button parameters.', 'woo-gutenberg-products-block' ),
 					'type'        => 'object',
@@ -624,21 +644,15 @@ class Products extends WC_REST_Products_Controller {
 					'items'       => array(
 						'type'       => 'object',
 						'properties' => array(
-							'text'         => array(
+							'text'        => array(
 								'description' => __( 'Button text.', 'woo-gutenberg-products-block' ),
 								'type'        => 'string',
 								'context'     => array( 'view', 'edit' ),
 								'readonly'    => true,
 							),
-							'description'  => array(
+							'description' => array(
 								'description' => __( 'Button description.', 'woo-gutenberg-products-block' ),
 								'type'        => 'string',
-								'context'     => array( 'view', 'edit' ),
-								'readonly'    => true,
-							),
-							'supports_ajax' => array(
-								'description' => __( 'Whether or not AJAX is supported.', 'woo-gutenberg-products-block' ),
-								'type'        => 'boolean',
 								'context'     => array( 'view', 'edit' ),
 								'readonly'    => true,
 							),

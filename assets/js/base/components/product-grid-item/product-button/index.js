@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import apiFetch from '@wordpress/api-fetch';
 import { __, sprintf } from '@wordpress/i18n';
 import { Component } from 'react';
+import { addQueryArgs } from '@wordpress/url';
 
 class ProductButton extends Component {
 	static propTypes = {
@@ -16,6 +17,7 @@ class ProductButton extends Component {
 	state = {
 		buttonText: '',
 		addingToCart: false,
+		addedToCart: false,
 	}
 
 	componentDidMount = () => {
@@ -41,53 +43,66 @@ class ProductButton extends Component {
 			},
 			cache: 'no-store',
 		} ).then( ( response ) => {
-			console.log( response );
-
 			const newQuantity = response.quantity;
 
 			this.setState( {
 				buttonText: sprintf( __( '%d in cart', 'woo-gutenberg-products-block' ), newQuantity ),
 				addingToCart: false,
+				addedToCart: true,
 			} );
+		} ).catch( ( response ) => {
+			if ( response.code ) {
+				return document.location.href = addQueryArgs( product.permalink, { wc_error: response.message } );
+			}
+
+			document.location.href = product.permalink;
 		} );
 	}
 
 	render = () => {
 		const { product, className } = this.props;
-		const { addingToCart, buttonText } = this.state;
+		const { addingToCart, addedToCart, buttonText } = this.state;
 
-		const classes = classnames(
+		const allowAddToCart = ! product.has_options && product.is_purchasable && product.is_in_stock;
+
+		const wrapperClasses = classnames(
 			className,
 			'wp-block-button',
-			{
-				loading: addingToCart,
-			}
 		);
 
-		const linkClasses = classnames(
+		const buttonClasses = classnames(
 			'wp-block-button__link',
 			'add_to_cart_button',
 			{
-				ajax_add_to_cart: true === product.add_to_cart.supports_ajax,
+				loading: addingToCart,
+				added: addedToCart,
 			}
 		);
 
 		return (
-			<div className={ classes }>
-				<button
-					onClick={ this.onAddToCart }
-					aria-label={ product.add_to_cart.description }
-					className={ linkClasses }
-					rel="nofollow"
-					data-quantity="1"
-					data-product_id={ product.id }
-					data-product_sku={ product.sku }
-				>
-					{ buttonText }
-				</button>
+			<div className={ wrapperClasses }>
+				{ allowAddToCart ? (
+					<button
+						onClick={ this.onAddToCart }
+						aria-label={ product.add_to_cart.description }
+						className={ buttonClasses }
+						disabled={ addingToCart }
+					>
+						{ buttonText }
+					</button>
+				) : (
+					<a
+						href={ product.permalink }
+						aria-label={ product.add_to_cart.description }
+						className={ buttonClasses }
+						rel="nofollow"
+					>
+						{ buttonText }
+					</a>
+				) }
 			</div>
 		);
 	}
-};
+}
 
 export default ProductButton;
