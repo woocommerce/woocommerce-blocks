@@ -13,11 +13,12 @@ import {
 } from '@woocommerce/components';
 import { Spinner, MenuItem } from '@wordpress/components';
 import classnames from 'classnames';
+import { ENDPOINTS, IS_LARGE_CATALOG } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
-import { isLargeCatalog, getProducts } from '../utils';
+import { getProducts } from '../utils';
 import {
 	IconRadioSelected,
 	IconRadioUnselected,
@@ -53,17 +54,22 @@ class ProductControl extends Component {
 		this.onProductSelect = this.onProductSelect.bind( this );
 	}
 
-	componentDidMount() {
-		const { selected } = this.props;
+	componentWillUnmount() {
+		this.debouncedOnSearch.cancel();
+		this.debouncedGetVariations.cancel();
+	}
 
-		getProducts( { selected } )
+	componentDidMount() {
+		const { selected, queryArgs } = this.props;
+
+		getProducts( { selected, queryArgs } )
 			.then( ( products ) => {
 				products = products.map( ( product ) => {
 					const count = product.variations ? product.variations.length : 0;
 					return {
 						...product,
 						parent: 0,
-						count: count,
+						count,
 					};
 				} );
 				this.setState( { products, loading: false } );
@@ -80,7 +86,7 @@ class ProductControl extends Component {
 	}
 
 	getVariations() {
-		const { product, variationsList } = this.state;
+		const { product, products, variationsList } = this.state;
 
 		if ( ! product ) {
 			this.setState( {
@@ -90,7 +96,7 @@ class ProductControl extends Component {
 			return;
 		}
 
-		const productDetails = this.state.products.find( ( findProduct ) => findProduct.id === product );
+		const productDetails = products.find( ( findProduct ) => findProduct.id === product );
 
 		if ( ! productDetails.variations || productDetails.variations.length === 0 ) {
 			return;
@@ -101,7 +107,7 @@ class ProductControl extends Component {
 		}
 
 		apiFetch( {
-			path: addQueryArgs( `/wc/blocks/products/${ product }/variations`, {
+			path: addQueryArgs( `${ ENDPOINTS.products }/${ product }/variations`, {
 				per_page: -1,
 			} ),
 		} )
@@ -118,8 +124,8 @@ class ProductControl extends Component {
 	}
 
 	onSearch( search ) {
-		const { selected } = this.props;
-		getProducts( { selected, search } )
+		const { selected, queryArgs } = this.props;
+		getProducts( { selected, search, queryArgs } )
 			.then( ( products ) => {
 				this.setState( { products, loading: false } );
 			} )
@@ -237,7 +243,7 @@ class ProductControl extends Component {
 
 	render() {
 		const { products, loading, product, variationsList } = this.state;
-		const { onChange, selected } = this.props;
+		const { onChange, renderItem, selected } = this.props;
 		const currentVariations = variationsList[ product ] || [];
 		const currentList = [ ...products, ...currentVariations ];
 		const messages = {
@@ -266,9 +272,9 @@ class ProductControl extends Component {
 					isSingle
 					selected={ selectedListItems }
 					onChange={ onChange }
-					onSearch={ isLargeCatalog ? this.debouncedOnSearch : null }
+					renderItem={ renderItem }
+					onSearch={ IS_LARGE_CATALOG ? this.debouncedOnSearch : null }
 					messages={ messages }
-					renderItem={ this.renderItem }
 					isHierarchical
 				/>
 			</Fragment>
@@ -282,9 +288,17 @@ ProductControl.propTypes = {
 	 */
 	onChange: PropTypes.func.isRequired,
 	/**
+	 * Callback to render each item in the selection list, allows any custom object-type rendering.
+	 */
+	renderItem: PropTypes.func.isRequired,
+	/**
 	 * The ID of the currently selected product.
 	 */
 	selected: PropTypes.number.isRequired,
+	/**
+	 * Query args to pass to getProducts.
+	 */
+	queryArgs: PropTypes.object,
 };
 
 export default ProductControl;

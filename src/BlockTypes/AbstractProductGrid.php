@@ -151,6 +151,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		$this->set_block_query_args( $query_args );
 		$this->set_ordering_query_args( $query_args );
 		$this->set_categories_query_args( $query_args );
+		$this->set_visibility_query_args( $query_args );
 
 		return $query_args;
 	}
@@ -211,6 +212,27 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 				'include_children' => 'all' === $this->attributes['catOperator'] ? false : true,
 			);
 		}
+	}
+
+	/**
+	 * Set visibility query args.
+	 *
+	 * @param array $query_args Query args.
+	 */
+	protected function set_visibility_query_args( &$query_args ) {
+		$product_visibility_terms  = wc_get_product_visibility_term_ids();
+		$product_visibility_not_in = array( $product_visibility_terms['exclude-from-catalog'] );
+
+		if ( 'yes' === get_option( 'woocommerce_hide_out_of_stock_items' ) ) {
+			$product_visibility_not_in[] = $product_visibility_terms['outofstock'];
+		}
+
+		$query_args['tax_query'][] = array(
+			'taxonomy' => 'product_visibility',
+			'field'    => 'term_taxonomy_id',
+			'terms'    => $product_visibility_not_in,
+			'operator' => 'NOT IN',
+		);
 	}
 
 	/**
@@ -321,8 +343,8 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 					{$data->image}
 					{$data->title}
 				</a>
-				{$data->price}
 				{$data->badge}
+				{$data->price}
 				{$data->rating}
 				{$data->button}
 			</li>",

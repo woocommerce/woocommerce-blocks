@@ -7,6 +7,10 @@
     "!**/test/**"
   ],
   "moduleDirectories": ["node_modules"],
+  "moduleNameMapper": {
+    "@woocommerce/settings": "assets/js/settings/shared",
+    "@woocommerce/block-settings": "assets/js/settings/blocks"
+  },
   "setupFiles": [
     "<rootDir>/node_modules/@wordpress/jest-preset-default/scripts/setup-globals.js",
     "<rootDir>/tests/js/setup-globals"
@@ -15,5 +19,8 @@
     "node_modules/(?!(simple-html-tokenizer)/)"
   ],
   "preset": "@wordpress/jest-preset-default",
+  "transform": {
+    "^.+\\.js$": "<rootDir>/tests/js/jestPreprocess.js"
+  },
   "verbose": true
 }

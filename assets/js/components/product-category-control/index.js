@@ -9,6 +9,7 @@ import { find } from 'lodash';
 import PropTypes from 'prop-types';
 import { SearchListControl, SearchListItem } from '@woocommerce/components';
 import { SelectControl } from '@wordpress/components';
+import { ENDPOINTS } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -27,7 +28,7 @@ class ProductCategoryControl extends Component {
 
 	componentDidMount() {
 		apiFetch( {
-			path: addQueryArgs( '/wc/blocks/products/categories', { per_page: -1 } ),
+			path: addQueryArgs( `${ ENDPOINTS.products }/categories`, { per_page: -1 } ),
 		} )
 			.then( ( list ) => {
 				this.setState( { list, loading: false } );

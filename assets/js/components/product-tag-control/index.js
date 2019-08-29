@@ -7,12 +7,13 @@ import { debounce, find } from 'lodash';
 import PropTypes from 'prop-types';
 import { SearchListControl, SearchListItem } from '@woocommerce/components';
 import { SelectControl } from '@wordpress/components';
+import { LIMIT_TAGS } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
+import { getProductTags } from '../utils';
 import './style.scss';
-import { limitTags, getProductTags } from '../utils';
 
 /**
  * Component to handle searching and selecting product tags.
@@ -127,7 +128,7 @@ class ProductTagControl extends Component {
 					isLoading={ loading }
 					selected={ selected.map( ( id ) => find( list, { id } ) ).filter( Boolean ) }
 					onChange={ onChange }
-					onSearch={ limitTags ? this.debouncedOnSearch : null }
+					onSearch={ LIMIT_TAGS ? this.debouncedOnSearch : null }
 					renderItem={ this.renderItem }
 					messages={ messages }
 					isHierarchical

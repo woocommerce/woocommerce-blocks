@@ -57,6 +57,7 @@ copy_dest_files() {
 	--exclude=renovate.json \
 	--exclude="*.config.js" \
 	--exclude="*-config.js" \
+	--exclude="*.config.json" \
 	--exclude=package.json \
 	--exclude=package-lock.json \
 	--exclude=none
@@ -134,6 +135,11 @@ git clone "$GIT_REPO" "$GIT_PATH" --branch "$BRANCH" --single-branch || exit "$?
 
 if [ ! -d "$GIT_PATH/build" ]; then
 	output 3 "Build directory not found in tag. Aborting."
+	exit 1
+fi
+
+if [ ! -d "$GIT_PATH/vendor" ]; then
+	output 3 "Vendor directory not found in tag. Aborting."
 	exit 1
 fi
 

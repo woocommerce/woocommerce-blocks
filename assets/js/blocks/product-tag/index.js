@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
+import { DEFAULT_COLUMNS, DEFAULT_ROWS } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -22,11 +23,12 @@ registerBlockType( 'woocommerce/product-tag', {
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
-		'Display a grid of products from selected tags.',
+		'Display a grid of products from your selected tags.',
 		'woo-gutenberg-products-block'
 	),
 	supports: {
 		align: [ 'wide', 'full' ],
+		html: false,
 	},
 	attributes: {
 		/**
@@ -34,7 +36,7 @@ registerBlockType( 'woocommerce/product-tag', {
 		 */
 		columns: {
 			type: 'number',
-			default: wc_product_block_data.default_columns,
+			default: DEFAULT_COLUMNS,
 		},
 
 		/**
@@ -42,7 +44,7 @@ registerBlockType( 'woocommerce/product-tag', {
 		 */
 		rows: {
 			type: 'number',
-			default: wc_product_block_data.default_rows,
+			default: DEFAULT_ROWS,
 		},
 
 		/**

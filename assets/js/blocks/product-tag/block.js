@@ -17,6 +17,7 @@ import {
 } from '@wordpress/components';
 import { Component, Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
+import { HAS_TAGS } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -25,7 +26,6 @@ import GridContentControl from '../../components/grid-content-control';
 import GridLayoutControl from '../../components/grid-layout-control';
 import ProductTagControl from '../../components/product-tag-control';
 import ProductOrderbyControl from '../../components/product-orderby-control';
-import { hasTags } from '../../components/utils';
 
 /**
  * Component to handle edit mode of "Products by Tag".
@@ -174,7 +174,7 @@ class ProductsByTagBlock extends Component {
 				className="wc-block-products-grid wc-block-product-tag"
 			>
 				{ __(
-					'Display a grid of products from your selected tags',
+					'Display a grid of products from your selected tags.',
 					'woo-gutenberg-products-block'
 				) }
 				<div className="wc-block-product-tag__selection">
@@ -231,7 +231,7 @@ class ProductsByTagBlock extends Component {
 
 		return (
 			<Fragment>
-				{ hasTags ? (
+				{ HAS_TAGS ? (
 					<Fragment>
 						<BlockControls>
 							<Toolbar

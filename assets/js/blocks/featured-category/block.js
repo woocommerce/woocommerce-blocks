@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import apiFetch from '@wordpress/api-fetch';
 import {
 	AlignmentToolbar,
 	BlockControls,
@@ -27,126 +26,81 @@ import {
 	withSpokenMessages,
 } from '@wordpress/components';
 import classnames from 'classnames';
-import { Component, Fragment } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
-import { debounce, isObject } from 'lodash';
 import PropTypes from 'prop-types';
-import { IconFolderStar } from '../../components/icons';
+import { MIN_HEIGHT } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
+import { IconFolderStar } from '../../components/icons';
 import ProductCategoryControl from '../../components/product-category-control';
-
-/**
- * The min-height for the block content.
- */
-const MIN_HEIGHT = wc_product_block_data.min_height;
-
-/**
- * Get the src from a category object, unless null (no image).
- *
- * @param {object|null} category A product category object from the API.
- * @return {string}
- */
-function getCategoryImageSrc( category ) {
-	if ( isObject( category.image ) ) {
-		return category.image.src;
-	}
-	return '';
-}
-
-/**
- * Get the attachment ID from a category object, unless null (no image).
- *
- * @param {object|null} category A product category object from the API.
- * @return {int}
- */
-function getCategoryImageID( category ) {
-	if ( isObject( category.image ) ) {
-		return category.image.id;
-	}
-	return 0;
-}
-
-/**
- * Generate a style object given either a product category image from the API or URL to an image.
- *
- * @param {string} url An image URL.
- * @return {object} A style object with a backgroundImage set (if a valid image is provided).
- */
-function backgroundImageStyles( url ) {
-	if ( url ) {
-		return { backgroundImage: `url(${ url })` };
-	}
-	return {};
-}
-
-/**
- * Convert the selected ratio to the correct background class.
- *
- * @param {number} ratio Selected opacity from 0 to 100.
- * @return {string} The class name, if applicable (not used for ratio 0 or 50).
- */
-function dimRatioToClass( ratio ) {
-	return ratio === 0 || ratio === 50 ?
-		null :
-		`has-background-dim-${ 10 * Math.round( ratio / 10 ) }`;
-}
+import ApiErrorPlaceholder from '../../components/api-error-placeholder';
+import {
+	dimRatioToClass,
+	getBackgroundImageStyles,
+	getCategoryImageId,
+	getCategoryImageSrc,
+} from './utils';
+import { withCategory } from '../../hocs';
 
 /**
  * Component to handle edit mode of "Featured Category".
  */
-class FeaturedCategory extends Component {
-	constructor() {
-		super( ...arguments );
-		this.state = {
-			category: false,
-			loaded: false,
-		};
+const FeaturedCategory = ( { attributes, isSelected, setAttributes, error, getCategory, isLoading, category, overlayColor, setOverlayColor, debouncedSpeak } ) => {
+	const renderApiError = () => (
+		<ApiErrorPlaceholder
+			className="wc-block-featured-category-error"
+			error={ error }
+			isLoading={ isLoading }
+			onRetry={ getCategory }
+		/>
+	);
 
-		this.debouncedGetCategory = debounce( this.getCategory.bind( this ), 200 );
-	}
+	const getBlockControls = () => {
+		const { contentAlign } = attributes;
+		const mediaId = attributes.mediaId || getCategoryImageId( category );
 
-	componentDidMount() {
-		this.getCategory();
-	}
+		return (
+			<BlockControls>
+				<AlignmentToolbar
+					value={ contentAlign }
+					onChange={ ( nextAlign ) => {
+						setAttributes( { contentAlign: nextAlign } );
+					} }
+				/>
+				<MediaUploadCheck>
+					<Toolbar>
+						<MediaUpload
+							onSelect={ ( media ) => {
+								setAttributes( { mediaId: media.id, mediaSrc: media.url } );
+							} }
+							allowedTypes={ [ 'image' ] }
+							value={ mediaId }
+							render={ ( { open } ) => (
+								<IconButton
+									className="components-toolbar__control"
+									label={ __( 'Edit media' ) }
+									icon="format-image"
+									onClick={ open }
+									disabled={ ! category }
+								/>
+							) }
+						/>
+					</Toolbar>
+				</MediaUploadCheck>
+			</BlockControls>
+		);
+	};
 
-	componentDidUpdate( prevProps ) {
-		if ( prevProps.attributes.categoryId !== this.props.attributes.categoryId ) {
-			this.debouncedGetCategory();
-		}
-	}
-
-	getCategory() {
-		const { categoryId } = this.props.attributes;
-		if ( ! categoryId ) {
-			// We've removed the selected product, or no product is selected yet.
-			this.setState( { category: false, loaded: true } );
-			return;
-		}
-		apiFetch( {
-			path: `/wc/blocks/products/categories/${ categoryId }`,
-		} )
-			.then( ( category ) => {
-				this.setState( { category, loaded: true } );
-			} )
-			.catch( () => {
-				this.setState( { category: false, loaded: true } );
-			} );
-	}
-
-	getInspectorControls() {
-		const {
-			attributes,
-			setAttributes,
-			overlayColor,
-			setOverlayColor,
-		} = this.props;
-
+	const getInspectorControls = () => {
 		const url =
-			attributes.mediaSrc || getCategoryImageSrc( this.state.category );
+			attributes.mediaSrc || getCategoryImageSrc( category );
 		const { focalPoint = { x: 0.5, y: 0.5 } } = attributes;
+		// FocalPointPicker was introduced in Gutenberg 5.0 (WordPress 5.2),
+		// so we need to check if it exists before using it.
+		const focalPointPickerExists = typeof FocalPointPicker === 'function';
 
 		return (
 			<InspectorControls key="inspector">
@@ -167,29 +121,32 @@ class FeaturedCategory extends Component {
 						},
 					] }
 				>
-					<RangeControl
-						label={ __( 'Background Opacity', 'woo-gutenberg-products-block' ) }
-						value={ attributes.dimRatio }
-						onChange={ ( ratio ) => setAttributes( { dimRatio: ratio } ) }
-						min={ 0 }
-						max={ 100 }
-						step={ 10 }
-					/>
-					{ !! FocalPointPicker && !! url &&
-						<FocalPointPicker
-							label={ __( 'Focal Point Picker' ) }
-							url={ url }
-							value={ focalPoint }
-							onChange={ ( value ) => setAttributes( { focalPoint: value } ) }
-						/>
-					}
+					{ !! url && (
+						<Fragment>
+							<RangeControl
+								label={ __( 'Background Opacity', 'woo-gutenberg-products-block' ) }
+								value={ attributes.dimRatio }
+								onChange={ ( ratio ) => setAttributes( { dimRatio: ratio } ) }
+								min={ 0 }
+								max={ 100 }
+								step={ 10 }
+							/>
+							{ focalPointPickerExists &&
+								<FocalPointPicker
+									label={ __( 'Focal Point Picker' ) }
+									url={ url }
+									value={ focalPoint }
+									onChange={ ( value ) => setAttributes( { focalPoint: value } ) }
+								/>
+							}
+						</Fragment>
+					) }
 				</PanelColorSettings>
 			</InspectorControls>
 		);
-	}
+	};
 
-	renderEditMode() {
-		const { attributes, debouncedSpeak, setAttributes } = this.props;
+	const renderEditMode = () => {
 		const onDone = () => {
 			setAttributes( { editMode: false } );
 			debouncedSpeak(
@@ -207,7 +164,7 @@ class FeaturedCategory extends Component {
 				className="wc-block-featured-category"
 			>
 				{ __(
-					'Visually highlight a product category and encourage prompt action',
+					'Visually highlight a product category and encourage prompt action.',
 					'woo-gutenberg-products-block'
 				) }
 				<div className="wc-block-featured-category__selection">
@@ -217,7 +174,7 @@ class FeaturedCategory extends Component {
 							const id = value[ 0 ] ? value[ 0 ].id : 0;
 							setAttributes( { categoryId: id, mediaId: 0, mediaSrc: '' } );
 						} }
-						multiple={ false }
+						isSingle
 					/>
 					<Button isDefault onClick={ onDone }>
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }
@@ -225,36 +182,32 @@ class FeaturedCategory extends Component {
 				</div>
 			</Placeholder>
 		);
-	}
+	};
 
-	render() {
-		const { attributes, isSelected, overlayColor, setAttributes } = this.props;
+	const renderCategory = () => {
 		const {
 			className,
 			contentAlign,
 			dimRatio,
-			editMode,
 			focalPoint,
 			height,
 			showDesc,
 		} = attributes;
-		const { loaded, category } = this.state;
 		const classes = classnames(
 			'wc-block-featured-category',
 			{
 				'is-selected': isSelected,
-				'is-loading': ! category && ! loaded,
-				'is-not-found': ! category && loaded,
+				'is-loading': ! category && isLoading,
+				'is-not-found': ! category && ! isLoading,
 				'has-background-dim': dimRatio !== 0,
 			},
 			dimRatioToClass( dimRatio ),
 			contentAlign !== 'center' && `has-${ contentAlign }-content`,
 			className,
 		);
-		const mediaId = attributes.mediaId || getCategoryImageID( category );
-		const mediaSrc = attributes.mediaSrc || getCategoryImageSrc( this.state.category );
+		const mediaSrc = attributes.mediaSrc || getCategoryImageSrc( category );
 		const style = !! category ?
-			backgroundImageStyles( mediaSrc ) :
+			getBackgroundImageStyles( mediaSrc ) :
 			{};
 		if ( overlayColor.color ) {
 			style.backgroundColor = overlayColor.color;
@@ -269,103 +222,88 @@ class FeaturedCategory extends Component {
 		};
 
 		return (
-			<Fragment>
-				<BlockControls>
-					<AlignmentToolbar
-						value={ contentAlign }
-						onChange={ ( nextAlign ) => {
-							setAttributes( { contentAlign: nextAlign } );
+			<ResizableBox
+				className={ classes }
+				size={ { height } }
+				minHeight={ MIN_HEIGHT }
+				enable={ { bottom: true } }
+				onResizeStop={ onResizeStop }
+				style={ style }
+			>
+				<div className="wc-block-featured-category__wrapper">
+					<h2
+						className="wc-block-featured-category__title"
+						dangerouslySetInnerHTML={ {
+							__html: category.name,
 						} }
 					/>
-					<MediaUploadCheck>
-						<Toolbar>
-							<MediaUpload
-								onSelect={ ( media ) => {
-									setAttributes( { mediaId: media.id, mediaSrc: media.url } );
-								} }
-								allowedTypes={ [ 'image' ] }
-								value={ mediaId }
-								render={ ( { open } ) => (
-									<IconButton
-										className="components-toolbar__control"
-										label={ __( 'Edit media' ) }
-										icon="format-image"
-										onClick={ open }
-										disabled={ ! this.state.category }
-									/>
-								) }
-							/>
-						</Toolbar>
-					</MediaUploadCheck>
-				</BlockControls>
-				{ ! attributes.editMode && this.getInspectorControls() }
-				{ editMode ? (
-					this.renderEditMode()
-				) : (
-					<Fragment>
-						{ !! category ? (
-							<ResizableBox
-								className={ classes }
-								size={ { height } }
-								minHeight={ MIN_HEIGHT }
-								enable={ { bottom: true } }
-								onResizeStop={ onResizeStop }
-								style={ style }
-							>
-								<div className="wc-block-featured-category__wrapper">
-									<h2
-										className="wc-block-featured-category__title"
-										dangerouslySetInnerHTML={ {
-											__html: category.name,
-										} }
-									/>
-									{ showDesc && (
-										<div
-											className="wc-block-featured-category__description"
-											dangerouslySetInnerHTML={ {
-												__html: category.description,
-											} }
-										/>
-									) }
-									<div className="wc-block-featured-category__link">
-										<InnerBlocks
-											template={ [
-												[
-													'core/button',
-													{
-														text: __(
-															'Shop now',
-															'woo-gutenberg-products-block'
-														),
-														url: category.permalink,
-														align: 'center',
-													},
-												],
-											] }
-											templateLock="all"
-										/>
-									</div>
-								</div>
-							</ResizableBox>
-						) : (
-							<Placeholder
-								className="wc-block-featured-category"
-								icon={ <IconFolderStar /> }
-								label={ __( 'Featured Category', 'woo-gutenberg-products-block' ) }
-							>
-								{ ! loaded ? (
-									<Spinner />
-								) : (
-									__( 'No product category is selected.', 'woo-gutenberg-products-block' )
-								) }
-							</Placeholder>
-						) }
-					</Fragment>
-				) }
-			</Fragment>
+					{ showDesc && (
+						<div
+							className="wc-block-featured-category__description"
+							dangerouslySetInnerHTML={ {
+								__html: category.description,
+							} }
+						/>
+					) }
+					<div className="wc-block-featured-category__link">
+						<InnerBlocks
+							template={ [
+								[
+									'core/button',
+									{
+										text: __(
+											'Shop now',
+											'woo-gutenberg-products-block'
+										),
+										url: category.permalink,
+										align: 'center',
+									},
+								],
+							] }
+							templateLock="all"
+						/>
+					</div>
+				</div>
+			</ResizableBox>
 		);
+	};
+
+	const renderNoCategory = () => (
+		<Placeholder
+			className="wc-block-featured-category"
+			icon={ <IconFolderStar /> }
+			label={ __( 'Featured Category', 'woo-gutenberg-products-block' ) }
+		>
+			{ isLoading ? (
+				<Spinner />
+			) : (
+				__( 'No product category is selected.', 'woo-gutenberg-products-block' )
+			) }
+		</Placeholder>
+	);
+
+	const { editMode } = attributes;
+
+	if ( error ) {
+		return renderApiError();
 	}
-}
+
+	if ( editMode ) {
+		return renderEditMode();
+	}
+
+	return (
+		<Fragment>
+			{ getBlockControls() }
+			{ getInspectorControls() }
+			{ category ? (
+				renderCategory()
+			) : (
+				renderNoCategory()
+			) }
+		</Fragment>
+	);
+};
 
 FeaturedCategory.propTypes = {
 	/**
@@ -384,6 +322,15 @@ FeaturedCategory.propTypes = {
 	 * A callback to update attributes.
 	 */
 	setAttributes: PropTypes.func.isRequired,
+	// from withCategory
+	error: PropTypes.object,
+	getCategory: PropTypes.func,
+	isLoading: PropTypes.bool,
+	category: PropTypes.shape( {
+		name: PropTypes.node,
+		description: PropTypes.node,
+		permalink: PropTypes.string,
+	} ),
 	// from withColors
 	overlayColor: PropTypes.object,
 	setOverlayColor: PropTypes.func.isRequired,
@@ -392,6 +339,7 @@ FeaturedCategory.propTypes = {
 };
 
 export default compose( [
+	withCategory,
 	withColors( { overlayColor: 'background-color' } ),
 	withSpokenMessages,
 ] )( FeaturedCategory );
