@@ -11,6 +11,7 @@ import { IS_LARGE_CATALOG } from '@woocommerce/block-settings';
  * Internal dependencies
  */
 import { getProducts } from '../components/utils';
+import { formatError } from '../base/utils/errors.js';
 
 /**
  * A higher order component that enhances the provided component with products
@@ -58,13 +59,7 @@ const withSearchedProducts = createHigherOrderComponent( ( OriginalComponent ) =
 
 		setError( errorResponse ) {
 			errorResponse.json().then( ( apiError ) => {
-				const error = typeof apiError === 'object' && apiError.hasOwnProperty( 'message' ) ? {
-					apiMessage: apiError.message,
-				} : {
-					// If we can't get any message from the API, set it to null and
-					// let <ApiErrorPlaceholder /> handle the message to display.
-					apiMessage: null,
-				};
+				const error = formatError( apiError );
 
 				this.setState( { list: [], loading: false, error } );
 			} );
