@@ -30,6 +30,7 @@ const withSearchedProducts = createHigherOrderComponent( ( OriginalComponent ) =
 				list: [],
 				loading: true,
 			};
+			this.setError = this.setError.bind( this );
 			this.debouncedOnSearch = debounce( this.onSearch.bind( this ), 400 );
 		}
 
@@ -39,9 +40,7 @@ const withSearchedProducts = createHigherOrderComponent( ( OriginalComponent ) =
 				.then( ( list ) => {
 					this.setState( { list, loading: false } );
 				} )
-				.catch( () => {
-					this.setState( { list: [], loading: false } );
-				} );
+				.catch( this.setError );
 		}
 
 		componentWillUnmount() {
@@ -54,17 +53,30 @@ const withSearchedProducts = createHigherOrderComponent( ( OriginalComponent ) =
 				.then( ( list ) => {
 					this.setState( { list, loading: false } );
 				} )
-				.catch( () => {
-					this.setState( { list: [], loading: false } );
-				} );
+				.catch( this.setError );
+		}
+
+		setError( errorResponse ) {
+			errorResponse.json().then( ( apiError ) => {
+				const error = typeof apiError === 'object' && apiError.hasOwnProperty( 'message' ) ? {
+					apiMessage: apiError.message,
+				} : {
+					// If we can't get any message from the API, set it to null and
+					// let <ApiErrorPlaceholder /> handle the message to display.
+					apiMessage: null,
+				};
+
+				this.setState( { list: [], loading: false, error } );
+			} );
 		}
 
 		render() {
-			const { list, loading } = this.state;
+			const { error, list, loading } = this.state;
 			const { selected } = this.props;
 			return (
 				<OriginalComponent
 					{ ...this.props }
+					error={ error }
 					products={ list }
 					isLoading={ loading }
 					selected={ list.filter(
