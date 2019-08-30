@@ -1,9 +1,22 @@
-export const formatError = ( apiError ) => {
-	return typeof apiError === 'object' && apiError.hasOwnProperty( 'message' ) ? {
-		apiMessage: apiError.message,
-	} : {
-		// If we can't get any message from the API, set it to null and
-		// let <ApiErrorPlaceholder /> handle the message to display.
-		apiMessage: null,
-	};
+const formatErrorMessage = ( error, messageProperty = 'frontendMessage' ) => {
+	if ( typeof error === 'object' && error.hasOwnProperty( 'message' ) ) {
+		return {
+			[ messageProperty ]: error.message,
+		};
+	}
+
+	return error;
+};
+
+export const formatError = async ( error ) => {
+	if ( error.json ) {
+		try {
+			const parsedError = await error.json();
+			return formatErrorMessage( parsedError, 'apiMessage' );
+		} catch ( e ) {
+			return formatErrorMessage( e );
+		}
+	}
+
+	return formatErrorMessage( error );
 };

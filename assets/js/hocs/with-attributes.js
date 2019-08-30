@@ -61,8 +61,8 @@ const withAttributes = createHigherOrderComponent(
 						}
 					}
 					this.setState( { attributes, expandedAttribute: newExpandedAttribute, loading: false, error: null } );
-				} ).catch( ( e ) => {
-					const error = formatError( e );
+				} ).catch( async ( e ) => {
+					const error = await formatError( e );
 
 					this.setState( { attributes: [], expandedAttribute: null, loading: false, error } );
 				} );
@@ -85,8 +85,8 @@ const withAttributes = createHigherOrderComponent(
 							termsLoading: false,
 						} ) );
 					} )
-					.catch( ( apiError ) => {
-						const error = formatError( apiError );
+					.catch( async ( e ) => {
+						const error = await formatError( e );
 
 						this.setState( { termsList: {}, termsLoading: false, error } );
 					} );

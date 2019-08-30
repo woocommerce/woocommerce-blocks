@@ -32,12 +32,10 @@ const withCategories = createHigherOrderComponent(
 
 				getCategories().then( ( categories ) => {
 					this.setState( { categories, loading: false, error: null } );
-				} ).catch( ( errorResponse ) => {
-					errorResponse.json().then( ( apiError ) => {
-						const error = formatError( apiError );
+				} ).catch( async ( e ) => {
+					const error = await formatError( e );
 
-						this.setState( { categories: null, loading: false, error } );
-					} );
+					this.setState( { categories: null, loading: false, error } );
 				} );
 			}
 

@@ -5,9 +5,19 @@ import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import { escapeHTML } from '@wordpress/escape-html';
 
-const getErrorMessage = ( { apiMessage, message } ) => {
+const getErrorMessage = ( { apiMessage, message, frontendMessage } ) => {
 	if ( message ) {
 		return message;
+	}
+
+	if ( frontendMessage ) {
+		return (
+			<span>
+				{ __( 'The following error was returned', 'woo-gutenberg-products-block' ) }
+				<br />
+				<code>{ escapeHTML( frontendMessage ) }</code>
+			</span>
+		);
 	}
 
 	if ( apiMessage ) {
