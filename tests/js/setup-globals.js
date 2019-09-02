@@ -1,8 +1,8 @@
 // Set up `wp.*` aliases.  Doing this because any tests importing wp stuff will likely run into this.
 global.wp = {};
 
-// wcSettings is required by @woocommerce/* packages
-global.wcSettings = {
+// wcSharedSettings is required by @woocommerce/* packages
+global.wcSharedSettings = {
 	adminUrl: 'https://vagrant.local/wp/wp-admin/',
 	locale: 'en-US',
 	currency: { code: 'USD', precision: 2, symbol: '&#36;' },
