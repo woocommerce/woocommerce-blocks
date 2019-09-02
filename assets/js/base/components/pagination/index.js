@@ -68,9 +68,22 @@ const Pagination = ( { currentPage, pagesToDisplay, onPageChange, totalPages } )
 };
 
 Pagination.propTypes = {
+	/**
+	 * Number of the page currently being displayed.
+	 */
 	currentPage: PropTypes.number.isRequired,
+	/**
+	 * Total number of pages.
+	 */
 	totalPages: PropTypes.number.isRequired,
+	/**
+	 * Callback function called when the user triggers a page change.
+	 */
 	onPageChange: PropTypes.func,
+	/**
+	 * Number of pages to display at the same time, including the active page
+	 * and the pages displayed before and after it.
+	 */
 	pagesToDisplay: PropTypes.number,
 };
 
