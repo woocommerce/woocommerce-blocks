@@ -33,7 +33,7 @@ const Pagination = ( { currentPage, pagesToDisplay, onPageChange, totalPages } )
 					title={ __( 'First page', 'woo-gutenberg-products-block' ) }
 				>
 					<Label
-						label="←"
+						label="<"
 						screenReaderLabel={ __( 'First page', 'woo-gutenberg-products-block' ) }
 					/>
 				</button>
@@ -58,7 +58,7 @@ const Pagination = ( { currentPage, pagesToDisplay, onPageChange, totalPages } )
 					title={ __( 'Last page', 'woo-gutenberg-products-block' ) }
 				>
 					<Label
-						label="→"
+						label=">"
 						screenReaderLabel={ __( 'Last page', 'woo-gutenberg-products-block' ) }
 					/>
 				</button>
