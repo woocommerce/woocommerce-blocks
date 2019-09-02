@@ -43,7 +43,7 @@ const Pagination = ( { currentPage, pagesToDisplay, onPageChange, totalPages } )
 					<button
 						key={ page }
 						className={ classNames( 'wc-block-pagination-page', {
-							'is-active': currentPage === page,
+							'wc-block-pagination-page--active': currentPage === page,
 						} ) }
 						onClick={ currentPage === page ? null : () => onPageChange( page ) }
 					>
