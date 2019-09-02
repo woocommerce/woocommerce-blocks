@@ -20,13 +20,13 @@ class ProductAttributeControl extends Component {
 		super();
 
 		this.renderItem = this.renderItem.bind( this );
-		this.onSelectAttribute = this.onSelectAttribute.bind( this );
+		this.onExpandAttribute = this.onExpandAttribute.bind( this );
 	}
 
-	onSelectAttribute( item ) {
+	onExpandAttribute( item ) {
 		return () => {
 			this.props.onChange( [] );
-			this.props.onSelectAttribute( item.id );
+			this.props.onExpandAttribute( item.id );
 		};
 	}
 
@@ -40,7 +40,7 @@ class ProductAttributeControl extends Component {
 		if ( search.length ) {
 			classes.push( 'is-searching' );
 		}
-		if ( depth === 0 && item.parent !== 0 ) {
+		if ( depth === 0 && item.parent ) {
 			classes.push( 'is-skip-level' );
 		}
 
@@ -51,7 +51,7 @@ class ProductAttributeControl extends Component {
 					{ ...args }
 					className={ classes.join( ' ' ) }
 					isSelected={ expandedAttribute === item.id }
-					onSelect={ this.onSelectAttribute }
+					onSelect={ this.onExpandAttribute }
 					isSingle
 					disabled={ '0' === item.count }
 					aria-expanded={ expandedAttribute === item.id }
@@ -201,7 +201,7 @@ ProductAttributeControl.propTypes = {
 	attributes: PropTypes.array,
 	error: PropTypes.object,
 	expandedAttribute: PropTypes.number,
-	onSelectAttribute: PropTypes.func,
+	onExpandAttribute: PropTypes.func,
 	isLoading: PropTypes.bool,
 	termsAreLoading: PropTypes.bool,
 	termsList: PropTypes.object,

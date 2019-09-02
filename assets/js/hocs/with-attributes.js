@@ -27,8 +27,7 @@ const withAttributes = createHigherOrderComponent(
 				};
 
 				this.loadAttributes = this.loadAttributes.bind( this );
-				this.loadTerms = this.loadTerms.bind( this );
-				this.onSelectAttribute = this.onSelectAttribute.bind( this );
+				this.onExpandAttribute = this.onExpandAttribute.bind( this );
 				this.debouncedLoadTerms = debounce( this.loadTerms.bind( this ), 200 );
 			}
 
@@ -92,7 +91,7 @@ const withAttributes = createHigherOrderComponent(
 					} );
 			}
 
-			onSelectAttribute( attributeId ) {
+			onExpandAttribute( attributeId ) {
 				const { expandedAttribute } = this.state;
 
 				this.setState( {
@@ -108,7 +107,7 @@ const withAttributes = createHigherOrderComponent(
 					attributes={ attributes }
 					error={ error }
 					expandedAttribute={ expandedAttribute }
-					onSelectAttribute={ this.onSelectAttribute }
+					onExpandAttribute={ this.onExpandAttribute }
 					isLoading={ loading }
 					termsAreLoading={ termsLoading }
 					termsList={ termsList }
