@@ -199,6 +199,9 @@ const GutenbergBlocksConfig = {
 	plugins: [
 		new WebpackRTLPlugin( {
 			filename: '[name]-rtl.css',
+			minify: {
+				safe: true,
+			},
 		} ),
 		new MiniCssExtractPlugin( {
 			filename: '[name].css',
