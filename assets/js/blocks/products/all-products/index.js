@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { InnerBlocks } from '@wordpress/editor';
 import { registerBlockType } from '@wordpress/blocks';
 import Gridicon from 'gridicons';
 
@@ -11,6 +12,7 @@ import Gridicon from 'gridicons';
 import Editor from './edit';
 import sharedAttributes from '../attributes';
 import { getBlockClassName } from '../utils.js';
+import '../../product-grid';
 
 /**
  * Register and run the "All Products" block.
@@ -51,7 +53,9 @@ registerBlockType( 'woocommerce/all-products', {
 		};
 
 		return (
-			<div className={ getBlockClassName( 'wc-block-reviews-by-product', attributes ) } { ...data } />
-		);
+			<div className={ getBlockClassName( 'wc-block-all-products', attributes ) } { ...data }>
+				<InnerBlocks.Content />
+			</div>
+		 );
 	},
 } );

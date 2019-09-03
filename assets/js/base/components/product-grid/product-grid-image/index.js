@@ -2,6 +2,7 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -11,11 +12,15 @@ import { PLACEHOLDER_IMG_SRC, THUMBNAIL_SIZE } from '../../../../constants';
 const ProductImage = ( { className, product = {} } ) => {
 	let image = null;
 
+	const classes = classnames(
+		className,
+		'wc-block-grid__product-image',
+	);
+
 	if ( product.images.length ) {
 		const mainImage = product.images[ 0 ];
 		image = (
 			<img
-				className={ className + '__image' }
 				src={ mainImage.thumbnail }
 				srcSet={ mainImage.srcset }
 				sizes={ mainImage.sizes }
@@ -26,7 +31,6 @@ const ProductImage = ( { className, product = {} } ) => {
 	} else {
 		image = (
 			<img
-				className={ className + '__image' }
 				src={ PLACEHOLDER_IMG_SRC }
 				alt=""
 				style={ { width: `${ THUMBNAIL_SIZE }px` } }
@@ -35,7 +39,7 @@ const ProductImage = ( { className, product = {} } ) => {
 	}
 
 	return (
-		<div className={ className }>
+		<div className={ classes }>
 			{ image }
 		</div>
 	);

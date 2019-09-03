@@ -5,6 +5,11 @@ import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
 import { ToggleControl, SelectControl } from '@wordpress/components';
 
+/**
+ * Internal dependencies
+ */
+import './editor.scss';
+
 export const getSharedContentControls = ( attributes, setAttributes ) => {
 	const { contentVisibility } = attributes;
 	const { button, price, rating, title, image } = contentVisibility;

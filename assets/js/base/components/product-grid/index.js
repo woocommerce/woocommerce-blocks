@@ -7,7 +7,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import ProductGridItem from '../product-grid-item';
+import ProductGridItem from './product-grid-item';
 import './style.scss';
 
 const ProductGrid = ( { attributes, componentId, products } ) => {

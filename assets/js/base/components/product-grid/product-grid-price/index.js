@@ -3,6 +3,7 @@
  */
 import PropTypes from 'prop-types';
 import NumberFormat from 'react-number-format';
+import classnames from 'classnames';
 
 const ProductPrice = ( { className, product = {} } ) => {
 	const numberFormatArgs = {
@@ -14,10 +15,15 @@ const ProductPrice = ( { className, product = {} } ) => {
 		suffix: product.prices.price_suffix,
 	};
 
+	const classes = classnames(
+		className,
+		'wc-block-grid__product-price',
+	);
+
 	if ( product.prices.price_range && product.prices.price_range.min_amount && product.prices.price_range.max_amount ) {
 		return (
-			<div className={ className }>
-				<span className={ className + '__value' }>
+			<div className={ classes }>
+				<span className={ 'wc-block-grid__product-price__value' }>
 					<NumberFormat value={ product.prices.price_range.min_amount } { ...numberFormatArgs } />
 					&nbsp;&mdash;&nbsp;
 					<NumberFormat value={ product.prices.price_range.max_amount } { ...numberFormatArgs } />
@@ -27,13 +33,13 @@ const ProductPrice = ( { className, product = {} } ) => {
 	}
 
 	return (
-		<div className={ className }>
+		<div className={ classes }>
 			{ product.prices.regular_price !== product.prices.price && (
-				<del className={ className + '__regular' }>
+				<del className={ 'wc-block-grid__product-price__regular' }>
 					<NumberFormat value={ product.prices.regular_price } { ...numberFormatArgs } />
 				</del>
 			) }
-			<span className={ className + '__value' }>
+			<span className={ 'wc-block-grid__product-price__value' }>
 				<NumberFormat value={ product.prices.price } { ...numberFormatArgs } />
 			</span>
 		</div>

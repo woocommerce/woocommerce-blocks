@@ -3,6 +3,7 @@
  */
 import PropTypes from 'prop-types';
 import { __, sprintf } from '@wordpress/i18n';
+import classnames from 'classnames';
 
 const ProductRating = ( { className, product = {} } ) => {
 	const rating = parseFloat( product.average_rating );
@@ -15,9 +16,14 @@ const ProductRating = ( { className, product = {} } ) => {
 		width: ( rating / 5 * 100 ) + '%', /* stylelint-disable-line */
 	};
 
+	const classes = classnames(
+		className,
+		'wc-block-grid__product-rating',
+	);
+
 	return (
-		<div className={ className }>
-			<div className={ className + '__stars' } role="img">
+		<div className={ classes }>
+			<div className={ 'wc-block-grid__product-rating__stars' } role="img">
 				<span style={ starStyle }>{ sprintf( __( 'Rated %d out of 5', 'woo-gutenberg-products-block' ), rating ) }</span>
 			</div>
 		</div>

@@ -29,6 +29,7 @@ class Block extends Component {
 	}
 
 	render() {
+		console.log( this.props.children );
 		/**
 		 * Todo classes
 		 *
