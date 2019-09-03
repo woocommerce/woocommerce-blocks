@@ -1,11 +1,20 @@
+.wc-block-pagination-page,
+.wc-block-pagination-ellipsis {
+	color: #333;
+	display: inline-block;
+	font-size: 1em;
+	font-weight: normal;
+}
+
 .wc-block-pagination-page {
 	background-color: transparent;
 	border-color: transparent;
-	color: #333;
-	font-size: 1em;
-	font-weight: normal;
-	min-width: 2.2em;
 	padding: 0.3em 0.6em;
+	min-width: 2.2em;
+}
+
+.wc-block-pagination-ellipsis {
+	padding: 0.3em;
 }
 
 .wc-block-pagination-page--active {
