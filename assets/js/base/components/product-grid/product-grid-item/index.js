@@ -8,15 +8,44 @@ import classnames from 'classnames';
 /**
  * Internal dependencies.
  */
-import ProductLink from '../product-grid-link';
+// import ProductLink from '../product-grid-link';
 import ProductTitle from '../product-grid-title';
 import ProductPrice from '../product-grid-price';
 import ProductButton from '../product-grid-button';
 import ProductImage from '../product-grid-image';
 import ProductRating from '../product-grid-rating';
-import ProductSaleBadge from '../product-grid-sale-badge';
+// import ProductSaleBadge from '../product-grid-sale-badge';
 
-const ProductGridItem = ( { attributes, product = {}, children } ) => {
+const DEFAULT_LAYOUT_CONFIG = [
+	{
+		component: ProductImage,
+		props: {},
+	},
+	{
+		component: ProductTitle,
+		props: {},
+	},
+	{
+		component: ProductPrice,
+		props: {},
+	},
+	{
+		component: ProductRating,
+		props: {},
+	},
+	{
+		component: ProductButton,
+		Props: {},
+	},
+];
+
+const renderProductItem = ( product, layoutConfig ) => {
+	return layoutConfig.map( ( { component: LayoutComponent, props } ) => {
+		return <LayoutComponent key={ 'layout' + LayoutComponent + product.id } { ...props } product={ product } />;
+	} );
+};
+
+const ProductGridItem = ( { product = {}, children, layoutConfig = DEFAULT_LAYOUT_CONFIG } ) => {
 	//const { contentVisibility } = attributes;
 	//const { button, price, rating, title, image } = contentVisibility;
 	const isLoading = ! Object.keys( product ).length > 0;
@@ -27,13 +56,13 @@ const ProductGridItem = ( { attributes, product = {}, children } ) => {
 		},
 	);
 
-	const childrenWithProps = React.Children.map( children, ( child ) =>
-		React.cloneElement( child, { product } )
-	);
+	const productRender = children ?
+		React.Children.map( children, ( child ) => React.cloneElement( child, { product } ) ) :
+		renderProductItem( product, layoutConfig );
 
 	return (
 		<li className={ classes } aria-hidden={ isLoading }>
-			{ childrenWithProps }
+			{ productRender }
 		</li>
 	);
 };

@@ -10,7 +10,7 @@ import classnames from 'classnames';
 import ProductGridItem from './product-grid-item';
 import './style.scss';
 
-const ProductGrid = ( { attributes, componentId, products } ) => {
+const ProductGrid = ( { attributes, componentId, products, layoutConfig } ) => {
 	const getClassnames = () => {
 		const { columns, rows, className, alignButtons, align } = attributes;
 		const alignClass = typeof align !== 'undefined' ? 'align' + align : '';
@@ -38,7 +38,7 @@ const ProductGrid = ( { attributes, componentId, products } ) => {
 						<ProductGridItem attributes={ attributes } />
 					) : (
 						products.map( ( product, i ) => (
-							<ProductGridItem key={ product.id || i } attributes={ attributes } product={ product } />
+							<ProductGridItem layoutConfig={ layoutConfig } key={ product.id || i } attributes={ attributes } product={ product } />
 						) )
 					)
 				}

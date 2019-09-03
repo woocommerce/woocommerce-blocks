@@ -6,14 +6,15 @@ import {
 	InnerBlocks,
 	InspectorControls,
 } from '@wordpress/editor';
+import { withSelect } from '@wordpress/data';
 import {
 	PanelBody,
 	withSpokenMessages,
-	Disabled,
 	Placeholder,
 	Button,
 } from '@wordpress/components';
 import { Component } from '@wordpress/element';
+import { compose } from '@wordpress/compose';
 import PropTypes from 'prop-types';
 import Gridicon from 'gridicons';
 
@@ -30,6 +31,19 @@ import GridLayoutControl from '../../../components/grid-layout-control';
 import { HAS_PRODUCTS } from '../../../constants';
 import Block from './block';
 import ProductGridItem from '../../../base/components/product-grid/product-grid-item';
+import ProductImage from '../../../base/components/product-grid/product-grid-image';
+import ProductButton from '../../../base/components/product-grid/product-grid-button';
+import ProductRating from '../../../base/components/product-grid/product-grid-rating';
+import ProductPrice from '../../../base/components/product-grid/product-grid-price';
+import ProductTitle from '../../../base/components/product-grid/product-grid-title';
+
+const mapBlockToComponent = {
+	'woocommerce/product-grid-image': ProductImage,
+	'woocommerce/product-grid-price': ProductPrice,
+	'woocommerce/product-grid-title': ProductTitle,
+	'woocommerce/product-grid-rating': ProductRating,
+	'woocommerce/product-grid-button': ProductButton,
+};
 
 /**
  * Component to handle edit mode of "All Products".
@@ -49,6 +63,34 @@ class Editor extends Component {
 		 */
 		debouncedSpeak: PropTypes.func.isRequired,
 	}
+
+	state = {
+		showPreview: false,
+	};
+
+	getProductLayoutConfig = ( innerBlocks ) => {
+		// loop through innerblocks and trigger the layout config from it.
+		return innerBlocks.map( ( block ) => {
+			return {
+				component: mapBlockToComponent[ block.name ],
+				props: {
+					...block.attributes,
+					children: block.innerBlocks.length > 0 ?
+						this.getProductLayoutConfig( block.innerBlocks ) :
+						[],
+				},
+			};
+		} );
+	};
+
+	togglePreview = () => {
+		this.setState( { showPreview: ! this.state.showPreview } );
+	};
+
+	renderPreview = () => {
+		const { attributes, block } = this.props;
+		return <Block attributes={ attributes } layout={ this.getProductLayoutConfig( block.innerBlocks ) } />;
+	};
 
 	getInspectorControls = () => {
 		const { attributes, setAttributes } = this.props;
@@ -88,7 +130,6 @@ class Editor extends Component {
 		const { contentVisibility } = attributes;
 
 		const blockIcon = <Gridicon icon="grid" />;
-		const blockTitle = __( 'All Products', 'woo-gutenberg-products-block' );
 		const hasContent = 0 !== Object.values( contentVisibility ).filter( Boolean ).length;
 
 		const ALLOWED_BLOCKS = [
@@ -109,14 +150,17 @@ class Editor extends Component {
 			[ 'woocommerce/product-grid-button', {} ],
 		];
 
+		if ( this.state.showPreview ) {
+			return this.renderPreview();
+		}
+
+		const blockTitle = __( 'All Products', 'woo-gutenberg-products-block' );
+
 		return (
 			<div className={ getBlockClassName( 'wc-block-all-products', attributes ) }>
 				{ this.getInspectorControls() }
 				{ ! HAS_PRODUCTS && renderNoProductsPlaceholder( blockTitle, blockIcon ) }
 				{ ! hasContent && renderHiddenContentPlaceholder( blockTitle, blockIcon ) }
-				<Disabled>
-					{ ( HAS_PRODUCTS && hasContent ) && ( <Block attributes={ attributes } children={ this.props.children } /> ) }
-				</Disabled>
 				<Placeholder
 					icon={ blockIcon }
 					label={ __( 'All Products', 'woo-gutenberg-products-block' ) }
@@ -137,7 +181,7 @@ class Editor extends Component {
 								</ProductGridItem>
 							</ul>
 						</div>
-						<Button isDefault onClick={ () => {} }>
+						<Button isDefault onClick={ this.togglePreview }>
 							{ __( 'Done', 'woo-gutenberg-products-block' ) }
 						</Button>
 					</div>
@@ -147,4 +191,12 @@ class Editor extends Component {
 	}
 }
 
-export default withSpokenMessages( Editor );
+export default compose(
+	withSpokenMessages,
+	withSelect( ( select, { clientId } ) => {
+		const { getBlock } = select( 'core/block-editor' );
+		return {
+			block: getBlock( clientId ),
+		};
+	} ),
+)( Editor );

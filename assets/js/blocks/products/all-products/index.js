@@ -56,6 +56,6 @@ registerBlockType( 'woocommerce/all-products', {
 			<div className={ getBlockClassName( 'wc-block-all-products', attributes ) } { ...data }>
 				<InnerBlocks.Content />
 			</div>
-		 );
+		);
 	},
 } );

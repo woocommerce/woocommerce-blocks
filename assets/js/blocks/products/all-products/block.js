@@ -29,7 +29,6 @@ class Block extends Component {
 	}
 
 	render() {
-		console.log( this.props.children );
 		/**
 		 * Todo classes
 		 *
@@ -37,7 +36,7 @@ class Block extends Component {
 		 * wc-block-{$this->block_name},
 		 */
 		return (
-			<ProductGrid products={ products } attributes={ this.props.attributes } componentId={ this.props.componentId } />
+			<ProductGrid products={ products } layoutConfig={ this.props.layoutConfig } attributes={ this.props.attributes } componentId={ this.props.componentId } />
 		);
 	}
 }
