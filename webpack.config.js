@@ -9,6 +9,7 @@ const ProgressBarPlugin = require( 'progress-bar-webpack-plugin' );
 const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
 const chalk = require( 'chalk' );
 const NODE_ENV = process.env.NODE_ENV || 'development';
+const WebpackRTLPlugin = require( 'webpack-rtl-plugin' );
 
 function findModuleMatch( module, match ) {
 	if ( module.request && match.test( module.request ) ) {
@@ -196,6 +197,9 @@ const GutenbergBlocksConfig = {
 		],
 	},
 	plugins: [
+		new WebpackRTLPlugin( {
+			filename: '[name]-rtl.css',
+		} ),
 		new MiniCssExtractPlugin( {
 			filename: '[name].css',
 		} ),
