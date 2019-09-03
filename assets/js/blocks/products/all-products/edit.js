@@ -89,7 +89,7 @@ class Editor extends Component {
 
 	renderPreview = () => {
 		const { attributes, block } = this.props;
-		return <Block attributes={ attributes } layout={ this.getProductLayoutConfig( block.innerBlocks ) } />;
+		return <Block attributes={ attributes } layoutConfig={ this.getProductLayoutConfig( block.innerBlocks ) } />;
 	};
 
 	getInspectorControls = () => {
