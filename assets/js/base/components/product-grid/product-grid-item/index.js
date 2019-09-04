@@ -41,7 +41,11 @@ const DEFAULT_LAYOUT_CONFIG = [
 
 const renderProductItem = ( product, layoutConfig ) => {
 	return layoutConfig.map( ( { component: LayoutComponent, props } ) => {
-		return <LayoutComponent key={ 'layout' + LayoutComponent + product.id } { ...props } product={ product } />;
+		let children = [];
+		if ( props.children.length > 0 ) {
+			children = renderProductItem( product, props.children );
+		}
+		return <LayoutComponent key={ 'layout' + LayoutComponent + product.id } { ...props } children={ children } product={ product } />;
 	} );
 };
 
