@@ -99,7 +99,7 @@ describe( 'withCategory Component', () => {
 	describe( 'when the API returns an error', () => {
 		const error = { message: 'There was an error.' };
 		const getCategoryPromise = Promise.reject( error );
-		const formattedError = { apiMessage: 'There was an error.' };
+		const formattedError = { message: 'There was an error.', type: 'api' };
 
 		beforeEach( () => {
 			mockUtils.getCategory.mockImplementation(

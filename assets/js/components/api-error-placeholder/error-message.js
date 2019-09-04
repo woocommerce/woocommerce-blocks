@@ -5,32 +5,32 @@ import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import { escapeHTML } from '@wordpress/escape-html';
 
-const getErrorMessage = ( { apiMessage, message, frontendMessage } ) => {
-	if ( message ) {
-		return message;
+const getErrorMessage = ( { message, type } ) => {
+	if ( ! message ) {
+		return __( 'An unknown error occurred which prevented the block from being updated.', 'woo-gutenberg-products-block' );
 	}
 
-	if ( frontendMessage ) {
+	if ( type === 'frontend' ) {
 		return (
 			<span>
 				{ __( 'The following error was returned', 'woo-gutenberg-products-block' ) }
 				<br />
-				<code>{ escapeHTML( frontendMessage ) }</code>
+				<code>{ escapeHTML( message ) }</code>
 			</span>
 		);
 	}
 
-	if ( apiMessage ) {
+	if ( type === 'api' ) {
 		return (
 			<span>
 				{ __( 'The following error was returned from the API', 'woo-gutenberg-products-block' ) }
 				<br />
-				<code>{ escapeHTML( apiMessage ) }</code>
+				<code>{ escapeHTML( message ) }</code>
 			</span>
 		);
 	}
 
-	return __( 'An unknown error occurred which prevented the block from being updated.', 'woo-gutenberg-products-block' );
+	return message;
 };
 
 const ErrorMessage = ( { error } ) => (
@@ -45,13 +45,13 @@ ErrorMessage.propTypes = {
 	 */
 	error: PropTypes.shape( {
 		/**
-		 * API error message to display in case of a missing `message`.
-		 */
-		apiMessage: PropTypes.node,
-		/**
 		 * Human-readable error message to display.
 		 */
-		message: PropTypes.string,
+		message: PropTypes.node,
+		/**
+		 * Type of the error. That will determine how the error is displayed to the user.
+		 */
+		type: PropTypes.oneOf( [ 'api', 'frontend' ] ),
 	} ),
 };
 

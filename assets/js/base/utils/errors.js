@@ -1,22 +1,30 @@
-const formatErrorMessage = ( error, messageProperty = 'frontendMessage' ) => {
-	if ( typeof error === 'object' && error.hasOwnProperty( 'message' ) ) {
-		return {
-			[ messageProperty ]: error.message,
-		};
-	}
-
-	return error;
-};
-
+/**
+ * Given a JS error or a fetch response error, parse and format it so it can be displayed to the user.
+ *
+ * @param {object} error Error object.
+ * @param {function} [error.json] If a json method is specified, it will try parsing the error first.
+ * @param {string} [error.message] If a message is specified, it will be shown to the user.
+ * @param {string} [error.type] The type will be used to determine how the error is shown to the user.
+ * @return {object} Error object containing a message and type.
+ */
 export const formatError = async ( error ) => {
-	if ( error.json ) {
+	if ( typeof error.json === 'function' ) {
 		try {
 			const parsedError = await error.json();
-			return formatErrorMessage( parsedError, 'apiMessage' );
+			return {
+				message: parsedError.message,
+				type: parsedError.type || 'api',
+			};
 		} catch ( e ) {
-			return formatErrorMessage( e );
+			return {
+				message: e.message,
+				type: 'frontend',
+			};
 		}
 	}
 
-	return formatErrorMessage( error );
+	return {
+		message: error.message,
+		type: error.type || 'frontend',
+	};
 };

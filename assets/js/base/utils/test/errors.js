@@ -9,7 +9,8 @@ describe( 'formatError', () => {
 			message: 'Lorem Ipsum',
 		} );
 		const expectedError = {
-			frontendMessage: 'Lorem Ipsum',
+			message: 'Lorem Ipsum',
+			type: 'frontend',
 		};
 
 		expect( error ).toEqual( expectedError );
@@ -20,7 +21,8 @@ describe( 'formatError', () => {
 			json: () => Promise.resolve( { message: 'Lorem Ipsum' } ),
 		} );
 		const expectedError = {
-			apiMessage: 'Lorem Ipsum',
+			message: 'Lorem Ipsum',
+			type: 'api',
 		};
 
 		expect( error ).toEqual( expectedError );
@@ -31,7 +33,8 @@ describe( 'formatError', () => {
 			json: () => Promise.reject( { message: 'Lorem Ipsum' } ),
 		} );
 		const expectedError = {
-			frontendMessage: 'Lorem Ipsum',
+			message: 'Lorem Ipsum',
+			type: 'frontend',
 		};
 
 		expect( error ).toEqual( expectedError );
