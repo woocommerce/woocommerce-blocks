@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { shallow } from 'enzyme';
+import TestRenderer from 'react-test-renderer';
 
 /**
  * Internal dependencies
@@ -48,7 +48,6 @@ describe( 'withAttributes Component', () => {
 
 	describe( 'lifecycle events', () => {
 		let getAttributesPromise;
-		let testComponent;
 
 		beforeEach( () => {
 			getAttributesPromise = Promise.resolve( mockAttributes );
@@ -56,61 +55,70 @@ describe( 'withAttributes Component', () => {
 				() => getAttributesPromise
 			);
 			mockUtils.getTerms.mockImplementation(
-				() => Promise.resolve()
+				() => Promise.resolve( [] )
 			);
 		} );
 
 		it( 'getAttributes is called on mount', () => {
-			testComponent = shallow( <TestComponent /> );
+			TestRenderer.create(
+				<TestComponent />
+			);
 			const { getAttributes } = mockUtils;
 
 			expect( getAttributes ).toHaveBeenCalledTimes( 1 );
 		} );
 
 		it( 'getTerms is called on component update', () => {
-			testComponent = shallow( <TestComponent /> );
-			const { onExpandAttribute } = testComponent.props();
+			const renderer = TestRenderer.create(
+				<TestComponent />
+			);
+			let props = renderer.root.findByType( 'div' ).props;
 
-			onExpandAttribute( 1 );
+			props.onExpandAttribute( 1 );
 
-			const element = testComponent.getElement();
 			const { getTerms } = mockUtils;
+			props = renderer.root.findByType( 'div' ).props;
 
 			expect( getTerms ).toHaveBeenCalledWith( 1 );
 			expect( getTerms ).toHaveBeenCalledTimes( 1 );
-			expect( element.props.expandedAttribute ).toBe( 1 );
+			expect( props.expandedAttribute ).toBe( 1 );
 		} );
 
 		it( 'getTerms is called on mount if there was an attribute selected', ( done ) => {
-			testComponent = shallow( <TestComponent selected={ selected } /> );
+			const renderer = TestRenderer.create(
+				<TestComponent selected={ selected } />
+			);
 
 			getAttributesPromise.then( () => {
 				const { getTerms } = mockUtils;
+				const props = renderer.root.findByType( 'div' ).props;
 
 				expect( getTerms ).toHaveBeenCalledWith( 1 );
 				expect( getTerms ).toHaveBeenCalledTimes( 1 );
-				expect( testComponent.state( 'expandedAttribute' ) ).toBe( 1 );
+				expect( props.expandedAttribute ).toBe( 1 );
 				done();
 			} );
 		} );
 	} );
 
 	describe( 'when the API returns attributes data', () => {
-		let testComponent;
+		let renderer;
 
 		beforeEach( () => {
 			mockUtils.getAttributes.mockImplementation(
 				() => Promise.resolve( mockAttributes )
 			);
-			testComponent = shallow( <TestComponent /> );
+			renderer = TestRenderer.create(
+				<TestComponent />
+			);
 		} );
 
 		it( 'sets the attributes props', () => {
-			const element = testComponent.getElement();
+			const props = renderer.root.findByType( 'div' ).props;
 
-			expect( element.props.error ).toBeNull();
-			expect( element.props.isLoading ).toBe( false );
-			expect( element.props.attributes ).toEqual( mockAttributesWithParent );
+			expect( props.error ).toBeNull();
+			expect( props.isLoading ).toBe( false );
+			expect( props.attributes ).toEqual( mockAttributesWithParent );
 		} );
 	} );
 
@@ -118,7 +126,7 @@ describe( 'withAttributes Component', () => {
 		const error = { message: 'There was an error.' };
 		const getAttributesPromise = Promise.reject( error );
 		const formattedError = { message: 'There was an error.', type: 'api' };
-		let testComponent;
+		let renderer;
 
 		beforeEach( () => {
 			mockUtils.getAttributes.mockImplementation(
@@ -127,20 +135,21 @@ describe( 'withAttributes Component', () => {
 			mockBaseUtils.formatError.mockImplementation(
 				() => formattedError,
 			);
-			testComponent = shallow( <TestComponent /> );
+			renderer = TestRenderer.create(
+				<TestComponent />
+			);
 		} );
 
 		it( 'sets the error prop', ( done ) => {
 			const { formatError } = mockBaseUtils;
 			getAttributesPromise.catch( () => {
-				const element = testComponent.getElement();
+				const props = renderer.root.findByType( 'div' ).props;
 
 				expect( formatError ).toHaveBeenCalledWith( error );
 				expect( formatError ).toHaveBeenCalledTimes( 1 );
-				expect( element.props.error ).toEqual( formattedError );
-				expect( element.props.isLoading ).toBe( false );
-				expect( element.props.attributes ).toEqual( [] );
-
+				expect( props.error ).toEqual( formattedError );
+				expect( props.isLoading ).toBe( false );
+				expect( props.attributes ).toEqual( [] );
 				done();
 			} );
 		} );
