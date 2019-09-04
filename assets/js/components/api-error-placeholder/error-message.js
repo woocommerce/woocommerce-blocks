@@ -10,7 +10,7 @@ const getErrorMessage = ( { message, type } ) => {
 		return __( 'An unknown error occurred which prevented the block from being updated.', 'woo-gutenberg-products-block' );
 	}
 
-	if ( type === 'frontend' ) {
+	if ( type === 'general' ) {
 		return (
 			<span>
 				{ __( 'The following error was returned', 'woo-gutenberg-products-block' ) }
@@ -49,9 +49,9 @@ ErrorMessage.propTypes = {
 		 */
 		message: PropTypes.node,
 		/**
-		 * Type of the error. That will determine how the error is displayed to the user.
+		 * Context in which the error was triggered. That will determine how the error is displayed to the user.
 		 */
-		type: PropTypes.oneOf( [ 'api', 'frontend' ] ),
+		type: PropTypes.oneOf( [ 'api', 'general' ] ),
 	} ),
 };
 

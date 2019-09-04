@@ -4,13 +4,13 @@
 import { formatError } from '../errors';
 
 describe( 'formatError', () => {
-	test( 'should format frontend errors', async () => {
+	test( 'should format general errors', async () => {
 		const error = await formatError( {
 			message: 'Lorem Ipsum',
 		} );
 		const expectedError = {
 			message: 'Lorem Ipsum',
-			type: 'frontend',
+			type: 'general',
 		};
 
 		expect( error ).toEqual( expectedError );
@@ -34,7 +34,7 @@ describe( 'formatError', () => {
 		} );
 		const expectedError = {
 			message: 'Lorem Ipsum',
-			type: 'frontend',
+			type: 'general',
 		};
 
 		expect( error ).toEqual( expectedError );

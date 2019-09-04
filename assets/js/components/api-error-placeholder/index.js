@@ -53,9 +53,9 @@ ApiErrorPlaceholder.propTypes = {
 		 */
 		message: PropTypes.node,
 		/**
-		 * Type of the error. That will determine how the error is displayed to the user.
+		 * Context in which the error was triggered. That will determine how the error is displayed to the user.
 		 */
-		type: PropTypes.oneOf( [ 'api', 'frontend' ] ),
+		type: PropTypes.oneOf( [ 'api', 'general' ] ),
 	} ),
 	/**
 	 * Whether there is a request running, so the 'Retry' button is hidden and

@@ -18,13 +18,13 @@ export const formatError = async ( error ) => {
 		} catch ( e ) {
 			return {
 				message: e.message,
-				type: 'frontend',
+				type: 'general',
 			};
 		}
 	}
 
 	return {
 		message: error.message,
-		type: error.type || 'frontend',
+		type: error.type || 'general',
 	};
 };
