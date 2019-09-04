@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { Component, Fragment } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 import { find } from 'lodash';
 import PropTypes from 'prop-types';
 import { SearchListControl, SearchListItem } from '@woocommerce/components';
@@ -15,24 +15,16 @@ import { withAttributes } from '../../hocs';
 import ErrorMessage from '../api-error-placeholder/error-message.js';
 import './style.scss';
 
-class ProductAttributeControl extends Component {
-	constructor() {
-		super();
-
-		this.renderItem = this.renderItem.bind( this );
-		this.onExpandAttribute = this.onExpandAttribute.bind( this );
-	}
-
-	onExpandAttribute( item ) {
+const ProductAttributeControl = ( { attributes, error, expandedAttribute, onChange, onOperatorChange, isLoading, operator, selected, termsAreLoading, termsList } ) => {
+	const onExpandAttribute = ( item ) => {
 		return () => {
-			this.props.onChange( [] );
-			this.props.onExpandAttribute( item.id );
+			onChange( [] );
+			onExpandAttribute( item.id );
 		};
-	}
+	};
 
-	renderItem( args ) {
+	const renderItem = ( args ) => {
 		const { item, search, depth = 0 } = args;
-		const { expandedAttribute, termsAreLoading } = this.props;
 		const classes = [
 			'woocommerce-product-attributes__item',
 			'woocommerce-search-list__item',
@@ -51,7 +43,7 @@ class ProductAttributeControl extends Component {
 					{ ...args }
 					className={ classes.join( ' ' ) }
 					isSelected={ expandedAttribute === item.id }
-					onSelect={ this.onExpandAttribute }
+					onSelect={ onExpandAttribute }
 					isSingle
 					disabled={ '0' === item.count }
 					aria-expanded={ expandedAttribute === item.id }
@@ -88,97 +80,94 @@ class ProductAttributeControl extends Component {
 				aria-label={ `${ item.breadcrumbs[ 0 ] }: ${ item.name }` }
 			/>
 		);
-	}
+	};
 
-	render() {
-		const { attributes, error, expandedAttribute, onChange, onOperatorChange, isLoading, operator, selected, termsList } = this.props;
-		const currentTerms = termsList[ expandedAttribute ] || [];
-		const currentList = [ ...attributes, ...currentTerms ];
+	const currentTerms = termsList[ expandedAttribute ] || [];
+	const currentList = [ ...attributes, ...currentTerms ];
 
-		const messages = {
-			clear: __( 'Clear all product attributes', 'woo-gutenberg-products-block' ),
-			list: __( 'Product Attributes', 'woo-gutenberg-products-block' ),
-			noItems: __(
-				"Your store doesn't have any product attributes.",
-				'woo-gutenberg-products-block'
-			),
-			search: __(
-				'Search for product attributes',
-				'woo-gutenberg-products-block'
-			),
-			selected: ( n ) =>
-				sprintf(
-					_n(
-						'%d attribute selected',
-						'%d attributes selected',
-						n,
-						'woo-gutenberg-products-block'
-					),
-					n
+	const messages = {
+		clear: __( 'Clear all product attributes', 'woo-gutenberg-products-block' ),
+		list: __( 'Product Attributes', 'woo-gutenberg-products-block' ),
+		noItems: __(
+			"Your store doesn't have any product attributes.",
+			'woo-gutenberg-products-block'
+		),
+		search: __(
+			'Search for product attributes',
+			'woo-gutenberg-products-block'
+		),
+		selected: ( n ) =>
+			sprintf(
+				_n(
+					'%d attribute selected',
+					'%d attributes selected',
+					n,
+					'woo-gutenberg-products-block'
 				),
-			updated: __(
-				'Product attribute search results updated.',
-				'woo-gutenberg-products-block'
+				n
 			),
-		};
+		updated: __(
+			'Product attribute search results updated.',
+			'woo-gutenberg-products-block'
+		),
+	};
 
-		if ( error ) {
-			return (
-				<ErrorMessage error={ error } />
-			);
-		}
-
+	if ( error ) {
 		return (
-			<Fragment>
-				<SearchListControl
-					className="woocommerce-product-attributes"
-					list={ currentList }
-					isLoading={ isLoading }
-					selected={ selected
-						.map( ( { id } ) => find( currentList, { id } ) )
-						.filter( Boolean ) }
-					onChange={ onChange }
-					renderItem={ this.renderItem }
-					messages={ messages }
-					isHierarchical
-				/>
-				{ !! onOperatorChange && (
-					<div className={ selected.length < 2 ? 'screen-reader-text' : '' }>
-						<SelectControl
-							className="woocommerce-product-attributes__operator"
-							label={ __(
-								'Display products matching',
-								'woo-gutenberg-products-block'
-							) }
-							help={ __(
-								'Pick at least two attributes to use this setting.',
-								'woo-gutenberg-products-block'
-							) }
-							value={ operator }
-							onChange={ onOperatorChange }
-							options={ [
-								{
-									label: __(
-										'Any selected attributes',
-										'woo-gutenberg-products-block'
-									),
-									value: 'any',
-								},
-								{
-									label: __(
-										'All selected attributes',
-										'woo-gutenberg-products-block'
-									),
-									value: 'all',
-								},
-							] }
-						/>
-					</div>
-				) }
-			</Fragment>
+			<ErrorMessage error={ error } />
 		);
 	}
-}
+
+	return (
+		<Fragment>
+			<SearchListControl
+				className="woocommerce-product-attributes"
+				list={ currentList }
+				isLoading={ isLoading }
+				selected={ selected
+					.map( ( { id } ) => find( currentList, { id } ) )
+					.filter( Boolean ) }
+				onChange={ onChange }
+				renderItem={ renderItem }
+				messages={ messages }
+				isHierarchical
+			/>
+			{ !! onOperatorChange && (
+				<div className={ selected.length < 2 ? 'screen-reader-text' : '' }>
+					<SelectControl
+						className="woocommerce-product-attributes__operator"
+						label={ __(
+							'Display products matching',
+							'woo-gutenberg-products-block'
+						) }
+						help={ __(
+							'Pick at least two attributes to use this setting.',
+							'woo-gutenberg-products-block'
+						) }
+						value={ operator }
+						onChange={ onOperatorChange }
+						options={ [
+							{
+								label: __(
+									'Any selected attributes',
+									'woo-gutenberg-products-block'
+								),
+								value: 'any',
+							},
+							{
+								label: __(
+									'All selected attributes',
+									'woo-gutenberg-products-block'
+								),
+								value: 'all',
+							},
+						] }
+					/>
+				</div>
+			) }
+		</Fragment>
+	);
+};
 
 ProductAttributeControl.propTypes = {
 	/**
