@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { Component, Fragment } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 import { find } from 'lodash';
 import PropTypes from 'prop-types';
 import { SearchListControl, SearchListItem } from '@woocommerce/components';
@@ -15,14 +15,8 @@ import { withCategories } from '../../hocs';
 import ErrorMessage from '../api-error-placeholder/error-message.js';
 import './style.scss';
 
-class ProductCategoryControl extends Component {
-	constructor() {
-		super( ...arguments );
-
-		this.renderItem = this.renderItem.bind( this );
-	}
-
-	renderItem( args ) {
+const ProductCategoryControl = ( { categories, error, isLoading, onChange, onOperatorChange, operator, selected, isSingle } ) => {
+	const renderItem = ( args ) => {
 		const { item, search, depth = 0 } = args;
 		const classes = [
 			'woocommerce-product-categories__item',
@@ -55,82 +49,78 @@ class ProductCategoryControl extends Component {
 				) }
 			/>
 		);
-	}
+	};
 
-	render() {
-		const { categories, error, isLoading, onChange, onOperatorChange, operator, selected, isSingle } = this.props;
-
-		const messages = {
-			clear: __( 'Clear all product categories', 'woo-gutenberg-products-block' ),
-			list: __( 'Product Categories', 'woo-gutenberg-products-block' ),
-			noItems: __(
-				"Your store doesn't have any product categories.",
-				'woo-gutenberg-products-block'
-			),
-			search: __(
-				'Search for product categories',
-				'woo-gutenberg-products-block'
-			),
-			selected: ( n ) =>
-				sprintf(
-					_n(
-						'%d category selected',
-						'%d categories selected',
-						n,
-						'woo-gutenberg-products-block'
-					),
-					n
+	const messages = {
+		clear: __( 'Clear all product categories', 'woo-gutenberg-products-block' ),
+		list: __( 'Product Categories', 'woo-gutenberg-products-block' ),
+		noItems: __(
+			"Your store doesn't have any product categories.",
+			'woo-gutenberg-products-block'
+		),
+		search: __(
+			'Search for product categories',
+			'woo-gutenberg-products-block'
+		),
+		selected: ( n ) =>
+			sprintf(
+				_n(
+					'%d category selected',
+					'%d categories selected',
+					n,
+					'woo-gutenberg-products-block'
 				),
-			updated: __(
-				'Category search results updated.',
-				'woo-gutenberg-products-block'
+				n
 			),
-		};
+		updated: __(
+			'Category search results updated.',
+			'woo-gutenberg-products-block'
+		),
+	};
 
-		if ( error ) {
-			return (
-				<ErrorMessage error={ error } />
-			);
-		}
-
+	if ( error ) {
 		return (
-			<Fragment>
-				<SearchListControl
-					className="woocommerce-product-categories"
-					list={ categories }
-					isLoading={ isLoading }
-					selected={ selected.map( ( id ) => find( categories, { id } ) ).filter( Boolean ) }
-					onChange={ onChange }
-					renderItem={ this.renderItem }
-					messages={ messages }
-					isHierarchical
-					isSingle={ isSingle }
-				/>
-				{ ( !! onOperatorChange ) && (
-					<div className={ selected.length < 2 ? 'screen-reader-text' : '' }>
-						<SelectControl
-							className="woocommerce-product-categories__operator"
-							label={ __( 'Display products matching', 'woo-gutenberg-products-block' ) }
-							help={ __( 'Pick at least two categories to use this setting.', 'woo-gutenberg-products-block' ) }
-							value={ operator }
-							onChange={ onOperatorChange }
-							options={ [
-								{
-									label: __( 'Any selected categories', 'woo-gutenberg-products-block' ),
-									value: 'any',
-								},
-								{
-									label: __( 'All selected categories', 'woo-gutenberg-products-block' ),
-									value: 'all',
-								},
-							] }
-						/>
-					</div>
-				) }
-			</Fragment>
+			<ErrorMessage error={ error } />
 		);
 	}
-}
+
+	return (
+		<Fragment>
+			<SearchListControl
+				className="woocommerce-product-categories"
+				list={ categories }
+				isLoading={ isLoading }
+				selected={ selected.map( ( id ) => find( categories, { id } ) ).filter( Boolean ) }
+				onChange={ onChange }
+				renderItem={ renderItem }
+				messages={ messages }
+				isHierarchical
+				isSingle={ isSingle }
+			/>
+			{ ( !! onOperatorChange ) && (
+				<div className={ selected.length < 2 ? 'screen-reader-text' : '' }>
+					<SelectControl
+						className="woocommerce-product-categories__operator"
+						label={ __( 'Display products matching', 'woo-gutenberg-products-block' ) }
+						help={ __( 'Pick at least two categories to use this setting.', 'woo-gutenberg-products-block' ) }
+						value={ operator }
+						onChange={ onOperatorChange }
+						options={ [
+							{
+								label: __( 'Any selected categories', 'woo-gutenberg-products-block' ),
+								value: 'any',
+							},
+							{
+								label: __( 'All selected categories', 'woo-gutenberg-products-block' ),
+								value: 'all',
+							},
+						] }
+					/>
+				</div>
+			) }
+		</Fragment>
+	);
+};
 
 ProductCategoryControl.propTypes = {
 	/**
