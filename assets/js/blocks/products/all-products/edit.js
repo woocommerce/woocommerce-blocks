@@ -38,8 +38,10 @@ import ProductButton from '../../../base/components/product-grid/product-grid-bu
 import ProductRating from '../../../base/components/product-grid/product-grid-rating';
 import ProductPrice from '../../../base/components/product-grid/product-grid-price';
 import ProductTitle from '../../../base/components/product-grid/product-grid-title';
+import ProductLink from '../../../base/components/product-grid/product-grid-link';
 
 const mapBlockToComponent = {
+	'woocommerce/product-grid-link': ProductLink,
 	'woocommerce/product-grid-image': ProductImage,
 	'woocommerce/product-grid-price': ProductPrice,
 	'woocommerce/product-grid-title': ProductTitle,
@@ -160,13 +162,13 @@ class Editor extends Component {
 			'woocommerce/product-grid-image',
 			'woocommerce/product-grid-rating',
 			'woocommerce/product-grid-button',
+			'woocommerce/product-grid-link',
 			'core/paragraph',
 			'core/heading',
 		];
 
 		const BLOCKS_TEMPLATE = [
-			[ 'woocommerce/product-grid-image', {} ],
-			[ 'woocommerce/product-grid-title', {} ],
+			[ 'woocommerce/product-grid-link', {} ],
 			[ 'woocommerce/product-grid-price', {} ],
 			[ 'woocommerce/product-grid-rating', {} ],
 			[ 'woocommerce/product-grid-button', {} ],
@@ -203,6 +205,7 @@ class Editor extends Component {
 											template={ BLOCKS_TEMPLATE }
 											templateLock={ false }
 											allowedBlocks={ ALLOWED_BLOCKS }
+											renderAppender={ false }
 										/>
 									</ProductGridItem>
 								</ul>
