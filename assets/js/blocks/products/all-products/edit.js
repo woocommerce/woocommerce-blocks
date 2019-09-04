@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import {
+	BlockControls,
 	InnerBlocks,
 	InspectorControls,
 } from '@wordpress/editor';
@@ -12,8 +13,9 @@ import {
 	withSpokenMessages,
 	Placeholder,
 	Button,
+	Toolbar,
 } from '@wordpress/components';
-import { Component } from '@wordpress/element';
+import { Component, Fragment } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 import PropTypes from 'prop-types';
 import Gridicon from 'gridicons';
@@ -65,7 +67,7 @@ class Editor extends Component {
 	}
 
 	state = {
-		showPreview: false,
+		showPreview: true,
 	};
 
 	getProductLayoutConfig = ( innerBlocks ) => {
@@ -128,6 +130,7 @@ class Editor extends Component {
 	render = () => {
 		const { attributes } = this.props;
 		const { contentVisibility } = attributes;
+		const { showPreview } = this.state;
 
 		const blockIcon = <Gridicon icon="grid" />;
 		const hasContent = 0 !== Object.values( contentVisibility ).filter( Boolean ).length;
@@ -150,42 +153,58 @@ class Editor extends Component {
 			[ 'woocommerce/product-grid-button', {} ],
 		];
 
-		if ( this.state.showPreview ) {
-			return this.renderPreview();
-		}
-
 		const blockTitle = __( 'All Products', 'woo-gutenberg-products-block' );
 
 		return (
 			<div className={ getBlockClassName( 'wc-block-all-products', attributes ) }>
-				{ this.getInspectorControls() }
-				{ ! HAS_PRODUCTS && renderNoProductsPlaceholder( blockTitle, blockIcon ) }
-				{ ! hasContent && renderHiddenContentPlaceholder( blockTitle, blockIcon ) }
-				<Placeholder
-					icon={ blockIcon }
-					label={ __( 'All Products', 'woo-gutenberg-products-block' ) }
-				>
-					{ __(
-						'Shows all products. Edit the product template below for products shown in the grid.',
-						'woo-gutenberg-products-block'
-					) }
-					<div className="wc-block-all-products-grid-item-template">
-						<div className="wc-block-grid has-1-columns">
-							<ul className="wc-block-grid__products">
-								<ProductGridItem attributes={ attributes } product={ attributes.product }>
-									<InnerBlocks
-										template={ BLOCKS_TEMPLATE }
-										templateLock={ false }
-										allowedBlocks={ ALLOWED_BLOCKS }
-									/>
-								</ProductGridItem>
-							</ul>
-						</div>
-						<Button isDefault onClick={ this.togglePreview }>
-							{ __( 'Done', 'woo-gutenberg-products-block' ) }
-						</Button>
-					</div>
-				</Placeholder>
+				<BlockControls>
+					<Toolbar
+						controls={ [
+							{
+								icon: 'edit',
+								title: __( 'Edit', 'woo-gutenberg-products-block' ),
+								onClick: () => this.togglePreview(),
+								isActive: ! showPreview,
+							},
+						] }
+					/>
+				</BlockControls>
+				{ showPreview ? (
+					<Fragment>
+						{ this.renderPreview() }
+					</Fragment>
+				) : (
+					<Fragment>
+						{ this.getInspectorControls() }
+						{ ! HAS_PRODUCTS && renderNoProductsPlaceholder( blockTitle, blockIcon ) }
+						{ ! hasContent && renderHiddenContentPlaceholder( blockTitle, blockIcon ) }
+						<Placeholder
+							icon={ blockIcon }
+							label={ __( 'All Products', 'woo-gutenberg-products-block' ) }
+						>
+							{ __(
+								'Shows all products. Edit the product template below for products shown in the grid.',
+								'woo-gutenberg-products-block'
+							) }
+							<div className="wc-block-all-products-grid-item-template">
+								<div className="wc-block-grid has-1-columns">
+									<ul className="wc-block-grid__products">
+										<ProductGridItem attributes={ attributes } product={ attributes.product }>
+											<InnerBlocks
+												template={ BLOCKS_TEMPLATE }
+												templateLock={ false }
+												allowedBlocks={ ALLOWED_BLOCKS }
+											/>
+										</ProductGridItem>
+									</ul>
+								</div>
+								<Button isDefault onClick={ this.togglePreview }>
+									{ __( 'Done', 'woo-gutenberg-products-block' ) }
+								</Button>
+							</div>
+						</Placeholder>
+					</Fragment>
+				) }
 			</div>
 		);
 	}
