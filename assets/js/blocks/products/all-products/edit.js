@@ -127,6 +127,25 @@ class Editor extends Component {
 		);
 	};
 
+	getBlockControls = () => {
+		const { showPreview } = this.state;
+
+		return (
+			<BlockControls>
+				<Toolbar
+					controls={ [
+						{
+							icon: 'edit',
+							title: __( 'Edit', 'woo-gutenberg-products-block' ),
+							onClick: () => this.togglePreview(),
+							isActive: ! showPreview,
+						},
+					] }
+				/>
+			</BlockControls>
+		);
+	}
+
 	render = () => {
 		const { attributes } = this.props;
 		const { contentVisibility } = attributes;
@@ -155,55 +174,44 @@ class Editor extends Component {
 
 		const blockTitle = __( 'All Products', 'woo-gutenberg-products-block' );
 
+		if ( ! HAS_PRODUCTS ) {
+			return renderNoProductsPlaceholder( blockTitle, blockIcon );
+		}
+
 		return (
 			<div className={ getBlockClassName( 'wc-block-all-products', attributes ) }>
-				<BlockControls>
-					<Toolbar
-						controls={ [
-							{
-								icon: 'edit',
-								title: __( 'Edit', 'woo-gutenberg-products-block' ),
-								onClick: () => this.togglePreview(),
-								isActive: ! showPreview,
-							},
-						] }
-					/>
-				</BlockControls>
+				{ this.getBlockControls() }
+				{ this.getInspectorControls() }
 				{ showPreview ? (
 					<Fragment>
-						{ this.renderPreview() }
+						{ hasContent ? this.renderPreview() : renderHiddenContentPlaceholder( blockTitle, blockIcon ) }
 					</Fragment>
 				) : (
-					<Fragment>
-						{ this.getInspectorControls() }
-						{ ! HAS_PRODUCTS && renderNoProductsPlaceholder( blockTitle, blockIcon ) }
-						{ ! hasContent && renderHiddenContentPlaceholder( blockTitle, blockIcon ) }
-						<Placeholder
-							icon={ blockIcon }
-							label={ __( 'All Products', 'woo-gutenberg-products-block' ) }
-						>
-							{ __(
-								'Shows all products. Edit the product template below for products shown in the grid.',
-								'woo-gutenberg-products-block'
-							) }
-							<div className="wc-block-all-products-grid-item-template">
-								<div className="wc-block-grid has-1-columns">
-									<ul className="wc-block-grid__products">
-										<ProductGridItem attributes={ attributes } product={ attributes.product }>
-											<InnerBlocks
-												template={ BLOCKS_TEMPLATE }
-												templateLock={ false }
-												allowedBlocks={ ALLOWED_BLOCKS }
-											/>
-										</ProductGridItem>
-									</ul>
-								</div>
-								<Button isDefault onClick={ this.togglePreview }>
-									{ __( 'Done', 'woo-gutenberg-products-block' ) }
-								</Button>
+					<Placeholder
+						icon={ blockIcon }
+						label={ __( 'All Products', 'woo-gutenberg-products-block' ) }
+					>
+						{ __(
+							'Shows all products. Edit the product template below for products shown in the grid.',
+							'woo-gutenberg-products-block'
+						) }
+						<div className="wc-block-all-products-grid-item-template">
+							<div className="wc-block-grid has-1-columns">
+								<ul className="wc-block-grid__products">
+									<ProductGridItem attributes={ attributes } product={ attributes.product }>
+										<InnerBlocks
+											template={ BLOCKS_TEMPLATE }
+											templateLock={ false }
+											allowedBlocks={ ALLOWED_BLOCKS }
+										/>
+									</ProductGridItem>
+								</ul>
 							</div>
-						</Placeholder>
-					</Fragment>
+							<Button isDefault onClick={ this.togglePreview }>
+								{ __( 'Done', 'woo-gutenberg-products-block' ) }
+							</Button>
+						</div>
+					</Placeholder>
 				) }
 			</div>
 		);
