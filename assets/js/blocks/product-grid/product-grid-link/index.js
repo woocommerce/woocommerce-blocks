@@ -17,9 +17,9 @@ import sharedConfig from '../shared-config';
  * Register and run the "All Products" block.
  */
 const blockConfig = {
-	title: __( 'Product Price', 'woo-gutenberg-products-block' ),
+	title: __( 'Product Link', 'woo-gutenberg-products-block' ),
 	description: __(
-		'Shows the price of a product within a product grid.',
+		'Links to the product page. Can contain other blocks.',
 		'woo-gutenberg-products-block'
 	),
 	edit( props ) {
