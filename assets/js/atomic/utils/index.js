@@ -7,6 +7,8 @@ import {
 	ProductListRating,
 } from '../components/product-list';
 
+let layoutKeys = 0;
+
 /**
  * Maps a layout config into atomic components.
  *
@@ -16,10 +18,14 @@ import {
 export const renderProductLayout = ( product, layoutConfig ) => {
 	return layoutConfig.map( ( { component: LayoutComponent, props } ) => {
 		let children = [];
+
 		if ( props.children.length > 0 ) {
 			children = renderProductLayout( product, props.children );
 		}
-		return <LayoutComponent key={ 'layout' + LayoutComponent + product.id } { ...props } children={ children } product={ product } />;
+
+		layoutKeys++;
+
+		return <LayoutComponent key={ 'layout' + layoutKeys + '_' + product.id } { ...props } children={ children } product={ product } />;
 	} );
 };
 
@@ -47,7 +53,7 @@ export const getProductLayoutConfig = ( innerBlocks ) => {
 			props: {
 				...block.attributes,
 				children: block.innerBlocks.length > 0 ?
-					this.getProductLayoutConfig( block.innerBlocks ) :
+					getProductLayoutConfig( block.innerBlocks ) :
 					[],
 			},
 		};

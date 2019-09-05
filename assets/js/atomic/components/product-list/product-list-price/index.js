@@ -35,7 +35,7 @@ const ProductListPrice = ( { className, product = {}, showSaleBadge = true } ) =
 	if ( product.prices.price_range && product.prices.price_range.min_amount && product.prices.price_range.max_amount ) {
 		return (
 			<Fragment>
-				{ renderSaleBadge }
+				{ renderSaleBadge() }
 				<div className={ classes }>
 					<span className={ 'wc-block-grid__product-price__value' }>
 						<NumberFormat value={ product.prices.price_range.min_amount } { ...numberFormatArgs } />
@@ -49,7 +49,7 @@ const ProductListPrice = ( { className, product = {}, showSaleBadge = true } ) =
 
 	return (
 		<Fragment>
-			{ renderSaleBadge }
+			{ renderSaleBadge() }
 			<div className={ classes }>
 				{ product.prices.regular_price !== product.prices.price && (
 					<del className={ 'wc-block-grid__product-price__regular' }>
