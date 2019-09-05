@@ -12,7 +12,7 @@ import Gridicon from 'gridicons';
 import Editor from './edit';
 import sharedAttributes from '../attributes';
 import { getBlockClassName } from '../utils.js';
-import '../../product-grid';
+import '../../../atomic/blocks/product-list';
 
 /**
  * Register and run the "All Products" block.

@@ -32,22 +32,8 @@ import { getSharedContentControls, getSharedListControls } from '../edit';
 import GridLayoutControl from '../../../components/grid-layout-control';
 import { HAS_PRODUCTS } from '../../../constants';
 import Block from './block';
-import ProductGridItem from '../../../base/components/product-grid/product-grid-item';
-import ProductImage from '../../../base/components/product-grid/product-grid-image';
-import ProductButton from '../../../base/components/product-grid/product-grid-button';
-import ProductRating from '../../../base/components/product-grid/product-grid-rating';
-import ProductPrice from '../../../base/components/product-grid/product-grid-price';
-import ProductTitle from '../../../base/components/product-grid/product-grid-title';
-import ProductLink from '../../../base/components/product-grid/product-grid-link';
-
-const mapBlockToComponent = {
-	'woocommerce/product-grid-link': ProductLink,
-	'woocommerce/product-grid-image': ProductImage,
-	'woocommerce/product-grid-price': ProductPrice,
-	'woocommerce/product-grid-title': ProductTitle,
-	'woocommerce/product-grid-rating': ProductRating,
-	'woocommerce/product-grid-button': ProductButton,
-};
+import { getProductLayoutConfig, productLayoutBlockMap } from '../../../atomic/utils';
+import ProductListItem from '../../../base/components/product-list-item';
 
 /**
  * Component to handle edit mode of "All Products".
@@ -72,28 +58,13 @@ class Editor extends Component {
 		showPreview: true,
 	};
 
-	getProductLayoutConfig = ( innerBlocks ) => {
-		// loop through innerblocks and trigger the layout config from it.
-		return innerBlocks.map( ( block ) => {
-			return {
-				component: mapBlockToComponent[ block.name ],
-				props: {
-					...block.attributes,
-					children: block.innerBlocks.length > 0 ?
-						this.getProductLayoutConfig( block.innerBlocks ) :
-						[],
-				},
-			};
-		} );
-	};
-
 	togglePreview = () => {
 		this.setState( { showPreview: ! this.state.showPreview } );
 	};
 
 	renderPreview = () => {
 		const { attributes, block } = this.props;
-		return <Block attributes={ attributes } layoutConfig={ this.getProductLayoutConfig( block.innerBlocks ) } />;
+		return <Block attributes={ attributes } layoutConfig={ getProductLayoutConfig( block.innerBlocks ) } />;
 	};
 
 	getInspectorControls = () => {
@@ -157,21 +128,16 @@ class Editor extends Component {
 		const hasContent = 0 !== Object.values( contentVisibility ).filter( Boolean ).length;
 
 		const ALLOWED_BLOCKS = [
-			'woocommerce/product-grid-title',
-			'woocommerce/product-grid-price',
-			'woocommerce/product-grid-image',
-			'woocommerce/product-grid-rating',
-			'woocommerce/product-grid-button',
-			'woocommerce/product-grid-link',
+			...Object.keys( productLayoutBlockMap ),
 			'core/paragraph',
 			'core/heading',
 		];
 
 		const BLOCKS_TEMPLATE = [
-			[ 'woocommerce/product-grid-link', {} ],
-			[ 'woocommerce/product-grid-price', {} ],
-			[ 'woocommerce/product-grid-rating', {} ],
-			[ 'woocommerce/product-grid-button', {} ],
+			[ 'woocommerce/product-list-link', {} ],
+			[ 'woocommerce/product-list-price', {} ],
+			[ 'woocommerce/product-list-rating', {} ],
+			[ 'woocommerce/product-list-button', {} ],
 		];
 
 		const blockTitle = __( 'All Products', 'woo-gutenberg-products-block' );
@@ -200,14 +166,14 @@ class Editor extends Component {
 						<div className="wc-block-all-products-grid-item-template">
 							<div className="wc-block-grid has-1-columns">
 								<ul className="wc-block-grid__products">
-									<ProductGridItem attributes={ attributes } product={ attributes.product }>
+									<ProductListItem attributes={ attributes } product={ attributes.product }>
 										<InnerBlocks
 											template={ BLOCKS_TEMPLATE }
 											templateLock={ false }
 											allowedBlocks={ ALLOWED_BLOCKS }
 											renderAppender={ false }
 										/>
-									</ProductGridItem>
+									</ProductListItem>
 								</ul>
 							</div>
 							<Button isDefault onClick={ this.togglePreview }>
