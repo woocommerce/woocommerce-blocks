@@ -42,12 +42,8 @@ const ProductPreview = ( { product } ) => {
 	}
 
 	return (
-		<div
-			className="wc-product-preview wc-block-grid__product"
-		>
-			<div className="wc-product-preview__image wc-block-grid__product-image">
-				{ image }
-			</div>
+		<div className="wc-product-preview wc-block-grid__product">
+			<div className="wc-product-preview__image wc-block-grid__product-image">{ image }</div>
 			<div
 				className="wc-product-preview__title wc-block-grid__product-title"
 				dangerouslySetInnerHTML={ { __html: product.name } }
@@ -58,7 +54,10 @@ const ProductPreview = ( { product } ) => {
 			/>
 
 			{ displayRating && (
-				<div className="wc-product-preview__rating star-rating wc-block-grid__product-rating" role="img">
+				<div
+					className="wc-product-preview__rating star-rating wc-block-grid__product-rating"
+					role="img"
+				>
 					<span style={ { width: `${ displayRating }%` } } />
 				</div>
 			) }

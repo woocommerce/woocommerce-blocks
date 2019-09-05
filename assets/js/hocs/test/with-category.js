@@ -20,20 +20,18 @@ jest.mock( '../../base/utils/errors', () => ( {
 
 const mockCategory = { name: 'Clothing' };
 const attributes = { categoryId: 1 };
-const TestComponent = withCategory( ( props ) => {
-	return <div
-		error={ props.error }
-		getCategory={ props.getCategory }
-		isLoading={ props.isLoading }
-		category={ props.category }
-	/>;
-} );
-const render = () => {
-	return TestRenderer.create(
-		<TestComponent
-			attributes={ attributes }
+const TestComponent = withCategory( props => {
+	return (
+		<div
+			error={ props.error }
+			getCategory={ props.getCategory }
+			isLoading={ props.isLoading }
+			category={ props.category }
 		/>
 	);
+} );
+const render = () => {
+	return TestRenderer.create( <TestComponent attributes={ attributes } /> );
 };
 
 describe( 'withCategory Component', () => {
@@ -58,11 +56,7 @@ describe( 'withCategory Component', () => {
 		it( 'getCategory is called on component update', () => {
 			const { getCategory } = mockUtils;
 			const newAttributes = { ...attributes, categoryId: 2 };
-			renderer.update(
-				<TestComponent
-					attributes={ newAttributes }
-				/>
-			);
+			renderer.update( <TestComponent attributes={ newAttributes } /> );
 
 			expect( getCategory ).toHaveBeenNthCalledWith( 2, newAttributes.categoryId );
 			expect( getCategory ).toHaveBeenCalledTimes( 2 );
@@ -80,8 +74,8 @@ describe( 'withCategory Component', () => {
 
 	describe( 'when the API returns category data', () => {
 		beforeEach( () => {
-			mockUtils.getCategory.mockImplementation(
-				( categoryId ) => Promise.resolve( { ...mockCategory, id: categoryId } )
+			mockUtils.getCategory.mockImplementation( categoryId =>
+				Promise.resolve( { ...mockCategory, id: categoryId } )
 			);
 			renderer = render();
 		} );
@@ -102,16 +96,12 @@ describe( 'withCategory Component', () => {
 		const formattedError = { message: 'There was an error.', type: 'api' };
 
 		beforeEach( () => {
-			mockUtils.getCategory.mockImplementation(
-				() => getCategoryPromise
-			);
-			mockBaseUtils.formatError.mockImplementation(
-				() => formattedError,
-			);
+			mockUtils.getCategory.mockImplementation( () => getCategoryPromise );
+			mockBaseUtils.formatError.mockImplementation( () => formattedError );
 			renderer = render();
 		} );
 
-		it( 'sets the error prop', ( done ) => {
+		it( 'sets the error prop', done => {
 			const { formatError } = mockBaseUtils;
 			getCategoryPromise.catch( () => {
 				const props = renderer.root.findByType( 'div' ).props;

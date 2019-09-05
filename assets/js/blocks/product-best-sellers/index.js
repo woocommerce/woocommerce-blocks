@@ -38,10 +38,7 @@ registerBlockType( 'woocommerce/product-best-sellers', {
 			{
 				type: 'block',
 				blocks: without( sharedAttributeBlockTypes, 'woocommerce/product-best-sellers' ),
-				transform: ( attributes ) => createBlock(
-					'woocommerce/product-best-sellers',
-					attributes
-				),
+				transform: attributes => createBlock( 'woocommerce/product-best-sellers', attributes ),
 			},
 		],
 	},

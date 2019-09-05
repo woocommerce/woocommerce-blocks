@@ -56,7 +56,7 @@ class FrontendContainerBlock extends Component {
 					newReviews.length,
 					'woo-gutenberg-products-block'
 				),
-				newReviews.length,
+				newReviews.length
 			)
 		);
 	}

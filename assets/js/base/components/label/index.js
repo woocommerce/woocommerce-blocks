@@ -20,11 +20,7 @@ const Label = ( { label, screenReaderLabel, wrapperElement, wrapperProps } ) => 
 			className: classNames( wrapperProps.className, 'screen-reader-text' ),
 		};
 
-		return (
-			<Wrapper { ...wrapperProps }>
-				{ screenReaderLabel }
-			</Wrapper>
-		);
+		return <Wrapper { ...wrapperProps }>{ screenReaderLabel }</Wrapper>;
 	}
 
 	Wrapper = wrapperElement || Fragment;
@@ -32,21 +28,13 @@ const Label = ( { label, screenReaderLabel, wrapperElement, wrapperProps } ) => 
 	if ( label && screenReaderLabel && label !== screenReaderLabel ) {
 		return (
 			<Wrapper { ...wrapperProps }>
-				<span aria-hidden="true">
-					{ label }
-				</span>
-				<span className="screen-reader-text">
-					{ screenReaderLabel }
-				</span>
+				<span aria-hidden="true">{ label }</span>
+				<span className="screen-reader-text">{ screenReaderLabel }</span>
 			</Wrapper>
 		);
 	}
 
-	return (
-		<Wrapper { ...wrapperProps }>
-			{ label }
-		</Wrapper>
-	);
+	return <Wrapper { ...wrapperProps }>{ label }</Wrapper>;
 };
 
 Label.propTypes = {

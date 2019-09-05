@@ -2,9 +2,7 @@
  * External dependencies
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
-import {
-	InspectorControls,
-} from '@wordpress/editor';
+import { InspectorControls } from '@wordpress/editor';
 import {
 	Button,
 	PanelBody,
@@ -23,7 +21,11 @@ import ProductCategoryControl from '../../../components/product-category-control
 import { IconReviewsByCategory } from '../../../components/icons';
 import EditorContainerBlock from '../editor-container-block.js';
 import NoReviewsPlaceholder from './no-reviews-placeholder.js';
-import { getBlockControls, getSharedReviewContentControls, getSharedReviewListControls } from '../edit-utils.js';
+import {
+	getBlockControls,
+	getSharedReviewContentControls,
+	getSharedReviewListControls,
+} from '../edit-utils.js';
 
 /**
  * Component to handle edit mode of "Reviews by Category".
@@ -31,11 +33,9 @@ import { getBlockControls, getSharedReviewContentControls, getSharedReviewListCo
 const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, setAttributes } ) => {
 	const { editMode, categoryIds } = attributes;
 
-	const renderCategoryControlItem = ( args ) => {
+	const renderCategoryControlItem = args => {
 		const { item, search, depth = 0 } = args;
-		const classes = [
-			'woocommerce-product-categories__item',
-		];
+		const classes = [ 'woocommerce-product-categories__item' ];
 		if ( search.length ) {
 			classes.push( 'is-searching' );
 		}
@@ -43,9 +43,9 @@ const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, setAttributes } 
 			classes.push( 'is-skip-level' );
 		}
 
-		const accessibleName = ! item.breadcrumbs.length ?
-			item.name :
-			`${ item.breadcrumbs.join( ', ' ) }, ${ item.name }`;
+		const accessibleName = ! item.breadcrumbs.length
+			? item.name
+			: `${ item.breadcrumbs.join( ', ' ) }, ${ item.name }`;
 
 		return (
 			<SearchListItem
@@ -69,10 +69,7 @@ const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, setAttributes } 
 	const getInspectorControls = () => {
 		return (
 			<InspectorControls key="inspector">
-				<PanelBody
-					title={ __( 'Category', 'woo-gutenberg-products-block' ) }
-					initialOpen={ false }
-				>
+				<PanelBody title={ __( 'Category', 'woo-gutenberg-products-block' ) } initialOpen={ false }>
 					<ProductCategoryControl
 						selected={ attributes.categoryIds }
 						onChange={ ( value = [] ) => {
@@ -101,10 +98,7 @@ const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, setAttributes } 
 		const onDone = () => {
 			setAttributes( { editMode: false } );
 			debouncedSpeak(
-				__(
-					'Showing Reviews by Category block preview.',
-					'woo-gutenberg-products-block'
-				)
+				__( 'Showing Reviews by Category block preview.', 'woo-gutenberg-products-block' )
 			);
 		};
 
@@ -113,10 +107,7 @@ const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, setAttributes } 
 				icon={ <IconReviewsByCategory className="block-editor-block-icon" /> }
 				label={ __( 'Reviews by Category', 'woo-gutenberg-products-block' ) }
 			>
-				{ __(
-					'Show product reviews from specific categories.',
-					'woo-gutenberg-products-block'
-				) }
+				{ __( 'Show product reviews from specific categories.', 'woo-gutenberg-products-block' ) }
 				<div className="wc-block-reviews__selection">
 					<ProductCategoryControl
 						selected={ attributes.categoryIds }

@@ -11,7 +11,8 @@ import ReviewListItem from '../review-list-item';
 import './style.scss';
 
 const ReviewList = ( { attributes, reviews } ) => {
-	const showReviewImage = ( SHOW_AVATARS || attributes.imageType === 'product' ) && attributes.showReviewImage;
+	const showReviewImage =
+		( SHOW_AVATARS || attributes.imageType === 'product' ) && attributes.showReviewImage;
 	const showReviewRating = ENABLE_REVIEW_RATING && attributes.showReviewRating;
 	const attrs = {
 		...attributes,
@@ -21,15 +22,13 @@ const ReviewList = ( { attributes, reviews } ) => {
 
 	return (
 		<ul className="wc-block-review-list">
-			{ reviews.length === 0 ?
-				(
-					<ReviewListItem attributes={ attrs } />
-				) : (
-					reviews.map( ( review, i ) => (
-						<ReviewListItem key={ review.id || i } attributes={ attrs } review={ review } />
-					) )
-				)
-			}
+			{ reviews.length === 0 ? (
+				<ReviewListItem attributes={ attrs } />
+			) : (
+				reviews.map( ( review, i ) => (
+					<ReviewListItem key={ review.id || i } attributes={ attrs } review={ review } />
+				) )
+			) }
 		</ul>
 	);
 };

@@ -11,9 +11,7 @@ import Gridicon from 'gridicons';
  */
 import Block from './block';
 import { deprecatedConvertToShortcode } from '../../utils/deprecations';
-import sharedAttributes, {
-	sharedAttributeBlockTypes,
-} from '../../utils/shared-attributes';
+import sharedAttributes, { sharedAttributeBlockTypes } from '../../utils/shared-attributes';
 
 registerBlockType( 'woocommerce/product-on-sale', {
 	title: __( 'On Sale Products', 'woo-gutenberg-products-block' ),
@@ -23,10 +21,7 @@ registerBlockType( 'woocommerce/product-on-sale', {
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
-	description: __(
-		'Display a grid of on sale products.',
-		'woo-gutenberg-products-block'
-	),
+	description: __( 'Display a grid of on sale products.', 'woo-gutenberg-products-block' ),
 	supports: {
 		align: [ 'wide', 'full' ],
 		html: false,
@@ -46,12 +41,8 @@ registerBlockType( 'woocommerce/product-on-sale', {
 		from: [
 			{
 				type: 'block',
-				blocks: without(
-					sharedAttributeBlockTypes,
-					'woocommerce/product-on-sale'
-				),
-				transform: ( attributes ) =>
-					createBlock( 'woocommerce/product-on-sale', attributes ),
+				blocks: without( sharedAttributeBlockTypes, 'woocommerce/product-on-sale' ),
+				transform: attributes => createBlock( 'woocommerce/product-on-sale', attributes ),
 			},
 		],
 	},

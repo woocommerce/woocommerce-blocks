@@ -15,12 +15,19 @@ import { withCategories } from '../../hocs';
 import ErrorMessage from '../api-error-placeholder/error-message.js';
 import './style.scss';
 
-const ProductCategoryControl = ( { categories, error, isLoading, onChange, onOperatorChange, operator, selected, isSingle } ) => {
-	const renderItem = ( args ) => {
+const ProductCategoryControl = ( {
+	categories,
+	error,
+	isLoading,
+	onChange,
+	onOperatorChange,
+	operator,
+	selected,
+	isSingle,
+} ) => {
+	const renderItem = args => {
 		const { item, search, depth = 0 } = args;
-		const classes = [
-			'woocommerce-product-categories__item',
-		];
+		const classes = [ 'woocommerce-product-categories__item' ];
 		if ( search.length ) {
 			classes.push( 'is-searching' );
 		}
@@ -28,9 +35,9 @@ const ProductCategoryControl = ( { categories, error, isLoading, onChange, onOpe
 			classes.push( 'is-skip-level' );
 		}
 
-		const accessibleName = ! item.breadcrumbs.length ?
-			item.name :
-			`${ item.breadcrumbs.join( ', ' ) }, ${ item.name }`;
+		const accessibleName = ! item.breadcrumbs.length
+			? item.name
+			: `${ item.breadcrumbs.join( ', ' ) }, ${ item.name }`;
 
 		return (
 			<SearchListItem
@@ -58,30 +65,17 @@ const ProductCategoryControl = ( { categories, error, isLoading, onChange, onOpe
 			"Your store doesn't have any product categories.",
 			'woo-gutenberg-products-block'
 		),
-		search: __(
-			'Search for product categories',
-			'woo-gutenberg-products-block'
-		),
-		selected: ( n ) =>
+		search: __( 'Search for product categories', 'woo-gutenberg-products-block' ),
+		selected: n =>
 			sprintf(
-				_n(
-					'%d category selected',
-					'%d categories selected',
-					n,
-					'woo-gutenberg-products-block'
-				),
+				_n( '%d category selected', '%d categories selected', n, 'woo-gutenberg-products-block' ),
 				n
 			),
-		updated: __(
-			'Category search results updated.',
-			'woo-gutenberg-products-block'
-		),
+		updated: __( 'Category search results updated.', 'woo-gutenberg-products-block' ),
 	};
 
 	if ( error ) {
-		return (
-			<ErrorMessage error={ error } />
-		);
+		return <ErrorMessage error={ error } />;
 	}
 
 	return (
@@ -90,19 +84,22 @@ const ProductCategoryControl = ( { categories, error, isLoading, onChange, onOpe
 				className="woocommerce-product-categories"
 				list={ categories }
 				isLoading={ isLoading }
-				selected={ selected.map( ( id ) => find( categories, { id } ) ).filter( Boolean ) }
+				selected={ selected.map( id => find( categories, { id } ) ).filter( Boolean ) }
 				onChange={ onChange }
 				renderItem={ renderItem }
 				messages={ messages }
 				isHierarchical
 				isSingle={ isSingle }
 			/>
-			{ ( !! onOperatorChange ) && (
+			{ !! onOperatorChange && (
 				<div className={ selected.length < 2 ? 'screen-reader-text' : '' }>
 					<SelectControl
 						className="woocommerce-product-categories__operator"
 						label={ __( 'Display products matching', 'woo-gutenberg-products-block' ) }
-						help={ __( 'Pick at least two categories to use this setting.', 'woo-gutenberg-products-block' ) }
+						help={ __(
+							'Pick at least two categories to use this setting.',
+							'woo-gutenberg-products-block'
+						) }
 						value={ operator }
 						onChange={ onOperatorChange }
 						options={ [

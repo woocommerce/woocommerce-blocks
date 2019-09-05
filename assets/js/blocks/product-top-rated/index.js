@@ -23,10 +23,7 @@ registerBlockType( blockTypeName, {
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
-	description: __(
-		'Display a grid of your top rated products.',
-		'woo-gutenberg-products-block'
-	),
+	description: __( 'Display a grid of your top rated products.', 'woo-gutenberg-products-block' ),
 	supports: {
 		align: [ 'wide', 'full' ],
 		html: false,
@@ -40,10 +37,7 @@ registerBlockType( blockTypeName, {
 			{
 				type: 'block',
 				blocks: without( sharedAttributeBlockTypes, blockTypeName ),
-				transform: ( attributes ) => createBlock(
-					'woocommerce/product-top-rated',
-					attributes
-				),
+				transform: attributes => createBlock( 'woocommerce/product-top-rated', attributes ),
 			},
 		],
 	},

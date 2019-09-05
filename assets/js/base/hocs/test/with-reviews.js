@@ -34,25 +34,22 @@ const defaultArgs = {
 	per_page: 2,
 	product_id: 1,
 };
-const TestComponent = withReviews( ( props ) => {
-	return <div
-		error={ props.error }
-		getReviews={ props.getReviews }
-		appendReviews={ props.appendReviews }
-		onChangeArgs={ props.onChangeArgs }
-		isLoading={ props.isLoading }
-		reviews={ props.reviews }
-		totalReviews={ props.totalReviews }
-	/>;
+const TestComponent = withReviews( props => {
+	return (
+		<div
+			error={ props.error }
+			getReviews={ props.getReviews }
+			appendReviews={ props.appendReviews }
+			onChangeArgs={ props.onChangeArgs }
+			isLoading={ props.isLoading }
+			reviews={ props.reviews }
+			totalReviews={ props.totalReviews }
+		/>
+	);
 } );
 const render = () => {
 	return TestRenderer.create(
-		<TestComponent
-			order="desc"
-			orderby="date_gmt"
-			productId={ 1 }
-			reviewsToDisplay={ 2 }
-		/>
+		<TestComponent order="desc" orderby="date_gmt" productId={ 1 } reviewsToDisplay={ 2 } />
 	);
 };
 
@@ -64,11 +61,19 @@ describe( 'withReviews Component', () => {
 
 	describe( 'lifecycle events', () => {
 		beforeEach( () => {
-			mockUtils.getReviews.mockImplementationOnce(
-				() => Promise.resolve( { reviews: mockReviews.slice( 0, 2 ), totalReviews: mockReviews.length } )
-			).mockImplementationOnce(
-				() => Promise.resolve( { reviews: mockReviews.slice( 2, 3 ), totalReviews: mockReviews.length } )
-			);
+			mockUtils.getReviews
+				.mockImplementationOnce( () =>
+					Promise.resolve( {
+						reviews: mockReviews.slice( 0, 2 ),
+						totalReviews: mockReviews.length,
+					} )
+				)
+				.mockImplementationOnce( () =>
+					Promise.resolve( {
+						reviews: mockReviews.slice( 2, 3 ),
+						totalReviews: mockReviews.length,
+					} )
+				);
 			renderer = render();
 		} );
 
@@ -82,12 +87,7 @@ describe( 'withReviews Component', () => {
 		it( 'getReviews is called on component update', () => {
 			const { getReviews } = mockUtils;
 			renderer.update(
-				<TestComponent
-					order="desc"
-					orderby="date_gmt"
-					productId={ 1 }
-					reviewsToDisplay={ 3 }
-				/>
+				<TestComponent order="desc" orderby="date_gmt" productId={ 1 } reviewsToDisplay={ 3 } />
 			);
 
 			expect( getReviews ).toHaveBeenNthCalledWith( 2, { ...defaultArgs, offset: 2, per_page: 1 } );
@@ -97,8 +97,8 @@ describe( 'withReviews Component', () => {
 
 	describe( 'when the API returns product data', () => {
 		beforeEach( () => {
-			mockUtils.getReviews.mockImplementation(
-				() => Promise.resolve( { reviews: mockReviews.slice( 0, 2 ), totalReviews: mockReviews.length } )
+			mockUtils.getReviews.mockImplementation( () =>
+				Promise.resolve( { reviews: mockReviews.slice( 0, 2 ), totalReviews: mockReviews.length } )
 			);
 			renderer = render();
 		} );
@@ -119,16 +119,12 @@ describe( 'withReviews Component', () => {
 		const formattedError = { message: 'There was an error.', type: 'api' };
 
 		beforeEach( () => {
-			mockUtils.getReviews.mockImplementation(
-				() => getReviewsPromise,
-			);
-			mockBaseUtils.formatError.mockImplementation(
-				() => formattedError,
-			);
+			mockUtils.getReviews.mockImplementation( () => getReviewsPromise );
+			mockBaseUtils.formatError.mockImplementation( () => formattedError );
 			renderer = render();
 		} );
 
-		it( 'sets the error prop', ( done ) => {
+		it( 'sets the error prop', done => {
 			const { formatError } = mockBaseUtils;
 			getReviewsPromise.catch( () => {
 				const props = renderer.root.findByType( 'div' ).props;

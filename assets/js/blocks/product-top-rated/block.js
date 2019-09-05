@@ -21,21 +21,11 @@ import ProductCategoryControl from '../../components/product-category-control';
 class ProductTopRatedBlock extends Component {
 	getInspectorControls() {
 		const { attributes, setAttributes } = this.props;
-		const {
-			categories,
-			catOperator,
-			columns,
-			contentVisibility,
-			rows,
-			alignButtons,
-		} = attributes;
+		const { categories, catOperator, columns, contentVisibility, rows, alignButtons } = attributes;
 
 		return (
 			<InspectorControls key="inspector">
-				<PanelBody
-					title={ __( 'Layout', 'woo-gutenberg-products-block' ) }
-					initialOpen
-				>
+				<PanelBody title={ __( 'Layout', 'woo-gutenberg-products-block' ) } initialOpen>
 					<GridLayoutControl
 						columns={ columns }
 						rows={ rows }
@@ -43,20 +33,14 @@ class ProductTopRatedBlock extends Component {
 						setAttributes={ setAttributes }
 					/>
 				</PanelBody>
-				<PanelBody
-					title={ __( 'Content', 'woo-gutenberg-products-block' ) }
-					initialOpen
-				>
+				<PanelBody title={ __( 'Content', 'woo-gutenberg-products-block' ) } initialOpen>
 					<GridContentControl
 						settings={ contentVisibility }
-						onChange={ ( value ) => setAttributes( { contentVisibility: value } ) }
+						onChange={ value => setAttributes( { contentVisibility: value } ) }
 					/>
 				</PanelBody>
 				<PanelBody
-					title={ __(
-						'Filter by Product Category',
-						'woo-gutenberg-products-block'
-					) }
+					title={ __( 'Filter by Product Category', 'woo-gutenberg-products-block' ) }
 					initialOpen={ false }
 				>
 					<ProductCategoryControl
@@ -66,9 +50,7 @@ class ProductTopRatedBlock extends Component {
 							setAttributes( { categories: ids } );
 						} }
 						operator={ catOperator }
-						onOperatorChange={ ( value = 'any' ) =>
-							setAttributes( { catOperator: value } )
-						}
+						onOperatorChange={ ( value = 'any' ) => setAttributes( { catOperator: value } ) }
 					/>
 				</PanelBody>
 			</InspectorControls>

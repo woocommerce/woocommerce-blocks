@@ -1,5 +1,8 @@
 const getConstantFromData = ( property, fallback = false ) => {
-	if ( typeof wc_product_block_data === 'object' && wc_product_block_data.hasOwnProperty( property ) ) {
+	if (
+		typeof wc_product_block_data === 'object' &&
+		wc_product_block_data.hasOwnProperty( property )
+	) {
 		return wc_product_block_data[ property ];
 	}
 	return fallback;

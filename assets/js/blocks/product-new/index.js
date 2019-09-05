@@ -11,9 +11,7 @@ import { without } from 'lodash';
 import Block from './block';
 import { deprecatedConvertToShortcode } from '../../utils/deprecations';
 import { IconNewReleases } from '../../components/icons';
-import sharedAttributes, {
-	sharedAttributeBlockTypes,
-} from '../../utils/shared-attributes';
+import sharedAttributes, { sharedAttributeBlockTypes } from '../../utils/shared-attributes';
 
 registerBlockType( 'woocommerce/product-new', {
 	title: __( 'Newest Products', 'woo-gutenberg-products-block' ),
@@ -23,10 +21,7 @@ registerBlockType( 'woocommerce/product-new', {
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
-	description: __(
-		'Display a grid of your newest products.',
-		'woo-gutenberg-products-block'
-	),
+	description: __( 'Display a grid of your newest products.', 'woo-gutenberg-products-block' ),
 	supports: {
 		align: [ 'wide', 'full' ],
 		html: false,
@@ -39,8 +34,7 @@ registerBlockType( 'woocommerce/product-new', {
 			{
 				type: 'block',
 				blocks: without( sharedAttributeBlockTypes, 'woocommerce/product-new' ),
-				transform: ( attributes ) =>
-					createBlock( 'woocommerce/product-new', attributes ),
+				transform: attributes => createBlock( 'woocommerce/product-new', attributes ),
 			},
 		],
 	},

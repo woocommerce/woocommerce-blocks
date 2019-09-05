@@ -17,12 +17,8 @@ const GridLayoutControl = ( { columns, rows, setAttributes, alignButtons } ) => 
 			<RangeControl
 				label={ __( 'Columns', 'woo-gutenberg-products-block' ) }
 				value={ columns }
-				onChange={ ( value ) => {
-					const newValue = clamp(
-						value,
-						MIN_COLUMNS,
-						MAX_COLUMNS
-					);
+				onChange={ value => {
+					const newValue = clamp( value, MIN_COLUMNS, MAX_COLUMNS );
 					setAttributes( { columns: isNaN( newValue ) ? '' : newValue } );
 				} }
 				min={ MIN_COLUMNS }
@@ -31,12 +27,8 @@ const GridLayoutControl = ( { columns, rows, setAttributes, alignButtons } ) => 
 			<RangeControl
 				label={ __( 'Rows', 'woo-gutenberg-products-block' ) }
 				value={ rows }
-				onChange={ ( value ) => {
-					const newValue = clamp(
-						value,
-						MIN_ROWS,
-						MAX_ROWS
-					);
+				onChange={ value => {
+					const newValue = clamp( value, MIN_ROWS, MAX_ROWS );
 					setAttributes( { rows: isNaN( newValue ) ? '' : newValue } );
 				} }
 				min={ MIN_ROWS }
@@ -45,15 +37,9 @@ const GridLayoutControl = ( { columns, rows, setAttributes, alignButtons } ) => 
 			<ToggleControl
 				label={ __( 'Align Add to Cart buttons', 'woo-gutenberg-products-block' ) }
 				help={
-					alignButtons ?
-						__(
-							'Buttons are aligned vertically.',
-							'woo-gutenberg-products-block'
-						) :
-						__(
-							'Buttons follow content.',
-							'woo-gutenberg-products-block'
-						)
+					alignButtons
+						? __( 'Buttons are aligned vertically.', 'woo-gutenberg-products-block' )
+						: __( 'Buttons follow content.', 'woo-gutenberg-products-block' )
 				}
 				checked={ alignButtons }
 				onChange={ () => setAttributes( { alignButtons: ! alignButtons } ) }

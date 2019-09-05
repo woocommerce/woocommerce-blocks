@@ -17,7 +17,7 @@ import { formatError } from '../base/utils/errors.js';
  * A higher order component that enhances the provided component with products
  * from a search query.
  */
-const withSearchedProducts = createHigherOrderComponent( ( OriginalComponent ) => {
+const withSearchedProducts = createHigherOrderComponent( OriginalComponent => {
 	/**
 	 * A Component wrapping the passed in component.
 	 *
@@ -38,7 +38,7 @@ const withSearchedProducts = createHigherOrderComponent( ( OriginalComponent ) =
 		componentDidMount() {
 			const { selected } = this.props;
 			getProducts( { selected } )
-				.then( ( list ) => {
+				.then( list => {
 					this.setState( { list, loading: false } );
 				} )
 				.catch( this.setError );
@@ -51,7 +51,7 @@ const withSearchedProducts = createHigherOrderComponent( ( OriginalComponent ) =
 		onSearch( search ) {
 			const { selected } = this.props;
 			getProducts( { selected, search } )
-				.then( ( list ) => {
+				.then( list => {
 					this.setState( { list, loading: false } );
 				} )
 				.catch( this.setError );
@@ -72,9 +72,7 @@ const withSearchedProducts = createHigherOrderComponent( ( OriginalComponent ) =
 					error={ error }
 					products={ list }
 					isLoading={ loading }
-					selected={ list.filter(
-						( { id } ) => selected.includes( id )
-					) }
+					selected={ list.filter( ( { id } ) => selected.includes( id ) ) }
 					onSearch={ IS_LARGE_CATALOG ? this.debouncedOnSearch : null }
 				/>
 			);

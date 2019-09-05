@@ -43,7 +43,7 @@ const ProductOrderbyControl = ( { value, setAttributes } ) => {
 					value: 'menu_order',
 				},
 			] }
-			onChange={ ( orderby ) => setAttributes( { orderby } ) }
+			onChange={ orderby => setAttributes( { orderby } ) }
 		/>
 	);
 };

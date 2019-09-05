@@ -57,10 +57,8 @@ registerBlockType( 'woocommerce/product-category', {
 			{
 				type: 'block',
 				blocks: without( sharedAttributeBlockTypes, 'woocommerce/product-category' ),
-				transform: ( attributes ) => createBlock(
-					'woocommerce/product-category',
-					{ ...attributes, editMode: false }
-				),
+				transform: attributes =>
+					createBlock( 'woocommerce/product-category', { ...attributes, editMode: false } ),
 			},
 		],
 	},

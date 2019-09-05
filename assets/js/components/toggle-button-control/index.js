@@ -52,9 +52,7 @@ class ToggleButtonControl extends Component {
 				>
 					{ label }
 				</label>
-				<ButtonGroup
-					aria-labelledby={ id + '__label' }
-				>
+				<ButtonGroup aria-labelledby={ id + '__label' }>
 					{ options.map( ( option, index ) => {
 						const buttonArgs = {};
 

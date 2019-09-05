@@ -24,45 +24,22 @@ import ErrorMessage from '../api-error-placeholder/error-message.js';
  *
  * @return {Function} A functional component.
  */
-const ProductsControl = ( {
-	error,
-	onChange,
-	onSearch,
-	selected,
-	products,
-	isLoading,
-} ) => {
+const ProductsControl = ( { error, onChange, onSearch, selected, products, isLoading } ) => {
 	const messages = {
 		clear: __( 'Clear all products', 'woo-gutenberg-products-block' ),
 		list: __( 'Products', 'woo-gutenberg-products-block' ),
-		noItems: __(
-			"Your store doesn't have any products.",
-			'woo-gutenberg-products-block'
-		),
-		search: __(
-			'Search for products to display',
-			'woo-gutenberg-products-block'
-		),
-		selected: ( n ) =>
+		noItems: __( "Your store doesn't have any products.", 'woo-gutenberg-products-block' ),
+		search: __( 'Search for products to display', 'woo-gutenberg-products-block' ),
+		selected: n =>
 			sprintf(
-				_n(
-					'%d product selected',
-					'%d products selected',
-					n,
-					'woo-gutenberg-products-block'
-				),
+				_n( '%d product selected', '%d products selected', n, 'woo-gutenberg-products-block' ),
 				n
 			),
-		updated: __(
-			'Product search results updated.',
-			'woo-gutenberg-products-block'
-		),
+		updated: __( 'Product search results updated.', 'woo-gutenberg-products-block' ),
 	};
 
 	if ( error ) {
-		return (
-			<ErrorMessage error={ error } />
-		);
+		return <ErrorMessage error={ error } />;
 	}
 
 	return (

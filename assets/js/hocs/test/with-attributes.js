@@ -21,22 +21,30 @@ jest.mock( '../../base/utils/errors', () => ( {
 
 jest.mock( 'lodash', () => ( {
 	...jest.requireActual( 'lodash' ),
-	debounce: ( func ) => func,
+	debounce: func => func,
 } ) );
 
-const mockAttributes = [ { id: 1, name: 'Color', slug: 'color' }, { id: 2, name: 'Size', slug: 'size' } ];
-const mockAttributesWithParent = [ { id: 1, name: 'Color', slug: 'color', parent: 0 }, { id: 2, name: 'Size', slug: 'size', parent: 0 } ];
+const mockAttributes = [
+	{ id: 1, name: 'Color', slug: 'color' },
+	{ id: 2, name: 'Size', slug: 'size' },
+];
+const mockAttributesWithParent = [
+	{ id: 1, name: 'Color', slug: 'color', parent: 0 },
+	{ id: 2, name: 'Size', slug: 'size', parent: 0 },
+];
 const selected = [ { id: 11, attr_slug: 'color' } ];
-const TestComponent = withAttributes( ( props ) => {
-	return <div
-		attributes={ props.attributes }
-		error={ props.error }
-		expandedAttribute={ props.expandedAttribute }
-		onExpandAttribute={ props.onExpandAttribute }
-		isLoading={ props.isLoading }
-		termsAreLoading={ props.termsAreLoading }
-		termsList={ props.termsList }
-	/>;
+const TestComponent = withAttributes( props => {
+	return (
+		<div
+			attributes={ props.attributes }
+			error={ props.error }
+			expandedAttribute={ props.expandedAttribute }
+			onExpandAttribute={ props.onExpandAttribute }
+			isLoading={ props.isLoading }
+			termsAreLoading={ props.termsAreLoading }
+			termsList={ props.termsList }
+		/>
+	);
 } );
 
 describe( 'withAttributes Component', () => {
@@ -51,27 +59,19 @@ describe( 'withAttributes Component', () => {
 
 		beforeEach( () => {
 			getAttributesPromise = Promise.resolve( mockAttributes );
-			mockUtils.getAttributes.mockImplementation(
-				() => getAttributesPromise
-			);
-			mockUtils.getTerms.mockImplementation(
-				() => Promise.resolve( [] )
-			);
+			mockUtils.getAttributes.mockImplementation( () => getAttributesPromise );
+			mockUtils.getTerms.mockImplementation( () => Promise.resolve( [] ) );
 		} );
 
 		it( 'getAttributes is called on mount', () => {
-			TestRenderer.create(
-				<TestComponent />
-			);
+			TestRenderer.create( <TestComponent /> );
 			const { getAttributes } = mockUtils;
 
 			expect( getAttributes ).toHaveBeenCalledTimes( 1 );
 		} );
 
 		it( 'getTerms is called on component update', () => {
-			const renderer = TestRenderer.create(
-				<TestComponent />
-			);
+			const renderer = TestRenderer.create( <TestComponent /> );
 			let props = renderer.root.findByType( 'div' ).props;
 
 			props.onExpandAttribute( 1 );
@@ -84,10 +84,8 @@ describe( 'withAttributes Component', () => {
 			expect( props.expandedAttribute ).toBe( 1 );
 		} );
 
-		it( 'getTerms is called on mount if there was an attribute selected', ( done ) => {
-			const renderer = TestRenderer.create(
-				<TestComponent selected={ selected } />
-			);
+		it( 'getTerms is called on mount if there was an attribute selected', done => {
+			const renderer = TestRenderer.create( <TestComponent selected={ selected } /> );
 
 			getAttributesPromise.then( () => {
 				const { getTerms } = mockUtils;
@@ -105,12 +103,8 @@ describe( 'withAttributes Component', () => {
 		let renderer;
 
 		beforeEach( () => {
-			mockUtils.getAttributes.mockImplementation(
-				() => Promise.resolve( mockAttributes )
-			);
-			renderer = TestRenderer.create(
-				<TestComponent />
-			);
+			mockUtils.getAttributes.mockImplementation( () => Promise.resolve( mockAttributes ) );
+			renderer = TestRenderer.create( <TestComponent /> );
 		} );
 
 		it( 'sets the attributes props', () => {
@@ -129,18 +123,12 @@ describe( 'withAttributes Component', () => {
 		let renderer;
 
 		beforeEach( () => {
-			mockUtils.getAttributes.mockImplementation(
-				() => getAttributesPromise
-			);
-			mockBaseUtils.formatError.mockImplementation(
-				() => formattedError,
-			);
-			renderer = TestRenderer.create(
-				<TestComponent />
-			);
+			mockUtils.getAttributes.mockImplementation( () => getAttributesPromise );
+			mockBaseUtils.formatError.mockImplementation( () => formattedError );
+			renderer = TestRenderer.create( <TestComponent /> );
 		} );
 
-		it( 'sets the error prop', ( done ) => {
+		it( 'sets the error prop', done => {
 			const { formatError } = mockBaseUtils;
 			getAttributesPromise.catch( () => {
 				const props = renderer.root.findByType( 'div' ).props;

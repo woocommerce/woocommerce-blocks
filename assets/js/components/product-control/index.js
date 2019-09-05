@@ -7,10 +7,7 @@ import { addQueryArgs } from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
 import { debounce, find, escapeRegExp, isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
-import {
-	SearchListControl,
-	SearchListItem,
-} from '@woocommerce/components';
+import { SearchListControl, SearchListItem } from '@woocommerce/components';
 import { Spinner, MenuItem } from '@wordpress/components';
 import classnames from 'classnames';
 import { ENDPOINTS, IS_LARGE_CATALOG } from '@woocommerce/block-settings';
@@ -19,10 +16,7 @@ import { ENDPOINTS, IS_LARGE_CATALOG } from '@woocommerce/block-settings';
  * Internal dependencies
  */
 import { getProducts } from '../utils';
-import {
-	IconRadioSelected,
-	IconRadioUnselected,
-} from '../icons';
+import { IconRadioSelected, IconRadioUnselected } from '../icons';
 import './style.scss';
 
 function getHighlightedName( name, search ) {
@@ -63,8 +57,8 @@ class ProductControl extends Component {
 		const { selected, queryArgs } = this.props;
 
 		getProducts( { selected, queryArgs } )
-			.then( ( products ) => {
-				products = products.map( ( product ) => {
+			.then( products => {
+				products = products.map( product => {
 					const count = product.variations ? product.variations.length : 0;
 					return {
 						...product,
@@ -96,7 +90,7 @@ class ProductControl extends Component {
 			return;
 		}
 
-		const productDetails = products.find( ( findProduct ) => findProduct.id === product );
+		const productDetails = products.find( findProduct => findProduct.id === product );
 
 		if ( ! productDetails.variations || productDetails.variations.length === 0 ) {
 			return;
@@ -111,9 +105,9 @@ class ProductControl extends Component {
 				per_page: -1,
 			} ),
 		} )
-			.then( ( variations ) => {
-				variations = variations.map( ( variation ) => ( { ...variation, parent: product } ) );
-				this.setState( ( prevState ) => ( {
+			.then( variations => {
+				variations = variations.map( variation => ( { ...variation, parent: product } ) );
+				this.setState( prevState => ( {
 					variationsList: { ...prevState.variationsList, [ product ]: variations },
 					variationsLoading: false,
 				} ) );
@@ -126,7 +120,7 @@ class ProductControl extends Component {
 	onSearch( search ) {
 		const { selected, queryArgs } = this.props;
 		getProducts( { selected, search, queryArgs } )
-			.then( ( products ) => {
+			.then( products => {
 				this.setState( { products, loading: false } );
 			} )
 			.catch( () => {
@@ -199,16 +193,9 @@ class ProductControl extends Component {
 					</span>
 
 					{ item.count ? (
-						<span
-							className="woocommerce-search-list__item-variation-count"
-						>
+						<span className="woocommerce-search-list__item-variation-count">
 							{ sprintf(
-								_n(
-									'%d variation',
-									'%d variations',
-									item.count,
-									'woo-gutenberg-products-block'
-								),
+								_n( '%d variation', '%d variations', item.count, 'woo-gutenberg-products-block' ),
 								item.count
 							) }
 						</span>
@@ -232,13 +219,7 @@ class ProductControl extends Component {
 			item.name = item.variation;
 		}
 
-		return (
-			<SearchListItem
-				className={ classes }
-				{ ...args }
-				{ ...a11yProps }
-			/>
-		);
+		return <SearchListItem className={ classes } { ...args } { ...a11yProps } />;
 	}
 
 	render() {
@@ -248,18 +229,9 @@ class ProductControl extends Component {
 		const currentList = [ ...products, ...currentVariations ];
 		const messages = {
 			list: __( 'Products', 'woo-gutenberg-products-block' ),
-			noItems: __(
-				"Your store doesn't have any products.",
-				'woo-gutenberg-products-block'
-			),
-			search: __(
-				'Search for a product to display',
-				'woo-gutenberg-products-block'
-			),
-			updated: __(
-				'Product search results updated.',
-				'woo-gutenberg-products-block'
-			),
+			noItems: __( "Your store doesn't have any products.", 'woo-gutenberg-products-block' ),
+			search: __( 'Search for a product to display', 'woo-gutenberg-products-block' ),
+			updated: __( 'Product search results updated.', 'woo-gutenberg-products-block' ),
 		};
 		const selectedListItems = selected ? [ find( currentList, { id: selected } ) ] : [];
 

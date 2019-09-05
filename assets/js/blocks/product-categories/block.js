@@ -43,11 +43,12 @@ class ProductCategoriesBlock extends Component {
 
 		return (
 			<ul key={ parentKey }>
-				{ items.map( ( cat ) => {
+				{ items.map( cat => {
 					const count = hasCount ? <span>({ cat.count })</span> : null;
 					return [
 						<li key={ cat.term_id }>
-							<a href={ isPreview ? null : cat.link }>{ cat.name }</a> { count } { /* eslint-disable-line */ }
+							{ /* eslint-disable-next-line jsx-a11y/anchor-is-valid */ }
+							<a href={ isPreview ? null : cat.link }>{ cat.name }</a> { count + ' ' }
 						</li>,
 						!! cat.children && !! cat.children.length && this.renderList( cat.children, depth + 1 ),
 					];
@@ -59,7 +60,7 @@ class ProductCategoriesBlock extends Component {
 	renderOptions( items, depth = 0 ) {
 		const { hasCount } = this.props.attributes;
 
-		return items.map( ( cat ) => {
+		return items.map( cat => {
 			const count = hasCount ? `(${ cat.count })` : null;
 			return [
 				<option key={ cat.term_id } value={ cat.link }>
@@ -73,14 +74,10 @@ class ProductCategoriesBlock extends Component {
 	render() {
 		const { attributes, categories, componentId } = this.props;
 		const { className, isDropdown } = attributes;
-		const classes = classnames(
-			'wc-block-product-categories',
-			className,
-			{
-				'is-dropdown': isDropdown,
-				'is-list': ! isDropdown,
-			}
-		);
+		const classes = classnames( 'wc-block-product-categories', className, {
+			'is-dropdown': isDropdown,
+			'is-list': ! isDropdown,
+		} );
 
 		const selectId = `prod-categories-${ componentId }`;
 
@@ -108,8 +105,17 @@ class ProductCategoriesBlock extends Component {
 									icon="arrow-right-alt2"
 									onClick={ this.onNavigate }
 								>
-									<svg aria-hidden="true" role="img" focusable="false" className="dashicon dashicons-arrow-right-alt2" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-										<path d="M6 15l5-5-5-5 1-2 7 7-7 7z"></path>
+									<svg
+										aria-hidden="true"
+										role="img"
+										focusable="false"
+										className="dashicon dashicons-arrow-right-alt2"
+										xmlns="http://www.w3.org/2000/svg"
+										width="20"
+										height="20"
+										viewBox="0 0 20 20"
+									>
+										<path d="M6 15l5-5-5-5 1-2 7 7-7 7z" />
 									</svg>
 								</button>
 							</Fragment>

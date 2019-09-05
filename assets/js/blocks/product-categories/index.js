@@ -100,9 +100,15 @@ registerBlockType( 'woocommerce/product-categories', {
 					<span aria-hidden className="wc-block-product-categories__placeholder" />
 				) : (
 					<ul aria-hidden>
-						<li><span className="wc-block-product-categories__placeholder" /></li>
-						<li><span className="wc-block-product-categories__placeholder" /></li>
-						<li><span className="wc-block-product-categories__placeholder" /></li>
+						<li>
+							<span className="wc-block-product-categories__placeholder" />
+						</li>
+						<li>
+							<span className="wc-block-product-categories__placeholder" />
+						</li>
+						<li>
+							<span className="wc-block-product-categories__placeholder" />
+						</li>
 					</ul>
 				) }
 			</div>

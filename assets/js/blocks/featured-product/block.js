@@ -37,20 +37,25 @@ import { MIN_HEIGHT } from '@woocommerce/block-settings';
  */
 import ProductControl from '../../components/product-control';
 import ApiErrorPlaceholder from '../../components/api-error-placeholder';
-import {
-	dimRatioToClass,
-	getBackgroundImageStyles,
-} from './utils';
-import {
-	getImageSrcFromProduct,
-	getImageIdFromProduct,
-} from '../../utils/products';
+import { dimRatioToClass, getBackgroundImageStyles } from './utils';
+import { getImageSrcFromProduct, getImageIdFromProduct } from '../../utils/products';
 import { withProduct } from '../../hocs';
 
 /**
  * Component to handle edit mode of "Featured Product".
  */
-const FeaturedProduct = ( { attributes, debouncedSpeak, error, getProduct, isLoading, isSelected, overlayColor, product, setAttributes, setOverlayColor } ) => {
+const FeaturedProduct = ( {
+	attributes,
+	debouncedSpeak,
+	error,
+	getProduct,
+	isLoading,
+	isSelected,
+	overlayColor,
+	product,
+	setAttributes,
+	setOverlayColor,
+} ) => {
 	const renderApiError = () => (
 		<ApiErrorPlaceholder
 			className="wc-block-featured-product-error"
@@ -64,10 +69,7 @@ const FeaturedProduct = ( { attributes, debouncedSpeak, error, getProduct, isLoa
 		const onDone = () => {
 			setAttributes( { editMode: false } );
 			debouncedSpeak(
-				__(
-					'Showing Featured Product block preview.',
-					'woo-gutenberg-products-block'
-				)
+				__( 'Showing Featured Product block preview.', 'woo-gutenberg-products-block' )
 			);
 		};
 
@@ -108,14 +110,14 @@ const FeaturedProduct = ( { attributes, debouncedSpeak, error, getProduct, isLoa
 			<BlockControls>
 				<AlignmentToolbar
 					value={ contentAlign }
-					onChange={ ( nextAlign ) => {
+					onChange={ nextAlign => {
 						setAttributes( { contentAlign: nextAlign } );
 					} }
 				/>
 				<MediaUploadCheck>
 					<Toolbar>
 						<MediaUpload
-							onSelect={ ( media ) => {
+							onSelect={ media => {
 								setAttributes( { mediaId: media.id, mediaSrc: media.url } );
 							} }
 							allowedTypes={ [ 'image' ] }
@@ -182,19 +184,19 @@ const FeaturedProduct = ( { attributes, debouncedSpeak, error, getProduct, isLoa
 							<RangeControl
 								label={ __( 'Background Opacity', 'woo-gutenberg-products-block' ) }
 								value={ attributes.dimRatio }
-								onChange={ ( ratio ) => setAttributes( { dimRatio: ratio } ) }
+								onChange={ ratio => setAttributes( { dimRatio: ratio } ) }
 								min={ 0 }
 								max={ 100 }
 								step={ 10 }
 							/>
-							{ focalPointPickerExists &&
+							{ focalPointPickerExists && (
 								<FocalPointPicker
 									label={ __( 'Focal Point Picker' ) }
 									url={ url }
 									value={ focalPoint }
-									onChange={ ( value ) => setAttributes( { focalPoint: value } ) }
+									onChange={ value => setAttributes( { focalPoint: value } ) }
 								/>
-							}
+							) }
 						</Fragment>
 					) }
 				</PanelColorSettings>
@@ -222,7 +224,7 @@ const FeaturedProduct = ( { attributes, debouncedSpeak, error, getProduct, isLoa
 			},
 			dimRatioToClass( dimRatio ),
 			contentAlign !== 'center' && `has-${ contentAlign }-content`,
-			className,
+			className
 		);
 
 		const style = getBackgroundImageStyles( attributes.mediaSrc || product );
@@ -231,8 +233,7 @@ const FeaturedProduct = ( { attributes, debouncedSpeak, error, getProduct, isLoa
 			style.backgroundColor = overlayColor.color;
 		}
 		if ( focalPoint ) {
-			style.backgroundPosition = `${ focalPoint.x * 100 }% ${ focalPoint.y *
-				100 }%`;
+			style.backgroundPosition = `${ focalPoint.x * 100 }% ${ focalPoint.y * 100 }%`;
 		}
 
 		const onResizeStop = ( event, direction, elt ) => {
@@ -283,10 +284,7 @@ const FeaturedProduct = ( { attributes, debouncedSpeak, error, getProduct, isLoa
 								[
 									'core/button',
 									{
-										text: __(
-											'Shop now',
-											'woo-gutenberg-products-block'
-										),
+										text: __( 'Shop now', 'woo-gutenberg-products-block' ),
 										url: product.permalink,
 										align: 'center',
 									},
@@ -306,11 +304,7 @@ const FeaturedProduct = ( { attributes, debouncedSpeak, error, getProduct, isLoa
 			icon="star-filled"
 			label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
 		>
-			{ isLoading ? (
-				<Spinner />
-			) : (
-				__( 'No product is selected.', 'woo-gutenberg-products-block' )
-			) }
+			{ isLoading ? <Spinner /> : __( 'No product is selected.', 'woo-gutenberg-products-block' ) }
 		</Placeholder>
 	);
 
@@ -328,11 +322,7 @@ const FeaturedProduct = ( { attributes, debouncedSpeak, error, getProduct, isLoa
 		<Fragment>
 			{ getBlockControls() }
 			{ getInspectorControls() }
-			{ product ? (
-				renderProduct()
-			) : (
-				renderNoProduct()
-			) }
+			{ product ? renderProduct() : renderNoProduct() }
 		</Fragment>
 	);
 };

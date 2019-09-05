@@ -32,7 +32,14 @@ const ProductOrderSelect = ( { defaultValue, onChange, readOnly, value } ) => {
 };
 
 ProductOrderSelect.propTypes = {
-	defaultValue: PropTypes.oneOf( [ 'menu_order', 'popularity', 'rating', 'date', 'price', 'price-desc' ] ),
+	defaultValue: PropTypes.oneOf( [
+		'menu_order',
+		'popularity',
+		'rating',
+		'date',
+		'price',
+		'price-desc',
+	] ),
 	onChange: PropTypes.func,
 	readOnly: PropTypes.bool,
 	value: PropTypes.oneOf( [ 'menu_order', 'popularity', 'rating', 'date', 'price', 'price-desc' ] ),

@@ -11,7 +11,7 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
 import { getReviews } from '../../blocks/reviews/utils';
 import { formatError } from '../utils/errors.js';
 
-const withReviews = ( OriginalComponent ) => {
+const withReviews = OriginalComponent => {
 	class WrappedComponent extends Component {
 		constructor() {
 			super( ...arguments );
@@ -37,9 +37,7 @@ const withReviews = ( OriginalComponent ) => {
 				// short intervals between value changes, this allows for optionally
 				// delaying review fetches via the provided delay function.
 				this.delayedAppendReviews();
-			} else if (
-				this.shouldReplaceReviews( prevProps, this.props )
-			) {
+			} else if ( this.shouldReplaceReviews( prevProps, this.props ) ) {
 				this.replaceReviews();
 			}
 		}
@@ -111,7 +109,9 @@ const withReviews = ( OriginalComponent ) => {
 			return getReviews( this.getArgs( oldReviews.length ) )
 				.then( ( { reviews: newReviews, totalReviews: newTotalReviews } ) => {
 					this.setState( {
-						reviews: oldReviews.filter( ( review ) => Object.keys( review ).length ).concat( newReviews ),
+						reviews: oldReviews
+							.filter( review => Object.keys( review ).length )
+							.concat( newReviews ),
 						totalReviews: newTotalReviews,
 						loading: false,
 						error: null,
@@ -135,13 +135,15 @@ const withReviews = ( OriginalComponent ) => {
 			const { reviewsToDisplay } = this.props;
 			const { error, loading, reviews, totalReviews } = this.state;
 
-			return <OriginalComponent
-				{ ...this.props }
-				error={ error }
-				isLoading={ loading }
-				reviews={ reviews.slice( 0, reviewsToDisplay ) }
-				totalReviews={ totalReviews }
-			/>;
+			return (
+				<OriginalComponent
+					{ ...this.props }
+					error={ error }
+					isLoading={ loading }
+					reviews={ reviews.slice( 0, reviewsToDisplay ) }
+					totalReviews={ totalReviews }
+				/>
+			);
 		}
 	}
 
@@ -158,7 +160,7 @@ const withReviews = ( OriginalComponent ) => {
 	};
 
 	WrappedComponent.defaultProps = {
-		delayFunction: ( f ) => f,
+		delayFunction: f => f,
 		onReviewsAppended: () => {},
 		onReviewsLoadError: () => {},
 		onReviewsReplaced: () => {},

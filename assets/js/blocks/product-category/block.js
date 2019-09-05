@@ -2,11 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	BlockControls,
-	InspectorControls,
-	ServerSideRender,
-} from '@wordpress/editor';
+import { BlockControls, InspectorControls, ServerSideRender } from '@wordpress/editor';
 import {
 	Button,
 	Disabled,
@@ -46,12 +42,12 @@ class ProductByCategoryBlock extends Component {
 
 		// from withSpokenMessages
 		debouncedSpeak: PropTypes.func.isRequired,
-	}
+	};
 
 	state = {
 		changedAttributes: {},
 		isEditing: false,
-	}
+	};
 
 	componentDidMount() {
 		const { attributes } = this.props;
@@ -67,20 +63,20 @@ class ProductByCategoryBlock extends Component {
 			isEditing: true,
 			changedAttributes: {},
 		} );
-	}
+	};
 
 	stopEditing = () => {
 		this.setState( {
 			isEditing: false,
 			changedAttributes: {},
 		} );
-	}
+	};
 
-	setChangedAttributes = ( attributes ) => {
-		this.setState( ( prevState ) => {
+	setChangedAttributes = attributes => {
+		this.setState( prevState => {
 			return { changedAttributes: { ...prevState.changedAttributes, ...attributes } };
 		} );
-	}
+	};
 
 	save = () => {
 		const { changedAttributes } = this.state;
@@ -88,19 +84,12 @@ class ProductByCategoryBlock extends Component {
 
 		setAttributes( changedAttributes );
 		this.stopEditing();
-	}
+	};
 
 	getInspectorControls() {
 		const { attributes, setAttributes } = this.props;
 		const { isEditing } = this.state;
-		const {
-			columns,
-			catOperator,
-			contentVisibility,
-			orderby,
-			rows,
-			alignButtons,
-		} = attributes;
+		const { columns, catOperator, contentVisibility, orderby, rows, alignButtons } = attributes;
 
 		return (
 			<InspectorControls key="inspector">
@@ -126,10 +115,7 @@ class ProductByCategoryBlock extends Component {
 						} }
 					/>
 				</PanelBody>
-				<PanelBody
-					title={ __( 'Layout', 'woo-gutenberg-products-block' ) }
-					initialOpen
-				>
+				<PanelBody title={ __( 'Layout', 'woo-gutenberg-products-block' ) } initialOpen>
 					<GridLayoutControl
 						columns={ columns }
 						rows={ rows }
@@ -137,23 +123,14 @@ class ProductByCategoryBlock extends Component {
 						setAttributes={ setAttributes }
 					/>
 				</PanelBody>
-				<PanelBody
-					title={ __( 'Content', 'woo-gutenberg-products-block' ) }
-					initialOpen
-				>
+				<PanelBody title={ __( 'Content', 'woo-gutenberg-products-block' ) } initialOpen>
 					<GridContentControl
 						settings={ contentVisibility }
-						onChange={ ( value ) => setAttributes( { contentVisibility: value } ) }
+						onChange={ value => setAttributes( { contentVisibility: value } ) }
 					/>
 				</PanelBody>
-				<PanelBody
-					title={ __( 'Order By', 'woo-gutenberg-products-block' ) }
-					initialOpen={ false }
-				>
-					<ProductOrderbyControl
-						setAttributes={ setAttributes }
-						value={ orderby }
-					/>
+				<PanelBody title={ __( 'Order By', 'woo-gutenberg-products-block' ) } initialOpen={ false }>
+					<ProductOrderbyControl setAttributes={ setAttributes } value={ orderby } />
 				</PanelBody>
 			</InspectorControls>
 		);
@@ -166,19 +143,13 @@ class ProductByCategoryBlock extends Component {
 		const onDone = () => {
 			this.save();
 			debouncedSpeak(
-				__(
-					'Showing Products by Category block preview.',
-					'woo-gutenberg-products-block'
-				)
+				__( 'Showing Products by Category block preview.', 'woo-gutenberg-products-block' )
 			);
 		};
 		const onCancel = () => {
 			this.stopEditing();
 			debouncedSpeak(
-				__(
-					'Showing Products by Category block preview.',
-					'woo-gutenberg-products-block'
-				)
+				__( 'Showing Products by Category block preview.', 'woo-gutenberg-products-block' )
 			);
 		};
 
@@ -248,18 +219,14 @@ class ProductByCategoryBlock extends Component {
 							{
 								icon: 'edit',
 								title: __( 'Edit' ),
-								onClick: () => isEditing ? this.stopEditing() : this.startEditing(),
+								onClick: () => ( isEditing ? this.stopEditing() : this.startEditing() ),
 								isActive: isEditing,
 							},
 						] }
 					/>
 				</BlockControls>
 				{ this.getInspectorControls() }
-				{ isEditing ? (
-					this.renderEditMode()
-				) : (
-					this.renderViewMode()
-				) }
+				{ isEditing ? this.renderEditMode() : this.renderViewMode() }
 			</Fragment>
 		);
 	}

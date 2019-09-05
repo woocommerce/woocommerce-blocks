@@ -12,7 +12,14 @@ import Label from '../label';
 import { getIndexes } from './utils.js';
 import './style.scss';
 
-const Pagination = ( { currentPage, displayFirstAndLastPages, displayNextAndPreviousArrows, pagesToDisplay, onPageChange, totalPages } ) => {
+const Pagination = ( {
+	currentPage,
+	displayFirstAndLastPages,
+	displayNextAndPreviousArrows,
+	pagesToDisplay,
+	onPageChange,
+	totalPages,
+} ) => {
 	const { minIndex, maxIndex } = getIndexes( pagesToDisplay, currentPage, totalPages );
 	const pages = [];
 	for ( let i = minIndex; i <= maxIndex; i++ ) {
@@ -43,10 +50,7 @@ const Pagination = ( { currentPage, displayFirstAndLastPages, displayNextAndPrev
 				</button>
 			) }
 			{ showFirstPage && (
-				<button
-					className="wc-block-pagination-page"
-					onClick={ () => onPageChange( 1 ) }
-				>
+				<button className="wc-block-pagination-page" onClick={ () => onPageChange( 1 ) }>
 					1
 				</button>
 			) }
@@ -55,7 +59,7 @@ const Pagination = ( { currentPage, displayFirstAndLastPages, displayNextAndPrev
 					{ __( '…', 'woo-gutenberg-products-block' ) }
 				</span>
 			) }
-			{ pages.map( ( page ) => {
+			{ pages.map( page => {
 				return (
 					<button
 						key={ page }
@@ -74,10 +78,7 @@ const Pagination = ( { currentPage, displayFirstAndLastPages, displayNextAndPrev
 				</span>
 			) }
 			{ showLastPage && (
-				<button
-					className="wc-block-pagination-page"
-					onClick={ () => onPageChange( totalPages ) }
-				>
+				<button className="wc-block-pagination-page" onClick={ () => onPageChange( totalPages ) }>
 					{ totalPages }
 				</button>
 			) }

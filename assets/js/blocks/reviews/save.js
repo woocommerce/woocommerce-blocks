@@ -5,7 +5,16 @@ import './editor.scss';
 import { getBlockClassName } from './utils.js';
 
 export default ( { attributes } ) => {
-	const { categoryIds, imageType, orderby, productId, reviewsOnPageLoad, reviewsOnLoadMore, showLoadMore, showOrderby } = attributes;
+	const {
+		categoryIds,
+		imageType,
+		orderby,
+		productId,
+		reviewsOnPageLoad,
+		reviewsOnLoadMore,
+		showLoadMore,
+		showOrderby,
+	} = attributes;
 
 	const data = {
 		'data-image-type': imageType,
@@ -27,7 +36,5 @@ export default ( { attributes } ) => {
 		className = 'wc-block-reviews-by-category';
 	}
 
-	return (
-		<div className={ getBlockClassName( className, attributes ) } { ...data } />
-	);
+	return <div className={ getBlockClassName( className, attributes ) } { ...data } />;
 };

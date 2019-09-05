@@ -15,20 +15,28 @@ import { withAttributes } from '../../hocs';
 import ErrorMessage from '../api-error-placeholder/error-message.js';
 import './style.scss';
 
-const ProductAttributeControl = ( { attributes, error, expandedAttribute, onChange, onOperatorChange, isLoading, operator, selected, termsAreLoading, termsList } ) => {
-	const onExpandAttribute = ( item ) => {
+const ProductAttributeControl = ( {
+	attributes,
+	error,
+	expandedAttribute,
+	onChange,
+	onOperatorChange,
+	isLoading,
+	operator,
+	selected,
+	termsAreLoading,
+	termsList,
+} ) => {
+	const onExpandAttribute = item => {
 		return () => {
 			onChange( [] );
 			onExpandAttribute( item.id );
 		};
 	};
 
-	const renderItem = ( args ) => {
+	const renderItem = args => {
 		const { item, search, depth = 0 } = args;
-		const classes = [
-			'woocommerce-product-attributes__item',
-			'woocommerce-search-list__item',
-		];
+		const classes = [ 'woocommerce-product-attributes__item', 'woocommerce-search-list__item' ];
 		if ( search.length ) {
 			classes.push( 'is-searching' );
 		}
@@ -48,12 +56,7 @@ const ProductAttributeControl = ( { attributes, error, expandedAttribute, onChan
 					disabled={ '0' === item.count }
 					aria-expanded={ expandedAttribute === item.id }
 					aria-label={ sprintf(
-						_n(
-							'%s, has %d term',
-							'%s, has %d terms',
-							item.count,
-							'woo-gutenberg-products-block'
-						),
+						_n( '%s, has %d term', '%s, has %d terms', item.count, 'woo-gutenberg-products-block' ),
 						item.name,
 						item.count
 					) }
@@ -92,30 +95,17 @@ const ProductAttributeControl = ( { attributes, error, expandedAttribute, onChan
 			"Your store doesn't have any product attributes.",
 			'woo-gutenberg-products-block'
 		),
-		search: __(
-			'Search for product attributes',
-			'woo-gutenberg-products-block'
-		),
-		selected: ( n ) =>
+		search: __( 'Search for product attributes', 'woo-gutenberg-products-block' ),
+		selected: n =>
 			sprintf(
-				_n(
-					'%d attribute selected',
-					'%d attributes selected',
-					n,
-					'woo-gutenberg-products-block'
-				),
+				_n( '%d attribute selected', '%d attributes selected', n, 'woo-gutenberg-products-block' ),
 				n
 			),
-		updated: __(
-			'Product attribute search results updated.',
-			'woo-gutenberg-products-block'
-		),
+		updated: __( 'Product attribute search results updated.', 'woo-gutenberg-products-block' ),
 	};
 
 	if ( error ) {
-		return (
-			<ErrorMessage error={ error } />
-		);
+		return <ErrorMessage error={ error } />;
 	}
 
 	return (
@@ -124,9 +114,7 @@ const ProductAttributeControl = ( { attributes, error, expandedAttribute, onChan
 				className="woocommerce-product-attributes"
 				list={ currentList }
 				isLoading={ isLoading }
-				selected={ selected
-					.map( ( { id } ) => find( currentList, { id } ) )
-					.filter( Boolean ) }
+				selected={ selected.map( ( { id } ) => find( currentList, { id } ) ).filter( Boolean ) }
 				onChange={ onChange }
 				renderItem={ renderItem }
 				messages={ messages }
@@ -136,10 +124,7 @@ const ProductAttributeControl = ( { attributes, error, expandedAttribute, onChan
 				<div className={ selected.length < 2 ? 'screen-reader-text' : '' }>
 					<SelectControl
 						className="woocommerce-product-attributes__operator"
-						label={ __(
-							'Display products matching',
-							'woo-gutenberg-products-block'
-						) }
+						label={ __( 'Display products matching', 'woo-gutenberg-products-block' ) }
 						help={ __(
 							'Pick at least two attributes to use this setting.',
 							'woo-gutenberg-products-block'
@@ -148,17 +133,11 @@ const ProductAttributeControl = ( { attributes, error, expandedAttribute, onChan
 						onChange={ onOperatorChange }
 						options={ [
 							{
-								label: __(
-									'Any selected attributes',
-									'woo-gutenberg-products-block'
-								),
+								label: __( 'Any selected attributes', 'woo-gutenberg-products-block' ),
 								value: 'any',
 							},
 							{
-								label: __(
-									'All selected attributes',
-									'woo-gutenberg-products-block'
-								),
+								label: __( 'All selected attributes', 'woo-gutenberg-products-block' ),
 								value: 'all',
 							},
 						] }

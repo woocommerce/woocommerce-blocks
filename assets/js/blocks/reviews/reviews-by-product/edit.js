@@ -2,15 +2,8 @@
  * External dependencies
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
-import {
-	InspectorControls,
-} from '@wordpress/editor';
-import {
-	Button,
-	PanelBody,
-	Placeholder,
-	withSpokenMessages,
-} from '@wordpress/components';
+import { InspectorControls } from '@wordpress/editor';
+import { Button, PanelBody, Placeholder, withSpokenMessages } from '@wordpress/components';
 import { SearchListItem } from '@woocommerce/components';
 import { Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
@@ -22,7 +15,11 @@ import ProductControl from '../../../components/product-control';
 import { IconReviewsByProduct } from '../../../components/icons';
 import EditorContainerBlock from '../editor-container-block.js';
 import NoReviewsPlaceholder from './no-reviews-placeholder.js';
-import { getBlockControls, getSharedReviewContentControls, getSharedReviewListControls } from '../edit-utils.js';
+import {
+	getBlockControls,
+	getSharedReviewContentControls,
+	getSharedReviewListControls,
+} from '../edit-utils.js';
 
 /**
  * Component to handle edit mode of "Reviews by Product".
@@ -30,19 +27,14 @@ import { getBlockControls, getSharedReviewContentControls, getSharedReviewListCo
 const ReviewsByProductEditor = ( { attributes, debouncedSpeak, setAttributes } ) => {
 	const { editMode, productId } = attributes;
 
-	const renderProductControlItem = ( args ) => {
+	const renderProductControlItem = args => {
 		const { item = 0 } = args;
 
 		return (
 			<SearchListItem
 				{ ...args }
 				countLabel={ sprintf(
-					_n(
-						'%d Review',
-						'%d Reviews',
-						item.review_count,
-						'woo-gutenberg-products-block'
-					),
+					_n( '%d Review', '%d Reviews', item.review_count, 'woo-gutenberg-products-block' ),
 					item.review_count
 				) }
 				showCount
@@ -63,10 +55,7 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, setAttributes } )
 	const getInspectorControls = () => {
 		return (
 			<InspectorControls key="inspector">
-				<PanelBody
-					title={ __( 'Product', 'woo-gutenberg-products-block' ) }
-					initialOpen={ false }
-				>
+				<PanelBody title={ __( 'Product', 'woo-gutenberg-products-block' ) } initialOpen={ false }>
 					<ProductControl
 						selected={ attributes.productId || 0 }
 						onChange={ ( value = [] ) => {
@@ -90,10 +79,7 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, setAttributes } )
 		const onDone = () => {
 			setAttributes( { editMode: false } );
 			debouncedSpeak(
-				__(
-					'Showing Reviews by Product block preview.',
-					'woo-gutenberg-products-block'
-				)
+				__( 'Showing Reviews by Product block preview.', 'woo-gutenberg-products-block' )
 			);
 		};
 
@@ -102,10 +88,7 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, setAttributes } )
 				icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
 				label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
 			>
-				{ __(
-					'Show reviews of your product to build trust',
-					'woo-gutenberg-products-block'
-				) }
+				{ __( 'Show reviews of your product to build trust', 'woo-gutenberg-products-block' ) }
 				<div className="wc-block-reviews__selection">
 					<ProductControl
 						selected={ attributes.productId || 0 }

@@ -5,14 +5,7 @@ import { DEFAULT_COLUMNS, DEFAULT_ROWS } from '@woocommerce/block-settings';
 
 export default function getShortcode( props, name ) {
 	const blockAttributes = props.attributes;
-	const {
-		attributes,
-		attrOperator,
-		categories,
-		catOperator,
-		orderby,
-		products,
-	} = blockAttributes;
+	const { attributes, attrOperator, categories, catOperator, orderby, products } = blockAttributes;
 	const columns = blockAttributes.columns || DEFAULT_COLUMNS;
 	const rows = blockAttributes.rows || DEFAULT_ROWS;
 

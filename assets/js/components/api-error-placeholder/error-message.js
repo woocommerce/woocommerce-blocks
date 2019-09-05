@@ -7,7 +7,10 @@ import { escapeHTML } from '@wordpress/escape-html';
 
 const getErrorMessage = ( { message, type } ) => {
 	if ( ! message ) {
-		return __( 'An unknown error occurred which prevented the block from being updated.', 'woo-gutenberg-products-block' );
+		return __(
+			'An unknown error occurred which prevented the block from being updated.',
+			'woo-gutenberg-products-block'
+		);
 	}
 
 	if ( type === 'general' ) {
@@ -34,9 +37,7 @@ const getErrorMessage = ( { message, type } ) => {
 };
 
 const ErrorMessage = ( { error } ) => (
-	<div className="wc-block-error-message">
-		{ getErrorMessage( error ) }
-	</div>
+	<div className="wc-block-error-message">{ getErrorMessage( error ) }</div>
 );
 
 ErrorMessage.propTypes = {

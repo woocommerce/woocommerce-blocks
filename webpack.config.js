@@ -36,7 +36,7 @@ const baseConfig = {
 	},
 };
 
-const requestToExternal = ( request ) => {
+const requestToExternal = request => {
 	const wcDepMap = {
 		'@woocommerce/settings': [ 'wc', 'wc-shared-settings' ],
 		'@woocommerce/block-settings': [ 'wc', 'wc-block-settings' ],
@@ -46,7 +46,7 @@ const requestToExternal = ( request ) => {
 	}
 };
 
-const requestToHandle = ( request ) => {
+const requestToHandle = request => {
 	const wcHandleMap = {
 		'@woocommerce/settings': 'wc-shared-settings',
 		'@woocommerce/block-settings': 'wc-block-settings',
@@ -89,7 +89,11 @@ const CoreConfig = {
 	plugins: [
 		new CleanWebpackPlugin(),
 		new ProgressBarPlugin( {
-			format: chalk.blue( 'Build core script' ) + ' [:bar] ' + chalk.green( ':percent' ) + ' :msg (:elapsed seconds)',
+			format:
+				chalk.blue( 'Build core script' ) +
+				' [:bar] ' +
+				chalk.green( ':percent' ) +
+				' :msg (:elapsed seconds)',
 		} ),
 		new DependencyExtractionWebpackPlugin( { injectPolyfill: true } ),
 	],
@@ -168,7 +172,9 @@ const GutenbergBlocksConfig = {
 					options: {
 						presets: [ '@wordpress/babel-preset-default' ],
 						plugins: [
-							NODE_ENV === 'production' ? require.resolve( 'babel-plugin-transform-react-remove-prop-types' ) : false,
+							NODE_ENV === 'production'
+								? require.resolve( 'babel-plugin-transform-react-remove-prop-types' )
+								: false,
 							require.resolve( '@babel/plugin-proposal-class-properties' ),
 						].filter( Boolean ),
 					},
@@ -206,12 +212,10 @@ const GutenbergBlocksConfig = {
 		new MiniCssExtractPlugin( {
 			filename: '[name].css',
 		} ),
-		new MergeExtractFilesPlugin( [
-			'build/editor.js',
-			'build/style.js',
-		], 'build/vendors.js' ),
+		new MergeExtractFilesPlugin( [ 'build/editor.js', 'build/style.js' ], 'build/vendors.js' ),
 		new ProgressBarPlugin( {
-			format: chalk.blue( 'Build' ) + ' [:bar] ' + chalk.green( ':percent' ) + ' :msg (:elapsed seconds)',
+			format:
+				chalk.blue( 'Build' ) + ' [:bar] ' + chalk.green( ':percent' ) + ' :msg (:elapsed seconds)',
 		} ),
 		new DependencyExtractionWebpackPlugin( {
 			injectPolyfill: true,
@@ -244,12 +248,15 @@ const BlocksFrontendConfig = {
 					loader: 'babel-loader?cacheDirectory',
 					options: {
 						presets: [
-							[ '@babel/preset-env', {
-								modules: false,
-								targets: {
-									browsers: [ 'extends @wordpress/browserslist-config' ],
+							[
+								'@babel/preset-env',
+								{
+									modules: false,
+									targets: {
+										browsers: [ 'extends @wordpress/browserslist-config' ],
+									},
 								},
-							} ],
+							],
 						],
 						plugins: [
 							require.resolve( '@babel/plugin-proposal-object-rest-spread' ),
@@ -257,7 +264,9 @@ const BlocksFrontendConfig = {
 							require.resolve( '@babel/plugin-proposal-async-generator-functions' ),
 							require.resolve( '@babel/plugin-transform-runtime' ),
 							require.resolve( '@babel/plugin-proposal-class-properties' ),
-							NODE_ENV === 'production' ? require.resolve( 'babel-plugin-transform-react-remove-prop-types' ) : false,
+							NODE_ENV === 'production'
+								? require.resolve( 'babel-plugin-transform-react-remove-prop-types' )
+								: false,
 						].filter( Boolean ),
 					},
 				},
@@ -272,7 +281,11 @@ const BlocksFrontendConfig = {
 	},
 	plugins: [
 		new ProgressBarPlugin( {
-			format: chalk.blue( 'Build frontend scripts' ) + ' [:bar] ' + chalk.green( ':percent' ) + ' :msg (:elapsed seconds)',
+			format:
+				chalk.blue( 'Build frontend scripts' ) +
+				' [:bar] ' +
+				chalk.green( ':percent' ) +
+				' :msg (:elapsed seconds)',
 		} ),
 		new DependencyExtractionWebpackPlugin( {
 			injectPolyfill: true,

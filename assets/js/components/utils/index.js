@@ -15,12 +15,7 @@ const getProductsRequests = ( { selected = [], search = '', queryArgs = [] } ) =
 		orderby: 'title',
 		order: 'asc',
 	};
-	const requests = [
-		addQueryArgs(
-			ENDPOINTS.products,
-			{ ...defaultArgs, ...queryArgs }
-		),
-	];
+	const requests = [ addQueryArgs( ENDPOINTS.products, { ...defaultArgs, ...queryArgs } ) ];
 
 	// If we have a large catalog, we might not get all selected products in the first page.
 	if ( IS_LARGE_CATALOG && selected.length ) {
@@ -44,9 +39,9 @@ const getProductsRequests = ( { selected = [], search = '', queryArgs = [] } ) =
 export const getProducts = ( { selected = [], search = '', queryArgs = [] } ) => {
 	const requests = getProductsRequests( { selected, search, queryArgs } );
 
-	return Promise.all( requests.map( ( path ) => apiFetch( { path } ) ) )
-		.then( ( data ) => uniqBy( flatten( data ), 'id' ) )
-		.catch( ( e ) => {
+	return Promise.all( requests.map( path => apiFetch( { path } ) ) )
+		.then( data => uniqBy( flatten( data ), 'id' ) )
+		.catch( e => {
 			throw e;
 		} );
 };
@@ -56,7 +51,7 @@ export const getProducts = ( { selected = [], search = '', queryArgs = [] } ) =>
  *
  * @param {number} productId Id of the product to retrieve.
  */
-export const getProduct = ( productId ) => {
+export const getProduct = productId => {
 	return apiFetch( {
 		path: `${ ENDPOINTS.products }/${ productId }`,
 	} );
@@ -92,7 +87,7 @@ const getProductTagsRequests = ( { selected = [], search } ) => {
 export const getProductTags = ( { selected = [], search } ) => {
 	const requests = getProductTagsRequests( { selected, search } );
 
-	return Promise.all( requests.map( ( path ) => apiFetch( { path } ) ) ).then( ( data ) => {
+	return Promise.all( requests.map( path => apiFetch( { path } ) ) ).then( data => {
 		return uniqBy( flatten( data ), 'id' );
 	} );
 };
@@ -102,7 +97,7 @@ export const getProductTags = ( { selected = [], search } ) => {
  *
  * @param {number} categoryId Id of the product to retrieve.
  */
-export const getCategory = ( categoryId ) => {
+export const getCategory = categoryId => {
 	return apiFetch( {
 		path: `${ ENDPOINTS.categories }/${ categoryId }`,
 	} );
@@ -123,8 +118,10 @@ export const getAttributes = () => {
 	} );
 };
 
-export const getTerms = ( attribute ) => {
+export const getTerms = attribute => {
 	return apiFetch( {
-		path: addQueryArgs( `${ ENDPOINTS.products }/attributes/${ attribute }/terms`, { per_page: -1 } ),
+		path: addQueryArgs( `${ ENDPOINTS.products }/attributes/${ attribute }/terms`, {
+			per_page: -1,
+		} ),
 	} );
 };

@@ -33,10 +33,7 @@ class ProductOnSaleBlock extends Component {
 
 		return (
 			<InspectorControls key="inspector">
-				<PanelBody
-					title={ __( 'Layout', 'woo-gutenberg-products-block' ) }
-					initialOpen
-				>
+				<PanelBody title={ __( 'Layout', 'woo-gutenberg-products-block' ) } initialOpen>
 					<GridLayoutControl
 						columns={ columns }
 						rows={ rows }
@@ -44,29 +41,17 @@ class ProductOnSaleBlock extends Component {
 						setAttributes={ setAttributes }
 					/>
 				</PanelBody>
-				<PanelBody
-					title={ __( 'Content', 'woo-gutenberg-products-block' ) }
-					initialOpen
-				>
+				<PanelBody title={ __( 'Content', 'woo-gutenberg-products-block' ) } initialOpen>
 					<GridContentControl
 						settings={ contentVisibility }
-						onChange={ ( value ) => setAttributes( { contentVisibility: value } ) }
+						onChange={ value => setAttributes( { contentVisibility: value } ) }
 					/>
 				</PanelBody>
-				<PanelBody
-					title={ __( 'Order By', 'woo-gutenberg-products-block' ) }
-					initialOpen={ false }
-				>
-					<ProductOrderbyControl
-						setAttributes={ setAttributes }
-						value={ orderby }
-					/>
+				<PanelBody title={ __( 'Order By', 'woo-gutenberg-products-block' ) } initialOpen={ false }>
+					<ProductOrderbyControl setAttributes={ setAttributes } value={ orderby } />
 				</PanelBody>
 				<PanelBody
-					title={ __(
-						'Filter by Product Category',
-						'woo-gutenberg-products-block'
-					) }
+					title={ __( 'Filter by Product Category', 'woo-gutenberg-products-block' ) }
 					initialOpen={ false }
 				>
 					<ProductCategoryControl
@@ -76,9 +61,7 @@ class ProductOnSaleBlock extends Component {
 							setAttributes( { categories: ids } );
 						} }
 						operator={ catOperator }
-						onOperatorChange={ ( value = 'any' ) =>
-							setAttributes( { catOperator: value } )
-						}
+						onOperatorChange={ ( value = 'any' ) => setAttributes( { catOperator: value } ) }
 					/>
 				</PanelBody>
 			</InspectorControls>
