@@ -10,21 +10,29 @@ import classnames from 'classnames';
  */
 import { renderProductLayout } from '../../../atomic/utils';
 import {
-	ProductListTitle,
 	ProductListPrice,
 	ProductListButton,
-	ProductListImage,
+	ProductListLink,
 	ProductListRating,
+	ProductListImage,
+	ProductListTitle,
 } from '../../../atomic/components/product-list';
 
 const DEFAULT_LAYOUT_CONFIG = [
 	{
-		component: ProductListImage,
-		props: {},
-	},
-	{
-		component: ProductListTitle,
-		props: {},
+		component: ProductListLink,
+		props: {
+			children: [
+				{
+					component: ProductListImage,
+					props: {},
+				},
+				{
+					component: ProductListTitle,
+					props: {},
+				},
+			],
+		},
 	},
 	{
 		component: ProductListPrice,

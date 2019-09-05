@@ -16,10 +16,10 @@ let layoutKeys = 0;
  * @param {object} layoutConfig Object with component data.
  */
 export const renderProductLayout = ( product, layoutConfig ) => {
-	return layoutConfig.map( ( { component: LayoutComponent, props } ) => {
+	return layoutConfig.map( ( { component: LayoutComponent, props = {} } ) => {
 		let children = [];
 
-		if ( props.children.length > 0 ) {
+		if ( !! props.children && props.children.length > 0 ) {
 			children = renderProductLayout( product, props.children );
 		}
 
@@ -47,6 +47,9 @@ export const productLayoutBlockMap = {
  * @param {object} innerBlocks Inner block components.
  */
 export const getProductLayoutConfig = ( innerBlocks ) => {
+	if ( typeof innerBlocks === 'undefined' || innerBlocks.length === 0 ) {
+		return undefined;
+	}
 	return innerBlocks.map( ( block ) => {
 		return {
 			component: productLayoutBlockMap[ block.name ],
