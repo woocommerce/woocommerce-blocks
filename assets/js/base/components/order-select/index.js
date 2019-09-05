@@ -47,7 +47,7 @@ const OrderSelect = ( {
 				readOnly={ readOnly }
 				value={ value }
 			>
-				{ options.map( option => (
+				{ options.map( ( option ) => (
 					<option key={ option.key } value={ option.key }>
 						{ option.label }
 					</option>

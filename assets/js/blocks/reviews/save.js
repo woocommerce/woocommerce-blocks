@@ -36,5 +36,7 @@ export default ( { attributes } ) => {
 		className = 'wc-block-reviews-by-category';
 	}
 
-	return <div className={ getBlockClassName( className, attributes ) } { ...data } />;
+	return (
+		<div className={ getBlockClassName( className, attributes ) } { ...data } />
+	);
 };

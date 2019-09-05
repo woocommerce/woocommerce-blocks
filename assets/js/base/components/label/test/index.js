@@ -11,7 +11,9 @@ import Label from '../';
 describe( 'Label', () => {
 	describe( 'without wrapperElement', () => {
 		test( 'should render both label and screen reader label', () => {
-			const component = TestRenderer.create( <Label label="Lorem" screenReaderLabel="Ipsum" /> );
+			const component = TestRenderer.create(
+				<Label label="Lorem" screenReaderLabel="Ipsum" />
+			);
 
 			expect( component.toJSON() ).toMatchSnapshot();
 		} );
@@ -23,7 +25,9 @@ describe( 'Label', () => {
 		} );
 
 		test( 'should render only the screen reader label', () => {
-			const component = TestRenderer.create( <Label screenReaderLabel="Ipsum" /> );
+			const component = TestRenderer.create(
+				<Label screenReaderLabel="Ipsum" />
+			);
 
 			expect( component.toJSON() ).toMatchSnapshot();
 		} );

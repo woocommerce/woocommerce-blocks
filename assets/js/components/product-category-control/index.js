@@ -25,7 +25,7 @@ const ProductCategoryControl = ( {
 	selected,
 	isSingle,
 } ) => {
-	const renderItem = args => {
+	const renderItem = ( args ) => {
 		const { item, search, depth = 0 } = args;
 		const classes = [ 'woocommerce-product-categories__item' ];
 		if ( search.length ) {
@@ -65,13 +65,24 @@ const ProductCategoryControl = ( {
 			"Your store doesn't have any product categories.",
 			'woo-gutenberg-products-block'
 		),
-		search: __( 'Search for product categories', 'woo-gutenberg-products-block' ),
-		selected: n =>
+		search: __(
+			'Search for product categories',
+			'woo-gutenberg-products-block'
+		),
+		selected: ( n ) =>
 			sprintf(
-				_n( '%d category selected', '%d categories selected', n, 'woo-gutenberg-products-block' ),
+				_n(
+					'%d category selected',
+					'%d categories selected',
+					n,
+					'woo-gutenberg-products-block'
+				),
 				n
 			),
-		updated: __( 'Category search results updated.', 'woo-gutenberg-products-block' ),
+		updated: __(
+			'Category search results updated.',
+			'woo-gutenberg-products-block'
+		),
 	};
 
 	if ( error ) {
@@ -84,7 +95,9 @@ const ProductCategoryControl = ( {
 				className="woocommerce-product-categories"
 				list={ categories }
 				isLoading={ isLoading }
-				selected={ selected.map( id => find( categories, { id } ) ).filter( Boolean ) }
+				selected={ selected
+					.map( ( id ) => find( categories, { id } ) )
+					.filter( Boolean ) }
 				onChange={ onChange }
 				renderItem={ renderItem }
 				messages={ messages }
@@ -95,7 +108,10 @@ const ProductCategoryControl = ( {
 				<div className={ selected.length < 2 ? 'screen-reader-text' : '' }>
 					<SelectControl
 						className="woocommerce-product-categories__operator"
-						label={ __( 'Display products matching', 'woo-gutenberg-products-block' ) }
+						label={ __(
+							'Display products matching',
+							'woo-gutenberg-products-block'
+						) }
 						help={ __(
 							'Pick at least two categories to use this setting.',
 							'woo-gutenberg-products-block'
@@ -104,11 +120,17 @@ const ProductCategoryControl = ( {
 						onChange={ onOperatorChange }
 						options={ [
 							{
-								label: __( 'Any selected categories', 'woo-gutenberg-products-block' ),
+								label: __(
+									'Any selected categories',
+									'woo-gutenberg-products-block'
+								),
 								value: 'any',
 							},
 							{
-								label: __( 'All selected categories', 'woo-gutenberg-products-block' ),
+								label: __(
+									'All selected categories',
+									'woo-gutenberg-products-block'
+								),
 								value: 'all',
 							},
 						] }

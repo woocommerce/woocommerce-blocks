@@ -24,9 +24,16 @@ global.wcSettings = {
 	},
 };
 
-const wordPressPackages = [ 'blocks', 'components', 'date', 'editor', 'element', 'i18n' ];
+const wordPressPackages = [
+	'blocks',
+	'components',
+	'date',
+	'editor',
+	'element',
+	'i18n',
+];
 
-wordPressPackages.forEach( lib => {
+wordPressPackages.forEach( ( lib ) => {
 	Object.defineProperty( global.wp, lib, {
 		get: () => require( `@wordpress/${ lib }` ),
 	} );

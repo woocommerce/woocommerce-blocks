@@ -16,7 +16,10 @@ const getErrorMessage = ( { message, type } ) => {
 	if ( type === 'general' ) {
 		return (
 			<span>
-				{ __( 'The following error was returned', 'woo-gutenberg-products-block' ) }
+				{ __(
+					'The following error was returned',
+					'woo-gutenberg-products-block'
+				) }
 				<br />
 				<code>{ escapeHTML( message ) }</code>
 			</span>
@@ -26,7 +29,10 @@ const getErrorMessage = ( { message, type } ) => {
 	if ( type === 'api' ) {
 		return (
 			<span>
-				{ __( 'The following error was returned from the API', 'woo-gutenberg-products-block' ) }
+				{ __(
+					'The following error was returned from the API',
+					'woo-gutenberg-products-block'
+				) }
 				<br />
 				<code>{ escapeHTML( message ) }</code>
 			</span>

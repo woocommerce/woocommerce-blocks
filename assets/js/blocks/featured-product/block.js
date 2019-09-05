@@ -38,7 +38,10 @@ import { MIN_HEIGHT } from '@woocommerce/block-settings';
 import ProductControl from '../../components/product-control';
 import ApiErrorPlaceholder from '../../components/api-error-placeholder';
 import { dimRatioToClass, getBackgroundImageStyles } from './utils';
-import { getImageSrcFromProduct, getImageIdFromProduct } from '../../utils/products';
+import {
+	getImageSrcFromProduct,
+	getImageIdFromProduct,
+} from '../../utils/products';
 import { withProduct } from '../../hocs';
 
 /**
@@ -69,7 +72,10 @@ const FeaturedProduct = ( {
 		const onDone = () => {
 			setAttributes( { editMode: false } );
 			debouncedSpeak(
-				__( 'Showing Featured Product block preview.', 'woo-gutenberg-products-block' )
+				__(
+					'Showing Featured Product block preview.',
+					'woo-gutenberg-products-block'
+				)
 			);
 		};
 
@@ -90,7 +96,11 @@ const FeaturedProduct = ( {
 							selected={ attributes.productId || 0 }
 							onChange={ ( value = [] ) => {
 								const id = value[ 0 ] ? value[ 0 ].id : 0;
-								setAttributes( { productId: id, mediaId: 0, mediaSrc: '' } );
+								setAttributes( {
+									productId: id,
+									mediaId: 0,
+									mediaSrc: '',
+								} );
 							} }
 						/>
 						<Button isDefault onClick={ onDone }>
@@ -110,15 +120,18 @@ const FeaturedProduct = ( {
 			<BlockControls>
 				<AlignmentToolbar
 					value={ contentAlign }
-					onChange={ nextAlign => {
+					onChange={ ( nextAlign ) => {
 						setAttributes( { contentAlign: nextAlign } );
 					} }
 				/>
 				<MediaUploadCheck>
 					<Toolbar>
 						<MediaUpload
-							onSelect={ media => {
-								setAttributes( { mediaId: media.id, mediaSrc: media.url } );
+							onSelect={ ( media ) => {
+								setAttributes( {
+									mediaId: media.id,
+									mediaSrc: media.url,
+								} );
 							} }
 							allowedTypes={ [ 'image' ] }
 							value={ mediaId }
@@ -161,12 +174,18 @@ const FeaturedProduct = ( {
 					<ToggleControl
 						label={ __( 'Show description', 'woo-gutenberg-products-block' ) }
 						checked={ attributes.showDesc }
-						onChange={ () => setAttributes( { showDesc: ! attributes.showDesc } ) }
+						onChange={ () =>
+							setAttributes( { showDesc: ! attributes.showDesc } )
+						}
 					/>
 					<ToggleControl
 						label={ __( 'Show price', 'woo-gutenberg-products-block' ) }
 						checked={ attributes.showPrice }
-						onChange={ () => setAttributes( { showPrice: ! attributes.showPrice } ) }
+						onChange={ () =>
+							setAttributes( {
+								showPrice: ! attributes.showPrice,
+							} )
+						}
 					/>
 				</PanelBody>
 				<PanelColorSettings
@@ -182,9 +201,12 @@ const FeaturedProduct = ( {
 					{ !! url && (
 						<Fragment>
 							<RangeControl
-								label={ __( 'Background Opacity', 'woo-gutenberg-products-block' ) }
+								label={ __(
+									'Background Opacity',
+									'woo-gutenberg-products-block'
+								) }
 								value={ attributes.dimRatio }
-								onChange={ ratio => setAttributes( { dimRatio: ratio } ) }
+								onChange={ ( ratio ) => setAttributes( { dimRatio: ratio } ) }
 								min={ 0 }
 								max={ 100 }
 								step={ 10 }
@@ -194,7 +216,9 @@ const FeaturedProduct = ( {
 									label={ __( 'Focal Point Picker' ) }
 									url={ url }
 									value={ focalPoint }
-									onChange={ value => setAttributes( { focalPoint: value } ) }
+									onChange={ ( value ) =>
+										setAttributes( { focalPoint: value } )
+									}
 								/>
 							) }
 						</Fragment>
@@ -233,7 +257,8 @@ const FeaturedProduct = ( {
 			style.backgroundColor = overlayColor.color;
 		}
 		if ( focalPoint ) {
-			style.backgroundPosition = `${ focalPoint.x * 100 }% ${ focalPoint.y * 100 }%`;
+			style.backgroundPosition = `${ focalPoint.x * 100 }% ${ focalPoint.y *
+				100 }%`;
 		}
 
 		const onResizeStop = ( event, direction, elt ) => {
@@ -275,7 +300,9 @@ const FeaturedProduct = ( {
 					{ showPrice && (
 						<div
 							className="wc-block-featured-product__price"
-							dangerouslySetInnerHTML={ { __html: product.price_html } }
+							dangerouslySetInnerHTML={ {
+								__html: product.price_html,
+							} }
 						/>
 					) }
 					<div className="wc-block-featured-product__link">
@@ -304,7 +331,11 @@ const FeaturedProduct = ( {
 			icon="star-filled"
 			label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
 		>
-			{ isLoading ? <Spinner /> : __( 'No product is selected.', 'woo-gutenberg-products-block' ) }
+			{ isLoading ? (
+				<Spinner />
+			) : (
+				__( 'No product is selected.', 'woo-gutenberg-products-block' )
+			) }
 		</Placeholder>
 	);
 

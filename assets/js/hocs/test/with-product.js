@@ -20,7 +20,7 @@ jest.mock( '../../base/utils/errors', () => ( {
 
 const mockProduct = { name: 'T-Shirt' };
 const attributes = { productId: 1 };
-const TestComponent = withProduct( props => {
+const TestComponent = withProduct( ( props ) => {
 	return (
 		<div
 			error={ props.error }
@@ -58,7 +58,10 @@ describe( 'withProduct Component', () => {
 			const newAttributes = { ...attributes, productId: 2 };
 			renderer.update( <TestComponent attributes={ newAttributes } /> );
 
-			expect( getProduct ).toHaveBeenNthCalledWith( 2, newAttributes.productId );
+			expect( getProduct ).toHaveBeenNthCalledWith(
+				2,
+				newAttributes.productId
+			);
 			expect( getProduct ).toHaveBeenCalledTimes( 2 );
 		} );
 
@@ -74,7 +77,7 @@ describe( 'withProduct Component', () => {
 
 	describe( 'when the API returns product data', () => {
 		beforeEach( () => {
-			mockUtils.getProduct.mockImplementation( productId =>
+			mockUtils.getProduct.mockImplementation( ( productId ) =>
 				Promise.resolve( { ...mockProduct, id: productId } )
 			);
 			renderer = render();
@@ -86,7 +89,10 @@ describe( 'withProduct Component', () => {
 			expect( props.error ).toBeNull();
 			expect( typeof props.getProduct ).toBe( 'function' );
 			expect( props.isLoading ).toBe( false );
-			expect( props.product ).toEqual( { ...mockProduct, id: attributes.productId } );
+			expect( props.product ).toEqual( {
+				...mockProduct,
+				id: attributes.productId,
+			} );
 		} );
 	} );
 
@@ -101,7 +107,7 @@ describe( 'withProduct Component', () => {
 			renderer = render();
 		} );
 
-		it( 'sets the error prop', done => {
+		it( 'sets the error prop', ( done ) => {
 			const { formatError } = mockBaseUtils;
 			getProductPromise.catch( () => {
 				const props = renderer.root.findByType( 'div' ).props;

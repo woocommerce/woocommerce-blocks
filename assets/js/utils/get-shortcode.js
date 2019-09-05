@@ -5,7 +5,14 @@ import { DEFAULT_COLUMNS, DEFAULT_ROWS } from '@woocommerce/block-settings';
 
 export default function getShortcode( props, name ) {
 	const blockAttributes = props.attributes;
-	const { attributes, attrOperator, categories, catOperator, orderby, products } = blockAttributes;
+	const {
+		attributes,
+		attrOperator,
+		categories,
+		catOperator,
+		orderby,
+		products,
+	} = blockAttributes;
 	const columns = blockAttributes.columns || DEFAULT_COLUMNS;
 	const rows = blockAttributes.rows || DEFAULT_ROWS;
 
@@ -21,7 +28,10 @@ export default function getShortcode( props, name ) {
 	}
 
 	if ( attributes && attributes.length ) {
-		shortcodeAtts.set( 'terms', attributes.map( ( { id } ) => id ).join( ',' ) );
+		shortcodeAtts.set(
+			'terms',
+			attributes.map( ( { id } ) => id ).join( ',' )
+		);
 		shortcodeAtts.set( 'attribute', attributes[ 0 ].attr_slug );
 		if ( attrOperator && 'all' === attrOperator ) {
 			shortcodeAtts.set( 'terms_operator', 'AND' );

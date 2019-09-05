@@ -43,7 +43,10 @@ class ProductControl extends Component {
 		};
 
 		this.debouncedOnSearch = debounce( this.onSearch.bind( this ), 400 );
-		this.debouncedGetVariations = debounce( this.getVariations.bind( this ), 200 );
+		this.debouncedGetVariations = debounce(
+			this.getVariations.bind( this ),
+			200
+		);
 		this.renderItem = this.renderItem.bind( this );
 		this.onProductSelect = this.onProductSelect.bind( this );
 	}
@@ -57,8 +60,8 @@ class ProductControl extends Component {
 		const { selected, queryArgs } = this.props;
 
 		getProducts( { selected, queryArgs } )
-			.then( products => {
-				products = products.map( product => {
+			.then( ( products ) => {
+				products = products.map( ( product ) => {
 					const count = product.variations ? product.variations.length : 0;
 					return {
 						...product,
@@ -90,9 +93,14 @@ class ProductControl extends Component {
 			return;
 		}
 
-		const productDetails = products.find( findProduct => findProduct.id === product );
+		const productDetails = products.find(
+			( findProduct ) => findProduct.id === product
+		);
 
-		if ( ! productDetails.variations || productDetails.variations.length === 0 ) {
+		if (
+			! productDetails.variations ||
+			productDetails.variations.length === 0
+		) {
 			return;
 		}
 
@@ -105,10 +113,16 @@ class ProductControl extends Component {
 				per_page: -1,
 			} ),
 		} )
-			.then( variations => {
-				variations = variations.map( variation => ( { ...variation, parent: product } ) );
-				this.setState( prevState => ( {
-					variationsList: { ...prevState.variationsList, [ product ]: variations },
+			.then( ( variations ) => {
+				variations = variations.map( ( variation ) => ( {
+					...variation,
+					parent: product,
+				} ) );
+				this.setState( ( prevState ) => ( {
+					variationsList: {
+						...prevState.variationsList,
+						[ product ]: variations,
+					},
 					variationsLoading: false,
 				} ) );
 			} )
@@ -120,7 +134,7 @@ class ProductControl extends Component {
 	onSearch( search ) {
 		const { selected, queryArgs } = this.props;
 		getProducts( { selected, search, queryArgs } )
-			.then( products => {
+			.then( ( products ) => {
 				this.setState( { products, loading: false } );
 			} )
 			.catch( () => {
@@ -195,7 +209,12 @@ class ProductControl extends Component {
 					{ item.count ? (
 						<span className="woocommerce-search-list__item-variation-count">
 							{ sprintf(
-								_n( '%d variation', '%d variations', item.count, 'woo-gutenberg-products-block' ),
+								_n(
+									'%d variation',
+									'%d variations',
+									item.count,
+									'woo-gutenberg-products-block'
+								),
 								item.count
 							) }
 						</span>
@@ -219,7 +238,9 @@ class ProductControl extends Component {
 			item.name = item.variation;
 		}
 
-		return <SearchListItem className={ classes } { ...args } { ...a11yProps } />;
+		return (
+			<SearchListItem className={ classes } { ...args } { ...a11yProps } />
+		);
 	}
 
 	render() {
@@ -229,11 +250,22 @@ class ProductControl extends Component {
 		const currentList = [ ...products, ...currentVariations ];
 		const messages = {
 			list: __( 'Products', 'woo-gutenberg-products-block' ),
-			noItems: __( "Your store doesn't have any products.", 'woo-gutenberg-products-block' ),
-			search: __( 'Search for a product to display', 'woo-gutenberg-products-block' ),
-			updated: __( 'Product search results updated.', 'woo-gutenberg-products-block' ),
+			noItems: __(
+				"Your store doesn't have any products.",
+				'woo-gutenberg-products-block'
+			),
+			search: __(
+				'Search for a product to display',
+				'woo-gutenberg-products-block'
+			),
+			updated: __(
+				'Product search results updated.',
+				'woo-gutenberg-products-block'
+			),
 		};
-		const selectedListItems = selected ? [ find( currentList, { id: selected } ) ] : [];
+		const selectedListItems = selected
+			? [ find( currentList, { id: selected } ) ]
+			: [];
 
 		return (
 			<Fragment>

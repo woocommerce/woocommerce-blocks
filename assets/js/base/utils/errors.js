@@ -7,7 +7,7 @@
  * @param  {string}   [error.type]    The context in which the error was triggered.
  * @return {Object}   Error object containing a message and type.
  */
-export const formatError = async error => {
+export const formatError = async ( error ) => {
 	if ( typeof error.json === 'function' ) {
 		try {
 			const parsedError = await error.json();

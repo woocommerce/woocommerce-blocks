@@ -3,7 +3,10 @@
  */
 import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
-import { PLACEHOLDER_IMG_SRC, THUMBNAIL_SIZE } from '@woocommerce/block-settings';
+import {
+	PLACEHOLDER_IMG_SRC,
+	THUMBNAIL_SIZE,
+} from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -43,7 +46,9 @@ const ProductPreview = ( { product } ) => {
 
 	return (
 		<div className="wc-product-preview wc-block-grid__product">
-			<div className="wc-product-preview__image wc-block-grid__product-image">{ image }</div>
+			<div className="wc-product-preview__image wc-block-grid__product-image">
+				{ image }
+			</div>
 			<div
 				className="wc-product-preview__title wc-block-grid__product-title"
 				dangerouslySetInnerHTML={ { __html: product.name } }
@@ -77,7 +82,10 @@ ProductPreview.propTypes = {
 	 */
 	product: PropTypes.shape( {
 		id: PropTypes.number,
-		average_rating: PropTypes.oneOf( [ 'PropTypes.number', 'PropTypes.string' ] ),
+		average_rating: PropTypes.oneOf( [
+			'PropTypes.number',
+			'PropTypes.string',
+		] ),
 		images: PropTypes.array,
 		name: PropTypes.string,
 		price_html: PropTypes.string,

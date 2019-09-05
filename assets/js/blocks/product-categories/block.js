@@ -43,14 +43,17 @@ class ProductCategoriesBlock extends Component {
 
 		return (
 			<ul key={ parentKey }>
-				{ items.map( cat => {
+				{ items.map( ( cat ) => {
 					const count = hasCount ? <span>({ cat.count })</span> : null;
 					return [
 						<li key={ cat.term_id }>
 							{ /* eslint-disable-next-line jsx-a11y/anchor-is-valid */ }
-							<a href={ isPreview ? null : cat.link }>{ cat.name }</a> { count + ' ' }
+							<a href={ isPreview ? null : cat.link }>{ cat.name }</a>
+							{ ' ' + count + ' ' }
 						</li>,
-						!! cat.children && !! cat.children.length && this.renderList( cat.children, depth + 1 ),
+						!! cat.children &&
+							!! cat.children.length &&
+							this.renderList( cat.children, depth + 1 ),
 					];
 				} ) }
 			</ul>
@@ -60,13 +63,15 @@ class ProductCategoriesBlock extends Component {
 	renderOptions( items, depth = 0 ) {
 		const { hasCount } = this.props.attributes;
 
-		return items.map( cat => {
+		return items.map( ( cat ) => {
 			const count = hasCount ? `(${ cat.count })` : null;
 			return [
 				<option key={ cat.term_id } value={ cat.link }>
 					{ '–'.repeat( depth ) } { cat.name } { count }
 				</option>,
-				!! cat.children && !! cat.children.length && this.renderOptions( cat.children, depth + 1 ),
+				!! cat.children &&
+					!! cat.children.length &&
+					this.renderOptions( cat.children, depth + 1 ),
 			];
 		} );
 	}
@@ -89,11 +94,17 @@ class ProductCategoriesBlock extends Component {
 							<Fragment>
 								<div className="wc-block-product-categories__dropdown">
 									<label className="screen-reader-text" htmlFor={ selectId }>
-										{ __( 'Select a category', 'woo-gutenberg-products-block' ) }
+										{ __(
+											'Select a category',
+											'woo-gutenberg-products-block'
+										) }
 									</label>
 									<select id={ selectId } ref={ this.select }>
 										<option value="false" hidden>
-											{ __( 'Select a category', 'woo-gutenberg-products-block' ) }
+											{ __(
+												'Select a category',
+												'woo-gutenberg-products-block'
+											) }
 										</option>
 										{ this.renderOptions( categories ) }
 									</select>
@@ -101,7 +112,10 @@ class ProductCategoriesBlock extends Component {
 								<button
 									type="button"
 									className="wc-block-product-categories__button"
-									aria-label={ __( 'Go to category', 'woo-gutenberg-products-block' ) }
+									aria-label={ __(
+										'Go to category',
+										'woo-gutenberg-products-block'
+									) }
 									icon="arrow-right-alt2"
 									onClick={ this.onNavigate }
 								>

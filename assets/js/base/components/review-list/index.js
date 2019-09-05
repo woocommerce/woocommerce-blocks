@@ -2,7 +2,10 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import { ENABLE_REVIEW_RATING, SHOW_AVATARS } from '@woocommerce/block-settings';
+import {
+	ENABLE_REVIEW_RATING,
+	SHOW_AVATARS,
+} from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -12,7 +15,8 @@ import './style.scss';
 
 const ReviewList = ( { attributes, reviews } ) => {
 	const showReviewImage =
-		( SHOW_AVATARS || attributes.imageType === 'product' ) && attributes.showReviewImage;
+		( SHOW_AVATARS || attributes.imageType === 'product' ) &&
+		attributes.showReviewImage;
 	const showReviewRating = ENABLE_REVIEW_RATING && attributes.showReviewRating;
 	const attrs = {
 		...attributes,
@@ -26,7 +30,11 @@ const ReviewList = ( { attributes, reviews } ) => {
 				<ReviewListItem attributes={ attrs } />
 			) : (
 				reviews.map( ( review, i ) => (
-					<ReviewListItem key={ review.id || i } attributes={ attrs } review={ review } />
+					<ReviewListItem
+						key={ review.id || i }
+						attributes={ attrs }
+						review={ review }
+					/>
 				) )
 			) }
 		</ul>

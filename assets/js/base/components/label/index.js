@@ -10,7 +10,12 @@ import classNames from 'classnames';
  * screenReaderLabel. The wrapper element and wrapper props can also be
  * specified via props.
  */
-const Label = ( { label, screenReaderLabel, wrapperElement, wrapperProps } ) => {
+const Label = ( {
+	label,
+	screenReaderLabel,
+	wrapperElement,
+	wrapperProps,
+} ) => {
 	let Wrapper;
 
 	if ( ! label && screenReaderLabel ) {

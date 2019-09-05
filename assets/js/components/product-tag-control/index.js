@@ -33,7 +33,7 @@ class ProductTagControl extends Component {
 		const { selected } = this.props;
 
 		getProductTags( { selected } )
-			.then( list => {
+			.then( ( list ) => {
 				this.setState( { list, loading: false } );
 			} )
 			.catch( () => {
@@ -46,7 +46,7 @@ class ProductTagControl extends Component {
 		this.setState( { loading: true } );
 
 		getProductTags( { selected, search } )
-			.then( list => {
+			.then( ( list ) => {
 				this.setState( { list, loading: false } );
 			} )
 			.catch( () => {
@@ -94,14 +94,25 @@ class ProductTagControl extends Component {
 		const messages = {
 			clear: __( 'Clear all product tags', 'woo-gutenberg-products-block' ),
 			list: __( 'Product Tags', 'woo-gutenberg-products-block' ),
-			noItems: __( "Your store doesn't have any product tags.", 'woo-gutenberg-products-block' ),
+			noItems: __(
+				"Your store doesn't have any product tags.",
+				'woo-gutenberg-products-block'
+			),
 			search: __( 'Search for product tags', 'woo-gutenberg-products-block' ),
-			selected: n =>
+			selected: ( n ) =>
 				sprintf(
-					_n( '%d tag selected', '%d tags selected', n, 'woo-gutenberg-products-block' ),
+					_n(
+						'%d tag selected',
+						'%d tags selected',
+						n,
+						'woo-gutenberg-products-block'
+					),
 					n
 				),
-			updated: __( 'Tag search results updated.', 'woo-gutenberg-products-block' ),
+			updated: __(
+				'Tag search results updated.',
+				'woo-gutenberg-products-block'
+			),
 		};
 
 		return (
@@ -110,7 +121,9 @@ class ProductTagControl extends Component {
 					className="woocommerce-product-tags"
 					list={ list }
 					isLoading={ loading }
-					selected={ selected.map( id => find( list, { id } ) ).filter( Boolean ) }
+					selected={ selected
+						.map( ( id ) => find( list, { id } ) )
+						.filter( Boolean ) }
 					onChange={ onChange }
 					onSearch={ LIMIT_TAGS ? this.debouncedOnSearch : null }
 					renderItem={ this.renderItem }
@@ -121,7 +134,10 @@ class ProductTagControl extends Component {
 					<div className={ selected.length < 2 ? 'screen-reader-text' : '' }>
 						<SelectControl
 							className="woocommerce-product-tags__operator"
-							label={ __( 'Display products matching', 'woo-gutenberg-products-block' ) }
+							label={ __(
+								'Display products matching',
+								'woo-gutenberg-products-block'
+							) }
 							help={ __(
 								'Pick at least two tags to use this setting.',
 								'woo-gutenberg-products-block'
@@ -130,11 +146,17 @@ class ProductTagControl extends Component {
 							onChange={ onOperatorChange }
 							options={ [
 								{
-									label: __( 'Any selected tags', 'woo-gutenberg-products-block' ),
+									label: __(
+										'Any selected tags',
+										'woo-gutenberg-products-block'
+									),
 									value: 'any',
 								},
 								{
-									label: __( 'All selected tags', 'woo-gutenberg-products-block' ),
+									label: __(
+										'All selected tags',
+										'woo-gutenberg-products-block'
+									),
 									value: 'all',
 								},
 							] }

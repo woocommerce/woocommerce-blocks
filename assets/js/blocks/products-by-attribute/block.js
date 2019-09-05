@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { BlockControls, InspectorControls, ServerSideRender } from '@wordpress/editor';
+import {
+	BlockControls,
+	InspectorControls,
+	ServerSideRender,
+} from '@wordpress/editor';
 import {
 	Button,
 	Disabled,
@@ -41,7 +45,10 @@ class ProductsByAttributeBlock extends Component {
 
 		return (
 			<InspectorControls key="inspector">
-				<PanelBody title={ __( 'Layout', 'woo-gutenberg-products-block' ) } initialOpen>
+				<PanelBody
+					title={ __( 'Layout', 'woo-gutenberg-products-block' ) }
+					initialOpen
+				>
 					<GridLayoutControl
 						columns={ columns }
 						rows={ rows }
@@ -49,14 +56,22 @@ class ProductsByAttributeBlock extends Component {
 						setAttributes={ setAttributes }
 					/>
 				</PanelBody>
-				<PanelBody title={ __( 'Content', 'woo-gutenberg-products-block' ) } initialOpen>
+				<PanelBody
+					title={ __( 'Content', 'woo-gutenberg-products-block' ) }
+					initialOpen
+				>
 					<GridContentControl
 						settings={ contentVisibility }
-						onChange={ value => setAttributes( { contentVisibility: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { contentVisibility: value } )
+						}
 					/>
 				</PanelBody>
 				<PanelBody
-					title={ __( 'Filter by Product Attribute', 'woo-gutenberg-products-block' ) }
+					title={ __(
+						'Filter by Product Attribute',
+						'woo-gutenberg-products-block'
+					) }
 					initialOpen={ false }
 				>
 					<ProductAttributeControl
@@ -71,11 +86,19 @@ class ProductsByAttributeBlock extends Component {
 							setAttributes( { attributes: result } );
 						} }
 						operator={ attrOperator }
-						onOperatorChange={ ( value = 'any' ) => setAttributes( { attrOperator: value } ) }
+						onOperatorChange={ ( value = 'any' ) =>
+							setAttributes( { attrOperator: value } )
+						}
 					/>
 				</PanelBody>
-				<PanelBody title={ __( 'Order By', 'woo-gutenberg-products-block' ) } initialOpen={ false }>
-					<ProductOrderbyControl setAttributes={ setAttributes } value={ orderby } />
+				<PanelBody
+					title={ __( 'Order By', 'woo-gutenberg-products-block' ) }
+					initialOpen={ false }
+				>
+					<ProductOrderbyControl
+						setAttributes={ setAttributes }
+						value={ orderby }
+					/>
 				</PanelBody>
 			</InspectorControls>
 		);
@@ -87,7 +110,10 @@ class ProductsByAttributeBlock extends Component {
 		const onDone = () => {
 			setAttributes( { editMode: false } );
 			debouncedSpeak(
-				__( 'Showing Products by Attribute block preview.', 'woo-gutenberg-products-block' )
+				__(
+					'Showing Products by Attribute block preview.',
+					'woo-gutenberg-products-block'
+				)
 			);
 		};
 
@@ -114,7 +140,9 @@ class ProductsByAttributeBlock extends Component {
 							setAttributes( { attributes: result } );
 						} }
 						operator={ blockAttributes.attrOperator }
-						onOperatorChange={ ( value = 'any' ) => setAttributes( { attrOperator: value } ) }
+						onOperatorChange={ ( value = 'any' ) =>
+							setAttributes( { attrOperator: value } )
+						}
 					/>
 					<Button isDefault onClick={ onDone }>
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }

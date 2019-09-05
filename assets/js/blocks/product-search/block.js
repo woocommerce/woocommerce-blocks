@@ -77,7 +77,14 @@ class ProductSearchBlock extends Component {
 
 	renderEdit() {
 		const { attributes, setAttributes, instanceId } = this.props;
-		const { label, placeholder, formId, className, hasLabel, align } = attributes;
+		const {
+			label,
+			placeholder,
+			formId,
+			className,
+			hasLabel,
+			align,
+		} = attributes;
 		const classes = classnames(
 			'wc-block-product-search',
 			align ? 'align' + align : '',
@@ -85,7 +92,9 @@ class ProductSearchBlock extends Component {
 		);
 
 		if ( ! formId ) {
-			setAttributes( { formId: `wc-block-product-search-${ instanceId }` } );
+			setAttributes( {
+				formId: `wc-block-product-search-${ instanceId }`,
+			} );
 		}
 
 		return (
@@ -94,20 +103,20 @@ class ProductSearchBlock extends Component {
 					<PlainText
 						className="wc-block-product-search__label"
 						value={ label }
-						onChange={ value => setAttributes( { label: value } ) }
+						onChange={ ( value ) => setAttributes( { label: value } ) }
 					/>
 				) }
 				<div className="wc-block-product-search__fields">
 					<PlainText
 						className="wc-block-product-search__field input-control"
 						value={ placeholder }
-						onChange={ value => setAttributes( { placeholder: value } ) }
+						onChange={ ( value ) => setAttributes( { placeholder: value } ) }
 					/>
 					<button
 						type="submit"
 						className="wc-block-product-search__button"
 						label={ __( 'Search', 'woo-gutenberg-products-block' ) }
-						onClick={ e => e.preventDefault() }
+						onClick={ ( e ) => e.preventDefault() }
 						tabIndex="-1"
 					>
 						<svg

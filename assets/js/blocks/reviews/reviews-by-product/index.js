@@ -21,7 +21,10 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 	icon: <IconReviewsByProduct fillColor="#96588a" />,
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
-	description: __( 'Show reviews of your product to build trust.', 'woo-gutenberg-products-block' ),
+	description: __(
+		'Show reviews of your product to build trust.',
+		'woo-gutenberg-products-block'
+	),
 	attributes: {
 		...sharedAttributes,
 		/**

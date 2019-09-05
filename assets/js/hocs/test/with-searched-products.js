@@ -25,7 +25,7 @@ mockedUtils.getProducts = jest
 // the onSearch call.
 const debouncedCancel = jest.fn();
 const debouncedAction = jest.fn();
-_.debounce = onSearch => {
+_.debounce = ( onSearch ) => {
 	const debounced = debouncedAction.mockImplementation( () => {
 		onSearch();
 	} );
@@ -40,28 +40,38 @@ describe( 'withSearchedProducts Component', () => {
 		debouncedAction.mockClear();
 		mockedUtils.getProducts.mockClear();
 	} );
-	const TestComponent = withSearchedProducts( ( { selected, products, isLoading, onSearch } ) => {
-		return (
-			<div
-				products={ products }
-				selected={ selected }
-				isLoading={ isLoading }
-				onSearch={ onSearch }
-			/>
-		);
-	} );
+	const TestComponent = withSearchedProducts(
+		( { selected, products, isLoading, onSearch } ) => {
+			return (
+				<div
+					products={ products }
+					selected={ selected }
+					isLoading={ isLoading }
+					onSearch={ onSearch }
+				/>
+			);
+		}
+	);
 	describe( 'lifecycle tests', () => {
 		const selected = [ 10 ];
-		const renderer = TestRenderer.create( <TestComponent selected={ selected } /> );
+		const renderer = TestRenderer.create(
+			<TestComponent selected={ selected } />
+		);
 		let props;
-		it( 'getProducts is called on mount with passed in selected ' + 'values', () => {
-			expect( getProducts ).toHaveBeenCalledWith( { selected } );
-			expect( getProducts ).toHaveBeenCalledTimes( 1 );
-		} );
+		it(
+			'getProducts is called on mount with passed in selected ' + 'values',
+			() => {
+				expect( getProducts ).toHaveBeenCalledWith( { selected } );
+				expect( getProducts ).toHaveBeenCalledTimes( 1 );
+			}
+		);
 		it( 'has expected values for props', () => {
 			props = renderer.root.findByType( 'div' ).props;
 			expect( props.selected ).toEqual( [ { id: 10, name: 'foo' } ] );
-			expect( props.products ).toEqual( [ { id: 10, name: 'foo' }, { id: 20, name: 'bar' } ] );
+			expect( props.products ).toEqual( [
+				{ id: 10, name: 'foo' },
+				{ id: 20, name: 'bar' },
+			] );
 		} );
 		it( 'debounce and getProducts is called on search event', () => {
 			props = renderer.root.findByType( 'div' ).props;

@@ -61,7 +61,7 @@ class EditorContainerBlock extends Component {
 				<EditorBlock
 					attributes={ attributes }
 					categoryIds={ categoryIds }
-					delayFunction={ callback => debounce( callback, 400 ) }
+					delayFunction={ ( callback ) => debounce( callback, 400 ) }
 					noReviewsPlaceholder={ noReviewsPlaceholder }
 					orderby={ orderby }
 					order={ order }

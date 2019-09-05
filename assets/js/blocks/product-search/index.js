@@ -23,7 +23,10 @@ registerBlockType( 'woocommerce/product-search', {
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
-	description: __( 'Help visitors find your products.', 'woo-gutenberg-products-block' ),
+	description: __(
+		'Help visitors find your products.',
+		'woo-gutenberg-products-block'
+	),
 	supports: {
 		align: [ 'wide', 'full' ],
 	},
@@ -76,9 +79,15 @@ registerBlockType( 'woocommerce/product-search', {
 		return (
 			<Fragment>
 				<InspectorControls key="inspector">
-					<PanelBody title={ __( 'Content', 'woo-gutenberg-products-block' ) } initialOpen>
+					<PanelBody
+						title={ __( 'Content', 'woo-gutenberg-products-block' ) }
+						initialOpen
+					>
 						<ToggleControl
-							label={ __( 'Show search field label', 'woo-gutenberg-products-block' ) }
+							label={ __(
+								'Show search field label',
+								'woo-gutenberg-products-block'
+							) }
 							help={
 								hasLabel
 									? __( 'Label is visible.', 'woo-gutenberg-products-block' )

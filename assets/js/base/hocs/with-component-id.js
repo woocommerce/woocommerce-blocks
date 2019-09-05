@@ -7,7 +7,7 @@ const ids = [];
  *
  * This is an alternative for withInstanceId from @wordpress/compose to avoid using that dependency on the frontend.
  */
-const withComponentId = OriginalComponent => {
+const withComponentId = ( OriginalComponent ) => {
 	return class WrappedComponent extends Component {
 		generateUniqueID() {
 			const group = WrappedComponent.name;
@@ -24,7 +24,9 @@ const withComponentId = OriginalComponent => {
 		render() {
 			const componentId = this.generateUniqueID();
 
-			return <OriginalComponent { ...this.props } componentId={ componentId } />;
+			return (
+				<OriginalComponent { ...this.props } componentId={ componentId } />
+			);
 		}
 	};
 };

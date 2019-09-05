@@ -33,15 +33,22 @@ const FrontendBlock = ( {
 	return (
 		<Fragment>
 			{ attributes.showOrderby !== 'false' && ENABLE_REVIEW_RATING && (
-				<ReviewOrderSelect defaultValue={ orderby } onChange={ onChangeOrderby } />
-			) }
-			<ReviewList attributes={ attributes } reviews={ reviews } />
-			{ attributes.showLoadMore !== 'false' && totalReviews > reviews.length && (
-				<LoadMoreButton
-					onClick={ onAppendReviews }
-					screenReaderLabel={ __( 'Load more reviews', 'woo-gutenberg-products-block' ) }
+				<ReviewOrderSelect
+					defaultValue={ orderby }
+					onChange={ onChangeOrderby }
 				/>
 			) }
+			<ReviewList attributes={ attributes } reviews={ reviews } />
+			{ attributes.showLoadMore !== 'false' &&
+				totalReviews > reviews.length && (
+					<LoadMoreButton
+						onClick={ onAppendReviews }
+						screenReaderLabel={ __(
+							'Load more reviews',
+							'woo-gutenberg-products-block'
+						) }
+					/>
+				) }
 		</Fragment>
 	);
 };

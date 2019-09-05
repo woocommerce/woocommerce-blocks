@@ -9,10 +9,12 @@ import { render } from 'react-dom';
 import Block from './block.js';
 import getCategories from './get-categories';
 
-const containers = document.querySelectorAll( '.wp-block-woocommerce-product-categories' );
+const containers = document.querySelectorAll(
+	'.wp-block-woocommerce-product-categories'
+);
 
 if ( containers.length ) {
-	Array.prototype.forEach.call( containers, el => {
+	Array.prototype.forEach.call( containers, ( el ) => {
 		const data = JSON.parse( JSON.stringify( el.dataset ) );
 		const attributes = {
 			hasCount: data.hasCount === 'true',

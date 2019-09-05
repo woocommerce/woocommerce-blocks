@@ -16,24 +16,24 @@ const headers = {
 	'User-Agent': 'request',
 };
 
-const getPullRequestType = labels => {
-	const typeLabel = labels.find( label => label.name.includes( 'type:' ) );
+const getPullRequestType = ( labels ) => {
+	const typeLabel = labels.find( ( label ) => label.name.includes( 'type:' ) );
 	if ( ! typeLabel ) {
 		return 'dev';
 	}
 	return typeLabel.name.replace( 'type: ', '' );
 };
 
-const isCollaborator = async username => {
+const isCollaborator = async ( username ) => {
 	return requestPromise( {
 		url: `https://api.github.com/orgs/woocommerce/members/${ username }`,
 		headers,
 		resolveWithFullResponse: true,
 	} )
-		.then( response => {
+		.then( ( response ) => {
 			return response.statusCode === 204;
 		} )
-		.catch( err => {
+		.catch( ( err ) => {
 			if ( err.statusCode !== 404 ) {
 				console.log( '🤯' );
 				console.log( err.message );
@@ -41,27 +41,29 @@ const isCollaborator = async username => {
 		} );
 };
 
-const isMergedPullRequest = async pullRequestUrl => {
+const isMergedPullRequest = async ( pullRequestUrl ) => {
 	const options = {
 		url: pullRequestUrl,
 		headers,
 		json: true,
 	};
 	return requestPromise( options )
-		.then( data => data.merged )
-		.catch( err => {
+		.then( ( data ) => data.merged )
+		.catch( ( err ) => {
 			console.log( '🤯' );
 			console.log( err.message );
 		} );
 };
 
-const getEntry = async data => {
+const getEntry = async ( data ) => {
 	if ( ! data.pull_request ) {
 		return;
 	}
 
 	const isMerged = await isMergedPullRequest( data.pull_request.url );
-	const skipChangelog = data.labels.find( label => label.name === 'skip-changelog' );
+	const skipChangelog = data.labels.find(
+		( label ) => label.name === 'skip-changelog'
+	);
 
 	if ( ! isMerged || skipChangelog ) {
 		return;
@@ -88,16 +90,20 @@ const getEntry = async data => {
 	return `- ${ title } #${ data.number } ${ authorTag }`;
 };
 
-const makeChangelog = async version => {
+const makeChangelog = async ( version ) => {
 	const results = await octokit.search.issuesAndPullRequests( {
 		q: `milestone:${ version }+type:pr+repo:${ REPO }`,
 		sort: 'reactions',
 		per_page: 100,
 	} );
-	const entries = await Promise.all( results.data.items.map( async pr => await getEntry( pr ) ) );
+	const entries = await Promise.all(
+		results.data.items.map( async ( pr ) => await getEntry( pr ) )
+	);
 
 	if ( ! entries || ! entries.length ) {
-		console.log( chalk.yellow( "This version doesn't have any associated PR." ) );
+		console.log(
+			chalk.yellow( "This version doesn't have any associated PR." )
+		);
 		return;
 	}
 
@@ -105,7 +111,9 @@ const makeChangelog = async version => {
 
 	if ( ! entries || ! entries.length ) {
 		console.log(
-			chalk.yellow( 'None of the PRs of this version are eligible for the changelog.' )
+			chalk.yellow(
+				'None of the PRs of this version are eligible for the changelog.'
+			)
 		);
 		return;
 	}
@@ -115,16 +123,21 @@ const makeChangelog = async version => {
 
 ( async () => {
 	console.log(
-		chalk.yellow( 'This program requires an api token. You can create one here: ' ) +
-			'https://github.com/settings/tokens'
+		chalk.yellow(
+			'This program requires an api token. You can create one here: '
+		) + 'https://github.com/settings/tokens'
 	);
 	console.log( '' );
 	console.log(
-		chalk.yellow( 'Token scope will require read permissions on public_repo, admin:org, and user.' )
+		chalk.yellow(
+			'Token scope will require read permissions on public_repo, admin:org, and user.'
+		)
 	);
 	console.log( '' );
 	console.log(
-		chalk.yellow( 'Export the token as variable called GH_API_TOKEN from your bash profile.' )
+		chalk.yellow(
+			'Export the token as variable called GH_API_TOKEN from your bash profile.'
+		)
 	);
 	console.log( '' );
 

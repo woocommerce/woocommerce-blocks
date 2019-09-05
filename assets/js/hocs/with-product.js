@@ -10,7 +10,7 @@ import { createHigherOrderComponent } from '@wordpress/compose';
 import { getProduct } from '../components/utils';
 import { formatError } from '../base/utils/errors.js';
 
-const withProduct = createHigherOrderComponent( OriginalComponent => {
+const withProduct = createHigherOrderComponent( ( OriginalComponent ) => {
 	return class WrappedComponent extends Component {
 		constructor() {
 			super( ...arguments );
@@ -27,7 +27,9 @@ const withProduct = createHigherOrderComponent( OriginalComponent => {
 		}
 
 		componentDidUpdate( prevProps ) {
-			if ( prevProps.attributes.productId !== this.props.attributes.productId ) {
+			if (
+				prevProps.attributes.productId !== this.props.attributes.productId
+			) {
 				this.loadProduct();
 			}
 		}
@@ -43,10 +45,10 @@ const withProduct = createHigherOrderComponent( OriginalComponent => {
 			this.setState( { loading: true } );
 
 			getProduct( productId )
-				.then( product => {
+				.then( ( product ) => {
 					this.setState( { product, loading: false, error: null } );
 				} )
-				.catch( async e => {
+				.catch( async ( e ) => {
 					const error = await formatError( e );
 
 					this.setState( { product: null, loading: false, error } );

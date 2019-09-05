@@ -24,19 +24,25 @@ MergeExtractFilesPlugin.prototype.apply = function( compiler ) {
 		return;
 	}
 	compiler.hooks.afterEmit.tap( 'afterEmit', () => {
-		this.files.forEach( f => {
+		this.files.forEach( ( f ) => {
 			// If we're watching, we might not have created all the file stubs.
 			if ( ! fs.existsSync( path.resolve( rootPath, f ) ) ) {
 				return;
 			}
 			const content = fs.readFileSync( path.resolve( rootPath, f ) );
 			try {
-				fs.appendFileSync( path.resolve( rootPath, this.output ), '\n\n' + content );
+				fs.appendFileSync(
+					path.resolve( rootPath, this.output ),
+					'\n\n' + content
+				);
 				// noop silently ignores errors with deleting the file.
 				rimraf( f, noop );
 			} catch ( error ) {
 				/* eslint-disable-next-line no-console */
-				console.log( ` There was an error merging ${ f } into ${ this.output }`, error );
+				console.log(
+					` There was an error merging ${ f } into ${ this.output }`,
+					error
+				);
 			}
 		} );
 	} );

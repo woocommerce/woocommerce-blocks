@@ -24,7 +24,10 @@ registerBlockType( 'woocommerce/all-reviews', {
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
-	description: __( 'Shows a list of all product reviews.', 'woo-gutenberg-products-block' ),
+	description: __(
+		'Shows a list of all product reviews.',
+		'woo-gutenberg-products-block'
+	),
 	attributes: {
 		...sharedAttributes,
 		/**

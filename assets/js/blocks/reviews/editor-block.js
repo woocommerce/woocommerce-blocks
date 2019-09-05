@@ -62,7 +62,10 @@ class EditorBlock extends Component {
 				<ReviewList attributes={ attributes } reviews={ reviews } />
 				{ attributes.showLoadMore && totalReviews > reviews.length && (
 					<LoadMoreButton
-						screenReaderLabel={ __( 'Load more reviews', 'woo-gutenberg-products-block' ) }
+						screenReaderLabel={ __(
+							'Load more reviews',
+							'woo-gutenberg-products-block'
+						) }
 					/>
 				) }
 			</Disabled>

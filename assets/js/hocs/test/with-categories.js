@@ -19,9 +19,13 @@ jest.mock( '../../base/utils/errors', () => ( {
 } ) );
 
 const mockCategories = [ { id: 1, name: 'Clothing' }, { id: 2, name: 'Food' } ];
-const TestComponent = withCategories( props => {
+const TestComponent = withCategories( ( props ) => {
 	return (
-		<div error={ props.error } isLoading={ props.isLoading } categories={ props.categories } />
+		<div
+			error={ props.error }
+			isLoading={ props.isLoading }
+			categories={ props.categories }
+		/>
 	);
 } );
 const render = () => {
@@ -50,7 +54,9 @@ describe( 'withCategories Component', () => {
 
 	describe( 'when the API returns categories data', () => {
 		beforeEach( () => {
-			mockUtils.getCategories.mockImplementation( () => Promise.resolve( mockCategories ) );
+			mockUtils.getCategories.mockImplementation( () =>
+				Promise.resolve( mockCategories )
+			);
 			renderer = render();
 		} );
 
@@ -74,7 +80,7 @@ describe( 'withCategories Component', () => {
 			renderer = render();
 		} );
 
-		it( 'sets the error prop', done => {
+		it( 'sets the error prop', ( done ) => {
 			const { formatError } = mockBaseUtils;
 			getCategoriesPromise.catch( () => {
 				const props = renderer.root.findByType( 'div' ).props;

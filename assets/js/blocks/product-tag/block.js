@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { BlockControls, InspectorControls, ServerSideRender } from '@wordpress/editor';
+import {
+	BlockControls,
+	InspectorControls,
+	ServerSideRender,
+} from '@wordpress/editor';
 import {
 	Button,
 	Disabled,
@@ -64,8 +68,13 @@ class ProductsByTagBlock extends Component {
 	}
 
 	setChangedAttributes( attributes ) {
-		this.setState( prevState => {
-			return { changedAttributes: { ...prevState.changedAttributes, ...attributes } };
+		this.setState( ( prevState ) => {
+			return {
+				changedAttributes: {
+					...prevState.changedAttributes,
+					...attributes,
+				},
+			};
 		} );
 	}
 
@@ -80,7 +89,14 @@ class ProductsByTagBlock extends Component {
 	getInspectorControls() {
 		const { attributes, setAttributes } = this.props;
 		const { isEditing } = this.state;
-		const { columns, tagOperator, contentVisibility, orderby, rows, alignButtons } = attributes;
+		const {
+			columns,
+			tagOperator,
+			contentVisibility,
+			orderby,
+			rows,
+			alignButtons,
+		} = attributes;
 
 		return (
 			<InspectorControls key="inspector">
@@ -95,10 +111,15 @@ class ProductsByTagBlock extends Component {
 							setAttributes( { tags: ids } );
 						} }
 						operator={ tagOperator }
-						onOperatorChange={ ( value = 'any' ) => setAttributes( { tagOperator: value } ) }
+						onOperatorChange={ ( value = 'any' ) =>
+							setAttributes( { tagOperator: value } )
+						}
 					/>
 				</PanelBody>
-				<PanelBody title={ __( 'Layout', 'woo-gutenberg-products-block' ) } initialOpen>
+				<PanelBody
+					title={ __( 'Layout', 'woo-gutenberg-products-block' ) }
+					initialOpen
+				>
 					<GridLayoutControl
 						columns={ columns }
 						rows={ rows }
@@ -106,14 +127,25 @@ class ProductsByTagBlock extends Component {
 						setAttributes={ setAttributes }
 					/>
 				</PanelBody>
-				<PanelBody title={ __( 'Content', 'woo-gutenberg-products-block' ) } initialOpen>
+				<PanelBody
+					title={ __( 'Content', 'woo-gutenberg-products-block' ) }
+					initialOpen
+				>
 					<GridContentControl
 						settings={ contentVisibility }
-						onChange={ value => setAttributes( { contentVisibility: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { contentVisibility: value } )
+						}
 					/>
 				</PanelBody>
-				<PanelBody title={ __( 'Order By', 'woo-gutenberg-products-block' ) } initialOpen={ false }>
-					<ProductOrderbyControl setAttributes={ setAttributes } value={ orderby } />
+				<PanelBody
+					title={ __( 'Order By', 'woo-gutenberg-products-block' ) }
+					initialOpen={ false }
+				>
+					<ProductOrderbyControl
+						setAttributes={ setAttributes }
+						value={ orderby }
+					/>
 				</PanelBody>
 			</InspectorControls>
 		);
@@ -126,13 +158,19 @@ class ProductsByTagBlock extends Component {
 		const onDone = () => {
 			this.save();
 			debouncedSpeak(
-				__( 'Showing Products by Tag block preview.', 'woo-gutenberg-products-block' )
+				__(
+					'Showing Products by Tag block preview.',
+					'woo-gutenberg-products-block'
+				)
 			);
 		};
 		const onCancel = () => {
 			this.stopEditing();
 			debouncedSpeak(
-				__( 'Showing Products by Tag block preview.', 'woo-gutenberg-products-block' )
+				__(
+					'Showing Products by Tag block preview.',
+					'woo-gutenberg-products-block'
+				)
 			);
 		};
 
@@ -161,7 +199,11 @@ class ProductsByTagBlock extends Component {
 					<Button isDefault onClick={ onDone }>
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }
 					</Button>
-					<Button className="wc-block-product-tag__cancel-button" isTertiary onClick={ onCancel }>
+					<Button
+						className="wc-block-product-tag__cancel-button"
+						isTertiary
+						onClick={ onCancel }
+					>
 						{ __( 'Cancel', 'woo-gutenberg-products-block' ) }
 					</Button>
 				</div>
@@ -206,7 +248,8 @@ class ProductsByTagBlock extends Component {
 									{
 										icon: 'edit',
 										title: __( 'Edit' ),
-										onClick: () => ( isEditing ? this.stopEditing() : this.startEditing() ),
+										onClick: () =>
+											isEditing ? this.stopEditing() : this.startEditing(),
 										isActive: isEditing,
 									},
 								] }

@@ -30,10 +30,14 @@ import {
 /**
  * Component to handle edit mode of "Reviews by Category".
  */
-const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, setAttributes } ) => {
+const ReviewsByCategoryEditor = ( {
+	attributes,
+	debouncedSpeak,
+	setAttributes,
+} ) => {
 	const { editMode, categoryIds } = attributes;
 
-	const renderCategoryControlItem = args => {
+	const renderCategoryControlItem = ( args ) => {
 		const { item, search, depth = 0 } = args;
 		const classes = [ 'woocommerce-product-categories__item' ];
 		if ( search.length ) {
@@ -69,7 +73,10 @@ const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, setAttributes } 
 	const getInspectorControls = () => {
 		return (
 			<InspectorControls key="inspector">
-				<PanelBody title={ __( 'Category', 'woo-gutenberg-products-block' ) } initialOpen={ false }>
+				<PanelBody
+					title={ __( 'Category', 'woo-gutenberg-products-block' ) }
+					initialOpen={ false }
+				>
 					<ProductCategoryControl
 						selected={ attributes.categoryIds }
 						onChange={ ( value = [] ) => {
@@ -83,11 +90,17 @@ const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, setAttributes } 
 					<ToggleControl
 						label={ __( 'Product name', 'woo-gutenberg-products-block' ) }
 						checked={ attributes.showProductName }
-						onChange={ () => setAttributes( { showProductName: ! attributes.showProductName } ) }
+						onChange={ () =>
+							setAttributes( {
+								showProductName: ! attributes.showProductName,
+							} )
+						}
 					/>
 					{ getSharedReviewContentControls( attributes, setAttributes ) }
 				</PanelBody>
-				<PanelBody title={ __( 'List Settings', 'woo-gutenberg-products-block' ) }>
+				<PanelBody
+					title={ __( 'List Settings', 'woo-gutenberg-products-block' ) }
+				>
 					{ getSharedReviewListControls( attributes, setAttributes ) }
 				</PanelBody>
 			</InspectorControls>
@@ -98,7 +111,10 @@ const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, setAttributes } 
 		const onDone = () => {
 			setAttributes( { editMode: false } );
 			debouncedSpeak(
-				__( 'Showing Reviews by Category block preview.', 'woo-gutenberg-products-block' )
+				__(
+					'Showing Reviews by Category block preview.',
+					'woo-gutenberg-products-block'
+				)
 			);
 		};
 
@@ -107,7 +123,10 @@ const ReviewsByCategoryEditor = ( { attributes, debouncedSpeak, setAttributes } 
 				icon={ <IconReviewsByCategory className="block-editor-block-icon" /> }
 				label={ __( 'Reviews by Category', 'woo-gutenberg-products-block' ) }
 			>
-				{ __( 'Show product reviews from specific categories.', 'woo-gutenberg-products-block' ) }
+				{ __(
+					'Show product reviews from specific categories.',
+					'woo-gutenberg-products-block'
+				) }
 				<div className="wc-block-reviews__selection">
 					<ProductCategoryControl
 						selected={ attributes.categoryIds }

@@ -54,4 +54,9 @@ function dimRatioToClass( ratio ) {
 		: `has-background-dim-${ 10 * Math.round( ratio / 10 ) }`;
 }
 
-export { getCategoryImageSrc, getCategoryImageId, getBackgroundImageStyles, dimRatioToClass };
+export {
+	getCategoryImageSrc,
+	getCategoryImageId,
+	getBackgroundImageStyles,
+	dimRatioToClass,
+};

@@ -21,7 +21,7 @@ jest.mock( '../../base/utils/errors', () => ( {
 
 jest.mock( 'lodash', () => ( {
 	...jest.requireActual( 'lodash' ),
-	debounce: func => func,
+	debounce: ( func ) => func,
 } ) );
 
 const mockAttributes = [
@@ -33,7 +33,7 @@ const mockAttributesWithParent = [
 	{ id: 2, name: 'Size', slug: 'size', parent: 0 },
 ];
 const selected = [ { id: 11, attr_slug: 'color' } ];
-const TestComponent = withAttributes( props => {
+const TestComponent = withAttributes( ( props ) => {
 	return (
 		<div
 			attributes={ props.attributes }
@@ -84,8 +84,10 @@ describe( 'withAttributes Component', () => {
 			expect( props.expandedAttribute ).toBe( 1 );
 		} );
 
-		it( 'getTerms is called on mount if there was an attribute selected', done => {
-			const renderer = TestRenderer.create( <TestComponent selected={ selected } /> );
+		it( 'getTerms is called on mount if there was an attribute selected', ( done ) => {
+			const renderer = TestRenderer.create(
+				<TestComponent selected={ selected } />
+			);
 
 			getAttributesPromise.then( () => {
 				const { getTerms } = mockUtils;
@@ -103,7 +105,9 @@ describe( 'withAttributes Component', () => {
 		let renderer;
 
 		beforeEach( () => {
-			mockUtils.getAttributes.mockImplementation( () => Promise.resolve( mockAttributes ) );
+			mockUtils.getAttributes.mockImplementation( () =>
+				Promise.resolve( mockAttributes )
+			);
 			renderer = TestRenderer.create( <TestComponent /> );
 		} );
 
@@ -128,7 +132,7 @@ describe( 'withAttributes Component', () => {
 			renderer = TestRenderer.create( <TestComponent /> );
 		} );
 
-		it( 'sets the error prop', done => {
+		it( 'sets the error prop', ( done ) => {
 			const { formatError } = mockBaseUtils;
 			getAttributesPromise.catch( () => {
 				const props = renderer.root.findByType( 'div' ).props;

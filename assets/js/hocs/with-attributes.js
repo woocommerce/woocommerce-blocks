@@ -12,7 +12,7 @@ import { debounce } from 'lodash';
 import { getAttributes, getTerms } from '../components/utils';
 import { formatError } from '../base/utils/errors.js';
 
-const withAttributes = createHigherOrderComponent( OriginalComponent => {
+const withAttributes = createHigherOrderComponent( ( OriginalComponent ) => {
 	class WrappedComponent extends Component {
 		constructor() {
 			super( ...arguments );
@@ -50,11 +50,16 @@ const withAttributes = createHigherOrderComponent( OriginalComponent => {
 			this.setState( { loading: true } );
 
 			getAttributes()
-				.then( attributes => {
-					attributes = attributes.map( item => ( { ...item, parent: 0 } ) );
+				.then( ( attributes ) => {
+					attributes = attributes.map( ( item ) => ( {
+						...item,
+						parent: 0,
+					} ) );
 					let newExpandedAttribute = expandedAttribute;
 					if ( ! expandedAttribute && selected.length > 0 ) {
-						const attr = attributes.find( item => item.slug === selected[ 0 ].attr_slug );
+						const attr = attributes.find(
+							( item ) => item.slug === selected[ 0 ].attr_slug
+						);
 						if ( attr ) {
 							newExpandedAttribute = attr.id;
 						}
@@ -66,10 +71,15 @@ const withAttributes = createHigherOrderComponent( OriginalComponent => {
 						error: null,
 					} );
 				} )
-				.catch( async e => {
+				.catch( async ( e ) => {
 					const error = await formatError( e );
 
-					this.setState( { attributes: [], expandedAttribute: null, loading: false, error } );
+					this.setState( {
+						attributes: [],
+						expandedAttribute: null,
+						loading: false,
+						error,
+					} );
 				} );
 		}
 
@@ -83,21 +93,28 @@ const withAttributes = createHigherOrderComponent( OriginalComponent => {
 			}
 
 			getTerms( expandedAttribute )
-				.then( terms => {
-					terms = terms.map( term => ( {
+				.then( ( terms ) => {
+					terms = terms.map( ( term ) => ( {
 						...term,
 						parent: expandedAttribute,
 						attr_slug: term.attribute.slug,
 					} ) );
-					this.setState( prevState => ( {
-						termsList: { ...prevState.termsList, [ expandedAttribute ]: terms },
+					this.setState( ( prevState ) => ( {
+						termsList: {
+							...prevState.termsList,
+							[ expandedAttribute ]: terms,
+						},
 						termsLoading: false,
 					} ) );
 				} )
-				.catch( async e => {
+				.catch( async ( e ) => {
 					const error = await formatError( e );
 
-					this.setState( { termsList: {}, termsLoading: false, error } );
+					this.setState( {
+						termsList: {},
+						termsLoading: false,
+						error,
+					} );
 				} );
 		}
 
@@ -105,12 +122,20 @@ const withAttributes = createHigherOrderComponent( OriginalComponent => {
 			const { expandedAttribute } = this.state;
 
 			this.setState( {
-				expandedAttribute: attributeId === expandedAttribute ? null : attributeId,
+				expandedAttribute:
+					attributeId === expandedAttribute ? null : attributeId,
 			} );
 		}
 
 		render() {
-			const { error, expandedAttribute, loading, attributes, termsList, termsLoading } = this.state;
+			const {
+				error,
+				expandedAttribute,
+				loading,
+				attributes,
+				termsList,
+				termsLoading,
+			} = this.state;
 
 			return (
 				<OriginalComponent

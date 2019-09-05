@@ -77,15 +77,18 @@ const FeaturedCategory = ( {
 			<BlockControls>
 				<AlignmentToolbar
 					value={ contentAlign }
-					onChange={ nextAlign => {
+					onChange={ ( nextAlign ) => {
 						setAttributes( { contentAlign: nextAlign } );
 					} }
 				/>
 				<MediaUploadCheck>
 					<Toolbar>
 						<MediaUpload
-							onSelect={ media => {
-								setAttributes( { mediaId: media.id, mediaSrc: media.url } );
+							onSelect={ ( media ) => {
+								setAttributes( {
+									mediaId: media.id,
+									mediaSrc: media.url,
+								} );
 							} }
 							allowedTypes={ [ 'image' ] }
 							value={ mediaId }
@@ -118,7 +121,9 @@ const FeaturedCategory = ( {
 					<ToggleControl
 						label={ __( 'Show description', 'woo-gutenberg-products-block' ) }
 						checked={ attributes.showDesc }
-						onChange={ () => setAttributes( { showDesc: ! attributes.showDesc } ) }
+						onChange={ () =>
+							setAttributes( { showDesc: ! attributes.showDesc } )
+						}
 					/>
 				</PanelBody>
 				<PanelColorSettings
@@ -134,9 +139,12 @@ const FeaturedCategory = ( {
 					{ !! url && (
 						<Fragment>
 							<RangeControl
-								label={ __( 'Background Opacity', 'woo-gutenberg-products-block' ) }
+								label={ __(
+									'Background Opacity',
+									'woo-gutenberg-products-block'
+								) }
 								value={ attributes.dimRatio }
-								onChange={ ratio => setAttributes( { dimRatio: ratio } ) }
+								onChange={ ( ratio ) => setAttributes( { dimRatio: ratio } ) }
 								min={ 0 }
 								max={ 100 }
 								step={ 10 }
@@ -146,7 +154,9 @@ const FeaturedCategory = ( {
 									label={ __( 'Focal Point Picker' ) }
 									url={ url }
 									value={ focalPoint }
-									onChange={ value => setAttributes( { focalPoint: value } ) }
+									onChange={ ( value ) =>
+										setAttributes( { focalPoint: value } )
+									}
 								/>
 							) }
 						</Fragment>
@@ -160,7 +170,10 @@ const FeaturedCategory = ( {
 		const onDone = () => {
 			setAttributes( { editMode: false } );
 			debouncedSpeak(
-				__( 'Showing Featured Product block preview.', 'woo-gutenberg-products-block' )
+				__(
+					'Showing Featured Product block preview.',
+					'woo-gutenberg-products-block'
+				)
 			);
 		};
 
@@ -179,7 +192,11 @@ const FeaturedCategory = ( {
 						selected={ [ attributes.categoryId ] }
 						onChange={ ( value = [] ) => {
 							const id = value[ 0 ] ? value[ 0 ].id : 0;
-							setAttributes( { categoryId: id, mediaId: 0, mediaSrc: '' } );
+							setAttributes( {
+								categoryId: id,
+								mediaId: 0,
+								mediaSrc: '',
+							} );
 						} }
 						isSingle
 					/>
@@ -192,7 +209,14 @@ const FeaturedCategory = ( {
 	};
 
 	const renderCategory = () => {
-		const { className, contentAlign, dimRatio, focalPoint, height, showDesc } = attributes;
+		const {
+			className,
+			contentAlign,
+			dimRatio,
+			focalPoint,
+			height,
+			showDesc,
+		} = attributes;
 		const classes = classnames(
 			'wc-block-featured-category',
 			{
@@ -211,7 +235,8 @@ const FeaturedCategory = ( {
 			style.backgroundColor = overlayColor.color;
 		}
 		if ( focalPoint ) {
-			style.backgroundPosition = `${ focalPoint.x * 100 }% ${ focalPoint.y * 100 }%`;
+			style.backgroundPosition = `${ focalPoint.x * 100 }% ${ focalPoint.y *
+				100 }%`;
 		}
 
 		const onResizeStop = ( event, direction, elt ) => {

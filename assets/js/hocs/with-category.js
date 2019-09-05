@@ -10,7 +10,7 @@ import { createHigherOrderComponent } from '@wordpress/compose';
 import { getCategory } from '../components/utils';
 import { formatError } from '../base/utils/errors.js';
 
-const withCategory = createHigherOrderComponent( OriginalComponent => {
+const withCategory = createHigherOrderComponent( ( OriginalComponent ) => {
 	return class WrappedComponent extends Component {
 		constructor() {
 			super( ...arguments );
@@ -27,7 +27,9 @@ const withCategory = createHigherOrderComponent( OriginalComponent => {
 		}
 
 		componentDidUpdate( prevProps ) {
-			if ( prevProps.attributes.categoryId !== this.props.attributes.categoryId ) {
+			if (
+				prevProps.attributes.categoryId !== this.props.attributes.categoryId
+			) {
 				this.loadCategory();
 			}
 		}
@@ -36,17 +38,21 @@ const withCategory = createHigherOrderComponent( OriginalComponent => {
 			const { categoryId } = this.props.attributes;
 
 			if ( ! categoryId ) {
-				this.setState( { category: null, loading: false, error: null } );
+				this.setState( {
+					category: null,
+					loading: false,
+					error: null,
+				} );
 				return;
 			}
 
 			this.setState( { loading: true } );
 
 			getCategory( categoryId )
-				.then( category => {
+				.then( ( category ) => {
 					this.setState( { category, loading: false, error: null } );
 				} )
-				.catch( async e => {
+				.catch( async ( e ) => {
 					const error = await formatError( e );
 
 					this.setState( { category: null, loading: false, error } );

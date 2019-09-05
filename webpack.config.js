@@ -36,7 +36,7 @@ const baseConfig = {
 	},
 };
 
-const requestToExternal = request => {
+const requestToExternal = ( request ) => {
 	const wcDepMap = {
 		'@woocommerce/settings': [ 'wc', 'wc-shared-settings' ],
 		'@woocommerce/block-settings': [ 'wc', 'wc-block-settings' ],
@@ -46,7 +46,7 @@ const requestToExternal = request => {
 	}
 };
 
-const requestToHandle = request => {
+const requestToHandle = ( request ) => {
 	const wcHandleMap = {
 		'@woocommerce/settings': 'wc-shared-settings',
 		'@woocommerce/block-settings': 'wc-block-settings',
@@ -115,11 +115,14 @@ const GutenbergBlocksConfig = {
 		'product-new': './assets/js/blocks/product-new/index.js',
 		'product-on-sale': './assets/js/blocks/product-on-sale/index.js',
 		'product-top-rated': './assets/js/blocks/product-top-rated/index.js',
-		'products-by-attribute': './assets/js/blocks/products-by-attribute/index.js',
+		'products-by-attribute':
+			'./assets/js/blocks/products-by-attribute/index.js',
 		'featured-product': './assets/js/blocks/featured-product/index.js',
 		'all-reviews': './assets/js/blocks/reviews/all-reviews/index.js',
-		'reviews-by-product': './assets/js/blocks/reviews/reviews-by-product/index.js',
-		'reviews-by-category': './assets/js/blocks/reviews/reviews-by-category/index.js',
+		'reviews-by-product':
+			'./assets/js/blocks/reviews/reviews-by-product/index.js',
+		'reviews-by-category':
+			'./assets/js/blocks/reviews/reviews-by-category/index.js',
 		'product-search': './assets/js/blocks/product-search/index.js',
 		'product-tag': './assets/js/blocks/product-tag/index.js',
 		'featured-category': './assets/js/blocks/featured-category/index.js',
@@ -173,7 +176,9 @@ const GutenbergBlocksConfig = {
 						presets: [ '@wordpress/babel-preset-default' ],
 						plugins: [
 							NODE_ENV === 'production'
-								? require.resolve( 'babel-plugin-transform-react-remove-prop-types' )
+								? require.resolve(
+										'babel-plugin-transform-react-remove-prop-types'
+								  )
 								: false,
 							require.resolve( '@babel/plugin-proposal-class-properties' ),
 						].filter( Boolean ),
@@ -212,10 +217,16 @@ const GutenbergBlocksConfig = {
 		new MiniCssExtractPlugin( {
 			filename: '[name].css',
 		} ),
-		new MergeExtractFilesPlugin( [ 'build/editor.js', 'build/style.js' ], 'build/vendors.js' ),
+		new MergeExtractFilesPlugin(
+			[ 'build/editor.js', 'build/style.js' ],
+			'build/vendors.js'
+		),
 		new ProgressBarPlugin( {
 			format:
-				chalk.blue( 'Build' ) + ' [:bar] ' + chalk.green( ':percent' ) + ' :msg (:elapsed seconds)',
+				chalk.blue( 'Build' ) +
+				' [:bar] ' +
+				chalk.green( ':percent' ) +
+				' :msg (:elapsed seconds)',
 		} ),
 		new DependencyExtractionWebpackPlugin( {
 			injectPolyfill: true,
@@ -261,11 +272,15 @@ const BlocksFrontendConfig = {
 						plugins: [
 							require.resolve( '@babel/plugin-proposal-object-rest-spread' ),
 							require.resolve( '@babel/plugin-transform-react-jsx' ),
-							require.resolve( '@babel/plugin-proposal-async-generator-functions' ),
+							require.resolve(
+								'@babel/plugin-proposal-async-generator-functions'
+							),
 							require.resolve( '@babel/plugin-transform-runtime' ),
 							require.resolve( '@babel/plugin-proposal-class-properties' ),
 							NODE_ENV === 'production'
-								? require.resolve( 'babel-plugin-transform-react-remove-prop-types' )
+								? require.resolve(
+										'babel-plugin-transform-react-remove-prop-types'
+								  )
 								: false,
 						].filter( Boolean ),
 					},

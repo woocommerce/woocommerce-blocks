@@ -47,8 +47,14 @@ const GridContentControl = ( { onChange, settings } ) => {
 				label={ __( 'Add to Cart button', 'woo-gutenberg-products-block' ) }
 				help={
 					button
-						? __( 'Add to Cart button is visible.', 'woo-gutenberg-products-block' )
-						: __( 'Add to Cart button is hidden.', 'woo-gutenberg-products-block' )
+						? __(
+								'Add to Cart button is visible.',
+								'woo-gutenberg-products-block'
+						  )
+						: __(
+								'Add to Cart button is hidden.',
+								'woo-gutenberg-products-block'
+						  )
 				}
 				checked={ button }
 				onChange={ () => onChange( { ...settings, button: ! button } ) }

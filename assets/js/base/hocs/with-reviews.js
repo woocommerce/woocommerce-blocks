@@ -11,7 +11,7 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
 import { getReviews } from '../../blocks/reviews/utils';
 import { formatError } from '../utils/errors.js';
 
-const withReviews = OriginalComponent => {
+const withReviews = ( OriginalComponent ) => {
 	class WrappedComponent extends Component {
 		constructor() {
 			super( ...arguments );
@@ -24,7 +24,9 @@ const withReviews = OriginalComponent => {
 			};
 
 			this.setError = this.setError.bind( this );
-			this.delayedAppendReviews = this.props.delayFunction( this.appendReviews );
+			this.delayedAppendReviews = this.props.delayFunction(
+				this.appendReviews
+			);
 		}
 
 		componentDidMount() {
@@ -58,7 +60,13 @@ const withReviews = OriginalComponent => {
 		}
 
 		getArgs( reviewsToSkip ) {
-			const { categoryIds, order, orderby, productId, reviewsToDisplay } = this.props;
+			const {
+				categoryIds,
+				order,
+				orderby,
+				productId,
+				reviewsToDisplay,
+			} = this.props;
 			const args = {
 				order,
 				orderby,
@@ -67,7 +75,9 @@ const withReviews = OriginalComponent => {
 			};
 
 			if ( categoryIds && categoryIds.length ) {
-				args.category_id = Array.isArray( categoryIds ) ? categoryIds.join( ',' ) : categoryIds;
+				args.category_id = Array.isArray( categoryIds )
+					? categoryIds.join( ',' )
+					: categoryIds;
 			}
 
 			if ( productId ) {
@@ -99,7 +109,8 @@ const withReviews = OriginalComponent => {
 		updateListOfReviews( oldReviews = [] ) {
 			const { reviewsToDisplay } = this.props;
 			const { totalReviews } = this.state;
-			const reviewsToLoad = Math.min( totalReviews, reviewsToDisplay ) - oldReviews.length;
+			const reviewsToLoad =
+				Math.min( totalReviews, reviewsToDisplay ) - oldReviews.length;
 
 			this.setState( {
 				loading: true,
@@ -110,7 +121,7 @@ const withReviews = OriginalComponent => {
 				.then( ( { reviews: newReviews, totalReviews: newTotalReviews } ) => {
 					this.setState( {
 						reviews: oldReviews
-							.filter( review => Object.keys( review ).length )
+							.filter( ( review ) => Object.keys( review ).length )
 							.concat( newReviews ),
 						totalReviews: newTotalReviews,
 						loading: false,
@@ -160,13 +171,15 @@ const withReviews = OriginalComponent => {
 	};
 
 	WrappedComponent.defaultProps = {
-		delayFunction: f => f,
+		delayFunction: ( f ) => f,
 		onReviewsAppended: () => {},
 		onReviewsLoadError: () => {},
 		onReviewsReplaced: () => {},
 	};
 
-	const { displayName = OriginalComponent.name || 'Component' } = OriginalComponent;
+	const {
+		displayName = OriginalComponent.name || 'Component',
+	} = OriginalComponent;
 	WrappedComponent.displayName = `WithReviews( ${ displayName } )`;
 
 	return WrappedComponent;

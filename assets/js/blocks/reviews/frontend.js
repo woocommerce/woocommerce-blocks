@@ -16,7 +16,7 @@ const containers = document.querySelectorAll( `
 
 if ( containers.length ) {
 	// Use Array.forEach for IE11 compatibility
-	Array.prototype.forEach.call( containers, el => {
+	Array.prototype.forEach.call( containers, ( el ) => {
 		const attributes = {
 			...el.dataset,
 			showReviewDate: el.classList.contains( 'has-date' ),

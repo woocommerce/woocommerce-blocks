@@ -10,7 +10,7 @@ import { createHigherOrderComponent } from '@wordpress/compose';
 import { getCategories } from '../components/utils';
 import { formatError } from '../base/utils/errors.js';
 
-const withCategories = createHigherOrderComponent( OriginalComponent => {
+const withCategories = createHigherOrderComponent( ( OriginalComponent ) => {
 	return class WrappedComponent extends Component {
 		constructor() {
 			super( ...arguments );
@@ -30,13 +30,21 @@ const withCategories = createHigherOrderComponent( OriginalComponent => {
 			this.setState( { loading: true } );
 
 			getCategories()
-				.then( categories => {
-					this.setState( { categories, loading: false, error: null } );
+				.then( ( categories ) => {
+					this.setState( {
+						categories,
+						loading: false,
+						error: null,
+					} );
 				} )
-				.catch( async e => {
+				.catch( async ( e ) => {
 					const error = await formatError( e );
 
-					this.setState( { categories: null, loading: false, error } );
+					this.setState( {
+						categories: null,
+						loading: false,
+						error,
+					} );
 				} );
 		}
 

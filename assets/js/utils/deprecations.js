@@ -12,7 +12,7 @@ import getShortcode from './get-shortcode';
 /**
  * Return a save function using the blockType to generate the correct shortcode.
  */
-export const deprecatedConvertToShortcode = blockType => {
+export const deprecatedConvertToShortcode = ( blockType ) => {
 	return function( props ) {
 		const { align, contentVisibility } = props.attributes;
 		const classes = classnames( align ? `align${ align }` : '', {
@@ -21,6 +21,10 @@ export const deprecatedConvertToShortcode = blockType => {
 			'is-hidden-rating': ! contentVisibility.rating,
 			'is-hidden-button': ! contentVisibility.button,
 		} );
-		return <RawHTML className={ classes }>{ getShortcode( props, blockType ) }</RawHTML>;
+		return (
+			<RawHTML className={ classes }>
+				{ getShortcode( props, blockType ) }
+			</RawHTML>
+		);
 	};
 };
