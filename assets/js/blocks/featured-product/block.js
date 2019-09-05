@@ -174,17 +174,17 @@ const FeaturedProduct = ( {
 					<ToggleControl
 						label={ __( 'Show description', 'woo-gutenberg-products-block' ) }
 						checked={ attributes.showDesc }
-						onChange={ () =>
-							setAttributes( { showDesc: ! attributes.showDesc } )
+						onChange={
+							// prettier-ignore
+							() => setAttributes( { showDesc: ! attributes.showDesc } )
 						}
 					/>
 					<ToggleControl
 						label={ __( 'Show price', 'woo-gutenberg-products-block' ) }
 						checked={ attributes.showPrice }
-						onChange={ () =>
-							setAttributes( {
-								showPrice: ! attributes.showPrice,
-							} )
+						onChange={
+							// prettier-ignore
+							() => setAttributes( { showPrice: ! attributes.showPrice } )
 						}
 					/>
 				</PanelBody>
