@@ -10,7 +10,7 @@ import {
 /**
  * List of mapped components.
  */
-const ATOMIC_COMPONENT_MAP = {
+export const COMPONENT_MAP = {
 	ProductListLink,
 	ProductListTitle,
 	ProductListPrice,
@@ -22,7 +22,7 @@ const ATOMIC_COMPONENT_MAP = {
 /**
  * Map blocks names to component names.
  */
-const ATOMIC_BLOCK_MAP = {
+export const BLOCK_MAP = {
 	'woocommerce/product-list-link': 'ProductListLink',
 	'woocommerce/product-list-image': 'ProductListImage',
 	'woocommerce/product-list-price': 'ProductListPrice',
@@ -30,15 +30,9 @@ const ATOMIC_BLOCK_MAP = {
 	'woocommerce/product-list-rating': 'ProductListRating',
 	'woocommerce/product-list-button': 'ProductListButton',
 };
-
-/**
- * List of allowed blocks in the product list. Includes those in the block map abpve.
- */
-export const PRODUCT_LIST_ALLOWED_BLOCKS = [
-	...Object.keys( ATOMIC_BLOCK_MAP ),
-	'core/paragraph',
-	'core/heading',
-];
+// @todo how to support these using mapping?
+//'core/paragraph',
+//'core/heading',
 
 /**
  * The default template (list of inner blocks) for the product list.
@@ -98,7 +92,7 @@ export const renderProductLayout = ( product, layoutConfig ) => {
 
 		layoutKeys++;
 
-		const LayoutComponent = ATOMIC_COMPONENT_MAP[ LayoutComponentName ];
+		const LayoutComponent = COMPONENT_MAP[ LayoutComponentName ];
 
 		return <LayoutComponent key={ 'layout' + layoutKeys + '_' + product.id } { ...props } children={ children } product={ product } />;
 	} );
@@ -115,7 +109,7 @@ export const getProductLayoutConfig = ( innerBlocks ) => {
 	}
 	return innerBlocks.map( ( block ) => {
 		return {
-			component: ATOMIC_BLOCK_MAP[ block.name ],
+			component: BLOCK_MAP[ block.name ],
 			props: {
 				...block.attributes,
 				product: undefined,

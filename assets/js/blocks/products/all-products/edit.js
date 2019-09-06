@@ -36,7 +36,7 @@ import Block from './block';
 import {
 	getProductLayoutConfig,
 	DEFAULT_PRODUCT_LIST_TEMPLATE,
-	PRODUCT_LIST_ALLOWED_BLOCKS,
+	BLOCK_MAP,
 } from '../../../atomic/utils';
 
 /**
@@ -169,7 +169,7 @@ class Editor extends Component {
 										<InnerBlocks
 											template={ DEFAULT_PRODUCT_LIST_TEMPLATE }
 											templateLock={ false }
-											allowedBlocks={ PRODUCT_LIST_ALLOWED_BLOCKS }
+											allowedBlocks={ Object.keys( BLOCK_MAP ) }
 											renderAppender={ false }
 										/>
 									</li>
