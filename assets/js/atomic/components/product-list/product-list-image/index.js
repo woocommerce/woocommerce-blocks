@@ -4,6 +4,7 @@
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Component } from 'react';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -14,6 +15,19 @@ class ProductListImage extends Component {
 	static propTypes = {
 		className: PropTypes.string,
 		product: PropTypes.object.isRequired,
+		showSaleBadge: PropTypes.bool,
+	}
+
+	renderSaleBadge = () => {
+		const { product, showSaleBadge } = this.props;
+
+		if ( showSaleBadge && product.onsale ) {
+			return (
+				<span className="wc-block-grid__product-onsale">
+					{ __( 'Sale', 'woo-gutenberg-products-block' ) }
+				</span>
+			);
+		}
 	}
 
 	render = () => {
@@ -48,6 +62,7 @@ class ProductListImage extends Component {
 
 		return (
 			<div className={ classes }>
+				{ this.renderSaleBadge() }
 				{ image }
 			</div>
 		);

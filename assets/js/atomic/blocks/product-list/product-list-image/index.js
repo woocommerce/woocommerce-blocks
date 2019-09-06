@@ -22,7 +22,7 @@ const blockConfig = {
 	edit( props ) {
 		const { className, attributes } = props;
 
-		return <ProductListImage className={ className } product={ attributes.product } />;
+		return <ProductListImage className={ className } product={ attributes.product } showSaleBadge={ true } />;
 	},
 };
 

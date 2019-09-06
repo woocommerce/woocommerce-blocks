@@ -23,7 +23,7 @@ const blockConfig = {
 		const { className, attributes } = props;
 
 		return (
-			<ProductListPrice className={ className } product={ attributes.product } showSaleBadge={ true } />
+			<ProductListPrice className={ className } product={ attributes.product } />
 		);
 	},
 };
