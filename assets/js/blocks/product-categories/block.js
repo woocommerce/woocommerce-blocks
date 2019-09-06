@@ -44,12 +44,12 @@ class ProductCategoriesBlock extends Component {
 		return (
 			<ul key={ parentKey }>
 				{ items.map( ( cat ) => {
-					const count = hasCount ? <span>({ cat.count })</span> : null;
+					const count = hasCount ? ` (${ cat.count })` : null;
 					return [
 						<li key={ cat.term_id }>
 							{ /* eslint-disable-next-line jsx-a11y/anchor-is-valid */ }
 							<a href={ isPreview ? null : cat.link }>{ cat.name }</a>
-							{ ' ' + count + ' ' }
+							{ count }
 						</li>,
 						!! cat.children &&
 							!! cat.children.length &&
