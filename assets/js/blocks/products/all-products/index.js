@@ -11,6 +11,7 @@ import Gridicon from 'gridicons';
  */
 import Editor from './edit';
 import sharedAttributes from '../attributes';
+import { getBlockClassName } from '../utils.js';
 import '../../../atomic/blocks/product-list';
 
 /**
@@ -46,9 +47,13 @@ registerBlockType( 'woocommerce/all-products', {
 	/**
 	 * Save the props to post content.
 	 */
-	save() {
+	save( { attributes } ) {
+		const data = {
+			'data-attributes': JSON.stringify( attributes ),
+		};
+
 		return (
-			<div>
+			<div className={ getBlockClassName( 'wc-block-reviews-by-product', attributes ) } { ...data }>
 				<InnerBlocks.Content />
 			</div>
 		);
