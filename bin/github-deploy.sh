@@ -52,7 +52,8 @@ echo
 echo "Before proceeding:"
 echo " • Ensure you have checked out the branch you wish to release"
 echo " • Ensure you have committed/pushed all local changes"
-echo " • Did you remember to update versions, changelogs, and stable tags in the readme and plugin files?"
+echo " • Did you remember to update changelogs, the readme and plugin files?"
+echo " • Are there any changes needed to the readme file?"
 echo " • If you are running this script directly instead of via '$ npm run deploy', ensure you have built assets and installed composer in --no-dev mode."
 echo
 output 3 "Do you want to continue? [y/N]: "
@@ -67,6 +68,10 @@ echo
 output 3 "Please enter the version number to tag, for example, 1.0.0:"
 read -r VERSION
 echo
+
+# Version changes
+output 2 "Updating version numbers in files..."
+source version-changes.sh
 
 # Check if is a pre-release.
 if is_substring "-" "${VERSION}"; then
