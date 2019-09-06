@@ -6,6 +6,7 @@ import {
 	InnerBlocks,
 } from '@wordpress/editor';
 import { registerBlockType } from '@wordpress/blocks';
+import Gridicon from 'gridicons';
 
 /**
  * Internal dependencies
@@ -22,6 +23,10 @@ const blockConfig = {
 		'Links to the product page. Can contain other blocks.',
 		'woo-gutenberg-products-block'
 	),
+	icon: {
+		src: <Gridicon icon="link" />,
+		foreground: '#96588a',
+	},
 	edit( props ) {
 		const { className, attributes } = props;
 
