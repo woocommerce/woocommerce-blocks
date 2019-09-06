@@ -79,7 +79,7 @@ fi
 
 # Version changes
 output 2 "Updating version numbers in files..."
-source version-changes.sh
+source $RELEASER_PATH/bin/version-changes.sh
 
 output 2 "Committing version change..."
 echo
