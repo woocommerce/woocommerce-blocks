@@ -1,7 +1,11 @@
 #!/bin/sh
+VERSION=${VERSION:=\$VID\:\$}
+IS_PRE_RELEASE=${IS_PRE_RELEASE:=false}
 
-# replace all instances of $VID:$ with the release version.
-find ./src -name "*.php" -print0 | xargs -0 sed -i '' 's/\$VID:\$/'${VERSION}'/g'
+# replace all instances of $VID:$ with the release version but only when not pre-release.
+if [ $IS_PRE_RELEASE = false ]; then
+	find ./src -name "*.php" -print0 | xargs -0 sed -i '' 's/\$VID:\$/'${VERSION}'/g'
+fi
 
 # Update version number in readme.txt
 sed -i '' -E 's/Stable tag:*.+/Stable tag: '${VERSION}'/' readme.txt
