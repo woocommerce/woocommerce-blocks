@@ -3,7 +3,8 @@ import { Component } from 'react';
 /**
  * HOC that gives a component a unique ID.
  *
- * This is an alternative for withInstanceId from @wordpress/compose to avoid using that dependency on the frontend.
+ * This is an alternative for withInstanceId from @wordpress/compose to avoid
+ * using that dependency on the frontend.
  */
 const withComponentId = ( OriginalComponent ) => {
 	let instances = 0;
