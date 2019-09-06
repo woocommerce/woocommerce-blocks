@@ -4,35 +4,39 @@
 import PropTypes from 'prop-types';
 import { __, sprintf } from '@wordpress/i18n';
 import classnames from 'classnames';
+import { Component } from 'react';
 
-const ProductListRating = ( { className, product = {} } ) => {
-	const rating = parseFloat( product.average_rating );
-
-	if ( ! Number.isFinite( rating ) || 0 === rating ) {
-		return null;
+class ProductListRating extends Component {
+	static propTypes = {
+		className: PropTypes.string,
+		product: PropTypes.object.isRequired,
 	}
 
-	const starStyle = {
-		width: ( rating / 5 * 100 ) + '%', /* stylelint-disable-line */
-	};
+	render = () => {
+		const { product, className } = this.props;
+		const rating = parseFloat( product.average_rating );
 
-	const classes = classnames(
-		className,
-		'wc-block-grid__product-rating',
-	);
+		if ( ! Number.isFinite( rating ) || 0 === rating ) {
+			return null;
+		}
 
-	return (
-		<div className={ classes }>
-			<div className={ 'wc-block-grid__product-rating__stars' } role="img">
-				<span style={ starStyle }>{ sprintf( __( 'Rated %d out of 5', 'woo-gutenberg-products-block' ), rating ) }</span>
+		const starStyle = {
+			width: ( rating / 5 * 100 ) + '%', /* stylelint-disable-line */
+		};
+
+		const classes = classnames(
+			className,
+			'wc-block-grid__product-rating',
+		);
+
+		return (
+			<div className={ classes }>
+				<div className={ 'wc-block-grid__product-rating__stars' } role="img">
+					<span style={ starStyle }>{ sprintf( __( 'Rated %d out of 5', 'woo-gutenberg-products-block' ), rating ) }</span>
+				</div>
 			</div>
-		</div>
-	);
-};
-
-ProductListRating.propTypes = {
-	className: PropTypes.string,
-	product: PropTypes.object.isRequired,
-};
+		);
+	}
+}
 
 export default ProductListRating;

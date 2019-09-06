@@ -36,7 +36,7 @@ class Block extends Component {
 		 * wc-block-{$this->block_name},
 		 */
 		return (
-			<ProductList products={ products } layoutConfig={ this.props.layoutConfig } attributes={ this.props.attributes } componentId={ this.props.componentId } />
+			<ProductList products={ products } attributes={ this.props.attributes } componentId={ this.props.componentId } />
 		);
 	}
 }

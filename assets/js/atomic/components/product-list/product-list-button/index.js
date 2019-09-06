@@ -24,7 +24,6 @@ class ProductListButton extends Component {
 		const { product } = this.props;
 
 		if ( product ) {
-			// We've removed all selected categories, or no categories have been selected yet.
 			this.setState( { buttonText: product.add_to_cart.text } );
 		}
 	}

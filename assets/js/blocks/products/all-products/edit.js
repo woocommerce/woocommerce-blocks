@@ -32,8 +32,11 @@ import { getSharedContentControls, getSharedListControls } from '../edit';
 import GridLayoutControl from '../../../components/grid-layout-control';
 import { HAS_PRODUCTS } from '../../../constants';
 import Block from './block';
-import { getProductLayoutConfig, productLayoutBlockMap } from '../../../atomic/utils';
-import ProductListItem from '../../../base/components/product-list-item';
+import {
+	getProductLayoutConfig,
+	DEFAULT_PRODUCT_LIST_TEMPLATE,
+	PRODUCT_LIST_ALLOWED_BLOCKS,
+} from '../../../atomic/utils';
 
 /**
  * Component to handle edit mode of "All Products".
@@ -62,9 +65,14 @@ class Editor extends Component {
 		this.setState( { showPreview: ! this.state.showPreview } );
 	};
 
+	onDone = () => {
+		const { block, setAttributes } = this.props;
+		setAttributes( { layoutConfig: getProductLayoutConfig( block.innerBlocks ) } );
+		this.togglePreview();
+	}
+
 	renderPreview = () => {
-		const { attributes, block } = this.props;
-		return <Block attributes={ attributes } layoutConfig={ getProductLayoutConfig( block.innerBlocks ) } />;
+		return <Block attributes={ this.props.attributes } />;
 	};
 
 	getInspectorControls = () => {
@@ -126,20 +134,6 @@ class Editor extends Component {
 
 		const blockIcon = <Gridicon icon="grid" />;
 		const hasContent = 0 !== Object.values( contentVisibility ).filter( Boolean ).length;
-
-		const ALLOWED_BLOCKS = [
-			...Object.keys( productLayoutBlockMap ),
-			'core/paragraph',
-			'core/heading',
-		];
-
-		const BLOCKS_TEMPLATE = [
-			[ 'woocommerce/product-list-link', {} ],
-			[ 'woocommerce/product-list-price', {} ],
-			[ 'woocommerce/product-list-rating', {} ],
-			[ 'woocommerce/product-list-button', {} ],
-		];
-
 		const blockTitle = __( 'All Products', 'woo-gutenberg-products-block' );
 
 		if ( ! HAS_PRODUCTS ) {
@@ -166,17 +160,17 @@ class Editor extends Component {
 						<div className="wc-block-all-products-grid-item-template">
 							<div className="wc-block-grid has-1-columns">
 								<ul className="wc-block-grid__products">
-									<ProductListItem attributes={ attributes } product={ attributes.product }>
+									<li className="wc-block-grid__product">
 										<InnerBlocks
-											template={ BLOCKS_TEMPLATE }
+											template={ DEFAULT_PRODUCT_LIST_TEMPLATE }
 											templateLock={ false }
-											allowedBlocks={ ALLOWED_BLOCKS }
+											allowedBlocks={ PRODUCT_LIST_ALLOWED_BLOCKS }
 											renderAppender={ false }
 										/>
-									</ProductListItem>
+									</li>
 								</ul>
 							</div>
-							<Button isDefault onClick={ this.togglePreview }>
+							<Button isDefault onClick={ this.onDone }>
 								{ __( 'Done', 'woo-gutenberg-products-block' ) }
 							</Button>
 						</div>

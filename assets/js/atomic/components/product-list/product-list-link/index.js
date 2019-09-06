@@ -3,27 +3,31 @@
  */
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { Component } from 'react';
 
-const ProductListLink = ( { children, className, product = {} } ) => {
-	const classes = classnames(
-		className,
-		'wc-block-grid__product-link',
-	);
+class ProductListLink extends Component {
+	static propTypes = {
+		className: PropTypes.string,
+		product: PropTypes.object.isRequired,
+	}
 
-	return (
-		<a
-			href={ product.permalink }
-			className={ classes }
-			rel="nofollow"
-		>
-			{ children }
-		</a>
-	);
-};
+	render = () => {
+		const { product, className, children } = this.props;
+		const classes = classnames(
+			className,
+			'wc-block-grid__product-link',
+		);
 
-ProductListLink.propTypes = {
-	className: PropTypes.string,
-	product: PropTypes.object.isRequired,
-};
+		return (
+			<a
+				href={ product.permalink }
+				className={ classes }
+				rel="nofollow"
+			>
+				{ children }
+			</a>
+		);
+	}
+}
 
 export default ProductListLink;

@@ -3,27 +3,32 @@
  */
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { Component } from 'react';
 
-const ProductListTitle = ( { className, product = {} } ) => {
-	if ( ! product.name ) {
-		return null;
+class ProductListTitle extends Component {
+	static propTypes = {
+		className: PropTypes.string,
+		product: PropTypes.object.isRequired,
 	}
 
-	const classes = classnames(
-		className,
-		'wc-block-grid__product-title',
-	);
+	render = () => {
+		const { product, className } = this.props;
 
-	return (
-		<div className={ classes }>
-			{ product.name }
-		</div>
-	);
-};
+		if ( ! product.name ) {
+			return null;
+		}
 
-ProductListTitle.propTypes = {
-	className: PropTypes.string,
-	product: PropTypes.object.isRequired,
-};
+		const classes = classnames(
+			className,
+			'wc-block-grid__product-title',
+		);
+
+		return (
+			<div className={ classes }>
+				{ product.name }
+			</div>
+		);
+	}
+}
 
 export default ProductListTitle;

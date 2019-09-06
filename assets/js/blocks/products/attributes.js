@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import { DEFAULT_COLUMNS, DEFAULT_ROWS } from '../../constants';
+import { DEFAULT_PRODUCT_LIST_LAYOUT } from '../../atomic/utils';
 
 export default {
 	/**
@@ -56,5 +57,13 @@ export default {
 	showOrderby: {
 		type: 'boolean',
 		default: true,
+	},
+
+	/**
+	 * Layout config.
+	 */
+	layoutConfig: {
+		type: 'array',
+		default: DEFAULT_PRODUCT_LIST_LAYOUT,
 	},
 };

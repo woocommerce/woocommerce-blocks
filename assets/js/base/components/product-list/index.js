@@ -10,7 +10,7 @@ import classnames from 'classnames';
 import ProductListItem from '../product-list-item';
 import './style.scss';
 
-const ProductList = ( { attributes, componentId, products, layoutConfig } ) => {
+const ProductList = ( { attributes, componentId, products } ) => {
 	const getClassnames = () => {
 		const { columns, rows, className, alignButtons, align } = attributes;
 		const alignClass = typeof align !== 'undefined' ? 'align' + align : '';
@@ -38,7 +38,7 @@ const ProductList = ( { attributes, componentId, products, layoutConfig } ) => {
 						<ProductListItem attributes={ attributes } />
 					) : (
 						products.map( ( product, i ) => (
-							<ProductListItem layoutConfig={ layoutConfig } key={ componentId + '_' + ( product.id || i ) } attributes={ attributes } product={ product } />
+							<ProductListItem key={ componentId + '_' + ( product.id || i ) } attributes={ attributes } product={ product } />
 						) )
 					)
 				}
