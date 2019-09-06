@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
+import { Disabled } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -23,7 +24,9 @@ const blockConfig = {
 		const { className, attributes } = props;
 
 		return (
-			<ProductListPrice className={ className } product={ attributes.product } />
+			<Disabled>
+				<ProductListPrice className={ className } product={ attributes.product } />
+			</Disabled>
 		);
 	},
 };

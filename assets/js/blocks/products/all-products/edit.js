@@ -14,6 +14,7 @@ import {
 	Placeholder,
 	Button,
 	Toolbar,
+	Disabled,
 } from '@wordpress/components';
 import { Component, Fragment } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
@@ -72,7 +73,11 @@ class Editor extends Component {
 	}
 
 	renderPreview = () => {
-		return <Block attributes={ this.props.attributes } />;
+		return (
+			<Disabled>
+				<Block attributes={ this.props.attributes } />
+			</Disabled>
+		);
 	};
 
 	getInspectorControls = () => {
