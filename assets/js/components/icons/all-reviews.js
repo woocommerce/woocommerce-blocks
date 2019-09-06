@@ -3,7 +3,7 @@
  */
 import { Icon } from '@wordpress/components';
 
-export default ( { className, fillColor } ) => (
+export default ( { className } ) => (
 	<Icon
 		className={ className }
 		icon={
@@ -11,15 +11,12 @@ export default ( { className, fillColor } ) => (
 				<g>
 					<g>
 						<path
-							fill={ fillColor }
 							d="M16.55 0H1.75C.56 0 0 .52 0 1.68v9.24c0 1.15.56 1.92 1.75 1.92H2V4.76a2.51 2.51 0 0 1 2.74-2.68H18v-.4A1.51 1.51 0 0 0 16.55 0z"
 						/>
 						<path
-							fill={ fillColor }
 							d="M19.54 3.11H4.74C3.55 3.11 3 3.64 3 4.79V14c0 1.19.55 2 1.74 2H5V7.88A2.51 2.51 0 0 1 7.73 5.2H21v-.41a1.51 1.51 0 0 0-1.46-1.68z"
 						/>
 						<path
-							fill={ fillColor }
 							d="M22.53 6.23H7.73C6.54 6.23 6 6.75 6 7.91v9.24c0 1.15.56 1.92 1.75 1.92h7a.59.59 0 0 1 .32.11l1.61 1.15 2.83 2a.31.31 0 0 0 .18.05.3.3 0 0 0 .31-.3v-2.73a.3.3 0 0 1 .28-.28h2.31A1.47 1.47 0 0 0 24 17.6V7.91a1.52 1.52 0 0 0-1.47-1.68z"
 						/>
 						<path
