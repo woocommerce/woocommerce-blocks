@@ -71,6 +71,12 @@ echo
 
 CURRENTBRANCH="$(git rev-parse --abbrev-ref HEAD)"
 
+# Check if is a pre-release.
+if is_substring "-" "${VERSION}"; then
+    IS_PRE_RELEASE=true
+	output 2 "Detected pre-release version!"
+fi
+
 # Version changes
 output 2 "Updating version numbers in files..."
 source version-changes.sh
@@ -80,12 +86,6 @@ echo
 
 git commit -am "Bumping version strings to new version." --no-verify
 git push origin $CURRENTBRANCH
-
-# Check if is a pre-release.
-if is_substring "-" "${VERSION}"; then
-    IS_PRE_RELEASE=true
-	output 2 "Detected pre-release version!"
-fi
 
 if [ ! -d "build" ]; then
 	output 3 "Build directory not found. Aborting."
