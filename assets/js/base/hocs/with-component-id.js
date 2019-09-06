@@ -14,7 +14,10 @@ const withComponentId = ( OriginalComponent ) => {
 
 		render() {
 			return (
-				<OriginalComponent { ...this.props } componentId={ this.instanceId } />
+				<OriginalComponent
+					{ ...this.props }
+					componentId={ this.instanceId }
+				/>
 			);
 		}
 	}
