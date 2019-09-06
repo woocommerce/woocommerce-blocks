@@ -14,10 +14,11 @@ class ProductListItem extends Component {
 	static propTypes = {
 		attributes: PropTypes.object.isRequired,
 		product: PropTypes.object,
+		componentId: PropTypes.number.isRequired,
 	}
 
 	render = () => {
-		const { product, attributes } = this.props;
+		const { product, attributes, componentId } = this.props;
 		const { layoutConfig } = attributes;
 		//const { contentVisibility } = attributes;
 		//const { button, price, rating, title, image } = contentVisibility;
@@ -31,7 +32,7 @@ class ProductListItem extends Component {
 
 		return (
 			<li className={ classes } aria-hidden={ isLoading }>
-				{ renderProductLayout( product, layoutConfig ) }
+				{ renderProductLayout( product, layoutConfig, componentId ) }
 			</li>
 		);
 	}

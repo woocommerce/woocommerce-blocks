@@ -74,27 +74,24 @@ export const DEFAULT_PRODUCT_LIST_LAYOUT = [
 	},
 ];
 
-let layoutKeys = 0;
-
 /**
  * Maps a layout config into atomic components.
  *
  * @param {object} product Product object to pass to atomic components.
  * @param {object} layoutConfig Object with component data.
+ * @param {number} componentId Parent component ID needed for key generation.
  */
-export const renderProductLayout = ( product, layoutConfig ) => {
+export const renderProductLayout = ( product, layoutConfig, componentId ) => {
 	return layoutConfig.map( ( { component: LayoutComponentName, props = {} } ) => {
 		let children = [];
 
 		if ( !! props.children && props.children.length > 0 ) {
-			children = renderProductLayout( product, props.children );
+			children = renderProductLayout( product, props.children, componentId );
 		}
-
-		layoutKeys++;
 
 		const LayoutComponent = COMPONENT_MAP[ LayoutComponentName ];
 
-		return <LayoutComponent key={ 'layout' + layoutKeys + '_' + product.id } { ...props } children={ children } product={ product } />;
+		return <LayoutComponent key={ 'layout' + LayoutComponentName + '_' + componentId + '_' + product.id } { ...props } children={ children } product={ product } />;
 	} );
 };
 

@@ -35,10 +35,10 @@ const ProductList = ( { attributes, componentId, products } ) => {
 			>
 				{ products.length === 0 ?
 					(
-						<ProductListItem attributes={ attributes } />
+						<ProductListItem attributes={ attributes } componentId={ componentId } />
 					) : (
 						products.map( ( product, i ) => (
-							<ProductListItem key={ componentId + '_' + ( product.id || i ) } attributes={ attributes } product={ product } />
+							<ProductListItem key={ componentId + '_' + ( product.id || i ) } componentId={ componentId } attributes={ attributes } product={ product } />
 						) )
 					)
 				}
