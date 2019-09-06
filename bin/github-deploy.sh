@@ -69,9 +69,17 @@ output 3 "Please enter the version number to tag, for example, 1.0.0:"
 read -r VERSION
 echo
 
+CURRENTBRANCH="$(git rev-parse --abbrev-ref HEAD)"
+
 # Version changes
 output 2 "Updating version numbers in files..."
 source version-changes.sh
+
+output 2 "Committing version change..."
+echo
+
+git commit -am "Bumping version strings to new version." --no-verify
+git push origin $CURRENTBRANCH
 
 # Check if is a pre-release.
 if is_substring "-" "${VERSION}"; then
@@ -95,8 +103,6 @@ fi
 
 output 2 "Starting release to GitHub..."
 echo
-
-CURRENTBRANCH="$(git rev-parse --abbrev-ref HEAD)"
 
 # Create a release branch.
 BRANCH="build/${VERSION}"
