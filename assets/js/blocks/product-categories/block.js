@@ -55,7 +55,9 @@ class ProductCategoriesBlock extends Component {
 							className="wc-block-product-categories-list-item"
 						>
 							{ /* eslint-disable-next-line jsx-a11y/anchor-is-valid */ }
-							<a href={ isPreview ? null : cat.link }>{ cat.name }</a>
+							<a href={ isPreview ? null : cat.link }>
+								{ cat.name }
+							</a>
 							{ count }
 						</li>,
 						!! cat.children &&
@@ -100,7 +102,10 @@ class ProductCategoriesBlock extends Component {
 						{ isDropdown ? (
 							<Fragment>
 								<div className="wc-block-product-categories__dropdown">
-									<label className="screen-reader-text" htmlFor={ selectId }>
+									<label
+										className="screen-reader-text"
+										htmlFor={ selectId }
+									>
 										{ __(
 											'Select a category',
 											'woo-gutenberg-products-block'

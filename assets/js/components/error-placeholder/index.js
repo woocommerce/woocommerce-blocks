@@ -14,10 +14,13 @@ import { Button, Placeholder, Spinner } from '@wordpress/components';
 import ErrorMessage from './error-message.js';
 import './style.scss';
 
-const ApiErrorPlaceholder = ( { className, error, isLoading, onRetry } ) => (
+const ErrorPlaceholder = ( { className, error, isLoading, onRetry } ) => (
 	<Placeholder
 		icon={ <Gridicon icon="notice" /> }
-		label={ __( 'Sorry, an error occurred', 'woo-gutenberg-products-block' ) }
+		label={ __(
+			'Sorry, an error occurred',
+			'woo-gutenberg-products-block'
+		) }
 		className={ classNames( 'wc-block-api-error', className ) }
 	>
 		<ErrorMessage error={ error } />
@@ -35,7 +38,7 @@ const ApiErrorPlaceholder = ( { className, error, isLoading, onRetry } ) => (
 	</Placeholder>
 );
 
-ApiErrorPlaceholder.propTypes = {
+ErrorPlaceholder.propTypes = {
 	/**
 	 * Classname to add to placeholder in addition to the defaults.
 	 */
@@ -64,4 +67,4 @@ ApiErrorPlaceholder.propTypes = {
 	onRetry: PropTypes.func,
 };
 
-export default ApiErrorPlaceholder;
+export default ErrorPlaceholder;

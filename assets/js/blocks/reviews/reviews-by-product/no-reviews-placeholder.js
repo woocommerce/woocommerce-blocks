@@ -8,13 +8,13 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import ApiErrorPlaceholder from '../../../components/api-error-placeholder';
+import ErrorPlaceholder from '../../../components/error-placeholder';
 import { IconReviewsByProduct } from '../../../components/icons';
 import { withProduct } from '../../../hocs';
 
 const NoReviewsPlaceholder = ( { error, getProduct, isLoading, product } ) => {
 	const renderApiError = () => (
-		<ApiErrorPlaceholder
+		<ErrorPlaceholder
 			className="wc-block-featured-product-error"
 			error={ error }
 			isLoading={ isLoading }
@@ -42,7 +42,9 @@ const NoReviewsPlaceholder = ( { error, getProduct, isLoading, product } ) => {
 	return (
 		<Placeholder
 			className="wc-block-reviews-by-product"
-			icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
+			icon={
+				<IconReviewsByProduct className="block-editor-block-icon" />
+			}
 			label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
 		>
 			{ content }
