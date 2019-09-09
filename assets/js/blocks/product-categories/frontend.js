@@ -5,8 +5,6 @@ import Block from './block.js';
 import getCategories from './get-categories';
 import renderFrontend from '../../utils/render-frontend.js';
 
-const selector = '.wp-block-woocommerce-product-categories';
-
 const getProps = ( el ) => {
 	const attributes = {
 		hasCount: el.dataset.hasCount === 'true',
@@ -21,4 +19,4 @@ const getProps = ( el ) => {
 	};
 };
 
-renderFrontend( selector, Block, getProps );
+renderFrontend( '.wp-block-woocommerce-product-categories', Block, getProps );
