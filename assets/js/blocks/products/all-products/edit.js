@@ -16,7 +16,7 @@ import {
 	Toolbar,
 	Disabled,
 } from '@wordpress/components';
-import { Component, Fragment } from '@wordpress/element';
+import { Component } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 import PropTypes from 'prop-types';
 import Gridicon from 'gridicons';
@@ -59,25 +59,30 @@ class Editor extends Component {
 	}
 
 	state = {
-		showPreview: true,
+		isEditing: false,
 	};
 
-	togglePreview = () => {
-		this.setState( { showPreview: ! this.state.showPreview } );
-	};
-
-	onDone = () => {
-		const { block, setAttributes } = this.props;
-		setAttributes( { layoutConfig: getProductLayoutConfig( block.innerBlocks ) } );
-		this.togglePreview();
+	getTitle = () => {
+		return __( 'All Products', 'woo-gutenberg-products-block' );
 	}
 
-	renderPreview = () => {
-		return (
-			<Disabled>
-				<Block attributes={ this.props.attributes } />
-			</Disabled>
-		);
+	getIcon = () => {
+		return <Gridicon icon="grid" />;
+	}
+
+	togglePreview = () => {
+		const { debouncedSpeak } = this.props;
+
+		this.setState( { isEditing: ! this.state.isEditing } );
+
+		if ( ! this.state.isEditing ) {
+			debouncedSpeak(
+				__(
+					'Showing All Products block preview.',
+					'woo-gutenberg-products-block'
+				)
+			);
+		}
 	};
 
 	getInspectorControls = () => {
@@ -114,7 +119,7 @@ class Editor extends Component {
 	};
 
 	getBlockControls = () => {
-		const { showPreview } = this.state;
+		const { isEditing } = this.state;
 
 		return (
 			<BlockControls>
@@ -124,7 +129,7 @@ class Editor extends Component {
 							icon: 'edit',
 							title: __( 'Edit', 'woo-gutenberg-products-block' ),
 							onClick: () => this.togglePreview(),
-							isActive: ! showPreview,
+							isActive: isEditing,
 						},
 					] }
 				/>
@@ -132,55 +137,85 @@ class Editor extends Component {
 		);
 	}
 
+	renderEditMode = () => {
+		const onDone = () => {
+			const { block, setAttributes } = this.props;
+			setAttributes( { layoutConfig: getProductLayoutConfig( block.innerBlocks ) } );
+			this.togglePreview();
+		};
+
+		const onCancel = () => {
+			this.togglePreview();
+		};
+
+		return (
+			<Placeholder
+				icon={ this.getIcon() }
+				label={ this.getTitle() }
+			>
+				{ __(
+					'Shows all products. Edit the product template below for products shown in the grid.',
+					'woo-gutenberg-products-block'
+				) }
+				<div className="wc-block-all-products-grid-item-template">
+					<div className="wc-block-grid has-1-columns">
+						<ul className="wc-block-grid__products">
+							<li className="wc-block-grid__product">
+								<InnerBlocks
+									template={ DEFAULT_PRODUCT_LIST_TEMPLATE }
+									templateLock={ false }
+									allowedBlocks={ Object.keys( BLOCK_MAP ) }
+									renderAppender={ false }
+								/>
+							</li>
+						</ul>
+					</div>
+					<Button isDefault onClick={ onDone }>
+						{ __( 'Done', 'woo-gutenberg-products-block' ) }
+					</Button>
+					<Button
+						className="wc-block-products-category__cancel-button"
+						isTertiary
+						onClick={ onCancel }
+					>
+						{ __( 'Cancel', 'woo-gutenberg-products-block' ) }
+					</Button>
+				</div>
+			</Placeholder>
+		);
+	}
+
+	renderViewMode = () => {
+		const { attributes } = this.props;
+
+		return (
+			<Disabled>
+				<Block attributes={ attributes } />
+			</Disabled>
+		);
+	}
+
 	render = () => {
 		const { attributes } = this.props;
 		const { contentVisibility } = attributes;
-		const { showPreview } = this.state;
-
-		const blockIcon = <Gridicon icon="grid" />;
+		const { isEditing } = this.state;
 		const hasContent = 0 !== Object.values( contentVisibility ).filter( Boolean ).length;
-		const blockTitle = __( 'All Products', 'woo-gutenberg-products-block' );
+		const blockTitle = this.getTitle();
+		const blockIcon = this.getIcon();
 
 		if ( ! HAS_PRODUCTS ) {
 			return renderNoProductsPlaceholder( blockTitle, blockIcon );
+		}
+
+		if ( ! hasContent ) {
+			return renderHiddenContentPlaceholder( blockTitle, blockIcon );
 		}
 
 		return (
 			<div className={ getBlockClassName( 'wc-block-all-products', attributes ) }>
 				{ this.getBlockControls() }
 				{ this.getInspectorControls() }
-				{ showPreview ? (
-					<Fragment>
-						{ hasContent ? this.renderPreview() : renderHiddenContentPlaceholder( blockTitle, blockIcon ) }
-					</Fragment>
-				) : (
-					<Placeholder
-						icon={ blockIcon }
-						label={ __( 'All Products', 'woo-gutenberg-products-block' ) }
-					>
-						{ __(
-							'Shows all products. Edit the product template below for products shown in the grid.',
-							'woo-gutenberg-products-block'
-						) }
-						<div className="wc-block-all-products-grid-item-template">
-							<div className="wc-block-grid has-1-columns">
-								<ul className="wc-block-grid__products">
-									<li className="wc-block-grid__product">
-										<InnerBlocks
-											template={ DEFAULT_PRODUCT_LIST_TEMPLATE }
-											templateLock={ false }
-											allowedBlocks={ Object.keys( BLOCK_MAP ) }
-											renderAppender={ false }
-										/>
-									</li>
-								</ul>
-							</div>
-							<Button isDefault onClick={ this.onDone }>
-								{ __( 'Done', 'woo-gutenberg-products-block' ) }
-							</Button>
-						</div>
-					</Placeholder>
-				) }
+				{ isEditing ? this.renderEditMode() : this.renderViewMode() }
 			</div>
 		);
 	}
