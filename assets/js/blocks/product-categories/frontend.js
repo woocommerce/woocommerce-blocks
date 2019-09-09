@@ -1,34 +1,24 @@
 /**
- * External dependencies
- */
-import { render } from 'react-dom';
-
-/**
  * Internal dependencies
  */
 import Block from './block.js';
 import getCategories from './get-categories';
+import renderFrontend from '../../utils/render-frontend.js';
 
-const containers = document.querySelectorAll(
-	'.wp-block-woocommerce-product-categories'
-);
+const selector = '.wp-block-woocommerce-product-categories';
 
-if ( containers.length ) {
-	Array.prototype.forEach.call( containers, ( el ) => {
-		const data = JSON.parse( JSON.stringify( el.dataset ) );
-		const attributes = {
-			hasCount: data.hasCount === 'true',
-			hasEmpty: data.hasEmpty === 'true',
-			isDropdown: data.isDropdown === 'true',
-			isHierarchical: data.isHierarchical === 'true',
-		};
-		const categories = getCategories( attributes );
+const getProps = ( el ) => {
+	const attributes = {
+		hasCount: el.dataset.hasCount === 'true',
+		hasEmpty: el.dataset.hasEmpty === 'true',
+		isDropdown: el.dataset.isDropdown === 'true',
+		isHierarchical: el.dataset.isHierarchical === 'true',
+	};
 
-		el.classList.remove( 'is-loading' );
+	return {
+		attributes,
+		categories: getCategories( attributes ),
+	};
+};
 
-		render(
-			<Block attributes={ attributes } categories={ categories } />,
-			el
-		);
-	} );
-}
+renderFrontend( selector, Block, getProps );
