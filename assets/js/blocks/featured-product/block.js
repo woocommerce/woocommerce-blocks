@@ -276,8 +276,9 @@ const FeaturedProduct = ( {
 			style.backgroundColor = overlayColor.color;
 		}
 		if ( focalPoint ) {
-			style.backgroundPosition = `${ focalPoint.x *
-				100 }% ${ focalPoint.y * 100 }%`;
+			const bgPosX = focalPoint.x * 100;
+			const bgPosY = focalPoint.y * 100;
+			style.backgroundPosition = `${ bgPosX }% ${ bgPosY }%`;
 		}
 
 		const onResizeStop = ( event, direction, elt ) => {
