@@ -6,7 +6,7 @@ import { getSetting } from '../get-setting';
 
 describe( 'setSetting', () => {
 	it(
-		'should add a new value to the settings state for value not' + ' present',
+		'should add a new value to the settings state for value not present',
 		() => {
 			setSetting( 'aSetting', 42 );
 			expect( getSetting( 'aSetting' ) ).toBe( 42 );
