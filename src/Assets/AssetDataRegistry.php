@@ -127,7 +127,7 @@ class AssetDataRegistry {
 		 * Developers, do not use this hook as it is likely to be removed.
 		 * Instead, use the data api:
 		 * wc_blocks_container()
-		 *     ->get( AssetDataRegistry::class )
+		 *     ->get( Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry::class )
 		 *     ->add( $key, $value )
 		 */
 		$settings = apply_filters(
@@ -143,7 +143,7 @@ class AssetDataRegistry {
 	 * Loops through each registered lazy data callback and adds the returned
 	 * value to the data array.
 	 *
-	 * This method is executed right beofre preparing the data for printing to
+	 * This method is executed right before preparing the data for printing to
 	 * the rendered screen.
 	 *
 	 * @return void
@@ -170,7 +170,8 @@ class AssetDataRegistry {
 	 *                             registered. You can only register data that
 	 *                             is not already in the registry identified by
 	 *                             the given key.
-	 * @param array|function $data If array, registered to the registry as is.
+	 * @param mixed          $data If not a function, registered to the registry
+	 *                             as is.
 	 *                             If a function, then the callback is invoked
 	 *                             right before output to the screen.
 	 *
