@@ -14,6 +14,10 @@
  * @internal This file is only used when running the REST API as a feature plugin.
  */
 
+use Automattic\WooCommerce\Blocks\Domain\Bootstrap;
+use Automattic\WooCommerce\Blocks\Domain\Package;
+use Automattic\WooCommerce\Blocks\Registry\Container;
+
 defined( 'ABSPATH' ) || exit;
 
 if ( version_compare( PHP_VERSION, '5.6.0', '<' ) ) {
@@ -68,4 +72,39 @@ if ( is_readable( $autoloader ) ) {
 	return;
 }
 
-add_action( 'plugins_loaded', array( '\Automattic\WooCommerce\Blocks\Package', 'init' ) );
+/**
+ * Loads the dependency injection container for woocommerce blocks.
+ *
+ * @param boolean $reset Used to reset the container to a fresh instance.
+ *                       Note: this means all dependencies will be reconstructed.
+ */
+function wc_blocks_container( $reset = false ) {
+	static $container;
+	if ( ! $container instanceof Container || $reset ) {
+		$container = new Container();
+		// register Package.
+		$container->register(
+			Package::class,
+			function ( $container ) {
+				return new Package( '2.5.0-dev', __FILE__ );
+			}
+		);
+		// register Bootstrap.
+		$container->register(
+			Bootstrap::class,
+			function ( $container ) {
+				return new Bootstrap( $container );
+			}
+		);
+	}
+	return $container;
+}
+
+add_action( 'plugins_loaded', 'wc_blocks_bootstrap' );
+/**
+ * Boostrap WooCommerce Blocks App
+ */
+function wc_blocks_bootstrap() {
+	// initialize bootstrap.
+	wc_blocks_container()->get( Bootstrap::class );
+}
