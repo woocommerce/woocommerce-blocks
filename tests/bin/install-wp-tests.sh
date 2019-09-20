@@ -164,7 +164,6 @@ install_deps() {
 	git clone --depth 1 "https://github.com/woocommerce/woocommerce.git"
 	# install dependencies
 	cd woocommerce
-	npm install
 	composer install --no-dev
 
 	# Back to original dir
