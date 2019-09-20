@@ -25,14 +25,14 @@ before_script:
     fi
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
-      composer install
+      composer install --no-dev
       # also installs woocommerce plugin
       bash tests/bin/install-wp-tests.sh wgpb_admin root '' localhost $WP_VERSION
       composer global require "phpunit/phpunit=4.8.*|5.7.*"
     fi
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
-      composer install --no-dev
+      composer install
     fi
 jobs:
     fast_finish: true
