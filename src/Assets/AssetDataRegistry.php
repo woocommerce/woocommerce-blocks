@@ -166,14 +166,12 @@ class AssetDataRegistry {
 	/**
 	 * Interface for adding data to the registry.
 	 *
-	 * @param string         $key  The key used to reference the data being
-	 *                             registered. You can only register data that
-	 *                             is not already in the registry identified by
-	 *                             the given key.
-	 * @param mixed          $data If not a function, registered to the registry
-	 *                             as is.
-	 *                             If a function, then the callback is invoked
-	 *                             right before output to the screen.
+	 * @param string $key  The key used to reference the data being registered.
+	 *                     You can only register data that is not already in the
+	 *                     registry identified by the given key.
+	 * @param mixed  $data If not a function, registered to the registry as is.
+	 *                     If a function, then the callback is invoked right
+	 *                     before output to the screen.
 	 *
 	 * @throws InvalidArgumentException  Only throws when site is in debug mode.
 	 */
