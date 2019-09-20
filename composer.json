@@ -11,9 +11,15 @@
 	"license": "GPL-3.0-or-later",
 	"prefer-stable": true,
 	"minimum-stability": "dev",
+	"repositories": [
+	  {
+	    "type": "vcs",
+	    "url": "https://github.com/nerrad/jetpack-autoloader"
+	  }
+	],
 	"require": {
 		"composer/installers": "1.7.0",
-		"automattic/jetpack-autoloader": "1.3.1"
+		"automattic/jetpack-autoloader": "dev-test-autoloader_files-fix"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "6.5.14",
