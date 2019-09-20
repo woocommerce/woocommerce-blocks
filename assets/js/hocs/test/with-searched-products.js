@@ -68,10 +68,10 @@ describe( 'withSearchedProducts Component', () => {
 		);
 		it( 'has expected values for props', () => {
 			props = renderer.root.findByType( 'div' ).props;
-			expect( props.selected ).toEqual( [ { id: 10, name: 'foo' } ] );
+			expect( props.selected ).toEqual( selected );
 			expect( props.products ).toEqual( [
-				{ id: 10, name: 'foo' },
-				{ id: 20, name: 'bar' },
+				{ id: 10, name: 'foo', parent: 0 },
+				{ id: 20, name: 'bar', parent: 0 },
 			] );
 		} );
 		it( 'debounce and getProducts is called on search event', () => {

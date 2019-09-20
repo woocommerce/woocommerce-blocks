@@ -42,7 +42,11 @@ const withSearchedProducts = createHigherOrderComponent(
 			componentDidMount() {
 				const { selected } = this.props;
 				getProducts( { selected } )
-					.then( ( list ) => {
+					.then( ( products ) => {
+						const list = products.map( ( product ) => ( {
+							...product,
+							parent: 0,
+						} ) );
 						this.setState( { list, loading: false } );
 					} )
 					.catch( this.setError );
@@ -69,16 +73,13 @@ const withSearchedProducts = createHigherOrderComponent(
 
 			render() {
 				const { error, list, loading } = this.state;
-				const { selected } = this.props;
+
 				return (
 					<OriginalComponent
 						{ ...this.props }
 						error={ error }
 						products={ list }
 						isLoading={ loading }
-						selected={ list.filter( ( { id } ) =>
-							selected.includes( id )
-						) }
 						onSearch={
 							IS_LARGE_CATALOG ? this.debouncedOnSearch : null
 						}

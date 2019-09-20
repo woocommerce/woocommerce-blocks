@@ -130,6 +130,14 @@ export const getCategories = () => {
 	} );
 };
 
+export const getProductVariations = ( product ) => {
+	return apiFetch( {
+		path: addQueryArgs( `${ ENDPOINTS.products }/${ product }/variations`, {
+			per_page: -1,
+		} ),
+	} );
+};
+
 export const getAttributes = () => {
 	return apiFetch( {
 		path: addQueryArgs( `${ ENDPOINTS.products }/attributes`, {
