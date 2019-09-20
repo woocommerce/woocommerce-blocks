@@ -113,7 +113,7 @@ class Assets {
 				'limitTags'          => $tag_count > 100,
 				'hasTags'            => $tag_count > 0,
 				'productCategories'  => $product_categories,
-				'homeUrl'            => esc_js( home_url( '/' ) ),
+				'homeUrl'            => esc_url( home_url( '/' ) ),
 				'showAvatars'        => '1' === get_option( 'show_avatars' ),
 				'enableReviewRating' => 'yes' === get_option( 'woocommerce_enable_review_rating' ),
 			]
