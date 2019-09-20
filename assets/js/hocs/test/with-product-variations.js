@@ -41,6 +41,7 @@ const render = () => {
 			isLoading={ false }
 			products={ mockProducts }
 			selected={ [ 1 ] }
+			showVariations={ true }
 		/>
 	);
 };
@@ -84,6 +85,7 @@ describe( 'withProductVariations Component', () => {
 					isLoading={ false }
 					products={ mockProducts }
 					selected={ [ 1 ] }
+					showVariations={ true }
 				/>
 			);
 
@@ -98,6 +100,7 @@ describe( 'withProductVariations Component', () => {
 					isLoading={ false }
 					products={ mockProducts }
 					selected={ [ 2 ] }
+					showVariations={ true }
 				/>
 			);
 			const { getProductVariations } = mockUtils;
@@ -112,6 +115,7 @@ describe( 'withProductVariations Component', () => {
 					isLoading={ false }
 					products={ mockProducts }
 					selected={ [ 3 ] }
+					showVariations={ true }
 				/>
 			);
 			const { getProductVariations } = mockUtils;

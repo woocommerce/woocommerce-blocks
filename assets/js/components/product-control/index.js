@@ -42,10 +42,11 @@ const ProductControl = ( {
 	products,
 	renderItem,
 	selected,
+	showVariations,
 	variations,
 	variationsLoading,
 } ) => {
-	const defaultRenderItem = ( args ) => {
+	const renderItemWithVariations = ( args ) => {
 		const { item, search, depth = 0, isSelected, onSelect } = args;
 		const variationsCount = item.variations ? item.variations.length : 0;
 		const classes = classnames(
@@ -149,7 +150,10 @@ const ProductControl = ( {
 		return <ErrorMessage error={ error } />;
 	}
 
-	const currentVariations = variations[ expandedProduct ] || [];
+	const currentVariations =
+		variations && variations[ expandedProduct ]
+			? variations[ expandedProduct ]
+			: [];
 	const currentList = [ ...products, ...currentVariations ];
 	const messages = {
 		list: __( 'Products', 'woo-gutenberg-products-block' ),
@@ -170,6 +174,12 @@ const ProductControl = ( {
 	const selectedListItems = selectedItem
 		? [ find( currentList, { id: selectedItem } ) ]
 		: [];
+	let renderItemFunc = null;
+	if ( renderItem ) {
+		renderItemFunc = renderItem;
+	} else if ( showVariations ) {
+		renderItemFunc = renderItemWithVariations;
+	}
 
 	return (
 		<Fragment>
@@ -180,7 +190,7 @@ const ProductControl = ( {
 				isSingle
 				selected={ selectedListItems }
 				onChange={ onChange }
-				renderItem={ renderItem || defaultRenderItem }
+				renderItem={ renderItemFunc }
 				onSearch={ IS_LARGE_CATALOG ? this.debouncedOnSearch : null }
 				messages={ messages }
 				isHierarchical
@@ -207,6 +217,10 @@ ProductControl.propTypes = {
 	 */
 	renderItem: PropTypes.func,
 	/**
+	 * Whether to show variations in the list of items available.
+	 */
+	showVariations: PropTypes.bool,
+	/**
 	 * The ID of the currently selected item (product or variation).
 	 */
 	selectedProduct: PropTypes.number,
@@ -214,6 +228,7 @@ ProductControl.propTypes = {
 
 ProductControl.defaultProps = {
 	expandedProduct: null,
+	showVariations: false,
 };
 
 export default withSingleSelected(

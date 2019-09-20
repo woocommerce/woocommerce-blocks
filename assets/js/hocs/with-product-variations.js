@@ -26,19 +26,20 @@ const withProductVariations = createHigherOrderComponent(
 			}
 
 			componentDidMount() {
-				const { selected } = this.props;
+				const { selected, showVariations } = this.props;
 
-				if ( selected ) {
+				if ( selected && showVariations ) {
 					this.loadVariations();
 				}
 			}
 
 			componentDidUpdate( prevProps ) {
-				const { isLoading, selected } = this.props;
+				const { isLoading, selected, showVariations } = this.props;
 
 				if (
-					! isShallowEqual( prevProps.selected, selected ) ||
-					( prevProps.isLoading && ! isLoading )
+					showVariations &&
+					( ! isShallowEqual( prevProps.selected, selected ) ||
+						( prevProps.isLoading && ! isLoading ) )
 				) {
 					this.loadVariations();
 				}
@@ -125,7 +126,11 @@ const withProductVariations = createHigherOrderComponent(
 			}
 
 			getExpandedProduct() {
-				const { isLoading, selected } = this.props;
+				const { isLoading, selected, showVariations } = this.props;
+
+				if ( ! showVariations ) {
+					return null;
+				}
 
 				let selectedItem =
 					selected && selected.length ? selected[ 0 ] : null;
@@ -171,9 +176,11 @@ const withProductVariations = createHigherOrderComponent(
 		}
 		WrappedComponent.propTypes = {
 			selected: PropTypes.array,
+			showVariations: PropTypes.bool,
 		};
 		WrappedComponent.defaultProps = {
 			selected: [],
+			showVariations: false,
 		};
 		return WrappedComponent;
 	},
