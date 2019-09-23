@@ -272,7 +272,7 @@ class ProductControl extends Component {
 					isSingle
 					selected={ selectedListItems }
 					onChange={ onChange }
-					renderItem={ renderItem }
+					renderItem={ renderItem || this.renderItem }
 					onSearch={ IS_LARGE_CATALOG ? this.debouncedOnSearch : null }
 					messages={ messages }
 					isHierarchical
