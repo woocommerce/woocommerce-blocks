@@ -42,11 +42,7 @@ const withSearchedProducts = createHigherOrderComponent(
 			componentDidMount() {
 				const { selected } = this.props;
 				getProducts( { selected } )
-					.then( ( products ) => {
-						const list = products.map( ( product ) => ( {
-							...product,
-							parent: 0,
-						} ) );
+					.then( ( list ) => {
 						this.setState( { list, loading: false } );
 					} )
 					.catch( this.setError );
