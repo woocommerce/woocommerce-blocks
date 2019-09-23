@@ -185,7 +185,7 @@ const ProductControl = ( {
 			list={ currentList }
 			isLoading={ isLoading }
 			isSingle
-			selected={ currentList.find( ( { id } ) =>
+			selected={ currentList.filter( ( { id } ) =>
 				selected.includes( id )
 			) }
 			onChange={ onChange }
