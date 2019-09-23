@@ -15,15 +15,11 @@ import { formatError } from '../base/utils/errors.js';
 const withProductVariations = createHigherOrderComponent(
 	( OriginalComponent ) => {
 		class WrappedComponent extends Component {
-			constructor() {
-				super( ...arguments );
-				this.state = {
-					error: null,
-					loading: false,
-					variations: {},
-				};
-				this.loadVariations = this.loadVariations.bind( this );
-			}
+			state = {
+				error: null,
+				loading: false,
+				variations: {},
+			};
 
 			componentDidMount() {
 				const { selected, showVariations } = this.props;
@@ -45,7 +41,7 @@ const withProductVariations = createHigherOrderComponent(
 				}
 			}
 
-			loadVariations() {
+			loadVariations = () => {
 				const { products } = this.props;
 				const { loading, variations } = this.state;
 
@@ -109,7 +105,7 @@ const withProductVariations = createHigherOrderComponent(
 							error,
 						} );
 					} );
-			}
+			};
 
 			isProductId( itemId ) {
 				const { products } = this.props;
@@ -173,15 +169,17 @@ const withProductVariations = createHigherOrderComponent(
 					/>
 				);
 			}
+
+			static propTypes = {
+				selected: PropTypes.array,
+				showVariations: PropTypes.bool,
+			};
+
+			static defaultProps = {
+				selected: [],
+				showVariations: false,
+			};
 		}
-		WrappedComponent.propTypes = {
-			selected: PropTypes.array,
-			showVariations: PropTypes.bool,
-		};
-		WrappedComponent.defaultProps = {
-			selected: [],
-			showVariations: false,
-		};
 		return WrappedComponent;
 	},
 	'withProductVariations'
