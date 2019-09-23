@@ -85,14 +85,20 @@ class Api {
 	}
 
 	/**
-	 * Registers a script according to `wp_register_script`, additionally loading the translations for the file.
+	 * Registers a script according to `wp_register_script`, additionally
+	 * loading the translations for the file.
 	 *
 	 * @since $VID:$
 	 *
-	 * @param string $handle    Name of the script. Should be unique.
-	 * @param string $relative_src       Relative url for the script to the path from plugin root.
-	 * @param array  $deps      Optional. An array of registered script handles this script depends on. Default empty array.
-	 * @param bool   $has_i18n  Optional. Whether to add a script translation call to this file. Default 'true'.
+	 * @param string $handle        Name of the script. Should be unique.
+	 * @param string $relative_src  Relative url for the script to the path
+	 *                              from plugin root.
+	 * @param array  $deps          Optional. An array of registered script
+	 *                              handles this script depends on. Default
+	 *                              empty array.
+	 * @param bool   $has_i18n      Optional. Whether to add a script
+	 *                              translation call to this file. Default:
+	 *                              true.
 	 */
 	public function register_script( $handle, $relative_src, $deps = [], $has_i18n = true ) {
 		wp_register_script(
