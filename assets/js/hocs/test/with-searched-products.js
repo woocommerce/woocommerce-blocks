@@ -18,7 +18,10 @@ jest.mock( '@woocommerce/block-settings', () => ( {
 mockedUtils.getProducts = jest
 	.fn()
 	.mockImplementation( () =>
-		Promise.resolve( [ { id: 10, name: 'foo' }, { id: 20, name: 'bar' } ] )
+		Promise.resolve( [
+			{ id: 10, name: 'foo', parent: 0 },
+			{ id: 20, name: 'bar', parent: 0 },
+		] )
 	);
 
 // Add a mock implementation of debounce for testing so we can spy on
