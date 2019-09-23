@@ -138,7 +138,7 @@ class Bootstrap {
 	}
 
 	/**
-	 * Remove core blocks (for 3.6 and below).
+	 * Remove core blocks (for 3.6 and above).
 	 */
 	protected function remove_core_blocks() {
 		remove_action( 'init', array( 'WC_Block_Library', 'init' ) );

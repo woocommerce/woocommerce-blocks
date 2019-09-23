@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
 class Package {
 
 	/**
-	 * For back compat this is provided. Ideally, you should use register your
+	 * For back compat this is provided. Ideally, you should register your
 	 * class with Automattic\Woocommerce\Blocks\Container and make Package a
 	 * dependency.
 	 *
