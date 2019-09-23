@@ -17,8 +17,9 @@ class Assets {
 	/**
 	 * Initialize class features on init.
 	 *
-	 * @since $VID:$ Moved most initialization to BootStrap and AssetDataRegistry
-	 *               classes as a part of ongoing refactor
+	 * @since $VID:$
+	 * Moved most initialization to BootStrap and AssetDataRegistry
+	 * classes as a part of ongoing refactor
 	 */
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'register_assets' ) );
@@ -29,8 +30,9 @@ class Assets {
 	/**
 	 * Register block scripts & styles.
 	 *
-	 * @since $VID:$ Moved data related enqueuing to new AssetDataRegistry class
-	 *               as part of ongoing refactoring.
+	 * @since $VID:$
+	 * Moved data related enqueuing to new AssetDataRegistry class
+	 * as part of ongoing refactoring.
 	 */
 	public static function register_assets() {
 		self::register_style( 'wc-block-editor', plugins_url( 'build/editor.css', __DIR__ ), array( 'wp-edit-blocks' ) );
