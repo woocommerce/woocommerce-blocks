@@ -9,6 +9,7 @@
 
 namespace Automattic\WooCommerce\Blocks\Assets;
 
+use Exception;
 use InvalidArgumentException;
 
 /**
@@ -174,28 +175,18 @@ class AssetDataRegistry {
 	 *                     before output to the screen.
 	 *
 	 * @throws InvalidArgumentException  Only throws when site is in debug mode.
+	 *                                   Always logs the error.
 	 */
 	public function add( $key, $data ) {
-		if ( ! is_string( $key ) ) {
+		try {
+			$this->add_data( $key, $data );
+		} catch ( Exception $e ) {
 			if ( $this->debug() ) {
-				throw new InvalidArgumentException(
-					'Key for the data being registered must be a string'
-				);
+				// bubble up.
+				throw $e;
 			}
+			wc_caught_exception( $e, __METHOD__, [ $key, $data ] );
 		}
-		if ( isset( $this->data[ $key ] ) ) {
-			if ( $this->debug() ) {
-				throw new InvalidArgumentException(
-					'Overriding existing data with an already registered key is not allowed'
-				);
-			}
-			return;
-		}
-		if ( \method_exists( $data, '__invoke' ) ) {
-			$this->lazy_data[ $key ] = $data;
-			return;
-		}
-		$this->data[ $key ] = $data;
 	}
 
 	/**
@@ -233,6 +224,38 @@ class AssetDataRegistry {
 				'before'
 			);
 		}
+	}
+
+	/**
+	 * See self::add() for docs.
+	 *
+	 * @param   string $key   Key for the data.
+	 * @param   mixed  $data  Value for the data.
+	 *
+	 * @throws InvalidArgumentException  If key is not a string or already
+	 *                                   exists in internal data cache.
+	 */
+	protected function add_data( $key, $data ) {
+		if ( ! is_string( $key ) ) {
+			if ( $this->debug() ) {
+				throw new InvalidArgumentException(
+					'Key for the data being registered must be a string'
+				);
+			}
+		}
+		if ( isset( $this->data[ $key ] ) ) {
+			if ( $this->debug() ) {
+				throw new InvalidArgumentException(
+					'Overriding existing data with an already registered key is not allowed'
+				);
+			}
+			return;
+		}
+		if ( \method_exists( $data, '__invoke' ) ) {
+			$this->lazy_data[ $key ] = $data;
+			return;
+		}
+		$this->data[ $key ] = $data;
 	}
 
 	/**
