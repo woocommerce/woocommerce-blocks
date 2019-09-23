@@ -15,9 +15,7 @@ const withSingleSelected = createHigherOrderComponent(
 				return (
 					<OriginalComponent
 						{ ...this.props }
-						selected={ [ selected ].filter(
-							( val ) => ! isNil( val )
-						) }
+						selected={ isNil( selected ) ? [] : [ selected ] }
 					/>
 				);
 			}
