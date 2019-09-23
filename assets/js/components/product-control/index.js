@@ -217,7 +217,7 @@ ProductControl.propTypes = {
 	/**
 	 * The ID of the currently selected item (product or variation).
 	 */
-	selected: PropTypes.arrayOf( [ PropTypes.number ] ),
+	selected: PropTypes.arrayOf( PropTypes.number ),
 	/**
 	 * Whether to show variations in the list of items available.
 	 */
