@@ -104,6 +104,11 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 2.4.2 - 2019-09-23 =
+
+- Fix product grids overflowing in some themes
+- Fix regression that prevented selecting product variations in the Featured Product block.
+
 = 2.4.1 - 2019-08-30 =
 
 - Fix conflict with WooCommerce Admin.
