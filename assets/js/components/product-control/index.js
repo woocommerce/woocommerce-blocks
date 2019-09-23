@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import { SearchListControl, SearchListItem } from '@woocommerce/components';
 import { Spinner, MenuItem } from '@wordpress/components';
 import classnames from 'classnames';
-import { IS_LARGE_CATALOG } from '@woocommerce/block-settings';
 import {
 	withProductVariations,
 	withSearchedProducts,
@@ -54,6 +53,7 @@ const ProductControl = ( {
 	error,
 	isLoading,
 	onChange,
+	onSearch,
 	products,
 	renderItem,
 	selected,
@@ -194,7 +194,7 @@ const ProductControl = ( {
 			) }
 			onChange={ onChange }
 			renderItem={ getRenderItemFunc() }
-			onSearch={ IS_LARGE_CATALOG ? this.debouncedOnSearch : null }
+			onSearch={ onSearch }
 			messages={ messages }
 			isHierarchical
 		/>
@@ -210,6 +210,10 @@ ProductControl.propTypes = {
 	 * The ID of the currently expanded product.
 	 */
 	expandedProduct: PropTypes.number,
+	/**
+	 * Callback to search products by their name.
+	 */
+	onSearch: PropTypes.func,
 	/**
 	 * Query args to pass to getProducts.
 	 */
