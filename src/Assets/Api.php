@@ -84,8 +84,6 @@ class Api {
 		return array_merge( $dependencies, $extra_dependencies );
 	}
 
-
-
 	/**
 	 * Registers a script according to `wp_register_script`, additionally loading the translations for the file.
 	 *
