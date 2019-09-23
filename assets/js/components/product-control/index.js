@@ -2,8 +2,7 @@
  * External dependencies
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
-import { find, escapeRegExp, isEmpty } from 'lodash';
+import { escapeRegExp, isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import { SearchListControl, SearchListItem } from '@woocommerce/components';
 import { Spinner, MenuItem } from '@wordpress/components';
@@ -146,6 +145,15 @@ const ProductControl = ( {
 		);
 	};
 
+	const getRenderItemFunc = () => {
+		if ( renderItem ) {
+			return renderItem;
+		} else if ( showVariations ) {
+			return renderItemWithVariations;
+		}
+		return null;
+	};
+
 	if ( error ) {
 		return <ErrorMessage error={ error } />;
 	}
@@ -170,32 +178,22 @@ const ProductControl = ( {
 			'woo-gutenberg-products-block'
 		),
 	};
-	const selectedItem = selected && selected.length ? selected[ 0 ] : null;
-	const selectedListItems = selectedItem
-		? [ find( currentList, { id: selectedItem } ) ]
-		: [];
-	let renderItemFunc = null;
-	if ( renderItem ) {
-		renderItemFunc = renderItem;
-	} else if ( showVariations ) {
-		renderItemFunc = renderItemWithVariations;
-	}
 
 	return (
-		<Fragment>
-			<SearchListControl
-				className="woocommerce-products"
-				list={ currentList }
-				isLoading={ isLoading }
-				isSingle
-				selected={ selectedListItems }
-				onChange={ onChange }
-				renderItem={ renderItemFunc }
-				onSearch={ IS_LARGE_CATALOG ? this.debouncedOnSearch : null }
-				messages={ messages }
-				isHierarchical
-			/>
-		</Fragment>
+		<SearchListControl
+			className="woocommerce-products"
+			list={ currentList }
+			isLoading={ isLoading }
+			isSingle
+			selected={ currentList.find( ( { id } ) =>
+				selected.includes( id )
+			) }
+			onChange={ onChange }
+			renderItem={ getRenderItemFunc() }
+			onSearch={ IS_LARGE_CATALOG ? this.debouncedOnSearch : null }
+			messages={ messages }
+			isHierarchical
+		/>
 	);
 };
 
@@ -217,17 +215,18 @@ ProductControl.propTypes = {
 	 */
 	renderItem: PropTypes.func,
 	/**
+	 * The ID of the currently selected item (product or variation).
+	 */
+	selected: PropTypes.arrayOf( [ PropTypes.number ] ),
+	/**
 	 * Whether to show variations in the list of items available.
 	 */
 	showVariations: PropTypes.bool,
-	/**
-	 * The ID of the currently selected item (product or variation).
-	 */
-	selectedProduct: PropTypes.number,
 };
 
 ProductControl.defaultProps = {
 	expandedProduct: null,
+	selected: [],
 	showVariations: false,
 };
 
