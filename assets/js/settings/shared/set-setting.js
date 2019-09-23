@@ -7,11 +7,11 @@ import { allSettings } from './settings-init';
  * @param {string}   name                        The setting property key for the
  *                                               setting being mutated.
  * @param {mixed}    value                       The value to set.
- * @param {function} [validation=( val ) => val] Allows for providing a callback
- *                                               to validate/sanitize the
- *                                               setting
+ * @param {function} [filter=( val ) => val]     Allows for providing a callback
+ *                                               to sanitize the setting (eg.
+ *                                               ensure it's a number)
  */
-export function setSetting( name, value, validation = ( val ) => val ) {
-	value = validation( value );
-	allSettings[ name ] = validation( value );
+export function setSetting( name, value, filter = ( val ) => val ) {
+	value = filter( value );
+	allSettings[ name ] = filter( value );
 }

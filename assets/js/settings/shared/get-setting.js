@@ -11,18 +11,16 @@ import { allSettings } from './settings-init';
  * @param {mixed}    [fallback=false]             The value to use as a fallback
  *                                                if the setting is not in the
  *                                                state.
- * @param {function} [validation=( val ) => val]  A callback to use for
- *                                                validating or sanitizing the
- *                                                setting value.
+ * @param {function} [filter=( val ) => val]  	  A callback for filtering the
+ *                                                value before it's returned.
+ *                                                Receives both the found value
+ *                                                (if it exists for the key) and
+ *                                                the provided fallback arg.
  * @returns {mixed}
  */
-export function getSetting(
-	name,
-	fallback = false,
-	validation = ( val ) => val
-) {
+export function getSetting( name, fallback = false, filter = ( val ) => val ) {
 	const value = allSettings.hasOwnProperty( name )
 		? allSettings[ name ]
 		: fallback;
-	return validation( value );
+	return filter( value, fallback );
 }

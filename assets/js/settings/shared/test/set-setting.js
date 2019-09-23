@@ -13,7 +13,7 @@ describe( 'setSetting', () => {
 		setSetting( 'adminUrl', 'not original' );
 		expect( getSetting( 'adminUrl' ) ).toBe( 'not original' );
 	} );
-	it( 'should save the value run through the provided validator', () => {
+	it( 'should save the value run through the provided filter', () => {
 		setSetting( 'aSetting', 'who', () => 42 );
 		expect( getSetting( 'aSetting' ) ).toBe( 42 );
 	} );

@@ -11,7 +11,7 @@ describe( 'getSetting', () => {
 	it( 'returns expected value for existing setting', () => {
 		expect( getSetting( 'adminUrl', 'not this' ) ).toEqual( ADMIN_URL );
 	} );
-	it( 'processes validation for provided validator', () => {
+	it( 'filters value via provided filter callback', () => {
 		expect( getSetting( 'some value', 'default', () => 42 ) ).toBe( 42 );
 	} );
 } );
