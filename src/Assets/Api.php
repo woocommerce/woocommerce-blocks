@@ -31,6 +31,7 @@ class Api {
 	public function __construct( Package $package ) {
 		$this->package = $package;
 	}
+
 	/**
 	 * Get the file modified time as a cache buster if we're in dev mode.
 	 *
@@ -57,7 +58,6 @@ class Api {
 		return $this->package->get_url( $relative_path );
 	}
 
-
 	/**
 	 * Returns the dependency array for the given asset relative path.
 	 *
@@ -67,7 +67,7 @@ class Api {
 	 * @param array  $extra_dependencies   Extra dependencies to be explicitly
 	 *                                     added to the generated array.
 	 *
-	 * @return array  An arry of dependencies
+	 * @return array  An array of dependencies
 	 */
 	protected function get_dependencies(
 		$asset_relative_path,

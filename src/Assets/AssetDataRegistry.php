@@ -26,7 +26,6 @@ class AssetDataRegistry {
 	 */
 	private $data = [];
 
-
 	/**
 	 * Lazy data is an array of closures that will be invoked just before
 	 * asset data is generated for the enqueued script.
