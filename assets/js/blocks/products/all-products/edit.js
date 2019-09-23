@@ -2,14 +2,8 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	InspectorControls,
-} from '@wordpress/editor';
-import {
-	PanelBody,
-	withSpokenMessages,
-	Disabled,
-} from '@wordpress/components';
+import { InspectorControls } from '@wordpress/editor';
+import { PanelBody, withSpokenMessages, Disabled } from '@wordpress/components';
 import { Component } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import Gridicon from 'gridicons';
@@ -24,7 +18,7 @@ import {
 } from '../utils';
 import { getSharedContentControls, getSharedListControls } from '../edit';
 import GridLayoutControl from '../../../components/grid-layout-control';
-import { HAS_PRODUCTS } from '../../../constants';
+import { HAS_PRODUCTS } from '@woocommerce/block-settings';
 import Block from './block';
 
 /**
@@ -44,7 +38,7 @@ class Editor extends Component {
 		 * From withSpokenMessages.
 		 */
 		debouncedSpeak: PropTypes.func.isRequired,
-	}
+	};
 
 	getInspectorControls = () => {
 		const { attributes, setAttributes } = this.props;
@@ -70,7 +64,10 @@ class Editor extends Component {
 					{ getSharedContentControls( attributes, setAttributes ) }
 				</PanelBody>
 				<PanelBody
-					title={ __( 'List Settings', 'woo-gutenberg-products-block' ) }
+					title={ __(
+						'List Settings',
+						'woo-gutenberg-products-block'
+					) }
 					initialOpen
 				>
 					{ getSharedListControls( attributes, setAttributes ) }
@@ -85,19 +82,29 @@ class Editor extends Component {
 
 		const blockIcon = <Gridicon icon="grid" />;
 		const blockTitle = __( 'All Products', 'woo-gutenberg-products-block' );
-		const hasContent = 0 !== Object.values( contentVisibility ).filter( Boolean ).length;
+		const hasContent =
+			0 !== Object.values( contentVisibility ).filter( Boolean ).length;
 
 		return (
-			<div className={ getBlockClassName( 'wc-block-all-products', attributes ) }>
+			<div
+				className={ getBlockClassName(
+					'wc-block-all-products',
+					attributes
+				) }
+			>
 				{ this.getInspectorControls() }
-				{ ! HAS_PRODUCTS && renderNoProductsPlaceholder( blockTitle, blockIcon ) }
-				{ ! hasContent && renderHiddenContentPlaceholder( blockTitle, blockIcon ) }
+				{ ! HAS_PRODUCTS &&
+					renderNoProductsPlaceholder( blockTitle, blockIcon ) }
+				{ ! hasContent &&
+					renderHiddenContentPlaceholder( blockTitle, blockIcon ) }
 				<Disabled>
-					{ ( HAS_PRODUCTS && hasContent ) && ( <Block attributes={ attributes } /> ) }
+					{ HAS_PRODUCTS && hasContent && (
+						<Block attributes={ attributes } />
+					) }
 				</Disabled>
 			</div>
 		);
-	}
+	};
 }
 
 export default withSpokenMessages( Editor );

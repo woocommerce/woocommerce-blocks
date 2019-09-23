@@ -7,22 +7,16 @@ import { addQueryArgs } from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
 import { debounce, find, escapeRegExp, isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
-import {
-	SearchListControl,
-	SearchListItem,
-} from '@woocommerce/components';
+import { SearchListControl, SearchListItem } from '@woocommerce/components';
 import { Spinner, MenuItem } from '@wordpress/components';
 import classnames from 'classnames';
+import { ENDPOINTS, IS_LARGE_CATALOG } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
-import { ENDPOINTS, IS_LARGE_CATALOG } from '../../constants';
 import { getProducts } from '../utils';
-import {
-	IconRadioSelected,
-	IconRadioUnselected,
-} from '../icons';
+import { IconRadioSelected, IconRadioUnselected } from '../icons';
 import './style.scss';
 
 function getHighlightedName( name, search ) {
@@ -49,7 +43,10 @@ class ProductControl extends Component {
 		};
 
 		this.debouncedOnSearch = debounce( this.onSearch.bind( this ), 400 );
-		this.debouncedGetVariations = debounce( this.getVariations.bind( this ), 200 );
+		this.debouncedGetVariations = debounce(
+			this.getVariations.bind( this ),
+			200
+		);
 		this.renderItem = this.renderItem.bind( this );
 		this.onProductSelect = this.onProductSelect.bind( this );
 	}
@@ -65,7 +62,9 @@ class ProductControl extends Component {
 		getProducts( { selected, queryArgs } )
 			.then( ( products ) => {
 				products = products.map( ( product ) => {
-					const count = product.variations ? product.variations.length : 0;
+					const count = product.variations
+						? product.variations.length
+						: 0;
 					return {
 						...product,
 						parent: 0,
@@ -96,9 +95,14 @@ class ProductControl extends Component {
 			return;
 		}
 
-		const productDetails = products.find( ( findProduct ) => findProduct.id === product );
+		const productDetails = products.find(
+			( findProduct ) => findProduct.id === product
+		);
 
-		if ( ! productDetails.variations || productDetails.variations.length === 0 ) {
+		if (
+			! productDetails.variations ||
+			productDetails.variations.length === 0
+		) {
 			return;
 		}
 
@@ -107,14 +111,23 @@ class ProductControl extends Component {
 		}
 
 		apiFetch( {
-			path: addQueryArgs( `${ ENDPOINTS.products }/${ product }/variations`, {
-				per_page: -1,
-			} ),
+			path: addQueryArgs(
+				`${ ENDPOINTS.products }/${ product }/variations`,
+				{
+					per_page: -1,
+				}
+			),
 		} )
 			.then( ( variations ) => {
-				variations = variations.map( ( variation ) => ( { ...variation, parent: product } ) );
+				variations = variations.map( ( variation ) => ( {
+					...variation,
+					parent: product,
+				} ) );
 				this.setState( ( prevState ) => ( {
-					variationsList: { ...prevState.variationsList, [ product ]: variations },
+					variationsList: {
+						...prevState.variationsList,
+						[ product ]: variations,
+					},
 					variationsLoading: false,
 				} ) );
 			} )
@@ -164,7 +177,9 @@ class ProductControl extends Component {
 		};
 
 		if ( item.breadcrumbs.length ) {
-			a11yProps[ 'aria-label' ] = `${ item.breadcrumbs[ 0 ] }: ${ item.name }`;
+			a11yProps[ 'aria-label' ] = `${ item.breadcrumbs[ 0 ] }: ${
+				item.name
+			}`;
 		}
 
 		if ( item.count ) {
@@ -199,9 +214,7 @@ class ProductControl extends Component {
 					</span>
 
 					{ item.count ? (
-						<span
-							className="woocommerce-search-list__item-variation-count"
-						>
+						<span className="woocommerce-search-list__item-variation-count">
 							{ sprintf(
 								_n(
 									'%d variation',
@@ -261,7 +274,9 @@ class ProductControl extends Component {
 				'woo-gutenberg-products-block'
 			),
 		};
-		const selectedListItems = selected ? [ find( currentList, { id: selected } ) ] : [];
+		const selectedListItems = selected
+			? [ find( currentList, { id: selected } ) ]
+			: [];
 
 		return (
 			<Fragment>
@@ -273,7 +288,9 @@ class ProductControl extends Component {
 					selected={ selectedListItems }
 					onChange={ onChange }
 					renderItem={ renderItem }
-					onSearch={ IS_LARGE_CATALOG ? this.debouncedOnSearch : null }
+					onSearch={
+						IS_LARGE_CATALOG ? this.debouncedOnSearch : null
+					}
 					messages={ messages }
 					isHierarchical
 				/>

@@ -7,47 +7,59 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
+import OrderSelect from '../order-select';
 import './style.scss';
 
-const ReviewOrderSelect = ( { componentId, onChange, readOnly, value } ) => {
-	const selectId = `wc-block-review-order-select__select-${ componentId }`;
-
+const ReviewOrderSelect = ( { defaultValue, onChange, readOnly, value } ) => {
 	return (
-		<p className="wc-block-review-order-select">
-			<label className="wc-block-review-order-select__label" htmlFor={ selectId }>
-				<span aria-hidden>
-					{ __( 'Order by', 'woo-gutenberg-products-block' ) }
-				</span>
-				<span className="screen-reader-text">
-					{ __( 'Order reviews by', 'woo-gutenberg-products-block' ) }
-				</span>
-			</label>
-			<select // eslint-disable-line jsx-a11y/no-onchange
-				id={ selectId }
-				className="wc-block-review-order-select__select"
-				onChange={ onChange }
-				readOnly={ readOnly }
-				value={ value }
-			>
-				<option value="most-recent">
-					{ __( 'Most recent', 'woo-gutenberg-products-block' ) }
-				</option>
-				<option value="highest-rating">
-					{ __( 'Highest rating', 'woo-gutenberg-products-block' ) }
-				</option>
-				<option value="lowest-rating">
-					{ __( 'Lowest rating', 'woo-gutenberg-products-block' ) }
-				</option>
-			</select>
-		</p>
+		<OrderSelect
+			className="wc-block-review-order-select"
+			defaultValue={ defaultValue }
+			label={ __( 'Order by', 'woo-gutenberg-products-block' ) }
+			onChange={ onChange }
+			options={ [
+				{
+					key: 'most-recent',
+					label: __( 'Most recent', 'woo-gutenberg-products-block' ),
+				},
+				{
+					key: 'highest-rating',
+					label: __(
+						'Highest rating',
+						'woo-gutenberg-products-block'
+					),
+				},
+				{
+					key: 'lowest-rating',
+					label: __(
+						'Lowest rating',
+						'woo-gutenberg-products-block'
+					),
+				},
+			] }
+			readOnly={ readOnly }
+			screenReaderLabel={ __(
+				'Order reviews by',
+				'woo-gutenberg-products-block'
+			) }
+			value={ value }
+		/>
 	);
 };
 
 ReviewOrderSelect.propTypes = {
-	componentId: PropTypes.number.isRequired,
+	defaultValue: PropTypes.oneOf( [
+		'most-recent',
+		'highest-rating',
+		'lowest-rating',
+	] ),
 	onChange: PropTypes.func,
 	readOnly: PropTypes.bool,
-	value: PropTypes.oneOf( [ 'most-recent', 'highest-rating', 'lowest-rating' ] ),
+	value: PropTypes.oneOf( [
+		'most-recent',
+		'highest-rating',
+		'lowest-rating',
+	] ),
 };
 
 export default ReviewOrderSelect;

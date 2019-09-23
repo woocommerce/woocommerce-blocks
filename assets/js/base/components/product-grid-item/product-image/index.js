@@ -6,7 +6,10 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import { PLACEHOLDER_IMG_SRC, THUMBNAIL_SIZE } from '../../../../constants';
+import {
+	PLACEHOLDER_IMG_SRC,
+	THUMBNAIL_SIZE,
+} from '@woocommerce/block-settings';
 
 const ProductImage = ( { className, product = {} } ) => {
 	let image = null;
@@ -34,11 +37,7 @@ const ProductImage = ( { className, product = {} } ) => {
 		);
 	}
 
-	return (
-		<div className={ className }>
-			{ image }
-		</div>
-	);
+	return <div className={ className }>{ image }</div>;
 };
 
 ProductImage.propTypes = {

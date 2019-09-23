@@ -8,28 +8,30 @@ import TestRenderer from 'react-test-renderer';
  */
 import withProduct from '../with-product';
 import * as mockUtils from '../../components/utils';
+import * as mockBaseUtils from '../../base/utils/errors';
 
-// Mock the getProduct functions for tests.
 jest.mock( '../../components/utils', () => ( {
 	getProduct: jest.fn(),
+} ) );
+
+jest.mock( '../../base/utils/errors', () => ( {
+	formatError: jest.fn(),
 } ) );
 
 const mockProduct = { name: 'T-Shirt' };
 const attributes = { productId: 1 };
 const TestComponent = withProduct( ( props ) => {
-	return <div
-		error={ props.error }
-		getProduct={ props.getProduct }
-		isLoading={ props.isLoading }
-		product={ props.product }
-	/>;
-} );
-const render = () => {
-	return TestRenderer.create(
-		<TestComponent
-			attributes={ attributes }
+	return (
+		<div
+			error={ props.error }
+			getProduct={ props.getProduct }
+			isLoading={ props.isLoading }
+			product={ props.product }
 		/>
 	);
+} );
+const render = () => {
+	return TestRenderer.create( <TestComponent attributes={ attributes } /> );
 };
 
 describe( 'withProduct Component', () => {
@@ -44,31 +46,39 @@ describe( 'withProduct Component', () => {
 			renderer = render();
 		} );
 
-		describe( 'test', () => {
-			it( 'getProduct is called on mount with passed in product id', () => {
-				const { getProduct } = mockUtils;
+		it( 'getProduct is called on mount with passed in product id', () => {
+			const { getProduct } = mockUtils;
 
-				expect( getProduct ).toHaveBeenCalledWith( attributes.productId );
-				expect( getProduct ).toHaveBeenCalledTimes( 1 );
-			} );
+			expect( getProduct ).toHaveBeenCalledWith( attributes.productId );
+			expect( getProduct ).toHaveBeenCalledTimes( 1 );
 		} );
 
-		describe( 'test', () => {
-			it( 'getProduct is hooked to the prop', () => {
-				const { getProduct } = mockUtils;
-				const props = renderer.root.findByType( 'div' ).props;
+		it( 'getProduct is called on component update', () => {
+			const { getProduct } = mockUtils;
+			const newAttributes = { ...attributes, productId: 2 };
+			renderer.update( <TestComponent attributes={ newAttributes } /> );
 
-				props.getProduct();
+			expect( getProduct ).toHaveBeenNthCalledWith(
+				2,
+				newAttributes.productId
+			);
+			expect( getProduct ).toHaveBeenCalledTimes( 2 );
+		} );
 
-				expect( getProduct ).toHaveBeenCalledTimes( 2 );
-			} );
+		it( 'getProduct is hooked to the prop', () => {
+			const { getProduct } = mockUtils;
+			const props = renderer.root.findByType( 'div' ).props;
+
+			props.getProduct();
+
+			expect( getProduct ).toHaveBeenCalledTimes( 2 );
 		} );
 	} );
 
 	describe( 'when the API returns product data', () => {
 		beforeEach( () => {
-			mockUtils.getProduct.mockImplementation(
-				( productId ) => Promise.resolve( { ...mockProduct, id: productId } )
+			mockUtils.getProduct.mockImplementation( ( productId ) =>
+				Promise.resolve( { ...mockProduct, id: productId } )
 			);
 			renderer = render();
 		} );
@@ -79,25 +89,40 @@ describe( 'withProduct Component', () => {
 			expect( props.error ).toBeNull();
 			expect( typeof props.getProduct ).toBe( 'function' );
 			expect( props.isLoading ).toBe( false );
-			expect( props.product ).toEqual( { ...mockProduct, id: attributes.productId } );
+			expect( props.product ).toEqual( {
+				...mockProduct,
+				id: attributes.productId,
+			} );
 		} );
 	} );
 
 	describe( 'when the API returns an error', () => {
+		const error = { message: 'There was an error.' };
+		const getProductPromise = Promise.reject( error );
+		const formattedError = { message: 'There was an error.', type: 'api' };
+
 		beforeEach( () => {
-			mockUtils.getProduct.mockImplementation(
-				() => Promise.reject( { message: 'There was an error.' } )
+			mockUtils.getProduct.mockImplementation( () => getProductPromise );
+			mockBaseUtils.formatError.mockImplementation(
+				() => formattedError
 			);
 			renderer = render();
 		} );
 
-		it( 'sets the error prop', () => {
-			const props = renderer.root.findByType( 'div' ).props;
+		it( 'sets the error prop', ( done ) => {
+			const { formatError } = mockBaseUtils;
+			getProductPromise.catch( () => {
+				const props = renderer.root.findByType( 'div' ).props;
 
-			expect( props.error ).toEqual( { apiMessage: 'There was an error.' } );
-			expect( typeof props.getProduct ).toBe( 'function' );
-			expect( props.isLoading ).toBe( false );
-			expect( props.product ).toBeNull();
+				expect( formatError ).toHaveBeenCalledWith( error );
+				expect( formatError ).toHaveBeenCalledTimes( 1 );
+				expect( props.error ).toEqual( formattedError );
+				expect( typeof props.getProduct ).toBe( 'function' );
+				expect( props.isLoading ).toBe( false );
+				expect( props.product ).toBeNull();
+
+				done();
+			} );
 		} );
 	} );
 } );

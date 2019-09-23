@@ -3,11 +3,7 @@
  */
 import apiFetch from '@wordpress/api-fetch';
 import classNames from 'classnames';
-
-/**
- * Internal dependencies
- */
-import { ENABLE_REVIEW_RATING } from '../../constants';
+import { ENABLE_REVIEW_RATING } from '@woocommerce/block-settings';
 
 export const getOrderArgs = ( orderValue ) => {
 	if ( ENABLE_REVIEW_RATING ) {
@@ -33,29 +29,40 @@ export const getOrderArgs = ( orderValue ) => {
 
 export const getReviews = ( args ) => {
 	return apiFetch( {
-		path: '/wc/blocks/products/reviews?' + Object.entries( args ).map( ( arg ) => arg.join( '=' ) ).join( '&' ),
+		path:
+			'/wc/blocks/products/reviews?' +
+			Object.entries( args )
+				.map( ( arg ) => arg.join( '=' ) )
+				.join( '&' ),
 		parse: false,
 	} ).then( ( response ) => {
 		return response.json().then( ( reviews ) => {
-			const totalReviews = parseInt( response.headers.get( 'x-wp-total' ), 10 );
+			const totalReviews = parseInt(
+				response.headers.get( 'x-wp-total' ),
+				10
+			);
 			return { reviews, totalReviews };
 		} );
 	} );
 };
 
 export const getBlockClassName = ( blockClassName, attributes ) => {
-	const { className, showReviewDate, showReviewerName, showReviewContent, showProductName, showReviewImage, showReviewRating } = attributes;
-
-	return classNames(
-		blockClassName,
+	const {
 		className,
-		{
-			'has-image': showReviewImage,
-			'has-name': showReviewerName,
-			'has-date': showReviewDate,
-			'has-rating': showReviewRating,
-			'has-content': showReviewContent,
-			'has-product-name': showProductName,
-		}
-	);
+		showReviewDate,
+		showReviewerName,
+		showReviewContent,
+		showProductName,
+		showReviewImage,
+		showReviewRating,
+	} = attributes;
+
+	return classNames( blockClassName, className, {
+		'has-image': showReviewImage,
+		'has-name': showReviewerName,
+		'has-date': showReviewDate,
+		'has-rating': showReviewRating,
+		'has-content': showReviewContent,
+		'has-product-name': showProductName,
+	} );
 };

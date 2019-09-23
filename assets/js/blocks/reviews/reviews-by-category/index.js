@@ -11,16 +11,17 @@ import '../editor.scss';
 import Editor from './edit';
 import { IconReviewsByCategory } from '../../../components/icons';
 import sharedAttributes from '../attributes';
-import { getBlockClassName } from '../utils.js';
+import save from '../save.js';
 
 /**
  * Register and run the "Reviews by category" block.
  */
 registerBlockType( 'woocommerce/reviews-by-category', {
 	title: __( 'Reviews by Category', 'woo-gutenberg-products-block' ),
-	icon: (
-		<IconReviewsByCategory fillColor="#96588a" />
-	),
+	icon: {
+		src: <IconReviewsByCategory />,
+		foreground: '#96588a',
+	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
@@ -37,8 +38,8 @@ registerBlockType( 'woocommerce/reviews-by-category', {
 			default: [],
 		},
 		/**
-		* Show the product name.
-		*/
+		 * Show the product name.
+		 */
 		showProductName: {
 			type: 'boolean',
 			default: true,
@@ -55,21 +56,5 @@ registerBlockType( 'woocommerce/reviews-by-category', {
 	/**
 	 * Save the props to post content.
 	 */
-	save( { attributes } ) {
-		const { imageType, orderby, categoryIds, reviewsOnPageLoad, reviewsOnLoadMore, showLoadMore, showOrderby } = attributes;
-
-		const data = {
-			'data-image-type': imageType,
-			'data-category-ids': categoryIds.join( ',' ),
-			'data-orderby': orderby,
-			'data-reviews-on-page-load': reviewsOnPageLoad,
-			'data-reviews-on-load-more': reviewsOnLoadMore,
-			'data-show-load-more': showLoadMore,
-			'data-show-orderby': showOrderby,
-		};
-
-		return (
-			<div className={ getBlockClassName( 'wc-block-reviews-by-category', attributes ) } { ...data } />
-		);
-	},
+	save,
 } );

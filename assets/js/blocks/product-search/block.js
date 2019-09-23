@@ -7,11 +7,11 @@ import { Component } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import { withInstanceId, compose } from '@wordpress/compose';
 import { PlainText } from '@wordpress/editor';
+import { HOME_URL } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
-import { HOME_URL } from '../../constants';
 import './editor.scss';
 import './style.scss';
 
@@ -20,11 +20,20 @@ import './style.scss';
  */
 class ProductSearchBlock extends Component {
 	renderView() {
-		const { attributes: { label, placeholder, formId, className, hasLabel, align } } = this.props;
+		const {
+			attributes: {
+				label,
+				placeholder,
+				formId,
+				className,
+				hasLabel,
+				align,
+			},
+		} = this.props;
 		const classes = classnames(
 			'wc-block-product-search',
 			align ? 'align' + align : '',
-			className,
+			className
 		);
 
 		return (
@@ -32,7 +41,11 @@ class ProductSearchBlock extends Component {
 				<form role="search" method="get" action={ HOME_URL }>
 					<label
 						htmlFor={ formId }
-						className={ hasLabel ? 'wc-block-product-search__label' : 'wc-block-product-search__label screen-reader-text' }
+						className={
+							hasLabel
+								? 'wc-block-product-search__label'
+								: 'wc-block-product-search__label screen-reader-text'
+						}
 					>
 						{ label }
 					</label>
@@ -48,10 +61,22 @@ class ProductSearchBlock extends Component {
 						<button
 							type="submit"
 							className="wc-block-product-search__button"
-							label={ __( 'Search', 'woo-gutenberg-products-block' ) }
+							label={ __(
+								'Search',
+								'woo-gutenberg-products-block'
+							) }
 						>
-							<svg aria-hidden="true" role="img" focusable="false" className="dashicon dashicons-arrow-right-alt2" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-								<path d="M6 15l5-5-5-5 1-2 7 7-7 7z"></path>
+							<svg
+								aria-hidden="true"
+								role="img"
+								focusable="false"
+								className="dashicon dashicons-arrow-right-alt2"
+								xmlns="http://www.w3.org/2000/svg"
+								width="20"
+								height="20"
+								viewBox="0 0 20 20"
+							>
+								<path d="M6 15l5-5-5-5 1-2 7 7-7 7z" />
 							</svg>
 						</button>
 					</div>
@@ -62,15 +87,24 @@ class ProductSearchBlock extends Component {
 
 	renderEdit() {
 		const { attributes, setAttributes, instanceId } = this.props;
-		const { label, placeholder, formId, className, hasLabel, align } = attributes;
+		const {
+			label,
+			placeholder,
+			formId,
+			className,
+			hasLabel,
+			align,
+		} = attributes;
 		const classes = classnames(
 			'wc-block-product-search',
 			align ? 'align' + align : '',
-			className,
+			className
 		);
 
 		if ( ! formId ) {
-			setAttributes( { formId: `wc-block-product-search-${ instanceId }` } );
+			setAttributes( {
+				formId: `wc-block-product-search-${ instanceId }`,
+			} );
 		}
 
 		return (
@@ -79,14 +113,18 @@ class ProductSearchBlock extends Component {
 					<PlainText
 						className="wc-block-product-search__label"
 						value={ label }
-						onChange={ ( value ) => setAttributes( { label: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { label: value } )
+						}
 					/>
 				) }
 				<div className="wc-block-product-search__fields">
 					<PlainText
 						className="wc-block-product-search__field input-control"
 						value={ placeholder }
-						onChange={ ( value ) => setAttributes( { placeholder: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { placeholder: value } )
+						}
 					/>
 					<button
 						type="submit"
@@ -95,8 +133,17 @@ class ProductSearchBlock extends Component {
 						onClick={ ( e ) => e.preventDefault() }
 						tabIndex="-1"
 					>
-						<svg aria-hidden="true" role="img" focusable="false" className="dashicon dashicons-arrow-right-alt2" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-							<path d="M6 15l5-5-5-5 1-2 7 7-7 7z"></path>
+						<svg
+							aria-hidden="true"
+							role="img"
+							focusable="false"
+							className="dashicon dashicons-arrow-right-alt2"
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 20 20"
+						>
+							<path d="M6 15l5-5-5-5 1-2 7 7-7 7z" />
 						</svg>
 					</button>
 				</div>
@@ -132,6 +179,4 @@ ProductSearchBlock.propTypes = {
 	setAttributes: PropTypes.func,
 };
 
-export default compose( [
-	withInstanceId,
-] )( ProductSearchBlock );
+export default compose( [ withInstanceId ] )( ProductSearchBlock );

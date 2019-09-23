@@ -46,12 +46,12 @@ class ProductByCategoryBlock extends Component {
 
 		// from withSpokenMessages
 		debouncedSpeak: PropTypes.func.isRequired,
-	}
+	};
 
 	state = {
 		changedAttributes: {},
 		isEditing: false,
-	}
+	};
 
 	componentDidMount() {
 		const { attributes } = this.props;
@@ -67,20 +67,25 @@ class ProductByCategoryBlock extends Component {
 			isEditing: true,
 			changedAttributes: {},
 		} );
-	}
+	};
 
 	stopEditing = () => {
 		this.setState( {
 			isEditing: false,
 			changedAttributes: {},
 		} );
-	}
+	};
 
 	setChangedAttributes = ( attributes ) => {
 		this.setState( ( prevState ) => {
-			return { changedAttributes: { ...prevState.changedAttributes, ...attributes } };
+			return {
+				changedAttributes: {
+					...prevState.changedAttributes,
+					...attributes,
+				},
+			};
 		} );
-	}
+	};
 
 	save = () => {
 		const { changedAttributes } = this.state;
@@ -88,7 +93,7 @@ class ProductByCategoryBlock extends Component {
 
 		setAttributes( changedAttributes );
 		this.stopEditing();
-	}
+	};
 
 	getInspectorControls() {
 		const { attributes, setAttributes } = this.props;
@@ -105,8 +110,13 @@ class ProductByCategoryBlock extends Component {
 		return (
 			<InspectorControls key="inspector">
 				<PanelBody
-					title={ __( 'Product Category', 'woo-gutenberg-products-block' ) }
-					initialOpen={ ! attributes.categories.length && ! isEditing }
+					title={ __(
+						'Product Category',
+						'woo-gutenberg-products-block'
+					) }
+					initialOpen={
+						! attributes.categories.length && ! isEditing
+					}
 				>
 					<ProductCategoryControl
 						selected={ attributes.categories }
@@ -143,7 +153,9 @@ class ProductByCategoryBlock extends Component {
 				>
 					<GridContentControl
 						settings={ contentVisibility }
-						onChange={ ( value ) => setAttributes( { contentVisibility: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { contentVisibility: value } )
+						}
 					/>
 				</PanelBody>
 				<PanelBody
@@ -185,7 +197,10 @@ class ProductByCategoryBlock extends Component {
 		return (
 			<Placeholder
 				icon="category"
-				label={ __( 'Products by Category', 'woo-gutenberg-products-block' ) }
+				label={ __(
+					'Products by Category',
+					'woo-gutenberg-products-block'
+				) }
 				className="wc-block-products-grid wc-block-products-category"
 			>
 				{ __(
@@ -226,7 +241,10 @@ class ProductByCategoryBlock extends Component {
 		return (
 			<Disabled>
 				{ hasCategories ? (
-					<ServerSideRender block={ name } attributes={ attributes } />
+					<ServerSideRender
+						block={ name }
+						attributes={ attributes }
+					/>
 				) : (
 					__(
 						'Select at least one category to display its products.',
@@ -248,18 +266,17 @@ class ProductByCategoryBlock extends Component {
 							{
 								icon: 'edit',
 								title: __( 'Edit' ),
-								onClick: () => isEditing ? this.stopEditing() : this.startEditing(),
+								onClick: () =>
+									isEditing
+										? this.stopEditing()
+										: this.startEditing(),
 								isActive: isEditing,
 							},
 						] }
 					/>
 				</BlockControls>
 				{ this.getInspectorControls() }
-				{ isEditing ? (
-					this.renderEditMode()
-				) : (
-					this.renderViewMode()
-				) }
+				{ isEditing ? this.renderEditMode() : this.renderViewMode() }
 			</Fragment>
 		);
 	}

@@ -4,13 +4,17 @@
 import { addQueryArgs } from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
 import { flatten, uniqBy } from 'lodash';
+import {
+	ENDPOINTS,
+	IS_LARGE_CATALOG,
+	LIMIT_TAGS,
+} from '@woocommerce/block-settings';
 
-/**
- * Internal dependencies
- */
-import { ENDPOINTS, IS_LARGE_CATALOG, LIMIT_TAGS } from '../../constants';
-
-const getProductsRequests = ( { selected = [], search = '', queryArgs = [] } ) => {
+const getProductsRequests = ( {
+	selected = [],
+	search = '',
+	queryArgs = [],
+} ) => {
 	const defaultArgs = {
 		per_page: IS_LARGE_CATALOG ? 100 : -1,
 		catalog_visibility: 'any',
@@ -20,10 +24,7 @@ const getProductsRequests = ( { selected = [], search = '', queryArgs = [] } ) =
 		order: 'asc',
 	};
 	const requests = [
-		addQueryArgs(
-			ENDPOINTS.products,
-			{ ...defaultArgs, ...queryArgs }
-		),
+		addQueryArgs( ENDPOINTS.products, { ...defaultArgs, ...queryArgs } ),
 	];
 
 	// If we have a large catalog, we might not get all selected products in the first page.
@@ -45,12 +46,18 @@ const getProductsRequests = ( { selected = [], search = '', queryArgs = [] } ) =
  *
  * @param {Object} - A query object with the list of selected products and search term.
  */
-export const getProducts = ( { selected = [], search = '', queryArgs = [] } ) => {
+export const getProducts = ( {
+	selected = [],
+	search = '',
+	queryArgs = [],
+} ) => {
 	const requests = getProductsRequests( { selected, search, queryArgs } );
 
-	return Promise.all( requests.map( ( path ) => apiFetch( { path } ) ) ).then( ( data ) => {
-		return uniqBy( flatten( data ), 'id' );
-	} );
+	return Promise.all( requests.map( ( path ) => apiFetch( { path } ) ) )
+		.then( ( data ) => uniqBy( flatten( data ), 'id' ) )
+		.catch( ( e ) => {
+			throw e;
+		} );
 };
 
 /**
@@ -94,9 +101,11 @@ const getProductTagsRequests = ( { selected = [], search } ) => {
 export const getProductTags = ( { selected = [], search } ) => {
 	const requests = getProductTagsRequests( { selected, search } );
 
-	return Promise.all( requests.map( ( path ) => apiFetch( { path } ) ) ).then( ( data ) => {
-		return uniqBy( flatten( data ), 'id' );
-	} );
+	return Promise.all( requests.map( ( path ) => apiFetch( { path } ) ) ).then(
+		( data ) => {
+			return uniqBy( flatten( data ), 'id' );
+		}
+	);
 };
 
 /**
@@ -107,5 +116,35 @@ export const getProductTags = ( { selected = [], search } ) => {
 export const getCategory = ( categoryId ) => {
 	return apiFetch( {
 		path: `${ ENDPOINTS.categories }/${ categoryId }`,
+	} );
+};
+
+/**
+ * Get a promise that resolves to an array of category objects from the API.
+ */
+export const getCategories = () => {
+	return apiFetch( {
+		path: addQueryArgs( `${ ENDPOINTS.products }/categories`, {
+			per_page: -1,
+		} ),
+	} );
+};
+
+export const getAttributes = () => {
+	return apiFetch( {
+		path: addQueryArgs( `${ ENDPOINTS.products }/attributes`, {
+			per_page: -1,
+		} ),
+	} );
+};
+
+export const getTerms = ( attribute ) => {
+	return apiFetch( {
+		path: addQueryArgs(
+			`${ ENDPOINTS.products }/attributes/${ attribute }/terms`,
+			{
+				per_page: -1,
+			}
+		),
 	} );
 };

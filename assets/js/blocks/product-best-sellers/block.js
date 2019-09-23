@@ -48,7 +48,9 @@ class ProductBestSellersBlock extends Component {
 				>
 					<GridContentControl
 						settings={ contentVisibility }
-						onChange={ ( value ) => setAttributes( { contentVisibility: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { contentVisibility: value } )
+						}
 					/>
 				</PanelBody>
 				<PanelBody
@@ -81,7 +83,10 @@ class ProductBestSellersBlock extends Component {
 			<Fragment>
 				{ this.getInspectorControls() }
 				<Disabled>
-					<ServerSideRender block={ name } attributes={ attributes } />
+					<ServerSideRender
+						block={ name }
+						attributes={ attributes }
+					/>
 				</Disabled>
 			</Fragment>
 		);
