@@ -46,7 +46,7 @@ const alias = {
 
 const requestToExternal = ( request ) => {
 	const wcDepMap = {
-		'@woocommerce/settings': [ 'wc', 'wcSettings' ],
+		'@woocommerce/settings': { this: [ 'wc', 'wcSettings' ] },
 	};
 	if ( wcDepMap[ request ] ) {
 		return wcDepMap[ request ];
