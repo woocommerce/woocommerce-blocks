@@ -33,6 +33,22 @@ const getInteractionIcon = ( isSelected = false ) => {
 	return isSelected ? <IconRadioSelected /> : <IconRadioUnselected />;
 };
 
+const messages = {
+	list: __( 'Products', 'woo-gutenberg-products-block' ),
+	noItems: __(
+		"Your store doesn't have any products.",
+		'woo-gutenberg-products-block'
+	),
+	search: __(
+		'Search for a product to display',
+		'woo-gutenberg-products-block'
+	),
+	updated: __(
+		'Product search results updated.',
+		'woo-gutenberg-products-block'
+	),
+};
+
 const ProductControl = ( {
 	expandedProduct,
 	error,
@@ -163,21 +179,6 @@ const ProductControl = ( {
 			? variations[ expandedProduct ]
 			: [];
 	const currentList = [ ...products, ...currentVariations ];
-	const messages = {
-		list: __( 'Products', 'woo-gutenberg-products-block' ),
-		noItems: __(
-			"Your store doesn't have any products.",
-			'woo-gutenberg-products-block'
-		),
-		search: __(
-			'Search for a product to display',
-			'woo-gutenberg-products-block'
-		),
-		updated: __(
-			'Product search results updated.',
-			'woo-gutenberg-products-block'
-		),
-	};
 
 	return (
 		<SearchListControl
