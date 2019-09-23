@@ -63,7 +63,10 @@ const ProductControl = ( {
 } ) => {
 	const renderItemWithVariations = ( args ) => {
 		const { item, search, depth = 0, isSelected, onSelect } = args;
-		const variationsCount = item.variations ? item.variations.length : 0;
+		const variationsCount =
+			item.variations && Array.isArray( item.variations )
+				? item.variations.length
+				: 0;
 		const classes = classnames(
 			'woocommerce-search-product__item',
 			'woocommerce-search-list__item',
