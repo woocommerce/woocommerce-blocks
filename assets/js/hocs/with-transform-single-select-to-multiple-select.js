@@ -6,7 +6,7 @@ import { createHigherOrderComponent } from '@wordpress/compose';
 import PropTypes from 'prop-types';
 import { isNil } from 'lodash';
 
-const withSingleSelected = createHigherOrderComponent(
+const withTransformSingleSelectToMultipleSelect = createHigherOrderComponent(
 	( OriginalComponent ) => {
 		class WrappedComponent extends Component {
 			render() {
@@ -31,7 +31,7 @@ const withSingleSelected = createHigherOrderComponent(
 		};
 		return WrappedComponent;
 	},
-	'withSingleSelected'
+	'withTransformSingleSelectToMultipleSelect'
 );
 
-export default withSingleSelected;
+export default withTransformSingleSelectToMultipleSelect;

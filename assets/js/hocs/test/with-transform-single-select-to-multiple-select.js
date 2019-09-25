@@ -6,13 +6,13 @@ import TestRenderer from 'react-test-renderer';
 /**
  * Internal dependencies
  */
-import withSingleSelected from '../with-single-selected';
+import withTransformSingleSelectToMultipleSelect from '../with-transform-single-select-to-multiple-select';
 
-const TestComponent = withSingleSelected( ( props ) => {
+const TestComponent = withTransformSingleSelectToMultipleSelect( ( props ) => {
 	return <div selected={ props.selected } />;
 } );
 
-describe( 'withSingleSelected Component', () => {
+describe( 'withTransformSingleSelectToMultipleSelect Component', () => {
 	describe( 'when the API returns an error', () => {
 		it( 'converts the selected value into an array', () => {
 			const selected = 123;

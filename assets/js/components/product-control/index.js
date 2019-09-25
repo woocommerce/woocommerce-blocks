@@ -10,7 +10,7 @@ import classnames from 'classnames';
 import {
 	withProductVariations,
 	withSearchedProducts,
-	withSingleSelected,
+	withTransformSingleSelectToMultipleSelect,
 } from '../../hocs';
 
 /**
@@ -238,6 +238,6 @@ ProductControl.defaultProps = {
 	showVariations: false,
 };
 
-export default withSingleSelected(
+export default withTransformSingleSelectToMultipleSelect(
 	withSearchedProducts( withProductVariations( ProductControl ) )
 );
