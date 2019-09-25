@@ -15,37 +15,56 @@ import ProductImage from './product-image';
 import ProductRating from './product-rating';
 import ProductSaleBadge from './product-sale-badge';
 
-const ProductGridItem = ( { attributes, product = {} } ) => {
+const ProductGridItem = ( { attributes, product } ) => {
 	const { contentVisibility } = attributes;
 	const { button, price, rating, title, image } = contentVisibility;
 	const isLoading = ! Object.keys( product ).length > 0;
-	const classes = classNames(
-		'wc-block-grid__product',
-		{
-			'is-loading': isLoading,
-		},
-	);
+	const classes = classNames( 'wc-block-grid__product', {
+		'is-loading': isLoading,
+	} );
+
 	return (
 		<li className={ classes } aria-hidden={ isLoading }>
-			<ProductLink product={ product } className="wc-block-grid__product-link">
+			<ProductLink
+				permalink={ product.permalink }
+				className="wc-block-grid__product-link"
+			>
 				{ image && (
-					<ProductImage product={ product } className="wc-block-grid__product-image" />
+					<ProductImage
+						images={ product.images }
+						className="wc-block-grid__product-image"
+					/>
 				) }
 				{ title && (
-					<ProductTitle product={ product } className="wc-block-grid__product-title" />
+					<ProductTitle
+						name={ product.name }
+						className="wc-block-grid__product-title"
+					/>
 				) }
 			</ProductLink>
 			{ price && (
-				<ProductSaleBadge product={ product } className="wc-block-grid__product-onsale" />
+				<ProductSaleBadge
+					onsale={ product.onsale }
+					className="wc-block-grid__product-onsale"
+				/>
 			) }
 			{ price && (
-				<ProductPrice product={ product } className="wc-block-grid__product-price" />
+				<ProductPrice
+					prices={ product.prices }
+					className="wc-block-grid__product-price"
+				/>
 			) }
 			{ rating && (
-				<ProductRating product={ product } className="wc-block-grid__product-rating" />
+				<ProductRating
+					averageRating={ product.average_rating }
+					className="wc-block-grid__product-rating"
+				/>
 			) }
 			{ button && (
-				<ProductButton product={ product } className="wc-block-grid__product-add-to-cart" />
+				<ProductButton
+					product={ product }
+					className="wc-block-grid__product-add-to-cart"
+				/>
 			) }
 		</li>
 	);
@@ -54,6 +73,10 @@ const ProductGridItem = ( { attributes, product = {} } ) => {
 ProductGridItem.propTypes = {
 	attributes: PropTypes.object.isRequired,
 	product: PropTypes.object,
+};
+
+ProductGridItem.defaultProps = {
+	product: {},
 };
 
 export default ProductGridItem;

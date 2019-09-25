@@ -11,11 +11,11 @@ import {
 	THUMBNAIL_SIZE,
 } from '@woocommerce/block-settings';
 
-const ProductImage = ( { className, product = {} } ) => {
+const ProductImage = ( { className, images } ) => {
 	let image = null;
 
-	if ( product.images.length ) {
-		const mainImage = product.images[ 0 ];
+	if ( images && images.length ) {
+		const mainImage = images[ 0 ];
 		image = (
 			<img
 				className={ className + '__image' }
@@ -41,8 +41,12 @@ const ProductImage = ( { className, product = {} } ) => {
 };
 
 ProductImage.propTypes = {
-	className: PropTypes.string,
-	product: PropTypes.object.isRequired,
+	className: PropTypes.string.isRequired,
+	images: PropTypes.arrayOf( PropTypes.object ),
+};
+
+ProductImage.defaultProps = {
+	images: [],
 };
 
 export default ProductImage;

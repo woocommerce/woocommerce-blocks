@@ -44,12 +44,25 @@
 		vertical-align: middle;
 		margin-left: auto;
 		margin-right: auto;
+
+		.is-loading & {
+			@include placeholder();
+			height: 250px;
+		}
 	}
 }
 
 .wc-block-grid__product-title {
 	line-height: 1.2;
 	font-weight: 700;
+
+	.is-loading &::before {
+		@include placeholder();
+		content: "";
+		display: inline-block;
+		height: 1.2em;
+		width: 6em;
+	}
 }
 
 .wc-block-grid__product-title,
@@ -75,6 +88,14 @@
 		font-size: 1.25em;
 		line-height: 1.25;
 		color: #000;
+
+		.is-loading &::before {
+			@include placeholder();
+			content: "";
+			display: inline-block;
+			height: 1.25em;
+			width: 3em;
+		}
 	}
 }
 
@@ -110,6 +131,17 @@
 			font-family: WooCommerce; /* stylelint-disable-line */
 			content: "\e031";
 			animation: spin 2s linear infinite;
+		}
+
+		.is-loading & {
+			@include placeholder();
+		}
+
+		.is-loading &::before {
+			content: "";
+			display: inline-block;
+			height: 0.875rem;
+			width: 5em;
 		}
 	}
 }

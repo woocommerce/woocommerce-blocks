@@ -3,21 +3,13 @@
  */
 import PropTypes from 'prop-types';
 
-const ProductTitle = ( { className, product = {} } ) => {
-	if ( ! product.name ) {
-		return null;
-	}
-
-	return (
-		<div className={ className }>
-			{ product.name }
-		</div>
-	);
+const ProductTitle = ( { className, name } ) => {
+	return <div className={ className }>{ name }</div>;
 };
 
 ProductTitle.propTypes = {
 	className: PropTypes.string,
-	product: PropTypes.object.isRequired,
+	name: PropTypes.string,
 };
 
 export default ProductTitle;

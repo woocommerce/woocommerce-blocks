@@ -8,10 +8,8 @@ import PropTypes from 'prop-types';
  * Internal dependencies
  */
 import withComponentId from '../../../base/hocs/with-component-id';
+import withProducts from '../../../base/hocs/with-products';
 import ProductGrid from '../../../base/components/product-grid';
-
-// Temporary data.
-import products from './sample-data.json';
 
 /**
  * The All Products Block. @todo
@@ -22,13 +20,14 @@ class Block extends Component {
 		 * The attributes for this block.
 		 */
 		attributes: PropTypes.object.isRequired,
-		/**
-		 * From withComponentId.
-		 */
+		// From withComponentId.
 		componentId: PropTypes.number,
-	}
+		// From withProducts.
+		products: PropTypes.array,
+	};
 
 	render() {
+		const { attributes, componentId, products } = this.props;
 		/**
 		 * Todo classes
 		 *
@@ -36,9 +35,13 @@ class Block extends Component {
 		 * wc-block-{$this->block_name},
 		 */
 		return (
-			<ProductGrid products={ products } attributes={ this.props.attributes } componentId={ this.props.componentId } />
+			<ProductGrid
+				attributes={ attributes }
+				componentId={ componentId }
+				products={ products }
+			/>
 		);
 	}
 }
 
-export default withComponentId( Block );
+export default withComponentId( withProducts( Block ) );
