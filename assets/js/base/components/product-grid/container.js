@@ -23,6 +23,7 @@ class ProductGridContainer extends Component {
 
 	onOrderChange = ( event ) => {
 		this.setState( {
+			currentPage: 1,
 			orderValue: event.target.value,
 		} );
 	};
