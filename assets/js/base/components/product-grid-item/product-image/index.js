@@ -6,15 +6,12 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import {
-	PLACEHOLDER_IMG_SRC,
-	THUMBNAIL_SIZE,
-} from '@woocommerce/block-settings';
+import { PLACEHOLDER_IMG_SRC } from '@woocommerce/block-settings';
 
 const ProductImage = ( { className, images } ) => {
 	if ( images && images.length ) {
 		const mainImage = images[ 0 ];
-		const aspectRatio = mainImage.height / mainImage.width * 100;
+		const aspectRatio = ( mainImage.height / mainImage.width ) * 100;
 
 		return (
 			<div
@@ -30,9 +27,6 @@ const ProductImage = ( { className, images } ) => {
 					srcSet={ mainImage.srcset }
 					sizes={ mainImage.sizes }
 					alt={ mainImage.alt }
-					style={ {
-						width: `${ THUMBNAIL_SIZE }px`,
-					} }
 				/>
 			</div>
 		);
@@ -43,7 +37,6 @@ const ProductImage = ( { className, images } ) => {
 				className={ className + '__image' }
 				src={ PLACEHOLDER_IMG_SRC }
 				alt=""
-				style={ { width: `${ THUMBNAIL_SIZE }px` } }
 			/>
 		</div>
 	);

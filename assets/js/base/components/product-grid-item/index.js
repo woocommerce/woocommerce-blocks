@@ -41,13 +41,13 @@ const ProductGridItem = ( { attributes, product } ) => {
 						className="wc-block-grid__product-title"
 					/>
 				) }
+				{ price && (
+					<ProductSaleBadge
+						onsale={ product.onsale }
+						className="wc-block-grid__product-onsale"
+					/>
+				) }
 			</ProductLink>
-			{ price && (
-				<ProductSaleBadge
-					onsale={ product.onsale }
-					className="wc-block-grid__product-onsale"
-				/>
-			) }
 			{ price && (
 				<ProductPrice
 					prices={ product.prices }

@@ -3,13 +3,24 @@
  */
 import PropTypes from 'prop-types';
 
+/**
+ * Internal dependencies
+ */
+import { THUMBNAIL_SIZE } from '@woocommerce/block-settings';
+
 const ProductLink = ( { children, className, permalink } ) => {
+	const props = {
+		className,
+		style: {
+			maxWidth: `${ THUMBNAIL_SIZE }px`,
+		},
+	};
 	if ( ! permalink ) {
-		return <div className={ className }>{ children }</div>;
+		return <div { ...props }>{ children }</div>;
 	}
 
 	return (
-		<a href={ permalink } className={ className } rel="nofollow">
+		<a { ...props } href={ permalink } rel="nofollow">
 			{ children }
 		</a>
 	);
