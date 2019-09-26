@@ -30,7 +30,10 @@ const withProducts = ( OriginalComponent ) => {
 		componentDidUpdate( prevProps ) {
 			if (
 				prevProps.currentPage !== this.props.currentPage ||
-				prevProps.orderValue !== this.props.orderValue
+				prevProps.orderValue !== this.props.orderValue ||
+				prevProps.attributes.columns !==
+					this.props.attributes.columns ||
+				prevProps.attributes.rows !== this.props.attributes.rows
 			) {
 				this.loadProducts();
 			}
