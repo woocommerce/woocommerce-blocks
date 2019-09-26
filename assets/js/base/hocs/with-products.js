@@ -6,7 +6,7 @@ import { Component } from 'react';
 /**
  * Internal dependencies
  */
-import { getProducts } from '../../components/utils';
+import { getProducts } from '../../blocks/products/utils';
 import { formatError } from '../utils/errors.js';
 
 const withProducts = ( OriginalComponent ) => {
@@ -17,6 +17,7 @@ const withProducts = ( OriginalComponent ) => {
 				products: [],
 				error: null,
 				loading: true,
+				totalProducts: 0,
 			};
 
 			this.loadProducts = this.loadProducts.bind( this );
@@ -26,25 +27,50 @@ const withProducts = ( OriginalComponent ) => {
 			this.loadProducts();
 		}
 
+		componentDidUpdate( prevProps ) {
+			if (
+				prevProps.currentPage !== this.props.currentPage ||
+				prevProps.orderValue !== this.props.orderValue
+			) {
+				this.loadProducts();
+			}
+		}
+
+		getOrderArgs( orderName ) {
+			switch ( orderName ) {
+				case 'menu_order':
+				case 'popularity':
+				case 'rating':
+				case 'date':
+				case 'price':
+					return {
+						orderby: orderName,
+						order: 'asc',
+					};
+				case 'price-desc':
+					return {
+						orderby: 'price',
+						order: 'desc',
+					};
+			}
+		}
+
 		loadProducts() {
-			const { selected } = this.props;
+			const { attributes, currentPage, orderValue } = this.props;
 
 			this.setState( { loading: true } );
 
-			getProducts( [ selected ] )
-				.then( ( products ) => {
-					products = products.map( ( product ) => {
-						const count = product.variations
-							? product.variations.length
-							: 0;
-						return {
-							...product,
-							parent: 0,
-							count,
-						};
-					} );
+			const args = {
+				...this.getOrderArgs( orderValue ),
+				per_page: attributes.columns * attributes.rows,
+				page: currentPage,
+			};
+
+			getProducts( args )
+				.then( ( productsData ) => {
 					this.setState( {
-						products,
+						products: productsData.products,
+						totalProducts: productsData.totalProducts,
 						loading: false,
 						error: null,
 					} );
@@ -54,6 +80,7 @@ const withProducts = ( OriginalComponent ) => {
 
 					this.setState( {
 						products: [],
+						totalProducts: 0,
 						loading: false,
 						error,
 					} );
@@ -61,12 +88,13 @@ const withProducts = ( OriginalComponent ) => {
 		}
 
 		render() {
-			const { error, loading, products } = this.state;
+			const { error, loading, products, totalProducts } = this.state;
 
 			return (
 				<OriginalComponent
 					{ ...this.props }
 					products={ products }
+					totalProducts={ totalProducts }
 					error={ error }
 					isLoading={ loading }
 				/>

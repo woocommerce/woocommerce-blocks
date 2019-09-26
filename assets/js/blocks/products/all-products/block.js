@@ -7,9 +7,7 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import withComponentId from '../../../base/hocs/with-component-id';
-import withProducts from '../../../base/hocs/with-products';
-import ProductGrid from '../../../base/components/product-grid';
+import ProductGridContainer from '../../../base/components/product-grid/container.js';
 
 /**
  * The All Products Block. @todo
@@ -20,28 +18,18 @@ class Block extends Component {
 		 * The attributes for this block.
 		 */
 		attributes: PropTypes.object.isRequired,
-		// From withComponentId.
-		componentId: PropTypes.number,
-		// From withProducts.
-		products: PropTypes.array,
 	};
 
 	render() {
-		const { attributes, componentId, products } = this.props;
+		const { attributes } = this.props;
 		/**
 		 * Todo classes
 		 *
 		 * wp-block-{$this->block_name},
 		 * wc-block-{$this->block_name},
 		 */
-		return (
-			<ProductGrid
-				attributes={ attributes }
-				componentId={ componentId }
-				products={ products }
-			/>
-		);
+		return <ProductGridContainer attributes={ attributes } />;
 	}
 }
 
-export default withComponentId( withProducts( Block ) );
+export default Block;
