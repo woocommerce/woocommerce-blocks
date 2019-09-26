@@ -49,7 +49,8 @@
 
 		.is-loading & {
 			@include placeholder();
-			height: 250px;
+			height: 0;
+			padding-bottom: 100%;
 		}
 	}
 }
@@ -60,9 +61,8 @@
 
 	.is-loading &::before {
 		@include placeholder();
-		content: "";
+		content: ".";
 		display: inline-block;
-		height: 1.2em;
 		width: 6em;
 	}
 }
@@ -93,9 +93,8 @@
 
 		.is-loading &::before {
 			@include placeholder();
-			content: "";
+			content: ".";
 			display: inline-block;
-			height: 1.25em;
 			width: 3em;
 		}
 	}
@@ -140,9 +139,9 @@
 		}
 
 		.is-loading &::before {
-			content: "";
+			color: transparent;
+			content: ".";
 			display: inline-block;
-			height: 0.875rem;
 			width: 5em;
 		}
 	}
