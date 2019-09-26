@@ -10,13 +10,11 @@ import classnames from 'classnames';
 import Pagination from '../pagination';
 import ProductOrderSelect from '../product-order-select';
 import ProductGridItem from '../product-grid-item';
-import withComponentId from '../../hocs/with-component-id';
 import withProducts from '../../hocs/with-products';
 import './style.scss';
 
 const ProductGrid = ( {
 	attributes,
-	componentId,
 	currentPage,
 	onOrderChange,
 	onPageChange,
@@ -52,10 +50,7 @@ const ProductGrid = ( {
 					value={ orderValue }
 				/>
 			) }
-			<ul
-				key={ `wc-block-grid__products-${ componentId }` }
-				className="wc-block-grid__products"
-			>
+			<ul className="wc-block-grid__products">
 				{ products.length === 0 ? (
 					<ProductGridItem attributes={ attributes } />
 				) : (
@@ -79,10 +74,8 @@ const ProductGrid = ( {
 
 ProductGrid.propTypes = {
 	attributes: PropTypes.object.isRequired,
-	// From withComponentId.
-	componentId: PropTypes.number,
 	// From withProducts.
 	products: PropTypes.array,
 };
 
-export default withComponentId( withProducts( ProductGrid ) );
+export default withProducts( ProductGrid );
