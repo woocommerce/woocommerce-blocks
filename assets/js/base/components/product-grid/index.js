@@ -38,9 +38,11 @@ const ProductGrid = ( {
 		);
 	};
 
-	const totalPages = Math.ceil(
-		totalProducts / ( attributes.columns * attributes.rows )
-	);
+	const perPage = attributes.columns * attributes.rows;
+	const totalPages = Math.ceil( totalProducts / perPage );
+	if ( ! products.length ) {
+		products = Array.from( { length: perPage } );
+	}
 
 	return (
 		<div className={ getClassnames() }>
@@ -51,23 +53,21 @@ const ProductGrid = ( {
 				/>
 			) }
 			<ul className="wc-block-grid__products">
-				{ products.length === 0 ? (
-					<ProductGridItem attributes={ attributes } />
-				) : (
-					products.map( ( product, i ) => (
-						<ProductGridItem
-							key={ product.id || i }
-							attributes={ attributes }
-							product={ product }
-						/>
-					) )
-				) }
+				{ products.map( ( product = {}, i ) => (
+					<ProductGridItem
+						key={ product.id || i }
+						attributes={ attributes }
+						product={ product }
+					/>
+				) ) }
 			</ul>
-			<Pagination
-				currentPage={ currentPage }
-				onPageChange={ onPageChange }
-				totalPages={ totalPages }
-			/>
+			{ totalProducts > perPage && (
+				<Pagination
+					currentPage={ currentPage }
+					onPageChange={ onPageChange }
+					totalPages={ totalPages }
+				/>
+			) }
 		</div>
 	);
 };
