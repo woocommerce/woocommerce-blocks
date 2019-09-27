@@ -14,9 +14,15 @@ const containers = document.querySelectorAll(
 
 if ( containers.length ) {
 	// Use Array.forEach for IE11 compatibility
-	Array.prototype.forEach.call( containers, ( el ) => {
+	Array.prototype.forEach.call( containers, ( el, i ) => {
 		const attributes = JSON.parse( el.dataset.attributes );
 
-		render( <Block attributes={ attributes } />, el );
+		render(
+			<Block
+				attributes={ attributes }
+				urlParameterSuffix={ i > 0 ? `_${ i + 1 }` : '' }
+			/>,
+			el
+		);
 	} );
 }

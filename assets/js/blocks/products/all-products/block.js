@@ -21,14 +21,19 @@ class Block extends Component {
 	};
 
 	render() {
-		const { attributes } = this.props;
+		const { attributes, urlParameterSuffix } = this.props;
 		/**
 		 * Todo classes
 		 *
 		 * wp-block-{$this->block_name},
 		 * wc-block-{$this->block_name},
 		 */
-		return <ProductGridContainer attributes={ attributes } />;
+		return (
+			<ProductGridContainer
+				attributes={ attributes }
+				urlParameterSuffix={ urlParameterSuffix }
+			/>
+		);
 	}
 }
 

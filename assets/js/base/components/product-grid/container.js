@@ -3,6 +3,7 @@
  */
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { addQueryArgs, getQueryArg } from '@wordpress/url';
 
 /**
  * Internal dependencies
@@ -10,21 +11,44 @@ import PropTypes from 'prop-types';
 import ProductGrid from './index';
 
 class ProductGridContainer extends Component {
+	pageParameter = `page${ this.props.urlParameterSuffix }`;
+	orderParameter = `order${ this.props.urlParameterSuffix }`;
+
 	state = {
-		currentPage: 1,
-		orderValue: null,
+		currentPage:
+			parseInt(
+				getQueryArg( window.location.href, this.pageParameter ),
+				10
+			) || 1,
+		orderValue: getQueryArg( window.location.href, this.orderParameter ),
 	};
 
 	onPageChange = ( newPage ) => {
+		window.history.pushState(
+			null,
+			'',
+			addQueryArgs( window.location.href, {
+				[ this.pageParameter ]: newPage,
+			} )
+		);
 		this.setState( {
 			currentPage: newPage,
 		} );
 	};
 
 	onOrderChange = ( event ) => {
+		const orderValue = event.target.value;
+		window.history.pushState(
+			null,
+			'',
+			addQueryArgs( window.location.href, {
+				[ this.orderParameter ]: orderValue,
+				[ this.pageParameter ]: 1,
+			} )
+		);
 		this.setState( {
 			currentPage: 1,
-			orderValue: event.target.value,
+			orderValue,
 		} );
 	};
 
@@ -48,6 +72,7 @@ class ProductGridContainer extends Component {
 
 ProductGridContainer.propTypes = {
 	attributes: PropTypes.object.isRequired,
+	urlParameterSuffix: PropTypes.string,
 };
 
 export default ProductGridContainer;
