@@ -14,7 +14,6 @@
 	padding: 0;
 	margin: 0 (-$gap/2) $gap;
 	background-clip: padding-box;
-	text-align: center;
 }
 
 .wc-block-grid__product {
@@ -28,7 +27,6 @@
 	border-left: $gap/2 solid transparent;
 	border-right: $gap/2 solid transparent;
 	border-bottom: $gap solid transparent;
-	display: inline-block;
 }
 
 .wc-block-grid__product-link {
