@@ -6,7 +6,7 @@ import { Component } from 'react';
 /**
  * Internal dependencies
  */
-import { getProducts } from '../../blocks/products/utils';
+import { getProducts } from './utils';
 import { formatError } from '../utils/errors.js';
 
 const withProducts = ( OriginalComponent ) => {

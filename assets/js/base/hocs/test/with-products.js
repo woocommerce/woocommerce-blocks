@@ -7,14 +7,10 @@ import TestRenderer from 'react-test-renderer';
  * Internal dependencies
  */
 import withProducts from '../with-products';
-import * as mockUtils from '../../../blocks/products/utils';
+import * as mockUtils from '../utils';
 import * as mockBaseUtils from '../../utils/errors';
 
-jest.mock( '../../../blocks/products/utils', () => ( {
-	getOrderArgs: () => ( {
-		order: 'desc',
-		orderby: 'date_gmt',
-	} ),
+jest.mock( '../utils', () => ( {
 	getProducts: jest.fn(),
 } ) );
 
