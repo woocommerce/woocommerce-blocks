@@ -9,47 +9,28 @@ import { addQueryArgs, getQueryArg } from '@wordpress/url';
  * Internal dependencies
  */
 import ProductGrid from './index';
+import withWindow from '../../hocs/with-window';
 
 class ProductGridContainer extends Component {
-	pageParameter = `page${ this.props.urlParameterSuffix }`;
-	orderParameter = `order${ this.props.urlParameterSuffix }`;
-
 	state = {
-		currentPage:
-			parseInt(
-				getQueryArg( window.location.href, this.pageParameter ),
-				10
-			) || 1,
-		orderValue: getQueryArg( window.location.href, this.orderParameter ),
+		currentPage: this.props.currentPage || 1,
+		orderValue: this.props.orderValue,
 	};
 
 	onPageChange = ( newPage ) => {
-		window.history.pushState(
-			null,
-			'',
-			addQueryArgs( window.location.href, {
-				[ this.pageParameter ]: newPage,
-			} )
-		);
 		this.setState( {
 			currentPage: newPage,
 		} );
+		this.props.onPageChange( newPage );
 	};
 
 	onOrderChange = ( event ) => {
 		const orderValue = event.target.value;
-		window.history.pushState(
-			null,
-			'',
-			addQueryArgs( window.location.href, {
-				[ this.orderParameter ]: orderValue,
-				[ this.pageParameter ]: 1,
-			} )
-		);
 		this.setState( {
 			currentPage: 1,
 			orderValue,
 		} );
+		this.props.onOrderChange( orderValue );
 	};
 
 	render() {
@@ -75,4 +56,30 @@ ProductGridContainer.propTypes = {
 	urlParameterSuffix: PropTypes.string,
 };
 
-export default ProductGridContainer;
+export default withWindow(
+	( { location, history }, { urlParameterSuffix } ) => {
+		const pageParameter = `page${ urlParameterSuffix }`;
+		const orderParameter = `order${ urlParameterSuffix }`;
+		return {
+			currentPage: parseInt( getQueryArg( location.href, pageParameter ) ),
+			orderValue: getQueryArg( location.href, orderParameter ),
+			onPageChange( newPage ) {
+				history.pushState(
+					null,
+					'',
+					addQueryArgs( location.href, { [ pageParameter ]: newPage })
+				)
+			},
+			onOrderChange( orderValue ) {
+				history.pushState(
+					null,
+					'',
+					addQueryArgs( location.href, {
+						[ orderParameter ]: orderValue,
+						[ pageParameter ]: 1,
+					} )
+				);
+			},
+		};
+	}
+)( ProductGridContainer );
