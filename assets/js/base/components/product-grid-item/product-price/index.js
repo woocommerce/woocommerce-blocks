@@ -4,23 +4,33 @@
 import PropTypes from 'prop-types';
 import NumberFormat from 'react-number-format';
 
-const ProductPrice = ( { className, product = {} } ) => {
+const ProductPrice = ( { className, prices } ) => {
 	const numberFormatArgs = {
 		displayType: 'text',
-		thousandSeparator: product.prices.thousand_separator,
-		decimalSeparator: product.prices.decimal_separator,
-		decimalScale: product.prices.decimals,
-		prefix: product.prices.price_prefix,
-		suffix: product.prices.price_suffix,
+		thousandSeparator: prices.thousand_separator,
+		decimalSeparator: prices.decimal_separator,
+		decimalScale: prices.decimals,
+		prefix: prices.price_prefix,
+		suffix: prices.price_suffix,
 	};
 
-	if ( product.prices.price_range && product.prices.price_range.min_amount && product.prices.price_range.max_amount ) {
+	if (
+		prices.price_range &&
+		prices.price_range.min_amount &&
+		prices.price_range.max_amount
+	) {
 		return (
 			<div className={ className }>
 				<span className={ className + '__value' }>
-					<NumberFormat value={ product.prices.price_range.min_amount } { ...numberFormatArgs } />
+					<NumberFormat
+						value={ prices.price_range.min_amount }
+						{ ...numberFormatArgs }
+					/>
 					&nbsp;&mdash;&nbsp;
-					<NumberFormat value={ product.prices.price_range.max_amount } { ...numberFormatArgs } />
+					<NumberFormat
+						value={ prices.price_range.max_amount }
+						{ ...numberFormatArgs }
+					/>
 				</span>
 			</div>
 		);
@@ -28,21 +38,29 @@ const ProductPrice = ( { className, product = {} } ) => {
 
 	return (
 		<div className={ className }>
-			{ product.prices.regular_price !== product.prices.price && (
-				<del className={ className + '__regular' }>
-					<NumberFormat value={ product.prices.regular_price } { ...numberFormatArgs } />
-				</del>
-			) }
+			{ Number.isFinite( prices.regular_price ) &&
+				prices.regular_price !== prices.price && (
+					<del className={ className + '__regular' }>
+						<NumberFormat
+							value={ prices.regular_price }
+							{ ...numberFormatArgs }
+						/>
+					</del>
+				) }
 			<span className={ className + '__value' }>
-				<NumberFormat value={ product.prices.price } { ...numberFormatArgs } />
+				<NumberFormat value={ prices.price } { ...numberFormatArgs } />
 			</span>
 		</div>
 	);
 };
 
 ProductPrice.propTypes = {
-	className: PropTypes.string,
-	product: PropTypes.object.isRequired,
+	className: PropTypes.string.isRequired,
+	prices: PropTypes.object,
+};
+
+ProductPrice.defaultProps = {
+	prices: {},
 };
 
 export default ProductPrice;

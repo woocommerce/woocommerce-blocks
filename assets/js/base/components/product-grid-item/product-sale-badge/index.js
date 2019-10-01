@@ -4,8 +4,8 @@
 import PropTypes from 'prop-types';
 import { __ } from '@wordpress/i18n';
 
-const ProductSaleBadge = ( { className, product = {} } ) => {
-	if ( ! product.onsale ) {
+const ProductSaleBadge = ( { className, onsale } ) => {
+	if ( ! onsale ) {
 		return null;
 	}
 
@@ -18,7 +18,7 @@ const ProductSaleBadge = ( { className, product = {} } ) => {
 
 ProductSaleBadge.propTypes = {
 	className: PropTypes.string,
-	product: PropTypes.object.isRequired,
+	onsale: PropTypes.bool,
 };
 
 export default ProductSaleBadge;

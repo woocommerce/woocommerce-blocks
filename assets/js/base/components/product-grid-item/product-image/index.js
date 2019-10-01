@@ -1,48 +1,60 @@
 /**
  * External dependencies
  */
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 /**
  * Internal dependencies
  */
-import {
-	PLACEHOLDER_IMG_SRC,
-	THUMBNAIL_SIZE,
-} from '@woocommerce/block-settings';
+import { PLACEHOLDER_IMG_SRC } from '@woocommerce/block-settings';
 
-const ProductImage = ( { className, product = {} } ) => {
-	let image = null;
 
-	if ( product.images.length ) {
-		const mainImage = product.images[ 0 ];
-		image = (
-			<img
-				className={ className + '__image' }
-				src={ mainImage.thumbnail }
-				srcSet={ mainImage.srcset }
-				sizes={ mainImage.sizes }
-				alt={ mainImage.alt }
-				style={ { width: `${ THUMBNAIL_SIZE }px` } }
-			/>
-		);
-	} else {
-		image = (
-			<img
-				className={ className + '__image' }
-				src={ PLACEHOLDER_IMG_SRC }
-				alt=""
-				style={ { width: `${ THUMBNAIL_SIZE }px` } }
-			/>
-		);
+class ProductImage extends Component {
+	state = {
+		loaded: false,
 	}
 
-	return <div className={ className }>{ image }</div>;
+	onImageLoaded = () => {
+		this.setState( {
+			loaded: true,
+		} );
+	}
+
+	render() {
+		const { className, image } = this.props;
+		const { loaded } = this.state;
+
+		return (
+			<div
+				className={ className }
+			>
+				{ image && (
+					<img
+						className={ className + '__image' }
+						src={ image.thumbnail }
+						srcSet={ image.srcset }
+						sizes={ image.sizes }
+						alt={ image.alt }
+						onLoad={ this.onImageLoaded }
+						hidden={ ! loaded }
+					/>
+				) }
+				{ ! loaded && (
+					<img
+						className={ `${ className }__image ${ className }__image_placeholder` }
+						src={ PLACEHOLDER_IMG_SRC }
+						alt=""
+					/>
+				) }
+			</div>
+		);
+	}
 };
 
 ProductImage.propTypes = {
-	className: PropTypes.string,
-	product: PropTypes.object.isRequired,
+	className: PropTypes.string.isRequired,
+	image: PropTypes.object,
 };
 
 export default ProductImage;

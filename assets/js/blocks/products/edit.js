@@ -13,27 +13,65 @@ export const getSharedContentControls = ( attributes, setAttributes ) => {
 			<ToggleControl
 				label={ __( 'Image', 'woo-gutenberg-products-block' ) }
 				checked={ image }
-				onChange={ () => setAttributes( { contentVisibility: { ...contentVisibility, image: ! image } } ) }
+				onChange={ () =>
+					setAttributes( {
+						contentVisibility: {
+							...contentVisibility,
+							image: ! image,
+						},
+					} )
+				}
 			/>
 			<ToggleControl
 				label={ __( 'Product Title', 'woo-gutenberg-products-block' ) }
 				checked={ title }
-				onChange={ () => setAttributes( { contentVisibility: { ...contentVisibility, title: ! title } } ) }
+				onChange={ () =>
+					setAttributes( {
+						contentVisibility: {
+							...contentVisibility,
+							title: ! title,
+						},
+					} )
+				}
 			/>
 			<ToggleControl
 				label={ __( 'Product Rating', 'woo-gutenberg-products-block' ) }
 				checked={ rating }
-				onChange={ () => setAttributes( { contentVisibility: { ...contentVisibility, rating: ! rating } } ) }
+				onChange={ () =>
+					setAttributes( {
+						contentVisibility: {
+							...contentVisibility,
+							rating: ! rating,
+						},
+					} )
+				}
 			/>
 			<ToggleControl
 				label={ __( 'Product Price', 'woo-gutenberg-products-block' ) }
 				checked={ price }
-				onChange={ () => setAttributes( { contentVisibility: { ...contentVisibility, price: ! price } } ) }
+				onChange={ () =>
+					setAttributes( {
+						contentVisibility: {
+							...contentVisibility,
+							price: ! price,
+						},
+					} )
+				}
 			/>
 			<ToggleControl
-				label={ __( 'Call-to-action Button', 'woo-gutenberg-products-block' ) }
+				label={ __(
+					'Call-to-action Button',
+					'woo-gutenberg-products-block'
+				) }
 				checked={ button }
-				onChange={ () => setAttributes( { contentVisibility: { ...contentVisibility, button: ! button } } ) }
+				onChange={ () =>
+					setAttributes( {
+						contentVisibility: {
+							...contentVisibility,
+							button: ! button,
+						},
+					} )
+				}
 			/>
 		</Fragment>
 	);
@@ -45,38 +83,57 @@ export const getSharedListControls = ( attributes, setAttributes ) => {
 			<ToggleControl
 				label={ __( 'Order by', 'woo-gutenberg-products-block' ) }
 				checked={ attributes.showOrderby }
-				onChange={ () => setAttributes( { showOrderby: ! attributes.showOrderby } ) }
+				onChange={ () =>
+					setAttributes( { showOrderby: ! attributes.showOrderby } )
+				}
 			/>
 			<SelectControl
-				label={ __( 'Order Products By', 'woo-gutenberg-products-block' ) }
+				label={ __(
+					'Order Products By',
+					'woo-gutenberg-products-block'
+				) }
 				value={ attributes.orderby }
 				options={ [
 					{
-						label: __( 'Newness - newest first', 'woo-gutenberg-products-block' ),
+						label: __(
+							'Newness - newest first',
+							'woo-gutenberg-products-block'
+						),
 						value: 'date',
 					},
 					{
-						label: __( 'Price - low to high', 'woo-gutenberg-products-block' ),
-						value: 'price_asc',
+						label: __(
+							'Price - low to high',
+							'woo-gutenberg-products-block'
+						),
+						value: 'price',
 					},
 					{
-						label: __( 'Price - high to low', 'woo-gutenberg-products-block' ),
-						value: 'price_desc',
+						label: __(
+							'Price - high to low',
+							'woo-gutenberg-products-block'
+						),
+						value: 'price-desc',
 					},
 					{
-						label: __( 'Rating - highest first', 'woo-gutenberg-products-block' ),
+						label: __(
+							'Rating - highest first',
+							'woo-gutenberg-products-block'
+						),
 						value: 'rating',
 					},
 					{
-						label: __( 'Sales - most first', 'woo-gutenberg-products-block' ),
+						label: __(
+							'Sales - most first',
+							'woo-gutenberg-products-block'
+						),
 						value: 'popularity',
 					},
 					{
-						label: __( 'Title - alphabetical', 'woo-gutenberg-products-block' ),
-						value: 'title',
-					},
-					{
-						label: __( 'Menu Order', 'woo-gutenberg-products-block' ),
+						label: __(
+							'Menu Order',
+							'woo-gutenberg-products-block'
+						),
 						value: 'menu_order',
 					},
 				] }

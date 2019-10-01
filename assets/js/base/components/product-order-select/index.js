@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
  * Internal dependencies
  */
 import OrderSelect from '../order-select';
+import './style.scss';
 
 const ProductOrderSelect = ( { defaultValue, onChange, readOnly, value } ) => {
 	return (

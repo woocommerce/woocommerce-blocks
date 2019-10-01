@@ -7,10 +7,21 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
+import Pagination from '../pagination';
+import ProductOrderSelect from '../product-order-select';
 import ProductGridItem from '../product-grid-item';
+import withProducts from '../../hocs/with-products';
 import './style.scss';
 
-const ProductGrid = ( { attributes, componentId, products } ) => {
+const ProductGrid = ( {
+	attributes,
+	currentPage,
+	onOrderChange,
+	onPageChange,
+	orderValue,
+	products,
+	totalProducts,
+} ) => {
 	const getClassnames = () => {
 		const { columns, rows, className, alignButtons, align } = attributes;
 		const alignClass = typeof align !== 'undefined' ? 'align' + align : '';
@@ -27,30 +38,44 @@ const ProductGrid = ( { attributes, componentId, products } ) => {
 		);
 	};
 
+	const perPage = attributes.columns * attributes.rows;
+	const totalPages = Math.ceil( totalProducts / perPage );
+	if ( ! products.length ) {
+		products = Array.from( { length: perPage } );
+	}
+
 	return (
 		<div className={ getClassnames() }>
-			<ul
-				key={ `wc-block-grid__products-${ componentId }` }
-				className="wc-block-grid__products"
-			>
-				{ products.length === 0 ?
-					(
-						<ProductGridItem attributes={ attributes } />
-					) : (
-						products.map( ( product, i ) => (
-							<ProductGridItem key={ product.id || i } attributes={ attributes } product={ product } />
-						) )
-					)
-				}
+			{ attributes.showOrderby && (
+				<ProductOrderSelect
+					onChange={ onOrderChange }
+					value={ orderValue }
+				/>
+			) }
+			<ul className="wc-block-grid__products">
+				{ products.map( ( product = {}, i ) => (
+					<ProductGridItem
+						key={ product.id || i }
+						attributes={ attributes }
+						product={ product }
+					/>
+				) ) }
 			</ul>
+			{ totalProducts > perPage && (
+				<Pagination
+					currentPage={ currentPage }
+					onPageChange={ onPageChange }
+					totalPages={ totalPages }
+				/>
+			) }
 		</div>
 	);
 };
 
 ProductGrid.propTypes = {
 	attributes: PropTypes.object.isRequired,
-	componentId: PropTypes.number.isRequired,
-	products: PropTypes.array.isRequired,
+	// From withProducts.
+	products: PropTypes.array,
 };
 
-export default ProductGrid;
+export default withProducts( ProductGrid );

@@ -3,13 +3,24 @@
  */
 import PropTypes from 'prop-types';
 
-const ProductLink = ( { children, className, product = {} } ) => {
+/**
+ * Internal dependencies
+ */
+import { THUMBNAIL_SIZE } from '@woocommerce/block-settings';
+
+const ProductLink = ( { children, className, permalink } ) => {
+	const props = {
+		className,
+		style: {
+			width: `${ THUMBNAIL_SIZE }px`,
+		},
+	};
+	if ( ! permalink ) {
+		return <div { ...props }>{ children }</div>;
+	}
+
 	return (
-		<a
-			href={ product.permalink }
-			className={ className }
-			rel="nofollow"
-		>
+		<a { ...props } href={ permalink } rel="nofollow">
 			{ children }
 		</a>
 	);
@@ -17,7 +28,7 @@ const ProductLink = ( { children, className, product = {} } ) => {
 
 ProductLink.propTypes = {
 	className: PropTypes.string,
-	product: PropTypes.object.isRequired,
+	permalink: PropTypes.string,
 };
 
 export default ProductLink;
