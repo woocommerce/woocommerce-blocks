@@ -29,7 +29,7 @@ const OrderSelect = ( {
 	const selectId = `wc-block-order-select__select-${ componentId }`;
 
 	return (
-		<p className={ classNames( 'wc-block-order-select', className ) }>
+		<div className={ classNames( 'wc-block-order-select', className ) }>
 			<Label
 				label={ label }
 				screenReaderLabel={ screenReaderLabel }
@@ -53,7 +53,7 @@ const OrderSelect = ( {
 					</option>
 				) ) }
 			</select>
-		</p>
+		</div>
 	);
 };
 
