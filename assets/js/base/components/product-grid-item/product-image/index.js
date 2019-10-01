@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 /**
@@ -8,47 +9,52 @@ import PropTypes from 'prop-types';
  */
 import { PLACEHOLDER_IMG_SRC } from '@woocommerce/block-settings';
 
-const ProductImage = ( { className, images } ) => {
-	if ( images && images.length ) {
-		const mainImage = images[ 0 ];
-		const aspectRatio = ( mainImage.height / mainImage.width ) * 100;
+
+class ProductImage extends Component {
+	state = {
+		loaded: false,
+	}
+
+	onImageLoaded = () => {
+		this.setState( {
+			loaded: true,
+		} );
+	}
+
+	render() {
+		const { className, image } = this.props;
+		const { loaded } = this.state;
 
 		return (
 			<div
 				className={ className }
-				style={ {
-					height: 0,
-					paddingBottom: `${ aspectRatio }%`,
-				} }
 			>
-				<img
-					className={ className + '__image' }
-					src={ mainImage.thumbnail }
-					srcSet={ mainImage.srcset }
-					sizes={ mainImage.sizes }
-					alt={ mainImage.alt }
-				/>
+				{ image && (
+					<img
+						className={ className + '__image' }
+						src={ image.thumbnail }
+						srcSet={ image.srcset }
+						sizes={ image.sizes }
+						alt={ image.alt }
+						onLoad={ this.onImageLoaded }
+						hidden={ ! loaded }
+					/>
+				) }
+				{ ! loaded && (
+					<img
+						className={ `${ className }__image ${ className }__image_placeholder` }
+						src={ PLACEHOLDER_IMG_SRC }
+						alt=""
+					/>
+				) }
 			</div>
 		);
 	}
-	return (
-		<div className={ className }>
-			<img
-				className={ className + '__image' }
-				src={ PLACEHOLDER_IMG_SRC }
-				alt=""
-			/>
-		</div>
-	);
 };
 
 ProductImage.propTypes = {
 	className: PropTypes.string.isRequired,
-	images: PropTypes.arrayOf( PropTypes.object ),
-};
-
-ProductImage.defaultProps = {
-	images: [],
+	image: PropTypes.object,
 };
 
 export default ProductImage;

@@ -350,7 +350,6 @@ class Products extends WC_REST_Products_Controller {
 			}
 
 			$thumbnail = wp_get_attachment_image_src( $attachment_id, 'woocommerce_thumbnail' );
-			$metadata  = wp_get_attachment_metadata( $attachment_id, 'full' );
 
 			$images[] = array(
 				'id'        => $attachment_id,
@@ -358,8 +357,6 @@ class Products extends WC_REST_Products_Controller {
 				'thumbnail' => current( $thumbnail ),
 				'srcset'    => wp_get_attachment_image_srcset( $attachment_id, 'full' ),
 				'sizes'     => wp_get_attachment_image_sizes( $attachment_id, 'full' ),
-				'height'    => $metadata['height'],
-				'width'     => $metadata['width'],
 				'name'      => get_the_title( $attachment_id ),
 				'alt'       => get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ),
 			);
@@ -606,16 +603,6 @@ class Products extends WC_REST_Products_Controller {
 							'sizes'     => array(
 								'description' => __( 'Thumbnail sizes for responsive images.', 'woo-gutenberg-products-block' ),
 								'type'        => 'string',
-								'context'     => array( 'view', 'edit' ),
-							),
-							'height'    => array(
-								'description' => __( 'Height of the image', 'woo-gutenberg-products-block' ),
-								'type'        => 'integer',
-								'context'     => array( 'view', 'edit' ),
-							),
-							'width'     => array(
-								'description' => __( 'Width of the image', 'woo-gutenberg-products-block' ),
-								'type'        => 'integer',
 								'context'     => array( 'view', 'edit' ),
 							),
 							'name'      => array(

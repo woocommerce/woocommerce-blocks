@@ -22,6 +22,7 @@ const ProductGridItem = ( { attributes, product } ) => {
 	const classes = classNames( 'wc-block-grid__product', {
 		'is-loading': isLoading,
 	} );
+	const productImage = product.images && product.images.length ? product.images[ 0 ] : null;
 
 	return (
 		<li className={ classes } aria-hidden={ isLoading }>
@@ -31,7 +32,8 @@ const ProductGridItem = ( { attributes, product } ) => {
 			>
 				{ image && (
 					<ProductImage
-						images={ product.images }
+						key={ productImage ? productImage.thumbnail : null }
+						image={ productImage }
 						className="wc-block-grid__product-image"
 					/>
 				) }
