@@ -61,7 +61,7 @@ const withProducts = ( OriginalComponent ) => {
 		loadProducts() {
 			const { attributes, currentPage, orderValue } = this.props;
 
-			this.setState( { loading: true } );
+			this.setState( { loading: true, products: [] } );
 
 			const args = {
 				...this.getOrderArgs( orderValue ),
