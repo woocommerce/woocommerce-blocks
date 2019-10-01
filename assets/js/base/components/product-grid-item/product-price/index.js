@@ -38,14 +38,15 @@ const ProductPrice = ( { className, prices } ) => {
 
 	return (
 		<div className={ className }>
-			{ prices.regular_price && prices.regular_price !== prices.price && (
-				<del className={ className + '__regular' }>
-					<NumberFormat
-						value={ prices.regular_price }
-						{ ...numberFormatArgs }
-					/>
-				</del>
-			) }
+			{ Number.isFinite( prices.regular_price ) &&
+				prices.regular_price !== prices.price && (
+					<del className={ className + '__regular' }>
+						<NumberFormat
+							value={ prices.regular_price }
+							{ ...numberFormatArgs }
+						/>
+					</del>
+				) }
 			<span className={ className + '__value' }>
 				<NumberFormat value={ prices.price } { ...numberFormatArgs } />
 			</span>
