@@ -12,7 +12,7 @@ const ProductLink = ( { children, className, permalink } ) => {
 	const props = {
 		className,
 		style: {
-			maxWidth: `${ THUMBNAIL_SIZE }px`,
+			width: `${ THUMBNAIL_SIZE }px`,
 		},
 	};
 	if ( ! permalink ) {
