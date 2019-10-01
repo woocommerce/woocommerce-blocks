@@ -33,6 +33,13 @@ class ProductGrid extends Component {
 			this.scrollPointRef.current.scrollIntoView();
 		}
 
+		const focusableElements = this.scrollPointRef.current.parentElement.querySelectorAll(
+			'button, a'
+		);
+		if ( focusableElements.length ) {
+			focusableElements[ 0 ].focus();
+		}
+
 		onPageChange( newPage );
 	};
 
