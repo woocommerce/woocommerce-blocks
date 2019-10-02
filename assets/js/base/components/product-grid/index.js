@@ -8,7 +8,7 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import Pagination from '../pagination';
-import ProductOrderSelect from '../product-order-select';
+import ProductSortSelect from '../product-sort-select';
 import ProductGridItem from '../product-grid-item';
 import withProducts from '../../hocs/with-products';
 import './style.scss';
@@ -18,7 +18,7 @@ const ProductGrid = ( {
 	currentPage,
 	onOrderChange,
 	onPageChange,
-	orderValue,
+	sortValue,
 	products,
 	totalProducts,
 } ) => {
@@ -47,9 +47,9 @@ const ProductGrid = ( {
 	return (
 		<div className={ getClassnames() }>
 			{ attributes.showOrderby && (
-				<ProductOrderSelect
+				<ProductSortSelect
 					onChange={ onOrderChange }
-					value={ orderValue }
+					value={ sortValue }
 				/>
 			) }
 			<ul className="wc-block-grid__products">

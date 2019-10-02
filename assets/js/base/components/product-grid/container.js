@@ -14,7 +14,7 @@ import withWindow from '../../hocs/with-window';
 class ProductGridContainer extends Component {
 	state = {
 		currentPage: this.props.currentPage || 1,
-		orderValue: this.props.orderValue,
+		sortValue: this.props.sortValue,
 	};
 
 	onPageChange = ( newPage ) => {
@@ -25,19 +25,18 @@ class ProductGridContainer extends Component {
 	};
 
 	onOrderChange = ( event ) => {
-		const orderValue = event.target.value;
+		const sortValue = event.target.value;
 		this.setState( {
 			currentPage: 1,
-			orderValue,
+			sortValue,
 		} );
-		this.props.onOrderChange( orderValue );
+		this.props.onOrderChange( sortValue );
 	};
 
 	render() {
 		const { attributes } = this.props;
 		const { currentPage } = this.state;
-		const orderValue =
-			this.state.orderValue || this.props.attributes.orderby;
+		const sortValue = this.state.sortValue || this.props.attributes.orderby;
 
 		return (
 			<ProductGrid
@@ -45,7 +44,7 @@ class ProductGridContainer extends Component {
 				currentPage={ currentPage }
 				onOrderChange={ this.onOrderChange }
 				onPageChange={ this.onPageChange }
-				orderValue={ orderValue }
+				sortValue={ sortValue }
 			/>
 		);
 	}
@@ -58,24 +57,28 @@ ProductGridContainer.propTypes = {
 
 export default withWindow(
 	( { location, history }, { urlParameterSuffix } ) => {
-		const pageParameter = `page${ urlParameterSuffix }`;
-		const orderParameter = `order${ urlParameterSuffix }`;
+		const pageParameter = `product_page${ urlParameterSuffix }`;
+		const sortParameter = `product_sort${ urlParameterSuffix }`;
 		return {
-			currentPage: parseInt( getQueryArg( location.href, pageParameter ) ),
-			orderValue: getQueryArg( location.href, orderParameter ),
+			currentPage: parseInt(
+				getQueryArg( location.href, pageParameter )
+			),
+			sortValue: getQueryArg( location.href, sortParameter ),
 			onPageChange( newPage ) {
 				history.pushState(
 					null,
 					'',
-					addQueryArgs( location.href, { [ pageParameter ]: newPage })
-				)
+					addQueryArgs( location.href, {
+						[ pageParameter ]: newPage,
+					} )
+				);
 			},
-			onOrderChange( orderValue ) {
+			onOrderChange( sortValue ) {
 				history.pushState(
 					null,
 					'',
 					addQueryArgs( location.href, {
-						[ orderParameter ]: orderValue,
+						[ sortParameter ]: sortValue,
 						[ pageParameter ]: 1,
 					} )
 				);

@@ -7,13 +7,13 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import OrderSelect from '../order-select';
+import SortSelect from '../sort-select';
 import './style.scss';
 
-const ReviewOrderSelect = ( { defaultValue, onChange, readOnly, value } ) => {
+const ReviewSortSelect = ( { defaultValue, onChange, readOnly, value } ) => {
 	return (
-		<OrderSelect
-			className="wc-block-review-order-select"
+		<SortSelect
+			className="wc-block-review-sort-select"
 			defaultValue={ defaultValue }
 			label={ __( 'Order by', 'woo-gutenberg-products-block' ) }
 			onChange={ onChange }
@@ -47,7 +47,7 @@ const ReviewOrderSelect = ( { defaultValue, onChange, readOnly, value } ) => {
 	);
 };
 
-ReviewOrderSelect.propTypes = {
+ReviewSortSelect.propTypes = {
 	defaultValue: PropTypes.oneOf( [
 		'most-recent',
 		'highest-rating',
@@ -62,4 +62,4 @@ ReviewOrderSelect.propTypes = {
 	] ),
 };
 
-export default ReviewOrderSelect;
+export default ReviewSortSelect;

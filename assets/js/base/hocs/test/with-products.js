@@ -46,7 +46,7 @@ const render = () => {
 				rows: 3,
 			} }
 			currentPage={ 1 }
-			orderValue="menu_order"
+			sortValue="menu_order"
 			productId={ 1 }
 			productsToDisplay={ 2 }
 		/>
