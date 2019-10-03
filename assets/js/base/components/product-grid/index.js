@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
@@ -12,114 +11,80 @@ import Pagination from '../pagination';
 import ProductOrderSelect from '../product-order-select';
 import ProductGridItem from '../product-grid-item';
 import withProducts from '../../hocs/with-products';
+import withScrollToTop from '../../hocs/with-scroll-to-top';
 import './style.scss';
 
-class ProductGrid extends Component {
-	constructor() {
-		super();
-
-		this.scrollPointRef = createRef();
-	}
-
-	onPaginationChange = ( newPage ) => {
-		const { onPageChange } = this.props;
-
-		const srollPointRefYPosition = this.scrollPointRef.current.getBoundingClientRect()
-			.bottom;
-		const isScrollPointRefVisible =
-			srollPointRefYPosition >= 0 &&
-			srollPointRefYPosition <= window.innerHeight;
-		if ( ! isScrollPointRefVisible ) {
-			this.scrollPointRef.current.scrollIntoView();
-		}
-
-		const focusableElements = this.scrollPointRef.current.parentElement.querySelectorAll(
-			'button, a'
-		);
-		if ( focusableElements.length ) {
-			focusableElements[ 0 ].focus();
-		}
-
+const ProductGrid = ( {
+	attributes,
+	currentPage,
+	onOrderChange,
+	onPageChange,
+	orderValue,
+	products,
+	scrollToTop,
+	totalProducts,
+} ) => {
+	const onPaginationChange = ( newPage ) => {
+		scrollToTop( { focusableSelector: 'a, button' } );
 		onPageChange( newPage );
 	};
 
-	render() {
-		const {
-			attributes,
-			currentPage,
-			onOrderChange,
-			orderValue,
-			products,
-			totalProducts,
-		} = this.props;
+	const getClassnames = () => {
+		const { columns, rows, className, alignButtons, align } = attributes;
+		const alignClass = typeof align !== 'undefined' ? 'align' + align : '';
 
-		const getClassnames = () => {
-			const {
-				columns,
-				rows,
-				className,
-				alignButtons,
-				align,
-			} = attributes;
-			const alignClass =
-				typeof align !== 'undefined' ? 'align' + align : '';
-
-			return classnames(
-				'wc-block-grid',
-				className,
-				alignClass,
-				'has-' + columns + '-columns',
-				{
-					'has-multiple-rows': rows > 1,
-					'has-aligned-buttons': alignButtons,
-				}
-			);
-		};
-
-		const perPage = attributes.columns * attributes.rows;
-		const totalPages = Math.ceil( totalProducts / perPage );
-		const gridProducts = products.length
-			? products
-			: Array.from( { length: perPage } );
-
-		return (
-			<div className={ getClassnames() }>
-				<div
-					className="wc-block-grid__products__scroll-point"
-					ref={ this.scrollPointRef }
-					aria-hidden
-				/>
-				{ attributes.showOrderby && (
-					<ProductOrderSelect
-						onChange={ onOrderChange }
-						value={ orderValue }
-					/>
-				) }
-				<ul className="wc-block-grid__products">
-					{ gridProducts.map( ( product = {}, i ) => (
-						<ProductGridItem
-							key={ product.id || i }
-							attributes={ attributes }
-							product={ product }
-						/>
-					) ) }
-				</ul>
-				{ totalProducts > perPage && (
-					<Pagination
-						currentPage={ currentPage }
-						onPageChange={ this.onPaginationChange }
-						totalPages={ totalPages }
-					/>
-				) }
-			</div>
+		return classnames(
+			'wc-block-grid',
+			className,
+			alignClass,
+			'has-' + columns + '-columns',
+			{
+				'has-multiple-rows': rows > 1,
+				'has-aligned-buttons': alignButtons,
+			}
 		);
-	}
-}
+	};
+
+	const perPage = attributes.columns * attributes.rows;
+	const totalPages = Math.ceil( totalProducts / perPage );
+	const gridProducts = products.length
+		? products
+		: Array.from( { length: perPage } );
+
+	return (
+		<div className={ getClassnames() }>
+			{ attributes.showOrderby && (
+				<ProductOrderSelect
+					onChange={ onOrderChange }
+					value={ orderValue }
+				/>
+			) }
+			<ul className="wc-block-grid__products">
+				{ gridProducts.map( ( product = {}, i ) => (
+					<ProductGridItem
+						key={ product.id || i }
+						attributes={ attributes }
+						product={ product }
+					/>
+				) ) }
+			</ul>
+			{ totalProducts > perPage && (
+				<Pagination
+					currentPage={ currentPage }
+					onPageChange={ onPaginationChange }
+					totalPages={ totalPages }
+				/>
+			) }
+		</div>
+	);
+};
 
 ProductGrid.propTypes = {
 	attributes: PropTypes.object.isRequired,
+	// From withScrollToTop.
+	scrollToTop: PropTypes.func,
 	// From withProducts.
 	products: PropTypes.array,
 };
 
-export default withProducts( ProductGrid );
+export default withScrollToTop( withProducts( ProductGrid ) );
