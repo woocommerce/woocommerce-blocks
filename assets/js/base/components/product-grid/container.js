@@ -24,13 +24,13 @@ class ProductGridContainer extends Component {
 		this.props.onPageChange( newPage );
 	};
 
-	onOrderChange = ( event ) => {
+	onSortChange = ( event ) => {
 		const sortValue = event.target.value;
 		this.setState( {
 			currentPage: 1,
 			sortValue,
 		} );
-		this.props.onOrderChange( sortValue );
+		this.props.onSortChange( sortValue );
 	};
 
 	render() {
@@ -42,7 +42,7 @@ class ProductGridContainer extends Component {
 			<ProductGrid
 				attributes={ attributes }
 				currentPage={ currentPage }
-				onOrderChange={ this.onOrderChange }
+				onSortChange={ this.onSortChange }
 				onPageChange={ this.onPageChange }
 				sortValue={ sortValue }
 			/>
@@ -73,7 +73,7 @@ export default withWindow(
 					} )
 				);
 			},
-			onOrderChange( sortValue ) {
+			onSortChange( sortValue ) {
 				history.pushState(
 					null,
 					'',

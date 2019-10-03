@@ -16,7 +16,7 @@ import './style.scss';
 const ProductGrid = ( {
 	attributes,
 	currentPage,
-	onOrderChange,
+	onSortChange,
 	onPageChange,
 	sortValue,
 	products,
@@ -48,7 +48,7 @@ const ProductGrid = ( {
 		<div className={ getClassnames() }>
 			{ attributes.showOrderby && (
 				<ProductSortSelect
-					onChange={ onOrderChange }
+					onChange={ onSortChange }
 					value={ sortValue }
 				/>
 			) }
