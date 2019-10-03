@@ -39,23 +39,26 @@ module.exports = class FallbackModuleDirectoryWebpackPlugin {
 	}
 
 	parseAlias( alias ) {
-		if( typeof alias === 'object' && ! Array.isArray( alias ) ) {
-			alias = Object.keys( alias ).map( key => {
+		if ( typeof alias === 'object' && ! Array.isArray( alias ) ) {
+			alias = Object.keys( alias ).map( ( key ) => {
 				let onlyModule = false;
 				let obj = alias[ key ];
-				if(/\$$/.test( key ) ) {
+				if ( /\$$/.test( key ) ) {
 					onlyModule = true;
 					key = key.substr( 0, key.length - 1 );
 				}
-				if( typeof obj === 'string' ) {
+				if ( typeof obj === 'string' ) {
 					obj = {
-						alias: obj
+						alias: obj,
 					};
 				}
-				obj = Object.assign( {
-					name: key,
-					onlyModule
-				}, obj );
+				obj = Object.assign(
+					{
+						name: key,
+						onlyModule,
+					},
+					obj
+				);
 				return obj;
 			} );
 		}
@@ -64,65 +67,67 @@ module.exports = class FallbackModuleDirectoryWebpackPlugin {
 
 	applyFallback( path ) {
 		// if directory does not have search string then bail
-		if ( ! path.includes( this.search ) )  {
+		if ( ! path.includes( this.search ) ) {
 			return path;
 		}
 
 		if ( ! fs.existsSync( path ) ) {
-			path = path.replace(
-				this.search,
-				this.replacement,
-			)
+			path = path.replace( this.search, this.replacement );
 		}
 		return path;
 	}
 
 	doApply( resolver, source, target, alias ) {
-		resolver.getHook( source ).tapAsync(
-			"FallbackModuleDirectoryWebpackPlugin",
-			( request, resolveContext, callback ) => {
-				const innerRequest = request.request || request.path;
+		resolver
+			.getHook( source )
+			.tapAsync(
+				'FallbackModuleDirectoryWebpackPlugin',
+				( request, resolveContext, callback ) => {
+					const innerRequest = request.request || request.path;
 
-				if ( ! innerRequest ) return callback();
+					if ( ! innerRequest ) return callback();
 
-				for ( const item of alias ) {
-					if (
-						innerRequest === item.name ||
-						( ! item.onlyModule && startsWith( innerRequest, item.name + '/' ) )
-					) {
+					for ( const item of alias ) {
 						if (
-							innerRequest !== item.alias &&
-							! startsWith( innerRequest, item.alias + '/')
+							innerRequest === item.name ||
+							( ! item.onlyModule &&
+								startsWith( innerRequest, item.name + '/' ) )
 						) {
-							const newRequestStr = this.applyFallback(
-								item.alias +
-								innerRequest.substr( item.name.length ),
-							);
-							const obj = {
-								...request,
-								request: newRequestStr
-							};
-							return resolver.doResolve(
-								target,
-								obj,
-								`aliased with mapping '${ item.name }' to '${ newRequestStr }'`,
-								resolveContext,
-								( err, result ) => {
-									if ( err ) return callback( err );
+							if (
+								innerRequest !== item.alias &&
+								! startsWith( innerRequest, item.alias + '/' )
+							) {
+								const newRequestStr = this.applyFallback(
+									item.alias +
+										innerRequest.substr( item.name.length )
+								);
+								const obj = {
+									...request,
+									request: newRequestStr,
+								};
+								return resolver.doResolve(
+									target,
+									obj,
+									`aliased with mapping '${
+										item.name
+									}' to '${ newRequestStr }'`,
+									resolveContext,
+									( err, result ) => {
+										if ( err ) return callback( err );
 
-									// Don't allow other aliasing or raw request
-									if ( result === undefined ) {
-										return callback( null, null );
+										// Don't allow other aliasing or raw request
+										if ( result === undefined ) {
+											return callback( null, null );
+										}
+										callback( null, result );
 									}
-									callback( null, result );
-								}
-							)
+								);
+							}
 						}
 					}
+					return callback();
 				}
-				return callback();
-			}
-		)
+			);
 	}
 
 	apply( resolver ) {
@@ -132,4 +137,4 @@ module.exports = class FallbackModuleDirectoryWebpackPlugin {
 			this.doApply( resolver, source, target, alias );
 		} );
 	}
-}
+};
