@@ -99,4 +99,4 @@ This plugin supports two type of builds:
 
 The legacy builds are loaded in a site environment where the WordPress version doesn't meet minimum requirements for a components used in a set build.
 
-You can read more about legacy builds in the [this doc](./assets/legacy/README.md).
+You can read more about legacy builds in the [this doc](./assets/js/legacy/README.md).
