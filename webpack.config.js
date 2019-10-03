@@ -11,6 +11,7 @@ const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extrac
 const chalk = require( 'chalk' );
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const WebpackRTLPlugin = require( 'webpack-rtl-plugin' );
+const FallbackModuleDirectoryPlugin = require( './bin/fallback-module-directory-webpack-plugin' );
 
 function findModuleMatch( module, match ) {
 	if ( module.request && match.test( module.request ) ) {
@@ -42,6 +43,40 @@ const alias = {
 		__dirname,
 		'assets/js/settings/blocks'
 	),
+	'@woocommerce/base-components': path.resolve(
+		__dirname,
+		'assets/js/base/components/'
+	),
+	'@woocommerce/base-hocs': path.resolve( __dirname, 'assets/js/base/hocs' ),
+	'@woocommerce/block-components': path.resolve(
+		__dirname,
+		'assets/js/components/'
+	),
+	'@woocommerce/block-hocs': path.resolve( __dirname, 'assets/js/hocs' ),
+};
+
+const legacyAliasResolve = {
+	plugins: [
+		new FallbackModuleDirectoryPlugin( '/legacy/', '/', {
+			...alias,
+			'@woocommerce/base-components': path.resolve(
+				__dirname,
+				'assets/js/legacy/base/components/'
+			),
+			'@woocommerce/base-hocs': path.resolve(
+				__dirname,
+				'assets/js/legacy/base/hocs'
+			),
+			'@woocommerce/block-components': path.resolve(
+				__dirname,
+				'assets/js/legacy/components/'
+			),
+			'@woocommerce/block-hocs': path.resolve(
+				__dirname,
+				'assets/js/legacy/hocs'
+			),
+		} ),
+	],
 };
 
 const requestToExternal = ( request ) => {
@@ -252,6 +287,71 @@ const GutenbergBlocksConfig = {
 	resolve: { alias },
 };
 
+// eslint-disable-next-line no-unused-vars
+const LegacyBlocksConfig = {
+	...GutenbergBlocksConfig,
+	output: {
+		path: path.resolve( __dirname, './build/' ),
+		filename: '[name]-legacy.js',
+		library: [ 'wc', 'blocks', '[name]' ],
+		libraryTarget: 'this',
+		// This fixes an issue with multiple webpack projects using chunking
+		// overwriting each other's chunk loader function.
+		// See https://webpack.js.org/configuration/output/#outputjsonpfunction
+		jsonpFunction: 'webpackWcBlocksJsonp',
+	},
+	plugins: [
+		new WebpackRTLPlugin( {
+			filename: '[name]-legacy.rtl.css',
+			minify: {
+				safe: true,
+			},
+		} ),
+		new MiniCssExtractPlugin( {
+			filename: '[name]-legacy.css',
+		} ),
+		new MergeExtractFilesPlugin(
+			[ 'build/editor.js', 'build/style.js' ],
+			'build/vendors.js'
+		),
+		new ProgressBarPlugin( {
+			format:
+				chalk.blue( 'Build' ) +
+				' [:bar] ' +
+				chalk.green( ':percent' ) +
+				' :msg (:elapsed seconds)',
+		} ),
+		new DependencyExtractionWebpackPlugin( {
+			injectPolyfill: true,
+			requestToExternal,
+			requestToHandle,
+		} ),
+	],
+	resolve: {
+		plugins: [
+			new FallbackModuleDirectoryPlugin( '/legacy/', '/', {
+				...alias,
+				'@woocommerce/base-components': path.resolve(
+					__dirname,
+					'assets/js/legacy/base/components/'
+				),
+				'@woocommerce/base-hocs': path.resolve(
+					__dirname,
+					'assets/js/legacy/base/hocs'
+				),
+				'@woocommerce/block-components': path.resolve(
+					__dirname,
+					'assets/js/legacy/components/'
+				),
+				'@woocommerce/block-hocs': path.resolve(
+					__dirname,
+					'assets/js/legacy/hocs'
+				),
+			} ),
+		],
+	},
+};
+
 const BlocksFrontendConfig = {
 	...baseConfig,
 	entry: {
@@ -338,4 +438,24 @@ const BlocksFrontendConfig = {
 	resolve: { alias },
 };
 
-module.exports = [ CoreConfig, GutenbergBlocksConfig, BlocksFrontendConfig ];
+// eslint-disable-next-line no-unused-vars
+const LegacyFrontendBlocksConfig = {
+	...BlocksFrontendConfig,
+	output: {
+		path: path.resolve( __dirname, './build/' ),
+		filename: '[name]-legacy-frontend.js',
+		// This fixes an issue with multiple webpack projects using chunking
+		// overwriting each other's chunk loader function.
+		// See https://webpack.js.org/configuration/output/#outputjsonpfunction
+		jsonpFunction: 'webpackWcBlocksJsonp',
+	},
+	resolve: legacyAliasResolve,
+};
+
+module.exports = [
+	CoreConfig,
+	GutenbergBlocksConfig,
+	BlocksFrontendConfig,
+	// LegacyBlocksConfig,
+	// LegacyFrontendBlocksConfig,
+];
