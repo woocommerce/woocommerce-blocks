@@ -42,8 +42,10 @@ const Pagination = ( {
 	}
 
 	const pages = [];
-	for ( let i = minIndex; i <= maxIndex; i++ ) {
-		pages.push( i );
+	if ( minIndex && maxIndex ) {
+		for ( let i = minIndex; i <= maxIndex; i++ ) {
+			pages.push( i );
+		}
 	}
 
 	return (
@@ -75,7 +77,9 @@ const Pagination = ( {
 			) }
 			{ showFirstPage && (
 				<button
-					className="wc-block-pagination-page"
+					className={ classNames( 'wc-block-pagination-page', {
+						'wc-block-pagination-page--active': currentPage === 1,
+					} ) }
 					onClick={ () => onPageChange( 1 ) }
 				>
 					1
@@ -117,7 +121,10 @@ const Pagination = ( {
 			) }
 			{ showLastPage && (
 				<button
-					className="wc-block-pagination-page"
+					className={ classNames( 'wc-block-pagination-page', {
+						'wc-block-pagination-page--active':
+							currentPage === totalPages,
+					} ) }
 					onClick={ () => onPageChange( totalPages ) }
 				>
 					{ totalPages }
