@@ -49,13 +49,8 @@ module.exports = class FallbackModuleDirectoryWebpackPlugin {
 	}
 
 	applyFallback( path ) {
-		// if directory does not have search string then bail
-		if ( ! path.includes( this.search ) ) {
-			return path;
-		}
-
-		if ( ! fs.existsSync( path ) ) {
-			path = path.replace( this.search, this.replacement );
+		if ( path.includes( this.search ) && ! fs.existsSync( path ) ) {
+			return path.replace( this.search, this.replacement );
 		}
 		return path;
 	}
