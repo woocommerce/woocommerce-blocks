@@ -9,7 +9,8 @@ import { addQueryArgs, getQueryArg } from '@wordpress/url';
  * Internal dependencies
  */
 import ProductGrid from './index';
-import withWindow from '../../hocs/with-window';
+import withBrowserHistory from '../../hocs/with-browser-history';
+import withBrowserLocation from '../../hocs/with-browser-location';
 
 class ProductGridContainer extends Component {
 	state = {
@@ -56,30 +57,40 @@ ProductGridContainer.propTypes = {
 	urlParameterSuffix: PropTypes.string,
 };
 
-export default withWindow(
-	( { location, history }, { urlParameterSuffix } ) => {
-		const pageParameter = `page${ urlParameterSuffix }`;
-		const orderParameter = `order${ urlParameterSuffix }`;
-		return {
-			currentPage: parseInt( getQueryArg( location.href, pageParameter ) ),
-			orderValue: getQueryArg( location.href, orderParameter ),
-			onPageChange( newPage ) {
-				history.pushState(
-					null,
-					'',
-					addQueryArgs( location.href, { [ pageParameter ]: newPage })
-				)
-			},
-			onOrderChange( orderValue ) {
-				history.pushState(
-					null,
-					'',
-					addQueryArgs( location.href, {
-						[ orderParameter ]: orderValue,
-						[ pageParameter ]: 1,
-					} )
-				);
-			},
-		};
-	}
-)( ProductGridContainer );
+export default withBrowserLocation( ( location, { urlParameterSuffix } ) => {
+	const pageParameter = `page${ urlParameterSuffix }`;
+	const orderParameter = `order${ urlParameterSuffix }`;
+	return {
+		currentPage: parseInt( getQueryArg( location.href, pageParameter ) ),
+		location,
+		orderValue: getQueryArg( location.href, orderParameter ),
+		pageParameter,
+		orderParameter,
+	};
+} )(
+	withBrowserHistory(
+		( history, { location, orderParameter, pageParameter } ) => {
+			return {
+				onPageChange( newPage ) {
+					history.pushState(
+						null,
+						'',
+						addQueryArgs( location.href, {
+							[ pageParameter ]: newPage,
+						} )
+					);
+				},
+				onOrderChange( orderValue ) {
+					history.pushState(
+						null,
+						'',
+						addQueryArgs( location.href, {
+							[ orderParameter ]: orderValue,
+							[ pageParameter ]: 1,
+						} )
+					);
+				},
+			};
+		}
+	)( ProductGridContainer )
+);
