@@ -8,23 +8,6 @@ const fs = require( 'fs' );
 // Note, this has some inspiration from the AliasPlugin and its implementation
 // @see https://github.com/webpack/enhanced-resolve/blob/v4.1.0/lib/AliasPlugin.js
 
-function startsWith( string, searchString ) {
-	const stringLength = string.length;
-	const searchLength = searchString.length;
-
-	// early out if the search length is greater than the search string
-	if ( searchLength > stringLength ) {
-		return false;
-	}
-	let index = -1;
-	while ( ++index < searchLength ) {
-		if ( string.charCodeAt( index ) !== searchString.charCodeAt( index ) ) {
-			return false;
-		}
-	}
-	return true;
-}
-
 module.exports = class FallbackModuleDirectoryWebpackPlugin {
 	constructor( search, replacement, alias ) {
 		this.search = search;
@@ -91,11 +74,11 @@ module.exports = class FallbackModuleDirectoryWebpackPlugin {
 						if (
 							innerRequest === item.name ||
 							( ! item.onlyModule &&
-								startsWith( innerRequest, item.name + '/' ) )
+								innerRequest.startsWith( item.name + '/' ) )
 						) {
 							if (
 								innerRequest !== item.alias &&
-								! startsWith( innerRequest, item.alias + '/' )
+								! innerRequest.startsWith( item.alias + '/' )
 							) {
 								const newRequestStr = this.applyFallback(
 									item.alias +
