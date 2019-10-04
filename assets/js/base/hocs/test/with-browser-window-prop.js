@@ -23,10 +23,6 @@ const render = ( propMap ) => {
 describe( 'withBrowserWindowProp Component', () => {
 	it( 'calls the propMap function with the window property and the props', () => {
 		const propMap = jest.fn();
-		const testFunction = jest.fn();
-		propMap.mockImplementation( ( wProp, props ) => {
-			testFunction( wProp, props );
-		} );
 
 		render( propMap );
 
@@ -35,11 +31,6 @@ describe( 'withBrowserWindowProp Component', () => {
 			greeting: 'Hello',
 		} );
 		expect( propMap ).toHaveBeenCalledTimes( 1 );
-		expect( testFunction ).toHaveBeenCalledWith( window[ windowProp ], {
-			name: 'Alice',
-			greeting: 'Hello',
-		} );
-		expect( testFunction ).toHaveBeenCalledTimes( 1 );
 	} );
 
 	it( 'sets the resulting props from the propMap into the resulting component', () => {
