@@ -47,7 +47,7 @@ const alias = {
 		__dirname,
 		'assets/js/base/components/'
 	),
-	'@woocommerce/base-hocs': path.resolve( __dirname, 'assets/js/base/hocs' ),
+	'@woocommerce/base-hocs': path.resolve( __dirname, 'assets/js/base/hocs/' ),
 	'@woocommerce/block-components': path.resolve(
 		__dirname,
 		'assets/js/components/'
@@ -65,7 +65,7 @@ const legacyAliasResolve = {
 			),
 			'@woocommerce/base-hocs': path.resolve(
 				__dirname,
-				'assets/js/legacy/base/hocs'
+				'assets/js/legacy/base/hocs/'
 			),
 			'@woocommerce/block-components': path.resolve(
 				__dirname,
