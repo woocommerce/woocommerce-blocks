@@ -4,7 +4,7 @@ const withBrowserWindowProp = ( prop, propMap ) => ( WrappedComponent ) => (
 	incomingProps
 ) => {
 	const props = w.hasOwnProperty( prop )
-		? propMap( w[ prop ] || {}, incomingProps )
+		? propMap( w[ prop ], incomingProps )
 		: {};
 	return <WrappedComponent { ...incomingProps } { ...props } />;
 };
