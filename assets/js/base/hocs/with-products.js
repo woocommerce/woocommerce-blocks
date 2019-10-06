@@ -30,7 +30,7 @@ const withProducts = ( OriginalComponent ) => {
 		componentDidUpdate( prevProps ) {
 			if (
 				prevProps.currentPage !== this.props.currentPage ||
-				prevProps.orderValue !== this.props.orderValue ||
+				prevProps.sortValue !== this.props.sortValue ||
 				prevProps.attributes.columns !==
 					this.props.attributes.columns ||
 				prevProps.attributes.rows !== this.props.attributes.rows
@@ -39,7 +39,7 @@ const withProducts = ( OriginalComponent ) => {
 			}
 		}
 
-		getOrderArgs( orderName ) {
+		getSortArgs( orderName ) {
 			switch ( orderName ) {
 				case 'menu_order':
 				case 'popularity':
@@ -59,12 +59,12 @@ const withProducts = ( OriginalComponent ) => {
 		}
 
 		loadProducts() {
-			const { attributes, currentPage, orderValue } = this.props;
+			const { attributes, currentPage, sortValue } = this.props;
 
 			this.setState( { loading: true, products: [] } );
 
 			const args = {
-				...this.getOrderArgs( orderValue ),
+				...this.getSortArgs( sortValue ),
 				per_page: attributes.columns * attributes.rows,
 				page: currentPage,
 			};

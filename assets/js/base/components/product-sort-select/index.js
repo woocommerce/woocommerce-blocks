@@ -7,13 +7,13 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import OrderSelect from '../order-select';
+import SortSelect from '../sort-select';
 import './style.scss';
 
-const ProductOrderSelect = ( { defaultValue, onChange, readOnly, value } ) => {
+const ProductSortSelect = ( { defaultValue, onChange, readOnly, value } ) => {
 	return (
-		<OrderSelect
-			className="wc-block-product-order-select"
+		<SortSelect
+			className="wc-block-product-sort-select"
 			defaultValue={ defaultValue }
 			name="orderby"
 			onChange={ onChange }
@@ -65,7 +65,7 @@ const ProductOrderSelect = ( { defaultValue, onChange, readOnly, value } ) => {
 	);
 };
 
-ProductOrderSelect.propTypes = {
+ProductSortSelect.propTypes = {
 	defaultValue: PropTypes.oneOf( [
 		'menu_order',
 		'popularity',
@@ -86,4 +86,4 @@ ProductOrderSelect.propTypes = {
 	] ),
 };
 
-export default ProductOrderSelect;
+export default ProductSortSelect;

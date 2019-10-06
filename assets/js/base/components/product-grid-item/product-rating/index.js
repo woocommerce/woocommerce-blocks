@@ -12,7 +12,7 @@ const ProductRating = ( { className, averageRating } ) => {
 	}
 
 	const starStyle = {
-		width: ( rating / 5 ) * 100 + '%' /* stylelint-disable-line */,
+		width: ( rating / 5 ) * 100 + '%',
 	};
 
 	return (

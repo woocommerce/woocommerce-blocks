@@ -13,7 +13,7 @@ import { ENABLE_REVIEW_RATING } from '@woocommerce/block-settings';
 import ErrorPlaceholder from '../../components/error-placeholder';
 import LoadMoreButton from '../../base/components/load-more-button';
 import ReviewList from '../../base/components/review-list';
-import ReviewOrderSelect from '../../base/components/review-order-select';
+import ReviewSortSelect from '../../base/components/review-sort-select';
 import withReviews from '../../base/hocs/with-reviews';
 
 /**
@@ -57,7 +57,7 @@ class EditorBlock extends Component {
 		return (
 			<Disabled>
 				{ attributes.showOrderby && ENABLE_REVIEW_RATING && (
-					<ReviewOrderSelect readOnly value={ attributes.orderby } />
+					<ReviewSortSelect readOnly value={ attributes.orderby } />
 				) }
 				<ReviewList attributes={ attributes } reviews={ reviews } />
 				{ attributes.showLoadMore && totalReviews > reviews.length && (
