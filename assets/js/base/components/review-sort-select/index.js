@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import SortSelect from '@woocommerce/base-components/order-select';
+import SortSelect from '@woocommerce/base-components/sort-select';
 import './style.scss';
 
 const ReviewSortSelect = ( { defaultValue, onChange, readOnly, value } ) => {

@@ -9,7 +9,7 @@ import classNames from 'classnames';
  * Internal dependencies
  */
 import { adminUrl } from '@woocommerce/settings';
-import { IconExternal } from '../../components/icons';
+import { IconExternal } from '@woocommerce/block-components/icons';
 
 export const getBlockClassName = ( blockClassName, attributes ) => {
 	const { className, contentVisibility } = attributes;

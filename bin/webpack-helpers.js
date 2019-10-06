@@ -241,6 +241,8 @@ const getFrontConfig = ( options = {} ) => {
 			'product-categories':
 				'./assets/js/blocks/product-categories/frontend.js',
 			reviews: './assets/js/blocks/reviews/frontend.js',
+			'all-products':
+				'./assets/js/blocks/products/all-products/frontend.js',
 		},
 		output: {
 			path: path.resolve( __dirname, '../build/' ),

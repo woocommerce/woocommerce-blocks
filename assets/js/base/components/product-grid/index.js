@@ -7,11 +7,11 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import Pagination from '../pagination';
-import ProductSortSelect from '../product-sort-select';
-import ProductGridItem from '../product-grid-item';
-import withProducts from '../../hocs/with-products';
-import withScrollToTop from '../../hocs/with-scroll-to-top';
+import Pagination from '@woocommerce/base-components/pagination';
+import ProductSortSelect from '@woocommerce/base-components/product-sort-select';
+import ProductGridItem from '@woocommerce/base-components/product-grid-item';
+import withProducts from '@woocommerce/base-hocs/with-products';
+import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import './style.scss';
 
 const ProductGrid = ( {

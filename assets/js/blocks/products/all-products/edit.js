@@ -17,7 +17,7 @@ import {
 	getBlockClassName,
 } from '../utils';
 import { getSharedContentControls, getSharedListControls } from '../edit';
-import GridLayoutControl from '../../../components/grid-layout-control';
+import GridLayoutControl from '@woocommerce/block-components/grid-layout-control';
 import { HAS_PRODUCTS } from '@woocommerce/block-settings';
 import Block from './block';
 

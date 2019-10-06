@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import ProductGridContainer from '../../../base/components/product-grid/container.js';
+import ProductGridContainer from '@woocommerce/base-components/product-grid/container.js';
 
 /**
  * The All Products Block. @todo

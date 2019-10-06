@@ -9,8 +9,8 @@ import { addQueryArgs, getQueryArg } from '@wordpress/url';
  * Internal dependencies
  */
 import ProductGrid from './index';
-import withBrowserHistory from '../../hocs/with-browser-history';
-import withBrowserLocation from '../../hocs/with-browser-location';
+import withBrowserHistory from '@woocommerce/base-hocs/with-browser-history';
+import withBrowserLocation from '@woocommerce/base-hocs/with-browser-location';
 
 class ProductGridContainer extends Component {
 	state = {
