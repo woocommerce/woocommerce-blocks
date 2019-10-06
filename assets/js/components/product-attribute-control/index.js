@@ -11,8 +11,8 @@ import { SelectControl, Spinner } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import { withAttributes } from '../../hocs';
-import ErrorMessage from '../error-placeholder/error-message.js';
+import { withAttributes } from '@woocommerce/block-hocs';
+import ErrorMessage from '@woocommerce/block-components/error-placeholder/error-message.js';
 import './style.scss';
 
 const ProductAttributeControl = ( {
@@ -20,6 +20,7 @@ const ProductAttributeControl = ( {
 	error,
 	expandedAttribute,
 	onChange,
+	onExpandAttribute,
 	onOperatorChange,
 	isLoading,
 	operator,
@@ -27,7 +28,7 @@ const ProductAttributeControl = ( {
 	termsAreLoading,
 	termsList,
 } ) => {
-	const onExpandAttribute = ( item ) => {
+	const onSelectAttribute = ( item ) => {
 		return () => {
 			onChange( [] );
 			onExpandAttribute( item.id );
@@ -54,7 +55,7 @@ const ProductAttributeControl = ( {
 					{ ...args }
 					className={ classes.join( ' ' ) }
 					isSelected={ expandedAttribute === item.id }
-					onSelect={ onExpandAttribute }
+					onSelect={ onSelectAttribute }
 					isSingle
 					disabled={ '0' === item.count }
 					aria-expanded={ expandedAttribute === item.id }

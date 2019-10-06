@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import SortSelect from '../sort-select';
+import SortSelect from '@woocommerce/base-components/soft-select';
 import './style.scss';
 
 const ProductSortSelect = ( { defaultValue, onChange, readOnly, value } ) => {

@@ -8,8 +8,8 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import { withSearchedProducts } from '../../hocs';
-import ErrorMessage from '../error-placeholder/error-message.js';
+import { withSearchedProducts } from '@woocommerce/block-hocs';
+import ErrorMessage from '@woocommerce/block-components/error-placeholder/error-message.js';
 
 /**
  * The products control exposes a custom selector for searching and selecting
@@ -68,7 +68,9 @@ const ProductsControl = ( {
 			className="woocommerce-products"
 			list={ products }
 			isLoading={ isLoading }
-			selected={ selected }
+			selected={ products.filter( ( { id } ) =>
+				selected.includes( id )
+			) }
 			onSearch={ onSearch }
 			onChange={ onChange }
 			messages={ messages }
