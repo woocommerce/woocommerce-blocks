@@ -9,7 +9,8 @@ import { addQueryArgs, getQueryArg } from '@wordpress/url';
  * Internal dependencies
  */
 import ProductGrid from './index';
-import withWindow from '../../hocs/with-window';
+import withBrowserHistory from '../../hocs/with-browser-history';
+import withBrowserLocation from '../../hocs/with-browser-location';
 
 class ProductGridContainer extends Component {
 	state = {
@@ -24,13 +25,13 @@ class ProductGridContainer extends Component {
 		this.props.onPageChange( newPage );
 	};
 
-	onSortChange = ( event ) => {
+	onOrderChange = ( event ) => {
 		const sortValue = event.target.value;
 		this.setState( {
 			currentPage: 1,
 			sortValue,
 		} );
-		this.props.onSortChange( sortValue );
+		this.props.onOrderChange( sortValue );
 	};
 
 	render() {
@@ -42,7 +43,7 @@ class ProductGridContainer extends Component {
 			<ProductGrid
 				attributes={ attributes }
 				currentPage={ currentPage }
-				onSortChange={ this.onSortChange }
+				onOrderChange={ this.onOrderChange }
 				onPageChange={ this.onPageChange }
 				sortValue={ sortValue }
 			/>
@@ -55,34 +56,40 @@ ProductGridContainer.propTypes = {
 	urlParameterSuffix: PropTypes.string,
 };
 
-export default withWindow(
-	( { location, history }, { urlParameterSuffix } ) => {
-		const pageParameter = `product_page${ urlParameterSuffix }`;
-		const sortParameter = `product_sort${ urlParameterSuffix }`;
-		return {
-			currentPage: parseInt(
-				getQueryArg( location.href, pageParameter )
-			),
-			sortValue: getQueryArg( location.href, sortParameter ),
-			onPageChange( newPage ) {
-				history.pushState(
-					null,
-					'',
-					addQueryArgs( location.href, {
-						[ pageParameter ]: newPage,
-					} )
-				);
-			},
-			onSortChange( sortValue ) {
-				history.pushState(
-					null,
-					'',
-					addQueryArgs( location.href, {
-						[ sortParameter ]: sortValue,
-						[ pageParameter ]: 1,
-					} )
-				);
-			},
-		};
-	}
-)( ProductGridContainer );
+export default withBrowserLocation( ( location, { urlParameterSuffix } ) => {
+	const pageParameter = `product_page${ urlParameterSuffix }`;
+	const sortParameter = `product_sort${ urlParameterSuffix }`;
+	return {
+		currentPage: parseInt( getQueryArg( location.href, pageParameter ) ),
+		location,
+		sortValue: getQueryArg( location.href, sortParameter ),
+		pageParameter,
+		sortParameter,
+	};
+} )(
+	withBrowserHistory(
+		( history, { location, sortParameter, pageParameter } ) => {
+			return {
+				onPageChange( newPage ) {
+					history.pushState(
+						null,
+						'',
+						addQueryArgs( location.href, {
+							[ pageParameter ]: newPage,
+						} )
+					);
+				},
+				onOrderChange( sortValue ) {
+					history.pushState(
+						null,
+						'',
+						addQueryArgs( location.href, {
+							[ sortParameter ]: sortValue,
+							[ pageParameter ]: 1,
+						} )
+					);
+				},
+			};
+		}
+	)( ProductGridContainer )
+);
