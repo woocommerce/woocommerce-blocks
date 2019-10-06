@@ -17,11 +17,11 @@ const withScrollToTop = ( OriginalComponent ) => {
 		}
 
 		scrollToTopIfNeeded = () => {
-			const srollPointRefYPosition = this.scrollPointRef.current.getBoundingClientRect()
+			const scrollPointRefYPosition = this.scrollPointRef.current.getBoundingClientRect()
 				.bottom;
 			const isScrollPointRefVisible =
-				srollPointRefYPosition >= 0 &&
-				srollPointRefYPosition <= window.innerHeight;
+				scrollPointRefYPosition >= 0 &&
+				scrollPointRefYPosition <= window.innerHeight;
 			if ( ! isScrollPointRefVisible ) {
 				this.scrollPointRef.current.scrollIntoView();
 			}
