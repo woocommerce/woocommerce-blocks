@@ -102,6 +102,7 @@ const Pagination = ( {
 								? null
 								: () => onPageChange( page )
 						}
+						disabled={ currentPage === page }
 					>
 						{ page }
 					</button>

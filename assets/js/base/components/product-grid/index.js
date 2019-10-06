@@ -11,6 +11,7 @@ import Pagination from '../pagination';
 import ProductSortSelect from '../product-sort-select';
 import ProductGridItem from '../product-grid-item';
 import withProducts from '../../hocs/with-products';
+import withScrollToTop from '../../hocs/with-scroll-to-top';
 import './style.scss';
 
 const ProductGrid = ( {
@@ -20,8 +21,14 @@ const ProductGrid = ( {
 	onPageChange,
 	sortValue,
 	products,
+	scrollToTop,
 	totalProducts,
 } ) => {
+	const onPaginationChange = ( newPage ) => {
+		scrollToTop( { focusableSelector: 'a, button' } );
+		onPageChange( newPage );
+	};
+
 	const getClassnames = () => {
 		const { columns, rows, className, alignButtons, align } = attributes;
 		const alignClass = typeof align !== 'undefined' ? 'align' + align : '';
@@ -40,9 +47,9 @@ const ProductGrid = ( {
 
 	const perPage = attributes.columns * attributes.rows;
 	const totalPages = Math.ceil( totalProducts / perPage );
-	if ( ! products.length ) {
-		products = Array.from( { length: perPage } );
-	}
+	const gridProducts = products.length
+		? products
+		: Array.from( { length: perPage } );
 
 	return (
 		<div className={ getClassnames() }>
@@ -53,7 +60,7 @@ const ProductGrid = ( {
 				/>
 			) }
 			<ul className="wc-block-grid__products">
-				{ products.map( ( product = {}, i ) => (
+				{ gridProducts.map( ( product = {}, i ) => (
 					<ProductGridItem
 						key={ product.id || i }
 						attributes={ attributes }
@@ -64,7 +71,7 @@ const ProductGrid = ( {
 			{ totalProducts > perPage && (
 				<Pagination
 					currentPage={ currentPage }
-					onPageChange={ onPageChange }
+					onPageChange={ onPaginationChange }
 					totalPages={ totalPages }
 				/>
 			) }
@@ -74,8 +81,10 @@ const ProductGrid = ( {
 
 ProductGrid.propTypes = {
 	attributes: PropTypes.object.isRequired,
+	// From withScrollToTop.
+	scrollToTop: PropTypes.func,
 	// From withProducts.
 	products: PropTypes.array,
 };
 
-export default withProducts( ProductGrid );
+export default withScrollToTop( withProducts( ProductGrid ) );
