@@ -6,10 +6,7 @@ import { Component, Fragment } from 'react';
 import { InspectorControls, ServerSideRender } from '@wordpress/editor';
 import { HOME_URL } from '@woocommerce/block-settings';
 import PropTypes from 'prop-types';
-import {
-	PanelBody,
-	ToggleControl,
-} from '@wordpress/components';
+import { PanelBody, ToggleControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
