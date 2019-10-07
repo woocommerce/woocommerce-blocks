@@ -141,10 +141,16 @@ const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 				EmptyResponsePlaceholder={ () => (
 					<Placeholder
 						icon={ <IconFolder /> }
-						label={ __( 'Product Categories List', 'woo-gutenberg-products-block' ) }
+						label={ __(
+							'Product Categories List',
+							'woo-gutenberg-products-block'
+						) }
 						className="wc-block-product-categories"
 					>
-						{ __( "This block shows product categories for your store. To use it, you'll first need to create a product and assign it to a category.", 'woo-gutenberg-products-block' ) }
+						{ __(
+							"This block shows product categories for your store. To use it, you'll first need to create a product and assign it to a category.",
+							'woo-gutenberg-products-block'
+						) }
 					</Placeholder>
 				) }
 			/>
