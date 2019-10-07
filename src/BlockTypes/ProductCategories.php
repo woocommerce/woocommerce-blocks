@@ -264,6 +264,9 @@ class ProductCategories extends AbstractDynamicBlock {
 	 * @return string
 	 */
 	protected function getCount( $category, $attributes ) {
+		if ( empty( $attributes['hasCount'] ) ) {
+			return '';
+		}
 		return $attributes['isDropdown'] ? '(' . absint( $category->count ) . ')' : '<span class="wc-block-product-categories-list-item-count">' . absint( $category->count ) . '</span>';
 	}
 }
