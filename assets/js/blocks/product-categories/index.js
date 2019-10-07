@@ -96,10 +96,15 @@ registerBlockType( 'woocommerce/product-categories', {
 				},
 			},
 			migrate( attributes ) {
-                return attributes;
-            },
+				return attributes;
+			},
 			save( props ) {
-				const { hasCount, hasEmpty, isDropdown, isHierarchical } = props.attributes;
+				const {
+					hasCount,
+					hasEmpty,
+					isDropdown,
+					isHierarchical,
+				} = props.attributes;
 				const data = {};
 				if ( hasCount ) {
 					data[ 'data-has-count' ] = true;
