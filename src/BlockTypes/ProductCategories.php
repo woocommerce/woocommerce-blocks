@@ -161,6 +161,7 @@ class ProductCategories extends AbstractDynamicBlock {
 				type="button"
 				class="wc-block-product-categories__button"
 				aria-label="' . esc_html__( 'Go to category', 'woo-gutenberg-products-block' ) . '"
+				onclick="const url = document.getElementById( \'' . esc_attr( $uid ) . '-select\' ).value; if ( \'false\' !== url ) document.location.href = url;"
 			>
 				<svg
 					aria-hidden="true"
