@@ -9,7 +9,7 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 import './editor.scss';
 import './style.scss';
-import edit from './edit.js';
+import Block from './block.js';
 import { IconFolder } from '@woocommerce/block-components/icons';
 
 registerBlockType( 'woocommerce/product-categories', {
@@ -74,7 +74,12 @@ registerBlockType( 'woocommerce/product-categories', {
 		},
 	},
 
-	edit,
+	/**
+	 * Renders and manages the block.
+	 */
+	edit( props ) {
+		return <Block { ...props } />;
+	},
 
 	/**
 	 * Save the props to post content.
