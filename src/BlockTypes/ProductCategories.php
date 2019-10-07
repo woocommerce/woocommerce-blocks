@@ -220,10 +220,11 @@ class ProductCategories extends AbstractDynamicBlock {
 	 * @param array $categories List of terms.
 	 * @param array $attributes Block attributes. Default empty array.
 	 * @param int   $uid Unique ID for the rendered block, used for HTML IDs.
+	 * @param int   $depth Current depth.
 	 * @return string Rendered output.
 	 */
-	protected function renderList( $categories, $attributes, $uid ) {
-		$output = '<ul class="wc-block-product-categories-list">' . $this->renderListItems( $categories, $attributes, $uid ) . '</ul>';
+	protected function renderList( $categories, $attributes, $uid, $depth = 0 ) {
+		$output = '<ul class="wc-block-product-categories-list wc-block-product-categories-list--depth-' . absint( $depth ) . '">' . $this->renderListItems( $categories, $attributes, $uid, $depth ) . '</ul>';
 
 		return $output;
 	}
