@@ -62,6 +62,10 @@ class ProductCategories extends AbstractDynamicBlock {
 		$uid        = uniqid( 'product-categories-' );
 		$categories = $this->get_categories( $attributes );
 
+		if ( ! $categories ) {
+			return '';
+		}
+
 		$output  = '<div class="wc-block-product-categories ' . esc_attr( $attributes['className'] ) . ' ' . ( $attributes['isDropdown'] ? 'is-dropdown' : 'is-list' ) . '">';
 		$output .= ! empty( $attributes['isDropdown'] ) ? $this->renderDropdown( $categories, $attributes, $uid ) : $this->renderList( $categories, $attributes, $uid );
 		$output .= '</div>';
@@ -85,6 +89,10 @@ class ProductCategories extends AbstractDynamicBlock {
 				'hierarchical' => true,
 			]
 		);
+
+		if ( ! $categories ) {
+			return [];
+		}
 
 		return $hierarchical ? $this->build_category_tree( $categories ) : $categories;
 	}
