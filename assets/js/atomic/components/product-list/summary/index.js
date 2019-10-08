@@ -4,10 +4,7 @@
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-const ProductListSummary = ( {
-	className,
-	product,
-} ) => {
+const ProductListSummary = ( { className, product } ) => {
 	if ( ! product.description ) {
 		return null;
 	}

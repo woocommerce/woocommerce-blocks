@@ -32,9 +32,7 @@ const blockConfig = {
 		return (
 			<Fragment>
 				<Disabled>
-					<ProductListSummary
-						product={ attributes.product }
-					/>
+					<ProductListSummary product={ attributes.product } />
 				</Disabled>
 			</Fragment>
 		);

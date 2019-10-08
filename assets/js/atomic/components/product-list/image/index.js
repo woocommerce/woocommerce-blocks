@@ -9,9 +9,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import {
-	PLACEHOLDER_IMG_SRC,
-} from '@woocommerce/block-settings';
+import { PLACEHOLDER_IMG_SRC } from '@woocommerce/block-settings';
 
 const ProductListImage = ( {
 	className,
