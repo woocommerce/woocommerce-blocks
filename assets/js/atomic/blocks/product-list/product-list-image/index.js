@@ -5,14 +5,8 @@ import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import Gridicon from 'gridicons';
 import { Fragment } from 'react';
-import {
-	Disabled,
-	PanelBody,
-	ToggleControl,
-} from '@wordpress/components';
-import {
-	InspectorControls,
-} from '@wordpress/editor';
+import { Disabled, PanelBody, ToggleControl } from '@wordpress/components';
+import { InspectorControls } from '@wordpress/editor';
 
 /**
  * Internal dependencies
@@ -42,7 +36,7 @@ const blockConfig = {
 		productLink: {
 			type: 'boolean',
 			default: true,
-		}
+		},
 	},
 	edit( props ) {
 		const { attributes, setAttributes } = props;
@@ -51,9 +45,17 @@ const blockConfig = {
 		return (
 			<Fragment>
 				<InspectorControls>
-					<PanelBody title={ __( 'Settings', 'woo-gutenberg-products-block' ) }>
+					<PanelBody
+						title={ __(
+							'Settings',
+							'woo-gutenberg-products-block'
+						) }
+					>
 						<ToggleControl
-							label={ __( 'Link to Product Page', 'woo-gutenberg-products-block' ) }
+							label={ __(
+								'Link to Product Page',
+								'woo-gutenberg-products-block'
+							) }
 							checked={ productLink }
 							onChange={ () =>
 								setAttributes( {

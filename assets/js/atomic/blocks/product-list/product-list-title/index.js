@@ -4,14 +4,8 @@
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import { Fragment } from 'react';
-import {
-	Disabled,
-	PanelBody,
-	ToggleControl,
-} from '@wordpress/components';
-import {
-	InspectorControls,
-} from '@wordpress/editor';
+import { Disabled, PanelBody, ToggleControl } from '@wordpress/components';
+import { InspectorControls } from '@wordpress/editor';
 
 /**
  * Internal dependencies
@@ -46,7 +40,7 @@ const blockConfig = {
 		productLink: {
 			type: 'boolean',
 			default: true,
-		}
+		},
 	},
 	edit( props ) {
 		const { attributes, setAttributes } = props;
@@ -55,11 +49,27 @@ const blockConfig = {
 		return (
 			<Fragment>
 				<InspectorControls>
-					<PanelBody title={ __( 'Settings', 'woo-gutenberg-products-block' ) }>
+					<PanelBody
+						title={ __(
+							'Settings',
+							'woo-gutenberg-products-block'
+						) }
+					>
 						<p>{ __( 'Level', 'woo-gutenberg-products-block' ) }</p>
-						<HeadingToolbar isCollapsed={ false } minLevel={ 1 } maxLevel={ 7 } selectedLevel={ level } onChange={ ( newLevel ) => setAttributes( { level: newLevel } ) } />
+						<HeadingToolbar
+							isCollapsed={ false }
+							minLevel={ 1 }
+							maxLevel={ 7 }
+							selectedLevel={ level }
+							onChange={ ( newLevel ) =>
+								setAttributes( { level: newLevel } )
+							}
+						/>
 						<ToggleControl
-							label={ __( 'Link to Product Page', 'woo-gutenberg-products-block' ) }
+							label={ __(
+								'Link to Product Page',
+								'woo-gutenberg-products-block'
+							) }
 							checked={ productLink }
 							onChange={ () =>
 								setAttributes( {
@@ -70,7 +80,11 @@ const blockConfig = {
 					</PanelBody>
 				</InspectorControls>
 				<Disabled>
-					<ProductListTitle headingLevel={ level } productLink={ productLink } product={ attributes.product } />
+					<ProductListTitle
+						headingLevel={ level }
+						productLink={ productLink }
+						product={ attributes.product }
+					/>
 				</Disabled>
 			</Fragment>
 		);

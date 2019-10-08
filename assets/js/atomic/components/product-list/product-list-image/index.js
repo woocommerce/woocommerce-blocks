@@ -41,7 +41,9 @@ const ProductListImage = ( {
 				srcSet={ mainImage.srcset }
 				sizes={ mainImage.sizes }
 				alt={ mainImage.alt }
-				style={ { width: `${ THUMBNAIL_SIZE }px` /* stylelint-disable-line */ } }
+				style={ {
+					width: `${ THUMBNAIL_SIZE }px` /* stylelint-disable-line */,
+				} }
 			/>
 		);
 	} else {
@@ -50,7 +52,9 @@ const ProductListImage = ( {
 				className="wc-block-grid__product-image__image wc-block-grid__product-image__image_placeholder"
 				src={ PLACEHOLDER_IMG_SRC }
 				alt=""
-				style={ { width: `${ THUMBNAIL_SIZE }px` /* stylelint-disable-line */ } }
+				style={ {
+					width: `${ THUMBNAIL_SIZE }px` /* stylelint-disable-line */,
+				} }
 			/>
 		);
 	}
@@ -68,14 +72,11 @@ const ProductListImage = ( {
 					{ image }
 				</a>
 			) : (
-				<Fragment>
-					{ image }
-				</Fragment>
+				<Fragment>{ image }</Fragment>
 			) }
 		</div>
 	);
 };
-
 
 ProductListImage.propTypes = {
 	className: PropTypes.string,

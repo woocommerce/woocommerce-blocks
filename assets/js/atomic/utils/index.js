@@ -75,17 +75,37 @@ export const DEFAULT_PRODUCT_LIST_LAYOUT = [
  * @param {number} componentId Parent component ID needed for key generation.
  */
 export const renderProductLayout = ( product, layoutConfig, componentId ) => {
-	return layoutConfig.map( ( { component: LayoutComponentName, props = {} } ) => {
-		let children = [];
+	return layoutConfig.map(
+		( { component: LayoutComponentName, props = {} } ) => {
+			let children = [];
 
-		if ( !! props.children && props.children.length > 0 ) {
-			children = renderProductLayout( product, props.children, componentId );
+			if ( !! props.children && props.children.length > 0 ) {
+				children = renderProductLayout(
+					product,
+					props.children,
+					componentId
+				);
+			}
+
+			const LayoutComponent = COMPONENT_MAP[ LayoutComponentName ];
+
+			return (
+				<LayoutComponent
+					key={
+						'layout' +
+						LayoutComponentName +
+						'_' +
+						componentId +
+						'_' +
+						product.id
+					}
+					{ ...props }
+					children={ children }
+					product={ product }
+				/>
+			);
 		}
-
-		const LayoutComponent = COMPONENT_MAP[ LayoutComponentName ];
-
-		return <LayoutComponent key={ 'layout' + LayoutComponentName + '_' + componentId + '_' + product.id } { ...props } children={ children } product={ product } />;
-	} );
+	);
 };
 
 /**
@@ -103,9 +123,10 @@ export const getProductLayoutConfig = ( innerBlocks ) => {
 			props: {
 				...block.attributes,
 				product: undefined,
-				children: block.innerBlocks.length > 0 ?
-					getProductLayoutConfig( block.innerBlocks ) :
-					[],
+				children:
+					block.innerBlocks.length > 0
+						? getProductLayoutConfig( block.innerBlocks )
+						: [],
 			},
 		};
 	} );

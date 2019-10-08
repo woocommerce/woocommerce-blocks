@@ -15,7 +15,7 @@ const ProductListTitle = ( {
 		return null;
 	}
 
-	const TagName = `h${headingLevel}`;
+	const TagName = `h${ headingLevel }`;
 
 	return (
 		<TagName
@@ -29,13 +29,11 @@ const ProductListTitle = ( {
 					{ product.name }
 				</a>
 			) : (
-				<Fragment>
-					{ product.name }
-				</Fragment>
+				<Fragment>{ product.name }</Fragment>
 			) }
 		</TagName>
 	);
-}
+};
 
 ProductListTitle.propTypes = {
 	className: PropTypes.string,
