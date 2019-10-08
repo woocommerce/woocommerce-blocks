@@ -25,7 +25,10 @@ registerBlockType( 'woocommerce/all-products', {
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
-	description: __( 'Display all products from your store as a grid.', 'woo-gutenberg-products-block' ),
+	description: __(
+		'Display all products from your store as a grid.',
+		'woo-gutenberg-products-block'
+	),
 	supports: {
 		align: [ 'wide', 'full' ],
 		html: false,
