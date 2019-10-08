@@ -20,8 +20,6 @@ class ProductListItem extends Component {
 	render = () => {
 		const { product, attributes, componentId } = this.props;
 		const { layoutConfig } = attributes;
-		//const { contentVisibility } = attributes;
-		//const { button, price, rating, title, image } = contentVisibility;
 		const isLoading = ! Object.keys( product ).length > 0;
 		const classes = classnames(
 			'wc-block-grid__product',

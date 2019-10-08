@@ -29,7 +29,7 @@ import {
 	renderNoProductsPlaceholder,
 	getBlockClassName,
 } from '../utils';
-import { getSharedContentControls, getSharedListControls } from '../edit';
+import { getSharedListControls } from '../edit';
 import GridLayoutControl from '@woocommerce/block-components/grid-layout-control';
 import { HAS_PRODUCTS } from '@woocommerce/block-settings';
 import Block from './block';
@@ -101,12 +101,6 @@ class Editor extends Component {
 						alignButtons={ alignButtons }
 						setAttributes={ setAttributes }
 					/>
-				</PanelBody>
-				<PanelBody
-					title={ __( 'Content', 'woo-gutenberg-products-block' ) }
-					initialOpen
-				>
-					{ getSharedContentControls( attributes, setAttributes ) }
 				</PanelBody>
 				<PanelBody
 					title={ __(
