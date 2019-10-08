@@ -36,10 +36,15 @@ const withProduct = createHigherOrderComponent( ( OriginalComponent ) => {
 		}
 
 		loadProduct() {
-			const { productId } = this.props.attributes;
+			const { productId, previewProduct } = this.props.attributes;
 
-			if ( ! productId ) {
-				this.setState( { product: null, loading: false, error: null } );
+			if ( ! productId || productId === 'preview' ) {
+				const product = productId === 'preview' ? previewProduct : null;
+				this.setState( {
+					product: product || this.state.product,
+					loading: false,
+					error: null,
+				} );
 				return;
 			}
 
