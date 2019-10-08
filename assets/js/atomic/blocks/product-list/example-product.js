@@ -1,0 +1,26 @@
+export default {
+	id: 0,
+	name: 'Sample Product',
+	images: [],
+	prices: {
+		currency_code: 'GBP',
+		decimal_separator: '.',
+		thousand_separator: ',',
+		decimals: 2,
+		price_prefix: '£',
+		price_suffix: '',
+		price: '9.99',
+		regular_price: '9.99',
+		sale_price: null,
+		price_range: null,
+	},
+	average_rating: 5,
+	add_to_cart: {
+		text: 'Add to cart',
+		description: 'Add to cart',
+	},
+	permalink: '#',
+	has_options: false,
+	is_purchasable: true,
+	is_in_stock: true,
+};

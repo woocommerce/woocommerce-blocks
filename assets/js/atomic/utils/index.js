@@ -23,7 +23,6 @@ export const COMPONENT_MAP = {
  * Map blocks names to component names.
  */
 export const BLOCK_MAP = {
-	'woocommerce/product-list-link': 'ProductListLink',
 	'woocommerce/product-list-image': 'ProductListImage',
 	'woocommerce/product-list-price': 'ProductListPrice',
 	'woocommerce/product-list-title': 'ProductListTitle',
@@ -38,7 +37,8 @@ export const BLOCK_MAP = {
  * The default template (list of inner blocks) for the product list.
  */
 export const DEFAULT_PRODUCT_LIST_TEMPLATE = [
-	[ 'woocommerce/product-list-link', {} ],
+	[ 'woocommerce/product-list-image', {} ],
+	[ 'woocommerce/product-list-title', {} ],
 	[ 'woocommerce/product-list-price', {} ],
 	[ 'woocommerce/product-list-rating', {} ],
 	[ 'woocommerce/product-list-button', {} ],
@@ -46,19 +46,12 @@ export const DEFAULT_PRODUCT_LIST_TEMPLATE = [
 
 export const DEFAULT_PRODUCT_LIST_LAYOUT = [
 	{
-		component: 'ProductListLink',
-		props: {
-			children: [
-				{
-					component: 'ProductListImage',
-					props: {},
-				},
-				{
-					component: 'ProductListTitle',
-					props: {},
-				},
-			],
-		},
+		component: 'ProductListImage',
+		props: {},
+	},
+	{
+		component: 'ProductListTitle',
+		props: {},
 	},
 	{
 		component: 'ProductListPrice',

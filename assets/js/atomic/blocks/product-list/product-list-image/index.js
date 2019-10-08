@@ -3,14 +3,23 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { Disabled } from '@wordpress/components';
 import Gridicon from 'gridicons';
+import { Fragment } from 'react';
+import {
+	Disabled,
+	PanelBody,
+	ToggleControl,
+} from '@wordpress/components';
+import {
+	InspectorControls,
+} from '@wordpress/editor';
 
 /**
  * Internal dependencies
  */
 import { ProductListImage } from '../../../components/product-list';
 import sharedConfig from '../shared-config';
+import exampleProduct from '../example-product';
 
 /**
  * Register and run the "All Products" block.
@@ -25,16 +34,43 @@ const blockConfig = {
 		src: <Gridicon icon="image" />,
 		foreground: '#96588a',
 	},
+	attributes: {
+		product: {
+			type: 'object',
+			default: exampleProduct,
+		},
+		productLink: {
+			type: 'boolean',
+			default: true,
+		}
+	},
 	edit( props ) {
-		const { attributes } = props;
+		const { attributes, setAttributes } = props;
+		const { productLink } = attributes;
 
 		return (
-			<Disabled>
-				<ProductListImage
-					product={ attributes.product }
-					showSaleBadge={ true }
-				/>
-			</Disabled>
+			<Fragment>
+				<InspectorControls>
+					<PanelBody title={ __( 'Settings', 'woo-gutenberg-products-block' ) }>
+						<ToggleControl
+							label={ __( 'Link to Product Page', 'woo-gutenberg-products-block' ) }
+							checked={ productLink }
+							onChange={ () =>
+								setAttributes( {
+									productLink: ! productLink,
+								} )
+							}
+						/>
+					</PanelBody>
+				</InspectorControls>
+				<Disabled>
+					<ProductListImage
+						product={ attributes.product }
+						showSaleBadge={ true }
+						productLink={ productLink }
+					/>
+				</Disabled>
+			</Fragment>
 		);
 	},
 };

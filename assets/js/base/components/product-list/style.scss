@@ -40,11 +40,19 @@
 	position: relative;
 }
 
+.entry-content .wc-block-grid__product-image,
 .wc-block-grid__product-image {
 	text-decoration: none;
 	margin-bottom: $gap;
 	display: block;
 	position: relative;
+
+	a {
+		text-decoration: none;
+		border: 0;
+		outline: 0;
+		box-shadow: none;
+	}
 
 	.wc-block-grid__product-image__image {
 		vertical-align: middle;
@@ -62,9 +70,14 @@
 	}
 }
 
+.editor-styles-wrapper .wc-block-grid__product-title,
 .wc-block-grid__product-title {
-	line-height: 1.2;
+	line-height: 1.2em;
 	font-weight: 700;
+	margin: 0 0 $gap-small;
+	padding: 0;
+	color: inherit;
+	font-size: inherit;
 
 	.is-loading &::before {
 		@include placeholder();
