@@ -5,6 +5,7 @@ import {
 	ProductListButton,
 	ProductListImage,
 	ProductListRating,
+	ProductListSummary,
 } from '../components/product-list';
 
 /**
@@ -17,6 +18,7 @@ export const COMPONENT_MAP = {
 	ProductListButton,
 	ProductListImage,
 	ProductListRating,
+	ProductListSummary,
 };
 
 /**
@@ -28,6 +30,7 @@ export const BLOCK_MAP = {
 	'woocommerce/product-list-title': 'ProductListTitle',
 	'woocommerce/product-list-rating': 'ProductListRating',
 	'woocommerce/product-list-button': 'ProductListButton',
+	'woocommerce/product-list-summary': 'ProductListSummary',
 };
 // @todo how to support these using mapping?
 //'core/paragraph',

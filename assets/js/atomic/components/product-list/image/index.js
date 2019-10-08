@@ -11,7 +11,6 @@ import classnames from 'classnames';
  */
 import {
 	PLACEHOLDER_IMG_SRC,
-	THUMBNAIL_SIZE,
 } from '@woocommerce/block-settings';
 
 const ProductListImage = ( {
@@ -41,9 +40,6 @@ const ProductListImage = ( {
 				srcSet={ mainImage.srcset }
 				sizes={ mainImage.sizes }
 				alt={ mainImage.alt }
-				style={ {
-					width: `${ THUMBNAIL_SIZE }px` /* stylelint-disable-line */,
-				} }
 			/>
 		);
 	} else {
@@ -52,9 +48,6 @@ const ProductListImage = ( {
 				className="wc-block-grid__product-image__image wc-block-grid__product-image__image_placeholder"
 				src={ PLACEHOLDER_IMG_SRC }
 				alt=""
-				style={ {
-					width: `${ THUMBNAIL_SIZE }px` /* stylelint-disable-line */,
-				} }
 			/>
 		);
 	}
