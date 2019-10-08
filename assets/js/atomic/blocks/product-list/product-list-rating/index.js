@@ -26,11 +26,11 @@ const blockConfig = {
 		foreground: '#96588a',
 	},
 	edit( props ) {
-		const { className, attributes } = props;
+		const { attributes } = props;
 
 		return (
 			<Disabled>
-				<ProductListRating className={ className } product={ attributes.product } />
+				<ProductListRating product={ attributes.product } />
 			</Disabled>
 		);
 	},

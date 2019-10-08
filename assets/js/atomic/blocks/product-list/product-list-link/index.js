@@ -28,7 +28,7 @@ const blockConfig = {
 		foreground: '#96588a',
 	},
 	edit( props ) {
-		const { className, attributes } = props;
+		const { attributes } = props;
 
 		const BLOCKS_TEMPLATE = [
 			[ 'woocommerce/product-list-image', {} ],
@@ -36,7 +36,7 @@ const blockConfig = {
 		];
 
 		return (
-			<ProductListLink className={ className } product={ attributes.product }>
+			<ProductListLink product={ attributes.product }>
 				<InnerBlocks
 					template={ BLOCKS_TEMPLATE }
 					templateLock={ false }

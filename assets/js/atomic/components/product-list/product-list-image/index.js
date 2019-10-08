@@ -2,9 +2,9 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import { Component } from 'react';
 import { __ } from '@wordpress/i18n';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -37,12 +37,11 @@ class ProductListImage extends Component {
 		const { product, className } = this.props;
 		let image = null;
 
-		const classes = classnames( className, 'wc-block-grid__product-image' );
-
-		if ( product.images.length ) {
+		if ( product.images && product.images.length ) {
 			const mainImage = product.images[ 0 ];
 			image = (
 				<img
+					className="wc-block-grid__product-image__image"
 					src={ mainImage.thumbnail }
 					srcSet={ mainImage.srcset }
 					sizes={ mainImage.sizes }
@@ -53,6 +52,7 @@ class ProductListImage extends Component {
 		} else {
 			image = (
 				<img
+					className="wc-block-grid__product-image__image wc-block-grid__product-image__image_placeholder"
 					src={ PLACEHOLDER_IMG_SRC }
 					alt=""
 					style={ { width: `${ THUMBNAIL_SIZE }px` } }
@@ -61,7 +61,7 @@ class ProductListImage extends Component {
 		}
 
 		return (
-			<div className={ classes }>
+			<div className={ classnames( className, 'wc-block-grid__product-image' ) }>
 				{ this.renderSaleBadge() }
 				{ image }
 			</div>

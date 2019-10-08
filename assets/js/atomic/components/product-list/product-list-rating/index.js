@@ -3,8 +3,8 @@
  */
 import PropTypes from 'prop-types';
 import { __, sprintf } from '@wordpress/i18n';
-import classnames from 'classnames';
 import { Component } from 'react';
+import classnames from 'classnames';
 
 class ProductListRating extends Component {
 	static propTypes = {
@@ -24,14 +24,9 @@ class ProductListRating extends Component {
 			width: ( rating / 5 * 100 ) + '%', /* stylelint-disable-line */
 		};
 
-		const classes = classnames(
-			className,
-			'wc-block-grid__product-rating',
-		);
-
 		return (
-			<div className={ classes }>
-				<div className={ 'wc-block-grid__product-rating__stars' } role="img">
+			<div className={ classnames( className, 'wc-block-grid__product-rating' ) }>
+				<div className="wc-block-grid__product-rating__stars" role="img">
 					<span style={ starStyle }>{ sprintf( __( 'Rated %d out of 5', 'woo-gutenberg-products-block' ), rating ) }</span>
 				</div>
 			</div>

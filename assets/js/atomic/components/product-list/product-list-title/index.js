@@ -2,8 +2,8 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import { Component } from 'react';
+import classnames from 'classnames';
 
 class ProductListTitle extends Component {
 	static propTypes = {
@@ -18,13 +18,8 @@ class ProductListTitle extends Component {
 			return null;
 		}
 
-		const classes = classnames(
-			className,
-			'wc-block-grid__product-title',
-		);
-
 		return (
-			<div className={ classes }>
+			<div className={ classnames( className, 'wc-block-grid__product-title' ) }>
 				{ product.name }
 			</div>
 		);
