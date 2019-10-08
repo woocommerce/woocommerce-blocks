@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { InnerBlocks } from '@wordpress/editor';
 import { registerBlockType } from '@wordpress/blocks';
+import { DEFAULT_HEIGHT } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -11,8 +12,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import './style.scss';
 import './editor.scss';
 import Block from './block';
-import { IconFolderStar } from '../../components/icons';
-import { DEFAULT_HEIGHT } from '../../constants';
+import { IconFolderStar } from '@woocommerce/block-components/icons';
 
 /**
  * Register and run the "Featured Category" block.

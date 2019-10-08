@@ -30,8 +30,8 @@ import {
 	getBlockClassName,
 } from '../utils';
 import { getSharedContentControls, getSharedListControls } from '../edit';
-import GridLayoutControl from '../../../components/grid-layout-control';
-import { HAS_PRODUCTS } from '../../../constants';
+import GridLayoutControl from '@woocommerce/block-components/grid-layout-control';
+import { HAS_PRODUCTS } from '@woocommerce/block-settings';
 import Block from './block';
 import {
 	getProductLayoutConfig,
@@ -56,7 +56,7 @@ class Editor extends Component {
 		 * From withSpokenMessages.
 		 */
 		debouncedSpeak: PropTypes.func.isRequired,
-	}
+	};
 
 	state = {
 		isEditing: false,
@@ -109,7 +109,10 @@ class Editor extends Component {
 					{ getSharedContentControls( attributes, setAttributes ) }
 				</PanelBody>
 				<PanelBody
-					title={ __( 'List Settings', 'woo-gutenberg-products-block' ) }
+					title={ __(
+						'List Settings',
+						'woo-gutenberg-products-block'
+					) }
 					initialOpen
 				>
 					{ getSharedListControls( attributes, setAttributes ) }
@@ -199,26 +202,28 @@ class Editor extends Component {
 		const { attributes } = this.props;
 		const { contentVisibility } = attributes;
 		const { isEditing } = this.state;
-		const hasContent = 0 !== Object.values( contentVisibility ).filter( Boolean ).length;
 		const blockTitle = this.getTitle();
 		const blockIcon = this.getIcon();
-
-		if ( ! HAS_PRODUCTS ) {
-			return renderNoProductsPlaceholder( blockTitle, blockIcon );
-		}
-
-		if ( ! hasContent ) {
-			return renderHiddenContentPlaceholder( blockTitle, blockIcon );
-		}
+		const hasContent =
+			0 !== Object.values( contentVisibility ).filter( Boolean ).length;
 
 		return (
-			<div className={ getBlockClassName( 'wc-block-all-products', attributes ) }>
+			<div
+				className={ getBlockClassName(
+					'wc-block-all-products',
+					attributes
+				) }
+			>
 				{ this.getBlockControls() }
 				{ this.getInspectorControls() }
+				{ ! HAS_PRODUCTS &&
+					renderNoProductsPlaceholder( blockTitle, blockIcon ) }
+				{ ! hasContent &&
+					renderHiddenContentPlaceholder( blockTitle, blockIcon ) }
 				{ isEditing ? this.renderEditMode() : this.renderViewMode() }
 			</div>
 		);
-	}
+	};
 }
 
 export default compose(

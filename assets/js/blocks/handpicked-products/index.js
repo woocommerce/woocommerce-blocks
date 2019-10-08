@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
+import { DEFAULT_COLUMNS } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -10,8 +11,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import './editor.scss';
 import Block from './block';
 import { deprecatedConvertToShortcode } from '../../utils/deprecations';
-import { IconWidgets } from '../../components/icons';
-import { DEFAULT_COLUMNS } from '../../constants';
+import { IconWidgets } from '@woocommerce/block-components/icons';
 
 registerBlockType( 'woocommerce/handpicked-products', {
 	title: __( 'Hand-picked Products', 'woo-gutenberg-products-block' ),
@@ -124,7 +124,9 @@ registerBlockType( 'woocommerce/handpicked-products', {
 					default: [],
 				},
 			},
-			save: deprecatedConvertToShortcode( 'woocommerce/handpicked-products' ),
+			save: deprecatedConvertToShortcode(
+				'woocommerce/handpicked-products'
+			),
 		},
 	],
 

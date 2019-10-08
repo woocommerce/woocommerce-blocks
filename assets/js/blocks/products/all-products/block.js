@@ -7,11 +7,7 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import withComponentId from '../../../base/hocs/with-component-id';
-import ProductList from '../../../base/components/product-list';
-
-// Temporary data.
-import products from './sample-data.json';
+import ProductListContainer from '@woocommerce/base-components/product-list/container.js';
 
 /**
  * The All Products Block. @todo
@@ -22,13 +18,10 @@ class Block extends Component {
 		 * The attributes for this block.
 		 */
 		attributes: PropTypes.object.isRequired,
-		/**
-		 * From withComponentId.
-		 */
-		componentId: PropTypes.number,
-	}
+	};
 
 	render() {
+		const { attributes, urlParameterSuffix } = this.props;
 		/**
 		 * Todo classes
 		 *
@@ -36,9 +29,12 @@ class Block extends Component {
 		 * wc-block-{$this->block_name},
 		 */
 		return (
-			<ProductList products={ products } attributes={ this.props.attributes } componentId={ this.props.componentId } />
+			<ProductListContainer
+				attributes={ attributes }
+				urlParameterSuffix={ urlParameterSuffix }
+			/>
 		);
 	}
 }
 
-export default withComponentId( Block );
+export default Block;

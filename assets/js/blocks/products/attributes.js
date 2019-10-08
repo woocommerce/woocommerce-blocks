@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { DEFAULT_COLUMNS, DEFAULT_ROWS } from '../../constants';
+import { DEFAULT_COLUMNS, DEFAULT_ROWS } from '@woocommerce/block-settings';
 import { DEFAULT_PRODUCT_LIST_LAYOUT } from '../../atomic/utils';
 
 export default {

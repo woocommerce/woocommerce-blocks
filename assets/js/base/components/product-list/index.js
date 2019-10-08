@@ -7,10 +7,30 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import ProductListItem from '../product-list-item';
+import Pagination from '@woocommerce/base-components/pagination';
+import ProductSortSelect from '@woocommerce/base-components/product-sort-select';
+import ProductListItem from '@woocommerce/base-components/product-list-item';
+import withProducts from '@woocommerce/base-hocs/with-products';
+import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
+import withComponentId from '@woocommerce/base-hocs/with-component-id';
 import './style.scss';
 
-const ProductList = ( { attributes, componentId, products } ) => {
+const ProductList = ( {
+	attributes,
+	currentPage,
+	onOrderChange,
+	onPageChange,
+	sortValue,
+	products,
+	scrollToTop,
+	totalProducts,
+	componentId,
+} ) => {
+	const onPaginationChange = ( newPage ) => {
+		scrollToTop( { focusableSelector: 'a, button' } );
+		onPageChange( newPage );
+	};
+
 	const getClassnames = () => {
 		const { columns, rows, className, alignButtons, align } = attributes;
 		const alignClass = typeof align !== 'undefined' ? 'align' + align : '';
@@ -27,30 +47,49 @@ const ProductList = ( { attributes, componentId, products } ) => {
 		);
 	};
 
+	const perPage = attributes.columns * attributes.rows;
+	const totalPages = Math.ceil( totalProducts / perPage );
+	const listProducts = products.length
+		? products
+		: Array.from( { length: perPage } );
+
 	return (
 		<div className={ getClassnames() }>
-			<ul
-				key={ `wc-block-grid__products-${ componentId }` }
-				className="wc-block-grid__products"
-			>
-				{ products.length === 0 ?
-					(
-						<ProductListItem attributes={ attributes } componentId={ componentId } />
-					) : (
-						products.map( ( product, i ) => (
-							<ProductListItem key={ componentId + '_' + ( product.id || i ) } componentId={ componentId } attributes={ attributes } product={ product } />
-						) )
-					)
-				}
+			{ attributes.showOrderby && (
+				<ProductSortSelect
+					onChange={ onOrderChange }
+					value={ sortValue }
+				/>
+			) }
+			<ul className="wc-block-grid__products">
+				{ listProducts.map( ( product = {}, i ) => (
+					<ProductListItem
+						key={ product.id || i }
+						attributes={ attributes }
+						product={ product }
+						componentId={ componentId }
+					/>
+				) ) }
 			</ul>
+			{ totalProducts > perPage && (
+				<Pagination
+					currentPage={ currentPage }
+					onPageChange={ onPaginationChange }
+					totalPages={ totalPages }
+				/>
+			) }
 		</div>
 	);
 };
 
 ProductList.propTypes = {
 	attributes: PropTypes.object.isRequired,
+	// From withScrollToTop.
+	scrollToTop: PropTypes.func,
+	// From withProducts.
+	products: PropTypes.array,
+	// from withComponentId
 	componentId: PropTypes.number.isRequired,
-	products: PropTypes.array.isRequired,
 };
 
-export default ProductList;
+export default withComponentId( withScrollToTop( withProducts( ProductList ) ) );

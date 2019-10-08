@@ -2,15 +2,11 @@
  * External dependencies
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
-import {
-	BlockControls,
-	InspectorControls,
-} from '@wordpress/editor';
+import { InspectorControls } from '@wordpress/editor';
 import {
 	Button,
 	PanelBody,
 	Placeholder,
-	Toolbar,
 	withSpokenMessages,
 } from '@wordpress/components';
 import { SearchListItem } from '@woocommerce/components';
@@ -20,32 +16,25 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import EditorBlock from './editor-block.js';
-import ProductControl from '../../../components/product-control';
-import { IconReviewsByProduct } from '../../../components/icons';
-import { getSharedReviewContentControls, getSharedReviewListControls } from '../edit.js';
-import { getBlockClassName } from '../utils.js';
+import ProductControl from '@woocommerce/block-components/product-control';
+import { IconReviewsByProduct } from '@woocommerce/block-components/icons';
+import EditorContainerBlock from '../editor-container-block.js';
+import NoReviewsPlaceholder from './no-reviews-placeholder.js';
+import {
+	getBlockControls,
+	getSharedReviewContentControls,
+	getSharedReviewListControls,
+} from '../edit-utils.js';
 
 /**
  * Component to handle edit mode of "Reviews by Product".
  */
-const ReviewsByProductEditor = ( { attributes, debouncedSpeak, setAttributes } ) => {
-	const { editMode, productId, showReviewDate, showReviewerName, showReviewContent, showReviewImage, showReviewRating } = attributes;
-
-	const getBlockControls = () => (
-		<BlockControls>
-			<Toolbar
-				controls={ [
-					{
-						icon: 'edit',
-						title: __( 'Edit' ),
-						onClick: () => setAttributes( { editMode: ! editMode } ),
-						isActive: editMode,
-					},
-				] }
-			/>
-		</BlockControls>
-	);
+const ReviewsByProductEditor = ( {
+	attributes,
+	debouncedSpeak,
+	setAttributes,
+} ) => {
+	const { editMode, productId } = attributes;
 
 	const renderProductControlItem = ( args ) => {
 		const { item = 0 } = args;
@@ -93,10 +82,20 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, setAttributes } )
 						renderItem={ renderProductControlItem }
 					/>
 				</PanelBody>
-				<PanelBody title={ __( 'Content', 'woo-gutenberg-products-block' ) }>
-					{ getSharedReviewContentControls( attributes, setAttributes ) }
+				<PanelBody
+					title={ __( 'Content', 'woo-gutenberg-products-block' ) }
+				>
+					{ getSharedReviewContentControls(
+						attributes,
+						setAttributes
+					) }
 				</PanelBody>
-				<PanelBody title={ __( 'List Settings', 'woo-gutenberg-products-block' ) }>
+				<PanelBody
+					title={ __(
+						'List Settings',
+						'woo-gutenberg-products-block'
+					) }
+				>
 					{ getSharedReviewListControls( attributes, setAttributes ) }
 				</PanelBody>
 			</InspectorControls>
@@ -116,8 +115,13 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, setAttributes } )
 
 		return (
 			<Placeholder
-				icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
-				label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
+				icon={
+					<IconReviewsByProduct className="block-editor-block-icon" />
+				}
+				label={ __(
+					'Reviews by Product',
+					'woo-gutenberg-products-block'
+				) }
 			>
 				{ __(
 					'Show reviews of your product to build trust',
@@ -144,38 +148,26 @@ const ReviewsByProductEditor = ( { attributes, debouncedSpeak, setAttributes } )
 		);
 	};
 
-	const renderHiddenContentPlaceholder = () => {
-		return (
-			<Placeholder
-				icon={ <IconReviewsByProduct className="block-editor-block-icon" /> }
-				label={ __( 'Reviews by Product', 'woo-gutenberg-products-block' ) }
-			>
-				{ __( 'The content for this block is hidden due to block settings.', 'woo-gutenberg-products-block' ) }
-			</Placeholder>
-		);
-	};
-
-	const renderViewMode = () => {
-		if ( ! showReviewContent && ! showReviewRating && ! showReviewDate && ! showReviewerName && ! showReviewImage ) {
-			return renderHiddenContentPlaceholder();
-		}
-
-		return (
-			<div className={ getBlockClassName( 'wc-block-reviews-by-product', attributes ) }>
-				<EditorBlock attributes={ attributes } />
-			</div>
-		);
-	};
-
 	if ( ! productId || editMode ) {
 		return renderEditMode();
 	}
 
 	return (
 		<Fragment>
-			{ getBlockControls() }
+			{ getBlockControls( editMode, setAttributes ) }
 			{ getInspectorControls() }
-			{ renderViewMode() }
+			<EditorContainerBlock
+				attributes={ attributes }
+				className="wc-block-all-reviews"
+				icon={
+					<IconReviewsByProduct className="block-editor-block-icon" />
+				}
+				name={ __(
+					'Reviews by Product',
+					'woo-gutenberg-products-block'
+				) }
+				noReviewsPlaceholder={ NoReviewsPlaceholder }
+			/>
 		</Fragment>
 	);
 };

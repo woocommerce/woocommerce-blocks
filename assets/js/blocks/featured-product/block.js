@@ -30,29 +30,37 @@ import { Fragment } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
+import { MIN_HEIGHT } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
-import ProductControl from '../../components/product-control';
-import ApiErrorPlaceholder from '../../components/api-error-placeholder';
-import {
-	dimRatioToClass,
-	getBackgroundImageStyles,
-} from './utils';
+import ProductControl from '@woocommerce/block-components/product-control';
+import ErrorPlaceholder from '@woocommerce/block-components/error-placeholder';
+import { dimRatioToClass, getBackgroundImageStyles } from './utils';
 import {
 	getImageSrcFromProduct,
 	getImageIdFromProduct,
 } from '../../utils/products';
-import { withProduct } from '../../hocs';
-import { MIN_HEIGHT } from '../../constants';
+import { withProduct } from '@woocommerce/block-hocs';
 
 /**
  * Component to handle edit mode of "Featured Product".
  */
-const FeaturedProduct = ( { attributes, debouncedSpeak, error, getProduct, isLoading, isSelected, overlayColor, product, setAttributes, setOverlayColor } ) => {
+const FeaturedProduct = ( {
+	attributes,
+	debouncedSpeak,
+	error,
+	getProduct,
+	isLoading,
+	isSelected,
+	overlayColor,
+	product,
+	setAttributes,
+	setOverlayColor,
+} ) => {
 	const renderApiError = () => (
-		<ApiErrorPlaceholder
+		<ErrorPlaceholder
 			className="wc-block-featured-product-error"
 			error={ error }
 			isLoading={ isLoading }
@@ -76,7 +84,10 @@ const FeaturedProduct = ( { attributes, debouncedSpeak, error, getProduct, isLoa
 				{ getBlockControls() }
 				<Placeholder
 					icon="star-filled"
-					label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
+					label={ __(
+						'Featured Product',
+						'woo-gutenberg-products-block'
+					) }
 					className="wc-block-featured-product"
 				>
 					{ __(
@@ -86,9 +97,14 @@ const FeaturedProduct = ( { attributes, debouncedSpeak, error, getProduct, isLoa
 					<div className="wc-block-featured-product__selection">
 						<ProductControl
 							selected={ attributes.productId || 0 }
+							showVariations
 							onChange={ ( value = [] ) => {
 								const id = value[ 0 ] ? value[ 0 ].id : 0;
-								setAttributes( { productId: id, mediaId: 0, mediaSrc: '' } );
+								setAttributes( {
+									productId: id,
+									mediaId: 0,
+									mediaSrc: '',
+								} );
 							} }
 						/>
 						<Button isDefault onClick={ onDone }>
@@ -116,7 +132,10 @@ const FeaturedProduct = ( { attributes, debouncedSpeak, error, getProduct, isLoa
 					<Toolbar>
 						<MediaUpload
 							onSelect={ ( media ) => {
-								setAttributes( { mediaId: media.id, mediaSrc: media.url } );
+								setAttributes( {
+									mediaId: media.id,
+									mediaSrc: media.url,
+								} );
 							} }
 							allowedTypes={ [ 'image' ] }
 							value={ mediaId }
@@ -137,7 +156,8 @@ const FeaturedProduct = ( { attributes, debouncedSpeak, error, getProduct, isLoa
 						{
 							icon: 'edit',
 							title: __( 'Edit' ),
-							onClick: () => setAttributes( { editMode: ! editMode } ),
+							onClick: () =>
+								setAttributes( { editMode: ! editMode } ),
 							isActive: editMode,
 						},
 					] }
@@ -155,16 +175,30 @@ const FeaturedProduct = ( { attributes, debouncedSpeak, error, getProduct, isLoa
 
 		return (
 			<InspectorControls key="inspector">
-				<PanelBody title={ __( 'Content', 'woo-gutenberg-products-block' ) }>
+				<PanelBody
+					title={ __( 'Content', 'woo-gutenberg-products-block' ) }
+				>
 					<ToggleControl
-						label={ __( 'Show description', 'woo-gutenberg-products-block' ) }
+						label={ __(
+							'Show description',
+							'woo-gutenberg-products-block'
+						) }
 						checked={ attributes.showDesc }
-						onChange={ () => setAttributes( { showDesc: ! attributes.showDesc } ) }
+						onChange={
+							// prettier-ignore
+							() => setAttributes( { showDesc: ! attributes.showDesc } )
+						}
 					/>
 					<ToggleControl
-						label={ __( 'Show price', 'woo-gutenberg-products-block' ) }
+						label={ __(
+							'Show price',
+							'woo-gutenberg-products-block'
+						) }
 						checked={ attributes.showPrice }
-						onChange={ () => setAttributes( { showPrice: ! attributes.showPrice } ) }
+						onChange={
+							// prettier-ignore
+							() => setAttributes( { showPrice: ! attributes.showPrice } )
+						}
 					/>
 				</PanelBody>
 				<PanelColorSettings
@@ -173,28 +207,38 @@ const FeaturedProduct = ( { attributes, debouncedSpeak, error, getProduct, isLoa
 						{
 							value: overlayColor.color,
 							onChange: setOverlayColor,
-							label: __( 'Overlay Color', 'woo-gutenberg-products-block' ),
+							label: __(
+								'Overlay Color',
+								'woo-gutenberg-products-block'
+							),
 						},
 					] }
 				>
 					{ !! url && (
 						<Fragment>
 							<RangeControl
-								label={ __( 'Background Opacity', 'woo-gutenberg-products-block' ) }
+								label={ __(
+									'Background Opacity',
+									'woo-gutenberg-products-block'
+								) }
 								value={ attributes.dimRatio }
-								onChange={ ( ratio ) => setAttributes( { dimRatio: ratio } ) }
+								onChange={ ( ratio ) =>
+									setAttributes( { dimRatio: ratio } )
+								}
 								min={ 0 }
 								max={ 100 }
 								step={ 10 }
 							/>
-							{ focalPointPickerExists &&
+							{ focalPointPickerExists && (
 								<FocalPointPicker
 									label={ __( 'Focal Point Picker' ) }
 									url={ url }
 									value={ focalPoint }
-									onChange={ ( value ) => setAttributes( { focalPoint: value } ) }
+									onChange={ ( value ) =>
+										setAttributes( { focalPoint: value } )
+									}
 								/>
-							}
+							) }
 						</Fragment>
 					) }
 				</PanelColorSettings>
@@ -222,17 +266,20 @@ const FeaturedProduct = ( { attributes, debouncedSpeak, error, getProduct, isLoa
 			},
 			dimRatioToClass( dimRatio ),
 			contentAlign !== 'center' && `has-${ contentAlign }-content`,
-			className,
+			className
 		);
 
-		const style = getBackgroundImageStyles( attributes.mediaSrc || product );
+		const style = getBackgroundImageStyles(
+			attributes.mediaSrc || product
+		);
 
 		if ( overlayColor.color ) {
 			style.backgroundColor = overlayColor.color;
 		}
 		if ( focalPoint ) {
-			style.backgroundPosition = `${ focalPoint.x * 100 }% ${ focalPoint.y *
-				100 }%`;
+			const bgPosX = focalPoint.x * 100;
+			const bgPosY = focalPoint.y * 100;
+			style.backgroundPosition = `${ bgPosX }% ${ bgPosY }%`;
 		}
 
 		const onResizeStop = ( event, direction, elt ) => {
@@ -274,7 +321,9 @@ const FeaturedProduct = ( { attributes, debouncedSpeak, error, getProduct, isLoa
 					{ showPrice && (
 						<div
 							className="wc-block-featured-product__price"
-							dangerouslySetInnerHTML={ { __html: product.price_html } }
+							dangerouslySetInnerHTML={ {
+								__html: product.price_html,
+							} }
 						/>
 					) }
 					<div className="wc-block-featured-product__link">
@@ -328,11 +377,7 @@ const FeaturedProduct = ( { attributes, debouncedSpeak, error, getProduct, isLoa
 		<Fragment>
 			{ getBlockControls() }
 			{ getInspectorControls() }
-			{ product ? (
-				renderProduct()
-			) : (
-				renderNoProduct()
-			) }
+			{ product ? renderProduct() : renderNoProduct() }
 		</Fragment>
 	);
 };

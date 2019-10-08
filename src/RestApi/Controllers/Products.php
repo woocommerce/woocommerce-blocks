@@ -105,17 +105,19 @@ class Products extends WC_REST_Products_Controller {
 	}
 
 	/**
-	 * Change read permissions to allow author access to this API.
+	 * Change REST API permissions so that authors have access to this API.
 	 *
-	 * @param bool   $permission Permission.
-	 * @param string $context Context of the request.
+	 * This code only runs for methods of this class. @see Products::get_items below.
+	 *
+	 * @param bool $permission Does the current user have access to the API.
 	 * @return bool
 	 */
-	public function change_permissions( $permission, $context ) {
-		if ( 'read' === $context ) {
-			$permission = current_user_can( 'edit_posts' );
+	public function force_edit_posts_permission( $permission ) {
+		// If user has access already, we can bypass additonal checks.
+		if ( $permission ) {
+			return $permission;
 		}
-		return $permission;
+		return current_user_can( 'edit_posts' );
 	}
 
 	/**
@@ -125,9 +127,9 @@ class Products extends WC_REST_Products_Controller {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function get_items( $request ) {
-		add_filter( 'woocommerce_rest_check_permissions', array( $this, 'change_permissions' ), 10, 2 );
+		add_filter( 'woocommerce_rest_check_permissions', array( $this, 'force_edit_posts_permission' ) );
 		$response = parent::get_items( $request );
-		remove_filter( 'woocommerce_rest_check_permissions', array( $this, 'change_permissions' ) );
+		remove_filter( 'woocommerce_rest_check_permissions', array( $this, 'force_edit_posts_permission' ) );
 
 		return $response;
 	}

@@ -11,9 +11,9 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import GridContentControl from '../../components/grid-content-control';
-import GridLayoutControl from '../../components/grid-layout-control';
-import ProductCategoryControl from '../../components/product-category-control';
+import GridContentControl from '@woocommerce/block-components/grid-content-control';
+import GridLayoutControl from '@woocommerce/block-components/grid-layout-control';
+import ProductCategoryControl from '@woocommerce/block-components/product-category-control';
 
 /**
  * Component to handle edit mode of "Top Rated Products".
@@ -49,7 +49,9 @@ class ProductTopRatedBlock extends Component {
 				>
 					<GridContentControl
 						settings={ contentVisibility }
-						onChange={ ( value ) => setAttributes( { contentVisibility: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { contentVisibility: value } )
+						}
 					/>
 				</PanelBody>
 				<PanelBody
@@ -82,7 +84,10 @@ class ProductTopRatedBlock extends Component {
 			<Fragment>
 				{ this.getInspectorControls() }
 				<Disabled>
-					<ServerSideRender block={ name } attributes={ attributes } />
+					<ServerSideRender
+						block={ name }
+						attributes={ attributes }
+					/>
 				</Disabled>
 			</Fragment>
 		);

@@ -25,10 +25,7 @@ registerBlockType( 'woocommerce/all-products', {
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
-	description: __(
-		'Show all products.',
-		'woo-gutenberg-products-block'
-	),
+	description: __( 'Show all products.', 'woo-gutenberg-products-block' ),
 	supports: {
 		align: [ 'wide', 'full' ],
 		html: false,
@@ -53,7 +50,13 @@ registerBlockType( 'woocommerce/all-products', {
 		};
 
 		return (
-			<div className={ getBlockClassName( 'wc-block-reviews-by-product', attributes ) } { ...data }>
+			<div
+				className={ getBlockClassName(
+					'wc-block-all-products',
+					attributes
+				) }
+				{ ...data }
+			>
 				<InnerBlocks.Content />
 			</div>
 		);

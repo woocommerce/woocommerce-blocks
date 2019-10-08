@@ -50,10 +50,9 @@ These instructions cover new releases of the blocks plugin for those with commit
 
 **Before any release** ensure you update:
 
-- The `readme.txt` file supported versions, version number, and changelog
-- The version number in `woocommerce-gutenberg-products-block.php`
-- The version number in `package.json`
-- The version number in `src/Package.php`
+- The `readme.txt` file supported versions, changelog and list of blocks if the release includes new blocks.
+
+> Note: version numbers will automatically be updated in files via the deploy script (see `bin/version-changes.sh`).
 
 ### Tagging new releases on GitHub
 
@@ -90,3 +89,14 @@ To release a new version, perform the following steps:
 - Run `npm pack` to prep a `.tgz` file.
 - Optionally test the package by uploading this onto a test site.
 - Run `npm publish --access public`, which will push the version up to npm.
+
+## Legacy builds
+
+This plugin supports two type of builds:
+
+- legacy builds (assets have `-legacy` suffix on their file names)
+- main builds (without the `-legacy` prefix)
+
+The legacy builds are loaded in a site environment where the WordPress version doesn't meet minimum requirements for a components used in a set build.
+
+You can read more about legacy builds in the [this doc](./assets/js/legacy/README.md).

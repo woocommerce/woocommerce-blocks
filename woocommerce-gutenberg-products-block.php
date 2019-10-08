@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Blocks
  * Plugin URI: https://github.com/woocommerce/woocommerce-gutenberg-products-block
  * Description: WooCommerce blocks for the Gutenberg editor.
- * Version: 2.4.0-dev
+ * Version: 2.5.0-dev
  * Author: Automattic
  * Author URI: https://woocommerce.com
  * Text Domain:  woo-gutenberg-products-block
@@ -68,4 +68,49 @@ if ( is_readable( $autoloader ) ) {
 	return;
 }
 
-add_action( 'plugins_loaded', array( '\Automattic\WooCommerce\Blocks\Package', 'init' ) );
+/**
+ * Loads the dependency injection container for woocommerce blocks.
+ *
+ * @param boolean $reset Used to reset the container to a fresh instance.
+ *                       Note: this means all dependencies will be reconstructed.
+ */
+function wc_blocks_container( $reset = false ) {
+	static $container;
+	if (
+		! $container instanceof Automattic\WooCommerce\Blocks\Registry\Container
+		|| $reset
+	) {
+		$container = new Automattic\WooCommerce\Blocks\Registry\Container();
+		// register Package.
+		$container->register(
+			Automattic\WooCommerce\Blocks\Domain\Package::class,
+			function ( $container ) {
+				return new Automattic\WooCommerce\Blocks\Domain\Package(
+					'2.5.0-dev',
+					__FILE__
+				);
+			}
+		);
+		// register Bootstrap.
+		$container->register(
+			Automattic\WooCommerce\Blocks\Domain\Bootstrap::class,
+			function ( $container ) {
+				return new Automattic\WooCommerce\Blocks\Domain\Bootstrap(
+					$container
+				);
+			}
+		);
+	}
+	return $container;
+}
+
+add_action( 'plugins_loaded', 'wc_blocks_bootstrap' );
+/**
+ * Boostrap WooCommerce Blocks App
+ */
+function wc_blocks_bootstrap() {
+	// initialize bootstrap.
+	wc_blocks_container()->get(
+		Automattic\WooCommerce\Blocks\Domain\Bootstrap::class
+	);
+}
