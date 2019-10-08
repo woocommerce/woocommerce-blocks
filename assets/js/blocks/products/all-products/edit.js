@@ -15,6 +15,7 @@ import {
 	Button,
 	Toolbar,
 	Disabled,
+	Tip,
 } from '@wordpress/components';
 import { Component } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
@@ -150,7 +151,7 @@ class Editor extends Component {
 		return (
 			<Placeholder icon={ this.getIcon() } label={ this.getTitle() }>
 				{ __(
-					'Shows all products. Edit the product template below for products shown in the grid.',
+					'Display all products from your store as a grid.',
 					'woo-gutenberg-products-block'
 				) }
 				<div className="wc-block-all-products-grid-item-template">
@@ -166,6 +167,12 @@ class Editor extends Component {
 							</li>
 						</ul>
 					</div>
+					<Tip>
+						{ __(
+							'Edit the blocks in the preview above to alter the content displayed for each product in the product grid. Click "done" to apply your changes.',
+							'woo-gutenberg-products-block'
+						) }
+					</Tip>
 					<Button isDefault onClick={ onDone }>
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }
 					</Button>
