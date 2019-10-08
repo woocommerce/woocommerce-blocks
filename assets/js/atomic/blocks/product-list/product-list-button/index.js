@@ -18,7 +18,7 @@ import sharedConfig from '../shared-config';
 const blockConfig = {
 	title: __( 'Product Button', 'woo-gutenberg-products-block' ),
 	description: __(
-		'Shows the read more/add to cart button for a product within a product grid.',
+		'Display a call to action button which either adds the product to the cart, or links to the product page.',
 		'woo-gutenberg-products-block'
 	),
 	icon: {

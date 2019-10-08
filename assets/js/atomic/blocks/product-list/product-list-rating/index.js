@@ -18,7 +18,7 @@ import sharedConfig from '../shared-config';
 const blockConfig = {
 	title: __( 'Product Rating', 'woo-gutenberg-products-block' ),
 	description: __(
-		'Shows the rating of a product within a product grid.',
+		'Display the average rating of a product.',
 		'woo-gutenberg-products-block'
 	),
 	icon: {

@@ -21,7 +21,7 @@ import exampleProduct from '../example-product';
 const blockConfig = {
 	title: __( 'Product Image', 'woo-gutenberg-products-block' ),
 	description: __(
-		'Shows the image of a product within a product grid.',
+		'Display the main product image',
 		'woo-gutenberg-products-block'
 	),
 	icon: {
