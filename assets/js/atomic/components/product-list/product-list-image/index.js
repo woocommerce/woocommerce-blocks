@@ -61,7 +61,12 @@ class ProductListImage extends Component {
 		}
 
 		return (
-			<div className={ classnames( className, 'wc-block-grid__product-image' ) }>
+			<div
+				className={ classnames(
+					className,
+					'wc-block-grid__product-image'
+				) }
+			>
 				{ this.renderSaleBadge() }
 				{ image }
 			</div>

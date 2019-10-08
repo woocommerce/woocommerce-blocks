@@ -10,7 +10,7 @@ class ProductListRating extends Component {
 	static propTypes = {
 		className: PropTypes.string,
 		product: PropTypes.object.isRequired,
-	}
+	};
 
 	render = () => {
 		const { product, className } = this.props;
@@ -21,17 +21,33 @@ class ProductListRating extends Component {
 		}
 
 		const starStyle = {
-			width: ( rating / 5 * 100 ) + '%', /* stylelint-disable-line */
+			width: ( rating / 5 ) * 100 + '%' /* stylelint-disable-line */,
 		};
 
 		return (
-			<div className={ classnames( className, 'wc-block-grid__product-rating' ) }>
-				<div className="wc-block-grid__product-rating__stars" role="img">
-					<span style={ starStyle }>{ sprintf( __( 'Rated %d out of 5', 'woo-gutenberg-products-block' ), rating ) }</span>
+			<div
+				className={ classnames(
+					className,
+					'wc-block-grid__product-rating'
+				) }
+			>
+				<div
+					className="wc-block-grid__product-rating__stars"
+					role="img"
+				>
+					<span style={ starStyle }>
+						{ sprintf(
+							__(
+								'Rated %d out of 5',
+								'woo-gutenberg-products-block'
+							),
+							rating
+						) }
+					</span>
 				</div>
 			</div>
 		);
-	}
+	};
 }
 
 export default ProductListRating;

@@ -30,7 +30,10 @@ const blockConfig = {
 
 		return (
 			<Disabled>
-				<ProductListImage product={ attributes.product } showSaleBadge={ true } />
+				<ProductListImage
+					product={ attributes.product }
+					showSaleBadge={ true }
+				/>
 			</Disabled>
 		);
 	},

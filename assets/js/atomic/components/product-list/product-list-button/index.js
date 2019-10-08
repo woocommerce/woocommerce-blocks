@@ -76,7 +76,7 @@ class ProductListButton extends Component {
 		const wrapperClasses = classnames(
 			className,
 			'wc-block-grid__product-add-to-cart',
-			'wp-block-button',
+			'wp-block-button'
 		);
 
 		const buttonClasses = classnames(

@@ -9,7 +9,7 @@ class ProductListTitle extends Component {
 	static propTypes = {
 		className: PropTypes.string,
 		product: PropTypes.object.isRequired,
-	}
+	};
 
 	render = () => {
 		const { product, className } = this.props;
@@ -19,11 +19,16 @@ class ProductListTitle extends Component {
 		}
 
 		return (
-			<div className={ classnames( className, 'wc-block-grid__product-title' ) }>
+			<div
+				className={ classnames(
+					className,
+					'wc-block-grid__product-title'
+				) }
+			>
 				{ product.name }
 			</div>
 		);
-	}
+	};
 }
 
 export default ProductListTitle;
