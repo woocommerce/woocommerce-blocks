@@ -9,14 +9,17 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { PLACEHOLDER_IMG_SRC, THUMBNAIL_SIZE } from '@woocommerce/block-settings';
+import {
+	PLACEHOLDER_IMG_SRC,
+	THUMBNAIL_SIZE,
+} from '@woocommerce/block-settings';
 
 class ProductListImage extends Component {
 	static propTypes = {
 		className: PropTypes.string,
 		product: PropTypes.object.isRequired,
 		showSaleBadge: PropTypes.bool,
-	}
+	};
 
 	renderSaleBadge = () => {
 		const { product, showSaleBadge } = this.props;
@@ -28,16 +31,13 @@ class ProductListImage extends Component {
 				</span>
 			);
 		}
-	}
+	};
 
 	render = () => {
 		const { product, className } = this.props;
 		let image = null;
 
-		const classes = classnames(
-			className,
-			'wc-block-grid__product-image',
-		);
+		const classes = classnames( className, 'wc-block-grid__product-image' );
 
 		if ( product.images.length ) {
 			const mainImage = product.images[ 0 ];
@@ -66,7 +66,7 @@ class ProductListImage extends Component {
 				{ image }
 			</div>
 		);
-	}
+	};
 }
 
 export default ProductListImage;
