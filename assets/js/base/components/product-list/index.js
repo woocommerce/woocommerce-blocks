@@ -92,4 +92,6 @@ ProductList.propTypes = {
 	componentId: PropTypes.number.isRequired,
 };
 
-export default withComponentId( withScrollToTop( withProducts( ProductList ) ) );
+export default withComponentId(
+	withScrollToTop( withProducts( ProductList ) )
+);

@@ -106,7 +106,7 @@ const getMainConfig = ( options = {} ) => {
 			'product-tag': './assets/js/blocks/product-tag/index.js',
 			'featured-category':
 				'./assets/js/blocks/featured-category/index.js',
-				'all-products': './assets/js/blocks/products/all-products/index.js',
+			'all-products': './assets/js/blocks/products/all-products/index.js',
 		},
 		output: {
 			path: path.resolve( __dirname, '../build/' ),

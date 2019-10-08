@@ -64,11 +64,11 @@ class Editor extends Component {
 
 	getTitle = () => {
 		return __( 'All Products', 'woo-gutenberg-products-block' );
-	}
+	};
 
 	getIcon = () => {
 		return <Gridicon icon="grid" />;
-	}
+	};
 
 	togglePreview = () => {
 		const { debouncedSpeak } = this.props;
@@ -138,12 +138,14 @@ class Editor extends Component {
 				/>
 			</BlockControls>
 		);
-	}
+	};
 
 	renderEditMode = () => {
 		const onDone = () => {
 			const { block, setAttributes } = this.props;
-			setAttributes( { layoutConfig: getProductLayoutConfig( block.innerBlocks ) } );
+			setAttributes( {
+				layoutConfig: getProductLayoutConfig( block.innerBlocks ),
+			} );
 			this.togglePreview();
 		};
 
@@ -152,10 +154,7 @@ class Editor extends Component {
 		};
 
 		return (
-			<Placeholder
-				icon={ this.getIcon() }
-				label={ this.getTitle() }
-			>
+			<Placeholder icon={ this.getIcon() } label={ this.getTitle() }>
 				{ __(
 					'Shows all products. Edit the product template below for products shown in the grid.',
 					'woo-gutenberg-products-block'
@@ -186,7 +185,7 @@ class Editor extends Component {
 				</div>
 			</Placeholder>
 		);
-	}
+	};
 
 	renderViewMode = () => {
 		const { attributes } = this.props;
@@ -196,7 +195,7 @@ class Editor extends Component {
 				<Block attributes={ attributes } />
 			</Disabled>
 		);
-	}
+	};
 
 	render = () => {
 		const { attributes } = this.props;
@@ -233,5 +232,5 @@ export default compose(
 		return {
 			block: getBlock( clientId ),
 		};
-	} ),
+	} )
 )( Editor );

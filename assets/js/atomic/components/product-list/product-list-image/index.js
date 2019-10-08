@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { PLACEHOLDER_IMG_SRC, THUMBNAIL_SIZE } from '../../../../constants';
+import { PLACEHOLDER_IMG_SRC, THUMBNAIL_SIZE } from '@woocommerce/block-settings';
 
 class ProductListImage extends Component {
 	static propTypes = {
