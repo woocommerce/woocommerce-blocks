@@ -164,7 +164,7 @@ class Editor extends Component {
 			const { block, replaceInnerBlocks } = this.props;
 			const newBlocks = [];
 			DEFAULT_PRODUCT_LIST_TEMPLATE.map( ( blockType ) => {
-				newBlocks.push( createBlock( blockType[0], blockType[1] ) );
+				newBlocks.push( createBlock( blockType[ 0 ], blockType[ 1 ] ) );
 				return true;
 			} );
 			replaceInnerBlocks( block.clientId, newBlocks, false );
@@ -215,10 +215,16 @@ class Editor extends Component {
 						<IconButton
 							className="wc-block-all-products__reset-button"
 							icon={ <Gridicon icon="grid" /> }
-							label={ __( 'Reset layout to default', 'woo-gutenberg-products-block' ) }
+							label={ __(
+								'Reset layout to default',
+								'woo-gutenberg-products-block'
+							) }
 							onClick={ onReset }
 						>
-							{ __( 'Reset Layout', 'woo-gutenberg-products-block' ) }
+							{ __(
+								'Reset Layout',
+								'woo-gutenberg-products-block'
+							) }
 						</IconButton>
 					</div>
 				</div>
@@ -273,11 +279,9 @@ export default compose(
 		};
 	} ),
 	withDispatch( ( dispatch ) => {
-		const {
-			replaceInnerBlocks,
-		} = dispatch( 'core/block-editor' );
+		const { replaceInnerBlocks } = dispatch( 'core/block-editor' );
 		return {
 			replaceInnerBlocks,
 		};
-	} ),
+	} )
 )( Editor );

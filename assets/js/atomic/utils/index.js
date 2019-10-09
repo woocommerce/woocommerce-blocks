@@ -79,7 +79,7 @@ export const DEFAULT_PRODUCT_LIST_LAYOUT = [
  */
 export const renderProductLayout = ( product, layoutConfig, componentId ) => {
 	return layoutConfig.map(
-		( { component: LayoutComponentName, props = {} } ) => {
+		( { component: LayoutComponentName, props = {} }, index ) => {
 			let children = [];
 
 			if ( !! props.children && props.children.length > 0 ) {
@@ -91,17 +91,18 @@ export const renderProductLayout = ( product, layoutConfig, componentId ) => {
 			}
 
 			const LayoutComponent = COMPONENT_MAP[ LayoutComponentName ];
+			const productID = product.id || 0;
+			const keyParts = [
+				'layout',
+				LayoutComponentName,
+				index,
+				componentId,
+				productID,
+			];
 
 			return (
 				<LayoutComponent
-					key={
-						'layout' +
-						LayoutComponentName +
-						'_' +
-						componentId +
-						'_' +
-						product.id
-					}
+					key={ keyParts.join( '_' ) }
 					{ ...props }
 					children={ children }
 					product={ product }
