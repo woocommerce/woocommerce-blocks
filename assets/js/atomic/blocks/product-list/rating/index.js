@@ -12,9 +12,6 @@ import Gridicon from 'gridicons';
 import { ProductListRating } from '../../../components/product-list';
 import sharedConfig from '../shared-config';
 
-/**
- * Register and run the "All Products" block.
- */
 const blockConfig = {
 	title: __( 'Product Rating', 'woo-gutenberg-products-block' ),
 	description: __(

@@ -12,9 +12,6 @@ import Gridicon from 'gridicons';
 import { ProductListPrice } from '../../../components/product-list';
 import sharedConfig from '../shared-config';
 
-/**
- * Register and run the "All Products" block.
- */
 const blockConfig = {
 	title: __( 'Product Price', 'woo-gutenberg-products-block' ),
 	description: __(

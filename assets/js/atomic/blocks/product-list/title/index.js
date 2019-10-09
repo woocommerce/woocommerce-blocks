@@ -15,9 +15,6 @@ import sharedConfig from '../shared-config';
 import HeadingToolbar from './heading-toolbar';
 import exampleProduct from '../example-product';
 
-/**
- * Register and run the "All Products" block.
- */
 const blockConfig = {
 	title: __( 'Product Title', 'woo-gutenberg-products-block' ),
 	description: __(

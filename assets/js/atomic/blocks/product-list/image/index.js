@@ -15,9 +15,6 @@ import { ProductListImage } from '../../../components/product-list';
 import sharedConfig from '../shared-config';
 import exampleProduct from '../example-product';
 
-/**
- * Register and run the "All Products" block.
- */
 const blockConfig = {
 	title: __( 'Product Image', 'woo-gutenberg-products-block' ),
 	description: __(
