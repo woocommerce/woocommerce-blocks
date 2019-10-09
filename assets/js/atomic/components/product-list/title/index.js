@@ -29,7 +29,7 @@ const ProductListTitle = ( {
 					{ product.name }
 				</a>
 			) : (
-				<Fragment>{ product.name }</Fragment>
+				{ product.name }
 			) }
 		</TagName>
 	);
