@@ -4,6 +4,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import withComponentId from '@woocommerce/base-hocs/with-component-id';
 
 /**
  * Internal dependencies.
@@ -14,6 +15,7 @@ class ProductListItem extends Component {
 	static propTypes = {
 		attributes: PropTypes.object.isRequired,
 		product: PropTypes.object,
+		// from withComponentId
 		componentId: PropTypes.number.isRequired,
 	};
 
@@ -33,4 +35,4 @@ class ProductListItem extends Component {
 	};
 }
 
-export default ProductListItem;
+export default withComponentId( ProductListItem );

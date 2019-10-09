@@ -2,7 +2,6 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import { Fragment } from 'react';
 import classnames from 'classnames';
 
 const ProductListTitle = ( {
@@ -15,6 +14,7 @@ const ProductListTitle = ( {
 		return null;
 	}
 
+	const productName = product.name;
 	const TagName = `h${ headingLevel }`;
 
 	return (
@@ -26,10 +26,10 @@ const ProductListTitle = ( {
 		>
 			{ !! productLink ? (
 				<a href={ product.permalink } rel="nofollow">
-					{ product.name }
+					{ productName }
 				</a>
 			) : (
-				{ product.name }
+				{ productName }
 			) }
 		</TagName>
 	);

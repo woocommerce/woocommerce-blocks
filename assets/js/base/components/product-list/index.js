@@ -12,7 +12,6 @@ import ProductSortSelect from '@woocommerce/base-components/product-sort-select'
 import ProductListItem from '@woocommerce/base-components/product-list-item';
 import withProducts from '@woocommerce/base-hocs/with-products';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
-import withComponentId from '@woocommerce/base-hocs/with-component-id';
 import './style.scss';
 
 const ProductList = ( {
@@ -24,7 +23,6 @@ const ProductList = ( {
 	products,
 	scrollToTop,
 	totalProducts,
-	componentId,
 } ) => {
 	const onPaginationChange = ( newPage ) => {
 		scrollToTop( { focusableSelector: 'a, button' } );
@@ -67,7 +65,6 @@ const ProductList = ( {
 						key={ product.id || i }
 						attributes={ attributes }
 						product={ product }
-						componentId={ componentId }
 					/>
 				) ) }
 			</ul>
@@ -88,10 +85,6 @@ ProductList.propTypes = {
 	scrollToTop: PropTypes.func,
 	// From withProducts.
 	products: PropTypes.array,
-	// from withComponentId
-	componentId: PropTypes.number.isRequired,
 };
 
-export default withComponentId(
-	withScrollToTop( withProducts( ProductList ) )
-);
+export default withScrollToTop( withProducts( ProductList ) );
