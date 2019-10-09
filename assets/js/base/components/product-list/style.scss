@@ -40,6 +40,7 @@
 	position: relative;
 }
 
+// Extra specificity to avoid editor styles on linked images.
 .entry-content .wc-block-grid__product-image,
 .wc-block-grid__product-image {
 	text-decoration: none;
