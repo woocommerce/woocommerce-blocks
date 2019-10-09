@@ -50,8 +50,8 @@
 		text-align: center;
 
 		.components-tip {
-			max-width: 400px;
-			margin: 0 auto;
+			max-width: 450px;
+			margin: 20px auto;
 			text-align: left;
 
 			p {
@@ -61,9 +61,11 @@
 
 		.wc-block-all-products__actions {
 			display: flex;
-			margin: 1em 0 0;
+			margin: 20px auto;
+			padding: 1em 0 0;
 			align-items: center;
 			vertical-align: middle;
+			max-width: 450px;
 			.wc-block-all-products__done-button {
 				margin: 0;
 				order: 3;
@@ -81,10 +83,10 @@
 		}
 
 		.wc-block-grid__products {
-			margin: 20px auto !important;
+			margin: 0 auto !important;
 			text-align: center;
 			position: relative;
-			max-width: 400px;
+			max-width: 450px;
 		}
 		.wc-block-grid__product {
 			padding: 1px 20px;

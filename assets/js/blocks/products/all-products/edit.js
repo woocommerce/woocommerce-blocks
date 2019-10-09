@@ -178,6 +178,12 @@ class Editor extends Component {
 					'woo-gutenberg-products-block'
 				) }
 				<div className="wc-block-all-products-grid-item-template">
+					<Tip>
+						{ __(
+							'Edit the blocks inside the preview below to change the content displayed for each product within the product grid.',
+							'woo-gutenberg-products-block'
+						) }
+					</Tip>
 					<div className="wc-block-grid has-1-columns">
 						<ul className="wc-block-grid__products">
 							<li className="wc-block-grid__product">
@@ -190,12 +196,6 @@ class Editor extends Component {
 							</li>
 						</ul>
 					</div>
-					<Tip>
-						{ __(
-							'Edit the blocks inside the preview above to change the content displayed for each product within the product grid.',
-							'woo-gutenberg-products-block'
-						) }
-					</Tip>
 					<div className="wc-block-all-products__actions">
 						<Button
 							className="wc-block-all-products__done-button"
