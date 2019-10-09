@@ -3,8 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { Fragment } from 'react';
-import { Disabled } from '@wordpress/components';
 import Gridicon from 'gridicons';
 
 /**
@@ -26,13 +24,7 @@ const blockConfig = {
 	edit( props ) {
 		const { attributes } = props;
 
-		return (
-			<Fragment>
-				<Disabled>
-					<ProductListSummary product={ attributes.product } />
-				</Disabled>
-			</Fragment>
-		);
+		return <ProductListSummary product={ attributes.product } />;
 	},
 };
 
