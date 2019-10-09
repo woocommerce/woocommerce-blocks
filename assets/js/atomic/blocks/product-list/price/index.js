@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { Disabled } from '@wordpress/components';
 import Gridicon from 'gridicons';
 
 /**
@@ -25,11 +24,7 @@ const blockConfig = {
 	edit( props ) {
 		const { attributes } = props;
 
-		return (
-			<Disabled>
-				<ProductListPrice product={ attributes.product } />
-			</Disabled>
-		);
+		return <ProductListPrice product={ attributes.product } />;
 	},
 };
 
