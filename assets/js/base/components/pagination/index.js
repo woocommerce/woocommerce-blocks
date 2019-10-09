@@ -81,6 +81,7 @@ const Pagination = ( {
 						'wc-block-pagination-page--active': currentPage === 1,
 					} ) }
 					onClick={ () => onPageChange( 1 ) }
+					disabled={ currentPage === 1 }
 				>
 					1
 				</button>
@@ -127,6 +128,7 @@ const Pagination = ( {
 							currentPage === totalPages,
 					} ) }
 					onClick={ () => onPageChange( totalPages ) }
+					disabled={ currentPage === totalPages }
 				>
 					{ totalPages }
 				</button>
