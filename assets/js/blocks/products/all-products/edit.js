@@ -2,17 +2,19 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { createBlock } from '@wordpress/blocks';
 import {
 	BlockControls,
 	InnerBlocks,
 	InspectorControls,
 } from '@wordpress/editor';
-import { withSelect } from '@wordpress/data';
+import { withDispatch, withSelect } from '@wordpress/data';
 import {
 	PanelBody,
 	withSpokenMessages,
 	Placeholder,
 	Button,
+	IconButton,
 	Toolbar,
 	Disabled,
 	Tip,
@@ -61,6 +63,12 @@ class Editor extends Component {
 
 	state = {
 		isEditing: false,
+		innerBlocks: [],
+	};
+
+	componentDidMount = () => {
+		const { block } = this.props;
+		this.setState( { innerBlocks: block.innerBlocks } );
 	};
 
 	getTitle = () => {
@@ -141,11 +149,26 @@ class Editor extends Component {
 			setAttributes( {
 				layoutConfig: getProductLayoutConfig( block.innerBlocks ),
 			} );
+			this.setState( { innerBlocks: block.innerBlocks } );
 			this.togglePreview();
 		};
 
 		const onCancel = () => {
+			const { block, replaceInnerBlocks } = this.props;
+			const { innerBlocks } = this.state;
+			replaceInnerBlocks( block.clientId, innerBlocks, false );
 			this.togglePreview();
+		};
+
+		const onReset = () => {
+			const { block, replaceInnerBlocks } = this.props;
+			const newBlocks = [];
+			DEFAULT_PRODUCT_LIST_TEMPLATE.map( ( blockType ) => {
+				newBlocks.push( createBlock( blockType[0], blockType[1] ) );
+				return true;
+			} );
+			replaceInnerBlocks( block.clientId, newBlocks, false );
+			this.setState( { innerBlocks: block.innerBlocks } );
 		};
 
 		return (
@@ -169,20 +192,35 @@ class Editor extends Component {
 					</div>
 					<Tip>
 						{ __(
-							'Edit the blocks in the preview above to alter the content displayed for each product in the product grid. Click "done" to apply your changes.',
+							'Edit the blocks inside the preview above to change the content displayed for each product within the product grid.',
 							'woo-gutenberg-products-block'
 						) }
 					</Tip>
-					<Button isDefault onClick={ onDone }>
-						{ __( 'Done', 'woo-gutenberg-products-block' ) }
-					</Button>
-					<Button
-						className="wc-block-products-category__cancel-button"
-						isTertiary
-						onClick={ onCancel }
-					>
-						{ __( 'Cancel', 'woo-gutenberg-products-block' ) }
-					</Button>
+					<div className="wc-block-all-products__actions">
+						<Button
+							className="wc-block-all-products__done-button"
+							isPrimary
+							isLarge
+							onClick={ onDone }
+						>
+							{ __( 'Done', 'woo-gutenberg-products-block' ) }
+						</Button>
+						<Button
+							className="wc-block-all-products__cancel-button"
+							isTertiary
+							onClick={ onCancel }
+						>
+							{ __( 'Cancel', 'woo-gutenberg-products-block' ) }
+						</Button>
+						<IconButton
+							className="wc-block-all-products__reset-button"
+							icon={ <Gridicon icon="grid" /> }
+							label={ __( 'Reset layout to default', 'woo-gutenberg-products-block' ) }
+							onClick={ onReset }
+						>
+							{ __( 'Reset Layout', 'woo-gutenberg-products-block' ) }
+						</IconButton>
+					</div>
 				</div>
 			</Placeholder>
 		);
@@ -233,5 +271,13 @@ export default compose(
 		return {
 			block: getBlock( clientId ),
 		};
-	} )
+	} ),
+	withDispatch( ( dispatch ) => {
+		const {
+			replaceInnerBlocks,
+		} = dispatch( 'core/block-editor' );
+		return {
+			replaceInnerBlocks,
+		};
+	} ),
 )( Editor );

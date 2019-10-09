@@ -51,11 +51,32 @@
 
 		.components-tip {
 			max-width: 400px;
-			margin: 20px auto;
+			margin: 0 auto;
 			text-align: left;
 
 			p {
 				margin: 1em 0;
+			}
+		}
+
+		.wc-block-all-products__actions {
+			display: flex;
+			margin: 1em 0 0;
+			align-items: center;
+			vertical-align: middle;
+			.wc-block-all-products__done-button {
+				margin: 0;
+				order: 3;
+				line-height: 32px;
+				height: auto;
+			}
+			.wc-block-all-products__cancel-button {
+				margin: 0 1em 0 auto;
+				order: 2;
+			}
+			.wc-block-all-products__reset-button {
+				margin: 0;
+				order: 1;
 			}
 		}
 
