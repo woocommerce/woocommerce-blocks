@@ -12,15 +12,17 @@ const ProductListSaleBadge = ( { className, product, align } ) => {
 
 	if ( product && product.onsale ) {
 		return (
-			<span
+			<div
 				className={ classnames(
 					className,
 					alignClass,
 					'wc-block-grid__product-onsale'
 				) }
 			>
-				{ __( 'Sale', 'woo-gutenberg-products-block' ) }
-			</span>
+				<span className="wc-block-grid__product-onsale__text">
+					{ __( 'Sale', 'woo-gutenberg-products-block' ) }
+				</span>
+			</div>
 		);
 	}
 

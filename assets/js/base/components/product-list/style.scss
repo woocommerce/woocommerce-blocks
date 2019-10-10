@@ -200,52 +200,63 @@
 }
 
 .wc-block-grid__product-onsale {
-	border: 1px solid #43454b;
-	color: #43454b;
-	background: #fff;
-	padding: 0.202em 0.6180469716em;
-	font-size: 0.875rem;
-	text-align: center;
-	text-transform: uppercase;
-	font-weight: 600;
-	display: inline-block;
-	width: auto;
-	border-radius: 3px;
-	z-index: 9;
-	position: relative;
+	min-width: 100px; // Keeps editor overlapping sale badge.
+	.wc-block-grid__product-onsale__text {
+		border: 1px solid #43454b;
+		color: #43454b;
+		background: #fff;
+		padding: 0.202em 0.6180469716em;
+		font-size: 0.875rem;
+		text-align: center;
+		text-transform: uppercase;
+		font-weight: 600;
+		display: inline-block;
+		width: auto;
+		border-radius: 3px;
+		z-index: 9;
+		position: relative;
+		margin: $gap-smaller/2 auto;
+	}
+
 	&.wc-block-grid__product-onsale--alignleft {
-		float: left;
+		.wc-block-grid__product-onsale__text {
+			position: absolute;
+			left: $gap-smaller/2;
+		}
 	}
 	&.wc-block-grid__product-onsale--alignright {
-		float: right;
+		.wc-block-grid__product-onsale__text {
+			position: absolute;
+			right: $gap-smaller/2;
+		}
 	}
 }
 
 // Element spacing.
 .wc-block-grid__product {
-	.wc-block-grid__product-image {
-		margin: 0;
-	}
-	.wc-block-grid__product-onsale {
-		margin: 0 auto;
+	// After the image we don't need to apply absolute positioning.
+	.wc-block-grid__product-image ~ .wc-block-grid__product-onsale {
+		overflow: hidden;
 
-		&.wc-block-grid__product-onsale--alignleft,
+		&.wc-block-grid__product-onsale--alignleft {
+			.wc-block-grid__product-onsale__text {
+				position: static;
+				float: left;
+			}
+		}
 		&.wc-block-grid__product-onsale--alignright {
-			margin: $gap-smaller/2 $gap-smaller/2 -100%;
+			.wc-block-grid__product-onsale__text {
+				position: static;
+				float: right;
+			}
 		}
 	}
-	// After the image we don't need to apply negative margins.
-	.wc-block-grid__product-image ~ .wc-block-grid__product-onsale {
-		margin-bottom: 0;
-	}
+	.wc-block-grid__product-image,
 	.wc-block-grid__product-title,
 	.wc-block-grid__product-price,
 	.wc-block-grid__product-rating {
-		margin-top: $gap-small;
-		margin-bottom: $gap-small;
-	}
-	&:first-child {
 		margin-top: 0;
+		margin-bottom: $gap-small;
 	}
 }
 
