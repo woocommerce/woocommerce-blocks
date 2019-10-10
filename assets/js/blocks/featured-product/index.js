@@ -38,7 +38,7 @@ registerBlockType( 'woocommerce/featured-product', {
 	example: {
 		attributes: {
 			contentAlign: 'center',
-			dimRation: 50,
+			dimRatio: 50,
 			editMode: false,
 			height: DEFAULT_HEIGHT,
 			mediaSrc: PLACEHOLDER_IMG_SRC,
