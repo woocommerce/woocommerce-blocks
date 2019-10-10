@@ -1,6 +1,13 @@
 import { Component } from 'react';
 import { addQueryArgs, getQueryArg } from '@wordpress/url';
 
+const hasWindowDependencies =
+	typeof window === 'object' &&
+	window.hasOwnProperty( 'history' ) &&
+	window.hasOwnProperty( 'location' ) &&
+	typeof window.addEventListener === 'function' &&
+	typeof window.removeEventListener === 'function';
+
 /**
  * HOC that keeps the state in sync with the URL query string.
  */
@@ -12,17 +19,10 @@ const withQueryStringValues = ( values ) => ( OriginalComponent ) => {
 		// add a suffix to all of them but the first one, so they read the correct values.
 		urlParameterSuffix = instances++ > 0 ? `_${ instances }` : '';
 
-		hasWindowDependencies =
-			typeof window === 'object' &&
-			window.hasOwnProperty( 'history' ) &&
-			window.hasOwnProperty( 'location' ) &&
-			typeof window.addEventListener === 'function' &&
-			typeof window.removeEventListener === 'function';
-
 		getStateFromLocation = () => {
 			const state = {};
 
-			if ( this.hasWindowDependencies ) {
+			if ( hasWindowDependencies ) {
 				values.forEach( ( value ) => {
 					state[ value ] = getQueryArg(
 						window.location.href,
@@ -37,7 +37,7 @@ const withQueryStringValues = ( values ) => ( OriginalComponent ) => {
 		state = this.getStateFromLocation();
 
 		componentDidMount = () => {
-			if ( this.hasWindowDependencies ) {
+			if ( hasWindowDependencies ) {
 				window.addEventListener(
 					'popstate',
 					this.updateStateFromLocation
@@ -46,7 +46,7 @@ const withQueryStringValues = ( values ) => ( OriginalComponent ) => {
 		};
 
 		componentWillUnmount = () => {
-			if ( this.hasWindowDependencies ) {
+			if ( hasWindowDependencies ) {
 				window.removeEventListener(
 					'popstate',
 					this.updateStateFromLocation
@@ -61,7 +61,7 @@ const withQueryStringValues = ( values ) => ( OriginalComponent ) => {
 		updateQueryStringValues = ( newValues ) => {
 			this.setState( newValues );
 
-			if ( this.hasWindowDependencies ) {
+			if ( hasWindowDependencies ) {
 				const queryStringValues = {};
 				Object.keys( newValues ).forEach( ( key ) => {
 					queryStringValues[ key + this.urlParameterSuffix ] =
