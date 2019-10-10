@@ -66,6 +66,22 @@ class ProductCategories extends AbstractDynamicBlock {
 			return '';
 		}
 
+		if ( ! empty( $content ) ) {
+			// Deal with legacy attributes (before this was an SSR block) that differ from defaults.
+			if ( strstr( $content, 'data-has-count="false"' ) ) {
+				$attributes['hasCount'] = false;
+			}
+			if ( strstr( $content, 'data-is-dropdown="true"' ) ) {
+				$attributes['isDropdown'] = true;
+			}
+			if ( strstr( $content, 'data-is-hierarchical="false"' ) ) {
+				$attributes['isHierarchical'] = false;
+			}
+			if ( strstr( $content, 'data-has-empty="true"' ) ) {
+				$attributes['hasEmpty'] = true;
+			}
+		}
+
 		$output  = '<div class="wc-block-product-categories ' . esc_attr( $attributes['className'] ) . ' ' . ( $attributes['isDropdown'] ? 'is-dropdown' : 'is-list' ) . '">';
 		$output .= ! empty( $attributes['isDropdown'] ) ? $this->renderDropdown( $categories, $attributes, $uid ) : $this->renderList( $categories, $attributes, $uid );
 		$output .= '</div>';
