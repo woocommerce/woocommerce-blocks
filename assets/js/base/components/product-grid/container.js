@@ -12,16 +12,14 @@ import withQueryStringValues from '@woocommerce/base-hocs/with-query-string-valu
 
 class ProductGridContainer extends Component {
 	onPageChange = ( newPage ) => {
-		const { updateQueryStringValues } = this.props;
-		updateQueryStringValues( {
+		this.props.updateQueryStringValues( {
 			product_page: newPage,
 		} );
 	};
 
 	onSortChange = ( event ) => {
-		const { updateQueryStringValues } = this.props;
 		const newSortValue = event.target.value;
-		updateQueryStringValues( {
+		this.props.updateQueryStringValues( {
 			product_sort: newSortValue,
 			product_page: 1,
 		} );
