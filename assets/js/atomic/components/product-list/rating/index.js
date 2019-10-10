@@ -21,7 +21,7 @@ class ProductListRating extends Component {
 		}
 
 		const starStyle = {
-			width: ( rating / 5 ) * 100 + '%' /* stylelint-disable-line */,
+			width: ( rating / 5 ) * 100 + '%',
 		};
 
 		return (
