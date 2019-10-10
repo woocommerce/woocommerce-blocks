@@ -8,6 +8,8 @@ const withQueryStringValues = ( values ) => ( OriginalComponent ) => {
 	let instances = 0;
 
 	class WrappedComponent extends Component {
+		// In case there is more than one component reading the query string values in the same page,
+		// add a suffix to all of them but the first one, so they read the correct values.
 		urlParameterSuffix = instances++ > 0 ? `_${ instances }` : '';
 
 		hasWindowDependencies =
