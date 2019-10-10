@@ -25,7 +25,7 @@ describe( 'withQueryStringValues Component', () => {
 		} );
 	} );
 
-	it( 'sets correct props to each instance', () => {
+	it( 'reads the correct query string value for each instance', () => {
 		global.window.location = {
 			href:
 				'https://www.wooocommerce.com/?name=Alice&name_2=Bob&name_3=Carol',
