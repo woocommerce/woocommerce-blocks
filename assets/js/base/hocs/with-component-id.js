@@ -8,11 +8,9 @@ import { Component } from 'react';
  */
 const withComponentId = ( OriginalComponent ) => {
 	let instances = 0;
+
 	class WrappedComponent extends Component {
-		constructor() {
-			super( ...arguments );
-			this.instanceId = instances++;
-		}
+		instanceId = instances++;
 
 		render() {
 			return (
