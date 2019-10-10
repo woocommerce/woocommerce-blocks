@@ -32,7 +32,7 @@ import {
 	renderNoProductsPlaceholder,
 	getBlockClassName,
 } from '../utils';
-import { getSharedListControls } from '../edit';
+import { getSharedContentControls, getSharedListControls } from '../edit';
 import GridLayoutControl from '@woocommerce/block-components/grid-layout-control';
 import { HAS_PRODUCTS } from '@woocommerce/block-settings';
 import Block from './block';
@@ -101,7 +101,10 @@ class Editor extends Component {
 		return (
 			<InspectorControls key="inspector">
 				<PanelBody
-					title={ __( 'Layout', 'woo-gutenberg-products-block' ) }
+					title={ __(
+						'Layout Settings',
+						'woo-gutenberg-products-block'
+					) }
 					initialOpen
 				>
 					<GridLayoutControl
@@ -113,11 +116,11 @@ class Editor extends Component {
 				</PanelBody>
 				<PanelBody
 					title={ __(
-						'List Settings',
+						'Content Settings',
 						'woo-gutenberg-products-block'
 					) }
-					initialOpen
 				>
+					{ getSharedContentControls( attributes, setAttributes ) }
 					{ getSharedListControls( attributes, setAttributes ) }
 				</PanelBody>
 			</InspectorControls>
@@ -190,7 +193,13 @@ class Editor extends Component {
 								<InnerBlocks
 									template={ DEFAULT_PRODUCT_LIST_TEMPLATE }
 									templateLock={ false }
-									allowedBlocks={ Object.keys( BLOCK_MAP ) }
+									allowedBlocks={ [
+										...new Set(
+											BLOCK_MAP.map(
+												( block ) => block.blockName
+											)
+										),
+									] }
 									renderAppender={ false }
 								/>
 							</li>

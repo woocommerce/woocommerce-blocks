@@ -7,6 +7,10 @@
 	}
 }
 
+.wc-block-grid {
+	text-align: center;
+}
+
 .wc-block-grid__products {
 	display: flex;
 	flex-wrap: wrap;
@@ -29,22 +33,10 @@
 	border-bottom: $gap solid transparent;
 }
 
-.wc-block-grid__product-link {
-	display: block;
-	text-decoration: none;
-	border: 0;
-	box-shadow: none !important;
-	margin-left: auto;
-	margin-right: auto;
-	max-width: 100%;
-	position: relative;
-}
-
 // Extra specificity to avoid editor styles on linked images.
 .entry-content .wc-block-grid__product-image,
 .wc-block-grid__product-image {
 	text-decoration: none;
-	margin-bottom: $gap;
 	display: block;
 	position: relative;
 
@@ -76,10 +68,10 @@
 .wc-block-grid__product-title {
 	line-height: 1.2em;
 	font-weight: 700;
-	margin: 0 0 $gap-small;
 	padding: 0;
 	color: inherit;
 	font-size: inherit;
+	display: block;
 
 	.is-loading &::before {
 		@include placeholder();
@@ -89,14 +81,9 @@
 	}
 }
 
-.wc-block-grid__product-title,
-.wc-block-grid__product-price,
-.wc-block-grid__product-rating {
-	margin-bottom: $gap-small;
-	display: block;
-}
-
 .wc-block-grid__product-price {
+	display: block;
+
 	.wc-block-grid__product-price__regular {
 		font-size: 0.8em;
 		line-height: 1;
@@ -106,13 +93,14 @@
 	}
 	.wc-block-grid__product-price__value {
 		letter-spacing: -1px;
-		white-space: nowrap;
 		font-weight: 600;
 		display: block;
 		font-size: 1.25em;
 		line-height: 1.25;
 		color: #000;
-
+		span {
+			white-space: nowrap;
+		}
 		.is-loading &::before {
 			@include placeholder();
 			content: ".";
@@ -123,10 +111,8 @@
 }
 
 .wc-block-grid__product-add-to-cart {
-	margin: 0;
 	word-break: break-word;
 	white-space: normal;
-
 	a,
 	button {
 		word-break: break-word;
@@ -169,31 +155,8 @@
 	}
 }
 
-.wc-block-grid__product-onsale {
-	border: 1px solid #43454b;
-	color: #43454b;
-	background: #fff;
-	padding: 0.202em 0.6180469716em;
-	font-size: 0.875rem;
-	text-align: center;
-	text-transform: uppercase;
-	font-weight: 600;
-	display: inline-block;
-	width: auto;
-	border-radius: 3px;
-	z-index: 9;
-	margin: 0 auto $gap;
-}
-
-.has-image {
-	.wc-block-grid__product-onsale {
-		top: $gap-smaller;
-		right: $gap-smaller;
-		position: absolute;
-	}
-}
-
 .wc-block-grid__product-rating {
+	display: block;
 
 	.wc-block-grid__product-rating__stars {
 		overflow: hidden;
@@ -217,7 +180,6 @@
 			opacity: 0.5;
 			color: #aaa;
 		}
-
 		span {
 			overflow: hidden;
 			top: 0;
@@ -226,7 +188,6 @@
 			position: absolute;
 			padding-top: 1.5em;
 		}
-
 		span::before {
 			content: "\53\53\53\53\53";
 			top: 0;
@@ -235,6 +196,56 @@
 			position: absolute;
 			color: #000;
 		}
+	}
+}
+
+.wc-block-grid__product-onsale {
+	border: 1px solid #43454b;
+	color: #43454b;
+	background: #fff;
+	padding: 0.202em 0.6180469716em;
+	font-size: 0.875rem;
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: 600;
+	display: inline-block;
+	width: auto;
+	border-radius: 3px;
+	z-index: 9;
+	position: relative;
+	&.wc-block-grid__product-onsale--alignleft {
+		float: left;
+	}
+	&.wc-block-grid__product-onsale--alignright {
+		float: right;
+	}
+}
+
+// Element spacing.
+.wc-block-grid__product {
+	.wc-block-grid__product-image {
+		margin: 0;
+	}
+	.wc-block-grid__product-onsale {
+		margin: 0 auto;
+
+		&.wc-block-grid__product-onsale--alignleft,
+		&.wc-block-grid__product-onsale--alignright {
+			margin: $gap-smaller/2 $gap-smaller/2 -100%;
+		}
+	}
+	// After the image we don't need to apply negative margins.
+	.wc-block-grid__product-image ~ .wc-block-grid__product-onsale {
+		margin-bottom: 0;
+	}
+	.wc-block-grid__product-title,
+	.wc-block-grid__product-price,
+	.wc-block-grid__product-rating {
+		margin-top: $gap-small;
+		margin-bottom: $gap-small;
+	}
+	&:first-child {
+		margin-top: 0;
 	}
 }
 

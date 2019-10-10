@@ -31,6 +31,7 @@ export default {
 	has_options: false,
 	is_purchasable: true,
 	is_in_stock: true,
+	onsale: true,
 	description:
 		'Fly your WordPress banner with this beauty! Deck out your office space or add it to your kids walls. This banner will spruce up any space it’s hung!',
 };

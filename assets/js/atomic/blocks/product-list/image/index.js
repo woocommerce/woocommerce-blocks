@@ -44,7 +44,7 @@ const blockConfig = {
 				<InspectorControls>
 					<PanelBody
 						title={ __(
-							'Settings',
+							'Content',
 							'woo-gutenberg-products-block'
 						) }
 					>
@@ -65,7 +65,6 @@ const blockConfig = {
 				<Disabled>
 					<ProductListImage
 						product={ attributes.product }
-						showSaleBadge={ true }
 						productLink={ productLink }
 					/>
 				</Disabled>

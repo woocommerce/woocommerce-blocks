@@ -3,7 +3,6 @@
  */
 import PropTypes from 'prop-types';
 import { Component, Fragment } from 'react';
-import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 
 /**
@@ -15,12 +14,10 @@ class ProductListImage extends Component {
 	static propTypes = {
 		className: PropTypes.string,
 		product: PropTypes.object.isRequired,
-		showSaleBadge: PropTypes.bool,
 		productLink: PropTypes.bool,
 	};
 
 	static defaultProps = {
-		showSaleBadge: true,
 		productLink: true,
 	};
 
@@ -60,17 +57,6 @@ class ProductListImage extends Component {
 		);
 	};
 
-	renderSaleBadge = () => {
-		const { showSaleBadge, product } = this.props;
-		if ( showSaleBadge && product.onsale ) {
-			return (
-				<span className="wc-block-grid__product-onsale">
-					{ __( 'Sale', 'woo-gutenberg-products-block' ) }
-				</span>
-			);
-		}
-	};
-
 	render() {
 		const { className, product, productLink } = this.props;
 		const image =
@@ -83,7 +69,6 @@ class ProductListImage extends Component {
 					'wc-block-grid__product-image'
 				) }
 			>
-				{ this.renderSaleBadge() }
 				{ !! productLink ? (
 					<a href={ product.permalink } rel="nofollow">
 						{ this.renderImage( image ) }

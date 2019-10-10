@@ -48,7 +48,7 @@ const blockConfig = {
 				<InspectorControls>
 					<PanelBody
 						title={ __(
-							'Settings',
+							'Content',
 							'woo-gutenberg-products-block'
 						) }
 					>

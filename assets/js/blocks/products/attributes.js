@@ -35,11 +35,7 @@ export default {
 	contentVisibility: {
 		type: 'object',
 		default: {
-			image: true,
-			title: true,
-			rating: true,
-			price: true,
-			button: true,
+			orderBy: true,
 		},
 	},
 
@@ -49,14 +45,6 @@ export default {
 	orderby: {
 		type: 'string',
 		default: 'date',
-	},
-
-	/**
-	 * Show the order by selector.
-	 */
-	showOrderby: {
-		type: 'boolean',
-		default: true,
 	},
 
 	/**

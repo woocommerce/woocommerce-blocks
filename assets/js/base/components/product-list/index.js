@@ -45,6 +45,7 @@ const ProductList = ( {
 		);
 	};
 
+	const { contentVisibility } = attributes;
 	const perPage = attributes.columns * attributes.rows;
 	const totalPages = Math.ceil( totalProducts / perPage );
 	const listProducts = products.length
@@ -53,7 +54,7 @@ const ProductList = ( {
 
 	return (
 		<div className={ getClassnames() }>
-			{ attributes.showOrderby && (
+			{ contentVisibility.orderBy && (
 				<ProductSortSelect
 					onChange={ onOrderChange }
 					value={ sortValue }

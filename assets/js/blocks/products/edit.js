@@ -12,68 +12,19 @@ import './editor.scss';
 
 export const getSharedContentControls = ( attributes, setAttributes ) => {
 	const { contentVisibility } = attributes;
-	const { button, price, rating, title, image } = contentVisibility;
 	return (
 		<Fragment>
 			<ToggleControl
-				label={ __( 'Image', 'woo-gutenberg-products-block' ) }
-				checked={ image }
-				onChange={ () =>
-					setAttributes( {
-						contentVisibility: {
-							...contentVisibility,
-							image: ! image,
-						},
-					} )
-				}
-			/>
-			<ToggleControl
-				label={ __( 'Product Title', 'woo-gutenberg-products-block' ) }
-				checked={ title }
-				onChange={ () =>
-					setAttributes( {
-						contentVisibility: {
-							...contentVisibility,
-							title: ! title,
-						},
-					} )
-				}
-			/>
-			<ToggleControl
-				label={ __( 'Product Rating', 'woo-gutenberg-products-block' ) }
-				checked={ rating }
-				onChange={ () =>
-					setAttributes( {
-						contentVisibility: {
-							...contentVisibility,
-							rating: ! rating,
-						},
-					} )
-				}
-			/>
-			<ToggleControl
-				label={ __( 'Product Price', 'woo-gutenberg-products-block' ) }
-				checked={ price }
-				onChange={ () =>
-					setAttributes( {
-						contentVisibility: {
-							...contentVisibility,
-							price: ! price,
-						},
-					} )
-				}
-			/>
-			<ToggleControl
 				label={ __(
-					'Call-to-action Button',
+					'Show Sorting Dropdown',
 					'woo-gutenberg-products-block'
 				) }
-				checked={ button }
+				checked={ contentVisibility.orderBy }
 				onChange={ () =>
 					setAttributes( {
 						contentVisibility: {
 							...contentVisibility,
-							button: ! button,
+							orderBy: ! contentVisibility.orderBy,
 						},
 					} )
 				}
@@ -85,13 +36,6 @@ export const getSharedContentControls = ( attributes, setAttributes ) => {
 export const getSharedListControls = ( attributes, setAttributes ) => {
 	return (
 		<Fragment>
-			<ToggleControl
-				label={ __( 'Order by', 'woo-gutenberg-products-block' ) }
-				checked={ attributes.showOrderby }
-				onChange={ () =>
-					setAttributes( { showOrderby: ! attributes.showOrderby } )
-				}
-			/>
 			<SelectControl
 				label={ __(
 					'Order Products By',
