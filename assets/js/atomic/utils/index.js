@@ -65,10 +65,6 @@ export const BLOCK_MAP = [
  */
 export const DEFAULT_PRODUCT_LIST_LAYOUT = [
 	{
-		component: 'ProductListSaleBadge',
-		props: { align: 'left' },
-	},
-	{
 		component: 'ProductListImage',
 		props: {},
 	},

@@ -11,6 +11,7 @@ import { InspectorControls } from '@wordpress/editor';
 /**
  * Internal dependencies
  */
+import ToggleButtonControl from '@woocommerce/block-components/toggle-button-control';
 import { ProductListImage } from '../../../components/product-list';
 import sharedConfig from '../shared-config';
 import exampleProduct from '../example-product';
@@ -34,10 +35,18 @@ const blockConfig = {
 			type: 'boolean',
 			default: true,
 		},
+		showSaleBadge: {
+			type: 'boolean',
+			default: true,
+		},
+		saleBadgeAlign: {
+			type: 'string',
+			default: 'right',
+		},
 	},
 	edit( props ) {
 		const { attributes, setAttributes } = props;
-		const { productLink } = attributes;
+		const { productLink, showSaleBadge, saleBadgeAlign } = attributes;
 
 		return (
 			<Fragment>
@@ -53,6 +62,10 @@ const blockConfig = {
 								'Link to Product Page',
 								'woo-gutenberg-products-block'
 							) }
+							help={ __(
+								'Links the image to the single product listing.',
+								'woo-gutenberg-products-block'
+							) }
 							checked={ productLink }
 							onChange={ () =>
 								setAttributes( {
@@ -60,12 +73,65 @@ const blockConfig = {
 								} )
 							}
 						/>
+						<ToggleControl
+							label={ __(
+								'Show On-Sale Badge',
+								'woo-gutenberg-products-block'
+							) }
+							help={ __(
+								'Overlay a "sale" badge if the product is on-sale.',
+								'woo-gutenberg-products-block'
+							) }
+							checked={ showSaleBadge }
+							onChange={ () =>
+								setAttributes( {
+									showSaleBadge: ! showSaleBadge,
+								} )
+							}
+						/>
+						{ showSaleBadge && (
+							<ToggleButtonControl
+								label={ __(
+									'Sale Badge Alignment',
+									'woo-gutenberg-products-block'
+								) }
+								value={ saleBadgeAlign }
+								options={ [
+									{
+										label: __(
+											'Left',
+											'woo-gutenberg-products-block'
+										),
+										value: 'left',
+									},
+									{
+										label: __(
+											'Center',
+											'woo-gutenberg-products-block'
+										),
+										value: 'center',
+									},
+									{
+										label: __(
+											'Right',
+											'woo-gutenberg-products-block'
+										),
+										value: 'right',
+									},
+								] }
+								onChange={ ( value ) =>
+									setAttributes( { saleBadgeAlign: value } )
+								}
+							/>
+						) }
 					</PanelBody>
 				</InspectorControls>
 				<Disabled>
 					<ProductListImage
 						product={ attributes.product }
 						productLink={ productLink }
+						showSaleBadge={ showSaleBadge }
+						saleBadgeAlign={ saleBadgeAlign }
 					/>
 				</Disabled>
 			</Fragment>

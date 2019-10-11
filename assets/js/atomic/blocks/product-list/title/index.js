@@ -67,6 +67,10 @@ const blockConfig = {
 								'Link to Product Page',
 								'woo-gutenberg-products-block'
 							) }
+							help={ __(
+								'Links the image to the single product listing.',
+								'woo-gutenberg-products-block'
+							) }
 							checked={ productLink }
 							onChange={ () =>
 								setAttributes( {

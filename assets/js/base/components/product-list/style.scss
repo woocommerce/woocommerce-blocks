@@ -199,58 +199,61 @@
 	}
 }
 
+.editor-styles-wrapper .wc-block-grid__products .wc-block-grid__product .wc-block-grid__product-onsale,
 .wc-block-grid__product-onsale {
-	min-width: 100px; // Keeps editor overlapping sale badge.
-	.wc-block-grid__product-onsale__text {
-		border: 1px solid #43454b;
-		color: #43454b;
-		background: #fff;
-		padding: 0.202em 0.6180469716em;
-		font-size: 0.875rem;
-		text-align: center;
-		text-transform: uppercase;
-		font-weight: 600;
-		display: inline-block;
-		width: auto;
-		border-radius: 3px;
-		z-index: 9;
-		position: relative;
-		margin: $gap-smaller/2 auto;
-	}
+	border: 1px solid #43454b;
+	color: #43454b;
+	background: #fff;
+	padding: 0.202em 0.6180469716em;
+	font-size: 0.875rem;
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: 600;
+	display: inline-block;
+	width: auto;
+	border-radius: 3px;
+	z-index: 9;
+	position: relative;
+	margin: $gap-smaller auto;
 
 	&.wc-block-grid__product-onsale--alignleft {
-		.wc-block-grid__product-onsale__text {
-			position: absolute;
-			left: $gap-smaller/2;
-		}
+		float: left;
+		margin: 0 auto 0 0;
 	}
 	&.wc-block-grid__product-onsale--alignright {
-		.wc-block-grid__product-onsale__text {
+		float: right;
+		margin: 0 0 0 auto;
+	}
+}
+.editor-styles-wrapper .wc-block-grid__products .wc-block-grid__product .wc-block-grid__product-image,
+.wc-block-grid__product-image {
+	.wc-block-grid__product-onsale {
+		&.wc-block-grid__product-onsale--alignleft {
+			position: absolute;
+			left: $gap-smaller/2;
+			top: $gap-smaller/2;
+			right: auto;
+			margin: 0;
+		}
+		&.wc-block-grid__product-onsale--aligncenter {
+			position: absolute;
+			top: $gap-smaller/2;
+			left: auto;
+			right: auto;
+			margin: 0;
+		}
+		&.wc-block-grid__product-onsale--alignright {
 			position: absolute;
 			right: $gap-smaller/2;
+			top: $gap-smaller/2;
+			left: auto;
+			margin: 0;
 		}
 	}
 }
 
 // Element spacing.
 .wc-block-grid__product {
-	// After the image we don't need to apply absolute positioning.
-	.wc-block-grid__product-image ~ .wc-block-grid__product-onsale {
-		overflow: hidden;
-
-		&.wc-block-grid__product-onsale--alignleft {
-			.wc-block-grid__product-onsale__text {
-				position: static;
-				float: left;
-			}
-		}
-		&.wc-block-grid__product-onsale--alignright {
-			.wc-block-grid__product-onsale__text {
-				position: static;
-				float: right;
-			}
-		}
-	}
 	.wc-block-grid__product-image,
 	.wc-block-grid__product-title,
 	.wc-block-grid__product-price,
