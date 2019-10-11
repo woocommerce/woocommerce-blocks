@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import Gridicon from 'gridicons';
-import { Fragment } from 'react';
+import { Fragment } from '@wordpress/element';
 import { Disabled, PanelBody, ToggleControl } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/editor';
 

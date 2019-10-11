@@ -6,7 +6,7 @@ import classnames from 'classnames';
 
 const ProductListSaleBadge = ( { className, product, align } ) => {
 	const alignClass =
-		typeof align !== 'undefined'
+		typeof align === 'string'
 			? 'wc-block-grid__product-onsale--align' + align
 			: '';
 

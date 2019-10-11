@@ -123,7 +123,7 @@ export const DEFAULT_PRODUCT_LIST_TEMPLATE = layoutConfigToBlockTemplate(
 /**
  * Converts innerblocks to a list of layout configs.
  *
- * @param {object} innerBlocks Inner block components.
+ * @param {object[]} innerBlocks Inner block components.
  */
 export const getProductLayoutConfig = ( innerBlocks ) => {
 	if ( typeof innerBlocks === 'undefined' || innerBlocks.length === 0 ) {
@@ -154,7 +154,7 @@ export const getProductLayoutConfig = ( innerBlocks ) => {
  * Maps a layout config into atomic components.
  *
  * @param {object} product Product object to pass to atomic components.
- * @param {object} layoutConfig Object with component data.
+ * @param {object[]} layoutConfig Object with component data.
  * @param {number} componentId Parent component ID needed for key generation.
  */
 export const renderProductLayout = ( product, layoutConfig, componentId ) => {
