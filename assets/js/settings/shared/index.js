@@ -12,7 +12,7 @@ export * from './default-constants';
 export { setSetting } from './set-setting';
 
 /**
- * Note: this attempts to coerce the wp_version to a semver for comparison
+ * Note: this attempts to coerce the wpVersion to a semver for comparison
  * This will result in dropping any beta/rc values.
  *
  * `5.3-beta1-4252` would get converted to `5.3.0-rc.4252`
@@ -23,7 +23,7 @@ export { setSetting } from './set-setting';
  * to `rc`.
  */
 export const compareWithWpVersion = ( version, operator ) => {
-	let replacement = getSetting( 'wp_version', '' ).replace(
+	let replacement = getSetting( 'wpVersion', '' ).replace(
 		/-[a-zA-Z0-9]*[\-]*/,
 		'.0-rc.'
 	);

@@ -1,3 +1,6 @@
+/**
+ * Internal imports
+ */
 import { compareWithWpVersion, setSetting } from '..';
 
 describe( 'compareWithWpVersion', () => {
@@ -11,10 +14,10 @@ describe( 'compareWithWpVersion', () => {
 		${'5.3.1'}          | ${'<'}   | ${true}
 		${'5.4-beta1'}      | ${'<'}   | ${true}
 	`(
-		'should return $result when $version is the current wp_version ' +
+		'should return $result when $version is the current wpVersion ' +
 			'and `5.3` is the version compared using `$operator`',
 		( { version, operator, result } ) => {
-			setSetting( 'wp_version', version );
+			setSetting( 'wpVersion', version );
 			expect( compareWithWpVersion( '5.3', operator ) ).toBe( result );
 		}
 	);
