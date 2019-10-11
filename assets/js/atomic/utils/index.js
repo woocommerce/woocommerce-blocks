@@ -154,7 +154,7 @@ export const getProductLayoutConfig = ( innerBlocks ) => {
  * Maps a layout config into atomic components.
  *
  * @param {object} product Product object to pass to atomic components.
- * @param {object} layoutConfig Object with component data.
+ * @param {object[]} layoutConfig Object with component data.
  * @param {number} componentId Parent component ID needed for key generation.
  */
 export const renderProductLayout = ( product, layoutConfig, componentId ) => {
