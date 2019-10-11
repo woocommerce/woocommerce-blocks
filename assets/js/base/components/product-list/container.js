@@ -8,11 +8,11 @@ import { addQueryArgs, getQueryArg } from '@wordpress/url';
 /**
  * Internal dependencies
  */
-import ProductGrid from './index';
+import ProductList from './index';
 import withBrowserHistory from '@woocommerce/base-hocs/with-browser-history';
 import withBrowserLocation from '@woocommerce/base-hocs/with-browser-location';
 
-class ProductGridContainer extends Component {
+class ProductListContainer extends Component {
 	state = {
 		currentPage: this.props.currentPage || 1,
 		sortValue: this.props.sortValue,
@@ -40,7 +40,7 @@ class ProductGridContainer extends Component {
 		const sortValue = this.state.sortValue || this.props.attributes.orderby;
 
 		return (
-			<ProductGrid
+			<ProductList
 				attributes={ attributes }
 				currentPage={ currentPage }
 				onOrderChange={ this.onOrderChange }
@@ -51,7 +51,7 @@ class ProductGridContainer extends Component {
 	}
 }
 
-ProductGridContainer.propTypes = {
+ProductListContainer.propTypes = {
 	attributes: PropTypes.object.isRequired,
 	urlParameterSuffix: PropTypes.string,
 };
@@ -91,5 +91,5 @@ export default withBrowserLocation( ( location, { urlParameterSuffix } ) => {
 				},
 			};
 		}
-	)( ProductGridContainer )
+	)( ProductListContainer )
 );
