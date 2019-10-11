@@ -26,8 +26,7 @@ const blockConfig = {
 		align: [ 'left', 'center', 'right' ],
 	},
 	edit( props ) {
-		const { attributes } = props;
-		const { align, product } = attributes;
+		const { align, product } = props.attributes;
 
 		return <ProductListSaleBadge product={ product } align={ align } />;
 	},
