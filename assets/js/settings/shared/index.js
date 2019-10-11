@@ -1,11 +1,15 @@
-export * from './default-constants';
-export { setSetting } from './set-setting';
-
 /**
  * Internal dependencies
  */
 import { getSetting } from './get-setting';
+
+/**
+ * External dependencies
+ */
 import compareVersions from 'compare-versions';
+
+export * from './default-constants';
+export { setSetting } from './set-setting';
 
 /**
  * Note: this attempts to coerce the wp_version to a semver for comparison
