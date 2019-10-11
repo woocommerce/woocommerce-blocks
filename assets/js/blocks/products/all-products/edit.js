@@ -193,13 +193,7 @@ class Editor extends Component {
 								<InnerBlocks
 									template={ DEFAULT_PRODUCT_LIST_TEMPLATE }
 									templateLock={ false }
-									allowedBlocks={ [
-										...new Set(
-											BLOCK_MAP.map(
-												( block ) => block.blockName
-											)
-										),
-									] }
+									allowedBlocks={ Object.keys( BLOCK_MAP ) }
 									renderAppender={ false }
 								/>
 							</li>

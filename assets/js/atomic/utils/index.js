@@ -29,36 +29,15 @@ export const COMPONENT_MAP = {
 /**
  * Map blocks names to component names.
  */
-export const BLOCK_MAP = [
-	{
-		component: 'ProductListPrice',
-		blockName: 'woocommerce/product-list-price',
-	},
-	{
-		component: 'ProductListImage',
-		blockName: 'woocommerce/product-list-image',
-	},
-	{
-		component: 'ProductListTitle',
-		blockName: 'woocommerce/product-list-title',
-	},
-	{
-		component: 'ProductListRating',
-		blockName: 'woocommerce/product-list-rating',
-	},
-	{
-		component: 'ProductListButton',
-		blockName: 'woocommerce/product-list-button',
-	},
-	{
-		component: 'ProductListSummary',
-		blockName: 'woocommerce/product-list-summary',
-	},
-	{
-		component: 'ProductListSaleBadge',
-		blockName: 'woocommerce/product-list-sale-badge',
-	},
-];
+export const BLOCK_MAP = {
+	'woocommerce/product-list-price': 'ProductListPrice',
+	'woocommerce/product-list-image': 'ProductListImage',
+	'woocommerce/product-list-title': 'ProductListTitle',
+	'woocommerce/product-list-rating': 'ProductListRating',
+	'woocommerce/product-list-button': 'ProductListButton',
+	'woocommerce/product-list-summary': 'ProductListSummary',
+	'woocommerce/product-list-sale-badge': 'ProductListSaleBadge',
+};
 
 /**
  * The default layout built from the default template.
@@ -94,23 +73,12 @@ export const DEFAULT_PRODUCT_LIST_LAYOUT = [
  * Converts and maps a layoutConfig to a block template.
  */
 export const layoutConfigToBlockTemplate = ( layoutConfig ) => {
-	const templateConfig = [];
-	const blockLookup = BLOCK_MAP.reduce(
-		( acc, it ) => ( ( acc[ it.component ] = it ), acc ),
-		{}
-	);
+	return layoutConfig.map( ( layout ) => {
+		const block = Object.entries( BLOCK_MAP )
+			.find( ( entry ) => entry[ 1 ] === layout.component );
 
-	layoutConfig.map( ( layout ) => {
-		const block = blockLookup[ layout.component ] || null;
-
-		if ( block ) {
-			templateConfig.push( [ block.blockName, layout.props ] );
-		}
-
-		return true;
-	} );
-
-	return templateConfig;
+		return Array.isArray( block ) ? [ block[ 0 ], layout.props ] : null;
+	} ).filter( Boolean );
 };
 
 /**
@@ -130,14 +98,9 @@ export const getProductLayoutConfig = ( innerBlocks ) => {
 		return DEFAULT_PRODUCT_LIST_LAYOUT;
 	}
 
-	const componentLookup = BLOCK_MAP.reduce(
-		( acc, it ) => ( ( acc[ it.blockName ] = it ), acc ),
-		{}
-	);
-
 	return innerBlocks.map( ( block ) => {
 		return {
-			component: componentLookup[ block.name ].component,
+			component: BLOCK_MAP[ block.name ],
 			props: {
 				...block.attributes,
 				product: undefined,
