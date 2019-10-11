@@ -123,7 +123,7 @@ export const DEFAULT_PRODUCT_LIST_TEMPLATE = layoutConfigToBlockTemplate(
 /**
  * Converts innerblocks to a list of layout configs.
  *
- * @param {object} innerBlocks Inner block components.
+ * @param {object[]} innerBlocks Inner block components.
  */
 export const getProductLayoutConfig = ( innerBlocks ) => {
 	if ( typeof innerBlocks === 'undefined' || innerBlocks.length === 0 ) {
