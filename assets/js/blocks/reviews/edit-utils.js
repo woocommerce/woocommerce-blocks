@@ -55,16 +55,14 @@ export const getSharedReviewContentControls = ( attributes, setAttributes ) => {
 					<RawHTML>
 						{ sprintf(
 							escapeHTML(
-								/* translators: A notice that links to WooCommerce settings. */
+								/* translators: 1: store settings url 2: link attributes */
 								__(
-									'Product rating is disabled in your %sstore settings%s.',
+									'Product rating is disabled in your <a href="%1$s" %2$s>store settings</a>.',
 									'woo-gutenberg-products-block'
 								)
 							),
-							`<a href="${ getAdminLink(
-								'admin.php?page=wc-settings&tab=products'
-							) }" target="_blank">`,
-							'</a>'
+							getAdminLink( 'admin.php?page=wc-settings&tab=products' ),
+							'target="_blank"'
 						) }
 					</RawHTML>
 				</Notice>
