@@ -9,6 +9,7 @@ Unlike the main WooCommerce REST API, this API does not require authentication. 
 -   GET `/wc/store/cart` - Get a representation of the cart, including totals.
 -   GET `/wc/store/cart/items` - Get cart items.
 -   GET `/wc/store/cart/items/<key>` - Get a single cart item.
+-   PUT `/wc/store/cart/items/<key>` - Update a single cart item (quantity only).
 -   POST `/wc/store/cart/items` - Create a new cart item.
 -   DELETE `/wc/store/cart/items` - Delete all cart items (clear cart).
 -   DELETE `/wc/store/cart/items/<key>` - Delete a single cart item.
