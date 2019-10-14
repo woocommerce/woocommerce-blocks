@@ -69,9 +69,8 @@ class RestApi {
 			'products'                => __NAMESPACE__ . '\RestApi\Controllers\Products',
 			'variations'              => __NAMESPACE__ . '\RestApi\Controllers\Variations',
 			'product-reviews'         => __NAMESPACE__ . '\RestApi\Controllers\ProductReviews',
-			// Public Store API.
-			'store-cart'              => __NAMESPACE__ . '\StoreApi\Controllers\Cart',
-			'store-cart-items'        => __NAMESPACE__ . '\StoreApi\Controllers\CartItems',
+			'store-cart'              => __NAMESPACE__ . '\RestApi\StoreApi\Controllers\Cart',
+			'store-cart-items'        => __NAMESPACE__ . '\RestApi\StoreApi\Controllers\CartItems',
 		];
 	}
 }

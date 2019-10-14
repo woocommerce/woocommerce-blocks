@@ -6,7 +6,7 @@
  * @package WooCommerce/Blocks
  */
 
-namespace Automattic\WooCommerce\Blocks\StoreApi\Controllers;
+namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -14,8 +14,8 @@ use \WP_Error as RestError;
 use \WP_REST_Server as RestServer;
 use \WP_REST_Controller as RestContoller;
 use \WP_REST_Response as RestResponse;
-use Automattic\WooCommerce\Blocks\StoreApi\Schemas\CartItemSchema;
-use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
+use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas\CartItemSchema;
+use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\CartController;
 
 /**
  * Cart API.
