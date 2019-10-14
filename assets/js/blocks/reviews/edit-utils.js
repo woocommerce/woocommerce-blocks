@@ -139,16 +139,14 @@ export const getSharedReviewContentControls = ( attributes, setAttributes ) => {
 							<RawHTML>
 								{ sprintf(
 									escapeHTML(
-										/* translators: A notice that links to WordPress settings. */
+										/* translators: 1: discussion settings url 2: link attributes */
 										__(
-											'Reviewer photo is disabled in your %ssite settings%s.',
+											'Reviewer photo is disabled in your <a href="%$1s" %$2s>site settings</a>.',
 											'woo-gutenberg-products-block'
 										)
 									),
-									`<a href="${ getAdminLink(
-										'options-discussion.php'
-									) }" target="_blank">`,
-									'</a>'
+									getAdminLink( 'options-discussion.php' ),
+									'target="_blank"'
 								) }
 							</RawHTML>
 						</Notice>
