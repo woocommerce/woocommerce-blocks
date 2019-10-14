@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
 use \WP_Error as Error;
 
 /**
- * Cart Controller class.
+ * Woo Cart Controller class.
  */
 class CartController {
 
@@ -104,6 +104,15 @@ class CartController {
 		do_action( 'woocommerce_add_to_cart', $cart_id, $product_id, $request['quantity'], $variation_id, $request['variation'], $request['cart_item_data'] );
 
 		return $cart_id;
+	}
+
+	/**
+	 * Get main instance of cart class.
+	 *
+	 * @return \WC_Cart
+	 */
+	public function get_cart_instance() {
+		return wc()->cart;
 	}
 
 	/**

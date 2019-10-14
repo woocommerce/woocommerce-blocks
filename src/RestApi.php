@@ -71,6 +71,7 @@ class RestApi {
 			'product-reviews'         => __NAMESPACE__ . '\RestApi\Controllers\ProductReviews',
 			// Public Store API.
 			'store-cart'              => __NAMESPACE__ . '\StoreApi\Controllers\Cart',
+			'store-cart-items'        => __NAMESPACE__ . '\StoreApi\Controllers\CartItems',
 		];
 	}
 }
