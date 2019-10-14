@@ -160,7 +160,7 @@ class CartItemSchema extends AbstractSchema {
 	 * @param array $cart_item Cart item array.
 	 * @return array
 	 */
-	public function get_object_for_response( $cart_item ) {
+	public function get_item_response( $cart_item ) {
 		$product          = $cart_item['data'];
 		$chosen_variation = [];
 

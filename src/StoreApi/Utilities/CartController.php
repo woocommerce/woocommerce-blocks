@@ -117,6 +117,22 @@ class CartController {
 	}
 
 	/**
+	 * Returns all cart items.
+	 *
+	 * @return array
+	 */
+	public function get_items() {
+		return array_filter( wc()->cart->get_cart() );
+	}
+
+	/**
+	 * Empty cart contents.
+	 */
+	public function empty_cart() {
+		wc()->cart->empty_cart();
+	}
+
+	/**
 	 * Get a product object to be added to the cart.
 	 *
 	 * @param array $request Add to cart request params.

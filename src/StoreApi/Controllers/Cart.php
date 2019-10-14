@@ -10,7 +10,7 @@ namespace Automattic\WooCommerce\Blocks\StoreApi\Controllers;
 
 defined( 'ABSPATH' ) || exit;
 
-use \WP_Error as Error;
+use \WP_Error as RestError;
 use \WP_REST_Server as RestServer;
 use \WP_REST_Controller as RestContoller;
 use Automattic\WooCommerce\Blocks\StoreApi\Schemas\CartItemSchema;
@@ -20,7 +20,6 @@ use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
  * Cart API.
  */
 class Cart extends RestContoller {
-
 	/**
 	 * Endpoint namespace.
 	 *
@@ -34,6 +33,20 @@ class Cart extends RestContoller {
 	 * @var string
 	 */
 	protected $rest_base = 'cart';
+
+	/**
+	 * Schema class instance.
+	 *
+	 * @var CartItemSchema
+	 */
+	protected $item_schema;
+
+	/**
+	 * Setup API class.
+	 */
+	public function __construct() {
+		$this->item_schema = new CartItemSchema();
+	}
 
 	/**
 	 * Register routes.
@@ -84,7 +97,7 @@ class Cart extends RestContoller {
 	 * @return array
 	 */
 	public function get_item_schema() {
-		return ( new CartItemSchema() )->get_item_schema();
+		return $this->item_schema->get_item_schema();
 	}
 
 	/**
@@ -94,11 +107,18 @@ class Cart extends RestContoller {
 	 * @return \WP_Error|\WP_REST_Response
 	 */
 	public function get_items( $request ) {
-		$schema = new CartItemSchema();
-		$cart   = wc()->cart->get_cart();
-		$items  = array_filter( array_map( [ $schema, 'get_object_for_response' ], array_values( $cart ) ) );
+		$controller = new CartController();
+		$cart       = $controller->get_items();
+		$items      = [];
 
-		return $items;
+		foreach ( $cart as $cart_item ) {
+			$data    = $this->prepare_item_for_response( $cart_item, $request );
+			$items[] = $this->prepare_response_for_collection( $data );
+		}
+
+		$response = rest_ensure_response( $items );
+
+		return $response;
 	}
 
 	/**
@@ -108,16 +128,29 @@ class Cart extends RestContoller {
 	 * @return \WP_Error|\WP_REST_Response
 	 */
 	public function get_item( $request ) {
-		$schema    = new CartItemSchema();
-		$cart_item = wc()->cart->get_cart_item( $request['id'] );
+		$controller = new CartController();
+		$cart_item  = $controller->get_item( $request['id'] );
 
 		if ( ! $cart_item ) {
-			return new Error( 'woocommerce_rest_cart_invalid_id', __( 'Invalid cart item ID.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
+			return new RestError( 'woocommerce_rest_cart_invalid_id', __( 'Invalid cart item ID.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
 		}
 
-		$object   = $schema->get_object_for_response( $cart_item );
-		$response = rest_ensure_response( $object );
+		$data     = $this->prepare_item_for_response( $cart_item, $request );
+		$response = rest_ensure_response( $data );
 
 		return $response;
+	}
+
+	/**
+	 * Prepares a single item output for response.
+	 *
+	 * @param array            $cart_item    Cart item array.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_REST_Response Response object.
+	 */
+	public function prepare_item_for_response( $cart_item, $request ) {
+		$data = $this->item_schema->get_item_response( $cart_item );
+
+		return rest_ensure_response( $data );
 	}
 }

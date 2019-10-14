@@ -10,7 +10,7 @@ namespace Automattic\WooCommerce\Blocks\StoreApi\Controllers;
 
 defined( 'ABSPATH' ) || exit;
 
-use \WP_Error as Error;
+use \WP_Error as RestError;
 use \WP_REST_Server as RestServer;
 use \WP_REST_Controller as RestContoller;
 use Automattic\WooCommerce\Blocks\StoreApi\Schemas\CartItemSchema;
@@ -19,15 +19,7 @@ use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
 /**
  * Cart/Add API.
  */
-class CartAdd extends RestContoller {
-
-	/**
-	 * Endpoint namespace.
-	 *
-	 * @var string
-	 */
-	protected $namespace = 'wc/store';
-
+class CartAdd extends Cart {
 	/**
 	 * Route base.
 	 *
@@ -56,15 +48,6 @@ class CartAdd extends RestContoller {
 	}
 
 	/**
-	 * Cart item schema.
-	 *
-	 * @return array
-	 */
-	public function get_item_schema() {
-		return ( new CartItemSchema() )->get_item_schema();
-	}
-
-	/**
 	 * Checks if a given request has access to create items.
 	 *
 	 * @param \WP_REST_Request $request Full data about the request.
@@ -82,10 +65,9 @@ class CartAdd extends RestContoller {
 	 */
 	public function create_item( $request ) {
 		if ( ! empty( $request['key'] ) ) {
-			return new Error( 'woocommerce_rest_cart_item_exists', __( 'Cannot create existing cart item.', 'woo-gutenberg-products-block' ), array( 'status' => 400 ) );
+			return new RestError( 'woocommerce_rest_cart_item_exists', __( 'Cannot create existing cart item.', 'woo-gutenberg-products-block' ), array( 'status' => 400 ) );
 		}
 
-		$schema     = new CartItemSchema();
 		$controller = new CartController();
 		$result     = $controller->add_to_cart(
 			[
@@ -98,6 +80,6 @@ class CartAdd extends RestContoller {
 			return $result;
 		}
 
-		return rest_ensure_response( $schema->get_object_for_response( $controller->get_item( $result ) ) );
+		return rest_ensure_response( $this->prepare_item_for_response( $controller->get_item( $result ) ) );
 	}
 }
