@@ -85,7 +85,7 @@ class CartController {
 		wc()->cart->cart_contents[ $cart_id ] = apply_filters(
 			'woocommerce_add_cart_item',
 			array_merge(
-				$cart_item_data,
+				$request['cart_item_data'],
 				array(
 					'key'          => $cart_id,
 					'product_id'   => $product_id,

@@ -64,18 +64,15 @@ class Cart extends RestContoller {
 					],
 				],
 				'schema' => [ $this, 'get_public_item_schema' ],
-			],
-			true
+			]
 		);
-
-		// Individual cart items.
 		register_rest_route(
 			$this->namespace,
-			'/' . $this->rest_base . '/(?P<id>[\s]+)',
+			'/' . $this->rest_base . '/(?P<key>[\w-]{32})',
 			[
 				'args'   => [
-					'id' => [
-						'description' => __( 'Unique identifier for the resource.', 'woo-gutenberg-products-block' ),
+					'key' => [
+						'description' => __( 'Unique identifier for the item within the cart.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 					],
 				],
@@ -89,15 +86,29 @@ class Cart extends RestContoller {
 				'schema' => [ $this, 'get_public_item_schema' ],
 			]
 		);
-	}
-
-	/**
-	 * Cart item schema.
-	 *
-	 * @return array
-	 */
-	public function get_item_schema() {
-		return $this->item_schema->get_item_schema();
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/add',
+			[
+				[
+					'methods'  => RestServer::CREATABLE,
+					'callback' => array( $this, 'create_item' ),
+					'args'     => $this->get_endpoint_args_for_item_schema( RestServer::CREATABLE ),
+				],
+				'schema' => array( $this, 'get_public_item_schema' ),
+			]
+		);
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/empty',
+			[
+				[
+					'methods'  => RestServer::DELETABLE,
+					'callback' => array( $this, 'delete_items' ),
+				],
+				'schema' => array( $this, 'get_public_item_schema' ),
+			]
+		);
 	}
 
 	/**
@@ -129,16 +140,85 @@ class Cart extends RestContoller {
 	 */
 	public function get_item( $request ) {
 		$controller = new CartController();
-		$cart_item  = $controller->get_item( $request['id'] );
+		$cart_item  = $controller->get_item( $request['key'] );
 
 		if ( ! $cart_item ) {
-			return new RestError( 'woocommerce_rest_cart_invalid_id', __( 'Invalid cart item ID.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
+			return new RestError( 'woocommerce_rest_cart_invalid_key', __( 'Invalid cart item key.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
 		}
 
 		$data     = $this->prepare_item_for_response( $cart_item, $request );
 		$response = rest_ensure_response( $data );
 
 		return $response;
+	}
+
+	/**
+	 * Creates one item from the collection.
+	 *
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_Error|\WP_REST_Response Response object on success, or WP_Error object on failure.
+	 */
+	public function create_item( $request ) {
+		if ( ! empty( $request['key'] ) ) {
+			return new RestError( 'woocommerce_rest_cart_item_exists', __( 'Cannot create existing cart item.', 'woo-gutenberg-products-block' ), array( 'status' => 400 ) );
+		}
+
+		$controller = new CartController();
+		$result     = $controller->add_to_cart(
+			[
+				'id'       => $request['id'],
+				'quantity' => $request['quantity'],
+			]
+		);
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		return rest_ensure_response( $this->prepare_item_for_response( $controller->get_item( $result ), $request ) );
+	}
+
+	/**
+	 * Deletes all items in the cart.
+	 *
+	 * @param \WP_Rest_Request $request Full data about the request.
+	 * @return \WP_Error|\WP_REST_Response Response object on success, or WP_Error object on failure.
+	 */
+	public function delete_items( $request ) {
+		$controller = new CartController();
+		$cart_items = $controller->get_items();
+
+		if ( 0 === count( $cart_items ) ) {
+			return new RestError(
+				'woocommerce_rest_cart_already_empty',
+				__( 'The cart is already empty.', 'woo-gutenberg-products-block' ),
+				array(
+					'status' => 400,
+				)
+			);
+		}
+
+		$previous = $this->get_items( $request );
+		$response = new RestResponse();
+		$response->set_data(
+			array(
+				'deleted'  => true,
+				'previous' => $previous->get_data(),
+			)
+		);
+
+		$controller->empty_cart();
+
+		return $response;
+	}
+
+	/**
+	 * Cart item schema.
+	 *
+	 * @return array
+	 */
+	public function get_item_schema() {
+		return $this->item_schema->get_item_schema();
 	}
 
 	/**
