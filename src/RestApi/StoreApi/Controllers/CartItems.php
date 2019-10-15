@@ -169,8 +169,9 @@ class CartItems extends RestContoller {
 		$controller = new CartController();
 		$result     = $controller->add_to_cart(
 			[
-				'id'       => $request['id'],
-				'quantity' => $request['quantity'],
+				'id'        => $request['id'],
+				'quantity'  => $request['quantity'],
+				'variation' => $request['variation'],
 			]
 		);
 

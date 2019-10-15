@@ -38,11 +38,10 @@ class CartItemSchema extends AbstractSchema {
 				'readonly'    => true,
 			),
 			'id'         => array(
-				'description' => __( 'ID of the product or variation this cart item represents.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'The cart item product or variation ID.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit' ),
 				'required'    => true,
-				'readonly'    => true,
 				'arg_options' => array(
 					'sanitize_callback' => 'absint',
 					'validate_callback' => array( $this, 'product_id_exists' ),
@@ -60,7 +59,7 @@ class CartItemSchema extends AbstractSchema {
 			'name'       => array(
 				'description' => __( 'Product name.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
-				'context'     => array( 'view', 'edit', 'embed' ),
+				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
 			'sku'        => array(
@@ -73,13 +72,13 @@ class CartItemSchema extends AbstractSchema {
 				'description' => __( 'Product URL.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'format'      => 'uri',
-				'context'     => array( 'view', 'edit', 'embed' ),
+				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
 			'images'     => array(
 				'description' => __( 'List of images.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
-				'context'     => array( 'view', 'edit', 'embed' ),
+				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 				'items'       => array(
 					'type'       => 'object',
@@ -125,20 +124,19 @@ class CartItemSchema extends AbstractSchema {
 				'readonly'    => true,
 			),
 			'variation'  => array(
-				'description' => __( 'If this cart item represents a variation, chosen attributes are shown here.', 'woo-gutenberg-products-block' ),
-				'type'        => 'object',
+				'description' => __( 'Chosen attributes (for variations).', 'woo-gutenberg-products-block' ),
+				'type'        => 'array',
 				'context'     => array( 'view', 'edit' ),
-				'readonly'    => true,
 				'items'       => array(
 					'type'       => 'object',
 					'properties' => array(
 						'attribute' => array(
-							'description' => __( 'Variation attribute.', 'woo-gutenberg-products-block' ),
+							'description' => __( 'Variation attribute name.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => array( 'view', 'edit' ),
 						),
 						'value'     => array(
-							'description' => __( 'Attribute value.', 'woo-gutenberg-products-block' ),
+							'description' => __( 'Variation attribute value.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => array( 'view', 'edit' ),
 						),
@@ -166,18 +164,7 @@ class CartItemSchema extends AbstractSchema {
 	 * @return array
 	 */
 	public function get_item_response( $cart_item ) {
-		$product          = $cart_item['data'];
-		$chosen_variation = [];
-
-		if ( $cart_item['variation'] ) {
-			foreach ( $cart_item['variation'] as $key => $value ) {
-				$chosen_variation[] = [
-					'attribute' => $key,
-					'value'     => $value,
-				];
-			}
-		}
-
+		$product = $cart_item['data'];
 		return [
 			'key'        => $cart_item['key'],
 			'id'         => $product->get_id(),
@@ -188,7 +175,73 @@ class CartItemSchema extends AbstractSchema {
 			'images'     => ( new ProductImages() )->images_to_array( $product ),
 			'price'      => wc_format_decimal( $product->get_price(), wc_get_price_decimals() ),
 			'line_price' => wc_format_decimal( isset( $cart_item['line_total'] ) ? $cart_item['line_total'] : $product->get_price() * wc_stock_amount( $cart_item['quantity'] ), wc_get_price_decimals() ),
-			'variation'  => $chosen_variation,
+			'variation'  => $this->format_variation_data( $cart_item['variation'], $product ),
 		];
+	}
+
+	/**
+	 * Format variation data, for example convert slugs such as attribute_pa_size to Size.
+	 *
+	 * @param array       $variation_data Array of data from the cart.
+	 * @param \WC_Product $product Product data.
+	 * @return array
+	 */
+	protected function format_variation_data( $variation_data, $product ) {
+		$return = [];
+
+		foreach ( $variation_data as $key => $value ) {
+			$taxonomy = wc_attribute_taxonomy_name( str_replace( 'attribute_pa_', '', urldecode( $key ) ) );
+
+			if ( taxonomy_exists( $taxonomy ) ) {
+				// If this is a term slug, get the term's nice name.
+				$term = get_term_by( 'slug', $value, $taxonomy );
+				if ( ! is_wp_error( $term ) && $term && $term->name ) {
+					$value = $term->name;
+				}
+				$label = wc_attribute_label( $taxonomy );
+			} else {
+				// If this is a custom option slug, get the options name.
+				$value = apply_filters( 'woocommerce_variation_option_name', $value, null, $taxonomy, $product );
+				$label = wc_attribute_label( str_replace( 'attribute_', '', $name ), $product );
+			}
+
+			$return[ $label ] = $value;
+		}
+
+		return $return;
+	}
+
+	/**
+	 * Get product attribute taxonomy name.
+	 *
+	 * @param string      $slug   Taxonomy name.
+	 * @param \WC_Product $object Product data.
+	 * @return string
+	 */
+	protected function get_attribute_taxonomy_name( $slug, $object ) {
+		// Format slug so it matches attributes of the product.
+		$slug       = wc_attribute_taxonomy_slug( $slug );
+		$attributes = $object->get_attributes();
+		$attribute  = false;
+
+		// pa_ attributes.
+		if ( isset( $attributes[ wc_attribute_taxonomy_name( $slug ) ] ) ) {
+			$attribute = $attributes[ wc_attribute_taxonomy_name( $slug ) ];
+		} elseif ( isset( $attributes[ $slug ] ) ) {
+			$attribute = $attributes[ $slug ];
+		}
+
+		if ( ! $attribute ) {
+			return $slug;
+		}
+
+		// Taxonomy attribute name.
+		if ( $attribute->is_taxonomy() ) {
+			$taxonomy = $attribute->get_taxonomy_object();
+			return $taxonomy->attribute_label;
+		}
+
+		// Custom product attribute name.
+		return $attribute->get_name();
 	}
 }
