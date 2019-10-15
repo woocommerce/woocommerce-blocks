@@ -100,12 +100,12 @@ class Cart extends RestContoller {
 	/**
 	 * Prepares a single item output for response.
 	 *
-	 * @param array            $cart_item    Cart item array.
+	 * @param array            $cart    Cart array.
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response Response object.
 	 */
-	public function prepare_item_for_response( $cart_item, $request ) {
-		$data = $this->cart_schema->get_item_response( $cart_item );
+	public function prepare_item_for_response( $cart, $request ) {
+		$data = $this->cart_schema->get_item_response( $cart );
 
 		return rest_ensure_response( $data );
 	}

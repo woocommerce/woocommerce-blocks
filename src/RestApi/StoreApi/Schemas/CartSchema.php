@@ -52,7 +52,7 @@ class CartSchema extends AbstractSchema {
 				),
 			),
 			'needs_shipping' => array(
-				'description' => __( 'True if the cart needs shipping. False for carts with only digital goods.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'True if the cart needs shipping. False for carts with only digital goods or stores with no shipping methods set-up.', 'woo-gutenberg-products-block' ),
 				'type'        => 'boolean',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
@@ -86,7 +86,7 @@ class CartSchema extends AbstractSchema {
 			'items'          => array_map( [ $cart_item_schema, 'get_item_response' ], array_filter( $cart->get_cart() ) ),
 			'needs_shipping' => $cart->needs_shipping(),
 			'total_price'    => $cart->get_cart_contents_total(),
-			'total_weight'   => $cart->get_cart_contents_weight(),
+			'total_weight'   => wc_get_weight( $cart->get_cart_contents_weight(), 'g' ),
 		];
 	}
 }
