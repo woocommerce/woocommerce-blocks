@@ -1,5 +1,12 @@
+/**
+ * External dependencies
+ */
+import { applyFilters } from '@wordpress/hooks';
+
+/**
+ * Internal dependencies
+ */
 import {
-	ProductListLink,
 	ProductListTitle,
 	ProductListPrice,
 	ProductListButton,
@@ -9,35 +16,24 @@ import {
 	ProductListSaleBadge,
 } from '../components/product-list';
 
-/**
- * List of mapped components.
- */
-export const COMPONENT_MAP = {
-	ProductListLink,
-	ProductListTitle,
-	ProductListPrice,
-	ProductListButton,
-	ProductListImage,
-	ProductListRating,
-	ProductListSummary,
-	ProductListSaleBadge,
-};
-
 // @todo how to support these using mapping?
 //'core/paragraph',
 //'core/heading',
 /**
  * Map blocks names to component names.
  */
-export const BLOCK_MAP = {
-	'woocommerce/product-list-price': 'ProductListPrice',
-	'woocommerce/product-list-image': 'ProductListImage',
-	'woocommerce/product-list-title': 'ProductListTitle',
-	'woocommerce/product-list-rating': 'ProductListRating',
-	'woocommerce/product-list-button': 'ProductListButton',
-	'woocommerce/product-list-summary': 'ProductListSummary',
-	'woocommerce/product-list-sale-badge': 'ProductListSaleBadge',
-};
+export const BLOCK_MAP = applyFilters(
+	'woocommerce_blocks_all_products_children',
+	{
+		'woocommerce/product-list-price': ProductListPrice,
+		'woocommerce/product-list-image': ProductListImage,
+		'woocommerce/product-list-title': ProductListTitle,
+		'woocommerce/product-list-rating': ProductListRating,
+		'woocommerce/product-list-button': ProductListButton,
+		'woocommerce/product-list-summary': ProductListSummary,
+		'woocommerce/product-list-sale-badge': ProductListSaleBadge,
+	}
+);
 
 /**
  * The default layout built from the default template.
@@ -69,16 +65,26 @@ export const DEFAULT_PRODUCT_LIST_LAYOUT = [
 	},
 ];
 
+const getBlockFromComponentName = ( componentName ) => {
+	const block = Object.entries( BLOCK_MAP ).find(
+		( entry ) => entry[ 1 ].name === componentName
+	);
+	return Array.isArray( block )
+		? { key: block[ 0 ], component: block[ 1 ] }
+		: null;
+};
+
 /**
  * Converts and maps a layoutConfig to a block template.
  */
 export const layoutConfigToBlockTemplate = ( layoutConfig ) => {
-	return layoutConfig.map( ( layout ) => {
-		const block = Object.entries( BLOCK_MAP )
-			.find( ( entry ) => entry[ 1 ] === layout.component );
+	return layoutConfig
+		.map( ( layout ) => {
+			const block = getBlockFromComponentName( layout.component );
 
-		return Array.isArray( block ) ? [ block[ 0 ], layout.props ] : null;
-	} ).filter( Boolean );
+			return block.key ? [ block.key, layout.props ] : null;
+		} )
+		.filter( Boolean );
 };
 
 /**
@@ -100,7 +106,7 @@ export const getProductLayoutConfig = ( innerBlocks ) => {
 
 	return innerBlocks.map( ( block ) => {
 		return {
-			component: BLOCK_MAP[ block.name ],
+			component: BLOCK_MAP[ block.name ].name,
 			props: {
 				...block.attributes,
 				product: undefined,
@@ -122,7 +128,7 @@ export const getProductLayoutConfig = ( innerBlocks ) => {
  */
 export const renderProductLayout = ( product, layoutConfig, componentId ) => {
 	return layoutConfig.map(
-		( { component: LayoutComponentName, props = {} }, index ) => {
+		( { component: layoutComponentName, props = {} }, index ) => {
 			let children = [];
 
 			if ( !! props.children && props.children.length > 0 ) {
@@ -133,11 +139,17 @@ export const renderProductLayout = ( product, layoutConfig, componentId ) => {
 				);
 			}
 
-			const LayoutComponent = COMPONENT_MAP[ LayoutComponentName ];
+			const block = getBlockFromComponentName( layoutComponentName );
+
+			if ( ! block ) {
+				return null;
+			}
+
+			const LayoutComponent = block.component;
 			const productID = product.id || 0;
 			const keyParts = [
 				'layout',
-				LayoutComponentName,
+				layoutComponentName,
 				index,
 				componentId,
 				productID,
