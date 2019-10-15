@@ -122,6 +122,29 @@ class CartItems extends TestCase {
 	}
 
 	/**
+	 * Test add to cart does not allow invalid items.
+	 */
+	public function test_invalid_create_item() {
+		wc_empty_cart();
+
+		$invalid_product = ProductHelper::create_simple_product( false );
+		$invalid_product->set_regular_price( '' );
+		$invalid_product->save();
+
+		$request = new WP_REST_Request( 'POST', '/wc/store/cart/items' );
+		$request->set_body_params(
+			array(
+				'id'       => $invalid_product->get_id(),
+				'quantity' => '10',
+			)
+		);
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 403, $response->get_status() );
+	}
+
+	/**
 	 * Test updating an item.
 	 */
 	public function test_update_item() {

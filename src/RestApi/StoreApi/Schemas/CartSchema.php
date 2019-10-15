@@ -83,7 +83,7 @@ class CartSchema extends AbstractSchema {
 		return [
 			'currency'       => get_woocommerce_currency(),
 			'item_count'     => $cart->get_cart_contents_count(),
-			'items'          => array_map( [ $cart_item_schema, 'get_item_response' ], array_filter( $cart->get_cart() ) ),
+			'items'          => array_values( array_map( [ $cart_item_schema, 'get_item_response' ], array_filter( $cart->get_cart() ) ) ),
 			'needs_shipping' => $cart->needs_shipping(),
 			'total_price'    => $cart->get_cart_contents_total(),
 			'total_weight'   => wc_get_weight( $cart->get_cart_contents_weight(), 'g' ),

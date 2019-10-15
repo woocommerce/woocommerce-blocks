@@ -55,12 +55,12 @@ class CartController {
 
 		if ( $product->is_sold_individually() && $existing_cart_id ) {
 			/* translators: %s: product name */
-			return new Error( 'woocommerce_rest_cart_product_sold_individually', sprintf( __( '"%s" is already inside your cart.', 'woo-gutenberg-products-block' ), $product->get_name() ) );
+			return new Error( 'woocommerce_rest_cart_product_sold_individually', sprintf( __( '"%s" is already inside your cart.', 'woo-gutenberg-products-block' ), $product->get_name() ), array( 'status' => 403 ) );
 		}
 
 		if ( ! $product->is_in_stock() ) {
 			/* translators: %s: product name */
-			return new Error( 'woocommerce_rest_cart_product_no_stock', sprintf( __( 'You cannot add &quot;%s&quot; to the cart because the product is out of stock.', 'woo-gutenberg-products-block' ), $product->get_name() ) );
+			return new Error( 'woocommerce_rest_cart_product_no_stock', sprintf( __( 'You cannot add &quot;%s&quot; to the cart because the product is out of stock.', 'woo-gutenberg-products-block' ), $product->get_name() ), array( 'status' => 403 ) );
 		}
 
 		if ( $product->managing_stock() ) {
@@ -72,7 +72,7 @@ class CartController {
 				return new Error(
 					'woocommerce_rest_cart_product_no_stock',
 					/* translators: 1: product name 2: quantity in stock */
-					sprintf( __( 'You cannot add that amount of &quot;%1$s&quot; to the cart because there is not enough stock (%2$s remaining).', 'woo-gutenberg-products-block' ), $product->get_name(), wc_format_stock_quantity_for_display( $product->get_stock_quantity(), $product ) )
+					sprintf( __( 'You cannot add that amount of &quot;%1$s&quot; to the cart because there is not enough stock (%2$s remaining).', 'woo-gutenberg-products-block' ), $product->get_name(), wc_format_stock_quantity_for_display( $product->get_stock_quantity(), $product ), array( 'status' => 403 ) )
 				);
 			}
 		}
@@ -151,11 +151,11 @@ class CartController {
 		$product = wc_get_product( $request['id'] );
 
 		if ( ! $product || 'trash' === $product->get_status() ) {
-			return new Error( 'woocommerce_rest_cart_invalid_product', __( 'This product cannot be added to the cart.', 'woo-gutenberg-products-block' ) );
+			return new Error( 'woocommerce_rest_cart_invalid_product', __( 'This product cannot be added to the cart.', 'woo-gutenberg-products-block' ), array( 'status' => 403 ) );
 		}
 
 		if ( ! $product->is_purchasable() ) {
-			return new Error( 'woocommerce_rest_cart_product_is_not_purchasable', __( 'This product cannot be purchased.', 'woo-gutenberg-products-block' ) );
+			return new Error( 'woocommerce_rest_cart_product_is_not_purchasable', __( 'This product cannot be purchased.', 'woo-gutenberg-products-block' ), array( 'status' => 403 ) );
 		}
 
 		return $product;
