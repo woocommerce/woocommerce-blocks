@@ -35,6 +35,17 @@ export const BLOCK_MAP = applyFilters(
 	}
 );
 
+const REVERSED_BLOCK_MAP = Object.entries( BLOCK_MAP ).reduce(
+	( acc, block ) => {
+		acc[ block[ 1 ].name ] = {
+			component: block[ 1 ],
+			key: block[ 0 ],
+		};
+		return acc;
+	},
+	{}
+);
+
 /**
  * The default layout built from the default template.
  */
@@ -65,22 +76,13 @@ export const DEFAULT_PRODUCT_LIST_LAYOUT = [
 	},
 ];
 
-const getBlockFromComponentName = ( componentName ) => {
-	const block = Object.entries( BLOCK_MAP ).find(
-		( entry ) => entry[ 1 ].name === componentName
-	);
-	return Array.isArray( block )
-		? { key: block[ 0 ], component: block[ 1 ] }
-		: null;
-};
-
 /**
  * Converts and maps a layoutConfig to a block template.
  */
 export const layoutConfigToBlockTemplate = ( layoutConfig ) => {
 	return layoutConfig
 		.map( ( layout ) => {
-			const block = getBlockFromComponentName( layout.component );
+			const block = REVERSED_BLOCK_MAP[ layout.component ];
 
 			return block.key ? [ block.key, layout.props ] : null;
 		} )
@@ -104,22 +106,24 @@ export const getProductLayoutConfig = ( innerBlocks ) => {
 		return DEFAULT_PRODUCT_LIST_LAYOUT;
 	}
 
-	return innerBlocks.map( ( block ) => {
-		if ( ! BLOCK_MAP[ block.name ] || ! BLOCK_MAP[ block.name ].name ) {
-			return null;
-		}
-		return {
-			component: BLOCK_MAP[ block.name ].name,
-			props: {
-				...block.attributes,
-				product: undefined,
-				children:
-					block.innerBlocks.length > 0
-						? getProductLayoutConfig( block.innerBlocks )
-						: [],
-			},
-		};
-	} ).filter( Boolean );
+	return innerBlocks
+		.map( ( block ) => {
+			if ( ! BLOCK_MAP[ block.name ] || ! BLOCK_MAP[ block.name ].name ) {
+				return null;
+			}
+			return {
+				component: BLOCK_MAP[ block.name ].name,
+				props: {
+					...block.attributes,
+					product: undefined,
+					children:
+						block.innerBlocks.length > 0
+							? getProductLayoutConfig( block.innerBlocks )
+							: [],
+				},
+			};
+		} )
+		.filter( Boolean );
 };
 
 /**
@@ -142,7 +146,7 @@ export const renderProductLayout = ( product, layoutConfig, componentId ) => {
 				);
 			}
 
-			const block = getBlockFromComponentName( layoutComponentName );
+			const block = REVERSED_BLOCK_MAP[ layoutComponentName ];
 
 			if ( ! block ) {
 				return null;
