@@ -158,7 +158,7 @@ class CartItemSchema extends AbstractSchema {
 	}
 
 	/**
-	 * Convert a woo cart item to an object suitable for the response.
+	 * Convert a WooCommerce cart item to an object suitable for the response.
 	 *
 	 * @param array $cart_item Cart item array.
 	 * @return array
