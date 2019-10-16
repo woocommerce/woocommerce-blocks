@@ -26,6 +26,7 @@ class Library {
 	 */
 	public static function register_blocks() {
 		$blocks = [
+			'AllReviews',
 			'FeaturedCategory',
 			'FeaturedProduct',
 			'HandpickedProducts',
@@ -36,6 +37,9 @@ class Library {
 			'ProductOnSale',
 			'ProductsByAttribute',
 			'ProductTopRated',
+			'ReviewsByProduct',
+			'ReviewsByCategory',
+			'ProductSearch',
 			'ProductTag',
 		];
 		foreach ( $blocks as $class ) {

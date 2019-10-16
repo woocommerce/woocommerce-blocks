@@ -43,9 +43,11 @@ copy_dest_files() {
 		--exclude=tests/ \
 		--exclude=phpcs.xml \
 		--exclude=phpunit.xml.dist \
+		--exclude=CODEOWNERS \
 		--exclude=renovate.json \
 		--exclude="*.config.js" \
 		--exclude="*-config.js" \
+		--exclude="*.config.json" \
 		--exclude=package.json \
 		--exclude=package-lock.json \
 		--exclude=none \
@@ -77,6 +79,7 @@ fi
 
 # Run the build.
 status "Installing dependencies... 📦"
+composer install --no-dev
 PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm install
 status "==========================="
 npm list webpack

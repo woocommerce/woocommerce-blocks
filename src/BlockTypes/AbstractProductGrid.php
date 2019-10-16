@@ -156,6 +156,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		$this->set_block_query_args( $query_args );
 		$this->set_ordering_query_args( $query_args );
 		$this->set_categories_query_args( $query_args );
+		$this->set_visibility_query_args( $query_args );
 
 		return $query_args;
 	}
@@ -219,6 +220,27 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	}
 
 	/**
+	 * Set visibility query args.
+	 *
+	 * @param array $query_args Query args.
+	 */
+	protected function set_visibility_query_args( &$query_args ) {
+		$product_visibility_terms  = wc_get_product_visibility_term_ids();
+		$product_visibility_not_in = array( $product_visibility_terms['exclude-from-catalog'] );
+
+		if ( 'yes' === get_option( 'woocommerce_hide_out_of_stock_items' ) ) {
+			$product_visibility_not_in[] = $product_visibility_terms['outofstock'];
+		}
+
+		$query_args['tax_query'][] = array(
+			'taxonomy' => 'product_visibility',
+			'field'    => 'term_taxonomy_id',
+			'terms'    => $product_visibility_not_in,
+			'operator' => 'NOT IN',
+		);
+	}
+
+	/**
 	 * Works out the item limit based on rows and columns, or returns default.
 	 *
 	 * @return int
@@ -236,21 +258,28 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 * @return array List of product IDs
 	 */
 	protected function get_products() {
-		$query_hash        = md5( wp_json_encode( $this->query_args ) . __CLASS__ );
-		$transient_name    = 'wc_block_' . $query_hash;
-		$transient_value   = get_transient( $transient_name );
-		$transient_version = \WC_Cache_Helper::get_transient_version( 'product_query' );
+		$is_cacheable = (bool) apply_filters( 'woocommerce_blocks_product_grid_is_cacheable', true, $this->query_args );
 
-		if ( isset( $transient_value['value'], $transient_value['version'] ) && $transient_value['version'] === $transient_version ) {
+		if ( $is_cacheable ) {
+			$query_hash        = md5( wp_json_encode( $this->query_args ) . __CLASS__ );
+			$transient_name    = 'wc_block_' . $query_hash;
+			$transient_value   = get_transient( $transient_name );
+			$transient_version = \WC_Cache_Helper::get_transient_version( 'product_query' );
+		}
+
+		if ( isset( $transient_value['value'], $transient_value['version'], $transient_version ) && $transient_value['version'] === $transient_version ) {
 			$results = $transient_value['value'];
 		} else {
-			$query           = new \WP_Query( $this->query_args );
-			$results         = wp_parse_id_list( $query->posts );
-			$transient_value = array(
-				'version' => $transient_version,
-				'value'   => $results,
-			);
-			set_transient( $transient_name, $transient_value, DAY_IN_SECONDS * 30 );
+			$query   = new \WP_Query( $this->query_args );
+			$results = wp_parse_id_list( $query->posts );
+
+			if ( $is_cacheable ) {
+				$transient_value = array(
+					'version' => $transient_version,
+					'value'   => $results,
+				);
+				set_transient( $transient_name, $transient_value, DAY_IN_SECONDS * 30 );
+			}
 
 			// Remove ordering query arguments which may have been added by get_catalog_ordering_args.
 			WC()->query->remove_ordering_args();
@@ -326,8 +355,8 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 					{$data->image}
 					{$data->title}
 				</a>
-				{$data->price}
 				{$data->badge}
+				{$data->price}
 				{$data->rating}
 				{$data->button}
 			</li>",
