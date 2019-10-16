@@ -23,7 +23,7 @@ import {
  * Map blocks names to component names.
  */
 export const BLOCK_MAP = applyFilters(
-	'woocommerce_blocks_product_grid_children',
+	'woocommerce_blocks_product_list_components',
 	{
 		'woocommerce/product-list-price': ProductListPrice,
 		'woocommerce/product-list-image': ProductListImage,
