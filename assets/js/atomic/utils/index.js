@@ -105,6 +105,9 @@ export const getProductLayoutConfig = ( innerBlocks ) => {
 	}
 
 	return innerBlocks.map( ( block ) => {
+		if ( ! BLOCK_MAP[ block.name ] || ! BLOCK_MAP[ block.name ].name ) {
+			return null;
+		}
 		return {
 			component: BLOCK_MAP[ block.name ].name,
 			props: {
@@ -116,7 +119,7 @@ export const getProductLayoutConfig = ( innerBlocks ) => {
 						: [],
 			},
 		};
-	} );
+	} ).filter( Boolean );
 };
 
 /**
