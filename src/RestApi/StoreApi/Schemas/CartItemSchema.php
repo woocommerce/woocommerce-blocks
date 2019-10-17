@@ -149,11 +149,11 @@ class CartItemSchema extends AbstractSchema {
 	/**
 	 * Check given ID exists,
 	 *
-	 * @param integer $param Product ID.
+	 * @param integer $product_id Product ID.
 	 * @return bool
 	 */
-	public function product_id_exists( $param ) {
-		$post = get_post( (int) $param );
+	public function product_id_exists( $product_id ) {
+		$post = get_post( (int) $product_id );
 		return $post && in_array( $post->post_type, [ 'product', 'product_variation' ], true );
 	}
 
