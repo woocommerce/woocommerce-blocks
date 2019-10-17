@@ -115,7 +115,7 @@ class CartItems extends RestContoller {
 	 */
 	public function get_items( $request ) {
 		$controller = new CartController();
-		$cart_items = $controller->get_items();
+		$cart_items = $controller->get_cart_items();
 		$items      = [];
 
 		foreach ( $cart_items as $cart_item ) {
@@ -136,7 +136,7 @@ class CartItems extends RestContoller {
 	 */
 	public function get_item( $request ) {
 		$controller = new CartController();
-		$cart_item  = $controller->get_item( $request['key'] );
+		$cart_item  = $controller->get_cart_item( $request['key'] );
 
 		if ( ! $cart_item ) {
 			return new RestError( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
@@ -173,7 +173,7 @@ class CartItems extends RestContoller {
 			return $result;
 		}
 
-		return rest_ensure_response( $this->prepare_item_for_response( $controller->get_item( $result ), $request ) );
+		return rest_ensure_response( $this->prepare_item_for_response( $controller->get_cart_item( $result ), $request ) );
 	}
 
 	/**
@@ -185,7 +185,7 @@ class CartItems extends RestContoller {
 	public function update_item( $request ) {
 		$controller = new CartController();
 		$cart       = $controller->get_cart_instance();
-		$cart_item  = $controller->get_item( $request['key'] );
+		$cart_item  = $controller->get_cart_item( $request['key'] );
 
 		if ( ! $cart_item ) {
 			return new RestError( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
@@ -195,7 +195,7 @@ class CartItems extends RestContoller {
 			$cart->set_quantity( $request['key'], $request['quantity'] );
 		}
 
-		return rest_ensure_response( $this->prepare_item_for_response( $controller->get_item( $request['key'] ), $request ) );
+		return rest_ensure_response( $this->prepare_item_for_response( $controller->get_cart_item( $request['key'] ), $request ) );
 	}
 
 	/**
@@ -207,7 +207,7 @@ class CartItems extends RestContoller {
 	public function delete_item( $request ) {
 		$controller = new CartController();
 		$cart       = $controller->get_cart_instance();
-		$cart_item  = $controller->get_item( $request['key'] );
+		$cart_item  = $controller->get_cart_item( $request['key'] );
 
 		if ( ! $cart_item ) {
 			return new RestError( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );

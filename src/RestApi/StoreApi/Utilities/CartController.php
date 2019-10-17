@@ -133,7 +133,7 @@ class CartController {
 	 * @param string $item_id Cart item id.
 	 * @return array
 	 */
-	public function get_item( $item_id ) {
+	public function get_cart_item( $item_id ) {
 		return isset( wc()->cart->cart_contents[ $item_id ] ) ? wc()->cart->cart_contents[ $item_id ] : [];
 	}
 
@@ -142,7 +142,7 @@ class CartController {
 	 *
 	 * @return array
 	 */
-	public function get_items() {
+	public function get_cart_items() {
 		return array_filter( wc()->cart->get_cart() );
 	}
 
