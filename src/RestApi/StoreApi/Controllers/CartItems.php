@@ -155,8 +155,9 @@ class CartItems extends RestContoller {
 	 * @return \WP_Error|\WP_REST_Response Response object on success, or WP_Error object on failure.
 	 */
 	public function create_item( $request ) {
+		// Do not allow key to be specified during creation.
 		if ( ! empty( $request['key'] ) ) {
-			return new RestError( 'woocommerce_rest_cart_item_exists', __( 'Cannot create existing cart item.', 'woo-gutenberg-products-block' ), array( 'status' => 400 ) );
+			return new RestError( 'woocommerce_rest_cart_item_exists', __( 'Cannot create an existing cart item.', 'woo-gutenberg-products-block' ), array( 'status' => 400 ) );
 		}
 
 		$controller = new CartController();
