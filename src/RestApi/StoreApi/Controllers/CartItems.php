@@ -72,13 +72,6 @@ class CartItems extends RestContoller {
 				[
 					'methods'  => RestServer::DELETABLE,
 					'callback' => [ $this, 'delete_items' ],
-					'args'     => [
-						'context' => $this->get_context_param( [ 'default' => 'view' ] ),
-						'key'     => [
-							'description' => __( 'Unique identifier for the item within the cart.', 'woo-gutenberg-products-block' ),
-							'type'        => 'string',
-						],
-					],
 				],
 				'schema' => [ $this, 'get_public_item_schema' ],
 			]
