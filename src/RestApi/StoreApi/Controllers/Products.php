@@ -16,6 +16,7 @@ use \WC_REST_Exception as RestException;
 use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas\ProductSchema;
 use Automattic\WooCommerce\Blocks\RestApi\Utilities\Pagination;
 use Automattic\WooCommerce\Blocks\RestApi\Utilities\ProductFiltering;
+use Automattic\WooCommerce\Blocks\RestApi\Utilities\ProductQuery;
 
 /**
  * Products API.
@@ -43,10 +44,18 @@ class Products extends RestContoller {
 	protected $product_schema;
 
 	/**
+	 * Query class instance.
+	 *
+	 * @var ProductQuery
+	 */
+	protected $product_query;
+
+	/**
 	 * Setup API class.
 	 */
 	public function __construct() {
 		$this->product_schema = new ProductSchema();
+		$this->product_query  = new ProductQuery();
 	}
 
 	/**
@@ -131,45 +140,15 @@ class Products extends RestContoller {
 	}
 
 	/**
-	 * Get objects.
-	 *
-	 * @since  3.0.0
-	 * @param  array $query_args Query args.
-	 * @return array
-	 */
-	protected function get_objects( $query_args ) {
-		$query  = new \WP_Query();
-		$result = $query->query( $query_args );
-
-		$total_posts = $query->found_posts;
-		if ( $total_posts < 1 ) {
-			// Out-of-bounds, run the query again without LIMIT for total count.
-			unset( $query_args['paged'] );
-			$count_query = new \WP_Query();
-			$count_query->query( $query_args );
-			$total_posts = $count_query->found_posts;
-		}
-
-		return array(
-			'objects' => array_map( 'wc_get_product', $result ),
-			'total'   => (int) $total_posts,
-			'pages'   => (int) ceil( $total_posts / (int) $query->query_vars['posts_per_page'] ),
-		);
-	}
-
-	/**
 	 * Get a collection of posts and add the post title filter option to \WP_Query.
 	 *
 	 * @param \WP_REST_Request $request Full details about the request.
 	 * @return RestError|\WP_REST_Response
 	 */
 	public function get_items( $request ) {
-		add_filter( 'posts_clauses', array( $this, 'get_items_query_clauses' ), 10, 2 );
+		$query_results = $this->product_query->get_objects( $request );
+		$objects       = array();
 
-		$query_args    = $this->prepare_objects_query( $request );
-		$query_results = $this->get_objects( $query_args );
-
-		$objects = array();
 		foreach ( $query_results['objects'] as $object ) {
 			if ( ! wc_rest_check_post_permissions( 'product', 'read', $object->get_id() ) ) {
 				continue;
@@ -184,323 +163,9 @@ class Products extends RestContoller {
 
 		$response = rest_ensure_response( $objects );
 		$response = ( new Pagination() )->add_headers( $response, $request, $total, $max_pages );
-		$response = ( new ProductFiltering() )->add_headers( $response, $request, $query_args );
+		$response = ( new ProductFiltering() )->add_headers( $response, $request, $this );
 
-		remove_filter( 'posts_clauses', array( $this, 'get_items_query_clauses' ), 10 );
 		return $response;
-	}
-
-	/**
-	 * Add in conditional search filters for products.
-	 *
-	 * @param array     $args Query args.
-	 * @param \WC_Query $wp_query WC_Query object.
-	 * @return array
-	 */
-	public function get_items_query_clauses( $args, $wp_query ) {
-		global $wpdb;
-
-		if ( $wp_query->get( 'search' ) ) {
-			$search         = "'%" . $wpdb->esc_like( $wp_query->get( 'search' ) ) . "%'";
-			$args['join']   = $this->append_product_sorting_table_join( $args['join'] );
-			$args['where'] .= " AND ({$wpdb->posts}.post_title LIKE {$search}";
-			$args['where'] .= wc_product_sku_enabled() ? ' OR wc_product_meta_lookup.sku LIKE ' . $search . ')' : ')';
-		}
-
-		if ( $wp_query->get( 'sku' ) ) {
-			$skus = explode( ',', $wp_query->get( 'sku' ) );
-			// Include the current string as a SKU too.
-			if ( 1 < count( $skus ) ) {
-				$skus[] = $wp_query->get( 'sku' );
-			}
-			$args['join']   = $this->append_product_sorting_table_join( $args['join'] );
-			$args['where'] .= ' AND wc_product_meta_lookup.sku IN ("' . implode( '","', array_map( 'esc_sql', $skus ) ) . '")';
-		}
-
-		if ( $wp_query->get( 'min_price' ) ) {
-			$args['join']   = $this->append_product_sorting_table_join( $args['join'] );
-			$args['where'] .= $wpdb->prepare( ' AND wc_product_meta_lookup.min_price >= %f ', floatval( $wp_query->get( 'min_price' ) ) );
-		}
-
-		if ( $wp_query->get( 'max_price' ) ) {
-			$args['join']   = $this->append_product_sorting_table_join( $args['join'] );
-			$args['where'] .= $wpdb->prepare( ' AND wc_product_meta_lookup.max_price <= %f ', floatval( $wp_query->get( 'max_price' ) ) );
-		}
-
-		if ( $wp_query->get( 'stock_status' ) ) {
-			$args['join']   = $this->append_product_sorting_table_join( $args['join'] );
-			$args['where'] .= $wpdb->prepare( ' AND wc_product_meta_lookup.stock_status = %s ', $wp_query->get( 'stock_status' ) );
-		}
-
-		if ( $wp_query->get( 'low_in_stock' ) ) {
-			$low_stock      = absint( max( get_option( 'woocommerce_notify_low_stock_amount' ), 1 ) );
-			$args['join']   = $this->append_product_sorting_table_join( $args['join'] );
-			$args['where'] .= $wpdb->prepare( ' AND wc_product_meta_lookup.stock_quantity <= %d', $low_stock );
-		}
-
-		return $args;
-	}
-
-	/**
-	 * Join wc_product_meta_lookup to posts if not already joined.
-	 *
-	 * @param string $sql SQL join.
-	 * @return string
-	 */
-	protected function append_product_sorting_table_join( $sql ) {
-		global $wpdb;
-
-		if ( ! strstr( $sql, 'wc_product_meta_lookup' ) ) {
-			$sql .= " LEFT JOIN {$wpdb->wc_product_meta_lookup} wc_product_meta_lookup ON $wpdb->posts.ID = wc_product_meta_lookup.product_id ";
-		}
-		return $sql;
-	}
-
-	/**
-	 * Make extra product orderby features supported by WooCommerce available to the WC API.
-	 * This includes 'price', 'popularity', and 'rating'.
-	 *
-	 * @param \WP_REST_Request $request Request data.
-	 * @return array
-	 */
-	protected function prepare_objects_query( $request ) {
-		$args                        = array();
-		$args['offset']              = $request['offset'];
-		$args['order']               = $request['order'];
-		$args['orderby']             = $request['orderby'];
-		$args['paged']               = $request['page'];
-		$args['post__in']            = $request['include'];
-		$args['post__not_in']        = $request['exclude'];
-		$args['posts_per_page']      = $request['per_page'];
-		$args['name']                = $request['slug'];
-		$args['post_parent__in']     = $request['parent'];
-		$args['post_parent__not_in'] = $request['parent_exclude'];
-		$args['s']                   = $request['search'];
-		$args['fields']              = 'ids';
-
-		if ( 'date' === $args['orderby'] ) {
-			$args['orderby'] = 'date ID';
-		}
-
-		$args['date_query'] = array();
-
-		// Set before into date query. Date query must be specified as an array of an array.
-		if ( isset( $request['before'] ) ) {
-			$args['date_query'][0]['before'] = $request['before'];
-		}
-
-		// Set after into date query. Date query must be specified as an array of an array.
-		if ( isset( $request['after'] ) ) {
-			$args['date_query'][0]['after'] = $request['after'];
-		}
-
-		// Set date query colummn. Defaults to post_date.
-		if ( isset( $request['date_column'] ) && ! empty( $args['date_query'][0] ) ) {
-			$args['date_query'][0]['column'] = 'post_' . $request['date_column'];
-		}
-
-		// Force the post_type argument, since it's not a user input variable.
-		$args['post_type'] = $this->post_type;
-
-		// Set post_status.
-		$args['post_status'] = $request['status'];
-
-		// Set custom args to handle later during clauses.
-		$custom_keys = array(
-			'sku',
-			'min_price',
-			'max_price',
-			'stock_status',
-			'low_in_stock',
-		);
-		foreach ( $custom_keys as $key ) {
-			if ( ! empty( $request[ $key ] ) ) {
-				$args[ $key ] = $request[ $key ];
-			}
-		}
-
-		// Taxonomy query to filter products by type, category,
-		// tag, shipping class, and attribute.
-		$tax_query = array();
-
-		// Map between taxonomy name and arg's key.
-		$taxonomies = array(
-			'product_cat'            => 'category',
-			'product_tag'            => 'tag',
-			'product_shipping_class' => 'shipping_class',
-		);
-
-		// Set tax_query for each passed arg.
-		foreach ( $taxonomies as $taxonomy => $key ) {
-			if ( ! empty( $request[ $key ] ) ) {
-				$tax_query[] = array(
-					'taxonomy' => $taxonomy,
-					'field'    => 'term_id',
-					'terms'    => $request[ $key ],
-				);
-			}
-		}
-
-		// Filter product type by slug.
-		if ( ! empty( $request['type'] ) ) {
-			$tax_query[] = array(
-				'taxonomy' => 'product_type',
-				'field'    => 'slug',
-				'terms'    => $request['type'],
-			);
-		}
-
-		// Filter by attribute and term.
-		if ( ! empty( $request['attribute'] ) && ! empty( $request['attribute_term'] ) ) {
-			if ( in_array( $request['attribute'], wc_get_attribute_taxonomy_names(), true ) ) {
-				$tax_query[] = array(
-					'taxonomy' => $request['attribute'],
-					'field'    => 'term_id',
-					'terms'    => $request['attribute_term'],
-				);
-			}
-		}
-
-		// Build tax_query if taxonomies are set.
-		if ( ! empty( $tax_query ) ) {
-			if ( ! empty( $args['tax_query'] ) ) {
-				$args['tax_query'] = array_merge( $tax_query, $args['tax_query'] ); // phpcs:ignore
-			} else {
-				$args['tax_query'] = $tax_query; // phpcs:ignore
-			}
-		}
-
-		// Filter featured.
-		if ( is_bool( $request['featured'] ) ) {
-			$args['tax_query'][] = array(
-				'taxonomy' => 'product_visibility',
-				'field'    => 'name',
-				'terms'    => 'featured',
-				'operator' => true === $request['featured'] ? 'IN' : 'NOT IN',
-			);
-		}
-
-		// Filter by tax class.
-		if ( ! empty( $request['tax_class'] ) ) {
-			$args['meta_query'] = $this->add_meta_query( // phpcs:ignore
-				$args,
-				array(
-					'key'   => '_tax_class',
-					'value' => 'standard' !== $request['tax_class'] ? $request['tax_class'] : '',
-				)
-			);
-		}
-
-		// Filter by on sale products.
-		if ( is_bool( $request['on_sale'] ) ) {
-			$on_sale_key = $request['on_sale'] ? 'post__in' : 'post__not_in';
-			$on_sale_ids = wc_get_product_ids_on_sale();
-
-			// Use 0 when there's no on sale products to avoid return all products.
-			$on_sale_ids = empty( $on_sale_ids ) ? array( 0 ) : $on_sale_ids;
-
-			$args[ $on_sale_key ] += $on_sale_ids;
-		}
-
-		// Force the post_type argument, since it's not a user input variable.
-		if ( ! empty( $request['sku'] ) ) {
-			$args['post_type'] = array( 'product', 'product_variation' );
-		} else {
-			$args['post_type'] = 'product';
-		}
-
-		$orderby = $request->get_param( 'orderby' );
-		$order   = $request->get_param( 'order' );
-
-		$ordering_args   = WC()->query->get_catalog_ordering_args( $orderby, $order );
-		$args['orderby'] = $ordering_args['orderby'];
-		$args['order']   = $ordering_args['order'];
-		if ( $ordering_args['meta_key'] ) {
-			$args['meta_key'] = $ordering_args['meta_key']; // phpcs:ignore
-		}
-
-		return $this->prepare_items_query( $args, $request );
-	}
-
-	/**
-	 * Add meta query.
-	 *
-	 * @param array $args       Query args.
-	 * @param array $meta_query Meta query.
-	 * @return array
-	 */
-	protected function add_meta_query( $args, $meta_query ) {
-		if ( empty( $args['meta_query'] ) ) {
-			$args['meta_query'] = []; // phpcs:ignore
-		}
-
-		$args['meta_query'][] = $meta_query;
-
-		return $args['meta_query'];
-	}
-
-	/**
-	 * Determine the allowed query_vars for a get_items() response and
-	 * prepare for \WP_Query.
-	 *
-	 * @param array            $prepared_args Prepared arguments.
-	 * @param \WP_REST_Request $request Request object.
-	 * @return array           $query_args
-	 */
-	protected function prepare_items_query( $prepared_args = array(), $request = null ) {
-		$valid_vars = array_flip( $this->get_allowed_query_vars() );
-		$query_args = array_intersect_key( $prepared_args, $valid_vars );
-
-		$query_args['ignore_sticky_posts'] = true;
-
-		if ( 'include' === $query_args['orderby'] ) {
-			$query_args['orderby'] = 'post__in';
-		} elseif ( 'id' === $query_args['orderby'] ) {
-			$query_args['orderby'] = 'ID'; // ID must be capitalized.
-		} elseif ( 'slug' === $query_args['orderby'] ) {
-			$query_args['orderby'] = 'name';
-		}
-
-		return $query_args;
-	}
-
-	/**
-	 * Get all the WP Query vars that are allowed for the API request.
-	 *
-	 * @return array
-	 */
-	protected function get_allowed_query_vars() {
-		global $wp;
-
-		/**
-		 * Filter the publicly allowed query vars.
-		 *
-		 * Allows adjusting of the default query vars that are made public.
-		 *
-		 * @param array  Array of allowed \WP_Query query vars.
-		 */
-		$valid_vars = apply_filters( 'query_vars', $wp->public_query_vars );
-
-		// Define our own in addition to WP's normal vars.
-		$rest_valid = array(
-			'date_query',
-			'ignore_sticky_posts',
-			'offset',
-			'post__in',
-			'post__not_in',
-			'post_parent',
-			'post_parent__in',
-			'post_parent__not_in',
-			'posts_per_page',
-			'meta_query',
-			'tax_query',
-			'meta_key',
-			'meta_value',
-			'meta_compare',
-			'meta_value_num',
-		);
-
-		return array_merge( $valid_vars, $rest_valid );
 	}
 
 	/**
@@ -648,6 +313,8 @@ class Products extends RestContoller {
 				'price',
 				'popularity',
 				'rating',
+				'menu_order',
+				'comment_count',
 			),
 			'validate_callback' => 'rest_validate_request_arg',
 		);
@@ -793,6 +460,41 @@ class Products extends RestContoller {
 		$params['search'] = array(
 			'description'       => __( 'Search by similar product name or sku.', 'woo-gutenberg-products-block' ),
 			'type'              => 'string',
+			'validate_callback' => 'rest_validate_request_arg',
+		);
+
+		$params['category_operator'] = array(
+			'description'       => __( 'Operator to compare product category terms.', 'woo-gutenberg-products-block' ),
+			'type'              => 'string',
+			'enum'              => array( 'in', 'not_in', 'and' ),
+			'default'           => 'in',
+			'sanitize_callback' => 'sanitize_key',
+			'validate_callback' => 'rest_validate_request_arg',
+		);
+
+		$params['tag_operator'] = array(
+			'description'       => __( 'Operator to compare product tags.', 'woo-gutenberg-products-block' ),
+			'type'              => 'string',
+			'enum'              => array( 'in', 'not_in', 'and' ),
+			'default'           => 'in',
+			'sanitize_callback' => 'sanitize_key',
+			'validate_callback' => 'rest_validate_request_arg',
+		);
+
+		$params['attribute_operator'] = array(
+			'description'       => __( 'Operator to compare product attribute terms.', 'woo-gutenberg-products-block' ),
+			'type'              => 'string',
+			'enum'              => array( 'in', 'not_in', 'and' ),
+			'default'           => 'in',
+			'sanitize_callback' => 'sanitize_key',
+			'validate_callback' => 'rest_validate_request_arg',
+		);
+
+		$params['catalog_visibility'] = array(
+			'description'       => __( 'Determines if hidden or visible catalog products are shown.', 'woo-gutenberg-products-block' ),
+			'type'              => 'string',
+			'enum'              => array( 'any', 'visible', 'catalog', 'search', 'hidden' ),
+			'sanitize_callback' => 'sanitize_key',
 			'validate_callback' => 'rest_validate_request_arg',
 		);
 
