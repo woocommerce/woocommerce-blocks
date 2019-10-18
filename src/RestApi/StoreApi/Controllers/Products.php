@@ -15,7 +15,6 @@ use \WP_REST_Controller as RestContoller;
 use \WC_REST_Exception as RestException;
 use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas\ProductSchema;
 use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\Pagination;
-use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ProductFiltering;
 use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ProductQuery;
 
 /**
@@ -41,7 +40,7 @@ class Products extends RestContoller {
 	 *
 	 * @var ProductSchema
 	 */
-	protected $product_schema;
+	protected $schema;
 
 	/**
 	 * Query class instance.
@@ -54,8 +53,8 @@ class Products extends RestContoller {
 	 * Setup API class.
 	 */
 	public function __construct() {
-		$this->product_schema = new ProductSchema();
-		$this->product_query  = new ProductQuery();
+		$this->schema        = new ProductSchema();
+		$this->product_query = new ProductQuery();
 	}
 
 	/**
@@ -106,7 +105,7 @@ class Products extends RestContoller {
 	 * @return array
 	 */
 	public function get_item_schema() {
-		return $this->product_schema->get_item_schema();
+		return $this->schema->get_item_schema();
 	}
 
 	/**
@@ -117,7 +116,7 @@ class Products extends RestContoller {
 	 * @return \WP_REST_Response $response Response data.
 	 */
 	public function prepare_item_for_response( $item, $request ) {
-		return rest_ensure_response( $this->product_schema->get_item_response( $item ) );
+		return rest_ensure_response( $this->schema->get_item_response( $item ) );
 	}
 
 	/**
@@ -163,7 +162,6 @@ class Products extends RestContoller {
 
 		$response = rest_ensure_response( $objects );
 		$response = ( new Pagination() )->add_headers( $response, $request, $total, $max_pages );
-		$response = ( new ProductFiltering() )->add_headers( $response, $request, $this );
 
 		return $response;
 	}
@@ -195,7 +193,7 @@ class Products extends RestContoller {
 	}
 
 	/**
-	 * Get the query params for collections of attachments.
+	 * Get the query params for collections of products.
 	 *
 	 * @return array
 	 */
@@ -471,27 +469,6 @@ class Products extends RestContoller {
 			),
 			'default'           => array(),
 			'sanitize_callback' => 'wp_parse_id_list',
-		);
-
-		$params['return_price_range'] = array(
-			'description' => __( 'If true, sets headers containing the minimum and maximum product prices for the collection.', 'woo-gutenberg-products-block' ),
-			'type'        => 'boolean',
-			'default'     => false,
-		);
-
-		$params['return_attribute_counts'] = array(
-			'description' => __( 'If requested, sets headers containing attribute term counts for products in the collection.', 'woo-gutenberg-products-block' ),
-			'type'        => 'array',
-			'items'       => array(
-				'type' => 'string',
-			),
-			'default'     => array(),
-		);
-
-		$params['return_rating_counts'] = array(
-			'description' => __( 'If true, sets headers containing rating counts for products in the collection.', 'woo-gutenberg-products-block' ),
-			'type'        => 'boolean',
-			'default'     => false,
 		);
 
 		return $params;

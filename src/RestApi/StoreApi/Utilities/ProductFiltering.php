@@ -15,41 +15,13 @@ use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ProductQuery;
  * Product Filtering class.
  */
 class ProductFiltering {
-
-	/**
-	 * Add product filtering headers to a response object.
-	 *
-	 * @param \WP_REST_Response $response Reference to the response object.
-	 * @param \WP_REST_Request  $request The request object.
-	 * @return \WP_REST_Response
-	 */
-	public function add_headers( $response, $request ) {
-		if ( ! empty( $request['return_price_range'] ) ) {
-			$price_results = $this->get_filtered_price( $request );
-			$response->header( 'Product-Min-Price', $price_results->min_price );
-			$response->header( 'Product-Max-Price', $price_results->max_price );
-		}
-
-		if ( ! empty( $request['return_attribute_counts'] ) ) {
-			$attribute_counts = $this->get_attribute_counts( $request );
-			$response->header( 'Product-Attribute-Counts', wp_json_encode( $attribute_counts ) );
-		}
-
-		if ( ! empty( $request['return_rating_counts'] ) ) {
-			$rating_counts = $this->get_rating_counts( $request );
-			$response->header( 'Product-Rating-Counts', wp_json_encode( $rating_counts ) );
-		}
-
-		return $response;
-	}
-
 	/**
 	 * Get filtered min price for current products.
 	 *
 	 * @param \WP_REST_Request $request The request object.
 	 * @return array
 	 */
-	protected function get_filtered_price( $request ) {
+	public function get_filtered_price( $request ) {
 		global $wpdb;
 
 		// Regenerate the products query without min/max price request params.
@@ -84,9 +56,10 @@ class ProductFiltering {
 	 * Get attribute counts for the current products.
 	 *
 	 * @param \WP_REST_Request $request The request object.
-	 * @return array
+	 * @param array            $attribute_names Attributes to count.
+	 * @return array termId=>count pairs.
 	 */
-	protected function get_attribute_counts( $request ) {
+	public function get_attribute_counts( $request, $attribute_names = [] ) {
 		global $wpdb;
 
 		// Grab the request from the WP Query object, and remove SQL_CALC_FOUND_ROWS and Limits so we get a list of all products.
@@ -105,7 +78,7 @@ class ProductFiltering {
 		remove_filter( 'posts_clauses', array( $product_query, 'add_query_clauses' ), 10 );
 		remove_filter( 'posts_pre_query', '__return_empty_array' );
 
-		$attributes_to_count     = array_map( 'wc_sanitize_taxonomy_name', $request['return_attribute_counts'] );
+		$attributes_to_count     = array_map( 'wc_sanitize_taxonomy_name', $attribute_names );
 		$attributes_to_count_sql = 'AND term_taxonomy.taxonomy IN ("' . implode( '","', $attributes_to_count ) . '")';
 		$attribute_count_sql     = "
 			SELECT COUNT( DISTINCT posts.ID ) as term_count, terms.term_id as term_count_id
@@ -119,20 +92,15 @@ class ProductFiltering {
 		";
 
 		$results = $wpdb->get_results( $attribute_count_sql ); // phpcs:ignore
-		$return  = [];
 
-		foreach ( $results as $result ) {
-			$return[ 'term-' . $result->term_count_id ] = absint( $result->term_count );
-		}
-
-		return $return;
+		return array_map( 'absint', wp_list_pluck( $results, 'term_count', 'term_count_id' ) );
 	}
 
 	/**
 	 * Get rating counts for the current products.
 	 *
 	 * @param \WP_REST_Request $request The request object.
-	 * @return array
+	 * @return array rating=>count pairs.
 	 */
 	public function get_rating_counts( $request ) {
 		global $wpdb;
@@ -165,12 +133,7 @@ class ProductFiltering {
 		";
 
 		$results = $wpdb->get_results( $rating_count_sql ); // phpcs:ignore
-		$return  = [];
 
-		foreach ( $results as $result ) {
-			$return[ 'rated-' . $result->rounded_average_rating ] = absint( $result->product_count );
-		}
-
-		return $return;
+		return array_map( 'absint', wp_list_pluck( $results, 'product_count', 'rounded_average_rating' ) );
 	}
 }

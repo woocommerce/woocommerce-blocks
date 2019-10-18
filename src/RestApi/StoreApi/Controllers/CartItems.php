@@ -36,17 +36,17 @@ class CartItems extends RestContoller {
 	protected $rest_base = 'cart/items';
 
 	/**
-	 * Schema class instances.
+	 * Schema class instance.
 	 *
-	 * @var array
+	 * @var object
 	 */
-	protected $cart_item_schema;
+	protected $schema;
 
 	/**
 	 * Setup API class.
 	 */
 	public function __construct() {
-		$this->cart_item_schema = new CartItemSchema();
+		$this->schema = new CartItemSchema();
 	}
 
 	/**
@@ -239,7 +239,7 @@ class CartItems extends RestContoller {
 	 * @return array
 	 */
 	public function get_item_schema() {
-		return $this->cart_item_schema->get_item_schema();
+		return $this->schema->get_item_schema();
 	}
 
 	/**
@@ -250,7 +250,7 @@ class CartItems extends RestContoller {
 	 * @return \WP_REST_Response Response object.
 	 */
 	public function prepare_item_for_response( $cart_item, $request ) {
-		$data = $this->cart_item_schema->get_item_response( $cart_item );
+		$data = $this->schema->get_item_response( $cart_item );
 
 		return rest_ensure_response( $data );
 	}
