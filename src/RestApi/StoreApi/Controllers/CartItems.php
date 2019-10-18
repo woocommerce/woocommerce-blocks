@@ -173,7 +173,9 @@ class CartItems extends RestContoller {
 			return $result;
 		}
 
-		return rest_ensure_response( $this->prepare_item_for_response( $controller->get_cart_item( $result ), $request ) );
+		$response = rest_ensure_response( $this->prepare_item_for_response( $controller->get_cart_item( $result ), $request ) );
+		$response->set_status( 201 );
+		return $response;
 	}
 
 	/**
