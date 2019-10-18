@@ -105,7 +105,7 @@ class ProductFiltering {
 		remove_filter( 'posts_clauses', array( $product_query, 'add_query_clauses' ), 10 );
 		remove_filter( 'posts_pre_query', '__return_empty_array' );
 
-		$attributes_to_count     = array_map( 'wc_sanitize_taxonomy_name', explode( ',', $request['return_attribute_counts'] ) );
+		$attributes_to_count     = array_map( 'wc_sanitize_taxonomy_name', $request['return_attribute_counts'] );
 		$attributes_to_count_sql = 'AND term_taxonomy.taxonomy IN ("' . implode( '","', $attributes_to_count ) . '")';
 		$attribute_count_sql     = "
 			SELECT COUNT( DISTINCT posts.ID ) as term_count, terms.term_id as term_count_id
