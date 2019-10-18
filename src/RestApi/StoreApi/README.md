@@ -110,6 +110,7 @@ GET /products?sku=sku-1,sku-2
 GET /products?featured=true
 GET /products?category=t-shirts
 GET /products?tag=special-items
+GET /products?attributes[0][attribute]=pa_color&attributes[0][slug]=red
 GET /products?on_sale=true
 GET /products?min_price=50
 GET /products?max_price=100
@@ -141,6 +142,7 @@ GET /products?return_rating_counts=true
 | `category_operator`       | string  |    no    | Operator to compare product category terms. Allowed values: `in`, `not_in`, `and`                                                                                         |
 | `tag`                     | string  |    no    | Limit result set to products assigned a specific tag ID.                                                                                                                  |
 | `tag_operator`            | string  |    no    | Operator to compare product tags. Allowed values: `in`, `not_in`, `and`                                                                                                   |
+| `attributes`              | array   |    no    | Limit result set to specific attribute terms. Expects an array of objects containing `attribute` (taxonomy), `term_id` or `slug`, and optional `operator` for comparison. |
 | `on_sale`                 | boolean |    no    | Limit result set to products on sale.                                                                                                                                     |
 | `min_price`               | string  |    no    | Limit result set to products based on a minimum price.                                                                                                                    |
 | `max_price`               | string  |    no    | Limit result set to products based on a maximum price.                                                                                                                    |

@@ -28,12 +28,12 @@ class ProductQuery {
 		$args['post__in']            = $request['include'];
 		$args['post__not_in']        = $request['exclude'];
 		$args['posts_per_page']      = $request['per_page'];
-		$args['name']                = $request['slug'];
 		$args['post_parent__in']     = $request['parent'];
 		$args['post_parent__not_in'] = $request['parent_exclude'];
 		$args['s']                   = $request['search'];
 		$args['fields']              = 'ids';
 		$args['ignore_sticky_posts'] = true;
+		$args['post_status']         = 'publish';
 
 		if ( 'date' === $args['orderby'] ) {
 			$args['orderby'] = 'date ID';
@@ -56,16 +56,12 @@ class ProductQuery {
 			$args['date_query'][0]['column'] = 'post_' . $request['date_column'];
 		}
 
-		// Set post_status.
-		$args['post_status'] = $request['status'];
-
 		// Set custom args to handle later during clauses.
 		$custom_keys = array(
 			'sku',
 			'min_price',
 			'max_price',
 			'stock_status',
-			'low_in_stock',
 		);
 
 		foreach ( $custom_keys as $key ) {
@@ -80,9 +76,8 @@ class ProductQuery {
 
 		// Map between taxonomy name and arg's key.
 		$taxonomies = array(
-			'product_cat'            => 'category',
-			'product_tag'            => 'tag',
-			'product_shipping_class' => 'shipping_class',
+			'product_cat' => 'category',
+			'product_tag' => 'tag',
 		);
 
 		// Set tax_query for each passed arg.
@@ -105,14 +100,20 @@ class ProductQuery {
 			);
 		}
 
-		// Filter by attribute and term.
-		if ( ! empty( $request['attribute'] ) && ! empty( $request['attribute_term'] ) ) {
-			if ( in_array( $request['attribute'], wc_get_attribute_taxonomy_names(), true ) ) {
-				$tax_query[] = array(
-					'taxonomy' => $request['attribute'],
-					'field'    => 'term_id',
-					'terms'    => $request['attribute_term'],
-				);
+		// Filter by attributes.
+		if ( ! empty( $request['attributes'] ) ) {
+			foreach ( $request['attributes'] as $attribute ) {
+				if ( empty( $attribute['term_id'] ) && empty( $attribute['slug'] ) ) {
+					continue;
+				}
+				if ( in_array( $attribute['attribute'], wc_get_attribute_taxonomy_names(), true ) ) {
+					$tax_query[] = array(
+						'taxonomy' => $attribute['attribute'],
+						'field'    => ! empty( $attribute['term_id'] ) ? 'term_id' : 'slug',
+						'terms'    => ! empty( $attribute['term_id'] ) ? $attribute['term_id'] : $attribute['slug'],
+						'operator' => isset( $attribute['operator'] ) ? $attribute['operator'] : 'IN',
+					);
+				}
 			}
 		}
 
@@ -132,17 +133,6 @@ class ProductQuery {
 				'field'    => 'name',
 				'terms'    => 'featured',
 				'operator' => true === $request['featured'] ? 'IN' : 'NOT IN',
-			);
-		}
-
-		// Filter by tax class.
-		if ( ! empty( $request['tax_class'] ) ) {
-			$args['meta_query'] = $this->add_meta_query( // phpcs:ignore
-				$args,
-				array(
-					'key'   => '_tax_class',
-					'value' => 'standard' !== $request['tax_class'] ? $request['tax_class'] : '',
-				)
 			);
 		}
 
@@ -322,12 +312,6 @@ class ProductQuery {
 		if ( $wp_query->get( 'stock_status' ) ) {
 			$args['join']   = $this->append_product_sorting_table_join( $args['join'] );
 			$args['where'] .= $wpdb->prepare( ' AND wc_product_meta_lookup.stock_status = %s ', $wp_query->get( 'stock_status' ) );
-		}
-
-		if ( $wp_query->get( 'low_in_stock' ) ) {
-			$low_stock      = absint( max( get_option( 'woocommerce_notify_low_stock_amount' ), 1 ) );
-			$args['join']   = $this->append_product_sorting_table_join( $args['join'] );
-			$args['where'] .= $wpdb->prepare( ' AND wc_product_meta_lookup.stock_quantity <= %d', $low_stock );
 		}
 
 		return $args;

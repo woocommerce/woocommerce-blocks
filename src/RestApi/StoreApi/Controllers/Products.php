@@ -257,13 +257,6 @@ class Products extends RestContoller {
 			'validate_callback' => 'rest_validate_request_arg',
 		);
 
-		$params['modified_before'] = array(
-			'description'       => __( 'Limit response to resources modified before a given ISO8601 compliant date.', 'woo-gutenberg-products-block' ),
-			'type'              => 'string',
-			'format'            => 'date-time',
-			'validate_callback' => 'rest_validate_request_arg',
-		);
-
 		$params['exclude'] = array(
 			'description'       => __( 'Ensure result set excludes specific IDs.', 'woo-gutenberg-products-block' ),
 			'type'              => 'array',
@@ -339,21 +332,6 @@ class Products extends RestContoller {
 			'default'           => array(),
 		);
 
-		$params['slug'] = array(
-			'description'       => __( 'Limit result set to products with a specific slug.', 'woo-gutenberg-products-block' ),
-			'type'              => 'string',
-			'validate_callback' => 'rest_validate_request_arg',
-		);
-
-		$params['status'] = array(
-			'default'           => 'any',
-			'description'       => __( 'Limit result set to products assigned a specific status.', 'woo-gutenberg-products-block' ),
-			'type'              => 'string',
-			'enum'              => array_merge( array( 'any', 'future' ), array_keys( get_post_statuses() ) ),
-			'sanitize_callback' => 'sanitize_key',
-			'validate_callback' => 'rest_validate_request_arg',
-		);
-
 		$params['type'] = array(
 			'description'       => __( 'Limit result set to products assigned a specific type.', 'woo-gutenberg-products-block' ),
 			'type'              => 'string',
@@ -390,37 +368,6 @@ class Products extends RestContoller {
 			'validate_callback' => 'rest_validate_request_arg',
 		);
 
-		$params['shipping_class'] = array(
-			'description'       => __( 'Limit result set to products assigned a specific shipping class ID.', 'woo-gutenberg-products-block' ),
-			'type'              => 'string',
-			'sanitize_callback' => 'wp_parse_id_list',
-			'validate_callback' => 'rest_validate_request_arg',
-		);
-
-		$params['attribute'] = array(
-			'description'       => __( 'Limit result set to products with a specific attribute. Use the taxonomy name/attribute slug.', 'woo-gutenberg-products-block' ),
-			'type'              => 'string',
-			'sanitize_callback' => 'sanitize_text_field',
-			'validate_callback' => 'rest_validate_request_arg',
-		);
-
-		$params['attribute_term'] = array(
-			'description'       => __( 'Limit result set to products with a specific attribute term ID (required an assigned attribute).', 'woo-gutenberg-products-block' ),
-			'type'              => 'string',
-			'sanitize_callback' => 'wp_parse_id_list',
-			'validate_callback' => 'rest_validate_request_arg',
-		);
-
-		if ( wc_tax_enabled() ) {
-			$params['tax_class'] = array(
-				'description'       => __( 'Limit result set to products with a specific tax class.', 'woo-gutenberg-products-block' ),
-				'type'              => 'string',
-				'enum'              => array_merge( array( 'standard' ), \WC_Tax::get_tax_class_slugs() ),
-				'sanitize_callback' => 'sanitize_text_field',
-				'validate_callback' => 'rest_validate_request_arg',
-			);
-		}
-
 		$params['on_sale'] = array(
 			'description'       => __( 'Limit result set to products on sale.', 'woo-gutenberg-products-block' ),
 			'type'              => 'boolean',
@@ -450,19 +397,6 @@ class Products extends RestContoller {
 			'validate_callback' => 'rest_validate_request_arg',
 		);
 
-		$params['low_in_stock'] = array(
-			'description'       => __( 'Limit result set to products that are low or out of stock.', 'woo-gutenberg-products-block' ),
-			'type'              => 'boolean',
-			'default'           => false,
-			'sanitize_callback' => 'wc_string_to_bool',
-		);
-
-		$params['search'] = array(
-			'description'       => __( 'Search by similar product name or sku.', 'woo-gutenberg-products-block' ),
-			'type'              => 'string',
-			'validate_callback' => 'rest_validate_request_arg',
-		);
-
 		$params['category_operator'] = array(
 			'description'       => __( 'Operator to compare product category terms.', 'woo-gutenberg-products-block' ),
 			'type'              => 'string',
@@ -488,6 +422,36 @@ class Products extends RestContoller {
 			'default'           => 'in',
 			'sanitize_callback' => 'sanitize_key',
 			'validate_callback' => 'rest_validate_request_arg',
+		);
+
+		$params['attributes'] = array(
+			'description' => __( 'Limit result set to products with selected global attributes.', 'woo-gutenberg-products-block' ),
+			'type'        => 'array',
+			'items'       => array(
+				'type'       => 'object',
+				'properties' => array(
+					'attribute' => array(
+						'description'       => __( 'Attribute taxonomy name.', 'woo-gutenberg-products-block' ),
+						'type'              => 'string',
+						'sanitize_callback' => 'wc_sanitize_taxonomy_name',
+					),
+					'term_id'   => array(
+						'description'       => __( 'Attribute term ID.', 'woo-gutenberg-products-block' ),
+						'type'              => 'array',
+						'sanitize_callback' => 'wp_parse_id_list',
+					),
+					'slug'      => array(
+						'description' => __( 'Comma separatede list of attribute slug(s). If a term ID is provided, this will be ignored.', 'woo-gutenberg-products-block' ),
+						'type'        => 'string',
+					),
+					'operator'  => array(
+						'description' => __( 'Operator to compare product attribute terms.', 'woo-gutenberg-products-block' ),
+						'type'        => 'string',
+						'enum'        => [ 'in', 'not in', 'and' ],
+					),
+				),
+			),
+			'default'     => array(),
 		);
 
 		$params['catalog_visibility'] = array(
