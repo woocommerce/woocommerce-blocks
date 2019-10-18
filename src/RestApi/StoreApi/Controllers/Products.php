@@ -498,8 +498,34 @@ class Products extends RestContoller {
 			'validate_callback' => 'rest_validate_request_arg',
 		);
 
+		$params['rating'] = array(
+			'description'       => __( 'Limit result set to products with a certain average rating.', 'woo-gutenberg-products-block' ),
+			'type'              => 'array',
+			'items'             => array(
+				'type' => 'integer',
+				'enum' => range( 1, 5 ),
+			),
+			'default'           => array(),
+			'sanitize_callback' => 'wp_parse_id_list',
+		);
+
 		$params['return_price_range'] = array(
 			'description' => __( 'If true, sets headers containing the minimum and maximum product prices for the collection.', 'woo-gutenberg-products-block' ),
+			'type'        => 'boolean',
+			'default'     => false,
+		);
+
+		$params['return_attribute_counts'] = array(
+			'description' => __( 'If requested, sets headers containing attribute term counts for products in the collection.', 'woo-gutenberg-products-block' ),
+			'type'        => 'array',
+			'items'       => array(
+				'type' => 'string',
+			),
+			'default'     => array(),
+		);
+
+		$params['return_rating_counts'] = array(
+			'description' => __( 'If true, sets headers containing rating counts for products in the collection.', 'woo-gutenberg-products-block' ),
 			'type'        => 'boolean',
 			'default'     => false,
 		);

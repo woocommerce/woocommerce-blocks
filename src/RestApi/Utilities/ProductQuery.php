@@ -166,7 +166,6 @@ class ProductQuery {
 		$category_operator  = $operator_mapping[ $request->get_param( 'category_operator' ) ];
 		$tag_operator       = $operator_mapping[ $request->get_param( 'tag_operator' ) ];
 		$attribute_operator = $operator_mapping[ $request->get_param( 'attribute_operator' ) ];
-		$catalog_visibility = $request->get_param( 'catalog_visibility' );
 
 		if ( $category_operator && isset( $args['tax_query'] ) ) {
 			foreach ( $args['tax_query'] as $i => $tax_query ) {
@@ -193,7 +192,11 @@ class ProductQuery {
 			}
 		}
 
-		if ( in_array( $catalog_visibility, array_keys( wc_get_product_visibility_options() ), true ) ) {
+		$catalog_visibility = $request->get_param( 'catalog_visibility' );
+		$rating             = $request->get_param( 'rating' );
+		$visibility_options = wc_get_product_visibility_options();
+
+		if ( in_array( $catalog_visibility, array_keys( $visibility_options ), true ) ) {
 			$exclude_from_catalog = 'search' === $catalog_visibility ? '' : 'exclude-from-catalog';
 			$exclude_from_search  = 'catalog' === $catalog_visibility ? '' : 'exclude-from-search';
 
@@ -202,6 +205,18 @@ class ProductQuery {
 				'field'    => 'name',
 				'terms'    => array( $exclude_from_catalog, $exclude_from_search ),
 				'operator' => 'hidden' === $catalog_visibility ? 'AND' : 'NOT IN',
+			);
+		}
+
+		if ( $rating ) {
+			$rating_terms = [];
+			foreach ( $rating as $value ) {
+				$rating_terms[] = 'rated-' . $value;
+			}
+			$args['tax_query'][] = array(
+				'taxonomy' => 'product_visibility',
+				'field'    => 'name',
+				'terms'    => $rating_terms,
 			);
 		}
 
