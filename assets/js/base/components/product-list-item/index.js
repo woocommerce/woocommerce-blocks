@@ -9,7 +9,7 @@ import withComponentId from '@woocommerce/base-hocs/with-component-id';
 /**
  * Internal dependencies.
  */
-import { renderProductLayout } from '../../../atomic/utils';
+import { renderProductLayout } from './utils';
 
 class ProductListItem extends Component {
 	static propTypes = {
@@ -20,7 +20,7 @@ class ProductListItem extends Component {
 	};
 
 	render = () => {
-		const { product, attributes, componentId } = this.props;
+		const { blockName, product, attributes, componentId } = this.props;
 		const { layoutConfig } = attributes;
 		const isLoading = ! Object.keys( product ).length > 0;
 		const classes = classnames( 'wc-block-grid__product', {
@@ -29,7 +29,12 @@ class ProductListItem extends Component {
 
 		return (
 			<li className={ classes } aria-hidden={ isLoading }>
-				{ renderProductLayout( product, layoutConfig, componentId ) }
+				{ renderProductLayout(
+					blockName,
+					product,
+					layoutConfig,
+					componentId
+				) }
 			</li>
 		);
 	};

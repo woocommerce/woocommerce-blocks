@@ -34,6 +34,7 @@ const baseConfig = {
 const CoreConfig = {
 	...baseConfig,
 	entry: {
+		wcBlocksRegistry: './assets/js/blocks-registry/index.js',
 		wcSettings: './assets/js/settings/shared/index.js',
 	},
 	output: {

@@ -22,6 +22,7 @@ function findModuleMatch( module, match ) {
 
 const requestToExternal = ( request ) => {
 	const wcDepMap = {
+		'@woocommerce/blocks-registry': [ 'wc', 'wcBlocksRegistry' ],
 		'@woocommerce/settings': [ 'wc', 'wcSettings' ],
 	};
 	if ( wcDepMap[ request ] ) {
@@ -31,6 +32,7 @@ const requestToExternal = ( request ) => {
 
 const requestToHandle = ( request ) => {
 	const wcHandleMap = {
+		'@woocommerce/blocks-registry': 'wc-blocks-registry',
 		'@woocommerce/settings': 'wc-settings',
 		'@woocommerce/block-settings': 'wc-settings',
 	};
@@ -43,6 +45,10 @@ const getAlias = ( options = {} ) => {
 	let { pathPart } = options;
 	pathPart = pathPart ? `${ pathPart }/` : '';
 	return {
+		'@woocommerce/blocks-registry': path.resolve(
+			__dirname,
+			'../assets/js/blocks-registry'
+		),
 		'@woocommerce/block-settings': path.resolve(
 			__dirname,
 			'../assets/js/settings/blocks'

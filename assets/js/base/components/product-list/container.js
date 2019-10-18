@@ -35,13 +35,14 @@ class ProductGridContainer extends Component {
 	};
 
 	render() {
-		const { attributes } = this.props;
+		const { attributes, blockName } = this.props;
 		const { currentPage } = this.state;
 		const sortValue = this.state.sortValue || this.props.attributes.orderby;
 
 		return (
 			<ProductGrid
 				attributes={ attributes }
+				blockName={ blockName }
 				currentPage={ currentPage }
 				onOrderChange={ this.onOrderChange }
 				onPageChange={ this.onPageChange }

@@ -44,6 +44,8 @@ class Assets {
 		self::register_script( 'wc-blocks', plugins_url( 'build/blocks.js', __DIR__ ), [], false );
 		self::register_script( 'wc-vendors', plugins_url( 'build/vendors.js', __DIR__ ), [], false );
 
+		self::register_script( 'wc-blocks-registry', plugins_url( 'build/wc-blocks-registry.js', __DIR__ ), [], false );
+
 		// Individual blocks.
 		$block_dependencies = array( 'wc-vendors', 'wc-blocks' );
 

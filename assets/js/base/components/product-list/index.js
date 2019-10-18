@@ -16,6 +16,7 @@ import './style.scss';
 
 const ProductList = ( {
 	attributes,
+	blockName,
 	currentPage,
 	onOrderChange,
 	onPageChange,
@@ -63,6 +64,7 @@ const ProductList = ( {
 			<ul className="wc-block-grid__products">
 				{ listProducts.map( ( product = {}, i ) => (
 					<ProductListItem
+						blockName={ blockName }
 						key={ product.id || i }
 						attributes={ attributes }
 						product={ product }

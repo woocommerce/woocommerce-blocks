@@ -31,6 +31,7 @@ class Block extends Component {
 		return (
 			<ProductListContainer
 				attributes={ attributes }
+				blockName="woocommerce/all-products"
 				urlParameterSuffix={ urlParameterSuffix }
 			/>
 		);
