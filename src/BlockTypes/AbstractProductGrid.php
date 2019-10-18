@@ -261,7 +261,8 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		$is_cacheable = (bool) apply_filters( 'woocommerce_blocks_product_grid_is_cacheable', true, $this->query_args );
 
 		if ( $is_cacheable ) {
-			$query_hash        = md5( wp_json_encode( $this->query_args ) . __CLASS__ );
+			$hash_args         = apply_filters( 'woocommerce_blocks_product_grid_hash_args', $this->query_args );
+			$query_hash        = md5( wp_json_encode( $hash_args ) . __CLASS__ );
 			$transient_name    = 'wc_block_' . $query_hash;
 			$transient_value   = get_transient( $transient_name );
 			$transient_version = \WC_Cache_Helper::get_transient_version( 'product_query' );
