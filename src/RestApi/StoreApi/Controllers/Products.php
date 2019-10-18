@@ -14,9 +14,9 @@ use \WP_Error as RestError;
 use \WP_REST_Controller as RestContoller;
 use \WC_REST_Exception as RestException;
 use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas\ProductSchema;
-use Automattic\WooCommerce\Blocks\RestApi\Utilities\Pagination;
-use Automattic\WooCommerce\Blocks\RestApi\Utilities\ProductFiltering;
-use Automattic\WooCommerce\Blocks\RestApi\Utilities\ProductQuery;
+use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\Pagination;
+use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ProductFiltering;
+use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ProductQuery;
 
 /**
  * Products API.
@@ -112,7 +112,7 @@ class Products extends RestContoller {
 	/**
 	 * Prepare a single item for response.
 	 *
-	 * @param \WC_Product      $item Object used to create response.
+	 * @param \WC_Product      $item Product object.
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response $response Response data.
 	 */
@@ -171,7 +171,7 @@ class Products extends RestContoller {
 	/**
 	 * Prepare links for the request.
 	 *
-	 * @param mixed            $item Object to prepare.
+	 * @param \WC_Product      $item Product object.
 	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */

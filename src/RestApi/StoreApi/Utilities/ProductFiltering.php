@@ -5,11 +5,11 @@
  * @package Automattic/WooCommerce/RestApi
  */
 
-namespace Automattic\WooCommerce\Blocks\RestApi\Utilities;
+namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities;
 
 defined( 'ABSPATH' ) || exit;
 
-use Automattic\WooCommerce\Blocks\RestApi\Utilities\ProductQuery;
+use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ProductQuery;
 
 /**
  * Product Filtering class.
