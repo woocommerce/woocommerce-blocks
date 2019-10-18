@@ -35,6 +35,11 @@ class ProductFiltering {
 			$response->header( 'Product-Attribute-Counts', wp_json_encode( $attribute_counts ) );
 		}
 
+		if ( ! empty( $request['return_rating_counts'] ) ) {
+			$rating_counts = $this->get_rating_counts( $request );
+			$response->header( 'Product-Rating-Counts', wp_json_encode( $rating_counts ) );
+		}
+
 		return $response;
 	}
 
@@ -76,7 +81,7 @@ class ProductFiltering {
 	}
 
 	/**
-	 * Get filtered min price for current products.
+	 * Get attribute counts for the current products.
 	 *
 	 * @param \WP_REST_Request $request The request object.
 	 * @return array
@@ -118,6 +123,52 @@ class ProductFiltering {
 
 		foreach ( $results as $result ) {
 			$return[ 'term-' . $result->term_count_id ] = absint( $result->term_count );
+		}
+
+		return $return;
+	}
+
+	/**
+	 * Get rating counts for the current products.
+	 *
+	 * @param \WP_REST_Request $request The request object.
+	 * @return array
+	 */
+	public function get_rating_counts( $request ) {
+		global $wpdb;
+
+		// Regenerate the products query without rating request params.
+		unset( $request['rating'] );
+
+		// Grab the request from the WP Query object, and remove SQL_CALC_FOUND_ROWS and Limits so we get a list of all products.
+		$product_query = new ProductQuery();
+
+		add_filter( 'posts_clauses', array( $product_query, 'add_query_clauses' ), 10, 2 );
+		add_filter( 'posts_pre_query', '__return_empty_array' );
+
+		$query_args                   = $product_query->prepare_objects_query( $request );
+		$query_args['no_found_rows']  = true;
+		$query_args['posts_per_page'] = -1;
+		$query                        = new \WP_Query();
+		$result                       = $query->query( $query_args );
+		$product_query_sql            = $query->request;
+
+		remove_filter( 'posts_clauses', array( $product_query, 'add_query_clauses' ), 10 );
+		remove_filter( 'posts_pre_query', '__return_empty_array' );
+
+		$rating_count_sql = "
+			SELECT COUNT( DISTINCT product_id ) as product_count, ROUND( average_rating, 0 ) as rounded_average_rating
+			FROM {$wpdb->wc_product_meta_lookup}
+			WHERE product_id IN ( {$product_query_sql} )
+			AND average_rating > 0
+			GROUP BY rounded_average_rating
+		";
+
+		$results = $wpdb->get_results( $rating_count_sql ); // phpcs:ignore
+		$return  = [];
+
+		foreach ( $results as $result ) {
+			$return[ 'rated-' . $result->rounded_average_rating ] = absint( $result->product_count );
 		}
 
 		return $return;

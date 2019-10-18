@@ -201,10 +201,11 @@ class ProductQuery {
 			$exclude_from_search  = 'catalog' === $catalog_visibility ? '' : 'exclude-from-search';
 
 			$args['tax_query'][] = array(
-				'taxonomy' => 'product_visibility',
-				'field'    => 'name',
-				'terms'    => array( $exclude_from_catalog, $exclude_from_search ),
-				'operator' => 'hidden' === $catalog_visibility ? 'AND' : 'NOT IN',
+				'taxonomy'      => 'product_visibility',
+				'field'         => 'name',
+				'terms'         => array( $exclude_from_catalog, $exclude_from_search ),
+				'operator'      => 'hidden' === $catalog_visibility ? 'AND' : 'NOT IN',
+				'rating_filter' => true,
 			);
 		}
 
