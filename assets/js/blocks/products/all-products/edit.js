@@ -34,7 +34,6 @@ import {
 } from '../utils';
 import {
 	getBlockMap,
-	getReversedBlockMap,
 	getDefaultBlocks,
 	getProductLayoutConfig,
 } from '../base-utils';
@@ -69,12 +68,7 @@ class Editor extends Component {
 
 	blockMap = getBlockMap( 'woocommerce/all-products' );
 
-	reversedBlockMap = getReversedBlockMap(
-		'woocommerce/all-products',
-		this.blockMap
-	);
-
-	defaultBlocks = getDefaultBlocks( this.reversedBlockMap );
+	defaultBlocks = getDefaultBlocks();
 
 	componentDidMount = () => {
 		const { block } = this.props;

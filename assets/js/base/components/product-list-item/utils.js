@@ -3,7 +3,7 @@
  */
 import {
 	DEFAULT_PRODUCT_LIST_LAYOUT,
-	getReversedBlockMap,
+	getBlockMap,
 } from '../../../blocks/products/base-utils';
 
 /**
@@ -23,8 +23,11 @@ export const renderProductLayout = (
 	if ( ! layoutConfig ) {
 		layoutConfig = DEFAULT_PRODUCT_LIST_LAYOUT;
 	}
+
+	const blockMap = getBlockMap( blockName );
+
 	return layoutConfig.map(
-		( { component: layoutComponentName, props = {} }, index ) => {
+		( { name: layoutBlockName, props = {} }, index ) => {
 			let children = [];
 
 			if ( !! props.children && props.children.length > 0 ) {
@@ -35,18 +38,16 @@ export const renderProductLayout = (
 				);
 			}
 
-			const reversedBlockMap = getReversedBlockMap( blockName );
-			const block = reversedBlockMap[ layoutComponentName ];
+			const LayoutComponent = blockMap[ layoutBlockName ];
 
-			if ( ! block ) {
+			if ( ! LayoutComponent ) {
 				return null;
 			}
 
-			const LayoutComponent = block.component;
 			const productID = product.id || 0;
 			const keyParts = [
 				'layout',
-				layoutComponentName,
+				layoutBlockName,
 				index,
 				componentId,
 				productID,

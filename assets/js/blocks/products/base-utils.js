@@ -36,77 +36,44 @@ export const getBlockMap = ( blockName ) => ( {
 } );
 
 /**
- * Maps component names to component classes and block names.
- *
- * @param {string} blockName Name of the parent block. Used to get extension children.
- * @param {object[]} blockMap Map of blocks as returned by `getBlockMap`. If not specified, it gets the block map with the passed `blockName`.
- */
-export const getReversedBlockMap = (
-	blockName,
-	blockMap = getBlockMap( blockName )
-) =>
-	Object.entries( blockMap ).reduce( ( acc, block ) => {
-		acc[ block[ 1 ].name ] = {
-			component: block[ 1 ],
-			key: block[ 0 ],
-		};
-		return acc;
-	}, {} );
-
-/**
  * The default layout built from the default template.
  */
 export const DEFAULT_PRODUCT_LIST_LAYOUT = [
 	{
-		component: 'ProductListSaleBadge',
+		name: 'woocommerce/product-list-sale-badge',
 		props: { align: 'left' },
 	},
 	{
-		component: 'ProductListImage',
+		name: 'woocommerce/product-list-image',
 		props: {},
 	},
 	{
-		component: 'ProductListTitle',
+		name: 'woocommerce/product-list-title',
 		props: {},
 	},
 	{
-		component: 'ProductListPrice',
+		name: 'woocommerce/product-list-price',
 		props: {},
 	},
 	{
-		component: 'ProductListRating',
+		name: 'woocommerce/product-list-rating',
 		props: {},
 	},
 	{
-		component: 'ProductListButton',
+		name: 'woocommerce/product-list-button',
 		props: {},
 	},
 ];
 
 /**
- * Converts and maps a layoutConfig to a block template.
- */
-export const layoutConfigToBlockTemplate = (
-	reversedBlockMap,
-	layoutConfig
-) => {
-	return layoutConfig
-		.map( ( layout ) => {
-			const block = reversedBlockMap[ layout.component ];
-
-			return block.key ? [ block.key, layout.props ] : null;
-		} )
-		.filter( Boolean );
-};
-
-/**
  * The default template (list of inner blocks) for the product list.
  */
-export const getDefaultBlocks = ( reversedBlockMap ) =>
-	layoutConfigToBlockTemplate(
-		reversedBlockMap,
-		DEFAULT_PRODUCT_LIST_LAYOUT
-	);
+export const getDefaultBlocks = () => {
+	return DEFAULT_PRODUCT_LIST_LAYOUT.map( ( layout ) => [
+		layout.name,
+		layout.props,
+	] );
+};
 
 /**
  * Converts innerblocks to a list of layout configs.
@@ -119,25 +86,17 @@ export const getProductLayoutConfig = ( blockMap, innerBlocks ) => {
 		return null;
 	}
 
-	return innerBlocks
-		.map( ( block ) => {
-			if ( ! blockMap[ block.name ] || ! blockMap[ block.name ].name ) {
-				return null;
-			}
-			return {
-				component: blockMap[ block.name ].name,
-				props: {
-					...block.attributes,
-					product: undefined,
-					children:
-						block.innerBlocks.length > 0
-							? getProductLayoutConfig(
-									blockMap,
-									block.innerBlocks
-							  )
-							: [],
-				},
-			};
-		} )
-		.filter( Boolean );
+	return innerBlocks.map( ( block ) => {
+		return {
+			name: block.name,
+			props: {
+				...block.attributes,
+				product: undefined,
+				children:
+					block.innerBlocks.length > 0
+						? getProductLayoutConfig( blockMap, block.innerBlocks )
+						: [],
+			},
+		};
+	} );
 };
