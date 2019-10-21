@@ -13,14 +13,18 @@ import { formatError } from '../utils/errors.js';
 
 const withReviews = ( OriginalComponent ) => {
 	class WrappedComponent extends Component {
-		constructor() {
-			super( ...arguments );
+		constructor( props ) {
+			super( props );
+
+			this.isPreview = Boolean( props.attributes.previewReviews );
 
 			this.state = {
 				error: null,
 				loading: true,
-				reviews: [],
-				totalReviews: 0,
+				reviews: this.isPreview ? props.attributes.previewReviews : [],
+				totalReviews: this.isPreview
+					? props.attributes.previewReviews.length
+					: 0,
 			};
 
 			this.setError = this.setError.bind( this );
@@ -88,12 +92,20 @@ const withReviews = ( OriginalComponent ) => {
 		}
 
 		replaceReviews() {
+			if ( this.isPreview ) {
+				return;
+			}
+
 			const { onReviewsReplaced } = this.props;
 
 			this.updateListOfReviews().then( onReviewsReplaced );
 		}
 
 		appendReviews() {
+			if ( this.isPreview ) {
+				return;
+			}
+
 			const { onReviewsAppended, reviewsToDisplay } = this.props;
 			const { reviews } = this.state;
 
