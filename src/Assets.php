@@ -41,6 +41,7 @@ class Assets {
 		wp_style_add_data( 'wc-block-style', 'rtl', 'replace' );
 
 		// Shared libraries and components across all blocks.
+		self::register_script( 'wc-blocks-data-store', plugins_url( 'build/wc-blocks-data.js', __DIR__ ), [], false );
 		self::register_script( 'wc-blocks', plugins_url( 'build/blocks.js', __DIR__ ), [], false );
 		self::register_script( 'wc-vendors', plugins_url( 'build/vendors.js', __DIR__ ), [], false );
 

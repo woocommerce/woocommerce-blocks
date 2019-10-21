@@ -35,6 +35,7 @@ const CoreConfig = {
 	...baseConfig,
 	entry: {
 		wcSettings: './assets/js/settings/shared/index.js',
+		wcBlocksData: './assets/js/data/index.js',
 	},
 	output: {
 		filename: ( chunkData ) => {

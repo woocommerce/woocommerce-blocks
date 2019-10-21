@@ -23,6 +23,7 @@ function findModuleMatch( module, match ) {
 const requestToExternal = ( request ) => {
 	const wcDepMap = {
 		'@woocommerce/settings': [ 'wc', 'wcSettings' ],
+		'@woocommerce/block-data': [ 'wc', 'wcBlocksData' ],
 	};
 	if ( wcDepMap[ request ] ) {
 		return wcDepMap[ request ];
@@ -33,6 +34,7 @@ const requestToHandle = ( request ) => {
 	const wcHandleMap = {
 		'@woocommerce/settings': 'wc-settings',
 		'@woocommerce/block-settings': 'wc-settings',
+		'@woocommerce/block-data': 'wc-blocks-data-store',
 	};
 	if ( wcHandleMap[ request ] ) {
 		return wcHandleMap[ request ];
