@@ -106,7 +106,7 @@ const getMainConfig = ( options = {} ) => {
 			'product-tag': './assets/js/blocks/product-tag/index.js',
 			'featured-category':
 				'./assets/js/blocks/featured-category/index.js',
-				'all-products': './assets/js/blocks/products/all-products/index.js',
+			'all-products': './assets/js/blocks/products/all-products/index.js',
 		},
 		output: {
 			path: path.resolve( __dirname, '../build/' ),
@@ -238,8 +238,6 @@ const getFrontConfig = ( options = {} ) => {
 		  };
 	return {
 		entry: {
-			'product-categories':
-				'./assets/js/blocks/product-categories/frontend.js',
 			reviews: './assets/js/blocks/reviews/frontend.js',
 			'all-products':
 				'./assets/js/blocks/products/all-products/frontend.js',
