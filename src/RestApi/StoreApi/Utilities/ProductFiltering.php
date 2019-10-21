@@ -130,6 +130,7 @@ class ProductFiltering {
 			WHERE product_id IN ( {$product_query_sql} )
 			AND average_rating > 0
 			GROUP BY rounded_average_rating
+			ORDER BY rounded_average_rating ASC
 		";
 
 		$results = $wpdb->get_results( $rating_count_sql ); // phpcs:ignore

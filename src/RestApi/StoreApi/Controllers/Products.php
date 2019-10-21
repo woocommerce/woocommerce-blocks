@@ -11,6 +11,7 @@ namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers;
 defined( 'ABSPATH' ) || exit;
 
 use \WP_Error as RestError;
+use \WP_REST_Server as RestServer;
 use \WP_REST_Controller as RestContoller;
 use \WC_REST_Exception as RestException;
 use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas\ProductSchema;
@@ -66,8 +67,8 @@ class Products extends RestContoller {
 			'/' . $this->rest_base,
 			array(
 				array(
-					'methods'  => 'GET',
-					'callback' => array( $this, 'get_items' ),
+					'methods'  => RestServer::READABLE,
+					'callback' => [ $this, 'get_items' ],
 					'args'     => $this->get_collection_params(),
 				),
 				'schema' => array( $this, 'get_public_item_schema' ),
@@ -84,7 +85,7 @@ class Products extends RestContoller {
 					),
 				),
 				array(
-					'methods'  => 'GET',
+					'methods'  => RestServer::READABLE,
 					'callback' => array( $this, 'get_item' ),
 					'args'     => array(
 						'context' => $this->get_context_param(
@@ -149,10 +150,6 @@ class Products extends RestContoller {
 		$objects       = array();
 
 		foreach ( $query_results['objects'] as $object ) {
-			if ( ! wc_rest_check_post_permissions( 'product', 'read', $object->get_id() ) ) {
-				continue;
-			}
-
 			$data      = $this->prepare_item_for_response( $object, $request );
 			$objects[] = $this->prepare_response_for_collection( $data );
 		}

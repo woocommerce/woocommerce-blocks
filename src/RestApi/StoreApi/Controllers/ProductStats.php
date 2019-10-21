@@ -13,6 +13,7 @@ namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers;
 defined( 'ABSPATH' ) || exit;
 
 use \WP_REST_Controller as RestContoller;
+use \WP_REST_Server as RestServer;
 use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ProductFiltering;
 
 /**
@@ -42,7 +43,7 @@ class ProductStats extends RestContoller {
 			'/' . $this->rest_base,
 			array(
 				array(
-					'methods'  => 'GET',
+					'methods'  => RestServer::READABLE,
 					'callback' => array( $this, 'get_items' ),
 					'args'     => $this->get_collection_params(),
 				),
@@ -58,57 +59,62 @@ class ProductStats extends RestContoller {
 	 */
 	public function get_item_schema() {
 		return [
-			'min_price'        => array(
-				'description' => __( 'Min price found in collection of products.', 'woo-gutenberg-products-block' ),
-				'type'        => 'integer',
-				'context'     => array( 'view', 'edit' ),
-				'readonly'    => true,
-			),
-			'max_price'        => array(
-				'description' => __( 'Max price found in collection of products.', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
-				'context'     => array( 'view', 'edit' ),
-			),
-			'attribute_counts' => array(
-				'description' => __( 'Returns number of products within attribute terms, indexed by term ID.', 'woo-gutenberg-products-block' ),
-				'type'        => 'object',
-				'context'     => array( 'view', 'edit' ),
-				'items'       => array(
-					'type'       => 'object',
-					'properties' => array(
-						'term'  => array(
-							'description' => __( 'Term ID', 'woo-gutenberg-products-block' ),
-							'type'        => 'integer',
-							'context'     => array( 'view', 'edit' ),
-						),
-						'count' => array(
-							'description' => __( 'Number of products.', 'woo-gutenberg-products-block' ),
-							'type'        => 'integer',
-							'context'     => array( 'view', 'edit' ),
+			'$schema'    => 'http://json-schema.org/draft-04/schema#',
+			'title'      => 'product_stats',
+			'type'       => 'object',
+			'properties' => [
+				'min_price'        => array(
+					'description' => __( 'Min price found in collection of products.', 'woo-gutenberg-products-block' ),
+					'type'        => 'integer',
+					'context'     => array( 'view', 'edit' ),
+					'readonly'    => true,
+				),
+				'max_price'        => array(
+					'description' => __( 'Max price found in collection of products.', 'woo-gutenberg-products-block' ),
+					'type'        => 'string',
+					'context'     => array( 'view', 'edit' ),
+				),
+				'attribute_counts' => array(
+					'description' => __( 'Returns number of products within attribute terms, indexed by term ID.', 'woo-gutenberg-products-block' ),
+					'type'        => 'object',
+					'context'     => array( 'view', 'edit' ),
+					'items'       => array(
+						'type'       => 'object',
+						'properties' => array(
+							'term'  => array(
+								'description' => __( 'Term ID', 'woo-gutenberg-products-block' ),
+								'type'        => 'integer',
+								'context'     => array( 'view', 'edit' ),
+							),
+							'count' => array(
+								'description' => __( 'Number of products.', 'woo-gutenberg-products-block' ),
+								'type'        => 'integer',
+								'context'     => array( 'view', 'edit' ),
+							),
 						),
 					),
 				),
-			),
-			'rating_counts'    => array(
-				'description' => __( 'Returns number of products with each average rating.', 'woo-gutenberg-products-block' ),
-				'type'        => 'object',
-				'context'     => array( 'view', 'edit' ),
-				'items'       => array(
-					'type'       => 'object',
-					'properties' => array(
-						'rating' => array(
-							'description' => __( 'Average rating', 'woo-gutenberg-products-block' ),
-							'type'        => 'integer',
-							'context'     => array( 'view', 'edit' ),
-						),
-						'count'  => array(
-							'description' => __( 'Number of products.', 'woo-gutenberg-products-block' ),
-							'type'        => 'integer',
-							'context'     => array( 'view', 'edit' ),
+				'rating_counts'    => array(
+					'description' => __( 'Returns number of products with each average rating.', 'woo-gutenberg-products-block' ),
+					'type'        => 'object',
+					'context'     => array( 'view', 'edit' ),
+					'items'       => array(
+						'type'       => 'object',
+						'properties' => array(
+							'rating' => array(
+								'description' => __( 'Average rating', 'woo-gutenberg-products-block' ),
+								'type'        => 'integer',
+								'context'     => array( 'view', 'edit' ),
+							),
+							'count'  => array(
+								'description' => __( 'Number of products.', 'woo-gutenberg-products-block' ),
+								'type'        => 'integer',
+								'context'     => array( 'view', 'edit' ),
+							),
 						),
 					),
 				),
-			),
+			],
 		];
 	}
 
