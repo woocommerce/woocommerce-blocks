@@ -14,7 +14,7 @@ cache:
 before_install:
   - timedatectl
   - nvm install
-  - npm rebuild node-saas
+  - npm rebuild node-sass
 
 before_script:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
