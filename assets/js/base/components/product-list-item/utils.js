@@ -31,6 +31,7 @@ export const renderProductLayout = (
 
 		if ( !! props.children && props.children.length > 0 ) {
 			children = renderProductLayout(
+				blockName,
 				product,
 				props.children,
 				componentId
