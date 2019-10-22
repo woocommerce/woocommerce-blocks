@@ -156,11 +156,9 @@
 		}
 	}
 	&.has-1-columns {
-
 		.wc-block-grid__products {
 			display: block;
 		}
-
 		.wc-block-grid__product {
 			margin-left: auto;
 			margin-right: auto;
@@ -179,6 +177,36 @@
 	&.has-8-columns {
 		.wc-block-grid__product {
 			font-size: 0.8em;
+		}
+	}
+}
+
+// Responsive media styles.
+@media only screen and ( max-width: 479px ) {
+	.wc-block-grid {
+		@for $i from 2 to 9 {
+			&.has-#{$i}-columns {
+				.wc-block-grid__products {
+					display: block;
+				}
+				.wc-block-grid__product {
+					margin-left: auto;
+					margin-right: auto;
+					flex: 1 0 100%;
+					max-width: 100%;
+					padding: 0;
+				}
+			}
+		}
+	}
+}
+@media only screen and ( min-width: 480px ) and ( max-width: 768px ) {
+	.wc-block-grid {
+		@for $i from 2 to 9 {
+			&.has-#{$i}-columns .wc-block-grid__product {
+				flex: 1 0 50%;
+				max-width: 50%;
+			}
 		}
 	}
 }
