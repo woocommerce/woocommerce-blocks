@@ -26,7 +26,7 @@ export const extractModelNameFromRoute = ( namespace, route ) => {
  * ...then the following would get returned
  * [ 'attribute_id', 'id' ]
  *
- * @param  {string} The route to extract identifier names from.
+ * @param  {string} route - The route to extract identifier names from.
  *
  * @return {Array}  An array of named route identifier names.
  */
