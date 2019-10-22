@@ -170,14 +170,14 @@ const withReviews = ( OriginalComponent ) => {
 				.catch( this.setError );
 		}
 
-		async setError( e ) {
+		setError = async ( e ) => {
 			const { onReviewsLoadError } = this.props;
 			const error = await formatError( e );
 
 			this.setState( { reviews: [], loading: false, error } );
 
 			onReviewsLoadError( error );
-		}
+		};
 
 		render() {
 			const { reviewsToDisplay } = this.props;
