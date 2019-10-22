@@ -38,7 +38,7 @@ describe( 'receiveRoutes', () => {
 		} );
 		expect( newState ).toBe( originalState );
 	} );
-	it( 'returns expected state when new route added.', () => {
+	it( 'returns expected state when new route added', () => {
 		const action = {
 			type: types.RECEIVE_MODEL_ROUTES,
 			namespace: 'wc/blocks',
