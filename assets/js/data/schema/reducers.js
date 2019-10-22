@@ -11,49 +11,8 @@ import {
 	extractModelNameFromRoute,
 	getRouteIds,
 	simplifyRouteWithId,
-	hasRouteInState,
 } from './utils';
-
-const updateState = (
-	state = {},
-	namespace,
-	modelName,
-	route,
-	routeIdNames
-) => {
-	if ( ! state[ namespace ] ) {
-		state = {
-			...state,
-			[ namespace ]: {
-				[ modelName ]: {
-					[ route ]: routeIdNames,
-				},
-			},
-		};
-	} else if ( ! state[ namespace ][ modelName ] ) {
-		state = {
-			...state,
-			[ namespace ]: {
-				...state[ namespace ],
-				[ modelName ]: {
-					[ route ]: routeIdNames,
-				},
-			},
-		};
-	} else {
-		state = {
-			...state,
-			[ namespace ]: {
-				...state[ namespace ],
-				[ modelName ]: {
-					...state[ namespace ][ modelName ],
-					[ route ]: routeIdNames,
-				},
-			},
-		};
-	}
-	return state;
-};
+import { hasInState, updateState } from '../utils';
 
 /**
  * Reducer for routes
@@ -72,13 +31,11 @@ export const receiveRoutes = ( state = {}, action ) => {
 				const routeIdNames = getRouteIds( route );
 				const savedRoute = simplifyRouteWithId( route, routeIdNames );
 				if (
-					! hasRouteInState( state, namespace, modelName, savedRoute )
+					! hasInState( state, [ namespace, modelName, savedRoute ] )
 				) {
 					state = updateState(
 						state,
-						namespace,
-						modelName,
-						savedRoute,
+						[ namespace, modelName, savedRoute ],
 						routeIdNames
 					);
 				}

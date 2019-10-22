@@ -63,16 +63,3 @@ export const simplifyRouteWithId = ( route, matchIds ) => {
 	} );
 	return route;
 };
-
-/**
- * Utility for returning whether the current data already exists in state.
- *
- * @return bool
- */
-export const hasRouteInState = ( state, namespace, modelName, route ) => {
-	return (
-		state[ namespace ] &&
-		state[ namespace ][ modelName ] &&
-		state[ namespace ][ modelName ][ route ]
-	);
-};

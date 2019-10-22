@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { hasExisting } from './utils';
+import { hasInState } from '../utils';
 
 /**
  * External dependencies
@@ -30,7 +30,7 @@ export const getCollection = (
 	// prep ids and query for state retrieval
 	ids = JSON.stringify( ids );
 	query = query !== null ? addQueryArgs( '', query ) : '';
-	if ( hasExisting( state, namespace, modelName, ids, query ) ) {
+	if ( hasInState( state, [ namespace, modelName, ids, query ] ) ) {
 		return state[ namespace ][ modelName ][ ids ][ query ];
 	}
 	return DEFAULT_EMPTY_ARRAY;

@@ -2,83 +2,7 @@
  * Internal dependencies
  */
 import { ACTION_TYPES as types } from './action-types';
-import { hasExisting } from './utils';
-
-const updateState = (
-	state = {},
-	namespace,
-	modelName,
-	ids,
-	queryString,
-	items,
-	replace = false
-) => {
-	if ( ! state[ namespace ] ) {
-		state = {
-			...state,
-			[ namespace ]: {
-				[ modelName ]: {
-					[ ids ]: {
-						[ queryString ]: items,
-					},
-				},
-			},
-		};
-	} else if ( ! state[ namespace ][ modelName ] ) {
-		state = {
-			...state,
-			[ namespace ]: {
-				...state[ namespace ],
-				[ modelName ]: {
-					[ ids ]: {
-						[ queryString ]: items,
-					},
-				},
-			},
-		};
-	} else if ( ! state[ namespace ][ modelName ][ ids ] ) {
-		state = {
-			...state,
-			[ namespace ]: {
-				...state[ namespace ],
-				[ modelName ]: {
-					...state[ namespace ][ modelName ],
-					[ ids ]: {
-						[ queryString ]: items,
-					},
-				},
-			},
-		};
-	} else {
-		state = replace
-			? {
-					...state,
-					[ namespace ]: {
-						...state[ namespace ],
-						[ modelName ]: {
-							...state[ namespace ][ modelName ],
-							[ ids ]: {
-								[ queryString ]: items,
-							},
-						},
-					},
-			  }
-			: {
-					...state,
-					[ namespace ]: {
-						...state[ namespace ],
-						[ modelName ]: {
-							...state[ namespace ][ modelName ],
-							[ ids ]: {
-								...state[ namespace ][ modelName ][ ids ],
-								[ queryString ]: items,
-							},
-						},
-					},
-			  };
-	}
-	return state;
-};
+import { hasInState, updateState } from '../utils';
 
 /**
  * Reducer for receiving items to a collection.
@@ -96,28 +20,21 @@ const receiveCollection = ( state = {}, action ) => {
 	switch ( type ) {
 		case types.RECEIVE_COLLECTION:
 			if (
-				hasExisting( state, namespace, modelName, ids, queryString )
+				hasInState( state, [ namespace, modelName, ids, queryString ] )
 			) {
 				return state;
 			}
 			state = updateState(
 				state,
-				namespace,
-				modelName,
-				ids,
-				queryString,
+				[ namespace, modelName, ids, queryString ],
 				items
 			);
 			break;
 		case types.RESET_COLLECTION:
 			state = updateState(
 				state,
-				namespace,
-				modelName,
-				ids,
-				queryString,
-				items,
-				true
+				[ namespace, modelName, ids, queryString ],
+				items
 			);
 			break;
 	}
