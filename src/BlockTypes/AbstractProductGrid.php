@@ -53,6 +53,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			'contentVisibility' => $this->get_schema_content_visibility(),
 			'align'             => $this->get_schema_align(),
 			'alignButtons'      => $this->get_schema_boolean( false ),
+			'isPreview'         => $this->get_schema_boolean( false ),
 		);
 	}
 
@@ -258,6 +259,14 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 * @return array List of product IDs
 	 */
 	protected function get_products() {
+		if ( $this->attributes['isPreview'] ) {
+			return [
+				'preview-1',
+				'preview-2',
+				'preview-3',
+			];
+		}
+
 		$is_cacheable = (bool) apply_filters( 'woocommerce_blocks_product_grid_is_cacheable', true, $this->query_args );
 
 		if ( $is_cacheable ) {
@@ -332,7 +341,20 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 * @return string Rendered product output.
 	 */
 	public function render_product( $id ) {
-		$product = wc_get_product( $id );
+		if ( substr( $id, 0, 8 ) === 'preview-' ) {
+			$preview_index   = array_pop( explode( '-', $id ) );
+			$preview_product = $this->get_preview_product( $preview_index );
+			$product         = new \WC_Product();
+			$product->set_id( $preview_index );
+			$product->set_name( $preview_product->name );
+			$product->set_featured( $preview_product->featured );
+			$product->set_price( $preview_product->price );
+			$product->set_regular_price( $preview_product->regular_price );
+			$product->set_sale_price( $preview_product->sale_price );
+			$product->set_average_rating( $preview_product->average_rating );
+		} else {
+			$product = wc_get_product( $id );
+		}
 
 		if ( ! $product ) {
 			return '';
@@ -372,7 +394,14 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 * @return string
 	 */
 	protected function get_image_html( $product ) {
-		return '<div class="wc-block-grid__product-image">' . $product->get_image( 'woocommerce_thumbnail' ) . '</div>';
+		if ( $this->attributes['isPreview'] ) {
+			$preview_index   = array_pop( explode( '-', $product->get_id() ) );
+			$preview_product = $this->get_preview_product( $preview_index );
+			$image           = '<img src="' . $preview_product->image . '" />';
+		} else {
+			$image = $product->get_image( 'woocommerce_thumbnail' );
+		}
+		return '<div class="wc-block-grid__product-image">' . $image . '</div>';
 	}
 
 	/**

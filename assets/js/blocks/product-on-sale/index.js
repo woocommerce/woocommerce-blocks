@@ -31,6 +31,23 @@ registerBlockType( 'woocommerce/product-on-sale', {
 		align: [ 'wide', 'full' ],
 		html: false,
 	},
+	example: {
+		attributes: {
+			columns: 3,
+			rows: 3,
+			alignButtons: false,
+			categories: [],
+			catOperator: 'any',
+			contentVisibility: {
+				title: true,
+				price: true,
+				rating: true,
+				button: true,
+			},
+			orderby: 'date',
+			isPreview: true,
+		},
+	},
 	attributes: {
 		...sharedAttributes,
 
@@ -40,6 +57,10 @@ registerBlockType( 'woocommerce/product-on-sale', {
 		orderby: {
 			type: 'string',
 			default: 'date',
+		},
+		isPreview: {
+			type: 'boolean',
+			default: false,
 		},
 	},
 	transforms: {
