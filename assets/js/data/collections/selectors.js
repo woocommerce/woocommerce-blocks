@@ -1,12 +1,12 @@
 /**
- * Internal dependencies
- */
-import { hasInState } from '../utils';
-
-/**
  * External dependencies
  */
 import { addQueryArgs } from '@wordpress/url';
+
+/**
+ * Internal dependencies
+ */
+import { hasInState } from '../utils';
 
 const DEFAULT_EMPTY_ARRAY = [];
 
