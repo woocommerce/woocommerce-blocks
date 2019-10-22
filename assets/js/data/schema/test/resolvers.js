@@ -1,14 +1,14 @@
 /**
+ * External dependencies
+ */
+import { select, apiFetch } from '@wordpress/data-controls';
+
+/**
  * Internal dependencies
  */
 import { getRoute, getRoutes } from '../resolvers';
 import { receiveRoutes } from '../actions';
 import { STORE_KEY } from '../constants';
-
-/**
- * External dependencies
- */
-import { select, apiFetch } from '@wordpress/data-controls';
 
 jest.mock( '@wordpress/data-controls' );
 
