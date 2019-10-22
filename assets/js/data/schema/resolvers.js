@@ -1,13 +1,13 @@
 /**
- * Internal imports
+ * External dependencies
+ */
+import { select, apiFetch } from '@wordpress/data-controls';
+
+/**
+ * Internal dependencies
  */
 import { receiveRoutes } from './actions';
 import { STORE_KEY } from './constants';
-
-/**
- * External imports
- */
-import { select, apiFetch } from '@wordpress/data-controls';
 
 /**
  * Resolver for the getRoute selector.
