@@ -1,12 +1,12 @@
 /**
- * Internal imports
- */
-import { getRoute, getRoutes } from '../selectors';
-
-/**
- * External imports
+ * External dependencies
  */
 import deepFreeze from 'deep-freeze';
+
+/**
+ * Internal dependencies
+ */
+import { getRoute, getRoutes } from '../selectors';
 
 const mockHasFinishedResolution = jest.fn().mockReturnValue( false );
 jest.mock( '@wordpress/data', () => ( {
