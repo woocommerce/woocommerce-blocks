@@ -1,6 +1,6 @@
 <?php
 /**
- * Product Filtering helper.
+ * Product Query fllters helper.
  *
  * @package Automattic/WooCommerce/RestApi
  */
@@ -12,9 +12,9 @@ defined( 'ABSPATH' ) || exit;
 use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ProductQuery;
 
 /**
- * Product Filtering class.
+ * Product Query fllters class.
  */
-class ProductFiltering {
+class ProductQueryFilters {
 	/**
 	 * Get filtered min price for current products.
 	 *

@@ -12,9 +12,9 @@ use \WC_REST_Unit_Test_Case as TestCase;
 use \WC_Helper_Product as ProductHelper;
 
 /**
- * ProductStats Controller Tests.
+ * Controller Tests.
  */
-class ProductStats extends TestCase {
+class ProductCollectionData extends TestCase {
 	/**
 	 * Setup test products data. Called before every test.
 	 */
@@ -67,14 +67,14 @@ class ProductStats extends TestCase {
 	 */
 	public function test_register_routes() {
 		$routes = $this->server->get_routes();
-		$this->assertArrayHasKey( '/wc/store/products/stats', $routes );
+		$this->assertArrayHasKey( '/wc/store/products/collection-data', $routes );
 	}
 
 	/**
 	 * Test getting items.
 	 */
 	public function test_get_items() {
-		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/products/stats' ) );
+		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/products/collection-data' ) );
 		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
@@ -88,7 +88,7 @@ class ProductStats extends TestCase {
 	 * Test calculation method.
 	 */
 	public function test_calculate_price_range() {
-		$request = new WP_REST_Request( 'GET', '/wc/store/products/stats' );
+		$request = new WP_REST_Request( 'GET', '/wc/store/products/collection-data' );
 		$request->set_param( 'calculate_price_range', true );
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
@@ -106,7 +106,7 @@ class ProductStats extends TestCase {
 	public function test_calculate_attribute_counts() {
 		ProductHelper::create_variation_product();
 
-		$request = new WP_REST_Request( 'GET', '/wc/store/products/stats' );
+		$request = new WP_REST_Request( 'GET', '/wc/store/products/collection-data' );
 		$request->set_param( 'calculate_attribute_counts', 'pa_size' );
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
@@ -124,7 +124,7 @@ class ProductStats extends TestCase {
 	 * Test calculation method.
 	 */
 	public function test_calculate_rating_counts() {
-		$request = new WP_REST_Request( 'GET', '/wc/store/products/stats' );
+		$request = new WP_REST_Request( 'GET', '/wc/store/products/collection-data' );
 		$request->set_param( 'calculate_rating_counts', true );
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
@@ -149,7 +149,7 @@ class ProductStats extends TestCase {
 	 * Test schema retrieval.
 	 */
 	public function test_get_item_schema() {
-		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\ProductStats();
+		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\ProductCollectionData();
 		$schema     = $controller->get_item_schema();
 
 		$this->assertArrayHasKey( 'min_price', $schema['properties'] );
@@ -162,7 +162,7 @@ class ProductStats extends TestCase {
 	 * Test collection params getter.
 	 */
 	public function test_get_collection_params() {
-		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\ProductStats();
+		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\ProductCollectionData();
 		$params     = $controller->get_collection_params();
 
 		$this->assertArrayHasKey( 'calculate_price_range', $params );

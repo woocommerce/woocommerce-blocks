@@ -84,22 +84,22 @@ Additional pagination headers are also sent back.
 
 Available resources in the Store API include:
 
-| Resource                               | Available endpoints        |
-| :------------------------------------- | :------------------------- |
-| [`Product Stats`](#products-stats-api) | `/wc/store/products/stats` |
-| [`Products`](#products-api)            | `/wc/store/products`       |
-| [`Cart`](#cart-api)                    | `/wc/store/cart`           |
-| [`Cart Items`](#cart-items-api)        | `/wc/store/cart/items`     |
+| Resource                                                   | Available endpoints                  |
+| :--------------------------------------------------------- | :----------------------------------- |
+| [`Product Collection Data`](#products-collection-data-api) | `/wc/store/products/collection-data` |
+| [`Products`](#products-api)                                | `/wc/store/products`                 |
+| [`Cart`](#cart-api)                                        | `/wc/store/cart`                     |
+| [`Cart Items`](#cart-items-api)                            | `/wc/store/cart/items`               |
 
-## Products Stats API
+## Product Collection Data API
 
-This endpoint allows you to get aggregate stats for products, for example, the min and max price in a collection of products (ignoring pagination). This is used by blocks for product filtering widgets, since counts are based on the product catalog being viewed.
+This endpoint allows you to get aggregate data from a collection of products, for example, the min and max price in a collection of products (ignoring pagination). This is used by blocks for product filtering widgets, since counts are based on the product catalog being viewed.
 
 ```http
-GET /products/stats
-GET /products/stats?calculate_price_range=true
-GET /products/stats?calculate_attribute_counts=pa_size,pa_color
-GET /products/stats?calculate_rating_counts=true
+GET /products/collection-data
+GET /products/collection-data?calculate_price_range=true
+GET /products/collection-data?calculate_attribute_counts=pa_size,pa_color
+GET /products/collection-data?calculate_rating_counts=true
 ```
 
 | Attribute                    | Type   | Required | Description                                                                                                                              |
@@ -108,10 +108,10 @@ GET /products/stats?calculate_rating_counts=true
 | `calculate_attribute_counts` | string |    No    | Returns attribute counts for a list of attribute (taxonomy) names you pass in via the parameter. If empty, only `null` will be returned. |
 | `calculate_rating_counts`    | bool   |    No    | Returns the counts of products with a certain average rating, 1-5. If false, only `null` will be returned.                               |
 
-**In additon to the above attributes**, all product list attributes are supported. This allows you to get stats for a certain subset of products. See [the products API list products section](#Llist-products) for the full list.
+**In addition to the above attributes**, all product list attributes are supported. This allows you to get data for a certain subset of products. See [the products API list products section](#list-products) for the full list.
 
 ```http
-curl "https://example-store.com/wp-json/wc/store/products/stats?calculate_price_range=true&calculate_attribute_counts=pa_size,pa_color&calculate_rating_counts=true"
+curl "https://example-store.com/wp-json/wc/store/products/collection-data?calculate_price_range=true&calculate_attribute_counts=pa_size,pa_color&calculate_rating_counts=true"
 ```
 
 Example response:

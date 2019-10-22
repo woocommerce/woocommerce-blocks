@@ -1,6 +1,6 @@
 <?php
 /**
- * Products stats controller. Get's aggregate data from a collection of products.
+ * Products collection data controller. Get's aggregate data from a collection of products.
  *
  * Supports the same parameters as /products, but returns a different response.
  *
@@ -14,12 +14,12 @@ defined( 'ABSPATH' ) || exit;
 
 use \WP_REST_Controller as RestContoller;
 use \WP_REST_Server as RestServer;
-use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ProductFiltering;
+use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ProductQueryFilters;
 
 /**
- * ProductStats API.
+ * ProductCollectionData API.
  */
-class ProductStats extends RestContoller {
+class ProductCollectionData extends RestContoller {
 	/**
 	 * Endpoint namespace.
 	 *
@@ -32,7 +32,7 @@ class ProductStats extends RestContoller {
 	 *
 	 * @var string
 	 */
-	protected $rest_base = 'products/stats';
+	protected $rest_base = 'products/collection-data';
 
 	/**
 	 * Register the routes for products.
@@ -53,14 +53,14 @@ class ProductStats extends RestContoller {
 	}
 
 	/**
-	 * Product stats schema.
+	 * Return the schema.
 	 *
 	 * @return array
 	 */
 	public function get_item_schema() {
 		return [
 			'$schema'    => 'http://json-schema.org/draft-04/schema#',
-			'title'      => 'product_stats',
+			'title'      => 'product_collection_data',
 			'type'       => 'object',
 			'properties' => [
 				'min_price'        => array(
@@ -125,16 +125,16 @@ class ProductStats extends RestContoller {
 	 * @return RestError|\WP_REST_Response
 	 */
 	public function get_items( $request ) {
-		$return            = [
+		$return  = [
 			'min_price'        => null,
 			'max_price'        => null,
 			'attribute_counts' => null,
 			'rating_counts'    => null,
 		];
-		$product_filtering = new ProductFiltering();
+		$filters = new ProductQueryFilters();
 
 		if ( ! empty( $request['calculate_price_range'] ) ) {
-			$price_results = $product_filtering->get_filtered_price( $request );
+			$price_results = $filters->get_filtered_price( $request );
 
 			$return['min_price'] = $price_results->min_price;
 			$return['max_price'] = $price_results->max_price;
@@ -142,7 +142,7 @@ class ProductStats extends RestContoller {
 
 		if ( ! empty( $request['calculate_attribute_counts'] ) ) {
 			$return['attribute_counts'] = [];
-			$counts                     = $product_filtering->get_attribute_counts( $request, $request['calculate_attribute_counts'] );
+			$counts                     = $filters->get_attribute_counts( $request, $request['calculate_attribute_counts'] );
 
 			foreach ( $counts as $key => $value ) {
 				$return['attribute_counts'][] = [
@@ -154,7 +154,7 @@ class ProductStats extends RestContoller {
 
 		if ( ! empty( $request['calculate_rating_counts'] ) ) {
 			$return['rating_counts'] = [];
-			$counts                  = $product_filtering->get_rating_counts( $request );
+			$counts                  = $filters->get_rating_counts( $request );
 
 			foreach ( $counts as $key => $value ) {
 				$return['rating_counts'][] = [
