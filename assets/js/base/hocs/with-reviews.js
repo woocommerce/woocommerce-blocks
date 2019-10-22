@@ -16,7 +16,7 @@ const withReviews = ( OriginalComponent ) => {
 		constructor( props ) {
 			super( props );
 
-			this.isPreview = Boolean( props.attributes.previewReviews );
+			this.isPreview = !! props.attributes.previewReviews;
 
 			this.state = {
 				error: null,
