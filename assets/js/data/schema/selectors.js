@@ -126,10 +126,7 @@ const getRouteFromModelEntries = ( stateSlice, ids = [] ) => {
 	// convert to array for easier discovery
 	stateSlice = Object.entries( stateSlice );
 	const match = stateSlice.find( ( [ , idNames ] ) => {
-		if ( ids.length === 0 && idNames.length === 0 ) {
-			return true;
-		}
-		return Object.keys( ids ).length === idNames.length;
+		return ids.length === idNames.length;
 	} );
 	const [ matchingRoute, routePlaceholders ] = match || [];
 	// if we have a matching route, let's return it.
