@@ -1,13 +1,13 @@
 /**
+ * External dependencies
+ */
+import deepFreeze from 'deep-freeze';
+
+/**
  * Internal dependencies
  */
 import queryStateReducer from '../reducers';
 import { setQueryValue, setValueForQueryContext } from '../actions';
-
-/**
- * External dependencies
- */
-import deepFreeze from 'deep-freeze';
 
 describe( 'queryStateReducer', () => {
 	const originalState = deepFreeze( {
