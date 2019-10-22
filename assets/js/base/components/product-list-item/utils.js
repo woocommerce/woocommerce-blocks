@@ -26,41 +26,33 @@ export const renderProductLayout = (
 
 	const blockMap = getBlockMap( blockName );
 
-	return layoutConfig.map(
-		( { name: layoutBlockName, props = {} }, index ) => {
-			let children = [];
+	return layoutConfig.map( ( [ name, props = {} ], index ) => {
+		let children = [];
 
-			if ( !! props.children && props.children.length > 0 ) {
-				children = renderProductLayout(
-					product,
-					props.children,
-					componentId
-				);
-			}
-
-			const LayoutComponent = blockMap[ layoutBlockName ];
-
-			if ( ! LayoutComponent ) {
-				return null;
-			}
-
-			const productID = product.id || 0;
-			const keyParts = [
-				'layout',
-				layoutBlockName,
-				index,
-				componentId,
-				productID,
-			];
-
-			return (
-				<LayoutComponent
-					key={ keyParts.join( '_' ) }
-					{ ...props }
-					children={ children }
-					product={ product }
-				/>
+		if ( !! props.children && props.children.length > 0 ) {
+			children = renderProductLayout(
+				product,
+				props.children,
+				componentId
 			);
 		}
-	);
+
+		const LayoutComponent = blockMap[ name ];
+
+		if ( ! LayoutComponent ) {
+			return null;
+		}
+
+		const productID = product.id || 0;
+		const keyParts = [ 'layout', name, index, componentId, productID ];
+
+		return (
+			<LayoutComponent
+				key={ keyParts.join( '_' ) }
+				{ ...props }
+				children={ children }
+				product={ product }
+			/>
+		);
+	} );
 };

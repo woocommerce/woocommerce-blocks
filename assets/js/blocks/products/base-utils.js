@@ -39,41 +39,13 @@ export const getBlockMap = ( blockName ) => ( {
  * The default layout built from the default template.
  */
 export const DEFAULT_PRODUCT_LIST_LAYOUT = [
-	{
-		name: 'woocommerce/product-list-sale-badge',
-		props: { align: 'left' },
-	},
-	{
-		name: 'woocommerce/product-list-image',
-		props: {},
-	},
-	{
-		name: 'woocommerce/product-list-title',
-		props: {},
-	},
-	{
-		name: 'woocommerce/product-list-price',
-		props: {},
-	},
-	{
-		name: 'woocommerce/product-list-rating',
-		props: {},
-	},
-	{
-		name: 'woocommerce/product-list-button',
-		props: {},
-	},
+	[ 'woocommerce/product-list-sale-badge', { align: 'left' } ],
+	[ 'woocommerce/product-list-image' ],
+	[ 'woocommerce/product-list-title' ],
+	[ 'woocommerce/product-list-price' ],
+	[ 'woocommerce/product-list-rating' ],
+	[ 'woocommerce/product-list-button' ],
 ];
-
-/**
- * The default template (list of inner blocks) for the product list.
- */
-export const getDefaultBlocks = () => {
-	return DEFAULT_PRODUCT_LIST_LAYOUT.map( ( layout ) => [
-		layout.name,
-		layout.props,
-	] );
-};
 
 /**
  * Converts innerblocks to a list of layout configs.
@@ -87,9 +59,9 @@ export const getProductLayoutConfig = ( blockMap, innerBlocks ) => {
 	}
 
 	return innerBlocks.map( ( block ) => {
-		return {
-			name: block.name,
-			props: {
+		return [
+			block.name,
+			{
 				...block.attributes,
 				product: undefined,
 				children:
@@ -97,6 +69,6 @@ export const getProductLayoutConfig = ( blockMap, innerBlocks ) => {
 						? getProductLayoutConfig( blockMap, block.innerBlocks )
 						: [],
 			},
-		};
+		];
 	} );
 };

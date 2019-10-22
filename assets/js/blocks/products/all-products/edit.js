@@ -33,8 +33,8 @@ import {
 	getBlockClassName,
 } from '../utils';
 import {
+	DEFAULT_PRODUCT_LIST_LAYOUT,
 	getBlockMap,
-	getDefaultBlocks,
 	getProductLayoutConfig,
 } from '../base-utils';
 import { getSharedContentControls, getSharedListControls } from '../edit';
@@ -67,8 +67,6 @@ class Editor extends Component {
 	};
 
 	blockMap = getBlockMap( 'woocommerce/all-products' );
-
-	defaultBlocks = getDefaultBlocks();
 
 	componentDidMount = () => {
 		const { block } = this.props;
@@ -173,8 +171,8 @@ class Editor extends Component {
 		const onReset = () => {
 			const { block, replaceInnerBlocks } = this.props;
 			const newBlocks = [];
-			this.defaultBlocks.map( ( blockType ) => {
-				newBlocks.push( createBlock( blockType[ 0 ], blockType[ 1 ] ) );
+			DEFAULT_PRODUCT_LIST_LAYOUT.map( ( [ name, attributes ] ) => {
+				newBlocks.push( createBlock( name, attributes ) );
 				return true;
 			} );
 			replaceInnerBlocks( block.clientId, newBlocks, false );
@@ -198,7 +196,7 @@ class Editor extends Component {
 						<ul className="wc-block-grid__products">
 							<li className="wc-block-grid__product">
 								<InnerBlocks
-									template={ this.defaultBlocks }
+									template={ DEFAULT_PRODUCT_LIST_LAYOUT }
 									templateLock={ false }
 									allowedBlocks={ Object.keys(
 										this.blockMap
