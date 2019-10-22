@@ -35,7 +35,7 @@ describe( 'getCollection', () => {
 		} );
 		test(
 			'when no route is retrieved, yields receiveCollection and ' +
-				'	returns',
+				'returns',
 			() => {
 				const { value } = fulfillment.next();
 				expect( value ).toEqual(
