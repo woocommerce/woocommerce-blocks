@@ -1,10 +1,4 @@
 /**
- * Internal dependencies
- */
-import { getCollection } from '../resolvers';
-import { receiveCollection } from '../actions';
-
-/**
  * External dependencies
  */
 import { select, apiFetch } from '@wordpress/data-controls';
@@ -12,6 +6,8 @@ import { select, apiFetch } from '@wordpress/data-controls';
 /**
  * Internal dependencies
  */
+import { getCollection } from '../resolvers';
+import { receiveCollection } from '../actions';
 import { STORE_KEY as SCHEMA_STORE_KEY } from '../../schema/constants';
 
 jest.mock( '@wordpress/data-controls' );
