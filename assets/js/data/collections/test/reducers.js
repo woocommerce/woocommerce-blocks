@@ -1,13 +1,13 @@
 /**
+ * External dependencies
+ */
+import deepFreeze from 'deep-freeze';
+
+/**
  * Internal dependencies
  */
 import receiveCollection from '../reducers';
 import { ACTION_TYPES as types } from '../action-types';
-
-/**
- * External dependencies
- */
-import deepFreeze from 'deep-freeze';
 
 describe( 'receiveCollection', () => {
 	const originalState = deepFreeze( {
