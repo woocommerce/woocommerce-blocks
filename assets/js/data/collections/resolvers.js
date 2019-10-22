@@ -1,14 +1,14 @@
 /**
- * Internal dependencies
- */
-import { receiveCollection } from './actions';
-import { STORE_KEY as SCHEMA_STORE_KEY } from '../schema/constants';
-
-/**
  * External dependencies
  */
 import { apiFetch, select } from '@wordpress/data-controls';
 import { addQueryArgs } from '@wordpress/url';
+
+/**
+ * Internal dependencies
+ */
+import { receiveCollection } from './actions';
+import { STORE_KEY as SCHEMA_STORE_KEY } from '../schema/constants';
 
 const DEFAULT_EMPTY_ARRAY = [];
 
