@@ -4,16 +4,14 @@
 import { __ } from '@wordpress/i18n';
 import { InnerBlocks } from '@wordpress/editor';
 import { registerBlockType } from '@wordpress/blocks';
-import {
-	DEFAULT_HEIGHT,
-	PLACEHOLDER_IMG_SRC,
-} from '@woocommerce/block-settings';
+import { DEFAULT_HEIGHT } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
 import './editor.scss';
+import { example } from './example';
 import Block from './block';
 
 /**
@@ -35,27 +33,7 @@ registerBlockType( 'woocommerce/featured-product', {
 		align: [ 'wide', 'full' ],
 		html: false,
 	},
-	example: {
-		attributes: {
-			contentAlign: 'center',
-			dimRatio: 50,
-			editMode: false,
-			height: DEFAULT_HEIGHT,
-			mediaSrc: PLACEHOLDER_IMG_SRC,
-			showDesc: true,
-			productId: 'preview',
-			previewProduct: {
-				name: __( 'My Awesome Thing', 'woo-gutenberg-products-block' ),
-				description: __(
-					'A thing that you will be amazed by',
-					'woo-gutenberg-products-block'
-				),
-				price_html:
-					'<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>42.00</span>',
-				permalink: 'https://example.org',
-			},
-		},
-	},
+	example,
 	attributes: {
 		/**
 		 * Alignment of content inside block.
@@ -157,6 +135,9 @@ registerBlockType( 'woocommerce/featured-product', {
 			default: true,
 		},
 
+		/**
+		 * Product preview.
+		 */
 		previewProduct: {
 			type: 'object',
 			default: null,
