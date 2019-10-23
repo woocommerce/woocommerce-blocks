@@ -1,28 +1,46 @@
 /**
  * Internal dependencies
  */
-import { getCollection } from '../selectors';
+import { getCollection, getCollectionHeader } from '../selectors';
 
-describe( 'getCollection', () => {
-	const state = {
-		'wc/blocks': {
-			products: {
-				'[]': {
-					'?someQuery=2': [ 'foo' ],
-				},
-			},
-			'products/attributes': {
-				'[10]': {
-					'?someQuery=2': [ 'bar' ],
-				},
-			},
-			'products/attributes/terms': {
-				'[10, 20]': {
-					'?someQuery=10': [ 42 ],
+const getHeaderMock = ( total ) => {
+	const headers = { total };
+	return {
+		get: ( key ) => headers[ key ] || null,
+		has: ( key ) => !! headers[ key ],
+	};
+};
+
+const state = {
+	'wc/blocks': {
+		products: {
+			'[]': {
+				'?someQuery=2': {
+					items: [ 'foo' ],
+					headers: getHeaderMock( 22 ),
 				},
 			},
 		},
-	};
+		'products/attributes': {
+			'[10]': {
+				'?someQuery=2': {
+					items: [ 'bar' ],
+					headers: getHeaderMock( 42 ),
+				},
+			},
+		},
+		'products/attributes/terms': {
+			'[10, 20]': {
+				'?someQuery=10': {
+					items: [ 42 ],
+					headers: getHeaderMock( 12 ),
+				},
+			},
+		},
+	},
+};
+
+describe( 'getCollection', () => {
 	it( 'returns empty array when namespace does not exist in state', () => {
 		expect( getCollection( state, 'invalid', 'products' ) ).toEqual( [] );
 	} );
@@ -57,5 +75,37 @@ describe( 'getCollection', () => {
 				);
 			}
 		);
+	} );
+} );
+
+describe( 'getCollectionHeader', () => {
+	it(
+		'returns undefined when there are headers but the specific header ' +
+			'does not exist',
+		() => {
+			expect(
+				getCollectionHeader(
+					state,
+					'wc/blocks',
+					'products',
+					'invalid',
+					{
+						someQuery: 2,
+					}
+				)
+			).toBeUndefined();
+		}
+	);
+	it( 'returns null when there are no headers for the given arguments', () => {
+		expect( getCollectionHeader( state, 'wc/blocks', 'invalid' ) ).toBe(
+			null
+		);
+	} );
+	it( 'returns expected header when it exists', () => {
+		expect(
+			getCollectionHeader( state, 'wc/blocks', 'products', 'total', {
+				someQuery: 2,
+			} )
+		).toBe( 22 );
 	} );
 } );
