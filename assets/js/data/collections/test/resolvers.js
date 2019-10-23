@@ -1,14 +1,16 @@
 /**
  * External dependencies
  */
-import { select, apiFetch } from '@wordpress/data-controls';
+import { select } from '@wordpress/data-controls';
 
 /**
  * Internal dependencies
  */
-import { getCollection } from '../resolvers';
+import { getCollection, getCollectionHeader } from '../resolvers';
 import { receiveCollection } from '../actions';
 import { STORE_KEY as SCHEMA_STORE_KEY } from '../../schema/constants';
+import { STORE_KEY } from '../constants';
+import { apiFetchWithHeaders } from '../controls';
 
 jest.mock( '@wordpress/data-controls' );
 
@@ -38,43 +40,55 @@ describe( 'getCollection', () => {
 				'returns',
 			() => {
 				const { value } = fulfillment.next();
-				expect( value ).toEqual(
-					receiveCollection(
-						'wc/blocks',
-						'products',
-						'?foo=bar',
-						[ 20, 30 ],
-						[]
-					)
+				const expected = receiveCollection(
+					'wc/blocks',
+					'products',
+					'?foo=bar',
+					[ 20, 30 ],
+					{
+						items: [],
+						headers: {
+							get: () => undefined,
+							has: () => undefined,
+						},
+					}
+				);
+				expect( value.type ).toBe( expected.type );
+				expect( value.namespace ).toBe( expected.namespace );
+				expect( value.modelName ).toBe( expected.modelName );
+				expect( value.queryString ).toBe( expected.queryString );
+				expect( value.ids ).toEqual( expected.ids );
+				expect( Object.keys( value.response ) ).toEqual(
+					Object.keys( expected.response )
 				);
 				const { done } = fulfillment.next();
 				expect( done ).toBe( true );
 			}
 		);
 		test(
-			'when route is retrieved, yields apiFetch control action with ' +
+			'when route is retrieved, yields apiFetchWithHeaders control action with ' +
 				'expected route',
 			() => {
 				rewind();
 				fulfillment.next();
 				const { value } = fulfillment.next( 'https://example.org' );
 				expect( value ).toEqual(
-					apiFetch( { path: 'https://example.org?foo=bar' } )
+					apiFetchWithHeaders( 'https://example.org?foo=bar' )
 				);
 			}
 		);
 		test(
-			'when apiFetch does not return a valid response, yields ' +
-				'expected action',
+			'when apiFetchWithHeaders does not return a valid response, ' +
+				'yields expected action',
 			() => {
-				const { value } = fulfillment.next();
+				const { value } = fulfillment.next( {} );
 				expect( value ).toEqual(
 					receiveCollection(
 						'wc/blocks',
 						'products',
 						'?foo=bar',
 						[ 20, 30 ],
-						[]
+						{ items: undefined, headers: undefined }
 					)
 				);
 			}
@@ -86,19 +100,60 @@ describe( 'getCollection', () => {
 				rewind();
 				fulfillment.next();
 				fulfillment.next( 'https://example.org' );
-				const { value } = fulfillment.next( [ '42', 'cheeseburgers' ] );
+				const { value } = fulfillment.next( {
+					items: [ '42', 'cheeseburgers' ],
+					headers: { foo: 'bar' },
+				} );
 				expect( value ).toEqual(
 					receiveCollection(
 						'wc/blocks',
 						'products',
 						'?foo=bar',
 						[ 20, 30 ],
-						[ '42', 'cheeseburgers' ]
+						{
+							items: [ '42', 'cheeseburgers' ],
+							headers: { foo: 'bar' },
+						}
 					)
 				);
 				const { done } = fulfillment.next();
 				expect( done ).toBe( true );
 			}
 		);
+	} );
+} );
+
+describe( 'getCollectionHeader', () => {
+	let fulfillment;
+	const rewind = ( ...testArgs ) =>
+		( fulfillment = getCollectionHeader( ...testArgs ) );
+	it( 'yields expected select control when called with less args', () => {
+		rewind( '/wc/blocks', 'products', 'x-wp-total' );
+		const { value } = fulfillment.next();
+		expect( value ).toEqual(
+			select( STORE_KEY, 'getCollection', '/wc/blocks', 'products' )
+		);
+	} );
+	it( 'yields expected select control when called with all args', () => {
+		const args = [
+			'/wc/blocks',
+			'products/attributes',
+			'x-wp-total',
+			{ sort: 'ASC' },
+			[ 10 ],
+		];
+		rewind( ...args );
+		const { value } = fulfillment.next();
+		expect( value ).toEqual(
+			select(
+				STORE_KEY,
+				'/wc/blocks',
+				'products/attributes',
+				{ sort: 'ASC' },
+				[ 10 ]
+			)
+		);
+		const { done } = fulfillment.next();
+		expect( done ).toBe( true );
 	} );
 } );
