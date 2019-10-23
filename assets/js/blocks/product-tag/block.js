@@ -264,18 +264,18 @@ class ProductsByTagBlock extends Component {
 										icon: 'edit',
 										title: __( 'Edit' ),
 										onClick: () =>
-											isEditing
-												? this.stopEditing()
-												: this.startEditing(),
+											isEditing ?
+												this.stopEditing() :
+												this.startEditing(),
 										isActive: isEditing,
 									},
 								] }
 							/>
 						</BlockControls>
 						{ this.getInspectorControls() }
-						{ isEditing
-							? this.renderEditMode()
-							: this.renderViewMode() }
+						{ isEditing ?
+							this.renderEditMode() :
+							this.renderViewMode() }
 					</Fragment>
 				) : (
 					<Placeholder

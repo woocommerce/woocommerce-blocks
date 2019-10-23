@@ -92,12 +92,12 @@ registerBlockType( 'woocommerce/product-search', {
 								'woo-gutenberg-products-block'
 							) }
 							help={
-								hasLabel
-									? __(
+								hasLabel ?
+									__(
 											'Label is visible.',
 											'woo-gutenberg-products-block'
-									  )
-									: __(
+									  ) :
+									__(
 											'Label is hidden.',
 											'woo-gutenberg-products-block'
 									  )

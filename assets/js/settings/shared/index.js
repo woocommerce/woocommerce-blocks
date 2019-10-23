@@ -27,9 +27,9 @@ export const compareWithWpVersion = ( version, operator ) => {
 		/-[a-zA-Z0-9]*[\-]*/,
 		'.0-rc.'
 	);
-	replacement = replacement.endsWith( '.' )
-		? replacement.substring( 0, replacement.length - 1 )
-		: replacement;
+	replacement = replacement.endsWith( '.' ) ?
+		replacement.substring( 0, replacement.length - 1 ) :
+		replacement;
 	return compareVersions.compare( version, replacement, operator );
 };
 

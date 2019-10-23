@@ -19,8 +19,8 @@ import { allSettings } from './settings-init';
  * @returns {mixed}
  */
 export function getSetting( name, fallback = false, filter = ( val ) => val ) {
-	const value = allSettings.hasOwnProperty( name )
-		? allSettings[ name ]
-		: fallback;
+	const value = allSettings.hasOwnProperty( name ) ?
+		allSettings[ name ] :
+		fallback;
 	return filter( value, fallback );
 }

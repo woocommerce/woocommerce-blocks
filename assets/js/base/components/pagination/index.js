@@ -92,9 +92,9 @@ const Pagination = ( {
 								currentPage === page,
 						} ) }
 						onClick={
-							currentPage === page
-								? null
-								: () => onPageChange( page )
+							currentPage === page ?
+								null :
+								() => onPageChange( page )
 						}
 					>
 						{ page }

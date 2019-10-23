@@ -46,9 +46,9 @@ const withReviews = ( OriginalComponent ) => {
 			error: null,
 			loading: true,
 			reviews: this.isPreview ? this.props.attributes.previewReviews : [],
-			totalReviews: this.isPreview
-				? this.props.attributes.previewReviews.length
-				: 0,
+			totalReviews: this.isPreview ?
+				this.props.attributes.previewReviews.length :
+				0,
 		};
 
 		componentDidMount() {
@@ -97,9 +97,9 @@ const withReviews = ( OriginalComponent ) => {
 			};
 
 			if ( categoryIds && categoryIds.length ) {
-				args.category_id = Array.isArray( categoryIds )
-					? categoryIds.join( ',' )
-					: categoryIds;
+				args.category_id = Array.isArray( categoryIds ) ?
+					categoryIds.join( ',' ) :
+					categoryIds;
 			}
 
 			if ( productId ) {

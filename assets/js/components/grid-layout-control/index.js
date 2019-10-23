@@ -54,12 +54,12 @@ const GridLayoutControl = ( {
 					'woo-gutenberg-products-block'
 				) }
 				help={
-					alignButtons
-						? __(
+					alignButtons ?
+						__(
 								'Buttons are aligned vertically.',
 								'woo-gutenberg-products-block'
-						  )
-						: __(
+						  ) :
+						__(
 								'Buttons follow content.',
 								'woo-gutenberg-products-block'
 						  )

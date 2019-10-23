@@ -64,9 +64,9 @@ class ProductTagControl extends Component {
 			classes.push( 'is-skip-level' );
 		}
 
-		const accessibleName = ! item.breadcrumbs.length
-			? item.name
-			: `${ item.breadcrumbs.join( ', ' ) }, ${ item.name }`;
+		const accessibleName = ! item.breadcrumbs.length ?
+			item.name :
+			`${ item.breadcrumbs.join( ', ' ) }, ${ item.name }`;
 
 		return (
 			<SearchListItem

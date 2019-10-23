@@ -282,9 +282,9 @@ class ProductByCategoryBlock extends Component {
 								icon: 'edit',
 								title: __( 'Edit' ),
 								onClick: () =>
-									isEditing
-										? this.stopEditing()
-										: this.startEditing(),
+									isEditing ?
+										this.stopEditing() :
+										this.startEditing(),
 								isActive: isEditing,
 							},
 						] }

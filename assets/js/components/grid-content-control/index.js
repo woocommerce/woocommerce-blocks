@@ -16,12 +16,12 @@ const GridContentControl = ( { onChange, settings } ) => {
 			<ToggleControl
 				label={ __( 'Product title', 'woo-gutenberg-products-block' ) }
 				help={
-					title
-						? __(
+					title ?
+						__(
 								'Product title is visible.',
 								'woo-gutenberg-products-block'
-						  )
-						: __(
+						  ) :
+						__(
 								'Product title is hidden.',
 								'woo-gutenberg-products-block'
 						  )
@@ -32,12 +32,12 @@ const GridContentControl = ( { onChange, settings } ) => {
 			<ToggleControl
 				label={ __( 'Product price', 'woo-gutenberg-products-block' ) }
 				help={
-					price
-						? __(
+					price ?
+						__(
 								'Product price is visible.',
 								'woo-gutenberg-products-block'
-						  )
-						: __(
+						  ) :
+						__(
 								'Product price is hidden.',
 								'woo-gutenberg-products-block'
 						  )
@@ -48,12 +48,12 @@ const GridContentControl = ( { onChange, settings } ) => {
 			<ToggleControl
 				label={ __( 'Product rating', 'woo-gutenberg-products-block' ) }
 				help={
-					rating
-						? __(
+					rating ?
+						__(
 								'Product rating is visible.',
 								'woo-gutenberg-products-block'
-						  )
-						: __(
+						  ) :
+						__(
 								'Product rating is hidden.',
 								'woo-gutenberg-products-block'
 						  )
@@ -67,12 +67,12 @@ const GridContentControl = ( { onChange, settings } ) => {
 					'woo-gutenberg-products-block'
 				) }
 				help={
-					button
-						? __(
+					button ?
+						__(
 								'Add to Cart button is visible.',
 								'woo-gutenberg-products-block'
-						  )
-						: __(
+						  ) :
+						__(
 								'Add to Cart button is hidden.',
 								'woo-gutenberg-products-block'
 						  )

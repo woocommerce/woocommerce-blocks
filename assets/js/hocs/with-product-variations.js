@@ -146,9 +146,9 @@ const withProductVariations = createHigherOrderComponent(
 				}
 
 				if ( ! isLoading && selectedItem ) {
-					return this.isProductId( selectedItem )
-						? selectedItem
-						: this.findParentProduct( selectedItem );
+					return this.isProductId( selectedItem ) ?
+						selectedItem :
+						this.findParentProduct( selectedItem );
 				}
 
 				return null;

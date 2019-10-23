@@ -32,12 +32,12 @@ const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 							'woo-gutenberg-products-block'
 						) }
 						help={
-							hasCount
-								? __(
+							hasCount ?
+								__(
 										'Product count is visible.',
 										'woo-gutenberg-products-block'
-								  )
-								: __(
+								  ) :
+								__(
 										'Product count is hidden.',
 										'woo-gutenberg-products-block'
 								  )
@@ -53,12 +53,12 @@ const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 							'woo-gutenberg-products-block'
 						) }
 						help={
-							isHierarchical
-								? __(
+							isHierarchical ?
+								__(
 										'Hierarchy is visible.',
 										'woo-gutenberg-products-block'
-								  )
-								: __(
+								  ) :
+								__(
 										'Hierarchy is hidden.',
 										'woo-gutenberg-products-block'
 								  )
@@ -76,12 +76,12 @@ const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 							'woo-gutenberg-products-block'
 						) }
 						help={
-							hasEmpty
-								? __(
+							hasEmpty ?
+								__(
 										'Empty categories are visible.',
 										'woo-gutenberg-products-block'
-								  )
-								: __(
+								  ) :
+								__(
 										'Empty categories are hidden.',
 										'woo-gutenberg-products-block'
 								  )
