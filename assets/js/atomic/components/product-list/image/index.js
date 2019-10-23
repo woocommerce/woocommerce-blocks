@@ -9,16 +9,21 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import { PLACEHOLDER_IMG_SRC } from '@woocommerce/block-settings';
+import { ProductListSaleBadge } from '../../../components/product-list';
 
 class ProductListImage extends Component {
 	static propTypes = {
 		className: PropTypes.string,
 		product: PropTypes.object.isRequired,
 		productLink: PropTypes.bool,
+		showSaleBadge: PropTypes.bool,
+		saleBadgeAlign: PropTypes.string,
 	};
 
 	static defaultProps = {
 		productLink: true,
+		showSaleBadge: true,
+		saleBadgeAlign: 'right',
 	};
 
 	state = {
@@ -29,6 +34,16 @@ class ProductListImage extends Component {
 		this.setState( {
 			loaded: true,
 		} );
+	};
+
+	renderSaleBadge = () => {
+		const { product, saleBadgeAlign } = this.props;
+		return (
+			<ProductListSaleBadge
+				product={ product }
+				align={ saleBadgeAlign }
+			/>
+		);
 	};
 
 	renderImage = ( image ) => {
@@ -58,7 +73,7 @@ class ProductListImage extends Component {
 	};
 
 	render() {
-		const { className, product, productLink } = this.props;
+		const { className, product, productLink, showSaleBadge } = this.props;
 		const image =
 			product.images && product.images.length ? product.images[ 0 ] : {};
 
@@ -71,10 +86,14 @@ class ProductListImage extends Component {
 			>
 				{ !! productLink ? (
 					<a href={ product.permalink } rel="nofollow">
+						{ showSaleBadge && this.renderSaleBadge() }
 						{ this.renderImage( image ) }
 					</a>
 				) : (
-					this.renderImage( image )
+					<Fragment>
+						{ showSaleBadge && this.renderSaleBadge() }
+						{ this.renderImage( image ) }
+					</Fragment>
 				) }
 			</div>
 		);

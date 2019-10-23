@@ -19,9 +19,7 @@ const ProductListSaleBadge = ( { className, product, align } ) => {
 					'wc-block-grid__product-onsale'
 				) }
 			>
-				<span className="wc-block-grid__product-onsale__text">
-					{ __( 'Sale', 'woo-gutenberg-products-block' ) }
-				</span>
+				{ __( 'Sale', 'woo-gutenberg-products-block' ) }
 			</div>
 		);
 	}
