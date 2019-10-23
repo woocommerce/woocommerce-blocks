@@ -9,15 +9,15 @@ import { addQueryArgs } from '@wordpress/url';
 import { hasInState } from '../utils';
 import { DEFAULT_EMPTY_ARRAY } from './constants';
 
-const getFromState = (
+const getFromState = ( {
 	state,
 	namespace,
 	modelName,
 	query,
 	ids,
 	type = 'items',
-	fallback = DEFAULT_EMPTY_ARRAY
-) => {
+	fallback = DEFAULT_EMPTY_ARRAY,
+} ) => {
 	// prep ids and query for state retrieval
 	ids = JSON.stringify( ids );
 	query = query !== null ? addQueryArgs( '', query ) : '';
@@ -34,15 +34,15 @@ const getCollectionHeaders = (
 	query = null,
 	ids = DEFAULT_EMPTY_ARRAY
 ) => {
-	return getFromState(
+	return getFromState( {
 		state,
 		namespace,
 		modelName,
 		query,
 		ids,
-		'headers',
-		undefined
-	);
+		type: 'headers',
+		fallback: undefined,
+	} );
 };
 
 /**
@@ -64,7 +64,7 @@ export const getCollection = (
 	query = null,
 	ids = DEFAULT_EMPTY_ARRAY
 ) => {
-	return getFromState( state, namespace, modelName, query, ids );
+	return getFromState( { state, namespace, modelName, query, ids } );
 };
 
 /**
