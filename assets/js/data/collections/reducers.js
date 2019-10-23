@@ -14,7 +14,7 @@ import { hasInState, updateState } from '../utils';
  *                            any changes.
  */
 const receiveCollection = ( state = {}, action ) => {
-	const { type, namespace, modelName, queryString, items } = action;
+	const { type, namespace, modelName, queryString, response } = action;
 	// ids are stringified so they can be used as an index.
 	const ids = action.ids ? JSON.stringify( action.ids ) : '[]';
 	switch ( type ) {
@@ -27,14 +27,14 @@ const receiveCollection = ( state = {}, action ) => {
 			state = updateState(
 				state,
 				[ namespace, modelName, ids, queryString ],
-				items
+				response
 			);
 			break;
 		case types.RESET_COLLECTION:
 			state = updateState(
 				state,
 				[ namespace, modelName, ids, queryString ],
-				items
+				response
 			);
 			break;
 	}
