@@ -1,6 +1,9 @@
 /**
  * External dependencies
  */
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
-export default createContext( { blockName: null } );
+const BlockNameContext = createContext( { blockName: null } );
+
+export const useBlockNameContext = () => useContext( BlockNameContext );
+export const BlockNameContextProvider = BlockNameContext.Provider;
