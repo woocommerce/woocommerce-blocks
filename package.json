@@ -120,7 +120,6 @@
 			"npm run lint:css"
 		],
 		"*.js": [
-			"prettier --write",
 			"npm run lint:js"
 		],
 		"*.php": [
