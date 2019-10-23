@@ -1,5 +1,10 @@
 import { ACTION_TYPES as types } from './action-types';
 
+let Headers = window.Headers || null;
+Headers = Headers
+	? new Headers()
+	: { get: () => undefined, has: () => undefined };
+
 /**
  * Returns an action object used in updating the store with the provided items
  * retrieved from a request using the given querystring.
@@ -12,7 +17,11 @@ import { ACTION_TYPES as types } from './action-types';
  * @param {string}   [queryString=''] The query string for the collection
  * @param {array}    [ids=[]]         An array of ids (in correct order) for the
  *                                    model.
- * @param {Array<*>} [items=[]]       Items attached with the collection.
+ * @param {Object}   [response={}]    An object containing the response from the
+ *                                    collection request.
+ * @param {Array<*>} response.items	  An array of items for the given collection.
+ * @param {Headers}  response.headers A Headers object from the response
+ *                                    @link https://developer.mozilla.org/en-US/docs/Web/API/Headers
  * @param {bool}     [replace=false]  If true, signals to replace the current
  *                                    items in the state with the provided
  *                                    items.
@@ -32,7 +41,7 @@ export function receiveCollection(
 	modelName,
 	queryString = '',
 	ids = [],
-	items = [],
+	response = { items: [], headers: Headers },
 	replace = false
 ) {
 	return {
@@ -41,6 +50,6 @@ export function receiveCollection(
 		modelName,
 		queryString,
 		ids,
-		items,
+		response,
 	};
 }
