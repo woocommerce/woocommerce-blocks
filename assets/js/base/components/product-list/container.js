@@ -35,14 +35,13 @@ class ProductListContainer extends Component {
 	};
 
 	render() {
-		const { attributes, blockName } = this.props;
+		const { attributes } = this.props;
 		const { currentPage } = this.state;
 		const sortValue = this.state.sortValue || this.props.attributes.orderby;
 
 		return (
 			<ProductList
 				attributes={ attributes }
-				blockName={ blockName }
 				currentPage={ currentPage }
 				onOrderChange={ this.onOrderChange }
 				onPageChange={ this.onPageChange }

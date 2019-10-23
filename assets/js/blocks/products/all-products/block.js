@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
  * Internal dependencies
  */
 import ProductListContainer from '@woocommerce/base-components/product-list/container.js';
+import BlockNameContext from '../../../base/utils/block-name-context';
 
 /**
  * The All Products Block. @todo
@@ -29,11 +30,12 @@ class Block extends Component {
 		 * wc-block-{$this->block_name},
 		 */
 		return (
-			<ProductListContainer
-				attributes={ attributes }
-				blockName="woocommerce/all-products"
-				urlParameterSuffix={ urlParameterSuffix }
-			/>
+			<BlockNameContext.Provider value="woocommerce/all-products">
+				<ProductListContainer
+					attributes={ attributes }
+					urlParameterSuffix={ urlParameterSuffix }
+				/>
+			</BlockNameContext.Provider>
 		);
 	}
 }

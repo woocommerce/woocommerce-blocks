@@ -1,43 +1,42 @@
 /**
  * External dependencies.
  */
-import { Component } from 'react';
+import { useContext } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import withComponentId from '@woocommerce/base-hocs/with-component-id';
 
 /**
  * Internal dependencies.
  */
+import BlockNameContext from '../../utils/block-name-context';
+import withComponentId from '@woocommerce/base-hocs/with-component-id';
 import { renderProductLayout } from './utils';
 
-class ProductListItem extends Component {
-	static propTypes = {
-		attributes: PropTypes.object.isRequired,
-		product: PropTypes.object,
-		// from withComponentId
-		componentId: PropTypes.number.isRequired,
-	};
+const ProductListItem = ( { product, attributes, componentId } ) => {
+	const { layoutConfig } = attributes;
+	const blockName = useContext( BlockNameContext );
+	const isLoading = ! Object.keys( product ).length > 0;
+	const classes = classnames( 'wc-block-grid__product', {
+		'is-loading': isLoading,
+	} );
 
-	render = () => {
-		const { blockName, product, attributes, componentId } = this.props;
-		const { layoutConfig } = attributes;
-		const isLoading = ! Object.keys( product ).length > 0;
-		const classes = classnames( 'wc-block-grid__product', {
-			'is-loading': isLoading,
-		} );
+	return (
+		<li className={ classes } aria-hidden={ isLoading }>
+			{ renderProductLayout(
+				blockName,
+				product,
+				layoutConfig,
+				componentId
+			) }
+		</li>
+	);
+};
 
-		return (
-			<li className={ classes } aria-hidden={ isLoading }>
-				{ renderProductLayout(
-					blockName,
-					product,
-					layoutConfig,
-					componentId
-				) }
-			</li>
-		);
-	};
-}
+ProductListItem.propTypes = {
+	attributes: PropTypes.object.isRequired,
+	product: PropTypes.object,
+	// from withComponentId
+	componentId: PropTypes.number.isRequired,
+};
 
 export default withComponentId( ProductListItem );
