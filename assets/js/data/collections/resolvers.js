@@ -1,16 +1,16 @@
 /**
  * External dependencies
  */
-import { apiFetch, select } from '@wordpress/data-controls';
+import { select } from '@wordpress/data-controls';
 import { addQueryArgs } from '@wordpress/url';
 
 /**
  * Internal dependencies
  */
-import { receiveCollection } from './actions';
+import { receiveCollection, DEFAULT_EMPTY_ARRAY } from './actions';
 import { STORE_KEY as SCHEMA_STORE_KEY } from '../schema/constants';
-
-const DEFAULT_EMPTY_ARRAY = [];
+import { STORE_KEY } from './constants';
+import { apiFetchWithHeaders } from './controls';
 
 /**
  * Resolver for retrieving a collection via a api route.
@@ -18,9 +18,9 @@ const DEFAULT_EMPTY_ARRAY = [];
  * @param {string} namespace
  * @param {string} modelName
  * @param {Object} query
- * @param {Array}  [ids=[]]
+ * @param {Array}  ids
  */
-export function* getCollection( namespace, modelName, query, ids = [] ) {
+export function* getCollection( namespace, modelName, query, ids ) {
 	const route = yield select(
 		SCHEMA_STORE_KEY,
 		'getRoute',
@@ -30,16 +30,42 @@ export function* getCollection( namespace, modelName, query, ids = [] ) {
 	);
 	const queryString = addQueryArgs( '', query );
 	if ( ! route ) {
-		yield receiveCollection(
-			namespace,
-			modelName,
-			queryString,
-			ids,
-			DEFAULT_EMPTY_ARRAY
-		);
+		yield receiveCollection( namespace, modelName, queryString, ids );
 		return;
 	}
-	let items = yield apiFetch( { path: route + queryString } );
-	items = items || DEFAULT_EMPTY_ARRAY;
-	yield receiveCollection( namespace, modelName, queryString, ids, items );
+	const { items = DEFAULT_EMPTY_ARRAY, headers } = yield apiFetchWithHeaders(
+		route + queryString
+	);
+	yield receiveCollection( namespace, modelName, queryString, ids, {
+		items,
+		headers,
+	} );
+}
+/**
+ * Resolver for retrieving a specific collection header for the given arguments
+ *
+ * Note: This triggers the `getCollection` resolver if it hasn't been resolved
+ * yet.
+ *
+ * @param {string} namespace
+ * @param {string} modelName
+ * @param {string} header
+ * @param {Object} query
+ * @param {Array}  ids
+ */
+export function* getCollectionHeader(
+	namespace,
+	modelName,
+	header,
+	query,
+	ids
+) {
+	// feed the correct number of args in for the select so we don't resolve
+	// unnecessarily. Any undefined args will be excluded. This is important
+	// because resolver resolution is cached by both number and value of args.
+	const args = [ namespace, modelName, query, ids ].filter(
+		( arg ) => typeof arg !== 'undefined'
+	);
+	//we call this simply to do any resolution of the collection if necessary.
+	yield select( STORE_KEY, 'getCollection', ...args );
 }

@@ -14,7 +14,10 @@ describe( 'receiveCollection', () => {
 		'wc/blocks': {
 			products: {
 				'[]': {
-					'?someQuery=2': [ 'foo' ],
+					'?someQuery=2': {
+						items: [ 'foo' ],
+						headers: { 'x-wp-total': 22 },
+					},
 				},
 			},
 		},
@@ -28,7 +31,10 @@ describe( 'receiveCollection', () => {
 				namespace: 'wc/blocks',
 				modelName: 'products',
 				queryString: '?someQuery=2',
-				items: [ 'bar' ],
+				response: {
+					items: [ 'bar' ],
+					headers: { foo: 'bar' },
+				},
 			};
 			expect( receiveCollection( originalState, testAction ) ).toBe(
 				originalState
@@ -44,13 +50,19 @@ describe( 'receiveCollection', () => {
 				namespace: 'wc/blocks',
 				modelName: 'products',
 				queryString: '?someQuery=2',
-				items: [ 'cheeseburger' ],
+				response: {
+					items: [ 'cheeseburger' ],
+					headers: { foo: 'bar' },
+				},
 			};
 			const newState = receiveCollection( originalState, testAction );
 			expect( newState ).not.toBe( originalState );
 			expect(
 				newState[ 'wc/blocks' ].products[ '[]' ][ '?someQuery=2' ]
-			).toEqual( [ 'cheeseburger' ] );
+			).toEqual( {
+				items: [ 'cheeseburger' ],
+				headers: { foo: 'bar' },
+			} );
 		}
 	);
 	it( 'returns new state when items do not exist in collection yet', () => {
@@ -59,13 +71,13 @@ describe( 'receiveCollection', () => {
 			namespace: 'wc/blocks',
 			modelName: 'products',
 			queryString: '?someQuery=3',
-			items: [ 'cheeseburger' ],
+			response: { items: [ 'cheeseburger' ], headers: { foo: 'bar' } },
 		};
 		const newState = receiveCollection( originalState, testAction );
 		expect( newState ).not.toBe( originalState );
 		expect(
 			newState[ 'wc/blocks' ].products[ '[]' ][ '?someQuery=3' ]
-		).toEqual( [ 'cheeseburger' ] );
+		).toEqual( { items: [ 'cheeseburger' ], headers: { foo: 'bar' } } );
 	} );
 	it( 'sets expected state when ids are passed in', () => {
 		const testAction = {
@@ -73,7 +85,7 @@ describe( 'receiveCollection', () => {
 			namespace: 'wc/blocks',
 			modelName: 'products/attributes',
 			queryString: '?something',
-			items: [ 10, 20 ],
+			response: { items: [ 10, 20 ], headers: { foo: 'bar' } },
 			ids: [ 30, 42 ],
 		};
 		const newState = receiveCollection( originalState, testAction );
@@ -82,6 +94,6 @@ describe( 'receiveCollection', () => {
 			newState[ 'wc/blocks' ][ 'products/attributes' ][ '[30,42]' ][
 				'?something'
 			]
-		).toEqual( [ 10, 20 ] );
+		).toEqual( { items: [ 10, 20 ], headers: { foo: 'bar' } } );
 	} );
 } );
