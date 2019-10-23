@@ -13,13 +13,11 @@ describe( 'blocks registry', () => {
 			return registerInnerBlock( args );
 		};
 		it( 'throws an error when registered block is missing `main`', () => {
-			expect( invokeTest( { main: null } ) ).toThrowError(
-				/parent name/
-			);
+			expect( invokeTest( { main: null } ) ).toThrowError( /main/ );
 		} );
 		it( 'throws an error when registered block is missing `blockName`', () => {
 			expect( invokeTest( { main, blockName: null } ) ).toThrowError(
-				/block name/
+				/blockName/
 			);
 		} );
 		it( 'throws an error when registered block is missing `component`', () => {

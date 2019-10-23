@@ -4,29 +4,36 @@
 import { registeredBlocks } from './registered-blocks-init';
 
 /**
+ * Validates that an option is of the given type. Otherwise, throws an error.
+ *
+ * @throws Will throw an error if the type of the option doesn't match the expected type.
+ * @param {Object} options      Object containing the option to validate.
+ * @param {string} optionName   Name of the option to validate.
+ * @param {string} expectedType Type expected for the option.
+ */
+const validateOption = ( options, optionName, expectedType ) => {
+	if ( typeof options[ optionName ] !== expectedType ) {
+		throw new Error(
+			`Incorrect value for the ${ optionName } argument when registering an inner block. It must be a ${ expectedType }.`
+		);
+	}
+};
+
+/**
  * Registers an inner block that can be added as a child of another block.
  *
  * @export
- * @param {string}   main      Name of the parent block.
- * @param {string}   value     Name of the child block being registered.
- * @param {function} component React component used to render the child block.
+ * @param {Object}   options           Options to use when registering the block.
+ * @param {string}   options.main      Name of the parent block.
+ * @param {string}   options.value     Name of the child block being registered.
+ * @param {function} options.component React component used to render the child block.
  */
-export function registerInnerBlock( { main, blockName, component } ) {
-	if ( typeof main !== 'string' ) {
-		throw new Error(
-			'Wrong parent name when registering an inner block. `main` must be a string.'
-		);
-	}
-	if ( typeof blockName !== 'string' ) {
-		throw new Error(
-			'Wrong block name when registering an inner block. `blockName` must be a string.'
-		);
-	}
-	if ( typeof component !== 'function' ) {
-		throw new Error(
-			'Wrong component when registering an inner block. `component` must be a function.'
-		);
-	}
+export function registerInnerBlock( options ) {
+	validateOption( options, 'main', 'string' );
+	validateOption( options, 'blockName', 'string' );
+	validateOption( options, 'component', 'function' );
+
+	const { main, blockName, component } = options;
 
 	if ( ! registeredBlocks[ main ] ) {
 		registeredBlocks[ main ] = {};
