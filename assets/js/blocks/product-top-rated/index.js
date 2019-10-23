@@ -13,6 +13,7 @@ import Block from './block';
 import { deprecatedConvertToShortcode } from '../../utils/deprecations';
 import sharedAttributes, {
 	sharedAttributeBlockTypes,
+	sharedExample,
 } from '../../utils/shared-attributes';
 
 const blockTypeName = 'woocommerce/product-top-rated';
@@ -33,9 +34,8 @@ registerBlockType( blockTypeName, {
 		align: [ 'wide', 'full' ],
 		html: false,
 	},
-	attributes: {
-		...sharedAttributes,
-	},
+	example: sharedExample,
+	attributes: sharedAttributes,
 
 	transforms: {
 		from: [

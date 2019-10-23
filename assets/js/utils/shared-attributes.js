@@ -11,6 +11,23 @@ export const sharedAttributeBlockTypes = [
 	'woocommerce/product-top-rated',
 ];
 
+export const sharedExample = {
+	attributes: {
+		columns: 3,
+		rows: 3,
+		alignButtons: false,
+		categories: [],
+		catOperator: 'any',
+		contentVisibility: {
+			title: true,
+			price: true,
+			rating: true,
+			button: true,
+		},
+		isPreview: true,
+	},
+};
+
 export default {
 	/**
 	 * Number of columns.
@@ -63,5 +80,10 @@ export default {
 			rating: true,
 			button: true,
 		},
+	},
+
+	isPreview: {
+		type: 'boolean',
+		default: false,
 	},
 };

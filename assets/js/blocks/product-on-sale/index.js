@@ -12,6 +12,7 @@ import Block from './block';
 import { deprecatedConvertToShortcode } from '../../utils/deprecations';
 import sharedAttributes, {
 	sharedAttributeBlockTypes,
+	sharedExample,
 } from '../../utils/shared-attributes';
 import { IconProductOnSale } from '@woocommerce/block-components/icons';
 
@@ -32,20 +33,10 @@ registerBlockType( 'woocommerce/product-on-sale', {
 		html: false,
 	},
 	example: {
+		...sharedExample,
 		attributes: {
-			columns: 3,
-			rows: 3,
-			alignButtons: false,
-			categories: [],
-			catOperator: 'any',
-			contentVisibility: {
-				title: true,
-				price: true,
-				rating: true,
-				button: true,
-			},
+			...sharedExample.attributes,
 			orderby: 'date',
-			isPreview: true,
 		},
 	},
 	attributes: {
@@ -57,10 +48,6 @@ registerBlockType( 'woocommerce/product-on-sale', {
 		orderby: {
 			type: 'string',
 			default: 'date',
-		},
-		isPreview: {
-			type: 'boolean',
-			default: false,
 		},
 	},
 	transforms: {

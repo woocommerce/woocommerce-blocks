@@ -13,6 +13,7 @@ import { deprecatedConvertToShortcode } from '../../utils/deprecations';
 import { IconNewReleases } from '@woocommerce/block-components/icons';
 import sharedAttributes, {
 	sharedAttributeBlockTypes,
+	sharedExample,
 } from '../../utils/shared-attributes';
 
 registerBlockType( 'woocommerce/product-new', {
@@ -31,9 +32,8 @@ registerBlockType( 'woocommerce/product-new', {
 		align: [ 'wide', 'full' ],
 		html: false,
 	},
-	attributes: {
-		...sharedAttributes,
-	},
+	example: sharedExample,
+	attributes: sharedAttributes,
 	transforms: {
 		from: [
 			{

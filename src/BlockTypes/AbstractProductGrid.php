@@ -254,12 +254,54 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	}
 
 	/**
+	 * Gets product example data.
+	 *
+	 * @param int|string $index Index of the preview product to retrieve (starting at 1).
+	 * @return object Data of the preview product.
+	 */
+	protected function get_preview_product( $index ) {
+		$preview_products = array(
+			(object) array(
+				'name'           => 'Cap',
+				'featured'       => false,
+				'price'          => 18,
+				'regular_price'  => 18,
+				'sale_price'     => 18,
+				'average_rating' => 5,
+				'rating_counts'  => 1,
+				'image'          => plugins_url( 'assets/js/previews/images/cap-2.jpg', dirname( __DIR__ ) ),
+			),
+			(object) array(
+				'name'           => 'Beanie',
+				'featured'       => true,
+				'price'          => 22,
+				'regular_price'  => 22,
+				'sale_price'     => 22,
+				'average_rating' => 4,
+				'rating_counts'  => 1,
+				'image'          => plugins_url( 'assets/js/previews/images/beanie-2.jpg', dirname( __DIR__ ) ),
+			),
+			(object) array(
+				'name'           => 'WordPress Pennant',
+				'featured'       => false,
+				'price'          => 10,
+				'regular_price'  => 10,
+				'sale_price'     => 8,
+				'average_rating' => 0,
+				'rating_counts'  => 0,
+				'image'          => plugins_url( 'assets/js/previews/images/pennant-1.jpg', dirname( __DIR__ ) ),
+			),
+		);
+		return $preview_products[ $index - 1 ];
+	}
+
+	/**
 	 * Run the query and return an array of product IDs
 	 *
 	 * @return array List of product IDs
 	 */
 	protected function get_products() {
-		if ( $this->attributes['isPreview'] ) {
+		if ( array_key_exists( 'isPreview', $this->attributes ) && $this->attributes['isPreview'] ) {
 			return [
 				'preview-1',
 				'preview-2',
@@ -351,6 +393,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			$product->set_price( $preview_product->price );
 			$product->set_regular_price( $preview_product->regular_price );
 			$product->set_sale_price( $preview_product->sale_price );
+			$product->set_rating_counts( $preview_product->rating_counts );
 			$product->set_average_rating( $preview_product->average_rating );
 		} else {
 			$product = wc_get_product( $id );
@@ -394,7 +437,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 * @return string
 	 */
 	protected function get_image_html( $product ) {
-		if ( $this->attributes['isPreview'] ) {
+		if ( array_key_exists( 'isPreview', $this->attributes ) && $this->attributes['isPreview'] ) {
 			$preview_index   = array_pop( explode( '-', $product->get_id() ) );
 			$preview_product = $this->get_preview_product( $preview_index );
 			$image           = '<img src="' . $preview_product->image . '" />';
