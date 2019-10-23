@@ -198,15 +198,34 @@
 				}
 			}
 		}
+		.wc-block-grid__product-image img {
+			width: 100%;
+		}
 	}
 }
 @media only screen and ( min-width: 480px ) and ( max-width: 768px ) {
 	.wc-block-grid {
 		@for $i from 2 to 9 {
-			&.has-#{$i}-columns .wc-block-grid__product {
-				flex: 1 0 50%;
-				max-width: 50%;
+			&.has-#{$i}-columns {
+				.wc-block-grid__product {
+					flex: 1 0 50%;
+					max-width: 50%;
+					padding: 0;
+					margin: 0 0 $gap-large 0;
+				}
+				.wc-block-grid__product:nth-child(odd) {
+					padding-right: $gap/2;
+				}
+				.wc-block-grid__product:nth-child(even) {
+					padding-left: $gap/2;
+					.wc-block-grid__product-onsale {
+						left: $gap/2;
+					}
+				}
 			}
+		}
+		.wc-block-grid__product-image img {
+			width: 100%;
 		}
 	}
 }
