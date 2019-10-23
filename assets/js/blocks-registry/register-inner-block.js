@@ -8,7 +8,7 @@ import { registeredBlocks } from './registered-blocks-init';
  *
  * @export
  * @param {string}   main      Name of the parent block.
- * @param {string}   value     Name of the child block beeing registered.
+ * @param {string}   value     Name of the child block being registered.
  * @param {function} component React component used to render the child block.
  */
 export function registerInnerBlock( { main, blockName, component } ) {

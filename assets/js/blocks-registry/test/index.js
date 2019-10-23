@@ -12,17 +12,17 @@ describe( 'blocks registry', () => {
 		const invokeTest = ( args ) => () => {
 			return registerInnerBlock( args );
 		};
-		it( 'throws an error when registered blocks is missing `main`', () => {
+		it( 'throws an error when registered block is missing `main`', () => {
 			expect( invokeTest( { main: null } ) ).toThrowError(
 				/parent name/
 			);
 		} );
-		it( 'throws an error when registered blocks is missing `blockName`', () => {
+		it( 'throws an error when registered block is missing `blockName`', () => {
 			expect( invokeTest( { main, blockName: null } ) ).toThrowError(
 				/block name/
 			);
 		} );
-		it( 'throws an error when registered blocks is missing `component`', () => {
+		it( 'throws an error when registered block is missing `component`', () => {
 			expect(
 				invokeTest( { main, blockName, component: null } )
 			).toThrowError( /component/ );
@@ -35,7 +35,7 @@ describe( 'blocks registry', () => {
 				getRegisteredInnerBlocks( '@woocommerce/all-products' )
 			).toEqual( {} );
 		} );
-		it( 'gets a block that was successfully registerd', () => {
+		it( 'gets a block that was successfully registered', () => {
 			registerInnerBlock( { main, blockName, component } );
 			expect(
 				getRegisteredInnerBlocks( '@woocommerce/all-products' )
