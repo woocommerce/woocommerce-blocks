@@ -75,11 +75,13 @@ class ProductCollectionData extends RestContoller {
 					'description' => __( 'Max price found in collection of products.', 'woo-gutenberg-products-block' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
+					'readonly'    => true,
 				),
 				'attribute_counts' => array(
 					'description' => __( 'Returns number of products within attribute terms, indexed by term ID.', 'woo-gutenberg-products-block' ),
 					'type'        => 'object',
 					'context'     => array( 'view', 'edit' ),
+					'readonly'    => true,
 					'items'       => array(
 						'type'       => 'object',
 						'properties' => array(
@@ -87,11 +89,13 @@ class ProductCollectionData extends RestContoller {
 								'description' => __( 'Term ID', 'woo-gutenberg-products-block' ),
 								'type'        => 'integer',
 								'context'     => array( 'view', 'edit' ),
+								'readonly'    => true,
 							),
 							'count' => array(
 								'description' => __( 'Number of products.', 'woo-gutenberg-products-block' ),
 								'type'        => 'integer',
 								'context'     => array( 'view', 'edit' ),
+								'readonly'    => true,
 							),
 						),
 					),
@@ -100,6 +104,7 @@ class ProductCollectionData extends RestContoller {
 					'description' => __( 'Returns number of products with each average rating.', 'woo-gutenberg-products-block' ),
 					'type'        => 'object',
 					'context'     => array( 'view', 'edit' ),
+					'readonly'    => true,
 					'items'       => array(
 						'type'       => 'object',
 						'properties' => array(
@@ -107,11 +112,13 @@ class ProductCollectionData extends RestContoller {
 								'description' => __( 'Average rating', 'woo-gutenberg-products-block' ),
 								'type'        => 'integer',
 								'context'     => array( 'view', 'edit' ),
+								'readonly'    => true,
 							),
 							'count'  => array(
 								'description' => __( 'Number of products.', 'woo-gutenberg-products-block' ),
 								'type'        => 'integer',
 								'context'     => array( 'view', 'edit' ),
+								'readonly'    => true,
 							),
 						),
 					),

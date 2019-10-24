@@ -50,7 +50,7 @@ class CartSchema extends AbstractSchema {
 				'readonly'    => true,
 				'items'       => array(
 					'type'       => 'object',
-					'properties' => ( new CartItemSchema() )->get_properties(),
+					'properties' => $this->force_schema_readonly( ( new CartItemSchema() )->get_properties() ),
 				),
 			),
 			'needs_shipping' => array(
