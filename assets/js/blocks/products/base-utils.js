@@ -36,7 +36,6 @@ export const getBlockMap = ( blockName ) => ( {
  * The default layout built from the default template.
  */
 export const DEFAULT_PRODUCT_LIST_LAYOUT = [
-	[ 'woocommerce/product-list-sale-badge', { align: 'left' } ],
 	[ 'woocommerce/product-list-image' ],
 	[ 'woocommerce/product-list-title' ],
 	[ 'woocommerce/product-list-price' ],
