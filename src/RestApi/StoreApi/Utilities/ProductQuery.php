@@ -155,31 +155,27 @@ class ProductQuery {
 			'and'    => 'AND',
 		);
 
-		$category_operator  = $operator_mapping[ $request->get_param( 'category_operator' ) ];
-		$tag_operator       = $operator_mapping[ $request->get_param( 'tag_operator' ) ];
-		$attribute_operator = $operator_mapping[ $request->get_param( 'attribute_operator' ) ];
+		if ( isset( $args['tax_query'] ) ) {
+			$category_operator  = $request->get_param( 'category_operator' );
+			$tag_operator       = $request->get_param( 'tag_operator' );
+			$attribute_operator = $request->get_param( 'attribute_operator' );
 
-		if ( $category_operator && isset( $args['tax_query'] ) ) {
 			foreach ( $args['tax_query'] as $i => $tax_query ) {
-				if ( 'product_cat' === $tax_query['taxonomy'] ) {
-					$args['tax_query'][ $i ]['operator']         = $category_operator;
-					$args['tax_query'][ $i ]['include_children'] = 'AND' === $category_operator ? false : true;
+				if ( $category_operator && 'product_cat' === $tax_query['taxonomy'] ) {
+					$operator = isset( $operator_mapping[ $category_operator ] ) ? $operator_mapping[ $category_operator ] : 'IN';
+
+					$args['tax_query'][ $i ]['operator']         = $operator;
+					$args['tax_query'][ $i ]['include_children'] = 'AND' === $operator ? false : true;
 				}
-			}
-		}
-
-		if ( $tag_operator && isset( $args['tax_query'] ) ) {
-			foreach ( $args['tax_query'] as $i => $tax_query ) {
 				if ( 'product_tag' === $tax_query['taxonomy'] ) {
-					$args['tax_query'][ $i ]['operator'] = $tag_operator;
-				}
-			}
-		}
+					$operator = isset( $operator_mapping[ $tag_operator ] ) ? $operator_mapping[ $tag_operator ] : 'IN';
 
-		if ( $attribute_operator && isset( $args['tax_query'] ) ) {
-			foreach ( $args['tax_query'] as $i => $tax_query ) {
+					$args['tax_query'][ $i ]['operator'] = $operator;
+				}
 				if ( in_array( $tax_query['taxonomy'], wc_get_attribute_taxonomy_names(), true ) ) {
-					$args['tax_query'][ $i ]['operator'] = $attribute_operator;
+					$operator = isset( $operator_mapping[ $attribute_operator ] ) ? $operator_mapping[ $attribute_operator ] : 'IN';
+
+					$args['tax_query'][ $i ]['operator'] = $operator;
 				}
 			}
 		}
