@@ -24,7 +24,7 @@ const ProductListSaleBadge = ( { className, product, align } ) => {
 		);
 	}
 
-	return '';
+	return null;
 };
 
 export default ProductListSaleBadge;
