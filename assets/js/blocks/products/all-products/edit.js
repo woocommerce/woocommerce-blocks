@@ -179,6 +179,16 @@ class Editor extends Component {
 			this.setState( { innerBlocks: block.innerBlocks } );
 		};
 
+		const InnerBlockProps = {
+			template: this.props.attributes.layoutConfig,
+			templateLock: false,
+			allowedBlocks: Object.keys( this.blockMap ),
+		};
+
+		if ( 0 !== this.props.attributes.layoutConfig.length ) {
+			InnerBlockProps.renderAppender = false;
+		}
+
 		return (
 			<Placeholder icon={ this.getIcon() } label={ this.getTitle() }>
 				{ __(
@@ -195,14 +205,7 @@ class Editor extends Component {
 					<div className="wc-block-grid has-1-columns">
 						<ul className="wc-block-grid__products">
 							<li className="wc-block-grid__product">
-								<InnerBlocks
-									template={ DEFAULT_PRODUCT_LIST_LAYOUT }
-									templateLock={ false }
-									allowedBlocks={ Object.keys(
-										this.blockMap
-									) }
-									renderAppender={ false }
-								/>
+								<InnerBlocks { ...InnerBlockProps } />
 							</li>
 						</ul>
 					</div>
@@ -244,6 +247,14 @@ class Editor extends Component {
 
 	renderViewMode = () => {
 		const { attributes } = this.props;
+		const { layoutConfig } = attributes;
+		const hasContent = layoutConfig && 0 !== layoutConfig.length;
+		const blockTitle = this.getTitle();
+		const blockIcon = this.getIcon();
+
+		if ( ! hasContent ) {
+			return renderHiddenContentPlaceholder( blockTitle, blockIcon );
+		}
 
 		return (
 			<Disabled>
@@ -254,12 +265,13 @@ class Editor extends Component {
 
 	render = () => {
 		const { attributes } = this.props;
-		const { contentVisibility } = attributes;
 		const { isEditing } = this.state;
 		const blockTitle = this.getTitle();
 		const blockIcon = this.getIcon();
-		const hasContent =
-			0 !== Object.values( contentVisibility ).filter( Boolean ).length;
+
+		if ( ! HAS_PRODUCTS ) {
+			return renderNoProductsPlaceholder( blockTitle, blockIcon );
+		}
 
 		return (
 			<div
@@ -270,10 +282,6 @@ class Editor extends Component {
 			>
 				{ this.getBlockControls() }
 				{ this.getInspectorControls() }
-				{ ! HAS_PRODUCTS &&
-					renderNoProductsPlaceholder( blockTitle, blockIcon ) }
-				{ ! hasContent &&
-					renderHiddenContentPlaceholder( blockTitle, blockIcon ) }
 				{ isEditing ? this.renderEditMode() : this.renderViewMode() }
 			</div>
 		);

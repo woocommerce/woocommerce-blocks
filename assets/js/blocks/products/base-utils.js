@@ -52,7 +52,7 @@ export const DEFAULT_PRODUCT_LIST_LAYOUT = [
  */
 export const getProductLayoutConfig = ( blockMap, innerBlocks ) => {
 	if ( ! innerBlocks || innerBlocks.length === 0 ) {
-		return null;
+		return [];
 	}
 
 	return innerBlocks.map( ( block ) => {

@@ -1,10 +1,7 @@
 /**
  * Internal dependencies
  */
-import {
-	DEFAULT_PRODUCT_LIST_LAYOUT,
-	getBlockMap,
-} from '../../../blocks/products/base-utils';
+import { getBlockMap } from '../../../blocks/products/base-utils';
 
 /**
  * Maps a layout config into atomic components.
@@ -21,7 +18,7 @@ export const renderProductLayout = (
 	componentId
 ) => {
 	if ( ! layoutConfig ) {
-		layoutConfig = DEFAULT_PRODUCT_LIST_LAYOUT;
+		return;
 	}
 
 	const blockMap = getBlockMap( blockName );
