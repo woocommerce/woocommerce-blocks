@@ -24,7 +24,7 @@ const ProductListTitle = ( {
 				'wc-block-grid__product-title'
 			) }
 		>
-			{ !! productLink ? (
+			{ productLink ? (
 				<a href={ product.permalink } rel="nofollow">
 					{ productName }
 				</a>

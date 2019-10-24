@@ -84,7 +84,7 @@ class ProductListImage extends Component {
 					'wc-block-grid__product-image'
 				) }
 			>
-				{ !! productLink ? (
+				{ productLink ? (
 					<a href={ product.permalink } rel="nofollow">
 						{ showSaleBadge && this.renderSaleBadge() }
 						{ this.renderImage( image ) }
