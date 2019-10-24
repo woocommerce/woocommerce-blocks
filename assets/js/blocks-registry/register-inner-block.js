@@ -25,7 +25,7 @@ const assertOption = ( options, optionName, expectedType ) => {
  * @export
  * @param {Object}   options           Options to use when registering the block.
  * @param {string}   options.main      Name of the parent block.
- * @param {string}   options.value     Name of the child block being registered.
+ * @param {string}   options.blockName Name of the child block being registered.
  * @param {function} options.component React component used to render the child block.
  */
 export function registerInnerBlock( options ) {
