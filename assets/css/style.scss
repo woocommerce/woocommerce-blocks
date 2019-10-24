@@ -182,7 +182,7 @@
 }
 
 // Responsive media styles.
-@media only screen and ( max-width: 479px ) {
+@include breakpoint( "<480px" ) {
 	.wc-block-grid {
 		@for $i from 2 to 9 {
 			&.has-#{$i}-columns {
@@ -203,7 +203,7 @@
 		}
 	}
 }
-@media only screen and ( min-width: 480px ) and ( max-width: 768px ) {
+@include breakpoint( "480px-600px" ) {
 	.wc-block-grid {
 		@for $i from 2 to 9 {
 			&.has-#{$i}-columns {
