@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { createContext, useContext } from 'react';
+import { createContext, useContext } from '@wordpress/element';
 
 const BlockNameContext = createContext( { blockName: null } );
 

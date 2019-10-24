@@ -7,8 +7,8 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import ProductListContainer from '@woocommerce/base-components/product-list/container.js';
-import { BlockNameContextProvider } from '../../../base/utils/block-name-context';
+import ProductListContainer from '@woocommerce/base-components/product-list/container';
+import { BlockNameContextProvider } from '@woocommerce/base-context/block-name-context';
 
 /**
  * The All Products Block. @todo

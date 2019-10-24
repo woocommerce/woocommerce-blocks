@@ -7,7 +7,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies.
  */
-import { useBlockNameContext } from '../../utils/block-name-context';
+import { useBlockNameContext } from '@woocommerce/base-context/block-name-context';
 import withComponentId from '@woocommerce/base-hocs/with-component-id';
 import { renderProductLayout } from './utils';
 
