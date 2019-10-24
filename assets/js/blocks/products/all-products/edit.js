@@ -32,15 +32,15 @@ import {
 	renderNoProductsPlaceholder,
 	getBlockClassName,
 } from '../utils';
+import {
+	DEFAULT_PRODUCT_LIST_LAYOUT,
+	getBlockMap,
+	getProductLayoutConfig,
+} from '../base-utils';
 import { getSharedContentControls, getSharedListControls } from '../edit';
 import GridLayoutControl from '@woocommerce/block-components/grid-layout-control';
 import { HAS_PRODUCTS } from '@woocommerce/block-settings';
 import Block from './block';
-import {
-	getProductLayoutConfig,
-	DEFAULT_PRODUCT_LIST_TEMPLATE,
-	BLOCK_MAP,
-} from '../../../atomic/utils';
 
 /**
  * Component to handle edit mode of "All Products".
@@ -65,6 +65,8 @@ class Editor extends Component {
 		isEditing: false,
 		innerBlocks: [],
 	};
+
+	blockMap = getBlockMap( 'woocommerce/all-products' );
 
 	componentDidMount = () => {
 		const { block } = this.props;
@@ -150,7 +152,10 @@ class Editor extends Component {
 		const onDone = () => {
 			const { block, setAttributes } = this.props;
 			setAttributes( {
-				layoutConfig: getProductLayoutConfig( block.innerBlocks ),
+				layoutConfig: getProductLayoutConfig(
+					this.blockMap,
+					block.innerBlocks
+				),
 			} );
 			this.setState( { innerBlocks: block.innerBlocks } );
 			this.togglePreview();
@@ -166,8 +171,8 @@ class Editor extends Component {
 		const onReset = () => {
 			const { block, replaceInnerBlocks } = this.props;
 			const newBlocks = [];
-			DEFAULT_PRODUCT_LIST_TEMPLATE.map( ( blockType ) => {
-				newBlocks.push( createBlock( blockType[ 0 ], blockType[ 1 ] ) );
+			DEFAULT_PRODUCT_LIST_LAYOUT.map( ( [ name, attributes ] ) => {
+				newBlocks.push( createBlock( name, attributes ) );
 				return true;
 			} );
 			replaceInnerBlocks( block.clientId, newBlocks, false );
@@ -191,15 +196,11 @@ class Editor extends Component {
 						<ul className="wc-block-grid__products">
 							<li className="wc-block-grid__product">
 								<InnerBlocks
-									template={ DEFAULT_PRODUCT_LIST_TEMPLATE }
+									template={ DEFAULT_PRODUCT_LIST_LAYOUT }
 									templateLock={ false }
-									allowedBlocks={ [
-										...new Set(
-											BLOCK_MAP.map(
-												( block ) => block.blockName
-											)
-										),
-									] }
+									allowedBlocks={ Object.keys(
+										this.blockMap
+									) }
 									renderAppender={ false }
 								/>
 							</li>
