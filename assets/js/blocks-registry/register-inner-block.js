@@ -4,14 +4,14 @@
 import { registeredBlocks } from './registered-blocks-init';
 
 /**
- * Validates that an option is of the given type. Otherwise, throws an error.
+ * Asserts that an option is of the given type. Otherwise, throws an error.
  *
  * @throws Will throw an error if the type of the option doesn't match the expected type.
  * @param {Object} options      Object containing the option to validate.
  * @param {string} optionName   Name of the option to validate.
  * @param {string} expectedType Type expected for the option.
  */
-const validateOption = ( options, optionName, expectedType ) => {
+const assertOption = ( options, optionName, expectedType ) => {
 	if ( typeof options[ optionName ] !== expectedType ) {
 		throw new Error(
 			`Incorrect value for the ${ optionName } argument when registering an inner block. It must be a ${ expectedType }.`
@@ -29,9 +29,9 @@ const validateOption = ( options, optionName, expectedType ) => {
  * @param {function} options.component React component used to render the child block.
  */
 export function registerInnerBlock( options ) {
-	validateOption( options, 'main', 'string' );
-	validateOption( options, 'blockName', 'string' );
-	validateOption( options, 'component', 'function' );
+	assertOption( options, 'main', 'string' );
+	assertOption( options, 'blockName', 'string' );
+	assertOption( options, 'component', 'function' );
 
 	const { main, blockName, component } = options;
 
