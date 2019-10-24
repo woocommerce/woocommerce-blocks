@@ -32,30 +32,30 @@ class ProductSchema extends AbstractSchema {
 			'id'             => array(
 				'description' => __( 'Unique identifier for the resource.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
-				'context'     => array( 'view', 'edit', 'embed' ),
+				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
 			'name'           => array(
 				'description' => __( 'Product name.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
-				'context'     => array( 'view', 'edit', 'embed' ),
+				'context'     => array( 'view', 'edit' ),
 			),
 			'variation'      => array(
 				'description' => __( 'Product variation attributes, if applicable.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
-				'context'     => array( 'view', 'edit', 'embed' ),
+				'context'     => array( 'view', 'edit' ),
 			),
 			'permalink'      => array(
 				'description' => __( 'Product URL.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'format'      => 'uri',
-				'context'     => array( 'view', 'edit', 'embed' ),
+				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
 			'description'    => array(
 				'description' => __( 'Short description or excerpt from description.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
-				'context'     => array( 'view', 'edit', 'embed' ),
+				'context'     => array( 'view', 'edit' ),
 			),
 			'sku'            => array(
 				'description' => __( 'Unique identifier.', 'woo-gutenberg-products-block' ),
@@ -89,7 +89,7 @@ class ProductSchema extends AbstractSchema {
 			'images'         => array(
 				'description' => __( 'List of images.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
-				'context'     => array( 'view', 'edit', 'embed' ),
+				'context'     => array( 'view', 'edit' ),
 				'items'       => array(
 					'type'       => 'object',
 					'properties' => array(
