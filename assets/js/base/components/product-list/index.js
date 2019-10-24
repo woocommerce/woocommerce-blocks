@@ -17,8 +17,8 @@ import './style.scss';
 const ProductList = ( {
 	attributes,
 	currentPage,
-	onOrderChange,
 	onPageChange,
+	onSortChange,
 	sortValue,
 	products,
 	scrollToTop,
@@ -56,7 +56,7 @@ const ProductList = ( {
 		<div className={ getClassnames() }>
 			{ contentVisibility.orderBy && (
 				<ProductSortSelect
-					onChange={ onOrderChange }
+					onChange={ onSortChange }
 					value={ sortValue }
 				/>
 			) }

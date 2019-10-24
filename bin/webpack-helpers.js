@@ -24,6 +24,7 @@ const requestToExternal = ( request ) => {
 	const wcDepMap = {
 		'@woocommerce/blocks-registry': [ 'wc', 'wcBlocksRegistry' ],
 		'@woocommerce/settings': [ 'wc', 'wcSettings' ],
+		'@woocommerce/block-data': [ 'wc', 'wcBlocksData' ],
 	};
 	if ( wcDepMap[ request ] ) {
 		return wcDepMap[ request ];
@@ -35,6 +36,7 @@ const requestToHandle = ( request ) => {
 		'@woocommerce/blocks-registry': 'wc-blocks-registry',
 		'@woocommerce/settings': 'wc-settings',
 		'@woocommerce/block-settings': 'wc-settings',
+		'@woocommerce/block-data': 'wc-blocks-data-store',
 	};
 	if ( wcHandleMap[ request ] ) {
 		return wcHandleMap[ request ];
@@ -248,8 +250,6 @@ const getFrontConfig = ( options = {} ) => {
 		  };
 	return {
 		entry: {
-			'product-categories':
-				'./assets/js/blocks/product-categories/frontend.js',
 			reviews: './assets/js/blocks/reviews/frontend.js',
 			'all-products':
 				'./assets/js/blocks/products/all-products/frontend.js',

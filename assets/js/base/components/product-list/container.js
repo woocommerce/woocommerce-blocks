@@ -3,48 +3,40 @@
  */
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { addQueryArgs, getQueryArg } from '@wordpress/url';
 
 /**
  * Internal dependencies
  */
 import ProductList from './index';
-import withBrowserHistory from '@woocommerce/base-hocs/with-browser-history';
-import withBrowserLocation from '@woocommerce/base-hocs/with-browser-location';
+import withQueryStringValues from '@woocommerce/base-hocs/with-query-string-values';
 
 class ProductListContainer extends Component {
-	state = {
-		currentPage: this.props.currentPage || 1,
-		sortValue: this.props.sortValue,
-	};
-
 	onPageChange = ( newPage ) => {
-		this.setState( {
-			currentPage: newPage,
+		this.props.updateQueryStringValues( {
+			product_page: newPage,
 		} );
-		this.props.onPageChange( newPage );
 	};
 
-	onOrderChange = ( event ) => {
-		const sortValue = event.target.value;
-		this.setState( {
-			currentPage: 1,
-			sortValue,
+	onSortChange = ( event ) => {
+		const newSortValue = event.target.value;
+		this.props.updateQueryStringValues( {
+			product_sort: newSortValue,
+			product_page: 1,
 		} );
-		this.props.onOrderChange( sortValue );
 	};
 
 	render() {
-		const { attributes } = this.props;
-		const { currentPage } = this.state;
-		const sortValue = this.state.sortValue || this.props.attributes.orderby;
+		// eslint-disable-next-line camelcase
+		const { attributes, product_page, product_sort } = this.props;
+		const currentPage = parseInt( product_page );
+		const sortValue = product_sort || attributes.orderby; // eslint-disable-line camelcase
 
 		return (
 			<ProductList
 				attributes={ attributes }
 				currentPage={ currentPage }
-				onOrderChange={ this.onOrderChange }
 				onPageChange={ this.onPageChange }
+				onSortChange={ this.onSortChange }
 				sortValue={ sortValue }
 			/>
 		);
@@ -53,43 +45,15 @@ class ProductListContainer extends Component {
 
 ProductListContainer.propTypes = {
 	attributes: PropTypes.object.isRequired,
-	urlParameterSuffix: PropTypes.string,
+	// From withQueryStringValues
+	product_page: PropTypes.oneOfType( [ PropTypes.number, PropTypes.string ] ),
+	product_sort: PropTypes.string,
 };
 
-export default withBrowserLocation( ( location, { urlParameterSuffix } ) => {
-	const pageParameter = `product_page${ urlParameterSuffix }`;
-	const sortParameter = `product_sort${ urlParameterSuffix }`;
-	return {
-		currentPage: parseInt( getQueryArg( location.href, pageParameter ) ),
-		location,
-		sortValue: getQueryArg( location.href, sortParameter ),
-		pageParameter,
-		sortParameter,
-	};
-} )(
-	withBrowserHistory(
-		( history, { location, sortParameter, pageParameter } ) => {
-			return {
-				onPageChange( newPage ) {
-					history.pushState(
-						null,
-						'',
-						addQueryArgs( location.href, {
-							[ pageParameter ]: newPage,
-						} )
-					);
-				},
-				onOrderChange( sortValue ) {
-					history.pushState(
-						null,
-						'',
-						addQueryArgs( location.href, {
-							[ sortParameter ]: sortValue,
-							[ pageParameter ]: 1,
-						} )
-					);
-				},
-			};
-		}
-	)( ProductListContainer )
+ProductListContainer.defaultProps = {
+	product_page: 1,
+};
+
+export default withQueryStringValues( [ 'product_page', 'product_sort' ] )(
+	ProductListContainer
 );

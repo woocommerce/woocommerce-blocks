@@ -13,6 +13,7 @@ namespace Automattic\WooCommerce\Blocks\RestApi\Controllers;
 defined( 'ABSPATH' ) || exit;
 
 use \WC_REST_Products_Controller;
+use Automattic\WooCommerce\Blocks\RestApi\Utilities\ProductImages;
 
 /**
  * REST API Products controller class.
@@ -213,7 +214,7 @@ class Products extends WC_REST_Products_Controller {
 			'price'          => $product->get_price(),
 			'price_html'     => $product->get_price_html(),
 			'prices'         => $this->get_prices( $product ),
-			'images'         => $this->get_images( $product ),
+			'images'         => ( new ProductImages() )->images_to_array( $product ),
 			'average_rating' => $product->get_average_rating(),
 			'review_count'   => $product->get_review_count(),
 			'has_options'    => $product->has_options(),

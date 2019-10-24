@@ -41,6 +41,7 @@ class Assets {
 		wp_style_add_data( 'wc-block-style', 'rtl', 'replace' );
 
 		// Shared libraries and components across all blocks.
+		self::register_script( 'wc-blocks-data-store', plugins_url( 'build/wc-blocks-data.js', __DIR__ ), [], false );
 		self::register_script( 'wc-blocks', plugins_url( 'build/blocks.js', __DIR__ ), [], false );
 		self::register_script( 'wc-vendors', plugins_url( 'build/vendors.js', __DIR__ ), [], false );
 
@@ -89,18 +90,8 @@ class Assets {
 	 * @since $VID:$ returned merged data along with incoming $settings
 	 */
 	public static function get_wc_block_data( $settings ) {
-		$tag_count          = wp_count_terms( 'product_tag' );
-		$product_counts     = wp_count_posts( 'product' );
-		$product_categories = get_terms(
-			'product_cat',
-			array(
-				'hide_empty' => false,
-				'pad_counts' => true,
-			)
-		);
-		foreach ( $product_categories as &$category ) {
-			$category->link = get_term_link( $category->term_id, 'product_cat' );
-		}
+		$tag_count      = wp_count_terms( 'product_tag' );
+		$product_counts = wp_count_posts( 'product' );
 
 		// Global settings used in each block.
 		return array_merge(
@@ -119,8 +110,6 @@ class Assets {
 				'isLargeCatalog'     => $product_counts->publish > 200,
 				'limitTags'          => $tag_count > 100,
 				'hasTags'            => $tag_count > 0,
-				'hasProducts'        => $product_counts->publish > 0,
-				'productCategories'  => $product_categories,
 				'homeUrl'            => esc_url( home_url( '/' ) ),
 				'showAvatars'        => '1' === get_option( 'show_avatars' ),
 				'enableReviewRating' => 'yes' === get_option( 'woocommerce_enable_review_rating' ),

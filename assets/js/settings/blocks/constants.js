@@ -16,5 +16,4 @@ export const IS_LARGE_CATALOG = getSetting( 'isLargeCatalog' );
 export const LIMIT_TAGS = getSetting( 'limitTags' );
 export const HAS_PRODUCTS = getSetting( 'hasProducts', true );
 export const HAS_TAGS = getSetting( 'hasTags', true );
-export const HOME_URL = getSetting( 'homeUrl ', '' );
-export const PRODUCT_CATEGORIES = getSetting( 'productCategories', [] );
+export const HOME_URL = getSetting( 'homeUrl', '' );
