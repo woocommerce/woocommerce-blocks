@@ -13,6 +13,8 @@ use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ProductQuery;
 
 /**
  * Product Query fllters class.
+ *
+ * @since $VID:$
  */
 class ProductQueryFilters {
 	/**

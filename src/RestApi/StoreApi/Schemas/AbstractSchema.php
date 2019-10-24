@@ -13,6 +13,8 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * AbstractBlock class.
+ *
+ * @since $VID:$
  */
 abstract class AbstractSchema {
 	/**

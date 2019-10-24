@@ -13,6 +13,8 @@ use Automattic\WooCommerce\Blocks\RestApi\Utilities\ProductImages;
 
 /**
  * ProductSchema class.
+ *
+ * @since $VID:$
  */
 class ProductSchema extends AbstractSchema {
 	/**

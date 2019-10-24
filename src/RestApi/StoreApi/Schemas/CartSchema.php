@@ -11,6 +11,8 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * CartSchema class.
+ *
+ * @since $VID:$
  */
 class CartSchema extends AbstractSchema {
 	/**

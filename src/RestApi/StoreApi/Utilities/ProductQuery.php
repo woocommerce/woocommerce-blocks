@@ -11,6 +11,8 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Product Query class.
+ *
+ * @since $VID:$
  */
 class ProductQuery {
 	/**

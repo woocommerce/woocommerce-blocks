@@ -18,6 +18,8 @@ use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\CartController;
 
 /**
  * Cart API.
+ *
+ * @since $VID:$
  */
 class Cart extends RestContoller {
 	/**

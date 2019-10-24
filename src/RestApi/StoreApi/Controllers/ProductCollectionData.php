@@ -18,6 +18,8 @@ use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ProductQueryFilters
 
 /**
  * ProductCollectionData API.
+ *
+ * @since $VID:$
  */
 class ProductCollectionData extends RestContoller {
 	/**
