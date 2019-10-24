@@ -7,13 +7,13 @@ import classnames from 'classnames';
 /**
  * Internal dependencies.
  */
-import { useBlockNameContext } from '@woocommerce/base-context/block-name-context';
+import { useInnerBlockParentNameContext } from '@woocommerce/base-context/inner-block-parent-name-context';
 import withComponentId from '@woocommerce/base-hocs/with-component-id';
 import { renderProductLayout } from './utils';
 
 const ProductListItem = ( { product, attributes, componentId } ) => {
 	const { layoutConfig } = attributes;
-	const blockName = useBlockNameContext();
+	const blockName = useInnerBlockParentNameContext();
 	const isLoading = ! Object.keys( product ).length > 0;
 	const classes = classnames( 'wc-block-grid__product', {
 		'is-loading': isLoading,

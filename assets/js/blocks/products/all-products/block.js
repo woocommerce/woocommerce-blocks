@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
  * Internal dependencies
  */
 import ProductListContainer from '@woocommerce/base-components/product-list/container';
-import { BlockNameContextProvider } from '@woocommerce/base-context/block-name-context';
+import { InnerBlockParentNameProvider } from '@woocommerce/base-context/inner-block-parent-name-context';
 
 /**
  * The All Products Block. @todo
@@ -30,12 +30,12 @@ class Block extends Component {
 		 * wc-block-{$this->block_name},
 		 */
 		return (
-			<BlockNameContextProvider value="woocommerce/all-products">
+			<InnerBlockParentNameProvider value="woocommerce/all-products">
 				<ProductListContainer
 					attributes={ attributes }
 					urlParameterSuffix={ urlParameterSuffix }
 				/>
-			</BlockNameContextProvider>
+			</InnerBlockParentNameProvider>
 		);
 	}
 }
