@@ -16,9 +16,6 @@ import {
 	ProductListSaleBadge,
 } from '../../atomic/components/product-list';
 
-// @todo how to support these using mapping?
-//'core/paragraph',
-//'core/heading',
 /**
  * Map blocks names to components.
  *
