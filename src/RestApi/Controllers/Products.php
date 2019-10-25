@@ -330,45 +330,6 @@ class Products extends WC_REST_Products_Controller {
 	}
 
 	/**
-	 * Get the images for a product or product variation.
-	 *
-	 * @param \WC_Product|\WC_Product_Variation $product Product instance.
-	 * @return array
-	 */
-	protected function get_images( $product ) {
-		$images         = array();
-		$attachment_ids = array();
-
-		if ( $product->get_image_id() ) {
-			$attachment_ids[] = $product->get_image_id();
-		}
-
-		$attachment_ids = wp_parse_id_list( array_merge( $attachment_ids, $product->get_gallery_image_ids() ) );
-
-		foreach ( $attachment_ids as $attachment_id ) {
-			$attachment = wp_get_attachment_image_src( $attachment_id, 'full' );
-
-			if ( ! is_array( $attachment ) ) {
-				continue;
-			}
-
-			$thumbnail = wp_get_attachment_image_src( $attachment_id, 'woocommerce_thumbnail' );
-
-			$images[] = array(
-				'id'        => $attachment_id,
-				'src'       => current( $attachment ),
-				'thumbnail' => current( $thumbnail ),
-				'srcset'    => wp_get_attachment_image_srcset( $attachment_id, 'full' ),
-				'sizes'     => wp_get_attachment_image_sizes( $attachment_id, 'full' ),
-				'name'      => get_the_title( $attachment_id ),
-				'alt'       => get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ),
-			);
-		}
-
-		return $images;
-	}
-
-	/**
 	 * Update the collection params.
 	 *
 	 * Adds new options for 'orderby', and new parameters 'category_operator', 'attribute_operator'.
