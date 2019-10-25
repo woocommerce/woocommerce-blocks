@@ -9,7 +9,7 @@ import Gridicon from 'gridicons';
 /**
  * Internal dependencies
  */
-import { ProductListButton } from '../../../components/product-list';
+import { ProductListButton } from '@woocommerce/atomic-components/product-list';
 import sharedConfig from '../shared-config';
 
 const blockConfig = {

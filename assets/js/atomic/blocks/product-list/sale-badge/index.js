@@ -7,7 +7,7 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import { ProductListSaleBadge } from '../../../components/product-list';
+import { ProductListSaleBadge } from '@woocommerce/atomic-components/product-list';
 import sharedConfig from '../shared-config';
 import { IconProductOnSale } from '@woocommerce/block-components/icons';
 

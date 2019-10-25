@@ -10,7 +10,7 @@ import { InspectorControls } from '@wordpress/editor';
 /**
  * Internal dependencies
  */
-import { ProductListTitle } from '../../../components/product-list';
+import { ProductListTitle } from '@woocommerce/atomic-components/product-list';
 import sharedConfig from '../shared-config';
 import HeadingToolbar from './heading-toolbar';
 import { previewProducts } from '../../../../previews/products';

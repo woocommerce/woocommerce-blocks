@@ -12,7 +12,7 @@ import { InspectorControls } from '@wordpress/editor';
  * Internal dependencies
  */
 import ToggleButtonControl from '@woocommerce/block-components/toggle-button-control';
-import { ProductListImage } from '../../../components/product-list';
+import { ProductListImage } from '@woocommerce/atomic-components/product-list';
 import sharedConfig from '../shared-config';
 import { previewProducts } from '../../../../previews/products';
 

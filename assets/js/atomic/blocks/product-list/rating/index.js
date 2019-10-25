@@ -8,7 +8,7 @@ import Gridicon from 'gridicons';
 /**
  * Internal dependencies
  */
-import { ProductListRating } from '../../../components/product-list';
+import { ProductListRating } from '@woocommerce/atomic-components/product-list';
 import sharedConfig from '../shared-config';
 
 const blockConfig = {
