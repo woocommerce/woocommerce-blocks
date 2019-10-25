@@ -23,7 +23,6 @@ const blockConfig = {
 	},
 	supports: {
 		html: false,
-		align: [ 'left', 'center', 'right' ],
 	},
 	edit( props ) {
 		const { align, product } = props.attributes;

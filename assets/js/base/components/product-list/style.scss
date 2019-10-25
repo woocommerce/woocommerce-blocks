@@ -215,15 +215,6 @@
 	z-index: 9;
 	position: relative;
 	margin: $gap-smaller auto;
-
-	&.wc-block-grid__product-onsale--alignleft {
-		float: left;
-		margin: 0 auto 0 0;
-	}
-	&.wc-block-grid__product-onsale--alignright {
-		float: right;
-		margin: 0 0 0 auto;
-	}
 }
 .editor-styles-wrapper .wc-block-grid__products .wc-block-grid__product .wc-block-grid__product-image,
 .wc-block-grid__product-image {
