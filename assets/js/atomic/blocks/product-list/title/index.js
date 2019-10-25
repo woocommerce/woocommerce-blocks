@@ -13,7 +13,7 @@ import { InspectorControls } from '@wordpress/editor';
 import { ProductListTitle } from '../../../components/product-list';
 import sharedConfig from '../shared-config';
 import HeadingToolbar from './heading-toolbar';
-import exampleProduct from '../example-product';
+import { previewProducts } from '../../../../previews/products';
 
 const blockConfig = {
 	title: __( 'Product Title', 'woo-gutenberg-products-block' ),
@@ -28,7 +28,7 @@ const blockConfig = {
 	attributes: {
 		product: {
 			type: 'object',
-			default: exampleProduct,
+			default: previewProducts[ 0 ],
 		},
 		level: {
 			type: 'number',

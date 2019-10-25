@@ -14,7 +14,7 @@ import { InspectorControls } from '@wordpress/editor';
 import ToggleButtonControl from '@woocommerce/block-components/toggle-button-control';
 import { ProductListImage } from '../../../components/product-list';
 import sharedConfig from '../shared-config';
-import exampleProduct from '../example-product';
+import { previewProducts } from '../../../../previews/products';
 
 const blockConfig = {
 	title: __( 'Product Image', 'woo-gutenberg-products-block' ),
@@ -29,7 +29,7 @@ const blockConfig = {
 	attributes: {
 		product: {
 			type: 'object',
-			default: exampleProduct,
+			default: previewProducts[ 0 ],
 		},
 		productLink: {
 			type: 'boolean',

@@ -7,7 +7,7 @@ import Gridicon from 'gridicons';
 /**
  * Internal dependencies
  */
-import exampleProduct from './example-product';
+import { previewProducts } from '../../../previews/products';
 
 /**
  * Holds default config for this collection of blocks.
@@ -26,7 +26,7 @@ export default {
 	attributes: {
 		product: {
 			type: 'object',
-			default: exampleProduct,
+			default: previewProducts[ 0 ],
 		},
 	},
 	save() {},
