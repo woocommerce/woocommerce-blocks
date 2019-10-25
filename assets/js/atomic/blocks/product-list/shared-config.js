@@ -7,7 +7,7 @@ import Gridicon from 'gridicons';
 /**
  * Internal dependencies
  */
-import { previewProducts } from '../../../previews/products';
+import { previewProducts } from '@woocommerce/resource-previews';
 
 /**
  * Holds default config for this collection of blocks.

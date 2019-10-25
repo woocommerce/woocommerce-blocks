@@ -14,7 +14,7 @@ import { InspectorControls } from '@wordpress/editor';
 import ToggleButtonControl from '@woocommerce/block-components/toggle-button-control';
 import { ProductListImage } from '@woocommerce/atomic-components/product-list';
 import sharedConfig from '../shared-config';
-import { previewProducts } from '../../../../previews/products';
+import { previewProducts } from '@woocommerce/resource-previews';
 
 const blockConfig = {
 	title: __( 'Product Image', 'woo-gutenberg-products-block' ),

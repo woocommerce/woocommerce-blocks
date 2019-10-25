@@ -13,7 +13,7 @@ import { InspectorControls } from '@wordpress/editor';
 import { ProductListTitle } from '@woocommerce/atomic-components/product-list';
 import sharedConfig from '../shared-config';
 import HeadingToolbar from './heading-toolbar';
-import { previewProducts } from '../../../../previews/products';
+import { previewProducts } from '@woocommerce/resource-previews';
 
 const blockConfig = {
 	title: __( 'Product Title', 'woo-gutenberg-products-block' ),
