@@ -4,4 +4,4 @@ export { default as ProductRating } from './rating';
 export { default as ProductTitle } from './title';
 export { default as ProductPrice } from './price';
 export { default as ProductSummary } from './summary';
-export { default as ProductSalesBadge } from './sale-badge';
+export { default as ProductSaleBadge } from './sale-badge';

@@ -7,7 +7,7 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import { ProductSalesBadge } from '@woocommerce/atomic-components/product';
+import { ProductSaleBadge } from '@woocommerce/atomic-components/product';
 import sharedConfig from '../shared-config';
 import { IconProductOnSale } from '@woocommerce/block-components/icons';
 
@@ -27,7 +27,7 @@ const blockConfig = {
 	edit( props ) {
 		const { align, product } = props.attributes;
 
-		return <ProductSalesBadge product={ product } align={ align } />;
+		return <ProductSaleBadge product={ product } align={ align } />;
 	},
 };
 

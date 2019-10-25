@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 
-const ProductSalesBadge = ( { className, product, align } ) => {
+const ProductSaleBadge = ( { className, product, align } ) => {
 	const alignClass =
 		typeof align === 'string'
 			? 'wc-block-grid__product-onsale--align' + align
@@ -27,4 +27,4 @@ const ProductSalesBadge = ( { className, product, align } ) => {
 	return null;
 };
 
-export default ProductSalesBadge;
+export default ProductSaleBadge;

@@ -9,7 +9,7 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import { PLACEHOLDER_IMG_SRC } from '@woocommerce/block-settings';
-import { ProductSalesBadge } from '../../../components/product';
+import { ProductSaleBadge } from '../../../components/product';
 
 class ProductImage extends Component {
 	static propTypes = {
@@ -39,7 +39,7 @@ class ProductImage extends Component {
 	renderSaleBadge = () => {
 		const { product, saleBadgeAlign } = this.props;
 		return (
-			<ProductSalesBadge product={ product } align={ saleBadgeAlign } />
+			<ProductSaleBadge product={ product } align={ saleBadgeAlign } />
 		);
 	};
 
