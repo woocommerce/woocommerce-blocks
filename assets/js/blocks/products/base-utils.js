@@ -7,14 +7,14 @@ import { getRegisteredInnerBlocks } from '@woocommerce/blocks-registry';
  * Internal dependencies
  */
 import {
-	ProductListTitle,
-	ProductListPrice,
-	ProductListButton,
-	ProductListImage,
-	ProductListRating,
-	ProductListSummary,
-	ProductListSaleBadge,
-} from '../../atomic/components/product-list';
+	ProductTitle,
+	ProductPrice,
+	ProductButton,
+	ProductImage,
+	ProductRating,
+	ProductSummary,
+	ProductSaleBadge,
+} from '@woocommerce/atomic-components/product';
 
 /**
  * Map blocks names to components.
@@ -22,13 +22,13 @@ import {
  * @param {string} blockName Name of the parent block. Used to get extension children.
  */
 export const getBlockMap = ( blockName ) => ( {
-	'woocommerce/product-list-price': ProductListPrice,
-	'woocommerce/product-list-image': ProductListImage,
-	'woocommerce/product-list-title': ProductListTitle,
-	'woocommerce/product-list-rating': ProductListRating,
-	'woocommerce/product-list-button': ProductListButton,
-	'woocommerce/product-list-summary': ProductListSummary,
-	'woocommerce/product-list-sale-badge': ProductListSaleBadge,
+	'woocommerce/product-price': ProductPrice,
+	'woocommerce/product-image': ProductImage,
+	'woocommerce/product-title': ProductTitle,
+	'woocommerce/product-rating': ProductRating,
+	'woocommerce/product-button': ProductButton,
+	'woocommerce/product-summary': ProductSummary,
+	'woocommerce/product-sale-badge': ProductSaleBadge,
 	...getRegisteredInnerBlocks( blockName ),
 } );
 
@@ -36,11 +36,11 @@ export const getBlockMap = ( blockName ) => ( {
  * The default layout built from the default template.
  */
 export const DEFAULT_PRODUCT_LIST_LAYOUT = [
-	[ 'woocommerce/product-list-image' ],
-	[ 'woocommerce/product-list-title' ],
-	[ 'woocommerce/product-list-price' ],
-	[ 'woocommerce/product-list-rating' ],
-	[ 'woocommerce/product-list-button' ],
+	[ 'woocommerce/product-image' ],
+	[ 'woocommerce/product-title' ],
+	[ 'woocommerce/product-price' ],
+	[ 'woocommerce/product-rating' ],
+	[ 'woocommerce/product-button' ],
 ];
 
 /**
