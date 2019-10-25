@@ -8,6 +8,7 @@ const ProgressBarPlugin = require( 'progress-bar-webpack-plugin' );
 const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
 const WebpackRTLPlugin = require( 'webpack-rtl-plugin' );
 const chalk = require( 'chalk' );
+const { omit } = require( 'lodash' );
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -86,6 +87,41 @@ const getAlias = ( options = {} ) => {
 	};
 };
 
+const mainEntry = {
+	// Shared blocks code
+	blocks: './assets/js/index.js',
+	// Blocks
+	'handpicked-products': './assets/js/blocks/handpicked-products/index.js',
+	'product-best-sellers': './assets/js/blocks/product-best-sellers/index.js',
+	'product-category': './assets/js/blocks/product-category/index.js',
+	'product-categories': './assets/js/blocks/product-categories/index.js',
+	'product-new': './assets/js/blocks/product-new/index.js',
+	'product-on-sale': './assets/js/blocks/product-on-sale/index.js',
+	'product-top-rated': './assets/js/blocks/product-top-rated/index.js',
+	'products-by-attribute':
+		'./assets/js/blocks/products-by-attribute/index.js',
+	'featured-product': './assets/js/blocks/featured-product/index.js',
+	'all-reviews': './assets/js/blocks/reviews/all-reviews/index.js',
+	'reviews-by-product':
+		'./assets/js/blocks/reviews/reviews-by-product/index.js',
+	'reviews-by-category':
+		'./assets/js/blocks/reviews/reviews-by-category/index.js',
+	'product-search': './assets/js/blocks/product-search/index.js',
+	'product-tag': './assets/js/blocks/product-tag/index.js',
+	'featured-category': './assets/js/blocks/featured-category/index.js',
+	'all-products': './assets/js/blocks/products/all-products/index.js',
+};
+
+const frontEndEntry = {
+	reviews: './assets/js/blocks/reviews/frontend.js',
+	'all-products': './assets/js/blocks/products/all-products/frontend.js',
+};
+
+const getEntryConfig = ( main = true, exclude = [] ) => {
+	const entryConfig = main ? mainEntry : frontEndEntry;
+	return omit( entryConfig, exclude );
+};
+
 const getMainConfig = ( options = {} ) => {
 	let { fileSuffix } = options;
 	const { alias, resolvePlugins = [] } = options;
@@ -99,35 +135,7 @@ const getMainConfig = ( options = {} ) => {
 				plugins: resolvePlugins,
 		  };
 	return {
-		entry: {
-			// Shared blocks code
-			blocks: './assets/js/index.js',
-			// Blocks
-			'handpicked-products':
-				'./assets/js/blocks/handpicked-products/index.js',
-			'product-best-sellers':
-				'./assets/js/blocks/product-best-sellers/index.js',
-			'product-category': './assets/js/blocks/product-category/index.js',
-			'product-categories':
-				'./assets/js/blocks/product-categories/index.js',
-			'product-new': './assets/js/blocks/product-new/index.js',
-			'product-on-sale': './assets/js/blocks/product-on-sale/index.js',
-			'product-top-rated':
-				'./assets/js/blocks/product-top-rated/index.js',
-			'products-by-attribute':
-				'./assets/js/blocks/products-by-attribute/index.js',
-			'featured-product': './assets/js/blocks/featured-product/index.js',
-			'all-reviews': './assets/js/blocks/reviews/all-reviews/index.js',
-			'reviews-by-product':
-				'./assets/js/blocks/reviews/reviews-by-product/index.js',
-			'reviews-by-category':
-				'./assets/js/blocks/reviews/reviews-by-category/index.js',
-			'product-search': './assets/js/blocks/product-search/index.js',
-			'product-tag': './assets/js/blocks/product-tag/index.js',
-			'featured-category':
-				'./assets/js/blocks/featured-category/index.js',
-			'all-products': './assets/js/blocks/products/all-products/index.js',
-		},
+		entry: getEntryConfig( true, options.exclude || [] ),
 		output: {
 			path: path.resolve( __dirname, '../build/' ),
 			filename: `[name]${ fileSuffix }.js`,
@@ -257,11 +265,7 @@ const getFrontConfig = ( options = {} ) => {
 				plugins: resolvePlugins,
 		  };
 	return {
-		entry: {
-			reviews: './assets/js/blocks/reviews/frontend.js',
-			'all-products':
-				'./assets/js/blocks/products/all-products/frontend.js',
-		},
+		entry: getEntryConfig( false, options.exclude || [] ),
 		output: {
 			path: path.resolve( __dirname, '../build/' ),
 			filename: `[name]${ fileSuffix }-frontend.js`,

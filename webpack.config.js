@@ -82,6 +82,15 @@ const GutenbergBlocksConfig = {
 	...getMainConfig( { alias: getAlias() } ),
 };
 
+const BlocksFrontendConfig = {
+	...baseConfig,
+	...getFrontConfig( { alias: getAlias() } ),
+};
+
+/**
+ * Currently Legacy Configs are for builds targeting < WP5.3
+ */
+
 // eslint-disable-next-line no-unused-vars
 const LegacyBlocksConfig = {
 	...baseConfig,
@@ -94,12 +103,8 @@ const LegacyBlocksConfig = {
 				getAlias( { pathPart: 'legacy' } )
 			),
 		],
+		exclude: [ 'all-products' ],
 	} ),
-};
-
-const BlocksFrontendConfig = {
-	...baseConfig,
-	...getFrontConfig( { alias: getAlias() } ),
 };
 
 // eslint-disable-next-line no-unused-vars
@@ -114,6 +119,7 @@ const LegacyFrontendBlocksConfig = {
 				getAlias( { pathPart: 'legacy' } )
 			),
 		],
+		exclude: [ 'all-products' ],
 	} ),
 };
 
@@ -121,6 +127,6 @@ module.exports = [
 	CoreConfig,
 	GutenbergBlocksConfig,
 	BlocksFrontendConfig,
-	// LegacyBlocksConfig,
-	// LegacyFrontendBlocksConfig,
+	LegacyBlocksConfig,
+	LegacyFrontendBlocksConfig,
 ];
