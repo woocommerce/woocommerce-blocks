@@ -26,12 +26,16 @@ export const apiFetchWithHeaders = ( path ) => {
  */
 export const controls = {
 	API_FETCH_WITH_HEADERS( { path } ) {
-		return new Promise( ( resolve ) => {
-			triggerFetch( { path, parse: false } ).then( ( response ) => {
-				response.json().then( ( items ) => {
-					resolve( { items, headers: response.headers } );
+		return new Promise( ( resolve, reject ) => {
+			triggerFetch( { path, parse: false } )
+				.then( ( response ) => {
+					response.json().then( ( items ) => {
+						resolve( { items, headers: response.headers } );
+					} );
+				} )
+				.catch( ( error ) => {
+					reject( error );
 				} );
-			} );
 		} );
 	},
 };

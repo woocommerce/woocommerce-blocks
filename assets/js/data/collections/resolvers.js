@@ -47,16 +47,16 @@ export function* getCollection( namespace, modelName, query, ids ) {
  * Note: This triggers the `getCollection` resolver if it hasn't been resolved
  * yet.
  *
+ * @param {string} header
  * @param {string} namespace
  * @param {string} modelName
- * @param {string} header
  * @param {Object} query
  * @param {Array}  ids
  */
 export function* getCollectionHeader(
+	header,
 	namespace,
 	modelName,
-	header,
 	query,
 	ids
 ) {
