@@ -55,7 +55,7 @@ export const useStoreProducts = ( query, options = DEFAULT_OPTIONS ) => {
 			);
 			return {
 				products: store.getCollection( ...args ),
-				productsTotal: store.getCollectionHeader(
+				totalProducts: store.getCollectionHeader(
 					'x-wp-total',
 					...args
 				),
