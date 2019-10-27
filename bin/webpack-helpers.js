@@ -232,8 +232,11 @@ const getMainConfig = ( options = {} ) => {
 				filename: `[name]${ fileSuffix }.css`,
 			} ),
 			new MergeExtractFilesPlugin(
-				[ 'build/editor.js', 'build/style.js' ],
-				'build/vendors.js'
+				[
+					`build/editor${ fileSuffix }.js`,
+					`build/style${ fileSuffix }.js`,
+				],
+				`build/vendors${ fileSuffix }.js`
 			),
 			new ProgressBarPlugin( {
 				format:
