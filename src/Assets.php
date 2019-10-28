@@ -124,9 +124,8 @@ class Assets {
 	 * @return string The cache buster value to use for the given file.
 	 */
 	protected static function get_file_version( $file ) {
-		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
-			$file = trim( $file, '/' );
-			return filemtime( \Automattic\WooCommerce\Blocks\Package::get_path() . '/' . $file );
+		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG && file_exists( \Automattic\WooCommerce\Blocks\Package::get_path() . $file ) ) {
+			return filemtime( \Automattic\WooCommerce\Blocks\Package::get_path() . $file );
 		}
 		return \Automattic\WooCommerce\Blocks\Package::get_version();
 	}
