@@ -44,8 +44,8 @@ class BlocksWpQuery extends WP_Query {
 	 * (where the SQL query is manipulated directly) you can still ensure there is a unique hash by injecting custom
 	 * query vars via the parse_query filter. For example:
 	 *
-	 *      add_filter( 'parse_query', function( $wp ) {
-	 *           $wp->query_vars['my_custom_query_var'] = true;
+	 *      add_filter( 'parse_query', function( $wp_query ) {
+	 *           $wp_query->query_vars['my_custom_query_var'] = true;
 	 *      } );
 	 *
 	 * Doing so won't have any negative effect on the query itself, and it will cause the hash to change.
