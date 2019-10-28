@@ -38,13 +38,24 @@ class BlocksWpQuery extends WP_Query {
 	}
 
 	/**
-	 * Cache cached posts, if a cache exists.
+	 * Get cached posts, if a cache exists.
+	 *
+	 * A hash is generated using the array of query_vars. If doing custom queries via filters such as posts_where
+	 * (where the SQL query is manipulated directly) you can still ensure there is a unique hash by injecting custom
+	 * query vars via the parse_query filter. For example:
+	 *
+	 *      add_filter( 'parse_query', function( $wp ) {
+	 *           $wp->query_vars['my_custom_query_var'] = true;
+	 *      } );
+	 *
+	 * Doing so won't have any negative effect on the query itself, and it will cause the hash to change.
 	 *
 	 * @param string $transient_version Transient version to allow for invalidation.
 	 * @return WP_Post[]|int[] Array of post objects or post IDs.
 	 */
 	public function get_cached_posts( $transient_version = '' ) {
-		$transient_name  = 'wc_blocks_query_' . $this->query_vars_hash;
+		$hash            = md5( wp_json_encode( $this->query_vars ) );
+		$transient_name  = 'wc_blocks_query_' . $hash;
 		$transient_value = get_transient( $transient_name );
 
 		if ( isset( $transient_value, $transient_value['version'], $transient_value['value'] ) && $transient_value['version'] === $transient_version ) {
