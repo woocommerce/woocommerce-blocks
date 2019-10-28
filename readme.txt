@@ -106,6 +106,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 = 2.4.4 - 2019-10-15 =
 
 - Fix product search widget due to missing home url on the form action.
+- Fix fatal on WP_Error due to missing root namespace for class invocation.
 
 = 2.4.3 - 2019-10-14 =
 
