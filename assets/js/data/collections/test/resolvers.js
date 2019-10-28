@@ -128,7 +128,7 @@ describe( 'getCollectionHeader', () => {
 	const rewind = ( ...testArgs ) =>
 		( fulfillment = getCollectionHeader( ...testArgs ) );
 	it( 'yields expected select control when called with less args', () => {
-		rewind( '/wc/blocks', 'products', 'x-wp-total' );
+		rewind( 'x-wp-total', '/wc/blocks', 'products' );
 		const { value } = fulfillment.next();
 		expect( value ).toEqual(
 			select( STORE_KEY, 'getCollection', '/wc/blocks', 'products' )
@@ -136,9 +136,9 @@ describe( 'getCollectionHeader', () => {
 	} );
 	it( 'yields expected select control when called with all args', () => {
 		const args = [
+			'x-wp-total',
 			'/wc/blocks',
 			'products/attributes',
-			'x-wp-total',
 			{ sort: 'ASC' },
 			[ 10 ],
 		];

@@ -10,9 +10,39 @@ import classnames from 'classnames';
 import Pagination from '@woocommerce/base-components/pagination';
 import ProductSortSelect from '@woocommerce/base-components/product-sort-select';
 import ProductListItem from '@woocommerce/base-components/product-list-item';
-import withProducts from '@woocommerce/base-hocs/with-products';
+import {
+	useStoreProducts,
+	useSynchronizedQueryState,
+} from '@woocommerce/base-hooks';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import './style.scss';
+
+const generateQuery = ( { sortValue, currentPage, attributes } ) => {
+	const { columns, rows } = attributes;
+	const getSortArgs = ( orderName ) => {
+		switch ( orderName ) {
+			case 'menu_order':
+			case 'popularity':
+			case 'rating':
+			case 'date':
+			case 'price':
+				return {
+					orderby: orderName,
+					order: 'asc',
+				};
+			case 'price-desc':
+				return {
+					orderby: 'price',
+					order: 'desc',
+				};
+		}
+	};
+	return {
+		...getSortArgs( sortValue ),
+		per_page: columns * rows,
+		page: currentPage,
+	};
+};
 
 const ProductList = ( {
 	attributes,
@@ -20,10 +50,18 @@ const ProductList = ( {
 	onPageChange,
 	onSortChange,
 	sortValue,
-	products,
 	scrollToTop,
-	totalProducts,
 } ) => {
+	// @todo query-state context (which is hardcoded 'product-grid' here) should
+	// be provided via a provider. This allows us to control query state context
+	// at the app level for anything nested within the provider.
+	const [ queryState ] = useSynchronizedQueryState(
+		'product-grid',
+		generateQuery( { attributes, sortValue, currentPage } )
+	);
+	// @todo should add an <ErrorBoundary> in parent component to handle any
+	// errors from the store and format etc.
+	const { products, totalProducts } = useStoreProducts( queryState );
 	const onPaginationChange = ( newPage ) => {
 		scrollToTop( { focusableSelector: 'a, button' } );
 		onPageChange( newPage );
@@ -84,8 +122,6 @@ ProductList.propTypes = {
 	attributes: PropTypes.object.isRequired,
 	// From withScrollToTop.
 	scrollToTop: PropTypes.func,
-	// From withProducts.
-	products: PropTypes.array,
 };
 
-export default withScrollToTop( withProducts( ProductList ) );
+export default withScrollToTop( ProductList );

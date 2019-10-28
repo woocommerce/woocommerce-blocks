@@ -86,9 +86,9 @@ describe( 'getCollectionHeader', () => {
 			expect(
 				getCollectionHeader(
 					state,
+					'invalid',
 					'wc/blocks',
 					'products',
-					'invalid',
 					{
 						someQuery: 2,
 					}
@@ -103,7 +103,7 @@ describe( 'getCollectionHeader', () => {
 	} );
 	it( 'returns expected header when it exists', () => {
 		expect(
-			getCollectionHeader( state, 'wc/blocks', 'products', 'total', {
+			getCollectionHeader( state, 'total', 'wc/blocks', 'products', {
 				someQuery: 2,
 			} )
 		).toBe( 22 );

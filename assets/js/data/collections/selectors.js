@@ -79,9 +79,9 @@ export const getCollection = (
  * ```
  *
  * @param {string} state        The current collection state.
+ * @param {string} header       The header to retrieve.
  * @param {string} namespace    The namespace for the collection.
  * @param {string} modelName    The model name for the collection.
- * @param {string} header       The header to retrieve.
  * @param {Object} [query=null] The query object on the collection request.
  * @param {Array}  [ids=[]]     Any ids for the collection request (these are
  *                              values that would be added to the route for a
@@ -93,9 +93,9 @@ export const getCollection = (
  */
 export const getCollectionHeader = (
 	state,
+	header,
 	namespace,
 	modelName,
-	header,
 	query = null,
 	ids = DEFAULT_EMPTY_ARRAY
 ) => {
