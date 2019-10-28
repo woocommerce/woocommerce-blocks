@@ -71,11 +71,41 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		$products         = $this->get_products();
 
 		if ( ! $products ) {
-			return '';
+			return $this->maybe_render_preview();
 		}
 
 		$classes = $this->get_container_classes();
 		$output  = implode( '', array_map( array( $this, 'render_product' ), $products ) );
+
+		return sprintf( '<div class="%s"><ul class="wc-block-grid__products">%s</ul></div>', esc_attr( $classes ), $output );
+	}
+
+	/**
+	 * If no products were returned by get_products, and this is a preview, render some sample data.
+	 *
+	 * @return string Rendered block type output.
+	 */
+	protected function maybe_render_preview() {
+		if ( empty( $this->attributes['isPreview'] ) ) {
+			return '';
+		}
+
+		// Use a filter to inject an image for previews.
+		add_filter(
+			'woocommerce_product_get_image',
+			function( $image, $product ) {
+				if ( ! empty( $product->preview_image ) ) {
+					$image = '<img src="' . esc_attr( $product->preview_image ) . '" />';
+				}
+
+				return $image;
+			},
+			10,
+			2
+		);
+
+		$classes = $this->get_container_classes();
+		$output  = implode( '', array_map( array( $this, 'render_product_object' ), $this->get_products_for_preview() ) );
 
 		return sprintf( '<div class="%s"><ul class="wc-block-grid__products">%s</ul></div>', esc_attr( $classes ), $output );
 	}
@@ -256,43 +286,52 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	/**
 	 * Gets product example data.
 	 *
-	 * @param int|string $index Index of the preview product to retrieve (starting at 1).
-	 * @return object Data of the preview product.
+	 * @return object[] Data for the preview products.
 	 */
-	protected function get_preview_product( $index ) {
-		$preview_products = array(
-			(object) array(
+	protected function get_products_for_preview() {
+		$preview_products = [];
+
+		$product = new \WC_Product();
+		$product->set_props(
+			[
 				'name'           => 'Cap',
 				'featured'       => false,
-				'price'          => 18,
 				'regular_price'  => 18,
-				'sale_price'     => 18,
 				'average_rating' => 5,
 				'rating_counts'  => 1,
-				'image'          => plugins_url( 'assets/js/previews/images/cap-2.jpg', dirname( __DIR__ ) ),
-			),
-			(object) array(
+			]
+		);
+		$product->preview_image = plugins_url( 'assets/js/previews/images/cap-2.jpg', dirname( __DIR__ ) );
+		$preview_products[]     = $product;
+
+		$product = new \WC_Product();
+		$product->set_props(
+			[
 				'name'           => 'Beanie',
 				'featured'       => true,
-				'price'          => 22,
 				'regular_price'  => 22,
-				'sale_price'     => 22,
 				'average_rating' => 4,
 				'rating_counts'  => 1,
-				'image'          => plugins_url( 'assets/js/previews/images/beanie-2.jpg', dirname( __DIR__ ) ),
-			),
-			(object) array(
+			]
+		);
+		$product->preview_image = plugins_url( 'assets/js/previews/images/beanie-2.jpg', dirname( __DIR__ ) );
+		$preview_products[]     = $product;
+
+		$product = new \WC_Product();
+		$product->set_props(
+			[
 				'name'           => 'WordPress Pennant',
 				'featured'       => false,
-				'price'          => 10,
 				'regular_price'  => 10,
 				'sale_price'     => 8,
 				'average_rating' => 0,
 				'rating_counts'  => 0,
-				'image'          => plugins_url( 'assets/js/previews/images/pennant-1.jpg', dirname( __DIR__ ) ),
-			),
+			]
 		);
-		return $preview_products[ $index - 1 ];
+		$product->preview_image = plugins_url( 'assets/js/previews/images/pennant-1.jpg', dirname( __DIR__ ) );
+		$preview_products[]     = $product;
+
+		return $preview_products;
 	}
 
 	/**
@@ -301,14 +340,6 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 * @return array List of product IDs
 	 */
 	protected function get_products() {
-		if ( array_key_exists( 'isPreview', $this->attributes ) && $this->attributes['isPreview'] ) {
-			return [
-				'preview-1',
-				'preview-2',
-				'preview-3',
-			];
-		}
-
 		$is_cacheable = (bool) apply_filters( 'woocommerce_blocks_product_grid_is_cacheable', true, $this->query_args );
 
 		if ( $is_cacheable ) {
@@ -377,28 +408,26 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	}
 
 	/**
-	 * Render a single products.
+	 * Render a single product with a given ID.
 	 *
 	 * @param int $id Product ID.
 	 * @return string Rendered product output.
 	 */
 	public function render_product( $id ) {
-		if ( substr( $id, 0, 8 ) === 'preview-' ) {
-			$preview_index   = array_pop( explode( '-', $id ) );
-			$preview_product = $this->get_preview_product( $preview_index );
-			$product         = new \WC_Product();
-			$product->set_id( $preview_index );
-			$product->set_name( $preview_product->name );
-			$product->set_featured( $preview_product->featured );
-			$product->set_price( $preview_product->price );
-			$product->set_regular_price( $preview_product->regular_price );
-			$product->set_sale_price( $preview_product->sale_price );
-			$product->set_rating_counts( $preview_product->rating_counts );
-			$product->set_average_rating( $preview_product->average_rating );
-		} else {
-			$product = wc_get_product( $id );
+		if ( ! $id ) {
+			return '';
 		}
 
+		return $this->render_product_object( wc_get_product( $id ) );
+	}
+
+	/**
+	 * Takes a product object and redners it as HTML.
+	 *
+	 * @param object $product Product object.
+	 * @return string Rendered product output.
+	 */
+	protected function render_product_object( $product ) {
 		if ( ! $product ) {
 			return '';
 		}
@@ -437,14 +466,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 * @return string
 	 */
 	protected function get_image_html( $product ) {
-		if ( array_key_exists( 'isPreview', $this->attributes ) && $this->attributes['isPreview'] ) {
-			$preview_index   = array_pop( explode( '-', $product->get_id() ) );
-			$preview_product = $this->get_preview_product( $preview_index );
-			$image           = '<img src="' . $preview_product->image . '" />';
-		} else {
-			$image = $product->get_image( 'woocommerce_thumbnail' );
-		}
-		return '<div class="wc-block-grid__product-image">' . $image . '</div>';
+		return '<div class="wc-block-grid__product-image">' . $product->get_image( 'woocommerce_thumbnail' ) . '</div>';
 	}
 
 	/**
