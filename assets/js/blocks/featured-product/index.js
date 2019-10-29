@@ -4,14 +4,15 @@
 import { __ } from '@wordpress/i18n';
 import { InnerBlocks } from '@wordpress/editor';
 import { registerBlockType } from '@wordpress/blocks';
+import { DEFAULT_HEIGHT } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
 import './editor.scss';
+import { example } from './example';
 import Block from './block';
-import { DEFAULT_HEIGHT } from '../../constants';
 
 /**
  * Register and run the "Featured Product" block.
@@ -32,6 +33,7 @@ registerBlockType( 'woocommerce/featured-product', {
 		align: [ 'wide', 'full' ],
 		html: false,
 	},
+	example,
 	attributes: {
 		/**
 		 * Alignment of content inside block.
@@ -131,6 +133,14 @@ registerBlockType( 'woocommerce/featured-product', {
 		showPrice: {
 			type: 'boolean',
 			default: true,
+		},
+
+		/**
+		 * Product preview.
+		 */
+		previewProduct: {
+			type: 'object',
+			default: null,
 		},
 	},
 
