@@ -3,129 +3,133 @@
  */
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import apiFetch from '@wordpress/api-fetch';
 import { __, sprintf } from '@wordpress/i18n';
-import { Component } from 'react';
-import { addQueryArgs } from '@wordpress/url';
+import {
+	useMemo,
+	useCallback,
+	useState,
+	useEffect,
+	useRef,
+} from '@wordpress/element';
+import { useDispatch } from '@wordpress/data';
+import { find } from 'lodash';
 
-class ProductButton extends Component {
-	static propTypes = {
-		className: PropTypes.string,
-		product: PropTypes.object.isRequired,
-	};
+/**
+ * Internal dependencies
+ */
+import { useCollection } from '@woocommerce/base-hooks';
+import { COLLECTIONS_STORE_KEY as STORE_KEY } from '@woocommerce/block-data';
 
-	state = {
-		addedToCart: false,
-		addingToCart: false,
-		cartQuantity: null,
-	};
-
-	onAddToCart = () => {
-		const { product } = this.props;
-
-		this.setState( { addingToCart: true } );
-
-		return apiFetch( {
-			method: 'POST',
-			path: '/wc/blocks/cart/add',
-			data: {
-				product_id: product.id,
-				quantity: 1,
-			},
-			cache: 'no-store',
-		} )
-			.then( ( response ) => {
-				const newQuantity = response.quantity;
-
-				this.setState( {
+const ProductButton = ( { product, className } ) => {
+	const {
+		id,
+		permalink,
+		addToCart: productCartDetails,
+		hasOptions,
+		isPurchasable,
+		isInStock,
+	} = product;
+	const { results: cartResults, isLoading: cartIsLoading } = useCollection( {
+		namespace: '/wc/store',
+		resourceName: 'cart/items',
+	} );
+	const currentCartResults = useRef( null );
+	const { __experimentalPersistItemToCollection } = useDispatch( STORE_KEY );
+	const { cartQuantity, addedToCart } = useMemo( () => {
+		const productItem = find( cartResults, { id } );
+		return productItem
+			? {
+					cartQuantity: productItem.quantity,
 					addedToCart: true,
-					addingToCart: false,
-					cartQuantity: newQuantity,
-				} );
-			} )
-			.catch( ( response ) => {
-				if ( response.code ) {
-					return ( document.location.href = addQueryArgs(
-						product.permalink,
-						{ wc_error: response.message }
-					) );
-				}
-
-				document.location.href = product.permalink;
-			} );
-	};
-
-	getButtonText = () => {
-		const { product } = this.props;
-		const { cartQuantity } = this.state;
-
-		if ( Number.isFinite( cartQuantity ) ) {
+			  }
+			: {
+					cartQuantity: 0,
+					addedToCart: false,
+			  };
+	}, [ cartResults, id ] );
+	const [ addingToCart, setAddingToCart ] = useState( false );
+	const addToCart = useCallback( () => {
+		setAddingToCart( true );
+		// exclude this item from the cartResults for adding to the new
+		// collection (so it's updated correctly!)
+		const collection = cartResults.filter( ( cartItem ) => {
+			return cartItem.id !== id;
+		} );
+		__experimentalPersistItemToCollection(
+			'/wc/store',
+			'cart/items',
+			collection,
+			{ id, quantity: 1 }
+		);
+	}, [ id, cartResults ] );
+	useEffect( () => {
+		if ( currentCartResults.current !== cartResults ) {
+			if ( addingToCart ) {
+				setAddingToCart( false );
+			}
+			currentCartResults.current = cartResults;
+		}
+	}, [ cartResults, addingToCart ] );
+	const getButtonText = useCallback( () => {
+		if ( Number.isFinite( cartQuantity ) && cartQuantity !== 0 ) {
 			return sprintf(
 				__( '%d in cart', 'woo-gutenberg-products-block' ),
 				cartQuantity
 			);
 		}
+		return productCartDetails.text;
+	}, [ cartQuantity, productCartDetails ] );
+	const wrapperClasses = classnames(
+		className,
+		'wc-block-grid__product-add-to-cart',
+		'wp-block-button'
+	);
 
-		return product.add_to_cart.text;
-	};
-
-	render = () => {
-		const { product, className } = this.props;
-		const { addingToCart, addedToCart } = this.state;
-
-		const wrapperClasses = classnames(
-			className,
-			'wc-block-grid__product-add-to-cart',
-			'wp-block-button'
-		);
-
-		const buttonClasses = classnames(
-			'wp-block-button__link',
-			'add_to_cart_button',
-			{
-				loading: addingToCart,
-				added: addedToCart,
-			}
-		);
-
-		if ( Object.keys( product ).length === 0 ) {
-			return (
-				<div className={ wrapperClasses }>
-					<button className={ buttonClasses } disabled={ true } />
-				</div>
-			);
+	const buttonClasses = classnames(
+		'wp-block-button__link',
+		'add_to_cart_button',
+		{
+			loading: addingToCart,
+			added: addedToCart,
 		}
+	);
 
-		const allowAddToCart =
-			! product.has_options &&
-			product.is_purchasable &&
-			product.is_in_stock;
-		const buttonText = this.getButtonText();
-
+	if ( Object.keys( product ).length === 0 || cartIsLoading ) {
 		return (
 			<div className={ wrapperClasses }>
-				{ allowAddToCart ? (
-					<button
-						onClick={ this.onAddToCart }
-						aria-label={ product.add_to_cart.description }
-						className={ buttonClasses }
-						disabled={ addingToCart }
-					>
-						{ buttonText }
-					</button>
-				) : (
-					<a
-						href={ product.permalink }
-						aria-label={ product.add_to_cart.description }
-						className={ buttonClasses }
-						rel="nofollow"
-					>
-						{ buttonText }
-					</a>
-				) }
+				<button className={ buttonClasses } disabled={ true } />
 			</div>
 		);
-	};
-}
+	}
+	const allowAddToCart = ! hasOptions && isPurchasable && isInStock;
+	return (
+		<div className={ wrapperClasses }>
+			{ allowAddToCart ? (
+				<button
+					onClick={ addToCart }
+					aria-label={ productCartDetails.description }
+					className={ buttonClasses }
+					disabled={ addingToCart }
+				>
+					{ getButtonText() }
+				</button>
+			) : (
+				<a
+					href={ permalink }
+					aria-label={ productCartDetails.description }
+					className={ buttonClasses }
+					rel="nofollow"
+				>
+					{ getButtonText() }
+				</a>
+			) }
+		</div>
+	);
+};
+
+ProductButton.propTypes = {
+	className: PropTypes.string,
+	product: PropTypes.object.isRequired,
+};
 
 export default ProductButton;
