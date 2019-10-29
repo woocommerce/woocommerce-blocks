@@ -14,7 +14,7 @@ export const sharedAttributeBlockTypes = [
 export const sharedExample = {
 	attributes: {
 		columns: 3,
-		rows: 3,
+		rows: 1,
 		alignButtons: false,
 		categories: [],
 		catOperator: 'any',
