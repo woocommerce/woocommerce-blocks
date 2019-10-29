@@ -89,7 +89,8 @@ export default function getShortcode( props, name ) {
 
 	// Build the shortcode string out of the set shortcode attributes.
 	let shortcode = '[products';
-	for ( const [ key, value ] of shortcodeAtts ) { /* eslint-disable-line */
+	for ( const [ key, value ] of shortcodeAtts ) {
+		/* eslint-disable-line */
 		shortcode += ' ' + key + '="' + value + '"';
 	}
 	shortcode += ']';
