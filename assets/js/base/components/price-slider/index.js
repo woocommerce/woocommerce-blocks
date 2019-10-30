@@ -5,6 +5,7 @@ import { sprintf, __ } from '@wordpress/i18n';
 import { Fragment, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { useDebounce } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -31,17 +32,27 @@ const PriceSlider = ( {
 	const [ inputMax, setInputMax ] = useState(
 		formatCurrencyForInput( max, priceFormat, currencySymbol )
 	);
+	const debouncedChangeCurrentMin = useDebounce( currentMin, 500 );
+	const debouncedChangeCurrentMax = useDebounce( currentMax, 500 );
 
 	useEffect( () => {
-		updateRanges( min, max );
+		if ( min > currentMin || max < currentMax ) {
+			updateRanges( min, max );
+		}
 	}, [ min, max ] );
 
 	useEffect( () => {
+		if ( ! showFilterButton && ! isLoading ) {
+			triggerChangeCallback();
+		}
+	}, [ debouncedChangeCurrentMin, debouncedChangeCurrentMax ] );
+
+	const triggerChangeCallback = () => {
 		onChange( {
 			min: currentMin,
 			max: currentMax,
 		} );
-	}, [ currentMin, currentMax ] );
+	};
 
 	/**
 	 * Handles styles for the shaded area of the range slider.
@@ -175,6 +186,7 @@ const PriceSlider = ( {
 				type="submit"
 				className="wc-block-price-filter__button wc-block-form-button"
 				disabled={ isLoading }
+				onClick={ triggerChangeCallback }
 			>
 				{ __( 'Go', 'woo-gutenberg-products-block' ) }
 			</button>
@@ -238,6 +250,13 @@ const PriceSlider = ( {
 	 * Render range input sliders.
 	 */
 	const renderRangeInputs = () => {
+		const rangeInputProps = {
+			onChange: onDrag,
+			step,
+			min,
+			max,
+			disabled: isLoading,
+		};
 		return (
 			<Fragment>
 				<div
@@ -253,11 +272,7 @@ const PriceSlider = ( {
 					) }
 					ref={ minRange }
 					value={ currentMin }
-					onChange={ onDrag }
-					step={ step }
-					min={ min }
-					max={ max }
-					disabled={ isLoading }
+					{ ...rangeInputProps }
 				/>
 				<input
 					type="range"
@@ -268,11 +283,7 @@ const PriceSlider = ( {
 					) }
 					ref={ maxRange }
 					value={ currentMax }
-					onChange={ onDrag }
-					step={ step }
-					min={ min }
-					max={ max }
-					disabled={ isLoading }
+					{ ...rangeInputProps }
 				/>
 			</Fragment>
 		);

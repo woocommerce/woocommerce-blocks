@@ -1,7 +1,11 @@
 /**
  * External dependencies
  */
-import { useCollection } from '@woocommerce/base-hooks';
+import {
+	useCollection,
+	useQueryStateByKey,
+	useQueryStateContext,
+} from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -15,16 +19,33 @@ import { CURRENCY } from '@woocommerce/settings';
 const PriceFilterBlock = ( { attributes } ) => {
 	const { showInputFields, showFilterButton } = attributes;
 
+	const [ queryState ] = useQueryStateContext( 'product-grid' );
 	const { results, isLoading } = useCollection( {
 		namespace: '/wc/store',
 		resourceName: 'products/collection-data',
 		query: {
+			...queryState,
+			min_price: undefined,
+			max_price: undefined,
+			orderby: undefined,
+			order: undefined,
+			per_page: undefined,
+			page: undefined,
 			calculate_price_range: true,
 		},
 	} );
 
 	const minConstraint = isLoading ? 0 : parseInt( results.min_price, 10 );
 	const maxConstraint = isLoading ? 100 : parseInt( results.max_price, 10 );
+
+	const [ minPrice, setMinPrice ] = useQueryStateByKey(
+		'product-grid',
+		'min_price'
+	);
+	const [ maxPrice, setMaxPrice ] = useQueryStateByKey(
+		'product-grid',
+		'max_price'
+	);
 
 	return (
 		<div className="wc-block-price-slider">
@@ -36,7 +57,14 @@ const PriceFilterBlock = ( { attributes } ) => {
 				priceFormat={ CURRENCY.price_format }
 				showInputFields={ showInputFields }
 				showFilterButton={ showFilterButton }
-				onChange={ () => {} }
+				onChange={ ( prices ) => {
+					if ( minPrice !== prices.min ) {
+						setMinPrice( prices.min );
+					}
+					if ( maxPrice !== prices.max ) {
+						setMaxPrice( prices.max );
+					}
+				} }
 				isLoading={ isLoading }
 			/>
 		</div>
