@@ -18,8 +18,6 @@ const PriceFilterBlock = ( { attributes } ) => {
 	return (
 		<div className={ classes }>
 			<PriceSlider
-				min={ 0 }
-				max={ 200 }
 				step={ 10 }
 				currencySymbol={ CURRENCY.symbol }
 				priceFormat={ CURRENCY.price_format }

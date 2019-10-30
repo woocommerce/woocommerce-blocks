@@ -5,54 +5,65 @@ import { sprintf, __ } from '@wordpress/i18n';
 import { Fragment, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { useCollection } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
-import { constrainRangeSliderValues } from './utils';
-
-const formatCurrencyForInput = ( value, priceFormat, currencySymbol ) => {
-	if ( '' === value ) {
-		return '';
-	}
-	const formattedNumber = parseInt( value, 10 );
-	const formattedValue = sprintf(
-		priceFormat,
-		currencySymbol,
-		formattedNumber
-	);
-
-	// This uses a textarea to magically decode HTML currency symbols.
-	const txt = document.createElement( 'textarea' );
-	txt.innerHTML = formattedValue;
-	return txt.value;
-};
+import { constrainRangeSliderValues, formatCurrencyForInput } from './utils';
 
 const PriceSlider = ( {
-	onChange,
 	min,
 	max,
+	onChange,
 	step,
 	currencySymbol,
 	priceFormat,
 	showInputFields,
 	showFilterButton,
 } ) => {
-	const [ currentMin, setCurrentMin ] = useState( parseInt( min, 10 ) );
-	const [ currentMax, setCurrentMax ] = useState( parseInt( max, 10 ) );
+	const { results, isLoading } = useCollection( {
+		namespace: '/wc/store',
+		resourceName: 'products/collection-data',
+		query: {
+			calculate_price_range: true,
+		},
+	} );
+
+	const minConstraint = isLoading
+		? parseInt( min, 10 )
+		: parseInt( results.min_price, 10 );
+	const maxConstraint = isLoading
+		? parseInt( max, 10 )
+		: parseInt( results.max_price, 10 );
+
+	const [ currentMin, setCurrentMin ] = useState( minConstraint );
+	const [ currentMax, setCurrentMax ] = useState( maxConstraint );
+
 	const [ inputMin, setInputMin ] = useState(
-		formatCurrencyForInput( min, priceFormat, currencySymbol )
+		formatCurrencyForInput( minConstraint, priceFormat, currencySymbol )
 	);
 	const [ inputMax, setInputMax ] = useState(
-		formatCurrencyForInput( max, priceFormat, currencySymbol )
+		formatCurrencyForInput( maxConstraint, priceFormat, currencySymbol )
 	);
 
+	/**
+	 * Handles styles for the shaded area of the range slider.
+	 */
 	const getProgressStyle = () => {
 		const low =
-			Math.round( 100 * ( ( currentMin - min ) / ( max - min ) ) ) - 0.5;
+			Math.round(
+				100 *
+					( ( currentMin - minConstraint ) /
+						( maxConstraint - minConstraint ) )
+			) - 0.5;
 		const high =
-			Math.round( 100 * ( ( currentMax - min ) / ( max - min ) ) ) + 0.5;
+			Math.round(
+				100 *
+					( ( currentMax - minConstraint ) /
+						( maxConstraint - minConstraint ) )
+			) + 0.5;
 
 		return {
 			'--low': low + '%',
@@ -74,8 +85,8 @@ const PriceSlider = ( {
 		const maxWidth = maxRange.current.offsetWidth;
 		const maxValue = maxRange.current.value;
 
-		const minX = minWidth * ( minValue / max );
-		const maxX = maxWidth * ( maxValue / max );
+		const minX = minWidth * ( minValue / maxConstraint );
+		const maxX = maxWidth * ( maxValue / maxConstraint );
 
 		const minXDiff = Math.abs( x - minX );
 		const maxXDiff = Math.abs( x - maxX );
@@ -93,26 +104,29 @@ const PriceSlider = ( {
 		}
 	};
 
+	const updateRanges = ( setMin, setMax ) => {
+		setCurrentMin( parseInt( setMin, 10 ) );
+		setCurrentMax( parseInt( setMax, 10 ) );
+		setInputMin(
+			formatCurrencyForInput( setMin, priceFormat, currencySymbol )
+		);
+		setInputMax(
+			formatCurrencyForInput( setMax, priceFormat, currencySymbol )
+		);
+	};
+
 	const onDrag = ( event ) => {
 		const isMin = event.target.classList.contains(
 			'wc-block-price-filter__range-input--min'
 		);
 		const values = constrainRangeSliderValues(
 			[ minRange.current.value, maxRange.current.value ],
-			min,
-			max,
+			minConstraint,
+			maxConstraint,
 			step,
 			isMin
 		);
-
-		setCurrentMin( parseInt( values[ 0 ], 10 ) );
-		setCurrentMax( parseInt( values[ 1 ], 10 ) );
-		setInputMin(
-			formatCurrencyForInput( values[ 0 ], priceFormat, currencySymbol )
-		);
-		setInputMax(
-			formatCurrencyForInput( values[ 1 ], priceFormat, currencySymbol )
-		);
+		updateRanges( values[ 0 ], values[ 1 ] );
 	};
 
 	const onInputBlur = ( event ) => {
@@ -124,20 +138,12 @@ const PriceSlider = ( {
 				minInput.current.value.replace( /[^0-9.-]+/g, '' ),
 				maxInput.current.value.replace( /[^0-9.-]+/g, '' ),
 			],
-			min,
-			max,
+			minConstraint,
+			maxConstraint,
 			step,
 			isMin
 		);
-
-		setCurrentMin( parseInt( values[ 0 ], 10 ) );
-		setCurrentMax( parseInt( values[ 1 ], 10 ) );
-		setInputMin(
-			formatCurrencyForInput( values[ 0 ], priceFormat, currencySymbol )
-		);
-		setInputMax(
-			formatCurrencyForInput( values[ 1 ], priceFormat, currencySymbol )
-		);
+		updateRanges( values[ 0 ], values[ 1 ] );
 	};
 
 	const onInputChange = ( event ) => {
@@ -154,6 +160,9 @@ const PriceSlider = ( {
 	};
 
 	useEffect( () => {
+		/**
+		 * Passes values to a callback provided in props.
+		 */
 		onChange( {
 			min: currentMin,
 			max: currentMax,
@@ -163,8 +172,7 @@ const PriceSlider = ( {
 	const minInput = useRef( inputMin );
 	const maxInput = useRef( inputMax );
 	const minRange = useRef( currentMin ? currentMin : 0 );
-	const maxRange = useRef( currentMax ? currentMax : max );
-
+	const maxRange = useRef( currentMax ? currentMax : maxConstraint );
 	const classes = classnames(
 		'wc-block-price-filter',
 		showInputFields && 'wc-block-price-filter--has-input-fields',
@@ -192,8 +200,8 @@ const PriceSlider = ( {
 					onChange={ onDrag }
 					value={ currentMin ? currentMin : 0 }
 					step={ step }
-					min={ min }
-					max={ max }
+					min={ minConstraint }
+					max={ maxConstraint }
 				/>
 				<input
 					type="range"
@@ -204,10 +212,10 @@ const PriceSlider = ( {
 					) }
 					ref={ maxRange }
 					onChange={ onDrag }
-					value={ currentMax ? currentMax : max }
+					value={ currentMax ? currentMax : maxConstraint }
 					step={ step }
-					min={ min }
-					max={ max }
+					min={ minConstraint }
+					max={ maxConstraint }
 				/>
 			</div>
 			<div className="wc-block-price-filter__controls">
@@ -277,7 +285,7 @@ PriceSlider.propTypes = {
 	/**
 	 * Maximum allowed price.
 	 */
-	max: PropTypes.number.isRequired,
+	max: PropTypes.number,
 	/**
 	 * Step for slider inputs.
 	 */
@@ -302,6 +310,7 @@ PriceSlider.propTypes = {
 
 PriceSlider.defaultProps = {
 	min: 0,
+	max: 0,
 	step: 1,
 	currencySymbol: '$',
 	priceFormat: '%1$s%2$s',
