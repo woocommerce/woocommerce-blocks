@@ -18,7 +18,70 @@ import { find } from 'lodash';
  * Internal dependencies
  */
 import { useCollection } from '@woocommerce/base-hooks';
-import { COLLECTIONS_STORE_KEY as STORE_KEY } from '@woocommerce/block-data';
+import { COLLECTIONS_STORE_KEY as storeKey } from '@woocommerce/block-data';
+
+/**
+ * A custom hook for exposing cart related data for a given product id and an
+ * action for adding a single quantity of the product _to_ the cart.
+ *
+ * Currently this is internal only to the ProductButton component until we have
+ * a clearer idea of the pattern that should emerge for a cart hook.
+ *
+ * @param {number} productId  The product id for the product connection to the
+ *                            cart.
+ *
+ * @return {Object} Returns an object with the following properties:
+ *    @type {number}   cartQuantity  The quantity of the product currently in
+ *                                   the cart.
+ *    @type {bool}     addingToCart  Whether the product is currently being
+ *                                   added to the cart (true).
+ *    @type {bool}     cartIsLoading Whether the cart is being loaded.
+ *    @type {function} addToCart     An action dispatcher for adding a single
+ *                                   quantity of the product to the cart.
+ *                                   Receives no arguments, it operates on the
+ *                                   current product.
+ */
+const useAddToCart = ( productId ) => {
+	const { results: cartResults, isLoading: cartIsLoading } = useCollection( {
+		namespace: '/wc/store',
+		resourceName: 'cart/items',
+	} );
+	const currentCartResults = useRef( null );
+	const { __experimentalPersistItemToCollection } = useDispatch( storeKey );
+	const cartQuantity = useMemo( () => {
+		const productItem = find( cartResults, { id: productId } );
+		return productItem ? productItem.quantity : 0;
+	}, [ cartResults, productId ] );
+	const [ addingToCart, setAddingToCart ] = useState( false );
+	const addToCart = useCallback( () => {
+		setAddingToCart( true );
+		// exclude this item from the cartResults for adding to the new
+		// collection (so it's updated correctly!)
+		const collection = cartResults.filter( ( cartItem ) => {
+			return cartItem.id !== productId;
+		} );
+		__experimentalPersistItemToCollection(
+			'/wc/store',
+			'cart/items',
+			collection,
+			{ id: productId, quantity: 1 }
+		);
+	}, [ productId, cartResults ] );
+	useEffect( () => {
+		if ( currentCartResults.current !== cartResults ) {
+			if ( addingToCart ) {
+				setAddingToCart( false );
+			}
+			currentCartResults.current = cartResults;
+		}
+	}, [ cartResults, addingToCart ] );
+	return {
+		cartQuantity,
+		addingToCart,
+		cartIsLoading,
+		addToCart,
+	};
+};
 
 const ProductButton = ( { product, className } ) => {
 	const {
@@ -29,56 +92,22 @@ const ProductButton = ( { product, className } ) => {
 		isPurchasable,
 		isInStock,
 	} = product;
-	const { results: cartResults, isLoading: cartIsLoading } = useCollection( {
-		namespace: '/wc/store',
-		resourceName: 'cart/items',
-	} );
-	const currentCartResults = useRef( null );
-	const { __experimentalPersistItemToCollection } = useDispatch( STORE_KEY );
-	const { cartQuantity, addedToCart } = useMemo( () => {
-		const productItem = find( cartResults, { id } );
-		return productItem
-			? {
-					cartQuantity: productItem.quantity,
-					addedToCart: true,
-			  }
-			: {
-					cartQuantity: 0,
-					addedToCart: false,
-			  };
-	}, [ cartResults, id ] );
-	const [ addingToCart, setAddingToCart ] = useState( false );
-	const addToCart = useCallback( () => {
-		setAddingToCart( true );
-		// exclude this item from the cartResults for adding to the new
-		// collection (so it's updated correctly!)
-		const collection = cartResults.filter( ( cartItem ) => {
-			return cartItem.id !== id;
-		} );
-		__experimentalPersistItemToCollection(
-			'/wc/store',
-			'cart/items',
-			collection,
-			{ id, quantity: 1 }
-		);
-	}, [ id, cartResults ] );
-	useEffect( () => {
-		if ( currentCartResults.current !== cartResults ) {
-			if ( addingToCart ) {
-				setAddingToCart( false );
-			}
-			currentCartResults.current = cartResults;
-		}
-	}, [ cartResults, addingToCart ] );
-	const getButtonText = useCallback( () => {
-		if ( Number.isFinite( cartQuantity ) && cartQuantity !== 0 ) {
+	const {
+		cartQuantity,
+		addingToCart,
+		cartIsLoading,
+		addToCart,
+	} = useAddToCart( id );
+	const addedToCart = cartQuantity > 0;
+	const getButtonText = () => {
+		if ( Number.isFinite( cartQuantity ) && addedToCart ) {
 			return sprintf(
 				__( '%d in cart', 'woo-gutenberg-products-block' ),
 				cartQuantity
 			);
 		}
 		return productCartDetails.text;
-	}, [ cartQuantity, productCartDetails ] );
+	};
 	const wrapperClasses = classnames(
 		className,
 		'wc-block-grid__product-add-to-cart',
