@@ -18,7 +18,6 @@ import { CURRENCY } from '@woocommerce/settings';
  */
 const PriceFilterBlock = ( { attributes } ) => {
 	const { showInputFields, showFilterButton } = attributes;
-
 	const [ queryState ] = useQueryStateContext( 'product-grid' );
 	const { results, isLoading } = useCollection( {
 		namespace: '/wc/store',
@@ -35,8 +34,12 @@ const PriceFilterBlock = ( { attributes } ) => {
 		},
 	} );
 
-	const minConstraint = isLoading ? 0 : parseInt( results.min_price, 10 );
-	const maxConstraint = isLoading ? 100 : parseInt( results.max_price, 10 );
+	const minConstraint = isLoading
+		? undefined
+		: parseInt( results.min_price, 10 );
+	const maxConstraint = isLoading
+		? undefined
+		: parseInt( results.max_price, 10 );
 
 	const [ minPrice, setMinPrice ] = useQueryStateByKey(
 		'product-grid',
@@ -47,24 +50,33 @@ const PriceFilterBlock = ( { attributes } ) => {
 		'max_price'
 	);
 
+	const onChange = ( prices ) => {
+		if ( prices.min === minConstraint ) {
+			setMinPrice( undefined );
+		} else if ( prices.min !== minPrice ) {
+			setMinPrice( prices.min );
+		}
+
+		if ( prices.max === maxConstraint ) {
+			setMaxPrice( undefined );
+		} else if ( prices.max !== maxPrice ) {
+			setMaxPrice( prices.max );
+		}
+	};
+
 	return (
 		<div className="wc-block-price-slider">
 			<PriceSlider
 				min={ minConstraint }
 				max={ maxConstraint }
+				initialMin={ undefined }
+				initialMax={ undefined }
 				step={ 10 }
 				currencySymbol={ CURRENCY.symbol }
 				priceFormat={ CURRENCY.price_format }
 				showInputFields={ showInputFields }
 				showFilterButton={ showFilterButton }
-				onChange={ ( prices ) => {
-					if ( minPrice !== prices.min ) {
-						setMinPrice( prices.min );
-					}
-					if ( maxPrice !== prices.max ) {
-						setMaxPrice( prices.max );
-					}
-				} }
+				onChange={ onChange }
 				isLoading={ isLoading }
 			/>
 		</div>

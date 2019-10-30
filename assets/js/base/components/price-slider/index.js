@@ -14,6 +14,8 @@ import './style.scss';
 import { constrainRangeSliderValues, formatCurrencyForInput } from './utils';
 
 const PriceSlider = ( {
+	initialMin,
+	initialMax,
 	min,
 	max,
 	onChange,
@@ -24,34 +26,65 @@ const PriceSlider = ( {
 	showFilterButton,
 	isLoading,
 } ) => {
-	const [ currentMin, setCurrentMin ] = useState( min );
-	const [ currentMax, setCurrentMax ] = useState( max );
-	const [ inputMin, setInputMin ] = useState(
-		formatCurrencyForInput( min, priceFormat, currencySymbol )
-	);
-	const [ inputMax, setInputMax ] = useState(
-		formatCurrencyForInput( max, priceFormat, currencySymbol )
-	);
-	const debouncedChangeCurrentMin = useDebounce( currentMin, 500 );
-	const debouncedChangeCurrentMax = useDebounce( currentMax, 500 );
+	const [ value, setValue ] = useState( {
+		min: initialMin,
+		max: initialMax,
+	} );
+	const [ formattedValue, setFormattedValue ] = useState( {
+		min: formatCurrencyForInput( value.min, priceFormat, currencySymbol ),
+		max: formatCurrencyForInput( value.max, priceFormat, currencySymbol ),
+	} );
+	const debouncedChangeValue = useDebounce( value, 500 );
 
 	useEffect( () => {
-		if ( min > currentMin || max < currentMax ) {
-			updateRanges( min, max );
+		if (
+			value.min === undefined ||
+			value.max === undefined ||
+			min > value.min ||
+			max < value.max
+		) {
+			setValue( {
+				min,
+				max,
+			} );
 		}
+		setFormattedValue( {
+			min: formatCurrencyForInput(
+				value.min,
+				priceFormat,
+				currencySymbol
+			),
+			max: formatCurrencyForInput(
+				value.max,
+				priceFormat,
+				currencySymbol
+			),
+		} );
 	}, [ min, max ] );
+
+	useEffect( () => {
+		setFormattedValue( {
+			min: formatCurrencyForInput(
+				value.min,
+				priceFormat,
+				currencySymbol
+			),
+			max: formatCurrencyForInput(
+				value.max,
+				priceFormat,
+				currencySymbol
+			),
+		} );
+	}, [ value ] );
 
 	useEffect( () => {
 		if ( ! showFilterButton && ! isLoading ) {
 			triggerChangeCallback();
 		}
-	}, [ debouncedChangeCurrentMin, debouncedChangeCurrentMax ] );
+	}, [ debouncedChangeValue ] );
 
 	const triggerChangeCallback = () => {
-		onChange( {
-			min: currentMin,
-			max: currentMax,
-		} );
+		onChange( value );
 	};
 
 	/**
@@ -59,9 +92,9 @@ const PriceSlider = ( {
 	 */
 	const getProgressStyle = () => {
 		const low =
-			Math.round( 100 * ( ( currentMin - min ) / ( max - min ) ) ) - 0.5;
+			Math.round( 100 * ( ( value.min - min ) / ( max - min ) ) ) - 0.5;
 		const high =
-			Math.round( 100 * ( ( currentMax - min ) / ( max - min ) ) ) + 0.5;
+			Math.round( 100 * ( ( value.max - min ) / ( max - min ) ) ) + 0.5;
 
 		return {
 			'--low': low + '%',
@@ -106,22 +139,6 @@ const PriceSlider = ( {
 	};
 
 	/**
-	 * Updates both the slider min/max values, and the input boxes.
-	 * @param {number} setMin Minimum
-	 * @param {number} setMax Maximum
-	 */
-	const updateRanges = ( setMin, setMax ) => {
-		setCurrentMin( parseInt( setMin, 10 ) );
-		setCurrentMax( parseInt( setMax, 10 ) );
-		setInputMin(
-			formatCurrencyForInput( setMin, priceFormat, currencySymbol )
-		);
-		setInputMax(
-			formatCurrencyForInput( setMax, priceFormat, currencySymbol )
-		);
-	};
-
-	/**
 	 * Called when the slider is dragged.
 	 * @param {obj} event Event object.
 	 */
@@ -136,7 +153,10 @@ const PriceSlider = ( {
 			step,
 			isMin
 		);
-		updateRanges( values[ 0 ], values[ 1 ] );
+		setValue( {
+			min: parseInt( values[ 0 ], 10 ),
+			max: parseInt( values[ 1 ], 10 ),
+		} );
 	};
 
 	/**
@@ -157,7 +177,10 @@ const PriceSlider = ( {
 			step,
 			isMin
 		);
-		updateRanges( values[ 0 ], values[ 1 ] );
+		setValue( {
+			min: parseInt( values[ 0 ], 10 ),
+			max: parseInt( values[ 1 ], 10 ),
+		} );
 	};
 
 	/**
@@ -169,12 +192,16 @@ const PriceSlider = ( {
 		const isMin = event.target.classList.contains(
 			'wc-block-price-filter__amount--min'
 		);
+		const key = isMin ? min : max;
 
-		if ( isMin ) {
-			setInputMin( newValue );
-		} else {
-			setInputMax( newValue );
-		}
+		setFormattedValue( {
+			...formattedValue,
+			[ key ]: formatCurrencyForInput(
+				newValue,
+				priceFormat,
+				currencySymbol
+			),
+		} );
 	};
 
 	/**
@@ -197,12 +224,15 @@ const PriceSlider = ( {
 	 * Renders text showing current prices.
 	 */
 	const renderText = () => {
+		if ( isLoading ) {
+			return;
+		}
 		return (
 			<div className="wc-block-price-filter__range-text">
 				{ sprintf(
 					__( 'Price: %s — %s', 'woo-gutenberg-products-block' ),
-					inputMin,
-					inputMax
+					formattedValue.min,
+					formattedValue.max
 				) }
 			</div>
 		);
@@ -223,7 +253,7 @@ const PriceSlider = ( {
 					) }
 					size="5"
 					ref={ minInput }
-					value={ inputMin }
+					value={ formattedValue.min }
 					onChange={ onInputChange }
 					onBlur={ onInputBlur }
 					disabled={ isLoading }
@@ -237,7 +267,7 @@ const PriceSlider = ( {
 					) }
 					size="5"
 					ref={ maxInput }
-					value={ inputMax }
+					value={ formattedValue.max }
 					onChange={ onInputChange }
 					onBlur={ onInputBlur }
 					disabled={ isLoading }
@@ -271,7 +301,7 @@ const PriceSlider = ( {
 						'woo-gutenberg-products-block'
 					) }
 					ref={ minRange }
-					value={ currentMin }
+					value={ value.min || 0 }
 					{ ...rangeInputProps }
 				/>
 				<input
@@ -282,7 +312,7 @@ const PriceSlider = ( {
 						'woo-gutenberg-products-block'
 					) }
 					ref={ maxRange }
-					value={ currentMax }
+					value={ value.max || 0 }
 					{ ...rangeInputProps }
 				/>
 			</Fragment>
@@ -322,6 +352,14 @@ PriceSlider.propTypes = {
 	 */
 	onChange: PropTypes.func.isRequired,
 	/**
+	 * Initial min value.
+	 */
+	initialMin: PropTypes.number,
+	/**
+	 * Initial max value.
+	 */
+	initialMax: PropTypes.number,
+	/**
 	 * Minimum allowed price.
 	 */
 	min: PropTypes.number,
@@ -356,8 +394,6 @@ PriceSlider.propTypes = {
 };
 
 PriceSlider.defaultProps = {
-	min: 0,
-	max: 100,
 	step: 1,
 	currencySymbol: '$',
 	priceFormat: '%1$s%2$s',
