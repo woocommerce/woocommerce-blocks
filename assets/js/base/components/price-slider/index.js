@@ -5,7 +5,6 @@ import { sprintf, __ } from '@wordpress/i18n';
 import { Fragment, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { useCollection } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -23,47 +22,34 @@ const PriceSlider = ( {
 	showInputFields,
 	showFilterButton,
 } ) => {
-	const { results, isLoading } = useCollection( {
-		namespace: '/wc/store',
-		resourceName: 'products/collection-data',
-		query: {
-			calculate_price_range: true,
-		},
-	} );
-
-	const minConstraint = isLoading
-		? parseInt( min, 10 )
-		: parseInt( results.min_price, 10 );
-	const maxConstraint = isLoading
-		? parseInt( max, 10 )
-		: parseInt( results.max_price, 10 );
-
-	const [ currentMin, setCurrentMin ] = useState( minConstraint );
-	const [ currentMax, setCurrentMax ] = useState( maxConstraint );
-
+	const [ currentMin, setCurrentMin ] = useState( min );
+	const [ currentMax, setCurrentMax ] = useState( max );
 	const [ inputMin, setInputMin ] = useState(
-		formatCurrencyForInput( minConstraint, priceFormat, currencySymbol )
+		formatCurrencyForInput( min, priceFormat, currencySymbol )
 	);
 	const [ inputMax, setInputMax ] = useState(
-		formatCurrencyForInput( maxConstraint, priceFormat, currencySymbol )
+		formatCurrencyForInput( max, priceFormat, currencySymbol )
 	);
+
+	useEffect( () => {
+		updateRanges( min, max );
+	}, [ min, max ] );
+
+	useEffect( () => {
+		onChange( {
+			min: currentMin,
+			max: currentMax,
+		} );
+	}, [ currentMin, currentMax ] );
 
 	/**
 	 * Handles styles for the shaded area of the range slider.
 	 */
 	const getProgressStyle = () => {
 		const low =
-			Math.round(
-				100 *
-					( ( currentMin - minConstraint ) /
-						( maxConstraint - minConstraint ) )
-			) - 0.5;
+			Math.round( 100 * ( ( currentMin - min ) / ( max - min ) ) ) - 0.5;
 		const high =
-			Math.round(
-				100 *
-					( ( currentMax - minConstraint ) /
-						( maxConstraint - minConstraint ) )
-			) + 0.5;
+			Math.round( 100 * ( ( currentMax - min ) / ( max - min ) ) ) + 0.5;
 
 		return {
 			'--low': low + '%',
@@ -85,8 +71,8 @@ const PriceSlider = ( {
 		const maxWidth = maxRange.current.offsetWidth;
 		const maxValue = maxRange.current.value;
 
-		const minX = minWidth * ( minValue / maxConstraint );
-		const maxX = maxWidth * ( maxValue / maxConstraint );
+		const minX = minWidth * ( minValue / max );
+		const maxX = maxWidth * ( maxValue / max );
 
 		const minXDiff = Math.abs( x - minX );
 		const maxXDiff = Math.abs( x - maxX );
@@ -104,6 +90,11 @@ const PriceSlider = ( {
 		}
 	};
 
+	/**
+	 * Updates both the slider min/max values, and the input boxes.
+	 * @param {number} setMin Minimum
+	 * @param {number} setMax Maximum
+	 */
 	const updateRanges = ( setMin, setMax ) => {
 		setCurrentMin( parseInt( setMin, 10 ) );
 		setCurrentMax( parseInt( setMax, 10 ) );
@@ -115,20 +106,28 @@ const PriceSlider = ( {
 		);
 	};
 
+	/**
+	 * Called when the slider is dragged.
+	 * @param {obj} event Event object.
+	 */
 	const onDrag = ( event ) => {
 		const isMin = event.target.classList.contains(
 			'wc-block-price-filter__range-input--min'
 		);
 		const values = constrainRangeSliderValues(
 			[ minRange.current.value, maxRange.current.value ],
-			minConstraint,
-			maxConstraint,
+			min,
+			max,
 			step,
 			isMin
 		);
 		updateRanges( values[ 0 ], values[ 1 ] );
 	};
 
+	/**
+	 * Called when a price input loses focus.
+	 * @param {obj} event Event object.
+	 */
 	const onInputBlur = ( event ) => {
 		const isMin = event.target.classList.contains(
 			'wc-block-price-filter__amount--min'
@@ -138,14 +137,18 @@ const PriceSlider = ( {
 				minInput.current.value.replace( /[^0-9.-]+/g, '' ),
 				maxInput.current.value.replace( /[^0-9.-]+/g, '' ),
 			],
-			minConstraint,
-			maxConstraint,
+			min,
+			max,
 			step,
 			isMin
 		);
 		updateRanges( values[ 0 ], values[ 1 ] );
 	};
 
+	/**
+	 * Called when the value of a price input is changed.
+	 * @param {obj} event Event object.
+	 */
 	const onInputChange = ( event ) => {
 		const newValue = event.target.value.replace( /[^0-9.-]+/g, '' );
 		const isMin = event.target.classList.contains(
@@ -159,20 +162,10 @@ const PriceSlider = ( {
 		}
 	};
 
-	useEffect( () => {
-		/**
-		 * Passes values to a callback provided in props.
-		 */
-		onChange( {
-			min: currentMin,
-			max: currentMax,
-		} );
-	}, [ currentMin, currentMax ] );
-
-	const minInput = useRef( inputMin );
-	const maxInput = useRef( inputMax );
-	const minRange = useRef( currentMin ? currentMin : 0 );
-	const maxRange = useRef( currentMax ? currentMax : maxConstraint );
+	const minInput = useRef();
+	const maxInput = useRef();
+	const minRange = useRef();
+	const maxRange = useRef();
 	const classes = classnames(
 		'wc-block-price-filter',
 		showInputFields && 'wc-block-price-filter--has-input-fields',
@@ -197,11 +190,11 @@ const PriceSlider = ( {
 						'woo-gutenberg-products-block'
 					) }
 					ref={ minRange }
+					value={ currentMin }
 					onChange={ onDrag }
-					value={ currentMin ? currentMin : 0 }
 					step={ step }
-					min={ minConstraint }
-					max={ maxConstraint }
+					min={ min }
+					max={ max }
 				/>
 				<input
 					type="range"
@@ -211,11 +204,11 @@ const PriceSlider = ( {
 						'woo-gutenberg-products-block'
 					) }
 					ref={ maxRange }
+					value={ currentMax }
 					onChange={ onDrag }
-					value={ currentMax ? currentMax : maxConstraint }
 					step={ step }
-					min={ minConstraint }
-					max={ maxConstraint }
+					min={ min }
+					max={ max }
 				/>
 			</div>
 			<div className="wc-block-price-filter__controls">
@@ -306,16 +299,21 @@ PriceSlider.propTypes = {
 	 * Whether or not to show filter button above the slider.
 	 */
 	showFilterButton: PropTypes.bool,
+	/**
+	 * Whether or not to show filter button above the slider.
+	 */
+	isLoading: PropTypes.bool,
 };
 
 PriceSlider.defaultProps = {
 	min: 0,
-	max: 0,
+	max: 100,
 	step: 1,
 	currencySymbol: '$',
 	priceFormat: '%1$s%2$s',
 	showInputFields: true,
 	showFilterButton: false,
+	isLoading: false,
 };
 
 export default PriceSlider;
