@@ -21,6 +21,7 @@ const PriceSlider = ( {
 	priceFormat,
 	showInputFields,
 	showFilterButton,
+	isLoading,
 } ) => {
 	const [ currentMin, setCurrentMin ] = useState( min );
 	const [ currentMax, setCurrentMax ] = useState( max );
@@ -64,6 +65,9 @@ const PriceSlider = ( {
 	 * @param {obj} event event data.
 	 */
 	const findClosestRange = ( event ) => {
+		if ( isLoading ) {
+			return;
+		}
 		const bounds = event.target.getBoundingClientRect();
 		const x = event.clientX - bounds.left;
 		const minWidth = minRange.current.offsetWidth;
@@ -162,22 +166,80 @@ const PriceSlider = ( {
 		}
 	};
 
-	const minInput = useRef();
-	const maxInput = useRef();
-	const minRange = useRef();
-	const maxRange = useRef();
-	const classes = classnames(
-		'wc-block-price-filter',
-		showInputFields && 'wc-block-price-filter--has-input-fields',
-		showFilterButton && 'wc-block-price-filter--has-filter-button'
-	);
-	return (
-		<div className={ classes }>
-			<div
-				className="wc-block-price-filter__range-input-wrapper"
-				onMouseMove={ findClosestRange }
-				onFocus={ findClosestRange }
+	/**
+	 * Renders the submit button.
+	 */
+	const renderSubmit = () => {
+		return (
+			<button
+				type="submit"
+				className="wc-block-price-filter__button wc-block-form-button"
+				disabled={ isLoading }
 			>
+				{ __( 'Go', 'woo-gutenberg-products-block' ) }
+			</button>
+		);
+	};
+
+	/**
+	 * Renders text showing current prices.
+	 */
+	const renderText = () => {
+		return (
+			<div className="wc-block-price-filter__range-text">
+				{ sprintf(
+					__( 'Price: %s — %s', 'woo-gutenberg-products-block' ),
+					inputMin,
+					inputMax
+				) }
+			</div>
+		);
+	};
+
+	/**
+	 * Renders text inputs for manual price input.
+	 */
+	const renderTextInputs = () => {
+		return (
+			<Fragment>
+				<input
+					type="text"
+					className="wc-block-price-filter__amount wc-block-price-filter__amount--min wc-block-form-text-input"
+					aria-label={ __(
+						'Filter products by minimum price',
+						'woo-gutenberg-products-block'
+					) }
+					size="5"
+					ref={ minInput }
+					value={ inputMin }
+					onChange={ onInputChange }
+					onBlur={ onInputBlur }
+					disabled={ isLoading }
+				/>
+				<input
+					type="text"
+					className="wc-block-price-filter__amount wc-block-price-filter__amount--max wc-block-form-text-input"
+					aria-label={ __(
+						'Filter products by maximum price',
+						'woo-gutenberg-products-block'
+					) }
+					size="5"
+					ref={ maxInput }
+					value={ inputMax }
+					onChange={ onInputChange }
+					onBlur={ onInputBlur }
+					disabled={ isLoading }
+				/>
+			</Fragment>
+		);
+	};
+
+	/**
+	 * Render range input sliders.
+	 */
+	const renderRangeInputs = () => {
+		return (
+			<Fragment>
 				<div
 					className="wc-block-price-filter__range-input-progress"
 					style={ getProgressStyle() }
@@ -195,6 +257,7 @@ const PriceSlider = ( {
 					step={ step }
 					min={ min }
 					max={ max }
+					disabled={ isLoading }
 				/>
 				<input
 					type="range"
@@ -209,58 +272,34 @@ const PriceSlider = ( {
 					step={ step }
 					min={ min }
 					max={ max }
+					disabled={ isLoading }
 				/>
+			</Fragment>
+		);
+	};
+
+	const minInput = useRef();
+	const maxInput = useRef();
+	const minRange = useRef();
+	const maxRange = useRef();
+	const classes = classnames(
+		'wc-block-price-filter',
+		showInputFields && 'wc-block-price-filter--has-input-fields',
+		showFilterButton && 'wc-block-price-filter--has-filter-button',
+		isLoading && 'is-loading'
+	);
+	return (
+		<div className={ classes }>
+			<div
+				className="wc-block-price-filter__range-input-wrapper"
+				onMouseMove={ findClosestRange }
+				onFocus={ findClosestRange }
+			>
+				{ ! isLoading && renderRangeInputs() }
 			</div>
 			<div className="wc-block-price-filter__controls">
-				{ showInputFields ? (
-					<Fragment>
-						<input
-							type="text"
-							className="wc-block-price-filter__amount wc-block-price-filter__amount--min wc-block-form-text-input"
-							aria-label={ __(
-								'Filter products by minimum price',
-								'woo-gutenberg-products-block'
-							) }
-							size="5"
-							ref={ minInput }
-							value={ inputMin }
-							onChange={ onInputChange }
-							onBlur={ onInputBlur }
-						/>
-						<input
-							type="text"
-							className="wc-block-price-filter__amount wc-block-price-filter__amount--max wc-block-form-text-input"
-							aria-label={ __(
-								'Filter products by maximum price',
-								'woo-gutenberg-products-block'
-							) }
-							size="5"
-							ref={ maxInput }
-							value={ inputMax }
-							onChange={ onInputChange }
-							onBlur={ onInputBlur }
-						/>
-					</Fragment>
-				) : (
-					<div className="wc-block-price-filter__range-text">
-						{ sprintf(
-							__(
-								'Price: %s — %s',
-								'woo-gutenberg-products-block'
-							),
-							inputMin,
-							inputMax
-						) }
-					</div>
-				) }
-				{ showFilterButton && (
-					<button
-						type="submit"
-						className="wc-block-price-filter__button wc-block-form-button"
-					>
-						{ __( 'Go', 'woo-gutenberg-products-block' ) }
-					</button>
-				) }
+				{ showInputFields ? renderTextInputs() : renderText() }
+				{ showFilterButton && renderSubmit() }
 			</div>
 		</div>
 	);

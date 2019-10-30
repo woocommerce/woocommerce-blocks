@@ -67,6 +67,7 @@
 			background: var(--track-background);
 		}
 	}
+
 	.wc-block-price-filter__controls {
 		display: flex;
 		flex-flow: row nowrap;
@@ -178,6 +179,15 @@
 			}
 		}
 	}
+
+	&.is-loading {
+		.wc-block-price-filter__range-input-wrapper,
+		.wc-block-price-filter__amount,
+		.wc-block-price-filter__button {
+			@include placeholder();
+			box-shadow: none;
+		}
+	}
 }
 
 @mixin ie {
@@ -186,6 +196,7 @@
 			background: transparent;
 			box-shadow: none;
 			height: 24px;
+
 			.wc-block-price-filter__range-input-progress {
 				background: #a8739d;
 				box-shadow: 0 0 0 1px inset #95588a;
@@ -233,6 +244,13 @@
 			}
 			&::-ms-fill-lower {
 				background: transparent;
+			}
+		}
+
+		&.is-loading {
+			.wc-block-price-filter__range-input-wrapper {
+				@include placeholder();
+				box-shadow: none;
 			}
 		}
 	}
