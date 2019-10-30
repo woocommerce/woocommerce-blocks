@@ -32,6 +32,8 @@
 	animation: loading-fade 1.2s ease-in-out infinite;
 	background-color: $core-grey-light-500;
 	color: transparent;
+	border: 0;
+	box-shadow: none;
 
 	&::after {
 		content: "\00a0";
