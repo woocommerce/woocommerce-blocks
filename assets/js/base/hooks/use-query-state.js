@@ -52,8 +52,14 @@ export const useQueryStateByKey = ( context, queryKey ) => {
 		},
 		[ context, queryKey ]
 	);
+
 	const { setQueryValue } = useDispatch( storeKey );
-	return [ queryValue, setQueryValue ];
+
+	const setQueryValueByKey = ( value ) => {
+		setQueryValue( context, queryKey, value );
+	};
+
+	return [ queryValue, setQueryValueByKey ];
 };
 
 /**
