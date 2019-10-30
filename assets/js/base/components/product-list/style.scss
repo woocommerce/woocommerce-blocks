@@ -144,13 +144,7 @@
 
 		.is-loading & {
 			@include placeholder();
-		}
-
-		.is-loading &::before {
-			color: transparent;
-			content: ".";
-			display: inline-block;
-			width: 5em;
+			min-width: 7em;
 		}
 	}
 }
