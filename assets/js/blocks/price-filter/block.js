@@ -51,24 +51,24 @@ const PriceFilterBlock = ( { attributes } ) => {
 	);
 
 	const onChange = ( prices ) => {
-		if ( prices.min === minConstraint ) {
+		if ( prices[ 0 ] === minConstraint ) {
 			setMinPrice( undefined );
-		} else if ( prices.min !== minPrice ) {
-			setMinPrice( prices.min );
+		} else if ( prices[ 0 ] !== minPrice ) {
+			setMinPrice( prices[ 0 ] );
 		}
 
-		if ( prices.max === maxConstraint ) {
+		if ( prices[ 1 ] === maxConstraint ) {
 			setMaxPrice( undefined );
-		} else if ( prices.max !== maxPrice ) {
-			setMaxPrice( prices.max );
+		} else if ( prices[ 1 ] !== maxPrice ) {
+			setMaxPrice( prices[ 1 ] );
 		}
 	};
 
 	return (
 		<div className="wc-block-price-slider">
 			<PriceSlider
-				min={ minConstraint }
-				max={ maxConstraint }
+				minConstraint={ minConstraint }
+				maxConstraint={ maxConstraint }
 				initialMin={ undefined }
 				initialMax={ undefined }
 				step={ 10 }
