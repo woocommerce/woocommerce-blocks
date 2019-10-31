@@ -2,7 +2,13 @@
  * External dependencies
  */
 import { sprintf, __ } from '@wordpress/i18n';
-import { Fragment, useState, useEffect, useRef } from '@wordpress/element';
+import {
+	Fragment,
+	useState,
+	useEffect,
+	useRef,
+	useCallback,
+} from '@wordpress/element';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useDebounce } from '@woocommerce/base-hooks';
@@ -67,9 +73,9 @@ const PriceSlider = ( {
 		}
 	}, [ debouncedChangeValue ] );
 
-	const triggerChangeCallback = () => {
+	const triggerChangeCallback = useCallback( () => {
 		onChange( [ minPrice, maxPrice ] );
-	};
+	}, [ minPrice, maxPrice ] );
 
 	/**
 	 * Handles styles for the shaded area of the range slider.
@@ -100,96 +106,116 @@ const PriceSlider = ( {
 	 *
 	 * @param {obj} event event data.
 	 */
-	const findClosestRange = ( event ) => {
-		if ( isLoading ) {
-			return;
-		}
-		const bounds = event.target.getBoundingClientRect();
-		const x = event.clientX - bounds.left;
-		const minWidth = minRange.current.offsetWidth;
-		const minValue = minRange.current.value;
-		const maxWidth = maxRange.current.offsetWidth;
-		const maxValue = maxRange.current.value;
+	const findClosestRange = useCallback(
+		( event ) => {
+			if ( isLoading ) {
+				return;
+			}
+			const bounds = event.target.getBoundingClientRect();
+			const x = event.clientX - bounds.left;
+			const minWidth = minRange.current.offsetWidth;
+			const minValue = minRange.current.value;
+			const maxWidth = maxRange.current.offsetWidth;
+			const maxValue = maxRange.current.value;
 
-		const minX = minWidth * ( minValue / maxConstraint );
-		const maxX = maxWidth * ( maxValue / maxConstraint );
+			const minX = minWidth * ( minValue / maxConstraint );
+			const maxX = maxWidth * ( maxValue / maxConstraint );
 
-		const minXDiff = Math.abs( x - minX );
-		const maxXDiff = Math.abs( x - maxX );
+			const minXDiff = Math.abs( x - minX );
+			const maxXDiff = Math.abs( x - maxX );
 
-		/**
-		 * The default z-index in the stylesheet as 20. 20 vs 21 is just for determining which range
-		 * slider should be at the front and has no meaning beyond
-		 */
-		if ( minXDiff > maxXDiff ) {
-			minRange.current.style.zIndex = 20;
-			maxRange.current.style.zIndex = 21;
-		} else {
-			minRange.current.style.zIndex = 21;
-			maxRange.current.style.zIndex = 20;
-		}
-	};
+			/**
+			 * The default z-index in the stylesheet as 20. 20 vs 21 is just for determining which range
+			 * slider should be at the front and has no meaning beyond
+			 */
+			if ( minXDiff > maxXDiff ) {
+				minRange.current.style.zIndex = 20;
+				maxRange.current.style.zIndex = 21;
+			} else {
+				minRange.current.style.zIndex = 21;
+				maxRange.current.style.zIndex = 20;
+			}
+		},
+		[ isLoading, maxConstraint, minRange, maxRange ]
+	);
 
 	/**
 	 * Called when the slider is dragged.
 	 * @param {obj} event Event object.
 	 */
-	const onDrag = ( event ) => {
-		const isMin = event.target.classList.contains(
-			'wc-block-price-filter__range-input--min'
-		);
-		const values = constrainRangeSliderValues(
-			[ minRange.current.value, maxRange.current.value ],
-			minConstraint,
-			maxConstraint,
-			step,
-			isMin
-		);
-		setMinPrice( parseInt( values[ 0 ], 10 ) );
-		setMaxPrice( parseInt( values[ 1 ], 10 ) );
-	};
+	const onDrag = useCallback(
+		( event ) => {
+			const isMin = event.target.classList.contains(
+				'wc-block-price-filter__range-input--min'
+			);
+			const values = constrainRangeSliderValues(
+				[ minRange.current.value, maxRange.current.value ],
+				minConstraint,
+				maxConstraint,
+				step,
+				isMin
+			);
+			setMinPrice( parseInt( values[ 0 ], 10 ) );
+			setMaxPrice( parseInt( values[ 1 ], 10 ) );
+		},
+		[ minRange, minConstraint, maxConstraint, step ]
+	);
 
 	/**
 	 * Called when a price input loses focus.
 	 * @param {obj} event Event object.
 	 */
-	const onInputBlur = ( event ) => {
-		const isMin = event.target.classList.contains(
-			'wc-block-price-filter__amount--min'
-		);
-		const values = constrainRangeSliderValues(
-			[
-				minInput.current.value.replace( /[^0-9.-]+/g, '' ),
-				maxInput.current.value.replace( /[^0-9.-]+/g, '' ),
-			],
-			minConstraint,
-			maxConstraint,
-			step,
-			isMin
-		);
-		setMinPrice( parseInt( values[ 0 ], 10 ) );
-		setMaxPrice( parseInt( values[ 1 ], 10 ) );
-	};
+	const onInputBlur = useCallback(
+		( event ) => {
+			const isMin = event.target.classList.contains(
+				'wc-block-price-filter__amount--min'
+			);
+			const values = constrainRangeSliderValues(
+				[
+					minInput.current.value.replace( /[^0-9.-]+/g, '' ),
+					maxInput.current.value.replace( /[^0-9.-]+/g, '' ),
+				],
+				minConstraint,
+				maxConstraint,
+				step,
+				isMin
+			);
+			setMinPrice( parseInt( values[ 0 ], 10 ) );
+			setMaxPrice( parseInt( values[ 1 ], 10 ) );
+		},
+		[ minInput, maxInput, minConstraint, maxConstraint, step ]
+	);
 
 	/**
 	 * Called when the value of a price input is changed.
 	 * @param {obj} event Event object.
 	 */
-	const onInputChange = ( event ) => {
-		const newValue = event.target.value.replace( /[^0-9.-]+/g, '' );
-		const isMin = event.target.classList.contains(
-			'wc-block-price-filter__amount--min'
-		);
-		if ( isMin ) {
-			setFormattedMinPrice(
-				formatCurrencyForInput( newValue, priceFormat, currencySymbol )
+	const onInputChange = useCallback(
+		( event ) => {
+			const newValue = event.target.value.replace( /[^0-9.-]+/g, '' );
+			const isMin = event.target.classList.contains(
+				'wc-block-price-filter__amount--min'
 			);
-		} else {
-			setFormattedMaxPrice(
-				formatCurrencyForInput( newValue, priceFormat, currencySymbol )
-			);
-		}
-	};
+			if ( isMin ) {
+				setFormattedMinPrice(
+					formatCurrencyForInput(
+						newValue,
+						priceFormat,
+						currencySymbol
+					)
+				);
+			} else {
+				setFormattedMaxPrice(
+					formatCurrencyForInput(
+						newValue,
+						priceFormat,
+						currencySymbol
+					)
+				);
+			}
+		},
+		[ priceFormat, currencySymbol ]
+	);
 
 	/**
 	 * Renders the submit button.
@@ -312,6 +338,7 @@ const PriceSlider = ( {
 		showFilterButton && 'wc-block-price-filter--has-filter-button',
 		isLoading && 'is-loading'
 	);
+
 	return (
 		<div className={ classes }>
 			<div
