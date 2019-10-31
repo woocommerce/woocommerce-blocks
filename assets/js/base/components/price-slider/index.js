@@ -48,18 +48,6 @@ const PriceSlider = ( {
 				max,
 			} );
 		}
-		setFormattedValue( {
-			min: formatCurrencyForInput(
-				value.min,
-				priceFormat,
-				currencySymbol
-			),
-			max: formatCurrencyForInput(
-				value.max,
-				priceFormat,
-				currencySymbol
-			),
-		} );
 	}, [ min, max ] );
 
 	useEffect( () => {
