@@ -8,6 +8,7 @@ import {
 	useEffect,
 	useRef,
 	useCallback,
+	useMemo,
 } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -73,14 +74,10 @@ const PriceSlider = ( {
 		}
 	}, [ debouncedChangeValue ] );
 
-	const triggerChangeCallback = useCallback( () => {
-		onChange( [ minPrice, maxPrice ] );
-	}, [ minPrice, maxPrice ] );
-
 	/**
 	 * Handles styles for the shaded area of the range slider.
 	 */
-	const getProgressStyle = () => {
+	const getProgressStyle = useMemo( () => {
 		const low =
 			Math.round(
 				100 *
@@ -98,7 +95,14 @@ const PriceSlider = ( {
 			'--low': low + '%',
 			'--high': high + '%',
 		};
-	};
+	}, [ minPrice, minConstraint, maxPrice, maxConstraint ] );
+
+	/**
+	 * Trigger the onChange prop callback with new values.
+	 */
+	const triggerChangeCallback = useCallback( () => {
+		onChange( [ minPrice, maxPrice ] );
+	}, [ minPrice, maxPrice ] );
 
 	/**
 	 * Works around an IE issue where only one range selector is visible by changing the display order
@@ -304,7 +308,7 @@ const PriceSlider = ( {
 			<Fragment>
 				<div
 					className="wc-block-price-filter__range-input-progress"
-					style={ getProgressStyle() }
+					style={ getProgressStyle }
 				/>
 				<input
 					type="range"
