@@ -6,6 +6,7 @@ import {
 	useQueryStateByKey,
 	useQueryStateContext,
 } from '@woocommerce/base-hooks';
+import { useCallback } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -17,7 +18,14 @@ import { CURRENCY } from '@woocommerce/settings';
  * Component displaying a price filter.
  */
 const PriceFilterBlock = ( { attributes } ) => {
-	const { showInputFields, showFilterButton } = attributes;
+	const [ minPrice, setMinPrice ] = useQueryStateByKey(
+		'product-grid',
+		'min_price'
+	);
+	const [ maxPrice, setMaxPrice ] = useQueryStateByKey(
+		'product-grid',
+		'max_price'
+	);
 	const [ queryState ] = useQueryStateContext( 'product-grid' );
 	const { results, isLoading } = useCollection( {
 		namespace: '/wc/store',
@@ -34,6 +42,7 @@ const PriceFilterBlock = ( { attributes } ) => {
 		},
 	} );
 
+	const { showInputFields, showFilterButton } = attributes;
 	const minConstraint = isLoading
 		? undefined
 		: parseInt( results.min_price, 10 );
@@ -41,28 +50,22 @@ const PriceFilterBlock = ( { attributes } ) => {
 		? undefined
 		: parseInt( results.max_price, 10 );
 
-	const [ minPrice, setMinPrice ] = useQueryStateByKey(
-		'product-grid',
-		'min_price'
-	);
-	const [ maxPrice, setMaxPrice ] = useQueryStateByKey(
-		'product-grid',
-		'max_price'
-	);
+	const onChange = useCallback(
+		( prices ) => {
+			if ( prices[ 0 ] === minConstraint ) {
+				setMinPrice( undefined );
+			} else if ( prices[ 0 ] !== minPrice ) {
+				setMinPrice( prices[ 0 ] );
+			}
 
-	const onChange = ( prices ) => {
-		if ( prices[ 0 ] === minConstraint ) {
-			setMinPrice( undefined );
-		} else if ( prices[ 0 ] !== minPrice ) {
-			setMinPrice( prices[ 0 ] );
-		}
-
-		if ( prices[ 1 ] === maxConstraint ) {
-			setMaxPrice( undefined );
-		} else if ( prices[ 1 ] !== maxPrice ) {
-			setMaxPrice( prices[ 1 ] );
-		}
-	};
+			if ( prices[ 1 ] === maxConstraint ) {
+				setMaxPrice( undefined );
+			} else if ( prices[ 1 ] !== maxPrice ) {
+				setMaxPrice( prices[ 1 ] );
+			}
+		},
+		[ minConstraint, maxConstraint, minPrice, maxPrice ]
+	);
 
 	return (
 		<div className="wc-block-price-slider">
