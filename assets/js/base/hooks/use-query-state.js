@@ -2,8 +2,8 @@
  * External dependencies
  */
 import { QUERY_STATE_STORE_KEY as storeKey } from '@woocommerce/block-data';
-import { useSelect, useDispatch, useCallback } from '@wordpress/data';
-import { useRef, useEffect } from '@wordpress/element';
+import { useSelect, useDispatch } from '@wordpress/data';
+import { useRef, useEffect, useCallback } from '@wordpress/element';
 import { useShallowEqual } from './use-shallow-equal';
 
 /**
