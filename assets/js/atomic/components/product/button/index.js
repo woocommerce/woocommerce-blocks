@@ -87,10 +87,10 @@ const ProductButton = ( { product, className } ) => {
 	const {
 		id,
 		permalink,
-		addToCart: productCartDetails,
-		hasOptions,
-		isPurchasable,
-		isInStock,
+		add_to_cart: productCartDetails,
+		has_options: hasOptions,
+		is_purchasable: isPurchasable,
+		is_in_stock: isInStock,
 	} = product;
 	const {
 		cartQuantity,
