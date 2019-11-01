@@ -108,6 +108,7 @@
 	"dependencies": {
 		"@woocommerce/components": "3.2.0",
 		"compare-versions": "3.5.1",
+		"dompurify": "^2.0.7",
 		"gridicons": "3.3.1",
 		"react-number-format": "4.3.1",
 		"trim-html": "0.1.9"

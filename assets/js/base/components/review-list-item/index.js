@@ -4,6 +4,7 @@
 import { __, sprintf } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { sanitize } from 'dompurify';
 
 /**
  * Internal dependencies
@@ -88,7 +89,15 @@ function getReviewContent( review ) {
 function getReviewProductName( review ) {
 	return (
 		<div className="wc-block-review-list-item__product">
-			<a href={ review.product_permalink }>{ review.product_name }</a>
+			<a
+				href={ review.product_permalink }
+				dangerouslySetInnerHTML={ {
+					// `product_name` might have html entities for things like
+					// emdash. So to display properly we need to allow the
+					// browser to render.
+					__html: sanitize( review.product_name ),
+				} }
+			/>
 		</div>
 	);
 }
