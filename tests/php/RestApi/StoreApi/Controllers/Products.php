@@ -76,9 +76,9 @@ class Products extends TestCase {
 		$this->assertArrayHasKey( 'description', $data[0] );
 		$this->assertArrayHasKey( 'sku', $data[0] );
 		$this->assertArrayHasKey( 'price', $data[0] );
-		$this->assertArrayHasKey( 'priceHtml', $data[0] );
-		$this->assertArrayHasKey( 'averageRating', $data[0] );
-		$this->assertArrayHasKey( 'reviewCount', $data[0] );
+		$this->assertArrayHasKey( 'price_html', $data[0] );
+		$this->assertArrayHasKey( 'average_rating', $data[0] );
+		$this->assertArrayHasKey( 'review_count', $data[0] );
 		$this->assertArrayHasKey( 'images', $data[0] );
 		$this->assertArrayHasKey( 'has_options', $data[0] );
 		$this->assertArrayHasKey( 'is_purchasable', $data[0] );
@@ -100,9 +100,9 @@ class Products extends TestCase {
 		$this->assertArrayHasKey( 'description', $schema['properties'] );
 		$this->assertArrayHasKey( 'sku', $schema['properties'] );
 		$this->assertArrayHasKey( 'price', $schema['properties'] );
-		$this->assertArrayHasKey( 'priceHtml', $schema['properties'] );
-		$this->assertArrayHasKey( 'averageRating', $schema['properties'] );
-		$this->assertArrayHasKey( 'reviewCount', $schema['properties'] );
+		$this->assertArrayHasKey( 'price_html', $schema['properties'] );
+		$this->assertArrayHasKey( 'average_rating', $schema['properties'] );
+		$this->assertArrayHasKey( 'review_count', $schema['properties'] );
 		$this->assertArrayHasKey( 'images', $schema['properties'] );
 		$this->assertArrayHasKey( 'has_options', $schema['properties'] );
 		$this->assertArrayHasKey( 'is_purchasable', $schema['properties'] );
@@ -124,9 +124,9 @@ class Products extends TestCase {
 		$this->assertArrayHasKey( 'description', $response->get_data() );
 		$this->assertArrayHasKey( 'sku', $response->get_data() );
 		$this->assertArrayHasKey( 'price', $response->get_data() );
-		$this->assertArrayHasKey( 'priceHtml', $response->get_data() );
-		$this->assertArrayHasKey( 'averageRating', $response->get_data() );
-		$this->assertArrayHasKey( 'reviewCount', $response->get_data() );
+		$this->assertArrayHasKey( 'price_html', $response->get_data() );
+		$this->assertArrayHasKey( 'average_rating', $response->get_data() );
+		$this->assertArrayHasKey( 'review_count', $response->get_data() );
 		$this->assertArrayHasKey( 'images', $response->get_data() );
 		$this->assertArrayHasKey( 'has_options', $response->get_data() );
 		$this->assertArrayHasKey( 'is_purchasable', $response->get_data() );

@@ -31,64 +31,64 @@ class ProductSchema extends AbstractSchema {
 	 */
 	protected function get_properties() {
 		return [
-			'id'            => array(
+			'id'             => array(
 				'description' => __( 'Unique identifier for the resource.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
-			'name'          => array(
+			'name'           => array(
 				'description' => __( 'Product name.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
 			),
-			'variation'     => array(
+			'variation'      => array(
 				'description' => __( 'Product variation attributes, if applicable.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
 			),
-			'permalink'     => array(
+			'permalink'      => array(
 				'description' => __( 'Product URL.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'format'      => 'uri',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
-			'description'   => array(
+			'description'    => array(
 				'description' => __( 'Short description or excerpt from description.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
 			),
-			'sku'           => array(
+			'sku'            => array(
 				'description' => __( 'Unique identifier.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
 			),
-			'price'         => array(
+			'price'          => array(
 				'description' => __( 'Current product price.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
-			'priceHtml'     => array(
+			'price_html'     => array(
 				'description' => __( 'Price formatted in HTML.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
-			'averageRating' => array(
+			'average_rating' => array(
 				'description' => __( 'Reviews average rating.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
-			'reviewCount'   => array(
+			'review_count'   => array(
 				'description' => __( 'Amount of reviews that the product has.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
-			'images'        => array(
+			'images'         => array(
 				'description' => __( 'List of images.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
 				'context'     => array( 'view', 'edit' ),
