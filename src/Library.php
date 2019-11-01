@@ -42,12 +42,12 @@ class Library {
 			'ReviewsByCategory',
 			'ProductSearch',
 			'ProductTag',
-			'PriceFilter',
 		];
 		// @todo after refactoring dynamic block registration, this will be moved
 		// to block level config.
 		if ( version_compare( $wp_version, '5.2', '>' ) ) {
 			$blocks[] = 'AllProducts';
+			$blocks[] = 'PriceFilter';
 		}
 		foreach ( $blocks as $class ) {
 			$class    = __NAMESPACE__ . '\\BlockTypes\\' . $class;
