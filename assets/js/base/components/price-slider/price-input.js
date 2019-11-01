@@ -46,23 +46,25 @@ PriceInput.propTypes = {
 	/**
 	 * Callback fired on input.
 	 */
-	onBlur: PropTypes.func.isRequired,
+	onBlur: PropTypes.func,
 	/**
 	 * Callback fired on input.
 	 */
-	onChange: PropTypes.func.isRequired,
+	onChange: PropTypes.func,
 	/**
-	 * Min price to display.
+	 * Min price to display. This is a string because it contains currency e.g. $10.00.
 	 */
 	minPrice: PropTypes.string.isRequired,
 	/**
-	 * Max price to display.
+	 * Max price to display. This is a string because it contains currency e.g. $10.00.
 	 */
 	maxPrice: PropTypes.string.isRequired,
 };
 
 PriceInput.defaultProps = {
 	disabled: false,
+	onBlur: () => {},
+	onChange: () => {},
 };
 
 export default PriceInput;

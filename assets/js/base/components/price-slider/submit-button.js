@@ -12,7 +12,8 @@ const SubmitButton = ( { disabled, onClick } ) => {
 			disabled={ disabled }
 			onClick={ onClick }
 		>
-			{ __( 'Go', 'woo-gutenberg-products-block' ) }
+			{ // translators: Submit button text for the price filter.
+			__( 'Go', 'woo-gutenberg-products-block' ) }
 		</button>
 	);
 };

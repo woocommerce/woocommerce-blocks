@@ -49,25 +49,28 @@ const PriceSlider = ( {
 	const debouncedChangeValue = useDebounce( [ minPrice, maxPrice ], 500 );
 
 	useEffect( () => {
-		if (
-			minPrice === undefined ||
-			maxPrice === undefined ||
-			minConstraint > minPrice ||
-			maxConstraint < maxPrice
-		) {
+		if ( minPrice === undefined || minConstraint > minPrice ) {
 			setMinPrice( minConstraint );
+		}
+	}, [ minConstraint ] );
+
+	useEffect( () => {
+		if ( maxPrice === undefined || maxConstraint < maxPrice ) {
 			setMaxPrice( maxConstraint );
 		}
-	}, [ minConstraint, maxConstraint ] );
+	}, [ maxConstraint ] );
 
 	useEffect( () => {
 		setFormattedMinPrice(
 			formatCurrencyForInput( minPrice, priceFormat, currencySymbol )
 		);
+	}, [ minPrice, priceFormat, currencySymbol ] );
+
+	useEffect( () => {
 		setFormattedMaxPrice(
 			formatCurrencyForInput( maxPrice, priceFormat, currencySymbol )
 		);
-	}, [ minPrice, maxPrice ] );
+	}, [ maxPrice, priceFormat, currencySymbol ] );
 
 	useEffect( () => {
 		if ( ! showFilterButton && ! isLoading ) {
@@ -141,7 +144,7 @@ const PriceSlider = ( {
 				maxRange.current.style.zIndex = 20;
 			}
 		},
-		[ isLoading, maxConstraint, minRange, maxRange ]
+		[ isLoading, maxConstraint ]
 	);
 
 	/**

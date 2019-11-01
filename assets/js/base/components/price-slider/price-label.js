@@ -11,6 +11,7 @@ const PriceLabel = ( { minPrice, maxPrice } ) => {
 	return (
 		<div className="wc-block-price-filter__range-text">
 			{ sprintf(
+				// translators: %s: low price, %s: high price.
 				__( 'Price: %s — %s', 'woo-gutenberg-products-block' ),
 				minPrice,
 				maxPrice
