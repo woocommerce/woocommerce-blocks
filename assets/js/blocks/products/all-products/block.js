@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import ProductListContainer from '@woocommerce/base-components/product-list/container';
 import { InnerBlockParentNameProvider } from '@woocommerce/base-context/inner-block-parent-name-context';
 import { ProductLayoutContextProvider } from '@woocommerce/base-context/product-layout-context';
+import preview from '../preview';
 
 const layoutStyleContext = {
 	layoutStyleClassPrefix: 'wc-block-grid',
@@ -28,6 +29,11 @@ class Block extends Component {
 
 	render() {
 		const { attributes, urlParameterSuffix } = this.props;
+
+		if ( attributes.isPreview ) {
+			return preview;
+		}
+
 		/**
 		 * Todo classes
 		 *

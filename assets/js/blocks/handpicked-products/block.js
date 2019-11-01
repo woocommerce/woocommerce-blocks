@@ -28,6 +28,7 @@ import GridContentControl from '@woocommerce/block-components/grid-content-contr
 import { IconWidgets } from '@woocommerce/block-components/icons';
 import ProductsControl from '@woocommerce/block-components/products-control';
 import ProductOrderbyControl from '@woocommerce/block-components/product-orderby-control';
+import preview from './preview';
 
 /**
  * Component to handle edit mode of "Hand-picked Products".
@@ -162,6 +163,10 @@ class ProductsBlock extends Component {
 	render() {
 		const { attributes, name, setAttributes } = this.props;
 		const { editMode } = attributes;
+
+		if ( attributes.isPreview ) {
+			return preview;
+		}
 
 		return (
 			<Fragment>

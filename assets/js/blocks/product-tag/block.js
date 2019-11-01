@@ -27,6 +27,7 @@ import GridLayoutControl from '@woocommerce/block-components/grid-layout-control
 import ProductTagControl from '@woocommerce/block-components/product-tag-control';
 import ProductOrderbyControl from '@woocommerce/block-components/product-orderby-control';
 import { IconProductTag } from '@woocommerce/block-components/icons';
+import preview from './preview';
 
 /**
  * Component to handle edit mode of "Products by Tag".
@@ -252,6 +253,11 @@ class ProductsByTagBlock extends Component {
 
 	render() {
 		const { isEditing } = this.state;
+		const { attributes } = this.props;
+
+		if ( attributes.isPreview ) {
+			return preview;
+		}
 
 		return (
 			<Fragment>
