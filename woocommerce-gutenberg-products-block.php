@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Blocks
  * Plugin URI: https://github.com/woocommerce/woocommerce-gutenberg-products-block
  * Description: WooCommerce blocks for the Gutenberg editor.
- * Version: 2.5.0-beta1
+ * Version: 2.5.0-beta2
  * Author: Automattic
  * Author URI: https://woocommerce.com
  * Text Domain:  woo-gutenberg-products-block
@@ -86,7 +86,7 @@ function wc_blocks_container( $reset = false ) {
 			Automattic\WooCommerce\Blocks\Domain\Package::class,
 			function ( $container ) {
 				return new Automattic\WooCommerce\Blocks\Domain\Package(
-					'2.5.0-beta1',
+					'2.5.0-beta2',
 					__FILE__
 				);
 			}
