@@ -92,7 +92,7 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		} );
 
 		return options;
-	}, [ filteredCounts, allTerms ] );
+	}, [ filteredCounts, allTerms, showCounts ] );
 
 	const onChange = useCallback( () => {}, [] );
 
