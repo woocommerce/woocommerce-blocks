@@ -1,0 +1,16 @@
+.wc-block-checkbox-list {
+	margin: 0;
+	padding: 0;
+	list-style: none outside;
+
+	li {
+		margin: 0 0 $gap-smallest;
+		padding: 0;
+		list-style: none outside;
+	}
+	&.is-loading {
+		li {
+			@include placeholder();
+		}
+	}
+}
