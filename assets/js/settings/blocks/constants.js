@@ -18,3 +18,4 @@ export const HAS_PRODUCTS = getSetting( 'hasProducts', true );
 export const HAS_TAGS = getSetting( 'hasTags', true );
 export const HOME_URL = getSetting( 'homeUrl', '' );
 export const PRODUCT_COUNT = getSetting( 'productCount', 0 );
+export const ATTRIBUTE_COUNT = getSetting( 'attributeCount', 0 );
