@@ -40,15 +40,20 @@ export const useQueryStateContext = ( context ) => {
  *
  * @param {string} context  What context to retrieve the query state for.
  * @param {*}      queryKey The specific query key to retrieve the value for.
+ * @param {*}      defaultValue  Default value if query does not exist.
  *
  * @return {*}  Whatever value is set at the query state index using the
  *              provided context and query key.
  */
-export const useQueryStateByKey = ( context, queryKey ) => {
+export const useQueryStateByKey = (
+	context,
+	queryKey,
+	defaultValue = undefined
+) => {
 	const queryValue = useSelect(
 		( select ) => {
 			const store = select( storeKey );
-			return store.getValueForQueryKey( context, queryKey, undefined );
+			return store.getValueForQueryKey( context, queryKey, defaultValue );
 		},
 		[ context, queryKey ]
 	);

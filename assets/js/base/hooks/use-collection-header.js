@@ -41,7 +41,12 @@ import { useShallowEqual } from './use-shallow-equal';
  *                              loading (true) or not.
  */
 export const useCollectionHeader = ( headerKey, options ) => {
-	const { namespace, resourceName, resourceValues, query } = options;
+	const {
+		namespace,
+		resourceName,
+		resourceValues = [],
+		query = {},
+	} = options;
 	if ( ! namespace || ! resourceName ) {
 		throw new Error(
 			'The options object must have valid values for the namespace and ' +
