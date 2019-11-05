@@ -28,7 +28,7 @@ registerBlockType( 'woocommerce/attribute-filter', {
 	attributes: {
 		attributeId: {
 			type: 'number',
-			default: 1, // @todo
+			default: 0,
 		},
 		showCounts: {
 			type: 'boolean',

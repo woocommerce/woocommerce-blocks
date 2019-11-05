@@ -2,17 +2,19 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
-import { InspectorControls } from '@wordpress/editor';
+import { Fragment, useState } from '@wordpress/element';
+import { InspectorControls, BlockControls } from '@wordpress/editor';
 import {
 	Placeholder,
 	Disabled,
 	PanelBody,
 	ToggleControl,
 	Button,
+	Toolbar,
+	withSpokenMessages,
 } from '@wordpress/components';
 import Gridicon from 'gridicons';
-import { ATTRIBUTE_COUNT } from '@woocommerce/block-settings';
+import { ATTRIBUTES } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -22,8 +24,28 @@ import './editor.scss';
 import { IconExternal } from '../../components/icons';
 import { ADMIN_URL } from '@woocommerce/settings';
 import ToggleButtonControl from '../../components/toggle-button-control';
+import ProductAttributeControl from '@woocommerce/block-components/product-attribute-control';
 
-export default function( { attributes, setAttributes } ) {
+const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
+	const [ isEditing, setIsEditing ] = useState( ! attributes.attributeId );
+
+	const getBlockControls = () => {
+		return (
+			<BlockControls>
+				<Toolbar
+					controls={ [
+						{
+							icon: 'edit',
+							title: __( 'Edit', 'woo-gutenberg-products-block' ),
+							onClick: () => setIsEditing( ! isEditing ),
+							isActive: isEditing,
+						},
+					] }
+				/>
+			</BlockControls>
+		);
+	};
+
 	const getInspectorControls = () => {
 		const { showCounts, displayStyle, queryType } = attributes;
 
@@ -165,18 +187,59 @@ export default function( { attributes, setAttributes } ) {
 		</Placeholder>
 	);
 
+	const renderEditMode = () => {
+		const onDone = () => {
+			setIsEditing( false );
+			debouncedSpeak(
+				__(
+					'Showing attribute filter block preview.',
+					'woo-gutenberg-products-block'
+				)
+			);
+		};
+
+		return (
+			<Placeholder
+				className="wc-block-attribute-filter"
+				icon={ <Gridicon icon="menus" /> }
+				label={ __(
+					'Filter Products by Attribute',
+					'woo-gutenberg-products-block'
+				) }
+				instructions={ __(
+					'Display a list of filters based on a chosen product attribute.',
+					'woo-gutenberg-products-block'
+				) }
+			>
+				<div className="wc-block-attribute-filter__selection">
+					<ProductAttributeControl onChange={ () => {} } />
+					<Button isDefault onClick={ onDone }>
+						{ __( 'Done', 'woo-gutenberg-products-block' ) }
+					</Button>
+				</div>
+			</Placeholder>
+		);
+	};
+
 	return (
 		<Fragment>
-			{ 0 === ATTRIBUTE_COUNT ? (
+			{ 0 === ATTRIBUTES.length ? (
 				noAttributesPlaceholder()
 			) : (
 				<Fragment>
+					{ getBlockControls() }
 					{ getInspectorControls() }
-					<Disabled>
-						<Block attributes={ attributes } isPreview />
-					</Disabled>
+					{ isEditing ? (
+						renderEditMode()
+					) : (
+						<Disabled>
+							<Block attributes={ attributes } isPreview />
+						</Disabled>
+					) }
 				</Fragment>
 			) }
 		</Fragment>
 	);
-}
+};
+
+export default withSpokenMessages( Edit );
