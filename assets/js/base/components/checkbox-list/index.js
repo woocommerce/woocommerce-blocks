@@ -47,11 +47,11 @@ const CheckboxList = ( { className, onChange, options, isLoading } ) => {
 		( event ) => {
 			const isChecked = event.target.checked;
 			const checkedValue = event.target.value;
-			const newChecked = checked;
+			const newChecked = checked.filter(
+				( value ) => value !== checkedValue
+			);
 
-			if ( ! isChecked ) {
-				newChecked.filter( ( value ) => value !== checkedValue );
-			} else {
+			if ( isChecked ) {
 				newChecked.push( checkedValue );
 			}
 
@@ -72,11 +72,7 @@ const CheckboxList = ( { className, onChange, options, isLoading } ) => {
 							id={ option.key }
 							value={ option.key }
 							onChange={ onCheckboxChange }
-							checked={
-								checked.includes( option.key )
-									? 'checked'
-									: false
-							}
+							checked={ checked.includes( option.key ) }
 						/>
 						<label htmlFor={ option.key }>{ option.label }</label>
 					</li>

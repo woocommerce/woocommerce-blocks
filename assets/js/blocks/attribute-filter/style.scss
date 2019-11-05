@@ -1,7 +1,22 @@
-.wc-block-attribute-filter-list-count::before {
-	content: " (";
-}
+.wc-block-attribute-filter {
+	.wc-block-attribute-filter-list {
+		margin: 0 0 $gap-small;
 
-.wc-block-attribute-filter-list-count::after {
-	content: ")";
+		li {
+			text-decoration: underline;
+			cursor: pointer;
+		}
+		li * {
+			cursor: pointer;
+		}
+		.wc-block-attribute-filter-list-count {
+			float: right;
+		}
+		.wc-block-attribute-filter-list-count::before {
+			content: " (";
+		}
+		.wc-block-attribute-filter-list-count::after {
+			content: ")";
+		}
+	}
 }

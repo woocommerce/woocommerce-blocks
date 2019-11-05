@@ -7,7 +7,7 @@ import {
 	useQueryStateContext,
 } from '@woocommerce/base-hooks';
 import { useCallback, Fragment, useEffect, useState } from '@wordpress/element';
-import { find, join, findIndex } from 'lodash';
+import { find, join, sortBy } from 'lodash';
 import { ATTRIBUTES } from '@woocommerce/block-settings';
 
 /**
@@ -28,14 +28,15 @@ const AttributeFilterBlock = ( { attributes } ) => {
 
 	const [ productAttributes, setProductAttributes ] = useQueryStateByKey(
 		'product-grid',
-		'attributes'
+		'attributes',
+		[]
 	);
 
 	const [ queryState ] = useQueryStateContext( 'product-grid' );
 
 	const { results: allTerms, isLoading: allTermsIsLoading } = useCollection( {
 		namespace: '/wc/blocks',
-		resourceName: 'products/attributes/(?P<attribute_id>[\\d]+)/terms',
+		resourceName: 'products/attributes/terms',
 		resourceValues: [ attributeId ],
 	} );
 
@@ -126,27 +127,28 @@ const AttributeFilterBlock = ( { attributes } ) => {
 	}, [ attributeId ] );
 
 	useEffect( () => {
-		const taxonomy = currentAttribute.attribute_name;
-		const newProductAttributes = productAttributes;
-		const currentQueryIndex = findIndex( newProductAttributes, [
-			'attribute',
-			taxonomy,
-		] );
+		const taxonomy = 'pa_' + currentAttribute.attribute_name;
 
-		const updatedQuery = {
-			attribute: taxonomy,
-			operator: 'or' === queryType ? 'in' : 'and',
-			slug: join( checkedOptions, ',' ),
-		};
-
-		if ( ! updatedQuery.slug ) {
-			delete newProductAttributes[ currentQueryIndex ];
-		} else {
-			newProductAttributes[ currentQueryIndex ] = updatedQuery;
+		if ( ! taxonomy ) {
+			return;
 		}
 
-		setProductAttributes( newProductAttributes );
-	}, [ checkedOptions, currentAttribute, productAttributes ] );
+		const newProductAttributes = productAttributes.filter(
+			( item ) => item.attribute !== taxonomy
+		);
+		const slug = join( checkedOptions, ',' );
+
+		if ( slug ) {
+			const updatedQuery = {
+				attribute: taxonomy,
+				operator: 'or' === queryType ? 'in' : 'and',
+				slug,
+			};
+			newProductAttributes.push( updatedQuery );
+		}
+
+		setProductAttributes( sortBy( newProductAttributes, 'attribute' ) );
+	}, [ checkedOptions ] );
 
 	const onChange = useCallback( ( checked ) => {
 		setCheckedOptions( checked );
