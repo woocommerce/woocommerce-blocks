@@ -15,12 +15,16 @@ const containers = document.querySelectorAll(
 if ( containers.length ) {
 	Array.prototype.forEach.call( containers, ( el ) => {
 		const attributes = {
-			attributeId: el.dataset.attributeid || 1, // @todo
+			attributeId: parseInt( el.dataset.attributeid || 0, 10 ),
 			showCounts: el.dataset.showcounts === 'true',
 			displayStyle: el.dataset.displaystyle,
 			queryType: el.dataset.querytype,
 		};
 		el.classList.remove( 'is-loading' );
+
+		if ( ! attributes.attributeId ) {
+			return null;
+		}
 
 		render( <Block attributes={ attributes } />, el );
 	} );

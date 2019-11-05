@@ -7,7 +7,8 @@ import {
 	useQueryStateContext,
 } from '@woocommerce/base-hooks';
 import { useCallback, Fragment, useEffect, useState } from '@wordpress/element';
-import { keyBy, invert, map, trim, split, join } from 'lodash';
+import { find, join, findIndex } from 'lodash';
+import { ATTRIBUTES } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -22,6 +23,8 @@ const AttributeFilterBlock = ( { attributes } ) => {
 	const { showCounts, attributeId, queryType } = attributes;
 
 	const [ options, setOptions ] = useState( [] );
+	const [ checkedOptions, setCheckedOptions ] = useState( [] );
+	const [ currentAttribute, setCurrentAttribute ] = useState( [] );
 
 	const [ productAttributes, setProductAttributes ] = useQueryStateByKey(
 		'product-grid',
@@ -116,39 +119,42 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		allTermsIsLoading,
 	] );
 
-	const onChange = useCallback( ( event ) => {
-		const checked = event.target.checked;
-		const slug = event.target.name;
-		const keyedAttributes = keyBy( productAttributes, 'attribute' );
-
-		// Get current terms as array.
-		const terms =
-			keyedAttributes.pa_color && keyedAttributes.pa_color.slug
-				? invert(
-						map( split( keyedAttributes.pa_color.slug, ',' ), trim )
-				  )
-				: [];
-
-		if ( checked ) {
-			terms[ slug ] = 1;
-		} else {
-			delete terms[ slug ];
-		}
-
-		keyedAttributes.pa_color = {};
-		keyedAttributes.pa_color.attribute = 'pa_color';
-		keyedAttributes.pa_color.slug = join(
-			Object.values( invert( terms ) ).filter( Boolean ),
-			','
+	useEffect( () => {
+		setCurrentAttribute(
+			find( ATTRIBUTES, [ 'attribute_id', attributeId + '' ] )
 		);
-		keyedAttributes.pa_color.operator = 'or' === queryType ? 'in' : 'and';
+	}, [ attributeId ] );
 
-		if ( ! keyedAttributes.pa_color.slug ) {
-			delete keyedAttributes.pa_color;
+	useEffect( () => {
+		const taxonomy = currentAttribute.attribute_name;
+		const newProductAttributes = productAttributes;
+		const currentQueryIndex = findIndex( newProductAttributes, [
+			'attribute',
+			taxonomy,
+		] );
+
+		const updatedQuery = {
+			attribute: taxonomy,
+			operator: 'or' === queryType ? 'in' : 'and',
+			slug: join( checkedOptions, ',' ),
+		};
+
+		if ( ! updatedQuery.slug ) {
+			delete newProductAttributes[ currentQueryIndex ];
+		} else {
+			newProductAttributes[ currentQueryIndex ] = updatedQuery;
 		}
 
-		setProductAttributes( Object.values( keyedAttributes ) );
+		setProductAttributes( newProductAttributes );
+	}, [ checkedOptions, currentAttribute, productAttributes ] );
+
+	const onChange = useCallback( ( checked ) => {
+		setCheckedOptions( checked );
 	}, [] );
+
+	if ( ! currentAttribute ) {
+		return null;
+	}
 
 	return (
 		<div className="wc-block-attribute-filter">

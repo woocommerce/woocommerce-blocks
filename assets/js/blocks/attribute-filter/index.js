@@ -48,8 +48,9 @@ registerBlockType( 'woocommerce/attribute-filter', {
 	 * Save the props to post content.
 	 */
 	save( { attributes } ) {
-		const { showCounts, displayStyle, queryType } = attributes;
+		const { showCounts, displayStyle, queryType, attributeId } = attributes;
 		const data = {
+			'data-attributeid': attributeId,
 			'data-showcounts': showCounts,
 			'data-displaystyle': displayStyle,
 			'data-querytype': queryType,

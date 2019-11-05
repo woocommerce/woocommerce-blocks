@@ -1,8 +1,8 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
-import { Fragment, useState } from '@wordpress/element';
+import { __, sprintf, _n } from '@wordpress/i18n';
+import { Fragment, useState, useCallback } from '@wordpress/element';
 import { InspectorControls, BlockControls } from '@wordpress/editor';
 import {
 	Placeholder,
@@ -15,6 +15,8 @@ import {
 } from '@wordpress/components';
 import Gridicon from 'gridicons';
 import { ATTRIBUTES } from '@woocommerce/block-settings';
+import { SearchListControl } from '@woocommerce/components';
+import { mapValues, toArray } from 'lodash';
 
 /**
  * Internal dependencies
@@ -24,7 +26,6 @@ import './editor.scss';
 import { IconExternal } from '../../components/icons';
 import { ADMIN_URL } from '@woocommerce/settings';
 import ToggleButtonControl from '../../components/toggle-button-control';
-import ProductAttributeControl from '@woocommerce/block-components/product-attribute-control';
 
 const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 	const [ isEditing, setIsEditing ] = useState( ! attributes.attributeId );
@@ -154,7 +155,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 				'woo-gutenberg-products-block'
 			) }
 			instructions={ __(
-				'Display a list of filters based on a chosen product attribute.',
+				'Display a list of filters based on a chosen attribute.',
 				'woo-gutenberg-products-block'
 			) }
 		>
@@ -187,16 +188,63 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 		</Placeholder>
 	);
 
+	const onDone = useCallback( () => {
+		setIsEditing( false );
+		debouncedSpeak(
+			__(
+				'Showing attribute filter block preview.',
+				'woo-gutenberg-products-block'
+			)
+		);
+	}, [] );
+
+	const onChange = useCallback( ( selected ) => {
+		setAttributes( {
+			attributeId: selected[ 0 ].id,
+		} );
+	}, [] );
+
 	const renderEditMode = () => {
-		const onDone = () => {
-			setIsEditing( false );
-			debouncedSpeak(
-				__(
-					'Showing attribute filter block preview.',
-					'woo-gutenberg-products-block'
-				)
-			);
+		const { attributeId } = attributes;
+
+		const messages = {
+			clear: __(
+				'Clear selected attribute',
+				'woo-gutenberg-products-block'
+			),
+			list: __( 'Product Attributes', 'woo-gutenberg-products-block' ),
+			noItems: __(
+				"Your store doesn't have any product attributes.",
+				'woo-gutenberg-products-block'
+			),
+			search: __(
+				'Search for product attribute',
+				'woo-gutenberg-products-block'
+			),
+			selected: ( n ) =>
+				sprintf(
+					_n(
+						'%d attribute selected',
+						'%d attributes selected',
+						n,
+						'woo-gutenberg-products-block'
+					),
+					n
+				),
+			updated: __(
+				'Product attribute search results updated.',
+				'woo-gutenberg-products-block'
+			),
 		};
+
+		const list = toArray(
+			mapValues( ATTRIBUTES, ( item ) => {
+				return {
+					id: parseInt( item.attribute_id, 10 ),
+					name: item.attribute_label,
+				};
+			} )
+		);
 
 		return (
 			<Placeholder
@@ -207,12 +255,21 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 					'woo-gutenberg-products-block'
 				) }
 				instructions={ __(
-					'Display a list of filters based on a chosen product attribute.',
+					'Display a list of filters based on a chosen attribute.',
 					'woo-gutenberg-products-block'
 				) }
 			>
 				<div className="wc-block-attribute-filter__selection">
-					<ProductAttributeControl onChange={ () => {} } />
+					<SearchListControl
+						className="woocommerce-product-attributes"
+						list={ list }
+						selected={ list.filter(
+							( { id } ) => id === attributeId
+						) }
+						onChange={ onChange }
+						messages={ messages }
+						isSingle
+					/>
 					<Button isDefault onClick={ onDone }>
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }
 					</Button>
