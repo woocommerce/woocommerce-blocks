@@ -142,6 +142,15 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 						}
 					/>
 				</PanelBody>
+				<PanelBody
+					title={ __(
+						'Filter Products by Attribute',
+						'woo-gutenberg-products-block'
+					) }
+					initialOpen={ false }
+				>
+					{ renderAttributeControl() }
+				</PanelBody>
 			</InspectorControls>
 		);
 	};
@@ -204,7 +213,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 		} );
 	}, [] );
 
-	const renderEditMode = () => {
+	const renderAttributeControl = () => {
 		const { attributeId } = attributes;
 
 		const messages = {
@@ -218,7 +227,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 				'woo-gutenberg-products-block'
 			),
 			search: __(
-				'Search for product attribute',
+				'Search for a product attribute:',
 				'woo-gutenberg-products-block'
 			),
 			selected: ( n ) =>
@@ -247,6 +256,19 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 		);
 
 		return (
+			<SearchListControl
+				className="woocommerce-product-attributes"
+				list={ list }
+				selected={ list.filter( ( { id } ) => id === attributeId ) }
+				onChange={ onChange }
+				messages={ messages }
+				isSingle
+			/>
+		);
+	};
+
+	const renderEditMode = () => {
+		return (
 			<Placeholder
 				className="wc-block-attribute-filter"
 				icon={ <Gridicon icon="menus" /> }
@@ -260,16 +282,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 				) }
 			>
 				<div className="wc-block-attribute-filter__selection">
-					<SearchListControl
-						className="woocommerce-product-attributes"
-						list={ list }
-						selected={ list.filter(
-							( { id } ) => id === attributeId
-						) }
-						onChange={ onChange }
-						messages={ messages }
-						isSingle
-					/>
+					{ renderAttributeControl() }
 					<Button isDefault onClick={ onDone }>
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }
 					</Button>
