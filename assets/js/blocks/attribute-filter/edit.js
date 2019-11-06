@@ -16,7 +16,7 @@ import {
 import Gridicon from 'gridicons';
 import { ATTRIBUTES } from '@woocommerce/block-settings';
 import { SearchListControl } from '@woocommerce/components';
-import { mapValues, toArray } from 'lodash';
+import { mapValues, toArray, sortBy } from 'lodash';
 
 /**
  * Internal dependencies
@@ -229,13 +229,16 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 			),
 		};
 
-		const list = toArray(
-			mapValues( ATTRIBUTES, ( item ) => {
-				return {
-					id: parseInt( item.attribute_id, 10 ),
-					name: item.attribute_label,
-				};
-			} )
+		const list = sortBy(
+			toArray(
+				mapValues( ATTRIBUTES, ( item ) => {
+					return {
+						id: parseInt( item.attribute_id, 10 ),
+						name: item.attribute_label,
+					};
+				} )
+			),
+			'name'
 		);
 
 		return (
