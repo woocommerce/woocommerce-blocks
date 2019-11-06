@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import {
 	Fragment,
@@ -19,9 +20,16 @@ import './style.scss';
 /**
  * Component used to show a list of checkboxes in a group.
  */
-const CheckboxList = ( { className, onChange, options, isLoading } ) => {
+const CheckboxList = ( {
+	className,
+	onChange,
+	options,
+	isLoading,
+	limit = 10,
+} ) => {
 	// Holds all checked options.
 	const [ checked, setChecked ] = useState( [] );
+	const [ showExpanded, setShowExpanded ] = useState( false );
 
 	useEffect( () => {
 		onChange( checked );
@@ -63,9 +71,15 @@ const CheckboxList = ( { className, onChange, options, isLoading } ) => {
 	);
 
 	const renderOptions = useCallback( () => {
+		// Truncate options if > the limit + 5.
+		const shouldTruncateOptions = options.length > limit + 5;
+		const showOptions =
+			shouldTruncateOptions && ! showExpanded
+				? [ ...options.slice( 0, limit ) ]
+				: options;
 		return (
 			<Fragment>
-				{ options.map( ( option ) => (
+				{ showOptions.map( ( option ) => (
 					<li key={ option.key }>
 						<input
 							type="checkbox"
@@ -77,9 +91,28 @@ const CheckboxList = ( { className, onChange, options, isLoading } ) => {
 						<label htmlFor={ option.key }>{ option.label }</label>
 					</li>
 				) ) }
+				{ shouldTruncateOptions && (
+					<li className="show-more">
+						<button
+							onClick={ () => {
+								setShowExpanded( ! showExpanded );
+							} }
+						>
+							{ showExpanded
+								? __(
+										'Show less',
+										'woo-gutenberg-products-block'
+								  )
+								: __(
+										'Show more',
+										'woo-gutenberg-products-block'
+								  ) }
+						</button>
+					</li>
+				) }
 			</Fragment>
 		);
-	}, [ options, checked ] );
+	}, [ options, checked, showExpanded ] );
 
 	const listClass = classNames(
 		'wc-block-checkbox-list',
@@ -105,6 +138,7 @@ CheckboxList.propTypes = {
 	),
 	className: PropTypes.string,
 	isLoading: PropTypes.bool,
+	limit: PropTypes.number,
 };
 
 export default CheckboxList;
