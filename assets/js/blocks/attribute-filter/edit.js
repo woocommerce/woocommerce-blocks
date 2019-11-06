@@ -48,7 +48,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 	};
 
 	const getInspectorControls = () => {
-		const { showCounts, displayStyle, queryType } = attributes;
+		const { showCounts, queryType } = attributes;
 
 		return (
 			<InspectorControls key="inspector">
@@ -87,37 +87,20 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 				>
 					<ToggleButtonControl
 						label={ __(
-							'Display Style',
-							'woo-gutenberg-products-block'
-						) }
-						value={ displayStyle }
-						options={ [
-							{
-								label: __(
-									'List',
-									'woo-gutenberg-products-block'
-								),
-								value: 'list',
-							},
-							{
-								label: __(
-									'Dropdown',
-									'woo-gutenberg-products-block'
-								),
-								value: 'dropdown',
-							},
-						] }
-						onChange={ ( value ) =>
-							setAttributes( {
-								displayStyle: value,
-							} )
-						}
-					/>
-					<ToggleButtonControl
-						label={ __(
 							'Query Type',
 							'woo-gutenberg-products-block'
 						) }
+						help={
+							'and' === queryType
+								? __(
+										'Products that have all of the selected attributes will be shown.',
+										'woo-gutenberg-products-block'
+								  )
+								: __(
+										'Products that have any of the selected attributes will be shown.',
+										'woo-gutenberg-products-block'
+								  )
+						}
 						value={ queryType }
 						options={ [
 							{

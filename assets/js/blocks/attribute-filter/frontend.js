@@ -17,7 +17,6 @@ if ( containers.length ) {
 		const attributes = {
 			attributeId: parseInt( el.dataset.attributeid || 0, 10 ),
 			showCounts: el.dataset.showcounts === 'true',
-			displayStyle: el.dataset.displaystyle,
 			queryType: el.dataset.querytype,
 		};
 		el.classList.remove( 'is-loading' );

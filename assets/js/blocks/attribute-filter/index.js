@@ -34,10 +34,6 @@ registerBlockType( 'woocommerce/attribute-filter', {
 			type: 'boolean',
 			default: true,
 		},
-		displayStyle: {
-			type: 'string',
-			default: 'list',
-		},
 		queryType: {
 			type: 'string',
 			default: 'and',
