@@ -69,7 +69,7 @@ const CheckboxList = ( {
 		[ checked ]
 	);
 
-	const renderOptions = useCallback( () => {
+	const renderedOptions = useMemo( () => {
 		// Truncate options if > the limit + 5.
 		const shouldTruncateOptions = options.length > limit + 5;
 		const showOptions =
@@ -121,7 +121,7 @@ const CheckboxList = ( {
 
 	return (
 		<ul className={ listClass }>
-			{ isLoading ? placeholder : renderOptions() }
+			{ isLoading ? placeholder : renderedOptions }
 		</ul>
 	);
 };
