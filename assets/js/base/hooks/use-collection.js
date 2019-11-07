@@ -60,7 +60,7 @@ export const useCollection = ( options ) => {
 				resourceName,
 				currentQuery,
 				currentResourceValues,
-			].filter( ( item ) => typeof item !== 'undefined' );
+			];
 			return {
 				results: store.getCollection( ...args ),
 				isLoading: ! store.hasFinishedResolution(

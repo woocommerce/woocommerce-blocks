@@ -66,7 +66,7 @@ export const useCollectionHeader = ( headerKey, options ) => {
 				resourceName,
 				currentQuery,
 				currentResourceValues,
-			].filter( ( item ) => typeof item !== 'undefined' );
+			];
 			return {
 				value: store.getCollectionHeader( ...args ),
 				isLoading: store.hasFinishedResolution(
