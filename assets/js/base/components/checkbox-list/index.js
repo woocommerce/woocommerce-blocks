@@ -162,7 +162,7 @@ const CheckboxList = ( {
 
 	const listClass = classNames(
 		'wc-block-checkbox-list',
-		isLoading && 'is-loading',
+		'is-loading': isLoading,
 		className
 	);
 
