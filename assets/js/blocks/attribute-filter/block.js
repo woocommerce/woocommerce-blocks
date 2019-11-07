@@ -8,13 +8,13 @@ import {
 } from '@woocommerce/base-hooks';
 import { useCallback, Fragment, useEffect, useState } from '@wordpress/element';
 import { find, sortBy } from 'lodash';
+import CheckboxList from '@woocommerce/base-components/checkbox-list';
+import { ATTRIBUTES } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
-import CheckboxList from '@woocommerce/base-components/checkbox-list';
-import { ATTRIBUTES } from '@woocommerce/block-settings';
 
 /**
  * Component displaying an attribute filter.

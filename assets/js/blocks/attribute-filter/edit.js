@@ -16,6 +16,8 @@ import {
 import Gridicon from 'gridicons';
 import { SearchListControl } from '@woocommerce/components';
 import { mapValues, toArray, sortBy } from 'lodash';
+import { ATTRIBUTES } from '@woocommerce/block-settings';
+import { ADMIN_URL } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -23,9 +25,7 @@ import { mapValues, toArray, sortBy } from 'lodash';
 import Block from './block.js';
 import './editor.scss';
 import { IconExternal } from '../../components/icons';
-import { ADMIN_URL } from '@woocommerce/settings';
 import ToggleButtonControl from '../../components/toggle-button-control';
-import { ATTRIBUTES } from '@woocommerce/block-settings';
 
 const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 	const [ isEditing, setIsEditing ] = useState( ! attributes.attributeId );
