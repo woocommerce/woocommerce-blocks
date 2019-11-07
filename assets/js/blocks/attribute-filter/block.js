@@ -118,6 +118,8 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		showCounts,
 		filteredCountsIsLoading,
 		allTermsIsLoading,
+		getFilteredTerm,
+		getLabel,
 	] );
 
 	useEffect( () => {
