@@ -146,7 +146,7 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		}
 
 		setProductAttributes( sortBy( newProductAttributes, 'attribute' ) );
-	}, [ checkedOptions ] );
+	}, [ checkedOptions, currentAttribute, productAttributes ] );
 
 	const onChange = useCallback( ( checked ) => {
 		setCheckedOptions( checked );
