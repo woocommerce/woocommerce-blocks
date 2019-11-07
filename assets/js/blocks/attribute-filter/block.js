@@ -132,7 +132,7 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		const newProductAttributes = productAttributes.filter(
 			( item ) => item.attribute !== taxonomy
 		);
-		const slug = join( checkedOptions, ',' );
+		const slug = checkedOptions.join( ',' );
 
 		if ( slug ) {
 			const updatedQuery = {

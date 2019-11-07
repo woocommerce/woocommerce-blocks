@@ -48,7 +48,7 @@ export const useQueryStateContext = ( context ) => {
 export const useQueryStateByKey = (
 	context,
 	queryKey,
-	defaultValue = undefined
+	defaultValue
 ) => {
 	const queryValue = useSelect(
 		( select ) => {
