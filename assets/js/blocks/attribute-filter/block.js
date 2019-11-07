@@ -4,7 +4,7 @@
 import {
 	useCollection,
 	useQueryStateByKey,
-	useQueryStateContext,
+	useQueryStateByContext,
 } from '@woocommerce/base-hooks';
 import {
 	useCallback,
@@ -43,7 +43,7 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		'attributes',
 		[]
 	);
-	const [ queryState ] = useQueryStateContext( 'product-grid' );
+	const [ queryState ] = useQueryStateByContext( 'product-grid' );
 
 	const countsQueryState = useMemo( () => {
 		if ( ! taxonomy ) {
