@@ -97,7 +97,7 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		allTerms.forEach( ( term ) => {
 			const filteredTerm = getFilteredTerm( term.id );
 
-			if ( ! filteredTerm && null !== filteredCounts ) {
+			if ( ! filteredTerm && filteredCounts !== null ) {
 				return;
 			}
 
