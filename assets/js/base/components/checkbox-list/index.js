@@ -151,7 +151,7 @@ const CheckboxList = ( {
 							</label>
 						</li>
 						{ shouldTruncateOptions &&
-							index === limit &&
+							index === ( limit - 1 ) &&
 							renderedShowMore }
 					</Fragment>
 				) ) }
