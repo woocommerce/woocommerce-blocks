@@ -35,7 +35,7 @@ const CheckboxList = ( {
 		onChange( checked );
 	}, [ checked ] );
 
-	const renderPlaceholder = useMemo( () => {
+	const placeholder = useMemo( () => {
 		return (
 			<Fragment>
 				{ [ ...Array( 5 ) ].map( ( x, i ) => (
@@ -121,7 +121,7 @@ const CheckboxList = ( {
 
 	return (
 		<ul className={ listClass }>
-			{ isLoading ? renderPlaceholder : renderOptions() }
+			{ isLoading ? placeholder : renderOptions() }
 		</ul>
 	);
 };
