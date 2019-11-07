@@ -134,7 +134,7 @@ const CheckboxList = ( {
 							className={
 								shouldTruncateOptions &&
 								! showExpanded &&
-								index > limit
+								index >= limit
 									? 'hidden'
 									: ''
 							}
