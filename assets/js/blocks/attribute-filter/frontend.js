@@ -11,9 +11,9 @@ import Block from './block.js';
 const getProps = ( el ) => {
 	return {
 		attributes: {
-			attributeId: parseInt( el.dataset[ 'attribute-id' ] || 0, 10 ),
-			showCounts: el.dataset[ 'show-counts' ] === 'true',
-			queryType: el.dataset[ 'query-type' ],
+			attributeId: parseInt( el.dataset.attributeId || 0, 10 ),
+			showCounts: el.dataset.showCounts === 'true',
+			queryType: el.dataset.queryType,
 		},
 	};
 };
