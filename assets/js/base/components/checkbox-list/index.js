@@ -22,9 +22,9 @@ import './style.scss';
  */
 const CheckboxList = ( {
 	className,
-	onChange,
-	options,
-	isLoading,
+	onChange = () => {},
+	options = [],
+	isLoading = false,
 	limit = 10,
 } ) => {
 	// Holds all checked options.
