@@ -36,7 +36,7 @@ registerBlockType( 'woocommerce/attribute-filter', {
 		},
 		queryType: {
 			type: 'string',
-			default: 'and',
+			default: 'or',
 		},
 	},
 	edit,

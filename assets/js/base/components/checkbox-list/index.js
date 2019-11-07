@@ -131,10 +131,12 @@ const CheckboxList = ( {
 				{ options.map( ( option, index ) => (
 					<Fragment key={ option.key }>
 						<li
-							aria-hidden={
+							className={
 								shouldTruncateOptions &&
 								! showExpanded &&
 								index > limit
+									? 'hidden'
+									: ''
 							}
 						>
 							<input

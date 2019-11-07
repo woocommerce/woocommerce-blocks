@@ -6,7 +6,13 @@ import {
 	useQueryStateByKey,
 	useQueryStateContext,
 } from '@woocommerce/base-hooks';
-import { useCallback, Fragment, useEffect, useState } from '@wordpress/element';
+import {
+	useCallback,
+	Fragment,
+	useEffect,
+	useState,
+	useMemo,
+} from '@wordpress/element';
 import { find, sortBy } from 'lodash';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
 import { ATTRIBUTES } from '@woocommerce/block-settings';
@@ -20,19 +26,48 @@ import './style.scss';
  * Component displaying an attribute filter.
  */
 const AttributeFilterBlock = ( { attributes } ) => {
-	const { showCounts, attributeId, queryType } = attributes;
-
 	const [ options, setOptions ] = useState( [] );
 	const [ checkedOptions, setCheckedOptions ] = useState( [] );
-	const [ currentAttribute, setCurrentAttribute ] = useState( [] );
+
+	const { showCounts, attributeId, queryType } = attributes;
+	const productAttribute = find( ATTRIBUTES, [
+		'attribute_id',
+		attributeId.toString(),
+	] );
+	const taxonomy = productAttribute.attribute_name
+		? 'pa_' + productAttribute.attribute_name
+		: null;
 
 	const [ productAttributes, setProductAttributes ] = useQueryStateByKey(
 		'product-grid',
 		'attributes',
 		[]
 	);
-
 	const [ queryState ] = useQueryStateContext( 'product-grid' );
+
+	const countsQueryState = useMemo( () => {
+		if ( ! taxonomy ) {
+			return {};
+		}
+		// If doing an "AND" query, we need to remove current taxonomy query so counts are not affected.
+		const modifiedQueryState =
+			'and' === queryType
+				? productAttributes.filter(
+						( item ) => item.attribute !== taxonomy
+				  )
+				: productAttributes;
+
+		// Take current query and remove paging args.
+		return {
+			...queryState,
+			orderby: undefined,
+			order: undefined,
+			per_page: undefined,
+			page: undefined,
+			attributes: modifiedQueryState,
+			calculate_attribute_counts: [ taxonomy ],
+		};
+	}, [ queryState, taxonomy, queryType, productAttributes ] );
 
 	const { results: allTerms, isLoading: allTermsIsLoading } = useCollection( {
 		namespace: '/wc/blocks',
@@ -48,12 +83,7 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		namespace: '/wc/store',
 		resourceName: 'products/collection-data',
 		query: {
-			...queryState,
-			orderby: undefined,
-			order: undefined,
-			per_page: undefined,
-			page: undefined,
-			calculate_attribute_counts: [ attributeId ],
+			...countsQueryState,
 		},
 	} );
 
@@ -124,18 +154,6 @@ const AttributeFilterBlock = ( { attributes } ) => {
 	] );
 
 	useEffect( () => {
-		setCurrentAttribute(
-			find( ATTRIBUTES, [ 'attribute_id', attributeId.toString() ] )
-		);
-	}, [ attributeId ] );
-
-	useEffect( () => {
-		if ( ! currentAttribute.attribute_name ) {
-			return;
-		}
-
-		const taxonomy = 'pa_' + currentAttribute.attribute_name;
-
 		const newProductAttributes = productAttributes.filter(
 			( item ) => item.attribute !== taxonomy
 		);
@@ -151,13 +169,13 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		}
 
 		setProductAttributes( sortBy( newProductAttributes, 'attribute' ) );
-	}, [ checkedOptions, currentAttribute, productAttributes ] );
+	}, [ checkedOptions, taxonomy, productAttributes ] );
 
 	const onChange = useCallback( ( checked ) => {
 		setCheckedOptions( checked );
 	}, [] );
 
-	if ( ! currentAttribute ) {
+	if ( ! taxonomy ) {
 		return null;
 	}
 
