@@ -4,11 +4,13 @@
 
 		li {
 			text-decoration: underline;
-			cursor: pointer;
+
+			label,
+			input {
+				cursor: pointer;
+			}
 		}
-		li * {
-			cursor: pointer;
-		}
+
 		.wc-block-attribute-filter-list-count {
 			float: right;
 		}
