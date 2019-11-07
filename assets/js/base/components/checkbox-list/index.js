@@ -61,9 +61,8 @@ const CheckboxList = ( {
 
 			if ( isChecked ) {
 				newChecked.push( checkedValue );
+				newChecked.sort();
 			}
-
-			newChecked.sort();
 
 			setChecked( newChecked );
 		},
