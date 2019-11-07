@@ -278,7 +278,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 
 	return (
 		<Fragment>
-			{ 0 === ATTRIBUTES.length ? (
+			{ 0 === Object.keys( ATTRIBUTES ).length ? (
 				noAttributesPlaceholder()
 			) : (
 				<Fragment>
