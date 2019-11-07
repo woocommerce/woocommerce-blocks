@@ -19,7 +19,7 @@ import { useShallowEqual } from './use-shallow-equal';
  *                 query state value for the given context.  The second element
  *                 is a dispatcher function for setting the query state.
  */
-export const useQueryStateContext = ( context ) => {
+export const useQueryStateByContext = ( context ) => {
 	const queryState = useSelect(
 		( select ) => {
 			const store = select( storeKey );
@@ -70,7 +70,7 @@ export const useQueryStateByKey = (
 };
 
 /**
- * A custom hook that works similarly to useQueryStateContext. However, this
+ * A custom hook that works similarly to useQueryStateByContext. However, this
  * hook allows for synchronizing with a provided queryState object.
  *
  * This hook does the following things with the provided `synchronizedQuery`
@@ -95,7 +95,7 @@ export const useQueryStateByKey = (
  *                                   synchronize internal query state with.
  */
 export const useSynchronizedQueryState = ( context, synchronizedQuery ) => {
-	const [ queryState, setQueryState ] = useQueryStateContext( context );
+	const [ queryState, setQueryState ] = useQueryStateByContext( context );
 	const currentSynchronizedQuery = useShallowEqual( synchronizedQuery );
 	// used to ensure we allow initial synchronization to occur before
 	// returning non-synced state.
