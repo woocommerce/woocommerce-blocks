@@ -122,7 +122,7 @@ const AttributeFilterBlock = ( { attributes } ) => {
 
 	useEffect( () => {
 		setCurrentAttribute(
-			find( ATTRIBUTES, [ 'attribute_id', attributeId + '' ] )
+			find( ATTRIBUTES, [ 'attribute_id', attributeId.toString() ] )
 		);
 	}, [ attributeId ] );
 
