@@ -129,10 +129,6 @@ const AttributeFilterBlock = ( { attributes } ) => {
 	useEffect( () => {
 		const taxonomy = 'pa_' + currentAttribute.attribute_name;
 
-		if ( ! taxonomy ) {
-			return;
-		}
-
 		const newProductAttributes = productAttributes.filter(
 			( item ) => item.attribute !== taxonomy
 		);
