@@ -13,14 +13,14 @@ import {
 	useState,
 	useMemo,
 } from '@wordpress/element';
-import { find, sortBy } from 'lodash';
+import { sortBy } from 'lodash';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
-import { ATTRIBUTES } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+import { getTaxonomyFromAttributeId } from '../../utils/attributes';
 
 /**
  * Component displaying an attribute filter.
@@ -28,27 +28,17 @@ import './style.scss';
 const AttributeFilterBlock = ( { attributes } ) => {
 	const [ options, setOptions ] = useState( [] );
 	const [ checkedOptions, setCheckedOptions ] = useState( [] );
-
 	const { showCounts, attributeId, queryType } = attributes;
-	const productAttribute = find( ATTRIBUTES, [
-		'attribute_id',
-		attributeId.toString(),
-	] );
-	const taxonomy = productAttribute.attribute_name
-		? 'pa_' + productAttribute.attribute_name
-		: null;
+	const taxonomy = getTaxonomyFromAttributeId( attributeId );
 
+	const [ queryState ] = useQueryStateByContext( 'product-grid' );
 	const [ productAttributes, setProductAttributes ] = useQueryStateByKey(
 		'product-grid',
 		'attributes',
 		[]
 	);
-	const [ queryState ] = useQueryStateByContext( 'product-grid' );
 
-	const countsQueryState = useMemo( () => {
-		if ( ! taxonomy ) {
-			return {};
-		}
+	const filteredCountsQueryState = useMemo( () => {
 		// If doing an "AND" query, we need to remove current taxonomy query so counts are not affected.
 		const modifiedQueryState =
 			'and' === queryType
@@ -69,21 +59,20 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		};
 	}, [ queryState, taxonomy, queryType, productAttributes ] );
 
-	const { results: allTerms, isLoading: allTermsIsLoading } = useCollection( {
-		namespace: '/wc/blocks',
+	const {
+		results: attributeTerms,
+		isLoading: attributeTermsLoading,
+	} = useCollection( {
+		namespace: '/wc/store',
 		resourceName: 'products/attributes/terms',
 		resourceValues: [ attributeId ],
-		query: { per_page: 100 },
 	} );
 
-	const {
-		results: filteredCounts,
-		isLoading: filteredCountsIsLoading,
-	} = useCollection( {
+	const { results: filteredCounts } = useCollection( {
 		namespace: '/wc/store',
 		resourceName: 'products/collection-data',
 		query: {
-			...countsQueryState,
+			...filteredCountsQueryState,
 		},
 	} );
 
@@ -119,13 +108,13 @@ const AttributeFilterBlock = ( { attributes } ) => {
 	 * Compare intersection of all terms and filtered counts to get a list of options to display.
 	 */
 	useEffect( () => {
-		if ( filteredCountsIsLoading || allTermsIsLoading ) {
+		if ( attributeTermsLoading ) {
 			return;
 		}
 
 		const newOptions = [];
 
-		allTerms.forEach( ( term ) => {
+		attributeTerms.forEach( ( term ) => {
 			const filteredTerm = getFilteredTerm( term.id );
 
 			if ( ! filteredTerm && filteredCounts !== null ) {
@@ -145,10 +134,8 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		setOptions( newOptions );
 	}, [
 		filteredCounts,
-		allTerms,
-		showCounts,
-		filteredCountsIsLoading,
-		allTermsIsLoading,
+		attributeTerms,
+		attributeTermsLoading,
 		getFilteredTerm,
 		getLabel,
 	] );
@@ -185,7 +172,7 @@ const AttributeFilterBlock = ( { attributes } ) => {
 				className={ 'wc-block-attribute-filter-list' }
 				options={ options }
 				onChange={ onChange }
-				isLoading={ allTermsIsLoading }
+				isLoading={ attributeTermsLoading }
 			/>
 		</div>
 	);
