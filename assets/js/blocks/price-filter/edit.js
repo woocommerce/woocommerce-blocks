@@ -12,6 +12,7 @@ import {
 	Button,
 } from '@wordpress/components';
 import { PRODUCT_COUNT } from '@woocommerce/block-settings';
+import { getAdminLink } from '@woocommerce/navigation';
 
 /**
  * Internal dependencies
@@ -19,7 +20,6 @@ import { PRODUCT_COUNT } from '@woocommerce/block-settings';
 import Block from './block.js';
 import './editor.scss';
 import { IconMoney, IconExternal } from '../../components/icons';
-import { ADMIN_URL } from '@woocommerce/settings';
 import ToggleButtonControl from '../../components/toggle-button-control';
 
 export default function( { attributes, setAttributes } ) {
@@ -113,7 +113,7 @@ export default function( { attributes, setAttributes } ) {
 				className="wc-block-price-slider__add_product_button"
 				isDefault
 				isLarge
-				href={ ADMIN_URL + 'post-new.php?post_type=product' }
+				href={ getAdminLink( 'post-new.php?post_type=product' ) }
 			>
 				{ __( 'Add new product', 'woo-gutenberg-products-block' ) +
 					' ' }

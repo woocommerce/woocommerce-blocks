@@ -17,7 +17,7 @@ import Gridicon from 'gridicons';
 import { SearchListControl } from '@woocommerce/components';
 import { mapValues, toArray, sortBy } from 'lodash';
 import { ATTRIBUTES } from '@woocommerce/block-settings';
-import { ADMIN_URL } from '@woocommerce/settings';
+import { getAdminLink } from '@woocommerce/navigation';
 
 /**
  * Internal dependencies
@@ -161,10 +161,9 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 				className="wc-block-attribute-filter__add_attribute_button"
 				isDefault
 				isLarge
-				href={
-					ADMIN_URL +
+				href={ getAdminLink(
 					'edit.php?post_type=product&page=product_attributes'
-				}
+				) }
 			>
 				{ __( 'Add new attribute', 'woo-gutenberg-products-block' ) +
 					' ' }
