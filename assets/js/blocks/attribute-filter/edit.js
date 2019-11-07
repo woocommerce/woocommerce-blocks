@@ -91,7 +91,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 							'woo-gutenberg-products-block'
 						) }
 						help={
-							'and' === queryType
+							queryType === 'and'
 								? __(
 										'Products that have all of the selected attributes will be shown.',
 										'woo-gutenberg-products-block'
@@ -276,7 +276,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 		);
 	};
 
-	return 0 === Object.keys( ATTRIBUTES ).length ? (
+	return Object.keys( ATTRIBUTES ).length === 0 ? (
 		noAttributesPlaceholder()
 	) : (
 		<Fragment>

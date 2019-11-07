@@ -133,7 +133,7 @@ const CheckboxList = ( {
 						<li
 							{ ...shouldTruncateOptions &&
 								! showExpanded &&
-								index > limit && { hidden: true } }
+								index >= limit && { hidden: true } }
 						>
 							<input
 								type="checkbox"
@@ -147,7 +147,7 @@ const CheckboxList = ( {
 							</label>
 						</li>
 						{ shouldTruncateOptions &&
-							index === limit &&
+							index === limit - 1 &&
 							renderedShowMore }
 					</Fragment>
 				) ) }
@@ -158,7 +158,9 @@ const CheckboxList = ( {
 
 	const classes = classNames(
 		'wc-block-checkbox-list',
-		isLoading && 'is-loading',
+		{
+			'is-loading': isLoading,
+		},
 		className
 	);
 

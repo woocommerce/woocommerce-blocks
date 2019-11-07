@@ -41,7 +41,7 @@ const AttributeFilterBlock = ( { attributes } ) => {
 	const filteredCountsQueryState = useMemo( () => {
 		// If doing an "AND" query, we need to remove current taxonomy query so counts are not affected.
 		const modifiedQueryState =
-			'and' === queryType
+			queryType === 'and'
 				? productAttributes.filter(
 						( item ) => item.attribute !== taxonomy
 				  )
@@ -149,7 +149,7 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		if ( slug ) {
 			const updatedQuery = {
 				attribute: taxonomy,
-				operator: 'or' === queryType ? 'in' : 'and',
+				operator: queryType === 'or' ? 'in' : 'and',
 				slug,
 			};
 			newProductAttributes.push( updatedQuery );
