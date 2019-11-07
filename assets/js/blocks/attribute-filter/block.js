@@ -162,7 +162,7 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		if ( slug ) {
 			const updatedQuery = {
 				attribute: taxonomy,
-				operator: 'or' === queryType ? 'in' : 'and',
+				operator: queryType === 'or' ? 'in' : 'and',
 				slug,
 			};
 			newProductAttributes.push( updatedQuery );
