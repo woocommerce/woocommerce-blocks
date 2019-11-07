@@ -46,10 +46,10 @@ registerBlockType( 'woocommerce/attribute-filter', {
 	save( { attributes } ) {
 		const { showCounts, displayStyle, queryType, attributeId } = attributes;
 		const data = {
-			'data-attributeid': attributeId,
-			'data-showcounts': showCounts,
-			'data-displaystyle': displayStyle,
-			'data-querytype': queryType,
+			'data-attribute-id': attributeId,
+			'data-show-counts': showCounts,
+			'data-display-style': displayStyle,
+			'data-query-type': queryType,
 		};
 		return (
 			<div className="is-loading" { ...data }>
