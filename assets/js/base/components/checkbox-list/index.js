@@ -66,7 +66,7 @@ const CheckboxList = ( {
 
 			setChecked( newChecked );
 		},
-		[ options, checked ]
+		[ checked ]
 	);
 
 	const renderOptions = useCallback( () => {
