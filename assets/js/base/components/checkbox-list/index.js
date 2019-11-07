@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import {
 	Fragment,
@@ -69,46 +69,91 @@ const CheckboxList = ( {
 		[ checked ]
 	);
 
+	const renderedShowMore = useMemo( () => {
+		const optionCount = options.length;
+		return (
+			! showExpanded && (
+				<li className="show-more">
+					<button
+						onClick={ () => {
+							setShowExpanded( true );
+						} }
+						aria-expanded={ false }
+						aria-label={ sprintf(
+							__(
+								'Show %s more options',
+								'woo-gutenberg-products-block'
+							),
+							optionCount - limit
+						) }
+					>
+						{ // translators: %s number of options to reveal.
+						sprintf(
+							__(
+								'Show %s more',
+								'woo-gutenberg-products-block'
+							),
+							optionCount - limit
+						) }
+					</button>
+				</li>
+			)
+		);
+	}, [ options, limit, showExpanded ] );
+
+	const renderedShowLess = useMemo( () => {
+		return (
+			showExpanded && (
+				<li className="show-less">
+					<button
+						onClick={ () => {
+							setShowExpanded( false );
+						} }
+						aria-expanded={ true }
+						aria-label={ __(
+							'Show less options',
+							'woo-gutenberg-products-block'
+						) }
+					>
+						{ __( 'Show less', 'woo-gutenberg-products-block' ) }
+					</button>
+				</li>
+			)
+		);
+	}, [ showExpanded ] );
+
 	const renderedOptions = useMemo( () => {
 		// Truncate options if > the limit + 5.
-		const shouldTruncateOptions = options.length > limit + 5;
-		const showOptions =
-			shouldTruncateOptions && ! showExpanded
-				? [ ...options.slice( 0, limit ) ]
-				: options;
+		const optionCount = options.length;
+		const shouldTruncateOptions = optionCount > limit + 5;
 		return (
 			<Fragment>
-				{ showOptions.map( ( option ) => (
-					<li key={ option.key }>
-						<input
-							type="checkbox"
-							id={ option.key }
-							value={ option.key }
-							onChange={ onCheckboxChange }
-							checked={ checked.includes( option.key ) }
-						/>
-						<label htmlFor={ option.key }>{ option.label }</label>
-					</li>
-				) ) }
-				{ shouldTruncateOptions && (
-					<li className="show-more">
-						<button
-							onClick={ () => {
-								setShowExpanded( ! showExpanded );
-							} }
+				{ options.map( ( option, index ) => (
+					<Fragment key={ option.key }>
+						<li
+							aria-hidden={
+								shouldTruncateOptions &&
+								! showExpanded &&
+								index > limit
+							}
 						>
-							{ showExpanded
-								? __(
-										'Show less',
-										'woo-gutenberg-products-block'
-								  )
-								: __(
-										'Show more',
-										'woo-gutenberg-products-block'
-								  ) }
-						</button>
-					</li>
-				) }
+							<input
+								type="checkbox"
+								id={ option.key }
+								value={ option.key }
+								onChange={ onCheckboxChange }
+								checked={ checked.includes( option.key ) }
+							/>
+							<label htmlFor={ option.key }>
+								{ option.label }
+							</label>
+						</li>
+						{ shouldTruncateOptions &&
+							index === limit &&
+							renderedShowMore }
+					</Fragment>
+				) ) }
+				{ shouldTruncateOptions && renderedShowLess }
 			</Fragment>
 		);
 	}, [ options, checked, showExpanded, limit, onCheckboxChange ] );

@@ -10,12 +10,19 @@
 		list-style: none outside;
 	}
 
-	li.show-more button {
-		background: none;
-		border: none;
-		padding: 0;
-		text-decoration: underline;
-		cursor: pointer;
+	li.show-more,
+	li.show-less {
+		button {
+			background: none;
+			border: none;
+			padding: 0;
+			text-decoration: underline;
+			cursor: pointer;
+		}
+	}
+
+	li[aria-hidden="true"] {
+		display: none;
 	}
 
 	&.is-loading {

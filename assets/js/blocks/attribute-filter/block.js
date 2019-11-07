@@ -38,6 +38,7 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		namespace: '/wc/blocks',
 		resourceName: 'products/attributes/terms',
 		resourceValues: [ attributeId ],
+		query: { per_page: 100 },
 	} );
 
 	const {
