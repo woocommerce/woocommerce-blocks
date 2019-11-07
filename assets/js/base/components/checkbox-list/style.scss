@@ -21,10 +21,6 @@
 		}
 	}
 
-	li.hidden {
-		display: none;
-	}
-
 	&.is-loading {
 		li {
 			@include placeholder();

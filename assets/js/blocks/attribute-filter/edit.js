@@ -276,22 +276,18 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 		);
 	};
 
-	return (
+	return 0 === Object.keys( ATTRIBUTES ).length ? (
+		noAttributesPlaceholder()
+	) : (
 		<Fragment>
-			{ 0 === Object.keys( ATTRIBUTES ).length ? (
-				noAttributesPlaceholder()
+			{ getBlockControls() }
+			{ getInspectorControls() }
+			{ isEditing ? (
+				renderEditMode()
 			) : (
-				<Fragment>
-					{ getBlockControls() }
-					{ getInspectorControls() }
-					{ isEditing ? (
-						renderEditMode()
-					) : (
-						<Disabled>
-							<Block attributes={ attributes } isPreview />
-						</Disabled>
-					) }
-				</Fragment>
+				<Disabled>
+					<Block attributes={ attributes } isPreview />
+				</Disabled>
 			) }
 		</Fragment>
 	);

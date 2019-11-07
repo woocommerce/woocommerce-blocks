@@ -131,13 +131,9 @@ const CheckboxList = ( {
 				{ options.map( ( option, index ) => (
 					<Fragment key={ option.key }>
 						<li
-							className={
-								shouldTruncateOptions &&
+							{ ...shouldTruncateOptions &&
 								! showExpanded &&
-								index > limit
-									? 'hidden'
-									: ''
-							}
+								index > limit && { hidden: true } }
 						>
 							<input
 								type="checkbox"
@@ -160,14 +156,14 @@ const CheckboxList = ( {
 		);
 	}, [ options, checked, showExpanded, limit, onCheckboxChange ] );
 
-	const listClass = classNames(
+	const classes = classNames(
 		'wc-block-checkbox-list',
 		isLoading && 'is-loading',
 		className
 	);
 
 	return (
-		<ul className={ listClass }>
+		<ul className={ classes }>
 			{ isLoading ? placeholder : renderedOptions }
 		</ul>
 	);
