@@ -61,7 +61,7 @@ const ProductList = ( {
 	);
 	// @todo should add an <ErrorBoundary> in parent component to handle any
 	// errors from the store and format etc.
-	const { products, totalProducts } = useStoreProducts( queryState );
+	const { products, productsLoading, totalProducts } = useStoreProducts( queryState );
 	const onPaginationChange = ( newPage ) => {
 		scrollToTop( { focusableSelector: 'a, button' } );
 		onPageChange( newPage );
@@ -86,9 +86,9 @@ const ProductList = ( {
 	const { contentVisibility } = attributes;
 	const perPage = attributes.columns * attributes.rows;
 	const totalPages = Math.ceil( totalProducts / perPage );
-	const listProducts = products.length
-		? products
-		: Array.from( { length: perPage } );
+	const listProducts = productsLoading && ! products.length
+		? Array.from( { length: perPage } )
+		: products;
 
 	return (
 		<div className={ getClassnames() }>
