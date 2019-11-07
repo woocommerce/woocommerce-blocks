@@ -7,7 +7,7 @@ import {
 	useQueryStateContext,
 } from '@woocommerce/base-hooks';
 import { useCallback, Fragment, useEffect, useState } from '@wordpress/element';
-import { find, join, sortBy } from 'lodash';
+import { find, sortBy } from 'lodash';
 import { ATTRIBUTES } from '@woocommerce/block-settings';
 
 /**
