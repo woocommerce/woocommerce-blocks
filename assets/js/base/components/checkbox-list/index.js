@@ -111,7 +111,7 @@ const CheckboxList = ( {
 				) }
 			</Fragment>
 		);
-	}, [ options, checked, showExpanded ] );
+	}, [ options, checked, showExpanded, limit, onCheckboxChange ] );
 
 	const listClass = classNames(
 		'wc-block-checkbox-list',
