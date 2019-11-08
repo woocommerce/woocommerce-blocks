@@ -82,7 +82,7 @@ const AttributeFilterBlock = ( { attributes } ) => {
 			return (
 				<Fragment key="label">
 					{ name }
-					{ showCounts && count && (
+					{ showCounts && (
 						<span className="wc-block-attribute-filter-list-count">
 							{ count }
 						</span>
@@ -110,12 +110,7 @@ const AttributeFilterBlock = ( { attributes } ) => {
 	 */
 	useEffect( () => {
 		// Do nothing until we have the attribute terms from the API.
-		if ( attributeTermsLoading ) {
-			return;
-		}
-		// If we already have options (this has already ran) but filtered counts are refreshing, don't change the list
-		// just yet. Wait for them to finish loading.
-		if ( options === null && filteredCountsLoading ) {
+		if ( attributeTermsLoading || filteredCountsLoading ) {
 			return;
 		}
 
@@ -123,19 +118,22 @@ const AttributeFilterBlock = ( { attributes } ) => {
 
 		attributeTerms.forEach( ( term ) => {
 			const filteredTerm = getFilteredTerm( term.id );
+			const isChecked = checkedOptions.includes( term.slug );
+			const inCollection = !! filteredTerm;
 
-			// If there is no match this term doesn't match the current product collection.
-			if ( ! filteredTerm && ! filteredCountsLoading ) {
+			// If there is no match this term doesn't match the current product collection - only render if checked.
+			if ( ! inCollection && ! isChecked ) {
 				return;
 			}
 
+			const filteredCount = filteredTerm
+				? filteredTerm.count
+				: term.count;
+			const count = ! inCollection && isChecked ? 0 : filteredCount;
+
 			newOptions.push( {
 				key: term.slug,
-				label: getLabel(
-					term.name,
-					filteredTerm ? filteredTerm.count : term.count
-				),
-				checked: false,
+				label: getLabel( term.name, count ),
 			} );
 		} );
 
@@ -146,6 +144,7 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		attributeTermsLoading,
 		getFilteredTerm,
 		getLabel,
+		checkedOptions,
 	] );
 
 	useEffect( () => {

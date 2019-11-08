@@ -181,7 +181,6 @@ CheckboxList.propTypes = {
 		PropTypes.shape( {
 			key: PropTypes.string.isRequired,
 			label: PropTypes.node.isRequired,
-			checked: PropTypes.bool,
 		} )
 	),
 	className: PropTypes.string,
