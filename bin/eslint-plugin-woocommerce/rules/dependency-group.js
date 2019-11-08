@@ -13,16 +13,6 @@ module.exports = {
 		 */
 
 		/**
-		 * Object describing a dependency block correction to be made.
-		 *
-		 * @property {?espree.Node} comment Comment node on which to replace
-		 *                                  value, if one can be salvaged.
-		 * @property {string}       value   Expected comment node value.
-		 *
-		 * @typedef {Object} WCDependencyBlockCorrection
-		 */
-
-		/**
 		 * Given a desired locality, generates the expected comment node value
 		 * property.
 		 *
