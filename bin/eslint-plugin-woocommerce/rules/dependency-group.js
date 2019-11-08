@@ -9,7 +9,7 @@ module.exports = {
 		/**
 		 * Locality classification of an import, "External" or "Internal".
 		 *
-		 * @typedef {string} WPPackageLocality
+		 * @typedef {string} WCPackageLocality
 		 */
 
 		/**
@@ -19,14 +19,14 @@ module.exports = {
 		 *                                  value, if one can be salvaged.
 		 * @property {string}       value   Expected comment node value.
 		 *
-		 * @typedef {Object} WPDependencyBlockCorrection
+		 * @typedef {Object} WCDependencyBlockCorrection
 		 */
 
 		/**
 		 * Given a desired locality, generates the expected comment node value
 		 * property.
 		 *
-		 * @param {WPPackageLocality} locality Desired package locality.
+		 * @param {WCPackageLocality} locality Desired package locality.
 		 *
 		 * @return {string} Expected comment node value.
 		 */
@@ -40,7 +40,7 @@ module.exports = {
 		 *
 		 * @param {string} source Import source string.
 		 *
-		 * @return {WPPackageLocality} Package locality.
+		 * @return {WCPackageLocality} Package locality.
 		 */
 		function getPackageLocality( source ) {
 			if ( source.startsWith( '.' ) ) {
@@ -55,7 +55,7 @@ module.exports = {
 		 * or false otherwise.
 		 *
 		 * @param {espree.Node}       node     Comment node to check.
-		 * @param {WPPackageLocality} locality Desired package locality.
+		 * @param {WCPackageLocality} locality Desired package locality.
 		 *
 		 * @return {boolean} Whether comment node satisfies locality.
 		 */
@@ -101,7 +101,7 @@ module.exports = {
 		 * updates, the function returns false. Otherwise, it will return true.
 		 *
 		 * @param {espree.Node}       node     Node to test.
-		 * @param {WPPackageLocality} locality Desired package locality.
+		 * @param {WCPackageLocality} locality Desired package locality.
 		 *
 		 * @return {boolean} Whether the node is in the correct locality.
 		 */
