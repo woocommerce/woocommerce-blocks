@@ -21,12 +21,13 @@ import CheckboxList from '@woocommerce/base-components/checkbox-list';
  */
 import './style.scss';
 import { getTaxonomyFromAttributeId } from '../../utils/attributes';
+import { isNull } from 'util';
 
 /**
  * Component displaying an attribute filter.
  */
 const AttributeFilterBlock = ( { attributes } ) => {
-	const [ options, setOptions ] = useState( [] );
+	const [ options, setOptions ] = useState( null );
 	const [ checkedOptions, setCheckedOptions ] = useState( [] );
 	const { showCounts, attributeId, queryType } = attributes;
 	const taxonomy = getTaxonomyFromAttributeId( attributeId );
@@ -68,7 +69,10 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		resourceValues: [ attributeId ],
 	} );
 
-	const { results: filteredCounts } = useCollection( {
+	const {
+		results: filteredCounts,
+		isLoading: filteredCountsLoading,
+	} = useCollection( {
 		namespace: '/wc/store',
 		resourceName: 'products/collection-data',
 		query: filteredCountsQueryState,
@@ -106,7 +110,13 @@ const AttributeFilterBlock = ( { attributes } ) => {
 	 * Compare intersection of all terms and filtered counts to get a list of options to display.
 	 */
 	useEffect( () => {
+		// Do nothing until we have the attribute terms from the API.
 		if ( attributeTermsLoading ) {
+			return;
+		}
+		// If we already have options (this has already ran) but filtered counts are refreshing, don't change the list
+		// just yet. Wait for them to finish loading.
+		if ( ! isNull( options ) && filteredCountsLoading ) {
 			return;
 		}
 
@@ -115,7 +125,8 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		attributeTerms.forEach( ( term ) => {
 			const filteredTerm = getFilteredTerm( term.id );
 
-			if ( ! filteredTerm && filteredCounts !== null ) {
+			// If there is no match this term doesn't match the current product collection.
+			if ( ! filteredTerm && ! filteredCountsLoading ) {
 				return;
 			}
 
@@ -131,7 +142,7 @@ const AttributeFilterBlock = ( { attributes } ) => {
 
 		setOptions( newOptions );
 	}, [
-		filteredCounts,
+		filteredCountsLoading,
 		attributeTerms,
 		attributeTermsLoading,
 		getFilteredTerm,
@@ -167,7 +178,7 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		<div className="wc-block-attribute-filter">
 			<CheckboxList
 				className={ 'wc-block-attribute-filter-list' }
-				options={ options }
+				options={ options ? options : [] }
 				onChange={ onChange }
 				isLoading={ attributeTermsLoading }
 			/>
