@@ -21,7 +21,6 @@ import CheckboxList from '@woocommerce/base-components/checkbox-list';
  */
 import './style.scss';
 import { getTaxonomyFromAttributeId } from '../../utils/attributes';
-import { isNull } from 'util';
 
 /**
  * Component displaying an attribute filter.
@@ -116,7 +115,7 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		}
 		// If we already have options (this has already ran) but filtered counts are refreshing, don't change the list
 		// just yet. Wait for them to finish loading.
-		if ( ! isNull( options ) && filteredCountsLoading ) {
+		if ( options === null && filteredCountsLoading ) {
 			return;
 		}
 
