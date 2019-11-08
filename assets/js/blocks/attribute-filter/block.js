@@ -26,7 +26,7 @@ import { getTaxonomyFromAttributeId } from '../../utils/attributes';
  * Component displaying an attribute filter.
  */
 const AttributeFilterBlock = ( { attributes } ) => {
-	const [ options, setOptions ] = useState( null );
+	const [ options, setOptions ] = useState( [] );
 	const [ checkedOptions, setCheckedOptions ] = useState( [] );
 	const { showCounts, attributeId, queryType } = attributes;
 	const taxonomy = getTaxonomyFromAttributeId( attributeId );
@@ -176,7 +176,7 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		<div className="wc-block-attribute-filter">
 			<CheckboxList
 				className={ 'wc-block-attribute-filter-list' }
-				options={ options ? options : [] }
+				options={ options }
 				onChange={ onChange }
 				isLoading={ attributeTermsLoading }
 			/>
