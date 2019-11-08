@@ -36,19 +36,15 @@ const CheckboxList = ( {
 	}, [ checked ] );
 
 	const placeholder = useMemo( () => {
-		return (
-			<Fragment>
-				{ [ ...Array( 5 ) ].map( ( x, i ) => (
-					<li
-						key={ i }
-						style={ {
-							/* stylelint-disable */
-							width: Math.floor( Math.random() * 75 ) + 25 + '%',
-						} }
-					/>
-				) ) }
-			</Fragment>
-		);
+		return [ ...Array( 5 ) ].map( ( x, i ) => (
+			<li
+				key={ i }
+				style={ {
+					/* stylelint-disable */
+					width: Math.floor( Math.random() * 75 ) + 25 + '%',
+				} }
+			/>
+		) );
 	}, [] );
 
 	const onCheckboxChange = useCallback(
@@ -73,7 +69,7 @@ const CheckboxList = ( {
 		const optionCount = options.length;
 		return (
 			! showExpanded && (
-				<li className="show-more">
+				<li key="show-more" className="show-more">
 					<button
 						onClick={ () => {
 							setShowExpanded( true );
@@ -104,7 +100,7 @@ const CheckboxList = ( {
 	const renderedShowLess = useMemo( () => {
 		return (
 			showExpanded && (
-				<li className="show-less">
+				<li key="show-less" className="show-less">
 					<button
 						onClick={ () => {
 							setShowExpanded( false );
@@ -154,7 +150,15 @@ const CheckboxList = ( {
 				{ shouldTruncateOptions && renderedShowLess }
 			</Fragment>
 		);
-	}, [ options, checked, showExpanded, limit, onCheckboxChange ] );
+	}, [
+		options,
+		checked,
+		showExpanded,
+		limit,
+		onCheckboxChange,
+		renderedShowLess,
+		renderedShowMore,
+	] );
 
 	const classes = classNames(
 		'wc-block-checkbox-list',

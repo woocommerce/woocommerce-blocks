@@ -71,15 +71,13 @@ const AttributeFilterBlock = ( { attributes } ) => {
 	const { results: filteredCounts } = useCollection( {
 		namespace: '/wc/store',
 		resourceName: 'products/collection-data',
-		query: {
-			...filteredCountsQueryState,
-		},
+		query: filteredCountsQueryState,
 	} );
 
 	const getLabel = useCallback(
 		( name, count ) => {
 			return (
-				<Fragment>
+				<Fragment key="label">
 					{ name }
 					{ showCounts && count && (
 						<span className="wc-block-attribute-filter-list-count">
@@ -156,7 +154,7 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		}
 
 		setProductAttributes( sortBy( newProductAttributes, 'attribute' ) );
-	}, [ checkedOptions, taxonomy, productAttributes ] );
+	}, [ checkedOptions, taxonomy, productAttributes, queryType ] );
 
 	const onChange = useCallback( ( checked ) => {
 		setCheckedOptions( checked );
