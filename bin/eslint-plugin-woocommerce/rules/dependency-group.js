@@ -7,8 +7,7 @@ module.exports = {
 		const comments = context.getSourceCode().getAllComments();
 
 		/**
-		 * Locality classification of an import, one of "External",
-		 * "WordPress", "Internal".
+		 * Locality classification of an import, "External" or "Internal".
 		 *
 		 * @typedef {string} WPPackageLocality
 		 */
