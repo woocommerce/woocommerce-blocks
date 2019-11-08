@@ -11,6 +11,12 @@
 	text-align: center;
 }
 
+.wc-block-grid__no-products {
+	padding: $gap-largest;
+	text-align: center;
+	width: 100%;
+}
+
 .wc-block-grid__products {
 	display: flex;
 	flex-wrap: wrap;

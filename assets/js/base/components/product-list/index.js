@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
@@ -61,7 +62,9 @@ const ProductList = ( {
 	);
 	// @todo should add an <ErrorBoundary> in parent component to handle any
 	// errors from the store and format etc.
-	const { products, productsLoading, totalProducts } = useStoreProducts( queryState );
+	const { products, productsLoading, totalProducts } = useStoreProducts(
+		queryState
+	);
 	const onPaginationChange = ( newPage ) => {
 		scrollToTop( { focusableSelector: 'a, button' } );
 		onPageChange( newPage );
@@ -86,26 +89,38 @@ const ProductList = ( {
 	const { contentVisibility } = attributes;
 	const perPage = attributes.columns * attributes.rows;
 	const totalPages = Math.ceil( totalProducts / perPage );
-	const listProducts = productsLoading && ! products.length
-		? Array.from( { length: perPage } )
-		: products;
+	const listProducts =
+		productsLoading && ! products.length
+			? Array.from( { length: perPage } )
+			: products;
+	const noProductsMatchingFilters =
+		products.length === 0 && ! productsLoading;
 
 	return (
 		<div className={ getClassnames() }>
-			{ contentVisibility.orderBy && (
+			{ contentVisibility.orderBy && ! noProductsMatchingFilters && (
 				<ProductSortSelect
 					onChange={ onSortChange }
 					value={ sortValue }
 				/>
 			) }
 			<ul className="wc-block-grid__products">
-				{ listProducts.map( ( product = {}, i ) => (
-					<ProductListItem
-						key={ product.id || i }
-						attributes={ attributes }
-						product={ product }
-					/>
-				) ) }
+				{ noProductsMatchingFilters ? (
+					<div className="wc-block-grid__no-products">
+						{ __(
+							'No products found matching your criteria.',
+							'woo-gutenberg-products-block'
+						) }
+					</div>
+				) : (
+					listProducts.map( ( product = {}, i ) => (
+						<ProductListItem
+							key={ product.id || i }
+							attributes={ attributes }
+							product={ product }
+						/>
+					) )
+				) }
 			</ul>
 			{ totalProducts > perPage && (
 				<Pagination
