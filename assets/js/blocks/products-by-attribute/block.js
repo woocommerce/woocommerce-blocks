@@ -18,10 +18,6 @@ import {
 import { Component, Fragment } from '@wordpress/element';
 import Gridicon from 'gridicons';
 import PropTypes from 'prop-types';
-
-/**
- * Internal dependencies
- */
 import GridContentControl from '@woocommerce/block-components/grid-content-control';
 import GridLayoutControl from '@woocommerce/block-components/grid-layout-control';
 import ProductAttributeTermControl from '@woocommerce/block-components/product-attribute-term-control';
