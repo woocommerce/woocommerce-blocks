@@ -190,7 +190,7 @@
 		}
 	}
 
-	&.is-disabled:not(&.isLoading) {
+	&.is-disabled:not(.is-loading) {
 		.wc-block-price-filter__range-input-wrapper,
 		.wc-block-price-filter__amount,
 		.wc-block-price-filter__button {
