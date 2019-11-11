@@ -90,15 +90,15 @@ const PriceSlider = ( {
 		);
 	}, [ maxPrice, priceFormat, currencySymbol ] );
 
+	const hasValidConstraints = useMemo( () => {
+		return isFinite( minConstraint ) && isFinite( maxConstraint );
+	}, [ minConstraint, maxConstraint ] );
+
 	useEffect( () => {
 		if ( ! showFilterButton && ! isLoading && hasValidConstraints ) {
 			triggerChange();
 		}
 	}, [ debouncedChangeValue ] );
-
-	const hasValidConstraints = useMemo( () => {
-		return isFinite( minConstraint ) && isFinite( maxConstraint );
-	}, [ minConstraint, maxConstraint ] );
 
 	/**
 	 * Handles styles for the shaded area of the range slider.
