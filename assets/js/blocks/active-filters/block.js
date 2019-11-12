@@ -17,13 +17,11 @@ const ActiveFiltersBlock = () => {
 	);*/
 	const [ minPrice, setMinPrice ] = useQueryStateByKey(
 		'product-grid',
-		'min_price',
-		''
+		'min_price'
 	);
 	const [ maxPrice, setMaxPrice ] = useQueryStateByKey(
 		'product-grid',
-		'max_price',
-		''
+		'max_price'
 	);
 
 	const removeFilterLink = useCallback( ( callback = () => {} ) => {
@@ -31,28 +29,28 @@ const ActiveFiltersBlock = () => {
 	}, [] );
 
 	const renderMinPrice = useCallback( () => {
-		if ( ! minPrice ) {
+		if ( ! Number.isFinite( minPrice ) ) {
 			return;
 		}
 		return (
 			<li>
 				Prices from { formatPrice( minPrice ) }
 				{ removeFilterLink( () => {
-					setMinPrice( '' );
+					setMinPrice( null );
 				} ) }
 			</li>
 		);
 	}, [ minPrice ] );
 
 	const renderMaxPrice = useCallback( () => {
-		if ( ! maxPrice ) {
+		if ( ! Number.isFinite( maxPrice ) ) {
 			return;
 		}
 		return (
 			<li>
 				Prices to { formatPrice( maxPrice ) }
 				{ removeFilterLink( () => {
-					setMaxPrice( '' );
+					setMaxPrice( null );
 				} ) }
 			</li>
 		);

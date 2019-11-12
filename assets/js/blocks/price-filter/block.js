@@ -18,11 +18,13 @@ import { useDebouncedCallback } from 'use-debounce';
 const PriceFilterBlock = ( { attributes } ) => {
 	const [ minPriceQuery, setMinPriceQuery ] = useQueryStateByKey(
 		'product-grid',
-		'min_price'
+		'min_price',
+		''
 	);
 	const [ maxPriceQuery, setMaxPriceQuery ] = useQueryStateByKey(
 		'product-grid',
-		'max_price'
+		'max_price',
+		''
 	);
 	const [ queryState ] = useQueryStateByContext( 'product-grid' );
 	const { results, isLoading } = useCollection( {
@@ -89,12 +91,16 @@ const PriceFilterBlock = ( { attributes } ) => {
 	 */
 	useEffect( () => {
 		if ( minPriceQuery !== minPrice ) {
-			setMinPrice( minPriceQuery );
+			setMinPrice(
+				Number.isFinite( minPriceQuery ) ? minPriceQuery : minConstraint
+			);
 		}
 		if ( maxPriceQuery !== maxPrice ) {
-			setMaxPrice( maxPriceQuery );
+			setMaxPrice(
+				Number.isFinite( maxPriceQuery ) ? maxPriceQuery : maxConstraint
+			);
 		}
-	}, [ minPriceQuery, maxPriceQuery ] );
+	}, [ minPriceQuery, maxPriceQuery, minConstraint, maxConstraint ] );
 
 	/**
 	 * Track product updates to update constraints.
