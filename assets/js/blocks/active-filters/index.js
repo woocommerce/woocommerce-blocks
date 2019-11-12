@@ -10,33 +10,23 @@ import Gridicon from 'gridicons';
  */
 import edit from './edit.js';
 
-registerBlockType( 'woocommerce/attribute-filter', {
-	title: __( 'Filter Products by Attribute', 'woo-gutenberg-products-block' ),
+registerBlockType( 'woocommerce/active-filters', {
+	title: __( 'Active Product Filters', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Gridicon icon="menus" />,
+		src: <Gridicon icon="list-checkmark" />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
-		'Display a list of filters based on a chosen product attribute.',
+		'Display a list of active product filters.',
 		'woo-gutenberg-products-block'
 	),
-	supports: {
-		align: [ 'wide', 'full' ],
-	},
+	supports: {},
 	attributes: {
-		attributeId: {
-			type: 'number',
-			default: 0,
-		},
-		showCounts: {
-			type: 'boolean',
-			default: true,
-		},
-		queryType: {
+		displayStyle: {
 			type: 'string',
-			default: 'or',
+			default: 'list',
 		},
 	},
 	edit,
@@ -44,17 +34,15 @@ registerBlockType( 'woocommerce/attribute-filter', {
 	 * Save the props to post content.
 	 */
 	save( { attributes } ) {
-		const { showCounts, queryType, attributeId } = attributes;
+		const { displayStyle } = attributes;
 		const data = {
-			'data-attribute-id': attributeId,
-			'data-show-counts': showCounts,
-			'data-query-type': queryType,
+			'data-display-style': displayStyle,
 		};
 		return (
 			<div className="is-loading" { ...data }>
 				<span
 					aria-hidden
-					className="wc-block-product-attribute-filter__placeholder"
+					className="wc-block-active-product-filters__placeholder"
 				/>
 			</div>
 		);
