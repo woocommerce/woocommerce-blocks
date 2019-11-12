@@ -18,7 +18,8 @@ import { useDebounce, usePrevious } from '@woocommerce/base-hooks';
  * Internal dependencies
  */
 import './style.scss';
-import { constrainRangeSliderValues, formatCurrencyForInput } from './utils';
+import { constrainRangeSliderValues } from './utils';
+import { formatPrice } from '../../utils/price';
 import SubmitButton from './submit-button';
 import PriceLabel from './price-label';
 import PriceInput from './price-input';
@@ -41,10 +42,10 @@ const PriceSlider = ( {
 	const [ minPrice, setMinPrice ] = useState( initialMin );
 	const [ maxPrice, setMaxPrice ] = useState( initialMax );
 	const [ formattedMinPrice, setFormattedMinPrice ] = useState(
-		formatCurrencyForInput( minPrice, priceFormat, currencySymbol )
+		formatPrice( minPrice, priceFormat, currencySymbol )
 	);
 	const [ formattedMaxPrice, setFormattedMaxPrice ] = useState(
-		formatCurrencyForInput( maxPrice, priceFormat, currencySymbol )
+		formatPrice( maxPrice, priceFormat, currencySymbol )
 	);
 	const debouncedChangeValue = useDebounce( [ minPrice, maxPrice ], 500 );
 	const prevMinConstraint = usePrevious( minConstraint );
@@ -80,13 +81,13 @@ const PriceSlider = ( {
 
 	useEffect( () => {
 		setFormattedMinPrice(
-			formatCurrencyForInput( minPrice, priceFormat, currencySymbol )
+			formatPrice( minPrice, priceFormat, currencySymbol )
 		);
 	}, [ minPrice, priceFormat, currencySymbol ] );
 
 	useEffect( () => {
 		setFormattedMaxPrice(
-			formatCurrencyForInput( maxPrice, priceFormat, currencySymbol )
+			formatPrice( maxPrice, priceFormat, currencySymbol )
 		);
 	}, [ maxPrice, priceFormat, currencySymbol ] );
 
@@ -250,19 +251,11 @@ const PriceSlider = ( {
 			);
 			if ( isMin ) {
 				setFormattedMinPrice(
-					formatCurrencyForInput(
-						newValue,
-						priceFormat,
-						currencySymbol
-					)
+					formatPrice( newValue, priceFormat, currencySymbol )
 				);
 			} else {
 				setFormattedMaxPrice(
-					formatCurrencyForInput(
-						newValue,
-						priceFormat,
-						currencySymbol
-					)
+					formatPrice( newValue, priceFormat, currencySymbol )
 				);
 			}
 		},
