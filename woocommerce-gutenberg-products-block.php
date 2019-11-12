@@ -88,7 +88,7 @@ function wc_blocks_container( $reset = false ) {
 			Automattic\WooCommerce\Blocks\Domain\Package::class,
 			function ( $container ) {
 				return new Automattic\WooCommerce\Blocks\Domain\Package(
-					'2.5.0-dev',
+					'2.5.0-dev', // version change placeholder comment (dont' remove).
 					__FILE__
 				);
 			}
