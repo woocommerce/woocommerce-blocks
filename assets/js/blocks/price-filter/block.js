@@ -160,22 +160,24 @@ const PriceFilterBlock = ( { attributes } ) => {
 
 	return (
 		<div className="wc-block-price-slider">
-			{ minConstraint !== null && maxConstraint !== null && (
-				<PriceSlider
-					minConstraint={ minConstraint }
-					maxConstraint={ maxConstraint }
-					minPrice={ minPrice }
-					maxPrice={ maxPrice }
-					step={ 10 }
-					currencySymbol={ CURRENCY.symbol }
-					priceFormat={ CURRENCY.price_format }
-					showInputFields={ attributes.showInputFields }
-					showFilterButton={ attributes.showFilterButton }
-					onChange={ onChange }
-					onSubmit={ onSubmit }
-					isLoading={ isLoading }
-				/>
-			) }
+			{ minConstraint !== null &&
+				maxConstraint !== null &&
+				minConstraint !== maxConstraint && (
+					<PriceSlider
+						minConstraint={ minConstraint }
+						maxConstraint={ maxConstraint }
+						minPrice={ minPrice }
+						maxPrice={ maxPrice }
+						step={ 10 }
+						currencySymbol={ CURRENCY.symbol }
+						priceFormat={ CURRENCY.price_format }
+						showInputFields={ attributes.showInputFields }
+						showFilterButton={ attributes.showFilterButton }
+						onChange={ onChange }
+						onSubmit={ onSubmit }
+						isLoading={ isLoading }
+					/>
+				) }
 		</div>
 	);
 };

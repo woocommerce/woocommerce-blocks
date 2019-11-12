@@ -152,7 +152,7 @@ const AttributeFilterBlock = ( { attributes } ) => {
 			( item ) => item.attribute !== taxonomy
 		);
 
-		if ( checkedOptions ) {
+		if ( checkedOptions.length > 0 ) {
 			const updatedQuery = {
 				attribute: taxonomy,
 				operator: queryType === 'or' ? 'in' : 'and',
