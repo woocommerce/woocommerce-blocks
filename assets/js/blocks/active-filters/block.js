@@ -1,9 +1,4 @@
 /**
- * Internal dependencies
- */
-import './style.scss';
-
-/**
  * Component displaying active filters.
  */
 const ActiveFiltersBlock = ( { attributes } ) => {

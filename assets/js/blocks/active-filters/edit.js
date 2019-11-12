@@ -10,7 +10,6 @@ import { Disabled, PanelBody, withSpokenMessages } from '@wordpress/components';
  * Internal dependencies
  */
 import Block from './block.js';
-import './editor.scss';
 import ToggleButtonControl from '../../components/toggle-button-control';
 
 const Edit = ( { attributes, setAttributes } ) => {
