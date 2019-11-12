@@ -89,7 +89,7 @@ class ProductAttributes extends TestCase {
 	}
 
 	/**
-	 * Test conversion of prdouct to rest response.
+	 * Test conversion of product to rest response.
 	 */
 	public function test_prepare_item_for_response() {
 		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\ProductAttributes();
