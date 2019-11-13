@@ -88,7 +88,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 					<HeadingToolbar
 						isCollapsed={ false }
 						minLevel={ 2 }
-						maxLevel={ 6 }
+						maxLevel={ 7 }
 						selectedLevel={ attributes.headingLevel }
 						onChange={ ( newLevel ) =>
 							setAttributes( { headingLevel: newLevel } )

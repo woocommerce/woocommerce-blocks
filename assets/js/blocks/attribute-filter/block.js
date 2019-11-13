@@ -176,7 +176,9 @@ const AttributeFilterBlock = ( { attributes, isPreview = false } ) => {
 
 	return (
 		<Fragment>
-			{ ! isPreview && <TagName>{ attributes.heading }</TagName> }
+			{ ! isPreview && attributes.heading && (
+				<TagName>{ attributes.heading }</TagName>
+			) }
 			<div className="wc-block-attribute-filter">
 				<CheckboxList
 					className={ 'wc-block-attribute-filter-list' }
