@@ -27,7 +27,6 @@ import { updateAttributeFilter } from '../../utils/attributes-query';
  */
 const AttributeFilterBlock = ( { attributes: blockAttributes } ) => {
 	const [ displayedOptions, setDisplayedOptions ] = useState( [] );
-	const [ checked, setChecked ] = useState( [] );
 	const attributeObject = getAttributeFromID( blockAttributes.attributeId );
 
 	const [ queryState ] = useQueryStateByContext( 'product-grid' );
@@ -35,6 +34,15 @@ const AttributeFilterBlock = ( { attributes: blockAttributes } ) => {
 		productAttributesQuery,
 		setProductAttributesQuery,
 	] = useQueryStateByKey( 'product-grid', 'attributes', [] );
+
+	const checked = useMemo( () => {
+		return productAttributesQuery
+			.filter(
+				( attribute ) =>
+					attribute.attribute === attributeObject.taxonomy
+			)
+			.flatMap( ( attribute ) => attribute.slug );
+	}, [ productAttributesQuery, attributeObject ] );
 
 	const filteredCountsQueryState = useMemo( () => {
 		// If doing an "AND" query, we need to remove current taxonomy query so counts are not affected.
@@ -153,44 +161,17 @@ const AttributeFilterBlock = ( { attributes: blockAttributes } ) => {
 	/**
 	 * Returns an array of term objects that have been chosen via the checkboxes.
 	 */
-	const selectedTerms = useMemo( () => {
-		const selected = attributeTerms.reduce( ( acc, term ) => {
-			if ( checked.includes( term.slug ) ) {
-				acc.push( term );
-			}
-			return acc;
-		}, [] );
-
-		return selected;
-	}, [ attributeTerms, checked ] );
-
-	/**
-	 * Update the filters when checked options are changed.
-	 */
-	useEffect( () => {
-		updateAttributeFilter(
-			productAttributesQuery,
-			setProductAttributesQuery,
-			attributeObject,
-			selectedTerms,
-			blockAttributes.queryType === 'or' ? 'in' : 'and'
-		);
-	}, [
-		attributeObject,
-		productAttributesQuery,
-		blockAttributes,
-		selectedTerms,
-	] );
-
-	/**
-	 * Update the checked items when filters are changed externally.
-	 *
-	 * @todo Updating this causes an infinite loop because it triggers other useEffects which update queries.
-	 * We need a single source of truth for filters so active filters block and other filter blocks can communicate.
-
-	useEffect( () => {
-
-	}, [] ); */
+	const getSelectedTerms = useCallback(
+		( newChecked ) => {
+			return attributeTerms.reduce( ( acc, term ) => {
+				if ( newChecked.includes( term.slug ) ) {
+					acc.push( term );
+				}
+				return acc;
+			}, [] );
+		},
+		[ attributeTerms ]
+	);
 
 	/**
 	 * When a checkbox in the list changes, update state.
@@ -208,9 +189,24 @@ const AttributeFilterBlock = ( { attributes: blockAttributes } ) => {
 				newChecked.sort();
 			}
 
-			setChecked( newChecked );
+			const newSelectedTerms = getSelectedTerms( newChecked );
+
+			updateAttributeFilter(
+				productAttributesQuery,
+				setProductAttributesQuery,
+				attributeObject,
+				newSelectedTerms,
+				blockAttributes.queryType === 'or' ? 'in' : 'and'
+			);
 		},
-		[ checked ]
+		[
+			attributeTerms,
+			checked,
+			productAttributesQuery,
+			setProductAttributesQuery,
+			attributeObject,
+			blockAttributes,
+		]
 	);
 
 	if ( ! attributeObject ) {

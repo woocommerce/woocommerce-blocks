@@ -10,6 +10,7 @@ import { useCallback, Fragment } from '@wordpress/element';
  */
 import './style.scss';
 import { getAttributeFromTaxonomy } from '../../utils/attributes';
+import { removeAttributeFilterBySlug } from '../../utils/attributes-query';
 
 /**
  * Component displaying active filters.
@@ -88,7 +89,12 @@ const ActiveFiltersBlock = () => {
 							{ attributeLabel + ': ' }
 							<strong>{ slug }</strong>
 							{ removeFilterLink( () => {
-								// Todo
+								removeAttributeFilterBySlug(
+									productAttributes,
+									setProductAttributes,
+									attributeObject,
+									slug
+								);
 							} ) }
 						</li>
 					) );
