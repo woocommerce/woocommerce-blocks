@@ -13,7 +13,7 @@ import { renderProductLayout } from './utils';
 
 const ProductListItem = ( { product, attributes, componentId } ) => {
 	const { layoutConfig } = attributes;
-	const blockName = useInnerBlockParentNameContext();
+	const { blockName } = useInnerBlockParentNameContext();
 	const isLoading = ! Object.keys( product ).length > 0;
 	const classes = classnames( 'wc-block-grid__product', {
 		'is-loading': isLoading,

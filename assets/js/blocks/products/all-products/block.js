@@ -7,9 +7,11 @@ import ProductListContainer from '@woocommerce/base-components/product-list/cont
 import { InnerBlockParentNameProvider } from '@woocommerce/base-context/inner-block-parent-name-context';
 import { ProductLayoutContextProvider } from '@woocommerce/base-context/product-layout-context';
 
-const layoutStyleContext = {
+const layoutContextConfig = {
 	layoutStyleClassPrefix: 'wc-block-grid',
 };
+
+const parentBlockConfig = { blockName: 'woocommerce/all-products' };
 
 /**
  * The All Products Block. @todo
@@ -31,8 +33,8 @@ class Block extends Component {
 		 * wc-block-{$this->block_name},
 		 */
 		return (
-			<InnerBlockParentNameProvider value="woocommerce/all-products">
-				<ProductLayoutContextProvider value={ layoutStyleContext }>
+			<InnerBlockParentNameProvider value={ parentBlockConfig }>
+				<ProductLayoutContextProvider value={ layoutContextConfig }>
 					<ProductListContainer
 						attributes={ attributes }
 						urlParameterSuffix={ urlParameterSuffix }
