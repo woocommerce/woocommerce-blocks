@@ -168,7 +168,7 @@ const AttributeFilterBlock = ( { attributes, isPreview = false } ) => {
 		setCheckedOptions( checked );
 	}, [] );
 
-	if ( ! taxonomy || options.length === 0 ) {
+	if ( ! taxonomy || ( options.length === 0 && ! attributeTermsLoading ) ) {
 		return null;
 	}
 
