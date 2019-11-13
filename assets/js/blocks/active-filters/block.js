@@ -1,9 +1,10 @@
 /**
  * External dependencies
  */
+import { __, sprintf } from '@wordpress/i18n';
 import { useQueryStateByKey } from '@woocommerce/base-hooks';
 import { formatPrice } from '@woocommerce/base-utils';
-import { useCallback, Fragment } from '@wordpress/element';
+import { useCallback, useMemo, Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -45,38 +46,48 @@ const ActiveFiltersBlock = () => {
 		);
 	}, [] );
 
-	const renderMinPriceFilter = useCallback( () => {
-		if ( ! Number.isFinite( minPrice ) ) {
+	const activePriceFilter = useMemo( () => {
+		if ( ! Number.isFinite( minPrice ) && ! Number.isFinite( maxPrice ) ) {
 			return;
+		}
+		let priceString;
+
+		if ( Number.isFinite( minPrice ) && Number.isFinite( maxPrice ) ) {
+			/* translators: %s min price, %s max price */
+			priceString = sprintf(
+				__( 'Between %s and %s', 'woo-gutenberg-products-block' ),
+				formatPrice( minPrice ),
+				formatPrice( maxPrice )
+			);
+		} else if ( Number.isFinite( minPrice ) ) {
+			/* translators: %s min price */
+			priceString = sprintf(
+				__( 'From %s', 'woo-gutenberg-products-block' ),
+				formatPrice( minPrice )
+			);
+		} else {
+			/* translators: %s max price */
+			priceString = sprintf(
+				__( 'Up to %s', 'woo-gutenberg-products-block' ),
+				formatPrice( maxPrice )
+			);
 		}
 		return (
 			<li>
-				Prices from { formatPrice( minPrice ) }
+				{ __( 'Price:', 'woo-gutenberg-products-block' ) + ' ' }
+				<strong>{ priceString }</strong>
 				{ removeFilterLink( () => {
 					setMinPrice( null );
-				} ) }
-			</li>
-		);
-	}, [ minPrice ] );
-
-	const renderMaxPriceFilter = useCallback( () => {
-		if ( ! Number.isFinite( maxPrice ) ) {
-			return;
-		}
-		return (
-			<li>
-				Prices to { formatPrice( maxPrice ) }
-				{ removeFilterLink( () => {
 					setMaxPrice( null );
 				} ) }
 			</li>
 		);
-	}, [ maxPrice ] );
+	}, [ minPrice, maxPrice, removeFilterLink ] );
 
 	/**
 	 * @todo we need a system or hook to lookup slugs->names and taxonomy->label for this.
 	 */
-	const renderProductAttributeFilters = useCallback( () => {
+	const renderActiveProductAttributeFilters = useCallback( () => {
 		return (
 			<Fragment>
 				{ productAttributes.map( ( attribute, attributeIndex ) => {
@@ -107,9 +118,8 @@ const ActiveFiltersBlock = () => {
 		<div className="wc-block-active-filters">
 			<h3>Active Filters</h3>
 			<ul className="wc-block-active-filters-list">
-				{ renderMinPriceFilter() }
-				{ renderMaxPriceFilter() }
-				{ renderProductAttributeFilters() }
+				{ activePriceFilter }
+				{ renderActiveProductAttributeFilters() }
 			</ul>
 		</div>
 	);
