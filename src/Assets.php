@@ -117,7 +117,7 @@ class Assets {
 				'showAvatars'        => '1' === get_option( 'show_avatars' ),
 				'enableReviewRating' => 'yes' === get_option( 'woocommerce_enable_review_rating' ),
 				'productCount'       => array_sum( (array) $product_counts ),
-				'attributes'         => wc_get_attribute_taxonomies(),
+				'attributes'         => array_values( wc_get_attribute_taxonomies() ),
 			]
 		);
 	}
