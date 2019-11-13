@@ -7,8 +7,10 @@
  * Author: Automattic
  * Author URI: https://woocommerce.com
  * Text Domain:  woo-gutenberg-products-block
+ * Requires at least: 5.0
+ * Requires PHP: 5.6
  * WC requires at least: 3.6
- * WC tested up to: 3.7
+ * WC tested up to: 3.8
  *
  * @package WooCommerce\Blocks
  * @internal This file is only used when running the REST API as a feature plugin.
@@ -85,8 +87,10 @@ function wc_blocks_container( $reset = false ) {
 		$container->register(
 			Automattic\WooCommerce\Blocks\Domain\Package::class,
 			function ( $container ) {
+				// leave for automated version bumping.
+				$version = '2.5.0-dev';
 				return new Automattic\WooCommerce\Blocks\Domain\Package(
-					'2.5.0-dev',
+					$version,
 					__FILE__
 				);
 			}

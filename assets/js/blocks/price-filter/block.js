@@ -7,7 +7,7 @@ import {
 	useQueryStateByContext,
 	usePrevious,
 } from '@woocommerce/base-hooks';
-import { useCallback, useState, useEffect } from '@wordpress/element';
+import { useCallback, useState, useEffect, Fragment } from '@wordpress/element';
 import PriceSlider from '@woocommerce/base-components/price-slider';
 import { CURRENCY } from '@woocommerce/settings';
 import { useDebouncedCallback } from 'use-debounce';
@@ -15,7 +15,7 @@ import { useDebouncedCallback } from 'use-debounce';
 /**
  * Component displaying a price filter.
  */
-const PriceFilterBlock = ( { attributes } ) => {
+const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 	const [ minPriceQuery, setMinPriceQuery ] = useQueryStateByKey(
 		'product-grid',
 		'min_price',
@@ -158,27 +158,38 @@ const PriceFilterBlock = ( { attributes } ) => {
 		}
 	}, [ maxConstraint ] );
 
+	if (
+		minConstraint === null ||
+		maxConstraint === null ||
+		minConstraint === maxConstraint
+	) {
+		return null;
+	}
+
+	const TagName = `h${ attributes.headingLevel }`;
+
 	return (
-		<div className="wc-block-price-slider">
-			{ minConstraint !== null &&
-				maxConstraint !== null &&
-				minConstraint !== maxConstraint && (
-					<PriceSlider
-						minConstraint={ minConstraint }
-						maxConstraint={ maxConstraint }
-						minPrice={ minPrice }
-						maxPrice={ maxPrice }
-						step={ 10 }
-						currencySymbol={ CURRENCY.symbol }
-						priceFormat={ CURRENCY.price_format }
-						showInputFields={ attributes.showInputFields }
-						showFilterButton={ attributes.showFilterButton }
-						onChange={ onChange }
-						onSubmit={ onSubmit }
-						isLoading={ isLoading }
-					/>
-				) }
-		</div>
+		<Fragment>
+			{ ! isPreview && attributes.heading && (
+				<TagName>{ attributes.heading }</TagName>
+			) }
+			<div className="wc-block-price-slider">
+				<PriceSlider
+					minConstraint={ minConstraint }
+					maxConstraint={ maxConstraint }
+					minPrice={ minPrice }
+					maxPrice={ maxPrice }
+					step={ 10 }
+					currencySymbol={ CURRENCY.symbol }
+					priceFormat={ CURRENCY.price_format }
+					showInputFields={ attributes.showInputFields }
+					showFilterButton={ attributes.showFilterButton }
+					onChange={ onChange }
+					onSubmit={ onSubmit }
+					isLoading={ isLoading }
+				/>
+			</div>
+		</Fragment>
 	);
 };
 

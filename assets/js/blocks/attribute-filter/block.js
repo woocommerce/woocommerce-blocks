@@ -25,7 +25,10 @@ import { updateAttributeFilter } from '../../utils/attributes-query';
 /**
  * Component displaying an attribute filter.
  */
-const AttributeFilterBlock = ( { attributes: blockAttributes } ) => {
+const AttributeFilterBlock = ( {
+	attributes: blockAttributes,
+	isPreview = false,
+} ) => {
 	const [ displayedOptions, setDisplayedOptions ] = useState( [] );
 	const attributeObject = getAttributeFromID( blockAttributes.attributeId );
 
@@ -209,21 +212,31 @@ const AttributeFilterBlock = ( { attributes: blockAttributes } ) => {
 		]
 	);
 
-	if ( ! attributeObject ) {
+	if (
+		! attributeObject ||
+		( displayedOptions.length === 0 && ! attributeTermsLoading )
+	) {
 		return null;
 	}
 
+	const TagName = `h${ blockAttributes.headingLevel }`;
+
 	return (
-		<div className="wc-block-attribute-filter">
-			<CheckboxList
-				className={ 'wc-block-attribute-filter-list' }
-				options={ displayedOptions }
-				checked={ checked }
-				onChange={ onChange }
-				isLoading={ attributeTermsLoading }
-				isDisabled={ filteredCountsLoading }
-			/>
-		</div>
+		<Fragment>
+			{ ! isPreview && blockAttributes.heading && (
+				<TagName>{ blockAttributes.heading }</TagName>
+			) }
+			<div className="wc-block-attribute-filter">
+				<CheckboxList
+					className={ 'wc-block-attribute-filter-list' }
+					options={ displayedOptions }
+					checked={ checked }
+					onChange={ onChange }
+					isLoading={ attributeTermsLoading }
+					isDisabled={ filteredCountsLoading }
+				/>
+			</div>
+		</Fragment>
 	);
 };
 
