@@ -4,20 +4,46 @@
 import { sortBy, map } from 'lodash';
 
 /**
- * Given a query object, removes an attribute term from the query filter if set.
- * @param {object} query Query object.
- * @param {object} attribute Attribute being filtered.
- * @param {object} attributeTerm Term being filtered
-
-export const removeAttributeFilter = (
+ * Given a query object, removes an attribute filter by a single slug.
+ * @param {object} query Current query object.
+ * @param {function} setQuery Callback to update the current query object.
+ * @param {object} attribute An attribute object.
+ * @param {string} slug Term slug to remove.
+ */
+export const removeAttributeFilterBySlug = (
 	query = [],
+	setQuery = () => {},
 	attribute,
-	attributeTerm
+	slug = ''
 ) => {
-	const isFiltering = false;
-};
+	// Get current filter for provided attribute.
+	const currentQuery = query.filter(
+		( item ) => item.attribute === attribute.taxonomy
+	)[ 0 ];
 
-export const addAttributeFilter = () => {}; */
+	if (
+		! currentQuery ||
+		! currentQuery.slug ||
+		! currentQuery.slug.includes( slug )
+	) {
+		return;
+	}
+
+	const newSlugs = currentQuery.slug.filter( ( item ) => item !== slug );
+
+	// Remove current attribute filter from query.
+	const returnQuery = query.filter(
+		( item ) => item.attribute !== attribute.taxonomy
+	);
+
+	// Add a new query for selected terms, if provided.
+	if ( newSlugs.length > 0 ) {
+		currentQuery.slug = newSlugs.sort();
+		returnQuery.push( currentQuery );
+	}
+
+	setQuery( sortBy( returnQuery, 'attribute' ) );
+};
 
 /**
  * Given a query object, sets the query up to filter by a given attribute and attribute terms.
@@ -44,7 +70,7 @@ export const updateAttributeFilter = (
 		const filterQuery = {
 			attribute: attribute.taxonomy,
 			operator,
-			slug: map( attributeTerms, 'slug' ),
+			slug: map( attributeTerms, 'slug' ).sort(),
 		};
 		returnQuery.push( filterQuery );
 	}

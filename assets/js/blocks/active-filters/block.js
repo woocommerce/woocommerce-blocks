@@ -9,12 +9,14 @@ import { useCallback, Fragment } from '@wordpress/element';
  * Internal dependencies
  */
 import './style.scss';
+import { getAttributeFromTaxonomy } from '../../utils/attributes';
 
 /**
  * Component displaying active filters.
  */
 const ActiveFiltersBlock = () => {
-	//const [ queryState ] = useQueryStateByContext( 'product-grid' );
+	// @todo rather than look at these individually we need a store of active filters which standardized names we can
+	// loop over the display, and remove in a standard fashion.
 	const [ productAttributes, setProductAttributes ] = useQueryStateByKey(
 		'product-grid',
 		'attributes',
@@ -77,20 +79,23 @@ const ActiveFiltersBlock = () => {
 		return (
 			<Fragment>
 				{ productAttributes.map( ( attribute, attributeIndex ) => {
-					return attribute.slug.map( ( item, index ) => (
+					const attributeObject = getAttributeFromTaxonomy(
+						attribute.attribute
+					);
+					const attributeLabel = attributeObject.label;
+					return attribute.slug.map( ( slug, index ) => (
 						<li key={ attributeIndex + '-' + index }>
-							{ attribute.attribute + ': ' }
-							<strong>{ item }</strong>
+							{ attributeLabel + ': ' }
+							<strong>{ slug }</strong>
 							{ removeFilterLink( () => {
-								// @todo All attributes except this one.
-								setProductAttributes();
+								// Todo
 							} ) }
 						</li>
 					) );
 				} ) }
 			</Fragment>
 		);
-	}, [ productAttributes ] );
+	}, [ productAttributes, setProductAttributes ] );
 
 	return (
 		<div className="wc-block-active-filters">

@@ -164,6 +164,9 @@ const AttributeFilterBlock = ( { attributes: blockAttributes } ) => {
 		return selected;
 	}, [ attributeTerms, checked ] );
 
+	/**
+	 * Update the filters when checked options are changed.
+	 */
 	useEffect( () => {
 		updateAttributeFilter(
 			productAttributesQuery,
@@ -173,7 +176,6 @@ const AttributeFilterBlock = ( { attributes: blockAttributes } ) => {
 			blockAttributes.queryType === 'or' ? 'in' : 'and'
 		);
 	}, [
-		checked,
 		attributeObject,
 		productAttributesQuery,
 		blockAttributes,
@@ -181,11 +183,35 @@ const AttributeFilterBlock = ( { attributes: blockAttributes } ) => {
 	] );
 
 	/**
+	 * Update the checked items when filters are changed externally.
+	 *
+	 * @todo Updating this causes an infinite loop because it triggers other useEffects which update queries.
+	 * We need a single source of truth for filters so active filters block and other filter blocks can communicate.
+
+	useEffect( () => {
+
+	}, [] ); */
+
+	/**
 	 * When a checkbox in the list changes, update state.
 	 */
-	const onChange = useCallback( ( values ) => {
-		setChecked( values );
-	}, [] );
+	const onChange = useCallback(
+		( event ) => {
+			const isChecked = event.target.checked;
+			const checkedValue = event.target.value;
+			const newChecked = checked.filter(
+				( value ) => value !== checkedValue
+			);
+
+			if ( isChecked ) {
+				newChecked.push( checkedValue );
+				newChecked.sort();
+			}
+
+			setChecked( newChecked );
+		},
+		[ checked ]
+	);
 
 	if ( ! attributeObject ) {
 		return null;
@@ -196,6 +222,7 @@ const AttributeFilterBlock = ( { attributes: blockAttributes } ) => {
 			<CheckboxList
 				className={ 'wc-block-attribute-filter-list' }
 				options={ displayedOptions }
+				checked={ checked }
 				onChange={ onChange }
 				isLoading={ attributeTermsLoading }
 				isDisabled={ filteredCountsLoading }
