@@ -13,39 +13,37 @@ import {
 	useState,
 	useMemo,
 } from '@wordpress/element';
-import { sortBy } from 'lodash';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
-import { getTaxonomyFromAttributeId } from '../../utils/attributes';
+import { getAttributeFromID } from '../../utils/attributes';
+import { updateAttributeFilter } from '../../utils/attributes-query';
 
 /**
  * Component displaying an attribute filter.
  */
-const AttributeFilterBlock = ( { attributes } ) => {
-	const [ options, setOptions ] = useState( [] );
-	const [ checkedOptions, setCheckedOptions ] = useState( [] );
-	const { showCounts, attributeId, queryType } = attributes;
-	const taxonomy = getTaxonomyFromAttributeId( attributeId );
+const AttributeFilterBlock = ( { attributes: blockAttributes } ) => {
+	const [ displayedOptions, setDisplayedOptions ] = useState( [] );
+	const [ checked, setChecked ] = useState( [] );
+	const attributeObject = getAttributeFromID( blockAttributes.attributeId );
 
 	const [ queryState ] = useQueryStateByContext( 'product-grid' );
-	const [ productAttributes, setProductAttributes ] = useQueryStateByKey(
-		'product-grid',
-		'attributes',
-		[]
-	);
+	const [
+		productAttributesQuery,
+		setProductAttributesQuery,
+	] = useQueryStateByKey( 'product-grid', 'attributes', [] );
 
 	const filteredCountsQueryState = useMemo( () => {
 		// If doing an "AND" query, we need to remove current taxonomy query so counts are not affected.
 		const modifiedQueryState =
-			queryType === 'or'
-				? productAttributes.filter(
-						( item ) => item.attribute !== taxonomy
+			blockAttributes.queryType === 'or'
+				? productAttributesQuery.filter(
+						( item ) => item.attribute !== attributeObject.taxonomy
 				  )
-				: productAttributes;
+				: productAttributesQuery;
 
 		// Take current query and remove paging args.
 		return {
@@ -55,9 +53,14 @@ const AttributeFilterBlock = ( { attributes } ) => {
 			per_page: undefined,
 			page: undefined,
 			attributes: modifiedQueryState,
-			calculate_attribute_counts: [ taxonomy ],
+			calculate_attribute_counts: [ attributeObject.taxonomy ],
 		};
-	}, [ queryState, taxonomy, queryType, productAttributes ] );
+	}, [
+		queryState,
+		attributeObject,
+		blockAttributes,
+		productAttributesQuery,
+	] );
 
 	const {
 		results: attributeTerms,
@@ -65,7 +68,7 @@ const AttributeFilterBlock = ( { attributes } ) => {
 	} = useCollection( {
 		namespace: '/wc/store',
 		resourceName: 'products/attributes/terms',
-		resourceValues: [ attributeId ],
+		resourceValues: [ attributeObject.id ],
 	} );
 
 	const {
@@ -77,12 +80,15 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		query: filteredCountsQueryState,
 	} );
 
+	/**
+	 * Get the label for an attribute term filter.
+	 */
 	const getLabel = useCallback(
 		( name, count ) => {
 			return (
 				<Fragment key="label">
 					{ name }
-					{ showCounts && (
+					{ blockAttributes.showCounts && count !== null && (
 						<span className="wc-block-attribute-filter-list-count">
 							{ count }
 						</span>
@@ -90,13 +96,16 @@ const AttributeFilterBlock = ( { attributes } ) => {
 				</Fragment>
 			);
 		},
-		[ showCounts ]
+		[ blockAttributes ]
 	);
 
+	/**
+	 * Get count data about a given term by ID.
+	 */
 	const getFilteredTerm = useCallback(
 		( id ) => {
 			if ( ! filteredCounts.attribute_counts ) {
-				return {};
+				return null;
 			}
 			return filteredCounts.attribute_counts.find(
 				( { term } ) => term === id
@@ -109,7 +118,6 @@ const AttributeFilterBlock = ( { attributes } ) => {
 	 * Compare intersection of all terms and filtered counts to get a list of options to display.
 	 */
 	useEffect( () => {
-		// Do nothing until we have the attribute terms from the API.
 		if ( attributeTermsLoading || filteredCountsLoading ) {
 			return;
 		}
@@ -118,18 +126,13 @@ const AttributeFilterBlock = ( { attributes } ) => {
 
 		attributeTerms.forEach( ( term ) => {
 			const filteredTerm = getFilteredTerm( term.id );
-			const isChecked = checkedOptions.includes( term.slug );
-			const inCollection = !! filteredTerm;
+			const isChecked = checked.includes( term.slug );
+			const count = filteredTerm ? filteredTerm.count : null;
 
 			// If there is no match this term doesn't match the current product collection - only render if checked.
-			if ( ! inCollection && ! isChecked ) {
+			if ( ! filteredTerm && ! isChecked ) {
 				return;
 			}
-
-			const filteredCount = filteredTerm
-				? filteredTerm.count
-				: term.count;
-			const count = ! inCollection && isChecked ? 0 : filteredCount;
 
 			newOptions.push( {
 				key: term.slug,
@@ -137,38 +140,54 @@ const AttributeFilterBlock = ( { attributes } ) => {
 			} );
 		} );
 
-		setOptions( newOptions );
+		setDisplayedOptions( newOptions );
 	}, [
-		filteredCountsLoading,
 		attributeTerms,
 		attributeTermsLoading,
+		filteredCountsLoading,
 		getFilteredTerm,
 		getLabel,
-		checkedOptions,
+		checked,
 	] );
 
+	/**
+	 * Returns an array of term objects that have been chosen via the checkboxes.
+	 */
+	const selectedTerms = useMemo( () => {
+		const selected = attributeTerms.reduce( ( acc, term ) => {
+			if ( checked.includes( term.slug ) ) {
+				acc.push( term );
+			}
+			return acc;
+		}, [] );
+
+		return selected;
+	}, [ attributeTerms, checked ] );
+
 	useEffect( () => {
-		const newProductAttributes = productAttributes.filter(
-			( item ) => item.attribute !== taxonomy
+		updateAttributeFilter(
+			productAttributesQuery,
+			setProductAttributesQuery,
+			attributeObject,
+			selectedTerms,
+			blockAttributes.queryType === 'or' ? 'in' : 'and'
 		);
+	}, [
+		checked,
+		attributeObject,
+		productAttributesQuery,
+		blockAttributes,
+		selectedTerms,
+	] );
 
-		if ( checkedOptions.length > 0 ) {
-			const updatedQuery = {
-				attribute: taxonomy,
-				operator: queryType === 'or' ? 'in' : 'and',
-				slug: checkedOptions,
-			};
-			newProductAttributes.push( updatedQuery );
-		}
-
-		setProductAttributes( sortBy( newProductAttributes, 'attribute' ) );
-	}, [ checkedOptions, taxonomy, productAttributes, queryType ] );
-
-	const onChange = useCallback( ( checked ) => {
-		setCheckedOptions( checked );
+	/**
+	 * When a checkbox in the list changes, update state.
+	 */
+	const onChange = useCallback( ( values ) => {
+		setChecked( values );
 	}, [] );
 
-	if ( ! taxonomy ) {
+	if ( ! attributeObject ) {
 		return null;
 	}
 
@@ -176,9 +195,10 @@ const AttributeFilterBlock = ( { attributes } ) => {
 		<div className="wc-block-attribute-filter">
 			<CheckboxList
 				className={ 'wc-block-attribute-filter-list' }
-				options={ options }
+				options={ displayedOptions }
 				onChange={ onChange }
 				isLoading={ attributeTermsLoading }
+				isDisabled={ filteredCountsLoading }
 			/>
 		</div>
 	);
