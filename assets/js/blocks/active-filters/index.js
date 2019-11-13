@@ -28,15 +28,25 @@ registerBlockType( 'woocommerce/active-filters', {
 			type: 'string',
 			default: 'list',
 		},
+		heading: {
+			type: 'string',
+			default: __( 'Active filters', 'woo-gutenberg-products-block' ),
+		},
+		headingLevel: {
+			type: 'number',
+			default: 3,
+		},
 	},
 	edit,
 	/**
 	 * Save the props to post content.
 	 */
 	save( { attributes } ) {
-		const { displayStyle } = attributes;
+		const { displayStyle, heading, headingLevel } = attributes;
 		const data = {
 			'data-display-style': displayStyle,
+			'data-heading': heading,
+			'data-heading-level': headingLevel,
 		};
 		return (
 			<div className="is-loading" { ...data }>

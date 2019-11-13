@@ -8,6 +8,8 @@ const getProps = ( el ) => {
 	return {
 		attributes: {
 			displayStyle: el.dataset.displayStyle,
+			heading: el.dataset.heading,
+			headingLevel: el.dataset.headingLevel || 3,
 		},
 	};
 };
