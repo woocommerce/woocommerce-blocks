@@ -25,6 +25,7 @@ const CheckboxList = ( {
 	onChange = () => {},
 	options = [],
 	isLoading = false,
+	isDisabled = false,
 	limit = 10,
 } ) => {
 	// Holds all checked options.
@@ -137,6 +138,7 @@ const CheckboxList = ( {
 								value={ option.key }
 								onChange={ onCheckboxChange }
 								checked={ checked.includes( option.key ) }
+								disabled={ isDisabled }
 							/>
 							<label htmlFor={ option.key }>
 								{ option.label }
@@ -158,6 +160,7 @@ const CheckboxList = ( {
 		onCheckboxChange,
 		renderedShowLess,
 		renderedShowMore,
+		isDisabled,
 	] );
 
 	const classes = classNames(
@@ -185,6 +188,7 @@ CheckboxList.propTypes = {
 	),
 	className: PropTypes.string,
 	isLoading: PropTypes.bool,
+	isDisabled: PropTypes.bool,
 	limit: PropTypes.number,
 };
 
