@@ -159,9 +159,10 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 	}, [ maxConstraint ] );
 
 	if (
-		minConstraint === null ||
-		maxConstraint === null ||
-		minConstraint === maxConstraint
+		! isLoading &&
+		( minConstraint === null ||
+			maxConstraint === null ||
+			minConstraint === maxConstraint )
 	) {
 		return null;
 	}
