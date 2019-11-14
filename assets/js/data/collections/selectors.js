@@ -81,7 +81,7 @@ export const getCollection = (
  * @param {string} state        The current collection state.
  * @param {string} header       The header to retrieve.
  * @param {string} namespace    The namespace for the collection.
- * @param {string} resourceName    The model name for the collection.
+ * @param {string} resourceName The model name for the collection.
  * @param {Object} [query=null] The query object on the collection request.
  * @param {Array}  [ids=[]]     Any ids for the collection request (these are
  *                              values that would be added to the route for a
