@@ -23,6 +23,9 @@ registerBlockType( 'woocommerce/active-filters', {
 		'woo-gutenberg-products-block'
 	),
 	supports: {},
+	example: {
+		attributes: {},
+	},
 	attributes: {
 		displayStyle: {
 			type: 'string',
