@@ -1,10 +1,10 @@
 /**
  * External dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { useQueryStateByKey } from '@woocommerce/base-hooks';
-import { formatPrice } from '@woocommerce/base-utils';
 import { useMemo, Fragment } from '@wordpress/element';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -12,21 +12,34 @@ import { useMemo, Fragment } from '@wordpress/element';
 import './style.scss';
 import { getAttributeFromTaxonomy } from '../../utils/attributes';
 import { removeAttributeFilterBySlug } from '../../utils/attributes-query';
+import { formatPriceRange } from './utils';
 
 /**
- * Callback when removing a filter.
- * @param {function} callback
+ * Render item.
+ * @param {string} type Type string.
+ * @param {string} name Name string.
+ * @param {*} removeCallback Callback to remove item.
+ * @param {*} removeIcon Icon for the remove button.
  */
-const removeFilterLink = ( callback = () => {} ) => {
+const renderItem = ( type, name, removeCallback = () => {} ) => {
 	return (
-		<button onClick={ callback } aria-label="Remove">
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-				<rect x="0" fill="none" width="24" height="24" />
-				<g>
-					<path d="M19.1 4.9C15.2 1 8.8 1 4.9 4.9S1 15.2 4.9 19.1s10.2 3.9 14.1 0 4-10.3.1-14.2zm-4.3 11.3L12 13.4l-2.8 2.8-1.4-1.4 2.8-2.8-2.8-2.8 1.4-1.4 2.8 2.8 2.8-2.8 1.4 1.4-2.8 2.8 2.8 2.8-1.4 1.4z" />
-				</g>
-			</svg>
-		</button>
+		<li
+			className="wc-block-active-filters-list-item"
+			key={ type + ':' + name }
+		>
+			<span className="wc-block-active-filters-list-item__type">
+				{ type + ': ' }
+			</span>
+			<strong className="wc-block-active-filters-list-item__name">
+				{ name }
+			</strong>
+			<button
+				onClick={ removeCallback }
+				aria-label={ __( 'Remove', 'woo-gutenberg-products-block' ) }
+			>
+				{ __( 'Remove', 'woo-gutenberg-products-block' ) }
+			</button>
+		</li>
 	);
 };
 
@@ -57,76 +70,57 @@ const ActiveFiltersBlock = ( {
 		if ( ! Number.isFinite( minPrice ) && ! Number.isFinite( maxPrice ) ) {
 			return;
 		}
-		let priceString;
-
-		if ( Number.isFinite( minPrice ) && Number.isFinite( maxPrice ) ) {
-			/* translators: %s min price, %s max price */
-			priceString = sprintf(
-				__( 'Between %s and %s', 'woo-gutenberg-products-block' ),
-				formatPrice( minPrice ),
-				formatPrice( maxPrice )
-			);
-		} else if ( Number.isFinite( minPrice ) ) {
-			/* translators: %s min price */
-			priceString = sprintf(
-				__( 'From %s', 'woo-gutenberg-products-block' ),
-				formatPrice( minPrice )
-			);
-		} else {
-			/* translators: %s max price */
-			priceString = sprintf(
-				__( 'Up to %s', 'woo-gutenberg-products-block' ),
-				formatPrice( maxPrice )
-			);
-		}
-		return (
-			<li>
-				{ __( 'Price:', 'woo-gutenberg-products-block' ) + ' ' }
-				<strong>{ priceString }</strong>
-				{ removeFilterLink( () => {
-					setMinPrice( null );
-					setMaxPrice( null );
-				} ) }
-			</li>
+		return renderItem(
+			__( 'Price:', 'woo-gutenberg-products-block' ),
+			formatPriceRange( minPrice, maxPrice ),
+			() => {
+				setMinPrice( null );
+				setMaxPrice( null );
+			}
 		);
-	}, [ minPrice, maxPrice, removeFilterLink ] );
+	}, [ minPrice, maxPrice, formatPriceRange ] );
 
 	const activeAttributeFilters = useMemo( () => {
 		return (
 			<Fragment>
-				{ productAttributes.map( ( attribute, attributeIndex ) => {
+				{ productAttributes.map( ( attribute ) => {
 					const attributeObject = getAttributeFromTaxonomy(
 						attribute.attribute
 					);
 					const attributeLabel = attributeObject.label;
-					return attribute.slug.map( ( slug, index ) => (
-						<li key={ attributeIndex + '-' + index }>
-							{ attributeLabel + ': ' }
-							<strong>{ slug }</strong>
-							{ removeFilterLink( () => {
-								removeAttributeFilterBySlug(
-									productAttributes,
-									setProductAttributes,
-									attributeObject,
-									slug
-								);
-							} ) }
-						</li>
-					) );
+					return attribute.slug.map( ( slug ) =>
+						renderItem( attributeLabel, slug, () => {
+							removeAttributeFilterBySlug(
+								productAttributes,
+								setProductAttributes,
+								attributeObject,
+								slug
+							);
+						} )
+					);
 				} ) }
 			</Fragment>
 		);
-	}, [ productAttributes, setProductAttributes, removeFilterLink ] );
+	}, [ productAttributes, setProductAttributes ] );
 
-	if (
-		productAttributes.length === 0 &&
-		! Number.isFinite( minPrice ) &&
-		! Number.isFinite( maxPrice )
-	) {
+	const hasFilters = useMemo( () => {
+		return (
+			productAttributes.length > 0 ||
+			Number.isFinite( minPrice ) ||
+			Number.isFinite( maxPrice )
+		);
+	}, [ productAttributes, minPrice, maxPrice ] );
+
+	if ( ! hasFilters && ! isPreview ) {
 		return null;
 	}
 
 	const TagName = `h${ blockAttributes.headingLevel }`;
+	const listClasses = classnames(
+		'wc-block-active-filters-list',
+		blockAttributes.displayStyle === 'chips' &&
+			'wc-block-active-filters-list--chips'
+	);
 
 	return (
 		<Fragment>
@@ -134,10 +128,34 @@ const ActiveFiltersBlock = ( {
 				<TagName>{ blockAttributes.heading }</TagName>
 			) }
 			<div className="wc-block-active-filters">
-				<ul className="wc-block-active-filters-list">
-					{ activePriceFilters }
-					{ activeAttributeFilters }
+				<ul className={ listClasses }>
+					{ isPreview ? (
+						<Fragment>
+							{ renderItem(
+								__( 'Size', 'woo-gutenberg-products-block' ),
+								__( 'Small', 'woo-gutenberg-products-block' )
+							) }
+							{ renderItem(
+								__( 'Color', 'woo-gutenberg-products-block' ),
+								__( 'Blue', 'woo-gutenberg-products-block' )
+							) }
+						</Fragment>
+					) : (
+						<Fragment>
+							{ activePriceFilters }
+							{ activeAttributeFilters }
+						</Fragment>
+					) }
 				</ul>
+				<button
+					className="wc-block-active-filters__clear-all"
+					onClick={ () => {
+						setMinPrice( null );
+						setMaxPrice( null );
+					} }
+				>
+					{ __( 'Clear All', 'woo-gutenberg-products-block' ) }
+				</button>
 			</div>
 		</Fragment>
 	);
