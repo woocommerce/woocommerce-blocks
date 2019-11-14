@@ -39,8 +39,7 @@ export const assertValidContextValue = (
 			errors.push(
 				`The ${ expectedProperty } is required and is not present.`
 			);
-		}
-		if (
+		} else if (
 			typeof value[ expectedProperty ] !== 'undefined' &&
 			typeof value[ expectedProperty ] !==
 				validationMap[ expectedProperty ].type
