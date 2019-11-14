@@ -152,6 +152,7 @@ const ActiveFiltersBlock = ( {
 					onClick={ () => {
 						setMinPrice( null );
 						setMaxPrice( null );
+						setProductAttributes( [] );
 					} }
 				>
 					{ __( 'Clear All', 'woo-gutenberg-products-block' ) }
