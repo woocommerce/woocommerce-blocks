@@ -14,8 +14,7 @@
 	margin: 0;
 }
 
-.wc-block-error__text,
-.wc-block-error__message {
+.wc-block-error__content > p:last-child {
 	margin-bottom: 0;
 }
 

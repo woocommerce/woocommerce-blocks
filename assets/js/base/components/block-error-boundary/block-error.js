@@ -8,9 +8,13 @@ import PropTypes from 'prop-types';
 const BlockError = ( {
 	imageUrl = `${ WC_BLOCKS_ASSET_URL }img/block-error.svg`,
 	header = __( 'Oops!', 'woo-gutenberg-products-block' ),
-	text = __(
-		'There was an error with loading this content.',
-		'woo-gutenberg-products-block'
+	content = (
+		<p>
+			{ __(
+				'There was an error with loading this content.',
+				'woo-gutenberg-products-block'
+			) }
+		</p>
 	),
 	errorMessage,
 } ) => {
@@ -27,9 +31,13 @@ const BlockError = ( {
 				{ header && (
 					<p className="wc-block-error__header">{ header }</p>
 				) }
-				{ text && <p className="wc-block-error__text">{ text }</p> }
+				{ content && (
+					<div className="wc-block-error__content">{ content }</div>
+				) }
 				{ errorMessage && (
-					<p className="wc-block-error__message">{ errorMessage }</p>
+					<div className="wc-block-error__message">
+						{ errorMessage }
+					</div>
 				) }
 			</div>
 		</div>
@@ -38,9 +46,9 @@ const BlockError = ( {
 
 BlockError.propTypes = {
 	errorMessage: PropTypes.string,
+	content: PropTypes.node,
 	header: PropTypes.string,
 	imageUrl: PropTypes.string,
-	text: PropTypes.string,
 };
 
 export default BlockError;
