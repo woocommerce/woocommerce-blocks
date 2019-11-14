@@ -1,22 +1,24 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-
-/**
- * Internal dependencies
- */
 import Pagination from '@woocommerce/base-components/pagination';
 import ProductSortSelect from '@woocommerce/base-components/product-sort-select';
 import ProductListItem from '@woocommerce/base-components/product-list-item';
 import {
 	useStoreProducts,
 	useSynchronizedQueryState,
+	useQueryStateByKey,
 } from '@woocommerce/base-hooks';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
+
+/**
+ * Internal dependencies
+ */
 import './style.scss';
+import noProducts from './no-products';
+import noMatchingProducts from './no-matching-products';
 
 const generateQuery = ( { sortValue, currentPage, attributes } ) => {
 	const { columns, rows } = attributes;
@@ -65,6 +67,20 @@ const ProductList = ( {
 	const { products, productsLoading, totalProducts } = useStoreProducts(
 		queryState
 	);
+	// These are possible filters.
+	const [ productAttributes, setProductAttributes ] = useQueryStateByKey(
+		'product-grid',
+		'attributes',
+		[]
+	);
+	const [ minPrice, setMinPrice ] = useQueryStateByKey(
+		'product-grid',
+		'min_price'
+	);
+	const [ maxPrice, setMaxPrice ] = useQueryStateByKey(
+		'product-grid',
+		'max_price'
+	);
 	const onPaginationChange = ( newPage ) => {
 		scrollToTop( { focusableSelector: 'a, button' } );
 		onPageChange( newPage );
@@ -93,35 +109,39 @@ const ProductList = ( {
 		productsLoading && ! products.length
 			? Array.from( { length: perPage } )
 			: products;
-	const noProductsMatchingFilters =
-		products.length === 0 && ! productsLoading;
+	const hasProducts = products.length !== 0 || productsLoading;
+	const hasFilters =
+		productAttributes.length > 0 ||
+		Number.isFinite( minPrice ) ||
+		Number.isFinite( maxPrice );
 
 	return (
 		<div className={ getClassnames() }>
-			{ contentVisibility.orderBy && ! noProductsMatchingFilters && (
+			{ contentVisibility.orderBy && hasProducts && (
 				<ProductSortSelect
 					onChange={ onSortChange }
 					value={ sortValue }
 				/>
 			) }
-			<ul className="wc-block-grid__products">
-				{ noProductsMatchingFilters ? (
-					<div className="wc-block-grid__no-products">
-						{ __(
-							'No products found matching your criteria.',
-							'woo-gutenberg-products-block'
-						) }
-					</div>
-				) : (
-					listProducts.map( ( product = {}, i ) => (
+			{ ! hasProducts &&
+				hasFilters &&
+				noMatchingProducts( () => {
+					setProductAttributes( [] );
+					setMinPrice( null );
+					setMaxPrice( null );
+				} ) }
+			{ ! hasProducts && ! hasFilters && noProducts() }
+			{ hasProducts && (
+				<ul className="wc-block-grid__products">
+					{ listProducts.map( ( product = {}, i ) => (
 						<ProductListItem
 							key={ product.id || i }
 							attributes={ attributes }
 							product={ product }
 						/>
-					) )
-				) }
-			</ul>
+					) ) }
+				</ul>
+			) }
 			{ totalProducts > perPage && (
 				<Pagination
 					currentPage={ currentPage }
