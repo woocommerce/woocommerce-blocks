@@ -14,8 +14,9 @@
 	margin: 0;
 }
 
-.wc-block-error__text {
-	margin-bottom: 0.5em;
+.wc-block-error__text,
+.wc-block-error__message {
+	margin-bottom: 0;
 }
 
 @include breakpoint( ">480px" ) {
@@ -23,7 +24,7 @@
 		flex-direction: row;
 	}
 
-	.wc-block-error__content {
+	.wc-block-error__image + .wc-block-error__content {
 		margin-left: $gap;
 	}
 }

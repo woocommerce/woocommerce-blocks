@@ -12,15 +12,15 @@ import './style.scss';
 class BlockErrorBoundary extends Component {
 	state = { hasError: false };
 
-	static getDerivedStateFromError() {
-		return { hasError: true };
+	static getDerivedStateFromError( error ) {
+		return { errorMessage: error.message, hasError: true };
 	}
 
 	render() {
-		const { hasError } = this.state;
+		const { errorMessage, hasError } = this.state;
 
 		if ( hasError ) {
-			return <BlockError />;
+			return <BlockError errorMessage={ errorMessage } />;
 		}
 
 		return this.props.children;
