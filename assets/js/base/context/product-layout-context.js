@@ -22,7 +22,7 @@ const validationMap = {
  * @var {React.Context} ProductLayoutContext A react context object
  */
 const ProductLayoutContext = createContext( {
-	layoutStyleClassPrefix: 'base',
+	layoutStyleClassPrefix: '',
 } );
 
 export const useProductLayoutContext = () => useContext( ProductLayoutContext );
