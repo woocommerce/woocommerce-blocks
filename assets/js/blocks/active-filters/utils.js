@@ -30,3 +30,32 @@ export const formatPriceRange = ( minPrice, maxPrice ) => {
 
 	return priceString;
 };
+
+/**
+ * Render item.
+ * @param {string} type Type string.
+ * @param {string} name Name string.
+ * @param {*} removeCallback Callback to remove item.
+ * @param {*} removeIcon Icon for the remove button.
+ */
+export const renderItem = ( type, name, removeCallback = () => {} ) => {
+	return (
+		<li
+			className="wc-block-active-filters-list-item"
+			key={ type + ':' + name }
+		>
+			<span className="wc-block-active-filters-list-item__type">
+				{ type + ': ' }
+			</span>
+			<strong className="wc-block-active-filters-list-item__name">
+				{ name }
+			</strong>
+			<button
+				onClick={ removeCallback }
+				aria-label={ __( 'Remove', 'woo-gutenberg-products-block' ) }
+			>
+				{ __( 'Remove', 'woo-gutenberg-products-block' ) }
+			</button>
+		</li>
+	);
+};

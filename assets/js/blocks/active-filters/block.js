@@ -11,37 +11,8 @@ import classnames from 'classnames';
  */
 import './style.scss';
 import { getAttributeFromTaxonomy } from '../../utils/attributes';
-import { removeAttributeFilterBySlug } from '../../utils/attributes-query';
-import { formatPriceRange } from './utils';
-
-/**
- * Render item.
- * @param {string} type Type string.
- * @param {string} name Name string.
- * @param {*} removeCallback Callback to remove item.
- * @param {*} removeIcon Icon for the remove button.
- */
-const renderItem = ( type, name, removeCallback = () => {} ) => {
-	return (
-		<li
-			className="wc-block-active-filters-list-item"
-			key={ type + ':' + name }
-		>
-			<span className="wc-block-active-filters-list-item__type">
-				{ type + ': ' }
-			</span>
-			<strong className="wc-block-active-filters-list-item__name">
-				{ name }
-			</strong>
-			<button
-				onClick={ removeCallback }
-				aria-label={ __( 'Remove', 'woo-gutenberg-products-block' ) }
-			>
-				{ __( 'Remove', 'woo-gutenberg-products-block' ) }
-			</button>
-		</li>
-	);
-};
+import { formatPriceRange, renderItem } from './utils';
+import ActiveAttributeFilters from './active-attribute-filters';
 
 /**
  * Component displaying active filters.
@@ -55,12 +26,10 @@ const ActiveFiltersBlock = ( {
 		'attributes',
 		[]
 	);
-
 	const [ minPrice, setMinPrice ] = useQueryStateByKey(
 		'product-grid',
 		'min_price'
 	);
-
 	const [ maxPrice, setMaxPrice ] = useQueryStateByKey(
 		'product-grid',
 		'max_price'
@@ -87,21 +56,17 @@ const ActiveFiltersBlock = ( {
 					const attributeObject = getAttributeFromTaxonomy(
 						attribute.attribute
 					);
-					const attributeLabel = attributeObject.label;
-					return attribute.slug.map( ( slug ) =>
-						renderItem( attributeLabel, slug, () => {
-							removeAttributeFilterBySlug(
-								productAttributes,
-								setProductAttributes,
-								attributeObject,
-								slug
-							);
-						} )
+					return (
+						<ActiveAttributeFilters
+							attributeObject={ attributeObject }
+							slugs={ attribute.slug }
+							key={ attribute.attribute }
+						/>
 					);
 				} ) }
 			</Fragment>
 		);
-	}, [ productAttributes, setProductAttributes ] );
+	}, [ productAttributes ] );
 
 	const hasFilters = useMemo( () => {
 		return (
