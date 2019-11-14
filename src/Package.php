@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Main package class. (Loader in the WC Core context as well)
  *
- * $VID:$
+ * @since $VID:$
  */
 class Package {
 
