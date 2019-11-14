@@ -9,7 +9,7 @@
  * {
  *   [expectedPropertyName<String>]: {
  *     required: [expectedRequired<Boolean>]
- *     type: [expectedtype<String>]
+ *     type: [expectedType<String>]
  *   }
  * }
  *
