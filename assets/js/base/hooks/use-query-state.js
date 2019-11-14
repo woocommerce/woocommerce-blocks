@@ -101,7 +101,7 @@ export const useQueryStateByKey = ( queryKey, defaultValue, context ) => {
  *
  * @param {Object} synchronizedQuery A provided query state object to
  *                                   synchronize internal query state with.
- * @param {string} context           What context to retrieve the query state
+ * @param {string} [context]         What context to retrieve the query state
  *                                   for. If not provided, will be pulled from
  *                                   the QueryStateContextProvider in the tree.
  */
