@@ -54,7 +54,7 @@ const withSearchedProducts = createHigherOrderComponent(
 
 			onSearch( search ) {
 				const { selected } = this.props;
-				this.setState( { loading: true } );
+
 				getProducts( { selected, search } )
 					.then( ( list ) => {
 						this.setState( { list, loading: false } );
