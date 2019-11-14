@@ -106,6 +106,24 @@ class ProductCategories extends WC_REST_Product_Categories_Controller {
 	 * @return \WP_REST_Response
 	 */
 	public function prepare_item_for_response( $item, $request ) {
+		$products_of_category = get_posts(
+			array(
+				'post_type'   => 'product',
+				'numberposts' => -1,
+				'tax_query'   => array(
+					array(
+						'taxonomy' => 'product_cat',
+						'field'    => 'id',
+						'terms'    => $item->term_id,
+					),
+				),
+			)
+		);
+		$reviews_count = 0;
+		foreach ( $products_of_category as $product ) {
+			$all_comments   = wp_count_comments( $product->ID );
+			$reviews_count += $all_comments->approved;
+		}
 		$data = array(
 			'id'          => (int) $item->term_id,
 			'name'        => $item->name,
@@ -115,6 +133,7 @@ class ProductCategories extends WC_REST_Product_Categories_Controller {
 			'description' => $item->description,
 			'image'       => null,
 			'permalink'   => get_term_link( $item->term_id, 'product_cat' ),
+			'reviews'     => $reviews_count,
 		);
 
 		$image_id = get_term_meta( $item->term_id, 'thumbnail_id', true );
