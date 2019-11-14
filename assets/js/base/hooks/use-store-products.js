@@ -25,17 +25,19 @@ export const useStoreProducts = ( query ) => {
 	// @todo see @https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1097
 	// where the namespace is going to be changed. Not doing in this pull.
 	const collectionOptions = {
-		namespace: '/wc/blocks',
+		namespace: '/wc/store',
 		resourceName: 'products',
-		query,
 	};
-	const { results: products, isLoading: productsLoading } = useCollection(
-		collectionOptions
-	);
-	const { value: totalProducts } = useCollectionHeader(
-		'x-wp-total',
-		collectionOptions
-	);
+	const { results: products, isLoading: productsLoading } = useCollection( {
+		...collectionOptions,
+		query,
+	} );
+	// eslint-disable-next-line no-unused-vars, camelcase
+	const { order, orderby, page, per_page, ...totalQuery } = query;
+	const { value: totalProducts } = useCollectionHeader( 'x-wp-total', {
+		...collectionOptions,
+		query: totalQuery,
+	} );
 	return {
 		products,
 		totalProducts,

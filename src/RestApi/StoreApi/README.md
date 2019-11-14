@@ -84,12 +84,14 @@ Additional pagination headers are also sent back.
 
 Available resources in the Store API include:
 
-| Resource                                                   | Available endpoints                  |
-| :--------------------------------------------------------- | :----------------------------------- |
-| [`Product Collection Data`](#products-collection-data-api) | `/wc/store/products/collection-data` |
-| [`Products`](#products-api)                                | `/wc/store/products`                 |
-| [`Cart`](#cart-api)                                        | `/wc/store/cart`                     |
-| [`Cart Items`](#cart-items-api)                            | `/wc/store/cart/items`               |
+| Resource                                                   | Available endpoints                     |
+| :--------------------------------------------------------- | :-------------------------------------- |
+| [`Product Collection Data`](#products-collection-data-api) | `/wc/store/products/collection-data`    |
+| [`Products`](#products-api)                                | `/wc/store/products`                    |
+| [`Cart`](#cart-api)                                        | `/wc/store/cart`                        |
+| [`Cart Items`](#cart-items-api)                            | `/wc/store/cart/items`                  |
+| [`Product Attributes`](#product-attributes-api)            | `/wc/store/products/attributes`         |
+| [`Product Attribute Terms`](#product-attribute-terms-api)  | `/wc/store/products/attributes/1/terms` |
 
 ## Product Collection Data API
 
@@ -222,8 +224,18 @@ Example response:
 		"permalink": "http://local.wordpress.test/product/wordpress-pennant/",
 		"sku": "wp-pennant",
 		"description": "<p>This is an external product.</p>\n",
-		"price": "0",
-		"price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>0.00</span>",
+		"prices": {
+			"currency_code": "GBP",
+			"decimal_separator": ".",
+			"thousand_separator": ",",
+			"decimals": 2,
+			"price_prefix": "£",
+			"price_suffix": "",
+			"price": 18,
+			"regular_price": 18,
+			"sale_price": 18,
+			"price_range": null
+		},
 		"average_rating": "3.60",
 		"review_count": 5,
 		"images": [
@@ -264,8 +276,18 @@ Example response:
 	"permalink": "http://local.wordpress.test/product/wordpress-pennant/",
 	"sku": "wp-pennant",
 	"description": "<p>This is an external product.</p>\n",
-	"price": "0",
-	"price_html": "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&pound;</span>0.00</span>",
+	"prices": {
+		"currency_code": "GBP",
+		"decimal_separator": ".",
+		"thousand_separator": ",",
+		"decimals": 2,
+		"price_prefix": "£",
+		"price_suffix": "",
+		"price": 18,
+		"regular_price": 18,
+		"sale_price": 18,
+		"price_range": null
+	},
 	"average_rating": "3.60",
 	"review_count": 5,
 	"images": [
@@ -530,4 +552,104 @@ Example response:
 
 ```json
 []
+```
+
+## Product Attributes API
+
+```http
+GET /products/attributes
+```
+
+There are no parameters required for this endpoint.
+
+```http
+curl "https://example-store.com/wp-json/wc/store/products/attributes"
+```
+
+Example response:
+
+```json
+[
+	{
+		"id": 1,
+		"name": "Color",
+		"slug": "pa_color",
+		"type": "select",
+		"order": "menu_order",
+		"has_archives": false
+	},
+	{
+		"id": 2,
+		"name": "Size",
+		"slug": "pa_size",
+		"type": "select",
+		"order": "menu_order",
+		"has_archives": false
+	}
+]
+```
+
+### Single attribute
+
+Get a single attribute taxonomy.
+
+```http
+GET /products/attributes/:id
+```
+
+| Attribute | Type    | Required | Description                          |
+| :-------- | :------ | :------: | :----------------------------------- |
+| `id`      | integer |   Yes    | The ID of the attribute to retrieve. |
+
+```http
+curl "https://example-store.com/wp-json/wc/store/products/attributes/1"
+```
+
+Example response:
+
+```json
+{
+	"id": 1,
+	"name": "Color",
+	"slug": "pa_color",
+	"type": "select",
+	"order": "menu_order",
+	"has_archives": false
+}
+```
+
+## Product Attribute Terms API
+
+```http
+GET /products/attributes/:id/terms
+GET /products/attributes/:id/terms&orderby=slug
+```
+
+| Attribute | Type    | Required | Description                                                                   |
+| :-------- | :------ | :------: | :---------------------------------------------------------------------------- |
+| `id`      | integer |   Yes    | The ID of the attribute to retrieve terms for.                                |
+| `order`   | string  |    no    | Order ascending or descending. Allowed values: `asc`, `desc`                  |
+| `orderby` | string  |    no    | Sort collection by object attribute. Allowed values: `name`, `slug`, `count`. |
+
+```http
+curl "https://example-store.com/wp-json/wc/store/products/attributes/1/terms"
+```
+
+Example response:
+
+```json
+[
+	{
+		"id": 22,
+		"name": "Blue",
+		"slug": "blue",
+		"count": 5
+	},
+	{
+		"id": 48,
+		"name": "Burgundy",
+		"slug": "burgundy",
+		"count": 1
+	}
+]
 ```

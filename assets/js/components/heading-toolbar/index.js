@@ -2,10 +2,6 @@
  * External dependencies
  */
 import { range } from 'lodash';
-
-/**
- * WordPress dependencies
- */
 import { __, sprintf } from '@wordpress/i18n';
 import { Component } from '@wordpress/element';
 import { Toolbar } from '@wordpress/components';
@@ -25,7 +21,7 @@ class HeadingToolbar extends Component {
 		const isActive = targetLevel === selectedLevel;
 		return {
 			icon: <HeadingLevelIcon level={ targetLevel } />,
-			// translators: %s: heading level e.g: "1", "2", "3"
+			// translators: %s: heading level e.g: "2", "3", "4"
 			title: sprintf( __( 'Heading %d' ), targetLevel ),
 			isActive,
 			onClick: () => onChange( targetLevel ),

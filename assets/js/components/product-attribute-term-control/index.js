@@ -7,15 +7,15 @@ import { find } from 'lodash';
 import PropTypes from 'prop-types';
 import { SearchListControl, SearchListItem } from '@woocommerce/components';
 import { SelectControl, Spinner } from '@wordpress/components';
+import { withAttributes } from '@woocommerce/block-hocs';
+import ErrorMessage from '@woocommerce/block-components/error-placeholder/error-message.js';
 
 /**
  * Internal dependencies
  */
-import { withAttributes } from '@woocommerce/block-hocs';
-import ErrorMessage from '@woocommerce/block-components/error-placeholder/error-message.js';
 import './style.scss';
 
-const ProductAttributeControl = ( {
+const ProductAttributeTermControl = ( {
 	attributes,
 	error,
 	expandedAttribute,
@@ -57,7 +57,7 @@ const ProductAttributeControl = ( {
 					isSelected={ expandedAttribute === item.id }
 					onSelect={ onSelectAttribute }
 					isSingle
-					disabled={ '0' === item.count }
+					disabled={ item.count === '0' }
 					aria-expanded={ expandedAttribute === item.id }
 					aria-label={ sprintf(
 						_n(
@@ -186,7 +186,7 @@ const ProductAttributeControl = ( {
 	);
 };
 
-ProductAttributeControl.propTypes = {
+ProductAttributeTermControl.propTypes = {
 	/**
 	 * Callback to update the selected product attributes.
 	 */
@@ -213,8 +213,8 @@ ProductAttributeControl.propTypes = {
 	termsList: PropTypes.object,
 };
 
-ProductAttributeControl.defaultProps = {
+ProductAttributeTermControl.defaultProps = {
 	operator: 'any',
 };
 
-export default withAttributes( ProductAttributeControl );
+export default withAttributes( ProductAttributeTermControl );

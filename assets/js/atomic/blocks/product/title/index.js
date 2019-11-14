@@ -6,14 +6,14 @@ import { registerBlockType } from '@wordpress/blocks';
 import { Fragment } from 'react';
 import { Disabled, PanelBody, ToggleControl } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/editor';
+import { ProductTitle } from '@woocommerce/atomic-components/product';
+import { previewProducts } from '@woocommerce/resource-previews';
+import HeadingToolbar from '@woocommerce/block-components/heading-toolbar';
 
 /**
  * Internal dependencies
  */
-import { ProductTitle } from '@woocommerce/atomic-components/product';
 import sharedConfig from '../shared-config';
-import HeadingToolbar from './heading-toolbar';
-import { previewProducts } from '@woocommerce/resource-previews';
 
 const blockConfig = {
 	title: __( 'Product Title', 'woo-gutenberg-products-block' ),
@@ -55,7 +55,7 @@ const blockConfig = {
 						<p>{ __( 'Level', 'woo-gutenberg-products-block' ) }</p>
 						<HeadingToolbar
 							isCollapsed={ false }
-							minLevel={ 1 }
+							minLevel={ 2 }
 							maxLevel={ 7 }
 							selectedLevel={ level }
 							onChange={ ( newLevel ) =>

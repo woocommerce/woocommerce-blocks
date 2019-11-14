@@ -3,11 +3,11 @@
  */
 import { Component } from '@wordpress/element';
 import { createHigherOrderComponent } from '@wordpress/compose';
+import { getCategory } from '@woocommerce/block-components/utils';
 
 /**
  * Internal dependencies
  */
-import { getCategory } from '@woocommerce/block-components/utils';
 import { formatError } from '../base/utils/errors.js';
 
 const withCategory = createHigherOrderComponent( ( OriginalComponent ) => {
@@ -17,7 +17,10 @@ const withCategory = createHigherOrderComponent( ( OriginalComponent ) => {
 			this.state = {
 				error: null,
 				loading: false,
-				category: null,
+				category:
+					this.props.attributes.categoryId === 'preview'
+						? this.props.attributes.previewCategory
+						: null,
 			};
 			this.loadCategory = this.loadCategory.bind( this );
 		}
@@ -37,6 +40,10 @@ const withCategory = createHigherOrderComponent( ( OriginalComponent ) => {
 
 		loadCategory() {
 			const { categoryId } = this.props.attributes;
+
+			if ( categoryId === 'preview' ) {
+				return;
+			}
 
 			if ( ! categoryId ) {
 				this.setState( {

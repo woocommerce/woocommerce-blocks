@@ -6,10 +6,6 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Disabled } from '@wordpress/components';
 import { ENABLE_REVIEW_RATING } from '@woocommerce/block-settings';
-
-/**
- * Internal dependencies
- */
 import ErrorPlaceholder from '@woocommerce/block-components/error-placeholder';
 import LoadMoreButton from '@woocommerce/base-components/load-more-button';
 import ReviewList from '@woocommerce/base-components/review-list';
@@ -50,7 +46,7 @@ class EditorBlock extends Component {
 			);
 		}
 
-		if ( 0 === reviews.length && ! isLoading ) {
+		if ( reviews.length === 0 && ! isLoading ) {
 			return <NoReviewsPlaceholder attributes={ attributes } />;
 		}
 

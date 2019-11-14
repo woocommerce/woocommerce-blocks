@@ -3,16 +3,16 @@
  */
 import TestRenderer, { act } from 'react-test-renderer';
 import { createRegistry, RegistryProvider } from '@wordpress/data';
+import { QUERY_STATE_STORE_KEY as storeKey } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
 import {
-	useQueryStateContext,
+	useQueryStateByContext,
 	useQueryStateByKey,
 	useSynchronizedQueryState,
 } from '../use-query-state';
-import { QUERY_STATE_STORE_KEY as storeKey } from '@woocommerce/block-data';
 
 jest.mock( '@woocommerce/block-data', () => ( {
 	__esModule: true,
@@ -104,8 +104,8 @@ describe( 'Testing Query State Hooks', () => {
 			},
 		} );
 	};
-	describe( 'useQueryStateContext', () => {
-		const TestComponent = getTestComponent( useQueryStateContext, [
+	describe( 'useQueryStateByContext', () => {
+		const TestComponent = getTestComponent( useQueryStateByContext, [
 			'context',
 		] );
 		let renderer;
