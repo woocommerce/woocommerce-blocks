@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import GridContentControl from '@woocommerce/block-components/grid-content-control';
 import GridLayoutControl from '@woocommerce/block-components/grid-layout-control';
 import ProductCategoryControl from '@woocommerce/block-components/product-category-control';
-import preview from './preview';
+import { gridBlockPreview } from '@woocommerce/resource-previews';
 
 /**
  * Component to handle edit mode of "Best Selling Products".
@@ -81,7 +81,7 @@ class ProductBestSellersBlock extends Component {
 		const { attributes, name } = this.props;
 
 		if ( attributes.isPreview ) {
-			return preview;
+			return gridBlockPreview;
 		}
 
 		return (
