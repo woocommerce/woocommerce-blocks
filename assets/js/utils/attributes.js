@@ -51,11 +51,11 @@ export const getAttributeFromID = ( attributeId ) => {
  * Get attribute data by taxonomy.
  *
  * @param {string} taxonomy The attribute taxonomy name e.g. pa_color.
- * @return {Object} The attribute object if it exists.
+ * @return {Object|undefined} The attribute object if it exists.
  */
 export const getAttributeFromTaxonomy = ( taxonomy ) => {
 	if ( ! taxonomy ) {
-		return undefined;
+		return;
 	}
 	return attributeObjects.find( ( attribute ) => {
 		return attribute.taxonomy === taxonomy;
