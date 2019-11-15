@@ -19,7 +19,7 @@ import { useShallowEqual } from './use-shallow-equal';
  *
  * @param {string} context What context to retrieve the query state for.
  *
- * @return {array} An array that has two elements. The first element is the
+ * @return {Array} An array that has two elements. The first element is the
  *                 query state value for the given context.  The second element
  *                 is a dispatcher function for setting the query state.
  */

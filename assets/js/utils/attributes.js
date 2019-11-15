@@ -5,6 +5,7 @@ import { ATTRIBUTES } from '@woocommerce/block-settings';
 
 /**
  * Format an attribute from the settings into an object with standardized keys.
+ * @param {Object} The attribute object.
  */
 const attributeSettingToObject = ( attribute ) => {
 	if ( ! attribute || ! attribute.attribute_name ) {
@@ -35,7 +36,7 @@ const attributeObjects = ATTRIBUTES.reduce( ( acc, current ) => {
  * Get attribute data by taxonomy.
  *
  * @param {number} attributeId The attribute ID.
- * @return {object} The attribute object or null.
+ * @return {Object} The attribute object or null.
  */
 export const getAttributeFromID = ( attributeId ) => {
 	if ( ! attributeId ) {
@@ -51,8 +52,8 @@ export const getAttributeFromID = ( attributeId ) => {
 /**
  * Get attribute data by taxonomy.
  *
- * @param {number} taxonomy The attribute taxonomy name e.g. pa_color.
- * @return {object} The attribute object or null.
+ * @param {string} taxonomy The attribute taxonomy name e.g. pa_color.
+ * @return {Object} The attribute object or null.
  */
 export const getAttributeFromTaxonomy = ( taxonomy ) => {
 	if ( ! taxonomy ) {

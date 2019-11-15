@@ -49,24 +49,18 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 	const prevMinConstraint = usePrevious( minConstraint );
 	const prevMaxConstraint = usePrevious( maxConstraint );
 
-	/**
-	 * Updates the query after a short delay.
-	 */
+	// Updates the query after a short delay.
 	const [ debouncedUpdateQuery ] = useDebouncedCallback( () => {
 		onSubmit();
 	}, 500 );
 
-	/**
-	 * Updates the query based on slider values.
-	 */
+	// Updates the query based on slider values.
 	const onSubmit = useCallback( () => {
 		setMinPriceQuery( minPrice === minConstraint ? undefined : minPrice );
 		setMaxPriceQuery( maxPrice === maxConstraint ? undefined : maxPrice );
 	}, [ minPrice, maxPrice, minConstraint, maxConstraint ] );
 
-	/**
-	 * Callback when slider is changed.
-	 */
+	// Callback when slider is changed.
 	const onChange = useCallback(
 		( prices ) => {
 			if ( prices[ 0 ] !== minPrice ) {
@@ -79,16 +73,12 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 		[ minConstraint, maxConstraint, minPrice, maxPrice ]
 	);
 
-	/**
-	 * Track price STATE changes - if state changes, update the query.
-	 */
+	// Track price STATE changes - if state changes, update the query.
 	useEffect( () => {
 		debouncedUpdateQuery();
 	}, [ minPrice, maxPrice ] );
 
-	/**
-	 * Track PRICE QUERY changes so the slider reflects current filters.
-	 */
+	// Track PRICE QUERY changes so the slider reflects current filters.
 	useEffect( () => {
 		if ( minPriceQuery !== minPrice ) {
 			setMinPrice(
@@ -102,9 +92,7 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 		}
 	}, [ minPriceQuery, maxPriceQuery, minConstraint, maxConstraint ] );
 
-	/**
-	 * Track product updates to update constraints.
-	 */
+	// Track product updates to update constraints.
 	useEffect( () => {
 		if ( isLoading ) {
 			return;
@@ -132,9 +120,7 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 		}
 	}, [ isLoading, results ] );
 
-	/**
-	 * Track min constraint changes.
-	 */
+	// Track min constraint changes.
 	useEffect( () => {
 		if (
 			minPrice === undefined ||
@@ -145,9 +131,7 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 		}
 	}, [ minConstraint ] );
 
-	/**
-	 * Track max constraint changes.
-	 */
+	// Track max constraint changes.
 	useEffect( () => {
 		if (
 			maxPrice === undefined ||

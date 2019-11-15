@@ -24,7 +24,7 @@ Headers = Headers
  * @param {string}   modelName        The model name for the collection route.
  *                                    string generating them.
  * @param {string}   [queryString=''] The query string for the collection
- * @param {array}    [ids=[]]         An array of ids (in correct order) for the
+ * @param {Array}    [ids=[]]         An array of ids (in correct order) for the
  *                                    model.
  * @param {Object}   [response={}]    An object containing the response from the
  *                                    collection request.
