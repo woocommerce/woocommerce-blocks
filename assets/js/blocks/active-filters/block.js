@@ -72,7 +72,7 @@ const ActiveFiltersBlock = ( {
 		);
 	};
 
-	if ( ! hasFilters && ! isPreview ) {
+	if ( ! hasFilters() && ! isPreview ) {
 		return null;
 	}
 
