@@ -52,10 +52,7 @@ export const renderRemovableListItem = (
 			<strong className="wc-block-active-filters-list-item__name">
 				{ name }
 			</strong>
-			<button
-				onClick={ removeCallback }
-				aria-label={ __( 'Remove', 'woo-gutenberg-products-block' ) }
-			>
+			<button onClick={ removeCallback }>
 				{ __( 'Remove', 'woo-gutenberg-products-block' ) }
 			</button>
 		</li>
