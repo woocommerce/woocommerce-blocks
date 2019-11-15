@@ -11,7 +11,7 @@ import classnames from 'classnames';
  */
 import './style.scss';
 import { getAttributeFromTaxonomy } from '../../utils/attributes';
-import { formatPriceRange, renderItem } from './utils';
+import { formatPriceRange, renderRemovableListItem } from './utils';
 import ActiveAttributeFilters from './active-attribute-filters';
 
 /**
@@ -39,7 +39,7 @@ const ActiveFiltersBlock = ( {
 		if ( ! Number.isFinite( minPrice ) && ! Number.isFinite( maxPrice ) ) {
 			return null;
 		}
-		return renderItem(
+		return renderRemovableListItem(
 			__( 'Price:', 'woo-gutenberg-products-block' ),
 			formatPriceRange( minPrice, maxPrice ),
 			() => {
@@ -96,11 +96,11 @@ const ActiveFiltersBlock = ( {
 				<ul className={ listClasses }>
 					{ isPreview ? (
 						<Fragment>
-							{ renderItem(
+							{ renderRemovableListItem(
 								__( 'Size', 'woo-gutenberg-products-block' ),
 								__( 'Small', 'woo-gutenberg-products-block' )
 							) }
-							{ renderItem(
+							{ renderRemovableListItem(
 								__( 'Color', 'woo-gutenberg-products-block' ),
 								__( 'Blue', 'woo-gutenberg-products-block' )
 							) }

@@ -6,7 +6,7 @@ import { useCollection, useQueryStateByKey } from '@woocommerce/base-hooks';
 /**
  * Internal dependencies
  */
-import { renderItem } from './utils';
+import { renderRemovableListItem } from './utils';
 import { removeAttributeFilterBySlug } from '../../utils/attributes-query';
 
 /**
@@ -37,14 +37,18 @@ const ActiveAttributeFilters = ( { attributeObject = {}, slugs = [] } ) => {
 				return term.slug === slug;
 			} ) || null;
 
-		return renderItem( attributeLabel, termObject.name || slug, () => {
-			removeAttributeFilterBySlug(
-				productAttributes,
-				setProductAttributes,
-				attributeObject,
-				slug
-			);
-		} );
+		return renderRemovableListItem(
+			attributeLabel,
+			termObject.name || slug,
+			() => {
+				removeAttributeFilterBySlug(
+					productAttributes,
+					setProductAttributes,
+					attributeObject,
+					slug
+				);
+			}
+		);
 	} );
 };
 

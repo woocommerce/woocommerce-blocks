@@ -32,13 +32,17 @@ export const formatPriceRange = ( minPrice, maxPrice ) => {
 };
 
 /**
- * Render item.
+ * Render a removable item in the active filters block list.
  * @param {string} type Type string.
  * @param {string} name Name string.
  * @param {*} removeCallback Callback to remove item.
  * @param {*} removeIcon Icon for the remove button.
  */
-export const renderItem = ( type, name, removeCallback = () => {} ) => {
+export const renderRemovableListItem = (
+	type,
+	name,
+	removeCallback = () => {}
+) => {
 	return (
 		<li
 			className="wc-block-active-filters-list-item"
