@@ -8,13 +8,9 @@ import PropTypes from 'prop-types';
 const BlockError = ( {
 	imageUrl = `${ WC_BLOCKS_ASSET_URL }img/block-error.svg`,
 	header = __( 'Oops!', 'woo-gutenberg-products-block' ),
-	content = (
-		<p>
-			{ __(
-				'There was an error with loading this content.',
-				'woo-gutenberg-products-block'
-			) }
-		</p>
+	text = __(
+		'There was an error with loading this content.',
+		'woo-gutenberg-products-block'
 	),
 	errorMessage,
 } ) => {
@@ -31,13 +27,9 @@ const BlockError = ( {
 				{ header && (
 					<p className="wc-block-error__header">{ header }</p>
 				) }
-				{ content && (
-					<div className="wc-block-error__content">{ content }</div>
-				) }
+				{ text && <p className="wc-block-error__text">{ text }</p> }
 				{ errorMessage && (
-					<div className="wc-block-error__message">
-						{ errorMessage }
-					</div>
+					<p className="wc-block-error__message">{ errorMessage }</p>
 				) }
 			</div>
 		</div>
@@ -50,12 +42,6 @@ BlockError.propTypes = {
 	 */
 	errorMessage: PropTypes.string,
 	/**
-	 * Content to display in the error block below the header.
-	 * If it's `null` or an empty string, nothing will be displayed.
-	 * If it's not defined, the default content will be used.
-	 */
-	content: PropTypes.node,
-	/**
 	 * Text to display as the heading of the error block.
 	 * If it's `null` or an empty string, no header will be displayed.
 	 * If it's not defined, the default header will be used.
@@ -67,6 +53,12 @@ BlockError.propTypes = {
 	 * If it's not defined, the default image will be used.
 	 */
 	imageUrl: PropTypes.string,
+	/**
+	 * Text to display in the error block below the header.
+	 * If it's `null` or an empty string, nothing will be displayed.
+	 * If it's not defined, the default text will be used.
+	 */
+	text: PropTypes.string,
 };
 
 export default BlockError;

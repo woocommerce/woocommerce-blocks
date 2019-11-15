@@ -14,8 +14,9 @@
 	margin: 0;
 }
 
-.wc-block-error__content > p:last-child {
-	margin-bottom: 0;
+.wc-block-error__text,
+.wc-block-error__message {
+	margin: 0;
 }
 
 @include breakpoint( ">480px" ) {

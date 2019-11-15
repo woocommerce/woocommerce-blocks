@@ -18,16 +18,16 @@ class BlockErrorBoundary extends Component {
 	}
 
 	render() {
-		const { content, header, imageUrl, showErrorMessage } = this.props;
+		const { header, imageUrl, showErrorMessage, text } = this.props;
 		const { errorMessage, hasError } = this.state;
 
 		if ( hasError ) {
 			return (
 				<BlockError
-					content={ content }
+					errorMessage={ showErrorMessage ? errorMessage : null }
 					header={ header }
 					imageUrl={ imageUrl }
-					errorMessage={ showErrorMessage ? errorMessage : null }
+					text={ text }
 				/>
 			);
 		}
@@ -37,12 +37,6 @@ class BlockErrorBoundary extends Component {
 }
 
 BlockErrorBoundary.propTypes = {
-	/**
-	 * Content to display in the error block below the header.
-	 * If it's `null` or an empty string, nothing will be displayed.
-	 * If it's not defined, the default content will be used.
-	 */
-	content: PropTypes.node,
 	/**
 	 * Text to display as the heading of the error block.
 	 * If it's `null` or an empty string, no header will be displayed.
@@ -59,6 +53,12 @@ BlockErrorBoundary.propTypes = {
 	 * Whether to display the JS error message.
 	 */
 	showErrorMessage: PropTypes.bool,
+	/**
+	 * Text to display in the error block below the header.
+	 * If it's `null` or an empty string, nothing will be displayed.
+	 * If it's not defined, the default text will be used.
+	 */
+	text: PropTypes.string,
 };
 
 BlockErrorBoundary.defaultProps = {
