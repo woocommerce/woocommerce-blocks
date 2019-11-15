@@ -17,16 +17,12 @@ import { useDebouncedCallback } from 'use-debounce';
  */
 const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 	const [ minPriceQuery, setMinPriceQuery ] = useQueryStateByKey(
-		'product-grid',
-		'min_price',
-		''
+		'min_price'
 	);
 	const [ maxPriceQuery, setMaxPriceQuery ] = useQueryStateByKey(
-		'product-grid',
-		'max_price',
-		''
+		'max_price'
 	);
-	const [ queryState ] = useQueryStateByContext( 'product-grid' );
+	const [ queryState ] = useQueryStateByContext();
 	const { results, isLoading } = useCollection( {
 		namespace: '/wc/store',
 		resourceName: 'products/collection-data',

@@ -31,12 +31,11 @@ const AttributeFilterBlock = ( {
 } ) => {
 	const [ displayedOptions, setDisplayedOptions ] = useState( [] );
 	const attributeObject = getAttributeFromID( blockAttributes.attributeId );
-
-	const [ queryState ] = useQueryStateByContext( 'product-grid' );
+	const [ queryState ] = useQueryStateByContext();
 	const [
 		productAttributesQuery,
 		setProductAttributesQuery,
-	] = useQueryStateByKey( 'product-grid', 'attributes', [] );
+	] = useQueryStateByKey( 'attributes', [] );
 
 	const checked = useMemo( () => {
 		return productAttributesQuery
