@@ -36,11 +36,11 @@ const attributeObjects = ATTRIBUTES.reduce( ( acc, current ) => {
  * Get attribute data by taxonomy.
  *
  * @param {number} attributeId The attribute ID.
- * @return {Object} The attribute object if it exists.
+ * @return {Object|undefined} The attribute object if it exists.
  */
 export const getAttributeFromID = ( attributeId ) => {
 	if ( ! attributeId ) {
-		return undefined;
+		return;
 	}
 	return attributeObjects.find( ( attribute ) => {
 		return attribute.id === attributeId;
