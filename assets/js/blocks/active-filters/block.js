@@ -50,22 +50,18 @@ const ActiveFiltersBlock = ( {
 	}, [ minPrice, maxPrice, formatPriceRange ] );
 
 	const activeAttributeFilters = useMemo( () => {
-		return (
-			<Fragment>
-				{ productAttributes.map( ( attribute ) => {
-					const attributeObject = getAttributeFromTaxonomy(
-						attribute.attribute
-					);
-					return (
-						<ActiveAttributeFilters
-							attributeObject={ attributeObject }
-							slugs={ attribute.slug }
-							key={ attribute.attribute }
-						/>
-					);
-				} ) }
-			</Fragment>
-		);
+		return productAttributes.map( ( attribute ) => {
+			const attributeObject = getAttributeFromTaxonomy(
+				attribute.attribute
+			);
+			return (
+				<ActiveAttributeFilters
+					attributeObject={ attributeObject }
+					slugs={ attribute.slug }
+					key={ attribute.attribute }
+				/>
+			);
+		} );
 	}, [ productAttributes ] );
 
 	const hasFilters = () => {
