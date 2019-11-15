@@ -36,7 +36,7 @@ const AttributeFilterBlock = ( {
 	const getLabel = useCallback(
 		( name, count ) => {
 			return (
-				<Fragment key="label">
+				<Fragment>
 					{ name }
 					{ blockAttributes.showCounts && count !== null && (
 						<span className="wc-block-attribute-filter-list-count">
