@@ -9,6 +9,8 @@ export const gridBlockPreview = (
 		alt="Grid Preview"
 		width="230"
 		height="250"
-		style={ { width: '100%' } }
+		style={ {
+			width: '100%',
+		} }
 	/>
 );
