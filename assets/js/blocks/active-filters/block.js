@@ -81,11 +81,10 @@ const ActiveFiltersBlock = ( {
 	}
 
 	const TagName = `h${ blockAttributes.headingLevel }`;
-	const listClasses = classnames(
-		'wc-block-active-filters-list',
-		blockAttributes.displayStyle === 'chips' &&
-			'wc-block-active-filters-list--chips'
-	);
+	const listClasses = classnames( 'wc-block-active-filters-list', {
+		'wc-block-active-filters-list--chips':
+			blockAttributes.displayStyle === 'chips',
+	} );
 
 	return (
 		<Fragment>
