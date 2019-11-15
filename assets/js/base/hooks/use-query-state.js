@@ -49,11 +49,7 @@ export const useQueryStateByContext = ( context ) => {
  * @return {*}  Whatever value is set at the query state index using the
  *              provided context and query key.
  */
-export const useQueryStateByKey = (
-	context,
-	queryKey,
-	defaultValue
-) => {
+export const useQueryStateByKey = ( context, queryKey, defaultValue ) => {
 	const queryValue = useSelect(
 		( select ) => {
 			const store = select( storeKey );

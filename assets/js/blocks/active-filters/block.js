@@ -37,7 +37,7 @@ const ActiveFiltersBlock = ( {
 
 	const activePriceFilters = useMemo( () => {
 		if ( ! Number.isFinite( minPrice ) && ! Number.isFinite( maxPrice ) ) {
-			return;
+			return null;
 		}
 		return renderItem(
 			__( 'Price:', 'woo-gutenberg-products-block' ),
