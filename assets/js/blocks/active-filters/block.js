@@ -68,13 +68,13 @@ const ActiveFiltersBlock = ( {
 		);
 	}, [ productAttributes ] );
 
-	const hasFilters = useMemo( () => {
+	const hasFilters = () => {
 		return (
 			productAttributes.length > 0 ||
 			Number.isFinite( minPrice ) ||
 			Number.isFinite( maxPrice )
 		);
-	}, [ productAttributes, minPrice, maxPrice ] );
+	};
 
 	if ( ! hasFilters && ! isPreview ) {
 		return null;
