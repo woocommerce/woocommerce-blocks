@@ -42,45 +42,45 @@ const ProductCategoryControl = ( {
 
 		const listItemAriaLabel = showReviewCount
 			? sprintf(
-				_n(
-					'%s, has %d review',
-					'%s, has %d reviews',
-					item.reviews,
-					'woo-gutenberg-products-block'
-				),
-				accessibleName,
-				item.reviews
-			)
+					_n(
+						'%s, has %d review',
+						'%s, has %d reviews',
+						item.review_count,
+						'woo-gutenberg-products-block'
+					),
+					accessibleName,
+					item.review_count
+			  )
 			: sprintf(
-				_n(
-					'%s, has %d product',
-					'%s, has %d products',
-					item.count,
-					'woo-gutenberg-products-block'
-				),
-				accessibleName,
-				item.count
-			);
+					_n(
+						'%s, has %d product',
+						'%s, has %d products',
+						item.count,
+						'woo-gutenberg-products-block'
+					),
+					accessibleName,
+					item.count
+			  );
 
-			const listItemCountLabel = showReviewCount
+		const listItemCountLabel = showReviewCount
 			? sprintf(
-				_n(
-					'%d Review',
-					'%d Reviews',
-					item.reviews,
-					'woo-gutenberg-products-block'
-				),
-				item.reviews
-			)
+					_n(
+						'%d Review',
+						'%d Reviews',
+						item.review_count,
+						'woo-gutenberg-products-block'
+					),
+					item.review_count
+			  )
 			: sprintf(
-				_n(
-					'%d Product',
-					'%d Products',
-					item.count,
-					'woo-gutenberg-products-block'
-				),
-				item.count
-			);
+					_n(
+						'%d Product',
+						'%d Products',
+						item.count,
+						'woo-gutenberg-products-block'
+					),
+					item.count
+			  );
 		return (
 			<SearchListItem
 				className={ classes.join( ' ' ) }
