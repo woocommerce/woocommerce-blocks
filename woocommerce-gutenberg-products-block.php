@@ -22,16 +22,6 @@ $minimum_wp_version  = '5.0';
 $minimum_php_version = '5.6';
 
 if ( version_compare( $GLOBALS['wp_version'], $minimum_wp_version, '<' ) ) {
-	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-		error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-			sprintf(
-				/* translators: Placeholders are numbers, versions of WordPress in use on the site, and required by WordPress. */
-				esc_html__( 'Your version of WordPress (%1$s) is lower than the version required by WooCommerce Blocks (%2$s). Please update WordPress to continue enjoying WooCommerce Blocks.', 'woo-gutenberg-products-block' ),
-				$GLOBALS['wp_version'],
-				$minimum_wp_version
-			)
-		);
-	}
 	/**
 	 * Outputs for an admin notice about running WooCommerce Blocks on outdated WordPress.
 	 *
@@ -48,16 +38,6 @@ if ( version_compare( $GLOBALS['wp_version'], $minimum_wp_version, '<' ) ) {
 }
 
 if ( version_compare( PHP_VERSION, $minimum_php_version, '<' ) ) {
-	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-		error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-			sprintf(
-				/* translators: Placeholders are numbers, versions of PHP in use on the site, and required by WooCommerce Blocks. */
-				esc_html__( 'Your version of PHP (%1$s) is lower than the version required by WooCommerce Blocks (%2$s). Please update PHP to continue enjoying WooCommerce Blocks.', 'woo-gutenberg-products-block' ),
-				esc_html( phpversion() ),
-				$minimum_php_version
-			)
-		);
-	}
 	/**
 	 * Outputs an admin notice for folks running an outdated version of PHP.
 	 *
