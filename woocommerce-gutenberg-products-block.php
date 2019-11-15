@@ -49,17 +49,6 @@ if ( version_compare( PHP_VERSION, $minimum_php_version, '<' ) ) {
 		?>
 		<div class="notice notice-error is-dismissible">
 			<p><?php esc_html_e( 'WooCommerce Blocks requires a more recent version of PHP and has been paused. Please update PHP to continue enjoying WooCommerce Blocks.', 'woo-gutenberg-products-block' ); ?></p>
-			<p class="button-container">
-				<?php
-				printf(
-					'<a class="button button-primary" href="%1$s" target="_blank" rel="noopener noreferrer">%2$s <span class="screen-reader-text">%3$s</span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>',
-					esc_url( wp_get_update_php_url() ),
-					esc_html__( 'Learn more about updating PHP' ), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
-					/* translators: accessibility text */
-					esc_html__( '(opens in a new tab)' ) // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
-				);
-				?>
-			</p>
 		</div>
 		<?php
 	}
