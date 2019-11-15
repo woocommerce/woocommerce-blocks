@@ -63,20 +63,18 @@ export const updateAttributeFilter = (
 	attributeTerms = [],
 	operator = 'in'
 ) => {
-	// Remove current attribute filter from query.
 	const returnQuery = query.filter(
 		( item ) => item.attribute !== attribute.taxonomy
 	);
 
-	// Add a new query for selected terms, if provided.
-	if ( attributeTerms.length > 0 ) {
-		const filterQuery = {
+	if ( attributeTerms.length === 0 ) {
+		setQuery( returnQuery );
+	} else {
+		returnQuery.push( {
 			attribute: attribute.taxonomy,
 			operator,
 			slug: map( attributeTerms, 'slug' ).sort(),
-		};
-		returnQuery.push( filterQuery );
+		} );
+		setQuery( sortBy( returnQuery, 'attribute' ) );
 	}
-
-	setQuery( sortBy( returnQuery, 'attribute' ) );
 };
