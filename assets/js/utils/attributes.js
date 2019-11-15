@@ -22,7 +22,7 @@ const attributeSettingToObject = ( attribute ) => {
 /**
  * Format all attribute settings into objects.
  */
-const attributeObjects = ATTRIBUTES.reduce( ( acc, current ) => {
+export const attributeObjects = ATTRIBUTES.reduce( ( acc, current ) => {
 	const attributeObject = attributeSettingToObject( current );
 
 	if ( attributeObject.id ) {

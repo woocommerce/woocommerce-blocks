@@ -20,7 +20,7 @@ import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundar
  * Internal dependencies
  */
 import './style.scss';
-import { getAttributeFromID } from '../../utils/attributes';
+import { getAttributeFromID, attributeObjects } from '../../utils/attributes';
 import { updateAttributeFilter } from '../../utils/attributes-query';
 
 /**
@@ -28,10 +28,15 @@ import { updateAttributeFilter } from '../../utils/attributes-query';
  */
 const AttributeFilterBlock = ( {
 	attributes: blockAttributes,
-	isPreview = false,
+	isEditor = false,
 } ) => {
 	const [ displayedOptions, setDisplayedOptions ] = useState( [] );
-	const attributeObject = getAttributeFromID( blockAttributes.attributeId );
+
+	const attributeObject =
+		blockAttributes.isPreview && ! blockAttributes.attributeId
+			? attributeObjects[ 0 ]
+			: getAttributeFromID( blockAttributes.attributeId );
+
 	const [ queryState ] = useQueryStateByContext();
 	const [
 		productAttributesQuery,
@@ -223,7 +228,7 @@ const AttributeFilterBlock = ( {
 
 	return (
 		<BlockErrorBoundary>
-			{ ! isPreview && blockAttributes.heading && (
+			{ ! isEditor && blockAttributes.heading && (
 				<TagName>{ blockAttributes.heading }</TagName>
 			) }
 			<div className="wc-block-attribute-filter">
