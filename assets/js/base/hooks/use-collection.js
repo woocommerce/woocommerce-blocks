@@ -3,6 +3,7 @@
  */
 import { COLLECTIONS_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
+import { useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -41,6 +42,7 @@ export const useCollection = ( options ) => {
 		resourceName,
 		resourceValues = [],
 		query = {},
+		shouldSelect = true,
 	} = options;
 	if ( ! namespace || ! resourceName ) {
 		throw new Error(
@@ -48,11 +50,15 @@ export const useCollection = ( options ) => {
 				'the resource properties.'
 		);
 	}
+	const currentResults = useRef( { results: [], isLoading: true } );
 	// ensure we feed the previous reference if it's equivalent
 	const currentQuery = useShallowEqual( query );
 	const currentResourceValues = useShallowEqual( resourceValues );
-	const { results = [], isLoading = true } = useSelect(
+	const results = useSelect(
 		( select ) => {
+			if ( ! shouldSelect ) {
+				return null;
+			}
 			const store = select( storeKey );
 			// filter out query if it is undefined.
 			const args = [
@@ -69,10 +75,18 @@ export const useCollection = ( options ) => {
 				),
 			};
 		},
-		[ namespace, resourceName, currentResourceValues, currentQuery ]
+		[
+			namespace,
+			resourceName,
+			currentResourceValues,
+			currentQuery,
+			shouldSelect,
+		]
 	);
-	return {
-		results,
-		isLoading,
-	};
+	// if selector was not bailed, then update current results. Otherwise return
+	// previous results
+	if ( results !== null ) {
+		currentResults.current = results;
+	}
+	return currentResults.current;
 };
