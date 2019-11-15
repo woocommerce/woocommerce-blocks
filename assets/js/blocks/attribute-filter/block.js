@@ -14,6 +14,7 @@ import {
 	useMemo,
 } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
+import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 
 /**
  * Internal dependencies
@@ -221,7 +222,7 @@ const AttributeFilterBlock = ( {
 	const TagName = `h${ blockAttributes.headingLevel }`;
 
 	return (
-		<Fragment>
+		<BlockErrorBoundary>
 			{ ! isPreview && blockAttributes.heading && (
 				<TagName>{ blockAttributes.heading }</TagName>
 			) }
@@ -235,7 +236,7 @@ const AttributeFilterBlock = ( {
 					isDisabled={ filteredCountsLoading }
 				/>
 			</div>
-		</Fragment>
+		</BlockErrorBoundary>
 	);
 };
 
