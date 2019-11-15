@@ -20,7 +20,7 @@ import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundar
  * Internal dependencies
  */
 import './style.scss';
-import { getAttributeFromID, attributeObjects } from '../../utils/attributes';
+import { getAttributeFromID } from '../../utils/attributes';
 import { updateAttributeFilter } from '../../utils/attributes-query';
 
 /**
@@ -30,12 +30,52 @@ const AttributeFilterBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
 } ) => {
-	const [ displayedOptions, setDisplayedOptions ] = useState( [] );
+	/**
+	 * Get the label for an attribute term filter.
+	 */
+	const getLabel = useCallback(
+		( name, count ) => {
+			return (
+				<Fragment key="label">
+					{ name }
+					{ blockAttributes.showCounts && count !== null && (
+						<span className="wc-block-attribute-filter-list-count">
+							{ count }
+						</span>
+					) }
+				</Fragment>
+			);
+		},
+		[ blockAttributes ]
+	);
 
 	const attributeObject =
 		blockAttributes.isPreview && ! blockAttributes.attributeId
-			? attributeObjects[ 0 ]
+			? {
+					id: 0,
+					name: 'preview',
+					taxonomy: 'preview',
+					label: 'Preview',
+			  }
 			: getAttributeFromID( blockAttributes.attributeId );
+	const [ displayedOptions, setDisplayedOptions ] = useState(
+		blockAttributes.isPreview && ! blockAttributes.attributeId
+			? [
+					{
+						key: 'preview-1',
+						label: getLabel( 'Blue', 3 ),
+					},
+					{
+						key: 'preview-2',
+						label: getLabel( 'Green', 3 ),
+					},
+					{
+						key: 'preview-3',
+						label: getLabel( 'Red', 2 ),
+					},
+			  ]
+			: []
+	);
 
 	const [ queryState ] = useQueryStateByContext();
 	const [
@@ -85,6 +125,7 @@ const AttributeFilterBlock = ( {
 		namespace: '/wc/store',
 		resourceName: 'products/attributes/terms',
 		resourceValues: [ attributeObject.id ],
+		shouldSelect: blockAttributes.attributeId > 0,
 	} );
 
 	const {
@@ -94,26 +135,8 @@ const AttributeFilterBlock = ( {
 		namespace: '/wc/store',
 		resourceName: 'products/collection-data',
 		query: filteredCountsQueryState,
+		shouldSelect: blockAttributes.attributeId > 0,
 	} );
-
-	/**
-	 * Get the label for an attribute term filter.
-	 */
-	const getLabel = useCallback(
-		( name, count ) => {
-			return (
-				<Fragment key="label">
-					{ name }
-					{ blockAttributes.showCounts && count !== null && (
-						<span className="wc-block-attribute-filter-list-count">
-							{ count }
-						</span>
-					) }
-				</Fragment>
-			);
-		},
-		[ blockAttributes ]
-	);
 
 	/**
 	 * Get count data about a given term by ID.
@@ -217,10 +240,7 @@ const AttributeFilterBlock = ( {
 		]
 	);
 
-	if (
-		! attributeObject ||
-		( displayedOptions.length === 0 && ! attributeTermsLoading )
-	) {
+	if ( displayedOptions.length === 0 && ! attributeTermsLoading ) {
 		return null;
 	}
 
@@ -237,8 +257,12 @@ const AttributeFilterBlock = ( {
 					options={ displayedOptions }
 					checked={ checked }
 					onChange={ onChange }
-					isLoading={ attributeTermsLoading }
-					isDisabled={ filteredCountsLoading }
+					isLoading={
+						! blockAttributes.isPreview && attributeTermsLoading
+					}
+					isDisabled={
+						! blockAttributes.isPreview && filteredCountsLoading
+					}
 				/>
 			</div>
 		</BlockErrorBoundary>
