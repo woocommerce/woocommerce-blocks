@@ -32,22 +32,24 @@ const ActiveAttributeFilters = ( { attributeObject = {}, slugs = [] } ) => {
 	const attributeLabel = attributeObject.label;
 
 	return slugs.map( ( slug ) => {
-		const termObject =
-			results.find( ( term ) => {
-				return term.slug === slug;
-			} ) || null;
+		const termObject = results.find( ( term ) => {
+			return term.slug === slug;
+		} );
 
-		return renderRemovableListItem(
-			attributeLabel,
-			termObject.name || slug,
-			() => {
-				removeAttributeFilterBySlug(
-					productAttributes,
-					setProductAttributes,
-					attributeObject,
-					slug
-				);
-			}
+		return (
+			termObject &&
+			renderRemovableListItem(
+				attributeLabel,
+				termObject.name || slug,
+				() => {
+					removeAttributeFilterBySlug(
+						productAttributes,
+						setProductAttributes,
+						attributeObject,
+						slug
+					);
+				}
+			)
 		);
 	} );
 };
