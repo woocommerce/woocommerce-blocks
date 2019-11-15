@@ -8,7 +8,7 @@ import { getBlockMap } from '../../../blocks/products/base-utils';
  *
  * @param {string} blockName Name of the parent block. Used to get extension children.
  * @param {Object} product Product object to pass to atomic components.
- * @param {object[]} layoutConfig Object with component data.
+ * @param {Object[]} layoutConfig Object with component data.
  * @param {number} componentId Parent component ID needed for key generation.
  */
 export const renderProductLayout = (
