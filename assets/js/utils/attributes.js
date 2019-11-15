@@ -36,34 +36,30 @@ const attributeObjects = ATTRIBUTES.reduce( ( acc, current ) => {
  * Get attribute data by taxonomy.
  *
  * @param {number} attributeId The attribute ID.
- * @return {Object} The attribute object or null.
+ * @return {Object} The attribute object if it exists.
  */
 export const getAttributeFromID = ( attributeId ) => {
 	if ( ! attributeId ) {
-		return null;
+		return undefined;
 	}
-	return (
-		attributeObjects.find( ( attribute ) => {
-			return attribute.id === attributeId;
-		} ) || null
-	);
+	return attributeObjects.find( ( attribute ) => {
+		return attribute.id === attributeId;
+	} );
 };
 
 /**
  * Get attribute data by taxonomy.
  *
  * @param {string} taxonomy The attribute taxonomy name e.g. pa_color.
- * @return {Object} The attribute object or null.
+ * @return {Object} The attribute object if it exists.
  */
 export const getAttributeFromTaxonomy = ( taxonomy ) => {
 	if ( ! taxonomy ) {
-		return null;
+		return undefined;
 	}
-	return (
-		attributeObjects.find( ( attribute ) => {
-			return attribute.taxonomy === taxonomy;
-		} ) || null
-	);
+	return attributeObjects.find( ( attribute ) => {
+		return attribute.taxonomy === taxonomy;
+	} );
 };
 
 /**
