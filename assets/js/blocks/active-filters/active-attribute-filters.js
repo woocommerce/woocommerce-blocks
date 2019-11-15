@@ -20,7 +20,6 @@ const ActiveAttributeFilters = ( { attributeObject = {}, slugs = [] } ) => {
 	} );
 
 	const [ productAttributes, setProductAttributes ] = useQueryStateByKey(
-		'product-grid',
 		'attributes',
 		[]
 	);
