@@ -24,6 +24,7 @@ export const removeAttributeFilterBySlug = (
 	if (
 		! currentQuery ||
 		! currentQuery.slug ||
+		! Array.isArray( currentQuery.slug ) ||
 		! currentQuery.slug.includes( slug )
 	) {
 		return;
