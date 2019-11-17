@@ -30,7 +30,7 @@ const EmptyPlaceHolder = () => (
  */
 const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 	const getInspectorControls = () => {
-		const { hasCount, hasEmpty, isDropdown, isHierarchical } = attributes;
+		const { hasCount, hasImage, hasEmpty, isDropdown, isHierarchical } = attributes;
 
 		return (
 			<InspectorControls key="inspector">
@@ -57,6 +57,27 @@ const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 						checked={ hasCount }
 						onChange={ () =>
 							setAttributes( { hasCount: ! hasCount } )
+						}
+					/>
+                    <ToggleControl
+						label={ __(
+							'Show category image',
+							'woo-gutenberg-products-block'
+						) }
+						help={
+							hasImage
+								? __(
+										'Category image is visible.',
+										'woo-gutenberg-products-block'
+								  )
+								: __(
+										'Category image is hidden.',
+										'woo-gutenberg-products-block'
+								  )
+						}
+						checked={ hasImage }
+						onChange={ () =>
+							setAttributes( { hasImage: ! hasImage } )
 						}
 					/>
 					<ToggleControl
