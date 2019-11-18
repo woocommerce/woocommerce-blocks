@@ -165,6 +165,25 @@ class ProductCategories extends WC_REST_Product_Categories_Controller {
 		return $response;
 	}
 
+
+	/**
+	 * Update the collection params.
+	 *
+	 * Adds new options for 'show_review_count'.
+	 *
+	 * @return array
+	 */
+	public function get_collection_params() {
+		$params                      = parent::get_collection_params();
+		$params['show_review_count'] = array(
+			'description' => __( 'Should we return how many reviews in a category?', 'woo-gutenberg-products-block' ),
+			'type'        => 'boolean',
+			'default'     => false,
+		);
+
+		return $params;
+	}
+
 	/**
 	 * Get the Product's schema, conforming to JSON Schema.
 	 *
@@ -179,14 +198,20 @@ class ProductCategories extends WC_REST_Product_Categories_Controller {
 			'properties' => array(),
 		);
 
-		$schema['properties']['id']          = $raw_schema['properties']['id'];
-		$schema['properties']['name']        = $raw_schema['properties']['name'];
-		$schema['properties']['slug']        = $raw_schema['properties']['slug'];
-		$schema['properties']['parent']      = $raw_schema['properties']['parent'];
-		$schema['properties']['count']       = $raw_schema['properties']['count'];
-		$schema['properties']['description'] = $raw_schema['properties']['description'];
-		$schema['properties']['image']       = $raw_schema['properties']['image'];
-		$schema['properties']['permalink']   = array(
+		$schema['properties']['id']           = $raw_schema['properties']['id'];
+		$schema['properties']['name']         = $raw_schema['properties']['name'];
+		$schema['properties']['slug']         = $raw_schema['properties']['slug'];
+		$schema['properties']['parent']       = $raw_schema['properties']['parent'];
+		$schema['properties']['count']        = $raw_schema['properties']['count'];
+		$schema['properties']['description']  = $raw_schema['properties']['description'];
+		$schema['properties']['image']        = $raw_schema['properties']['image'];
+		$schema['properties']['review_count'] = array(
+			'description' => __( 'Number of reviews in the category.', 'woo-gutenberg-products-block' ),
+			'type'        => 'integer',
+			'context'     => array( 'view', 'edit' ),
+			'readonly'    => true,
+		);
+		$schema['properties']['permalink']    = array(
 			'description' => __( 'Category URL.', 'woo-gutenberg-products-block' ),
 			'type'        => 'string',
 			'format'      => 'uri',
