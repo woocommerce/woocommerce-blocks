@@ -55,9 +55,9 @@ const generateQuery = ( { sortValue, currentPage, attributes } ) => {
  * @param {Object} [query={}]       Initial query.
  * @param {Object} [secondQuery={}] Query to compare against the first one.
  *
- * @return {Boolean} Whether query attributes (except excluded ones) are the same.
+ * @return {boolean} Whether query attributes (except excluded ones) are the same.
  */
-const areQueryFiltersTheSame = ( query = {}, secondQuery = {} ) => {
+const areQueryFiltersEqual = ( query = {}, secondQuery = {} ) => {
 	/* eslint-disable no-unused-vars, camelcase */
 	const { order, orderby, page, per_page, ...totalQuery } = query;
 	const {
@@ -95,11 +95,9 @@ const ProductList = ( {
 			onPageChange( 1 );
 		}
 	}, [ queryState ] );
-
-	const { products, totalProducts: totalProductsString, productsLoading } = useStoreProducts(
-		queryState
-	);
-	let totalProducts = parseInt( totalProductsString );
+    const results = useStoreProducts( queryState );
+    const { products, productsLoading } = results;
+	const totalProducts = parseInt( results.totalProducts );
 
 	useEffect( () => {
 		if ( ! productsLoading ) {
@@ -107,10 +105,7 @@ const ProductList = ( {
 		}
 	}, [ productsLoading ] );
 	const { layoutStyleClassPrefix } = useProductLayoutContext();
-	const previousTotalProducts = usePrevious(
-        parseInt( totalProductsString ),
-        Number.isFinite
-    );
+	const previousTotalProducts = usePrevious( totalProducts, Number.isFinite );
     if ( 
         ! Number.isFinite( totalProducts ) &&
         areQueryFiltersTheSame( queryState, previousQueryState )
@@ -142,7 +137,11 @@ const ProductList = ( {
 
 	const { contentVisibility } = attributes;
 	const perPage = attributes.columns * attributes.rows;
-	const totalPages = Math.ceil( totalProducts / perPage );
+	const totalPages =
+		! Number.isFinite( totalProducts ) &&
+		areQueryFiltersEqual( queryState, previousQueryState )
+			? Math.ceil( previousTotalProducts / perPage )
+			: Math.ceil( totalProducts / perPage );
 	const listProducts = products.length
 		? products
 		: Array.from( { length: perPage } );
