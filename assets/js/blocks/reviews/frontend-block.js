@@ -2,17 +2,13 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { ENABLE_REVIEW_RATING } from '@woocommerce/block-settings';
-
-/**
- * Internal dependencies
- */
 import LoadMoreButton from '@woocommerce/base-components/load-more-button';
 import ReviewSortSelect from '@woocommerce/base-components/review-sort-select';
 import ReviewList from '@woocommerce/base-components/review-list';
 import withReviews from '@woocommerce/base-hocs/with-reviews';
+import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 
 /**
  * Block rendered in the frontend.
@@ -26,12 +22,12 @@ const FrontendBlock = ( {
 } ) => {
 	const { orderby } = attributes;
 
-	if ( 0 === reviews.length ) {
+	if ( reviews.length === 0 ) {
 		return null;
 	}
 
 	return (
-		<Fragment>
+		<BlockErrorBoundary>
 			{ attributes.showOrderby !== 'false' && ENABLE_REVIEW_RATING && (
 				<ReviewSortSelect
 					defaultValue={ orderby }
@@ -49,7 +45,7 @@ const FrontendBlock = ( {
 						) }
 					/>
 				) }
-		</Fragment>
+		</BlockErrorBoundary>
 	);
 };
 

@@ -3,17 +3,17 @@
  */
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-
-/**
- * Internal dependencies
- */
 import ProductListContainer from '@woocommerce/base-components/product-list/container';
-import { InnerBlockParentNameProvider } from '@woocommerce/base-context/inner-block-parent-name-context';
+import { InnerBlockConfigurationProvider } from '@woocommerce/base-context/inner-block-configuration-context';
 import { ProductLayoutContextProvider } from '@woocommerce/base-context/product-layout-context';
+import { gridBlockPreview } from '@woocommerce/resource-previews';
+import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 
-const layoutStyleContext = {
+const layoutContextConfig = {
 	layoutStyleClassPrefix: 'wc-block-grid',
 };
+
+const parentBlockConfig = { parentName: 'woocommerce/all-products' };
 
 /**
  * The All Products Block. @todo
@@ -28,6 +28,11 @@ class Block extends Component {
 
 	render() {
 		const { attributes, urlParameterSuffix } = this.props;
+
+		if ( attributes.isPreview ) {
+			return gridBlockPreview;
+		}
+
 		/**
 		 * Todo classes
 		 *
@@ -35,14 +40,16 @@ class Block extends Component {
 		 * wc-block-{$this->block_name},
 		 */
 		return (
-			<InnerBlockParentNameProvider value="woocommerce/all-products">
-				<ProductLayoutContextProvider value={ layoutStyleContext }>
-					<ProductListContainer
-						attributes={ attributes }
-						urlParameterSuffix={ urlParameterSuffix }
-					/>
-				</ProductLayoutContextProvider>
-			</InnerBlockParentNameProvider>
+			<BlockErrorBoundary>
+				<InnerBlockConfigurationProvider value={ parentBlockConfig }>
+					<ProductLayoutContextProvider value={ layoutContextConfig }>
+						<ProductListContainer
+							attributes={ attributes }
+							urlParameterSuffix={ urlParameterSuffix }
+						/>
+					</ProductLayoutContextProvider>
+				</InnerBlockConfigurationProvider>
+			</BlockErrorBoundary>
 		);
 	}
 }

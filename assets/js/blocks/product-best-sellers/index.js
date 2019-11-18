@@ -2,9 +2,9 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { createBlock, registerBlockType } from '@wordpress/blocks';
 import { without } from 'lodash';
 import Gridicon from 'gridicons';
+import { createBlock, registerBlockType } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -30,6 +30,11 @@ registerBlockType( 'woocommerce/product-best-sellers', {
 	supports: {
 		align: [ 'wide', 'full' ],
 		html: false,
+	},
+	example: {
+		attributes: {
+			isPreview: true,
+		},
 	},
 	attributes: {
 		...sharedAttributes,

@@ -72,6 +72,10 @@ const getAlias = ( options = {} ) => {
 			__dirname,
 			`../assets/js/${ pathPart }base/hooks/`
 		),
+		'@woocommerce/base-utils': path.resolve(
+			__dirname,
+			`../assets/js/${ pathPart }base/utils/`
+		),
 		'@woocommerce/block-components': path.resolve(
 			__dirname,
 			`../assets/js/${ pathPart }components/`
@@ -115,12 +119,16 @@ const mainEntry = {
 	'featured-category': './assets/js/blocks/featured-category/index.js',
 	'all-products': './assets/js/blocks/products/all-products/index.js',
 	'price-filter': './assets/js/blocks/price-filter/index.js',
+	'attribute-filter': './assets/js/blocks/attribute-filter/index.js',
+	'active-filters': './assets/js/blocks/active-filters/index.js',
 };
 
 const frontEndEntry = {
 	reviews: './assets/js/blocks/reviews/frontend.js',
 	'all-products': './assets/js/blocks/products/all-products/frontend.js',
 	'price-filter': './assets/js/blocks/price-filter/frontend.js',
+	'attribute-filter': './assets/js/blocks/attribute-filter/frontend.js',
+	'active-filters': './assets/js/blocks/active-filters/frontend.js',
 };
 
 const getEntryConfig = ( main = true, exclude = [] ) => {
@@ -277,7 +285,7 @@ const getFrontConfig = ( options = {} ) => {
 		entry: getEntryConfig( false, options.exclude || [] ),
 		output: {
 			path: path.resolve( __dirname, '../build/' ),
-			filename: `[name]${ fileSuffix }-frontend.js`,
+			filename: `[name]-frontend${ fileSuffix }.js`,
 			// This fixes an issue with multiple webpack projects using chunking
 			// overwriting each other's chunk loader function.
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction

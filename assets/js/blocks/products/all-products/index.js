@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { InnerBlocks } from '@wordpress/editor';
+import { InnerBlocks } from '@wordpress/block-editor';
 import { registerBlockType } from '@wordpress/blocks';
 import Gridicon from 'gridicons';
 
@@ -32,6 +32,11 @@ registerBlockType( 'woocommerce/all-products', {
 	supports: {
 		align: [ 'wide', 'full' ],
 		html: false,
+	},
+	example: {
+		attributes: {
+			isPreview: true,
+		},
 	},
 	attributes: {
 		...sharedAttributes,

@@ -22,10 +22,8 @@ registerBlockType( 'woocommerce/price-filter', {
 		'Display a slider to filter products in your store by price.',
 		'woo-gutenberg-products-block'
 	),
-	supports: {
-		align: [ 'wide', 'full' ],
-	},
-
+	supports: {},
+	example: {},
 	attributes: {
 		showInputFields: {
 			type: 'boolean',
@@ -35,6 +33,14 @@ registerBlockType( 'woocommerce/price-filter', {
 			type: 'boolean',
 			default: false,
 		},
+		heading: {
+			type: 'string',
+			default: __( 'Filter by price', 'woo-gutenberg-products-block' ),
+		},
+		headingLevel: {
+			type: 'number',
+			default: 3,
+		},
 	},
 
 	edit,
@@ -43,14 +49,24 @@ registerBlockType( 'woocommerce/price-filter', {
 	 * Save the props to post content.
 	 */
 	save( { attributes } ) {
-		const { showInputFields, showFilterButton } = attributes;
+		const {
+			showInputFields,
+			showFilterButton,
+			heading,
+			headingLevel,
+		} = attributes;
 		const data = {
 			'data-showinputfields': showInputFields,
 			'data-showfilterbutton': showFilterButton,
+			'data-heading': heading,
+			'data-heading-level': headingLevel,
 		};
 		return (
 			<div className="is-loading" { ...data }>
-				<span aria-hidden className="wc-block-product-categories__placeholder" />
+				<span
+					aria-hidden
+					className="wc-block-product-categories__placeholder"
+				/>
 			</div>
 		);
 	},

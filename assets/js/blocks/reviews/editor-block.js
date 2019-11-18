@@ -6,15 +6,12 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Disabled } from '@wordpress/components';
 import { ENABLE_REVIEW_RATING } from '@woocommerce/block-settings';
-
-/**
- * Internal dependencies
- */
 import ErrorPlaceholder from '@woocommerce/block-components/error-placeholder';
 import LoadMoreButton from '@woocommerce/base-components/load-more-button';
 import ReviewList from '@woocommerce/base-components/review-list';
 import ReviewSortSelect from '@woocommerce/base-components/review-sort-select';
 import withReviews from '@woocommerce/base-hocs/with-reviews';
+import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 
 /**
  * Block rendered in the editor.
@@ -50,25 +47,31 @@ class EditorBlock extends Component {
 			);
 		}
 
-		if ( 0 === reviews.length && ! isLoading ) {
+		if ( reviews.length === 0 && ! isLoading ) {
 			return <NoReviewsPlaceholder attributes={ attributes } />;
 		}
 
 		return (
-			<Disabled>
-				{ attributes.showOrderby && ENABLE_REVIEW_RATING && (
-					<ReviewSortSelect readOnly value={ attributes.orderby } />
-				) }
-				<ReviewList attributes={ attributes } reviews={ reviews } />
-				{ attributes.showLoadMore && totalReviews > reviews.length && (
-					<LoadMoreButton
-						screenReaderLabel={ __(
-							'Load more reviews',
-							'woo-gutenberg-products-block'
+			<BlockErrorBoundary>
+				<Disabled>
+					{ attributes.showOrderby && ENABLE_REVIEW_RATING && (
+						<ReviewSortSelect
+							readOnly
+							value={ attributes.orderby }
+						/>
+					) }
+					<ReviewList attributes={ attributes } reviews={ reviews } />
+					{ attributes.showLoadMore &&
+						totalReviews > reviews.length && (
+							<LoadMoreButton
+								screenReaderLabel={ __(
+									'Load more reviews',
+									'woo-gutenberg-products-block'
+								) }
+							/>
 						) }
-					/>
-				) }
-			</Disabled>
+				</Disabled>
+			</BlockErrorBoundary>
 		);
 	}
 }

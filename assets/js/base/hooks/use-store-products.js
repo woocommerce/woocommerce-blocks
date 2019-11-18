@@ -27,15 +27,17 @@ export const useStoreProducts = ( query ) => {
 	const collectionOptions = {
 		namespace: '/wc/store',
 		resourceName: 'products',
-		query,
 	};
-	const { results: products, isLoading: productsLoading } = useCollection(
-		collectionOptions
-	);
-	const { value: totalProducts } = useCollectionHeader(
-		'x-wp-total',
-		collectionOptions
-	);
+	const { results: products, isLoading: productsLoading } = useCollection( {
+		...collectionOptions,
+		query,
+	} );
+	// eslint-disable-next-line no-unused-vars, camelcase
+	const { order, orderby, page, per_page, ...totalQuery } = query;
+	const { value: totalProducts } = useCollectionHeader( 'x-wp-total', {
+		...collectionOptions,
+		query: totalQuery,
+	} );
 	return {
 		products,
 		totalProducts,

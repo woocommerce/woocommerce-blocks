@@ -25,7 +25,7 @@ import { useShallowEqual } from './use-shallow-equal';
  * @param {string} options.resourceName   The name of the resource for the
  *                                        collection. Example:
  *                                        `'products/attributes'`
- * @param {array}  options.resourceValues An array of values (in correct order)
+ * @param {Array}  options.resourceValues An array of values (in correct order)
  *                                        that are substituted in the route
  *                                        placeholders for the collection route.
  *                                        Example: `[10, 20]`
@@ -41,11 +41,16 @@ import { useShallowEqual } from './use-shallow-equal';
  *                              loading (true) or not.
  */
 export const useCollectionHeader = ( headerKey, options ) => {
-	const { namespace, resourceName, resourceValues, query } = options;
+	const {
+		namespace,
+		resourceName,
+		resourceValues = [],
+		query = {},
+	} = options;
 	if ( ! namespace || ! resourceName ) {
 		throw new Error(
 			'The options object must have valid values for the namespace and ' +
-				'the modelName properties.'
+				'the resource name properties.'
 		);
 	}
 	// ensure we feed the previous reference if it's equivalent
@@ -61,7 +66,7 @@ export const useCollectionHeader = ( headerKey, options ) => {
 				resourceName,
 				currentQuery,
 				currentResourceValues,
-			].filter( ( item ) => typeof item !== 'undefined' );
+			];
 			return {
 				value: store.getCollectionHeader( ...args ),
 				isLoading: store.hasFinishedResolution(

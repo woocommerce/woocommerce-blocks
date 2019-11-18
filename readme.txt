@@ -57,6 +57,18 @@ Show a list of all product reviews on a landing page, blog post or any other pag
 **Product Search**
 Help shoppers find your products by placing a search box in specific locations.
 
+**All Products**
+Display all products from your store as a grid with pagination and sorting options. Requires WordPress 5.3.
+
+**Filter Products by Price**
+Display a slider to filter products in your store by price. Works in combination with the _All Products_ block. Requires WordPress 5.3.
+
+**Filter Products by Attribute**
+Display a list of filters based on a chosen product attribute. Works in combination with the _All Products_ block. Requires WordPress 5.3.
+
+**Active Product Filters**
+Display a list of active product filters. Works in combination with the _Filter Products by Price_ and _Filter Products by Attribute_ block. Requires WordPress 5.3.
+
 We've also improved the category selection filter. If you select two or more categories, you can now chose to show products that include ANY or ALL selected categories.
 
 == Getting Started ==
@@ -64,7 +76,7 @@ We've also improved the category selection filter. If you select two or more cat
 = Minimum Requirements =
 
 * WordPress 5.0
-* WooCommerce 3.6 or greater
+* WooCommerce 3.7 or greater
 * PHP version 5.2.4 or greater (PHP 7.2 or greater is recommended)
 * MySQL version 5.0 or greater (MySQL 5.6 or greater is recommended)
 

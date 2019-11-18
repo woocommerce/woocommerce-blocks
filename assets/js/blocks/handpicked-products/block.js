@@ -20,14 +20,11 @@ import {
 import { Component, Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import { MAX_COLUMNS, MIN_COLUMNS } from '@woocommerce/block-settings';
-
-/**
- * Internal dependencies
- */
 import GridContentControl from '@woocommerce/block-components/grid-content-control';
 import { IconWidgets } from '@woocommerce/block-components/icons';
 import ProductsControl from '@woocommerce/block-components/products-control';
 import ProductOrderbyControl from '@woocommerce/block-components/product-orderby-control';
+import { gridBlockPreview } from '@woocommerce/resource-previews';
 
 /**
  * Component to handle edit mode of "Hand-picked Products".
@@ -162,6 +159,10 @@ class ProductsBlock extends Component {
 	render() {
 		const { attributes, name, setAttributes } = this.props;
 		const { editMode } = attributes;
+
+		if ( attributes.isPreview ) {
+			return gridBlockPreview;
+		}
 
 		return (
 			<Fragment>

@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
-import { InspectorControls } from '@wordpress/editor';
+import { InspectorControls, PlainText } from '@wordpress/block-editor';
 import {
 	Placeholder,
 	Disabled,
@@ -12,6 +12,8 @@ import {
 	Button,
 } from '@wordpress/components';
 import { PRODUCT_COUNT } from '@woocommerce/block-settings';
+import { getAdminLink } from '@woocommerce/navigation';
+import HeadingToolbar from '@woocommerce/block-components/heading-toolbar';
 
 /**
  * Internal dependencies
@@ -19,7 +21,6 @@ import { PRODUCT_COUNT } from '@woocommerce/block-settings';
 import Block from './block.js';
 import './editor.scss';
 import { IconMoney, IconExternal } from '../../components/icons';
-import { ADMIN_URL } from '@woocommerce/settings';
 import ToggleButtonControl from '../../components/toggle-button-control';
 
 export default function( { attributes, setAttributes } ) {
@@ -58,7 +59,7 @@ export default function( { attributes, setAttributes } ) {
 						] }
 						onChange={ ( value ) =>
 							setAttributes( {
-								showInputFields: 'editable' === value,
+								showInputFields: value === 'editable',
 							} )
 						}
 					/>
@@ -83,6 +84,21 @@ export default function( { attributes, setAttributes } ) {
 							setAttributes( {
 								showFilterButton: ! showFilterButton,
 							} )
+						}
+					/>
+					<p>
+						{ __(
+							'Heading Level',
+							'woo-gutenberg-products-block'
+						) }
+					</p>
+					<HeadingToolbar
+						isCollapsed={ false }
+						minLevel={ 2 }
+						maxLevel={ 7 }
+						selectedLevel={ attributes.headingLevel }
+						onChange={ ( newLevel ) =>
+							setAttributes( { headingLevel: newLevel } )
 						}
 					/>
 				</PanelBody>
@@ -113,7 +129,7 @@ export default function( { attributes, setAttributes } ) {
 				className="wc-block-price-slider__add_product_button"
 				isDefault
 				isLarge
-				href={ ADMIN_URL + 'post-new.php?post_type=product' }
+				href={ getAdminLink( 'post-new.php?post_type=product' ) }
 			>
 				{ __( 'Add new product', 'woo-gutenberg-products-block' ) +
 					' ' }
@@ -129,13 +145,24 @@ export default function( { attributes, setAttributes } ) {
 		</Placeholder>
 	);
 
+	const TagName = `h${ attributes.headingLevel }`;
+
 	return (
 		<Fragment>
-			{ 0 === PRODUCT_COUNT ? (
+			{ PRODUCT_COUNT === 0 ? (
 				noProductsPlaceholder()
 			) : (
 				<Fragment>
 					{ getInspectorControls() }
+					<TagName>
+						<PlainText
+							className="wc-block-attribute-filter-heading"
+							value={ attributes.heading }
+							onChange={ ( value ) =>
+								setAttributes( { heading: value } )
+							}
+						/>
+					</TagName>
 					<Disabled>
 						<Block attributes={ attributes } isPreview />
 					</Disabled>

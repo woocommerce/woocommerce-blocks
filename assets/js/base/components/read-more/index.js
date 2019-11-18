@@ -1,7 +1,5 @@
 /**
- * Show text based content, limited to a number of lines, with a read more link.
- *
- * Based on https://github.com/zoltantothcom/react-clamp-lines.
+ * External dependencies
  */
 import React, { createRef, Component } from 'react';
 import PropTypes from 'prop-types';
@@ -12,6 +10,11 @@ import { __ } from '@wordpress/i18n';
  */
 import { clampLines } from './utils';
 
+/**
+ * Show text based content, limited to a number of lines, with a read more link.
+ *
+ * Based on https://github.com/zoltantothcom/react-clamp-lines.
+ */
 class ReadMore extends Component {
 	constructor( props ) {
 		super( ...arguments );
@@ -113,7 +116,7 @@ class ReadMore extends Component {
 			return null;
 		}
 
-		if ( false === clampEnabled ) {
+		if ( clampEnabled === false ) {
 			return (
 				<div className={ className }>
 					<div ref={ this.reviewContent }>{ content }</div>
@@ -123,7 +126,7 @@ class ReadMore extends Component {
 
 		return (
 			<div className={ className }>
-				{ ( ! isExpanded || null === clampEnabled ) && (
+				{ ( ! isExpanded || clampEnabled === null ) && (
 					<div
 						ref={ this.reviewSummary }
 						aria-hidden={ isExpanded }
@@ -132,7 +135,7 @@ class ReadMore extends Component {
 						} }
 					/>
 				) }
-				{ ( isExpanded || null === clampEnabled ) && (
+				{ ( isExpanded || clampEnabled === null ) && (
 					<div
 						ref={ this.reviewContent }
 						aria-hidden={ ! isExpanded }

@@ -6,9 +6,11 @@ module.exports = {
 	globals: {
 		wcSettings: true,
 	},
-	plugins: [ 'jest' ],
+	plugins: [ 'jest', 'woocommerce' ],
 	rules: {
 		'@wordpress/dependency-group': 'off',
+		'woocommerce/dependency-group': 'error',
 		'valid-jsdoc': 'off',
+		yoda: [ 'error', 'never' ],
 	},
 };

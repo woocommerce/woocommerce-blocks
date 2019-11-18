@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import { DEFAULT_COLUMNS } from '@woocommerce/block-settings';
+import { IconWidgets } from '@woocommerce/block-components/icons';
 
 /**
  * Internal dependencies
@@ -11,7 +12,6 @@ import { DEFAULT_COLUMNS } from '@woocommerce/block-settings';
 import './editor.scss';
 import Block from './block';
 import { deprecatedConvertToShortcode } from '../../utils/deprecations';
-import { IconWidgets } from '@woocommerce/block-components/icons';
 
 registerBlockType( 'woocommerce/handpicked-products', {
 	title: __( 'Hand-picked Products', 'woo-gutenberg-products-block' ),
@@ -28,6 +28,11 @@ registerBlockType( 'woocommerce/handpicked-products', {
 	supports: {
 		align: [ 'wide', 'full' ],
 		html: false,
+	},
+	example: {
+		attributes: {
+			isPreview: true,
+		},
 	},
 	attributes: {
 		/**
@@ -86,6 +91,14 @@ registerBlockType( 'woocommerce/handpicked-products', {
 		 * How to align cart buttons.
 		 */
 		alignButtons: {
+			type: 'boolean',
+			default: false,
+		},
+
+		/**
+		 * Are we previewing?
+		 */
+		isPreview: {
 			type: 'boolean',
 			default: false,
 		},

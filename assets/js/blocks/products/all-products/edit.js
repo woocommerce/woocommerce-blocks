@@ -7,7 +7,7 @@ import {
 	BlockControls,
 	InnerBlocks,
 	InspectorControls,
-} from '@wordpress/editor';
+} from '@wordpress/block-editor';
 import { withDispatch, withSelect } from '@wordpress/data';
 import {
 	PanelBody,
@@ -23,6 +23,8 @@ import { Component } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 import PropTypes from 'prop-types';
 import Gridicon from 'gridicons';
+import GridLayoutControl from '@woocommerce/block-components/grid-layout-control';
+import { HAS_PRODUCTS } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -38,8 +40,6 @@ import {
 	getProductLayoutConfig,
 } from '../base-utils';
 import { getSharedContentControls, getSharedListControls } from '../edit';
-import GridLayoutControl from '@woocommerce/block-components/grid-layout-control';
-import { HAS_PRODUCTS } from '@woocommerce/block-settings';
 import Block from './block';
 
 /**
@@ -185,7 +185,7 @@ class Editor extends Component {
 			allowedBlocks: Object.keys( this.blockMap ),
 		};
 
-		if ( 0 !== this.props.attributes.layoutConfig.length ) {
+		if ( this.props.attributes.layoutConfig.length !== 0 ) {
 			InnerBlockProps.renderAppender = false;
 		}
 
@@ -248,7 +248,7 @@ class Editor extends Component {
 	renderViewMode = () => {
 		const { attributes } = this.props;
 		const { layoutConfig } = attributes;
-		const hasContent = layoutConfig && 0 !== layoutConfig.length;
+		const hasContent = layoutConfig && layoutConfig.length !== 0;
 		const blockTitle = this.getTitle();
 		const blockIcon = this.getIcon();
 

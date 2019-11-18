@@ -1,3 +1,6 @@
+/**
+ * External dependencies
+ */
 import { getSetting } from '@woocommerce/settings';
 
 export const ENABLE_REVIEW_RATING = getSetting( 'enableReviewRating', true );
@@ -18,3 +21,5 @@ export const HAS_PRODUCTS = getSetting( 'hasProducts', true );
 export const HAS_TAGS = getSetting( 'hasTags', true );
 export const HOME_URL = getSetting( 'homeUrl', '' );
 export const PRODUCT_COUNT = getSetting( 'productCount', 0 );
+export const ATTRIBUTES = getSetting( 'attributes', [] );
+export const WC_BLOCKS_ASSET_URL = getSetting( 'wcBlocksAssetUrl', '' );

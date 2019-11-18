@@ -7,8 +7,10 @@
  * Author: Automattic
  * Author URI: https://woocommerce.com
  * Text Domain:  woo-gutenberg-products-block
- * WC requires at least: 3.6
- * WC tested up to: 3.7
+ * Requires at least: 5.0
+ * Requires PHP: 5.6
+ * WC requires at least: 3.7
+ * WC tested up to: 3.8
  *
  * @package WooCommerce\Blocks
  * @internal This file is only used when running the REST API as a feature plugin.
@@ -16,9 +18,50 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( version_compare( PHP_VERSION, '5.6.0', '<' ) ) {
+$minimum_wp_version = '5.0';
+
+/**
+ * Whether notices must be displayed in the current page (plugins and WooCommerce pages).
+ *
+ * @since $VID:$
+ */
+function should_display_compatibility_notices() {
+	$current_screen = get_current_screen();
+
+	if ( ! isset( $current_screen ) ) {
+		return false;
+	}
+
+	$is_plugins_page     =
+		property_exists( $current_screen, 'id' ) &&
+		'plugins' === $current_screen->id;
+	$is_woocommerce_page =
+		property_exists( $current_screen, 'parent_base' ) &&
+		'woocommerce' === $current_screen->parent_base;
+
+	return $is_plugins_page || $is_woocommerce_page;
+}
+
+if ( version_compare( $GLOBALS['wp_version'], $minimum_wp_version, '<' ) ) {
+	/**
+	 * Outputs for an admin notice about running WooCommerce Blocks on outdated WordPress.
+	 *
+	 * @since $VID:$
+	 */
+	function woocommerce_blocks_admin_unsupported_wp_notice() {
+		if ( should_display_compatibility_notices() ) {
+			?>
+			<div class="notice notice-error is-dismissible">
+				<p><?php esc_html_e( 'WooCommerce Blocks requires a more recent version of WordPress and has been paused. Please update WordPress to continue enjoying WooCommerce Blocks.', 'woo-gutenberg-products-block' ); ?></p>
+			</div>
+			<?php
+		}
+	}
+	add_action( 'admin_notices', 'woocommerce_blocks_admin_unsupported_wp_notice' );
 	return;
 }
+
+define( 'WC_BLOCKS_PLUGIN_FILE', __FILE__ );
 
 /**
  * Autoload packages.
@@ -68,49 +111,5 @@ if ( is_readable( $autoloader ) ) {
 	return;
 }
 
-/**
- * Loads the dependency injection container for woocommerce blocks.
- *
- * @param boolean $reset Used to reset the container to a fresh instance.
- *                       Note: this means all dependencies will be reconstructed.
- */
-function wc_blocks_container( $reset = false ) {
-	static $container;
-	if (
-		! $container instanceof Automattic\WooCommerce\Blocks\Registry\Container
-		|| $reset
-	) {
-		$container = new Automattic\WooCommerce\Blocks\Registry\Container();
-		// register Package.
-		$container->register(
-			Automattic\WooCommerce\Blocks\Domain\Package::class,
-			function ( $container ) {
-				return new Automattic\WooCommerce\Blocks\Domain\Package(
-					'2.5.0-dev',
-					__FILE__
-				);
-			}
-		);
-		// register Bootstrap.
-		$container->register(
-			Automattic\WooCommerce\Blocks\Domain\Bootstrap::class,
-			function ( $container ) {
-				return new Automattic\WooCommerce\Blocks\Domain\Bootstrap(
-					$container
-				);
-			}
-		);
-	}
-	return $container;
-}
+add_action( 'plugins_loaded', array( '\Automattic\WooCommerce\Blocks\Package', 'init' ) );
 
-add_action( 'plugins_loaded', 'wc_blocks_bootstrap' );
-/**
- * Boostrap WooCommerce Blocks App
- */
-function wc_blocks_bootstrap() {
-	// initialize bootstrap.
-	wc_blocks_container()->get(
-		Automattic\WooCommerce\Blocks\Domain\Bootstrap::class
-	);
-}

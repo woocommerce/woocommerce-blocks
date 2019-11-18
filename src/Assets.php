@@ -67,6 +67,8 @@ class Assets {
 		self::register_script( 'wc-product-search', plugins_url( self::get_block_asset_build_path( 'product-search' ), __DIR__ ), $block_dependencies );
 		self::register_script( 'wc-all-products', plugins_url( self::get_block_asset_build_path( 'all-products' ), __DIR__ ), $block_dependencies );
 		self::register_script( 'wc-price-filter', plugins_url( self::get_block_asset_build_path( 'price-filter' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-attribute-filter', plugins_url( self::get_block_asset_build_path( 'attribute-filter' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-active-filters', plugins_url( self::get_block_asset_build_path( 'active-filters' ), __DIR__ ), $block_dependencies );
 	}
 
 	/**
@@ -108,13 +110,15 @@ class Assets {
 				'placeholderImgSrc'  => wc_placeholder_img_src(),
 				'min_height'         => wc_get_theme_support( 'featured_block::min_height', 500 ),
 				'default_height'     => wc_get_theme_support( 'featured_block::default_height', 500 ),
-				'isLargeCatalog'     => $product_counts->publish > 200,
+				'isLargeCatalog'     => $product_counts->publish > 100,
 				'limitTags'          => $tag_count > 100,
 				'hasTags'            => $tag_count > 0,
 				'homeUrl'            => esc_url( home_url( '/' ) ),
 				'showAvatars'        => '1' === get_option( 'show_avatars' ),
 				'enableReviewRating' => 'yes' === get_option( 'woocommerce_enable_review_rating' ),
 				'productCount'       => array_sum( (array) $product_counts ),
+				'attributes'         => array_values( wc_get_attribute_taxonomies() ),
+				'wcBlocksAssetUrl'   => plugins_url( 'assets/', __DIR__ ),
 			]
 		);
 	}
@@ -163,8 +167,7 @@ class Assets {
 	 * @param string $name Name of the script used to identify the file inside build folder.
 	 */
 	public static function register_block_script( $name ) {
-		$filename = 'build/' . $name . '.js';
-		self::register_script( 'wc-' . $name, plugins_url( $filename, __DIR__ ) );
+		self::register_script( 'wc-' . $name, plugins_url( self::get_block_asset_build_path( $name ), __DIR__ ) );
 		wp_enqueue_script( 'wc-' . $name );
 	}
 

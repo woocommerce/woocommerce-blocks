@@ -1,5 +1,5 @@
 /**
- * This returns a "modelName" string as an index for a given route.
+ * This returns a resource name string as an index for a given route.
  *
  * For example:
  * /wc/blocks/products/attributes/(?P<id>[\d]+)/terms
@@ -9,9 +9,9 @@
  * @param {string} namespace
  * @param {string} route
  *
- * @return {string} The model name extracted from the route.
+ * @return {string} The resource name extracted from the route.
  */
-export const extractModelNameFromRoute = ( namespace, route ) => {
+export const extractResourceNameFromRoute = ( namespace, route ) => {
 	route = route.replace( `${ namespace }/`, '' );
 	return route.replace( /\/\(\?P\<[a-z_]*\>\[\\*[a-z]\]\+\)/g, '' );
 };
@@ -49,7 +49,7 @@ export const getRouteIds = ( route ) => {
  * /wc/blocks/products/attributes/{attribute_id}/terms/{id}
  *
  * @param {string} route     The route to manipulate
- * @param {array}  matchIds  An array of named ids ( [ attribute_id, id ] )
+ * @param {Array}  matchIds  An array of named ids ( [ attribute_id, id ] )
  *
  * @return {string} The route with new id placeholders
  */

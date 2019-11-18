@@ -6,11 +6,11 @@ import { debounce } from 'lodash';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import PropTypes from 'prop-types';
 import { IS_LARGE_CATALOG } from '@woocommerce/block-settings';
+import { getProducts } from '@woocommerce/block-components/utils';
 
 /**
  * Internal dependencies
  */
-import { getProducts } from '@woocommerce/block-components/utils';
 import { formatError } from '../base/utils/errors.js';
 
 /**
@@ -54,6 +54,7 @@ const withSearchedProducts = createHigherOrderComponent(
 
 			onSearch( search ) {
 				const { selected } = this.props;
+
 				getProducts( { selected, search } )
 					.then( ( list ) => {
 						this.setState( { list, loading: false } );
@@ -77,7 +78,12 @@ const withSearchedProducts = createHigherOrderComponent(
 						products={ list }
 						isLoading={ loading }
 						onSearch={
-							IS_LARGE_CATALOG ? this.debouncedOnSearch : null
+							IS_LARGE_CATALOG
+								? ( search ) => {
+										this.setState( { loading: true } );
+										this.debouncedOnSearch( search );
+								  }
+								: null
 						}
 					/>
 				);

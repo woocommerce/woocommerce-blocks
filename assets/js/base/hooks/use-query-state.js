@@ -4,6 +4,11 @@
 import { QUERY_STATE_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useRef, useEffect, useCallback } from '@wordpress/element';
+import { useQueryStateContext } from '@woocommerce/base-context/query-state-context';
+
+/**
+ * Internal dependencies
+ */
 import { useShallowEqual } from './use-shallow-equal';
 
 /**
@@ -13,13 +18,18 @@ import { useShallowEqual } from './use-shallow-equal';
  * "Query State" is a wp.data store that keeps track of an arbitrary object of
  * query keys and their values.
  *
- * @param {string} context What context to retrieve the query state for.
+ * @param {string} [context] What context to retrieve the query state for. If not
+ *                           provided, this hook will attempt to get the context
+ *                           from the query state context provided by the
+ *                           QueryStateContextProvider
  *
- * @return {array} An array that has two elements. The first element is the
+ * @return {Array} An array that has two elements. The first element is the
  *                 query state value for the given context.  The second element
  *                 is a dispatcher function for setting the query state.
  */
-export const useQueryStateContext = ( context ) => {
+export const useQueryStateByContext = ( context ) => {
+	const queryStateContext = useQueryStateContext();
+	context = context || queryStateContext;
 	const queryState = useSelect(
 		( select ) => {
 			const store = select( storeKey );
@@ -38,17 +48,22 @@ export const useQueryStateContext = ( context ) => {
  * "Query State" is a wp.data store that keeps track of an arbitrary object of
  * query keys and their values.
  *
- * @param {string} context  What context to retrieve the query state for.
- * @param {*}      queryKey The specific query key to retrieve the value for.
+ * @param {*}      queryKey     The specific query key to retrieve the value for.
+ * @param {*}      defaultValue Default value if query does not exist.
+ * @param {string} [context]    What context to retrieve the query state for. If
+ *                              not provided will attempt to use what is provided
+ *                              by query state context.
  *
  * @return {*}  Whatever value is set at the query state index using the
  *              provided context and query key.
  */
-export const useQueryStateByKey = ( context, queryKey ) => {
+export const useQueryStateByKey = ( queryKey, defaultValue, context ) => {
+	const queryStateContext = useQueryStateContext();
+	context = context || queryStateContext;
 	const queryValue = useSelect(
 		( select ) => {
 			const store = select( storeKey );
-			return store.getValueForQueryKey( context, queryKey, undefined );
+			return store.getValueForQueryKey( context, queryKey, defaultValue );
 		},
 		[ context, queryKey ]
 	);
@@ -65,7 +80,7 @@ export const useQueryStateByKey = ( context, queryKey ) => {
 };
 
 /**
- * A custom hook that works similarly to useQueryStateContext. However, this
+ * A custom hook that works similarly to useQueryStateByContext. However, this
  * hook allows for synchronizing with a provided queryState object.
  *
  * This hook does the following things with the provided `synchronizedQuery`
@@ -84,13 +99,16 @@ export const useQueryStateByKey = ( context, queryKey ) => {
  * state by hydration or component attributes, or routing url changes that
  * affect query state).
  *
- * @param {string} context           What context to retrieve the query state
- *                                   for.
  * @param {Object} synchronizedQuery A provided query state object to
  *                                   synchronize internal query state with.
+ * @param {string} [context]         What context to retrieve the query state
+ *                                   for. If not provided, will be pulled from
+ *                                   the QueryStateContextProvider in the tree.
  */
-export const useSynchronizedQueryState = ( context, synchronizedQuery ) => {
-	const [ queryState, setQueryState ] = useQueryStateContext( context );
+export const useSynchronizedQueryState = ( synchronizedQuery, context ) => {
+	const queryStateContext = useQueryStateContext();
+	context = context || queryStateContext;
+	const [ queryState, setQueryState ] = useQueryStateByContext( context );
 	const currentSynchronizedQuery = useShallowEqual( synchronizedQuery );
 	// used to ensure we allow initial synchronization to occur before
 	// returning non-synced state.
