@@ -7,7 +7,7 @@ import {
 	useQueryStateByContext,
 	usePrevious,
 } from '@woocommerce/base-hooks';
-import { useCallback, useState, useEffect } from '@wordpress/element';
+import { useCallback, useState, useEffect, useMemo } from '@wordpress/element';
 import PriceSlider from '@woocommerce/base-components/price-slider';
 import { CURRENCY } from '@woocommerce/settings';
 import { useDebouncedCallback } from 'use-debounce';
@@ -41,8 +41,21 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 
 	const [ minPrice, setMinPrice ] = useState();
 	const [ maxPrice, setMaxPrice ] = useState();
-	const [ minConstraint, setMinConstraint ] = useState();
-	const [ maxConstraint, setMaxConstraint ] = useState();
+
+	const minConstraint = useMemo( () => {
+		if ( isNaN( results.min_price ) ) {
+			return null;
+		}
+		return Math.floor( parseInt( results.min_price, 10 ) / 10 ) * 10;
+	}, [ results.min_price ] );
+
+	const maxConstraint = useMemo( () => {
+		if ( isNaN( results.max_price ) ) {
+			return null;
+		}
+		return Math.ceil( parseInt( results.max_price, 10 ) / 10 ) * 10;
+	}, [ results.max_price ] );
+
 	const prevMinConstraint = usePrevious( minConstraint );
 	const prevMaxConstraint = usePrevious( maxConstraint );
 
@@ -88,34 +101,6 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 			);
 		}
 	}, [ minPriceQuery, maxPriceQuery, minConstraint, maxConstraint ] );
-
-	// Track product updates to update constraints.
-	useEffect( () => {
-		if ( isLoading ) {
-			return;
-		}
-
-		const minPriceFromQuery = results.min_price;
-		const maxPriceFromQuery = results.max_price;
-
-		if ( isNaN( minPriceFromQuery ) ) {
-			setMinConstraint( null );
-		} else {
-			// Round up to nearest 10 to match the step attribute.
-			setMinConstraint(
-				Math.floor( parseInt( minPriceFromQuery, 10 ) / 10 ) * 10
-			);
-		}
-
-		if ( isNaN( maxPriceFromQuery ) ) {
-			setMaxConstraint( null );
-		} else {
-			// Round down to nearest 10 to match the step attribute.
-			setMaxConstraint(
-				Math.ceil( parseInt( maxPriceFromQuery, 10 ) / 10 ) * 10
-			);
-		}
-	}, [ isLoading, results ] );
 
 	// Track min constraint changes.
 	useEffect( () => {
