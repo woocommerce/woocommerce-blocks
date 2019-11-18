@@ -49,8 +49,8 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 		? null
 		: Math.ceil( parseInt( results.max_price, 10 ) / 10 ) * 10;
 
-	const prevMinConstraint = usePrevious( minConstraint );
-	const prevMaxConstraint = usePrevious( maxConstraint );
+	const prevMinConstraint = usePrevious( minConstraint, Number.isFinite );
+	const prevMaxConstraint = usePrevious( maxConstraint, Number.isFinite );
 
 	// Updates the query after a short delay.
 	const [ debouncedUpdateQuery ] = useDebouncedCallback( () => {
