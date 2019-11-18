@@ -5,7 +5,6 @@ import {
 	useCollection,
 	useQueryStateByKey,
 	useQueryStateByContext,
-	usePrevious,
 } from '@woocommerce/base-hooks';
 import { useCallback, useState, useEffect } from '@wordpress/element';
 import PriceSlider from '@woocommerce/base-components/price-slider';
@@ -48,9 +47,6 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 	const maxConstraint = isNaN( results.max_price )
 		? null
 		: Math.ceil( parseInt( results.max_price, 10 ) / 10 ) * 10;
-
-	const prevMinConstraint = usePrevious( minConstraint, Number.isFinite );
-	const prevMaxConstraint = usePrevious( maxConstraint, Number.isFinite );
 
 	// Updates the query after a short delay.
 	const [ debouncedUpdateQuery ] = useDebouncedCallback( () => {
@@ -95,32 +91,6 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 		}
 	}, [ minPriceQuery, maxPriceQuery, minConstraint, maxConstraint ] );
 
-	// Track min constraint changes.
-	useEffect( () => {
-		if (
-			Number.isFinite( minConstraint ) && (
-				minPrice === undefined ||
-				minConstraint > minPrice ||
-				minPrice === prevMinConstraint
-			)
-		) {
-			setMinPrice( minConstraint );
-		}
-	}, [ minConstraint ] );
-
-	// Track max constraint changes.
-	useEffect( () => {
-		if (
-			Number.isFinite( maxConstraint ) && (
-				maxPrice === undefined ||
-				maxConstraint < maxPrice ||
-				maxPrice === prevMaxConstraint
-			)
-		) {
-			setMaxPrice( maxConstraint );
-		}
-	}, [ maxConstraint ] );
-
 	if (
 		! isLoading &&
 		( minConstraint === null ||
@@ -131,6 +101,12 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 	}
 
 	const TagName = `h${ attributes.headingLevel }`;
+	const min = Number.isFinite( minConstraint )
+		? Math.max( minPrice, minConstraint )
+		: minPrice;
+	const max = Number.isFinite( maxConstraint )
+		? Math.min( maxPrice, maxConstraint )
+		: maxPrice;
 
 	return (
 		<BlockErrorBoundary>
@@ -141,8 +117,8 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 				<PriceSlider
 					minConstraint={ minConstraint }
 					maxConstraint={ maxConstraint }
-					minPrice={ minPrice }
-					maxPrice={ maxPrice }
+					minPrice={ min }
+					maxPrice={ max }
 					step={ 10 }
 					currencySymbol={ CURRENCY.symbol }
 					priceFormat={ CURRENCY.price_format }
