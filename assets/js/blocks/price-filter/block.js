@@ -98,9 +98,11 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 	// Track min constraint changes.
 	useEffect( () => {
 		if (
-			minPrice === undefined ||
-			minConstraint > minPrice ||
-			minPrice === prevMinConstraint
+			Number.isFinite( minConstraint ) && (
+				minPrice === undefined ||
+				minConstraint > minPrice ||
+				minPrice === prevMinConstraint
+			)
 		) {
 			setMinPrice( minConstraint );
 		}
@@ -109,9 +111,11 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 	// Track max constraint changes.
 	useEffect( () => {
 		if (
-			maxPrice === undefined ||
-			maxConstraint < maxPrice ||
-			maxPrice === prevMaxConstraint
+			Number.isFinite( maxConstraint ) && (
+				maxPrice === undefined ||
+				maxConstraint < maxPrice ||
+				maxPrice === prevMaxConstraint
+			)
 		) {
 			setMaxPrice( maxConstraint );
 		}
