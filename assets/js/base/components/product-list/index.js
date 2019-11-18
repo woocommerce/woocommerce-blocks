@@ -8,12 +8,13 @@ import ProductSortSelect from '@woocommerce/base-components/product-sort-select'
 import ProductListItem from '@woocommerce/base-components/product-list-item';
 import { useEffect, useRef } from '@wordpress/element';
 import {
+	usePrevious,
 	useStoreProducts,
 	useSynchronizedQueryState,
-	usePrevious,
 } from '@woocommerce/base-hooks';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import { useProductLayoutContext } from '@woocommerce/base-context/product-layout-context';
+import isShallowEqual from '@wordpress/is-shallow-equal';
 
 /**
  * Internal dependencies
@@ -47,6 +48,29 @@ const generateQuery = ( { sortValue, currentPage, attributes } ) => {
 	};
 };
 
+/**
+ * Whether two queries are the same excluding some parameters we know are not
+ * used for filters (order, orderby, page, per_page).
+ *
+ * @param {Object} [query={}]       Initial query.
+ * @param {Object} [secondQuery={}] Query to compare against the first one.
+ *
+ * @return {Boolean} Whether query attributes (except excluded ones) are the same.
+ */
+const areQueryFiltersTheSame = ( query = {}, secondQuery = {} ) => {
+	/* eslint-disable no-unused-vars, camelcase */
+	const { order, orderby, page, per_page, ...totalQuery } = query;
+	const {
+		order: secondOrder,
+		orderby: secondOrderby,
+		page: secondPage,
+		per_page: secondPerPage,
+		...totalSecondQuery
+	} = secondQuery;
+	/* eslint-enable */
+	return isShallowEqual( totalQuery, totalSecondQuery );
+};
+
 const ProductList = ( {
 	attributes,
 	currentPage,
@@ -72,9 +96,10 @@ const ProductList = ( {
 		}
 	}, [ queryState ] );
 
-	const { products, totalProducts, productsLoading } = useStoreProducts(
+	const { products, totalProducts: totalProductsString, productsLoading } = useStoreProducts(
 		queryState
 	);
+	let totalProducts = parseInt( totalProductsString );
 
 	useEffect( () => {
 		if ( ! productsLoading ) {
@@ -82,6 +107,17 @@ const ProductList = ( {
 		}
 	}, [ productsLoading ] );
 	const { layoutStyleClassPrefix } = useProductLayoutContext();
+	const previousTotalProducts = usePrevious(
+        parseInt( totalProductsString ),
+        Number.isFinite
+    );
+    if ( 
+        ! Number.isFinite( totalProducts ) &&
+        areQueryFiltersTheSame( queryState, previousQueryState )
+    ) {
+        totalProducts = previousTotalProducts;
+    }
+    const previousQueryState = usePrevious( queryState );
 	const onPaginationChange = ( newPage ) => {
 		scrollToTop( { focusableSelector: 'a, button' } );
 		onPageChange( newPage );
@@ -128,7 +164,7 @@ const ProductList = ( {
 					/>
 				) ) }
 			</ul>
-			{ totalProducts > perPage && (
+			{ totalPages > 1 && (
 				<Pagination
 					currentPage={ currentPage }
 					onPageChange={ onPaginationChange }
