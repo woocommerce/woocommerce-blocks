@@ -7,7 +7,7 @@ import {
 	useQueryStateByContext,
 	usePrevious,
 } from '@woocommerce/base-hooks';
-import { useCallback, useState, useEffect, useMemo } from '@wordpress/element';
+import { useCallback, useState, useEffect } from '@wordpress/element';
 import PriceSlider from '@woocommerce/base-components/price-slider';
 import { CURRENCY } from '@woocommerce/settings';
 import { useDebouncedCallback } from 'use-debounce';
@@ -42,19 +42,12 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 	const [ minPrice, setMinPrice ] = useState();
 	const [ maxPrice, setMaxPrice ] = useState();
 
-	const minConstraint = useMemo( () => {
-		if ( isNaN( results.min_price ) ) {
-			return null;
-		}
-		return Math.floor( parseInt( results.min_price, 10 ) / 10 ) * 10;
-	}, [ results.min_price ] );
-
-	const maxConstraint = useMemo( () => {
-		if ( isNaN( results.max_price ) ) {
-			return null;
-		}
-		return Math.ceil( parseInt( results.max_price, 10 ) / 10 ) * 10;
-	}, [ results.max_price ] );
+	const minConstraint = isNaN( results.min_price )
+		? null
+		: Math.floor( parseInt( results.min_price, 10 ) / 10 ) * 10;
+	const maxConstraint = isNaN( results.max_price )
+		? null
+		: Math.ceil( parseInt( results.max_price, 10 ) / 10 ) * 10;
 
 	const prevMinConstraint = usePrevious( minConstraint );
 	const prevMaxConstraint = usePrevious( maxConstraint );
