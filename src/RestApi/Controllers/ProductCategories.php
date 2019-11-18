@@ -107,35 +107,34 @@ class ProductCategories extends WC_REST_Product_Categories_Controller {
 	 */
 	public function prepare_item_for_response( $item, $request ) {
 		$data = array(
-			'id'          => (int) $item->term_id,
-			'name'        => $item->name,
-			'slug'        => $item->slug,
-			'parent'      => (int) $item->parent,
-			'count'       => (int) $item->count,
-			'description' => $item->description,
-			'image'       => null,
-			'permalink'   => get_term_link( $item->term_id, 'product_cat' ),
+			'id'           => (int) $item->term_id,
+			'name'         => $item->name,
+			'slug'         => $item->slug,
+			'parent'       => (int) $item->parent,
+			'count'        => (int) $item->count,
+			'description'  => $item->description,
+			'image'        => null,
+			'review_count' => null,
+			'permalink'    => get_term_link( $item->term_id, 'product_cat' ),
 		);
 
 		if ( $request->get_param( 'show_review_count' ) ) {
 			global $wpdb;
-			$term_id       = $item->term_id;
-			$term_taxonomy = 'product_cat';
 
-			$products_of_category_sql = "
-			SELECT SUM( DISTINCT comment_count) as review_count
-			FROM {$wpdb->posts} AS posts
-			INNER JOIN {$wpdb->term_relationships} AS term_relationships ON posts.ID = term_relationships.object_id
-			INNER JOIN {$wpdb->term_taxonomy} AS term_taxonomy USING( term_taxonomy_id )
-			INNER JOIN {$wpdb->terms} AS terms USING( term_id )
-			WHERE terms.term_id IN ( {$term_id} )
-			AND term_taxonomy.taxonomy IN ( '{$term_taxonomy}' )
-			";
-			$products_of_category = $wpdb->get_results($products_of_category_sql); // phpcs:ignore
+			$products_of_category_sql = $wpdb->prepare(
+				"SELECT SUM( DISTINCT comment_count) as review_count
+				FROM {$wpdb->posts} AS posts
+				INNER JOIN {$wpdb->term_relationships} AS term_relationships ON posts.ID = term_relationships.object_id
+				INNER JOIN {$wpdb->term_taxonomy} AS term_taxonomy USING( term_taxonomy_id )
+				INNER JOIN {$wpdb->terms} AS terms USING( term_id )
+				WHERE terms.term_id=%d
+				AND term_taxonomy.taxonomy='product_cat'",
+				$item->term_id
+			);
 
-			$review_count = $products_of_category[0]->review_count;
+			$review_count = $wpdb->get_var( $products_of_category_sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
-			$data['review_count'] = $review_count;
+			$data['review_count'] = (int) $review_count;
 		}
 
 		$image_id = get_term_meta( $item->term_id, 'thumbnail_id', true );
