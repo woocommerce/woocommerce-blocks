@@ -65,18 +65,11 @@ const ProductList = ( {
 	);
 	// These are possible filters.
 	const [ productAttributes, setProductAttributes ] = useQueryStateByKey(
-		'product-grid',
 		'attributes',
 		[]
 	);
-	const [ minPrice, setMinPrice ] = useQueryStateByKey(
-		'product-grid',
-		'min_price'
-	);
-	const [ maxPrice, setMaxPrice ] = useQueryStateByKey(
-		'product-grid',
-		'max_price'
-	);
+	const [ minPrice, setMinPrice ] = useQueryStateByKey( 'min_price' );
+	const [ maxPrice, setMaxPrice ] = useQueryStateByKey( 'max_price' );
 	const onPaginationChange = ( newPage ) => {
 		scrollToTop( { focusableSelector: 'a, button' } );
 		onPageChange( newPage );
