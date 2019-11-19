@@ -1,17 +1,18 @@
 /**
  * External dependencies
  */
+import { isEqual } from 'lodash';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Pagination from '@woocommerce/base-components/pagination';
 import ProductSortSelect from '@woocommerce/base-components/product-sort-select';
 import ProductListItem from '@woocommerce/base-components/product-list-item';
-import { useEffect, useRef } from '@wordpress/element';
+import { useEffect } from '@wordpress/element';
 import {
+	usePrevious,
 	useStoreProducts,
 	useSynchronizedQueryState,
 	useQueryStateByKey,
-	usePrevious,
 } from '@woocommerce/base-hooks';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import { useProductLayoutContext } from '@woocommerce/base-context/product-layout-context';
@@ -50,6 +51,21 @@ const generateQuery = ( { sortValue, currentPage, attributes } ) => {
 	};
 };
 
+/**
+ * Given a query state, returns the same query without the attributes related to
+ * pagination and sorting.
+ *
+ * @param {Object} query Query to extract the attributes from.
+ *
+ * @return {Object} Same query without pagination and sorting attributes.
+ */
+
+const extractPaginationAndSortAttributes = ( query ) => {
+	/* eslint-disable-next-line no-unused-vars, camelcase */
+	const { order, orderby, page, per_page, ...totalQuery } = query;
+	return totalQuery;
+};
+
 const ProductList = ( {
 	attributes,
 	currentPage,
@@ -65,19 +81,13 @@ const ProductList = ( {
 			currentPage,
 		} )
 	);
-	const previousPage = usePrevious( queryState.page );
-	const isInitialized = useRef( false );
-	useEffect( () => {
-		// if page did not change in the query state then that means something
-		// else changed and we should reset the current page number
-		if ( previousPage === queryState.page && isInitialized.current ) {
-			onPageChange( 1 );
-		}
-	}, [ queryState ] );
+	const results = useStoreProducts( queryState );
+	const { products, productsLoading } = results;
+	const totalProducts = parseInt( results.totalProducts );
 
-	const { products, totalProducts, productsLoading } = useStoreProducts(
-		queryState
-	);
+	const { layoutStyleClassPrefix } = useProductLayoutContext();
+	const totalQuery = extractPaginationAndSortAttributes( queryState );
+
 	// These are possible filters.
 	const [ productAttributes, setProductAttributes ] = useQueryStateByKey(
 		'attributes',
@@ -86,16 +96,31 @@ const ProductList = ( {
 	const [ minPrice, setMinPrice ] = useQueryStateByKey( 'min_price' );
 	const [ maxPrice, setMaxPrice ] = useQueryStateByKey( 'max_price' );
 
+	// Only update previous query totals if the query is different and
+	// the total number of products is a finite number.
+	const previousQueryTotals = usePrevious(
+		{ totalQuery, totalProducts },
+		(
+			{ totalQuery: nextQuery, totalProducts: nextProducts },
+			{ totalQuery: currentQuery } = {}
+		) =>
+			! isEqual( nextQuery, currentQuery ) &&
+			Number.isFinite( nextProducts )
+	);
+	const isPreviousTotalQueryEqual =
+		typeof previousQueryTotals === 'object' &&
+		isEqual( totalQuery, previousQueryTotals.totalQuery );
 	useEffect( () => {
-		if ( ! productsLoading ) {
-			isInitialized.current = true;
+		// If query state (excluding pagination/sorting attributes) changed,
+		// reset pagination to the first page.
+		if ( ! isPreviousTotalQueryEqual ) {
+			onPageChange( 1 );
 		}
-	}, [ productsLoading ] );
-	const { layoutStyleClassPrefix } = useProductLayoutContext();
+	}, [ queryState ] );
+
 	const onPaginationChange = ( newPage ) => {
 		scrollToTop( { focusableSelector: 'a, button' } );
 		onPageChange( newPage );
-		isInitialized.current = false;
 	};
 
 	const getClassnames = () => {
@@ -116,11 +141,13 @@ const ProductList = ( {
 
 	const { contentVisibility } = attributes;
 	const perPage = attributes.columns * attributes.rows;
-	const totalPages = Math.ceil( totalProducts / perPage );
-	const listProducts =
-		productsLoading && ! products.length
-			? Array.from( { length: perPage } )
-			: products;
+	const totalPages =
+		! Number.isFinite( totalProducts ) && isPreviousTotalQueryEqual
+			? Math.ceil( previousQueryTotals.totalProducts / perPage )
+			: Math.ceil( totalProducts / perPage );
+	const listProducts = products.length
+		? products
+		: Array.from( { length: perPage } );
 	const hasProducts = products.length !== 0 || productsLoading;
 	const hasFilters =
 		productAttributes.length > 0 ||
@@ -156,7 +183,7 @@ const ProductList = ( {
 					) ) }
 				</ul>
 			) }
-			{ totalProducts > perPage && (
+			{ totalPages > 1 && (
 				<Pagination
 					currentPage={ currentPage }
 					onPageChange={ onPaginationChange }
