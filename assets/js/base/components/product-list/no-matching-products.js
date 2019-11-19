@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { WC_BLOCKS_ASSET_URL } from '@woocommerce/block-settings';
 
-const noMatchingProducts = ( { resetCallback = () => {} } ) => {
+const NoMatchingProducts = ( { resetCallback = () => {} } ) => {
 	return (
 		<div className="wc-block-grid__no-products">
 			<img
@@ -28,4 +28,4 @@ const noMatchingProducts = ( { resetCallback = () => {} } ) => {
 	);
 };
 
-export default noMatchingProducts;
+export default NoMatchingProducts;

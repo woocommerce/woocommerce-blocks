@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { WC_BLOCKS_ASSET_URL } from '@woocommerce/block-settings';
 
-const noProducts = () => {
+const NoProducts = () => {
 	return (
 		<div className="wc-block-grid__no-products">
 			<img
@@ -25,4 +25,4 @@ const noProducts = () => {
 	);
 };
 
-export default noProducts;
+export default NoProducts;
