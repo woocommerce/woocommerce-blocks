@@ -86,7 +86,7 @@ const ProductList = ( {
 		if ( previousPage === queryState.page && isInitialized.current ) {
 			onPageChange( 1 );
 		}
-	}, [ queryState ] );
+	}, [ queryState.page ] );
 	const results = useStoreProducts( queryState );
 	const { products, productsLoading } = results;
 	const totalProducts = parseInt( results.totalProducts );
