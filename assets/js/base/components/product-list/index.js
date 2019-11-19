@@ -6,12 +6,15 @@ import classnames from 'classnames';
 import Pagination from '@woocommerce/base-components/pagination';
 import ProductSortSelect from '@woocommerce/base-components/product-sort-select';
 import ProductListItem from '@woocommerce/base-components/product-list-item';
+import { useEffect, useRef } from '@wordpress/element';
 import {
 	useStoreProducts,
 	useSynchronizedQueryState,
 	useQueryStateByKey,
+	usePrevious,
 } from '@woocommerce/base-hooks';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
+import { useProductLayoutContext } from '@woocommerce/base-context/product-layout-context';
 
 /**
  * Internal dependencies
@@ -58,9 +61,17 @@ const ProductList = ( {
 	const [ queryState ] = useSynchronizedQueryState(
 		generateQuery( { attributes, sortValue, currentPage } )
 	);
-	// @todo should add an <ErrorBoundary> in parent component to handle any
-	// errors from the store and format etc.
-	const { products, productsLoading, totalProducts } = useStoreProducts(
+	const previousPage = usePrevious( queryState.page );
+	const isInitialized = useRef( false );
+	useEffect( () => {
+		// if page did not change in the query state then that means something
+		// else changed and we should reset the current page number
+		if ( previousPage === queryState.page && isInitialized.current ) {
+			onPageChange( 1 );
+		}
+	}, [ queryState ] );
+
+	const { products, totalProducts, productsLoading } = useStoreProducts(
 		queryState
 	);
 	// These are possible filters.
@@ -70,6 +81,13 @@ const ProductList = ( {
 	);
 	const [ minPrice, setMinPrice ] = useQueryStateByKey( 'min_price' );
 	const [ maxPrice, setMaxPrice ] = useQueryStateByKey( 'max_price' );
+
+	useEffect( () => {
+		if ( ! productsLoading ) {
+			isInitialized.current = true;
+		}
+	}, [ productsLoading ] );
+	const { layoutStyleClassPrefix } = useProductLayoutContext();
 	const onPaginationChange = ( newPage ) => {
 		scrollToTop( { focusableSelector: 'a, button' } );
 		onPageChange( newPage );
@@ -80,7 +98,7 @@ const ProductList = ( {
 		const alignClass = typeof align !== 'undefined' ? 'align' + align : '';
 
 		return classnames(
-			'wc-block-grid',
+			layoutStyleClassPrefix,
 			className,
 			alignClass,
 			'has-' + columns + '-columns',
@@ -121,7 +139,7 @@ const ProductList = ( {
 				} ) }
 			{ ! hasProducts && ! hasFilters && noProducts() }
 			{ hasProducts && (
-				<ul className="wc-block-grid__products">
+				<ul className={ `${ layoutStyleClassPrefix }__products` }>
 					{ listProducts.map( ( product = {}, i ) => (
 						<ProductListItem
 							key={ product.id || i }
