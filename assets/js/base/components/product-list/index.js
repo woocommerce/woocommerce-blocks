@@ -20,8 +20,8 @@ import { useProductLayoutContext } from '@woocommerce/base-context/product-layou
  * Internal dependencies
  */
 import './style.scss';
-import noProducts from './no-products';
-import noMatchingProducts from './no-matching-products';
+import NoProducts from './no-products';
+import NoMatchingProducts from './no-matching-products';
 
 const generateQuery = ( { sortValue, currentPage, attributes } ) => {
 	const { columns, rows } = attributes;
@@ -130,14 +130,16 @@ const ProductList = ( {
 					value={ sortValue }
 				/>
 			) }
-			{ ! hasProducts &&
-				hasFilters &&
-				noMatchingProducts( () => {
-					setProductAttributes( [] );
-					setMinPrice( null );
-					setMaxPrice( null );
-				} ) }
-			{ ! hasProducts && ! hasFilters && noProducts() }
+			{ ! hasProducts && hasFilters && (
+				<NoMatchingProducts
+					resetCallback={ () => {
+						setProductAttributes( [] );
+						setMinPrice( null );
+						setMaxPrice( null );
+					} }
+				/>
+			) }
+			{ ! hasProducts && ! hasFilters && <NoProducts /> }
 			{ hasProducts && (
 				<ul className={ `${ layoutStyleClassPrefix }__products` }>
 					{ listProducts.map( ( product = {}, i ) => (

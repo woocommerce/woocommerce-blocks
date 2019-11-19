@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { WC_BLOCKS_ASSET_URL } from '@woocommerce/block-settings';
 
-const noMatchingProducts = ( resetCallback ) => {
+const noMatchingProducts = ( { resetCallback = () => {} } ) => {
 	return (
 		<div className="wc-block-grid__no-products">
 			<img
