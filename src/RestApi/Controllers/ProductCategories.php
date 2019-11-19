@@ -197,13 +197,14 @@ class ProductCategories extends WC_REST_Product_Categories_Controller {
 			'properties' => array(),
 		);
 
-		$schema['properties']['id']           = $raw_schema['properties']['id'];
-		$schema['properties']['name']         = $raw_schema['properties']['name'];
-		$schema['properties']['slug']         = $raw_schema['properties']['slug'];
-		$schema['properties']['parent']       = $raw_schema['properties']['parent'];
-		$schema['properties']['count']        = $raw_schema['properties']['count'];
-		$schema['properties']['description']  = $raw_schema['properties']['description'];
-		$schema['properties']['image']        = $raw_schema['properties']['image'];
+		$schema['properties']['id']          = $raw_schema['properties']['id'];
+		$schema['properties']['name']        = $raw_schema['properties']['name'];
+		$schema['properties']['slug']        = $raw_schema['properties']['slug'];
+		$schema['properties']['parent']      = $raw_schema['properties']['parent'];
+		$schema['properties']['count']       = $raw_schema['properties']['count'];
+		$schema['properties']['description'] = $raw_schema['properties']['description'];
+		$schema['properties']['image']       = $raw_schema['properties']['image'];
+		// review_count will return null unless show_review_count param is trus.
 		$schema['properties']['review_count'] = array(
 			'description' => __( 'Number of reviews in the category.', 'woo-gutenberg-products-block' ),
 			'type'        => 'integer',
