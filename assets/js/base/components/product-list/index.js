@@ -49,26 +49,18 @@ const generateQuery = ( { sortValue, currentPage, attributes } ) => {
 };
 
 /**
- * Whether two queries are the same excluding some parameters we know are not
- * used for filters (order, orderby, page, per_page).
+ * Given a query state, returns the same query without the attributes related to
+ * pagination and sorting.
  *
- * @param {Object} [query={}]       Initial query.
- * @param {Object} [secondQuery={}] Query to compare against the first one.
+ * @param {Object} query Query to extract the attributes from.
  *
- * @return {boolean} Whether query attributes (except excluded ones) are the same.
+ * @return {Object} Same query without pagination and sorting attributes.
  */
-const areQueryFiltersEqual = ( query = {}, secondQuery = {} ) => {
-	/* eslint-disable no-unused-vars, camelcase */
+
+const extractPaginationAndSortAttributes = ( query ) => {
+	/* eslint-disable-next-line no-unused-vars, camelcase */
 	const { order, orderby, page, per_page, ...totalQuery } = query;
-	const {
-		order: secondOrder,
-		orderby: secondOrderby,
-		page: secondPage,
-		per_page: secondPerPage,
-		...totalSecondQuery
-	} = secondQuery;
-	/* eslint-enable */
-	return isShallowEqual( totalQuery, totalSecondQuery );
+	return totalQuery;
 };
 
 const ProductList = ( {
@@ -105,8 +97,18 @@ const ProductList = ( {
 		}
 	}, [ productsLoading ] );
 	const { layoutStyleClassPrefix } = useProductLayoutContext();
-	const previousTotalProducts = usePrevious( totalProducts, Number.isFinite );
-	const previousQueryState = usePrevious( queryState );
+	const totalQuery = extractPaginationAndSortAttributes( queryState );
+	// Only update previous query totals if the query is different and
+	// the total number of products is a finite number.
+	const previousQueryTotals = usePrevious(
+		{ totalQuery, totalProducts },
+		(
+			{ totalQuery: nextQuery, totalProducts: nextProducts },
+			{ totalQuery: currentQuery } = {}
+		) =>
+			! isShallowEqual( nextQuery, currentQuery ) &&
+			Number.isFinite( nextProducts )
+	);
 	const onPaginationChange = ( newPage ) => {
 		scrollToTop( { focusableSelector: 'a, button' } );
 		onPageChange( newPage );
@@ -133,8 +135,9 @@ const ProductList = ( {
 	const perPage = attributes.columns * attributes.rows;
 	const totalPages =
 		! Number.isFinite( totalProducts ) &&
-		areQueryFiltersEqual( queryState, previousQueryState )
-			? Math.ceil( previousTotalProducts / perPage )
+		typeof previousQueryTotals === 'object' &&
+		isShallowEqual( totalQuery, previousQueryTotals.totalQuery )
+			? Math.ceil( previousQueryTotals.totalProducts / perPage )
 			: Math.ceil( totalProducts / perPage );
 	const listProducts = products.length
 		? products

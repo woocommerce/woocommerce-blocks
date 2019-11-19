@@ -13,10 +13,13 @@ export const usePrevious = ( value, validation ) => {
 	const ref = useRef();
 
 	useEffect( () => {
-		if ( ! validation || validation( value ) ) {
+		if (
+			ref.current !== value &&
+			( ! validation || validation( value, ref.current ) )
+		) {
 			ref.current = value;
 		}
-	}, [ value ] );
+	}, [ value, ref.current ] );
 
 	return ref.current;
 };
