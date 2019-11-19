@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { isEqual } from 'lodash';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Pagination from '@woocommerce/base-components/pagination';
@@ -14,7 +15,6 @@ import {
 } from '@woocommerce/base-hooks';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import { useProductLayoutContext } from '@woocommerce/base-context/product-layout-context';
-import isShallowEqual from '@wordpress/is-shallow-equal';
 
 /**
  * Internal dependencies
@@ -80,13 +80,6 @@ const ProductList = ( {
 	);
 	const previousPage = usePrevious( queryState.page );
 	const isInitialized = useRef( false );
-	useEffect( () => {
-		// if page did not change in the query state then that means something
-		// else changed and we should reset the current page number
-		if ( previousPage === queryState.page && isInitialized.current ) {
-			onPageChange( 1 );
-		}
-	}, [ queryState.page ] );
 	const results = useStoreProducts( queryState );
 	const { products, productsLoading } = results;
 	const totalProducts = parseInt( results.totalProducts );
@@ -106,9 +99,24 @@ const ProductList = ( {
 			{ totalQuery: nextQuery, totalProducts: nextProducts },
 			{ totalQuery: currentQuery } = {}
 		) =>
-			! isShallowEqual( nextQuery, currentQuery ) &&
+			! isEqual( nextQuery, currentQuery ) &&
 			Number.isFinite( nextProducts )
 	);
+	const isPreviousTotalQueryEqual =
+		typeof previousQueryTotals === 'object' &&
+		isEqual( totalQuery, previousQueryTotals.totalQuery );
+	useEffect( () => {
+		// if page did not change in the query state then that means something
+		// else changed and we should reset the current page number
+		if (
+			! isPreviousTotalQueryEqual &&
+			previousPage === queryState.page &&
+			isInitialized.current
+		) {
+			onPageChange( 1 );
+		}
+	}, [ queryState ] );
+
 	const onPaginationChange = ( newPage ) => {
 		scrollToTop( { focusableSelector: 'a, button' } );
 		onPageChange( newPage );
@@ -134,9 +142,7 @@ const ProductList = ( {
 	const { contentVisibility } = attributes;
 	const perPage = attributes.columns * attributes.rows;
 	const totalPages =
-		! Number.isFinite( totalProducts ) &&
-		typeof previousQueryTotals === 'object' &&
-		isShallowEqual( totalQuery, previousQueryTotals.totalQuery )
+		! Number.isFinite( totalProducts ) && isPreviousTotalQueryEqual
 			? Math.ceil( previousQueryTotals.totalProducts / perPage )
 			: Math.ceil( totalProducts / perPage );
 	const listProducts = products.length
