@@ -71,6 +71,7 @@ const ProductList = ( {
 	const { products, totalProducts, productsLoading } = useStoreProducts(
 		queryState
 	);
+
 	useEffect( () => {
 		if ( ! productsLoading ) {
 			isInitialized.current = true;
