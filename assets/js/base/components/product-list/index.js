@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import Pagination from '@woocommerce/base-components/pagination';
 import ProductSortSelect from '@woocommerce/base-components/product-sort-select';
 import ProductListItem from '@woocommerce/base-components/product-list-item';
-import { useEffect, useRef } from '@wordpress/element';
+import { useEffect } from '@wordpress/element';
 import {
 	usePrevious,
 	useStoreProducts,
@@ -78,17 +78,10 @@ const ProductList = ( {
 			currentPage,
 		} )
 	);
-	const previousPage = usePrevious( queryState.page );
-	const isInitialized = useRef( false );
 	const results = useStoreProducts( queryState );
-	const { products, productsLoading } = results;
+	const { products } = results;
 	const totalProducts = parseInt( results.totalProducts );
 
-	useEffect( () => {
-		if ( ! productsLoading ) {
-			isInitialized.current = true;
-		}
-	}, [ productsLoading ] );
 	const { layoutStyleClassPrefix } = useProductLayoutContext();
 	const totalQuery = extractPaginationAndSortAttributes( queryState );
 	// Only update previous query totals if the query is different and
@@ -106,13 +99,9 @@ const ProductList = ( {
 		typeof previousQueryTotals === 'object' &&
 		isEqual( totalQuery, previousQueryTotals.totalQuery );
 	useEffect( () => {
-		// if page did not change in the query state then that means something
-		// else changed and we should reset the current page number
-		if (
-			! isPreviousTotalQueryEqual &&
-			previousPage === queryState.page &&
-			isInitialized.current
-		) {
+		// If query state (excluding pagination/sorting attributes) changed,
+		// reset pagination to the first page.
+		if ( ! isPreviousTotalQueryEqual ) {
 			onPageChange( 1 );
 		}
 	}, [ queryState ] );
@@ -120,7 +109,6 @@ const ProductList = ( {
 	const onPaginationChange = ( newPage ) => {
 		scrollToTop( { focusableSelector: 'a, button' } );
 		onPageChange( newPage );
-		isInitialized.current = false;
 	};
 
 	const getClassnames = () => {
