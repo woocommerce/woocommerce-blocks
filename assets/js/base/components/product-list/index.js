@@ -95,8 +95,8 @@ const ProductList = ( {
 			onPageChange( 1 );
 		}
 	}, [ queryState ] );
-    const results = useStoreProducts( queryState );
-    const { products, productsLoading } = results;
+	const results = useStoreProducts( queryState );
+	const { products, productsLoading } = results;
 	const totalProducts = parseInt( results.totalProducts );
 
 	useEffect( () => {
@@ -106,13 +106,7 @@ const ProductList = ( {
 	}, [ productsLoading ] );
 	const { layoutStyleClassPrefix } = useProductLayoutContext();
 	const previousTotalProducts = usePrevious( totalProducts, Number.isFinite );
-    if ( 
-        ! Number.isFinite( totalProducts ) &&
-        areQueryFiltersTheSame( queryState, previousQueryState )
-    ) {
-        totalProducts = previousTotalProducts;
-    }
-    const previousQueryState = usePrevious( queryState );
+	const previousQueryState = usePrevious( queryState );
 	const onPaginationChange = ( newPage ) => {
 		scrollToTop( { focusableSelector: 'a, button' } );
 		onPageChange( newPage );
