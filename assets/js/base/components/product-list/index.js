@@ -56,7 +56,11 @@ const ProductList = ( {
 	scrollToTop,
 } ) => {
 	const [ queryState ] = useSynchronizedQueryState(
-		generateQuery( { attributes, sortValue, currentPage } )
+		generateQuery( {
+			attributes,
+			sortValue,
+			currentPage,
+		} )
 	);
 	const previousPage = usePrevious( queryState.page );
 	const isInitialized = useRef( false );
@@ -81,6 +85,7 @@ const ProductList = ( {
 	const onPaginationChange = ( newPage ) => {
 		scrollToTop( { focusableSelector: 'a, button' } );
 		onPageChange( newPage );
+		isInitialized.current = false;
 	};
 
 	const getClassnames = () => {
