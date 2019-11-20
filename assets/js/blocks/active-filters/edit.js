@@ -2,10 +2,10 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
 import { InspectorControls, PlainText } from '@wordpress/block-editor';
 import { Disabled, PanelBody, withSpokenMessages } from '@wordpress/components';
 import HeadingToolbar from '@woocommerce/block-components/heading-toolbar';
+import classNames from 'classnames';
 
 /**
  * Internal dependencies
@@ -14,9 +14,9 @@ import Block from './block.js';
 import ToggleButtonControl from '../../components/toggle-button-control';
 
 const Edit = ( { attributes, setAttributes } ) => {
-	const getInspectorControls = () => {
-		const { displayStyle } = attributes;
+	const { className, displayStyle, heading, headingLevel } = attributes;
 
+	const getInspectorControls = () => {
 		return (
 			<InspectorControls key="inspector">
 				<PanelBody
@@ -63,7 +63,7 @@ const Edit = ( { attributes, setAttributes } ) => {
 						isCollapsed={ false }
 						minLevel={ 2 }
 						maxLevel={ 7 }
-						selectedLevel={ attributes.headingLevel }
+						selectedLevel={ headingLevel }
 						onChange={ ( newLevel ) =>
 							setAttributes( { headingLevel: newLevel } )
 						}
@@ -73,15 +73,15 @@ const Edit = ( { attributes, setAttributes } ) => {
 		);
 	};
 
-	const TagName = `h${ attributes.headingLevel }`;
+	const TagName = `h${ headingLevel }`;
 
 	return (
-		<Fragment>
+		<div className={ classNames( 'is-loading', className ) }>
 			{ getInspectorControls() }
 			<TagName>
 				<PlainText
 					className="wc-block-attribute-filter-heading"
-					value={ attributes.heading }
+					value={ heading }
 					onChange={ ( value ) =>
 						setAttributes( { heading: value } )
 					}
@@ -90,7 +90,7 @@ const Edit = ( { attributes, setAttributes } ) => {
 			<Disabled>
 				<Block attributes={ attributes } isPreview />
 			</Disabled>
-		</Fragment>
+		</div>
 	);
 };
 

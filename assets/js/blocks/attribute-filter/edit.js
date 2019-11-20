@@ -23,6 +23,7 @@ import { mapValues, toArray, sortBy, find } from 'lodash';
 import { ATTRIBUTES } from '@woocommerce/block-settings';
 import { getAdminLink } from '@woocommerce/navigation';
 import HeadingToolbar from '@woocommerce/block-components/heading-toolbar';
+import classNames from 'classnames';
 
 /**
  * Internal dependencies
@@ -33,6 +34,14 @@ import { IconExternal } from '../../components/icons';
 import ToggleButtonControl from '../../components/toggle-button-control';
 
 const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
+	const {
+		className,
+		heading,
+		headingLevel,
+		showCounts,
+		queryType,
+	} = attributes;
+
 	const [ isEditing, setIsEditing ] = useState(
 		! attributes.attributeId && ! attributes.isPreview
 	);
@@ -55,8 +64,6 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 	};
 
 	const getInspectorControls = () => {
-		const { showCounts, queryType } = attributes;
-
 		return (
 			<InspectorControls key="inspector">
 				<PanelBody
@@ -95,7 +102,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 						isCollapsed={ false }
 						minLevel={ 2 }
 						maxLevel={ 7 }
-						selectedLevel={ attributes.headingLevel }
+						selectedLevel={ headingLevel }
 						onChange={ ( newLevel ) =>
 							setAttributes( { headingLevel: newLevel } )
 						}
@@ -315,7 +322,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 		);
 	};
 
-	const TagName = `h${ attributes.headingLevel }`;
+	const TagName = `h${ headingLevel }`;
 
 	return Object.keys( ATTRIBUTES ).length === 0 ? (
 		noAttributesPlaceholder()
@@ -326,11 +333,11 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 			{ isEditing ? (
 				renderEditMode()
 			) : (
-				<Fragment>
+				<div className={ classNames( 'is-loading', className ) }>
 					<TagName>
 						<PlainText
 							className="wc-block-attribute-filter-heading"
-							value={ attributes.heading }
+							value={ heading }
 							onChange={ ( value ) =>
 								setAttributes( { heading: value } )
 							}
@@ -339,7 +346,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 					<Disabled>
 						<Block attributes={ attributes } isEditor />
 					</Disabled>
-				</Fragment>
+				</div>
 			) }
 		</Fragment>
 	);
