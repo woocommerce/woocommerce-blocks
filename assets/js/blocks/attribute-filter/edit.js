@@ -34,15 +34,17 @@ import ToggleButtonControl from '../../components/toggle-button-control';
 
 const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 	const {
+		attributeId,
 		className,
 		heading,
 		headingLevel,
-		showCounts,
+		isPreview,
 		queryType,
+		showCounts,
 	} = attributes;
 
 	const [ isEditing, setIsEditing ] = useState(
-		! attributes.attributeId && ! attributes.isPreview
+		! attributeId && ! isPreview
 	);
 
 	const getBlockControls = () => {
@@ -224,7 +226,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 			selectedId.toString(),
 		] );
 
-		if ( ! productAttribute || attributes.attributeId === selectedId ) {
+		if ( ! productAttribute || attributeId === selectedId ) {
 			return;
 		}
 
@@ -241,8 +243,6 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 	}, [] );
 
 	const renderAttributeControl = () => {
-		const { attributeId } = attributes;
-
 		const messages = {
 			clear: __(
 				'Clear selected attribute',

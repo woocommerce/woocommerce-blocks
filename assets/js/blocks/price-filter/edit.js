@@ -102,7 +102,7 @@ export default function( { attributes, setAttributes } ) {
 						isCollapsed={ false }
 						minLevel={ 2 }
 						maxLevel={ 7 }
-						selectedLevel={ attributes.headingLevel }
+						selectedLevel={ headingLevel }
 						onChange={ ( newLevel ) =>
 							setAttributes( { headingLevel: newLevel } )
 						}
