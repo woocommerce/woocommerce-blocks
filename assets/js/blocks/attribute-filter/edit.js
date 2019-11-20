@@ -23,7 +23,6 @@ import { mapValues, toArray, sortBy, find } from 'lodash';
 import { ATTRIBUTES } from '@woocommerce/block-settings';
 import { getAdminLink } from '@woocommerce/navigation';
 import HeadingToolbar from '@woocommerce/block-components/heading-toolbar';
-import classNames from 'classnames';
 
 /**
  * Internal dependencies
@@ -333,7 +332,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 			{ isEditing ? (
 				renderEditMode()
 			) : (
-				<div className={ classNames( 'is-loading', className ) }>
+				<div className={ className }>
 					<TagName>
 						<PlainText
 							className="wc-block-attribute-filter-heading"

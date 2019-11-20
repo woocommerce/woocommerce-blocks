@@ -5,7 +5,6 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls, PlainText } from '@wordpress/block-editor';
 import { Disabled, PanelBody, withSpokenMessages } from '@wordpress/components';
 import HeadingToolbar from '@woocommerce/block-components/heading-toolbar';
-import classNames from 'classnames';
 
 /**
  * Internal dependencies
@@ -76,7 +75,7 @@ const Edit = ( { attributes, setAttributes } ) => {
 	const TagName = `h${ headingLevel }`;
 
 	return (
-		<div className={ classNames( 'is-loading', className ) }>
+		<div className={ className }>
 			{ getInspectorControls() }
 			<TagName>
 				<PlainText

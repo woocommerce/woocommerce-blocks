@@ -14,7 +14,6 @@ import {
 import { PRODUCT_COUNT } from '@woocommerce/block-settings';
 import { getAdminLink } from '@woocommerce/navigation';
 import HeadingToolbar from '@woocommerce/block-components/heading-toolbar';
-import classNames from 'classnames';
 
 /**
  * Internal dependencies
@@ -159,7 +158,7 @@ export default function( { attributes, setAttributes } ) {
 			{ PRODUCT_COUNT === 0 ? (
 				noProductsPlaceholder()
 			) : (
-				<div className={ classNames( 'is-loading', className ) }>
+				<div className={ className }>
 					{ getInspectorControls() }
 					<TagName>
 						<PlainText
