@@ -143,7 +143,7 @@ class ProductCollectionData extends RestContoller {
 		$filters = new ProductQueryFilters();
 
 		if ( ! empty( $request['calculate_price_range'] ) ) {
-			$filter_request = $request;
+			$filter_request = clone $request;
 			$filter_request->set_param( 'min_price', null );
 			$filter_request->set_param( 'max_price', null );
 			$price_results = $filters->get_filtered_price( $filter_request );
@@ -169,7 +169,7 @@ class ProductCollectionData extends RestContoller {
 			// Or type queries need special handling because the attribute, if set, needs removing from the query first otherwise counts would not be correct.
 			if ( $taxonomy__or_queries ) {
 				foreach ( $taxonomy__or_queries as $taxonomy ) {
-					$filter_request    = $request;
+					$filter_request    = clone $request;
 					$filter_attributes = $filter_request->get_param( 'attributes' );
 
 					if ( ! empty( $filter_attributes ) ) {
