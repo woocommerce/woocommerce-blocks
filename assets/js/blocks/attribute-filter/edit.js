@@ -237,7 +237,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 				attributeName
 			),
 		} );
-	}, [] );
+	}, [ attributeId ] );
 
 	const renderAttributeControl = () => {
 		const messages = {
