@@ -220,6 +220,15 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 	}, [] );
 
 	const onChange = useCallback( ( selected ) => {
+		if ( ! selected || ! selected[ 0 ] ) {
+			setAttributes( {
+				attributeId: 0,
+				heading: __( 'Filter by attribute', 'woo-gutenberg-products-block' )
+			} );
+
+			return;
+		}
+
 		const selectedId = selected[ 0 ].id;
 		const productAttribute = find( ATTRIBUTES, [
 			'attribute_id',
@@ -313,7 +322,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 			>
 				<div className="wc-block-attribute-filter__selection">
 					{ renderAttributeControl() }
-					<Button isDefault onClick={ onDone }>
+					<Button isDefault disabled={ attributeId === 0 } onClick={ onDone }>
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }
 					</Button>
 				</div>
