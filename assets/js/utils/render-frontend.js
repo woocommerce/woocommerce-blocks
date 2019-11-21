@@ -4,8 +4,8 @@
 import { render } from 'react-dom';
 import { getSetting } from '@woocommerce/settings';
 import { SCHEMA_STORE_KEY } from '@woocommerce/block-data';
-import { useEffect, useRef } from '@wordpress/element';
-import { useDispatch, useSelect } from '@wordpress/data';
+import { useRef } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 import { forEach } from 'lodash';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 
@@ -15,29 +15,31 @@ import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundar
  * @param {mixed} children Child components.
  */
 const HydrateRestApiData = ( { children } ) => {
-	const { receiveRoutes, startResolution, finishResolution } = useDispatch(
-		SCHEMA_STORE_KEY
-	);
-	const { isResolving, hasFinishedResolution } = useSelect( ( select ) => {
-		const store = select( SCHEMA_STORE_KEY );
-		return store;
-	} );
-	const RestApiRoutes = useRef( getSetting( 'restApiRoutes' ) );
+	const restApiRoutes = useRef( getSetting( 'restApiRoutes' ) );
 
-	useEffect( () => {
-		if ( RestApiRoutes.current ) {
-			forEach( RestApiRoutes.current, ( routes, namespace ) => {
-				if (
-					! isResolving( 'getRoutes', [ namespace ] ) &&
-					! hasFinishedResolution( 'getRoutes', [ namespace ] )
-				) {
-					startResolution( 'getRoutes', [ namespace ] );
-					receiveRoutes( routes, [ namespace ] );
-					finishResolution( 'getRoutes', [ namespace ] );
-				}
-			} );
+	useSelect( ( select, registry ) => {
+		const { isResolving, hasFinishedResolution } = select(
+			SCHEMA_STORE_KEY
+		);
+		const {
+			receiveRoutes,
+			startResolution,
+			finishResolution,
+		} = registry.dispatch( SCHEMA_STORE_KEY );
+		if ( ! restApiRoutes.current ) {
+			return;
 		}
-	}, [ RestApiRoutes ] );
+		forEach( restApiRoutes.current, ( routes, namespace ) => {
+			if (
+				! isResolving( 'getRoutes', [ namespace ] ) &&
+				! hasFinishedResolution( 'getRoutes', [ namespace ] )
+			) {
+				startResolution( 'getRoutes', [ namespace ] );
+				receiveRoutes( routes, [ namespace ] );
+				finishResolution( 'getRoutes', [ namespace ] );
+			}
+		} );
+	}, [] );
 
 	return children;
 };
