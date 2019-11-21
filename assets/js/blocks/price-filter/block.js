@@ -24,12 +24,10 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 		'max_price'
 	);
 	const [ queryState ] = useQueryStateByContext();
-	const { results, isLoading } = useCollectionData(
-		{
-			priceRange: true,
-		},
-		queryState
-	);
+	const { results, isLoading } = useCollectionData( {
+		queryPrices: true,
+		queryState,
+	} );
 
 	const [ minPrice, setMinPrice ] = useState();
 	const [ maxPrice, setMaxPrice ] = useState();

@@ -106,15 +106,13 @@ const AttributeFilterBlock = ( {
 	const {
 		results: filteredCounts,
 		isLoading: filteredCountsLoading,
-	} = useCollectionData(
-		{
-			attribute: {
-				taxonomy: attributeObject.taxonomy,
-				queryType: blockAttributes.queryType,
-			},
+	} = useCollectionData( {
+		queryAttribute: {
+			taxonomy: attributeObject.taxonomy,
+			queryType: blockAttributes.queryType,
 		},
-		queryState
-	);
+		queryState,
+	} );
 
 	/**
 	 * Get count data about a given term by ID.

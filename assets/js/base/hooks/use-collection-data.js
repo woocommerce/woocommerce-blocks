@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { useState, useEffect, useMemo } from '@wordpress/element';
-import { useQueryStateByContext, useCollection } from '@woocommerce/base-hooks';
+import {
+	useQueryStateByContext,
+	useQueryStateByKey,
+	useCollection,
+} from '@woocommerce/base-hooks';
 import { useCollectionDataContext } from '@woocommerce/base-context/collection-data-context';
 import { useDebounce } from 'use-debounce';
 import { find, sortBy } from 'lodash';
@@ -13,15 +17,11 @@ import { find, sortBy } from 'lodash';
 import { useShallowEqual } from './use-shallow-equal';
 
 const buildCollectionDataQuery = ( collectionDataQueryState ) => {
-	const query = {};
+	const query = collectionDataQueryState;
 
-	if ( collectionDataQueryState.priceRange ) {
-		query.calculate_price_range = true;
-	}
-
-	if ( collectionDataQueryState.attributes ) {
+	if ( collectionDataQueryState.calculate_attribute_counts ) {
 		query.calculate_attribute_counts = sortBy(
-			collectionDataQueryState.attributes.map(
+			collectionDataQueryState.calculate_attribute_counts.map(
 				( { taxonomy, queryType } ) => {
 					return {
 						taxonomy,
@@ -36,48 +36,55 @@ const buildCollectionDataQuery = ( collectionDataQueryState ) => {
 	return query;
 };
 
-export const useCollectionData = (
-	collectionDataQuery = [],
+export const useCollectionData = ( {
+	queryAttribute,
+	queryPrices,
 	queryState,
-	context
-) => {
+	context,
+} ) => {
 	const collectionDataContext = useCollectionDataContext();
 	context = context || collectionDataContext;
 
+	const [ collectionDataQueryState ] = useQueryStateByContext( context );
 	const [
-		collectionDataQueryState,
-		setCollectionDataQueryState,
-	] = useQueryStateByContext( context );
+		calculateAttributesQueryState,
+		setCalculateAttributesQueryState,
+	] = useQueryStateByKey( 'calculate_attribute_counts', [], context );
+	const [
+		calculatePriceRangeQueryState,
+		setCalculatePriceRangeQueryState,
+	] = useQueryStateByKey( 'calculate_price_range', false, context );
 
-	const currentCollectionDataQuery = useShallowEqual( collectionDataQuery );
+	const currentQueryAttribute = useShallowEqual( queryAttribute || {} );
+	const currentQueryPrices = useShallowEqual( queryPrices );
 
 	useEffect( () => {
-		const stateAttributes = collectionDataQueryState.attributes || [];
-
-		if ( currentCollectionDataQuery.attribute ) {
-			const foundAttribute = find( stateAttributes, ( attribute ) => {
-				return (
-					attribute.taxonomy ===
-					currentCollectionDataQuery.attribute.taxonomy
-				);
-			} );
+		if ( currentQueryAttribute ) {
+			const foundAttribute = find(
+				calculateAttributesQueryState,
+				( attribute ) => {
+					return (
+						attribute.taxonomy === currentQueryAttribute.taxonomy
+					);
+				}
+			);
 
 			if ( ! foundAttribute ) {
-				stateAttributes.push( currentCollectionDataQuery.attribute );
+				const setState = calculateAttributesQueryState;
+				setState.push( currentQueryAttribute );
+				setCalculateAttributesQueryState( setState );
 			}
 		}
+	}, [ currentQueryAttribute ] );
 
-		const mergedQueryState = {
-			...collectionDataQueryState,
-			...currentCollectionDataQuery,
-			attribute: undefined,
-			attributes: stateAttributes,
-		};
-
-		setCollectionDataQueryState( context, mergedQueryState );
-
-		console.log( 'used effect' ); // eslint-disable-line
-	}, [ currentCollectionDataQuery ] );
+	useEffect( () => {
+		if (
+			calculatePriceRangeQueryState !== currentQueryPrices &&
+			currentQueryPrices !== undefined
+		) {
+			setCalculatePriceRangeQueryState( currentQueryPrices );
+		}
+	}, [ currentQueryPrices ] );
 
 	// Defer the select query so all collection-data query vars can be gathered.
 	const [ shouldSelect, setShouldSelect ] = useState( false );
