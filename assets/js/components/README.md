@@ -46,4 +46,4 @@ There are some functions that work across components, these have been extracted 
 
 ## Block Title
 
-A block that is responsible for showing the title for all of our blocks.
+A block that is responsible for showing the title for some of our blocks.
