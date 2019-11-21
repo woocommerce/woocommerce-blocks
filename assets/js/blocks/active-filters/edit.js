@@ -79,10 +79,8 @@ const Edit = ( { attributes, setAttributes } ) => {
 			<BlockTitle
 				headingLevel={ headingLevel }
 				heading={ heading }
-				onChange={ ( value ) =>
-							setAttributes( { heading: value } )
-						}
-					/>
+				onChange={ ( value ) => setAttributes( { heading: value } ) }
+			/>
 			<Disabled>
 				<Block attributes={ attributes } isPreview />
 			</Disabled>

@@ -3,22 +3,23 @@
  */
 import PropTypes from 'prop-types';
 import { PlainText } from '@wordpress/block-editor';
-import classnames from 'classnames'
+import classnames from 'classnames';
 
 const BlockTitle = ( { className, headingLevel, onChange, heading } ) => {
 	const TagName = `h${ headingLevel }`;
 	return (
 		<TagName>
 			<PlainText
-				className={ classnames( "wc-block-attribute-filter-heading", className ) }
+				className={ classnames(
+					'wc-block-attribute-filter-heading',
+					className
+				) }
 				value={ heading }
 				onChange={ onChange }
-							/>
+			/>
 		</TagName>
-	)
-}
-;
-
+	);
+};
 BlockTitle.propTypes = {
 	/**
 	 * Classname to add to title in addition to the defaults.
@@ -39,4 +40,3 @@ BlockTitle.propTypes = {
 };
 
 export default BlockTitle;
-

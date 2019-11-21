@@ -16,7 +16,6 @@ import { getAdminLink } from '@woocommerce/navigation';
 import HeadingToolbar from '@woocommerce/block-components/heading-toolbar';
 import BlockTitle from '@woocommerce/block-components/block-title';
 
-
 /**
  * Internal dependencies
  */

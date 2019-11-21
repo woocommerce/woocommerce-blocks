@@ -3,10 +3,7 @@
  */
 import { __, sprintf, _n } from '@wordpress/i18n';
 import { Fragment, useState, useCallback } from '@wordpress/element';
-import {
-	InspectorControls,
-	BlockControls,
-} from '@wordpress/block-editor';
+import { InspectorControls, BlockControls } from '@wordpress/block-editor';
 import {
 	Placeholder,
 	Disabled,
@@ -320,8 +317,6 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 			</Placeholder>
 		);
 	};
-
-
 
 	return Object.keys( ATTRIBUTES ).length === 0 ? (
 		noAttributesPlaceholder()
