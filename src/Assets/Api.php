@@ -114,6 +114,7 @@ class Api {
 				'woo-gutenberg-products-block',
 				$this->package->get_path( 'languages' )
 			);
+			do_action( 'woocommerce_blocks_register_script', $handle, $relative_src );
 		}
 	}
 

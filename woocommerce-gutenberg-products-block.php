@@ -113,3 +113,39 @@ if ( is_readable( $autoloader ) ) {
 
 add_action( 'plugins_loaded', array( '\Automattic\WooCommerce\Blocks\Package', 'init' ) );
 
+/**
+ * Gets JSON translation files from woocommerce core, if they exist, and appends them as a script.
+ *
+ * @param string $handle Script handle.
+ * @param string $relative_src Script filename/path.
+ */
+function woocommerce_blocks_add_woocommerce_core_translations( $handle, $relative_src ) {
+	$locale    = determine_locale();
+	$file_base = 'woocommerce-' . $locale;
+	$relative  = 'packages/woocommerce-blocks/' . $relative_src;
+
+	// Translations are always based on the unminified filename.
+	if ( substr( $relative, -7 ) === '.min.js' ) {
+		$relative = substr( $relative, 0, -7 ) . '.js';
+	}
+
+	$md5_filename      = $file_base . '-' . md5( $relative ) . '.json';
+	$languages_path    = WP_LANG_DIR . '/plugins';
+	$json_translations = load_script_translations( $languages_path . '/' . $md5_filename, $handle, 'woocommerce' );
+
+	if ( ! $json_translations ) {
+		return;
+	}
+
+	$output = <<<JS
+	( function( domain, translations ) {
+		var localeData = translations.locale_data[ domain ] || translations.locale_data.messages;
+		localeData[""].domain = domain;
+		wp.i18n.setLocaleData( localeData, domain );
+	} )( "woo-gutenberg-products-block", {$json_translations} );
+JS;
+
+	wp_add_inline_script( $handle, $output, 'before' );
+}
+
+add_action( 'woocommerce_blocks_register_script', 'woocommerce_blocks_add_woocommerce_core_translations', 10, 2 );
