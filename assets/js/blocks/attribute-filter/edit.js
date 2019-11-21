@@ -6,7 +6,6 @@ import { Fragment, useState, useCallback } from '@wordpress/element';
 import {
 	InspectorControls,
 	BlockControls,
-	PlainText,
 } from '@wordpress/block-editor';
 import {
 	Placeholder,
@@ -23,6 +22,7 @@ import { mapValues, toArray, sortBy, find } from 'lodash';
 import { ATTRIBUTES } from '@woocommerce/block-settings';
 import { getAdminLink } from '@woocommerce/navigation';
 import HeadingToolbar from '@woocommerce/block-components/heading-toolbar';
+import BlockTitle from '@woocommerce/block-components/block-title';
 
 /**
  * Internal dependencies
@@ -321,7 +321,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 		);
 	};
 
-	const TagName = `h${ headingLevel }`;
+
 
 	return Object.keys( ATTRIBUTES ).length === 0 ? (
 		noAttributesPlaceholder()
@@ -333,15 +333,13 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 				renderEditMode()
 			) : (
 				<div className={ className }>
-					<TagName>
-						<PlainText
-							className="wc-block-attribute-filter-heading"
-							value={ heading }
-							onChange={ ( value ) =>
-								setAttributes( { heading: value } )
-							}
-						/>
-					</TagName>
+					<BlockTitle
+						headingLevel={ headingLevel }
+						heading={ heading }
+						onChange={ ( value ) =>
+							setAttributes( { heading: value } )
+						}
+					/>
 					<Disabled>
 						<Block attributes={ attributes } isEditor />
 					</Disabled>
