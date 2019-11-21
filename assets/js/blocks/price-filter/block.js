@@ -75,7 +75,7 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 		if ( ! attributes.showFilterButton ) {
 			debouncedUpdateQuery();
 		}
-	}, [ minPrice, maxPrice, attributes ] );
+	}, [ minPrice, maxPrice, attributes.showFilterButton ] );
 
 	// Track PRICE QUERY changes so the slider reflects current filters.
 	useEffect( () => {
