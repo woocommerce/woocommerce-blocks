@@ -5,13 +5,11 @@ import {
 	useCollection,
 	useQueryStateByKey,
 	useQueryStateByContext,
-	usePrevious,
 } from '@woocommerce/base-hooks';
-import { useCallback, useState, useEffect } from '@wordpress/element';
+import { Fragment, useCallback, useState, useEffect } from '@wordpress/element';
 import PriceSlider from '@woocommerce/base-components/price-slider';
 import { CURRENCY } from '@woocommerce/settings';
 import { useDebouncedCallback } from 'use-debounce';
-import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 
 /**
  * Component displaying a price filter.
@@ -41,10 +39,13 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 
 	const [ minPrice, setMinPrice ] = useState();
 	const [ maxPrice, setMaxPrice ] = useState();
-	const [ minConstraint, setMinConstraint ] = useState();
-	const [ maxConstraint, setMaxConstraint ] = useState();
-	const prevMinConstraint = usePrevious( minConstraint );
-	const prevMaxConstraint = usePrevious( maxConstraint );
+
+	const minConstraint = isNaN( results.min_price )
+		? null
+		: Math.floor( parseInt( results.min_price, 10 ) / 10 ) * 10;
+	const maxConstraint = isNaN( results.max_price )
+		? null
+		: Math.ceil( parseInt( results.max_price, 10 ) / 10 ) * 10;
 
 	// Updates the query after a short delay.
 	const [ debouncedUpdateQuery ] = useDebouncedCallback( () => {
@@ -72,8 +73,10 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 
 	// Track price STATE changes - if state changes, update the query.
 	useEffect( () => {
-		debouncedUpdateQuery();
-	}, [ minPrice, maxPrice ] );
+		if ( ! attributes.showFilterButton ) {
+			debouncedUpdateQuery();
+		}
+	}, [ minPrice, maxPrice, attributes.showFilterButton ] );
 
 	// Track PRICE QUERY changes so the slider reflects current filters.
 	useEffect( () => {
@@ -89,56 +92,6 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 		}
 	}, [ minPriceQuery, maxPriceQuery, minConstraint, maxConstraint ] );
 
-	// Track product updates to update constraints.
-	useEffect( () => {
-		if ( isLoading ) {
-			return;
-		}
-
-		const minPriceFromQuery = results.min_price;
-		const maxPriceFromQuery = results.max_price;
-
-		if ( isNaN( minPriceFromQuery ) ) {
-			setMinConstraint( null );
-		} else {
-			// Round up to nearest 10 to match the step attribute.
-			setMinConstraint(
-				Math.floor( parseInt( minPriceFromQuery, 10 ) / 10 ) * 10
-			);
-		}
-
-		if ( isNaN( maxPriceFromQuery ) ) {
-			setMaxConstraint( null );
-		} else {
-			// Round down to nearest 10 to match the step attribute.
-			setMaxConstraint(
-				Math.ceil( parseInt( maxPriceFromQuery, 10 ) / 10 ) * 10
-			);
-		}
-	}, [ isLoading, results ] );
-
-	// Track min constraint changes.
-	useEffect( () => {
-		if (
-			minPrice === undefined ||
-			minConstraint > minPrice ||
-			minPrice === prevMinConstraint
-		) {
-			setMinPrice( minConstraint );
-		}
-	}, [ minConstraint ] );
-
-	// Track max constraint changes.
-	useEffect( () => {
-		if (
-			maxPrice === undefined ||
-			maxConstraint < maxPrice ||
-			maxPrice === prevMaxConstraint
-		) {
-			setMaxPrice( maxConstraint );
-		}
-	}, [ maxConstraint ] );
-
 	if (
 		! isLoading &&
 		( minConstraint === null ||
@@ -149,9 +102,15 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 	}
 
 	const TagName = `h${ attributes.headingLevel }`;
+	const min = Number.isFinite( minConstraint )
+		? Math.max( minPrice, minConstraint )
+		: minPrice;
+	const max = Number.isFinite( maxConstraint )
+		? Math.min( maxPrice, maxConstraint )
+		: maxPrice;
 
 	return (
-		<BlockErrorBoundary>
+		<Fragment>
 			{ ! isPreview && attributes.heading && (
 				<TagName>{ attributes.heading }</TagName>
 			) }
@@ -159,8 +118,8 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 				<PriceSlider
 					minConstraint={ minConstraint }
 					maxConstraint={ maxConstraint }
-					minPrice={ minPrice }
-					maxPrice={ maxPrice }
+					minPrice={ min }
+					maxPrice={ max }
 					step={ 10 }
 					currencySymbol={ CURRENCY.symbol }
 					priceFormat={ CURRENCY.price_format }
@@ -171,7 +130,7 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 					isLoading={ isLoading }
 				/>
 			</div>
-		</BlockErrorBoundary>
+		</Fragment>
 	);
 };
 

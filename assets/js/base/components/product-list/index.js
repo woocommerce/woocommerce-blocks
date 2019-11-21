@@ -1,16 +1,18 @@
 /**
  * External dependencies
  */
+import { isEqual } from 'lodash';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Pagination from '@woocommerce/base-components/pagination';
 import ProductSortSelect from '@woocommerce/base-components/product-sort-select';
 import ProductListItem from '@woocommerce/base-components/product-list-item';
-import { useEffect, useRef } from '@wordpress/element';
+import { useEffect } from '@wordpress/element';
 import {
+	usePrevious,
 	useStoreProducts,
 	useSynchronizedQueryState,
-	usePrevious,
+	useQueryStateByKey,
 } from '@woocommerce/base-hooks';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import { useProductLayoutContext } from '@woocommerce/base-context/product-layout-context';
@@ -19,6 +21,8 @@ import { useProductLayoutContext } from '@woocommerce/base-context/product-layou
  * Internal dependencies
  */
 import './style.scss';
+import NoProducts from './no-products';
+import NoMatchingProducts from './no-matching-products';
 
 const generateQuery = ( { sortValue, currentPage, attributes } ) => {
 	const { columns, rows } = attributes;
@@ -47,6 +51,21 @@ const generateQuery = ( { sortValue, currentPage, attributes } ) => {
 	};
 };
 
+/**
+ * Given a query state, returns the same query without the attributes related to
+ * pagination and sorting.
+ *
+ * @param {Object} query Query to extract the attributes from.
+ *
+ * @return {Object} Same query without pagination and sorting attributes.
+ */
+
+const extractPaginationAndSortAttributes = ( query ) => {
+	/* eslint-disable-next-line no-unused-vars, camelcase */
+	const { order, orderby, page, per_page, ...totalQuery } = query;
+	return totalQuery;
+};
+
 const ProductList = ( {
 	attributes,
 	currentPage,
@@ -56,39 +75,60 @@ const ProductList = ( {
 	scrollToTop,
 } ) => {
 	const [ queryState ] = useSynchronizedQueryState(
-		generateQuery( { attributes, sortValue, currentPage } )
+		generateQuery( {
+			attributes,
+			sortValue,
+			currentPage,
+		} )
 	);
-	const previousPage = usePrevious( queryState.page );
-	const isInitialized = useRef( false );
+	const results = useStoreProducts( queryState );
+	const { products, productsLoading } = results;
+	const totalProducts = parseInt( results.totalProducts );
+
+	const { layoutStyleClassPrefix } = useProductLayoutContext();
+	const totalQuery = extractPaginationAndSortAttributes( queryState );
+
+	// These are possible filters.
+	const [ productAttributes, setProductAttributes ] = useQueryStateByKey(
+		'attributes',
+		[]
+	);
+	const [ minPrice, setMinPrice ] = useQueryStateByKey( 'min_price' );
+	const [ maxPrice, setMaxPrice ] = useQueryStateByKey( 'max_price' );
+
+	// Only update previous query totals if the query is different and
+	// the total number of products is a finite number.
+	const previousQueryTotals = usePrevious(
+		{ totalQuery, totalProducts },
+		(
+			{ totalQuery: nextQuery, totalProducts: nextProducts },
+			{ totalQuery: currentQuery } = {}
+		) =>
+			! isEqual( nextQuery, currentQuery ) &&
+			Number.isFinite( nextProducts )
+	);
+	const isPreviousTotalQueryEqual =
+		typeof previousQueryTotals === 'object' &&
+		isEqual( totalQuery, previousQueryTotals.totalQuery );
 	useEffect( () => {
-		// if page did not change in the query state then that means something
-		// else changed and we should reset the current page number
-		if ( previousPage === queryState.page && isInitialized.current ) {
+		// If query state (excluding pagination/sorting attributes) changed,
+		// reset pagination to the first page.
+		if ( ! isPreviousTotalQueryEqual ) {
 			onPageChange( 1 );
 		}
 	}, [ queryState ] );
 
-	const { products, totalProducts, productsLoading } = useStoreProducts(
-		queryState
-	);
-	useEffect( () => {
-		if ( ! productsLoading ) {
-			isInitialized.current = true;
-		}
-	}, [ productsLoading ] );
-	const { layoutStyleClassPrefix } = useProductLayoutContext();
 	const onPaginationChange = ( newPage ) => {
 		scrollToTop( { focusableSelector: 'a, button' } );
 		onPageChange( newPage );
 	};
 
 	const getClassnames = () => {
-		const { columns, rows, className, alignButtons, align } = attributes;
+		const { columns, rows, alignButtons, align } = attributes;
 		const alignClass = typeof align !== 'undefined' ? 'align' + align : '';
 
 		return classnames(
 			layoutStyleClassPrefix,
-			className,
 			alignClass,
 			'has-' + columns + '-columns',
 			{
@@ -100,29 +140,49 @@ const ProductList = ( {
 
 	const { contentVisibility } = attributes;
 	const perPage = attributes.columns * attributes.rows;
-	const totalPages = Math.ceil( totalProducts / perPage );
+	const totalPages =
+		! Number.isFinite( totalProducts ) && isPreviousTotalQueryEqual
+			? Math.ceil( previousQueryTotals.totalProducts / perPage )
+			: Math.ceil( totalProducts / perPage );
 	const listProducts = products.length
 		? products
 		: Array.from( { length: perPage } );
+	const hasProducts = products.length !== 0 || productsLoading;
+	const hasFilters =
+		productAttributes.length > 0 ||
+		Number.isFinite( minPrice ) ||
+		Number.isFinite( maxPrice );
 
 	return (
 		<div className={ getClassnames() }>
-			{ contentVisibility.orderBy && (
+			{ contentVisibility.orderBy && hasProducts && (
 				<ProductSortSelect
 					onChange={ onSortChange }
 					value={ sortValue }
 				/>
 			) }
-			<ul className={ `${ layoutStyleClassPrefix }__products` }>
-				{ listProducts.map( ( product = {}, i ) => (
-					<ProductListItem
-						key={ product.id || i }
-						attributes={ attributes }
-						product={ product }
-					/>
-				) ) }
-			</ul>
-			{ totalProducts > perPage && (
+			{ ! hasProducts && hasFilters && (
+				<NoMatchingProducts
+					resetCallback={ () => {
+						setProductAttributes( [] );
+						setMinPrice( null );
+						setMaxPrice( null );
+					} }
+				/>
+			) }
+			{ ! hasProducts && ! hasFilters && <NoProducts /> }
+			{ hasProducts && (
+				<ul className={ `${ layoutStyleClassPrefix }__products` }>
+					{ listProducts.map( ( product = {}, i ) => (
+						<ProductListItem
+							key={ product.id || i }
+							attributes={ attributes }
+							product={ product }
+						/>
+					) ) }
+				</ul>
+			) }
+			{ totalPages > 1 && (
 				<Pagination
 					currentPage={ currentPage }
 					onPageChange={ onPaginationChange }

@@ -7,6 +7,7 @@ import { SCHEMA_STORE_KEY } from '@woocommerce/block-data';
 import { useEffect, useRef } from '@wordpress/element';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { forEach } from 'lodash';
+import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 
 /**
  * Hydrate Rest API data from settings to reduce the number of API requests needed.
@@ -63,9 +64,11 @@ export default ( selector, Block, getProps = () => {} ) => {
 			el.classList.remove( 'is-loading' );
 
 			render(
-				<HydrateRestApiData>
-					<Block { ...props } attributes={ attributes } />
-				</HydrateRestApiData>,
+				<BlockErrorBoundary>
+					<HydrateRestApiData>
+						<Block { ...props } attributes={ attributes } />
+					</HydrateRestApiData>
+				</BlockErrorBoundary>,
 				el
 			);
 		} );

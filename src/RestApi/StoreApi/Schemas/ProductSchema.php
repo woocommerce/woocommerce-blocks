@@ -14,7 +14,7 @@ use Automattic\WooCommerce\Blocks\RestApi\Utilities\ProductImages;
 /**
  * ProductSchema class.
  *
- * @since $VID:$
+ * @since 2.5.0
  */
 class ProductSchema extends AbstractSchema {
 	/**
@@ -333,8 +333,8 @@ class ProductSchema extends AbstractSchema {
 
 			if ( min( $prices['price'] ) !== max( $prices['price'] ) ) {
 				return [
-					'min_amount' => min( $prices['price'] ),
-					'max_amount' => max( $prices['price'] ),
+					'min_amount' => 'incl' === $tax_display_mode ? wc_get_price_including_tax( $product, [ 'price' => min( $prices['price'] ) ] ) : wc_get_price_excluding_tax( $product, [ 'price' => min( $prices['price'] ) ] ),
+					'max_amount' => 'incl' === $tax_display_mode ? wc_get_price_including_tax( $product, [ 'price' => max( $prices['price'] ) ] ) : wc_get_price_excluding_tax( $product, [ 'price' => max( $prices['price'] ) ] ),
 				];
 			}
 		}
