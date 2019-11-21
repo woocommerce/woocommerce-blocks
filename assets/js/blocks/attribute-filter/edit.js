@@ -219,37 +219,43 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 		);
 	}, [] );
 
-	const onChange = useCallback( ( selected ) => {
-		if ( ! selected || ! selected[ 0 ] ) {
+	const onChange = useCallback(
+		( selected ) => {
+			if ( ! selected || ! selected[ 0 ] ) {
+				setAttributes( {
+					attributeId: 0,
+					heading: __(
+						'Filter by attribute',
+						'woo-gutenberg-products-block'
+					),
+				} );
+
+				return;
+			}
+
+			const selectedId = selected[ 0 ].id;
+			const productAttribute = find( ATTRIBUTES, [
+				'attribute_id',
+				selectedId.toString(),
+			] );
+
+			if ( ! productAttribute || attributeId === selectedId ) {
+				return;
+			}
+
+			const attributeName = productAttribute.attribute_name;
+
 			setAttributes( {
-				attributeId: 0,
-				heading: __( 'Filter by attribute', 'woo-gutenberg-products-block' )
+				attributeId: selectedId,
+				heading: sprintf(
+					// Translators: %s attribute name.
+					__( 'Filter by %s', 'woo-gutenberg-products-block' ),
+					attributeName
+				),
 			} );
-
-			return;
-		}
-
-		const selectedId = selected[ 0 ].id;
-		const productAttribute = find( ATTRIBUTES, [
-			'attribute_id',
-			selectedId.toString(),
-		] );
-
-		if ( ! productAttribute || attributeId === selectedId ) {
-			return;
-		}
-
-		const attributeName = productAttribute.attribute_name;
-
-		setAttributes( {
-			attributeId: selectedId,
-			heading: sprintf(
-				// Translators: %s attribute name.
-				__( 'Filter by %s', 'woo-gutenberg-products-block' ),
-				attributeName
-			),
-		} );
-	}, [ attributeId ] );
+		},
+		[ attributeId ]
+	);
 
 	const renderAttributeControl = () => {
 		const messages = {
@@ -322,7 +328,11 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 			>
 				<div className="wc-block-attribute-filter__selection">
 					{ renderAttributeControl() }
-					<Button isDefault disabled={ attributeId === 0 } onClick={ onDone }>
+					<Button
+						isDefault
+						disabled={ attributeId === 0 }
+						onClick={ onDone }
+					>
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }
 					</Button>
 				</div>
