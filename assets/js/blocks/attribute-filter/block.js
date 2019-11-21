@@ -108,12 +108,10 @@ const AttributeFilterBlock = ( {
 		isLoading: filteredCountsLoading,
 	} = useCollectionData(
 		{
-			calculate_attribute_counts: [
-				{
-					taxonomy: attributeObject.taxonomy,
-					query_type: blockAttributes.queryType,
-				},
-			],
+			attribute: {
+				taxonomy: attributeObject.taxonomy,
+				queryType: blockAttributes.queryType,
+			},
 		},
 		queryState
 	);

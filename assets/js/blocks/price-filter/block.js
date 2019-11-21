@@ -26,7 +26,7 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 	const [ queryState ] = useQueryStateByContext();
 	const { results, isLoading } = useCollectionData(
 		{
-			calculate_price_range: true,
+			priceRange: true,
 		},
 		queryState
 	);
