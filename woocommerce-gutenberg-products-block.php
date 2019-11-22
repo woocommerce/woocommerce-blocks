@@ -120,6 +120,7 @@ add_action( 'plugins_loaded', array( '\Automattic\WooCommerce\Blocks\Package', '
  * @param string|false      $file         Path to the translation file to load. False if there isn't one.
  * @param string            $handle       Name of the script to register a translation domain to.
  * @param string            $domain       The text domain.
+ * @return string JSON translations.
  */
 function woocommerce_blocks_get_i18n_data_json( $translations, $file, $handle, $domain ) {
 	if ( 'woo-gutenberg-products-block' !== $domain ) {
