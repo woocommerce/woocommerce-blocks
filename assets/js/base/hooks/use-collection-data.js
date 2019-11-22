@@ -9,7 +9,7 @@ import {
 } from '@woocommerce/base-hooks';
 import { useCollectionDataContext } from '@woocommerce/base-context/collection-data-context';
 import { useDebounce } from 'use-debounce';
-import { find, sortBy } from 'lodash';
+import { sortBy } from 'lodash';
 
 /**
  * Internal dependencies
@@ -53,15 +53,17 @@ export const useCollectionData = ( {
 	const [
 		calculatePriceRangeQueryState,
 		setCalculatePriceRangeQueryState,
-	] = useQueryStateByKey( 'calculate_price_range', false, context );
+	] = useQueryStateByKey( 'calculate_price_range', null, context );
 
 	const currentQueryAttribute = useShallowEqual( queryAttribute || {} );
 	const currentQueryPrices = useShallowEqual( queryPrices );
 
 	useEffect( () => {
-		if ( typeof currentQueryAttribute === 'object' && Object.keys( currentQueryAttribute ).length ) {
-			const foundAttribute = find(
-				calculateAttributesQueryState,
+		if (
+			typeof currentQueryAttribute === 'object' &&
+			Object.keys( currentQueryAttribute ).length
+		) {
+			const foundAttribute = calculateAttributesQueryState.find(
 				( attribute ) => {
 					return (
 						attribute.taxonomy === currentQueryAttribute.taxonomy
@@ -70,12 +72,17 @@ export const useCollectionData = ( {
 			);
 
 			if ( ! foundAttribute ) {
-				const setState = calculateAttributesQueryState;
-				setState.push( currentQueryAttribute );
-				setCalculateAttributesQueryState( setState );
+				setCalculateAttributesQueryState( [
+					...calculateAttributesQueryState,
+					currentQueryAttribute,
+				] );
 			}
 		}
-	}, [ currentQueryAttribute ] );
+	}, [
+		currentQueryAttribute,
+		calculateAttributesQueryState,
+		setCalculateAttributesQueryState,
+	] );
 
 	useEffect( () => {
 		if (
@@ -84,7 +91,11 @@ export const useCollectionData = ( {
 		) {
 			setCalculatePriceRangeQueryState( currentQueryPrices );
 		}
-	}, [ currentQueryPrices ] );
+	}, [
+		currentQueryPrices,
+		setCalculatePriceRangeQueryState,
+		calculatePriceRangeQueryState,
+	] );
 
 	// Defer the select query so all collection-data query vars can be gathered.
 	const [ shouldSelect, setShouldSelect ] = useState( false );
