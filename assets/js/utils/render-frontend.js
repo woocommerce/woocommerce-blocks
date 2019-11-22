@@ -6,7 +6,6 @@ import { getSetting } from '@woocommerce/settings';
 import { SCHEMA_STORE_KEY } from '@woocommerce/block-data';
 import { useRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
-import { forEach } from 'lodash';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 
 /**
@@ -18,6 +17,10 @@ const HydrateRestApiData = ( { children } ) => {
 	const restApiRoutes = useRef( getSetting( 'restApiRoutes' ) );
 
 	useSelect( ( select, registry ) => {
+		if ( ! restApiRoutes.current ) {
+			return;
+		}
+
 		const { isResolving, hasFinishedResolution } = select(
 			SCHEMA_STORE_KEY
 		);
@@ -26,10 +29,9 @@ const HydrateRestApiData = ( { children } ) => {
 			startResolution,
 			finishResolution,
 		} = registry.dispatch( SCHEMA_STORE_KEY );
-		if ( ! restApiRoutes.current ) {
-			return;
-		}
-		forEach( restApiRoutes.current, ( routes, namespace ) => {
+
+		Object.keys( restApiRoutes.current ).forEach( ( namespace ) => {
+			const routes = restApiRoutes.current[ namespace ];
 			if (
 				! isResolving( 'getRoutes', [ namespace ] ) &&
 				! hasFinishedResolution( 'getRoutes', [ namespace ] )
@@ -56,7 +58,8 @@ export default ( selector, Block, getProps = () => {} ) => {
 	const containers = document.querySelectorAll( selector );
 
 	if ( containers.length ) {
-		forEach( containers, ( el, i ) => {
+		// Use Array.forEach for IE11 compatibility.
+		Array.prototype.forEach.call( containers, ( el, i ) => {
 			const props = getProps( el, i );
 			const attributes = {
 				...el.dataset,
