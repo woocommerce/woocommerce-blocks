@@ -59,7 +59,7 @@ export const useCollectionData = ( {
 	const currentQueryPrices = useShallowEqual( queryPrices );
 
 	useEffect( () => {
-		if ( currentQueryAttribute ) {
+		if ( typeof currentQueryAttribute === 'object' && Object.keys( currentQueryAttribute ).length ) {
 			const foundAttribute = find(
 				calculateAttributesQueryState,
 				( attribute ) => {
