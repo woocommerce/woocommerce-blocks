@@ -38,6 +38,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 		isPreview,
 		queryType,
 		showCounts,
+		displayStyle,
 	} = attributes;
 
 	const [ isEditing, setIsEditing ] = useState(
@@ -148,6 +149,34 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 						onChange={ ( value ) =>
 							setAttributes( {
 								queryType: value,
+							} )
+						}
+					/>
+					<ToggleButtonControl
+						label={ __(
+							'Display Style',
+							'woo-gutenberg-products-block'
+						) }
+						value={ displayStyle }
+						options={ [
+							{
+								label: __(
+									'List',
+									'woo-gutenberg-products-block'
+								),
+								value: 'list',
+							},
+							{
+								label: __(
+									'Dropdown',
+									'woo-gutenberg-products-block'
+								),
+								value: 'dropdown',
+							},
+						] }
+						onChange={ ( value ) =>
+							setAttributes( {
+								displayStyle: value,
 							} )
 						}
 					/>
