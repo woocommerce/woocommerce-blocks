@@ -96,7 +96,7 @@ export const useCollectionData = ( {
 
 	const collectionDataQueryVars = useMemo( () => {
 		return buildCollectionDataQuery( collectionDataQueryState );
-	}, [ collectionDataQueryState, buildCollectionDataQuery ] );
+	}, [ collectionDataQueryState ] );
 
 	return useCollection( {
 		namespace: '/wc/store',
