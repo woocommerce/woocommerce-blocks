@@ -156,7 +156,6 @@ class Assets {
 		wp_register_script( $handle, $src, $dependencies, $ver, true );
 		if ( $has_i18n && function_exists( 'wp_set_script_translations' ) ) {
 			wp_set_script_translations( $handle, 'woo-gutenberg-products-block', dirname( __DIR__ ) . '/languages' );
-			do_action( 'woocommerce_blocks_register_script', $handle, $relative_src );
 		}
 	}
 
