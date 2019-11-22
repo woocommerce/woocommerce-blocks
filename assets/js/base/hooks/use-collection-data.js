@@ -7,7 +7,7 @@ import {
 	useQueryStateByKey,
 	useCollection,
 } from '@woocommerce/base-hooks';
-import { useCollectionDataContext } from '@woocommerce/base-context/collection-data-context';
+import { useQueryStateContext } from '@woocommerce/base-context/query-state-context';
 import { useDebounce } from 'use-debounce';
 import { sortBy } from 'lodash';
 
@@ -40,10 +40,9 @@ export const useCollectionData = ( {
 	queryAttribute,
 	queryPrices,
 	queryState,
-	context,
 } ) => {
-	const collectionDataContext = useCollectionDataContext();
-	context = context || collectionDataContext;
+	let context = useQueryStateContext();
+	context = `${ context }-collection-data`;
 
 	const [ collectionDataQueryState ] = useQueryStateByContext( context );
 	const [
