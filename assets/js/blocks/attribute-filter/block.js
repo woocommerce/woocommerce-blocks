@@ -15,7 +15,6 @@ import {
 	useMemo,
 } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
-import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 
 /**
  * Internal dependencies
@@ -223,7 +222,7 @@ const AttributeFilterBlock = ( {
 	const TagName = `h${ blockAttributes.headingLevel }`;
 
 	return (
-		<BlockErrorBoundary>
+		<Fragment>
 			{ ! isEditor && blockAttributes.heading && (
 				<TagName>{ blockAttributes.heading }</TagName>
 			) }
@@ -241,7 +240,7 @@ const AttributeFilterBlock = ( {
 					}
 				/>
 			</div>
-		</BlockErrorBoundary>
+		</Fragment>
 	);
 };
 

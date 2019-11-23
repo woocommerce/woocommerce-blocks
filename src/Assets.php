@@ -119,6 +119,9 @@ class Assets {
 				'productCount'       => array_sum( (array) $product_counts ),
 				'attributes'         => array_values( wc_get_attribute_taxonomies() ),
 				'wcBlocksAssetUrl'   => plugins_url( 'assets/', __DIR__ ),
+				'restApiRoutes'      => [
+					'/wc/store' => array_keys( \Automattic\WooCommerce\Blocks\RestApi::get_routes_from_namespace( 'wc/store' ) ),
+				],
 			]
 		);
 	}
@@ -147,9 +150,9 @@ class Assets {
 	 * @param bool   $has_i18n  Optional. Whether to add a script translation call to this file. Default 'true'.
 	 */
 	protected static function register_script( $handle, $src, $deps = [], $has_i18n = true ) {
-		$filename     = str_replace( plugins_url( '/', __DIR__ ), '', $src );
-		$ver          = self::get_file_version( $filename );
-		$deps_path    = dirname( __DIR__ ) . '/' . str_replace( '.js', '.deps.json', $filename );
+		$relative_src = str_replace( plugins_url( '/', __DIR__ ), '', $src );
+		$ver          = self::get_file_version( $relative_src );
+		$deps_path    = dirname( __DIR__ ) . '/' . str_replace( '.js', '.deps.json', $relative_src );
 		$dependencies = file_exists( $deps_path ) ? json_decode( file_get_contents( $deps_path ) ) : []; // phpcs:ignore WordPress.WP.AlternativeFunctions
 		$dependencies = array_merge( $dependencies, $deps );
 

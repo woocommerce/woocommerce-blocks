@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { render } from 'react-dom';
+import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 
 /**
  * Renders a block component in the place of a specified set of selectors.
@@ -15,7 +16,7 @@ export default ( selector, Block, getProps = () => {} ) => {
 	const containers = document.querySelectorAll( selector );
 
 	if ( containers.length ) {
-		// Use Array.forEach for IE11 compatibility
+		// Use Array.forEach for IE11 compatibility.
 		Array.prototype.forEach.call( containers, ( el, i ) => {
 			const props = getProps( el, i );
 			const attributes = {
@@ -25,7 +26,12 @@ export default ( selector, Block, getProps = () => {} ) => {
 
 			el.classList.remove( 'is-loading' );
 
-			render( <Block { ...props } attributes={ attributes } />, el );
+			render(
+				<BlockErrorBoundary>
+					<Block { ...props } attributes={ attributes } />
+				</BlockErrorBoundary>,
+				el
+			);
 		} );
 	}
 };

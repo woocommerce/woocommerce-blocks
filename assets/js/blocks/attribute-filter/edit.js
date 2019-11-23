@@ -3,11 +3,7 @@
  */
 import { __, sprintf, _n } from '@wordpress/i18n';
 import { Fragment, useState, useCallback } from '@wordpress/element';
-import {
-	InspectorControls,
-	BlockControls,
-	PlainText,
-} from '@wordpress/block-editor';
+import { InspectorControls, BlockControls } from '@wordpress/block-editor';
 import {
 	Placeholder,
 	Disabled,
@@ -23,6 +19,7 @@ import { mapValues, toArray, sortBy, find } from 'lodash';
 import { ATTRIBUTES } from '@woocommerce/block-settings';
 import { getAdminLink } from '@woocommerce/navigation';
 import HeadingToolbar from '@woocommerce/block-components/heading-toolbar';
+import BlockTitle from '@woocommerce/block-components/block-title';
 
 /**
  * Internal dependencies
@@ -33,8 +30,18 @@ import { IconExternal } from '../../components/icons';
 import ToggleButtonControl from '../../components/toggle-button-control';
 
 const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
+	const {
+		attributeId,
+		className,
+		heading,
+		headingLevel,
+		isPreview,
+		queryType,
+		showCounts,
+	} = attributes;
+
 	const [ isEditing, setIsEditing ] = useState(
-		! attributes.attributeId && ! attributes.isPreview
+		! attributeId && ! isPreview
 	);
 
 	const getBlockControls = () => {
@@ -55,8 +62,6 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 	};
 
 	const getInspectorControls = () => {
-		const { showCounts, queryType } = attributes;
-
 		return (
 			<InspectorControls key="inspector">
 				<PanelBody
@@ -95,7 +100,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 						isCollapsed={ false }
 						minLevel={ 2 }
 						maxLevel={ 7 }
-						selectedLevel={ attributes.headingLevel }
+						selectedLevel={ headingLevel }
 						onChange={ ( newLevel ) =>
 							setAttributes( { headingLevel: newLevel } )
 						}
@@ -218,7 +223,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 			selectedId.toString(),
 		] );
 
-		if ( ! productAttribute || attributes.attributeId === selectedId ) {
+		if ( ! productAttribute || attributeId === selectedId ) {
 			return;
 		}
 
@@ -235,8 +240,6 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 	}, [] );
 
 	const renderAttributeControl = () => {
-		const { attributeId } = attributes;
-
 		const messages = {
 			clear: __(
 				'Clear selected attribute',
@@ -315,8 +318,6 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 		);
 	};
 
-	const TagName = `h${ attributes.headingLevel }`;
-
 	return Object.keys( ATTRIBUTES ).length === 0 ? (
 		noAttributesPlaceholder()
 	) : (
@@ -326,20 +327,18 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 			{ isEditing ? (
 				renderEditMode()
 			) : (
-				<Fragment>
-					<TagName>
-						<PlainText
-							className="wc-block-attribute-filter-heading"
-							value={ attributes.heading }
-							onChange={ ( value ) =>
-								setAttributes( { heading: value } )
-							}
-						/>
-					</TagName>
+				<div className={ className }>
+					<BlockTitle
+						headingLevel={ headingLevel }
+						heading={ heading }
+						onChange={ ( value ) =>
+							setAttributes( { heading: value } )
+						}
+					/>
 					<Disabled>
 						<Block attributes={ attributes } isEditor />
 					</Disabled>
-				</Fragment>
+				</div>
 			) }
 		</Fragment>
 	);
