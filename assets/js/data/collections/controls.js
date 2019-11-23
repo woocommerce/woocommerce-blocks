@@ -26,7 +26,7 @@ export const apiFetchWithHeaders = ( path ) => {
  */
 export const controls = {
 	API_FETCH_WITH_HEADERS( { path } ) {
-		return new Promise( ( resolve, reject ) => {
+		return new Promise( ( resolve ) => {
 			triggerFetch( { path, parse: false } )
 				.then( ( response ) => {
 					response.json().then( ( items ) => {
@@ -34,7 +34,7 @@ export const controls = {
 					} );
 				} )
 				.catch( ( error ) => {
-					reject( error );
+					throw error;
 				} );
 		} );
 	},
