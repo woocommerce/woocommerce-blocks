@@ -70,6 +70,11 @@ export const useCollection = ( options ) => {
 				currentQuery,
 				currentResourceValues,
 			];
+			// is there an error? if so throw!
+			const error = store.getCollectionError( ...args );
+			if ( error ) {
+				throw error;
+			}
 			return {
 				results: store.getCollection( ...args ),
 				isLoading: ! store.hasFinishedResolution(

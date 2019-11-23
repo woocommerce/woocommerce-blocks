@@ -42,6 +42,13 @@ const receiveCollection = ( state = {}, action ) => {
 				response
 			);
 			break;
+		case 'ERROR':
+			state = updateState(
+				state,
+				[ namespace, resourceName, ids, queryString ],
+				response
+			);
+			break;
 	}
 	return state;
 };

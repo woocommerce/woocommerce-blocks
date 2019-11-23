@@ -7,7 +7,11 @@ import { addQueryArgs } from '@wordpress/url';
 /**
  * Internal dependencies
  */
-import { receiveCollection, DEFAULT_EMPTY_ARRAY } from './actions';
+import {
+	receiveCollection,
+	receiveCollectionError,
+	DEFAULT_EMPTY_ARRAY,
+} from './actions';
 import { STORE_KEY as SCHEMA_STORE_KEY } from '../schema/constants';
 import { STORE_KEY } from './constants';
 import { apiFetchWithHeaders } from './controls';
@@ -33,13 +37,25 @@ export function* getCollection( namespace, resourceName, query, ids ) {
 		yield receiveCollection( namespace, resourceName, queryString, ids );
 		return;
 	}
-	const { items = DEFAULT_EMPTY_ARRAY, headers } = yield apiFetchWithHeaders(
-		route + queryString
-	);
-	yield receiveCollection( namespace, resourceName, queryString, ids, {
-		items,
-		headers,
-	} );
+	try {
+		const {
+			items = DEFAULT_EMPTY_ARRAY,
+			headers,
+		} = yield apiFetchWithHeaders( route + queryString );
+		yield receiveCollection( namespace, resourceName, queryString, ids, {
+			items,
+			headers,
+			errors: null,
+		} );
+	} catch ( e ) {
+		yield receiveCollectionError(
+			namespace,
+			resourceName,
+			queryString,
+			ids,
+			e
+		);
+	}
 }
 /**
  * Resolver for retrieving a specific collection header for the given arguments
