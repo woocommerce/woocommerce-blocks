@@ -112,7 +112,10 @@ const ProductButton = ( { product, className } ) => {
 	// https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1247
 	useEffect( () => {
 		// eslint-disable-next-line no-undef
-		const event = new Event( "wc_fragment_refresh", { "bubbles":true, "cancelable":true } );
+		const event = new Event( 'wc_fragment_refresh', {
+			bubbles: true,
+			cancelable: true,
+		} );
 		document.body.dispatchEvent( event );
 	}, [ addedToCart ] );
 	const wrapperClasses = classnames(
