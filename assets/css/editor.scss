@@ -39,3 +39,10 @@
 		}
 	}
 }
+
+// Ensure textarea bg color is transparent for block titles.
+// Some themes (e.g. Twenty Twenty) set bg white for textarea, which breaks editor theme styles.
+// https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1204
+textarea.wc-block-component-title {
+	background-color: transparent;
+}
