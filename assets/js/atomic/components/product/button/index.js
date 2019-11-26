@@ -114,7 +114,7 @@ const ProductButton = ( { product, className } ) => {
 		const event = document.createEvent( 'Event' );
 		event.initEvent( 'wc_fragment_refresh', true, true );
 		document.body.dispatchEvent( event );
-	}, [ addedToCart ] )
+	}, [ addedToCart ] );
 	const wrapperClasses = classnames(
 		className,
 		`${ layoutStyleClassPrefix }__product-add-to-cart`,
