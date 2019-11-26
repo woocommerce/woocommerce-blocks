@@ -106,6 +106,15 @@ const ProductButton = ( { product, className } ) => {
 		}
 		return productCartDetails.text;
 	};
+
+	// This is a hack to trigger cart updates till we migrate to block based card
+	// that relies on the store, see
+	// https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1247
+	useEffect( () => {
+		const event = document.createEvent( 'Event' );
+		event.initEvent( 'wc_fragment_refresh', true, true );
+		document.body.dispatchEvent( event );
+	}, [ addedToCart ] )
 	const wrapperClasses = classnames(
 		className,
 		`${ layoutStyleClassPrefix }__product-add-to-cart`,
