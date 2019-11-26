@@ -20,6 +20,14 @@
 		padding: 0.1em 0.2em;
 		min-width: 1.6em;
 	}
+
+	// Twenty Twenty register a background color for buttons that is too specific
+	// and broad at the same time `button:not(.toggle)` so We’re Engaging in a
+	// specify war with them here.
+	// https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1203
+	&:not(.toggle) {
+		background-color: transparent;
+	}
 }
 
 .wc-block-pagination-ellipsis {
