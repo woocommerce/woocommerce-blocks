@@ -117,7 +117,7 @@ const ProductButton = ( { product, className } ) => {
 			cancelable: true,
 		} );
 		document.body.dispatchEvent( event );
-	}, [ addedToCart ] );
+	}, [ cartQuantity ] );
 	const wrapperClasses = classnames(
 		className,
 		`${ layoutStyleClassPrefix }__product-add-to-cart`,
