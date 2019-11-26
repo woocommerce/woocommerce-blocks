@@ -97,6 +97,7 @@ const ProductButton = ( { product, className } ) => {
 	} = useAddToCart( id );
 	const { layoutStyleClassPrefix } = useProductLayoutContext();
 	const addedToCart = cartQuantity > 0;
+	const firstMount = useRef( true );
 	const getButtonText = () => {
 		if ( Number.isFinite( cartQuantity ) && addedToCart ) {
 			return sprintf(
@@ -111,6 +112,10 @@ const ProductButton = ( { product, className } ) => {
 	// that relies on the store, see
 	// https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1247
 	useEffect( () => {
+		if ( firstMount.current ) {
+			firstMount.current = false;
+			return;
+		}
 		// eslint-disable-next-line no-undef
 		const event = new Event( 'wc_fragment_refresh', {
 			bubbles: true,
@@ -118,6 +123,7 @@ const ProductButton = ( { product, className } ) => {
 		} );
 		document.body.dispatchEvent( event );
 	}, [ cartQuantity ] );
+
 	const wrapperClasses = classnames(
 		className,
 		`${ layoutStyleClassPrefix }__product-add-to-cart`,
