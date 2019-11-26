@@ -111,8 +111,8 @@ const ProductButton = ( { product, className } ) => {
 	// that relies on the store, see
 	// https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1247
 	useEffect( () => {
-		const event = document.createEvent( 'Event' );
-		event.initEvent( 'wc_fragment_refresh', true, true );
+		// eslint-disable-next-line no-undef
+		const event = new Event( "wc_fragment_refresh", { "bubbles":true, "cancelable":true } );
 		document.body.dispatchEvent( event );
 	}, [ addedToCart ] );
 	const wrapperClasses = classnames(
