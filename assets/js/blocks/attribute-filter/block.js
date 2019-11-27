@@ -285,6 +285,7 @@ const AttributeFilterBlock = ( {
 					/>
 				) : (
 					<DropdownSelector
+						attributeLabel={ attributeObject.label }
 						checked={ checked }
 						className={ 'wc-block-attribute-filter-dropdown' }
 						inputLabel={ blockAttributes.heading }

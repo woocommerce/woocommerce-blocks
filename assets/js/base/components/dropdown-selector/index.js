@@ -40,6 +40,7 @@ const stateReducer = ( state, changes ) => {
  * Component used to show a list of checkboxes in a group.
  */
 const CheckboxList = ( {
+	attributeLabel = '',
 	className,
 	checked = [],
 	inputLabel = '',
@@ -138,7 +139,7 @@ const CheckboxList = ( {
 														'Any %s',
 														'woo-gutenberg-products-block'
 													),
-													'' //@todo attributeName
+													attributeLabel
 											  )
 											: null,
 								} ) }
@@ -203,6 +204,7 @@ const CheckboxList = ( {
 };
 
 CheckboxList.propTypes = {
+	attributeLabel: PropTypes.string,
 	checked: PropTypes.array,
 	className: PropTypes.string,
 	inputLabel: PropTypes.string,
