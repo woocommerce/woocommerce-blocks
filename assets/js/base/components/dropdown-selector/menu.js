@@ -28,7 +28,8 @@ const DropdownSelectorMenu = ( {
 								'wc-block-dropdown-selector__list-item',
 								{
 									'is-selected': selected,
-									'is-focused': highlightedIndex === index,
+									'is-highlighted':
+										highlightedIndex === index,
 								}
 							),
 							index,

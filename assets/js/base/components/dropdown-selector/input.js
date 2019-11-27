@@ -7,12 +7,12 @@ const DropdownSelectorInput = ( {
 	attributeLabel,
 	checked,
 	getInputProps,
-	label,
 	inputRef,
-	value,
 	isDisabled,
+	label,
 	onFocus,
 	onRemoveItem,
+	value,
 } ) => {
 	return (
 		<input
@@ -20,7 +20,7 @@ const DropdownSelectorInput = ( {
 				ref: inputRef,
 				className: 'wc-block-dropdown-selector__input',
 				disabled: isDisabled,
-				'aria-label': label,
+				onFocus,
 				onKeyDown( event ) {
 					if (
 						event.key === 'Backspace' &&
@@ -30,7 +30,6 @@ const DropdownSelectorInput = ( {
 						onRemoveItem( checked[ checked.length - 1 ] );
 					}
 				},
-				onFocus,
 				placeholder:
 					checked.length === 0
 						? sprintf(
@@ -39,6 +38,7 @@ const DropdownSelectorInput = ( {
 								attributeLabel
 						  )
 						: null,
+				'aria-label': label,
 			} ) }
 		/>
 	);

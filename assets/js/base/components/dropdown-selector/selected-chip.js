@@ -3,20 +3,20 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 
-const DropdownSelectorSelectedChip = ( { label, name, onClick, value } ) => {
+const DropdownSelectorSelectedChip = ( { onClick, option } ) => {
 	return (
 		<button
 			className="wc-block-dropdown-selector__selected-chip"
 			onClick={ ( e ) => {
 				e.stopPropagation();
-				onClick( value );
+				onClick( option.value );
 			} }
 			aria-label={ sprintf(
 				__( 'Remove %s filter', 'woo-gutenberg-products-block' ),
-				name
+				option.name
 			) }
 		>
-			{ label }
+			{ option.label }
 			<span className="wc-block-dropdown-selector__selected-chip__remove">
 				𝘅
 			</span>

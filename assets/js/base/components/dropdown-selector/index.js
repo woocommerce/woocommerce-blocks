@@ -29,6 +29,7 @@ const stateReducer = ( state, changes ) => {
 				isOpen: true,
 				inputValue: '',
 			};
+		case Downshift.stateChangeTypes.blurInput:
 		case Downshift.stateChangeTypes.mouseUp:
 			return {
 				...changes,
@@ -76,6 +77,8 @@ const DropdownSelector = ( {
 			} ) => (
 				<div className={ classes }>
 					<DropdownSelectorInputWrapper
+						isOpen={ isOpen }
+						inputRef={ inputRef }
 						onClick={
 							isOpen
 								? null
@@ -83,20 +86,16 @@ const DropdownSelector = ( {
 										inputRef.current.focus();
 								  }
 						}
-						isOpen={ isOpen }
-						inputRef={ inputRef }
 					>
 						{ checked.map( ( value ) => {
-							const { label, name } = options.find(
-								( option ) => option.value === value
+							const option = options.find(
+								( o ) => o.value === value
 							);
 							return (
 								<DropdownSelectorSelectedChip
 									key={ value }
-									label={ label }
-									name={ name }
 									onClick={ onChange }
-									value={ value }
+									option={ option }
 								/>
 							);
 						} ) }
@@ -107,8 +106,8 @@ const DropdownSelector = ( {
 							inputRef={ inputRef }
 							isDisabled={ isDisabled }
 							label={ inputLabel }
-							onRemoveItem={ onChange }
 							onFocus={ openMenu }
+							onRemoveItem={ onChange }
 							value={ inputValue }
 						/>
 					</DropdownSelectorInputWrapper>
