@@ -32,7 +32,7 @@ const baseConfig = {
 	watchOptions: {
 		ignored: /node_modules/,
 	},
-	devtool: NODE_ENV === 'production' ? false : 'source-map',
+	devtool: NODE_ENV === 'development' ? 'source-map' : false,
 };
 
 const CoreConfig = {
