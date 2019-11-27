@@ -33,12 +33,12 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 	const {
 		attributeId,
 		className,
+		displayStyle,
 		heading,
 		headingLevel,
 		isPreview,
 		queryType,
 		showCounts,
-		displayStyle,
 	} = attributes;
 
 	const [ isEditing, setIsEditing ] = useState(

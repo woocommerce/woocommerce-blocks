@@ -154,8 +154,8 @@ CheckboxList.propTypes = {
 	onChange: PropTypes.func,
 	options: PropTypes.arrayOf(
 		PropTypes.shape( {
-			value: PropTypes.string.isRequired,
 			label: PropTypes.node.isRequired,
+			value: PropTypes.string.isRequired,
 		} )
 	),
 	checked: PropTypes.array,
