@@ -1,4 +1,6 @@
 .wc-block-attribute-filter {
+	margin-bottom: $gap-large;
+
 	.wc-block-attribute-filter-list-count::before {
 		content: " (";
 	}
@@ -7,7 +9,7 @@
 	}
 
 	.wc-block-attribute-filter-list {
-		margin: 0 0 $gap;
+		margin: 0;
 
 		li {
 			text-decoration: underline;
