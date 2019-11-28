@@ -80,11 +80,20 @@ const updateWindowHistory = ( values, queryStateContext ) => {
 };
 
 /**
- * A custom hook that tbc
+ * A custom hook that handles exposes current query string values from the
+ * url and a function for updating browser window history (if it's available
+ * in the given environment).
  *
- * @param {} [] tbc
+ * This hook also registers event handlers for acting on forward and back
+ * actions on the url.
  *
- * @return {} tbc
+ * @param {Object} urlKeys An object where the keys are the whitelisted query
+ *                         string keys to extract/update and the values are the
+ *                         default value to use if not found in the url.
+ *
+ * @return {Array} An array where the first item is the current urlState and the
+ *                 second item is a function for updating the window history with
+ *                 a new state.
  */
 export const useUrlQueryString = ( urlKeys ) => {
 	const queryStateContext = useQueryStateContext();
