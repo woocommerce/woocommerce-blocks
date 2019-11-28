@@ -9,31 +9,29 @@ import { useUrlQueryString } from '@woocommerce/base-hooks';
  */
 import ProductList from './index';
 
-function ProductListContainer ( props ) {
+function ProductListContainer( props ) {
+	// Initialise the query string state from props.
+	const { attributes } = props;
+	const [ urlState, updateUrlHistory ] = useUrlQueryString( [
+		'product_page',
+		'product_sort',
+	] );
 	const onPageChange = ( newPage ) => {
-		updateUrlAttributes( {
+		updateUrlHistory( {
 			product_page: newPage,
 		} );
 	};
 
 	const onSortChange = ( event ) => {
 		const newSortValue = event.target.value;
-		updateUrlAttributes( {
+		updateUrlHistory( {
 			product_sort: newSortValue,
 		} );
 	};
 
-	// Initialise the query string state from props.
-	// eslint-disable-next-line camelcase
-	const { attributes, product_page } = props;
-	const [ urlAttributes, updateUrlAttributes ] = useUrlQueryString( {
-		product_page,
-		product_sort: attributes.orderby,
-	} );
-
 	// Use query string props for component render.
-	const sortValue = urlAttributes.product_sort; // eslint-disable-line camelcase
-	const currentPage = parseInt( urlAttributes.product_page );
+	const sortValue = urlState.product_sort;
+	const currentPage = parseInt( urlState.product_page );
 
 	return (
 		<ProductList
@@ -45,7 +43,6 @@ function ProductListContainer ( props ) {
 		/>
 	);
 }
-
 
 ProductListContainer.propTypes = {
 	attributes: PropTypes.object.isRequired,
