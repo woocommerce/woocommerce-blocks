@@ -1,59 +1,57 @@
 /**
  * External dependencies
  */
-import { Component } from 'react';
 import PropTypes from 'prop-types';
-import withQueryStringValues from '@woocommerce/base-hocs/with-query-string-values';
+import { useUrlQueryString } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
  */
 import ProductList from './index';
 
-class ProductListContainer extends Component {
-	onPageChange = ( newPage ) => {
-		this.props.updateQueryStringValues( {
+function ProductListContainer ( props ) {
+	const onPageChange = ( newPage ) => {
+		updateUrlAttributes( {
 			product_page: newPage,
 		} );
 	};
 
-	onSortChange = ( event ) => {
+	const onSortChange = ( event ) => {
 		const newSortValue = event.target.value;
-		this.props.updateQueryStringValues( {
+		updateUrlAttributes( {
 			product_sort: newSortValue,
-			product_page: 1,
 		} );
 	};
 
-	render() {
-		// eslint-disable-next-line camelcase
-		const { attributes, product_page, product_sort } = this.props;
-		const currentPage = parseInt( product_page );
-		const sortValue = product_sort || attributes.orderby; // eslint-disable-line camelcase
+	// eslint-disable-next-line camelcase
+	const { attributes, product_page, product_sort } = props;
+	const sortValue = product_sort || attributes.orderby; // eslint-disable-line camelcase
 
-		return (
-			<ProductList
-				attributes={ attributes }
-				currentPage={ currentPage }
-				onPageChange={ this.onPageChange }
-				onSortChange={ this.onSortChange }
-				sortValue={ sortValue }
-			/>
-		);
-	}
+	const [ urlAttributes, updateUrlAttributes ] = useUrlQueryString( {
+		product_page,
+		product_sort: sortValue,
+	} )
+
+	const currentPage = parseInt( urlAttributes.product_page );
+
+	return (
+		<ProductList
+			attributes={ attributes }
+			currentPage={ currentPage }
+			onPageChange={ onPageChange }
+			onSortChange={ onSortChange }
+			sortValue={ sortValue }
+		/>
+	);
 }
+
 
 ProductListContainer.propTypes = {
 	attributes: PropTypes.object.isRequired,
-	// From withQueryStringValues
-	product_page: PropTypes.oneOfType( [ PropTypes.number, PropTypes.string ] ),
-	product_sort: PropTypes.string,
 };
 
 ProductListContainer.defaultProps = {
 	product_page: 1,
 };
 
-export default withQueryStringValues( [ 'product_page', 'product_sort' ] )(
-	ProductListContainer
-);
+export default ProductListContainer;
