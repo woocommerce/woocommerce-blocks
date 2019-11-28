@@ -21,16 +21,6 @@ const hasWindowDependencies =
  * @return {} tbc
  */
 export const useUrlQueryString = ( values ) => {
-	const [ state, setState ] = useState( values );
-	const updateState = partialUpdate => {
-		setState( prevState => {
-			return {
-				...prevState,
-				...partialUpdate
-			}
-		} );
-	}
-
 	// Suffix all props with an instance "id", to support multiple components with independent url params.
 	// Coming soon.
 	const uniqueSuffix = '';//instances++ > 0 ? `_${ instances }` : '';
@@ -49,6 +39,19 @@ export const useUrlQueryString = ( values ) => {
 
 		return urlState;
 	};
+
+	const [ state, setState ] = useState( {
+		...values,
+		...getStateFromUrl()
+	} );
+	const updateState = partialUpdate => {
+		setState( prevState => {
+			return {
+				...prevState,
+				...partialUpdate
+			}
+		} );
+	}
 
 	const updateStateFromUrl = () => {
 		updateState( getStateFromUrl() );
