@@ -14,7 +14,7 @@ import { useDebouncedCallback } from 'use-debounce';
 /**
  * Component displaying a price filter.
  */
-const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
+const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	const [ minPriceQuery, setMinPriceQuery ] = useQueryStateByKey(
 		'min_price'
 	);
@@ -101,7 +101,7 @@ const PriceFilterBlock = ( { attributes, isPreview = false } ) => {
 
 	return (
 		<Fragment>
-			{ ! isPreview && attributes.heading && (
+			{ ! isEditor && attributes.heading && (
 				<TagName>{ attributes.heading }</TagName>
 			) }
 			<div className="wc-block-price-slider">

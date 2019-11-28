@@ -19,7 +19,7 @@ import ActiveAttributeFilters from './active-attribute-filters';
  */
 const ActiveFiltersBlock = ( {
 	attributes: blockAttributes,
-	isPreview = false,
+	isEditor = false,
 } ) => {
 	const [ productAttributes, setProductAttributes ] = useQueryStateByKey(
 		'attributes',
@@ -65,7 +65,7 @@ const ActiveFiltersBlock = ( {
 		);
 	};
 
-	if ( ! hasFilters() && ! isPreview ) {
+	if ( ! hasFilters() && ! isEditor ) {
 		return null;
 	}
 
@@ -77,12 +77,12 @@ const ActiveFiltersBlock = ( {
 
 	return (
 		<Fragment>
-			{ ! isPreview && blockAttributes.heading && (
+			{ ! isEditor && blockAttributes.heading && (
 				<TagName>{ blockAttributes.heading }</TagName>
 			) }
 			<div className="wc-block-active-filters">
 				<ul className={ listClasses }>
-					{ isPreview ? (
+					{ isEditor ? (
 						<Fragment>
 							{ renderRemovableListItem(
 								__( 'Size', 'woo-gutenberg-products-block' ),
