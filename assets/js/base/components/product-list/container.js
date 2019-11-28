@@ -12,10 +12,10 @@ import ProductList from './index';
 function ProductListContainer( props ) {
 	// Initialise the query string state from props.
 	const { attributes } = props;
-	const [ urlState, updateUrlHistory ] = useUrlQueryString( [
-		'product_page',
-		'product_sort',
-	] );
+	const [ urlState, updateUrlHistory ] = useUrlQueryString( {
+		product_page: 1,
+		product_sort: attributes.orderby,
+	} );
 	const onPageChange = ( newPage ) => {
 		updateUrlHistory( {
 			product_page: newPage,

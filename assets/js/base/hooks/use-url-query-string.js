@@ -51,11 +51,12 @@ const initializeState = ( { urlKeys, queryStateContext } ) => {
 	const urlState = {};
 
 	if ( hasWindowDependencies ) {
-		urlKeys.forEach( ( urlKey ) => {
-			urlState[ urlKey ] = getQueryArg(
+		Object.keys( urlKeys ).forEach( ( urlKey ) => {
+			const queryStringValue = getQueryArg(
 				window.location.href,
 				`${ urlKey }_${ queryStateContext }`
 			);
+			urlState[ urlKey ] = queryStringValue || urlKeys[ urlKey ];
 		} );
 	}
 	return urlState;
