@@ -3,7 +3,7 @@
  */
 import { QUERY_STATE_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { useRef, useEffect, useCallback } from '@wordpress/element';
+import { useEffect, useCallback } from '@wordpress/element';
 import { useQueryStateContext } from '@woocommerce/base-context/query-state-context';
 
 /**
@@ -116,19 +116,13 @@ export const useSynchronizedQueryState = ( synchronizedQuery, context ) => {
 	const queryStateContext = useQueryStateContext();
 	context = context || queryStateContext;
 	const [ queryState, setQueryState ] = useQueryStateByContext( context );
-	const currentSynchronizedQuery = useShallowEqual( synchronizedQuery );
-	// used to ensure we allow initial synchronization to occur before
-	// returning non-synced state.
-	const isInitialized = useRef( false );
+	const currentSynchronizedQuery = useShallowEqual( {
+		...queryState,
+		...synchronizedQuery,
+	} );
 	// update queryState anytime incoming synchronizedQuery changes
 	useEffect( () => {
-		setQueryState( {
-			...queryState,
-			...currentSynchronizedQuery,
-		} );
-		isInitialized.current = true;
+		setQueryState( currentSynchronizedQuery );
 	}, [ currentSynchronizedQuery ] );
-	return isInitialized.current
-		? [ queryState, setQueryState ]
-		: [ synchronizedQuery, setQueryState ];
+	return [ currentSynchronizedQuery, setQueryState ];
 };
