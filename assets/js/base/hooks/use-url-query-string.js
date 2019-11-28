@@ -1,8 +1,10 @@
 /**
  * External dependencies
  */
-import { useState, useEffect } from '@wordpress/element';
+import { useEffect, useReducer } from '@wordpress/element';
 import { addQueryArgs, getQueryArg } from '@wordpress/url';
+import { useQueryStateContext } from '@woocommerce/base-context/query-state-context';
+import isShallowEqual from '@wordpress/is-shallow-equal';
 
 const hasWindowDependencies =
 	typeof window === 'object' &&
@@ -11,7 +13,70 @@ const hasWindowDependencies =
 	typeof window.addEventListener === 'function' &&
 	typeof window.removeEventListener === 'function';
 
-// let instances = 0;
+const update = ( urlKey, urlValue ) => {
+	return {
+		type: 'update',
+		urlKey,
+		urlValue,
+	};
+};
+
+const reset = ( initializationValues ) => {
+	return {
+		type: 'reset',
+		initializationValues,
+	};
+};
+
+const reducer = ( state, action ) => {
+	const { type, urlKey, urlValue, initializationValues } = action;
+	switch ( type ) {
+		case 'reset':
+			state = initializationValues || state;
+			break;
+		case 'update':
+			state =
+				! state[ urlKey ] ||
+				! isShallowEqual( state[ urlKey ], urlValue )
+					? { ...state, [ urlKey ]: urlValue }
+					: state;
+			break;
+		default:
+			throw new Error( 'Invalid action type for reducer.' );
+	}
+	return state;
+};
+
+const initializeState = ( { urlKeys, queryStateContext } ) => {
+	const urlState = {};
+
+	if ( hasWindowDependencies ) {
+		urlKeys.forEach( ( urlKey ) => {
+			urlState[ urlKey ] = getQueryArg(
+				window.location.href,
+				`${ urlKey }_${ queryStateContext }`
+			);
+		} );
+	}
+	return urlState;
+};
+
+const updateWindowHistory = ( values, queryStateContext ) => {
+	if ( hasWindowDependencies ) {
+		const queryStringValues = {};
+
+		Object.keys( values ).forEach( ( key ) => {
+			queryStringValues[ `${ key }_${ queryStateContext }` ] =
+				values[ key ];
+		} );
+
+		window.history.pushState(
+			null,
+			'',
+			addQueryArgs( window.location.href, queryStringValues )
+		);
+	}
+};
 
 /**
  * A custom hook that tbc
@@ -20,80 +85,43 @@ const hasWindowDependencies =
  *
  * @return {} tbc
  */
-export const useUrlQueryString = ( values ) => {
-	// Suffix all props with an instance "id", to support multiple components with independent url params.
-	// Coming soon.
-	const uniqueSuffix = '';//instances++ > 0 ? `_${ instances }` : '';
+export const useUrlQueryString = ( urlKeys ) => {
+	const queryStateContext = useQueryStateContext();
+	const [ urlState, dispatch ] = useReducer(
+		reducer,
+		{ urlKeys, queryStateContext },
+		initializeState
+	);
 
-	const getStateFromUrl = () => {
-		const urlState = {};
-
-		if ( hasWindowDependencies ) {
-			Object.keys( values ).forEach( ( value ) => {
-				urlState[ value ] = getQueryArg(
-					window.location.href,
-					value + uniqueSuffix
-				);
-			} );
-		}
-
-		return urlState;
-	};
-
-	const [ state, setState ] = useState( {
-		...values,
-		...getStateFromUrl()
-	} );
-	const updateState = partialUpdate => {
-		setState( prevState => {
-			return {
-				...prevState,
-				...partialUpdate
-			}
+	const updateState = ( partialUpdate ) => {
+		Object.keys( partialUpdate ).forEach( ( key ) => {
+			dispatch( update( key, partialUpdate[ key ] ) );
 		} );
-	}
-
-	const updateStateFromUrl = () => {
-		updateState( getStateFromUrl() );
 	};
 
-	const updateValues = ( newValues ) => {
+	const updateHistory = ( newValues ) => {
 		updateState( newValues );
-
-		if ( hasWindowDependencies ) {
-			const queryStringValues = {};
-			Object.keys( newValues ).forEach( ( key ) => {
-				queryStringValues[ key + uniqueSuffix ] =
-					newValues[ key ];
-			} );
-
-			window.history.pushState(
-				null,
-				'',
-				addQueryArgs( window.location.href, queryStringValues )
-			);
-		}
+		updateWindowHistory( newValues, queryStateContext );
 	};
 
 	// Update our state when the use navigates back/forward (history API).
-	useEffect(() => {
-		if ( hasWindowDependencies ) {
-			window.addEventListener(
-				'popstate',
-				updateStateFromUrl
+	useEffect( () => {
+		const updateStateFromUrl = () => {
+			dispatch(
+				reset( initializeState( { urlKeys, queryStateContext } ) )
 			);
+		};
+
+		if ( hasWindowDependencies ) {
+			window.addEventListener( 'popstate', updateStateFromUrl );
 		}
 
-		return function cleanup() {
+		return () => {
 			if ( hasWindowDependencies ) {
-				window.removeEventListener(
-					'popstate',
-					updateStateFromUrl
-				);
+				window.removeEventListener( 'popstate', updateStateFromUrl );
 			}
 		};
-	});
+	}, [ dispatch ] );
 
-	return [ state, updateValues ];
+	return [ urlState, updateHistory ];
 };
-
