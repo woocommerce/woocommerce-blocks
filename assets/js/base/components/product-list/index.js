@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import Pagination from '@woocommerce/base-components/pagination';
 import ProductSortSelect from '@woocommerce/base-components/product-sort-select';
 import ProductListItem from '@woocommerce/base-components/product-list-item';
-import { useEffect } from '@wordpress/element';
+import { useEffect, useRef } from '@wordpress/element';
 import {
 	usePrevious,
 	useStoreProducts,
@@ -81,6 +81,7 @@ const ProductList = ( {
 			currentPage,
 		} )
 	);
+	const hasMounted = useRef( false );
 	const results = useStoreProducts( queryState );
 	const { products, productsLoading } = results;
 	const totalProducts = parseInt( results.totalProducts );
@@ -113,7 +114,7 @@ const ProductList = ( {
 	useEffect( () => {
 		// If query state (excluding pagination/sorting attributes) changed,
 		// reset pagination to the first page.
-		if ( ! isPreviousTotalQueryEqual ) {
+		if ( ! isPreviousTotalQueryEqual && hasMounted.current ) {
 			onPageChange( 1 );
 		}
 	}, [ queryState ] );
@@ -152,6 +153,9 @@ const ProductList = ( {
 		productAttributes.length > 0 ||
 		Number.isFinite( minPrice ) ||
 		Number.isFinite( maxPrice );
+	useEffect( () => {
+		hasMounted.current = true;
+	}, [] );
 
 	return (
 		<div className={ getClassnames() }>
