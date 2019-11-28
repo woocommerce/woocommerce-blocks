@@ -9,9 +9,8 @@ import { useUrlQueryString } from '@woocommerce/base-hooks';
  */
 import ProductList from './index';
 
-function ProductListContainer( props ) {
+function ProductListContainer( { attributes } ) {
 	// Initialise the query string state from props.
-	const { attributes } = props;
 	const [ urlState, updateUrlHistory ] = useUrlQueryString( {
 		product_page: 1,
 		product_sort: attributes.orderby,
