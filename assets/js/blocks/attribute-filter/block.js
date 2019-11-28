@@ -274,16 +274,7 @@ const AttributeFilterBlock = ( {
 				<TagName>{ blockAttributes.heading }</TagName>
 			) }
 			<div className="wc-block-attribute-filter">
-				{ blockAttributes.displayStyle === 'list' ? (
-					<CheckboxList
-						className={ 'wc-block-attribute-filter-list' }
-						options={ displayedOptions }
-						checked={ checked }
-						onChange={ onChange }
-						isLoading={ isLoading }
-						isDisabled={ isDisabled }
-					/>
-				) : (
+				{ blockAttributes.displayStyle === 'dropdown' ? (
 					<DropdownSelector
 						attributeLabel={ attributeObject.label }
 						checked={ checked }
@@ -293,6 +284,15 @@ const AttributeFilterBlock = ( {
 						isLoading={ isLoading }
 						onChange={ onChange }
 						options={ displayedOptions }
+					/>
+				) : (
+					<CheckboxList
+						className={ 'wc-block-attribute-filter-list' }
+						options={ displayedOptions }
+						checked={ checked }
+						onChange={ onChange }
+						isLoading={ isLoading }
+						isDisabled={ isDisabled }
 					/>
 				) }
 			</div>

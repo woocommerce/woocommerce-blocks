@@ -85,8 +85,10 @@ registerBlockType( 'woocommerce/attribute-filter', {
 			'data-query-type': queryType,
 			'data-heading': heading,
 			'data-heading-level': headingLevel,
-			'data-display-style': displayStyle,
 		};
+		if ( displayStyle !== 'list' ) {
+			data[ 'data-display-style' ] = displayStyle;
+		}
 		return (
 			<div
 				className={ classNames( 'is-loading', className ) }
