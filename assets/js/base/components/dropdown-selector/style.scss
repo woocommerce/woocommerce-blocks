@@ -42,10 +42,10 @@
 }
 
 .wc-block-dropdown-selector__selected-chip {
-	background-color: #dfdfdf;
+	background-color: $core-grey-light-600;
 	border: 1px solid #9f9f9f;
 	border-radius: 4px;
-	color: inherit;
+	color: $core-grey-dark-600;
 	display: inline-block;
 	font-size: 0.8em;
 	font-weight: inherit;
@@ -57,7 +57,9 @@
 	&:hover,
 	&:focus,
 	&:active {
+		background-color: $core-grey-light-600;
 		border: 1px solid #9f9f9f;
+		color: $core-grey-dark-600;
 	}
 }
 
@@ -86,10 +88,11 @@
 
 .wc-block-dropdown-selector__list-item {
 	background-color: #fff;
+	color: $core-grey-dark-600;
 	padding: 0 $gap-smallest;
 
 	&.is-selected {
-		background-color: #d8d8d8;
+		background-color: $core-grey-light-600;
 	}
 
 	&:hover,
