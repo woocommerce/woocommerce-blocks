@@ -6,13 +6,14 @@ import {
 	useQueryStateByKey,
 	useQueryStateByContext,
 	useCollectionData,
+	useUrlQueryString,
 } from '@woocommerce/base-hooks';
 import {
 	useCallback,
 	Fragment,
 	useEffect,
 	useState,
-	useMemo,
+	useRef,
 } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
 
@@ -22,6 +23,8 @@ import CheckboxList from '@woocommerce/base-components/checkbox-list';
 import './style.scss';
 import { getAttributeFromID } from '../../utils/attributes';
 import { updateAttributeFilter } from '../../utils/attributes-query';
+
+const getAttributeResourceName = ( attributeId ) => `att_${ attributeId }`;
 
 /**
  * Component displaying an attribute filter.
@@ -83,14 +86,50 @@ const AttributeFilterBlock = ( {
 		setProductAttributesQuery,
 	] = useQueryStateByKey( 'attributes', [] );
 
-	const checked = useMemo( () => {
-		return productAttributesQuery
+	const [ urlState, updateUrlHistory ] = useUrlQueryString( {
+		[ getAttributeResourceName( attributeObject.id ) ]: [],
+	} );
+
+	const checked = useRef( [] );
+	const hasMounted = useRef( false );
+
+	useEffect( () => {
+		const checkedTerms = productAttributesQuery
 			.filter(
 				( attribute ) =>
 					attribute.attribute === attributeObject.taxonomy
 			)
 			.flatMap( ( attribute ) => attribute.slug );
-	}, [ productAttributesQuery, attributeObject ] );
+		const attributeResourceName = getAttributeResourceName(
+			attributeObject.id
+		);
+		const urlStateHasAttributes =
+			urlState[ attributeResourceName ].length > 0;
+		checked.current = urlStateHasAttributes
+			? Array.from(
+					new Set( [
+						...checkedTerms,
+						...urlState[ attributeResourceName ],
+					] )
+			  )
+			: checkedTerms;
+		if ( ! hasMounted.current && urlStateHasAttributes ) {
+			const query = productAttributesQuery.filter(
+				( { taxonomy } ) => taxonomy !== attributeObject.taxonomy
+			);
+			query.push( {
+				attribute: attributeObject.taxonomy,
+				operator: attributeObject.operator,
+				slug: checked.current,
+			} );
+			setProductAttributesQuery( query );
+			hasMounted.current = true;
+		}
+	}, [
+		productAttributesQuery,
+		attributeObject,
+		urlState[ getAttributeResourceName( attributeObject.id ) ],
+	] );
 
 	const {
 		results: attributeTerms,
@@ -137,10 +176,11 @@ const AttributeFilterBlock = ( {
 		}
 
 		const newOptions = [];
+		const urlStringTermSlugs = [];
 
 		attributeTerms.forEach( ( term ) => {
 			const filteredTerm = getFilteredTerm( term.id );
-			const isChecked = checked.includes( term.slug );
+			const isChecked = checked.current.includes( term.slug );
 			const count = filteredTerm ? filteredTerm.count : null;
 
 			// If there is no match this term doesn't match the current product collection - only render if checked.
@@ -152,8 +192,17 @@ const AttributeFilterBlock = ( {
 				key: term.slug,
 				label: getLabel( term.name, count ),
 			} );
+			if ( isChecked ) {
+				urlStringTermSlugs.push( term.slug );
+			}
 		} );
-
+		if ( urlStringTermSlugs.length > 0 ) {
+			updateUrlHistory( {
+				[ getAttributeResourceName(
+					attributeObject.id
+				) ]: urlStringTermSlugs,
+			} );
+		}
 		setDisplayedOptions( newOptions );
 	}, [
 		attributeTerms,
@@ -161,7 +210,6 @@ const AttributeFilterBlock = ( {
 		filteredCountsLoading,
 		getFilteredTerm,
 		getLabel,
-		checked,
 	] );
 
 	/**
@@ -179,6 +227,32 @@ const AttributeFilterBlock = ( {
 		[ attributeTerms ]
 	);
 
+	const updateFilterWithSelectedTerms = useCallback(
+		( checkedItems ) => {
+			const newSelectedTerms = getSelectedTerms( checkedItems );
+			updateAttributeFilter(
+				productAttributesQuery,
+				setProductAttributesQuery,
+				attributeObject,
+				newSelectedTerms,
+				blockAttributes.queryType === 'or' ? 'in' : 'and'
+			);
+			updateUrlHistory( {
+				[ getAttributeResourceName(
+					attributeObject.id
+				) ]: checkedItems,
+			} );
+		},
+		[
+			attributeTerms,
+			productAttributesQuery,
+			setProductAttributesQuery,
+			attributeObject,
+			blockAttributes,
+			updateUrlHistory,
+		]
+	);
+
 	/**
 	 * When a checkbox in the list changes, update state.
 	 */
@@ -186,7 +260,7 @@ const AttributeFilterBlock = ( {
 		( event ) => {
 			const isChecked = event.target.checked;
 			const checkedValue = event.target.value;
-			const newChecked = checked.filter(
+			const newChecked = checked.current.filter(
 				( value ) => value !== checkedValue
 			);
 
@@ -195,24 +269,9 @@ const AttributeFilterBlock = ( {
 				newChecked.sort();
 			}
 
-			const newSelectedTerms = getSelectedTerms( newChecked );
-
-			updateAttributeFilter(
-				productAttributesQuery,
-				setProductAttributesQuery,
-				attributeObject,
-				newSelectedTerms,
-				blockAttributes.queryType === 'or' ? 'in' : 'and'
-			);
+			updateFilterWithSelectedTerms( newChecked );
 		},
-		[
-			attributeTerms,
-			checked,
-			productAttributesQuery,
-			setProductAttributesQuery,
-			attributeObject,
-			blockAttributes,
-		]
+		[ updateFilterWithSelectedTerms ]
 	);
 
 	if ( displayedOptions.length === 0 && ! attributeTermsLoading ) {
@@ -230,7 +289,7 @@ const AttributeFilterBlock = ( {
 				<CheckboxList
 					className={ 'wc-block-attribute-filter-list' }
 					options={ displayedOptions }
-					checked={ checked }
+					checked={ checked.current }
 					onChange={ onChange }
 					isLoading={
 						! blockAttributes.isPreview && attributeTermsLoading
