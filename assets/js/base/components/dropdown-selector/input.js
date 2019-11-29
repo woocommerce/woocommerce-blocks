@@ -20,14 +20,13 @@ const DropdownSelectorInput = ( {
 				className: 'wc-block-dropdown-selector__input',
 				disabled: isDisabled,
 				onFocus,
-				onKeyDown( event ) {
+				onKeyDown( e ) {
 					if (
-						event.key === 'Backspace' &&
+						e.key === 'Backspace' &&
 						! value &&
 						checked.length > 0
 					) {
 						onRemoveItem( checked[ checked.length - 1 ] );
-						inputRef.current.focus();
 					}
 				},
 				placeholder:

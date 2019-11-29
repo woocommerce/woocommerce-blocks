@@ -3,13 +3,18 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 
-const DropdownSelectorSelectedChip = ( { onClick, option } ) => {
+const DropdownSelectorSelectedChip = ( { onRemoveItem, option } ) => {
 	return (
 		<button
 			className="wc-block-dropdown-selector__selected-chip"
 			onClick={ ( e ) => {
 				e.stopPropagation();
-				onClick( option.value );
+				onRemoveItem( option.value );
+			} }
+			onKeyDown={ ( e ) => {
+				if ( e.key === 'Backspace' || e.key === 'Delete' ) {
+					onRemoveItem( option.value );
+				}
 			} }
 			aria-label={ sprintf(
 				__( 'Remove %s filter', 'woo-gutenberg-products-block' ),

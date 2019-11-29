@@ -60,6 +60,12 @@ const DropdownSelector = ( {
 		'is-loading': isLoading,
 	} );
 
+	const focusInput = ( isOpen ) => {
+		if ( ! isOpen ) {
+			inputRef.current.focus();
+		}
+	};
+
 	return (
 		<Downshift
 			onChange={ onChange }
@@ -78,20 +84,16 @@ const DropdownSelector = ( {
 			} ) => (
 				<div className={ classes }>
 					{ /* eslint-disable-next-line jsx-a11y/label-has-for */ }
-					<label { ...getLabelProps( {
-						className: 'screen-reader-text',
-					} ) }>
+					<label
+						{ ...getLabelProps( {
+							className: 'screen-reader-text',
+						} ) }
+					>
 						{ inputLabel }
 					</label>
 					<DropdownSelectorInputWrapper
 						isOpen={ isOpen }
-						onClick={
-							isOpen
-								? null
-								: () => {
-										inputRef.current.focus();
-								  }
-						}
+						onClick={ () => focusInput( isOpen ) }
 					>
 						{ checked.map( ( value ) => {
 							const option = options.find(
@@ -100,7 +102,10 @@ const DropdownSelector = ( {
 							return (
 								<DropdownSelectorSelectedChip
 									key={ value }
-									onClick={ onChange }
+									onRemoveItem={ ( val ) => {
+										onChange( val );
+										focusInput( isOpen );
+									} }
 									option={ option }
 								/>
 							);
@@ -112,7 +117,10 @@ const DropdownSelector = ( {
 							inputRef={ inputRef }
 							isDisabled={ isDisabled }
 							onFocus={ openMenu }
-							onRemoveItem={ onChange }
+							onRemoveItem={ ( val ) => {
+								onChange( val );
+								focusInput( isOpen );
+							} }
 							value={ inputValue }
 						/>
 					</DropdownSelectorInputWrapper>
