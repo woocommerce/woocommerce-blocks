@@ -69,6 +69,7 @@ const DropdownSelector = ( {
 			{ ( {
 				getInputProps,
 				getItemProps,
+				getLabelProps,
 				getMenuProps,
 				highlightedIndex,
 				inputValue,
@@ -76,6 +77,12 @@ const DropdownSelector = ( {
 				openMenu,
 			} ) => (
 				<div className={ classes }>
+					{ /* eslint-disable-next-line jsx-a11y/label-has-for */ }
+					<label { ...getLabelProps( {
+						className: 'screen-reader-text',
+					} ) }>
+						{ inputLabel }
+					</label>
 					<DropdownSelectorInputWrapper
 						isOpen={ isOpen }
 						onClick={
@@ -104,7 +111,6 @@ const DropdownSelector = ( {
 							getInputProps={ getInputProps }
 							inputRef={ inputRef }
 							isDisabled={ isDisabled }
-							label={ inputLabel }
 							onFocus={ openMenu }
 							onRemoveItem={ onChange }
 							value={ inputValue }

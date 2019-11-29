@@ -9,7 +9,6 @@ const DropdownSelectorInput = ( {
 	getInputProps,
 	inputRef,
 	isDisabled,
-	label,
 	onFocus,
 	onRemoveItem,
 	value,
@@ -38,7 +37,6 @@ const DropdownSelectorInput = ( {
 								attributeLabel
 						  )
 						: null,
-				'aria-label': label,
 			} ) }
 		/>
 	);
