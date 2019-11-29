@@ -78,7 +78,6 @@ const DropdownSelector = ( {
 				<div className={ classes }>
 					<DropdownSelectorInputWrapper
 						isOpen={ isOpen }
-						inputRef={ inputRef }
 						onClick={
 							isOpen
 								? null
