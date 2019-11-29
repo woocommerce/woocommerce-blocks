@@ -27,6 +27,7 @@ const DropdownSelectorInput = ( {
 						checked.length > 0
 					) {
 						onRemoveItem( checked[ checked.length - 1 ] );
+						inputRef.current.focus();
 					}
 				},
 				placeholder:
