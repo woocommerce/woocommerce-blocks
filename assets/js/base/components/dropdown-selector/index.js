@@ -124,23 +124,19 @@ const DropdownSelector = ( {
 							value={ inputValue }
 						/>
 					</DropdownSelectorInputWrapper>
-					<DropdownSelectorMenu
-						checked={ checked }
-						getItemProps={ getItemProps }
-						getMenuProps={ getMenuProps }
-						highlightedIndex={ highlightedIndex }
-						options={
-							isOpen && ! isDisabled
-								? options.filter(
-										( option ) =>
-											! inputValue ||
-											option.value.startsWith(
-												inputValue
-											)
-								  )
-								: []
-						}
-					/>
+					{ isOpen && ! isDisabled && (
+						<DropdownSelectorMenu
+							checked={ checked }
+							getItemProps={ getItemProps }
+							getMenuProps={ getMenuProps }
+							highlightedIndex={ highlightedIndex }
+							options={ options.filter(
+								( option ) =>
+									! inputValue ||
+									option.value.startsWith( inputValue )
+							) }
+						/>
+					) }
 				</div>
 			) }
 		</Downshift>
