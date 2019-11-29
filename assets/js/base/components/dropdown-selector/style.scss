@@ -13,10 +13,6 @@
 	flex-wrap: wrap;
 	padding: 2px;
 
-	.is-loading & {
-		@include placeholder();
-	}
-
 	.is-disabled & {
 		background-color: $core-grey-light-500;
 	}
@@ -42,10 +38,6 @@
 	&:focus,
 	&:active {
 		outline: 0;
-	}
-
-	.is-loading &::placeholder {
-		color: transparent;
 	}
 }
 

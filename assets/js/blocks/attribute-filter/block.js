@@ -280,7 +280,6 @@ const AttributeFilterBlock = ( {
 						checked={ checked }
 						className={ 'wc-block-attribute-filter-dropdown' }
 						inputLabel={ blockAttributes.heading }
-						isDisabled={ isDisabled }
 						isLoading={ isLoading }
 						onChange={ onChange }
 						options={ displayedOptions }
