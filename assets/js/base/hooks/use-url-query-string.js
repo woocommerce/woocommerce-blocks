@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { useEffect, useReducer } from '@wordpress/element';
-import { addQueryArgs, getQueryArg } from '@wordpress/url';
+import { addQueryArgs, getQueryArg, removeQueryArgs } from '@wordpress/url';
 import { useQueryStateContext } from '@woocommerce/base-context/query-state-context';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 
@@ -18,6 +18,13 @@ const update = ( urlKey, urlValue ) => {
 		type: 'update',
 		urlKey,
 		urlValue,
+	};
+};
+
+const deleteEntry = ( urlKey ) => {
+	return {
+		type: 'delete',
+		urlKey,
 	};
 };
 
@@ -41,6 +48,11 @@ const reducer = ( state, action ) => {
 					? { ...state, [ urlKey ]: urlValue }
 					: state;
 			break;
+		case 'delete':
+			if ( state[ urlKey ] );
+			// eslint-disable-next-line no-unused-vars
+			const { urlKey: deletedKey, ...rest } = state;
+			return { ...rest };
 		default:
 			throw new Error( 'Invalid action type for reducer.' );
 	}
@@ -79,6 +91,17 @@ const updateWindowHistory = ( values, queryStateContext ) => {
 	}
 };
 
+const deleteWindowHistory = ( keys, queryStateContext ) => {
+	if ( hasWindowDependencies ) {
+		keys = keys.map( ( key ) => `${ key }_${ queryStateContext }` );
+		window.history.pushState(
+			null,
+			'',
+			removeQueryArgs( window.location.href, ...keys )
+		);
+	}
+};
+
 /**
  * A custom hook that handles exposes current query string values from the
  * url and a function for updating browser window history (if it's available
@@ -109,9 +132,20 @@ export const useUrlQueryString = ( urlKeys ) => {
 		} );
 	};
 
+	const deleteState = ( keys ) => {
+		Object.keys( keys ).forEach( ( key ) => {
+			dispatch( deleteEntry( key ) );
+		} );
+	};
+
 	const updateHistory = ( newValues ) => {
 		updateState( newValues );
 		updateWindowHistory( newValues, queryStateContext );
+	};
+
+	const deleteHistory = ( keys ) => {
+		deleteState( keys );
+		deleteWindowHistory( keys, queryStateContext );
 	};
 
 	// Update our state when the use navigates back/forward (history API).
@@ -133,5 +167,5 @@ export const useUrlQueryString = ( urlKeys ) => {
 		};
 	}, [ dispatch ] );
 
-	return [ urlState, updateHistory ];
+	return [ urlState, updateHistory, deleteHistory ];
 };

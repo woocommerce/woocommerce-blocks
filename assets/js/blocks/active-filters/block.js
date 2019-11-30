@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useQueryStateByKey } from '@woocommerce/base-hooks';
+import { useQueryStateByKey, useUrlQueryString } from '@woocommerce/base-hooks';
 import { useMemo, Fragment } from '@wordpress/element';
 import classnames from 'classnames';
 
@@ -11,6 +11,7 @@ import classnames from 'classnames';
  */
 import './style.scss';
 import { getAttributeFromTaxonomy } from '../../utils/attributes';
+import { getAttributeResourceName } from '../../utils/attributes-query';
 import { formatPriceRange, renderRemovableListItem } from './utils';
 import ActiveAttributeFilters from './active-attribute-filters';
 
@@ -28,6 +29,19 @@ const ActiveFiltersBlock = ( {
 	const [ minPrice, setMinPrice ] = useQueryStateByKey( 'min_price' );
 	const [ maxPrice, setMaxPrice ] = useQueryStateByKey( 'max_price' );
 
+	const urlKeyWhiteList = productAttributes.reduce(
+		( whiteList, attribute ) => {
+			const attributeObject = getAttributeFromTaxonomy(
+				attribute.attribute
+			);
+			whiteList[ getAttributeResourceName( attributeObject.id ) ] = [];
+			return whiteList;
+		},
+		{}
+	);
+
+	const [ , , deleteHistory ] = useUrlQueryString( urlKeyWhiteList );
+
 	const activePriceFilters = useMemo( () => {
 		if ( ! Number.isFinite( minPrice ) && ! Number.isFinite( maxPrice ) ) {
 			return null;
@@ -43,7 +57,7 @@ const ActiveFiltersBlock = ( {
 	}, [ minPrice, maxPrice, formatPriceRange ] );
 
 	const activeAttributeFilters = useMemo( () => {
-		return productAttributes.map( ( attribute ) => {
+		return productAttributes.sort().map( ( attribute ) => {
 			const attributeObject = getAttributeFromTaxonomy(
 				attribute.attribute
 			);
@@ -106,6 +120,7 @@ const ActiveFiltersBlock = ( {
 						setMinPrice( null );
 						setMaxPrice( null );
 						setProductAttributes( [] );
+						deleteHistory( Object.keys( urlKeyWhiteList ) );
 					} }
 				>
 					{ __( 'Clear All', 'woo-gutenberg-products-block' ) }

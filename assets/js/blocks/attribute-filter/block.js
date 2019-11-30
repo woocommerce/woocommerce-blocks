@@ -22,9 +22,10 @@ import CheckboxList from '@woocommerce/base-components/checkbox-list';
  */
 import './style.scss';
 import { getAttributeFromID } from '../../utils/attributes';
-import { updateAttributeFilter } from '../../utils/attributes-query';
-
-const getAttributeResourceName = ( attributeId ) => `att_${ attributeId }`;
+import {
+	updateAttributeFilter,
+	getAttributeResourceName,
+} from '../../utils/attributes-query';
 
 /**
  * Component displaying an attribute filter.
@@ -105,15 +106,13 @@ const AttributeFilterBlock = ( {
 		);
 		const urlStateHasAttributes =
 			urlState[ attributeResourceName ].length > 0;
-		checked.current = urlStateHasAttributes
-			? Array.from(
-					new Set( [
-						...checkedTerms,
-						...urlState[ attributeResourceName ],
-					] )
-			  )
-			: checkedTerms;
 		if ( ! hasMounted.current && urlStateHasAttributes ) {
+			checked.current = Array.from(
+				new Set( [
+					...checkedTerms,
+					...urlState[ attributeResourceName ],
+				] )
+			).sort();
 			const query = productAttributesQuery.filter(
 				( { taxonomy } ) => taxonomy !== attributeObject.taxonomy
 			);
@@ -124,6 +123,8 @@ const AttributeFilterBlock = ( {
 			} );
 			setProductAttributesQuery( query );
 			hasMounted.current = true;
+		} else {
+			checked.current = checkedTerms.sort();
 		}
 	}, [
 		productAttributesQuery,

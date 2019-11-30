@@ -1,13 +1,20 @@
 /**
  * External dependencies
  */
-import { useCollection, useQueryStateByKey } from '@woocommerce/base-hooks';
+import {
+	useCollection,
+	useQueryStateByKey,
+	useUrlQueryString,
+} from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
  */
 import { renderRemovableListItem } from './utils';
-import { removeAttributeFilterBySlug } from '../../utils/attributes-query';
+import {
+	removeAttributeFilterBySlug,
+	getAttributeResourceName,
+} from '../../utils/attributes-query';
 
 /**
  * Component that renders active attribute (terms) filters.
@@ -23,6 +30,9 @@ const ActiveAttributeFilters = ( { attributeObject = {}, slugs = [] } ) => {
 		'attributes',
 		[]
 	);
+	const [ urlState, updateUrlHistory ] = useUrlQueryString( {
+		[ getAttributeResourceName( attributeObject.id ) ]: [],
+	} );
 
 	if ( isLoading ) {
 		return null;
@@ -47,6 +57,23 @@ const ActiveAttributeFilters = ( { attributeObject = {}, slugs = [] } ) => {
 						attributeObject,
 						slug
 					);
+					//if slug in urlState, remove it.
+					const urlAttributeState =
+						urlState[
+							getAttributeResourceName( attributeObject.id )
+						];
+					if (
+						urlAttributeState.length > 0 &&
+						urlAttributeState.includes( slug )
+					) {
+						updateUrlHistory( {
+							[ getAttributeResourceName(
+								attributeObject.id
+							) ]: urlAttributeState
+								.filter( ( term ) => term !== slug )
+								.sort(),
+						} );
+					}
 				}
 			)
 		);

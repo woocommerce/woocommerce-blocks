@@ -78,3 +78,6 @@ export const updateAttributeFilter = (
 		setQuery( sortBy( returnQuery, 'attribute' ) );
 	}
 };
+
+export const getAttributeResourceName = ( attributeId ) =>
+	`att_${ attributeId }`;
