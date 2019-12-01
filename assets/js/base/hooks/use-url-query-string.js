@@ -1,10 +1,10 @@
 /**
  * External dependencies
  */
-import { useEffect, useReducer } from '@wordpress/element';
+import { useEffect, useRef } from '@wordpress/element';
 import { addQueryArgs, getQueryArg, removeQueryArgs } from '@wordpress/url';
+import { useQueryStateByContext } from '@woocommerce/base-hooks';
 import { useQueryStateContext } from '@woocommerce/base-context/query-state-context';
-import isShallowEqual from '@wordpress/is-shallow-equal';
 
 const hasWindowDependencies =
 	typeof window === 'object' &&
@@ -13,62 +13,16 @@ const hasWindowDependencies =
 	typeof window.addEventListener === 'function' &&
 	typeof window.removeEventListener === 'function';
 
-const update = ( urlKey, urlValue ) => {
-	return {
-		type: 'update',
-		urlKey,
-		urlValue,
-	};
-};
-
-const deleteEntry = ( urlKey ) => {
-	return {
-		type: 'delete',
-		urlKey,
-	};
-};
-
-const reset = ( initializationValues ) => {
-	return {
-		type: 'reset',
-		initializationValues,
-	};
-};
-
-const reducer = ( state, action ) => {
-	const { type, urlKey, urlValue, initializationValues } = action;
-	switch ( type ) {
-		case 'reset':
-			state = initializationValues || state;
-			break;
-		case 'update':
-			state =
-				! state[ urlKey ] ||
-				! isShallowEqual( state[ urlKey ], urlValue )
-					? { ...state, [ urlKey ]: urlValue }
-					: state;
-			break;
-		case 'delete':
-			if ( state[ urlKey ] );
-			// eslint-disable-next-line no-unused-vars
-			const { urlKey: deletedKey, ...rest } = state;
-			return { ...rest };
-		default:
-			throw new Error( 'Invalid action type for reducer.' );
-	}
-	return state;
-};
-
-const initializeState = ( { urlKeys, queryStateContext } ) => {
+const getInitialState = ( urlKeysAndDefaults, queryStateContext ) => {
 	const urlState = {};
-
 	if ( hasWindowDependencies ) {
-		Object.keys( urlKeys ).forEach( ( urlKey ) => {
+		Object.keys( urlKeysAndDefaults ).forEach( ( urlKey ) => {
 			const queryStringValue = getQueryArg(
 				window.location.href,
 				`${ urlKey }_${ queryStateContext }`
 			);
-			urlState[ urlKey ] = queryStringValue || urlKeys[ urlKey ];
+			urlState[ urlKey ] =
+				queryStringValue || urlKeysAndDefaults[ urlKey ];
 		} );
 	}
 	return urlState;
@@ -83,23 +37,35 @@ const updateWindowHistory = ( values, queryStateContext ) => {
 				values[ key ];
 		} );
 
-		window.history.pushState(
-			null,
-			'',
-			addQueryArgs( window.location.href, queryStringValues )
-		);
+		const existingUrl = window.location.href;
+		const newUrl = addQueryArgs( window.location.href, queryStringValues );
+
+		if ( newUrl !== existingUrl ) {
+			window.history.pushState( null, '', newUrl );
+		}
 	}
 };
 
-const deleteWindowHistory = ( keys, queryStateContext ) => {
+const removeWindowHistory = ( keys, queryStateContext ) => {
 	if ( hasWindowDependencies ) {
 		keys = keys.map( ( key ) => `${ key }_${ queryStateContext }` );
-		window.history.pushState(
-			null,
-			'',
-			removeQueryArgs( window.location.href, ...keys )
-		);
+		const existingUrl = window.location.href;
+		const newUrl = removeQueryArgs( window.location.href, ...keys );
+		if ( newUrl !== existingUrl ) {
+			window.history.pushState( null, '', newUrl );
+		}
 	}
+};
+
+const extractSlice = ( keys, state ) => {
+	let hasValues = false;
+	return keys.reduce( ( newState, key ) => {
+		if ( state[ key ] ) {
+			hasValues = true;
+			newState[ key ] = state[ key ];
+		}
+		return hasValues ? newState : null;
+	}, {} );
 };
 
 /**
@@ -118,42 +84,78 @@ const deleteWindowHistory = ( keys, queryStateContext ) => {
  *                 second item is a function for updating the window history with
  *                 a new state.
  */
-export const useUrlQueryString = ( urlKeys ) => {
+export const useUrlQueryString = ( urlKeysAndDefaults ) => {
 	const queryStateContext = useQueryStateContext();
-	const [ urlState, dispatch ] = useReducer(
-		reducer,
-		{ urlKeys, queryStateContext },
-		initializeState
+	const sliceIndex = JSON.stringify( Object.keys( urlKeysAndDefaults ) );
+	const urlStateContext = `queryString.${ queryStateContext }`;
+	const [ urlState = {}, setUrlState ] = useQueryStateByContext(
+		urlStateContext
+	);
+	const initialState = useRef(
+		getInitialState( urlKeysAndDefaults, queryStateContext )
 	);
 
+	useEffect( () => {
+		if ( ! urlState[ sliceIndex ] ) {
+			const newState = {
+				...urlState,
+				...getInitialState( urlKeysAndDefaults, queryStateContext ),
+			};
+			setUrlState( newState );
+		}
+	}, [ urlState ] );
+
 	const updateState = ( partialUpdate ) => {
+		let doUpdate = false;
 		Object.keys( partialUpdate ).forEach( ( key ) => {
-			dispatch( update( key, partialUpdate[ key ] ) );
+			// only update if this is a key for this instance.
+			if ( urlKeysAndDefaults[ key ] ) {
+				urlState[ key ] = partialUpdate[ key ];
+				doUpdate = true;
+			}
 		} );
+		if ( doUpdate ) {
+			setUrlState( urlState );
+		}
 	};
 
-	const deleteState = ( keys ) => {
-		Object.keys( keys ).forEach( ( key ) => {
-			dispatch( deleteEntry( key ) );
+	const removeState = ( keys ) => {
+		let doUpdate = false;
+		keys.forEach( ( key ) => {
+			// only update if this is a key for this instance.
+			if ( urlKeysAndDefaults[ key ] ) {
+				urlState[ key ] = urlKeysAndDefaults[ key ];
+				doUpdate = true;
+			}
 		} );
+		if ( doUpdate ) {
+			setUrlState( urlState );
+		}
 	};
 
 	const updateHistory = ( newValues ) => {
-		updateState( newValues );
 		updateWindowHistory( newValues, queryStateContext );
+		updateState( newValues );
 	};
 
 	const deleteHistory = ( keys ) => {
-		deleteState( keys );
-		deleteWindowHistory( keys, queryStateContext );
+		removeWindowHistory( keys, queryStateContext );
+		removeState( keys );
 	};
 
 	// Update our state when the use navigates back/forward (history API).
 	useEffect( () => {
 		const updateStateFromUrl = () => {
-			dispatch(
-				reset( initializeState( { urlKeys, queryStateContext } ) )
+			const newInitialState = getInitialState(
+				urlKeysAndDefaults,
+				queryStateContext
 			);
+			const newState = {
+				...urlState,
+				...newInitialState,
+			};
+			initialState.current = newInitialState;
+			setUrlState( newState );
 		};
 
 		if ( hasWindowDependencies ) {
@@ -165,7 +167,11 @@ export const useUrlQueryString = ( urlKeys ) => {
 				window.removeEventListener( 'popstate', updateStateFromUrl );
 			}
 		};
-	}, [ dispatch ] );
+	}, [ urlState ] );
+	const stateSlice = extractSlice(
+		Object.keys( urlKeysAndDefaults ),
+		urlState
+	);
 
-	return [ urlState, updateHistory, deleteHistory ];
+	return [ stateSlice || initialState.current, updateHistory, deleteHistory ];
 };

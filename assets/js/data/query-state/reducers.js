@@ -13,11 +13,11 @@ import { getStateForContext } from './utils';
 const queryStateReducer = ( state = {}, action ) => {
 	const { type, context, queryKey, value } = action;
 	const prevState = getStateForContext( state, context );
+	let prevStateObject;
 	let newState;
 	switch ( type ) {
 		case types.SET_QUERY_KEY_VALUE:
-			const prevStateObject =
-				prevState !== null ? JSON.parse( prevState ) : {};
+			prevStateObject = prevState !== null ? JSON.parse( prevState ) : {};
 
 			// mutate it and JSON.stringify to compare
 			prevStateObject[ queryKey ] = value;
@@ -28,6 +28,18 @@ const queryStateReducer = ( state = {}, action ) => {
 					...state,
 					[ context ]: newState,
 				};
+			}
+			break;
+		case types.REMOVE_QUERY_KEY_VALUE:
+			prevStateObject = prevState !== null ? JSON.parse( prevState ) : {};
+			// remove queryKey
+			if ( prevStateObject[ queryKey ] ) {
+				delete prevStateObject[ queryKey ];
+				newState = JSON.stringify( prevStateObject );
+				return ( state = {
+					...state,
+					[ context ]: newState,
+				} );
 			}
 			break;
 		case types.SET_QUERY_CONTEXT_VALUE:

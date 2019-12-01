@@ -16,6 +16,7 @@ import {
 	useRef,
 } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
+import isShallowEqual from '@wordpress/is-shallow-equal';
 
 /**
  * Internal dependencies
@@ -90,9 +91,7 @@ const AttributeFilterBlock = ( {
 	const [ urlState, updateUrlHistory ] = useUrlQueryString( {
 		[ getAttributeResourceName( attributeObject.id ) ]: [],
 	} );
-
 	const checked = useRef( [] );
-	const hasMounted = useRef( false );
 
 	useEffect( () => {
 		const checkedTerms = productAttributesQuery
@@ -104,25 +103,18 @@ const AttributeFilterBlock = ( {
 		const attributeResourceName = getAttributeResourceName(
 			attributeObject.id
 		);
-		const urlStateHasAttributes =
-			urlState[ attributeResourceName ].length > 0;
-		if ( ! hasMounted.current && urlStateHasAttributes ) {
-			checked.current = Array.from(
-				new Set( [
-					...checkedTerms,
-					...urlState[ attributeResourceName ],
-				] )
-			).sort();
+		const urlStateTerms = urlState[ attributeResourceName ];
+		if ( ! isShallowEqual( urlStateTerms, checkedTerms ) ) {
+			checked.current = urlStateTerms.sort();
 			const query = productAttributesQuery.filter(
-				( { taxonomy } ) => taxonomy !== attributeObject.taxonomy
+				( { attribute } ) => attribute !== attributeObject.taxonomy
 			);
 			query.push( {
 				attribute: attributeObject.taxonomy,
-				operator: attributeObject.operator,
+				operator: blockAttributes.queryType === 'or' ? 'in' : 'and',
 				slug: checked.current,
 			} );
 			setProductAttributesQuery( query );
-			hasMounted.current = true;
 		} else {
 			checked.current = checkedTerms.sort();
 		}
@@ -197,13 +189,6 @@ const AttributeFilterBlock = ( {
 				urlStringTermSlugs.push( term.slug );
 			}
 		} );
-		if ( urlStringTermSlugs.length > 0 ) {
-			updateUrlHistory( {
-				[ getAttributeResourceName(
-					attributeObject.id
-				) ]: urlStringTermSlugs,
-			} );
-		}
 		setDisplayedOptions( newOptions );
 	}, [
 		attributeTerms,

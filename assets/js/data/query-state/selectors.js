@@ -41,11 +41,7 @@ export const getValueForQueryKey = (
  * @return {*} The currently stored query-state for the given context or
  *             defaultValue if not present in state.
  */
-export const getValueForQueryContext = (
-	state,
-	context,
-	defaultValue = {}
-) => {
+export const getValueForQueryContext = ( state, context, defaultValue ) => {
 	const stateContext = getStateForContext( state, context );
 	return stateContext === null ? defaultValue : JSON.parse( stateContext );
 };

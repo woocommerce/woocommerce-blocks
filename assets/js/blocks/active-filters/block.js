@@ -57,23 +57,30 @@ const ActiveFiltersBlock = ( {
 	}, [ minPrice, maxPrice, formatPriceRange ] );
 
 	const activeAttributeFilters = useMemo( () => {
-		return productAttributes.sort().map( ( attribute ) => {
-			const attributeObject = getAttributeFromTaxonomy(
-				attribute.attribute
-			);
-			return (
-				<ActiveAttributeFilters
-					attributeObject={ attributeObject }
-					slugs={ attribute.slug }
-					key={ attribute.attribute }
-				/>
-			);
-		} );
+		return productAttributes
+			.sort()
+			.map( ( attribute ) => {
+				const attributeObject = getAttributeFromTaxonomy(
+					attribute.attribute
+				);
+				return (
+					attribute.slug &&
+					attribute.slug.length > 0 && (
+						<ActiveAttributeFilters
+							attributeObject={ attributeObject }
+							productAttributes={ productAttributes }
+							setProductAttributes={ setProductAttributes }
+							key={ attribute.attribute }
+						/>
+					)
+				);
+			} )
+			.filter( ( activeFilter ) => !! activeFilter );
 	}, [ productAttributes ] );
 
 	const hasFilters = () => {
 		return (
-			productAttributes.length > 0 ||
+			activeAttributeFilters.length > 0 ||
 			Number.isFinite( minPrice ) ||
 			Number.isFinite( maxPrice )
 		);

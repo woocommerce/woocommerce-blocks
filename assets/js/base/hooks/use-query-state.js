@@ -25,7 +25,9 @@ import { useShallowEqual } from './use-shallow-equal';
  *
  * @return {Array} An array that has two elements. The first element is the
  *                 query state value for the given context.  The second element
- *                 is a dispatcher function for setting the query state.
+ *                 is a dispatcher function for setting the query state. If
+ *                 there is not state for the given context, undefined will be
+ *                 the value for the first element.
  */
 export const useQueryStateByContext = ( context ) => {
 	const queryStateContext = useQueryStateContext();
@@ -75,15 +77,18 @@ export const useQueryStateByKey = ( queryKey, defaultValue, context ) => {
 		[ context, queryKey ]
 	);
 
-	const { setQueryValue } = useDispatch( storeKey );
+	const { setQueryValue, removeQueryValue } = useDispatch( storeKey );
 	const setQueryValueByKey = useCallback(
 		( value ) => {
 			setQueryValue( context, queryKey, value );
 		},
 		[ context, queryKey ]
 	);
+	const removeQueryValueByKey = useCallback( () => {
+		removeQueryValue( context );
+	}, [ context, queryKey ] );
 
-	return [ queryValue, setQueryValueByKey ];
+	return [ queryValue, setQueryValueByKey, removeQueryValueByKey ];
 };
 
 /**

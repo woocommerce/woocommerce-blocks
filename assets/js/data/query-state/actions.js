@@ -21,6 +21,13 @@ export const setQueryValue = ( context, queryKey, value ) => {
 	};
 };
 
+export const removeQueryValue = ( context, queryKey ) => {
+	return {
+		type: types.REMOVE_QUERY_KEY_VALUE,
+		queryKey,
+	};
+};
+
 /**
  * Action creator for setting query-state for a given context.
  *

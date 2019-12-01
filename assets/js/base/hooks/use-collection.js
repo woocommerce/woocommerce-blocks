@@ -10,6 +10,19 @@ import { useRef } from '@wordpress/element';
  */
 import { useShallowEqual } from './use-shallow-equal';
 
+// todo also used by use-url-query-string so move to a utils.
+const sortQuery = ( query ) => {
+	if ( ! query ) {
+		return {};
+	}
+	const sortOrder = Object.keys( query ).sort();
+	const newQuery = {};
+	sortOrder.forEach( ( key ) => {
+		newQuery[ key ] = query[ key ];
+	} );
+	return newQuery;
+};
+
 /**
  * This is a custom hook that is wired up to the `wc/store/collections` data
  * store. Given a collections option object, this will ensure a component is
