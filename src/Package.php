@@ -78,7 +78,7 @@ class Package {
 				NewPackage::class,
 				function ( $container ) {
 					// leave for automated version bumping.
-					$version = '2.5.1';
+					$version = '2.5.2';
 					return new NewPackage(
 						$version,
 						WC_BLOCKS_PLUGIN_FILE
