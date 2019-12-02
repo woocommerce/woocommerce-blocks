@@ -34,7 +34,8 @@
 		"test:update": "wp-scripts test-unit-js --updateSnapshot --config tests/js/jest.config.json",
 		"test:watch": "npm run test -- --watch",
 		"env:start": "wp-env start",
-		"env:reset-site": "wp-scripts",
+		"env:reset-site": "wp-env clean",
+		"env:stop": "wp-env stop",
 		"test:e2e": "wp-scripts test-e2e --config tests/e2e/jest.config.js",
 		"size-check": "bundlesize",
 		"changelog": "node ./bin/changelog.js "
@@ -50,6 +51,7 @@
 		"@wordpress/data-controls": "1.3.3",
 		"@wordpress/date": "3.5.0",
 		"@wordpress/dependency-extraction-webpack-plugin": "1.2.0",
+		"@wordpress/e2e-test-utils": "^3.0.0",
 		"@wordpress/editor": "9.7.0",
 		"@wordpress/element": "2.8.0",
 		"@wordpress/env": "^0.1.0",
@@ -91,6 +93,7 @@
 		"prettier": "git+https://github.com/Automattic/wp-prettier.git#wp-prettier-1.17.0",
 		"progress-bar-webpack-plugin": "1.12.1",
 		"promptly": "3.0.3",
+		"puppeteer": "^2.0.0",
 		"react-test-renderer": "16.12.0",
 		"request-promise": "4.2.5",
 		"rimraf": "3.0.0",
@@ -109,11 +112,9 @@
 	},
 	"dependencies": {
 		"@woocommerce/components": "3.2.0",
-		"@wordpress/e2e-test-utils": "^3.0.0",
 		"compare-versions": "3.5.1",
 		"eslint-plugin-woocommerce": "file:bin/eslint-plugin-woocommerce",
 		"gridicons": "3.3.1",
-		"puppeteer": "^2.0.0",
 		"react-number-format": "4.3.1",
 		"trim-html": "0.1.9",
 		"use-debounce": "3.1.0"
