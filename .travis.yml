@@ -65,3 +65,7 @@ jobs:
           script:
             - npm install
             - npm run build:ci
+        - name: Run E2E tests
+          script:
+            - npm install
+            - npm run test:e2e --
