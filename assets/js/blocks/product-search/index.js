@@ -113,7 +113,7 @@ registerBlockType( 'woocommerce/product-search', {
 						/>
 					</PanelBody>
 				</InspectorControls>
-				<Block { ...props } isEditor />
+				<Block { ...props } isEditor={ true } />
 			</Fragment>
 		);
 	},
