@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { useQueryStateByKey } from '@woocommerce/base-hooks';
 import { useMemo, Fragment } from '@wordpress/element';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
 /**
  * Internal dependencies
@@ -113,6 +114,17 @@ const ActiveFiltersBlock = ( {
 			</div>
 		</Fragment>
 	);
+};
+
+ActiveFiltersBlock.propTypes = {
+	/**
+	 * The attributes for this block.
+	 */
+	attributes: PropTypes.object.isRequired,
+	/**
+	 * Whether it's in the editor or frontend display.
+	 */
+	isEditor: PropTypes.bool,
 };
 
 export default ActiveFiltersBlock;

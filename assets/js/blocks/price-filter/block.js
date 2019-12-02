@@ -10,6 +10,7 @@ import { Fragment, useCallback, useState, useEffect } from '@wordpress/element';
 import PriceSlider from '@woocommerce/base-components/price-slider';
 import { CURRENCY } from '@woocommerce/settings';
 import { useDebouncedCallback } from 'use-debounce';
+import PropTypes from 'prop-types';
 
 /**
  * Component displaying a price filter.
@@ -122,6 +123,17 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 			</div>
 		</Fragment>
 	);
+};
+
+PriceFilterBlock.propTypes = {
+	/**
+	 * The attributes for this block.
+	 */
+	attributes: PropTypes.object.isRequired,
+	/**
+	 * Whether it's in the editor or frontend display.
+	 */
+	isEditor: PropTypes.bool,
 };
 
 export default PriceFilterBlock;
