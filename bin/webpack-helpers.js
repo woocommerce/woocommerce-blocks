@@ -95,9 +95,11 @@ const getAlias = ( options = {} ) => {
 	};
 };
 
+// TODO suggest we move this out to its own file at repo root, it feels buried here
 const mainEntry = {
 	// Shared blocks code
 	blocks: './assets/js/index.js',
+
 	// Blocks
 	'handpicked-products': './assets/js/blocks/handpicked-products/index.js',
 	'product-best-sellers': './assets/js/blocks/product-best-sellers/index.js',
@@ -123,6 +125,9 @@ const mainEntry = {
 	'active-filters': './assets/js/blocks/active-filters/index.js',
 	'block-error-boundary':
 		'./assets/js/base/components/block-error-boundary/style.scss',
+
+	// cart & checkout blocks
+	cart: './assets/js/blocks/cart-checkout/cart/index.js',
 };
 
 const frontEndEntry = {
