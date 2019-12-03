@@ -9,9 +9,9 @@ import { registerBlockType } from '@wordpress/blocks';
  * Internal dependencies
  */
 import Block from './block';
-
+import { example } from './example';
 /**
- * Register and run the "Featured Product" block.
+ * Register and run the Cart block.
  */
 registerBlockType( 'woocommerce/cart', {
 	title: __( 'Cart', 'woo-gutenberg-products-block' ),
@@ -26,6 +26,7 @@ registerBlockType( 'woocommerce/cart', {
 		align: [ 'wide', 'full' ],
 		html: false,
 	},
+	example,
 	attributes: {},
 
 	/**
