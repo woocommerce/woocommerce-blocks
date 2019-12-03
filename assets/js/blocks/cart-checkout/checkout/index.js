@@ -7,7 +7,8 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import edit from './edit.js.js';
+import edit from './edit';
+import { example } from './example';
 
 registerBlockType( 'woocommerce/checkout', {
 	title: __( 'Checkout', 'woo-gutenberg-products-block' ),
@@ -24,11 +25,7 @@ registerBlockType( 'woocommerce/checkout', {
 		'woo-gutenberg-products-block'
 	),
 	supports: {},
-	example: {
-		attributes: {
-			isPreview: true,
-		},
-	},
+	example,
 	attributes: {
 		/**
 		 * Are we previewing?
