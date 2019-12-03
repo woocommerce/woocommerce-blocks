@@ -230,8 +230,7 @@ const AttributeFilterBlock = ( {
 					),
 					filterAddedName,
 					filterRemovedName
-				),
-				'assertive'
+				)
 			);
 		} else if ( filterAddedName ) {
 			speak(
@@ -239,8 +238,7 @@ const AttributeFilterBlock = ( {
 					// translators: %s attribute term (for example: 'red', 'blue', 'large'...)
 					__( '%s filter added.', 'woo-gutenberg-products-block' ),
 					filterAddedName
-				),
-				'assertive'
+				)
 			);
 		} else if ( filterRemovedName ) {
 			speak(
@@ -248,8 +246,7 @@ const AttributeFilterBlock = ( {
 					// translators: %s attribute term (for example: 'red', 'blue', 'large'...)
 					__( '%s filter removed.', 'woo-gutenberg-products-block' ),
 					filterRemovedName
-				),
-				'assertive'
+				)
 			);
 		}
 	};
