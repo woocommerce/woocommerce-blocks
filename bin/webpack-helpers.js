@@ -95,7 +95,6 @@ const getAlias = ( options = {} ) => {
 	};
 };
 
-// TODO suggest we move this out to its own file at repo root, it feels buried here
 const mainEntry = {
 	// Shared blocks code
 	blocks: './assets/js/index.js',
@@ -136,6 +135,7 @@ const frontEndEntry = {
 	'price-filter': './assets/js/blocks/price-filter/frontend.js',
 	'attribute-filter': './assets/js/blocks/attribute-filter/frontend.js',
 	'active-filters': './assets/js/blocks/active-filters/frontend.js',
+	cart: './assets/js/blocks/cart-checkout/cart/frontend.js',
 };
 
 const getEntryConfig = ( main = true, exclude = [] ) => {
