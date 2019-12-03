@@ -224,6 +224,7 @@ const AttributeFilterBlock = ( {
 			speak(
 				sprintf(
 					__(
+						// translators: %s attribute terms (for example: 'red', 'blue', 'large'...)
 						'%s filter replaced with %s.',
 						'woo-gutenberg-products-block'
 					),
@@ -235,6 +236,7 @@ const AttributeFilterBlock = ( {
 		} else if ( filterAddedName ) {
 			speak(
 				sprintf(
+					// translators: %s attribute term (for example: 'red', 'blue', 'large'...)
 					__( '%s filter added.', 'woo-gutenberg-products-block' ),
 					filterAddedName
 				),
@@ -243,6 +245,7 @@ const AttributeFilterBlock = ( {
 		} else if ( filterRemovedName ) {
 			speak(
 				sprintf(
+					// translators: %s attribute term (for example: 'red', 'blue', 'large'...)
 					__( '%s filter removed.', 'woo-gutenberg-products-block' ),
 					filterRemovedName
 				),
