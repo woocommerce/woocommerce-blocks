@@ -12,9 +12,9 @@ import edit from './edit.js';
 registerBlockType( 'woocommerce/checkout', {
 	title: __( 'Checkout', 'woo-gutenberg-products-block' ),
 	icon: {
-		// TODO: Replace this once we have an icon for the checkout
+		// @todo: Replace this once we have an icon for the checkout
 		src: 'cart',
-		// TODO: Revert this to #96588a once we have an icon for the checkout
+		// @todo: Revert this to #96588a once we have an icon for the checkout
 		foreground: '#555d66',
 	},
 	category: 'woocommerce',
