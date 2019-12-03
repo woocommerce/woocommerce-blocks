@@ -1,16 +1,13 @@
 /**
  * External dependencies
  */
-import { Fragment } from '@wordpress/element';
 import { Placeholder } from '@wordpress/components';
 
 /**
- * Component to handle edit mode of "Featured Product".
+ * Component to handle edit mode of "Cart Block".
  */
 const Cart = () => {
-	return <Fragment>
-		<Placeholder>Cart block coming soon…</Placeholder>
-	</Fragment>;
+	return <Placeholder>Cart block coming soon…</Placeholder>;
 };
 
 Cart.propTypes = {};
