@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { Fragment } from '@wordpress/element';
 import { Placeholder } from '@wordpress/components';
 
 /**
@@ -14,11 +13,7 @@ import './style.scss';
  */
 const Block = () => {
 	return (
-		<Fragment>
-			<Placeholder>
-				Checkout block coming soon to store near you
-			</Placeholder>
-		</Fragment>
+		<Placeholder>Checkout block coming soon to store near you</Placeholder>
 	);
 };
 
