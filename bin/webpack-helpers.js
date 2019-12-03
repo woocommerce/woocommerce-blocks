@@ -121,7 +121,7 @@ const mainEntry = {
 	'price-filter': './assets/js/blocks/price-filter/index.js',
 	'attribute-filter': './assets/js/blocks/attribute-filter/index.js',
 	'active-filters': './assets/js/blocks/active-filters/index.js',
-	checkout: './assets/js/blocks/checkout/index.js',
+	checkout: './assets/js/blocks/cart-checkout/checkout/index.js',
 	'block-error-boundary':
 		'./assets/js/base/components/block-error-boundary/style.scss',
 };
@@ -132,7 +132,7 @@ const frontEndEntry = {
 	'price-filter': './assets/js/blocks/price-filter/frontend.js',
 	'attribute-filter': './assets/js/blocks/attribute-filter/frontend.js',
 	'active-filters': './assets/js/blocks/active-filters/frontend.js',
-	checkout: './assets/js/blocks/checkout/frontend.js',
+	checkout: './assets/js/blocks/cart-checkout/checkout/frontend.js',
 };
 
 const getEntryConfig = ( main = true, exclude = [] ) => {

@@ -7,7 +7,7 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import edit from './edit.js';
+import edit from './edit.js.js';
 
 registerBlockType( 'woocommerce/checkout', {
 	title: __( 'Checkout', 'woo-gutenberg-products-block' ),
