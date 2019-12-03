@@ -37,7 +37,7 @@ class Cart extends AbstractBlock {
 	}
 
 	/**
-	 * Append frontend scripts when rendering the Product Categories List block.
+	 * Append frontend scripts when rendering the Cart block.
 	 *
 	 * @param array  $attributes Block attributes. Default empty array.
 	 * @param string $content    Block content. Default empty string.
