@@ -25,6 +25,7 @@ class Assets {
 		add_action( 'init', array( __CLASS__, 'register_assets' ) );
 		add_action( 'body_class', array( __CLASS__, 'add_theme_body_class' ), 1 );
 		add_filter( 'woocommerce_shared_settings', array( __CLASS__, 'get_wc_block_data' ) );
+		add_filter( 'allowed_block_types', array( __CLASS__, 'filter_out_restricted_blocks' ), 20, 2 );
 	}
 
 	/**
@@ -83,6 +84,27 @@ class Assets {
 		return $classes;
 	}
 
+	/**
+	 * Returns a new block list excluding some restricted blocks.
+	 *
+	 * This is used to remove the Checkout and Cart block from other pages.
+	 *
+	 * @param array  $allowed_block_types The original settings array from the filter.
+	 * @param object $post The current post.
+	 *
+	 * @since $VID:$
+	 */
+	public static function filter_out_restricted_blocks( $allowed_block_types, $post ) {
+		$checkout_page_id = (int) get_option( 'woocommerce_checkout_page_id' );
+
+		if ( $post->ID !== $checkout_page_id ) {
+			$registered_blocks  = array_keys( \WP_Block_Type_Registry::get_instance()->get_all_registered() );
+			$checkout_block_key = array_search( 'woocommerce/checkout', $registered_blocks, true );
+			unset( $registered_blocks[ $checkout_block_key ] );
+			$allowed_block_types = $registered_blocks;
+		}
+		return $allowed_block_types;
+	}
 	/**
 	 * Returns block-related data for enqueued wc-block-settings script.
 	 *
