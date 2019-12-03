@@ -2,7 +2,7 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import { useRef } from '@wordpress/element';
+import { useCallback, useRef } from '@wordpress/element';
 import classNames from 'classnames';
 import Downshift from 'downshift';
 import { __, sprintf } from '@wordpress/i18n';
@@ -42,26 +42,29 @@ const DropdownSelector = ( {
 	 * State reducer for the downshift component.
 	 * See: https://github.com/downshift-js/downshift#statereducer
 	 */
-	const stateReducer = ( state, changes ) => {
-		switch ( changes.type ) {
-			case Downshift.stateChangeTypes.keyDownEnter:
-			case Downshift.stateChangeTypes.clickItem:
-				return {
-					...changes,
-					highlightedIndex: state.highlightedIndex,
-					isOpen: multiple,
-					inputValue: '',
-				};
-			case Downshift.stateChangeTypes.blurInput:
-			case Downshift.stateChangeTypes.mouseUp:
-				return {
-					...changes,
-					inputValue: state.inputValue,
-				};
-			default:
-				return changes;
-		}
-	};
+	const stateReducer = useCallback(
+		( state, changes ) => {
+			switch ( changes.type ) {
+				case Downshift.stateChangeTypes.keyDownEnter:
+				case Downshift.stateChangeTypes.clickItem:
+					return {
+						...changes,
+						highlightedIndex: state.highlightedIndex,
+						isOpen: multiple,
+						inputValue: '',
+					};
+				case Downshift.stateChangeTypes.blurInput:
+				case Downshift.stateChangeTypes.mouseUp:
+					return {
+						...changes,
+						inputValue: state.inputValue,
+					};
+				default:
+					return changes;
+			}
+		},
+		[ multiple ]
+	);
 
 	return (
 		<Downshift

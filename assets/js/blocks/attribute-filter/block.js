@@ -205,86 +205,102 @@ const AttributeFilterBlock = ( {
 		[ attributeTerms ]
 	);
 
-	const getFilterNameFromValue = ( filterValue ) => {
-		const { name } = displayedOptions.find(
-			( option ) => option.value === filterValue
-		);
-
-		return name;
-	};
-
-	const announceFilterChange = ( { filterAdded, filterRemoved } ) => {
-		const filterAddedName = filterAdded
-			? getFilterNameFromValue( filterAdded )
-			: null;
-		const filterRemovedName = filterRemoved
-			? getFilterNameFromValue( filterRemoved )
-			: null;
-		if ( filterAddedName && filterRemovedName ) {
-			speak(
-				sprintf(
-					__(
-						// translators: %s attribute terms (for example: 'red', 'blue', 'large'...)
-						'%s filter replaced with %s.',
-						'woo-gutenberg-products-block'
-					),
-					filterAddedName,
-					filterRemovedName
-				)
-			);
-		} else if ( filterAddedName ) {
-			speak(
-				sprintf(
-					// translators: %s attribute term (for example: 'red', 'blue', 'large'...)
-					__( '%s filter added.', 'woo-gutenberg-products-block' ),
-					filterAddedName
-				)
-			);
-		} else if ( filterRemovedName ) {
-			speak(
-				sprintf(
-					// translators: %s attribute term (for example: 'red', 'blue', 'large'...)
-					__( '%s filter removed.', 'woo-gutenberg-products-block' ),
-					filterRemovedName
-				)
-			);
-		}
-	};
+	const multiple =
+		blockAttributes.displayStyle !== 'dropdown' ||
+		blockAttributes.queryType === 'or';
 
 	/**
 	 * When a checkbox in the list changes, update state.
 	 */
-	const onChange = ( replace ) => ( checkedValue ) => {
-		const previouslyChecked = checked.includes( checkedValue );
-		let newChecked;
+	const onChange = useCallback(
+		( checkedValue ) => {
+			const getFilterNameFromValue = ( filterValue ) => {
+				const { name } = displayedOptions.find(
+					( option ) => option.value === filterValue
+				);
 
-		if ( replace ) {
-			newChecked = previouslyChecked ? [] : [ checkedValue ];
-			const filterAdded = previouslyChecked ? null : checkedValue;
-			const filterRemoved = checked.length === 1 ? checked[ 0 ] : null;
-			announceFilterChange( { filterAdded, filterRemoved } );
-		} else {
-			newChecked = checked.filter( ( value ) => value !== checkedValue );
+				return name;
+			};
 
-			if ( ! previouslyChecked ) {
-				newChecked.push( checkedValue );
-				newChecked.sort();
-				announceFilterChange( { filterAdded: checkedValue } );
+			const announceFilterChange = ( { filterAdded, filterRemoved } ) => {
+				const filterAddedName = filterAdded
+					? getFilterNameFromValue( filterAdded )
+					: null;
+				const filterRemovedName = filterRemoved
+					? getFilterNameFromValue( filterRemoved )
+					: null;
+				if ( filterAddedName && filterRemovedName ) {
+					speak(
+						sprintf(
+							__(
+								// translators: %s attribute terms (for example: 'red', 'blue', 'large'...)
+								'%s filter replaced with %s.',
+								'woo-gutenberg-products-block'
+							),
+							filterAddedName,
+							filterRemovedName
+						)
+					);
+				} else if ( filterAddedName ) {
+					speak(
+						sprintf(
+							// translators: %s attribute term (for example: 'red', 'blue', 'large'...)
+							__(
+								'%s filter added.',
+								'woo-gutenberg-products-block'
+							),
+							filterAddedName
+						)
+					);
+				} else if ( filterRemovedName ) {
+					speak(
+						sprintf(
+							// translators: %s attribute term (for example: 'red', 'blue', 'large'...)
+							__(
+								'%s filter removed.',
+								'woo-gutenberg-products-block'
+							),
+							filterRemovedName
+						)
+					);
+				}
+			};
+
+			const previouslyChecked = checked.includes( checkedValue );
+			let newChecked;
+
+			if ( ! multiple ) {
+				newChecked = previouslyChecked ? [] : [ checkedValue ];
+				const filterAdded = previouslyChecked ? null : checkedValue;
+				const filterRemoved =
+					checked.length === 1 ? checked[ 0 ] : null;
+				announceFilterChange( { filterAdded, filterRemoved } );
 			} else {
-				announceFilterChange( { filterRemoved: checkedValue } );
+				newChecked = checked.filter(
+					( value ) => value !== checkedValue
+				);
+
+				if ( ! previouslyChecked ) {
+					newChecked.push( checkedValue );
+					newChecked.sort();
+					announceFilterChange( { filterAdded: checkedValue } );
+				} else {
+					announceFilterChange( { filterRemoved: checkedValue } );
+				}
 			}
-		}
 
-		const newSelectedTerms = getSelectedTerms( newChecked );
+			const newSelectedTerms = getSelectedTerms( newChecked );
 
-		updateAttributeFilter(
-			productAttributesQuery,
-			setProductAttributesQuery,
-			attributeObject,
-			newSelectedTerms,
-			blockAttributes.queryType === 'or' ? 'in' : 'and'
-		);
-	};
+			updateAttributeFilter(
+				productAttributesQuery,
+				setProductAttributesQuery,
+				attributeObject,
+				newSelectedTerms,
+				blockAttributes.queryType === 'or' ? 'in' : 'and'
+			);
+		},
+		[ displayedOptions, multiple ]
+	);
 
 	if ( displayedOptions.length === 0 && ! attributeTermsLoading ) {
 		return null;
@@ -307,10 +323,8 @@ const AttributeFilterBlock = ( {
 						className={ 'wc-block-attribute-filter-dropdown' }
 						inputLabel={ blockAttributes.heading }
 						isLoading={ isLoading }
-						multiple={ blockAttributes.queryType === 'or' }
-						onChange={ onChange(
-							blockAttributes.queryType !== 'or'
-						) }
+						multiple={ multiple }
+						onChange={ onChange }
 						options={ displayedOptions }
 					/>
 				) : (
@@ -318,7 +332,7 @@ const AttributeFilterBlock = ( {
 						className={ 'wc-block-attribute-filter-list' }
 						options={ displayedOptions }
 						checked={ checked }
-						onChange={ onChange( false ) }
+						onChange={ onChange }
 						isLoading={ isLoading }
 						isDisabled={ isDisabled }
 					/>
