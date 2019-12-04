@@ -33,13 +33,13 @@ class CartItemSchema extends AbstractSchema {
 	 */
 	protected function get_properties() {
 		return [
-			'key'        => array(
+			'key'           => array(
 				'description' => __( 'Unique identifier for the item within the cart.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
-			'id'         => array(
+			'id'            => array(
 				'description' => __( 'The cart item product or variation ID.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit' ),
@@ -49,7 +49,7 @@ class CartItemSchema extends AbstractSchema {
 					'validate_callback' => array( $this, 'product_id_exists' ),
 				),
 			),
-			'quantity'   => array(
+			'quantity'      => array(
 				'description' => __( 'Quantity of this item in the cart.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit' ),
@@ -58,26 +58,26 @@ class CartItemSchema extends AbstractSchema {
 					'sanitize_callback' => 'wc_stock_amount',
 				),
 			),
-			'name'       => array(
+			'name'          => array(
 				'description' => __( 'Product name.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
-			'sku'        => array(
+			'sku'           => array(
 				'description' => __( 'Stock keeping unit, if applicable.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
-			'permalink'  => array(
+			'permalink'     => array(
 				'description' => __( 'Product URL.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'format'      => 'uri',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
-			'images'     => array(
+			'images'        => array(
 				'description' => __( 'List of images.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
 				'context'     => array( 'view', 'edit' ),
@@ -113,19 +113,37 @@ class CartItemSchema extends AbstractSchema {
 					),
 				),
 			),
-			'price'      => array(
+			'price'         => array(
 				'description' => __( 'Current product price.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
-			'line_price' => array(
-				'description' => __( 'Current line price.', 'woo-gutenberg-products-block' ),
+			'line_price'    => array(
+				'description' => __( 'Line price subtotal (excluding any discounts).', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
-			'variation'  => array(
+			'line_subtotal' => array(
+				'description' => __( 'Line price subtotal including coupons and discounts.', 'woo-gutenberg-products-block' ),
+				'type'        => 'string',
+				'context'     => array( 'view', 'edit' ),
+				'readonly'    => true,
+			),
+			'line_saving'   => array(
+				'description' => __( 'Line price discount amount.', 'woo-gutenberg-products-block' ),
+				'type'        => 'string',
+				'context'     => array( 'view', 'edit' ),
+				'readonly'    => true,
+			),
+			'show_saving'   => array(
+				'description' => __( 'True if the line has a discount applied.', 'woo-gutenberg-products-block' ),
+				'type'        => 'boolean',
+				'context'     => array( 'view', 'edit' ),
+				'readonly'    => true,
+			),
+			'variation'     => array(
 				'description' => __( 'Chosen attributes (for variations).', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => array( 'view', 'edit' ),
