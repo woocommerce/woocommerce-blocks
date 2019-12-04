@@ -5,7 +5,7 @@
 }
 
 .wc-block-dropdown-selector__input-wrapper {
-	align-items: baseline;
+	align-items: center;
 	border: 1px solid #9f9f9f;
 	border-radius: 4px;
 	cursor: text;
@@ -82,12 +82,15 @@
 		background-color: transparent;
 		border: 0;
 		color: inherit;
+		font-size: inherit;
 		font-weight: inherit;
+		text-transform: initial;
 
 		&:hover,
 		&:focus,
 		&:active {
 			background-color: transparent;
+			text-decoration: none;
 		}
 	}
 
@@ -95,7 +98,6 @@
 		align-items: center;
 		color: $core-grey-dark-600;
 		display: inline-flex;
-		font-size: 0.8em;
 		height: 1.8em;
 		padding: 1.5px 1.5px 1.5px 4px;
 		width: 100%;
@@ -108,7 +110,6 @@
 		border-radius: 4px;
 		color: $core-grey-dark-600;
 		display: inline-flex;
-		font-size: 0.8em;
 		height: 1.8em;
 		margin: 1.5px;
 		padding: 0 0 0 4px;
@@ -125,6 +126,7 @@
 
 	.wc-block-dropdown-selector__selected-value__label,
 	.wc-block-dropdown-selector__selected-chip__label {
+		font-size: 0.8em;
 		flex-grow: 1;
 		padding: 0;
 		text-align: left;
