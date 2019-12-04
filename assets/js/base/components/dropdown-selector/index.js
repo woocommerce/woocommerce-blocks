@@ -134,8 +134,9 @@ const DropdownSelector = ( {
 								inputRef.current.focus();
 							} }
 							placeholder={
-								checked.length === 0 && multiple
-									? sprintf(
+								checked.length > 0 && multiple
+									? null
+									: sprintf(
 											// Translators: %s attribute name.
 											__(
 												'Any %s',
@@ -143,7 +144,6 @@ const DropdownSelector = ( {
 											),
 											attributeLabel
 									  )
-									: null
 							}
 							value={ inputValue }
 						/>
