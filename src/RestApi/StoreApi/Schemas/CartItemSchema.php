@@ -166,18 +166,27 @@ class CartItemSchema extends AbstractSchema {
 	 * @return array
 	 */
 	public function get_item_response( $cart_item ) {
-		$product = $cart_item['data'];
+		$product  = $cart_item['data'];
+		$price_dp = wc_get_price_decimals();
+
+		$line_subtotal           = $product->get_price() * wc_stock_amount( $cart_item['quantity'] );
+		$line_total_incl_coupons = isset( $cart_item['line_total'] ) ? $cart_item['line_total'] : $line_subtotal;
+		$line_saving             = $line_subtotal - $line_total_incl_coupons;
+
 		return [
-			'key'        => $cart_item['key'],
-			'id'         => $product->get_id(),
-			'quantity'   => wc_stock_amount( $cart_item['quantity'] ),
-			'name'       => $product->get_title(),
-			'sku'        => $product->get_sku(),
-			'permalink'  => $product->get_permalink(),
-			'images'     => ( new ProductImages() )->images_to_array( $product ),
-			'price'      => wc_format_decimal( $product->get_price(), wc_get_price_decimals() ),
-			'line_price' => wc_format_decimal( isset( $cart_item['line_total'] ) ? $cart_item['line_total'] : $product->get_price() * wc_stock_amount( $cart_item['quantity'] ), wc_get_price_decimals() ),
-			'variation'  => $this->format_variation_data( $cart_item['variation'], $product ),
+			'key'           => $cart_item['key'],
+			'id'            => $product->get_id(),
+			'quantity'      => wc_stock_amount( $cart_item['quantity'] ),
+			'name'          => $product->get_title(),
+			'sku'           => $product->get_sku(),
+			'permalink'     => $product->get_permalink(),
+			'images'        => ( new ProductImages() )->images_to_array( $product ),
+			'price'         => wc_format_decimal( $product->get_price(), $price_dp ),
+			'line_price'    => wc_format_decimal( $line_total_incl_coupons, $price_dp ),
+			'line_subtotal' => wc_format_decimal( $line_subtotal, $price_dp ),
+			'line_saving'   => wc_format_decimal( $line_saving, $price_dp ),
+			'show_saving'   => $line_saving > 0,
+			'variation'     => $this->format_variation_data( $cart_item['variation'], $product ),
 		];
 	}
 
