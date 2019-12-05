@@ -1,0 +1,59 @@
+$inner-circle-size: 24px;
+$circle-border-size: 8px;
+$outer-circle-size: $inner-circle-size + (2 * $circle-border-size);
+
+.wc-components-checkout-step {
+	position: relative;
+	border-left: 1px solid $core-grey-light-700;
+	padding-left: $gap-large;
+	padding-bottom: $gap-larger;
+}
+
+.wc-components-checkout-step__heading {
+	display: flex;
+	justify-content: space-between;
+	align-content: center;
+}
+
+// @todo: remove the parent class once we dial the specification down.
+.wc-components-checkout-step__heading .wc-components-checkout-step__title {
+	@include font-size(16, 24px);
+	// @todo: replace this with a variable
+	color: #2c3338;
+	margin-bottom: $gap-smaller;
+	font-weight: 400;
+}
+
+.wc-components-checkout-step__secondary-action {
+	@include font-size(12, 22px);
+	// @todo: replace this with a variable
+	color: #2c3338;
+
+	a {
+		font-weight: bold;
+	}
+}
+.wc-components-checkout-step__description {
+	@include font-size(14, 20px);
+	// @todo: replace this with a variable
+	color: #50575e;
+	// @todo: delete this after we remove placeholders
+	display: block;
+	margin-bottom: $gap-large;
+}
+
+.wc-components-checkout-step__number {
+	position: absolute;
+	width: $inner-circle-size;
+	height: $inner-circle-size;
+	left: -$outer-circle-size / 2;
+	top: -$circle-border-size;
+	background: $core-grey-dark-300;
+	color: $white;
+	font-size: 14px;
+	line-height: $inner-circle-size;
+	text-align: center;
+	border-radius: $outer-circle-size / 2;
+	border: $circle-border-size solid $white;
+	box-sizing: content-box;
+}
