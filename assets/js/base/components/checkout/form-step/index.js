@@ -19,14 +19,12 @@ const FormStep = ( {
 	description,
 	children,
 	secondaryAction,
-	isLastStep,
 } ) => {
 	return (
 		<div
 			className={ classnames( [
 				className,
 				'wc-components-checkout-step',
-				{ 'is-last-step': isLastStep },
 			] ) }
 			id={ id }
 		>
@@ -47,17 +45,15 @@ const StepNumber = ( { stepNumber } ) => {
 		<div className="wc-components-checkout-step__number">
 			<Label
 				label={ stepNumber }
-				screenReaderLabel={
-					sprintf(
-						__(
-							// translators: %s is a step number (1, 2, 3...)
-							'Step %s',
-							'woo-gutenberg-products-block'
-						),
-						stepNumber
-					)
-				}
-		/>
+				screenReaderLabel={ sprintf(
+					__(
+						// translators: %s is a step number (1, 2, 3...)
+						'Step %s',
+						'woo-gutenberg-products-block'
+					),
+					stepNumber
+				) }
+			/>
 		</div>
 	);
 };
@@ -82,7 +78,6 @@ FormStep.propTypes = {
 	description: PropTypes.string,
 	children: PropTypes.node,
 	secondaryAction: PropTypes.node,
-	isLastStep: PropTypes.bool,
 };
 
 export default FormStep;

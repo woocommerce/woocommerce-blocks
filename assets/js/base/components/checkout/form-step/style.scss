@@ -15,7 +15,7 @@ $gray-80: #2c3338;
 	padding-left: $gap-large;
 	padding-bottom: $gap-larger;
 
-	&.is-last-step {
+	&:last-child {
 		border-left: none;
 	}
 }
