@@ -2,7 +2,7 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import { Fragment } from 'react';
+import { Fragment, isValidElement } from 'react';
 import classNames from 'classnames';
 
 /**
@@ -18,7 +18,7 @@ const Label = ( {
 } ) => {
 	let Wrapper;
 
-	if ( ! label && screenReaderLabel ) {
+	if ( ! isValidElement( label ) && isValidElement( screenReaderLabel ) ) {
 		Wrapper = wrapperElement || 'span';
 		wrapperProps = {
 			...wrapperProps,
@@ -33,7 +33,11 @@ const Label = ( {
 
 	Wrapper = wrapperElement || Fragment;
 
-	if ( label && screenReaderLabel && label !== screenReaderLabel ) {
+	if (
+		isValidElement( label ) &&
+		isValidElement( screenReaderLabel ) &&
+		label !== screenReaderLabel
+	) {
 		return (
 			<Wrapper { ...wrapperProps }>
 				<span aria-hidden="true">{ label }</span>

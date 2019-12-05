@@ -8,6 +8,7 @@ import {
 	useQueryStateByKey,
 	useQueryStateByContext,
 	useCollectionData,
+	useShallowEqual,
 } from '@woocommerce/base-hooks';
 import {
 	useCallback,
@@ -19,13 +20,15 @@ import {
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
 import DropdownSelector from '@woocommerce/base-components/dropdown-selector';
 import Label from '@woocommerce/base-components/label';
+import SubmitButton from '@woocommerce/base-components/submit-button';
+import isShallowEqual from '@wordpress/is-shallow-equal';
 
 /**
  * Internal dependencies
  */
-import './style.scss';
 import { getAttributeFromID } from '../../utils/attributes';
 import { updateAttributeFilter } from '../../utils/attributes-query';
+import './style.scss';
 
 /**
  * Component displaying an attribute filter.
@@ -77,6 +80,7 @@ const AttributeFilterBlock = ( {
 					label: 'Preview',
 			  }
 			: getAttributeFromID( blockAttributes.attributeId );
+	const [ checked, setChecked ] = useState( [] );
 	const [ displayedOptions, setDisplayedOptions ] = useState(
 		blockAttributes.isPreview && ! blockAttributes.attributeId
 			? [
@@ -105,7 +109,7 @@ const AttributeFilterBlock = ( {
 		setProductAttributesQuery,
 	] = useQueryStateByKey( 'attributes', [] );
 
-	const checked = useMemo( () => {
+	const checkedQuery = useMemo( () => {
 		return productAttributesQuery
 			.filter(
 				( attribute ) =>
@@ -157,6 +161,17 @@ const AttributeFilterBlock = ( {
 	 * Compare intersection of all terms and filtered counts to get a list of options to display.
 	 */
 	useEffect( () => {
+		const isAttributeInRequest = ( termSlug ) => {
+			if ( ! queryState || ! queryState.attributes ) {
+				return false;
+			}
+			return queryState.attributes.some(
+				( { attribute, slug = [] } ) =>
+					attribute === attributeObject.taxonomy &&
+					slug.includes( termSlug )
+			);
+		};
+
 		if ( attributeTermsLoading || filteredCountsLoading ) {
 			return;
 		}
@@ -165,13 +180,17 @@ const AttributeFilterBlock = ( {
 
 		attributeTerms.forEach( ( term ) => {
 			const filteredTerm = getFilteredTerm( term.id );
-			const isChecked = checked.includes( term.slug );
-			const count = filteredTerm ? filteredTerm.count : null;
 
 			// If there is no match this term doesn't match the current product collection - only render if checked.
-			if ( ! filteredTerm && ! isChecked ) {
+			if (
+				! filteredTerm &&
+				! checked.includes( term.slug ) &&
+				! isAttributeInRequest( term.slug )
+			) {
 				return;
 			}
+
+			const count = filteredTerm ? filteredTerm.count : 0;
 
 			newOptions.push( {
 				value: term.slug,
@@ -182,12 +201,14 @@ const AttributeFilterBlock = ( {
 
 		setDisplayedOptions( newOptions );
 	}, [
+		attributeObject.taxonomy,
 		attributeTerms,
 		attributeTermsLoading,
 		filteredCountsLoading,
 		getFilteredTerm,
 		getLabel,
 		checked,
+		queryState,
 	] );
 
 	/**
@@ -203,6 +224,36 @@ const AttributeFilterBlock = ( {
 			}, [] );
 		},
 		[ attributeTerms ]
+	);
+
+	const onSubmit = () => {
+		updateAttributeFilter(
+			productAttributesQuery,
+			setProductAttributesQuery,
+			attributeObject,
+			getSelectedTerms( checked ),
+			blockAttributes.queryType === 'or' ? 'in' : 'and'
+		);
+	};
+
+	// Track checked STATE changes - if state changes, update the query.
+	useEffect( () => {
+		if ( ! blockAttributes.showFilterButton ) {
+			onSubmit();
+		}
+	}, [ checked, onSubmit ] );
+
+	const curentCheckedQuery = useShallowEqual( checkedQuery );
+
+	// Track ATTRIBUTES QUERY changes so the block reflects current filters.
+	useEffect(
+		() => {
+			if ( ! isShallowEqual( checked, checkedQuery ) ) {
+				setChecked( checkedQuery );
+			}
+		},
+		// We only want to apply this effect when the query changes, so we are intentionally leaving `checked` out of the dependencies.
+		[ curentCheckedQuery ]
 	);
 
 	const multiple =
@@ -289,17 +340,9 @@ const AttributeFilterBlock = ( {
 				}
 			}
 
-			const newSelectedTerms = getSelectedTerms( newChecked );
-
-			updateAttributeFilter(
-				productAttributesQuery,
-				setProductAttributesQuery,
-				attributeObject,
-				newSelectedTerms,
-				blockAttributes.queryType === 'or' ? 'in' : 'and'
-			);
+			setChecked( newChecked );
 		},
-		[ displayedOptions, multiple ]
+		[ checked, displayedOptions, multiple ]
 	);
 
 	if ( displayedOptions.length === 0 && ! attributeTermsLoading ) {
@@ -335,6 +378,13 @@ const AttributeFilterBlock = ( {
 						onChange={ onChange }
 						isLoading={ isLoading }
 						isDisabled={ isDisabled }
+					/>
+				) }
+				{ blockAttributes.showFilterButton && (
+					<SubmitButton
+						className="wc-block-attribute-filter__button"
+						disabled={ isLoading || isDisabled }
+						onClick={ onSubmit }
 					/>
 				) }
 			</div>

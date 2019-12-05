@@ -39,6 +39,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 		isPreview,
 		queryType,
 		showCounts,
+		showFilterButton,
 	} = attributes;
 
 	const [ isEditing, setIsEditing ] = useState(
@@ -177,6 +178,35 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 						onChange={ ( value ) =>
 							setAttributes( {
 								displayStyle: value,
+							} )
+						}
+					/>
+					<ToggleControl
+						label={ __(
+							'Filter button',
+							'woo-gutenberg-products-block'
+						) }
+						help={ () => {
+							if ( showFilterButton ) {
+								return __(
+									'Results will only update when the button is pressed.',
+									'woo-gutenberg-products-block'
+								);
+							}
+							return displayStyle === 'list'
+								? __(
+										'Results will update when the options are checked.',
+										'woo-gutenberg-products-block'
+								  )
+								: __(
+										'Results will update when the options are selected.',
+										'woo-gutenberg-products-block'
+								  );
+						} }
+						checked={ showFilterButton }
+						onChange={ ( value ) =>
+							setAttributes( {
+								showFilterButton: value,
 							} )
 						}
 					/>
