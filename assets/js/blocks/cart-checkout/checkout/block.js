@@ -25,7 +25,7 @@ const Block = () => {
 					'woo-gutenberg-products-block'
 				) }
 				description={ __(
-					'We’ll use this email to send you details and updates about your order.',
+					'We\'ll use this email to send you details and updates about your order.',
 					'woo-gutenberg-products-block'
 				) }
 				stepNumber={ 1 }

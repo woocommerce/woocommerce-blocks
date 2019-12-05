@@ -12,10 +12,7 @@ import './style.scss';
 const CheckoutForm = ( { className, children } ) => {
 	return (
 		<form
-			className={ classnames(
-				'wc-components-checkout-form',
-				className,
-			) }
+			className={ classnames( 'wc-components-checkout-form', className ) }
 		>
 			{ children }
 		</form>
