@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { __, _n, sprintf } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
 import {
 	useCollection,
@@ -19,7 +19,6 @@ import {
 } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
 import DropdownSelector from '@woocommerce/base-components/dropdown-selector';
-import Label from '@woocommerce/base-components/label';
 import SubmitButton from '@woocommerce/base-components/submit-button';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 
@@ -28,6 +27,8 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
  */
 import { getAttributeFromID } from '../../utils/attributes';
 import { updateAttributeFilter } from '../../utils/attributes-query';
+import Label from './label';
+import { previewAttributeObject, previewOptions } from './preview';
 import './style.scss';
 
 /**
@@ -37,69 +38,15 @@ const AttributeFilterBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
 } ) => {
-	/**
-	 * Get the label for an attribute term filter.
-	 */
-	const getLabel = useCallback(
-		( name, count ) => {
-			return (
-				<Fragment>
-					{ name }
-					{ blockAttributes.showCounts && count !== null && (
-						<Label
-							label={ count }
-							screenReaderLabel={ sprintf(
-								// translators: %s number of products.
-								_n(
-									'%s product',
-									'%s products',
-									count,
-									'woo-gutenberg-products-block'
-								),
-								count
-							) }
-							wrapperElement="span"
-							wrapperProps={ {
-								className:
-									'wc-block-attribute-filter-list-count',
-							} }
-						/>
-					) }
-				</Fragment>
-			);
-		},
-		[ blockAttributes ]
-	);
-
 	const attributeObject =
 		blockAttributes.isPreview && ! blockAttributes.attributeId
-			? {
-					id: 0,
-					name: 'preview',
-					taxonomy: 'preview',
-					label: 'Preview',
-			  }
+			? previewAttributeObject
 			: getAttributeFromID( blockAttributes.attributeId );
+
 	const [ checked, setChecked ] = useState( [] );
 	const [ displayedOptions, setDisplayedOptions ] = useState(
 		blockAttributes.isPreview && ! blockAttributes.attributeId
-			? [
-					{
-						value: 'preview-1',
-						name: 'Blue',
-						label: getLabel( 'Blue', 3 ),
-					},
-					{
-						value: 'preview-2',
-						name: 'Green',
-						label: getLabel( 'Green', 3 ),
-					},
-					{
-						value: 'preview-3',
-						name: 'Red',
-						label: getLabel( 'Red', 2 ),
-					},
-			  ]
+			? previewOptions
 			: []
 	);
 
@@ -108,15 +55,6 @@ const AttributeFilterBlock = ( {
 		productAttributesQuery,
 		setProductAttributesQuery,
 	] = useQueryStateByKey( 'attributes', [] );
-
-	const checkedQuery = useMemo( () => {
-		return productAttributesQuery
-			.filter(
-				( attribute ) =>
-					attribute.attribute === attributeObject.taxonomy
-			)
-			.flatMap( ( attribute ) => attribute.slug );
-	}, [ productAttributesQuery, attributeObject ] );
 
 	const {
 		results: attributeTerms,
@@ -161,7 +99,10 @@ const AttributeFilterBlock = ( {
 	 * Compare intersection of all terms and filtered counts to get a list of options to display.
 	 */
 	useEffect( () => {
-		const isAttributeInRequest = ( termSlug ) => {
+		/**
+		 * Checks if a term slug is in the query state.
+		 */
+		const isTermInQueryState = ( termSlug ) => {
 			if ( ! queryState || ! queryState.attributes ) {
 				return false;
 			}
@@ -176,40 +117,65 @@ const AttributeFilterBlock = ( {
 			return;
 		}
 
-		const newOptions = [];
+		const newOptions = attributeTerms
+			.map( ( term ) => {
+				const filteredTerm = getFilteredTerm( term.id );
 
-		attributeTerms.forEach( ( term ) => {
-			const filteredTerm = getFilteredTerm( term.id );
+				// If there is no match this term doesn't match the current product collection - only render if checked.
+				if (
+					! filteredTerm &&
+					! checked.includes( term.slug ) &&
+					! isTermInQueryState( term.slug )
+				) {
+					return null;
+				}
 
-			// If there is no match this term doesn't match the current product collection - only render if checked.
-			if (
-				! filteredTerm &&
-				! checked.includes( term.slug ) &&
-				! isAttributeInRequest( term.slug )
-			) {
-				return;
-			}
+				const count = filteredTerm ? filteredTerm.count : 0;
 
-			const count = filteredTerm ? filteredTerm.count : 0;
-
-			newOptions.push( {
-				value: term.slug,
-				name: term.name,
-				label: getLabel( term.name, count ),
-			} );
-		} );
+				return {
+					value: term.slug,
+					name: term.name,
+					label: (
+						<Label
+							name={ term.name }
+							count={ blockAttributes.showCounts ? count : null }
+						/>
+					),
+				};
+			} )
+			.filter( Boolean );
 
 		setDisplayedOptions( newOptions );
 	}, [
 		attributeObject.taxonomy,
 		attributeTerms,
 		attributeTermsLoading,
+		blockAttributes.showCounts,
 		filteredCountsLoading,
 		getFilteredTerm,
-		getLabel,
 		checked,
-		queryState,
+		queryState.attributes,
 	] );
+
+	// Track checked STATE changes - if state changes, update the query.
+	useEffect( () => {
+		if ( ! blockAttributes.showFilterButton ) {
+			onSubmit();
+		}
+	}, [ checked, onSubmit ] );
+
+	const curentCheckedQuery = useShallowEqual( checkedQuery );
+
+	// Track ATTRIBUTES QUERY changes so the block reflects current filters.
+	useEffect(
+		() => {
+			if ( ! isShallowEqual( checked, checkedQuery ) ) {
+				setChecked( checkedQuery );
+			}
+		},
+		// We only want to apply this effect when the query changes, so we are intentionally leaving `checked` out of the dependencies.
+		[ curentCheckedQuery ]
+	);
 
 	/**
 	 * Returns an array of term objects that have been chosen via the checkboxes.
@@ -236,25 +202,13 @@ const AttributeFilterBlock = ( {
 		);
 	};
 
-	// Track checked STATE changes - if state changes, update the query.
-	useEffect( () => {
-		if ( ! blockAttributes.showFilterButton ) {
-			onSubmit();
-		}
-	}, [ checked, onSubmit ] );
-
-	const curentCheckedQuery = useShallowEqual( checkedQuery );
-
-	// Track ATTRIBUTES QUERY changes so the block reflects current filters.
-	useEffect(
-		() => {
-			if ( ! isShallowEqual( checked, checkedQuery ) ) {
-				setChecked( checkedQuery );
-			}
-		},
-		// We only want to apply this effect when the query changes, so we are intentionally leaving `checked` out of the dependencies.
-		[ curentCheckedQuery ]
-	);
+	const checkedQuery = useMemo( () => {
+		return productAttributesQuery
+			.filter(
+				( { attribute } ) => attribute === attributeObject.taxonomy
+			)
+			.flatMap( ( { slug } ) => slug );
+	}, [ productAttributesQuery, attributeObject.taxonomy ] );
 
 	const multiple =
 		blockAttributes.displayStyle !== 'dropdown' ||

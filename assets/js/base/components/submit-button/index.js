@@ -18,7 +18,7 @@ const SubmitButton = ( { className, disabled, onClick } ) => {
 			disabled={ disabled }
 			onClick={ onClick }
 		>
-			{ // translators: Submit button text for the filters.
+			{ // translators: Submit button text for filters.
 			__( 'Go', 'woo-gutenberg-products-block' ) }
 		</button>
 	);
