@@ -1,7 +1,7 @@
 .wc-block-text-toolbar-button {
 	&.is-toggled,
 	&.is-toggled:focus {
-		background: #555d65;
-		color: #fff;
+		background: $core-grey-dark-500;
+		color: $white;
 	}
 }
