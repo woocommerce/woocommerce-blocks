@@ -2,6 +2,8 @@
  * External dependencies
  */
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
+
 /**
  * Internal dependencies
  */
@@ -57,4 +59,16 @@ const SecondaryAction = ( { link } ) => (
 		{ link }
 	</span>
 );
+
+FormStep.propTypes = {
+	id: PropTypes.string,
+	className: PropTypes.string,
+	stepNumber: PropTypes.number,
+	title: PropTypes.string,
+	description: PropTypes.string,
+	children: PropTypes.node,
+	secondaryAction: PropTypes.node,
+	isLastStep: PropTypes.bool,
+};
+
 export default FormStep;

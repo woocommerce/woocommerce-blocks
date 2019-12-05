@@ -2,6 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
@@ -18,6 +19,11 @@ const CheckoutForm = ( { className, children } ) => {
 			{ children }
 		</form>
 	);
+};
+
+CheckoutForm.propTypes = {
+	className: PropTypes.string,
+	children: PropTypes.node,
 };
 
 export default CheckoutForm;
