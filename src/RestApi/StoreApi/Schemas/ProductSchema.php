@@ -255,10 +255,10 @@ class ProductSchema extends AbstractSchema {
 	/**
 	 * Convert a WooCommerce product into an object suitable for the response.
 	 *
-	 * @param array $product Product object.
+	 * @param \WC_Product $product Product instance.
 	 * @return array
 	 */
-	public function get_item_response( $product ) {
+	public function get_item_response( \WC_Product $product ) {
 		return [
 			'id'                  => $product->get_id(),
 			'name'                => $product->get_title(),
@@ -285,10 +285,10 @@ class ProductSchema extends AbstractSchema {
 	/**
 	 * If a product has low stock, return the remaining stock amount for display.
 	 *
-	 * @param \WC_Product|\WC_Product_Variation $product Product instance.
+	 * @param \WC_Product $product Product instance.
 	 * @return integer|null
 	 */
-	protected function get_low_stock_remaining( $product ) {
+	protected function get_low_stock_remaining( \WC_Product $product ) {
 		if ( ! is_null( $product->get_stock_quantity() ) && $product->get_stock_quantity() <= wc_get_low_stock_amount( $product ) ) {
 			return $product->get_stock_quantity();
 		}
@@ -298,10 +298,10 @@ class ProductSchema extends AbstractSchema {
 	/**
 	 * Get an array of pricing data.
 	 *
-	 * @param \WC_Product|\WC_Product_Variation $product Product instance.
+	 * @param \WC_Product $product Product instance.
 	 * @return array
 	 */
-	protected function get_prices( $product ) {
+	protected function get_prices( \WC_Product $product ) {
 		$tax_display_mode = get_option( 'woocommerce_tax_display_shop' );
 		$position         = get_option( 'woocommerce_currency_pos' );
 		$symbol           = html_entity_decode( get_woocommerce_currency_symbol() );
@@ -344,10 +344,10 @@ class ProductSchema extends AbstractSchema {
 	/**
 	 * Get price range from certain product types.
 	 *
-	 * @param \WC_Product|\WC_Product_Variation $product Product instance.
+	 * @param \WC_Product $product Product instance.
 	 * @return arary|null
 	 */
-	protected function get_price_range( $product ) {
+	protected function get_price_range( \WC_Product $product ) {
 		if ( $product->is_type( 'variable' ) ) {
 			$prices = $product->get_variation_prices( true );
 
