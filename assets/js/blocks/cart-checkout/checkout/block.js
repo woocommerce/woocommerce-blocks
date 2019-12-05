@@ -19,17 +19,17 @@ const Block = () => {
 	return (
 		<CheckoutForm>
 			<FormStep
+				id="billing-fields"
 				className="wc-blocks-checkout__billing-fields"
 				title={ __(
 					'Contact information',
 					'woo-gutenberg-products-block'
 				) }
 				description={ __(
-					'We\'ll use this email to send you details and updates about your order.',
+					"We'll use this email to send you details and updates about your order.",
 					'woo-gutenberg-products-block'
 				) }
 				stepNumber={ 1 }
-				id="checkout-billing-fields"
 				secondaryAction={
 					<Fragment>
 						{ __(
@@ -45,6 +45,7 @@ const Block = () => {
 				<Placeholder>A checkout step, coming soon near you</Placeholder>
 			</FormStep>
 			<FormStep
+				id="shipping-fields"
 				className="wc-blocks-checkout__shipping-fields"
 				title={ __(
 					'Shipping address',
@@ -55,11 +56,11 @@ const Block = () => {
 					'woo-gutenberg-products-block'
 				) }
 				stepNumber={ 2 }
-				id="checkout-shipping-fields"
 			>
 				<Placeholder>A checkout step, coming soon near you</Placeholder>
 			</FormStep>
 			<FormStep
+				id="shipping-methods"
 				className="wc-blocks-checkout__shipping-methods"
 				title={ __(
 					'Shipping options',
@@ -70,11 +71,11 @@ const Block = () => {
 					'woo-gutenberg-products-block'
 				) }
 				stepNumber={ 3 }
-				id="checkout-shipping-methods"
 			>
 				<Placeholder>A checkout step, coming soon near you</Placeholder>
 			</FormStep>
 			<FormStep
+				id="payment-fields"
 				className="wc-blocks-checkout__payment-fields"
 				title={ __( 'Payment method', 'woo-gutenberg-products-block' ) }
 				description={ __(
@@ -82,7 +83,6 @@ const Block = () => {
 					'woo-gutenberg-products-block'
 				) }
 				stepNumber={ 4 }
-				id="checkout-payment-fields"
 			>
 				<Placeholder>A checkout step, coming soon near you</Placeholder>
 			</FormStep>
