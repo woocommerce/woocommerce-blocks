@@ -9,7 +9,7 @@ import classnames from 'classnames';
  */
 import './style.scss';
 
-function TextToolbarButton( props ) {
+function TextToolbarButton( { className, ...props } ) {
 	const classes = classnames(
 		'wc-block-text-toolbar-button',
 		props.className
