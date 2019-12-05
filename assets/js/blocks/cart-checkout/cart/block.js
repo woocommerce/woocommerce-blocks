@@ -2,9 +2,10 @@
  * External dependencies
  */
 import { BlockControls } from '@wordpress/block-editor';
-import { Button, Toolbar } from '@wordpress/components';
+import { Toolbar } from '@wordpress/components';
 import { Fragment, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+import TextToolbarButton from '@woocommerce/block-components/text-toolbar-button';
 
 /**
  * Internal dependencies
@@ -24,24 +25,24 @@ const Cart = () => {
 
 	const getBlockControls = () => {
 		return (
-			<BlockControls>
+			<BlockControls className='wc-block-cart-toolbar'>
 				<Toolbar>
-					<Button
+					<TextToolbarButton
 						onClick={ toggleFullCartMode }
 						isToggled={ isFullCartMode }>
 						{  __(
 							'Full Cart',
 							'woo-gutenberg-products-block'
 						) }
-					</Button>
-					<Button
+					</TextToolbarButton>
+					<TextToolbarButton
 						onClick={ toggleFullCartMode }
 						isToggled={ ! isFullCartMode }>
 						{  __(
 							'Empty Cart',
 							'woo-gutenberg-products-block'
 						) }
-					</Button>
+					</TextToolbarButton>
 				</Toolbar>
 			</BlockControls>
 		);
