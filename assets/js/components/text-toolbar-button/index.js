@@ -12,7 +12,7 @@ import './style.scss';
 function TextToolbarButton( { className, ...props } ) {
 	const classes = classnames(
 		'wc-block-text-toolbar-button',
-		props.className
+		className
 	);
 	return (
 		<Button className={ classes } { ...props } />
