@@ -22,10 +22,10 @@ const FormStep = ( {
 } ) => {
 	return (
 		<div
-			className={ classnames( [
+			className={ classnames(
 				className,
 				'wc-components-checkout-step',
-			] ) }
+			) }
 			id={ id }
 		>
 			<StepNumber stepNumber={ stepNumber } />
