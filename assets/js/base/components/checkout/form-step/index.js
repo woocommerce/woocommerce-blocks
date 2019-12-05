@@ -3,11 +3,13 @@
  */
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import { __, sprintf } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+import Label from '../../label';
 
 const FormStep = ( {
 	id,
@@ -43,7 +45,19 @@ const FormStep = ( {
 const StepNumber = ( { stepNumber } ) => {
 	return (
 		<div className="wc-components-checkout-step__number">
-			{ stepNumber }
+			<Label
+				label={ stepNumber }
+				screenReaderLabel={
+					sprintf(
+						__(
+							// translators: %s is a step number (1, 2, 3...)
+							'Step %s',
+							'woo-gutenberg-products-block'
+						),
+						stepNumber
+					)
+				}
+		/>
 		</div>
 	);
 };
