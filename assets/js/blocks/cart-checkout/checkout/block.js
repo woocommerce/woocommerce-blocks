@@ -83,6 +83,7 @@ const Block = () => {
 				) }
 				stepNumber={ 4 }
 				id="checkout-payment-fields"
+				isLastStep={ true }
 			>
 				<Placeholder>A checkout step, coming soon near you</Placeholder>
 			</FormStep>

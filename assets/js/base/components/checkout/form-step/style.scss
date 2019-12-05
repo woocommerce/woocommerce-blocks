@@ -7,6 +7,10 @@ $outer-circle-size: $inner-circle-size + (2 * $circle-border-size);
 	border-left: 1px solid $core-grey-light-700;
 	padding-left: $gap-large;
 	padding-bottom: $gap-larger;
+
+	&.is-last-step {
+		border-left: none;
+	}
 }
 
 .wc-components-checkout-step__heading {

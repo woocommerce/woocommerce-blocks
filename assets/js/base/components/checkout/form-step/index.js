@@ -15,12 +15,14 @@ const FormStep = ( {
 	description,
 	children,
 	secondaryAction,
+	isLastStep,
 } ) => {
 	return (
 		<div
 			className={ classnames( [
 				className,
 				'wc-components-checkout-step',
+				{ 'is-last-step': isLastStep },
 			] ) }
 			id={ id }
 		>
