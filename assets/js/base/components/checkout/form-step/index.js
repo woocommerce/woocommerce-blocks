@@ -18,7 +18,7 @@ const FormStep = ( {
 	title,
 	description,
 	children,
-	secondaryAction,
+	StepHeadingContent,
 } ) => {
 	return (
 		<div
@@ -26,7 +26,10 @@ const FormStep = ( {
 			id={ id }
 		>
 			<StepNumber stepNumber={ stepNumber } />
-			<StepHeading title={ title } secondaryAction={ secondaryAction } />
+			<StepHeading
+				title={ title }
+				StepHeadingContent={ StepHeadingContent }
+			/>
 			<span className="wc-components-checkout-step__description">
 				{ description }
 			</span>
@@ -55,16 +58,13 @@ const StepNumber = ( { stepNumber } ) => {
 	);
 };
 
-const StepHeading = ( { title, secondaryAction } ) => (
+const StepHeading = ( { title, StepHeadingContent } ) => (
 	<div className="wc-components-checkout-step__heading">
 		<h4 className="wc-components-checkout-step__title">{ title }</h4>
-		{ secondaryAction && <SecondaryAction link={ secondaryAction } /> }
+		<span className="wc-components-checkout-step__heading-content">
+			{ StepHeadingContent }
+		</span>
 	</div>
-);
-const SecondaryAction = ( { link } ) => (
-	<span className="wc-components-checkout-step__secondary-action">
-		{ link }
-	</span>
 );
 
 FormStep.propTypes = {

@@ -35,7 +35,7 @@ $gray-80: #2c3338;
 }
 
 // @todo: remove the parent class once we dial the specification down.
-.wc-components-checkout-step .wc-components-checkout-step__secondary-action {
+.wc-components-checkout-step .wc-components-checkout-step__heading-content {
 	@include font-size(12, 24px);
 	color: $gray-80;
 

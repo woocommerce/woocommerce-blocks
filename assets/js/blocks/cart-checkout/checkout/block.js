@@ -30,7 +30,7 @@ const Block = () => {
 					'woo-gutenberg-products-block'
 				) }
 				stepNumber={ 1 }
-				secondaryAction={
+				StepHeadingContent={
 					<Fragment>
 						{ __(
 							'Already have an account? ',
