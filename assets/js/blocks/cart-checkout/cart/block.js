@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { BlockControls } from '@wordpress/block-editor';
-import { Toolbar } from '@wordpress/components';
+import { Button, Toolbar } from '@wordpress/components';
 import { Fragment, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
@@ -25,30 +25,24 @@ const Cart = () => {
 	const getBlockControls = () => {
 		return (
 			<BlockControls>
-				<Toolbar
-					controls={ [
-						{
-							// Using dashicons for now, but we need to decide whether we're using
-							// icons or text. These icons are not ideal :)
-							icon: 'yes-alt',
-							title: __(
-								'Full Cart',
-								'woo-gutenberg-products-block'
-							),
-							onClick: toggleFullCartMode,
-							isActive: isFullCartMode,
-						},
-						{
-							icon: 'marker',
-							title: __(
-								'Empty Cart',
-								'woo-gutenberg-products-block'
-							),
-							onClick: toggleFullCartMode,
-							isActive: ! isFullCartMode,
-						},
-					] }
-				/>
+				<Toolbar>
+					<Button
+						onClick={ toggleFullCartMode }
+						isToggled={ isFullCartMode }>
+						{  __(
+							'Full Cart',
+							'woo-gutenberg-products-block'
+						) }
+					</Button>
+					<Button
+						onClick={ toggleFullCartMode }
+						isToggled={ ! isFullCartMode }>
+						{  __(
+							'Empty Cart',
+							'woo-gutenberg-products-block'
+						) }
+					</Button>
+				</Toolbar>
 			</BlockControls>
 		);
 	};
