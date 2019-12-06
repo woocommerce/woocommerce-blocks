@@ -96,16 +96,18 @@ class CartShippingRates extends RestContoller {
 			return new RestError( 'woocommerce_rest_cart_error', __( 'There are no shippable items in the cart.', 'woo-gutenberg-products-block' ), array( 'status' => 400 ) );
 		}
 
-		$packages_to_quote = $this->get_shipping_packages( $request );
-		$quotes            = WC()->shipping()->calculate_shipping( $packages_to_quote );
+		$packages_to_quote    = $this->get_shipping_packages( $request );
+		$packages_with_quotes = WC()->shipping()->calculate_shipping( $packages_to_quote );
+		$rates                = [];
 
-		foreach ( $quotes as $quote ) {
-			var_dump( $quote['rates'] );
+		foreach ( $packages_with_quotes as $package_id => $package ) {
+			foreach ( $package['rates'] as $rate ) {
+				$data    = $this->prepare_item_for_response( $rate, $package_id, $package, $request );
+				$rates[] = $this->prepare_response_for_collection( $data );
+			}
 		}
 
-		//$data     = $this->prepare_item_for_response( $cart, $request );
-		$data = [];
-		$response = rest_ensure_response( $data );
+		$response = rest_ensure_response( $rates );
 
 		return $response;
 	}
@@ -122,14 +124,14 @@ class CartShippingRates extends RestContoller {
 	/**
 	 * Prepares a single item output for response.
 	 *
-	 * @param array            $cart    Cart array.
+	 * @param ShippingRate     $rate Shipping rate object instance.
+	 * @param int              $package_id ID/index of the package.
+	 * @param array            $package Shipping package this rate is for.
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response Response object.
 	 */
-	public function prepare_item_for_response( $cart, $request ) {
-		$data = $this->schema->get_item_response( $cart );
-
-		return rest_ensure_response( $data );
+	public function prepare_item_for_response( $rate, $package_id, $package, $request ) {
+		return rest_ensure_response( $this->schema->get_item_response( $rate, $package_id, $package ) );
 	}
 
 	/**
