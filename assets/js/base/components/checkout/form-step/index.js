@@ -11,6 +11,33 @@ import { __, sprintf } from '@wordpress/i18n';
 import './style.scss';
 import Label from '../../label';
 
+const StepNumber = ( { stepNumber } ) => {
+	return (
+		<div className="wc-components-checkout-step__number">
+			<Label
+				label={ stepNumber }
+				screenReaderLabel={ sprintf(
+					__(
+						// translators: %s is a step number (1, 2, 3...)
+						'Step %s',
+						'woo-gutenberg-products-block'
+					),
+					stepNumber
+				) }
+			/>
+		</div>
+	);
+};
+
+const StepHeading = ( { title, StepHeadingContent } ) => (
+	<div className="wc-components-checkout-step__heading">
+		<h4 className="wc-components-checkout-step__title">{ title }</h4>
+		<span className="wc-components-checkout-step__heading-content">
+			{ StepHeadingContent }
+		</span>
+	</div>
+);
+
 const FormStep = ( {
 	id,
 	className,
@@ -39,33 +66,6 @@ const FormStep = ( {
 		</div>
 	);
 };
-
-const StepNumber = ( { stepNumber } ) => {
-	return (
-		<div className="wc-components-checkout-step__number">
-			<Label
-				label={ stepNumber }
-				screenReaderLabel={ sprintf(
-					__(
-						// translators: %s is a step number (1, 2, 3...)
-						'Step %s',
-						'woo-gutenberg-products-block'
-					),
-					stepNumber
-				) }
-			/>
-		</div>
-	);
-};
-
-const StepHeading = ( { title, StepHeadingContent } ) => (
-	<div className="wc-components-checkout-step__heading">
-		<h4 className="wc-components-checkout-step__title">{ title }</h4>
-		<span className="wc-components-checkout-step__heading-content">
-			{ StepHeadingContent }
-		</span>
-	</div>
-);
 
 FormStep.propTypes = {
 	id: PropTypes.string,
