@@ -98,18 +98,13 @@ class CartShippingRates extends RestContoller {
 
 		$packages_to_quote    = $this->get_shipping_packages( $request );
 		$packages_with_quotes = WC()->shipping()->calculate_shipping( $packages_to_quote );
-		$rates                = [];
+		$packages_response    = [];
 
 		foreach ( $packages_with_quotes as $package_id => $package ) {
-			foreach ( $package['rates'] as $rate ) {
-				$data    = $this->prepare_item_for_response( $rate, $package_id, $package, $request );
-				$rates[] = $this->prepare_response_for_collection( $data );
-			}
+			$packages_response[] = $this->prepare_response_for_collection( $this->prepare_item_for_response( $package_id, $package ) );
 		}
 
-		$response = rest_ensure_response( $rates );
-
-		return $response;
+		return rest_ensure_response( $packages_response );
 	}
 
 	/**
@@ -124,14 +119,12 @@ class CartShippingRates extends RestContoller {
 	/**
 	 * Prepares a single item output for response.
 	 *
-	 * @param ShippingRate     $rate Shipping rate object instance.
-	 * @param int              $package_id ID/index of the package.
-	 * @param array            $package Shipping package this rate is for.
-	 * @param \WP_REST_Request $request Request object.
+	 * @param int   $package_id Package index (ID).
+	 * @param array $package    Shipping package complete with rates from WooCommerce.
 	 * @return \WP_REST_Response Response object.
 	 */
-	public function prepare_item_for_response( $rate, $package_id, $package, $request ) {
-		return rest_ensure_response( $this->schema->get_item_response( $rate, $package_id, $package ) );
+	public function prepare_item_for_response( $package_id, $package ) {
+		return rest_ensure_response( $this->schema->get_item_response( $package_id, $package ) );
 	}
 
 	/**
