@@ -17,14 +17,16 @@ $outer-circle-size: $inner-circle-size + (2 * $circle-border-size);
 	display: flex;
 	justify-content: space-between;
 	align-content: center;
+	flex-wrap: wrap;
+	margin-bottom: $gap-smaller;
 }
 
 // @todo: remove the parent class once we dial the specification down.
 .wc-components-checkout-step__heading .wc-components-checkout-step__title {
 	@include font-size(16, 24px);
 	color: $gray-80;
-	margin-bottom: $gap-smaller;
 	font-weight: 400;
+	margin-right: $gap-small;
 }
 
 // @todo: remove the parent class once we dial the specification down.
