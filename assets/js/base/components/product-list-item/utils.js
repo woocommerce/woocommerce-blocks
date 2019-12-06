@@ -1,4 +1,10 @@
 /**
+ * External dependencies
+ */
+import { RawHTML } from '@wordpress/element';
+import { getSaveContent, getSaveElement } from '@wordpress/blocks';
+
+/**
  * Internal dependencies
  */
 import { getBlockMap } from '../../../blocks/products/base-utils';
@@ -38,7 +44,9 @@ export const renderProductLayout = (
 		const LayoutComponent = blockMap[ name ];
 
 		if ( ! LayoutComponent ) {
-			return null;
+			return <RawHTML>{ getSaveContent( name, props ) }</RawHTML>;
+			// @todo investigate why `getSaveElement` adds a wrapping `<div>` to the paragraph content.
+			// return getSaveElement( name, props );
 		}
 
 		const productID = product.id || 0;

@@ -187,7 +187,10 @@ class Editor extends Component {
 		const InnerBlockProps = {
 			template: this.props.attributes.layoutConfig,
 			templateLock: false,
-			allowedBlocks: Object.keys( this.blockMap ),
+			allowedBlocks: [
+				'core/paragraph',
+				...Object.keys( this.blockMap ),
+			],
 		};
 
 		if ( this.props.attributes.layoutConfig.length !== 0 ) {
