@@ -154,11 +154,14 @@ class Assets {
 	protected static function register_script( $handle, $src, $deps = [], $has_i18n = true ) {
 		$relative_src = str_replace( plugins_url( '/', __DIR__ ), '', $src );
 		$ver          = self::get_file_version( $relative_src );
-		$deps_path    = dirname( __DIR__ ) . '/' . str_replace( '.js', '.deps.json', $relative_src );
-		$dependencies = file_exists( $deps_path ) ? json_decode( file_get_contents( $deps_path ) ) : []; // phpcs:ignore WordPress.WP.AlternativeFunctions
-		$dependencies = array_merge( $dependencies, $deps );
+		$deps_path    = dirname( __DIR__ ) . '/' . str_replace( '.js', '.asset.php', $relative_src );
 
-		wp_register_script( $handle, $src, $dependencies, $ver, true );
+		if ( file_exists( $deps_path ) ) {
+			$deps_array = include $deps_path;
+			$deps       = isset( $deps_array['dependencies'] ) ? array_merge( $deps_array['dependencies'], $deps ) : $deps;
+		}
+
+		wp_register_script( $handle, $src, $deps, $ver, true );
 		if ( $has_i18n && function_exists( 'wp_set_script_translations' ) ) {
 			wp_set_script_translations( $handle, 'woo-gutenberg-products-block', dirname( __DIR__ ) . '/languages' );
 		}

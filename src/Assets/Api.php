@@ -64,24 +64,25 @@ class Api {
 	 * @param string $asset_relative_path  Something like 'build/constants.js'
 	 *                                     considered to be relative to the main
 	 *                                     asset path.
-	 * @param array  $extra_dependencies   Extra dependencies to be explicitly
+	 * @param array  $dependencies         Dependencies to be explicitly
 	 *                                     added to the generated array.
 	 *
 	 * @return array  An array of dependencies
 	 */
 	protected function get_dependencies(
 		$asset_relative_path,
-		$extra_dependencies = []
+		$dependencies = []
 	) {
 		$dependency_path = $this->package->get_path(
-			str_replace( '.js', '.deps.json', $asset_relative_path )
+			str_replace( '.js', '.asset.php', $asset_relative_path )
 		);
-		// phpcs:ignore WordPress.WP.AlternativeFunctions
-		$dependencies = file_exists( $dependency_path )
-			// phpcs:ignore WordPress.WP.AlternativeFunctions
-			? json_decode( file_get_contents( $dependency_path ) )
-			: [];
-		return array_merge( $dependencies, $extra_dependencies );
+
+		if ( file_exists( $dependency_path ) ) {
+			$deps_array   = include $dependency_path;
+			$dependencies = isset( $deps_array['dependencies'] ) ? array_merge( $deps_array['dependencies'], $dependencies ) : $dependencies;
+		}
+
+		return $dependencies;
 	}
 
 	/**
