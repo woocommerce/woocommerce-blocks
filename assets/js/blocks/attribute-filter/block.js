@@ -102,6 +102,7 @@ const AttributeFilterBlock = ( {
 		shouldSelect: blockAttributes.attributeId > 0,
 	} );
 
+	const filterAvailableFilters = blockAttributes.queryType === 'and';
 	const {
 		results: filteredCounts,
 		isLoading: filteredCountsLoading,
@@ -110,7 +111,7 @@ const AttributeFilterBlock = ( {
 			taxonomy: attributeObject.taxonomy,
 			queryType: blockAttributes.queryType,
 		},
-		queryState,
+		queryState: filterAvailableFilters ? queryState : null,
 	} );
 
 	/**
