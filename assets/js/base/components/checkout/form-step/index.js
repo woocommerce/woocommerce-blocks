@@ -8,8 +8,8 @@ import { __, sprintf } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import './style.scss';
 import Label from '../../label';
+import './style.scss';
 
 const StepNumber = ( { stepNumber } ) => {
 	return (
