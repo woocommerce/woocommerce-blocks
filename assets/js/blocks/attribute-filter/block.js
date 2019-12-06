@@ -158,11 +158,16 @@ const AttributeFilterBlock = ( {
 	] );
 
 	// Track checked STATE changes - if state changes, update the query.
-	useEffect( () => {
-		if ( ! blockAttributes.showFilterButton ) {
-			onSubmit();
-		}
-	}, [ checked, onSubmit ] );
+	useEffect(
+		() => {
+			if ( ! blockAttributes.showFilterButton ) {
+				onSubmit();
+			}
+		},
+		// There is no need to add blockAttributes.showFilterButton as a dependency.
+		// It will only change in the editor and there we don't need to call onSubmit in any case.
+		[ checked, onSubmit ]
+	);
 
 	const curentCheckedQuery = useShallowEqual( checkedQuery );
 
@@ -193,6 +198,10 @@ const AttributeFilterBlock = ( {
 	);
 
 	const onSubmit = () => {
+		if ( isEditor ) {
+			return;
+		}
+
 		updateAttributeFilter(
 			productAttributesQuery,
 			setProductAttributesQuery,
