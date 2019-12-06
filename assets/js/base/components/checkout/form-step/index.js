@@ -45,7 +45,7 @@ const FormStep = ( {
 	title,
 	description,
 	children,
-	StepHeadingContent,
+	stepHeadingContent,
 } ) => {
 	return (
 		<div
@@ -55,7 +55,7 @@ const FormStep = ( {
 			<StepNumber stepNumber={ stepNumber } />
 			<StepHeading
 				title={ title }
-				StepHeadingContent={ StepHeadingContent }
+				StepHeadingContent={ stepHeadingContent }
 			/>
 			<span className="wc-components-checkout-step__description">
 				{ description }
