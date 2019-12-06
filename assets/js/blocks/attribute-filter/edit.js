@@ -186,23 +186,17 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 							'Filter button',
 							'woo-gutenberg-products-block'
 						) }
-						help={ () => {
-							if ( showFilterButton ) {
-								return __(
-									'Results will only update when the button is pressed.',
-									'woo-gutenberg-products-block'
-								);
-							}
-							return displayStyle === 'list'
+						help={
+							showFilterButton
 								? __(
-										'Results will update when the options are checked.',
+										'Products will only update when the button is pressed.',
 										'woo-gutenberg-products-block'
 								  )
 								: __(
-										'Results will update when the options are selected.',
+										'Products will update as options are selected.',
 										'woo-gutenberg-products-block'
-								  );
-						} }
+								  )
+						}
 						checked={ showFilterButton }
 						onChange={ ( value ) =>
 							setAttributes( {
