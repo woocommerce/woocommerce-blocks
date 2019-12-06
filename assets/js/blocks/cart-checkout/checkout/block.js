@@ -30,7 +30,7 @@ const Block = () => {
 					'woo-gutenberg-products-block'
 				) }
 				stepNumber={ 1 }
-				stepHeadingContent={ () =>
+				stepHeadingContent={ () => (
 					<Fragment>
 						{ __(
 							'Already have an account? ',
@@ -40,7 +40,7 @@ const Block = () => {
 							{ __( 'Log in.', 'woo-gutenberg-products-block' ) }
 						</a>
 					</Fragment>
-				}
+				) }
 			>
 				<Placeholder>A checkout step, coming soon near you</Placeholder>
 			</FormStep>
