@@ -2,13 +2,6 @@ $inner-circle-size: 24px;
 $circle-border-size: 8px;
 $outer-circle-size: $inner-circle-size + (2 * $circle-border-size);
 
-// @todo: replace those colors with the correct values once we settle on a design system palette.
-$gray-10: #c3c4c7;
-$gray-20: #a7aaad;
-$gray-60: #50575e;
-$gray-80: #2c3338;
-
-
 .wc-components-checkout-step {
 	position: relative;
 	border-left: 1px solid $gray-10;
