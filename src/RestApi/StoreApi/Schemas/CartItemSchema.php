@@ -113,7 +113,7 @@ class CartItemSchema extends AbstractSchema {
 					),
 				),
 			),
-			'price'         => array(
+			'product_price' => array(
 				'description' => __( 'Current product price.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
@@ -186,7 +186,7 @@ class CartItemSchema extends AbstractSchema {
 			'sku'           => $product->get_sku(),
 			'permalink'     => $product->get_permalink(),
 			'images'        => ( new ProductImages() )->images_to_array( $product ),
-			'price'         => $product->get_price(),
+			'product_price' => $product->get_price(),
 			'line_total'    => $line_total_incl_coupons,
 			'line_subtotal' => $line_subtotal,
 			'variation'     => $this->format_variation_data( $cart_item['variation'], $product ),
