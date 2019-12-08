@@ -119,14 +119,14 @@ class CartItemSchema extends AbstractSchema {
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
-			'line_price'    => array(
+			'line_subtotal' => array(
 				'description' => __( 'Line price subtotal (excluding any discounts).', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
-			'line_subtotal' => array(
-				'description' => __( 'Line price subtotal including coupons and discounts.', 'woo-gutenberg-products-block' ),
+			'line_total'    => array(
+				'description' => __( 'Line price total including coupons and discounts.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
@@ -200,7 +200,7 @@ class CartItemSchema extends AbstractSchema {
 			'permalink'     => $product->get_permalink(),
 			'images'        => ( new ProductImages() )->images_to_array( $product ),
 			'price'         => wc_format_decimal( $product->get_price(), $price_dp ),
-			'line_price'    => wc_format_decimal( $line_total_incl_coupons, $price_dp ),
+			'line_total'    => wc_format_decimal( $line_total_incl_coupons, $price_dp ),
 			'line_subtotal' => wc_format_decimal( $line_subtotal, $price_dp ),
 			'line_saving'   => wc_format_decimal( $line_saving, $price_dp ),
 			'show_saving'   => $line_saving > 0,
