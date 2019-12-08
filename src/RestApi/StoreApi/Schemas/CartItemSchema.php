@@ -186,9 +186,9 @@ class CartItemSchema extends AbstractSchema {
 			'sku'           => $product->get_sku(),
 			'permalink'     => $product->get_permalink(),
 			'images'        => ( new ProductImages() )->images_to_array( $product ),
-			'price'         => wc_format_decimal( $product->get_price(), $price_dp ),
-			'line_total'    => wc_format_decimal( $line_total_incl_coupons, $price_dp ),
-			'line_subtotal' => wc_format_decimal( $line_subtotal, $price_dp ),
+			'price'         => $product->get_price(),
+			'line_total'    => $line_total_incl_coupons,
+			'line_subtotal' => $line_subtotal,
 			'variation'     => $this->format_variation_data( $cart_item['variation'], $product ),
 		];
 	}
