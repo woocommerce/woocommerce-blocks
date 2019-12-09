@@ -4,7 +4,7 @@ Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
 Requires at least: 5.0
 Tested up to: 5.3
 Requires PHP: 5.6
-Stable tag: 2.5.2
+Stable tag: 2.5.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -115,6 +115,10 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 5. WooCommerce Product Blocks in the block inserter menu
 
 == Changelog ==
+
+= 2.5.3 - 2019-12-09 =
+- Prevent Filter Products by Attribute block hiding non-matching options when Querty Type is set to OR. #1339
+- bug: Fix price slider layout in narrow columns #1231
 
 = 2.5.2 - 2019-12-02 =
 - Fixed a PHP Notice in Featured Category Block when the category is invalid. #1291 👏 @strategio
