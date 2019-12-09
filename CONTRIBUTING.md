@@ -14,8 +14,8 @@ We have a set of scripts in npm to automate important developer tasks.
 
 ### Build
 
-- Run `$ npm run build` to build all assets for production.
-- Run `$ npm start` to run the development build and watch for changes.
+-   Run `$ npm run build` to build all assets for production.
+-   Run `$ npm start` to run the development build and watch for changes.
 
 These scripts compile the code using `webpack`.
 
@@ -27,9 +27,9 @@ Run `$ npm run lint` to check code against our linting rules.
 
 This script runs 3 sub-commands: `lint:php`, `lint:css`, `lint:js`. Use these to run linters across the codebase (linters check for valid syntax).
 
-- `lint:php` runs phpcs via composer, which uses the [phpcs.xml](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/master/phpcs.xml) ruleset.
-- `lint:css` runs stylelint over all the scss code in `assets/css`, using the rules in [.stylelintrc.json.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/master/.stylelintrc.json)
-- `lint:js` runs eslint over all the JavaScript, using the rules in [.eslintrc.js.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/master/.eslintrc.js)
+-   `lint:php` runs phpcs via composer, which uses the [phpcs.xml](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/master/phpcs.xml) ruleset.
+-   `lint:css` runs stylelint over all the scss code in `assets/css`, using the rules in [.stylelintrc.json.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/master/.stylelintrc.json)
+-   `lint:js` runs eslint over all the JavaScript, using the rules in [.eslintrc.js.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/master/.eslintrc.js)
 
 ### Test
 
@@ -37,8 +37,8 @@ Run `$ npm run test` to run unit tests on the JavaScript.
 
 The test scripts use [wp-scripts](https://github.com/WordPress/gutenberg/tree/master/packages/scripts) to run jest for component and unit testing.
 
-- `test:update` updates the snapshot tests for components, used if you change a component that has tests attached.
-- Use `test:watch` to keep watch of files and automatically re-run tests.
+-   `test:update` updates the snapshot tests for components, used if you change a component that has tests attached.
+-   Use `test:watch` to keep watch of files and automatically re-run tests.
 
 ### Create an installable zip package
 
@@ -50,13 +50,40 @@ These instructions cover new releases of the blocks plugin for those with commit
 
 ### Prerequisites
 
-- Have [Github's Hub](https://github.com/github/hub) cli installed and authenticated.
+-   Have [Github's Hub](https://github.com/github/hub) cli installed and authenticated.
 
 **Before any release** ensure you update:
 
-- The `readme.txt` file supported versions, changelog and list of blocks if the release includes new blocks.
+-   The `readme.txt` file supported versions, changelog and list of blocks if the release includes new blocks.
 
 > Note: version numbers will automatically be updated in files via the deploy script (see `bin/version-changes.sh`).
+
+### Creating release branches
+
+When releasing a major or minor feature frozen version of Blocks (e.g. release candidate), create a new release branch from master named `release/X.X`. **This release branch is where you should create tags and releases from.**
+
+If post-release fixes or changes are needed, create Pull Requests against **master**, but label the PR with the correct milestone. For example, if fixing an issue in Blocks 2.5, create a PR against master with a `2.5.x` milestone. Once approved and merged to master the same changes will be cherry picked to the release branch.
+
+To do this:
+
+-   Switch to the release branch
+-   Run the command ([using HUB command line helper](https://hub.github.com/hub-am.1.html)): `hub am -3 http://URL-TO-PR`
+-   The command will tell you if the merge was successful. If not, you can cherry pick individual commits using [git cherry pick](https://git-scm.com/docs/git-cherry-pick) which is more time consuming.
+-   Push the changes to origin.
+-   After success, label the PR as `status: cherry-picked`. This lets everyone know the chery picking has been completed.
+
+You'll also need to manually update the changelog and version numbers in the release branch before tagging. There is a changelog helper script which can list changelog entries from merged PRs in a milestone:
+
+`npm run changelog`
+
+Follow the instructions, then add the changelog entries to the readme.txt file before committing to the release branch. As well as the changelog, there are version strings which need updating in:
+
+-   `package.json`
+-   `readme.text`
+-   `src/package.php`
+-   `woocommerce-gutenberg-products-block.php`
+
+Once all of this is done, you are safe to run the deploy scripts exaplained below.
 
 ### Tagging new releases on GitHub
 
@@ -68,7 +95,7 @@ $ npm run deploy
 
 This will trigger a build and then run the release script (found in `/bin/github-deploy.sh`). This tags a new version and creates the GitHub release from your current branch.
 
-__Important:__ Before running the deploy script ensure you have committed all changes to GitHub and that you have the correct branch checked out that you wish to release.
+**Important:** Before running the deploy script ensure you have committed all changes to GitHub and that you have the correct branch checked out that you wish to release.
 
 If you want to add additional details or a binary file to the release after deployment, [you can edit the release here](https://github.com/woocommerce/woocommerce-gutenberg-products-block/releases).
 
@@ -82,11 +109,11 @@ $ npm run release
 
 This will ask for a tagged version number, check it out from GitHub, check out the SVN repository, and prepare all files. It will give you a command when it's finished to do the actual commit; you have a chance to test/check the files before pushing to WordPress.org.
 
-__Important:__ Before running the release script ensure you have already pushed a new release to GitHub.
+**Important:** Before running the release script ensure you have already pushed a new release to GitHub.
 
 ### Bumping the version
 
-After you release, create a commit to master that updates the version to the next minor with a `-dev` suffix.  For example, if you just released `2.5.0`, you'd do an update changing the version to `2.6.0-dev`.  See an [example here](https://github.com/woocommerce/woocommerce-gutenberg-products-block/commit/e27f053e7be0bf7c1d376f5bdb9d9999190ce158).
+After you release, create a commit to master that updates the version to the next minor with a `-dev` suffix. For example, if you just released `2.5.0`, you'd do an update changing the version to `2.6.0-dev`. See an [example here](https://github.com/woocommerce/woocommerce-gutenberg-products-block/commit/e27f053e7be0bf7c1d376f5bdb9d9999190ce158).
 
 ## Updating a single file in WordPress.org
 
@@ -122,16 +149,16 @@ In the past, we published the blocks to NPM at [@woocommerce/block-library](http
 
 To release a new version, perform the following steps:
 
-- Run `npm pack` to prep a `.tgz` file.
-- Optionally test the package by uploading this onto a test site.
-- Run `npm publish --access public`, which will push the version up to npm.
+-   Run `npm pack` to prep a `.tgz` file.
+-   Optionally test the package by uploading this onto a test site.
+-   Run `npm publish --access public`, which will push the version up to npm.
 
 ## Legacy builds
 
 This plugin supports two type of builds:
 
-- legacy builds (assets have `-legacy` suffix on their file names)
-- main builds (without the `-legacy` prefix)
+-   legacy builds (assets have `-legacy` suffix on their file names)
+-   main builds (without the `-legacy` prefix)
 
 The legacy builds are loaded in a site environment where the WordPress version doesn't meet minimum requirements for a components used in a set build.
 
