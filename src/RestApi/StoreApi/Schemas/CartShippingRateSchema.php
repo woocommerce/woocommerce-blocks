@@ -10,7 +10,6 @@ namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas;
 defined( 'ABSPATH' ) || exit;
 
 use \WC_Shipping_Rate as ShippingRate;
-use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\CartItems as CartItemsController;
 
 /**
  * CartShippingRateSchema class.
@@ -29,30 +28,21 @@ class CartShippingRateSchema extends AbstractSchema {
 	 * @return array
 	 */
 	protected function get_properties() {
-		$cart_item_schema = new CartItemSchema();
-
 		return [
-			'package_id' => [
-				'description' => __( 'Package ID.', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
-			],
-			'rates'      => [
+			'shipping-rates' => [
 				'description' => __( 'List of shipping rates.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 				'items'       => $this->get_rate_properties(),
 			],
-			'contents'   => [
-				'description' => __( 'If the cart is made up of multiple shipments, this contains information about the package. Otherwise this returns null.', 'woo-gutenberg-products-block' ),
+			'items'          => [
+				'description' => __( 'List of cart items (keys) the returned shipping rates apply to.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 				'items'       => [
-					'type'       => 'object',
-					'properties' => $cart_item_schema->get_properties(),
+					'type' => 'string',
 				],
 			],
 		];
@@ -65,12 +55,6 @@ class CartShippingRateSchema extends AbstractSchema {
 	 */
 	protected function get_rate_properties() {
 		return [
-			'id'            => [
-				'description' => __( 'ID of the shipping rate.', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
-			],
 			'name'          => [
 				'description' => __( 'Name of the shipping rate, e.g. Express shipping.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
@@ -95,9 +79,21 @@ class CartShippingRateSchema extends AbstractSchema {
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'source'        => [
-				'description' => __( 'Source of the shipping rate, e.g. the name of the shipping method.', 'woo-gutenberg-products-block' ),
+			'id'            => [
+				'description' => __( 'ID of the shipping rate.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+			],
+			'method_id'     => [
+				'description' => __( 'ID of the shipping method that provided the rate.', 'woo-gutenberg-products-block' ),
+				'type'        => 'string',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+			],
+			'instance_id'   => [
+				'description' => __( 'Instance ID of the shipping method that provided the rate.', 'woo-gutenberg-products-block' ),
+				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
@@ -134,17 +130,9 @@ class CartShippingRateSchema extends AbstractSchema {
 	 * @return array
 	 */
 	public function get_item_response( $package_id, $package ) {
-		$cart_item_controller = new CartItemsController();
-		$items_in_package     = array();
-		foreach ( $package['contents'] as $cart_item ) {
-			$data               = $cart_item_controller->prepare_item_for_response( $cart_item, [] );
-			$items_in_package[] = $cart_item_controller->prepare_response_for_collection( $data );
-		}
-
 		return [
-			'package_id' => $package_id,
-			'rates'      => array_map( [ $this, 'get_rate_response' ], $package['rates'] ),
-			'contents'   => $items_in_package,
+			'items'          => array_values( wp_list_pluck( $package['contents'], 'key' ) ),
+			'shipping-rates' => array_values( array_map( [ $this, 'get_rate_response' ], $package['rates'] ) ),
 		];
 	}
 
@@ -155,8 +143,40 @@ class CartShippingRateSchema extends AbstractSchema {
 	 * @return array
 	 */
 	protected function get_rate_response( $rate ) {
-		$meta_data   = $rate->get_meta_data();
-		$return_meta = array_reduce(
+		return [
+			'name'          => $this->get_rate_prop( $rate, 'label' ),
+			'description'   => $this->get_rate_prop( $rate, 'description' ),
+			'handling_time' => $this->get_rate_prop( $rate, 'handling_time' ),
+			'price'         => $this->get_rate_prop( $rate, 'cost' ),
+			'rate_id'       => $this->get_rate_prop( $rate, 'id' ),
+			'instance_id'   => $this->get_rate_prop( $rate, 'instance_id' ),
+			'method_id'     => $this->get_rate_prop( $rate, 'method_id' ),
+			'meta_data'     => $this->get_rate_meta_data( $rate ),
+		];
+	}
+
+	/**
+	 * Gets a prop of the rate object, if callable.
+	 *
+	 * @param WC_Shipping_Rate $rate Rate object.
+	 * @param string           $prop Prop name.
+	 * @return string
+	 */
+	protected function get_rate_prop( $rate, $prop ) {
+		$getter = 'get_' . $prop;
+		return \is_callable( array( $rate, $getter ) ) ? $rate->$getter() : '';
+	}
+
+	/**
+	 * Converts rate meta data into a suitable response object.
+	 *
+	 * @param WC_Shipping_Rate $rate Rate object.
+	 * @return array
+	 */
+	protected function get_rate_meta_data( $rate ) {
+		$meta_data = $rate->get_meta_data();
+
+		return array_reduce(
 			array_keys( $meta_data ),
 			function( $return, $key ) use ( $meta_data ) {
 				$return[] = [
@@ -167,16 +187,5 @@ class CartShippingRateSchema extends AbstractSchema {
 			},
 			[]
 		);
-
-		return [
-			'rate_id'       => $rate->get_id(),
-			'instance'      => $rate->get_instance_id(),
-			'method'        => $rate->get_method_id(),
-			'name'          => $rate->get_label(),
-			'description'   => '',
-			'handling_time' => '',
-			'price'         => $rate->get_cost(),
-			'meta_data'     => $return_meta,
-		];
 	}
 }
