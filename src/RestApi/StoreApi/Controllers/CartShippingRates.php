@@ -86,7 +86,7 @@ class CartShippingRates extends RestContoller {
 			return new RestError( 'woocommerce_rest_cart_shipping_rates_missing_country', __( 'Shipping destination country is required.', 'woo-gutenberg-products-block' ), array( 'status' => 400 ) );
 		}
 
-		$request = $this->validate_destination( $request );
+		$request = $this->validate_shipping_address( $request );
 
 		if ( is_wp_error( $request ) ) {
 			return $request;
@@ -113,12 +113,12 @@ class CartShippingRates extends RestContoller {
 	}
 
 	/**
-	 * Format the request destination.
+	 * Format the request address.
 	 *
 	 * @param \WP_REST_Request $request Full details about the request.
 	 * @return \WP_Error|\WP_REST_Response
 	 */
-	protected function validate_destination( $request ) {
+	protected function validate_shipping_address( $request ) {
 		$request['country']  = wc_strtoupper( $request['country'] );
 		$request['postcode'] = $request['postcode'] ? wc_format_postcode( $request['postcode'], $request['country'] ) : null;
 
