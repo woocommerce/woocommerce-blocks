@@ -137,7 +137,7 @@ class CartShippingRates extends RestContoller {
 		$params['context']['default'] = 'view';
 
 		$params['address_1'] = array(
-			'description'       => __( 'First line of address being shipped to.', 'woo-gutenberg-products-block' ),
+			'description'       => __( 'First line of the address being shipped to.', 'woo-gutenberg-products-block' ),
 			'type'              => 'string',
 			'default'           => '',
 			'sanitize_callback' => 'wc_clean',
@@ -145,7 +145,7 @@ class CartShippingRates extends RestContoller {
 		);
 
 		$params['address_2'] = array(
-			'description'       => __( 'Second line of address being shipped to.', 'woo-gutenberg-products-block' ),
+			'description'       => __( 'Second line of the address being shipped to.', 'woo-gutenberg-products-block' ),
 			'type'              => 'string',
 			'default'           => '',
 			'sanitize_callback' => 'wc_clean',
@@ -153,7 +153,7 @@ class CartShippingRates extends RestContoller {
 		);
 
 		$params['city'] = array(
-			'description'       => __( 'City name being shipped to.', 'woo-gutenberg-products-block' ),
+			'description'       => __( 'City of the address being shipped to.', 'woo-gutenberg-products-block' ),
 			'type'              => 'string',
 			'default'           => '',
 			'sanitize_callback' => 'wc_clean',
@@ -161,7 +161,7 @@ class CartShippingRates extends RestContoller {
 		);
 
 		$params['state'] = array(
-			'description'       => __( 'ISO code or name of the state, province or district being shipped to.', 'woo-gutenberg-products-block' ),
+			'description'       => __( 'ISO code, or name, for the state, province, or district of the address being shipped to.', 'woo-gutenberg-products-block' ),
 			'type'              => 'string',
 			'default'           => '',
 			'sanitize_callback' => 'wc_clean',
@@ -169,7 +169,7 @@ class CartShippingRates extends RestContoller {
 		);
 
 		$params['postcode'] = array(
-			'description'       => __( 'Postal code being shipped to.', 'woo-gutenberg-products-block' ),
+			'description'       => __( 'Zip or Postcode of the address being shipped to.', 'woo-gutenberg-products-block' ),
 			'type'              => 'string',
 			'default'           => '',
 			'sanitize_callback' => 'wc_clean',
@@ -177,7 +177,7 @@ class CartShippingRates extends RestContoller {
 		);
 
 		$params['country'] = array(
-			'description'       => __( 'ISO code of the country being shipped to.', 'woo-gutenberg-products-block' ),
+			'description'       => __( 'ISO code for the country of the address being shipped to.', 'woo-gutenberg-products-block' ),
 			'type'              => 'string',
 			'default'           => '',
 			'sanitize_callback' => 'wc_clean',
@@ -190,35 +190,26 @@ class CartShippingRates extends RestContoller {
 	/**
 	 * Get packages to calculate shipping for.
 	 *
-	 * Based on WC_Cart::get_shipping_packages but allows the destination to be customised.
+	 * Based on WC_Cart::get_shipping_packages but allows the destination to be
+	 * customised based on passed params.
 	 *
 	 * @param \WP_REST_Request $request Request object.
 	 * @return array of cart items
 	 */
 	protected function get_shipping_packages( $request ) {
-		$controller = new CartController();
-		$cart_items = $controller->get_cart_items(
-			function( $item ) {
-				return ! empty( $item['data'] ) && $item['data']->needs_shipping();
-			}
-		);
+		$packages = WC()->cart->get_shipping_packages();
 
-		return apply_filters(
-			'woocommerce_cart_shipping_packages',
-			array(
-				array(
-					'contents'      => $cart_items,
-					'contents_cost' => array_sum( wp_list_pluck( $cart_items, 'line_total' ) ),
-					'destination'   => array(
-						'country'   => $request['country'],
-						'state'     => $request['state'],
-						'postcode'  => $request['postcode'],
-						'city'      => $request['city'],
-						'address_1' => $request['address_1'],
-						'address_2' => $request['address_2'],
-					),
-				),
-			)
-		);
+		foreach ( $packages as $key => $package ) {
+			$packages[ $key ]['destination'] = [
+				'address_1' => $request['address_1'],
+				'address_2' => $request['address_2'],
+				'city'      => $request['city'],
+				'state'     => $request['state'],
+				'postcode'  => $request['postcode'],
+				'country'   => $request['country'],
+			];
+		}
+
+		return $packages;
 	}
 }

@@ -29,12 +29,49 @@ class CartShippingRateSchema extends AbstractSchema {
 	 */
 	protected function get_properties() {
 		return [
-			'shipping-rates' => [
-				'description' => __( 'List of shipping rates.', 'woo-gutenberg-products-block' ),
-				'type'        => 'array',
+			'destination'    => [
+				'description' => __( 'Shipping destination address.', 'woo-gutenberg-products-block' ),
+				'type'        => 'object',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-				'items'       => $this->get_rate_properties(),
+				'items'       => [
+					'address_1' => [
+						'description' => __( 'First line of the address being shipped to.', 'woo-gutenberg-products-block' ),
+						'type'        => 'string',
+						'context'     => [ 'view', 'edit' ],
+						'readonly'    => true,
+					],
+					'address_2' => [
+						'description' => __( 'Second line of the address being shipped to.', 'woo-gutenberg-products-block' ),
+						'type'        => 'string',
+						'context'     => [ 'view', 'edit' ],
+						'readonly'    => true,
+					],
+					'city'      => [
+						'description' => __( 'City of the address being shipped to.', 'woo-gutenberg-products-block' ),
+						'type'        => 'string',
+						'context'     => [ 'view', 'edit' ],
+						'readonly'    => true,
+					],
+					'state'     => [
+						'description' => __( 'ISO code, or name, for the state, province, or district of the address being shipped to.', 'woo-gutenberg-products-block' ),
+						'type'        => 'string',
+						'context'     => [ 'view', 'edit' ],
+						'readonly'    => true,
+					],
+					'postcode'  => [
+						'description' => __( 'Zip or Postcode of the address being shipped to.', 'woo-gutenberg-products-block' ),
+						'type'        => 'string',
+						'context'     => [ 'view', 'edit' ],
+						'readonly'    => true,
+					],
+					'country'   => [
+						'description' => __( 'ISO code for the country of the address being shipped to.', 'woo-gutenberg-products-block' ),
+						'type'        => 'string',
+						'context'     => [ 'view', 'edit' ],
+						'readonly'    => true,
+					],
+				],
 			],
 			'items'          => [
 				'description' => __( 'List of cart items (keys) the returned shipping rates apply to.', 'woo-gutenberg-products-block' ),
@@ -44,6 +81,13 @@ class CartShippingRateSchema extends AbstractSchema {
 				'items'       => [
 					'type' => 'string',
 				],
+			],
+			'shipping-rates' => [
+				'description' => __( 'List of shipping rates.', 'woo-gutenberg-products-block' ),
+				'type'        => 'array',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+				'items'       => $this->get_rate_properties(),
 			],
 		];
 	}
@@ -130,6 +174,14 @@ class CartShippingRateSchema extends AbstractSchema {
 	 */
 	public function get_item_response( $package ) {
 		return [
+			'destination'    => [
+				'address_1' => $package['destination']['address_1'],
+				'address_2' => $package['destination']['address_2'],
+				'city'      => $package['destination']['city'],
+				'state'     => $package['destination']['state'],
+				'postcode'  => $package['destination']['postcode'],
+				'country'   => $package['destination']['country'],
+			],
 			'items'          => array_values( wp_list_pluck( $package['contents'], 'key' ) ),
 			'shipping-rates' => array_values( array_map( [ $this, 'get_rate_response' ], $package['rates'] ) ),
 		];
