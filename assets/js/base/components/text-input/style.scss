@@ -1,0 +1,35 @@
+.wc-components-text-input {
+	position: relative;
+	margin-top: $gap;
+}
+
+.wc-components-text-input label {
+	position: absolute;
+	// +1px is to account for border
+	transform: translateX(#{$gap}) translateY(#{$gap-small});
+	font-size: 16px;
+	line-height: 22px;
+}
+
+.wc-components-text-input.is-active label {
+	/*font-size: 12px;
+	top: $gap-smaller + 1px;
+	line-height: 12px;*/
+	transform: translateX(#{$gap - $gap-small}) translateY(#{$gap-smaller}) scale(0.75);
+	transition: all 200ms ease;
+}
+
+.wc-components-text-input.is-active input[type="text"] {
+	padding: $gap-large $gap 0;
+}
+
+.wc-components-text-input input[type="text"] {
+	padding: $gap-small $gap;
+	border-radius: 4px;
+	border: 1px solid $input-border-gray;
+	width: 100%;
+	font-size: 16px;
+	line-height: 22px;
+	font-family: inherit;
+	margin: 0;
+}

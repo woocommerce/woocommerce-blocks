@@ -1,0 +1,13 @@
+.wc-components-input-row {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+
+	& > * {
+		margin-right: $gap-small;
+		flex-grow: 1;
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+}

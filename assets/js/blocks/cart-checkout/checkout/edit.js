@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Disabled } from '@wordpress/components';
 import { withFeedbackPrompt } from '@woocommerce/block-hocs';
 
 /**
@@ -16,9 +15,7 @@ const CheckoutEditor = ( { attributes } ) => {
 
 	return (
 		<div className={ className }>
-			<Disabled>
-				<Block attributes={ attributes } />
-			</Disabled>
+			<Block attributes={ attributes } />
 		</div>
 	);
 };

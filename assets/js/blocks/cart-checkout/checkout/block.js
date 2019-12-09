@@ -2,10 +2,11 @@
  * External dependencies
  */
 import { Fragment } from '@wordpress/element';
-import { Placeholder } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import FormStep from '@woocommerce/base-components/checkout/form-step';
 import CheckoutForm from '@woocommerce/base-components/checkout/form';
+import TextInput from '@woocommerce/base-components/text-input';
+import InputRow from '@woocommerce/base-components/input-row';
 
 /**
  * Internal dependencies
@@ -42,49 +43,52 @@ const Block = () => {
 					</Fragment>
 				) }
 			>
-				<Placeholder>A checkout step, coming soon near you</Placeholder>
-			</FormStep>
-			<FormStep
-				id="shipping-fields"
-				className="wc-blocks-checkout__shipping-fields"
-				title={ __(
-					'Shipping address',
-					'woo-gutenberg-products-block'
-				) }
-				description={ __(
-					'Enter the physical address where you want us to deliver your order.',
-					'woo-gutenberg-products-block'
-				) }
-				stepNumber={ 2 }
-			>
-				<Placeholder>A checkout step, coming soon near you</Placeholder>
-			</FormStep>
-			<FormStep
-				id="shipping-methods"
-				className="wc-blocks-checkout__shipping-methods"
-				title={ __(
-					'Shipping options',
-					'woo-gutenberg-products-block'
-				) }
-				description={ __(
-					'Select your shipping method below.',
-					'woo-gutenberg-products-block'
-				) }
-				stepNumber={ 3 }
-			>
-				<Placeholder>A checkout step, coming soon near you</Placeholder>
-			</FormStep>
-			<FormStep
-				id="payment-fields"
-				className="wc-blocks-checkout__payment-fields"
-				title={ __( 'Payment method', 'woo-gutenberg-products-block' ) }
-				description={ __(
-					'Select a payment method below.',
-					'woo-gutenberg-products-block'
-				) }
-				stepNumber={ 4 }
-			>
-				<Placeholder>A checkout step, coming soon near you</Placeholder>
+				<TextInput
+					id="email-field"
+					label={ __(
+						'Email address',
+						'woo-gutenberg-products-block'
+					) }
+				/>
+				<InputRow>
+					<TextInput
+						id="email-field-2"
+						label={ __(
+							'Email address',
+							'woo-gutenberg-products-block'
+						) }
+					/>
+					<TextInput
+						id="name-field"
+						label={ __(
+							'Name address',
+							'woo-gutenberg-products-block'
+						) }
+					/>
+				</InputRow>
+				<InputRow>
+					<TextInput
+						id="name-field-2"
+						label={ __(
+							'Name address',
+							'woo-gutenberg-products-block'
+						) }
+					/>
+					<TextInput
+						id="name-field-3"
+						label={ __(
+							'Name address',
+							'woo-gutenberg-products-block'
+						) }
+					/>
+					<TextInput
+						id="name-field-4"
+						label={ __(
+							'Name address',
+							'woo-gutenberg-products-block'
+						) }
+					/>
+				</InputRow>
 			</FormStep>
 		</CheckoutForm>
 	);
