@@ -10,8 +10,8 @@ import TextToolbarButton from '@woocommerce/block-components/text-toolbar-button
 /**
  * Internal dependencies
  */
-import FullCart from './components/full-cart';
-import EmptyCart from './components/empty-cart';
+import FullCart from './full-cart';
+import EmptyCart from './empty-cart';
 
 /**
  * Component to handle edit mode of "Cart Block".
@@ -25,23 +25,19 @@ const Cart = () => {
 
 	const getBlockControls = () => {
 		return (
-			<BlockControls className='wc-block-cart-toolbar'>
+			<BlockControls className="wc-block-cart-toolbar">
 				<Toolbar>
 					<TextToolbarButton
 						onClick={ toggleFullCartMode }
-						isToggled={ isFullCartMode }>
-						{  __(
-							'Full Cart',
-							'woo-gutenberg-products-block'
-						) }
+						isToggled={ isFullCartMode }
+					>
+						{ __( 'Full Cart', 'woo-gutenberg-products-block' ) }
 					</TextToolbarButton>
 					<TextToolbarButton
 						onClick={ toggleFullCartMode }
-						isToggled={ ! isFullCartMode }>
-						{  __(
-							'Empty Cart',
-							'woo-gutenberg-products-block'
-						) }
+						isToggled={ ! isFullCartMode }
+					>
+						{ __( 'Empty Cart', 'woo-gutenberg-products-block' ) }
 					</TextToolbarButton>
 				</Toolbar>
 			</BlockControls>
