@@ -83,7 +83,13 @@ class CartShippingRates extends RestContoller {
 		}
 
 		if ( empty( $request['country'] ) ) {
-			return new RestError( 'woocommerce_rest_cart_error', __( 'Shipping destination country is required.', 'woo-gutenberg-products-block' ), array( 'status' => 400 ) );
+			return new RestError( 'woocommerce_rest_cart_shipping_rates_missing_country', __( 'Shipping destination country is required.', 'woo-gutenberg-products-block' ), array( 'status' => 400 ) );
+		}
+
+		$request = $this->validate_destination( $request );
+
+		if ( is_wp_error( $request ) ) {
+			return $request;
 		}
 
 		$cart_items = $controller->get_cart_items(
@@ -93,18 +99,57 @@ class CartShippingRates extends RestContoller {
 		);
 
 		if ( empty( $cart_items ) ) {
-			return new RestError( 'woocommerce_rest_cart_error', __( 'There are no shippable items in the cart.', 'woo-gutenberg-products-block' ), array( 'status' => 400 ) );
+			return rest_ensure_response( [] );
 		}
 
-		$packages_to_quote    = $this->get_shipping_packages( $request );
-		$packages_with_quotes = WC()->shipping()->calculate_shipping( $packages_to_quote );
-		$packages_response    = [];
+		$packages = $this->get_shipping_packages( $request );
+		$response = [];
 
-		foreach ( $packages_with_quotes as $package_id => $package ) {
-			$packages_response[] = $this->prepare_response_for_collection( $this->prepare_item_for_response( $package ) );
+		foreach ( $packages as $package ) {
+			$response[] = $this->prepare_response_for_collection( $this->prepare_item_for_response( $package ) );
 		}
 
-		return rest_ensure_response( $packages_response );
+		return rest_ensure_response( $response );
+	}
+
+	/**
+	 * Format the request destination.
+	 *
+	 * @param \WP_REST_Request $request Full details about the request.
+	 * @return \WP_Error|\WP_REST_Response
+	 */
+	protected function validate_destination( $request ) {
+		$request['country']  = wc_strtoupper( $request['country'] );
+		$request['postcode'] = $request['postcode'] ? wc_format_postcode( $request['postcode'], $request['country'] ) : null;
+
+		if ( ! empty( $request['state'] ) ) {
+			$valid_states = WC()->countries->get_states( $request['country'] );
+
+			if ( is_array( $valid_states ) && count( $valid_states ) > 0 ) {
+				$valid_state_values = array_map( 'wc_strtoupper', array_flip( array_map( 'wc_strtoupper', $valid_states ) ) );
+				$request['state']   = wc_strtoupper( $request['state'] );
+
+				if ( isset( $valid_state_values[ $request['state'] ] ) ) {
+					// With this part we consider state value to be valid as well,
+					// convert it to the state key for the valid_states check below.
+					$request['state'] = $valid_state_values[ $request['state'] ];
+				}
+
+				if ( ! in_array( $request['state'], $valid_state_values, true ) ) {
+					return new RestError(
+						'woocommerce_rest_cart_shipping_rates_invalid_state',
+						sprintf(
+							/* translators: 1: valid states */
+							__( 'Desintation state is not valid. Please enter one of the following: %s', 'woo-gutenberg-products-block' ),
+							implode( ', ', $valid_states )
+						),
+						[ 'status' => 400 ]
+					);
+				}
+			}
+		}
+
+		return $request;
 	}
 
 	/**
@@ -188,7 +233,7 @@ class CartShippingRates extends RestContoller {
 	}
 
 	/**
-	 * Get packages to calculate shipping for.
+	 * Get packages with calculated shipping.
 	 *
 	 * Based on WC_Cart::get_shipping_packages but allows the destination to be
 	 * customised based on passed params.
@@ -209,6 +254,8 @@ class CartShippingRates extends RestContoller {
 				'country'   => $request['country'],
 			];
 		}
+
+		$packages = WC()->shipping()->calculate_shipping( $packages );
 
 		return $packages;
 	}
