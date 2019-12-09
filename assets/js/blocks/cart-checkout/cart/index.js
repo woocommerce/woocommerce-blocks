@@ -8,7 +8,7 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import Block from './block';
+import Editor from './edit';
 import { example } from './example';
 
 /**
@@ -34,13 +34,17 @@ registerBlockType( 'woocommerce/cart', {
 	 * Renders and manages the block.
 	 */
 	edit( props ) {
-		return <Block { ...props } />;
+		return <Editor { ...props } />;
 	},
 
 	/**
 	 * Block content is rendered in PHP, not via save function.
 	 */
 	save() {
-		return <InnerBlocks.Content />;
+		return (
+			<div>
+				<InnerBlocks.Content />
+			</div>
+		);
 	},
 } );
