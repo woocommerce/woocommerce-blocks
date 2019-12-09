@@ -10,6 +10,7 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 import Editor from './edit';
 import { example } from './example';
+import './style.scss';
 
 /**
  * Register and run the Cart block.
@@ -42,7 +43,7 @@ registerBlockType( 'woocommerce/cart', {
 	 */
 	save() {
 		return (
-			<div>
+			<div className="is-loading">
 				<InnerBlocks.Content />
 			</div>
 		);
