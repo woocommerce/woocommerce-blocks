@@ -123,7 +123,7 @@ class CartShippingRateSchema extends AbstractSchema {
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'id'            => [
+			'rate_id'       => [
 				'description' => __( 'ID of the shipping rate.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
@@ -197,7 +197,7 @@ class CartShippingRateSchema extends AbstractSchema {
 		return [
 			'name'          => $this->get_rate_prop( $rate, 'label' ),
 			'description'   => $this->get_rate_prop( $rate, 'description' ),
-			'handling_time' => $this->get_rate_prop( $rate, 'handling_time' ),
+			'delivery_time' => $this->get_rate_prop( $rate, 'delivery_time' ),
 			'price'         => $this->get_rate_prop( $rate, 'cost' ),
 			'rate_id'       => $this->get_rate_prop( $rate, 'id' ),
 			'instance_id'   => $this->get_rate_prop( $rate, 'instance_id' ),
