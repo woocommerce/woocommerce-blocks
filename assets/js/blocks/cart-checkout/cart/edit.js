@@ -6,6 +6,7 @@ import { Toolbar } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import TextToolbarButton from '@woocommerce/block-components/text-toolbar-button';
+import PropTypes from 'prop-types';
 
 /**
  * Internal dependencies
@@ -53,6 +54,8 @@ const CartEditor = ( { className } ) => {
 	);
 };
 
-CartEditor.propTypes = {};
+CartEditor.propTypes = {
+	className: PropTypes.string,
+};
 
 export default CartEditor;
