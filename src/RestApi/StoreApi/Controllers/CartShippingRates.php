@@ -101,7 +101,7 @@ class CartShippingRates extends RestContoller {
 		$packages_response    = [];
 
 		foreach ( $packages_with_quotes as $package_id => $package ) {
-			$packages_response[] = $this->prepare_response_for_collection( $this->prepare_item_for_response( $package_id, $package ) );
+			$packages_response[] = $this->prepare_response_for_collection( $this->prepare_item_for_response( $package ) );
 		}
 
 		return rest_ensure_response( $packages_response );
@@ -119,12 +119,11 @@ class CartShippingRates extends RestContoller {
 	/**
 	 * Prepares a single item output for response.
 	 *
-	 * @param int   $package_id Package index (ID).
-	 * @param array $package    Shipping package complete with rates from WooCommerce.
+	 * @param array $package Shipping package complete with rates from WooCommerce.
 	 * @return \WP_REST_Response Response object.
 	 */
-	public function prepare_item_for_response( $package_id, $package ) {
-		return rest_ensure_response( $this->schema->get_item_response( $package_id, $package ) );
+	public function prepare_item_for_response( $package ) {
+		return rest_ensure_response( $this->schema->get_item_response( $package ) );
 	}
 
 	/**

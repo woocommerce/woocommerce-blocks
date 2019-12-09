@@ -125,11 +125,10 @@ class CartShippingRateSchema extends AbstractSchema {
 	/**
 	 * Convert a shipping rate from WooCommerce into a valid response.
 	 *
-	 * @param int   $package_id Package index (ID).
-	 * @param array $package    Shipping package complete with rates from WooCommerce.
+	 * @param array $package Shipping package complete with rates from WooCommerce.
 	 * @return array
 	 */
-	public function get_item_response( $package_id, $package ) {
+	public function get_item_response( $package ) {
 		return [
 			'items'          => array_values( wp_list_pluck( $package['contents'], 'key' ) ),
 			'shipping-rates' => array_values( array_map( [ $this, 'get_rate_response' ], $package['rates'] ) ),
