@@ -27,7 +27,7 @@ Run `$ npm run lint` to check code against our linting rules.
 
 This script runs 3 sub-commands: `lint:php`, `lint:css`, `lint:js`. Use these to run linters across the codebase (linters check for valid syntax).
 
--   `lint:php` runs phpcs via composer, which uses the [phpcs.xml](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/master/phpcs.xml) ruleset.
+-   `lint:php` runs phpcs via composer, which uses the [phpcs.xml](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/master/phpcs.xml) rule set.
 -   `lint:css` runs stylelint over all the scss code in `assets/css`, using the rules in [.stylelintrc.json.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/master/.stylelintrc.json)
 -   `lint:js` runs eslint over all the JavaScript, using the rules in [.eslintrc.js.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/master/.eslintrc.js)
 
@@ -40,7 +40,7 @@ The test scripts use [wp-scripts](https://github.com/WordPress/gutenberg/tree/ma
 -   `test:update` updates the snapshot tests for components, used if you change a component that has tests attached.
 -   Use `test:watch` to keep watch of files and automatically re-run tests.
 
-### Create an installable zip package
+### Create a plugin package in ZIP format
 
 Run `$ npm run package-plugin` to trigger install and build, and then create a zip file which you can use to install WooCommerce Blocks in WordPress admin.
 
@@ -50,7 +50,7 @@ These instructions cover new releases of the blocks plugin for those with commit
 
 ### Prerequisites
 
--   Have [Github's Hub](https://github.com/github/hub) cli installed and authenticated.
+-   Have [Github Hub](https://github.com/github/hub) cli installed and authenticated.
 
 **Before any release** ensure you update:
 
@@ -70,20 +70,15 @@ To do this:
 -   Run the command ([using HUB command line helper](https://hub.github.com/hub-am.1.html)): `hub am -3 http://URL-TO-PR`
 -   The command will tell you if the merge was successful. If not, you can cherry pick individual commits using [git cherry pick](https://git-scm.com/docs/git-cherry-pick) which is more time consuming.
 -   Push the changes to origin.
--   After success, label the PR as `status: cherry-picked`. This lets everyone know the chery picking has been completed.
+-   After success, label the PR as `status: cherry-picked`. This lets everyone know the cherry picking has been completed.
 
 You'll also need to manually update the changelog and version numbers in the release branch before tagging. There is a changelog helper script which can list changelog entries from merged PRs in a milestone:
 
 `npm run changelog`
 
-Follow the instructions, then add the changelog entries to the readme.txt file before committing to the release branch. As well as the changelog, there are version strings which need updating in:
+Follow the instructions, then add the changelog entries to the readme.txt file before committing to the release branch. Once all of this is done, you are safe to run the deploy scripts explained below.
 
--   `package.json`
--   `readme.text`
--   `src/package.php`
--   `woocommerce-gutenberg-products-block.php`
-
-Once all of this is done, you are safe to run the deploy scripts exaplained below.
+If you're using the GitHub deploy script you no longer need to worry about version bumps; it's automated. The `$ npm run deploy` (explained below) will update version strings in `package.json`, `readme.text`, `src/package.php`, and `woocommerce-gutenberg-products-block.php` for you, committing the changes to the current branch.
 
 ### Tagging new releases on GitHub
 
