@@ -76,7 +76,7 @@ class ProductByCategoryBlock extends Component {
 	/**
 	 * Set changed attributes to state.
 	 *
-	 * @param {Array} attributes List of attributes to set.
+	 * @param {Object} attributes List of attributes to set.
 	 */
 	setChangedAttributes = ( attributes ) => {
 		this.setState( ( prevState ) => {

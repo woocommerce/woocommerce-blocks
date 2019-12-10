@@ -28,7 +28,7 @@ const blockConfig = {
 	/**
 	 * Renders the edit view for a block.
 	 *
-	 * @param {Array} props Props to pass to block.
+	 * @param {Object} props Props to pass to block.
 	 */
 	edit( props ) {
 		const { align, product } = props.attributes;

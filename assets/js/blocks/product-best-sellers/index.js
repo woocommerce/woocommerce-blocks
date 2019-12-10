@@ -70,7 +70,7 @@ registerBlockType( 'woocommerce/product-best-sellers', {
 	/**
 	 * Renders and manages the block.
 	 *
-	 * @param {Array} props Props to pass to block.
+	 * @param {Object} props Props to pass to block.
 	 */
 	edit( props ) {
 		return <Block { ...props } />;
