@@ -17,7 +17,7 @@ import { formatError } from '../base/utils/errors.js';
  * A higher order component that enhances the provided component with products
  * from a search query.
  *
- * @param {*} OriginalComponent Component being wrapped.
+ * @param {Function} OriginalComponent Component being wrapped.
  */
 const withSearchedProducts = createHigherOrderComponent(
 	( OriginalComponent ) => {

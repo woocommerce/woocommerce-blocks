@@ -15,7 +15,7 @@ import { formatError } from '../base/utils/errors.js';
 /**
  * HOC that queries attributes for a component.
  *
- * @param {*} OriginalComponent Component being wrapped.
+ * @param {Function} OriginalComponent Component being wrapped.
  */
 const withAttributes = createHigherOrderComponent( ( OriginalComponent ) => {
 	class WrappedComponent extends Component {

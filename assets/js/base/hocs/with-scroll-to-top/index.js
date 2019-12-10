@@ -11,7 +11,7 @@ import './style.scss';
 /**
  * HOC that provides a function to scroll to the top of the component.
  *
- * @param {*} OriginalComponent Component being wrapped.
+ * @param {Function} OriginalComponent Component being wrapped.
  */
 const withScrollToTop = ( OriginalComponent ) => {
 	class WrappedComponent extends Component {

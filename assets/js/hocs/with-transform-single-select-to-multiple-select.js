@@ -9,7 +9,7 @@ import { isNil } from 'lodash';
 /**
  * HOC that transforms a single select to a multiple select.
  *
- * @param {*} OriginalComponent Component being wrapped.
+ * @param {Function} OriginalComponent Component being wrapped.
  */
 const withTransformSingleSelectToMultipleSelect = createHigherOrderComponent(
 	( OriginalComponent ) => {

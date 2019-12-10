@@ -15,7 +15,7 @@ import { formatError } from '../base/utils/errors.js';
 /**
  * HOC that queries variations for a component.
  *
- * @param {*} OriginalComponent Component being wrapped.
+ * @param {Function} OriginalComponent Component being wrapped.
  */
 const withProductVariations = createHigherOrderComponent(
 	( OriginalComponent ) => {

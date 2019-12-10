@@ -12,7 +12,7 @@ import { formatError } from '../utils/errors.js';
 /**
  * HOC that queries products for a component.
  *
- * @param {*} OriginalComponent Component being wrapped.
+ * @param {Function} OriginalComponent Component being wrapped.
  */
 const withProducts = ( OriginalComponent ) => {
 	class WrappedComponent extends Component {

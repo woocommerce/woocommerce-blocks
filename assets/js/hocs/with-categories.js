@@ -13,7 +13,7 @@ import { formatError } from '../base/utils/errors.js';
 /**
  * HOC that queries categories for a component.
  *
- * @param {*} OriginalComponent Component being wrapped.
+ * @param {Function} OriginalComponent Component being wrapped.
  */
 const withCategories = createHigherOrderComponent( ( OriginalComponent ) => {
 	return class WrappedComponent extends Component {

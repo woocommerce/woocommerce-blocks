@@ -14,7 +14,7 @@ import { formatError } from '../utils/errors.js';
 /**
  * HOC that queries reviews for a component.
  *
- * @param {*} OriginalComponent Component being wrapped.
+ * @param {Function} OriginalComponent Component being wrapped.
  */
 const withReviews = ( OriginalComponent ) => {
 	class WrappedComponent extends Component {
