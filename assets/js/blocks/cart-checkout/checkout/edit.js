@@ -16,21 +16,21 @@ import FeedbackPrompt from '../feedback-prompt';
 import Block from './block.js';
 import './editor.scss';
 
+const getInspectorControls = () => {
+	return (
+		<InspectorControls>
+			<FeedbackPrompt
+				text={ __(
+					'We are currently working on improving our checkout and providing merchants with tools and options to customize their checkout to their stores needs.',
+					'woo-gutenberg-products-block'
+				) }
+			/>
+		</InspectorControls>
+	);
+};
+
 const Edit = ( { attributes } ) => {
 	const { className } = attributes;
-
-	const getInspectorControls = () => {
-		return (
-			<InspectorControls>
-				<FeedbackPrompt
-					text={ __(
-						'We are currently working on improving our checkout and providing merchants with tools and options to customize their checkout to their stores needs.',
-						'woo-gutenberg-products-block'
-					) }
-				/>
-			</InspectorControls>
-		);
-	};
 
 	return (
 		<div className={ className }>

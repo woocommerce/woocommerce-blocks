@@ -14,6 +14,19 @@ import FullCart from './components/full-cart';
 import EmptyCart from './components/empty-cart';
 import FeedbackPrompt from '../feedback-prompt';
 
+const getInspectorControls = () => {
+	return (
+		<InspectorControls>
+			<FeedbackPrompt
+				text={ __(
+					'We are currently working on improving our cart and providing merchants with tools and options to customize their cart to their stores needs.',
+					'woo-gutenberg-products-block'
+				) }
+			/>
+		</InspectorControls>
+	);
+};
+
 /**
  * Component to handle edit mode of "Cart Block".
  */
@@ -22,19 +35,6 @@ const Cart = () => {
 
 	const toggleFullCartMode = () => {
 		setFullCartMode( ! isFullCartMode );
-	};
-
-	const getInspectorControls = () => {
-		return (
-			<InspectorControls>
-				<FeedbackPrompt
-					text={ __(
-						'We are currently working on improving our cart and providing merchants with tools and options to customize their cart to their stores needs.',
-						'woo-gutenberg-products-block'
-					) }
-				/>
-			</InspectorControls>
-		);
 	};
 
 	const getBlockControls = () => {
