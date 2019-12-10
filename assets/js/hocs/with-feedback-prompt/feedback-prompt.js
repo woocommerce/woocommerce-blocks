@@ -22,6 +22,7 @@ const FeedbackPrompt = ( { text } ) => {
 			</h2>
 			<p className="wc-block-feedback-prompt__text">{ text }</p>
 			<a
+				// @todo Update the link to a page to gather feedback.
 				href="https://wordpress.org/support/plugin/woo-gutenberg-products-block/reviews/"
 				className="wc-block-feedback-prompt__link"
 				rel="noreferrer noopener"
