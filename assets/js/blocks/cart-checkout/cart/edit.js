@@ -4,19 +4,20 @@
 import { __ } from '@wordpress/i18n';
 import { BlockControls } from '@wordpress/block-editor';
 import { Toolbar } from '@wordpress/components';
-import { Fragment, useState } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import TextToolbarButton from '@woocommerce/block-components/text-toolbar-button';
+import PropTypes from 'prop-types';
 
 /**
  * Internal dependencies
  */
-import FullCart from './components/full-cart';
-import EmptyCart from './components/empty-cart';
+import FullCart from './full-cart';
+import EmptyCart from './empty-cart';
 
 /**
  * Component to handle edit mode of "Cart Block".
  */
-const Cart = () => {
+const CartEditor = ( { className } ) => {
 	const [ isFullCartMode, setFullCartMode ] = useState( true );
 
 	const toggleFullCartMode = () => {
@@ -44,16 +45,17 @@ const Cart = () => {
 		);
 	};
 
-	const cart = isFullCartMode ? <FullCart /> : <EmptyCart />;
-
 	return (
-		<Fragment>
+		<div className={ className }>
 			{ getBlockControls() }
-			{ cart }
-		</Fragment>
+			{ isFullCartMode && <FullCart /> }
+			<EmptyCart hidden={ isFullCartMode } />
+		</div>
 	);
 };
 
-Cart.propTypes = {};
+CartEditor.propTypes = {
+	className: PropTypes.string,
+};
 
-export default Cart;
+export default CartEditor;
