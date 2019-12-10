@@ -1,6 +1,6 @@
 <?php
 /**
- * Products collection data controller. Get's aggregate data from a collection of products.
+ * Products collection data controller. Get aggregate data from a collection of products.
  *
  * Supports the same parameters as /products, but returns a different response.
  *
