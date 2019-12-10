@@ -5,7 +5,6 @@
 
 .wc-components-text-input label {
 	position: absolute;
-	// +1px is to account for border
 	transform: translateX(#{$gap}) translateY(#{$gap-small});
 	font-size: 16px;
 	line-height: 22px;
@@ -13,9 +12,6 @@
 }
 
 .wc-components-text-input.is-active label {
-	/*font-size: 12px;
-	top: $gap-smaller + 1px;
-	line-height: 12px;*/
 	transform: translateX(#{$gap - $gap-small}) translateY(#{$gap-smallest}) scale(0.75);
 	transition: all 200ms ease;
 }
