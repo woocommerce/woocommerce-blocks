@@ -24,6 +24,12 @@ const blockConfig = {
 	supports: {
 		html: false,
 	},
+
+	/**
+	 * Renders the edit view for a block.
+	 *
+	 * @param {Array} props Props to pass to block.
+	 */
 	edit( props ) {
 		const { align, product } = props.attributes;
 

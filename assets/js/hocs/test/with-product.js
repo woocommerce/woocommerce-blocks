@@ -109,9 +109,9 @@ describe( 'withProduct Component', () => {
 			renderer = render();
 		} );
 
-		it( 'sets the error prop', ( done ) => {
-			const { formatError } = mockBaseUtils;
-			getProductPromise.catch( () => {
+		test( 'sets the error prop', () => {
+			return new Promise( ( done ) => {
+				const { formatError } = mockBaseUtils;
 				const props = renderer.root.findByType( 'div' ).props;
 
 				expect( formatError ).toHaveBeenCalledWith( error );

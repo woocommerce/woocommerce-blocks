@@ -31,7 +31,9 @@ registerBlockType( 'woocommerce/cart', {
 	attributes: {},
 
 	/**
-	 * Renders and manages the block.
+	 * Renders the edit view for a block.
+	 *
+	 * @param {Array} props Props to pass to block.
 	 */
 	edit( props ) {
 		return <Block { ...props } />;

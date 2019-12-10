@@ -76,6 +76,8 @@ registerBlockType( 'woocommerce/product-search', {
 
 	/**
 	 * Renders and manages the block.
+	 *
+	 * @param {Array} props Props to pass to block.
 	 */
 	edit( props ) {
 		const { attributes, setAttributes } = props;
@@ -120,6 +122,8 @@ registerBlockType( 'woocommerce/product-search', {
 
 	/**
 	 * Save the props to post content.
+	 *
+	 * @param {Array} attributes Props to pass to block.
 	 */
 	save( attributes ) {
 		return (

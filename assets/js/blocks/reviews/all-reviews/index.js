@@ -49,6 +49,8 @@ registerBlockType( 'woocommerce/all-reviews', {
 
 	/**
 	 * Renders and manages the block.
+	 *
+	 * @param {Array} props Props to pass to block.
 	 */
 	edit( props ) {
 		return <Editor { ...props } />;

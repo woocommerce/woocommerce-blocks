@@ -22,7 +22,10 @@ const mockProducts = [
 	{ id: 1, name: 'Hoodie', variations: [ 3, 4 ] },
 	{ id: 2, name: 'Backpack' },
 ];
-const mockVariations = [ { id: 3, name: 'Blue' }, { id: 4, name: 'Red' } ];
+const mockVariations = [
+	{ id: 3, name: 'Blue' },
+	{ id: 4, name: 'Red' },
+];
 const TestComponent = withProductVariations( ( props ) => {
 	return (
 		<div
@@ -163,9 +166,9 @@ describe( 'withProductVariations Component', () => {
 			renderer = render();
 		} );
 
-		it( 'sets the error prop', ( done ) => {
-			const { formatError } = mockBaseUtils;
-			getProductVariationsPromise.catch( () => {
+		test( 'sets the error prop', () => {
+			return new Promise( ( done ) => {
+				const { formatError } = mockBaseUtils;
 				const props = renderer.root.findByType( 'div' ).props;
 
 				expect( formatError ).toHaveBeenCalledWith( error );

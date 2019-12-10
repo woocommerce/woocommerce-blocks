@@ -88,20 +88,16 @@ describe( 'withAttributes Component', () => {
 			expect( props.expandedAttribute ).toBe( 1 );
 		} );
 
-		it( 'getTerms is called on mount if there was an attribute selected', ( done ) => {
-			const renderer = TestRenderer.create(
+		it( 'getTerms is called on mount if there was an attribute selected', async () => {
+			const renderer = await TestRenderer.create(
 				<TestComponent selected={ selected } />
 			);
+			const props = renderer.root.findByType( 'div' ).props;
+			const { getTerms } = mockUtils;
 
-			getAttributesPromise.then( () => {
-				const { getTerms } = mockUtils;
-				const props = renderer.root.findByType( 'div' ).props;
-
-				expect( getTerms ).toHaveBeenCalledWith( 1 );
-				expect( getTerms ).toHaveBeenCalledTimes( 1 );
-				expect( props.expandedAttribute ).toBe( 1 );
-				done();
-			} );
+			expect( getTerms ).toHaveBeenCalledWith( 1 );
+			expect( getTerms ).toHaveBeenCalledTimes( 1 );
+			expect( props.expandedAttribute ).toBe( 1 );
 		} );
 	} );
 
@@ -140,9 +136,9 @@ describe( 'withAttributes Component', () => {
 			renderer = TestRenderer.create( <TestComponent /> );
 		} );
 
-		it( 'sets the error prop', ( done ) => {
-			const { formatError } = mockBaseUtils;
-			getAttributesPromise.catch( () => {
+		test( 'sets the error prop', () => {
+			return new Promise( ( done ) => {
+				const { formatError } = mockBaseUtils;
 				const props = renderer.root.findByType( 'div' ).props;
 
 				expect( formatError ).toHaveBeenCalledWith( error );

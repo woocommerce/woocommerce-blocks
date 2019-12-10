@@ -150,6 +150,8 @@ registerBlockType( 'woocommerce/product-categories', {
 
 	/**
 	 * Renders and manages the block.
+	 *
+	 * @param {Array} props Props to pass to block.
 	 */
 	edit( props ) {
 		return <Block { ...props } />;
