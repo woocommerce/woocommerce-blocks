@@ -78,7 +78,7 @@ class Api {
 		);
 
 		if ( file_exists( $dependency_path ) ) {
-			$deps_array   = include $dependency_path;
+			$deps_array   = require $dependency_path;
 			$dependencies = isset( $deps_array['dependencies'] ) ? array_merge( $deps_array['dependencies'], $dependencies ) : $dependencies;
 		}
 
