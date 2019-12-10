@@ -19,9 +19,11 @@ const TextInput = ( {
 	screenReaderLabel,
 	disabled,
 	help,
+	value,
+	onChange,
 } ) => {
 	const [ isActive, setIsActive ] = useState( false );
-	const [ value, setValue ] = useState( '' );
+	const onChangeValue = ( event ) => onChange( event.target.value );
 	return (
 		<div
 			className={ classnames( 'wc-components-text-input', className, {
@@ -41,7 +43,7 @@ const TextInput = ( {
 				type="text"
 				id={ id }
 				value={ value }
-				onChange={ ( { target } ) => setValue( target.value ) }
+				onChange={ onChangeValue }
 				onFocus={ () => setIsActive( true ) }
 				onBlur={ () => setIsActive( false ) }
 				aria-label={ ariaLabel || label }
