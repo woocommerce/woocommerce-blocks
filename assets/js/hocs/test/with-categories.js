@@ -91,19 +91,17 @@ describe( 'withCategories Component', () => {
 			renderer = render();
 		} );
 
-		test( 'sets the error prop', () => {
-			return new Promise( ( done ) => {
-				const { formatError } = mockBaseUtils;
-				const props = renderer.root.findByType( 'div' ).props;
+		test( 'sets the error prop', async () => {
+			await expect( () => getCategoriesPromise() ).toThrow();
 
-				expect( formatError ).toHaveBeenCalledWith( error );
-				expect( formatError ).toHaveBeenCalledTimes( 1 );
-				expect( props.error ).toEqual( formattedError );
-				expect( props.isLoading ).toBe( false );
-				expect( props.categories ).toBeNull();
+			const { formatError } = mockBaseUtils;
+			const props = renderer.root.findByType( 'div' ).props;
 
-				done();
-			} );
+			expect( formatError ).toHaveBeenCalledWith( error );
+			expect( formatError ).toHaveBeenCalledTimes( 1 );
+			expect( props.error ).toEqual( formattedError );
+			expect( props.isLoading ).toBe( false );
+			expect( props.categories ).toBeNull();
 		} );
 	} );
 } );

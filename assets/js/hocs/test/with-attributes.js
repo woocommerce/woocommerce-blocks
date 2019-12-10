@@ -89,11 +89,14 @@ describe( 'withAttributes Component', () => {
 		} );
 
 		it( 'getTerms is called on mount if there was an attribute selected', async () => {
-			const renderer = await TestRenderer.create(
+			const renderer = TestRenderer.create(
 				<TestComponent selected={ selected } />
 			);
-			const props = renderer.root.findByType( 'div' ).props;
+
+			await getAttributesPromise;
+
 			const { getTerms } = mockUtils;
+			const props = renderer.root.findByType( 'div' ).props;
 
 			expect( getTerms ).toHaveBeenCalledWith( 1 );
 			expect( getTerms ).toHaveBeenCalledTimes( 1 );
@@ -136,18 +139,17 @@ describe( 'withAttributes Component', () => {
 			renderer = TestRenderer.create( <TestComponent /> );
 		} );
 
-		test( 'sets the error prop', () => {
-			return new Promise( ( done ) => {
-				const { formatError } = mockBaseUtils;
-				const props = renderer.root.findByType( 'div' ).props;
+		test( 'sets the error prop', async () => {
+			await expect( () => getAttributesPromise() ).toThrow();
 
-				expect( formatError ).toHaveBeenCalledWith( error );
-				expect( formatError ).toHaveBeenCalledTimes( 1 );
-				expect( props.error ).toEqual( formattedError );
-				expect( props.isLoading ).toBe( false );
-				expect( props.attributes ).toEqual( [] );
-				done();
-			} );
+			const { formatError } = mockBaseUtils;
+			const props = renderer.root.findByType( 'div' ).props;
+
+			expect( formatError ).toHaveBeenCalledWith( error );
+			expect( formatError ).toHaveBeenCalledTimes( 1 );
+			expect( props.error ).toEqual( formattedError );
+			expect( props.isLoading ).toBe( false );
+			expect( props.attributes ).toEqual( [] );
 		} );
 	} );
 } );

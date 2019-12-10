@@ -166,19 +166,17 @@ describe( 'withProductVariations Component', () => {
 			renderer = render();
 		} );
 
-		test( 'sets the error prop', () => {
-			return new Promise( ( done ) => {
-				const { formatError } = mockBaseUtils;
-				const props = renderer.root.findByType( 'div' ).props;
+		test( 'sets the error prop', async () => {
+			await expect( () => getProductVariationsPromise() ).toThrow();
 
-				expect( formatError ).toHaveBeenCalledWith( error );
-				expect( formatError ).toHaveBeenCalledTimes( 1 );
-				expect( props.error ).toEqual( formattedError );
-				expect( props.isLoading ).toBe( false );
-				expect( props.variations ).toEqual( { 1: null } );
+			const { formatError } = mockBaseUtils;
+			const props = renderer.root.findByType( 'div' ).props;
 
-				done();
-			} );
+			expect( formatError ).toHaveBeenCalledWith( error );
+			expect( formatError ).toHaveBeenCalledTimes( 1 );
+			expect( props.error ).toEqual( formattedError );
+			expect( props.isLoading ).toBe( false );
+			expect( props.variations ).toEqual( { 1: null } );
 		} );
 	} );
 } );
