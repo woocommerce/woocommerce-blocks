@@ -1,3 +1,4 @@
+export { default as withFeedbackPrompt } from './with-feedback-prompt';
 export { default as withAttributes } from './with-attributes';
 export { default as withCategories } from './with-categories';
 export { default as withCategory } from './with-category';

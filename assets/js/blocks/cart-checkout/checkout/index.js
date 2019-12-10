@@ -7,7 +7,7 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import edit from './edit';
+import Edit from './edit';
 import { example } from './example';
 import './editor.scss';
 
@@ -36,7 +36,16 @@ registerBlockType( 'woocommerce/checkout', {
 			default: false,
 		},
 	},
-	edit,
+	edit: ( props ) => (
+		<Edit
+			{ ...props }
+			feedbackPromptText={ __(
+				'We are currently working on improving our checkout and providing merchants with tools and options to customize their checkout to their stores needs.',
+				'woo-gutenberg-products-block'
+			) }
+			showFeedbackPrompt={ true }
+		/>
+	),
 	/**
 	 * Save the props to post content.
 	 */

@@ -2,30 +2,17 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { BlockControls, InspectorControls } from '@wordpress/block-editor';
+import { BlockControls } from '@wordpress/block-editor';
 import { Toolbar } from '@wordpress/components';
 import { Fragment, useState } from '@wordpress/element';
 import TextToolbarButton from '@woocommerce/block-components/text-toolbar-button';
+import { withFeedbackPrompt } from '@woocommerce/block-hocs';
 
 /**
  * Internal dependencies
  */
 import FullCart from './components/full-cart';
 import EmptyCart from './components/empty-cart';
-import FeedbackPrompt from '../feedback-prompt';
-
-const getInspectorControls = () => {
-	return (
-		<InspectorControls>
-			<FeedbackPrompt
-				text={ __(
-					'We are currently working on improving our cart and providing merchants with tools and options to customize their cart to their stores needs.',
-					'woo-gutenberg-products-block'
-				) }
-			/>
-		</InspectorControls>
-	);
-};
 
 /**
  * Component to handle edit mode of "Cart Block".
@@ -63,7 +50,6 @@ const Cart = () => {
 	return (
 		<Fragment>
 			{ getBlockControls() }
-			{ getInspectorControls() }
 			{ cart }
 		</Fragment>
 	);
@@ -71,4 +57,4 @@ const Cart = () => {
 
 Cart.propTypes = {};
 
-export default Cart;
+export default withFeedbackPrompt( Cart );
