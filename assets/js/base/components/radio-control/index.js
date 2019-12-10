@@ -12,7 +12,6 @@ import './style.scss';
 const RadioControl = ( {
 	className,
 	selected,
-	help,
 	id,
 	onChange,
 	options = [],
@@ -26,65 +25,92 @@ const RadioControl = ( {
 					className
 				) }
 			>
-				{ options.map( ( option, index ) => (
-					<label
-						key={ `${ id }-${ index }` }
-						className="wc-components-radio-control__option"
-						htmlFor={ `${ id }-${ index }` }
-					>
-						<input
-							id={ `${ id }-${ index }` }
-							className="wc-components-radio-control__input"
-							type="radio"
-							name={ id }
-							value={ option.value }
-							onChange={ onChangeValue }
-							checked={ option.value === selected }
-							aria-describedby={
-								!! help ? `${ id }__help` : undefined
-							}
-						/>
-						<Label
-							label={ option.label }
-							wrapperElement="span"
-							wrapperProps={ {
-								className: 'wc-components-radio-control__label',
-							} }
+				{ options.map(
+					(
+						{
+							value,
+							label,
+							description,
+							secondaryLabel,
+							secondaryDescription,
+						},
+						index
+					) => (
+						<label
+							key={ `${ id }-${ index }` }
+							className="wc-components-radio-control__option"
+							htmlFor={ `${ id }-${ index }` }
 						>
-							{ option.label }
-						</Label>
-						<Label
-							label={ option.secondaryLabel }
-							wrapperElement="span"
-							wrapperProps={ {
-								className:
-									'wc-components-radio-control__secondary-label',
-							} }
-						>
-							{ option.secondaryLabel }
-						</Label>
-						<Label
-							label={ option.description }
-							wrapperElement="span"
-							wrapperProps={ {
-								className:
-									'wc-components-radio-control__description',
-							} }
-						>
-							{ option.description }
-						</Label>
-						<Label
-							label={ option.secondaryDescription }
-							wrapperElement="span"
-							wrapperProps={ {
-								className:
-									'wc-components-radio-control__secondary-description',
-							} }
-						>
-							{ option.secondaryDescription }
-						</Label>
-					</label>
-				) ) }
+							<input
+								id={ `${ id }-${ index }` }
+								className="wc-components-radio-control__input"
+								type="radio"
+								name={ id }
+								value={ value }
+								onChange={ onChangeValue }
+								checked={ value === selected }
+								aria-describedby={ classnames( {
+									[ `${ id }-${ index }__label` ]: label,
+									[ `${ id }-${ index }__secondary-label` ]: secondaryLabel,
+									[ `${ id }-${ index }__description` ]: description,
+									[ `${ id }-${ index }__secondary-description` ]: secondaryDescription,
+								} ) }
+							/>
+							{ label && (
+								<Label
+									label={ label }
+									wrapperElement="span"
+									wrapperProps={ {
+										className:
+											'wc-components-radio-control__label',
+										id: `${ id }-${ index }__label`,
+									} }
+								>
+									{ label }
+								</Label>
+							) }
+							{ secondaryLabel && (
+								<Label
+									label={ secondaryLabel }
+									wrapperElement="span"
+									wrapperProps={ {
+										className:
+											'wc-components-radio-control__secondary-label',
+										id: `${ id }-${ index }__secondary-label`,
+									} }
+								>
+									{ secondaryLabel }
+								</Label>
+							) }
+							{ description && (
+								<Label
+									label={ description }
+									wrapperElement="span"
+									wrapperProps={ {
+										className:
+											'wc-components-radio-control__description',
+										id: `${ id }-${ index }__description`,
+									} }
+								>
+									{ description }
+								</Label>
+							) }
+							{ secondaryDescription && (
+								<Label
+									label={ secondaryDescription }
+									wrapperElement="span"
+									wrapperProps={ {
+										className:
+											'wc-components-radio-control__secondary-description',
+										id: `${ id }-${ index }__secondary-description`,
+									} }
+								>
+									{ secondaryDescription }
+								</Label>
+							) }
+						</label>
+					)
+				) }
 			</div>
 		)
 	);
