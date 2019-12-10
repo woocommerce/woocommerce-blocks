@@ -78,7 +78,7 @@ class ProductCollectionData extends RestController {
 					'readonly'    => true,
 				),
 				'attribute_counts' => array(
-					'description' => __( 'Returns number of products within attribute terms, indexed by term ID.', 'woo-gutenberg-products-block' ),
+					'description' => __( 'Returns number of products within attribute terms.', 'woo-gutenberg-products-block' ),
 					'type'        => 'array',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
