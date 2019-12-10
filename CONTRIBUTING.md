@@ -78,7 +78,7 @@ You'll also need to manually update the changelog and version numbers in the rel
 
 Follow the instructions, then add the changelog entries to the readme.txt file before committing to the release branch. Once all of this is done, you are safe to run the deploy scripts explained below.
 
-If you're using the GitHub deploy script you no longer need to worry about version bumps; it's automated. The `$ npm run deploy` (explained below) will update version strings in `package.json`, `readme.text`, `src/package.php`, and `woocommerce-gutenberg-products-block.php` for you, committing the changes to the current branch.
+If you're using the GitHub deploy script you no longer need to worry about version bumps; it's automated. The `$ npm run deploy` (explained below) will update version strings in `package.json`, `readme.text`, `src/Package.php`, and `woocommerce-gutenberg-products-block.php` for you, committing the changes to the current branch.
 
 ### Tagging new releases on GitHub
 
