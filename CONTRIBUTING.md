@@ -94,6 +94,13 @@ This will trigger a build and then run the release script (found in `/bin/github
 
 If you want to add additional details or a binary file to the release after deployment, [you can edit the release here](https://github.com/woocommerce/woocommerce-gutenberg-products-block/releases).
 
+### Bumping the version in MASTER after releasing a tag
+
+After you release a new version from a release branch there are some other steps to do to keep `master` up to date.
+
+-   If you released an update with a changelog, create a commit/PR to master with the new changelog entries.
+-   Create a commit to master that updates the version to the next minor with a `-dev` suffix. For example, if you just released `2.5.0`, you'd do an update changing the version to `2.6.0-dev`. See an [example here](https://github.com/woocommerce/woocommerce-gutenberg-products-block/commit/e27f053e7be0bf7c1d376f5bdb9d9999190ce158).
+
 ### Pushing new releases to WordPress.org
 
 If you have SVN commit access to the WordPress.org plugin repository you can run the following script to prepare a new version:
@@ -105,10 +112,6 @@ $ npm run release
 This will ask for a tagged version number, check it out from GitHub, check out the SVN repository, and prepare all files. It will give you a command when it's finished to do the actual commit; you have a chance to test/check the files before pushing to WordPress.org.
 
 **Important:** Before running the release script ensure you have already pushed a new release to GitHub.
-
-### Bumping the version
-
-After you release, create a commit to master that updates the version to the next minor with a `-dev` suffix. For example, if you just released `2.5.0`, you'd do an update changing the version to `2.6.0-dev`. See an [example here](https://github.com/woocommerce/woocommerce-gutenberg-products-block/commit/e27f053e7be0bf7c1d376f5bdb9d9999190ce158).
 
 ## Updating a single file in WordPress.org
 
