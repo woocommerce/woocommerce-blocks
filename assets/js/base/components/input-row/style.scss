@@ -2,10 +2,12 @@
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
+	margin-top: $gap;
 
-	& > * {
+	& > .wc-components-text-input {
 		margin-right: $gap-small;
 		flex-grow: 1;
+		margin-top: 0;
 		&:last-child {
 			margin-right: 0;
 		}

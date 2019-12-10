@@ -9,18 +9,19 @@
 	transform: translateX(#{$gap}) translateY(#{$gap-small});
 	font-size: 16px;
 	line-height: 22px;
+	transition: all 200ms ease;
 }
 
 .wc-components-text-input.is-active label {
 	/*font-size: 12px;
 	top: $gap-smaller + 1px;
 	line-height: 12px;*/
-	transform: translateX(#{$gap - $gap-small}) translateY(#{$gap-smaller}) scale(0.75);
+	transform: translateX(#{$gap - $gap-small}) translateY(#{$gap-smallest}) scale(0.75);
 	transition: all 200ms ease;
 }
 
 .wc-components-text-input.is-active input[type="text"] {
-	padding: $gap-large $gap 0;
+	padding: $gap-large $gap $gap-smallest;
 }
 
 .wc-components-text-input input[type="text"] {
@@ -32,4 +33,6 @@
 	line-height: 22px;
 	font-family: inherit;
 	margin: 0;
+	box-sizing: border-box;
+	height: 48px;
 }
