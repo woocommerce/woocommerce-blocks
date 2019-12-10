@@ -84,7 +84,7 @@
 		"mini-css-extract-plugin": "0.8.0",
 		"node-sass": "4.13.0",
 		"postcss-loader": "3.0.0",
-		"prettier": "git+https://github.com/Automattic/wp-prettier.git#wp-prettier-1.18.2",
+		"prettier": "npm:wp-prettier@1.19.1",
 		"progress-bar-webpack-plugin": "1.12.1",
 		"promptly": "3.0.3",
 		"react-test-renderer": "16.12.0",
