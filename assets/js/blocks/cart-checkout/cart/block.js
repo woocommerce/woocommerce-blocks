@@ -1,10 +1,10 @@
 /**
  * External dependencies
  */
-import { BlockControls } from '@wordpress/block-editor';
+import { __ } from '@wordpress/i18n';
+import { BlockControls, InspectorControls } from '@wordpress/block-editor';
 import { Toolbar } from '@wordpress/components';
 import { Fragment, useState } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
 import TextToolbarButton from '@woocommerce/block-components/text-toolbar-button';
 
 /**
@@ -12,6 +12,7 @@ import TextToolbarButton from '@woocommerce/block-components/text-toolbar-button
  */
 import FullCart from './components/full-cart';
 import EmptyCart from './components/empty-cart';
+import FeedbackPrompt from '../feedback-prompt';
 
 /**
  * Component to handle edit mode of "Cart Block".
@@ -23,25 +24,34 @@ const Cart = () => {
 		setFullCartMode( ! isFullCartMode );
 	};
 
+	const getInspectorControls = () => {
+		return (
+			<InspectorControls>
+				<FeedbackPrompt
+					text={ __(
+						'We are currently working on improving our cart and providing merchants with tools and options to customize their cart to their stores needs.',
+						'woo-gutenberg-products-block'
+					) }
+				/>
+			</InspectorControls>
+		);
+	};
+
 	const getBlockControls = () => {
 		return (
-			<BlockControls className='wc-block-cart-toolbar'>
+			<BlockControls className="wc-block-cart-toolbar">
 				<Toolbar>
 					<TextToolbarButton
 						onClick={ toggleFullCartMode }
-						isToggled={ isFullCartMode }>
-						{  __(
-							'Full Cart',
-							'woo-gutenberg-products-block'
-						) }
+						isToggled={ isFullCartMode }
+					>
+						{ __( 'Full Cart', 'woo-gutenberg-products-block' ) }
 					</TextToolbarButton>
 					<TextToolbarButton
 						onClick={ toggleFullCartMode }
-						isToggled={ ! isFullCartMode }>
-						{  __(
-							'Empty Cart',
-							'woo-gutenberg-products-block'
-						) }
+						isToggled={ ! isFullCartMode }
+					>
+						{ __( 'Empty Cart', 'woo-gutenberg-products-block' ) }
 					</TextToolbarButton>
 				</Toolbar>
 			</BlockControls>
@@ -53,6 +63,7 @@ const Cart = () => {
 	return (
 		<Fragment>
 			{ getBlockControls() }
+			{ getInspectorControls() }
 			{ cart }
 		</Fragment>
 	);
