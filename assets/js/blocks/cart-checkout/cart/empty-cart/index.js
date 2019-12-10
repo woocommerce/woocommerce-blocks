@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { InnerBlocks } from '@wordpress/editor';
+import { InnerBlocks } from '@wordpress/block-editor';
 import { SHOP_URL } from '@woocommerce/block-settings';
 import PropTypes from 'prop-types';
 
