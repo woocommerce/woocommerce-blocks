@@ -87,7 +87,10 @@ class CartShippingRateSchema extends AbstractSchema {
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-				'items'       => $this->get_rate_properties(),
+				'items'       => [
+					'type'       => 'object',
+					'properties' => $this->get_rate_properties(),
+				],
 			],
 		];
 	}
