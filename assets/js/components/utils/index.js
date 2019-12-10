@@ -140,7 +140,7 @@ export const getCategory = ( categoryId ) => {
 /**
  * Get a promise that resolves to an array of category objects from the API.
  *
- * @param {Array} queryArgs Query args to pass in.
+ * @param {Object} queryArgs Query args to pass in.
  */
 export const getCategories = ( queryArgs ) => {
 	return apiFetch( {
