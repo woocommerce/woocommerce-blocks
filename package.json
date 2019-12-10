@@ -110,7 +110,6 @@
 		"eslint-plugin-woocommerce": "file:bin/eslint-plugin-woocommerce",
 		"gridicons": "3.3.1",
 		"react-number-format": "4.3.1",
-		"serialize-javascript": "2.1.1",
 		"trim-html": "0.1.9",
 		"use-debounce": "3.3.0"
 	},
