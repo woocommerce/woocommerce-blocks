@@ -132,14 +132,14 @@ class CartShippingRates extends TestCase {
 		$this->assertArrayHasKey( 'destination', $schema['properties'] );
 		$this->assertArrayHasKey( 'items', $schema['properties'] );
 		$this->assertArrayHasKey( 'shipping-rates', $schema['properties'] );
-		$this->assertArrayHasKey( 'name', $schema['properties']['shipping-rates']['items'] );
-		$this->assertArrayHasKey( 'description', $schema['properties']['shipping-rates']['items'] );
-		$this->assertArrayHasKey( 'delivery_time', $schema['properties']['shipping-rates']['items'] );
-		$this->assertArrayHasKey( 'price', $schema['properties']['shipping-rates']['items'] );
-		$this->assertArrayHasKey( 'rate_id', $schema['properties']['shipping-rates']['items'] );
-		$this->assertArrayHasKey( 'instance_id', $schema['properties']['shipping-rates']['items'] );
-		$this->assertArrayHasKey( 'method_id', $schema['properties']['shipping-rates']['items'] );
-		$this->assertArrayHasKey( 'meta_data', $schema['properties']['shipping-rates']['items'] );
+		$this->assertArrayHasKey( 'name', $schema['properties']['shipping-rates']['items']['properties'] );
+		$this->assertArrayHasKey( 'description', $schema['properties']['shipping-rates']['items']['properties'] );
+		$this->assertArrayHasKey( 'delivery_time', $schema['properties']['shipping-rates']['items']['properties'] );
+		$this->assertArrayHasKey( 'price', $schema['properties']['shipping-rates']['items']['properties'] );
+		$this->assertArrayHasKey( 'rate_id', $schema['properties']['shipping-rates']['items']['properties'] );
+		$this->assertArrayHasKey( 'instance_id', $schema['properties']['shipping-rates']['items']['properties'] );
+		$this->assertArrayHasKey( 'method_id', $schema['properties']['shipping-rates']['items']['properties'] );
+		$this->assertArrayHasKey( 'meta_data', $schema['properties']['shipping-rates']['items']['properties'] );
 	}
 
 	/**
