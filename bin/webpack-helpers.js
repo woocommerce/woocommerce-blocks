@@ -122,12 +122,12 @@ const mainEntry = {
 	'price-filter': './assets/js/blocks/price-filter/index.js',
 	'attribute-filter': './assets/js/blocks/attribute-filter/index.js',
 	'active-filters': './assets/js/blocks/active-filters/index.js',
-	checkout: './assets/js/blocks/cart-checkout/checkout/index.js',
 	'block-error-boundary':
 		'./assets/js/base/components/block-error-boundary/style.scss',
 
 	// cart & checkout blocks
 	cart: './assets/js/blocks/cart-checkout/cart/index.js',
+	checkout: './assets/js/blocks/cart-checkout/checkout/index.js',
 };
 
 const frontEndEntry = {
