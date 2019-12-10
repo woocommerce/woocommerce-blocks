@@ -56,7 +56,10 @@ const Block = () => {
 					) }
 					value={ contactFields.email }
 					onChange={ ( newValue ) =>
-						setContactFields( { ...contactFields, eail: newValue } )
+						setContactFields( {
+							...contactFields,
+							email: newValue,
+						} )
 					}
 				/>
 				<CheckboxControl
