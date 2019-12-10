@@ -1,6 +1,6 @@
 <?php
 /**
- * Cart shippnig rates controller.
+ * Cart shipping rates controller.
  *
  * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  * @package WooCommerce/Blocks
@@ -140,7 +140,7 @@ class CartShippingRates extends RestController {
 						'woocommerce_rest_cart_shipping_rates_invalid_state',
 						sprintf(
 							/* translators: 1: valid states */
-							__( 'Desintation state is not valid. Please enter one of the following: %s', 'woo-gutenberg-products-block' ),
+							__( 'Destination state is not valid. Please enter one of the following: %s', 'woo-gutenberg-products-block' ),
 							implode( ', ', $valid_states )
 						),
 						[ 'status' => 400 ]
