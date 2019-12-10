@@ -12,14 +12,14 @@ defined( 'ABSPATH' ) || exit;
 
 use \WP_Error as RestError;
 use \WP_REST_Server as RestServer;
-use \WP_REST_Controller as RestContoller;
+use \WP_REST_Controller as RestController;
 use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas\CartShippingRateSchema;
 use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\CartController;
 
 /**
  * Cart Shipping Rates API.
  */
-class CartShippingRates extends RestContoller {
+class CartShippingRates extends RestController {
 	/**
 	 * Endpoint namespace.
 	 *

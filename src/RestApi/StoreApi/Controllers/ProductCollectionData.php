@@ -12,7 +12,7 @@ namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers;
 
 defined( 'ABSPATH' ) || exit;
 
-use \WP_REST_Controller as RestContoller;
+use \WP_REST_Controller as RestController;
 use \WP_REST_Server as RestServer;
 use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ProductQueryFilters;
 
@@ -21,7 +21,7 @@ use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ProductQueryFilters
  *
  * @since 2.5.0
  */
-class ProductCollectionData extends RestContoller {
+class ProductCollectionData extends RestController {
 	/**
 	 * Endpoint namespace.
 	 *
