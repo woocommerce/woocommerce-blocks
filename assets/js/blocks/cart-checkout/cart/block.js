@@ -6,7 +6,6 @@ import { BlockControls } from '@wordpress/block-editor';
 import { Toolbar } from '@wordpress/components';
 import { Fragment, useState } from '@wordpress/element';
 import TextToolbarButton from '@woocommerce/block-components/text-toolbar-button';
-import { withFeedbackPrompt } from '@woocommerce/block-hocs';
 
 /**
  * Internal dependencies
@@ -57,4 +56,4 @@ const Cart = () => {
 
 Cart.propTypes = {};
 
-export default withFeedbackPrompt( Cart );
+export default Cart;

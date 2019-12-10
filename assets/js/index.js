@@ -3,6 +3,8 @@
  */
 import { getCategories, setCategories } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
+import { addFilter } from '@wordpress/hooks';
+import { withFeedbackPrompt } from '@woocommerce/block-hocs';
 
 /**
  * Internal dependencies
@@ -20,3 +22,9 @@ setCategories( [
 		icon: <IconWoo />,
 	},
 ] );
+
+addFilter(
+	'editor.BlockEdit',
+	'woocommerce/blocks/with-feedback-prompt',
+	withFeedbackPrompt
+);
