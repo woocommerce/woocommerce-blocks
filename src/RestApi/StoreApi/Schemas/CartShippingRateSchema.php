@@ -34,7 +34,7 @@ class CartShippingRateSchema extends AbstractSchema {
 				'type'        => 'object',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-				'items'       => [
+				'properties'  => [
 					'address_1' => [
 						'description' => __( 'First line of the address being shipped to.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',

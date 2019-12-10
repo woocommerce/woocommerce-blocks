@@ -79,7 +79,7 @@ class ProductCollectionData extends RestController {
 				),
 				'attribute_counts' => array(
 					'description' => __( 'Returns number of products within attribute terms, indexed by term ID.', 'woo-gutenberg-products-block' ),
-					'type'        => 'object',
+					'type'        => 'array',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 					'items'       => array(
@@ -102,7 +102,7 @@ class ProductCollectionData extends RestController {
 				),
 				'rating_counts'    => array(
 					'description' => __( 'Returns number of products with each average rating.', 'woo-gutenberg-products-block' ),
-					'type'        => 'object',
+					'type'        => 'array',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 					'items'       => array(
