@@ -157,7 +157,7 @@ class Assets {
 		$deps_path    = dirname( __DIR__ ) . '/' . str_replace( '.js', '.asset.php', $relative_src );
 
 		if ( file_exists( $deps_path ) ) {
-			$deps_array = include $deps_path;
+			$deps_array = require $deps_path;
 			$deps       = isset( $deps_array['dependencies'] ) ? array_merge( $deps_array['dependencies'], $deps ) : $deps;
 		}
 
