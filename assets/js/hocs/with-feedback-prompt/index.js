@@ -9,6 +9,7 @@ import { createHigherOrderComponent } from '@wordpress/compose';
 /**
  * Internal dependencies
  */
+import { useFeedbackContext } from '../../context/feedback-context';
 import FeedbackPrompt from './feedback-prompt.js';
 
 const blocksFeedback = {
@@ -31,6 +32,9 @@ const blocksFeedback = {
  */
 const withFeedbackPrompt = createHigherOrderComponent( ( BlockEdit ) => {
 	return ( props ) => {
+		const context = useFeedbackContext();
+		// Context is not available here
+		console.log( 'Context inside withFeedbackPrompt', context );
 		const feedbackPromptText = blocksFeedback[ props.name ];
 
 		if ( feedbackPromptText && props.isSelected ) {
