@@ -116,6 +116,9 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 2.5.4 - 2019-12-11 =
+- bug: Fix increase in some bundle sizes #1363
+
 = 2.5.3 - 2019-12-09 =
 - Prevent Filter Products by Attribute block hiding non-matching options when Querty Type is set to OR. #1339
 - bug: Fix price slider layout in narrow columns #1231
