@@ -101,6 +101,7 @@ class Cart extends TestCase {
 		$this->assertArrayHasKey( 'total_shipping_tax', $schema['properties'] );
 		$this->assertArrayHasKey( 'total_tax', $schema['properties'] );
 		$this->assertArrayHasKey( 'total_price', $schema['properties'] );
+		$this->assertArrayHasKey( 'tax_lines', $schema['properties'] );
 	}
 
 	/**
@@ -126,5 +127,6 @@ class Cart extends TestCase {
 		$this->assertArrayHasKey( 'total_shipping_tax', $response->get_data() );
 		$this->assertArrayHasKey( 'total_tax', $response->get_data() );
 		$this->assertArrayHasKey( 'total_price', $response->get_data() );
+		$this->assertArrayHasKey( 'tax_lines', $response->get_data() );
 	}
 }

@@ -29,102 +29,125 @@ class CartSchema extends AbstractSchema {
 	 */
 	protected function get_properties() {
 		return [
-			'currency'           => array(
+			'currency'           => [
 				'description' => __( 'Currency code (in ISO format) of the cart item prices.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'default'     => get_woocommerce_currency(),
 				'enum'        => array_keys( get_woocommerce_currencies() ),
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
-			'items'              => array(
+			],
+			'items'              => [
 				'description' => __( 'List of cart items.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-				'items'       => array(
+				'items'       => [
 					'type'       => 'object',
 					'properties' => $this->force_schema_readonly( ( new CartItemSchema() )->get_properties() ),
-				),
-			),
-			'items_count'        => array(
+				],
+			],
+			'items_count'        => [
 				'description' => __( 'Number of items in the cart.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
-			'items_weight'       => array(
+			],
+			'items_weight'       => [
 				'description' => __( 'Total weight (in grams) of all products in the cart.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
-			'needs_shipping'     => array(
+			],
+			'needs_shipping'     => [
 				'description' => __( 'True if the cart needs shipping. False for carts with only digital goods or stores with no shipping methods set-up.', 'woo-gutenberg-products-block' ),
 				'type'        => 'boolean',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
-			'total_items'        => array(
+			],
+			'total_items'        => [
 				'description' => __( 'Total price of items in the cart.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
-			'total_items_tax'    => array(
+			],
+			'total_items_tax'    => [
 				'description' => __( 'Total tax on items in the cart.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
-			'total_fees'         => array(
+			],
+			'total_fees'         => [
 				'description' => __( 'Total price of any applied fees.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
-			'total_fees_tax'     => array(
+			],
+			'total_fees_tax'     => [
 				'description' => __( 'Total tax on fees.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
-			'total_discount'     => array(
+			],
+			'total_discount'     => [
 				'description' => __( 'Total discount from applied coupons.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
-			'total_discount_tax' => array(
+			],
+			'total_discount_tax' => [
 				'description' => __( 'Total tax removed due to discount from applied coupons.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
-			'total_shipping'     => array(
+			],
+			'total_shipping'     => [
 				'description' => __( 'Total price of shipping.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
-			'total_shipping_tax' => array(
+			],
+			'total_shipping_tax' => [
 				'description' => __( 'Total tax on shipping.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
-			'total_tax'          => array(
+			],
+			'total_tax'          => [
 				'description' => __( 'Total tax applied to items and shipping.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
-			'total_price'        => array(
+			],
+			'total_price'        => [
 				'description' => __( 'Total price the customer will pay.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
+			],
+			'tax_lines'          => [
+				'description' => __( 'Lines of taxes applied to items and shipping.', 'woo-gutenberg-products-block' ),
+				'type'        => 'array',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+				'items'       => [
+					'type'       => 'object',
+					'properties' => [
+						'name'  => [
+							'description' => __( 'The name of the tax.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+						'price' => [
+							'description' => __( 'The amount of tax charged.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+					],
+				],
+			],
 		];
 	}
 
@@ -152,6 +175,27 @@ class CartSchema extends AbstractSchema {
 			'total_shipping_tax' => wc_format_decimal( $cart->get_shipping_tax() ),
 			'total_tax'          => wc_format_decimal( $cart->get_total_tax() ),
 			'total_price'        => wc_format_decimal( $cart->get_total() ),
+			'tax_lines'          => $this->get_tax_lines( $cart ),
 		];
+	}
+
+	/**
+	 * Get tax lines from the cart and format to match schema.
+	 *
+	 * @param \WC_Cart $cart Cart class instance.
+	 * @return array
+	 */
+	protected function get_tax_lines( $cart ) {
+		$cart_tax_totals = $cart->get_tax_totals();
+		$tax_lines       = [];
+
+		foreach ( $cart_tax_totals as $cart_tax_total ) {
+			$tax_lines[] = array(
+				'name'  => $cart_tax_total->label,
+				'price' => wc_format_decimal( $cart_tax_total->amount ),
+			);
+		}
+
+		return $tax_lines;
 	}
 }
