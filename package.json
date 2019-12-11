@@ -137,7 +137,7 @@
 				"maxSize": "50kB"
 			},
 			{
-				"path": "./build/vendors*/*.js",
+				"path": "./build/vendors*.js",
 				"maxSize": "350 kb"
 			}
 		]
