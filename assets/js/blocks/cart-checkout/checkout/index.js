@@ -7,8 +7,7 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import { FeedbackContextProvider } from '../../../context/feedback-context';
-import Edit from './edit';
+import edit from './edit';
 import { example } from './example';
 import './editor.scss';
 
@@ -37,20 +36,7 @@ registerBlockType( 'woocommerce/checkout', {
 			default: false,
 		},
 	},
-	edit( props ) {
-		return (
-			<FeedbackContextProvider
-				value={ {
-					text: __(
-						'We are currently working on improving our checkout and providing merchants with tools and options to customize their checkout to their stores needs.',
-						'woo-gutenberg-products-block'
-					),
-				} }
-			>
-				<Edit { ...props } />
-			</FeedbackContextProvider>
-		);
-	},
+	edit,
 	/**
 	 * Save the props to post content.
 	 */
