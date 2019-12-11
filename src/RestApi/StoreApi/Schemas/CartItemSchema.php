@@ -120,13 +120,13 @@ class CartItemSchema extends AbstractSchema {
 				'readonly'    => true,
 			),
 			'line_subtotal' => array(
-				'description' => __( 'Line price subtotal (excluding any discounts).', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Line price subtotal (excluding coupons and discounts).', 'woo-gutenberg-products-block' ),
 				'type'        => 'float',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
 			'line_total'    => array(
-				'description' => __( 'Line price total including coupons and discounts.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Line price total (including coupons and discounts).', 'woo-gutenberg-products-block' ),
 				'type'        => 'float',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
