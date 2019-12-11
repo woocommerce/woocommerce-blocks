@@ -84,7 +84,7 @@ class Package {
 				NewPackage::class,
 				function ( $container ) {
 					// leave for automated version bumping.
-					$version = '2.5.3';
+					$version = '2.5.4';
 					return new NewPackage(
 						$version,
 						dirname( __DIR__ )
