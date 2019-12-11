@@ -121,13 +121,13 @@ class CartItemSchema extends AbstractSchema {
 			),
 			'line_subtotal' => array(
 				'description' => __( 'Line price subtotal (excluding coupons and discounts).', 'woo-gutenberg-products-block' ),
-				'type'        => 'float',
+				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
 			'line_total'    => array(
 				'description' => __( 'Line price total (including coupons and discounts).', 'woo-gutenberg-products-block' ),
-				'type'        => 'float',
+				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
@@ -172,9 +172,7 @@ class CartItemSchema extends AbstractSchema {
 	 * @return array
 	 */
 	public function get_item_response( $cart_item ) {
-		$product  = $cart_item['data'];
-		$price_dp = wc_get_price_decimals();
-
+		$product                 = $cart_item['data'];
 		$line_subtotal           = $product->get_price() * wc_stock_amount( $cart_item['quantity'] );
 		$line_total_incl_coupons = isset( $cart_item['line_total'] ) ? $cart_item['line_total'] : $line_subtotal;
 
@@ -186,9 +184,9 @@ class CartItemSchema extends AbstractSchema {
 			'sku'           => $product->get_sku(),
 			'permalink'     => $product->get_permalink(),
 			'images'        => ( new ProductImages() )->images_to_array( $product ),
-			'product_price' => $product->get_price(),
-			'line_total'    => $line_total_incl_coupons,
-			'line_subtotal' => $line_subtotal,
+			'product_price' => wc_format_decimal( $product->get_price() ),
+			'line_total'    => wc_format_decimal( $line_total_incl_coupons ),
+			'line_subtotal' => wc_format_decimal( $line_subtotal ),
 			'variation'     => $this->format_variation_data( $cart_item['variation'], $product ),
 		];
 	}
