@@ -126,15 +126,19 @@
 		"files": [
 			{
 				"path": "./build/*.js",
-				"maxSize": "300 kB"
+				"maxSize": "200 kB"
 			},
 			{
 				"path": "./build/*frontend*.js",
-				"maxSize": "130 kB"
+				"maxSize": "60 kB"
 			},
 			{
 				"path": "./build/*.css",
-				"maxSize": "100kB"
+				"maxSize": "50kB"
+			},
+			{
+				"path": "./build/vendors*/*.js",
+				"maxSize": "350 kb"
 			}
 		]
 	},
