@@ -69,8 +69,8 @@ class Assets {
 		self::register_script( 'wc-price-filter', plugins_url( self::get_block_asset_build_path( 'price-filter' ), __DIR__ ), $block_dependencies );
 		self::register_script( 'wc-attribute-filter', plugins_url( self::get_block_asset_build_path( 'attribute-filter' ), __DIR__ ), $block_dependencies );
 		self::register_script( 'wc-active-filters', plugins_url( self::get_block_asset_build_path( 'active-filters' ), __DIR__ ), $block_dependencies );
-		self::register_script( 'wc-checkout', plugins_url( self::get_block_asset_build_path( 'checkout' ), __DIR__ ), $block_dependencies );
-		self::register_script( 'wc-cart', plugins_url( self::get_block_asset_build_path( 'cart' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-checkout-block', plugins_url( self::get_block_asset_build_path( 'checkout' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-cart-block', plugins_url( self::get_block_asset_build_path( 'cart' ), __DIR__ ), $block_dependencies );
 	}
 
 	/**
@@ -116,6 +116,7 @@ class Assets {
 				'limitTags'          => $tag_count > 100,
 				'hasTags'            => $tag_count > 0,
 				'homeUrl'            => esc_url( home_url( '/' ) ),
+				'shopUrl'            => get_permalink( wc_get_page_id( 'shop' ) ),
 				'showAvatars'        => '1' === get_option( 'show_avatars' ),
 				'enableReviewRating' => 'yes' === get_option( 'woocommerce_enable_review_rating' ),
 				'productCount'       => array_sum( (array) $product_counts ),
@@ -146,19 +147,25 @@ class Assets {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string $handle    Name of the script. Should be unique.
-	 * @param string $src       Full URL of the script, or path of the script relative to the WordPress root directory.
-	 * @param array  $deps      Optional. An array of registered script handles this script depends on. Default empty array.
-	 * @param bool   $has_i18n  Optional. Whether to add a script translation call to this file. Default 'true'.
+	 * @param string $handle       Name of the script. Should be unique.
+	 * @param string $src          Full URL of the script, or path of the script relative to the WordPress root directory.
+	 * @param array  $dependencies Optional. An array of registered script handles this script depends on. Default empty array.
+	 * @param bool   $has_i18n     Optional. Whether to add a script translation call to this file. Default 'true'.
 	 */
-	protected static function register_script( $handle, $src, $deps = [], $has_i18n = true ) {
+	protected static function register_script( $handle, $src, $dependencies = [], $has_i18n = true ) {
 		$relative_src = str_replace( plugins_url( '/', __DIR__ ), '', $src );
-		$ver          = self::get_file_version( $relative_src );
-		$deps_path    = dirname( __DIR__ ) . '/' . str_replace( '.js', '.deps.json', $relative_src );
-		$dependencies = file_exists( $deps_path ) ? json_decode( file_get_contents( $deps_path ) ) : []; // phpcs:ignore WordPress.WP.AlternativeFunctions
-		$dependencies = array_merge( $dependencies, $deps );
+		$asset_path   = dirname( __DIR__ ) . '/' . str_replace( '.js', '.asset.php', $relative_src );
 
-		wp_register_script( $handle, $src, $dependencies, $ver, true );
+		if ( file_exists( $asset_path ) ) {
+			$asset        = require $asset_path;
+			$dependencies = isset( $asset['dependencies'] ) ? array_merge( $asset['dependencies'], $dependencies ) : $dependencies;
+			$version      = ! empty( $asset['version'] ) ? $asset['version'] : self::get_file_version( $relative_src );
+		} else {
+			$version = self::get_file_version( $relative_src );
+		}
+
+		wp_register_script( $handle, $src, $dependencies, $version, true );
+
 		if ( $has_i18n && function_exists( 'wp_set_script_translations' ) ) {
 			wp_set_script_translations( $handle, 'woo-gutenberg-products-block', dirname( __DIR__ ) . '/languages' );
 		}
@@ -168,12 +175,15 @@ class Assets {
 	 * Queues a block script.
 	 *
 	 * @since 2.3.0
+	 * @since $VID:$ Changed $name to $script_name and added $handle argument.
 	 *
-	 * @param string $name Name of the script used to identify the file inside build folder.
+	 * @param string $script_name Name of the script used to identify the file inside build folder.
+	 * @param string $handle      Provided if the handle should be different than the script name. `wc-` prefix automatically added.
 	 */
-	public static function register_block_script( $name ) {
-		self::register_script( 'wc-' . $name, plugins_url( self::get_block_asset_build_path( $name ), __DIR__ ) );
-		wp_enqueue_script( 'wc-' . $name );
+	public static function register_block_script( $script_name, $handle = '' ) {
+		$handle = '' !== $handle ? $handle : $script_name;
+		self::register_script( 'wc-' . $handle, plugins_url( self::get_block_asset_build_path( $script_name ), __DIR__ ) );
+		wp_enqueue_script( 'wc-' . $handle );
 	}
 
 	/**
