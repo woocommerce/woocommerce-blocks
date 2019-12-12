@@ -9,6 +9,8 @@ namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas;
 
 defined( 'ABSPATH' ) || exit;
 
+use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\MoneyValue;
+
 /**
  * CartSchema class.
  *
@@ -66,62 +68,62 @@ class CartSchema extends AbstractSchema {
 				'readonly'    => true,
 			],
 			'total_items'        => [
-				'description' => __( 'Total price of items in the cart.', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
+				'description' => __( 'Total price of items in the cart. Amount provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
+				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
 			'total_items_tax'    => [
-				'description' => __( 'Total tax on items in the cart.', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
+				'description' => __( 'Total tax on items in the cart. Amount provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
+				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
 			'total_fees'         => [
-				'description' => __( 'Total price of any applied fees.', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
+				'description' => __( 'Total price of any applied fees. Amount provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
+				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
 			'total_fees_tax'     => [
-				'description' => __( 'Total tax on fees.', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
+				'description' => __( 'Total tax on fees. Amount provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
+				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
 			'total_discount'     => [
-				'description' => __( 'Total discount from applied coupons.', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
+				'description' => __( 'Total discount from applied coupons. Amount provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
+				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
 			'total_discount_tax' => [
-				'description' => __( 'Total tax removed due to discount from applied coupons.', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
+				'description' => __( 'Total tax removed due to discount from applied coupons. Amount provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
+				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
 			'total_shipping'     => [
-				'description' => __( 'Total price of shipping.', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
+				'description' => __( 'Total price of shipping. Amount provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
+				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
 			'total_shipping_tax' => [
-				'description' => __( 'Total tax on shipping.', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
+				'description' => __( 'Total tax on shipping. Amount provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
+				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
 			'total_tax'          => [
-				'description' => __( 'Total tax applied to items and shipping.', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
+				'description' => __( 'Total tax applied to items and shipping. Amount provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
+				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
 			'total_price'        => [
-				'description' => __( 'Total price the customer will pay.', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
+				'description' => __( 'Total price the customer will pay. Amount provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
+				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
@@ -140,8 +142,8 @@ class CartSchema extends AbstractSchema {
 							'readonly'    => true,
 						],
 						'price' => [
-							'description' => __( 'The amount of tax charged.', 'woo-gutenberg-products-block' ),
-							'type'        => 'string',
+							'description' => __( 'The amount of tax charged. Amount provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
+							'type'        => 'integer',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
 						],
@@ -165,16 +167,16 @@ class CartSchema extends AbstractSchema {
 			'items_count'        => $cart->get_cart_contents_count(),
 			'items_weight'       => wc_get_weight( $cart->get_cart_contents_weight(), 'g' ),
 			'needs_shipping'     => $cart->needs_shipping(),
-			'total_items'        => wc_format_decimal( $cart->get_subtotal() ),
-			'total_items_tax'    => wc_format_decimal( $cart->get_subtotal_tax() ),
-			'total_fees'         => wc_format_decimal( $cart->get_fee_total() ),
-			'total_fees_tax'     => wc_format_decimal( $cart->get_fee_tax() ),
-			'total_discount'     => wc_format_decimal( $cart->get_discount_total() ),
-			'total_discount_tax' => wc_format_decimal( $cart->get_discount_tax() ),
-			'total_shipping'     => wc_format_decimal( $cart->get_shipping_total() ),
-			'total_shipping_tax' => wc_format_decimal( $cart->get_shipping_tax() ),
-			'total_tax'          => wc_format_decimal( $cart->get_total_tax() ),
-			'total_price'        => wc_format_decimal( $cart->get_total() ),
+			'total_items'        => ( new MoneyValue() )->from_decimal( $cart->get_subtotal(), wc_get_price_decimals() ),
+			'total_items_tax'    => ( new MoneyValue() )->from_decimal( $cart->get_subtotal_tax(), wc_get_price_decimals() ),
+			'total_fees'         => ( new MoneyValue() )->from_decimal( $cart->get_fee_total(), wc_get_price_decimals() ),
+			'total_fees_tax'     => ( new MoneyValue() )->from_decimal( $cart->get_fee_tax(), wc_get_price_decimals() ),
+			'total_discount'     => ( new MoneyValue() )->from_decimal( $cart->get_discount_total(), wc_get_price_decimals() ),
+			'total_discount_tax' => ( new MoneyValue() )->from_decimal( $cart->get_discount_tax(), wc_get_price_decimals() ),
+			'total_shipping'     => ( new MoneyValue() )->from_decimal( $cart->get_shipping_total(), wc_get_price_decimals() ),
+			'total_shipping_tax' => ( new MoneyValue() )->from_decimal( $cart->get_shipping_tax(), wc_get_price_decimals() ),
+			'total_tax'          => ( new MoneyValue() )->from_decimal( $cart->get_total_tax(), wc_get_price_decimals() ),
+			'total_price'        => ( new MoneyValue() )->from_decimal( $cart->get_total(), wc_get_price_decimals() ),
 			'tax_lines'          => $this->get_tax_lines( $cart ),
 		];
 	}
@@ -192,7 +194,7 @@ class CartSchema extends AbstractSchema {
 		foreach ( $cart_tax_totals as $cart_tax_total ) {
 			$tax_lines[] = array(
 				'name'  => $cart_tax_total->label,
-				'price' => wc_format_decimal( $cart_tax_total->amount ),
+				'price' => ( ( new MoneyValue() )->from_decimal( $cart_tax_total->amount, wc_get_price_decimals() ) ),
 			);
 		}
 
