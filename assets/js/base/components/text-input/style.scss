@@ -17,10 +17,6 @@
 	transition: all 200ms ease;
 }
 
-.wc-components-text-input.is-active input[type="text"] {
-	padding: $gap-large $gap $gap-smallest;
-}
-
 .wc-components-text-input input[type="text"] {
 	padding: $gap-small $gap;
 	border-radius: 4px;
@@ -33,4 +29,8 @@
 	box-sizing: border-box;
 	height: 48px;
 	color: $input-text-active;
+}
+
+.wc-components-text-input.is-active input[type="text"] {
+	padding: $gap-large $gap $gap-smallest;
 }
