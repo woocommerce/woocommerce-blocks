@@ -2,6 +2,11 @@
 /**
  * Handles monetary values using integers by using the smallest unit of a currency.
  *
+ * This could be replaced with https://github.com/moneyphp/money if we want to
+ * support currencies in the future. However at this stage we only need to use
+ * the store decimal setting (which is independent of currency) to format
+ * values for the API.
+ *
  * @package WooCommerce/Blocks
  */
 
@@ -20,13 +25,6 @@ class MoneyValue {
 	 * @var string
 	 */
 	protected $amount = '0';
-
-	/**
-	 * Constructor.
-	 */
-	public function __construct() {
-
-	}
 
 	/**
 	 * Converts to string if this class is used as a string.
