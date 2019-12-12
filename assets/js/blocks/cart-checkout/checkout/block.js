@@ -64,7 +64,10 @@ const Block = () => {
 				/>
 				<CheckboxControl
 					className="wc-blocks-checkout__keep-updated"
-					label="Keep me up to date on news and exclusive offers"
+					label={ __(
+						'Keep me up to date on news and exclusive offers',
+						'woo-gutenberg-products-block'
+					) }
 					checked={ contactFields.keepUpdated }
 					onChange={ () =>
 						setContactFields( {
@@ -212,7 +215,10 @@ const Block = () => {
 				/>
 				<CheckboxControl
 					className="wc-blocks-checkout__use-address-for-billing"
-					label="Use same address for billing"
+					label={ __(
+						'Use same address for billing',
+						'woo-gutenberg-products-block'
+					) }
 					checked={ shippingFields.useSameForBilling }
 					onChange={ () =>
 						setShippingFields( {
@@ -293,7 +299,10 @@ const Block = () => {
 				<Placeholder>Payment methods, coming soon</Placeholder>
 				<CheckboxControl
 					className="wc-blocks-checkout__save-card-info"
-					label="Save payment information to my account for future purchases."
+					label={ __(
+						'Save payment information to my account for future purchases.',
+						'woo-gutenberg-products-block'
+					) }
 					checked={ shouldSavePayment }
 					onChange={ () =>
 						setShouldSavePayment( ! shouldSavePayment )
