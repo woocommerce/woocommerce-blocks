@@ -24,7 +24,16 @@ class MoneyValue {
 	 *
 	 * @var string
 	 */
-	protected $amount = '0';
+	protected $amount;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param string|integer $amount Set money amount.
+	 */
+	public function __construct( $amount = '0' ) {
+		$this->amount = (string) $amount;
+	}
 
 	/**
 	 * Converts to string if this class is used as a string.
