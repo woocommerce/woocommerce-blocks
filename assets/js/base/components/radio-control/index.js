@@ -23,23 +23,20 @@ const RadioControl = ( {
 				className={ classnames( 'wc-blocks-radio-control', className ) }
 			>
 				{ options.map(
-					(
-						{
-							value,
-							label,
-							description,
-							secondaryLabel,
-							secondaryDescription,
-						},
-						index
-					) => (
+					( {
+						value,
+						label,
+						description,
+						secondaryLabel,
+						secondaryDescription,
+					} ) => (
 						<label
-							key={ `${ id }-${ index }` }
+							key={ `${ id }-${ value }` }
 							className="wc-blocks-radio-control__option"
-							htmlFor={ `${ id }-${ index }` }
+							htmlFor={ `${ id }-${ value }` }
 						>
 							<input
-								id={ `${ id }-${ index }` }
+								id={ `${ id }-${ value }` }
 								className="wc-blocks-radio-control__input"
 								type="radio"
 								name={ id }
@@ -47,10 +44,10 @@ const RadioControl = ( {
 								onChange={ onChangeValue }
 								checked={ value === selected }
 								aria-describedby={ classnames( {
-									[ `${ id }-${ index }__label` ]: label,
-									[ `${ id }-${ index }__secondary-label` ]: secondaryLabel,
-									[ `${ id }-${ index }__description` ]: description,
-									[ `${ id }-${ index }__secondary-description` ]: secondaryDescription,
+									[ `${ id }-${ value }__label` ]: label,
+									[ `${ id }-${ value }__secondary-label` ]: secondaryLabel,
+									[ `${ id }-${ value }__description` ]: description,
+									[ `${ id }-${ value }__secondary-description` ]: secondaryDescription,
 								} ) }
 							/>
 							{ label && (
@@ -60,7 +57,7 @@ const RadioControl = ( {
 									wrapperProps={ {
 										className:
 											'wc-blocks-radio-control__label',
-										id: `${ id }-${ index }__label`,
+										id: `${ id }-${ value }__label`,
 									} }
 								>
 									{ label }
@@ -73,7 +70,7 @@ const RadioControl = ( {
 									wrapperProps={ {
 										className:
 											'wc-blocks-radio-control__secondary-label',
-										id: `${ id }-${ index }__secondary-label`,
+										id: `${ id }-${ value }__secondary-label`,
 									} }
 								>
 									{ secondaryLabel }
@@ -86,7 +83,7 @@ const RadioControl = ( {
 									wrapperProps={ {
 										className:
 											'wc-blocks-radio-control__description',
-										id: `${ id }-${ index }__description`,
+										id: `${ id }-${ value }__description`,
 									} }
 								>
 									{ description }
@@ -99,7 +96,7 @@ const RadioControl = ( {
 									wrapperProps={ {
 										className:
 											'wc-blocks-radio-control__secondary-description',
-										id: `${ id }-${ index }__secondary-description`,
+										id: `${ id }-${ value }__secondary-description`,
 									} }
 								>
 									{ secondaryDescription }
