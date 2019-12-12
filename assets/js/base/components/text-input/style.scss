@@ -9,6 +9,7 @@
 	font-size: 16px;
 	line-height: 22px;
 	transition: all 200ms ease;
+	color: $gray-50;
 }
 
 .wc-components-text-input.is-active label {
@@ -31,4 +32,5 @@
 	margin: 0;
 	box-sizing: border-box;
 	height: 48px;
+	color: $input-text-active;
 }
