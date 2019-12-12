@@ -1,9 +1,9 @@
-.wc-components-text-input {
+.wc-blocks-text-input {
 	position: relative;
 	margin-top: $gap;
 }
 
-.wc-components-text-input label {
+.wc-blocks-text-input label {
 	position: absolute;
 	transform: translateX(#{$gap}) translateY(#{$gap-small});
 	font-size: 16px;
@@ -12,12 +12,12 @@
 	color: $gray-50;
 }
 
-.wc-components-text-input.is-active label {
+.wc-blocks-text-input.is-active label {
 	transform: translateX(#{$gap - $gap-small}) translateY(#{$gap-smallest}) scale(0.75);
 	transition: all 200ms ease;
 }
 
-.wc-components-text-input input[type="text"] {
+.wc-blocks-text-input input[type="text"] {
 	padding: $gap-small $gap;
 	border-radius: 4px;
 	border: 1px solid $input-border-gray;
@@ -31,6 +31,6 @@
 	color: $input-text-active;
 }
 
-.wc-components-text-input.is-active input[type="text"] {
+.wc-blocks-text-input.is-active input[type="text"] {
 	padding: $gap-large $gap $gap-smallest;
 }

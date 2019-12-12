@@ -20,10 +20,7 @@ const RadioControl = ( {
 	return (
 		options.length && (
 			<div
-				className={ classnames(
-					'wc-components-radio-control',
-					className
-				) }
+				className={ classnames( 'wc-blocks-radio-control', className ) }
 			>
 				{ options.map(
 					(
@@ -38,12 +35,12 @@ const RadioControl = ( {
 					) => (
 						<label
 							key={ `${ id }-${ index }` }
-							className="wc-components-radio-control__option"
+							className="wc-blocks-radio-control__option"
 							htmlFor={ `${ id }-${ index }` }
 						>
 							<input
 								id={ `${ id }-${ index }` }
-								className="wc-components-radio-control__input"
+								className="wc-blocks-radio-control__input"
 								type="radio"
 								name={ id }
 								value={ value }
@@ -62,7 +59,7 @@ const RadioControl = ( {
 									wrapperElement="span"
 									wrapperProps={ {
 										className:
-											'wc-components-radio-control__label',
+											'wc-blocks-radio-control__label',
 										id: `${ id }-${ index }__label`,
 									} }
 								>
@@ -75,7 +72,7 @@ const RadioControl = ( {
 									wrapperElement="span"
 									wrapperProps={ {
 										className:
-											'wc-components-radio-control__secondary-label',
+											'wc-blocks-radio-control__secondary-label',
 										id: `${ id }-${ index }__secondary-label`,
 									} }
 								>
@@ -88,7 +85,7 @@ const RadioControl = ( {
 									wrapperElement="span"
 									wrapperProps={ {
 										className:
-											'wc-components-radio-control__description',
+											'wc-blocks-radio-control__description',
 										id: `${ id }-${ index }__description`,
 									} }
 								>
@@ -101,7 +98,7 @@ const RadioControl = ( {
 									wrapperElement="span"
 									wrapperProps={ {
 										className:
-											'wc-components-radio-control__secondary-description',
+											'wc-blocks-radio-control__secondary-description',
 										id: `${ id }-${ index }__secondary-description`,
 									} }
 								>
