@@ -12,7 +12,7 @@ import './editor.scss';
 
 const CheckoutEditor = ( { attributes } ) => {
 	const { className } = attributes;
-
+	// @todo: wrap Block with Disabled once you finish building the form
 	return (
 		<div className={ className }>
 			<Block attributes={ attributes } />
