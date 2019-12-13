@@ -9,8 +9,6 @@ namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas;
 
 defined( 'ABSPATH' ) || exit;
 
-use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\MoneyValue;
-
 /**
  * CartSchema class.
  *
@@ -175,16 +173,16 @@ class CartSchema extends AbstractSchema {
 			'items_count'         => $cart->get_cart_contents_count(),
 			'items_weight'        => wc_get_weight( $cart->get_cart_contents_weight(), 'g' ),
 			'needs_shipping'      => $cart->needs_shipping(),
-			'total_items'         => ( new MoneyValue() )->from_decimal( $cart->get_subtotal(), wc_get_price_decimals() ),
-			'total_items_tax'     => ( new MoneyValue() )->from_decimal( $cart->get_subtotal_tax(), wc_get_price_decimals() ),
-			'total_fees'          => ( new MoneyValue() )->from_decimal( $cart->get_fee_total(), wc_get_price_decimals() ),
-			'total_fees_tax'      => ( new MoneyValue() )->from_decimal( $cart->get_fee_tax(), wc_get_price_decimals() ),
-			'total_discount'      => ( new MoneyValue() )->from_decimal( $cart->get_discount_total(), wc_get_price_decimals() ),
-			'total_discount_tax'  => ( new MoneyValue() )->from_decimal( $cart->get_discount_tax(), wc_get_price_decimals() ),
-			'total_shipping'      => ( new MoneyValue() )->from_decimal( $cart->get_shipping_total(), wc_get_price_decimals() ),
-			'total_shipping_tax'  => ( new MoneyValue() )->from_decimal( $cart->get_shipping_tax(), wc_get_price_decimals() ),
-			'total_tax'           => ( new MoneyValue() )->from_decimal( $cart->get_total_tax(), wc_get_price_decimals() ),
-			'total_price'         => ( new MoneyValue() )->from_decimal( $cart->get_total(), wc_get_price_decimals() ),
+			'total_items'         => $this->prepare_money_response( $cart->get_subtotal(), wc_get_price_decimals() ),
+			'total_items_tax'     => $this->prepare_money_response( $cart->get_subtotal_tax(), wc_get_price_decimals() ),
+			'total_fees'          => $this->prepare_money_response( $cart->get_fee_total(), wc_get_price_decimals() ),
+			'total_fees_tax'      => $this->prepare_money_response( $cart->get_fee_tax(), wc_get_price_decimals() ),
+			'total_discount'      => $this->prepare_money_response( $cart->get_discount_total(), wc_get_price_decimals() ),
+			'total_discount_tax'  => $this->prepare_money_response( $cart->get_discount_tax(), wc_get_price_decimals() ),
+			'total_shipping'      => $this->prepare_money_response( $cart->get_shipping_total(), wc_get_price_decimals() ),
+			'total_shipping_tax'  => $this->prepare_money_response( $cart->get_shipping_tax(), wc_get_price_decimals() ),
+			'total_tax'           => $this->prepare_money_response( $cart->get_total_tax(), wc_get_price_decimals() ),
+			'total_price'         => $this->prepare_money_response( $cart->get_total(), wc_get_price_decimals() ),
 			'tax_lines'           => $this->get_tax_lines( $cart ),
 		];
 	}
@@ -202,7 +200,7 @@ class CartSchema extends AbstractSchema {
 		foreach ( $cart_tax_totals as $cart_tax_total ) {
 			$tax_lines[] = array(
 				'name'  => $cart_tax_total->label,
-				'price' => ( ( new MoneyValue() )->from_decimal( $cart_tax_total->amount, wc_get_price_decimals() ) ),
+				'price' => ( $this->prepare_money_response( $cart_tax_total->amount, wc_get_price_decimals() ) ),
 			);
 		}
 

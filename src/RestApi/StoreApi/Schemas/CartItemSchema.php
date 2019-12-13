@@ -12,7 +12,6 @@ namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas;
 defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Blocks\RestApi\Utilities\ProductImages;
-use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\MoneyValue;
 
 /**
  * AbstractBlock class.
@@ -195,11 +194,11 @@ class CartItemSchema extends AbstractSchema {
 			'sku'               => $product->get_sku(),
 			'permalink'         => $product->get_permalink(),
 			'images'            => ( new ProductImages() )->images_to_array( $product ),
-			'product_price'     => ( new MoneyValue() )->from_decimal( $product->get_price(), wc_get_price_decimals() ),
-			'line_subtotal'     => ( new MoneyValue() )->from_decimal( $cart_item['line_subtotal'], wc_get_price_decimals() ),
-			'line_subtotal_tax' => ( new MoneyValue() )->from_decimal( $cart_item['line_subtotal_tax'], wc_get_price_decimals() ),
-			'line_total'        => ( new MoneyValue() )->from_decimal( $cart_item['line_total'], wc_get_price_decimals() ),
-			'line_total_tax'    => ( new MoneyValue() )->from_decimal( $cart_item['line_tax'], wc_get_price_decimals() ),
+			'product_price'     => $this->prepare_money_response( $product->get_price(), wc_get_price_decimals() ),
+			'line_subtotal'     => $this->prepare_money_response( $cart_item['line_subtotal'], wc_get_price_decimals() ),
+			'line_subtotal_tax' => $this->prepare_money_response( $cart_item['line_subtotal_tax'], wc_get_price_decimals() ),
+			'line_total'        => $this->prepare_money_response( $cart_item['line_total'], wc_get_price_decimals() ),
+			'line_total_tax'    => $this->prepare_money_response( $cart_item['line_tax'], wc_get_price_decimals() ),
 			'variation'         => $this->format_variation_data( $cart_item['variation'], $product ),
 		];
 	}
