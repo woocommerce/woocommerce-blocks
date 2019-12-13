@@ -68,16 +68,16 @@ class Cart extends TestCase {
 		$this->assertEquals( false, $data['needs_shipping'] );
 		$this->assertEquals( '30', $data['items_weight'] );
 
-		$this->assertEquals( 3000, $data['total_items'] );
-		$this->assertEquals( 0, $data['total_items_tax'] );
-		$this->assertEquals( 0, $data['total_fees'] );
-		$this->assertEquals( 0, $data['total_fees_tax'] );
-		$this->assertEquals( 0, $data['total_discount'] );
-		$this->assertEquals( 0, $data['total_discount_tax'] );
-		$this->assertEquals( 0, $data['total_shipping'] );
-		$this->assertEquals( 0, $data['total_shipping_tax'] );
-		$this->assertEquals( 0, $data['total_tax'] );
-		$this->assertEquals( 3000, $data['total_price'] );
+		$this->assertEquals( '3000', $data['total_items'] );
+		$this->assertEquals( '0', $data['total_items_tax'] );
+		$this->assertEquals( '0', $data['total_fees'] );
+		$this->assertEquals( '0', $data['total_fees_tax'] );
+		$this->assertEquals( '0', $data['total_discount'] );
+		$this->assertEquals( '0', $data['total_discount_tax'] );
+		$this->assertEquals( '0', $data['total_shipping'] );
+		$this->assertEquals( '0', $data['total_shipping_tax'] );
+		$this->assertEquals( '0', $data['total_tax'] );
+		$this->assertEquals( '3000', $data['total_price'] );
 	}
 
 	/**

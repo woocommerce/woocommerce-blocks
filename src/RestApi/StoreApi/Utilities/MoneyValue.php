@@ -36,7 +36,9 @@ class MoneyValue {
 	}
 
 	/**
-	 * Converts to string if this class is used as a string.
+	 * Output raw amount when used as a string.
+	 *
+	 * @return string
 	 */
 	public function __toString() {
 		return $this->amount;
@@ -45,10 +47,10 @@ class MoneyValue {
 	/**
 	 * Return the price amount.
 	 *
-	 * @return string|int
+	 * @return string
 	 */
 	public function get_amount() {
-		return $this->amount > PHP_INT_MAX ? $this->amount : (int) $this->amount;
+		return $this->amount;
 	}
 
 	/**

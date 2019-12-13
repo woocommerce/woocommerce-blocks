@@ -23,18 +23,16 @@ class MoneyValueTests extends TestCase {
 		$tests = [
 			[
 				'amount'   => 1000,
-				'expected' => 1000,
+				'expected' => '1000',
 			],
 			[
 				'amount'   => '100',
-				'expected' => 100,
+				'expected' => '100',
 			]
 		];
 
 		foreach ( $tests as $index => $test ) {
 			$amount = new MoneyValue( $test['amount'] );
-
-			$this->assertTrue( is_integer( $amount->get_amount() ), 'Test: ' . $index );
 			$this->assertEquals( $test['expected'], $amount->get_amount(), 'Test: ' . $index );
 		}
 	}
@@ -48,31 +46,31 @@ class MoneyValueTests extends TestCase {
 				'amount'        => "10.00",
 				'decimals'      => '2',
 				'rounding_mode' => PHP_ROUND_HALF_UP,
-				'expected'      => 1000,
+				'expected'      => '1000',
 			],
 			[
 				'amount'        => "10.1234",
 				'decimals'      => '4',
 				'rounding_mode' => PHP_ROUND_HALF_UP,
-				'expected'      => 101234,
-			],
+				'expected'      => '101234',
+''			],
 			[
 				'amount'        => "10.00",
 				'decimals'      => '0',
 				'rounding_mode' => PHP_ROUND_HALF_UP,
-				'expected'      => 10,
+				'expected'      => '10',
 			],
 			[
 				'amount'        => "10.995",
 				'decimals'      => '2',
 				'rounding_mode' => PHP_ROUND_HALF_UP,
-				'expected'      => 1100,
+				'expected'      => '1100',
 			],
 			[
 				'amount'        => "10.995",
 				'decimals'      => '2',
 				'rounding_mode' => PHP_ROUND_HALF_DOWN,
-				'expected'      => 1099,
+				'expected'      => '1099',
 			],
 		];
 
@@ -84,20 +82,10 @@ class MoneyValueTests extends TestCase {
 	}
 
 	/**
-	 * Test large integers.
-	 */
-	public function test_get_amount_long_int() {
-		$long_int = ( (string) PHP_INT_MAX ) . 0;
-		$amount   = new MoneyValue( $long_int );
-
-		$this->assertTrue( is_string( $amount->get_amount() ) );
-	}
-
-	/**
 	 * Test class is converted to string when treated like one.
 	 */
 	public function test_to_string() {
 		$amount = new MoneyValue( 1000 );
-		$this->assertEquals( '1000', (string) $amount );
+		$this->assertEquals( '1000', $amount );
 	}
 }
