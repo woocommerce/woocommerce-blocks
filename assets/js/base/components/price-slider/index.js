@@ -259,7 +259,7 @@ const PriceSlider = ( {
 				onMouseMove={ findClosestRange }
 				onFocus={ findClosestRange }
 			>
-				{ ! isLoading && hasValidConstraints && (
+				{ hasValidConstraints && (
 					<Fragment>
 						<div
 							className="wc-block-price-filter__range-input-progress"
@@ -278,6 +278,7 @@ const PriceSlider = ( {
 							min={ minConstraint }
 							max={ maxConstraint }
 							ref={ minRange }
+							disabled={ isLoading }
 						/>
 						<input
 							type="range"
@@ -292,6 +293,7 @@ const PriceSlider = ( {
 							min={ minConstraint }
 							max={ maxConstraint }
 							ref={ maxRange }
+							disabled={ isLoading }
 						/>
 					</Fragment>
 				) }
