@@ -39,13 +39,13 @@ class CartCouponSchema extends AbstractSchema {
 				],
 			],
 			'total_discount'     => [
-				'description' => __( 'Total discount applied by this coupon.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Total discount applied by this coupon. Amount provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
 			'total_discount_tax' => [
-				'description' => __( 'Total tax removed due to discount applied by this coupon.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Total tax removed due to discount applied by this coupon. Amount provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
@@ -75,8 +75,8 @@ class CartCouponSchema extends AbstractSchema {
 	public function get_item_response( $coupon_code, $total_discount, $total_discount_tax ) {
 		return [
 			'code'               => $coupon_code,
-			'total_discount'     => $total_discount,
-			'total_discount_tax' => $total_discount_tax,
+			'total_discount'     => $this->prepare_money_response( $total_discount, wc_get_price_decimals() ),
+			'total_discount_tax' => $this->prepare_money_response( $total_discount_tax, wc_get_price_decimals(), PHP_ROUND_HALF_DOWN ),
 		];
 	}
 }
