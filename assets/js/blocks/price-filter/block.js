@@ -5,12 +5,36 @@ import {
 	useQueryStateByKey,
 	useQueryStateByContext,
 	useCollectionData,
+	usePrevious,
 } from '@woocommerce/base-hooks';
 import { Fragment, useCallback, useState, useEffect } from '@wordpress/element';
 import PriceSlider from '@woocommerce/base-components/price-slider';
 import { CURRENCY } from '@woocommerce/settings';
 import { useDebouncedCallback } from 'use-debounce';
 import PropTypes from 'prop-types';
+
+const useConstraints = ( { minPrice, maxPrice } ) => {
+	const currentMinConstraint = isNaN( minPrice )
+		? null
+		: Math.floor( parseInt( minPrice, 10 ) / 10 ) * 10;
+	const previousMinConstraint = usePrevious( currentMinConstraint, ( val ) =>
+		Number.isFinite( val )
+	);
+	const minConstraint = Number.isFinite( currentMinConstraint )
+		? currentMinConstraint
+		: previousMinConstraint;
+	const currentMaxConstraint = isNaN( maxPrice )
+		? null
+		: Math.ceil( parseInt( maxPrice, 10 ) / 10 ) * 10;
+	const previousMaxConstraint = usePrevious( currentMaxConstraint, ( val ) =>
+		Number.isFinite( val )
+	);
+	const maxConstraint = Number.isFinite( currentMaxConstraint )
+		? currentMaxConstraint
+		: previousMaxConstraint;
+
+	return { minConstraint, maxConstraint };
+};
 
 /**
  * Component displaying a price filter.
@@ -31,12 +55,10 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	const [ minPrice, setMinPrice ] = useState();
 	const [ maxPrice, setMaxPrice ] = useState();
 
-	const minConstraint = isNaN( results.min_price )
-		? null
-		: Math.floor( parseInt( results.min_price, 10 ) / 10 ) * 10;
-	const maxConstraint = isNaN( results.max_price )
-		? null
-		: Math.ceil( parseInt( results.max_price, 10 ) / 10 ) * 10;
+	const { minConstraint, maxConstraint } = useConstraints( {
+		minPrice: results.min_price,
+		maxPrice: results.max_price,
+	} );
 
 	// Updates the query after a short delay.
 	const [ debouncedUpdateQuery ] = useDebouncedCallback( () => {
