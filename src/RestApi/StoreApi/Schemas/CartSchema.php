@@ -40,7 +40,7 @@ class CartSchema extends AbstractSchema {
 				'readonly'    => true,
 			],
 			'currency_minor_unit' => [
-				'description' => __( 'Currency minor unit (cents, pence, etc) for cart item prices.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Currency minor unit (number of digits after the decimal separator) used for cart item prices.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
 				'default'     => wc_get_price_decimals(),
 				'context'     => [ 'view', 'edit' ],
