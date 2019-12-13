@@ -76,61 +76,67 @@ class ProductSchema extends AbstractSchema {
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 				'properties'  => array(
-					'currency_code'      => array(
-						'description' => __( 'Currency code.', 'woo-gutenberg-products-block' ),
+					'currency_code'               => [
+						'description' => __( 'Currency code (in ISO format).', 'woo-gutenberg-products-block' ),
+						'type'        => 'string',
+						'context'     => [ 'view', 'edit' ],
+						'readonly'    => true,
+					],
+					'currency_symbol'             => [
+						'description' => __( 'Symbol for this currency that should be used to format prices.', 'woo-gutenberg-products-block' ),
+						'type'        => 'string',
+						'context'     => [ 'view', 'edit' ],
+						'readonly'    => true,
+					],
+					'currency_minor_unit'         => [
+						'description' => __( 'Currency minor unit (number of digits after the decimal separator) used for cart item prices.', 'woo-gutenberg-products-block' ),
+						'type'        => 'integer',
+						'context'     => [ 'view', 'edit' ],
+						'readonly'    => true,
+					],
+					'currency_decimal_separator'  => array(
+						'description' => __( 'Decimal separator for this currency that should be used to format prices.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => array( 'view', 'edit' ),
 						'readonly'    => true,
 					),
-					'decimal_separator'  => array(
-						'description' => __( 'Decimal separator.', 'woo-gutenberg-products-block' ),
+					'currency_thousand_separator' => array(
+						'description' => __( 'Thousand separator for this currency that should be used to format prices.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => array( 'view', 'edit' ),
 						'readonly'    => true,
 					),
-					'thousand_separator' => array(
-						'description' => __( 'Thousand separator.', 'woo-gutenberg-products-block' ),
+					'currency_prefix'             => array(
+						'description' => __( 'Price prefix for this currency that should be used to format prices.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => array( 'view', 'edit' ),
 						'readonly'    => true,
 					),
-					'decimals'           => array(
-						'description' => __( 'Number of decimal places.', 'woo-gutenberg-products-block' ),
+					'currency_suffix'             => array(
+						'description' => __( 'Price prefix for this currency that should be used to format prices.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => array( 'view', 'edit' ),
 						'readonly'    => true,
 					),
-					'price_prefix'       => array(
-						'description' => __( 'Price prefix, e.g. currency.', 'woo-gutenberg-products-block' ),
-						'type'        => 'string',
-						'context'     => array( 'view', 'edit' ),
-						'readonly'    => true,
-					),
-					'price_suffix'       => array(
-						'description' => __( 'Price prefix, e.g. currency.', 'woo-gutenberg-products-block' ),
-						'type'        => 'string',
-						'context'     => array( 'view', 'edit' ),
-						'readonly'    => true,
-					),
-					'price'              => array(
+					'price'                       => array(
 						'description' => __( 'Current product price.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => array( 'view', 'edit' ),
 						'readonly'    => true,
 					),
-					'regular_price'      => array(
+					'regular_price'               => array(
 						'description' => __( 'Regular product price', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => array( 'view', 'edit' ),
 						'readonly'    => true,
 					),
-					'sale_price'         => array(
+					'sale_price'                  => array(
 						'description' => __( 'Sale product price, if applicable.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => array( 'view', 'edit' ),
 						'readonly'    => true,
 					),
-					'price_range'        => array(
+					'price_range'                 => array(
 						'description' => __( 'Price range, if applicable.', 'woo-gutenberg-products-block' ),
 						'type'        => 'object',
 						'context'     => array( 'view', 'edit' ),
@@ -292,40 +298,12 @@ class ProductSchema extends AbstractSchema {
 	 * @return array
 	 */
 	protected function get_prices( \WC_Product $product ) {
-		$tax_display_mode = get_option( 'woocommerce_tax_display_shop' );
-		$position         = get_option( 'woocommerce_currency_pos' );
-		$symbol           = html_entity_decode( get_woocommerce_currency_symbol() );
-		$prefix           = '';
-		$suffix           = '';
-
-		// No break so symbol is added.
-		switch ( $position ) {
-			case 'left_space':
-				$prefix = $symbol . ' ';
-				break;
-			case 'left':
-				$prefix = $symbol;
-				break;
-			case 'right_space':
-				$suffix = ' ' . $symbol;
-				break;
-			case 'right':
-				$suffix = $symbol;
-				break;
-		}
-
-		$prices = [
-			'currency_code'      => get_woocommerce_currency(),
-			'decimal_separator'  => wc_get_price_decimal_separator(),
-			'thousand_separator' => wc_get_price_thousand_separator(),
-			'decimals'           => wc_get_price_decimals(),
-			'price_prefix'       => $prefix,
-			'price_suffix'       => $suffix,
-		];
-
-		$prices['price']         = 'incl' === $tax_display_mode ? wc_get_price_including_tax( $product ) : wc_get_price_excluding_tax( $product );
-		$prices['regular_price'] = 'incl' === $tax_display_mode ? wc_get_price_including_tax( $product, [ 'price' => $product->get_regular_price() ] ) : wc_get_price_excluding_tax( $product, [ 'price' => $product->get_regular_price() ] );
-		$prices['sale_price']    = 'incl' === $tax_display_mode ? wc_get_price_including_tax( $product, [ 'price' => $product->get_sale_price() ] ) : wc_get_price_excluding_tax( $product, [ 'price' => $product->get_sale_price() ] );
+		$prices                  = $this->get_store_currency_response();
+		$tax_display_mode        = get_option( 'woocommerce_tax_display_shop' );
+		$price_function          = 'incl' === $tax_display_mode ? 'wc_get_price_including_tax' : 'wc_get_price_excluding_tax';
+		$prices['price']         = $this->prepare_money_response( $price_function( $product ), wc_get_price_decimals() );
+		$prices['regular_price'] = $this->prepare_money_response( $price_function( $product, [ 'price' => $product->get_regular_price() ] ), wc_get_price_decimals() );
+		$prices['sale_price']    = $this->prepare_money_response( $price_function( $product, [ 'price' => $product->get_sale_price() ] ), wc_get_price_decimals() );
 		$prices['price_range']   = $this->get_price_range( $product );
 
 		return $prices;
@@ -338,31 +316,33 @@ class ProductSchema extends AbstractSchema {
 	 * @return array|null
 	 */
 	protected function get_price_range( \WC_Product $product ) {
+		$tax_display_mode = get_option( 'woocommerce_tax_display_shop' );
+		$price_function   = 'incl' === $tax_display_mode ? 'wc_get_price_including_tax' : 'wc_get_price_excluding_tax';
+
 		if ( $product->is_type( 'variable' ) ) {
 			$prices = $product->get_variation_prices( true );
 
 			if ( min( $prices['price'] ) !== max( $prices['price'] ) ) {
 				return [
-					'min_amount' => 'incl' === $tax_display_mode ? wc_get_price_including_tax( $product, [ 'price' => min( $prices['price'] ) ] ) : wc_get_price_excluding_tax( $product, [ 'price' => min( $prices['price'] ) ] ),
-					'max_amount' => 'incl' === $tax_display_mode ? wc_get_price_including_tax( $product, [ 'price' => max( $prices['price'] ) ] ) : wc_get_price_excluding_tax( $product, [ 'price' => max( $prices['price'] ) ] ),
+					'min_amount' => $this->prepare_money_response( $price_function( $product, [ 'price' => min( $prices['price'] ) ] ), wc_get_price_decimals() ),
+					'max_amount' => $this->prepare_money_response( $price_function( $product, [ 'price' => max( $prices['price'] ) ] ), wc_get_price_decimals() ),
 				];
 			}
 		}
 
 		if ( $product->is_type( 'grouped' ) ) {
-			$tax_display_mode = get_option( 'woocommerce_tax_display_shop' );
-			$children         = array_filter( array_map( 'wc_get_product', $product->get_children() ), 'wc_products_array_filter_visible_grouped' );
+			$children = array_filter( array_map( 'wc_get_product', $product->get_children() ), 'wc_products_array_filter_visible_grouped' );
 
 			foreach ( $children as $child ) {
 				if ( '' !== $child->get_price() ) {
-					$child_prices[] = 'incl' === $tax_display_mode ? wc_get_price_including_tax( $child ) : wc_get_price_excluding_tax( $child );
+					$child_prices[] = $price_function( $child );
 				}
 			}
 
 			if ( ! empty( $child_prices ) ) {
 				return [
-					'min_amount' => min( $child_prices ),
-					'max_amount' => max( $child_prices ),
+					'min_amount' => $this->prepare_money_response( min( $child_prices ), wc_get_price_decimals() ),
+					'max_amount' => $this->prepare_money_response( max( $child_prices ), wc_get_price_decimals() ),
 				];
 			}
 		}

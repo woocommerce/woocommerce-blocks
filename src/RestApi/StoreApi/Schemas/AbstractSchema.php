@@ -65,6 +65,43 @@ abstract class AbstractSchema {
 	}
 
 	/**
+	 * Prepares a list of store currency data to return in responses.
+	 *
+	 * @return array
+	 */
+	protected function get_store_currency_response() {
+		$position = get_option( 'woocommerce_currency_pos' );
+		$symbol   = html_entity_decode( get_woocommerce_currency_symbol() );
+		$prefix   = '';
+		$suffix   = '';
+
+		switch ( $position ) {
+			case 'left_space':
+				$prefix = $symbol . ' ';
+				break;
+			case 'left':
+				$prefix = $symbol;
+				break;
+			case 'right_space':
+				$suffix = ' ' . $symbol;
+				break;
+			case 'right':
+				$suffix = $symbol;
+				break;
+		}
+
+		return [
+			'currency_code'               => get_woocommerce_currency(),
+			'currency_symbol'             => $symbol,
+			'currency_minor_unit'         => wc_get_price_decimals(),
+			'currency_decimal_separator'  => wc_get_price_decimal_separator(),
+			'currency_thousand_separator' => wc_get_price_thousand_separator(),
+			'currency_prefix'             => $prefix,
+			'currency_suffix'             => $suffix,
+		];
+	}
+
+	/**
 	 * Convert monetary values from WooCommerce to string based integers, using
 	 * the smallest unit of a currency.
 	 *
