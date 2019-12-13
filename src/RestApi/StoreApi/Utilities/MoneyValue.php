@@ -56,36 +56,18 @@ class MoneyValue {
 	 *
 	 * @param string|float $amount Monetary amount with decimals.
 	 * @param int          $decimals Number if decimals the amount is formatted with.
-	 * @param string       $rounding_mode Valid rounding mode: PHP_ROUND_HALF_DOWN, PHP_ROUND_HALF_UP, PHP_ROUND_HALF_EVEN, PHP_ROUND_HALF_ODD.
+	 * @param int          $rounding_mode Defaults to the PHP_ROUND_HALF_UP constant.
 	 * @return string      The new amount.
 	 */
-	public function from_decimal( $amount, $decimals = 2, $rounding_mode = 'PHP_ROUND_HALF_UP' ) {
+	public function from_decimal( $amount, $decimals = 2, $rounding_mode = PHP_ROUND_HALF_UP ) {
 		$this->amount = (string) intval(
 			round(
 				wc_format_decimal( $amount ) * ( 10 ** $decimals ),
 				0,
-				$this->get_rounding_mode( $rounding_mode )
+				$rounding_mode
 			)
 		);
 
 		return $this->get_amount();
-	}
-
-	/**
-	 * Get rounding mode constant to pass from PHP round.
-	 *
-	 * @param string|int $rounding_mode Either a PHP rounding mode constant name, or number.
-	 * @return int
-	 */
-	protected function get_rounding_mode( $rounding_mode = 'PHP_ROUND_HALF_UP' ) {
-		if ( is_numeric( $rounding_mode ) ) {
-			return (int) $rounding_mode;
-		}
-
-		if ( defined( $rounding_mode ) ) {
-			return constant( $rounding_mode );
-		}
-
-		return 1;
 	}
 }

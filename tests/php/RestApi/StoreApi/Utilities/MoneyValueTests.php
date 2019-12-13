@@ -47,31 +47,31 @@ class MoneyValueTests extends TestCase {
 			[
 				'amount'        => "10.00",
 				'decimals'      => '2',
-				'rounding_mode' => 'PHP_ROUND_HALF_UP',
+				'rounding_mode' => PHP_ROUND_HALF_UP,
 				'expected'      => 1000,
 			],
 			[
 				'amount'        => "10.1234",
 				'decimals'      => '4',
-				'rounding_mode' => 'PHP_ROUND_HALF_UP',
+				'rounding_mode' => PHP_ROUND_HALF_UP,
 				'expected'      => 101234,
 			],
 			[
 				'amount'        => "10.00",
 				'decimals'      => '0',
-				'rounding_mode' => 'PHP_ROUND_HALF_UP',
+				'rounding_mode' => PHP_ROUND_HALF_UP,
 				'expected'      => 10,
 			],
 			[
 				'amount'        => "10.995",
 				'decimals'      => '2',
-				'rounding_mode' => 'PHP_ROUND_HALF_UP',
+				'rounding_mode' => PHP_ROUND_HALF_UP,
 				'expected'      => 1100,
 			],
 			[
 				'amount'        => "10.995",
 				'decimals'      => '2',
-				'rounding_mode' => 'PHP_ROUND_HALF_DOWN',
+				'rounding_mode' => PHP_ROUND_HALF_DOWN,
 				'expected'      => 1099,
 			],
 		];
