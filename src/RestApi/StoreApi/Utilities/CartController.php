@@ -157,6 +157,80 @@ class CartController {
 	}
 
 	/**
+	 * See if cart has applied coupon by code.
+	 *
+	 * @param string $coupon_code Cart coupon code.
+	 * @return bool
+	 */
+	public function has_coupon( $coupon_code ) {
+		return wc()->cart->has_discount( $coupon_code );
+	}
+
+	/**
+	 * Returns all applied coupons.
+	 *
+	 * @param callable $callback Optional callback to apply to the array filter.
+	 * @return array
+	 */
+	public function get_cart_coupons( $callback = null ) {
+		return $callback ? array_filter( wc()->cart->get_applied_coupons(), $callback ) : array_filter( wc()->cart->get_applied_coupons() );
+	}
+
+	/**
+	 * Based on the core cart class but returns errors rather than rendering notices directly.
+	 *
+	 * @throws RestException Exception if invalid data is detected.
+	 * @param string $coupon_code Coupon code.
+	 */
+	public function apply_coupon( $coupon_code ) {
+		$cart            = $this->get_cart_instance();
+		$applied_coupons = $this->get_cart_coupons();
+		$coupon          = new \WC_Coupon( $coupon_code );
+
+		if ( $coupon->get_code() !== $coupon_code ) {
+			throw new RestException( 'woocommerce_rest_cart_coupon_error', __( 'Invalid coupon code.', 'woo-gutenberg-products-block' ), 403 );
+		}
+
+		if ( $this->has_coupon( $coupon_code ) ) {
+			throw new RestException( 'woocommerce_rest_cart_coupon_error', __( 'Coupon has already been applied.', 'woo-gutenberg-products-block' ), 403 );
+		}
+
+		if ( ! $coupon->is_valid() ) {
+			throw new RestException( 'woocommerce_rest_cart_coupon_error', $coupon->get_error_message(), 403 );
+		}
+
+		// Prevents new coupons being added if individual use coupons are already in the cart.
+		$individual_use_coupons = $this->get_cart_coupons(
+			function( $code ) {
+				$coupon = new \WC_Coupon( $code );
+				return $coupon->get_individual_use();
+			}
+		);
+
+		foreach ( $individual_use_coupons as $code ) {
+			$individual_use_coupon = new \WC_Coupon( $code );
+
+			if ( false === apply_filters( 'woocommerce_apply_with_individual_use_coupon', false, $coupon, $individual_use_coupon, $applied_coupons ) ) {
+				/* translators: %s: coupon code */
+				throw new RestException( 'woocommerce_rest_cart_coupon_error', sprintf( __( '"%s" has already been applied and cannot be used in conjunction with other coupons.', 'woo-gutenberg-products-block' ), $code ), 403 );
+			}
+		}
+
+		if ( $coupon->get_individual_use() ) {
+			$coupons_to_remove = array_diff( $applied_coupons, apply_filters( 'woocommerce_apply_individual_use_coupon', array(), $coupon, $applied_coupons ) );
+
+			foreach ( $coupons_to_remove as $code ) {
+				$cart->remove_coupon( $code );
+			}
+		}
+
+		$applied_coupons[] = $coupon_code;
+		$cart->set_applied_coupons( $applied_coupons );
+
+		do_action( 'woocommerce_applied_coupon', $coupon_code );
+	}
+
+	/**
 	 * Get a product object to be added to the cart.
 	 *
 	 * @throws RestException Exception if invalid data is detected.
