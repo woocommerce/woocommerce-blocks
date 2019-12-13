@@ -147,7 +147,7 @@ const getEntryConfig = ( main = true, exclude = [] ) => {
 
 const getMainConfig = ( options = {} ) => {
 	let { fileSuffix } = options;
-	const { alias, resolvePlugins = [] } = options;
+	const { alias, resolvePlugins = [], mainPlugins = [] } = options;
 	fileSuffix = fileSuffix ? `-${ fileSuffix }` : '';
 	const resolve = alias
 		? {
@@ -274,6 +274,7 @@ const getMainConfig = ( options = {} ) => {
 				requestToExternal,
 				requestToHandle,
 			} ),
+			...mainPlugins,
 		],
 		resolve,
 	};
@@ -281,7 +282,7 @@ const getMainConfig = ( options = {} ) => {
 
 const getFrontConfig = ( options = {} ) => {
 	let { fileSuffix } = options;
-	const { alias, resolvePlugins = [] } = options;
+	const { alias, resolvePlugins = [], mainPlugins = [] } = options;
 	fileSuffix = fileSuffix ? `-${ fileSuffix }` : '';
 	const resolve = alias
 		? {
@@ -369,6 +370,7 @@ const getFrontConfig = ( options = {} ) => {
 				requestToExternal,
 				requestToHandle,
 			} ),
+			...mainPlugins,
 		],
 		resolve,
 	};

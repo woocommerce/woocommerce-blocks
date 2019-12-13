@@ -40,8 +40,8 @@ const baseConfig = {
 
 // add bundleAnalyzer if the token is present
 const bundleAnalyzer = bundleAnalyzerToken
-	? [ new BundleAnalyzerPlugin( { token: bundleAnalyzerToken } ) ]
-	: [];
+	? () => [ new BundleAnalyzerPlugin( { token: bundleAnalyzerToken } ) ]
+	: () => [];
 
 const CoreConfig = {
 	...baseConfig,
@@ -86,20 +86,23 @@ const CoreConfig = {
 				' :msg (:elapsed seconds)',
 		} ),
 		new DependencyExtractionWebpackPlugin( { injectPolyfill: true } ),
-		...bundleAnalyzer,
+		...bundleAnalyzer(),
 	],
 };
 
 const GutenbergBlocksConfig = {
 	...baseConfig,
-	...getMainConfig( { alias: getAlias(), resolvePlugins: bundleAnalyzer } ),
+	...getMainConfig( {
+		alias: getAlias(),
+		mainPlugins: bundleAnalyzer(),
+	} ),
 };
 
 const BlocksFrontendConfig = {
 	...baseConfig,
 	...getFrontConfig( {
 		alias: getAlias(),
-		resolvePlugins: bundleAnalyzer,
+		mainPlugins: bundleAnalyzer(),
 	} ),
 };
 
@@ -112,13 +115,13 @@ const LegacyBlocksConfig = {
 	...baseConfig,
 	...getMainConfig( {
 		fileSuffix: 'legacy',
+		mainPlugins: bundleAnalyzer(),
 		resolvePlugins: [
 			new FallbackModuleDirectoryPlugin(
 				'/legacy/',
 				'/',
 				getAlias( { pathPart: 'legacy' } )
 			),
-			...bundleAnalyzer,
 		],
 		exclude: [
 			'all-products',
@@ -136,13 +139,13 @@ const LegacyFrontendBlocksConfig = {
 	...baseConfig,
 	...getFrontConfig( {
 		fileSuffix: 'legacy',
+		mainPlugins: bundleAnalyzer(),
 		resolvePlugins: [
 			new FallbackModuleDirectoryPlugin(
 				'/legacy/',
 				'/',
 				getAlias( { pathPart: 'legacy' } )
 			),
-			...bundleAnalyzer,
 		],
 		exclude: [
 			'all-products',
