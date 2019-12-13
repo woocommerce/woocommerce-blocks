@@ -81,8 +81,8 @@ const PriceSlider = ( {
 			};
 		}
 
-		// normalize to whatever is the closest step (because range input will
-		// only jump to the closest step in the range)
+		// Normalize to whatever is the closest step (because range input will
+		// only jump to the closest step in the range).
 		const min = Math.round( minPrice / step ) * step;
 		const max = Math.round( maxPrice / step ) * step;
 
