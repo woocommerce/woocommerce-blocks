@@ -255,6 +255,7 @@ const getMainConfig = ( options = {} ) => {
 			new MiniCssExtractPlugin( {
 				filename: `[name]${ fileSuffix }.css`,
 			} ),
+			...mainPlugins,
 			new MergeExtractFilesPlugin(
 				[
 					`build/editor${ fileSuffix }.js`,
@@ -274,7 +275,6 @@ const getMainConfig = ( options = {} ) => {
 				requestToExternal,
 				requestToHandle,
 			} ),
-			...mainPlugins,
 		],
 		resolve,
 	};
