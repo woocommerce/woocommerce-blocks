@@ -200,7 +200,7 @@ class CartSchema extends AbstractSchema {
 		foreach ( $cart_tax_totals as $cart_tax_total ) {
 			$tax_lines[] = array(
 				'name'  => $cart_tax_total->label,
-				'price' => ( $this->prepare_money_response( $cart_tax_total->amount, wc_get_price_decimals() ) ),
+				'price' => $this->prepare_money_response( $cart_tax_total->amount, wc_get_price_decimals() ),
 			);
 		}
 
