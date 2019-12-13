@@ -228,17 +228,7 @@ class CartCoupons extends RestController {
 	 * @return RestResponse Response object.
 	 */
 	public function prepare_item_for_response( $coupon_code, $request ) {
-		$controller           = new CartController();
-		$cart                 = $controller->get_cart_instance();
-		$total_discounts      = $cart->get_coupon_discount_totals();
-		$total_discount_taxes = $cart->get_coupon_discount_tax_totals();
-		$data                 = $this->schema->get_item_response(
-			$coupon_code,
-			isset( $total_discounts[ $coupon_code ] ) ? $total_discounts[ $coupon_code ] : 0,
-			isset( $total_discount_taxes[ $coupon_code ] ) ? $total_discount_taxes[ $coupon_code ] : 0
-		);
-
-		return rest_ensure_response( $data );
+		return rest_ensure_response( $this->schema->get_item_response( $coupon_code ) );
 	}
 
 	/**

@@ -9,6 +9,8 @@ namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas;
 
 defined( 'ABSPATH' ) || exit;
 
+use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\CartController;
+
 /**
  * CartCouponSchema class.
  *
@@ -68,15 +70,17 @@ class CartCouponSchema extends AbstractSchema {
 	 * Convert a WooCommerce cart item to an object suitable for the response.
 	 *
 	 * @param string $coupon_code Coupon code from the cart.
-	 * @param string $total_discount Total discount from cart for this coupon.
-	 * @param string $total_discount_tax Total discount tax from cart for this coupon.
 	 * @return array
 	 */
-	public function get_item_response( $coupon_code, $total_discount, $total_discount_tax ) {
+	public function get_item_response( $coupon_code ) {
+		$controller           = new CartController();
+		$cart                 = $controller->get_cart_instance();
+		$total_discounts      = $cart->get_coupon_discount_totals();
+		$total_discount_taxes = $cart->get_coupon_discount_tax_totals();
 		return [
 			'code'               => $coupon_code,
-			'total_discount'     => $this->prepare_money_response( $total_discount, wc_get_price_decimals() ),
-			'total_discount_tax' => $this->prepare_money_response( $total_discount_tax, wc_get_price_decimals(), PHP_ROUND_HALF_DOWN ),
+			'total_discount'     => $this->prepare_money_response( isset( $total_discounts[ $coupon_code ] ) ? $total_discounts[ $coupon_code ] : 0, wc_get_price_decimals() ),
+			'total_discount_tax' => $this->prepare_money_response( isset( $total_discount_taxes[ $coupon_code ] ) ? $total_discount_taxes[ $coupon_code ] : 0, wc_get_price_decimals(), PHP_ROUND_HALF_DOWN ),
 		];
 	}
 }
