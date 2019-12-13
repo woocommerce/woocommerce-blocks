@@ -65,11 +65,11 @@ abstract class AbstractSchema {
 	}
 
 	/**
-	 * Convert monetary values from WooCommerce to integers, using the smallest
-	 * unit of a currency.
+	 * Convert monetary values from WooCommerce to string based integers, using
+	 * the smallest unit of a currency.
 	 *
 	 * @param string|float $amount Monetary amount with decimals.
-	 * @param int          $decimals Number if decimals the amount is formatted with.
+	 * @param int          $decimals Number of decimals the amount is formatted with.
 	 * @param int          $rounding_mode Defaults to the PHP_ROUND_HALF_UP constant.
 	 * @return string      The new amount.
 	 */
@@ -78,7 +78,7 @@ abstract class AbstractSchema {
 			round(
 				wc_format_decimal( $amount ) * ( 10 ** $decimals ),
 				0,
-				$rounding_mode
+				absint( $rounding_mode )
 			)
 		);
 	}
