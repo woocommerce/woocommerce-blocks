@@ -68,13 +68,15 @@ class CartCouponSchema extends AbstractSchema {
 	 * Convert a WooCommerce cart item to an object suitable for the response.
 	 *
 	 * @param string $coupon_code Coupon code from the cart.
+	 * @param string $total_discount Total discount from cart for this coupon.
+	 * @param string $total_discount_tax Total discount tax from cart for this coupon.
 	 * @return array
 	 */
-	public function get_item_response( $coupon_code ) {
+	public function get_item_response( $coupon_code, $total_discount, $total_discount_tax ) {
 		return [
 			'code'               => $coupon_code,
-			'total_discount'     => 0,
-			'total_discount_tax' => 0,
+			'total_discount'     => $total_discount,
+			'total_discount_tax' => $total_discount_tax,
 		];
 	}
 }
