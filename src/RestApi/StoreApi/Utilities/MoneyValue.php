@@ -62,7 +62,7 @@ class MoneyValue {
 	public function from_decimal( $amount, $decimals = 2, $rounding_mode = 'PHP_ROUND_HALF_UP' ) {
 		$this->amount = (string) intval(
 			round(
-				wc_format_decimal( $amount ) * pow( 10, $decimals ),
+				wc_format_decimal( $amount ) * ( 10 ** $decimals ),
 				0,
 				$this->get_rounding_mode( $rounding_mode )
 			)
