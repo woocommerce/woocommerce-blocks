@@ -7,8 +7,11 @@ const { CleanWebpackPlugin } = require( 'clean-webpack-plugin' );
 const ProgressBarPlugin = require( 'progress-bar-webpack-plugin' );
 const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
 const chalk = require( 'chalk' );
+const BundleAnalyzerPlugin = require( '@bundle-analyzer/webpack-plugin' );
 const NODE_ENV = process.env.NODE_ENV || 'development';
+const bundleAnalyzerToken = process.env.BUNDLE_ANALYZER_TOKEN || '';
 const FallbackModuleDirectoryPlugin = require( './bin/fallback-module-directory-webpack-plugin' );
+
 const {
 	getAlias,
 	getMainConfig,
@@ -34,6 +37,11 @@ const baseConfig = {
 	},
 	devtool: NODE_ENV === 'development' ? 'source-map' : false,
 };
+
+// add bundleAnalyzer if the token is present
+const bundleAnalyzer = bundleAnalyzerToken
+	? [ new BundleAnalyzerPlugin( { token: bundleAnalyzerToken } ) ]
+	: [];
 
 const CoreConfig = {
 	...baseConfig,
@@ -78,17 +86,21 @@ const CoreConfig = {
 				' :msg (:elapsed seconds)',
 		} ),
 		new DependencyExtractionWebpackPlugin( { injectPolyfill: true } ),
+		...bundleAnalyzer,
 	],
 };
 
 const GutenbergBlocksConfig = {
 	...baseConfig,
-	...getMainConfig( { alias: getAlias() } ),
+	...getMainConfig( { alias: getAlias(), resolvePlugins: bundleAnalyzer } ),
 };
 
 const BlocksFrontendConfig = {
 	...baseConfig,
-	...getFrontConfig( { alias: getAlias() } ),
+	...getFrontConfig( {
+		alias: getAlias(),
+		resolvePlugins: bundleAnalyzer,
+	} ),
 };
 
 /**
@@ -106,6 +118,7 @@ const LegacyBlocksConfig = {
 				'/',
 				getAlias( { pathPart: 'legacy' } )
 			),
+			...bundleAnalyzer,
 		],
 		exclude: [
 			'all-products',
@@ -129,6 +142,7 @@ const LegacyFrontendBlocksConfig = {
 				'/',
 				getAlias( { pathPart: 'legacy' } )
 			),
+			...bundleAnalyzer,
 		],
 		exclude: [
 			'all-products',

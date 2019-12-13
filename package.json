@@ -43,6 +43,7 @@
 	"devDependencies": {
 		"@babel/core": "7.7.5",
 		"@babel/plugin-proposal-class-properties": "7.7.4",
+		"@bundle-analyzer/webpack-plugin": "^0.5.1",
 		"@octokit/rest": "16.35.0",
 		"@wordpress/babel-preset-default": "4.7.0",
 		"@wordpress/blocks": "6.8.0",
