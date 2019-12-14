@@ -70,4 +70,5 @@ jobs:
           script:
             - npm install
             - npm run build:ci
+            - ls
             - cat webpack-stats.json | npx bundle-analyzer --token $BUNDLE_ANALYZER_TOKEN
