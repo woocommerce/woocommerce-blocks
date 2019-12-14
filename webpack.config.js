@@ -9,7 +9,6 @@ const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extrac
 const chalk = require( 'chalk' );
 const BundleAnalyzerPlugin = require( '@bundle-analyzer/webpack-plugin' );
 const NODE_ENV = process.env.NODE_ENV || 'development';
-
 const bundleAnalyzerToken = process.env.BUNDLE_ANALYZER_TOKEN || '';
 const FallbackModuleDirectoryPlugin = require( './bin/fallback-module-directory-webpack-plugin' );
 
