@@ -1,19 +1,19 @@
 module.exports = {
 	files: [
 		{
-			test: './build/*.js',
+			test: '*.js',
 			maxSize: '200 kB',
 		},
 		{
-			test: './build/*frontend*.js',
+			test: '*frontend*.js',
 			maxSize: '60 kB',
 		},
 		{
-			test: './build/*.css',
+			test: '*.css',
 			maxSize: '50kB',
 		},
 		{
-			test: './build/vendors*.js',
+			test: 'vendors*.js',
 			maxSize: '350 kb',
 		},
 	],
