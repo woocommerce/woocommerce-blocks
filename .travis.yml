@@ -70,3 +70,4 @@ jobs:
           script:
             - npm install
             - npm run build:ci
+            - npx bundle-analyzer --token $BUNDLE_ANALYZER_TOKEN
