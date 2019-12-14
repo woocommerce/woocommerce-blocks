@@ -9,7 +9,7 @@ const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extrac
 const chalk = require( 'chalk' );
 const BundleAnalyzerPlugin = require( '@bundle-analyzer/webpack-plugin' );
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const bundleAnalyzerToken = process.env.BUNDLE_ANALYZER_TOKEN || '';
+const bundleAnalyzerToken = '';
 const FallbackModuleDirectoryPlugin = require( './bin/fallback-module-directory-webpack-plugin' );
 
 const {
@@ -40,8 +40,8 @@ const baseConfig = {
 
 // add bundleAnalyzer if the token is present
 const bundleAnalyzer = bundleAnalyzerToken
-	? [ new BundleAnalyzerPlugin( { token: bundleAnalyzerToken } ) ]
-	: [];
+	? () => [ new BundleAnalyzerPlugin( { token: bundleAnalyzerToken } ) ]
+	: () => [];
 
 const CoreConfig = {
 	...baseConfig,
@@ -86,15 +86,15 @@ const CoreConfig = {
 				' :msg (:elapsed seconds)',
 		} ),
 		new DependencyExtractionWebpackPlugin( { injectPolyfill: true } ),
-		...bundleAnalyzer,
+		...bundleAnalyzer(),
 	],
 };
 
 const GutenbergBlocksConfig = {
 	...baseConfig,
 	...getMainConfig( {
-		alias: getAlias,
-		mainPlugins: bundleAnalyzer,
+		alias: getAlias(),
+		mainPlugins: bundleAnalyzer(),
 	} ),
 };
 
@@ -102,7 +102,7 @@ const BlocksFrontendConfig = {
 	...baseConfig,
 	...getFrontConfig( {
 		alias: getAlias(),
-		mainPlugins: bundleAnalyzer,
+		mainPlugins: bundleAnalyzer(),
 	} ),
 };
 
@@ -115,7 +115,7 @@ const LegacyBlocksConfig = {
 	...baseConfig,
 	...getMainConfig( {
 		fileSuffix: 'legacy',
-		mainPlugins: bundleAnalyzer,
+		mainPlugins: bundleAnalyzer(),
 		resolvePlugins: [
 			new FallbackModuleDirectoryPlugin(
 				'/legacy/',
@@ -139,7 +139,7 @@ const LegacyFrontendBlocksConfig = {
 	...baseConfig,
 	...getFrontConfig( {
 		fileSuffix: 'legacy',
-		mainPlugins: bundleAnalyzer,
+		mainPlugins: bundleAnalyzer(),
 		resolvePlugins: [
 			new FallbackModuleDirectoryPlugin(
 				'/legacy/',
