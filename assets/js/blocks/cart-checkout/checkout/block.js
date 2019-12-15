@@ -20,6 +20,7 @@ import {
  * Internal dependencies
  */
 import './style.scss';
+import '../../../payment-methods-demo';
 
 /**
  * Component displaying an attribute filter.
