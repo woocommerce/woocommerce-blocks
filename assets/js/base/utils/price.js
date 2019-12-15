@@ -16,10 +16,10 @@ export const formatPrice = (
 	priceFormat = CURRENCY.price_format,
 	currencySymbol = CURRENCY.symbol
 ) => {
-	if ( ! isFinite( parseInt( value ) ) ) {
+	const formattedNumber = parseInt( value, 10 );
+	if ( ! isFinite( formattedNumber ) ) {
 		return '';
 	}
-	const formattedNumber = parseInt( value, 10 );
 	const formattedValue = sprintf(
 		priceFormat,
 		currencySymbol,

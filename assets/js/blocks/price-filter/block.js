@@ -23,6 +23,7 @@ const useConstraints = ( { minPrice, maxPrice } ) => {
 	const minConstraint = Number.isFinite( currentMinConstraint )
 		? currentMinConstraint
 		: previousMinConstraint;
+
 	const currentMaxConstraint = isNaN( maxPrice )
 		? null
 		: Math.ceil( parseInt( maxPrice, 10 ) / 10 ) * 10;
