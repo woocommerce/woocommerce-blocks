@@ -5,3 +5,4 @@ export * from './use-collection';
 export * from './use-collection-header';
 export * from './use-collection-data';
 export * from './use-previous';
+export * from './checkout';
