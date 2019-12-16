@@ -31,220 +31,181 @@ class ProductSchema extends AbstractSchema {
 	 */
 	protected function get_properties() {
 		return [
-			'id'                  => array(
+			'id'                  => [
 				'description' => __( 'Unique identifier for the resource.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
-			'name'                => array(
+			],
+			'name'                => [
 				'description' => __( 'Product name.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
-				'context'     => array( 'view', 'edit' ),
-			),
-			'variation'           => array(
+				'context'     => [ 'view', 'edit' ],
+			],
+			'variation'           => [
 				'description' => __( 'Product variation attributes, if applicable.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
-				'context'     => array( 'view', 'edit' ),
-			),
-			'permalink'           => array(
+				'context'     => [ 'view', 'edit' ],
+			],
+			'permalink'           => [
 				'description' => __( 'Product URL.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'format'      => 'uri',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
-			'description'         => array(
+			],
+			'description'         => [
 				'description' => __( 'Short description or excerpt from description.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
-				'context'     => array( 'view', 'edit' ),
-			),
-			'on_sale'             => array(
+				'context'     => [ 'view', 'edit' ],
+			],
+			'on_sale'             => [
 				'description' => __( 'Is the product on sale?', 'woo-gutenberg-products-block' ),
 				'type'        => 'boolean',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
-			'sku'                 => array(
+			],
+			'sku'                 => [
 				'description' => __( 'Unique identifier.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
-				'context'     => array( 'view', 'edit' ),
-			),
-			'prices'              => array(
+				'context'     => [ 'view', 'edit' ],
+			],
+			'prices'              => [
 				'description' => __( 'Price data.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-				'properties'  => array(
-					'currency_code'               => [
-						'description' => __( 'Currency code (in ISO format).', 'woo-gutenberg-products-block' ),
-						'type'        => 'string',
-						'context'     => [ 'view', 'edit' ],
-						'readonly'    => true,
-					],
-					'currency_symbol'             => [
-						'description' => __( 'Symbol for this currency that should be used to format prices.', 'woo-gutenberg-products-block' ),
-						'type'        => 'string',
-						'context'     => [ 'view', 'edit' ],
-						'readonly'    => true,
-					],
-					'currency_minor_unit'         => [
-						'description' => __( 'Currency minor unit (number of digits after the decimal separator) used for cart item prices.', 'woo-gutenberg-products-block' ),
-						'type'        => 'integer',
-						'context'     => [ 'view', 'edit' ],
-						'readonly'    => true,
-					],
-					'currency_decimal_separator'  => array(
-						'description' => __( 'Decimal separator for this currency that should be used to format prices.', 'woo-gutenberg-products-block' ),
-						'type'        => 'string',
-						'context'     => array( 'view', 'edit' ),
-						'readonly'    => true,
-					),
-					'currency_thousand_separator' => array(
-						'description' => __( 'Thousand separator for this currency that should be used to format prices.', 'woo-gutenberg-products-block' ),
-						'type'        => 'string',
-						'context'     => array( 'view', 'edit' ),
-						'readonly'    => true,
-					),
-					'currency_prefix'             => array(
-						'description' => __( 'Price prefix for this currency that should be used to format prices.', 'woo-gutenberg-products-block' ),
-						'type'        => 'string',
-						'context'     => array( 'view', 'edit' ),
-						'readonly'    => true,
-					),
-					'currency_suffix'             => array(
-						'description' => __( 'Price prefix for this currency that should be used to format prices.', 'woo-gutenberg-products-block' ),
-						'type'        => 'string',
-						'context'     => array( 'view', 'edit' ),
-						'readonly'    => true,
-					),
-					'price'                       => array(
-						'description' => __( 'Current product price.', 'woo-gutenberg-products-block' ),
-						'type'        => 'string',
-						'context'     => array( 'view', 'edit' ),
-						'readonly'    => true,
-					),
-					'regular_price'               => array(
-						'description' => __( 'Regular product price', 'woo-gutenberg-products-block' ),
-						'type'        => 'string',
-						'context'     => array( 'view', 'edit' ),
-						'readonly'    => true,
-					),
-					'sale_price'                  => array(
-						'description' => __( 'Sale product price, if applicable.', 'woo-gutenberg-products-block' ),
-						'type'        => 'string',
-						'context'     => array( 'view', 'edit' ),
-						'readonly'    => true,
-					),
-					'price_range'                 => array(
-						'description' => __( 'Price range, if applicable.', 'woo-gutenberg-products-block' ),
-						'type'        => 'object',
-						'context'     => array( 'view', 'edit' ),
-						'readonly'    => true,
-						'properties'  => array(
-							'min_amount' => array(
-								'description' => __( 'Price amount.', 'woo-gutenberg-products-block' ),
-								'type'        => 'string',
-								'context'     => array( 'view', 'edit' ),
-								'readonly'    => true,
-							),
-							'max_amount' => array(
-								'description' => __( 'Price amount.', 'woo-gutenberg-products-block' ),
-								'type'        => 'string',
-								'context'     => array( 'view', 'edit' ),
-								'readonly'    => true,
-							),
-						),
-					),
+				'properties'  => array_merge(
+					$this->get_store_currency_properties(),
+					[
+						'price'         => [
+							'description' => __( 'Current product price.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+						'regular_price' => [
+							'description' => __( 'Regular product price', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+						'sale_price'    => [
+							'description' => __( 'Sale product price, if applicable.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+						'price_range'   => [
+							'description' => __( 'Price range, if applicable.', 'woo-gutenberg-products-block' ),
+							'type'        => 'object',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+							'properties'  => [
+								'min_amount' => [
+									'description' => __( 'Price amount.', 'woo-gutenberg-products-block' ),
+									'type'        => 'string',
+									'context'     => [ 'view', 'edit' ],
+									'readonly'    => true,
+								],
+								'max_amount' => [
+									'description' => __( 'Price amount.', 'woo-gutenberg-products-block' ),
+									'type'        => 'string',
+									'context'     => [ 'view', 'edit' ],
+									'readonly'    => true,
+								],
+							],
+						],
+					]
 				),
-			),
-			'average_rating'      => array(
+			],
+			'average_rating'      => [
 				'description' => __( 'Reviews average rating.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
-			'review_count'        => array(
+			],
+			'review_count'        => [
 				'description' => __( 'Amount of reviews that the product has.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
-			'images'              => array(
+			],
+			'images'              => [
 				'description' => __( 'List of images.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
-				'context'     => array( 'view', 'edit' ),
-				'items'       => array(
+				'context'     => [ 'view', 'edit' ],
+				'items'       => [
 					'type'       => 'object',
-					'properties' => array(
-						'id'   => array(
+					'properties' => [
+						'id'   => [
 							'description' => __( 'Image ID.', 'woo-gutenberg-products-block' ),
 							'type'        => 'integer',
-							'context'     => array( 'view', 'edit' ),
-						),
-						'src'  => array(
+							'context'     => [ 'view', 'edit' ],
+						],
+						'src'  => [
 							'description' => __( 'Image URL.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'format'      => 'uri',
-							'context'     => array( 'view', 'edit' ),
-						),
-						'name' => array(
+							'context'     => [ 'view', 'edit' ],
+						],
+						'name' => [
 							'description' => __( 'Image name.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
-							'context'     => array( 'view', 'edit' ),
-						),
-						'alt'  => array(
+							'context'     => [ 'view', 'edit' ],
+						],
+						'alt'  => [
 							'description' => __( 'Image alternative text.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
-							'context'     => array( 'view', 'edit' ),
-						),
-					),
-				),
-			),
-			'has_options'         => array(
+							'context'     => [ 'view', 'edit' ],
+						],
+					],
+				],
+			],
+			'has_options'         => [
 				'description' => __( 'Does the product have options?', 'woo-gutenberg-products-block' ),
 				'type'        => 'boolean',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
-			'is_purchasable'      => array(
+			],
+			'is_purchasable'      => [
 				'description' => __( 'Is the product purchasable?', 'woo-gutenberg-products-block' ),
 				'type'        => 'boolean',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
-			'is_in_stock'         => array(
+			],
+			'is_in_stock'         => [
 				'description' => __( 'Is the product in stock?', 'woo-gutenberg-products-block' ),
 				'type'        => 'boolean',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
-			'low_stock_remaining' => array(
+			],
+			'low_stock_remaining' => [
 				'description' => __( 'Quantity left in stock if stock is low, or null if not applicable.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-			),
-			'add_to_cart'         => array(
+			],
+			'add_to_cart'         => [
 				'description' => __( 'Add to cart button parameters.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
-				'context'     => array( 'view', 'edit' ),
+				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
-				'properties'  => array(
-					'text'        => array(
+				'properties'  => [
+					'text'        => [
 						'description' => __( 'Button text.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
-						'context'     => array( 'view', 'edit' ),
+						'context'     => [ 'view', 'edit' ],
 						'readonly'    => true,
-					),
-					'description' => array(
+					],
+					'description' => [
 						'description' => __( 'Button description.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
-						'context'     => array( 'view', 'edit' ),
+						'context'     => [ 'view', 'edit' ],
 						'readonly'    => true,
-					),
-				),
-			),
+					],
+				],
+			],
 		];
 	}
 
