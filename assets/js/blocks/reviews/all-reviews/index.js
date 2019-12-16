@@ -16,6 +16,7 @@ import { example } from '../example';
 
 /**
  * Register and run the "All Reviews" block.
+ * This block lists all product reviews.
  */
 registerBlockType( 'woocommerce/all-reviews', {
 	title: __( 'All Reviews', 'woo-gutenberg-products-block' ),
@@ -49,6 +50,8 @@ registerBlockType( 'woocommerce/all-reviews', {
 
 	/**
 	 * Renders and manages the block.
+	 *
+	 * @param {Object} props Props to pass to block.
 	 */
 	edit( props ) {
 		return <Editor { ...props } />;

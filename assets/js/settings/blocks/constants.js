@@ -3,7 +3,10 @@
  */
 import { getSetting } from '@woocommerce/settings';
 
-export const ENABLE_REVIEW_RATING = getSetting( 'enableReviewRating', true );
+export const REVIEW_RATINGS_ENABLED = getSetting(
+	'reviewRatingsEnabled',
+	true
+);
 export const SHOW_AVATARS = getSetting( 'showAvatars', true );
 export const MAX_COLUMNS = getSetting( 'max_columns', 6 );
 export const MIN_COLUMNS = getSetting( 'min_columns', 1 );
@@ -21,6 +24,7 @@ export const HAS_PRODUCTS = getSetting( 'hasProducts', true );
 export const HAS_TAGS = getSetting( 'hasTags', true );
 export const HOME_URL = getSetting( 'homeUrl', '' );
 export const SHOP_URL = getSetting( 'shopUrl', '' );
+export const CHECKOUT_URL = getSetting( 'checkoutUrl', '' );
 export const PRODUCT_COUNT = getSetting( 'productCount', 0 );
 export const ATTRIBUTES = getSetting( 'attributes', [] );
 export const WC_BLOCKS_ASSET_URL = getSetting( 'wcBlocksAssetUrl', '' );

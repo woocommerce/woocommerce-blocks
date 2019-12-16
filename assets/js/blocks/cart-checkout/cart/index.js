@@ -3,12 +3,13 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InnerBlocks } from '@wordpress/block-editor';
+import { Disabled } from '@wordpress/components';
 import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
-import edit from './edit';
+import Editor from './edit';
 import { example } from './example';
 import './style.scss';
 
@@ -31,7 +32,18 @@ registerBlockType( 'woocommerce/cart', {
 	example,
 	attributes: {},
 
-	edit,
+	/**
+	 * Renders the edit view for a block.
+	 *
+	 * @param {Object} props Props to pass to block.
+	 */
+	edit( props ) {
+		return (
+			<Disabled>
+				<Editor { ...props } />
+			</Disabled>
+		);
+	},
 
 	/**
 	 * Block content is rendered in PHP, not via save function.

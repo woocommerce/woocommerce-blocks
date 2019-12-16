@@ -19,7 +19,7 @@ import {
 } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
 import DropdownSelector from '@woocommerce/base-components/dropdown-selector';
-import SubmitButton from '@woocommerce/base-components/submit-button';
+import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 
 /**
@@ -101,6 +101,8 @@ const AttributeFilterBlock = ( {
 	useEffect( () => {
 		/**
 		 * Checks if a term slug is in the query state.
+		 *
+		 * @param {string} termSlug The term of the slug to check.
 		 */
 		const isTermInQueryState = ( termSlug ) => {
 			if ( ! queryState || ! queryState.attributes ) {
@@ -169,7 +171,7 @@ const AttributeFilterBlock = ( {
 		[ checked, onSubmit ]
 	);
 
-	const curentCheckedQuery = useShallowEqual( checkedQuery );
+	const currentCheckedQuery = useShallowEqual( checkedQuery );
 
 	// Track ATTRIBUTES QUERY changes so the block reflects current filters.
 	useEffect(
@@ -179,7 +181,7 @@ const AttributeFilterBlock = ( {
 			}
 		},
 		// We only want to apply this effect when the query changes, so we are intentionally leaving `checked` out of the dependencies.
-		[ curentCheckedQuery ]
+		[ currentCheckedQuery ]
 	);
 
 	/**
@@ -344,7 +346,7 @@ const AttributeFilterBlock = ( {
 					/>
 				) }
 				{ blockAttributes.showFilterButton && (
-					<SubmitButton
+					<FilterSubmitButton
 						className="wc-block-attribute-filter__button"
 						disabled={ isLoading || isDisabled }
 						onClick={ onSubmit }

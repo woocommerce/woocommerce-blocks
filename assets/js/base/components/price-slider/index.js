@@ -19,7 +19,7 @@ import classnames from 'classnames';
 import './style.scss';
 import { constrainRangeSliderValues } from './utils';
 import { formatPrice } from '../../utils/price';
-import SubmitButton from '../submit-button';
+import FilterSubmitButton from '../filter-submit-button';
 import PriceLabel from './price-label';
 import PriceInput from './price-input';
 
@@ -81,16 +81,21 @@ const PriceSlider = ( {
 			};
 		}
 
+		// Normalize to whatever is the closest step (because range input will
+		// only jump to the closest step in the range).
+		const min = Math.round( minPrice / step ) * step;
+		const max = Math.round( maxPrice / step ) * step;
+
 		const low =
 			Math.round(
 				100 *
-					( ( minPrice - minConstraint ) /
+					( ( min - minConstraint ) /
 						( maxConstraint - minConstraint ) )
 			) - 0.5;
 		const high =
 			Math.round(
 				100 *
-					( ( maxPrice - minConstraint ) /
+					( ( max - minConstraint ) /
 						( maxConstraint - minConstraint ) )
 			) + 0.5;
 
@@ -104,13 +109,14 @@ const PriceSlider = ( {
 		minConstraint,
 		maxConstraint,
 		hasValidConstraints,
+		step,
 	] );
 
 	/**
 	 * Works around an IE issue where only one range selector is visible by changing the display order
 	 * based on the mouse position.
 	 *
-	 * @param {obj} event event data.
+	 * @param {Object} event event data.
 	 */
 	const findClosestRange = useCallback(
 		( event ) => {
@@ -147,7 +153,8 @@ const PriceSlider = ( {
 
 	/**
 	 * Called when the slider is dragged.
-	 * @param {obj} event Event object.
+	 *
+	 * @param {Object} event Event object.
 	 */
 	const rangeInputOnChange = useCallback(
 		( event ) => {
@@ -175,7 +182,8 @@ const PriceSlider = ( {
 
 	/**
 	 * Called when a price input loses focus - commit changes to slider.
-	 * @param {obj} event Event object.
+	 *
+	 * @param {Object} event Event object.
 	 */
 	const priceInputOnBlur = useCallback(
 		( event ) => {
@@ -217,7 +225,8 @@ const PriceSlider = ( {
 
 	/**
 	 * Called when a price input is typed in - store value but don't update slider.
-	 * @param {obj} event Event object.
+	 *
+	 * @param {Object} event Event object.
 	 */
 	const priceInputOnChange = useCallback(
 		( event ) => {
@@ -306,7 +315,7 @@ const PriceSlider = ( {
 					/>
 				) }
 				{ showFilterButton && (
-					<SubmitButton
+					<FilterSubmitButton
 						className="wc-block-price-filter__button"
 						disabled={ isLoading || ! hasValidConstraints }
 						onClick={ onSubmit }
