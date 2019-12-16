@@ -5,25 +5,21 @@ import { sprintf } from '@wordpress/i18n';
 import { CURRENCY } from '@woocommerce/settings';
 
 /**
- * Format a price with currency data.
+ * Format a price, provided using the smallest unit of the currency, as a
+ * decimal complete with currency symbols using current store settings.
  *
- * @param {number} value Number to format.
- * @param {string} priceFormat  Price format string.
- * @param {string} currencySymbol Currency symbol.
+ * @param {number} price Price, in cents, to format.
  */
-export const formatPrice = (
-	value,
-	priceFormat = CURRENCY.priceFormat,
-	currencySymbol = CURRENCY.symbol
-) => {
-	const formattedNumber = parseInt( value, 10 );
-	if ( ! isFinite( formattedNumber ) ) {
+export const formatPrice = ( price ) => {
+	if ( price === '' || price === undefined ) {
 		return '';
 	}
+
+	// eslint-disable-next-line @wordpress/valid-sprintf
 	const formattedValue = sprintf(
-		priceFormat,
-		currencySymbol,
-		formattedNumber
+		CURRENCY.priceFormat,
+		CURRENCY.symbol,
+		parseInt( price, 10 ) / 10 ** CURRENCY.precision
 	);
 
 	// This uses a textarea to magically decode HTML currency symbols.

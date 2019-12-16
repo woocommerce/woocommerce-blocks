@@ -8,7 +8,6 @@ import {
 } from '@woocommerce/base-hooks';
 import { Fragment, useCallback, useState, useEffect } from '@wordpress/element';
 import PriceSlider from '@woocommerce/base-components/price-slider';
-import { CURRENCY } from '@woocommerce/settings';
 import { useDebouncedCallback } from 'use-debounce';
 import PropTypes from 'prop-types';
 
@@ -19,6 +18,8 @@ import usePriceConstraints from './use-price-constraints.js';
 
 /**
  * Component displaying a price filter.
+ *
+ * @param {Object} props Component props.
  */
 const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	const [ minPriceQuery, setMinPriceQuery ] = useQueryStateByKey(
@@ -36,9 +37,24 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	const [ minPrice, setMinPrice ] = useState();
 	const [ maxPrice, setMaxPrice ] = useState();
 
+	const priceRangeData =
+		typeof results.price_range !== 'object'
+			? {
+					currency_code: 'USD',
+					currency_symbol: '$',
+					currency_minor_unit: 2,
+					currency_decimal_separator: '.',
+					currency_thousand_separator: ',',
+					currency_prefix: '$',
+					currency_suffix: '',
+					min_price: undefined,
+					max_price: undefined,
+			  }
+			: results.price_range;
+
 	const { minConstraint, maxConstraint } = usePriceConstraints( {
-		minPrice: results.min_price,
-		maxPrice: results.max_price,
+		minPrice: priceRangeData.min_price,
+		maxPrice: priceRangeData.max_price,
 	} );
 
 	// Updates the query after a short delay.
@@ -116,9 +132,16 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 					maxConstraint={ maxConstraint }
 					minPrice={ min }
 					maxPrice={ max }
-					step={ 10 }
-					currencySymbol={ CURRENCY.symbol }
-					priceFormat={ CURRENCY.priceFormat }
+					step={ 10 ** priceRangeData.currency_minor_unit }
+					thousandSeparator={
+						priceRangeData.currency_thousand_separator
+					}
+					decimalSeparator={
+						priceRangeData.currency_decimal_separator
+					}
+					decimalScale={ priceRangeData.currency_minor_unit }
+					prefix={ priceRangeData.currency_prefix }
+					suffix={ priceRangeData.currency_suffix }
 					showInputFields={ attributes.showInputFields }
 					showFilterButton={ attributes.showFilterButton }
 					onChange={ onChange }
