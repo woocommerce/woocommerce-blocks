@@ -19,16 +19,14 @@ import FeedbackPrompt from './feedback-prompt.js';
  */
 const withFeedbackPrompt = createHigherOrderComponent(
 	( content ) => ( BlockEdit ) => {
-		return ( props ) => {
-			return (
-				<Fragment>
-					<BlockEdit { ...props } />
-					<InspectorControls>
-						<FeedbackPrompt text={ content } />
-					</InspectorControls>
-				</Fragment>
-			);
-		};
+		return ( props ) => (
+			<Fragment>
+				<BlockEdit { ...props } />
+				<InspectorControls>
+					<FeedbackPrompt text={ content } />
+				</InspectorControls>
+			</Fragment>
+		);
 	},
 	'withFeedbackPrompt'
 );
