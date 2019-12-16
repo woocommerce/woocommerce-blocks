@@ -59,4 +59,9 @@ CartEditor.propTypes = {
 	className: PropTypes.string,
 };
 
-export default withFeedbackPrompt( CartEditor );
+export default withFeedbackPrompt(
+	__(
+		'We are currently working on improving our cart and providing merchants with tools and options to customize their cart to their stores needs.',
+		'woo-gutenberg-products-block'
+	)
+)( CartEditor );
