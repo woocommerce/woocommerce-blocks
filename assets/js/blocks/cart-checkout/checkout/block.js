@@ -18,7 +18,7 @@ import './style.scss';
 /**
  * Component displaying an attribute filter.
  */
-const Block = ( { shippingMethods = [], isEditor = true } ) => {
+const Block = ( { shippingMethods = [], isEditor = false } ) => {
 	const [ shippingMethod, setShippingMethod ] = useState( {} );
 	const [ contactFields, setContactFields ] = useState( {} );
 	const [ shouldSavePayment, setShouldSavePayment ] = useState( true );
