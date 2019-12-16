@@ -1,7 +1,7 @@
 /**
- * Internal dependencies
+ * External dependencies
  */
-import { usePrevious } from '../../base/hooks/use-previous';
+import { usePrevious } from '@woocommerce/base-hooks';
 
 export const usePriceConstraint = ( price ) => {
 	const currentConstraint = isNaN( price )
