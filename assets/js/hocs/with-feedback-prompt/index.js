@@ -17,8 +17,8 @@ import FeedbackPrompt from './feedback-prompt.js';
  *
  * @return {WPComponent} Wrapped component.
  */
-const withFeedbackPrompt = createHigherOrderComponent(
-	( content ) => ( BlockEdit ) => {
+const withFeedbackPrompt = ( content ) =>
+	createHigherOrderComponent( ( BlockEdit ) => {
 		return ( props ) => (
 			<Fragment>
 				<BlockEdit { ...props } />
@@ -27,8 +27,6 @@ const withFeedbackPrompt = createHigherOrderComponent(
 				</InspectorControls>
 			</Fragment>
 		);
-	},
-	'withFeedbackPrompt'
-);
+	}, 'withFeedbackPrompt' );
 
 export default withFeedbackPrompt;
