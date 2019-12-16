@@ -15,7 +15,7 @@ const CheckoutEditor = ( { attributes } ) => {
 	// @todo: wrap Block with Disabled once you finish building the form
 	return (
 		<div className={ className }>
-			<Block attributes={ attributes } />
+			<Block attributes={ attributes } isEditor={ true } />
 		</div>
 	);
 };
