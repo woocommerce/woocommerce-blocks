@@ -53,7 +53,7 @@ class ProductQuery {
 			$args['date_query'][0]['after'] = $request['after'];
 		}
 
-		// Set date query colummn. Defaults to post_date.
+		// Set date query column. Defaults to post_date.
 		if ( isset( $request['date_column'] ) && ! empty( $args['date_query'][0] ) ) {
 			$args['date_query'][0]['column'] = 'post_' . $request['date_column'];
 		}
@@ -82,7 +82,7 @@ class ProductQuery {
 			'and'    => 'AND',
 		);
 
-		// Map between taxonomy name and arg's key.
+		// Map between taxonomy name and arg key.
 		$taxonomies = array(
 			'product_cat' => 'category',
 			'product_tag' => 'tag',

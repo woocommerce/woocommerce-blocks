@@ -43,14 +43,14 @@ class ProductCollectionData extends RestController {
 		register_rest_route(
 			$this->namespace,
 			'/' . $this->rest_base,
-			array(
-				array(
+			[
+				[
 					'methods'  => RestServer::READABLE,
-					'callback' => array( $this, 'get_items' ),
+					'callback' => [ $this, 'get_items' ],
 					'args'     => $this->get_collection_params(),
-				),
-				'schema' => array( $this, 'get_public_item_schema' ),
-			)
+				],
+				'schema' => [ $this, 'get_public_item_schema' ],
+			]
 		);
 	}
 
@@ -65,64 +65,78 @@ class ProductCollectionData extends RestController {
 			'title'      => 'product_collection_data',
 			'type'       => 'object',
 			'properties' => [
-				'min_price'        => array(
-					'description' => __( 'Min price found in collection of products.', 'woo-gutenberg-products-block' ),
-					'type'        => 'integer',
-					'context'     => array( 'view', 'edit' ),
+				'price_range'      => [
+					'description' => __( 'Min and max prices found in collection of products, provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
+					'type'        => 'object',
+					'context'     => [ 'view', 'edit' ],
 					'readonly'    => true,
-				),
-				'max_price'        => array(
-					'description' => __( 'Max price found in collection of products.', 'woo-gutenberg-products-block' ),
-					'type'        => 'string',
-					'context'     => array( 'view', 'edit' ),
-					'readonly'    => true,
-				),
-				'attribute_counts' => array(
+					'properties'  => [
+						'currency_minor_unit' => [
+							'description' => __( 'Currency minor unit (number of digits after the decimal separator) for returned prices.', 'woo-gutenberg-products-block' ),
+							'type'        => 'integer',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+						'min_price'           => [
+							'description' => __( 'Min price found in collection of products.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+						'max_price'           => [
+							'description' => __( 'Max price found in collection of products.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+					],
+				],
+				'attribute_counts' => [
 					'description' => __( 'Returns number of products within attribute terms.', 'woo-gutenberg-products-block' ),
 					'type'        => 'array',
-					'context'     => array( 'view', 'edit' ),
+					'context'     => [ 'view', 'edit' ],
 					'readonly'    => true,
-					'items'       => array(
+					'items'       => [
 						'type'       => 'object',
-						'properties' => array(
-							'term'  => array(
+						'properties' => [
+							'term'  => [
 								'description' => __( 'Term ID', 'woo-gutenberg-products-block' ),
 								'type'        => 'integer',
-								'context'     => array( 'view', 'edit' ),
+								'context'     => [ 'view', 'edit' ],
 								'readonly'    => true,
-							),
-							'count' => array(
+							],
+							'count' => [
 								'description' => __( 'Number of products.', 'woo-gutenberg-products-block' ),
 								'type'        => 'integer',
-								'context'     => array( 'view', 'edit' ),
+								'context'     => [ 'view', 'edit' ],
 								'readonly'    => true,
-							),
-						),
-					),
-				),
-				'rating_counts'    => array(
+							],
+						],
+					],
+				],
+				'rating_counts'    => [
 					'description' => __( 'Returns number of products with each average rating.', 'woo-gutenberg-products-block' ),
 					'type'        => 'array',
-					'context'     => array( 'view', 'edit' ),
+					'context'     => [ 'view', 'edit' ],
 					'readonly'    => true,
-					'items'       => array(
+					'items'       => [
 						'type'       => 'object',
-						'properties' => array(
-							'rating' => array(
+						'properties' => [
+							'rating' => [
 								'description' => __( 'Average rating', 'woo-gutenberg-products-block' ),
 								'type'        => 'integer',
-								'context'     => array( 'view', 'edit' ),
+								'context'     => [ 'view', 'edit' ],
 								'readonly'    => true,
-							),
-							'count'  => array(
+							],
+							'count'  => [
 								'description' => __( 'Number of products.', 'woo-gutenberg-products-block' ),
 								'type'        => 'integer',
-								'context'     => array( 'view', 'edit' ),
+								'context'     => [ 'view', 'edit' ],
 								'readonly'    => true,
-							),
-						),
-					),
-				),
+							],
+						],
+					],
+				],
 			],
 		];
 	}
@@ -135,8 +149,7 @@ class ProductCollectionData extends RestController {
 	 */
 	public function get_items( $request ) {
 		$return  = [
-			'min_price'        => null,
-			'max_price'        => null,
+			'price_range'      => null,
 			'attribute_counts' => null,
 			'rating_counts'    => null,
 		];
@@ -146,10 +159,14 @@ class ProductCollectionData extends RestController {
 			$filter_request = clone $request;
 			$filter_request->set_param( 'min_price', null );
 			$filter_request->set_param( 'max_price', null );
-			$price_results = $filters->get_filtered_price( $filter_request );
 
-			$return['min_price'] = $price_results->min_price;
-			$return['max_price'] = $price_results->max_price;
+			$price_results         = $filters->get_filtered_price( $filter_request );
+			$decimals              = wc_get_price_decimals();
+			$return['price_range'] = [
+				'currency_minor_unit' => $decimals,
+				'min_price'           => (string) round( $price_results->min_price * ( 10 ** $decimals ), 0 ),
+				'max_price'           => (string) round( $price_results->max_price * ( 10 ** $decimals ), 0 ),
+			];
 		}
 
 		if ( ! empty( $request['calculate_attribute_counts'] ) ) {
@@ -228,41 +245,41 @@ class ProductCollectionData extends RestController {
 	public function get_collection_params() {
 		$params = ( new Products() )->get_collection_params();
 
-		$params['calculate_price_range'] = array(
+		$params['calculate_price_range'] = [
 			'description' => __( 'If true, calculates the minimum and maximum product prices for the collection.', 'woo-gutenberg-products-block' ),
 			'type'        => 'boolean',
 			'default'     => false,
-		);
+		];
 
-		$params['calculate_attribute_counts'] = array(
+		$params['calculate_attribute_counts'] = [
 			'description' => __( 'If requested, calculates attribute term counts for products in the collection.', 'woo-gutenberg-products-block' ),
 			'type'        => 'array',
-			'items'       => array(
+			'items'       => [
 				'type'       => 'object',
-				'properties' => array(
-					'taxonomy'   => array(
+				'properties' => [
+					'taxonomy'   => [
 						'description' => __( 'Taxonomy name.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
-						'context'     => array( 'view', 'edit' ),
+						'context'     => [ 'view', 'edit' ],
 						'readonly'    => true,
-					),
-					'query_type' => array(
+					],
+					'query_type' => [
 						'description' => __( 'Query type being performed which may affect counts. Valid values include "and" and "or".', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
-						'enum'        => array( 'and', 'or' ),
-						'context'     => array( 'view', 'edit' ),
+						'enum'        => [ 'and', 'or' ],
+						'context'     => [ 'view', 'edit' ],
 						'readonly'    => true,
-					),
-				),
-			),
-			'default'     => array(),
-		);
+					],
+				],
+			],
+			'default'     => [],
+		];
 
-		$params['calculate_rating_counts'] = array(
+		$params['calculate_rating_counts'] = [
 			'description' => __( 'If true, calculates rating counts for products in the collection.', 'woo-gutenberg-products-block' ),
 			'type'        => 'boolean',
 			'default'     => false,
-		);
+		];
 
 		return $params;
 	}

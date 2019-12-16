@@ -71,7 +71,7 @@ class ProductSchema extends AbstractSchema {
 				'context'     => [ 'view', 'edit' ],
 			],
 			'prices'              => [
-				'description' => __( 'Price data.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Price data provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
