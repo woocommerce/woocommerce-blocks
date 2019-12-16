@@ -5,7 +5,6 @@ import {
 	useQueryStateByKey,
 	useQueryStateByContext,
 	useCollectionData,
-	usePrevious,
 } from '@woocommerce/base-hooks';
 import { Fragment, useCallback, useState, useEffect } from '@wordpress/element';
 import PriceSlider from '@woocommerce/base-components/price-slider';
@@ -13,29 +12,10 @@ import { CURRENCY } from '@woocommerce/settings';
 import { useDebouncedCallback } from 'use-debounce';
 import PropTypes from 'prop-types';
 
-const useConstraints = ( { minPrice, maxPrice } ) => {
-	const currentMinConstraint = isNaN( minPrice )
-		? null
-		: Math.floor( parseInt( minPrice, 10 ) / 10 ) * 10;
-	const previousMinConstraint = usePrevious( currentMinConstraint, ( val ) =>
-		Number.isFinite( val )
-	);
-	const minConstraint = Number.isFinite( currentMinConstraint )
-		? currentMinConstraint
-		: previousMinConstraint;
-
-	const currentMaxConstraint = isNaN( maxPrice )
-		? null
-		: Math.ceil( parseInt( maxPrice, 10 ) / 10 ) * 10;
-	const previousMaxConstraint = usePrevious( currentMaxConstraint, ( val ) =>
-		Number.isFinite( val )
-	);
-	const maxConstraint = Number.isFinite( currentMaxConstraint )
-		? currentMaxConstraint
-		: previousMaxConstraint;
-
-	return { minConstraint, maxConstraint };
-};
+/**
+ * Internal dependencies
+ */
+import usePriceConstraints from './use-price-constraints.js';
 
 /**
  * Component displaying a price filter.
@@ -56,7 +36,7 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	const [ minPrice, setMinPrice ] = useState();
 	const [ maxPrice, setMaxPrice ] = useState();
 
-	const { minConstraint, maxConstraint } = useConstraints( {
+	const { minConstraint, maxConstraint } = usePriceConstraints( {
 		minPrice: results.min_price,
 		maxPrice: results.max_price,
 	} );
