@@ -10,11 +10,12 @@ const ProductPrice = ( { className, product } ) => {
 	const prices = product.prices || {};
 	const numberFormatArgs = {
 		displayType: 'text',
-		thousandSeparator: prices.thousand_separator,
-		decimalSeparator: prices.decimal_separator,
-		decimalScale: prices.decimals,
-		prefix: prices.price_prefix,
-		suffix: prices.price_suffix,
+		thousandSeparator: prices.currency_thousand_separator,
+		decimalSeparator: prices.currency_decimal_separator,
+		decimalScale: prices.currency_minor_unit,
+		prefix: prices.currency_prefix,
+		suffix: prices.currency_suffix,
+		isNumericString: true,
 	};
 
 	if (
@@ -33,12 +34,18 @@ const ProductPrice = ( { className, product } ) => {
 					className={ `${ layoutStyleClassPrefix }__product-price__value` }
 				>
 					<NumberFormat
-						value={ prices.price_range.min_amount }
+						value={
+							prices.price_range.min_amount /
+							10 ** prices.currency_minor_unit
+						}
 						{ ...numberFormatArgs }
 					/>
 					&nbsp;&mdash;&nbsp;
 					<NumberFormat
-						value={ prices.price_range.max_amount }
+						value={
+							prices.price_range.max_amount /
+							10 ** prices.currency_minor_unit
+						}
 						{ ...numberFormatArgs }
 					/>
 				</span>
@@ -58,7 +65,10 @@ const ProductPrice = ( { className, product } ) => {
 					className={ `${ layoutStyleClassPrefix }__product-price__regular` }
 				>
 					<NumberFormat
-						value={ prices.regular_price }
+						value={
+							prices.regular_price /
+							10 ** prices.currency_minor_unit
+						}
 						{ ...numberFormatArgs }
 					/>
 				</del>
@@ -66,7 +76,10 @@ const ProductPrice = ( { className, product } ) => {
 			<span
 				className={ `${ layoutStyleClassPrefix }__product-price__value` }
 			>
-				<NumberFormat value={ prices.price } { ...numberFormatArgs } />
+				<NumberFormat
+					value={ prices.price / 10 ** prices.currency_minor_unit }
+					{ ...numberFormatArgs }
+				/>
 			</span>
 		</div>
 	);
