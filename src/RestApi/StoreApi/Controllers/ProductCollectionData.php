@@ -15,6 +15,7 @@ defined( 'ABSPATH' ) || exit;
 use \WP_REST_Controller as RestController;
 use \WP_REST_Server as RestServer;
 use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ProductQueryFilters;
+use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas\ProductCollectionDataSchema;
 
 /**
  * ProductCollectionData API.
@@ -35,6 +36,13 @@ class ProductCollectionData extends RestController {
 	 * @var string
 	 */
 	protected $rest_base = 'products/collection-data';
+
+	/**
+	 * Setup API class.
+	 */
+	public function __construct() {
+		$this->schema = new ProductCollectionDataSchema();
+	}
 
 	/**
 	 * Register the routes for products.
@@ -60,85 +68,18 @@ class ProductCollectionData extends RestController {
 	 * @return array
 	 */
 	public function get_item_schema() {
-		return [
-			'$schema'    => 'http://json-schema.org/draft-04/schema#',
-			'title'      => 'product_collection_data',
-			'type'       => 'object',
-			'properties' => [
-				'price_range'      => [
-					'description' => __( 'Min and max prices found in collection of products, provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
-					'type'        => 'object',
-					'context'     => [ 'view', 'edit' ],
-					'readonly'    => true,
-					'properties'  => [
-						'currency_minor_unit' => [
-							'description' => __( 'Currency minor unit (number of digits after the decimal separator) for returned prices.', 'woo-gutenberg-products-block' ),
-							'type'        => 'integer',
-							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
-						],
-						'min_price'           => [
-							'description' => __( 'Min price found in collection of products.', 'woo-gutenberg-products-block' ),
-							'type'        => 'string',
-							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
-						],
-						'max_price'           => [
-							'description' => __( 'Max price found in collection of products.', 'woo-gutenberg-products-block' ),
-							'type'        => 'string',
-							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
-						],
-					],
-				],
-				'attribute_counts' => [
-					'description' => __( 'Returns number of products within attribute terms.', 'woo-gutenberg-products-block' ),
-					'type'        => 'array',
-					'context'     => [ 'view', 'edit' ],
-					'readonly'    => true,
-					'items'       => [
-						'type'       => 'object',
-						'properties' => [
-							'term'  => [
-								'description' => __( 'Term ID', 'woo-gutenberg-products-block' ),
-								'type'        => 'integer',
-								'context'     => [ 'view', 'edit' ],
-								'readonly'    => true,
-							],
-							'count' => [
-								'description' => __( 'Number of products.', 'woo-gutenberg-products-block' ),
-								'type'        => 'integer',
-								'context'     => [ 'view', 'edit' ],
-								'readonly'    => true,
-							],
-						],
-					],
-				],
-				'rating_counts'    => [
-					'description' => __( 'Returns number of products with each average rating.', 'woo-gutenberg-products-block' ),
-					'type'        => 'array',
-					'context'     => [ 'view', 'edit' ],
-					'readonly'    => true,
-					'items'       => [
-						'type'       => 'object',
-						'properties' => [
-							'rating' => [
-								'description' => __( 'Average rating', 'woo-gutenberg-products-block' ),
-								'type'        => 'integer',
-								'context'     => [ 'view', 'edit' ],
-								'readonly'    => true,
-							],
-							'count'  => [
-								'description' => __( 'Number of products.', 'woo-gutenberg-products-block' ),
-								'type'        => 'integer',
-								'context'     => [ 'view', 'edit' ],
-								'readonly'    => true,
-							],
-						],
-					],
-				],
-			],
-		];
+		return $this->schema->get_item_schema();
+	}
+
+	/**
+	 * Prepare a single item for response.
+	 *
+	 * @param array            $data Collection data to return.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_REST_Response $response Response data.
+	 */
+	public function prepare_item_for_response( $data, $request ) {
+		return rest_ensure_response( $this->schema->get_item_response( $data ) );
 	}
 
 	/**
@@ -148,8 +89,9 @@ class ProductCollectionData extends RestController {
 	 * @return RestError|\WP_REST_Response
 	 */
 	public function get_items( $request ) {
-		$return  = [
-			'price_range'      => null,
+		$data    = [
+			'min_price'        => null,
+			'max_price'        => null,
 			'attribute_counts' => null,
 			'rating_counts'    => null,
 		];
@@ -160,13 +102,9 @@ class ProductCollectionData extends RestController {
 			$filter_request->set_param( 'min_price', null );
 			$filter_request->set_param( 'max_price', null );
 
-			$price_results         = $filters->get_filtered_price( $filter_request );
-			$decimals              = wc_get_price_decimals();
-			$return['price_range'] = [
-				'currency_minor_unit' => $decimals,
-				'min_price'           => (string) round( $price_results->min_price * ( 10 ** $decimals ), 0 ),
-				'max_price'           => (string) round( $price_results->max_price * ( 10 ** $decimals ), 0 ),
-			];
+			$price_results     = $filters->get_filtered_price( $filter_request );
+			$data['min_price'] = $price_results->min_price;
+			$data['max_price'] = $price_results->max_price;
 		}
 
 		if ( ! empty( $request['calculate_attribute_counts'] ) ) {
@@ -181,7 +119,7 @@ class ProductCollectionData extends RestController {
 				}
 			}
 
-			$return['attribute_counts'] = [];
+			$data['attribute_counts'] = [];
 
 			// Or type queries need special handling because the attribute, if set, needs removing from the query first otherwise counts would not be correct.
 			if ( $taxonomy__or_queries ) {
@@ -202,7 +140,7 @@ class ProductCollectionData extends RestController {
 					$counts = $filters->get_attribute_counts( $filter_request, [ $taxonomy ] );
 
 					foreach ( $counts as $key => $value ) {
-						$return['attribute_counts'][] = [
+						$data['attribute_counts'][] = [
 							'term'  => $key,
 							'count' => $value,
 						];
@@ -214,7 +152,7 @@ class ProductCollectionData extends RestController {
 				$counts = $filters->get_attribute_counts( $request, $taxonomy__and_queries );
 
 				foreach ( $counts as $key => $value ) {
-					$return['attribute_counts'][] = [
+					$data['attribute_counts'][] = [
 						'term'  => $key,
 						'count' => $value,
 					];
@@ -223,19 +161,19 @@ class ProductCollectionData extends RestController {
 		}
 
 		if ( ! empty( $request['calculate_rating_counts'] ) ) {
-			$filter_request          = clone $request;
-			$counts                  = $filters->get_rating_counts( $filter_request );
-			$return['rating_counts'] = [];
+			$filter_request        = clone $request;
+			$counts                = $filters->get_rating_counts( $filter_request );
+			$data['rating_counts'] = [];
 
 			foreach ( $counts as $key => $value ) {
-				$return['rating_counts'][] = [
+				$data['rating_counts'][] = [
 					'rating' => $key,
 					'count'  => $value,
 				];
 			}
 		}
 
-		return rest_ensure_response( $return );
+		return rest_ensure_response( $this->prepare_item_for_response( $data, $request ) );
 	}
 
 	/**
