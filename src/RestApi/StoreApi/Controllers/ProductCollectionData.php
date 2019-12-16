@@ -223,7 +223,8 @@ class ProductCollectionData extends RestController {
 		}
 
 		if ( ! empty( $request['calculate_rating_counts'] ) ) {
-			$counts                  = $filters->get_rating_counts( $request );
+			$filter_request          = clone $request;
+			$counts                  = $filters->get_rating_counts( $filter_request );
 			$return['rating_counts'] = [];
 
 			foreach ( $counts as $key => $value ) {
