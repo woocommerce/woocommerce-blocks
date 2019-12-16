@@ -8,7 +8,7 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import Editor from './edit';
+import Edit from './edit';
 import { example } from './example';
 import './style.scss';
 
@@ -31,12 +31,16 @@ registerBlockType( 'woocommerce/cart', {
 	example,
 	attributes: {},
 
-	/**
-	 * Renders and manages the block.
-	 */
-	edit( props ) {
-		return <Editor { ...props } />;
-	},
+	edit: ( props ) => (
+		<Edit
+			{ ...props }
+			feedbackPromptText={ __(
+				'We are currently working on improving our checkout and providing merchants with tools and options to customize their checkout to their stores needs.',
+				'woo-gutenberg-products-block'
+			) }
+			showFeedbackPrompt={ true }
+		/>
+	),
 
 	/**
 	 * Block content is rendered in PHP, not via save function.

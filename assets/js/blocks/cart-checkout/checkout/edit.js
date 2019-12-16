@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { Disabled } from '@wordpress/components';
+import { withFeedbackPrompt } from '@woocommerce/block-hocs';
 
 /**
  * Internal dependencies
@@ -21,4 +22,4 @@ const Edit = ( { attributes } ) => {
 	);
 };
 
-export default Edit;
+export default withFeedbackPrompt( Edit );

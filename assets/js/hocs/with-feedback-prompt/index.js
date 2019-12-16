@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
 import { InspectorControls } from '@wordpress/block-editor';
 import { createHigherOrderComponent } from '@wordpress/compose';
@@ -10,17 +9,6 @@ import { createHigherOrderComponent } from '@wordpress/compose';
  * Internal dependencies
  */
 import FeedbackPrompt from './feedback-prompt.js';
-
-const blocksFeedback = {
-	'woocommerce/cart': __(
-		'We are currently working on improving our checkout and providing merchants with tools and options to customize their checkout to their stores needs.',
-		'woo-gutenberg-products-block'
-	),
-	'woocommerce/checkout': __(
-		'We are currently working on improving our checkout and providing merchants with tools and options to customize their checkout to their stores needs.',
-		'woo-gutenberg-products-block'
-	),
-};
 
 /**
  * Adds a feedback prompt to the editor sidebar.
@@ -31,12 +19,16 @@ const blocksFeedback = {
  */
 const withFeedbackPrompt = createHigherOrderComponent( ( BlockEdit ) => {
 	return ( props ) => {
-		const feedbackPromptText = blocksFeedback[ props.name ];
+		const {
+			feedbackPromptText,
+			showFeedbackPrompt,
+			...blockEditProps
+		} = props;
 
-		if ( feedbackPromptText && props.isSelected ) {
+		if ( showFeedbackPrompt ) {
 			return (
 				<Fragment>
-					<BlockEdit { ...props } />
+					<BlockEdit { ...blockEditProps } />
 					<InspectorControls>
 						<FeedbackPrompt text={ feedbackPromptText } />
 					</InspectorControls>

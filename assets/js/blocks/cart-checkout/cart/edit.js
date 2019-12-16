@@ -7,6 +7,7 @@ import { Toolbar } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import TextToolbarButton from '@woocommerce/block-components/text-toolbar-button';
 import PropTypes from 'prop-types';
+import { withFeedbackPrompt } from '@woocommerce/block-hocs';
 
 /**
  * Internal dependencies
@@ -58,4 +59,4 @@ CartEditor.propTypes = {
 	className: PropTypes.string,
 };
 
-export default CartEditor;
+export default withFeedbackPrompt( CartEditor );
