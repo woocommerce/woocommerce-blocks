@@ -15,12 +15,7 @@ import { currencyToNumberFormat } from './utils';
  *
  * @param {Object} props Component props.
  */
-const FormattedPrice = ( {
-	value,
-	currency,
-	onValueChange,
-	...props
-} ) => {
+const FormattedPrice = ( { value, currency, onValueChange, ...props } ) => {
 	const priceValue = value / 10 ** currency.minorUnit;
 
 	if ( ! Number.isFinite( priceValue ) ) {
@@ -36,17 +31,21 @@ const FormattedPrice = ( {
 		onValueChange: undefined,
 	};
 
-	const onValueChangeWrapper = onValueChange ? ( values ) => {
-		const centValue = values.value * 10 ** currency.minorUnit;
+	const onValueChangeWrapper = onValueChange
+		? ( values ) => {
+				const centValue = values.value * 10 ** currency.minorUnit;
 
-		onValueChange( centValue );
-	} : () => {};
+				onValueChange( centValue );
+		  }
+		: () => {};
 
-	return <NumberFormat { ...numberFormatProps } value={ priceValue } onValueChange={ onValueChangeWrapper } />
-};
-
-FormattedPrice.propTypes = {
-
+	return (
+		<NumberFormat
+			{ ...numberFormatProps }
+			value={ priceValue }
+			onValueChange={ onValueChangeWrapper }
+		/>
+	);
 };
 
 export default FormattedPrice;

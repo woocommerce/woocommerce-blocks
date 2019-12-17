@@ -49,7 +49,7 @@ export const getCurrencyFromSettings = () => {
 		minorUnit: CURRENCY.precision,
 		prefix: getPrefix( CURRENCY.symbol, CURRENCY.symbolPosition ),
 		suffix: getSuffix( CURRENCY.symbol, CURRENCY.symbolPosition ),
-	}
+	};
 };
 
 /**
@@ -66,11 +66,11 @@ export const getCurrencyFromPriceResponse = ( currencyData ) => {
 		code: currencyData.currency_code || 'USD',
 		symbol: currencyData.currency_symbol || '$',
 		thousandSeparator: currencyData.currency_thousand_separator || ',',
-		decimalSeparator:  currencyData.currency_decimal_separator || '.',
+		decimalSeparator: currencyData.currency_decimal_separator || '.',
 		minorUnit: currencyData.currency_minor_unit || 2,
 		prefix: currencyData.currency_prefix || '$',
 		suffix: currencyData.currency_suffix || '',
-	}
+	};
 };
 
 /**
@@ -84,7 +84,7 @@ export const getCurrency = ( currencyData ) => {
 	return {
 		...settings,
 		...currencyData,
-	}
+	};
 };
 
 /**

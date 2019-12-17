@@ -41,8 +41,12 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	const currency = getCurrencyFromPriceResponse( results.price_range );
 
 	const { minConstraint, maxConstraint } = usePriceConstraints( {
-		minPrice: results.price_range ? results.price_range.min_price : undefined,
-		maxPrice: results.price_range ? results.price_range.max_price : undefined,
+		minPrice: results.price_range
+			? results.price_range.min_price
+			: undefined,
+		maxPrice: results.price_range
+			? results.price_range.max_price
+			: undefined,
 		minorUnit: currency.minorUnit,
 	} );
 

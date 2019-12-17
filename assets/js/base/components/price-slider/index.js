@@ -198,10 +198,7 @@ const PriceSlider = ( {
 				'wc-block-price-filter__amount--min'
 			);
 			const values = constrainRangeSliderValues(
-				[
-					minPriceInput,
-					maxPriceInput,
-				],
+				[ minPriceInput, maxPriceInput ],
 				minConstraint,
 				maxConstraint,
 				stepValue,
