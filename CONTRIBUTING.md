@@ -58,7 +58,10 @@ These instructions cover new releases of the blocks plugin for those with commit
 
 **Before a minor release** ensure you update:
 
-> the release last major release branch you're basing this release from (e.g `release/2.5`), chances are you aren’t the last person who released and this branch will be outdated.
+-   The release last major release branch you're basing this release from (e.g `release/2.5`), chances are you aren’t the last person who released and this branch will be outdated.
+
+-   `git checkout release/2.x` (e.g release/2.5).
+-   `git pull origin release/2.5`
 
 ### Creating release branches
 
