@@ -118,6 +118,7 @@ class Assets {
 				'homeUrl'              => esc_url( home_url( '/' ) ),
 				'shopUrl'              => get_permalink( wc_get_page_id( 'shop' ) ),
 				'checkoutUrl'          => get_permalink( wc_get_page_id( 'checkout' ) ),
+				'couponsEnabled'       => wc_coupons_enabled(),
 				'showAvatars'          => '1' === get_option( 'show_avatars' ),
 				'reviewRatingsEnabled' => wc_review_ratings_enabled(),
 				'productCount'         => array_sum( (array) $product_counts ),

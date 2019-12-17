@@ -124,6 +124,8 @@ const mainEntry = {
 	'active-filters': './assets/js/blocks/active-filters/index.js',
 	'block-error-boundary':
 		'./assets/js/base/components/block-error-boundary/style.scss',
+	'wordpress-components-style':
+		'./node_modules/@wordpress/components/build-style/style.css',
 
 	// cart & checkout blocks
 	cart: './assets/js/blocks/cart-checkout/cart/index.js',
@@ -193,7 +195,7 @@ const getMainConfig = ( options = {} ) => {
 						priority: 10,
 					},
 					style: {
-						test: /style\.scss$/,
+						test: /style\.s?css$/,
 						name: 'style',
 						chunks: 'all',
 						priority: 5,
@@ -224,7 +226,7 @@ const getMainConfig = ( options = {} ) => {
 					},
 				},
 				{
-					test: /\.s[c|a]ss$/,
+					test: /\.s?[c|a]ss$/,
 					use: [
 						'style-loader',
 						MiniCssExtractPlugin.loader,

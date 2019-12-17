@@ -4,6 +4,7 @@
 }
 
 .wc-blocks-text-input label {
+	pointer-events: none;
 	position: absolute;
 	transform: translateX(#{$gap}) translateY(#{$gap-small});
 	font-size: 16px;
