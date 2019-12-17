@@ -32,7 +32,7 @@ const PriceSlider = ( {
 	minConstraint,
 	maxConstraint,
 	onChange = () => {},
-	step = 10,
+	step,
 	thousandSeparator = ',',
 	decimalSeparator = '.',
 	decimalScale = 2,
@@ -45,6 +45,9 @@ const PriceSlider = ( {
 } ) => {
 	const minRange = useRef();
 	const maxRange = useRef();
+
+	// We want step to default to 10 major units, e.g. $10.
+	const stepValue = step ? step : 10 * 10 ** decimalScale;
 
 	const [ minPriceInput, setMinPriceInput ] = useState(
 		minPrice / 10 ** decimalScale
@@ -85,8 +88,8 @@ const PriceSlider = ( {
 
 		// Normalize to whatever is the closest step (because range input will
 		// only jump to the closest step in the range).
-		const min = Math.round( minPrice / step ) * step;
-		const max = Math.round( maxPrice / step ) * step;
+		const min = Math.round( minPrice / stepValue ) * stepValue;
+		const max = Math.round( maxPrice / stepValue ) * stepValue;
 
 		const low =
 			Math.round(
@@ -111,7 +114,7 @@ const PriceSlider = ( {
 		minConstraint,
 		maxConstraint,
 		hasValidConstraints,
-		step,
+		stepValue,
 	] );
 
 	/**
@@ -171,7 +174,7 @@ const PriceSlider = ( {
 				currentValues,
 				minConstraint,
 				maxConstraint,
-				step,
+				stepValue,
 				isMin
 			);
 			onChange( [
@@ -179,7 +182,7 @@ const PriceSlider = ( {
 				parseInt( values[ 1 ], 10 ),
 			] );
 		},
-		[ minPrice, maxPrice, minConstraint, maxConstraint, step ]
+		[ minPrice, maxPrice, minConstraint, maxConstraint, stepValue ]
 	);
 
 	/**
@@ -209,7 +212,7 @@ const PriceSlider = ( {
 				],
 				minConstraint,
 				maxConstraint,
-				step,
+				stepValue,
 				isMin
 			);
 			onChange( [
@@ -220,7 +223,7 @@ const PriceSlider = ( {
 		[
 			minConstraint,
 			maxConstraint,
-			step,
+			stepValue,
 			minPriceInput,
 			maxPriceInput,
 			decimalScale,
@@ -257,7 +260,7 @@ const PriceSlider = ( {
 							) }
 							value={ minPrice || 0 }
 							onChange={ rangeInputOnChange }
-							step={ step }
+							step={ stepValue }
 							min={ minConstraint }
 							max={ maxConstraint }
 							ref={ minRange }
@@ -272,7 +275,7 @@ const PriceSlider = ( {
 							) }
 							value={ maxPrice || 0 }
 							onChange={ rangeInputOnChange }
-							step={ step }
+							step={ stepValue }
 							min={ minConstraint }
 							max={ maxConstraint }
 							ref={ maxRange }

@@ -55,6 +55,7 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	const { minConstraint, maxConstraint } = usePriceConstraints( {
 		minPrice: priceRangeData.min_price,
 		maxPrice: priceRangeData.max_price,
+		minorUnit: priceRangeData.currency_minor_unit,
 	} );
 
 	// Updates the query after a short delay.
@@ -132,7 +133,6 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 					maxConstraint={ maxConstraint }
 					minPrice={ min }
 					maxPrice={ max }
-					step={ 10 ** priceRangeData.currency_minor_unit }
 					thousandSeparator={
 						priceRangeData.currency_thousand_separator
 					}
