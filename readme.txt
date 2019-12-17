@@ -4,7 +4,7 @@ Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
 Requires at least: 5.0
 Tested up to: 5.3
 Requires PHP: 5.6
-Stable tag: 2.5.4
+Stable tag: 2.5.5
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -115,6 +115,17 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 5. WooCommerce Product Blocks in the block inserter menu
 
 == Changelog ==
+
+= 2.5.5 - 2019-12-17 =
+- bug: Fix broken atomic blocks in the All Products Block #1402
+- bug: Only allow one instance of the All Products block per page/post. #1383
+- bug: All Products Block: Fix default sort order changes not updating block in editor. #1385
+- bug: Normalize set minPrice and maxPrice values by step #1379
+- bug: Fix messaging when there are no attributes #1382
+- Price Filter: fix NaN values shown in some occasions while loading . #1386
+- bug: Fix incorrect property name for price format #1397
+- Remove double colon on active filter block price label. #1399
+- Fix: Attribute filters were not updating based on changes in the Price filter when query type was set to OR. #1390
 
 = 2.5.4 - 2019-12-11 =
 - bug: Fix increase in some bundle sizes #1363
