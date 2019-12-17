@@ -122,10 +122,10 @@ Example response:
 ```json
 {
 	"price_range": [
-    "currency_minor_unit": 2,
-    "min_price": "0",
-	  "max_price": "9000",
-  ],
+		"currency_minor_unit": 2,
+		"min_price": "0",
+		"max_price": "9000",
+	],
 	"attribute_counts": [
 		{
 			"term": 22,
