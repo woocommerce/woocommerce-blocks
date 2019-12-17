@@ -10,7 +10,7 @@ import { usePriceConstraint } from '../use-price-constraints';
 
 describe( 'usePriceConstraints', () => {
 	const TestComponent = ( { price } ) => {
-		const priceConstraint = usePriceConstraint( price );
+		const priceConstraint = usePriceConstraint( price, 2 );
 		return <div priceConstraint={ priceConstraint } />;
 	};
 

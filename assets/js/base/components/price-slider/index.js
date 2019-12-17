@@ -12,7 +12,7 @@ import {
 } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import NumberFormat from 'react-number-format';
+import FormattedPrice from '@woocommerce/base-components/formatted-price';
 
 /**
  * Internal dependencies
@@ -33,11 +33,7 @@ const PriceSlider = ( {
 	maxConstraint,
 	onChange = () => {},
 	step,
-	thousandSeparator = ',',
-	decimalSeparator = '.',
-	decimalScale = 2,
-	prefix = '$',
-	suffix,
+	currency,
 	showInputFields = true,
 	showFilterButton = false,
 	isLoading = false,
@@ -47,21 +43,17 @@ const PriceSlider = ( {
 	const maxRange = useRef();
 
 	// We want step to default to 10 major units, e.g. $10.
-	const stepValue = step ? step : 10 * 10 ** decimalScale;
+	const stepValue = step ? step : 10 * 10 ** currency.minorUnit;
 
-	const [ minPriceInput, setMinPriceInput ] = useState(
-		minPrice / 10 ** decimalScale
-	);
-	const [ maxPriceInput, setMaxPriceInput ] = useState(
-		maxPrice / 10 ** decimalScale
-	);
+	const [ minPriceInput, setMinPriceInput ] = useState( minPrice );
+	const [ maxPriceInput, setMaxPriceInput ] = useState( maxPrice );
 
 	useEffect( () => {
-		setMinPriceInput( minPrice / 10 ** decimalScale );
+		setMinPriceInput( minPrice );
 	}, [ minPrice ] );
 
 	useEffect( () => {
-		setMaxPriceInput( maxPrice / 10 ** decimalScale );
+		setMaxPriceInput( maxPrice );
 	}, [ maxPrice ] );
 
 	/**
@@ -207,8 +199,8 @@ const PriceSlider = ( {
 			);
 			const values = constrainRangeSliderValues(
 				[
-					minPriceInput * 10 ** decimalScale,
-					maxPriceInput * 10 ** decimalScale,
+					minPriceInput,
+					maxPriceInput,
 				],
 				minConstraint,
 				maxConstraint,
@@ -226,7 +218,7 @@ const PriceSlider = ( {
 			stepValue,
 			minPriceInput,
 			maxPriceInput,
-			decimalScale,
+			currency,
 		]
 	);
 
@@ -287,45 +279,37 @@ const PriceSlider = ( {
 			<div className="wc-block-price-filter__controls">
 				{ showInputFields && (
 					<Fragment>
-						<NumberFormat
+						<FormattedPrice
+							currency={ currency }
 							displayType="input"
-							thousandSeparator={ thousandSeparator }
-							decimalSeparator={ decimalSeparator }
-							decimalScale={ decimalScale }
-							prefix={ prefix }
-							suffix={ suffix }
 							className="wc-block-price-filter__amount wc-block-price-filter__amount--min wc-block-form-text-input"
 							aria-label={ __(
 								'Filter products by minimum price',
 								'woo-gutenberg-products-block'
 							) }
-							onValueChange={ ( values ) => {
-								if ( values.value === minPriceInput ) {
+							onValueChange={ ( value ) => {
+								if ( value === minPriceInput ) {
 									return;
 								}
-								setMinPriceInput( values.value );
+								setMinPriceInput( value );
 							} }
 							onBlur={ priceInputOnBlur }
 							disabled={ isLoading || ! hasValidConstraints }
 							value={ minPriceInput }
 						/>
-						<NumberFormat
+						<FormattedPrice
+							currency={ currency }
 							displayType="input"
-							thousandSeparator={ thousandSeparator }
-							decimalSeparator={ decimalSeparator }
-							decimalScale={ decimalScale }
-							prefix={ prefix }
-							suffix={ suffix }
 							className="wc-block-price-filter__amount wc-block-price-filter__amount--max wc-block-form-text-input"
 							aria-label={ __(
 								'Filter products by maximum price',
 								'woo-gutenberg-products-block'
 							) }
-							onValueChange={ ( values ) => {
-								if ( values.value === maxPriceInput ) {
+							onValueChange={ ( value ) => {
+								if ( value === maxPriceInput ) {
 									return;
 								}
-								setMaxPriceInput( values.value );
+								setMaxPriceInput( value );
 							} }
 							onBlur={ priceInputOnBlur }
 							disabled={ isLoading || ! hasValidConstraints }
@@ -340,24 +324,16 @@ const PriceSlider = ( {
 						<div className="wc-block-price-filter__range-text">
 							{ __( 'Price', 'woo-gutenberg-products-block' ) }:
 							&nbsp;
-							<NumberFormat
+							<FormattedPrice
+								currency={ currency }
 								displayType="text"
-								thousandSeparator={ thousandSeparator }
-								decimalSeparator={ decimalSeparator }
-								decimalScale={ decimalScale }
-								prefix={ prefix }
-								suffix={ suffix }
-								value={ minPrice / 10 ** decimalScale }
+								value={ minPrice }
 							/>
 							&nbsp;&ndash;&nbsp;
-							<NumberFormat
+							<FormattedPrice
+								currency={ currency }
 								displayType="text"
-								thousandSeparator={ thousandSeparator }
-								decimalSeparator={ decimalSeparator }
-								decimalScale={ decimalScale }
-								prefix={ prefix }
-								suffix={ suffix }
-								value={ maxPrice / 10 ** decimalScale }
+								value={ maxPrice }
 							/>
 						</div>
 					) }
@@ -403,25 +379,9 @@ PriceSlider.propTypes = {
 	 */
 	step: PropTypes.number,
 	/**
-	 * Number formatting thousand separator.
+	 * Currency data used for formatting prices.
 	 */
-	thousandSeparator: PropTypes.string,
-	/**
-	 * Number formatting decimal separator.
-	 */
-	decimalSeparator: PropTypes.string,
-	/**
-	 * Number formatting scale.
-	 */
-	decimalScale: PropTypes.number,
-	/**
-	 * Number formatting prefix.
-	 */
-	prefix: PropTypes.string,
-	/**
-	 * Number formatting suffix.
-	 */
-	suffix: PropTypes.string,
+	currency: PropTypes.object.isRequired,
 	/**
 	 * Whether or not to show input fields above the slider.
 	 */

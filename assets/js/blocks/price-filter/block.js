@@ -10,6 +10,7 @@ import { Fragment, useCallback, useState, useEffect } from '@wordpress/element';
 import PriceSlider from '@woocommerce/base-components/price-slider';
 import { useDebouncedCallback } from 'use-debounce';
 import PropTypes from 'prop-types';
+import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
@@ -37,25 +38,12 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	const [ minPrice, setMinPrice ] = useState();
 	const [ maxPrice, setMaxPrice ] = useState();
 
-	const priceRangeData =
-		typeof results.price_range !== 'object'
-			? {
-					currency_code: 'USD',
-					currency_symbol: '$',
-					currency_minor_unit: 2,
-					currency_decimal_separator: '.',
-					currency_thousand_separator: ',',
-					currency_prefix: '$',
-					currency_suffix: '',
-					min_price: undefined,
-					max_price: undefined,
-			  }
-			: results.price_range;
+	const currency = getCurrencyFromPriceResponse( results.price_range );
 
 	const { minConstraint, maxConstraint } = usePriceConstraints( {
-		minPrice: priceRangeData.min_price,
-		maxPrice: priceRangeData.max_price,
-		minorUnit: priceRangeData.currency_minor_unit,
+		minPrice: results.price_range ? results.price_range.min_price : undefined,
+		maxPrice: results.price_range ? results.price_range.max_price : undefined,
+		minorUnit: currency.minorUnit,
 	} );
 
 	// Updates the query after a short delay.
@@ -133,15 +121,7 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 					maxConstraint={ maxConstraint }
 					minPrice={ min }
 					maxPrice={ max }
-					thousandSeparator={
-						priceRangeData.currency_thousand_separator
-					}
-					decimalSeparator={
-						priceRangeData.currency_decimal_separator
-					}
-					decimalScale={ priceRangeData.currency_minor_unit }
-					prefix={ priceRangeData.currency_prefix }
-					suffix={ priceRangeData.currency_suffix }
+					currency={ currency }
 					showInputFields={ attributes.showInputFields }
 					showFilterButton={ attributes.showFilterButton }
 					onChange={ onChange }
