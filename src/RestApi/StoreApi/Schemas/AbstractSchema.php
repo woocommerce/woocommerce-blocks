@@ -119,6 +119,11 @@ abstract class AbstractSchema {
 	/**
 	 * Prepares a list of store currency data to return in responses.
 	 *
+	 * @todo Core could use a more format currency object format, making use of
+	 * constants for currency format rather than strings, and holding this type
+	 * of information instead of plugins/blocks needed to normalize things
+	 * themselves.
+	 *
 	 * @return array
 	 */
 	protected function get_store_currency_response() {
