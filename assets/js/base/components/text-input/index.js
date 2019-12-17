@@ -14,6 +14,7 @@ import './style.scss';
 const TextInput = ( {
 	className,
 	id,
+	type,
 	ariaLabel,
 	label,
 	screenReaderLabel,
@@ -40,7 +41,7 @@ const TextInput = ( {
 				htmlFor={ id }
 			/>
 			<input
-				type="text"
+				type={ type || 'text' }
 				id={ id }
 				value={ value }
 				onChange={ onChangeValue }
