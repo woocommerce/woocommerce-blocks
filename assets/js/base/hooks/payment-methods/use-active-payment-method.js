@@ -14,10 +14,10 @@ const useActivePaymentMethod = () => {
 	useEffect( () => {
 		if ( ! activePaymentMethod && activePaymentMethod !== null ) {
 			const paymentMethods = getPaymentMethods();
-			const paymentMethodNames = Object.keys( paymentMethods );
+			const paymentMethodSlugs = Object.keys( paymentMethods );
 			setActivePaymentMethod(
-				paymentMethodNames.length > 0
-					? paymentMethods[ paymentMethodNames[ 0 ] ].name
+				paymentMethodSlugs.length > 0
+					? paymentMethods[ paymentMethodSlugs[ 0 ] ].name
 					: null
 			);
 		}
