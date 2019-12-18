@@ -6,7 +6,7 @@ import { usePrevious } from '@woocommerce/base-hooks';
 /**
  * Return the price constraint.
  *
- * @param {number} price Price in cents.
+ * @param {number} price Price in minor unit, e.g. cents.
  * @param {number} minorUnit Price minor unit (number of digits after the decimal separator).
  */
 export const usePriceConstraint = ( price, minorUnit ) => {

@@ -86,7 +86,7 @@ export const getCurrency = ( currencyData ) => {
  * Format a price, provided using the smallest unit of the currency, as a
  * decimal complete with currency symbols using current store settings.
  *
- * @param {number} price Price, as minor unit, e.g. cents, to format.
+ * @param {number} price Price in minor unit, e.g. cents.
  * @param {Object} currencyData Currency data object.
  */
 export const formatPrice = ( price, currencyData ) => {
