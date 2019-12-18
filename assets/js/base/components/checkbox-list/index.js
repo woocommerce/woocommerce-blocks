@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __, _n, sprintf } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import { Fragment, useMemo, useState } from '@wordpress/element';
 import classNames from 'classnames';
@@ -48,8 +48,10 @@ const CheckboxList = ( {
 						} }
 						aria-expanded={ false }
 						aria-label={ sprintf(
-							__(
+							_n(
+								'Show %s more option',
 								'Show %s more options',
+								optionCount - limit,
 								'woo-gutenberg-products-block'
 							),
 							optionCount - limit
@@ -57,8 +59,10 @@ const CheckboxList = ( {
 					>
 						{ // translators: %s number of options to reveal.
 						sprintf(
-							__(
+							_n(
 								'Show %s more',
+								'Show %s more',
+								optionCount - limit,
 								'woo-gutenberg-products-block'
 							),
 							optionCount - limit
@@ -99,9 +103,9 @@ const CheckboxList = ( {
 				{ options.map( ( option, index ) => (
 					<Fragment key={ option.key }>
 						<li
-							{ ...shouldTruncateOptions &&
+							{ ...( shouldTruncateOptions &&
 								! showExpanded &&
-								index >= limit && { hidden: true } }
+								index >= limit && { hidden: true } ) }
 						>
 							<input
 								type="checkbox"
