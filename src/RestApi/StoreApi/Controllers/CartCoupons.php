@@ -168,7 +168,7 @@ class CartCoupons extends RestController {
 
 		$response = $this->get_item( $request );
 
-		if ( \is_a( $response, 'RestError' ) ) {
+		if ( $response instanceof RestError ) {
 			return $response;
 		}
 
