@@ -63,7 +63,7 @@ class CartCouponSchema extends AbstractSchema {
 	 */
 	public function coupon_exists( $coupon_code ) {
 		$coupon = new \WC_Coupon( $coupon_code );
-		return (bool) $coupon;
+		return (bool) $coupon->get_id() || $coupon->get_virtual();
 	}
 
 	/**
