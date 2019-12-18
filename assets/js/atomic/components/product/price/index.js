@@ -3,7 +3,7 @@
  */
 import classnames from 'classnames';
 import { useProductLayoutContext } from '@woocommerce/base-context/product-layout-context';
-import FormattedMonetaryAmount from '@woocommerce/base-components/Formatted-monetary-amount';
+import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 
 const ProductPrice = ( { className, product } ) => {

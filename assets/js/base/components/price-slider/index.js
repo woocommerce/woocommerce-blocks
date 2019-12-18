@@ -12,7 +12,7 @@ import {
 } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import FormattedMonetaryAmount from '@woocommerce/base-components/Formatted-monetary-amount';
+import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 
 /**
  * Internal dependencies
