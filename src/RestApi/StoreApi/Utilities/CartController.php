@@ -2,8 +2,6 @@
 /**
  * Helper class to bridge the gap between the cart API and Woo core.
  *
- * Overrides some of the woo core cart methods to make them work with the API and generally increase flexibility. Some of this logic should move to core.
- *
  * @package WooCommerce/Blocks
  */
 
@@ -23,6 +21,10 @@ class CartController {
 
 	/**
 	 * Based on the core cart class but returns errors rather than rendering notices directly.
+	 *
+	 * @todo Overriding the core add_to_cart method was necessary because core outputs notices when an item is added to
+	 * the cart. For us this would cause notices to build up and output on the store, out of context. Core would need
+	 * refactoring to split notices out from other cart actions.
 	 *
 	 * @throws RestException Exception if invalid data is detected.
 	 *
@@ -52,21 +54,44 @@ class CartController {
 				$variation_id = 0;
 			}
 
-			$cart_id          = wc()->cart->generate_cart_id( $product_id, $variation_id, $request['variation'], $request['cart_item_data'] );
+			$cart_id          = wc()->cart->generate_cart_id(
+				$product_id,
+				$variation_id,
+				$request['variation'],
+				$request['cart_item_data']
+			);
 			$existing_cart_id = wc()->cart->find_product_in_cart( $cart_id );
 
 			if ( ! $product->is_purchasable() ) {
-				throw new RestException( 'woocommerce_rest_cart_product_is_not_purchasable', __( 'This product cannot be purchased.', 'woo-gutenberg-products-block' ), 403 );
+				throw new RestException(
+					'woocommerce_rest_cart_product_is_not_purchasable',
+					__( 'This product cannot be purchased.', 'woo-gutenberg-products-block' ),
+					403
+				);
 			}
 
 			if ( $product->is_sold_individually() && $existing_cart_id ) {
-				/* translators: %s: product name */
-				throw new RestException( 'woocommerce_rest_cart_product_sold_individually', sprintf( __( '"%s" is already inside your cart.', 'woo-gutenberg-products-block' ), $product->get_name() ), 403 );
+				throw new RestException(
+					'woocommerce_rest_cart_product_sold_individually',
+					sprintf(
+						/* translators: %s: product name */
+						__( '"%s" is already inside your cart.', 'woo-gutenberg-products-block' ),
+						$product->get_name()
+					),
+					403
+				);
 			}
 
 			if ( ! $product->is_in_stock() ) {
-				/* translators: %s: product name */
-				throw new RestException( 'woocommerce_rest_cart_product_no_stock', sprintf( __( 'You cannot add &quot;%s&quot; to the cart because the product is out of stock.', 'woo-gutenberg-products-block' ), $product->get_name() ), 403 );
+				throw new RestException(
+					'woocommerce_rest_cart_product_no_stock',
+					sprintf(
+						/* translators: %s: product name */
+						__( 'You cannot add &quot;%s&quot; to the cart because the product is out of stock.', 'woo-gutenberg-products-block' ),
+						$product->get_name()
+					),
+					403
+				);
 			}
 
 			if ( $product->managing_stock() ) {
@@ -112,7 +137,15 @@ class CartController {
 
 			wc()->cart->cart_contents = apply_filters( 'woocommerce_cart_contents_changed', wc()->cart->cart_contents );
 
-			do_action( 'woocommerce_add_to_cart', $cart_id, $product_id, $request['quantity'], $variation_id, $request['variation'], $request['cart_item_data'] );
+			do_action(
+				'woocommerce_add_to_cart',
+				$cart_id,
+				$product_id,
+				$request['quantity'],
+				$variation_id,
+				$request['variation'],
+				$request['cart_item_data']
+			);
 
 			return $cart_id;
 		} catch ( RestException $e ) {
@@ -179,7 +212,12 @@ class CartController {
 	/**
 	 * Based on the core cart class but returns errors rather than rendering notices directly.
 	 *
+	 * @todo Overriding the core apply_coupon method was necessary because core outputs notices when a coupon gets
+	 * applied. For us this would cause notices to build up and output on the store, out of context. Core would need
+	 * refactoring to split notices out from other cart actions.
+	 *
 	 * @throws RestException Exception if invalid data is detected.
+	 *
 	 * @param string $coupon_code Coupon code.
 	 */
 	public function apply_coupon( $coupon_code ) {
@@ -188,15 +226,27 @@ class CartController {
 		$coupon          = new \WC_Coupon( $coupon_code );
 
 		if ( $coupon->get_code() !== $coupon_code ) {
-			throw new RestException( 'woocommerce_rest_cart_coupon_error', __( 'Invalid coupon code.', 'woo-gutenberg-products-block' ), 403 );
+			throw new RestException(
+				'woocommerce_rest_cart_coupon_error',
+				__( 'Invalid coupon code.', 'woo-gutenberg-products-block' ),
+				403
+			);
 		}
 
 		if ( $this->has_coupon( $coupon_code ) ) {
-			throw new RestException( 'woocommerce_rest_cart_coupon_error', __( 'Coupon has already been applied.', 'woo-gutenberg-products-block' ), 403 );
+			throw new RestException(
+				'woocommerce_rest_cart_coupon_error',
+				__( 'Coupon has already been applied.', 'woo-gutenberg-products-block' ),
+				403
+			);
 		}
 
 		if ( ! $coupon->is_valid() ) {
-			throw new RestException( 'woocommerce_rest_cart_coupon_error', $coupon->get_error_message(), 403 );
+			throw new RestException(
+				'woocommerce_rest_cart_coupon_error',
+				$coupon->get_error_message(),
+				403
+			);
 		}
 
 		// Prevents new coupons being added if individual use coupons are already in the cart.
@@ -211,8 +261,15 @@ class CartController {
 			$individual_use_coupon = new \WC_Coupon( $code );
 
 			if ( false === apply_filters( 'woocommerce_apply_with_individual_use_coupon', false, $coupon, $individual_use_coupon, $applied_coupons ) ) {
-				/* translators: %s: coupon code */
-				throw new RestException( 'woocommerce_rest_cart_coupon_error', sprintf( __( '"%s" has already been applied and cannot be used in conjunction with other coupons.', 'woo-gutenberg-products-block' ), $code ), 403 );
+				throw new RestException(
+					'woocommerce_rest_cart_coupon_error',
+					sprintf(
+						/* translators: %s: coupon code */
+						__( '"%s" has already been applied and cannot be used in conjunction with other coupons.', 'woo-gutenberg-products-block' ),
+						$code
+					),
+					403
+				);
 			}
 		}
 
@@ -242,7 +299,11 @@ class CartController {
 		$product = wc_get_product( $request['id'] );
 
 		if ( ! $product || 'trash' === $product->get_status() ) {
-			throw new RestException( 'woocommerce_rest_cart_invalid_product', __( 'This product cannot be added to the cart.', 'woo-gutenberg-products-block' ), 403 );
+			throw new RestException(
+				'woocommerce_rest_cart_invalid_product',
+				__( 'This product cannot be added to the cart.', 'woo-gutenberg-products-block' ),
+				403
+			);
 		}
 
 		return $product;
@@ -371,7 +432,11 @@ class CartController {
 		$variation_id     = $data_store->find_matching_product_variation( $product, $match_attributes );
 
 		if ( empty( $variation_id ) ) {
-			throw new RestException( 'woocommerce_rest_variation_id_from_variation_data', __( 'No matching variation found.', 'woo-gutenberg-products-block' ), 400 );
+			throw new RestException(
+				'woocommerce_rest_variation_id_from_variation_data',
+				__( 'No matching variation found.', 'woo-gutenberg-products-block' ),
+				400
+			);
 		}
 
 		return $variation_id;
@@ -395,17 +460,36 @@ class CartController {
 			if ( ! $attribute['is_variation'] ) {
 				continue;
 			}
-			$attribute_label = wc_attribute_label( $attribute['name'] );
+			$attribute_label          = wc_attribute_label( $attribute['name'] );
+			$variation_attribute_name = wc_variation_attribute_name( $attribute['name'] );
 
 			// Attribute labels e.g. Size.
 			if ( isset( $variation_data[ $attribute_label ] ) ) {
-				$return[ wc_variation_attribute_name( $attribute['name'] ) ] = $attribute['is_taxonomy'] ? sanitize_title( $variation_data[ $attribute_label ] ) : html_entity_decode( wc_clean( $variation_data[ $attribute_label ] ), ENT_QUOTES, get_bloginfo( 'charset' ) );
+				$return[ $variation_attribute_name ] =
+					$attribute['is_taxonomy']
+						?
+						sanitize_title( $variation_data[ $attribute_label ] )
+						:
+						html_entity_decode(
+							wc_clean( $variation_data[ $attribute_label ] ),
+							ENT_QUOTES,
+							get_bloginfo( 'charset' )
+						);
 				continue;
 			}
 
 			// Attribute slugs e.g. pa_size.
 			if ( isset( $variation_data[ $attribute['name'] ] ) ) {
-				$return[ wc_variation_attribute_name( $attribute['name'] ) ] = $attribute['is_taxonomy'] ? sanitize_title( $variation_data[ $attribute['name'] ] ) : html_entity_decode( wc_clean( $variation_data[ $attribute['name'] ] ), ENT_QUOTES, get_bloginfo( 'charset' ) );
+				$return[ $variation_attribute_name ] =
+					$attribute['is_taxonomy']
+						?
+						sanitize_title( $variation_data[ $attribute['name'] ] )
+						:
+						html_entity_decode(
+							wc_clean( $variation_data[ $attribute['name'] ] ),
+							ENT_QUOTES,
+							get_bloginfo( 'charset' )
+						);
 			}
 		}
 		return $return;
@@ -425,7 +509,11 @@ class CartController {
 		}
 
 		if ( ! $product || 'trash' === $product->get_status() ) {
-			throw new RestException( 'woocommerce_rest_cart_invalid_parent_product', __( 'This product cannot be added to the cart.', 'woo-gutenberg-products-block' ), 403 );
+			throw new RestException(
+				'woocommerce_rest_cart_invalid_parent_product',
+				__( 'This product cannot be added to the cart.', 'woo-gutenberg-products-block' ),
+				403
+			);
 		}
 
 		return $product->get_attributes();
