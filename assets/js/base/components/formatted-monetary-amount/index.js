@@ -27,7 +27,12 @@ const currencyToNumberFormat = ( currency ) => {
  *
  * @param {Object} props Component props.
  */
-const FormattedMonetaryAmount = ( { value, currency, onValueChange, ...props } ) => {
+const FormattedMonetaryAmount = ( {
+	value,
+	currency,
+	onValueChange,
+	...props
+} ) => {
 	const priceValue = value / 10 ** currency.minorUnit;
 
 	if ( ! Number.isFinite( priceValue ) ) {

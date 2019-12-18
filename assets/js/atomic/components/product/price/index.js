@@ -60,7 +60,10 @@ const ProductPrice = ( { className, product } ) => {
 			<span
 				className={ `${ layoutStyleClassPrefix }__product-price__value` }
 			>
-				<FormattedMonetaryAmount currency={ currency } value={ prices.price } />
+				<FormattedMonetaryAmount
+					currency={ currency }
+					value={ prices.price }
+				/>
 			</span>
 		</div>
 	);
