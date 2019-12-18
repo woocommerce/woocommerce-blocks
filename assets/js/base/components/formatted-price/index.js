@@ -33,9 +33,8 @@ const FormattedPrice = ( { value, currency, onValueChange, ...props } ) => {
 
 	const onValueChangeWrapper = onValueChange
 		? ( values ) => {
-				const centValue = values.value * 10 ** currency.minorUnit;
-
-				onValueChange( centValue );
+				const minorUnitValue = values.value * 10 ** currency.minorUnit;
+				onValueChange( minorUnitValue );
 		  }
 		: () => {};
 
