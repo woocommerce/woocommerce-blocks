@@ -27,7 +27,7 @@ const currencyToNumberFormat = ( currency ) => {
  *
  * @param {Object} props Component props.
  */
-const FormattedPrice = ( { value, currency, onValueChange, ...props } ) => {
+const FormattedMonetaryAmount = ( { value, currency, onValueChange, ...props } ) => {
 	const priceValue = value / 10 ** currency.minorUnit;
 
 	if ( ! Number.isFinite( priceValue ) ) {
@@ -43,6 +43,7 @@ const FormattedPrice = ( { value, currency, onValueChange, ...props } ) => {
 		onValueChange: undefined,
 	};
 
+	// Wrapper for NumberFormat onValueChange which handles subunit conversion.
 	const onValueChangeWrapper = onValueChange
 		? ( values ) => {
 				const minorUnitValue = values.value * 10 ** currency.minorUnit;
@@ -59,4 +60,4 @@ const FormattedPrice = ( { value, currency, onValueChange, ...props } ) => {
 	);
 };
 
-export default FormattedPrice;
+export default FormattedMonetaryAmount;

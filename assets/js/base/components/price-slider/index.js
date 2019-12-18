@@ -12,7 +12,7 @@ import {
 } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import FormattedPrice from '@woocommerce/base-components/formatted-price';
+import FormattedMonetaryAmount from '@woocommerce/base-components/Formatted-monetary-amount';
 
 /**
  * Internal dependencies
@@ -276,7 +276,7 @@ const PriceSlider = ( {
 			<div className="wc-block-price-filter__controls">
 				{ showInputFields && (
 					<Fragment>
-						<FormattedPrice
+						<FormattedMonetaryAmount
 							currency={ currency }
 							displayType="input"
 							className="wc-block-price-filter__amount wc-block-price-filter__amount--min wc-block-form-text-input"
@@ -294,7 +294,7 @@ const PriceSlider = ( {
 							disabled={ isLoading || ! hasValidConstraints }
 							value={ minPriceInput }
 						/>
-						<FormattedPrice
+						<FormattedMonetaryAmount
 							currency={ currency }
 							displayType="input"
 							className="wc-block-price-filter__amount wc-block-price-filter__amount--max wc-block-form-text-input"
@@ -321,13 +321,13 @@ const PriceSlider = ( {
 						<div className="wc-block-price-filter__range-text">
 							{ __( 'Price', 'woo-gutenberg-products-block' ) }:
 							&nbsp;
-							<FormattedPrice
+							<FormattedMonetaryAmount
 								currency={ currency }
 								displayType="text"
 								value={ minPrice }
 							/>
 							&nbsp;&ndash;&nbsp;
-							<FormattedPrice
+							<FormattedMonetaryAmount
 								currency={ currency }
 								displayType="text"
 								value={ maxPrice }
