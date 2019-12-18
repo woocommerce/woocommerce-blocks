@@ -36,20 +36,16 @@ const getSuffix = ( symbol, symbolPosition ) => {
 };
 
 /**
- * Gets currency information in normalized format from server settings.
- *
- * @return {Object} Normalized currency info.
+ * Currency information in normalized format from server settings.
  */
-export const getCurrencyFromSettings = () => {
-	return {
-		code: CURRENCY.code,
-		symbol: CURRENCY.symbol,
-		thousandSeparator: CURRENCY.thousandSeparator,
-		decimalSeparator: CURRENCY.decimalSeparator,
-		minorUnit: CURRENCY.precision,
-		prefix: getPrefix( CURRENCY.symbol, CURRENCY.symbolPosition ),
-		suffix: getSuffix( CURRENCY.symbol, CURRENCY.symbolPosition ),
-	};
+const siteCurrencySettings = {
+	code: CURRENCY.code,
+	symbol: CURRENCY.symbol,
+	thousandSeparator: CURRENCY.thousandSeparator,
+	decimalSeparator: CURRENCY.decimalSeparator,
+	minorUnit: CURRENCY.precision,
+	prefix: getPrefix( CURRENCY.symbol, CURRENCY.symbolPosition ),
+	suffix: getSuffix( CURRENCY.symbol, CURRENCY.symbolPosition ),
 };
 
 /**
@@ -60,7 +56,7 @@ export const getCurrencyFromSettings = () => {
  */
 export const getCurrencyFromPriceResponse = ( currencyData ) => {
 	if ( ! currencyData || typeof currencyData !== 'object' ) {
-		return getCurrencyFromSettings();
+		return siteCurrencySettings;
 	}
 	return {
 		code: currencyData.currency_code || 'USD',
@@ -80,9 +76,8 @@ export const getCurrencyFromPriceResponse = ( currencyData ) => {
  * @return {Object} Normalized currency info.
  */
 export const getCurrency = ( currencyData ) => {
-	const settings = getCurrencyFromSettings();
 	return {
-		...settings,
+		...siteCurrencySettings,
 		...currencyData,
 	};
 };
