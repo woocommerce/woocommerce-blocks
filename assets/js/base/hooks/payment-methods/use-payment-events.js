@@ -12,9 +12,7 @@ const usePaymentEvents = () => {
 	const { paymentStatus, setPaymentStatus } = useState( STATUS.PRISTINE );
 	const dispatch = useMemo(
 		() => ( {
-			pristine: () => setPaymentStatus( STATUS.PRISTINE ),
 			started: () => setPaymentStatus( STATUS.STARTED ),
-			finished: () => setPaymentStatus( STATUS.FINISHED ),
 			error: () => setPaymentStatus( STATUS.ERROR ),
 			failed: () => setPaymentStatus( STATUS.FAILED ),
 			success: () => setPaymentStatus( STATUS.SUCCESS ),
@@ -25,7 +23,10 @@ const usePaymentEvents = () => {
 		() => ( {
 			isPristine: () => paymentStatus === STATUS.PRISTINE,
 			isStarted: () => paymentStatus === STATUS.STARTED,
-			isFinished: () => paymentStatus === STATUS.FINISHED,
+			isFinished: () =>
+				[ STATUS.ERROR, STATUS.FAILED, STATUS.SUCCESS ].includes(
+					paymentStatus
+				),
 			hasError: () => paymentStatus === STATUS.ERROR,
 			hasFailed: () => paymentStatus === STATUS.FAILED,
 			isSuccessful: () => paymentStatus === STATUS.SUCCESS,
