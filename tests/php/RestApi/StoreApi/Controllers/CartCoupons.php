@@ -62,8 +62,8 @@ class CartCoupons extends TestCase {
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( $this->coupon->get_code(), $data['code'] );
-		$this->assertEquals( '0', $data['total_discount'] );
-		$this->assertEquals( '0', $data['total_discount_tax'] );
+		$this->assertEquals( '0', $data['totals']['total_discount'] );
+		$this->assertEquals( '0', $data['totals']['total_discount_tax'] );
 	}
 
 	/**
@@ -94,33 +94,33 @@ class CartCoupons extends TestCase {
 		$request = new WP_REST_Request( 'POST', '/wc/store/cart/coupons' );
 		$request->set_body_params(
 			array(
-				'code' => 'IDONOTEXIST'
+				'code' => 'IDONOTEXIST',
 			)
 		);
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
-		$this->assertEquals( 403, $response->get_status() );
+		$this->assertEquals( 400, $response->get_status() );
 	}
 
 	/**
 	 * Test delete item.
 	 */
 	public function test_delete_item() {
-		$request = new WP_REST_Request( 'DELETE', '/wc/store/cart/coupons/' . $this->coupon->get_code() );
+		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/coupons/' . $this->coupon->get_code() );
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
 		$this->assertEquals( 204, $response->get_status() );
 		$this->assertEmpty( $data );
 
-		$request = new WP_REST_Request( 'DELETE', '/wc/store/cart/coupons/' . $this->coupon->get_code() );
+		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/coupons/' . $this->coupon->get_code() );
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
 		$this->assertEquals( 404, $response->get_status() );
 
-		$request = new WP_REST_Request( 'DELETE', '/wc/store/cart/coupons/i-do-not-exist' );
+		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/coupons/i-do-not-exist' );
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
@@ -131,7 +131,7 @@ class CartCoupons extends TestCase {
 	 * Test delete all items.
 	 */
 	public function test_delete_items() {
-		$request = new WP_REST_Request( 'DELETE', '/wc/store/cart/coupons' );
+		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/coupons' );
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
@@ -153,8 +153,7 @@ class CartCoupons extends TestCase {
 		$schema     = $controller->get_item_schema();
 
 		$this->assertArrayHasKey( 'code', $schema['properties'] );
-		$this->assertArrayHasKey( 'total_discount', $schema['properties'] );
-		$this->assertArrayHasKey( 'total_discount_tax', $schema['properties'] );
+		$this->assertArrayHasKey( 'totals', $schema['properties'] );
 	}
 
 	/**
@@ -165,7 +164,6 @@ class CartCoupons extends TestCase {
 		$response   = $controller->prepare_item_for_response( $this->coupon->get_code(), [] );
 
 		$this->assertArrayHasKey( 'code', $response->get_data() );
-		$this->assertArrayHasKey( 'total_discount', $response->get_data() );
-		$this->assertArrayHasKey( 'total_discount_tax', $response->get_data() );
+		$this->assertArrayHasKey( 'totals', $response->get_data() );
 	}
 }
