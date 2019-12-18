@@ -322,7 +322,7 @@ Example response:
 
 ```json
 {
-  "coupons": [],
+	"coupons": [],
 	"items": [
 		{
 			"key": "6512bd43d9caa6e02c990b0a82652dca",
