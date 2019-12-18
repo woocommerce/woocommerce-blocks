@@ -7,6 +7,7 @@ import {
 	useState,
 	useMemo,
 } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 
 const CheckoutContext = createContext( {} );
 
@@ -14,7 +15,11 @@ export const useCheckoutContext = () => {
 	return useContext( CheckoutContext );
 };
 
-const CheckoutProvider = ( { children, initialActivePaymentMethod } ) => {
+const CheckoutProvider = ( {
+	children,
+	initialActivePaymentMethod,
+	placeOrderLabel = __( 'Place Order', 'woo-gutenberg-product-block' ),
+} ) => {
 	const [ successRedirectUrl, setSuccessRedirectUrl ] = useState( '' );
 	const [ failureRedirectUrl, setFailureRedirectUrl ] = useState( '' );
 	const [ checkoutComplete, setCheckoutComplete ] = useState( false );
@@ -40,6 +45,7 @@ const CheckoutProvider = ( { children, initialActivePaymentMethod } ) => {
 			updateNotices,
 			activePaymentMethod,
 			setActivePaymentMethod,
+			placeOrderLabel,
 		};
 	}, [
 		successRedirectUrl,
@@ -47,6 +53,7 @@ const CheckoutProvider = ( { children, initialActivePaymentMethod } ) => {
 		checkoutComplete,
 		checkoutHasError,
 		activePaymentMethod,
+		placeOrderLabel,
 		notices,
 	] );
 	return (
