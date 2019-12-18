@@ -6,6 +6,7 @@ import { useState } from '@wordpress/element';
 import { PanelBody, PanelRow } from '@wordpress/components';
 import Button from '@woocommerce/base-components/button';
 import TextInput from '@woocommerce/base-components/text-input';
+import Label from '@woocommerce/base-components/label';
 import PropTypes from 'prop-types';
 
 /**
@@ -18,7 +19,18 @@ const TotalsCouponCodeInput = ( { onSubmit } ) => {
 	return (
 		<PanelBody
 			className="wc-block-coupon-code"
-			title={ __( 'Coupon Code?', 'woo-gutenberg-products-block' ) }
+			title={
+				<Label
+					label={ __(
+						'Coupon Code?',
+						'woo-gutenberg-products-block'
+					) }
+					screenReaderLabel={ __(
+						'Introduce Coupon Code',
+						'woo-gutenberg-products-block'
+					) }
+				/>
+			}
 			initialOpen={ false }
 		>
 			<PanelRow className="wc-block-coupon-code__row">
