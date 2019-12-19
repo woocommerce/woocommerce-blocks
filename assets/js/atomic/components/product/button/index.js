@@ -103,6 +103,7 @@ const ProductButton = ( { product, className } ) => {
 	const getButtonText = () => {
 		if ( Number.isFinite( cartQuantity ) && addedToCart ) {
 			return sprintf(
+				// translators: %s number of products in cart.
 				_n(
 					'%d in cart',
 					'%d in cart',
