@@ -1,6 +1,6 @@
 <?php
 /**
- * Customer controller.
+ * Customer controller representing customer session data.
  *
  * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  * @package WooCommerce/Blocks
@@ -65,6 +65,11 @@ class Customer extends RestController {
 						'context' => $this->get_context_param( [ 'default' => 'view' ] ),
 					],
 				],
+				[
+					'methods'  => RestServer::EDITABLE,
+					'callback' => array( $this, 'update_item' ),
+					'args'     => $this->get_endpoint_args_for_item_schema( RestServer::EDITABLE ),
+				],
 				'schema' => [ $this, 'get_public_item_schema' ],
 			]
 		);
@@ -84,6 +89,50 @@ class Customer extends RestController {
 				'woocommerce_rest_customer_error',
 				__( 'Unable to retrieve customer.', 'woo-gutenberg-products-block' ),
 				[ 'status' => 500 ]
+			);
+		}
+
+		return $this->prepare_item_for_response( $customer, $request );
+	}
+
+	/**
+	 * Update the current customer.
+	 *
+	 * @param \WP_Rest_Request $request Full data about the request.
+	 * @return \WP_Error|\WP_REST_Response Response object on success, or WP_Error object on failure.
+	 */
+	public function update_item( $request ) {
+		$customer = wc()->cart->get_customer();
+
+		if ( ! $customer || ! $customer instanceof CustomerObject ) {
+			return new RestError(
+				'woocommerce_rest_customer_error',
+				__( 'Unable to retrieve customer.', 'woo-gutenberg-products-block' ),
+				[ 'status' => 500 ]
+			);
+		}
+
+		try {
+			if ( isset( $request['billing'] ) ) {
+				$allowed_billing_values = array_intersect_key( $request['billing'], ( $this->get_item_schema() )['properties']['billing']['properties'] );
+				foreach ( $allowed_billing_values as $key => $value ) {
+					$customer->{"set_billing_$key"}( $value );
+				}
+			}
+
+			if ( isset( $request['shipping'] ) ) {
+				$allowed_shipping_values = array_intersect_key( $request['shipping'], ( $this->get_item_schema() )['properties']['shipping']['properties'] );
+				foreach ( $allowed_shipping_values as $key => $value ) {
+					$customer->{"set_shipping_$key"}( $value );
+				}
+			}
+
+			$customer->save();
+		} catch ( Exception $e ) {
+			return new RestError(
+				$e->getErrorCode(),
+				$e->getMessage(),
+				[ 'status' => 400 ]
 			);
 		}
 

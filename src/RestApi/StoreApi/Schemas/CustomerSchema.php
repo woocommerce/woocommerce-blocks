@@ -29,150 +29,126 @@ class CustomerSchema extends AbstractSchema {
 	 */
 	protected function get_properties() {
 		return [
-			'id'         => [
-				'description' => __( 'Unique identifier for the resource.', 'woo-gutenberg-products-block' ),
+			'id'       => [
+				'description' => __( 'Customer ID. Will return 0 if the customer is logged out.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'username'   => [
-				'description' => __( 'Customer login name.', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
-			],
-			'first_name' => [
-				'description' => __( 'Customer first name.', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
-				'context'     => [ 'view', 'edit' ],
-				'arg_options' => [
-					'sanitize_callback' => 'sanitize_text_field',
-				],
-			],
-			'last_name'  => [
-				'description' => __( 'Customer last name.', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
-				'context'     => [ 'view', 'edit' ],
-				'arg_options' => [
-					'sanitize_callback' => 'sanitize_text_field',
-				],
-			],
-			'email'      => [
-				'description' => __( 'The email address for the customer.', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
-				'format'      => 'email',
-				'context'     => [ 'view', 'edit' ],
-			],
-			'billing'    => [
+			'billing'  => [
 				'description' => __( 'List of billing address data.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
 				'context'     => [ 'view', 'edit' ],
 				'properties'  => [
 					'first_name' => [
-						'description' => __( 'First name.', 'woo-gutenberg-products-block' ),
+						'description' => __( 'First name of the customer for the billing address.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => [ 'view', 'edit' ],
 					],
 					'last_name'  => [
-						'description' => __( 'Last name.', 'woo-gutenberg-products-block' ),
+						'description' => __( 'Last name of the customer for the billing address.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => [ 'view', 'edit' ],
 					],
 					'company'    => [
-						'description' => __( 'Company name.', 'woo-gutenberg-products-block' ),
+						'description' => __( 'Company name for the billing address.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => [ 'view', 'edit' ],
 					],
 					'address_1'  => [
-						'description' => __( 'Address line 1', 'woo-gutenberg-products-block' ),
+						'description' => __( 'First line of the billing address.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => [ 'view', 'edit' ],
 					],
 					'address_2'  => [
-						'description' => __( 'Address line 2', 'woo-gutenberg-products-block' ),
+						'description' => __( 'Second line of the billing address.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => [ 'view', 'edit' ],
 					],
 					'city'       => [
-						'description' => __( 'City name.', 'woo-gutenberg-products-block' ),
+						'description' => __( 'City of the billing address.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => [ 'view', 'edit' ],
 					],
 					'state'      => [
-						'description' => __( 'ISO code or name of the state, province or district.', 'woo-gutenberg-products-block' ),
+						'description' => __( 'ISO code, or name, for the state, province, or district of the billing address.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => [ 'view', 'edit' ],
 					],
 					'postcode'   => [
-						'description' => __( 'Postal code.', 'woo-gutenberg-products-block' ),
+						'description' => __( 'Zip or Postcode of the billing address.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => [ 'view', 'edit' ],
 					],
 					'country'    => [
-						'description' => __( 'ISO code of the country.', 'woo-gutenberg-products-block' ),
+						'description' => __( 'ISO country code for the billing address.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => [ 'view', 'edit' ],
 					],
 					'email'      => [
-						'description' => __( 'Email address.', 'woo-gutenberg-products-block' ),
+						'description' => __( 'The billing email address of the customer.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'format'      => 'email',
 						'context'     => [ 'view', 'edit' ],
+						'arg_options' => [
+							'sanitize_callback' => 'sanitize_email',
+							'validate_callback' => 'is_email',
+						],
 					],
 					'phone'      => [
-						'description' => __( 'Phone number.', 'woo-gutenberg-products-block' ),
+						'description' => __( 'The billing contact number of the customer.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => [ 'view', 'edit' ],
 					],
 				],
 			],
-			'shipping'   => [
+			'shipping' => [
 				'description' => __( 'List of shipping address data.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
 				'context'     => [ 'view', 'edit' ],
 				'properties'  => [
 					'first_name' => [
-						'description' => __( 'First name.', 'woo-gutenberg-products-block' ),
+						'description' => __( 'First name of the customer for the shipping address.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => [ 'view', 'edit' ],
 					],
 					'last_name'  => [
-						'description' => __( 'Last name.', 'woo-gutenberg-products-block' ),
+						'description' => __( 'Last name of the customer for the shipping address.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => [ 'view', 'edit' ],
 					],
 					'company'    => [
-						'description' => __( 'Company name.', 'woo-gutenberg-products-block' ),
+						'description' => __( 'Company name for the shipping address.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => [ 'view', 'edit' ],
 					],
 					'address_1'  => [
-						'description' => __( 'Address line 1', 'woo-gutenberg-products-block' ),
+						'description' => __( 'First line of the shipping address.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => [ 'view', 'edit' ],
 					],
 					'address_2'  => [
-						'description' => __( 'Address line 2', 'woo-gutenberg-products-block' ),
+						'description' => __( 'Second line of the shipping address.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => [ 'view', 'edit' ],
 					],
 					'city'       => [
-						'description' => __( 'City name.', 'woo-gutenberg-products-block' ),
+						'description' => __( 'City of the shipping address.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => [ 'view', 'edit' ],
 					],
 					'state'      => [
-						'description' => __( 'ISO code or name of the state, province or district.', 'woo-gutenberg-products-block' ),
+						'description' => __( 'ISO code, or name, for the state, province, or district of the shipping address.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => [ 'view', 'edit' ],
 					],
 					'postcode'   => [
-						'description' => __( 'Postal code.', 'woo-gutenberg-products-block' ),
+						'description' => __( 'Zip or Postcode of the shipping address.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => [ 'view', 'edit' ],
 					],
 					'country'    => [
-						'description' => __( 'ISO code of the country.', 'woo-gutenberg-products-block' ),
+						'description' => __( 'ISO country code for the shipping address.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 						'context'     => [ 'view', 'edit' ],
 					],
@@ -189,12 +165,8 @@ class CustomerSchema extends AbstractSchema {
 	 */
 	public function get_item_response( $object ) {
 		return [
-			'id'         => $object->get_id(),
-			'username'   => $object->get_username(),
-			'first_name' => $object->get_first_name(),
-			'last_name'  => $object->get_last_name(),
-			'email'      => $object->get_email(),
-			'billing'    => [
+			'id'       => is_user_logged_in() ? $object->get_id() : 0,
+			'billing'  => [
 				'first_name' => $object->get_billing_first_name(),
 				'last_name'  => $object->get_billing_last_name(),
 				'company'    => $object->get_billing_company(),
@@ -207,7 +179,7 @@ class CustomerSchema extends AbstractSchema {
 				'email'      => $object->get_billing_email(),
 				'phone'      => $object->get_billing_phone(),
 			],
-			'shipping'   => [
+			'shipping' => [
 				'first_name' => $object->get_shipping_first_name(),
 				'last_name'  => $object->get_shipping_last_name(),
 				'company'    => $object->get_shipping_company(),
