@@ -8,16 +8,16 @@ const useCheckoutNotices = () => {
 	const addNotice = ( notice ) => {
 		updateNotices( ( originalNotices ) => [ ...originalNotices, notice ] );
 	};
-	const removeNotice = ( notice ) => {
+	const clearAllNotices = () => {
 		// @todo...figure out how notices are saved - might need unique ids?
 		// Do we have a special notice creator that takes care of that?
 		// Use wp notice api?
-		return notice;
+		updateNotices( [] );
 	};
 	return {
 		notices,
 		addNotice,
-		removeNotice,
+		clearAllNotices,
 	};
 };
 
