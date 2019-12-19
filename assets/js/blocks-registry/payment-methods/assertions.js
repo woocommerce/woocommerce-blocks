@@ -1,41 +1,36 @@
-export const assertValidPaymentMethodComponent = ( paymentMethod ) => {
+export const assertValidPaymentMethodComponent = (
+	component,
+	componentName
+) => {
 	// @todo detect if functional component (not render prop)
-	if ( typeof paymentMethod !== 'function' ) {
+	if ( typeof component !== 'function' ) {
 		throw new Error(
-			'The registered payment method must be a functional component'
+			`The ${ componentName } for the payment method must be a functional component`
 		);
 	}
 };
 
-export const assertValidPaymentMethod = ( paymentMethod ) => {
-	// paymentMethods are expected to have 4 properties, tab, content, name, ariaLabel.
-	if ( ! paymentMethod.tab ) {
-		throw new Error(
-			'A payment method is expected to have a tab property'
-		);
+export const assertConfigHasProperties = (
+	config,
+	expectedProperties = []
+) => {
+	const missingProperties = expectedProperties.reduce( ( acc, property ) => {
+		if ( ! config[ property ] ) {
+			acc.push( property );
+		}
+		return acc;
+	}, [] );
+	if ( missingProperties.length > 0 ) {
+		const message =
+			'The payment method configuration object is missing the following properties:';
+		throw new Error( message + missingProperties.join( ', ' ) );
 	}
-	if ( ! paymentMethod.content ) {
+};
+
+export const assertValidPaymentMethodCreator = ( creator, configName ) => {
+	if ( typeof creator !== 'function' ) {
 		throw new Error(
-			'A payment method is expected to have a content property'
-		);
-	}
-	if ( ! paymentMethod.ariaLabel ) {
-		throw new Error(
-			'A payment method is expected to have an ariaLabel property. This is used for tabs aria-label property.'
-		);
-	}
-	try {
-		assertValidPaymentMethodComponent( paymentMethod.content );
-	} catch ( e ) {
-		throw new Error(
-			'The paymentMethod.content value must be a functional components'
-		);
-	}
-	try {
-		assertValidPaymentMethodComponent( paymentMethod.tab );
-	} catch ( e ) {
-		throw new Error(
-			'The paymentMethod.tab value must be a functional components'
+			`A payment method must be registered with a function that creates and returns a ${ configName } instance`
 		);
 	}
 };

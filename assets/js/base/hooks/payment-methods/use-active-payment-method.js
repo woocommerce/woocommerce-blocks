@@ -2,26 +2,30 @@
  * External dependencies
  */
 import { useCheckoutContext } from '@woocommerce/base-context/checkout-context';
+import { usePaymentMethods } from '@woocommerce/base-hooks';
 import { useEffect } from '@wordpress/element';
-import { getPaymentMethods } from '@woocommerce/blocks-registry';
 
 const useActivePaymentMethod = () => {
 	const {
 		activePaymentMethod,
 		setActivePaymentMethod,
 	} = useCheckoutContext();
+	const { paymentMethods, isInitialized } = usePaymentMethods();
 	// if payment method has not been set yet, let's set it.
 	useEffect( () => {
+		// if not initialized yet bail
+		if ( ! isInitialized ) {
+			return;
+		}
 		if ( ! activePaymentMethod && activePaymentMethod !== null ) {
-			const paymentMethods = getPaymentMethods();
-			const paymentMethodSlugs = Object.keys( paymentMethods );
+			const paymentMethodIds = Object.keys( paymentMethods );
 			setActivePaymentMethod(
-				paymentMethodSlugs.length > 0
-					? paymentMethods[ paymentMethodSlugs[ 0 ] ].name
+				paymentMethodIds.length > 0
+					? paymentMethods[ paymentMethodIds[ 0 ] ].name
 					: null
 			);
 		}
-	}, [ activePaymentMethod, setActivePaymentMethod ] );
+	}, [ activePaymentMethod, setActivePaymentMethod, isInitialized ] );
 	return { activePaymentMethod, setActivePaymentMethod };
 };
 

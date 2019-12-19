@@ -5,8 +5,8 @@ import {
 	useCheckoutData,
 	usePaymentEvents,
 	useActivePaymentMethod,
+	usePaymentMethods,
 } from '@woocommerce/base-hooks';
-import { getPaymentMethods } from '@woocommerce/blocks-registry';
 import { useCallback } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
@@ -28,21 +28,20 @@ const createTabs = ( paymentMethods ) => {
 	const paymentMethodsKeys = Object.keys( paymentMethods );
 	return paymentMethodsKeys.length > 0
 		? paymentMethodsKeys.map( ( key ) => {
-				const { tab, ariaLabel } = paymentMethods[ key ];
+				const { label, ariaLabel } = paymentMethods[ key ];
 				return {
 					name: key,
-					title: tab,
+					title: label,
 					ariaLabel,
 				};
 		  } )
 		: [ noPaymentMethodTab() ];
 };
 
-const paymentMethods = getPaymentMethods();
-
 const PaymentMethods = () => {
 	const [ checkoutData ] = useCheckoutData();
 	const { dispatch, select } = usePaymentEvents();
+	const { isInitialized, paymentMethods } = usePaymentMethods();
 	const {
 		activePaymentMethod,
 		setActivePaymentMethod,
@@ -51,19 +50,8 @@ const PaymentMethods = () => {
 		() => ( selectedTab ) => {
 			const PaymentMethod =
 				( paymentMethods[ selectedTab ] &&
-					paymentMethods[ selectedTab ].content ) ||
+					paymentMethods[ selectedTab ].activeContent ) ||
 				null;
-			// @todo if undefined return placeholder for no registered payment methods
-			if ( ! PaymentMethod ) {
-				return (
-					<p>
-						{ __(
-							'No payment methods setup',
-							'woo-gutenberg-products-block'
-						) }
-					</p>
-				);
-			}
 			const paymentEvents = { dispatch, select };
 			return (
 				<PaymentMethod
@@ -75,6 +63,14 @@ const PaymentMethods = () => {
 		},
 		[ checkoutData, dispatch, select ]
 	);
+	if (
+		! isInitialized ||
+		( Object.keys( paymentMethods ).length === 0 && isInitialized )
+	) {
+		// @todo this can be a placeholder informing the user there are no
+		// payment methods setup?
+		return <div>No Payment Methods Initialized</div>;
+	}
 	return (
 		<Tabs
 			className="wc-component__payment-method-options"

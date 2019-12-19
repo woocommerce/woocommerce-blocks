@@ -1,0 +1,51 @@
+/**
+ * Internal dependencies
+ */
+import {
+	assertConfigHasProperties,
+	assertValidPaymentMethodComponent,
+} from './assertions';
+
+export default class PaymentMethodConfig {
+	constructor( config ) {
+		// validate config
+		PaymentMethodConfig.assertValidConfig( config );
+		this.id = config.id;
+		this.label = config.label;
+		this.stepContent = config.stepContent;
+		this.ariaLabel = config.ariaLabel;
+		this.activeContent = config.activeContent;
+		this.canMakePayment = config.canMakePayment;
+		Object.freeze( this );
+	}
+
+	static assertValidConfig = ( config ) => {
+		assertConfigHasProperties( config, [
+			'id',
+			'label',
+			'stepContent',
+			'ariaLabel',
+			'activeContent',
+			'canMakePayment',
+		] );
+		if ( typeof config.id !== 'string' ) {
+			throw new Error( 'The id for the payment method must be a string' );
+		}
+		assertValidPaymentMethodComponent( config.label, 'label' );
+		assertValidPaymentMethodComponent( config.stepContent, 'stepContent' );
+		assertValidPaymentMethodComponent(
+			config.activeContent,
+			'activeContent'
+		);
+		if ( typeof config.ariaLabel !== 'string' ) {
+			throw new Error(
+				'The ariaLabel for the payment method must be a string'
+			);
+		}
+		if ( ! ( config.canMakePayment instanceof Promise ) ) {
+			throw new Error(
+				'The canMakePayment property for the payment method must be a promise.'
+			);
+		}
+	};
+}
