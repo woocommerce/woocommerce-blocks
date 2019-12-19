@@ -80,24 +80,6 @@ class Customer extends TestCase {
 	}
 
 	/**
-	 * Test delete customer data.
-	 */
-	public function test_delete_items() {
-		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/items' );
-		$response = $this->server->dispatch( $request );
-		$data     = $response->get_data();
-
-		$this->assertEquals( 200, $response->get_status() );
-		$this->assertEquals( [], $data );
-
-		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/cart/items' ) );
-		$data     = $response->get_data();
-
-		$this->assertEquals( 200, $response->get_status() );
-		$this->assertEquals( 0, count( $data ) );
-	}
-
-	/**
 	 * Test schema retrieval.
 	 */
 	public function test_get_item_schema() {
