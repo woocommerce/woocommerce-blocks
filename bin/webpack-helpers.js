@@ -194,8 +194,14 @@ const getMainConfig = ( options = {} ) => {
 						chunks: 'all',
 						priority: 10,
 					},
+					'vendors-style': {
+						test: /\/node_modules\/.*?style.css/,
+						name: 'vendors-style',
+						chunks: 'all',
+						priority: 7,
+					},
 					style: {
-						test: /style\.s?css$/,
+						test: /style\.scss$/,
 						name: 'style',
 						chunks: 'all',
 						priority: 5,
