@@ -39,6 +39,7 @@ const CheckboxList = ( {
 
 	const renderedShowMore = useMemo( () => {
 		const optionCount = options.length;
+		const remainingOptionsCount = optionCount - limit;
 		return (
 			! showExpanded && (
 				<li key="show-more" className="show-more">
@@ -51,21 +52,21 @@ const CheckboxList = ( {
 							_n(
 								'Show %s more option',
 								'Show %s more options',
-								optionCount - limit,
+								remainingOptionsCount,
 								'woo-gutenberg-products-block'
 							),
-							optionCount - limit
+							remainingOptionsCount
 						) }
 					>
-						{ // translators: %s number of options to reveal.
-						sprintf(
+						{ sprintf(
+							// translators: %s number of options to reveal.
 							_n(
 								'Show %s more',
 								'Show %s more',
-								optionCount - limit,
+								remainingOptionsCount,
 								'woo-gutenberg-products-block'
 							),
-							optionCount - limit
+							remainingOptionsCount
 						) }
 					</button>
 				</li>
