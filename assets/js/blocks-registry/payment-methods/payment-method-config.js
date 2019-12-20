@@ -1,10 +1,7 @@
 /**
  * Internal dependencies
  */
-import {
-	assertConfigHasProperties,
-	assertValidPaymentMethodComponent,
-} from './assertions';
+import { assertConfigHasProperties, assertValidElement } from './assertions';
 
 export default class PaymentMethodConfig {
 	constructor( config ) {
@@ -30,12 +27,9 @@ export default class PaymentMethodConfig {
 		if ( typeof config.id !== 'string' ) {
 			throw new Error( 'The id for the payment method must be a string' );
 		}
-		assertValidPaymentMethodComponent( config.label, 'label' );
-		assertValidPaymentMethodComponent( config.stepContent, 'stepContent' );
-		assertValidPaymentMethodComponent(
-			config.activeContent,
-			'activeContent'
-		);
+		assertValidElement( config.label, 'label' );
+		assertValidElement( config.stepContent, 'stepContent' );
+		assertValidElement( config.activeContent, 'activeContent' );
 		if ( typeof config.ariaLabel !== 'string' ) {
 			throw new TypeError(
 				'The ariaLabel for the payment method must be a string'

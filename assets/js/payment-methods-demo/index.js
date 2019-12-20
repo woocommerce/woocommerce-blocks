@@ -9,14 +9,14 @@ import {
 /**
  * Internal dependencies
  */
-import { ExpressApplePay, ExpressPaypal } from './express-payment';
+import { expressApplePay, expressPaypal } from './express-payment';
 import { paypalPaymentMethod, ccPaymentMethod } from './payment-methods';
 
 registerExpressPaymentMethod(
 	( Config ) =>
 		new Config( {
 			id: 'applepay',
-			activeContent: ExpressApplePay,
+			activeContent: expressApplePay,
 			canMakePayment: Promise.resolve( true ),
 		} )
 );
@@ -24,7 +24,7 @@ registerExpressPaymentMethod(
 	( Config ) =>
 		new Config( {
 			id: 'paypal',
-			activeContent: ExpressPaypal,
+			activeContent: expressPaypal,
 			canMakePayment: Promise.resolve( true ),
 		} )
 );

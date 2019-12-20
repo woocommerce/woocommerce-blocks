@@ -1,3 +1,8 @@
+/**
+ * External dependencies
+ */
+import { isValidElement } from '@wordpress/element';
+
 export const assertValidPaymentMethodComponent = (
 	component,
 	componentName
@@ -10,12 +15,20 @@ export const assertValidPaymentMethodComponent = (
 	}
 };
 
+export const assertValidElement = ( element, elementName ) => {
+	if ( ! isValidElement( element ) && element !== null ) {
+		throw new TypeError(
+			`The ${ elementName } for the payment method must be a React element or null.`
+		);
+	}
+};
+
 export const assertConfigHasProperties = (
 	config,
 	expectedProperties = []
 ) => {
 	const missingProperties = expectedProperties.reduce( ( acc, property ) => {
-		if ( ! config[ property ] ) {
+		if ( ! config.hasOwnProperty( property ) ) {
 			acc.push( property );
 		}
 		return acc;

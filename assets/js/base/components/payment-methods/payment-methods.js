@@ -7,7 +7,7 @@ import {
 	useActivePaymentMethod,
 	usePaymentMethods,
 } from '@woocommerce/base-hooks';
-import { useCallback } from '@wordpress/element';
+import { useCallback, cloneElement } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -20,7 +20,7 @@ const noPaymentMethodTab = () => {
 	return {
 		name: label,
 		label,
-		title: label,
+		title: () => label,
 	};
 };
 
@@ -31,7 +31,7 @@ const createTabs = ( paymentMethods ) => {
 				const { label, ariaLabel } = paymentMethods[ key ];
 				return {
 					name: key,
-					title: label,
+					title: () => label,
 					ariaLabel,
 				};
 		  } )
@@ -48,18 +48,18 @@ const PaymentMethods = () => {
 	} = useActivePaymentMethod();
 	const getRenderedTab = useCallback(
 		() => ( selectedTab ) => {
-			const PaymentMethod =
+			const paymentMethod =
 				( paymentMethods[ selectedTab ] &&
 					paymentMethods[ selectedTab ].activeContent ) ||
 				null;
 			const paymentEvents = { dispatch, select };
-			return (
-				<PaymentMethod
-					isActive
-					checkoutData={ checkoutData }
-					paymentEvents={ paymentEvents }
-				/>
-			);
+			return paymentMethod
+				? cloneElement( paymentMethod, {
+						isActive: true,
+						checkoutData,
+						paymentEvents,
+				  } )
+				: null;
 		},
 		[ checkoutData, dispatch, select ]
 	);

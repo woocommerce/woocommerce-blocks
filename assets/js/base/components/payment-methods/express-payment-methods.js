@@ -6,6 +6,7 @@ import {
 	usePaymentEvents,
 	useExpressPaymentMethods,
 } from '@woocommerce/base-hooks';
+import { cloneElement } from '@wordpress/element';
 
 const ExpressPaymentMethods = () => {
 	const [ checkoutData ] = useCheckoutData();
@@ -18,7 +19,7 @@ const ExpressPaymentMethods = () => {
 	const content =
 		paymentMethodSlugs.length > 0 ? (
 			paymentMethodSlugs.map( ( slug ) => {
-				const ExpressPaymentMethod =
+				const expressPaymentMethod =
 					paymentMethods[ slug ].activeContent;
 				const paymentEvents = { dispatch, select };
 				return (
@@ -26,10 +27,10 @@ const ExpressPaymentMethods = () => {
 						key={ `paymentMethod_${ slug }` }
 						id={ `express-payment-method-${ slug }` }
 					>
-						<ExpressPaymentMethod
-							checkoutData={ checkoutData }
-							paymentEvents={ paymentEvents }
-						/>
+						{ cloneElement( expressPaymentMethod, {
+							checkoutData,
+							paymentEvents,
+						} ) }
 					</li>
 				);
 			} )

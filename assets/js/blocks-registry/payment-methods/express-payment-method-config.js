@@ -1,10 +1,7 @@
 /**
  * Internal dependencies
  */
-import {
-	assertConfigHasProperties,
-	assertValidPaymentMethodComponent,
-} from './assertions';
+import { assertConfigHasProperties, assertValidElement } from './assertions';
 
 export default class ExpressPaymentMethodConfig {
 	constructor( config ) {
@@ -22,10 +19,7 @@ export default class ExpressPaymentMethodConfig {
 				'The id for the express payment method must be a string'
 			);
 		}
-		assertValidPaymentMethodComponent(
-			config.activeContent,
-			'activeContent'
-		);
+		assertValidElement( config.activeContent, 'activeContent' );
 		if ( ! ( config.canMakePayment instanceof Promise ) ) {
 			throw new TypeError(
 				'The canMakePayment property for the express payment method must be a promise.'
