@@ -165,7 +165,7 @@ class CustomerSchema extends AbstractSchema {
 	 */
 	public function get_item_response( $object ) {
 		return [
-			'id'       => is_user_logged_in() ? $object->get_id() : 0,
+			'id'       => $object->get_id(),
 			'billing'  => [
 				'first_name' => $object->get_billing_first_name(),
 				'last_name'  => $object->get_billing_last_name(),
