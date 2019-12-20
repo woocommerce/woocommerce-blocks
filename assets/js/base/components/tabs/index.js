@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { useState, useEffect } from '@wordpress/element';
-import { find, partial } from 'lodash';
 import { withInstanceId } from '@wordpress/compose';
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
@@ -61,7 +60,7 @@ const Tabs = ( {
 		setSelected( tabKey );
 		onSelect( tabKey );
 	};
-	const selectedTab = find( tabs, { name: selected } );
+	const selectedTab = tabs.find( ( tab ) => tab.name === selected );
 	if ( ! selectedTab ) {
 		throw new Error( 'There is no available tab for the selected item' );
 	}
@@ -87,7 +86,7 @@ const Tabs = ( {
 						selected={ tab.name === selected }
 						key={ tab.name }
 						ariaLabel={ tab.ariaLabel || null }
-						onClick={ partial( handleClick, tab.name ) }
+						onClick={ () => handleClick( tab.name ) }
 					>
 						{ tab.title() }
 					</TabButton>
