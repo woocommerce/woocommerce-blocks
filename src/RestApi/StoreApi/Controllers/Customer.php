@@ -103,6 +103,7 @@ class Customer extends RestController {
 	 */
 	public function update_item( $request ) {
 		$customer = wc()->cart->get_customer();
+		$schema   = $this->get_item_schema();
 
 		if ( ! $customer || ! $customer instanceof CustomerObject ) {
 			return new RestError(
@@ -114,14 +115,14 @@ class Customer extends RestController {
 
 		try {
 			if ( isset( $request['billing'] ) ) {
-				$allowed_billing_values = array_intersect_key( $request['billing'], ( $this->get_item_schema() )['properties']['billing']['properties'] );
+				$allowed_billing_values = array_intersect_key( $request['billing'], $schema['properties']['billing']['properties'] );
 				foreach ( $allowed_billing_values as $key => $value ) {
 					$customer->{"set_billing_$key"}( $value );
 				}
 			}
 
 			if ( isset( $request['shipping'] ) ) {
-				$allowed_shipping_values = array_intersect_key( $request['shipping'], ( $this->get_item_schema() )['properties']['shipping']['properties'] );
+				$allowed_shipping_values = array_intersect_key( $request['shipping'], $schema['properties']['shipping']['properties'] );
 				foreach ( $allowed_shipping_values as $key => $value ) {
 					$customer->{"set_shipping_$key"}( $value );
 				}
