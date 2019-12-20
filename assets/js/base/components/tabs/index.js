@@ -62,6 +62,9 @@ const Tabs = ( {
 		onSelect( tabKey );
 	};
 	const selectedTab = find( tabs, { name: selected } );
+	if ( ! selectedTab ) {
+		throw new Error( 'There is no available tab for the selected item' );
+	}
 	const selectedId = `${ instanceId }-${ selectedTab.name }`;
 	return (
 		<div className={ classnames( 'wc-component__tabs', className ) }>
