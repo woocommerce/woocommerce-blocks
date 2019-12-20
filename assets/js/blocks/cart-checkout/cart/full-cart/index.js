@@ -9,6 +9,7 @@ import {
 } from '@woocommerce/base-components/totals';
 import RadioControl from '@woocommerce/base-components/radio-control';
 import { COUPONS_ENABLED } from '@woocommerce/block-settings';
+import { Card, CardBody } from 'wordpress-components';
 
 /**
  * Internal dependencies
@@ -60,58 +61,63 @@ const Cart = () => {
 					Cart block <b>full state</b> coming soon…
 				</span>
 			</div>
-			<div className="wc-block-cart__sidebar">
-				<h2 className="wc-block-cart__totals-title">
-					{ __( 'Cart totals', 'woo-gutenberg-products-block' ) }
-				</h2>
-				{ totalItems.map( ( { label, value, description } ) => (
+			<Card className="wc-block-cart__sidebar" isElevated={ true }>
+				<CardBody>
+					<h2 className="wc-block-cart__totals-title">
+						{ __( 'Cart totals', 'woo-gutenberg-products-block' ) }
+					</h2>
+					{ totalItems.map( ( { label, value, description } ) => (
+						<TotalsItem
+							key={ label }
+							label={ label }
+							value={ value }
+							description={ description }
+						/>
+					) ) }
+					<fieldset className="wc-block-cart__shipping-options-fieldset">
+						<legend
+							id="wc-block-cart__shipping-options-label"
+							className="screen-reader-text"
+						>
+							{ __(
+								'Choose the shipping method.',
+								'woo-gutenberg-products-block'
+							) }
+						</legend>
+						<RadioControl
+							id="wc-block-cart__shipping-options"
+							className="wc-block-cart__shipping-options"
+							selected={ selectedShippingOption }
+							options={ placeholderShippingMethods.map(
+								( option ) => ( {
+									label: option.label,
+									value: option.value,
+									description: [
+										option.price,
+										option.schedule,
+									]
+										.filter( Boolean )
+										.join( ' — ' ),
+								} )
+							) }
+							onChange={ ( newSelectedShippingOption ) =>
+								setSelectedShippingOption(
+									newSelectedShippingOption
+								)
+							}
+						/>
+					</fieldset>
+					{ COUPONS_ENABLED && (
+						<TotalsCouponCodeInput onSubmit={ onActivateCoupon } />
+					) }
 					<TotalsItem
-						key={ label }
-						label={ label }
-						value={ value }
-						description={ description }
+						className="wc-block-cart__totals-footer"
+						label={ __( 'Total', 'woo-gutenberg-products-block' ) }
+						value={ totalValue }
 					/>
-				) ) }
-				<fieldset className="wc-block-cart__shipping-options-fieldset">
-					<legend
-						id="wc-block-cart__shipping-options-label"
-						className="screen-reader-text"
-					>
-						{ __(
-							'Choose the shipping method.',
-							'woo-gutenberg-products-block'
-						) }
-					</legend>
-					<RadioControl
-						id="wc-block-cart__shipping-options"
-						className="wc-block-cart__shipping-options"
-						selected={ selectedShippingOption }
-						options={ placeholderShippingMethods.map(
-							( option ) => ( {
-								label: option.label,
-								value: option.value,
-								description: [ option.price, option.schedule ]
-									.filter( Boolean )
-									.join( ' — ' ),
-							} )
-						) }
-						onChange={ ( newSelectedShippingOption ) =>
-							setSelectedShippingOption(
-								newSelectedShippingOption
-							)
-						}
-					/>
-				</fieldset>
-				{ COUPONS_ENABLED && (
-					<TotalsCouponCodeInput onSubmit={ onActivateCoupon } />
-				) }
-				<TotalsItem
-					className="wc-block-cart__totals-footer"
-					label={ __( 'Total', 'woo-gutenberg-products-block' ) }
-					value={ totalValue }
-				/>
-				<CheckoutButton />
-			</div>
+					<CheckoutButton />
+				</CardBody>
+			</Card>
 		</div>
 	);
 };
