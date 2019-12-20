@@ -50,7 +50,7 @@ const Tabs = ( {
 	useEffect( () => {
 		if ( ! selected ) {
 			setSelected(
-				initialTabName || ( tabs.length > 0 ? tabs[ 0 ].name : null )
+				initialTabName || ( tabs.length > 0 ? tabs[ 0 ].name : '' )
 			);
 		}
 	}, [ initialTabName, tabs ] );
