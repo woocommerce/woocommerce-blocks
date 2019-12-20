@@ -7,29 +7,28 @@ import { useState, useMemo } from '@wordpress/element';
  * Internal dependencies
  */
 import { STATUS } from './constants';
+const { STARTED, ERROR, FAILED, SUCCESS, PRISTINE } = STATUS;
 
 const usePaymentEvents = () => {
-	const { paymentStatus, setPaymentStatus } = useState( STATUS.PRISTINE );
+	const { paymentStatus, setPaymentStatus } = useState( PRISTINE );
 	const dispatch = useMemo(
 		() => ( {
-			started: () => setPaymentStatus( STATUS.STARTED ),
-			error: () => setPaymentStatus( STATUS.ERROR ),
-			failed: () => setPaymentStatus( STATUS.FAILED ),
-			success: () => setPaymentStatus( STATUS.SUCCESS ),
+			started: () => setPaymentStatus( STARTED ),
+			error: () => setPaymentStatus( ERROR ),
+			failed: () => setPaymentStatus( FAILED ),
+			success: () => setPaymentStatus( SUCCESS ),
 		} ),
 		[ setPaymentStatus ]
 	);
 	const select = useMemo(
 		() => ( {
-			isPristine: () => paymentStatus === STATUS.PRISTINE,
-			isStarted: () => paymentStatus === STATUS.STARTED,
+			isPristine: () => paymentStatus === PRISTINE,
+			isStarted: () => paymentStatus === STARTED,
 			isFinished: () =>
-				[ STATUS.ERROR, STATUS.FAILED, STATUS.SUCCESS ].includes(
-					paymentStatus
-				),
-			hasError: () => paymentStatus === STATUS.ERROR,
-			hasFailed: () => paymentStatus === STATUS.FAILED,
-			isSuccessful: () => paymentStatus === STATUS.SUCCESS,
+				[ ERROR, FAILED, SUCCESS ].includes( paymentStatus ),
+			hasError: () => paymentStatus === ERROR,
+			hasFailed: () => paymentStatus === FAILED,
+			isSuccessful: () => paymentStatus === SUCCESS,
 		} ),
 		[ paymentStatus ]
 	);
