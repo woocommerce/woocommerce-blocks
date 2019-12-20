@@ -16,7 +16,6 @@ const RadioControl = ( {
 	onChange,
 	options = [],
 } ) => {
-	// @todo extract everything in `map` to a RadioControlOption and from the upper component use <><CardDivider><RadioControlOption></y>
 	return (
 		options.length && (
 			<div
