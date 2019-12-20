@@ -14,6 +14,7 @@ import { COUPONS_ENABLED } from '@woocommerce/block-settings';
  * Internal dependencies
  */
 import CheckoutButton from './checkout-button';
+import placeholderShippingMethods from '../../placeholder-shipping-methods';
 import './style.scss';
 
 /**
@@ -46,36 +47,10 @@ const Cart = () => {
 			),
 		},
 	];
-	const shippingOptions = [
-		{
-			value: 'store',
-			label: __( 'Click and collect', 'woo-gutenberg-products-block' ),
-			description: __(
-				'FREE - Pickup in store',
-				'woo-gutenberg-products-block'
-			),
-		},
-		{
-			value: 'regular-shipping',
-			label: __( 'Regular shipping', 'woo-gutenberg-products-block' ),
-			description: __(
-				'€5.00 - 5 business days',
-				'woo-gutenberg-products-block'
-			),
-		},
-		{
-			value: 'express-shipping',
-			label: __( 'Express shipping', 'woo-gutenberg-products-block' ),
-			description: __(
-				'$10.00 - 3 business days',
-				'woo-gutenberg-products-block'
-			),
-		},
-	];
 	const totalValue = '€100';
 
 	const [ selectedShippingOption, setSelectedShippingOption ] = useState(
-		shippingOptions[ 0 ].value
+		placeholderShippingMethods[ 0 ].value
 	);
 
 	return (
@@ -111,7 +86,15 @@ const Cart = () => {
 						id="wc-block-cart__shipping-options"
 						className="wc-block-cart__shipping-options"
 						selected={ selectedShippingOption }
-						options={ shippingOptions }
+						options={ placeholderShippingMethods.map(
+							( option ) => ( {
+								label: option.label,
+								value: option.value,
+								description: [ option.price, option.schedule ]
+									.filter( Boolean )
+									.join( ' — ' ),
+							} )
+						) }
 						onChange={ ( newSelectedShippingOption ) =>
 							setSelectedShippingOption(
 								newSelectedShippingOption
