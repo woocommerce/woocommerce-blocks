@@ -16,7 +16,6 @@ export default class PaymentMethodConfig {
 		this.ariaLabel = config.ariaLabel;
 		this.activeContent = config.activeContent;
 		this.canMakePayment = config.canMakePayment;
-		Object.freeze( this );
 	}
 
 	static assertValidConfig = ( config ) => {
@@ -38,12 +37,12 @@ export default class PaymentMethodConfig {
 			'activeContent'
 		);
 		if ( typeof config.ariaLabel !== 'string' ) {
-			throw new Error(
+			throw new TypeError(
 				'The ariaLabel for the payment method must be a string'
 			);
 		}
 		if ( ! ( config.canMakePayment instanceof Promise ) ) {
-			throw new Error(
+			throw new TypeError(
 				'The canMakePayment property for the payment method must be a promise.'
 			);
 		}
