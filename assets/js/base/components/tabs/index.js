@@ -53,7 +53,7 @@ const Tabs = ( {
 				initialTabName || ( tabs.length > 0 ? tabs[ 0 ].name : '' )
 			);
 		}
-	}, [ initialTabName, tabs ] );
+	}, [ initialTabName, tabs, selected ] );
 	if ( ! selected ) {
 		return null;
 	}
