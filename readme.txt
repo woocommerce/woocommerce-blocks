@@ -4,7 +4,7 @@ Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
 Requires at least: 5.0
 Tested up to: 5.3
 Requires PHP: 5.6
-Stable tag: 2.5.6
+Stable tag: 2.5.7
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -115,6 +115,10 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 5. WooCommerce Product Blocks in the block inserter menu
 
 == Changelog ==
+
+= 2.5.7 = 2019-12-20 =
+- Add translation comments and use correct functions #1412, #1415
+- bug: Fix Price Filter constraints when price is decimal #1419
 
 = 2.5.6 = 2019-12-17 =
 - bug: Fix broken build in 2.5.5. Has same changelog as 2.5.5.
