@@ -3,11 +3,6 @@
  */
 import classnames from 'classnames';
 
-/**
- * Internal dependencies
- */
-import Label from '../label';
-
 const Option = ( { onChange, option, name, selected } ) => {
 	const {
 		value,
@@ -40,53 +35,36 @@ const Option = ( { onChange, option, name, selected } ) => {
 				} ) }
 			/>
 			{ label && (
-				<Label
-					label={ label }
-					wrapperElement="span"
-					wrapperProps={ {
-						className: 'wc-blocks-radio-control__label',
-						id: `${ name }-${ value }__label`,
-					} }
+				<span
+					id={ `${ name }-${ value }__label` }
+					className="wc-blocks-radio-control__label"
 				>
 					{ label }
-				</Label>
+				</span>
 			) }
 			{ secondaryLabel && (
-				<Label
-					label={ secondaryLabel }
-					wrapperElement="span"
-					wrapperProps={ {
-						className: 'wc-blocks-radio-control__secondary-label',
-						id: `${ name }-${ value }__secondary-label`,
-					} }
+				<span
+					id={ `${ name }-${ value }__secondary-label` }
+					className="wc-blocks-radio-control__secondary-label"
 				>
 					{ secondaryLabel }
-				</Label>
+				</span>
 			) }
 			{ description && (
-				<Label
-					label={ description }
-					wrapperElement="span"
-					wrapperProps={ {
-						className: 'wc-blocks-radio-control__description',
-						id: `${ name }-${ value }__description`,
-					} }
+				<span
+					id={ `${ name }-${ value }__description` }
+					className="wc-blocks-radio-control__description"
 				>
 					{ description }
-				</Label>
+				</span>
 			) }
 			{ secondaryDescription && (
-				<Label
-					label={ secondaryDescription }
-					wrapperElement="span"
-					wrapperProps={ {
-						className:
-							'wc-blocks-radio-control__secondary-description',
-						id: `${ name }-${ value }__secondary-description`,
-					} }
+				<span
+					id={ `${ name }-${ value }__secondary-description` }
+					className="wc-blocks-radio-control__secondary-description"
 				>
 					{ secondaryDescription }
-				</Label>
+				</span>
 			) }
 		</label>
 	);
