@@ -10,6 +10,7 @@ import TextInput from '@woocommerce/base-components/text-input';
 import RadioControl from '@woocommerce/base-components/radio-control';
 import InputRow from '@woocommerce/base-components/input-row';
 import { CheckboxControl, Placeholder } from '@wordpress/components';
+
 /**
  * Internal dependencies
  */

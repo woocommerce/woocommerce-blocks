@@ -124,8 +124,7 @@ const mainEntry = {
 	'active-filters': './assets/js/blocks/active-filters/index.js',
 	'block-error-boundary':
 		'./assets/js/base/components/block-error-boundary/style.scss',
-	'wordpress-components-style':
-		'./node_modules/@wordpress/components/build-style/style.css',
+	'panel-style': './node_modules/@wordpress/components/src/panel/style.scss',
 
 	// cart & checkout blocks
 	cart: './assets/js/blocks/cart-checkout/cart/index.js',
@@ -174,6 +173,7 @@ const getMainConfig = ( options = {} ) => {
 		},
 		optimization: {
 			splitChunks: {
+				minSize: 0,
 				cacheGroups: {
 					commons: {
 						test: /[\\/]node_modules[\\/]/,
@@ -195,7 +195,7 @@ const getMainConfig = ( options = {} ) => {
 						priority: 10,
 					},
 					'vendors-style': {
-						test: /\/node_modules\/.*?style.css/,
+						test: /\/node_modules\/.*?style\.s?css$/,
 						name: 'vendors-style',
 						chunks: 'all',
 						priority: 7,
@@ -232,7 +232,30 @@ const getMainConfig = ( options = {} ) => {
 					},
 				},
 				{
-					test: /\.s?[c|a]ss$/,
+					test: /\/node_modules\/.*?style\.s?css$/,
+					use: [
+						'style-loader',
+						MiniCssExtractPlugin.loader,
+						{ loader: 'css-loader', options: { importLoaders: 1 } },
+						'postcss-loader',
+						{
+							loader: 'sass-loader',
+							query: {
+								includePaths: [ 'node_modules' ],
+								data:
+									'@import "~@wordpress/base-styles/colors"; ' +
+									'@import "~@wordpress/base-styles/variables"; ' +
+									'@import "~@wordpress/base-styles/mixins"; ' +
+									'@import "~@wordpress/base-styles/breakpoints"; ' +
+									'@import "~@wordpress/base-styles/animations"; ' +
+									'@import "~@wordpress/base-styles/z-index"; ',
+							},
+						},
+					],
+				},
+				{
+					test: /\.s?css$/,
+					exclude: /node_modules/,
 					use: [
 						'style-loader',
 						MiniCssExtractPlugin.loader,
