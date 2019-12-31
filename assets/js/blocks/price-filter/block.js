@@ -61,7 +61,7 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 		setMaxPriceQuery( maxPrice === maxConstraint ? undefined : maxPrice );
 	}, [ minPrice, maxPrice, minConstraint, maxConstraint ] );
 
-	// Callback when slider is changed.
+	// Callback when slider or input fields are changed.
 	const onChange = useCallback(
 		( prices ) => {
 			if ( prices[ 0 ] !== minPrice ) {
