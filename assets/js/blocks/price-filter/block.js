@@ -52,7 +52,7 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 		setMaxPriceQuery( maxPrice === maxConstraint ? undefined : maxPrice );
 	}, [ minPrice, maxPrice, minConstraint, maxConstraint ] );
 
-	// Callback when slider is changed.
+	// Callback when slider or input fields are changed.
 	const onChange = useCallback(
 		( prices ) => {
 			if ( prices[ 0 ] !== minPrice ) {
@@ -96,14 +96,6 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	}
 
 	const TagName = `h${ attributes.headingLevel }`;
-	const min = Math.max(
-		Number.isFinite( minPrice ) ? minPrice : -Infinity,
-		Number.isFinite( minConstraint ) ? minConstraint : -Infinity
-	);
-	const max = Math.min(
-		Number.isFinite( maxPrice ) ? maxPrice : Infinity,
-		Number.isFinite( maxConstraint ) ? maxConstraint : Infinity
-	);
 
 	return (
 		<Fragment>
@@ -114,8 +106,8 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 				<PriceSlider
 					minConstraint={ minConstraint }
 					maxConstraint={ maxConstraint }
-					minPrice={ min }
-					maxPrice={ max }
+					minPrice={ minPrice }
+					maxPrice={ maxPrice }
 					step={ 10 }
 					currencySymbol={ CURRENCY.symbol }
 					priceFormat={ CURRENCY.priceFormat }
