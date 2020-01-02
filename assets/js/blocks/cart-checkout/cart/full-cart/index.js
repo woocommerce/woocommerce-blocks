@@ -7,7 +7,7 @@ import {
 	TotalsCouponCodeInput,
 	TotalsItem,
 } from '@woocommerce/base-components/totals';
-import ShippingMethodsControl from '@woocommerce/base-components/shipping-methods-control';
+import ShippingRatesControl from '@woocommerce/base-components/shipping-rates-control';
 import {
 	COUPONS_ENABLED,
 	DISPLAY_PRICES_INCLUDING_TAXES,
@@ -20,7 +20,6 @@ import { previewCartItems } from '@woocommerce/resource-previews';
  * Internal dependencies
  */
 import CheckoutButton from './checkout-button';
-import placeholderShippingMethods from '../../placeholder-shipping-methods';
 import CartLineItemsTitle from './cart-line-items-title';
 import CartLineItemsTable from './cart-line-items-table';
 
@@ -114,9 +113,7 @@ const Cart = () => {
 	const currency = getCurrencyFromPriceResponse( cartTotals );
 	const totalRowsConfig = getTotalRowsConfig( cartTotals );
 
-	const [ selectedShippingOption, setSelectedShippingOption ] = useState(
-		placeholderShippingMethods[ 0 ].value
-	);
+	const [ selectedShippingRate, setSelectedShippingRate ] = useState();
 
 	return (
 		<div className="wc-block-cart">
@@ -147,18 +144,25 @@ const Cart = () => {
 								'woo-gutenberg-products-block'
 							) }
 						</legend>
-						<ShippingMethodsControl
+						<ShippingRatesControl
+							address={ {
+								country: '', // @todo get default country?
+								// https://github.com/woocommerce/woocommerce/blob/master/templates/cart/cart-shipping.php#L22
+							} }
 							className="wc-block-cart__shipping-options"
-							selected={ selectedShippingOption }
+							selected={ selectedShippingRate }
 							renderOption={ ( option ) => ( {
-								label: option.label,
-								value: option.value,
-								description: [ option.price, option.schedule ]
+								label: option.name,
+								value: option.rate_id,
+								description: [
+									option.price, // @todo replace with currency component
+									option.delivery_time,
+								]
 									.filter( Boolean )
 									.join( ' — ' ),
 							} ) }
 							onChange={ ( newSelectedShippingOption ) =>
-								setSelectedShippingOption(
+								setSelectedShippingRate(
 									newSelectedShippingOption
 								)
 							}

@@ -7,8 +7,8 @@ import FormStep from '@woocommerce/base-components/checkout/form-step';
 import CheckoutForm from '@woocommerce/base-components/checkout/form';
 import NoShipping from '@woocommerce/base-components/checkout/no-shipping';
 import TextInput from '@woocommerce/base-components/text-input';
-import ShippingMethodsControl from '@woocommerce/base-components/shipping-methods-control';
 import { ShippingCountryInput } from '@woocommerce/base-components/country-input';
+import ShippingRatesControl from '@woocommerce/base-components/shipping-rates-control';
 import InputRow from '@woocommerce/base-components/input-row';
 import { CheckboxControl } from '@wordpress/components';
 import CheckoutProvider from '@woocommerce/base-context/checkout-context';
@@ -16,21 +16,26 @@ import {
 	ExpressCheckoutFormControl,
 	PaymentMethods,
 } from '@woocommerce/base-components/payment-methods';
+import { useShippingRates } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
  */
-import placeholderShippingMethods from '../placeholder-shipping-methods';
 import './style.scss';
 import '../../../payment-methods-demo';
 
 /**
  * Component displaying an attribute filter.
  */
-const Block = ( {
-	shippingMethods = placeholderShippingMethods,
-	isEditor = false,
-} ) => {
+const Block = ( { isEditor = false } ) => {
+	const { shippingRates } = useShippingRates( {
+		address_1: '',
+		address_2: '',
+		city: '',
+		state: '',
+		postcode: '',
+		country: '',
+	} );
 	const [ shippingMethod, setShippingMethod ] = useState( {} );
 	const [ contactFields, setContactFields ] = useState( {} );
 	const [ shouldSavePayment, setShouldSavePayment ] = useState( true );
@@ -96,7 +101,7 @@ const Block = ( {
 						}
 					/>
 				</FormStep>
-				{ shippingMethods.length === 0 && (
+				{ shippingRates.length === 0 && (
 					<FormStep
 						id="shipping-fields"
 						className="wc-block-checkout__shipping-fields"
@@ -113,7 +118,7 @@ const Block = ( {
 						{ isEditor && <NoShipping /> }
 					</FormStep>
 				) }
-				{ shippingMethods.length > 0 && (
+				{ shippingRates.length > 0 && (
 					<Fragment>
 						<FormStep
 							id="shipping-fields"
@@ -280,22 +285,35 @@ const Block = ( {
 							) }
 							stepNumber={ 3 }
 						>
-							<ShippingMethodsControl
-								selected={ shippingMethod.method || 'collect' }
-								onChange={ ( option ) =>
-									setShippingMethod( {
-										...shippingMethod,
-										method: option,
-									} )
-								}
-								renderOption={ ( option ) => ( {
-									label: option.label,
-									value: option.value,
-									description: option.dispatcher,
-									secondaryLabel: option.price,
-									secondaryDescription: option.schedule,
-								} ) }
-							/>
+							{ shippingFields.country ? (
+								<ShippingRatesControl
+									address={ {
+										address_1: shippingFields.streetAddress,
+										address_2: shippingFields.apartment,
+										city: shippingFields.city,
+										state: shippingFields.county,
+										postcode: shippingFields.postalCode,
+										country: shippingFields.country,
+									} }
+									onChange={ ( option ) =>
+										setShippingMethod( {
+											...shippingMethod,
+											method: option,
+										} )
+									}
+									renderOption={ ( option ) => ( {
+										label: option.name,
+										value: option.rate_id,
+										description: option.description,
+										secondaryLabel: option.price,
+										secondaryDescription:
+											option.delivery_time,
+									} ) }
+									selected={ shippingMethod.method }
+								/>
+							) : (
+								<span>Please select a country first</span>
+							) }
 							<CheckboxControl
 								className="wc-block-checkout__add-note"
 								label="Add order notes?"
