@@ -247,7 +247,11 @@ const PriceSlider = ( {
 								'Filter products by minimum price',
 								'woo-gutenberg-products-block'
 							) }
-							value={ minPrice || 0 }
+							value={
+								Number.isFinite( minPrice )
+									? minPrice
+									: minConstraint
+							}
 							onChange={ rangeInputOnChange }
 							step={ stepValue }
 							min={ minConstraint }
@@ -262,7 +266,11 @@ const PriceSlider = ( {
 								'Filter products by maximum price',
 								'woo-gutenberg-products-block'
 							) }
-							value={ maxPrice || 0 }
+							value={
+								Number.isFinite( maxPrice )
+									? maxPrice
+									: maxConstraint
+							}
 							onChange={ rangeInputOnChange }
 							step={ stepValue }
 							min={ minConstraint }
