@@ -105,14 +105,6 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 	}
 
 	const TagName = `h${ attributes.headingLevel }`;
-	const min = Math.max(
-		Number.isFinite( minPrice ) ? minPrice : -Infinity,
-		Number.isFinite( minConstraint ) ? minConstraint : -Infinity
-	);
-	const max = Math.min(
-		Number.isFinite( maxPrice ) ? maxPrice : Infinity,
-		Number.isFinite( maxConstraint ) ? maxConstraint : Infinity
-	);
 
 	return (
 		<Fragment>
@@ -123,8 +115,8 @@ const PriceFilterBlock = ( { attributes, isEditor = false } ) => {
 				<PriceSlider
 					minConstraint={ minConstraint }
 					maxConstraint={ maxConstraint }
-					minPrice={ min }
-					maxPrice={ max }
+					minPrice={ minPrice }
+					maxPrice={ maxPrice }
 					currency={ currency }
 					showInputFields={ attributes.showInputFields }
 					showFilterButton={ attributes.showFilterButton }
