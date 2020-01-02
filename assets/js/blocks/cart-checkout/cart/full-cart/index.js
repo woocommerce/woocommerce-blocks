@@ -7,7 +7,7 @@ import {
 	TotalsCouponCodeInput,
 	TotalsItem,
 } from '@woocommerce/base-components/totals';
-import RadioControl from '@woocommerce/base-components/radio-control';
+import ShippingMethodsControl from '@woocommerce/base-components/shipping-methods-control';
 import {
 	COUPONS_ENABLED,
 	DISPLAY_PRICES_INCLUDING_TAXES,
@@ -147,21 +147,16 @@ const Cart = () => {
 								'woo-gutenberg-products-block'
 							) }
 						</legend>
-						<RadioControl
+						<ShippingMethodsControl
 							className="wc-block-cart__shipping-options"
 							selected={ selectedShippingOption }
-							options={ placeholderShippingMethods.map(
-								( option ) => ( {
-									label: option.label,
-									value: option.value,
-									description: [
-										option.price,
-										option.schedule,
-									]
-										.filter( Boolean )
-										.join( ' — ' ),
-								} )
-							) }
+							renderOption={ ( option ) => ( {
+								label: option.label,
+								value: option.value,
+								description: [ option.price, option.schedule ]
+									.filter( Boolean )
+									.join( ' — ' ),
+							} ) }
 							onChange={ ( newSelectedShippingOption ) =>
 								setSelectedShippingOption(
 									newSelectedShippingOption

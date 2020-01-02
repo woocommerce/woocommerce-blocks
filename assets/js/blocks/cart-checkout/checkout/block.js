@@ -7,8 +7,8 @@ import FormStep from '@woocommerce/base-components/checkout/form-step';
 import CheckoutForm from '@woocommerce/base-components/checkout/form';
 import NoShipping from '@woocommerce/base-components/checkout/no-shipping';
 import TextInput from '@woocommerce/base-components/text-input';
+import ShippingMethodsControl from '@woocommerce/base-components/shipping-methods-control';
 import { ShippingCountryInput } from '@woocommerce/base-components/country-input';
-import RadioControl from '@woocommerce/base-components/radio-control';
 import InputRow from '@woocommerce/base-components/input-row';
 import { CheckboxControl } from '@wordpress/components';
 import CheckoutProvider from '@woocommerce/base-context/checkout-context';
@@ -27,7 +27,10 @@ import '../../../payment-methods-demo';
 /**
  * Component displaying an attribute filter.
  */
-const Block = ( { shippingMethods = [], isEditor = false } ) => {
+const Block = ( {
+	shippingMethods = placeholderShippingMethods,
+	isEditor = false,
+} ) => {
 	const [ shippingMethod, setShippingMethod ] = useState( {} );
 	const [ contactFields, setContactFields ] = useState( {} );
 	const [ shouldSavePayment, setShouldSavePayment ] = useState( true );
@@ -277,24 +280,21 @@ const Block = ( { shippingMethods = [], isEditor = false } ) => {
 							) }
 							stepNumber={ 3 }
 						>
-							<RadioControl
+							<ShippingMethodsControl
 								selected={ shippingMethod.method || 'collect' }
-								id="shipping-method"
 								onChange={ ( option ) =>
 									setShippingMethod( {
 										...shippingMethod,
 										method: option,
 									} )
 								}
-								options={ placeholderShippingMethods.map(
-									( option ) => ( {
-										label: option.label,
-										value: option.value,
-										description: option.dispatcher,
-										secondaryLabel: option.price,
-										secondaryDescription: option.schedule,
-									} )
-								) }
+								renderOption={ ( option ) => ( {
+									label: option.label,
+									value: option.value,
+									description: option.dispatcher,
+									secondaryLabel: option.price,
+									secondaryDescription: option.schedule,
+								} ) }
 							/>
 							<CheckboxControl
 								className="wc-block-checkout__add-note"
