@@ -33,10 +33,7 @@ export const useShippingRates = ( query ) => {
 	} );
 
 	return {
-		shippingRates:
-			shippingRates && shippingRates.length > 0
-				? shippingRates[ 0 ][ 'shipping-rates' ]
-				: [],
+		shippingRates,
 		shippingRatesLoading,
 	};
 };

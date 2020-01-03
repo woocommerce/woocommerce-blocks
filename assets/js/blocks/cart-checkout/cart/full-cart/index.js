@@ -147,7 +147,6 @@ const Cart = () => {
 						<ShippingRatesControl
 							address={ {
 								country: '', // @todo get default country?
-								// https://github.com/woocommerce/woocommerce/blob/master/templates/cart/cart-shipping.php#L22
 							} }
 							className="wc-block-cart__shipping-options"
 							selected={ selectedShippingRate }

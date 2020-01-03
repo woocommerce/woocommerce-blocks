@@ -28,6 +28,7 @@ import '../../../payment-methods-demo';
  * Component displaying an attribute filter.
  */
 const Block = ( { isEditor = false } ) => {
+	// @todo
 	const { shippingRates } = useShippingRates( {
 		address_1: '',
 		address_2: '',
@@ -295,10 +296,10 @@ const Block = ( { isEditor = false } ) => {
 										postcode: shippingFields.postalCode,
 										country: shippingFields.country,
 									} }
-									onChange={ ( option ) =>
+									onChange={ ( newMethods ) =>
 										setShippingMethod( {
 											...shippingMethod,
-											method: option,
+											methods: newMethods,
 										} )
 									}
 									renderOption={ ( option ) => ( {
@@ -309,9 +310,10 @@ const Block = ( { isEditor = false } ) => {
 										secondaryDescription:
 											option.delivery_time,
 									} ) }
-									selected={ shippingMethod.method }
+									selected={ shippingMethod.methods }
 								/>
 							) : (
+								/* @todo Remove this once <CountryInput /> is created, because country will no longer be undefined on load. */
 								<span>Please select a country first</span>
 							) }
 							<CheckboxControl
