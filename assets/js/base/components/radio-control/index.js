@@ -25,7 +25,7 @@ const RadioControl = ( {
 					<RadioControlOption
 						key={ `${ id }-${ option.value }` }
 						name={ id }
-						selected={ selected }
+						checked={ option.value === selected }
 						option={ option }
 						onChange={ onChange }
 					/>

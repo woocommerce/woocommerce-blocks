@@ -3,7 +3,7 @@
  */
 import classnames from 'classnames';
 
-const Option = ( { onChange, option, name, selected } ) => {
+const Option = ( { checked, name, onChange, option } ) => {
 	const {
 		value,
 		label,
@@ -26,7 +26,7 @@ const Option = ( { onChange, option, name, selected } ) => {
 				name={ name }
 				value={ value }
 				onChange={ onChangeValue }
-				checked={ value === selected }
+				checked={ checked }
 				aria-describedby={ classnames( {
 					[ `${ name }-${ value }__label` ]: label,
 					[ `${ name }-${ value }__secondary-label` ]: secondaryLabel,
