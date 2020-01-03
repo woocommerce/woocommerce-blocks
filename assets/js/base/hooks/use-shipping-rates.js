@@ -4,7 +4,6 @@
 import { useCollection } from './use-collection';
 
 /**
- * @todo add tests
  * This is a custom hook that is wired up to the `wc/store/collections` data
  * store for the `wc/store/cart/shipping-rates` route. Given a query object, this
  * will ensure a component is kept up to date with the shipping rates matching that
