@@ -23,10 +23,7 @@ const ExpressPaymentMethods = () => {
 					paymentMethods[ slug ].activeContent;
 				const paymentEvents = { dispatch, select };
 				return (
-					<li
-						key={ `paymentMethod_${ slug }` }
-						id={ `express-payment-method-${ slug }` }
-					>
+					<li key={ slug } id={ `express-payment-method-${ slug }` }>
 						{ cloneElement( expressPaymentMethod, {
 							checkoutData,
 							paymentEvents,
