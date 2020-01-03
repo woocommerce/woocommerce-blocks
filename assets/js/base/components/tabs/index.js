@@ -25,7 +25,7 @@ const TabButton = ( {
 			type="button"
 			tabIndex={ selected ? null : -1 }
 			aria-selected={ selected }
-			aria-label={ ! ariaLabel ? null : ariaLabel }
+			aria-label={ ariaLabel }
 			id={ tabId }
 			onClick={ onClick }
 			{ ...rest }
