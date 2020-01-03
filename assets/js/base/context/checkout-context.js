@@ -51,6 +51,7 @@ const CheckoutProvider = ( {
 		successRedirectUrl,
 		failureRedirectUrl,
 		isCheckoutComplete,
+		isCalculating,
 		checkoutHasError,
 		activePaymentMethod,
 		placeOrderLabel,
