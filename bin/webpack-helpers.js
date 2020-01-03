@@ -257,7 +257,6 @@ const getMainConfig = ( options = {} ) => {
 					test: /\.s?css$/,
 					exclude: /node_modules/,
 					use: [
-						'style-loader',
 						MiniCssExtractPlugin.loader,
 						{ loader: 'css-loader', options: { importLoaders: 1 } },
 						'postcss-loader',
