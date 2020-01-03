@@ -16,7 +16,7 @@ export const assertValidPaymentMethodComponent = (
 };
 
 export const assertValidElement = ( element, elementName ) => {
-	if ( ! isValidElement( element ) && element !== null ) {
+	if ( element !== null && ! isValidElement( element ) ) {
 		throw new TypeError(
 			`The ${ elementName } for the payment method must be a React element or null.`
 		);
