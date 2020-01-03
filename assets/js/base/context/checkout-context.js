@@ -22,7 +22,7 @@ const CheckoutProvider = ( {
 } ) => {
 	const [ successRedirectUrl, setSuccessRedirectUrl ] = useState( '' );
 	const [ failureRedirectUrl, setFailureRedirectUrl ] = useState( '' );
-	const [ checkoutComplete, setCheckoutComplete ] = useState( false );
+	const [ isCheckoutComplete, setIsCheckoutComplete ] = useState( false );
 	const [ checkoutHasError, setCheckoutHasError ] = useState( false );
 	const [ notices, updateNotices ] = useState( [] );
 	const [ isCalculating, setIsCalculating ] = useState( false );
@@ -35,8 +35,8 @@ const CheckoutProvider = ( {
 			setSuccessRedirectUrl,
 			failureRedirectUrl,
 			setFailureRedirectUrl,
-			checkoutComplete,
-			setCheckoutComplete,
+			isCheckoutComplete,
+			setIsCheckoutComplete,
 			checkoutHasError,
 			setCheckoutHasError,
 			isCalculating,
@@ -50,7 +50,7 @@ const CheckoutProvider = ( {
 	}, [
 		successRedirectUrl,
 		failureRedirectUrl,
-		checkoutComplete,
+		isCheckoutComplete,
 		checkoutHasError,
 		activePaymentMethod,
 		placeOrderLabel,

@@ -5,8 +5,8 @@ import useCheckoutContext from '@woocommerce/base-context/checkout-context';
 
 export const useCheckoutEvents = () => {
 	const {
-		checkoutComplete,
-		setCheckoutComplete,
+		isCheckoutComplete,
+		setIsCheckoutComplete,
 		checkoutHasError,
 		setCheckoutHasError,
 		isCalculating,
@@ -20,7 +20,7 @@ export const useCheckoutEvents = () => {
 	};
 	const setComplete = () => {
 		cancelCheckoutError();
-		setCheckoutComplete( true );
+		setIsCheckoutComplete( true );
 	};
 	const setCalculating = () => {
 		setIsCalculating( true );
@@ -29,13 +29,13 @@ export const useCheckoutEvents = () => {
 		setIsCalculating( false );
 	};
 	return {
-		setCheckoutComplete: setComplete,
+		setIsCheckoutComplete: setComplete,
 		setCheckoutHasError: setHasError,
 		cancelCheckoutError,
 		setIsCalculating: setCalculating,
 		cancelCalculating,
 		isCalculating,
-		checkoutComplete,
+		isCheckoutComplete,
 		checkoutHasError,
 	};
 };
