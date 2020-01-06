@@ -7,6 +7,8 @@
 
 namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities;
 
+use \WC_Product;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -290,16 +292,32 @@ class ProductQuery {
 
 		if ( $wp_query->get( 'min_price' ) ) {
 			// Convert from subunit to decimal.
-			$query_price    = floatval( $wp_query->get( 'min_price' ) / ( 10 ** wc_get_price_decimals() ) );
-			$args['join']   = $this->append_product_sorting_table_join( $args['join'] );
-			$args['where'] .= $wpdb->prepare( ' AND wc_product_meta_lookup.min_price >= %f ', $query_price );
+			$query_price = floatval( $wp_query->get( 'min_price' ) / ( 10 ** wc_get_price_decimals() ) );
+			// Maybe convert to consider included tax.
+			$price_with_tax = $this->price_accounting_for_taxes( $query_price );
+			if ( $price_with_tax !== $query_price ) {
+				$args['join']   = $this->append_product_sorting_table_join( $args['join'] );
+				$args['join']   = $this->append_product_is_taxable_join( $args['join'] );
+				$args['where'] .= $wpdb->prepare( ' AND ( ( postmeta.meta_value = "taxable" AND wc_product_meta_lookup.min_price >= %f ) OR ( postmeta.meta_value != "taxable" AND wc_product_meta_lookup.min_price >= %f ) ) ', $price_with_tax, $query_price );
+			} else {
+				$args['join']   = $this->append_product_sorting_table_join( $args['join'] );
+				$args['where'] .= $wpdb->prepare( ' AND wc_product_meta_lookup.min_price >= %f ', $query_price );
+			}
 		}
 
 		if ( $wp_query->get( 'max_price' ) ) {
 			// Convert from subunit to decimal.
-			$query_price    = floatval( $wp_query->get( 'max_price' ) / ( 10 ** wc_get_price_decimals() ) );
-			$args['join']   = $this->append_product_sorting_table_join( $args['join'] );
-			$args['where'] .= $wpdb->prepare( ' AND wc_product_meta_lookup.max_price <= %f ', $query_price );
+			$query_price = floatval( $wp_query->get( 'max_price' ) / ( 10 ** wc_get_price_decimals() ) );
+			// Maybe convert to consider included tax.
+			$price_with_tax = $this->price_accounting_for_taxes( $query_price );
+			if ( $price_with_tax !== $query_price ) {
+				$args['join']   = $this->append_product_sorting_table_join( $args['join'] );
+				$args['join']   = $this->append_product_is_taxable_join( $args['join'] );
+				$args['where'] .= $wpdb->prepare( ' AND ( ( postmeta.meta_value = "taxable" AND wc_product_meta_lookup.max_price <= %f ) OR ( postmeta.meta_value != "taxable" AND wc_product_meta_lookup.max_price <= %f ) ) ', $price_with_tax, $query_price );
+			} else {
+				$args['join']   = $this->append_product_sorting_table_join( $args['join'] );
+				$args['where'] .= $wpdb->prepare( ' AND wc_product_meta_lookup.max_price <= %f ', $query_price );
+			}
 		}
 
 		if ( $wp_query->get( 'stock_status' ) ) {
@@ -340,5 +358,47 @@ class ProductQuery {
 			$sql .= " LEFT JOIN {$wpdb->wc_product_meta_lookup} wc_product_meta_lookup ON $wpdb->posts.ID = wc_product_meta_lookup.product_id ";
 		}
 		return $sql;
+	}
+
+	/**
+	 * Appends the join for post meta table for the taxable meta key.
+	 *
+	 * @param string $sql  The existing join query.
+	 * @return  string        The new join query.
+	 */
+	protected function append_product_is_taxable_join( $sql ) {
+		global $wpdb;
+		if ( ! strstr( $sql, 'postmeta' ) ) {
+			$sql .= " LEFT JOIN {$wpdb->postmeta} postmeta ON $wpdb->posts.ID = postmeta.post_id AND meta_key = '_tax_status' ";
+		}
+		return $sql;
+	}
+
+	/**
+	 * Calculates the given price with tax taken away from it. Used to normalize
+	 * queries against prices when the displayed price includes tax and the
+	 * price saved in the db does not include tax.
+	 *
+	 * @param float $price  The non-modified price.
+	 * @return  float          The price with the tax adjustment if needed.
+	 */
+	protected function price_accounting_for_taxes( $price ) {
+		if ( ! wc_prices_include_tax() && 'incl' === get_option( 'woocommerce_tax_display_shop' ) ) {
+			// forces the prices include tax option to yes so we can use the
+			// canonical method for calculating the tax.
+			add_filter( 'woocommerce_prices_include_tax', [ $this, 'filter_including_taxes' ] );
+			$price = wc_get_price_excluding_tax( new WC_Product(), [ 'price' => $price ] );
+			remove_filter( 'woocommerce_prices_include_tax', [ $this, 'filter_including_taxes' ] );
+		}
+		return $price;
+	}
+
+	/**
+	 * Callback for `woocommerce_prices_include_tax filter.
+	 *
+	 * @return  string  Yes!
+	 */
+	public function filter_including_taxes() {
+		return 'yes';
 	}
 }
