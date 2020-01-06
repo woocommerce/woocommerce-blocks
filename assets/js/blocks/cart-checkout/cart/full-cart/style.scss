@@ -20,16 +20,16 @@
 }
 
 .wc-block-cart__shipping-options {
-	.wc-blocks-radio-control__label {
+	.wc-block-radio-control__label {
 		flex-basis: 100%;
 		line-height: 16px;
 	}
 
-	.wc-blocks-radio-control__description {
+	.wc-block-radio-control__description {
 		flex-basis: 100%;
 	}
 
-	.wc-blocks-radio-control__option {
+	.wc-block-radio-control__option {
 		padding-left: $gap-large;
 
 		&:last-child {
@@ -37,7 +37,7 @@
 		}
 	}
 
-	.wc-blocks-radio-control__input {
+	.wc-block-radio-control__input {
 		left: 0;
 		top: $gap;
 	}
