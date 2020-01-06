@@ -75,17 +75,13 @@ const Cart = () => {
 						/>
 					) ) }
 					<fieldset className="wc-block-cart__shipping-options-fieldset">
-						<legend
-							id="wc-block-cart__shipping-options-label"
-							className="screen-reader-text"
-						>
+						<legend className="screen-reader-text">
 							{ __(
 								'Choose the shipping method.',
 								'woo-gutenberg-products-block'
 							) }
 						</legend>
 						<RadioControl
-							id="wc-block-cart__shipping-options"
 							className="wc-block-cart__shipping-options"
 							selected={ selectedShippingOption }
 							options={ placeholderShippingMethods.map(

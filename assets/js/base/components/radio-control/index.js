@@ -2,6 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
+import withComponentId from '@woocommerce/base-hocs/with-component-id';
 
 /**
  * Internal dependencies
@@ -11,8 +12,8 @@ import './style.scss';
 
 const RadioControl = ( {
 	className,
+	componentId,
 	selected,
-	id,
 	onChange,
 	options = [],
 } ) => {
@@ -23,8 +24,8 @@ const RadioControl = ( {
 			>
 				{ options.map( ( option ) => (
 					<RadioControlOption
-						key={ `${ id }-${ option.value }` }
-						name={ id }
+						key={ option.value }
+						name={ `radio-control-${ componentId }` }
 						checked={ option.value === selected }
 						option={ option }
 						onChange={ onChange }
@@ -35,4 +36,4 @@ const RadioControl = ( {
 	);
 };
 
-export default RadioControl;
+export default withComponentId( RadioControl );

@@ -15,7 +15,6 @@ const Option = ( { checked, name, onChange, option } ) => {
 
 	return (
 		<label
-			key={ `${ name }-${ value }` }
 			className="wc-block-radio-control__option"
 			htmlFor={ `${ name }-${ value }` }
 		>
