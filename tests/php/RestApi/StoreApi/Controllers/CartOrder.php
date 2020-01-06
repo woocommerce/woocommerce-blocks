@@ -60,7 +60,7 @@ class CartOrder extends TestCase {
 	 * Test order creation from cart data.
 	 */
 	public function test_create_item() {
-		$request = new WP_REST_Request( 'GET', '/wc/store/cart/order' );
+		$request = new WP_REST_Request( 'POST', '/wc/store/cart/order' );
 		$request->set_param( 'billing_address', [
 			"first_name" => "Margaret",
 			"last_name"  => "Thatchcroft",
