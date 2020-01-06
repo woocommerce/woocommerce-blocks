@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { useState, useEffect } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import { withInstanceId } from '@wordpress/compose';
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
@@ -45,14 +45,9 @@ const Tabs = ( {
 	ariaLabel = __( 'Tabbed Content', 'woo-gutenberg-products-block' ),
 	children,
 } ) => {
-	const [ selected, setSelected ] = useState( '' );
-	useEffect( () => {
-		if ( ! selected ) {
-			setSelected(
-				initialTabName || ( tabs.length > 0 ? tabs[ 0 ].name : '' )
-			);
-		}
-	}, [ initialTabName, tabs, selected ] );
+	const [ selected, setSelected ] = useState(
+		initialTabName || ( tabs.length > 0 ? tabs[ 0 ].name : '' )
+	);
 	if ( ! selected ) {
 		return null;
 	}
