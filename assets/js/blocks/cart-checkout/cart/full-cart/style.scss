@@ -3,6 +3,14 @@
 	border-width: 1px 0;
 }
 
+.wc-block-cart__main {
+	margin-right: 3em;
+}
+
+.wc-block-cart__item-count {
+	float: right;
+}
+
 @include breakpoint( ">782px" ) {
 	.wc-block-cart {
 		display: flex;

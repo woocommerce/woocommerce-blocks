@@ -1,8 +1,8 @@
-
 /**
  * Internal dependencies
  */
 import CheckoutButton from './checkout-button';
+import CartProductsTitle from './cart-products-title';
 import './style.scss';
 
 /**
@@ -12,8 +12,9 @@ const Cart = () => {
 	return (
 		<div className="wc-block-cart">
 			<div className="wc-block-cart__main">
+				<CartProductsTitle />
 				<span>
-					Cart block <b>full state</b> coming soon…
+					Cart <b>line items</b> coming soon…
 				</span>
 			</div>
 			<div className="wc-block-cart__sidebar">
