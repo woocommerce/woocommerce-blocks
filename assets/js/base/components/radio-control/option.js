@@ -16,12 +16,12 @@ const Option = ( { checked, name, onChange, option } ) => {
 	return (
 		<label
 			key={ `${ name }-${ value }` }
-			className="wc-blocks-radio-control__option"
+			className="wc-block-radio-control__option"
 			htmlFor={ `${ name }-${ value }` }
 		>
 			<input
 				id={ `${ name }-${ value }` }
-				className="wc-blocks-radio-control__input"
+				className="wc-block-radio-control__input"
 				type="radio"
 				name={ name }
 				value={ value }
@@ -37,7 +37,7 @@ const Option = ( { checked, name, onChange, option } ) => {
 			{ label && (
 				<span
 					id={ `${ name }-${ value }__label` }
-					className="wc-blocks-radio-control__label"
+					className="wc-block-radio-control__label"
 				>
 					{ label }
 				</span>
@@ -45,7 +45,7 @@ const Option = ( { checked, name, onChange, option } ) => {
 			{ secondaryLabel && (
 				<span
 					id={ `${ name }-${ value }__secondary-label` }
-					className="wc-blocks-radio-control__secondary-label"
+					className="wc-block-radio-control__secondary-label"
 				>
 					{ secondaryLabel }
 				</span>
@@ -53,7 +53,7 @@ const Option = ( { checked, name, onChange, option } ) => {
 			{ description && (
 				<span
 					id={ `${ name }-${ value }__description` }
-					className="wc-blocks-radio-control__description"
+					className="wc-block-radio-control__description"
 				>
 					{ description }
 				</span>
@@ -61,7 +61,7 @@ const Option = ( { checked, name, onChange, option } ) => {
 			{ secondaryDescription && (
 				<span
 					id={ `${ name }-${ value }__secondary-description` }
-					className="wc-blocks-radio-control__secondary-description"
+					className="wc-block-radio-control__secondary-description"
 				>
 					{ secondaryDescription }
 				</span>
