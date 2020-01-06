@@ -8,6 +8,8 @@ import { previewCartItems } from '@woocommerce/resource-previews';
  */
 import CheckoutButton from './checkout-button';
 import CartProductsTitle from './cart-products-title';
+import CartProductsTable from './cart-products-table';
+
 import './style.scss';
 
 /**
@@ -18,9 +20,7 @@ const Cart = () => {
 		<div className="wc-block-cart">
 			<div className="wc-block-cart__main">
 				<CartProductsTitle itemCount={ previewCartItems.length } />
-				<span>
-					Cart <b>line items</b> coming soon…
-				</span>
+				<CartProductsTable items={ previewCartItems } />
 			</div>
 			<div className="wc-block-cart__sidebar">
 				<CheckoutButton />
