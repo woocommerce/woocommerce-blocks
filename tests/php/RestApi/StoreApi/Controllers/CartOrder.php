@@ -78,33 +78,33 @@ class CartOrder extends TestCase {
 
 		$this->assertEquals( 201, $response->get_status() );
 
-		$this->assertArrayHasKey( 'id', $data[0] );
-		$this->assertArrayHasKey( 'number', $data[0] );
-		$this->assertArrayHasKey( 'status', $data[0] );
-		$this->assertArrayHasKey( 'order_key', $data[0] );
-		$this->assertArrayHasKey( 'created_via', $data[0] );
-		$this->assertArrayHasKey( 'prices_include_tax', $data[0] );
-		$this->assertArrayHasKey( 'events', $data[0] );
-		$this->assertArrayHasKey( 'customer', $data[0] );
-		$this->assertArrayHasKey( 'billing_address', $data[0] );
-		$this->assertArrayHasKey( 'shipping_address', $data[0] );
-		$this->assertArrayHasKey( 'customer_note', $data[0] );
-		$this->assertArrayHasKey( 'items', $data[0] );
-		$this->assertArrayHasKey( 'totals', $data[0] );
+		$this->assertArrayHasKey( 'id', $data );
+		$this->assertArrayHasKey( 'number', $data );
+		$this->assertArrayHasKey( 'status', $data );
+		$this->assertArrayHasKey( 'order_key', $data );
+		$this->assertArrayHasKey( 'created_via', $data );
+		$this->assertArrayHasKey( 'prices_include_tax', $data );
+		$this->assertArrayHasKey( 'events', $data );
+		$this->assertArrayHasKey( 'customer', $data );
+		$this->assertArrayHasKey( 'billing_address', $data );
+		$this->assertArrayHasKey( 'shipping_address', $data );
+		$this->assertArrayHasKey( 'customer_note', $data );
+		$this->assertArrayHasKey( 'items', $data );
+		$this->assertArrayHasKey( 'totals', $data );
 
-		$this->assertEquals( 'Margaret', $data[0]['billing_address']['first_name'] );
-		$this->assertEquals( 'Thatchcroft', $data[0]['billing_address']['last_name'] );
-		$this->assertEquals( '123 South Street', $data[0]['billing_address']['address_1'] );
-		$this->assertEquals( 'Apt 1', $data[0]['billing_address']['address_2'] );
-		$this->assertEquals( 'Philadelphia', $data[0]['billing_address']['city'] );
-		$this->assertEquals( 'PA', $data[0]['billing_address']['state'] );
-		$this->assertEquals( '19123', $data[0]['billing_address']['postcode'] );
-		$this->assertEquals( 'US', $data[0]['billing_address']['country'] );
-		$this->assertEquals( 'test@test.com', $data[0]['billing_address']['email'] );
-		$this->assertEquals( '', $data[0]['billing_address']['phone'] );
+		$this->assertEquals( 'Margaret', $data['billing_address']['first_name'] );
+		$this->assertEquals( 'Thatchcroft', $data['billing_address']['last_name'] );
+		$this->assertEquals( '123 South Street', $data['billing_address']['address_1'] );
+		$this->assertEquals( 'Apt 1', $data['billing_address']['address_2'] );
+		$this->assertEquals( 'Philadelphia', $data['billing_address']['city'] );
+		$this->assertEquals( 'PA', $data['billing_address']['state'] );
+		$this->assertEquals( '19123', $data['billing_address']['postcode'] );
+		$this->assertEquals( 'US', $data['billing_address']['country'] );
+		$this->assertEquals( 'test@test.com', $data['billing_address']['email'] );
+		$this->assertEquals( '', $data['billing_address']['phone'] );
 
-		$this->assertEquals( 'pending', $data[0]['status'] );
-		$this->assertEquals( 2, count( $data[0]['items'] ) );
+		$this->assertEquals( 'pending', $data['status'] );
+		$this->assertEquals( 2, count( $data['items'] ) );
 	}
 
 	/**
