@@ -19,7 +19,7 @@ const RadioControl = ( {
 	return (
 		options.length && (
 			<div
-				className={ classnames( 'wc-blocks-radio-control', className ) }
+				className={ classnames( 'wc-block-radio-control', className ) }
 			>
 				{ options.map( ( option ) => (
 					<RadioControlOption
