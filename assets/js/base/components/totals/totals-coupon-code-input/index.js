@@ -8,13 +8,14 @@ import Button from '@woocommerce/base-components/button';
 import TextInput from '@woocommerce/base-components/text-input';
 import Label from '@woocommerce/base-components/label';
 import PropTypes from 'prop-types';
+import withComponentId from '@woocommerce/base-hocs/with-component-id';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
 
-const TotalsCouponCodeInput = ( { onSubmit } ) => {
+const TotalsCouponCodeInput = ( { componentId, onSubmit } ) => {
 	const [ couponValue, setCouponValue ] = useState( '' );
 	return (
 		<PanelBody
@@ -29,12 +30,14 @@ const TotalsCouponCodeInput = ( { onSubmit } ) => {
 						'Introduce Coupon Code',
 						'woo-gutenberg-products-block'
 					) }
+					htmlFor={ `wc-block-coupon-code__input-${ componentId }` }
 				/>
 			}
 			initialOpen={ false }
 		>
 			<PanelRow className="wc-block-coupon-code__row">
 				<TextInput
+					id={ `wc-block-coupon-code__input-${ componentId }` }
 					className="wc-block-coupon-code__input"
 					label={ __( 'Enter code', 'woo-gutenberg-products-block' ) }
 					value={ couponValue }
@@ -60,4 +63,4 @@ TotalsCouponCodeInput.propTypes = {
 	onSubmit: PropTypes.func,
 };
 
-export default TotalsCouponCodeInput;
+export default withComponentId( TotalsCouponCodeInput );
