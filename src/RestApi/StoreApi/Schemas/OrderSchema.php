@@ -145,12 +145,12 @@ class OrderSchema extends AbstractSchema {
 						'context'     => [ 'view', 'edit' ],
 						'readonly'    => true,
 					],
-					'customer_note'       => [
-						'description' => __( 'Note added to the order by the customer during checkout.', 'woo-gutenberg-products-block' ),
-						'type'        => 'string',
-						'context'     => [ 'view', 'edit' ],
-					],
 				],
+			],
+			'customer_note'      => [
+				'description' => __( 'Note added to the order by the customer during checkout.', 'woo-gutenberg-products-block' ),
+				'type'        => 'string',
+				'context'     => [ 'view', 'edit' ],
 			],
 			'billing_address'    => [
 				'description' => __( 'Billing address.', 'woo-gutenberg-products-block' ),
@@ -267,30 +267,6 @@ class OrderSchema extends AbstractSchema {
 					],
 				],
 			],
-			'payment'            => [
-				'description' => __( 'Payment provider and transaction information.', 'woo-gutenberg-products-block' ),
-				'type'        => 'object',
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
-				'properties'  => [
-					'payment_method'       => [
-						'description' => __( 'Payment method ID.', 'woo-gutenberg-products-block' ),
-						'type'        => 'string',
-						'context'     => [ 'view', 'edit' ],
-					],
-					'payment_method_title' => [
-						'description' => __( 'Payment method title.', 'woo-gutenberg-products-block' ),
-						'type'        => 'string',
-						'context'     => [ 'view', 'edit' ],
-					],
-					'transaction_id'       => [
-						'description' => __( 'Unique transaction ID.', 'woo-gutenberg-products-block' ),
-						'type'        => 'string',
-						'context'     => [ 'view', 'edit' ],
-						'readonly'    => true,
-					],
-				],
-			],
 			'coupons'            => [
 				'description' => __( 'List of applied cart coupons.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
@@ -329,21 +305,25 @@ class OrderSchema extends AbstractSchema {
 							'description' => __( 'Shipping method name.', 'woo-gutenberg-products-block' ),
 							'type'        => 'mixed',
 							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
 						],
 						'method_id'    => [
 							'description' => __( 'Shipping method ID.', 'woo-gutenberg-products-block' ),
 							'type'        => 'mixed',
 							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
 						],
 						'instance_id'  => [
 							'description' => __( 'Shipping instance ID.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
 						],
 						'total'        => [
 							'description' => __( 'Line total (after discounts).', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
 						],
 						'total_tax'    => [
 							'description' => __( 'Line total tax (after discounts).', 'woo-gutenberg-products-block' ),
@@ -495,8 +475,8 @@ class OrderSchema extends AbstractSchema {
 				'customer_id'         => $object->get_customer_id(),
 				'customer_ip_address' => $object->get_customer_ip_address(),
 				'customer_user_agent' => $object->get_customer_user_agent(),
-				'customer_note'       => $object->get_customer_note(),
 			],
+			'customer_note'      => $object->get_customer_note(),
 			'billing_address'    => [
 				'first_name' => $object->get_billing_first_name(),
 				'last_name'  => $object->get_billing_last_name(),
@@ -520,11 +500,6 @@ class OrderSchema extends AbstractSchema {
 				'state'      => $object->get_shipping_state(),
 				'postcode'   => $object->get_shipping_postcode(),
 				'country'    => $object->get_shipping_country(),
-			],
-			'payment'            => [
-				'payment_method'       => $object->get_payment_method(),
-				'payment_method_title' => $object->get_payment_method_title(),
-				'transaction_id'       => $object->get_transaction_id(),
 			],
 			'items'              => array_values( array_map( [ $order_item_schema, 'get_item_response' ], $object->get_items( 'line_item' ) ) ),
 			'totals'             => array_merge(

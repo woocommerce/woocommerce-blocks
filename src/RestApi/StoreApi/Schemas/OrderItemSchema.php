@@ -29,12 +29,6 @@ class OrderItemSchema extends AbstractSchema {
 	 */
 	protected function get_properties() {
 		return [
-			'item_id'   => [
-				'description' => __( 'Unique identifier for the item within the order.', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
-			],
 			'id'        => [
 				'description' => __( 'The item product or variation ID.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
@@ -190,14 +184,13 @@ class OrderItemSchema extends AbstractSchema {
 		$product = $line_item->get_product();
 
 		return [
-			'item_id'   => $line_item->get_id(),
 			'id'        => $line_item->get_variation_id() ? $line_item->get_variation_id() : $line_item->get_product_id(),
 			'quantity'  => $line_item->get_quantity(),
 			'name'      => $product ? $product->get_title() : null,
 			'sku'       => $product ? $product->get_sku() : null,
 			'permalink' => $product ? $product->get_permalink() : null,
 			'images'    => $product ? ( new ProductImages() )->images_to_array( $product ) : null,
-			// 'variation' => $this->format_variation_data( $cart_item['variation'], $product ),
+			'variation' => $this->format_variation_data( $line_item, $product ),
 			'totals'    => array_merge(
 				$this->get_store_currency_response(),
 				[
@@ -211,17 +204,26 @@ class OrderItemSchema extends AbstractSchema {
 	}
 
 	/**
-	 * Format variation data, for example convert slugs such as attribute_pa_size to Size.
+	 * Format variation data. For line items we get meta data and format it.
 	 *
-	 * @param array       $variation_data Array of data from the cart.
-	 * @param \WC_Product $product Product data.
+	 * @param \WC_Order_Item_Product $line_item Line item from the order.
+	 * @param \WC_Product            $product Product data.
 	 * @return array
 	 */
-	protected function format_variation_data( $variation_data, $product ) {
-		$return = [];
+	protected function format_variation_data( $line_item, $product ) {
+		$return         = [];
+		$line_item_meta = $line_item->get_meta_data();
+		$attribute_keys = array_keys( $product->get_attributes() );
 
-		foreach ( $variation_data as $key => $value ) {
-			$taxonomy = wc_attribute_taxonomy_name( str_replace( 'attribute_pa_', '', urldecode( $key ) ) );
+		foreach ( $line_item_meta as $meta ) {
+			$key   = $meta->key;
+			$value = $meta->value;
+
+			if ( ! in_array( $key, $attribute_keys, true ) ) {
+				continue;
+			}
+
+			$taxonomy = wc_attribute_taxonomy_name( str_replace( 'pa_', '', urldecode( $key ) ) );
 
 			if ( taxonomy_exists( $taxonomy ) ) {
 				// If this is a term slug, get the term's nice name.
@@ -233,7 +235,7 @@ class OrderItemSchema extends AbstractSchema {
 			} else {
 				// If this is a custom option slug, get the options name.
 				$value = apply_filters( 'woocommerce_variation_option_name', $value, null, $taxonomy, $product );
-				$label = wc_attribute_label( str_replace( 'attribute_', '', $name ), $product );
+				$label = wc_attribute_label( $name, $product );
 			}
 
 			$return[ $label ] = $value;
