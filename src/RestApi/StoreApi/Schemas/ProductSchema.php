@@ -333,8 +333,8 @@ class ProductSchema extends AbstractSchema {
 
 			if ( min( $prices['price'] ) !== max( $prices['price'] ) ) {
 				return [
-					'min_amount' => 'incl' === $tax_display_mode ? wc_get_price_including_tax( $product, [ 'price' => min( $prices['price'] ) ] ) : wc_get_price_excluding_tax( $product, [ 'price' => min( $prices['price'] ) ] ),
-					'max_amount' => 'incl' === $tax_display_mode ? wc_get_price_including_tax( $product, [ 'price' => max( $prices['price'] ) ] ) : wc_get_price_excluding_tax( $product, [ 'price' => max( $prices['price'] ) ] ),
+					'min_amount' => min( $prices['price'] ),
+					'max_amount' => max( $prices['price'] ),
 				];
 			}
 		}
@@ -342,10 +342,11 @@ class ProductSchema extends AbstractSchema {
 		if ( $product->is_type( 'grouped' ) ) {
 			$tax_display_mode = get_option( 'woocommerce_tax_display_shop' );
 			$children         = array_filter( array_map( 'wc_get_product', $product->get_children() ), 'wc_products_array_filter_visible_grouped' );
+			$price_function   = 'incl' === $tax_display_mode ? 'wc_get_price_including_tax' : 'wc_get_price_excluding_tax';
 
 			foreach ( $children as $child ) {
 				if ( '' !== $child->get_price() ) {
-					$child_prices[] = 'incl' === $tax_display_mode ? wc_get_price_including_tax( $child ) : wc_get_price_excluding_tax( $child );
+					$child_prices[] = $price_function( $child );
 				}
 			}
 
