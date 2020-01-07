@@ -9,13 +9,26 @@ import PropTypes from 'prop-types';
 import './style.scss';
 
 const QuantitySelector = ( { quantity, onChange } ) => {
+	// For now just use a regular number edit.
+	// TODO Replace this with custom control based on design (follow up PR).
 	return (
-		<div className="wc-block-quantity-selector">
-			<button onClick={ () => onChange( quantity - 1 ) }>-</button>
-			<span>{ quantity }</span>
-			<button onClick={ () => onChange( quantity + 1 ) }>+</button>
-		</div>
+		<input
+			className="wc-block-quantity-selector-input"
+			type="number"
+			step="1"
+			min="0"
+			value={ quantity }
+			onChange={ ( event ) => onChange( event.target.value ) }
+		/>
 	);
+
+	// return (
+	// 	<div className="wc-block-quantity-selector">
+	// 		<button onClick={ () => onChange( quantity - 1 ) }>-</button>
+	// 		<span>{ quantity }</span>
+	// 		<button onClick={ () => onChange( quantity + 1 ) }>+</button>
+	// 	</div>
+	// );
 };
 
 QuantitySelector.propTypes = {
