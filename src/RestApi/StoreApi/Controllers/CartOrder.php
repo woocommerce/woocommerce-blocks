@@ -296,6 +296,7 @@ class CartOrder extends RestController {
 
 		WC()->checkout->create_order_line_items( $order, WC()->cart );
 		WC()->checkout->create_order_fee_lines( $order, WC()->cart );
+		// @todo This may need revision during checkout implementation in order to store chosen shipping options rather than those from the cart.
 		WC()->checkout->create_order_shipping_lines( $order, WC()->session->get( 'chosen_shipping_methods' ), WC()->shipping()->get_packages() );
 		WC()->checkout->create_order_tax_lines( $order, WC()->cart );
 		WC()->checkout->create_order_coupon_lines( $order, WC()->cart );
