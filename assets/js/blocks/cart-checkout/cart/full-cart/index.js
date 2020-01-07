@@ -81,30 +81,30 @@ const getTotalRowsConfig = ( cartTotals ) => {
 	return totalRowsConfig;
 };
 
+// @todo this are placeholders
+const onActivateCoupon = ( couponCode ) => {
+	// eslint-disable-next-line no-console
+	console.log( 'coupon activated: ' + couponCode );
+};
+const cartTotals = {
+	currency: 'EUR',
+	currency_minor_unit: 2,
+	total_items: '6000',
+	total_items_tax: '0',
+	total_fees: '0',
+	total_fees_tax: '0',
+	total_discount: '0',
+	total_discount_tax: '0',
+	total_shipping: '0',
+	total_shipping_tax: '0',
+	total_tax: '0',
+	total_price: '6000',
+};
+
 /**
  * Component that renders the Cart block when user has something in cart aka "full".
  */
 const Cart = () => {
-	// @todo this are placeholders
-	const onActivateCoupon = ( couponCode ) => {
-		// eslint-disable-next-line no-console
-		console.log( 'coupon activated: ' + couponCode );
-	};
-	const cartTotals = {
-		currency: 'EUR',
-		currency_minor_unit: 2,
-		total_items: '6000',
-		total_items_tax: '0',
-		total_fees: '0',
-		total_fees_tax: '0',
-		total_discount: '0',
-		total_discount_tax: '0',
-		total_shipping: '0',
-		total_shipping_tax: '0',
-		total_tax: '0',
-		total_price: '6000',
-	};
-
 	const currency = getCurrencyFromPriceResponse( cartTotals );
 	const totalRowsConfig = getTotalRowsConfig( cartTotals );
 
