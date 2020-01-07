@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { useState } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import QuantitySelector from '@woocommerce/base-components/cart/quantity-selector';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
@@ -38,6 +39,9 @@ const CartProductsTableItem = ( {
 					quantity={ lineQuantity }
 					onChange={ setLineQuantity }
 				/>
+				<div className="wc-block-cart__items-remove-link" href="#">
+					{ __( 'Remove item', 'woo-gutenberg-products-block' ) }
+				</div>
 			</td>
 			<td>
 				{ fullPrice }
