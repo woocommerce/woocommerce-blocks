@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
-import { PanelBody, PanelRow } from '@wordpress/components';
+import { PanelBody, PanelRow } from 'wordpress-components';
 import Button from '@woocommerce/base-components/button';
 import TextInput from '@woocommerce/base-components/text-input';
 import Label from '@woocommerce/base-components/label';
