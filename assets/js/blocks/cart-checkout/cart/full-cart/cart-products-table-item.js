@@ -4,6 +4,8 @@
 import { useState } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import QuantitySelector from '@woocommerce/base-components/cart/quantity-selector';
+import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
+import { getCurrency } from '@woocommerce/base-utils';
 
 const CartProductsTableItem = ( {
 	name,
@@ -13,6 +15,7 @@ const CartProductsTableItem = ( {
 	total,
 } ) => {
 	const [ lineQuantity, setLineQuantity ] = useState( quantity );
+	const currency = getCurrency();
 
 	return (
 		<tr>
@@ -26,7 +29,12 @@ const CartProductsTableItem = ( {
 					onChange={ setLineQuantity }
 				/>
 			</td>
-			<td>{ total }</td>
+			<td>
+				<FormattedMonetaryAmount
+					currency={ currency }
+					value={ total }
+				/>
+			</td>
 		</tr>
 	);
 };
