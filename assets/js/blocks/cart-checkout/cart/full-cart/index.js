@@ -49,7 +49,7 @@ const getTotalRows = ( cartTotals ) => {
 		} );
 	}
 	const totalDiscount = parseInt( cartTotals.total_discount );
-	if ( parseInt( totalDiscount ) > 0 ) {
+	if ( totalDiscount > 0 ) {
 		const totalDiscountTax = parseInt( cartTotals.total_discount_tax );
 		totalRows.push( {
 			label: __( 'Discount:', 'woo-gutenberg-products-block' ),
