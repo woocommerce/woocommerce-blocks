@@ -27,10 +27,10 @@ import './style.scss';
  * @param {Object} cartTotals - Cart totals data as provided by the API.
  * @returns {Object[]} Values to display in the cart block.
  */
-const getTotalRows = ( cartTotals ) => {
+const getTotalRowsConfig = ( cartTotals ) => {
 	const totalItems = parseInt( cartTotals.total_items, 10 );
 	const totalItemsTax = parseInt( cartTotals.total_items_tax, 10 );
-	const totalRows = [
+	const totalRowsConfig = [
 		{
 			label: __( 'List items:', 'woo-gutenberg-products-block' ),
 			value: DISPLAY_PRICES_INCLUDING_TAXES
@@ -41,7 +41,7 @@ const getTotalRows = ( cartTotals ) => {
 	const totalFees = parseInt( cartTotals.total_fees, 10 );
 	if ( totalFees > 0 ) {
 		const totalFeesTax = parseInt( cartTotals.total_fees_tax, 10 );
-		totalRows.push( {
+		totalRowsConfig.push( {
 			label: __( 'Fees:', 'woo-gutenberg-products-block' ),
 			value: DISPLAY_PRICES_INCLUDING_TAXES
 				? totalFees + totalFeesTax
@@ -51,7 +51,7 @@ const getTotalRows = ( cartTotals ) => {
 	const totalDiscount = parseInt( cartTotals.total_discount, 10 );
 	if ( totalDiscount > 0 ) {
 		const totalDiscountTax = parseInt( cartTotals.total_discount_tax, 10 );
-		totalRows.push( {
+		totalRowsConfig.push( {
 			label: __( 'Discount:', 'woo-gutenberg-products-block' ),
 			value: DISPLAY_PRICES_INCLUDING_TAXES
 				? totalDiscount + totalDiscountTax
@@ -60,14 +60,14 @@ const getTotalRows = ( cartTotals ) => {
 	}
 	if ( ! DISPLAY_PRICES_INCLUDING_TAXES ) {
 		const totalTax = parseInt( cartTotals.total_tax, 10 );
-		totalRows.push( {
+		totalRowsConfig.push( {
 			label: __( 'Taxes:', 'woo-gutenberg-products-block' ),
 			value: totalTax,
 		} );
 	}
 	const totalShipping = parseInt( cartTotals.total_shipping, 10 );
 	const totalShippingTax = parseInt( cartTotals.total_shipping_tax, 10 );
-	totalRows.push( {
+	totalRowsConfig.push( {
 		label: __( 'Shipping:', 'woo-gutenberg-products-block' ),
 		value: DISPLAY_PRICES_INCLUDING_TAXES
 			? totalShipping + totalShippingTax
@@ -78,7 +78,7 @@ const getTotalRows = ( cartTotals ) => {
 		),
 	} );
 
-	return totalRows;
+	return totalRowsConfig;
 };
 
 /**
@@ -106,7 +106,7 @@ const Cart = () => {
 	};
 
 	const currency = getCurrencyFromPriceResponse( cartTotals );
-	const totalRows = getTotalRows( cartTotals );
+	const totalRowsConfig = getTotalRowsConfig( cartTotals );
 
 	const [ selectedShippingOption, setSelectedShippingOption ] = useState(
 		placeholderShippingMethods[ 0 ].value
@@ -123,7 +123,7 @@ const Cart = () => {
 				<h2 className="wc-block-cart__totals-title">
 					{ __( 'Cart totals', 'woo-gutenberg-products-block' ) }
 				</h2>
-				{ totalRows.map( ( { label, value, description } ) => (
+				{ totalRowsConfig.map( ( { label, value, description } ) => (
 					<TotalsItem
 						key={ label }
 						currency={ currency }
