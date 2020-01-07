@@ -19,6 +19,62 @@ class Library {
 	 */
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'register_blocks' ) );
+		add_action( 'init', array( __CLASS__, 'define_tables' ) );
+		add_action( 'init', array( __CLASS__, 'maybe_create_tables' ) );
+		add_filter( 'wc_order_statuses', array( __CLASS__, 'register_draft_order_status' ) );
+	}
+
+	/**
+	 * Register custom tables within $wpdb object.
+	 */
+	public static function define_tables() {
+		global $wpdb;
+
+		// List of tables without prefixes.
+		$tables = array(
+			'wc_reserved_stock' => 'wc_reserved_stock',
+		);
+
+		foreach ( $tables as $name => $table ) {
+			$wpdb->$name    = $wpdb->prefix . $table;
+			$wpdb->tables[] = $table;
+		}
+	}
+
+	/**
+	 * Set up the database tables which the plugin needs to function.
+	 */
+	public static function maybe_create_tables() {
+		$db_version = get_option( 'wc_blocks_db_version', 0 );
+
+		if ( version_compare( $db_version, \Automattic\WooCommerce\Blocks\Package::get_version(), '>=' ) ) {
+			return;
+		}
+
+		global $wpdb;
+
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+
+		$wpdb->hide_errors();
+		$collate = '';
+
+		if ( $wpdb->has_cap( 'collation' ) ) {
+			$collate = $wpdb->get_charset_collate();
+		}
+
+		dbDelta(
+			"
+			CREATE TABLE {$wpdb->prefix}wc_reserved_stock (
+				`order_id` bigint(20) NOT NULL,
+				`product_id` bigint(20) NOT NULL,
+				`stock_quantity` double NOT NULL DEFAULT 0,
+				`timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				PRIMARY KEY  (`order_id`, `product_id`)
+			) $collate;
+			"
+		);
+
+		update_option( 'wc_blocks_db_version', \Automattic\WooCommerce\Blocks\Package::get_version() );
 	}
 
 	/**
@@ -58,5 +114,18 @@ class Library {
 			$instance = new $class();
 			$instance->register_block_type();
 		}
+	}
+
+	/**
+	 * Register custom order status for orders created via the API during checkout.
+	 *
+	 * Draft order status is used before payment is attempted, during checkout, when a cart is converted to an order.
+	 *
+	 * @param array $statuses Array of statuses.
+	 * @return array
+	 */
+	public static function register_draft_order_status( $statuses ) {
+		$statuses['wc-draft'] = _x( 'Draft', 'Order status', 'woo-gutenberg-products-block' );
+		return $statuses;
 	}
 }

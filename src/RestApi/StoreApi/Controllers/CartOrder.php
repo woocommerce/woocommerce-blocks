@@ -83,42 +83,129 @@ class CartOrder extends RestController {
 	 * @return RestError|RestResponse
 	 */
 	public function create_item( $request ) {
-		$schema = $this->get_item_schema();
+		add_filter( 'woocommerce_default_order_status', array( $this, 'default_order_status' ) );
 
 		try {
-			$order = $this->create_order_from_cart( $request );
+			// Create or retrieve the draft order for the current cart.
+			$order_object  = $this->create_order_from_cart( $request );
+			$reserve_stock = $this->reserve_stock_for_draft_order( $order_object );
 
-			// Store data sent with the request.
-			if ( isset( $request['billing_address'] ) ) {
-				$allowed_billing_values = array_intersect_key( $request['billing_address'], $schema['properties']['billing_address']['properties'] );
-				foreach ( $allowed_billing_values as $key => $value ) {
-					$order->{"set_billing_$key"}( $value );
-				}
+			if ( is_wp_error( $reserve_stock ) ) {
+				// Something went wrong - return error.
+				$response = $reserve_stock;
+			} else {
+				$response = $this->prepare_item_for_response( $order_object, $request );
+				$response->set_status( 201 );
 			}
-
-			if ( isset( $request['shipping_address'] ) ) {
-				$allowed_shipping_values = array_intersect_key( $request['shipping_address'], $schema['properties']['shipping_address']['properties'] );
-				foreach ( $allowed_shipping_values as $key => $value ) {
-					$order->{"set_shipping_$key"}( $value );
-				}
-			}
-
-			if ( isset( $request['customer_note'] ) ) {
-				$order->set_customer_note( $request['customer_note'] );
-			}
-
-			$order->save();
-
-			// Store Order ID in session so we can look it up later.
-			WC()->session->set( 'order_awaiting_payment', $order->get_id() );
-
-			$response = $this->prepare_item_for_response( $order, $request );
-			$response->set_status( 201 );
-
-			return $response;
 		} catch ( Exception $e ) {
-			return new RestError( 'checkout-error', $e->getMessage() );
+			$response = new RestError( 'checkout-error', $e->getMessage() );
 		}
+
+		remove_filter( 'woocommerce_default_order_status', array( $this, 'default_order_status' ) );
+
+		return $response;
+	}
+
+	/**
+	 * Put a temporary hold on stock for this order.
+	 *
+	 * @throws RestException Exception when stock cannot be reserved.
+	 * @param \WC_Order $order Order object.
+	 * @return bool|RestError
+	 */
+	protected function reserve_stock_for_draft_order( $order ) {
+		global $wpdb;
+
+		try {
+			// Remove any holds that already exist for this order.
+			$wpdb->delete( $wpdb->wc_reserved_stock, [ 'order_id' => $order->get_id() ] );
+
+			$hold_stock_minutes = (int) get_option( 'woocommerce_hold_stock_minutes', 0 );
+			$stock_to_reserve   = [];
+
+			// Loop over line items and check each item may be purchased.
+			foreach ( $order->get_items() as $item ) {
+				if ( ! $item->is_type( 'line_item' ) ) {
+					continue;
+				}
+
+				$product = $item->get_product();
+
+				if ( ! $product->is_in_stock() ) {
+					throw new RestException(
+						'woocommerce_rest_cart_order_product_not_in_stock',
+						sprintf(
+							/* translators: %s: product name */
+							__( '%s is out of stock and cannot be purchased.', 'woo-gutenberg-products-block' ),
+							$product->get_name()
+						),
+						403
+					);
+				}
+
+				// If stock management if off, no need to reserve any stock here.
+				if ( ! $product->managing_stock() || $product->backorders_allowed() ) {
+					continue;
+				}
+
+				$stocked_product_id = $product->get_stock_managed_by_id();
+
+				if ( ! isset( $stock_to_reserve[ $stocked_product_id ] ) ) {
+					$stock_to_reserve[ $stocked_product_id ] = 0;
+				}
+
+				// Query for any existing holds on stock for this item. @todo join for post status.
+				$reserved_stock = $wpdb->get_var(
+					$wpdb->prepare(
+						"
+						SELECT SUM( stock_table.`stock_quantity` ) FROM $wpdb->wc_reserved_stock stock_table
+						LEFT JOIN $wpdb->posts posts ON stock_table.`order_id` = posts.ID
+						WHERE stock_table.`product_id` = %d
+						AND posts.post_status = 'wc-draft'
+						",
+						$stocked_product_id
+					)
+				);
+
+				// Deals with legacy stock reservation which the core Woo checkout performs.
+				$reserved_stock += ( $hold_stock_minutes > 0 ) ? wc_get_held_stock_quantity( $product ) : 0;
+
+				if ( ( $product->get_stock_quantity() - $reserved_stock - $stock_to_reserve[ $stocked_product_id ] ) < $item->get_quantity() ) {
+					throw new RestException(
+						'woocommerce_rest_cart_order_product_not_enough_stock',
+						sprintf(
+							/* translators: %s: product name */
+							__( 'Not enough units of %s are available in stock to fulfil this order.', 'woo-gutenberg-products-block' ),
+							$product->get_name()
+						),
+						403
+					);
+				}
+
+				// Queue this reservation for later DB insertion.
+				$stock_to_reserve[ $stocked_product_id ] += $item->get_quantity();
+			}
+
+			$stock_to_reserve = array_filter( $stock_to_reserve );
+
+			if ( $stock_to_reserve ) {
+				$stock_to_reserve_rows = [];
+
+				foreach ( $stock_to_reserve as $product_id => $stock_quantity ) {
+					$stock_to_reserve_rows[] = '(' . esc_sql( $order->get_id() ) . ',"' . esc_sql( $product_id ) . '","' . esc_sql( $stock_quantity ) . '")';
+				}
+
+				$values = implode( ',', $stock_to_reserve_rows );
+
+				$wpdb->query(
+					"INSERT INTO {$wpdb->wc_reserved_stock} ( order_id, product_id, stock_quantity ) VALUES {$values};" // phpcs:ignore
+				);
+			}
+		} catch ( RestException $e ) {
+			return new RestError( $e->getErrorCode(), $e->getMessage(), array( 'status' => $e->getCode() ) );
+		}
+
+		return true;
 	}
 
 	/**
@@ -128,7 +215,8 @@ class CartOrder extends RestController {
 	 * @return \WC_Order A new order object.
 	 */
 	protected function create_order_from_cart( $request ) {
-		$order = new \WC_Order();
+		$order = $this->get_order_object();
+		$order->set_status( 'draft' );
 		$order->set_created_via( 'store-api' );
 		$order->set_currency( get_woocommerce_currency() );
 		$order->set_prices_include_tax( 'yes' === get_option( 'woocommerce_prices_include_tax' ) );
@@ -138,8 +226,39 @@ class CartOrder extends RestController {
 
 		$this->set_props_from_cart( $order, $request );
 		$this->create_line_items_from_cart( $order, $request );
+		$this->set_props_from_request( $order, $request );
+
+		$order->save();
+
+		// Store Order ID in session so we can look it up later.
+		WC()->session->set( 'draft_order_id', $order->get_id() );
 
 		return $order;
+	}
+
+	/**
+	 * Get an order object, either using a current draft order, or returning a new one.
+	 *
+	 * @return \WC_Order A new order object.
+	 */
+	protected function get_order_object() {
+		$draft_order_id = WC()->session->get( 'draft_order_id' );
+		$draft_order    = $draft_order_id ? wc_get_order( $draft_order_id ) : false;
+
+		if ( $draft_order && $draft_order->has_status( 'draft' ) && 'store-api' === $draft_order->get_created_via() ) {
+			return $draft_order;
+		}
+
+		return new \WC_Order();
+	}
+
+	/**
+	 * Changes default order status to draft for orders created via this API.
+	 *
+	 * @return string
+	 */
+	public function default_order_status() {
+		return 'draft';
 	}
 
 	/**
@@ -149,14 +268,13 @@ class CartOrder extends RestController {
 	 * @param RestRequest $request Full details about the request.
 	 */
 	protected function set_props_from_cart( &$order, $request ) {
-		$order->set_cart_hash( WC()->cart->get_cart_hash() );
 		$order->set_shipping_total( WC()->cart->get_shipping_total() );
 		$order->set_discount_total( WC()->cart->get_discount_total() );
 		$order->set_discount_tax( WC()->cart->get_discount_tax() );
 		$order->set_cart_tax( WC()->cart->get_cart_contents_tax() + WC()->cart->get_fee_tax() );
 		$order->set_shipping_tax( WC()->cart->get_shipping_tax() );
 		$order->set_total( WC()->cart->get_total( 'edit' ) );
-		$order->add_meta_data( 'is_vat_exempt', WC()->cart->get_customer()->get_is_vat_exempt() ? 'yes' : 'no' );
+		$order->update_meta_data( 'is_vat_exempt', WC()->cart->get_customer()->get_is_vat_exempt() ? 'yes' : 'no' );
 	}
 
 	/**
@@ -166,11 +284,51 @@ class CartOrder extends RestController {
 	 * @param RestRequest $request Full details about the request.
 	 */
 	protected function create_line_items_from_cart( &$order, $request ) {
+		$draft_order_cart_hash = $order->get_cart_hash();
+
+		if ( WC()->cart->get_cart_hash() === $draft_order_cart_hash ) {
+			return;
+		}
+
+		if ( $draft_order_cart_hash ) {
+			$order->remove_order_items();
+		}
+
 		WC()->checkout->create_order_line_items( $order, WC()->cart );
 		WC()->checkout->create_order_fee_lines( $order, WC()->cart );
 		WC()->checkout->create_order_shipping_lines( $order, WC()->session->get( 'chosen_shipping_methods' ), WC()->shipping()->get_packages() );
 		WC()->checkout->create_order_tax_lines( $order, WC()->cart );
 		WC()->checkout->create_order_coupon_lines( $order, WC()->cart );
+
+		$order->set_cart_hash( WC()->cart->get_cart_hash() );
+	}
+
+	/**
+	 * Set props from API request.
+	 *
+	 * @param \WC_Order   $order Object to prepare for the response.
+	 * @param RestRequest $request Full details about the request.
+	 */
+	protected function set_props_from_request( &$order, $request ) {
+		$schema = $this->get_item_schema();
+
+		if ( isset( $request['billing_address'] ) ) {
+			$allowed_billing_values = array_intersect_key( $request['billing_address'], $schema['properties']['billing_address']['properties'] );
+			foreach ( $allowed_billing_values as $key => $value ) {
+				$order->{"set_billing_$key"}( $value );
+			}
+		}
+
+		if ( isset( $request['shipping_address'] ) ) {
+			$allowed_shipping_values = array_intersect_key( $request['shipping_address'], $schema['properties']['shipping_address']['properties'] );
+			foreach ( $allowed_shipping_values as $key => $value ) {
+				$order->{"set_shipping_$key"}( $value );
+			}
+		}
+
+		if ( isset( $request['customer_note'] ) ) {
+			$order->set_customer_note( $request['customer_note'] );
+		}
 	}
 
 	/**
