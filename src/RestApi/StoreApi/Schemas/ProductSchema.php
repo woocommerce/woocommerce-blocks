@@ -281,7 +281,7 @@ class ProductSchema extends AbstractSchema {
 		$price_function   = 'incl' === $tax_display_mode ? 'wc_get_price_including_tax' : 'wc_get_price_excluding_tax';
 
 		if ( $product->is_type( 'variable' ) ) {
-			$prices = $product->get_variation_prices( true );
+			$prices = $product->get_variation_prices( false );
 
 			if ( min( $prices['price'] ) !== max( $prices['price'] ) ) {
 				return [
