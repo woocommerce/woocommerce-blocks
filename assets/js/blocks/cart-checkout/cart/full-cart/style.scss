@@ -11,6 +11,29 @@
 	float: right;
 }
 
+table.wc-block-cart__items {
+	th,
+	td {
+		border-bottom: 1px solid $core-grey-light-600;
+	}
+
+	th {
+		// overriding table:not( .has-background ) presumably from theme
+		background-color: transparent !important;
+		padding: 0.5em 0;
+		text-transform: uppercase;
+	}
+
+	td {
+		padding: 1em;
+	}
+
+	td.wc-block-cart__items-image {
+		padding-left: 1em;
+		max-width: 60px;
+	}
+}
+
 @include breakpoint( ">782px" ) {
 	.wc-block-cart {
 		display: flex;

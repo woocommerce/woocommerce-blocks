@@ -3,9 +3,18 @@
  */
 import PropTypes from 'prop-types';
 
-const CartProductsTableItem = ( { name, quantity, total } ) => {
+const CartProductsTableItem = ( {
+	name,
+	imageUrl,
+	imageAltText,
+	quantity,
+	total,
+} ) => {
 	return (
 		<tr>
+			<td className="wc-block-cart__items-image">
+				<img src={ imageUrl } alt={ imageAltText } />
+			</td>
 			<td>{ name }</td>
 			<td>{ quantity }</td>
 			<td>{ total }</td>
@@ -15,6 +24,8 @@ const CartProductsTableItem = ( { name, quantity, total } ) => {
 
 CartProductsTableItem.propTypes = {
 	name: PropTypes.string,
+	imageUrl: PropTypes.string,
+	imageAltText: PropTypes.string,
 	quantity: PropTypes.number,
 	total: PropTypes.string,
 };
