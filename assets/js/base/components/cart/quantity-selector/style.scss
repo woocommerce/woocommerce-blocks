@@ -1,0 +1,21 @@
+.wc-block-quantity-selector {
+	border-radius: 2px;
+	border: 1px solid $core-grey-light-500;
+	display: inline-block;
+
+	span {
+		padding: 0.5em;
+	}
+
+	button {
+		border-style: none;
+		background-color: transparent;
+		width: 30px;
+		height: 30px;
+		vertical-align: middle;
+
+		&:hover {
+			background-color: transparent;
+		}
+	}
+}
