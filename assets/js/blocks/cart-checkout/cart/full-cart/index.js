@@ -28,8 +28,8 @@ import './style.scss';
  * @returns {Object[]} Values to display in the cart block.
  */
 const getTotalRows = ( cartTotals ) => {
-	const totalItems = parseInt( cartTotals.total_items );
-	const totalItemsTax = parseInt( cartTotals.total_items_tax );
+	const totalItems = parseInt( cartTotals.total_items, 10 );
+	const totalItemsTax = parseInt( cartTotals.total_items_tax, 10 );
 	const totalRows = [
 		{
 			label: __( 'List items:', 'woo-gutenberg-products-block' ),
@@ -38,9 +38,9 @@ const getTotalRows = ( cartTotals ) => {
 				: totalItems,
 		},
 	];
-	const totalFees = parseInt( cartTotals.total_fees );
+	const totalFees = parseInt( cartTotals.total_fees, 10 );
 	if ( totalFees > 0 ) {
-		const totalFeesTax = parseInt( cartTotals.total_fees_tax );
+		const totalFeesTax = parseInt( cartTotals.total_fees_tax, 10 );
 		totalRows.push( {
 			label: __( 'Fees:', 'woo-gutenberg-products-block' ),
 			value: DISPLAY_PRICES_INCLUDING_TAXES
@@ -48,9 +48,9 @@ const getTotalRows = ( cartTotals ) => {
 				: totalFees,
 		} );
 	}
-	const totalDiscount = parseInt( cartTotals.total_discount );
+	const totalDiscount = parseInt( cartTotals.total_discount, 10 );
 	if ( totalDiscount > 0 ) {
-		const totalDiscountTax = parseInt( cartTotals.total_discount_tax );
+		const totalDiscountTax = parseInt( cartTotals.total_discount_tax, 10 );
 		totalRows.push( {
 			label: __( 'Discount:', 'woo-gutenberg-products-block' ),
 			value: DISPLAY_PRICES_INCLUDING_TAXES
@@ -59,14 +59,14 @@ const getTotalRows = ( cartTotals ) => {
 		} );
 	}
 	if ( ! DISPLAY_PRICES_INCLUDING_TAXES ) {
-		const totalTax = parseInt( cartTotals.total_tax );
+		const totalTax = parseInt( cartTotals.total_tax, 10 );
 		totalRows.push( {
 			label: __( 'Taxes:', 'woo-gutenberg-products-block' ),
 			value: totalTax,
 		} );
 	}
-	const totalShipping = parseInt( cartTotals.total_shipping );
-	const totalShippingTax = parseInt( cartTotals.total_shipping_tax );
+	const totalShipping = parseInt( cartTotals.total_shipping, 10 );
+	const totalShippingTax = parseInt( cartTotals.total_shipping_tax, 10 );
 	totalRows.push( {
 		label: __( 'Shipping:', 'woo-gutenberg-products-block' ),
 		value: DISPLAY_PRICES_INCLUDING_TAXES
@@ -169,7 +169,7 @@ const Cart = () => {
 					className="wc-block-cart__totals-footer"
 					currency={ currency }
 					label={ __( 'Total', 'woo-gutenberg-products-block' ) }
-					value={ parseInt( cartTotals.total_price ) }
+					value={ parseInt( cartTotals.total_price, 10 ) }
 				/>
 				<CheckoutButton />
 			</div>
