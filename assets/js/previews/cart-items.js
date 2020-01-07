@@ -15,22 +15,19 @@ export const previewCartItems = [
 	{
 		id: 1,
 		quantity: 2,
-		name: __(
-			'Beanie',
-			'woo-gutenberg-products-block'
-		),
+		name: __( 'Beanie', 'woo-gutenberg-products-block' ),
 		sku: 'woo-beanie',
 		permalink: 'https://example.org',
 		images: [
-		{
-			id: 10,
-			src: productPicture,
-			thumbnail: productPicture,
-			srcset: '',
-			sizes: '',
-			name: '',
-			alt: '',
-		}
+			{
+				id: 10,
+				src: productPicture,
+				thumbnail: productPicture,
+				srcset: '',
+				sizes: '',
+				name: '',
+				alt: '',
+			},
 		],
 		variation: [],
 		totals: {
@@ -50,22 +47,19 @@ export const previewCartItems = [
 	{
 		id: 1,
 		quantity: 1,
-		name: __(
-			'Cap',
-			'woo-gutenberg-products-block'
-		),
+		name: __( 'Cap', 'woo-gutenberg-products-block' ),
 		sku: 'woo-cap',
 		permalink: 'https://example.org',
 		images: [
-		{
-			id: 11,
-			src: productPicture,
-			thumbnail: productPicture,
-			srcset: '',
-			sizes: '',
-			name: '',
-			alt: '',
-		}
+			{
+				id: 11,
+				src: productPicture,
+				thumbnail: productPicture,
+				srcset: '',
+				sizes: '',
+				name: '',
+				alt: '',
+			},
 		],
 		variation: [],
 		totals: {
@@ -81,5 +75,5 @@ export const previewCartItems = [
 			line_total: '1400',
 			line_total_tax: '0',
 		},
-	}
+	},
 ];
