@@ -32,6 +32,11 @@ table.wc-block-cart__items {
 	td.wc-block-cart__items-image {
 		max-width: 60px;
 	}
+
+	.wc-block-cart__items-full-price {
+		color: $core-grey-light-800;
+		text-decoration: line-through;
+	}
 }
 
 @include breakpoint( ">782px" ) {

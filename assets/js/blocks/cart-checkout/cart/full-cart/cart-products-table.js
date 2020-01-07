@@ -22,6 +22,7 @@ const CartProductsTable = ( { items = [] } ) => {
 				imageAltText={ imageAltText }
 				name={ lineItem.name }
 				quantity={ lineItem.quantity }
+				subtotal={ lineItem.totals.line_subtotal }
 				total={ lineItem.totals.line_total }
 			/>
 		);

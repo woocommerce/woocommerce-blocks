@@ -12,10 +12,20 @@ const CartProductsTableItem = ( {
 	imageUrl,
 	imageAltText,
 	quantity,
+	subtotal,
 	total,
 } ) => {
 	const [ lineQuantity, setLineQuantity ] = useState( quantity );
 	const currency = getCurrency();
+
+	const discounted = subtotal !== total;
+	const fullPrice = discounted ? (
+		<div className="wc-block-cart__items-full-price">
+			<FormattedMonetaryAmount currency={ currency } value={ subtotal } />
+		</div>
+	) : (
+		undefined
+	);
 
 	return (
 		<tr>
@@ -30,10 +40,13 @@ const CartProductsTableItem = ( {
 				/>
 			</td>
 			<td>
-				<FormattedMonetaryAmount
-					currency={ currency }
-					value={ total }
-				/>
+				{ fullPrice }
+				<div>
+					<FormattedMonetaryAmount
+						currency={ currency }
+						value={ total }
+					/>
+				</div>
 			</td>
 		</tr>
 	);
@@ -44,6 +57,7 @@ CartProductsTableItem.propTypes = {
 	imageUrl: PropTypes.string,
 	imageAltText: PropTypes.string,
 	quantity: PropTypes.number,
+	subtotal: PropTypes.string,
 	total: PropTypes.string,
 };
 
