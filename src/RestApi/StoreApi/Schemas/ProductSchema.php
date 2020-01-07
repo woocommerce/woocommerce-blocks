@@ -278,7 +278,6 @@ class ProductSchema extends AbstractSchema {
 	 */
 	protected function get_price_range( \WC_Product $product ) {
 		$tax_display_mode = get_option( 'woocommerce_tax_display_shop' );
-		$price_function   = 'incl' === $tax_display_mode ? 'wc_get_price_including_tax' : 'wc_get_price_excluding_tax';
 
 		if ( $product->is_type( 'variable' ) ) {
 			$prices = $product->get_variation_prices( true );
@@ -292,7 +291,8 @@ class ProductSchema extends AbstractSchema {
 		}
 
 		if ( $product->is_type( 'grouped' ) ) {
-			$children = array_filter( array_map( 'wc_get_product', $product->get_children() ), 'wc_products_array_filter_visible_grouped' );
+			$children       = array_filter( array_map( 'wc_get_product', $product->get_children() ), 'wc_products_array_filter_visible_grouped' );
+			$price_function = 'incl' === $tax_display_mode ? 'wc_get_price_including_tax' : 'wc_get_price_excluding_tax';
 
 			foreach ( $children as $child ) {
 				if ( '' !== $child->get_price() ) {
