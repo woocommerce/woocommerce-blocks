@@ -117,9 +117,6 @@ class CartOrder extends RestController {
 		global $wpdb;
 
 		try {
-			// Remove any holds that already exist for this order.
-			$wpdb->delete( $wpdb->wc_reserved_stock, [ 'order_id' => $order->get_id() ] );
-
 			$hold_stock_minutes = (int) get_option( 'woocommerce_hold_stock_minutes', 0 );
 			$stock_to_reserve   = [];
 
@@ -154,7 +151,10 @@ class CartOrder extends RestController {
 					$stock_to_reserve[ $stocked_product_id ] = 0;
 				}
 
-				// Query for any existing holds on stock for this item. @todo join for post status.
+				// Query for any existing holds on stock for this item.
+				// Ignores reserved stock already made for this order.
+				// Ignores stock for orders which are no longer drafts (assuming real stock reduction was performed).
+				// Ignores stock reserved over 10 mins ago. Client can call this endpoint to renew holds on stock.
 				$reserved_stock = $wpdb->get_var(
 					$wpdb->prepare(
 						"
@@ -162,8 +162,11 @@ class CartOrder extends RestController {
 						LEFT JOIN $wpdb->posts posts ON stock_table.`order_id` = posts.ID
 						WHERE stock_table.`product_id` = %d
 						AND posts.post_status = 'wc-draft'
+						AND stock_table.`order_id` != %d
+						AND stock_table.`timestamp` > ( NOW() - INTERVAL 10 MINUTE )
 						",
-						$stocked_product_id
+						$stocked_product_id,
+						$order->get_id()
 					)
 				);
 
@@ -198,7 +201,7 @@ class CartOrder extends RestController {
 				$values = implode( ',', $stock_to_reserve_rows );
 
 				$wpdb->query(
-					"INSERT INTO {$wpdb->wc_reserved_stock} ( order_id, product_id, stock_quantity ) VALUES {$values};" // phpcs:ignore
+					"REPLACE INTO {$wpdb->wc_reserved_stock} ( order_id, product_id, stock_quantity ) VALUES {$values};" // phpcs:ignore
 				);
 			}
 		} catch ( RestException $e ) {
