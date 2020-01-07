@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { useState } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import QuantitySelector from '@woocommerce/base-components/cart/quantity-selector';
 
@@ -11,6 +12,8 @@ const CartProductsTableItem = ( {
 	quantity,
 	total,
 } ) => {
+	const [ lineQuantity, setLineQuantity ] = useState( quantity );
+
 	return (
 		<tr>
 			<td className="wc-block-cart__items-image">
@@ -18,7 +21,10 @@ const CartProductsTableItem = ( {
 			</td>
 			<td>{ name }</td>
 			<td>
-				<QuantitySelector quantity={ quantity } />
+				<QuantitySelector
+					quantity={ lineQuantity }
+					onChange={ setLineQuantity }
+				/>
 			</td>
 			<td>{ total }</td>
 		</tr>

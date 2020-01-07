@@ -8,12 +8,12 @@ import PropTypes from 'prop-types';
  */
 import './style.scss';
 
-const QuantitySelector = ( { quantity } ) => {
+const QuantitySelector = ( { quantity, onChange } ) => {
 	return (
 		<div className="wc-block-quantity-selector">
-			<button>-</button>
+			<button onClick={ () => onChange( quantity - 1 ) }>-</button>
 			<span>{ quantity }</span>
-			<button>+</button>
+			<button onClick={ () => onChange( quantity + 1 ) }>+</button>
 		</div>
 	);
 };
