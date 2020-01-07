@@ -1160,7 +1160,7 @@ Example response:
 ```json
 {
   "id": 0,
-  "billing": {
+  "billing_address": {
     "first_name": "Margaret",
     "last_name": "Thatchcroft",
     "company": "",
@@ -1173,7 +1173,7 @@ Example response:
     "email": "test@test.com",
     "phone": ""
   },
-  "shipping": {
+  "shipping_address": {
     "first_name": "Margaret",
     "last_name": "Thatchcroft",
     "company": "",
@@ -1209,7 +1209,7 @@ Example response:
 ```json
 {
   "id": 0,
-  "billing": {
+  "billing_address": {
     "first_name": "Margaret",
     "last_name": "Thatchcroft",
     "company": "Test",
@@ -1222,7 +1222,7 @@ Example response:
     "email": "test@test.com",
     "phone": ""
   },
-  "shipping": {
+  "shipping_address": {
     "first_name": "Margaret",
     "last_name": "Thatchcroft",
     "company": "",
