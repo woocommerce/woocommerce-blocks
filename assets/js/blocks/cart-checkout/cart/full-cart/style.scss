@@ -25,7 +25,8 @@ table.wc-block-cart__items {
 	}
 
 	td {
-		padding: 1em 0;
+		padding: 1em;
+		padding-left: 0;
 	}
 
 	td.wc-block-cart__items-image {
@@ -52,7 +53,7 @@ table.wc-block-cart__items {
 
 	table.wc-block-cart__items {
 		td.wc-block-cart__items-image {
-			padding: 1em;
+			padding-left: 1em;
 		}
 	}
 }
