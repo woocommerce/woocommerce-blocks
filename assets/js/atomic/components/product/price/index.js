@@ -13,6 +13,7 @@ const ProductPrice = ( { className, product } ) => {
 		thousandSeparator: prices.thousand_separator,
 		decimalSeparator: prices.decimal_separator,
 		decimalScale: prices.decimals,
+		fixedDecimalScale: true,
 		prefix: prices.price_prefix,
 		suffix: prices.price_suffix,
 	};
@@ -22,6 +23,8 @@ const ProductPrice = ( { className, product } ) => {
 		prices.price_range.min_amount &&
 		prices.price_range.max_amount
 	) {
+		const minAmount = parseFloat( prices.price_range.min_amount );
+		const maxAmount = parseFloat( prices.price_range.max_amount );
 		return (
 			<div
 				className={ classnames(
@@ -32,15 +35,9 @@ const ProductPrice = ( { className, product } ) => {
 				<span
 					className={ `${ layoutStyleClassPrefix }__product-price__value` }
 				>
-					<NumberFormat
-						value={ prices.price_range.min_amount }
-						{ ...numberFormatArgs }
-					/>
+					<NumberFormat value={ minAmount } { ...numberFormatArgs } />
 					&nbsp;&mdash;&nbsp;
-					<NumberFormat
-						value={ prices.price_range.max_amount }
-						{ ...numberFormatArgs }
-					/>
+					<NumberFormat value={ maxAmount } { ...numberFormatArgs } />
 				</span>
 			</div>
 		);
