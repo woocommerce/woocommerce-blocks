@@ -46,10 +46,8 @@ class Cart extends AbstractBlock {
 	public function render( $attributes = array(), $content = '' ) {
 		\Automattic\WooCommerce\Blocks\Assets::register_block_script(
 			$this->block_name . '-frontend',
-			$this->block_name . '-block-frontend'
-		);
-		\Automattic\WooCommerce\Blocks\Assets::register_block_script(
-			'vendors-frontend'
+			$this->block_name . '-block-frontend',
+			[ 'wc-vendors-frontend' ]
 		);
 		return $content;
 	}

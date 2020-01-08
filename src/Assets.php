@@ -45,6 +45,7 @@ class Assets {
 		self::register_script( 'wc-blocks-data-store', plugins_url( 'build/wc-blocks-data.js', __DIR__ ), [], false );
 		self::register_script( 'wc-blocks', plugins_url( self::get_block_asset_build_path( 'blocks' ), __DIR__ ), [], false );
 		self::register_script( 'wc-vendors', plugins_url( self::get_block_asset_build_path( 'vendors' ), __DIR__ ), [], false );
+		self::register_script( 'wc-vendors-frontend', plugins_url( self::get_block_asset_build_path( 'vendors-frontend' ), __DIR__ ), [], false );
 
 		self::register_script( 'wc-blocks-registry', plugins_url( 'build/wc-blocks-registry.js', __DIR__ ), [], false );
 
@@ -181,12 +182,13 @@ class Assets {
 	 * @since 2.3.0
 	 * @since $VID:$ Changed $name to $script_name and added $handle argument.
 	 *
-	 * @param string $script_name Name of the script used to identify the file inside build folder.
-	 * @param string $handle      Provided if the handle should be different than the script name. `wc-` prefix automatically added.
+	 * @param string $script_name  Name of the script used to identify the file inside build folder.
+	 * @param string $handle       Optional. Provided if the handle should be different than the script name. `wc-` prefix automatically added.
+	 * @param array  $dependencies Optional. An array of registered script handles this script depends on. Default empty array.
 	 */
-	public static function register_block_script( $script_name, $handle = '' ) {
+	public static function register_block_script( $script_name, $handle = '', $dependencies = [] ) {
 		$handle = '' !== $handle ? $handle : $script_name;
-		self::register_script( 'wc-' . $handle, plugins_url( self::get_block_asset_build_path( $script_name ), __DIR__ ) );
+		self::register_script( 'wc-' . $handle, plugins_url( self::get_block_asset_build_path( $script_name ), __DIR__ ), $dependencies );
 		wp_enqueue_script( 'wc-' . $handle );
 	}
 
