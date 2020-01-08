@@ -14,7 +14,7 @@ $cart-right-column-width: 100px;
 }
 
 .wc-block-cart__table-header {
-	display: flex;
+	display: none;
 	padding: 0.5em 0;
 	text-transform: uppercase;
 }
@@ -82,9 +82,7 @@ $cart-right-column-width: 100px;
 		padding: $gap $gap-large $gap-largest;
 	}
 
-	table.wc-block-cart__items {
-		td.wc-block-cart__items-image {
-			padding-left: 1em;
-		}
+	.wc-block-cart__table-header {
+		display: flex;
 	}
 }
