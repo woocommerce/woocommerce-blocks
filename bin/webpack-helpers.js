@@ -331,6 +331,19 @@ const getFrontConfig = ( options = {} ) => {
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
 			jsonpFunction: 'webpackWcBlocksJsonp',
 		},
+		optimization: {
+			splitChunks: {
+				minSize: 0,
+				cacheGroups: {
+					vendors: {
+						test: /[\\/]node_modules[\\/]/,
+						name: 'vendors',
+						chunks: 'all',
+						enforce: true,
+					},
+				},
+			},
+		},
 		module: {
 			rules: [
 				{
