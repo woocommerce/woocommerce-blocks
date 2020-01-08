@@ -43,28 +43,28 @@ const CartProductsTableItem = ( {
 	};
 
 	return (
-		<div className="wc-block-cart__table-item">
-			<div className="wc-block-cart__table-image">
+		<tr className="wc-block-cart__table-item">
+			<td className="wc-block-cart__table-image">
 				<img
 					src={ imageUrl }
 					alt={ imageAltText }
 					srcSet={ imageSrcSet }
 					sizes={ imageSizes }
 				/>
-			</div>
-			<div className="wc-block-cart__table-product">
+			</td>
+			<td className="wc-block-cart__table-product">
 				<div>{ name }</div>
 				{ quantitySelector( 'wc-block-cart__table-quantity-stacked' ) }
-			</div>
-			<div className="wc-block-cart__table-quantity-column">
+			</td>
+			<td className="wc-block-cart__table-quantity-column">
 				<div>
 					{ quantitySelector() }
 					<div className="wc-block-cart__table-remove-link">
 						{ __( 'Remove item', 'woo-gutenberg-products-block' ) }
 					</div>
 				</div>
-			</div>
-			<div className="wc-block-cart__table-total">
+			</td>
+			<td className="wc-block-cart__table-total">
 				<div>
 					{ fullPrice }
 					<div>
@@ -74,8 +74,8 @@ const CartProductsTableItem = ( {
 						/>
 					</div>
 				</div>
-			</div>
-		</div>
+			</td>
+		</tr>
 	);
 };
 

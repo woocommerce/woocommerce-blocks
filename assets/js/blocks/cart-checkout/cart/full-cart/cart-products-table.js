@@ -31,20 +31,25 @@ const CartProductsTable = ( { items = [] } ) => {
 	} );
 
 	return (
-		<div className="wc-block-cart__table">
-			<div className="wc-block-cart__table-header">
-				<div className="wc-block-cart__table-header-product">
-					{ __( 'Product', 'woo-gutenberg-products-block' ) }
-				</div>
-				<div className="wc-block-cart__table-header-quantity">
-					{ __( 'Quantity', 'woo-gutenberg-products-block' ) }
-				</div>
-				<div className="wc-block-cart__table-header-total">
-					{ __( 'Total', 'woo-gutenberg-products-block' ) }
-				</div>
-			</div>
-			{ products }
-		</div>
+		<table className="wc-block-cart__table">
+			<thead>
+				<tr className="wc-block-cart__table-header">
+					<th
+						className="wc-block-cart__table-header-product"
+						colSpan="2"
+					>
+						{ __( 'Product', 'woo-gutenberg-products-block' ) }
+					</th>
+					<th className="wc-block-cart__table-header-quantity">
+						{ __( 'Quantity', 'woo-gutenberg-products-block' ) }
+					</th>
+					<th className="wc-block-cart__table-header-total">
+						{ __( 'Total', 'woo-gutenberg-products-block' ) }
+					</th>
+				</tr>
+			</thead>
+			<tbody>{ products }</tbody>
+		</table>
 	);
 };
 
