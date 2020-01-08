@@ -28,20 +28,30 @@ const CartProductsTableItem = ( {
 		undefined
 	);
 
+	// We use this in two places so we can stack the quantity selector under
+	// product info on smaller screens.
+	const quantitySelector = ( classes ) => {
+		return (
+			<QuantitySelector
+				className={ classes }
+				quantity={ lineQuantity }
+				onChange={ setLineQuantity }
+			/>
+		);
+	};
+
 	return (
 		<div className="wc-block-cart__table-item">
-			<div className="wc-block-cart__table-product">
-				<div className="wc-block-cart__table-image">
-					<img src={ imageUrl } alt={ imageAltText } />
-				</div>
-				<div>{ name }</div>
+			<div className="wc-block-cart__table-image">
+				<img src={ imageUrl } alt={ imageAltText } />
 			</div>
-			<div className="wc-block-cart__table-quantity">
+			<div className="wc-block-cart__table-product">
+				<div>{ name }</div>
+				{ quantitySelector( 'wc-block-cart__table-quantity-stacked' ) }
+			</div>
+			<div className="wc-block-cart__table-quantity-column">
 				<div>
-					<QuantitySelector
-						quantity={ lineQuantity }
-						onChange={ setLineQuantity }
-					/>
+					{ quantitySelector() }
 					<div className="wc-block-cart__table-remove-link" href="#">
 						{ __( 'Remove item', 'woo-gutenberg-products-block' ) }
 					</div>

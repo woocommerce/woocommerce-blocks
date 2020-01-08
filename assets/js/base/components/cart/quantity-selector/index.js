@@ -2,18 +2,21 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
 
-const QuantitySelector = ( { quantity, onChange } ) => {
+const QuantitySelector = ( { className, quantity, onChange } ) => {
+	const classes = classNames( 'wc-block-quantity-selector-input', className );
+
 	// For now just use a regular number edit.
 	// TODO Replace this with custom control based on design (follow up PR).
 	return (
 		<input
-			className="wc-block-quantity-selector-input"
+			className={ classes }
 			type="number"
 			step="1"
 			min="0"
@@ -32,6 +35,7 @@ const QuantitySelector = ( { quantity, onChange } ) => {
 };
 
 QuantitySelector.propTypes = {
+	className: PropTypes.string,
 	quantity: PropTypes.number,
 	onChange: PropTypes.func,
 };
