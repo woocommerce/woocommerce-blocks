@@ -333,8 +333,8 @@ class ProductSchema extends AbstractSchema {
 
 			if ( min( $prices['price'] ) !== max( $prices['price'] ) ) {
 				return [
-					'min_amount' => min( $prices['price'] ),
-					'max_amount' => max( $prices['price'] ),
+					'min_amount' => floatval( min( $prices['price'] ) ),
+					'max_amount' => floatval( max( $prices['price'] ) ),
 				];
 			}
 		}
