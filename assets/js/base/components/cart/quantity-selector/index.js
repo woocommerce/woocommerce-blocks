@@ -12,8 +12,8 @@ import './style.scss';
 const QuantitySelector = ( { className, quantity, onChange } ) => {
 	const classes = classNames( 'wc-block-quantity-selector-input', className );
 
-	// For now just use a regular number edit.
-	// TODO Replace this with custom control based on design (follow up PR).
+	// For now just use a regular number edit. (temporary)
+	// @todo https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1521
 	return (
 		<input
 			className={ classes }
