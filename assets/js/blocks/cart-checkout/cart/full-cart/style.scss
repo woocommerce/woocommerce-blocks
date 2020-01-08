@@ -3,6 +3,7 @@ $cart-image-width: 60px;
 .wc-block-cart__sidebar {
 	border: 1px solid $core-grey-light-600;
 	border-width: 1px 0;
+	min-width: 15rem;
 }
 
 .wc-block-cart__item-count {
@@ -79,8 +80,16 @@ table.wc-block-cart__table td {
 		padding: $gap $gap-large $gap-largest;
 	}
 
+	.wc-block-cart__table {
+		table-layout: fixed;
+	}
+
 	.wc-block-cart__table-header {
 		display: table-row;
+	}
+
+	.wc-block-cart__table-header-product {
+		width: 60%;
 	}
 
 	.wc-block-cart__table-quantity-column {
