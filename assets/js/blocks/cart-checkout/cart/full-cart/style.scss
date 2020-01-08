@@ -51,11 +51,11 @@ table.wc-block-cart__table {
 	display: none;
 }
 .wc-block-cart__table-quantity-stacked {
-	display: flex;
+	display: block;
 }
 
 .wc-block-cart__table-total {
-	align-self: flex-end;
+	vertical-align: bottom;
 }
 
 .wc-block-cart__table-full-price {
