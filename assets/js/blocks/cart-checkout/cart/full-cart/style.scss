@@ -6,10 +6,6 @@ $cart-image-width: 60px;
 	border-width: 1px 0;
 }
 
-.wc-block-cart__main {
-	margin-right: 3em;
-}
-
 .wc-block-cart__item-count {
 	float: right;
 }
@@ -79,6 +75,7 @@ $cart-image-width: 60px;
 
 	.wc-block-cart__main {
 		flex-grow: 4;
+		margin-right: 3em;
 	}
 
 	.wc-block-cart__sidebar {
