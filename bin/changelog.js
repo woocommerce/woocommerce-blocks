@@ -182,7 +182,7 @@ const makeChangelog = async ( version ) => {
 		console.log( '' );
 		console.log(
 			chalk.yellow( 'Write it as it appears in the milestones page: ' ) +
-				`https://github.com/${REPO}/milestones`
+				`https://github.com/${ REPO }/milestones`
 		);
 		console.log( '' );
 		const version = await promptly.prompt( 'Version number: ' );
@@ -190,7 +190,7 @@ const makeChangelog = async ( version ) => {
 		console.log(
 			chalk.green(
 				'Here is the generated changelog. Be sure to remove entries ' +
-					`not intended for a ${pkg.title} release.`
+					`not intended for a ${ pkg.title } release.`
 			)
 		);
 		console.log( '' );
