@@ -6,11 +6,11 @@ const requestPromise = require( 'request-promise' );
 const chalk = require( 'chalk' );
 const octokit = require( '@octokit/rest' )();
 const promptly = require( 'promptly' );
-const pkg = require( '../pacakge.json' );
+const pkg = require( '../package.json' );
 
 const REPO = pkg.repository.url
 	// remove https://github.com:
-	.split( ':' )[ 1 ]
+	.split( ':' )[ 2 ]
 	// remove the .git ending.
 	.slice( 0, -4 );
 
@@ -182,7 +182,7 @@ const makeChangelog = async ( version ) => {
 		console.log( '' );
 		console.log(
 			chalk.yellow( 'Write it as it appears in the milestones page: ' ) +
-				'https://github.com/woocommerce/woocommerce-gutenberg-products-block/milestones'
+				`https://github.com/${REPO}/milestones`
 		);
 		console.log( '' );
 		const version = await promptly.prompt( 'Version number: ' );
@@ -190,7 +190,7 @@ const makeChangelog = async ( version ) => {
 		console.log(
 			chalk.green(
 				'Here is the generated changelog. Be sure to remove entries ' +
-					'not intended for a WooCommerce Blocks release.'
+					`not intended for a ${pkg.title} release.`
 			)
 		);
 		console.log( '' );
