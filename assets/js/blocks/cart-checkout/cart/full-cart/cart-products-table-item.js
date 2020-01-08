@@ -29,7 +29,7 @@ const CartProductsTableItem = ( {
 	);
 
 	return (
-		<div className="wc-block-cart__table-items">
+		<div className="wc-block-cart__table-item">
 			<div className="wc-block-cart__table-product">
 				<div className="wc-block-cart__table-image">
 					<img src={ imageUrl } alt={ imageAltText } />
