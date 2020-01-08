@@ -144,7 +144,7 @@ const makeChangelog = async ( version ) => {
 		);
 		return;
 	}
-
+	filteredEntries.sort();
 	console.log( filteredEntries.join( '\n' ) );
 };
 
