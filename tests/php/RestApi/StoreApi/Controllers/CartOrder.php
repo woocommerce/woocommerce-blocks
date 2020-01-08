@@ -103,7 +103,7 @@ class CartOrder extends TestCase {
 		$this->assertEquals( 'test@test.com', $data['billing_address']['email'] );
 		$this->assertEquals( '', $data['billing_address']['phone'] );
 
-		$this->assertEquals( 'pending', $data['status'] );
+		$this->assertEquals( 'draft', $data['status'] );
 		$this->assertEquals( 2, count( $data['items'] ) );
 	}
 
