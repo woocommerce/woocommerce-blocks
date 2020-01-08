@@ -11,7 +11,6 @@ import CartProductsTableItem from './cart-products-table-item';
 
 const CartProductsTable = ( { items = [] } ) => {
 	const products = items.map( ( lineItem ) => {
-		// TODO we'll need to handle srcset, correct image size
 		const imageProps = {};
 		if ( lineItem.images && lineItem.images.length ) {
 			imageProps.imageUrl = lineItem.images[ 0 ].src;
