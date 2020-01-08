@@ -6,9 +6,22 @@ const requestPromise = require( 'request-promise' );
 const chalk = require( 'chalk' );
 const octokit = require( '@octokit/rest' )();
 const promptly = require( 'promptly' );
+const pkg = require('../pacakge.json');
 
-const REPO = 'woocommerce/woocommerce-gutenberg-products-block';
 
+const REPO = pkg.repository.url
+	// remove https://github.com:
+	.split(":")[1]
+	// remove the .git ending.
+	.slice(0, -4);
+
+if ( pkg.changelog === undefined ) {
+	pkg.changelog = {
+		"LabelPrefix": "type:",
+		"skipLabel": "no-changelog",
+		"defaultPrefix": "dev"
+	};
+}
 const headers = {
 	'Content-Type': 'application/json;charset=UTF-8',
 	Authorization: `token ${ process.env.GH_API_TOKEN }`,
@@ -18,17 +31,17 @@ const headers = {
 
 const getPullRequestType = ( labels ) => {
 	const typeLabel = labels.find( ( label ) =>
-		label.name.includes( 'type:' )
+		label.name.includes( pkg.changelog.LabelPrefix )
 	);
 	if ( ! typeLabel ) {
-		return 'dev';
+		return pkg.changelog.defaultPrefix;
 	}
-	return typeLabel.name.replace( 'type: ', '' );
+	return typeLabel.name.replace( `${pkg.changelog.LabelPrefix} `, '' );
 };
 
 const isCollaborator = async ( username ) => {
 	return requestPromise( {
-		url: `https://api.github.com/orgs/woocommerce/members/${ username }`,
+		url: `https://api.github.com/orgs/${ REPO.split( '/' )[0] }/members/${ username }`,
 		headers,
 		resolveWithFullResponse: true,
 	} )
@@ -64,7 +77,7 @@ const getEntry = async ( data ) => {
 
 	const isMerged = await isMergedPullRequest( data.pull_request.url );
 	const skipChangelog = data.labels.find(
-		( label ) => label.name === 'skip-changelog'
+		( label ) => label.name === pkg.changelog.skipChangelog
 	);
 
 	if ( ! isMerged || skipChangelog ) {
@@ -89,7 +102,7 @@ const getEntry = async ( data ) => {
 	} else {
 		title = `${ type }: ${ data.title }`;
 	}
-	return `- ${ title } #${ data.number } ${ authorTag }`;
+	return `- ${ title } [#${ data.number }](https://github.com/${REPO}/${ data.number })`;
 };
 
 const makeChangelog = async ( version ) => {

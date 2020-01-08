@@ -161,6 +161,11 @@
 			"composer run-script phpcs"
 		]
 	},
+	"changelog": {
+		"LabelPrefix": "type:",
+		"skipLabel": "no-changelog",
+		"defaultPrefix": "dev"
+	},
 	"files": [
 		"assets/**/*.{js,scss,php}",
 		"build/**/*.{js,json,css}",
