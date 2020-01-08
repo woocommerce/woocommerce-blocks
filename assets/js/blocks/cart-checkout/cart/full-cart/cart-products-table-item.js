@@ -52,7 +52,7 @@ const CartProductsTableItem = ( {
 			<div className="wc-block-cart__table-quantity-column">
 				<div>
 					{ quantitySelector() }
-					<div className="wc-block-cart__table-remove-link" href="#">
+					<div className="wc-block-cart__table-remove-link">
 						{ __( 'Remove item', 'woo-gutenberg-products-block' ) }
 					</div>
 				</div>
