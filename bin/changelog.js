@@ -106,15 +106,27 @@ const getEntry = async ( data ) => {
 };
 
 const makeChangelog = async ( version ) => {
-	const results = await octokit.search.issuesAndPullRequests( {
-		q: `milestone:${ version }+type:pr+repo:${ REPO }`,
-		sort: 'reactions',
-		per_page: 100,
-	} );
-	const entries = await Promise.all(
-		results.data.items.map( async ( pr ) => await getEntry( pr ) )
-	);
 
+	const fetchAllPages = async (page = 1) => {
+		const results = await octokit.search.issuesAndPullRequests( {
+			q: `milestone:"${ version }"+type:pr+repo:${ REPO }`,
+			sort: 'reactions',
+			per_page: 100,
+			page,
+		} );
+
+		if (results.data.items < 100) {
+			return results.data.items;
+		}
+
+		const nextResults = await fetchAllPages(page+1);
+		return results.data.items.concat(nextResults);
+	}
+
+	const rawEntries = await fetchAllPages();
+	const entries = await Promise.all(
+		rawEntries.map( async ( pr ) => await getEntry( pr ) )
+	);
 	if ( ! entries || ! entries.length ) {
 		console.log(
 			chalk.yellow( "This version doesn't have any associated PR." )
