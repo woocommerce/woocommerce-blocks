@@ -42,7 +42,7 @@ $cart-image-width: 60px;
 
 .wc-block-cart__table-item {
 	display: flex;
-	padding: 1em 0;
+	padding: $gap 0;
 
 	border-top: 1px solid $core-grey-light-600;
 	&:last-child {
@@ -52,7 +52,7 @@ $cart-image-width: 60px;
 
 .wc-block-cart__table-image {
 	max-width: $cart-image-width;
-	margin-right: 1em;
+	margin-right: $gap;
 }
 
 .wc-block-cart__table-full-price {
@@ -82,7 +82,7 @@ $cart-image-width: 60px;
 	}
 
 	.wc-block-cart__table-image {
-		margin-left: 1em;
+		margin-left: $gap;
 	}
 
 }
