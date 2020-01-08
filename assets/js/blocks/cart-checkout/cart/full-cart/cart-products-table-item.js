@@ -12,6 +12,8 @@ const CartProductsTableItem = ( {
 	name,
 	imageUrl,
 	imageAltText,
+	imageSrcSet,
+	imageSizes,
 	quantity,
 	subtotal,
 	total,
@@ -43,7 +45,12 @@ const CartProductsTableItem = ( {
 	return (
 		<div className="wc-block-cart__table-item">
 			<div className="wc-block-cart__table-image">
-				<img src={ imageUrl } alt={ imageAltText } />
+				<img
+					src={ imageUrl }
+					alt={ imageAltText }
+					srcSet={ imageSrcSet }
+					sizes={ imageSizes }
+				/>
 			</div>
 			<div className="wc-block-cart__table-product">
 				<div>{ name }</div>

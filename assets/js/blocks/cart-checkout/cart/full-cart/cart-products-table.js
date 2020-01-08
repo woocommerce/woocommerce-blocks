@@ -12,18 +12,21 @@ import CartProductsTableItem from './cart-products-table-item';
 const CartProductsTable = ( { items = [] } ) => {
 	const products = items.map( ( lineItem ) => {
 		// TODO we'll need to handle srcset, correct image size
-		const imageValid = lineItem.images && lineItem.images.length;
-		const imageUrl = imageValid ? lineItem.images[ 0 ].src : '';
-		const imageAltText = imageValid ? lineItem.images[ 0 ].alt : '';
+		const imageProps = {};
+		if ( lineItem.images && lineItem.images.length ) {
+			imageProps.imageUrl = lineItem.images[ 0 ].src;
+			imageProps.imageAltText = lineItem.images[ 0 ].alt;
+			imageProps.imageSrcSet = lineItem.images[ 0 ].srcset;
+			imageProps.imageSizes = lineItem.images[ 0 ].sizes;
+		}
 		return (
 			<CartProductsTableItem
 				key={ lineItem.id }
-				imageUrl={ imageUrl }
-				imageAltText={ imageAltText }
 				name={ lineItem.name }
 				quantity={ lineItem.quantity }
 				subtotal={ lineItem.totals.line_subtotal }
 				total={ lineItem.totals.line_total }
+				{ ...imageProps }
 			/>
 		);
 	} );
