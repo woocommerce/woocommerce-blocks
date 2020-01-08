@@ -6,20 +6,19 @@ const requestPromise = require( 'request-promise' );
 const chalk = require( 'chalk' );
 const octokit = require( '@octokit/rest' )();
 const promptly = require( 'promptly' );
-const pkg = require('../pacakge.json');
-
+const pkg = require( '../pacakge.json' );
 
 const REPO = pkg.repository.url
 	// remove https://github.com:
-	.split(":")[1]
+	.split( ':' )[ 1 ]
 	// remove the .git ending.
-	.slice(0, -4);
+	.slice( 0, -4 );
 
 if ( pkg.changelog === undefined ) {
 	pkg.changelog = {
-		"LabelPrefix": "type:",
-		"skipLabel": "no-changelog",
-		"defaultPrefix": "dev"
+		LabelPrefix: 'type:',
+		skipLabel: 'no-changelog',
+		defaultPrefix: 'dev',
 	};
 }
 const headers = {
@@ -36,12 +35,14 @@ const getPullRequestType = ( labels ) => {
 	if ( ! typeLabel ) {
 		return pkg.changelog.defaultPrefix;
 	}
-	return typeLabel.name.replace( `${pkg.changelog.LabelPrefix} `, '' );
+	return typeLabel.name.replace( `${ pkg.changelog.LabelPrefix } `, '' );
 };
 
 const isCollaborator = async ( username ) => {
 	return requestPromise( {
-		url: `https://api.github.com/orgs/${ REPO.split( '/' )[0] }/members/${ username }`,
+		url: `https://api.github.com/orgs/${
+			REPO.split( '/' )[ 0 ]
+		}/members/${ username }`,
 		headers,
 		resolveWithFullResponse: true,
 	} )
@@ -102,12 +103,13 @@ const getEntry = async ( data ) => {
 	} else {
 		title = `${ type }: ${ data.title }`;
 	}
-	return `- ${ title } [#${ data.number }](https://github.com/${REPO}/${ data.number })`;
+	return `- ${ title } [#${ data.number }](https://github.com/${ REPO }/${
+		data.number
+	})`;
 };
 
 const makeChangelog = async ( version ) => {
-
-	const fetchAllPages = async (page = 1) => {
+	const fetchAllPages = async ( page = 1 ) => {
 		const results = await octokit.search.issuesAndPullRequests( {
 			q: `milestone:"${ version }"+type:pr+repo:${ REPO }`,
 			sort: 'reactions',
@@ -115,13 +117,13 @@ const makeChangelog = async ( version ) => {
 			page,
 		} );
 
-		if (results.data.items < 100) {
+		if ( results.data.items < 100 ) {
 			return results.data.items;
 		}
 
-		const nextResults = await fetchAllPages(page+1);
-		return results.data.items.concat(nextResults);
-	}
+		const nextResults = await fetchAllPages( page + 1 );
+		return results.data.items.concat( nextResults );
+	};
 
 	const rawEntries = await fetchAllPages();
 	const entries = await Promise.all(
