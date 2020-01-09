@@ -12,8 +12,13 @@ const CartLineItemRow = ( { lineItem } ) => {
 	const { name, images, quantity, totals } = lineItem;
 	const { line_total: total, line_subtotal: subtotal } = totals;
 
-	const image = images.length ? images[ 0 ] : {};
-	const imageAltText = image.alt || '';
+	const imageProps = {};
+	if ( images && images.length ) {
+		imageProps.src = lineItem.images[ 0 ].src || '';
+		imageProps.alt = lineItem.images[ 0 ].alt || '';
+		imageProps.srcSet = lineItem.images[ 0 ].srcset || '';
+		imageProps.sizes = lineItem.images[ 0 ].sizes || '';
+	}
 
 	const [ lineQuantity, setLineQuantity ] = useState( quantity );
 	const currency = getCurrency();
@@ -43,7 +48,7 @@ const CartLineItemRow = ( { lineItem } ) => {
 		<tr>
 			<td className="wc-block-cart-item__product">
 				<div className="wc-block-cart-item__product-wrapper">
-					<img { ...image } alt={ imageAltText } />
+					<img { ...imageProps } alt={ imageProps.alt } />
 					<div className="wc-block-cart-item__product-details">
 						<div>{ name }</div>
 						{ quantitySelector(

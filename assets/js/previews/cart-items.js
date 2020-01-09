@@ -47,7 +47,7 @@ export const previewCartItems = [
 	},
 	{
 		key: '2',
-		id: 1,
+		id: 2,
 		quantity: 1,
 		name: __( 'Cap', 'woo-gutenberg-products-block' ),
 		sku: 'woo-cap',

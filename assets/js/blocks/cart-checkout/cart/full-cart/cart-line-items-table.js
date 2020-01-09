@@ -11,7 +11,7 @@ import CartLineItemRow from './cart-line-item-row';
 
 const CartLineItemsTable = ( { lineItems = [] } ) => {
 	const products = lineItems.map( ( lineItem ) => (
-		<CartLineItemRow key={ lineItem.id } lineItem={ lineItem } />
+		<CartLineItemRow key={ lineItem.key } lineItem={ lineItem } />
 	) );
 
 	return (
@@ -35,9 +35,11 @@ const CartLineItemsTable = ( { lineItems = [] } ) => {
 };
 
 CartLineItemsTable.propTypes = {
-	lineItems: PropTypes.shape( {
-		key: PropTypes.string.isRequired,
-	} ),
+	lineItems: PropTypes.arrayOf(
+		PropTypes.shape( {
+			key: PropTypes.string.isRequired,
+		} )
+	),
 };
 
 export default CartLineItemsTable;
