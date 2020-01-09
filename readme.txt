@@ -77,7 +77,7 @@ We've also improved the category selection filter. If you select two or more cat
 
 * WordPress 5.0
 * WooCommerce 3.7 or greater
-* PHP version 5.2.4 or greater (PHP 7.2 or greater is recommended)
+* PHP version 5.6 or greater (PHP 7.2 or greater is recommended)
 * MySQL version 5.0 or greater (MySQL 5.6 or greater is recommended)
 
 Visit the [WooCommerce server requirements documentation](https://docs.woocommerce.com/document/server-requirements/) for a detailed list of server requirements.
