@@ -10,25 +10,9 @@ import PropTypes from 'prop-types';
 import CartProductsTableItem from './cart-products-table-item';
 
 const CartProductsTable = ( { lineItems = [] } ) => {
-	const products = lineItems.map( ( lineItem ) => {
-		const imageProps = {};
-		if ( lineItem.images && lineItem.images.length ) {
-			imageProps.imageUrl = lineItem.images[ 0 ].src;
-			imageProps.imageAltText = lineItem.images[ 0 ].alt;
-			imageProps.imageSrcSet = lineItem.images[ 0 ].srcset;
-			imageProps.imageSizes = lineItem.images[ 0 ].sizes;
-		}
-		return (
-			<CartProductsTableItem
-				key={ lineItem.id }
-				name={ lineItem.name }
-				quantity={ lineItem.quantity }
-				subtotal={ lineItem.totals.line_subtotal }
-				total={ lineItem.totals.line_total }
-				{ ...imageProps }
-			/>
-		);
-	} );
+	const products = lineItems.map( ( lineItem ) => (
+		<CartProductsTableItem key={ lineItem.id } lineItem={ lineItem } />
+	) );
 
 	return (
 		<table className="wc-block-cart__table">
@@ -54,7 +38,9 @@ const CartProductsTable = ( { lineItems = [] } ) => {
 };
 
 CartProductsTable.propTypes = {
-	lineItems: PropTypes.array,
+	lineItems: PropTypes.shape( {
+		key: PropTypes.string.isRequired,
+	} ),
 };
 
 export default CartProductsTable;

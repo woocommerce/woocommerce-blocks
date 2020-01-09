@@ -13,6 +13,7 @@ import productPicture from './product-image';
 // https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/master/src/RestApi/StoreApi#cart-items-api
 export const previewCartItems = [
 	{
+		key: '1',
 		id: 1,
 		quantity: 2,
 		name: __( 'Beanie', 'woo-gutenberg-products-block' ),
@@ -45,6 +46,7 @@ export const previewCartItems = [
 		},
 	},
 	{
+		key: '2',
 		id: 1,
 		quantity: 1,
 		name: __( 'Cap', 'woo-gutenberg-products-block' ),
