@@ -460,11 +460,7 @@ class OrderSchema extends AbstractSchema {
 	 * @param \WC_Order $order Order class instance.
 	 * @return array
 	 */
-	public function get_item_response( $order ) {
-		if ( ! ( $order instanceof \WC_Order ) ) {
-			return [];
-		}
-
+	public function get_item_response( \WC_Order $order ) {
 		$order_item_schema = new OrderItemSchema();
 
 		return [

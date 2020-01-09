@@ -180,11 +180,7 @@ class OrderItemSchema extends AbstractSchema {
 	 * @param \WC_Order_Item_Product $line_item Order line item array.
 	 * @return array
 	 */
-	public function get_item_response( $line_item ) {
-		if ( ! ( $line_item instanceof \WC_Order_Item_Product ) ) {
-			return [];
-		}
-
+	public function get_item_response( \WC_Order_Item_Product $line_item ) {
 		$product     = $line_item->get_product();
 		$has_product = $product instanceof \WC_Product;
 
