@@ -12,8 +12,10 @@ const CartLineItemsTitle = ( {
 		_n( '%d item', '%d items', itemCount, 'woo-gutenberg-products-block' ),
 		itemCount
 	);
+	const readableHeading = `${ title } – ${ itemCountHeading }`;
+
 	return (
-		<h2>
+		<h2 aria-label={ readableHeading }>
 			<span>{ title } </span>
 			<span className="wc-block-cart__item-count">
 				{ itemCountHeading }
