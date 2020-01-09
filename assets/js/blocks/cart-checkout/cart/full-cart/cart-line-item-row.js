@@ -41,12 +41,16 @@ const CartLineItemRow = ( { lineItem } ) => {
 
 	return (
 		<tr>
-			<td className="wc-block-cart-item__image">
-				<img { ...image } alt={ imageAltText } />
-			</td>
 			<td className="wc-block-cart-item__product">
-				<div>{ name }</div>
-				{ quantitySelector( 'wc-block-cart-item__quantity-stacked' ) }
+				<div className="wc-block-cart-item__product-wrapper">
+					<img { ...image } alt={ imageAltText } />
+					<div className="wc-block-cart-item__product-details">
+						<div>{ name }</div>
+						{ quantitySelector(
+							'wc-block-cart-item__quantity-stacked'
+						) }
+					</div>
+				</div>
 			</td>
 			<td className="wc-block-cart-item__quantity">
 				<div>
