@@ -65,6 +65,8 @@ const getEntry = async ( pullRequest ) => {
 			.trim();
 		if ( ! title.length ) {
 			title = `${ type }: ${ pullRequest.title }`;
+		} else {
+			title = `${ type }: ${ title }`;
 		}
 	} else {
 		title = `${ type }: ${ pullRequest.title }`;
