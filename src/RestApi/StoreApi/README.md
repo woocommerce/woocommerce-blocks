@@ -990,7 +990,7 @@ Example response:
 			"country": "US"
 		},
 		"items": [ "6512bd43d9caa6e02c990b0a82652dca" ],
-		"shipping-rates": [
+		"shipping_rates": [
 			{
 				"name": "International",
 				"description": "",
