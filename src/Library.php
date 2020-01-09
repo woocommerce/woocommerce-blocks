@@ -124,7 +124,7 @@ class Library {
 	 * @param array $statuses Array of statuses.
 	 * @return array
 	 */
-	public static function register_draft_order_status( $statuses ) {
+	public static function register_draft_order_status( array $statuses ) {
 		$statuses['wc-draft'] = _x( 'Draft', 'Order status', 'woo-gutenberg-products-block' );
 		return $statuses;
 	}

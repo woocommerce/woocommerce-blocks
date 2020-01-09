@@ -181,16 +181,21 @@ class OrderItemSchema extends AbstractSchema {
 	 * @return array
 	 */
 	public function get_item_response( $line_item ) {
-		$product = $line_item->get_product();
+		if ( ! ( $line_item instanceof \WC_Order_Item_Product ) ) {
+			return [];
+		}
+
+		$product     = $line_item->get_product();
+		$has_product = $product instanceof \WC_Product;
 
 		return [
 			'id'        => $line_item->get_variation_id() ? $line_item->get_variation_id() : $line_item->get_product_id(),
 			'quantity'  => $line_item->get_quantity(),
-			'name'      => $product ? $product->get_title() : null,
-			'sku'       => $product ? $product->get_sku() : null,
-			'permalink' => $product ? $product->get_permalink() : null,
-			'images'    => $product ? ( new ProductImages() )->images_to_array( $product ) : null,
-			'variation' => $this->format_variation_data( $line_item, $product ),
+			'name'      => $has_product ? $product->get_title() : null,
+			'sku'       => $has_product ? $product->get_sku() : null,
+			'permalink' => $has_product ? $product->get_permalink() : null,
+			'images'    => $has_product ? ( new ProductImages() )->images_to_array( $product ) : null,
+			'variation' => $has_product ? $this->format_variation_data( $line_item, $product ) : [],
 			'totals'    => array_merge(
 				$this->get_store_currency_response(),
 				[
@@ -210,7 +215,7 @@ class OrderItemSchema extends AbstractSchema {
 	 * @param \WC_Product            $product Product data.
 	 * @return array
 	 */
-	protected function format_variation_data( $line_item, $product ) {
+	protected function format_variation_data( \WC_Order_Item_Product $line_item, \WC_Product $product ) {
 		$return         = [];
 		$line_item_meta = $line_item->get_meta_data();
 		$attribute_keys = array_keys( $product->get_attributes() );
@@ -242,39 +247,5 @@ class OrderItemSchema extends AbstractSchema {
 		}
 
 		return $return;
-	}
-
-	/**
-	 * Get product attribute taxonomy name.
-	 *
-	 * @param string      $slug   Taxonomy name.
-	 * @param \WC_Product $object Product data.
-	 * @return string
-	 */
-	protected function get_attribute_taxonomy_name( $slug, $object ) {
-		// Format slug so it matches attributes of the product.
-		$slug       = wc_attribute_taxonomy_slug( $slug );
-		$attributes = $object->get_attributes();
-		$attribute  = false;
-
-		// pa_ attributes.
-		if ( isset( $attributes[ wc_attribute_taxonomy_name( $slug ) ] ) ) {
-			$attribute = $attributes[ wc_attribute_taxonomy_name( $slug ) ];
-		} elseif ( isset( $attributes[ $slug ] ) ) {
-			$attribute = $attributes[ $slug ];
-		}
-
-		if ( ! $attribute ) {
-			return $slug;
-		}
-
-		// Taxonomy attribute name.
-		if ( $attribute->is_taxonomy() ) {
-			$taxonomy = $attribute->get_taxonomy_object();
-			return $taxonomy->attribute_label;
-		}
-
-		// Custom product attribute name.
-		return $attribute->get_name();
 	}
 }

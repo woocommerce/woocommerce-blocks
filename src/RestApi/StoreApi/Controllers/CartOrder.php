@@ -113,7 +113,7 @@ class CartOrder extends RestController {
 	 * @param \WC_Order $order Order object.
 	 * @return bool|RestError
 	 */
-	protected function reserve_stock_for_draft_order( $order ) {
+	protected function reserve_stock_for_draft_order( \WC_Order $order ) {
 		global $wpdb;
 
 		try {
@@ -217,7 +217,7 @@ class CartOrder extends RestController {
 	 * @param RestRequest $request Full details about the request.
 	 * @return \WC_Order A new order object.
 	 */
-	protected function create_order_from_cart( $request ) {
+	protected function create_order_from_cart( RestRequest $request ) {
 		$order = $this->get_order_object();
 		$order->set_status( 'draft' );
 		$order->set_created_via( 'store-api' );
@@ -270,7 +270,7 @@ class CartOrder extends RestController {
 	 * @param \WC_Order   $order Object to prepare for the response.
 	 * @param RestRequest $request Full details about the request.
 	 */
-	protected function set_props_from_cart( &$order, $request ) {
+	protected function set_props_from_cart( \WC_Order &$order, RestRequest $request ) {
 		$order->set_shipping_total( WC()->cart->get_shipping_total() );
 		$order->set_discount_total( WC()->cart->get_discount_total() );
 		$order->set_discount_tax( WC()->cart->get_discount_tax() );
@@ -286,7 +286,7 @@ class CartOrder extends RestController {
 	 * @param \WC_Order   $order Object to prepare for the response.
 	 * @param RestRequest $request Full details about the request.
 	 */
-	protected function create_line_items_from_cart( &$order, $request ) {
+	protected function create_line_items_from_cart( \WC_Order &$order, RestRequest $request ) {
 		$draft_order_cart_hash = $order->get_cart_hash();
 
 		if ( WC()->cart->get_cart_hash() === $draft_order_cart_hash ) {
@@ -313,7 +313,7 @@ class CartOrder extends RestController {
 	 * @param \WC_Order   $order Object to prepare for the response.
 	 * @param RestRequest $request Full details about the request.
 	 */
-	protected function set_props_from_request( &$order, $request ) {
+	protected function set_props_from_request( \WC_Order &$order, RestRequest $request ) {
 		$schema = $this->get_item_schema();
 
 		if ( isset( $request['billing_address'] ) ) {

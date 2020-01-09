@@ -457,65 +457,69 @@ class OrderSchema extends AbstractSchema {
 	/**
 	 * Convert a woo order into an object suitable for the response.
 	 *
-	 * @param \WC_Order $object Order class instance.
+	 * @param \WC_Order $order Order class instance.
 	 * @return array
 	 */
-	public function get_item_response( $object ) {
+	public function get_item_response( $order ) {
+		if ( ! ( $order instanceof \WC_Order ) ) {
+			return [];
+		}
+
 		$order_item_schema = new OrderItemSchema();
 
 		return [
-			'id'                 => $object->get_id(),
-			'number'             => $object->get_order_number(),
-			'status'             => $object->get_status(),
-			'order_key'          => $object->get_order_key(),
-			'created_via'        => $object->get_created_via(),
-			'prices_include_tax' => $object->get_prices_include_tax(),
-			'events'             => $this->get_events( $object ),
+			'id'                 => $order->get_id(),
+			'number'             => $order->get_order_number(),
+			'status'             => $order->get_status(),
+			'order_key'          => $order->get_order_key(),
+			'created_via'        => $order->get_created_via(),
+			'prices_include_tax' => $order->get_prices_include_tax(),
+			'events'             => $this->get_events( $order ),
 			'customer'           => [
-				'customer_id'         => $object->get_customer_id(),
-				'customer_ip_address' => $object->get_customer_ip_address(),
-				'customer_user_agent' => $object->get_customer_user_agent(),
+				'customer_id'         => $order->get_customer_id(),
+				'customer_ip_address' => $order->get_customer_ip_address(),
+				'customer_user_agent' => $order->get_customer_user_agent(),
 			],
-			'customer_note'      => $object->get_customer_note(),
+			'customer_note'      => $order->get_customer_note(),
 			'billing_address'    => [
-				'first_name' => $object->get_billing_first_name(),
-				'last_name'  => $object->get_billing_last_name(),
-				'company'    => $object->get_billing_company(),
-				'address_1'  => $object->get_billing_address_1(),
-				'address_2'  => $object->get_billing_address_2(),
-				'city'       => $object->get_billing_city(),
-				'state'      => $object->get_billing_state(),
-				'postcode'   => $object->get_billing_postcode(),
-				'country'    => $object->get_billing_country(),
-				'email'      => $object->get_billing_email(),
-				'phone'      => $object->get_billing_phone(),
+				'first_name' => $order->get_billing_first_name(),
+				'last_name'  => $order->get_billing_last_name(),
+				'company'    => $order->get_billing_company(),
+				'address_1'  => $order->get_billing_address_1(),
+				'address_2'  => $order->get_billing_address_2(),
+				'city'       => $order->get_billing_city(),
+				'state'      => $order->get_billing_state(),
+				'postcode'   => $order->get_billing_postcode(),
+				'country'    => $order->get_billing_country(),
+				'email'      => $order->get_billing_email(),
+				'phone'      => $order->get_billing_phone(),
 			],
 			'shipping_address'   => [
-				'first_name' => $object->get_shipping_first_name(),
-				'last_name'  => $object->get_shipping_last_name(),
-				'company'    => $object->get_shipping_company(),
-				'address_1'  => $object->get_shipping_address_1(),
-				'address_2'  => $object->get_shipping_address_2(),
-				'city'       => $object->get_shipping_city(),
-				'state'      => $object->get_shipping_state(),
-				'postcode'   => $object->get_shipping_postcode(),
-				'country'    => $object->get_shipping_country(),
+				'first_name' => $order->get_shipping_first_name(),
+				'last_name'  => $order->get_shipping_last_name(),
+				'company'    => $order->get_shipping_company(),
+				'address_1'  => $order->get_shipping_address_1(),
+				'address_2'  => $order->get_shipping_address_2(),
+				'city'       => $order->get_shipping_city(),
+				'state'      => $order->get_shipping_state(),
+				'postcode'   => $order->get_shipping_postcode(),
+				'country'    => $order->get_shipping_country(),
 			],
-			'items'              => array_values( array_map( [ $order_item_schema, 'get_item_response' ], $object->get_items( 'line_item' ) ) ),
+			'items'              => array_values( array_map( [ $order_item_schema, 'get_item_response' ], $order->get_items( 'line_item' ) ) ),
 			'totals'             => array_merge(
 				$this->get_store_currency_response(),
 				[
-					'total_items'        => $this->prepare_money_response( $object->get_subtotal(), wc_get_price_decimals() ),
-					'total_items_tax'    => $this->prepare_money_response( $this->get_subtotal_tax( $object ), wc_get_price_decimals() ),
-					'total_fees'         => $this->prepare_money_response( $this->get_fee_total( $object ), wc_get_price_decimals() ),
-					'total_fees_tax'     => $this->prepare_money_response( $this->get_fee_tax( $object ), wc_get_price_decimals() ),
-					'total_discount'     => $this->prepare_money_response( $object->get_discount_total(), wc_get_price_decimals() ),
-					'total_discount_tax' => $this->prepare_money_response( $object->get_discount_tax(), wc_get_price_decimals() ),
-					'total_shipping'     => $this->prepare_money_response( $object->get_shipping_total(), wc_get_price_decimals() ),
-					'total_shipping_tax' => $this->prepare_money_response( $object->get_shipping_tax(), wc_get_price_decimals() ),
-					'total_price'        => $this->prepare_money_response( $object->get_total(), wc_get_price_decimals() ),
-					'total_tax'          => $this->prepare_money_response( $object->get_total_tax(), wc_get_price_decimals() ),
-					'tax_lines'          => $this->get_tax_lines( $object ),
+					'total_items'        => $this->prepare_money_response( $order->get_subtotal(), wc_get_price_decimals() ),
+					'total_items_tax'    => $this->prepare_money_response( $this->get_subtotal_tax( $order ), wc_get_price_decimals() ),
+					'total_fees'         => $this->prepare_money_response( $this->get_fee_total( $order ), wc_get_price_decimals() ),
+					'total_fees_tax'     => $this->prepare_money_response( $this->get_fee_tax( $order ), wc_get_price_decimals() ),
+					'total_discount'     => $this->prepare_money_response( $order->get_discount_total(), wc_get_price_decimals() ),
+					'total_discount_tax' => $this->prepare_money_response( $order->get_discount_tax(), wc_get_price_decimals() ),
+					'total_shipping'     => $this->prepare_money_response( $order->get_shipping_total(), wc_get_price_decimals() ),
+					'total_shipping_tax' => $this->prepare_money_response( $order->get_shipping_tax(), wc_get_price_decimals() ),
+					'total_price'        => $this->prepare_money_response( $order->get_total(), wc_get_price_decimals() ),
+					'total_tax'          => $this->prepare_money_response( $order->get_total_tax(), wc_get_price_decimals() ),
+					'tax_lines'          => $this->get_tax_lines( $order ),
 				]
 			),
 		];
@@ -534,15 +538,15 @@ class OrderSchema extends AbstractSchema {
 	/**
 	 * Get event dates from an order, formatting both local and GMT values.
 	 *
-	 * @param \WC_Order $object Order class instance.
+	 * @param \WC_Order $order Order class instance.
 	 * @return array
 	 */
-	protected function get_events( $object ) {
+	protected function get_events( \WC_Order $order ) {
 		$events = [];
 		$props  = [ 'date_created', 'date_modified', 'date_completed', 'date_paid' ];
 
 		foreach ( $props as $prop ) {
-			$datetime                 = $object->{"get_$prop"}();
+			$datetime                 = $order->{"get_$prop"}();
 			$events[ $prop ]          = wc_rest_prepare_date_response( $datetime, false );
 			$events[ $prop . '_gmt' ] = wc_rest_prepare_date_response( $datetime );
 		}
@@ -553,11 +557,11 @@ class OrderSchema extends AbstractSchema {
 	/**
 	 * Get tax lines from the order and format to match schema.
 	 *
-	 * @param \WC_Order $object Order class instance.
+	 * @param \WC_Order $order Order class instance.
 	 * @return array
 	 */
-	protected function get_tax_lines( $object ) {
-		$tax_totals = $object->get_tax_totals();
+	protected function get_tax_lines( \WC_Order $order ) {
+		$tax_totals = $order->get_tax_totals();
 		$tax_lines  = [];
 
 		foreach ( $tax_totals as $tax_total ) {
@@ -577,12 +581,12 @@ class OrderSchema extends AbstractSchema {
 	 *
 	 * @todo This could be added to the orders class to match the cart class.
 	 *
-	 * @param \WC_Order $object Order class instance.
+	 * @param \WC_Order $order Order class instance.
 	 * @return float
 	 */
-	protected function get_subtotal_tax( $object ) {
+	protected function get_subtotal_tax( \WC_Order $order ) {
 		$total = 0;
-		foreach ( $object->get_items() as $item ) {
+		foreach ( $order->get_items() as $item ) {
 			$total += $item->get_subtotal_tax();
 		}
 		return $total;
@@ -594,12 +598,12 @@ class OrderSchema extends AbstractSchema {
 	 *
 	 * @todo This could be added to the orders class to match the cart class.
 	 *
-	 * @param \WC_Order $object Order class instance.
+	 * @param \WC_Order $order Order class instance.
 	 * @return float
 	 */
-	protected function get_fee_total( $object ) {
+	protected function get_fee_total( \WC_Order $order ) {
 		$total = 0;
-		foreach ( $object->get_fees() as $item ) {
+		foreach ( $order->get_fees() as $item ) {
 			$total += $item->get_total();
 		}
 		return $total;
@@ -612,12 +616,12 @@ class OrderSchema extends AbstractSchema {
 	 *
 	 * @todo This could be added to the orders class to match the cart class.
 	 *
-	 * @param \WC_Order $object Order class instance.
+	 * @param \WC_Order $order Order class instance.
 	 * @return float
 	 */
-	protected function get_fee_tax( $object ) {
+	protected function get_fee_tax( \WC_Order $order ) {
 		$total = 0;
-		foreach ( $object->get_fees() as $item ) {
+		foreach ( $order->get_fees() as $item ) {
 			$total += $item->get_total_tax();
 		}
 		return $total;
