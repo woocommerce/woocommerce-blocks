@@ -28,9 +28,7 @@ const CartLineItemRow = ( { lineItem } ) => {
 		<div className="wc-block-cart-item__full-price">
 			<FormattedMonetaryAmount currency={ currency } value={ subtotal } />
 		</div>
-	) : (
-		undefined
-	);
+	) : null;
 
 	// We use this in two places so we can stack the quantity selector under
 	// product info on smaller screens.
@@ -50,7 +48,7 @@ const CartLineItemRow = ( { lineItem } ) => {
 				<div className="wc-block-cart-item__product-wrapper">
 					<img { ...imageProps } alt={ imageProps.alt } />
 					<div className="wc-block-cart-item__product-details">
-						<div>{ name }</div>
+						{ name }
 						{ quantitySelector(
 							'wc-block-cart-item__quantity-stacked'
 						) }
@@ -66,15 +64,11 @@ const CartLineItemRow = ( { lineItem } ) => {
 				</div>
 			</td>
 			<td className="wc-block-cart-item__total">
-				<div>
-					{ fullPrice }
-					<div>
-						<FormattedMonetaryAmount
-							currency={ currency }
-							value={ total }
-						/>
-					</div>
-				</div>
+				{ fullPrice }
+				<FormattedMonetaryAmount
+					currency={ currency }
+					value={ total }
+				/>
 			</td>
 		</tr>
 	);
