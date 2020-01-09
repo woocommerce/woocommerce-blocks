@@ -140,7 +140,7 @@ class CartOrder extends RestController {
 					);
 				}
 
-				// If stock management if off, no need to reserve any stock here.
+				// If stock management is off, no need to reserve any stock here.
 				if ( ! $product->managing_stock() || $product->backorders_allowed() ) {
 					continue;
 				}
