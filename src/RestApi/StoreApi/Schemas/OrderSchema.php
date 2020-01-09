@@ -575,7 +575,7 @@ class OrderSchema extends AbstractSchema {
 	 *
 	 * Needed because orders do not hold this total like carts.
 	 *
-	 * @todo This could be added to the orders class to match the cart class.
+	 * @todo In the future this could be added to the core WC_Order class to better match the WC_Cart class.
 	 *
 	 * @param \WC_Order $order Order class instance.
 	 * @return float
@@ -592,7 +592,7 @@ class OrderSchema extends AbstractSchema {
 	 *
 	 * Needed because orders do not hold this total like carts.
 	 *
-	 * @todo This could be added to the orders class to match the cart class.
+	 * @todo In the future this could be added to the core WC_Order class to better match the WC_Cart class.
 	 *
 	 * @param \WC_Order $order Order class instance.
 	 * @return float
@@ -610,7 +610,7 @@ class OrderSchema extends AbstractSchema {
 	 *
 	 * Needed because orders do not hold this total like carts.
 	 *
-	 * @todo This could be added to the orders class to match the cart class.
+	 * @todo In the future this could be added to the core WC_Order class to better match the WC_Cart class.
 	 *
 	 * @param \WC_Order $order Order class instance.
 	 * @return float
