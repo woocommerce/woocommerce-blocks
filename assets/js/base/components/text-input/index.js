@@ -21,7 +21,7 @@ const TextInput = ( {
 	disabled,
 	help,
 	value = '',
-	onChange,
+	onChange = () => null,
 } ) => {
 	const [ isActive, setIsActive ] = useState( false );
 	const onChangeValue = ( event ) => onChange( event.target.value );
