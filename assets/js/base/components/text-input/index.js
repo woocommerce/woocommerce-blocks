@@ -20,7 +20,7 @@ const TextInput = ( {
 	screenReaderLabel,
 	disabled,
 	help,
-	value,
+	value = '',
 	onChange,
 } ) => {
 	const [ isActive, setIsActive ] = useState( false );
