@@ -10,13 +10,14 @@ namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers;
 
 defined( 'ABSPATH' ) || exit;
 
-use \WP_Error as RestError;
+use \WP_Error;
 use \WP_REST_Server as RestServer;
 use \WP_REST_Controller as RestController;
 use \WP_REST_Response as RestResponse;
 use \WP_REST_Request as RestRequest;
 use \WC_REST_Exception as RestException;
 use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas\OrderSchema;
+use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ReserveStock;
 
 /**
  * Cart Order API.
@@ -74,36 +75,29 @@ class CartOrder extends RestController {
 	 * Converts the global cart to an order object.
 	 *
 	 * @todo Since this relies on the cart global so much, why doesn't the core cart class do this?
-	 * @todo set payment method
-	 * @todo set customer note
 	 *
 	 * Based on WC_Checkout::create_order.
 	 *
 	 * @param RestRequest $request Full details about the request.
-	 * @return RestError|RestResponse
+	 * @return WP_Error|RestResponse
 	 */
 	public function create_item( $request ) {
-		add_filter( 'woocommerce_default_order_status', array( $this, 'default_order_status' ) );
-
 		try {
 			// Create or retrieve the draft order for the current cart.
 			$order_object  = $this->create_order_from_cart( $request );
-			$reserve_stock = $this->reserve_stock_for_draft_order( $order_object );
+			$reserve_stock = $this->reserve_stock( $order_object );
 
 			if ( is_wp_error( $reserve_stock ) ) {
-				// Something went wrong - return error.
-				$response = $reserve_stock;
-			} else {
-				$response = $this->prepare_item_for_response( $order_object, $request );
-				$response->set_status( 201 );
+				return $reserve_stock;
 			}
+
+			$response = $this->prepare_item_for_response( $order_object, $request );
+			$response->set_status( 201 );
+			return $response;
 		} catch ( Exception $e ) {
-			$response = new RestError( 'checkout-error', $e->getMessage() );
+			remove_filter( 'woocommerce_default_order_status', array( $this, 'default_order_status' ) );
+			return new WP_Error( 'create-order-error', $e->getMessage() );
 		}
-
-		remove_filter( 'woocommerce_default_order_status', array( $this, 'default_order_status' ) );
-
-		return $response;
 	}
 
 	/**
@@ -111,107 +105,11 @@ class CartOrder extends RestController {
 	 *
 	 * @throws RestException Exception when stock cannot be reserved.
 	 * @param \WC_Order $order Order object.
-	 * @return bool|RestError
+	 * @return bool|WP_Error
 	 */
-	protected function reserve_stock_for_draft_order( \WC_Order $order ) {
-		global $wpdb;
-
-		try {
-			$hold_stock_minutes = (int) get_option( 'woocommerce_hold_stock_minutes', 0 );
-			$stock_to_reserve   = [];
-
-			// Loop over line items and check each item may be purchased.
-			foreach ( $order->get_items() as $item ) {
-				if ( ! $item->is_type( 'line_item' ) ) {
-					continue;
-				}
-
-				$product = $item->get_product();
-
-				if ( ! ( $product instanceof \WC_Product ) ) {
-					continue;
-				}
-
-				if ( ! $product->is_in_stock() ) {
-					throw new RestException(
-						'woocommerce_rest_cart_order_product_not_in_stock',
-						sprintf(
-							/* translators: %s: product name */
-							__( '%s is out of stock and cannot be purchased.', 'woo-gutenberg-products-block' ),
-							$product->get_name()
-						),
-						403
-					);
-				}
-
-				// If stock management is off, no need to reserve any stock here.
-				if ( ! $product->managing_stock() || $product->backorders_allowed() ) {
-					continue;
-				}
-
-				$stocked_product_id = $product->get_stock_managed_by_id();
-
-				if ( ! isset( $stock_to_reserve[ $stocked_product_id ] ) ) {
-					$stock_to_reserve[ $stocked_product_id ] = 0;
-				}
-
-				// Query for any existing holds on stock for this item.
-				// Ignores reserved stock already made for this order.
-				// Ignores stock for orders which are no longer drafts (assuming real stock reduction was performed).
-				// Ignores stock reserved over 10 mins ago. Client can call this endpoint to renew holds on stock.
-				$reserved_stock = $wpdb->get_var(
-					$wpdb->prepare(
-						"
-						SELECT SUM( stock_table.`stock_quantity` ) FROM $wpdb->wc_reserved_stock stock_table
-						LEFT JOIN $wpdb->posts posts ON stock_table.`order_id` = posts.ID
-						WHERE stock_table.`product_id` = %d
-						AND posts.post_status = 'wc-draft'
-						AND stock_table.`order_id` != %d
-						AND stock_table.`timestamp` > ( NOW() - INTERVAL 10 MINUTE )
-						",
-						$stocked_product_id,
-						$order->get_id()
-					)
-				);
-
-				// Deals with legacy stock reservation which the core Woo checkout performs.
-				$reserved_stock += ( $hold_stock_minutes > 0 ) ? wc_get_held_stock_quantity( $product ) : 0;
-
-				if ( ( $product->get_stock_quantity() - $reserved_stock - $stock_to_reserve[ $stocked_product_id ] ) < $item->get_quantity() ) {
-					throw new RestException(
-						'woocommerce_rest_cart_order_product_not_enough_stock',
-						sprintf(
-							/* translators: %s: product name */
-							__( 'Not enough units of %s are available in stock to fulfil this order.', 'woo-gutenberg-products-block' ),
-							$product->get_name()
-						),
-						403
-					);
-				}
-
-				// Queue this reservation for later DB insertion.
-				$stock_to_reserve[ $stocked_product_id ] += $item->get_quantity();
-			}
-
-			$stock_to_reserve = array_filter( $stock_to_reserve );
-
-			if ( $stock_to_reserve ) {
-				$stock_to_reserve_rows = [];
-
-				foreach ( $stock_to_reserve as $product_id => $stock_quantity ) {
-					$stock_to_reserve_rows[] = '(' . esc_sql( $order->get_id() ) . ',"' . esc_sql( $product_id ) . '","' . esc_sql( $stock_quantity ) . '")';
-				}
-
-				$values = implode( ',', $stock_to_reserve_rows );
-
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
-				$wpdb->query( "REPLACE INTO {$wpdb->wc_reserved_stock} ( order_id, product_id, stock_quantity ) VALUES {$values};" );
-			}
-		} catch ( RestException $e ) {
-			return new RestError( $e->getErrorCode(), $e->getMessage(), array( 'status' => $e->getCode() ) );
-		}
-
-		return true;
+	protected function reserve_stock( \WC_Order $order ) {
+		$reserve_stock_helper = new ReserveStock();
+		return $reserve_stock_helper->reserve_stock_for_order( $order );
 	}
 
 	/**
@@ -221,6 +119,8 @@ class CartOrder extends RestController {
 	 * @return \WC_Order A new order object.
 	 */
 	protected function create_order_from_cart( RestRequest $request ) {
+		add_filter( 'woocommerce_default_order_status', array( $this, 'default_order_status' ) );
+
 		$order = $this->get_order_object();
 		$order->set_status( 'draft' );
 		$order->set_created_via( 'store-api' );
@@ -235,6 +135,8 @@ class CartOrder extends RestController {
 		$this->set_props_from_request( $order, $request );
 
 		$order->save();
+
+		remove_filter( 'woocommerce_default_order_status', array( $this, 'default_order_status' ) );
 
 		// Store Order ID in session so we can look it up later.
 		WC()->session->set( 'draft_order_id', $order->get_id() );
