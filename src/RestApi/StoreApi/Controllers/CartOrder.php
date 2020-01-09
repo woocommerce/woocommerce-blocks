@@ -204,7 +204,7 @@ class CartOrder extends RestController {
 
 				$values = implode( ',', $stock_to_reserve_rows );
 
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
 				$wpdb->query( "REPLACE INTO {$wpdb->wc_reserved_stock} ( order_id, product_id, stock_quantity ) VALUES {$values};" );
 			}
 		} catch ( RestException $e ) {
