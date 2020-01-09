@@ -63,7 +63,7 @@ const TextInput = ( {
 TextInput.propTypes = {
 	id: PropTypes.string,
 	value: PropTypes.string,
-	onChangeValue: PropTypes.func,
+	onChange: PropTypes.func,
 	ariaLabel: PropTypes.string,
 	label: PropTypes.string,
 	screenReaderLabel: PropTypes.string,
