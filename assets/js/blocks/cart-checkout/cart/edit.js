@@ -2,10 +2,8 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { BlockControls } from '@wordpress/block-editor';
-import { Disabled, Toolbar } from '@wordpress/components';
+import { Disabled, ButtonGroup, Button } from '@wordpress/components';
 import { useState } from '@wordpress/element';
-import TextToolbarButton from '@woocommerce/block-components/text-toolbar-button';
 import PropTypes from 'prop-types';
 import { withFeedbackPrompt } from '@woocommerce/block-hocs';
 
@@ -14,6 +12,7 @@ import { withFeedbackPrompt } from '@woocommerce/block-hocs';
  */
 import FullCart from './full-cart';
 import EmptyCart from './empty-cart';
+import './editor.scss';
 
 /**
  * Component to handle edit mode of "Cart Block".
@@ -21,28 +20,40 @@ import EmptyCart from './empty-cart';
 const CartEditor = ( { className } ) => {
 	const [ isFullCartMode, setFullCartMode ] = useState( true );
 
-	const toggleFullCartMode = () => {
-		setFullCartMode( ! isFullCartMode );
-	};
-
 	const getBlockControls = () => {
 		return (
-			<BlockControls className="wc-block-cart-toolbar">
-				<Toolbar>
-					<TextToolbarButton
-						onClick={ toggleFullCartMode }
-						isToggled={ isFullCartMode }
+			<div className="wc-block-cart-view-switcher">
+				<label
+					id="wc-block-cart-view-switcher__label"
+					htmlFor="wc-block-cart-view-switcher"
+					className="wc-block-cart-view-switcher__label"
+				>
+					{ __( 'View:', 'woo-gutenberg-products-block' ) + ' ' }
+				</label>
+				<ButtonGroup
+					id="wc-block-cart-view-switcher"
+					aria-labelledby={ 'wc-block-cart-view-switcher__label' }
+				>
+					<Button
+						isPrimary={ isFullCartMode }
+						isSecondary={ ! isFullCartMode }
+						onClick={ () => {
+							setFullCartMode( true );
+						} }
 					>
 						{ __( 'Full Cart', 'woo-gutenberg-products-block' ) }
-					</TextToolbarButton>
-					<TextToolbarButton
-						onClick={ toggleFullCartMode }
-						isToggled={ ! isFullCartMode }
+					</Button>
+					<Button
+						isPrimary={ ! isFullCartMode }
+						isSecondary={ isFullCartMode }
+						onClick={ () => {
+							setFullCartMode( false );
+						} }
 					>
 						{ __( 'Empty Cart', 'woo-gutenberg-products-block' ) }
-					</TextToolbarButton>
-				</Toolbar>
-			</BlockControls>
+					</Button>
+				</ButtonGroup>
+			</div>
 		);
 	};
 
