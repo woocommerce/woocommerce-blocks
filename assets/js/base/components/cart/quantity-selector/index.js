@@ -10,7 +10,10 @@ import classNames from 'classnames';
 import './style.scss';
 
 const QuantitySelector = ( { className, quantity, onChange } ) => {
-	const classes = classNames( 'wc-block-quantity-selector-input', className );
+	const classes = classNames(
+		'wc-block-quantity-selector__input',
+		className
+	);
 
 	// For now just use a regular number edit. (temporary)
 	// @todo https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1521
@@ -24,14 +27,6 @@ const QuantitySelector = ( { className, quantity, onChange } ) => {
 			onChange={ ( event ) => onChange( event.target.value ) }
 		/>
 	);
-
-	// return (
-	// 	<div className="wc-block-quantity-selector">
-	// 		<button onClick={ () => onChange( quantity - 1 ) }>-</button>
-	// 		<span>{ quantity }</span>
-	// 		<button onClick={ () => onChange( quantity + 1 ) }>+</button>
-	// 	</div>
-	// );
 };
 
 QuantitySelector.propTypes = {
