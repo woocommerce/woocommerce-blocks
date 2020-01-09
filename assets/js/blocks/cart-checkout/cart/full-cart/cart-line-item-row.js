@@ -20,7 +20,7 @@ const CartLineItemRow = ( { lineItem } ) => {
 
 	const isDiscounted = subtotal !== total;
 	const fullPrice = isDiscounted ? (
-		<div className="wc-block-cart__table-full-price">
+		<div className="wc-block-cart-item__full-price">
 			<FormattedMonetaryAmount currency={ currency } value={ subtotal } />
 		</div>
 	) : (
@@ -40,23 +40,23 @@ const CartLineItemRow = ( { lineItem } ) => {
 	};
 
 	return (
-		<tr className="wc-block-cart__table-item">
-			<td className="wc-block-cart__table-image">
+		<tr>
+			<td className="wc-block-cart-item__image">
 				<img { ...image } alt={ imageAltText } />
 			</td>
-			<td className="wc-block-cart__table-product">
+			<td className="wc-block-cart-item__product">
 				<div>{ name }</div>
-				{ quantitySelector( 'wc-block-cart__table-quantity-stacked' ) }
+				{ quantitySelector( 'wc-block-cart-item__quantity-stacked' ) }
 			</td>
-			<td className="wc-block-cart__table-quantity-column">
+			<td className="wc-block-cart-item__quantity">
 				<div>
 					{ quantitySelector() }
-					<div className="wc-block-cart__table-remove-link">
+					<div className="wc-block-cart-item__remove-link">
 						{ __( 'Remove item', 'woo-gutenberg-products-block' ) }
 					</div>
 				</div>
 			</td>
-			<td className="wc-block-cart__table-total">
+			<td className="wc-block-cart-item__total">
 				<div>
 					{ fullPrice }
 					<div>

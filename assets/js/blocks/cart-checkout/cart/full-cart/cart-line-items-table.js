@@ -15,19 +15,19 @@ const CartLineItemsTable = ( { lineItems = [] } ) => {
 	) );
 
 	return (
-		<table className="wc-block-cart__table">
+		<table className="wc-block-cart-items">
 			<thead>
-				<tr className="wc-block-cart__table-header">
+				<tr className="wc-block-cart-items__header">
 					<th
-						className="wc-block-cart__table-header-product"
+						className="wc-block-cart-items__header-product"
 						colSpan="2"
 					>
 						{ __( 'Product', 'woo-gutenberg-products-block' ) }
 					</th>
-					<th className="wc-block-cart__table-header-quantity">
+					<th className="wc-block-cart-items__header-quantity">
 						{ __( 'Quantity', 'woo-gutenberg-products-block' ) }
 					</th>
-					<th className="wc-block-cart__table-header-total">
+					<th className="wc-block-cart-items__header-total">
 						{ __( 'Total', 'woo-gutenberg-products-block' ) }
 					</th>
 				</tr>
