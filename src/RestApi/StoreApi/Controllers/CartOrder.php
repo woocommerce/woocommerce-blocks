@@ -128,6 +128,10 @@ class CartOrder extends RestController {
 
 				$product = $item->get_product();
 
+				if ( ! ( $product instanceof \WC_Product ) ) {
+					continue;
+				}
+
 				if ( ! $product->is_in_stock() ) {
 					throw new RestException(
 						'woocommerce_rest_cart_order_product_not_in_stock',
