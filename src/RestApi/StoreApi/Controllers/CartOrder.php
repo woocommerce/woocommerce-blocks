@@ -123,6 +123,9 @@ class CartOrder extends RestController {
 	/**
 	 * Select shipping rates and store in session.
 	 *
+	 * @todo Might be useful to included validation here. However right now it will just default to the default method
+	 * if the chosen rate id is invalid.
+	 *
 	 * @throws RestException Exception when shipping is invalid.
 	 * @param RestRequest $request Full details about the request.
 	 */
