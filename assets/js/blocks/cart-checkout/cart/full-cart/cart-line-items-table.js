@@ -7,11 +7,11 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import CartProductsTableItem from './cart-products-table-item';
+import CartLineItemRow from './cart-line-item-row';
 
-const CartProductsTable = ( { lineItems = [] } ) => {
+const CartLineItemsTable = ( { lineItems = [] } ) => {
 	const products = lineItems.map( ( lineItem ) => (
-		<CartProductsTableItem key={ lineItem.id } lineItem={ lineItem } />
+		<CartLineItemRow key={ lineItem.id } lineItem={ lineItem } />
 	) );
 
 	return (
@@ -37,10 +37,10 @@ const CartProductsTable = ( { lineItems = [] } ) => {
 	);
 };
 
-CartProductsTable.propTypes = {
+CartLineItemsTable.propTypes = {
 	lineItems: PropTypes.shape( {
 		key: PropTypes.string.isRequired,
 	} ),
 };
 
-export default CartProductsTable;
+export default CartLineItemsTable;

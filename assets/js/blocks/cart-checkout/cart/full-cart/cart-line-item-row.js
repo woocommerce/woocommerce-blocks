@@ -8,7 +8,7 @@ import QuantitySelector from '@woocommerce/base-components/quantity-selector';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import { getCurrency } from '@woocommerce/base-utils';
 
-const CartProductsTableItem = ( { lineItem } ) => {
+const CartLineItemRow = ( { lineItem } ) => {
 	const { name, images, quantity, totals } = lineItem;
 	const { line_total: total, line_subtotal: subtotal } = totals;
 
@@ -71,7 +71,7 @@ const CartProductsTableItem = ( { lineItem } ) => {
 	);
 };
 
-CartProductsTableItem.propTypes = {
+CartLineItemRow.propTypes = {
 	lineItem: PropTypes.shape( {
 		name: PropTypes.string.isRequired,
 		images: PropTypes.array.isRequired,
@@ -83,4 +83,4 @@ CartProductsTableItem.propTypes = {
 	} ),
 };
 
-export default CartProductsTableItem;
+export default CartLineItemRow;

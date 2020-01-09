@@ -4,7 +4,7 @@
 import { __, sprintf, _n } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 
-const CartProductsTitle = ( {
+const CartLineItemsTitle = ( {
 	title = __( 'Shopping cart', 'woo-gutenberg-products-block' ),
 	itemCount = 1,
 } ) => {
@@ -22,9 +22,9 @@ const CartProductsTitle = ( {
 	);
 };
 
-CartProductsTitle.propTypes = {
+CartLineItemsTitle.propTypes = {
 	title: PropTypes.string,
 	itemCount: PropTypes.number,
 };
 
-export default CartProductsTitle;
+export default CartLineItemsTitle;
