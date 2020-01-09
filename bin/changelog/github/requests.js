@@ -1,17 +1,17 @@
 'use strict';
 
 const requestPromise = require( 'request-promise' );
-const octokit = require( '@octokit/rest' )();
+const { graphql } = require( '@octokit/graphql' );
 const { pkg, REPO } = require( '../config' );
 
 /* eslint no-console: 0 */
 
 const headers = {
-	'Content-Type': 'application/json;charset=UTF-8',
-	Authorization: `token ${ process.env.GH_API_TOKEN }`,
-	Accept: 'application/vnd.github.inertia-preview+json',
-	'User-Agent': 'request',
+	authorization: `token ${ process.env.GH_API_TOKEN }`,
+	'user-agent': 'changelog-tool',
 };
+
+const authedGraphql = graphql.defaults( { headers } );
 
 const getPullRequestType = ( labels ) => {
 	const typeLabel = labels.find( ( label ) =>
@@ -42,40 +42,21 @@ const isCollaborator = async ( username ) => {
 		} );
 };
 
-const isMergedPullRequest = async ( pullRequestUrl ) => {
-	const options = {
-		url: pullRequestUrl,
-		headers,
-		json: true,
-	};
-	return requestPromise( options )
-		.then( ( data ) => data.merged )
-		.catch( ( err ) => {
-			console.log( '🤯' );
-			console.log( err.message );
-		} );
-};
-
-const getEntry = async ( data ) => {
-	if ( ! data.pull_request ) {
+const getEntry = async ( pullRequest ) => {
+	if (
+		pullRequest.labels.nodes.some(
+			( label ) => label.name === pkg.changelog.skipLabel
+		)
+	) {
 		return;
 	}
 
-	const isMerged = await isMergedPullRequest( data.pull_request.url );
-	const skipChangelog = data.labels.find(
-		( label ) => label.name === pkg.changelog.skipLabel
-	);
-
-	if ( ! isMerged || skipChangelog ) {
-		return;
-	}
-
-	const collaborator = await isCollaborator( data.user.login );
-	const type = getPullRequestType( data.labels );
-	const authorTag = collaborator ? '' : `👏 @${ data.user.login }`;
+	const collaborator = await isCollaborator( pullRequest.author.login );
+	const type = getPullRequestType( pullRequest.labels.nodes );
+	const authorTag = collaborator ? '' : `👏 @${ pullRequest.author.login }`;
 	let title;
-	if ( /### Changelog\r\n\r\n> /.test( data.body ) ) {
-		const bodyParts = data.body.split( '### Changelog\r\n\r\n> ' );
+	if ( /### Changelog\r\n\r\n> /.test( pullRequest.body ) ) {
+		const bodyParts = pullRequest.body.split( '### Changelog\r\n\r\n> ' );
 		const note = bodyParts[ bodyParts.length - 1 ];
 		title = note
 			// Remove comment prompt
@@ -83,35 +64,95 @@ const getEntry = async ( data ) => {
 			// Remove new lines and whitespace
 			.trim();
 		if ( ! title.length ) {
-			title = `${ type }: ${ data.title }`;
+			title = `${ type }: ${ pullRequest.title }`;
 		}
 	} else {
-		title = `${ type }: ${ data.title }`;
+		title = `${ type }: ${ pullRequest.title }`;
 	}
-	return `- ${ title } [#${ data.number }](https://github.com/${ REPO }/${ data.number }) ${ authorTag }`;
+	return `- ${ title } [#${ pullRequest.number }](${ pullRequest.url }) ${ authorTag }`;
 };
 
-const fetchAllPages = async ( version ) =>
-	await ( async () => {
-		const fetchResults = async ( page = 1 ) => {
-			const results = await octokit.search.issuesAndPullRequests( {
-				q: `milestone:"${ version }"+type:pr+repo:${ REPO }`,
-				sort: 'reactions',
-				per_page: 100,
-				page,
-			} );
+const getMilestoneNumber = async ( version ) => {
+	const [ owner, repo ] = REPO.split( '/' );
+	const query = `
+	{
+		repository(owner: "${ owner }", name: "${ repo }") {
+			milestones(last: 50) {
+				nodes {
+					title
+					number
+				}
+			}
+		}
+	}
+	`;
+	const data = await authedGraphql( query );
+	const matchingNode = data.repository.milestones.nodes.find(
+		( node ) => node.title === version
+	);
+	if ( ! matchingNode ) {
+		throw new Error(
+			`Unable to find a milestone matching the given version ${ version }`
+		);
+	}
+	return matchingNode.number;
+};
 
-			if ( results.data.items < 100 ) {
-				return results.data.items;
+const getQuery = ( milestoneNumber, before ) => {
+	const [ owner, repo ] = REPO.split( '/' );
+	const paging = before ? ', before: "${before}"' : '';
+	return `
+	{
+		repository(owner: "${ owner }", name: "${ repo }"${ paging }) {
+			milestone(number: ${ milestoneNumber }) {
+				pullRequests(last: 100, states: [MERGED]) {
+					totalCount
+					pageInfo {
+						hasNextPage
+						endCursor
+					}
+					nodes {
+						number
+						title
+						url
+						author {
+							login
+						}
+						body
+						labels(last: 10) {
+							nodes {
+								name
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	`;
+};
+
+const fetchAllPullRequests = async ( version ) =>
+	await ( async () => {
+		const milestoneNumber = await getMilestoneNumber( version );
+		const fetchResults = async ( before ) => {
+			const query = getQuery( milestoneNumber, before );
+			const results = await authedGraphql( query );
+			if ( results.repository.milestone.pullRequests.totalCount < 100 ) {
+				return results.repository.milestone.pullRequests.nodes;
 			}
 
-			const nextResults = await fetchResults( page + 1 );
-			return results.data.items.concat( nextResults );
+			const nextResults = await fetchResults(
+				results.repository.milestone.pullRequests.pageInfo.endCursor
+			);
+			return results.repository.milestone.pullRequests.nodes.concat(
+				nextResults
+			);
 		};
 		return await fetchResults();
 	} )();
 
 module.exports = {
-	fetchAllPages,
+	fetchAllPullRequests,
 	getEntry,
 };

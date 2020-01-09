@@ -103,9 +103,7 @@ const getEntry = async ( data ) => {
 	} else {
 		title = `${ type }: ${ data.title }`;
 	}
-	return `- ${ title } [#${ data.number }](https://github.com/${ REPO }/${
-		data.number
-	})`;
+	return `- ${ title } [#${ data.number }](https://github.com/${ REPO }/${ data.number })`;
 };
 
 const makeChangelog = async ( version ) => {

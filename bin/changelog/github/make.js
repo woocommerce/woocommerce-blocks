@@ -1,14 +1,14 @@
 'use strict';
 
 const chalk = require( 'chalk' );
-const { fetchAllPages, getEntry } = require( './requests' );
+const { fetchAllPullRequests, getEntry } = require( './requests' );
 
 /* eslint no-console: 0*/
 
 const make = async ( version ) => {
-	const rawEntries = await fetchAllPages( version );
+	const pullRequests = await fetchAllPullRequests( version );
 	let entries = await Promise.all(
-		rawEntries.map( async ( pr ) => await getEntry( pr ) )
+		pullRequests.map( async ( pr ) => await getEntry( pr ) )
 	);
 	if ( ! entries || ! entries.length ) {
 		console.log(

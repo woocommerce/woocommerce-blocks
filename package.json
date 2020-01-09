@@ -44,6 +44,7 @@
 	"devDependencies": {
 		"@babel/core": "7.7.7",
 		"@babel/plugin-proposal-class-properties": "7.7.4",
+		"@octokit/graphql": "^4.3.1",
 		"@octokit/rest": "16.36.0",
 		"@wordpress/babel-preset-default": "4.8.0",
 		"@wordpress/base-styles": "^1.1.0",
