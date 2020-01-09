@@ -55,7 +55,7 @@ class RestApi {
 	}
 
 	/**
-	 * If we're making a cart request, we may need to load some additonal classes from WC Core so we're ready to deal with requests.
+	 * If we're making a cart request, we may need to load some additional classes from WC Core so we're ready to deal with requests.
 	 *
 	 * Note: We load the session here early so guest nonces are in place.
 	 *

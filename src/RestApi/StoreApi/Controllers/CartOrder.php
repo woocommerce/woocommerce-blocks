@@ -64,7 +64,25 @@ class CartOrder extends RestController {
 				[
 					'methods'  => RestServer::CREATABLE,
 					'callback' => array( $this, 'create_item' ),
-					'args'     => $this->get_endpoint_args_for_item_schema( RestServer::CREATABLE ),
+					'args'     => array_merge(
+						$this->get_endpoint_args_for_item_schema( RestServer::CREATABLE ),
+						array(
+							'shipping_rates' => array(
+								'description' => __( 'Selected shipping rates to apply to the order.', 'woo-gutenberg-products-block' ),
+								'type'        => 'array',
+								'required'    => true,
+								'items'       => [
+									'type'       => 'object',
+									'properties' => [
+										'rate_id' => [
+											'description' => __( 'ID of the shipping rate.', 'woo-gutenberg-products-block' ),
+											'type'        => 'string',
+										],
+									],
+								],
+							),
+						)
+					),
 				],
 				'schema' => [ $this, 'get_public_item_schema' ],
 			]
@@ -83,21 +101,48 @@ class CartOrder extends RestController {
 	 */
 	public function create_item( $request ) {
 		try {
-			// Create or retrieve the draft order for the current cart.
-			$order_object  = $this->create_order_from_cart( $request );
-			$reserve_stock = $this->reserve_stock( $order_object );
+			// If part of the request, first update shipping selections so that cart totals are correct.
+			$this->select_shipping_rates( $request );
 
-			if ( is_wp_error( $reserve_stock ) ) {
-				return $reserve_stock;
-			}
+			// Create or retrieve the draft order for the current cart.
+			$order_object = $this->create_order_from_cart( $request );
+
+			// Try to reserve stock, if available.
+			$this->reserve_stock( $order_object );
 
 			$response = $this->prepare_item_for_response( $order_object, $request );
 			$response->set_status( 201 );
 			return $response;
+		} catch ( RestException $e ) {
+			return new WP_Error( $e->getErrorCode(), $e->getMessage(), $e->getCode() );
 		} catch ( Exception $e ) {
-			remove_filter( 'woocommerce_default_order_status', array( $this, 'default_order_status' ) );
-			return new WP_Error( 'create-order-error', $e->getMessage() );
+			return new WP_Error( 'create-order-error', $e->getMessage(), [ 'status' => 500 ] );
 		}
+	}
+
+	/**
+	 * Select shipping rates and store in session.
+	 *
+	 * @throws RestException Exception when shipping is invalid.
+	 * @param RestRequest $request Full details about the request.
+	 */
+	protected function select_shipping_rates( RestRequest $request ) {
+		if ( ! isset( $request['shipping_rates'] ) ) {
+			return;
+		}
+
+		$chosen_shipping_methods = [];
+
+		foreach ( $request['shipping_rates'] as $shipping_rate ) {
+			if ( ! isset( $shipping_rate['rate_id'] ) ) {
+				continue;
+			}
+			$chosen_shipping_methods[] = $shipping_rate['rate_id'];
+		}
+
+		WC()->session->set( 'chosen_shipping_methods', $chosen_shipping_methods );
+		WC()->cart->calculate_shipping();
+		WC()->cart->calculate_totals();
 	}
 
 	/**
@@ -105,11 +150,14 @@ class CartOrder extends RestController {
 	 *
 	 * @throws RestException Exception when stock cannot be reserved.
 	 * @param \WC_Order $order Order object.
-	 * @return bool|WP_Error
 	 */
 	protected function reserve_stock( \WC_Order $order ) {
 		$reserve_stock_helper = new ReserveStock();
-		return $reserve_stock_helper->reserve_stock_for_order( $order );
+		$result               = $reserve_stock_helper->reserve_stock_for_order( $order );
+
+		if ( is_wp_error( $result ) ) {
+			throw new RestException( $result->get_error_code(), $result->get_error_message(), $result->get_error_data( 'status' ) );
+		}
 	}
 
 	/**
@@ -188,28 +236,39 @@ class CartOrder extends RestController {
 	/**
 	 * Create order line items.
 	 *
+	 * @todo Knowing if items changed between the order and cart can be complex. Line items are ok because there is a
+	 * hash, but no hash exists for other line item types. Having a normalised set of data between cart and order, or
+	 * additional hashes, would be useful in the future and to help refactor this code.
+	 *
 	 * @param \WC_Order   $order Object to prepare for the response.
 	 * @param RestRequest $request Full details about the request.
 	 */
 	protected function create_line_items_from_cart( \WC_Order $order, RestRequest $request ) {
-		$draft_order_cart_hash = $order->get_cart_hash();
-
-		if ( WC()->cart->get_cart_hash() === $draft_order_cart_hash ) {
-			return;
+		// We only need to update line items if the cart changed.
+		if ( WC()->cart->get_cart_hash() !== $order->get_cart_hash() ) {
+			$order->remove_order_items( 'line_item' );
+			$order->set_cart_hash( WC()->cart->get_cart_hash() );
+			WC()->checkout->create_order_line_items( $order, WC()->cart );
 		}
 
-		if ( $draft_order_cart_hash ) {
-			$order->remove_order_items();
+		// This checks to see if coupons have changed between the cart and the order.
+		if ( array_diff( $order->get_coupon_codes(), WC()->cart->get_applied_coupons() ) ) {
+			$order->remove_order_items( 'coupon' );
+			WC()->checkout->create_order_coupon_lines( $order, WC()->cart );
 		}
 
-		WC()->checkout->create_order_line_items( $order, WC()->cart );
+		// There is no way to know if fees changed, so recreate them here.
+		$order->remove_order_items( 'fee' );
 		WC()->checkout->create_order_fee_lines( $order, WC()->cart );
-		// @todo This may need revision during checkout implementation in order to store chosen shipping options rather than those from the cart.
-		WC()->checkout->create_order_shipping_lines( $order, WC()->session->get( 'chosen_shipping_methods' ), WC()->shipping()->get_packages() );
-		WC()->checkout->create_order_tax_lines( $order, WC()->cart );
-		WC()->checkout->create_order_coupon_lines( $order, WC()->cart );
 
-		$order->set_cart_hash( WC()->cart->get_cart_hash() );
+		// There is no way to know if shipping changed, so recreate it here.
+		$order->remove_order_items( 'shipping' );
+		WC()->checkout->create_order_shipping_lines( $order, WC()->session->get( 'chosen_shipping_methods' ), WC()->shipping()->get_packages() );
+
+		// There is no way to know if taxes changed, so recreate it here.
+		$order->remove_order_items( 'tax' );
+		WC()->checkout->create_order_tax_lines( $order, WC()->cart );
+
 	}
 
 	/**
