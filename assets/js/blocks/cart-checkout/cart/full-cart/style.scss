@@ -41,6 +41,10 @@ table.wc-block-cart-items {
 .wc-block-cart-item__product-wrapper {
 	display: flex;
 	flex-direction: row;
+
+	// Fixes a Safari-specific issue - product images display stretched vertically (full image height).
+	// https://stackoverflow.com/questions/57516373/image-stretching-in-flexbox-in-safari
+	align-items: flex-start;
 }
 
 .wc-block-cart-item__product img {
