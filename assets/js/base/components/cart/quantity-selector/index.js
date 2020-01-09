@@ -9,7 +9,11 @@ import classNames from 'classnames';
  */
 import './style.scss';
 
-const QuantitySelector = ( { className, quantity, onChange } ) => {
+const QuantitySelector = ( {
+	className,
+	quantity = 1,
+	onChange = () => null,
+} ) => {
 	const classes = classNames(
 		'wc-block-quantity-selector__input',
 		className
