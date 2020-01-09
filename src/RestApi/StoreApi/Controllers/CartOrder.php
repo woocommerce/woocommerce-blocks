@@ -270,7 +270,7 @@ class CartOrder extends RestController {
 	 * @param \WC_Order   $order Object to prepare for the response.
 	 * @param RestRequest $request Full details about the request.
 	 */
-	protected function set_props_from_cart( \WC_Order &$order, RestRequest $request ) {
+	protected function set_props_from_cart( \WC_Order $order, RestRequest $request ) {
 		$order->set_shipping_total( WC()->cart->get_shipping_total() );
 		$order->set_discount_total( WC()->cart->get_discount_total() );
 		$order->set_discount_tax( WC()->cart->get_discount_tax() );
@@ -286,7 +286,7 @@ class CartOrder extends RestController {
 	 * @param \WC_Order   $order Object to prepare for the response.
 	 * @param RestRequest $request Full details about the request.
 	 */
-	protected function create_line_items_from_cart( \WC_Order &$order, RestRequest $request ) {
+	protected function create_line_items_from_cart( \WC_Order $order, RestRequest $request ) {
 		$draft_order_cart_hash = $order->get_cart_hash();
 
 		if ( WC()->cart->get_cart_hash() === $draft_order_cart_hash ) {
@@ -313,7 +313,7 @@ class CartOrder extends RestController {
 	 * @param \WC_Order   $order Object to prepare for the response.
 	 * @param RestRequest $request Full details about the request.
 	 */
-	protected function set_props_from_request( \WC_Order &$order, RestRequest $request ) {
+	protected function set_props_from_request( \WC_Order $order, RestRequest $request ) {
 		$schema = $this->get_item_schema();
 
 		if ( isset( $request['billing_address'] ) ) {
