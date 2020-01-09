@@ -9,8 +9,8 @@ import PropTypes from 'prop-types';
  */
 import CartProductsTableItem from './cart-products-table-item';
 
-const CartProductsTable = ( { items = [] } ) => {
-	const products = items.map( ( lineItem ) => {
+const CartProductsTable = ( { lineItems = [] } ) => {
+	const products = lineItems.map( ( lineItem ) => {
 		const imageProps = {};
 		if ( lineItem.images && lineItem.images.length ) {
 			imageProps.imageUrl = lineItem.images[ 0 ].src;
@@ -54,7 +54,7 @@ const CartProductsTable = ( { items = [] } ) => {
 };
 
 CartProductsTable.propTypes = {
-	items: PropTypes.array,
+	lineItems: PropTypes.array,
 };
 
 export default CartProductsTable;

@@ -20,7 +20,7 @@ const Cart = () => {
 		<div className="wc-block-cart">
 			<div className="wc-block-cart__main">
 				<CartProductsTitle itemCount={ previewCartItems.length } />
-				<CartProductsTable items={ previewCartItems } />
+				<CartProductsTable lineItems={ previewCartItems } />
 			</div>
 			<div className="wc-block-cart__sidebar">
 				<CheckoutButton />

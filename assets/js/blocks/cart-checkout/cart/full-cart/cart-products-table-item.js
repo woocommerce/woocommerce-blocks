@@ -21,8 +21,8 @@ const CartProductsTableItem = ( {
 	const [ lineQuantity, setLineQuantity ] = useState( quantity );
 	const currency = getCurrency();
 
-	const discounted = subtotal !== total;
-	const fullPrice = discounted ? (
+	const isDiscounted = subtotal !== total;
+	const fullPrice = isDiscounted ? (
 		<div className="wc-block-cart__table-full-price">
 			<FormattedMonetaryAmount currency={ currency } value={ subtotal } />
 		</div>
@@ -32,10 +32,10 @@ const CartProductsTableItem = ( {
 
 	// We use this in two places so we can stack the quantity selector under
 	// product info on smaller screens.
-	const quantitySelector = ( classes ) => {
+	const quantitySelector = ( className ) => {
 		return (
 			<QuantitySelector
-				className={ classes }
+				className={ className }
 				quantity={ lineQuantity }
 				onChange={ setLineQuantity }
 			/>
