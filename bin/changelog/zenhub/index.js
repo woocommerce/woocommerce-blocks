@@ -1,10 +1,6 @@
 'use-strict';
 
-/* eslint no-console: 0 */
-
-const makeChangeLog = () => {
-	console.log( 'using Zenhub' );
-};
+const { makeChangeLog } = require( './make-change-log' );
 
 module.exports = {
 	makeChangeLog,

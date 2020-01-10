@@ -13,6 +13,7 @@ if ( pkg.changelog === undefined ) {
 		labelPrefix: 'type:',
 		skipLabel: 'no-changelog',
 		defaultPrefix: 'dev',
+		zenhub: false,
 	};
 }
 

@@ -1,7 +1,7 @@
 'use strict';
 
 const { REPO } = require( '../config' );
-const { authedGraphql, getEntry } = require( '../common' );
+const { authedGraphql } = require( '../common' );
 
 /* eslint no-console: 0 */
 
@@ -33,12 +33,12 @@ const getMilestoneNumber = async ( version ) => {
 
 const getQuery = ( milestoneNumber, before ) => {
 	const [ owner, repo ] = REPO.split( '/' );
-	const paging = before ? ', before: "${before}"' : '';
+	const paging = before ? `, before: "${ before }"` : '';
 	return `
 	{
-		repository(owner: "${ owner }", name: "${ repo }"${ paging }) {
+		repository(owner: "${ owner }", name: "${ repo }") {
 			milestone(number: ${ milestoneNumber }) {
-				pullRequests(last: 100, states: [MERGED]) {
+				pullRequests(last: 100, states: [MERGED]${ paging }) {
 					totalCount
 					pageInfo {
 						hasNextPage
@@ -87,5 +87,4 @@ const fetchAllPullRequests = async ( version ) =>
 
 module.exports = {
 	fetchAllPullRequests,
-	getEntry,
 };
