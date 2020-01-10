@@ -20,7 +20,7 @@ const ShippingRatesControl = ( {
 		() => {
 			if ( shippingRates.length > 0 ) {
 				const isSelectedValid = selected.some( ( selectedId, i ) => {
-					const rates = shippingRates[ i ][ 'shipping-rates' ];
+					const rates = shippingRates[ i ].shipping_rates;
 					if ( rates.length === 0 ) {
 						return false;
 					}
@@ -33,9 +33,8 @@ const ShippingRatesControl = ( {
 				}
 				const newShippingRates = shippingRates
 					.map( ( shippingRate ) => {
-						if ( shippingRate[ 'shipping-rates' ].length > 0 ) {
-							return shippingRate[ 'shipping-rates' ][ 0 ]
-								.rate_id;
+						if ( shippingRate.shipping_rates.length > 0 ) {
+							return shippingRate.shipping_rates[ 0 ].rate_id;
 						}
 						return null;
 					} )
@@ -56,7 +55,7 @@ const ShippingRatesControl = ( {
 	}
 
 	return shippingRates.map( ( shippingRate, i ) => {
-		if ( shippingRate[ 'shipping-rates' ].length === 0 ) {
+		if ( shippingRate.shipping_rates.length === 0 ) {
 			return null;
 		}
 
@@ -72,9 +71,7 @@ const ShippingRatesControl = ( {
 						newSelected[ i ] = newShippingRate;
 						onChange( newSelected );
 					} }
-					options={ shippingRate[ 'shipping-rates' ].map(
-						renderOption
-					) }
+					options={ shippingRate.shipping_rates.map( renderOption ) }
 					selected={ selected[ i ] }
 				/>
 				{ shippingRates.length > 0 && (
