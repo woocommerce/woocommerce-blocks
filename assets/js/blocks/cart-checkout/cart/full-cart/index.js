@@ -14,13 +14,18 @@ import {
 } from '@woocommerce/block-settings';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import { Card, CardBody } from 'wordpress-components';
+import { previewCartItems } from '@woocommerce/resource-previews';
 
 /**
  * Internal dependencies
  */
 import CheckoutButton from './checkout-button';
 import placeholderShippingMethods from '../../placeholder-shipping-methods';
+import CartLineItemsTitle from './cart-line-items-title';
+import CartLineItemsTable from './cart-line-items-table';
+
 import './style.scss';
+import './editor.scss';
 
 /**
  * Given an API response with cart totals, generates an array of rows to display in the Cart block.
@@ -116,9 +121,8 @@ const Cart = () => {
 	return (
 		<div className="wc-block-cart">
 			<div className="wc-block-cart__main">
-				<span>
-					Cart block <b>full state</b> coming soon…
-				</span>
+				<CartLineItemsTitle itemCount={ previewCartItems.length } />
+				<CartLineItemsTable lineItems={ previewCartItems } />
 			</div>
 			<Card className="wc-block-cart__sidebar" isElevated={ true }>
 				<CardBody>
