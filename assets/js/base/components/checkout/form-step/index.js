@@ -29,10 +29,9 @@ const StepNumber = ( { stepNumber } ) => {
 	);
 };
 
-const StepHeading = ( { title, legend, stepHeadingContent } ) => (
+const StepHeading = ( { title, stepHeadingContent } ) => (
 	<div className="wc-block-checkout-step__heading">
 		<h4 className="wc-block-checkout-step__title">
-			<legend className="screen-reader-text">{ legend || title }</legend>
 			<span aria-hidden="true">{ title }</span>
 		</h4>
 		<span className="wc-block-checkout-step__heading-content">
@@ -56,18 +55,16 @@ const FormStep = ( {
 			className={ classnames( className, 'wc-block-checkout-step' ) }
 			id={ id }
 		>
+			<legend className="screen-reader-text">{ legend || title }</legend>
 			<StepNumber stepNumber={ stepNumber } />
 			<StepHeading
 				title={ title }
-				legend={ legend }
 				stepHeadingContent={ stepHeadingContent() }
 			/>
 			<span className="wc-block-checkout-step__description">
 				{ description }
 			</span>
-			<div className="wc-block-checkout-step__content">
-				{ children }
-			</div>
+			<div className="wc-block-checkout-step__content">{ children }</div>
 		</fieldset>
 	);
 };
