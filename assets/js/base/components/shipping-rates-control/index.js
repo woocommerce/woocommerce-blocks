@@ -74,7 +74,7 @@ const ShippingRatesControl = ( {
 					options={ shippingRate.shipping_rates.map( renderOption ) }
 					selected={ selected[ i ] }
 				/>
-				{ shippingRates.length > 0 && (
+				{ shippingRates.length > 1 && (
 					<span>
 						{ /* @todo show product names */ }
 						{ shippingRate.items.join( ',' ) }
