@@ -45,7 +45,6 @@
 		"@babel/core": "7.7.7",
 		"@babel/plugin-proposal-class-properties": "7.7.4",
 		"@octokit/graphql": "^4.3.1",
-		"@octokit/rest": "16.36.0",
 		"@wordpress/babel-preset-default": "4.8.0",
 		"@wordpress/base-styles": "^1.1.0",
 		"@wordpress/blocks": "6.9.0",
@@ -102,7 +101,8 @@
 		"webpack": "4.41.5",
 		"webpack-cli": "3.3.10",
 		"webpack-rtl-plugin": "2.0.0",
-		"yargs": "15.1.0"
+		"yargs": "15.1.0",
+		"zenhub-api": "^0.2.0"
 	},
 	"engines": {
 		"node": "12.14.1",
@@ -165,7 +165,8 @@
 	"changelog": {
 		"labelPrefix": "type:",
 		"skipLabel": "skip-changelog",
-		"defaultPrefix": "dev"
+		"defaultPrefix": "dev",
+		"zenhub": true
 	},
 	"files": [
 		"assets/**/*.{js,scss,php}",
