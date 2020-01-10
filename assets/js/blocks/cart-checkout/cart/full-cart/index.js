@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, Fragment } from '@wordpress/element';
 import {
 	TotalsCouponCodeInput,
 	TotalsItem,
@@ -15,6 +15,7 @@ import {
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import { Card, CardBody } from 'wordpress-components';
 import { previewCartItems } from '@woocommerce/resource-previews';
+import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 
 /**
  * Internal dependencies
@@ -153,12 +154,20 @@ const Cart = () => {
 							renderOption={ ( option ) => ( {
 								label: option.name,
 								value: option.rate_id,
-								description: [
-									option.price, // @todo replace with currency component
-									option.delivery_time,
-								]
-									.filter( Boolean )
-									.join( ' — ' ),
+								description: (
+									<Fragment>
+										{ option.price && (
+											<FormattedMonetaryAmount
+												currency={ currency } // @todo make sure currency is retrieved from the shipping rates API
+												value={ option.price }
+											/>
+										) }
+										{ option.price && option.delivery_time
+											? ' — '
+											: null }
+										{ option.delivery_time }
+									</Fragment>
+								),
 							} ) }
 							onChange={ ( newSelectedShippingOption ) =>
 								setSelectedShippingRate(
