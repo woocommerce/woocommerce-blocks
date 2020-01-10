@@ -192,7 +192,7 @@ class CartOrder extends RestController {
 		add_filter( 'woocommerce_default_order_status', array( $this, 'default_order_status' ) );
 
 		$order = $this->get_order_object();
-		$order->set_status( 'draft' );
+		$order->set_status( 'checkout-draft' );
 		$order->set_created_via( 'store-api' );
 		$order->set_currency( get_woocommerce_currency() );
 		$order->set_prices_include_tax( 'yes' === get_option( 'woocommerce_prices_include_tax' ) );
@@ -260,7 +260,7 @@ class CartOrder extends RestController {
 	 * @return string
 	 */
 	public function default_order_status() {
-		return 'draft';
+		return 'checkout-draft';
 	}
 
 	/**
@@ -325,11 +325,7 @@ class CartOrder extends RestController {
 			$selected_rate    = isset( $rates[ $selected_rate_id ] ) ? $rates[ $selected_rate_id ] : false;
 
 			if ( ! $rates ) {
-				throw new RestException(
-					'no-shipping-rates-found',
-					__( 'No shipping rates found. Please check your shipping address.', 'woo-gutenberg-products-block' ),
-					403
-				);
+				continue;
 			}
 
 			if ( ! $selected_rate ) {

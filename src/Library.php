@@ -22,6 +22,7 @@ class Library {
 		add_action( 'init', array( __CLASS__, 'define_tables' ) );
 		add_action( 'init', array( __CLASS__, 'maybe_create_tables' ) );
 		add_filter( 'wc_order_statuses', array( __CLASS__, 'register_draft_order_status' ) );
+		add_filter( 'woocommerce_register_shop_order_post_statuses', array( __CLASS__, 'register_draft_order_post_status' ) );
 	}
 
 	/**
@@ -125,7 +126,26 @@ class Library {
 	 * @return array
 	 */
 	public static function register_draft_order_status( array $statuses ) {
-		$statuses['wc-draft'] = _x( 'Draft', 'Order status', 'woo-gutenberg-products-block' );
+		$statuses['wc-checkout-draft'] = _x( 'Draft', 'Order status', 'woo-gutenberg-products-block' );
+		return $statuses;
+	}
+
+	/**
+	 * Register custom order post status for orders created via the API during checkout.
+	 *
+	 * @param array $statuses Array of statuses.
+	 * @return array
+	 */
+	public static function register_draft_order_post_status( array $statuses ) {
+		$statuses['wc-checkout-draft'] = [
+			'label'                     => _x( 'Draft', 'Order status', 'woo-gutenberg-products-block' ),
+			'public'                    => false,
+			'exclude_from_search'       => false,
+			'show_in_admin_all_list'    => false,
+			'show_in_admin_status_list' => true,
+			/* translators: %s: number of orders */
+			'label_count'               => _n_noop( 'Drafts <span class="count">(%s)</span>', 'Drafts <span class="count">(%s)</span>', 'woo-gutenberg-products-block' ),
+		];
 		return $statuses;
 	}
 }

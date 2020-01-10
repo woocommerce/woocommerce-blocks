@@ -122,7 +122,7 @@ class ReserveStock {
 				SELECT SUM( stock_table.`stock_quantity` ) FROM $wpdb->wc_reserved_stock stock_table
 				LEFT JOIN $wpdb->posts posts ON stock_table.`order_id` = posts.ID
 				WHERE stock_table.`product_id` = %d
-				AND posts.post_status = 'wc-draft'
+				AND posts.post_status = 'wc-checkout-draft'
 				AND stock_table.`order_id` != %d
 				AND stock_table.`timestamp` > ( NOW() - INTERVAL 10 MINUTE )
 				",

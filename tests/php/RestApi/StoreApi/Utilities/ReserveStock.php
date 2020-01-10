@@ -29,7 +29,7 @@ class ReserveStockTests extends TestCase {
 		$product->save();
 
 		$order = OrderHelper::create_order( 1, $product ); // Note this adds 4 to the order.
-		$order->set_status( 'draft' );
+		$order->set_status( 'checkout-draft' );
 		$order->save();
 
 		$result = $class->reserve_stock_for_order( $order );
@@ -38,7 +38,7 @@ class ReserveStockTests extends TestCase {
 
 		// Repeat.
 		$order = OrderHelper::create_order( 1, $product );
-		$order->set_status( 'draft' );
+		$order->set_status( 'checkout-draft' );
 		$order->save();
 
 		$result = $class->reserve_stock_for_order( $order );
@@ -47,11 +47,11 @@ class ReserveStockTests extends TestCase {
 
 		// Repeat again - should not be enough stock for this.
 		$order = OrderHelper::create_order( 1, $product );
-		$order->set_status( 'draft' );
+		$order->set_status( 'checkout-draft' );
 		$order->save();
 
 		$result = $class->reserve_stock_for_order( $order );
-		$this->assertTrue( $result );
+		$this->assertTrue( is_wp_error( $result ) );
 	}
 
 	/**
