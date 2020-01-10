@@ -13,7 +13,7 @@ import ProductOrderbyControl from '@woocommerce/block-components/product-orderby
 import { gridBlockPreview } from '@woocommerce/resource-previews';
 import { IconProductOnSale } from '@woocommerce/block-components/icons';
 
-const EmptyPlaceHolder = () => (
+const EmptyPlaceholder = () => (
 	<Placeholder
 		icon={ <IconProductOnSale /> }
 		label={ __( 'On Sale Products', 'woo-gutenberg-products-block' ) }
@@ -112,7 +112,7 @@ class ProductOnSaleBlock extends Component {
 					<ServerSideRender
 						block={ name }
 						attributes={ attributes }
-						EmptyResponsePlaceholder={ EmptyPlaceHolder }
+						EmptyResponsePlaceholder={ EmptyPlaceholder }
 					/>
 				</Disabled>
 			</Fragment>
