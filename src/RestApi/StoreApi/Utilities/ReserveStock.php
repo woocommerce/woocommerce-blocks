@@ -18,7 +18,6 @@ class ReserveStock {
 	/**
 	 * Put a temporary hold on stock for an order if enough is available.
 	 *
-	 * @throws RestException Exception when stock cannot be reserved.
 	 * @param \WC_Order $order Order object.
 	 * @return bool|WP_Error
 	 */
@@ -114,7 +113,7 @@ class ReserveStock {
 	 * @param integer     $exclude_order_id Optional order to exclude from the results.
 	 * @return integer Amount of stock already reserved.
 	 */
-	protected function get_reserved_stock( \WC_Product $product, $exclude_order_id = 0 ) {
+	public function get_reserved_stock( \WC_Product $product, $exclude_order_id = 0 ) {
 		global $wpdb;
 
 		$reserved_stock = $wpdb->get_var(
