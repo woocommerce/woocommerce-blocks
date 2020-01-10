@@ -39,7 +39,7 @@ class CartOrder extends TestCase {
 
 		wc_empty_cart();
 
-		$this->keys = [];
+		$this->keys   = [];
 		$this->keys[] = wc()->cart->add_to_cart( $this->products[0]->get_id(), 2 );
 		$this->keys[] = wc()->cart->add_to_cart( $this->products[1]->get_id(), 1 );
 	}
@@ -51,7 +51,7 @@ class CartOrder extends TestCase {
 		$routes = $this->server->get_routes();
 		$this->assertArrayHasKey( '/wc/store/cart/order', $routes );
 
-		$request = new WP_REST_Request( 'GET', '/wc/store/cart/order' );
+		$request  = new WP_REST_Request( 'GET', '/wc/store/cart/order' );
 		$response = $this->server->dispatch( $request );
 		$this->assertEquals( 404, $response->get_status() );
 	}
@@ -61,18 +61,21 @@ class CartOrder extends TestCase {
 	 */
 	public function test_create_item() {
 		$request = new WP_REST_Request( 'POST', '/wc/store/cart/order' );
-		$request->set_param( 'billing_address', [
-			"first_name" => "Margaret",
-			"last_name"  => "Thatchcroft",
-			"address_1"  => "123 South Street",
-			"address_2"  => "Apt 1",
-			"city"       => "Philadelphia",
-			"state"      => "PA",
-			"postcode"   => "19123",
-			"country"    => "US",
-			"email"      => "test@test.com",
-			"phone"      => ""
-		] );
+		$request->set_param(
+			'billing_address',
+			[
+				'first_name' => 'Margaret',
+				'last_name'  => 'Thatchcroft',
+				'address_1'  => '123 South Street',
+				'address_2'  => 'Apt 1',
+				'city'       => 'Philadelphia',
+				'state'      => 'PA',
+				'postcode'   => '19123',
+				'country'    => 'US',
+				'email'      => 'test@test.com',
+				'phone'      => '',
+			]
+		);
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 

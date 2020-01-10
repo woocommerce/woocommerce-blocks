@@ -77,7 +77,7 @@ class CartOrder extends RestController {
 							'shipping_rates' => array(
 								'description' => __( 'Selected shipping rates to apply to the order.', 'woo-gutenberg-products-block' ),
 								'type'        => 'array',
-								'required'    => true,
+								'required'    => false,
 								'items'       => [
 									'type'       => 'object',
 									'properties' => [
@@ -319,9 +319,18 @@ class CartOrder extends RestController {
 		$order->remove_order_items( 'shipping' );
 
 		foreach ( $packages as $package_key => $package ) {
-			$fallback_rate_id = current( array_keys( $package['rates'] ) );
+			$rates            = $package['rates'];
+			$fallback_rate_id = current( array_keys( $rates ) );
 			$selected_rate_id = isset( $selected_rates[ $package_key ] ) ? $selected_rates[ $package_key ] : $fallback_rate_id;
-			$selected_rate    = isset( $package['rates'][ $selected_rate_id ] ) ? $package['rates'][ $selected_rate_id ] : false;
+			$selected_rate    = isset( $rates[ $selected_rate_id ] ) ? $rates[ $selected_rate_id ] : false;
+
+			if ( ! $rates ) {
+				throw new RestException(
+					'no-shipping-rates-found',
+					__( 'No shipping rates found. Please check your shipping address.', 'woo-gutenberg-products-block' ),
+					403
+				);
+			}
 
 			if ( ! $selected_rate ) {
 				throw new RestException(
@@ -330,7 +339,7 @@ class CartOrder extends RestController {
 						/* translators: 1: Rate ID, 2: list of valid ids */
 						__( '%1$s is not a valid shipping rate ID. Select one of the following: %2$s', 'woo-gutenberg-products-block' ),
 						$selected_rate_id,
-						implode( ', ', array_keys( $package['rates'] ) )
+						implode( ', ', array_keys( $rates ) )
 					),
 					403
 				);
@@ -371,9 +380,13 @@ class CartOrder extends RestController {
 	 *
 	 * @param \WC_Order   $order Object to prepare for the response.
 	 * @param RestRequest $request Full details about the request.
-	 * @return array of cart items
+	 * @return array of packages and shipping rates.
 	 */
 	protected function get_shipping_packages( \WC_Order $order, RestRequest $request ) {
+		if ( ! WC()->cart->needs_shipping() ) {
+			return [];
+		}
+
 		$packages = WC()->cart->get_shipping_packages();
 
 		foreach ( $packages as $key => $package ) {
