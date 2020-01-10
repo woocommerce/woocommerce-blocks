@@ -79,7 +79,8 @@ table.wc-block-cart-items {
 	}
 }
 
-.wc-block-cart__shipping-options-fieldset {
+// Added extra class and label for specificity.
+.wc-block-cart fieldset.wc-block-cart__shipping-options-fieldset {
 	background-color: transparent;
 	margin: 0;
 	padding: 0;
