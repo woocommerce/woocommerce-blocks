@@ -5,6 +5,8 @@ $line-offset-from-circle-size: 8px;
 	position: relative;
 	border: none;
 	padding: 0 0 $gap-larger $gap-large;
+	background: none;
+	margin: 0;
 
 	&:last-child::before {
 		content: none;
