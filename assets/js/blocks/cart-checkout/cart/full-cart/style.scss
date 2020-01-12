@@ -68,6 +68,10 @@ table.wc-block-cart-items {
 }
 
 .wc-block-cart-item__full-price {
+	// inline on mobile, so line prices are aligned vertically
+	display: inline-block;
+	margin-right: 0.5em;
+
 	color: $core-grey-dark-400;
 	text-decoration: line-through;
 }
@@ -180,6 +184,11 @@ table.wc-block-cart-items {
 
 	.wc-block-cart-item__total {
 		vertical-align: top;
+	}
+
+	.wc-block-cart-item__full-price {
+		display: block;
+		margin-right: 0;
 	}
 
 	.wc-block-cart-item__discount-badge {
