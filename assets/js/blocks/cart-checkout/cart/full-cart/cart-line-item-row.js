@@ -2,11 +2,25 @@
  * External dependencies
  */
 import { useState } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import QuantitySelector from '@woocommerce/base-components/quantity-selector';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
-import { getCurrency } from '@woocommerce/base-utils';
+import { getCurrency, formatPrice } from '@woocommerce/base-utils';
+
+/**
+ * Return the difference between two price amounts, e.g. a discount.
+ *
+ * @param {string} subtotal Currency value in minor unit, e.g. cents.
+ * @param {string} total Currency value in minor unit, e.g. cents.
+ * @return {number} The difference (discount).
+ */
+const calcPriceDifference = ( subtotal, total ) => {
+	const subtotalValue = parseInt( subtotal, 10 );
+	const totalValue = parseInt( total, 10 );
+
+	return subtotalValue - totalValue;
+};
 
 const CartLineItemRow = ( { lineItem } ) => {
 	const { name, images, quantity, totals } = lineItem;
@@ -23,12 +37,28 @@ const CartLineItemRow = ( { lineItem } ) => {
 	const [ lineQuantity, setLineQuantity ] = useState( quantity );
 	const currency = getCurrency();
 
-	const isDiscounted = subtotal !== total;
-	const fullPrice = isDiscounted ? (
-		<div className="wc-block-cart-item__full-price">
-			<FormattedMonetaryAmount currency={ currency } value={ subtotal } />
-		</div>
-	) : null;
+	const discountAmount = calcPriceDifference( subtotal, total );
+	let fullPrice = null,
+		discountBadge = null;
+	if ( discountAmount > 0 ) {
+		fullPrice = (
+			<div className="wc-block-cart-item__full-price">
+				<FormattedMonetaryAmount
+					currency={ currency }
+					value={ subtotal }
+				/>
+			</div>
+		);
+		discountBadge = (
+			<div className="wc-block-cart-item__discount-badge">
+				{ sprintf(
+					/* translators: %s discount amount */
+					__( 'Save %s!', 'woo-gutenberg-products-block' ),
+					formatPrice( discountAmount, currency )
+				) }
+			</div>
+		);
+	}
 
 	// We use this in two places so we can stack the quantity selector under
 	// product info on smaller screens.
@@ -69,6 +99,7 @@ const CartLineItemRow = ( { lineItem } ) => {
 					currency={ currency }
 					value={ total }
 				/>
+				{ discountBadge }
 			</td>
 		</tr>
 	);
