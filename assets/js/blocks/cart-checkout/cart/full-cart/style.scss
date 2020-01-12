@@ -63,11 +63,31 @@ table.wc-block-cart-items {
 
 .wc-block-cart-item__total {
 	vertical-align: bottom;
+	font-size: 16px;
+	line-height: 19px;
 }
 
 .wc-block-cart-item__full-price {
-	color: $core-grey-light-800;
+	color: $core-grey-dark-400;
 	text-decoration: line-through;
+}
+
+.wc-block-cart-item__line-total {
+	color: $black;
+}
+
+.wc-block-cart-item__discount-badge {
+	// hidden on mobile
+	display: none;
+
+	span {
+		background-color: $core-grey-dark-600;
+		border-radius: 3px;
+		color: $white;
+		font-size: 12px;
+		padding: 0 1em;
+		text-transform: uppercase;
+	}
 }
 
 .wc-block-cart__totals-footer {
@@ -160,5 +180,9 @@ table.wc-block-cart-items {
 
 	.wc-block-cart-item__total {
 		vertical-align: top;
+	}
+
+	.wc-block-cart-item__discount-badge {
+		display: block;
 	}
 }
