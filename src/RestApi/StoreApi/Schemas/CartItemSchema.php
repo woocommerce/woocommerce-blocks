@@ -195,7 +195,9 @@ class CartItemSchema extends AbstractSchema {
 	public function get_item_response( $cart_item ) {
 		$product = $cart_item['data'];
 
-		$short_description = $product->get_short_description() ? $product->get_short_description() : wc_trim_string( $product->get_description() );
+		$description_char_limit = 75;
+
+		$short_description = $product->get_short_description() ? $product->get_short_description() : wc_trim_string( $product->get_description(), $description_char_limit );
 		$short_description = wp_filter_nohtml_kses( $short_description );
 		$short_description = strip_shortcodes( $short_description );
 
