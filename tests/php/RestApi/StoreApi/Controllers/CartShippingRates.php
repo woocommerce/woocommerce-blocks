@@ -72,7 +72,7 @@ class CartShippingRates extends TestCase {
 		$this->assertEquals( null, $data[0]['destination']->postcode );
 		$this->assertEquals( 'US', $data[0]['destination']->country );
 	}
-	
+
 	/**
 	 * Test getting shipping.
 	 */
