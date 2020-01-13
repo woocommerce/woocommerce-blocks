@@ -16,7 +16,6 @@ import {
 	ExpressCheckoutFormControl,
 	PaymentMethods,
 } from '@woocommerce/base-components/payment-methods';
-import { useShippingRates } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -27,16 +26,7 @@ import '../../../payment-methods-demo';
 /**
  * Component displaying an attribute filter.
  */
-const Block = ( { isEditor = false } ) => {
-	// @todo
-	const { shippingRates } = useShippingRates( {
-		address_1: '',
-		address_2: '',
-		city: '',
-		state: '',
-		postcode: '',
-		country: '',
-	} );
+const Block = ( { shippingMethods = [], isEditor = false } ) => {
 	const [ shippingMethod, setShippingMethod ] = useState( {} );
 	const [ contactFields, setContactFields ] = useState( {} );
 	const [ shouldSavePayment, setShouldSavePayment ] = useState( true );
@@ -73,7 +63,6 @@ const Block = ( { isEditor = false } ) => {
 					) }
 				>
 					<TextInput
-						id="email-field"
 						type="email"
 						label={ __(
 							'Email address',
@@ -102,234 +91,217 @@ const Block = ( { isEditor = false } ) => {
 						}
 					/>
 				</FormStep>
-				{ shippingRates.length === 0 && (
+				<FormStep
+					id="shipping-fields"
+					className="wc-block-checkout__shipping-fields"
+					title={ __(
+						'Shipping address',
+						'woo-gutenberg-products-block'
+					) }
+					description={ __(
+						'Enter the physical address where you want us to deliver your order.',
+						'woo-gutenberg-products-block'
+					) }
+					stepNumber={ 2 }
+				>
+					<Fragment>
+						<InputRow>
+							<TextInput
+								label={ __(
+									'First name',
+									'woo-gutenberg-products-block'
+								) }
+								value={ shippingFields.firstName }
+								onChange={ ( newValue ) =>
+									setShippingFields( {
+										...shippingFields,
+										firstName: newValue,
+									} )
+								}
+							/>
+							<TextInput
+								label={ __(
+									'Surname',
+									'woo-gutenberg-products-block'
+								) }
+								value={ shippingFields.lastName }
+								onChange={ ( newValue ) =>
+									setShippingFields( {
+										...shippingFields,
+										lastName: newValue,
+									} )
+								}
+							/>
+						</InputRow>
+						<TextInput
+							label={ __(
+								'Street address',
+								'woo-gutenberg-products-block'
+							) }
+							value={ shippingFields.streetAddress }
+							onChange={ ( newValue ) =>
+								setShippingFields( {
+									...shippingFields,
+									streetAddress: newValue,
+								} )
+							}
+						/>
+						<TextInput
+							label={ __(
+								'Apartment, suite, etc.',
+								'woo-gutenberg-products-block'
+							) }
+							value={ shippingFields.apartment }
+							onChange={ ( newValue ) =>
+								setShippingFields( {
+									...shippingFields,
+									apartment: newValue,
+								} )
+							}
+						/>
+						<InputRow>
+							<ShippingCountryInput
+								label={ __(
+									'Country',
+									'woo-gutenberg-products-block'
+								) }
+								value={ shippingFields.country }
+								onChange={ ( newValue ) =>
+									setShippingFields( {
+										...shippingFields,
+										country: newValue,
+									} )
+								}
+							/>
+							<TextInput
+								label={ __(
+									'City',
+									'woo-gutenberg-products-block'
+								) }
+								value={ shippingFields.city }
+								onChange={ ( newValue ) =>
+									setShippingFields( {
+										...shippingFields,
+										city: newValue,
+									} )
+								}
+							/>
+						</InputRow>
+						<InputRow>
+							<TextInput
+								label={ __(
+									'County',
+									'woo-gutenberg-products-block'
+								) }
+								value={ shippingFields.county }
+								onChange={ ( newValue ) =>
+									setShippingFields( {
+										...shippingFields,
+										county: newValue,
+									} )
+								}
+							/>
+							<TextInput
+								label={ __(
+									'Postal code',
+									'woo-gutenberg-products-block'
+								) }
+								value={ shippingFields.postalCode }
+								onChange={ ( newValue ) =>
+									setShippingFields( {
+										...shippingFields,
+										postalCode: newValue,
+									} )
+								}
+							/>
+						</InputRow>
+						<TextInput
+							type="tel"
+							label={ __(
+								'Phone',
+								'woo-gutenberg-products-block'
+							) }
+							value={ shippingFields.phone }
+							onChange={ ( newValue ) =>
+								setShippingFields( {
+									...shippingFields,
+									phone: newValue,
+								} )
+							}
+						/>
+						<CheckboxControl
+							className="wc-block-checkout__use-address-for-billing"
+							label={ __(
+								'Use same address for billing',
+								'woo-gutenberg-products-block'
+							) }
+							checked={ shippingFields.useSameForBilling }
+							onChange={ () =>
+								setShippingFields( {
+									...shippingFields,
+									useSameForBilling: ! shippingFields.useSameForBilling,
+								} )
+							}
+						/>
+					</Fragment>
+				</FormStep>
+				{ shippingMethods.length === 0 && isEditor ? (
+					<NoShipping />
+				) : (
 					<FormStep
-						id="shipping-fields"
-						className="wc-block-checkout__shipping-fields"
+						id="shipping-option"
+						className="wc-block-checkout__shipping-option"
 						title={ __(
-							'Shipping address',
+							'Shipping options',
 							'woo-gutenberg-products-block'
 						) }
 						description={ __(
-							'Enter the physical address where you want us to deliver your order.',
+							'Select your shipping method below.',
 							'woo-gutenberg-products-block'
 						) }
-						stepNumber={ 2 }
+						stepNumber={ 3 }
 					>
-						{ isEditor && <NoShipping /> }
+						<ShippingRatesControl
+							address={
+								shippingFields.country
+									? {
+											address_1:
+												shippingFields.streetAddress,
+											address_2: shippingFields.apartment,
+											city: shippingFields.city,
+											state: shippingFields.county,
+											postcode: shippingFields.postalCode,
+											country: shippingFields.country,
+									  }
+									: null
+							}
+							onChange={ ( newMethods ) =>
+								setShippingMethod( {
+									...shippingMethod,
+									methods: newMethods,
+								} )
+							}
+							renderOption={ ( option ) => ( {
+								label: option.name,
+								value: option.rate_id,
+								description: option.description,
+								secondaryLabel: option.price,
+								secondaryDescription: option.delivery_time,
+							} ) }
+							selected={ shippingMethod.methods }
+						/>
+						<CheckboxControl
+							className="wc-block-checkout__add-note"
+							label="Add order notes?"
+							checked={ shippingMethod.orderNote }
+							onChange={ () =>
+								setShippingMethod( {
+									...shippingMethod,
+									orderNote: ! shippingMethod.orderNote,
+								} )
+							}
+						/>
 					</FormStep>
-				) }
-				{ shippingRates.length > 0 && (
-					<Fragment>
-						<FormStep
-							id="shipping-fields"
-							className="wc-block-checkout__shipping-fields"
-							title={ __(
-								'Shipping address',
-								'woo-gutenberg-products-block'
-							) }
-							description={ __(
-								'Enter the physical address where you want us to deliver your order.',
-								'woo-gutenberg-products-block'
-							) }
-							stepNumber={ 2 }
-						>
-							<InputRow>
-								<TextInput
-									label={ __(
-										'First name',
-										'woo-gutenberg-products-block'
-									) }
-									value={ shippingFields.firstName }
-									onChange={ ( newValue ) =>
-										setShippingFields( {
-											...shippingFields,
-											firstName: newValue,
-										} )
-									}
-								/>
-								<TextInput
-									label={ __(
-										'Surname',
-										'woo-gutenberg-products-block'
-									) }
-									value={ shippingFields.lastName }
-									onChange={ ( newValue ) =>
-										setShippingFields( {
-											...shippingFields,
-											lastName: newValue,
-										} )
-									}
-								/>
-							</InputRow>
-							<TextInput
-								label={ __(
-									'Street address',
-									'woo-gutenberg-products-block'
-								) }
-								value={ shippingFields.streetAddress }
-								onChange={ ( newValue ) =>
-									setShippingFields( {
-										...shippingFields,
-										streetAddress: newValue,
-									} )
-								}
-							/>
-							<TextInput
-								label={ __(
-									'Apartment, suite, etc.',
-									'woo-gutenberg-products-block'
-								) }
-								value={ shippingFields.apartment }
-								onChange={ ( newValue ) =>
-									setShippingFields( {
-										...shippingFields,
-										apartment: newValue,
-									} )
-								}
-							/>
-							<InputRow>
-								<ShippingCountryInput
-									label={ __(
-										'Country',
-										'woo-gutenberg-products-block'
-									) }
-									value={ shippingFields.country }
-									onChange={ ( newValue ) =>
-										setShippingFields( {
-											...shippingFields,
-											country: newValue,
-										} )
-									}
-								/>
-								<TextInput
-									label={ __(
-										'City',
-										'woo-gutenberg-products-block'
-									) }
-									value={ shippingFields.city }
-									onChange={ ( newValue ) =>
-										setShippingFields( {
-											...shippingFields,
-											city: newValue,
-										} )
-									}
-								/>
-							</InputRow>
-							<InputRow>
-								<TextInput
-									label={ __(
-										'County',
-										'woo-gutenberg-products-block'
-									) }
-									value={ shippingFields.county }
-									onChange={ ( newValue ) =>
-										setShippingFields( {
-											...shippingFields,
-											county: newValue,
-										} )
-									}
-								/>
-								<TextInput
-									label={ __(
-										'Postal code',
-										'woo-gutenberg-products-block'
-									) }
-									value={ shippingFields.postalCode }
-									onChange={ ( newValue ) =>
-										setShippingFields( {
-											...shippingFields,
-											postalCode: newValue,
-										} )
-									}
-								/>
-							</InputRow>
-							<TextInput
-								type="tel"
-								label={ __(
-									'Phone',
-									'woo-gutenberg-products-block'
-								) }
-								value={ shippingFields.phone }
-								onChange={ ( newValue ) =>
-									setShippingFields( {
-										...shippingFields,
-										phone: newValue,
-									} )
-								}
-							/>
-							<CheckboxControl
-								className="wc-block-checkout__use-address-for-billing"
-								label={ __(
-									'Use same address for billing',
-									'woo-gutenberg-products-block'
-								) }
-								checked={ shippingFields.useSameForBilling }
-								onChange={ () =>
-									setShippingFields( {
-										...shippingFields,
-										useSameForBilling: ! shippingFields.useSameForBilling,
-									} )
-								}
-							/>
-						</FormStep>
-						<FormStep
-							id="shipping-option"
-							className="wc-block-checkout__shipping-option"
-							title={ __(
-								'Shipping options',
-								'woo-gutenberg-products-block'
-							) }
-							description={ __(
-								'Select your shipping method below.',
-								'woo-gutenberg-products-block'
-							) }
-							stepNumber={ 3 }
-						>
-							<ShippingRatesControl
-								address={
-									shippingFields.country
-										? {
-												address_1:
-													shippingFields.streetAddress,
-												address_2:
-													shippingFields.apartment,
-												city: shippingFields.city,
-												state: shippingFields.county,
-												postcode:
-													shippingFields.postalCode,
-												country: shippingFields.country,
-										  }
-										: null
-								}
-								onChange={ ( newMethods ) =>
-									setShippingMethod( {
-										...shippingMethod,
-										methods: newMethods,
-									} )
-								}
-								renderOption={ ( option ) => ( {
-									label: option.name,
-									value: option.rate_id,
-									description: option.description,
-									secondaryLabel: option.price,
-									secondaryDescription: option.delivery_time,
-								} ) }
-								selected={ shippingMethod.methods }
-							/>
-							<CheckboxControl
-								className="wc-block-checkout__add-note"
-								label="Add order notes?"
-								checked={ shippingMethod.orderNote }
-								onChange={ () =>
-									setShippingMethod( {
-										...shippingMethod,
-										orderNote: ! shippingMethod.orderNote,
-									} )
-								}
-							/>
-						</FormStep>
-					</Fragment>
 				) }
 				<FormStep
 					id="payment-method"
