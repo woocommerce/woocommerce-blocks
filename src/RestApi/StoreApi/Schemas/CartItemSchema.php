@@ -200,6 +200,7 @@ class CartItemSchema extends AbstractSchema {
 		$short_description = $product->get_short_description() ? $product->get_short_description() : wc_trim_string( $product->get_description(), $description_char_limit );
 		$short_description = wp_filter_nohtml_kses( $short_description );
 		$short_description = strip_shortcodes( $short_description );
+		$short_description = normalize_whitespace( $short_description );
 
 		return [
 			'key'               => $cart_item['key'],
