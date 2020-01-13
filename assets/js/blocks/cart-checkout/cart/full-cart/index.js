@@ -111,7 +111,7 @@ const cartTotals = {
  * Component that renders the Cart block when user has something in cart aka "full".
  */
 const Cart = () => {
-	const currency = getCurrencyFromPriceResponse( cartTotals );
+	const totalsCurrency = getCurrencyFromPriceResponse( cartTotals );
 	const totalRowsConfig = getTotalRowsConfig( cartTotals );
 
 	const [ selectedShippingRate, setSelectedShippingRate ] = useState();
@@ -131,7 +131,7 @@ const Cart = () => {
 						( { label, value, description } ) => (
 							<TotalsItem
 								key={ label }
-								currency={ currency }
+								currency={ totalsCurrency }
 								label={ label }
 								value={ value }
 								description={ description }
@@ -155,7 +155,9 @@ const Cart = () => {
 									<Fragment>
 										{ option.price && (
 											<FormattedMonetaryAmount
-												currency={ currency } // @todo make sure currency is retrieved from the shipping rates API
+												currency={ getCurrencyFromPriceResponse(
+													option
+												) }
 												value={ option.price }
 											/>
 										) }
@@ -178,7 +180,7 @@ const Cart = () => {
 					) }
 					<TotalsItem
 						className="wc-block-cart__totals-footer"
-						currency={ currency }
+						currency={ totalsCurrency }
 						label={ __( 'Total', 'woo-gutenberg-products-block' ) }
 						value={ parseInt( cartTotals.total_price, 10 ) }
 					/>

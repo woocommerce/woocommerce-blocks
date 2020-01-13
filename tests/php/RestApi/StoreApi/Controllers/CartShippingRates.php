@@ -72,16 +72,7 @@ class CartShippingRates extends TestCase {
 		$this->assertEquals( null, $data[0]['destination']->postcode );
 		$this->assertEquals( 'US', $data[0]['destination']->country );
 	}
-
-	/**
-	 * Test getting shipping.
-	 */
-	public function test_get_items_missing_address() {
-		$request  = new WP_REST_Request( 'GET', '/wc/store/cart/shipping-rates' );
-		$response = $this->server->dispatch( $request );
-		$this->assertEquals( 400, $response->get_status() );
-	}
-
+	
 	/**
 	 * Test getting shipping.
 	 */
