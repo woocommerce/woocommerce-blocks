@@ -11,6 +11,8 @@ import { ShippingCountryInput } from '@woocommerce/base-components/country-input
 import ShippingRatesControl from '@woocommerce/base-components/shipping-rates-control';
 import InputRow from '@woocommerce/base-components/input-row';
 import { CheckboxControl } from '@wordpress/components';
+import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
+import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import CheckoutProvider from '@woocommerce/base-context/checkout-context';
 import {
 	ExpressCheckoutFormControl,
@@ -285,7 +287,14 @@ const Block = ( { shippingMethods = [], isEditor = false } ) => {
 								label: option.name,
 								value: option.rate_id,
 								description: option.description,
-								secondaryLabel: option.price,
+								secondaryLabel: (
+									<FormattedMonetaryAmount
+										currency={ getCurrencyFromPriceResponse(
+											option
+										) }
+										value={ option.price }
+									/>
+								),
 								secondaryDescription: option.delivery_time,
 							} ) }
 							selected={ shippingMethod.methods }
