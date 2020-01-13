@@ -51,6 +51,7 @@ const ShippingRatesControl = ( {
 
 	if ( shippingRatesLoading ) {
 		// @todo Add some indication that shipping rates are loading.
+		// see: https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1555
 		return null;
 	}
 
@@ -76,7 +77,8 @@ const ShippingRatesControl = ( {
 				/>
 				{ shippingRates.length > 1 && (
 					<span>
-						{ /* @todo show product names */ }
+						{ /* @todo Show product names,
+						see: https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1554 */ }
 						{ shippingRate.items.join( ', ' ) }
 					</span>
 				) }
