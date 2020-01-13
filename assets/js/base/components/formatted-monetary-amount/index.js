@@ -4,6 +4,11 @@
 import NumberFormat from 'react-number-format';
 
 /**
+ * Internal dependencies
+ */
+import './style.scss';
+
+/**
  * Formats currency data into the expected format for NumberFormat.
  *
  * @param {Object} currency Currency data.
@@ -59,6 +64,7 @@ const FormattedMonetaryAmount = ( {
 
 	return (
 		<NumberFormat
+			className="wc-block-formatted-money-amount"
 			{ ...numberFormatProps }
 			value={ priceValue }
 			onValueChange={ onValueChangeWrapper }
