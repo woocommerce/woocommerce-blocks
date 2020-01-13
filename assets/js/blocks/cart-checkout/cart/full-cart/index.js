@@ -146,9 +146,6 @@ const Cart = () => {
 							) }
 						</legend>
 						<ShippingRatesControl
-							address={ {
-								country: '', // @todo get default country?
-							} }
 							className="wc-block-cart__shipping-options"
 							selected={ selectedShippingRate }
 							renderOption={ ( option ) => ( {

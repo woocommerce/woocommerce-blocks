@@ -82,10 +82,6 @@ class CartShippingRates extends RestController {
 			return new RestError( 'woocommerce_rest_cart_error', __( 'Unable to retrieve cart.', 'woo-gutenberg-products-block' ), array( 'status' => 500 ) );
 		}
 
-		if ( empty( $request['country'] ) ) {
-			return new RestError( 'woocommerce_rest_cart_shipping_rates_missing_country', __( 'Shipping destination country is required.', 'woo-gutenberg-products-block' ), array( 'status' => 400 ) );
-		}
-
 		$request = $this->validate_shipping_address( $request );
 
 		if ( is_wp_error( $request ) ) {
@@ -246,6 +242,9 @@ class CartShippingRates extends RestController {
 		$packages = WC()->cart->get_shipping_packages();
 
 		foreach ( $packages as $key => $package ) {
+			if ( ! $request['country'] ) {
+				continue;
+			}
 			$packages[ $key ]['destination'] = [
 				'address_1' => $request['address_1'],
 				'address_2' => $request['address_2'],
