@@ -18,30 +18,32 @@ const ShippingRatesControl = ( {
 	// Select first item when shipping rates are loaded.
 	useEffect(
 		() => {
-			if ( shippingRates.length > 0 ) {
-				const isSelectedValid = selected.some( ( selectedId, i ) => {
+			if ( shippingRates.length === 0 ) {
+				return;
+			}
+
+			const isSelectedValid =
+				selected.length === shippingRates.length &&
+				selected.every( ( selectedId, i ) => {
 					const rates = shippingRates[ i ].shipping_rates;
-					if ( rates.length === 0 ) {
-						return false;
-					}
 					return rates.some(
 						( { rate_id: rateId } ) => rateId === selectedId
 					);
 				} );
-				if ( isSelectedValid ) {
-					return;
+
+			if ( isSelectedValid ) {
+				return;
+			}
+
+			const newShippingRates = shippingRates.map( ( shippingRate ) => {
+				if ( shippingRate.shipping_rates.length > 0 ) {
+					return shippingRate.shipping_rates[ 0 ].rate_id;
 				}
-				const newShippingRates = shippingRates
-					.map( ( shippingRate ) => {
-						if ( shippingRate.shipping_rates.length > 0 ) {
-							return shippingRate.shipping_rates[ 0 ].rate_id;
-						}
-						return null;
-					} )
-					.filter( Boolean );
-				if ( newShippingRates.length > 0 ) {
-					onChange( newShippingRates );
-				}
+				return null;
+			} );
+
+			if ( newShippingRates.length > 0 ) {
+				onChange( newShippingRates );
 			}
 		},
 		// We only want to run this when `shippingRates` changes,
