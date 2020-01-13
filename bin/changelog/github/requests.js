@@ -41,7 +41,7 @@ const getQuery = ( milestoneNumber, before ) => {
 				pullRequests(last: 100, states: [MERGED]${ paging }) {
 					totalCount
 					pageInfo {
-						hasNextPage
+						hasPreviousPage
 						startCursor
 					}
 					nodes {
@@ -71,7 +71,10 @@ const fetchAllPullRequests = async ( version ) =>
 		const fetchResults = async ( before ) => {
 			const query = getQuery( milestoneNumber, before );
 			const results = await authedGraphql( query );
-			if ( results.repository.milestone.pullRequests.totalCount < 100 ) {
+			if (
+				results.repository.milestone.pullRequests.pageInfo
+					.hasPreviousPage === false
+			) {
 				return results.repository.milestone.pullRequests.nodes;
 			}
 

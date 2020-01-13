@@ -18,7 +18,6 @@ const getQuery = ( before ) => {
 			pullRequests(last: 100, states: [MERGED]${ paging }) {
 				totalCount
 				pageInfo {
-					hasNextPage
 					startCursor
 				}
 				nodes {
