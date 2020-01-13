@@ -68,10 +68,6 @@ table.wc-block-cart-items {
 }
 
 .wc-block-cart-item__full-price {
-	// inline on mobile, so line prices are aligned vertically
-	display: inline-block;
-	margin-right: 0.5em;
-
 	color: $core-grey-dark-400;
 	text-decoration: line-through;
 }
@@ -81,9 +77,6 @@ table.wc-block-cart-items {
 }
 
 .wc-block-cart-item__discount-badge {
-	// hidden on mobile
-	display: none;
-
 	span {
 		background-color: $core-grey-dark-600;
 		border-radius: 3px;
@@ -136,6 +129,16 @@ table.wc-block-cart-items {
 
 @include breakpoint( "<782px" ) {
 	.wc-block-cart__totals-title {
+		display: none;
+	}
+
+	.wc-block-cart-item__full-price {
+		// inline on mobile, so line prices are aligned vertically
+		display: inline-block;
+		margin-right: 0.5em;
+	}
+
+	.wc-block-cart-item__discount-badge {
 		display: none;
 	}
 }
