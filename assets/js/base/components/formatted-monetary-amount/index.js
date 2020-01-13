@@ -2,6 +2,7 @@
  * External dependencies
  */
 import NumberFormat from 'react-number-format';
+import classNames from 'classnames';
 
 /**
  * Internal dependencies
@@ -34,6 +35,7 @@ const currencyToNumberFormat = ( currency ) => {
  * @param {Object} props Component props.
  */
 const FormattedMonetaryAmount = ( {
+	className,
 	value,
 	currency,
 	onValueChange,
@@ -45,6 +47,7 @@ const FormattedMonetaryAmount = ( {
 		return null;
 	}
 
+	const classes = classNames( 'wc-block-formatted-money-amount', className );
 	const numberFormatProps = {
 		displayType: 'text',
 		...props,
@@ -64,7 +67,7 @@ const FormattedMonetaryAmount = ( {
 
 	return (
 		<NumberFormat
-			className="wc-block-formatted-money-amount"
+			className={ classes }
 			{ ...numberFormatProps }
 			value={ priceValue }
 			onValueChange={ onValueChangeWrapper }
