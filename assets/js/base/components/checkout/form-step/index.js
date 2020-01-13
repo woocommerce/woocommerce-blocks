@@ -31,8 +31,8 @@ const StepNumber = ( { stepNumber } ) => {
 
 const StepHeading = ( { title, stepHeadingContent } ) => (
 	<div className="wc-block-checkout-step__heading">
-		<h4 className="wc-block-checkout-step__title">
-			<span aria-hidden="true">{ title }</span>
+		<h4 aria-hidden="true" className="wc-block-checkout-step__title">
+			{ title }
 		</h4>
 		<span className="wc-block-checkout-step__heading-content">
 			{ stepHeadingContent }
