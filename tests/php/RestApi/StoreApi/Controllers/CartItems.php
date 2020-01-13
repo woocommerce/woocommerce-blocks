@@ -10,6 +10,7 @@ namespace Automattic\WooCommerce\Blocks\Tests\RestApi\StoreApi\Controllers;
 use \WP_REST_Request;
 use \WC_REST_Unit_Test_Case as TestCase;
 use \WC_Helper_Product as ProductHelper;
+use Automattic\WooCommerce\Blocks\Tests\Helpers\ValidateSchema;
 
 /**
  * Cart Controller Tests.
@@ -19,6 +20,8 @@ class CartItems extends TestCase {
 	 * Setup test products data. Called before every test.
 	 */
 	public function setUp() {
+		global $wpdb;
+
 		parent::setUp();
 
 		wp_set_current_user( 0 );
@@ -27,22 +30,28 @@ class CartItems extends TestCase {
 
 		$this->products = [];
 
-		// Create some test products.
+		// Create a test simple product.
 		$this->products[0] = ProductHelper::create_simple_product( false );
 		$this->products[0]->set_weight( 10 );
 		$this->products[0]->set_regular_price( 10 );
 		$this->products[0]->save();
 
-		$this->products[1] = ProductHelper::create_simple_product( false );
+		$image_url = media_sideload_image( 'http://cldup.com/Dr1Bczxq4q.png', $this->products[0]->get_id(), '', 'src' );
+		$image_id  = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE guid = %s", $image_url ) );
+		$this->products[0]->set_image_id( $image_id[0] );
+		$this->products[0]->save();
+
+		// Create a test variable product.
+		$this->products[1] = ProductHelper::create_variation_product( false );
 		$this->products[1]->set_weight( 10 );
 		$this->products[1]->set_regular_price( 10 );
 		$this->products[1]->save();
 
 		wc_empty_cart();
 
-		$this->keys = [];
+		$this->keys   = [];
 		$this->keys[] = wc()->cart->add_to_cart( $this->products[0]->get_id(), 2 );
-		$this->keys[] = wc()->cart->add_to_cart( $this->products[1]->get_id(), 1 );
+		$this->keys[] = wc()->cart->add_to_cart( $this->products[1]->get_id(), 1, current( $this->products[1]->get_children() ), [ 'size' => 'small' ] );
 	}
 
 	/**
@@ -161,14 +170,14 @@ class CartItems extends TestCase {
 	 * Test delete item.
 	 */
 	public function test_delete_item() {
-		$request = new WP_REST_Request( 'DELETE', '/wc/store/cart/items/' . $this->keys[0] );
+		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/items/' . $this->keys[0] );
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
 		$this->assertEquals( 204, $response->get_status() );
 		$this->assertEmpty( $data );
 
-		$request = new WP_REST_Request( 'DELETE', '/wc/store/cart/items/' . $this->keys[0] );
+		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/items/' . $this->keys[0] );
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
@@ -179,7 +188,7 @@ class CartItems extends TestCase {
 	 * Test delete all items.
 	 */
 	public function test_delete_items() {
-		$request = new WP_REST_Request( 'DELETE', '/wc/store/cart/items' );
+		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/items' );
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
@@ -228,5 +237,27 @@ class CartItems extends TestCase {
 		$this->assertArrayHasKey( 'images', $response->get_data() );
 		$this->assertArrayHasKey( 'totals', $response->get_data() );
 		$this->assertArrayHasKey( 'variation', $response->get_data() );
+	}
+
+	/**
+	 * Test schema matches responses.
+	 *
+	 * Tests schema of both products in cart to cover as much schema as possible.
+	 */
+	public function test_schema_matches_response() {
+		$cart       = wc()->cart->get_cart();
+		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\CartItems();
+		$schema     = $controller->get_item_schema();
+		$validate   = new ValidateSchema( $schema );
+
+		// Simple product.
+		$response = $controller->prepare_item_for_response( current( $cart ), [] );
+		$diff     = $validate->get_diff_from_object( $response->get_data() );
+		$this->assertEquals( [ 'variation' ], $diff, print_r( $diff, true ) );
+
+		// Variable product.
+		$response = $controller->prepare_item_for_response( end( $cart ), [] );
+		$diff     = $validate->get_diff_from_object( $response->get_data() );
+		$this->assertEquals( [ 'images' ], $diff, print_r( $diff, true ) );
 	}
 }
