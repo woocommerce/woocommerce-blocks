@@ -10,6 +10,7 @@ namespace Automattic\WooCommerce\Blocks\Tests\RestApi\StoreApi\Controllers;
 use \WP_REST_Request;
 use \WC_REST_Unit_Test_Case as TestCase;
 use \WC_Helper_Product as ProductHelper;
+use Automattic\WooCommerce\Blocks\Tests\Helpers\ValidateSchema;
 
 /**
  * Products Controller Tests.
@@ -19,13 +20,25 @@ class Products extends TestCase {
 	 * Setup test products data. Called before every test.
 	 */
 	public function setUp() {
+		global $wpdb;
+
 		parent::setUp();
 
 		wp_set_current_user( 0 );
 
-		$this->products = [];
+		$this->products    = [];
 		$this->products[0] = ProductHelper::create_simple_product( true );
 		$this->products[1] = ProductHelper::create_simple_product( true );
+
+		$image_url = media_sideload_image( 'http://cldup.com/Dr1Bczxq4q.png', $this->products[0]->get_id(), '', 'src' );
+		$image_id  = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE guid = %s", $image_url ) );
+		$this->products[0]->set_image_id( $image_id[0] );
+		$this->products[0]->save();
+
+		$image_url = media_sideload_image( 'http://cldup.com/Dr1Bczxq4q.png', $this->products[1]->get_id(), '', 'src' );
+		$image_id  = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE guid = %s", $image_url ) );
+		$this->products[1]->set_image_id( $image_id[0] );
+		$this->products[1]->save();
 	}
 
 	/**
@@ -169,5 +182,18 @@ class Products extends TestCase {
 		$this->assertArrayHasKey( 'attributes', $params );
 		$this->assertArrayHasKey( 'catalog_visibility', $params );
 		$this->assertArrayHasKey( 'rating', $params );
+	}
+
+	/**
+	 * Test schema matches responses.
+	 */
+	public function test_schema_matches_response() {
+		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\Products();
+		$response   = $controller->prepare_item_for_response( $this->products[0], [] );
+		$schema     = $controller->get_item_schema();
+		$validate   = new ValidateSchema( $schema );
+
+		$diff = $validate->get_diff_from_object( $response->get_data() );
+		$this->assertEmpty( $diff, print_r( $diff, true ) );
 	}
 }

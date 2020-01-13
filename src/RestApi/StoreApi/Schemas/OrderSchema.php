@@ -268,7 +268,7 @@ class OrderSchema extends AbstractSchema {
 				],
 			],
 			'coupons'            => [
-				'description' => __( 'List of applied cart coupons.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'List of applied coupons.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
@@ -285,76 +285,6 @@ class OrderSchema extends AbstractSchema {
 				'items'       => [
 					'type'       => 'object',
 					'properties' => $this->force_schema_readonly( ( new OrderItemSchema() )->get_properties() ),
-				],
-			],
-			'shipping_lines'     => [
-				'description' => __( 'Shipping lines data.', 'woo-gutenberg-products-block' ),
-				'type'        => 'array',
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
-				'items'       => [
-					'type'       => 'object',
-					'properties' => [
-						'id'           => [
-							'description' => __( 'Item ID.', 'woo-gutenberg-products-block' ),
-							'type'        => 'integer',
-							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
-						],
-						'method_title' => [
-							'description' => __( 'Shipping method name.', 'woo-gutenberg-products-block' ),
-							'type'        => 'mixed',
-							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
-						],
-						'method_id'    => [
-							'description' => __( 'Shipping method ID.', 'woo-gutenberg-products-block' ),
-							'type'        => 'mixed',
-							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
-						],
-						'instance_id'  => [
-							'description' => __( 'Shipping instance ID.', 'woo-gutenberg-products-block' ),
-							'type'        => 'string',
-							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
-						],
-						'total'        => [
-							'description' => __( 'Line total (after discounts).', 'woo-gutenberg-products-block' ),
-							'type'        => 'string',
-							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
-						],
-						'total_tax'    => [
-							'description' => __( 'Line total tax (after discounts).', 'woo-gutenberg-products-block' ),
-							'type'        => 'string',
-							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
-						],
-						'taxes'        => [
-							'description' => __( 'Line taxes.', 'woo-gutenberg-products-block' ),
-							'type'        => 'array',
-							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
-							'items'       => [
-								'type'       => 'object',
-								'properties' => [
-									'id'    => [
-										'description' => __( 'Tax rate ID.', 'woo-gutenberg-products-block' ),
-										'type'        => 'integer',
-										'context'     => [ 'view', 'edit' ],
-										'readonly'    => true,
-									],
-									'total' => [
-										'description' => __( 'Tax total.', 'woo-gutenberg-products-block' ),
-										'type'        => 'string',
-										'context'     => [ 'view', 'edit' ],
-										'readonly'    => true,
-									],
-								],
-							],
-						],
-					],
 				],
 			],
 			'totals'             => [
@@ -461,8 +391,8 @@ class OrderSchema extends AbstractSchema {
 	 * @return array
 	 */
 	public function get_item_response( \WC_Order $order ) {
-		$order_item_schema = new OrderItemSchema();
-
+		$order_item_schema   = new OrderItemSchema();
+		$order_coupon_schema = new OrderCouponSchema();
 		return [
 			'id'                 => $order->get_id(),
 			'number'             => $order->get_order_number(),
@@ -501,6 +431,7 @@ class OrderSchema extends AbstractSchema {
 				'postcode'   => $order->get_shipping_postcode(),
 				'country'    => $order->get_shipping_country(),
 			],
+			'coupons'            => array_values( array_map( [ $order_coupon_schema, 'get_item_response' ], $order->get_items( 'coupon' ) ) ),
 			'items'              => array_values( array_map( [ $order_item_schema, 'get_item_response' ], $order->get_items( 'line_item' ) ) ),
 			'totals'             => array_merge(
 				$this->get_store_currency_response(),

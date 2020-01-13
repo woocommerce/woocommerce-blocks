@@ -10,6 +10,7 @@ namespace Automattic\WooCommerce\Blocks\Tests\RestApi\StoreApi\Controllers;
 use \WP_REST_Request;
 use \WC_REST_Unit_Test_Case as TestCase;
 use \WC_Helper_Product as ProductHelper;
+use Automattic\WooCommerce\Blocks\Tests\Helpers\ValidateSchema;
 
 /**
  * Controller Tests.
@@ -176,5 +177,31 @@ class ProductCollectionData extends TestCase {
 		$this->assertArrayHasKey( 'calculate_price_range', $params );
 		$this->assertArrayHasKey( 'calculate_attribute_counts', $params );
 		$this->assertArrayHasKey( 'calculate_rating_counts', $params );
+	}
+
+	/**
+	 * Test schema matches responses.
+	 */
+	public function test_schema_matches_response() {
+		ProductHelper::create_variation_product();
+		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\ProductCollectionData();
+		$request = new WP_REST_Request( 'GET', '/wc/store/products/collection-data' );
+		$request->set_param( 'calculate_price_range', true );
+		$request->set_param(
+			'calculate_attribute_counts',
+			[
+				[
+					'taxonomy'   => 'pa_size',
+					'query_type' => 'and',
+				]
+			]
+		);
+		$request->set_param( 'calculate_rating_counts', true );
+		$response = $this->server->dispatch( $request );
+		$schema     = $controller->get_item_schema();
+		$validate   = new ValidateSchema( $schema );
+
+		$diff     = $validate->get_diff_from_object( $response->get_data() );
+		$this->assertEmpty( $diff, print_r( $diff, true ) );
 	}
 }

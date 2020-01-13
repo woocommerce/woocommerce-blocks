@@ -11,6 +11,8 @@ use \WP_REST_Request;
 use \WC_REST_Unit_Test_Case as TestCase;
 use \WC_Helper_Product as ProductHelper;
 use \WC_Helper_Order as OrderHelper;
+use \WC_Helper_Coupon as CouponHelper;
+use Automattic\WooCommerce\Blocks\Tests\Helpers\ValidateSchema;
 
 /**
  * Cart Order Controller Tests.
@@ -153,5 +155,23 @@ class CartOrder extends TestCase {
 		$this->assertArrayHasKey( 'customer_note', $response->get_data() );
 		$this->assertArrayHasKey( 'items', $response->get_data() );
 		$this->assertArrayHasKey( 'totals', $response->get_data() );
+	}
+
+	/**
+	 * Test schema matches responses.
+	 */
+	public function test_schema_matches_response() {
+		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\CartOrder();
+
+		$order  = OrderHelper::create_order();
+		$coupon = CouponHelper::create_coupon();
+		$order->apply_coupon( $coupon );
+
+		$response = $controller->prepare_item_for_response( $order, [] );
+		$schema   = $controller->get_item_schema();
+		$validate = new ValidateSchema( $schema );
+
+		$diff = $validate->get_diff_from_object( $response->get_data() );
+		$this->assertEmpty( $diff, print_r( $diff, true ) );
 	}
 }

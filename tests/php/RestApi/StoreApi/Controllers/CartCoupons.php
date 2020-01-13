@@ -11,6 +11,7 @@ use \WP_REST_Request;
 use \WC_REST_Unit_Test_Case as TestCase;
 use \WC_Helper_Product as ProductHelper;
 use \WC_Helper_Coupon as CouponHelper;
+use Automattic\WooCommerce\Blocks\Tests\Helpers\ValidateSchema;
 
 /**
  * Cart Coupons Controller Tests.
@@ -165,5 +166,18 @@ class CartCoupons extends TestCase {
 
 		$this->assertArrayHasKey( 'code', $response->get_data() );
 		$this->assertArrayHasKey( 'totals', $response->get_data() );
+	}
+
+	/**
+	 * Test schema matches responses.
+	 */
+	public function test_schema_matches_response() {
+		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\CartCoupons();
+		$response   = $controller->prepare_item_for_response( $this->coupon->get_code(), [] );
+		$schema     = $controller->get_item_schema();
+		$validate   = new ValidateSchema( $schema );
+
+		$diff = $validate->get_diff_from_object( $response->get_data() );
+		$this->assertEmpty( $diff, print_r( $diff, true ) );
 	}
 }

@@ -10,6 +10,7 @@ namespace Automattic\WooCommerce\Blocks\Tests\RestApi\StoreApi\Controllers;
 use \WP_REST_Request;
 use \WC_REST_Unit_Test_Case as TestCase;
 use \WC_Helper_Product as ProductHelper;
+use Automattic\WooCommerce\Blocks\Tests\Helpers\ValidateSchema;
 
 /**
  * Product Attributes Controller Tests.
@@ -98,5 +99,18 @@ class ProductAttributeTerms extends TestCase {
 		$this->assertArrayHasKey( 'order', $params );
 		$this->assertArrayHasKey( 'orderby', $params );
 		$this->assertArrayHasKey( 'hide_empty', $params );
+	}
+
+	/**
+	 * Test schema matches responses.
+	 */
+	public function test_schema_matches_response() {
+		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\ProductAttributeTerms();
+		$response   = $controller->prepare_item_for_response( get_term_by( 'name', 'test', 'pa_size' ), [] );
+		$schema     = $controller->get_item_schema();
+		$validate   = new ValidateSchema( $schema );
+
+		$diff     = $validate->get_diff_from_object( $response->get_data() );
+		$this->assertEmpty( $diff, print_r( $diff, true ) );
 	}
 }

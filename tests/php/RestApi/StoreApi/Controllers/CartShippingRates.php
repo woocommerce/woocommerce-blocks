@@ -10,6 +10,8 @@ namespace Automattic\WooCommerce\Blocks\Tests\RestApi\StoreApi\Controllers;
 use \WP_REST_Request;
 use \WC_REST_Unit_Test_Case as TestCase;
 use \WC_Helper_Product as ProductHelper;
+use \WC_Helper_Shipping;
+use Automattic\WooCommerce\Blocks\Tests\Helpers\ValidateSchema;
 
 /**
  * Cart Shipping Rates Controller Tests.
@@ -35,6 +37,8 @@ class CartShippingRates extends TestCase {
 		wc_empty_cart();
 		wc()->cart->add_to_cart( $this->products[0]->get_id(), 2 );
 		wc()->cart->add_to_cart( $this->products[1]->get_id(), 1 );
+
+		WC_Helper_Shipping::create_simple_flat_rate();
 	}
 
 	/**
@@ -168,5 +172,25 @@ class CartShippingRates extends TestCase {
 		$this->assertArrayHasKey( 'state', $params );
 		$this->assertArrayHasKey( 'country', $params );
 		$this->assertArrayHasKey( 'postcode', $params );
+	}
+
+	/**
+	 * Test schema matches responses.
+	 */
+	public function test_schema_matches_response() {
+		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\CartShippingRates();
+		$request    = new WP_REST_Request( 'GET', '/wc/store/cart/shipping-rates' );
+		$request->set_param( 'address_1', 'Test address 1' );
+		$request->set_param( 'address_2', 'Test address 2' );
+		$request->set_param( 'city', 'Test City' );
+		$request->set_param( 'state', 'AL' );
+		$request->set_param( 'postcode', '90210' );
+		$request->set_param( 'country', 'US' );
+		$response = $this->server->dispatch( $request );
+		$schema   = $controller->get_item_schema();
+		$validate = new ValidateSchema( $schema );
+
+		$diff = $validate->get_diff_from_object( current( $response->get_data() ) );
+		$this->assertEmpty( $diff, print_r( $diff, true ) );
 	}
 }

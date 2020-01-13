@@ -10,6 +10,8 @@ namespace Automattic\WooCommerce\Blocks\Tests\RestApi\StoreApi\Controllers;
 use \WP_REST_Request;
 use \WC_REST_Unit_Test_Case as TestCase;
 use \WC_Helper_Product as ProductHelper;
+use \WC_Helper_Coupon as CouponHelper;
+use Automattic\WooCommerce\Blocks\Tests\Helpers\ValidateSchema;
 
 /**
  * Cart Controller Tests.
@@ -38,11 +40,14 @@ class Cart extends TestCase {
 		$this->products[1]->set_regular_price( 10 );
 		$this->products[1]->save();
 
+		$this->coupon = CouponHelper::create_coupon();
+
 		wc_empty_cart();
 
-		$this->keys = [];
+		$this->keys   = [];
 		$this->keys[] = wc()->cart->add_to_cart( $this->products[0]->get_id(), 2 );
 		$this->keys[] = wc()->cart->add_to_cart( $this->products[1]->get_id(), 1 );
+		wc()->cart->apply_coupon( $this->coupon->get_code() );
 	}
 
 	/**
@@ -72,12 +77,12 @@ class Cart extends TestCase {
 		$this->assertEquals( '0', $data['totals']['total_items_tax'] );
 		$this->assertEquals( '0', $data['totals']['total_fees'] );
 		$this->assertEquals( '0', $data['totals']['total_fees_tax'] );
-		$this->assertEquals( '0', $data['totals']['total_discount'] );
+		$this->assertEquals( '100', $data['totals']['total_discount'] );
 		$this->assertEquals( '0', $data['totals']['total_discount_tax'] );
 		$this->assertEquals( '0', $data['totals']['total_shipping'] );
 		$this->assertEquals( '0', $data['totals']['total_shipping_tax'] );
 		$this->assertEquals( '0', $data['totals']['total_tax'] );
-		$this->assertEquals( '3000', $data['totals']['total_price'] );
+		$this->assertEquals( '2900', $data['totals']['total_price'] );
 	}
 
 	/**
@@ -107,5 +112,19 @@ class Cart extends TestCase {
 		$this->assertArrayHasKey( 'needs_shipping', $response->get_data() );
 		$this->assertArrayHasKey( 'items_weight', $response->get_data() );
 		$this->assertArrayHasKey( 'totals', $response->get_data() );
+	}
+
+	/**
+	 * Test schema matches responses.
+	 */
+	public function test_schema_matches_response() {
+		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\Cart();
+		$cart       = wc()->cart;
+		$response   = $controller->prepare_item_for_response( $cart, [] );
+		$schema     = $controller->get_item_schema();
+		$validate   = new ValidateSchema( $schema );
+
+		$diff = $validate->get_diff_from_object( $response->get_data() );
+		$this->assertEmpty( $diff, print_r( $diff, true ) );
 	}
 }

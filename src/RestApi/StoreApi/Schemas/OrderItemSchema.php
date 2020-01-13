@@ -173,9 +173,7 @@ class OrderItemSchema extends AbstractSchema {
 	}
 
 	/**
-	 * Convert a WooCommerce cart item to an object suitable for the response.
-	 *
-	 * @todo Variation is stored to meta - how can we gather for response?
+	 * Convert an order item to an object suitable for the response.
 	 *
 	 * @param \WC_Order_Item_Product $line_item Order line item array.
 	 * @return array

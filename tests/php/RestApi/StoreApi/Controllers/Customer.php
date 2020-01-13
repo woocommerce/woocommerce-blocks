@@ -10,6 +10,7 @@ namespace Automattic\WooCommerce\Blocks\Tests\RestApi\StoreApi\Controllers;
 use \WP_REST_Request;
 use \WC_REST_Unit_Test_Case as TestCase;
 use \WC_Helper_Product as ProductHelper;
+use Automattic\WooCommerce\Blocks\Tests\Helpers\ValidateSchema;
 
 /**
  * Customer Controller Tests.
@@ -138,5 +139,40 @@ class Customer extends TestCase {
 		$this->assertEquals( 'PA', $data['shipping_address']['state'] );
 		$this->assertEquals( '19123', $data['shipping_address']['postcode'] );
 		$this->assertEquals( 'US', $data['shipping_address']['country'] );
+	}
+
+	/**
+	 * Test schema matches responses.
+	 */
+	public function test_schema_matches_response() {
+		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\Customer();
+		$customer   = new \WC_Customer();
+
+		$customer->set_billing_first_name( 'Name' );
+		$customer->set_billing_last_name( 'Surname' );
+		$customer->set_billing_email( 'test@test.com' );
+		$customer->set_billing_phone( '+44 01010101011' );
+		$customer->set_billing_address_1( '123 South Street' );
+		$customer->set_billing_address_2( 'Apt 1' );
+		$customer->set_billing_city( 'Philadelphia' );
+		$customer->set_billing_state( 'PA' );
+		$customer->set_billing_postcode( '19123' );
+		$customer->set_billing_country( 'US' );
+
+		$customer->set_shipping_first_name( 'Name' );
+		$customer->set_shipping_last_name( 'Surname' );
+		$customer->set_shipping_address_1( '123 South Street' );
+		$customer->set_shipping_address_2( 'Apt 1' );
+		$customer->set_shipping_city( 'Philadelphia' );
+		$customer->set_shipping_state( 'PA' );
+		$customer->set_shipping_postcode( '19123' );
+		$customer->set_shipping_country( 'US' );
+
+		$response = $controller->prepare_item_for_response( $customer, [] );
+		$schema     = $controller->get_item_schema();
+		$validate   = new ValidateSchema( $schema );
+
+		$diff     = $validate->get_diff_from_object( $response->get_data() );
+		$this->assertEmpty( $diff, print_r( $diff, true ) );
 	}
 }
