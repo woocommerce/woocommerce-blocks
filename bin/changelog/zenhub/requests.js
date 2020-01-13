@@ -15,11 +15,11 @@ const getQuery = ( before ) => {
 	const query = `
 	{
 		repository(owner: "${ owner }", name: "${ repo }") {
-			pullRequests(last: 100, states: [MERGED], orderBy: {field: CREATED_AT, direction: ASC}${ paging }) {
+			pullRequests(last: 100, states: [MERGED]${ paging }) {
 				totalCount
 				pageInfo {
 					hasNextPage
-					endCursor
+					startCursor
 				}
 				nodes {
 					number
@@ -79,7 +79,7 @@ const fetchAllPullRequests = async ( releaseId ) => {
 		}
 		maxPages--;
 		const nextResults = await fetchResults(
-			results.repository.pullRequests.pageInfo.endCursor
+			results.repository.pullRequests.pageInfo.startCursor
 		);
 		return pullRequests.concat(
 			extractPullRequestsMatchingReleaseIssue( releaseIds, nextResults )

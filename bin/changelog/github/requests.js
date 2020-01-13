@@ -42,7 +42,7 @@ const getQuery = ( milestoneNumber, before ) => {
 					totalCount
 					pageInfo {
 						hasNextPage
-						endCursor
+						startCursor
 					}
 					nodes {
 						number
@@ -76,7 +76,7 @@ const fetchAllPullRequests = async ( version ) =>
 			}
 
 			const nextResults = await fetchResults(
-				results.repository.milestone.pullRequests.pageInfo.endCursor
+				results.repository.milestone.pullRequests.pageInfo.startCursor
 			);
 			return results.repository.milestone.pullRequests.nodes.concat(
 				nextResults
