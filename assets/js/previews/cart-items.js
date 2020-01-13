@@ -30,7 +30,16 @@ export const previewCartItems = [
 				alt: '',
 			},
 		],
-		variation: [],
+		variation: [
+			{
+				attribute: 'Color',
+				value: 'Yellow',
+			},
+			{
+				attribute: 'Size',
+				value: 'Small',
+			},
+		],
 		totals: {
 			currency_code: 'USD',
 			currency_symbol: '$',
@@ -63,7 +72,12 @@ export const previewCartItems = [
 				alt: '',
 			},
 		],
-		variation: [],
+		variation: [
+			{
+				attribute: 'Color',
+				value: 'Orange',
+			},
+		],
 		totals: {
 			currency_code: 'USD',
 			currency_symbol: '$',
