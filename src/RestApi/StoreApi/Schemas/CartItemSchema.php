@@ -89,31 +89,43 @@ class CartItemSchema extends AbstractSchema {
 				'items'       => [
 					'type'       => 'object',
 					'properties' => [
-						'id'   => [
+						'id'        => array(
 							'description' => __( 'Image ID.', 'woo-gutenberg-products-block' ),
 							'type'        => 'integer',
 							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
-						],
-						'src'  => [
-							'description' => __( 'Image URL.', 'woo-gutenberg-products-block' ),
+						),
+						'src'       => array(
+							'description' => __( 'Full size image URL.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'format'      => 'uri',
 							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
-						],
-						'name' => [
+						),
+						'thumbnail' => array(
+							'description' => __( 'Thumbnail URL.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'format'      => 'uri',
+							'context'     => [ 'view', 'edit' ],
+						),
+						'srcset'    => array(
+							'description' => __( 'Thumbnail srcset for responsive images.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+						),
+						'sizes'     => array(
+							'description' => __( 'Thumbnail sizes for responsive images.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+						),
+						'name'      => array(
 							'description' => __( 'Image name.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
-						],
-						'alt'  => [
+						),
+						'alt'       => array(
 							'description' => __( 'Image alternative text.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
-						],
+						),
 					],
 				],
 			],
@@ -248,7 +260,10 @@ class CartItemSchema extends AbstractSchema {
 				$label = wc_attribute_label( str_replace( 'attribute_', '', $name ), $product );
 			}
 
-			$return[ $label ] = $value;
+			$return[] = [
+				'attribute' => $label,
+				'value'     => $value,
+			];
 		}
 
 		return $return;

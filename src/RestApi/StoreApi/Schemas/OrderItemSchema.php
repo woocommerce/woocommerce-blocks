@@ -239,7 +239,10 @@ class OrderItemSchema extends AbstractSchema {
 				$label = wc_attribute_label( $name, $product );
 			}
 
-			$return[ $label ] = $value;
+			$return[] = [
+				'attribute' => $label,
+				'value'     => $value,
+			];
 		}
 
 		return $return;
