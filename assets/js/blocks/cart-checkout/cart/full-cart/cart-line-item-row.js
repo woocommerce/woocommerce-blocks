@@ -13,7 +13,11 @@ const ProductVariationDetails = ( { variation } ) => {
 		.map( ( v ) => `${ v.attribute }: ${ v.value }` )
 		.join( ' / ' );
 
-	return <div>{ variationsText }</div>;
+	return (
+		<div className="wc-block-cart-item__product-attributes">
+			{ variationsText }
+		</div>
+	);
 };
 
 const CartLineItemRow = ( { lineItem } ) => {
