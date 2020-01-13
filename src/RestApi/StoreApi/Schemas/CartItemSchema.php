@@ -200,7 +200,7 @@ class CartItemSchema extends AbstractSchema {
 			'id'                => $product->get_id(),
 			'quantity'          => wc_stock_amount( $cart_item['quantity'] ),
 			'name'              => $product->get_title(),
-			'short_description' => apply_filters( 'woocommerce_short_description', $product->get_short_description() ? $product->get_short_description() : wc_trim_string( $product->get_description(), 400 ) ),
+			'short_description' => $product->get_short_description() ? $product->get_short_description() : wc_trim_string( $product->get_description() ),
 			'sku'               => $product->get_sku(),
 			'permalink'         => $product->get_permalink(),
 			'images'            => ( new ProductImages() )->images_to_array( $product ),
