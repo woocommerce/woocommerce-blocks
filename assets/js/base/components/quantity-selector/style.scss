@@ -1,3 +1,61 @@
-.wc-block-quantity-selector__input {
-	width: 60px;
+.wc-block-quantity-selector {
+	display: flex;
+	border: 1px solid #d6d9dd;
+	background: #fff;
+	border-radius: 4px;
+
+	.wc-block-quantity-selector__input {
+		order: 2;
+		min-width: 40px;
+		flex: 1 1 auto;
+		border: 0;
+		padding: 0.5em 0;
+		margin: 0;
+		text-align: center;
+		background: transparent;
+		color: #000;
+		-moz-appearance: textfield;
+		vertical-align: middle;
+	}
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+	.wc-block-quantity-selector__button {
+		border: 0;
+		padding: 0 0.5em;
+		margin: 0;
+		background: none transparent;
+		outline: none;
+		cursor: pointer;
+		color: #000;
+		font-style: normal;
+		font-size: 1em;
+
+		&:disabled {
+			color: #d6d9dd;
+			cursor: default;
+			background: none transparent;
+			border: 0;
+			padding: 0 0.5em;
+			outline: none;
+		}
+		&:hover,
+		&:focus {
+			background: none transparent;
+			border: 0;
+			padding: 0 0.5em;
+			outline: none;
+		}
+		&:focus {
+			text-decoration: underline;
+		}
+	}
+	.wc-block-quantity-selector__button--minus {
+		order: 1;
+	}
+	.wc-block-quantity-selector__button--plus {
+		order: 3;
+	}
 }
