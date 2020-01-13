@@ -286,36 +286,37 @@ const Block = ( { isEditor = false } ) => {
 							) }
 							stepNumber={ 3 }
 						>
-							{ shippingFields.country ? (
-								<ShippingRatesControl
-									address={ {
-										address_1: shippingFields.streetAddress,
-										address_2: shippingFields.apartment,
-										city: shippingFields.city,
-										state: shippingFields.county,
-										postcode: shippingFields.postalCode,
-										country: shippingFields.country,
-									} }
-									onChange={ ( newMethods ) =>
-										setShippingMethod( {
-											...shippingMethod,
-											methods: newMethods,
-										} )
-									}
-									renderOption={ ( option ) => ( {
-										label: option.name,
-										value: option.rate_id,
-										description: option.description,
-										secondaryLabel: option.price,
-										secondaryDescription:
-											option.delivery_time,
-									} ) }
-									selected={ shippingMethod.methods }
-								/>
-							) : (
-								/* @todo Remove this once <CountryInput /> is created, because country will no longer be undefined on load. */
-								<span>Please select a country first</span>
-							) }
+							<ShippingRatesControl
+								address={
+									shippingFields.country
+										? {
+												address_1:
+													shippingFields.streetAddress,
+												address_2:
+													shippingFields.apartment,
+												city: shippingFields.city,
+												state: shippingFields.county,
+												postcode:
+													shippingFields.postalCode,
+												country: shippingFields.country,
+										  }
+										: null
+								}
+								onChange={ ( newMethods ) =>
+									setShippingMethod( {
+										...shippingMethod,
+										methods: newMethods,
+									} )
+								}
+								renderOption={ ( option ) => ( {
+									label: option.name,
+									value: option.rate_id,
+									description: option.description,
+									secondaryLabel: option.price,
+									secondaryDescription: option.delivery_time,
+								} ) }
+								selected={ shippingMethod.methods }
+							/>
 							<CheckboxControl
 								className="wc-block-checkout__add-note"
 								label="Add order notes?"

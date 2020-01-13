@@ -15,7 +15,7 @@ const ShippingRatesControl = ( {
 } ) => {
 	const { shippingRates, shippingRatesLoading } = useShippingRates( address );
 
-	// Select first items when shipping rates are loaded.
+	// Select first item when shipping rates are loaded.
 	useEffect(
 		() => {
 			if ( shippingRates.length > 0 ) {
@@ -77,7 +77,7 @@ const ShippingRatesControl = ( {
 				{ shippingRates.length > 1 && (
 					<span>
 						{ /* @todo show product names */ }
-						{ shippingRate.items.join( ',' ) }
+						{ shippingRate.items.join( ', ' ) }
 					</span>
 				) }
 			</Fragment>
