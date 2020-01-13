@@ -17,6 +17,7 @@ export const previewCartItems = [
 		id: 1,
 		quantity: 2,
 		name: __( 'Beanie', 'woo-gutenberg-products-block' ),
+		description: __( 'Warm hat for winter' ),
 		sku: 'woo-beanie',
 		permalink: 'https://example.org',
 		images: [
@@ -59,6 +60,7 @@ export const previewCartItems = [
 		id: 2,
 		quantity: 1,
 		name: __( 'Cap', 'woo-gutenberg-products-block' ),
+		description: __( 'Lightweight baseball cap' ),
 		sku: 'woo-cap',
 		permalink: 'https://example.org',
 		images: [

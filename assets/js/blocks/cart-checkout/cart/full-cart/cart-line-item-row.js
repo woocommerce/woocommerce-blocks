@@ -17,7 +17,7 @@ const ProductVariationDetails = ( { variation } ) => {
 };
 
 const CartLineItemRow = ( { lineItem } ) => {
-	const { name, images, variation, quantity, totals } = lineItem;
+	const { name, description, images, variation, quantity, totals } = lineItem;
 	const { line_total: total, line_subtotal: subtotal } = totals;
 
 	const imageProps = {};
@@ -60,6 +60,7 @@ const CartLineItemRow = ( { lineItem } ) => {
 							{ name }
 						</div>
 						<div className="wc-block-cart-item__product-metadata">
+							{ description }
 							<ProductVariationDetails variation={ variation } />
 						</div>
 						{ quantitySelector(
@@ -90,6 +91,7 @@ const CartLineItemRow = ( { lineItem } ) => {
 CartLineItemRow.propTypes = {
 	lineItem: PropTypes.shape( {
 		name: PropTypes.string.isRequired,
+		description: PropTypes.string.isRequired,
 		images: PropTypes.array.isRequired,
 		quantity: PropTypes.number.isRequired,
 		variation: PropTypes.arrayOf(
