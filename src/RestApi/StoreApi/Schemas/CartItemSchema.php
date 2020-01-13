@@ -195,12 +195,16 @@ class CartItemSchema extends AbstractSchema {
 	public function get_item_response( $cart_item ) {
 		$product = $cart_item['data'];
 
+		$short_description = $product->get_short_description() ? $product->get_short_description() : wc_trim_string( $product->get_description() );
+		$short_description = wp_filter_nohtml_kses( $short_description );
+		$short_description = strip_shortcodes( $short_description );
+
 		return [
 			'key'               => $cart_item['key'],
 			'id'                => $product->get_id(),
 			'quantity'          => wc_stock_amount( $cart_item['quantity'] ),
 			'name'              => $product->get_title(),
-			'short_description' => $product->get_short_description() ? $product->get_short_description() : wc_trim_string( $product->get_description() ),
+			'short_description' => $short_description,
 			'sku'               => $product->get_sku(),
 			'permalink'         => $product->get_permalink(),
 			'images'            => ( new ProductImages() )->images_to_array( $product ),
