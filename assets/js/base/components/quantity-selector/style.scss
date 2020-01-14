@@ -50,9 +50,6 @@
 			@include reset-button;
 			color: #555;
 		}
-		&:focus {
-			text-decoration: underline;
-		}
 	}
 	.wc-block-quantity-selector__button--minus {
 		order: 1;
