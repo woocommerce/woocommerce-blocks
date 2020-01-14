@@ -2,8 +2,11 @@
 	border: 0;
 	padding: 0;
 	margin: 0;
-	outline: none;
 	background: none transparent;
+
+	&:focus {
+		outline: 2px solid #d6d9dd;
+	}
 }
 
 .wc-block-quantity-selector {
@@ -23,8 +26,13 @@
 		text-align: center;
 		background: transparent;
 		color: #000;
-		-moz-appearance: textfield;
 		vertical-align: middle;
+		-moz-appearance: textfield;
+
+		&:focus {
+			background: lighten(#d6d9dd, 10%);
+			outline: 1px solid #d6d9dd;
+		}
 	}
 	input::-webkit-outer-spin-button,
 	input::-webkit-inner-spin-button {
