@@ -79,7 +79,7 @@ const QuantitySelector = ( {
 					setCurrentValue( currentValue - 1 );
 				} }
 			>
-				-
+				&#65293;
 			</button>
 			<button
 				aria-label={ __(
@@ -91,7 +91,7 @@ const QuantitySelector = ( {
 					setCurrentValue( currentValue + 1 );
 				} }
 			>
-				+
+				&#65291;
 			</button>
 		</div>
 	);
