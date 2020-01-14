@@ -94,13 +94,11 @@ const CartLineItemRow = ( { lineItem } ) => {
 
 	const lowStockBadge = lowStockRemaining ? (
 		<div className="wc-block-cart-item__low-stock-badge">
-			<span>
-				{ sprintf(
-					/* translators: %s stock amount (number of items in stock for product) */
-					__( '%s left in stock', 'woo-gutenberg-products-block' ),
-					lowStockRemaining
-				) }
-			</span>
+			{ sprintf(
+				/* translators: %s stock amount (number of items in stock for product) */
+				__( '%s left in stock', 'woo-gutenberg-products-block' ),
+				lowStockRemaining
+			) }
 		</div>
 	) : null;
 
