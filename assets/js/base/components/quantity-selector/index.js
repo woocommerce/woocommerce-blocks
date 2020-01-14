@@ -1,7 +1,8 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
+import { speak } from '@wordpress/a11y';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useRef, useState, useEffect, useCallback } from '@wordpress/element';
@@ -18,6 +19,7 @@ const QuantitySelector = ( {
 	className,
 	quantity = 1,
 	onChange = () => null,
+	itemName = '',
 } ) => {
 	const classes = classNames( 'wc-block-quantity-selector', className );
 	const inputRef = useRef( null );
@@ -67,6 +69,14 @@ const QuantitySelector = ( {
 							: parseInt( event.target.value, 10 );
 					setCurrentValue( value );
 				} }
+				aria-label={ sprintf(
+					__(
+						// translators: %s Item name.
+						'Quantity of %s in your cart.',
+						'woo-gutenberg-products-block'
+					),
+					itemName
+				) }
 			/>
 			<button
 				aria-label={ __(
@@ -76,7 +86,18 @@ const QuantitySelector = ( {
 				className="wc-block-quantity-selector__button wc-block-quantity-selector__button--minus"
 				disabled={ currentValue <= 0 }
 				onClick={ () => {
-					setCurrentValue( currentValue - 1 );
+					const newQuantity = currentValue - 1;
+					setCurrentValue( newQuantity );
+					speak(
+						sprintf(
+							__(
+								// translators: %s Quantity amount.
+								'Quantity reduced to %s.',
+								'woo-gutenberg-products-block'
+							),
+							newQuantity
+						)
+					);
 				} }
 			>
 				&#65293;
@@ -88,7 +109,18 @@ const QuantitySelector = ( {
 				) }
 				className="wc-block-quantity-selector__button wc-block-quantity-selector__button--plus"
 				onClick={ () => {
-					setCurrentValue( currentValue + 1 );
+					const newQuantity = currentValue + 1;
+					setCurrentValue( newQuantity );
+					speak(
+						sprintf(
+							__(
+								// translators: %s Quantity amount.
+								'Quantity increased to %s.',
+								'woo-gutenberg-products-block'
+							),
+							newQuantity
+						)
+					);
 				} }
 			>
 				&#65291;
@@ -101,6 +133,7 @@ QuantitySelector.propTypes = {
 	className: PropTypes.string,
 	quantity: PropTypes.number,
 	onChange: PropTypes.func,
+	itemName: PropTypes.string,
 };
 
 export default QuantitySelector;
