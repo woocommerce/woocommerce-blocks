@@ -31,7 +31,16 @@ const settings = {
 		multiple: false,
 	},
 	example,
-	attributes: {},
+	attributes: {
+		isShippingCalculatorEnabled: {
+			type: 'boolean',
+			default: true,
+		},
+		isShippingCostHidden: {
+			type: 'boolean',
+			default: false,
+		},
+	},
 
 	/**
 	 * Renders the edit view for a block.

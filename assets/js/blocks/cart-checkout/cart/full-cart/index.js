@@ -38,7 +38,12 @@ const onActivateCoupon = ( couponCode ) => {
 /**
  * Component that renders the Cart block when user has something in cart aka "full".
  */
-const Cart = ( { cartItems = [], cartTotals = {} } ) => {
+const Cart = ( {
+	cartItems = [],
+	cartTotals = {},
+	isShippingCalculatorEnabled,
+	isShippingCostHidden
+} ) => {
 	const [ selectedShippingRate, setSelectedShippingRate ] = useState();
 	const [
 		shippingCalculatorAddress,
@@ -96,27 +101,28 @@ const Cart = ( { cartItems = [], cartTotals = {} } ) => {
 				value: totalTax,
 			} );
 		}
-		const totalShipping = parseInt( cartTotals.total_shipping, 10 );
-		const totalShippingTax = parseInt( cartTotals.total_shipping_tax, 10 );
-		totalRowsConfig.push( {
-			label: __( 'Shipping:', 'woo-gutenberg-products-block' ),
-			value: DISPLAY_PRICES_INCLUDING_TAXES
-				? totalShipping + totalShippingTax
-				: totalShipping,
-			description: (
-				<Fragment>
-					{ __(
-						'Shipping to location',
-						'woo-gutenberg-products-block'
-					) + ' ' }
-					<ShippingCalculator
-						address={ shippingCalculatorAddress }
-						setAddress={ setShippingCalculatorAddress }
-					/>
-				</Fragment>
-			),
-		} );
-
+		if ( ! isShippingCostHidden ) {
+			const totalShipping = parseInt( cartTotals.total_shipping, 10 );
+			const totalShippingTax = parseInt( cartTotals.total_shipping_tax, 10 );
+			totalRowsConfig.push( {
+				label: __( 'Shipping:', 'woo-gutenberg-products-block' ),
+				value: DISPLAY_PRICES_INCLUDING_TAXES
+					? totalShipping + totalShippingTax
+					: totalShipping,
+				description: (
+					<Fragment>
+						{ __(
+							'Shipping to location',
+							'woo-gutenberg-products-block'
+						) + ' ' }
+						<ShippingCalculator
+							address={ shippingCalculatorAddress }
+							setAddress={ setShippingCalculatorAddress }
+						/>
+					</Fragment>
+				),
+			} );
+		}
 		return totalRowsConfig;
 	};
 
@@ -149,16 +155,17 @@ const Cart = ( { cartItems = [], cartTotals = {} } ) => {
 								/>
 							)
 						) }
-						<fieldset className="wc-block-cart__shipping-options-fieldset">
-							<legend className="screen-reader-text">
-								{ __(
+						{ isShippingCalculatorEnabled && (
+							<fieldset className="wc-block-cart__shipping-options-fieldset">
+								<legend className="screen-reader-text">
+									{ __(
 									'Choose the shipping method.',
 									'woo-gutenberg-products-block'
 								) }
-							</legend>
-							<ShippingRatesControl
-								className="wc-block-cart__shipping-options"
-								address={
+								</legend>
+								<ShippingRatesControl
+									className="wc-block-cart__shipping-options"
+									address={
 									shippingCalculatorAddress.country
 										? {
 												city:
@@ -172,7 +179,7 @@ const Cart = ( { cartItems = [], cartTotals = {} } ) => {
 										  }
 										: null
 								}
-								noResultsMessage={ sprintf(
+									noResultsMessage={ sprintf(
 									// translators: %s shipping destination.
 									__(
 										'No shipping options were found for %s.',
@@ -182,8 +189,8 @@ const Cart = ( { cartItems = [], cartTotals = {} } ) => {
 									// see: https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1606
 									'location'
 								) }
-								selected={ selectedShippingRate }
-								renderOption={ ( option ) => ( {
+									selected={ selectedShippingRate }
+									renderOption={ ( option ) => ( {
 									label: decodeEntities( option.name ),
 									value: option.rate_id,
 									description: (
@@ -206,13 +213,14 @@ const Cart = ( { cartItems = [], cartTotals = {} } ) => {
 										</Fragment>
 									),
 								} ) }
-								onChange={ ( newSelectedShippingOption ) =>
+									onChange={ ( newSelectedShippingOption ) =>
 									setSelectedShippingRate(
 										newSelectedShippingOption
 									)
 								}
 							/>
-						</fieldset>
+							</fieldset>
+						) }
 						{ COUPONS_ENABLED && (
 							<TotalsCouponCodeInput
 								onSubmit={ onActivateCoupon }
@@ -225,7 +233,7 @@ const Cart = ( { cartItems = [], cartTotals = {} } ) => {
 								'Total',
 								'woo-gutenberg-products-block'
 							) }
-							value={ parseInt( cartTotals.total_price, 10 ) }
+							value={ parseInt( fetchedCartTotals.total_price, 10 ) }
 						/>
 						<CheckoutButton />
 					</CardBody>
