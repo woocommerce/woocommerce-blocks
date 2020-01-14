@@ -41,7 +41,7 @@ const CartLineItemRow = ( { lineItem } ) => {
 		images,
 		variation,
 		quantity,
-		lowStockRemaining,
+		low_stock_remaining: lowStockRemaining,
 		totals,
 	} = lineItem;
 	const { line_total: total, line_subtotal: subtotal } = totals;
@@ -152,7 +152,7 @@ CartLineItemRow.propTypes = {
 		description: PropTypes.string.isRequired,
 		images: PropTypes.array.isRequired,
 		quantity: PropTypes.number.isRequired,
-		lowStockRemaining: PropTypes.number,
+		low_stock_remaining: PropTypes.number,
 		variation: PropTypes.arrayOf(
 			PropTypes.shape( {
 				attribute: PropTypes.string.isRequired,
