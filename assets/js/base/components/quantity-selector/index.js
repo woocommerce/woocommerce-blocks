@@ -6,9 +6,7 @@ import { speak } from '@wordpress/a11y';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useRef, useState, useEffect, useCallback } from '@wordpress/element';
-
-const KEYCODE_UP = 38;
-const KEYCODE_DOWN = 40;
+import { DOWN, UP } from '@wordpress/keycodes';
 
 /**
  * Internal dependencies
@@ -39,14 +37,23 @@ const QuantitySelector = ( {
 	 */
 	const quantityInputOnKeyDown = useCallback(
 		( event ) => {
-			if ( event.keyCode === KEYCODE_UP ) {
-				event.preventDefault();
-				setCurrentValue( currentValue + 1 );
-			}
+			const isArrowDown =
+				typeof event.key !== undefined
+					? event.key === 'ArrowDown'
+					: event.keyCode === DOWN;
+			const isArrowUp =
+				typeof event.key !== undefined
+					? event.key === 'ArrowUp'
+					: event.keyCode === UP;
 
-			if ( event.keyCode === KEYCODE_DOWN && currentValue > 0 ) {
+			if ( isArrowDown && currentValue > 0 ) {
 				event.preventDefault();
 				setCurrentValue( currentValue - 1 );
+			}
+
+			if ( isArrowUp ) {
+				event.preventDefault();
+				setCurrentValue( currentValue + 1 );
 			}
 		},
 		[ currentValue, setCurrentValue ]
