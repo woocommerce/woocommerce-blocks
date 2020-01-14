@@ -43,16 +43,19 @@ class ValidateSchema {
 			$property_value = current( $object[ $property_name ] );
 
 			if ( ! empty( $property_value ) ) {
-				$schema_diff[ $property_name ] = array_diff(
+				$nested_diffs = array_diff(
 					array_keys( $property_schema['items']['properties'] ),
 					array_keys( $property_value )
 				);
+				foreach ( $nested_diffs as $nested_diff ) {
+					$schema_diff[] = $property_name . ':' . $nested_diff;
+				}
 			} else {
 				$schema_diff[] = $property_name;
 			}
 		}
 
-		return array_filter( $schema_diff );
+		return array_values( array_filter( $schema_diff ) );
 	}
 
 	/**
