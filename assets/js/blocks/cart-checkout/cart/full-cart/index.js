@@ -8,6 +8,7 @@ import {
 	TotalsItem,
 } from '@woocommerce/base-components/totals';
 import ShippingRatesControl from '@woocommerce/base-components/shipping-rates-control';
+import ShippingCalculatorAddress from '@woocommerce/base-components/shipping-calculator-address';
 import {
 	COUPONS_ENABLED,
 	DISPLAY_PRICES_INCLUDING_TAXES,
@@ -115,6 +116,11 @@ const Cart = () => {
 	const totalRowsConfig = getTotalRowsConfig( cartTotals );
 
 	const [ selectedShippingRate, setSelectedShippingRate ] = useState();
+	const [ isShippingCalculatorOpen ] = useState( true );
+	const [
+		shippingCalculatorAddress,
+		setShippingCalculatorAddress,
+	] = useState( { city: '', county: '', postCode: '', country: '' } );
 
 	return (
 		<div className="wc-block-cart">
@@ -142,6 +148,12 @@ const Cart = () => {
 								/>
 							)
 						) }
+						{ isShippingCalculatorOpen && (
+							<ShippingCalculatorAddress
+								address={ shippingCalculatorAddress }
+								onUpdate={ setShippingCalculatorAddress }
+							/>
+						) }
 						<fieldset className="wc-block-cart__shipping-options-fieldset">
 							<legend className="screen-reader-text">
 								{ __(
@@ -151,6 +163,20 @@ const Cart = () => {
 							</legend>
 							<ShippingRatesControl
 								className="wc-block-cart__shipping-options"
+								address={
+									shippingCalculatorAddress.country
+										? {
+												city:
+													shippingCalculatorAddress.city,
+												state:
+													shippingCalculatorAddress.county,
+												postcode:
+													shippingCalculatorAddress.postCode,
+												country:
+													shippingCalculatorAddress.country,
+										  }
+										: null
+								}
 								noResultsMessage={ sprintf(
 									// translators: %s shipping destination.
 									__(
