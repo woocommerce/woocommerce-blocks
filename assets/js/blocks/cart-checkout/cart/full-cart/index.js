@@ -28,66 +28,6 @@ import CartLineItemsTable from './cart-line-items-table';
 import './style.scss';
 import './editor.scss';
 
-/**
- * Given an API response with cart totals, generates an array of rows to display in the Cart block.
- *
- * @param {Object} cartTotals - Cart totals data as provided by the API.
- * @returns {Object[]} Values to display in the cart block.
- */
-const getTotalRowsConfig = ( cartTotals ) => {
-	const totalItems = parseInt( cartTotals.total_items, 10 );
-	const totalItemsTax = parseInt( cartTotals.total_items_tax, 10 );
-	const totalRowsConfig = [
-		{
-			label: __( 'List items:', 'woo-gutenberg-products-block' ),
-			value: DISPLAY_PRICES_INCLUDING_TAXES
-				? totalItems + totalItemsTax
-				: totalItems,
-		},
-	];
-	const totalFees = parseInt( cartTotals.total_fees, 10 );
-	if ( totalFees > 0 ) {
-		const totalFeesTax = parseInt( cartTotals.total_fees_tax, 10 );
-		totalRowsConfig.push( {
-			label: __( 'Fees:', 'woo-gutenberg-products-block' ),
-			value: DISPLAY_PRICES_INCLUDING_TAXES
-				? totalFees + totalFeesTax
-				: totalFees,
-		} );
-	}
-	const totalDiscount = parseInt( cartTotals.total_discount, 10 );
-	if ( totalDiscount > 0 ) {
-		const totalDiscountTax = parseInt( cartTotals.total_discount_tax, 10 );
-		totalRowsConfig.push( {
-			label: __( 'Discount:', 'woo-gutenberg-products-block' ),
-			value: DISPLAY_PRICES_INCLUDING_TAXES
-				? totalDiscount + totalDiscountTax
-				: totalDiscount,
-		} );
-	}
-	if ( ! DISPLAY_PRICES_INCLUDING_TAXES ) {
-		const totalTax = parseInt( cartTotals.total_tax, 10 );
-		totalRowsConfig.push( {
-			label: __( 'Taxes:', 'woo-gutenberg-products-block' ),
-			value: totalTax,
-		} );
-	}
-	const totalShipping = parseInt( cartTotals.total_shipping, 10 );
-	const totalShippingTax = parseInt( cartTotals.total_shipping_tax, 10 );
-	totalRowsConfig.push( {
-		label: __( 'Shipping:', 'woo-gutenberg-products-block' ),
-		value: DISPLAY_PRICES_INCLUDING_TAXES
-			? totalShipping + totalShippingTax
-			: totalShipping,
-		description: __(
-			'Shipping to location (change address)',
-			'woo-gutenberg-products-block'
-		),
-	} );
-
-	return totalRowsConfig;
-};
-
 // @todo this are placeholders
 const onActivateCoupon = ( couponCode ) => {
 	// eslint-disable-next-line no-console
@@ -112,15 +52,106 @@ const cartTotals = {
  * Component that renders the Cart block when user has something in cart aka "full".
  */
 const Cart = () => {
-	const totalsCurrency = getCurrencyFromPriceResponse( cartTotals );
-	const totalRowsConfig = getTotalRowsConfig( cartTotals );
-
 	const [ selectedShippingRate, setSelectedShippingRate ] = useState();
-	const [ isShippingCalculatorOpen ] = useState( true );
+	const [ isShippingCalculatorOpen, setIsShippingCalculatorOpen ] = useState(
+		false
+	);
 	const [
 		shippingCalculatorAddress,
 		setShippingCalculatorAddress,
-	] = useState( { city: '', county: '', postCode: '', country: '' } );
+	] = useState( {
+		city: '',
+		county: '',
+		postCode: '',
+		country: '',
+	} );
+
+	/**
+	 * Given an API response with cart totals, generates an array of rows to display in the Cart block.
+	 *
+	 * @param {Object} cartTotals - Cart totals data as provided by the API.
+	 * @return {Object[]} Values to display in the cart block.
+	 */
+	const getTotalRowsConfig = () => {
+		const totalItems = parseInt( cartTotals.total_items, 10 );
+		const totalItemsTax = parseInt( cartTotals.total_items_tax, 10 );
+		const totalRowsConfig = [
+			{
+				label: __( 'List items:', 'woo-gutenberg-products-block' ),
+				value: DISPLAY_PRICES_INCLUDING_TAXES
+					? totalItems + totalItemsTax
+					: totalItems,
+			},
+		];
+		const totalFees = parseInt( cartTotals.total_fees, 10 );
+		if ( totalFees > 0 ) {
+			const totalFeesTax = parseInt( cartTotals.total_fees_tax, 10 );
+			totalRowsConfig.push( {
+				label: __( 'Fees:', 'woo-gutenberg-products-block' ),
+				value: DISPLAY_PRICES_INCLUDING_TAXES
+					? totalFees + totalFeesTax
+					: totalFees,
+			} );
+		}
+		const totalDiscount = parseInt( cartTotals.total_discount, 10 );
+		if ( totalDiscount > 0 ) {
+			const totalDiscountTax = parseInt(
+				cartTotals.total_discount_tax,
+				10
+			);
+			totalRowsConfig.push( {
+				label: __( 'Discount:', 'woo-gutenberg-products-block' ),
+				value: DISPLAY_PRICES_INCLUDING_TAXES
+					? totalDiscount + totalDiscountTax
+					: totalDiscount,
+			} );
+		}
+		if ( ! DISPLAY_PRICES_INCLUDING_TAXES ) {
+			const totalTax = parseInt( cartTotals.total_tax, 10 );
+			totalRowsConfig.push( {
+				label: __( 'Taxes:', 'woo-gutenberg-products-block' ),
+				value: totalTax,
+			} );
+		}
+		const totalShipping = parseInt( cartTotals.total_shipping, 10 );
+		const totalShippingTax = parseInt( cartTotals.total_shipping_tax, 10 );
+		totalRowsConfig.push( {
+			label: __( 'Shipping:', 'woo-gutenberg-products-block' ),
+			value: DISPLAY_PRICES_INCLUDING_TAXES
+				? totalShipping + totalShippingTax
+				: totalShipping,
+			description: (
+				<Fragment>
+					{ __(
+						'Shipping to location',
+						'woo-gutenberg-products-block'
+					) }{ ' ' }
+					<span className="wc-block-cart__change-address">
+						(
+						<button
+							className="wc-block-cart__change-address-button"
+							onClick={ () => {
+								setIsShippingCalculatorOpen(
+									! isShippingCalculatorOpen
+								);
+							} }
+						>
+							{ __(
+								'change address',
+								'woo-gutenberg-products-block'
+							) }
+						</button>
+						)
+					</span>
+				</Fragment>
+			),
+		} );
+
+		return totalRowsConfig;
+	};
+
+	const totalsCurrency = getCurrencyFromPriceResponse( cartTotals );
+	const totalRowsConfig = getTotalRowsConfig( cartTotals );
 
 	return (
 		<div className="wc-block-cart">
