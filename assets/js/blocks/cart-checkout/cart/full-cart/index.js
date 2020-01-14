@@ -8,7 +8,7 @@ import {
 	TotalsItem,
 } from '@woocommerce/base-components/totals';
 import ShippingRatesControl from '@woocommerce/base-components/shipping-rates-control';
-import ShippingCalculatorAddress from '@woocommerce/base-components/shipping-calculator-address';
+import ShippingCalculator from '@woocommerce/base-components/shipping-calculator';
 import {
 	COUPONS_ENABLED,
 	DISPLAY_PRICES_INCLUDING_TAXES,
@@ -53,9 +53,6 @@ const cartTotals = {
  */
 const Cart = () => {
 	const [ selectedShippingRate, setSelectedShippingRate ] = useState();
-	const [ isShippingCalculatorOpen, setIsShippingCalculatorOpen ] = useState(
-		false
-	);
 	const [
 		shippingCalculatorAddress,
 		setShippingCalculatorAddress,
@@ -125,24 +122,11 @@ const Cart = () => {
 					{ __(
 						'Shipping to location',
 						'woo-gutenberg-products-block'
-					) }{ ' ' }
-					<span className="wc-block-cart__change-address">
-						(
-						<button
-							className="wc-block-cart__change-address-button"
-							onClick={ () => {
-								setIsShippingCalculatorOpen(
-									! isShippingCalculatorOpen
-								);
-							} }
-						>
-							{ __(
-								'change address',
-								'woo-gutenberg-products-block'
-							) }
-						</button>
-						)
-					</span>
+					) + ' ' }
+					<ShippingCalculator
+						address={ shippingCalculatorAddress }
+						setAddress={ setShippingCalculatorAddress }
+					/>
 				</Fragment>
 			),
 		} );
@@ -178,12 +162,6 @@ const Cart = () => {
 									description={ description }
 								/>
 							)
-						) }
-						{ isShippingCalculatorOpen && (
-							<ShippingCalculatorAddress
-								address={ shippingCalculatorAddress }
-								onUpdate={ setShippingCalculatorAddress }
-							/>
 						) }
 						<fieldset className="wc-block-cart__shipping-options-fieldset">
 							<legend className="screen-reader-text">
