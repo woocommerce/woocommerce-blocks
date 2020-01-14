@@ -51,13 +51,11 @@ const CartLineItemRow = ( { lineItem } ) => {
 		);
 		discountBadge = (
 			<div className="wc-block-cart-item__discount-badge">
-				<span>
-					{ sprintf(
-						/* translators: %s discount amount */
-						__( 'Save %s!', 'woo-gutenberg-products-block' ),
-						formatPrice( discountAmount, currency )
-					) }
-				</span>
+				{ sprintf(
+					/* translators: %s discount amount */
+					__( 'Save %s!', 'woo-gutenberg-products-block' ),
+					formatPrice( discountAmount, currency )
+				) }
 			</div>
 		);
 	}
@@ -97,11 +95,12 @@ const CartLineItemRow = ( { lineItem } ) => {
 			</td>
 			<td className="wc-block-cart-item__total">
 				{ fullPrice }
-				<FormattedMonetaryAmount
-					className="wc-block-cart-item__line-total"
-					currency={ currency }
-					value={ total }
-				/>
+				<div className="wc-block-cart-item__line-total">
+					<FormattedMonetaryAmount
+						currency={ currency }
+						value={ total }
+					/>
+				</div>
 				{ discountBadge }
 			</td>
 		</tr>
