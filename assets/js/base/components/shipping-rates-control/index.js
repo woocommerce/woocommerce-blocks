@@ -67,7 +67,6 @@ const ShippingRatesControl = ( {
 		return (
 			<Fragment key={ id }>
 				<RadioControl
-					id={ id }
 					className={ className }
 					onChange={ ( newShippingRate ) => {
 						const newSelected = [ ...selected ];
