@@ -28,47 +28,58 @@ class ValidateSchema {
 	}
 
 	/**
-	 * Compare an object to the schema and return the diff.
+	 * Validate properties and return diff.
 	 *
 	 * @param object $object Object to compare.
+	 * @param array  $schema Schema to find nested properties under.
+	 * @param string $prefix Prefix to append to diff property names.
 	 * @return array
 	 */
-	public function get_diff_from_object( $object ) {
-		$schema_diff = array_diff(
-			array_keys( $this->schema['properties'] ),
-			array_keys( $object )
-		);
+	public function get_diff_from_object( $object, $schema = null, $prefix = '' ) {
+		$missing      = [];
+		$invalid_type = [];
+		$no_schema    = [];
 
-		foreach ( $this->get_schema_with_nested_properties() as $property_name => $property_schema ) {
-			$property_value = current( $object[ $property_name ] );
+		if ( is_null( $schema ) ) {
+			$schema = $this->schema['properties'];
+		}
 
-			if ( ! empty( $property_value ) ) {
-				$nested_diffs = array_diff(
-					array_keys( $property_schema['items']['properties'] ),
-					array_keys( $property_value )
+		if ( ! is_scalar( $object ) ) {
+			$no_schema = array_diff( array_keys( $object ), array_keys( $schema ) );
+		}
+
+		foreach ( $schema as $property_name => $property_schema ) {
+			// Validate property is set in object.
+			if ( ! isset( $object[ $property_name ] ) ) {
+				$missing[] = $prefix . $property_name;
+				continue;
+			}
+
+			// Validate type.
+			if ( $property_schema['type'] !== gettype( $object[ $property_name ] ) ) {
+				$invalid_type[] = $prefix . $property_name;
+				continue;
+			}
+
+			// Validate nested props.
+			if ( isset( $property_schema['items']['properties'] ) ) {
+				$diff         = $this->get_diff_from_object(
+					current( $object[ $property_name ] ),
+					$property_schema['items']['properties'],
+					$prefix . $property_name . ':'
 				);
-				foreach ( $nested_diffs as $nested_diff ) {
-					$schema_diff[] = $property_name . ':' . $nested_diff;
-				}
-			} else {
-				$schema_diff[] = $property_name;
+				$missing      = isset( $diff['missing'] ) ? array_merge( $missing, $diff['missing'] ) : $missing;
+				$invalid_type = isset( $diff['invalid_type'] ) ? array_merge( $invalid_type, $diff['invalid_type'] ) : $invalid_type;
+				$no_schema    = isset( $diff['no_schema'] ) ? array_merge( $no_schema, $diff['no_schema'] ) : $no_schema;
 			}
 		}
 
-		return array_values( array_filter( $schema_diff ) );
-	}
-
-	/**
-	 * Return schema which expects nested properties.
-	 *
-	 * @return array
-	 */
-	protected function get_schema_with_nested_properties() {
 		return array_filter(
-			$this->schema['properties'],
-			function( $property ) {
-				return isset( $property['items']['properties'] );
-			}
+			[
+				'missing'      => array_values( array_filter( $missing ) ),
+				'invalid_type' => array_values( array_filter( $invalid_type ) ),
+				'no_schema'    => array_values( array_filter( $no_schema ) ),
+			]
 		);
 	}
 }
