@@ -44,7 +44,7 @@ class ValidateSchema {
 			$schema = $this->schema['properties'];
 		}
 
-		if ( ! is_scalar( $object ) ) {
+		if ( is_array( $object ) || is_object( $object ) ) {
 			$no_schema = array_diff( array_keys( $object ), array_keys( $schema ) );
 		}
 
@@ -56,8 +56,10 @@ class ValidateSchema {
 			}
 
 			// Validate type.
-			if ( $property_schema['type'] !== gettype( $object[ $property_name ] ) ) {
-				$invalid_type[] = $prefix . $property_name;
+			$type = gettype( $object[ $property_name ] );
+			if ( $type && ! $this->validate_type( $type, $property_schema['type'] ) ) {
+				$expected       = is_array( $property_schema['type'] ) ? implode( ', ', $property_schema['type'] ) : $property_schema['type'];
+				$invalid_type[] = $prefix . $property_name . " ({$type}, expected {$expected})";
 				continue;
 			}
 
@@ -85,5 +87,19 @@ class ValidateSchema {
 				'no_schema'    => array_values( array_filter( $no_schema ) ),
 			]
 		);
+	}
+
+	/**
+	 * Validate type and return if valid.
+	 *
+	 * @param string       $type
+	 * @param string|array $expected
+	 * @return boolean
+	 */
+	protected function validate_type( $type, $expected ) {
+		if ( is_array( $expected ) ) {
+			return in_array( $type, $expected );
+		}
+		return $expected === $type;
 	}
 }

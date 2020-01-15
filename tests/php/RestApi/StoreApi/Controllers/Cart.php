@@ -106,12 +106,13 @@ class Cart extends TestCase {
 		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\Cart();
 		$cart       = wc()->cart;
 		$response   = $controller->prepare_item_for_response( $cart, [] );
+		$data       = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
-		$this->assertArrayHasKey( 'items_count', $response->get_data() );
-		$this->assertArrayHasKey( 'items', $response->get_data() );
-		$this->assertArrayHasKey( 'needs_shipping', $response->get_data() );
-		$this->assertArrayHasKey( 'items_weight', $response->get_data() );
-		$this->assertArrayHasKey( 'totals', $response->get_data() );
+		$this->assertArrayHasKey( 'items_count', $data );
+		$this->assertArrayHasKey( 'items', $data );
+		$this->assertArrayHasKey( 'needs_shipping', $data );
+		$this->assertArrayHasKey( 'items_weight', $data );
+		$this->assertArrayHasKey( 'totals', $data );
 	}
 
 	/**
