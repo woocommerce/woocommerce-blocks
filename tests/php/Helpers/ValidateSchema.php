@@ -30,9 +30,9 @@ class ValidateSchema {
 	/**
 	 * Validate properties and return diff.
 	 *
-	 * @param object $object Object to compare.
-	 * @param array  $schema Schema to find nested properties under.
-	 * @param string $prefix Prefix to append to diff property names.
+	 * @param array|object $object Object to compare.
+	 * @param array        $schema Schema to find nested properties under.
+	 * @param string       $prefix Prefix to append to diff property names.
 	 * @return array
 	 */
 	public function get_diff_from_object( $object, $schema = null, $prefix = '' ) {
@@ -44,9 +44,12 @@ class ValidateSchema {
 			$schema = $this->schema['properties'];
 		}
 
-		if ( is_array( $object ) || is_object( $object ) ) {
-			$no_schema = array_diff( array_keys( $object ), array_keys( $schema ) );
+		if ( ! is_array( $object ) && ! is_object( $object ) ) {
+			return [];
 		}
+
+		$object    = (array) $object;
+		$no_schema = array_diff( array_keys( (array) $object ), array_keys( $schema ) );
 
 		foreach ( $schema as $property_name => $property_schema ) {
 			// Validate property is set in object. Avoids isset in case value is NULL.
@@ -65,7 +68,7 @@ class ValidateSchema {
 
 			// Validate nested props.
 			if ( isset( $property_schema['items']['properties'] ) ) {
-				$nested_value = 'array' === $property_schema['type'] ? current( $object[ $property_name ] ) : $object[ $property_name ];
+				$nested_value = is_array( $object[ $property_name ] ) ? current( $object[ $property_name ] ) : $object[ $property_name ];
 
 				if ( $nested_value ) {
 					$diff         = $this->get_diff_from_object(
@@ -90,7 +93,7 @@ class ValidateSchema {
 	}
 
 	/**
-	 * Validate type and return if valid.
+	 * Validate type and return if it matches.
 	 *
 	 * @param string       $type
 	 * @param string|array $expected
