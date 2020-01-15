@@ -28,10 +28,14 @@ class ProductAttributeTerms extends TestCase {
 		$this->attributes[0] = ProductHelper::create_attribute( 'color', [ 'red', 'green', 'blue' ] );
 		$this->attributes[1] = ProductHelper::create_attribute( 'size', [ 'small', 'medium', 'large' ] );
 
-		wp_insert_term( 'test', 'pa_size', [
-			'description' => 'This is a test description',
-			'slug'        => 'test-slug',
-		] );
+		wp_insert_term(
+			'test',
+			'pa_size',
+			[
+				'description' => 'This is a test description',
+				'slug'        => 'test-slug',
+			]
+		);
 	}
 
 	/**
@@ -49,7 +53,7 @@ class ProductAttributeTerms extends TestCase {
 		$request = new WP_REST_Request( 'GET', '/wc/store/products/attributes/' . $this->attributes[0]['attribute_id'] . '/terms' );
 		$request->set_param( 'hide_empty', false );
 		$response = $this->server->dispatch( $request );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 3, count( $data ) );
@@ -80,7 +84,7 @@ class ProductAttributeTerms extends TestCase {
 	public function test_prepare_item_for_response() {
 		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\ProductAttributeTerms();
 		$response   = $controller->prepare_item_for_response( get_term_by( 'name', 'test', 'pa_size' ), [] );
-		$data       = $response->get_data();
+		$data       = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertArrayHasKey( 'id', $data );
 		$this->assertEquals( 'test', $data['name'] );
@@ -110,7 +114,7 @@ class ProductAttributeTerms extends TestCase {
 		$schema     = $controller->get_item_schema();
 		$validate   = new ValidateSchema( $schema );
 
-		$diff     = $validate->get_diff_from_object( $response->get_data() );
+		$diff = $validate->get_diff_from_object( $response->get_data() );
 		$this->assertEmpty( $diff, print_r( $diff, true ) );
 	}
 }

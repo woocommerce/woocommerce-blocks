@@ -400,14 +400,14 @@ class OrderSchema extends AbstractSchema {
 			'order_key'          => $order->get_order_key(),
 			'created_via'        => $order->get_created_via(),
 			'prices_include_tax' => $order->get_prices_include_tax(),
-			'events'             => $this->get_events( $order ),
-			'customer'           => [
+			'events'             => (object) $this->get_events( $order ),
+			'customer'           => (object) [
 				'customer_id'         => $order->get_customer_id(),
 				'customer_ip_address' => $order->get_customer_ip_address(),
 				'customer_user_agent' => $order->get_customer_user_agent(),
 			],
 			'customer_note'      => $order->get_customer_note(),
-			'billing_address'    => [
+			'billing_address'    => (object) [
 				'first_name' => $order->get_billing_first_name(),
 				'last_name'  => $order->get_billing_last_name(),
 				'company'    => $order->get_billing_company(),
@@ -420,7 +420,7 @@ class OrderSchema extends AbstractSchema {
 				'email'      => $order->get_billing_email(),
 				'phone'      => $order->get_billing_phone(),
 			],
-			'shipping_address'   => [
+			'shipping_address'   => (object) [
 				'first_name' => $order->get_shipping_first_name(),
 				'last_name'  => $order->get_shipping_last_name(),
 				'company'    => $order->get_shipping_company(),
@@ -433,7 +433,7 @@ class OrderSchema extends AbstractSchema {
 			],
 			'coupons'            => array_values( array_map( [ $order_coupon_schema, 'get_item_response' ], $order->get_items( 'coupon' ) ) ),
 			'items'              => array_values( array_map( [ $order_item_schema, 'get_item_response' ], $order->get_items( 'line_item' ) ) ),
-			'totals'             => array_merge(
+			'totals'             => (object) array_merge(
 				$this->get_store_currency_response(),
 				[
 					'total_items'        => $this->prepare_money_response( $order->get_subtotal(), wc_get_price_decimals() ),

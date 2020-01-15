@@ -49,8 +49,8 @@ class ValidateSchema {
 		}
 
 		foreach ( $schema as $property_name => $property_schema ) {
-			// Validate property is set in object.
-			if ( ! isset( $object[ $property_name ] ) ) {
+			// Validate property is set in object. Avoids isset in case value is NULL.
+			if ( ( is_array( $object ) && ! array_key_exists( $property_name, $object ) ) || ( is_object( $object ) && ! property_exists( $object, $property_name ) ) ) {
 				$missing[] = $prefix . $property_name;
 				continue;
 			}
@@ -63,14 +63,18 @@ class ValidateSchema {
 
 			// Validate nested props.
 			if ( isset( $property_schema['items']['properties'] ) ) {
-				$diff         = $this->get_diff_from_object(
-					current( $object[ $property_name ] ),
-					$property_schema['items']['properties'],
-					$prefix . $property_name . ':'
-				);
-				$missing      = isset( $diff['missing'] ) ? array_merge( $missing, $diff['missing'] ) : $missing;
-				$invalid_type = isset( $diff['invalid_type'] ) ? array_merge( $invalid_type, $diff['invalid_type'] ) : $invalid_type;
-				$no_schema    = isset( $diff['no_schema'] ) ? array_merge( $no_schema, $diff['no_schema'] ) : $no_schema;
+				$nested_value = 'array' === $property_schema['type'] ? current( $object[ $property_name ] ) : $object[ $property_name ];
+
+				if ( $nested_value ) {
+					$diff         = $this->get_diff_from_object(
+						$nested_value,
+						$property_schema['items']['properties'],
+						$prefix . $property_name . ':'
+					);
+					$missing      = isset( $diff['missing'] ) ? array_merge( $missing, $diff['missing'] ) : $missing;
+					$invalid_type = isset( $diff['invalid_type'] ) ? array_merge( $invalid_type, $diff['invalid_type'] ) : $invalid_type;
+					$no_schema    = isset( $diff['no_schema'] ) ? array_merge( $no_schema, $diff['no_schema'] ) : $no_schema;
+				}
 			}
 		}
 

@@ -138,23 +138,39 @@ class ProductSchema extends AbstractSchema {
 				'items'       => [
 					'type'       => 'object',
 					'properties' => [
-						'id'   => [
+						'id'        => [
 							'description' => __( 'Image ID.', 'woo-gutenberg-products-block' ),
 							'type'        => 'integer',
 							'context'     => [ 'view', 'edit' ],
 						],
-						'src'  => [
-							'description' => __( 'Image URL.', 'woo-gutenberg-products-block' ),
+						'src'       => [
+							'description' => __( 'Full size image URL.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'format'      => 'uri',
 							'context'     => [ 'view', 'edit' ],
 						],
-						'name' => [
+						'thumbnail' => [
+							'description' => __( 'Thumbnail URL.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'format'      => 'uri',
+							'context'     => [ 'view', 'edit' ],
+						],
+						'srcset'    => [
+							'description' => __( 'Thumbnail srcset for responsive images.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+						],
+						'sizes'     => [
+							'description' => __( 'Thumbnail sizes for responsive images.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+						],
+						'name'      => [
 							'description' => __( 'Image name.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
 						],
-						'alt'  => [
+						'alt'       => [
 							'description' => __( 'Image alternative text.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
@@ -265,7 +281,7 @@ class ProductSchema extends AbstractSchema {
 		$prices['price']         = $this->prepare_money_response( $price_function( $product ), wc_get_price_decimals() );
 		$prices['regular_price'] = $this->prepare_money_response( $price_function( $product, [ 'price' => $product->get_regular_price() ] ), wc_get_price_decimals() );
 		$prices['sale_price']    = $this->prepare_money_response( $price_function( $product, [ 'price' => $product->get_sale_price() ] ), wc_get_price_decimals() );
-		$prices['price_range']   = $this->get_price_range( $product );
+		$prices['price_range']   = (object) $this->get_price_range( $product );
 
 		return $prices;
 	}

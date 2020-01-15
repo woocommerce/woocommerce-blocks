@@ -63,7 +63,7 @@ class Cart extends TestCase {
 	 */
 	public function test_get_item() {
 		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/cart' ) );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 3, $data['items_count'] );

@@ -79,7 +79,7 @@ class CartOrder extends TestCase {
 			]
 		);
 		$response = $this->server->dispatch( $request );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 201, $response->get_status() );
 
@@ -141,20 +141,21 @@ class CartOrder extends TestCase {
 		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\CartOrder();
 		$order      = OrderHelper::create_order();
 		$response   = $controller->prepare_item_for_response( $order, [] );
+		$data       = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
-		$this->assertArrayHasKey( 'id', $response->get_data() );
-		$this->assertArrayHasKey( 'number', $response->get_data() );
-		$this->assertArrayHasKey( 'status', $response->get_data() );
-		$this->assertArrayHasKey( 'order_key', $response->get_data() );
-		$this->assertArrayHasKey( 'created_via', $response->get_data() );
-		$this->assertArrayHasKey( 'prices_include_tax', $response->get_data() );
-		$this->assertArrayHasKey( 'events', $response->get_data() );
-		$this->assertArrayHasKey( 'customer', $response->get_data() );
-		$this->assertArrayHasKey( 'billing_address', $response->get_data() );
-		$this->assertArrayHasKey( 'shipping_address', $response->get_data() );
-		$this->assertArrayHasKey( 'customer_note', $response->get_data() );
-		$this->assertArrayHasKey( 'items', $response->get_data() );
-		$this->assertArrayHasKey( 'totals', $response->get_data() );
+		$this->assertArrayHasKey( 'id', $data );
+		$this->assertArrayHasKey( 'number', $data );
+		$this->assertArrayHasKey( 'status', $data );
+		$this->assertArrayHasKey( 'order_key', $data );
+		$this->assertArrayHasKey( 'created_via', $data );
+		$this->assertArrayHasKey( 'prices_include_tax', $data );
+		$this->assertArrayHasKey( 'events', $data );
+		$this->assertArrayHasKey( 'customer', $data );
+		$this->assertArrayHasKey( 'billing_address', $data );
+		$this->assertArrayHasKey( 'shipping_address', $data );
+		$this->assertArrayHasKey( 'customer_note', $data );
+		$this->assertArrayHasKey( 'items', $data );
+		$this->assertArrayHasKey( 'totals', $data );
 	}
 
 	/**

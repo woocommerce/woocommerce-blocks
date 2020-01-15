@@ -46,7 +46,7 @@ class ProductAttributes extends TestCase {
 	 */
 	public function test_get_item() {
 		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/products/attributes/' . $this->attributes[0]->id ) );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( $this->attributes[0]->id, $data['id'] );
@@ -62,7 +62,7 @@ class ProductAttributes extends TestCase {
 	 */
 	public function test_get_items() {
 		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/products/attributes' ) );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 2, count( $data ) );
@@ -95,13 +95,14 @@ class ProductAttributes extends TestCase {
 	public function test_prepare_item_for_response() {
 		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\ProductAttributes();
 		$response   = $controller->prepare_item_for_response( $this->attributes[0], [] );
+		$data       = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
-		$this->assertArrayHasKey( 'id', $response->get_data() );
-		$this->assertArrayHasKey( 'name', $response->get_data() );
-		$this->assertArrayHasKey( 'slug', $response->get_data() );
-		$this->assertArrayHasKey( 'type', $response->get_data() );
-		$this->assertArrayHasKey( 'order', $response->get_data() );
-		$this->assertArrayHasKey( 'has_archives', $response->get_data() );
+		$this->assertArrayHasKey( 'id', $data );
+		$this->assertArrayHasKey( 'name', $data );
+		$this->assertArrayHasKey( 'slug', $data );
+		$this->assertArrayHasKey( 'type', $data );
+		$this->assertArrayHasKey( 'order', $data );
+		$this->assertArrayHasKey( 'has_archives', $data );
 	}
 
 	/**

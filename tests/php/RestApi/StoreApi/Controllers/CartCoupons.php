@@ -48,7 +48,7 @@ class CartCoupons extends TestCase {
 	 */
 	public function test_get_items() {
 		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/cart/coupons' ) );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 1, count( $data ) );
@@ -59,7 +59,7 @@ class CartCoupons extends TestCase {
 	 */
 	public function test_get_item() {
 		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/cart/coupons/' . $this->coupon->get_code() ) );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( $this->coupon->get_code(), $data['code'] );
@@ -80,7 +80,7 @@ class CartCoupons extends TestCase {
 			)
 		);
 		$response = $this->server->dispatch( $request );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 201, $response->get_status() );
 		$this->assertEquals( $this->coupon->get_code(), $data['code'] );
@@ -99,7 +99,7 @@ class CartCoupons extends TestCase {
 			)
 		);
 		$response = $this->server->dispatch( $request );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 400, $response->get_status() );
 	}
@@ -110,20 +110,20 @@ class CartCoupons extends TestCase {
 	public function test_delete_item() {
 		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/coupons/' . $this->coupon->get_code() );
 		$response = $this->server->dispatch( $request );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 204, $response->get_status() );
 		$this->assertEmpty( $data );
 
 		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/coupons/' . $this->coupon->get_code() );
 		$response = $this->server->dispatch( $request );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 404, $response->get_status() );
 
 		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/coupons/i-do-not-exist' );
 		$response = $this->server->dispatch( $request );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 404, $response->get_status() );
 	}
@@ -134,13 +134,13 @@ class CartCoupons extends TestCase {
 	public function test_delete_items() {
 		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/coupons' );
 		$response = $this->server->dispatch( $request );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( [], $data );
 
 		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/cart/coupons' ) );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 0, count( $data ) );
@@ -163,9 +163,10 @@ class CartCoupons extends TestCase {
 	public function test_prepare_item_for_response() {
 		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\CartCoupons();
 		$response   = $controller->prepare_item_for_response( $this->coupon->get_code(), [] );
+		$data       = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
-		$this->assertArrayHasKey( 'code', $response->get_data() );
-		$this->assertArrayHasKey( 'totals', $response->get_data() );
+		$this->assertArrayHasKey( 'code', $data );
+		$this->assertArrayHasKey( 'totals', $data );
 	}
 
 	/**

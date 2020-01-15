@@ -29,7 +29,7 @@ class Customer extends TestCase {
 	 */
 	public function test_get_item() {
 		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/customer' ) );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertArrayHasKey( 'id', $data );
@@ -55,7 +55,7 @@ class Customer extends TestCase {
 			]
 		);
 		$response = $this->server->dispatch( $request );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( '123 South Street', $data['billing_address']['address_1'] );
@@ -75,7 +75,7 @@ class Customer extends TestCase {
 			]
 		);
 		$response = $this->server->dispatch( $request );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 400, $response->get_status() );
 	}
@@ -120,7 +120,7 @@ class Customer extends TestCase {
 		$customer->set_shipping_country( 'US' );
 
 		$response = $controller->prepare_item_for_response( $customer, [] );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 'Name', $data['billing_address']['first_name'] );
 		$this->assertEquals( 'Surname', $data['billing_address']['last_name'] );
@@ -169,10 +169,10 @@ class Customer extends TestCase {
 		$customer->set_shipping_country( 'US' );
 
 		$response = $controller->prepare_item_for_response( $customer, [] );
-		$schema     = $controller->get_item_schema();
-		$validate   = new ValidateSchema( $schema );
+		$schema   = $controller->get_item_schema();
+		$validate = new ValidateSchema( $schema );
 
-		$diff     = $validate->get_diff_from_object( $response->get_data() );
+		$diff = $validate->get_diff_from_object( $response->get_data() );
 		$this->assertEmpty( $diff, print_r( $diff, true ) );
 	}
 }

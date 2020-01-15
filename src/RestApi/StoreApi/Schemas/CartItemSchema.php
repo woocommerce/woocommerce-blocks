@@ -217,12 +217,12 @@ class CartItemSchema extends AbstractSchema {
 			'id'                => $product->get_id(),
 			'quantity'          => wc_stock_amount( $cart_item['quantity'] ),
 			'name'              => $product->get_title(),
-			'short_description' => $short_description,
 			'sku'               => $product->get_sku(),
+			'short_description' => $short_description,
 			'permalink'         => $product->get_permalink(),
 			'images'            => ( new ProductImages() )->images_to_array( $product ),
 			'variation'         => $this->format_variation_data( $cart_item['variation'], $product ),
-			'totals'            => array_merge(
+			'totals'            => (object) array_merge(
 				$this->get_store_currency_response(),
 				[
 					'line_subtotal'     => $this->prepare_money_response( $cart_item['line_subtotal'], wc_get_price_decimals() ),

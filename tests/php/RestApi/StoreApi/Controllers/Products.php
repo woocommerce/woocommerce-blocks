@@ -55,7 +55,7 @@ class Products extends TestCase {
 	 */
 	public function test_get_item() {
 		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/products/' . $this->products[0]->get_id() ) );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( $this->products[0]->get_id(), $data['id'] );
@@ -78,7 +78,7 @@ class Products extends TestCase {
 	 */
 	public function test_get_items() {
 		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/products' ) );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 2, count( $data ) );
@@ -129,22 +129,23 @@ class Products extends TestCase {
 	public function test_prepare_item_for_response() {
 		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\Products();
 		$response   = $controller->prepare_item_for_response( $this->products[0], [] );
+		$data       = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
-		$this->assertArrayHasKey( 'id', $response->get_data() );
-		$this->assertArrayHasKey( 'name', $response->get_data() );
-		$this->assertArrayHasKey( 'variation', $response->get_data() );
-		$this->assertArrayHasKey( 'permalink', $response->get_data() );
-		$this->assertArrayHasKey( 'description', $response->get_data() );
-		$this->assertArrayHasKey( 'on_sale', $response->get_data() );
-		$this->assertArrayHasKey( 'sku', $response->get_data() );
-		$this->assertArrayHasKey( 'prices', $response->get_data() );
-		$this->assertArrayHasKey( 'average_rating', $response->get_data() );
-		$this->assertArrayHasKey( 'review_count', $response->get_data() );
-		$this->assertArrayHasKey( 'images', $response->get_data() );
-		$this->assertArrayHasKey( 'has_options', $response->get_data() );
-		$this->assertArrayHasKey( 'is_purchasable', $response->get_data() );
-		$this->assertArrayHasKey( 'is_in_stock', $response->get_data() );
-		$this->assertArrayHasKey( 'add_to_cart', $response->get_data() );
+		$this->assertArrayHasKey( 'id', $data );
+		$this->assertArrayHasKey( 'name', $data );
+		$this->assertArrayHasKey( 'variation', $data );
+		$this->assertArrayHasKey( 'permalink', $data );
+		$this->assertArrayHasKey( 'description', $data );
+		$this->assertArrayHasKey( 'on_sale', $data );
+		$this->assertArrayHasKey( 'sku', $data );
+		$this->assertArrayHasKey( 'prices', $data );
+		$this->assertArrayHasKey( 'average_rating', $data );
+		$this->assertArrayHasKey( 'review_count', $data );
+		$this->assertArrayHasKey( 'images', $data );
+		$this->assertArrayHasKey( 'has_options', $data );
+		$this->assertArrayHasKey( 'is_purchasable', $data );
+		$this->assertArrayHasKey( 'is_in_stock', $data );
+		$this->assertArrayHasKey( 'add_to_cart', $data );
 	}
 
 	/**

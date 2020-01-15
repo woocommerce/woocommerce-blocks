@@ -75,30 +75,42 @@ class OrderItemSchema extends AbstractSchema {
 				'items'       => [
 					'type'       => 'object',
 					'properties' => [
-						'id'   => [
+						'id'        => [
 							'description' => __( 'Image ID.', 'woo-gutenberg-products-block' ),
 							'type'        => 'integer',
 							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
 						],
-						'src'  => [
-							'description' => __( 'Image URL.', 'woo-gutenberg-products-block' ),
+						'src'       => [
+							'description' => __( 'Full size image URL.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'format'      => 'uri',
 							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
 						],
-						'name' => [
+						'thumbnail' => [
+							'description' => __( 'Thumbnail URL.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'format'      => 'uri',
+							'context'     => [ 'view', 'edit' ],
+						],
+						'srcset'    => [
+							'description' => __( 'Thumbnail srcset for responsive images.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+						],
+						'sizes'     => [
+							'description' => __( 'Thumbnail sizes for responsive images.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+						],
+						'name'      => [
 							'description' => __( 'Image name.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
 						],
-						'alt'  => [
+						'alt'       => [
 							'description' => __( 'Image alternative text.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
 						],
 					],
 				],

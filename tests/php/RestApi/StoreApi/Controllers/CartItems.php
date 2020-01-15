@@ -68,7 +68,7 @@ class CartItems extends TestCase {
 	 */
 	public function test_get_items() {
 		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/cart/items' ) );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 2, count( $data ) );
@@ -79,7 +79,7 @@ class CartItems extends TestCase {
 	 */
 	public function test_get_item() {
 		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/cart/items/' . $this->keys[0] ) );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( $this->keys[0], $data['key'] );
@@ -93,7 +93,7 @@ class CartItems extends TestCase {
 
 		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/items/XXX815416f775098fe977004015c6193' );
 		$response = $this->server->dispatch( $request );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 404, $response->get_status() );
 	}
@@ -112,14 +112,14 @@ class CartItems extends TestCase {
 			)
 		);
 		$response = $this->server->dispatch( $request );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 201, $response->get_status() );
 		$this->assertEquals( $this->products[0]->get_id(), $data['id'] );
 		$this->assertEquals( 10, $data['quantity'] );
 
 		$response = $this->server->dispatch( $request );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 201, $response->get_status() );
 		$this->assertEquals( $this->products[0]->get_id(), $data['id'] );
@@ -144,7 +144,6 @@ class CartItems extends TestCase {
 			)
 		);
 		$response = $this->server->dispatch( $request );
-		$data     = $response->get_data();
 
 		$this->assertEquals( 403, $response->get_status() );
 	}
@@ -160,7 +159,7 @@ class CartItems extends TestCase {
 			)
 		);
 		$response = $this->server->dispatch( $request );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 10, $data['quantity'] );
@@ -172,14 +171,14 @@ class CartItems extends TestCase {
 	public function test_delete_item() {
 		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/items/' . $this->keys[0] );
 		$response = $this->server->dispatch( $request );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 204, $response->get_status() );
 		$this->assertEmpty( $data );
 
 		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/items/' . $this->keys[0] );
 		$response = $this->server->dispatch( $request );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 404, $response->get_status() );
 	}
@@ -190,13 +189,13 @@ class CartItems extends TestCase {
 	public function test_delete_items() {
 		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/items' );
 		$response = $this->server->dispatch( $request );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( [], $data );
 
 		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/cart/items' ) );
-		$data     = $response->get_data();
+		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 0, count( $data ) );
@@ -227,16 +226,17 @@ class CartItems extends TestCase {
 		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\CartItems();
 		$cart       = wc()->cart->get_cart();
 		$response   = $controller->prepare_item_for_response( current( $cart ), [] );
+		$data       = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
 
-		$this->assertArrayHasKey( 'key', $response->get_data() );
-		$this->assertArrayHasKey( 'id', $response->get_data() );
-		$this->assertArrayHasKey( 'quantity', $response->get_data() );
-		$this->assertArrayHasKey( 'name', $response->get_data() );
-		$this->assertArrayHasKey( 'sku', $response->get_data() );
-		$this->assertArrayHasKey( 'permalink', $response->get_data() );
-		$this->assertArrayHasKey( 'images', $response->get_data() );
-		$this->assertArrayHasKey( 'totals', $response->get_data() );
-		$this->assertArrayHasKey( 'variation', $response->get_data() );
+		$this->assertArrayHasKey( 'key', $data );
+		$this->assertArrayHasKey( 'id', $data );
+		$this->assertArrayHasKey( 'quantity', $data );
+		$this->assertArrayHasKey( 'name', $data );
+		$this->assertArrayHasKey( 'sku', $data );
+		$this->assertArrayHasKey( 'permalink', $data );
+		$this->assertArrayHasKey( 'images', $data );
+		$this->assertArrayHasKey( 'totals', $data );
+		$this->assertArrayHasKey( 'variation', $data );
 	}
 
 	/**
@@ -253,11 +253,11 @@ class CartItems extends TestCase {
 		// Simple product.
 		$response = $controller->prepare_item_for_response( current( $cart ), [] );
 		$diff     = $validate->get_diff_from_object( $response->get_data() );
-		$this->assertEquals( [ 'variation' ], $diff, print_r( $diff, true ) );
+		$this->assertEmpty( $diff, print_r( $diff, true ) );
 
 		// Variable product.
 		$response = $controller->prepare_item_for_response( end( $cart ), [] );
 		$diff     = $validate->get_diff_from_object( $response->get_data() );
-		$this->assertEquals( [ 'images' ], $diff, print_r( $diff, true ) );
+		$this->assertEmpty( $diff, print_r( $diff, true ) );
 	}
 }
