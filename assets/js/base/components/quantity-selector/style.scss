@@ -5,14 +5,14 @@
 	background: none transparent;
 
 	&:focus {
-		outline: 2px solid #d6d9dd;
+		outline: 2px solid $core-grey-dark-100;
 	}
 }
 
 .wc-block-quantity-selector {
 	display: flex;
 	min-width: 100px;
-	border: 1px solid #d6d9dd;
+	border: 1px solid $core-grey-dark-100;
 	background: #fff;
 	border-radius: 4px;
 
@@ -30,8 +30,8 @@
 		-moz-appearance: textfield;
 
 		&:focus {
-			background: lighten(#d6d9dd, 10%);
-			outline: 1px solid #d6d9dd;
+			background: $core-grey-light-200;
+			outline: 1px solid $core-grey-dark-100;
 		}
 	}
 	input::-webkit-outer-spin-button,
@@ -43,20 +43,20 @@
 		@include reset-button;
 		min-width: 30px;
 		cursor: pointer;
-		color: #000;
+		color: $core-grey-dark-700;
 		font-style: normal;
 		font-size: 1em;
 		text-align: center;
 
-		&:disabled {
-			color: #d6d9dd;
-			cursor: default;
-			@include reset-button;
-		}
 		&:hover,
 		&:focus {
 			@include reset-button;
-			color: #555;
+			color: $core-grey-dark-900;
+		}
+		&:disabled {
+			color: $core-grey-dark-100;
+			cursor: default;
+			@include reset-button;
 		}
 	}
 	.wc-block-quantity-selector__button--minus {
