@@ -97,6 +97,7 @@ class ValidateSchema {
 	 * @return boolean
 	 */
 	protected function validate_type( $type, $expected ) {
+		$type = strtolower( $type );
 		if ( is_array( $expected ) ) {
 			return in_array( $type, $expected );
 		}
