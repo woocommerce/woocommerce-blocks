@@ -89,43 +89,43 @@ class CartItemSchema extends AbstractSchema {
 				'items'       => [
 					'type'       => 'object',
 					'properties' => [
-						'id'        => array(
+						'id'        => [
 							'description' => __( 'Image ID.', 'woo-gutenberg-products-block' ),
 							'type'        => 'integer',
 							'context'     => [ 'view', 'edit' ],
-						),
-						'src'       => array(
+						],
+						'src'       => [
 							'description' => __( 'Full size image URL.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'format'      => 'uri',
 							'context'     => [ 'view', 'edit' ],
-						),
-						'thumbnail' => array(
+						],
+						'thumbnail' => [
 							'description' => __( 'Thumbnail URL.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'format'      => 'uri',
 							'context'     => [ 'view', 'edit' ],
-						),
-						'srcset'    => array(
+						],
+						'srcset'    => [
 							'description' => __( 'Thumbnail srcset for responsive images.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
-						),
-						'sizes'     => array(
+						],
+						'sizes'     => [
 							'description' => __( 'Thumbnail sizes for responsive images.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
-						),
-						'name'      => array(
+						],
+						'name'      => [
 							'description' => __( 'Image name.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
-						),
-						'alt'       => array(
+						],
+						'alt'       => [
 							'description' => __( 'Image alternative text.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
-						),
+						],
 					],
 				],
 			],
