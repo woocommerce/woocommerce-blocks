@@ -40,7 +40,7 @@ const CartEditor = ( { className, attributes, setAttributes } ) => {
 						'woo-gutenberg-products-block'
 					) }
 					help={ __(
-						'Allow customers to estimate shipping',
+						'Allow customers to estimate shipping.',
 						'woo-gutenberg-products-block'
 					) }
 					checked={ isShippingCalculatorEnabled }
@@ -56,7 +56,7 @@ const CartEditor = ( { className, attributes, setAttributes } ) => {
 						'woo-gutenberg-products-block'
 					) }
 					help={ __(
-						'Hides this shipping costs until an address is entered',
+						'Hide shipping costs until an address is entered.',
 						'woo-gutenberg-products-block'
 					) }
 					checked={ isShippingCostHidden }
