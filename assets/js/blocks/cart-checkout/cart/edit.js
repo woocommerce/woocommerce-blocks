@@ -4,7 +4,8 @@
 import { __ } from '@wordpress/i18n';
 import { BlockControls } from '@wordpress/block-editor';
 import { Disabled, Toolbar } from '@wordpress/components';
-import { useState } from '@wordpress/element';
+import { useDispatch } from '@wordpress/data';
+import { useState, useEffect } from '@wordpress/element';
 import TextToolbarButton from '@woocommerce/block-components/text-toolbar-button';
 import PropTypes from 'prop-types';
 import { withFeedbackPrompt } from '@woocommerce/block-hocs';
@@ -18,8 +19,14 @@ import EmptyCart from './empty-cart';
 /**
  * Component to handle edit mode of "Cart Block".
  */
-const CartEditor = ( { className } ) => {
+const CartEditor = ( { className, clientId } ) => {
 	const [ isFullCartMode, setFullCartMode ] = useState( true );
+
+	const { selectBlock } = useDispatch( 'core/block-editor' );
+
+	useEffect( () => {
+		selectBlock( clientId );
+	}, [ clientId ] );
 
 	const toggleFullCartMode = () => {
 		setFullCartMode( ! isFullCartMode );
