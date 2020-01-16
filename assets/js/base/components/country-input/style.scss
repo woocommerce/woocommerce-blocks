@@ -8,14 +8,16 @@
 		transform-origin: top left;
 		font-size: 16px;
 		line-height: 22px;
-		transition: all 200ms ease;
 		color: $gray-50;
 		z-index: 1;
+
+		@media screen and (prefers-reduced-motion: no-preference) {
+			transition: all 200ms ease;
+		}
 	}
 
 	&.is-active label {
 		transform: translateX(#{$gap}) translateY(#{$gap-smallest}) scale(0.75);
-		transition: all 200ms ease;
 	}
 
 	.components-custom-select-control__button {
