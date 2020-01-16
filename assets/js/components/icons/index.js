@@ -2,6 +2,7 @@
 export { default as IconAllReviews } from './all-reviews';
 export { default as IconCheckChecked } from './checkbox-checked';
 export { default as IconCheckUnchecked } from './checkbox-unchecked';
+export { default as IconDelete } from './delete';
 export { default as IconFolder } from './folder';
 export { default as IconFolderStar } from './folder-star';
 export { default as IconProductOnSale } from './product-on-sale';
