@@ -63,11 +63,11 @@ ViewSwitchControl.propTypes = {
 			name: PropTypes.string.isRequired,
 			value: PropTypes.string.isRequired,
 		} )
-	),
+	).isRequired,
 	/**
 	 * The selected view.
 	 */
-	selected: PropTypes.string,
+	selected: PropTypes.string.isRequired,
 	/**
 	 * Callback fired when the selected view changes.
 	 */
