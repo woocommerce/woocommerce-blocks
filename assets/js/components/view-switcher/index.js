@@ -16,8 +16,8 @@ import './editor.scss';
 const ViewSwitcher = ( {
 	className,
 	label = __( 'View', 'woo-gutenberg-products-block' ),
-	views = [],
-	defaultView = '',
+	views,
+	defaultView,
 	componentId,
 	render,
 } ) => {
