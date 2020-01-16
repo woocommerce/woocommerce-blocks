@@ -36,3 +36,6 @@ export const WC_BLOCKS_ASSET_URL = getSetting( 'wcBlocksAssetUrl', '' );
 export const SHIPPING_COUNTRIES = JSON.parse(
 	getSetting( 'shippingCountries', [] )
 );
+export const ALLOWED_COUNTRIES = JSON.parse(
+	getSetting( 'allowedCountries', [] )
+);
