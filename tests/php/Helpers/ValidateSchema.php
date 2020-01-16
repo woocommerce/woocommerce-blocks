@@ -48,8 +48,11 @@ class ValidateSchema {
 			return [];
 		}
 
-		$object    = (array) $object;
-		$no_schema = array_diff( array_keys( (array) $object ), array_keys( $schema ) );
+		$object          = (array) $object;
+		$no_schema_diffs = array_diff( array_keys( (array) $object ), array_keys( $schema ) );
+		foreach ( $no_schema_diffs as $no_schema_diff ) {
+			$no_schema[] = $prefix . $no_schema_diff;
+		}
 
 		foreach ( $schema as $property_name => $property_schema ) {
 			// Validate property is set in object. Avoids isset in case value is NULL.
