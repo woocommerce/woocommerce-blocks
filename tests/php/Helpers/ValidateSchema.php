@@ -95,15 +95,18 @@ class ValidateSchema {
 	/**
 	 * Validate type and return if it matches.
 	 *
-	 * @param string       $type
-	 * @param string|array $expected
+	 * @param string       $type Type to check.
+	 * @param string|array $expected Expected types.
 	 * @return boolean
 	 */
 	protected function validate_type( $type, $expected ) {
-		$type = strtolower( $type );
-		if ( is_array( $expected ) ) {
-			return in_array( $type, $expected );
+		$type     = strtolower( $type );
+		$expected = is_array( $expected ) ? $expected : [ $expected ];
+
+		if ( in_array( 'number', $expected ) ) {
+			$expected = array_merge( $expected, [ 'double', 'float', 'integer' ] );
 		}
-		return $expected === $type;
+
+		return in_array( $type, $expected, true );
 	}
 }

@@ -57,7 +57,7 @@ class CartSchema extends AbstractSchema {
 			],
 			'items_weight'   => [
 				'description' => __( 'Total weight (in grams) of all products in the cart.', 'woo-gutenberg-products-block' ),
-				'type'        => 'double',
+				'type'        => 'number',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
