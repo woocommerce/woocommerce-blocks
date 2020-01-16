@@ -48,6 +48,11 @@ table.wc-block-cart-items {
 	text-decoration: underline;
 }
 
+.wc-block-cart-item__remove-icon {
+	color: $core-grey-light-900;
+	fill: currentColor;
+}
+
 .wc-block-cart-items__header-total,
 .wc-block-cart-item__total {
 	text-align: right;
@@ -101,7 +106,6 @@ table.wc-block-cart-items {
 }
 
 .wc-block-cart-item__total {
-	vertical-align: bottom;
 	font-size: 16px;
 	line-height: 19px;
 }
@@ -167,8 +171,29 @@ table.wc-block-cart-items {
 }
 
 @include breakpoint( "<782px" ) {
+	.wc-block-cart-items td {
+		&:first-child {
+			padding-left: 0;
+		}
+		&:last-child {
+			padding-right: 0;
+		}
+	}
+
 	.wc-block-cart-item__remove-link {
 		display: none;
+	}
+
+	.wc-block-cart-item__total {
+		// We position this td cell relative so we can use position: absolute for trash icon at top.
+		position: relative;
+	}
+
+	.wc-block-cart-item__remove-icon {
+		display: inline-block;
+		position: absolute;
+		top: $gap;
+		right: 0;
 	}
 
 	.wc-block-cart__totals-title {
@@ -179,6 +204,10 @@ table.wc-block-cart-items {
 	.wc-block-cart-item__full-price {
 		// inline on mobile, so line prices are aligned vertically
 		display: inline-block;
+	}
+
+	.wc-block-cart-item__total {
+		vertical-align: bottom;
 	}
 
 	.wc-block-cart-item__discount-badge {
@@ -226,6 +255,10 @@ table.wc-block-cart-items {
 
 	.wc-block-cart-item__remove-link {
 		display: block;
+	}
+
+	.wc-block-cart-item__remove-icon {
+		display: none;
 	}
 
 	.wc-block-cart-item__total {

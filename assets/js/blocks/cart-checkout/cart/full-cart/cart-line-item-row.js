@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import QuantitySelector from '@woocommerce/base-components/quantity-selector';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import { getCurrency, formatPrice } from '@woocommerce/base-utils';
+import { IconDelete } from '@woocommerce/block-components/icons';
 
 /**
  * Return the difference between two price amounts, e.g. a discount.
@@ -132,14 +133,19 @@ const CartLineItemRow = ( { lineItem } ) => {
 				</div>
 			</td>
 			<td className="wc-block-cart-item__total">
-				{ fullPrice }
-				<div className="wc-block-cart-item__line-total">
-					<FormattedMonetaryAmount
-						currency={ currency }
-						value={ total }
-					/>
+				<div className="wc-block-cart-item__remove-icon">
+					<IconDelete />
 				</div>
-				{ discountBadge }
+				<div className="wc-block-cart-item__totals-container">
+					{ fullPrice }
+					<div className="wc-block-cart-item__line-total">
+						<FormattedMonetaryAmount
+							currency={ currency }
+							value={ total }
+						/>
+					</div>
+					{ discountBadge }
+				</div>
 			</td>
 		</tr>
 	);
