@@ -71,7 +71,9 @@ class TermSchema extends AbstractSchema {
 	public function get_item_response( $term ) {
 		return [
 			'id'          => (int) $term->term_id,
-			'name'        => $term->name,
+			// Attribute values (aka taxonomy terms) are stored in database with chars like '&' encoded.
+			// We decode them so the API response can be rendered in UI.
+			'name'        => wp_specialchars_decode( $term->name ),
 			'description' => $term->description,
 			'slug'        => $term->slug,
 			'count'       => (int) $term->count,
