@@ -34,8 +34,8 @@ export const PRODUCT_COUNT = getSetting( 'productCount', 0 );
 export const ATTRIBUTES = getSetting( 'attributes', [] );
 export const WC_BLOCKS_ASSET_URL = getSetting( 'wcBlocksAssetUrl', '' );
 export const SHIPPING_COUNTRIES = JSON.parse(
-	getSetting( 'shippingCountries', [] )
+	getSetting( 'shippingCountries', '[]' )
 );
 export const ALLOWED_COUNTRIES = JSON.parse(
-	getSetting( 'allowedCountries', [] )
+	getSetting( 'allowedCountries', '[]' )
 );
