@@ -6,13 +6,14 @@
 		position: absolute;
 		transform: translateX(#{$gap}) translateY(#{$gap-small});
 		transform-origin: top left;
+		transition: all 200ms ease;
 		font-size: 16px;
 		line-height: 22px;
 		color: $gray-50;
 		z-index: 1;
 
-		@media screen and (prefers-reduced-motion: no-preference) {
-			transition: all 200ms ease;
+		@media screen and (prefers-reduced-motion: reduce) {
+			transition: none;
 		}
 	}
 
