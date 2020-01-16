@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Disabled } from '@wordpress/components';
-import { useState } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import { withFeedbackPrompt } from '@woocommerce/block-hocs';
 import ViewSwitcher from '@woocommerce/block-components/view-switcher';
@@ -18,13 +18,10 @@ import EmptyCart from './empty-cart';
  * Component to handle edit mode of "Cart Block".
  */
 const CartEditor = ( { className } ) => {
-	const [ currentView, setCurrentView ] = useState( 'full' );
-
 	return (
 		<div className={ className }>
 			<ViewSwitcher
 				label={ __( 'Edit', 'woo-gutenberg-products-block' ) }
-				onChange={ ( view ) => setCurrentView( view ) }
 				views={ [
 					{
 						value: 'full',
@@ -38,14 +35,18 @@ const CartEditor = ( { className } ) => {
 						),
 					},
 				] }
-				selected={ currentView }
+				defaultView={ 'full' }
+				render={ ( currentView ) => (
+					<Fragment>
+						{ currentView === 'full' && (
+							<Disabled>
+								<FullCart />
+							</Disabled>
+						) }
+						<EmptyCart hidden={ currentView === 'full' } />
+					</Fragment>
+				) }
 			/>
-			{ currentView === 'full' && (
-				<Disabled>
-					<FullCart />
-				</Disabled>
-			) }
-			<EmptyCart hidden={ currentView === 'full' } />
 		</div>
 	);
 };

@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { ButtonGroup, Button } from '@wordpress/components';
+import { useState, Fragment } from '@wordpress/element';
 import withComponentId from '@woocommerce/base-hocs/with-component-id';
 
 /**
@@ -16,37 +17,41 @@ const ViewSwitcher = ( {
 	className,
 	label = __( 'View', 'woo-gutenberg-products-block' ),
 	views = [],
-	selected = '',
-	onChange = () => {},
+	defaultView = '',
 	componentId,
+	render,
 } ) => {
+	const [ currentView, setCurrentView ] = useState( defaultView );
 	const classes = classnames( className, 'wc-block-view-switch-control' );
 	const htmlId = 'wc-block-view-switch-control-' + componentId;
 
 	return (
-		<div className={ classes }>
-			<label
-				htmlFor={ htmlId }
-				className="wc-block-view-switch-control__label"
-			>
-				{ label + ': ' }
-			</label>
-			<ButtonGroup id={ htmlId }>
-				{ views.map( ( view ) => (
-					<Button
-						key={ view.value }
-						isPrimary={ selected === view.value }
-						isLarge
-						aria-pressed={ selected === view.value }
-						onClick={ () => {
-							onChange( view.value );
-						} }
-					>
-						{ view.name }
-					</Button>
-				) ) }
-			</ButtonGroup>
-		</div>
+		<Fragment>
+			<div className={ classes }>
+				<label
+					htmlFor={ htmlId }
+					className="wc-block-view-switch-control__label"
+				>
+					{ label + ': ' }
+				</label>
+				<ButtonGroup id={ htmlId }>
+					{ views.map( ( view ) => (
+						<Button
+							key={ view.value }
+							isPrimary={ currentView === view.value }
+							isLarge
+							aria-pressed={ currentView === view.value }
+							onClick={ () => {
+								setCurrentView( view.value );
+							} }
+						>
+							{ view.name }
+						</Button>
+					) ) }
+				</ButtonGroup>
+			</div>
+			{ render( currentView ) }
+		</Fragment>
 	);
 };
 
@@ -65,13 +70,13 @@ ViewSwitcher.propTypes = {
 		} )
 	).isRequired,
 	/**
-	 * The selected view.
+	 * The default selected view.
 	 */
-	selected: PropTypes.string.isRequired,
+	defaultView: PropTypes.string.isRequired,
 	/**
-	 * Callback fired when the selected view changes.
+	 * Render prop for selected views.
 	 */
-	onChange: PropTypes.func,
+	render: PropTypes.func.isRequired,
 	// from withComponentId
 	componentId: PropTypes.number.isRequired,
 };
