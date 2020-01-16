@@ -50,22 +50,24 @@ const CartEditor = ( { className, attributes, setAttributes } ) => {
 						} )
 					}
 				/>
-				<ToggleControl
-					label={ __(
-						'Hide shipping costs',
-						'woo-gutenberg-products-block'
-					) }
-					help={ __(
-						'Hide shipping costs until an address is entered.',
-						'woo-gutenberg-products-block'
-					) }
-					checked={ isShippingCostHidden }
-					onChange={ () =>
-						setAttributes( {
-							isShippingCostHidden: ! isShippingCostHidden,
-						} )
-					}
-				/>
+				{ isShippingCalculatorEnabled && (
+					<ToggleControl
+						label={ __(
+							'Hide shipping costs',
+							'woo-gutenberg-products-block'
+						) }
+						help={ __(
+							'Hide shipping costs until an address is entered.',
+							'woo-gutenberg-products-block'
+						) }
+						checked={ isShippingCostHidden }
+						onChange={ () =>
+							setAttributes( {
+								isShippingCostHidden: ! isShippingCostHidden,
+							} )
+						}
+					/>
+				) }
 			</PanelBody>
 		</InspectorControls>
 	);

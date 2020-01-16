@@ -101,7 +101,7 @@ const Cart = ( {
 				value: totalTax,
 			} );
 		}
-		if ( ! isShippingCostHidden ) {
+		if ( isShippingCalculatorEnabled ) {
 			const totalShipping = parseInt( cartTotals.total_shipping, 10 );
 			const totalShippingTax = parseInt( cartTotals.total_shipping_tax, 10 );
 			totalRowsConfig.push( {
@@ -222,10 +222,8 @@ const Cart = ( {
 							</fieldset>
 						) }
 						{ COUPONS_ENABLED && (
-							<TotalsCouponCodeInput
-								onSubmit={ onActivateCoupon }
-							/>
-						) }
+						<TotalsCouponCodeInput onSubmit={ onActivateCoupon } />
+					) }
 						<TotalsItem
 							className="wc-block-cart__totals-footer"
 							currency={ totalsCurrency }
@@ -234,7 +232,7 @@ const Cart = ( {
 								'woo-gutenberg-products-block'
 							) }
 							value={ parseInt( fetchedCartTotals.total_price, 10 ) }
-						/>
+					/>
 						<CheckoutButton />
 					</CardBody>
 				</Card>
