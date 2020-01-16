@@ -9,10 +9,12 @@
 	float: right;
 }
 
+table.wc-block-cart-items,
 table.wc-block-cart-items th,
 table.wc-block-cart-items td {
 	// Override Storefront theme gray table background.
 	background: none !important;
+	border: 0;
 }
 
 table.wc-block-cart-items th {
@@ -113,9 +115,6 @@ table.wc-block-cart-items td:last-child {
 
 .wc-block-cart-item__quantity {
 	display: none;
-}
-.wc-block-cart-item__quantity-stacked {
-	display: block;
 }
 
 .wc-block-cart-item__total {
@@ -225,6 +224,27 @@ table.wc-block-cart-items td:last-child {
 
 	.wc-block-cart-item__discount-badge {
 		display: none;
+	}
+
+	table.wc-block-cart-items {
+		td {
+			padding: 16px 0;
+		}
+		.wc-block-cart-item__product {
+			width: 70%;
+			box-sizing: border-box;
+
+			.wc-block-cart-item__product-wrapper {
+				img {
+					width: 100px;
+				}
+			}
+		}
+		.wc-block-cart-item__total {
+			width: 30%;
+			padding-left: 16px;
+			box-sizing: border-box;
+		}
 	}
 }
 
