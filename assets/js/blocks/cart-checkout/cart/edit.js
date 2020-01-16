@@ -6,7 +6,7 @@ import { Disabled } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import { withFeedbackPrompt } from '@woocommerce/block-hocs';
-import ViewSwitchControl from '@woocommerce/block-components/view-switch-control';
+import ViewSwitcher from '@woocommerce/block-components/view-switcher';
 
 /**
  * Internal dependencies
@@ -22,7 +22,7 @@ const CartEditor = ( { className } ) => {
 
 	return (
 		<div className={ className }>
-			<ViewSwitchControl
+			<ViewSwitcher
 				label={ __( 'Edit', 'woo-gutenberg-products-block' ) }
 				onChange={ ( view ) => setCurrentView( view ) }
 				views={ [

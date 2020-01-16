@@ -12,7 +12,7 @@ import withComponentId from '@woocommerce/base-hocs/with-component-id';
  */
 import './editor.scss';
 
-const ViewSwitchControl = ( {
+const ViewSwitcher = ( {
 	className,
 	label = __( 'View', 'woo-gutenberg-products-block' ),
 	views = [],
@@ -50,7 +50,7 @@ const ViewSwitchControl = ( {
 	);
 };
 
-ViewSwitchControl.propTypes = {
+ViewSwitcher.propTypes = {
 	/**
 	 * Custom class name to add to component.
 	 */
@@ -76,4 +76,4 @@ ViewSwitchControl.propTypes = {
 	componentId: PropTypes.number.isRequired,
 };
 
-export default withComponentId( ViewSwitchControl );
+export default withComponentId( ViewSwitcher );
