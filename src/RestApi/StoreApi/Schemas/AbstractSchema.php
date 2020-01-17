@@ -190,6 +190,6 @@ abstract class AbstractSchema {
 		if ( is_array( $response ) ) {
 			return array_map( [ $this, 'prepare_html_response' ], $response );
 		}
-		return wp_kses_post( trim( convert_chars( wptexturize( $response ) ) ) );
+		return is_scalar( $response ) ? wp_kses_post( trim( convert_chars( wptexturize( $response ) ) ) ) : $response;
 	}
 }
