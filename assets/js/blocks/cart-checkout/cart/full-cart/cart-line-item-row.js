@@ -136,16 +136,14 @@ const CartLineItemRow = ( { lineItem } ) => {
 				<div className="wc-block-cart-item__remove-icon">
 					<IconTrash />
 				</div>
-				<div className="wc-block-cart-item__totals-container">
-					{ fullPrice }
-					<div className="wc-block-cart-item__line-total">
-						<FormattedMonetaryAmount
-							currency={ currency }
-							value={ total }
-						/>
-					</div>
-					{ discountBadge }
+				{ fullPrice }
+				<div className="wc-block-cart-item__line-total">
+					<FormattedMonetaryAmount
+						currency={ currency }
+						value={ total }
+					/>
 				</div>
+				{ discountBadge }
 			</td>
 		</tr>
 	);
