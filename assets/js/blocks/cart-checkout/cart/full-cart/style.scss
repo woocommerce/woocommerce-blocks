@@ -28,6 +28,15 @@ table.wc-block-cart-items {
 	border-bottom: 1px solid $core-grey-light-600;
 }
 
+table.wc-block-cart-items th:first-child,
+table.wc-block-cart-items td:first-child {
+	padding-left: 0;
+}
+table.wc-block-cart-items th:last-child,
+table.wc-block-cart-items td:last-child {
+	padding-right: 0;
+}
+
 .wc-block-cart-items__header {
 	display: none;
 	text-transform: uppercase;
