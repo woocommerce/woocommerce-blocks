@@ -218,6 +218,10 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 
 	const onChange = useCallback(
 		( selected ) => {
+			if ( ! selected || ! selected.length ) {
+				return;
+			}
+
 			const selectedId = selected[ 0 ].id;
 			const productAttribute = find( ATTRIBUTES, [
 				'attribute_id',
