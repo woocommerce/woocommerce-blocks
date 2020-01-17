@@ -301,38 +301,4 @@ class CartItemSchema extends AbstractSchema {
 
 		return $return;
 	}
-
-	/**
-	 * Get product attribute taxonomy name.
-	 *
-	 * @param string      $slug   Taxonomy name.
-	 * @param \WC_Product $object Product data.
-	 * @return string
-	 */
-	protected function get_attribute_taxonomy_name( $slug, $object ) {
-		// Format slug so it matches attributes of the product.
-		$slug       = wc_attribute_taxonomy_slug( $slug );
-		$attributes = $object->get_attributes();
-		$attribute  = false;
-
-		// pa_ attributes.
-		if ( isset( $attributes[ wc_attribute_taxonomy_name( $slug ) ] ) ) {
-			$attribute = $attributes[ wc_attribute_taxonomy_name( $slug ) ];
-		} elseif ( isset( $attributes[ $slug ] ) ) {
-			$attribute = $attributes[ $slug ];
-		}
-
-		if ( ! $attribute ) {
-			return $slug;
-		}
-
-		// Taxonomy attribute name.
-		if ( $attribute->is_taxonomy() ) {
-			$taxonomy = $attribute->get_taxonomy_object();
-			return $taxonomy->attribute_label;
-		}
-
-		// Custom product attribute name.
-		return $attribute->get_name();
-	}
 }
