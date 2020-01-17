@@ -118,15 +118,13 @@ const CartLineItemRow = ( { lineItem } ) => {
 				</div>
 			</td>
 			<td className="wc-block-cart-item__quantity">
-				<div>
-					{ quantitySelector() }
-					<button className="wc-block-cart-item__remove-link">
-						{ __( 'Remove item', 'woo-gutenberg-products-block' ) }
-					</button>
-					<button className="wc-block-cart-item__remove-icon">
-						<IconTrash />
-					</button>
-				</div>
+				{ quantitySelector() }
+				<button className="wc-block-cart-item__remove-link">
+					{ __( 'Remove item', 'woo-gutenberg-products-block' ) }
+				</button>
+				<button className="wc-block-cart-item__remove-icon">
+					<IconTrash />
+				</button>
 			</td>
 			<td className="wc-block-cart-item__total">
 				{ fullPrice }
