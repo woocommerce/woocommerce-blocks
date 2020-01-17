@@ -39,6 +39,8 @@ table.wc-block-cart-items {
 }
 
 .wc-block-cart-item__remove-link {
+	@include link-button;
+
 	color: $core-grey-dark-400;
 	font-size: 14px;
 	line-height: 12px;
@@ -49,6 +51,8 @@ table.wc-block-cart-items {
 }
 
 .wc-block-cart-item__remove-icon {
+	@include link-button;
+
 	color: $core-grey-dark-400;
 	fill: currentColor;
 }
