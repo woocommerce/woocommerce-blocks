@@ -44,10 +44,8 @@ table.wc-block-cart-items {
 		}
 	}
 	.wc-block-cart-items__row {
-		.wc-block-cart-item__image {
-			img {
-				width: 100%;
-			}
+		.wc-block-cart-item__image img {
+			width: 100%;
 		}
 		.wc-block-cart-item__product {
 			.wc-block-cart-item__product-name {
@@ -189,6 +187,7 @@ table.wc-block-cart-items {
 		}
 		.wc-block-cart-items__row {
 			display: grid;
+			grid-template-columns: 80px 132px;
 			border-top: 1px solid $core-grey-light-600;
 			padding: $gap 0;
 			position: relative;
@@ -196,22 +195,18 @@ table.wc-block-cart-items {
 			.wc-block-cart-item__image {
 				grid-column-start: 1;
 				grid-row-start: 1;
-				width: auto;
-				max-width: 100px;
 				padding-right: $gap;
 			}
 			.wc-block-cart-item__product {
 				grid-column-start: 2;
 				grid-column-end: 4;
 				grid-row-start: 1;
-				width: auto;
+				justify-self: stretch;
 				padding-bottom: $gap;
 			}
 			.wc-block-cart-item__quantity {
 				grid-column-start: 2;
 				grid-row-start: 2;
-				width: auto;
-				max-width: 132px;
 				vertical-align: bottom;
 				padding-right: $gap;
 
@@ -225,7 +220,6 @@ table.wc-block-cart-items {
 			.wc-block-cart-item__total {
 				grid-column-start: 3;
 				grid-row-start: 2;
-				width: auto;
 				align-self: center;
 
 				.wc-block-cart-item__discount-badge {
