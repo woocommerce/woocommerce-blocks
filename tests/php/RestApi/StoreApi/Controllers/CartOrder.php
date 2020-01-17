@@ -79,7 +79,7 @@ class CartOrder extends TestCase {
 			]
 		);
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 201, $response->get_status() );
 
@@ -97,16 +97,16 @@ class CartOrder extends TestCase {
 		$this->assertArrayHasKey( 'items', $data );
 		$this->assertArrayHasKey( 'totals', $data );
 
-		$this->assertEquals( 'Margaret', $data['billing_address']['first_name'] );
-		$this->assertEquals( 'Thatchcroft', $data['billing_address']['last_name'] );
-		$this->assertEquals( '123 South Street', $data['billing_address']['address_1'] );
-		$this->assertEquals( 'Apt 1', $data['billing_address']['address_2'] );
-		$this->assertEquals( 'Philadelphia', $data['billing_address']['city'] );
-		$this->assertEquals( 'PA', $data['billing_address']['state'] );
-		$this->assertEquals( '19123', $data['billing_address']['postcode'] );
-		$this->assertEquals( 'US', $data['billing_address']['country'] );
-		$this->assertEquals( 'test@test.com', $data['billing_address']['email'] );
-		$this->assertEquals( '', $data['billing_address']['phone'] );
+		$this->assertEquals( 'Margaret', $data['billing_address']->first_name );
+		$this->assertEquals( 'Thatchcroft', $data['billing_address']->last_name );
+		$this->assertEquals( '123 South Street', $data['billing_address']->address_1 );
+		$this->assertEquals( 'Apt 1', $data['billing_address']->address_2 );
+		$this->assertEquals( 'Philadelphia', $data['billing_address']->city );
+		$this->assertEquals( 'PA', $data['billing_address']->state );
+		$this->assertEquals( '19123', $data['billing_address']->postcode );
+		$this->assertEquals( 'US', $data['billing_address']->country );
+		$this->assertEquals( 'test@test.com', $data['billing_address']->email );
+		$this->assertEquals( '', $data['billing_address']->phone );
 
 		$this->assertEquals( 'checkout-draft', $data['status'] );
 		$this->assertEquals( 2, count( $data['items'] ) );
@@ -141,7 +141,7 @@ class CartOrder extends TestCase {
 		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\CartOrder();
 		$order      = OrderHelper::create_order();
 		$response   = $controller->prepare_item_for_response( $order, [] );
-		$data       = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data       = $response->get_data();
 
 		$this->assertArrayHasKey( 'id', $data );
 		$this->assertArrayHasKey( 'number', $data );

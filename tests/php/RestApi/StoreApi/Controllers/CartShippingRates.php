@@ -56,7 +56,7 @@ class CartShippingRates extends TestCase {
 		$request = new WP_REST_Request( 'GET', '/wc/store/cart/shipping-rates' );
 		$request->set_param( 'country', 'US' );
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 1, count( $data ) );
@@ -65,12 +65,12 @@ class CartShippingRates extends TestCase {
 		$this->assertArrayHasKey( 'items', $data[0] );
 		$this->assertArrayHasKey( 'shipping_rates', $data[0] );
 
-		$this->assertEquals( null, $data[0]['destination']['address_1'] );
-		$this->assertEquals( null, $data[0]['destination']['address_2'] );
-		$this->assertEquals( null, $data[0]['destination']['city'] );
-		$this->assertEquals( null, $data[0]['destination']['state'] );
-		$this->assertEquals( null, $data[0]['destination']['postcode'] );
-		$this->assertEquals( 'US', $data[0]['destination']['country'] );
+		$this->assertEquals( null, $data[0]['destination']->address_1 );
+		$this->assertEquals( null, $data[0]['destination']->address_2 );
+		$this->assertEquals( null, $data[0]['destination']->city );
+		$this->assertEquals( null, $data[0]['destination']->state );
+		$this->assertEquals( null, $data[0]['destination']->postcode );
+		$this->assertEquals( 'US', $data[0]['destination']->country );
 	}
 
 	/**
@@ -95,22 +95,22 @@ class CartShippingRates extends TestCase {
 		$request->set_param( 'postcode', '90210' );
 		$request->set_param( 'country', 'US' );
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
-		$this->assertEquals( 'Test address 1', $data[0]['destination']['address_1'] );
-		$this->assertEquals( 'Test address 2', $data[0]['destination']['address_2'] );
-		$this->assertEquals( 'Test City', $data[0]['destination']['city'] );
-		$this->assertEquals( 'AL', $data[0]['destination']['state'] );
-		$this->assertEquals( '90210', $data[0]['destination']['postcode'] );
-		$this->assertEquals( 'US', $data[0]['destination']['country'] );
+		$this->assertEquals( 'Test address 1', $data[0]['destination']->address_1 );
+		$this->assertEquals( 'Test address 2', $data[0]['destination']->address_2 );
+		$this->assertEquals( 'Test City', $data[0]['destination']->city );
+		$this->assertEquals( 'AL', $data[0]['destination']->state );
+		$this->assertEquals( '90210', $data[0]['destination']->postcode );
+		$this->assertEquals( 'US', $data[0]['destination']->country );
 
 		// US address with invalid state.
 		$request = new WP_REST_Request( 'GET', '/wc/store/cart/shipping-rates' );
 		$request->set_param( 'state', 'ZZZZZZZZ' );
 		$request->set_param( 'country', 'US' );
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 400, $response->get_status() );
 
@@ -119,11 +119,11 @@ class CartShippingRates extends TestCase {
 		$request->set_param( 'state', 'Alabama' );
 		$request->set_param( 'country', 'US' );
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
-		$this->assertEquals( 'AL', $data[0]['destination']['state'] );
-		$this->assertEquals( 'US', $data[0]['destination']['country'] );
+		$this->assertEquals( 'AL', $data[0]['destination']->state );
+		$this->assertEquals( 'US', $data[0]['destination']->country );
 	}
 
 	/**
@@ -153,7 +153,7 @@ class CartShippingRates extends TestCase {
 		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\CartShippingRates();
 		$packages   = wc()->shipping->calculate_shipping( wc()->cart->get_shipping_packages() );
 		$response   = $controller->prepare_item_for_response( current( $packages ), [] );
-		$data       = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data       = $response->get_data();
 
 		$this->assertArrayHasKey( 'destination', $data );
 		$this->assertArrayHasKey( 'items', $data );

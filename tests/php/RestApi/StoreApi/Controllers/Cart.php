@@ -63,7 +63,7 @@ class Cart extends TestCase {
 	 */
 	public function test_get_item() {
 		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/cart' ) );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 3, $data['items_count'] );
@@ -71,18 +71,18 @@ class Cart extends TestCase {
 		$this->assertEquals( false, $data['needs_shipping'] );
 		$this->assertEquals( '30', $data['items_weight'] );
 
-		$this->assertEquals( 'GBP', $data['totals']['currency_code'] );
-		$this->assertEquals( 2, $data['totals']['currency_minor_unit'] );
-		$this->assertEquals( '3000', $data['totals']['total_items'] );
-		$this->assertEquals( '0', $data['totals']['total_items_tax'] );
-		$this->assertEquals( '0', $data['totals']['total_fees'] );
-		$this->assertEquals( '0', $data['totals']['total_fees_tax'] );
-		$this->assertEquals( '100', $data['totals']['total_discount'] );
-		$this->assertEquals( '0', $data['totals']['total_discount_tax'] );
-		$this->assertEquals( '0', $data['totals']['total_shipping'] );
-		$this->assertEquals( '0', $data['totals']['total_shipping_tax'] );
-		$this->assertEquals( '0', $data['totals']['total_tax'] );
-		$this->assertEquals( '2900', $data['totals']['total_price'] );
+		$this->assertEquals( 'GBP', $data['totals']->currency_code );
+		$this->assertEquals( 2, $data['totals']->currency_minor_unit );
+		$this->assertEquals( '3000', $data['totals']->total_items );
+		$this->assertEquals( '0', $data['totals']->total_items_tax );
+		$this->assertEquals( '0', $data['totals']->total_fees );
+		$this->assertEquals( '0', $data['totals']->total_fees_tax );
+		$this->assertEquals( '100', $data['totals']->total_discount );
+		$this->assertEquals( '0', $data['totals']->total_discount_tax );
+		$this->assertEquals( '0', $data['totals']->total_shipping );
+		$this->assertEquals( '0', $data['totals']->total_shipping_tax );
+		$this->assertEquals( '0', $data['totals']->total_tax );
+		$this->assertEquals( '2900', $data['totals']->total_price );
 	}
 
 	/**
@@ -106,7 +106,7 @@ class Cart extends TestCase {
 		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\Cart();
 		$cart       = wc()->cart;
 		$response   = $controller->prepare_item_for_response( $cart, [] );
-		$data       = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data       = $response->get_data();
 
 		$this->assertArrayHasKey( 'items_count', $data );
 		$this->assertArrayHasKey( 'items', $data );

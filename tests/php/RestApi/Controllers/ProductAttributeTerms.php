@@ -60,7 +60,7 @@ class ProductAttributeTerms extends WC_REST_Unit_Test_Case {
 		$request = new WP_REST_Request( 'GET', $this->endpoint . '/products/attributes/' . $this->attr_color['attribute_id'] . '/terms' );
 
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 3, count( $data ) );
 		$term = $data[0];
@@ -106,7 +106,7 @@ class ProductAttributeTerms extends WC_REST_Unit_Test_Case {
 		$request = new WP_REST_Request( 'GET', $this->endpoint . '/products/attributes/' . $this->attr_size['attribute_id'] . '/terms' );
 
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 4, count( $data ) );
 	}

@@ -80,7 +80,7 @@ class ProductCollectionData extends TestCase {
 	 */
 	public function test_get_items() {
 		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/products/collection-data' ) );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( null, $data['price_range'] );
@@ -95,12 +95,12 @@ class ProductCollectionData extends TestCase {
 		$request = new WP_REST_Request( 'GET', '/wc/store/products/collection-data' );
 		$request->set_param( 'calculate_price_range', true );
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
-		$this->assertEquals( 2, $data['price_range']['currency_minor_unit'] );
-		$this->assertEquals( '1000', $data['price_range']['min_price'] );
-		$this->assertEquals( '10000', $data['price_range']['max_price'] );
+		$this->assertEquals( 2, $data['price_range']->currency_minor_unit );
+		$this->assertEquals( '1000', $data['price_range']->min_price );
+		$this->assertEquals( '10000', $data['price_range']->max_price );
 		$this->assertEquals( null, $data['attribute_counts'] );
 		$this->assertEquals( null, $data['rating_counts'] );
 	}
@@ -122,14 +122,14 @@ class ProductCollectionData extends TestCase {
 			]
 		);
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( null, $data['price_range'] );
 		$this->assertEquals( null, $data['rating_counts'] );
 
-		$this->assertArrayHasKey( 'term', $data['attribute_counts'][0] );
-		$this->assertArrayHasKey( 'count', $data['attribute_counts'][0] );
+		$this->assertObjectHasAttribute( 'term', $data['attribute_counts'][0] );
+		$this->assertObjectHasAttribute( 'count', $data['attribute_counts'][0] );
 	}
 
 	/**
@@ -139,18 +139,18 @@ class ProductCollectionData extends TestCase {
 		$request = new WP_REST_Request( 'GET', '/wc/store/products/collection-data' );
 		$request->set_param( 'calculate_rating_counts', true );
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( null, $data['price_range'] );
 		$this->assertEquals( null, $data['attribute_counts'] );
 		$this->assertEquals(
 			[
-				[
+				(object) [
 					'rating' => 4,
 					'count'  => 1,
 				],
-				[
+				(object) [
 					'rating' => 5,
 					'count'  => 1,
 				],

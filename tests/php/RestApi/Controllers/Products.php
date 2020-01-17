@@ -106,7 +106,7 @@ class Products extends WC_REST_Unit_Test_Case {
 		sleep( 1 ); // So both products have different timestamps.
 		$product  = ProductHelper::create_simple_product();
 		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/blocks/products' ) );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 6, count( $data ) );
@@ -159,7 +159,7 @@ class Products extends WC_REST_Unit_Test_Case {
 		$request->set_param( 'orderby', 'price' );
 		$request->set_param( 'order', 'asc' );
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 6, count( $data ) );
@@ -201,7 +201,7 @@ class Products extends WC_REST_Unit_Test_Case {
 		$request      = new WP_REST_REQUEST( 'GET', '/wc/blocks/products' );
 		$request->set_query_params( $query_params );
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 5, count( $data ) );
@@ -215,7 +215,7 @@ class Products extends WC_REST_Unit_Test_Case {
 		$request      = new WP_REST_REQUEST( 'GET', '/wc/blocks/products' );
 		$request->set_query_params( $query_params );
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 6, count( $data ) );
@@ -229,7 +229,7 @@ class Products extends WC_REST_Unit_Test_Case {
 		$request      = new WP_REST_REQUEST( 'GET', '/wc/blocks/products' );
 		$request->set_query_params( $query_params );
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 6, count( $data ) );
@@ -241,7 +241,7 @@ class Products extends WC_REST_Unit_Test_Case {
 		$request      = new WP_REST_REQUEST( 'GET', '/wc/blocks/products' );
 		$request->set_query_params( $query_params );
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 1, count( $data ) );
@@ -263,7 +263,7 @@ class Products extends WC_REST_Unit_Test_Case {
 		$request->set_param( 'category_operator', 'in' );
 
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 3, count( $data ) );
@@ -284,7 +284,7 @@ class Products extends WC_REST_Unit_Test_Case {
 		$request->set_param( 'category_operator', 'and' );
 
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 1, count( $data ) );
@@ -305,7 +305,7 @@ class Products extends WC_REST_Unit_Test_Case {
 		$request->set_param( 'category_operator', 'and' );
 
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 1, count( $data ) );

@@ -60,7 +60,7 @@ class ProductAttributes extends WC_REST_Unit_Test_Case {
 		$request = new WP_REST_Request( 'GET', $this->endpoint . '/products/attributes' );
 
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 2, count( $data ) );
 		$attribute = $data[0];
@@ -105,7 +105,7 @@ class ProductAttributes extends WC_REST_Unit_Test_Case {
 		$request = new WP_REST_Request( 'GET', $this->endpoint . '/products/attributes/' . $this->attr_size['attribute_id'] );
 
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( $this->attr_size['attribute_id'], $data['id'] );
 		$this->assertEquals( $this->attr_size['attribute_name'], $data['name'] );

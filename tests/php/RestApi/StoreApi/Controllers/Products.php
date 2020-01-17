@@ -55,21 +55,21 @@ class Products extends TestCase {
 	 */
 	public function test_get_item() {
 		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/products/' . $this->products[0]->get_id() ) );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( $this->products[0]->get_id(), $data['id'] );
 		$this->assertEquals( $this->products[0]->get_title(), $data['name'] );
 		$this->assertEquals( $this->products[0]->get_permalink(), $data['permalink'] );
 		$this->assertEquals( $this->products[0]->get_sku(), $data['sku'] );
-		$this->assertEquals( $this->products[0]->get_price(), $data['prices']['price'] / ( 10 ** $data['prices']['currency_minor_unit'] ) );
+		$this->assertEquals( $this->products[0]->get_price(), $data['prices']->price / ( 10 ** $data['prices']->currency_minor_unit ) );
 		$this->assertEquals( $this->products[0]->get_average_rating(), $data['average_rating'] );
 		$this->assertEquals( $this->products[0]->get_review_count(), $data['review_count'] );
 		$this->assertEquals( $this->products[0]->has_options(), $data['has_options'] );
 		$this->assertEquals( $this->products[0]->is_purchasable(), $data['is_purchasable'] );
 		$this->assertEquals( $this->products[0]->is_in_stock(), $data['is_in_stock'] );
-		$this->assertEquals( $this->products[0]->add_to_cart_text(), $data['add_to_cart']['text'] );
-		$this->assertEquals( $this->products[0]->add_to_cart_description(), $data['add_to_cart']['description'] );
+		$this->assertEquals( $this->products[0]->add_to_cart_text(), $data['add_to_cart']->text );
+		$this->assertEquals( $this->products[0]->add_to_cart_description(), $data['add_to_cart']->description );
 		$this->assertEquals( $this->products[0]->is_on_sale(), $data['on_sale'] );
 	}
 
@@ -78,7 +78,7 @@ class Products extends TestCase {
 	 */
 	public function test_get_items() {
 		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/products' ) );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 2, count( $data ) );
@@ -129,7 +129,7 @@ class Products extends TestCase {
 	public function test_prepare_item_for_response() {
 		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\Products();
 		$response   = $controller->prepare_item_for_response( $this->products[0], [] );
-		$data       = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data       = $response->get_data();
 
 		$this->assertArrayHasKey( 'id', $data );
 		$this->assertArrayHasKey( 'name', $data );

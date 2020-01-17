@@ -53,7 +53,7 @@ class ProductAttributeTerms extends TestCase {
 		$request = new WP_REST_Request( 'GET', '/wc/store/products/attributes/' . $this->attributes[0]['attribute_id'] . '/terms' );
 		$request->set_param( 'hide_empty', false );
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 3, count( $data ) );
@@ -84,7 +84,7 @@ class ProductAttributeTerms extends TestCase {
 	public function test_prepare_item_for_response() {
 		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\ProductAttributeTerms();
 		$response   = $controller->prepare_item_for_response( get_term_by( 'name', 'test', 'pa_size' ), [] );
-		$data       = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data       = $response->get_data();
 
 		$this->assertArrayHasKey( 'id', $data );
 		$this->assertEquals( 'test', $data['name'] );

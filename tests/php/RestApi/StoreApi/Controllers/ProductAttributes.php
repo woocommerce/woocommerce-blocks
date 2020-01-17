@@ -46,7 +46,7 @@ class ProductAttributes extends TestCase {
 	 */
 	public function test_get_item() {
 		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/products/attributes/' . $this->attributes[0]->id ) );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( $this->attributes[0]->id, $data['id'] );
@@ -62,7 +62,7 @@ class ProductAttributes extends TestCase {
 	 */
 	public function test_get_items() {
 		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/products/attributes' ) );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 2, count( $data ) );
@@ -95,7 +95,7 @@ class ProductAttributes extends TestCase {
 	public function test_prepare_item_for_response() {
 		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\ProductAttributes();
 		$response   = $controller->prepare_item_for_response( $this->attributes[0], [] );
-		$data       = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data       = $response->get_data();
 
 		$this->assertArrayHasKey( 'id', $data );
 		$this->assertArrayHasKey( 'name', $data );

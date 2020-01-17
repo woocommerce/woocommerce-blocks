@@ -80,7 +80,7 @@ class ProductCategories extends WC_REST_Unit_Test_Case {
 		$request = new WP_REST_Request( 'GET', $this->endpoint . '/products/categories' );
 
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 4, count( $data ) ); // Three created and `uncategorized`.
 	}
@@ -120,7 +120,7 @@ class ProductCategories extends WC_REST_Unit_Test_Case {
 		$request = new WP_REST_Request( 'GET', $this->endpoint . '/products/categories/' . $this->categories['parent']['term_id'] );
 
 		$response = $this->server->dispatch( $request );
-		$data     = json_decode( wp_json_encode( $response->get_data() ), true ); // Converts objects to arrays.
+		$data     = $response->get_data();
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( $data['name'], 'Parent Category' );
 		$this->assertEquals( $data['parent'], 0 );
