@@ -1,3 +1,60 @@
+.wc-block-cart {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0 (-$gap) $gap;
+
+	.wc-block-cart__main {
+		margin: 0 $gap;
+		flex: 1 0 500px;
+	}
+	.wc-block-cart__sidebar {
+		flex: 1 1 240px;
+		margin: 0 $gap;
+		border: 1px solid $core-grey-light-600;
+		border-width: 1px 0;
+	}
+	.wc-block-cart__item-count {
+		float: right;
+	}
+	.wc-block-cart__totals-footer {
+		color: #000;
+		font-size: 1.25em;
+
+		> .wc-block-totals-table-item__label {
+			font-weight: normal;
+		}
+	}
+	// Added extra class and label for specificity.
+	fieldset.wc-block-cart__shipping-options-fieldset {
+		background-color: transparent;
+		margin: 0;
+		padding: 0;
+	}
+	.wc-block-cart__shipping-options {
+		.wc-block-radio-control__label {
+			flex-basis: 100%;
+			line-height: 16px;
+		}
+
+		.wc-block-radio-control__description {
+			flex-basis: 100%;
+		}
+
+		.wc-block-radio-control__option {
+			padding-left: $gap-large;
+
+			&:last-child {
+				border-bottom: none;
+			}
+		}
+
+		.wc-block-radio-control__input {
+			left: 0;
+			top: $gap;
+		}
+	}
+}
+
 table.wc-block-cart-items,
 table.wc-block-cart-items th,
 table.wc-block-cart-items td {
@@ -34,12 +91,13 @@ table.wc-block-cart-items {
 		}
 		.wc-block-cart-items__header-product {
 			visibility: hidden;
+			min-width: 300px;
 		}
 		.wc-block-cart-items__header-quantity {
-			width: 132px;
+			width: 116px;
 		}
 		.wc-block-cart-items__header-total {
-			width: 132px;
+			width: 100px;
 			text-align: right;
 		}
 	}
@@ -76,9 +134,11 @@ table.wc-block-cart-items {
 				@include link-button;
 
 				color: $core-grey-dark-400;
-				font-size: 14px;
+				font-size: 12px;
 				line-height: 12px;
 				margin-top: 0.5em;
+				text-transform: none;
+				white-space: nowrap;
 				// Temporary - this is not yet a link or "link button".
 				// May not be needed when remove is hooked up to API properly.
 				text-decoration: underline;
@@ -123,57 +183,20 @@ table.wc-block-cart-items {
 	}
 }
 
-.wc-block-cart__sidebar {
-	border: 1px solid $core-grey-light-600;
-	border-width: 1px 0;
-	min-width: 15rem;
-	padding-bottom: $gap-largest;
-}
-.wc-block-cart__item-count {
-	float: right;
-}
-.wc-block-cart__totals-footer {
-	color: #000;
-	font-size: 1.25em;
-
-	> .wc-block-totals-table-item__label {
-		font-weight: normal;
-	}
-}
-
-// Added extra class and label for specificity.
-.wc-block-cart fieldset.wc-block-cart__shipping-options-fieldset {
-	background-color: transparent;
-	margin: 0;
-	padding: 0;
-}
-
-.wc-block-cart__shipping-options {
-	.wc-block-radio-control__label {
-		flex-basis: 100%;
-		line-height: 16px;
-	}
-
-	.wc-block-radio-control__description {
-		flex-basis: 100%;
-	}
-
-	.wc-block-radio-control__option {
-		padding-left: $gap-large;
-
-		&:last-child {
-			border-bottom: none;
-		}
-	}
-
-	.wc-block-radio-control__input {
-		left: 0;
-		top: $gap;
-	}
-}
-
 // Mobile styles.
 @include breakpoint( "<782px" ) {
+	.wc-block-cart {
+		display: block;
+		margin: 0 0 $gap;
+		.wc-block-cart__main {
+			margin: 0;
+			flex: none;
+		}
+		.wc-block-cart__sidebar {
+			margin: 0;
+			flex: none;
+		}
+	}
 	table.wc-block-cart-items {
 		td {
 			padding: 0;
@@ -227,22 +250,5 @@ table.wc-block-cart-items {
 				}
 			}
 		}
-	}
-}
-
-// Desktop only styles.
-@include breakpoint( ">782px" ) {
-	.wc-block-cart__sidebar {
-		max-width: 374px;
-	}
-	.wc-block-cart {
-		display: flex;
-	}
-	.wc-block-cart__main {
-		flex-grow: 4;
-		margin-right: 3em;
-	}
-	.wc-block-cart__sidebar {
-		flex-grow: 1;
 	}
 }
