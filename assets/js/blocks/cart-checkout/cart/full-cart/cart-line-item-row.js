@@ -105,23 +105,16 @@ const CartLineItemRow = ( { lineItem } ) => {
 	) : null;
 
 	return (
-		<tr>
+		<tr className="wc-block-cart-items__row">
+			<td className="wc-block-cart-item__image">
+				<img { ...imageProps } alt={ imageProps.alt } />
+			</td>
 			<td className="wc-block-cart-item__product">
-				<div className="wc-block-cart-item__product-wrapper">
-					<img { ...imageProps } alt={ imageProps.alt } />
-					<div className="wc-block-cart-item__product-details">
-						<div className="wc-block-cart-item__product-name">
-							{ name }
-						</div>
-						{ lowStockBadge }
-						<div className="wc-block-cart-item__product-metadata">
-							{ description }
-							<ProductVariationDetails variation={ variation } />
-						</div>
-						{ quantitySelector(
-							'wc-block-cart-item__quantity-stacked'
-						) }
-					</div>
+				<div className="wc-block-cart-item__product-name">{ name }</div>
+				{ lowStockBadge }
+				<div className="wc-block-cart-item__product-metadata">
+					{ description }
+					<ProductVariationDetails variation={ variation } />
 				</div>
 			</td>
 			<td className="wc-block-cart-item__quantity">
@@ -130,12 +123,12 @@ const CartLineItemRow = ( { lineItem } ) => {
 					<button className="wc-block-cart-item__remove-link">
 						{ __( 'Remove item', 'woo-gutenberg-products-block' ) }
 					</button>
+					<button className="wc-block-cart-item__remove-icon">
+						<IconTrash />
+					</button>
 				</div>
 			</td>
 			<td className="wc-block-cart-item__total">
-				<button className="wc-block-cart-item__remove-icon">
-					<IconTrash />
-				</button>
 				{ fullPrice }
 				<div className="wc-block-cart-item__line-total">
 					<FormattedMonetaryAmount
