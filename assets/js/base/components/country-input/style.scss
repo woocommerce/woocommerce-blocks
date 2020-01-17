@@ -38,7 +38,10 @@
 	}
 
 	.components-custom-select-control__menu {
+		background-color: #fff;
 		margin: 0;
+		max-height: 300px;
+		overflow: auto;
 	}
 
 	.components-custom-select-control__item {
