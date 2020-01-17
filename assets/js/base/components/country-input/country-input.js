@@ -35,7 +35,7 @@ const CountryInput = ( {
 			} }
 			value={ {
 				key: value,
-				name: countries[ value ],
+				name: decodeEntities( countries[ value ] ),
 			} }
 		/>
 	);
