@@ -82,6 +82,26 @@ class CartShippingRates extends RestController {
 			return new RestError( 'woocommerce_rest_cart_error', __( 'Unable to retrieve cart.', 'woo-gutenberg-products-block' ), array( 'status' => 500 ) );
 		}
 
+		if ( ! empty( $request['country'] ) ) {
+			$valid_countries = WC()->countries->get_shipping_countries();
+
+			if (
+				is_array( $valid_countries ) &&
+				count( $valid_countries ) > 0 &&
+				! array_key_exists( $request['country'], $valid_countries )
+			) {
+				return new RestError(
+					'woocommerce_rest_cart_shipping_rates_invalid_country',
+					sprintf(
+						/* translators: 1: valid countries */
+						__( 'Destination country key is not valid. Please enter one of the following: %s', 'woo-gutenberg-products-block' ),
+						implode( ', ', array_keys( $valid_countries ) )
+					),
+					[ 'status' => 400 ]
+				);
+			}
+		}
+
 		$request = $this->validate_shipping_address( $request );
 
 		if ( is_wp_error( $request ) ) {
