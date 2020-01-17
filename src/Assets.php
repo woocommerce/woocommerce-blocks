@@ -126,8 +126,8 @@ class Assets {
 				'productCount'                => array_sum( (array) $product_counts ),
 				'attributes'                  => array_values( wc_get_attribute_taxonomies() ),
 				'wcBlocksAssetUrl'            => plugins_url( 'assets/', __DIR__ ),
-				'shippingCountries'           => wp_json_encode( WC()->countries->get_shipping_countries() ),
-				'allowedCountries'            => wp_json_encode( WC()->countries->get_allowed_countries() ),
+				'shippingCountries'           => WC()->countries->get_shipping_countries(),
+				'allowedCountries'            => WC()->countries->get_allowed_countries(),
 				'restApiRoutes'               => [
 					'/wc/store' => array_keys( \Automattic\WooCommerce\Blocks\RestApi::get_routes_from_namespace( 'wc/store' ) ),
 				],
