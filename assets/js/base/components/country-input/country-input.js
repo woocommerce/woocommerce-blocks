@@ -4,6 +4,7 @@
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { CustomSelectControl } from 'wordpress-components';
+import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Internal dependencies
@@ -19,7 +20,7 @@ const CountryInput = ( {
 } ) => {
 	const options = Object.keys( countries ).map( ( key ) => ( {
 		key,
-		name: countries[ key ],
+		name: decodeEntities( countries[ key ] ),
 	} ) );
 
 	return (
