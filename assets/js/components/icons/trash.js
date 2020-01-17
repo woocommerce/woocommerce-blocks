@@ -3,7 +3,7 @@
  */
 import { Icon } from '@wordpress/components';
 
-// This is named `delete` as it is the `delete_outline` icon from Material.
+// This uses `delete_outline` icon from Material.
 // https://material.io/resources/icons/?icon=delete_outline&style=baseline
 // We are using it as `trash` or `trashcan` or `remove-item`.
 export default () => (
