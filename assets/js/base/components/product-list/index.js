@@ -31,15 +31,15 @@ const generateQuery = ( { sortValue, currentPage, attributes } ) => {
 			case 'menu_order':
 			case 'popularity':
 			case 'rating':
-			case 'date':
 			case 'price':
 				return {
 					orderby: orderName,
 					order: 'asc',
 				};
 			case 'price-desc':
+			case 'date':
 				return {
-					orderby: 'price',
+					orderby: orderName,
 					order: 'desc',
 				};
 		}
