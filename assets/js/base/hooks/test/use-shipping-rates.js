@@ -15,6 +15,11 @@ jest.mock( '@woocommerce/block-data', () => ( {
 	COLLECTIONS_STORE_KEY: 'test/store',
 } ) );
 
+// Make debounce instantaneous.
+jest.mock( 'use-debounce', () => ( {
+	useDebounce: ( a ) => [ a ],
+} ) );
+
 describe( 'useShippingRates', () => {
 	let registry, mocks, renderer;
 	const getProps = ( testRenderer ) => {

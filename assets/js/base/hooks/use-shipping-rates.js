@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { useDebounce } from 'use-debounce';
+
+/**
  * Internal dependencies
  */
 import { useCollection } from './use-collection';
@@ -19,16 +24,18 @@ import { useCollection } from './use-collection';
  *                                         rates are still loading or not.
  */
 export const useShippingRates = ( query ) => {
+	const [ debouncedQuery ] = useDebounce( query, 300 );
 	const collectionOptions = {
 		namespace: '/wc/store',
 		resourceName: 'cart/shipping-rates',
 	};
+
 	const {
 		results: shippingRates,
 		isLoading: shippingRatesLoading,
 	} = useCollection( {
 		...collectionOptions,
-		query,
+		query: debouncedQuery,
 	} );
 
 	return {
