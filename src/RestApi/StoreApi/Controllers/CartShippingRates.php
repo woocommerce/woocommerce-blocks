@@ -93,8 +93,8 @@ class CartShippingRates extends RestController {
 				return new RestError(
 					'woocommerce_rest_cart_shipping_rates_invalid_country',
 					sprintf(
-						/* translators: 1: valid countries */
-						__( 'Destination country key is not valid. Please enter one of the following: %s', 'woo-gutenberg-products-block' ),
+						/* translators: 1: valid country codes */
+						__( 'Destination country code is not valid. Please enter one of the following: %s', 'woo-gutenberg-products-block' ),
 						implode( ', ', array_keys( $valid_countries ) )
 					),
 					[ 'status' => 400 ]
