@@ -153,7 +153,9 @@ const Cart = () => {
 									'No shipping options were found for %s.',
 									'woo-gutenberg-products-block'
 								),
-								'location' // @todo should display destination name. See: https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1606
+								// @todo Should display destination name,
+								// see: https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1606
+								'location'
 							) }
 							selected={ selectedShippingRate }
 							renderOption={ ( option ) => ( {

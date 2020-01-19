@@ -55,10 +55,18 @@ const ShippingRatesControl = ( {
 	};
 
 	const renderOptions = ( shippingRates, i ) => {
-		if ( shippingRates.length > 1 ) {
-			return renderSeveralOptions( shippingRates, i );
+		switch ( shippingRates.length ) {
+			case 0:
+				return (
+					<p className="wc-block-shipping-rates-control__no-results">
+						{ noResultsMessage }
+					</p>
+				);
+			case 1:
+				return renderSingleOption( shippingRates[ 0 ] );
+			default:
+				return renderSeveralOptions( shippingRates, i );
 		}
-		return renderSingleOption( shippingRates[ 0 ] );
 	};
 
 	const { shippingRates, shippingRatesLoading } = useShippingRates( address );
@@ -105,28 +113,18 @@ const ShippingRatesControl = ( {
 		return null;
 	}
 
-	return shippingRates.map( ( shippingRate, i ) => {
-		const id = shippingRate.items.join();
-
-		return (
-			<Fragment key={ id }>
-				{ shippingRate.shipping_rates.length > 0 ? (
-					renderOptions( shippingRate.shipping_rates, i )
-				) : (
-					<p className="wc-block-shipping-rates-control__no-results">
-						{ noResultsMessage }
-					</p>
-				) }
-				{ shippingRates.length > 1 && (
-					<span>
-						{ /* @todo Show product names,
+	return shippingRates.map( ( shippingRate, i ) => (
+		<Fragment key={ shippingRate.items.join() }>
+			{ renderOptions( shippingRate.shipping_rates, i ) }
+			{ shippingRates.length > 1 && (
+				<span>
+					{ /* @todo Show product names,
 						see: https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1554 */ }
-						{ shippingRate.items.join( ', ' ) }
-					</span>
-				) }
-			</Fragment>
-		);
-	} );
+					{ shippingRate.items.join( ', ' ) }
+				</span>
+			) }
+		</Fragment>
+	) );
 };
 
 ShippingRatesControl.propTypes = {
@@ -138,11 +136,11 @@ ShippingRatesControl.propTypes = {
 		postcode: PropTypes.string,
 		country: PropTypes.string,
 	} ),
+	noResultsMessage: PropTypes.string.isRequired,
 	onChange: PropTypes.func.isRequired,
 	renderOption: PropTypes.func.isRequired,
 	className: PropTypes.string,
 	selected: PropTypes.arrayOf( PropTypes.string ),
-	noResultsMessage: PropTypes.string,
 };
 
 export default ShippingRatesControl;

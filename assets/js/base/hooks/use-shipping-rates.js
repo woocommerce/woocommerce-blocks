@@ -25,16 +25,13 @@ import { useCollection } from './use-collection';
  */
 export const useShippingRates = ( query ) => {
 	const [ debouncedQuery ] = useDebounce( query, 300 );
-	const collectionOptions = {
-		namespace: '/wc/store',
-		resourceName: 'cart/shipping-rates',
-	};
 
 	const {
 		results: shippingRates,
 		isLoading: shippingRatesLoading,
 	} = useCollection( {
-		...collectionOptions,
+		namespace: '/wc/store',
+		resourceName: 'cart/shipping-rates',
 		query: debouncedQuery,
 	} );
 
