@@ -116,6 +116,11 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 2.5.11 - 2020-01-20 =
+- bug: Fix a javascript error when editing All Products inner blocks "Link to Product Page" option #1593 
+- bug: Fix an issue in All Products when ordering by newness was reversed #1598
+- bug: Fix a javascript error in editor when user re-selects same attribute in Filter Products by Attribute block #1596 
+
 = 2.5.10 - 2020-01-09 =
 - All Products block: fix wrong price format for variable products with certain currency settings. #1518
 
