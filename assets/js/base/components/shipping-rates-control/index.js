@@ -8,9 +8,15 @@ import RadioControl, {
 import { useShippingRates } from '@woocommerce/base-hooks';
 import { Fragment, useEffect } from '@wordpress/element';
 
+/**
+ * Internal dependencies
+ */
+import './style.scss';
+
 const ShippingRatesControl = ( {
 	address,
 	className,
+	noResultsMessage,
 	onChange,
 	renderOption,
 	selected = [],
@@ -46,6 +52,13 @@ const ShippingRatesControl = ( {
 				selected={ selected[ i ] }
 			/>
 		);
+	};
+
+	const renderOptions = ( shippingRates, i ) => {
+		if ( shippingRates.length > 1 ) {
+			return renderSeveralOptions( shippingRates, i );
+		}
+		return renderSingleOption( shippingRates[ 0 ] );
 	};
 
 	const { shippingRates, shippingRatesLoading } = useShippingRates( address );
@@ -93,17 +106,17 @@ const ShippingRatesControl = ( {
 	}
 
 	return shippingRates.map( ( shippingRate, i ) => {
-		if ( shippingRate.shipping_rates.length === 0 ) {
-			return null;
-		}
-
 		const id = shippingRate.items.join();
 
 		return (
 			<Fragment key={ id }>
-				{ shippingRate.shipping_rates.length > 1
-					? renderSeveralOptions( shippingRate.shipping_rates, i )
-					: renderSingleOption( shippingRate.shipping_rates[ 0 ] ) }
+				{ shippingRate.shipping_rates.length > 0 ? (
+					renderOptions( shippingRate.shipping_rates, i )
+				) : (
+					<p className="wc-block-shipping-rates-control__no-results">
+						{ noResultsMessage }
+					</p>
+				) }
 				{ shippingRates.length > 1 && (
 					<span>
 						{ /* @todo Show product names,
@@ -129,6 +142,7 @@ ShippingRatesControl.propTypes = {
 	renderOption: PropTypes.func.isRequired,
 	className: PropTypes.string,
 	selected: PropTypes.arrayOf( PropTypes.string ),
+	noResultsMessage: PropTypes.string,
 };
 
 export default ShippingRatesControl;

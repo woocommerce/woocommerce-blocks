@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { useState, Fragment } from '@wordpress/element';
 import {
 	TotalsCouponCodeInput,
@@ -147,6 +147,14 @@ const Cart = () => {
 						</legend>
 						<ShippingRatesControl
 							className="wc-block-cart__shipping-options"
+							noResultsMessage={ sprintf(
+								// translators: %s shipping destination.
+								__(
+									'No shipping options were found for %s.',
+									'woo-gutenberg-products-block'
+								),
+								'location' // @todo should display destination name. See: https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1606
+							) }
 							selected={ selectedShippingRate }
 							renderOption={ ( option ) => ( {
 								label: option.name,

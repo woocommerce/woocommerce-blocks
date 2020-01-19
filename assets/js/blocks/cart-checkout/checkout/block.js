@@ -277,6 +277,10 @@ const Block = ( { shippingMethods = [], isEditor = false } ) => {
 									  }
 									: null
 							}
+							noResultsMessage={ __(
+								'There are no shipping options available. Please ensure that your address has been entered correctly, or contact us if you need any help.',
+								'woo-gutenberg-products-block'
+							) }
 							onChange={ ( newMethods ) =>
 								setShippingMethod( {
 									...shippingMethod,
