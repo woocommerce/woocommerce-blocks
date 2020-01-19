@@ -2,7 +2,9 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import RadioControl from '@woocommerce/base-components/radio-control';
+import RadioControl, {
+	RadioControlOptionLayout,
+} from '@woocommerce/base-components/radio-control';
 import { useShippingRates } from '@woocommerce/base-hooks';
 import { Fragment, useEffect } from '@wordpress/element';
 
@@ -13,6 +15,39 @@ const ShippingRatesControl = ( {
 	renderOption,
 	selected = [],
 } ) => {
+	const renderSingleOption = ( option ) => {
+		const {
+			label,
+			secondaryLabel,
+			description,
+			secondaryDescription,
+		} = renderOption( option );
+
+		return (
+			<RadioControlOptionLayout
+				label={ label }
+				secondaryLabel={ secondaryLabel }
+				description={ description }
+				secondaryDescription={ secondaryDescription }
+			/>
+		);
+	};
+
+	const renderSeveralOptions = ( shippingRates, i ) => {
+		return (
+			<RadioControl
+				className={ className }
+				onChange={ ( newShippingRate ) => {
+					const newSelected = [ ...selected ];
+					newSelected[ i ] = newShippingRate;
+					onChange( newSelected );
+				} }
+				options={ shippingRates.map( renderOption ) }
+				selected={ selected[ i ] }
+			/>
+		);
+	};
+
 	const { shippingRates, shippingRatesLoading } = useShippingRates( address );
 
 	// Select first item when shipping rates are loaded.
@@ -66,16 +101,9 @@ const ShippingRatesControl = ( {
 
 		return (
 			<Fragment key={ id }>
-				<RadioControl
-					className={ className }
-					onChange={ ( newShippingRate ) => {
-						const newSelected = [ ...selected ];
-						newSelected[ i ] = newShippingRate;
-						onChange( newSelected );
-					} }
-					options={ shippingRate.shipping_rates.map( renderOption ) }
-					selected={ selected[ i ] }
-				/>
+				{ shippingRate.shipping_rates.length > 1
+					? renderSeveralOptions( shippingRate.shipping_rates, i )
+					: renderSingleOption( shippingRate.shipping_rates[ 0 ] ) }
 				{ shippingRates.length > 1 && (
 					<span>
 						{ /* @todo Show product names,
