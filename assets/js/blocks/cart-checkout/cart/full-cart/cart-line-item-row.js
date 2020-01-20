@@ -8,6 +8,7 @@ import QuantitySelector from '@woocommerce/base-components/quantity-selector';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import { getCurrency, formatPrice } from '@woocommerce/base-utils';
 import { IconTrash } from '@woocommerce/block-components/icons';
+import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Return the difference between two price amounts, e.g. a discount.
@@ -107,7 +108,10 @@ const CartLineItemRow = ( { lineItem } ) => {
 	return (
 		<tr className="wc-block-cart-items__row">
 			<td className="wc-block-cart-item__image">
-				<img { ...imageProps } alt={ imageProps.alt } />
+				<img
+					{ ...imageProps }
+					alt={ decodeEntities( imageProps.alt ) }
+				/>
 			</td>
 			<td className="wc-block-cart-item__product">
 				<div className="wc-block-cart-item__product-name">{ name }</div>
