@@ -46,7 +46,7 @@ Run `$ npm run package-plugin` to trigger install and build, and then create a z
 
 ## Releases
 
-See [release.md](release.md).
+See [RELEASE.md](RELEASE.md).
 
 ## Publishing `@woocommerce/block-library`
 
