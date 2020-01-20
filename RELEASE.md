@@ -8,7 +8,7 @@
     - `admin:org`
     - `public_repo`
     - `read:user`
-  - Ensure your token is available to scripts, e.g. `export GH_API_TOKEN={token}` or similar.
+  - Ensure your token is available to scripts, e.g. `export GH_API_TOKEN={YOUR-TOKEN}` or similar.
 - Get WPORG plugin svn commit access - ask a team member.
 
 _Outcome_: __You are equipped to ship a release!__
@@ -16,7 +16,8 @@ _Outcome_: __You are equipped to ship a release!__
 ## Release process
 ### Lead-up to release
 #### Ensure release development is complete
-- Ensure all issues/PRs intended for this release are merged & closed and assigned to release milestone.
+- Release milestone should exist (!).
+- Ensure all issues/PRs intended for this release are merged, closed and assigned to release milestone.
 - All PRs should have changelog entry, or `skip-changelog` tag.
 - Check with team to confirm any outstanding or in progress work.
 
@@ -78,12 +79,12 @@ _Outcome_: __Confident that source code is ready for release: intended fixes are
 
 _Outcomes_: __Version numbers updated in source code & developers can test tagged release.__
 
-###### Release to WPORG
+##### Release to WPORG
 - Push release to WPORG `npm run release`.
 - Note that this may happen a day or so after Github release.
 - FYI: Sometimes we make small changes (e.g. readme only) by [committing directly to svn repo](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/#editing-existing-files).
 
-_Outcome_: __Customers can install/update via WPORG & WPORG plugin page up to date__.
+_Outcome_: __Customers can install/update via WPORG; WPORG plugin page is up to date__.
 
 ### After release
 #### Update `master` with release changes
@@ -92,10 +93,9 @@ _Outcome_: __Customers can install/update via WPORG & WPORG plugin page up to da
 - Code changes should already be present on master - all dev happens on `master`.
 
 
-## Details to link / document
-- "Legacy" stuff
+## Info to link to / document (todo)
+- ["Legacy"](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/add/release-process/assets/js/legacy/README.md) stuff - is this relevant to releases
 - Release milestones
-- Release branches
 - Relationship to Woo core release
-- Testing blocks when included in Woo core 
+- Testing blocks plugin as included in Woo core (do we do this?)
 - Policy for inclusion in major / minor / fix releases
