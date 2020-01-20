@@ -380,9 +380,10 @@ class ProductQuery {
 			return false;
 		}
 
-		$tax_display = get_option( 'woocommerce_tax_display_shop' );
+		$display  = get_option( 'woocommerce_tax_display_shop' );
+		$database = wc_prices_include_tax() ? 'incl' : 'excl';
 
-		return ( ! wc_prices_include_tax() && 'incl' === $tax_display ) || ( wc_prices_include_tax() && 'excl' === $tax_display );
+		return $display !== $database;
 	}
 
 	/**
