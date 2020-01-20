@@ -172,7 +172,7 @@ class CartItemSchema extends AbstractSchema {
 			'id'         => $product->get_id(),
 			'quantity'   => wc_stock_amount( $cart_item['quantity'] ),
 			'name'       => $this->prepare_html_response( $product->get_title() ),
- 			'sku'        => $this->prepare_html_response( $product->get_sku() ),
+			'sku'        => $this->prepare_html_response( $product->get_sku() ),
 			'permalink'  => $product->get_permalink(),
 			'images'     => ( new ProductImages() )->images_to_array( $product ),
 			'price'      => wc_format_decimal( $product->get_price(), wc_get_price_decimals() ),
