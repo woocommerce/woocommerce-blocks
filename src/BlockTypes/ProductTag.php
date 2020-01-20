@@ -42,20 +42,20 @@ class ProductTag extends AbstractProductGrid {
 	 * @return array
 	 */
 	protected function get_attributes() {
-		return array(
-			'className'         => $this->get_schema_string(),
-			'columns'           => $this->get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
-			'rows'              => $this->get_schema_number( wc_get_theme_support( 'product_blocks::default_rows', 1 ) ),
-			'contentVisibility' => $this->get_schema_content_visibility(),
-			'align'             => $this->get_schema_align(),
-			'alignButtons'      => $this->get_schema_boolean( false ),
-			'orderby'           => $this->get_schema_orderby(),
-			'tags'              => $this->get_schema_list_ids(),
-			'tagOperator'       => array(
-				'type'    => 'string',
-				'default' => 'any',
-			),
-			'isPreview'         => $this->get_schema_boolean( false ),
+		$attributes = parent::get_attributes();
+
+		unset( $attributes['categories'], $attributes['catOperator'] );
+
+		return array_merge(
+			$attributes,
+			[
+				'orderby'     => $this->get_schema_orderby(),
+				'tagOperator' => array(
+					'type'    => 'string',
+					'default' => 'any',
+				),
+				'tags'        => $this->get_schema_list_ids(),
+			]
 		);
 	}
 }

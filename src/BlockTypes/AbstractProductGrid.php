@@ -43,20 +43,20 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 * @return array List of block attributes with type and defaults.
 	 */
 	protected function get_attributes() {
-		return array(
-			'className'         => $this->get_schema_string(),
-			'columns'           => $this->get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
-			'rows'              => $this->get_schema_number( wc_get_theme_support( 'product_blocks::default_rows', 1 ) ),
-			'categories'        => $this->get_schema_list_ids(),
-			'catOperator'       => array(
-				'type'    => 'string',
-				'default' => 'any',
-			),
-			'contentVisibility' => $this->get_schema_content_visibility(),
+		return [
 			'align'             => $this->get_schema_align(),
 			'alignButtons'      => $this->get_schema_boolean( false ),
+			'categories'        => $this->get_schema_list_ids(),
+			'catOperator'       => [
+				'default' => 'any',
+				'type'    => 'string',
+			],
+			'className'         => $this->get_schema_string(),
+			'columns'           => $this->get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
+			'contentVisibility' => $this->get_schema_content_visibility(),
 			'isPreview'         => $this->get_schema_boolean( false ),
-		);
+			'rows'              => $this->get_schema_number( wc_get_theme_support( 'product_blocks::default_rows', 3 ) ),
+		];
 	}
 
 	/**
@@ -122,7 +122,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		// These should match what's set in JS `registerBlockType`.
 		$defaults = array(
 			'columns'           => wc_get_theme_support( 'product_blocks::default_columns', 3 ),
-			'rows'              => wc_get_theme_support( 'product_blocks::default_rows', 1 ),
+			'rows'              => wc_get_theme_support( 'product_blocks::default_rows', 3 ),
 			'alignButtons'      => false,
 			'categories'        => array(),
 			'catOperator'       => 'any',

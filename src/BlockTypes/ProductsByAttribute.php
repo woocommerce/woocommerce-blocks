@@ -46,35 +46,35 @@ class ProductsByAttribute extends AbstractProductGrid {
 	 * @return array
 	 */
 	protected function get_attributes() {
-		return array(
-			'align'             => $this->get_schema_align(),
-			'alignButtons'      => $this->get_schema_boolean( false ),
-			'attributes'        => array(
-				'type'    => 'array',
-				'items'   => array(
-					'type'       => 'object',
-					'properties' => array(
-						'id'        => array(
-							'type' => 'number',
-						),
-						'attr_slug' => array(
-							'type' => 'string',
-						),
-					),
-				),
-				'default' => array(),
-			),
-			'attrOperator'      => array(
-				'type'    => 'string',
-				'default' => 'any',
-			),
-			'className'         => $this->get_schema_string(),
-			'columns'           => $this->get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
-			'contentVisibility' => $this->get_schema_content_visibility(),
-			'editMode'          => $this->get_schema_boolean( true ),
-			'orderby'           => $this->get_schema_orderby(),
-			'rows'              => $this->get_schema_number( wc_get_theme_support( 'product_blocks::default_rows', 1 ) ),
-			'isPreview'         => $this->get_schema_boolean( false ),
+		$attributes = parent::get_attributes();
+
+		unset( $attributes['categories'], $attributes['catOperator'] );
+
+		return array_merge(
+			$attributes,
+			[
+				'attributes'   => [
+					'type'    => 'array',
+					'items'   => [
+						'type'       => 'object',
+						'properties' => [
+							'id'        => [
+								'type' => 'number',
+							],
+							'attr_slug' => [
+								'type' => 'string',
+							],
+						],
+					],
+					'default' => [],
+				],
+				'attrOperator' => [
+					'type'    => 'string',
+					'default' => 'any',
+				],
+				'editMode'     => $this->get_schema_boolean( true ),
+				'orderby'      => $this->get_schema_orderby(),
+			]
 		);
 	}
 }
