@@ -31,7 +31,9 @@ Note: changelog should be formatted like this in PR description. Note the preced
 _Outcome_: __Team is aware of release and in agreement about what fixes & features are included.__
 
 #### Ensure release branch includes all relevant fixes
-- Make release branch if needed (major/minor). (?)
+- Make release branch if needed (major/minor).
+  - For fix releases, the branch should already exist.
+  - Otherwise create branch: `release/X.X`.
 - Update your local checkout to tip of the release branch.
 - Cherry pick all PRs into the release branch:
   - If branch is already labelled `status: cherry-picked 🍒` then continue to next PR.
@@ -49,7 +51,8 @@ _Outcome_: __Release branch has all relevant changes merged & pushed.__
 - Run changelog script `npm run changelog` to get changelog txt for readme. Changelog content will be output to screen by script.
 - Add changelog section for release, e.g. `= 2.5.11 - 2020-01-20 =`.
 - Copy-paste the changelog content into `readme.txt`.
-- Make any other changes to readme as needed - e.g. support versions changing, new blocks.
+- Make any other changes to readme as needed - e.g. support versions changing, new blocks. 
+- Push readme changes to release branch on origin repo.
 
 _Outcome_: __`readme.txt` is up to date with changes for release.__
 
@@ -78,17 +81,19 @@ _Outcomes_: __Version numbers updated in source code & developers can test tagge
 ###### Release to WPORG
 - Push release to WPORG `npm run release`.
 - Note that this may happen a day or so after Github release.
+- FYI: Sometimes we make small changes (e.g. readme only) by [committing directly to svn repo](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/#editing-existing-files).
 
 _Outcome_: __Customers can install/update via WPORG & WPORG plugin page up to date__.
 
 ### After release
 #### Update `master` with release changes
 - Ensure changelog is up to date on master.
-- If major/minor release, update version on master.
-- Code changes should already be present on master (all dev happens on `master`).
+- If major/minor release, update version on master with dev suffix, e.g. [`2.6-dev`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/commit/e27f053e7be0bf7c1d376f5bdb9d9999190ce158).
+- Code changes should already be present on master - all dev happens on `master`.
 
 
 ## Details to link / document
+- "Legacy" stuff
 - Release milestones
 - Release branches
 - Relationship to Woo core release
