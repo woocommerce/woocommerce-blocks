@@ -93,9 +93,9 @@ _Outcome_: __Customers can install/update via WPORG; WPORG plugin page is up to 
 - Code changes should already be present on master - all dev happens on `master`.
 
 
-## Info to link to / document (todo)
-- ["Legacy"](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/add/release-process/assets/js/legacy/README.md) stuff - is this relevant to releases
+## `@todo` Missing info to link to / document
 - Release milestones
 - Relationship to Woo core release
 - Testing blocks plugin as included in Woo core (do we do this?)
-- Policy for inclusion in major / minor / fix releases
+- Policy for inclusion in major / minor / fix releases - i.e. how we use versioning 
+- ["Legacy"](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/add/release-process/assets/js/legacy/README.md) stuff - is this relevant to releases?
