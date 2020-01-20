@@ -4,14 +4,14 @@
 	margin: 0 (-$gap) $gap;
 
 	.wc-block-cart__main {
-		margin: 0 $gap;
-		flex: 1 0 500px;
+		flex: 1 0 60%;
+		margin: 0;
+		padding: 0 $gap;
 	}
 	.wc-block-cart__sidebar {
-		flex: 1 1 240px;
-		margin: 0 $gap;
-		border: 1px solid $core-grey-light-600;
-		border-width: 1px 0;
+		flex: 1 1 40%;
+		margin: 0;
+		padding: 0 $gap;
 	}
 	.wc-block-cart__item-count {
 		float: right;
@@ -29,6 +29,7 @@
 		background-color: transparent;
 		margin: 0;
 		padding: 0;
+		border: 0;
 	}
 	.wc-block-cart__shipping-options {
 		.wc-block-radio-control__label {
@@ -189,11 +190,11 @@ table.wc-block-cart-items {
 		display: block;
 		margin: 0 0 $gap;
 		.wc-block-cart__main {
-			margin: 0;
+			padding: 0;
 			flex: none;
 		}
 		.wc-block-cart__sidebar {
-			margin: 0;
+			padding: 0;
 			flex: none;
 		}
 	}
