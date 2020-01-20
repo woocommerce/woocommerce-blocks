@@ -171,8 +171,8 @@ class CartItemSchema extends AbstractSchema {
 			'key'        => $cart_item['key'],
 			'id'         => $product->get_id(),
 			'quantity'   => wc_stock_amount( $cart_item['quantity'] ),
-			'name'       => $product->get_title(),
-			'sku'        => $product->get_sku(),
+			'name'       => $this->prepare_html_response( $product->get_title() ),
+			'sku'        => $this->prepare_html_response( $product->get_sku() ),
 			'permalink'  => $product->get_permalink(),
 			'images'     => ( new ProductImages() )->images_to_array( $product ),
 			'price'      => wc_format_decimal( $product->get_price(), wc_get_price_decimals() ),
@@ -207,7 +207,7 @@ class CartItemSchema extends AbstractSchema {
 				$label = wc_attribute_label( str_replace( 'attribute_', '', $name ), $product );
 			}
 
-			$return[ $label ] = $value;
+			$return[ $this->prepare_html_response( $label ) ] = $this->prepare_html_response( $value );
 		}
 
 		return $return;

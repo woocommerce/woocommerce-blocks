@@ -15,6 +15,7 @@ import {
 	useMemo,
 } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
+import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Internal dependencies
@@ -37,7 +38,7 @@ const AttributeFilterBlock = ( {
 		( name, count ) => {
 			return (
 				<Fragment>
-					{ name }
+					{ decodeEntities( name ) }
 					{ blockAttributes.showCounts && count !== null && (
 						<span className="wc-block-attribute-filter-list-count">
 							{ count }
