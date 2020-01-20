@@ -4,12 +4,13 @@
 	margin: 0 (-$gap) $gap;
 
 	.wc-block-cart__main {
-		flex: 1 0 60%;
+		flex: 1 0 65%;
 		margin: 0;
 		padding: 0 $gap;
+		min-width: 500px;
 	}
 	.wc-block-cart__sidebar {
-		flex: 1 1 40%;
+		flex: 1 1 35%;
 		margin: 0;
 		padding: 0 $gap;
 	}
