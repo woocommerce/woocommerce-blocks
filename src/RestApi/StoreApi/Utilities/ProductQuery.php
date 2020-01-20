@@ -288,7 +288,9 @@ class ProductQuery {
 			$args['where'] .= $wpdb->prepare( ' AND wc_product_meta_lookup.stock_status = %s ', $wp_query->get( 'stock_status' ) );
 		}
 
-		$args = $this->add_price_filter_clauses( $args, $wp_query );
+		if ( $wp_query->get( 'min_price' ) || $wp_query->get( 'max_price' ) ) {
+			$args = $this->add_price_filter_clauses( $args, $wp_query );
+		}
 
 		return $args;
 	}
@@ -303,25 +305,21 @@ class ProductQuery {
 	protected function add_price_filter_clauses( $args, $wp_query ) {
 		global $wpdb;
 
-		if ( ! $wp_query->get( 'min_price' ) && ! $wp_query->get( 'max_price' ) ) {
-			return $args;
-		}
+		$adjust_for_taxes = $this->adjust_price_filters_for_displayed_taxes();
+		$args['join']     = $this->append_product_sorting_table_join( $args['join'] );
 
-		$args['join'] = $this->append_product_sorting_table_join( $args['join'] );
-		$where        = [];
-
-		if ( $this->adjust_price_filters_for_displayed_taxes() ) {
-			if ( $wp_query->get( 'min_price' ) ) {
+		if ( $wp_query->get( 'min_price' ) ) {
+			if ( $adjust_for_taxes ) {
 				$args['where'] .= $this->get_price_filter_query_for_displayed_taxes( $this->prepare_price_filter( $wp_query->get( 'min_price' ) ), 'min_price', '>=' );
-			}
-			if ( $wp_query->get( 'max_price' ) ) {
-				$args['where'] .= $this->get_price_filter_query_for_displayed_taxes( $this->prepare_price_filter( $wp_query->get( 'max_price' ) ), 'max_price', '<=' );
-			}
-		} else {
-			if ( $wp_query->get( 'min_price' ) ) {
+			} else {
 				$args['where'] .= $wpdb->prepare( ' AND wc_product_meta_lookup.min_price >= %f ', $this->prepare_price_filter( $wp_query->get( 'min_price' ) ) );
 			}
-			if ( $wp_query->get( 'max_price' ) ) {
+		}
+
+		if ( $wp_query->get( 'max_price' ) ) {
+			if ( $adjust_for_taxes ) {
+				$args['where'] .= $this->get_price_filter_query_for_displayed_taxes( $this->prepare_price_filter( $wp_query->get( 'max_price' ) ), 'max_price', '<=' );
+			} else {
 				$args['where'] .= $wpdb->prepare( ' AND wc_product_meta_lookup.max_price <= %f ', $this->prepare_price_filter( $wp_query->get( 'max_price' ) ) );
 			}
 		}
