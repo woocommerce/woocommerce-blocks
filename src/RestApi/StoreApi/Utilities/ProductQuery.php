@@ -423,23 +423,6 @@ class ProductQuery {
 	}
 
 	/**
-	 * Add meta query.
-	 *
-	 * @param array $args       Query args.
-	 * @param array $meta_query Meta query.
-	 * @return array
-	 */
-	protected function add_meta_query( $args, $meta_query ) {
-		if ( empty( $args['meta_query'] ) ) {
-			$args['meta_query'] = []; // phpcs:ignore
-		}
-
-		$args['meta_query'][] = $meta_query;
-
-		return $args['meta_query'];
-	}
-
-	/**
 	 * Join wc_product_meta_lookup to posts if not already joined.
 	 *
 	 * @param string $sql SQL join.
