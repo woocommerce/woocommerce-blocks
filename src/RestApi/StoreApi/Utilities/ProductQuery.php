@@ -309,18 +309,22 @@ class ProductQuery {
 		$args['join']     = $this->append_product_sorting_table_join( $args['join'] );
 
 		if ( $wp_query->get( 'min_price' ) ) {
+			$min_price_filter = $this->prepare_price_filter( $wp_query->get( 'min_price' ) );
+
 			if ( $adjust_for_taxes ) {
-				$args['where'] .= $this->get_price_filter_query_for_displayed_taxes( $this->prepare_price_filter( $wp_query->get( 'min_price' ) ), 'min_price', '>=' );
+				$args['where'] .= $this->get_price_filter_query_for_displayed_taxes( $min_price_filter, 'min_price', '>=' );
 			} else {
-				$args['where'] .= $wpdb->prepare( ' AND wc_product_meta_lookup.min_price >= %f ', $this->prepare_price_filter( $wp_query->get( 'min_price' ) ) );
+				$args['where'] .= $wpdb->prepare( ' AND wc_product_meta_lookup.min_price >= %f ', $min_price_filter );
 			}
 		}
 
 		if ( $wp_query->get( 'max_price' ) ) {
+			$max_price_filter = $this->prepare_price_filter( $wp_query->get( 'max_price' ) );
+
 			if ( $adjust_for_taxes ) {
-				$args['where'] .= $this->get_price_filter_query_for_displayed_taxes( $this->prepare_price_filter( $wp_query->get( 'max_price' ) ), 'max_price', '<=' );
+				$args['where'] .= $this->get_price_filter_query_for_displayed_taxes( $max_price_filter, 'max_price', '<=' );
 			} else {
-				$args['where'] .= $wpdb->prepare( ' AND wc_product_meta_lookup.max_price <= %f ', $this->prepare_price_filter( $wp_query->get( 'max_price' ) ) );
+				$args['where'] .= $wpdb->prepare( ' AND wc_product_meta_lookup.max_price <= %f ', $max_price_filter );
 			}
 		}
 
