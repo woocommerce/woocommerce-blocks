@@ -23,9 +23,9 @@ const withDefaultAttributes = createHigherOrderComponent(
 			if ( blockType.name.startsWith( 'woocommerce/' ) ) {
 				Object.keys( blockType.attributes ).map( ( key ) => {
 					if (
-						props.attributes[ key ] === undefined &&
-						blockType.defaults !== undefined &&
-						blockType.defaults[ key ] !== undefined
+						typeof props.attributes[ key ] === 'undefined' &&
+						typeof blockType.defaults !== 'undefined' &&
+						typeof blockType.defaults[ key ] !== 'undefined'
 					) {
 						props.attributes[ key ] = blockType.defaults[ key ];
 					}

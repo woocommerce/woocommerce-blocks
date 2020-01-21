@@ -14,9 +14,9 @@ const setBlockAttributeDefaults = ( blockAttributes, blockType ) => {
 	if ( blockType.name.startsWith( 'woocommerce/' ) ) {
 		Object.keys( blockType.attributes ).map( ( key ) => {
 			if (
-				blockAttributes[ key ] === undefined &&
-				blockType.defaults !== undefined &&
-				blockType.defaults[ key ] !== undefined
+				typeof blockAttributes[ key ] === 'undefined' &&
+				typeof blockType.defaults !== 'undefined' &&
+				typeof blockType.defaults[ key ] !== 'undefined'
 			) {
 				blockAttributes[ key ] = blockType.defaults[ key ];
 			}
