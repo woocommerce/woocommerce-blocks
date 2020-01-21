@@ -14,10 +14,7 @@ import sharedAttributes from '../attributes';
 import { getBlockClassName } from '../utils.js';
 import '../../../atomic/blocks/product';
 
-/**
- * Register and run the "All Products" block.
- */
-registerBlockType( 'woocommerce/all-products', {
+const blockSettings = {
 	title: __( 'All Products', 'woo-gutenberg-products-block' ),
 	icon: {
 		src: <Gridicon icon="grid" />,
@@ -42,7 +39,6 @@ registerBlockType( 'woocommerce/all-products', {
 	attributes: {
 		...sharedAttributes,
 	},
-
 	/**
 	 * Renders and manages the block.
 	 *
@@ -51,7 +47,6 @@ registerBlockType( 'woocommerce/all-products', {
 	edit( props ) {
 		return <Editor { ...props } />;
 	},
-
 	/**
 	 * Save the props to post content.
 	 *
@@ -74,4 +69,26 @@ registerBlockType( 'woocommerce/all-products', {
 			</div>
 		);
 	},
+};
+
+/**
+ * Register and run the "All Products" block.
+ */
+registerBlockType( 'woocommerce/all-products', {
+	...blockSettings,
+	/**
+	 * Deprecation rule to handle the previous default rows which was 1 instead of 3.
+	 */
+	deprecated: [
+		{
+			attributes: {
+				...blockSettings.attributes,
+				rows: {
+					type: 'number',
+					default: 1,
+				},
+			},
+			save: blockSettings.save,
+		},
+	],
 } );
