@@ -355,6 +355,11 @@ class ProductQuery {
 				$adjusted_price_filter
 			);
 		}
+
+		if ( empty( $or_queries ) ) {
+			return '';
+		}
+
 		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
 		return $wpdb->prepare(
 			' AND (
