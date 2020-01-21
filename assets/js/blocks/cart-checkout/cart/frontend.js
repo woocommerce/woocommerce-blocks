@@ -21,8 +21,16 @@ const CartFrontend = ( { emptyCart } ) => {
 		return null;
 	}
 
-	const cartItems = cartData.items;
-	const isCartEmpty = cartItems.length <= 0;
+const cartItems = cartData.items;
+const isCartEmpty = cartItems.length <= 0;
+if ( ! isCartEmpty ) {
+	const getProps = ( el ) => {
+		return {
+			isShippingCalculatorEnabled:
+				el.dataset.isShippingCalculatorEnabled === 'true',
+			isShippingCostHidden: el.dataset.isShippingCostHidden === 'true',
+		};
+	};
 
 	return isCartEmpty ? (
 		<RawHTML>{ emptyCart }</RawHTML>

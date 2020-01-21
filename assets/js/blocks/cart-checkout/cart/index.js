@@ -2,9 +2,14 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import classNames from 'classnames';
 import { InnerBlocks } from '@wordpress/block-editor';
 import { registerBlockType } from '@wordpress/blocks';
 import { Icon, cart } from '@woocommerce/icons';
+import {
+	ENABLE_SHIPPING_CALCULATION,
+	HIDE_SHIPPING_COST,
+} from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -34,11 +39,11 @@ const settings = {
 	attributes: {
 		isShippingCalculatorEnabled: {
 			type: 'boolean',
-			default: true,
+			default: ENABLE_SHIPPING_CALCULATION,
 		},
 		isShippingCostHidden: {
 			type: 'boolean',
-			default: false,
+			default: HIDE_SHIPPING_COST,
 		},
 	},
 
@@ -52,11 +57,23 @@ const settings = {
 	},
 
 	/**
-	 * Block content is rendered in PHP, not via save function.
+	 * Save the props to post content.
 	 */
-	save() {
+	save( { attributes } ) {
+		const {
+			className,
+			isShippingCalculatorEnabled,
+			isShippingCostHidden,
+		} = attributes;
+		const data = {
+			'data-is-shipping-calculator-enabled': isShippingCalculatorEnabled,
+			'data-is-shipping-cost-hidden': isShippingCostHidden,
+		};
 		return (
-			<div className="is-loading">
+			<div
+				className={ classNames( 'is-loading', className ) }
+				{ ...data }
+			>
 				<InnerBlocks.Content />
 			</div>
 		);
