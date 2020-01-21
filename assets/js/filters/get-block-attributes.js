@@ -3,8 +3,6 @@ const { addFilter } = wp.hooks;
 /**
  * Adjust attributes on load to set defaults so default attributes get saved.
  *
- * Ref:
- *
  * @param {Object} blockAttributes Original block attributes.
  * @param {Object} blockType       Block type settings.
  *
