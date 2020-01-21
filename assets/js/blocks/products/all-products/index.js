@@ -5,17 +5,14 @@ import { __ } from '@wordpress/i18n';
 import { InnerBlocks } from '@wordpress/block-editor';
 import { registerBlockType } from '@wordpress/blocks';
 import Gridicon from 'gridicons';
-import { withDefaultAttributes } from '@woocommerce/block-hocs';
 
 /**
  * Internal dependencies
  */
 import Editor from './edit';
 import { attributes as sharedAttributes, defaults } from '../attributes';
-import { getBlockClassName, setBlockAttributeDefaults } from '../utils.js';
+import { getBlockClassName } from '../utils.js';
 import '../../../atomic/blocks/product';
-
-const { addFilter } = wp.hooks;
 
 const blockSettings = {
 	title: __( 'All Products', 'woo-gutenberg-products-block' ),
@@ -39,9 +36,7 @@ const blockSettings = {
 			isPreview: true,
 		},
 	},
-	attributes: {
-		...sharedAttributes,
-	},
+	attributes: sharedAttributes,
 	defaults,
 	/**
 	 * Renders and manages the block.
@@ -85,25 +80,14 @@ registerBlockType( 'woocommerce/all-products', {
 	 */
 	deprecated: [
 		{
-			attributes: Object.assign( blockSettings.attributes, {
+			attributes: {
+				...blockSettings.attributes,
 				rows: {
 					type: 'number',
 					default: 1,
 				},
-			} ),
+			},
 			save: blockSettings.save,
 		},
 	],
 } );
-
-addFilter(
-	'blocks.getBlockAttributes',
-	'woocommerce-blocks/get-block-attributes',
-	setBlockAttributeDefaults
-);
-
-addFilter(
-	'editor.BlockListBlock',
-	'woocommerce-blocks/with-default-attributes',
-	withDefaultAttributes
-);

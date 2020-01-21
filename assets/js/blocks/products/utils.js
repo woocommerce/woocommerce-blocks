@@ -19,31 +19,6 @@ export const getBlockClassName = ( blockClassName, attributes ) => {
 	} );
 };
 
-/**
- * Adjust attributes on load to set defaults so default attributes get saved.
- *
- * Ref: https://github.com/WordPress/gutenberg/issues/7342
- *
- * @param {Object} blockAttributes Original block attributes.
- * @param {Object} blockType       Block type settings.
- *
- * @return {Object} Filtered block attributes.
- */
-export const setBlockAttributeDefaults = ( blockAttributes, blockType ) => {
-	Object.keys( blockType.attributes ).map( ( key ) => {
-		if (
-			blockAttributes[ key ] === undefined &&
-			blockType.defaults !== undefined &&
-			blockType.defaults[ key ] !== undefined
-		) {
-			blockAttributes[ key ] = blockType.defaults[ key ];
-		}
-		return key;
-	} );
-
-	return blockAttributes;
-};
-
 export const renderNoProductsPlaceholder = ( blockTitle, blockIcon ) => (
 	<Placeholder
 		className="wc-block-products"
