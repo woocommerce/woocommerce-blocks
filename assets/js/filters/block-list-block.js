@@ -1,9 +1,39 @@
 /**
  * External dependencies
  */
-import { withDefaultAttributes } from '@woocommerce/block-hocs';
-
+import { createHigherOrderComponent } from '@wordpress/compose';
+const { getBlockType } = wp.blocks;
 const { addFilter } = wp.hooks;
+
+/**
+ * withDefaultAttributes HOC for editor.BlockListBlock. This sets defaults
+ * when a block is loaded.
+ *
+ *  @param	object BlockListBlock The BlockListBlock element.
+ */
+const withDefaultAttributes = createHigherOrderComponent(
+	( BlockListBlock ) => {
+		return function( props ) {
+			const blockType = getBlockType( props.block.name );
+
+			if ( blockType.name.startsWith( 'woocommerce/' ) ) {
+				Object.keys( blockType.attributes ).map( ( key ) => {
+					if (
+						typeof props.attributes[ key ] === 'undefined' &&
+						typeof blockType.defaults !== 'undefined' &&
+						typeof blockType.defaults[ key ] !== 'undefined'
+					) {
+						props.attributes[ key ] = blockType.defaults[ key ];
+					}
+					return key;
+				} );
+			}
+
+			return <BlockListBlock { ...props } />;
+		};
+	},
+	'withDefaultAttributes'
+);
 
 /**
  * Hook into `editor.BlockListBlock` to set default attributes (if blocks
