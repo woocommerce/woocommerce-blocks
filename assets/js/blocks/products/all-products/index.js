@@ -80,13 +80,9 @@ registerBlockType( 'woocommerce/all-products', {
 	 */
 	deprecated: [
 		{
-			attributes: {
-				...blockSettings.attributes,
-				rows: {
-					type: 'number',
-					default: 1,
-				},
-			},
+			attributes: Object.assign( {}, blockSettings.attributes, {
+				rows: { type: 'number', default: 1 },
+			} ),
 			save: blockSettings.save,
 		},
 	],
