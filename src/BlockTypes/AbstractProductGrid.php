@@ -43,20 +43,20 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 * @return array List of block attributes with type and defaults.
 	 */
 	protected function get_attributes() {
-		return [
-			'align'             => $this->get_schema_align(),
-			'alignButtons'      => $this->get_schema_boolean( false ),
-			'categories'        => $this->get_schema_list_ids(),
-			'catOperator'       => [
-				'default' => 'any',
-				'type'    => 'string',
-			],
+		return array(
 			'className'         => $this->get_schema_string(),
 			'columns'           => $this->get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),
-			'contentVisibility' => $this->get_schema_content_visibility(),
-			'isPreview'         => $this->get_schema_boolean( false ),
 			'rows'              => $this->get_schema_number( wc_get_theme_support( 'product_blocks::default_rows', 3 ) ),
-		];
+			'categories'        => $this->get_schema_list_ids(),
+			'catOperator'       => array(
+				'type'    => 'string',
+				'default' => 'any',
+			),
+			'contentVisibility' => $this->get_schema_content_visibility(),
+			'align'             => $this->get_schema_align(),
+			'alignButtons'      => $this->get_schema_boolean( false ),
+			'isPreview'         => $this->get_schema_boolean( false ),
+		);
 	}
 
 	/**
