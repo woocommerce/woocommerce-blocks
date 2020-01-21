@@ -66,15 +66,28 @@ const ActiveFiltersBlock = ( {
 		);
 	};
 
-	if ( ! hasFilters() && ! isEditor ) {
-		return null;
-	}
-
 	const TagName = `h${ blockAttributes.headingLevel }`;
 	const listClasses = classnames( 'wc-block-active-filters-list', {
 		'wc-block-active-filters-list--chips':
 			blockAttributes.displayStyle === 'chips',
 	} );
+
+	const clearAllButton = (
+		<button
+			className="wc-block-active-filters__clear-all"
+			onClick={ () => {
+				setMinPrice( null );
+				setMaxPrice( null );
+				setProductAttributes( [] );
+			} }
+		>
+			{ __( 'Clear All', 'woo-gutenberg-products-block' ) }
+		</button>
+	);
+	const noFiltersLabel = __(
+		'No filters enabled.',
+		'woo-gutenberg-products-block'
+	);
 
 	return (
 		<Fragment>
@@ -101,16 +114,7 @@ const ActiveFiltersBlock = ( {
 						</Fragment>
 					) }
 				</ul>
-				<button
-					className="wc-block-active-filters__clear-all"
-					onClick={ () => {
-						setMinPrice( null );
-						setMaxPrice( null );
-						setProductAttributes( [] );
-					} }
-				>
-					{ __( 'Clear All', 'woo-gutenberg-products-block' ) }
-				</button>
+				{ hasFilters() ? clearAllButton : noFiltersLabel }
 			</div>
 		</Fragment>
 	);
