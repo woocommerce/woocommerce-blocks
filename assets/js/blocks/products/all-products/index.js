@@ -53,9 +53,11 @@ const blockSettings = {
 	 */
 	save( { attributes } ) {
 		const data = {
-			'data-attributes': JSON.stringify( attributes ),
+			'data-attributes': JSON.stringify(
+				attributes,
+				Object.keys( attributes ).sort()
+			),
 		};
-
 		return (
 			<div
 				className={ getBlockClassName(
@@ -83,7 +85,22 @@ registerBlockType( 'woocommerce/all-products', {
 			attributes: Object.assign( {}, blockSettings.attributes, {
 				rows: { type: 'number', default: 1 },
 			} ),
-			save: blockSettings.save,
+			save( { attributes } ) {
+				const data = {
+					'data-attributes': JSON.stringify( attributes ),
+				};
+				return (
+					<div
+						className={ getBlockClassName(
+							'wc-block-all-products',
+							attributes
+						) }
+						{ ...data }
+					>
+						<InnerBlocks.Content />
+					</div>
+				);
+			},
 		},
 	],
 } );
