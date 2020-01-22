@@ -17,16 +17,22 @@ const withDefaultAttributes = createHigherOrderComponent(
 			const blockType = getBlockType( props.block.name );
 
 			if ( blockType.name.startsWith( 'woocommerce/' ) ) {
+				const attributes = Object.assign( {}, props.attributes );
+
 				Object.keys( blockType.attributes ).map( ( key ) => {
 					if (
-						typeof props.attributes[ key ] === 'undefined' &&
+						typeof attributes[ key ] === 'undefined' &&
 						typeof blockType.defaults !== 'undefined' &&
 						typeof blockType.defaults[ key ] !== 'undefined'
 					) {
-						props.attributes[ key ] = blockType.defaults[ key ];
+						attributes[ key ] = blockType.defaults[ key ];
 					}
 					return key;
 				} );
+
+				return (
+					<BlockListBlock attributes={ attributes } { ...props } />
+				);
 			}
 
 			return <BlockListBlock { ...props } />;
