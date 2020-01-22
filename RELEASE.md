@@ -92,9 +92,9 @@ _Outcomes_: __Version numbers updated in source code & developers can test tagge
     - The command should look like this: `cd /Users/{YOU}/blocks-deployment/woo-gutenberg-products-block-svn && svn ci -m "Release 2.5.11, see readme.txt for changelog."`
   - Commit should complete successfully with a message like `Committed revision 2231217.`.
 - Confirm that the WPORG release is updated and correct:
-  - Changelog, `Version` & `Last updated` on https://wordpress.org/plugins/woo-gutenberg-products-block/
-  - Confirm svn tag is correct, e.g. [2.5.11](https://plugins.svn.wordpress.org/woo-gutenberg-products-block/tags/2.5.11/)
-  - Confirm WooCommerce.com plugin page is updated https://woocommerce.com/products/woocommerce-gutenberg-products-block/
+  - Changelog, `Version` & `Last updated` on [WPORG plugin page](https://wordpress.org/plugins/woo-gutenberg-products-block/).
+  - Confirm svn tag is correct, e.g. [2.5.11](https://plugins.svn.wordpress.org/woo-gutenberg-products-block/tags/2.5.11/).
+  - Confirm [WooCommerce.com plugin page](https://woocommerce.com/products/woocommerce-gutenberg-products-block/) is updated.
   - Download zip and smoke test.
   - Test updating plugin from previous version.
     - Recommended: test existing WooCommerce Blocks content works correctly after update (no block validation errors).
@@ -116,12 +116,13 @@ We have _major_, _minor_ and _patch_ releases.
 
 For example:
 
-- version == 2.5.11 is a _patch_ release
+- version == 2.5.11
   - 2 == _major_ version; has breaking changes or major new features
   - 5 == _minor_ version; has new features
   - 11 == _patch_, aka point / revision / fix; has bug fixes and improvements to existing features
-- 2.6 is a _minor_ release
-- 3.0 is a _major_ release
+- 2.0 is a _major_ release
+- 2.5 is a _minor_ release
+- 2.5.11 is a _patch_ release
 
 There are some differences to our release process for each kind of release - these are detailed in the steps above.
 
