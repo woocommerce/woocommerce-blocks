@@ -53,7 +53,7 @@ _Outcome_: __Release branch has all relevant changes merged & pushed.__
 ### Prepare release
 #### Ensure release branch readme is up to date
 - Run changelog script `npm run changelog` to get changelog txt for readme. Changelog content will be output to screen by script.
-- Add changelog section for release, e.g. `= 2.5.11 - 2020-01-20 =`.
+- Add changelog section for release, e.g. [`= 2.5.11 - 2020-01-20 =`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/commit/74a41881bfa456a2167a52aaeb4871352255e328).
 - Copy-paste the changelog content into `readme.txt`.
 - Make any other changes to readme as needed - e.g. support versions changing, new blocks. 
 - Push readme changes to release branch on origin repo.
@@ -61,13 +61,15 @@ _Outcome_: __Release branch has all relevant changes merged & pushed.__
 _Outcome_: __`readme.txt` is up to date with changes for release.__
 
 #### Build zip & smoke test
-- Ensure you are on the tip of the release branch.
+- Ensure you are on the tip of the release branch, e.g. `git pull origin release/2.5`
 - Update dependencies – `npm ci`.
 - Run a production build - `npm run build`.
 - Run package script to get a zip to test `npm run package-plugin`.
 - Smoke test built release zip:
-  - Recommend doing this in a clean environment, e.g. Jurassic.Ninja site.
-  - Sanity check - check correct blocks exist and function.
+  - __Recommended__: 
+    - At least one other person should test the built zip - ask a teammate to help out.
+    - Test a clean environment, e.g. Jurassic.Ninja site.
+  - Confidence check - check correct blocks exist and function.
   - Test to confirm new features/fixes are working correctly.
   - Smoke test – test a cross section of core functionality.
 
@@ -78,7 +80,7 @@ _Outcome_: __Confident that source code is ready for release: intended fixes are
 - Prepare tagged release on github `npm run deploy`. 
   - Note: the script automatically updates version numbers (commits on your behalf).
 - Edit release, add changelog info to Github release notes.
-- Check release repo tag is correct - checkout, smoke test/sanity check.
+- Check release repo tag is correct - checkout, smoke test/confidence check.
 
 _Outcomes_: __Version numbers updated in source code & developers can test tagged release.__
 
