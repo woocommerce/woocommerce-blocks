@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { useEffect } from '@wordpress/element';
 import { createHigherOrderComponent } from '@wordpress/compose';
 const { getBlockType } = wp.blocks;
 const { addFilter } = wp.hooks;
@@ -15,25 +16,31 @@ const withDefaultAttributes = createHigherOrderComponent(
 	( BlockListBlock ) => {
 		return function( props ) {
 			const blockType = getBlockType( props.block.name );
+			const attributes = Object.assign( {}, props.attributes || {} );
 
-			if ( blockType.name.startsWith( 'woocommerce/' ) ) {
-				const newProps = Object.assign( {}, props );
-
+			if (
+				props.block.name.startsWith( 'woocommerce/' ) &&
+				typeof blockType.attributes !== 'undefined' &&
+				typeof blockType.defaults !== 'undefined'
+			) {
 				Object.keys( blockType.attributes ).map( ( key ) => {
 					if (
-						typeof newProps.attributes[ key ] === 'undefined' &&
-						typeof blockType.defaults !== 'undefined' &&
+						typeof attributes[ key ] === 'undefined' &&
 						typeof blockType.defaults[ key ] !== 'undefined'
 					) {
-						newProps.attributes[ key ] = blockType.defaults[ key ];
+						attributes[ key ] = blockType.defaults[ key ];
 					}
 					return key;
 				} );
-
-				return <BlockListBlock { ...newProps } />;
 			}
 
-			return <BlockListBlock { ...props } />;
+			useEffect( () => {
+				if ( props.block.name.startsWith( 'woocommerce/' ) ) {
+					props.setAttributes( attributes );
+				}
+			}, [] );
+
+			return <BlockListBlock { ...props } attributes={ attributes } />;
 		};
 	},
 	'withDefaultAttributes'
