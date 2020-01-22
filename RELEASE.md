@@ -1,5 +1,7 @@
 # Releases
 
+This document outlines the process of releasing new versions of the blocks plugin.
+
 ## Prerequisites - what you need to release WooCommerce Blocks
 - You should be set up for development - for more info see [`CONTRIBUTING.md`](CONTRIBUTING.md).
 - Install & set up [GitHub hub](https://hub.github.com) tools.
@@ -20,7 +22,7 @@ _Outcome_: __You are equipped to ship a release!__
 - Release milestone should exist (!).
 - Ensure all issues/PRs intended for this release are merged, closed and assigned to release milestone.
 - All PRs should have changelog entry, or `skip-changelog` tag.
-- Check with team to confirm any outstanding or in progress work.
+- Check with the team to confirm any outstanding or in progress work.
 
 Note: changelog should be formatted like this in PR description. Note the preceding `> ` - this is required by changelog script.
 
@@ -36,7 +38,7 @@ _Outcome_: __Team is aware of release and in agreement about what fixes & featur
 - Make release branch if needed (major/minor).
   - For fix releases, the branch should already exist.
   - Otherwise create branch: `release/X.X`.
-- Update your local checkout to tip of the release branch.
+- Update your local checkout to the tip of the release branch.
 - Cherry pick all PRs into the release branch:
   - If branch is already labelled `status: cherry-picked 🍒` then continue to next PR.
   - Ideally, use GitHub Hub to cherry pick the PR - `hub am -3 {http://URL-TO-PR}`. 
@@ -59,7 +61,7 @@ _Outcome_: __Release branch has all relevant changes merged & pushed.__
 _Outcome_: __`readme.txt` is up to date with changes for release.__
 
 #### Build zip & smoke test
-- Ensure you are on tip of release branch.
+- Ensure you are on the tip of the release branch.
 - Update dependencies – `npm ci`.
 - Run a production build - `npm run build`.
 - Run package script to get a zip to test `npm run package-plugin`.
@@ -80,7 +82,7 @@ _Outcome_: __Confident that source code is ready for release: intended fixes are
 
 _Outcomes_: __Version numbers updated in source code & developers can test tagged release.__
 
-##### Release to WPORG
+#### Release to WPORG
 - Push release to WPORG `npm run release`.
 - Note that this may happen a day or so after Github release.
 - FYI: Sometimes we make small changes (e.g. readme only) by [committing directly to svn repo](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/#editing-existing-files).

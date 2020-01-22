@@ -11,6 +11,8 @@ Thanks for your interest in contributing to WooCommerce Blocks! Below are some d
 -   [`composer`](https://getcomposer.org)
 -   A WordPress development environment - e.g. [`VVV`](https://varyingvagrantvagrants.org) or [`docker`](https://www.docker.com).
 
+See [`package.json` `engines`](package.json) for details of required versions.
+
 ### Clone repo & install code dependencies
 
 -   Clone this repository locally - `git clone https://github.com/woocommerce/woocommerce-gutenberg-products-block.git`.
