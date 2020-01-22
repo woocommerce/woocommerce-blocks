@@ -22,10 +22,16 @@
 
 		li {
 			margin: 0 0 $gap-smallest;
-			padding: 0 16px 0 0;
+			padding: 0;
 			list-style: none outside;
 			clear: both;
-			position: relative;
+
+			.wc-block-active-filters-list-item__name {
+				font-weight: bold;
+				display: block;
+				position: relative;
+				padding: 0 16px 0 0;
+			}
 		}
 
 		button {

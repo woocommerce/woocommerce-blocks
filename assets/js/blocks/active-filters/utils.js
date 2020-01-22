@@ -41,30 +41,37 @@ export const formatPriceRange = ( minPrice, maxPrice ) => {
  * @param {string} type Type string.
  * @param {string} name Name string.
  * @param {Function} removeCallback Callback to remove item.
+ * @param {boolean} showLabel Should the label be shown for this item?
  */
-export const renderRemovableListItem = (
+export const renderRemovableListItem = ( {
 	type,
 	name,
-	removeCallback = () => {}
-) => {
+	removeCallback = () => {},
+	showLabel = true,
+} ) => {
 	return (
 		<li
 			className="wc-block-active-filters-list-item"
 			key={ type + ':' + name }
 		>
-			<span className="wc-block-active-filters-list-item__type">
-				{ type + ': ' }
-			</span>
-			<strong className="wc-block-active-filters-list-item__name">
+			{ showLabel && (
+				<span className="wc-block-active-filters-list-item__type">
+					{ type + ': ' }
+				</span>
+			) }
+			<span className="wc-block-active-filters-list-item__name">
 				{ name }
-			</strong>
-			<button onClick={ removeCallback }>
-				{ sprintf(
-					/* translators: %s attribute value used in the filter. For example: yellow, green, small, large. */
-					__( 'Remove %s filter', 'woo-gutenberg-products-block' ),
-					name
-				) }
-			</button>
+				<button onClick={ removeCallback }>
+					{ sprintf(
+						/* translators: %s attribute value used in the filter. For example: yellow, green, small, large. */
+						__(
+							'Remove %s filter',
+							'woo-gutenberg-products-block'
+						),
+						name
+					) }
+				</button>
+			</span>
 		</li>
 	);
 };

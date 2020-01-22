@@ -34,14 +34,14 @@ const ActiveFiltersBlock = ( {
 		if ( ! Number.isFinite( minPrice ) && ! Number.isFinite( maxPrice ) ) {
 			return null;
 		}
-		return renderRemovableListItem(
-			__( 'Price', 'woo-gutenberg-products-block' ),
-			formatPriceRange( minPrice, maxPrice ),
-			() => {
+		return renderRemovableListItem( {
+			type: __( 'Price', 'woo-gutenberg-products-block' ),
+			name: formatPriceRange( minPrice, maxPrice ),
+			removeCallback: () => {
 				setMinPrice( undefined );
 				setMaxPrice( undefined );
-			}
-		);
+			},
+		} );
 	}, [ minPrice, maxPrice, formatPriceRange ] );
 
 	const activeAttributeFilters = useMemo( () => {
@@ -54,6 +54,7 @@ const ActiveFiltersBlock = ( {
 					attributeObject={ attributeObject }
 					slugs={ attribute.slug }
 					key={ attribute.attribute }
+					operator={ attribute.operator }
 				/>
 			);
 		} );
@@ -86,14 +87,26 @@ const ActiveFiltersBlock = ( {
 				<ul className={ listClasses }>
 					{ isEditor ? (
 						<Fragment>
-							{ renderRemovableListItem(
-								__( 'Size', 'woo-gutenberg-products-block' ),
-								__( 'Small', 'woo-gutenberg-products-block' )
-							) }
-							{ renderRemovableListItem(
-								__( 'Color', 'woo-gutenberg-products-block' ),
-								__( 'Blue', 'woo-gutenberg-products-block' )
-							) }
+							{ renderRemovableListItem( {
+								type: __(
+									'Size',
+									'woo-gutenberg-products-block'
+								),
+								name: __(
+									'Small',
+									'woo-gutenberg-products-block'
+								),
+							} ) }
+							{ renderRemovableListItem( {
+								type: __(
+									'Color',
+									'woo-gutenberg-products-block'
+								),
+								name: __(
+									'Blue',
+									'woo-gutenberg-products-block'
+								),
+							} ) }
 						</Fragment>
 					) : (
 						<Fragment>
