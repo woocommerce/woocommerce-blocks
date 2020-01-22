@@ -344,7 +344,12 @@ class ProductQuery {
 
 		// Select only used tax classes to avoid unwanted calculations.
 		$product_tax_classes = $wpdb->get_col( "SELECT DISTINCT tax_class FROM {$wpdb->wc_product_meta_lookup};" );
-		$or_queries          = [];
+
+		if ( empty( $product_tax_classes ) ) {
+			return '';
+		}
+
+		$or_queries = [];
 
 		// We need to adjust the filter for each possible tax class and combine the queries into one.
 		foreach ( $product_tax_classes as $tax_class ) {
@@ -354,10 +359,6 @@ class ProductQuery {
 				$tax_class,
 				$adjusted_price_filter
 			);
-		}
-
-		if ( empty( $or_queries ) ) {
-			return '';
 		}
 
 		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
