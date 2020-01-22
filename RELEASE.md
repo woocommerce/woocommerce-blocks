@@ -20,7 +20,7 @@ _Outcome_: __You are equipped to ship a release!__
 ### Lead-up to release
 #### Ensure release development is complete
 - For _major_ and _minor_ releases, we use ZenHub.
-- For _patch_ releases, we use GitHube milestones - [example](https://github.com/woocommerce/woocommerce-gutenberg-products-block/milestone/41).
+- For _patch_ releases, we use GitHub milestones - [example](https://github.com/woocommerce/woocommerce-gutenberg-products-block/milestone/41).
 - Ensure all issues/PRs intended for this release are merged, closed and linked to release.
 - All PRs should have changelog entry, or `skip-changelog` tag.
 - Check with the team to confirm any outstanding or in progress work.
@@ -69,15 +69,15 @@ _Outcome_: __Release branch has `readme.txt` is updated with release details.__
 - Smoke test built release zip:
   - __Recommended__: 
     - At least one other person should test the built zip - ask a teammate to help out.
-    - Test a clean environment, e.g. Jurassic.Ninja site.
-  - Confidence check - check correct blocks exist and function.
+    - Test in a clean environment, e.g. Jurassic.Ninja site.
+  - Confidence check - check blocks are available and function.
   - Test to confirm new features/fixes are working correctly.
   - Smoke test – test a cross section of core functionality.
 
 _Outcome_: __Confident that source code is ready for release: intended fixes are working correctly, no release blockers or build issues.__
 
 ### Release!
-#### Release to GitHub
+#### Tag release on GitHub
 - Prepare tagged release on github `npm run deploy`. 
   - Note: the script automatically updates version numbers (commits on your behalf).
 - Edit release, add changelog info to Github release notes.
@@ -86,11 +86,11 @@ _Outcome_: __Confident that source code is ready for release: intended fixes are
 _Outcomes_: __Version numbers updated in source code & developers can test tagged release.__
 
 #### Release to WPORG
-- Run `npm run release`.
-  - Note: this script clones a copy of the source code to your home folder, and outputs the svn command to push this up to WPORG.
+- Run `npm run release`. This script clones a copy of the source code to your home folder, and outputs an `svn` command to push release up to WPORG.
 - Push release to WPORG using `svn`.
-  - Run svn command to commit to WPORG svn repo, which will look something like this: `cd /Users/{YOU}/blocks-deployment/woo-gutenberg-products-block-svn && svn ci -m "Release 2.5.11, see readme.txt for changelog."`
-  - Should complete successfully with a message like `Committed revision 2231217.`.
+  - Run generated svn command to commit to WPORG svn repo.
+    - The command should look like this: `cd /Users/{YOU}/blocks-deployment/woo-gutenberg-products-block-svn && svn ci -m "Release 2.5.11, see readme.txt for changelog."`
+  - Commit should complete successfully with a message like `Committed revision 2231217.`.
 - Confirm that the WPORG release is updated and correct:
   - Changelog, `Version` & `Last updated` on https://wordpress.org/plugins/woo-gutenberg-products-block/
   - Confirm svn tag is correct, e.g. [2.5.11](https://plugins.svn.wordpress.org/woo-gutenberg-products-block/tags/2.5.11/)
