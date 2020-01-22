@@ -87,7 +87,6 @@ _Outcomes_: __Version numbers updated in source code & developers can test tagge
 #### Release to WPORG
 - Push release to WPORG `npm run release`.
 - Note that this may happen a day or so after Github release.
-- FYI: Sometimes we make small changes (e.g. readme only) by [committing directly to svn repo](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/#editing-existing-files).
 
 _Outcome_: __Customers can install/update via WPORG; WPORG plugin page is up to date__.
 
@@ -97,6 +96,30 @@ _Outcome_: __Customers can install/update via WPORG; WPORG plugin page is up to 
 - If major/minor release, update version on master with dev suffix, e.g. [`2.6-dev`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/commit/e27f053e7be0bf7c1d376f5bdb9d9999190ce158).
 - Code changes should already be present on master - all dev happens on `master`.
 
+## Appendix: updating a specific file on WPORG 
+
+Sometimes, we need to update a single file in WordPress.org without wanting to do a full release, for example, updating the `readme.txt` versions or descriptions. In order to do that, refer to the _[Editing Existing Files](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/#editing-existing-files)_ section of the Subversion guide in developer.wordpress.org or follow these steps:
+
+1. Checkout the plugin repo:
+
+```
+svn co "http://plugins.svn.wordpress.org/woo-gutenberg-products-block/"
+cd woo-gutenberg-products-block
+```
+
+2. Modify the files you want to change in `trunk` or `tags/x.y.z`.
+
+3. Check your changes with:
+
+```
+svn stat
+svn diff
+```
+
+4. Commit the changes to the server:
+
+```
+svn ci -m "Updated readme.txt description"
 
 ## `@todo` Missing info to link to / document
 - Release milestones
