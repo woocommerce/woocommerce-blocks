@@ -68,9 +68,10 @@ _Outcome_: __Release branch has `readme.txt` is updated with release details.__
 - Run a production build - `npm run build`.
 - Run package script to get a zip to test `npm run package-plugin`.
 - Smoke test built release zip:
-  - __Recommended__: 
-    - At least one other person should test the built zip - ask a teammate to help out.
-    - Test in a clean environment, e.g. Jurassic.Ninja site.
+  - At least one other person should test the built zip - ask a teammate to help out.
+  - Test in a clean environment, e.g. Jurassic.Ninja site.
+  - Test existing WooCommerce Blocks content works correctly after update (no block validation errors).
+  - Test to confirm blocks are available and work correctly in oldest supported WordPress version (e.g. 5.0).
   - Confidence check - check blocks are available and function.
   - Test to confirm new features/fixes are working correctly.
   - Smoke test – test a cross section of core functionality.
@@ -98,7 +99,6 @@ _Outcomes_: __Version numbers updated in source code & developers can test tagge
   - Confirm [WooCommerce.com plugin page](https://woocommerce.com/products/woocommerce-gutenberg-products-block/) is updated.
   - Download zip and smoke test.
   - Test updating plugin from previous version.
-    - Recommended: test existing WooCommerce Blocks content works correctly after update (no block validation errors).
 
 _Outcome_: __Customers can install/update via WPORG; WPORG plugin page is up to date__.
 
