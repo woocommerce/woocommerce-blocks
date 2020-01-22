@@ -2,11 +2,26 @@
 
 Thanks for your interest in contributing to WooCommerce Blocks! Below are some developer docs for working with the project.
 
-To get started you need to install all required dependencies by running the following command in the plugin directory.
+## Get started
 
-```bash
-npm install && composer install
-```
+### Required developer tools
+
+-   [`git`](https://git-scm.com)
+-   [`npm` and `node.js`](https://nodejs.org)
+-   [`composer`](https://getcomposer.org)
+-   A WordPress development environment - e.g. [`VVV`](https://varyingvagrantvagrants.org) or [`docker`](https://www.docker.com).
+
+### Clone repo & install code dependencies
+
+-   Clone this repository locally - `git clone https://github.com/woocommerce/woocommerce-gutenberg-products-block.git`.
+-   Change directory to your repo folder, e.g. `cd woocommerce-gutenberg-products-block`.
+-   Install javascript and php dependencies - `npm install && composer install`.
+
+### Run the plugin
+
+-   Ensure the repo folder is in the `wp-content/plugins` folder of your WordPress environment.
+-   Activate the `WooCommerce Blocks` plugin (should be dev version, e.g. `2.6.0-dev`).
+-   Edit a page or post in block editor - you should see WooCommerce blocks in the block inserter!
 
 ## NPM commands
 

@@ -1,6 +1,7 @@
 # Releases
 
 ## Prerequisites - what you need to release WooCommerce Blocks
+- You should be set up for development - for more info see [`CONTRIBUTING.md`](CONTRIBUTING.md).
 - Install & set up [GitHub hub](https://hub.github.com) tools.
 - Configure a GitHub token for release scripts to use.
   - https://github.com/settings/tokens
