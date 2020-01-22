@@ -36,10 +36,10 @@ Note: changelog should be formatted like this in PR description. Note the preced
 _Outcome_: __Team is aware of release and in agreement about what fixes & features are included.__
 
 #### Ensure release branch includes all relevant fixes
-- Make release branch if needed.
+- Make release branch (if needed).
   - For _major_ and _minor_ releases, create branch: `release/X.X`.
   - For _patch_ releases, the branch should already exist.
-- Update your local checkout to the tip of the release branch.
+- Ensure your local checkout is updated to the tip of the release branch.
 - For _patch_ releases, cherry pick relevant PRs into the release branch:
   - If PR is already labelled `status: cherry-picked 🍒` then continue to next PR.
   - Ideally, use GitHub Hub to cherry pick the PR - `hub am -3 {http://URL-TO-PR}`. 
@@ -58,6 +58,7 @@ _Outcome_: __Release branch has all relevant changes merged & pushed.__
 - Copy-paste the changelog content into `readme.txt`.
 - Make any other changes to readme as needed - e.g. support versions changing, new blocks. 
 - Push readme changes to release branch on origin repo.
+  - Note: you can push your readme changes directly to branch – no need for a PR & review process.
 
 _Outcome_: __Release branch has `readme.txt` is updated with release details.__
 
@@ -105,7 +106,6 @@ _Outcome_: __Customers can install/update via WPORG; WPORG plugin page is up to 
 #### Update `master` with release changes
 - Ensure changelog is up to date on master.
 - For _major_ & _minor_ releases, update version on master with dev suffix, e.g. [`2.6-dev`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/commit/e27f053e7be0bf7c1d376f5bdb9d9999190ce158).
-- Code changes should already be present on master - all dev happens on `master`.
 
 #### Clean up release milestone / Zenhub
 - For _patch_ releases, close the milestone in GitHub.
@@ -158,3 +158,4 @@ svn ci -m "Updated readme.txt description"
 - Policy for inclusion in major / minor / fix releases - i.e. how we use versioning 
 - ["Legacy"](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/add/release-process/assets/js/legacy/README.md) stuff - is this relevant to releases?
 - `jetpack-autoloader` versions in this plugin vs. wc-admin vs. WooCommerce core
+```
