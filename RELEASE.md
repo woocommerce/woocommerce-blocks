@@ -19,8 +19,9 @@ _Outcome_: __You are equipped to ship a release!__
 ## Release process
 ### Lead-up to release
 #### Ensure release development is complete
-- Release milestone should exist (!).
-- Ensure all issues/PRs intended for this release are merged, closed and assigned to release milestone.
+- For _major_ and _minor_ releases, we use ZenHub.
+- For _patch_ releases, we use GitHube milestones - [example](https://github.com/woocommerce/woocommerce-gutenberg-products-block/milestone/41).
+- Ensure all issues/PRs intended for this release are merged, closed and linked to release.
 - All PRs should have changelog entry, or `skip-changelog` tag.
 - Check with the team to confirm any outstanding or in progress work.
 
@@ -35,9 +36,9 @@ Note: changelog should be formatted like this in PR description. Note the preced
 _Outcome_: __Team is aware of release and in agreement about what fixes & features are included.__
 
 #### Ensure release branch includes all relevant fixes
-- Make release branch if needed (major/minor).
-  - For fix releases, the branch should already exist.
-  - Otherwise create branch: `release/X.X`.
+- Make release branch if needed.
+  - For _major_ and _minor_ releases, create branch: `release/X.X`.
+  - For _patch_ releases, the branch should already exist.
 - Update your local checkout to the tip of the release branch.
 - Cherry pick all PRs into the release branch:
   - If branch is already labelled `status: cherry-picked 🍒` then continue to next PR.
@@ -103,8 +104,26 @@ _Outcome_: __Customers can install/update via WPORG; WPORG plugin page is up to 
 ### After release
 #### Update `master` with release changes
 - Ensure changelog is up to date on master.
-- If major/minor release, update version on master with dev suffix, e.g. [`2.6-dev`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/commit/e27f053e7be0bf7c1d376f5bdb9d9999190ce158).
+- For _major_ & _minor_ releases, update version on master with dev suffix, e.g. [`2.6-dev`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/commit/e27f053e7be0bf7c1d376f5bdb9d9999190ce158).
 - Code changes should already be present on master - all dev happens on `master`.
+
+#### Clean up release milestone / Zenhub
+- For _patch_ releases, close the milestone in GitHub.
+- For _major_ & _minor_ releases - tbc
+
+## Appendix: Versions
+We have _major_, _minor_ and _patch_ releases. 
+
+For example:
+
+- version == 2.5.11 is a _patch_ release
+  - 2 == _major_ version; has breaking changes or major new features
+  - 5 == _minor_ version; has new features
+  - 11 == _patch_, aka point / revision / fix; has bug fixes and improvements to existing features
+- 2.6 is a _minor_ release
+- 3.0 is a _major_ release
+
+There are some differences to our release process for each kind of release - these are detailed in the steps above.
 
 ## Appendix: updating a specific file on WPORG 
 
