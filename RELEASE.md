@@ -40,8 +40,8 @@ _Outcome_: __Team is aware of release and in agreement about what fixes & featur
   - For _major_ and _minor_ releases, create branch: `release/X.X`.
   - For _patch_ releases, the branch should already exist.
 - Update your local checkout to the tip of the release branch.
-- Cherry pick all PRs into the release branch:
-  - If branch is already labelled `status: cherry-picked 🍒` then continue to next PR.
+- For _patch_ releases, cherry pick relevant PRs into the release branch:
+  - If PR is already labelled `status: cherry-picked 🍒` then continue to next PR.
   - Ideally, use GitHub Hub to cherry pick the PR - `hub am -3 {http://URL-TO-PR}`. 
   - If there are serious conflicts or extensive differences between `master` and release branch, you may need to take more care:
     - Manually cherry pick individual commits using git - `git cherry-pick {COMMIT-HASH}`.
@@ -59,7 +59,7 @@ _Outcome_: __Release branch has all relevant changes merged & pushed.__
 - Make any other changes to readme as needed - e.g. support versions changing, new blocks. 
 - Push readme changes to release branch on origin repo.
 
-_Outcome_: __`readme.txt` is up to date with changes for release.__
+_Outcome_: __Release branch has `readme.txt` is updated with release details.__
 
 #### Build zip & smoke test
 - Ensure you are on the tip of the release branch, e.g. `git pull origin release/2.5`
