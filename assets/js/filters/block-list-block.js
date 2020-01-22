@@ -1,47 +1,65 @@
 /**
  * External dependencies
  */
-import { useEffect } from '@wordpress/element';
+import { Component } from '@wordpress/element';
 import { createHigherOrderComponent } from '@wordpress/compose';
 const { getBlockType } = wp.blocks;
 const { addFilter } = wp.hooks;
 
 /**
- * withDefaultAttributes HOC for editor.BlockListBlock. This sets defaults
- * when a block is loaded.
+ * withDefaultAttributes HOC for editor.BlockListBlock.
  *
- *  @param	object BlockListBlock The BlockListBlock element.
+ * @param	object BlockListBlock The BlockListBlock element.
  */
 const withDefaultAttributes = createHigherOrderComponent(
 	( BlockListBlock ) => {
-		return function( props ) {
-			const blockType = getBlockType( props.block.name );
-			const attributes = Object.assign( {}, props.attributes || {} );
+		class WrappedComponent extends Component {
+			constructor() {
+				super( ...arguments );
 
-			if (
-				props.block.name.startsWith( 'woocommerce/' ) &&
-				typeof blockType.attributes !== 'undefined' &&
-				typeof blockType.defaults !== 'undefined'
-			) {
-				Object.keys( blockType.attributes ).map( ( key ) => {
-					if (
-						typeof attributes[ key ] === 'undefined' &&
-						typeof blockType.defaults[ key ] !== 'undefined'
-					) {
-						attributes[ key ] = blockType.defaults[ key ];
-					}
-					return key;
-				} );
+				const blockType = getBlockType( this.props.block.name );
+				const attributes = Object.assign(
+					{},
+					this.props.attributes || {}
+				);
+
+				if (
+					this.props.block.name.startsWith( 'woocommerce/' ) &&
+					typeof blockType.attributes !== 'undefined' &&
+					typeof blockType.defaults !== 'undefined'
+				) {
+					Object.keys( blockType.attributes ).map( ( key ) => {
+						if (
+							typeof attributes[ key ] === 'undefined' &&
+							typeof blockType.defaults[ key ] !== 'undefined'
+						) {
+							attributes[ key ] = blockType.defaults[ key ];
+						}
+						return key;
+					} );
+				}
+
+				this.attributesWithDefaults = attributes;
 			}
 
-			useEffect( () => {
-				if ( props.block.name.startsWith( 'woocommerce/' ) ) {
-					props.setAttributes( attributes );
-				}
-			}, [] );
+			componentDidMount() {
+				const { block, setAttributes } = this.props;
 
-			return <BlockListBlock { ...props } attributes={ attributes } />;
-		};
+				if ( block.name.startsWith( 'woocommerce/' ) ) {
+					setAttributes( this.attributesWithDefaults );
+				}
+			}
+
+			render() {
+				return (
+					<BlockListBlock
+						{ ...this.props }
+						attributes={ this.attributesWithDefaults }
+					/>
+				);
+			}
+		}
+		return WrappedComponent;
 	},
 	'withDefaultAttributes'
 );
