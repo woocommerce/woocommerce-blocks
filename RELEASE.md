@@ -85,8 +85,18 @@ _Outcome_: __Confident that source code is ready for release: intended fixes are
 _Outcomes_: __Version numbers updated in source code & developers can test tagged release.__
 
 #### Release to WPORG
-- Push release to WPORG `npm run release`.
-- Note that this may happen a day or so after Github release.
+- Run `npm run release`.
+  - Note: this script clones a copy of the source code to your home folder, and outputs the svn command to push this up to WPORG.
+- Push release to WPORG using `svn`.
+  - Run svn command to commit to WPORG svn repo, which will look something like this: `cd /Users/{YOU}/blocks-deployment/woo-gutenberg-products-block-svn && svn ci -m "Release 2.5.11, see readme.txt for changelog."`
+  - Should complete successfully with a message like `Committed revision 2231217.`.
+- Confirm that the WPORG release is updated and correct:
+  - Changelog, `Version` & `Last updated` on https://wordpress.org/plugins/woo-gutenberg-products-block/
+  - Confirm svn tag is correct, e.g. [2.5.11](https://plugins.svn.wordpress.org/woo-gutenberg-products-block/tags/2.5.11/)
+  - Confirm WooCommerce.com plugin page is updated https://woocommerce.com/products/woocommerce-gutenberg-products-block/
+  - Download zip and smoke test.
+  - Test updating plugin from previous version.
+    - Recommended: test existing WooCommerce Blocks content works correctly after update (no block validation errors).
 
 _Outcome_: __Customers can install/update via WPORG; WPORG plugin page is up to date__.
 
