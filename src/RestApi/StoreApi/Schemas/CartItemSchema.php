@@ -255,20 +255,22 @@ class CartItemSchema extends AbstractSchema {
 	 * @return string
 	 */
 	protected function get_product_summary( \WC_Product $product ) {
-		$description       = $product->get_description();
 		$short_description = $product->get_short_description();
 
-		// Select description based on availability.
-		$source        = \trim( $short_description ? $short_description : $description );
-		$source_length = \strlen( \wp_strip_all_tags( $source ) );
-
-		// Try to extract the first sentence only if the description is too long.
-		if ( 150 < $source_length ) {
-			$source_p = \wpautop( $source );
-			$source   = \strstr( $source_p, '</p>' ) ? \substr( $source_p, 0, \strpos( $source_p, '</p>' ) + 4 ) : \wc_trim_string( $source, 150 );
+		if ( $short_description ) {
+			return \wc_format_content( $short_description );
 		}
 
-		return \wc_format_content( $source );
+		$description = $product->get_description();
+		$length      = \strlen( \wp_strip_all_tags( $description ) );
+
+		// Try to extract the first sentence only if the description is too long.
+		if ( 150 < $length ) {
+			$description_p = \wpautop( $description );
+			$description   = \strstr( $description_p, '</p>' ) ? \substr( $description_p, 0, \strpos( $description_p, '</p>' ) + 4 ) : \wc_trim_string( $description, 150 );
+		}
+
+		return \wc_format_content( $description );
 	}
 
 	/**
