@@ -9,7 +9,7 @@ import React from 'react';
 import ReadMore from '../';
 
 export default {
-	title: 'ReadMore',
+	title: 'WooCommerce Blocks/base/ReadMore',
 	component: ReadMore,
 };
 
