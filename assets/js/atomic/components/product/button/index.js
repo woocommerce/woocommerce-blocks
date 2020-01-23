@@ -81,7 +81,7 @@ const useAddToCart = ( productId ) => {
 	};
 };
 
-const Event = window.Event || {};
+const Event = window.Event || null;
 
 const ProductButton = ( { product, className } ) => {
 	const {
