@@ -9,7 +9,7 @@
 	"packageRules": [
 		{
 			"packageNames": [ "automattic/jetpack-autoloader" ],
-			"rangeStrategy": "replace"
+			"rangeStrategy": "bump"
 		}
 	]
 }
