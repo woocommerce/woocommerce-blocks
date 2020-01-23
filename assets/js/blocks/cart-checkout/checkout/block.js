@@ -106,146 +106,141 @@ const Block = ( { shippingMethods = [], isEditor = false } ) => {
 					) }
 					stepNumber={ 2 }
 				>
-					<Fragment>
-						<InputRow>
-							<TextInput
-								label={ __(
-									'First name',
-									'woo-gutenberg-products-block'
-								) }
-								value={ shippingFields.firstName }
-								onChange={ ( newValue ) =>
-									setShippingFields( {
-										...shippingFields,
-										firstName: newValue,
-									} )
-								}
-							/>
-							<TextInput
-								label={ __(
-									'Surname',
-									'woo-gutenberg-products-block'
-								) }
-								value={ shippingFields.lastName }
-								onChange={ ( newValue ) =>
-									setShippingFields( {
-										...shippingFields,
-										lastName: newValue,
-									} )
-								}
-							/>
-						</InputRow>
+					<InputRow>
 						<TextInput
 							label={ __(
-								'Street address',
+								'First name',
 								'woo-gutenberg-products-block'
 							) }
-							value={ shippingFields.streetAddress }
+							value={ shippingFields.firstName }
 							onChange={ ( newValue ) =>
 								setShippingFields( {
 									...shippingFields,
-									streetAddress: newValue,
+									firstName: newValue,
 								} )
 							}
 						/>
 						<TextInput
 							label={ __(
-								'Apartment, suite, etc.',
+								'Surname',
 								'woo-gutenberg-products-block'
 							) }
-							value={ shippingFields.apartment }
+							value={ shippingFields.lastName }
 							onChange={ ( newValue ) =>
 								setShippingFields( {
 									...shippingFields,
-									apartment: newValue,
+									lastName: newValue,
 								} )
 							}
 						/>
-						<InputRow>
-							<ShippingCountryInput
-								label={ __(
-									'Country',
-									'woo-gutenberg-products-block'
-								) }
-								value={ shippingFields.country }
-								onChange={ ( newValue ) =>
-									setShippingFields( {
-										...shippingFields,
-										country: newValue,
-									} )
-								}
-							/>
-							<TextInput
-								label={ __(
-									'City',
-									'woo-gutenberg-products-block'
-								) }
-								value={ shippingFields.city }
-								onChange={ ( newValue ) =>
-									setShippingFields( {
-										...shippingFields,
-										city: newValue,
-									} )
-								}
-							/>
-						</InputRow>
-						<InputRow>
-							<TextInput
-								label={ __(
-									'County',
-									'woo-gutenberg-products-block'
-								) }
-								value={ shippingFields.county }
-								onChange={ ( newValue ) =>
-									setShippingFields( {
-										...shippingFields,
-										county: newValue,
-									} )
-								}
-							/>
-							<TextInput
-								label={ __(
-									'Postal code',
-									'woo-gutenberg-products-block'
-								) }
-								value={ shippingFields.postalCode }
-								onChange={ ( newValue ) =>
-									setShippingFields( {
-										...shippingFields,
-										postalCode: newValue,
-									} )
-								}
-							/>
-						</InputRow>
+					</InputRow>
+					<TextInput
+						label={ __(
+							'Street address',
+							'woo-gutenberg-products-block'
+						) }
+						value={ shippingFields.streetAddress }
+						onChange={ ( newValue ) =>
+							setShippingFields( {
+								...shippingFields,
+								streetAddress: newValue,
+							} )
+						}
+					/>
+					<TextInput
+						label={ __(
+							'Apartment, suite, etc.',
+							'woo-gutenberg-products-block'
+						) }
+						value={ shippingFields.apartment }
+						onChange={ ( newValue ) =>
+							setShippingFields( {
+								...shippingFields,
+								apartment: newValue,
+							} )
+						}
+					/>
+					<InputRow>
+						<ShippingCountryInput
+							label={ __(
+								'Country',
+								'woo-gutenberg-products-block'
+							) }
+							value={ shippingFields.country }
+							onChange={ ( newValue ) =>
+								setShippingFields( {
+									...shippingFields,
+									country: newValue,
+								} )
+							}
+						/>
 						<TextInput
-							type="tel"
 							label={ __(
-								'Phone',
+								'City',
 								'woo-gutenberg-products-block'
 							) }
-							value={ shippingFields.phone }
+							value={ shippingFields.city }
 							onChange={ ( newValue ) =>
 								setShippingFields( {
 									...shippingFields,
-									phone: newValue,
+									city: newValue,
 								} )
 							}
 						/>
-						<CheckboxControl
-							className="wc-block-checkout__use-address-for-billing"
+					</InputRow>
+					<InputRow>
+						<TextInput
 							label={ __(
-								'Use same address for billing',
+								'County',
 								'woo-gutenberg-products-block'
 							) }
-							checked={ shippingFields.useSameForBilling }
-							onChange={ () =>
+							value={ shippingFields.county }
+							onChange={ ( newValue ) =>
 								setShippingFields( {
 									...shippingFields,
-									useSameForBilling: ! shippingFields.useSameForBilling,
+									county: newValue,
 								} )
 							}
 						/>
-					</Fragment>
+						<TextInput
+							label={ __(
+								'Postal code',
+								'woo-gutenberg-products-block'
+							) }
+							value={ shippingFields.postalCode }
+							onChange={ ( newValue ) =>
+								setShippingFields( {
+									...shippingFields,
+									postalCode: newValue,
+								} )
+							}
+						/>
+					</InputRow>
+					<TextInput
+						type="tel"
+						label={ __( 'Phone', 'woo-gutenberg-products-block' ) }
+						value={ shippingFields.phone }
+						onChange={ ( newValue ) =>
+							setShippingFields( {
+								...shippingFields,
+								phone: newValue,
+							} )
+						}
+					/>
+					<CheckboxControl
+						className="wc-block-checkout__use-address-for-billing"
+						label={ __(
+							'Use same address for billing',
+							'woo-gutenberg-products-block'
+						) }
+						checked={ shippingFields.useSameForBilling }
+						onChange={ () =>
+							setShippingFields( {
+								...shippingFields,
+								useSameForBilling: ! shippingFields.useSameForBilling,
+							} )
+						}
+					/>
 				</FormStep>
 				{ shippingMethods.length === 0 && isEditor ? (
 					<NoShipping />
