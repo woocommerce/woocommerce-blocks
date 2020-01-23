@@ -63,11 +63,20 @@ class CartItemSchema extends AbstractSchema {
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'short_description'   => [
-				'description' => __( 'Product short description or excerpt from full description.', 'woo-gutenberg-products-block' ),
+			'summary'             => [
+				'description' => __( 'A short summary (or excerpt from the full description) for the product in HTML format.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
+			],
+			'short_description'   => [
+				'description' => __( 'Product short description in HTML format.', 'woo-gutenberg-products-block' ),
+				'type'        => 'string',
+				'context'     => [ 'view', 'edit' ],
+			],
+			'description'         => [
+				'description' => __( 'Product full description in HTML format.', 'woo-gutenberg-products-block' ),
+				'type'        => 'string',
+				'context'     => [ 'view', 'edit' ],
 			],
 			'sku'                 => [
 				'description' => __( 'Stock keeping unit, if applicable.', 'woo-gutenberg-products-block' ),
@@ -214,17 +223,14 @@ class CartItemSchema extends AbstractSchema {
 	public function get_item_response( $cart_item ) {
 		$product = $cart_item['data'];
 
-		$short_description = apply_filters( 'woocommerce_short_description', $product->get_short_description() ? $product->get_short_description() : $product->get_description(), 400 );
-		$short_description = wp_filter_nohtml_kses( $short_description );
-		$short_description = strip_shortcodes( $short_description );
-		$short_description = normalize_whitespace( $short_description );
-
 		return [
 			'key'                 => $cart_item['key'],
 			'id'                  => $product->get_id(),
 			'quantity'            => wc_stock_amount( $cart_item['quantity'] ),
 			'name'                => $this->prepare_html_response( $product->get_title() ),
-			'short_description'   => $this->prepare_html_response( $short_description ),
+			'summary'             => $this->prepare_html_response( $this->get_product_summary( $product ) ),
+			'short_description'   => $this->prepare_html_response( wc_format_content( $product->get_short_description() ) ),
+			'description'         => $this->prepare_html_response( wc_format_content( $product->get_description() ) ),
 			'sku'                 => $this->prepare_html_response( $product->get_sku() ),
 			'low_stock_remaining' => $this->get_low_stock_remaining( $product ),
 			'permalink'           => $product->get_permalink(),
@@ -240,6 +246,29 @@ class CartItemSchema extends AbstractSchema {
 				]
 			),
 		];
+	}
+
+	/**
+	 * Generate a summary from the product short/full description.
+	 *
+	 * @param \WC_Product $product Product instance.
+	 * @return string
+	 */
+	protected function get_product_summary( \WC_Product $product ) {
+		$description       = $product->get_description();
+		$short_description = $product->get_short_description();
+
+		// Select description based on availability.
+		$source        = \trim( $short_description ? $short_description : $description );
+		$source_length = \strlen( \wp_strip_all_tags( $source ) );
+
+		// Try to extract the first sentence only if the description is too long.
+		if ( 150 < $source_length ) {
+			$source_p = \wpautop( $source );
+			$source   = \strstr( $source_p, '</p>' ) ? \substr( $source_p, 0, \strpos( $source_p, '</p>' ) + 4 ) : \wc_trim_string( $source, 150 );
+		}
+
+		return \wc_format_content( $source );
 	}
 
 	/**

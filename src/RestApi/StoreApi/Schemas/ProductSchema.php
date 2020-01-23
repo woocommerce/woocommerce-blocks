@@ -268,6 +268,7 @@ class ProductSchema extends AbstractSchema {
 			),
 		];
 	}
+
 	/**
 	 * Generate a summary from the product short/full description.
 	 *
