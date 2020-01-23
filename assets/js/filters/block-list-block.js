@@ -25,7 +25,10 @@ const withDefaultAttributes = createHigherOrderComponent(
 			}
 
 			componentDidUpdate() {
-				if ( ! this.state.mounted ) {
+				if (
+					this.props.block.name.startsWith( 'woocommerce/' ) &&
+					! this.state.mounted
+				) {
 					this.setState( { mounted: true } );
 				}
 			}
