@@ -2,15 +2,13 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import RadioControl, {
-	RadioControlOptionLayout,
-} from '@woocommerce/base-components/radio-control';
 import { useShippingRates } from '@woocommerce/base-hooks';
-import { Fragment, useEffect } from '@wordpress/element';
+import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import Package from './package';
 import './style.scss';
 
 const ShippingRatesControl = ( {
@@ -21,54 +19,6 @@ const ShippingRatesControl = ( {
 	renderOption,
 	selected = [],
 } ) => {
-	const renderSingleOption = ( option ) => {
-		const {
-			label,
-			secondaryLabel,
-			description,
-			secondaryDescription,
-		} = renderOption( option );
-
-		return (
-			<RadioControlOptionLayout
-				label={ label }
-				secondaryLabel={ secondaryLabel }
-				description={ description }
-				secondaryDescription={ secondaryDescription }
-			/>
-		);
-	};
-
-	const renderSeveralOptions = ( shippingRates, i ) => {
-		return (
-			<RadioControl
-				className={ className }
-				onChange={ ( newShippingRate ) => {
-					const newSelected = [ ...selected ];
-					newSelected[ i ] = newShippingRate;
-					onChange( newSelected );
-				} }
-				options={ shippingRates.map( renderOption ) }
-				selected={ selected[ i ] }
-			/>
-		);
-	};
-
-	const renderOptions = ( shippingRates, i ) => {
-		switch ( shippingRates.length ) {
-			case 0:
-				return (
-					<p className="wc-block-shipping-rates-control__no-results">
-						{ noResultsMessage }
-					</p>
-				);
-			case 1:
-				return renderSingleOption( shippingRates[ 0 ] );
-			default:
-				return renderSeveralOptions( shippingRates, i );
-		}
-	};
-
 	const { shippingRates, shippingRatesLoading } = useShippingRates( address );
 
 	// Select first item when shipping rates are loaded.
@@ -114,16 +64,20 @@ const ShippingRatesControl = ( {
 	}
 
 	return shippingRates.map( ( shippingRate, i ) => (
-		<Fragment key={ shippingRate.items.join() }>
-			{ renderOptions( shippingRate.shipping_rates, i ) }
-			{ shippingRates.length > 1 && (
-				<span>
-					{ /* @todo Show product names,
-						see: https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1554 */ }
-					{ shippingRate.items.join( ', ' ) }
-				</span>
-			) }
-		</Fragment>
+		<Package
+			key={ shippingRate.items.join() }
+			className={ className }
+			noResultsMessage={ noResultsMessage }
+			onChange={ ( newShippingRate ) => {
+				const newSelected = [ ...selected ];
+				newSelected[ i ] = newShippingRate;
+				onChange( newSelected );
+			} }
+			renderOption={ renderOption }
+			selected={ selected[ i ] }
+			shippingRate={ shippingRate }
+			showItems={ shippingRates.length > 1 }
+		/>
 	) );
 };
 
