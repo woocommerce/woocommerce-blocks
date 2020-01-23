@@ -12,7 +12,7 @@ import { ProductRating } from '@woocommerce/atomic-components/product';
 import sharedConfig from '../shared-config';
 
 const blockConfig = {
-	title: __( 'Product Rating', 'woo-gutenberg-products-block' ),
+	title: __( 'Average Rating', 'woo-gutenberg-products-block' ),
 	description: __(
 		'Display the average rating of a product.',
 		'woo-gutenberg-products-block'
