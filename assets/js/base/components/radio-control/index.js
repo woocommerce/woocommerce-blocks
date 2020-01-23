@@ -7,7 +7,7 @@ import withComponentId from '@woocommerce/base-hocs/with-component-id';
 /**
  * Internal dependencies
  */
-import Option from './option';
+import RadioControlOption from './option';
 import './style.scss';
 
 const RadioControl = ( {
@@ -26,7 +26,7 @@ const RadioControl = ( {
 				className={ classnames( 'wc-block-radio-control', className ) }
 			>
 				{ options.map( ( option ) => (
-					<Option
+					<RadioControlOption
 						key={ option.value }
 						name={ `radio-control-${ radioControlId }` }
 						checked={ option.value === selected }
@@ -40,5 +40,5 @@ const RadioControl = ( {
 };
 
 export default withComponentId( RadioControl );
-export { default as RadioControlOption } from './option';
+export { RadioControlOption };
 export { default as RadioControlOptionLayout } from './option-layout';
