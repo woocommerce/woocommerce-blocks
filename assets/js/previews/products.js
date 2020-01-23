@@ -15,6 +15,14 @@ export const previewProducts = [
 		variation: '',
 		permalink: 'https://example.org',
 		sku: 'wp-pennant',
+		summary: __(
+			'Fly your WordPress banner with this beauty! Deck out your office space or add it to your kids walls. This banner will spruce up any space it’s hung!',
+			'woo-gutenberg-products-block'
+		),
+		short_description: __(
+			'Fly your WordPress banner with this beauty! Deck out your office space or add it to your kids walls. This banner will spruce up any space it’s hung!',
+			'woo-gutenberg-products-block'
+		),
 		description: __(
 			'Fly your WordPress banner with this beauty! Deck out your office space or add it to your kids walls. This banner will spruce up any space it’s hung!',
 			'woo-gutenberg-products-block'

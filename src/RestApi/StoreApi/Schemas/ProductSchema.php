@@ -54,8 +54,18 @@ class ProductSchema extends AbstractSchema {
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
+			'summary'             => [
+				'description' => __( 'A short summary (or excerpt from the full description) for the product in HTML format.', 'woo-gutenberg-products-block' ),
+				'type'        => 'string',
+				'context'     => [ 'view', 'edit' ],
+			],
+			'short_description'   => [
+				'description' => __( 'Product short description in HTML format.', 'woo-gutenberg-products-block' ),
+				'type'        => 'string',
+				'context'     => [ 'view', 'edit' ],
+			],
 			'description'         => [
-				'description' => __( 'Short description or excerpt from description.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Product full description in HTML format.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
 			],
@@ -238,7 +248,9 @@ class ProductSchema extends AbstractSchema {
 			'variation'           => $this->prepare_html_response( $product->is_type( 'variation' ) ? wc_get_formatted_variation( $product, true, true, false ) : '' ),
 			'permalink'           => $product->get_permalink(),
 			'sku'                 => $this->prepare_html_response( $product->get_sku() ),
-			'description'         => $this->prepare_html_response( apply_filters( 'woocommerce_short_description', $product->get_short_description() ? $product->get_short_description() : wc_trim_string( $product->get_description(), 400 ) ) ),
+			'summary'             => $this->prepare_html_response( $this->get_product_summary( $product ) ),
+			'short_description'   => $this->prepare_html_response( wc_format_content( $product->get_short_description() ) ),
+			'description'         => $this->prepare_html_response( wc_format_content( $product->get_description() ) ),
 			'on_sale'             => $product->is_on_sale(),
 			'prices'              => (object) $this->get_prices( $product ),
 			'average_rating'      => $product->get_average_rating(),
@@ -255,6 +267,28 @@ class ProductSchema extends AbstractSchema {
 				]
 			),
 		];
+	}
+	/**
+	 * Generate a summary from the product short/full description.
+	 *
+	 * @param \WC_Product $product Product instance.
+	 * @return string
+	 */
+	protected function get_product_summary( \WC_Product $product ) {
+		$description       = $product->get_description();
+		$short_description = $product->get_short_description();
+
+		// Select description based on availability.
+		$source        = \trim( $short_description ? $short_description : $description );
+		$source_length = \strlen( \wp_strip_all_tags( $source ) );
+
+		// Try to extract the first sentence only if the description is too long.
+		if ( 150 < $source_length ) {
+			$source_p = \wpautop( $source );
+			$source   = \strstr( $source_p, '</p>' ) ? \substr( $source_p, 0, \strpos( $source_p, '</p>' ) + 4 ) : \wc_trim_string( $source, 150 );
+		}
+
+		return \wc_format_content( $source );
 	}
 
 	/**
