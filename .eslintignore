@@ -6,3 +6,8 @@ languages
 node_modules
 vendor
 legacy
+
+# ignore various storybook generated files for now (we may be able to trim this down or take ownership of these files)
+.storybook/main.js
+stories/0-Welcome.stories.js
+stories/1-Button.stories.js
