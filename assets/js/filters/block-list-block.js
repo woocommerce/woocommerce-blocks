@@ -14,32 +14,6 @@ const { addFilter } = wp.hooks;
 const withDefaultAttributes = createHigherOrderComponent(
 	( BlockListBlock ) => {
 		class WrappedComponent extends Component {
-			getAttributesWithDefaults = () => {
-				const blockType = getBlockType( this.props.block.name );
-				const attributes = Object.assign(
-					{},
-					this.props.attributes || {}
-				);
-
-				if (
-					this.props.block.name.startsWith( 'woocommerce/' ) &&
-					typeof blockType.attributes !== 'undefined' &&
-					typeof blockType.defaults !== 'undefined'
-				) {
-					Object.keys( blockType.attributes ).map( ( key ) => {
-						if (
-							typeof attributes[ key ] === 'undefined' &&
-							typeof blockType.defaults[ key ] !== 'undefined'
-						) {
-							attributes[ key ] = blockType.defaults[ key ];
-						}
-						return key;
-					} );
-				}
-
-				return attributes;
-			};
-
 			state = { mounted: false };
 
 			componentDidMount() {
@@ -48,7 +22,12 @@ const withDefaultAttributes = createHigherOrderComponent(
 				if ( block.name.startsWith( 'woocommerce/' ) ) {
 					setAttributes( this.getAttributesWithDefaults() );
 				}
-				this.setState( { mounted: true } );
+			}
+
+			componentDidUpdate() {
+				if ( ! this.state.mounted ) {
+					this.setState( { mounted: true } );
+				}
 			}
 
 			getAttributesWithDefaults() {
@@ -75,7 +54,6 @@ const withDefaultAttributes = createHigherOrderComponent(
 						return key;
 					} );
 				}
-
 				return attributes;
 			}
 
