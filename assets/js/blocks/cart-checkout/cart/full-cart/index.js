@@ -122,81 +122,92 @@ const Cart = () => {
 				<CartLineItemsTitle itemCount={ previewCartItems.length } />
 				<CartLineItemsTable lineItems={ previewCartItems } />
 			</div>
-			<Card className="wc-block-cart__sidebar" isElevated={ true }>
-				<CardBody>
-					<h2 className="wc-block-cart__totals-title">
-						{ __( 'Cart totals', 'woo-gutenberg-products-block' ) }
-					</h2>
-					{ totalRowsConfig.map(
-						( { label, value, description } ) => (
-							<TotalsItem
-								key={ label }
-								currency={ totalsCurrency }
-								label={ label }
-								value={ value }
-								description={ description }
-							/>
-						)
-					) }
-					<fieldset className="wc-block-cart__shipping-options-fieldset">
-						<legend className="screen-reader-text">
+			<div className="wc-block-cart__sidebar">
+				<Card isElevated={ true }>
+					<CardBody>
+						<h2 className="wc-block-cart__totals-title">
 							{ __(
-								'Choose the shipping method.',
+								'Cart totals',
 								'woo-gutenberg-products-block'
 							) }
-						</legend>
-						<ShippingRatesControl
-							className="wc-block-cart__shipping-options"
-							noResultsMessage={ sprintf(
-								// translators: %s shipping destination.
-								__(
-									'No shipping options were found for %s.',
+						</h2>
+						{ totalRowsConfig.map(
+							( { label, value, description } ) => (
+								<TotalsItem
+									key={ label }
+									currency={ totalsCurrency }
+									label={ label }
+									value={ value }
+									description={ description }
+								/>
+							)
+						) }
+						<fieldset className="wc-block-cart__shipping-options-fieldset">
+							<legend className="screen-reader-text">
+								{ __(
+									'Choose the shipping method.',
 									'woo-gutenberg-products-block'
-								),
-								// @todo Should display destination name,
-								// see: https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1606
-								'location'
+								) }
+							</legend>
+							<ShippingRatesControl
+								className="wc-block-cart__shipping-options"
+								noResultsMessage={ sprintf(
+									// translators: %s shipping destination.
+									__(
+										'No shipping options were found for %s.',
+										'woo-gutenberg-products-block'
+									),
+									// @todo Should display destination name,
+									// see: https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1606
+									'location'
+								) }
+								selected={ selectedShippingRate }
+								renderOption={ ( option ) => ( {
+									label: option.name,
+									value: option.rate_id,
+									description: (
+										<Fragment>
+											{ option.price && (
+												<FormattedMonetaryAmount
+													currency={ getCurrencyFromPriceResponse(
+														option
+													) }
+													value={ option.price }
+												/>
+											) }
+											{ option.price &&
+											option.delivery_time
+												? ' — '
+												: null }
+											{ option.delivery_time }
+										</Fragment>
+									),
+								} ) }
+								onChange={ ( newSelectedShippingOption ) =>
+									setSelectedShippingRate(
+										newSelectedShippingOption
+									)
+								}
+							/>
+						</fieldset>
+						{ COUPONS_ENABLED && (
+							<TotalsCouponCodeInput
+								onSubmit={ onActivateCoupon }
+							/>
+						) }
+						<TotalsItem
+							className="wc-block-cart__totals-footer"
+							currency={ totalsCurrency }
+							label={ __(
+								'Total',
+								'woo-gutenberg-products-block'
 							) }
-							selected={ selectedShippingRate }
-							renderOption={ ( option ) => ( {
-								label: option.name,
-								value: option.rate_id,
-								description: (
-									<Fragment>
-										{ option.price && (
-											<FormattedMonetaryAmount
-												currency={ getCurrencyFromPriceResponse(
-													option
-												) }
-												value={ option.price }
-											/>
-										) }
-										{ option.price && option.delivery_time
-											? ' — '
-											: null }
-										{ option.delivery_time }
-									</Fragment>
-								),
-							} ) }
-							onChange={ ( newSelectedShippingOption ) =>
-								setSelectedShippingRate(
-									newSelectedShippingOption
-								)
-							}
+							value={ parseInt( cartTotals.total_price, 10 ) }
 						/>
-					</fieldset>
-					{ COUPONS_ENABLED && (
-						<TotalsCouponCodeInput onSubmit={ onActivateCoupon } />
-					) }
-					<TotalsItem
-						className="wc-block-cart__totals-footer"
-						currency={ totalsCurrency }
-						label={ __( 'Total', 'woo-gutenberg-products-block' ) }
-						value={ parseInt( cartTotals.total_price, 10 ) }
-					/>
-					<CheckoutButton />
-				</CardBody>
-			</Card>
+						<CheckoutButton />
+					</CardBody>
+				</Card>
+			</div>
 		</div>
 	);
 };
