@@ -9,7 +9,7 @@ const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extrac
 const WebpackRTLPlugin = require( 'webpack-rtl-plugin' );
 const chalk = require( 'chalk' );
 const { omit } = require( 'lodash' );
-
+const { DefinePlugin } = require( 'webpack' );
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
 function findModuleMatch( module, match ) {
@@ -304,6 +304,13 @@ const getMainConfig = ( options = {} ) => {
 				injectPolyfill: true,
 				requestToExternal,
 				requestToHandle,
+			} ),
+			new DefinePlugin( {
+				// Inject the `WOOCOMMERCE_BLOCKS_PHASE` global, used for feature flagging.
+				'process.env.WOOCOMMERCE_BLOCKS_PHASE': JSON.stringify(
+					process.env.npm_package_config_WOOCOMMERCE_BLOCKS_PHASE ||
+						'experimental'
+				),
 			} ),
 		],
 		resolve,
