@@ -13,8 +13,8 @@ export default {
 	component: Button,
 };
 
-export const Test = () => (
+export const Default = () => (
 	<div>
-		<Button>Test</Button>
+		<Button>Buy now</Button>
 	</div>
 );

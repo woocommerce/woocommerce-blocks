@@ -13,7 +13,7 @@ export default {
 	component: ReadMore,
 };
 
-export const Test = () => (
+export const Default = () => (
 	<ReadMore maxLines={ 2 }>
 		<h1>
 			No! Alderaan is peaceful. We have no weapons. You can&apos;t
