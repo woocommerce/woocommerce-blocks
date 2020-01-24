@@ -6,7 +6,6 @@
 	"composer": {
 		"enabled": false
 	},
-	{
   "labels": ["type: dependencies"],
 	"packageRules": [
 		{
