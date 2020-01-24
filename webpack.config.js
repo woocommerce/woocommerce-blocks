@@ -3,6 +3,7 @@
  */
 const path = require( 'path' );
 const { kebabCase } = require( 'lodash' );
+const { DefinePlugin } = require( 'webpack' );
 const { CleanWebpackPlugin } = require( 'clean-webpack-plugin' );
 const CreateFileWebpack = require( 'create-file-webpack' );
 const ProgressBarPlugin = require( 'progress-bar-webpack-plugin' );
