@@ -20,9 +20,6 @@
 		"type": "git",
 		"url": "https://github.com:woocommerce/woocommerce-gutenberg-products-block.git"
 	},
-	"config": {
-		"WOOCOMMERCE_BLOCKS_PHASE": "experimental"
-	},
 	"license": "GPL-3.0+",
 	"scripts": {
 		"deploy": "cross-env WOOCOMMERCE_BLOCKS_PHASE=stable composer install --no-dev && npm run build --loglevel error && sh ./bin/github-deploy.sh",
