@@ -8,6 +8,11 @@ import { __ } from '@wordpress/i18n';
  */
 import productPicture from './product-image';
 
+const description = __(
+	'Fly your WordPress banner with this beauty! Deck out your office space or add it to your kids walls. This banner will spruce up any space it’s hung!',
+	'woo-gutenberg-products-block'
+);
+
 export const previewProducts = [
 	{
 		id: 1,
@@ -15,18 +20,9 @@ export const previewProducts = [
 		variation: '',
 		permalink: 'https://example.org',
 		sku: 'wp-pennant',
-		summary: __(
-			'Fly your WordPress banner with this beauty! Deck out your office space or add it to your kids walls. This banner will spruce up any space it’s hung!',
-			'woo-gutenberg-products-block'
-		),
-		short_description: __(
-			'Fly your WordPress banner with this beauty! Deck out your office space or add it to your kids walls. This banner will spruce up any space it’s hung!',
-			'woo-gutenberg-products-block'
-		),
-		description: __(
-			'Fly your WordPress banner with this beauty! Deck out your office space or add it to your kids walls. This banner will spruce up any space it’s hung!',
-			'woo-gutenberg-products-block'
-		),
+		summary: description,
+		short_description: description,
+		description,
 		price: '7.99',
 		price_html:
 			'<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>7.99</span>',
