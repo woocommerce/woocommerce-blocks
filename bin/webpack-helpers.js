@@ -95,7 +95,7 @@ const getAlias = ( options = {} ) => {
 	};
 };
 
-const mainEntry = {
+const stableMainEntry = {
 	// Shared blocks code
 	blocks: './assets/js/index.js',
 
@@ -127,21 +127,35 @@ const mainEntry = {
 	'panel-style': './node_modules/@wordpress/components/src/panel/style.scss',
 	'custom-select-control-style':
 		'./node_modules/@wordpress/components/src/custom-select-control/style.scss',
+};
 
-	// cart & checkout blocks
+const experimentalMainEntry = {
 	cart: './assets/js/blocks/cart-checkout/cart/index.js',
 	checkout: './assets/js/blocks/cart-checkout/checkout/index.js',
 };
 
-const frontEndEntry = {
+const mainEntry =
+	process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental'
+		? Object.assign( {}, stableMainEntry, experimentalMainEntry )
+		: Object.assign( {}, stableMainEntry );
+
+const stableFrontEndEntry = {
 	reviews: './assets/js/blocks/reviews/frontend.js',
 	'all-products': './assets/js/blocks/products/all-products/frontend.js',
 	'price-filter': './assets/js/blocks/price-filter/frontend.js',
 	'attribute-filter': './assets/js/blocks/attribute-filter/frontend.js',
 	'active-filters': './assets/js/blocks/active-filters/frontend.js',
+};
+
+const experimentalFrontEndEntry = {
 	checkout: './assets/js/blocks/cart-checkout/checkout/frontend.js',
 	cart: './assets/js/blocks/cart-checkout/cart/frontend.js',
 };
+
+const frontEndEntry =
+	process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental'
+		? Object.assign( {}, stableFrontEndEntry, experimentalFrontEndEntry )
+		: Object.assign( {}, stableFrontEndEntry );
 
 const getEntryConfig = ( main = true, exclude = [] ) => {
 	const entryConfig = main ? mainEntry : frontEndEntry;
