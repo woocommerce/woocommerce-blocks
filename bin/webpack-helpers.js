@@ -406,6 +406,12 @@ const getFrontConfig = ( options = {} ) => {
 				requestToExternal,
 				requestToHandle,
 			} ),
+			new DefinePlugin( {
+				// Inject the `WOOCOMMERCE_BLOCKS_PHASE` global, used for feature flagging.
+				'process.env.WOOCOMMERCE_BLOCKS_PHASE': JSON.stringify(
+					process.env.WOOCOMMERCE_BLOCKS_PHASE || 'experimental'
+				),
+			} ),
 		],
 		resolve,
 	};

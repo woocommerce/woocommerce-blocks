@@ -3,6 +3,7 @@
  */
 const path = require( 'path' );
 const { kebabCase } = require( 'lodash' );
+const { DefinePlugin } = require( 'webpack' );
 const { CleanWebpackPlugin } = require( 'clean-webpack-plugin' );
 const ProgressBarPlugin = require( 'progress-bar-webpack-plugin' );
 const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
@@ -83,6 +84,12 @@ const CoreConfig = {
 				' :msg (:elapsed seconds)',
 		} ),
 		new DependencyExtractionWebpackPlugin( { injectPolyfill: true } ),
+		new DefinePlugin( {
+			// Inject the `WOOCOMMERCE_BLOCKS_PHASE` global, used for feature flagging.
+			'process.env.WOOCOMMERCE_BLOCKS_PHASE': JSON.stringify(
+				process.env.WOOCOMMERCE_BLOCKS_PHASE || 'experimental'
+			),
+		} ),
 	],
 };
 
