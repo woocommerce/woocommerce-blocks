@@ -13,6 +13,7 @@ export { default as image } from './library/image';
 export { default as grid } from './library/grid';
 export { default as list } from './library/list';
 export { default as more } from './library/more';
+export { default as notes } from './library/notes';
 export { default as notice } from './library/notice';
 export { default as tags } from './library/tags';
 export { default as radioSelected } from './library/radio-selected';
