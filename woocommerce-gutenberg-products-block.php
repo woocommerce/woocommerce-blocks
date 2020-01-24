@@ -18,6 +18,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
+define( 'WOOCOMMERCE_BLOCKS_PHASE', 'experimental' );
+
 $minimum_wp_version = '5.0';
 
 /**
