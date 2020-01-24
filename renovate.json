@@ -6,6 +6,8 @@
 	"composer": {
 		"enabled": false
 	},
+	{
+  "labels": ["type: dependencies"],
 	"packageRules": [
 		{
 			"packageNames": [ "automattic/jetpack-autoloader" ],
