@@ -9,7 +9,7 @@ import { React, useState } from 'react';
 import PriceSlider from '../';
 
 export default {
-	title: 'WooCommerce Blocks/base/PriceSlider',
+	title: 'WooCommerce Blocks/@base-components/PriceSlider',
 	component: PriceSlider,
 };
 

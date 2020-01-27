@@ -16,7 +16,7 @@ I.e. it's coupled to WordPress + Woo environment.
 */
 
 export default {
-	title: 'WooCommerce Blocks/base/ProductPreview',
+	title: 'WooCommerce Blocks/components/ProductPreview',
 	component: ProductPreview,
 };
 

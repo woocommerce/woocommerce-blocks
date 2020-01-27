@@ -28,7 +28,7 @@ import {
 } from '../';
 
 export default {
-	title: 'WooCommerce Blocks/base/Icons',
+	title: 'WooCommerce Blocks/components/Icons',
 };
 
 export const woo = () => (

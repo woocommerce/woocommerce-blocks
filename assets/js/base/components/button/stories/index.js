@@ -9,7 +9,7 @@ import React from 'react';
 import Button from '../';
 
 export default {
-	title: 'WooCommerce Blocks/base/Button',
+	title: 'WooCommerce Blocks/@base-components/Button',
 	component: Button,
 };
 

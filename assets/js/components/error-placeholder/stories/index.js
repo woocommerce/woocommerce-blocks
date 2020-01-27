@@ -9,7 +9,7 @@ import React from 'react';
 import ErrorPlaceholder from '../';
 
 export default {
-	title: 'WooCommerce Blocks/base/ErrorPlaceholder',
+	title: 'WooCommerce Blocks/components/ErrorPlaceholder',
 	component: ErrorPlaceholder,
 };
 
