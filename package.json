@@ -163,7 +163,7 @@
 		"labelPrefix": "type:",
 		"skipLabel": "skip-changelog",
 		"defaultPrefix": "dev",
-		"zenhub": true
+		"devNoteLabel": ""
 	},
 	"files": [
 		"assets/**/*.{js,scss,php}",
