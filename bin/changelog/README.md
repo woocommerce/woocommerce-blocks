@@ -4,7 +4,15 @@ This folder contains the logic for a changelog script that can be used for gener
 
 ## Usage:
 
-You can implement the script in you `package.json` in the simplest form by adding the following to the `"scripts"` property (assuming it is installed in `./bin`):
+By default, changelog entries will use the title of pull requests. However, you can also customize the changelog entry by adding to the description of the pull custom text in the following format.
+
+```md
+### Changelog
+
+> Fix bug in Safari and other Webkit browsers.
+```
+
+You can implement the script in your `package.json` in the simplest form by adding the following to the `"scripts"` property (assuming it is installed in `./bin`):
 
 ```json
 {
