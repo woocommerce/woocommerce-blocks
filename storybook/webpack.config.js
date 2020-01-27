@@ -6,18 +6,23 @@ const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 /**
  * Internal dependencies
  */
-const { getMainConfig } = require( '../bin/webpack-helpers.js' );
+const { getAlias, getMainConfig } = require( '../bin/webpack-helpers.js' );
 
-module.exports = ( { config } ) => {
-	const mainConfig = getMainConfig();
+module.exports = ( { config: storybookConfig } ) => {
+	const wooBlocksConfig = getMainConfig( { alias: getAlias() } );
 
-	config.module.rules.push( ...mainConfig.module.rules );
+	storybookConfig.resolve.alias = {
+		...storybookConfig.resolve.alias,
+		...wooBlocksConfig.resolve.alias,
+	};
 
-	config.plugins.push(
+	storybookConfig.module.rules.push( ...wooBlocksConfig.module.rules );
+
+	storybookConfig.plugins.push(
 		new MiniCssExtractPlugin( {
 			filename: `[name].css`,
 		} )
 	);
 
-	return config;
+	return storybookConfig;
 };
