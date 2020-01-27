@@ -6,30 +6,40 @@ const { make } = require( '../common' );
 const { fetchAllPullRequests } = require( './requests' );
 
 /* eslint no-console: 0 */
+let ready = false;
 
 const makeChangeLog = async () => {
-	console.log(
-		chalk.yellow(
-			'This program requires an api token from Github and Zenhub. You can create one here: '
-		) +
-			'https://github.com/settings/tokens' +
-			' and https://app.zenhub.com/dashboard/tokens'
-	);
-	console.log( '' );
-	console.log(
-		chalk.yellow(
-			'Token scope for Github will require read permissions on public_repo, admin:org, and user.'
-		)
-	);
-	console.log( '' );
-	console.log(
-		chalk.yellow(
-			'Export the github token as variable called GH_API_TOKEN and the Zenhub token as a variable called ZH_API_KEY from your bash profile.'
-		)
-	);
-	console.log( '' );
+	if ( ! pkg.changelog.zhApiKey || ! pkg.changelog.ghApiToken ) {
+		console.log(
+			chalk.yellow(
+				'This program requires an api token from Github and Zenhub. You can create one here: '
+			) +
+				'https://github.com/settings/tokens' +
+				' and https://app.zenhub.com/dashboard/tokens'
+		);
+		console.log( '' );
+		console.log(
+			chalk.yellow(
+				'Token scope for Github will require read permissions on public_repo, admin:org, and user.'
+			)
+		);
+		console.log( '' );
+		console.log(
+			chalk.yellow(
+				'Export the github token as variable called GH_API_TOKEN and the Zenhub token as a variable called ZH_API_KEY from your bash profile.'
+			)
+		);
+		console.log( '' );
 
-	const ready = await promptly.confirm( 'Are you ready to continue? ' );
+		ready = await promptly.confirm( 'Are you ready to continue? ' );
+	} else {
+		console.log(
+			chalk.green(
+				'Detected ZH_API_KEY and GH_API_TOKEN values are set.'
+			)
+		);
+		ready = true;
+	}
 
 	if ( ready ) {
 		console.log( '' );
