@@ -23,8 +23,8 @@ Name | Type | Default | Description
 
 ## Adding Icons
 
-1. Add the Icon file to `./library` folder.
-2. Make sure to use `SVG` primitive from `@wordpress/components` and not a native svg, `SVG` offer more accessability features.
-3. Remove Width and Height since they're handled by Icon.
-4. Remove any hardcoded colors on the svg, if necessity, use `CurrentColor`.
-4. Export the Icon in `./library/index.js`.
+1. Add the icon file to `./library` folder.
+2. Make sure to use `SVG` primitive from `@wordpress/components` and not a native svg. `SVG` offers more accessibility features.
+3. Remove width and height since they're handled by Icon.
+4. Remove any hardcoded colors on the svg. If necessary,, use `CurrentColor`.
+5. Export the Icon in `./library/index.js`.
