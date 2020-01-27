@@ -10,6 +10,7 @@ namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas;
 defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Blocks\RestApi\Utilities\ProductImages;
+use Automattic\WooCommerce\Blocks\RestApi\Utilities\ProductSummary;
 
 /**
  * ProductSchema class.
@@ -248,7 +249,7 @@ class ProductSchema extends AbstractSchema {
 			'variation'           => $this->prepare_html_response( $product->is_type( 'variation' ) ? wc_get_formatted_variation( $product, true, true, false ) : '' ),
 			'permalink'           => $product->get_permalink(),
 			'sku'                 => $this->prepare_html_response( $product->get_sku() ),
-			'summary'             => $this->prepare_html_response( $this->get_product_summary( $product ) ),
+			'summary'             => $this->prepare_html_response( ( new ProductSummary( $product ) )->get_summary( 150 ) ),
 			'short_description'   => $this->prepare_html_response( wc_format_content( $product->get_short_description() ) ),
 			'description'         => $this->prepare_html_response( wc_format_content( $product->get_description() ) ),
 			'on_sale'             => $product->is_on_sale(),
@@ -267,31 +268,6 @@ class ProductSchema extends AbstractSchema {
 				]
 			),
 		];
-	}
-
-	/**
-	 * Generate a summary from the product short/full description.
-	 *
-	 * @param \WC_Product $product Product instance.
-	 * @return string
-	 */
-	protected function get_product_summary( \WC_Product $product ) {
-		$short_description = $product->get_short_description();
-
-		if ( $short_description ) {
-			return \wc_format_content( $short_description );
-		}
-
-		$description = $product->get_description();
-		$length      = \strlen( \wp_strip_all_tags( $description ) );
-
-		// Try to extract the first sentence only if the description is too long.
-		if ( 150 < $length ) {
-			$description_p = \wpautop( $description );
-			$description   = \strstr( $description_p, '</p>' ) ? \substr( $description_p, 0, \strpos( $description_p, '</p>' ) + 4 ) : \wc_trim_string( $description, 150 );
-		}
-
-		return \wc_format_content( $description );
 	}
 
 	/**
