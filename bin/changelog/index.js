@@ -3,8 +3,9 @@
 
 const { makeChangeLog: githubMake } = require( './github' );
 const { makeChangeLog: zenhubMake } = require( './zenhub' );
-const { pkg } = require( './config' );
+const { pkg, changelogSrcTypes } = require( './config' );
 
-const makeChangeLog = pkg.changelog.zenhub ? zenhubMake : githubMake;
+const makeChangeLog =
+	pkg.changelogSrcType === changelogSrcTypes.ZENHUB ? zenhubMake : githubMake;
 
 makeChangeLog();
