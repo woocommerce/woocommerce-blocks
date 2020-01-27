@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { InnerBlocks } from '@wordpress/editor';
 import { registerBlockType } from '@wordpress/blocks';
 import { DEFAULT_HEIGHT } from '@woocommerce/block-settings';
-import { Icon, folderStared } from '@woocommerce/icons';
+import { Icon, FolderStarred } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
@@ -21,7 +21,7 @@ import { example } from './example';
 registerBlockType( 'woocommerce/featured-category', {
 	title: __( 'Featured Category', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon icon={ folderStared } />,
+		src: <Icon icon={ FolderStarred } />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',
