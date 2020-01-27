@@ -23,6 +23,13 @@ const getPullRequestType = ( labels ) => {
 	return typeLabel.name.replace( `${ pkg.changelog.labelPrefix } `, '' );
 };
 
+const devNoteSuffix = ( labels ) => {
+	const noteLabel = labels.find( ( label ) =>
+		label.name.includes( pkg.changelog.devNoteLabel )
+	);
+	return noteLabel ? ' [DN]' : '';
+};
+
 const isCollaborator = async ( username ) => {
 	return requestPromise( {
 		url: `https://api.github.com/orgs/${
@@ -54,6 +61,7 @@ const getEntry = async ( pullRequest ) => {
 	const collaborator = await isCollaborator( pullRequest.author.login );
 	const type = getPullRequestType( pullRequest.labels.nodes );
 	const authorTag = collaborator ? '' : `👏 @${ pullRequest.author.login }`;
+	const devNote = devNoteSuffix( pullRequest.labels.nodes );
 	let title;
 	if ( /### Changelog\r\n\r\n> /.test( pullRequest.body ) ) {
 		const bodyParts = pullRequest.body.split( '### Changelog\r\n\r\n> ' );
@@ -71,7 +79,7 @@ const getEntry = async ( pullRequest ) => {
 	} else {
 		title = `${ type }: ${ pullRequest.title }`;
 	}
-	return `- ${ title } [#${ pullRequest.number }](${ pullRequest.url }) ${ authorTag }`;
+	return `- ${ title } [#${ pullRequest.number }](${ pullRequest.url })${ devNote } ${ authorTag }`;
 };
 
 module.exports = {
