@@ -12,7 +12,7 @@ export default {
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	icon: {
-		src: <Icon icon={ grid } />,
+		src: <Icon srcElement={ grid } />,
 		foreground: '#96588a',
 	},
 	supports: {

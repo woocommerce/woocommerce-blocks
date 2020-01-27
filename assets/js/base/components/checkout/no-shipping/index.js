@@ -14,7 +14,7 @@ import './style.scss';
 const NoShipping = () => {
 	return (
 		<Placeholder
-			icon={ <Icon icon={ truck } /> }
+			icon={ <Icon srcElement={ truck } /> }
 			label={ __( 'Shipping options', 'woo-gutenberg-products-block' ) }
 			className="wc-block-checkout__no-shipping"
 		>

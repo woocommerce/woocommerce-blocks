@@ -199,7 +199,7 @@ class ProductByCategoryBlock extends Component {
 
 		return (
 			<Placeholder
-				icon={ <Icon icon={ folder } /> }
+				icon={ <Icon srcElement={ folder } /> }
 				label={ __(
 					'Products by Category',
 					'woo-gutenberg-products-block'
@@ -249,7 +249,7 @@ class ProductByCategoryBlock extends Component {
 						attributes={ attributes }
 						EmptyResponsePlaceholder={ () => (
 							<Placeholder
-								icon={ <Icon icon={ folder } /> }
+								icon={ <Icon srcElement={ folder } /> }
 								label={ __(
 									'Products by Category',
 									'woo-gutenberg-products-block'

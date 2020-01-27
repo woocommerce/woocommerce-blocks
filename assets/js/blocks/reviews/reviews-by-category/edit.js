@@ -132,7 +132,10 @@ const ReviewsByCategoryEditor = ( {
 		return (
 			<Placeholder
 				icon={
-					<Icon icon={ review } className="block-editor-block-icon" />
+					<Icon
+						srcElement={ review }
+						className="block-editor-block-icon"
+					/>
 				}
 				label={ __(
 					'Reviews by Category',
@@ -172,7 +175,10 @@ const ReviewsByCategoryEditor = ( {
 				attributes={ attributes }
 				className="wc-block-reviews-by-category"
 				icon={
-					<Icon icon={ review } className="block-editor-block-icon" />
+					<Icon
+						srcElement={ review }
+						className="block-editor-block-icon"
+					/>
 				}
 				name={ __(
 					'Reviews by Category',

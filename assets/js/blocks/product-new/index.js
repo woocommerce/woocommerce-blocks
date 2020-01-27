@@ -18,7 +18,7 @@ import sharedAttributes, {
 registerBlockType( 'woocommerce/product-new', {
 	title: __( 'Newest Products', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon icon={ exclamation } />,
+		src: <Icon srcElement={ exclamation } />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',

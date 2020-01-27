@@ -18,7 +18,7 @@ const blockConfig = {
 		'woo-gutenberg-products-block'
 	),
 	icon: {
-		src: <Icon icon={ bill } />,
+		src: <Icon srcElement={ bill } />,
 		foreground: '#96588a',
 	},
 

@@ -11,7 +11,7 @@ import ToggleButtonControl from '@woocommerce/block-components/toggle-button-con
 
 const EmptyPlaceholder = () => (
 	<Placeholder
-		icon={ <Icon icon={ list } /> }
+		icon={ <Icon srcElement={ list } /> }
 		label={ __(
 			'Product Categories List',
 			'woo-gutenberg-products-block'

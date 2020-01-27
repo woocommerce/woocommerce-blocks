@@ -14,7 +14,7 @@ import edit from './edit.js';
 registerBlockType( 'woocommerce/attribute-filter', {
 	title: __( 'Filter Products by Attribute', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon icon={ server } />,
+		src: <Icon srcElement={ server } />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',

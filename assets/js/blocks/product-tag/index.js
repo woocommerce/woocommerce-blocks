@@ -18,7 +18,7 @@ import Block from './block';
 registerBlockType( 'woocommerce/product-tag', {
 	title: __( 'Products by Tag', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon icon={ more } />,
+		src: <Icon srcElement={ more } />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',

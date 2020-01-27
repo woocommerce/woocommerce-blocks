@@ -15,7 +15,7 @@ import { Icon, tag } from '@woocommerce/icons';
 
 const EmptyPlaceholder = () => (
 	<Placeholder
-		icon={ <Icon icon={ tag } /> }
+		icon={ <Icon srcElement={ tag } /> }
 		label={ __( 'On Sale Products', 'woo-gutenberg-products-block' ) }
 		className="wc-block-product-on-sale"
 	>

@@ -20,7 +20,7 @@ import { example } from '../example';
 registerBlockType( 'woocommerce/reviews-by-category', {
 	title: __( 'Reviews by Category', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon icon={ review } />,
+		src: <Icon srcElement={ review } />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',

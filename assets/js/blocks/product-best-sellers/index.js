@@ -18,7 +18,7 @@ import sharedAttributes, {
 registerBlockType( 'woocommerce/product-best-sellers', {
 	title: __( 'Best Selling Products', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon icon={ stonks } />,
+		src: <Icon srcElement={ stonks } />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',

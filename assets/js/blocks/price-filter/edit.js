@@ -116,7 +116,7 @@ export default function( { attributes, setAttributes } ) {
 	const noProductsPlaceholder = () => (
 		<Placeholder
 			className="wc-block-price-slider"
-			icon={ <Icon icon={ bill } /> }
+			icon={ <Icon srcElement={ bill } /> }
 			label={ __(
 				'Filter Products by Price',
 				'woo-gutenberg-products-block'
@@ -140,7 +140,7 @@ export default function( { attributes, setAttributes } ) {
 			>
 				{ __( 'Add new product', 'woo-gutenberg-products-block' ) +
 					' ' }
-				<Icon icon={ external } />
+				<Icon srcElement={ external } />
 			</Button>
 			<Button
 				className="wc-block-price-slider__read_more_button"

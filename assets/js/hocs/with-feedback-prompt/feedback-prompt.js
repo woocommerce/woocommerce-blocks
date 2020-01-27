@@ -16,7 +16,7 @@ import './style.scss';
 const FeedbackPrompt = ( { text } ) => {
 	return (
 		<div className="wc-block-feedback-prompt">
-			<Icon icon={ comment } />
+			<Icon srcElement={ comment } />
 			<h2 className="wc-block-feedback-prompt__title">
 				{ __( 'Feedback?', 'woo-gutenberg-products-block' ) }
 			</h2>
@@ -32,7 +32,7 @@ const FeedbackPrompt = ( { text } ) => {
 					'Give us your feedback.',
 					'woo-gutenberg-products-block'
 				) }
-				<Icon icon={ external } size={ 16 } />
+				<Icon srcElement={ external } size={ 16 } />
 			</a>
 		</div>
 	);

@@ -10,7 +10,10 @@ const NoCategoryReviewsPlaceholder = () => {
 		<Placeholder
 			className="wc-block-all-reviews"
 			icon={
-				<Icon icon={ discussion } className="block-editor-block-icon" />
+				<Icon
+					srcElement={ discussion }
+					className="block-editor-block-icon"
+				/>
 			}
 			label={ __( 'All Reviews', 'woo-gutenberg-products-block' ) }
 		>

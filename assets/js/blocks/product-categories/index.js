@@ -15,7 +15,7 @@ import Block from './block.js';
 registerBlockType( 'woocommerce/product-categories', {
 	title: __( 'Product Categories List', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon icon={ list } />,
+		src: <Icon srcElement={ list } />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',

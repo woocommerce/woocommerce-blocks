@@ -85,7 +85,7 @@ const FeaturedProduct = ( {
 			<Fragment>
 				{ getBlockControls() }
 				<Placeholder
-					icon={ <Icon icon={ star } /> }
+					icon={ <Icon srcElement={ star } /> }
 					label={ __(
 						'Featured Product',
 						'woo-gutenberg-products-block'
@@ -383,7 +383,7 @@ const FeaturedProduct = ( {
 	const renderNoProduct = () => (
 		<Placeholder
 			className="wc-block-featured-product"
-			icon={ <Icon icon={ star } /> }
+			icon={ <Icon srcElement={ star } /> }
 			label={ __( 'Featured Product', 'woo-gutenberg-products-block' ) }
 		>
 			{ isLoading ? (

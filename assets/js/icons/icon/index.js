@@ -3,8 +3,8 @@
  */
 import { cloneElement } from '@wordpress/element';
 
-function Icon( { icon, size = 24, ...props } ) {
-	return cloneElement( icon, {
+function Icon( { srcElement, size = 24, ...props } ) {
+	return cloneElement( srcElement, {
 		width: size,
 		height: size,
 		...props,

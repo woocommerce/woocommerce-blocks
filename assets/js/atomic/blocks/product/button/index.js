@@ -19,7 +19,7 @@ const blockConfig = {
 		'woo-gutenberg-products-block'
 	),
 	icon: {
-		src: <Icon icon={ cart } />,
+		src: <Icon srcElement={ cart } />,
 		foreground: '#96588a',
 	},
 	edit( props ) {

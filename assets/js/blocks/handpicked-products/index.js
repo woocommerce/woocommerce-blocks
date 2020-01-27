@@ -16,7 +16,7 @@ import { deprecatedConvertToShortcode } from '../../utils/deprecations';
 registerBlockType( 'woocommerce/handpicked-products', {
 	title: __( 'Hand-picked Products', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon icon={ widgets } />,
+		src: <Icon srcElement={ widgets } />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',

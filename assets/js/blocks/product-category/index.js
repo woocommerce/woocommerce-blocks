@@ -22,7 +22,7 @@ import sharedAttributes, {
 registerBlockType( 'woocommerce/product-category', {
 	title: __( 'Products by Category', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon icon={ folder } />,
+		src: <Icon srcElement={ folder } />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',

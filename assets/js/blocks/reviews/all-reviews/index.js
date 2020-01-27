@@ -21,7 +21,7 @@ import { example } from '../example';
 registerBlockType( 'woocommerce/all-reviews', {
 	title: __( 'All Reviews', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon icon={ discussion } />,
+		src: <Icon srcElement={ discussion } />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',

@@ -17,7 +17,7 @@ import '../../../atomic/blocks/product';
 const blockSettings = {
 	title: __( 'All Products', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon icon={ grid } />,
+		src: <Icon srcElement={ grid } />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',

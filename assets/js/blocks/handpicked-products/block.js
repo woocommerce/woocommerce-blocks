@@ -129,7 +129,7 @@ class ProductsBlock extends Component {
 
 		return (
 			<Placeholder
-				icon={ <Icon icon={ widgets } /> }
+				icon={ <Icon srcElement={ widgets } /> }
 				label={ __(
 					'Hand-picked Products',
 					'woo-gutenberg-products-block'

@@ -19,7 +19,7 @@ import './style.scss';
 registerBlockType( 'woocommerce/cart', {
 	title: __( 'Cart', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon icon={ cart } />,
+		src: <Icon srcElement={ cart } />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',

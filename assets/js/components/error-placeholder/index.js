@@ -16,7 +16,7 @@ import './editor.scss';
 
 const ErrorPlaceholder = ( { className, error, isLoading, onRetry } ) => (
 	<Placeholder
-		icon={ <Icon icon={ notice } /> }
+		icon={ <Icon srcElement={ notice } /> }
 		label={ __(
 			'Sorry, an error occurred',
 			'woo-gutenberg-products-block'

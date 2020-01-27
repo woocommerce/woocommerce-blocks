@@ -18,7 +18,7 @@ const blockConfig = {
 		'woo-gutenberg-products-block'
 	),
 	icon: {
-		src: <Icon icon={ star } />,
+		src: <Icon srcElement={ star } />,
 		foreground: '#96588a',
 	},
 

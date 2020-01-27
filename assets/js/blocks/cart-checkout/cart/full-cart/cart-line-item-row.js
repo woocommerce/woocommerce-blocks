@@ -127,7 +127,7 @@ const CartLineItemRow = ( { lineItem } ) => {
 					{ __( 'Remove item', 'woo-gutenberg-products-block' ) }
 				</button>
 				<button className="wc-block-cart-item__remove-icon">
-					<Icon icon={ trash } />
+					<Icon srcElement={ trash } />
 				</button>
 			</td>
 			<td className="wc-block-cart-item__total">

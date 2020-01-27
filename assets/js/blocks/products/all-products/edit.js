@@ -86,7 +86,7 @@ class Editor extends Component {
 	};
 
 	getIcon = () => {
-		return <Icon icon={ grid } />;
+		return <Icon srcElement={ grid } />;
 	};
 
 	togglePreview = () => {
@@ -232,7 +232,7 @@ class Editor extends Component {
 						</Button>
 						<IconButton
 							className="wc-block-all-products__reset-button"
-							icon={ <Icon icon={ grid } /> }
+							icon={ <Icon srcElement={ grid } /> }
 							label={ __(
 								'Reset layout to default',
 								'woo-gutenberg-products-block'

@@ -20,7 +20,7 @@ const blockTypeName = 'woocommerce/product-top-rated';
 registerBlockType( blockTypeName, {
 	title: __( 'Top Rated Products', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon icon={ thumbUp } />,
+		src: <Icon srcElement={ thumbUp } />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',

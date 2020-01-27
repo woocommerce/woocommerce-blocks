@@ -220,7 +220,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 	const noAttributesPlaceholder = () => (
 		<Placeholder
 			className="wc-block-attribute-filter"
-			icon={ <Icon icon={ server } /> }
+			icon={ <Icon srcElement={ server } /> }
 			label={ __(
 				'Filter Products by Attribute',
 				'woo-gutenberg-products-block'
@@ -246,7 +246,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 			>
 				{ __( 'Add new attribute', 'woo-gutenberg-products-block' ) +
 					' ' }
-				<Icon icon={ external } />
+				<Icon srcElement={ external } />
 			</Button>
 			<Button
 				className="wc-block-attribute-filter__read_more_button"
@@ -357,7 +357,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 		return (
 			<Placeholder
 				className="wc-block-attribute-filter"
-				icon={ <Icon icon={ server } /> }
+				icon={ <Icon srcElement={ server } /> }
 				label={ __(
 					'Filter Products by Attribute',
 					'woo-gutenberg-products-block'

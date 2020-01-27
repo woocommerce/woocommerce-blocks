@@ -7,11 +7,11 @@ WooCommerce Blocks Icons Library.
 ```js
 import { Icon, bill, woo } from '@woocommerce/icons';
 
-<Icon icon={ bill } />
+<Icon srcElement={ bill } />
 
-<Icon icon={ bill } size={ 16 } />
+<Icon srcElement={ bill } size={ 16 } />
 
-<Icon icon={ woo } width={ 20 } height={ Math.floor( 20 * 1.67 ) } />
+<Icon srcElement={ woo } width={ 20 } height={ Math.floor( 20 * 1.67 ) } />
 ```
 
 ## Props
@@ -26,5 +26,5 @@ Name | Type | Default | Description
 1. Add the icon file to `./library` folder.
 2. Make sure to use `SVG` primitive from `@wordpress/components` and not a native svg. `SVG` offers more accessibility features.
 3. Remove width and height since they're handled by Icon.
-4. Remove any hardcoded colors on the svg. If necessary,, use `CurrentColor`.
+4. Remove any hardcoded colors on the svg. If necessary, use `CurrentColor`.
 5. Export the Icon in `./library/index.js`.

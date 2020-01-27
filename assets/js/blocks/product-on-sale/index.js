@@ -18,7 +18,7 @@ import sharedAttributes, {
 registerBlockType( 'woocommerce/product-on-sale', {
 	title: __( 'On Sale Products', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon icon={ tag } />,
+		src: <Icon srcElement={ tag } />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',

@@ -17,7 +17,7 @@ import Block from './block.js';
 registerBlockType( 'woocommerce/product-search', {
 	title: __( 'Product Search', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon icon={ search } />,
+		src: <Icon srcElement={ search } />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',

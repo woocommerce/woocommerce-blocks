@@ -14,7 +14,7 @@ import edit from './edit.js';
 registerBlockType( 'woocommerce/active-filters', {
 	title: __( 'Active Product Filters', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon icon={ toggle } />,
+		src: <Icon srcElement={ toggle } />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',

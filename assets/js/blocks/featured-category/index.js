@@ -21,7 +21,7 @@ import { example } from './example';
 registerBlockType( 'woocommerce/featured-category', {
 	title: __( 'Featured Category', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon icon={ FolderStarred } />,
+		src: <Icon srcElement={ FolderStarred } />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',

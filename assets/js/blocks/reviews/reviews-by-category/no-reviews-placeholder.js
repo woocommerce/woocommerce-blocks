@@ -9,7 +9,10 @@ const NoReviewsPlaceholder = () => {
 		<Placeholder
 			className="wc-block-reviews-by-category"
 			icon={
-				<Icon icon={ review } className="block-editor-block-icon" />
+				<Icon
+					srcElement={ review }
+					className="block-editor-block-icon"
+				/>
 			}
 			label={ __(
 				'Reviews by Category',

@@ -30,9 +30,9 @@ function getHighlightedName( name, search ) {
 
 const getInteractionIcon = ( isSelected = false ) => {
 	return isSelected ? (
-		<Icon icon={ radioSelected } />
+		<Icon srcElement={ radioSelected } />
 	) : (
-		<Icon icon={ radioUnselected } />
+		<Icon srcElement={ radioUnselected } />
 	);
 };
 

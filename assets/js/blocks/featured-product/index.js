@@ -21,7 +21,7 @@ import Block from './block';
 registerBlockType( 'woocommerce/featured-product', {
 	title: __( 'Featured Product', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon icon={ star } />,
+		src: <Icon srcElement={ star } />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',

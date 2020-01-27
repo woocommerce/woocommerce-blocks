@@ -15,7 +15,7 @@ import './editor.scss';
 registerBlockType( 'woocommerce/checkout', {
 	title: __( 'Checkout', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon icon={ card } />,
+		src: <Icon srcElement={ card } />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',

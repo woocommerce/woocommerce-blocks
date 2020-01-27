@@ -178,7 +178,10 @@ class ProductsByTagBlock extends Component {
 		return (
 			<Placeholder
 				icon={
-					<Icon icon={ more } className="block-editor-block-icon" />
+					<Icon
+						srcElement={ more }
+						className="block-editor-block-icon"
+					/>
 				}
 				label={ __(
 					'Products by Tag',

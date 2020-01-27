@@ -190,7 +190,7 @@ const FeaturedCategory = ( {
 
 		return (
 			<Placeholder
-				icon={ <Icon icon={ FolderStarred } /> }
+				icon={ <Icon srcElement={ FolderStarred } /> }
 				label={ __(
 					'Featured Category',
 					'woo-gutenberg-products-block'
@@ -337,7 +337,7 @@ const FeaturedCategory = ( {
 	const renderNoCategory = () => (
 		<Placeholder
 			className="wc-block-featured-category"
-			icon={ <Icon icon={ FolderStarred } /> }
+			icon={ <Icon srcElement={ FolderStarred } /> }
 			label={ __( 'Featured Category', 'woo-gutenberg-products-block' ) }
 		>
 			{ isLoading ? (

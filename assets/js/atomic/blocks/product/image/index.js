@@ -23,7 +23,7 @@ const blockConfig = {
 		'woo-gutenberg-products-block'
 	),
 	icon: {
-		src: <Icon icon={ image } />,
+		src: <Icon srcElement={ image } />,
 		foreground: '#96588a',
 	},
 	attributes: {

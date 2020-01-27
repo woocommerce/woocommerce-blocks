@@ -118,7 +118,7 @@ class ProductsByAttributeBlock extends Component {
 
 		return (
 			<Placeholder
-				icon={ <Icon icon={ tags } /> }
+				icon={ <Icon srcElement={ tags } /> }
 				label={ __(
 					'Products by Attribute',
 					'woo-gutenberg-products-block'
