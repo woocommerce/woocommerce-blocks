@@ -1,0 +1,69 @@
+# Coding Guidelines
+
+This living document serves to prescribe coding guidelines specific to the WooCommerce Blocks project. Base coding guidelines follow the [WordPress Coding Standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/) and [Gutenberg coding standards](https://developer.wordpress.org/block-editor/contributors/develop/coding-guidelines/).
+
+The following sections outline additional patterns and conventions used in the Blocks project.
+
+## CSS
+
+### CSS Class Names
+
+To avoid class name collisions, class names must adhere to the following guidelines, based on the [BEM methodology](https://en.bem.info/methodology/) and [Gutenberg coding standards](https://developer.wordpress.org/block-editor/contributors/develop/coding-guidelines/).
+
+#### Prefixing
+
+As a WordPress plugin, Blocks has to play nicely with other plugins and themes, and WordPress itself. To minimize conflict potential all classes should be prefixed with `.wc-block-`.
+
+#### Naming
+
+As well as using a `wc-block-` prefix, all class names assigned to an element must be prefixed with the name of the package, followed by a dash and the name of the directory in which the component resides. Any descendent of the component's root element must append a dash-delimited descriptor, separated from the base by two consecutive underscores \_\_.
+
+    Root element: wc-block-package-directory
+    Child elements: wc-block-package-directory__descriptor-foo-bar
+
+For example, `assets/base/components/checkbox-list` uses the class name: `wc-block-checkbox-list`.
+
+The **root element** is considered to be the highest ancestor element returned by the default export in the index.js. Notably, if your folder contains multiple files, each with their own default exported component, only the element rendered by that of index.js can be considered the root. All others should be treated as **descendents**.
+
+Naming is not strictly tied to the DOM so it **doesn’t matter how many nested levels deep a descendent element is**. The naming convention is there to help you identify relationships with the root element.
+
+**Examples:**
+
+-   `wc-block-dropdown-selector` (root element)
+-   ├── `wc-block-dropdown-selector__input` (descendent)
+-   ├── `wc-block-dropdown-selector__input--active` (modifier on descendent)
+-   └── `wc-block-dropdown-selector__placeholder` (descendent)
+
+### RTL Styles
+
+Blocks uses the `webpack-rtl-plugin` package to generate styles for Right-to-Left languages. These are generated automatically.
+
+To make adjustments to the generated RTL styles, for example, excluding certain rules from the RTL stylesheets, you should use the [control directives here](https://rtlcss.com/learn/usage-guide/control-directives/index.html).
+
+For example, you can exclude individual lines:
+
+```css
+.code {
+	/*rtl:ignore*/
+	direction: ltr;
+	/*rtl:ignore*/
+	text-align: left;
+}
+```
+
+Or exclude blocks of CSS:
+
+```css
+.code {
+	/*rtl:begin:ignore*/
+	direction: ltr;
+	text-align: left;
+	/*rtl:end:ignore*/
+}
+```
+
+### SCSS File Naming Conventions for Blocks
+
+The build process will split SCSS from within the blocks library directory into two separate CSS files when Webpack runs.
+
+Styles placed in a `style.scss` file will be built into `build/style.css`, to load on the front end theme as well as in the editor. If you need additional styles specific to the block's display in the editor, add them to an `editor.scss`.
