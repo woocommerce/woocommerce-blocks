@@ -29,15 +29,7 @@ const DEFAULTS = {
 pkg.changelog = pkg.changelog || DEFAULTS;
 
 config.merge( { ...DEFAULTS, ...pkg.changelog } );
-config.env( [
-	'LABEL_PREFIX',
-	'SKIP_LABEL',
-	'DEFAULT_PREFIX',
-	'DEV_NOTE_LABEL',
-	'CHANGELOG_SRC_TYPE',
-	'GH_API_TOKEN',
-	'ZH_API_KEY',
-] );
+config.env( [ 'GH_API_TOKEN', 'ZH_API_KEY' ] );
 config.argv( Object.keys( pkg.changelog ) );
 
 //merge in command-line arguments
