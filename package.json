@@ -164,7 +164,8 @@
 	"changelog": {
 		"labelPrefix": "type:",
 		"skipLabel": "skip-changelog",
-		"defaultPrefix": "dev"
+		"defaultPrefix": "dev",
+		"repo": "woocommerce/woocommerce-gutenberg-products-block"
 	},
 	"files": [
 		"assets/**/*.{js,scss,php}",

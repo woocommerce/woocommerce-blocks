@@ -10,18 +10,13 @@ const changelogSrcTypes = {
 	ZENHUB: 'ZENHUB_RELEASE',
 };
 
-const REPO = pkg.repository.url
-	// remove https://github.com:
-	.split( ':' )[ 2 ]
-	// remove the .git ending.
-	.slice( 0, -4 );
-
 const DEFAULTS = {
 	labelPrefix: 'type:',
 	skipLabel: 'no-changelog',
 	defaultPrefix: 'dev',
 	changelogSrcType: changelogSrcTypes.MILESTONE,
 	devNoteLabel: 'dev-note',
+	repo: '',
 	ghApiToken: '',
 	zhApiKey: '',
 };
@@ -32,7 +27,14 @@ config.merge( { ...DEFAULTS, ...pkg.changelog } );
 config.env( [ 'GH_API_TOKEN', 'ZH_API_KEY' ] );
 config.argv( Object.keys( pkg.changelog ) );
 
-//merge in command-line arguments
+const REPO = config.get( 'repo' );
+
+if ( ! REPO ) {
+	throw new Error(
+		"The 'repo' configuration value is not set. This script requires the\n" +
+			'repository namespace used as the source for the changelog entries.'
+	);
+}
 
 module.exports = {
 	pkg: {
