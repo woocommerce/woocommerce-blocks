@@ -16,7 +16,13 @@ As a WordPress plugin, Blocks has to play nicely with other plugins and themes, 
 
 #### Naming
 
-As well as using a `wc-block-` prefix, all class names assigned to an element must be prefixed with the name of the package, followed by a dash and the name of the directory in which the component resides. Any descendent of the component's root element must append a dash-delimited descriptor, separated from the base by two consecutive underscores `__`.
+All class names assigned to an element must be prefixed with the following, each joined by a dash (`-`):
+
+-   The `wc-block` plugin prefix.
+-   The name of the sub-package (where applicable, e.g. if there was a distributed sub-package called `components` living within the blocks plugin, the prefix would be `wc-block-components-`).
+-   The name of the directory in which the component resides.
+
+Any descendent of the component's root element must append a dash-delimited descriptor, separated from the base by two consecutive underscores `__`.
 
     Example, `assets/base/components/checkbox-list` uses the class name: `wc-block-checkbox-list`.
 
