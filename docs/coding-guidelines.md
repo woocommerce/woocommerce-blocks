@@ -22,7 +22,7 @@ All class names assigned to an element must be prefixed with the following, each
 -   The name of the sub-package (where applicable, e.g. if there was a distributed sub-package called `components` living within the blocks plugin, the prefix would be `wc-block-components-`).
 -   The name of the directory in which the component resides.
 
-Any descendent of the component's root element must append a dash-delimited descriptor, separated from the base by two consecutive underscores `__`.
+Any descendant of the component's root element must append a dash-delimited descriptor, separated from the base by two consecutive underscores `__`.
 
     Example, `assets/base/components/checkbox-list` uses the class name: `wc-block-checkbox-list`.
 
@@ -38,9 +38,9 @@ Finally, A **modifier** is a flag on an element which can be used to change appe
 
     Example: `wc-block-package-directory__descriptor-foo-bar--state`
 
-The **root element** is considered to be the highest ancestor element returned by the default export in the index.js. Notably, if your folder contains multiple files, each with their own default exported component, only the element rendered by that of index.js can be considered the root. All others should be treated as **descendents**.
+The **root element** is considered to be the highest ancestor element returned by the default export in the index.js. Notably, if your folder contains multiple files, each with their own default exported component, only the element rendered by that of index.js can be considered the root. All others should be treated as **descendants**.
 
-Naming is not strictly tied to the DOM so it **doesn’t matter how many nested levels deep a descendent element is**. The naming convention is there to help you identify relationships with the root element.
+Naming is not strictly tied to the DOM so it **doesn’t matter how many nested levels deep a descendant element is**. The naming convention is there to help you identify relationships with the root element.
 
 **Nesting Example:**
 
