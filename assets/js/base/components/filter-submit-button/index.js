@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import Label from '@woocommerce/base-components/label';
 
 /**
  * Internal dependencies
@@ -21,8 +22,16 @@ const FilterSubmitButton = ( { className, disabled, onClick } ) => {
 			disabled={ disabled }
 			onClick={ onClick }
 		>
-			{ // translators: Submit button text for filters.
-			__( 'Go', 'woo-gutenberg-products-block' ) }
+			<Label
+				label={
+					// translators: Submit button text for filters.
+					__( 'Go', 'woo-gutenberg-products-block' )
+				}
+				screenReaderLabel={ __(
+					'Apply filter',
+					'woo-gutenberg-products-block'
+				) }
+			/>
 		</button>
 	);
 };
