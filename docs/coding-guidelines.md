@@ -12,22 +12,27 @@ To avoid class name collisions, class names must adhere to the following guideli
 
 #### Prefixing
 
-As a WordPress plugin, Blocks has to play nicely with other plugins and themes, and WordPress itself. To minimize conflict potential all classes should be prefixed with `.wc-block-`.
+As a WordPress plugin, Blocks has to play nicely with other plugins and themes, and WordPress itself. To minimize potential conflicts, all classes should be prefixed with `.wc-block-`.
 
 #### Naming
 
-As well as using a `wc-block-` prefix, all class names assigned to an element must be prefixed with the name of the package, followed by a dash and the name of the directory in which the component resides. Any descendent of the component's root element must append a dash-delimited descriptor, separated from the base by two consecutive underscores \_\_.
+As well as using a `wc-block-` prefix, all class names assigned to an element must be prefixed with the name of the package, followed by a dash and the name of the directory in which the component resides. Any descendent of the component's root element must append a dash-delimited descriptor, separated from the base by two consecutive underscores `__`.
 
-    Root element: wc-block-package-directory
-    Child elements: wc-block-package-directory__descriptor-foo-bar
+    Example, `assets/base/components/checkbox-list` uses the class name: `wc-block-checkbox-list`.
 
-For example, `assets/base/components/checkbox-list` uses the class name: `wc-block-checkbox-list`.
+A **root element** (or **Block** in BEM notation) is a standalone entity that is meaningful on its own. Whilst they can be nested and interact with each other, semantically they remain equal; there is no precedence or hierarchy.
+
+Example: `wc-block-package-directory`
+
+A **child element** (or **Element** in BEM notation) has no standalone meaning and is semantically tied to its block.
+
+    Example: `wc-block-package-directory__descriptor-foo-bar`
 
 The **root element** is considered to be the highest ancestor element returned by the default export in the index.js. Notably, if your folder contains multiple files, each with their own default exported component, only the element rendered by that of index.js can be considered the root. All others should be treated as **descendents**.
 
 Naming is not strictly tied to the DOM so it **doesn’t matter how many nested levels deep a descendent element is**. The naming convention is there to help you identify relationships with the root element.
 
-**Examples:**
+**Nesting Example:**
 
 -   `wc-block-dropdown-selector` (root element)
 -   ├── `wc-block-dropdown-selector__input` (descendent)
