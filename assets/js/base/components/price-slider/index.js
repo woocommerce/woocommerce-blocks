@@ -241,7 +241,7 @@ const PriceSlider = ( {
 				onFocus={ findClosestRange }
 			>
 				{ hasValidConstraints && (
-					<Fragment>
+					<div aria-hidden={ showInputFields }>
 						<div
 							className="wc-block-price-filter__range-input-progress"
 							style={ progressStyles }
@@ -284,7 +284,7 @@ const PriceSlider = ( {
 							ref={ maxRange }
 							disabled={ isLoading }
 						/>
-					</Fragment>
+					</div>
 				) }
 			</div>
 			<div className="wc-block-price-filter__controls">
