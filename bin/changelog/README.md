@@ -46,7 +46,7 @@ The two environment variables you can use are:
 | Environment Variable | Description |
 | -------------------- | ----------  |
 | GH_API_TOKEN | Github API token for authorizing on the github API. |
-| ZH_API_KEY   | Zenhub api key used for authorizing against the zenhub API. |
+| ZH_API_TOKEN   | Zenhub api token used for authorizing against the zenhub API. |
 
 ### Examples:
 
