@@ -25,7 +25,7 @@ pkg.changelog = pkg.changelog || DEFAULTS;
 
 config.merge( { ...DEFAULTS, ...pkg.changelog } );
 config.env( [ 'GH_API_TOKEN', 'ZH_API_KEY' ] );
-config.argv( Object.keys( pkg.changelog ) );
+config.argv( Object.keys( DEFAULTS ) );
 
 const REPO = config.get( 'repo' );
 
