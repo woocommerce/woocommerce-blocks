@@ -7,6 +7,7 @@ import { useMemo, Fragment } from '@wordpress/element';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import Label from '@woocommerce/base-components/label';
+import { speak } from '@wordpress/a11y';
 
 /**
  * Internal dependencies
@@ -40,6 +41,9 @@ const ActiveFiltersBlock = ( {
 			() => {
 				setMinPrice( undefined );
 				setMaxPrice( undefined );
+				speak(
+					__( 'Price filter removed', 'woo-gutenberg-products-block' )
+				);
 			}
 		);
 	}, [ minPrice, maxPrice, formatPriceRange ] );
@@ -108,6 +112,12 @@ const ActiveFiltersBlock = ( {
 						setMinPrice( undefined );
 						setMaxPrice( undefined );
 						setProductAttributes( [] );
+						speak(
+							__(
+								'Cleared all filters',
+								'woo-gutenberg-products-block'
+							)
+						);
 					} }
 				>
 					<Label
