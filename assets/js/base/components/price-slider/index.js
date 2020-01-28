@@ -264,6 +264,7 @@ const PriceSlider = ( {
 							max={ maxConstraint }
 							ref={ minRange }
 							disabled={ isLoading }
+							tabIndex={ showInputFields ? '-1' : '0' }
 						/>
 						<input
 							type="range"
@@ -283,6 +284,7 @@ const PriceSlider = ( {
 							max={ maxConstraint }
 							ref={ maxRange }
 							disabled={ isLoading }
+							tabIndex={ showInputFields ? '-1' : '0' }
 						/>
 					</div>
 				) }
