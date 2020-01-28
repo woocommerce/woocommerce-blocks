@@ -41,7 +41,7 @@
 		"test:watch": "npm run test -- --watch",
 		"size-check": "bundlewatch",
 		"changelog": "node ./bin/changelog",
-		"changelog:zenhub": "node ./bin/changelog --changelogSrcType:'MILESTONE'"
+		"changelog:zenhub": "node ./bin/changelog --changelogSrcType='ZENHUB_RELEASE'"
 	},
 	"devDependencies": {
 		"@babel/core": "7.8.3",
