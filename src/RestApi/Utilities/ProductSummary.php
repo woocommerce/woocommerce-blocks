@@ -68,10 +68,10 @@ final class ProductSummary {
 	 */
 	private function generate_summary( $content, $max_words ) {
 		$content_p = \wpautop( $content );
-		$paragraph = \strstr( $content_p, '</p>' ) ? \substr( $content_p, 0, \strpos( $content_p, '</p>' ) + 4 ) : $content_p;
+		$paragraph = \strstr( $content_p, '</p>' ) ? \substr( $content_p, 0, \strpos( $content_p, '</p>' ) + 4 ) : $content;
 
 		if ( $this->get_word_count( $paragraph ) > $max_words ) {
-			return \wp_trim_words( $content, $max_words );
+			return \wp_trim_words( $paragraph, $max_words );
 		}
 
 		return $paragraph;
