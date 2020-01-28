@@ -87,7 +87,7 @@ const Pagination = ( {
 						label={ 1 }
 						screenReaderLabel={ sprintf(
 							/* translators: %d is the page number (1, 2, 3...). */
-							__( 'Page %s', 'woo-gutenberg-products-block' ),
+							__( 'Page %d', 'woo-gutenberg-products-block' ),
 							1
 						) }
 					/>
@@ -120,7 +120,7 @@ const Pagination = ( {
 							label={ page }
 							screenReaderLabel={ sprintf(
 								/* translators: %d is the page number (1, 2, 3...). */
-								__( 'Page %s', 'woo-gutenberg-products-block' ),
+								__( 'Page %d', 'woo-gutenberg-products-block' ),
 								page
 							) }
 						/>
@@ -148,7 +148,7 @@ const Pagination = ( {
 						label={ totalPages }
 						screenReaderLabel={ sprintf(
 							/* translators: %d is the page number (1, 2, 3...). */
-							__( 'Page %s', 'woo-gutenberg-products-block' ),
+							__( 'Page %d', 'woo-gutenberg-products-block' ),
 							totalPages
 						) }
 					/>
