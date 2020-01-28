@@ -10,12 +10,29 @@ let ready = false;
 
 const makeChangeLog = async () => {
 	if ( ! pkg.changelog.zhApiKey || ! pkg.changelog.ghApiToken ) {
+		const zenhubSet = pkg.changelog.zhApiKey
+			? chalk.green( 'set' )
+			: chalk.red( 'not set' );
+		const githubSet = pkg.changelog.ghApiToken
+			? chalk.green( 'set' )
+			: chalk.red( 'not set' );
+		console.log( `${ chalk.yellow( 'Zenhub Key:' ) } ${ zenhubSet }` );
+		console.log( `${ chalk.yellow( 'Github Token:' ) } ${ githubSet }` );
+		console.log( '' );
 		console.log(
 			chalk.yellow(
-				'This program requires an api token from Github and Zenhub. You can create one here: '
-			) +
-				'https://github.com/settings/tokens' +
-				' and https://app.zenhub.com/dashboard/tokens'
+				'This program requires an api token from Github and Zenhub.'
+			)
+		);
+		console.log(
+			chalk.yellow(
+				'You can create and get a Github token here: https://github.com/settings/tokens'
+			)
+		);
+		console.log(
+			chalk.yellow(
+				'You can create and get a Zenhub key here: https://app.zenhub.com/dashboard/tokens'
+			)
 		);
 		console.log( '' );
 		console.log(
@@ -35,7 +52,7 @@ const makeChangeLog = async () => {
 	} else {
 		console.log(
 			chalk.green(
-				'Detected ZH_API_KEY and GH_API_TOKEN values are set.'
+				'Detected that ZH_API_KEY and GH_API_TOKEN values are set.'
 			)
 		);
 		ready = true;
