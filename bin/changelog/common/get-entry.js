@@ -7,7 +7,7 @@ const { pkg, REPO } = require( '../config' );
 /* eslint no-console: 0 */
 
 const headers = {
-	authorization: `token ${ process.env.GH_API_TOKEN }`,
+	authorization: `token ${ pkg.changelog.ghApiToken }`,
 	'user-agent': 'changelog-tool',
 };
 

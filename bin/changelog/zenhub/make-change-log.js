@@ -9,8 +9,8 @@ const { fetchAllPullRequests } = require( './requests' );
 let ready = false;
 
 const makeChangeLog = async () => {
-	if ( ! pkg.changelog.zhApiKey || ! pkg.changelog.ghApiToken ) {
-		const zenhubSet = pkg.changelog.zhApiKey
+	if ( ! pkg.changelog.zhApiToken || ! pkg.changelog.ghApiToken ) {
+		const zenhubSet = pkg.changelog.zhApiToken
 			? chalk.green( 'set' )
 			: chalk.red( 'not set' );
 		const githubSet = pkg.changelog.ghApiToken

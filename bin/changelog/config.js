@@ -18,13 +18,13 @@ const DEFAULTS = {
 	devNoteLabel: 'dev-note',
 	repo: '',
 	ghApiToken: '',
-	zhApiKey: '',
+	zhApiToken: '',
 };
 
 pkg.changelog = pkg.changelog || DEFAULTS;
 
 config.merge( { ...DEFAULTS, ...pkg.changelog } );
-config.env( [ 'GH_API_TOKEN', 'ZH_API_KEY' ] );
+config.env( [ 'GH_API_TOKEN', 'ZH_API_TOKEN' ] );
 config.argv( Object.keys( DEFAULTS ) );
 
 const REPO = config.get( 'repo' );
