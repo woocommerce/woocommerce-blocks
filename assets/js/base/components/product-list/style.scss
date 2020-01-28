@@ -181,7 +181,8 @@
 		height: 1.618em;
 		line-height: 1.618;
 		font-size: 1em;
-		font-family: star; /* stylelint-disable-line */
+		/* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
+		font-family: star;
 		font-weight: 400;
 		margin: 0 auto;
 		text-align: left;
