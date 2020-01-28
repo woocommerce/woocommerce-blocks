@@ -12,13 +12,13 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Product Summary class.
  */
-class ProductSummary {
+final class ProductSummary {
 	/**
 	 * Original content from the product.
 	 *
 	 * @var string
 	 */
-	protected $content = '';
+	private $content = '';
 
 	/**
 	 * Constructor.
@@ -55,7 +55,7 @@ class ProductSummary {
 	 * @param string $content HTML Content.
 	 * @return int Length
 	 */
-	protected function get_word_count( $content ) {
+	private function get_word_count( $content ) {
 		return \str_word_count( \wp_strip_all_tags( $content ) );
 	}
 
@@ -66,7 +66,7 @@ class ProductSummary {
 	 * @param int    $max_words Maximum allowed words for summary.
 	 * @return string
 	 */
-	protected function generate_summary( $content, $max_words ) {
+	private function generate_summary( $content, $max_words ) {
 		$content_p = \wpautop( $content );
 		$paragraph = \strstr( $content_p, '</p>' ) ? \substr( $content_p, 0, \strpos( $content_p, '</p>' ) + 4 ) : $content_p;
 
