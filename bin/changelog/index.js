@@ -9,7 +9,7 @@ try {
 	const { pkg, changelogSrcTypes } = require( './config' );
 
 	const makeChangeLog =
-		pkg.changelogSrcType === changelogSrcTypes.ZENHUB
+		pkg.changelog.changelogSrcType === changelogSrcTypes.ZENHUB
 			? zenhubMake
 			: githubMake;
 
