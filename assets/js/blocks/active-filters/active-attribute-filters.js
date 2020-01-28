@@ -1,10 +1,8 @@
 /**
  * External dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
 import { useCollection, useQueryStateByKey } from '@woocommerce/base-hooks';
 import { decodeEntities } from '@wordpress/html-entities';
-import { speak } from '@wordpress/a11y';
 
 /**
  * Internal dependencies
@@ -37,28 +35,21 @@ const ActiveAttributeFilters = ( { attributeObject = {}, slugs = [] } ) => {
 		const termObject = results.find( ( term ) => {
 			return term.slug === slug;
 		} );
-		const name = decodeEntities( termObject.name || slug );
 
 		return (
 			termObject &&
-			renderRemovableListItem( attributeLabel, name, () => {
-				removeAttributeFilterBySlug(
-					productAttributes,
-					setProductAttributes,
-					attributeObject,
-					slug
-				);
-				speak(
-					sprintf(
-						// translators: %s is a filter value (large, medium, blue, yellow...)
-						__(
-							'%s filter removed',
-							'woo-gutenberg-products-block'
-						),
-						name
-					)
-				);
-			} )
+			renderRemovableListItem(
+				attributeLabel,
+				decodeEntities( termObject.name || slug ),
+				() => {
+					removeAttributeFilterBySlug(
+						productAttributes,
+						setProductAttributes,
+						attributeObject,
+						slug
+					);
+				}
+			)
 		);
 	} );
 };
