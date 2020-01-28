@@ -3,6 +3,7 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { formatPrice } from '@woocommerce/base-utils';
+import Label from '@woocommerce/base-components/label';
 
 /**
  * Format a min/max price range to display.
@@ -59,7 +60,17 @@ export const renderRemovableListItem = (
 				{ name }
 			</strong>
 			<button onClick={ removeCallback }>
-				{ __( 'Remove', 'woo-gutenberg-products-block' ) }
+				<Label
+					label={ __( 'Remove', 'woo-gutenberg-products-block' ) }
+					screenReaderLabel={ sprintf(
+						/* translators: %s attribute value used in the filter. For example: yellow, green, small, large. */
+						__(
+							'Remove %s filter',
+							'woo-gutenberg-products-block'
+						),
+						name
+					) }
+				/>
 			</button>
 		</li>
 	);

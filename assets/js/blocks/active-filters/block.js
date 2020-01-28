@@ -6,6 +6,7 @@ import { useQueryStateByKey } from '@woocommerce/base-hooks';
 import { useMemo, Fragment } from '@wordpress/element';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import Label from '@woocommerce/base-components/label';
 
 /**
  * Internal dependencies
@@ -109,7 +110,16 @@ const ActiveFiltersBlock = ( {
 						setProductAttributes( [] );
 					} }
 				>
-					{ __( 'Clear All', 'woo-gutenberg-products-block' ) }
+					<Label
+						label={ __(
+							'Clear All',
+							'woo-gutenberg-products-block'
+						) }
+						screenReaderLabel={ __(
+							'Clear All Filters',
+							'woo-gutenberg-products-block'
+						) }
+					/>
 				</button>
 			</div>
 		</Fragment>
