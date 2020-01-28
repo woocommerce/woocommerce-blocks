@@ -22,11 +22,15 @@ As well as using a `wc-block-` prefix, all class names assigned to an element mu
 
 A **root element** (or **Block** in BEM notation) is a standalone entity that is meaningful on its own. Whilst they can be nested and interact with each other, semantically they remain equal; there is no precedence or hierarchy.
 
-Example: `wc-block-package-directory`
+    Example: `wc-block-package-directory`
 
 A **child element** (or **Element** in BEM notation) has no standalone meaning and is semantically tied to its block.
 
     Example: `wc-block-package-directory__descriptor-foo-bar`
+
+Finally, A **modifier** is a flag on an element which can be used to change appearance, behavior or state.
+
+    Example: `wc-block-package-directory__descriptor-foo-bar--state`
 
 The **root element** is considered to be the highest ancestor element returned by the default export in the index.js. Notably, if your folder contains multiple files, each with their own default exported component, only the element rendered by that of index.js can be considered the root. All others should be treated as **descendents**.
 
@@ -34,10 +38,10 @@ Naming is not strictly tied to the DOM so it **doesn’t matter how many nested 
 
 **Nesting Example:**
 
--   `wc-block-dropdown-selector` (root element)
--   ├── `wc-block-dropdown-selector__input` (descendent)
--   ├── `wc-block-dropdown-selector__input--active` (modifier on descendent)
--   └── `wc-block-dropdown-selector__placeholder` (descendent)
+-   `wc-block-dropdown-selector` (Root Element/BEM Block)
+-   ├── `wc-block-dropdown-selector__input` (Child Element/BEM Element)
+-   ├── `wc-block-dropdown-selector__input--hidden` (Modifier)
+-   └── `wc-block-dropdown-selector__placeholder` (Child Element/BEM Element)
 
 ### RTL Styles
 
