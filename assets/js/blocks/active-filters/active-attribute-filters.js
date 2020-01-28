@@ -3,7 +3,8 @@
  */
 import { useCollection, useQueryStateByKey } from '@woocommerce/base-hooks';
 import { decodeEntities } from '@wordpress/html-entities';
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
+import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -43,19 +44,16 @@ const ActiveAttributeFilters = ( {
 
 		let name = decodeEntities( termObject.name || slug );
 
-		if ( index > 0 ) {
-			name =
-				operator === 'in'
-					? sprintf(
-							// Translators: %s attribute name.
-							__( 'or %s', 'woo-gutenberg-products-block' ),
-							name
-					  )
-					: sprintf(
-							// Translators: %s attribute name.
-							__( 'and %s', 'woo-gutenberg-products-block' ),
-							name
-					  );
+		if ( index > 0 && operator === 'and' ) {
+			name = (
+				<Fragment>
+					<span className="wc-block-active-filters-list-item__operator">
+						{ __( 'and', 'woo-gutenberg-products-block' ) }
+					</span>
+					&nbsp;
+					{ name }
+				</Fragment>
+			);
 		}
 
 		return (
