@@ -38,8 +38,8 @@ const ActiveFiltersBlock = ( {
 			__( 'Price', 'woo-gutenberg-products-block' ),
 			formatPriceRange( minPrice, maxPrice ),
 			() => {
-				setMinPrice( null );
-				setMaxPrice( null );
+				setMinPrice( undefined );
+				setMaxPrice( undefined );
 			}
 		);
 	}, [ minPrice, maxPrice, formatPriceRange ] );
@@ -105,8 +105,8 @@ const ActiveFiltersBlock = ( {
 				<button
 					className="wc-block-active-filters__clear-all"
 					onClick={ () => {
-						setMinPrice( null );
-						setMaxPrice( null );
+						setMinPrice( undefined );
+						setMaxPrice( undefined );
 						setProductAttributes( [] );
 					} }
 				>
