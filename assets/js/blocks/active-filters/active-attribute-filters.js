@@ -4,7 +4,6 @@
 import { useCollection, useQueryStateByKey } from '@woocommerce/base-hooks';
 import { decodeEntities } from '@wordpress/html-entities';
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -37,42 +36,49 @@ const ActiveAttributeFilters = ( {
 
 	const attributeLabel = attributeObject.label;
 
-	return slugs.map( ( slug, index ) => {
-		const termObject = results.find( ( term ) => {
-			return term.slug === slug;
-		} );
+	return (
+		<li>
+			<span className="wc-block-active-filters__list-item-type">
+				{ attributeLabel }:
+			</span>
+			<ul>
+				{ slugs.map( ( slug, index ) => {
+					const termObject = results.find( ( term ) => {
+						return term.slug === slug;
+					} );
 
-		let name = decodeEntities( termObject.name || slug );
+					if ( ! termObject ) {
+						return null;
+					}
 
-		if ( index > 0 && operator === 'and' ) {
-			name = (
-				<Fragment>
-					<span className="wc-block-active-filters-list-item__operator">
-						{ __( 'and', 'woo-gutenberg-products-block' ) }
-					</span>
-					&nbsp;
-					{ name }
-				</Fragment>
-			);
-		}
+					let prefix = '';
 
-		return (
-			termObject &&
-			renderRemovableListItem( {
-				type: attributeLabel,
-				name,
-				removeCallback: () => {
-					removeAttributeFilterBySlug(
-						productAttributes,
-						setProductAttributes,
-						attributeObject,
-						slug
-					);
-				},
-				showLabel: index === 0,
-			} )
-		);
-	} );
+					if ( index > 0 && operator === 'and' ) {
+						prefix = (
+							<span className="wc-block-active-filters__list-item-operator">
+								{ __( 'and', 'woo-gutenberg-products-block' ) }
+							</span>
+						);
+					}
+
+					return renderRemovableListItem( {
+						type: attributeLabel,
+						name: decodeEntities( termObject.name || slug ),
+						prefix,
+						removeCallback: () => {
+							removeAttributeFilterBySlug(
+								productAttributes,
+								setProductAttributes,
+								attributeObject,
+								slug
+							);
+						},
+						showLabel: false,
+					} );
+				} ) }
+			</ul>
+		</li>
+	);
 };
 
 export default ActiveAttributeFilters;
