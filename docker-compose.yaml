@@ -30,6 +30,7 @@ services:
       WORDPRESS_TABLE_PREFIX: "wp_"
       WORDPRESS_DEBUG: 1
     volumes:
+      - "../woocommerce:/var/www/html/wp-content/plugins/woocommerce"
       - "./:/var/www/html/wp-content/plugins/woocommerce-gutenberg-products-block"
       - wordpress:/var/www/html
 
@@ -43,13 +44,14 @@ services:
     command: >
       /bin/sh -c '
       wp core install --url=http://localhost:8084 --title="WooCommerce Core E2E Test Suite" --admin_user=admin --admin_password=password --admin_email=admin@woocommercecoree2etestsuite.com --path=/var/www/html --skip-email;
-      wp plugin install woocommerce --activate;
+      wp plugin activate woocommerce;
       wp plugin activate woocommerce-gutenberg-products-block;
       wp theme install twentynineteen --activate;
       wp user create customer customer@woocommercecoree2etestsuite.com --user_pass=password --role=customer --path=/var/www/html;
       wp post create --post_type=page --post_status=publish --post_title='Ready' --post_content='E2E-tests.';
       '
     volumes:
+      - "../woocommerce:/var/www/html/wp-content/plugins/woocommerce"
       - "./:/var/www/html/wp-content/plugins/woocommerce-gutenberg-products-block"
       - wordpress:/var/www/html
 
