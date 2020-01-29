@@ -5,7 +5,7 @@ module.exports = {
 		slowMo: process.env.PUPPETEER_SLOWMO ? false : 50,
 		headless: process.env.PUPPETEER_HEADLESS || false,
 		ignoreHTTPSErrors: true,
-		args: [ '--window-size=1920,1080', '--user-agent=puppeteer-debug' ],
+		args: [ '--window-size=1920,1080', '--user-agent=chrome' ],
 		devtools: true,
 		defaultViewport: {
 			width: 1280,
