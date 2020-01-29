@@ -41,7 +41,7 @@ export const formatPriceRange = ( minPrice, maxPrice ) => {
  * @param {string} type Type string.
  * @param {string} name Name string.
  * @param {Function} removeCallback Callback to remove item.
- * @param {boolean} showLabel Should the label be shown for this item?
+ * @param {boolean} [showLabel=true] Should the label be shown for this item?
  */
 export const renderRemovableListItem = ( {
 	type,
