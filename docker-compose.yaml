@@ -30,6 +30,7 @@ services:
       WORDPRESS_TABLE_PREFIX: "wp_"
       WORDPRESS_DEBUG: 1
     volumes:
+      - "../woocommerce:/var/www/html/wp-content/plugins/woocommerce"
       - "./:/var/www/html/wp-content/plugins/woocommerce-gutenberg-products-block"
       - "./vendor/woocommerce/woocommerce/:/var/www/html/wp-content/plugins/woocommerce"
       - wordpress:/var/www/html
@@ -51,6 +52,7 @@ services:
       wp post create --post_type=page --post_status=publish --post_title='Ready' --post_content='E2E-tests.';
       '
     volumes:
+      - "../woocommerce:/var/www/html/wp-content/plugins/woocommerce"
       - "./:/var/www/html/wp-content/plugins/woocommerce-gutenberg-products-block"
       - "./vendor/woocommerce/woocommerce/:/var/www/html/wp-content/plugins/woocommerce"
       - wordpress:/var/www/html
