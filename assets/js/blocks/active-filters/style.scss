@@ -15,7 +15,7 @@
 			background: transparent none;
 		}
 	}
-	.wc-block-active-filters-list {
+	.wc-block-active-filters__list {
 		margin: 0 0 $gap-smallest;
 		list-style: none outside;
 		clear: both;
@@ -26,7 +26,13 @@
 			list-style: none outside;
 			clear: both;
 
-			.wc-block-active-filters-list-item__type {
+			ul {
+				margin: 0;
+				padding: 0;
+				list-style: none outside;
+			}
+
+			.wc-block-active-filters__list-item-type {
 				text-transform: uppercase;
 				font-size: 0.7em;
 				letter-spacing: 0.1em;
@@ -34,12 +40,12 @@
 				display: block;
 			}
 
-			.wc-block-active-filters-list-item__operator {
+			.wc-block-active-filters__list-item-operator {
 				font-weight: normal;
 				font-style: italic;
 			}
 
-			.wc-block-active-filters-list-item__name {
+			.wc-block-active-filters__list-item-name {
 				font-weight: bold;
 				display: block;
 				position: relative;
@@ -47,7 +53,7 @@
 			}
 
 			&:first-child {
-				.wc-block-active-filters-list-item__type {
+				.wc-block-active-filters__list-item-type {
 					margin: 0;
 				}
 			}
@@ -77,18 +83,20 @@
 			}
 		}
 
-		&.wc-block-active-filters-list--chips {
+		&.wc-block-active-filters__list--chips {
 			li {
 				display: inline-block;
+
+				.wc-block-active-filters__list-item-type {
+					display: none;
+				}
+			}
+			li.wc-block-active-filters__list-item {
 				background: #c4c4c4;
 				border-radius: 4px;
 				padding: 4px 8px;
 				margin: 0 6px 6px 0;
 				color: #24292d;
-
-				.wc-block-active-filters-list-item__type {
-					display: none;
-				}
 			}
 			button {
 				float: none;
