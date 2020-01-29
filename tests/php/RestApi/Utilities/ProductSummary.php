@@ -16,6 +16,14 @@ use Automattic\WooCommerce\Blocks\RestApi\Utilities\ProductSummary;
  */
 class ProductSummaryTests extends TestCase {
 	/**
+	 * Tear down method.
+	 */
+	public function tearDown() {
+		remove_filter( 'gettext_with_context', array( $this, 'gettext_with_context_callback' ), 10, 3 );
+		parent::tearDown();
+	}
+
+	/**
 	 * Test that stock is reserved for draft orders.
 	 */
 	public function test_get_summary() {
@@ -33,20 +41,26 @@ class ProductSummaryTests extends TestCase {
 		$this->assertEquals( "<p>Lorem&hellip;</p>\n", $class->get_summary( 1 ) );
 
 		// Test for languages where characters are words.
-		add_filter(
-			'gettext_with_context',
-			function( $translated, $text, $context ) {
-				if ( $text === 'words' && $context === 'Word count type. Do not translate!' ) {
-					return 'characters';
-				}
-				return $translated;
-			},
-			10,
-			3
-		);
+		add_filter( 'gettext_with_context', array( $this, 'gettext_with_context_callback' ), 10, 3 );
+
 		$product->set_description( '<p>我不知道这是否行得通。</p><p>我是用中文写的说明，因此我们可以测试如何修剪产品摘要中的单词。</p>' );
 		$this->assertEquals( "<p>我不知道这是否行得通。</p>\n", $class->get_summary() );
 		$this->assertEquals( "<p>我不知&hellip;</p>\n", $class->get_summary( 3 ) );
+	}
+
+	/**
+	 * Adjusts word count type to character based.
+	 *
+	 * @param string $translated Translated string.
+	 * @param string $text Text to translate.
+	 * @param string $context Translation context.
+	 * @return string
+	 */
+	public function gettext_with_context_callback( $translated, $text, $context ) {
+		if ( $text === 'words' && $context === 'Word count type. Do not translate!' ) {
+			return 'characters';
+		}
+		return $translated;
 	}
 }
 
