@@ -70,10 +70,14 @@ export const useCollection = ( options ) => {
 				currentQuery,
 				currentResourceValues,
 			];
-			// is there an error? if so throw!
+			// is there an error? if so return it.
 			const error = store.getCollectionError( ...args );
 			if ( error ) {
-				throw error;
+				return {
+					results: [],
+					isLoading: false,
+					error,
+				};
 			}
 			return {
 				results: store.getCollection( ...args ),
