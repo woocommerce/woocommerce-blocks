@@ -21,7 +21,7 @@ To make future testing more efficient, we recommend setting up some Blocks in ad
 3. Test inserting various blocks into the editor;
     - All Products Blocks (this is powered by the Store API)
     - Featured Product (this is powered by the REST API)
-    - Sale Products (this is SSR)
+    - On Sale Products (this is SSR)
     - Is the Browser error console free from errors/notices/warnings after inserting them?
     - Do they persist and continue to display correctly after save/refresh?
 
