@@ -60,7 +60,7 @@ export const useCollection = ( options ) => {
 	// ensure we feed the previous reference if it's equivalent
 	const currentQuery = useShallowEqual( query );
 	const currentResourceValues = useShallowEqual( resourceValues );
-	const [ , /* state */ setState ] = useState();
+	const [ , setState ] = useState();
 	const results = useSelect(
 		( select ) => {
 			if ( ! shouldSelect ) {
