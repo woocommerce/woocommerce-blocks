@@ -15,8 +15,14 @@ module.exports = ( { config: storybookConfig } ) => {
 		...storybookConfig.resolve.alias,
 		...wooBlocksConfig.resolve.alias,
 	};
-
-	storybookConfig.module.rules.push( ...wooBlocksConfig.module.rules );
+	storybookConfig.module.rules.push(
+		{
+			test: /\/stories\/.+\.js$/,
+			loaders: [ require.resolve( '@storybook/source-loader' ) ],
+			enforce: 'pre',
+		},
+		...wooBlocksConfig.module.rules
+	);
 
 	storybookConfig.plugins.push(
 		new MiniCssExtractPlugin( {
