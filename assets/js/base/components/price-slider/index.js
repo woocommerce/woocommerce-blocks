@@ -355,6 +355,10 @@ const PriceSlider = ( {
 						className="wc-block-price-filter__button"
 						disabled={ isLoading || ! hasValidConstraints }
 						onClick={ onSubmit }
+						screenReaderLabel={ __(
+							'Apply price filter',
+							'woo-gutenberg-products-block'
+						) }
 					/>
 				) }
 			</div>
