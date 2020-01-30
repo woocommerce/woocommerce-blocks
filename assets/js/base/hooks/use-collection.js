@@ -3,7 +3,7 @@
  */
 import { COLLECTIONS_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
-import { useRef, useState, Fragment } from '@wordpress/element';
+import { useRef, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -74,23 +74,17 @@ export const useCollection = ( options ) => {
 				currentQuery,
 				currentResourceValues,
 			];
+
 			// is there an error? if so return it.
 			const error = store.getCollectionError( ...args );
 			if ( error ) {
 				// Throw an exception within setState - this is needed because
 				// this is a hook (https://github.com/facebook/react/issues/14981).
 				setState( () => {
-					throw {
-						message: (
-							<Fragment>
-								<strong>{ error.status }</strong>:&nbsp;
-								{ error.statusText }
-							</Fragment>
-						),
-						error,
-					};
+					throw error;
 				} );
 			}
+
 			return {
 				results: store.getCollection( ...args ),
 				isLoading: ! store.hasFinishedResolution(
