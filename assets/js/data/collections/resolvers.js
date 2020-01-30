@@ -38,19 +38,17 @@ export function* getCollection( namespace, resourceName, query, ids ) {
 		return;
 	}
 
-	const {
-		items = DEFAULT_EMPTY_ARRAY,
-		headers,
-		error,
-	} = yield apiFetchWithHeaders( route + queryString );
+	try {
+		const {
+			items = DEFAULT_EMPTY_ARRAY,
+			headers,
+		} = yield apiFetchWithHeaders( route + queryString );
 
-	if ( typeof error === 'undefined' ) {
 		yield receiveCollection( namespace, resourceName, queryString, ids, {
 			items,
 			headers,
-			error: null,
 		} );
-	} else {
+	} catch ( error ) {
 		yield receiveCollectionError(
 			namespace,
 			resourceName,
