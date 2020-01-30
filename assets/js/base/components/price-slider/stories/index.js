@@ -14,8 +14,7 @@ export default {
 };
 
 export const Default = () => {
-	// PriceSlider expects client to update min & max price
-	// is this a bug? not fully self-contained
+	// PriceSlider expects client to update min & max price, i.e. is a controlled component
 	const [ min, setMin ] = useState( 1000 );
 	const [ max, setMax ] = useState( 5000 );
 	return (
