@@ -18,7 +18,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'WOOCOMMERCE_BLOCKS_PHASE', 'experimental' );
+$woo_options = parse_ini_file( __DIR__ . '/blocks.ini' );
+
+define( 'WOOCOMMERCE_BLOCKS_PHASE', $woo_options['woocommerce_blocks_phase'] );
 
 $minimum_wp_version = '5.0';
 
