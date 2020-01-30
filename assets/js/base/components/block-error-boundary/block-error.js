@@ -40,7 +40,7 @@ BlockError.propTypes = {
 	/**
 	 * Error message to display below the content.
 	 */
-	errorMessage: PropTypes.oneOfType( [ PropTypes.string, PropTypes.node ] ),
+	errorMessage: PropTypes.node,
 	/**
 	 * Text to display as the heading of the error block.
 	 * If it's `null` or an empty string, no header will be displayed.
