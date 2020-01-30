@@ -34,7 +34,7 @@ export const controls = {
 					} );
 				} )
 				.catch( ( error ) => {
-					throw error;
+					resolve( { items: [], headers: [], error } );
 				} );
 		} );
 	},
