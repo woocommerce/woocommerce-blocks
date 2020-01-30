@@ -62,7 +62,7 @@ BlockErrorBoundary.propTypes = {
 };
 
 BlockErrorBoundary.defaultProps = {
-	showErrorMessage: false,
+	showErrorMessage: true,
 };
 
 export default BlockErrorBoundary;

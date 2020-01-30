@@ -3,7 +3,7 @@
  */
 import { COLLECTIONS_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
-import { useRef, useState } from '@wordpress/element';
+import { useRef, useState, Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -81,7 +81,12 @@ export const useCollection = ( options ) => {
 				// this is a hook (https://github.com/facebook/react/issues/14981).
 				setState( () => {
 					throw {
-						message: error.statusText,
+						message: (
+							<Fragment>
+								<strong>{ error.status }</strong>:&nbsp;
+								{ error.statusText }
+							</Fragment>
+						),
 						error,
 					};
 				} );
