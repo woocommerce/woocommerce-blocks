@@ -42,7 +42,7 @@ const receiveCollection = ( state = {}, action ) => {
 				response
 			);
 			break;
-		case 'ERROR':
+		case types.ERROR:
 			state = updateState(
 				state,
 				[ namespace, resourceName, ids, queryString ],
