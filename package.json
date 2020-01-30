@@ -83,6 +83,7 @@
 		"eslint-config-prettier": "6.10.0",
 		"eslint-plugin-jest": "23.6.0",
 		"eslint-plugin-woocommerce": "file:bin/eslint-plugin-woocommerce",
+		"eslint-plugin-wpcalypso": "^4.1.0",
 		"husky": "2.4.1",
 		"ignore-loader": "0.1.2",
 		"lint-staged": "9.5.0",
