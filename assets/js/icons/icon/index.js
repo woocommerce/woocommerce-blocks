@@ -1,14 +1,17 @@
 /**
  * External dependencies
  */
-import { cloneElement } from '@wordpress/element';
+import { cloneElement, isValidElement } from '@wordpress/element';
 
 function Icon( { srcElement, size = 24, ...props } ) {
-	return cloneElement( srcElement, {
-		width: size,
-		height: size,
-		...props,
-	} );
+	return (
+		isValidElement( srcElement ) &&
+		cloneElement( srcElement, {
+			width: size,
+			height: size,
+			...props,
+		} )
+	);
 }
 
 export default Icon;
