@@ -1,10 +1,10 @@
-# Releasing New Versions
+# Releases
 
 This document outlines the process of releasing new versions of the blocks plugin.
 
 ## Prerequisites - what you need to release WooCommerce Blocks
 
--   You should be set up for development - for more info see [`CONTRIBUTING.md`](CONTRIBUTING.md).
+-   You should be set up for development - for more info see [this doc](../contributors/getting-started.md).
 -   Install & set up [GitHub hub](https://hub.github.com) tools.
 -   Configure a GitHub token for release scripts to use.
     -   https://github.com/settings/tokens
