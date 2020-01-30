@@ -136,8 +136,8 @@ const experimentalMainEntry = {
 
 const mainEntry =
 	process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental'
-		? Object.assign( {}, stableMainEntry, experimentalMainEntry )
-		: Object.assign( {}, stableMainEntry );
+		? { ...stableMainEntry, ...experimentalMainEntry }
+		: { ...stableMainEntry };
 
 const stableFrontEndEntry = {
 	reviews: './assets/js/blocks/reviews/frontend.js',
@@ -154,8 +154,8 @@ const experimentalFrontEndEntry = {
 
 const frontEndEntry =
 	process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental'
-		? Object.assign( {}, stableFrontEndEntry, experimentalFrontEndEntry )
-		: Object.assign( {}, stableFrontEndEntry );
+		? { ...stableFrontEndEntry, ...experimentalFrontEndEntry }
+		: { ...stableFrontEndEntry };
 
 const getEntryConfig = ( main = true, exclude = [] ) => {
 	const entryConfig = main ? mainEntry : frontEndEntry;
