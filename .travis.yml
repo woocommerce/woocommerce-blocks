@@ -47,18 +47,21 @@ jobs:
           php: 7.1
           env:
               - WP_VERSION=latest
+              - WOOCOMMERCE_BLOCKS_PHASE=experimental
           script:
               - phpunit
         - name: PHP 5.6/unit-tests/Latest WP
           php: 5.6
           env:
               - WP_VERSION=latest
+              - WOOCOMMERCE_BLOCKS_PHASE=experimental
           script:
               - phpunit
         - name: PHP Linting Check
           php: 7.1
           env:
               - WP_TRAVISCI=phpcs
+              - WOOCOMMERCE_BLOCKS_PHASE=experimental
           script:
               - npm run lint:php
         - name: Javascript Tests
