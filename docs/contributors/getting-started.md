@@ -9,7 +9,7 @@ Before you can start modifying files you'll want to clone this repository locall
 To do so from the command line, ensure you have [`git`](https://git-scm.com) installed on your machine, and run the clone command:
 
 ```
-git clone https://github.com/woocommerce/woocommerce-gutenberg-products-block.git
+$ git clone https://github.com/woocommerce/woocommerce-gutenberg-products-block.git
 ```
 
 ## Installing dependencies
@@ -23,8 +23,8 @@ See [`package.json` `engines`](package.json) for details of required versions.
 
 Once you have `node` and `composer` setup, install the dependencies from the command line:
 
--   Change directory to your repo folder, e.g. `cd woocommerce-gutenberg-products-block`.
--   Install javascript and php dependencies - `npm install && composer install`.
+-   Change directory to your repo folder, e.g. `$ cd woocommerce-gutenberg-products-block`.
+-   Install javascript and php dependencies - `$ npm install && composer install`.
 
 ## Building the plugin files
 
