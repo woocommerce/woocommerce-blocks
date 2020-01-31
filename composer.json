@@ -11,13 +11,18 @@
 	"license": "GPL-3.0-or-later",
 	"prefer-stable": true,
 	"minimum-stability": "dev",
+	"repositories": [ {
+    "type":"composer",
+    "url":"https://wpackagist.org"
+  } ],
 	"require": {
 		"composer/installers": "1.7.0",
 		"automattic/jetpack-autoloader": "^1.2.0"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "6.5.14",
-		"woocommerce/woocommerce-sniffs": "0.0.7"
+		"woocommerce/woocommerce-sniffs": "0.0.7",
+    "wpackagist-plugin/woocommerce":"3.9.1"
 	},
 	"autoload": {
 		"psr-4": {
@@ -36,6 +41,9 @@
 		"scripts-description": {
 			"phpcs": "Analyze code against the WordPress coding standards with PHP_CodeSniffer",
 			"phpcbf": "Fix coding standards warnings/errors automatically with PHP Code Beautifier"
-		}
+		},
+		"installer-paths": {
+      "vendor/woocommerce/{$name}": [ "wpackagist-plugin/woocommerce" ]
+    }
 	}
 }
