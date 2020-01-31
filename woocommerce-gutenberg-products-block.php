@@ -203,4 +203,4 @@ function woocommerce_blocks_get_php_translation_from_core( $translation, $text, 
 	return $translation;
 }
 
-add_filter( 'gettext', 'woocommerce_blocks_get_php_translation_from_core', 10, 4 );
+add_filter( 'gettext', 'woocommerce_blocks_get_php_translation_from_core', 10, 3 );
