@@ -29,9 +29,7 @@ class BlockErrorBoundary extends Component {
 			};
 		}
 
-		if ( typeof error.message !== 'undefined' ) {
-			return { errorMessage: error.message, hasError: true };
-		}
+		return { errorMessage: error.message, hasError: true };
 	}
 
 	render() {
