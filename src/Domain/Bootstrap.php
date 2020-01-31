@@ -157,7 +157,10 @@ class Bootstrap {
 	protected function define_feature_flag() {
 		$woo_options = parse_ini_file( __DIR__ . '/../../blocks.ini' );
 		$flag        = 'stable';
-		if ( is_array( $woo_options ) && ( 'experimental' === $woo_options['woocommerce_blocks_phase'] || 'stable' === $woo_options['woocommerce_blocks_phase'] ) ) {
+		if ( is_array( $woo_options ) && (
+				'experimental' === $woo_options['woocommerce_blocks_phase'] ||
+				'stable' === $woo_options['woocommerce_blocks_phase']
+		) ) {
 			$flag = sanitize_key( $woo_options['woocommerce_blocks_phase'] );
 		}
 		define( 'WOOCOMMERCE_BLOCKS_PHASE', $flag );
