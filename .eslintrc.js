@@ -1,5 +1,9 @@
 module.exports = {
-	extends: [ 'plugin:@wordpress/eslint-plugin/recommended', 'prettier', "plugin:jest/recommended" ],
+	extends: [
+		'plugin:@wordpress/eslint-plugin/recommended',
+		'prettier',
+		'plugin:jest/recommended',
+	],
 	env: {
 		'jest/globals': true,
 	},
@@ -8,7 +12,7 @@ module.exports = {
 		page: true,
 		browser: true,
 		context: true,
-		jestPuppeteer: true
+		jestPuppeteer: true,
 	},
 	plugins: [ 'jest', 'woocommerce' ],
 	rules: {
