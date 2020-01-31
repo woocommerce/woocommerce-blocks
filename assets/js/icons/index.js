@@ -7,7 +7,7 @@ export { default as comment } from './library/comment';
 export { default as discussion } from './library/discussion';
 export { default as exclamation } from './library/exclamation';
 export { default as external } from './library/external';
-export { default as FolderStarred } from './library/folder-starred';
+export { default as folderStarred } from './library/folder-starred';
 export { default as folder } from './library/folder';
 export { default as grid } from './library/grid';
 export { default as image } from './library/image';
