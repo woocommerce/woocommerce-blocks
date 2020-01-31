@@ -20,3 +20,5 @@ Once testing is complete and any discovered issues are patched, update the `Test
 If a new fix release is needed to deal with any compatibility problems, any patches, and the readme.txt update, should be cherry picked into the release branch and deployed. See [Releasing Updates](readme.md).
 
 If no changes are needed, and no fix releases are scheduled, you can use an SVN client to update the Stable Tag of the Blocks plugin in trunk (https://plugins.svn.wordpress.org/woo-gutenberg-products-block/trunk/). This will prevent the page on WordPress.org from warning users about incompatibilities.
+
+Instructions for updating specific files on SVN can be [found in this doc](readme.md#appendix-updating-a-specific-file-on-wporg).
