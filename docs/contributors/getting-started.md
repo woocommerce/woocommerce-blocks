@@ -44,7 +44,7 @@ This plugin supports two type of builds:
 -   legacy builds (assets have `-legacy` suffix on their file names)
 -   main builds (without the `-legacy` prefix)
 
-The legacy builds are loaded in a site environment where the WordPress version doesn't meet minimum requirements for a components used in a set build.
+The legacy builds are loaded in a site environment where the WordPress version doesn't meet minimum requirements for a component used in a set build.
 
 You can read more about legacy builds in the [this doc](./assets/js/legacy/README.md).
 
@@ -94,9 +94,11 @@ With the extension installed, ESLint will use the `.eslintrc.js` file in the roo
 
 To use Prettier, you should install the [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) extension in Visual Studio Code. You can then configure it to be the default formatter and to automatically fix issues on save, by adding the following to your settings.
 
+```
 "[javascript]": {
-"editor.defaultFormatter": "esbenp.prettier-vscode",
-"editor.formatOnSave": true
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true
 },
+```
 
 This will use the `.prettierrc.js` file in the root folder of the Blocks plugin repository and the version of Prettier that is installed in the root `node_modules` folder.
