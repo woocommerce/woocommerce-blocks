@@ -65,15 +65,14 @@ class RestApi {
 	 * @return mixed
 	 */
 	public static function maybe_init_cart_session( $return, $request = false ) {
-		// Pass through other errors.
-		if ( ! empty( $error ) ) {
-			return $error;
+		$wc_instance = wc();
+		if ( ! $wc_instance instanceof \WooCommerce ) {
+			return $return;
 		}
-
-		wc()->frontend_includes();
-		wc()->initialize_session();
-		wc()->initialize_cart();
-		wc()->cart->get_cart();
+		$wc_instance->frontend_includes();
+		$wc_instance->initialize_session();
+		$wc_instance->initialize_cart();
+		$wc_instance->cart->get_cart();
 
 		return $return;
 	}
