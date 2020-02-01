@@ -32,7 +32,7 @@ if ( WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
 }`,
 			errors: [
 				{
-					message: 'accessedViaEnv',
+					messageId: 'accessedViaEnv',
 				},
 			],
 			output: `
@@ -47,7 +47,7 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE !== 'experimental' ) {
 }`,
 			errors: [
 				{
-					message: 'equalOperator',
+					messageId: 'equalOperator',
 				},
 			],
 			output: `
@@ -62,7 +62,7 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE == 'experimental' ) {
 }`,
 			errors: [
 				{
-					message: 'equalOperator',
+					messageId: 'equalOperator',
 				},
 			],
 			output: `
@@ -77,7 +77,7 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE > 'experimental' ) {
 }`,
 			errors: [
 				{
-					message: 'equalOperator',
+					messageId: 'equalOperator',
 				},
 			],
 			output: `
@@ -92,7 +92,7 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'core' ) {
 }`,
 			errors: [
 				{
-					message: 'whiteListedFlag',
+					messageId: 'whiteListedFlag',
 				},
 			],
 			output: `
@@ -105,7 +105,7 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
 const featureFlag = process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental'`,
 			errors: [
 				{
-					message: 'noTernary',
+					messageId: 'noTernary',
 				},
 			],
 		},

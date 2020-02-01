@@ -55,7 +55,7 @@ function testIsAccessedViaProcessEnv( node, context ) {
 	}
 	context.report( {
 		node,
-		message: 'accessedViaEnv',
+		messageId: 'accessedViaEnv',
 		fix( fixer ) {
 			return fixer.replaceText(
 				parent,
@@ -99,7 +99,7 @@ function testBinaryExpressionOperatorIsEqual( node, context ) {
 		context.report( {
 			node,
 			loc: operatorToken.loc,
-			message: 'equalOperator',
+			messageId: 'equalOperator',
 			fix( fixer ) {
 				return fixer.replaceText( operatorToken, '===' );
 			},
@@ -156,7 +156,7 @@ function testIsUsedInStrictBinaryExpression( node, context ) {
 
 	context.report( {
 		node,
-		message: 'whiteListedFlag',
+		messageId: 'whiteListedFlag',
 		data: {
 			flags: flags.join( ', ' ),
 		},
@@ -203,7 +203,7 @@ function testIsUsedInIfOrTernary( node, context ) {
 
 	context.report( {
 		node,
-		message: 'noTernary',
+		messageId: 'noTernary',
 	} );
 }
 
