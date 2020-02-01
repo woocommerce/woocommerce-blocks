@@ -67,6 +67,47 @@ function testIsAccessedViaProcessEnv( node, context ) {
 }
 
 /**
+ * Tests whether the WOOCOMMERCE_BLOCKS_PHASE strict binary comparison
+ * is strict equal only
+ *
+ * @example
+ * ```js
+ * // good
+ * if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
+ * if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'stable' ) {
+ *
+ * // bad
+ * if ( process.env.WOOCOMMERCE_BLOCKS_PHASE !== 'experimental' ) {
+ * if ( process.env.WOOCOMMERCE_BLOCKS_PHASE !== 'stable' ) {
+ * ```
+ *
+ * @param {Object} node    The WOOCOMMERCE_BLOCKS_PHASE identifier node.
+ * @param {Object} context The eslint context object.
+ */
+function testBinaryExpressionOperatorIsEqual( node, context ) {
+	const sourceCode = context.getSourceCode();
+	node = node.parent.parent;
+	const operatorToken = sourceCode.getFirstTokenBetween(
+		node.left,
+		node.right,
+		( token ) => token.value === node.operator
+	);
+
+	if ( operatorToken.value === '===' ) {
+		return;
+	}
+	context.report( {
+		node,
+		loc: operatorToken.loc,
+		message:
+			'The `WOOCOMMERCE_BLOCKS_PHASE` comparison should only be a strict equal `===`, if you need `!==` try switching the flag ',
+		fix( fixer ) {
+			return fixer.replaceText( operatorToken, '===' );
+		},
+	} );
+}
+
+/**
  * Tests whether the WOOCOMMERCE_BLOCKS_PHASE variable is used in a strict binary
  * equality expression in a comparison with a enum of string flags, triggering a
  * violation if not.
@@ -184,6 +225,7 @@ module.exports = {
 
 				testIsAccessedViaProcessEnv( node, context );
 				testIsUsedInStrictBinaryExpression( node, context );
+				testBinaryExpressionOperatorIsEqual( node, context );
 				testIsUsedInIfOrTernary( node, context );
 			},
 			Literal( node ) {
