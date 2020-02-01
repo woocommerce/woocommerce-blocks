@@ -19,13 +19,15 @@ setCategories( [
 	{
 		slug: 'woocommerce',
 		title: __( 'WooCommerce', 'woo-gutenberg-products-block' ),
-		icon: (
-			<Icon
-				icon={ woo }
-				width={ Math.floor( 20 * 1.67 ) }
-				height={ 20 }
-				className="woo-icon"
-			/>
-		),
+		icon: {
+			src: (
+				<Icon
+					icon={ woo }
+					width={ Math.floor( 20 * 1.67 ) }
+					height={ 20 }
+					className="woo-icon"
+				/>
+			),
+		},
 	},
 ] );
