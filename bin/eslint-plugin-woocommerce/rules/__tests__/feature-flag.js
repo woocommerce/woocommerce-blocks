@@ -87,6 +87,81 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
 		},
 		{
 			code: `
+if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 'experimental' ) {
+    registerBlockType( 'woocommerce/checkout', settings );
+}`,
+			errors: [
+				{
+					messageId: 'equalOperator',
+				},
+			],
+			output: `
+if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
+    registerBlockType( 'woocommerce/checkout', settings );
+}`,
+		},
+		{
+			code: `
+if ( process.env.WOOCOMMERCE_BLOCKS_PHASE >= 'experimental' ) {
+    registerBlockType( 'woocommerce/checkout', settings );
+}`,
+			errors: [
+				{
+					messageId: 'equalOperator',
+				},
+			],
+			output: `
+if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
+    registerBlockType( 'woocommerce/checkout', settings );
+}`,
+		},
+		{
+			code: `
+if ( process.env.WOOCOMMERCE_BLOCKS_PHASE <= 'experimental' ) {
+    registerBlockType( 'woocommerce/checkout', settings );
+}`,
+			errors: [
+				{
+					messageId: 'equalOperator',
+				},
+			],
+			output: `
+if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
+    registerBlockType( 'woocommerce/checkout', settings );
+}`,
+		},
+		{
+			code: `
+if ( process.env.WOOCOMMERCE_BLOCKS_PHASE == 'experimental' ) {
+    registerBlockType( 'woocommerce/checkout', settings );
+}`,
+			errors: [
+				{
+					messageId: 'equalOperator',
+				},
+			],
+			output: `
+if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
+    registerBlockType( 'woocommerce/checkout', settings );
+}`,
+		},
+		{
+			code: `
+if ( process.env.WOOCOMMERCE_BLOCKS_PHASE > 'experimental' ) {
+    registerBlockType( 'woocommerce/checkout', settings );
+}`,
+			errors: [
+				{
+					messageId: 'equalOperator',
+				},
+			],
+			output: `
+if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
+    registerBlockType( 'woocommerce/checkout', settings );
+}`,
+		},
+		{
+			code: `
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'core' ) {
     registerBlockType( 'woocommerce/checkout', settings );
 }`,
