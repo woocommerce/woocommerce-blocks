@@ -127,6 +127,7 @@ async function importSampleProducts() {
 		'wp-content/plugins/woocommerce/sample-data/sample_products.csv'
 	);
 	await page.click( '.wc-actions .button-next' );
+	await page.waitForSelector( '.wc-importer-mapping-table' );
 	await page.select(
 		'.wc-importer-mapping-table tr:nth-child(29) select',
 		''
