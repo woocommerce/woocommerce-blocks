@@ -32,8 +32,7 @@ if ( WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
 }`,
 			errors: [
 				{
-					message:
-						'The `WOOCOMMERCE_BLOCKS_PHASE` constant should be accessed using `process.env.WOOCOMMERCE_BLOCKS_PHASE`.',
+					message: 'accessedViaEnv',
 				},
 			],
 		},

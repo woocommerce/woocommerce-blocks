@@ -55,8 +55,7 @@ function testIsAccessedViaProcessEnv( node, context ) {
 	}
 	context.report( {
 		node,
-		message:
-			'The `WOOCOMMERCE_BLOCKS_PHASE` constant should be accessed using `process.env.WOOCOMMERCE_BLOCKS_PHASE`.',
+		message: 'accessedViaEnv',
 		fix( fixer ) {
 			return fixer.replaceText(
 				parent,
@@ -99,8 +98,7 @@ function testBinaryExpressionOperatorIsEqual( node, context ) {
 	context.report( {
 		node,
 		loc: operatorToken.loc,
-		message:
-			'The `WOOCOMMERCE_BLOCKS_PHASE` comparison should only be a strict equal `===`, if you need `!==` try switching the flag ',
+		message: 'equalOperator',
 		fix( fixer ) {
 			return fixer.replaceText( operatorToken, '===' );
 		},
@@ -159,9 +157,10 @@ function testIsUsedInStrictBinaryExpression( node, context ) {
 
 	context.report( {
 		node,
-		message: `The \`WOOCOMMERCE_BLOCKS_PHASE\` constant should only be used in a strict equality comparison with a predefined flag of: (${ flags.join(
-			', '
-		) }).`,
+		message: 'strictBinary',
+		data: {
+			flags: flags.join( ', ' ),
+		},
 		fix( fixer ) {
 			return fixer.replaceText( providedFlag, "'experimental'" );
 		},
@@ -203,10 +202,10 @@ function testIsUsedInIfOrTernary( node, context ) {
 		return;
 	}
 
-	context.report(
+	context.report( {
 		node,
-		'The `WOOCOMMERCE_BLOCKS_PHASE` constant should only be used as part of the condition in an if statement or ternary expression.'
-	);
+		message: 'noTernary',
+	} );
 }
 
 module.exports = {
@@ -214,6 +213,16 @@ module.exports = {
 		type: 'problem',
 		schema: [],
 		fixable: 'code',
+		messages: {
+			accessedViaEnv:
+				'The `WOOCOMMERCE_BLOCKS_PHASE` constant should be accessed using `process.env.WOOCOMMERCE_BLOCKS_PHASE`.',
+			strictBinary:
+				'The `WOOCOMMERCE_BLOCKS_PHASE` constant should only be used in a strict equality comparison with a predefined flag of: {{ flags }}',
+			equalOperator:
+				'The `WOOCOMMERCE_BLOCKS_PHASE` comparison should only be a strict equal `===`, if you need `!==` try switching the flag ',
+			noTernary:
+				'The `WOOCOMMERCE_BLOCKS_PHASE` constant should only be used as part of the condition in an if statement or ternary expression.',
+		},
 	},
 	create( context ) {
 		return {
