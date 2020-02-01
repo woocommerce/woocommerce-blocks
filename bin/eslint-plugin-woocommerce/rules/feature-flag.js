@@ -156,6 +156,7 @@ function testIsUsedInStrictBinaryExpression( node, context ) {
 
 	context.report( {
 		node,
+		loc: providedFlag.loc,
 		messageId: 'whiteListedFlag',
 		data: {
 			flags: flags.join( ', ' ),
@@ -216,7 +217,7 @@ module.exports = {
 			accessedViaEnv:
 				'The `WOOCOMMERCE_BLOCKS_PHASE` constant should be accessed using `process.env.WOOCOMMERCE_BLOCKS_PHASE`.',
 			whiteListedFlag:
-				'The `WOOCOMMERCE_BLOCKS_PHASE` constant should only be used in a strict equality comparison with a predefined flag of: {{ flags }}',
+				'The `WOOCOMMERCE_BLOCKS_PHASE` constant should only be used in a strict equality comparison with a predefined flag of: {{ flags }}.',
 			equalOperator:
 				'The `WOOCOMMERCE_BLOCKS_PHASE` comparison should only be a strict equal `===`, if you need `!==` try switching the flag ',
 			noTernary:
