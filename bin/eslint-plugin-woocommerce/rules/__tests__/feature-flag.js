@@ -20,7 +20,7 @@ ruleTester.run( 'feature-flag', rule, {
 		{
 			code: `
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
-	registerBlockType( 'woocommerce/checkout', settings );
+    registerBlockType( 'woocommerce/checkout', settings );
 }`,
 		},
 	],
@@ -28,11 +28,84 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
 		{
 			code: `
 if ( WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
-	registerBlockType( 'woocommerce/checkout', settings );
+    registerBlockType( 'woocommerce/checkout', settings );
 }`,
 			errors: [
 				{
 					message: 'accessedViaEnv',
+				},
+			],
+			output: `
+if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
+    registerBlockType( 'woocommerce/checkout', settings );
+}`,
+		},
+		{
+			code: `
+if ( process.env.WOOCOMMERCE_BLOCKS_PHASE !== 'experimental' ) {
+    registerBlockType( 'woocommerce/checkout', settings );
+}`,
+			errors: [
+				{
+					message: 'equalOperator',
+				},
+			],
+			output: `
+if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
+    registerBlockType( 'woocommerce/checkout', settings );
+}`,
+		},
+		{
+			code: `
+if ( process.env.WOOCOMMERCE_BLOCKS_PHASE == 'experimental' ) {
+    registerBlockType( 'woocommerce/checkout', settings );
+}`,
+			errors: [
+				{
+					message: 'equalOperator',
+				},
+			],
+			output: `
+if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
+    registerBlockType( 'woocommerce/checkout', settings );
+}`,
+		},
+		{
+			code: `
+if ( process.env.WOOCOMMERCE_BLOCKS_PHASE > 'experimental' ) {
+    registerBlockType( 'woocommerce/checkout', settings );
+}`,
+			errors: [
+				{
+					message: 'equalOperator',
+				},
+			],
+			output: `
+if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
+    registerBlockType( 'woocommerce/checkout', settings );
+}`,
+		},
+		{
+			code: `
+if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'core' ) {
+    registerBlockType( 'woocommerce/checkout', settings );
+}`,
+			errors: [
+				{
+					message: 'whiteListedFlag',
+				},
+			],
+			output: `
+if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
+    registerBlockType( 'woocommerce/checkout', settings );
+}`,
+		},
+		{
+			code: `
+const featureFlag = process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental'`,
+			errors: [
+				{
+					message: 'noTernary',
 				},
 			],
 		},

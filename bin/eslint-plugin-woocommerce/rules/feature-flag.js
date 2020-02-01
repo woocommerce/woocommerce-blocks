@@ -86,23 +86,25 @@ function testIsAccessedViaProcessEnv( node, context ) {
 function testBinaryExpressionOperatorIsEqual( node, context ) {
 	const sourceCode = context.getSourceCode();
 	node = node.parent.parent;
-	const operatorToken = sourceCode.getFirstTokenBetween(
-		node.left,
-		node.right,
-		( token ) => token.value === node.operator
-	);
+	if ( node.type === 'BinaryExpression' ) {
+		const operatorToken = sourceCode.getFirstTokenBetween(
+			node.left,
+			node.right,
+			( token ) => token.value === node.operator
+		);
 
-	if ( operatorToken.value === '===' ) {
-		return;
+		if ( operatorToken.value === '===' ) {
+			return;
+		}
+		context.report( {
+			node,
+			loc: operatorToken.loc,
+			message: 'equalOperator',
+			fix( fixer ) {
+				return fixer.replaceText( operatorToken, '===' );
+			},
+		} );
 	}
-	context.report( {
-		node,
-		loc: operatorToken.loc,
-		message: 'equalOperator',
-		fix( fixer ) {
-			return fixer.replaceText( operatorToken, '===' );
-		},
-	} );
 }
 
 /**
@@ -134,9 +136,6 @@ function testIsUsedInStrictBinaryExpression( node, context ) {
 	if ( parent ) {
 		const comparisonNode =
 			node.parent.type === 'MemberExpression' ? node.parent : node;
-
-		// Test for process.env.WOOCOMMERCE_BLOCKS_PHASE === <string> or <string> === process.env.WOOCOMMERCE_BLOCKS_PHASE
-		const hasCorrectOperator = [ '===', '!==' ].includes( parent.operator );
 		const hasCorrectOperands =
 			( parent.left === comparisonNode &&
 				flags.includes( parent.right.value ) ) ||
@@ -150,14 +149,14 @@ function testIsUsedInStrictBinaryExpression( node, context ) {
 		} else {
 			providedFlag = parent.left;
 		}
-		if ( hasCorrectOperator && hasCorrectOperands ) {
+		if ( hasCorrectOperands ) {
 			return;
 		}
 	}
 
 	context.report( {
 		node,
-		message: 'strictBinary',
+		message: 'whiteListedFlag',
 		data: {
 			flags: flags.join( ', ' ),
 		},
@@ -216,7 +215,7 @@ module.exports = {
 		messages: {
 			accessedViaEnv:
 				'The `WOOCOMMERCE_BLOCKS_PHASE` constant should be accessed using `process.env.WOOCOMMERCE_BLOCKS_PHASE`.',
-			strictBinary:
+			whiteListedFlag:
 				'The `WOOCOMMERCE_BLOCKS_PHASE` constant should only be used in a strict equality comparison with a predefined flag of: {{ flags }}',
 			equalOperator:
 				'The `WOOCOMMERCE_BLOCKS_PHASE` comparison should only be a strict equal `===`, if you need `!==` try switching the flag ',
