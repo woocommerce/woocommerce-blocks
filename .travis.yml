@@ -2,23 +2,52 @@ language: php
 
 dist: trusty
 
+services:
+  - docker
+
 sudo: false
 
 cache:
-    directories:
-        - vendor
-        - node_modules
-        - $HOME/.npm
-        - $HOME/.composer/cache
+  directories:
+    - vendor
+    - node_modules
+    - $HOME/.composer/cache
+    - $HOME/.jest-cache
+    - $HOME/.npm
+    - $HOME/.nvm/.cache
 
 branches:
-    only:
-        - master
-        - /release\/.*/
+  only:
+    - master
+    - /release\/.*/
+
+env:
+  global:
+    - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+    - LOCAL_SCRIPT_DEBUG: false
+    - INSTALL_COMPOSER: false
+    - INSTALL_WORDPRESS: true
+
+# Make sure NodeGit gets the correct C libs.
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - libstdc++-4.9-dev
 
 before_install:
-    - timedatectl
-    - nvm install --latest-npm
+  - timedatectl
+  - nvm install --latest-npm
+  - |
+    if [[ "$INSTALL_WORDPRESS" = "true" ]]; then
+      # Upgrade docker-compose.
+      sudo rm /usr/local/bin/docker-compose
+      curl -sL https://github.com/docker/compose/releases/download/1.25.3/docker-compose-`uname -s`-`uname -m` > docker-compose
+      chmod +x docker-compose
+      sudo mv docker-compose /usr/local/bin
+      docker-compose up -d
+    fi
 
 before_script:
     - export PATH="$HOME/.composer/vendor/bin:$PATH"
@@ -37,39 +66,55 @@ before_script:
         fi
 
 jobs:
-    fast_finish: true
-    include:
-        - stage: build tests
-          name: PHP 7.1/unit-tests/Latest WP
-          php: 7.1
-          env:
-              - WP_VERSION=latest
-              - WOOCOMMERCE_BLOCKS_PHASE=experimental
-          script:
-              - phpunit
-        - name: PHP 5.6/unit-tests/Latest WP
-          php: 5.6
-          env:
-              - WP_VERSION=latest
-              - WOOCOMMERCE_BLOCKS_PHASE=experimental
-          script:
-              - phpunit
-        - name: PHP Linting Check
-          php: 7.1
-          env:
-              - WP_TRAVISCI=phpcs
-              - WOOCOMMERCE_BLOCKS_PHASE=experimental
-          script:
-              - npm run lint:php
-        - name: Javascript Tests
-          script:
-              - npm install
-              - npm run test
-          env:
-            - WOOCOMMERCE_BLOCKS_PHASE=experimental
-        - name: Javascript/CSS Lint and Bundle Size Check
-          script:
-              - npm install
-              - npm run build:ci
-          env:
-            - WOOCOMMERCE_BLOCKS_PHASE=experimental
+  fast_finish: true
+  include:
+    - stage: build tests
+      name: PHP 7.1/unit-tests/Latest WP
+      php: 7.1
+      env:
+        - WP_VERSION=latest
+        - WOOCOMMERCE_BLOCKS_PHASE=experimental
+        - INSTALL_WORDPRESS=false
+      script:
+        - phpunit
+    - name: PHP 5.6/unit-tests/Latest WP
+      php: 5.6
+      env:
+        - WP_VERSION=latest
+        - WOOCOMMERCE_BLOCKS_PHASE=experimental
+        - INSTALL_WORDPRESS=false
+      script:
+        - phpunit
+    - name: PHP Linting Check
+      php: 7.1
+      env:
+        - WP_TRAVISCI=phpcs
+        - WOOCOMMERCE_BLOCKS_PHASE=experimental
+        - INSTALL_WORDPRESS=false
+      script:
+        - npm run lint:php
+    - name: Javascript Tests
+      script:
+        - npm install
+        - npm run test
+      env:
+        - WOOCOMMERCE_BLOCKS_PHASE=experimental
+        - INSTALL_WORDPRESS=false
+    - name: Javascript/CSS Lint and Bundle Size Check
+      script:
+        - npm install
+        - npm run build:ci
+      env:
+        - WOOCOMMERCE_BLOCKS_PHASE=experimental
+        - INSTALL_WORDPRESS=false
+    - name: E2E Tests
+      script:
+        - npm install
+        - composer install
+        - npm run build
+        - npm run test:e2e
+      env:
+        - WOOCOMMERCE_BLOCKS_PHASE=experimental
+        - INSTALL_WORDPRESS=true
+        - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=
+
