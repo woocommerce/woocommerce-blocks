@@ -27,6 +27,7 @@ env:
     - LOCAL_SCRIPT_DEBUG: false
     - INSTALL_COMPOSER: false
     - INSTALL_WORDPRESS: true
+    - WOOCOMMERCE_BLOCKS_PHASE: experimental
 
 # Make sure NodeGit gets the correct C libs.
 addons:
