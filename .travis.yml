@@ -46,7 +46,26 @@ before_install:
       curl -sL https://github.com/docker/compose/releases/download/1.25.3/docker-compose-`uname -s`-`uname -m` > docker-compose
       chmod +x docker-compose
       sudo mv docker-compose /usr/local/bin
-      docker-compose up -d
+    fi
+
+before_script:
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - |
+    if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
+      phpenv config-rm xdebug.ini
+    else
+      echo "xdebug.ini does not exist"
+    fi
+  - |
+    if [[ ! -z "$WP_VERSION" ]] ; then
+      composer install
+      # also installs woocommerce plugin
+      bash tests/bin/install.sh wgpb_admin root '' localhost $WP_VERSION
+      composer global require "phpunit/phpunit=4.8.*|5.7.*"
+    fi
+  - |
+    if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
+      composer install
     fi
 
 before_script:
@@ -112,9 +131,11 @@ jobs:
         - npm install
         - composer install
         - npm run build
-        - npm run test:e2e
+        - docker-compose up --build -d
+        - bash tests/bin/run-e2e-CI.sh
+      after_script:
+        - docker-compose down -v
       env:
         - WOOCOMMERCE_BLOCKS_PHASE=experimental
         - INSTALL_WORDPRESS=true
         - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=
-
