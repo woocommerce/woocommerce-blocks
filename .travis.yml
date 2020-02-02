@@ -23,11 +23,11 @@ branches:
 
 env:
   global:
-    - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-    - LOCAL_SCRIPT_DEBUG: false
-    - INSTALL_COMPOSER: false
-    - INSTALL_WORDPRESS: true
-    - WOOCOMMERCE_BLOCKS_PHASE: experimental
+    - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+    - LOCAL_SCRIPT_DEBUG=false
+    - INSTALL_COMPOSER=false
+    - INSTALL_WORDPRESS=true
+    - WOOCOMMERCE_BLOCKS_PHASE=experimental
 
 # Make sure NodeGit gets the correct C libs.
 addons:
@@ -93,7 +93,6 @@ jobs:
       php: 7.1
       env:
         - WP_VERSION=latest
-        - WOOCOMMERCE_BLOCKS_PHASE=experimental
         - INSTALL_WORDPRESS=false
       script:
         - phpunit
@@ -101,7 +100,6 @@ jobs:
       php: 5.6
       env:
         - WP_VERSION=latest
-        - WOOCOMMERCE_BLOCKS_PHASE=experimental
         - INSTALL_WORDPRESS=false
       script:
         - phpunit
@@ -109,7 +107,6 @@ jobs:
       php: 7.1
       env:
         - WP_TRAVISCI=phpcs
-        - WOOCOMMERCE_BLOCKS_PHASE=experimental
         - INSTALL_WORDPRESS=false
       script:
         - npm run lint:php
@@ -118,14 +115,12 @@ jobs:
         - npm install
         - npm run test
       env:
-        - WOOCOMMERCE_BLOCKS_PHASE=experimental
         - INSTALL_WORDPRESS=false
     - name: Javascript/CSS Lint and Bundle Size Check
       script:
         - npm install
         - npm run build:ci
       env:
-        - WOOCOMMERCE_BLOCKS_PHASE=experimental
         - INSTALL_WORDPRESS=false
     - name: E2E Tests
       script:
@@ -137,6 +132,5 @@ jobs:
       after_script:
         - docker-compose down -v
       env:
-        - WOOCOMMERCE_BLOCKS_PHASE=experimental
         - INSTALL_WORDPRESS=true
         - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=
