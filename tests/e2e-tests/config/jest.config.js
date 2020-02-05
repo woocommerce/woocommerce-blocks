@@ -5,6 +5,11 @@ module.exports = {
 	// An array of file extensions your modules use
 	moduleFileExtensions: [ 'js' ],
 
+	moduleNameMapper: {
+		'@woocommerce/e2e-tests/(.*)':
+			'<rootDir>/node_modules/woocommerce/tests/e2e-tests/$1',
+	},
+
 	preset: 'jest-puppeteer',
 
 	// Where to look for test files
@@ -23,4 +28,6 @@ module.exports = {
 
 	// Sort test path alphabetically. This is needed so that `activate-and-setup` tests run first
 	testSequencer: '<rootDir>/tests/e2e-tests/config/jest-custom-sequencer.js',
+
+	transformIgnorePatterns: [ 'node_modules/(?!(woocommerce)/)' ],
 };
