@@ -26,6 +26,8 @@
 		"release": "sh ./bin/wordpress-deploy.sh",
 		"build": "cross-env BABEL_ENV=default NODE_ENV=production webpack",
 		"build:ci": "npm run build && npm run size-check && npm run lint:js && npm run lint:css",
+		"docker:up": "docker-compose up --build -d",
+    "docker:down": "docker-compose down -v",
 		"start": "cross-env BABEL_ENV=default webpack --watch --info-verbosity none",
 		"lint": "npm run lint:php && npm run lint:css && npm run lint:js",
 		"lint:php": "composer run-script phpcs .",
