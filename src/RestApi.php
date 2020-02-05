@@ -67,7 +67,7 @@ class RestApi {
 		$wc_instance = wc();
 		// if WooCommerce instance isn't available or already have an
 		// authentication error, just return.
-		if ( ! $wc_instance instanceof \WooCommerce || \is_wp_error( $return ) ) {
+		if ( ! method_exists( $wc_instance, 'initialize_session' ) || \is_wp_error( $return ) ) {
 			return $return;
 		}
 		$wc_instance->frontend_includes();
