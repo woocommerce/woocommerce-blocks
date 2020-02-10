@@ -13,46 +13,43 @@ services:
     volumes:
       - db:/var/lib/mysql
 
-  wordpress-woocommerce-blocks-dev:
+  wordpress-www:
     depends_on:
       - db
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 8084:80
+      - ${WORDPRESS_PORT}:80
     restart: on-failure
     environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_NAME: testdb
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
-      WORDPRESS_TABLE_PREFIX: "wp_"
-      WORDPRESS_DEBUG: 1
+      WORDPRESS_DB_HOST:
+      WORDPRESS_DB_NAME:
+      WORDPRESS_DB_USER:
+      WORDPRESS_DB_PASSWORD:
+      WORDPRESS_TABLE_PREFIX:
+      WORDPRESS_DEBUG:
     volumes:
       - "./:/var/www/html/wp-content/plugins/woocommerce-gutenberg-products-block"
-      - "./vendor/woocommerce/woocommerce/:/var/www/html/wp-content/plugins/woocommerce"
       - wordpress:/var/www/html
 
   wordpress-cli:
     depends_on:
       - db
-      - wordpress-woocommerce-blocks-dev
-    image: wordpress:cli
+      - wordpress-www
+    build:
+        context: ./bin/docker/wp-cli
     restart: on-failure
-    user: xfs
-    command: >
-      /bin/sh -c '
-      wp core install --url=http://localhost:8084 --title="WooCommerce Core E2E Test Suite" --admin_user=admin --admin_password=password --admin_email=admin@woocommercecoree2etestsuite.com --path=/var/www/html --skip-email;
-      wp plugin activate woocommerce;
-      wp plugin activate woocommerce-gutenberg-products-block;
-      wp theme install twentynineteen --activate;
-      wp user create customer customer@woocommercecoree2etestsuite.com --user_pass=password --role=customer --path=/var/www/html;
-      wp post create --post_type=page --post_status=publish --post_title='Ready' --post_content='E2E-tests.';
-      '
+    environment:
+        WORDPRESS_HOST:
+        WORDPRESS_TITLE:
+        WORDPRESS_LOGIN:
+        WORDPRESS_PASSWORD:
+        WORDPRESS_PORT:
+        WORDPRESS_EMAIL:
+        DOMAIN_NAME:
     volumes:
-      - "./:/var/www/html/wp-content/plugins/woocommerce-gutenberg-products-block"
-      - "./vendor/woocommerce/woocommerce/:/var/www/html/wp-content/plugins/woocommerce"
+      - ./:/var/www/html/wp-content/plugins/woocommerce-gutenberg-products-block
       - wordpress:/var/www/html
 
 volumes:
