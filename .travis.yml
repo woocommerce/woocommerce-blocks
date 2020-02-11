@@ -60,7 +60,7 @@ jobs:
         - name: PHP Linting Check
           php: 7.1
           env:
-              - WP_TRAVISCI=phpcs
+              - WP_TRAVISCI=build
               - WOOCOMMERCE_BLOCKS_PHASE=experimental
           script:
               - npm run lint:php
@@ -80,7 +80,8 @@ jobs:
           script:
             - npm install
             - npm run docker:up
-            - sleep 16
+            - composer install
+            - npm run:build-ci
             - npm run test:e2e
           env:
             - WOOCOMMERCE_BLOCKS_PHASE=experimental
