@@ -80,6 +80,6 @@ jobs:
           script:
             - npm install
             - npm run docker:up
-            - npm run tests:e2e
+            - npm run test:e2e
           env:
             - WOOCOMMERCE_BLOCKS_PHASE=experimental
