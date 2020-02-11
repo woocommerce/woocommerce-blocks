@@ -80,7 +80,7 @@ jobs:
           script:
             - npm install
             - npm run docker:up
-            - sleep 10
+            - sleep 16
             - npm run test:e2e
           env:
             - WOOCOMMERCE_BLOCKS_PHASE=experimental
