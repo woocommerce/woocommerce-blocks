@@ -11,6 +11,51 @@ import { useRef, useState } from '@wordpress/element';
 import { useShallowEqual } from './use-shallow-equal';
 
 /**
+ * Check if the store needs invalidating due to a change in last modified headers.
+ *
+ * @param {*} store Store object.
+ * @param {*} dispatch Store dispatcher.
+ */
+const invalidateModifiedStore = ( store, dispatch ) => {
+	if (
+		store.getCollectionPreviousLastModified() &&
+		store.getCollectionLastModified() >
+			store.getCollectionPreviousLastModified()
+	) {
+		// reset previous last modified to last modified to prevent this
+		// running multiple times.
+		dispatch( storeKey ).resetLastModified();
+		dispatch( storeKey ).invalidateResolutionForStoreSelector(
+			'getCollection'
+		);
+	}
+};
+
+/**
+ * Check if the store needs invalidating due to a change in last modified headers.
+ *
+ * @param {*} store 			Store object.
+ * @param {*} dispatch 			Store dispatcher.
+ * @param {number} freshness 	How many milliseconds must elapse for data to
+ * 								be considered stale.
+ */
+const invalidateStaleStore = ( store, dispatch, freshness ) => {
+	if ( ! store.getCollectionTimestamp() ) {
+		dispatch( storeKey ).updateTimestamp( Date.now() );
+		return;
+	}
+	if (
+		freshness &&
+		store.getCollectionTimestamp() + freshness < Date.now()
+	) {
+		dispatch( storeKey ).updateTimestamp( Date.now() );
+		dispatch( storeKey ).invalidateResolutionForStoreSelector(
+			'getCollection'
+		);
+	}
+};
+
+/**
  * This is a custom hook that is wired up to the `wc/store/collections` data
  * store. Given a collections option object, this will ensure a component is
  * kept up to date with the collection matching that query in the store state.
@@ -36,13 +81,16 @@ import { useShallowEqual } from './use-shallow-equal';
  * @param {boolean} options.shouldSelect  If false, the previous results will be
  *                                        returned and internal selects will not
  *                                        fire.
+ * @param {number} freshness      	      How many milliseconds must elapse for
+ *                                        data to be considered stale.
+ *                                        Default 600000 (10 min).
  *
  * @return {Object} This hook will return an object with two properties:
  *                  - results   An array of collection items returned.
  *                  - isLoading A boolean indicating whether the collection is
  *                              loading (true) or not.
  */
-export const useCollection = ( options ) => {
+export const useCollection = ( options, freshness = 600000 ) => {
 	const {
 		namespace,
 		resourceName,
@@ -67,7 +115,10 @@ export const useCollection = ( options ) => {
 				return null;
 			}
 			const store = select( storeKey );
-			// filter out query if it is undefined.
+
+			invalidateModifiedStore( store, dispatch );
+			invalidateStaleStore( store, dispatch, freshness );
+
 			const args = [
 				namespace,
 				resourceName,

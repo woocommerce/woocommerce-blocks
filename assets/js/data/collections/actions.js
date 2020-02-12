@@ -133,3 +133,10 @@ export function resetLastModified() {
 		type: types.RESET_LAST_MODIFIED,
 	};
 }
+
+export function updateTimestamp( timestamp ) {
+	return {
+		type: types.UPDATE_TIMESTAMP,
+		timestamp,
+	};
+}

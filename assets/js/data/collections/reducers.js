@@ -34,6 +34,13 @@ const receiveCollection = ( state = {}, action ) => {
 		};
 	}
 
+	if ( action.type === types.UPDATE_TIMESTAMP ) {
+		return {
+			...state,
+			timestamp: action.timestamp,
+		};
+	}
+
 	const { type, namespace, resourceName, queryString, response } = action;
 	// ids are stringified so they can be used as an index.
 	const ids = action.ids ? JSON.stringify( action.ids ) : '[]';
