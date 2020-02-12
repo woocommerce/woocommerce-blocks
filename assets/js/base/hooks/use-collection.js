@@ -81,7 +81,7 @@ const invalidateStaleStore = ( store, dispatch, freshness ) => {
  * @param {boolean} options.shouldSelect  If false, the previous results will be
  *                                        returned and internal selects will not
  *                                        fire.
- * @param {number} freshness      	      How many milliseconds must elapse for
+ * @param {number} freshness              How many milliseconds must elapse for
  *                                        data to be considered stale.
  *                                        Default 600000 (10 min).
  *
