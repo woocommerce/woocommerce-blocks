@@ -120,3 +120,16 @@ export function receiveCollectionError(
 		},
 	};
 }
+
+export function receiveLastModified( timestamp ) {
+	return {
+		type: types.RECEIVE_LAST_MODIFIED,
+		timestamp,
+	};
+}
+
+export function resetLastModified() {
+	return {
+		type: types.RESET_LAST_MODIFIED,
+	};
+}

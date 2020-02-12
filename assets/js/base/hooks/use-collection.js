@@ -62,7 +62,7 @@ export const useCollection = ( options ) => {
 	const currentResourceValues = useShallowEqual( resourceValues );
 	const [ , setState ] = useState();
 	const results = useSelect(
-		( select ) => {
+		( select, { dispatch } ) => {
 			if ( ! shouldSelect ) {
 				return null;
 			}
@@ -83,6 +83,20 @@ export const useCollection = ( options ) => {
 				setState( () => {
 					throw error;
 				} );
+			}
+
+			// Maybe invalidate existing caches.
+			if (
+				store.getCollectionPreviousLastModified() &&
+				store.getCollectionLastModified() >
+					store.getCollectionPreviousLastModified()
+			) {
+				// reset previous last modified to last modified to prevent this
+				// running multiple times.
+				dispatch( storeKey ).resetLastModified();
+				dispatch( storeKey ).invalidateResolutionForStoreSelector(
+					'getCollection'
+				);
 			}
 
 			return {

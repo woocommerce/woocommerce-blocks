@@ -10,6 +10,7 @@ import { addQueryArgs } from '@wordpress/url';
 import {
 	receiveCollection,
 	receiveCollectionError,
+	receiveLastModified,
 	DEFAULT_EMPTY_ARRAY,
 } from './actions';
 import { STORE_KEY as SCHEMA_STORE_KEY } from '../schema/constants';
@@ -44,6 +45,15 @@ export function* getCollection( namespace, resourceName, query, ids ) {
 			headers,
 		} = yield apiFetchWithHeaders( route + queryString );
 
+		if (
+			typeof headers.get( 'last-modified' ) !== 'undefined' &&
+			headers.get( 'last-modified' ) > 0
+		) {
+			yield receiveLastModified(
+				parseInt( headers.get( 'last-modified' ), 10 )
+			);
+		}
+
 		yield receiveCollection( namespace, resourceName, queryString, ids, {
 			items,
 			headers,
@@ -58,6 +68,7 @@ export function* getCollection( namespace, resourceName, query, ids ) {
 		);
 	}
 }
+
 /**
  * Resolver for retrieving a specific collection header for the given arguments
  *
