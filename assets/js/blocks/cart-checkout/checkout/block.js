@@ -8,6 +8,7 @@ import CheckoutForm from '@woocommerce/base-components/checkout/form';
 import NoShipping from '@woocommerce/base-components/checkout/no-shipping';
 import TextInput from '@woocommerce/base-components/text-input';
 import { ShippingCountryInput } from '@woocommerce/base-components/country-input';
+import { ShippingCountyInput } from '@woocommerce/base-components/county-input';
 import ShippingRatesControl from '@woocommerce/base-components/shipping-rates-control';
 import InputRow from '@woocommerce/base-components/input-row';
 import { CheckboxControl } from '@wordpress/components';
@@ -189,7 +190,7 @@ const Block = ( { shippingMethods = [], isEditor = false } ) => {
 						/>
 					</InputRow>
 					<InputRow>
-						<TextInput
+						<ShippingCountyInput
 							label={ __(
 								'County',
 								'woo-gutenberg-products-block'
