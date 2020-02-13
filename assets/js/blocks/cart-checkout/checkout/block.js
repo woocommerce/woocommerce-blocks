@@ -172,6 +172,7 @@ const Block = ( { shippingMethods = [], isEditor = false } ) => {
 								setShippingFields( {
 									...shippingFields,
 									country: newValue,
+									county: '',
 								} )
 							}
 						/>
