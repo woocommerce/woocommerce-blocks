@@ -261,18 +261,17 @@ class CartShippingRates extends RestController {
 	protected function get_shipping_packages( $request ) {
 		$packages = WC()->cart->get_shipping_packages();
 
-		foreach ( $packages as $key => $package ) {
-			if ( ! $request['country'] ) {
-				continue;
+		if ( $request['country'] ) {
+			foreach ( $packages as $key => $package ) {
+				$packages[ $key ]['destination'] = [
+					'address_1' => $request['address_1'],
+					'address_2' => $request['address_2'],
+					'city'      => $request['city'],
+					'state'     => $request['state'],
+					'postcode'  => $request['postcode'],
+					'country'   => $request['country'],
+				];
 			}
-			$packages[ $key ]['destination'] = [
-				'address_1' => $request['address_1'],
-				'address_2' => $request['address_2'],
-				'city'      => $request['city'],
-				'state'     => $request['state'],
-				'postcode'  => $request['postcode'],
-				'country'   => $request['country'],
-			];
 		}
 
 		$packages = WC()->shipping()->calculate_shipping( $packages );
