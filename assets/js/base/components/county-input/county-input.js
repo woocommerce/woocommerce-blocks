@@ -7,6 +7,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 /**
  * Internal dependencies
  */
+import TextInput from '../text-input';
 import Select from '../select';
 
 const CountyInput = ( {
@@ -19,7 +20,14 @@ const CountyInput = ( {
 } ) => {
 	const countryCounties = counties[ country ];
 	if ( ! countryCounties || Object.keys( countryCounties ).length === 0 ) {
-		return null;
+		return (
+			<TextInput
+				className={ className }
+				label={ label }
+				onChange={ onChange }
+				value={ value }
+			/>
+		);
 	}
 
 	const options = Object.keys( countryCounties ).map( ( key ) => ( {
