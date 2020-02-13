@@ -108,7 +108,7 @@
 	.wc-block-grid__product-price__regular {
 		font-size: 0.8em;
 		line-height: 1;
-		color: #aaa;
+		color: #555;
 		margin-top: -0.25em;
 		display: block;
 	}
@@ -173,16 +173,17 @@
 .wc-block-grid__product-rating {
 	display: block;
 
-	.wc-block-grid__product-rating__stars {
+	.wc-block-grid__product-rating__stars,
+	.star-rating {
 		overflow: hidden;
 		position: relative;
 		width: 5.3em;
 		height: 1.618em;
 		line-height: 1.618;
 		font-size: 1em;
-		font-family: star; /* stylelint-disable-line */
+		/* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
+		font-family: star;
 		font-weight: 400;
-		display: -block;
 		margin: 0 auto;
 		text-align: left;
 
@@ -263,7 +264,8 @@
 	.wc-block-grid__product-image,
 	.wc-block-grid__product-title,
 	.wc-block-grid__product-price,
-	.wc-block-grid__product-rating {
+	.wc-block-grid__product-rating,
+	.wc-block-grid__product-add-to-cart {
 		margin-top: 0;
 		margin-bottom: $gap-small;
 	}
@@ -275,8 +277,11 @@
 			display: flex;
 			flex-direction: column;
 		}
-		.wc-block-grid__product-add-to-cart {
-			margin-top: auto !important;
+		.wc-block-grid__product > .wc-block-grid__product-title:last-child,
+		.wc-block-grid__product > div:last-child {
+			margin-top: auto;
+			margin-bottom: 0;
+			padding-bottom: $gap-small;
 		}
 	}
 	@for $i from 1 to 9 {

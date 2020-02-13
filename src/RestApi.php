@@ -19,7 +19,7 @@ class RestApi {
 	 */
 	public static function init() {
 		add_action( 'rest_api_init', array( __CLASS__, 'register_rest_routes' ), 10 );
-		add_filter( 'rest_authentication_errors', array( __CLASS__, 'maybe_init_cart_session' ), 1, 2 );
+		add_filter( 'rest_authentication_errors', array( __CLASS__, 'maybe_init_cart_session' ), 1 );
 	}
 
 	/**
@@ -61,19 +61,19 @@ class RestApi {
 	 *
 	 * @todo check compat < WC 3.6. Make specific to cart endpoint.
 	 * @param mixed $return Value being filtered.
-	 * @param array $request Request data.
 	 * @return mixed
 	 */
-	public static function maybe_init_cart_session( $return, $request = false ) {
-		// Pass through other errors.
-		if ( ! empty( $error ) ) {
-			return $error;
+	public static function maybe_init_cart_session( $return ) {
+		$wc_instance = wc();
+		// if WooCommerce instance isn't available or already have an
+		// authentication error, just return.
+		if ( ! method_exists( $wc_instance, 'initialize_session' ) || \is_wp_error( $return ) ) {
+			return $return;
 		}
-
-		wc()->frontend_includes();
-		wc()->initialize_session();
-		wc()->initialize_cart();
-		wc()->cart->get_cart();
+		$wc_instance->frontend_includes();
+		$wc_instance->initialize_session();
+		$wc_instance->initialize_cart();
+		$wc_instance->cart->get_cart();
 
 		return $return;
 	}
@@ -84,7 +84,7 @@ class RestApi {
 	 * @return array
 	 */
 	protected static function get_controllers() {
-		return [
+		$controllers = [
 			'product-attributes'            => __NAMESPACE__ . '\RestApi\Controllers\ProductAttributes',
 			'product-attribute-terms'       => __NAMESPACE__ . '\RestApi\Controllers\ProductAttributeTerms',
 			'product-categories'            => __NAMESPACE__ . '\RestApi\Controllers\ProductCategories',
@@ -92,16 +92,25 @@ class RestApi {
 			'products'                      => __NAMESPACE__ . '\RestApi\Controllers\Products',
 			'variations'                    => __NAMESPACE__ . '\RestApi\Controllers\Variations',
 			'product-reviews'               => __NAMESPACE__ . '\RestApi\Controllers\ProductReviews',
-			'store-cart'                    => __NAMESPACE__ . '\RestApi\StoreApi\Controllers\Cart',
-			'store-cart-items'              => __NAMESPACE__ . '\RestApi\StoreApi\Controllers\CartItems',
-			'store-cart-coupons'            => __NAMESPACE__ . '\RestApi\StoreApi\Controllers\CartCoupons',
-			'store-cart-shipping-rates'     => __NAMESPACE__ . '\RestApi\StoreApi\Controllers\CartShippingRates',
-			'store-cart-order'              => __NAMESPACE__ . '\RestApi\StoreApi\Controllers\CartOrder',
-			'store-customer'                => __NAMESPACE__ . '\RestApi\StoreApi\Controllers\Customer',
 			'store-products'                => __NAMESPACE__ . '\RestApi\StoreApi\Controllers\Products',
 			'store-product-collection-data' => __NAMESPACE__ . '\RestApi\StoreApi\Controllers\ProductCollectionData',
 			'store-product-attributes'      => __NAMESPACE__ . '\RestApi\StoreApi\Controllers\ProductAttributes',
 			'store-product-attribute-terms' => __NAMESPACE__ . '\RestApi\StoreApi\Controllers\ProductAttributeTerms',
 		];
+
+		$experimental_controllers = [
+			'store-cart'                => __NAMESPACE__ . '\RestApi\StoreApi\Controllers\Cart',
+			'store-cart-order'          => __NAMESPACE__ . '\RestApi\StoreApi\Controllers\CartOrder',
+			'store-cart-items'          => __NAMESPACE__ . '\RestApi\StoreApi\Controllers\CartItems',
+			'store-cart-coupons'        => __NAMESPACE__ . '\RestApi\StoreApi\Controllers\CartCoupons',
+			'store-cart-shipping-rates' => __NAMESPACE__ . '\RestApi\StoreApi\Controllers\CartShippingRates',
+			'store-customer'            => __NAMESPACE__ . '\RestApi\StoreApi\Controllers\Customer',
+		];
+
+		if ( WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
+			$controllers = array_merge( $controllers, $experimental_controllers );
+		}
+
+		return $controllers;
 	}
 }

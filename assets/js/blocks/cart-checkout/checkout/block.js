@@ -163,7 +163,7 @@ const Block = ( { shippingMethods = [], isEditor = false } ) => {
 					<InputRow>
 						<ShippingCountryInput
 							label={ __(
-								'Country',
+								'Country / Region',
 								'woo-gutenberg-products-block'
 							) }
 							value={ shippingFields.country }

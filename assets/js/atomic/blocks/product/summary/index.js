@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import Gridicon from 'gridicons';
+import { Icon, notes } from '@woocommerce/icons';
 import { ProductSummary } from '@woocommerce/atomic-components/product';
 
 /**
@@ -14,11 +14,11 @@ import sharedConfig from '../shared-config';
 const blockConfig = {
 	title: __( 'Product Summary', 'woo-gutenberg-products-block' ),
 	description: __(
-		'Display the short description of a product.',
+		'Display a short description about a product.',
 		'woo-gutenberg-products-block'
 	),
 	icon: {
-		src: <Gridicon icon="aside" />,
+		src: <Icon srcElement={ notes } />,
 		foreground: '#96588a',
 	},
 

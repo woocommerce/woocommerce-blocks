@@ -6,6 +6,7 @@ import { useQueryStateByKey } from '@woocommerce/base-hooks';
 import { useMemo, Fragment } from '@wordpress/element';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import Label from '@woocommerce/base-components/label';
 
 /**
  * Internal dependencies
@@ -33,14 +34,14 @@ const ActiveFiltersBlock = ( {
 		if ( ! Number.isFinite( minPrice ) && ! Number.isFinite( maxPrice ) ) {
 			return null;
 		}
-		return renderRemovableListItem(
-			__( 'Price', 'woo-gutenberg-products-block' ),
-			formatPriceRange( minPrice, maxPrice ),
-			() => {
-				setMinPrice( null );
-				setMaxPrice( null );
-			}
-		);
+		return renderRemovableListItem( {
+			type: __( 'Price', 'woo-gutenberg-products-block' ),
+			name: formatPriceRange( minPrice, maxPrice ),
+			removeCallback: () => {
+				setMinPrice( undefined );
+				setMaxPrice( undefined );
+			},
+		} );
 	}, [ minPrice, maxPrice, formatPriceRange ] );
 
 	const activeAttributeFilters = useMemo( () => {
@@ -53,6 +54,7 @@ const ActiveFiltersBlock = ( {
 					attributeObject={ attributeObject }
 					slugs={ attribute.slug }
 					key={ attribute.attribute }
+					operator={ attribute.operator }
 				/>
 			);
 		} );
@@ -71,8 +73,8 @@ const ActiveFiltersBlock = ( {
 	}
 
 	const TagName = `h${ blockAttributes.headingLevel }`;
-	const listClasses = classnames( 'wc-block-active-filters-list', {
-		'wc-block-active-filters-list--chips':
+	const listClasses = classnames( 'wc-block-active-filters__list', {
+		'wc-block-active-filters__list--chips':
 			blockAttributes.displayStyle === 'chips',
 	} );
 
@@ -85,14 +87,26 @@ const ActiveFiltersBlock = ( {
 				<ul className={ listClasses }>
 					{ isEditor ? (
 						<Fragment>
-							{ renderRemovableListItem(
-								__( 'Size', 'woo-gutenberg-products-block' ),
-								__( 'Small', 'woo-gutenberg-products-block' )
-							) }
-							{ renderRemovableListItem(
-								__( 'Color', 'woo-gutenberg-products-block' ),
-								__( 'Blue', 'woo-gutenberg-products-block' )
-							) }
+							{ renderRemovableListItem( {
+								type: __(
+									'Size',
+									'woo-gutenberg-products-block'
+								),
+								name: __(
+									'Small',
+									'woo-gutenberg-products-block'
+								),
+							} ) }
+							{ renderRemovableListItem( {
+								type: __(
+									'Color',
+									'woo-gutenberg-products-block'
+								),
+								name: __(
+									'Blue',
+									'woo-gutenberg-products-block'
+								),
+							} ) }
 						</Fragment>
 					) : (
 						<Fragment>
@@ -104,12 +118,21 @@ const ActiveFiltersBlock = ( {
 				<button
 					className="wc-block-active-filters__clear-all"
 					onClick={ () => {
-						setMinPrice( null );
-						setMaxPrice( null );
+						setMinPrice( undefined );
+						setMaxPrice( undefined );
 						setProductAttributes( [] );
 					} }
 				>
-					{ __( 'Clear All', 'woo-gutenberg-products-block' ) }
+					<Label
+						label={ __(
+							'Clear All',
+							'woo-gutenberg-products-block'
+						) }
+						screenReaderLabel={ __(
+							'Clear All Filters',
+							'woo-gutenberg-products-block'
+						) }
+					/>
 				</button>
 			</div>
 		</Fragment>

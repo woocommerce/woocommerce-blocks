@@ -9,7 +9,7 @@ const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extrac
 const WebpackRTLPlugin = require( 'webpack-rtl-plugin' );
 const chalk = require( 'chalk' );
 const { omit } = require( 'lodash' );
-
+const { DefinePlugin } = require( 'webpack' );
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
 function findModuleMatch( module, match ) {
@@ -48,13 +48,9 @@ const getAlias = ( options = {} ) => {
 	let { pathPart } = options;
 	pathPart = pathPart ? `${ pathPart }/` : '';
 	return {
-		'@woocommerce/blocks-registry': path.resolve(
+		'@woocommerce/atomic-components': path.resolve(
 			__dirname,
-			'../assets/js/blocks-registry'
-		),
-		'@woocommerce/block-settings': path.resolve(
-			__dirname,
-			'../assets/js/settings/blocks'
+			`../assets/js/${ pathPart }atomic/components/`
 		),
 		'@woocommerce/base-components': path.resolve(
 			__dirname,
@@ -84,18 +80,27 @@ const getAlias = ( options = {} ) => {
 			__dirname,
 			`../assets/js/${ pathPart }hocs`
 		),
-		'@woocommerce/atomic-components': path.resolve(
+		'@woocommerce/blocks-registry': path.resolve(
 			__dirname,
-			`../assets/js/${ pathPart }atomic/components/`
+			'../assets/js/blocks-registry'
 		),
+		'@woocommerce/block-settings': path.resolve(
+			__dirname,
+			'../assets/js/settings/blocks'
+		),
+		'@woocommerce/icons': path.resolve( __dirname, `../assets/js/icons` ),
 		'@woocommerce/resource-previews': path.resolve(
 			__dirname,
 			`../assets/js/${ pathPart }previews/`
 		),
+		'@woocommerce/e2e-tests': path.resolve(
+			__dirname,
+			'node_modules/woocommerce/tests/e2e-tests'
+		),
 	};
 };
 
-const mainEntry = {
+const stableMainEntry = {
 	// Shared blocks code
 	blocks: './assets/js/index.js',
 
@@ -127,21 +132,35 @@ const mainEntry = {
 	'panel-style': './node_modules/@wordpress/components/src/panel/style.scss',
 	'custom-select-control-style':
 		'./node_modules/@wordpress/components/src/custom-select-control/style.scss',
+};
 
-	// cart & checkout blocks
+const experimentalMainEntry = {
 	cart: './assets/js/blocks/cart-checkout/cart/index.js',
 	checkout: './assets/js/blocks/cart-checkout/checkout/index.js',
 };
 
-const frontEndEntry = {
+const mainEntry =
+	process.env.WOOCOMMERCE_BLOCKS_PHASE === 'stable'
+		? stableMainEntry
+		: { ...stableMainEntry, ...experimentalMainEntry };
+
+const stableFrontEndEntry = {
 	reviews: './assets/js/blocks/reviews/frontend.js',
 	'all-products': './assets/js/blocks/products/all-products/frontend.js',
 	'price-filter': './assets/js/blocks/price-filter/frontend.js',
 	'attribute-filter': './assets/js/blocks/attribute-filter/frontend.js',
 	'active-filters': './assets/js/blocks/active-filters/frontend.js',
+};
+
+const experimentalFrontEndEntry = {
 	checkout: './assets/js/blocks/cart-checkout/checkout/frontend.js',
 	cart: './assets/js/blocks/cart-checkout/cart/frontend.js',
 };
+
+const frontEndEntry =
+	process.env.WOOCOMMERCE_BLOCKS_PHASE === 'stable'
+		? stableFrontEndEntry
+		: { ...stableFrontEndEntry, ...experimentalFrontEndEntry };
 
 const getEntryConfig = ( main = true, exclude = [] ) => {
 	const entryConfig = main ? mainEntry : frontEndEntry;
@@ -305,6 +324,12 @@ const getMainConfig = ( options = {} ) => {
 				requestToExternal,
 				requestToHandle,
 			} ),
+			new DefinePlugin( {
+				// Inject the `WOOCOMMERCE_BLOCKS_PHASE` global, used for feature flagging.
+				'process.env.WOOCOMMERCE_BLOCKS_PHASE': JSON.stringify(
+					process.env.WOOCOMMERCE_BLOCKS_PHASE || 'experimental'
+				),
+			} ),
 		],
 		resolve,
 	};
@@ -399,6 +424,12 @@ const getFrontConfig = ( options = {} ) => {
 				injectPolyfill: true,
 				requestToExternal,
 				requestToHandle,
+			} ),
+			new DefinePlugin( {
+				// Inject the `WOOCOMMERCE_BLOCKS_PHASE` global, used for feature flagging.
+				'process.env.WOOCOMMERCE_BLOCKS_PHASE': JSON.stringify(
+					process.env.WOOCOMMERCE_BLOCKS_PHASE || 'experimental'
+				),
 			} ),
 		],
 		resolve,

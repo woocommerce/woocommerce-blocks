@@ -5,5 +5,12 @@
 	"schedule": [ "before 3am on wednesday" ],
 	"composer": {
 		"enabled": false
-	}
+	},
+  "labels": ["type: dependencies", "skip-changelog"],
+	"packageRules": [
+		{
+			"packageNames": [ "automattic/jetpack-autoloader" ],
+			"rangeStrategy": "bump"
+		}
+	]
 }

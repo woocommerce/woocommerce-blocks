@@ -11,9 +11,13 @@
 	"license": "GPL-3.0-or-later",
 	"prefer-stable": true,
 	"minimum-stability": "dev",
+	"repositories": [ {
+    "type":"composer",
+    "url":"https://wpackagist.org"
+  } ],
 	"require": {
 		"composer/installers": "1.7.0",
-		"automattic/jetpack-autoloader": "1.3.2"
+		"automattic/jetpack-autoloader": "^1.2.0"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "6.5.14",

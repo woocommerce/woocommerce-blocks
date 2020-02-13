@@ -14,20 +14,39 @@ const { addFilter } = wp.hooks;
 const withDefaultAttributes = createHigherOrderComponent(
 	( BlockListBlock ) => {
 		class WrappedComponent extends Component {
-			constructor() {
-				super( ...arguments );
+			mounted = false;
 
+			componentDidMount() {
+				const { block, setAttributes } = this.props;
+
+				if ( block.name.startsWith( 'woocommerce/' ) ) {
+					setAttributes( this.getAttributesWithDefaults() );
+				}
+			}
+
+			componentDidUpdate() {
+				if (
+					this.props.block.name.startsWith( 'woocommerce/' ) &&
+					! this.mounted
+				) {
+					this.mounted = true;
+				}
+			}
+
+			getAttributesWithDefaults() {
 				const blockType = getBlockType( this.props.block.name );
-				const attributes = Object.assign(
-					{},
-					this.props.attributes || {}
-				);
+				let attributes = this.props.attributes;
 
 				if (
+					! this.mounted &&
 					this.props.block.name.startsWith( 'woocommerce/' ) &&
 					typeof blockType.attributes !== 'undefined' &&
 					typeof blockType.defaults !== 'undefined'
 				) {
+					attributes = Object.assign(
+						{},
+						this.props.attributes || {}
+					);
 					Object.keys( blockType.attributes ).map( ( key ) => {
 						if (
 							typeof attributes[ key ] === 'undefined' &&
@@ -38,23 +57,14 @@ const withDefaultAttributes = createHigherOrderComponent(
 						return key;
 					} );
 				}
-
-				this.attributesWithDefaults = attributes;
-			}
-
-			componentDidMount() {
-				const { block, setAttributes } = this.props;
-
-				if ( block.name.startsWith( 'woocommerce/' ) ) {
-					setAttributes( this.attributesWithDefaults );
-				}
+				return attributes;
 			}
 
 			render() {
 				return (
 					<BlockListBlock
 						{ ...this.props }
-						attributes={ this.attributesWithDefaults }
+						attributes={ this.getAttributesWithDefaults() }
 					/>
 				);
 			}

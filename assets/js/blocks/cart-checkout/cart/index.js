@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { InnerBlocks } from '@wordpress/block-editor';
 import { registerBlockType } from '@wordpress/blocks';
+import { Icon, cart } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
@@ -15,10 +16,10 @@ import './style.scss';
 /**
  * Register and run the Cart block.
  */
-registerBlockType( 'woocommerce/cart', {
+const settings = {
 	title: __( 'Cart', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: 'cart',
+		src: <Icon srcElement={ cart } />,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',
@@ -51,4 +52,8 @@ registerBlockType( 'woocommerce/cart', {
 			</div>
 		);
 	},
-} );
+};
+
+if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
+	registerBlockType( 'woocommerce/cart', settings );
+}
