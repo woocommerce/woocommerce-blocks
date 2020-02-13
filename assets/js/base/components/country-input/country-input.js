@@ -20,12 +20,6 @@ const CountryInput = ( {
 		key,
 		name: decodeEntities( countries[ key ] ),
 	} ) );
-	const formattedValue = value
-		? {
-				key: value,
-				name: decodeEntities( countries[ value ] ),
-		  }
-		: null;
 
 	return (
 		<Select
@@ -33,7 +27,7 @@ const CountryInput = ( {
 			label={ label }
 			onChange={ onChange }
 			options={ options }
-			value={ formattedValue }
+			value={ options.find( ( option ) => option.key === value ) }
 		/>
 	);
 };

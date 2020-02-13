@@ -34,12 +34,6 @@ const CountyInput = ( {
 		key,
 		name: decodeEntities( countryCounties[ key ] ),
 	} ) );
-	const formattedValue = countryCounties[ value ]
-		? {
-				key: value,
-				name: decodeEntities( countryCounties[ value ] ),
-		  }
-		: null;
 
 	return (
 		<Select
@@ -47,7 +41,7 @@ const CountyInput = ( {
 			label={ label }
 			onChange={ onChange }
 			options={ options }
-			value={ formattedValue }
+			value={ options.find( ( option ) => option.key === value ) }
 		/>
 	);
 };
