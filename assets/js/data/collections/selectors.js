@@ -152,13 +152,3 @@ export const getCollectionLastModified = ( state ) => {
 export const getCollectionPreviousLastModified = ( state ) => {
 	return state.previousLastModified || 0;
 };
-
-/**
- * Gets the timestamp of the last request for this collection.
- *
- * @param {string} state The current collection state.
- * @return {number} Timestamp.
- */
-export const getCollectionTimestamp = ( state ) => {
-	return state.timestamp || 0;
-};
