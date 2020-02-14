@@ -264,14 +264,13 @@ class ProductCategories extends AbstractDynamicBlock {
 	 * @return string Rendered output.
 	 */
 	protected function renderListItems( $categories, $attributes, $uid, $depth = 0 ) {
-		$output     = '';
-		$image_size = 'large';
+		$output = '';
 
 		foreach ( $categories as $category ) {
 			$output .= '
 				<li class="wc-block-product-categories-list-item">
 					<a href="' . esc_attr( get_term_link( $category->term_id, 'product_cat' ) ) . '">
-						' . $this->get_image_html( $category, $attributes, $image_size ) . esc_html( $category->name ) . '
+						' . $this->get_image_html( $category, $attributes ) . esc_html( $category->name ) . '
 					</a>
 					' . $this->getCount( $category, $attributes ) . '
 					' . ( ! empty( $category->children ) ? $this->renderList( $category->children, $attributes, $uid, $depth + 1 ) : '' ) . '
