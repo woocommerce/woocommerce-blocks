@@ -26,18 +26,11 @@ const receiveCollection = ( state = {}, action ) => {
 		};
 	}
 
-	// Reset both last and previous last modified to the latest value.
+	// Reset previousLastModified to the last known lastModified value.
 	if ( action.type === types.RESET_LAST_MODIFIED ) {
 		return {
 			...state,
 			previousLastModified: state.lastModified,
-		};
-	}
-
-	if ( action.type === types.UPDATE_TIMESTAMP ) {
-		return {
-			...state,
-			timestamp: action.timestamp,
 		};
 	}
 

@@ -32,30 +32,6 @@ const invalidateModifiedStore = ( store, dispatch ) => {
 };
 
 /**
- * Check if the store needs invalidating due to a change in last modified headers.
- *
- * @param {*} store 			Store object.
- * @param {*} dispatch 			Store dispatcher.
- * @param {number} freshness 	How many milliseconds must elapse for data to
- * 								be considered stale.
- */
-const invalidateStaleStore = ( store, dispatch, freshness ) => {
-	if ( ! store.getCollectionTimestamp() ) {
-		dispatch( storeKey ).updateTimestamp( Date.now() );
-		return;
-	}
-	if (
-		freshness &&
-		store.getCollectionTimestamp() + freshness < Date.now()
-	) {
-		dispatch( storeKey ).updateTimestamp( Date.now() );
-		dispatch( storeKey ).invalidateResolutionForStoreSelector(
-			'getCollection'
-		);
-	}
-};
-
-/**
  * This is a custom hook that is wired up to the `wc/store/collections` data
  * store. Given a collections option object, this will ensure a component is
  * kept up to date with the collection matching that query in the store state.
@@ -81,16 +57,13 @@ const invalidateStaleStore = ( store, dispatch, freshness ) => {
  * @param {boolean} options.shouldSelect  If false, the previous results will be
  *                                        returned and internal selects will not
  *                                        fire.
- * @param {number} freshness              How many milliseconds must elapse for
- *                                        data to be considered stale.
- *                                        Default 600000 (10 min).
  *
  * @return {Object} This hook will return an object with two properties:
  *                  - results   An array of collection items returned.
  *                  - isLoading A boolean indicating whether the collection is
  *                              loading (true) or not.
  */
-export const useCollection = ( options, freshness = 600000 ) => {
+export const useCollection = ( options ) => {
 	const {
 		namespace,
 		resourceName,
@@ -115,40 +88,24 @@ export const useCollection = ( options, freshness = 600000 ) => {
 				return null;
 			}
 			const store = select( storeKey );
-
-			invalidateModifiedStore( store, dispatch );
-			invalidateStaleStore( store, dispatch, freshness );
-
 			const args = [
 				namespace,
 				resourceName,
 				currentQuery,
 				currentResourceValues,
 			];
-
-			// is there an error? if so return it.
 			const error = store.getCollectionError( ...args );
+
 			if ( error ) {
-				// Throw an exception within setState - this is needed because
-				// this is a hook (https://github.com/facebook/react/issues/14981).
+				// Is there an error? If so, throw an exception.
+				// This uses setState because useCollection is a hook.
+				// See https://github.com/facebook/react/issues/14981
 				setState( () => {
 					throw error;
 				} );
 			}
 
-			// Maybe invalidate existing caches.
-			if (
-				store.getCollectionPreviousLastModified() &&
-				store.getCollectionLastModified() >
-					store.getCollectionPreviousLastModified()
-			) {
-				// reset previous last modified to last modified to prevent this
-				// running multiple times.
-				dispatch( storeKey ).resetLastModified();
-				dispatch( storeKey ).invalidateResolutionForStoreSelector(
-					'getCollection'
-				);
-			}
+			invalidateModifiedStore( store, dispatch );
 
 			return {
 				results: store.getCollection( ...args ),
