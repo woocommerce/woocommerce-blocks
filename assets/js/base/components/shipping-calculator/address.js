@@ -4,6 +4,8 @@
 import PropTypes from 'prop-types';
 import { __ } from '@wordpress/i18n';
 import Button from '@woocommerce/base-components/button';
+import { ShippingCountryInput } from '@woocommerce/base-components/country-input';
+import { ShippingCountyInput } from '@woocommerce/base-components/county-input';
 import TextInput from '@woocommerce/base-components/text-input';
 import { useState } from '@wordpress/element';
 import isShallowEqual from '@wordpress/is-shallow-equal';
@@ -18,21 +20,24 @@ const ShippingCalculatorAddress = ( { address: initialAddress, onUpdate } ) => {
 
 	return (
 		<div className="wc-block-shipping-calculator-address">
-			<TextInput
-				id="shipping-country"
+			<ShippingCountryInput
 				className="wc-block-shipping-calculator-address__input"
-				label={ __( 'Country', 'woo-gutenberg-products-block' ) }
+				label={ __(
+					'Country / Region',
+					'woo-gutenberg-products-block'
+				) }
 				value={ address.country }
 				onChange={ ( newValue ) =>
 					setAddress( {
 						...address,
 						country: newValue,
+						county: '',
 					} )
 				}
 			/>
-			<TextInput
-				id="shipping-county"
+			<ShippingCountyInput
 				className="wc-block-shipping-calculator-address__input"
+				country={ address.country }
 				label={ __( 'County', 'woo-gutenberg-products-block' ) }
 				value={ address.county }
 				onChange={ ( newValue ) =>
@@ -43,7 +48,6 @@ const ShippingCalculatorAddress = ( { address: initialAddress, onUpdate } ) => {
 				}
 			/>
 			<TextInput
-				id="shipping-city"
 				className="wc-block-shipping-calculator-address__input"
 				label={ __( 'City', 'woo-gutenberg-products-block' ) }
 				value={ address.city }
@@ -55,7 +59,6 @@ const ShippingCalculatorAddress = ( { address: initialAddress, onUpdate } ) => {
 				}
 			/>
 			<TextInput
-				id="shipping-postal-code"
 				className="wc-block-shipping-calculator-address__input"
 				label={ __( 'Postal code', 'woo-gutenberg-products-block' ) }
 				value={ address.postalCode }
