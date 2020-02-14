@@ -210,11 +210,11 @@ const Block = ( { shippingMethods = [], isEditor = false } ) => {
 								'Postal code',
 								'woo-gutenberg-products-block'
 							) }
-							value={ shippingFields.postalCode }
+							value={ shippingFields.postcode }
 							onChange={ ( newValue ) =>
 								setShippingFields( {
 									...shippingFields,
-									postalCode: newValue,
+									postcode: newValue,
 								} )
 							}
 						/>
@@ -270,7 +270,7 @@ const Block = ( { shippingMethods = [], isEditor = false } ) => {
 											address_2: shippingFields.apartment,
 											city: shippingFields.city,
 											state: shippingFields.county,
-											postcode: shippingFields.postalCode,
+											postcode: shippingFields.postcode,
 											country: shippingFields.country,
 									  }
 									: null

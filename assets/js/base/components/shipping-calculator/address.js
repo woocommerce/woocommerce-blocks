@@ -61,11 +61,11 @@ const ShippingCalculatorAddress = ( { address: initialAddress, onUpdate } ) => {
 			<TextInput
 				className="wc-block-shipping-calculator-address__input"
 				label={ __( 'Postal code', 'woo-gutenberg-products-block' ) }
-				value={ address.postalCode }
+				value={ address.postcode }
 				onChange={ ( newValue ) =>
 					setAddress( {
 						...address,
-						postalCode: newValue,
+						postcode: newValue,
 					} )
 				}
 			/>

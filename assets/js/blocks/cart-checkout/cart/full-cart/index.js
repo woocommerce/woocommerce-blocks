@@ -59,7 +59,7 @@ const Cart = () => {
 	] = useState( {
 		city: '',
 		county: '',
-		postCode: '',
+		postcode: '',
 		country: '',
 	} );
 
@@ -180,7 +180,7 @@ const Cart = () => {
 												state:
 													shippingCalculatorAddress.county,
 												postcode:
-													shippingCalculatorAddress.postCode,
+													shippingCalculatorAddress.postcode,
 												country:
 													shippingCalculatorAddress.country,
 										  }
