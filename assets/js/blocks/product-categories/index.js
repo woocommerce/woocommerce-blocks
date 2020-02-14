@@ -31,7 +31,7 @@ registerBlockType( 'woocommerce/product-categories', {
 	example: {
 		attributes: {
 			hasCount: true,
-            hasImage: true,
+			hasImage: true,
 		},
 	},
 	attributes: {
@@ -43,7 +43,7 @@ registerBlockType( 'woocommerce/product-categories', {
 			default: true,
 		},
 
-        /**
+		/**
 		 * Whether to show the category image in each category.
 		 */
 		hasImage: {
@@ -87,13 +87,6 @@ registerBlockType( 'woocommerce/product-categories', {
 					selector: 'div',
 					attribute: 'data-has-count',
 				},
-                hasImage: {
-					type: 'boolean',
-					default: false,
-					source: 'attribute',
-					selector: 'div',
-					attribute: 'data-has-image',
-				},
 				hasEmpty: {
 					type: 'boolean',
 					default: false,
@@ -122,7 +115,6 @@ registerBlockType( 'woocommerce/product-categories', {
 			save( props ) {
 				const {
 					hasCount,
-					hasImage,
 					hasEmpty,
 					isDropdown,
 					isHierarchical,
@@ -130,9 +122,6 @@ registerBlockType( 'woocommerce/product-categories', {
 				const data = {};
 				if ( hasCount ) {
 					data[ 'data-has-count' ] = true;
-				}
-                if ( hasImage ) {
-					data[ 'data-has-image' ] = true;
 				}
 				if ( hasEmpty ) {
 					data[ 'data-has-empty' ] = true;
