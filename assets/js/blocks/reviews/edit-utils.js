@@ -1,9 +1,9 @@
 /**
  * External dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
-import { Fragment, RawHTML } from '@wordpress/element';
-import { escapeHTML } from '@wordpress/escape-html';
+import { __ } from '@wordpress/i18n';
+import { Fragment } from '@wordpress/element';
+import { __experimentalCreateInterpolateElement } from 'wordpress-element';
 import {
 	Notice,
 	ToggleControl,
@@ -51,19 +51,24 @@ export const getSharedReviewContentControls = ( attributes, setAttributes ) => {
 					className="wc-block-reviews__notice"
 					isDismissible={ false }
 				>
-					<RawHTML>
-						{ sprintf(
-							escapeHTML(
-								/* translators: 1: store settings url 2: link attributes */
-								__(
-									'Product rating is disabled in your <a href="%1$s" %2$s>store settings</a>.',
-									'woo-gutenberg-products-block'
-								)
+					{ __experimentalCreateInterpolateElement(
+						__(
+							'Product rating is disabled in your <a>store settings</a>.',
+							'woo-gutenberg-products-block'
+						),
+						{
+							a: (
+								// eslint-disable-next-line jsx-a11y/anchor-has-content
+								<a
+									href={ getAdminLink(
+										'admin.php?page=wc-settings&tab=products'
+									) }
+									target="_blank"
+									rel="noopener noreferrer"
+								/>
 							),
-							getAdminLink( 'admin.php?page=wc-settings&tab=products' ),
-							'target="_blank"'
-						) }
-					</RawHTML>
+						}
+					) }
 				</Notice>
 			) }
 			<ToggleControl
@@ -135,19 +140,24 @@ export const getSharedReviewContentControls = ( attributes, setAttributes ) => {
 							className="wc-block-reviews__notice"
 							isDismissible={ false }
 						>
-							<RawHTML>
-								{ sprintf(
-									escapeHTML(
-										/* translators: 1: discussion settings url 2: link attributes */
-										__(
-											'Reviewer photo is disabled in your <a href="%$1s" %$2s>site settings</a>.',
-											'woo-gutenberg-products-block'
-										)
+							{ __experimentalCreateInterpolateElement(
+								__(
+									'Reviewer photo is disabled in your <a>site settings</a>.',
+									'woo-gutenberg-products-block'
+								),
+								{
+									a: (
+										// eslint-disable-next-line jsx-a11y/anchor-has-content
+										<a
+											href={ getAdminLink(
+												'options-discussion.php'
+											) }
+											target="_blank"
+											rel="noopener noreferrer"
+										/>
 									),
-									getAdminLink( 'options-discussion.php' ),
-									'target="_blank"'
-								) }
-							</RawHTML>
+								}
+							) }
 						</Notice>
 					) }
 				</Fragment>
