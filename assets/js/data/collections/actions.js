@@ -127,9 +127,3 @@ export function receiveLastModified( timestamp ) {
 		timestamp,
 	};
 }
-
-export function resetLastModified() {
-	return {
-		type: types.RESET_LAST_MODIFIED,
-	};
-}

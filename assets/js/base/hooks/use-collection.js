@@ -11,27 +11,6 @@ import { useRef, useState } from '@wordpress/element';
 import { useShallowEqual } from './use-shallow-equal';
 
 /**
- * Check if the store needs invalidating due to a change in last modified headers.
- *
- * @param {*} store Store object.
- * @param {*} dispatch Store dispatcher.
- */
-const invalidateModifiedStore = ( store, dispatch ) => {
-	if (
-		store.getCollectionPreviousLastModified() &&
-		store.getCollectionLastModified() >
-			store.getCollectionPreviousLastModified()
-	) {
-		// reset previous last modified to last modified to prevent this
-		// running multiple times.
-		dispatch( storeKey ).resetLastModified();
-		dispatch( storeKey ).invalidateResolutionForStoreSelector(
-			'getCollection'
-		);
-	}
-};
-
-/**
  * This is a custom hook that is wired up to the `wc/store/collections` data
  * store. Given a collections option object, this will ensure a component is
  * kept up to date with the collection matching that query in the store state.
@@ -83,7 +62,7 @@ export const useCollection = ( options ) => {
 	const currentResourceValues = useShallowEqual( resourceValues );
 	const [ , setState ] = useState();
 	const results = useSelect(
-		( select, { dispatch } ) => {
+		( select ) => {
 			if ( ! shouldSelect ) {
 				return null;
 			}
@@ -104,8 +83,6 @@ export const useCollection = ( options ) => {
 					throw error;
 				} );
 			}
-
-			invalidateModifiedStore( store, dispatch );
 
 			return {
 				results: store.getCollection( ...args ),
