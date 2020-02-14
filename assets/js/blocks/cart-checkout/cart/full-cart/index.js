@@ -58,7 +58,7 @@ const Cart = () => {
 		setShippingCalculatorAddress,
 	] = useState( {
 		city: '',
-		county: '',
+		state: '',
 		postcode: '',
 		country: '',
 	} );
@@ -178,7 +178,7 @@ const Cart = () => {
 												city:
 													shippingCalculatorAddress.city,
 												state:
-													shippingCalculatorAddress.county,
+													shippingCalculatorAddress.state,
 												postcode:
 													shippingCalculatorAddress.postcode,
 												country:

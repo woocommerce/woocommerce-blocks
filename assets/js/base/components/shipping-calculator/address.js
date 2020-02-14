@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { __ } from '@wordpress/i18n';
 import Button from '@woocommerce/base-components/button';
 import { ShippingCountryInput } from '@woocommerce/base-components/country-input';
-import { ShippingCountyInput } from '@woocommerce/base-components/county-input';
+import { ShippingStateInput } from '@woocommerce/base-components/state-input';
 import TextInput from '@woocommerce/base-components/text-input';
 import { useState } from '@wordpress/element';
 import isShallowEqual from '@wordpress/is-shallow-equal';
@@ -31,19 +31,19 @@ const ShippingCalculatorAddress = ( { address: initialAddress, onUpdate } ) => {
 					setAddress( {
 						...address,
 						country: newValue,
-						county: '',
+						state: '',
 					} )
 				}
 			/>
-			<ShippingCountyInput
+			<ShippingStateInput
 				className="wc-block-shipping-calculator-address__input"
 				country={ address.country }
-				label={ __( 'County', 'woo-gutenberg-products-block' ) }
-				value={ address.county }
+				label={ __( 'State / County', 'woo-gutenberg-products-block' ) }
+				value={ address.state }
 				onChange={ ( newValue ) =>
 					setAddress( {
 						...address,
-						county: newValue,
+						state: newValue,
 					} )
 				}
 			/>
