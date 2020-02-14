@@ -21,17 +21,13 @@ const receiveCollection = ( state = {}, action ) => {
 		}
 		return {
 			...state,
-			previousLastModified: state.lastModified || action.timestamp,
 			lastModified: action.timestamp,
 		};
 	}
 
-	// Reset previousLastModified to the last known lastModified value.
-	if ( action.type === types.RESET_LAST_MODIFIED ) {
-		return {
-			...state,
-			previousLastModified: state.lastModified,
-		};
+	// When invalidating data, remove stored values from state.
+	if ( action.type === types.INVALIDATE_RESOLUTION_FOR_STORE ) {
+		return {};
 	}
 
 	const { type, namespace, resourceName, queryString, response } = action;
