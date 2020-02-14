@@ -192,6 +192,7 @@ const Block = ( { shippingMethods = [], isEditor = false } ) => {
 					</InputRow>
 					<InputRow>
 						<ShippingCountyInput
+							country={ shippingFields.country }
 							label={ __(
 								'County',
 								'woo-gutenberg-products-block'
