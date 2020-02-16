@@ -26,7 +26,13 @@ const calcPriceDifference = ( subtotal, total ) => {
 
 const ProductVariationDetails = ( { variation } ) => {
 	const variationsText = variation
-		.map( ( v ) => `${ v.attribute }: ${ v.value }` )
+		.map( ( v ) => {
+			if ( v.attribute ) {
+				return `${ v.attribute }: ${ decodeEntities( v.value ) }`;
+			}
+			// Support for product attributes with no name/key
+			return `${ decodeEntities( v.value ) }`;
+		} )
 		.join( ' / ' );
 
 	return (
