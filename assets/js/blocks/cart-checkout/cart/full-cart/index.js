@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import PropTypes from 'prop-types';
 import { __, sprintf } from '@wordpress/i18n';
 import { useState, Fragment } from '@wordpress/element';
 import {
@@ -14,7 +15,6 @@ import {
 } from '@woocommerce/block-settings';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import { Card, CardBody } from 'wordpress-components';
-import { previewCartItems } from '@woocommerce/resource-previews';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 
 /**
@@ -31,7 +31,7 @@ import './editor.scss';
  * Given an API response with cart totals, generates an array of rows to display in the Cart block.
  *
  * @param {Object} cartTotals - Cart totals data as provided by the API.
- * @returns {Object[]} Values to display in the cart block.
+ * @return {Object[]} Values to display in the cart block.
  */
 const getTotalRowsConfig = ( cartTotals ) => {
 	const totalItems = parseInt( cartTotals.total_items, 10 );
@@ -110,7 +110,7 @@ const cartTotals = {
 /**
  * Component that renders the Cart block when user has something in cart aka "full".
  */
-const Cart = () => {
+const Cart = ( { cartItems = [] } ) => {
 	const totalsCurrency = getCurrencyFromPriceResponse( cartTotals );
 	const totalRowsConfig = getTotalRowsConfig( cartTotals );
 
@@ -119,8 +119,8 @@ const Cart = () => {
 	return (
 		<div className="wc-block-cart">
 			<div className="wc-block-cart__main">
-				<CartLineItemsTitle itemCount={ previewCartItems.length } />
-				<CartLineItemsTable lineItems={ previewCartItems } />
+				<CartLineItemsTitle itemCount={ cartItems.length } />
+				<CartLineItemsTable lineItems={ cartItems } />
 			</div>
 			<div className="wc-block-cart__sidebar">
 				<Card isElevated={ true }>
@@ -212,6 +212,8 @@ const Cart = () => {
 	);
 };
 
-Cart.propTypes = {};
+Cart.propTypes = {
+	items: PropTypes.array,
+};
 
 export default Cart;
