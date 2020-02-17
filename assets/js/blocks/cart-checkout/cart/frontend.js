@@ -24,7 +24,11 @@ const CartFrontend = () => {
 	const isCartEmpty = ! isLoading && cartItems.length <= 0;
 
 	// @todo render cart loading state/spinner
-	return isCartEmpty ? <EmptyCart /> : <FullCart cartItems={ cartItems } />;
+	return isCartEmpty ? (
+		<EmptyCart />
+	) : (
+		<FullCart cartItems={ cartItems } cartTotals={ cartData.totals } />
+	);
 };
 
 const isCartEmpty = false; // @todo check if the cart has some products

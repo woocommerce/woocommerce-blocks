@@ -92,25 +92,11 @@ const onActivateCoupon = ( couponCode ) => {
 	// eslint-disable-next-line no-console
 	console.log( 'coupon activated: ' + couponCode );
 };
-const cartTotals = {
-	currency: 'EUR',
-	currency_minor_unit: 2,
-	total_items: '6000',
-	total_items_tax: '0',
-	total_fees: '0',
-	total_fees_tax: '0',
-	total_discount: '0',
-	total_discount_tax: '0',
-	total_shipping: '0',
-	total_shipping_tax: '0',
-	total_tax: '0',
-	total_price: '6000',
-};
 
 /**
  * Component that renders the Cart block when user has something in cart aka "full".
  */
-const Cart = ( { cartItems = [] } ) => {
+const Cart = ( { cartItems = [], cartTotals = {} } ) => {
 	const totalsCurrency = getCurrencyFromPriceResponse( cartTotals );
 	const totalRowsConfig = getTotalRowsConfig( cartTotals );
 
@@ -214,6 +200,18 @@ const Cart = ( { cartItems = [] } ) => {
 
 Cart.propTypes = {
 	cartItems: PropTypes.array,
+	cartTotals: PropTypes.shape( {
+		total_items: PropTypes.string,
+		total_items_tax: PropTypes.string,
+		total_fees: PropTypes.string,
+		total_fees_tax: PropTypes.string,
+		total_discount: PropTypes.string,
+		total_discount_tax: PropTypes.string,
+		total_shipping: PropTypes.string,
+		total_shipping_tax: PropTypes.string,
+		total_tax: PropTypes.string,
+		total_price: PropTypes.string,
+	} ),
 };
 
 export default Cart;
