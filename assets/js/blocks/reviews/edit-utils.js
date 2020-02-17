@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
 import { __experimentalCreateInterpolateElement } from 'wordpress-element';
 import {
 	Notice,
@@ -36,7 +35,7 @@ export const getBlockControls = ( editMode, setAttributes ) => (
 
 export const getSharedReviewContentControls = ( attributes, setAttributes ) => {
 	return (
-		<Fragment>
+		<>
 			<ToggleControl
 				label={ __( 'Product rating', 'woo-gutenberg-products-block' ) }
 				checked={ attributes.showReviewRating }
@@ -108,7 +107,7 @@ export const getSharedReviewContentControls = ( attributes, setAttributes ) => {
 				}
 			/>
 			{ attributes.showReviewImage && (
-				<Fragment>
+				<>
 					<ToggleButtonControl
 						label={ __(
 							'Review image',
@@ -160,9 +159,9 @@ export const getSharedReviewContentControls = ( attributes, setAttributes ) => {
 							) }
 						</Notice>
 					) }
-				</Fragment>
+				</>
 			) }
-		</Fragment>
+		</>
 	);
 };
 
@@ -171,7 +170,7 @@ export const getSharedReviewListControls = ( attributes, setAttributes ) => {
 	const maxPerPage = 20;
 
 	return (
-		<Fragment>
+		<>
 			<ToggleControl
 				label={ __( 'Order by', 'woo-gutenberg-products-block' ) }
 				checked={ attributes.showOrderby }
@@ -225,6 +224,6 @@ export const getSharedReviewListControls = ( attributes, setAttributes ) => {
 					min={ minPerPage }
 				/>
 			) }
-		</Fragment>
+		</>
 	);
 };
