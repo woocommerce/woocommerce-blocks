@@ -50,6 +50,7 @@ const generateQuery = ( { sortValue, currentPage, attributes } ) => {
 	};
 	return {
 		...getSortArgs( sortValue ),
+		catalog_visibility: 'catalog',
 		per_page: columns * rows,
 		page: currentPage,
 	};
