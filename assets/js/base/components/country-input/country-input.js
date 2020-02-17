@@ -31,18 +31,28 @@ const CountryInput = ( {
 				options={ options }
 				value={ options.find( ( option ) => option.key === value ) }
 			/>
-			<input
-				type="text"
-				aria-hidden={ true }
-				autoComplete={ autoComplete }
-				value={ value }
-				onChange={ ( event ) => onChange( event.target.value ) }
-				style={ {
-					height: '0',
-					border: '0',
-					padding: '0',
-				} }
-			/>
+			{ autoComplete !== 'off' && (
+				<input
+					type="text"
+					aria-hidden={ true }
+					autoComplete={ autoComplete }
+					value={ value }
+					onChange={ ( event ) => {
+						const textValue = event.target.value;
+						const foundOption = options.find(
+							( option ) => option.key === textValue
+						);
+						if ( foundOption ) {
+							onChange( foundOption.key );
+						}
+					} }
+					style={ {
+						height: '0',
+						border: '0',
+						padding: '0',
+					} }
+				/>
+			) }
 		</>
 	);
 };

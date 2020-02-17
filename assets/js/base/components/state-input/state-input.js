@@ -3,6 +3,7 @@
  */
 import PropTypes from 'prop-types';
 import { decodeEntities } from '@wordpress/html-entities';
+import { useCallback } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -20,32 +21,70 @@ const StateInput = ( {
 	value = '',
 } ) => {
 	const countryCounties = counties[ country ];
-	if ( ! countryCounties || Object.keys( countryCounties ).length === 0 ) {
-		return (
-			<TextInput
-				className={ className }
-				label={ label }
-				onChange={ onChange }
-				autoComplete={ autoComplete }
-				value={ value }
-			/>
-		);
-	}
+	const options =
+		countryCounties && Object.keys( countryCounties ).length > 0
+			? Object.keys( countryCounties ).map( ( key ) => ( {
+					key,
+					name: decodeEntities( countryCounties[ key ] ),
+			  } ) )
+			: [];
 
-	const options = Object.keys( countryCounties ).map( ( key ) => ( {
-		key,
-		name: decodeEntities( countryCounties[ key ] ),
-	} ) );
+	/**
+	 * Handles state selection onChange events. Finds a matching state by key or value.
+	 *
+	 * @param {Object} event event data.
+	 */
+	const onChangeState = useCallback(
+		( stateValue ) => {
+			if ( options.length > 0 ) {
+				const foundOption = options.find(
+					( option ) =>
+						option.key === stateValue || option.name === stateValue
+				);
+
+				onChange( foundOption ? foundOption.key : '' );
+				return;
+			}
+			onChange( stateValue );
+		},
+		[ onChange, options ]
+	);
 
 	return (
-		<Select
-			className={ className }
-			label={ label }
-			onChange={ onChange }
-			options={ options }
-			autoComplete={ autoComplete }
-			value={ options.find( ( option ) => option.key === value ) }
-		/>
+		<>
+			{ options.length > 0 ? (
+				<Select
+					className={ className }
+					label={ label }
+					onChange={ onChangeState }
+					options={ options }
+					value={ options.find( ( option ) => option.key === value ) }
+				/>
+			) : (
+				<TextInput
+					className={ className }
+					label={ label }
+					onChange={ onChangeState }
+					value={ value }
+				/>
+			) }
+			{ autoComplete !== 'off' && (
+				<input
+					type="text"
+					aria-hidden={ true }
+					autoComplete={ autoComplete }
+					value={ value }
+					onChange={ ( event ) =>
+						onChangeState( event.target.value )
+					}
+					style={ {
+						height: '0',
+						border: '0',
+						padding: '0',
+					} }
+				/>
+			) }
+		</>
 	);
 };
 
