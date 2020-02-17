@@ -42,14 +42,13 @@ const CountryInput = ( {
 						const foundOption = options.find(
 							( option ) => option.key === textValue
 						);
-						if ( foundOption ) {
-							onChange( foundOption.key );
-						}
+						onChange( foundOption ? foundOption.key : '' );
 					} }
 					style={ {
 						height: '0',
 						border: '0',
 						padding: '0',
+						position: 'absolute',
 					} }
 				/>
 			) }

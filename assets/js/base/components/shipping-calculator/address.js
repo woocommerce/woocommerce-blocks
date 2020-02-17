@@ -19,7 +19,7 @@ const ShippingCalculatorAddress = ( { address: initialAddress, onUpdate } ) => {
 	const [ address, setAddress ] = useState( initialAddress );
 
 	return (
-		<div className="wc-block-shipping-calculator-address">
+		<form className="wc-block-shipping-calculator-address">
 			<ShippingCountryInput
 				className="wc-block-shipping-calculator-address__input"
 				label={ __(
@@ -32,7 +32,6 @@ const ShippingCalculatorAddress = ( { address: initialAddress, onUpdate } ) => {
 					setAddress( {
 						...address,
 						country: newValue,
-						state: '',
 					} )
 				}
 			/>
@@ -80,7 +79,7 @@ const ShippingCalculatorAddress = ( { address: initialAddress, onUpdate } ) => {
 			>
 				{ __( 'Update', 'woo-gutenberg-products-block' ) }
 			</Button>
-		</div>
+		</form>
 	);
 };
 

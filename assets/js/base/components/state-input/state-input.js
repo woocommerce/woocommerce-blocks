@@ -81,6 +81,7 @@ const StateInput = ( {
 						height: '0',
 						border: '0',
 						padding: '0',
+						position: 'absolute',
 					} }
 				/>
 			) }
