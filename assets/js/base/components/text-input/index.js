@@ -28,7 +28,7 @@ const TextInput = ( {
 } ) => {
 	const [ isActive, setIsActive ] = useState( false );
 	const onChangeValue = ( event ) => onChange( event.target.value );
-	const textInputId = id || componentId;
+	const textInputId = id || 'textinput-' + componentId;
 
 	return (
 		<div
