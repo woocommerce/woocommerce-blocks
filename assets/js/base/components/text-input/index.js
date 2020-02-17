@@ -80,6 +80,7 @@ TextInput.propTypes = {
 	screenReaderLabel: PropTypes.string,
 	disabled: PropTypes.bool,
 	help: PropTypes.string,
+	autoComplete: PropTypes.string,
 };
 
 export default withComponentId( TextInput );

@@ -16,6 +16,7 @@ const StateInput = ( {
 	country,
 	label,
 	onChange,
+	autoComplete = 'off',
 	value = '',
 } ) => {
 	const countryCounties = counties[ country ];
@@ -25,6 +26,7 @@ const StateInput = ( {
 				className={ className }
 				label={ label }
 				onChange={ onChange }
+				autoComplete={ autoComplete }
 				value={ value }
 			/>
 		);
@@ -41,6 +43,7 @@ const StateInput = ( {
 			label={ label }
 			onChange={ onChange }
 			options={ options }
+			autoComplete={ autoComplete }
 			value={ options.find( ( option ) => option.key === value ) }
 		/>
 	);
@@ -54,6 +57,7 @@ StateInput.propTypes = {
 		] )
 	).isRequired,
 	onChange: PropTypes.func.isRequired,
+	autoComplete: PropTypes.string,
 	className: PropTypes.string,
 	country: PropTypes.string,
 	label: PropTypes.string,
