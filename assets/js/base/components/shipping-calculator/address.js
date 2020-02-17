@@ -22,7 +22,10 @@ const ShippingCalculatorAddress = ( { address: initialAddress, onUpdate } ) => {
 		<div className="wc-block-shipping-calculator-address">
 			<ShippingCountryInput
 				className="wc-block-shipping-calculator-address__input"
-				label={ __( 'Country', 'woo-gutenberg-products-block' ) }
+				label={ __(
+					'Country / Region',
+					'woo-gutenberg-products-block'
+				) }
 				value={ address.country }
 				autoComplete="country"
 				onChange={ ( newValue ) =>
