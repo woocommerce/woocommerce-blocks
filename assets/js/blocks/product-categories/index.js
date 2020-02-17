@@ -31,7 +31,7 @@ registerBlockType( 'woocommerce/product-categories', {
 	example: {
 		attributes: {
 			hasCount: true,
-			hasImage: true,
+			hasImage: false,
 		},
 	},
 	attributes: {
