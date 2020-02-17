@@ -23,7 +23,7 @@ const CartFrontend = () => {
 	const cartItems = isLoading ? [] : cartData.items;
 	const isCartEmpty = ! isLoading && cartItems.length <= 0;
 
-	// @todo render cart loading state/spinner
+	// @todo render cart loading state e.g. animated spinner
 	return isCartEmpty ? (
 		<EmptyCart />
 	) : (
@@ -43,7 +43,7 @@ if ( ! isCartEmpty ) {
 
 	renderFrontend( selector, withRestApiHydration( CartFrontend ), getProps );
 } else {
-	// Should this move to a side effect of CartFrontend component?
+	// @todo Should this move to a side effect of CartFrontend component?
 	const containers = document.querySelectorAll( selector );
 
 	if ( containers.length ) {
