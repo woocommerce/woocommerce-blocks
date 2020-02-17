@@ -50,24 +50,15 @@ const StateInput = ( {
 		[ onChange, options ]
 	);
 
-	return (
+	return options.length > 0 ? (
 		<>
-			{ options.length > 0 ? (
-				<Select
-					className={ className }
-					label={ label }
-					onChange={ onChangeState }
-					options={ options }
-					value={ options.find( ( option ) => option.key === value ) }
-				/>
-			) : (
-				<TextInput
-					className={ className }
-					label={ label }
-					onChange={ onChangeState }
-					value={ value }
-				/>
-			) }
+			<Select
+				className={ className }
+				label={ label }
+				onChange={ onChangeState }
+				options={ options }
+				value={ options.find( ( option ) => option.key === value ) }
+			/>
 			{ autoComplete !== 'off' && (
 				<input
 					type="text"
@@ -86,6 +77,14 @@ const StateInput = ( {
 				/>
 			) }
 		</>
+	) : (
+		<TextInput
+			className={ className }
+			label={ label }
+			onChange={ onChangeState }
+			autoComplete={ autoComplete }
+			value={ value }
+		/>
 	);
 };
 
