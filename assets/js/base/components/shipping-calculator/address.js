@@ -22,11 +22,9 @@ const ShippingCalculatorAddress = ( { address: initialAddress, onUpdate } ) => {
 		<div className="wc-block-shipping-calculator-address">
 			<ShippingCountryInput
 				className="wc-block-shipping-calculator-address__input"
-				label={ __(
-					'Country / Region',
-					'woo-gutenberg-products-block'
-				) }
+				label={ __( 'Country', 'woo-gutenberg-products-block' ) }
 				value={ address.country }
+				autoComplete="country"
 				onChange={ ( newValue ) =>
 					setAddress( {
 						...address,
@@ -40,6 +38,7 @@ const ShippingCalculatorAddress = ( { address: initialAddress, onUpdate } ) => {
 				country={ address.country }
 				label={ __( 'State / County', 'woo-gutenberg-products-block' ) }
 				value={ address.state }
+				autoComplete="address-level1"
 				onChange={ ( newValue ) =>
 					setAddress( {
 						...address,
@@ -51,6 +50,7 @@ const ShippingCalculatorAddress = ( { address: initialAddress, onUpdate } ) => {
 				className="wc-block-shipping-calculator-address__input"
 				label={ __( 'City', 'woo-gutenberg-products-block' ) }
 				value={ address.city }
+				autoComplete="address-level2"
 				onChange={ ( newValue ) =>
 					setAddress( {
 						...address,
@@ -62,6 +62,7 @@ const ShippingCalculatorAddress = ( { address: initialAddress, onUpdate } ) => {
 				className="wc-block-shipping-calculator-address__input"
 				label={ __( 'Postal code', 'woo-gutenberg-products-block' ) }
 				value={ address.postcode }
+				autoComplete="postal-code"
 				onChange={ ( newValue ) =>
 					setAddress( {
 						...address,

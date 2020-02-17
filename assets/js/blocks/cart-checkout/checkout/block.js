@@ -72,6 +72,7 @@ const Block = ( { shippingMethods = [], isEditor = false } ) => {
 							'woo-gutenberg-products-block'
 						) }
 						value={ contactFields.email }
+						autoComplete="email"
 						onChange={ ( newValue ) =>
 							setContactFields( {
 								...contactFields,
@@ -114,6 +115,7 @@ const Block = ( { shippingMethods = [], isEditor = false } ) => {
 								'woo-gutenberg-products-block'
 							) }
 							value={ shippingFields.firstName }
+							autoComplete="given-name"
 							onChange={ ( newValue ) =>
 								setShippingFields( {
 									...shippingFields,
@@ -127,6 +129,7 @@ const Block = ( { shippingMethods = [], isEditor = false } ) => {
 								'woo-gutenberg-products-block'
 							) }
 							value={ shippingFields.lastName }
+							autoComplete="family-name"
 							onChange={ ( newValue ) =>
 								setShippingFields( {
 									...shippingFields,
@@ -141,6 +144,7 @@ const Block = ( { shippingMethods = [], isEditor = false } ) => {
 							'woo-gutenberg-products-block'
 						) }
 						value={ shippingFields.streetAddress }
+						autoComplete="address-line1"
 						onChange={ ( newValue ) =>
 							setShippingFields( {
 								...shippingFields,
@@ -154,6 +158,7 @@ const Block = ( { shippingMethods = [], isEditor = false } ) => {
 							'woo-gutenberg-products-block'
 						) }
 						value={ shippingFields.apartment }
+						autoComplete="address-line2"
 						onChange={ ( newValue ) =>
 							setShippingFields( {
 								...shippingFields,
@@ -164,10 +169,11 @@ const Block = ( { shippingMethods = [], isEditor = false } ) => {
 					<InputRow>
 						<ShippingCountryInput
 							label={ __(
-								'Country / Region',
+								'Country',
 								'woo-gutenberg-products-block'
 							) }
 							value={ shippingFields.country }
+							autoComplete="country"
 							onChange={ ( newValue ) =>
 								setShippingFields( {
 									...shippingFields,
@@ -182,6 +188,7 @@ const Block = ( { shippingMethods = [], isEditor = false } ) => {
 								'woo-gutenberg-products-block'
 							) }
 							value={ shippingFields.city }
+							autoComplete="address-level2"
 							onChange={ ( newValue ) =>
 								setShippingFields( {
 									...shippingFields,
@@ -198,6 +205,7 @@ const Block = ( { shippingMethods = [], isEditor = false } ) => {
 								'woo-gutenberg-products-block'
 							) }
 							value={ shippingFields.state }
+							autoComplete="address-level1"
 							onChange={ ( newValue ) =>
 								setShippingFields( {
 									...shippingFields,
@@ -211,6 +219,7 @@ const Block = ( { shippingMethods = [], isEditor = false } ) => {
 								'woo-gutenberg-products-block'
 							) }
 							value={ shippingFields.postcode }
+							autoComplete="postal-code"
 							onChange={ ( newValue ) =>
 								setShippingFields( {
 									...shippingFields,
@@ -223,6 +232,7 @@ const Block = ( { shippingMethods = [], isEditor = false } ) => {
 						type="tel"
 						label={ __( 'Phone', 'woo-gutenberg-products-block' ) }
 						value={ shippingFields.phone }
+						autoComplete="tel"
 						onChange={ ( newValue ) =>
 							setShippingFields( {
 								...shippingFields,
