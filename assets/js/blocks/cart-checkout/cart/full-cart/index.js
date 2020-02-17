@@ -213,7 +213,7 @@ const Cart = ( { cartItems = [] } ) => {
 };
 
 Cart.propTypes = {
-	items: PropTypes.array,
+	cartItems: PropTypes.array,
 };
 
 export default Cart;
