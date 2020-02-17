@@ -45,7 +45,7 @@ const ProductVariationDetails = ( { variation } ) => {
 const CartLineItemRow = ( { lineItem } ) => {
 	const {
 		name,
-		description,
+		summary,
 		images,
 		variation,
 		quantity,
@@ -123,7 +123,7 @@ const CartLineItemRow = ( { lineItem } ) => {
 				<div className="wc-block-cart-item__product-name">{ name }</div>
 				{ lowStockBadge }
 				<div className="wc-block-cart-item__product-metadata">
-					<div dangerouslySetInnerHTML={ { __html: description } } />
+					<div dangerouslySetInnerHTML={ { __html: summary } } />
 					<ProductVariationDetails variation={ variation } />
 				</div>
 			</td>
@@ -153,7 +153,7 @@ const CartLineItemRow = ( { lineItem } ) => {
 CartLineItemRow.propTypes = {
 	lineItem: PropTypes.shape( {
 		name: PropTypes.string.isRequired,
-		description: PropTypes.string.isRequired,
+		summary: PropTypes.string.isRequired,
 		images: PropTypes.array.isRequired,
 		quantity: PropTypes.number.isRequired,
 		low_stock_remaining: PropTypes.number,
