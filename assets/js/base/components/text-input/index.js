@@ -22,6 +22,7 @@ const TextInput = ( {
 	screenReaderLabel,
 	disabled,
 	help,
+	autoComplete = 'off',
 	value = '',
 	onChange,
 } ) => {
@@ -48,6 +49,7 @@ const TextInput = ( {
 				type={ type }
 				id={ textInputId }
 				value={ value }
+				autoComplete={ autoComplete }
 				onChange={ onChangeValue }
 				onFocus={ () => setIsActive( true ) }
 				onBlur={ () => setIsActive( false ) }
