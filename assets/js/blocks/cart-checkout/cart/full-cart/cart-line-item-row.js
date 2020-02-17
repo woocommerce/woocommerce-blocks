@@ -123,7 +123,7 @@ const CartLineItemRow = ( { lineItem } ) => {
 				<div className="wc-block-cart-item__product-name">{ name }</div>
 				{ lowStockBadge }
 				<div className="wc-block-cart-item__product-metadata">
-					{ description }
+					<div dangerouslySetInnerHTML={ { __html: description } } />
 					<ProductVariationDetails variation={ variation } />
 				</div>
 			</td>
