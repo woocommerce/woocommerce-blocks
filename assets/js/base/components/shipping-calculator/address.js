@@ -32,6 +32,7 @@ const ShippingCalculatorAddress = ( { address: initialAddress, onUpdate } ) => {
 					setAddress( {
 						...address,
 						country: newValue,
+						state: '',
 					} )
 				}
 			/>
