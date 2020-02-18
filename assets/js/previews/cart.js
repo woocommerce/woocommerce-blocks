@@ -44,12 +44,12 @@ export const previewCart = {
 			],
 			variation: [
 				{
-					attribute: 'Color',
-					value: 'Yellow',
+					attribute: __( 'Color', 'woo-gutenberg-products-block' ),
+					value: __( 'Yellow', 'woo-gutenberg-products-block' ),
 				},
 				{
-					attribute: 'Size',
-					value: 'Small',
+					attribute: __( 'Size', 'woo-gutenberg-products-block' ),
+					value: __( 'Small', 'woo-gutenberg-products-block' ),
 				},
 			],
 			totals: {
@@ -96,8 +96,8 @@ export const previewCart = {
 			],
 			variation: [
 				{
-					attribute: 'Color',
-					value: 'Orange',
+					attribute: __( 'Color', 'woo-gutenberg-products-block' ),
+					value: __( 'Orange', 'woo-gutenberg-products-block' ),
 				},
 			],
 			totals: {
