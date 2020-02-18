@@ -116,6 +116,9 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 2.5.13 - 2020-02-18 =
+- Respect hidden products in All Products block. #1753
+
 = 2.5.12 - 2020-02-05 =
 - Fix ratings appearing as text in the editor instead. #1650
 - Fix error with the All Products block and Internet Explorer 11 when adding products to the cart. #1642
