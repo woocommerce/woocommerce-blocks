@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import { usePrevious, useShippingRates } from '@woocommerce/base-hooks';
 import { useEffect } from '@wordpress/element';
@@ -82,7 +83,13 @@ const ShippingRatesControl = ( {
 
 	if ( shippingRatesLoading ) {
 		return (
-			<LoadingComponent showSpinner={ true }>
+			<LoadingComponent
+				screenReaderLabel={ __(
+					'Loading shipping rates…',
+					'woo-gutenberg-products-block'
+				) }
+				showSpinner={ true }
+			>
 				{ renderPackages( previousShippingRates || [] ) }
 			</LoadingComponent>
 		);
