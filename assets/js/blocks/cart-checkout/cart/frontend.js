@@ -23,7 +23,10 @@ const CartFrontend = ( { emptyCart } ) => {
 	const cartItems = isLoading ? [] : cartData.items;
 	const isCartEmpty = ! isLoading && cartItems.length <= 0;
 
-	// @todo render cart loading state e.g. animated spinner
+	if ( isLoading ) {
+		return null;
+	}
+
 	return isCartEmpty ? (
 		<RawHTML>{ emptyCart }</RawHTML>
 	) : (
