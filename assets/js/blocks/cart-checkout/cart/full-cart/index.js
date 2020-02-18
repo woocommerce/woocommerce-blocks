@@ -17,6 +17,7 @@ import {
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import { Card, CardBody } from 'wordpress-components';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
+import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Internal dependencies
@@ -183,7 +184,7 @@ const Cart = ( { cartItems = [], cartTotals = {} } ) => {
 								) }
 								selected={ selectedShippingRate }
 								renderOption={ ( option ) => ( {
-									label: option.name,
+									label: decodeEntities( option.name ),
 									value: option.rate_id,
 									description: (
 										<Fragment>
@@ -199,7 +200,9 @@ const Cart = ( { cartItems = [], cartTotals = {} } ) => {
 											option.delivery_time
 												? ' — '
 												: null }
-											{ option.delivery_time }
+											{ decodeEntities(
+												option.delivery_time
+											) }
 										</Fragment>
 									),
 								} ) }
