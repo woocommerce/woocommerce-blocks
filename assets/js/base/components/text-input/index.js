@@ -36,15 +36,6 @@ const TextInput = ( {
 				'is-active': isActive || value,
 			} ) }
 		>
-			<Label
-				label={ label }
-				screenReaderLabel={ screenReaderLabel || label }
-				wrapperElement="label"
-				wrapperProps={ {
-					htmlFor: textInputId,
-				} }
-				htmlFor={ textInputId }
-			/>
 			<input
 				type={ type }
 				id={ textInputId }
@@ -58,6 +49,15 @@ const TextInput = ( {
 				aria-describedby={
 					!! help ? textInputId + '__help' : undefined
 				}
+			/>
+			<Label
+				label={ label }
+				screenReaderLabel={ screenReaderLabel || label }
+				wrapperElement="label"
+				wrapperProps={ {
+					htmlFor: textInputId,
+				} }
+				htmlFor={ textInputId }
 			/>
 			{ !! help && (
 				<p
