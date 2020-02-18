@@ -2,7 +2,7 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import { useShippingRates } from '@woocommerce/base-hooks';
+import { usePrevious, useShippingRates } from '@woocommerce/base-hooks';
 import { useEffect } from '@wordpress/element';
 
 /**
@@ -10,6 +10,7 @@ import { useEffect } from '@wordpress/element';
  */
 import Package from './package';
 import './style.scss';
+import LoadingComponent from '../loading-component';
 
 const ShippingRatesControl = ( {
 	address,
@@ -20,6 +21,28 @@ const ShippingRatesControl = ( {
 	selected = [],
 } ) => {
 	const { shippingRates, shippingRatesLoading } = useShippingRates( address );
+	const previousShippingRates = usePrevious(
+		shippingRates,
+		( newRates ) => newRates.length > 0
+	);
+
+	const renderPackages = ( rates ) =>
+		rates.map( ( shippingRate, i ) => (
+			<Package
+				key={ shippingRate.items.join() }
+				className={ className }
+				noResultsMessage={ noResultsMessage }
+				onChange={ ( newShippingRate ) => {
+					const newSelected = [ ...selected ];
+					newSelected[ i ] = newShippingRate;
+					onChange( newSelected );
+				} }
+				renderOption={ renderOption }
+				selected={ selected[ i ] }
+				shippingRate={ shippingRate }
+				showItems={ rates.length > 1 }
+			/>
+		) );
 
 	// Select first item when shipping rates are loaded.
 	useEffect(
@@ -58,27 +81,14 @@ const ShippingRatesControl = ( {
 	);
 
 	if ( shippingRatesLoading ) {
-		// @todo Add some indication that shipping rates are loading.
-		// see: https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1555
-		return null;
+		return (
+			<LoadingComponent showSpinner={ true }>
+				{ renderPackages( previousShippingRates || [] ) }
+			</LoadingComponent>
+		);
 	}
 
-	return shippingRates.map( ( shippingRate, i ) => (
-		<Package
-			key={ shippingRate.items.join() }
-			className={ className }
-			noResultsMessage={ noResultsMessage }
-			onChange={ ( newShippingRate ) => {
-				const newSelected = [ ...selected ];
-				newSelected[ i ] = newShippingRate;
-				onChange( newSelected );
-			} }
-			renderOption={ renderOption }
-			selected={ selected[ i ] }
-			shippingRate={ shippingRate }
-			showItems={ shippingRates.length > 1 }
-		/>
-	) );
+	return renderPackages( shippingRates );
 };
 
 ShippingRatesControl.propTypes = {
