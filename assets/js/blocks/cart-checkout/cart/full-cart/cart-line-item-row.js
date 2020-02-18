@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { useState } from '@wordpress/element';
+import { useState, RawHTML } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import QuantitySelector from '@woocommerce/base-components/quantity-selector';
@@ -28,7 +28,9 @@ const ProductVariationDetails = ( { variation } ) => {
 	const variationsText = variation
 		.map( ( v ) => {
 			if ( v.attribute ) {
-				return `${ decodeEntities( v.attribute ) }: ${ decodeEntities( v.value ) }`;
+				return `${ decodeEntities( v.attribute ) }: ${ decodeEntities(
+					v.value
+				) }`;
 			}
 			// Support for product attributes with no name/key
 			return `${ decodeEntities( v.value ) }`;
@@ -123,7 +125,7 @@ const CartLineItemRow = ( { lineItem } ) => {
 				<div className="wc-block-cart-item__product-name">{ name }</div>
 				{ lowStockBadge }
 				<div className="wc-block-cart-item__product-metadata">
-					<div dangerouslySetInnerHTML={ { __html: summary } } />
+					<RawHTML>{ summary }</RawHTML>
 					<ProductVariationDetails variation={ variation } />
 				</div>
 			</td>
