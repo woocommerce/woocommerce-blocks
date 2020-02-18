@@ -28,7 +28,7 @@ const ProductVariationDetails = ( { variation } ) => {
 	const variationsText = variation
 		.map( ( v ) => {
 			if ( v.attribute ) {
-				return `${ v.attribute }: ${ decodeEntities( v.value ) }`;
+				return `${ decodeEntities( v.attribute ) }: ${ decodeEntities( v.value ) }`;
 			}
 			// Support for product attributes with no name/key
 			return `${ decodeEntities( v.value ) }`;
