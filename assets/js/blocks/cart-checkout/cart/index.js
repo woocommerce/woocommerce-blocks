@@ -7,8 +7,8 @@ import { InnerBlocks } from '@wordpress/block-editor';
 import { registerBlockType } from '@wordpress/blocks';
 import { Icon, cart } from '@woocommerce/icons';
 import {
-	ENABLE_SHIPPING_CALCULATION,
-	HIDE_SHIPPING_COST,
+	IS_SHIPPING_CALCULATOR_ENABLED,
+	IS_SHIPPING_COST_HIDDEN,
 } from '@woocommerce/block-settings';
 
 /**
@@ -39,11 +39,11 @@ const settings = {
 	attributes: {
 		isShippingCalculatorEnabled: {
 			type: 'boolean',
-			default: ENABLE_SHIPPING_CALCULATION,
+			default: IS_SHIPPING_CALCULATOR_ENABLED,
 		},
 		isShippingCostHidden: {
 			type: 'boolean',
-			default: HIDE_SHIPPING_COST,
+			default: IS_SHIPPING_COST_HIDDEN,
 		},
 	},
 

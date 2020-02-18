@@ -128,8 +128,8 @@ class Assets {
 				'reviewRatingsEnabled'        => wc_review_ratings_enabled(),
 				'productCount'                => array_sum( (array) $product_counts ),
 				'attributes'                  => array_values( wc_get_attribute_taxonomies() ),
-				'isShippingCalculatorEnabled' => 'yes' === get_option( 'woocommerce_enable_shipping_calc' ),
-				'isShippingCostHidden'        => 'yes' === get_option( 'woocommerce_shipping_cost_requires_address' ),
+				'isShippingCalculatorEnabled' => filter_var( get_option( 'woocommerce_enable_shipping_calc' ), FILTER_VALIDATE_BOOLEAN ),
+				'isShippingCostHidden'        => filter_var( get_option( 'woocommerce_shipping_cost_requires_address' ), FILTER_VALIDATE_BOOLEAN ),
 				'wcBlocksAssetUrl'            => plugins_url( 'assets/', __DIR__ ),
 				'restApiRoutes'               => [
 					'/wc/store' => array_keys( \Automattic\WooCommerce\Blocks\RestApi::get_routes_from_namespace( 'wc/store' ) ),
