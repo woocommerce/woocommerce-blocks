@@ -2,7 +2,6 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -20,7 +19,7 @@ const Package = ( {
 	showItems,
 } ) => {
 	return (
-		<Fragment>
+		<>
 			<PackageOptions
 				className={ className }
 				noResultsMessage={ noResultsMessage }
@@ -36,7 +35,7 @@ const Package = ( {
 					{ shippingRate.items.join( ', ' ) }
 				</span>
 			) }
-		</Fragment>
+		</>
 	);
 };
 

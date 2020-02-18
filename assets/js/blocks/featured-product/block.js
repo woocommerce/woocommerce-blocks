@@ -27,7 +27,6 @@ import {
 	withSpokenMessages,
 } from '@wordpress/components';
 import classnames from 'classnames';
-import { Fragment } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
@@ -82,7 +81,7 @@ const FeaturedProduct = ( {
 		};
 
 		return (
-			<Fragment>
+			<>
 				{ getBlockControls() }
 				<Placeholder
 					icon={ <Icon srcElement={ star } /> }
@@ -114,7 +113,7 @@ const FeaturedProduct = ( {
 						</Button>
 					</div>
 				</Placeholder>
-			</Fragment>
+			</>
 		);
 	};
 
@@ -217,7 +216,7 @@ const FeaturedProduct = ( {
 					] }
 				>
 					{ !! url && (
-						<Fragment>
+						<>
 							<RangeControl
 								label={ __(
 									'Background Opacity',
@@ -241,7 +240,7 @@ const FeaturedProduct = ( {
 									}
 								/>
 							) }
-						</Fragment>
+						</>
 					) }
 				</PanelColorSettings>
 			</InspectorControls>
@@ -405,11 +404,11 @@ const FeaturedProduct = ( {
 	}
 
 	return (
-		<Fragment>
+		<>
 			{ getBlockControls() }
 			{ getInspectorControls() }
 			{ product ? renderProduct() : renderNoProduct() }
-		</Fragment>
+		</>
 	);
 };
 

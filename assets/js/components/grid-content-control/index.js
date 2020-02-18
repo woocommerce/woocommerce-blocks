@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import { ToggleControl } from '@wordpress/components';
 
@@ -12,7 +11,7 @@ import { ToggleControl } from '@wordpress/components';
 const GridContentControl = ( { onChange, settings } ) => {
 	const { button, price, rating, title } = settings;
 	return (
-		<Fragment>
+		<>
 			<ToggleControl
 				label={ __( 'Product title', 'woo-gutenberg-products-block' ) }
 				help={
@@ -80,7 +79,7 @@ const GridContentControl = ( { onChange, settings } ) => {
 				checked={ button }
 				onChange={ () => onChange( { ...settings, button: ! button } ) }
 			/>
-		</Fragment>
+		</>
 	);
 };
 

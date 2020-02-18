@@ -2,7 +2,7 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import { Fragment, useState } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import classnames from 'classnames';
 import { PLACEHOLDER_IMG_SRC } from '@woocommerce/block-settings';
 import { useProductLayoutContext } from '@woocommerce/base-context/product-layout-context';
@@ -25,7 +25,7 @@ const Image = ( { layoutPrefix, loaded, image, onLoad } ) => {
 	} );
 	const { thumbnail, srcset, sizes, alt } = image || {};
 	return (
-		<Fragment>
+		<>
 			{ image && (
 				<img
 					className={ cssClass }
@@ -44,7 +44,7 @@ const Image = ( { layoutPrefix, loaded, image, onLoad } ) => {
 					alt=""
 				/>
 			) }
-		</Fragment>
+		</>
 	);
 };
 
@@ -61,7 +61,7 @@ const ProductImage = ( {
 		product.images && product.images.length ? product.images[ 0 ] : null;
 
 	const renderedSalesAndImage = (
-		<Fragment>
+		<>
 			<SaleBadge
 				product={ product }
 				saleBadgeAlign={ saleBadgeAlign }
@@ -73,7 +73,7 @@ const ProductImage = ( {
 				image={ image }
 				onLoad={ () => setImageLoaded( true ) }
 			/>
-		</Fragment>
+		</>
 	);
 
 	return (

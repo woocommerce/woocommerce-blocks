@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import {
-	Fragment,
 	useState,
 	useEffect,
 	useCallback,
@@ -291,7 +290,7 @@ const PriceSlider = ( {
 			</div>
 			<div className="wc-block-price-filter__controls">
 				{ showInputFields && (
-					<Fragment>
+					<>
 						<FormattedMonetaryAmount
 							currency={ currency }
 							displayType="input"
@@ -328,7 +327,7 @@ const PriceSlider = ( {
 							disabled={ isLoading || ! hasValidConstraints }
 							value={ maxPriceInput }
 						/>
-					</Fragment>
+					</>
 				) }
 				{ ! showInputFields &&
 					! isLoading &&

@@ -19,6 +19,7 @@ module.exports = {
 		'@wordpress/dependency-group': 'off',
 		'woocommerce/dependency-group': 'error',
 		'woocommerce/feature-flag': 'error',
+		'react/jsx-fragments': [ 'error', 'syntax' ],
 		'valid-jsdoc': 'off',
 		radix: 'error',
 		yoda: [ 'error', 'never' ],

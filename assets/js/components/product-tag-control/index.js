@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { Component, Fragment } from '@wordpress/element';
+import { Component } from '@wordpress/element';
 import { debounce, find } from 'lodash';
 import PropTypes from 'prop-types';
 import { SearchListControl, SearchListItem } from '@woocommerce/components';
@@ -122,7 +122,7 @@ class ProductTagControl extends Component {
 		};
 
 		return (
-			<Fragment>
+			<>
 				<SearchListControl
 					className="woocommerce-product-tags"
 					list={ list }
@@ -173,7 +173,7 @@ class ProductTagControl extends Component {
 						/>
 					</div>
 				) }
-			</Fragment>
+			</>
 		);
 	}
 }

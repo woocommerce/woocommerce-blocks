@@ -15,7 +15,7 @@ import {
 	Toolbar,
 	withSpokenMessages,
 } from '@wordpress/components';
-import { Component, Fragment } from '@wordpress/element';
+import { Component } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import GridContentControl from '@woocommerce/block-components/grid-content-control';
 import GridLayoutControl from '@woocommerce/block-components/grid-layout-control';
@@ -282,7 +282,7 @@ class ProductByCategoryBlock extends Component {
 		}
 
 		return (
-			<Fragment>
+			<>
 				<BlockControls>
 					<Toolbar
 						controls={ [
@@ -300,7 +300,7 @@ class ProductByCategoryBlock extends Component {
 				</BlockControls>
 				{ this.getInspectorControls() }
 				{ isEditing ? this.renderEditMode() : this.renderViewMode() }
-			</Fragment>
+			</>
 		);
 	}
 }

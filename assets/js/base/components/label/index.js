@@ -2,8 +2,8 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import { Fragment } from 'react';
 import classNames from 'classnames';
+import React from 'react';
 
 /**
  * Component used to render an accessible text given a label and/or a
@@ -35,7 +35,7 @@ const Label = ( {
 		return <Wrapper { ...wrapperProps }>{ screenReaderLabel }</Wrapper>;
 	}
 
-	Wrapper = wrapperElement || Fragment;
+	Wrapper = wrapperElement || React.Fragment;
 
 	if ( hasLabel && hasScreenReaderLabel && label !== screenReaderLabel ) {
 		return (

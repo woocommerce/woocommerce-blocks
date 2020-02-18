@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { Fragment, useState } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import FormStep from '@woocommerce/base-components/checkout/form-step';
 import CheckoutForm from '@woocommerce/base-components/checkout/form';
@@ -51,7 +51,7 @@ const Block = ( { shippingMethods = [], isEditor = false } ) => {
 					) }
 					stepNumber={ 1 }
 					stepHeadingContent={ () => (
-						<Fragment>
+						<>
 							{ __(
 								'Already have an account? ',
 								'woo-gutenberg-products-block'
@@ -62,7 +62,7 @@ const Block = ( { shippingMethods = [], isEditor = false } ) => {
 									'woo-gutenberg-products-block'
 								) }
 							</a>
-						</Fragment>
+						</>
 					) }
 				>
 					<TextInput

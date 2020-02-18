@@ -5,7 +5,6 @@ import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import { InspectorControls } from '@wordpress/editor';
 import { PanelBody, ToggleControl } from '@wordpress/components';
-import { Fragment } from '@wordpress/element';
 import { Icon, search } from '@woocommerce/icons';
 /**
  * Internal dependencies
@@ -82,7 +81,7 @@ registerBlockType( 'woocommerce/product-search', {
 		const { attributes, setAttributes } = props;
 		const { hasLabel } = attributes;
 		return (
-			<Fragment>
+			<>
 				<InspectorControls key="inspector">
 					<PanelBody
 						title={ __(
@@ -115,7 +114,7 @@ registerBlockType( 'woocommerce/product-search', {
 					</PanelBody>
 				</InspectorControls>
 				<Block { ...props } isEditor={ true } />
-			</Fragment>
+			</>
 		);
 	},
 

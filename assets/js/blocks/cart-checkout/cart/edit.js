@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Disabled } from '@wordpress/components';
-import { Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import { withFeedbackPrompt } from '@woocommerce/block-hocs';
 import ViewSwitcher from '@woocommerce/block-components/view-switcher';
@@ -37,14 +36,14 @@ const CartEditor = ( { className } ) => {
 				] }
 				defaultView={ 'full' }
 				render={ ( currentView ) => (
-					<Fragment>
+					<>
 						{ currentView === 'full' && (
 							<Disabled>
 								<FullCart />
 							</Disabled>
 						) }
 						<EmptyCart hidden={ currentView === 'full' } />
-					</Fragment>
+					</>
 				) }
 			/>
 		</div>

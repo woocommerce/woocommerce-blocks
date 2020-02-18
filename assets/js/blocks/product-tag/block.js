@@ -15,7 +15,7 @@ import {
 	Toolbar,
 	withSpokenMessages,
 } from '@wordpress/components';
-import { Component, Fragment } from '@wordpress/element';
+import { Component } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import { HAS_TAGS } from '@woocommerce/block-settings';
 import GridContentControl from '@woocommerce/block-components/grid-content-control';
@@ -264,9 +264,9 @@ class ProductsByTagBlock extends Component {
 		}
 
 		return (
-			<Fragment>
+			<>
 				{ HAS_TAGS ? (
-					<Fragment>
+					<>
 						<BlockControls>
 							<Toolbar
 								controls={ [
@@ -286,7 +286,7 @@ class ProductsByTagBlock extends Component {
 						{ isEditing
 							? this.renderEditMode()
 							: this.renderViewMode() }
-					</Fragment>
+					</>
 				) : (
 					<Placeholder
 						icon={
@@ -307,7 +307,7 @@ class ProductsByTagBlock extends Component {
 						) }
 					</Placeholder>
 				) }
-			</Fragment>
+			</>
 		);
 	}
 }

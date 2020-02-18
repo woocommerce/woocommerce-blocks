@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { useState, Fragment } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import {
 	TotalsCouponCodeInput,
 	TotalsItem,
@@ -118,7 +118,7 @@ const Cart = () => {
 				? totalShipping + totalShippingTax
 				: totalShipping,
 			description: (
-				<Fragment>
+				<>
 					{ __(
 						'Shipping to location',
 						'woo-gutenberg-products-block'
@@ -127,7 +127,7 @@ const Cart = () => {
 						address={ shippingCalculatorAddress }
 						setAddress={ setShippingCalculatorAddress }
 					/>
-				</Fragment>
+				</>
 			),
 		} );
 
@@ -201,7 +201,7 @@ const Cart = () => {
 									label: option.name,
 									value: option.rate_id,
 									description: (
-										<Fragment>
+										<>
 											{ option.price && (
 												<FormattedMonetaryAmount
 													currency={ getCurrencyFromPriceResponse(
@@ -215,7 +215,7 @@ const Cart = () => {
 												? ' — '
 												: null }
 											{ option.delivery_time }
-										</Fragment>
+										</>
 									),
 								} ) }
 								onChange={ ( newSelectedShippingOption ) =>

@@ -3,7 +3,6 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { formatPrice } from '@woocommerce/base-utils';
-import { Fragment } from '@wordpress/element';
 
 /**
  * Format a min/max price range to display.
@@ -64,11 +63,11 @@ export const renderRemovableListItem = ( {
 			) }
 			<span className="wc-block-active-filters__list-item-name">
 				{ prefix ? (
-					<Fragment>
+					<>
 						{ prefix }
 						&nbsp;
 						{ name }
-					</Fragment>
+					</>
 				) : (
 					name
 				) }

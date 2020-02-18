@@ -10,13 +10,7 @@ import {
 	useCollectionData,
 	useShallowEqual,
 } from '@woocommerce/base-hooks';
-import {
-	useCallback,
-	Fragment,
-	useEffect,
-	useState,
-	useMemo,
-} from '@wordpress/element';
+import { useCallback, useEffect, useState, useMemo } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
 import DropdownSelector from '@woocommerce/base-components/dropdown-selector';
 import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
@@ -323,7 +317,7 @@ const AttributeFilterBlock = ( {
 	const isDisabled = ! blockAttributes.isPreview && filteredCountsLoading;
 
 	return (
-		<Fragment>
+		<>
 			{ ! isEditor && blockAttributes.heading && (
 				<TagName>{ blockAttributes.heading }</TagName>
 			) }
@@ -357,7 +351,7 @@ const AttributeFilterBlock = ( {
 					/>
 				) }
 			</div>
-		</Fragment>
+		</>
 	);
 };
 

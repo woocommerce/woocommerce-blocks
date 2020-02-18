@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import { Icon, image } from '@woocommerce/icons';
-import { Fragment } from '@wordpress/element';
 import { Disabled, PanelBody, ToggleControl } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 import ToggleButtonControl from '@woocommerce/block-components/toggle-button-control';
@@ -49,7 +48,7 @@ const blockConfig = {
 		const { productLink, showSaleBadge, saleBadgeAlign } = attributes;
 
 		return (
-			<Fragment>
+			<>
 				<InspectorControls>
 					<PanelBody
 						title={ __(
@@ -134,7 +133,7 @@ const blockConfig = {
 						saleBadgeAlign={ saleBadgeAlign }
 					/>
 				</Disabled>
-			</Fragment>
+			</>
 		);
 	},
 };
