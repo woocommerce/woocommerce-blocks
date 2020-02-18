@@ -66,8 +66,8 @@ const settings = {
 			isShippingCostHidden,
 		} = attributes;
 		const data = {
-			'data-is-shipping-calculator-enabled': isShippingCalculatorEnabled,
-			'data-is-shipping-cost-hidden': isShippingCostHidden,
+			'data-isshippingcalculatorenabled': isShippingCalculatorEnabled,
+			'data-isshippingcosthidden': isShippingCostHidden,
 		};
 		return (
 			<div
