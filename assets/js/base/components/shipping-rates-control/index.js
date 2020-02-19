@@ -11,7 +11,7 @@ import { useEffect } from '@wordpress/element';
  */
 import Package from './package';
 import './style.scss';
-import LoadingComponent from '../loading-component';
+import LoadingMask from '../loading-mask';
 
 const ShippingRatesControl = ( {
 	address,
@@ -83,7 +83,7 @@ const ShippingRatesControl = ( {
 
 	if ( shippingRatesLoading ) {
 		return (
-			<LoadingComponent
+			<LoadingMask
 				screenReaderLabel={ __(
 					'Loading shipping rates…',
 					'woo-gutenberg-products-block'
@@ -91,7 +91,7 @@ const ShippingRatesControl = ( {
 				showSpinner={ true }
 			>
 				{ renderPackages( previousShippingRates || [] ) }
-			</LoadingComponent>
+			</LoadingMask>
 		);
 	}
 

@@ -11,19 +11,17 @@ import { Spinner } from 'wordpress-components';
  */
 import './style.scss';
 
-const LoadingComponent = ( {
+const LoadingMask = ( {
 	children,
 	className,
 	screenReaderLabel,
 	showSpinner = false,
 } ) => {
 	return (
-		<div
-			className={ classNames( className, 'wc-block-loading-component' ) }
-		>
+		<div className={ classNames( className, 'wc-block-loading-mask' ) }>
 			{ showSpinner && <Spinner /> }
 			<div
-				className="wc-blocks-loading-component__children"
+				className="wc-blocks-loading-mask__children"
 				aria-hidden={ true }
 			>
 				{ children }
@@ -36,10 +34,10 @@ const LoadingComponent = ( {
 	);
 };
 
-LoadingComponent.propTypes = {
+LoadingMask.propTypes = {
 	className: PropTypes.string,
 	screenReaderLabel: PropTypes.string,
 	showSpinner: PropTypes.bool,
 };
 
-export default LoadingComponent;
+export default LoadingMask;
