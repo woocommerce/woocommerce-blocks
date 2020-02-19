@@ -21,16 +21,8 @@ const CartFrontend = ( { emptyCart } ) => {
 		return null;
 	}
 
-const cartItems = cartData.items;
-const isCartEmpty = cartItems.length <= 0;
-if ( ! isCartEmpty ) {
-	const getProps = ( el ) => {
-		return {
-			isShippingCalculatorEnabled:
-				el.dataset.isShippingCalculatorEnabled === 'true',
-			isShippingCostHidden: el.dataset.isShippingCostHidden === 'true',
-		};
-	};
+	const cartItems = cartData.items;
+	const isCartEmpty = cartItems.length <= 0;
 
 	return isCartEmpty ? (
 		<RawHTML>{ emptyCart }</RawHTML>
@@ -41,6 +33,9 @@ if ( ! isCartEmpty ) {
 
 const getProps = ( el ) => ( {
 	emptyCart: el.innerHTML,
+	isShippingCalculatorEnabled:
+		el.dataset.isshippingcalculatorenabled === 'true',
+	isShippingCostHidden: el.dataset.isshippingcosthidden === 'true',
 } );
 
 renderFrontend(

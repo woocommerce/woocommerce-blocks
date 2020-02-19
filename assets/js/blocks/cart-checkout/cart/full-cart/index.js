@@ -42,7 +42,7 @@ const Cart = ( {
 	cartItems = [],
 	cartTotals = {},
 	isShippingCalculatorEnabled,
-	isShippingCostHidden
+	isShippingCostHidden,
 } ) => {
 	const [ selectedShippingRate, setSelectedShippingRate ] = useState();
 	const [
@@ -61,7 +61,7 @@ const Cart = ( {
 	 * @return {Object[]} Values to display in the cart block.
 	 * @param cartTotals
 	 */
-	const getTotalRowsConfig = ( cartTotals ) => {
+	const getTotalRowsConfig = () => {
 		const totalItems = parseInt( cartTotals.total_items, 10 );
 		const totalItemsTax = parseInt( cartTotals.total_items_tax, 10 );
 		const totalRowsConfig = [
@@ -130,8 +130,8 @@ const Cart = ( {
 		return totalRowsConfig;
 	};
 
-	const totalsCurrency = getCurrencyFromPriceResponse( fetchedCartTotals );
-	const totalRowsConfig = getTotalRowsConfig( fetchedCartTotals );
+	const totalsCurrency = getCurrencyFromPriceResponse( cartTotals );
+	const totalRowsConfig = getTotalRowsConfig( cartTotals );
 
 	const ShippingCalculatorOptions = () => (
 		<fieldset className="wc-block-cart__shipping-options-fieldset">
@@ -232,10 +232,7 @@ const Cart = ( {
 								'Total',
 								'woo-gutenberg-products-block'
 							) }
-							value={ parseInt(
-								fetchedCartTotals.total_price,
-								10
-							) }
+							value={ parseInt( cartTotals.total_price, 10 ) }
 						/>
 						<CheckoutButton />
 					</CardBody>
