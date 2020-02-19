@@ -61,11 +61,7 @@ const Cart = ( {
 	useEffect( () => {
 		if ( isShippingCalculatorEnabled ) {
 			if ( isShippingCostHidden ) {
-				if (
-					Object.values( shippingCalculatorAddress ).filter(
-						( v ) => ! v
-					).length === 0
-				) {
+				if ( shippingCalculatorAddress.country ) {
 					return setShowShippingCosts( true );
 				}
 			} else {
