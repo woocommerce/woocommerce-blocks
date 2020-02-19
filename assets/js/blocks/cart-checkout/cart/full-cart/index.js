@@ -12,6 +12,7 @@ import ShippingRatesControl from '@woocommerce/base-components/shipping-rates-co
 import ShippingCalculator from '@woocommerce/base-components/shipping-calculator';
 import {
 	COUPONS_ENABLED,
+	SHIPPING_ENABLED,
 	DISPLAY_PRICES_INCLUDING_TAXES,
 } from '@woocommerce/block-settings';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
@@ -59,6 +60,9 @@ const Cart = ( {
 		! isShippingCostHidden
 	);
 	useEffect( () => {
+		if ( ! SHIPPING_ENABLED ) {
+			return setShowShippingCosts( false );
+		}
 		if ( isShippingCalculatorEnabled ) {
 			if ( isShippingCostHidden ) {
 				if ( shippingCalculatorAddress.country ) {
@@ -121,7 +125,7 @@ const Cart = ( {
 				value: totalTax,
 			} );
 		}
-		if ( isShippingCalculatorEnabled ) {
+		if ( SHIPPING_ENABLED && isShippingCalculatorEnabled ) {
 			const totalShipping = parseInt( cartTotals.total_shipping, 10 );
 			const totalShippingTax = parseInt(
 				cartTotals.total_shipping_tax,

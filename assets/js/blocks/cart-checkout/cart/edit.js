@@ -4,15 +4,12 @@
 import { __ } from '@wordpress/i18n';
 
 import { InspectorControls } from '@wordpress/block-editor';
-import {
-	Disabled,
-	PanelBody,
-	ToggleControl,
-} from '@wordpress/components';
+import { Disabled, PanelBody, ToggleControl } from '@wordpress/components';
 import PropTypes from 'prop-types';
 import { withFeedbackPrompt } from '@woocommerce/block-hocs';
 import ViewSwitcher from '@woocommerce/block-components/view-switcher';
 import { previewCart } from '@woocommerce/resource-previews';
+import { SHIPPING_ENABLED } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -94,13 +91,17 @@ const CartEditor = ( { className, attributes, setAttributes } ) => {
 					<>
 						{ currentView === 'full' && (
 							<>
-								<BlockSettings />
+								{ SHIPPING_ENABLED && <BlockSettings /> }
 								<Disabled>
 									<FullCart
 										cartItems={ previewCart.items }
 										cartTotals={ previewCart.totals }
-										isShippingCostHidden={ isShippingCostHidden }
-										isShippingCalculatorEnabled={ isShippingCalculatorEnabled }
+										isShippingCostHidden={
+											isShippingCostHidden
+										}
+										isShippingCalculatorEnabled={
+											isShippingCalculatorEnabled
+										}
 									/>
 								</Disabled>
 							</>

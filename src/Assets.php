@@ -123,6 +123,7 @@ class Assets {
 				'shopUrl'                     => get_permalink( wc_get_page_id( 'shop' ) ),
 				'checkoutUrl'                 => get_permalink( wc_get_page_id( 'checkout' ) ),
 				'couponsEnabled'              => wc_coupons_enabled(),
+				'shippingEnabled'             => wc_shipping_enabled(),
 				'displayPricesIncludingTaxes' => 'incl' === get_option( 'woocommerce_tax_display_shop' ),
 				'showAvatars'                 => '1' === get_option( 'show_avatars' ),
 				'reviewRatingsEnabled'        => wc_review_ratings_enabled(),

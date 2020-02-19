@@ -26,6 +26,7 @@ export const HOME_URL = getSetting( 'homeUrl', '' );
 export const SHOP_URL = getSetting( 'shopUrl', '' );
 export const CHECKOUT_URL = getSetting( 'checkoutUrl', '' );
 export const COUPONS_ENABLED = getSetting( 'couponsEnabled', true );
+export const SHIPPING_ENABLED = getSetting( 'shippingEnabled', true );
 export const DISPLAY_PRICES_INCLUDING_TAXES = getSetting(
 	'displayPricesIncludingTaxes',
 	false
