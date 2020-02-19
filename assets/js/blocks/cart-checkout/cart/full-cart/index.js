@@ -3,7 +3,7 @@
  */
 import PropTypes from 'prop-types';
 import { __, sprintf } from '@wordpress/i18n';
-import { useState, Fragment } from '@wordpress/element';
+import { useState, Fragment, useEffect } from '@wordpress/element';
 import {
 	TotalsCouponCodeInput,
 	TotalsItem,
@@ -55,6 +55,29 @@ const Cart = ( {
 		country: '',
 	} );
 
+	const [ showShippingCosts, setShowShippingCosts ] = useState(
+		! isShippingCostHidden
+	);
+	useEffect( () => {
+		if ( isShippingCalculatorEnabled ) {
+			if ( isShippingCostHidden ) {
+				if (
+					Object.values( shippingCalculatorAddress ).filter(
+						( v ) => ! v
+					).length === 0
+				) {
+					return setShowShippingCosts( true );
+				}
+			} else {
+				return setShowShippingCosts( true );
+			}
+		}
+		return setShowShippingCosts( false );
+	}, [
+		isShippingCalculatorEnabled,
+		isShippingCostHidden,
+		shippingCalculatorAddress,
+	] );
 	/**
 	 * Given an API response with cart totals, generates an array of rows to display in the Cart block.
 	 *
@@ -216,10 +239,7 @@ const Cart = ( {
 								/>
 							)
 						) }
-						{ isShippingCalculatorEnabled &&
-							! isShippingCostHidden && (
-								<ShippingCalculatorOptions />
-							) }
+						{ showShippingCosts && <ShippingCalculatorOptions /> }
 						{ COUPONS_ENABLED && (
 							<TotalsCouponCodeInput
 								onSubmit={ onActivateCoupon }
