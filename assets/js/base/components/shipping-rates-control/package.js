@@ -33,7 +33,7 @@ const Package = ( {
 				selected={ selected }
 			/>
 			{ showItems && (
-				<small>
+				<small className="wc-block-shipping-rates-control__package-items">
 					{ Object.values( shippingRate.items ).map( ( v, i ) => {
 						const name = decodeEntities( v.name );
 						const quantity = v.quantity;
