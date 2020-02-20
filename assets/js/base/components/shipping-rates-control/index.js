@@ -30,7 +30,7 @@ const ShippingRatesControl = ( {
 	const renderPackages = ( rates ) =>
 		rates.map( ( shippingRate, i ) => (
 			<Package
-				key={ shippingRate.items.join() }
+				key={ Object.keys( shippingRate.items ).join() }
 				className={ className }
 				noResultsMessage={ noResultsMessage }
 				onChange={ ( newShippingRate ) => {

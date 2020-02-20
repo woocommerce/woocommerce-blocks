@@ -3,6 +3,7 @@
  */
 import PropTypes from 'prop-types';
 import { Fragment } from '@wordpress/element';
+import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Internal dependencies
@@ -30,11 +31,14 @@ const Package = ( {
 				selected={ selected }
 			/>
 			{ showItems && (
-				<span>
-					{ /* @todo Show product names,
-						see: https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1554 */ }
-					{ shippingRate.items.join( ', ' ) }
-				</span>
+				<small>
+					{ Object.values( shippingRate.items )
+						.map(
+							( v ) =>
+								`${ decodeEntities( v.name ) } ×${ v.quantity }`
+						)
+						.join( ', ' ) }
+				</small>
 			) }
 		</Fragment>
 	);
@@ -46,7 +50,12 @@ Package.propTypes = {
 	renderOption: PropTypes.func.isRequired,
 	shippingRate: PropTypes.shape( {
 		shipping_rates: PropTypes.arrayOf( PropTypes.object ).isRequired,
-		items: PropTypes.arrayOf( PropTypes.string ).isRequired,
+		items: PropTypes.objectOf(
+			PropTypes.shape( {
+				name: PropTypes.string.isRequired,
+				quantity: PropTypes.number.isRequired,
+			} ).isRequired
+		).isRequired,
 	} ).isRequired,
 	className: PropTypes.string,
 	selected: PropTypes.string,
