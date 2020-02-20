@@ -3,7 +3,7 @@
  */
 import PropTypes from 'prop-types';
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useCallback } from '@wordpress/element';
 import {
 	TotalsCouponCodeInput,
 	TotalsItem,
@@ -22,6 +22,7 @@ import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import { Card, CardBody } from 'wordpress-components';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import { decodeEntities } from '@wordpress/html-entities';
+import { useStoreCartCoupons } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -32,12 +33,6 @@ import CartLineItemsTable from './cart-line-items-table';
 
 import './style.scss';
 import './editor.scss';
-
-// @todo this are placeholders
-const onActivateCoupon = ( couponCode ) => {
-	// eslint-disable-next-line no-console
-	console.log( 'coupon activated: ' + couponCode );
-};
 
 const renderShippingRatesControlOption = ( option ) => ( {
 	label: decodeEntities( option.name ),
@@ -80,6 +75,7 @@ const Cart = ( {
 	const [ showShippingCosts, setShowShippingCosts ] = useState(
 		! isShippingCostHidden
 	);
+
 	useEffect( () => {
 		if ( ! SHIPPING_ENABLED ) {
 			return setShowShippingCosts( false );
@@ -99,6 +95,16 @@ const Cart = ( {
 		isShippingCostHidden,
 		shippingCalculatorAddress,
 	] );
+
+	const { applyCoupon } = useStoreCartCoupons();
+
+	const onActivateCoupon = useCallback( ( couponCode ) => {
+		// eslint-disable-next-line no-console
+		console.log( 'coupon activated: ' + couponCode );
+
+		applyCoupon( couponCode );
+	}, [] );
+
 	/**
 	 * Given an API response with cart totals, generates an array of rows to display in the Cart block.
 	 *
