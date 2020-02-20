@@ -1,7 +1,15 @@
 /**
+ * External dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { apiFetch, select, dispatch } from '@wordpress/data-controls';
+
+/**
  * Internal dependencies
  */
 import { ACTION_TYPES as types } from './action-types';
+import { STORE_KEY as SCHEMA_STORE_KEY } from '../schema/constants';
+import { STORE_KEY as COLLECTIONS_STORE_KEY } from '../collections/constants';
 
 /**
  * Returns an action object used in updating the store with the provided items
@@ -21,4 +29,58 @@ export function receiveCart( response = {} ) {
 		type: types.RECEIVE_CART,
 		response,
 	};
+}
+
+export function receiveError( error = {} ) {
+	return {
+		type: types.RECEIVE_ERROR,
+		error,
+	};
+}
+
+export function* applyCoupon( couponCode ) {
+	try {
+		const route = yield select(
+			SCHEMA_STORE_KEY,
+			'getRoute',
+			'/wc/store',
+			'cart/coupons'
+		);
+
+		if ( ! route ) {
+			yield receiveError( {
+				code: 'missing_route',
+				message: __(
+					'Unable to apply coupon.',
+					'woo-gutenberg-products-block'
+				),
+				data: {
+					status: 500,
+				},
+			} );
+			return;
+		}
+
+		const item = yield apiFetch( {
+			path: route,
+			method: 'POST',
+			data: {
+				code: couponCode,
+			},
+			cache: 'no-store',
+		} );
+
+		if ( item ) {
+			console.log( 'DISPATCH' );
+			yield dispatch(
+				COLLECTIONS_STORE_KEY,
+				'invalidateResolution',
+				'getCollection',
+				'/wc/store',
+				'cart'
+			);
+		}
+	} catch ( error ) {
+		yield receiveError( error );
+	}
 }

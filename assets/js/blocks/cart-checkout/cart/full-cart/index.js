@@ -22,7 +22,7 @@ import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import { Card, CardBody } from 'wordpress-components';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import { decodeEntities } from '@wordpress/html-entities';
-import { useStoreCartCoupons } from '@woocommerce/base-hooks';
+import { useStoreCart } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -96,7 +96,7 @@ const Cart = ( {
 		shippingCalculatorAddress,
 	] );
 
-	const { applyCoupon } = useStoreCartCoupons();
+	const { applyCoupon } = useStoreCart();
 
 	const onActivateCoupon = useCallback( ( couponCode ) => {
 		// eslint-disable-next-line no-console

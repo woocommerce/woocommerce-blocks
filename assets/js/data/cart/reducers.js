@@ -12,15 +12,21 @@ import { ACTION_TYPES as types } from './action-types';
  * @return  {Object}          New or existing state.
  */
 const reducer = ( state = {}, action ) => {
-	const { type, response } = action;
-	switch ( type ) {
+	switch ( action.type ) {
+		case types.RECEIVE_ERROR:
+			if ( ! state.errors ) {
+				state.errors = [];
+			}
+			state.errors.push( action.error );
+			break;
 		case types.RECEIVE_CART:
 			state = {
 				...state,
-				...response,
+				...action.response,
 			};
 			break;
 	}
+	console.log( state );
 	return state;
 };
 

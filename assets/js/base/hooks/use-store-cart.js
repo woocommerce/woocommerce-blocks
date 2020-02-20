@@ -30,26 +30,32 @@ const defaultStoreCartData = {
  *                  - isLoading A boolean indicating whether the cart is
  *                              loading (true) or not.
  */
-export const useStoreCart = ( options = [] ) => {
-	const { shouldSelect = true } = options;
+export const useStoreCart = ( options = { shouldSelect: true } ) => {
+	const { shouldSelect } = options;
 	const currentResults = useRef( defaultStoreCartData );
+
 	const results = useSelect(
-		( select ) => {
+		( select, { dispatch } ) => {
 			if ( ! shouldSelect ) {
 				return null;
 			}
 			const store = select( storeKey );
-			const cartData = store.getCart();
-			const cartIsLoading = ! store.hasFinishedResolution( 'getCart' );
+			const { applyCoupon } = dispatch( storeKey );
+			const cartData = store.getCartData() || {};
+			const cartIsLoading = ! store.hasFinishedResolution(
+				'getCartData'
+			);
 
 			return {
 				cartCoupons: cartData.coupons || [],
 				cartItems: cartData.items || [],
-				cartItemsCount: cartData.items_count || 0,
-				cartItemsWeight: cartData.items_weight || 0,
-				cartNeedsShipping: cartData.needs_shipping || true,
+				cartItemsCount: cartData.itemsCount || 0,
+				cartItemsWeight: cartData.itemsWeight || 0,
+				cartNeedsShipping: cartData.needsShipping || true,
 				cartTotals: cartData.totals || [],
 				cartIsLoading,
+				applyCoupon,
+				cartErrors: cartData.errors || [],
 			};
 		},
 		[ shouldSelect ]

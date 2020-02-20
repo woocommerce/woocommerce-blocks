@@ -24,6 +24,7 @@ const CartFrontend = ( {
 		cartItemsCount,
 		cartTotals,
 		cartIsLoading,
+		cartErrors,
 	} = useStoreCart();
 
 	if ( cartIsLoading ) {
@@ -32,15 +33,28 @@ const CartFrontend = ( {
 
 	const isCartEmpty = cartItemsCount === 0;
 
+	console.log( cartErrors );
+
 	return isCartEmpty ? (
 		<RawHTML>{ emptyCart }</RawHTML>
 	) : (
-		<FullCart
-			cartItems={ cartItems }
-			cartTotals={ cartTotals }
-			isShippingCalculatorEnabled={ isShippingCalculatorEnabled }
-			isShippingCostHidden={ isShippingCostHidden }
-		/>
+		<>
+			<div className="errors">
+				{ // @todo This is a placeholder for error messages - this needs refactoring.
+				cartErrors &&
+					cartErrors.map( ( error = {}, i ) => (
+						<div className="notice" key={ 'notice-' + i }>
+							{ error.message }
+						</div>
+					) ) }
+			</div>
+			<FullCart
+				cartItems={ cartItems }
+				cartTotals={ cartTotals }
+				isShippingCalculatorEnabled={ isShippingCalculatorEnabled }
+				isShippingCostHidden={ isShippingCostHidden }
+			/>
+		</>
 	);
 };
 

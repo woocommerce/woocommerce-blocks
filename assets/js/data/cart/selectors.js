@@ -4,6 +4,6 @@
  * @param {Object} state        The current collections state.
  * @return {Array} Cart data.
  */
-export const getCart = ( state ) => {
+export const getCartData = ( state ) => {
 	return state;
 };

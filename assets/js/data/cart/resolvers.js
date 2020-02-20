@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { select } from '@wordpress/data-controls';
+import { camelCase, mapKeys } from 'lodash';
 
 /**
  * Internal dependencies
@@ -12,7 +13,7 @@ import { STORE_KEY as COLLECTIONS_STORE_KEY } from '../collections/constants';
 /**
  * Resolver for retrieving a collection via a api route.
  */
-export function* getCart() {
+export function* getCartData() {
 	const collectionData = yield select(
 		COLLECTIONS_STORE_KEY,
 		'getCollection',
@@ -26,5 +27,9 @@ export function* getCart() {
 		return;
 	}
 
-	yield receiveCart( collectionData );
+	const mappedCollectionData = mapKeys( collectionData, ( value, key ) => {
+		return camelCase( key );
+	} );
+
+	yield receiveCart( mappedCollectionData );
 }
