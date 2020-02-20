@@ -19,21 +19,25 @@ const CartFrontend = ( {
 	isShippingCalculatorEnabled,
 	isShippingCostHidden,
 } ) => {
-	const { cartData, isLoading } = useStoreCart();
+	const {
+		cartItems,
+		cartItemsCount,
+		cartTotals,
+		cartIsLoading,
+	} = useStoreCart();
 
-	if ( isLoading ) {
+	if ( cartIsLoading ) {
 		return null;
 	}
 
-	const cartItems = cartData.items;
-	const isCartEmpty = cartItems.length <= 0;
+	const isCartEmpty = cartItemsCount === 0;
 
 	return isCartEmpty ? (
 		<RawHTML>{ emptyCart }</RawHTML>
 	) : (
 		<FullCart
 			cartItems={ cartItems }
-			cartTotals={ cartData.totals }
+			cartTotals={ cartTotals }
 			isShippingCalculatorEnabled={ isShippingCalculatorEnabled }
 			isShippingCostHidden={ isShippingCostHidden }
 		/>
