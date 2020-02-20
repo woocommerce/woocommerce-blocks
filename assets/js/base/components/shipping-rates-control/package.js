@@ -2,8 +2,10 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
+import { _n, sprintf } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
 import { decodeEntities } from '@wordpress/html-entities';
+import Label from '@woocommerce/base-components/label';
 
 /**
  * Internal dependencies
@@ -32,12 +34,31 @@ const Package = ( {
 			/>
 			{ showItems && (
 				<small>
-					{ Object.values( shippingRate.items )
-						.map(
-							( v ) =>
-								`${ decodeEntities( v.name ) } ×${ v.quantity }`
-						)
-						.join( ', ' ) }
+					{ Object.values( shippingRate.items ).map( ( v, i ) => {
+						const name = decodeEntities( v.name );
+						const quantity = v.quantity;
+						const displayComma =
+							i < Object.values( shippingRate.items ).length - 1;
+						return (
+							<Fragment key={ name }>
+								<Label
+									label={ `${ name } ×${ quantity }` }
+									screenReaderLabel={ sprintf(
+										// translators: %s name of the product (ie: Sunglasses), %d number of units in the current cart package
+										_n(
+											'%s (%d unit)',
+											'%s (%d units)',
+											quantity,
+											'woo-gutenberg-products-block'
+										),
+										name,
+										quantity
+									) }
+								/>
+								{ displayComma && ', ' }
+							</Fragment>
+						);
+					} ) }
 				</small>
 			) }
 		</Fragment>
