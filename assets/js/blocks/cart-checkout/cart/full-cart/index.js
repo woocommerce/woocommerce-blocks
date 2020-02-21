@@ -131,15 +131,18 @@ const Cart = ( {
 			);
 			totalRowsConfig.push( {
 				label: __( 'Discount:', 'woo-gutenberg-products-block' ),
-				value: DISPLAY_PRICES_INCLUDING_TAXES
-					? totalDiscount + totalDiscountTax
-					: totalDiscount,
+				value:
+					( DISPLAY_PRICES_INCLUDING_TAXES
+						? totalDiscount + totalDiscountTax
+						: totalDiscount ) * -1,
 				description: (
 					<>
 						{ cartCoupons.map( ( cartCoupon, index ) => (
 							<button
 								key={ 'coupon-' + index }
-								onClick={ onRemoveCoupon( cartCoupon.code ) }
+								onClick={ () => {
+									onRemoveCoupon( cartCoupon.code );
+								} }
 							>
 								{ cartCoupon.code }
 							</button>
@@ -279,16 +282,16 @@ const Cart = ( {
 Cart.propTypes = {
 	cartItems: PropTypes.array,
 	cartTotals: PropTypes.shape( {
-		totalItems: PropTypes.string,
-		totalItemsTax: PropTypes.string,
-		totalFees: PropTypes.string,
-		totalFeesTax: PropTypes.string,
-		totalDiscount: PropTypes.string,
-		totalDiscountTax: PropTypes.string,
-		totalShipping: PropTypes.string,
-		totalShipping_Tax: PropTypes.string,
-		totalTax: PropTypes.string,
-		totalPrice: PropTypes.string,
+		total_items: PropTypes.string,
+		total_items_tax: PropTypes.string,
+		total_fees: PropTypes.string,
+		total_fees_tax: PropTypes.string,
+		total_discount: PropTypes.string,
+		total_discount_tax: PropTypes.string,
+		total_shipping: PropTypes.string,
+		total_shipping_tax: PropTypes.string,
+		total_tax: PropTypes.string,
+		total_price: PropTypes.string,
 	} ),
 	isShippingCalculatorEnabled: PropTypes.bool,
 	isShippingCostHidden: PropTypes.bool,

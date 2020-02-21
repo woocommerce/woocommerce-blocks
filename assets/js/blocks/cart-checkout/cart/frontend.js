@@ -26,6 +26,7 @@ const CartFrontend = ( {
 		cartIsLoading,
 		cartErrors,
 		applyCoupon,
+		removeCoupon,
 		cartCoupons,
 	} = useStoreCart();
 
@@ -54,6 +55,7 @@ const CartFrontend = ( {
 					isShippingCalculatorEnabled={ isShippingCalculatorEnabled }
 					isShippingCostHidden={ isShippingCostHidden }
 					onApplyCoupon={ applyCoupon }
+					onRemoveCoupon={ removeCoupon }
 				/>
 			) }
 		</>

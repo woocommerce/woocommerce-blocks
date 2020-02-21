@@ -31,6 +31,14 @@ export function receiveCart( response = {} ) {
 	};
 }
 
+/**
+ * Returns an action object used for receiving customer facing errors from the
+ * API.
+ *
+ * @param {Object}   [error={}]    An error object containing the error message
+ *                                 and response code.
+ * @return {Object} Object for action.
+ */
 export function receiveError( error = {} ) {
 	return {
 		type: types.RECEIVE_ERROR,
@@ -38,9 +46,21 @@ export function receiveError( error = {} ) {
 	};
 }
 
+const missingRouteError = {
+	code: 'missing_route',
+	message: __( 'Unable to apply coupon.', 'woo-gutenberg-products-block' ),
+	data: {
+		status: 500,
+	},
+};
+
+/**
+ * Applies a coupon code and either invalidates caches, or receives an error if
+ * the coupon cannot be applied.
+ *
+ * @param {string} couponCode The coupon code to apply to the cart.
+ */
 export function* applyCoupon( couponCode ) {
-	// eslint-disable-next-line no-console
-	console.log( 'coupon activated: ' + couponCode );
 	try {
 		const route = yield select(
 			SCHEMA_STORE_KEY,
@@ -50,22 +70,56 @@ export function* applyCoupon( couponCode ) {
 		);
 
 		if ( ! route ) {
-			yield receiveError( {
-				code: 'missing_route',
-				message: __(
-					'Unable to apply coupon.',
-					'woo-gutenberg-products-block'
-				),
-				data: {
-					status: 500,
-				},
-			} );
+			yield receiveError( missingRouteError );
 			return;
 		}
 
 		const item = yield apiFetch( {
 			path: route,
 			method: 'POST',
+			data: {
+				code: couponCode,
+			},
+			cache: 'no-store',
+		} );
+
+		if ( item ) {
+			yield dispatch(
+				COLLECTIONS_STORE_KEY,
+				'invalidateResolution',
+				'getCollection',
+				'/wc/store',
+				'cart'
+			);
+		}
+	} catch ( error ) {
+		yield receiveError( error );
+	}
+}
+
+/**
+ * Removes a coupon code and either invalidates caches, or receives an error if
+ * the coupon cannot be removed.
+ *
+ * @param {string} couponCode The coupon code to remove from the cart.
+ */
+export function* removeCoupon( couponCode ) {
+	try {
+		const route = yield select(
+			SCHEMA_STORE_KEY,
+			'getRoute',
+			'/wc/store',
+			'cart/coupons'
+		);
+
+		if ( ! route ) {
+			yield receiveError( missingRouteError );
+			return;
+		}
+
+		const item = yield apiFetch( {
+			path: route,
+			method: 'DELETE',
 			data: {
 				code: couponCode,
 			},

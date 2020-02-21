@@ -40,7 +40,7 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 				return null;
 			}
 			const store = select( storeKey );
-			const { applyCoupon } = dispatch( storeKey );
+			const { applyCoupon, removeCoupon } = dispatch( storeKey );
 			const cartData = store.getCartData() || {};
 			const cartIsLoading = ! store.hasFinishedResolution(
 				'getCartData'
@@ -55,6 +55,7 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 				cartTotals: cartData.totals || {},
 				cartIsLoading,
 				applyCoupon,
+				removeCoupon,
 				cartErrors: cartData.errors,
 			};
 		},

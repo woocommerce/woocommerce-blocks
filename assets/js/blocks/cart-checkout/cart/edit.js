@@ -9,24 +9,16 @@ import PropTypes from 'prop-types';
 import { withFeedbackPrompt } from '@woocommerce/block-hocs';
 import ViewSwitcher from '@woocommerce/block-components/view-switcher';
 import {
-	previewCart as previewCartApiResponse,
+	previewCart,
 	previewShippingRates,
 } from '@woocommerce/resource-previews';
 import { SHIPPING_ENABLED } from '@woocommerce/block-settings';
-import { camelCase, mapKeys } from 'lodash';
 
 /**
  * Internal dependencies
  */
 import FullCart from './full-cart';
 import EmptyCart from './empty-cart';
-
-/**
- * Convert preview data in API format to camelCase like useStoreCart does.
- */
-const previewCart = mapKeys( previewCartApiResponse, ( value, key ) => {
-	return camelCase( key );
-} );
 
 /**
  * Component to handle edit mode of "Cart Block".

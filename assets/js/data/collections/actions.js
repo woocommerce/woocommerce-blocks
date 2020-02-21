@@ -8,7 +8,11 @@ import { apiFetch, select } from '@wordpress/data-controls';
  */
 import { ACTION_TYPES as types } from './action-types';
 import { STORE_KEY as SCHEMA_STORE_KEY } from '../schema/constants';
-import Headers from '../utils/headers';
+
+let Headers = window.Headers || null;
+Headers = Headers
+	? new Headers()
+	: { get: () => undefined, has: () => undefined };
 
 /**
  * Returns an action object used in updating the store with the provided items
