@@ -25,35 +25,37 @@ const CartFrontend = ( {
 		cartTotals,
 		cartIsLoading,
 		cartErrors,
+		applyCoupon,
+		cartCoupons,
 	} = useStoreCart();
 
 	if ( cartIsLoading ) {
 		return null;
 	}
 
-	const isCartEmpty = cartItemsCount === 0;
-
-	console.log( cartErrors );
-
-	return isCartEmpty ? (
-		<RawHTML>{ emptyCart }</RawHTML>
-	) : (
+	return (
 		<>
 			<div className="errors">
 				{ // @todo This is a placeholder for error messages - this needs refactoring.
 				cartErrors &&
 					cartErrors.map( ( error = {}, i ) => (
-						<div className="notice" key={ 'notice-' + i }>
+						<div className="woocommerce-info" key={ 'notice-' + i }>
 							{ error.message }
 						</div>
 					) ) }
 			</div>
-			<FullCart
-				cartItems={ cartItems }
-				cartTotals={ cartTotals }
-				isShippingCalculatorEnabled={ isShippingCalculatorEnabled }
-				isShippingCostHidden={ isShippingCostHidden }
-			/>
+			{ cartItemsCount === 0 ? (
+				<RawHTML>{ emptyCart }</RawHTML>
+			) : (
+				<FullCart
+					cartItems={ cartItems }
+					cartTotals={ cartTotals }
+					cartCoupons={ cartCoupons }
+					isShippingCalculatorEnabled={ isShippingCalculatorEnabled }
+					isShippingCostHidden={ isShippingCostHidden }
+					onApplyCoupon={ applyCoupon }
+				/>
+			) }
 		</>
 	);
 };

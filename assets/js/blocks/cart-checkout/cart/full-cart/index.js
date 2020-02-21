@@ -3,7 +3,7 @@
  */
 import PropTypes from 'prop-types';
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect, useCallback } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import {
 	TotalsCouponCodeInput,
 	TotalsItem,
@@ -22,7 +22,6 @@ import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import { Card, CardBody } from 'wordpress-components';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import { decodeEntities } from '@wordpress/html-entities';
-import { useStoreCart } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -57,9 +56,12 @@ const renderShippingRatesControlOption = ( option ) => ( {
 const Cart = ( {
 	cartItems = [],
 	cartTotals = {},
+	cartCoupons = [],
 	isShippingCalculatorEnabled,
 	isShippingCostHidden,
 	shippingRates,
+	onApplyCoupon = () => {},
+	onRemoveCoupon = () => {},
 } ) => {
 	const [ selectedShippingRate, setSelectedShippingRate ] = useState();
 	const [
@@ -71,7 +73,6 @@ const Cart = ( {
 		postcode: '',
 		country: '',
 	} );
-
 	const [ showShippingCosts, setShowShippingCosts ] = useState(
 		! isShippingCostHidden
 	);
@@ -95,15 +96,6 @@ const Cart = ( {
 		isShippingCostHidden,
 		shippingCalculatorAddress,
 	] );
-
-	const { applyCoupon } = useStoreCart();
-
-	const onActivateCoupon = useCallback( ( couponCode ) => {
-		// eslint-disable-next-line no-console
-		console.log( 'coupon activated: ' + couponCode );
-
-		applyCoupon( couponCode );
-	}, [] );
 
 	/**
 	 * Given an API response with cart totals, generates an array of rows to display in the Cart block.
@@ -142,6 +134,18 @@ const Cart = ( {
 				value: DISPLAY_PRICES_INCLUDING_TAXES
 					? totalDiscount + totalDiscountTax
 					: totalDiscount,
+				description: (
+					<>
+						{ cartCoupons.map( ( cartCoupon, index ) => (
+							<button
+								key={ 'coupon-' + index }
+								onClick={ onRemoveCoupon( cartCoupon.code ) }
+							>
+								{ cartCoupon.code }
+							</button>
+						) ) }
+					</>
+				),
 			} );
 		}
 		if ( ! DISPLAY_PRICES_INCLUDING_TAXES ) {
@@ -253,9 +257,7 @@ const Cart = ( {
 						) }
 						{ showShippingCosts && <ShippingCalculatorOptions /> }
 						{ COUPONS_ENABLED && (
-							<TotalsCouponCodeInput
-								onSubmit={ onActivateCoupon }
-							/>
+							<TotalsCouponCodeInput onSubmit={ onApplyCoupon } />
 						) }
 						<TotalsItem
 							className="wc-block-cart__totals-footer"
@@ -277,16 +279,16 @@ const Cart = ( {
 Cart.propTypes = {
 	cartItems: PropTypes.array,
 	cartTotals: PropTypes.shape( {
-		total_items: PropTypes.string,
-		total_items_tax: PropTypes.string,
-		total_fees: PropTypes.string,
-		total_fees_tax: PropTypes.string,
-		total_discount: PropTypes.string,
-		total_discount_tax: PropTypes.string,
-		total_shipping: PropTypes.string,
-		total_shipping_tax: PropTypes.string,
-		total_tax: PropTypes.string,
-		total_price: PropTypes.string,
+		totalItems: PropTypes.string,
+		totalItemsTax: PropTypes.string,
+		totalFees: PropTypes.string,
+		totalFeesTax: PropTypes.string,
+		totalDiscount: PropTypes.string,
+		totalDiscountTax: PropTypes.string,
+		totalShipping: PropTypes.string,
+		totalShipping_Tax: PropTypes.string,
+		totalTax: PropTypes.string,
+		totalPrice: PropTypes.string,
 	} ),
 	isShippingCalculatorEnabled: PropTypes.bool,
 	isShippingCostHidden: PropTypes.bool,
@@ -294,6 +296,8 @@ Cart.propTypes = {
 	 * List of shipping rates to display. If defined, shipping rates will not be fetched from the API (used for the block preview).
 	 */
 	shippingRates: PropTypes.array,
+	onApplyCoupon: PropTypes.func,
+	onRemoveCoupon: PropTypes.func,
 };
 
 export default Cart;

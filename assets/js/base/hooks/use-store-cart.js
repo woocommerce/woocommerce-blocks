@@ -52,10 +52,10 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 				cartItemsCount: cartData.itemsCount || 0,
 				cartItemsWeight: cartData.itemsWeight || 0,
 				cartNeedsShipping: cartData.needsShipping || true,
-				cartTotals: cartData.totals || [],
+				cartTotals: cartData.totals || {},
 				cartIsLoading,
 				applyCoupon,
-				cartErrors: cartData.errors || [],
+				cartErrors: cartData.errors,
 			};
 		},
 		[ shouldSelect ]

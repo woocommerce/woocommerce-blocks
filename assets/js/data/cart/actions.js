@@ -39,6 +39,8 @@ export function receiveError( error = {} ) {
 }
 
 export function* applyCoupon( couponCode ) {
+	// eslint-disable-next-line no-console
+	console.log( 'coupon activated: ' + couponCode );
 	try {
 		const route = yield select(
 			SCHEMA_STORE_KEY,
@@ -71,7 +73,6 @@ export function* applyCoupon( couponCode ) {
 		} );
 
 		if ( item ) {
-			console.log( 'DISPATCH' );
 			yield dispatch(
 				COLLECTIONS_STORE_KEY,
 				'invalidateResolution',
