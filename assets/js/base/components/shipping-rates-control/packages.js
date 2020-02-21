@@ -36,10 +36,10 @@ const Packages = ( {
 };
 
 Packages.propTypes = {
-	noResultsMessage: PropTypes.string.isRequired,
-	onChange: PropTypes.func.isRequired,
 	renderOption: PropTypes.func.isRequired,
 	className: PropTypes.string,
+	noResultsMessage: PropTypes.string,
+	onChange: PropTypes.func,
 	selected: PropTypes.arrayOf( PropTypes.string ),
 	shippingRates: PropTypes.arrayOf(
 		PropTypes.shape( {

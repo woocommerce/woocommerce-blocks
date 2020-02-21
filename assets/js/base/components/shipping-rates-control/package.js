@@ -66,8 +66,6 @@ const Package = ( {
 };
 
 Package.propTypes = {
-	noResultsMessage: PropTypes.string.isRequired,
-	onChange: PropTypes.func.isRequired,
 	renderOption: PropTypes.func.isRequired,
 	shippingRate: PropTypes.shape( {
 		shipping_rates: PropTypes.arrayOf( PropTypes.object ).isRequired,
@@ -79,6 +77,8 @@ Package.propTypes = {
 		).isRequired,
 	} ).isRequired,
 	className: PropTypes.string,
+	noResultsMessage: PropTypes.string,
+	onChange: PropTypes.func,
 	selected: PropTypes.string,
 	showItems: PropTypes.bool,
 };

@@ -73,12 +73,12 @@ const ShippingRatesControl = ( {
 				showSpinner={ true }
 			>
 				<Packages
-					shippingRates={ previousShippingRates || [] }
 					className={ className }
 					noResultsMessage={ noResultsMessage }
 					onChange={ onChange }
 					renderOption={ renderOption }
 					selected={ selected }
+					shippingRates={ previousShippingRates || [] }
 				/>
 			</LoadingMask>
 		);
@@ -86,12 +86,12 @@ const ShippingRatesControl = ( {
 
 	return (
 		<Packages
-			shippingRates={ shippingRates }
 			className={ className }
 			noResultsMessage={ noResultsMessage }
 			onChange={ onChange }
 			renderOption={ renderOption }
 			selected={ selected }
+			shippingRates={ shippingRates }
 		/>
 	);
 };
@@ -113,3 +113,4 @@ ShippingRatesControl.propTypes = {
 };
 
 export default ShippingRatesControl;
+export { Packages };
