@@ -1,35 +1,53 @@
 /**
  * External dependencies
  */
-import { select } from '@wordpress/data-controls';
+import { select, apiFetch } from '@wordpress/data-controls';
 import { camelCase, mapKeys } from 'lodash';
 
 /**
  * Internal dependencies
  */
-import { receiveCart } from './actions';
-import { STORE_KEY as COLLECTIONS_STORE_KEY } from '../collections/constants';
+import { receiveCart, receiveError } from './actions';
+import { STORE_KEY, MISSING_ROUTE_ERROR, CART_API_ERROR } from './constants';
+import { STORE_KEY as SCHEMA_STORE_KEY } from '../schema/constants';
 
 /**
- * Resolver for retrieving a collection via a api route.
+ * Resolver for retrieving all cart data.
  */
 export function* getCartData() {
-	const collectionData = yield select(
-		COLLECTIONS_STORE_KEY,
-		'getCollection',
+	const route = yield select(
+		SCHEMA_STORE_KEY,
+		'getRoute',
 		'/wc/store',
-		'cart',
-		[]
+		'cart'
 	);
 
-	if ( ! collectionData ) {
-		yield receiveCart();
+	if ( ! route ) {
+		yield receiveError( MISSING_ROUTE_ERROR );
 		return;
 	}
 
-	const mappedCollectionData = mapKeys( collectionData, ( value, key ) => {
-		return camelCase( key );
+	const cartData = yield apiFetch( {
+		path: route,
+		method: 'GET',
+		cache: 'no-store',
 	} );
 
-	yield receiveCart( mappedCollectionData );
+	if ( ! cartData ) {
+		yield receiveError( CART_API_ERROR );
+		return;
+	}
+
+	yield receiveCart(
+		mapKeys( cartData, ( value, key ) => {
+			return camelCase( key );
+		} )
+	);
+}
+
+/**
+ * Resolver for retrieving cart totals.
+ */
+export function* getCartTotals() {
+	yield select( STORE_KEY, 'getCartData' );
 }

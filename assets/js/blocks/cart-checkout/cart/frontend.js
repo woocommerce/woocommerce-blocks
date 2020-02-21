@@ -4,7 +4,7 @@
 import { withRestApiHydration } from '@woocommerce/block-hocs';
 import { useStoreCart } from '@woocommerce/base-hooks';
 import { RawHTML } from '@wordpress/element';
-
+import LoadingMask from '@woocommerce/base-components/loading-mask';
 /**
  * Internal dependencies
  */
@@ -21,16 +21,14 @@ const CartFrontend = ( {
 } ) => {
 	const {
 		cartItems,
-		cartItemsCount,
 		cartTotals,
 		cartIsLoading,
 		cartErrors,
-		applyCoupon,
-		removeCoupon,
 		cartCoupons,
 	} = useStoreCart();
 
-	if ( cartIsLoading ) {
+	// Blank state on first load.
+	if ( cartIsLoading && ! cartItems.length ) {
 		return null;
 	}
 
@@ -45,18 +43,20 @@ const CartFrontend = ( {
 						</div>
 					) ) }
 			</div>
-			{ cartItemsCount === 0 ? (
+			{ ! cartItems.length ? (
 				<RawHTML>{ emptyCart }</RawHTML>
 			) : (
-				<FullCart
-					cartItems={ cartItems }
-					cartTotals={ cartTotals }
-					cartCoupons={ cartCoupons }
-					isShippingCalculatorEnabled={ isShippingCalculatorEnabled }
-					isShippingCostHidden={ isShippingCostHidden }
-					onApplyCoupon={ applyCoupon }
-					onRemoveCoupon={ removeCoupon }
-				/>
+				<LoadingMask showSpinner={ true } isLoading={ cartIsLoading }>
+					<FullCart
+						cartItems={ cartItems }
+						cartTotals={ cartTotals }
+						cartCoupons={ cartCoupons }
+						isShippingCalculatorEnabled={
+							isShippingCalculatorEnabled
+						}
+						isShippingCostHidden={ isShippingCostHidden }
+					/>
+				</LoadingMask>
 			) }
 		</>
 	);

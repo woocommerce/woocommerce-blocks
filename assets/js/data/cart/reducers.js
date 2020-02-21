@@ -19,6 +19,12 @@ const reducer = ( state = { errors: [] }, action ) => {
 				errors: state.errors.concat( action.error ),
 			};
 			break;
+		case types.REPLACE_ERRORS:
+			state = {
+				...state,
+				errors: [ action.error ],
+			};
+			break;
 		case types.RECEIVE_CART:
 			state = {
 				...state,

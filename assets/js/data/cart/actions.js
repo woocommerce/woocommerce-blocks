@@ -1,15 +1,14 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
-import { apiFetch, select, dispatch } from '@wordpress/data-controls';
+import { apiFetch, select } from '@wordpress/data-controls';
 
 /**
  * Internal dependencies
  */
 import { ACTION_TYPES as types } from './action-types';
+import { MISSING_ROUTE_ERROR } from './constants';
 import { STORE_KEY as SCHEMA_STORE_KEY } from '../schema/constants';
-import { STORE_KEY as COLLECTIONS_STORE_KEY } from '../collections/constants';
 
 /**
  * Returns an action object used in updating the store with the provided items
@@ -18,10 +17,7 @@ import { STORE_KEY as COLLECTIONS_STORE_KEY } from '../collections/constants';
  * This is a generic response action.
  *
  * @param {Object}   [response={}]    An object containing the response from the
- *                                    collection request.
- * @param {Array<*>} response.items	An array of items for the given collection.
- * @param {Headers}  response.headers A Headers object from the response
- *                                    link https://developer.mozilla.org/en-US/docs/Web/API/Headers
+ *                                    request.
  * @return {Object} Object for action.
  */
 export function receiveCart( response = {} ) {
@@ -35,24 +31,18 @@ export function receiveCart( response = {} ) {
  * Returns an action object used for receiving customer facing errors from the
  * API.
  *
- * @param {Object}   [error={}]    An error object containing the error message
+ * @param {Object}  [error={}]     An error object containing the error message
  *                                 and response code.
+ * @param {boolean} [replace=true] Should existing errors be replaced, or should
+ *                                 the error be appended.
  * @return {Object} Object for action.
  */
-export function receiveError( error = {} ) {
+export function receiveError( error = {}, replace = true ) {
 	return {
-		type: types.RECEIVE_ERROR,
+		type: replace ? types.REPLACE_ERRORS : types.RECEIVE_ERROR,
 		error,
 	};
 }
-
-const missingRouteError = {
-	code: 'missing_route',
-	message: __( 'Unable to apply coupon.', 'woo-gutenberg-products-block' ),
-	data: {
-		status: 500,
-	},
-};
 
 /**
  * Applies a coupon code and either invalidates caches, or receives an error if
@@ -66,31 +56,23 @@ export function* applyCoupon( couponCode ) {
 			SCHEMA_STORE_KEY,
 			'getRoute',
 			'/wc/store',
-			'cart/coupons'
+			'cart/apply-coupon/(?P<code>[\\w-]+)',
+			[ couponCode ]
 		);
 
 		if ( ! route ) {
-			yield receiveError( missingRouteError );
+			yield receiveError( MISSING_ROUTE_ERROR );
 			return;
 		}
 
-		const item = yield apiFetch( {
+		const result = yield apiFetch( {
 			path: route,
 			method: 'POST',
-			data: {
-				code: couponCode,
-			},
 			cache: 'no-store',
 		} );
 
-		if ( item ) {
-			yield dispatch(
-				COLLECTIONS_STORE_KEY,
-				'invalidateResolution',
-				'getCollection',
-				'/wc/store',
-				'cart'
-			);
+		if ( result ) {
+			yield receiveCart( result );
 		}
 	} catch ( error ) {
 		yield receiveError( error );
@@ -109,31 +91,23 @@ export function* removeCoupon( couponCode ) {
 			SCHEMA_STORE_KEY,
 			'getRoute',
 			'/wc/store',
-			'cart/coupons'
+			'cart/remove-coupon/(?P<code>[\\w-]+)',
+			[ couponCode ]
 		);
 
 		if ( ! route ) {
-			yield receiveError( missingRouteError );
+			yield receiveError( MISSING_ROUTE_ERROR );
 			return;
 		}
 
-		const item = yield apiFetch( {
+		const result = yield apiFetch( {
 			path: route,
 			method: 'DELETE',
-			data: {
-				code: couponCode,
-			},
 			cache: 'no-store',
 		} );
 
-		if ( item ) {
-			yield dispatch(
-				COLLECTIONS_STORE_KEY,
-				'invalidateResolution',
-				'getCollection',
-				'/wc/store',
-				'cart'
-			);
+		if ( result ) {
+			yield receiveCart( result );
 		}
 	} catch ( error ) {
 		yield receiveError( error );

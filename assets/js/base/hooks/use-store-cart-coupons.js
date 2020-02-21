@@ -3,12 +3,12 @@
  */
 import { useCallback, useState, useEffect, useRef } from '@wordpress/element';
 import { useDispatch } from '@wordpress/data';
-import { COLLECTIONS_STORE_KEY as storeKey } from '@woocommerce/block-data';
+import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
-import { useCollection } from './use-collection';
+import { useStoreCart } from './use-store-cart';
 
 /**
  * This is a custom hook for loading the Store API /cart/coupons endpoint and an
@@ -22,50 +22,43 @@ import { useCollection } from './use-collection';
  *                  - applyingCoupon True when a coupon is being applied.
  */
 export const useStoreCartCoupons = () => {
-	const collectionOptions = {
-		namespace: '/wc/store',
-		resourceName: 'cart/coupons',
-	};
-
-	const { results: appliedCoupons, isLoading } = useCollection(
-		collectionOptions
-	);
-
-	const currentAppliedCoupons = useRef( null );
+	const currentCartIsLoading = useRef( null );
+	const { cartCoupons, cartIsLoading } = useStoreCart();
 	const [ applyingCoupon, setApplyingCoupon ] = useState( false );
-	const { __experimentalPersistItemToCollection } = useDispatch( storeKey );
+	const [ removingCoupon, setRemovingCoupon ] = useState( false );
+	const {
+		applyCoupon: dispatchApplyCoupon,
+		removeCoupon: dispatchRemoveCoupon,
+	} = useDispatch( storeKey );
 
-	const applyCoupon = useCallback(
-		( couponCode ) => {
-			setApplyingCoupon( true );
-			// exclude this item from the cartResults for adding to the new
-			// collection (so it's updated correctly!)
-			const collection = appliedCoupons.filter( ( coupon ) => {
-				return coupon.code !== couponCode;
-			} );
-			__experimentalPersistItemToCollection(
-				'/wc/store',
-				'cart/coupons',
-				collection,
-				{ code: couponCode }
-			);
-		},
-		[ appliedCoupons ]
-	);
+	const applyCoupon = useCallback( ( couponCode ) => {
+		setApplyingCoupon( true );
+		dispatchApplyCoupon( couponCode );
+	}, [] );
+
+	const removeCoupon = useCallback( ( couponCode ) => {
+		setRemovingCoupon( true );
+		dispatchRemoveCoupon( couponCode );
+	}, [] );
 
 	useEffect( () => {
-		if ( currentAppliedCoupons.current !== appliedCoupons ) {
-			if ( applyingCoupon ) {
+		if ( currentCartIsLoading.current !== cartIsLoading ) {
+			if ( ! cartIsLoading && applyingCoupon ) {
 				setApplyingCoupon( false );
 			}
-			currentAppliedCoupons.current = appliedCoupons;
+			if ( ! cartIsLoading && removingCoupon ) {
+				setRemovingCoupon( false );
+			}
+			currentCartIsLoading.current = cartIsLoading;
 		}
-	}, [ appliedCoupons, applyingCoupon ] );
+	}, [ cartIsLoading, applyingCoupon, removingCoupon ] );
 
 	return {
-		appliedCoupons,
-		isLoading,
+		appliedCoupons: cartCoupons,
+		isLoading: cartIsLoading,
 		applyCoupon,
+		removeCoupon,
 		applyingCoupon,
+		removingCoupon,
 	};
 };

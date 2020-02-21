@@ -35,13 +35,12 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 	const currentResults = useRef( defaultStoreCartData );
 
 	const results = useSelect(
-		( select, { dispatch } ) => {
+		( select ) => {
 			if ( ! shouldSelect ) {
 				return null;
 			}
 			const store = select( storeKey );
-			const { applyCoupon, removeCoupon } = dispatch( storeKey );
-			const cartData = store.getCartData() || {};
+			const cartData = store.getCartData();
 			const cartIsLoading = ! store.hasFinishedResolution(
 				'getCartData'
 			);
@@ -52,10 +51,8 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 				cartItemsCount: cartData.itemsCount || 0,
 				cartItemsWeight: cartData.itemsWeight || 0,
 				cartNeedsShipping: cartData.needsShipping || true,
-				cartTotals: cartData.totals || {},
+				cartTotals: store.getCartTotals(),
 				cartIsLoading,
-				applyCoupon,
-				removeCoupon,
 				cartErrors: cartData.errors,
 			};
 		},

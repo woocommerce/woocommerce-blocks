@@ -13,6 +13,7 @@ import ShippingRatesControl, {
 } from '@woocommerce/base-components/shipping-rates-control';
 import ShippingCalculator from '@woocommerce/base-components/shipping-calculator';
 import ShippingLocation from '@woocommerce/base-components/shipping-location';
+import LoadingMask from '@woocommerce/base-components/loading-mask';
 import {
 	COUPONS_ENABLED,
 	SHIPPING_ENABLED,
@@ -22,6 +23,7 @@ import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import { Card, CardBody } from 'wordpress-components';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import { decodeEntities } from '@wordpress/html-entities';
+import { useStoreCartCoupons } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -60,8 +62,6 @@ const Cart = ( {
 	isShippingCalculatorEnabled,
 	isShippingCostHidden,
 	shippingRates,
-	onApplyCoupon = () => {},
-	onRemoveCoupon = () => {},
 } ) => {
 	const [ selectedShippingRate, setSelectedShippingRate ] = useState();
 	const [
@@ -76,6 +76,12 @@ const Cart = ( {
 	const [ showShippingCosts, setShowShippingCosts ] = useState(
 		! isShippingCostHidden
 	);
+	const {
+		applyCoupon,
+		removeCoupon,
+		applyingCoupon,
+		removingCoupon,
+	} = useStoreCartCoupons();
 
 	useEffect( () => {
 		if ( ! SHIPPING_ENABLED ) {
@@ -124,11 +130,13 @@ const Cart = ( {
 			} );
 		}
 		const totalDiscount = parseInt( cartTotals.total_discount, 10 );
-		if ( totalDiscount > 0 ) {
+		if ( totalDiscount > 0 || cartCoupons.length !== 0 ) {
 			const totalDiscountTax = parseInt(
 				cartTotals.total_discount_tax,
 				10
 			);
+			// @todo The remove coupon button is a placeholder - replace with new
+			// chip component.
 			totalRowsConfig.push( {
 				label: __( 'Discount:', 'woo-gutenberg-products-block' ),
 				value:
@@ -136,18 +144,26 @@ const Cart = ( {
 						? totalDiscount + totalDiscountTax
 						: totalDiscount ) * -1,
 				description: (
-					<>
+					<LoadingMask
+						screenReaderLabel={ __(
+							'Removing coupon…',
+							'woo-gutenberg-products-block'
+						) }
+						isLoading={ removingCoupon }
+						showSpinner={ false }
+					>
 						{ cartCoupons.map( ( cartCoupon, index ) => (
 							<button
 								key={ 'coupon-' + index }
+								disabled={ removingCoupon }
 								onClick={ () => {
-									onRemoveCoupon( cartCoupon.code );
+									removeCoupon( cartCoupon.code );
 								} }
 							>
 								{ cartCoupon.code }
 							</button>
 						) ) }
-					</>
+					</LoadingMask>
 				),
 			} );
 		}
@@ -260,7 +276,10 @@ const Cart = ( {
 						) }
 						{ showShippingCosts && <ShippingCalculatorOptions /> }
 						{ COUPONS_ENABLED && (
-							<TotalsCouponCodeInput onSubmit={ onApplyCoupon } />
+							<TotalsCouponCodeInput
+								onSubmit={ applyCoupon }
+								isLoading={ applyingCoupon }
+							/>
 						) }
 						<TotalsItem
 							className="wc-block-cart__totals-footer"
@@ -299,8 +318,6 @@ Cart.propTypes = {
 	 * List of shipping rates to display. If defined, shipping rates will not be fetched from the API (used for the block preview).
 	 */
 	shippingRates: PropTypes.array,
-	onApplyCoupon: PropTypes.func,
-	onRemoveCoupon: PropTypes.func,
 };
 
 export default Cart;
