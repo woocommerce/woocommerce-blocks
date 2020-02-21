@@ -149,7 +149,7 @@ const Cart = ( {
 							'Removing coupon…',
 							'woo-gutenberg-products-block'
 						) }
-						isLoading={ removingCoupon }
+						isLoading={ removingCoupon !== '' }
 						showSpinner={ false }
 					>
 						{ cartCoupons.map( ( cartCoupon, index ) => (
@@ -278,7 +278,7 @@ const Cart = ( {
 						{ COUPONS_ENABLED && (
 							<TotalsCouponCodeInput
 								onSubmit={ applyCoupon }
-								isLoading={ applyingCoupon }
+								isLoading={ applyingCoupon !== '' }
 							/>
 						) }
 						<TotalsItem

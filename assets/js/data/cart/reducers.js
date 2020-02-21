@@ -28,7 +28,20 @@ const reducer = ( state = { errors: [] }, action ) => {
 		case types.RECEIVE_CART:
 			state = {
 				...state,
+				errors: [],
 				...action.response,
+			};
+			break;
+		case types.APPLYING_COUPON:
+			state = {
+				...state,
+				applyingCoupon: action.couponCode,
+			};
+			break;
+		case types.REMOVING_COUPON:
+			state = {
+				...state,
+				removingCoupon: action.couponCode,
 			};
 			break;
 	}

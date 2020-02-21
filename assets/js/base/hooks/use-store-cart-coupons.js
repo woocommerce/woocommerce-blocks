@@ -1,8 +1,8 @@
 /**
  * External dependencies
  */
-import { useCallback, useState, useEffect, useRef } from '@wordpress/element';
-import { useDispatch } from '@wordpress/data';
+import { useRef } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 
 /**
@@ -22,43 +22,35 @@ import { useStoreCart } from './use-store-cart';
  *                  - applyingCoupon True when a coupon is being applied.
  */
 export const useStoreCartCoupons = () => {
-	const currentCartIsLoading = useRef( null );
 	const { cartCoupons, cartIsLoading } = useStoreCart();
-	const [ applyingCoupon, setApplyingCoupon ] = useState( false );
-	const [ removingCoupon, setRemovingCoupon ] = useState( false );
-	const {
-		applyCoupon: dispatchApplyCoupon,
-		removeCoupon: dispatchRemoveCoupon,
-	} = useDispatch( storeKey );
-
-	const applyCoupon = useCallback( ( couponCode ) => {
-		setApplyingCoupon( true );
-		dispatchApplyCoupon( couponCode );
-	}, [] );
-
-	const removeCoupon = useCallback( ( couponCode ) => {
-		setRemovingCoupon( true );
-		dispatchRemoveCoupon( couponCode );
-	}, [] );
-
-	useEffect( () => {
-		if ( currentCartIsLoading.current !== cartIsLoading ) {
-			if ( ! cartIsLoading && applyingCoupon ) {
-				setApplyingCoupon( false );
-			}
-			if ( ! cartIsLoading && removingCoupon ) {
-				setRemovingCoupon( false );
-			}
-			currentCartIsLoading.current = cartIsLoading;
-		}
-	}, [ cartIsLoading, applyingCoupon, removingCoupon ] );
-
-	return {
+	const currentResults = useRef( {
 		appliedCoupons: cartCoupons,
 		isLoading: cartIsLoading,
-		applyCoupon,
-		removeCoupon,
-		applyingCoupon,
-		removingCoupon,
-	};
+		applyCoupon: () => {},
+		removeCoupon: () => {},
+		applyingCoupon: '',
+		removingCoupon: '',
+	} );
+
+	const results = useSelect( ( select, { dispatch } ) => {
+		const store = select( storeKey );
+		const applyingCoupon = store.getApplyingCoupon();
+		const removingCoupon = store.getRemovingCoupon();
+		const { applyCoupon, removeCoupon } = dispatch( storeKey );
+
+		return {
+			appliedCoupons: cartCoupons,
+			isLoading: cartIsLoading,
+			applyCoupon,
+			removeCoupon,
+			applyingCoupon,
+			removingCoupon,
+		};
+	}, [] );
+	// if selector was not bailed, then update current results. Otherwise return
+	// previous results
+	if ( results !== null ) {
+		currentResults.current = results;
+	}
+	return currentResults.current;
 };

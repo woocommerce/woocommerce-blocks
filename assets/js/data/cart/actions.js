@@ -45,12 +45,40 @@ export function receiveError( error = {}, replace = true ) {
 }
 
 /**
+ * Returns an action object used to track when a coupon is applying.
+ *
+ * @param {boolean} [couponCode] Coupon being added.
+ * @return {Object} Object for action.
+ */
+export function receiveApplyingCoupon( couponCode ) {
+	return {
+		type: types.APPLYING_COUPON,
+		couponCode,
+	};
+}
+
+/**
+ * Returns an action object used to track when a coupon is removing.
+ *
+ * @param {string} [couponCode] Coupon being removed.
+ * @return {Object} Object for action.
+ */
+export function receiveRemovingCoupon( couponCode ) {
+	return {
+		type: types.REMOVING_COUPON,
+		couponCode,
+	};
+}
+
+/**
  * Applies a coupon code and either invalidates caches, or receives an error if
  * the coupon cannot be applied.
  *
  * @param {string} couponCode The coupon code to apply to the cart.
  */
 export function* applyCoupon( couponCode ) {
+	yield receiveApplyingCoupon( couponCode );
+
 	try {
 		const route = yield select(
 			SCHEMA_STORE_KEY,
@@ -77,6 +105,8 @@ export function* applyCoupon( couponCode ) {
 	} catch ( error ) {
 		yield receiveError( error );
 	}
+
+	yield receiveApplyingCoupon( '' );
 }
 
 /**
@@ -86,6 +116,8 @@ export function* applyCoupon( couponCode ) {
  * @param {string} couponCode The coupon code to remove from the cart.
  */
 export function* removeCoupon( couponCode ) {
+	yield receiveRemovingCoupon( couponCode );
+
 	try {
 		const route = yield select(
 			SCHEMA_STORE_KEY,
@@ -112,4 +144,6 @@ export function* removeCoupon( couponCode ) {
 	} catch ( error ) {
 		yield receiveError( error );
 	}
+
+	yield receiveRemovingCoupon( '' );
 }
