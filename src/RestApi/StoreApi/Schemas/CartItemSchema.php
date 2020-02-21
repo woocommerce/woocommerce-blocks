@@ -224,6 +224,8 @@ class CartItemSchema extends AbstractSchema {
 	public function get_item_response( $cart_item ) {
 		$product = $cart_item['data'];
 
+		$total_line_full_price = $product->get_regular_price() * $cart_item['quantity'];
+
 		return [
 			'key'                 => $cart_item['key'],
 			'id'                  => $product->get_id(),
@@ -240,7 +242,7 @@ class CartItemSchema extends AbstractSchema {
 			'totals'              => (object) array_merge(
 				$this->get_store_currency_response(),
 				[
-					'line_subtotal'     => $this->prepare_money_response( $cart_item['line_subtotal'], wc_get_price_decimals() ),
+					'line_subtotal'     => $this->prepare_money_response( $total_line_full_price, wc_get_price_decimals() ),
 					'line_subtotal_tax' => $this->prepare_money_response( $cart_item['line_subtotal_tax'], wc_get_price_decimals() ),
 					'line_total'        => $this->prepare_money_response( $cart_item['line_total'], wc_get_price_decimals() ),
 					'line_total_tax'    => $this->prepare_money_response( $cart_item['line_tax'], wc_get_price_decimals() ),
