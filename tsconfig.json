@@ -33,7 +33,8 @@
 			"@woocommerce/resource-previews": [ "assets/js/previews" ],
 			"@woocommerce/e2e-tests": [
 				"node_modules/woocommerce/tests/e2e-tests"
-			]
+			],
+			"@woocommerce/type-defs/*": [ "assets/js/type-defs/*" ]
 		}
 	},
 	"include": [ "./assets/js/**/*.js" ]
