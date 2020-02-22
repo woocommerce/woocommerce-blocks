@@ -1,0 +1,11 @@
+{
+	"compilerOptions": {
+		"module": "es2015",
+		"moduleResolution": "node",
+		"target": "es2019",
+		"allowJs": true,
+		"checkJs": true,
+		"noEmit": true
+	},
+	"include": [ "assets/js" ]
+}
