@@ -1,11 +1,33 @@
 {
 	"compilerOptions": {
+		"baseUrl": ".",
 		"module": "es2015",
 		"moduleResolution": "node",
 		"target": "es2019",
 		"allowJs": true,
 		"checkJs": true,
-		"noEmit": true
+		"noEmit": true,
+		"jsx": "preserve",
+		"allowSyntheticDefaultImports": true,
+		"paths": {
+			"@woocommerce/atomic-components/*": [
+				"assets/js/base/atomic/components/*"
+			],
+			"@woocommerce/base-components/*": [ "assets/js/base/components/*" ],
+			"@woocommerce/base-context/*": [ "assets/js/base/context/*" ],
+			"@woocommerce/base-hocs/*": [ "assets/js/base/hocs/*" ],
+			"@woocommerce/base-hooks/*": [ "assets/js/base/hooks" ],
+			"@woocommerce/base-utils": [ "assets/js/base/utils" ],
+			"@woocommerce/block-components/*": [ "assets/js/components/*" ],
+			"@woocommerce/block-hocs/*": [ "assets/js/hocs/*" ],
+			"@woocommerce/blocks-registry/*": [ "assets/js/blocks-registry/*" ],
+			"@woocommerce/block-settings": [ "assets/js/settings/blocks" ],
+			"@woocommerce/icons": [ "assets/js/icons" ],
+			"@woocommerce/resource-previews": [ "assets/js/previews" ],
+			"@woocommerce/e2e-tests": [
+				"node_modules/woocommerce/tests/e2e-tests"
+			]
+		}
 	},
 	"include": [ "assets/js" ]
 }
