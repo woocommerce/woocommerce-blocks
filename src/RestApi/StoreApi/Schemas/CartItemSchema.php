@@ -27,6 +27,20 @@ class CartItemSchema extends AbstractSchema {
 	protected $title = 'cart_item';
 
 	/**
+	 * We use product schema for line item price info.
+	 *
+	 * @var ProductSchema
+	 */
+	protected $product_schema;
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->product_schema = new ProductSchema();
+	}
+
+	/**
 	 * Cart schema properties.
 	 *
 	 * @return array
@@ -175,7 +189,7 @@ class CartItemSchema extends AbstractSchema {
 					$this->get_store_currency_properties(),
 					[
 						'line_subtotal'     => [
-							'description' => __( 'Line price subtotal (excluding coupons and discounts).', 'woo-gutenberg-products-block' ),
+							'description' => __( 'Line price subtotal.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
@@ -187,7 +201,7 @@ class CartItemSchema extends AbstractSchema {
 							'readonly'    => true,
 						],
 						'line_total'        => [
-							'description' => __( 'Line price total (including coupons and discounts).', 'woo-gutenberg-products-block' ),
+							'description' => __( 'Line price total.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
@@ -224,7 +238,7 @@ class CartItemSchema extends AbstractSchema {
 	public function get_item_response( $cart_item ) {
 		$product = $cart_item['data'];
 
-		$total_line_full_price = $product->get_regular_price() * $cart_item['quantity'];
+		$product_prices = $this->product_schema->get_prices( $product );
 
 		return [
 			'key'                 => $cart_item['key'],
@@ -239,6 +253,7 @@ class CartItemSchema extends AbstractSchema {
 			'permalink'           => $product->get_permalink(),
 			'images'              => ( new ProductImages() )->images_to_array( $product ),
 			'variation'           => $this->format_variation_data( $cart_item['variation'], $product ),
+			'prices'              => $product_prices,
 			'totals'              => (object) array_merge(
 				$this->get_store_currency_response(),
 				[
