@@ -302,7 +302,7 @@ class CartItemSchema extends AbstractSchema {
 			'permalink'           => $product->get_permalink(),
 			'images'              => ( new ProductImages() )->images_to_array( $product ),
 			'variation'           => $this->format_variation_data( $cart_item['variation'], $product ),
-			'prices'              => $product_prices,
+			'prices'              => (object) $product_prices,
 			'totals'              => (object) array_merge(
 				$this->get_store_currency_response(),
 				[
