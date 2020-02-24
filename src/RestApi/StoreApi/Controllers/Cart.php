@@ -80,7 +80,7 @@ class Cart extends RestController {
 					],
 				],
 				[
-					'methods'  => RestServer::CREATABLE,
+					'methods'  => 'POST',
 					'callback' => [ $this, 'apply_coupon' ],
 				],
 				'schema' => [ $this, 'get_public_item_schema' ],
@@ -97,7 +97,7 @@ class Cart extends RestController {
 					],
 				],
 				[
-					'methods'  => RestServer::DELETABLE,
+					'methods'  => 'POST',
 					'callback' => [ $this, 'remove_coupon' ],
 				],
 				'schema' => [ $this, 'get_public_item_schema' ],

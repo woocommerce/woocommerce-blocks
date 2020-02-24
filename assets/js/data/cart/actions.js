@@ -106,7 +106,7 @@ export function* removeCoupon( couponCode ) {
 	try {
 		const result = yield apiFetch( {
 			path: '/wc/store/cart/remove-coupon/' + couponCode,
-			method: 'DELETE',
+			method: 'POST',
 			cache: 'no-store',
 		} );
 
