@@ -1,14 +1,12 @@
 /**
  * External dependencies
  */
-import { apiFetch, select } from '@wordpress/data-controls';
+import { apiFetch } from '@wordpress/data-controls';
 
 /**
  * Internal dependencies
  */
 import { ACTION_TYPES as types } from './action-types';
-import { MISSING_ROUTE_ERROR } from './constants';
-import { STORE_KEY as SCHEMA_STORE_KEY } from '../schema/constants';
 
 /**
  * Returns an action object used in updating the store with the provided items
@@ -47,7 +45,7 @@ export function receiveError( error = {}, replace = true ) {
 /**
  * Returns an action object used to track when a coupon is applying.
  *
- * @param {boolean} [couponCode] Coupon being added.
+ * @param {string} [couponCode] Coupon being added.
  * @return {Object} Object for action.
  */
 export function receiveApplyingCoupon( couponCode ) {
@@ -80,21 +78,8 @@ export function* applyCoupon( couponCode ) {
 	yield receiveApplyingCoupon( couponCode );
 
 	try {
-		const route = yield select(
-			SCHEMA_STORE_KEY,
-			'getRoute',
-			'/wc/store',
-			'cart/apply-coupon/(?P<code>[\\w-]+)',
-			[ couponCode ]
-		);
-
-		if ( ! route ) {
-			yield receiveError( MISSING_ROUTE_ERROR );
-			return;
-		}
-
 		const result = yield apiFetch( {
-			path: route,
+			path: '/wc/store/cart/apply-coupon/' + couponCode,
 			method: 'POST',
 			cache: 'no-store',
 		} );
@@ -119,21 +104,8 @@ export function* removeCoupon( couponCode ) {
 	yield receiveRemovingCoupon( couponCode );
 
 	try {
-		const route = yield select(
-			SCHEMA_STORE_KEY,
-			'getRoute',
-			'/wc/store',
-			'cart/remove-coupon/(?P<code>[\\w-]+)',
-			[ couponCode ]
-		);
-
-		if ( ! route ) {
-			yield receiveError( MISSING_ROUTE_ERROR );
-			return;
-		}
-
 		const result = yield apiFetch( {
-			path: route,
+			path: '/wc/store/cart/remove-coupon/' + couponCode,
 			method: 'DELETE',
 			cache: 'no-store',
 		} );
