@@ -24,15 +24,15 @@ export const useStoreCartCoupons = () => {
 
 	const results = useSelect( ( select, { dispatch } ) => {
 		const store = select( storeKey );
-		const applyingCoupon = store.getApplyingCoupon();
-		const removingCoupon = store.getRemovingCoupon();
+		const isApplyingCoupon = store.isApplyingCoupon();
+		const isRemovingCoupon = store.isRemovingCoupon();
 		const { applyCoupon, removeCoupon } = dispatch( storeKey );
 
 		return {
 			applyCoupon,
 			removeCoupon,
-			applyingCoupon,
-			removingCoupon,
+			isApplyingCoupon,
+			isRemovingCoupon,
 		};
 	}, [] );
 

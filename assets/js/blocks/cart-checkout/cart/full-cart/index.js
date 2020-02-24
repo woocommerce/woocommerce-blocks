@@ -79,8 +79,8 @@ const Cart = ( {
 	const {
 		applyCoupon,
 		removeCoupon,
-		applyingCoupon,
-		removingCoupon,
+		isApplyingCoupon,
+		isRemovingCoupon,
 	} = useStoreCartCoupons();
 
 	useEffect( () => {
@@ -149,13 +149,13 @@ const Cart = ( {
 							'Removing coupon…',
 							'woo-gutenberg-products-block'
 						) }
-						isLoading={ removingCoupon !== '' }
+						isLoading={ isRemovingCoupon }
 						showSpinner={ false }
 					>
 						{ cartCoupons.map( ( cartCoupon ) => (
 							<button
 								key={ 'coupon-' + cartCoupon.code }
-								disabled={ removingCoupon }
+								disabled={ isRemovingCoupon }
 								onClick={ () => {
 									removeCoupon( cartCoupon.code );
 								} }
@@ -278,7 +278,7 @@ const Cart = ( {
 						{ COUPONS_ENABLED && (
 							<TotalsCouponCodeInput
 								onSubmit={ applyCoupon }
-								isLoading={ applyingCoupon !== '' }
+								isLoading={ isApplyingCoupon }
 							/>
 						) }
 						<TotalsItem
