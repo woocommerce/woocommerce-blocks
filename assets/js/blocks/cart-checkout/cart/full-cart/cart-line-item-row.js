@@ -80,7 +80,7 @@ const CartLineItemRow = ( { lineItem } ) => {
 			</div>
 		);
 		saleBadge = (
-			<div className="wc-block-cart-item__discount-badge">
+			<div className="wc-block-cart-item__sale-badge">
 				{ sprintf(
 					/* translators: %s discount amount */
 					__( 'Save %s!', 'woo-gutenberg-products-block' ),
