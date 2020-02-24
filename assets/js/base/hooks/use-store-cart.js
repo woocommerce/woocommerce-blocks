@@ -1,18 +1,10 @@
+/** @typedef { import('@woocommerce/type-defs/hooks').StoreCart } StoreCart */
+
 /**
  * External dependencies
  */
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
-
-const defaultStoreCartData = {
-	cartCoupons: [],
-	cartItems: [],
-	cartItemsCount: 0,
-	cartItemsWeight: 0,
-	cartNeedsShipping: true,
-	cartTotals: [],
-	cartIsLoading: true,
-};
 
 /**
  * This is a custom hook that is wired up to the `wc/store/cart` data
@@ -24,10 +16,7 @@ const defaultStoreCartData = {
  *                                        returned and internal selects will not
  *                                        fire.
  *
- * @return {Object} This hook will return an object with two properties:
- *                  - cartData  An array of cart data returned.
- *                  - isLoading A boolean indicating whether the cart is
- *                              loading (true) or not.
+ * @return {StoreCart} Object containing cart data.
  */
 export const useStoreCart = ( options = { shouldSelect: true } ) => {
 	const { shouldSelect } = options;
@@ -57,7 +46,16 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 		[ shouldSelect ]
 	);
 	if ( results === null ) {
-		return defaultStoreCartData;
+		return {
+			cartCoupons: [],
+			cartItems: [],
+			cartItemsCount: 0,
+			cartItemsWeight: 0,
+			cartNeedsShipping: true,
+			cartTotals: [],
+			cartIsLoading: true,
+			cartErrors: [],
+		};
 	}
 	return results;
 };
