@@ -3,7 +3,6 @@
  */
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
-import { useRef } from '@wordpress/element';
 
 const defaultStoreCartData = {
 	cartCoupons: [],
@@ -32,7 +31,6 @@ const defaultStoreCartData = {
  */
 export const useStoreCart = ( options = { shouldSelect: true } ) => {
 	const { shouldSelect } = options;
-	const currentResults = useRef( defaultStoreCartData );
 
 	const results = useSelect(
 		( select ) => {
@@ -46,11 +44,11 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 			);
 
 			return {
-				cartCoupons: cartData.coupons || [],
-				cartItems: cartData.items || [],
-				cartItemsCount: cartData.itemsCount || 0,
-				cartItemsWeight: cartData.itemsWeight || 0,
-				cartNeedsShipping: cartData.needsShipping || true,
+				cartCoupons: cartData.coupons,
+				cartItems: cartData.items,
+				cartItemsCount: cartData.itemsCount,
+				cartItemsWeight: cartData.itemsWeight,
+				cartNeedsShipping: cartData.needsShipping,
 				cartTotals: store.getCartTotals(),
 				cartIsLoading,
 				cartErrors: cartData.errors,
@@ -58,10 +56,8 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 		},
 		[ shouldSelect ]
 	);
-	// if selector was not bailed, then update current results. Otherwise return
-	// previous results
-	if ( results !== null ) {
-		currentResults.current = results;
+	if ( results === null ) {
+		return defaultStoreCartData;
 	}
-	return currentResults.current;
+	return results;
 };

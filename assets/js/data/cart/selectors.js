@@ -5,7 +5,14 @@
  * @return {Object} The data to return.
  */
 export const getCartData = ( state ) => {
-	return state;
+	return {
+		coupons: state.coupons || [],
+		items: state.items || [],
+		itemsCount: state.itemsCount || 0,
+		itemsWeight: state.itemsWeight || 0,
+		needsShipping: state.needsShipping || true,
+		errors: state.errors || [],
+	};
 };
 
 /**
