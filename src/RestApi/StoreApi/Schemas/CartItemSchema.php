@@ -180,6 +180,55 @@ class CartItemSchema extends AbstractSchema {
 					],
 				],
 			],
+			'prices'              => [
+				'description' => __( 'Price data for the product in the current line item, provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
+				'type'        => 'object',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+				'properties'  => array_merge(
+					$this->get_store_currency_properties(),
+					[
+						'price'         => [
+							'description' => __( 'Current product price.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+						'regular_price' => [
+							'description' => __( 'Regular product price', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+						'sale_price'    => [
+							'description' => __( 'Sale product price, if applicable.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+						'price_range'   => [
+							'description' => __( 'Price range, if applicable.', 'woo-gutenberg-products-block' ),
+							'type'        => [ 'object', 'null' ],
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+							'properties'  => [
+								'min_amount' => [
+									'description' => __( 'Price amount.', 'woo-gutenberg-products-block' ),
+									'type'        => 'string',
+									'context'     => [ 'view', 'edit' ],
+									'readonly'    => true,
+								],
+								'max_amount' => [
+									'description' => __( 'Price amount.', 'woo-gutenberg-products-block' ),
+									'type'        => 'string',
+									'context'     => [ 'view', 'edit' ],
+									'readonly'    => true,
+								],
+							],
+						],
+					]
+				),
+			],
 			'totals'              => [
 				'description' => __( 'Item total amounts provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
