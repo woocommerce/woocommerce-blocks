@@ -152,9 +152,9 @@ const Cart = ( {
 						isLoading={ removingCoupon !== '' }
 						showSpinner={ false }
 					>
-						{ cartCoupons.map( ( cartCoupon, index ) => (
+						{ cartCoupons.map( ( cartCoupon ) => (
 							<button
-								key={ 'coupon-' + index }
+								key={ 'coupon-' + cartCoupon.code }
 								disabled={ removingCoupon }
 								onClick={ () => {
 									removeCoupon( cartCoupon.code );
