@@ -3,7 +3,6 @@
 /**
  * External dependencies
  */
-import { useRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 
@@ -22,14 +21,6 @@ import { useStoreCart } from './use-store-cart';
  */
 export const useStoreCartCoupons = () => {
 	const { cartCoupons, cartIsLoading } = useStoreCart();
-	const currentResults = useRef( {
-		appliedCoupons: cartCoupons,
-		isLoading: cartIsLoading,
-		applyCoupon: () => {},
-		removeCoupon: () => {},
-		applyingCoupon: '',
-		removingCoupon: '',
-	} );
 
 	const results = useSelect( ( select, { dispatch } ) => {
 		const store = select( storeKey );
@@ -38,18 +29,16 @@ export const useStoreCartCoupons = () => {
 		const { applyCoupon, removeCoupon } = dispatch( storeKey );
 
 		return {
-			appliedCoupons: cartCoupons,
-			isLoading: cartIsLoading,
 			applyCoupon,
 			removeCoupon,
 			applyingCoupon,
 			removingCoupon,
 		};
 	}, [] );
-	// if selector was not bailed, then update current results. Otherwise return
-	// previous results
-	if ( results !== null ) {
-		currentResults.current = results;
-	}
-	return currentResults.current;
+
+	return {
+		appliedCoupons: cartCoupons,
+		isLoading: cartIsLoading,
+		...results,
+	};
 };
