@@ -189,7 +189,7 @@ class CartItemSchema extends AbstractSchema {
 					$this->get_store_currency_properties(),
 					[
 						'line_subtotal'     => [
-							'description' => __( 'Line price subtotal.', 'woo-gutenberg-products-block' ),
+							'description' => __( 'Line price subtotal (excludes coupons; includes any active sale pricing).', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
