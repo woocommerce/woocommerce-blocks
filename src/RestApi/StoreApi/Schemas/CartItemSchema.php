@@ -201,7 +201,7 @@ class CartItemSchema extends AbstractSchema {
 							'readonly'    => true,
 						],
 						'line_total'        => [
-							'description' => __( 'Line price total.', 'woo-gutenberg-products-block' ),
+							'description' => __( 'Line price total (includes coupons and sale pricing).', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
