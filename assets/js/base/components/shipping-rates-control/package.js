@@ -33,14 +33,15 @@ const Package = ( {
 				selected={ selected }
 			/>
 			{ showItems && (
-				<small className="wc-block-shipping-rates-control__package-items">
-					{ Object.values( shippingRate.items ).map( ( v, i ) => {
+				<ul className="wc-block-shipping-rates-control__package-items">
+					{ Object.values( shippingRate.items ).map( ( v ) => {
 						const name = decodeEntities( v.name );
 						const quantity = v.quantity;
-						const displayComma =
-							i < Object.values( shippingRate.items ).length - 1;
 						return (
-							<Fragment key={ name }>
+							<li
+								key={ name }
+								className="wc-block-shipping-rates-control__package-item"
+							>
 								<Label
 									label={ `${ name } ×${ quantity }` }
 									screenReaderLabel={ sprintf(
@@ -55,11 +56,10 @@ const Package = ( {
 										quantity
 									) }
 								/>
-								{ displayComma && ', ' }
-							</Fragment>
+							</li>
 						);
 					} ) }
-				</small>
+				</ul>
 			) }
 		</Fragment>
 	);
