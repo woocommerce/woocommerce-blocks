@@ -50,11 +50,8 @@ const CartLineItemRow = ( { lineItem } ) => {
 		variation,
 		quantity,
 		low_stock_remaining: lowStockRemaining,
-		totals,
 		prices,
 	} = lineItem;
-	const regularPrice = getPriceNumber( prices.regular_price );
-	const total = getPriceNumber( totals.line_total );
 
 	const imageProps = {};
 	if ( images && images.length ) {
@@ -67,12 +64,13 @@ const CartLineItemRow = ( { lineItem } ) => {
 	const [ lineQuantity, setLineQuantity ] = useState( quantity );
 	const currency = getCurrency();
 
-	const lineFullPrice = regularPrice * lineQuantity;
-	const discountAmount = lineFullPrice - total;
+	const lineFullPrice = getPriceNumber( prices.regular_price ) * lineQuantity;
+	const purchasePrice = getPriceNumber( prices.price ) * lineQuantity;
+	const saleDiscountAmount = lineFullPrice - purchasePrice;
 
 	let fullPrice = null,
-		discountBadge = null;
-	if ( discountAmount > 0 ) {
+		saleBadge = null;
+	if ( saleDiscountAmount > 0 ) {
 		fullPrice = (
 			<div className="wc-block-cart-item__full-price">
 				<FormattedMonetaryAmount
@@ -81,12 +79,12 @@ const CartLineItemRow = ( { lineItem } ) => {
 				/>
 			</div>
 		);
-		discountBadge = (
+		saleBadge = (
 			<div className="wc-block-cart-item__discount-badge">
 				{ sprintf(
 					/* translators: %s discount amount */
 					__( 'Save %s!', 'woo-gutenberg-products-block' ),
-					formatPrice( discountAmount, currency )
+					formatPrice( saleDiscountAmount, currency )
 				) }
 			</div>
 		);
@@ -152,10 +150,10 @@ const CartLineItemRow = ( { lineItem } ) => {
 				<div className="wc-block-cart-item__line-total">
 					<FormattedMonetaryAmount
 						currency={ currency }
-						value={ total }
+						value={ purchasePrice }
 					/>
 				</div>
-				{ discountBadge }
+				{ saleBadge }
 			</td>
 		</tr>
 	);
