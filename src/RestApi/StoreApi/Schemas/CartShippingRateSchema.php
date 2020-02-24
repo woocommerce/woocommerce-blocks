@@ -89,7 +89,7 @@ class CartShippingRateSchema extends AbstractSchema {
 						],
 						'quantity' => [
 							'description' => __( 'Quantity of the item in the current package.', 'woo-gutenberg-products-block' ),
-							'type'        => 'integer',
+							'type'        => 'number',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
 						],
