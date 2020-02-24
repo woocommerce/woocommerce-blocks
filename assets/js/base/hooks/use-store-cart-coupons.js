@@ -1,3 +1,5 @@
+/** @typedef { import('@woocommerce/type-defs/hooks').StoreCartCoupon } StoreCartCoupon */
+
 /**
  * External dependencies
  */
@@ -15,11 +17,8 @@ import { useStoreCart } from './use-store-cart';
  * action for adding a coupon _to_ the cart.
  * See also: https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/master/src/RestApi/StoreApi
  *
- * @return {Object} This hook will return an object with these properties:
- *                  - appliedCoupons List of applied coupons from the API.
- *                  - isLoading True when coupon data is being loaded.
- *                  - applyCoupon Callback for applying a coupon by code.
- *                  - applyingCoupon True when a coupon is being applied.
+ * @return {StoreCartCoupon} An object exposing data and actions from/for the
+ * store api /cart/coupons endpoint.
  */
 export const useStoreCartCoupons = () => {
 	const { cartCoupons, cartIsLoading } = useStoreCart();
