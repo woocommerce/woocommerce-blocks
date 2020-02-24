@@ -1,28 +1,70 @@
+/** @typedef { import('@woocommerce/type-defs/cart').CartData } CartData */
+/** @typedef { import('@woocommerce/type-defs/cart').CartTotals } CartTotals */
+
 /**
- * Retrieves add cart data from the state.
+ * Retrieves cart data from state.
  *
  * @param {Object} state The current state.
- * @return {Object} The data to return.
+ * @return {CartData} The data to return.
  */
 export const getCartData = ( state ) => {
-	return {
-		coupons: state.coupons || [],
-		items: state.items || [],
-		itemsCount: state.itemsCount || 0,
-		itemsWeight: state.itemsWeight || 0,
-		needsShipping: state.needsShipping || true,
-		errors: state.errors || [],
-	};
+	return state.cartData;
 };
 
 /**
- * Retrieves add cart data from the state.
+ * Retrieves cart totals from state.
+ *
+ * @param {Object} state The current state.
+ * @return {CartTotals} The data to return.
+ */
+export const getCartTotals = ( state ) => {
+	return (
+		state.cartData.totals || {
+			currency_code: '',
+			currency_symbol: '',
+			currency_minor_unit: 2,
+			currency_decimal_separator: '.',
+			currency_thousand_separator: ',',
+			currency_prefix: '',
+			currency_suffix: '',
+			total_items: 0,
+			total_items_tax: 0,
+			total_fees: 0,
+			total_fees_tax: 0,
+			total_discount: 0,
+			total_discount_tax: 0,
+			total_shipping: 0,
+			total_shipping_tax: 0,
+			total_price: 0,
+			total_tax: 0,
+			tax_lines: [],
+		}
+	);
+};
+
+/**
+ * Retrieves cart meta from state.
  *
  * @param {Object} state The current state.
  * @return {Object} The data to return.
  */
-export const getCartTotals = ( state ) => {
-	return state.totals || {};
+export const getCartMeta = ( state ) => {
+	return (
+		state.metaData || {
+			applyingCoupon: '',
+			removingCoupon: '',
+		}
+	);
+};
+
+/**
+ * Retrieves cart errors from state.
+ *
+ * @param {Object} state The current state.
+ * @return {Array} Array of errors.
+ */
+export const getCartErrors = ( state ) => {
+	return state.errors || [];
 };
 
 /**
@@ -32,7 +74,7 @@ export const getCartTotals = ( state ) => {
  * @return {boolean} True if a coupon is being applied.
  */
 export const isApplyingCoupon = ( state ) => {
-	return !! state.applyingCoupon;
+	return !! state.metaData.applyingCoupon;
 };
 
 /**
@@ -42,7 +84,7 @@ export const isApplyingCoupon = ( state ) => {
  * @return {string} The data to return.
  */
 export const getCouponBeingApplied = ( state ) => {
-	return state.applyingCoupon || '';
+	return state.metaData.applyingCoupon || '';
 };
 
 /**
@@ -52,7 +94,7 @@ export const getCouponBeingApplied = ( state ) => {
  * @return {boolean} True if a coupon is being removed.
  */
 export const isRemovingCoupon = ( state ) => {
-	return !! state.removingCoupon;
+	return !! state.metaData.removingCoupon;
 };
 
 /**
@@ -62,5 +104,5 @@ export const isRemovingCoupon = ( state ) => {
  * @return {string} The data to return.
  */
 export const getCouponBeingRemoved = ( state ) => {
-	return state.removingCoupon || '';
+	return state.metaData.removingCoupon || '';
 };

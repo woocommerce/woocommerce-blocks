@@ -28,6 +28,8 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 			}
 			const store = select( storeKey );
 			const cartData = store.getCartData();
+			const cartErrors = store.getCartErrors();
+			const cartTotals = store.getCartTotals();
 			const cartIsLoading = ! store.hasFinishedResolution(
 				'getCartData'
 			);
@@ -38,9 +40,9 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 				cartItemsCount: cartData.itemsCount,
 				cartItemsWeight: cartData.itemsWeight,
 				cartNeedsShipping: cartData.needsShipping,
-				cartTotals: store.getCartTotals(),
+				cartTotals,
 				cartIsLoading,
-				cartErrors: cartData.errors,
+				cartErrors,
 			};
 		},
 		[ shouldSelect ]
@@ -52,7 +54,7 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 			cartItemsCount: 0,
 			cartItemsWeight: 0,
 			cartNeedsShipping: true,
-			cartTotals: [],
+			cartTotals: {},
 			cartIsLoading: true,
 			cartErrors: [],
 		};
