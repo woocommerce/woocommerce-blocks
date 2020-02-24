@@ -12,7 +12,7 @@ import './style.scss';
 const Packages = ( {
 	className,
 	noResultsMessage,
-	onChange,
+	onChange = () => {},
 	renderOption,
 	selected = [],
 	shippingRates,
