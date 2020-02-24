@@ -99,13 +99,13 @@ const CartEditor = ( { className, attributes, setAttributes } ) => {
 									<FullCart
 										cartItems={ previewCart.items }
 										cartTotals={ previewCart.totals }
-										shippingRates={ previewShippingRates }
 										isShippingCostHidden={
 											isShippingCostHidden
 										}
 										isShippingCalculatorEnabled={
 											isShippingCalculatorEnabled
 										}
+										shippingRates={ previewShippingRates }
 									/>
 								</Disabled>
 							</>
