@@ -238,25 +238,25 @@ class CartItemSchema extends AbstractSchema {
 					$this->get_store_currency_properties(),
 					[
 						'line_subtotal'     => [
-							'description' => __( 'Line price subtotal (excludes coupons; includes any active sale pricing).', 'woo-gutenberg-products-block' ),
+							'description' => __( 'Line subtotal (the price of the product before coupon discounts have been applied).', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
 						],
 						'line_subtotal_tax' => [
-							'description' => __( 'Line price subtotal tax.', 'woo-gutenberg-products-block' ),
+							'description' => __( 'Line subtotal tax.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
 						],
 						'line_total'        => [
-							'description' => __( 'Line price total (includes coupons and sale pricing).', 'woo-gutenberg-products-block' ),
+							'description' => __( 'Line total (the price of the product after coupon discounts have been applied).', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
 						],
 						'line_total_tax'    => [
-							'description' => __( 'Line price total tax.', 'woo-gutenberg-products-block' ),
+							'description' => __( 'Line total tax.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
