@@ -101,6 +101,30 @@ class Cart extends TestCase {
 		$data     = $response->get_data();
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( '100', $data['totals']->total_discount );
+
+		// Test coupons with different case.
+		$newcoupon = CouponHelper::create_coupon( 'testCoupon' );
+		$request = new WP_REST_Request( 'POST', '/wc/store/cart/apply-coupon' );
+		$request->set_body_params(
+			array(
+				'code' => 'testCoupon',
+			)
+		);
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+		$this->assertEquals( 200, $response->get_status() );
+
+		// Test coupons with special chars in the code.
+		$newcoupon = CouponHelper::create_coupon( '$5 off' );
+		$request = new WP_REST_Request( 'POST', '/wc/store/cart/apply-coupon' );
+		$request->set_body_params(
+			array(
+				'code' => '$5 off',
+			)
+		);
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+		$this->assertEquals( 200, $response->get_status() );
 	}
 
 	/**
