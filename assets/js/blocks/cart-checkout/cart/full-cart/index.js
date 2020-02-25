@@ -204,50 +204,6 @@ const Cart = ( {
 	const totalsCurrency = getCurrencyFromPriceResponse( cartTotals );
 	const totalRowsConfig = getTotalRowsConfig();
 
-	const ShippingCalculatorOptions = () => (
-		<fieldset className="wc-block-cart__shipping-options-fieldset">
-			<legend className="screen-reader-text">
-				{ __(
-					'Choose the shipping method.',
-					'woo-gutenberg-products-block'
-				) }
-			</legend>
-			{ shippingRates ? (
-				<Packages
-					className="wc-block-cart__shipping-options"
-					renderOption={ renderShippingRatesControlOption }
-					shippingRates={ shippingRates }
-					selected={ [
-						shippingRates[ 0 ].shipping_rates[ 0 ].rate_id,
-					] }
-				/>
-			) : (
-				<ShippingRatesControl
-					className="wc-block-cart__shipping-options"
-					address={
-						shippingCalculatorAddress.country
-							? {
-									city: shippingCalculatorAddress.city,
-									state: shippingCalculatorAddress.state,
-									postcode:
-										shippingCalculatorAddress.postcode,
-									country: shippingCalculatorAddress.country,
-							  }
-							: null
-					}
-					noResultsMessage={ __(
-						'No shipping options were found.',
-						'woo-gutenberg-products-block'
-					) }
-					selected={ selectedShippingRate }
-					renderOption={ renderShippingRatesControlOption }
-					onChange={ ( newSelectedShippingOption ) =>
-						setSelectedShippingRate( newSelectedShippingOption )
-					}
-				/>
-			) }
-		</fieldset>
-	);
 	return (
 		<div className="wc-block-cart">
 			<div className="wc-block-cart__main">
@@ -274,7 +230,62 @@ const Cart = ( {
 								/>
 							)
 						) }
-						{ showShippingCosts && <ShippingCalculatorOptions /> }
+						{ showShippingCosts && (
+							<fieldset className="wc-block-cart__shipping-options-fieldset">
+								<legend className="screen-reader-text">
+									{ __(
+										'Choose the shipping method.',
+										'woo-gutenberg-products-block'
+									) }
+								</legend>
+								{ shippingRates ? (
+									<Packages
+										className="wc-block-cart__shipping-options"
+										renderOption={
+											renderShippingRatesControlOption
+										}
+										shippingRates={ shippingRates }
+										selected={ [
+											shippingRates[ 0 ]
+												.shipping_rates[ 0 ].rate_id,
+										] }
+									/>
+								) : (
+									<ShippingRatesControl
+										className="wc-block-cart__shipping-options"
+										address={
+											shippingCalculatorAddress.country
+												? {
+														city:
+															shippingCalculatorAddress.city,
+														state:
+															shippingCalculatorAddress.state,
+														postcode:
+															shippingCalculatorAddress.postcode,
+														country:
+															shippingCalculatorAddress.country,
+												  }
+												: null
+										}
+										noResultsMessage={ __(
+											'No shipping options were found.',
+											'woo-gutenberg-products-block'
+										) }
+										selected={ selectedShippingRate }
+										renderOption={
+											renderShippingRatesControlOption
+										}
+										onChange={ (
+											newSelectedShippingOption
+										) =>
+											setSelectedShippingRate(
+												newSelectedShippingOption
+											)
+										}
+									/>
+								) }
+							</fieldset>
+						) }
 						{ COUPONS_ENABLED && (
 							<TotalsCouponCodeInput
 								onSubmit={ applyCoupon }
