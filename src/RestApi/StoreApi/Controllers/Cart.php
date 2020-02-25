@@ -103,6 +103,20 @@ class Cart extends RestController {
 				'schema' => [ $this, 'get_public_item_schema' ],
 			]
 		);
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/select-shipping',
+			[
+				'args'   => [
+					'context' => $this->get_context_param( [ 'default' => 'view' ] ),
+				],
+				[
+					'methods'  => 'POST',
+					'callback' => [ $this, 'select_shipping' ],
+				],
+				'schema' => [ $this, 'get_public_item_schema' ],
+			]
+		);
 	}
 
 	/**
