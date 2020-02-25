@@ -32,5 +32,9 @@
 		&:focus {
 			color: #d94f4f;
 		}
+		&:disabled {
+			color: $core-grey-dark-100;
+			cursor: not-allowed;
+		}
 	}
 }
