@@ -8,6 +8,7 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use Automattic\WooCommerce\Blocks\Package;
+use \WC_Shipping_Zone as ShippingZone;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -61,6 +62,14 @@ class Checkout extends AbstractBlock {
 		}
 		if ( ! $data_registry->exists( 'shippingStates' ) ) {
 			$data_registry->add( 'shippingStates', WC()->countries->get_shipping_country_states() );
+		}
+		if ( function_exists( 'get_current_screen' ) ) {
+			$screen = get_current_screen();
+			if ( $screen->is_block_editor() && ! $data_registry->exists( 'shippingMethodsExist' ) ) {
+				$worldwide = new ShippingZone( 0 );
+				$methods   = $worldwide->get_shipping_methods( true );
+				$data_registry->add( 'shippingMethodsExist', count( $methods ) > 0 );
+			}
 		}
 		\Automattic\WooCommerce\Blocks\Assets::register_block_script( $this->block_name . '-frontend', $this->block_name . '-block-frontend' );
 		return $content;
