@@ -7,6 +7,21 @@ import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
 
 /**
+ * @constant
+ * @type  {StoreCart} Object containing cart data.
+ */
+const defaultCartData = {
+	cartCoupons: [],
+	cartItems: [],
+	cartItemsCount: 0,
+	cartItemsWeight: 0,
+	cartNeedsShipping: true,
+	cartTotals: {},
+	cartIsLoading: true,
+	cartErrors: [],
+};
+
+/**
  * This is a custom hook that is wired up to the `wc/store/cart` data
  * store.
  *
@@ -48,16 +63,7 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 		[ shouldSelect ]
 	);
 	if ( results === null ) {
-		return {
-			cartCoupons: [],
-			cartItems: [],
-			cartItemsCount: 0,
-			cartItemsWeight: 0,
-			cartNeedsShipping: true,
-			cartTotals: {},
-			cartIsLoading: true,
-			cartErrors: [],
-		};
+		return defaultCartData;
 	}
 	return results;
 };
