@@ -33,7 +33,6 @@ const settings = {
 	supports: {
 		align: [ 'wide', 'full' ],
 		html: false,
-		multiple: false,
 	},
 	example,
 	attributes: {
