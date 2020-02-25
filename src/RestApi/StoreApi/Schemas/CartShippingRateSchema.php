@@ -96,6 +96,12 @@ class CartShippingRateSchema extends AbstractSchema {
 					],
 				],
 			],
+			'name'           => [
+				'description' => __( 'Name of the package.', 'woo-gutenberg-products-block' ),
+				'type'        => 'string',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+			],
 			'shipping_rates' => [
 				'description' => __( 'List of shipping rates.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
@@ -214,6 +220,15 @@ class CartShippingRateSchema extends AbstractSchema {
 				]
 			),
 			'items'          => $items,
+			'name'           => apply_filters(
+				'woocommerce_shipping_package_name',
+				( $package['index'] > 0 ) ?
+					/* translators: %d: shipping package number */
+					sprintf( _x( 'Shipping %d', 'shipping packages', 'woo-gutenberg-products-block' ), ( $package['index'] + 1 ) ) :
+					_x( 'Shipping', 'shipping packages', 'woo-gutenberg-products-block' ),
+				$package['index'],
+				$package
+			),
 			'shipping_rates' => array_values( array_map( [ $this, 'get_rate_response' ], $package['rates'] ) ),
 		];
 	}
