@@ -71,34 +71,34 @@ class Cart extends RestController {
 		);
 		register_rest_route(
 			$this->namespace,
-			'/' . $this->rest_base . '/apply-coupon/(?P<code>[\w-]+)',
+			'/' . $this->rest_base . '/apply-coupon',
 			[
-				'args'   => [
-					'code' => [
-						'description' => __( 'Unique identifier for the coupon within the cart.', 'woo-gutenberg-products-block' ),
-						'type'        => 'string',
-					],
-				],
 				[
 					'methods'  => 'POST',
 					'callback' => [ $this, 'apply_coupon' ],
+					'args'     => [
+						'code' => [
+							'description' => __( 'Unique identifier for the coupon within the cart.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+						],
+					],
 				],
 				'schema' => [ $this, 'get_public_item_schema' ],
 			]
 		);
 		register_rest_route(
 			$this->namespace,
-			'/' . $this->rest_base . '/remove-coupon/(?P<code>[\w-]+)',
+			'/' . $this->rest_base . '/remove-coupon',
 			[
-				'args'   => [
-					'code' => [
-						'description' => __( 'Unique identifier for the coupon within the cart.', 'woo-gutenberg-products-block' ),
-						'type'        => 'string',
-					],
-				],
 				[
 					'methods'  => 'POST',
 					'callback' => [ $this, 'remove_coupon' ],
+					'args'     => [
+						'code' => [
+							'description' => __( 'Unique identifier for the coupon within the cart.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+						],
+					],
 				],
 				'schema' => [ $this, 'get_public_item_schema' ],
 			]
