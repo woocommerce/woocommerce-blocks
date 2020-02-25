@@ -14,6 +14,7 @@ import ShippingRatesControl, {
 import ShippingCalculator from '@woocommerce/base-components/shipping-calculator';
 import ShippingLocation from '@woocommerce/base-components/shipping-location';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
+import Chip from '@woocommerce/base-components/chip';
 import {
 	COUPONS_ENABLED,
 	SHIPPING_ENABLED,
@@ -143,7 +144,7 @@ const Cart = ( {
 					( DISPLAY_PRICES_INCLUDING_TAXES
 						? totalDiscount + totalDiscountTax
 						: totalDiscount ) * -1,
-				description: (
+				description: cartCoupons.length !== 0 && (
 					<LoadingMask
 						screenReaderLabel={ __(
 							'Removing coupon…',
@@ -152,17 +153,20 @@ const Cart = ( {
 						isLoading={ isRemovingCoupon }
 						showSpinner={ false }
 					>
-						{ cartCoupons.map( ( cartCoupon ) => (
-							<button
-								key={ 'coupon-' + cartCoupon.code }
-								disabled={ isRemovingCoupon }
-								onClick={ () => {
-									removeCoupon( cartCoupon.code );
-								} }
-							>
-								{ cartCoupon.code }
-							</button>
-						) ) }
+						<ul className="wc-block-cart-coupon-list">
+							{ cartCoupons.map( ( cartCoupon ) => (
+								<Chip
+									key={ 'coupon-' + cartCoupon.code }
+									className="wc-block-cart-coupon-list__item"
+									text={ cartCoupon.code }
+									disabled={ isRemovingCoupon }
+									onRemove={ () => {
+										removeCoupon( cartCoupon.code );
+									} }
+									radius="large"
+								/>
+							) ) }
+						</ul>
 					</LoadingMask>
 				),
 			} );
