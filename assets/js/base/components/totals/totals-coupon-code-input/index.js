@@ -59,29 +59,31 @@ const TotalsCouponCodeInput = ( {
 				isLoading={ isLoading }
 				showSpinner={ false }
 			>
-				<PanelRow className="wc-block-coupon-code__row">
-					<TextInput
-						id={ `wc-block-coupon-code__input-${ componentId }` }
-						className="wc-block-coupon-code__input"
-						label={ __(
-							'Enter code',
-							'woo-gutenberg-products-block'
-						) }
-						value={ couponValue }
-						onChange={ ( newCouponValue ) =>
-							setCouponValue( newCouponValue )
-						}
-					/>
-					<Button
-						className="wc-block-coupon-code__button"
-						disabled={ isLoading }
-						onClick={ () => {
-							onSubmit( couponValue );
-						} }
-						type="submit"
-					>
-						{ __( 'Apply', 'woo-gutenberg-products-block' ) }
-					</Button>
+				<PanelRow>
+					<form className="wc-block-coupon-code__form">
+						<TextInput
+							id={ `wc-block-coupon-code__input-${ componentId }` }
+							className="wc-block-coupon-code__input"
+							label={ __(
+								'Enter code',
+								'woo-gutenberg-products-block'
+							) }
+							value={ couponValue }
+							onChange={ ( newCouponValue ) =>
+								setCouponValue( newCouponValue )
+							}
+						/>
+						<Button
+							className="wc-block-coupon-code__button"
+							disabled={ isLoading }
+							onClick={ () => {
+								onSubmit( couponValue );
+							} }
+							type="submit"
+						>
+							{ __( 'Apply', 'woo-gutenberg-products-block' ) }
+						</Button>
+					</form>
 				</PanelRow>
 			</LoadingMask>
 		</PanelBody>
