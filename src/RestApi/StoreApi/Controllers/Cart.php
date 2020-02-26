@@ -146,7 +146,10 @@ class Cart extends RestController {
 			'/' . $this->rest_base . '/select-shipping',
 			[
 				'args'   => [
-					'context' => $this->get_context_param( [ 'default' => 'view' ] ),
+					'shipping_rates' => [
+						'description' => __( 'Array of selected shipping rates ids.', 'woo-gutenberg-products-block' ),
+						'type'        => 'array',
+					],
 				],
 				[
 					'methods'  => 'POST',
@@ -177,8 +180,9 @@ class Cart extends RestController {
 			return new RestError( 'woocommerce_rest_cart_error', __( 'Unable to retrieve cart.', 'woo-gutenberg-products-block' ), array( 'status' => 500 ) );
 		}
 
+		$rates_ids = wc_clean( wp_unslash( $request['shipping_rates'] ) );
 		try {
-			$controller->select_shipping_rate( $request['shipping_rate'] );
+			$controller->select_shipping_rate( $rates_ids );
 		} catch ( RestException $e ) {
 			return new RestError( $e->getErrorCode(), $e->getMessage(), array( 'status' => $e->getCode() ) );
 		}
