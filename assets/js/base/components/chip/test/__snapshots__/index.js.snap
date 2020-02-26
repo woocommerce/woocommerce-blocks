@@ -4,7 +4,17 @@ exports[`Chip with custom wrapper should render a chip made up of a div instead 
 <div
   className="wc-block-components-chip wc-block-components-chip--radius-small"
 >
-  Test
+  <span
+    aria-hidden="true"
+    className="wc-block-components-chip__text"
+  >
+    Test
+  </span>
+  <span
+    className="screen-reader-text"
+  >
+    Test
+  </span>
   <button
     aria-label="Remove \\"Test\\""
     className="wc-block-components-chip__remove"
@@ -20,7 +30,17 @@ exports[`Chip without custom wrapper should render defined radius 1`] = `
 <li
   className="wc-block-components-chip wc-block-components-chip--radius-large"
 >
-  Test
+  <span
+    aria-hidden="true"
+    className="wc-block-components-chip__text"
+  >
+    Test
+  </span>
+  <span
+    className="screen-reader-text"
+  >
+    Test
+  </span>
   <button
     aria-label="Remove \\"Test\\""
     className="wc-block-components-chip__remove"
@@ -36,7 +56,17 @@ exports[`Chip without custom wrapper should render text and the remove button 1`
 <li
   className="wc-block-components-chip wc-block-components-chip--radius-small"
 >
-  Test
+  <span
+    aria-hidden="true"
+    className="wc-block-components-chip__text"
+  >
+    Test
+  </span>
+  <span
+    className="screen-reader-text"
+  >
+    Test
+  </span>
   <button
     aria-label="Remove \\"Test\\""
     className="wc-block-components-chip__remove"
@@ -52,7 +82,17 @@ exports[`Chip without custom wrapper should render with disabled remove button 1
 <li
   className="wc-block-components-chip wc-block-components-chip--radius-small"
 >
-  Test
+  <span
+    aria-hidden="true"
+    className="wc-block-components-chip__text"
+  >
+    Test
+  </span>
+  <span
+    className="screen-reader-text"
+  >
+    Test
+  </span>
   <button
     aria-label="Remove \\"Test\\""
     className="wc-block-components-chip__remove"

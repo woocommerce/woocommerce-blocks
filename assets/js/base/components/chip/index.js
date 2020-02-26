@@ -36,7 +36,9 @@ const Chip = ( {
 	return (
 		// @ts-ignore
 		<Wrapper className={ wrapperClassName }>
-			<span aria-hidden="true">{ text }</span>
+			<span aria-hidden="true" className="wc-block-components-chip__text">
+				{ text }
+			</span>
 			<span className="screen-reader-text">
 				{ screenReaderText ? screenReaderText : text }
 			</span>
