@@ -295,7 +295,7 @@ const Block = ( { shippingRates = [], isEditor = false } ) => {
 							) }
 							stepNumber={ 3 }
 						>
-							{ shippingRates ? (
+							{ shippingRates.length > 0 ? (
 								<Packages
 									renderOption={
 										renderShippingRatesControlOption
