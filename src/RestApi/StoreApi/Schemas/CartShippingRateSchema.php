@@ -222,11 +222,11 @@ class CartShippingRateSchema extends AbstractSchema {
 			'items'          => $items,
 			'name'           => apply_filters(
 				'woocommerce_shipping_package_name',
-				( $package['index'] > 0 ) ?
+				( $package['key'] > 0 ) ?
 					/* translators: %d: shipping package number */
-					sprintf( _x( 'Shipping %d', 'shipping packages', 'woo-gutenberg-products-block' ), ( $package['index'] + 1 ) ) :
+					sprintf( _x( 'Shipping %d', 'shipping packages', 'woo-gutenberg-products-block' ), ( $package['key'] + 1 ) ) :
 					_x( 'Shipping', 'shipping packages', 'woo-gutenberg-products-block' ),
-				$package['index'],
+				$package['key'],
 				$package
 			),
 			'shipping_rates' => array_values( array_map( [ $this, 'get_rate_response' ], $package['rates'] ) ),

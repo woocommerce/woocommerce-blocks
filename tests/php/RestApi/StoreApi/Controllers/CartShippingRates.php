@@ -170,11 +170,11 @@ class CartShippingRates extends TestCase {
 	 * Test conversion of cart item to rest response.
 	 */
 	public function test_prepare_item_for_response() {
-		$controller           = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\CartShippingRates();
-		$packages             = wc()->shipping->calculate_shipping( wc()->cart->get_shipping_packages() );
-		$packages[0]['index'] = 0;
-		$response             = $controller->prepare_item_for_response( current( $packages ), [] );
-		$data                 = $response->get_data();
+		$controller         = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\CartShippingRates();
+		$packages           = wc()->shipping->calculate_shipping( wc()->cart->get_shipping_packages() );
+		$packages[0]['key'] = 0;
+		$response           = $controller->prepare_item_for_response( current( $packages ), [] );
+		$data               = $response->get_data();
 
 		$this->assertArrayHasKey( 'destination', $data );
 		$this->assertArrayHasKey( 'items', $data );
