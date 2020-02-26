@@ -1,3 +1,5 @@
+/** @typedef { import('@woocommerce/type-defs/hooks').StoreCartItems } StoreCartItems */
+
 /**
  * External dependencies
  */
@@ -13,6 +15,8 @@ import { useStoreCart } from './use-store-cart';
  * This is a custom hook for loading the Store API /cart/ endpoint and
  * actions for removing or changing item quantity.
  * See also: https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/master/src/RestApi/StoreApi
+ *
+ * @return {StoreCartItems} An object exposing data and actions relating to cart items.
  */
 export const useStoreCartItems = () => {
 	const { cartItems, cartIsLoading } = useStoreCart();
