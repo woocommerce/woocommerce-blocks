@@ -57,15 +57,17 @@ export const ProductImage = ( { image = {} } ) => {
  * Returns a low stock badge for a line item.
  */
 export const ProductLowStockBadge = ( { lowStockRemaining } ) => {
+	if ( ! lowStockRemaining ) {
+		return null;
+	}
+
 	return (
-		lowStockRemaining && (
-			<div className="wc-block-cart-item__low-stock-badge">
-				{ sprintf(
-					/* translators: %s stock amount (number of items in stock for product) */
-					__( '%s left in stock', 'woo-gutenberg-products-block' ),
-					lowStockRemaining
-				) }
-			</div>
-		)
+		<div className="wc-block-cart-item__low-stock-badge">
+			{ sprintf(
+				/* translators: %s stock amount (number of items in stock for product) */
+				__( '%s left in stock', 'woo-gutenberg-products-block' ),
+				lowStockRemaining
+			) }
+		</div>
 	);
 };
