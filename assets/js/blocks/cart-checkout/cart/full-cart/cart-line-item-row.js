@@ -13,7 +13,6 @@ import { Icon, trash } from '@woocommerce/icons';
  * Internal dependencies
  */
 import {
-	getPriceNumber,
 	ProductVariationDetails,
 	ProductImage,
 	ProductLowStockBadge,
@@ -35,8 +34,8 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 
 	const [ lineQuantity, setLineQuantity ] = useState( quantity );
 	const currency = getCurrency();
-	const regularPrice = getPriceNumber( prices.regular_price ) * lineQuantity;
-	const purchasePrice = getPriceNumber( prices.price ) * lineQuantity;
+	const regularPrice = parseInt( prices.regular_price, 10 ) * lineQuantity;
+	const purchasePrice = parseInt( prices.price, 10 ) * lineQuantity;
 	const saleAmount = regularPrice - purchasePrice;
 
 	return (
