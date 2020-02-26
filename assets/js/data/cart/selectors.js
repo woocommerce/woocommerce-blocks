@@ -112,7 +112,7 @@ export const getCouponBeingRemoved = ( state ) => {
  *
  * @param {Object} state The current state.
  * @param {string} cartItemKey Key for a cart item.
- * @return {Object} Cart item object.
+ * @return {Object} Cart item object, or undefined if not found.
  */
 export const getCartItem = ( state, cartItemKey ) => {
 	return state.cartData.items.find( cartItem => ( cartItem.key === cartItemKey ) );
