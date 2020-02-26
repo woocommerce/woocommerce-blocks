@@ -11,8 +11,8 @@ import { __, sprintf } from '@wordpress/i18n';
 import './style.scss';
 
 /**
- * Component used to render a "chip" -- that is a list of inline items, each
- * containing some text with an X button to remove/dismiss each chip.
+ * Component used to render a "chip" -- a list item containing some text with
+ * an X button to remove/dismiss each chip.
  *
  * Each chip defaults to a list element but this can be customized by providing
  * a wrapperElement.
