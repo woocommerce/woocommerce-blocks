@@ -34,12 +34,12 @@ export const ProductVariationDetails = ( { variation } ) => {
 export const ProductImage = ( { image = {} } ) => {
 	const imageProps = {
 		src: image.src || PLACEHOLDER_IMG_SRC,
-		alt: image.alt || '',
+		alt: decodeEntities( image.alt ) || '',
 		srcSet: image.srcset || '',
 		sizes: image.sizes || '',
 	};
 
-	return <img { ...imageProps } alt={ decodeEntities( imageProps.alt ) } />;
+	return <img { ...imageProps } alt={ imageProps.alt } />;
 };
 
 /**
