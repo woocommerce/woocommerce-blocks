@@ -64,7 +64,7 @@ class Checkout extends AbstractBlock {
 		}
 		if ( function_exists( 'get_current_screen' ) ) {
 			$screen = get_current_screen();
-			if ( $screen->is_block_editor() && ! $data_registry->exists( 'shippingMethodsExist' ) ) {
+			if ( $screen && $screen->is_block_editor() && ! $data_registry->exists( 'shippingMethodsExist' ) ) {
 				$methods_exist = wc_get_shipping_method_count() > 0;
 				$data_registry->add( 'shippingMethodsExist', $methods_exist );
 			}
