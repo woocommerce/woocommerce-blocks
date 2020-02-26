@@ -3,16 +3,30 @@
  */
 import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
+import { useMemo } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import CartLineItemRow from './cart-line-item-row';
 
-const CartLineItemsTable = ( { lineItems = [] } ) => {
-	const products = lineItems.map( ( lineItem ) => {
-		return <CartLineItemRow key={ lineItem.key } lineItem={ lineItem } />;
-	} );
+const CartLineItemsTable = ( { lineItems = [], isLoading = false } ) => {
+	const placeholderRows = useMemo( () => {
+		return [ ...Array( 3 ) ].map( ( _x, i ) => (
+			<CartLineItemRow key={ i } />
+		) );
+	}, [] );
+
+	const products = isLoading
+		? placeholderRows
+		: lineItems.map( ( lineItem ) => {
+				return (
+					<CartLineItemRow
+						key={ lineItem.key }
+						lineItem={ lineItem }
+					/>
+				);
+		  } );
 
 	return (
 		<table className="wc-block-cart-items">
@@ -43,6 +57,7 @@ CartLineItemsTable.propTypes = {
 			key: PropTypes.string.isRequired,
 		} )
 	),
+	isLoading: PropTypes.bool,
 };
 
 export default CartLineItemsTable;
