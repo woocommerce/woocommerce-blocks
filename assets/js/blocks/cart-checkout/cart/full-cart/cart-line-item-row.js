@@ -22,15 +22,15 @@ import {
 /**
  * Cart line item table row component.
  */
-const CartLineItemRow = ( { lineItem } ) => {
+const CartLineItemRow = ( { lineItem = {} } ) => {
 	const {
-		name,
-		summary,
-		permalink,
-		images,
-		variation,
-		quantity,
-		prices,
+		name = '',
+		summary = '',
+		permalink = '',
+		images = [],
+		variation = [],
+		quantity = 1,
+		prices = {},
 	} = lineItem;
 
 	const [ lineQuantity, setLineQuantity ] = useState( quantity );
