@@ -186,7 +186,7 @@ class CartSchema extends AbstractSchema {
 
 		return [
 			'coupons'           => array_values( array_map( [ $cart_coupon_schema, 'get_item_response' ], array_filter( $cart->get_applied_coupons() ) ) ),
-			'selected_shipping' => $cart->get_chosen_shipping_methods(),
+			'selected_shipping' => WC()->session->get( 'chosen_shipping_methods' ),
 			'items'             => array_values( array_map( [ $cart_item_schema, 'get_item_response' ], array_filter( $cart->get_cart() ) ) ),
 			'items_count'       => $cart->get_cart_contents_count(),
 			'items_weight'      => wc_get_weight( $cart->get_cart_contents_weight(), 'g' ),

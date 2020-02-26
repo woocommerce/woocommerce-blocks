@@ -216,7 +216,7 @@ class CartController {
 	 */
 	public function select_shipping_rate( $rate_ids ) {
 		$cart                    = $this->get_cart_instance();
-		$chosen_shipping_methods = WC()->session->get( 'chosen_shipping_methods' );
+		$chosen_shipping_methods = WC()->session->get( 'chosen_shipping_methods' ) ? WC()->session->get( 'chosen_shipping_methods' ) : array();
 		$posted_shipping_methods = $rate_ids ? wc_clean( wp_unslash( $rate_ids ) ) : array();
 
 		if ( empty( $posted_shipping_methods ) ) {
