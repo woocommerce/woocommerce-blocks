@@ -19,6 +19,7 @@ import './style.scss';
  */
 const Chip = ( {
 	text,
+	screenReaderText,
 	element = 'li',
 	className = '',
 	onRemove = () => {},
@@ -35,7 +36,10 @@ const Chip = ( {
 	return (
 		// @ts-ignore
 		<Wrapper className={ wrapperClassName }>
-			{ text }
+			<span aria-hidden="true">{ text }</span>
+			<span className="screen-reader-text">
+				{ screenReaderText ? screenReaderText : text }
+			</span>
 			<button
 				className="wc-block-components-chip__remove"
 				onClick={ onRemove }
@@ -53,7 +57,8 @@ const Chip = ( {
 };
 
 Chip.propTypes = {
-	text: PropTypes.node.isRequired,
+	text: PropTypes.string.isRequired,
+	screenReaderText: PropTypes.string,
 	element: PropTypes.elementType,
 	className: PropTypes.string,
 	onRemove: PropTypes.func,

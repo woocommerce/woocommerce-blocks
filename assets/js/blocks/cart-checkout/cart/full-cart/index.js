@@ -2,7 +2,7 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import { __ } from '@wordpress/i18n';
+import { sprintf, __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 import {
 	TotalsCouponCodeInput,
@@ -159,6 +159,14 @@ const Cart = ( {
 									key={ 'coupon-' + cartCoupon.code }
 									className="wc-block-cart-coupon-list__item"
 									text={ cartCoupon.code }
+									screenReaderText={ sprintf(
+										/* Translators: %s Coupon code. */
+										__(
+											'Coupon: %s',
+											'woo-gutenberg-products-block'
+										),
+										cartCoupon.code
+									) }
 									disabled={ isRemovingCoupon }
 									onRemove={ () => {
 										removeCoupon( cartCoupon.code );
