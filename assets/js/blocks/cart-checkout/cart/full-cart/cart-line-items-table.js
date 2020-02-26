@@ -3,20 +3,17 @@
  */
 import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
-import { useMemo } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import CartLineItemRow from './cart-line-item-row';
 
-const CartLineItemsTable = ( { lineItems = [], isLoading = false } ) => {
-	const placeholderRows = useMemo( () => {
-		return [ ...Array( 3 ) ].map( ( _x, i ) => (
-			<CartLineItemRow key={ i } />
-		) );
-	}, [] );
+const placeholderRows = [ ...Array( 3 ) ].map( ( _x, i ) => (
+	<CartLineItemRow key={ i } />
+) );
 
+const CartLineItemsTable = ( { lineItems = [], isLoading = false } ) => {
 	const products = isLoading
 		? placeholderRows
 		: lineItems.map( ( lineItem ) => {
