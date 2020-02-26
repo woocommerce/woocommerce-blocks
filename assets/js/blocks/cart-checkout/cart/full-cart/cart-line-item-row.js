@@ -12,11 +12,9 @@ import { Icon, trash } from '@woocommerce/icons';
 /**
  * Internal dependencies
  */
-import {
-	ProductVariationDetails,
-	ProductImage,
-	ProductLowStockBadge,
-} from './utils';
+import ProductVariationData from './product-variation-data';
+import ProductImage from './product-image';
+import ProductLowStockBadge from './product-low-stock-badge';
 
 /**
  * Cart line item table row component.
@@ -57,7 +55,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 				/>
 				<div className="wc-block-cart-item__product-metadata">
 					<RawHTML>{ summary }</RawHTML>
-					<ProductVariationDetails variation={ variation } />
+					<ProductVariationData variation={ variation } />
 				</div>
 			</td>
 			<td className="wc-block-cart-item__quantity">
