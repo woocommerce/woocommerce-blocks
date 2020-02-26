@@ -48,7 +48,7 @@ const Chip = ( {
 				disabled={ disabled }
 				aria-label={ sprintf(
 					/* translators: %s chip text. */
-					__( 'Remove "%s"', 'woo-gutenberg-products-block' ),
+					__( 'Remove coupon "%s"', 'woo-gutenberg-products-block' ),
 					text
 				) }
 			>
