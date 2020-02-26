@@ -158,6 +158,37 @@ class Cart extends RestController {
 	}
 
 	/**
+	 * Select a shipping rate for the cart.
+	 *
+	 * This selects a shipping rate and adds it to an array of selected shipping rates, passing one or multiple items will add them to the selected shipping rates, passing an empty array will unset everything.
+	 *
+	 * @param \WP_REST_Request $request Full details about the request.
+	 * @return \WP_Error|\WP_REST_Response
+	 */
+	public function select_shipping( $request ) {
+		if ( ! wc_shipping_enabled() ) {
+			return new RestError( 'woocommerce_rest_shipping_disabled', __( 'Shipping is disabled.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
+		}
+
+		$controller = new CartController();
+		$cart       = $controller->get_cart_instance();
+
+		if ( ! $cart || ! $cart instanceof \WC_Cart ) {
+			return new RestError( 'woocommerce_rest_cart_error', __( 'Unable to retrieve cart.', 'woo-gutenberg-products-block' ), array( 'status' => 500 ) );
+		}
+
+		try {
+			$controller->select_shipping_rate( $request['shipping_rate'] );
+		} catch ( RestException $e ) {
+			return new RestError( $e->getErrorCode(), $e->getMessage(), array( 'status' => $e->getCode() ) );
+		}
+
+		$data     = $this->prepare_item_for_response( $cart, $request );
+		$response = rest_ensure_response( $data );
+
+		return $response;
+	}
+	/**
 	 * Apply a coupon to the cart.
 	 *
 	 * This works like the CartCoupons endpoint, but returns the entire cart when finished to avoid multiple requests.
