@@ -37,10 +37,14 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 	const purchasePrice = parseInt( prices.price, 10 ) * lineQuantity;
 	const saleAmount = regularPrice - purchasePrice;
 
-	const { removeItemFromCart } = useStoreCartItems();
+	const {
+		removeItemFromCart,
+		isItemQuantityPending
+	} = useStoreCartItems();
 	const removeItem = () => {
 		removeItemFromCart( key );
 	};
+	const itemQuantityDisabled = isItemQuantityPending( key );
 
 	return (
 		<tr className="wc-block-cart-items__row">
@@ -66,6 +70,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 			</td>
 			<td className="wc-block-cart-item__quantity">
 				<QuantitySelector
+					disabled={ itemQuantityDisabled }
 					quantity={ lineQuantity }
 					onChange={ setLineQuantity }
 					itemName={ name }
@@ -77,6 +82,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 					{ __( 'Remove item', 'woo-gutenberg-products-block' ) }
 				</button>
 				<button
+					disabled={ itemQuantityDisabled }
 					className="wc-block-cart-item__remove-icon"
 					onClick={ removeItem }
 				>

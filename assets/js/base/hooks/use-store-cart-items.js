@@ -18,9 +18,12 @@ export const useStoreCartItems = () => {
 	const { cartItems, cartIsLoading } = useStoreCart();
 
 	const results = useSelect( ( select, { dispatch } ) => {
+		const store = select( storeKey );
+		const isItemQuantityPending = store.isItemQuantityPending.bind( store );
 		const { removeItemFromCart } = dispatch( storeKey );
 
 		return {
+			isItemQuantityPending,
 			removeItemFromCart,
 		};
 	}, [] );
