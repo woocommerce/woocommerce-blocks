@@ -59,7 +59,7 @@ const TotalsCouponCodeInput = ( {
 				isLoading={ isLoading }
 				showSpinner={ false }
 			>
-				<PanelRow>
+				<PanelRow className="wc-block-coupon-code__row">
 					<form className="wc-block-coupon-code__form">
 						<TextInput
 							id={ `wc-block-coupon-code__input-${ componentId }` }
