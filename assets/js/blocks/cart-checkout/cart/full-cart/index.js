@@ -267,6 +267,10 @@ const Cart = ( {
 										}
 										shippingRates={ shippingRates }
 										selected={ [
+											// This is only rendered in the editor, with placeholder
+											// shippingRates, so we can safely fallback to set the
+											// first shipping rate as selected and ignore setting
+											// an onChange prop.
 											shippingRates[ 0 ]
 												.shipping_rates[ 0 ].rate_id,
 										] }
