@@ -210,6 +210,24 @@ class CartController {
 	}
 
 	/**
+	 * Selects a shipping rate.
+	 *
+	 * @param array $rate_ids Shipping rate ids.
+	 */
+	public function select_shipping_rate( $rate_ids ) {
+		$cart                    = $this->get_cart_instance();
+		$chosen_shipping_methods = WC()->session->get( 'chosen_shipping_methods' );
+		$posted_shipping_methods = $rate_ids ? wc_clean( wp_unslash( $rate_ids ) ) : array();
+
+		if ( empty( $posted_shipping_methods ) ) {
+			$chosen_shipping_methods = array();
+		} else {
+			$chosen_shipping_methods = array_merge( $chosen_shipping_methods, $posted_shipping_methods );
+		}
+		WC()->session->set( 'chosen_shipping_methods', $chosen_shipping_methods );
+	}
+
+	/**
 	 * Based on the core cart class but returns errors rather than rendering notices directly.
 	 *
 	 * @todo Overriding the core apply_coupon method was necessary because core outputs notices when a coupon gets
