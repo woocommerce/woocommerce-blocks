@@ -4,6 +4,33 @@
 import { ACTION_TYPES as types } from './action-types';
 
 /**
+ * Sub-reducer for cart items array.
+ *
+ * @param   {Array}  state   cartData.items state slice.
+ * @param   {Object}  action  Action object.
+ */
+const cartItemsReducer = ( state = [], action ) => {
+	switch ( action.type ) {
+		case types.ITEM_QUANTITY_PENDING:
+			return state.map( ( cartItem ) => {
+				if ( cartItem.key === action.cartItemKey ) {
+					return {
+						...cartItem,
+						isQuantityPending: action.isQuantityPending,
+					};
+				}
+				return cartItem;
+			} );
+
+		case types.RECEIVE_REMOVED_ITEM:
+			return state.filter( ( cartItem ) => {
+				return cartItem.key !== action.cartItemKey;
+			} );
+	}
+	return state;
+};
+
+/**
  * Reducer for receiving items related to the cart.
  *
  * @param   {Object}  state   The current state in the store.
@@ -61,6 +88,18 @@ const reducer = (
 				metaData: {
 					...state.metaData,
 					removingCoupon: action.couponCode,
+				},
+			};
+			break;
+
+		// Delegate to cartItemsReducer.
+		case types.RECEIVE_REMOVED_ITEM:
+		case types.ITEM_QUANTITY_PENDING:
+			state = {
+				...state,
+				cartData: {
+					...state.cartData,
+					items: cartItemsReducer( state.cartData.items, action ),
 				},
 			};
 			break;
