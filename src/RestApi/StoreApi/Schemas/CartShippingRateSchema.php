@@ -74,13 +74,19 @@ class CartShippingRateSchema extends AbstractSchema {
 				],
 			],
 			'items'          => [
-				'description' => __( 'List of cart items (keys) the returned shipping rates apply to.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'List of cart items the returned shipping rates apply to.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 				'items'       => [
 					'type'       => 'object',
 					'properties' => [
+						'key'      => [
+							'description' => __( 'Unique identifier for the item within the cart.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
 						'name'     => [
 							'description' => __( 'Name of the item.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
@@ -190,13 +196,15 @@ class CartShippingRateSchema extends AbstractSchema {
 	 * Convert a shipping rate from WooCommerce into a valid response.
 	 *
 	 * @param array $package Shipping package complete with rates from WooCommerce.
+	 * @param int   $package_id ID of the package.
 	 * @return array
 	 */
-	public function get_item_response( $package ) {
+	public function get_item_response( $package, $package_id ) {
 		// Add product names and quantities.
 		$items = array();
 		foreach ( $package['contents'] as $item_id => $values ) {
-			$items[ $item_id ] = [
+			$items[] = [
+				'key'      => $item_id,
 				'name'     => $values['data']->get_name(),
 				'quantity' => $values['quantity'],
 			];
