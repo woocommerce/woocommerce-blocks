@@ -22,6 +22,7 @@ import ProductLowStockBadge from './product-low-stock-badge';
  */
 const CartLineItemRow = ( { lineItem = {} } ) => {
 	const {
+		key = '',
 		name = '',
 		summary = '',
 		permalink = '',
@@ -37,10 +38,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 	const purchasePrice = parseInt( prices.price, 10 ) * lineQuantity;
 	const saleAmount = regularPrice - purchasePrice;
 
-	const {
-		removeItemFromCart,
-		isItemQuantityPending
-	} = useStoreCartItems();
+	const { removeItemFromCart, isItemQuantityPending } = useStoreCartItems();
 	const removeItem = () => {
 		removeItemFromCart( key );
 	};
@@ -75,7 +73,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 					onChange={ setLineQuantity }
 					itemName={ name }
 				/>
-				<button 
+				<button
 					className="wc-block-cart-item__remove-link"
 					onClick={ removeItem }
 				>
