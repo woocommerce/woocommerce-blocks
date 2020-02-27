@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { useState, RawHTML } from '@wordpress/element';
+import { RawHTML } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import QuantitySelector from '@woocommerce/base-components/quantity-selector';
@@ -32,15 +32,16 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 		prices = {},
 	} = lineItem;
 
-	const [ lineQuantity, setLineQuantity ] = useState( quantity );
 	const currency = getCurrency();
 	const regularPrice = parseInt( prices.regular_price, 10 ) * lineQuantity;
 	const purchasePrice = parseInt( prices.price, 10 ) * lineQuantity;
 	const saleAmount = regularPrice - purchasePrice;
 
-	const { removeItem, isPending: itemQuantityDisabled } = useStoreCartItem(
-		key
-	);
+	const {
+		changeCartItemQuantity,
+		removeItem, 
+		isPending: itemQuantityDisabled,
+	} = useStoreCartItem( key );
 
 	return (
 		<tr className="wc-block-cart-items__row">
