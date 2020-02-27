@@ -1,4 +1,9 @@
 /**
+  * External dependencies
+  */
+import { boolean } from '@storybook/addon-knobs';
+
+/**
  * Internal dependencies
  */
 import QuantitySelector from '../';
@@ -10,5 +15,8 @@ export default {
 };
 
 export const Default = () => (
-	<QuantitySelector itemName='widgets'></QuantitySelector>
+	<QuantitySelector
+		disabled={ boolean( 'Disabled', false ) }
+		itemName='widgets'
+	></QuantitySelector>
 );
