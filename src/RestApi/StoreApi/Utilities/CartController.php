@@ -212,19 +212,15 @@ class CartController {
 	/**
 	 * Selects a shipping rate.
 	 *
-	 * @param array $rate_ids Shipping rate ids.
+	 * @param int    $package_id ID of the package to choose a rate for.
+	 * @param string $rate_id ID of the rate being chosen.
 	 */
-	public function select_shipping_rate( $rate_ids ) {
-		$cart                    = $this->get_cart_instance();
-		$chosen_shipping_methods = WC()->session->get( 'chosen_shipping_methods' ) ? WC()->session->get( 'chosen_shipping_methods' ) : array();
-		$posted_shipping_methods = $rate_ids ? wc_clean( wp_unslash( $rate_ids ) ) : array();
+	public function select_shipping_rate( $package_id, $rate_id ) {
+		$cart                        = $this->get_cart_instance();
+		$session_data                = WC()->session->get( 'chosen_shipping_methods' ) ? WC()->session->get( 'chosen_shipping_methods' ) : [];
+		$session_data[ $package_id ] = $rate_id;
 
-		if ( empty( $posted_shipping_methods ) ) {
-			$chosen_shipping_methods = array();
-		} else {
-			$chosen_shipping_methods = array_merge( $chosen_shipping_methods, $posted_shipping_methods );
-		}
-		WC()->session->set( 'chosen_shipping_methods', $chosen_shipping_methods );
+		WC()->session->set( 'chosen_shipping_methods', $session_data );
 	}
 
 	/**

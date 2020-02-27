@@ -105,17 +105,23 @@ class Cart extends RestController {
 		);
 		register_rest_route(
 			$this->namespace,
-			'/' . $this->rest_base . '/select-shipping',
+			'/' . $this->rest_base . '/select-shipping-rate/(?P<package_id>[\d]+)',
 			[
 				'args'   => [
-					'shipping_rates' => [
-						'description' => __( 'Array of selected shipping rates ids.', 'woo-gutenberg-products-block' ),
-						'type'        => 'array',
+					'package_id' => array(
+						'description' => __( 'The ID of the package being shipped.', 'woo-gutenberg-products-block' ),
+						'type'        => 'integer',
+						'required'    => true,
+					),
+					'rate_id'    => [
+						'description' => __( 'The chosen rate ID for the package.', 'woo-gutenberg-products-block' ),
+						'type'        => 'string',
+						'required'    => true,
 					],
 				],
 				[
 					'methods'  => 'POST',
-					'callback' => [ $this, 'select_shipping' ],
+					'callback' => [ $this, 'select_shipping_rate_for_package' ],
 				],
 				'schema' => [ $this, 'get_public_item_schema' ],
 			]
@@ -125,14 +131,18 @@ class Cart extends RestController {
 	/**
 	 * Select a shipping rate for the cart.
 	 *
-	 * This selects a shipping rate and adds it to an array of selected shipping rates, passing one or multiple items will add them to the selected shipping rates, passing an empty array will unset everything.
+	 * This selects a shipping rate for a package and adds it to an array of selected shipping rates.
 	 *
 	 * @param \WP_REST_Request $request Full details about the request.
 	 * @return \WP_Error|\WP_REST_Response
 	 */
-	public function select_shipping( $request ) {
+	public function select_shipping_rate_for_package( $request ) {
 		if ( ! wc_shipping_enabled() ) {
 			return new RestError( 'woocommerce_rest_shipping_disabled', __( 'Shipping is disabled.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
+		}
+
+		if ( ! isset( $request['package_id'] ) || ! is_numeric( $request['package_id'] ) ) {
+			return new RestError( 'woocommerce_rest_cart_missing_package_id', __( 'Invalid Package ID.', 'woo-gutenberg-products-block' ), array( 'status' => 403 ) );
 		}
 
 		$controller = new CartController();
@@ -142,9 +152,11 @@ class Cart extends RestController {
 			return new RestError( 'woocommerce_rest_cart_error', __( 'Unable to retrieve cart.', 'woo-gutenberg-products-block' ), array( 'status' => 500 ) );
 		}
 
-		$rates_ids = wc_clean( wp_unslash( $request['shipping_rates'] ) );
+		$package_id = absint( $request['package_id'] );
+		$rate_id    = wc_clean( wp_unslash( $request['rate_id'] ) );
+
 		try {
-			$controller->select_shipping_rate( $rates_ids );
+			$controller->select_shipping_rate( $package_id, $rate_id );
 		} catch ( RestException $e ) {
 			return new RestError( $e->getErrorCode(), $e->getMessage(), array( 'status' => $e->getCode() ) );
 		}

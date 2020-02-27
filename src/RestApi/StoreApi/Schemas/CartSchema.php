@@ -45,7 +45,21 @@ class CartSchema extends AbstractSchema {
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 				'items'       => [
-					'type' => 'string',
+					'type'       => 'object',
+					'properties' => [
+						'package_id' => [
+							'description' => __( 'The ID of the package being shipped.', 'woo-gutenberg-products-block' ),
+							'type'        => 'integer',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+						'rate_id'    => [
+							'description' => __( 'ID of the shipping rate.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+					],
 				],
 			],
 			'items'                   => [
@@ -238,6 +252,21 @@ class CartSchema extends AbstractSchema {
 	 * @return array
 	 */
 	protected function get_selected_shipping_rates() {
-		return WC()->session->get( 'chosen_shipping_methods', array() );
+		$selected_shipping_rates = [];
+		$chosen_shipping_methods = WC()->session->get( 'chosen_shipping_methods', array() );
+
+		// Core stores chosen rates in an indexed array where the index matches the package ids.
+		foreach ( $chosen_shipping_methods as $key => $value ) {
+			// Core sets rates to false when they are not set. Normalize to a string for the API response.
+			if ( false === $value ) {
+				$value = '';
+			}
+			$selected_shipping_rates[] = [
+				'package_id' => $key,
+				'rate_id'    => $value,
+			];
+		}
+
+		return $selected_shipping_rates;
 	}
 }
