@@ -16,25 +16,29 @@ import { useStoreCart } from './use-store-cart';
  * actions for removing or changing item quantity.
  * See also: https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/master/src/RestApi/StoreApi
  *
+ * @param {string} cartItemKey Key for a cart item.
  * @return {StoreCartItems} An object exposing data and actions relating to cart items.
  */
-export const useStoreCartItems = () => {
+export const useStoreCartItem = ( cartItemKey ) => {
 	const { cartItems, cartIsLoading } = useStoreCart();
+	const cartItem = cartItems.filter( ( item ) => item.key === cartItemKey );
 
 	const results = useSelect( ( select, { dispatch } ) => {
 		const store = select( storeKey );
-		const isItemQuantityPending = store.isItemQuantityPending.bind( store );
+		const isPending = store.isItemQuantityPending( cartItemKey );
 		const { removeItemFromCart } = dispatch( storeKey );
 
 		return {
-			isItemQuantityPending,
-			removeItemFromCart,
+			isPending,
+			removeItem: () => {
+				removeItemFromCart( cartItemKey );
+			},
 		};
 	}, [] );
 
 	return {
 		isLoading: cartIsLoading,
-		cartItems,
+		cartItem,
 		...results,
 	};
 };

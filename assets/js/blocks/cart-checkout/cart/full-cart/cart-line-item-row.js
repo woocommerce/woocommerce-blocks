@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import QuantitySelector from '@woocommerce/base-components/quantity-selector';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import { getCurrency, formatPrice } from '@woocommerce/base-utils';
-import { useStoreCartItems } from '@woocommerce/base-hooks';
+import { useStoreCartItem } from '@woocommerce/base-hooks';
 import { Icon, trash } from '@woocommerce/icons';
 
 /**
@@ -38,11 +38,9 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 	const purchasePrice = parseInt( prices.price, 10 ) * lineQuantity;
 	const saleAmount = regularPrice - purchasePrice;
 
-	const { removeItemFromCart, isItemQuantityPending } = useStoreCartItems();
-	const removeItem = () => {
-		removeItemFromCart( key );
-	};
-	const itemQuantityDisabled = isItemQuantityPending( key );
+	const { removeItem, isPending: itemQuantityDisabled } = useStoreCartItem(
+		key
+	);
 
 	return (
 		<tr className="wc-block-cart-items__row">
@@ -74,6 +72,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 					itemName={ name }
 				/>
 				<button
+					disabled={ itemQuantityDisabled }
 					className="wc-block-cart-item__remove-link"
 					onClick={ removeItem }
 				>
