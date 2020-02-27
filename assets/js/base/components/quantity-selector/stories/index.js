@@ -1,6 +1,6 @@
 /**
-  * External dependencies
-  */
+ * External dependencies
+ */
 import { boolean } from '@storybook/addon-knobs';
 
 /**
