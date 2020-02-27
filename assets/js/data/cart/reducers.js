@@ -15,6 +15,7 @@ const reducer = (
 	state = {
 		cartData: {
 			coupons: [],
+			selectedShippingRates: [],
 			items: [],
 			itemsCount: 0,
 			itemsWeight: 0,

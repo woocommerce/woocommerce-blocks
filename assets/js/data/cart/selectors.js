@@ -106,3 +106,13 @@ export const isRemovingCoupon = ( state ) => {
 export const getCouponBeingRemoved = ( state ) => {
 	return state.metaData.removingCoupon || '';
 };
+
+/**
+ * Retrieves the selected shipping rates ids.
+ *
+ * @param {Object} state The current state.
+ * @return {string} The data to return.
+ */
+export const selectedShippingRates = ( state ) => {
+	return state.cartData.selectedShippingRates;
+};

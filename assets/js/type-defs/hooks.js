@@ -23,4 +23,11 @@
  * @property {boolean}  isRemovingCoupon True when a coupon is being removed.
  */
 
+/**
+ * @typedef {Object} SelectedShippingRates
+ *
+ * @property {Array}    selectedShippingRates Array of selected shipping rates.
+ * @property {Function} selectShippingRate    Callback for selecting a rate.
+ */
+
 export {};

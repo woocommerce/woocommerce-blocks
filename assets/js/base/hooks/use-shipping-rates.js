@@ -1,12 +1,13 @@
+// @ts-nocheck
 /**
  * External dependencies
  */
 import { useDebounce } from 'use-debounce';
-
 /**
  * Internal dependencies
  */
 import { useCollection } from './use-collection';
+import { useSelectedShippingRates } from './use-selected-shipping-rates';
 
 /**
  * This is a custom hook that is wired up to the `wc/store/collections` data
@@ -25,6 +26,10 @@ import { useCollection } from './use-collection';
  */
 export const useShippingRates = ( query ) => {
 	const [ debouncedQuery ] = useDebounce( query, 300 );
+	const {
+		selectedShippingRates,
+		selectShippingRate,
+	} = useSelectedShippingRates();
 
 	const {
 		results: shippingRates,
@@ -37,6 +42,8 @@ export const useShippingRates = ( query ) => {
 
 	return {
 		shippingRates,
+		selectedShippingRates,
+		selectShippingRate,
 		shippingRatesLoading,
 	};
 };

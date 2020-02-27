@@ -10,3 +10,4 @@ export * from './use-previous';
 export * from './checkout';
 export * from './payment-methods';
 export * from './use-shipping-rates';
+export * from './use-selected-shipping-rates';

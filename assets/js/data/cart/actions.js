@@ -125,3 +125,27 @@ export function* removeCoupon( couponCode ) {
 
 	yield receiveRemovingCoupon( '' );
 }
+
+/**
+ * Selects a shipping rate.
+ *
+ * @param {Array} shippingRates the shipping rates ids
+ */
+export function* selectShippingRate( shippingRates ) {
+	try {
+		const result = yield apiFetch( {
+			path: '/wc/store/cart/select-shipping',
+			method: 'POST',
+			data: {
+				shipping_rates: shippingRates,
+			},
+			cache: 'no-store',
+		} );
+
+		if ( result ) {
+			yield receiveCart( result );
+		}
+	} catch ( error ) {
+		yield receiveError( error );
+	}
+}
