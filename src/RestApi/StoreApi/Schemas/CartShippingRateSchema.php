@@ -29,6 +29,12 @@ class CartShippingRateSchema extends AbstractSchema {
 	 */
 	protected function get_properties() {
 		return [
+			'package_id'     => [
+				'description' => __( 'The ID of the package the shipping rates belong to.', 'woo-gutenberg-products-block' ),
+				'type'        => 'integer',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+			],
 			'destination'    => [
 				'description' => __( 'Shipping destination address.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
@@ -211,6 +217,7 @@ class CartShippingRateSchema extends AbstractSchema {
 		}
 
 		return [
+			'package_id'     => $package_id,
 			'destination'    => (object) $this->prepare_html_response(
 				[
 					'address_1' => $package['destination']['address_1'],
