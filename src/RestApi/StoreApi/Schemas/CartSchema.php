@@ -238,6 +238,6 @@ class CartSchema extends AbstractSchema {
 	 * @return array
 	 */
 	protected function get_selected_shipping_rates() {
-		return WC()->session->get( 'selected_shipping_methods', array() );
+		return WC()->session->get( 'chosen_shipping_methods', array() );
 	}
 }
