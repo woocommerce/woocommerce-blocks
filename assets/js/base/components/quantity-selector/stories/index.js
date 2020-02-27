@@ -18,5 +18,5 @@ export const Default = () => (
 	<QuantitySelector
 		disabled={ boolean( 'Disabled', false ) }
 		itemName='widgets'
-	></QuantitySelector>
+	/>
 );
