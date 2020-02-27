@@ -11,17 +11,6 @@ import { ACTION_TYPES as types } from './action-types';
  */
 const cartItemsReducer = ( state = [], action ) => {
 	switch ( action.type ) {
-		case types.ITEM_QUANTITY_PENDING:
-			return state.map( ( cartItem ) => {
-				if ( cartItem.key === action.cartItemKey ) {
-					return {
-						...cartItem,
-						isQuantityPending: action.isQuantityPending,
-					};
-				}
-				return cartItem;
-			} );
-
 		case types.RECEIVE_REMOVED_ITEM:
 			return state.filter( ( cartItem ) => {
 				return cartItem.key !== action.cartItemKey;
@@ -40,6 +29,7 @@ const cartItemsReducer = ( state = [], action ) => {
  */
 const reducer = (
 	state = {
+		cartItemsQuantityPending: [],
 		cartData: {
 			coupons: [],
 			items: [],
@@ -92,9 +82,23 @@ const reducer = (
 			};
 			break;
 
+		case types.ITEM_QUANTITY_PENDING:
+			// Remove key by default - handles isQuantityPending==false
+			// and prevents duplicates when isQuantityPending===true.
+			const newPendingKeys = state.cartItemsQuantityPending.filter(
+				( key ) => key !== action.cartItemKey
+			);
+			if ( action.isQuantityPending ) {
+				newPendingKeys.push( action.cartItemKey );
+			}
+			state = {
+				...state,
+				cartItemsQuantityPending: newPendingKeys,
+			};
+			break;
+
 		// Delegate to cartItemsReducer.
 		case types.RECEIVE_REMOVED_ITEM:
-		case types.ITEM_QUANTITY_PENDING:
 			state = {
 				...state,
 				cartData: {

@@ -115,7 +115,9 @@ export const getCouponBeingRemoved = ( state ) => {
  * @return {Object} Cart item object, or undefined if not found.
  */
 export const getCartItem = ( state, cartItemKey ) => {
-	return state.cartData.items.find( cartItem => ( cartItem.key === cartItemKey ) );
+	return state.cartData.items.find(
+		( cartItem ) => cartItem.key === cartItemKey
+	);
 };
 
 /**
@@ -126,10 +128,5 @@ export const getCartItem = ( state, cartItemKey ) => {
  * @return {boolean} True if a item has a pending request to delete / update quantity.
  */
 export const isItemQuantityPending = ( state, cartItemKey ) => {
-	const cartItem = getCartItem( state, cartItemKey );
-	if ( ! cartItem ) {
-		return false;
-	}
-
-	return !! cartItem.isQuantityPending;
+	return state.cartItemsQuantityPending.includes( cartItemKey );
 };
