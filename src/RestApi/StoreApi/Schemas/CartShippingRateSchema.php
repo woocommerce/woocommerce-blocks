@@ -128,8 +128,13 @@ class CartShippingRateSchema extends AbstractSchema {
 	 */
 	protected function get_rate_properties() {
 		return array_merge(
-			$this->get_store_currency_properties(),
 			[
+				'rate_id'       => [
+					'description' => __( 'ID of the shipping rate.', 'woo-gutenberg-products-block' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+					'readonly'    => true,
+				],
 				'name'          => [
 					'description' => __( 'Name of the shipping rate, e.g. Express shipping.', 'woo-gutenberg-products-block' ),
 					'type'        => 'string',
@@ -150,12 +155,6 @@ class CartShippingRateSchema extends AbstractSchema {
 				],
 				'price'         => [
 					'description' => __( 'Price of this shipping rate using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
-					'type'        => 'string',
-					'context'     => [ 'view', 'edit' ],
-					'readonly'    => true,
-				],
-				'rate_id'       => [
-					'description' => __( 'ID of the shipping rate.', 'woo-gutenberg-products-block' ),
 					'type'        => 'string',
 					'context'     => [ 'view', 'edit' ],
 					'readonly'    => true,
@@ -194,7 +193,14 @@ class CartShippingRateSchema extends AbstractSchema {
 						],
 					],
 				],
-			]
+				'selected'      => [
+					'description' => __( 'True if this is the rate currently selected by the customer for the cart.', 'woo-gutenberg-products-block' ),
+					'type'        => 'bool',
+					'context'     => [ 'view', 'edit' ],
+					'readonly'    => true,
+				],
+			],
+			$this->get_store_currency_properties()
 		);
 	}
 
@@ -228,29 +234,55 @@ class CartShippingRateSchema extends AbstractSchema {
 				]
 			),
 			'items'          => $items,
-			'shipping_rates' => array_values( array_map( [ $this, 'get_rate_response' ], $package['rates'] ) ),
+			'shipping_rates' => $this->prepare_rates_response( $package ),
 		];
+	}
+
+	/**
+	 * Prepare an array of rates from a package for the response.
+	 *
+	 * @param array $package Shipping package complete with rates from WooCommerce.
+	 * @return array
+	 */
+	protected function prepare_rates_response( $package ) {
+		$rates          = $package['rates'];
+		$selected_rates = WC()->session->get( 'chosen_shipping_methods', array() );
+		$selected_rate  = isset( $chosen_shipping_methods[ $package['package_id'] ] ) ? $chosen_shipping_methods[ $package['package_id'] ] : '';
+
+		if ( empty( $selected_rate ) && ! empty( $package['rates'] ) ) {
+			$selected_rate = $package['rates'][0]->get_rate_prop( $rate, 'id' );
+		}
+
+		$response = [];
+
+		foreach ( $package['rates'] as $rate ) {
+			$response[] = $this->get_rate_response( $rate, $selected_rate );
+		}
+
+		return $response;
 	}
 
 	/**
 	 * Response for a single rate.
 	 *
 	 * @param WC_Shipping_Rate $rate Rate object.
+	 * @param string           $selected_rate Selected rate.
 	 * @return array
 	 */
-	protected function get_rate_response( $rate ) {
+	protected function get_rate_response( $rate, $selected_rate = '' ) {
 		return array_merge(
-			$this->get_store_currency_response(),
 			[
+				'rate_id'       => $this->get_rate_prop( $rate, 'id' ),
 				'name'          => $this->prepare_html_response( $this->get_rate_prop( $rate, 'label' ) ),
 				'description'   => $this->prepare_html_response( $this->get_rate_prop( $rate, 'description' ) ),
 				'delivery_time' => $this->prepare_html_response( $this->get_rate_prop( $rate, 'delivery_time' ) ),
 				'price'         => $this->prepare_money_response( $this->get_rate_prop( $rate, 'cost' ), wc_get_price_decimals() ),
-				'rate_id'       => $this->get_rate_prop( $rate, 'id' ),
 				'instance_id'   => $this->get_rate_prop( $rate, 'instance_id' ),
 				'method_id'     => $this->get_rate_prop( $rate, 'method_id' ),
 				'meta_data'     => $this->get_rate_meta_data( $rate ),
-			]
+				'selected'      => $selected_rate === $this->get_rate_prop( $rate, 'id' ),
+			],
+			$this->get_store_currency_response()
 		);
 	}
 

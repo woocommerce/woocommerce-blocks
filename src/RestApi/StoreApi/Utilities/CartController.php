@@ -210,6 +210,24 @@ class CartController {
 	}
 
 	/**
+	 * Get shipping packages from the cart and format as required.
+	 *
+	 * @param bool $calculate_rates Should rates for the packages also be returned.
+	 * @return array
+	 */
+	public function get_shipping_packages( $calculate_rates = true ) {
+		$cart     = $this->get_cart_instance();
+		$packages = $cart->get_shipping_packages();
+
+		// Add package ID to array.
+		foreach ( $packages as $key => $package ) {
+			$packages[ $key ]['package_id'] = $key;
+		}
+
+		return $calculate_rates ? WC()->shipping()->calculate_shipping( $packages ) : $packages;
+	}
+
+	/**
 	 * Selects a shipping rate.
 	 *
 	 * @param int    $package_id ID of the package to choose a rate for.

@@ -271,8 +271,6 @@ class Cart extends RestController {
 	 * @return \WP_REST_Response Response object.
 	 */
 	public function prepare_item_for_response( $cart, $request ) {
-		$data = $this->schema->get_item_response( $cart );
-
-		return rest_ensure_response( $data );
+		return rest_ensure_response( $this->schema->get_item_response( $cart ) );
 	}
 }
