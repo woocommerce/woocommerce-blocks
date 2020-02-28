@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { camelCase, mapKeys } from 'lodash';
+
+/**
  * Internal dependencies
  */
 import { ACTION_TYPES as types } from './action-types';
@@ -44,7 +49,9 @@ const reducer = (
 			state = {
 				...state,
 				errors: [],
-				cartData: action.response,
+				cartData: mapKeys( action.response, ( _, key ) =>
+					camelCase( key )
+				),
 			};
 			break;
 		case types.APPLYING_COUPON:
