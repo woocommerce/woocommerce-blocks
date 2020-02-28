@@ -47,7 +47,7 @@ const StoreNoticesContainer = ( { className, notices, componentId } ) => {
 
 StoreNoticesContainer.propTypes = {
 	className: PropTypes.string,
-	notices: PropTypes.array,
+	notices: PropTypes.object,
 	// from withComponentId
 	componentId: PropTypes.number.isRequired,
 };

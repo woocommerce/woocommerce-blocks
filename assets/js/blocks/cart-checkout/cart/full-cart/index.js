@@ -24,7 +24,11 @@ import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import { Card, CardBody } from 'wordpress-components';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import { decodeEntities } from '@wordpress/html-entities';
-import { useStoreCartCoupons, useStoreNotices } from '@woocommerce/base-hooks';
+import {
+	useStoreCartCoupons,
+	useStoreNotices,
+	useStoreCart,
+} from '@woocommerce/base-hooks';
 import classnames from 'classnames';
 
 /**
@@ -86,9 +90,15 @@ const Cart = ( {
 		isRemovingCoupon,
 	} = useStoreCartCoupons();
 
-	const { notices, addNotice, clearNotices } = useStoreNotices();
+	const { cartErrors } = useStoreCart();
 
-	addNotice( 'Hello', 'warning' );
+	const { addNotice } = useStoreNotices();
+
+	useEffect( () => {
+		cartErrors.map( ( error = {} ) => {
+			addNotice( error.message, 'error' );
+		} );
+	}, [ cartErrors ] );
 
 	useEffect( () => {
 		if ( ! SHIPPING_ENABLED ) {

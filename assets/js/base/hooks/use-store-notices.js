@@ -1,25 +1,31 @@
 /**
  * External dependencies
  */
-import useStoreNoticesContext from '@woocommerce/base-context/store-notices-context';
+import { useStoreNoticesContext } from '@woocommerce/base-context/store-notices-context';
+import { useCallback } from '@wordpress/element';
 
-console.log( useStoreNoticesContext );
+export const useStoreNotices = () => {
+	const { notices, setNotice } = useStoreNoticesContext();
 
-const useStoreNotices = () => {
-	const { notices, setNotice, noticeTypes } = useStoreNoticesContext();
-	const addNotice = ( text, noticeType = 'default' ) => {
-		if ( noticetypes.includes( noticeType ) ) {
-			setNotice[ noticeType ]( text );
-		}
-	};
-	const clearNotices = ( noticeType = null ) => {
-		setNotice.clear( noticeType );
-	};
+	const addNotice = useCallback(
+		( text, noticeType = 'default' ) => {
+			if ( typeof setNotice[ noticeType ] === 'function' ) {
+				setNotice[ noticeType ]( text );
+			}
+		},
+		[ setNotice ]
+	);
+
+	const clearNotices = useCallback(
+		( noticeType = 'default' ) => {
+			setNotice.clear( noticeType );
+		},
+		[ setNotice ]
+	);
+
 	return {
 		notices,
 		addNotice,
 		clearNotices,
 	};
 };
-
-export default useStoreNotices;

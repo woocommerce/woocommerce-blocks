@@ -16,11 +16,6 @@ export const useStoreNoticesContext = () => {
 	return useContext( StoreNoticesContext );
 };
 
-const reducer = ( state, action ) => {
-	return state; // @todo
-};
-
-const noticeTypes = [ 'default', 'error', 'warning', 'info', 'success' ];
 const addDefault = ( text ) => ( { type: 'DEFAULT', text } );
 const addError = ( text ) => ( { type: 'ERROR', text } );
 const addWarning = ( text ) => ( { type: 'WARNING', text } );
@@ -30,6 +25,53 @@ const clearNotices = ( noticeType = null ) => ( {
 	type: noticeType ? 'CLEAR' : 'CLEARALL',
 	noticeType,
 } );
+
+const reducer = ( state, action ) => {
+	switch ( action.type ) {
+		case 'DEFAULT':
+			state = {
+				...state,
+				default: state.default.concat( [ action.text ] ),
+			};
+			break;
+		case 'ERROR':
+			state = {
+				...state,
+				error: state.error.concat( [ action.text ] ),
+			};
+			break;
+		case 'WARNING':
+			state = {
+				...state,
+				warning: state.warning.concat( [ action.text ] ),
+			};
+			break;
+		case 'INFO':
+			state = {
+				...state,
+				info: state.info.concat( [ action.text ] ),
+			};
+			break;
+		case 'SUCCESS':
+			state = {
+				...state,
+				success: state.success.concat( [ action.text ] ),
+			};
+			break;
+		case 'CLEAR':
+			const newState = {};
+			newState[ action.noticeType ] = {};
+			state = {
+				...state,
+				...newState,
+			};
+			break;
+		case 'CLEARALL':
+			state = {};
+			break;
+	}
+	return state;
+};
 
 /**
  * Provides an interface for blocks to add notices to the frontend UI.
@@ -46,7 +88,7 @@ const StoreNoticesProvider = ( {
 	className = '',
 	createNoticeContainer = true,
 } ) => {
-	const { notices, dispatch } = useReducer( reducer, {
+	const [ notices, dispatch ] = useReducer( reducer, {
 		default: [],
 		error: [],
 		warning: [],
@@ -64,12 +106,20 @@ const StoreNoticesProvider = ( {
 			clear: ( noticeType = null ) =>
 				void dispatch( clearNotices( noticeType ) ),
 		} ),
-		[]
+		[
+			dispatch,
+			addDefault,
+			addError,
+			addWarning,
+			addInfo,
+			addSuccess,
+			clearNotices,
+		]
 	);
 
 	// Provides an API for consumers of this provider containing notices (the
 	// state) and setNotice to interact with the state.
-	const contextValue = { notices, setNotice, noticeTypes };
+	const contextValue = { notices, setNotice };
 
 	return (
 		<StoreNoticesContext.Provider value={ contextValue }>
