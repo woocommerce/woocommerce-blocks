@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import { usePrevious, useShippingRates } from '@woocommerce/base-hooks';
-import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -25,42 +24,6 @@ const ShippingRatesControl = ( {
 	const previousShippingRates = usePrevious(
 		shippingRates,
 		( newRates ) => newRates.length > 0
-	);
-
-	// Select first item when shipping rates are loaded.
-	useEffect(
-		() => {
-			if ( shippingRates.length === 0 ) {
-				return;
-			}
-
-			const isSelectedValid =
-				selected.length === shippingRates.length &&
-				selected.every( ( selectedId, i ) => {
-					const rates = shippingRates[ i ].shipping_rates;
-					return rates.some(
-						( { rate_id: rateId } ) => rateId === selectedId
-					);
-				} );
-
-			if ( isSelectedValid ) {
-				return;
-			}
-
-			const newShippingRates = shippingRates.map( ( shippingRate ) => {
-				if ( shippingRate.shipping_rates.length > 0 ) {
-					return shippingRate.shipping_rates[ 0 ].rate_id;
-				}
-				return null;
-			} );
-
-			if ( newShippingRates.length > 0 ) {
-				onChange( newShippingRates );
-			}
-		},
-		// We only want to run this when `shippingRates` changes,
-		// so there is no need to add `selected` to the effect dependencies.
-		[ shippingRates ]
 	);
 
 	if ( shippingRatesLoading ) {

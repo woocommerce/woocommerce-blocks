@@ -24,7 +24,10 @@ import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import { Card, CardBody } from 'wordpress-components';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import { decodeEntities } from '@wordpress/html-entities';
-import { useStoreCartCoupons } from '@woocommerce/base-hooks';
+import {
+	useStoreCartCoupons,
+	useSelectedShippingRates,
+} from '@woocommerce/base-hooks';
 import classnames from 'classnames';
 
 /**
@@ -86,6 +89,10 @@ const Cart = ( {
 		isRemovingCoupon,
 	} = useStoreCartCoupons();
 
+	const {
+		selectedShippingRates: __experimentalSelectedShippingRates,
+		selectShippingRate: __experimentalSelectShippingRate,
+	} = useSelectedShippingRates();
 	useEffect( () => {
 		if ( ! SHIPPING_ENABLED ) {
 			return setShowShippingCosts( false );
@@ -253,10 +260,12 @@ const Cart = ( {
 						'No shipping options were found.',
 						'woo-gutenberg-products-block'
 					) }
-					selected={ selectedShippingRate }
+					selected={ __experimentalSelectedShippingRates }
 					renderOption={ renderShippingRatesControlOption }
 					onChange={ ( newSelectedShippingOption ) =>
-						setSelectedShippingRate( newSelectedShippingOption )
+						__experimentalSelectShippingRate(
+							newSelectedShippingOption
+						)
 					}
 				/>
 			) }
