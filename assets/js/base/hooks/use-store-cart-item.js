@@ -23,18 +23,21 @@ export const useStoreCartItem = ( cartItemKey ) => {
 	const { cartItems, cartIsLoading } = useStoreCart();
 	const cartItem = cartItems.filter( ( item ) => item.key === cartItemKey );
 
-	const results = useSelect( ( select, { dispatch } ) => {
-		const store = select( storeKey );
-		const isPending = store.isItemQuantityPending( cartItemKey );
-		const { removeItemFromCart } = dispatch( storeKey );
+	const results = useSelect(
+		( select, { dispatch } ) => {
+			const store = select( storeKey );
+			const isPending = store.isItemQuantityPending( cartItemKey );
+			const { removeItemFromCart } = dispatch( storeKey );
 
-		return {
-			isPending,
-			removeItem: () => {
-				removeItemFromCart( cartItemKey );
-			},
-		};
-	}, [] );
+			return {
+				isPending,
+				removeItem: () => {
+					removeItemFromCart( cartItemKey );
+				},
+			};
+		},
+		[ cartItemKey ]
+	);
 
 	return {
 		isLoading: cartIsLoading,
