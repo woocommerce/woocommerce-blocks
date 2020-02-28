@@ -250,7 +250,7 @@ class CartShippingRateSchema extends AbstractSchema {
 		$selected_rate  = isset( $chosen_shipping_methods[ $package['package_id'] ] ) ? $chosen_shipping_methods[ $package['package_id'] ] : '';
 
 		if ( empty( $selected_rate ) && ! empty( $package['rates'] ) ) {
-			$selected_rate = $package['rates'][0]->get_rate_prop( $rate, 'id' );
+			$selected_rate = wc_get_chosen_shipping_method_for_package( $package['package_id'], $package );
 		}
 
 		$response = [];
