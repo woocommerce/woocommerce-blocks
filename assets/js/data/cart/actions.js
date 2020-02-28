@@ -203,6 +203,7 @@ export function* removeItemFromCart( cartItemKey ) {
  * - Sets cart item as pending while API request is in progress.
  *
  * @param {string} cartItemKey Cart item being updated.
+ * @param {number} quantity Specified (new) quantity.
  */
 export function* changeCartItemQuantity( cartItemKey, quantity ) {
 	yield itemQuantityPending( cartItemKey, true );
