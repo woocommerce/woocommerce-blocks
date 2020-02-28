@@ -1,12 +1,13 @@
 /**
  * External dependencies
  */
-import { apiFetch } from '@wordpress/data-controls';
+import { apiFetch, dispatch } from '@wordpress/data-controls';
 
 /**
  * Internal dependencies
  */
 import { ACTION_TYPES as types } from './action-types';
+import { CORE_NOTICES_CONTEXT } from '../constants';
 
 /**
  * Returns an action object used in updating the store with the provided items
@@ -91,6 +92,13 @@ export function* applyCoupon( couponCode ) {
 			yield receiveCart( result );
 		}
 	} catch ( error ) {
+		yield dispatch(
+			'core/notices',
+			'createNotice',
+			'error',
+			error.message,
+			{ context: CORE_NOTICES_CONTEXT }
+		);
 		yield receiveError( error );
 	}
 
