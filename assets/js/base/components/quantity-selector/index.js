@@ -5,7 +5,7 @@ import { __, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useRef, useState, useEffect, useCallback } from '@wordpress/element';
+import { useRef, useCallback } from '@wordpress/element';
 import { DOWN, UP } from '@wordpress/keycodes';
 
 /**
@@ -22,14 +22,6 @@ const QuantitySelector = ( {
 } ) => {
 	const classes = classNames( 'wc-block-quantity-selector', className );
 	const inputRef = useRef( null );
-	const [ currentValue, setCurrentValue ] = useState( quantity );
-
-	useEffect( () => {
-		if ( currentValue !== inputRef.current.value ) {
-			inputRef.current.value = currentValue;
-		}
-		onChange( currentValue );
-	}, [ currentValue, onChange ] );
 
 	/**
 	 * Handles keyboard up and down keys to change quantity value.
@@ -47,17 +39,17 @@ const QuantitySelector = ( {
 					? event.key === 'ArrowUp'
 					: event.keyCode === UP;
 
-			if ( isArrowDown && currentValue > 0 ) {
+			if ( isArrowDown && quantity > 0 ) {
 				event.preventDefault();
-				setCurrentValue( currentValue - 1 );
+				onChange( quantity - 1 );
 			}
 
 			if ( isArrowUp ) {
 				event.preventDefault();
-				setCurrentValue( currentValue + 1 );
+				onChange( quantity + 1 );
 			}
 		},
-		[ currentValue, setCurrentValue ]
+		[ quantity, onChange ]
 	);
 
 	return (
@@ -76,7 +68,7 @@ const QuantitySelector = ( {
 						isNaN( event.target.value ) || ! event.target.value
 							? 0
 							: parseInt( event.target.value, 10 );
-					setCurrentValue( value );
+					onChange( value );
 				} }
 				aria-label={ sprintf(
 					__(
@@ -93,10 +85,10 @@ const QuantitySelector = ( {
 					'woo-gutenberg-products-block'
 				) }
 				className="wc-block-quantity-selector__button wc-block-quantity-selector__button--minus"
-				disabled={ disabled || currentValue <= 0 }
+				disabled={ disabled || quantity <= 0 }
 				onClick={ () => {
-					const newQuantity = currentValue - 1;
-					setCurrentValue( newQuantity );
+					const newQuantity = quantity - 1;
+					onChange( newQuantity );
 					speak(
 						sprintf(
 							__(
@@ -119,8 +111,8 @@ const QuantitySelector = ( {
 				disabled={ disabled }
 				className="wc-block-quantity-selector__button wc-block-quantity-selector__button--plus"
 				onClick={ () => {
-					const newQuantity = currentValue + 1;
-					setCurrentValue( newQuantity );
+					const newQuantity = quantity + 1;
+					onChange( newQuantity );
 					speak(
 						sprintf(
 							__(

@@ -37,9 +37,11 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 	const purchasePrice = parseInt( prices.price, 10 ) * quantity;
 	const saleAmount = regularPrice - purchasePrice;
 
-	const { removeItem, isPending: itemQuantityDisabled } = useStoreCartItem(
-		key
-	);
+	const {
+		changeQuantity,
+		removeItem,
+		isPending: itemQuantityDisabled,
+	} = useStoreCartItem( key );
 
 	return (
 		<tr className="wc-block-cart-items__row">
@@ -67,6 +69,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 				<QuantitySelector
 					disabled={ itemQuantityDisabled }
 					quantity={ quantity }
+					onChange={ changeQuantity }
 					itemName={ name }
 				/>
 				<button
