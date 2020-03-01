@@ -5,7 +5,7 @@ import { __, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useRef, useCallback } from '@wordpress/element';
+import { useCallback } from '@wordpress/element';
 import { DOWN, UP } from '@wordpress/keycodes';
 
 /**
@@ -21,7 +21,6 @@ const QuantitySelector = ( {
 	disabled,
 } ) => {
 	const classes = classNames( 'wc-block-quantity-selector', className );
-	const inputRef = useRef( null );
 
 	/**
 	 * Handles keyboard up and down keys to change quantity value.
@@ -61,7 +60,6 @@ const QuantitySelector = ( {
 				step="1"
 				min="0"
 				value={ quantity }
-				ref={ inputRef }
 				onKeyDown={ quantityInputOnKeyDown }
 				onChange={ ( event ) => {
 					const value =
