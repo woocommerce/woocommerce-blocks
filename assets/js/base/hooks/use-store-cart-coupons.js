@@ -3,6 +3,7 @@
 /**
  * External dependencies
  */
+import { __, sprintf } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useStoreNoticesContext } from '@woocommerce/base-context/store-notices-context';
@@ -37,7 +38,14 @@ export const useStoreCartCoupons = () => {
 						if ( result === true ) {
 							dispatch( 'core/notices' ).createNotice(
 								'success',
-								'Applied coupon',
+								sprintf(
+									// translators: %s coupon code.
+									__(
+										'Coupon code "%s" has been applied to your cart',
+										'woo-gutenberg-products-block'
+									),
+									couponCode
+								),
 								{ context }
 							);
 						}
@@ -57,7 +65,14 @@ export const useStoreCartCoupons = () => {
 						if ( result === true ) {
 							dispatch( 'core/notices' ).createNotice(
 								'info',
-								'Removed coupon',
+								sprintf(
+									// translators: %s coupon code.
+									__(
+										'Coupon code "%s" has been removed from your cart',
+										'woo-gutenberg-products-block'
+									),
+									couponCode
+								),
 								{ context }
 							);
 						}

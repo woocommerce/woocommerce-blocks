@@ -26,7 +26,7 @@ const StoreNoticesProvider = ( {
 	children,
 	className = '',
 	createNoticeContainer = true,
-	context = 'wc-core',
+	context = 'wc/core',
 } ) => {
 	const { createNotice } = useDispatch( 'core/notices' );
 
@@ -82,6 +82,7 @@ const StoreNoticesProvider = ( {
 				<StoreNoticesContainer
 					className={ className }
 					notices={ contextValue.notices }
+					context={ contextValue.context }
 				/>
 			) }
 			{ children }
