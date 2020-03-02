@@ -15,7 +15,6 @@ use \WP_REST_Server as RestServer;
 use \WP_REST_Controller as RestController;
 use \WP_REST_Response as RestResponse;
 use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas\CartItemSchema;
-use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas\CartSchema;
 use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\CartController;
 
 /**
@@ -46,18 +45,10 @@ class CartItems extends RestController {
 	protected $schema;
 
 	/**
-	 * Cart schema instance.
-	 *
-	 * @var object
-	 */
-	protected $cart_schema;
-
-	/**
 	 * Setup API class.
 	 */
 	public function __construct() {
-		$this->schema      = new CartItemSchema();
-		$this->cart_schema = new CartSchema();
+		$this->schema = new CartItemSchema();
 	}
 
 	/**
@@ -108,10 +99,6 @@ class CartItems extends RestController {
 					'methods'  => RestServer::EDITABLE,
 					'callback' => array( $this, 'update_item' ),
 					'args'     => $this->get_endpoint_args_for_item_schema( RestServer::EDITABLE ),
-				],
-				[
-					'methods'  => RestServer::DELETABLE,
-					'callback' => [ $this, 'delete_item' ],
 				],
 				'schema' => [ $this, 'get_public_item_schema' ],
 			]
@@ -209,26 +196,6 @@ class CartItems extends RestController {
 		}
 
 		return rest_ensure_response( $this->prepare_item_for_response( $controller->get_cart_item( $request['key'] ), $request ) );
-	}
-
-	/**
-	 * Delete a single cart item.
-	 *
-	 * @param \WP_Rest_Request $request Full data about the request.
-	 * @return \WP_Error|\WP_REST_Response Response object on success, or WP_Error object on failure.
-	 */
-	public function delete_item( $request ) {
-		$controller = new CartController();
-		$cart       = $controller->get_cart_instance();
-		$cart_item  = $controller->get_cart_item( $request['key'] );
-
-		if ( ! $cart_item ) {
-			return new RestError( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
-		}
-
-		$cart->remove_cart_item( $request['key'] );
-
-		return new RestResponse( $this->cart_schema->get_item_response( $cart ), 200 );
 	}
 
 	/**

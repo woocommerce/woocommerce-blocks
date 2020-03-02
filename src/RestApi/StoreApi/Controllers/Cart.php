@@ -103,6 +103,23 @@ class Cart extends RestController {
 				'schema' => [ $this, 'get_public_item_schema' ],
 			]
 		);
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/remove-item',
+			[
+				[
+					'methods'  => 'POST',
+					'callback' => [ $this, 'remove_cart_item' ],
+					'args'     => [
+						'key' => [
+							'description' => __( 'Unique identifier (key) for the cart item.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+						],
+					],
+				],
+				'schema' => [ $this, 'get_public_item_schema' ],
+			]
+		);
 	}
 
 	/**
@@ -186,6 +203,29 @@ class Cart extends RestController {
 		if ( ! $cart || ! $cart instanceof \WC_Cart ) {
 			return new RestError( 'woocommerce_rest_cart_error', __( 'Unable to retrieve cart.', 'woo-gutenberg-products-block' ), array( 'status' => 500 ) );
 		}
+
+		$data     = $this->prepare_item_for_response( $cart, $request );
+		$response = rest_ensure_response( $data );
+
+		return $response;
+	}
+
+	/**
+	 * Delete a single cart item.
+	 *
+	 * @param \WP_Rest_Request $request Full data about the request.
+	 * @return \WP_Error|\WP_REST_Response Response object on success, or WP_Error object on failure.
+	 */
+	public function remove_cart_item( $request ) {
+		$controller = new CartController();
+		$cart       = $controller->get_cart_instance();
+		$cart_item  = $controller->get_cart_item( $request['key'] );
+
+		if ( ! $cart_item ) {
+			return new RestError( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
+		}
+
+		$cart->remove_cart_item( $request['key'] );
 
 		$data     = $this->prepare_item_for_response( $cart, $request );
 		$response = rest_ensure_response( $data );

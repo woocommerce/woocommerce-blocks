@@ -200,8 +200,8 @@ export function* removeItemFromCart( cartItemKey ) {
 
 	try {
 		const cart = yield apiFetch( {
-			path: `/wc/store/cart/items/${ cartItemKey }`,
-			method: 'DELETE',
+			path: `/wc/store/cart/remove-item/?key=${ cartItemKey }`,
+			method: 'POST',
 			cache: 'no-store',
 		} );
 
