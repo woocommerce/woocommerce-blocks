@@ -129,15 +129,16 @@ export function* removeCoupon( couponCode ) {
 /**
  * Selects a shipping rate.
  *
- * @param {Array} shippingRates the shipping rates ids
+ * @param rateId
+ * @param packageId
  */
-export function* selectShippingRate( shippingRates ) {
+export function* selectShippingRate( rateId, packageId = 0 ) {
 	try {
 		const result = yield apiFetch( {
-			path: '/wc/store/cart/select-shipping',
+			path: `/wc/store/cart/select-shipping-rate/${ packageId }`,
 			method: 'POST',
 			data: {
-				shipping_rates: shippingRates,
+				rate_id: rateId,
 			},
 			cache: 'no-store',
 		} );

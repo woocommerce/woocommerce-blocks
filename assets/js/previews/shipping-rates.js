@@ -5,7 +5,12 @@ import { __ } from '@wordpress/i18n';
 
 export const previewShippingRates = [
 	{
-		destination: {},
+		destination: {
+			country: 'US',
+			state: 'New York',
+			city: 'NYC',
+			postcode: '10007',
+		},
 		items: {},
 		shipping_rates: [
 			{
@@ -21,6 +26,7 @@ export const previewShippingRates = [
 				delivery_time: '',
 				price: '200',
 				rate_id: 'free_shipping:1',
+				selected: true,
 			},
 			{
 				currency_code: 'USD',
@@ -35,6 +41,7 @@ export const previewShippingRates = [
 				delivery_time: '',
 				price: '0',
 				rate_id: 'local_pickup:1',
+				selected: false,
 			},
 		],
 	},

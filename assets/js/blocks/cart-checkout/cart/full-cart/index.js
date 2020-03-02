@@ -23,11 +23,7 @@ import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import { Card, CardBody } from 'wordpress-components';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import { decodeEntities } from '@wordpress/html-entities';
-import {
-	useStoreCartCoupons,
-	useSelectedShippingRates,
-	useShippingRates,
-} from '@woocommerce/base-hooks';
+import { useStoreCartCoupons, useShippingRates } from '@woocommerce/base-hooks';
 import classnames from 'classnames';
 
 /**
@@ -69,15 +65,8 @@ const Cart = ( {
 	shippingRates,
 	isLoading = false,
 } ) => {
-	const {
-		selectedShippingRates,
-		selectShippingRate,
-	} = useSelectedShippingRates();
-	const {
-		shippingAddress,
-		updateShipping,
-		shippingRatesLoading,
-	} = useShippingRates();
+	const { updateShipping, shippingRatesLoading } = useShippingRates();
+	const shippingAddress = shippingRates[ 0 ]?.destination;
 	const [ showShippingCosts, setShowShippingCosts ] = useState(
 		! isShippingCostHidden
 	);
@@ -94,7 +83,7 @@ const Cart = ( {
 		}
 		if ( isShippingCalculatorEnabled ) {
 			if ( isShippingCostHidden ) {
-				if ( shippingAddress.country ) {
+				if ( shippingAddress?.country ) {
 					return setShowShippingCosts( true );
 				}
 			} else {
@@ -238,9 +227,7 @@ const Cart = ( {
 					'No shipping options were found.',
 					'woo-gutenberg-products-block'
 				) }
-				selected={ selectedShippingRates }
 				renderOption={ renderShippingRatesControlOption }
-				onChange={ selectShippingRate }
 				shippingRates={ shippingRates }
 				shippingRatesLoading={ shippingRatesLoading }
 			/>

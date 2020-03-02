@@ -3,7 +3,7 @@
 /**
  * External dependencies
  */
-import { useSelect } from '@wordpress/data';
+import { useDispatch } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 
 /**
@@ -13,19 +13,9 @@ import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
  * @return {SelectedShippingRates} An object exposing data and actions from/for the
  * store api /cart/select-shipping endpoint.
  */
-export const useSelectedShippingRates = () => {
-	const results = useSelect( ( select, { dispatch } ) => {
-		const store = select( storeKey );
-		const selectedShippingRates = store.selectedShippingRates();
-		const { selectShippingRate } = dispatch( storeKey );
-
-		return {
-			selectedShippingRates,
-			selectShippingRate,
-		};
-	}, [] );
-
+export const useSelectShippingRate = () => {
+	const { selectShippingRate } = useDispatch( storeKey );
 	return {
-		...results,
+		selectShippingRate,
 	};
 };
