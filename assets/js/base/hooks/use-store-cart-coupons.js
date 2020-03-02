@@ -6,7 +6,7 @@
 import { __, sprintf } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
-import { useStoreNoticesContext } from '@woocommerce/base-context/store-notices-context';
+import { useStoreNotices } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -23,7 +23,11 @@ import { useStoreCart } from './use-store-cart';
  */
 export const useStoreCartCoupons = () => {
 	const { cartCoupons, cartIsLoading } = useStoreCart();
-	const { context } = useStoreNoticesContext();
+	const {
+		addErrorNotice,
+		addSuccessNotice,
+		addInfoNotice,
+	} = useStoreNotices();
 
 	const results = useSelect(
 		( select, { dispatch } ) => {
@@ -32,12 +36,11 @@ export const useStoreCartCoupons = () => {
 			const isRemovingCoupon = store.isRemovingCoupon();
 			const { applyCoupon, removeCoupon } = dispatch( storeKey );
 
-			const applyCouponWithContext = ( couponCode ) => {
+			const applyCouponWithNotices = ( couponCode ) => {
 				applyCoupon( couponCode )
 					.then( ( result ) => {
 						if ( result === true ) {
-							dispatch( 'core/notices' ).createNotice(
-								'success',
+							addSuccessNotice(
 								sprintf(
 									// translators: %s coupon code.
 									__(
@@ -46,25 +49,24 @@ export const useStoreCartCoupons = () => {
 									),
 									couponCode
 								),
-								{ context }
+								{
+									id: 'coupon-form',
+								}
 							);
 						}
 					} )
 					.catch( ( error ) => {
-						dispatch( 'core/notices' ).createNotice(
-							'error',
-							error.message,
-							{ context }
-						);
+						addErrorNotice( error.message, {
+							id: 'coupon-form',
+						} );
 					} );
 			};
 
-			const removeCouponWithContext = ( couponCode ) => {
+			const removeCouponWithNotices = ( couponCode ) => {
 				removeCoupon( couponCode )
 					.then( ( result ) => {
 						if ( result === true ) {
-							dispatch( 'core/notices' ).createNotice(
-								'info',
+							addInfoNotice(
 								sprintf(
 									// translators: %s coupon code.
 									__(
@@ -73,27 +75,27 @@ export const useStoreCartCoupons = () => {
 									),
 									couponCode
 								),
-								{ context }
+								{
+									id: 'coupon-form',
+								}
 							);
 						}
 					} )
 					.catch( ( error ) => {
-						dispatch( 'core/notices' ).createNotice(
-							'error',
-							error.message,
-							{ context }
-						);
+						addErrorNotice( error.message, {
+							id: 'coupon-form',
+						} );
 					} );
 			};
 
 			return {
-				applyCoupon: applyCouponWithContext,
-				removeCoupon: removeCouponWithContext,
+				applyCoupon: applyCouponWithNotices,
+				removeCoupon: removeCouponWithNotices,
 				isApplyingCoupon,
 				isRemovingCoupon,
 			};
 		},
-		[ context ]
+		[ addErrorNotice, addSuccessNotice, addInfoNotice ]
 	);
 
 	return {

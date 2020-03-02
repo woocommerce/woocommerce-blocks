@@ -1,6 +1,8 @@
 .wc-block-components-notices {
 	display: block;
+	margin-bottom: 2em;
 	.wc-block-components-notices__notice {
+		margin: 0;
 		.components-notice__content {
 			display: inline-block;
 		}
@@ -17,5 +19,8 @@
 				vertical-align: text-top;
 			}
 		}
+	}
+	.wc-block-components-notices__notice + .wc-block-components-notices__notice {
+		margin-top: 1em;
 	}
 }

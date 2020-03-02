@@ -2,7 +2,7 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import { createContext, useContext, useMemo } from '@wordpress/element';
+import { createContext, useContext } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 import StoreNoticesContainer from '@woocommerce/base-components/store-notices-container';
 
@@ -28,39 +28,7 @@ const StoreNoticesProvider = ( {
 	createNoticeContainer = true,
 	context = 'wc/core',
 } ) => {
-	const { createNotice } = useDispatch( 'core/notices' );
-
-	const setNotice = useMemo(
-		() => ( {
-			default: ( text ) =>
-				void createNotice( 'default', text, {
-					context,
-					isDismissible: false,
-				} ),
-			error: ( text ) =>
-				void createNotice( 'error', text, {
-					context,
-					isDismissible: false,
-				} ),
-			warning: ( text ) =>
-				void createNotice( 'warning', text, {
-					context,
-					isDismissible: false,
-				} ),
-			info: ( text ) =>
-				void createNotice( 'info', text, {
-					context,
-					isDismissible: false,
-				} ),
-			success: ( text ) =>
-				void createNotice( 'success', text, {
-					context,
-					isDismissible: false,
-				} ),
-		} ),
-		[ createNotice, context ]
-	);
-
+	const { createNotice, removeNotice } = useDispatch( 'core/notices' );
 	const { notices } = useSelect(
 		( select ) => {
 			return {
@@ -69,10 +37,10 @@ const StoreNoticesProvider = ( {
 		},
 		[ context ]
 	);
-
 	const contextValue = {
 		notices,
-		setNotice,
+		createNotice,
+		removeNotice,
 		context,
 	};
 
