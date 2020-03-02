@@ -8,12 +8,12 @@ import { Notice } from 'wordpress-components';
 const getWooClassName = ( { status = 'default' } ) => {
 	switch ( status ) {
 		case 'error':
-			return 'woocommerce-error';
+			return 'woocommerce-message woocommerce-error';
 		case 'success':
-			return 'woocommerce-success';
+			return 'woocommerce-message woocommerce-success';
 		case 'info':
 		case 'warning':
-			return 'woocommerce-info';
+			return 'woocommerce-message woocommerce-info';
 	}
 	return '';
 };

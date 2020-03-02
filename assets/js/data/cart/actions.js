@@ -1,13 +1,12 @@
 /**
  * External dependencies
  */
-import { apiFetch, dispatch } from '@wordpress/data-controls';
+import { apiFetch } from '@wordpress/data-controls';
 
 /**
  * Internal dependencies
  */
 import { ACTION_TYPES as types } from './action-types';
-import { CORE_NOTICES_CONTEXT } from '../constants';
 
 /**
  * Returns an action object used in updating the store with the provided items
@@ -73,6 +72,7 @@ export function receiveRemovingCoupon( couponCode ) {
  * Applies a coupon code and either invalidates caches, or receives an error if
  * the coupon cannot be applied.
  *
+ * @throws Will throw an error if there is an API problem.
  * @param {string} couponCode The coupon code to apply to the cart.
  */
 export function* applyCoupon( couponCode ) {
@@ -91,24 +91,26 @@ export function* applyCoupon( couponCode ) {
 		if ( result ) {
 			yield receiveCart( result );
 		}
+
+		// Finished handling the coupon.
+		yield receiveApplyingCoupon( '' );
 	} catch ( error ) {
-		yield dispatch(
-			'core/notices',
-			'createNotice',
-			'error',
-			error.message,
-			{ context: CORE_NOTICES_CONTEXT }
-		);
+		// Store the error message in state.
 		yield receiveError( error );
+		// Finished handling the coupon.
+		yield receiveApplyingCoupon( '' );
+		// Re-throw the error.
+		throw error;
 	}
 
-	yield receiveApplyingCoupon( '' );
+	return true;
 }
 
 /**
  * Removes a coupon code and either invalidates caches, or receives an error if
  * the coupon cannot be removed.
  *
+ * @throws Will throw an error if there is an API problem.
  * @param {string} couponCode The coupon code to remove from the cart.
  */
 export function* removeCoupon( couponCode ) {
@@ -127,11 +129,19 @@ export function* removeCoupon( couponCode ) {
 		if ( result ) {
 			yield receiveCart( result );
 		}
+
+		// Finished handling the coupon.
+		yield receiveRemovingCoupon( '' );
 	} catch ( error ) {
+		// Store the error message in state.
 		yield receiveError( error );
+		// Finished handling the coupon.
+		yield receiveRemovingCoupon( '' );
+		// Re-throw the error.
+		throw error;
 	}
 
-	yield receiveRemovingCoupon( '' );
+	return true;
 }
 
 /**

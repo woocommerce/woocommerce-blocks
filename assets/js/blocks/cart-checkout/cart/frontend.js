@@ -29,7 +29,7 @@ const CartFrontend = ( {
 	} = useStoreCart();
 
 	return (
-		<StoreNoticesProvider>
+		<StoreNoticesProvider context="wc-cart">
 			{ ! cartIsLoading && ! cartItems.length ? (
 				<RawHTML>{ emptyCart }</RawHTML>
 			) : (

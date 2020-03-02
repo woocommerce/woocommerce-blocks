@@ -5,6 +5,7 @@
  */
 import { useSelect } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
+import { useStoreNoticesContext } from '@woocommerce/base-context/store-notices-context';
 
 /**
  * Internal dependencies
@@ -21,20 +22,64 @@ import { useStoreCart } from './use-store-cart';
  */
 export const useStoreCartCoupons = () => {
 	const { cartCoupons, cartIsLoading } = useStoreCart();
+	const { context } = useStoreNoticesContext();
 
-	const results = useSelect( ( select, { dispatch } ) => {
-		const store = select( storeKey );
-		const isApplyingCoupon = store.isApplyingCoupon();
-		const isRemovingCoupon = store.isRemovingCoupon();
-		const { applyCoupon, removeCoupon } = dispatch( storeKey );
+	const results = useSelect(
+		( select, { dispatch } ) => {
+			const store = select( storeKey );
+			const isApplyingCoupon = store.isApplyingCoupon();
+			const isRemovingCoupon = store.isRemovingCoupon();
+			const { applyCoupon, removeCoupon } = dispatch( storeKey );
 
-		return {
-			applyCoupon,
-			removeCoupon,
-			isApplyingCoupon,
-			isRemovingCoupon,
-		};
-	}, [] );
+			const applyCouponWithContext = ( couponCode ) => {
+				applyCoupon( couponCode )
+					.then( ( result ) => {
+						if ( result === true ) {
+							dispatch( 'core/notices' ).createNotice(
+								'success',
+								'Applied coupon',
+								{ context }
+							);
+						}
+					} )
+					.catch( ( error ) => {
+						dispatch( 'core/notices' ).createNotice(
+							'error',
+							error.message,
+							{ context }
+						);
+					} );
+			};
+
+			const removeCouponWithContext = ( couponCode ) => {
+				removeCoupon( couponCode )
+					.then( ( result ) => {
+						if ( result === true ) {
+							dispatch( 'core/notices' ).createNotice(
+								'info',
+								'Removed coupon',
+								{ context }
+							);
+						}
+					} )
+					.catch( ( error ) => {
+						dispatch( 'core/notices' ).createNotice(
+							'error',
+							error.message,
+							{ context }
+						);
+					} );
+			};
+
+			return {
+				applyCoupon: applyCouponWithContext,
+				removeCoupon: removeCouponWithContext,
+				isApplyingCoupon,
+				isRemovingCoupon,
+			};
+		},
+		[ context ]
+	);
 
 	return {
 		appliedCoupons: cartCoupons,

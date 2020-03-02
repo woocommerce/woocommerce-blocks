@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { createContext, useContext, useMemo } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 import StoreNoticesContainer from '@woocommerce/base-components/store-notices-container';
-import { CORE_NOTICES_CONTEXT } from '@woocommerce/block-data';
 
 const StoreNoticesContext = createContext( {} );
 
@@ -27,6 +26,7 @@ const StoreNoticesProvider = ( {
 	children,
 	className = '',
 	createNoticeContainer = true,
+	context = 'wc-core',
 } ) => {
 	const { createNotice } = useDispatch( 'core/notices' );
 
@@ -34,47 +34,46 @@ const StoreNoticesProvider = ( {
 		() => ( {
 			default: ( text ) =>
 				void createNotice( 'default', text, {
-					context: CORE_NOTICES_CONTEXT,
+					context,
 					isDismissible: false,
 				} ),
 			error: ( text ) =>
 				void createNotice( 'error', text, {
-					context: CORE_NOTICES_CONTEXT,
+					context,
 					isDismissible: false,
 				} ),
 			warning: ( text ) =>
 				void createNotice( 'warning', text, {
-					context: CORE_NOTICES_CONTEXT,
+					context,
 					isDismissible: false,
 				} ),
 			info: ( text ) =>
 				void createNotice( 'info', text, {
-					context: CORE_NOTICES_CONTEXT,
+					context,
 					isDismissible: false,
 				} ),
 			success: ( text ) =>
 				void createNotice( 'success', text, {
-					context: CORE_NOTICES_CONTEXT,
+					context,
 					isDismissible: false,
 				} ),
 		} ),
-		[ createNotice, CORE_NOTICES_CONTEXT ]
+		[ createNotice, context ]
 	);
 
 	const { notices } = useSelect(
 		( select ) => {
 			return {
-				notices: select( 'core/notices' ).getNotices(
-					CORE_NOTICES_CONTEXT
-				),
+				notices: select( 'core/notices' ).getNotices( context ),
 			};
 		},
-		[ CORE_NOTICES_CONTEXT ]
+		[ context ]
 	);
 
 	const contextValue = {
 		notices,
 		setNotice,
+		context,
 	};
 
 	return (
@@ -94,6 +93,7 @@ StoreNoticesProvider.propTypes = {
 	className: PropTypes.string,
 	createNoticeContainer: PropTypes.bool,
 	children: PropTypes.node,
+	context: PropTypes.string,
 };
 
 export default StoreNoticesProvider;
