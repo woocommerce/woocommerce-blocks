@@ -19,7 +19,7 @@ const Packages = ( {
 } ) => {
 	return shippingRates.map( ( shippingRate, i ) => (
 		<Package
-			key={ Object.keys( shippingRate.items ).join() }
+			key={ shippingRate.package_id }
 			className={ className }
 			noResultsMessage={ noResultsMessage }
 			onChange={ ( newShippingRate ) => {

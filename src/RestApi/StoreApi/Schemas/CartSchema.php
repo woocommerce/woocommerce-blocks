@@ -7,6 +7,8 @@
 
 namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas;
 
+use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\CartController;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -29,7 +31,7 @@ class CartSchema extends AbstractSchema {
 	 */
 	protected function get_properties() {
 		return [
-			'coupons'                 => [
+			'coupons'        => [
 				'description' => __( 'List of applied cart coupons.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
@@ -39,16 +41,17 @@ class CartSchema extends AbstractSchema {
 					'properties' => $this->force_schema_readonly( ( new CartCouponSchema() )->get_properties() ),
 				],
 			],
-			'selected_shipping_rates' => [
-				'description' => __( 'List of selected shipping rates.', 'woo-gutenberg-products-block' ),
+			'shipping_rates' => [
+				'description' => __( 'List of available shipping rates for the cart.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 				'items'       => [
-					'type' => 'string',
+					'type'       => 'object',
+					'properties' => $this->force_schema_readonly( ( new CartShippingRateSchema() )->get_properties() ),
 				],
 			],
-			'items'                   => [
+			'items'          => [
 				'description' => __( 'List of cart items.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
@@ -58,25 +61,25 @@ class CartSchema extends AbstractSchema {
 					'properties' => $this->force_schema_readonly( ( new CartItemSchema() )->get_properties() ),
 				],
 			],
-			'items_count'             => [
+			'items_count'    => [
 				'description' => __( 'Number of items in the cart.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'items_weight'            => [
+			'items_weight'   => [
 				'description' => __( 'Total weight (in grams) of all products in the cart.', 'woo-gutenberg-products-block' ),
 				'type'        => 'number',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'needs_shipping'          => [
+			'needs_shipping' => [
 				'description' => __( 'True if the cart needs shipping. False for carts with only digital goods or stores with no shipping methods set-up.', 'woo-gutenberg-products-block' ),
 				'type'        => 'boolean',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'totals'                  => [
+			'totals'         => [
 				'description' => __( 'Cart total amounts provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
 				'context'     => [ 'view', 'edit' ],
@@ -180,18 +183,20 @@ class CartSchema extends AbstractSchema {
 	 * @return array
 	 */
 	public function get_item_response( $cart ) {
-		$cart_coupon_schema = new CartCouponSchema();
-		$cart_item_schema   = new CartItemSchema();
-		$context            = 'edit';
+		$controller           = new CartController();
+		$cart_coupon_schema   = new CartCouponSchema();
+		$cart_item_schema     = new CartItemSchema();
+		$shipping_rate_schema = new CartShippingRateSchema();
+		$context              = 'edit';
 
 		return [
-			'coupons'                 => array_values( array_map( [ $cart_coupon_schema, 'get_item_response' ], array_filter( $cart->get_applied_coupons() ) ) ),
-			'selected_shipping_rates' => $this->get_selected_shipping_rates(),
-			'items'                   => array_values( array_map( [ $cart_item_schema, 'get_item_response' ], array_filter( $cart->get_cart() ) ) ),
-			'items_count'             => $cart->get_cart_contents_count(),
-			'items_weight'            => wc_get_weight( $cart->get_cart_contents_weight(), 'g' ),
-			'needs_shipping'          => $cart->needs_shipping(),
-			'totals'                  => (object) array_merge(
+			'coupons'        => array_values( array_map( [ $cart_coupon_schema, 'get_item_response' ], array_filter( $cart->get_applied_coupons() ) ) ),
+			'shipping_rates' => array_values( array_map( [ $shipping_rate_schema, 'get_item_response' ], $controller->get_shipping_packages() ) ),
+			'items'          => array_values( array_map( [ $cart_item_schema, 'get_item_response' ], array_filter( $cart->get_cart() ) ) ),
+			'items_count'    => $cart->get_cart_contents_count(),
+			'items_weight'   => wc_get_weight( $cart->get_cart_contents_weight(), 'g' ),
+			'needs_shipping' => $cart->needs_shipping(),
+			'totals'         => (object) array_merge(
 				$this->get_store_currency_response(),
 				[
 					'total_items'        => $this->prepare_money_response( $cart->get_subtotal(), wc_get_price_decimals() ),
@@ -230,14 +235,5 @@ class CartSchema extends AbstractSchema {
 		}
 
 		return $tax_lines;
-	}
-
-	/**
-	 * Get selected shipping rates from the user session.
-	 *
-	 * @return array
-	 */
-	protected function get_selected_shipping_rates() {
-		return WC()->session->get( 'chosen_shipping_methods', array() );
 	}
 }
