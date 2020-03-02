@@ -207,14 +207,6 @@ const Cart = ( {
 				),
 			} );
 		}
-
-		if ( ! DISPLAY_CART_PRICES_INCLUDING_TAX ) {
-			totalRowsConfig.push( {
-				label: __( 'Taxes', 'woo-gutenberg-products-block' ),
-				value: parseInt( cartTotals.total_tax, 10 ),
-			} );
-		}
-
 		return totalRowsConfig;
 	};
 
@@ -313,6 +305,17 @@ const Cart = ( {
 									/>
 								) }
 							</fieldset>
+						) }
+						{ ! DISPLAY_CART_PRICES_INCLUDING_TAX && (
+							<TotalsItem
+								className="wc-block-cart__total-tax"
+								currency={ totalsCurrency }
+								label={ __(
+									'Taxes',
+									'woo-gutenberg-products-block'
+								) }
+								value={ parseInt( cartTotals.total_tax, 10 ) }
+							/>
 						) }
 						{ COUPONS_ENABLED && (
 							<TotalsCouponCodeInput
