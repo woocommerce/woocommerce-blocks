@@ -15,8 +15,8 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
  */
 import './style.scss';
 
-const ShippingCalculatorAddress = ( { onUpdate } ) => {
-	const [ address, setAddress ] = useState( {} );
+const ShippingCalculatorAddress = ( { address: initialAddress, onUpdate } ) => {
+	const [ address, setAddress ] = useState( initialAddress );
 
 	return (
 		<form className="wc-block-shipping-calculator-address">
@@ -75,6 +75,7 @@ const ShippingCalculatorAddress = ( { onUpdate } ) => {
 			/>
 			<Button
 				className="wc-block-shipping-calculator-address__button"
+				disabled={ isShallowEqual( address, initialAddress ) }
 				onClick={ ( e ) => {
 					e.preventDefault();
 					return onUpdate( address );

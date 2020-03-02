@@ -41,7 +41,7 @@ const ShippingRatesControl = ( {
 					onChange={ onChange }
 					renderOption={ renderOption }
 					selected={ selected }
-					shippingRates={ previousShippingRates || [] }
+					shippingRates={ previousShippingRates || shippingRates }
 				/>
 			</LoadingMask>
 		);

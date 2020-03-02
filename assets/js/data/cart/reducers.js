@@ -20,7 +20,7 @@ const reducer = (
 	state = {
 		cartData: {
 			coupons: [],
-			selectedShippingRates: [],
+			shippingRates: [],
 			items: [],
 			itemsCount: 0,
 			itemsWeight: 0,
@@ -69,6 +69,15 @@ const reducer = (
 				metaData: {
 					...state.metaData,
 					removingCoupon: action.couponCode,
+				},
+			};
+			break;
+		case types.UPDATING_SHIPPING:
+			state = {
+				...state,
+				metaData: {
+					...state.metaData,
+					updatingShipping: action.isResolving,
 				},
 			};
 			break;

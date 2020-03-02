@@ -5,7 +5,7 @@
 /**
  * External dependencies
  */
-import { useDispatch } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 /**
  * Internal dependencies
@@ -24,12 +24,22 @@ import { useStoreCart } from './use-store-cart';
  *                                         rates are still loading or not.
  */
 export const useShippingRates = () => {
-	const { shippingRates, cartIsLoading } = useStoreCart();
-	const { updateShipping } = useDispatch( storeKey );
+	const { shippingRates } = useStoreCart();
+	const results = useSelect( ( select, { dispatch } ) => {
+		const store = select( storeKey );
+		const shippingAddress = store.shippingAddress();
+		const shippingRatesLoading = store.areShippingRatesLoading();
+		const { updateShipping } = dispatch( storeKey );
+
+		return {
+			shippingAddress,
+			shippingRatesLoading,
+			updateShipping,
+		};
+	}, [] );
 
 	return {
 		shippingRates,
-		updateShipping,
-		cartIsLoading,
+		...results,
 	};
 };
