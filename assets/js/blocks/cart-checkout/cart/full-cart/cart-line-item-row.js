@@ -69,6 +69,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 				<QuantitySelector
 					disabled={ itemQuantityDisabled }
 					quantity={ quantity }
+					maximum={ lineItem.sold_individually ? 1 : undefined }
 					onChange={ changeQuantity }
 					itemName={ name }
 				/>
@@ -122,6 +123,7 @@ CartLineItemRow.propTypes = {
 		images: PropTypes.array.isRequired,
 		quantity: PropTypes.number.isRequired,
 		low_stock_remaining: PropTypes.number,
+		sold_individually: PropTypes.bool,
 		variation: PropTypes.arrayOf(
 			PropTypes.shape( {
 				attribute: PropTypes.string.isRequired,
