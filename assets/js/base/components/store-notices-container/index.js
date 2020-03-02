@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import withComponentId from '@woocommerce/base-hocs/with-component-id';
 import { Notice } from 'wordpress-components';
-import { useDispatch } from '@wordpress/data';
+import { useStoreNoticesContext } from '@woocommerce/base-context/store-notices-context';
 
 /**
  * Internal dependencies
@@ -25,13 +25,8 @@ const getWooClassName = ( { status = 'default' } ) => {
 	return '';
 };
 
-const StoreNoticesContainer = ( {
-	className,
-	notices,
-	componentId,
-	context,
-} ) => {
-	const { removeNotice } = useDispatch( 'core/notices' );
+const StoreNoticesContainer = ( { className, notices, componentId } ) => {
+	const { removeNotice } = useStoreNoticesContext();
 	const wrapperClass = classnames( className, 'wc-block-components-notices' );
 
 	return (
@@ -50,7 +45,7 @@ const StoreNoticesContainer = ( {
 						) }
 						onRemove={ () => {
 							if ( props.id && props.isDismissible ) {
-								removeNotice( props.id, context );
+								removeNotice( props.id );
 							}
 						} }
 					>
@@ -65,7 +60,6 @@ const StoreNoticesContainer = ( {
 StoreNoticesContainer.propTypes = {
 	className: PropTypes.string,
 	notices: PropTypes.array,
-	context: PropTypes.string,
 	// from withComponentId
 	componentId: PropTypes.number.isRequired,
 };
