@@ -17,6 +17,7 @@ import './style.scss';
 const QuantitySelector = ( {
 	className,
 	quantity = 1,
+	minimum = 1,
 	maximum = undefined,
 	onChange = () => null,
 	itemName = '',
@@ -24,7 +25,7 @@ const QuantitySelector = ( {
 } ) => {
 	const classes = classNames( 'wc-block-quantity-selector', className );
 
-	const canDecrease = quantity > 0;
+	const canDecrease = quantity > minimum;
 	const canIncrease = quantity < maximum || isUndefined( maximum );
 
 	/**
@@ -72,7 +73,10 @@ const QuantitySelector = ( {
 							? 0
 							: parseInt( event.target.value, 10 );
 					if ( ! isUndefined( maximum ) ) {
-						value = Math.max( value, maximum );
+						value = Math.min( value, maximum );
+					}
+					if ( ! isUndefined( minimum ) ) {
+						value = Math.max( value, minimum );
 					}
 					if ( value !== quantity ) {
 						onChange( value );
@@ -142,6 +146,7 @@ const QuantitySelector = ( {
 QuantitySelector.propTypes = {
 	className: PropTypes.string,
 	quantity: PropTypes.number,
+	minimum: PropTypes.number,
 	maximum: PropTypes.number,
 	onChange: PropTypes.func,
 	itemName: PropTypes.string,
