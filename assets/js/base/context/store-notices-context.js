@@ -39,7 +39,7 @@ const StoreNoticesProvider = ( {
 		( status = 'default', content = '', options = {} ) => {
 			createNotice( status, content, {
 				...options,
-				context,
+				context: options.context || context,
 			} );
 		},
 		[ createNotice, context ]
