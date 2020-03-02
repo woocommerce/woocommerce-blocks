@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
-import { usePrevious, useShippingRates } from '@woocommerce/base-hooks';
+import { usePrevious } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -13,14 +13,14 @@ import LoadingMask from '../loading-mask';
 import './style.scss';
 
 const ShippingRatesControl = ( {
-	address,
+	shippingRates,
+	shippingRatesLoading,
 	className,
 	noResultsMessage,
 	onChange,
 	renderOption,
 	selected = [],
 } ) => {
-	const { shippingRates, shippingRatesLoading } = useShippingRates( address );
 	const previousShippingRates = usePrevious(
 		shippingRates,
 		( newRates ) => newRates.length > 0

@@ -2,6 +2,7 @@
  * @typedef {Object} StoreCart
  *
  * @property {Array}   cartCoupons       An array of coupons applied to the cart.
+ * @property {Array}   shippingRates     array of selected shipping rates
  * @property {Array}   cartItems         An array of items in the cart.
  * @property {number}  cartItemsCount    The number of items in the cart.
  * @property {number}  cartItemsWeight   The weight of all items in the cart.

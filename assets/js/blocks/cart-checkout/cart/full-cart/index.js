@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * External dependencies
  */
@@ -27,6 +28,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 import {
 	useStoreCartCoupons,
 	useSelectedShippingRates,
+	useShippingRates,
 } from '@woocommerce/base-hooks';
 import classnames from 'classnames';
 
@@ -69,7 +71,11 @@ const Cart = ( {
 	shippingRates,
 	isLoading = false,
 } ) => {
-	const [ selectedShippingRate, setSelectedShippingRate ] = useState();
+	const {
+		selectedShippingRates,
+		selectShippingRate,
+	} = useSelectedShippingRates();
+	const { updateShipping } = useShippingRates();
 	const [
 		shippingCalculatorAddress,
 		setShippingCalculatorAddress,
@@ -89,10 +95,6 @@ const Cart = ( {
 		isRemovingCoupon,
 	} = useStoreCartCoupons();
 
-	const {
-		selectedShippingRates: __experimentalSelectedShippingRates,
-		selectShippingRate: __experimentalSelectShippingRate,
-	} = useSelectedShippingRates();
 	useEffect( () => {
 		if ( ! SHIPPING_ENABLED ) {
 			return setShowShippingCosts( false );
@@ -213,7 +215,7 @@ const Cart = ( {
 						/>
 						<ShippingCalculator
 							address={ shippingCalculatorAddress }
-							setAddress={ setShippingCalculatorAddress }
+							setAddress={ updateShipping }
 						/>
 					</>
 				),
@@ -260,13 +262,9 @@ const Cart = ( {
 						'No shipping options were found.',
 						'woo-gutenberg-products-block'
 					) }
-					selected={ __experimentalSelectedShippingRates }
+					selected={ selectedShippingRates }
 					renderOption={ renderShippingRatesControlOption }
-					onChange={ ( newSelectedShippingOption ) =>
-						__experimentalSelectShippingRate(
-							newSelectedShippingOption
-						)
-					}
+					onChange={ selectShippingRate }
 				/>
 			) }
 		</fieldset>

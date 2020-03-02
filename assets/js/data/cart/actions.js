@@ -149,3 +149,26 @@ export function* selectShippingRate( shippingRates ) {
 		yield receiveError( error );
 	}
 }
+
+/**
+ * Applies a coupon code and either invalidates caches, or receives an error if
+the coupon cannot be applied.
+ *
+ * @param {Object} address shipping address to be updated
+ */
+export function* updateShipping( address ) {
+	try {
+		const result = yield apiFetch( {
+			path: '/wc/store/cart/update-shipping',
+			method: 'POST',
+			data: address,
+			cache: 'no-store',
+		} );
+
+		if ( result ) {
+			yield receiveCart( result );
+		}
+	} catch ( error ) {
+		yield receiveError( error );
+	}
+}

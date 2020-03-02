@@ -15,7 +15,7 @@ const Packages = ( {
 	onChange = () => {},
 	renderOption,
 	selected = [],
-	shippingRates,
+	shippingRates = [],
 } ) => {
 	return shippingRates.map( ( shippingRate, i ) => (
 		<Package

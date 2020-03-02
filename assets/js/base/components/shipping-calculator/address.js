@@ -15,8 +15,8 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
  */
 import './style.scss';
 
-const ShippingCalculatorAddress = ( { address: initialAddress, onUpdate } ) => {
-	const [ address, setAddress ] = useState( initialAddress );
+const ShippingCalculatorAddress = ( { onUpdate } ) => {
+	const [ address, setAddress ] = useState( {} );
 
 	return (
 		<form className="wc-block-shipping-calculator-address">
@@ -75,8 +75,10 @@ const ShippingCalculatorAddress = ( { address: initialAddress, onUpdate } ) => {
 			/>
 			<Button
 				className="wc-block-shipping-calculator-address__button"
-				disabled={ isShallowEqual( address, initialAddress ) }
-				onClick={ () => onUpdate( address ) }
+				onClick={ ( e ) => {
+					e.preventDefault();
+					return onUpdate( address );
+				} }
 				type="submit"
 			>
 				{ __( 'Update', 'woo-gutenberg-products-block' ) }
