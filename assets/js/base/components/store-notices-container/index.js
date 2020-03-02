@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import withComponentId from '@woocommerce/base-hocs/with-component-id';
 import { Notice } from 'wordpress-components';
 import { useStoreNoticesContext } from '@woocommerce/base-context/store-notices-context';
+import { useInstanceId } from 'wordpress-compose';
 
 /**
  * Internal dependencies
@@ -25,34 +26,30 @@ const getWooClassName = ( { status = 'default' } ) => {
 	return '';
 };
 
-const StoreNoticesContainer = ( { className, notices, componentId } ) => {
+const StoreNoticesContainer = ( { className, notices } ) => {
 	const { removeNotice } = useStoreNoticesContext();
 	const wrapperClass = classnames( className, 'wc-block-components-notices' );
+	const instanceId = useInstanceId( StoreNoticesContainer );
 
 	return (
-		<div className={ wrapperClass } key={ componentId }>
-			{ notices.map(
-				(
-					props = { id: '', content: '', isDismissible: false },
-					i
-				) => (
-					<Notice
-						key={ 'store-notice-' + i }
-						{ ...props }
-						className={ classnames(
-							'wc-block-components-notices__notice',
-							getWooClassName( props )
-						) }
-						onRemove={ () => {
-							if ( props.id && props.isDismissible ) {
-								removeNotice( props.id );
-							}
-						} }
-					>
-						{ props.content }
-					</Notice>
-				)
-			) }
+		<div className={ wrapperClass } key={ instanceId }>
+			{ notices.map( ( props ) => (
+				<Notice
+					key={ 'store-notice-' + props.id }
+					{ ...props }
+					className={ classnames(
+						'wc-block-components-notices__notice',
+						getWooClassName( props )
+					) }
+					onRemove={ () => {
+						if ( props.isDismissible ) {
+							removeNotice( props.id );
+						}
+					} }
+				>
+					{ props.content }
+				</Notice>
+			) ) }
 		</div>
 	);
 };
@@ -60,8 +57,6 @@ const StoreNoticesContainer = ( { className, notices, componentId } ) => {
 StoreNoticesContainer.propTypes = {
 	className: PropTypes.string,
 	notices: PropTypes.array,
-	// from withComponentId
-	componentId: PropTypes.number.isRequired,
 };
 
 export default withComponentId( StoreNoticesContainer );
