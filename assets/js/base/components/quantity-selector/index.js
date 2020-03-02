@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useCallback } from '@wordpress/element';
 import { DOWN, UP } from '@wordpress/keycodes';
-import { isUndefined } from 'lodash';
 
 /**
  * Internal dependencies
@@ -18,15 +17,16 @@ const QuantitySelector = ( {
 	className,
 	quantity = 1,
 	minimum = 1,
-	maximum = undefined,
+	maximum,
 	onChange = () => null,
 	itemName = '',
 	disabled,
 } ) => {
 	const classes = classNames( 'wc-block-quantity-selector', className );
 
+	const hasMaximum = maximum !== undefined;
 	const canDecrease = quantity > minimum;
-	const canIncrease = quantity < maximum || isUndefined( maximum );
+	const canIncrease = ! hasMaximum || quantity < maximum;
 
 	/**
 	 * Handles keyboard up and down keys to change quantity value.
@@ -54,7 +54,7 @@ const QuantitySelector = ( {
 				onChange( quantity + 1 );
 			}
 		},
-		[ quantity, onChange ]
+		[ quantity, onChange, canIncrease, canDecrease ]
 	);
 
 	return (
@@ -72,12 +72,10 @@ const QuantitySelector = ( {
 						isNaN( event.target.value ) || ! event.target.value
 							? 0
 							: parseInt( event.target.value, 10 );
-					if ( ! isUndefined( maximum ) ) {
+					if ( hasMaximum ) {
 						value = Math.min( value, maximum );
 					}
-					if ( ! isUndefined( minimum ) ) {
-						value = Math.max( value, minimum );
-					}
+					value = Math.max( value, minimum );
 					if ( value !== quantity ) {
 						onChange( value );
 					}
