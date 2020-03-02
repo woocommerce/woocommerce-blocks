@@ -5,9 +5,9 @@ import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { Component } from '@wordpress/element';
 import PropTypes from 'prop-types';
-import { withInstanceId, compose } from '@wordpress/compose';
 import { PlainText } from '@wordpress/editor';
 import { HOME_URL } from '@woocommerce/block-settings';
+import withComponentId from '@woocommerce/base-hocs/with-component-id';
 
 /**
  * Internal dependencies
@@ -86,7 +86,7 @@ class ProductSearchBlock extends Component {
 	}
 
 	renderEdit() {
-		const { attributes, setAttributes, instanceId } = this.props;
+		const { attributes, componentId, setAttributes } = this.props;
 		const {
 			label,
 			placeholder,
@@ -103,7 +103,7 @@ class ProductSearchBlock extends Component {
 
 		if ( ! formId ) {
 			setAttributes( {
-				formId: `wc-block-product-search-${ instanceId }`,
+				formId: `wc-block-product-search-${ componentId }`,
 			} );
 		}
 
@@ -168,7 +168,7 @@ ProductSearchBlock.propTypes = {
 	/**
 	 * A unique ID for identifying the label for the select dropdown.
 	 */
-	instanceId: PropTypes.number,
+	componentId: PropTypes.number,
 	/**
 	 * Whether it's in the editor or frontend display.
 	 */
@@ -179,4 +179,4 @@ ProductSearchBlock.propTypes = {
 	setAttributes: PropTypes.func,
 };
 
-export default compose( [ withInstanceId ] )( ProductSearchBlock );
+export default withComponentId( ProductSearchBlock );
