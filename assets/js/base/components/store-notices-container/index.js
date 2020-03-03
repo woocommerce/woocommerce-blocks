@@ -3,10 +3,8 @@
  */
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import withComponentId from '@woocommerce/base-hocs/with-component-id';
 import { Notice } from 'wordpress-components';
 import { useStoreNoticesContext } from '@woocommerce/base-context/store-notices-context';
-import { useInstanceId } from 'wordpress-compose';
 
 /**
  * Internal dependencies
@@ -29,10 +27,9 @@ const getWooClassName = ( { status = 'default' } ) => {
 const StoreNoticesContainer = ( { className, notices } ) => {
 	const { removeNotice } = useStoreNoticesContext();
 	const wrapperClass = classnames( className, 'wc-block-components-notices' );
-	const instanceId = useInstanceId( StoreNoticesContainer );
 
 	return (
-		<div className={ wrapperClass } key={ instanceId }>
+		<div className={ wrapperClass }>
 			{ notices.map( ( props ) => (
 				<Notice
 					key={ 'store-notice-' + props.id }
@@ -59,4 +56,4 @@ StoreNoticesContainer.propTypes = {
 	notices: PropTypes.array,
 };
 
-export default withComponentId( StoreNoticesContainer );
+export default StoreNoticesContainer;
