@@ -8,6 +8,8 @@ import {
 import { useStoreCart } from '@woocommerce/base-hooks';
 import { RawHTML } from '@wordpress/element';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
+import StoreNoticesProvider from '@woocommerce/base-context/store-notices-context';
+
 /**
  * Internal dependencies
  */
@@ -26,21 +28,11 @@ const CartFrontend = ( {
 		cartItems,
 		cartTotals,
 		cartIsLoading,
-		cartErrors,
 		cartCoupons,
 	} = useStoreCart();
 
 	return (
-		<>
-			<div className="errors">
-				{ // @todo This is a placeholder for error messages - this needs refactoring.
-				cartErrors &&
-					cartErrors.map( ( error = {}, i ) => (
-						<div className="woocommerce-info" key={ 'notice-' + i }>
-							{ error.message }
-						</div>
-					) ) }
-			</div>
+		<StoreNoticesProvider context="wc/cart">
 			{ ! cartIsLoading && ! cartItems.length ? (
 				<RawHTML>{ emptyCart }</RawHTML>
 			) : (
@@ -57,7 +49,7 @@ const CartFrontend = ( {
 					/>
 				</LoadingMask>
 			) }
-		</>
+		</StoreNoticesProvider>
 	);
 };
 

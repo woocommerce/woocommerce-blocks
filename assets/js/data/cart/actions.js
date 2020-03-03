@@ -72,6 +72,7 @@ export function receiveRemovingCoupon( couponCode ) {
  * Applies a coupon code and either invalidates caches, or receives an error if
  * the coupon cannot be applied.
  *
+ * @throws Will throw an error if there is an API problem.
  * @param {string} couponCode The coupon code to apply to the cart.
  */
 export function* applyCoupon( couponCode ) {
@@ -90,17 +91,26 @@ export function* applyCoupon( couponCode ) {
 		if ( result ) {
 			yield receiveCart( result );
 		}
+
+		// Finished handling the coupon.
+		yield receiveApplyingCoupon( '' );
 	} catch ( error ) {
+		// Store the error message in state.
 		yield receiveError( error );
+		// Finished handling the coupon.
+		yield receiveApplyingCoupon( '' );
+		// Re-throw the error.
+		throw error;
 	}
 
-	yield receiveApplyingCoupon( '' );
+	return true;
 }
 
 /**
  * Removes a coupon code and either invalidates caches, or receives an error if
  * the coupon cannot be removed.
  *
+ * @throws Will throw an error if there is an API problem.
  * @param {string} couponCode The coupon code to remove from the cart.
  */
 export function* removeCoupon( couponCode ) {
@@ -119,11 +129,32 @@ export function* removeCoupon( couponCode ) {
 		if ( result ) {
 			yield receiveCart( result );
 		}
+
+		// Finished handling the coupon.
+		yield receiveRemovingCoupon( '' );
 	} catch ( error ) {
+		// Store the error message in state.
 		yield receiveError( error );
+		// Finished handling the coupon.
+		yield receiveRemovingCoupon( '' );
+		// Re-throw the error.
+		throw error;
 	}
 
-	yield receiveRemovingCoupon( '' );
+	return true;
+}
+
+/**
+ * Returns an action object for updating a single cart item in the store.
+ *
+ * @param {Object}   [response={}]    A cart item API response.
+ * @return {Object} Object for action.
+ */
+export function receiveCartItem( response = {} ) {
+	return {
+		type: types.RECEIVE_CART_ITEM,
+		cartItem: response,
+	};
 }
 
 /**
@@ -175,6 +206,36 @@ export function* removeItemFromCart( cartItemKey ) {
 		} );
 
 		yield receiveRemovedItem( cartItemKey );
+	} catch ( error ) {
+		yield receiveError( error );
+	}
+
+	yield itemQuantityPending( cartItemKey, false );
+}
+
+/**
+ * Changes the quantity for specified cart item:
+ * - Calls API to set quantity.
+ * - If successful, yields action to update store.
+ * - If error, yields action to store error.
+ * - Sets cart item as pending while API request is in progress.
+ *
+ * @param {string} cartItemKey Cart item being updated.
+ * @param {number} quantity Specified (new) quantity.
+ */
+export function* changeCartItemQuantity( cartItemKey, quantity ) {
+	yield itemQuantityPending( cartItemKey, true );
+
+	try {
+		const result = yield apiFetch( {
+			path: `/wc/store/cart/items/${ cartItemKey }?quantity=${ quantity }`,
+			method: 'PUT',
+			cache: 'no-store',
+		} );
+
+		if ( result ) {
+			yield receiveCartItem( result );
+		}
 	} catch ( error ) {
 		yield receiveError( error );
 	}
