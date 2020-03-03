@@ -42,9 +42,4 @@
  * @property {Function} removeItem      Callback for removing a cart item.
  */
 
- /**
-  * @typedef {Object} SelectedShippingRates
-  *
-  * @property {Function} selectShippingRate    Callback for selecting a rate.
-  */
 export {};

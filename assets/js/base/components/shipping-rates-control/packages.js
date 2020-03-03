@@ -17,7 +17,7 @@ const Packages = ( {
 	renderOption,
 	shippingRates = [],
 } ) => {
-	const { selectShippingRate } = useSelectShippingRate();
+	const selectShippingRate = useSelectShippingRate();
 	const initiallySelectedRates = shippingRates.map(
 		( p ) => p.shipping_rates.find( ( rate ) => rate.selected ).rate_id
 	);
@@ -46,11 +46,15 @@ Packages.propTypes = {
 	renderOption: PropTypes.func.isRequired,
 	className: PropTypes.string,
 	noResultsMessage: PropTypes.string,
-	onChange: PropTypes.func,
-	selected: PropTypes.arrayOf( PropTypes.string ),
 	shippingRates: PropTypes.arrayOf(
 		PropTypes.shape( {
-			items: PropTypes.object.isRequired,
+			items: PropTypes.arrayOf(
+				PropTypes.shape( {
+					key: PropTypes.string,
+					name: PropTypes.string,
+					quantity: PropTypes.number,
+				} )
+			).isRequired,
 		} ).isRequired
 	).isRequired,
 };

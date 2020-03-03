@@ -22,6 +22,7 @@ import { useStoreCart } from './use-store-cart';
  *                  - shippingRates        An array of shipping rate objects.
  *                  - shippingRatesLoading A boolean indicating whether the shipping
  *                                         rates are still loading or not.
+ *                  - updateShipping       An action dispatcher to update the shipping address.
  */
 export const useShippingRates = () => {
 	const { shippingRates } = useStoreCart();

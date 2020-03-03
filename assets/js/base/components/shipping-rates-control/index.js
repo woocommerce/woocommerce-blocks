@@ -17,9 +17,7 @@ const ShippingRatesControl = ( {
 	shippingRatesLoading,
 	className,
 	noResultsMessage,
-	onChange,
 	renderOption,
-	selected = [],
 } ) => {
 	const previousShippingRates = usePrevious(
 		shippingRates,
@@ -38,9 +36,7 @@ const ShippingRatesControl = ( {
 				<Packages
 					className={ className }
 					noResultsMessage={ noResultsMessage }
-					onChange={ onChange }
 					renderOption={ renderOption }
-					selected={ selected }
 					shippingRates={ previousShippingRates || shippingRates }
 				/>
 			</LoadingMask>
@@ -59,9 +55,7 @@ const ShippingRatesControl = ( {
 			<Packages
 				className={ className }
 				noResultsMessage={ noResultsMessage }
-				onChange={ onChange }
 				renderOption={ renderOption }
-				selected={ selected }
 				shippingRates={ previousShippingRates || shippingRates }
 			/>
 		</LoadingMask>
@@ -78,10 +72,8 @@ ShippingRatesControl.propTypes = {
 		country: PropTypes.string,
 	} ),
 	noResultsMessage: PropTypes.string.isRequired,
-	onChange: PropTypes.func.isRequired,
 	renderOption: PropTypes.func.isRequired,
 	className: PropTypes.string,
-	selected: PropTypes.arrayOf( PropTypes.string ),
 };
 
 export default ShippingRatesControl;
