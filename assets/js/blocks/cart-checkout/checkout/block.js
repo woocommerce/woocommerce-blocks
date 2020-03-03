@@ -28,11 +28,14 @@ import { decodeEntities } from '@wordpress/html-entities';
 import './style.scss';
 import '../../../payment-methods-demo';
 
-const Block = ( { shippingRates = [], isEditor = false } ) => {
+const Block = ( { attributes, isEditor = false, shippingRates = [] } ) => {
 	const [ selectedShippingRate, setSelectedShippingRate ] = useState( {} );
 	const [ contactFields, setContactFields ] = useState( {} );
 	const [ shouldSavePayment, setShouldSavePayment ] = useState( true );
 	const [ shippingFields, setShippingFields ] = useState( {} );
+	const [ useShippingAsBilling, setUseShippingAsBilling ] = useState(
+		attributes.useShippingAsBilling
+	);
 
 	const renderShippingRatesControlOption = ( option ) => ( {
 		label: decodeEntities( option.name ),
@@ -149,12 +152,13 @@ const Block = ( { shippingRates = [], isEditor = false } ) => {
 								'Use same address for billing',
 								'woo-gutenberg-products-block'
 							) }
-							checked={ shippingFields.useSameForBilling }
-							onChange={ () =>
-								setShippingFields( {
-									...shippingFields,
-									useSameForBilling: ! shippingFields.useSameForBilling,
-								} )
+							checked={
+								isEditor
+									? attributes.useShippingAsBilling
+									: useShippingAsBilling
+							}
+							onChange={ ( isChecked ) =>
+								setUseShippingAsBilling( isChecked )
 							}
 						/>
 					</FormStep>
