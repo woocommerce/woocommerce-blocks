@@ -139,6 +139,26 @@ class Cart extends TestCase {
 	}
 
 	/**
+	 * Test changing the quantity of a cart item.
+	 */
+	public function test_update_item() {
+		$request = new WP_REST_Request( 'POST', '/wc/store/cart/update-item/' );
+		$request->set_body_params(
+			array(
+				'key' => $this->keys[0],
+				'quantity' => '10',
+			)
+		);
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 200, $response->get_status() );
+		$this->assertEquals( 10, $data['quantity'] );
+		$this->assertEquals( 11, $data['items_count'] );
+		$this->assertEquals( '1100', $data['quantity'] );
+	}
+
+	/**
 	 * Test applying coupon to cart.
 	 */
 	public function test_apply_coupon() {
