@@ -139,7 +139,7 @@ class Cart extends TestCase {
 		$request->set_body_params(
 			array(
 				'key' => $this->keys[0],
-				'quantity' => '10',
+				'quantity' => 10,
 			)
 		);
 		$response = $this->server->dispatch( $request );
