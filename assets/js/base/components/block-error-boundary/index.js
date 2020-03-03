@@ -33,7 +33,13 @@ class BlockErrorBoundary extends Component {
 	}
 
 	render() {
-		const { header, imageUrl, showErrorMessage, text } = this.props;
+		const {
+			header,
+			imageUrl,
+			showErrorMessage,
+			text,
+			errorMessagePrefix,
+		} = this.props;
 		const { errorMessage, hasError } = this.state;
 
 		if ( hasError ) {
@@ -43,6 +49,7 @@ class BlockErrorBoundary extends Component {
 					header={ header }
 					imageUrl={ imageUrl }
 					text={ text }
+					errorMessagePrefix={ errorMessagePrefix }
 				/>
 			);
 		}
@@ -74,6 +81,10 @@ BlockErrorBoundary.propTypes = {
 	 * If it's not defined, the default text will be used.
 	 */
 	text: PropTypes.node,
+	/**
+	 * Text preceeding the error message.
+	 */
+	errorMessagePrefix: PropTypes.string,
 };
 
 BlockErrorBoundary.defaultProps = {
