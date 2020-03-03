@@ -110,13 +110,6 @@ class Cart extends TestCase {
 		$this->assertEquals( 1, count( $data['items'] ) );
 		$this->assertEquals( '10', $data['items_weight'] );
 		$this->assertEquals( '1000', $data['totals']->total_items );
-
-		// Test removing same cart item (now deleted) - should return 404.
-		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/remove-item/?key=' . $this->keys[0] );
-		$response = $this->server->dispatch( $request );
-		$data     = $response->get_data();
-
-		$this->assertEquals( 404, $response->get_status() );
 	}
 
 	/**
