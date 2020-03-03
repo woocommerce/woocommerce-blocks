@@ -96,7 +96,6 @@ class Cart extends TestCase {
 		$this->assertEquals( 404, $response->get_status() );
 	}
 
-
 	/**
 	* Test remove cart item.
 	*/
