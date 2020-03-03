@@ -127,8 +127,8 @@ const stableMainEntry = {
 	'price-filter': './assets/js/blocks/price-filter/index.js',
 	'attribute-filter': './assets/js/blocks/attribute-filter/index.js',
 	'active-filters': './assets/js/blocks/active-filters/index.js',
-	'block-error-boundry':
-		'./assets/js/base/components/block-error-boundry/style.scss',
+	'block-error-boundary':
+		'./assets/js/base/components/block-error-boundary/style.scss',
 	'panel-style': './node_modules/@wordpress/components/src/panel/style.scss',
 	'custom-select-control-style':
 		'./node_modules/@wordpress/components/src/custom-select-control/style.scss',
