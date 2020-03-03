@@ -125,7 +125,7 @@ class Cart extends RestController {
 			'/' . $this->rest_base . '/update-item',
 			[
 				[
-					'methods'  => RestServer::EDITABLE,
+					'methods'  => 'POST',
 					'callback' => [ $this, 'update_cart_item' ],
 					'args'     => [
 						'key'      => [

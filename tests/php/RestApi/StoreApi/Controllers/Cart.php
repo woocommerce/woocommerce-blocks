@@ -135,10 +135,10 @@ class Cart extends TestCase {
 	 * Test changing the quantity of a cart item.
 	 */
 	public function test_update_item() {
-		$request = new WP_REST_Request( 'POST', '/wc/store/cart/update-item/' );
+		$request = new WP_REST_Request( 'POST', '/wc/store/cart/update-item' );
 		$request->set_body_params(
 			array(
-				'key' => $this->keys[0],
+				'key'      => $this->keys[0],
 				'quantity' => 10,
 			)
 		);
