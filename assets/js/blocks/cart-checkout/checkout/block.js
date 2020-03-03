@@ -65,7 +65,6 @@ const Block = ( { attributes, isEditor = false, shippingRates = [] } ) => {
 						"We'll use this email to send you details and updates about your order.",
 						'woo-gutenberg-products-block'
 					) }
-					stepNumber={ 1 }
 					stepHeadingContent={ () => (
 						<Fragment>
 							{ __(
@@ -124,7 +123,6 @@ const Block = ( { attributes, isEditor = false, shippingRates = [] } ) => {
 							'Enter the physical address where you want us to deliver your order.',
 							'woo-gutenberg-products-block'
 						) }
-						stepNumber={ 2 }
 					>
 						<AddressForm
 							onChange={ setShippingFields }
@@ -178,7 +176,6 @@ const Block = ( { attributes, isEditor = false, shippingRates = [] } ) => {
 								'Select your shipping method below.',
 								'woo-gutenberg-products-block'
 							) }
-							stepNumber={ 3 }
 						>
 							{ shippingRates.length > 0 ? (
 								<Packages
@@ -253,7 +250,6 @@ const Block = ( { attributes, isEditor = false, shippingRates = [] } ) => {
 						'Select a payment method below.',
 						'woo-gutenberg-products-block'
 					) }
-					stepNumber={ 4 }
 				>
 					<PaymentMethods />
 					{ /*@todo this should be something the payment method controls*/ }
