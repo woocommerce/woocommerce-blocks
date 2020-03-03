@@ -89,7 +89,7 @@ class Cart extends TestCase {
 	 * Test remove cart item.
 	 */
 	public function test_remove_cart_item() {
-		$request  = new WP_REST_Request( 'POST', '/wc/store/cart/remove-item?=' . $this->keys[0] );
+		$request  = new WP_REST_Request( 'POST', '/wc/store/cart/remove-item/?key=' . $this->keys[0] );
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
@@ -99,7 +99,7 @@ class Cart extends TestCase {
 		$this->assertEquals( '10', $data['items_weight'] );
 		$this->assertEquals( '1000', $data['totals']->total_items );
 
-		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/remove-item?=' . $this->keys[0] );
+		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/remove-item/?key=' . $this->keys[0] );
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
