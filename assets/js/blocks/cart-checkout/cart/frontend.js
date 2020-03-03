@@ -5,10 +5,14 @@ import {
 	withRestApiHydration,
 	withStoreCartApiHydration,
 } from '@woocommerce/block-hocs';
+import { __ } from '@wordpress/i18n';
 import { useStoreCart } from '@woocommerce/base-hooks';
 import { RawHTML } from '@wordpress/element';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
 import StoreNoticesProvider from '@woocommerce/base-context/store-notices-context';
+import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
+import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
+import { __experimentalCreateInterpolateElement } from 'wordpress-element';
 
 /**
  * Internal dependencies
@@ -33,25 +37,48 @@ const CartFrontend = ( {
 	} = useStoreCart();
 
 	return (
-		<StoreNoticesProvider context="wc/cart">
-			{ ! cartIsLoading && ! cartItems.length ? (
-				<RawHTML>{ emptyCart }</RawHTML>
-			) : (
-				<LoadingMask showSpinner={ true } isLoading={ cartIsLoading }>
-					<FullCart
-						cartItems={ cartItems }
-						cartTotals={ cartTotals }
-						cartCoupons={ cartCoupons }
-						isShippingCalculatorEnabled={
-							isShippingCalculatorEnabled
-						}
-						isShippingCostHidden={ isShippingCostHidden }
-						isLoading={ cartIsLoading }
-						shippingRates={ shippingRates }
-					/>
-				</LoadingMask>
+		<BlockErrorBoundary
+			header={ __(
+				'Something went wrong…',
+				'woo-gutenberg-products-block'
 			) }
-		</StoreNoticesProvider>
+			text={ __experimentalCreateInterpolateElement(
+				__(
+					'The cart has encountered an unexpected error. <a>Try reloading the page</a>. If the error persists, please get in touch with us so we can assist.',
+					'woo-gutenberg-products-block'
+				),
+				{
+					a: (
+						// eslint-disable-next-line jsx-a11y/anchor-has-content
+						<a href="." />
+					),
+				}
+			) }
+			showErrorMessage={ CURRENT_USER_IS_ADMIN }
+		>
+			<StoreNoticesProvider context="wc/cart">
+				{ ! cartIsLoading && ! cartItems.length ? (
+					<RawHTML>{ emptyCart }</RawHTML>
+				) : (
+					<LoadingMask
+						showSpinner={ true }
+						isLoading={ cartIsLoading }
+					>
+						<FullCart
+							cartItems={ cartItems }
+							cartTotals={ cartTotals }
+							cartCoupons={ cartCoupons }
+							isShippingCalculatorEnabled={
+								isShippingCalculatorEnabled
+							}
+							isShippingCostHidden={ isShippingCostHidden }
+							isLoading={ cartIsLoading }
+							shippingRates={ shippingRates }
+						/>
+					</LoadingMask>
+				) }
+			</StoreNoticesProvider>
+		</BlockErrorBoundary>
 	);
 };
 
