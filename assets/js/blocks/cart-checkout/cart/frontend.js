@@ -10,7 +10,6 @@ import { useStoreCart } from '@woocommerce/base-hooks';
 import { RawHTML } from '@wordpress/element';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
 import StoreNoticesProvider from '@woocommerce/base-context/store-notices-context';
-import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
 import { __experimentalCreateInterpolateElement } from 'wordpress-element';
 
@@ -37,48 +36,25 @@ const CartFrontend = ( {
 	} = useStoreCart();
 
 	return (
-		<BlockErrorBoundary
-			header={ __(
-				'Something went wrong…',
-				'woo-gutenberg-products-block'
-			) }
-			text={ __experimentalCreateInterpolateElement(
-				__(
-					'The cart has encountered an unexpected error. <a>Try reloading the page</a>. If the error persists, please get in touch with us so we can assist.',
-					'woo-gutenberg-products-block'
-				),
-				{
-					a: (
-						// eslint-disable-next-line jsx-a11y/anchor-has-content
-						<a href="." />
-					),
-				}
-			) }
-			showErrorMessage={ CURRENT_USER_IS_ADMIN }
-		>
-			<StoreNoticesProvider context="wc/cart">
-				{ ! cartIsLoading && ! cartItems.length ? (
-					<RawHTML>{ emptyCart }</RawHTML>
-				) : (
-					<LoadingMask
-						showSpinner={ true }
+		<StoreNoticesProvider context="wc/cart">
+			{ ! cartIsLoading && ! cartItems.length ? (
+				<RawHTML>{ emptyCart }</RawHTML>
+			) : (
+				<LoadingMask showSpinner={ true } isLoading={ cartIsLoading }>
+					<FullCart
+						cartItems={ cartItems }
+						cartTotals={ cartTotals }
+						cartCoupons={ cartCoupons }
+						isShippingCalculatorEnabled={
+							isShippingCalculatorEnabled
+						}
+						isShippingCostHidden={ isShippingCostHidden }
 						isLoading={ cartIsLoading }
-					>
-						<FullCart
-							cartItems={ cartItems }
-							cartTotals={ cartTotals }
-							cartCoupons={ cartCoupons }
-							isShippingCalculatorEnabled={
-								isShippingCalculatorEnabled
-							}
-							isShippingCostHidden={ isShippingCostHidden }
-							isLoading={ cartIsLoading }
-							shippingRates={ shippingRates }
-						/>
-					</LoadingMask>
-				) }
-			</StoreNoticesProvider>
-		</BlockErrorBoundary>
+						shippingRates={ shippingRates }
+					/>
+				</LoadingMask>
+			) }
+		</StoreNoticesProvider>
 	);
 };
 
@@ -89,8 +65,28 @@ const getProps = ( el ) => ( {
 	isShippingCostHidden: el.dataset.isshippingcosthidden === 'true',
 } );
 
+const getErrorBoundaryProps = () => {
+	return {
+		header: __( 'Something went wrong…', 'woo-gutenberg-products-block' ),
+		text: __experimentalCreateInterpolateElement(
+			__(
+				'The cart has encountered an unexpected error. <a>Try reloading the page</a>. If the error persists, please get in touch with us so we can assist.',
+				'woo-gutenberg-products-block'
+			),
+			{
+				a: (
+					// eslint-disable-next-line jsx-a11y/anchor-has-content
+					<a href="." />
+				),
+			}
+		),
+		showErrorMessage: CURRENT_USER_IS_ADMIN,
+	};
+};
+
 renderFrontend(
 	'.wp-block-woocommerce-cart',
 	withStoreCartApiHydration( withRestApiHydration( CartFrontend ) ),
-	getProps
+	getProps,
+	getErrorBoundaryProps
 );
