@@ -88,7 +88,19 @@ class Cart extends TestCase {
 	/**
 	 * Test remove cart item.
 	 */
+	public function test_remove_bad_cart_item() {
+		// Test removing a bad cart item - should return 404.
+		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/remove-item/?key=bad_item_key_123' );
+		$response = $this->server->dispatch( $request );
+
+		$this->assertEquals( 404, $response->get_status() );
+	}
+
+	/**
+	 * Test remove cart item.
+	 */
 	public function test_remove_cart_item() {
+		// Test removing a valid cart item - should return updated cart.
 		$request  = new WP_REST_Request( 'POST', '/wc/store/cart/remove-item/?key=' . $this->keys[0] );
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
@@ -99,6 +111,7 @@ class Cart extends TestCase {
 		$this->assertEquals( '10', $data['items_weight'] );
 		$this->assertEquals( '1000', $data['totals']->total_items );
 
+		// Test removing same cart item (now deleted) - should return 404.
 		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/remove-item/?key=' . $this->keys[0] );
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
