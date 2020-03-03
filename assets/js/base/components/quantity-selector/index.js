@@ -24,7 +24,7 @@ const QuantitySelector = ( {
 } ) => {
 	const classes = classNames( 'wc-block-quantity-selector', className );
 
-	const hasMaximum = maximum !== undefined;
+	const hasMaximum = typeof maximum !== 'undefined';
 	const canDecrease = quantity > minimum;
 	const canIncrease = ! hasMaximum || quantity < maximum;
 
