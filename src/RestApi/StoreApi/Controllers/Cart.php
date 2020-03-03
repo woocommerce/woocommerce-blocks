@@ -253,7 +253,7 @@ class Cart extends RestController {
 		} catch ( RestException $e ) {
 			return new RestError( $e->getErrorCode(), $e->getMessage(), array( 'status' => $e->getCode() ) );
 		}
-
+		$cart->calculate_totals();
 		$data     = $this->prepare_item_for_response( $cart, $request );
 		$response = rest_ensure_response( $data );
 
@@ -285,7 +285,6 @@ class Cart extends RestController {
 		} catch ( RestException $e ) {
 			return new RestError( $e->getErrorCode(), $e->getMessage(), array( 'status' => $e->getCode() ) );
 		}
-
 		$data     = $this->prepare_item_for_response( $cart, $request );
 		$response = rest_ensure_response( $data );
 

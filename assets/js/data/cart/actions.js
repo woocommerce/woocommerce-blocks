@@ -244,3 +244,66 @@ export function* changeCartItemQuantity( cartItemKey, quantity ) {
 
 	yield itemQuantityPending( cartItemKey, false );
 }
+
+/**
+ * Selects a shipping rate.
+ *
+ * @param rateId
+ * @param packageId
+ */
+export function* selectShippingRate( rateId, packageId = 0 ) {
+	try {
+		const result = yield apiFetch( {
+			path: `/wc/store/cart/select-shipping-rate/${ packageId }`,
+			method: 'POST',
+			data: {
+				rate_id: rateId,
+			},
+			cache: 'no-store',
+		} );
+
+		if ( result ) {
+			yield receiveCart( result );
+		}
+	} catch ( error ) {
+		yield receiveError( error );
+	}
+}
+
+/**
+ * Returns an action object used to track what shipping address are we updating to.
+ *
+ * @param {boolean} isResolving if we're loading shipping address or not.
+ * @return {Object} Object for action.
+ */
+export function receiveShippingAddress( isResolving ) {
+	return {
+		type: types.UPDATING_SHIPPING,
+		isResolving,
+	};
+}
+
+/**
+ * Applies a coupon code and either invalidates caches, or receives an error if
+the coupon cannot be applied.
+ *
+ * @param {Object} address shipping address to be updated
+ */
+export function* updateShipping( address ) {
+	yield receiveShippingAddress( true );
+	try {
+		const result = yield apiFetch( {
+			path: '/wc/store/cart/update-shipping',
+			method: 'POST',
+			data: address,
+			cache: 'no-store',
+		} );
+
+		if ( result ) {
+			yield receiveCart( result );
+		}
+	} catch ( error ) {
+		yield receiveError( error );
+	}
+	yield receiveShippingAddress( false );
+}

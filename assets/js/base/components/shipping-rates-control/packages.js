@@ -2,6 +2,8 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
+import { useState } from '@wordpress/element';
+import { useSelectShippingRate } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -12,23 +14,27 @@ import './style.scss';
 const Packages = ( {
 	className,
 	noResultsMessage,
-	onChange = () => {},
 	renderOption,
-	selected = [],
-	shippingRates,
+	shippingRates = [],
 } ) => {
+	const { selectShippingRate } = useSelectShippingRate();
+	const initiallySelectedRates = shippingRates.map(
+		( p ) => p.shipping_rates.find( ( rate ) => rate.selected ).rate_id
+	);
+	const [ selectedShipping, setSelectedShipping ] = useState(
+		initiallySelectedRates
+	);
 	return shippingRates.map( ( shippingRate, i ) => (
 		<Package
 			key={ shippingRate.package_id }
 			className={ className }
 			noResultsMessage={ noResultsMessage }
 			onChange={ ( newShippingRate ) => {
-				const newSelected = [ ...selected ];
-				newSelected[ i ] = newShippingRate;
-				onChange( newSelected );
+				setSelectedShipping( [ newShippingRate ] );
+				selectShippingRate( newShippingRate, i );
 			} }
 			renderOption={ renderOption }
-			selected={ selected[ i ] }
+			selected={ selectedShipping[ i ] }
 			shippingRate={ shippingRate }
 			showItems={ shippingRates.length > 1 }
 			title={ shippingRates.length > 1 ? shippingRate.name : null }

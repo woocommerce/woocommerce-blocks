@@ -129,4 +129,14 @@ export const getCartItem = ( state, cartItemKey ) => {
  */
 export const isItemQuantityPending = ( state, cartItemKey ) => {
 	return state.cartItemsQuantityPending.includes( cartItemKey );
+}
+
+/**
+ * Retrieves the address applied for shipping.
+ *
+ * @param {Object} state The current state.
+ * @return {boolean} The data to return.
+ */
+export const areShippingRatesLoading = ( state ) => {
+ return !! state.metaData.updatingShipping;
 };

@@ -27,7 +27,7 @@ import { useShallowEqual } from './use-shallow-equal';
  *                                        `'products/attributes'`
  * @param {Array}  options.resourceValues An array of values (in correct order)
  *                                        that are substituted in the route
- *                                        placeholders for the collection route.
+ *                                        placeholders for the collection route (optional).
  *                                        Example: `[10, 20]`
  * @param {Object} options.query          An object of key value pairs for the
  *                                        query to execute on the collection
@@ -35,7 +35,7 @@ import { useShallowEqual } from './use-shallow-equal';
  *                                        `{ order: 'ASC', order_by: 'price' }`
  * @param {boolean} options.shouldSelect  If false, the previous results will be
  *                                        returned and internal selects will not
- *                                        fire.
+ *                                        fire (optional).
  *
  * @return {Object} This hook will return an object with two properties:
  *                  - results   An array of collection items returned.
