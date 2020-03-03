@@ -166,24 +166,6 @@ class CartItems extends TestCase {
 	}
 
 	/**
-	 * Test delete item.
-	 */
-	public function test_delete_item() {
-		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/items/' . $this->keys[0] );
-		$response = $this->server->dispatch( $request );
-		$data     = $response->get_data();
-
-		$this->assertEquals( 204, $response->get_status() );
-		$this->assertEmpty( $data );
-
-		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/items/' . $this->keys[0] );
-		$response = $this->server->dispatch( $request );
-		$data     = $response->get_data();
-
-		$this->assertEquals( 404, $response->get_status() );
-	}
-
-	/**
 	 * Test delete all items.
 	 */
 	public function test_delete_items() {
