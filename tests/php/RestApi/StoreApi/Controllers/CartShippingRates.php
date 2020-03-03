@@ -171,8 +171,8 @@ class CartShippingRates extends TestCase {
 	 */
 	public function test_prepare_item_for_response() {
 		$controller         = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\CartShippingRates();
-		$packages           = wc()->shipping->calculate_shipping( wc()->cart->get_shipping_packages() );
-		$packages[0]['key'] = 0;
+		$cart_controller    = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\CartController();
+		$packages           = $cart_controller->get_shipping_packages();
 		$response           = $controller->prepare_item_for_response( current( $packages ), [] );
 		$data               = $response->get_data();
 

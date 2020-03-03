@@ -35,6 +35,12 @@ class CartShippingRateSchema extends AbstractSchema {
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
+			'name'           => [
+				'description' => __( 'Name of the package.', 'woo-gutenberg-products-block' ),
+				'type'        => 'string',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+			],
 			'destination'    => [
 				'description' => __( 'Shipping destination address.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
@@ -107,12 +113,6 @@ class CartShippingRateSchema extends AbstractSchema {
 						],
 					],
 				],
-			],
-			'name'           => [
-				'description' => __( 'Name of the package.', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
 			],
 			'shipping_rates' => [
 				'description' => __( 'List of shipping rates.', 'woo-gutenberg-products-block' ),
@@ -227,8 +227,24 @@ class CartShippingRateSchema extends AbstractSchema {
 			];
 		}
 
+		// Generate package name.
+		$package_number       = absint( $package['package_id'] ) + 1;
+		$package_display_name = apply_filters(
+			'woocommerce_shipping_package_name',
+			$package_number > 1 ?
+				sprintf(
+					/* translators: %d: shipping package number */
+					_x( 'Shipping %d', 'shipping packages', 'woo-gutenberg-products-block' ),
+					$package_number
+				) :
+				_x( 'Shipping', 'shipping packages', 'woo-gutenberg-products-block' ),
+			$package['package_id'],
+			$package
+		);
+
 		return [
 			'package_id'     => $package['package_id'],
+			'name'           => $package_display_name,
 			'destination'    => (object) $this->prepare_html_response(
 				[
 					'address_1' => $package['destination']['address_1'],
@@ -240,15 +256,6 @@ class CartShippingRateSchema extends AbstractSchema {
 				]
 			),
 			'items'          => $items,
-			'name'           => apply_filters(
-				'woocommerce_shipping_package_name',
-				( $package['key'] > 0 ) ?
-					/* translators: %d: shipping package number */
-					sprintf( _x( 'Shipping %d', 'shipping packages', 'woo-gutenberg-products-block' ), ( $package['key'] + 1 ) ) :
-					_x( 'Shipping', 'shipping packages', 'woo-gutenberg-products-block' ),
-				$package['key'],
-				$package
-			),
 			'shipping_rates' => $this->prepare_rates_response( $package ),
 		];
 	}
