@@ -201,7 +201,7 @@ class CartShippingRateSchema extends AbstractSchema {
 				],
 				'selected'      => [
 					'description' => __( 'True if this is the rate currently selected by the customer for the cart.', 'woo-gutenberg-products-block' ),
-					'type'        => 'bool',
+					'type'        => 'boolean',
 					'context'     => [ 'view', 'edit' ],
 					'readonly'    => true,
 				],

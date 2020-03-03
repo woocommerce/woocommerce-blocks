@@ -103,7 +103,7 @@ class CartShippingRates extends TestCase {
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
-		$this->assertEquals( 200, $response->get_status() );
+		$this->assertEquals( 400, $response->get_status() );
 
 		// Address with invalid country.
 		$request = new WP_REST_Request( 'GET', '/wc/store/cart/shipping-rates' );

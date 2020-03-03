@@ -14,6 +14,7 @@ use \WP_Error as RestError;
 use \WP_REST_Server as RestServer;
 use \WP_REST_Controller as RestController;
 use \WC_REST_Exception as RestException;
+use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers\CartShippingRates;
 use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas\CartSchema;
 use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\CartController;
 
@@ -245,19 +246,19 @@ class Cart extends RestController {
 			return new RestError( 'woocommerce_rest_cart_error', __( 'Unable to retrieve cart.', 'woo-gutenberg-products-block' ), array( 'status' => 500 ) );
 		}
 
-		$package_id = absint( $request['package_id'] );
-		$rate_id    = wc_clean( wp_unslash( $request['rate_id'] ) );
+		if ( $cart->needs_shipping() ) {
+			$package_id = absint( $request['package_id'] );
+			$rate_id    = wc_clean( wp_unslash( $request['rate_id'] ) );
 
-		try {
-			$controller->select_shipping_rate( $package_id, $rate_id );
-		} catch ( RestException $e ) {
-			return new RestError( $e->getErrorCode(), $e->getMessage(), array( 'status' => $e->getCode() ) );
+			try {
+				$controller->select_shipping_rate( $package_id, $rate_id );
+			} catch ( RestException $e ) {
+				return new RestError( $e->getErrorCode(), $e->getMessage(), array( 'status' => $e->getCode() ) );
+			}
 		}
 		$cart->calculate_totals();
-		$data     = $this->prepare_item_for_response( $cart, $request );
-		$response = rest_ensure_response( $data );
 
-		return $response;
+		return rest_ensure_response( $this->prepare_item_for_response( $cart, $request ) );
 	}
 	/**
 	 * Apply a coupon to the cart.
@@ -344,7 +345,8 @@ class Cart extends RestController {
 			return new RestError( 'woocommerce_rest_cart_error', __( 'Unable to retrieve cart.', 'woo-gutenberg-products-block' ), array( 'status' => 500 ) );
 		}
 
-		$request = $this->validate_shipping_address( $request );
+		$cart_shipping_rate_controller = new CartShippingRates();
+		$request                       = $cart_shipping_rate_controller->validate_shipping_address( $request );
 
 		if ( is_wp_error( $request ) ) {
 			return $request;
@@ -366,10 +368,9 @@ class Cart extends RestController {
 		$cart->calculate_shipping();
 		$cart->calculate_totals();
 
-		$data     = $this->prepare_item_for_response( $cart, $request );
-		$response = rest_ensure_response( $data );
+		$data = $this->prepare_item_for_response( $cart, $request );
 
-		return $response;
+		return rest_ensure_response( $data );
 	}
 
 	/**
@@ -458,76 +459,5 @@ class Cart extends RestController {
 	 */
 	public function prepare_item_for_response( $cart, $request ) {
 		return rest_ensure_response( $this->schema->get_item_response( $cart ) );
-	}
-
-	/**
-	 * Format the request address.
-	 *
-	 * @param \WP_REST_Request $request Full details about the request.
-	 * @return \WP_Error|\WP_REST_Response
-	 */
-	protected function validate_shipping_address( $request ) {
-		$valid_countries = WC()->countries->get_shipping_countries();
-
-		if ( empty( $request['country'] ) ) {
-			return new RestError(
-				'woocommerce_rest_cart_shipping_rates_missing_country',
-				sprintf(
-					/* translators: 1: valid country codes */
-					__( 'No destination country code was given. Please provide one of the following: %s', 'woo-gutenberg-products-block' ),
-					implode( ', ', array_keys( $valid_countries ) )
-				),
-				[ 'status' => 400 ]
-			);
-		}
-
-		$request['country'] = wc_strtoupper( $request['country'] );
-
-		if (
-			is_array( $valid_countries ) &&
-			count( $valid_countries ) > 0 &&
-			! array_key_exists( $request['country'], $valid_countries )
-		) {
-			return new RestError(
-				'woocommerce_rest_cart_shipping_rates_invalid_country',
-				sprintf(
-					/* translators: 1: valid country codes */
-					__( 'Destination country code is not valid. Please enter one of the following: %s', 'woo-gutenberg-products-block' ),
-					implode( ', ', array_keys( $valid_countries ) )
-				),
-				[ 'status' => 400 ]
-			);
-		}
-
-		$request['postcode'] = $request['postcode'] ? wc_format_postcode( $request['postcode'], $request['country'] ) : null;
-
-		if ( ! empty( $request['state'] ) ) {
-			$valid_states = WC()->countries->get_states( $request['country'] );
-
-			if ( is_array( $valid_states ) && count( $valid_states ) > 0 ) {
-				$valid_state_values = array_map( 'wc_strtoupper', array_flip( array_map( 'wc_strtoupper', $valid_states ) ) );
-				$request['state']   = wc_strtoupper( $request['state'] );
-
-				if ( isset( $valid_state_values[ $request['state'] ] ) ) {
-					// With this part we consider state value to be valid as well,
-					// convert it to the state key for the valid_states check below.
-					$request['state'] = $valid_state_values[ $request['state'] ];
-				}
-
-				if ( ! in_array( $request['state'], $valid_state_values, true ) ) {
-					return new RestError(
-						'woocommerce_rest_cart_shipping_rates_invalid_state',
-						sprintf(
-							/* translators: 1: valid states */
-							__( 'Destination state is not valid. Please enter one of the following: %s', 'woo-gutenberg-products-block' ),
-							implode( ', ', $valid_states )
-						),
-						[ 'status' => 400 ]
-					);
-				}
-			}
-		}
-
-		return $request;
 	}
 }

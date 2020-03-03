@@ -212,16 +212,21 @@ class CartController {
 	/**
 	 * Get shipping packages from the cart and format as required.
 	 *
-	 * @param bool $calculate_rates Should rates for the packages also be returned.
+	 * @param bool  $calculate_rates Should rates for the packages also be returned.
+	 * @param array $destination Pass an address to override the package destination before calculation.
 	 * @return array
 	 */
-	public function get_shipping_packages( $calculate_rates = true ) {
+	public function get_shipping_packages( $calculate_rates = true, $destination = [] ) {
 		$cart     = $this->get_cart_instance();
 		$packages = $cart->get_shipping_packages();
 
 		// Add package ID to array.
 		foreach ( $packages as $key => $package ) {
 			$packages[ $key ]['package_id'] = $key;
+
+			if ( ! empty( $destination ) ) {
+				$packages[ $key ]['destination'] = $destination;
+			}
 		}
 
 		return $calculate_rates ? WC()->shipping()->calculate_shipping( $packages ) : $packages;
