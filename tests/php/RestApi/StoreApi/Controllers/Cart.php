@@ -100,11 +100,7 @@ class Cart extends TestCase {
 		$data     = $response->get_data();
 
 		$this->assertEquals( 404, $response->get_status() );
-		$this->assertEquals( 3, $data['items_count'] );
-		$this->assertEquals( 2, count( $data['items'] ) );
-		$this->assertEquals( false, $data['needs_shipping'] );
-		$this->assertEquals( '30', $data['items_weight'] );
-		$this->assertEquals( '3000', $data['totals']->total_items );
+		$this->assertEquals( 'woocommerce_rest_cart_invalid_key', $data['code'] );
 	}
 
 	/**
@@ -132,10 +128,7 @@ class Cart extends TestCase {
 		$data     = $response->get_data();
 
 		$this->assertEquals( 404, $response->get_status() );
-		$this->assertEquals( 1, $data['items_count'] );
-		$this->assertEquals( 1, count( $data['items'] ) );
-		$this->assertEquals( '10', $data['items_weight'] );
-		$this->assertEquals( '1000', $data['totals']->total_items );
+		$this->assertEquals( 'woocommerce_rest_cart_invalid_key', $data['code'] );
 	}
 
 	/**
