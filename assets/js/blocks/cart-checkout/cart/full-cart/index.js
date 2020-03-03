@@ -336,11 +336,11 @@ const Cart = ( {
 									<p className="wc-block-cart__totals-footer-tax">
 										{ __experimentalCreateInterpolateElement(
 											__(
-												'Including <taxAmount/> in taxes',
+												'Including <TaxAmount/> in taxes',
 												'woo-gutenberg-products-block'
 											),
 											{
-												taxAmount: (
+												TaxAmount: (
 													<FormattedMonetaryAmount
 														className="wc-block-cart__totals-footer-tax-value"
 														currency={
