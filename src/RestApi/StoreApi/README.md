@@ -308,6 +308,8 @@ Example response:
 
 ## Cart API
 
+### Get the cart
+
 ```http
 GET /cart
 ```
@@ -454,6 +456,35 @@ Example response:
 	}
 }
 ```
+
+### Edit single cart item
+
+Change the quantity of a cart item.
+
+```http
+PUT /cart/remove_item/
+```
+
+| Attribute  | Type    | Required | Description                        |
+| :--------- | :------ | :------: | :--------------------------------- |
+| `key`      | string  |   Yes    | The key of the cart item to edit.  |
+| `quantity` | integer |   Yes    | Quantity of this item in the cart. |
+
+Returns the full cart object (same response as `GET /cart`).
+
+### Delete single cart item
+
+Delete/remove an item from the cart.
+
+```http
+POST /cart/items/:key
+```
+
+| Attribute | Type   | Required | Description                       |
+| :-------- | :----- | :------: | :-------------------------------- |
+| `key`     | string |   Yes    | The key of the cart item to edit. |
+
+Returns the full cart object (same response as `GET /cart`).
 
 ## Cart items API
 
@@ -720,66 +751,6 @@ Example response:
 	"line_total_tax": "917",
 	"variation": []
 }
-```
-
-### Edit single cart item
-
-Edit an item in the cart.
-
-```http
-PUT /cart/items/:key
-```
-
-| Attribute  | Type    | Required | Description                        |
-| :--------- | :------ | :------: | :--------------------------------- |
-| `key`      | string  |   Yes    | The key of the cart item to edit.  |
-| `quantity` | integer |   Yes    | Quantity of this item in the cart. |
-
-```http
-curl --request PUT https://example-store.com/wp-json/wc/store/cart/items/3ef815416f775098fe977004015c6193&quantity=10
-```
-
-Example response:
-
-```json
-{
-	"key": "3ef815416f775098fe977004015c6193",
-	"id": 100,
-	"quantity": 10,
-	"name": "Single",
-	"sku": "woo-single",
-	"permalink": "http://local.wordpress.test/product/single/",
-	"images": [
-		{
-			"id": 56,
-			"src": "http://local.wordpress.test/wp-content/uploads/2019/07/single-1.jpg",
-			"name": "single-1.jpg",
-			"alt": ""
-		}
-	],
-	"product_price": "5500",
-	"line_subtotal": "4583",
-	"line_subtotal_tax": "917",
-	"line_total": "4583",
-	"line_total_tax": "917",
-	"variation": []
-}
-```
-
-### Delete single cart item
-
-Delete/remove an item from the cart.
-
-```http
-DELETE /cart/items/:key
-```
-
-| Attribute | Type   | Required | Description                       |
-| :-------- | :----- | :------: | :-------------------------------- |
-| `key`     | string |   Yes    | The key of the cart item to edit. |
-
-```http
-curl --request DELETE https://example-store.com/wp-json/wc/store/cart/items/3ef815416f775098fe977004015c6193
 ```
 
 ### Delete all cart items
