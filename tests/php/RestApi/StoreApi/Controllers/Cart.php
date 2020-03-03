@@ -120,6 +120,10 @@ class Cart extends TestCase {
 		$this->assertEquals( 1, count( $data['items'] ) );
 		$this->assertEquals( '10', $data['items_weight'] );
 		$this->assertEquals( '1000', $data['totals']->total_items );
+
+		// Test removing same item again - should return 404 (item is already removed).
+		$response = $this->server->dispatch( $request );
+		$this->assertEquals( 404, $response->get_status() );
 	}
 
 	/**
