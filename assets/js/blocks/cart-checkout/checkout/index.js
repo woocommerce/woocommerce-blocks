@@ -40,7 +40,7 @@ const settings = {
 		},
 		useShippingAsBilling: {
 			type: 'boolean',
-			default: true, // @todo should default to some setting?
+			default: true,
 		},
 	},
 	edit,
