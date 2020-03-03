@@ -33,6 +33,7 @@ const Block = ( { attributes, isEditor = false, shippingRates = [] } ) => {
 	const [ contactFields, setContactFields ] = useState( {} );
 	const [ shouldSavePayment, setShouldSavePayment ] = useState( true );
 	const [ shippingFields, setShippingFields ] = useState( {} );
+	const [ billingFields, setBillingFields ] = useState( {} );
 	const [ useShippingAsBilling, setUseShippingAsBilling ] = useState(
 		attributes.useShippingAsBilling
 	);
@@ -50,13 +51,19 @@ const Block = ( { attributes, isEditor = false, shippingRates = [] } ) => {
 		secondaryDescription: decodeEntities( option.delivery_time ),
 	} );
 
+	const useShippingAddressAsBilling = isEditor
+		? attributes.useShippingAsBilling
+		: useShippingAsBilling;
+	const showBillingFields =
+		! SHIPPING_ENABLED || ! useShippingAddressAsBilling;
+
 	return (
 		<CheckoutProvider>
 			<ExpressCheckoutFormControl />
 			<CheckoutForm>
 				<FormStep
-					id="billing-fields"
-					className="wc-block-checkout__billing-fields"
+					id="contact-fields"
+					className="wc-block-checkout__contact-fields"
 					title={ __(
 						'Contact information',
 						'woo-gutenberg-products-block'
@@ -150,14 +157,46 @@ const Block = ( { attributes, isEditor = false, shippingRates = [] } ) => {
 								'Use same address for billing',
 								'woo-gutenberg-products-block'
 							) }
-							checked={
-								isEditor
-									? attributes.useShippingAsBilling
-									: useShippingAsBilling
-							}
+							checked={ useShippingAddressAsBilling }
 							onChange={ ( isChecked ) =>
 								setUseShippingAsBilling( isChecked )
 							}
+						/>
+					</FormStep>
+				) }
+				{ showBillingFields && (
+					<FormStep
+						id="billing-fields"
+						className="wc-block-checkout__billing-fields"
+						title={ __(
+							'Billing address',
+							'woo-gutenberg-products-block'
+						) }
+						description={ __(
+							'Enter the address that matches your card or payment method.',
+							'woo-gutenberg-products-block'
+						) }
+					>
+						<AddressForm
+							onChange={ setBillingFields }
+							type="billing"
+							values={ billingFields }
+						/>
+						<TextInput
+							type="tel"
+							label={ __(
+								'Phone',
+								'woo-gutenberg-products-block'
+							) }
+							value={ billingFields.phone }
+							autoComplete="tel"
+							onChange={ ( newValue ) =>
+								setBillingFields( {
+									...billingFields,
+									phone: newValue,
+								} )
+							}
+							required={ true }
 						/>
 					</FormStep>
 				) }
