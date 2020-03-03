@@ -21,6 +21,7 @@ class Library {
 		add_action( 'init', array( __CLASS__, 'register_blocks' ) );
 		add_action( 'init', array( __CLASS__, 'define_tables' ) );
 		add_action( 'init', array( __CLASS__, 'maybe_create_tables' ) );
+		add_action( 'init', array( __CLASS__, 'maybe_create_cronjobs' ) );
 		add_filter( 'wc_order_statuses', array( __CLASS__, 'register_draft_order_status' ) );
 		add_filter( 'woocommerce_register_shop_order_post_statuses', array( __CLASS__, 'register_draft_order_post_status' ) );
 	}
@@ -76,6 +77,17 @@ class Library {
 		);
 
 		update_option( 'wc_blocks_db_version', \Automattic\WooCommerce\Blocks\Package::get_version() );
+	}
+
+	/**
+	 * Maybe create cron events.
+	 */
+	public static function maybe_create_cronjobs() {
+		$next_event = wp_get_scheduled_event( 'woocommerce_cleanup_draft_orders' );
+
+		if ( ! $next_event ) {
+			wp_schedule_event( time() + 10, 'daily', 'woocommerce_cleanup_draft_orders' );
+		}
 	}
 
 	/**
