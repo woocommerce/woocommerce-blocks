@@ -77,6 +77,7 @@ FormStep.propTypes = {
 	description: PropTypes.string,
 	children: PropTypes.node,
 	stepHeadingContent: PropTypes.func,
+	legend: PropTypes.string,
 };
 
 export default FormStep;
