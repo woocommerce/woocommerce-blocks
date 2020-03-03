@@ -19,7 +19,9 @@ const Packages = ( {
 } ) => {
 	const selectShippingRate = useSelectShippingRate();
 	const initiallySelectedRates = shippingRates.map(
-		( p ) => p.shipping_rates.find( ( rate ) => rate.selected ).rate_id
+		// the API responds with those keys.
+		// eslint-disable-next-line camelcase
+		( p ) => p.shipping_rates.find( ( rate ) => rate.selected )?.rate_id
 	);
 	const [ selectedShipping, setSelectedShipping ] = useState(
 		initiallySelectedRates
