@@ -228,8 +228,12 @@ export function* changeCartItemQuantity( cartItemKey, quantity ) {
 
 	try {
 		const cart = yield apiFetch( {
-			path: `/wc/store/cart/update-item/?key=${ cartItemKey }&quantity=${ quantity }`,
-			method: 'PUT',
+			path: `/wc/store/cart/update-item`,
+			method: 'POST',
+			data: {
+				key: cartItemKey,
+				quantity,
+			},
 			cache: 'no-store',
 		} );
 
