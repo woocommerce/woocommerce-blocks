@@ -86,17 +86,6 @@ class Cart extends TestCase {
 	}
 
 	/**
-	 * Test removing a nonexistent cart item.
-	 */
-	public function test_remove_bad_cart_item() {
-		// Test removing a bad cart item - should return 404.
-		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/remove-item/?key=bad_item_key_123' );
-		$response = $this->server->dispatch( $request );
-
-		$this->assertEquals( 404, $response->get_status() );
-	}
-
-	/**
 	 * Test remove cart item.
 	 */
 	public function test_remove_cart_item() {
