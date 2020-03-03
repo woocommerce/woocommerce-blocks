@@ -26,6 +26,12 @@ const CheckoutEditor = ( { attributes, setAttributes } ) => {
 						'woo-gutenberg-products-block'
 					) }
 				>
+					<p className="wc-block-checkout__controls-text">
+						{ __(
+							'Reduce the number of fields required to checkout.',
+							'woo-gutenberg-products-block'
+						) }
+					</p>
 					<ToggleControl
 						label={ __(
 							'Use the shipping address as the billing address',
