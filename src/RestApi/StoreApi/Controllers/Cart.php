@@ -120,6 +120,27 @@ class Cart extends RestController {
 				'schema' => [ $this, 'get_public_item_schema' ],
 			]
 		);
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/update-item',
+			[
+				[
+					'methods'  => RestServer::EDITABLE,
+					'callback' => [ $this, 'update_cart_item' ],
+					'args'     => [
+						'key'      => [
+							'description' => __( 'Unique identifier (key) for the cart item to update.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+						],
+						'quantity' => [
+							'description' => __( 'New quantity of the item in the cart.', 'woo-gutenberg-products-block' ),
+							'type'        => 'integer',
+						],
+					],
+				],
+				'schema' => [ $this, 'get_public_item_schema' ],
+			]
+		);
 	}
 
 	/**
@@ -226,6 +247,31 @@ class Cart extends RestController {
 		}
 
 		$cart->remove_cart_item( $request['key'] );
+
+		$data     = $this->prepare_item_for_response( $cart, $request );
+		$response = rest_ensure_response( $data );
+
+		return $response;
+	}
+
+	/**
+	 * Change quantity for specified cart item.
+	 *
+	 * @param \WP_Rest_Request $request Full data about the request.
+	 * @return \WP_Error|\WP_REST_Response Response object on success, or WP_Error object on failure.
+	 */
+	public function update_cart_item( $request ) {
+		$controller = new CartController();
+		$cart       = $controller->get_cart_instance();
+		$cart_item  = $controller->get_cart_item( $request['key'] );
+
+		if ( ! $cart_item ) {
+			return new RestError( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
+		}
+
+		if ( isset( $request['quantity'] ) ) {
+			$cart->set_quantity( $request['key'], $request['quantity'] );
+		}
 
 		$data     = $this->prepare_item_for_response( $cart, $request );
 		$response = rest_ensure_response( $data );

@@ -227,15 +227,13 @@ export function* changeCartItemQuantity( cartItemKey, quantity ) {
 	yield itemQuantityPending( cartItemKey, true );
 
 	try {
-		const result = yield apiFetch( {
-			path: `/wc/store/cart/items/${ cartItemKey }?quantity=${ quantity }`,
+		const cart = yield apiFetch( {
+			path: `/wc/store/cart/update-item/?key=${ cartItemKey }&quantity=${ quantity }`,
 			method: 'PUT',
 			cache: 'no-store',
 		} );
 
-		if ( result ) {
-			yield receiveCartItem( result );
-		}
+		yield receiveCart( cart );
 	} catch ( error ) {
 		yield receiveError( error );
 	}
