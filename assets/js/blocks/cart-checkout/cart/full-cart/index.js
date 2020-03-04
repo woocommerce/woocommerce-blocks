@@ -66,7 +66,7 @@ const Cart = ( {
 	shippingRates,
 	isLoading = false,
 } ) => {
-	const { updateShipping, shippingRatesLoading } = useShippingRates();
+	const { updateShippingAddress, shippingRatesLoading } = useShippingRates();
 	const shippingAddress = shippingRates[ 0 ]?.destination;
 	const [ showShippingCosts, setShowShippingCosts ] = useState(
 		! isShippingCostHidden
@@ -186,7 +186,7 @@ const Cart = ( {
 						<ShippingLocation address={ shippingAddress } />
 						<ShippingCalculator
 							address={ shippingAddress }
-							setAddress={ updateShipping }
+							setAddress={ updateShippingAddress }
 						/>
 					</>
 				),
