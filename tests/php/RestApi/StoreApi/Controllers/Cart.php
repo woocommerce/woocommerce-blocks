@@ -146,9 +146,9 @@ class Cart extends TestCase {
 		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
-		$this->assertEquals( 10, $data['quantity'] );
+		$this->assertEquals( 10, $data['items'][0]['quantity'] );
 		$this->assertEquals( 11, $data['items_count'] );
-		$this->assertEquals( '1100', $data['quantity'] );
+		$this->assertEquals( '11000', $data['totals']->total_items );
 	}
 
 	/**
