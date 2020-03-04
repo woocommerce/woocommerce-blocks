@@ -7,7 +7,9 @@ import { CART_STORE_KEY } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
 
 /**
- * Hydrate Cart API data to make it available without an API request.
+ * Hydrate Cart API data.
+ *
+ * Makes cart data available without an API request to wc/store/cart/.
  */
 const useStoreCartApiHydration = () => {
 	const cartData = useRef( getSetting( 'cartData' ) );
