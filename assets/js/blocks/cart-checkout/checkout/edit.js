@@ -152,15 +152,13 @@ const CheckoutEditor = ( { attributes, setAttributes } ) => {
 					'woo-gutenberg-products-block'
 				) }
 			>
-				<Disabled>
-					<Block
-						attributes={ attributes }
-						isEditor={ true }
-						shippingRates={
-							SHIPPING_METHODS_EXIST ? previewShippingRates : []
-						}
-					/>
-				</Disabled>
+				<Block
+					attributes={ attributes }
+					isEditor={ true }
+					shippingRates={
+						SHIPPING_METHODS_EXIST ? previewShippingRates : []
+					}
+				/>
 			</BlockErrorBoundary>
 		</div>
 	);
