@@ -6,7 +6,11 @@ import { withFeedbackPrompt } from '@woocommerce/block-hocs';
 import { previewShippingRates } from '@woocommerce/resource-previews';
 import { SHIPPING_METHODS_EXIST } from '@woocommerce/block-settings';
 import { InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, ToggleControl } from '@wordpress/components';
+import {
+	PanelBody,
+	ToggleControl,
+	CheckboxControl,
+} from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -15,7 +19,15 @@ import Block from './block.js';
 import './editor.scss';
 
 const CheckoutEditor = ( { attributes, setAttributes } ) => {
-	const { className, useShippingAsBilling, showCompanyField } = attributes;
+	const {
+		className,
+		useShippingAsBilling,
+		showCompanyField,
+		showAddress2Field,
+		showPhoneField,
+		requireCompanyField,
+		requirePhoneField,
+	} = attributes;
 	// @todo: wrap Block with Disabled once you finish building the form
 	return (
 		<div className={ className }>
@@ -44,6 +56,60 @@ const CheckoutEditor = ( { attributes, setAttributes } ) => {
 							} )
 						}
 					/>
+					{ showCompanyField && (
+						<CheckboxControl
+							label={ __(
+								'Require company name?',
+								'woo-gutenberg-products-block'
+							) }
+							checked={ requireCompanyField }
+							onChange={ () =>
+								setAttributes( {
+									requireCompanyField: ! requireCompanyField,
+								} )
+							}
+							className="components-base-control--nested"
+						/>
+					) }
+					<ToggleControl
+						label={ __(
+							'Apartment, suite, unit',
+							'woo-gutenberg-products-block'
+						) }
+						checked={ showAddress2Field }
+						onChange={ () =>
+							setAttributes( {
+								showAddress2Field: ! showAddress2Field,
+							} )
+						}
+					/>
+					<ToggleControl
+						label={ __(
+							'Phone number',
+							'woo-gutenberg-products-block'
+						) }
+						checked={ showPhoneField }
+						onChange={ () =>
+							setAttributes( {
+								showPhoneField: ! showPhoneField,
+							} )
+						}
+					/>
+					{ showPhoneField && (
+						<CheckboxControl
+							label={ __(
+								'Require phone number?',
+								'woo-gutenberg-products-block'
+							) }
+							checked={ requirePhoneField }
+							onChange={ () =>
+								setAttributes( {
+									requirePhoneField: ! requirePhoneField,
+								} )
+							}
+							className="components-base-control--nested"
+						/>
+					) }
 				</PanelBody>
 				<PanelBody
 					title={ __(

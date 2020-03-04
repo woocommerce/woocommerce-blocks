@@ -4,11 +4,13 @@
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import { Icon, card } from '@woocommerce/icons';
+import { kebabCase } from 'lodash';
 
 /**
  * Internal dependencies
  */
 import edit from './edit';
+import blockAttributes from './attributes';
 import { example } from './example';
 import './editor.scss';
 
@@ -30,39 +32,26 @@ const settings = {
 		multiple: false,
 	},
 	example,
-	attributes: {
-		/**
-		 * Are we previewing?
-		 */
-		isPreview: {
-			type: 'boolean',
-			default: false,
-		},
-		useShippingAsBilling: {
-			type: 'boolean',
-			default: true,
-		},
-		showCompanyField: {
-			type: 'boolean',
-			default: true,
-		},
-	},
+	attributes: blockAttributes,
 	edit,
 	/**
 	 * Save the props to post content.
 	 */
 	save( { attributes } ) {
-		const {
-			className,
-			useShippingAsBilling,
-			showCompanyField,
-		} = attributes;
-		const data = {
-			'data-use-shipping-as-billing': useShippingAsBilling,
-			'data-show-company-field': showCompanyField,
-		};
+		const data = {};
+
+		Object.keys( blockAttributes ).map( ( key ) => {
+			if (
+				blockAttributes[ key ].save !== false &&
+				typeof attributes[ key ] !== 'undefined'
+			) {
+				data[ 'data-' + kebabCase( key ) ] = attributes[ key ];
+			}
+			return true;
+		} );
+
 		return (
-			<div className={ className } { ...data }>
+			<div className={ attributes.className } { ...data }>
 				Checkout block coming soon to store near you
 			</div>
 		);
