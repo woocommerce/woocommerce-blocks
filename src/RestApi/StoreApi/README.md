@@ -716,6 +716,52 @@ Example response:
 }
 ```
 
+### New cart item
+
+Add an item to the cart.
+
+```http
+POST /cart/items/
+```
+
+| Attribute   | Type    | Required | Description                                                                                          |
+| :---------- | :------ | :------: | :--------------------------------------------------------------------------------------------------- |
+| `id`        | integer |   Yes    | The cart item product or variation ID.                                                               |
+| `quantity`  | integer |   Yes    | Quantity of this item in the cart.                                                                   |
+| `variation` | array   |   Yes    | Chosen attributes (for variations) containing an array of objects with keys `attribute` and `value`. |
+
+```http
+curl --request POST https://example-store.com/wp-json/wc/store/cart/items?id=100&quantity=1
+```
+
+Example response:
+
+```json
+{
+	"key": "3ef815416f775098fe977004015c6193",
+	"id": 100,
+	"quantity": 1,
+	"name": "Single",
+	"sku": "woo-single",
+	"permalink": "http://local.wordpress.test/product/single/",
+	"images": [
+		{
+			"id": 56,
+			"src": "http://local.wordpress.test/wp-content/uploads/2019/07/single-1.jpg",
+			"name": "single-1.jpg",
+			"alt": ""
+		}
+	],
+	"product_price": "5500",
+	"line_subtotal": "4583",
+	"line_subtotal_tax": "917",
+	"line_total": "4583",
+	"line_total_tax": "917",
+	"variation": []
+}
+```
+
+
 ### Edit single cart item
 
 Edit an item in the cart.
@@ -774,52 +820,6 @@ DELETE /cart/items/:key
 
 ```http
 curl --request DELETE https://example-store.com/wp-json/wc/store/cart/items/3ef815416f775098fe977004015c6193
-```
-
-
-### New cart item
-
-Add an item to the cart.
-
-```http
-POST /cart/items/
-```
-
-| Attribute   | Type    | Required | Description                                                                                          |
-| :---------- | :------ | :------: | :--------------------------------------------------------------------------------------------------- |
-| `id`        | integer |   Yes    | The cart item product or variation ID.                                                               |
-| `quantity`  | integer |   Yes    | Quantity of this item in the cart.                                                                   |
-| `variation` | array   |   Yes    | Chosen attributes (for variations) containing an array of objects with keys `attribute` and `value`. |
-
-```http
-curl --request POST https://example-store.com/wp-json/wc/store/cart/items?id=100&quantity=1
-```
-
-Example response:
-
-```json
-{
-	"key": "3ef815416f775098fe977004015c6193",
-	"id": 100,
-	"quantity": 1,
-	"name": "Single",
-	"sku": "woo-single",
-	"permalink": "http://local.wordpress.test/product/single/",
-	"images": [
-		{
-			"id": 56,
-			"src": "http://local.wordpress.test/wp-content/uploads/2019/07/single-1.jpg",
-			"name": "single-1.jpg",
-			"alt": ""
-		}
-	],
-	"product_price": "5500",
-	"line_subtotal": "4583",
-	"line_subtotal_tax": "917",
-	"line_total": "4583",
-	"line_total_tax": "917",
-	"variation": []
-}
 ```
 
 ### Delete all cart items
