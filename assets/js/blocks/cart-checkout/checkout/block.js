@@ -57,6 +57,18 @@ const Block = ( { attributes, isEditor = false, shippingRates = [] } ) => {
 	const showBillingFields =
 		! SHIPPING_ENABLED || ! useShippingAddressAsBilling;
 
+	const addressFields = [
+		'first_name',
+		'last_name',
+		attributes.showCompanyField ? 'company' : '',
+		'address_1',
+		'address_2',
+		'country',
+		'city',
+		'postcode',
+		'state',
+	].filter( Boolean );
+
 	return (
 		<CheckoutProvider>
 			<ExpressCheckoutFormControl />
@@ -134,6 +146,7 @@ const Block = ( { attributes, isEditor = false, shippingRates = [] } ) => {
 						<AddressForm
 							onChange={ setShippingFields }
 							values={ shippingFields }
+							fields={ addressFields }
 						/>
 						<TextInput
 							type="tel"
@@ -181,6 +194,7 @@ const Block = ( { attributes, isEditor = false, shippingRates = [] } ) => {
 							onChange={ setBillingFields }
 							type="billing"
 							values={ billingFields }
+							fields={ addressFields }
 						/>
 						<TextInput
 							type="tel"

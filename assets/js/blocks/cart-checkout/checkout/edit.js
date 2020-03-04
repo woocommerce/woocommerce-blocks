@@ -15,11 +15,36 @@ import Block from './block.js';
 import './editor.scss';
 
 const CheckoutEditor = ( { attributes, setAttributes } ) => {
-	const { className, useShippingAsBilling } = attributes;
+	const { className, useShippingAsBilling, showCompanyField } = attributes;
 	// @todo: wrap Block with Disabled once you finish building the form
 	return (
 		<div className={ className }>
 			<InspectorControls>
+				<PanelBody
+					title={ __(
+						'Form options',
+						'woo-gutenberg-products-block'
+					) }
+				>
+					<p className="wc-block-checkout__controls-text">
+						{ __(
+							'Choose whether your checkout form requires extra information from customers.',
+							'woo-gutenberg-products-block'
+						) }
+					</p>
+					<ToggleControl
+						label={ __(
+							'Company name',
+							'woo-gutenberg-products-block'
+						) }
+						checked={ showCompanyField }
+						onChange={ () =>
+							setAttributes( {
+								showCompanyField: ! showCompanyField,
+							} )
+						}
+					/>
+				</PanelBody>
 				<PanelBody
 					title={ __(
 						'Billing address',

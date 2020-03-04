@@ -13,6 +13,7 @@ const getProps = ( el ) => {
 	return {
 		attributes: {
 			useShippingAsBilling: el.dataset.useShippingAsBilling !== 'false',
+			showCompanyField: el.dataset.showCompanyField !== 'false',
 		},
 	};
 };

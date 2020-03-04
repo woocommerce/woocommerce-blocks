@@ -42,15 +42,24 @@ const settings = {
 			type: 'boolean',
 			default: true,
 		},
+		showCompanyField: {
+			type: 'boolean',
+			default: true,
+		},
 	},
 	edit,
 	/**
 	 * Save the props to post content.
 	 */
 	save( { attributes } ) {
-		const { className, useShippingAsBilling } = attributes;
+		const {
+			className,
+			useShippingAsBilling,
+			showCompanyField,
+		} = attributes;
 		const data = {
 			'data-use-shipping-as-billing': useShippingAsBilling,
+			'data-show-company-field': showCompanyField,
 		};
 		return (
 			<div className={ className } { ...data }>
