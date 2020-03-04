@@ -462,7 +462,7 @@ Example response:
 Change the quantity of a cart item.
 
 ```http
-PUT /cart/remove_item/
+PUT /cart/update-item/
 ```
 
 | Attribute  | Type    | Required | Description                        |
@@ -472,12 +472,16 @@ PUT /cart/remove_item/
 
 Returns the full cart object (same response as `GET /cart`).
 
+```http
+curl --request POST "https://example-store.com/wp-json/wc/store/cart/update-item?key=1ff1de774005f8da13f42943881c655f&quantity=3"
+```
+
 ### Delete single cart item
 
 Delete/remove an item from the cart.
 
 ```http
-POST /cart/items/:key
+POST /cart/remove-item/
 ```
 
 | Attribute | Type   | Required | Description                       |
@@ -485,6 +489,10 @@ POST /cart/items/:key
 | `key`     | string |   Yes    | The key of the cart item to edit. |
 
 Returns the full cart object (same response as `GET /cart`).
+
+```http
+curl --request POST "https://example-store.com/wp-json/wc/store/cart/remove-item?key=1ff1de774005f8da13f42943881c655f"
+```
 
 ## Cart items API
 
