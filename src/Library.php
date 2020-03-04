@@ -84,10 +84,8 @@ class Library {
 	 * Maybe create cron events.
 	 */
 	public static function maybe_create_cronjobs() {
-		$next_event = wp_get_scheduled_event( 'woocommerce_cleanup_draft_orders' );
-
-		if ( ! $next_event ) {
-			wp_schedule_event( time() + 10, 'daily', 'woocommerce_cleanup_draft_orders' );
+		if ( function_exists( 'as_next_scheduled_action' ) && false === as_next_scheduled_action( 'woocommerce_cleanup_draft_orders' ) ) {
+			as_schedule_recurring_action( strtotime( 'midnight tonight' ), DAY_IN_SECONDS, 'woocommerce_cleanup_draft_orders' );
 		}
 	}
 
