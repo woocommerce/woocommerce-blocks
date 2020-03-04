@@ -17,19 +17,7 @@ import {
 	DEFAULT_ADDRESS_FIELDS,
 } from '@woocommerce/block-settings';
 
-const defaultFieldNames = [
-	'first_name',
-	'last_name',
-	'company',
-	'address_1',
-	'address_2',
-	'country',
-	'city',
-	'postcode',
-	'state',
-];
-
-const defaultFieldValues = {
+const defaultFieldConfig = {
 	first_name: {
 		autocomplete: 'given-name',
 	},
@@ -61,7 +49,8 @@ const defaultFieldValues = {
 };
 
 const AddressForm = ( {
-	fields = defaultFieldNames,
+	fields = Object.keys( defaultFieldConfig ),
+	fieldConfig = defaultFieldConfig,
 	onChange,
 	type = 'shipping',
 	values,
@@ -71,7 +60,7 @@ const AddressForm = ( {
 		key: field,
 		...DEFAULT_ADDRESS_FIELDS[ field ],
 		...countryLocale[ field ],
-		...defaultFieldValues[ field ],
+		...fieldConfig[ field ],
 	} ) );
 	const sortedAddressFields = addressFields.sort(
 		( a, b ) => a.priority - b.priority
@@ -132,11 +121,25 @@ const AddressForm = ( {
 						/>
 					);
 				}
+
+				const optional = __(
+					'(optional)',
+					'woo-gutenberg-products-block'
+				);
+				let fieldLabel = addressField.label || addressField.placeholder;
+
+				if (
+					! addressField.required &&
+					! fieldLabel.includes( optional )
+				) {
+					fieldLabel = fieldLabel + ' ' + optional;
+				}
+
 				return (
 					<TextInput
 						key={ addressField.key }
 						className={ `wc-block-address-form__${ addressField.key }` }
-						label={ addressField.label || addressField.placeholder }
+						label={ fieldLabel }
 						value={ values[ addressField.key ] }
 						autoComplete={ addressField.autocomplete }
 						onChange={ ( newValue ) =>
@@ -156,7 +159,10 @@ const AddressForm = ( {
 AddressForm.propTypes = {
 	onChange: PropTypes.func.isRequired,
 	values: PropTypes.object.isRequired,
-	fields: PropTypes.arrayOf( PropTypes.oneOf( defaultFieldNames ) ),
+	fields: PropTypes.arrayOf(
+		PropTypes.oneOf( Object.keys( defaultFieldConfig ) )
+	),
+	fieldConfig: PropTypes.object,
 	type: PropTypes.oneOf( [ 'billing', 'shipping' ] ),
 };
 

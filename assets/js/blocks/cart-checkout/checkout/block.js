@@ -57,17 +57,39 @@ const Block = ( { attributes, isEditor = false, shippingRates = [] } ) => {
 	const showBillingFields =
 		! SHIPPING_ENABLED || ! useShippingAddressAsBilling;
 
-	const addressFields = [
-		'first_name',
-		'last_name',
-		attributes.showCompanyField ? 'company' : '',
-		'address_1',
-		'address_2',
-		'country',
-		'city',
-		'postcode',
-		'state',
-	].filter( Boolean );
+	const addressFields = {
+		first_name: {
+			autocomplete: 'given-name',
+		},
+		last_name: {
+			autocomplete: 'family-name',
+		},
+		company: {
+			autocomplete: 'organization',
+			hidden: ! attributes.showCompanyField,
+			required: attributes.requireCompanyField,
+		},
+		address_1: {
+			autocomplete: 'address-line1',
+		},
+		address_2: {
+			autocomplete: 'address-line2',
+			hidden: ! attributes.showAddress2Field,
+		},
+		country: {
+			autocomplete: 'country',
+			priority: 65,
+		},
+		city: {
+			autocomplete: 'address-level2',
+		},
+		postcode: {
+			autocomplete: 'postal-code',
+		},
+		state: {
+			autocomplete: 'address-level1',
+		},
+	};
 
 	return (
 		<CheckoutProvider>
@@ -146,24 +168,34 @@ const Block = ( { attributes, isEditor = false, shippingRates = [] } ) => {
 						<AddressForm
 							onChange={ setShippingFields }
 							values={ shippingFields }
-							fields={ addressFields }
+							fields={ Object.keys( addressFields ) }
+							fieldConfig={ addressFields }
 						/>
-						<TextInput
-							type="tel"
-							label={ __(
-								'Phone',
-								'woo-gutenberg-products-block'
-							) }
-							value={ shippingFields.phone }
-							autoComplete="tel"
-							onChange={ ( newValue ) =>
-								setShippingFields( {
-									...shippingFields,
-									phone: newValue,
-								} )
-							}
-							required={ true }
-						/>
+						{ attributes.showPhoneField && (
+							<TextInput
+								type="tel"
+								label={
+									attributes.requirePhoneField
+										? __(
+												'Phone',
+												'woo-gutenberg-products-block'
+										  )
+										: __(
+												'Phone (optional)',
+												'woo-gutenberg-products-block'
+										  )
+								}
+								value={ shippingFields.phone }
+								autoComplete="tel"
+								onChange={ ( newValue ) =>
+									setShippingFields( {
+										...shippingFields,
+										phone: newValue,
+									} )
+								}
+								required={ attributes.requirePhoneField }
+							/>
+						) }
 						<CheckboxControl
 							className="wc-block-checkout__use-address-for-billing"
 							label={ __(
@@ -194,23 +226,8 @@ const Block = ( { attributes, isEditor = false, shippingRates = [] } ) => {
 							onChange={ setBillingFields }
 							type="billing"
 							values={ billingFields }
-							fields={ addressFields }
-						/>
-						<TextInput
-							type="tel"
-							label={ __(
-								'Phone',
-								'woo-gutenberg-products-block'
-							) }
-							value={ billingFields.phone }
-							autoComplete="tel"
-							onChange={ ( newValue ) =>
-								setBillingFields( {
-									...billingFields,
-									phone: newValue,
-								} )
-							}
-							required={ true }
+							fields={ Object.keys( addressFields ) }
+							fieldConfig={ addressFields }
 						/>
 					</FormStep>
 				) }
