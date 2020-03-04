@@ -95,6 +95,15 @@ class CartItems extends RestController {
 						'context' => $this->get_context_param( [ 'default' => 'view' ] ),
 					],
 				],
+				[
+					'methods'  => RestServer::EDITABLE,
+					'callback' => array( $this, 'update_item' ),
+					'args'     => $this->get_endpoint_args_for_item_schema( RestServer::EDITABLE ),
+				],
+				[
+					'methods'  => RestServer::DELETABLE,
+					'callback' => [ $this, 'delete_item' ],
+				],
 				'schema' => [ $this, 'get_public_item_schema' ],
 			]
 		);
@@ -169,6 +178,48 @@ class CartItems extends RestController {
 		$response = rest_ensure_response( $this->prepare_item_for_response( $controller->get_cart_item( $result ), $request ) );
 		$response->set_status( 201 );
 		return $response;
+	}
+
+	/**
+	 * Update a single cart item.
+	 *
+	 * @param \WP_Rest_Request $request Full data about the request.
+	 * @return \WP_Error|\WP_REST_Response Response object on success, or WP_Error object on failure.
+	 */
+	public function update_item( $request ) {
+		$controller = new CartController();
+		$cart       = $controller->get_cart_instance();
+		$cart_item  = $controller->get_cart_item( $request['key'] );
+
+		if ( ! $cart_item ) {
+			return new RestError( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
+		}
+
+		if ( isset( $request['quantity'] ) ) {
+			$cart->set_quantity( $request['key'], $request['quantity'] );
+		}
+
+		return rest_ensure_response( $this->prepare_item_for_response( $controller->get_cart_item( $request['key'] ), $request ) );
+	}
+
+	/**
+	 * Delete a single cart item.
+	 *
+	 * @param \WP_Rest_Request $request Full data about the request.
+	 * @return \WP_Error|\WP_REST_Response Response object on success, or WP_Error object on failure.
+	 */
+	public function delete_item( $request ) {
+		$controller = new CartController();
+		$cart       = $controller->get_cart_instance();
+		$cart_item  = $controller->get_cart_item( $request['key'] );
+
+		if ( ! $cart_item ) {
+			return new RestError( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
+		}
+
+		$cart->remove_cart_item( $request['key'] );
+
+		return new RestResponse( null, 204 );
 	}
 
 	/**
