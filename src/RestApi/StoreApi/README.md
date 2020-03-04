@@ -761,7 +761,6 @@ Example response:
 }
 ```
 
-
 ### Edit single cart item
 
 Edit an item in the cart.
@@ -783,26 +782,26 @@ Example response:
 
 ```json
 {
-  "key": "3ef815416f775098fe977004015c6193",
-  "id": 100,
-  "quantity": 10,
-  "name": "Single",
-  "sku": "woo-single",
-  "permalink": "http://local.wordpress.test/product/single/",
-  "images": [
-    {
-      "id": 56,
-      "src": "http://local.wordpress.test/wp-content/uploads/2019/07/single-1.jpg",
-      "name": "single-1.jpg",
-      "alt": ""
-    }
-  ],
-  "product_price": "5500",
-  "line_subtotal": "4583",
-  "line_subtotal_tax": "917",
-  "line_total": "4583",
-  "line_total_tax": "917",
-  "variation": []
+	"key": "3ef815416f775098fe977004015c6193",
+	"id": 100,
+	"quantity": 10,
+	"name": "Single",
+	"sku": "woo-single",
+	"permalink": "http://local.wordpress.test/product/single/",
+	"images": [
+		{
+			"id": 56,
+			"src": "http://local.wordpress.test/wp-content/uploads/2019/07/single-1.jpg",
+			"name": "single-1.jpg",
+			"alt": ""
+		}
+	],
+	"product_price": "5500",
+	"line_subtotal": "4583",
+	"line_subtotal_tax": "917",
+	"line_total": "4583",
+	"line_total_tax": "917",
+	"variation": []
 }
 ```
 
