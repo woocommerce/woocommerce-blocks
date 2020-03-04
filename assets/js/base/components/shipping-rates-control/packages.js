@@ -49,6 +49,10 @@ Packages.propTypes = {
 					quantity: PropTypes.number,
 				} )
 			).isRequired,
+			package_id: PropTypes.number,
+			name: PropTypes.string,
+			destination: PropTypes.object,
+			shipping_rates: PropTypes.arrayOf( PropTypes.object ),
 		} ).isRequired
 	).isRequired,
 };
