@@ -29,11 +29,11 @@ export const useShippingRates = () => {
 	const results = useSelect( ( select, { dispatch } ) => {
 		const store = select( storeKey );
 		const shippingRatesLoading = store.areShippingRatesLoading();
-		const { updateShipping } = dispatch( storeKey );
+		const { updateShippingAddress } = dispatch( storeKey );
 
 		return {
 			shippingRatesLoading,
-			updateShipping,
+			updateShippingAddress,
 		};
 	}, [] );
 

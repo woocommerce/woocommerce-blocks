@@ -125,15 +125,15 @@ const reducer = (
 				},
 			};
 			break;
-			case types.UPDATING_SHIPPING:
-				state = {
-					...state,
-					metaData: {
-						...state.metaData,
-						updatingShipping: action.isResolving,
-					},
-				};
-				break;
+		case types.UPDATING_SHIPPING_ADDRESS:
+			state = {
+				...state,
+				metaData: {
+					...state.metaData,
+					updatingShipping: action.isResolving,
+				},
+			};
+			break;
 	}
 	return state;
 };

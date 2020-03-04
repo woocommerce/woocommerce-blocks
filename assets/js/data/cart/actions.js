@@ -276,9 +276,9 @@ export function* selectShippingRate( rateId, packageId = 0 ) {
  * @param {boolean} isResolving if we're loading shipping address or not.
  * @return {Object} Object for action.
  */
-export function receiveShippingAddress( isResolving ) {
+export function shippingRatesAreResolving( isResolving ) {
 	return {
-		type: types.UPDATING_SHIPPING,
+		type: types.UPDATING_SHIPPING_ADDRESS,
 		isResolving,
 	};
 }
@@ -289,8 +289,8 @@ the coupon cannot be applied.
  *
  * @param {Object} address shipping address to be updated
  */
-export function* updateShipping( address ) {
-	yield receiveShippingAddress( true );
+export function* updateShippingAddress( address ) {
+	yield shippingRatesAreResolving( true );
 	try {
 		const result = yield apiFetch( {
 			path: '/wc/store/cart/update-shipping',
@@ -305,5 +305,5 @@ export function* updateShipping( address ) {
 	} catch ( error ) {
 		yield receiveError( error );
 	}
-	yield receiveShippingAddress( false );
+	yield shippingRatesAreResolving( false );
 }
