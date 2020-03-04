@@ -118,6 +118,14 @@ final class ReserveStock {
 
 		$query_for_stock          = $this->get_query_for_stock( $product_id );
 		$query_for_reserved_stock = $this->get_query_for_reserved_stock( $product_id, $order->get_id() );
+		$required_stock           = $stock_quantity;
+
+		// Deals with legacy stock reservations from woo core.
+		$support_legacy_held_stock = ! \class_exists( '\Automattic\WooCommerce\Checkout\Helpers\ReserveStock' ) && absint( get_option( 'woocommerce_hold_stock_minutes', 0 ) ) > 0;
+
+		if ( $support_legacy_held_stock ) {
+			$required_stock += wc_get_held_stock_quantity( wc_get_product( $product_id ) );
+		}
 
 		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
 		$result = $wpdb->query(
@@ -131,7 +139,7 @@ final class ReserveStock {
 				$product_id,
 				$stock_quantity,
 				$minutes,
-				$stock_quantity
+				$required_stock
 			)
 		);
 		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
