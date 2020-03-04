@@ -55,9 +55,15 @@ class Cart extends AbstractBlock {
 		if ( ! $data_registry->exists( 'shippingStates' ) ) {
 			$data_registry->add( 'shippingStates', WC()->countries->get_shipping_country_states() );
 		}
-		if ( ! $data_registry->exists( 'cartData' ) ) {
-			$data_registry->add( 'cartData', WC()->api->get_endpoint_data( '/wc/store/cart' ) );
+		if ( ! $data_registry->exists( 'countryLocale' ) ) {
+			$data_registry->add( 'countryLocale', WC()->countries->get_country_locale() );
 		}
+		if ( ! $data_registry->exists( 'defaultAddressFields' ) ) {
+			$data_registry->add( 'defaultAddressFields', WC()->countries->get_default_address_fields() );
+		}
+    if ( ! $data_registry->exists( 'cartData' ) ) {
+			$data_registry->add( 'cartData', WC()->api->get_endpoint_data( '/wc/store/cart' ) );
+    }
 		\Automattic\WooCommerce\Blocks\Assets::register_block_script(
 			$this->block_name . '-frontend',
 			$this->block_name . '-block-frontend'

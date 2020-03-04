@@ -105,6 +105,12 @@ class CartItemSchema extends AbstractSchema {
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
+			'sold_individually'   => [
+				'description' => __( 'If true, only one item of this product is allowed for purchase in a single order.', 'woo-gutenberg-products-block' ),
+				'type'        => 'boolean',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+			],
 			'permalink'           => [
 				'description' => __( 'Product URL.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
@@ -181,7 +187,7 @@ class CartItemSchema extends AbstractSchema {
 				],
 			],
 			'prices'              => [
-				'description' => __( 'Price data for the product in the current line item, provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Price data for the product in the current line item, including or excluding taxes based on the "display prices during cart and checkout" setting. Provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
@@ -287,7 +293,7 @@ class CartItemSchema extends AbstractSchema {
 	public function get_item_response( $cart_item ) {
 		$product = $cart_item['data'];
 
-		$product_prices = $this->product_schema->get_prices( $product );
+		$product_prices = $this->product_schema->get_prices( $product, get_option( 'woocommerce_tax_display_cart' ) );
 
 		return [
 			'key'                 => $cart_item['key'],
@@ -299,6 +305,7 @@ class CartItemSchema extends AbstractSchema {
 			'description'         => $this->prepare_html_response( wc_format_content( $product->get_description() ) ),
 			'sku'                 => $this->prepare_html_response( $product->get_sku() ),
 			'low_stock_remaining' => $this->get_low_stock_remaining( $product ),
+			'sold_individually'   => $product->is_sold_individually(),
 			'permalink'           => $product->get_permalink(),
 			'images'              => ( new ProductImages() )->images_to_array( $product ),
 			'variation'           => $this->format_variation_data( $cart_item['variation'], $product ),
