@@ -12,6 +12,7 @@ export default class PaymentMethodConfig {
 		this.ariaLabel = config.ariaLabel;
 		this.activeContent = config.activeContent;
 		this.edit = config.edit;
+		this.needsBilling = !! config?.needsBilling;
 		this.canMakePayment = config.canMakePayment;
 	}
 
