@@ -3,6 +3,31 @@
 # Exit if any command fails.
 set -e
 
+TYPE='PRODUCTION';
+
+print_usage() {
+	echo "build-plugin-zip - attempt to build a plugin"
+	echo " "
+	echo "build-plugin-zip [arguments]"
+	echo " "
+	echo "options:"
+	echo "-h          show brief help"
+	echo "-d          build plugin in development mode"
+}
+
+# get args
+while getopts 'hd' flag; do
+	case "${flag}" in
+		h) print_usage ;;
+		d) TYPE='DEV' ;;
+		*)
+			print_usage
+			exit 1
+			;;
+	esac
+done
+
+
 # Store paths
 SOURCE_PATH=$(pwd)
 
@@ -79,16 +104,21 @@ if [ -z "$NO_CHECKS" ]; then
 fi
 
 # Run the build.
-status "Installing dependencies... 📦"
-composer install --no-dev
-PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm install
-status "==========================="
 npm list webpack
-status "Generating build... 👷‍♀️"
-status "==========================="
-npm list webpack
-npm run build
-status "==========================="
+if [ $TYPE = 'DEV' ]; then
+	status "Generating development build... 👷‍♀️"
+	status "==========================="
+else
+	status "Installing dependencies... 📦"
+	composer install --no-dev
+	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm install
+	status "==========================="
+	status "Generating production build... 👷‍♀️"
+	status "==========================="
+	npm list webpack
+	npm run build
+	status "==========================="
+fi
 npm list webpack
 
 # Generate the plugin zip file.
