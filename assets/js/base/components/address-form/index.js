@@ -36,6 +36,7 @@ export const defaultFieldConfig = {
 	country: {
 		autocomplete: 'country',
 		priority: 65,
+		required: true,
 	},
 	city: {
 		autocomplete: 'address-level2',
@@ -66,12 +67,25 @@ const AddressForm = ( {
 		( a, b ) => a.priority - b.priority
 	);
 
+	const optionalText = __( '(optional)', 'woo-gutenberg-products-block' );
+
 	return (
 		<div className="wc-block-address-form">
 			{ sortedAddressFields.map( ( addressField ) => {
 				if ( addressField.hidden ) {
 					return null;
 				}
+
+				const requiredField = addressField.required;
+				let fieldLabel = addressField.label || addressField.placeholder;
+
+				if (
+					! addressField.required &&
+					! fieldLabel.includes( optionalText )
+				) {
+					fieldLabel = fieldLabel + ' ' + optionalText;
+				}
+
 				if ( addressField.key === 'country' ) {
 					const Tag =
 						type === 'shipping'
@@ -80,10 +94,7 @@ const AddressForm = ( {
 					return (
 						<Tag
 							key={ addressField.key }
-							label={ __(
-								'Country / Region',
-								'woo-gutenberg-products-block'
-							) }
+							label={ fieldLabel }
 							value={ values.country }
 							autoComplete={ addressField.autocomplete }
 							onChange={ ( newValue ) =>
@@ -93,10 +104,11 @@ const AddressForm = ( {
 									state: '',
 								} )
 							}
-							required={ true }
+							required={ requiredField }
 						/>
 					);
 				}
+
 				if ( addressField.key === 'state' ) {
 					const Tag =
 						type === 'shipping'
@@ -106,7 +118,7 @@ const AddressForm = ( {
 						<Tag
 							key={ addressField.key }
 							country={ values.country }
-							label={ addressField.label }
+							label={ fieldLabel }
 							value={ values.state }
 							autoComplete={ addressField.autocomplete }
 							onChange={ ( newValue ) =>
@@ -115,24 +127,9 @@ const AddressForm = ( {
 									state: newValue,
 								} )
 							}
-							required={
-								! values.country || addressField.required
-							}
+							required={ requiredField }
 						/>
 					);
-				}
-
-				const optional = __(
-					'(optional)',
-					'woo-gutenberg-products-block'
-				);
-				let fieldLabel = addressField.label || addressField.placeholder;
-
-				if (
-					! addressField.required &&
-					! fieldLabel.includes( optional )
-				) {
-					fieldLabel = fieldLabel + ' ' + optional;
 				}
 
 				return (
@@ -148,7 +145,7 @@ const AddressForm = ( {
 								[ addressField.key ]: newValue,
 							} )
 						}
-						required={ addressField.required }
+						required={ requiredField }
 					/>
 				);
 			} ) }
