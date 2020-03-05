@@ -78,6 +78,7 @@ class Cart extends AbstractBlock {
 		return '
 			<div class="wc-block-cart wc-block-cart--skeleton" aria-hidden="true">
 				<div class="wc-block-cart__main">
+					<h2><span></span></h2>
 					<table class="wc-block-cart-items">
 						<thead>
 							<tr class="wc-block-cart-items__header">
