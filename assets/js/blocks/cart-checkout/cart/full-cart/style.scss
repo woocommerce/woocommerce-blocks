@@ -317,7 +317,7 @@ table.wc-block-cart-items {
 			.wc-block-cart-item__total {
 				grid-column-start: 3;
 				grid-row-start: 2;
-				align-self: center;
+				align-self: flex-end;
 
 				.wc-block-formatted-money-amount {
 					display: inline-block;
