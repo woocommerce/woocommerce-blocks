@@ -13,7 +13,7 @@ import renderFrontend from '../../../utils/render-frontend.js';
 const getProps = ( el ) => {
 	const attributes = {};
 
-	Object.keys( blockAttributes ).map( ( key ) => {
+	Object.keys( blockAttributes ).forEach( ( key ) => {
 		if ( typeof el.dataset[ key ] !== 'undefined' ) {
 			if (
 				el.dataset[ key ] === 'true' ||

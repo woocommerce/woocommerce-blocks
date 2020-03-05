@@ -40,7 +40,7 @@ const settings = {
 	save( { attributes } ) {
 		const data = {};
 
-		Object.keys( blockAttributes ).map( ( key ) => {
+		Object.keys( blockAttributes ).forEach( ( key ) => {
 			if (
 				blockAttributes[ key ].save !== false &&
 				typeof attributes[ key ] !== 'undefined'
