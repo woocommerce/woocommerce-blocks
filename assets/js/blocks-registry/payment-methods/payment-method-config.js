@@ -12,7 +12,11 @@ export default class PaymentMethodConfig {
 		this.ariaLabel = config.ariaLabel;
 		this.activeContent = config.activeContent;
 		this.edit = config.edit;
-		this.needsBilling = !! config?.needsBilling;
+		// @todo implement usage of this property in the checkout billing form.
+		this.needsBilling =
+			typeof config.needsBilling === 'undefined'
+				? true
+				: !! config.needsBilling;
 		this.canMakePayment = config.canMakePayment;
 	}
 

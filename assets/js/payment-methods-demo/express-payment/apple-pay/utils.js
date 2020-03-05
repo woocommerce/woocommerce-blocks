@@ -15,15 +15,10 @@ import { getSetting } from '@woocommerce/settings';
  * @typedef {import('@woocommerce/type-defs/cart').CartTotalItem} CartTotalItem
  */
 
-// @todo this can't be in the file because the block might not show up unless it's
-// rendered! (which also means it won't get passed from the server until it is rendered).
-// so we need to work out a loading process for when the cart or checkout hasn't been added to the
-// content yet - definitely don't want to load stripe without the block in the page. So that means
-// checkout will need to have some sort of editor preview for stripe.
 /**
  * Stripe data comes form the server passed on a global object.
  *
- * @return  {StripeServerData}
+ * @return  {StripeServerData} Stripe server data.
  */
 const getStripeServerData = () => {
 	const stripeServerData = getSetting( 'stripe_data', null );
