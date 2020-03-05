@@ -24,7 +24,6 @@ const getProps = ( el ) => {
 				attributes[ key ] = el.dataset[ key ];
 			}
 		}
-		return true;
 	} );
 
 	return {

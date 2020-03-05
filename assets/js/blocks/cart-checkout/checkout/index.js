@@ -47,7 +47,6 @@ const settings = {
 			) {
 				data[ 'data-' + kebabCase( key ) ] = attributes[ key ];
 			}
-			return true;
 		} );
 
 		return (
