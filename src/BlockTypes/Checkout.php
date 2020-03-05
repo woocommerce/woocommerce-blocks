@@ -75,7 +75,10 @@ class Checkout extends AbstractBlock {
 		if ( ! $data_registry->exists( 'defaultAddressFields' ) ) {
 			$data_registry->add( 'defaultAddressFields', WC()->countries->get_default_address_fields() );
 		}
+		do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before' );
 		\Automattic\WooCommerce\Blocks\Assets::register_block_script( $this->block_name . '-frontend', $this->block_name . '-block-frontend' );
+		do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_after' );
+
 		return $content;
 	}
 }

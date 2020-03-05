@@ -64,10 +64,12 @@ class Cart extends AbstractBlock {
 		if ( ! $data_registry->exists( 'cartData' ) ) {
 			$data_registry->add( 'cartData', WC()->api->get_endpoint_data( '/wc/store/cart' ) );
 		}
+		do_action( 'woocommerce_blocks_enqueue_cart_block_scripts_before' );
 		\Automattic\WooCommerce\Blocks\Assets::register_block_script(
 			$this->block_name . '-frontend',
 			$this->block_name . '-block-frontend'
 		);
+		do_action( 'woocommerce_blocks_enqueue_cart_block_scripts_after' );
 		return $content . $this->get_skeleton();
 	}
 
