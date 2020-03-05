@@ -182,6 +182,8 @@ export const ShippingMethodDataProvider = ( { children } ) => {
 		dispatchErrorStatus,
 		shippingErrorTypes: ERROR_TYPES,
 		shippingRates: shippingOptions,
+		// @todo, don't think this property is needed, it's more of an internal
+		// thing
 		setShippingRates: setShippingOptions,
 		shippingRatesLoading: shippingOptionsLoading,
 		selectedRates,
