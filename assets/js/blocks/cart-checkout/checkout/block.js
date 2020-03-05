@@ -16,7 +16,7 @@ import ShippingRatesControl, {
 import { CheckboxControl } from '@wordpress/components';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
-import CheckoutProvider from '@woocommerce/base-context/checkout-context';
+import { CheckoutProvider } from '@woocommerce/base-context';
 import {
 	ExpressCheckoutFormControl,
 	PaymentMethods,
@@ -74,7 +74,7 @@ const Block = ( { attributes, isEditor = false, shippingRates = [] } ) => {
 
 	return (
 		<CheckoutProvider>
-			<ExpressCheckoutFormControl />
+			<ExpressCheckoutFormControl isEditor={ isEditor } />
 			<CheckoutForm>
 				<FormStep
 					id="contact-fields"
@@ -302,7 +302,7 @@ const Block = ( { attributes, isEditor = false, shippingRates = [] } ) => {
 						'woo-gutenberg-products-block'
 					) }
 				>
-					<PaymentMethods />
+					<PaymentMethods isEditor={ isEditor } />
 					{ /*@todo this should be something the payment method controls*/ }
 					<CheckboxControl
 						className="wc-block-checkout__save-card-info"

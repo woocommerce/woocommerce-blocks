@@ -7,6 +7,8 @@ import { __, sprintf } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useStoreNotices } from '@woocommerce/base-hooks';
+import { useCheckoutContext } from '@woocommerce/base-context';
+import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -22,6 +24,7 @@ import { useStoreCart } from './use-store-cart';
  * store api /cart/coupons endpoint.
  */
 export const useStoreCartCoupons = () => {
+	const { dispatchActions } = useCheckoutContext();
 	const { cartCoupons, cartIsLoading } = useStoreCart();
 	const {
 		addErrorNotice,
@@ -97,7 +100,23 @@ export const useStoreCartCoupons = () => {
 		},
 		[ addErrorNotice, addSuccessNotice, addInfoNotice ]
 	);
-
+	// Dispatch calculating increments on loading changes for checkout state.
+	// Each of the below are done individually to avoid unnecessary dispatches.
+	useEffect( () => {
+		return void ( cartIsLoading
+			? dispatchActions.incrementCalculating()
+			: dispatchActions.decrementCalculating() );
+	}, [ cartIsLoading ] );
+	useEffect( () => {
+		return void ( results.isApplyingCoupon
+			? dispatchActions.incrementCalculating()
+			: dispatchActions.decrementCalculating() );
+	}, [ results.isApplyingCoupon ] );
+	useEffect( () => {
+		return void ( results.isRemovingCoupon
+			? dispatchActions.incrementCalculating()
+			: dispatchActions.decrementCalculating() );
+	}, [ results.isRemovingCoupon ] );
 	return {
 		appliedCoupons: cartCoupons,
 		isLoading: cartIsLoading,

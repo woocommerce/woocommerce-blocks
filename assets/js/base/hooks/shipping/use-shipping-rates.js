@@ -6,7 +6,7 @@ import { useDebounce } from 'use-debounce';
 /**
  * Internal dependencies
  */
-import { useCollection } from './use-collection';
+import { useCollection } from '../use-collection';
 
 /**
  * This is a custom hook that is wired up to the `wc/store/collections` data

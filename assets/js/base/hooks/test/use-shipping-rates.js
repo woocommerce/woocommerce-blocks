@@ -8,7 +8,7 @@ import { COLLECTIONS_STORE_KEY as storeKey } from '@woocommerce/block-data';
 /**
  * Internal dependencies
  */
-import { useShippingRates } from '../use-shipping-rates';
+import { useShippingRates } from '../shipping/use-shipping-rates';
 
 jest.mock( '@woocommerce/block-data', () => ( {
 	__esModule: true,

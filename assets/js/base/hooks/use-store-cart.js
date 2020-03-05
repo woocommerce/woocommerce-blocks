@@ -5,6 +5,8 @@
  */
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
+import { useEffect } from '@wordpress/element';
+import { useCheckoutContext } from '@woocommerce/base-context';
 
 /**
  * @constant
@@ -35,11 +37,12 @@ const defaultCartData = {
  */
 export const useStoreCart = ( options = { shouldSelect: true } ) => {
 	const { shouldSelect } = options;
-
+	// get dispatcher from checkout context to record errors.
+	const { dispatchActions } = useCheckoutContext();
 	const results = useSelect(
 		( select ) => {
 			if ( ! shouldSelect ) {
-				return null;
+				return defaultCartData;
 			}
 			const store = select( storeKey );
 			const cartData = store.getCartData();
@@ -62,8 +65,20 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 		},
 		[ shouldSelect ]
 	);
-	if ( results === null ) {
-		return defaultCartData;
-	}
+
+	// React to loading and error status dispatch checkout status updates.
+	// Note these are done separately to avoid unnecessary dispatches.
+	useEffect( () => {
+		return void ( results.cartErrors
+			? dispatchActions.setHasError()
+			: dispatchActions.clearError() );
+	}, [ results.cartErrors ] );
+
+	useEffect( () => {
+		return void ( results.cartIsLoading
+			? dispatchActions.incrementCalculating()
+			: dispatchActions.decrementCalculating() );
+	}, [ results.cartIsLoading ] );
+
 	return results;
 };
