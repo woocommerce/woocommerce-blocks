@@ -2,12 +2,15 @@
  * External dependencies
  */
 import {
-	useCheckoutData,
-	usePaymentEvents,
-	useActivePaymentMethod,
+	usePaymentMethodInterface,
 	usePaymentMethods,
 } from '@woocommerce/base-hooks';
-import { useCallback, cloneElement } from '@wordpress/element';
+import {
+	cloneElement,
+	useRef,
+	useCallback,
+	useEffect,
+} from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -38,30 +41,39 @@ const createTabs = ( paymentMethods ) => {
 		: [ noPaymentMethodTab() ];
 };
 
-const PaymentMethods = () => {
-	const [ checkoutData ] = useCheckoutData();
-	const { dispatch, select } = usePaymentEvents();
+const PaymentMethods = ( { isEditor } ) => {
 	const { isInitialized, paymentMethods } = usePaymentMethods();
 	const {
 		activePaymentMethod,
 		setActivePaymentMethod,
-	} = useActivePaymentMethod();
+		...paymentMethodInterface
+	} = usePaymentMethodInterface();
+	const currentPaymentMethodInterface = useRef( paymentMethodInterface );
+	const currentPaymentMethods = useRef( paymentMethods );
+
+	// update refs on changes
+	useEffect( () => {
+		currentPaymentMethods.current = paymentMethods;
+		currentPaymentMethodInterface.current = paymentMethodInterface;
+	}, [ paymentMethods, paymentMethodInterface ] );
+
 	const getRenderedTab = useCallback(
 		() => ( selectedTab ) => {
-			const paymentMethod =
-				( paymentMethods[ selectedTab ] &&
-					paymentMethods[ selectedTab ].activeContent ) ||
-				null;
-			const paymentEvents = { dispatch, select };
+			let paymentMethod =
+				currentPaymentMethods.current[ selectedTab ] || null;
+			if ( paymentMethod ) {
+				paymentMethod = isEditor
+					? paymentMethod.edit
+					: paymentMethod.activeContent;
+			}
 			return paymentMethod
 				? cloneElement( paymentMethod, {
 						isActive: true,
-						checkoutData,
-						paymentEvents,
+						...currentPaymentMethodInterface.current,
 				  } )
 				: null;
 		},
-		[ checkoutData, dispatch, select ]
+		[]
 	);
 	if (
 		! isInitialized ||

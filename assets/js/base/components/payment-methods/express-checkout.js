@@ -24,7 +24,7 @@ const ExpressCheckoutContainer = ( { children } ) => {
 	);
 };
 
-const ExpressCheckoutFormControl = () => {
+const ExpressCheckoutFormControl = ( { isEditor } ) => {
 	const { paymentMethods, isInitialized } = useExpressPaymentMethods();
 
 	// determine whether we even show this
@@ -44,7 +44,7 @@ const ExpressCheckoutFormControl = () => {
 					'woo-gutenberg-products-block'
 				) }
 			</p>
-			<ExpressPaymentMethods />
+			<ExpressPaymentMethods isEditor={ isEditor } />
 		</ExpressCheckoutContainer>
 	);
 };

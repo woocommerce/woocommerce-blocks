@@ -2,15 +2,13 @@
  * External dependencies
  */
 import {
-	useCheckoutData,
-	usePaymentEvents,
+	usePaymentMethodInterface,
 	useExpressPaymentMethods,
 } from '@woocommerce/base-hooks';
-import { cloneElement } from '@wordpress/element';
+import { cloneElement, isValidElement } from '@wordpress/element';
 
-const ExpressPaymentMethods = () => {
-	const [ checkoutData ] = useCheckoutData();
-	const { dispatch, select } = usePaymentEvents();
+const ExpressPaymentMethods = ( { isEditor } ) => {
+	const paymentMethodInterface = usePaymentMethodInterface();
 	// not implementing isInitialized here because it's utilized further
 	// up in the tree for express payment methods. We won't even get here if
 	// there's no payment methods after initialization.
@@ -19,17 +17,16 @@ const ExpressPaymentMethods = () => {
 	const content =
 		paymentMethodSlugs.length > 0 ? (
 			paymentMethodSlugs.map( ( slug ) => {
-				const expressPaymentMethod =
-					paymentMethods[ slug ].activeContent;
-				const paymentEvents = { dispatch, select };
-				return (
+				const expressPaymentMethod = isEditor
+					? paymentMethods[ slug ].edit
+					: paymentMethods[ slug ].activeContent;
+				return isValidElement( expressPaymentMethod ) ? (
 					<li key={ slug } id={ `express-payment-method-${ slug }` }>
 						{ cloneElement( expressPaymentMethod, {
-							checkoutData,
-							paymentEvents,
+							...paymentMethodInterface,
 						} ) }
 					</li>
-				);
+				) : null;
 			} )
 		) : (
 			<li key="noneRegistered">No registered Payment Methods</li>
