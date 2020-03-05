@@ -53,10 +53,10 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 	// independently (after debounce).
 	const [ debouncedQuantity ] = useDebounce( localQuantity, 400 );
 	useEffect( () => {
-		if ( key ) {
+		if ( debouncedQuantity !== localQuantity ) {
 			changeQuantity( debouncedQuantity );
 		}
-	}, [ key, debouncedQuantity ] );
+	}, [ debouncedQuantity ] );
 
 	return (
 		<tr className="wc-block-cart-items__row">
