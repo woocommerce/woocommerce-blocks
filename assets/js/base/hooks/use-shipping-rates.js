@@ -1,10 +1,6 @@
 /**
  * External dependencies
  */
-
-/**
- * External dependencies
- */
 import { useSelect } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 /**

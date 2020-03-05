@@ -24,25 +24,6 @@ const ShippingRatesControl = ( {
 		( newRates ) => newRates.length > 0
 	);
 
-	if ( shippingRatesLoading ) {
-		return (
-			<LoadingMask
-				screenReaderLabel={ __(
-					'Loading shipping rates…',
-					'woo-gutenberg-products-block'
-				) }
-				showSpinner={ false }
-			>
-				<Packages
-					className={ className }
-					noResultsMessage={ noResultsMessage }
-					renderOption={ renderOption }
-					shippingRates={ previousShippingRates || shippingRates }
-				/>
-			</LoadingMask>
-		);
-	}
-
 	return (
 		<LoadingMask
 			isLoading={ shippingRatesLoading }

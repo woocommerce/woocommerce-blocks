@@ -5,12 +5,7 @@ import { __ } from '@wordpress/i18n';
 
 export const previewShippingRates = [
 	{
-		destination: {
-			country: 'US',
-			state: 'New York',
-			city: 'NYC',
-			postcode: '10007',
-		},
+		destination: {},
 		items: {},
 		shipping_rates: [
 			{

@@ -181,7 +181,7 @@ const Cart = ( {
 				value: DISPLAY_CART_PRICES_INCLUDING_TAX
 					? totalShipping + totalShippingTax
 					: totalShipping,
-				description: shippingAddress && (
+				description: (
 					<>
 						<ShippingLocation address={ shippingAddress } />
 						<ShippingCalculator

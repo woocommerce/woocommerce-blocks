@@ -249,7 +249,7 @@ export function* changeCartItemQuantity( cartItemKey, quantity ) {
  * Selects a shipping rate.
  *
  * @param {string} rateId the id of the rate being selected.
- * @param {number} packageId the key of the packages that we will select within.
+ * @param {number} [packageId] the key of the packages that we will select within.
  */
 export function* selectShippingRate( rateId, packageId = 0 ) {
 	try {
