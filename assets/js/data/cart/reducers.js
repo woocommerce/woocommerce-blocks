@@ -116,7 +116,6 @@ const reducer = (
 
 		// Delegate to cartItemsReducer.
 		case types.RECEIVE_CART_ITEM:
-		case types.RECEIVE_CART_ITEM_QUANTITY:
 		case types.RECEIVE_REMOVED_ITEM:
 			state = {
 				...state,
