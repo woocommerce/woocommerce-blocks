@@ -76,7 +76,7 @@ class Cart extends AbstractBlock {
 	 */
 	protected function get_skeleton() {
 		return '
-			<div class="wc-block-cart wc-block-cart--skeleton" aria-hidden="true">
+			<div class="wc-block-cart wc-block-cart--is-loading wc-block-cart--skeleton" aria-hidden="true">
 				<div class="wc-block-cart__main">
 					<h2><span></span></h2>
 					<table class="wc-block-cart-items">
@@ -89,13 +89,13 @@ class Cart extends AbstractBlock {
 							</tr>
 						</thead>
 						<tbody>
-						<tr class="wc-block-cart-items__row">
+							<tr class="wc-block-cart-items__row">
 								<td class="wc-block-cart-item__image">
 									<div><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=" width="1" height="1" /></div>
 								</td>
 								<td class="wc-block-cart-item__product">
-									<div></div>
-									<div></div>
+									<div class="wc-block-cart-item__product-name"></div>
+									<div class="wc-block-cart-item__product-metadata"></div>
 								</td>
 								<td class="wc-block-cart-item__quantity">
 								<div class="wc-block-quantity-selector">
@@ -105,7 +105,7 @@ class Cart extends AbstractBlock {
 								</div>
 								</td>
 								<td class="wc-block-cart-item__total">
-									<div></div>
+									<div class="wc-block-cart-item__price"></div>
 								</td>
 							</tr>
 							<tr class="wc-block-cart-items__row">
@@ -113,8 +113,8 @@ class Cart extends AbstractBlock {
 									<div><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=" width="1" height="1" /></div>
 								</td>
 								<td class="wc-block-cart-item__product">
-									<div></div>
-									<div></div>
+									<div class="wc-block-cart-item__product-name">&nbsp;</div>
+									<div class="wc-block-cart-item__product-metadata">&nbsp;</div>
 								</td>
 								<td class="wc-block-cart-item__quantity">
 								<div class="wc-block-quantity-selector">
@@ -124,7 +124,7 @@ class Cart extends AbstractBlock {
 								</div>
 								</td>
 								<td class="wc-block-cart-item__total">
-									<div></div>
+									<div class="wc-block-cart-item__price"></div>
 								</td>
 							</tr>
 							<tr class="wc-block-cart-items__row">
@@ -132,8 +132,8 @@ class Cart extends AbstractBlock {
 									<div><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=" width="1" height="1" /></div>
 								</td>
 								<td class="wc-block-cart-item__product">
-									<div></div>
-									<div></div>
+									<div class="wc-block-cart-item__product-name"></div>
+									<div class="wc-block-cart-item__product-metadata"></div>
 								</td>
 								<td class="wc-block-cart-item__quantity">
 								<div class="wc-block-quantity-selector">
@@ -143,7 +143,7 @@ class Cart extends AbstractBlock {
 								</div>
 								</td>
 								<td class="wc-block-cart-item__total">
-									<div></div>
+									<div class="wc-block-cart-item__price"></div>
 								</td>
 							</tr>
 						</tbody>
