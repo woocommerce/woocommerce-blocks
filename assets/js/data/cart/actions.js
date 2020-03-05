@@ -214,23 +214,7 @@ export function* removeItemFromCart( cartItemKey ) {
 }
 
 /**
- * Returns an action object for updating the quantity of the specified cart item.
- *
- * @param {string} cartItemKey Cart item being updated.
- * @param {number} quantity Specified (new) quantity.
- * @return {Object} Object for action.
- */
-export function receiveCartItemQuantity( cartItemKey, quantity ) {
-	return {
-		type: types.RECEIVE_CART_ITEM_QUANTITY,
-		key: cartItemKey,
-		quantity,
-	};
-}
-
-/**
- * Changes the quantity for specified cart item:
- * - Immediately updates the quantity in the store (so UI is responsive to input).
+ * Persists a quantity change the for specified cart item:
  * - Calls API to set quantity.
  * - If successful, yields action to update store.
  * - If error, yields action to store error.
@@ -239,9 +223,6 @@ export function receiveCartItemQuantity( cartItemKey, quantity ) {
  * @param {number} quantity Specified (new) quantity.
  */
 export function* changeCartItemQuantity( cartItemKey, quantity ) {
-	// Update the store & UI immediately (optimistic).
-	yield receiveCartItemQuantity( cartItemKey, quantity );
-
 	try {
 		const cart = yield apiFetch( {
 			path: `/wc/store/cart/update-item`,

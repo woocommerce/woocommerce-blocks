@@ -25,18 +25,6 @@ const cartItemsReducer = ( state = [], action ) => {
 				return cartItem;
 			} );
 
-		case types.RECEIVE_CART_ITEM_QUANTITY:
-			// Update the quantity of the specified cart item.
-			return state.map( ( cartItem ) => {
-				if ( cartItem.key === action.key ) {
-					return {
-						...cartItem,
-						quantity: action.quantity,
-					};
-				}
-				return cartItem;
-			} );
-
 		case types.RECEIVE_REMOVED_ITEM:
 			return state.filter( ( cartItem ) => {
 				return cartItem.key !== action.cartItemKey;
