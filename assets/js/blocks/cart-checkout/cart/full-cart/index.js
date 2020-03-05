@@ -54,6 +54,43 @@ const renderShippingRatesControlOption = ( option ) => ( {
 	),
 } );
 
+const ShippingCalculatorOptions = ( {
+	shippingRates,
+	shippingRatesLoading,
+	shippingAddress,
+} ) => {
+	return (
+		<fieldset className="wc-block-cart__shipping-options-fieldset">
+			<legend className="screen-reader-text">
+				{ __(
+					'Choose the shipping method.',
+					'woo-gutenberg-products-block'
+				) }
+			</legend>
+			<ShippingRatesControl
+				className="wc-block-cart__shipping-options"
+				address={
+					shippingAddress
+						? {
+								city: shippingAddress.city,
+								state: shippingAddress.state,
+								postcode: shippingAddress.postcode,
+								country: shippingAddress.country,
+						  }
+						: null
+				}
+				noResultsMessage={ __(
+					'No shipping options were found.',
+					'woo-gutenberg-products-block'
+				) }
+				renderOption={ renderShippingRatesControlOption }
+				shippingRates={ shippingRates }
+				shippingRatesLoading={ shippingRatesLoading }
+			/>
+		</fieldset>
+	);
+};
+
 /**
  * Component that renders the Cart block when user has something in cart aka "full".
  */
@@ -198,37 +235,6 @@ const Cart = ( {
 	const totalsCurrency = getCurrencyFromPriceResponse( cartTotals );
 	const totalRowsConfig = getTotalRowsConfig();
 
-	const ShippingCalculatorOptions = () => (
-		<fieldset className="wc-block-cart__shipping-options-fieldset">
-			<legend className="screen-reader-text">
-				{ __(
-					'Choose the shipping method.',
-					'woo-gutenberg-products-block'
-				) }
-			</legend>
-			<ShippingRatesControl
-				className="wc-block-cart__shipping-options"
-				address={
-					shippingAddress
-						? {
-								city: shippingAddress.city,
-								state: shippingAddress.state,
-								postcode: shippingAddress.postcode,
-								country: shippingAddress.country,
-						  }
-						: null
-				}
-				noResultsMessage={ __(
-					'No shipping options were found.',
-					'woo-gutenberg-products-block'
-				) }
-				renderOption={ renderShippingRatesControlOption }
-				shippingRates={ shippingRates }
-				shippingRatesLoading={ shippingRatesLoading }
-			/>
-		</fieldset>
-	);
-
 	const cartClassName = classnames( 'wc-block-cart', {
 		'wc-block-cart--is-loading': isLoading,
 	} );
@@ -270,7 +276,13 @@ const Cart = ( {
 										'woo-gutenberg-products-block'
 									) }
 								</legend>
-								<ShippingCalculatorOptions />
+								<ShippingCalculatorOptions
+									shippingRates={ shippingRates }
+									shippingRatesLoading={
+										shippingRatesLoading
+									}
+									shippingAddress={ shippingAddress }
+								/>
 							</fieldset>
 						) }
 						{ ! DISPLAY_CART_PRICES_INCLUDING_TAX && (
