@@ -17,7 +17,7 @@ import {
 	DEFAULT_ADDRESS_FIELDS,
 } from '@woocommerce/block-settings';
 
-const defaultFieldConfig = {
+export const defaultFieldConfig = {
 	first_name: {
 		autocomplete: 'given-name',
 	},

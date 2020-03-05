@@ -3,7 +3,9 @@
  */
 import { Fragment, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import AddressForm from '@woocommerce/base-components/address-form';
+import AddressForm, {
+	defaultFieldConfig,
+} from '@woocommerce/base-components/address-form';
 import FormStep from '@woocommerce/base-components/checkout/form-step';
 import CheckoutForm from '@woocommerce/base-components/checkout/form';
 import NoShipping from '@woocommerce/base-components/checkout/no-shipping';
@@ -58,36 +60,15 @@ const Block = ( { attributes, isEditor = false, shippingRates = [] } ) => {
 		! SHIPPING_ENABLED || ! useShippingAddressAsBilling;
 
 	const addressFields = {
-		first_name: {
-			autocomplete: 'given-name',
-		},
-		last_name: {
-			autocomplete: 'family-name',
-		},
+		...defaultFieldConfig,
 		company: {
-			autocomplete: 'organization',
+			...defaultFieldConfig.company,
 			hidden: ! attributes.showCompanyField,
 			required: attributes.requireCompanyField,
 		},
-		address_1: {
-			autocomplete: 'address-line1',
-		},
 		address_2: {
-			autocomplete: 'address-line2',
+			...defaultFieldConfig.address_2,
 			hidden: ! attributes.showAddress2Field,
-		},
-		country: {
-			autocomplete: 'country',
-			priority: 65,
-		},
-		city: {
-			autocomplete: 'address-level2',
-		},
-		postcode: {
-			autocomplete: 'postal-code',
-		},
-		state: {
-			autocomplete: 'address-level1',
 		},
 	};
 
