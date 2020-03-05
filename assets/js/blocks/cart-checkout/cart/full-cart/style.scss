@@ -319,6 +319,10 @@ table.wc-block-cart-items {
 				grid-row-start: 2;
 				align-self: center;
 
+				.wc-block-formatted-money-amount {
+					display: inline-block;
+				}
+
 				.wc-block-cart-item__sale-badge {
 					display: none;
 				}
