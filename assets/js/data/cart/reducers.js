@@ -26,7 +26,7 @@ const cartItemsReducer = ( state = [], action ) => {
 			} );
 
 		case types.RECEIVE_CART_ITEM_QUANTITY:
-			// Replace specified cart element with the new data from server.
+			// Update the quantity of the specified cart item.
 			return state.map( ( cartItem ) => {
 				if ( cartItem.key === action.key ) {
 					return {
