@@ -28,7 +28,7 @@ export const useStoreCartItem = ( cartItemKey ) => {
 
 	// Store quantity in hook state. This is used to keep the UI
 	// updated while server request is updated.
-	const [ quantity, changeQuantity ] = useState( cartItem.quantity );
+	const [ quantity, changeQuantity ] = useState( cartItem?.quantity );
 	const [ debouncedQuantity ] = useDebounce( quantity, 400 );
 
 	const { removeItemFromCart, changeCartItemQuantity } = useDispatch(
@@ -43,7 +43,7 @@ export const useStoreCartItem = ( cartItemKey ) => {
 
 	// Observe debounced quantity value, fire action to update server when it changes.
 	useEffect( () => {
-		if ( cartItem.quantity === debouncedQuantity ) return;
+		if ( cartItem?.quantity === debouncedQuantity ) return;
 		asyncChangeQuantity( debouncedQuantity );
 	}, [ debouncedQuantity ] );
 
