@@ -3,7 +3,7 @@
 /**
  * External dependencies
  */
-import { useSelect } from '@wordpress/data';
+import { useSelect, useDispatch } from '@wordpress/data';
 import { useState, useEffect } from '@wordpress/element';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useDebounce } from 'use-debounce';
@@ -31,28 +31,15 @@ export const useStoreCartItem = ( cartItemKey ) => {
 	const [ quantity, changeQuantity ] = useState( cartItem.quantity );
 	const [ debouncedQuantity ] = useDebounce( quantity, 400 );
 
-	const results = useSelect(
-		( select, { dispatch } ) => {
-			const store = select( storeKey );
-			const isPending = store.isItemQuantityPending( cartItemKey );
-			const { removeItemFromCart, changeCartItemQuantity } = dispatch(
-				storeKey
-			);
-
-			return {
-				isPending,
-				asyncChangeQuantity: ( newQuantity ) => {
-					changeCartItemQuantity( cartItemKey, newQuantity );
-				},
-				removeItem: () => {
-					removeItemFromCart( cartItemKey );
-				},
-			};
-		},
-		[ cartItemKey ]
+	const { removeItemFromCart, changeCartItemQuantity } = useDispatch(
+		storeKey
 	);
-
-	const { asyncChangeQuantity, ...plunkedResult } = results;
+	const asyncChangeQuantity = ( newQuantity ) => {
+		changeCartItemQuantity( cartItemKey, newQuantity );
+	};
+	const removeItem = () => {
+		removeItemFromCart( cartItemKey );
+	};
 
 	// Observe debounced quantity value, fire action to update server when it changes.
 	useEffect( () => {
@@ -60,11 +47,20 @@ export const useStoreCartItem = ( cartItemKey ) => {
 		asyncChangeQuantity( debouncedQuantity );
 	}, [ debouncedQuantity ] );
 
+	const isPending = useSelect(
+		( select ) => {
+			const store = select( storeKey );
+			return store.isItemQuantityPending( cartItemKey );
+		},
+		[ cartItemKey ]
+	);
+
 	return {
+		isPending,
 		quantity,
 		changeQuantity,
+		removeItem,
 		isLoading: cartIsLoading,
 		cartItem,
-		...plunkedResult,
 	};
 };
