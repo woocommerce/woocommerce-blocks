@@ -34,6 +34,7 @@
  * @property {boolean}  isLoading       True when cart items are being
  *                                      loaded.
  * @property {CartData} cartData        A cart item from the data store.
+ * @property {number}   quantity        The quantity of the item in the cart.
  * @property {Function} isPending       Callback for determining if a cart
  *                                      item is currently updating (i.e.
  *                                      remove / change quantity).
