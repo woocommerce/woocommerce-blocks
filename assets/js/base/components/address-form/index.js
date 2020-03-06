@@ -11,29 +11,29 @@ import {
 	BillingStateInput,
 	ShippingStateInput,
 } from '@woocommerce/base-components/state-input';
-import { COUNTRY_LOCALE } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
 import defaultAddressFields from './default-address-fields';
+import countryAddressFields from './country-address-fields';
 
 /**
  * Checkout address form.
  */
 const AddressForm = ( {
 	fields = Object.keys( defaultAddressFields ),
-	fieldConfig = defaultAddressFields,
+	fieldConfig = {},
 	onChange,
 	type = 'shipping',
 	values,
 } ) => {
-	const countryLocale = COUNTRY_LOCALE[ values.country ] || {};
+	const countryLocale = countryAddressFields[ values.country ] || {};
 	const addressFields = fields.map( ( field ) => ( {
 		key: field,
 		...defaultAddressFields[ field ],
-		...countryLocale[ field ],
 		...fieldConfig[ field ],
+		...countryLocale[ field ],
 	} ) );
 	const sortedAddressFields = addressFields.sort(
 		( a, b ) => a.index - b.index

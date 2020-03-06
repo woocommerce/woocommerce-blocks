@@ -53,7 +53,6 @@ export const SHIPPING_METHODS_EXIST = getSetting(
 	'shippingMethodsExist',
 	false
 );
-export const COUNTRY_LOCALE = getSetting( 'countryLocale', {} );
 
 const defaultPage = {
 	name: '',
