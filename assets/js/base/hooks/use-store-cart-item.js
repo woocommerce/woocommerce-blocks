@@ -4,7 +4,9 @@
  * External dependencies
  */
 import { useSelect } from '@wordpress/data';
+import { useState, useEffect } from '@wordpress/element';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
+import { useDebounce } from 'use-debounce';
 
 /**
  * Internal dependencies
@@ -18,11 +20,17 @@ import { useStoreCart } from './use-store-cart';
  * @see https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/master/src/RestApi/StoreApi
  *
  * @param {string} cartItemKey Key for a cart item.
+ * @param {number} initialQuantity Quantity of the cart item.
  * @return {StoreCartItem} An object exposing data and actions relating to cart items.
  */
-export const useStoreCartItem = ( cartItemKey ) => {
+export const useStoreCartItem = ( cartItemKey, initialQuantity ) => {
 	const { cartItems, cartIsLoading } = useStoreCart();
 	const cartItem = cartItems.filter( ( item ) => item.key === cartItemKey );
+
+	// Store quantity in hook state. This is used to keep the UI
+	// updated while server request is updated.
+	const [ quantity, changeQuantity ] = useState( initialQuantity );
+	const [ debouncedQuantity ] = useDebounce( quantity, 400 );
 
 	const results = useSelect(
 		( select, { dispatch } ) => {
@@ -34,7 +42,7 @@ export const useStoreCartItem = ( cartItemKey ) => {
 
 			return {
 				isPending,
-				changeQuantity: ( newQuantity ) => {
+				asyncChangeQuantity: ( newQuantity ) => {
 					changeCartItemQuantity( cartItemKey, newQuantity );
 				},
 				removeItem: () => {
@@ -45,9 +53,19 @@ export const useStoreCartItem = ( cartItemKey ) => {
 		[ cartItemKey ]
 	);
 
+	const { asyncChangeQuantity, ...plunkedResult } = results;
+
+	// Observe debounced quantity value, fire action to update server when it changes.
+	useEffect( () => {
+		if ( initialQuantity === debouncedQuantity ) return;
+		asyncChangeQuantity( debouncedQuantity );
+	}, [ debouncedQuantity ] );
+
 	return {
+		quantity,
+		changeQuantity,
 		isLoading: cartIsLoading,
 		cartItem,
-		...results,
+		...plunkedResult,
 	};
 };

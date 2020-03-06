@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { RawHTML, useState, useEffect } from '@wordpress/element';
+import { RawHTML } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import QuantitySelector from '@woocommerce/base-components/quantity-selector';
@@ -9,7 +9,6 @@ import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-mone
 import { getCurrency, formatPrice } from '@woocommerce/base-utils';
 import { useStoreCartItem } from '@woocommerce/base-hooks';
 import { Icon, trash } from '@woocommerce/icons';
-import { useDebounce } from 'use-debounce';
 
 /**
  * Internal dependencies
@@ -29,34 +28,23 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 		permalink = '',
 		images = [],
 		variation = [],
-		quantity = 1,
+		quantity: initialQuantity = 1,
 		prices = {},
 	} = lineItem;
+
+	// Strange to pass in the quantity to the cart item hook;
+	// it should know it?
+	const {
+		quantity,
+		changeQuantity,
+		removeItem,
+		isPending: itemQuantityDisabled,
+	} = useStoreCartItem( key, initialQuantity );
 
 	const currency = getCurrency();
 	const regularPrice = parseInt( prices.regular_price, 10 ) * quantity;
 	const purchasePrice = parseInt( prices.price, 10 ) * quantity;
 	const saleAmount = regularPrice - purchasePrice;
-
-	const {
-		changeQuantity,
-		removeItem,
-		isPending: itemQuantityDisabled,
-	} = useStoreCartItem( key );
-
-	// Store item quantity in local state so the UI can update independently
-	// of store/server updates.
-	const [ localQuantity, updateLocalQuantity ] = useState( quantity );
-	// Debounce updates to the local quantity value, and update the store
-	// and server when value stablises.
-	// Note that other dependent values in the row (e.g. total) are updated
-	// independently (after debounce).
-	const [ debouncedQuantity ] = useDebounce( localQuantity, 400 );
-	useEffect( () => {
-		if ( debouncedQuantity !== localQuantity ) {
-			changeQuantity( debouncedQuantity );
-		}
-	}, [ debouncedQuantity ] );
 
 	return (
 		<tr className="wc-block-cart-items__row">
@@ -83,9 +71,9 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 			<td className="wc-block-cart-item__quantity">
 				<QuantitySelector
 					disabled={ itemQuantityDisabled }
-					quantity={ localQuantity }
+					quantity={ quantity }
 					maximum={ lineItem.sold_individually ? 1 : undefined }
-					onChange={ updateLocalQuantity }
+					onChange={ changeQuantity }
 					itemName={ name }
 				/>
 				<button
