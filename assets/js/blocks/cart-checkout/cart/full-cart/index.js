@@ -103,8 +103,12 @@ const Cart = ( {
 	shippingRates,
 	isLoading = false,
 } ) => {
-	const { updateShippingAddress, shippingRatesLoading } = useShippingRates();
-	const shippingAddress = shippingRates[ 0 ]?.destination;
+	const defaultAddressFields = [ 'country', 'state', 'city', 'postcode' ];
+	const {
+		shippingAddress,
+		setShippingAddress,
+		shippingRatesLoading,
+	} = useShippingRates( defaultAddressFields );
 	const {
 		applyCoupon,
 		removeCoupon,
@@ -161,7 +165,7 @@ const Cart = ( {
 							<TotalsShippingItem
 								currency={ totalsCurrency }
 								shippingAddress={ shippingAddress }
-								updateShippingAddress={ updateShippingAddress }
+								updateShippingAddress={ setShippingAddress }
 								values={ cartTotals }
 							/>
 						) }
