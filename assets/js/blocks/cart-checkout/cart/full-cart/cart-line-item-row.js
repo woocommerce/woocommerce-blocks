@@ -28,18 +28,15 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 		permalink = '',
 		images = [],
 		variation = [],
-		quantity: initialQuantity = 1,
 		prices = {},
 	} = lineItem;
 
-	// Strange to pass in the quantity to the cart item hook;
-	// it should know it?
 	const {
 		quantity,
 		changeQuantity,
 		removeItem,
 		isPending: itemQuantityDisabled,
-	} = useStoreCartItem( key, initialQuantity );
+	} = useStoreCartItem( key );
 
 	const currency = getCurrency();
 	const regularPrice = parseInt( prices.regular_price, 10 ) * quantity;
@@ -124,7 +121,6 @@ CartLineItemRow.propTypes = {
 		name: PropTypes.string.isRequired,
 		summary: PropTypes.string.isRequired,
 		images: PropTypes.array.isRequired,
-		quantity: PropTypes.number.isRequired,
 		low_stock_remaining: PropTypes.number,
 		sold_individually: PropTypes.bool,
 		variation: PropTypes.arrayOf(
