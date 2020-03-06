@@ -45,7 +45,7 @@ class ReserveStockTests extends TestCase {
 	}
 
 	/**
-	 * Test that stock is reserved for draft orders.
+	 * Test that trying to reserve stock too much throws an exception.
 	 *
 	 * @expectedException Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ReserveStockException
 	 */
