@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 
 const postcodeBeforeCity = {
 	city: {
-		index: 8,
+		index: 9,
 	},
 	postcode: {
 		index: 7,

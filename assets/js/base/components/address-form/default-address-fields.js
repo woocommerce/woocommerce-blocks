@@ -84,17 +84,6 @@ const defaultAddressFields = {
 		hidden: false,
 		index: 7,
 	},
-	postcode: {
-		label: __( 'Postal code', 'woo-gutenberg-products-block' ),
-		optionalLabel: __(
-			'Postal code (optional)',
-			'woo-gutenberg-products-block'
-		),
-		autocomplete: 'postal-code',
-		required: true,
-		hidden: false,
-		index: 8,
-	},
 	state: {
 		label: __( 'State/County', 'woo-gutenberg-products-block' ),
 		optionalLabel: __(
@@ -102,6 +91,17 @@ const defaultAddressFields = {
 			'woo-gutenberg-products-block'
 		),
 		autocomplete: 'address-level1',
+		required: true,
+		hidden: false,
+		index: 8,
+	},
+	postcode: {
+		label: __( 'Postal code', 'woo-gutenberg-products-block' ),
+		optionalLabel: __(
+			'Postal code (optional)',
+			'woo-gutenberg-products-block'
+		),
+		autocomplete: 'postal-code',
 		required: true,
 		hidden: false,
 		index: 9,
