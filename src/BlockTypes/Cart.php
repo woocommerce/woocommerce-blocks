@@ -39,6 +39,20 @@ class Cart extends AbstractBlock {
 	}
 
 	/**
+	 * Given an array of country keys and their states, order the list of states alphabetically.
+	 *
+	 * @param array $states Array containing the states per each country key.
+	 * @return array Same array but with states ordered alphabetically.
+	 */
+	private function sort_states( $states ) {
+		foreach ( $states as $country_key => $states_per_country ) {
+			uasort( $states_per_country, 'wc_ascii_uasort_comparison' );
+			$states[ $country_key ] = $states_per_country;
+		}
+		return $states;
+	}
+
+	/**
 	 * Append frontend scripts when rendering the Cart block.
 	 *
 	 * @param array  $attributes Block attributes. Default empty array.
@@ -53,7 +67,7 @@ class Cart extends AbstractBlock {
 			$data_registry->add( 'shippingCountries', WC()->countries->get_shipping_countries() );
 		}
 		if ( ! $data_registry->exists( 'shippingStates' ) ) {
-			$data_registry->add( 'shippingStates', WC()->countries->get_shipping_country_states() );
+			$data_registry->add( 'shippingStates', $this->sort_states( WC()->countries->get_shipping_country_states() ) );
 		}
 		if ( ! $data_registry->exists( 'countryLocale' ) ) {
 			$data_registry->add( 'countryLocale', WC()->countries->get_country_locale() );

@@ -40,6 +40,20 @@ class Checkout extends AbstractBlock {
 	}
 
 	/**
+	 * Given an array of country keys and their states, order the list of states alphabetically.
+	 *
+	 * @param array $states Array containing the states per each country key.
+	 * @return array Same array but with states ordered alphabetically.
+	 */
+	private function sort_states( $states ) {
+		foreach ( $states as $country_key => $states_per_country ) {
+			uasort( $states_per_country, 'wc_ascii_uasort_comparison' );
+			$states[ $country_key ] = $states_per_country;
+		}
+		return $states;
+	}
+
+	/**
 	 * Append frontend scripts when rendering the block.
 	 *
 	 * @param array  $attributes Block attributes. Default empty array.
@@ -57,10 +71,10 @@ class Checkout extends AbstractBlock {
 			$data_registry->add( 'shippingCountries', WC()->countries->get_shipping_countries() );
 		}
 		if ( ! $data_registry->exists( 'allowedStates' ) ) {
-			$data_registry->add( 'allowedStates', WC()->countries->get_allowed_country_states() );
+			$data_registry->add( 'allowedStates', $this->sort_states( WC()->countries->get_allowed_country_states() ) );
 		}
 		if ( ! $data_registry->exists( 'shippingStates' ) ) {
-			$data_registry->add( 'shippingStates', WC()->countries->get_shipping_country_states() );
+			$data_registry->add( 'shippingStates', $this->sort_states( WC()->countries->get_shipping_country_states() ) );
 		}
 		if ( function_exists( 'get_current_screen' ) ) {
 			$screen = get_current_screen();
