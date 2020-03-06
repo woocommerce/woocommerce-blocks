@@ -238,8 +238,6 @@ export function* changeCartItemQuantity( cartItemKey, quantity ) {
 	} catch ( error ) {
 		yield receiveError( error );
 	}
-
-	yield itemQuantityPending( cartItemKey, false );
 }
 
 /**
