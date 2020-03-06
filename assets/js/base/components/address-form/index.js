@@ -12,46 +12,19 @@ import {
 	BillingStateInput,
 	ShippingStateInput,
 } from '@woocommerce/base-components/state-input';
-import {
-	COUNTRY_LOCALE,
-	DEFAULT_ADDRESS_FIELDS,
-} from '@woocommerce/block-settings';
+import { COUNTRY_LOCALE } from '@woocommerce/block-settings';
 
-export const defaultFieldConfig = {
-	first_name: {
-		autocomplete: 'given-name',
-	},
-	last_name: {
-		autocomplete: 'family-name',
-	},
-	company: {
-		autocomplete: 'organization',
-	},
-	address_1: {
-		autocomplete: 'address-line1',
-	},
-	address_2: {
-		autocomplete: 'address-line2',
-	},
-	country: {
-		autocomplete: 'country',
-		priority: 65,
-		required: true,
-	},
-	city: {
-		autocomplete: 'address-level2',
-	},
-	postcode: {
-		autocomplete: 'postal-code',
-	},
-	state: {
-		autocomplete: 'address-level1',
-	},
-};
+/**
+ * Internal dependencies
+ */
+import defaultAddressFields from './default-address-fields';
 
+/**
+ * Checkout address form.
+ */
 const AddressForm = ( {
-	fields = Object.keys( defaultFieldConfig ),
-	fieldConfig = defaultFieldConfig,
+	fields = Object.keys( defaultAddressFields ),
+	fieldConfig = defaultAddressFields,
 	onChange,
 	type = 'shipping',
 	values,
@@ -59,12 +32,12 @@ const AddressForm = ( {
 	const countryLocale = COUNTRY_LOCALE[ values.country ] || {};
 	const addressFields = fields.map( ( field ) => ( {
 		key: field,
-		...DEFAULT_ADDRESS_FIELDS[ field ],
+		...defaultAddressFields[ field ],
 		...countryLocale[ field ],
 		...fieldConfig[ field ],
 	} ) );
 	const sortedAddressFields = addressFields.sort(
-		( a, b ) => a.priority - b.priority
+		( a, b ) => a.index - b.index
 	);
 
 	const optionalText = __( '(optional)', 'woo-gutenberg-products-block' );
@@ -157,7 +130,7 @@ AddressForm.propTypes = {
 	onChange: PropTypes.func.isRequired,
 	values: PropTypes.object.isRequired,
 	fields: PropTypes.arrayOf(
-		PropTypes.oneOf( Object.keys( defaultFieldConfig ) )
+		PropTypes.oneOf( Object.keys( defaultAddressFields ) )
 	),
 	fieldConfig: PropTypes.object,
 	type: PropTypes.oneOf( [ 'billing', 'shipping' ] ),

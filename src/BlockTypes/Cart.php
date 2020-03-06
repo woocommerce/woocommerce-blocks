@@ -58,9 +58,6 @@ class Cart extends AbstractBlock {
 		if ( ! $data_registry->exists( 'countryLocale' ) ) {
 			$data_registry->add( 'countryLocale', WC()->countries->get_country_locale() );
 		}
-		if ( ! $data_registry->exists( 'defaultAddressFields' ) ) {
-			$data_registry->add( 'defaultAddressFields', WC()->countries->get_default_address_fields() );
-		}
 		if ( ! $data_registry->exists( 'cartData' ) ) {
 			$data_registry->add( 'cartData', WC()->api->get_endpoint_data( '/wc/store/cart' ) );
 		}
