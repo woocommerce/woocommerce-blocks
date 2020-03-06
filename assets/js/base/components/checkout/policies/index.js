@@ -8,6 +8,7 @@ import {
 	PRIVACY_PAGE_NAME,
 	TERMS_PAGE_NAME,
 } from '@woocommerce/block-settings';
+import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Internal dependencies
@@ -24,11 +25,12 @@ const Policies = () => {
 						target="_blank"
 						rel="noopener noreferrer"
 					>
-						{ PRIVACY_PAGE_NAME ||
-							__(
-								'Privacy Policy',
-								'woo-gutenberg-products-block'
-							) }
+						{ PRIVACY_PAGE_NAME
+							? decodeEntities( PRIVACY_PAGE_NAME )
+							: __(
+									'Privacy Policy',
+									'woo-gutenberg-products-block'
+							  ) }
 					</a>
 				</li>
 			) }
@@ -39,11 +41,12 @@ const Policies = () => {
 						target="_blank"
 						rel="noopener noreferrer"
 					>
-						{ TERMS_PAGE_NAME ||
-							__(
-								'Terms and Conditions',
-								'woo-gutenberg-products-block'
-							) }
+						{ TERMS_PAGE_NAME
+							? decodeEntities( TERMS_PAGE_NAME )
+							: __(
+									'Terms and Conditions',
+									'woo-gutenberg-products-block'
+							  ) }
 					</a>
 				</li>
 			) }
