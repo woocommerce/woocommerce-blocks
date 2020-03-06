@@ -56,8 +56,9 @@ export const useShippingRates = ( addressFields ) => {
 		}
 	}, [ debouncedShippingAddress ] );
 	return {
+		shippingRates,
 		shippingAddress,
-		shippingRatesLoading,
 		setShippingAddress,
+		shippingRatesLoading,
 	};
 };

@@ -19,11 +19,13 @@ describe( 'useShippingRates', () => {
 	let registry, mocks, renderer;
 	const getProps = ( testRenderer ) => {
 		const {
-			shippingRates,
+			shippingAddress,
+			setShippingAddress,
 			shippingRatesLoading,
 		} = testRenderer.root.findByType( 'div' ).props;
 		return {
-			shippingRates,
+			shippingAddress,
+			setShippingAddress,
 			shippingRatesLoading,
 		};
 	};
@@ -34,8 +36,14 @@ describe( 'useShippingRates', () => {
 		</RegistryProvider>
 	);
 
+	const defaultFieldsConfig = {
+		country: '',
+		state: '',
+		city: '',
+		postcode: '',
+	};
 	const getTestComponent = () => () => {
-		const items = useShippingRates();
+		const items = useShippingRates( defaultFieldsConfig );
 		return <div { ...items } />;
 	};
 
@@ -45,7 +53,16 @@ describe( 'useShippingRates', () => {
 		itemsCount: 123,
 		itemsWeight: 123,
 		needsShipping: false,
-		shippingRates: { foo: 'bar' },
+		shippingRates: [
+			{
+				destination: {
+					country: '',
+					state: '',
+					city: '',
+					postcode: '',
+				},
+			},
+		],
 	};
 
 	const setUpMocks = () => {
@@ -70,22 +87,25 @@ describe( 'useShippingRates', () => {
 		renderer = null;
 		setUpMocks();
 	} );
-	it( 'should return expected shipping rates provided by the store', () => {
+	it( 'should return expected address provided by the store', () => {
 		const TestComponent = getTestComponent();
 		act( () => {
 			renderer = TestRenderer.create(
 				getWrappedComponents( TestComponent )
 			);
 		} );
-		const { shippingRates } = getProps( renderer );
-		expect( shippingRates ).toBe( mockCartData.shippingRates );
+
+		const { shippingAddress } = getProps( renderer );
+		expect( shippingAddress ).toStrictEqual(
+			mockCartData.shippingRates[ 0 ].destination
+		);
 		// rerender
 		act( () => {
 			renderer.update( getWrappedComponents( TestComponent ) );
 		} );
-		// re-render should result in same shippingRates object.
-		const { shippingRates: newShippingRates } = getProps( renderer );
-		expect( newShippingRates ).toBe( shippingRates );
+		// re-render should result in same shippingAddress object.
+		const { shippingAddress: newShippingAddress } = getProps( renderer );
+		expect( newShippingAddress ).toStrictEqual( shippingAddress );
 		renderer.unmount();
 	} );
 } );
