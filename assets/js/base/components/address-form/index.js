@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import TextInput from '@woocommerce/base-components/text-input';
 import {
@@ -40,36 +39,28 @@ const AddressForm = ( {
 		( a, b ) => a.index - b.index
 	);
 
-	const optionalText = __( '(optional)', 'woo-gutenberg-products-block' );
-
 	return (
 		<div className="wc-block-address-form">
-			{ sortedAddressFields.map( ( addressField ) => {
-				if ( addressField.hidden ) {
+			{ sortedAddressFields.map( ( field ) => {
+				if ( field.hidden ) {
 					return null;
 				}
 
-				const requiredField = addressField.required;
-				let fieldLabel = addressField.label || addressField.placeholder;
-
-				if (
-					! addressField.required &&
-					! fieldLabel.includes( optionalText )
-				) {
-					fieldLabel = fieldLabel + ' ' + optionalText;
-				}
-
-				if ( addressField.key === 'country' ) {
+				if ( field.key === 'country' ) {
 					const Tag =
 						type === 'shipping'
 							? ShippingCountryInput
 							: BillingCountryInput;
 					return (
 						<Tag
-							key={ addressField.key }
-							label={ fieldLabel }
+							key={ field.key }
+							label={
+								field.required
+									? field.label
+									: field.optionalLabel
+							}
 							value={ values.country }
-							autoComplete={ addressField.autocomplete }
+							autoComplete={ field.autocomplete }
 							onChange={ ( newValue ) =>
 								onChange( {
 									...values,
@@ -77,48 +68,54 @@ const AddressForm = ( {
 									state: '',
 								} )
 							}
-							required={ requiredField }
+							required={ field.required }
 						/>
 					);
 				}
 
-				if ( addressField.key === 'state' ) {
+				if ( field.key === 'state' ) {
 					const Tag =
 						type === 'shipping'
 							? ShippingStateInput
 							: BillingStateInput;
 					return (
 						<Tag
-							key={ addressField.key }
+							key={ field.key }
 							country={ values.country }
-							label={ fieldLabel }
+							label={
+								field.required
+									? field.label
+									: field.optionalLabel
+							}
 							value={ values.state }
-							autoComplete={ addressField.autocomplete }
+							autoComplete={ field.autocomplete }
 							onChange={ ( newValue ) =>
 								onChange( {
 									...values,
 									state: newValue,
 								} )
 							}
-							required={ requiredField }
+							required={ field.required }
 						/>
 					);
 				}
 
 				return (
 					<TextInput
-						key={ addressField.key }
-						className={ `wc-block-address-form__${ addressField.key }` }
-						label={ fieldLabel }
-						value={ values[ addressField.key ] }
-						autoComplete={ addressField.autocomplete }
+						key={ field.key }
+						className={ `wc-block-address-form__${ field.key }` }
+						label={
+							field.required ? field.label : field.optionalLabel
+						}
+						value={ values[ field.key ] }
+						autoComplete={ field.autocomplete }
 						onChange={ ( newValue ) =>
 							onChange( {
 								...values,
-								[ addressField.key ]: newValue,
+								[ field.key ]: newValue,
 							} )
 						}
-						required={ requiredField }
+						required={ field.required }
 					/>
 				);
 			} ) }
