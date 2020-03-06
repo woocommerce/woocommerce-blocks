@@ -18,6 +18,13 @@ const optionalState = {
 	},
 };
 
+const hiddenState = {
+	state: {
+		required: false,
+		hidden: true,
+	},
+};
+
 const hiddenPostcode = {
 	postcode: {
 		required: false,
@@ -30,7 +37,7 @@ const countryAddressFields = {
 		...hiddenPostcode,
 		...optionalState,
 	},
-	AF: optionalState,
+	AF: hiddenState,
 	AO: {
 		...hiddenPostcode,
 		state: {
@@ -43,7 +50,7 @@ const countryAddressFields = {
 	},
 	AT: {
 		...postcodeBeforeCity,
-		...optionalState,
+		...hiddenState,
 	},
 	AU: {
 		city: {
@@ -70,7 +77,7 @@ const countryAddressFields = {
 	},
 	AX: {
 		...postcodeBeforeCity,
-		...optionalState,
+		...hiddenState,
 	},
 	BD: {
 		postcode: {
@@ -86,22 +93,15 @@ const countryAddressFields = {
 	},
 	BE: {
 		...postcodeBeforeCity,
-		state: {
-			label: __( 'Province', 'woo-gutenberg-products-block' ),
-			optionalLabel: __(
-				'Province (optional)',
-				'woo-gutenberg-products-block'
-			),
-			required: false,
-		},
+		...hiddenState,
 	},
 	BH: {
 		postcode: {
 			required: false,
 		},
-		...optionalState,
+		...hiddenState,
 	},
-	BI: optionalState,
+	BI: hiddenState,
 	BO: hiddenPostcode,
 	BS: hiddenPostcode,
 	CA: {
@@ -153,18 +153,18 @@ const countryAddressFields = {
 			required: false,
 		},
 	},
-	CZ: optionalState,
+	CZ: hiddenState,
 	DE: {
 		...postcodeBeforeCity,
-		...optionalState,
+		...hiddenState,
 	},
 	DK: {
 		...postcodeBeforeCity,
-		...optionalState,
+		...hiddenState,
 	},
 	EE: {
 		...postcodeBeforeCity,
-		...optionalState,
+		...hiddenState,
 	},
 	ES: {
 		...postcodeBeforeCity,
@@ -178,11 +178,11 @@ const countryAddressFields = {
 	},
 	FI: {
 		...postcodeBeforeCity,
-		...optionalState,
+		...hiddenState,
 	},
 	FR: {
 		...postcodeBeforeCity,
-		...optionalState,
+		...hiddenState,
 	},
 	GB: {
 		postcode: {
@@ -200,8 +200,8 @@ const countryAddressFields = {
 			),
 		},
 	},
-	GP: optionalState,
-	GF: optionalState,
+	GP: hiddenState,
+	GF: hiddenState,
 	GR: optionalState,
 	HK: {
 		postcode: {
@@ -259,13 +259,13 @@ const countryAddressFields = {
 	},
 	IS: {
 		...postcodeBeforeCity,
-		...optionalState,
+		...hiddenState,
 	},
 	IL: {
 		...postcodeBeforeCity,
-		...optionalState,
+		...hiddenState,
 	},
-	IM: optionalState,
+	IM: hiddenState,
 	IT: {
 		...postcodeBeforeCity,
 		state: {
@@ -304,8 +304,22 @@ const countryAddressFields = {
 			index: 5,
 		},
 	},
-	KR: optionalState,
-	KW: optionalState,
+	KR: hiddenState,
+	KW: hiddenState,
+	LB: hiddenState,
+	LI: {
+		...postcodeBeforeCity,
+		state: {
+			label: __( 'Municipality', 'woo-gutenberg-products-block' ),
+			optionalLabel: __(
+				'Municipality (optional)',
+				'woo-gutenberg-products-block'
+			),
+			required: false,
+		},
+	},
+	LK: hiddenState,
+	LU: hiddenState,
 	LV: {
 		state: {
 			label: __( 'Municipality', 'woo-gutenberg-products-block' ),
@@ -316,9 +330,8 @@ const countryAddressFields = {
 			required: false,
 		},
 	},
-	LB: optionalState,
-	MQ: optionalState,
-	MT: optionalState,
+	MQ: hiddenState,
+	MT: hiddenState,
 	MZ: {
 		...hiddenPostcode,
 		state: {
@@ -331,17 +344,26 @@ const countryAddressFields = {
 	},
 	NL: {
 		...postcodeBeforeCity,
-		state: {
-			label: __( 'Province', 'woo-gutenberg-products-block' ),
-			optionalLabel: __(
-				'Province (optional)',
-				'woo-gutenberg-products-block'
-			),
-			required: false,
-		},
+		...hiddenState,
 	},
 	NG: {
 		...hiddenPostcode,
+		state: {
+			label: __( 'State', 'woo-gutenberg-products-block' ),
+			optionalLabel: __(
+				'State (optional)',
+				'woo-gutenberg-products-block'
+			),
+		},
+	},
+	NO: {
+		...postcodeBeforeCity,
+		...hiddenState,
+	},
+	NP: {
+		postcode: {
+			required: false,
+		},
 		state: {
 			label: __( 'State', 'woo-gutenberg-products-block' ),
 			optionalLabel: __(
@@ -366,28 +388,12 @@ const countryAddressFields = {
 			),
 		},
 	},
-	NO: {
-		...postcodeBeforeCity,
-		...optionalState,
-	},
-	NP: {
-		postcode: {
-			required: false,
-		},
-		state: {
-			label: __( 'State', 'woo-gutenberg-products-block' ),
-			optionalLabel: __(
-				'State (optional)',
-				'woo-gutenberg-products-block'
-			),
-		},
-	},
 	PL: {
 		...postcodeBeforeCity,
-		...optionalState,
+		...hiddenState,
 	},
-	PT: optionalState,
-	RE: optionalState,
+	PT: hiddenState,
+	RE: hiddenState,
 	RO: {
 		state: {
 			label: __( 'County', 'woo-gutenberg-products-block' ),
@@ -397,31 +403,24 @@ const countryAddressFields = {
 			),
 		},
 	},
-	RS: {
-		state: {
-			required: false,
-			hidden: true,
-		},
-	},
+	RS: hiddenState,
 	SE: {
 		...postcodeBeforeCity,
-		...optionalState,
+		...hiddenState,
 	},
 	SG: {
 		city: {
 			required: false,
 		},
-		state: {
-			required: false,
-		},
+		...hiddenState,
 	},
 	SK: {
 		...postcodeBeforeCity,
-		...optionalState,
+		...hiddenState,
 	},
 	SI: {
 		...postcodeBeforeCity,
-		...optionalState,
+		...hiddenState,
 	},
 	SR: {
 		...hiddenPostcode,
@@ -436,19 +435,6 @@ const countryAddressFields = {
 			),
 		},
 	},
-	LI: {
-		...postcodeBeforeCity,
-		state: {
-			label: __( 'Municipality', 'woo-gutenberg-products-block' ),
-			optionalLabel: __(
-				'Municipality (optional)',
-				'woo-gutenberg-products-block'
-			),
-			required: false,
-		},
-	},
-	LK: optionalState,
-	LU: optionalState,
 	MD: {
 		state: {
 			label: __(
@@ -512,13 +498,10 @@ const countryAddressFields = {
 			index: 7,
 			required: false,
 		},
-		state: {
-			required: false,
-			hidden: true,
-		},
+		...hiddenState,
 	},
 	WS: hiddenPostcode,
-	YT: optionalState,
+	YT: hiddenState,
 	ZA: {
 		state: {
 			label: __( 'Province', 'woo-gutenberg-products-block' ),
