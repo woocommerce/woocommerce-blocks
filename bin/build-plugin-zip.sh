@@ -13,13 +13,15 @@ print_usage() {
 	echo "options:"
 	echo "-h          show brief help"
 	echo "-d          build plugin in development mode"
+	echo "-z          build zip only on current environment"
 }
 
 # get args
-while getopts 'hd' flag; do
+while getopts 'hdz' flag; do
 	case "${flag}" in
 		h) print_usage ;;
 		d) TYPE='DEV' ;;
+		z) TYPE='ZIP_ONLY' ;;
 		*)
 			print_usage
 			exit 1
@@ -106,7 +108,18 @@ fi
 # Run the build.
 npm list webpack
 if [ $TYPE = 'DEV' ]; then
+	status "Installing dependencies... 👷‍♀️"
+	status "==========================="
+	composer install
+	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm install
+	status "==========================="
 	status "Generating development build... 👷‍♀️"
+	status "==========================="
+	npm list webpack
+	npm run dev
+	status "==========================="
+elif [ $TYPE = 'ZIP_ONLY' ]; then
+	status "Using existing environment ...👷‍♀️"
 	status "==========================="
 else
 	status "Installing dependencies... 📦"
@@ -119,7 +132,6 @@ else
 	npm run build
 	status "==========================="
 fi
-npm list webpack
 
 # Generate the plugin zip file.
 status "Creating archive... 🎁"
