@@ -24,29 +24,19 @@ import { useStoreCart } from './use-store-cart';
  */
 export const useStoreCartItem = ( cartItemKey ) => {
 	const { cartItems, cartIsLoading } = useStoreCart();
-	const cartItem = cartItems.find( ( item ) => item.key === cartItemKey );
-
+	const [ cartItem, setCartItem ] = useState( {
+		key: '',
+		isLoading: true,
+		cartData: {},
+		quantity: 0,
+		isPending: false,
+		changeQuantity: () => void null,
+		removeItem: () => void null,
+	} );
 	// Store quantity in hook state. This is used to keep the UI
 	// updated while server request is updated.
-	const [ quantity, changeQuantity ] = useState( cartItem?.quantity );
+	const [ quantity, changeQuantity ] = useState( cartItem.quantity );
 	const [ debouncedQuantity ] = useDebounce( quantity, 400 );
-
-	const { removeItemFromCart, changeCartItemQuantity } = useDispatch(
-		storeKey
-	);
-	const asyncChangeQuantity = ( newQuantity ) => {
-		changeCartItemQuantity( cartItemKey, newQuantity );
-	};
-	const removeItem = () => {
-		removeItemFromCart( cartItemKey );
-	};
-
-	// Observe debounced quantity value, fire action to update server when it changes.
-	useEffect( () => {
-		if ( cartItem?.quantity === debouncedQuantity ) return;
-		asyncChangeQuantity( debouncedQuantity );
-	}, [ debouncedQuantity ] );
-
 	const isPending = useSelect(
 		( select ) => {
 			const store = select( storeKey );
@@ -54,6 +44,33 @@ export const useStoreCartItem = ( cartItemKey ) => {
 		},
 		[ cartItemKey ]
 	);
+	useEffect( () => {
+		if ( ! cartIsLoading ) {
+			const foundCartItem = cartItems.find(
+				( item ) => item.key === cartItemKey
+			);
+			if ( foundCartItem ) {
+				setCartItem( foundCartItem );
+			}
+		}
+	}, [ cartItems, cartIsLoading, cartItemKey ] );
+
+	const { removeItemFromCart, changeCartItemQuantity } = useDispatch(
+		storeKey
+	);
+	const removeItem = () => {
+		removeItemFromCart( cartItemKey );
+	};
+
+	// Observe debounced quantity value, fire action to update server when it
+	// changes.
+	useEffect( () => {
+		if ( debouncedQuantity === 0 ) {
+			changeQuantity( cartItem.quantity );
+			return;
+		}
+		changeCartItemQuantity( cartItemKey, debouncedQuantity );
+	}, [ debouncedQuantity, cartItemKey, cartItem.quantity ] );
 
 	return {
 		isPending,
