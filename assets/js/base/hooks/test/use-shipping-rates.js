@@ -19,11 +19,13 @@ describe( 'useShippingRates', () => {
 	let registry, mocks, renderer;
 	const getProps = ( testRenderer ) => {
 		const {
+			shippingRates,
 			shippingAddress,
 			setShippingAddress,
 			shippingRatesLoading,
 		} = testRenderer.root.findByType( 'div' ).props;
 		return {
+			shippingRates,
 			shippingAddress,
 			setShippingAddress,
 			shippingRatesLoading,
@@ -36,12 +38,7 @@ describe( 'useShippingRates', () => {
 		</RegistryProvider>
 	);
 
-	const defaultFieldsConfig = {
-		country: '',
-		state: '',
-		city: '',
-		postcode: '',
-	};
+	const defaultFieldsConfig = [ 'country', 'state', 'city', 'postcode' ];
 	const getTestComponent = () => () => {
 		const items = useShippingRates( defaultFieldsConfig );
 		return <div { ...items } />;
@@ -55,6 +52,7 @@ describe( 'useShippingRates', () => {
 		needsShipping: false,
 		shippingRates: [
 			{
+				shippingRates: [ { foo: 'bar' } ],
 				destination: {
 					country: '',
 					state: '',
@@ -106,6 +104,26 @@ describe( 'useShippingRates', () => {
 		// re-render should result in same shippingAddress object.
 		const { shippingAddress: newShippingAddress } = getProps( renderer );
 		expect( newShippingAddress ).toStrictEqual( shippingAddress );
+		renderer.unmount();
+	} );
+
+	it( 'should return expected shipping rates provided by the store', () => {
+		const TestComponent = getTestComponent();
+		act( () => {
+			renderer = TestRenderer.create(
+				getWrappedComponents( TestComponent )
+			);
+		} );
+
+		const { shippingRates } = getProps( renderer );
+		expect( shippingRates ).toStrictEqual( mockCartData.shippingRates );
+		// rerender
+		act( () => {
+			renderer.update( getWrappedComponents( TestComponent ) );
+		} );
+		// re-render should result in same shippingAddress object.
+		const { shippingRates: newShippingRates } = getProps( renderer );
+		expect( newShippingRates ).toStrictEqual( shippingRates );
 		renderer.unmount();
 	} );
 } );
