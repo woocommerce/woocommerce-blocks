@@ -16,7 +16,7 @@ import { pluckAddress } from '../utils';
  * Given a a set of default fields keys, this will handle shipping form state and load
  * new rates when certain fields change.
  *
- * @param addressFields an object containing default fields keys.
+ * @param {Array} addressFieldsKeys an array containing default fields keys.
  *
  * @return {Object} This hook will return an object with three properties:
  *                 - {Boolean} shippingRatesLoading A boolean indicating whether the shipping
@@ -25,8 +25,11 @@ import { pluckAddress } from '../utils';
  *                   update shipping address and dispatches async rate fetching.
  *                 - {Object} shippingAddress       An object containing shipping address.
  */
-export const useShippingRates = ( addressFields ) => {
+export const useShippingRates = ( addressFieldsKeys ) => {
 	const { shippingRates } = useStoreCart();
+	const addressFields = Object.fromEntries(
+		addressFieldsKeys.map( ( key ) => [ key, '' ] )
+	);
 	const derivedAddress = shippingRates[ 0 ]?.destination;
 	const initialAddress = { ...addressFields, ...derivedAddress };
 	const shippingAddressReducer = ( state, address ) => ( {

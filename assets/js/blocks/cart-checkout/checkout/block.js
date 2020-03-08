@@ -76,11 +76,7 @@ const Block = ( { attributes, isEditor = false, shippingRates = [] } ) => {
 		shippingRatesLoading,
 		shippingAddress: shippingFields,
 		setShippingAddress: setShippingFields,
-	} = useShippingRates(
-		Object.fromEntries(
-			Object.entries( addressFields ).map( ( [ key ] ) => [ key, '' ] )
-		)
-	);
+	} = useShippingRates( Object.keys( addressFields ) );
 
 	return (
 		<CheckoutProvider>
