@@ -318,7 +318,7 @@ table.wc-block-cart-items {
 
 // Mobile styles.
 @include breakpoint( "<782px" ) {
-	.wp-block-woocommerce-cart > .wc-block-cart {
+	.wc-block-cart:not(.wc-block-cart--is-loading):not(.wc-block-cart--skeleton) {
 		display: block;
 		margin: 0 0 $gap;
 		.wc-block-cart__main {
