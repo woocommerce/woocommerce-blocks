@@ -7,13 +7,17 @@ TYPE='PRODUCTION';
 
 print_usage() {
 	echo "build-plugin-zip - attempt to build a plugin"
+	echo "By default this will build a clean production build and zip archive"
+	echo "of the built plugin assets"
 	echo " "
 	echo "build-plugin-zip [arguments]"
 	echo " "
 	echo "options:"
 	echo "-h          show brief help"
 	echo "-d          build plugin in development mode"
-	echo "-z          build zip only on current environment"
+	echo "-z          build zip only, skipping build commands (so it uses files"
+	echo "            existing on disk already)"
+	echo " "
 }
 
 # get args
@@ -119,7 +123,7 @@ if [ $TYPE = 'DEV' ]; then
 	npm run dev
 	status "==========================="
 elif [ $TYPE = 'ZIP_ONLY' ]; then
-	status "Using existing environment ...👷‍♀️"
+	status "Skipping build commands - using current built assets on disk for built archive...👷‍♀️"
 	status "==========================="
 else
 	status "Installing dependencies... 📦"
