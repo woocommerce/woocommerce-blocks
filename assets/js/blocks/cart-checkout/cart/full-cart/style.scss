@@ -414,6 +414,7 @@ table.wc-block-cart-items {
 		padding: $gap;
 		position: fixed;
 		width: 100%;
+		z-index: 1;
 	}
 	// temporary hack so we can put checkout button at bottom on mobile
 	.storefront-handheld-footer-bar {
