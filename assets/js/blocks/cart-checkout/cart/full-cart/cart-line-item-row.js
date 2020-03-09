@@ -63,15 +63,7 @@ const CartLineItemRow = ( { lineItem } ) => {
 		isPending: itemQuantityDisabled,
 	} = useStoreCartItemQuantity( lineItem );
 
-	const currency = getCurrency( {
-		currency_code: prices.currency_code,
-		currency_minor_unit: prices.currency_minor_unit,
-		currency_symbol: prices.currency_symbol,
-		currency_prefix: prices.currency_prefix,
-		currency_suffix: prices.currency_suffix,
-		currency_decimal_separator: prices.currency_decimal_separator,
-		currency_thousand_separator: prices.currency_thousand_separator,
-	} );
+	const currency = getCurrency( prices );
 	const regularPrice = parseInt( prices.regular_price, 10 ) * quantity;
 	const purchasePrice = parseInt( prices.price, 10 ) * quantity;
 	const saleAmount = regularPrice - purchasePrice;
