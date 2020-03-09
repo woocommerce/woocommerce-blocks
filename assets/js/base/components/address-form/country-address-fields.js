@@ -1,8 +1,17 @@
+/** @typedef { import('@woocommerce/type-defs/address-fields').CountryAddressFields } CountryAddressFields */
+/** @typedef { import('@woocommerce/type-defs/address-fields').AddressFieldKey } AddressFieldKey */
+/** @typedef { import('@woocommerce/type-defs/address-fields').AddressField } AddressField */
+
 /**
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
 
+/**
+ * Used to render postcode before the city field.
+ *
+ * @type {Object <AddressFieldKey, AddressField>}
+ */
 const postcodeBeforeCity = {
 	city: {
 		index: 9,
@@ -12,12 +21,22 @@ const postcodeBeforeCity = {
 	},
 };
 
+/**
+ * Used to make the state field optional.
+ *
+ * @type {Object <AddressFieldKey, AddressField>}
+ */
 const optionalState = {
 	state: {
 		required: false,
 	},
 };
 
+/**
+ * Used to hide the state field.
+ *
+ * @type {Object <AddressFieldKey, AddressField>}
+ */
 const hiddenState = {
 	state: {
 		required: false,
@@ -25,6 +44,11 @@ const hiddenState = {
 	},
 };
 
+/**
+ * Used to hide the postcode field.
+ *
+ * @type {Object <AddressFieldKey, AddressField>}
+ */
 const hiddenPostcode = {
 	postcode: {
 		required: false,
@@ -32,6 +56,11 @@ const hiddenPostcode = {
 	},
 };
 
+/**
+ * Country specific address field properties.
+ *
+ * @type {CountryAddressFields}
+ */
 const countryAddressFields = {
 	AE: {
 		...hiddenPostcode,

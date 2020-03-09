@@ -1,12 +1,24 @@
+/** @typedef { import('@woocommerce/type-defs/address-fields').AddressField } AddressField */
+
 /**
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
 
 /**
- * Default address field names and labels.
+ * Default address field properties.
+ *
+ * @property {AddressField} first_name Customer first name.
+ * @property {AddressField} last_name  Customer last name.
+ * @property {AddressField} company    Company name.
+ * @property {AddressField} address_1  Street address.
+ * @property {AddressField} address_2  Second line of address.
+ * @property {AddressField} country    Country code.
+ * @property {AddressField} city       City name.
+ * @property {AddressField} state      State name or code.
+ * @property {AddressField} postcode   Postal code.
  */
-const defaultAddressFields = {
+const AddressFields = {
 	first_name: {
 		label: __( 'First name', 'woo-gutenberg-products-block' ),
 		optionalLabel: __(
@@ -108,4 +120,4 @@ const defaultAddressFields = {
 	},
 };
 
-export default defaultAddressFields;
+export default AddressFields;
