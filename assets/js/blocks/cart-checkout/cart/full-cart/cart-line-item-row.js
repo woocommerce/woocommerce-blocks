@@ -20,15 +20,60 @@ import ProductLowStockBadge from './product-low-stock-badge';
 /**
  * Cart line item table row component.
  */
-const CartLineItemRow = ( { lineItem = {} } ) => {
+const CartLineItemRow = ( {
+	lineItem = {
+		key: '',
+		id: 0,
+		quantity: 0,
+		name: '',
+		summary: '',
+		short_description: '',
+		sku: '',
+		remaining_stock: null,
+		low_stock_remaining: null,
+		sold_individually: false,
+		permalink: '',
+		images: [],
+		variation: [],
+		prices: {
+			currency_code: 'US',
+			currency_minor_unit: 2,
+			currency_symbol: '$',
+			currency_prefix: '$',
+			currency_suffix: '',
+			currency_decimal_separator: '.',
+			currency_thousand_separator: ',',
+			price: '0',
+			regular_price: '0',
+			sale_price: '0',
+			price_range: null,
+		},
+		totals: {
+			currency_code: 'US',
+			currency_minor_unit: 2,
+			currency_symbol: '$',
+			currency_prefix: '$',
+			currency_suffix: '',
+			currency_decimal_separator: '.',
+			currency_thousand_separator: ',',
+			line_subtotal: '0',
+			line_subtotal_tax: '0',
+			line_total: '0',
+			line_total_tax: '0',
+		},
+	},
+} ) => {
+	/**
+	 * @type {import('@woocommerce/type-defs/cart').CartItem}
+	 */
 	const {
-		key = '',
-		name = '',
-		summary = '',
-		permalink = '',
-		images = [],
-		variation = [],
-		prices = {},
+		name,
+		summary,
+		remaining_stock: remainingStock,
+		permalink,
+		images,
+		variation,
+		prices,
 	} = lineItem;
 
 	const {
@@ -36,12 +81,23 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 		changeQuantity,
 		removeItem,
 		isPending: itemQuantityDisabled,
-	} = useStoreCartItemQuantity( key );
+	} = useStoreCartItemQuantity( lineItem );
 
-	const currency = getCurrency();
+	const currency = getCurrency( {
+		currency_code: prices.currency_code,
+		currency_minor_unit: prices.currency_minor_unit,
+		currency_symbol: prices.currency_symbol,
+		currency_prefix: prices.currency_prefix,
+		currency_suffix: prices.currency_suffix,
+		currency_decimal_separator: prices.currency_decimal_separator,
+		currency_thousand_separator: prices.currency_thousand_separator,
+	} );
 	const regularPrice = parseInt( prices.regular_price, 10 ) * quantity;
 	const purchasePrice = parseInt( prices.price, 10 ) * quantity;
 	const saleAmount = regularPrice - purchasePrice;
+	let maximum = lineItem.sold_individually ? 1 : undefined;
+	// account for stock
+	maximum = ! maximum && remainingStock ? remainingStock : maximum;
 
 	return (
 		<tr className="wc-block-cart-items__row">
@@ -69,7 +125,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 				<QuantitySelector
 					disabled={ itemQuantityDisabled }
 					quantity={ quantity }
-					maximum={ lineItem.sold_individually ? 1 : undefined }
+					maximum={ maximum }
 					onChange={ changeQuantity }
 					itemName={ name }
 				/>
@@ -121,6 +177,7 @@ CartLineItemRow.propTypes = {
 		name: PropTypes.string.isRequired,
 		summary: PropTypes.string.isRequired,
 		images: PropTypes.array.isRequired,
+		remaining_stock: PropTypes.number,
 		low_stock_remaining: PropTypes.number,
 		sold_individually: PropTypes.bool,
 		variation: PropTypes.arrayOf(
