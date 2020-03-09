@@ -14,7 +14,7 @@ import {
 /**
  * Internal dependencies
  */
-import Editor from './edit';
+import edit from './edit';
 import { example } from './example';
 import './style.scss';
 
@@ -47,14 +47,7 @@ const settings = {
 		},
 	},
 
-	/**
-	 * Renders the edit view for a block.
-	 *
-	 * @param {Object} props Props to pass to block.
-	 */
-	edit( props ) {
-		return <Editor { ...props } />;
-	},
+	edit,
 
 	/**
 	 * Save the props to post content.
