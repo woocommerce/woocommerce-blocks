@@ -1,12 +1,13 @@
 /**
  * External dependencies
  */
-import { apiFetch } from '@wordpress/data-controls';
+import { apiFetch, select } from '@wordpress/data-controls';
 
 /**
  * Internal dependencies
  */
 import { ACTION_TYPES as types } from './action-types';
+import { STORE_KEY as CART_STORE_KEY } from './constants';
 
 /**
  * Returns an action object used in updating the store with the provided items
@@ -223,6 +224,11 @@ export function* removeItemFromCart( cartItemKey ) {
  * @param {number} quantity Specified (new) quantity.
  */
 export function* changeCartItemQuantity( cartItemKey, quantity ) {
+	const cartItem = yield select( CART_STORE_KEY, 'getCartItem', cartItemKey );
+
+	if ( cartItem?.quantity === quantity ) {
+		return;
+	}
 	try {
 		const cart = yield apiFetch( {
 			path: `/wc/store/cart/update-item`,
