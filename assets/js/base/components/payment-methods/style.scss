@@ -3,7 +3,6 @@
 	border: 2px solid $black;
 	border-radius: 5px;
 	padding: 10px;
-	margin-bottom: $gap-large;
 
 	.wc-block-component-express-checkout__title {
 		position: relative;
@@ -44,5 +43,25 @@
 		> li:nth-child(odd) {
 			padding-right: $gap-smaller;
 		}
+	}
+}
+.wc-block-component-express-checkout-continue-rule {
+	display: flex;
+	align-items: center;
+	text-align: center;
+	padding: 0 ($gap-large+14px);
+	margin: $gap-large 0;
+
+	&::before {
+		margin-right: 10px;
+	}
+	&::after {
+		margin-left: 10px;
+	}
+	&::before,
+	&::after {
+		content: " ";
+		flex: 1;
+		border-bottom: 1px solid $core-grey-light-600;
 	}
 }
