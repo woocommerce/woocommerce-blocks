@@ -81,7 +81,7 @@ const CheckoutEditor = ( { attributes, setAttributes } ) => {
 					) }
 					<ToggleControl
 						label={ __(
-							'Apartment, suite, unit etc',
+							'Apartment, suite, unit, etc',
 							'woo-gutenberg-products-block'
 						) }
 						checked={ showAddress2Field }
