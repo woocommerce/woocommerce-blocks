@@ -104,13 +104,13 @@
  */
 
 /**
- * @typedef {function():PaymentStatusDispatchers} PaymentStatusDispatch
+ * @typedef {function():PaymentStatusDispatchers|undefined} PaymentStatusDispatch
  */
 
 /**
  * @typedef {Object} PaymentMethodDataContext
  *
- * @property {PaymentStatusDispatch}     setPaymentStatus       Sets the
+ * @property {PaymentStatusDispatch}     setPaymentStatus        Sets the
  *                                                               payment status
  *                                                               for the payment
  *                                                               method.
