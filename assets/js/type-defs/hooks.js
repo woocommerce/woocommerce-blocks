@@ -38,7 +38,6 @@
  * @property {Function} changeQuantity  Callback for changing quantity of item
  *                                      in cart.
  * @property {Function} removeItem      Callback for removing a cart item.
- * @property {Object}   cartItem        The cartItem retrieved.
  */
 
 export {};
