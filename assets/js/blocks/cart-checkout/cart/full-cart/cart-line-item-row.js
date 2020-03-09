@@ -9,6 +9,7 @@ import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-mone
 import { getCurrency, formatPrice } from '@woocommerce/base-utils';
 import { useStoreCartItemQuantity } from '@woocommerce/base-hooks';
 import { Icon, trash } from '@woocommerce/icons';
+import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -18,61 +19,37 @@ import ProductImage from './product-image';
 import ProductLowStockBadge from './product-low-stock-badge';
 
 /**
+ * @typedef {import('@woocommerce/type-defs/cart').CartItem} CartItem
+ */
+
+/**
+ *
+ * @param {boolean}     backOrdersAllowed Whether to allow backorders or not.
+ * @param {number|null} lowStockAmount    If present the number of stock
+ *                                        remaining.
+ *
+ * @return {number} The maximum number value for the quantity input.
+ */
+const getMaximumQuantity = ( backOrdersAllowed, lowStockAmount ) => {
+	const maxQuantityLimit = getSetting( 'quantitySelectLimit', 99 );
+	if ( backOrdersAllowed || ! lowStockAmount ) {
+		return maxQuantityLimit;
+	}
+	return Math.min( lowStockAmount, maxQuantityLimit );
+};
+
+/**
  * Cart line item table row component.
  */
-const CartLineItemRow = ( {
-	lineItem = {
-		key: '',
-		id: 0,
-		quantity: 0,
-		name: '',
-		summary: '',
-		short_description: '',
-		sku: '',
-		remaining_stock: null,
-		low_stock_remaining: null,
-		low_stock_threshold: null,
-		sold_individually: false,
-		permalink: '',
-		images: [],
-		variation: [],
-		prices: {
-			currency_code: 'US',
-			currency_minor_unit: 2,
-			currency_symbol: '$',
-			currency_prefix: '$',
-			currency_suffix: '',
-			currency_decimal_separator: '.',
-			currency_thousand_separator: ',',
-			price: '0',
-			regular_price: '0',
-			sale_price: '0',
-			price_range: null,
-		},
-		totals: {
-			currency_code: 'US',
-			currency_minor_unit: 2,
-			currency_symbol: '$',
-			currency_prefix: '$',
-			currency_suffix: '',
-			currency_decimal_separator: '.',
-			currency_thousand_separator: ',',
-			line_subtotal: '0',
-			line_subtotal_tax: '0',
-			line_total: '0',
-			line_total_tax: '0',
-		},
-	},
-} ) => {
+const CartLineItemRow = ( { lineItem } ) => {
 	/**
-	 * @type {import('@woocommerce/type-defs/cart').CartItem}
+	 * @type {CartItem}
 	 */
 	const {
 		name,
 		summary,
-		remaining_stock: remainingStock,
-		low_stock_threshold: lowStockThreshold,
 		low_stock_remaining: lowStockRemaining,
+		backorders_allowed: backOrdersAllowed,
 		permalink,
 		images,
 		variation,
@@ -98,15 +75,6 @@ const CartLineItemRow = ( {
 	const regularPrice = parseInt( prices.regular_price, 10 ) * quantity;
 	const purchasePrice = parseInt( prices.price, 10 ) * quantity;
 	const saleAmount = regularPrice - purchasePrice;
-	let maximum = lineItem.sold_individually ? 1 : undefined;
-	// account for stock
-	maximum = ! maximum && remainingStock ? remainingStock : maximum;
-	const lowStock =
-		remainingStock &&
-		lowStockThreshold &&
-		remainingStock - quantity <= lowStockThreshold
-			? remainingStock - quantity
-			: lowStockRemaining;
 
 	return (
 		<tr className="wc-block-cart-items__row">
@@ -122,7 +90,7 @@ const CartLineItemRow = ( {
 				>
 					{ name }
 				</a>
-				<ProductLowStockBadge lowStockRemaining={ lowStock } />
+				<ProductLowStockBadge lowStockRemaining={ lowStockRemaining } />
 				<div className="wc-block-cart-item__product-metadata">
 					<RawHTML>{ summary }</RawHTML>
 					<ProductVariationData variation={ variation } />
@@ -132,7 +100,10 @@ const CartLineItemRow = ( {
 				<QuantitySelector
 					disabled={ itemQuantityDisabled }
 					quantity={ quantity }
-					maximum={ maximum }
+					maximum={ getMaximumQuantity(
+						backOrdersAllowed,
+						lowStockRemaining
+					) }
 					onChange={ changeQuantity }
 					itemName={ name }
 				/>
@@ -184,9 +155,9 @@ CartLineItemRow.propTypes = {
 		name: PropTypes.string.isRequired,
 		summary: PropTypes.string.isRequired,
 		images: PropTypes.array.isRequired,
-		remaining_stock: PropTypes.number,
-		low_stock_remaining: PropTypes.number,
-		sold_individually: PropTypes.bool,
+		low_stock_remaining: PropTypes.number.isRequired,
+		backorders_allowed: PropTypes.bool.isRequired,
+		sold_individually: PropTypes.bool.isRequired,
 		variation: PropTypes.arrayOf(
 			PropTypes.shape( {
 				attribute: PropTypes.string.isRequired,

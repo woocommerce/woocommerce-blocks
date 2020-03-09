@@ -146,14 +146,12 @@
  *                                                     in HTML format.
  * @property {string}              sku                 Stock keeping unit, if
  *                                                     applicable.
- * @property {number|null}         remaining_stock     Quantity left in stock or
- *                                                     null if not applicable.
  * @property {number|null}         low_stock_remaining Quantity left in stock if
  *                                                     stock is low, or null if
  *                                                     not applicable.
- * @property {number|null}         low_stock_threshold The low stock threshold
- *                                                     or null if not
- *                                                     applicable.
+ * @property {boolean}             backorders_allowed  True if backorders are
+ *                                                     allowed past stock
+ *                                                     availability.
  * @property {boolean}             sold_individually   If true, only one item of
  *                                                     this product is allowed
  *                                                     for purchase in a single
