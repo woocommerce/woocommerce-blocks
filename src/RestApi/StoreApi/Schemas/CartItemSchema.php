@@ -110,6 +110,12 @@ class CartItemSchema extends AbstractSchema {
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
+			'low_stock_threshold' => [
+				'description' => __( 'This is the low stock threshold amount, or null if not applicable', 'woo-gutenberg-products-block' ),
+				'type'        => [ 'integer', 'null' ],
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+			],
 			'sold_individually'   => [
 				'description' => __( 'If true, only one item of this product is allowed for purchase in a single order.', 'woo-gutenberg-products-block' ),
 				'type'        => 'boolean',
@@ -310,6 +316,7 @@ class CartItemSchema extends AbstractSchema {
 			'description'         => $this->prepare_html_response( wc_format_content( $product->get_description() ) ),
 			'sku'                 => $this->prepare_html_response( $product->get_sku() ),
 			'low_stock_remaining' => $this->get_low_stock_remaining( $product ),
+			'low_stock_threshold' => wc_get_low_stock_amount( $product ),
 			'remaining_stock'     => $this->get_remaining_stock( $product ),
 			'sold_individually'   => $product->is_sold_individually(),
 			'permalink'           => $product->get_permalink(),

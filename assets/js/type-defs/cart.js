@@ -151,6 +151,9 @@
  * @property {number|null}         low_stock_remaining Quantity left in stock if
  *                                                     stock is low, or null if
  *                                                     not applicable.
+ * @property {number|null}         low_stock_threshold The low stock threshold
+ *                                                     or null if not
+ *                                                     applicable.
  * @property {boolean}             sold_individually   If true, only one item of
  *                                                     this product is allowed
  *                                                     for purchase in a single

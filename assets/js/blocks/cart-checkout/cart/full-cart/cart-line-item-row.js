@@ -31,6 +31,7 @@ const CartLineItemRow = ( {
 		sku: '',
 		remaining_stock: null,
 		low_stock_remaining: null,
+		low_stock_threshold: null,
 		sold_individually: false,
 		permalink: '',
 		images: [],
@@ -70,6 +71,8 @@ const CartLineItemRow = ( {
 		name,
 		summary,
 		remaining_stock: remainingStock,
+		low_stock_threshold: lowStockThreshold,
+		low_stock_remaining: lowStockRemaining,
 		permalink,
 		images,
 		variation,
@@ -98,6 +101,12 @@ const CartLineItemRow = ( {
 	let maximum = lineItem.sold_individually ? 1 : undefined;
 	// account for stock
 	maximum = ! maximum && remainingStock ? remainingStock : maximum;
+	const lowStock =
+		remainingStock &&
+		lowStockThreshold &&
+		remainingStock - quantity <= lowStockThreshold
+			? remainingStock - quantity
+			: lowStockRemaining;
 
 	return (
 		<tr className="wc-block-cart-items__row">
@@ -113,9 +122,7 @@ const CartLineItemRow = ( {
 				>
 					{ name }
 				</a>
-				<ProductLowStockBadge
-					lowStockRemaining={ lineItem.low_stock_remaining }
-				/>
+				<ProductLowStockBadge lowStockRemaining={ lowStock } />
 				<div className="wc-block-cart-item__product-metadata">
 					<RawHTML>{ summary }</RawHTML>
 					<ProductVariationData variation={ variation } />
