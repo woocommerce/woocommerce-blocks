@@ -316,7 +316,7 @@ class CartItemSchema extends AbstractSchema {
 			'description'         => $this->prepare_html_response( wc_format_content( $product->get_description() ) ),
 			'sku'                 => $this->prepare_html_response( $product->get_sku() ),
 			'low_stock_remaining' => $this->get_low_stock_remaining( $product ),
-			'low_stock_threshold' => wc_get_low_stock_amount( $product ),
+			'low_stock_threshold' => (int) wc_get_low_stock_amount( $product ),
 			'remaining_stock'     => $this->get_remaining_stock( $product ),
 			'sold_individually'   => $product->is_sold_individually(),
 			'permalink'           => $product->get_permalink(),
