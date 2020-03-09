@@ -7,20 +7,19 @@
 
 	.wc-block-component-express-checkout__title {
 		position: relative;
-		top: -24px;
 		background-color: $white;
 		padding-left: $gap-small;
 		padding-right: $gap-small;
+		margin-top: -24px;
+		margin-left: $gap-small;
+		margin-bottom: $gap-small;
 		width: fit-content;
 		color: $black;
 		font-weight: bold;
 	}
 
 	.wc-block-component-express-checkout__content {
-		margin-top: -15px;
-		padding-left: $gap-large;
-		padding-right: $gap-large;
-		padding-bottom: $gap;
+		padding: 0 $gap-large;
 	}
 
 	.wc-block-component-express-checkout-payment-event-buttons {
@@ -30,10 +29,20 @@
 		flex-wrap: wrap;
 		width: 100%;
 		padding: 0;
-		margin: 0;
+		margin: 0 0 $gap;
+		overflow: hidden;
 		> li {
 			display: inline-block;
 			width: 50%;
+			> img {
+				width: 100%;
+			}
+		}
+		> li:nth-child(even) {
+			padding-left: $gap-smaller;
+		}
+		> li:nth-child(odd) {
+			padding-right: $gap-smaller;
 		}
 	}
 }
