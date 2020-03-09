@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { useCheckoutContext } from '@woocommerce/base-context/checkout-context';
+import { useCheckoutContext } from '@woocommerce/base-context';
 import { usePaymentMethods } from '@woocommerce/base-hooks';
 import { useEffect } from '@wordpress/element';
 
