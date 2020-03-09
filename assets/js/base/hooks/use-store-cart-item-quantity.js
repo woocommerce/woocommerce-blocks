@@ -45,12 +45,8 @@ export const useStoreCartItemQuantity = ( cartItem ) => {
 	// Observe debounced quantity value, fire action to update server when it
 	// changes.
 	useEffect( () => {
-		if ( debouncedQuantity === 0 ) {
-			changeQuantity( cartItem.quantity );
-			return;
-		}
 		changeCartItemQuantity( cartItem.key, debouncedQuantity );
-	}, [ debouncedQuantity, cartItem.key, cartItem.quantity ] );
+	}, [ debouncedQuantity, cartItem.key ] );
 
 	return {
 		isPending,
