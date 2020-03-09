@@ -29,7 +29,7 @@
  */
 
 /**
- * @typedef {Object} StoreCartItem
+ * @typedef {Object} StoreCartItemQuantity
  *
  * @property {boolean}  isLoading       True when cart items are being
  *                                      loaded.

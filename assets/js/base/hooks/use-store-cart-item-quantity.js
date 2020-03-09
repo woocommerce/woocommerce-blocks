@@ -12,7 +12,7 @@ import { useDebounce } from 'use-debounce';
 import { useStoreCart } from './use-store-cart';
 
 /**
- * @typedef {import('@woocommerce/type-defs/hooks').StoreCartItem} StoreCartItem
+ * @typedef {import('@woocommerce/type-defs/hooks').StoreCartItemQuantity} StoreCartItemQuantity
  * @typedef {import('@woocommerce/type-defs/cart').CartItem} CartItem
  */
 
@@ -23,9 +23,9 @@ import { useStoreCart } from './use-store-cart';
  * @see https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/master/src/RestApi/StoreApi
  *
  * @param {string} cartItemKey Key for a cart item.
- * @return {StoreCartItem} An object exposing data and actions relating to cart items.
+ * @return {StoreCartItemQuantity} An object exposing data and actions relating to cart items.
  */
-export const useStoreCartItem = ( cartItemKey ) => {
+export const useStoreCartItemQuantity = ( cartItemKey ) => {
 	const { cartItems, cartIsLoading } = useStoreCart();
 	/**
 	 * @type {[CartItem, function( CartItem ):undefined]}
