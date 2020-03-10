@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import withRestApiHydration from '@woocommerce/base-hocs/with-rest-api-hydration';
+import { withRestApiHydration } from '@woocommerce/block-hocs';
 
 /**
  * Internal dependencies

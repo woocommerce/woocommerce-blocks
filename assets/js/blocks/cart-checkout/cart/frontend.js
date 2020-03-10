@@ -1,8 +1,10 @@
 /**
  * External dependencies
  */
-import withRestApiHydration from '@woocommerce/base-hocs/with-rest-api-hydration';
-import withStoreCartApiHydration from '@woocommerce/base-hocs/with-store-cart-api-hydration';
+import {
+	withRestApiHydration,
+	withStoreCartApiHydration,
+} from '@woocommerce/block-hocs';
 import { __ } from '@wordpress/i18n';
 import { useStoreCart } from '@woocommerce/base-hooks';
 import { RawHTML } from '@wordpress/element';
