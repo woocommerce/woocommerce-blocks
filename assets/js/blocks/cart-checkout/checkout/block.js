@@ -327,9 +327,11 @@ const Block = ( {
 							/>
 						</FormStep>
 						<div className="wc-block-checkout__actions">
-							<ReturnToCartButton
-								link={ attributes.cartPageUrl }
-							/>
+							{ attributes.showReturnToCart && (
+								<ReturnToCartButton
+									link={ attributes.cartPageUrl }
+								/>
+							) }
 							<PlaceOrderButton />
 						</div>
 						{ attributes.showPolicyLinks && <Policies /> }

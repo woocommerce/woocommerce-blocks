@@ -13,12 +13,14 @@ import {
 	ToggleControl,
 	CheckboxControl,
 	Notice,
+	TextControl,
 } from '@wordpress/components';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import {
 	PRIVACY_URL,
 	TERMS_URL,
 	SHIPPING_METHODS_EXIST,
+	CART_URL,
 } from '@woocommerce/block-settings';
 import { getAdminLink } from '@woocommerce/settings';
 import { __experimentalCreateInterpolateElement } from 'wordpress-element';
@@ -39,6 +41,8 @@ const CheckoutEditor = ( { attributes, setAttributes } ) => {
 		requireCompanyField,
 		requirePhoneField,
 		showPolicyLinks,
+		cartPageUrl,
+		showReturnToCart,
 	} = attributes;
 	return (
 		<div className={ className }>
@@ -149,13 +153,17 @@ const CheckoutEditor = ( { attributes, setAttributes } ) => {
 				>
 					<p className="wc-block-checkout__controls-text">
 						{ __(
-							'Choose additional content to display on checkout.',
+							'Choose additional content to display.',
 							'woo-gutenberg-products-block'
 						) }
 					</p>
 					<ToggleControl
 						label={ __(
-							'Show links to terms and conditions and privacy policy',
+							'Show links to policies',
+							'woo-gutenberg-products-block'
+						) }
+						help={ __(
+							'Shows a list of links to your "terms and conditions" and "privacy policy" pages.',
 							'woo-gutenberg-products-block'
 						) }
 						checked={ showPolicyLinks }
@@ -199,6 +207,33 @@ const CheckoutEditor = ( { attributes, setAttributes } ) => {
 								}
 							) }
 						</Notice>
+					) }
+					<ToggleControl
+						label={ __(
+							'Show a "return to cart" link',
+							'woo-gutenberg-products-block'
+						) }
+						checked={ showReturnToCart }
+						onChange={ () =>
+							setAttributes( {
+								showReturnToCart: ! showReturnToCart,
+							} )
+						}
+					/>
+					{ showReturnToCart && (
+						<TextControl
+							label={ __(
+								'Return to Cart link URL',
+								'woo-gutenberg-products-block'
+							) }
+							value={ cartPageUrl }
+							placeholder={ CART_URL }
+							onChange={ ( value ) =>
+								setAttributes( {
+									cartPageUrl: value,
+								} )
+							}
+						/>
 					) }
 				</PanelBody>
 			</InspectorControls>
