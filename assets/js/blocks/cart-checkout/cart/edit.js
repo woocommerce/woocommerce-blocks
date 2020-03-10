@@ -159,7 +159,7 @@ CartEditor.propTypes = {
 
 export default withFeedbackPrompt(
 	__(
-		'We are currently working on improving our cart and providing merchants with tools and options to customize their cart to their stores needs.',
+		'We are currently working on improving our cart and checkout blocks, providing merchants with the tools and customization options they need.',
 		'woo-gutenberg-products-block'
 	)
 )( CartEditor );
