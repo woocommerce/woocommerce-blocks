@@ -21,11 +21,16 @@ const useActivePaymentMethod = () => {
 			const paymentMethodIds = Object.keys( paymentMethods );
 			setActivePaymentMethod(
 				paymentMethodIds.length > 0
-					? paymentMethods[ paymentMethodIds[ 0 ] ].name
+					? paymentMethods[ paymentMethodIds[ 0 ] ].id
 					: null
 			);
 		}
-	}, [ activePaymentMethod, setActivePaymentMethod, isInitialized ] );
+	}, [
+		activePaymentMethod,
+		setActivePaymentMethod,
+		isInitialized,
+		paymentMethods,
+	] );
 	return { activePaymentMethod, setActivePaymentMethod };
 };
 
