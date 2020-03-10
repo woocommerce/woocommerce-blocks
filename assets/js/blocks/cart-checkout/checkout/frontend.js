@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { withRestApiHydration } from '@woocommerce/block-hocs';
+import withRestApiHydration from '@woocommerce/base-hocs/with-rest-api-hydration';
 import { useStoreCart } from '@woocommerce/base-hooks';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
