@@ -51,7 +51,7 @@ const createTabs = ( paymentMethods ) => {
  * @param {Object} paymentMethods The current registered payment methods
  * @param {boolean} isEditor Whether in the editor context (true) or not (false).
  *
- * @return The payment method matching the id for the given context.
+ * @return {Object} The payment method matching the id for the given context.
  */
 const getPaymentMethod = ( id, paymentMethods, isEditor ) => {
 	let paymentMethod = paymentMethods[ id ] || null;
@@ -82,8 +82,8 @@ const PaymentMethods = () => {
 	const getRenderedTab = useCallback(
 		() => ( selectedTab ) => {
 			const paymentMethod = getPaymentMethod(
-				currentPaymentMethods.current,
 				selectedTab,
+				currentPaymentMethods.current,
 				isEditor
 			);
 			const paymentEvents = { dispatch, select };
