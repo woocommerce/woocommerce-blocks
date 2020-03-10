@@ -17,6 +17,7 @@ import { __experimentalCreateInterpolateElement } from 'wordpress-element';
  * Internal dependencies
  */
 import FullCart from './full-cart';
+import blockAttributes from './attributes';
 import renderFrontend from '../../../utils/render-frontend.js';
 
 /**
@@ -58,12 +59,29 @@ const CartFrontend = ( {
 	);
 };
 
-const getProps = ( el ) => ( {
-	emptyCart: el.innerHTML,
-	isShippingCalculatorEnabled:
-		el.dataset.isShippingCalculatorEnabled === 'true',
-	isShippingCostHidden: el.dataset.isShippingCostHidden === 'true',
-} );
+const getProps = ( el ) => {
+	const attributes = {};
+
+	Object.keys( blockAttributes ).forEach( ( key ) => {
+		if ( typeof el.dataset[ key ] !== 'undefined' ) {
+			if (
+				el.dataset[ key ] === 'true' ||
+				el.dataset[ key ] === 'false'
+			) {
+				attributes[ key ] = el.dataset[ key ] !== 'false';
+			} else {
+				attributes[ key ] = el.dataset[ key ];
+			}
+		} else {
+			attributes[ key ] = blockAttributes[ key ].default;
+		}
+	} );
+
+	return {
+		emptyCart: el.innerHTML,
+		attributes,
+	};
+};
 
 const getErrorBoundaryProps = () => {
 	return {
