@@ -2,10 +2,10 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import classNames from 'classnames';
 import { InnerBlocks } from '@wordpress/block-editor';
 import { registerBlockType } from '@wordpress/blocks';
 import { Icon, cart } from '@woocommerce/icons';
+import { kebabCase } from 'lodash';
 
 /**
  * Internal dependencies
@@ -40,20 +40,19 @@ const settings = {
 	 * Save the props to post content.
 	 */
 	save( { attributes } ) {
-		const {
-			className,
-			isShippingCalculatorEnabled,
-			isShippingCostHidden,
-		} = attributes;
-		const data = {
-			'data-is-shipping-calculator-enabled': isShippingCalculatorEnabled,
-			'data-is-shipping-cost-hidden': isShippingCostHidden,
-		};
+		const data = {};
+
+		Object.keys( blockAttributes ).forEach( ( key ) => {
+			if (
+				blockAttributes[ key ].save !== false &&
+				typeof attributes[ key ] !== 'undefined'
+			) {
+				data[ 'data-' + kebabCase( key ) ] = attributes[ key ];
+			}
+		} );
+
 		return (
-			<div
-				className={ classNames( 'is-loading', className ) }
-				{ ...data }
-			>
+			<div className={ attributes.className } { ...data }>
 				<InnerBlocks.Content />
 			</div>
 		);
