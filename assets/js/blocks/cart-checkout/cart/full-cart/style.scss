@@ -416,8 +416,9 @@ table.wc-block-cart-items {
 		width: 100%;
 		z-index: 1;
 	}
-	// temporary hack so we can put checkout button at bottom on mobile
-	.storefront-handheld-footer-bar {
+	// Hide the Storefront sticky footer on cart & checkout page, so it doesn't clash with sticky submit.
+	// Note - this will only work on woo "Cart" page.
+	.woocommerce-page.woocommerce-cart.theme-storefront .storefront-handheld-footer-bar {
 		display: none;
 	}
 }
