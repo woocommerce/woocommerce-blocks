@@ -103,6 +103,7 @@ class Assets {
 		$product_counts = wp_count_posts( 'product' );
 		$page_ids       = [
 			'shop'     => wc_get_page_id( 'shop' ),
+			'cart'     => wc_get_page_id( 'cart' ),
 			'checkout' => wc_get_page_id( 'checkout' ),
 			'privacy'  => wc_privacy_policy_page_id(),
 			'terms'    => wc_terms_and_conditions_page_id(),
@@ -145,6 +146,10 @@ class Assets {
 					'shop'     => $page_ids['shop'] ? [
 						'name' => get_the_title( $page_ids['shop'] ),
 						'url'  => get_permalink( $page_ids['shop'] ),
+					] : false,
+					'cart'     => $page_ids['cart'] ? [
+						'name' => get_the_title( $page_ids['cart'] ),
+						'url'  => get_permalink( $page_ids['cart'] ),
 					] : false,
 					'checkout' => $page_ids['checkout'] ? [
 						'name' => get_the_title( $page_ids['checkout'] ),

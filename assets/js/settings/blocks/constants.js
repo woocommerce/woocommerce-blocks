@@ -60,11 +60,13 @@ const defaultPage = {
 };
 const storePages = getSetting( 'storePages', {
 	shop: defaultPage,
+	cart: defaultPage,
 	checkout: defaultPage,
 	privacy: defaultPage,
 	terms: defaultPage,
 } );
 export const SHOP_URL = storePages.shop.url;
+export const CART_URL = storePages.cart.url;
 export const CHECKOUT_URL = storePages.checkout.url;
 export const PRIVACY_URL = storePages.privacy.url;
 export const TERMS_URL = storePages.terms.url;
