@@ -71,11 +71,16 @@ export const useShippingMethodDataContext = () => {
  *
  * @param {Object} props Incoming props for the component
  */
-const ShippingRateCalculation = ( { address, onChange } ) => {
+const ShippingRateCalculation = ( { onChange } ) => {
 	// @todo, it'd be handy if we could pass through callbacks that are fired on
 	// successful rate retrieval vs callbacks fired on unsuccessful rates
 	// retrieval. That way emitters could just be fed into the hook directly.
-	const { shippingRates, shippingRatesLoading } = useShippingRates( address );
+	const { shippingRates, shippingRatesLoading } = useShippingRates( [
+		'country',
+		'state',
+		'city',
+		'postcode',
+	] );
 	useEffect( () => {
 		onChange( shippingRates, shippingRatesLoading );
 	}, [ shippingRates, shippingRatesLoading ] );
