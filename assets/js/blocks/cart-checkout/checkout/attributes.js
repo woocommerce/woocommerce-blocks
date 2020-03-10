@@ -32,6 +32,10 @@ const blockAttributes = {
 		type: 'boolean',
 		default: true,
 	},
+	cartPageUrl: {
+		type: 'string',
+		default: '',
+	},
 };
 
 export default blockAttributes;

@@ -10,6 +10,8 @@ import {
 	CheckoutForm,
 	NoShipping,
 	Policies,
+	PlaceOrderButton,
+	ReturnToCartButton,
 } from '@woocommerce/base-components/checkout';
 import TextInput from '@woocommerce/base-components/text-input';
 import ShippingRatesControl from '@woocommerce/base-components/shipping-rates-control';
@@ -324,6 +326,12 @@ const Block = ( {
 								}
 							/>
 						</FormStep>
+						<div className="wc-block-checkout__actions">
+							<ReturnToCartButton
+								link={ attributes.cartPageUrl }
+							/>
+							<PlaceOrderButton />
+						</div>
 						{ attributes.showPolicyLinks && <Policies /> }
 					</CheckoutForm>
 				</Main>
