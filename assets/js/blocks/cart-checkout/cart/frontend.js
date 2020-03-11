@@ -24,12 +24,7 @@ import renderFrontend from '../../../utils/render-frontend.js';
  * Wrapper component to supply API data and show empty cart view as needed.
  */
 const CartFrontend = ( { emptyCart, attributes } ) => {
-	const {
-		cartItems,
-		cartTotals,
-		cartIsLoading,
-		cartCoupons,
-	} = useStoreCart();
+	const { cartItems, cartIsLoading } = useStoreCart();
 
 	return (
 		<StoreNoticesProvider context="wc/cart">
@@ -38,14 +33,12 @@ const CartFrontend = ( { emptyCart, attributes } ) => {
 			) : (
 				<LoadingMask showSpinner={ true } isLoading={ cartIsLoading }>
 					<FullCart
-						cartItems={ cartItems }
-						cartTotals={ cartTotals }
-						cartCoupons={ cartCoupons }
 						isShippingCalculatorEnabled={
 							attributes.isShippingCalculatorEnabled
 						}
 						isShippingCostHidden={ attributes.isShippingCostHidden }
 						isLoading={ cartIsLoading }
+						isEditor={ false }
 					/>
 				</LoadingMask>
 			) }

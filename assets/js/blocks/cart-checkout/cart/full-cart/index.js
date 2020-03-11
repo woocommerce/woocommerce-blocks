@@ -20,7 +20,8 @@ import {
 } from '@woocommerce/block-settings';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import { Card, CardBody } from 'wordpress-components';
-import { useStoreCartCoupons } from '@woocommerce/base-hooks';
+import { useStoreCartCoupons, useStoreCart } from '@woocommerce/base-hooks';
+import { CartProvider } from '@woocommerce/base-context';
 import classnames from 'classnames';
 import {
 	Sidebar,
@@ -42,18 +43,19 @@ import './editor.scss';
  * Component that renders the Cart block when user has something in cart aka "full".
  */
 const Cart = ( {
-	cartItems = [],
-	cartTotals = {},
-	cartCoupons = [],
 	isShippingCalculatorEnabled,
 	isShippingCostHidden,
-	isLoading = false,
+	isEditor = false,
 } ) => {
+	const { cartItems, cartTotals, cartIsLoading } = useStoreCart();
+
 	const {
 		applyCoupon,
 		removeCoupon,
 		isApplyingCoupon,
 		isRemovingCoupon,
+		cartCoupons,
+		cartCouponsErrors,
 	} = useStoreCartCoupons();
 
 	// @todo shippingRatesErrors
@@ -65,92 +67,83 @@ const Cart = ( {
 	const totalsCurrency = getCurrencyFromPriceResponse( cartTotals );
 
 	const cartClassName = classnames( 'wc-block-cart', {
-		'wc-block-cart--is-loading': isLoading,
+		'wc-block-cart--is-loading': cartIsLoading,
 	} );
 
 	return (
-		<SidebarLayout className={ cartClassName }>
-			<Main className="wc-block-cart__main">
-				<CartLineItemsTitle itemCount={ cartItems.length } />
-				<CartLineItemsTable
-					lineItems={ cartItems }
-					isLoading={ isLoading }
-				/>
-			</Main>
-			<Sidebar className="wc-block-cart__sidebar">
-				<Card isElevated={ true }>
-					<CardBody>
-						<h2 className="wc-block-cart__totals-title">
-							{ __(
-								'Cart totals',
-								'woo-gutenberg-products-block'
+		<CartProvider isEditor={ isEditor }>
+			<SidebarLayout className={ cartClassName }>
+				<Main className="wc-block-cart__main">
+					<CartLineItemsTitle itemCount={ cartItems.length } />
+					<CartLineItemsTable
+						lineItems={ cartItems }
+						isLoading={ cartIsLoading }
+					/>
+				</Main>
+				<Sidebar className="wc-block-cart__sidebar">
+					<Card isElevated={ true }>
+						<CardBody>
+							<h2 className="wc-block-cart__totals-title">
+								{ __(
+									'Cart totals',
+									'woo-gutenberg-products-block'
+								) }
+							</h2>
+							<SubtotalsItem
+								currency={ totalsCurrency }
+								values={ cartTotals }
+							/>
+							<TotalsFeesItem
+								currency={ totalsCurrency }
+								values={ cartTotals }
+							/>
+							<TotalsDiscountItem
+								cartCoupons={ cartCoupons }
+								currency={ totalsCurrency }
+								isRemovingCoupon={ isRemovingCoupon }
+								removeCoupon={ removeCoupon }
+								values={ cartTotals }
+							/>
+							{ SHIPPING_ENABLED && (
+								<TotalsShippingItem
+									showCalculator={
+										isShippingCalculatorEnabled
+									}
+									showRatesWithoutAddress={
+										isShippingCostHidden
+									}
+									values={ cartTotals }
+									currency={ totalsCurrency }
+								/>
 							) }
-						</h2>
-						<SubtotalsItem
-							currency={ totalsCurrency }
-							values={ cartTotals }
-						/>
-						<TotalsFeesItem
-							currency={ totalsCurrency }
-							values={ cartTotals }
-						/>
-						<TotalsDiscountItem
-							cartCoupons={ cartCoupons }
-							currency={ totalsCurrency }
-							isRemovingCoupon={ isRemovingCoupon }
-							removeCoupon={ removeCoupon }
-							values={ cartTotals }
-						/>
-						{ SHIPPING_ENABLED && (
-							<TotalsShippingItem
-								showCalculator={ isShippingCalculatorEnabled }
-								showRatesWithoutAddress={ isShippingCostHidden }
-								values={ cartTotals }
-								currency={ totalsCurrency }
-							/>
-						) }
-						{ ! DISPLAY_CART_PRICES_INCLUDING_TAX && (
-							<TotalsTaxesItem
+							{ ! DISPLAY_CART_PRICES_INCLUDING_TAX && (
+								<TotalsTaxesItem
+									currency={ totalsCurrency }
+									values={ cartTotals }
+								/>
+							) }
+							{ COUPONS_ENABLED && (
+								<TotalsCouponCodeInput
+									onSubmit={ applyCoupon }
+									isLoading={ isApplyingCoupon }
+								/>
+							) }
+							<TotalsFooterItem
 								currency={ totalsCurrency }
 								values={ cartTotals }
 							/>
-						) }
-						{ COUPONS_ENABLED && (
-							<TotalsCouponCodeInput
-								onSubmit={ applyCoupon }
-								initialOpen={ true }
-								isLoading={ isApplyingCoupon }
-							/>
-						) }
-						<TotalsFooterItem
-							currency={ totalsCurrency }
-							values={ cartTotals }
-						/>
-						<CheckoutButton />
-					</CardBody>
-				</Card>
-			</Sidebar>
-		</SidebarLayout>
+							<CheckoutButton />
+						</CardBody>
+					</Card>
+				</Sidebar>
+			</SidebarLayout>
+		</CartProvider>
 	);
 };
 
 Cart.propTypes = {
-	cartItems: PropTypes.array,
-	cartTotals: PropTypes.shape( {
-		total_items: PropTypes.string,
-		total_items_tax: PropTypes.string,
-		total_fees: PropTypes.string,
-		total_fees_tax: PropTypes.string,
-		total_discount: PropTypes.string,
-		total_discount_tax: PropTypes.string,
-		total_shipping: PropTypes.string,
-		total_shipping_tax: PropTypes.string,
-		total_tax: PropTypes.string,
-		total_price: PropTypes.string,
-	} ),
 	isShippingCalculatorEnabled: PropTypes.bool,
 	isShippingCostHidden: PropTypes.bool,
-	isLoading: PropTypes.bool,
 };
 
 export default Cart;

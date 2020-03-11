@@ -8,10 +8,6 @@ import { Disabled, PanelBody, ToggleControl } from '@wordpress/components';
 import PropTypes from 'prop-types';
 import { withFeedbackPrompt } from '@woocommerce/block-hocs';
 import ViewSwitcher from '@woocommerce/block-components/view-switcher';
-import {
-	previewCart,
-	previewShippingRates,
-} from '@woocommerce/resource-previews';
 import { SHIPPING_ENABLED } from '@woocommerce/block-settings';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 
@@ -108,17 +104,13 @@ const CartEditor = ( { className, attributes, setAttributes } ) => {
 								>
 									<Disabled>
 										<FullCart
-											cartItems={ previewCart.items }
-											cartTotals={ previewCart.totals }
 											isShippingCostHidden={
 												isShippingCostHidden
 											}
 											isShippingCalculatorEnabled={
 												isShippingCalculatorEnabled
 											}
-											shippingRates={
-												previewShippingRates
-											}
+											isEditor={ true }
 										/>
 									</Disabled>
 								</BlockErrorBoundary>
