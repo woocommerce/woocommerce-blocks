@@ -13,17 +13,14 @@ import {
 	TotalsShippingItem,
 	TotalsTaxesItem,
 } from '@woocommerce/base-components/totals';
-import ShippingRatesControl from '@woocommerce/base-components/shipping-rates-control';
 import {
 	COUPONS_ENABLED,
-	SHIPPING_ENABLED,
 	DISPLAY_CART_PRICES_INCLUDING_TAX,
+	SHIPPING_ENABLED,
 } from '@woocommerce/block-settings';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import { Card, CardBody } from 'wordpress-components';
-import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
-import { decodeEntities } from '@wordpress/html-entities';
-import { useStoreCartCoupons, useShippingRates } from '@woocommerce/base-hooks';
+import { useStoreCartCoupons } from '@woocommerce/base-hooks';
 import classnames from 'classnames';
 import {
 	Sidebar,
@@ -41,50 +38,6 @@ import CartLineItemsTable from './cart-line-items-table';
 import './style.scss';
 import './editor.scss';
 
-const renderShippingRatesControlOption = ( option ) => ( {
-	label: decodeEntities( option.name ),
-	value: option.rate_id,
-	description: (
-		<>
-			{ option.price && (
-				<FormattedMonetaryAmount
-					currency={ getCurrencyFromPriceResponse( option ) }
-					value={ option.price }
-				/>
-			) }
-			{ option.price && option.delivery_time ? ' — ' : null }
-			{ decodeEntities( option.delivery_time ) }
-		</>
-	),
-} );
-
-const ShippingCalculatorOptions = ( {
-	shippingRates,
-	shippingRatesLoading,
-} ) => {
-	return (
-		<fieldset className="wc-block-cart__shipping-options-fieldset">
-			<legend className="screen-reader-text">
-				{ __(
-					'Choose the shipping method.',
-					'woo-gutenberg-products-block'
-				) }
-			</legend>
-			<ShippingRatesControl
-				className="wc-block-cart__shipping-options"
-				collapsibleWhenMultiple={ true }
-				noResultsMessage={ __(
-					'No shipping options were found.',
-					'woo-gutenberg-products-block'
-				) }
-				renderOption={ renderShippingRatesControlOption }
-				shippingRates={ shippingRates }
-				shippingRatesLoading={ shippingRatesLoading }
-			/>
-		</fieldset>
-	);
-};
-
 /**
  * Component that renders the Cart block when user has something in cart aka "full".
  */
@@ -94,15 +47,8 @@ const Cart = ( {
 	cartCoupons = [],
 	isShippingCalculatorEnabled,
 	isShippingCostHidden,
-	shippingRates,
 	isLoading = false,
 } ) => {
-	const defaultAddressFields = [ 'country', 'state', 'city', 'postcode' ];
-	const {
-		shippingAddress,
-		setShippingAddress,
-		shippingRatesLoading,
-	} = useShippingRates( defaultAddressFields );
 	const {
 		applyCoupon,
 		removeCoupon,
@@ -110,11 +56,11 @@ const Cart = ( {
 		isRemovingCoupon,
 	} = useStoreCartCoupons();
 
-	const showShippingCosts = Boolean(
-		SHIPPING_ENABLED &&
-			isShippingCalculatorEnabled &&
-			( ! isShippingCostHidden || shippingAddress?.country )
-	);
+	// @todo shippingRatesErrors
+	const errors = [ ...cartCouponsErrors ];
+	if ( errors.length > 0 ) {
+		throw new Error( errors[ 0 ].message );
+	}
 
 	const totalsCurrency = getCurrencyFromPriceResponse( cartTotals );
 
@@ -155,29 +101,13 @@ const Cart = ( {
 							removeCoupon={ removeCoupon }
 							values={ cartTotals }
 						/>
-						{ isShippingCalculatorEnabled && (
+						{ SHIPPING_ENABLED && (
 							<TotalsShippingItem
-								currency={ totalsCurrency }
-								shippingAddress={ shippingAddress }
-								updateShippingAddress={ setShippingAddress }
+								showCalculator={ isShippingCalculatorEnabled }
+								showRatesWithoutAddress={ isShippingCostHidden }
 								values={ cartTotals }
+								currency={ totalsCurrency }
 							/>
-						) }
-						{ showShippingCosts && (
-							<fieldset className="wc-block-cart__shipping-options-fieldset">
-								<legend className="screen-reader-text">
-									{ __(
-										'Choose the shipping method.',
-										'woo-gutenberg-products-block'
-									) }
-								</legend>
-								<ShippingCalculatorOptions
-									shippingRates={ shippingRates }
-									shippingRatesLoading={
-										shippingRatesLoading
-									}
-								/>
-							</fieldset>
 						) }
 						{ ! DISPLAY_CART_PRICES_INCLUDING_TAX && (
 							<TotalsTaxesItem
@@ -221,10 +151,6 @@ Cart.propTypes = {
 	isShippingCalculatorEnabled: PropTypes.bool,
 	isShippingCostHidden: PropTypes.bool,
 	isLoading: PropTypes.bool,
-	/**
-	 * List of shipping rates to display. If defined, shipping rates will not be fetched from the API (used for the block preview).
-	 */
-	shippingRates: PropTypes.array,
 };
 
 export default Cart;
