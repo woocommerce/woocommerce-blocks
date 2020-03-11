@@ -17,8 +17,8 @@ See also: https://github.com/woocommerce/woocommerce-gutenberg-products-block/tr
  * locally by a state and updated optimistically.
  */
 export const useSelectShippingRate = ( shippingRates ) => {
-	const initiallySelectedRates = Object.fromEntries(
-		shippingRates.map(
+	const initiallySelectedRates = shippingRates
+		.map(
 			// the API responds with those keys.
 			/* eslint-disable camelcase */
 			( p ) => [
@@ -27,7 +27,12 @@ export const useSelectShippingRate = ( shippingRates ) => {
 			]
 			/* eslint-enable */
 		)
-	);
+		// A fromEntries ponyfill, creates an object from an array of arrays.
+		.reduce( ( obj, [ key, val ] ) => {
+			obj[ key ] = val;
+			return obj;
+		}, {} );
+
 	const [ selectedShippingRates, setSelectedShipping ] = useState(
 		initiallySelectedRates
 	);

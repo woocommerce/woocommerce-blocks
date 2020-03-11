@@ -28,9 +28,13 @@ import { pluckAddress } from '../../utils';
  */
 export const useShippingRates = ( addressFieldsKeys ) => {
 	const { cartErrors, shippingRates } = useStoreCart();
-	const addressFields = Object.fromEntries(
-		addressFieldsKeys.map( ( key ) => [ key, '' ] )
-	);
+	const addressFields = addressFieldsKeys
+		.map( ( key ) => [ key, '' ] )
+		// A fromEntries ponyfill, creates an object from an array of arrays.
+		.reduce( ( obj, [ key, val ] ) => {
+			obj[ key ] = val;
+			return obj;
+		}, {} );
 	const derivedAddress = shippingRates[ 0 ]?.destination;
 	const initialAddress = { ...addressFields, ...derivedAddress };
 	const shippingAddressReducer = ( state, address ) => ( {
