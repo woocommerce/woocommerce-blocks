@@ -29,12 +29,12 @@ const noPaymentMethodTab = () => {
 };
 
 const createTabs = ( paymentMethods ) => {
-	const paymentMethodsKeys = Object.keys( paymentMethods );
-	return paymentMethodsKeys.length > 0
-		? paymentMethodsKeys.map( ( key ) => {
-				const { label, ariaLabel } = paymentMethods[ key ];
+	const paymentMethodIds = Object.keys( paymentMethods );
+	return paymentMethodIds.length > 0
+		? paymentMethodIds.map( ( id ) => {
+				const { label, ariaLabel } = paymentMethods[ id ];
 				return {
-					name: key,
+					name: id,
 					title: () => label,
 					ariaLabel,
 				};

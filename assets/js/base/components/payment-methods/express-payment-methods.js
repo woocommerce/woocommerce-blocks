@@ -15,15 +15,15 @@ const ExpressPaymentMethods = () => {
 	// up in the tree for express payment methods. We won't even get here if
 	// there's no payment methods after initialization.
 	const { paymentMethods } = useExpressPaymentMethods();
-	const paymentMethodSlugs = Object.keys( paymentMethods );
+	const paymentMethodIds = Object.keys( paymentMethods );
 	const content =
-		paymentMethodSlugs.length > 0 ? (
-			paymentMethodSlugs.map( ( slug ) => {
+		paymentMethodIds.length > 0 ? (
+			paymentMethodIds.map( ( id ) => {
 				const expressPaymentMethod = isEditor
-					? paymentMethods[ slug ].edit
-					: paymentMethods[ slug ].activeContent;
+					? paymentMethods[ id ].edit
+					: paymentMethods[ id ].activeContent;
 				return isValidElement( expressPaymentMethod ) ? (
-					<li key={ slug } id={ `express-payment-method-${ slug }` }>
+					<li key={ id } id={ `express-payment-method-${ id }` }>
 						{ cloneElement( expressPaymentMethod, {
 							...paymentMethodInterface,
 						} ) }
