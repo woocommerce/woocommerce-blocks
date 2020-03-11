@@ -90,7 +90,9 @@ class Checkout extends AbstractBlock {
 			remove_filter( 'woocommerce_payment_methods_list_item', [ $this, 'include_token_id_with_payment_methods' ], 10, 2 );
 		}
 
+		do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before' );
 		\Automattic\WooCommerce\Blocks\Assets::register_block_script( $this->block_name . '-frontend', $this->block_name . '-block-frontend' );
+		do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_after' );
 		return $content . $this->get_skeleton();
 	}
 
