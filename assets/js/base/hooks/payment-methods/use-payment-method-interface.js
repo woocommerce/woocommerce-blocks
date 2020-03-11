@@ -9,6 +9,7 @@ import {
 import { __ } from '@wordpress/i18n';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import { useEffect, useRef } from '@wordpress/element';
+import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -172,6 +173,7 @@ export const usePaymentMethodInterface = () => {
 			// if it's available.
 			country: '',
 			cartItems: currentCartTotals.current,
+			displayPricesIncludingTax: DISPLAY_CART_PRICES_INCLUDING_TAX,
 			appliedCoupons,
 		},
 		eventRegistration: {
