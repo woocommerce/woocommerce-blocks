@@ -22,41 +22,56 @@ import {
 
 /**
  * @typedef {import('@woocommerce/type-defs/registered-payment-method-props').RegisteredPaymentMethodProps} RegisteredPaymentMethodProps
- * @typedef {import('@woocommerce/type-defs/registered-payment-method-props').CartTotalItem} CartTotalItem
+ * @typedef {import('@woocommerce/type-defs/cart').CartTotalItem} CartTotalItem
  */
 
-// @todo similar logic is done in `blocks/cart-checkout/cart/full-cart/index.js`
-// we should extract this to use in both places so it's consistent.
-// @todo this will need to account for `DISPLAY_PRICES_INCLUDING_TAXES`.
 /**
+ * Prepares the total items into a shape usable for display as passed on to
+ * registered payment methods.
+ *
  * @param {Object} totals Current cart total items
  * @param {boolean} needsShipping Whether or not shipping is needed.
  *
  * @return {CartTotalItem[]}  Array for cart total items prepared for use.
  */
-const prepareTotalItems = ( totals, needsShipping ) => {
+export const prepareTotalItems = ( totals, needsShipping ) => {
 	const newTotals = [];
-	newTotals.push( {
-		label: __( 'Subtotal:', 'woo-gutenberg-products-block' ),
-		value: parseInt( totals.total_items, 10 ),
-	} );
-	newTotals.push( {
-		label: __( 'Fees:', 'woo-gutenberg-products-block' ),
-		value: parseInt( totals.total_fees, 10 ),
-	} );
-	newTotals.push( {
-		label: __( 'Discount:', 'woo-gutenberg-products-block' ),
-		value: parseInt( totals.total_discount, 10 ),
-	} );
+	const factory = ( label, property ) => {
+		const value = parseInt( totals[ property ], 10 );
+		const tax = parseInt( totals[ property + '_tax' ], 10 );
+		return {
+			label,
+			value,
+			valueWithTax: value + tax,
+		};
+	};
+	newTotals.push(
+		factory(
+			__( 'Subtotal:', 'woo-gutenberg-products-block' ),
+			'total_items'
+		)
+	);
+	newTotals.push(
+		factory( __( 'Fees:', 'woo-gutenberg-products-block' ), 'total_fees' )
+	);
+	newTotals.push(
+		factory(
+			__( 'Discount:', 'woo-gutenberg-products-block' ),
+			'total_discount'
+		)
+	);
 	newTotals.push( {
 		label: __( 'Taxes:', 'woo-gutenberg-products-block' ),
 		value: parseInt( totals.total_tax, 10 ),
+		valueWithTax: parseInt( totals.total_tax, 10 ),
 	} );
 	if ( needsShipping ) {
-		newTotals.push( {
-			label: __( 'Shipping:', 'woo-gutenberg-products-block' ),
-			value: parseInt( totals.total_shipping, 10 ),
-		} );
+		newTotals.push(
+			factory(
+				__( 'Shipping:', 'woo-gutenberg-products-block' ),
+				'total_shipping'
+			)
+		);
 	}
 	return newTotals;
 };
