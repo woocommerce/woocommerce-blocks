@@ -8,6 +8,7 @@ import classNames from 'classnames';
 /**
  * Internal dependencies
  */
+import './editor.scss';
 import './style.scss';
 
 /**

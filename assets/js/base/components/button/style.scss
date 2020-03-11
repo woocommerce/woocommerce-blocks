@@ -1,11 +1,11 @@
 // Extra classes are added for specificity.
-.button.wc-block-button,
-.editor-styles-wrapper .button.wc-block-button {
+.button.wc-block-button {
 	background-color: #000;
 	color: #fff;
 	display: block;
 	font-size: inherit;
 	font-weight: bold;
+	line-height: 1;
 	padding: $gap-small;
 	text-align: center;
 	text-decoration: none;
