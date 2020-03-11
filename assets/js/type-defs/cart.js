@@ -1,8 +1,10 @@
 /**
  * @typedef {Object} CartTotalItem
  *
- * @property {string} label  Label for total item
- * @property {number} value  The value of the total item
+ * @property {string} label        Label for total item
+ * @property {number} value        The value of the total item
+ * @property {number} valueWithTax The value of the total item with tax
+ *                                 included.
  */
 
 /**
