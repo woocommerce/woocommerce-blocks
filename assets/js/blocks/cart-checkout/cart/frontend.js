@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
 import { useStoreCart } from '@woocommerce/base-hooks';
 import { RawHTML } from '@wordpress/element';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
-import { StoreNoticesProvider } from '@woocommerce/base-context';
+import { StoreNoticesProvider, CartProvider } from '@woocommerce/base-context';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
 import { __experimentalCreateInterpolateElement } from 'wordpress-element';
 
@@ -21,13 +21,13 @@ import blockAttributes from './attributes';
 import renderFrontend from '../../../utils/render-frontend.js';
 
 /**
- * Wrapper component to supply API data and show empty cart view as needed.
+ * Renders the frontend block within the cart provider.
  */
-const CartFrontend = ( { emptyCart, attributes } ) => {
+const Block = ( { emptyCart, attributes } ) => {
 	const { cartItems, cartIsLoading } = useStoreCart();
 
 	return (
-		<StoreNoticesProvider context="wc/cart">
+		<>
 			{ ! cartIsLoading && ! cartItems.length ? (
 				<RawHTML>{ emptyCart }</RawHTML>
 			) : (
@@ -37,11 +37,24 @@ const CartFrontend = ( { emptyCart, attributes } ) => {
 							attributes.isShippingCalculatorEnabled
 						}
 						isShippingCostHidden={ attributes.isShippingCostHidden }
-						isLoading={ cartIsLoading }
-						isEditor={ false }
 					/>
 				</LoadingMask>
 			) }
+		</>
+	);
+};
+
+/**
+ * Wrapper component to supply API data and show empty cart view as needed.
+ *
+ * @param {*} props
+ */
+const CartFrontend = ( props ) => {
+	return (
+		<StoreNoticesProvider context="wc/cart">
+			<CartProvider isEditor={ false }>
+				<Block { ...props } />
+			</CartProvider>
 		</StoreNoticesProvider>
 	);
 };

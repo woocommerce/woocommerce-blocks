@@ -10,6 +10,7 @@ import { withFeedbackPrompt } from '@woocommerce/block-hocs';
 import ViewSwitcher from '@woocommerce/block-components/view-switcher';
 import { SHIPPING_ENABLED } from '@woocommerce/block-settings';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
+import { CartProvider } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -103,15 +104,16 @@ const CartEditor = ( { className, attributes, setAttributes } ) => {
 									) }
 								>
 									<Disabled>
-										<FullCart
-											isShippingCostHidden={
-												isShippingCostHidden
-											}
-											isShippingCalculatorEnabled={
-												isShippingCalculatorEnabled
-											}
-											isEditor={ true }
-										/>
+										<CartProvider isEditor={ true }>
+											<FullCart
+												isShippingCostHidden={
+													isShippingCostHidden
+												}
+												isShippingCalculatorEnabled={
+													isShippingCalculatorEnabled
+												}
+											/>
+										</CartProvider>
 									</Disabled>
 								</BlockErrorBoundary>
 							</>

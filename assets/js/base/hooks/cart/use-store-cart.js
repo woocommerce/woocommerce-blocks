@@ -5,6 +5,9 @@
  */
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
+import { useCartContext } from '@woocommerce/base-context';
+import { previewCart } from '@woocommerce/resource-previews';
+import { camelCase, mapKeys } from 'lodash';
 
 /**
  * @constant
@@ -12,6 +15,7 @@ import { useSelect } from '@wordpress/data';
  */
 const defaultCartData = {
 	cartCoupons: [],
+	shippingRates: [],
 	cartItems: [],
 	cartItemsCount: 0,
 	cartItemsWeight: 0,
@@ -35,6 +39,7 @@ const defaultCartData = {
  * @return {StoreCart} Object containing cart data.
  */
 export const useStoreCart = ( options = { shouldSelect: true } ) => {
+	const { isEditor } = useCartContext();
 	const { shouldSelect } = options;
 
 	const results = useSelect(
@@ -42,6 +47,25 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 			if ( ! shouldSelect ) {
 				return null;
 			}
+
+			if ( isEditor ) {
+				// Convert keys to camelCase like the reducer in the cart data store.
+				const cartData = mapKeys( previewCart, ( _, key ) =>
+					camelCase( key )
+				);
+				return {
+					cartCoupons: cartData.coupons,
+					shippingRates: cartData.shippingRates,
+					cartItems: cartData.items,
+					cartItemsCount: cartData.itemsCount,
+					cartItemsWeight: cartData.itemsWeight,
+					cartNeedsShipping: cartData.needsShipping,
+					cartTotals: previewCart.totals,
+					cartIsLoading: false,
+					cartErrors: [],
+				};
+			}
+
 			const store = select( storeKey );
 			const cartData = store.getCartData();
 			const cartErrors = store.getCartErrors();
@@ -49,7 +73,6 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 			const cartIsLoading = ! store.hasFinishedResolution(
 				'getCartData'
 			);
-
 			return {
 				cartCoupons: cartData.coupons,
 				shippingRates: cartData.shippingRates,
