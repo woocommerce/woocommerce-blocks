@@ -143,29 +143,35 @@ class Assets {
 				],
 				'homeUrl'                       => esc_url( home_url( '/' ) ),
 				'storePages'                    => [
-					'shop'     => $page_ids['shop'] ? [
-						'name' => get_the_title( $page_ids['shop'] ),
-						'url'  => get_permalink( $page_ids['shop'] ),
-					] : false,
-					'cart'     => $page_ids['cart'] ? [
-						'name' => get_the_title( $page_ids['cart'] ),
-						'url'  => get_permalink( $page_ids['cart'] ),
-					] : false,
-					'checkout' => $page_ids['checkout'] ? [
-						'name' => get_the_title( $page_ids['checkout'] ),
-						'url'  => get_permalink( $page_ids['checkout'] ),
-					] : false,
-					'privacy'  => $page_ids['privacy'] ? [
-						'name' => get_the_title( $page_ids['privacy'] ),
-						'url'  => get_permalink( $page_ids['privacy'] ),
-					] : false,
-					'terms'    => $page_ids['terms'] ? [
-						'name' => get_the_title( $page_ids['terms'] ),
-						'url'  => get_permalink( $page_ids['terms'] ),
-					] : false,
+					'shop'     => self::format_page_resource( $page_ids['shop'] ),
+					'cart'     => self::format_page_resource( $page_ids['cart'] ),
+					'checkout' => self::format_page_resource( $page_ids['checkout'] ),
+					'privacy'  => self::format_page_resource( $page_ids['privacy'] ),
+					'terms'    => self::format_page_resource( $page_ids['terms'] ),
 				],
+				'allPages'                      => array_map( [ __CLASS__, 'format_page_resource' ], array_column( get_pages(), null, 'ID' ) ),
 			]
 		);
+	}
+
+	/**
+	 * Format a page object into a standard array of data.
+	 *
+	 * @param WP_Post|int $page Page object or ID.
+	 * @return array
+	 */
+	protected static function format_page_resource( $page ) {
+		if ( ! $page ) {
+			return [];
+		}
+		if ( is_numeric( $page ) ) {
+			$page = get_post( $page );
+		}
+		return [
+			'id'        => $page->ID,
+			'title'     => $page->post_title,
+			'permalink' => get_permalink( $page->ID ),
+		];
 	}
 
 	/**

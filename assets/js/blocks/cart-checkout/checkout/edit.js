@@ -12,15 +12,16 @@ import {
 	PanelBody,
 	ToggleControl,
 	CheckboxControl,
+	SelectControl,
 	Notice,
-	TextControl,
 } from '@wordpress/components';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import {
 	PRIVACY_URL,
 	TERMS_URL,
 	SHIPPING_METHODS_EXIST,
-	CART_URL,
+	CART_PAGE_ID,
+	ALL_PAGES,
 } from '@woocommerce/block-settings';
 import { getAdminLink } from '@woocommerce/settings';
 import { __experimentalCreateInterpolateElement } from 'wordpress-element';
@@ -41,7 +42,6 @@ const CheckoutEditor = ( { attributes, setAttributes } ) => {
 		requireCompanyField,
 		requirePhoneField,
 		showPolicyLinks,
-		cartPageUrl,
 		showReturnToCart,
 	} = attributes;
 	return (
@@ -210,7 +210,7 @@ const CheckoutEditor = ( { attributes, setAttributes } ) => {
 					) }
 					<ToggleControl
 						label={ __(
-							'Show a "return to cart" link',
+							'Show a link to "return to cart"',
 							'woo-gutenberg-products-block'
 						) }
 						checked={ showReturnToCart }
@@ -221,17 +221,26 @@ const CheckoutEditor = ( { attributes, setAttributes } ) => {
 						}
 					/>
 					{ showReturnToCart && (
-						<TextControl
+						<SelectControl
 							label={ __(
-								'Return to Cart link URL',
+								'Cart page',
 								'woo-gutenberg-products-block'
 							) }
-							value={ cartPageUrl }
-							placeholder={ CART_URL }
+							help={ __(
+								'The "return to cart" link will send the customer here.',
+								'woo-gutenberg-products-block'
+							) }
+							value={ attributes.cartPageId || CART_PAGE_ID }
+							options={ Object.values( ALL_PAGES ).map(
+								( page ) => {
+									return {
+										label: page.title,
+										value: page.id,
+									};
+								}
+							) }
 							onChange={ ( value ) =>
-								setAttributes( {
-									cartPageUrl: value,
-								} )
+								setAttributes( { cartPageId: value } )
 							}
 						/>
 					) }

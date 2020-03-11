@@ -329,7 +329,7 @@ const Block = ( {
 						<div className="wc-block-checkout__actions">
 							{ attributes.showReturnToCart && (
 								<ReturnToCartButton
-									href={ attributes.cartPageUrl }
+									page={ attributes.cartPageId }
 								/>
 							) }
 							<PlaceOrderButton />

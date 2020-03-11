@@ -36,8 +36,8 @@ const blockAttributes = {
 		type: 'boolean',
 		default: true,
 	},
-	cartPageUrl: {
-		type: 'string',
+	cartPageId: {
+		type: 'number',
 		default: '',
 	},
 };
