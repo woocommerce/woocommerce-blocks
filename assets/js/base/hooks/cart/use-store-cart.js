@@ -23,7 +23,6 @@ const defaultCartData = {
 	cartTotals: {},
 	cartIsLoading: true,
 	cartErrors: [],
-	shippingRates: [],
 };
 
 /**
