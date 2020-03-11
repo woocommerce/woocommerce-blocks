@@ -24,11 +24,7 @@ const renderShippingRatesControlOption = ( option ) => ( {
 	),
 } );
 
-const ShippingRateSelector = ( {
-	shippingRates,
-	shippingRatesLoading,
-	hasShippingAddress = true,
-} ) => {
+const ShippingRateSelector = ( { shippingRates, shippingRatesLoading } ) => {
 	return (
 		<fieldset className="wc-block-cart__shipping-options-fieldset">
 			<legend className="screen-reader-text">
@@ -40,17 +36,10 @@ const ShippingRateSelector = ( {
 			<ShippingRatesControl
 				className="wc-block-cart__shipping-options"
 				collapsibleWhenMultiple={ true }
-				noResultsMessage={
-					hasShippingAddress
-						? __(
-								'No shipping options were found.',
-								'woo-gutenberg-products-block'
-						  )
-						: __(
-								'Shipping options will be shown during checkout.',
-								'woo-gutenberg-products-block'
-						  )
-				}
+				noResultsMessage={ __(
+					'No shipping options were found.',
+					'woo-gutenberg-products-block'
+				) }
 				renderOption={ renderShippingRatesControlOption }
 				shippingRates={ shippingRates }
 				shippingRatesLoading={ shippingRatesLoading }

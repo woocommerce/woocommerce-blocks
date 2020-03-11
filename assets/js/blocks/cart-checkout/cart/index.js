@@ -6,6 +6,7 @@ import { InnerBlocks } from '@wordpress/block-editor';
 import { registerBlockType } from '@wordpress/blocks';
 import { Icon, cart } from '@woocommerce/icons';
 import { kebabCase } from 'lodash';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -52,7 +53,10 @@ const settings = {
 		} );
 
 		return (
-			<div className={ attributes.className } { ...data }>
+			<div
+				className={ classnames( 'is-loading', attributes.className ) }
+				{ ...data }
+			>
 				<InnerBlocks.Content />
 			</div>
 		);

@@ -61,19 +61,12 @@ export const useShippingRates = ( addressFieldsKeys ) => {
 		}
 	}, [ debouncedShippingAddress ] );
 
-	// Get address fields with values. hasShippingAddress will be true if
-	// country and at least one other field is populated.
-	const filteredShippingAddress = Object.values( shippingAddress ).filter(
-		Boolean
-	);
-
 	return {
 		shippingRates,
 		shippingAddress,
 		setShippingAddress,
 		shippingRatesLoading,
 		shippingRatesErrors: cartErrors,
-		hasShippingAddress:
-			filteredShippingAddress.length > 1 && shippingAddress.country,
+		hasShippingAddress: !! shippingAddress.country,
 	};
 };

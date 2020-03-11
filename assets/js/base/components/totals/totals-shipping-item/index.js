@@ -32,65 +32,59 @@ const TotalsShippingItem = ( {
 	const {
 		shippingRates,
 		shippingAddress,
-		setShippingAddress,
 		shippingRatesLoading,
 		hasShippingAddress,
+		setShippingAddress,
 	} = useShippingRates( defaultAddressFields );
 	const totalShippingValue = DISPLAY_CART_PRICES_INCLUDING_TAX
 		? parseInt( values.total_shipping, 10 ) +
 		  parseInt( values.total_shipping_tax, 10 )
 		: parseInt( values.total_shipping, 10 );
-	const filteredShippingAddress = Object.values( shippingAddress ).filter(
-		Boolean
-	);
-	const hasAddress = filteredShippingAddress.length > 1;
 	const hasRates = hasShippingRate( shippingRates ) || totalShippingValue;
-	const showRates = showRatesWithoutAddress || hasAddress;
+	const showingRates = showRatesWithoutAddress || hasShippingAddress;
 
-	// No rates and calculations are disabled - show checkout prompt.
-	if ( ! hasRates && ! showCalculator ) {
+	// If we have no rates, and an address is needed.
+	if ( ! hasRates && ! hasShippingAddress ) {
 		return (
 			<TotalsItem
 				label={ __( 'Shipping', 'woo-gutenberg-products-block' ) }
 				value={
-					<em>
-						{ __(
-							'Calculated during checkout',
-							'woo-gutenberg-products-block'
-						) }
-					</em>
-				}
-			/>
-		);
-	}
-
-	// No rates, no address, and rates disabled until address is given.
-	if ( ! hasRates && ! showRates && showCalculator ) {
-		return (
-			<TotalsItem
-				label={ __( 'Shipping', 'woo-gutenberg-products-block' ) }
-				value={
-					<button
-						className="wc-block-cart__change-address-button"
-						onClick={ () => {
-							setIsShippingCalculatorOpen(
-								! isShippingCalculatorOpen
-							);
-						} }
-					>
-						{ __( 'Calculate', 'woo-gutenberg-products-block' ) }
-					</button>
+					showCalculator ? (
+						<button
+							className="wc-block-cart__change-address-button"
+							onClick={ () => {
+								setIsShippingCalculatorOpen(
+									! isShippingCalculatorOpen
+								);
+							} }
+						>
+							{ __(
+								'Calculate',
+								'woo-gutenberg-products-block'
+							) }
+						</button>
+					) : (
+						<em>
+							{ __(
+								'Calculated during checkout',
+								'woo-gutenberg-products-block'
+							) }
+						</em>
+					)
 				}
 				description={
-					<ShippingCalculator
-						address={ shippingAddress }
-						setAddress={ setShippingAddress }
-						onUpdate={ () => {
-							setIsShippingCalculatorOpen( false );
-						} }
-						hidden={ ! isShippingCalculatorOpen }
-						showToggle={ false }
-					/>
+					<>
+						{ showCalculator && isShippingCalculatorOpen && (
+							<ShippingCalculator
+								onUpdate={ ( newAddress ) => {
+									setShippingAddress( newAddress );
+									setIsShippingCalculatorOpen( false );
+								} }
+								address={ shippingAddress }
+								addressFields={ defaultAddressFields }
+							/>
+						) }
+					</>
 				}
 			/>
 		);
@@ -103,28 +97,37 @@ const TotalsShippingItem = ( {
 				value={ totalShippingValue ? totalShippingValue : '' }
 				description={
 					<>
-						<ShippingLocation address={ shippingAddress } />
+						<ShippingLocation address={ shippingAddress } />{ ' ' }
 						{ showCalculator && (
-							<ShippingCalculator
-								address={ shippingAddress }
-								setAddress={ setShippingAddress }
-								onUpdate={ () => {
-									setIsShippingCalculatorOpen( false );
-								} }
-								hidden={ ! isShippingCalculatorOpen }
-								showToggle={ true }
-								onToggle={ () => {
+							<button
+								className="wc-block-cart__change-address-button"
+								onClick={ () => {
 									setIsShippingCalculatorOpen(
 										! isShippingCalculatorOpen
 									);
 								} }
+							>
+								{ __(
+									'(change address)',
+									'woo-gutenberg-products-block'
+								) }
+							</button>
+						) }
+						{ showCalculator && isShippingCalculatorOpen && (
+							<ShippingCalculator
+								onUpdate={ ( newAddress ) => {
+									setShippingAddress( newAddress );
+									setIsShippingCalculatorOpen( false );
+								} }
+								address={ shippingAddress }
+								addressFields={ defaultAddressFields }
 							/>
 						) }
 					</>
 				}
 				currency={ currency }
 			/>
-			{ showRates && (
+			{ showingRates && (
 				<fieldset className="wc-block-cart__shipping-options-fieldset">
 					<legend className="screen-reader-text">
 						{ __(
@@ -135,7 +138,6 @@ const TotalsShippingItem = ( {
 					<ShippingRateSelector
 						shippingRates={ shippingRates }
 						shippingRatesLoading={ shippingRatesLoading }
-						hasShippingAddress={ hasShippingAddress }
 					/>
 				</fieldset>
 			) }

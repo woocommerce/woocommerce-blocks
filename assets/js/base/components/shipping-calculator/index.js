@@ -2,7 +2,6 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -10,56 +9,24 @@ import { __ } from '@wordpress/i18n';
 import ShippingCalculatorAddress from './address';
 import './style.scss';
 
-const ShippingCalculator = ( {
-	address,
-	setAddress,
-	hidden = false,
-	onUpdate = () => {},
-	showToggle = true,
-	onToggle = () => {},
-} ) => {
+const ShippingCalculator = ( { onUpdate, address, addressFields } ) => {
 	return (
 		<div className="wc-block-cart__shipping-calculator">
-			{ showToggle && (
-				<>
-					{ '(' }
-					<button
-						className="wc-block-cart__change-address-button"
-						onClick={ onToggle }
-					>
-						{ __(
-							'change address',
-							'woo-gutenberg-products-block'
-						) }
-					</button>
-					{ ')' }
-				</>
-			) }
-			{ ! hidden && (
-				<ShippingCalculatorAddress
-					address={ address }
-					onUpdate={ ( newAddress ) => {
-						setAddress( newAddress );
-						onUpdate();
-					} }
-				/>
-			) }
+			<ShippingCalculatorAddress
+				address={ address }
+				addressFields={ addressFields }
+				onUpdate={ ( newAddress ) => {
+					onUpdate( newAddress );
+				} }
+			/>
 		</div>
 	);
 };
 
 ShippingCalculator.propTypes = {
-	address: PropTypes.shape( {
-		city: PropTypes.string,
-		state: PropTypes.string,
-		postcode: PropTypes.string,
-		country: PropTypes.string,
-	} ),
-	setAddress: PropTypes.func.isRequired,
-	hidden: PropTypes.bool,
-	onUpdate: PropTypes.func,
-	showToggle: PropTypes.bool,
-	onToggle: PropTypes.func,
+	onUpdate: PropTypes.func.isRequired,
+	address: PropTypes.object.isRequired,
+	addressFields: PropTypes.array.isRequired,
 };
 
 export default ShippingCalculator;

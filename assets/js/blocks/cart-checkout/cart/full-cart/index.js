@@ -42,7 +42,7 @@ import './editor.scss';
  * Component that renders the Cart block when user has something in cart aka "full".
  */
 const Cart = ( { isShippingCalculatorEnabled, isShippingCostHidden } ) => {
-	const { cartItems, cartTotals, cartIsLoading } = useStoreCart();
+	const { cartItems, cartTotals, cartIsLoading, cartErrors } = useStoreCart();
 
 	const {
 		applyCoupon,
@@ -53,8 +53,7 @@ const Cart = ( { isShippingCalculatorEnabled, isShippingCostHidden } ) => {
 		cartCouponsErrors,
 	} = useStoreCartCoupons();
 
-	// @todo shippingRatesErrors
-	const errors = [ ...cartCouponsErrors ];
+	const errors = [ ...cartErrors, ...cartCouponsErrors ];
 	if ( errors.length > 0 ) {
 		throw new Error( errors[ 0 ].message );
 	}
@@ -101,7 +100,9 @@ const Cart = ( { isShippingCalculatorEnabled, isShippingCostHidden } ) => {
 						{ SHIPPING_ENABLED && (
 							<TotalsShippingItem
 								showCalculator={ isShippingCalculatorEnabled }
-								showRatesWithoutAddress={ isShippingCostHidden }
+								showRatesWithoutAddress={
+									! isShippingCostHidden
+								}
 								values={ cartTotals }
 								currency={ totalsCurrency }
 							/>

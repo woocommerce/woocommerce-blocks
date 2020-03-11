@@ -28,7 +28,7 @@ const Block = ( { emptyCart, attributes } ) => {
 
 	return (
 		<>
-			{ ! cartIsLoading && ! cartItems.length ? (
+			{ ! cartIsLoading && cartItems.length === 0 ? (
 				<RawHTML>{ emptyCart }</RawHTML>
 			) : (
 				<LoadingMask showSpinner={ true } isLoading={ cartIsLoading }>

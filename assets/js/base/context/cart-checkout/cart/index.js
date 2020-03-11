@@ -28,11 +28,11 @@ export const CartProvider = ( { children, isEditor } ) => {
 	/**
 	 * @type {CartDataContext}
 	 */
-	const checkoutData = {
+	const cartData = {
 		isEditor,
 	};
 	return (
-		<CartContext.Provider value={ checkoutData }>
+		<CartContext.Provider value={ cartData }>
 			{ children }
 		</CartContext.Provider>
 	);
