@@ -20,10 +20,12 @@ export const useSelectShippingRate = ( shippingRates ) => {
 	const initiallySelectedRates = Object.fromEntries(
 		shippingRates.map(
 			// the API responds with those keys.
-			( p, i ) => [
-				i,
+			( p ) => [
+				/* eslint-disable camelcase */
+				p.package_id,
 				// eslint-disable-next-line camelcase
 				p.shipping_rates.find( ( rate ) => rate.selected )?.rate_id,
+				/* eslint-enable */
 			]
 		)
 	);
