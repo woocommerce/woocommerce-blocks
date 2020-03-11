@@ -206,4 +206,12 @@
  *                                                        (true) or not (false).
  */
 
+/**
+ * @typedef {Object} CartDataContext
+ *
+ * @property {boolean}                 isEditor           Indicates whether in
+ *                                                        the editor context
+ *                                                        (true) or not (false).
+ */
+
 export {};
