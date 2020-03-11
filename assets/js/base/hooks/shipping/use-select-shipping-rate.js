@@ -17,17 +17,25 @@ See also: https://github.com/woocommerce/woocommerce-gutenberg-products-block/tr
  * locally by a state and updated optimistically.
  */
 export const useSelectShippingRate = ( shippingRates ) => {
-	const initiallySelectedRates = shippingRates.map(
-		// the API responds with those keys.
-		// eslint-disable-next-line camelcase
-		( p ) => p.shipping_rates.find( ( rate ) => rate.selected )?.rate_id
+	const initiallySelectedRates = Object.fromEntries(
+		shippingRates.map(
+			// the API responds with those keys.
+			( p, i ) => [
+				i,
+				// eslint-disable-next-line camelcase
+				p.shipping_rates.find( ( rate ) => rate.selected )?.rate_id,
+			]
+		)
 	);
 	const [ selectedShippingRates, setSelectedShipping ] = useState(
 		initiallySelectedRates
 	);
 	const { selectShippingRate } = useDispatch( storeKey );
 	const setRate = ( newShippingRate, packageId ) => {
-		setSelectedShipping( [ newShippingRate ] );
+		setSelectedShipping( {
+			...selectedShippingRates,
+			[ packageId ]: newShippingRate,
+		} );
 		selectShippingRate( newShippingRate, packageId );
 	};
 	return {
