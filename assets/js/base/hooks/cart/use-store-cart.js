@@ -7,7 +7,6 @@ import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
 import { useCartContext } from '@woocommerce/base-context';
 import { previewCart } from '@woocommerce/resource-previews';
-import { camelCase, mapKeys } from 'lodash';
 
 /**
  * @constant
@@ -48,17 +47,13 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 			}
 
 			if ( isEditor ) {
-				// Convert keys to camelCase like the reducer in the cart data store.
-				const cartData = mapKeys( previewCart, ( _, key ) =>
-					camelCase( key )
-				);
 				return {
-					cartCoupons: cartData.coupons,
-					shippingRates: cartData.shippingRates,
-					cartItems: cartData.items,
-					cartItemsCount: cartData.itemsCount,
-					cartItemsWeight: cartData.itemsWeight,
-					cartNeedsShipping: cartData.needsShipping,
+					cartCoupons: previewCart.coupons,
+					shippingRates: previewCart.shipping_rates,
+					cartItems: previewCart.items,
+					cartItemsCount: previewCart.items_count,
+					cartItemsWeight: previewCart.items_weight,
+					cartNeedsShipping: previewCart.needs_shipping,
 					cartTotals: previewCart.totals,
 					cartIsLoading: false,
 					cartErrors: [],
