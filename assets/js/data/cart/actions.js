@@ -268,7 +268,10 @@ export function* selectShippingRate( rateId, packageId = 0 ) {
 		}
 	} catch ( error ) {
 		yield receiveError( error );
+		// Re-throw the error.
+		throw error;
 	}
+	return true;
 }
 
 /**
