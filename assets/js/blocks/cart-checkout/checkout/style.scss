@@ -4,6 +4,10 @@
 	margin-top: $gap;
 }
 
+.wc-block-checkout .wc-block-shipping-rates-control__package:not(:first-of-type) {
+	margin-top: $gap-larger;
+}
+
 @include breakpoint( ">480px" ) {
 	.wc-block-checkout__billing-fields,
 	.wc-block-checkout__shipping-fields {
