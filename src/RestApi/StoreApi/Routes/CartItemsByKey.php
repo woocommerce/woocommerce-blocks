@@ -137,7 +137,7 @@ class CartItemsByKey extends AbstractRoute {
 	 * @return array
 	 */
 	protected function prepare_links( $cart_item, $request ) {
-		$base  = $this->namespace . '/' . $this->rest_base;
+		$base  = $this->get_namespace() . $this->get_path();
 		$links = array(
 			'self'       => array(
 				'href' => rest_url( trailingslashit( $base ) . $cart_item['key'] ),

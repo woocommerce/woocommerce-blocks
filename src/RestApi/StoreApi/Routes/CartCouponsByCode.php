@@ -75,7 +75,7 @@ class CartCouponsByCode extends AbstractRoute {
 			return new \WP_Error( 'woocommerce_rest_cart_coupon_invalid_code', __( 'Coupon does not exist in the cart.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
 		}
 
-		return rest_ensure_response( $this->schema->get_item_response( $coupon_code ) );
+		return $this->prepare_item_for_response( $request['code'], $request );
 	}
 
 	/**

@@ -37,7 +37,7 @@ abstract class AbstractRoute implements RouteInterface {
 	 *
 	 * @return array
 	 */
-	protected function get_item_schema() {
+	public function get_item_schema() {
 		return $this->schema->get_item_schema();
 	}
 
@@ -48,7 +48,7 @@ abstract class AbstractRoute implements RouteInterface {
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response $response Response data.
 	 */
-	protected function prepare_item_for_response( $item, \WP_REST_Request $request ) {
+	public function prepare_item_for_response( $item, \WP_REST_Request $request ) {
 		$response = rest_ensure_response( $this->schema->get_item_response( $item ) );
 		$response->add_links( $this->prepare_links( $item, $request ) );
 
@@ -59,8 +59,6 @@ abstract class AbstractRoute implements RouteInterface {
 	 * Retrieves the context param.
 	 *
 	 * Ensures consistent descriptions between endpoints, and populates enum from schema.
-	 *
-	 * @since 4.7.0
 	 *
 	 * @param array $args Optional. Additional arguments for context parameter. Default empty array.
 	 * @return array Context parameter details.
@@ -131,30 +129,7 @@ abstract class AbstractRoute implements RouteInterface {
 	 */
 	public function get_collection_params() {
 		return array(
-			'context'  => $this->get_context_param(),
-			'page'     => array(
-				'description'       => __( 'Current page of the collection.', 'woo-gutenberg-products-block' ),
-				'type'              => 'integer',
-				'default'           => 1,
-				'sanitize_callback' => 'absint',
-				'validate_callback' => 'rest_validate_request_arg',
-				'minimum'           => 1,
-			),
-			'per_page' => array(
-				'description'       => __( 'Maximum number of items to be returned in result set.', 'woo-gutenberg-products-block' ),
-				'type'              => 'integer',
-				'default'           => 10,
-				'minimum'           => 1,
-				'maximum'           => 100,
-				'sanitize_callback' => 'absint',
-				'validate_callback' => 'rest_validate_request_arg',
-			),
-			'search'   => array(
-				'description'       => __( 'Limit results to those matching a string.', 'woo-gutenberg-products-block' ),
-				'type'              => 'string',
-				'sanitize_callback' => 'sanitize_text_field',
-				'validate_callback' => 'rest_validate_request_arg',
-			),
+			'context' => $this->get_context_param(),
 		);
 	}
 }

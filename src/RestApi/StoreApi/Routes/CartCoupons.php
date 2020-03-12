@@ -104,7 +104,7 @@ class CartCoupons extends AbstractRoute {
 			return new \WP_Error( $e->getErrorCode(), $e->getMessage(), array( 'status' => $e->getCode() ) );
 		}
 
-		$response = $this->get_item( $request );
+		$response = $this->prepare_item_for_response( $request['code'], $request );
 
 		if ( $response instanceof \WP_Error ) {
 			return $response;
