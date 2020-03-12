@@ -1,116 +1,70 @@
 <?php
 /**
- * Product Attribute Terms Controller.
+ * Product Attribute Terms route.
  *
  * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  * @package WooCommerce/Blocks
  */
 
-namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Controllers;
+namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Routes;
 
 defined( 'ABSPATH' ) || exit;
 
-use \WP_Error as RestError;
-use \WP_REST_Server as RestServer;
-use \WP_REST_Controller as RestController;
-use \WC_REST_Exception as RestException;
-use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas\TermSchema;
 use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\TermQuery;
 
 /**
- * Product attribute terms API.
- *
- * @since 2.5.0
+ * ProductAttributeTerms class.
  */
-class ProductAttributeTerms extends RestController {
+class ProductAttributeTerms extends AbstractRoute {
 	/**
-	 * Endpoint namespace.
+	 * Get the namespace for this route.
 	 *
-	 * @var string
+	 * @return string
 	 */
-	protected $namespace = 'wc/store';
-
-	/**
-	 * Route base.
-	 *
-	 * @var string
-	 */
-	protected $rest_base = 'products/attributes/(?P<attribute_id>[\d]+)/terms';
-
-	/**
-	 * Schema class instance.
-	 *
-	 * @var TermSchema
-	 */
-	protected $schema;
-
-	/**
-	 * Query class instance.
-	 *
-	 * @var TermQuery
-	 */
-	protected $term_query;
-
-	/**
-	 * Setup API class.
-	 */
-	public function __construct() {
-		$this->schema     = new TermSchema();
-		$this->term_query = new TermQuery();
+	public function get_namespace() {
+		return 'wc/store';
 	}
 
 	/**
-	 * Register the routes.
+	 * Get the path of this REST route.
+	 *
+	 * @return string
 	 */
-	public function register_routes() {
-		register_rest_route(
-			$this->namespace,
-			'/' . $this->rest_base,
-			array(
-				'args'   => array(
-					'attribute_id' => array(
-						'description' => __( 'Unique identifier for the attribute.', 'woo-gutenberg-products-block' ),
-						'type'        => 'integer',
-					),
+	public function get_path() {
+		return '/products/attributes/(?P<attribute_id>[\d]+)/terms';
+	}
+
+	/**
+	 * Get method arguments for this REST route.
+	 *
+	 * @return array An array of endpoints.
+	 */
+	public function get_args() {
+		return [
+			'args'   => array(
+				'attribute_id' => array(
+					'description' => __( 'Unique identifier for the attribute.', 'woo-gutenberg-products-block' ),
+					'type'        => 'integer',
 				),
-				array(
-					'methods'  => RestServer::READABLE,
-					'callback' => [ $this, 'get_items' ],
-					'args'     => $this->get_collection_params(),
-				),
-				'schema' => array( $this, 'get_public_item_schema' ),
-			)
-		);
-	}
-
-	/**
-	 * Item schema.
-	 *
-	 * @return array
-	 */
-	public function get_item_schema() {
-		return $this->schema->get_item_schema();
-	}
-
-	/**
-	 * Prepare a single item for response.
-	 *
-	 * @param \WP_Term         $item Term object.
-	 * @param \WP_REST_Request $request Request object.
-	 * @return \WP_REST_Response $response Response data.
-	 */
-	public function prepare_item_for_response( $item, $request ) {
-		return rest_ensure_response( $this->schema->get_item_response( $item ) );
+			),
+			[
+				'methods'  => \WP_REST_Server::READABLE,
+				'callback' => [ $this, 'get_response' ],
+				'args'     => $this->get_collection_params(),
+			],
+			'schema' => [ $this->schema, 'get_public_item_schema' ],
+		];
 	}
 
 	/**
 	 * Get a collection of attribute terms.
 	 *
 	 * @param \WP_REST_Request $request Full details about the request.
-	 * @return RestError|\WP_REST_Response
+	 * @return \WP_Error|\WP_REST_Response
 	 */
-	public function get_items( $request ) {
-		$attribute = wc_get_attribute( $request['attribute_id'] );
+	public function get_response( $request ) {
+		$attribute  = wc_get_attribute( $request['attribute_id'] );
+		$term_query = new TermQuery();
 
 		if ( ! $attribute || ! taxonomy_exists( $attribute->slug ) ) {
 			return new \WP_Error( 'woocommerce_rest_taxonomy_invalid', __( 'Attribute does not exist.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
@@ -123,7 +77,7 @@ class ProductAttributeTerms extends RestController {
 			'hide_empty' => $request['hide_empty'],
 		];
 
-		$objects = $this->term_query->get_objects( $term_request );
+		$objects = $term_query->get_objects( $term_request );
 		$return  = [];
 
 		foreach ( $objects as $object ) {

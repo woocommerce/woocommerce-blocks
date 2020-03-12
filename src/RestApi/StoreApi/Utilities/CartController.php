@@ -10,7 +10,6 @@ namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities;
 defined( 'ABSPATH' ) || exit;
 
 use \WP_Error as Error;
-use \WC_REST_Exception as RestException;
 
 /**
  * Woo Cart Controller class.
@@ -26,7 +25,7 @@ class CartController {
 	 * the cart. For us this would cause notices to build up and output on the store, out of context. Core would need
 	 * refactoring to split notices out from other cart actions.
 	 *
-	 * @throws RestException Exception if invalid data is detected.
+	 * @throws \WC_REST_Exception Exception if invalid data is detected.
 	 *
 	 * @param array $request Add to cart request params.
 	 * @return string|Error
@@ -63,7 +62,7 @@ class CartController {
 			$existing_cart_id = wc()->cart->find_product_in_cart( $cart_id );
 
 			if ( ! $product->is_purchasable() ) {
-				throw new RestException(
+				throw new \WC_REST_Exception(
 					'woocommerce_rest_cart_product_is_not_purchasable',
 					__( 'This product cannot be purchased.', 'woo-gutenberg-products-block' ),
 					403
@@ -71,7 +70,7 @@ class CartController {
 			}
 
 			if ( $product->is_sold_individually() && $existing_cart_id ) {
-				throw new RestException(
+				throw new \WC_REST_Exception(
 					'woocommerce_rest_cart_product_sold_individually',
 					sprintf(
 						/* translators: %s: product name */
@@ -83,7 +82,7 @@ class CartController {
 			}
 
 			if ( ! $product->is_in_stock() ) {
-				throw new RestException(
+				throw new \WC_REST_Exception(
 					'woocommerce_rest_cart_product_no_stock',
 					sprintf(
 						/* translators: %s: product name */
@@ -100,7 +99,7 @@ class CartController {
 				$stock_controller_quantity = isset( $cart_product_quantities[ $stock_controller_id ] ) ? $cart_product_quantities[ $stock_controller_id ] : 0;
 
 				if ( ! $product->has_enough_stock( $stock_controller_quantity + $request['quantity'] ) ) {
-					throw new RestException(
+					throw new \WC_REST_Exception(
 						'woocommerce_rest_cart_product_no_stock',
 						sprintf(
 							/* translators: 1: product name 2: quantity in stock */
@@ -148,7 +147,7 @@ class CartController {
 			);
 
 			return $cart_id;
-		} catch ( RestException $e ) {
+		} catch ( \WC_REST_Exception $e ) {
 			return new Error( $e->getErrorCode(), $e->getMessage(), array( 'status' => $e->getCode() ) );
 		}
 	}
@@ -253,7 +252,7 @@ class CartController {
 	 * applied. For us this would cause notices to build up and output on the store, out of context. Core would need
 	 * refactoring to split notices out from other cart actions.
 	 *
-	 * @throws RestException Exception if invalid data is detected.
+	 * @throws \WC_REST_Exception Exception if invalid data is detected.
 	 *
 	 * @param string $coupon_code Coupon code.
 	 */
@@ -263,7 +262,7 @@ class CartController {
 		$coupon          = new \WC_Coupon( $coupon_code );
 
 		if ( $coupon->get_code() !== $coupon_code ) {
-			throw new RestException(
+			throw new \WC_REST_Exception(
 				'woocommerce_rest_cart_coupon_error',
 				sprintf(
 					/* Translators: %s coupon code */
@@ -275,7 +274,7 @@ class CartController {
 		}
 
 		if ( $this->has_coupon( $coupon_code ) ) {
-			throw new RestException(
+			throw new \WC_REST_Exception(
 				'woocommerce_rest_cart_coupon_error',
 				sprintf(
 					/* Translators: %s coupon code */
@@ -287,7 +286,7 @@ class CartController {
 		}
 
 		if ( ! $coupon->is_valid() ) {
-			throw new RestException(
+			throw new \WC_REST_Exception(
 				'woocommerce_rest_cart_coupon_error',
 				$coupon->get_error_message(),
 				403
@@ -306,7 +305,7 @@ class CartController {
 			$individual_use_coupon = new \WC_Coupon( $code );
 
 			if ( false === apply_filters( 'woocommerce_apply_with_individual_use_coupon', false, $coupon, $individual_use_coupon, $applied_coupons ) ) {
-				throw new RestException(
+				throw new \WC_REST_Exception(
 					'woocommerce_rest_cart_coupon_error',
 					sprintf(
 						/* translators: %s: coupon code */
@@ -335,7 +334,7 @@ class CartController {
 	/**
 	 * Get a product object to be added to the cart.
 	 *
-	 * @throws RestException Exception if invalid data is detected.
+	 * @throws \WC_REST_Exception Exception if invalid data is detected.
 	 *
 	 * @param array $request Add to cart request params.
 	 * @return \WC_Product|Error Returns a product object if purchasable.
@@ -344,7 +343,7 @@ class CartController {
 		$product = wc_get_product( $request['id'] );
 
 		if ( ! $product || 'trash' === $product->get_status() ) {
-			throw new RestException(
+			throw new \WC_REST_Exception(
 				'woocommerce_rest_cart_invalid_product',
 				__( 'This product cannot be added to the cart.', 'woo-gutenberg-products-block' ),
 				403
@@ -388,7 +387,7 @@ class CartController {
 	/**
 	 * If variations are set, validate and format the values ready to add to the cart.
 	 *
-	 * @throws RestException Exception if invalid data is detected.
+	 * @throws \WC_REST_Exception Exception if invalid data is detected.
 	 *
 	 * @param array $request Add to cart request params.
 	 * @return array Updated request array.
@@ -436,7 +435,7 @@ class CartController {
 					continue;
 				}
 
-				throw new RestException(
+				throw new \WC_REST_Exception(
 					'woocommerce_rest_invalid_variation_data',
 					/* translators: %1$s: Attribute name, %2$s: Allowed values. */
 					sprintf( __( 'Invalid value posted for %1$s. Allowed values: %2$s', 'woo-gutenberg-products-block' ), $attribute_label, implode( ', ', $attribute->get_slugs() ) ),
@@ -451,7 +450,7 @@ class CartController {
 		}
 
 		if ( ! empty( $missing_attributes ) ) {
-			throw new RestException(
+			throw new \WC_REST_Exception(
 				'woocommerce_rest_missing_variation_data',
 				/* translators: %s: Attribute name. */
 				__( 'Missing variation data for variable product.', 'woo-gutenberg-products-block' ) . ' ' . sprintf( _n( '%s is a required field', '%s are required fields', count( $missing_attributes ), 'woo-gutenberg-products-block' ), wc_format_list_of_items( $missing_attributes ) ),
@@ -465,7 +464,7 @@ class CartController {
 	/**
 	 * Try to match request data to a variation ID and return the ID.
 	 *
-	 * @throws RestException Exception if variation cannot be found.
+	 * @throws \WC_REST_Exception Exception if variation cannot be found.
 	 *
 	 * @param array       $request Add to cart request params.
 	 * @param \WC_Product $product Product being added to the cart.
@@ -477,7 +476,7 @@ class CartController {
 		$variation_id     = $data_store->find_matching_product_variation( $product, $match_attributes );
 
 		if ( empty( $variation_id ) ) {
-			throw new RestException(
+			throw new \WC_REST_Exception(
 				'woocommerce_rest_variation_id_from_variation_data',
 				__( 'No matching variation found.', 'woo-gutenberg-products-block' ),
 				400
@@ -492,7 +491,7 @@ class CartController {
 	 *
 	 * Labels are converted to names (e.g. Size to pa_size), and values are cleaned.
 	 *
-	 * @throws RestException Exception if variation cannot be found.
+	 * @throws \WC_REST_Exception Exception if variation cannot be found.
 	 *
 	 * @param array $variation_data Key value pairs of attributes and values.
 	 * @param array $variable_product_attributes Product attributes we're expecting.
@@ -543,7 +542,7 @@ class CartController {
 	/**
 	 * Get product attributes from the variable product (which may be the parent if the product object is a variation).
 	 *
-	 * @throws RestException Exception if product is invalid.
+	 * @throws \WC_REST_Exception Exception if product is invalid.
 	 *
 	 * @param \WC_Product $product Product being added to the cart.
 	 * @return array
@@ -554,7 +553,7 @@ class CartController {
 		}
 
 		if ( ! $product || 'trash' === $product->get_status() ) {
-			throw new RestException(
+			throw new \WC_REST_Exception(
 				'woocommerce_rest_cart_invalid_parent_product',
 				__( 'This product cannot be added to the cart.', 'woo-gutenberg-products-block' ),
 				403

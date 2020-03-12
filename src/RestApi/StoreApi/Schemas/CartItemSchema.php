@@ -44,7 +44,7 @@ class CartItemSchema extends AbstractSchema {
 	 *
 	 * @return array
 	 */
-	protected function get_properties() {
+	public function get_properties() {
 		return [
 			'key'                 => [
 				'description' => __( 'Unique identifier for the item within the cart.', 'woo-gutenberg-products-block' ),
