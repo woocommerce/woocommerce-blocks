@@ -172,7 +172,7 @@ export const usePaymentMethodInterface = () => {
 			// @todo need to pass along the default country set for the site
 			// if it's available.
 			country: '',
-			cartItems: currentCartTotals.current,
+			cartTotalItems: currentCartTotals.current,
 			displayPricesIncludingTax: DISPLAY_CART_PRICES_INCLUDING_TAX,
 			appliedCoupons,
 		},

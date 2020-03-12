@@ -134,7 +134,7 @@
  *                                                          for the default
  *                                                          country for the
  *                                                          site.
- * @property {CartTotalItem[]}    cartItems                 The various subtotal
+ * @property {CartTotalItem[]}    cartTotalItems            The various subtotal
  *                                                          amounts.
  * @property {boolean}            displayPricesIncludingTax True means that the
  *                                                          site is configured
