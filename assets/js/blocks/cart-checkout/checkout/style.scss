@@ -23,4 +23,88 @@
 			grid-column-start: span 2;
 		}
 	}
+
+	.wc-block-checkout__sidebar {
+		.wc-block-totals-table-item {
+			padding-left: $gap-small;
+			padding-right: $gap-small;
+		}
+
+		.wc-block-coupon-code .components-panel__body-toggle {
+			padding-left: $gap-small;
+		}
+
+		.wc-block-coupon-code__row {
+			padding-left: $gap-small;
+			padding-right: $gap-small;
+		}
+	}
+}
+
+.wc-block-checkout__sidebar {
+	.wc-block-order-summary {
+		border: none;
+		margin: -20px;
+
+		> .components-panel__body-title {
+			padding: $gap-small 0 $gap-small $gap-small;
+		}
+
+		.components-panel__body-toggle {
+			padding: 0;
+		}
+	}
+
+	.wc-block-order-summary__button-icon {
+		vertical-align: middle;
+	}
+
+	.wc-block-order-summary__button-text {
+		margin-left: $gap;
+	}
+
+	.wc-block-order-summary__row {
+		display: table;
+		padding: 0 $gap-small;
+	}
+
+	.wc-block-order-summary-item {
+		display: table-row;
+	}
+
+	.wc-block-order-summary-item__image,
+	.wc-block-order-summary-item__description,
+	.wc-block-order-summary-item__price {
+		display: table-cell;
+		vertical-align: top;
+	}
+
+	.wc-block-order-summary-item__image {
+		min-width: 48px;
+		position: relative;
+	}
+
+	.wc-block-order-summary-item__quantity {
+		align-items: center;
+		background: #fff;
+		border: 2px solid currentColor;
+		border-radius: 50%;
+		display: flex;
+		font-size: 11px;
+		min-height: 22px;
+		position: absolute;
+		justify-content: center;
+		right: -6px;
+		top: -6px;
+		min-width: 22px;
+	}
+
+	.wc-block-order-summary-item__description {
+		padding-left: $gap-small;
+		padding-right: $gap-small;
+
+		.wc-block-formatted-money-amount {
+			font-size: 0.875em;
+		}
+	}
 }

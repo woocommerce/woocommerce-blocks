@@ -40,6 +40,7 @@ import '../../../payment-methods-demo';
 const Block = ( {
 	attributes,
 	cartCoupons = [],
+	cartItems = [],
 	cartTotals = {},
 	isEditor = false,
 	shippingRates = [],
@@ -326,9 +327,10 @@ const Block = ( {
 						{ attributes.showPolicyLinks && <Policies /> }
 					</CheckoutForm>
 				</Main>
-				<Sidebar>
+				<Sidebar className="wc-block-checkout__sidebar">
 					<CheckoutSidebar
 						cartCoupons={ cartCoupons }
+						cartItems={ cartItems }
 						cartTotals={ cartTotals }
 						shippingRates={ shippingRates }
 					/>
