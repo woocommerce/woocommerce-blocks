@@ -6,15 +6,7 @@
  * @return {boolean} True if a rate exists.
  */
 const hasShippingRate = ( shippingRatePackages ) => {
-	let foundRate = false;
-
-	shippingRatePackages.forEach( ( shippingRatePackage ) => {
-		if ( shippingRatePackage.shipping_rates.length ) {
-			foundRate = true;
-		}
-	} );
-
-	return foundRate;
+	return shippingRatePackages.some( shippingRatePackage  => shippingRatePackage.shipping_rates.length );
 };
 
 export default hasShippingRate;
