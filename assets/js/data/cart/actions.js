@@ -308,6 +308,10 @@ export function* updateShippingAddress( address ) {
 		}
 	} catch ( error ) {
 		yield receiveError( error );
+		yield shippingRatesAreResolving( false );
+		// rethrow error.
+		throw error;
 	}
 	yield shippingRatesAreResolving( false );
+	return true;
 }
