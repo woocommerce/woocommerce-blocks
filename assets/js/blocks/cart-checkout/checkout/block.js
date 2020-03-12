@@ -28,7 +28,7 @@ import {
 	Sidebar,
 	SidebarLayout,
 	Main,
-} from '@woocommerce/base-components/sidebar-layout'; // @todo
+} from '@woocommerce/base-components/sidebar-layout';
 
 /**
  * Internal dependencies
