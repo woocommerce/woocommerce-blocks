@@ -22,10 +22,11 @@ class RoutesController {
 			'cart'                    => new Schemas\CartSchema(),
 			'coupon'                  => new Schemas\CartCouponSchema(),
 			'cart-item'               => new Schemas\CartItemSchema(),
+			'order'                   => new Schemas\OrderSchema(),
 			'product-attribute'       => new Schemas\ProductAttributeSchema(),
-			'term'                    => new Schemas\TermSchema(),
-			'product'                 => new Schemas\ProductSchema(),
 			'product-collection-data' => new Schemas\ProductCollectionDataSchema(),
+			'product'                 => new Schemas\ProductSchema(),
+			'term'                    => new Schemas\TermSchema(),
 		];
 
 		$routes = [
@@ -33,6 +34,7 @@ class RoutesController {
 			new Routes\CartApplyCoupon( $schemas['cart'] ),
 			new Routes\CartCoupons( $schemas['coupon'] ),
 			new Routes\CartCouponsByCode( $schemas['coupon'] ),
+			new Routes\CartCreateOrder( $schemas['order'] ),
 			new Routes\CartItems( $schemas['cart-item'] ),
 			new Routes\CartItemsByKey( $schemas['cart-item'] ),
 			new Routes\CartRemoveCoupon( $schemas['cart'] ),
