@@ -234,7 +234,7 @@ class CartSchema extends AbstractSchema {
 		$draft_order_id      = isset( $draft_order_session['id'] ) ? absint( $draft_order_session['id'] ) : 0;
 		$draft_order         = $draft_order_id ? wc_get_order( $draft_order_id ) : false;
 
-		if ( $draft_order && $draft_order->has_status( 'draft' ) && 'store-api' === $draft_order->get_created_via() ) {
+		if ( $draft_order && $draft_order->has_status( 'checkout-draft' ) && 'store-api' === $draft_order->get_created_via() ) {
 			return $draft_order_id;
 		}
 
