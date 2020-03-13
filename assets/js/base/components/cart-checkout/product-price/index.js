@@ -2,6 +2,7 @@
  * External dependencies
  */
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 /**
@@ -9,18 +10,21 @@ import PropTypes from 'prop-types';
  */
 import './style.scss';
 
-const ProductPrice = ( { currency, regularValue, value } ) => {
+const ProductPrice = ( { className, currency, regularValue, value } ) => {
 	return (
 		<>
 			{ Number.isFinite( regularValue ) && regularValue !== value && (
 				<FormattedMonetaryAmount
-					className="wc-block-product-price--regular"
+					className={ classNames(
+						'wc-block-product-price--regular',
+						className
+					) }
 					currency={ currency }
 					value={ regularValue }
 				/>
 			) }
 			<FormattedMonetaryAmount
-				className="wc-block-product-price"
+				className={ classNames( 'wc-block-product-price', className ) }
 				currency={ currency }
 				value={ value }
 			/>
@@ -31,6 +35,7 @@ const ProductPrice = ( { currency, regularValue, value } ) => {
 ProductPrice.propTypes = {
 	currency: PropTypes.object.isRequired,
 	value: PropTypes.number.isRequired,
+	className: PropTypes.string,
 	regularValue: PropTypes.number,
 };
 

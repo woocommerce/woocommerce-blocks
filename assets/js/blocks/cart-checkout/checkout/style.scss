@@ -70,12 +70,16 @@
 		padding-right: $gap-small;
 	}
 
+	.wc-block-product-name {
+		display: inline;
+	}
+
 	.wc-block-order-summary-item__prices {
 		font-size: 0.875em;
 	}
 
 	.wc-block-order-summary-item__total-price {
-		text-align: right;
+		float: right;
 	}
 }
 
@@ -109,9 +113,7 @@
 			padding-left: $gap-small;
 			padding-right: $gap-small;
 		}
-	}
 
-	.wc-block-checkout__sidebar {
 		.wc-block-order-summary {
 			> .components-panel__body-title {
 				padding-left: $gap-small;
