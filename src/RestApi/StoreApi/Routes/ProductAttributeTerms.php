@@ -59,15 +59,16 @@ class ProductAttributeTerms extends AbstractRoute {
 	/**
 	 * Get a collection of attribute terms.
 	 *
-	 * @param \WP_REST_Request $request Full details about the request.
-	 * @return \WP_Error|\WP_REST_Response
+	 * @throws RouteException On error.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_REST_Response
 	 */
-	public function get_response( $request ) {
+	protected function get_route_response( \WP_REST_Request $request ) {
 		$attribute  = wc_get_attribute( $request['attribute_id'] );
 		$term_query = new TermQuery();
 
 		if ( ! $attribute || ! taxonomy_exists( $attribute->slug ) ) {
-			return new \WP_Error( 'woocommerce_rest_taxonomy_invalid', __( 'Attribute does not exist.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
+			throw new RouteException( 'woocommerce_rest_taxonomy_invalid', __( 'Attribute does not exist.', 'woo-gutenberg-products-block' ), 404 );
 		}
 
 		$term_request = [
