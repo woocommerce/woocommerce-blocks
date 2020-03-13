@@ -339,11 +339,14 @@ const StripeAppleExpressComponent = injectStripe( ApplePayExpressComponent );
  * @param {RegisteredPaymentMethodProps|{}} props
  */
 export const ApplePayExpress = ( props ) => {
+	const style = { height: 'auto' };
 	return (
 		<StripeProvider apiKey={ getApiKey() }>
-			<Elements>
-				<StripeAppleExpressComponent { ...props } />
-			</Elements>
+			<div className="stripe-container" style={ style }>
+				<Elements>
+					<StripeAppleExpressComponent { ...props } />
+				</Elements>
+			</div>
 		</StripeProvider>
 	);
 };
