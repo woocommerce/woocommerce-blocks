@@ -318,7 +318,7 @@ const ApplePayExpressComponent = ( {
 		paymentRequestButton: {
 			type,
 			theme,
-			height,
+			height: height + 'px',
 		},
 	};
 
@@ -340,10 +340,11 @@ const StripeAppleExpressComponent = injectStripe( ApplePayExpressComponent );
  */
 export const ApplePayExpress = ( props ) => {
 	const style = { height: 'auto' };
+	const { locale } = getStripeServerData().button;
 	return (
 		<StripeProvider apiKey={ getApiKey() }>
 			<div className="stripe-container" style={ style }>
-				<Elements>
+				<Elements locale={ locale }>
 					<StripeAppleExpressComponent { ...props } />
 				</Elements>
 			</div>

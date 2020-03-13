@@ -278,7 +278,7 @@
  * @property {string}  button.type      The type of button.
  * @property {string}  button.theme     The theme for the button.
  * @property {string}  button.height    The height (in pixels) for the button.
- * @property {string}  button.width     The width (in pixels) for the button.
+ * @property {string}  button.locale    The locale to use for stripe elements.
  */
 
 export {};
