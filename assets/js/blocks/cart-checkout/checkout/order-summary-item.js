@@ -3,7 +3,6 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { getCurrency } from '@woocommerce/base-utils';
-import { useStoreCartItemQuantity } from '@woocommerce/base-hooks';
 import Label from '@woocommerce/base-components/label';
 import {
 	ProductImage,
@@ -21,11 +20,10 @@ const CheckoutOrderSummaryItem = ( { cartItem } ) => {
 		name,
 		permalink,
 		prices,
+		quantity,
 		summary,
 		variation,
 	} = cartItem;
-
-	const { quantity } = useStoreCartItemQuantity( cartItem );
 
 	const currency = getCurrency( prices );
 	const regularPrice = parseInt( prices.regular_price, 10 );
@@ -78,6 +76,7 @@ CheckoutOrderSummaryItem.propTypes = {
 			price: PropTypes.string,
 			regular_price: PropTypes.string,
 		} ),
+		quantity: PropTypes.number,
 		summary: PropTypes.string,
 		variation: PropTypes.array,
 	} ),
