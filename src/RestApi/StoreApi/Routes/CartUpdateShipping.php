@@ -106,12 +106,7 @@ class CartUpdateShipping extends AbstractRoute {
 
 		$controller = new CartController();
 		$cart       = $controller->get_cart_instance();
-
-		if ( ! $cart || ! $cart instanceof \WC_Cart ) {
-			throw new RouteException( 'woocommerce_rest_cart_error', __( 'Unable to retrieve cart.', 'woo-gutenberg-products-block' ), 500 );
-		}
-
-		$request = $this->validate_shipping_address( $request );
+		$request    = $this->validate_shipping_address( $request );
 
 		// Update customer session.
 		WC()->customer->set_props(

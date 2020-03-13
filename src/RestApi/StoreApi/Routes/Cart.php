@@ -62,10 +62,6 @@ class Cart extends AbstractRoute {
 		$controller = new CartController();
 		$cart       = $controller->get_cart_instance();
 
-		if ( ! $cart || ! $cart instanceof \WC_Cart ) {
-			throw new RouteException( 'woocommerce_rest_cart_error', __( 'Unable to retrieve cart.', 'woo-gutenberg-products-block' ), 500 );
-		}
-
 		return rest_ensure_response( $this->schema->get_item_response( $cart ) );
 	}
 }

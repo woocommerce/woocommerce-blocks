@@ -70,10 +70,6 @@ class CartApplyCoupon extends AbstractRoute {
 		$cart        = $controller->get_cart_instance();
 		$coupon_code = wc_format_coupon_code( $request['code'] );
 
-		if ( ! $cart || ! $cart instanceof \WC_Cart ) {
-			throw new RouteException( 'woocommerce_rest_cart_error', __( 'Unable to retrieve cart.', 'woo-gutenberg-products-block' ), 500 );
-		}
-
 		try {
 			$controller->apply_coupon( $coupon_code );
 		} catch ( \WC_REST_Exception $e ) {

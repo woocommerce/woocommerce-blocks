@@ -151,10 +151,17 @@ class CartController {
 	/**
 	 * Get main instance of cart class.
 	 *
+	 * @throws RouteException When cart cannot be loaded.
 	 * @return \WC_Cart
 	 */
 	public function get_cart_instance() {
-		return wc()->cart;
+		$cart = wc()->cart;
+
+		if ( ! $cart || ! $cart instanceof \WC_Cart ) {
+			throw new RouteException( 'woocommerce_rest_cart_error', __( 'Unable to retrieve cart.', 'woo-gutenberg-products-block' ), 500 );
+		}
+
+		return $cart;
 	}
 
 	/**

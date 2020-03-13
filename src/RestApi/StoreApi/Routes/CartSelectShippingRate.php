@@ -79,10 +79,6 @@ class CartSelectShippingRate extends AbstractRoute {
 		$controller = new CartController();
 		$cart       = $controller->get_cart_instance();
 
-		if ( ! $cart || ! $cart instanceof \WC_Cart ) {
-			throw new RouteException( 'woocommerce_rest_cart_error', __( 'Unable to retrieve cart.', 'woo-gutenberg-products-block' ), 500 );
-		}
-
 		if ( $cart->needs_shipping() ) {
 			$package_id = absint( $request['package_id'] );
 			$rate_id    = wc_clean( wp_unslash( $request['rate_id'] ) );
