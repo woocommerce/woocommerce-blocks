@@ -14,7 +14,6 @@ import { previewCart } from '@woocommerce/resource-previews';
  */
 const defaultCartData = {
 	cartCoupons: [],
-	shippingRates: [],
 	cartItems: [],
 	cartItemsCount: 0,
 	cartItemsWeight: 0,
@@ -22,7 +21,6 @@ const defaultCartData = {
 	cartTotals: {},
 	cartIsLoading: true,
 	cartErrors: [],
-	shippingRates: [],
 	shippingAddress: {
 		first_name: '',
 		last_name: '',
@@ -34,6 +32,7 @@ const defaultCartData = {
 		postcode: '',
 		country: '',
 	},
+	shippingRates: [],
 };
 
 /**
