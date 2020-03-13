@@ -53,30 +53,32 @@ const CheckoutEditor = ( { attributes, setAttributes } ) => {
 		return (
 			<>
 				<InspectorControls>
-					<Notice
-						className="wc-block-checkout__page-notice"
-						isDismissible={ false }
-						status="warning"
-					>
-						{ __experimentalCreateInterpolateElement(
-							__(
-								'If you would like to use this block as your default checkout you must update your <a>page settings in WooCommerce</a>.',
-								'woo-gutenberg-products-block'
-							),
-							{
-								a: (
-									// eslint-disable-next-line jsx-a11y/anchor-has-content
-									<a
-										href={ getAdminLink(
-											'admin.php?page=wc-settings&tab=advanced'
-										) }
-										target="_blank"
-										rel="noopener noreferrer"
-									/>
+					{ currentPostId !== CHECKOUT_PAGE_ID && (
+						<Notice
+							className="wc-block-checkout__page-notice"
+							isDismissible={ false }
+							status="warning"
+						>
+							{ __experimentalCreateInterpolateElement(
+								__(
+									'If you would like to use this block as your default checkout you must update your <a>page settings in WooCommerce</a>.',
+									'woo-gutenberg-products-block'
 								),
-							}
-						) }
-					</Notice>
+								{
+									a: (
+										// eslint-disable-next-line jsx-a11y/anchor-has-content
+										<a
+											href={ getAdminLink(
+												'admin.php?page=wc-settings&tab=advanced'
+											) }
+											target="_blank"
+											rel="noopener noreferrer"
+										/>
+									),
+								}
+							) }
+						</Notice>
+					) }
 					<PanelBody
 						title={ __(
 							'Form options',
