@@ -3,7 +3,6 @@
  */
 import { useSelect } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
