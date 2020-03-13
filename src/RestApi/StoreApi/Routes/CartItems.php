@@ -50,12 +50,12 @@ class CartItems extends AbstractRoute {
 			],
 			[
 				'methods'  => \WP_REST_Server::CREATABLE,
-				'callback' => array( $this, 'post_response' ),
+				'callback' => array( $this, 'get_response' ),
 				'args'     => $this->schema->get_endpoint_args_for_item_schema( \WP_REST_Server::CREATABLE ),
 			],
 			[
 				'methods'  => \WP_REST_Server::DELETABLE,
-				'callback' => [ $this, 'delete_response' ],
+				'callback' => [ $this, 'get_response' ],
 			],
 			'schema' => [ $this->schema, 'get_public_item_schema' ],
 		];
@@ -64,10 +64,11 @@ class CartItems extends AbstractRoute {
 	/**
 	 * Get a collection of cart items.
 	 *
-	 * @param \WP_REST_Request $request Full details about the request.
-	 * @return \WP_Error|\WP_REST_Response
+	 * @throws RouteException On error.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_REST_Response
 	 */
-	public function get_response( $request ) {
+	protected function get_route_response( \WP_REST_Request $request ) {
 		$controller = new CartController();
 		$cart_items = $controller->get_cart_items();
 		$items      = [];
@@ -85,13 +86,14 @@ class CartItems extends AbstractRoute {
 	/**
 	 * Creates one item from the collection.
 	 *
-	 * @param \WP_REST_Request $request Full data about the request.
-	 * @return \WP_Error|\WP_REST_Response Response object on success, or WP_Error object on failure.
+	 * @throws RouteException On error.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_REST_Response
 	 */
-	public function post_response( $request ) {
+	protected function get_route_post_response( \WP_REST_Request $request ) {
 		// Do not allow key to be specified during creation.
 		if ( ! empty( $request['key'] ) ) {
-			return new \WP_Error( 'woocommerce_rest_cart_item_exists', __( 'Cannot create an existing cart item.', 'woo-gutenberg-products-block' ), array( 'status' => 400 ) );
+			throw new RouteException( 'woocommerce_rest_cart_item_exists', __( 'Cannot create an existing cart item.', 'woo-gutenberg-products-block' ), 400 );
 		}
 
 		$controller = new CartController();
@@ -103,10 +105,6 @@ class CartItems extends AbstractRoute {
 			]
 		);
 
-		if ( is_wp_error( $result ) ) {
-			return $result;
-		}
-
 		$response = rest_ensure_response( $this->prepare_item_for_response( $controller->get_cart_item( $result ), $request ) );
 		$response->set_status( 201 );
 		return $response;
@@ -115,10 +113,11 @@ class CartItems extends AbstractRoute {
 	/**
 	 * Deletes all items in the cart.
 	 *
-	 * @param \WP_Rest_Request $request Full data about the request.
-	 * @return \WP_Error|\WP_REST_Response Response object on success, or WP_Error object on failure.
+	 * @throws RouteException On error.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_REST_Response
 	 */
-	public function delete_response( $request ) {
+	protected function get_route_delete_response( \WP_REST_Request $request ) {
 		$controller = new CartController();
 		$controller->empty_cart();
 		return new \WP_REST_Response( [], 200 );

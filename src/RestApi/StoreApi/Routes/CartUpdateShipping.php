@@ -42,7 +42,7 @@ class CartUpdateShipping extends AbstractRoute {
 		return [
 			[
 				'methods'  => \WP_REST_Server::CREATABLE,
-				'callback' => [ $this, 'post_response' ],
+				'callback' => [ $this, 'get_response' ],
 				'args'     => [
 					'address_1' => array(
 						'description'       => __( 'First line of the address being shipped to.', 'woo-gutenberg-products-block' ),
@@ -95,26 +95,23 @@ class CartUpdateShipping extends AbstractRoute {
 	/**
 	 * Handle the request and return a valid response for this endpoint.
 	 *
+	 * @throws RouteException On error.
 	 * @param \WP_REST_Request $request Request object.
-	 * @return \WP_Error|\WP_REST_Response
+	 * @return \WP_REST_Response
 	 */
-	public function post_response( \WP_REST_Request $request ) {
+	protected function get_route_post_response( \WP_REST_Request $request ) {
 		if ( ! wc_shipping_enabled() ) {
-			return new \WP_Error( 'woocommerce_rest_shipping_disabled', __( 'Shipping is disabled.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
+			throw new RouteException( 'woocommerce_rest_shipping_disabled', __( 'Shipping is disabled.', 'woo-gutenberg-products-block' ), 404 );
 		}
 
 		$controller = new CartController();
 		$cart       = $controller->get_cart_instance();
 
 		if ( ! $cart || ! $cart instanceof \WC_Cart ) {
-			return new \WP_Error( 'woocommerce_rest_cart_error', __( 'Unable to retrieve cart.', 'woo-gutenberg-products-block' ), array( 'status' => 500 ) );
+			throw new RouteException( 'woocommerce_rest_cart_error', __( 'Unable to retrieve cart.', 'woo-gutenberg-products-block' ), 500 );
 		}
 
 		$request = $this->validate_shipping_address( $request );
-
-		if ( is_wp_error( $request ) ) {
-			return $request;
-		}
 
 		// Update customer session.
 		WC()->customer->set_props(
@@ -138,21 +135,22 @@ class CartUpdateShipping extends AbstractRoute {
 	/**
 	 * Format the request address.
 	 *
+	 * @throws RouteException On error.
 	 * @param \WP_REST_Request $request Full details about the request.
-	 * @return \WP_Error|\WP_REST_Response
+	 * @return \WP_REST_Response
 	 */
 	public function validate_shipping_address( $request ) {
 		$valid_countries = WC()->countries->get_shipping_countries();
 
 		if ( empty( $request['country'] ) ) {
-			return new \WP_Error(
+			throw new RouteException(
 				'woocommerce_rest_cart_shipping_rates_missing_country',
 				sprintf(
 					/* translators: 1: valid country codes */
 					__( 'No destination country code was given. Please provide one of the following: %s', 'woo-gutenberg-products-block' ),
 					implode( ', ', array_keys( $valid_countries ) )
 				),
-				[ 'status' => 400 ]
+				400
 			);
 		}
 
@@ -163,14 +161,14 @@ class CartUpdateShipping extends AbstractRoute {
 			count( $valid_countries ) > 0 &&
 			! array_key_exists( $request['country'], $valid_countries )
 		) {
-			return new \WP_Error(
+			throw new RouteException(
 				'woocommerce_rest_cart_shipping_rates_invalid_country',
 				sprintf(
 					/* translators: 1: valid country codes */
 					__( 'Destination country code is not valid. Please enter one of the following: %s', 'woo-gutenberg-products-block' ),
 					implode( ', ', array_keys( $valid_countries ) )
 				),
-				[ 'status' => 400 ]
+				400
 			);
 		}
 
@@ -190,14 +188,14 @@ class CartUpdateShipping extends AbstractRoute {
 				}
 
 				if ( ! in_array( $request['state'], $valid_state_values, true ) ) {
-					return new \WP_Error(
+					throw new RouteException(
 						'woocommerce_rest_cart_shipping_rates_invalid_state',
 						sprintf(
 							/* translators: 1: valid states */
 							__( 'Destination state is not valid. Please enter one of the following: %s', 'woo-gutenberg-products-block' ),
 							implode( ', ', $valid_states )
 						),
-						[ 'status' => 400 ]
+						400
 					);
 				}
 			}

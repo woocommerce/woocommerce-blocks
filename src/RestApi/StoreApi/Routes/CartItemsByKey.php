@@ -56,12 +56,12 @@ class CartItemsByKey extends AbstractRoute {
 			],
 			[
 				'methods'  => \WP_REST_Server::EDITABLE,
-				'callback' => array( $this, 'put_response' ),
+				'callback' => array( $this, 'get_response' ),
 				'args'     => $this->schema->get_endpoint_args_for_item_schema( \WP_REST_Server::EDITABLE ),
 			],
 			[
 				'methods'  => \WP_REST_Server::DELETABLE,
-				'callback' => [ $this, 'delete_response' ],
+				'callback' => [ $this, 'get_response' ],
 			],
 			'schema' => [ $this->schema, 'get_public_item_schema' ],
 		];
@@ -70,15 +70,16 @@ class CartItemsByKey extends AbstractRoute {
 	/**
 	 * Get a single cart items.
 	 *
-	 * @param \WP_REST_Request $request Full details about the request.
-	 * @return \WP_Error|\WP_REST_Response
+	 * @throws RouteException On error.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_REST_Response
 	 */
-	public function get_response( $request ) {
+	protected function get_route_response( \WP_REST_Request $request ) {
 		$controller = new CartController();
 		$cart_item  = $controller->get_cart_item( $request['key'] );
 
 		if ( ! $cart_item ) {
-			return new \WP_Error( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
+			throw new RouteException( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), 404 );
 		}
 
 		$data     = $this->prepare_item_for_response( $cart_item, $request );
@@ -90,16 +91,17 @@ class CartItemsByKey extends AbstractRoute {
 	/**
 	 * Update a single cart item.
 	 *
-	 * @param \WP_Rest_Request $request Full data about the request.
-	 * @return \WP_Error|\WP_REST_Response Response object on success, or WP_Error object on failure.
+	 * @throws RouteException On error.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_REST_Response
 	 */
-	public function put_response( $request ) {
+	protected function get_route_update_response( \WP_REST_Request $request ) {
 		$controller = new CartController();
 		$cart       = $controller->get_cart_instance();
 		$cart_item  = $controller->get_cart_item( $request['key'] );
 
 		if ( ! $cart_item ) {
-			return new \WP_Error( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
+			throw new RouteException( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), 404 );
 		}
 
 		if ( isset( $request['quantity'] ) ) {
@@ -112,16 +114,17 @@ class CartItemsByKey extends AbstractRoute {
 	/**
 	 * Delete a single cart item.
 	 *
-	 * @param \WP_Rest_Request $request Full data about the request.
-	 * @return \WP_Error|\WP_REST_Response Response object on success, or WP_Error object on failure.
+	 * @throws RouteException On error.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_REST_Response
 	 */
-	public function delete_response( $request ) {
+	protected function get_route_delete_response( \WP_REST_Request $request ) {
 		$controller = new CartController();
 		$cart       = $controller->get_cart_instance();
 		$cart_item  = $controller->get_cart_item( $request['key'] );
 
 		if ( ! $cart_item ) {
-			return new \WP_Error( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
+			throw new RouteException( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), 404 );
 		}
 
 		$cart->remove_cart_item( $request['key'] );

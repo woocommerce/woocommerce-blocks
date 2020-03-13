@@ -50,12 +50,12 @@ class CartCoupons extends AbstractRoute {
 			],
 			[
 				'methods'  => \WP_REST_Server::CREATABLE,
-				'callback' => [ $this, 'post_response' ],
+				'callback' => [ $this, 'get_response' ],
 				'args'     => $this->schema->get_endpoint_args_for_item_schema( \WP_REST_Server::CREATABLE ),
 			],
 			[
 				'methods'  => \WP_REST_Server::DELETABLE,
-				'callback' => [ $this, 'delete_response' ],
+				'callback' => [ $this, 'get_response' ],
 			],
 			'schema' => [ $this->schema, 'get_public_item_schema' ],
 		];
@@ -64,10 +64,11 @@ class CartCoupons extends AbstractRoute {
 	/**
 	 * Get a collection of cart coupons.
 	 *
-	 * @param \WP_REST_Request $request Full details about the request.
-	 * @return \WP_Error|\WP_REST_Response
+	 * @throws RouteException On error.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_REST_Response
 	 */
-	public function get_response( $request ) {
+	protected function get_route_response( \WP_REST_Request $request ) {
 		$controller   = new CartController();
 		$cart_coupons = $controller->get_cart_coupons();
 		$items        = [];
@@ -88,12 +89,13 @@ class CartCoupons extends AbstractRoute {
 	/**
 	 * Add a coupon to the cart and return the result.
 	 *
-	 * @param \WP_REST_Request $request Full data about the request.
-	 * @return \WP_Error|\WP_REST_Response Response object on success, or WP_Error object on failure.
+	 * @throws RouteException On error.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_REST_Response
 	 */
-	public function post_response( $request ) {
+	protected function get_route_post_response( \WP_REST_Request $request ) {
 		if ( ! wc_coupons_enabled() ) {
-			return new \WP_Error( 'woocommerce_rest_cart_coupon_disabled', __( 'Coupons are disabled.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
+			throw new RouteException( 'woocommerce_rest_cart_coupon_disabled', __( 'Coupons are disabled.', 'woo-gutenberg-products-block' ), 404 );
 		}
 
 		$controller = new CartController();
@@ -101,16 +103,10 @@ class CartCoupons extends AbstractRoute {
 		try {
 			$controller->apply_coupon( $request['code'] );
 		} catch ( \WC_REST_Exception $e ) {
-			return new \WP_Error( $e->getErrorCode(), $e->getMessage(), array( 'status' => $e->getCode() ) );
+			throw new RouteException( $e->getErrorCode(), $e->getMessage(), $e->getCode() );
 		}
 
 		$response = $this->prepare_item_for_response( $request['code'], $request );
-
-		if ( $response instanceof \WP_Error ) {
-			return $response;
-		}
-
-		$response = rest_ensure_response( $response );
 		$response->set_status( 201 );
 
 		return $response;
@@ -119,10 +115,11 @@ class CartCoupons extends AbstractRoute {
 	/**
 	 * Deletes all coupons in the cart.
 	 *
-	 * @param \WP_REST_Request $request Full data about the request.
-	 * @return \WP_Error|\WP_REST_Response Response object on success, or WP_Error object on failure.
+	 * @throws RouteException On error.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_REST_Response
 	 */
-	public function delete_response( $request ) {
+	protected function get_route_delete_response( \WP_REST_Request $request ) {
 		$controller = new CartController();
 		$cart       = $controller->get_cart_instance();
 		$cart->remove_coupons();

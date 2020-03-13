@@ -42,7 +42,7 @@ class CartUpdateItem extends AbstractRoute {
 		return [
 			[
 				'methods'  => \WP_REST_Server::CREATABLE,
-				'callback' => [ $this, 'post_response' ],
+				'callback' => [ $this, 'get_response' ],
 				'args'     => [
 					'key'      => [
 						'description' => __( 'Unique identifier (key) for the cart item to update.', 'woo-gutenberg-products-block' ),
@@ -61,16 +61,17 @@ class CartUpdateItem extends AbstractRoute {
 	/**
 	 * Handle the request and return a valid response for this endpoint.
 	 *
+	 * @throws RouteException On error.
 	 * @param \WP_REST_Request $request Request object.
-	 * @return \WP_Error|\WP_REST_Response
+	 * @return \WP_REST_Response
 	 */
-	public function post_response( \WP_REST_Request $request ) {
+	protected function get_route_post_response( \WP_REST_Request $request ) {
 		$controller = new CartController();
 		$cart       = $controller->get_cart_instance();
 		$cart_item  = $controller->get_cart_item( $request['key'] );
 
 		if ( ! $cart_item ) {
-			return new \WP_Error( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
+			throw new RouteException( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), 404 );
 		}
 
 		if ( isset( $request['quantity'] ) ) {
