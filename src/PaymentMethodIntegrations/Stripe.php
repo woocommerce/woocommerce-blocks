@@ -55,8 +55,11 @@ class Stripe {
 	 * This will also ensure stripe data is loaded with the blocks.
 	 */
 	public function register_assets() {
-		add_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before', [ $this, 'enqueue_stripe_and_data' ] );
-		add_action( 'woocommerce_blocks_enqueue_cart_block_scripts_before', [ $this, 'enqueue_stripe_and_data' ] );
+		// only do when not in admin.
+		if ( ! is_admin() ) {
+			add_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before', [ $this, 'enqueue_stripe_and_data' ] );
+			add_action( 'woocommerce_blocks_enqueue_cart_block_scripts_before', [ $this, 'enqueue_stripe_and_data' ] );
+		}
 	}
 
 	/**
