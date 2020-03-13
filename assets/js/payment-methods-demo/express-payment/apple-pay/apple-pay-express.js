@@ -312,11 +312,11 @@ const ApplePayExpressComponent = ( {
 	}, [ canMakePayment ] );
 
 	// locale is not a valid value for the paymentRequestButton style
-	const { type, theme } = getStripeServerData().button;
+	const { theme } = getStripeServerData().button;
 
 	const paymentRequestButtonStyle = {
 		paymentRequestButton: {
-			type,
+			type: 'default',
 			theme,
 			height: '48px',
 		},
@@ -339,15 +339,12 @@ const StripeAppleExpressComponent = injectStripe( ApplePayExpressComponent );
  * @param {RegisteredPaymentMethodProps|{}} props
  */
 export const ApplePayExpress = ( props ) => {
-	const style = { height: 'auto' };
 	const { locale } = getStripeServerData().button;
 	return (
 		<StripeProvider apiKey={ getApiKey() }>
-			<div className="stripe-container" style={ style }>
-				<Elements locale={ locale }>
-					<StripeAppleExpressComponent { ...props } />
-				</Elements>
-			</div>
+			<Elements locale={ locale }>
+				<StripeAppleExpressComponent { ...props } />
+			</Elements>
 		</StripeProvider>
 	);
 };
