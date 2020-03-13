@@ -20,6 +20,7 @@ class RoutesController {
 	public static function register_routes() {
 		$schemas = [
 			'cart'                    => new Schemas\CartSchema(),
+			'checkout'                => new Schemas\CheckoutSchema(),
 			'coupon'                  => new Schemas\CartCouponSchema(),
 			'cart-item'               => new Schemas\CartItemSchema(),
 			'order'                   => new Schemas\OrderSchema(),
@@ -42,7 +43,7 @@ class RoutesController {
 			new Routes\CartSelectShippingRate( $schemas['cart'] ),
 			new Routes\CartUpdateItem( $schemas['cart'] ),
 			new Routes\CartUpdateShipping( $schemas['cart'] ),
-			new Routes\Checkout( $schemas['order'] ),
+			new Routes\Checkout( $schemas['checkout'] ),
 			new Routes\ProductAttributes( $schemas['product-attribute'] ),
 			new Routes\ProductAttributesById( $schemas['product-attribute'] ),
 			new Routes\ProductAttributeTerms( $schemas['term'] ),
