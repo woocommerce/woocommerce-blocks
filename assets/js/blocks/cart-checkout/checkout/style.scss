@@ -12,7 +12,7 @@
 	.wc-block-order-summary {
 		border: none;
 
-		> .components-panel__body-title {
+		> .components-panel__body-title > .components-panel__body-toggle {
 			padding: $gap-small 0;
 		}
 
@@ -115,7 +115,7 @@
 		}
 
 		.wc-block-order-summary {
-			> .components-panel__body-title {
+			> .components-panel__body-title > .components-panel__body-toggle {
 				padding-left: $gap-small;
 			}
 		}
