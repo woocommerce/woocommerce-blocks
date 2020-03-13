@@ -16,6 +16,7 @@ import {
 import {
 	COUPONS_ENABLED,
 	DISPLAY_CART_PRICES_INCLUDING_TAX,
+	SHIPPING_ENABLED,
 } from '@woocommerce/block-settings';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import { Card, CardBody } from 'wordpress-components';

@@ -58,7 +58,7 @@ class CartSchema extends AbstractSchema {
 				'readonly'    => true,
 				'items'       => [
 					'type'       => 'object',
-					'properties' => $this->get_shipping_address_schema(),
+					'properties' => $this->force_schema_readonly( ( new ShippingAddressSchema() )->get_properties() ),
 				],
 			],
 			'items'            => [
@@ -193,17 +193,17 @@ class CartSchema extends AbstractSchema {
 	 * @return array
 	 */
 	public function get_item_response( $cart ) {
-		$controller           = new CartController();
-		$cart_coupon_schema   = new CartCouponSchema();
-		$cart_item_schema     = new CartItemSchema();
-		$shipping_rate_schema = new CartShippingRateSchema();
-		$customer_data        = ( new CustomerSchema() )->get_item_response( WC()->customer );
-		$context              = 'edit';
+		$controller              = new CartController();
+		$cart_coupon_schema      = new CartCouponSchema();
+		$cart_item_schema        = new CartItemSchema();
+		$shipping_rate_schema    = new CartShippingRateSchema();
+		$shipping_address_schema = ( new ShippingAddressSchema() )->get_item_response( WC()->customer );
+		$context                 = 'edit';
 
 		return [
 			'coupons'          => array_values( array_map( [ $cart_coupon_schema, 'get_item_response' ], array_filter( $cart->get_applied_coupons() ) ) ),
 			'shipping_rates'   => array_values( array_map( [ $shipping_rate_schema, 'get_item_response' ], $controller->get_shipping_packages() ) ),
-			'shipping_address' => $customer_data['shipping_address'],
+			'shipping_address' => $shipping_address_schema,
 			'items'            => array_values( array_map( [ $cart_item_schema, 'get_item_response' ], array_filter( $cart->get_cart() ) ) ),
 			'items_count'      => $cart->get_cart_contents_count(),
 			'items_weight'     => wc_get_weight( $cart->get_cart_contents_weight(), 'g' ),
@@ -247,16 +247,5 @@ class CartSchema extends AbstractSchema {
 		}
 
 		return $tax_lines;
-	}
-
-
-	/**
-	 * Get shipping address schema from CustomerSchema
-	 *
-	 * @return array
-	 */
-	protected function get_shipping_address_schema() {
-		$customer_schema = $this->force_schema_readonly( ( new CustomerSchema() )->get_properties() );
-		return $customer_schema['shipping_address']['properties'];
 	}
 }
