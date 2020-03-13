@@ -55,12 +55,6 @@ describe( 'useShippingRates', () => {
 			city: '',
 			postcode: '',
 		},
-		billingAddress: {
-			country: '',
-			state: '',
-			city: '',
-			postcode: '',
-		},
 		shippingRates: [
 			{
 				shippingRates: [ { foo: 'bar' } ],

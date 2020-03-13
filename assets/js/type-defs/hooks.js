@@ -13,8 +13,6 @@
  *                                                   rates
  * @property {CartShippingAddress} shippingAddress   Shipping address for the
  *                                                   cart.
- * @property {CartBillingAddress}  billingAddress    Billing address for the
- *                                                   cart.
  * @property {Array}               cartItems         An array of items in the
  *                                                   cart.
  * @property {number}              cartItemsCount    The number of items in the

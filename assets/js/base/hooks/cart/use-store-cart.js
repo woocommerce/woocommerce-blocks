@@ -34,19 +34,6 @@ const defaultCartData = {
 		postcode: '',
 		country: '',
 	},
-	billingAddress: {
-		first_name: '',
-		last_name: '',
-		company: '',
-		address_1: '',
-		address_2: '',
-		city: '',
-		state: '',
-		postcode: '',
-		country: '',
-		phone: '',
-		email: '',
-	},
 };
 
 /**
@@ -96,7 +83,6 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 				cartCoupons: cartData.coupons,
 				shippingRates: cartData.shippingRates,
 				shippingAddress: cartData.shippingAddress,
-				billingAddress: cartData.billingAddress,
 				cartItems: cartData.items,
 				cartItemsCount: cartData.itemsCount,
 				cartItemsWeight: cartData.itemsWeight,
