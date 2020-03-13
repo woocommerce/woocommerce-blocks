@@ -14,7 +14,6 @@ import { withInstanceId } from 'wordpress-compose';
  * Internal dependencies
  */
 import LoadingMask from '../../loading-mask';
-import './editor.scss';
 import './style.scss';
 
 const TotalsCouponCodeInput = ( {
