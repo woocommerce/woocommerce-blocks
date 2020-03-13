@@ -10,9 +10,6 @@ import PropTypes from 'prop-types';
  */
 import './style.scss';
 
-/**
- * Returns a low stock badge for a line item.
- */
 const ProductSaleBadge = ( { currency, saleAmount } ) => {
 	return (
 		saleAmount > 0 && (
