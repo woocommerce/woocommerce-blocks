@@ -22,12 +22,10 @@ class RoutesController {
 			'cart'                    => new Schemas\CartSchema(),
 			'coupon'                  => new Schemas\CartCouponSchema(),
 			'cart-item'               => new Schemas\CartItemSchema(),
-			'checkout'                => new Schemas\CheckoutSchema(),
-			'order'                   => new Schemas\OrderSchema(),
 			'product-attribute'       => new Schemas\ProductAttributeSchema(),
-			'product-collection-data' => new Schemas\ProductCollectionDataSchema(),
-			'product'                 => new Schemas\ProductSchema(),
 			'term'                    => new Schemas\TermSchema(),
+			'product'                 => new Schemas\ProductSchema(),
+			'product-collection-data' => new Schemas\ProductCollectionDataSchema(),
 		];
 
 		$routes = [
@@ -35,7 +33,6 @@ class RoutesController {
 			new Routes\CartApplyCoupon( $schemas['cart'] ),
 			new Routes\CartCoupons( $schemas['coupon'] ),
 			new Routes\CartCouponsByCode( $schemas['coupon'] ),
-			new Routes\CartCreateOrder( $schemas['order'] ),
 			new Routes\CartItems( $schemas['cart-item'] ),
 			new Routes\CartItemsByKey( $schemas['cart-item'] ),
 			new Routes\CartRemoveCoupon( $schemas['cart'] ),
@@ -43,7 +40,6 @@ class RoutesController {
 			new Routes\CartSelectShippingRate( $schemas['cart'] ),
 			new Routes\CartUpdateItem( $schemas['cart'] ),
 			new Routes\CartUpdateShipping( $schemas['cart'] ),
-			new Routes\Checkout( $schemas['checkout'] ),
 			new Routes\ProductAttributes( $schemas['product-attribute'] ),
 			new Routes\ProductAttributesById( $schemas['product-attribute'] ),
 			new Routes\ProductAttributeTerms( $schemas['term'] ),

@@ -42,6 +42,86 @@ abstract class AbstractRoute implements RouteInterface {
 	}
 
 	/**
+	 * Get the route response based on the type of request.
+	 *
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_Error|\WP_REST_Response
+	 */
+	public function get_response( \WP_REST_Request $request ) {
+		$response = null;
+		try {
+			switch ( $request->get_method() ) {
+				case 'POST':
+					$response = $this->get_route_post_response( $request );
+					break;
+				case 'PUT':
+				case 'PATCH':
+					$response = $this->get_route_update_response( $request );
+					break;
+				case 'DELETE':
+					$response = $this->get_route_delete_response( $request );
+					break;
+				default:
+					$response = $this->get_route_response( $request );
+					break;
+			}
+		} catch ( RouteException $error ) {
+			$response = new \WP_Error( $error->getErrorCode(), $error->getMessage(), [ 'status' => $error->getCode() ] );
+		} catch ( Exception $error ) {
+			$response = new WP_Error( 'unknown_server_error', $error->getMessage(), [ 'status' => '500' ] );
+		}
+		return $response;
+	}
+
+	/**
+	 * Get route response for GET requests.
+	 *
+	 * When implemented, should return a \WP_REST_Response.
+	 *
+	 * @throws RouteException On error.
+	 * @param \WP_REST_Request $request Request object.
+	 */
+	protected function get_route_response( \WP_REST_Request $request ) {
+		throw new RouteException( 'woocommerce_rest_invalid_endpoint', __( 'Method not implemented', 'woo-gutenberg-products-block' ), 404 );
+	}
+
+	/**
+	 * Get route response for POST requests.
+	 *
+	 * When implemented, should return a \WP_REST_Response.
+	 *
+	 * @throws RouteException On error.
+	 * @param \WP_REST_Request $request Request object.
+	 */
+	protected function get_route_post_response( \WP_REST_Request $request ) {
+		throw new RouteException( 'woocommerce_rest_invalid_endpoint', __( 'Method not implemented', 'woo-gutenberg-products-block' ), 404 );
+	}
+
+	/**
+	 * Get route response for PUT requests.
+	 *
+	 * When implemented, should return a \WP_REST_Response.
+	 *
+	 * @throws RouteException On error.
+	 * @param \WP_REST_Request $request Request object.
+	 */
+	protected function get_route_update_response( \WP_REST_Request $request ) {
+		throw new RouteException( 'woocommerce_rest_invalid_endpoint', __( 'Method not implemented', 'woo-gutenberg-products-block' ), 404 );
+	}
+
+	/**
+	 * Get route response for DELETE requests.
+	 *
+	 * When implemented, should return a \WP_REST_Response.
+	 *
+	 * @throws RouteException On error.
+	 * @param \WP_REST_Request $request Request object.
+	 */
+	protected function get_route_delete_response( \WP_REST_Request $request ) {
+		throw new RouteException( 'woocommerce_rest_invalid_endpoint', __( 'Method not implemented', 'woo-gutenberg-products-block' ), 404 );
+	}
+
+	/**
 	 * Prepare a single item for response.
 	 *
 	 * @param mixed            $item Item to format to schema.

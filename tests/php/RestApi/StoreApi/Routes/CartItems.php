@@ -152,7 +152,7 @@ class CartItems extends TestCase {
 	 * Test updating an item.
 	 */
 	public function test_update_item() {
-		$request = new WP_REST_Request( 'POST', '/wc/store/cart/items/' . $this->keys[0] );
+		$request = new WP_REST_Request( 'PUT', '/wc/store/cart/items/' . $this->keys[0] );
 		$request->set_body_params(
 			array(
 				'quantity' => '10',

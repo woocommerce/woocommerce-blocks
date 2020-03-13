@@ -51,10 +51,11 @@ class ProductAttributes extends AbstractRoute {
 	/**
 	 * Get a collection of attributes.
 	 *
-	 * @param \WP_REST_Request $request Full details about the request.
-	 * @return \WP_Error|\WP_REST_Response
+	 * @throws RouteException On error.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_REST_Response
 	 */
-	public function get_response( $request ) {
+	protected function get_route_response( \WP_REST_Request $request ) {
 		$ids    = wc_get_attribute_taxonomy_ids();
 		$return = [];
 

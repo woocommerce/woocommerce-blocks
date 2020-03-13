@@ -56,7 +56,6 @@ class CartItemSchema extends AbstractSchema {
 				'description' => __( 'The cart item product or variation ID.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
-				'required'    => true,
 				'arg_options' => [
 					'sanitize_callback' => 'absint',
 					'validate_callback' => [ $this, 'product_id_exists' ],
@@ -66,7 +65,6 @@ class CartItemSchema extends AbstractSchema {
 				'description' => __( 'Quantity of this item in the cart.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
-				'required'    => true,
 				'arg_options' => [
 					'sanitize_callback' => 'wc_stock_amount',
 				],

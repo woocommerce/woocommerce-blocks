@@ -63,14 +63,15 @@ class ProductsById extends AbstractRoute {
 	/**
 	 * Get a single item.
 	 *
-	 * @param \WP_REST_Request $request Full details about the request.
-	 * @return \WP_Error|\WP_REST_Response
+	 * @throws RouteException On error.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_REST_Response
 	 */
-	public function get_response( $request ) {
+	protected function get_route_response( \WP_REST_Request $request ) {
 		$object = wc_get_product( (int) $request['id'] );
 
 		if ( ! $object || 0 === $object->get_id() ) {
-			return new \WP_Error( 'woocommerce_rest_product_invalid_id', __( 'Invalid product ID.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
+			throw new RouteException( 'woocommerce_rest_product_invalid_id', __( 'Invalid product ID.', 'woo-gutenberg-products-block' ), 404 );
 		}
 
 		return rest_ensure_response( $this->schema->get_item_response( $object ) );

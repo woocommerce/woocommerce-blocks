@@ -25,14 +25,14 @@ import { pluckAddress } from '../../utils';
  *                 - {Function} setShippingAddress  An function that optimistically
  *                   update shipping address and dispatches async rate fetching.
  *                 - {Object} shippingAddress       An object containing shipping address.
+ *                 - {Object} shippingAddress       True when address data exists.
  */
 export const useShippingRates = ( addressFieldsKeys ) => {
 	const { cartErrors, shippingRates } = useStoreCart();
-	const addressFields = Object.fromEntries(
-		addressFieldsKeys.map( ( key ) => [ key, '' ] )
-	);
-	const derivedAddress = shippingRates[ 0 ]?.destination;
-	const initialAddress = { ...addressFields, ...derivedAddress };
+	const initialAddress = shippingRates[ 0 ]?.destination || {};
+	addressFieldsKeys.forEach( ( key ) => {
+		initialAddress[ key ] = initialAddress[ key ] || '';
+	} );
 	const shippingAddressReducer = ( state, address ) => ( {
 		...state,
 		...address,
@@ -59,11 +59,13 @@ export const useShippingRates = ( addressFieldsKeys ) => {
 			updateShippingAddress( debouncedShippingAddress );
 		}
 	}, [ debouncedShippingAddress ] );
+
 	return {
 		shippingRates,
 		shippingAddress,
 		setShippingAddress,
 		shippingRatesLoading,
 		shippingRatesErrors: cartErrors,
+		hasShippingAddress: !! shippingAddress.country,
 	};
 };

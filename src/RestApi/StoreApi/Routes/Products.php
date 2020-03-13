@@ -54,10 +54,11 @@ class Products extends AbstractRoute {
 	/**
 	 * Get a collection of posts and add the post title filter option to \WP_Query.
 	 *
-	 * @param \WP_REST_Request $request Full details about the request.
-	 * @return \WP_Error|\WP_REST_Response
+	 * @throws RouteException On error.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_REST_Response
 	 */
-	public function get_response( $request ) {
+	protected function get_route_response( \WP_REST_Request $request ) {
 		$response      = new \WP_REST_Response();
 		$product_query = new ProductQuery();
 

@@ -42,7 +42,7 @@ class CartSelectShippingRate extends AbstractRoute {
 		return [
 			[
 				'methods'  => \WP_REST_Server::CREATABLE,
-				'callback' => [ $this, 'post_response' ],
+				'callback' => [ $this, 'get_response' ],
 				'args'     => [
 					'package_id' => array(
 						'description' => __( 'The ID of the package being shipped.', 'woo-gutenberg-products-block' ),
@@ -63,24 +63,21 @@ class CartSelectShippingRate extends AbstractRoute {
 	/**
 	 * Handle the request and return a valid response for this endpoint.
 	 *
+	 * @throws RouteException On error.
 	 * @param \WP_REST_Request $request Request object.
-	 * @return \WP_Error|\WP_REST_Response
+	 * @return \WP_REST_Response
 	 */
-	public function post_response( \WP_REST_Request $request ) {
+	protected function get_route_post_response( \WP_REST_Request $request ) {
 		if ( ! wc_shipping_enabled() ) {
-			return new \WP_Error( 'woocommerce_rest_shipping_disabled', __( 'Shipping is disabled.', 'woo-gutenberg-products-block' ), array( 'status' => 404 ) );
+			throw new RouteException( 'woocommerce_rest_shipping_disabled', __( 'Shipping is disabled.', 'woo-gutenberg-products-block' ), 404 );
 		}
 
 		if ( ! isset( $request['package_id'] ) || ! is_numeric( $request['package_id'] ) ) {
-			return new \WP_Error( 'woocommerce_rest_cart_missing_package_id', __( 'Invalid Package ID.', 'woo-gutenberg-products-block' ), array( 'status' => 403 ) );
+			throw new RouteException( 'woocommerce_rest_cart_missing_package_id', __( 'Invalid Package ID.', 'woo-gutenberg-products-block' ), 403 );
 		}
 
 		$controller = new CartController();
 		$cart       = $controller->get_cart_instance();
-
-		if ( ! $cart || ! $cart instanceof \WC_Cart ) {
-			return new \WP_Error( 'woocommerce_rest_cart_error', __( 'Unable to retrieve cart.', 'woo-gutenberg-products-block' ), array( 'status' => 500 ) );
-		}
 
 		if ( $cart->needs_shipping() ) {
 			$package_id = absint( $request['package_id'] );
@@ -89,7 +86,7 @@ class CartSelectShippingRate extends AbstractRoute {
 			try {
 				$controller->select_shipping_rate( $package_id, $rate_id );
 			} catch ( \WC_Rest_Exception $e ) {
-				return new \WP_Error( $e->getErrorCode(), $e->getMessage(), array( 'status' => $e->getCode() ) );
+				throw new RouteException( $e->getErrorCode(), $e->getMessage(), $e->getCode() );
 			}
 		}
 		$cart->calculate_totals();
