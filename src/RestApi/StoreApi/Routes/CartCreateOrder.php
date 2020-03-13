@@ -42,7 +42,7 @@ class CartCreateOrder extends AbstractRoute {
 		return [
 			[
 				'methods'  => \WP_REST_Server::CREATABLE,
-				'callback' => [ $this, 'post_response' ],
+				'callback' => [ $this, 'get_response' ],
 				'args'     => $this->schema->get_endpoint_args_for_item_schema( \WP_REST_Server::CREATABLE ),
 			],
 			'schema' => [ $this->schema, 'get_public_item_schema' ],
@@ -52,48 +52,43 @@ class CartCreateOrder extends AbstractRoute {
 	/**
 	 * Convert the cart into a new draft order, or update an existing draft order, and return an updated cart response.
 	 *
+	 * @throws RouteException On error.
 	 * @param \WP_REST_Request $request Request object.
-	 * @return \WP_Error|\WP_REST_Response
+	 * @return \WP_REST_Response
 	 */
-	public function post_response( \WP_REST_Request $request ) {
-		try {
-			$this->draft_order = WC()->session->get(
-				'store_api_draft_order',
-				[
-					'id'     => 0,
-					'hashes' => [
-						'line_items' => false,
-						'shipping'   => false,
-						'fees'       => false,
-						'coupons'    => false,
-						'taxes'      => false,
-					],
-				]
-			);
+	protected function get_route_post_response( \WP_REST_Request $request ) {
+		$this->draft_order = WC()->session->get(
+			'store_api_draft_order',
+			[
+				'id'     => 0,
+				'hashes' => [
+					'line_items' => false,
+					'shipping'   => false,
+					'fees'       => false,
+					'coupons'    => false,
+					'taxes'      => false,
+				],
+			]
+		);
 
-			// Update session based on posted data.
-			$this->update_session( $request );
+		// Update session based on posted data.
+		$this->update_session( $request );
 
-			// Create or retrieve the draft order for the current cart.
-			$order_object = $this->create_order_from_cart( $request );
+		// Create or retrieve the draft order for the current cart.
+		$order_object = $this->create_order_from_cart( $request );
 
-			// Try to reserve stock for 10 mins, if available.
-			// @todo Remove once min support for WC reaches 4.0.0.
-			if ( \class_exists( '\Automattic\WooCommerce\Checkout\Helpers\ReserveStock' ) ) {
-				$reserve_stock = new \Automattic\WooCommerce\Checkout\Helpers\ReserveStock();
-			} else {
-				$reserve_stock = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ReserveStock();
-			}
-
-			$reserve_stock->reserve_stock_for_order( $order_object, 10 );
-			$response = $this->prepare_item_for_response( $order_object, $request );
-			$response->set_status( 201 );
-			return $response;
-		} catch ( \WC_Rest_Exception $e ) {
-			return new \WP_Error( $e->getErrorCode(), $e->getMessage(), $e->getCode() );
-		} catch ( Exception $e ) {
-			return new \WP_Error( 'create-order-error', $e->getMessage(), [ 'status' => 500 ] );
+		// Try to reserve stock for 10 mins, if available.
+		// @todo Remove once min support for WC reaches 4.0.0.
+		if ( \class_exists( '\Automattic\WooCommerce\Checkout\Helpers\ReserveStock' ) ) {
+			$reserve_stock = new \Automattic\WooCommerce\Checkout\Helpers\ReserveStock();
+		} else {
+			$reserve_stock = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ReserveStock();
 		}
+
+		$reserve_stock->reserve_stock_for_order( $order_object, 10 );
+		$response = $this->prepare_item_for_response( $order_object, $request );
+		$response->set_status( 201 );
+		return $response;
 	}
 
 	/**
@@ -207,7 +202,7 @@ class CartCreateOrder extends AbstractRoute {
 	/**
 	 * Create order line items.
 	 *
-	 * @todo Knowing if items changed between the order and cart can be complex. Line items are ok because there is a
+	 * @internal Knowing if items changed between the order and cart can be complex. Line items are ok because there is a
 	 * hash, but no hash exists for other line item types. Having a normalized set of data between cart and order, or
 	 * additional hashes, would be useful in the future and to help refactor this code. In the meantime, we're relying
 	 * on custom hashes in $this->draft_order to track if things changed.

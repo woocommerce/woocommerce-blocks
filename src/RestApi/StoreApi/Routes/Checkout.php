@@ -42,7 +42,7 @@ class Checkout extends AbstractRoute {
 		return [
 			[
 				'methods'  => \WP_REST_Server::CREATABLE,
-				'callback' => [ $this, 'post_response' ],
+				'callback' => [ $this, 'get_response' ],
 				// @todo Determine the args we want to accept here.
 				'args'     => [],
 			],
@@ -53,23 +53,18 @@ class Checkout extends AbstractRoute {
 	/**
 	 * Convert the cart into a new draft order, or update an existing draft order, and return an updated cart response.
 	 *
+	 * @throws RouteException On error.
 	 * @param \WP_REST_Request $request Request object.
-	 * @return \WP_Error|\WP_REST_Response
+	 * @return \WP_REST_Response
 	 */
-	public function post_response( \WP_REST_Request $request ) {
-		try {
-			// @todo Add order and payment gateway processing here.
-			// @todo we need to determine the fields we want to return after processing e.g. redirect URLs.
-			$checkout_result = [
-				'order' => new \WC_Order(),
-			];
-			$response        = $this->prepare_item_for_response( $checkout_result, $request );
-			$response->set_status( 200 );
-			return $response;
-		} catch ( \WC_Rest_Exception $e ) {
-			return new \WP_Error( $e->getErrorCode(), $e->getMessage(), $e->getCode() );
-		} catch ( Exception $e ) {
-			return new \WP_Error( 'checkout-error', $e->getMessage(), [ 'status' => 500 ] );
-		}
+	protected function get_route_post_response( \WP_REST_Request $request ) {
+		// @todo Add order and payment gateway processing here.
+		// @todo we need to determine the fields we want to return after processing e.g. redirect URLs.
+		$checkout_result = [
+			'order' => new \WC_Order(),
+		];
+		$response        = $this->prepare_item_for_response( $checkout_result, $request );
+		$response->set_status( 200 );
+		return $response;
 	}
 }
