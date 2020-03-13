@@ -5,7 +5,7 @@
  */
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
-import { useCartContext } from '@woocommerce/base-context';
+import { useEditorContext } from '@woocommerce/base-context';
 import { previewCart } from '@woocommerce/resource-previews';
 
 /**
@@ -37,7 +37,7 @@ const defaultCartData = {
  * @return {StoreCart} Object containing cart data.
  */
 export const useStoreCart = ( options = { shouldSelect: true } ) => {
-	const { isEditor } = useCartContext();
+	const { isEditor } = useEditorContext();
 	const { shouldSelect } = options;
 
 	const results = useSelect(

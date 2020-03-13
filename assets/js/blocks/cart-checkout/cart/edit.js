@@ -10,7 +10,8 @@ import { withFeedbackPrompt } from '@woocommerce/block-hocs';
 import ViewSwitcher from '@woocommerce/block-components/view-switcher';
 import { SHIPPING_ENABLED } from '@woocommerce/block-settings';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
-import { CartProvider } from '@woocommerce/base-context';
+import { EditorProvider } from '@woocommerce/base-context';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -23,6 +24,11 @@ import EmptyCart from './empty-cart';
  */
 const CartEditor = ( { className, attributes, setAttributes } ) => {
 	const { isShippingCalculatorEnabled, isShippingCostHidden } = attributes;
+
+	const currentPostId = useSelect( ( select ) => {
+		const store = select( 'core/editor' );
+		return store.getCurrentPostId();
+	}, [] );
 
 	const BlockSettings = () => (
 		<InspectorControls>
@@ -104,7 +110,9 @@ const CartEditor = ( { className, attributes, setAttributes } ) => {
 									) }
 								>
 									<Disabled>
-										<CartProvider isEditor={ true }>
+										<EditorProvider
+											currentPostId={ currentPostId }
+										>
 											<FullCart
 												isShippingCostHidden={
 													isShippingCostHidden
@@ -113,7 +121,7 @@ const CartEditor = ( { className, attributes, setAttributes } ) => {
 													isShippingCalculatorEnabled
 												}
 											/>
-										</CartProvider>
+										</EditorProvider>
 									</Disabled>
 								</BlockErrorBoundary>
 							</>
