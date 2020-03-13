@@ -8,6 +8,7 @@ import { decodeEntities } from '@wordpress/html-entities';
  * Internal dependencies
  */
 import Select from '../select';
+import { ValidationInputError } from '../validation';
 
 const CountryInput = ( {
 	className,
@@ -17,6 +18,7 @@ const CountryInput = ( {
 	value = '',
 	autoComplete = 'off',
 	required = false,
+	errorMessage = '',
 } ) => {
 	const options = Object.keys( countries ).map( ( key ) => ( {
 		key,
@@ -32,6 +34,7 @@ const CountryInput = ( {
 				options={ options }
 				value={ options.find( ( option ) => option.key === value ) }
 				required={ required }
+				hasError={ !! errorMessage }
 			/>
 			{ autoComplete !== 'off' && (
 				<input
@@ -56,6 +59,7 @@ const CountryInput = ( {
 					tabIndex={ -1 }
 				/>
 			) }
+			<ValidationInputError errorMessage={ errorMessage } />
 		</>
 	);
 };
