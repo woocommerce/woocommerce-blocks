@@ -10,9 +10,11 @@ import {
 	CheckoutForm,
 	NoShipping,
 	Policies,
+} from '@woocommerce/base-components/checkout';
+import {
 	PlaceOrderButton,
 	ReturnToCartButton,
-} from '@woocommerce/base-components/checkout';
+} from '@woocommerce/base-components/cart-checkout';
 import TextInput from '@woocommerce/base-components/text-input';
 import ShippingRatesControl from '@woocommerce/base-components/shipping-rates-control';
 import CheckboxControl from '@woocommerce/base-components/checkbox-control';

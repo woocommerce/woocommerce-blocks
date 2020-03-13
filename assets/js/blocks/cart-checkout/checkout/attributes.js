@@ -38,7 +38,7 @@ const blockAttributes = {
 	},
 	cartPageId: {
 		type: 'number',
-		default: '',
+		default: 0,
 	},
 };
 

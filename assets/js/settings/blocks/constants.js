@@ -67,11 +67,17 @@ const storePages = getSetting( 'storePages', {
 	terms: defaultPage,
 } );
 export const SHOP_URL = storePages.shop.permalink;
+
+export const CHECKOUT_PAGE_ID = storePages.checkout.id;
 export const CHECKOUT_URL = storePages.checkout.permalink;
+
 export const PRIVACY_URL = storePages.privacy.permalink;
-export const TERMS_URL = storePages.terms.permalink;
 export const PRIVACY_PAGE_NAME = storePages.privacy.title;
+
+export const TERMS_URL = storePages.terms.permalink;
 export const TERMS_PAGE_NAME = storePages.terms.title;
+
 export const CART_PAGE_ID = storePages.cart.id;
 export const CART_URL = storePages.cart.permalink;
+
 export const ALL_PAGES = getSetting( 'allPages', {} );

@@ -2,8 +2,12 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import Button from '@woocommerce/base-components/button';
 import { useCheckoutContext } from '@woocommerce/base-context';
+
+/**
+ * Internal dependencies
+ */
+import Button from '../button';
 
 const PlaceOrderButton = () => {
 	const { submitLabel, onSubmit } = useCheckoutContext();
