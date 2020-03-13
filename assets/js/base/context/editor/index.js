@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { createContext, useContext } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').EditorDataContext} EditorDataContext
@@ -27,12 +28,23 @@ export const useEditorContext = () => {
  * @param {number}  props.currentPostId The post being edited.
  */
 export const EditorProvider = ( { children, currentPostId = 0 } ) => {
+	const editingPostId = useSelect(
+		( select ) => {
+			if ( ! currentPostId ) {
+				const store = select( 'core/editor' );
+				return store.getCurrentPostId();
+			}
+			return currentPostId;
+		},
+		[ currentPostId ]
+	);
+
 	/**
 	 * @type {EditorDataContext}
 	 */
 	const editorData = {
 		isEditor: true,
-		currentPostId,
+		currentPostId: editingPostId,
 	};
 
 	return (
