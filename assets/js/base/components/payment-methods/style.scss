@@ -38,11 +38,14 @@
 				width: 100%;
 			}
 		}
-		> li:nth-child(even) {
+		> li:nth-child ( even ) {
 			padding-left: $gap-smaller;
 		}
-		> li:nth-child(odd) {
+		> li:nth-child ( odd ) {
 			padding-right: $gap-smaller;
+		}
+		img {
+			height: 48px;
 		}
 	}
 }

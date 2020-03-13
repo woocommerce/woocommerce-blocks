@@ -312,13 +312,13 @@ const ApplePayExpressComponent = ( {
 	}, [ canMakePayment ] );
 
 	// locale is not a valid value for the paymentRequestButton style
-	const { type, theme, height } = getStripeServerData().button;
+	const { type, theme } = getStripeServerData().button;
 
 	const paymentRequestButtonStyle = {
 		paymentRequestButton: {
 			type,
 			theme,
-			height: height + 'px',
+			height: '48px',
 		},
 	};
 
