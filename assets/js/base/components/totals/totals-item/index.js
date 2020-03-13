@@ -3,8 +3,8 @@
  */
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { isValidElement } from '@wordpress/element';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
-import { isNumber } from 'lodash';
 
 /**
  * Internal dependencies
@@ -17,17 +17,17 @@ const TotalsItem = ( { className, currency, label, value, description } ) => {
 			className={ classnames( 'wc-block-totals-table-item', className ) }
 		>
 			<span className="wc-block-totals-table-item__label">{ label }</span>
-			{ isNumber( value ) ? (
+			{ isValidElement( value ) ? (
+				<div className="wc-block-totals-table-item__value">
+					{ value }
+				</div>
+			) : (
 				<FormattedMonetaryAmount
 					className="wc-block-totals-table-item__value"
 					currency={ currency }
 					displayType="text"
 					value={ value }
 				/>
-			) : (
-				<div className="wc-block-totals-table-item__value">
-					{ value }
-				</div>
 			) }
 			<div className="wc-block-totals-table-item__description">
 				{ description }
