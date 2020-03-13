@@ -108,9 +108,9 @@ const ApplePayExpressComponent = ( {
 				getPaymentRequest( {
 					total: billing.cartTotal,
 					currencyCode: billing.currency.code.toLowerCase(),
-					countryCode: billing.country,
+					countryCode: shippingData.shippingAddress.country,
 					shippingRequired: shippingData.needsShipping,
-					cartTotalItems: billing.cartItems,
+					cartTotalItems: billing.cartTotalItems,
 					stripe,
 				} )
 			);
@@ -126,15 +126,15 @@ const ApplePayExpressComponent = ( {
 				paymentRequest: currentPaymentRequest.current,
 				total: billing.cartTotal,
 				currencyCode: billing.currency.code.toLowerCase(),
-				cartTotalItems: billing.cartItems,
+				cartTotalItems: billing.cartTotalItems,
 			} );
 		}
 	}, [
 		billing.cartTotal,
 		billing.currency.code,
-		billing.country,
+		shippingData.shippingAddress.country,
 		shippingData.needsShipping,
-		billing.cartItems,
+		billing.cartTotalItems,
 		paymentStatus.currentStatus.isPristine,
 		stripe,
 	] );
@@ -195,7 +195,7 @@ const ApplePayExpressComponent = ( {
 				),
 				total: getTotalPaymentItem( currentBilling.current.cartTotal ),
 				displayItems: normalizeLineItems(
-					currentBilling.current.cartItems
+					currentBilling.current.cartTotalItems
 				),
 			} );
 		}
@@ -214,7 +214,7 @@ const ApplePayExpressComponent = ( {
 							currentBilling.current.cartTotal
 						),
 						displayItems: normalizeLineItems(
-							currentBilling.current.cartItems
+							currentBilling.current.cartTotalItems
 						),
 				  }
 				: {
@@ -311,9 +311,14 @@ const ApplePayExpressComponent = ( {
 		}
 	}, [ canMakePayment ] );
 
+	// locale is not a valid value for the paymentRequestButton style
+	const { type, theme, height } = getStripeServerData().button;
+
 	const paymentRequestButtonStyle = {
 		paymentRequestButton: {
-			...getStripeServerData().button,
+			type,
+			theme,
+			height,
 		},
 	};
 
