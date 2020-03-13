@@ -36,16 +36,14 @@
 			width: 50%;
 			> img {
 				width: 100%;
+				height: 48px;
 			}
 		}
-		> li:nth-child ( even ) {
+		> li:nth-child( even ) {
 			padding-left: $gap-smaller;
 		}
-		> li:nth-child ( odd ) {
+		> li:nth-child( odd ) {
 			padding-right: $gap-smaller;
-		}
-		img {
-			height: 48px;
 		}
 	}
 }
