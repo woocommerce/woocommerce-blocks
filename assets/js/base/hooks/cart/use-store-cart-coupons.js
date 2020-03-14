@@ -6,12 +6,13 @@
 import { __, sprintf } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
-import { useStoreNotices } from '@woocommerce/base-hooks';
+import { useValidationContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
  */
 import { useStoreCart } from './use-store-cart';
+import { useStoreNotices } from '../use-store-notices';
 
 /**
  * This is a custom hook for loading the Store API /cart/coupons endpoint and an
@@ -24,6 +25,7 @@ import { useStoreCart } from './use-store-cart';
 export const useStoreCartCoupons = () => {
 	const { cartCoupons, cartErrors, cartIsLoading } = useStoreCart();
 	const { addErrorNotice, addSnackbarNotice } = useStoreNotices();
+	const { setValidationErrors } = useValidationContext();
 
 	const results = useSelect(
 		( select, { dispatch } ) => {
@@ -56,9 +58,7 @@ export const useStoreCartCoupons = () => {
 						}
 					} )
 					.catch( ( error ) => {
-						addErrorNotice( error.message, {
-							id: 'coupon-form',
-						} );
+						setValidationErrors( { coupon: error.message } );
 						// Finished handling the coupon.
 						receiveApplyingCoupon( '' );
 					} );
