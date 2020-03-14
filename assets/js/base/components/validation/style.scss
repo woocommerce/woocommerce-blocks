@@ -2,4 +2,5 @@
 	color: $error-red;
 	@include font-size(12);
 	padding-left: $gap-small;
+	padding-top: $gap-smallest;
 }
