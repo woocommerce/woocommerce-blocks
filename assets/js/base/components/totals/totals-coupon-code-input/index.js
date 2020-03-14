@@ -7,8 +7,11 @@ import { PanelBody, PanelRow } from 'wordpress-components';
 import { Button } from '@woocommerce/base-components/cart-checkout';
 import TextInput from '@woocommerce/base-components/text-input';
 import Label from '@woocommerce/base-components/label';
+import { ValidationInputError } from '@woocommerce/base-components/validation';
 import PropTypes from 'prop-types';
 import { withInstanceId } from 'wordpress-compose';
+import classnames from 'classnames';
+import { useValidationContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -24,15 +27,17 @@ const TotalsCouponCodeInput = ( {
 } ) => {
 	const [ couponValue, setCouponValue ] = useState( '' );
 	const currentIsLoading = useRef( false );
+	const { getValidationError, clearValidationError } = useValidationContext();
+	const validationMessage = getValidationError( 'coupon' );
 
 	useEffect( () => {
 		if ( currentIsLoading.current !== isLoading ) {
-			if ( ! isLoading && couponValue ) {
+			if ( ! isLoading && couponValue && ! validationMessage ) {
 				setCouponValue( '' );
 			}
 			currentIsLoading.current = isLoading;
 		}
-	}, [ isLoading, couponValue ] );
+	}, [ isLoading, couponValue, validationMessage ] );
 
 	return (
 		<PanelBody
@@ -62,18 +67,29 @@ const TotalsCouponCodeInput = ( {
 			>
 				<PanelRow className="wc-block-coupon-code__row">
 					<form className="wc-block-coupon-code__form">
-						<TextInput
-							id={ `wc-block-coupon-code__input-${ instanceId }` }
-							className="wc-block-coupon-code__input"
-							label={ __(
-								'Enter code',
-								'woo-gutenberg-products-block'
-							) }
-							value={ couponValue }
-							onChange={ ( newCouponValue ) =>
-								setCouponValue( newCouponValue )
-							}
-						/>
+						<div>
+							<TextInput
+								id={ `wc-block-coupon-code__input-${ instanceId }` }
+								className={ classnames(
+									'wc-block-coupon-code__input',
+									{
+										'has-error': !! validationMessage,
+									}
+								) }
+								label={ __(
+									'Enter code',
+									'woo-gutenberg-products-block'
+								) }
+								value={ couponValue }
+								onChange={ ( newCouponValue ) => {
+									setCouponValue( newCouponValue );
+									clearValidationError( 'coupon' );
+								} }
+							/>
+							<ValidationInputError
+								errorMessage={ validationMessage }
+							/>
+						</div>
 						<Button
 							className="wc-block-coupon-code__button"
 							disabled={ isLoading || ! couponValue }
