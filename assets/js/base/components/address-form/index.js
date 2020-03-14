@@ -38,7 +38,6 @@ const AddressForm = ( {
 	const sortedAddressFields = addressFields.sort(
 		( a, b ) => a.index - b.index
 	);
-
 	return (
 		<div className="wc-block-address-form">
 			{ sortedAddressFields.map( ( field ) => {

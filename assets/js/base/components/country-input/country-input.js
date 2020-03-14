@@ -3,6 +3,7 @@
  */
 import PropTypes from 'prop-types';
 import { decodeEntities } from '@wordpress/html-entities';
+import { useValidationContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -18,12 +19,13 @@ const CountryInput = ( {
 	value = '',
 	autoComplete = 'off',
 	required = false,
-	errorMessage = '',
 } ) => {
 	const options = Object.keys( countries ).map( ( key ) => ( {
 		key,
 		name: decodeEntities( countries[ key ] ),
 	} ) );
+	const { getValidationError } = useValidationContext();
+	const errorMessage = getValidationError( 'country' );
 
 	return (
 		<>
