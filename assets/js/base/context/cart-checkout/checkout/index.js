@@ -3,6 +3,7 @@
  */
 import { PaymentMethodDataProvider } from '../payment-methods';
 import { ShippingMethodDataProvider } from '../shipping';
+import { ValidationContextProvider } from '../validation';
 import { actions } from './actions';
 import { reducer } from './reducer';
 import { DEFAULT_STATE, STATUS } from './constants';
@@ -187,13 +188,15 @@ export const CheckoutProvider = ( {
 	};
 	return (
 		<CheckoutContext.Provider value={ checkoutData }>
-			<PaymentMethodDataProvider
-				activePaymentMethod={ initialActivePaymentMethod }
-			>
-				<ShippingMethodDataProvider>
-					{ children }
-				</ShippingMethodDataProvider>
-			</PaymentMethodDataProvider>
+			<ValidationContextProvider>
+				<PaymentMethodDataProvider
+					activePaymentMethod={ initialActivePaymentMethod }
+				>
+					<ShippingMethodDataProvider>
+						{ children }
+					</ShippingMethodDataProvider>
+				</PaymentMethodDataProvider>
+			</ValidationContextProvider>
 		</CheckoutContext.Provider>
 	);
 };
