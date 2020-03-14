@@ -30,7 +30,11 @@ export const useStoreCartCoupons = () => {
 			const store = select( storeKey );
 			const isApplyingCoupon = store.isApplyingCoupon();
 			const isRemovingCoupon = store.isRemovingCoupon();
-			const { applyCoupon, removeCoupon } = dispatch( storeKey );
+			const {
+				applyCoupon,
+				removeCoupon,
+				receiveApplyingCoupon,
+			} = dispatch( storeKey );
 
 			const applyCouponWithNotices = ( couponCode ) => {
 				applyCoupon( couponCode )
@@ -55,6 +59,8 @@ export const useStoreCartCoupons = () => {
 						addErrorNotice( error.message, {
 							id: 'coupon-form',
 						} );
+						// Finished handling the coupon.
+						receiveApplyingCoupon( '' );
 					} );
 			};
 
@@ -81,6 +87,8 @@ export const useStoreCartCoupons = () => {
 						addErrorNotice( error.message, {
 							id: 'coupon-form',
 						} );
+						// Finished handling the coupon.
+						receiveApplyingCoupon( '' );
 					} );
 			};
 
