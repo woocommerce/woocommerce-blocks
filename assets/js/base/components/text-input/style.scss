@@ -2,6 +2,18 @@
 	position: relative;
 	margin-top: $gap;
 	white-space: nowrap;
+
+	input {
+		border: 1px solid $input-border-gray;
+	}
+
+	&.has-error input {
+		border: 1px solid $error-red;
+
+		&:focus {
+			outline-color: $error-red;
+		}
+	}
 }
 
 .wc-block-text-input label {
@@ -35,7 +47,6 @@
 	background-color: #fff;
 	padding: $gap-small $gap;
 	border-radius: 4px;
-	border: 1px solid $input-border-gray;
 	width: 100%;
 	font-size: 16px;
 	line-height: 22px;
