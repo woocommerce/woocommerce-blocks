@@ -96,6 +96,7 @@
 	@include breakpoint( "<600px" ) {
 		top: 10px;
 		left: 0;
+		bottom: auto;
 		width: fit-content;
 	}
 }
