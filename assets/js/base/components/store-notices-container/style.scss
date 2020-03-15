@@ -87,14 +87,24 @@
 }
 
 .components-snackbar-list {
-	position: absolute;
+	position: fixed;
 	z-index: z-index(".components-snackbar-list");
 	width: 100%;
 	box-sizing: border-box;
+	bottom: 100px;
+	left: 100px;
+	@include breakpoint( "<600px" ) {
+		top: 10px;
+		left: 0;
+		width: fit-content;
+	}
 }
 
 .components-snackbar-list__notice-container {
-	position: fixed;
-	left: $gap-large;
-	bottom: $gap-large;
+	position: relative;
+	padding-top: 8px;
+	@include breakpoint( "<600px" ) {
+		margin-left: 10px;
+		margin-right: 10px;
+	}
 }
