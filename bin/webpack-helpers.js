@@ -268,13 +268,19 @@ const getMainConfig = ( options = {} ) => {
 							loader: 'sass-loader',
 							query: {
 								includePaths: [ 'node_modules' ],
-								data:
-									'@import "~@wordpress/base-styles/colors"; ' +
-									'@import "~@wordpress/base-styles/variables"; ' +
-									'@import "~@wordpress/base-styles/mixins"; ' +
-									'@import "~@wordpress/base-styles/breakpoints"; ' +
-									'@import "~@wordpress/base-styles/animations"; ' +
-									'@import "~@wordpress/base-styles/z-index"; ',
+								data: [
+									'colors',
+									'breakpoints',
+									'variables',
+									'mixins',
+									'animations',
+									'z-index',
+								]
+									.map(
+										( imported ) =>
+											`@import "~@wordpress/base-styles/${ imported }";`
+									)
+									.join( ' ' ),
 							},
 						},
 					],
@@ -289,12 +295,27 @@ const getMainConfig = ( options = {} ) => {
 						{
 							loader: 'sass-loader',
 							query: {
-								includePaths: [ 'assets/css/abstracts' ],
-								data:
-									'@import "_colors"; ' +
-									'@import "_variables"; ' +
-									'@import "_breakpoints"; ' +
-									'@import "_mixins"; ',
+								includePaths: [
+									'assets/css/abstracts',
+									'node_modules',
+								],
+								data: [
+									'~@wordpress/base-styles/colors',
+									'~@wordpress/base-styles/breakpoints',
+									'~@wordpress/base-styles/variables',
+									'~@wordpress/base-styles/mixins',
+									'~@wordpress/base-styles/animations',
+									'~@wordpress/base-styles/z-index',
+									'_colors',
+									'_variables',
+									'_breakpoints',
+									'_mixins',
+								]
+									.map(
+										( imported ) =>
+											`@import "${ imported }";`
+									)
+									.join( ' ' ),
 							},
 						},
 					],
