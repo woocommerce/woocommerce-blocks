@@ -197,43 +197,43 @@ class CartItemSchema extends AbstractSchema {
 				'properties'  => array_merge(
 					$this->get_store_currency_properties(),
 					[
-						'price'         => [
+						'price'              => [
 							'description' => __( 'Current product price.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
 						],
-						'regular_price' => [
+						'regular_price'      => [
 							'description' => __( 'Regular product price.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
 						],
-						'sale_price'    => [
+						'sale_price'         => [
 							'description' => __( 'Sale product price, if applicable.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
 						],
-						'line_price'    => [
+						'line_price'         => [
 							'description' => __( 'Current product price multiplied by line quantity.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
 						],
-						'regular_price' => [
+						'line_regular_price' => [
 							'description' => __( 'Regular product price multiplied by line quantity.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
 						],
-						'sale_price'    => [
+						'line_sale_price'    => [
 							'description' => __( 'Sale product price, if applicable, multiplied by line quantity.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
 						],
-						'price_range'   => [
+						'price_range'        => [
 							'description' => __( 'Price range, if applicable.', 'woo-gutenberg-products-block' ),
 							'type'        => [ 'object', 'null' ],
 							'context'     => [ 'view', 'edit' ],
@@ -329,7 +329,7 @@ class CartItemSchema extends AbstractSchema {
 			'permalink'           => $product->get_permalink(),
 			'images'              => ( new ProductImages() )->images_to_array( $product ),
 			'variation'           => $this->format_variation_data( $cart_item['variation'], $product ),
-			'prices'              => $this->get_prices( $product, get_option( 'woocommerce_tax_display_cart' ), wc_stock_amount( $cart_item['quantity'] ) ),
+			'prices'              => (object) $this->get_prices( $product, get_option( 'woocommerce_tax_display_cart' ), wc_stock_amount( $cart_item['quantity'] ) ),
 			'totals'              => (object) array_merge(
 				$this->get_store_currency_response(),
 				[
