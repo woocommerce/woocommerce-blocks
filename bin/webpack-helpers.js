@@ -112,7 +112,7 @@ const stableMainEntry = {
 		'./node_modules/@wordpress/components/src/checkbox-control/style.scss',
 	'spinner-style':
 		'./node_modules/@wordpress/components/src/spinner/style.scss',
-	'snackbar-notices':
+	'snackbar-notice-style':
 		'./node_modules/@wordpress/components/src/snackbar/style.scss',
 
 	// Blocks
