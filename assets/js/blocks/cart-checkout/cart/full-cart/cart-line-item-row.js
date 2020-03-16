@@ -60,8 +60,8 @@ const CartLineItemRow = ( { lineItem } ) => {
 	} = useStoreCartItemQuantity( lineItem );
 
 	const currency = getCurrency( prices );
-	const regularPrice = parseInt( prices.regular_price, 10 ) * quantity;
-	const purchasePrice = parseInt( prices.price, 10 ) * quantity;
+	const regularPrice = parseInt( prices.line_regular_price, 10 );
+	const purchasePrice = parseInt( prices.line_price, 10 );
 	const saleAmount = regularPrice - purchasePrice;
 
 	return (
