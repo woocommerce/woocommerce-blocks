@@ -14,7 +14,6 @@ import { previewCart } from '@woocommerce/resource-previews';
  */
 const defaultCartData = {
 	cartCoupons: [],
-	shippingRates: [],
 	cartItems: [],
 	cartItemsCount: 0,
 	cartItemsWeight: 0,
@@ -22,6 +21,18 @@ const defaultCartData = {
 	cartTotals: {},
 	cartIsLoading: true,
 	cartErrors: [],
+	shippingAddress: {
+		first_name: '',
+		last_name: '',
+		company: '',
+		address_1: '',
+		address_2: '',
+		city: '',
+		state: '',
+		postcode: '',
+		country: '',
+	},
+	shippingRates: [],
 };
 
 /**
@@ -43,13 +54,12 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 	const results = useSelect(
 		( select ) => {
 			if ( ! shouldSelect ) {
-				return null;
+				return defaultCartData;
 			}
 
 			if ( isEditor ) {
 				return {
 					cartCoupons: previewCart.coupons,
-					shippingRates: previewCart.shipping_rates,
 					cartItems: previewCart.items,
 					cartItemsCount: previewCart.items_count,
 					cartItemsWeight: previewCart.items_weight,
@@ -57,6 +67,13 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 					cartTotals: previewCart.totals,
 					cartIsLoading: false,
 					cartErrors: [],
+					shippingRates: previewCart.shipping_rates,
+					shippingAddress: {
+						country: '',
+						state: '',
+						city: '',
+						postcode: '',
+					},
 				};
 			}
 
@@ -70,6 +87,7 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 			return {
 				cartCoupons: cartData.coupons,
 				shippingRates: cartData.shippingRates,
+				shippingAddress: cartData.shippingAddress,
 				cartItems: cartData.items,
 				cartItemsCount: cartData.itemsCount,
 				cartItemsWeight: cartData.itemsWeight,
@@ -81,8 +99,5 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 		},
 		[ shouldSelect ]
 	);
-	if ( results === null ) {
-		return defaultCartData;
-	}
 	return results;
 };
