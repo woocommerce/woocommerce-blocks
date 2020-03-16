@@ -14,48 +14,15 @@ import { useValidationContext } from '@woocommerce/base-context';
 import './style.scss';
 import AddressForm from '../address-form';
 
-const validateCountry = (
-	values,
-	setValidationErrors,
-	clearValidationError,
-	hasValidationError
-) => {
-	if (
-		! hasValidationError &&
-		( values.city || values.state || values.postcode ) &&
-		! values.country
-	) {
-		setValidationErrors( {
-			country: __(
-				'Please select a country to calculate rates.',
-				'woo-gutenberg-products-block'
-			),
-		} );
-	}
-	if ( hasValidationError && values.country ) {
-		clearValidationError( 'country' );
-	}
-};
-
 const ShippingCalculatorAddress = ( {
 	address: initialAddress,
 	onUpdate,
 	addressFields,
 } ) => {
 	const [ address, setAddress ] = useState( initialAddress );
-	const {
-		getValidationError,
-		setValidationErrors,
-		clearValidationError,
-	} = useValidationContext();
+	const { getValidationError } = useValidationContext();
 
 	const updateAddress = ( newAddress ) => {
-		validateCountry(
-			newAddress,
-			setValidationErrors,
-			clearValidationError,
-			!! getValidationError( 'country' )
-		);
 		setAddress( newAddress );
 	};
 

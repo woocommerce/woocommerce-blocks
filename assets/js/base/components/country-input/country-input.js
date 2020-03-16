@@ -4,6 +4,7 @@
 import PropTypes from 'prop-types';
 import { decodeEntities } from '@wordpress/html-entities';
 import { useValidationContext } from '@woocommerce/base-context';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -28,9 +29,8 @@ const CountryInput = ( {
 	const errorMessage = getValidationError( 'country' );
 
 	return (
-		<>
+		<div className={ classnames( className, 'wc-block-country-input' ) }>
 			<Select
-				className={ className }
 				label={ label }
 				onChange={ onChange }
 				options={ options }
@@ -62,7 +62,7 @@ const CountryInput = ( {
 				/>
 			) }
 			<ValidationInputError errorMessage={ errorMessage } />
-		</>
+		</div>
 	);
 };
 
