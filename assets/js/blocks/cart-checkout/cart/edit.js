@@ -4,13 +4,19 @@
 import { __ } from '@wordpress/i18n';
 
 import { InspectorControls } from '@wordpress/block-editor';
-import { Disabled, PanelBody, ToggleControl } from '@wordpress/components';
+import {
+	Disabled,
+	PanelBody,
+	ToggleControl,
+	SelectControl,
+} from '@wordpress/components';
 import PropTypes from 'prop-types';
 import { withFeedbackPrompt } from '@woocommerce/block-hocs';
 import ViewSwitcher from '@woocommerce/block-components/view-switcher';
-import { SHIPPING_ENABLED } from '@woocommerce/block-settings';
+import { SHIPPING_ENABLED, CART_PAGE_ID } from '@woocommerce/block-settings';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
-import { EditorProvider } from '@woocommerce/base-context';
+import { EditorProvider, useEditorContext } from '@woocommerce/base-context';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -19,7 +25,21 @@ import FullCart from './full-cart';
 import EmptyCart from './empty-cart';
 
 const BlockSettings = ( { attributes, setAttributes } ) => {
-	const { isShippingCalculatorEnabled, isShippingCostHidden } = attributes;
+	const {
+		isShippingCalculatorEnabled,
+		isShippingCostHidden,
+		checkoutPageId,
+	} = attributes;
+	const pages =
+		useSelect( ( select ) => {
+			return select( 'core' ).getEntityRecords( 'postType', 'page', {
+				status: 'publish',
+				orderby: 'title',
+				order: 'asc',
+				per_page: 100,
+			} );
+		}, [] ) || null;
+	const { currentPostId } = useEditorContext();
 
 	return (
 		<InspectorControls>
@@ -59,6 +79,44 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 					}
 				/>
 			</PanelBody>
+			{ ( currentPostId !== CART_PAGE_ID || checkoutPageId ) && pages && (
+				<PanelBody
+					title={ __(
+						'Proceed to Checkout button',
+						'woo-gutenberg-products-block'
+					) }
+				>
+					<SelectControl
+						label={ __(
+							'Link to',
+							'woo-gutenberg-products-block'
+						) }
+						value={ checkoutPageId }
+						options={ [
+							...[
+								{
+									label: __(
+										'WooCommerce Checkout Page',
+										'woo-gutenberg-products-block'
+									),
+									value: 0,
+								},
+							],
+							...Object.values( pages ).map( ( page ) => {
+								return {
+									label: page.title.raw,
+									value: parseInt( page.id, 10 ),
+								};
+							} ),
+						] }
+						onChange={ ( value ) =>
+							setAttributes( {
+								checkoutPageId: parseInt( value, 10 ),
+							} )
+						}
+					/>
+				</PanelBody>
+			) }
 		</InspectorControls>
 	);
 };
@@ -67,7 +125,6 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
  * Component to handle edit mode of "Cart Block".
  */
 const CartEditor = ( { className, attributes, setAttributes } ) => {
-	const { isShippingCalculatorEnabled, isShippingCostHidden } = attributes;
 	return (
 		<div className={ className }>
 			<ViewSwitcher
@@ -114,12 +171,7 @@ const CartEditor = ( { className, attributes, setAttributes } ) => {
 									<Disabled>
 										<EditorProvider>
 											<FullCart
-												isShippingCostHidden={
-													isShippingCostHidden
-												}
-												isShippingCalculatorEnabled={
-													isShippingCalculatorEnabled
-												}
+												attributes={ attributes }
 											/>
 										</EditorProvider>
 									</Disabled>
