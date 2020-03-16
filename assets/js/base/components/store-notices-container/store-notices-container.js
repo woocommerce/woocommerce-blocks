@@ -14,12 +14,12 @@ import './style.scss';
 const getWooClassName = ( { status = 'default' } ) => {
 	switch ( status ) {
 		case 'error':
-			return 'woocommerce-message woocommerce-error';
+			return 'woocommerce-error';
 		case 'success':
-			return 'woocommerce-message woocommerce-success';
+			return 'woocommerce-success';
 		case 'info':
 		case 'warning':
-			return 'woocommerce-message woocommerce-info';
+			return 'woocommerce-info';
 	}
 	return '';
 };
@@ -43,6 +43,7 @@ const StoreNoticesContainer = ( { className, notices } ) => {
 					{ ...props }
 					className={ classnames(
 						'wc-block-components-notices__notice',
+						'woocommerce-message',
 						getWooClassName( props )
 					) }
 					onRemove={ () => {
