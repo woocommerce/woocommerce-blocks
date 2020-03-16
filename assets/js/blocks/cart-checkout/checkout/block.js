@@ -333,12 +333,11 @@ const Block = ( {
 							{ attributes.showReturnToCart && (
 								<ReturnToCartButton
 									link={
-										attributes.cartPageId
-											? getSetting(
+										 getSetting(
 													'page-' +
-														attributes.cartPageId
+														attributes?.cartPageId,
+													false
 											  )
-											: false
 									}
 								/>
 							) }
