@@ -338,7 +338,7 @@ const Block = ( {
 													'page-' +
 														attributes.cartPageId
 											  )
-											: undefined
+											: false
 									}
 								/>
 							) }
