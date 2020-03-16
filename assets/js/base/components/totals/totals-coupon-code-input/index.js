@@ -67,29 +67,24 @@ const TotalsCouponCodeInput = ( {
 			>
 				<PanelRow className="wc-block-coupon-code__row">
 					<form className="wc-block-coupon-code__form">
-						<div>
-							<TextInput
-								id={ `wc-block-coupon-code__input-${ instanceId }` }
-								className={ classnames(
-									'wc-block-coupon-code__input',
-									{
-										'has-error': !! validationMessage,
-									}
-								) }
-								label={ __(
-									'Enter code',
-									'woo-gutenberg-products-block'
-								) }
-								value={ couponValue }
-								onChange={ ( newCouponValue ) => {
-									setCouponValue( newCouponValue );
-									clearValidationError( 'coupon' );
-								} }
-							/>
-							<ValidationInputError
-								errorMessage={ validationMessage }
-							/>
-						</div>
+						<TextInput
+							id={ `wc-block-coupon-code__input-${ instanceId }` }
+							className={ classnames(
+								'wc-block-coupon-code__input',
+								{
+									'has-error': !! validationMessage,
+								}
+							) }
+							label={ __(
+								'Enter code',
+								'woo-gutenberg-products-block'
+							) }
+							value={ couponValue }
+							onChange={ ( newCouponValue ) => {
+								setCouponValue( newCouponValue );
+								clearValidationError( 'coupon' );
+							} }
+						/>
 						<Button
 							className="wc-block-coupon-code__button"
 							disabled={ isLoading || ! couponValue }
@@ -103,6 +98,7 @@ const TotalsCouponCodeInput = ( {
 						</Button>
 					</form>
 				</PanelRow>
+				<ValidationInputError errorMessage={ validationMessage } />
 			</LoadingMask>
 		</PanelBody>
 	);
