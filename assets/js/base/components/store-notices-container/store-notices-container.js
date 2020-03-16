@@ -61,7 +61,15 @@ const StoreNoticesContainer = ( { className, notices } ) => {
 
 StoreNoticesContainer.propTypes = {
 	className: PropTypes.string,
-	notices: PropTypes.array,
+	notices: PropTypes.arrayOf(
+		PropTypes.shape( {
+			content: PropTypes.string.isRequired,
+			id: PropTypes.string.isRequired,
+			status: PropTypes.string.isRequired,
+			isDismissible: PropTypes.bool,
+			type: PropTypes.oneOf( [ 'default', 'snackbar' ] ),
+		} )
+	),
 };
 
 export default StoreNoticesContainer;
