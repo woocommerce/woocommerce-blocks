@@ -19,6 +19,7 @@ import { EditorProvider, useEditorContext } from '@woocommerce/base-context';
 import { useSelect } from '@wordpress/data';
 import { __experimentalCreateInterpolateElement } from 'wordpress-element';
 import { getAdminLink } from '@woocommerce/settings';
+import { recordEditorEvent } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
@@ -85,11 +86,15 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 						'woo-gutenberg-products-block'
 					) }
 					checked={ isShippingCalculatorEnabled }
-					onChange={ () =>
+					onChange={ () => {
+						const newEnabled = ! isShippingCalculatorEnabled;
+						recordEditorEvent( 'cart_shipping_calculator_toggled', {
+							enabled: newEnabled,
+						} );
 						setAttributes( {
-							isShippingCalculatorEnabled: ! isShippingCalculatorEnabled,
-						} )
-					}
+							isShippingCalculatorEnabled: newEnabled,
+						} );
+					} }
 				/>
 				<ToggleControl
 					label={ __(
