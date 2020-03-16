@@ -160,11 +160,15 @@ class Assets {
 	 * @return array
 	 */
 	protected static function format_page_resource( $page ) {
-		if ( ! $page ) {
-			return [];
-		}
 		if ( is_numeric( $page ) ) {
 			$page = get_post( $page );
+		}
+		if ( ! $page ) {
+			return [
+				'id'        => 0,
+				'title'     => '',
+				'permalink' => false,
+			];
 		}
 		return [
 			'id'        => $page->ID,

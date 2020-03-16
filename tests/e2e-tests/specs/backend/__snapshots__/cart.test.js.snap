@@ -11,7 +11,7 @@ exports[`Cart Block can be created 1`] = `
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {\\"align\\":\\"center\\"} -->
-<p class=\\"has-text-align-center\\"><a href=\\"http://localhost:8084/?p=1624\\">Browse store</a>.</p>
+<p class=\\"has-text-align-center\\"><a href=\\"false\\">Browse store</a>.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:separator {\\"className\\":\\"is-style-dots\\"} -->
