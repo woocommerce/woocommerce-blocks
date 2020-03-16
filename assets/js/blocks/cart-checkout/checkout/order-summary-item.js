@@ -28,6 +28,7 @@ const CheckoutOrderSummaryItem = ( { cartItem } ) => {
 	const currency = getCurrency( prices );
 	const regularPrice = parseInt( prices.regular_price, 10 );
 	const purchasePrice = parseInt( prices.price, 10 );
+	const linePrice = parseInt( prices.line_price, 10 );
 
 	return (
 		<div className="wc-block-order-summary-item">
@@ -49,7 +50,7 @@ const CheckoutOrderSummaryItem = ( { cartItem } ) => {
 					<ProductPrice
 						className="wc-block-order-summary-item__total-price"
 						currency={ currency }
-						value={ purchasePrice * quantity }
+						value={ linePrice }
 					/>
 					<ProductName permalink={ permalink } name={ name } />
 				</div>
