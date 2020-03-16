@@ -27,7 +27,11 @@ const TotalsCouponCodeInput = ( {
 } ) => {
 	const [ couponValue, setCouponValue ] = useState( '' );
 	const currentIsLoading = useRef( false );
-	const { getValidationError, clearValidationError } = useValidationContext();
+	const {
+		getValidationError,
+		clearValidationError,
+		getValidationErrorId,
+	} = useValidationContext();
 	const validationMessage = getValidationError( 'coupon' );
 
 	useEffect( () => {
@@ -38,6 +42,8 @@ const TotalsCouponCodeInput = ( {
 			currentIsLoading.current = isLoading;
 		}
 	}, [ isLoading, couponValue, validationMessage ] );
+
+	const textInputId = `wc-block-coupon-code__input-${ instanceId }`;
 
 	return (
 		<PanelBody
@@ -52,7 +58,7 @@ const TotalsCouponCodeInput = ( {
 						'Introduce Coupon Code',
 						'woo-gutenberg-products-block'
 					) }
-					htmlFor={ `wc-block-coupon-code__input-${ instanceId }` }
+					htmlFor={ textInputId }
 				/>
 			}
 			initialOpen={ initialOpen }
@@ -68,7 +74,7 @@ const TotalsCouponCodeInput = ( {
 				<PanelRow className="wc-block-coupon-code__row">
 					<form className="wc-block-coupon-code__form">
 						<TextInput
-							id={ `wc-block-coupon-code__input-${ instanceId }` }
+							id={ textInputId }
 							className={ classnames(
 								'wc-block-coupon-code__input',
 								{
@@ -80,6 +86,9 @@ const TotalsCouponCodeInput = ( {
 								'woo-gutenberg-products-block'
 							) }
 							value={ couponValue }
+							ariaDescribedBy={ getValidationErrorId(
+								textInputId
+							) }
 							onChange={ ( newCouponValue ) => {
 								setCouponValue( newCouponValue );
 								clearValidationError( 'coupon' );
@@ -98,7 +107,10 @@ const TotalsCouponCodeInput = ( {
 						</Button>
 					</form>
 				</PanelRow>
-				<ValidationInputError errorMessage={ validationMessage } />
+				<ValidationInputError
+					errorMessage={ validationMessage }
+					elementId={ textInputId }
+				/>
 			</LoadingMask>
 		</PanelBody>
 	);

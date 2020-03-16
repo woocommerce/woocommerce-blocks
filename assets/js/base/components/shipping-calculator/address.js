@@ -27,7 +27,7 @@ const validateCountry = (
 	) {
 		setValidationErrors( {
 			country: __(
-				'At minimum, a country must be selected to calculate rates.',
+				'Please select a country to calculate rates.',
 				'woo-gutenberg-products-block'
 			),
 		} );

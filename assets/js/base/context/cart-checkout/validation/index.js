@@ -78,11 +78,25 @@ export const ValidationContextProvider = ( { children } ) => {
 			updateValidationErrors( { ...validationErrors, ...newErrors } );
 		}
 	};
+
+	/**
+	 * Provides an id for the validation error that can be used to fill out
+	 * aria-describedby attribute values.
+	 *
+	 * @param {string} inputId The input css id the validation error is related
+	 *                         to.
+	 * @return {string} The id to use for the validation error container.
+	 */
+	const getValidationErrorId = ( inputId ) => {
+		return inputId ? `validate-error-${ inputId }` : '';
+	};
+
 	const context = {
 		getValidationError,
 		setValidationErrors,
 		clearValidationError,
 		clearAllValidationErrors,
+		getValidationErrorId,
 	};
 	return (
 		<ValidationContext.Provider value={ context }>
