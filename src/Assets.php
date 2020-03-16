@@ -149,7 +149,6 @@ class Assets {
 					'privacy'  => self::format_page_resource( $page_ids['privacy'] ),
 					'terms'    => self::format_page_resource( $page_ids['terms'] ),
 				],
-				'allPages'                      => array_map( [ __CLASS__, 'format_page_resource' ], array_column( get_pages(), null, 'ID' ) ),
 			]
 		);
 	}

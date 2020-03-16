@@ -79,5 +79,3 @@ export const TERMS_PAGE_NAME = storePages.terms.title;
 
 export const CART_PAGE_ID = storePages.cart.id;
 export const CART_URL = storePages.cart.permalink;
-
-export const ALL_PAGES = getSetting( 'allPages', {} );

@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { CART_URL, ALL_PAGES } from '@woocommerce/block-settings';
+import { CART_URL } from '@woocommerce/block-settings';
 import { Icon, arrowBack } from '@woocommerce/icons';
 
 /**
@@ -10,9 +10,8 @@ import { Icon, arrowBack } from '@woocommerce/icons';
  */
 import './style.scss';
 
-const ReturnToCartButton = ( { page = 0 } ) => {
-	const href =
-		page && ALL_PAGES[ page ] ? ALL_PAGES[ page ].permalink : CART_URL;
+const ReturnToCartButton = ( { link = '' } ) => {
+	const href = link ? link : CART_URL;
 	return (
 		<a
 			href={ href }

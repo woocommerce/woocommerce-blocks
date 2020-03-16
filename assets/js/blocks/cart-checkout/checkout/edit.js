@@ -20,9 +20,9 @@ import {
 	PRIVACY_URL,
 	TERMS_URL,
 	SHIPPING_METHODS_EXIST,
-	ALL_PAGES,
 	CHECKOUT_PAGE_ID,
 } from '@woocommerce/block-settings';
+import { useSelect } from '@wordpress/data';
 import { getAdminLink } from '@woocommerce/settings';
 import { __experimentalCreateInterpolateElement } from 'wordpress-element';
 import { EditorProvider, useEditorContext } from '@woocommerce/base-context';
@@ -44,11 +44,20 @@ const CheckoutEditor = ( { attributes, setAttributes } ) => {
 		requirePhoneField,
 		showPolicyLinks,
 		showReturnToCart,
-		cartPageId,
+		cartPageLink,
 	} = attributes;
 
 	const BlockSettings = () => {
 		const { currentPostId } = useEditorContext();
+		const pages =
+			useSelect( ( select ) => {
+				return select( 'core' ).getEntityRecords( 'postType', 'page', {
+					status: 'publish',
+					orderby: 'title',
+					order: 'asc',
+					per_page: 100,
+				} );
+			}, [] ) || null;
 
 		return (
 			<>
@@ -260,13 +269,13 @@ const CheckoutEditor = ( { attributes, setAttributes } ) => {
 						/>
 						{ showReturnToCart &&
 							( currentPostId !== CHECKOUT_PAGE_ID ||
-								cartPageId ) && (
+								cartPageLink ) && (
 								<SelectControl
 									label={ __(
 										'Link to',
 										'woo-gutenberg-products-block'
 									) }
-									value={ cartPageId }
+									value={ cartPageLink }
 									options={ [
 										...[
 											{
@@ -274,20 +283,20 @@ const CheckoutEditor = ( { attributes, setAttributes } ) => {
 													'WooCommerce Cart Page',
 													'woo-gutenberg-products-block'
 												),
-												value: 0,
+												value: '',
 											},
 										],
-										...Object.values( ALL_PAGES ).map(
+										...Object.values( pages ).map(
 											( page ) => {
 												return {
-													label: page.title,
-													value: page.id,
+													label: page.title.raw,
+													value: page.link,
 												};
 											}
 										),
 									] }
 									onChange={ ( value ) =>
-										setAttributes( { cartPageId: value } )
+										setAttributes( { cartPageLink: value } )
 									}
 								/>
 							) }
