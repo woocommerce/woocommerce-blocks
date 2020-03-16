@@ -112,6 +112,8 @@ const stableMainEntry = {
 		'./node_modules/@wordpress/components/src/checkbox-control/style.scss',
 	'spinner-style':
 		'./node_modules/@wordpress/components/src/spinner/style.scss',
+	'snackbar-notices':
+		'./node_modules/@wordpress/components/src/snackbar/style.scss',
 
 	// Blocks
 	'handpicked-products': './assets/js/blocks/handpicked-products/index.js',
@@ -300,12 +302,6 @@ const getMainConfig = ( options = {} ) => {
 									'node_modules',
 								],
 								data: [
-									'~@wordpress/base-styles/colors',
-									'~@wordpress/base-styles/breakpoints',
-									'~@wordpress/base-styles/variables',
-									'~@wordpress/base-styles/mixins',
-									'~@wordpress/base-styles/animations',
-									'~@wordpress/base-styles/z-index',
 									'_colors',
 									'_variables',
 									'_breakpoints',
