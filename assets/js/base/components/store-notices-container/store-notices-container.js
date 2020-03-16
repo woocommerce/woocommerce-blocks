@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Notice } from 'wordpress-components';
 import { useStoreNoticesContext } from '@woocommerce/base-context';
-import { filter } from 'lodash';
 
 /**
  * Internal dependencies
@@ -28,15 +27,13 @@ const getWooClassName = ( { status = 'default' } ) => {
 const StoreNoticesContainer = ( { className, notices } ) => {
 	const { removeNotice } = useStoreNoticesContext();
 	const wrapperClass = classnames( className, 'wc-block-components-notices' );
-
-	if ( ! notices.length ) {
-		return null;
-	}
-
-	const regularNotices = filter(
-		notices,
+	const regularNotices = notices.filter(
 		( notice ) => notice.type !== 'snackbar'
 	);
+
+	if ( ! regularNotices.length ) {
+		return null;
+	}
 
 	return (
 		<div className={ wrapperClass }>
