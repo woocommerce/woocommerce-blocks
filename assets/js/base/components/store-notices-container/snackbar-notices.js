@@ -1,15 +1,14 @@
 /**
  * External dependencies
  */
-import { filter } from 'lodash';
 import { SnackbarList } from 'wordpress-components';
 import { useStoreNotices } from '@woocommerce/base-hooks';
 
 const NoticesContainer = () => {
 	const { notices, removeNotice } = useStoreNotices();
-	const snackbarNotices = filter( notices, {
-		type: 'snackbar',
-	} );
+	const snackbarNotices = notices.filter(
+		( notice ) => notice.type === 'snackbar'
+	);
 	return (
 		<SnackbarList
 			notices={ snackbarNotices }
