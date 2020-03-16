@@ -10,11 +10,10 @@ import { Icon, arrowBack } from '@woocommerce/icons';
  */
 import './style.scss';
 
-const ReturnToCartButton = ( { link = '' } ) => {
-	const href = link ? link : CART_URL;
+const ReturnToCartButton = ( { link = CART_URL } ) => {
 	return (
 		<a
-			href={ href }
+			href={ link }
 			className="wc-block-components-checkout-return-to-cart-button"
 		>
 			<Icon srcElement={ arrowBack } />

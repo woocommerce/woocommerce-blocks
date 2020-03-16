@@ -25,7 +25,7 @@ import {
 	ExpressCheckoutFormControl,
 	PaymentMethods,
 } from '@woocommerce/base-components/payment-methods';
-import { SHIPPING_ENABLED, CART_URL } from '@woocommerce/block-settings';
+import { SHIPPING_ENABLED } from '@woocommerce/block-settings';
 import { decodeEntities } from '@wordpress/html-entities';
 import { useShippingRates } from '@woocommerce/base-hooks';
 import {
@@ -333,9 +333,12 @@ const Block = ( {
 							{ attributes.showReturnToCart && (
 								<ReturnToCartButton
 									link={
-										getSetting(
-											'page-' + attributes.cartPageId
-										) || CART_URL
+										attributes.cartPageId
+											? getSetting(
+													'page-' +
+														attributes.cartPageId
+											  )
+											: undefined
 									}
 								/>
 							) }
