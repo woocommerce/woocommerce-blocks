@@ -2,27 +2,30 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-
+import FeedbackPrompt from '@woocommerce/block-components/feedback-prompt';
 import { InspectorControls } from '@wordpress/block-editor';
 import {
 	Disabled,
 	PanelBody,
 	ToggleControl,
 	SelectControl,
+	Notice,
 } from '@wordpress/components';
 import PropTypes from 'prop-types';
-import { withFeedbackPrompt } from '@woocommerce/block-hocs';
 import ViewSwitcher from '@woocommerce/block-components/view-switcher';
 import { SHIPPING_ENABLED, CART_PAGE_ID } from '@woocommerce/block-settings';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import { EditorProvider, useEditorContext } from '@woocommerce/base-context';
 import { useSelect } from '@wordpress/data';
+import { __experimentalCreateInterpolateElement } from 'wordpress-element';
+import { getAdminLink } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
  */
 import FullCart from './full-cart';
 import EmptyCart from './empty-cart';
+import './editor.scss';
 
 const BlockSettings = ( { attributes, setAttributes } ) => {
 	const {
@@ -43,6 +46,32 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 
 	return (
 		<InspectorControls>
+			{ currentPostId !== CART_PAGE_ID && (
+				<Notice
+					className="wc-block-cart__page-notice"
+					isDismissible={ false }
+					status="warning"
+				>
+					{ __experimentalCreateInterpolateElement(
+						__(
+							'If you would like to use this block as your default cart you must update your <a>page settings in WooCommerce</a>.',
+							'woo-gutenberg-products-block'
+						),
+						{
+							a: (
+								// eslint-disable-next-line jsx-a11y/anchor-has-content
+								<a
+									href={ getAdminLink(
+										'admin.php?page=wc-settings&tab=advanced'
+									) }
+									target="_blank"
+									rel="noopener noreferrer"
+								/>
+							),
+						}
+					) }
+				</Notice>
+			) }
 			<PanelBody
 				title={ __( 'Shipping rates', 'woo-gutenberg-products-block' ) }
 			>
@@ -117,6 +146,12 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 					/>
 				</PanelBody>
 			) }
+			<FeedbackPrompt
+				text={ __(
+					'We are currently working on improving our cart and checkout blocks, providing merchants with the tools and customization options they need.',
+					'woo-gutenberg-products-block'
+				) }
+			/>
 		</InspectorControls>
 	);
 };
@@ -206,9 +241,4 @@ CartEditor.propTypes = {
 	className: PropTypes.string,
 };
 
-export default withFeedbackPrompt(
-	__(
-		'We are currently working on improving our cart and checkout blocks, providing merchants with the tools and customization options they need.',
-		'woo-gutenberg-products-block'
-	)
-)( CartEditor );
+export default CartEditor;
