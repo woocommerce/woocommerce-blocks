@@ -43,7 +43,7 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 		requirePhoneField,
 		showPolicyLinks,
 		showReturnToCart,
-		cartPageLink,
+		cartPageId,
 	} = attributes;
 	const { currentPostId } = useEditorContext();
 	const pages =
@@ -54,7 +54,7 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 				order: 'asc',
 				per_page: 100,
 			} );
-		}, [] ) || {};
+		}, [] ) || null;
 
 	return (
 		<InspectorControls>
@@ -252,13 +252,14 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 					}
 				/>
 				{ showReturnToCart &&
-					( currentPostId !== CHECKOUT_PAGE_ID || cartPageLink ) && (
+					( currentPostId !== CHECKOUT_PAGE_ID || cartPageId ) &&
+					pages && (
 						<SelectControl
 							label={ __(
 								'Link to',
 								'woo-gutenberg-products-block'
 							) }
-							value={ cartPageLink }
+							value={ cartPageId }
 							options={ [
 								...[
 									{
@@ -272,12 +273,14 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 								...Object.values( pages ).map( ( page ) => {
 									return {
 										label: page.title.raw,
-										value: page.link,
+										value: parseInt( page.id, 10 ),
 									};
 								} ),
 							] }
 							onChange={ ( value ) =>
-								setAttributes( { cartPageLink: value } )
+								setAttributes( {
+									cartPageId: parseInt( value, 10 ),
+								} )
 							}
 						/>
 					) }
@@ -294,7 +297,6 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 
 const CheckoutEditor = ( { attributes, setAttributes } ) => {
 	const { className } = attributes;
-
 	return (
 		<EditorProvider>
 			<div className={ className }>

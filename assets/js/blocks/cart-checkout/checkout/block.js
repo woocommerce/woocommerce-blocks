@@ -25,7 +25,7 @@ import {
 	ExpressCheckoutFormControl,
 	PaymentMethods,
 } from '@woocommerce/base-components/payment-methods';
-import { SHIPPING_ENABLED } from '@woocommerce/block-settings';
+import { SHIPPING_ENABLED, CART_URL } from '@woocommerce/block-settings';
 import { decodeEntities } from '@wordpress/html-entities';
 import { useShippingRates } from '@woocommerce/base-hooks';
 import {
@@ -33,6 +33,7 @@ import {
 	SidebarLayout,
 	Main,
 } from '@woocommerce/base-components/sidebar-layout';
+import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -331,7 +332,11 @@ const Block = ( {
 						<div className="wc-block-checkout__actions">
 							{ attributes.showReturnToCart && (
 								<ReturnToCartButton
-									link={ attributes.cartPageLink }
+									link={
+										getSetting(
+											'page-' + attributes.cartPageId
+										) || CART_URL
+									}
 								/>
 							) }
 							<PlaceOrderButton />
