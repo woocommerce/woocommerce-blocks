@@ -13,6 +13,7 @@ const ValidationContext = createContext( {
 	setValidationErrors: ( errors ) => void errors,
 	clearValidationError: ( property ) => void property,
 	clearAllValidationErrors: () => void null,
+	getValidationErrorId: ( inputId ) => void inputId,
 } );
 
 /**
