@@ -22,15 +22,11 @@ const ShippingCalculatorAddress = ( {
 	const [ address, setAddress ] = useState( initialAddress );
 	const { getValidationError } = useValidationContext();
 
-	const updateAddress = ( newAddress ) => {
-		setAddress( newAddress );
-	};
-
 	return (
 		<form className="wc-block-shipping-calculator-address">
 			<AddressForm
 				fields={ addressFields }
-				onChange={ updateAddress }
+				onChange={ setAddress }
 				values={ address }
 			/>
 			<Button
