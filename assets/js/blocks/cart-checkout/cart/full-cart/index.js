@@ -43,6 +43,8 @@ import './editor.scss';
  * Component that renders the Cart block when user has something in cart aka "full".
  */
 const Cart = ( { attributes } ) => {
+	const { isShippingCalculatorEnabled, isShippingCostHidden } = attributes;
+
 	const {
 		cartItems,
 		cartTotals,
