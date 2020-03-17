@@ -30,7 +30,7 @@ import {
 } from '@woocommerce/base-components/payment-methods';
 import { SHIPPING_ENABLED } from '@woocommerce/block-settings';
 import { decodeEntities } from '@wordpress/html-entities';
-import { useShippingRates } from '@woocommerce/base-hooks';
+import { useShippingRates, useBillingData } from '@woocommerce/base-hooks';
 import {
 	Sidebar,
 	SidebarLayout,
@@ -75,6 +75,12 @@ const Block = ( {
 		}
 		return true;
 	};
+	const {
+		billingAddress,
+		setBillingAddress,
+		shippingAsBilling,
+		setShippingAsBilling,
+	} = useBillingData( attributes.shippingAsBilling );
 
 	const renderShippingRatesControlOption = ( option ) => ( {
 		label: decodeEntities( option.name ),
@@ -90,8 +96,8 @@ const Block = ( {
 	} );
 
 	const useShippingAddressAsBilling = isEditor
-		? attributes.useShippingAsBilling
-		: useShippingAsBilling;
+		? attributes.shippingAsBilling
+		: shippingAsBilling;
 	const showBillingFields =
 		! SHIPPING_ENABLED || ! useShippingAddressAsBilling;
 

@@ -155,3 +155,11 @@ export const areShippingRatesLoading = createRegistrySelector(
 		);
 	}
 );
+
+export const getBillingAddress = ( state ) => {
+	return state.billingData.billingAddress;
+};
+
+export const getShippingAsBilling = ( state ) => {
+	return state.billingData.shippingAsBilling;
+};
