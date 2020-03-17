@@ -16,6 +16,7 @@ import {
 	ProductPrice,
 	ProductSaleBadge,
 } from '@woocommerce/base-components/cart-checkout';
+import Dinero from 'dinero.js';
 
 /**
  * @typedef {import('@woocommerce/type-defs/cart').CartItem} CartItem
@@ -60,9 +61,15 @@ const CartLineItemRow = ( { lineItem } ) => {
 	} = useStoreCartItemQuantity( lineItem );
 
 	const currency = getCurrency( prices );
-	const regularPrice = parseInt( prices.line_regular_price, 10 );
-	const purchasePrice = parseInt( prices.line_price, 10 );
-	const saleAmount = regularPrice - purchasePrice;
+	const regularPrice = Dinero( {
+		amount: parseInt( prices.raw_prices.regular_price, 10 ),
+		precision: parseInt( prices.raw_prices.precision, 10 ),
+	} ).multiply( quantity );
+	const purchasePrice = Dinero( {
+		amount: parseInt( prices.raw_prices.price, 10 ),
+		precision: parseInt( prices.raw_prices.precision, 10 ),
+	} ).multiply( quantity );
+	const saleAmount = regularPrice.subtract( purchasePrice );
 
 	return (
 		<tr className="wc-block-cart-items__row">
@@ -105,12 +112,18 @@ const CartLineItemRow = ( { lineItem } ) => {
 			<td className="wc-block-cart-item__total">
 				<ProductPrice
 					currency={ currency }
-					regularValue={ regularPrice }
-					value={ purchasePrice }
+					regularValue={ regularPrice
+						.convertPrecision( currency.minorUnit )
+						.getAmount() }
+					value={ purchasePrice
+						.convertPrecision( currency.minorUnit )
+						.getAmount() }
 				/>
 				<ProductSaleBadge
 					currency={ currency }
-					saleAmount={ saleAmount }
+					saleAmount={ saleAmount
+						.convertPrecision( currency.minorUnit )
+						.getAmount() }
 				/>
 			</td>
 		</tr>
