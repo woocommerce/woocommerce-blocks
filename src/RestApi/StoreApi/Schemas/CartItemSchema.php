@@ -267,32 +267,6 @@ class CartItemSchema extends AbstractSchema {
 								],
 							],
 						],
-						'line_totals'   => [
-							'description' => __( 'Line totals (product prices multiplied by line quantity).', 'woo-gutenberg-products-block' ),
-							'type'        => [ 'object', 'null' ],
-							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
-							'properties'  => [
-								'price'         => [
-									'description' => __( 'Current product price multiplied by line quantity.', 'woo-gutenberg-products-block' ),
-									'type'        => 'string',
-									'context'     => [ 'view', 'edit' ],
-									'readonly'    => true,
-								],
-								'regular_price' => [
-									'description' => __( 'Regular product price multiplied by line quantity.', 'woo-gutenberg-products-block' ),
-									'type'        => 'string',
-									'context'     => [ 'view', 'edit' ],
-									'readonly'    => true,
-								],
-								'sale_price'    => [
-									'description' => __( 'Sale product price, if applicable, multiplied by line quantity.', 'woo-gutenberg-products-block' ),
-									'type'        => 'string',
-									'context'     => [ 'view', 'edit' ],
-									'readonly'    => true,
-								],
-							],
-						],
 					]
 				),
 			],
@@ -404,31 +378,6 @@ class CartItemSchema extends AbstractSchema {
 			'price'         => $this->prepare_money_response( $price_function( $product ), wc_get_rounding_precision() ),
 			'regular_price' => $this->prepare_money_response( $price_function( $product, [ 'price' => $product->get_regular_price() ] ), wc_get_rounding_precision() ),
 			'sale_price'    => $this->prepare_money_response( $price_function( $product, [ 'price' => $product->get_sale_price() ] ), wc_get_rounding_precision() ),
-		];
-
-		// Add line prices (totals).
-		$prices['line_totals'] = [
-			'price'         => $this->prepare_money_response( $price_function( $product, [ 'qty' => $qty ] ), wc_get_price_decimals() ),
-			'regular_price' => $this->prepare_money_response(
-				$price_function(
-					$product,
-					[
-						'price' => $product->get_regular_price(),
-						'qty'   => $qty,
-					]
-				),
-				wc_get_price_decimals()
-			),
-			'sale_price'    => $this->prepare_money_response(
-				$price_function(
-					$product,
-					[
-						'price' => $product->get_sale_price(),
-						'qty'   => $qty,
-					]
-				),
-				wc_get_price_decimals()
-			),
 		];
 
 		return $prices;

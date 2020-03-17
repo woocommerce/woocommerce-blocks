@@ -68,9 +68,11 @@ export const previewCart = {
 				price: '800',
 				regular_price: '800',
 				sale_price: '800',
-				line_price: '1600',
-				line_regular_price: '1600',
-				line_sale_price: '1600',
+				raw_prices: {
+					price: '800',
+					regular_price: '800',
+					sale_price: '800',
+				},
 			},
 			totals: {
 				currency_code: 'USD',
@@ -133,9 +135,11 @@ export const previewCart = {
 				price: '1400',
 				regular_price: '1600',
 				sale_price: '1400',
-				line_price: '1400',
-				line_regular_price: '1600',
-				line_sale_price: '1400',
+				raw_prices: {
+					price: '1400',
+					regular_price: '1600',
+					sale_price: '1400',
+				},
 			},
 			totals: {
 				currency_code: 'USD',
