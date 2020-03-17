@@ -69,9 +69,10 @@ export const previewCart = {
 				regular_price: '800',
 				sale_price: '800',
 				raw_prices: {
-					price: '800',
-					regular_price: '800',
-					sale_price: '800',
+					precision: 6,
+					price: '8000000',
+					regular_price: '8000000',
+					sale_price: '8000000',
 				},
 			},
 			totals: {
@@ -136,9 +137,10 @@ export const previewCart = {
 				regular_price: '1600',
 				sale_price: '1400',
 				raw_prices: {
-					price: '1400',
-					regular_price: '1600',
-					sale_price: '1400',
+					precision: 6,
+					price: '14000000',
+					regular_price: '16000000',
+					sale_price: '14000000',
 				},
 			},
 			totals: {
