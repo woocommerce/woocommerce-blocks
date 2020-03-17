@@ -197,43 +197,25 @@ class CartItemSchema extends AbstractSchema {
 				'properties'  => array_merge(
 					$this->get_store_currency_properties(),
 					[
-						'price'              => [
+						'price'         => [
 							'description' => __( 'Current product price.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
 						],
-						'regular_price'      => [
+						'regular_price' => [
 							'description' => __( 'Regular product price.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
 						],
-						'sale_price'         => [
+						'sale_price'    => [
 							'description' => __( 'Sale product price, if applicable.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
 						],
-						'line_price'         => [
-							'description' => __( 'Current product price multiplied by line quantity.', 'woo-gutenberg-products-block' ),
-							'type'        => 'string',
-							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
-						],
-						'line_regular_price' => [
-							'description' => __( 'Regular product price multiplied by line quantity.', 'woo-gutenberg-products-block' ),
-							'type'        => 'string',
-							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
-						],
-						'line_sale_price'    => [
-							'description' => __( 'Sale product price, if applicable, multiplied by line quantity.', 'woo-gutenberg-products-block' ),
-							'type'        => 'string',
-							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
-						],
-						'price_range'        => [
+						'price_range'   => [
 							'description' => __( 'Price range, if applicable.', 'woo-gutenberg-products-block' ),
 							'type'        => [ 'object', 'null' ],
 							'context'     => [ 'view', 'edit' ],
@@ -247,6 +229,64 @@ class CartItemSchema extends AbstractSchema {
 								],
 								'max_amount' => [
 									'description' => __( 'Price amount.', 'woo-gutenberg-products-block' ),
+									'type'        => 'string',
+									'context'     => [ 'view', 'edit' ],
+									'readonly'    => true,
+								],
+							],
+						],
+						'raw_prices'    => [
+							'description' => __( 'Raw unrounded product prices used in calculations. Provided using a higher unit of precision than the currency.', 'woo-gutenberg-products-block' ),
+							'type'        => [ 'object', 'null' ],
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+							'properties'  => [
+								'precision'     => [
+									'description' => __( 'Decimal precision of the returned prices.', 'woo-gutenberg-products-block' ),
+									'type'        => 'integer',
+									'context'     => [ 'view', 'edit' ],
+									'readonly'    => true,
+								],
+								'price'         => [
+									'description' => __( 'Current product price.', 'woo-gutenberg-products-block' ),
+									'type'        => 'string',
+									'context'     => [ 'view', 'edit' ],
+									'readonly'    => true,
+								],
+								'regular_price' => [
+									'description' => __( 'Regular product price.', 'woo-gutenberg-products-block' ),
+									'type'        => 'string',
+									'context'     => [ 'view', 'edit' ],
+									'readonly'    => true,
+								],
+								'sale_price'    => [
+									'description' => __( 'Sale product price, if applicable.', 'woo-gutenberg-products-block' ),
+									'type'        => 'string',
+									'context'     => [ 'view', 'edit' ],
+									'readonly'    => true,
+								],
+							],
+						],
+						'line_totals'   => [
+							'description' => __( 'Line totals (product prices multiplied by line quantity).', 'woo-gutenberg-products-block' ),
+							'type'        => [ 'object', 'null' ],
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+							'properties'  => [
+								'price'         => [
+									'description' => __( 'Current product price multiplied by line quantity.', 'woo-gutenberg-products-block' ),
+									'type'        => 'string',
+									'context'     => [ 'view', 'edit' ],
+									'readonly'    => true,
+								],
+								'regular_price' => [
+									'description' => __( 'Regular product price multiplied by line quantity.', 'woo-gutenberg-products-block' ),
+									'type'        => 'string',
+									'context'     => [ 'view', 'edit' ],
+									'readonly'    => true,
+								],
+								'sale_price'    => [
+									'description' => __( 'Sale product price, if applicable, multiplied by line quantity.', 'woo-gutenberg-products-block' ),
 									'type'        => 'string',
 									'context'     => [ 'view', 'edit' ],
 									'readonly'    => true,
@@ -358,28 +398,38 @@ class CartItemSchema extends AbstractSchema {
 		// Get individual product prices from product schema.
 		$prices = $this->product_schema->get_prices( $product, $tax_display_mode );
 
-		// Get product prices for the line item (based on qty).
-		$prices['line_price']         = $this->prepare_money_response( $price_function( $product, [ 'qty' => $qty ] ), wc_get_price_decimals() );
-		$prices['line_regular_price'] = $this->prepare_money_response(
-			$price_function(
-				$product,
-				[
-					'price' => $product->get_regular_price(),
-					'qty'   => $qty,
-				]
+		// Add raw prices (prices with greater precision).
+		$prices['raw_prices'] = [
+			'precision'     => wc_get_rounding_precision(),
+			'price'         => $this->prepare_money_response( $price_function( $product ), wc_get_rounding_precision() ),
+			'regular_price' => $this->prepare_money_response( $price_function( $product, [ 'price' => $product->get_regular_price() ] ), wc_get_rounding_precision() ),
+			'sale_price'    => $this->prepare_money_response( $price_function( $product, [ 'price' => $product->get_sale_price() ] ), wc_get_rounding_precision() ),
+		];
+
+		// Add line prices (totals).
+		$prices['line_totals'] = [
+			'price'         => $this->prepare_money_response( $price_function( $product, [ 'qty' => $qty ] ), wc_get_price_decimals() ),
+			'regular_price' => $this->prepare_money_response(
+				$price_function(
+					$product,
+					[
+						'price' => $product->get_regular_price(),
+						'qty'   => $qty,
+					]
+				),
+				wc_get_price_decimals()
 			),
-			wc_get_price_decimals()
-		);
-		$prices['line_sale_price']    = $this->prepare_money_response(
-			$price_function(
-				$product,
-				[
-					'price' => $product->get_sale_price(),
-					'qty'   => $qty,
-				]
+			'sale_price'    => $this->prepare_money_response(
+				$price_function(
+					$product,
+					[
+						'price' => $product->get_sale_price(),
+						'qty'   => $qty,
+					]
+				),
+				wc_get_price_decimals()
 			),
-			wc_get_price_decimals()
-		);
+		];
 
 		return $prices;
 	}
