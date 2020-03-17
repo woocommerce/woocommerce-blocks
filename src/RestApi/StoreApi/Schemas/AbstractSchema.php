@@ -54,13 +54,13 @@ abstract class AbstractSchema {
 	}
 
 	/**
-	 * Retrieves an array of endpoint arguments from the item schema for the controller.
+	 * Retrieves an array of endpoint arguments from schema.
 	 *
+	 * @param array  $schema The array of schema data.
 	 * @param string $method Optional. HTTP method of the request.
 	 * @return array Endpoint arguments.
 	 */
-	public function get_endpoint_args_for_item_schema( $method = \WP_REST_Server::CREATABLE ) {
-		$schema            = $this->get_item_schema();
+	protected function get_endpoint_args_from_schema( $schema, $method = \WP_REST_Server::CREATABLE ) {
 		$schema_properties = ! empty( $schema['properties'] ) ? $schema['properties'] : array();
 		$endpoint_args     = array();
 
@@ -113,6 +113,16 @@ abstract class AbstractSchema {
 		}
 
 		return $endpoint_args;
+	}
+
+	/**
+	 * Retrieves an array of endpoint arguments from the item schema for the controller.
+	 *
+	 * @param string $method Optional. HTTP method of the request.
+	 * @return array Endpoint arguments.
+	 */
+	public function get_endpoint_args_for_item_schema( $method = \WP_REST_Server::CREATABLE ) {
+		return $this->get_endpoint_args_from_schema( $this->get_item_schema(), $method );
 	}
 
 	/**

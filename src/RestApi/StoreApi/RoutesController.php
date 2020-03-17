@@ -32,6 +32,7 @@ class RoutesController {
 
 		$routes = [
 			new Routes\Cart( $schemas['cart'] ),
+			new Routes\CartAddItem( $schemas['cart'] ),
 			new Routes\CartApplyCoupon( $schemas['cart'] ),
 			new Routes\CartCoupons( $schemas['coupon'] ),
 			new Routes\CartCouponsByCode( $schemas['coupon'] ),
