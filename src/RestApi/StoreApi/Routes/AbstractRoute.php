@@ -82,6 +82,9 @@ abstract class AbstractRoute implements RouteInterface {
 	/**
 	 * For non-GET endpoints, require and validate a nonce to prevent CSRF attacks.
 	 *
+	 * Nonces will mismatch if the logged in session cookie is different! If using a client to test, set this cookie
+	 * to match the logged in cookie in your browser.
+	 *
 	 * @throws RouteException On error.
 	 *
 	 * @param \WP_REST_Request $request Request object.
@@ -94,15 +97,10 @@ abstract class AbstractRoute implements RouteInterface {
 			throw new RouteException( 'woocommerce_rest_missing_nonce', __( 'Missing the X-WC-Store-API-Nonce header. This endpoint requires a valid nonce.', 'woo-gutenberg-products-block' ), 403 );
 		}
 
-		// Compatibility with basic auth plugins - if logged in, ensure session token cookie exists.
-		if ( is_user_logged_in() && ! wp_get_session_token() ) {
-			wp_set_auth_cookie( get_current_user_id() );
-		}
-
 		$valid_nonce = wp_verify_nonce( $nonce, 'wc_store_api' );
 
 		if ( ! $valid_nonce ) {
-			throw new RouteException( 'woocommerce_rest_missing_nonce', __( 'The X-WC-Store-API-Nonce header is invalid.', 'woo-gutenberg-products-block' ), 403 );
+			throw new RouteException( 'woocommerce_rest_invalid_nonce', __( 'X-WC-Store-API-Nonce is invalid.', 'woo-gutenberg-products-block' ), 403 );
 		}
 	}
 
