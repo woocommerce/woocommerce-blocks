@@ -155,7 +155,7 @@
 	}
 }
 .wc-block-checkout--skeleton {
-	display: flex;
+	display: none;
 }
 .is-loading + .wc-block-checkout--skeleton {
 	display: flex;
