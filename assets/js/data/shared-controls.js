@@ -2,41 +2,6 @@
  * External dependencies
  */
 import triggerFetch from '@wordpress/api-fetch';
-import { select, dispatch } from '@wordpress/data-controls';
-
-/**
- * Internal dependencies
- */
-import { NONCE_STORE_KEY } from './index';
-
-/**
- * Dispatched a control action for triggering an api fetch call with no parsing.
- * Typically this would be used in scenarios where headers are needed.
- * Also adds the current nonce to the request.
- *
- * @param {Object} options The options for the API request.
- *
- * @return {Object} The control action descriptor.
- */
-export function* apiFetchWithNonce( options ) {
-	const nonce = yield select( NONCE_STORE_KEY, 'getCurrentNonce' );
-
-	const { response, headers } = yield apiFetchWithHeaders( {
-		...options,
-		headers: {
-			'X-WC-Store-API-Nonce': nonce,
-		},
-	} );
-
-	if ( response ) {
-		yield dispatch( NONCE_STORE_KEY, 'receiveNonceFromHeaders', headers );
-	}
-
-	return {
-		response,
-		headers,
-	};
-}
 
 /**
  * Dispatched a control action for triggering an api fetch call with no parsing.
@@ -66,6 +31,7 @@ export const controls = {
 				.then( ( fetchResponse ) => {
 					fetchResponse.json().then( ( response ) => {
 						resolve( { response, headers: fetchResponse.headers } );
+						triggerFetch.setNonce( fetchResponse.headers );
 					} );
 				} )
 				.catch( ( error ) => {
