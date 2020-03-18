@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import TextInput from '@woocommerce/base-components/text-input';
 import {
@@ -11,12 +12,43 @@ import {
 	BillingStateInput,
 	ShippingStateInput,
 } from '@woocommerce/base-components/state-input';
+import { useValidationContext } from '@woocommerce/base-context';
+import { useEffect } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
 import defaultAddressFields from './default-address-fields';
 import countryAddressFields from './country-address-fields';
+
+// If it's the shipping address form and the user starts entering address
+// values without having set the country first, show an error.
+const validateShippingCountry = (
+	values,
+	setValidationErrors,
+	clearValidationError,
+	hasValidationError
+) => {
+	if (
+		! hasValidationError &&
+		! values.country &&
+		Object.values( values ).some( ( value ) => value !== '' )
+	) {
+		setValidationErrors( {
+			'shipping-missing-country': {
+				message: __(
+					'Please select a country to calculate rates.',
+					'woo-gutenberg-products-block'
+				),
+				hidden: false,
+			},
+		} );
+	}
+	if ( hasValidationError && values.country ) {
+		clearValidationError( 'shipping-missing-country' );
+	}
+};
 
 /**
  * Checkout address form.
@@ -28,6 +60,11 @@ const AddressForm = ( {
 	type = 'shipping',
 	values,
 } ) => {
+	const {
+		getValidationError,
+		setValidationErrors,
+		clearValidationError,
+	} = useValidationContext();
 	const countryLocale = countryAddressFields[ values.country ] || {};
 	const addressFields = fields.map( ( field ) => ( {
 		key: field,
@@ -38,6 +75,25 @@ const AddressForm = ( {
 	const sortedAddressFields = addressFields.sort(
 		( a, b ) => a.index - b.index
 	);
+	const countryValidationError =
+		getValidationError( 'shipping-missing-country' ) || {};
+	useEffect( () => {
+		if ( type === 'shipping' ) {
+			validateShippingCountry(
+				values,
+				setValidationErrors,
+				clearValidationError,
+				countryValidationError.message &&
+					! countryValidationError.hidden
+			);
+		}
+	}, [
+		values,
+		countryValidationError,
+		setValidationErrors,
+		clearValidationError,
+	] );
+
 	return (
 		<div className="wc-block-address-form">
 			{ sortedAddressFields.map( ( field ) => {
@@ -51,27 +107,29 @@ const AddressForm = ( {
 							? ShippingCountryInput
 							: BillingCountryInput;
 					return (
-						<Tag
-							key={ field.key }
-							label={
-								field.required
-									? field.label
-									: field.optionalLabel
-							}
-							value={ values.country }
-							autoComplete={ field.autocomplete }
-							onChange={ ( newValue ) =>
-								onChange( {
-									...values,
-									country: newValue,
-									state: '',
-									city: '',
-									postcode: '',
-								} )
-							}
-							errorMessage={ field.errorMessage }
-							required={ field.required }
-						/>
+						<Fragment key={ field.key }>
+							<Tag
+								label={
+									field.required
+										? field.label
+										: field.optionalLabel
+								}
+								value={ values.country }
+								autoComplete={ field.autocomplete }
+								onChange={ ( newValue ) =>
+									onChange( {
+										...values,
+										country: newValue,
+										state: '',
+										city: '',
+										postcode: '',
+									} )
+								}
+								errorId="shipping-missing-country"
+								errorMessage={ field.errorMessage }
+								required={ field.required }
+							/>
+						</Fragment>
 					);
 				}
 

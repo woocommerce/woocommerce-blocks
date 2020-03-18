@@ -24,12 +24,14 @@ const Select = ( {
 	value,
 	instanceId,
 	required,
+	errorId,
 	errorMessage = __(
 		'Please select a value.',
 		'woo-gutenberg-products-block'
 	),
 } ) => {
 	const selectId = id || 'select-' + instanceId;
+	errorId = errorId || selectId;
 	const {
 		getValidationError,
 		setValidationErrors,
@@ -37,10 +39,10 @@ const Select = ( {
 	} = useValidationContext();
 	const validateSelect = () => {
 		if ( ! required || value ) {
-			clearValidationError( selectId );
+			clearValidationError( errorId );
 		} else {
 			setValidationErrors( {
-				[ selectId ]: {
+				[ errorId ]: {
 					message: errorMessage,
 					hidden: true,
 				},
@@ -52,7 +54,7 @@ const Select = ( {
 		validateSelect();
 	}, [ value ] );
 
-	const error = getValidationError( selectId ) || {};
+	const error = getValidationError( errorId ) || {};
 
 	return (
 		<div
@@ -70,7 +72,7 @@ const Select = ( {
 				options={ options }
 				value={ value }
 			/>
-			<ValidationInputError propertyName={ selectId } />
+			<ValidationInputError propertyName={ errorId } />
 		</div>
 	);
 };
@@ -84,6 +86,7 @@ Select.propTypes = {
 		} ).isRequired
 	).isRequired,
 	className: PropTypes.string,
+	errorId: PropTypes.string,
 	errorMessage: PropTypes.string,
 	id: PropTypes.string,
 	label: PropTypes.string,

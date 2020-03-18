@@ -19,6 +19,7 @@ const CountryInput = ( {
 	value = '',
 	autoComplete = 'off',
 	required = false,
+	errorId,
 	errorMessage = __(
 		'Please select a country.',
 		'woo-gutenberg-products-block'
@@ -36,6 +37,7 @@ const CountryInput = ( {
 				onChange={ onChange }
 				options={ options }
 				value={ options.find( ( option ) => option.key === value ) }
+				errorId={ errorId }
 				errorMessage={ errorMessage }
 				required={ required }
 			/>
@@ -73,6 +75,7 @@ CountryInput.propTypes = {
 	label: PropTypes.string,
 	value: PropTypes.string,
 	autoComplete: PropTypes.string,
+	errorId: PropTypes.string,
 	errorMessage: PropTypes.string,
 };
 

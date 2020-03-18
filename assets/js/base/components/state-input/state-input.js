@@ -21,6 +21,7 @@ const StateInput = ( {
 	autoComplete = 'off',
 	value = '',
 	required = false,
+	errorId,
 	errorMessage = __(
 		'Please select a state.',
 		'woo-gutenberg-products-block'
@@ -72,6 +73,7 @@ const StateInput = ( {
 					onChange={ onChangeState }
 					options={ options }
 					value={ options.find( ( option ) => option.key === value ) }
+					errorId={ errorId }
 					errorMessage={ errorMessage }
 					required={ required }
 				/>
@@ -120,6 +122,7 @@ StateInput.propTypes = {
 	autoComplete: PropTypes.string,
 	className: PropTypes.string,
 	country: PropTypes.string,
+	errorId: PropTypes.string,
 	errorMessage: PropTypes.string,
 	label: PropTypes.string,
 	value: PropTypes.string,
