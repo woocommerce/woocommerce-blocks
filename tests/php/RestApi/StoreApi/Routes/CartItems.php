@@ -198,7 +198,7 @@ class CartItems extends TestCase {
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
-		$this->assertEquals( 200, $response->get_status(), print_r( $data, true ) );
+		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( [], $data );
 
 		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/cart/items' ) );
