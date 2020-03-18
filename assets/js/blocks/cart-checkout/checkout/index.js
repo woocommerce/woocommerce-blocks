@@ -49,11 +49,7 @@ const settings = {
 			}
 		} );
 
-		return (
-			<div className={ attributes.className } { ...data }>
-				Checkout block coming soon to store near you
-			</div>
-		);
+		return <div className={ attributes.className } { ...data } />;
 	},
 };
 
