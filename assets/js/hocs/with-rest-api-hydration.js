@@ -3,14 +3,19 @@
  */
 import { useRef } from '@wordpress/element';
 import { getSetting } from '@woocommerce/settings';
-import { SCHEMA_STORE_KEY } from '@woocommerce/block-data';
-import { useSelect } from '@wordpress/data';
+import { SCHEMA_STORE_KEY, NONCE_STORE_KEY } from '@woocommerce/block-data';
+import { useSelect, useDispatch } from '@wordpress/data';
 
 /**
  * Hydrate Rest API data from settings to reduce the number of API requests needed.
  */
 const useRestApiHydration = () => {
 	const restApiRoutes = useRef( getSetting( 'restApiRoutes' ) );
+	const storeApiNonce = getSetting( 'storeApiNonce' );
+
+	const { receiveNonce } = useDispatch( NONCE_STORE_KEY );
+
+	receiveNonce( storeApiNonce );
 
 	useSelect( ( select, registry ) => {
 		if ( ! restApiRoutes.current ) {
