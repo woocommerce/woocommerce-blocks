@@ -40,9 +40,7 @@ export const ValidationContextProvider = ( { children } ) => {
 	 *
 	 * @return {Object} The error object for the given property.
 	 */
-	const getValidationError = ( property ) => {
-		return validationErrors[ property ];
-	};
+	const getValidationError = ( property ) => validationErrors[ property ];
 
 	/**
 	 * Clears any validation error that exists in state for the given property

@@ -4,7 +4,6 @@
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { CustomSelectControl } from 'wordpress-components';
-import { withInstanceId } from 'wordpress-compose';
 
 /**
  * Internal dependencies
@@ -58,5 +57,5 @@ Select.propTypes = {
 	} ),
 };
 
-export default withInstanceId( Select );
+export default Select;
 export { default as ValidatedSelect } from './validated';

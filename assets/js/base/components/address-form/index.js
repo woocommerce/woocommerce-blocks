@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
 import {
@@ -107,29 +106,32 @@ const AddressForm = ( {
 							? ShippingCountryInput
 							: BillingCountryInput;
 					return (
-						<Fragment key={ field.key }>
-							<Tag
-								label={
-									field.required
-										? field.label
-										: field.optionalLabel
-								}
-								value={ values.country }
-								autoComplete={ field.autocomplete }
-								onChange={ ( newValue ) =>
-									onChange( {
-										...values,
-										country: newValue,
-										state: '',
-										city: '',
-										postcode: '',
-									} )
-								}
-								errorId="shipping-missing-country"
-								errorMessage={ field.errorMessage }
-								required={ field.required }
-							/>
-						</Fragment>
+						<Tag
+							key={ field.key }
+							label={
+								field.required
+									? field.label
+									: field.optionalLabel
+							}
+							value={ values.country }
+							autoComplete={ field.autocomplete }
+							onChange={ ( newValue ) =>
+								onChange( {
+									...values,
+									country: newValue,
+									state: '',
+									city: '',
+									postcode: '',
+								} )
+							}
+							errorId={
+								type === 'shipping'
+									? 'shipping-missing-country'
+									: null
+							}
+							errorMessage={ field.errorMessage }
+							required={ field.required }
+						/>
 					);
 				}
 

@@ -68,8 +68,8 @@ const Block = ( {
 	} = useValidationContext();
 
 	const validateSubmit = () => {
-		showAllValidationErrors();
 		if ( areThereValidationErrors() ) {
+			showAllValidationErrors();
 			scrollToTop( { focusableSelector: 'input:invalid' } );
 			return false;
 		}

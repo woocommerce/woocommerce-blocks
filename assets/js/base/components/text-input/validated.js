@@ -20,8 +20,6 @@ const ValidatedTextInput = ( {
 	instanceId,
 	id,
 	ariaDescribedBy,
-	help,
-	value = '',
 	errorId,
 	validateOnMount = true,
 	onChange,
@@ -62,11 +60,10 @@ const ValidatedTextInput = ( {
 
 	const errorMessage = getValidationError( errorId ) || {};
 	const hasError = errorMessage.message && ! errorMessage.hidden;
-	let describedBy =
-		!! help && ! ariaDescribedBy ? textInputId + '__help' : ariaDescribedBy; // @todo can be removed?
-	if ( showError && hasError ) {
-		describedBy = getValidationErrorId( textInputId );
-	}
+	const describedBy =
+		showError && hasError
+			? getValidationErrorId( textInputId )
+			: ariaDescribedBy;
 
 	return (
 		<TextInput
@@ -80,7 +77,6 @@ const ValidatedTextInput = ( {
 			feedback={
 				showError && <ValidationInputError propertyName={ errorId } />
 			}
-			value={ value }
 			ref={ inputRef }
 			onChange={ ( val ) => {
 				hideValidationError( errorId );
@@ -96,14 +92,7 @@ ValidatedTextInput.propTypes = {
 	onChange: PropTypes.func.isRequired,
 	id: PropTypes.string,
 	value: PropTypes.string,
-	ariaLabel: PropTypes.string,
 	ariaDescribedBy: PropTypes.string,
-	label: PropTypes.string,
-	screenReaderLabel: PropTypes.string,
-	disabled: PropTypes.bool,
-	help: PropTypes.string,
-	autoComplete: PropTypes.string,
-	required: PropTypes.bool,
 	errorId: PropTypes.string,
 	validateOnMount: PropTypes.bool,
 	showError: PropTypes.bool,

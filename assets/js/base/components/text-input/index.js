@@ -99,9 +99,6 @@ TextInput.propTypes = {
 	help: PropTypes.string,
 	autoComplete: PropTypes.string,
 	required: PropTypes.bool,
-	errorId: PropTypes.string,
-	validateOnMount: PropTypes.bool,
-	showError: PropTypes.bool,
 };
 
 export default TextInput;
