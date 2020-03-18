@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import { decodeEntities } from '@wordpress/html-entities';
 import { useCallback, useEffect } from '@wordpress/element';
@@ -20,6 +21,10 @@ const StateInput = ( {
 	autoComplete = 'off',
 	value = '',
 	required = false,
+	errorMessage = __(
+		'Please select a state.',
+		'woo-gutenberg-products-block'
+	),
 } ) => {
 	const countryStates = states[ country ];
 	const options = countryStates
@@ -67,6 +72,7 @@ const StateInput = ( {
 					onChange={ onChangeState }
 					options={ options }
 					value={ options.find( ( option ) => option.key === value ) }
+					errorMessage={ errorMessage }
 					required={ required }
 				/>
 				{ autoComplete !== 'off' && (
@@ -114,6 +120,7 @@ StateInput.propTypes = {
 	autoComplete: PropTypes.string,
 	className: PropTypes.string,
 	country: PropTypes.string,
+	errorMessage: PropTypes.string,
 	label: PropTypes.string,
 	value: PropTypes.string,
 };

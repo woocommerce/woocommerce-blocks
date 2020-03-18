@@ -1,16 +1,15 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import { decodeEntities } from '@wordpress/html-entities';
-import { useValidationContext } from '@woocommerce/base-context';
 import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
 import Select from '../select';
-import { ValidationInputError } from '../validation';
 
 const CountryInput = ( {
 	className,
@@ -20,13 +19,15 @@ const CountryInput = ( {
 	value = '',
 	autoComplete = 'off',
 	required = false,
+	errorMessage = __(
+		'Please select a country.',
+		'woo-gutenberg-products-block'
+	),
 } ) => {
 	const options = Object.keys( countries ).map( ( key ) => ( {
 		key,
 		name: decodeEntities( countries[ key ] ),
 	} ) );
-	const { getValidationError } = useValidationContext();
-	const errorMessage = getValidationError( 'country' );
 
 	return (
 		<div className={ classnames( className, 'wc-block-country-input' ) }>
@@ -35,8 +36,8 @@ const CountryInput = ( {
 				onChange={ onChange }
 				options={ options }
 				value={ options.find( ( option ) => option.key === value ) }
+				errorMessage={ errorMessage }
 				required={ required }
-				hasError={ !! errorMessage }
 			/>
 			{ autoComplete !== 'off' && (
 				<input
@@ -61,7 +62,6 @@ const CountryInput = ( {
 					tabIndex={ -1 }
 				/>
 			) }
-			<ValidationInputError errorMessage={ errorMessage } />
 		</div>
 	);
 };
@@ -73,6 +73,7 @@ CountryInput.propTypes = {
 	label: PropTypes.string,
 	value: PropTypes.string,
 	autoComplete: PropTypes.string,
+	errorMessage: PropTypes.string,
 };
 
 export default CountryInput;
