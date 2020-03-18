@@ -2,22 +2,23 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { WC_BLOCKS_ASSET_URL, SHOP_URL } from '@woocommerce/block-settings';
+import { SHOP_URL } from '@woocommerce/block-settings';
+import { Icon, cart } from '@woocommerce/icons';
 
 const EmptyCart = () => {
 	return (
 		<div className="wc-block-checkout-empty">
-			<img
-				src={ WC_BLOCKS_ASSET_URL + 'img/no-products.svg' }
-				alt={ __( 'No products', 'woo-gutenberg-products-block' ) }
+			<Icon
 				className="wc-block-checkout-empty__image"
+				srcElement={ cart }
+				size={ 100 }
 			/>
 			<strong className="wc-block-checkout-empty__title">
 				{ __( 'Your cart is empty!', 'woo-gutenberg-products-block' ) }
 			</strong>
 			<p className="wc-block-checkout-empty__description">
 				{ __(
-					'Checkout is not available whilst your cart is empty. Add some products to your cart and come back later!',
+					"Checkout is not available whilst your cart is empty—please take a look through our store and come back when you're ready to place an order.",
 					'woo-gutenberg-products-block'
 				) }
 			</p>
