@@ -8,7 +8,7 @@ import { select } from '@wordpress/data-controls';
  */
 import { ACTION_TYPES as types } from './action-types';
 import { STORE_KEY as CART_STORE_KEY } from './constants';
-import { apiFetchWithNonce } from '../shared-controls';
+import { apiFetchWithHeaders } from '../shared-controls';
 
 /**
  * Returns an action object used in updating the store with the provided items
@@ -136,7 +136,7 @@ export function* applyCoupon( couponCode ) {
 	yield receiveApplyingCoupon( couponCode );
 
 	try {
-		const { response } = yield apiFetchWithNonce( {
+		const { response } = yield apiFetchWithHeaders( {
 			path: '/wc/store/cart/apply-coupon',
 			method: 'POST',
 			data: {
@@ -168,7 +168,7 @@ export function* removeCoupon( couponCode ) {
 	yield receiveRemovingCoupon( couponCode );
 
 	try {
-		const { response } = yield apiFetchWithNonce( {
+		const { response } = yield apiFetchWithHeaders( {
 			path: '/wc/store/cart/remove-coupon',
 			method: 'POST',
 			data: {
@@ -204,7 +204,7 @@ export function* removeItemFromCart( cartItemKey ) {
 	yield itemQuantityPending( cartItemKey, true );
 
 	try {
-		const { response } = yield apiFetchWithNonce( {
+		const { response } = yield apiFetchWithHeaders( {
 			path: `/wc/store/cart/remove-item/?key=${ cartItemKey }`,
 			method: 'POST',
 			cache: 'no-store',
@@ -234,7 +234,7 @@ export function* changeCartItemQuantity( cartItemKey, quantity ) {
 		return;
 	}
 	try {
-		const { response } = yield apiFetchWithNonce( {
+		const { response } = yield apiFetchWithHeaders( {
 			path: '/wc/store/cart/update-item',
 			method: 'POST',
 			data: {
@@ -258,7 +258,7 @@ export function* changeCartItemQuantity( cartItemKey, quantity ) {
  */
 export function* selectShippingRate( rateId, packageId = 0 ) {
 	try {
-		const { response } = yield apiFetchWithNonce( {
+		const { response } = yield apiFetchWithHeaders( {
 			path: `/wc/store/cart/select-shipping-rate/${ packageId }`,
 			method: 'POST',
 			data: {
@@ -285,7 +285,7 @@ the coupon cannot be applied.
 export function* updateShippingAddress( address ) {
 	yield shippingRatesAreResolving( true );
 	try {
-		const { response } = yield apiFetchWithNonce( {
+		const { response } = yield apiFetchWithHeaders( {
 			path: '/wc/store/cart/update-shipping',
 			method: 'POST',
 			data: address,
