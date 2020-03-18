@@ -15,7 +15,7 @@ import {
 	PlaceOrderButton,
 	ReturnToCartButton,
 } from '@woocommerce/base-components/cart-checkout';
-import TextInput from '@woocommerce/base-components/text-input';
+import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
 import ShippingRatesControl from '@woocommerce/base-components/shipping-rates-control';
 import CheckboxControl from '@woocommerce/base-components/checkbox-control';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
@@ -146,7 +146,7 @@ const Block = ( {
 								</Fragment>
 							) }
 						>
-							<TextInput
+							<ValidatedTextInput
 								type="email"
 								label={ __(
 									'Email address',
@@ -197,7 +197,7 @@ const Block = ( {
 									fieldConfig={ addressFields }
 								/>
 								{ attributes.showPhoneField && (
-									<TextInput
+									<ValidatedTextInput
 										type="tel"
 										label={
 											attributes.requirePhoneField

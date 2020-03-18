@@ -3,7 +3,7 @@
  */
 import { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import TextInput from '@woocommerce/base-components/text-input';
+import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
 import {
 	BillingCountryInput,
 	ShippingCountryInput,
@@ -162,7 +162,7 @@ const AddressForm = ( {
 				}
 
 				return (
-					<TextInput
+					<ValidatedTextInput
 						key={ field.key }
 						className={ `wc-block-address-form__${ field.key }` }
 						label={

@@ -9,8 +9,8 @@ import { useCallback, useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import TextInput from '../text-input';
-import Select from '../select';
+import { ValidatedTextInput } from '../text-input';
+import { ValidatedSelect } from '../select';
 
 const StateInput = ( {
 	className,
@@ -67,7 +67,7 @@ const StateInput = ( {
 	if ( options.length > 0 ) {
 		return (
 			<>
-				<Select
+				<ValidatedSelect
 					className={ className }
 					label={ label }
 					onChange={ onChangeState }
@@ -100,7 +100,7 @@ const StateInput = ( {
 		);
 	}
 	return (
-		<TextInput
+		<ValidatedTextInput
 			className={ className }
 			label={ label }
 			onChange={ onChangeState }

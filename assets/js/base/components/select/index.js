@@ -1,9 +1,6 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
-import { useEffect } from 'react';
-import { useValidationContext } from '@woocommerce/base-context';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { CustomSelectControl } from 'wordpress-components';
@@ -12,56 +9,22 @@ import { withInstanceId } from 'wordpress-compose';
 /**
  * Internal dependencies
  */
-import { ValidationInputError } from '../validation';
 import './style.scss';
 
 const Select = ( {
 	className,
+	feedback,
 	id,
 	label,
 	onChange,
 	options,
 	value,
-	instanceId,
-	required,
-	errorId,
-	errorMessage = __(
-		'Please select a value.',
-		'woo-gutenberg-products-block'
-	),
 } ) => {
-	const selectId = id || 'select-' + instanceId;
-	errorId = errorId || selectId;
-	const {
-		getValidationError,
-		setValidationErrors,
-		clearValidationError,
-	} = useValidationContext();
-	const validateSelect = () => {
-		if ( ! required || value ) {
-			clearValidationError( errorId );
-		} else {
-			setValidationErrors( {
-				[ errorId ]: {
-					message: errorMessage,
-					hidden: true,
-				},
-			} );
-		}
-	};
-
-	useEffect( () => {
-		validateSelect();
-	}, [ value ] );
-
-	const error = getValidationError( errorId ) || {};
-
 	return (
 		<div
-			id={ selectId }
+			id={ id }
 			className={ classnames( 'wc-block-select', className, {
 				'is-active': value,
-				'has-error': error.message && ! error.hidden,
 			} ) }
 		>
 			<CustomSelectControl
@@ -72,7 +35,7 @@ const Select = ( {
 				options={ options }
 				value={ value }
 			/>
-			<ValidationInputError propertyName={ errorId } />
+			{ feedback }
 		</div>
 	);
 };
@@ -86,11 +49,9 @@ Select.propTypes = {
 		} ).isRequired
 	).isRequired,
 	className: PropTypes.string,
-	errorId: PropTypes.string,
-	errorMessage: PropTypes.string,
+	feedback: PropTypes.node,
 	id: PropTypes.string,
 	label: PropTypes.string,
-	required: PropTypes.bool,
 	value: PropTypes.shape( {
 		key: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
@@ -98,3 +59,4 @@ Select.propTypes = {
 };
 
 export default withInstanceId( Select );
+export { default as ValidatedSelect } from './validated';

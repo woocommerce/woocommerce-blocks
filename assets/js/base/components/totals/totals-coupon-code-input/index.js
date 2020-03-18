@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { useState, useEffect, useRef } from '@wordpress/element';
 import { PanelBody, PanelRow } from 'wordpress-components';
 import { Button } from '@woocommerce/base-components/cart-checkout';
-import TextInput from '@woocommerce/base-components/text-input';
+import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
 import Label from '@woocommerce/base-components/label';
 import { ValidationInputError } from '@woocommerce/base-components/validation';
 import PropTypes from 'prop-types';
@@ -69,7 +69,7 @@ const TotalsCouponCodeInput = ( {
 			>
 				<PanelRow className="wc-block-coupon-code__row">
 					<form className="wc-block-coupon-code__form">
-						<TextInput
+						<ValidatedTextInput
 							id={ textInputId }
 							errorId="coupon"
 							className="wc-block-coupon-code__input"

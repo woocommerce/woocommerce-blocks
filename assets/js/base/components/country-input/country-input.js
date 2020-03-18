@@ -9,7 +9,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import Select from '../select';
+import { ValidatedSelect } from '../select';
 
 const CountryInput = ( {
 	className,
@@ -32,7 +32,7 @@ const CountryInput = ( {
 
 	return (
 		<div className={ classnames( className, 'wc-block-country-input' ) }>
-			<Select
+			<ValidatedSelect
 				label={ label }
 				onChange={ onChange }
 				options={ options }
