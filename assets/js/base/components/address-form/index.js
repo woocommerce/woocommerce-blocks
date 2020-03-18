@@ -32,7 +32,7 @@ const validateShippingCountry = (
 	if (
 		! hasValidationError &&
 		! values.country &&
-		Object.values( values ).some( ( value ) => value !== '' )
+		( values.city || values.state || values.postcode )
 	) {
 		setValidationErrors( {
 			'shipping-missing-country': {
