@@ -27,7 +27,7 @@ import renderFrontend from '../../../utils/render-frontend.js';
  * Renders the frontend block within the cart provider.
  */
 const Block = ( { emptyCart, attributes } ) => {
-	const { cartItems, cartIsLoading } = useStoreCart();
+	const { cartItems = [], cartIsLoading = true } = useStoreCart();
 
 	return (
 		<>
