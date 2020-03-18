@@ -50,6 +50,9 @@ abstract class AbstractRoute implements RouteInterface {
 	public function get_response( \WP_REST_Request $request ) {
 		$response = null;
 		try {
+			if ( 'GET' !== $request->get_method() ) {
+				$this->check_nonce( $request );
+			}
 			switch ( $request->get_method() ) {
 				case 'POST':
 					$response = $this->get_route_post_response( $request );
@@ -65,12 +68,42 @@ abstract class AbstractRoute implements RouteInterface {
 					$response = $this->get_route_response( $request );
 					break;
 			}
+			if ( 'GET' !== $request->get_method() && ! is_wp_error( $response ) ) {
+				$response->header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
+			}
 		} catch ( RouteException $error ) {
 			$response = new \WP_Error( $error->getErrorCode(), $error->getMessage(), [ 'status' => $error->getCode() ] );
 		} catch ( Exception $error ) {
 			$response = new WP_Error( 'unknown_server_error', $error->getMessage(), [ 'status' => '500' ] );
 		}
 		return $response;
+	}
+
+	/**
+	 * For non-GET endpoints, require and validate a nonce to prevent CSRF attacks.
+	 *
+	 * @throws RouteException On error.
+	 *
+	 * @param \WP_REST_Request $request Request object.
+	 */
+	protected function check_nonce( \WP_REST_Request $request ) {
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		$nonce = isset( $_SERVER['HTTP_X_WC_STORE_API_NONCE'] ) ? $_SERVER['HTTP_X_WC_STORE_API_NONCE'] : null;
+
+		if ( null === $nonce ) {
+			throw new RouteException( 'woocommerce_rest_missing_nonce', __( 'Missing the X-WC-Store-API-Nonce header. This endpoint requires a valid nonce.', 'woo-gutenberg-products-block' ), 403 );
+		}
+
+		// Compatibility with basic auth plugins - if logged in, ensure session token cookie exists.
+		if ( is_user_logged_in() && ! wp_get_session_token() ) {
+			wp_set_auth_cookie( get_current_user_id() );
+		}
+
+		$valid_nonce = wp_verify_nonce( $nonce, 'wc_store_api' );
+
+		if ( ! $valid_nonce ) {
+			throw new RouteException( 'woocommerce_rest_missing_nonce', __( 'The X-WC-Store-API-Nonce header is invalid.', 'woo-gutenberg-products-block' ), 403 );
+		}
 	}
 
 	/**
