@@ -13,6 +13,9 @@ import classnames from 'classnames';
  */
 import './style.scss';
 
+/**
+ * Render content when no payment methods are found depending on context.
+ */
 const NoPaymentMethods = () => {
 	const { isEditor } = useCheckoutContext();
 
@@ -23,6 +26,9 @@ const NoPaymentMethods = () => {
 	);
 };
 
+/**
+ * Renders a placeholder in the editor.
+ */
 const NoPaymentMethodsPlaceholder = () => {
 	return (
 		<Placeholder
@@ -49,6 +55,9 @@ const NoPaymentMethodsPlaceholder = () => {
 	);
 };
 
+/**
+ * Renders a notice on the frontend.
+ */
 const NoPaymentMethodsNotice = () => {
 	return (
 		<Notice
