@@ -103,7 +103,7 @@ const PaymentMethods = () => {
 	}
 	return (
 		<Tabs
-			className="wc-component__payment-method-options"
+			className="wc-block-components-checkout-payment-methods"
 			onSelect={ ( tabName ) => setActivePaymentMethod( tabName ) }
 			tabs={ createTabs( paymentMethods ) }
 			initialTabName={ activePaymentMethod }
