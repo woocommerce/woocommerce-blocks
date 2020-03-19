@@ -10,7 +10,7 @@ const EmptyCart = () => {
 		<div className="wc-block-checkout-empty">
 			<Icon
 				className="wc-block-checkout-empty__image"
-				alt={ __( 'Empty cart', 'woo-gutenberg-products-block' ) }
+				alt=""
 				srcElement={ cart }
 				size={ 100 }
 			/>

@@ -11,7 +11,7 @@ const NoProducts = () => {
 		<div className={ `${ layoutStyleClassPrefix }__no-products` }>
 			<Icon
 				className={ `${ layoutStyleClassPrefix }__no-products-image` }
-				alt={ __( 'No products', 'woo-gutenberg-products-block' ) }
+				alt=""
 				srcElement={ notice }
 				size={ 100 }
 			/>
