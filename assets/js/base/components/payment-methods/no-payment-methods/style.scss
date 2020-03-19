@@ -1,6 +1,5 @@
-.wc-block-checkout__no-payment-methods {
-	display: block;
-	margin-bottom: $gap !important;
+.components-placeholder.wc-block-checkout__no-payment-methods {
+	margin-bottom: $gap;
 
 	.components-placeholder__fieldset {
 		display: block;
@@ -18,6 +17,6 @@
 	}
 }
 
-.wc-block-checkout__no-payment-methods-notice {
-	margin-bottom: $gap !important;
+.components-notice.wc-block-checkout__no-payment-methods-notice {
+	margin-bottom: $gap;
 }

@@ -45,6 +45,8 @@ const NoPaymentMethodsPlaceholder = () => {
 			<Button
 				isDefault
 				href={ `${ ADMIN_URL }admin.php?page=wc-settings&tab=checkout` }
+				target="_blank"
+				rel="noopener noreferrer"
 			>
 				{ __(
 					'Configure Payment Methods',
