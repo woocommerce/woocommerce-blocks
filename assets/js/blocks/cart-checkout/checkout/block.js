@@ -80,8 +80,7 @@ const Block = ( {
 		setBillingAddress,
 		shippingAsBilling,
 		setShippingAsBilling,
-	} = useBillingData( attributes.shippingAsBilling );
-
+	} = useBillingData();
 	const renderShippingRatesControlOption = ( option ) => ( {
 		label: decodeEntities( option.name ),
 		value: option.rate_id,
@@ -95,11 +94,7 @@ const Block = ( {
 		secondaryDescription: decodeEntities( option.delivery_time ),
 	} );
 
-	const useShippingAddressAsBilling = isEditor
-		? attributes.shippingAsBilling
-		: shippingAsBilling;
-	const showBillingFields =
-		! SHIPPING_ENABLED || ! useShippingAddressAsBilling;
+	const showBillingFields = ! SHIPPING_ENABLED || ! shippingAsBilling;
 
 	const addressFields = {
 		...defaultAddressFields,

@@ -85,7 +85,7 @@ const reducer = (
 		},
 		metaData: {},
 		billingData: {
-			billingAsShipping: false,
+			shippingAsBilling: false,
 			email: '',
 			billingAddress: {
 				first_name: '',
