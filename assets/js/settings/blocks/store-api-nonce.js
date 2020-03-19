@@ -8,12 +8,15 @@ import apiFetch from '@wordpress/api-fetch';
  */
 import { getSetting } from '../shared';
 
+// Cache for the initial nonce initialized from hydration.
+let nonce = getSetting( 'storeApiNonce' );
+
 /**
  * Returns whether or not this is a non GET wc/store API request.
  *
- * @param {Object} options Options given to apiFetch.
+ * @param {Object} options Fetch options.
  *
- * @return boolean
+ * @return {boolean} Returns true if this is a store request.
  */
 const isStoreApiGetRequest = ( options ) => {
 	const url = options.url || options.path;
@@ -23,9 +26,11 @@ const isStoreApiGetRequest = ( options ) => {
 	return /wc\/store\//.exec( url ) !== null;
 };
 
-/** cache for nonce initialized from hydration  */
-let nonce = getSetting( 'storeApiNonce' );
-
+/**
+ * Set the current nonce from a header object.
+ *
+ * @param {Object} headers Headers object.
+ */
 const setNonce = ( headers ) => {
 	const newNonce = headers?.get( 'X-WC-Store-API-Nonce' );
 	if ( newNonce ) {
@@ -33,6 +38,14 @@ const setNonce = ( headers ) => {
 	}
 };
 
+/**
+ * Nonce middleware which updates the nonce after a request, if given.
+ *
+ * @param {Object}   options Fetch options.
+ * @param {Function} next    The next middleware or fetchHandler to call.
+ *
+ * @return {*} The evaluated result of the remaining middleware chain.
+ */
 export const storeNonceMiddleware = ( options, next ) => {
 	if ( isStoreApiGetRequest( options ) ) {
 		const existingHeaders = options.headers || {};

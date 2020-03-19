@@ -76,10 +76,10 @@ class RestApi {
 	 * The Store API does not require authentication.
 	 *
 	 * @param \WP_Error|mixed $result Error from another authentication handler, null if we should handle it, or another value if not.
-	 * @return WP_Error|mixed|bool
+	 * @return \WP_Error|null|bool
 	 */
 	public static function store_api_authentication( $result ) {
-		// Pass through other errors.
+		// Pass through errors from other authentication methods used before this one.
 		if ( ! empty( $result ) || ! self::is_request_to_store_api() ) {
 			return $result;
 		}
