@@ -302,17 +302,3 @@ export function* updateShippingAddress( address ) {
 	yield shippingRatesAreResolving( false );
 	return true;
 }
-
-export function setBillingAddress( address ) {
-	return {
-		type: types.UPDATE_BILLING_ADDRESS,
-		address,
-	};
-}
-
-export function setShippingAsBilling( shippingAsBilling ) {
-	return {
-		type: types.TOGGLE_SHIPPING_AS_BIllING,
-		shippingAsBilling,
-	};
-}

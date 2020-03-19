@@ -84,21 +84,6 @@ const reducer = (
 			},
 		},
 		metaData: {},
-		billingData: {
-			shippingAsBilling: false,
-			email: '',
-			billingAddress: {
-				first_name: '',
-				last_name: '',
-				company: '',
-				address_1: '',
-				address_2: '',
-				city: '',
-				state: '',
-				postcode: '',
-				country: '',
-			},
-		},
 		errors: [],
 	},
 	action
@@ -180,29 +165,6 @@ const reducer = (
 				},
 			};
 			break;
-		case types.UPDATE_BILLING_ADDRESS:
-			state = {
-				...state,
-				billingData: {
-					...state.billingData,
-					billingAddress: {
-						...action.address,
-					},
-				},
-			};
-			break;
-		case types.TOGGLE_SHIPPING_AS_BIllING:
-			const address = action.shippingAsBilling
-				? state.cartData.shippingAddress
-				: state.billingData.billingAddress;
-			state = {
-				...state,
-				billingData: {
-					...state.billingData,
-					shippingAsBilling: action.shippingAsBilling,
-					billingAddress: { ...address },
-				},
-			};
 	}
 	return state;
 };
