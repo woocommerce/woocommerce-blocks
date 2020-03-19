@@ -52,6 +52,20 @@ class Cart extends AbstractBlock {
 		do_action( 'woocommerce_blocks_enqueue_cart_block_scripts_before' );
 		$this->enqueue_assets( $attributes );
 		do_action( 'woocommerce_blocks_enqueue_cart_block_scripts_after' );
+
+		// Disable storefront footer bar when using this block.
+		if ( has_action( 'storefront_footer', 'storefront_handheld_footer_bar' ) ) {
+			remove_action( 'storefront_footer', 'storefront_handheld_footer_bar', 999 );
+		}
+
+		// Add placeholder element to footer to push content for the sticky bar on mobile.
+		add_action(
+			'wp_footer',
+			function() {
+				echo '<div class="wc-block-cart__submit-container-push"></div>';
+			}
+		);
+
 		return $content . $this->get_skeleton();
 	}
 
