@@ -18,7 +18,7 @@ import { useCheckoutContext } from '@woocommerce/base-context';
  * Internal dependencies
  */
 import Tabs from '../tabs';
-import NoPaymentMethods from './no-payment-methods';
+import NoPaymentMethods from './no-payment-methods/index';
 
 /**
  * Returns a payment method for the given context.

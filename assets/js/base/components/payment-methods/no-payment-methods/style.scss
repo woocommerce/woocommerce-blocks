@@ -1,4 +1,5 @@
-.wc-block-checkout__no-shipping {
+
+.wc-block-checkout__no-payment-methods {
 	display: block;
 	margin-bottom: $gap !important;
 
@@ -10,7 +11,7 @@
 			color: $white;
 		}
 
-		.wc-block-checkout__no-shipping-description {
+		.wc-block-checkout__no-payment-methods-description {
 			display: block;
 			margin: 0.25em 0 1em 0;
 			font-size: 13px;
