@@ -44,13 +44,13 @@ export const emitEvent = async ( observers, eventType, data ) => {
  */
 export const emitEventWithAbort = async ( observers, eventType, data ) => {
 	const observersByType = observers[ eventType ] || [];
-	let response;
 	for ( let i = 0; i < observersByType.length; i++ ) {
 		try {
-			response = await Promise.resolve( observersByType[ i ]( data ) );
+			const response = await Promise.resolve(
+				observersByType[ i ]( data )
+			);
 			if ( response !== true ) {
-				// abort we have an error
-				i = observersByType.length;
+				return response;
 			}
 		} catch ( e ) {
 			// we don't handle thrown errors but just console.log for
@@ -59,5 +59,5 @@ export const emitEventWithAbort = async ( observers, eventType, data ) => {
 			console.error( e );
 		}
 	}
-	return response;
+	return true;
 };
