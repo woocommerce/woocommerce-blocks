@@ -97,9 +97,7 @@ export const CheckoutProvider = ( {
 	const currentObservers = useRef( observers );
 	const hydratedBillingData = getSetting( 'billingData' );
 	useEffect( () => {
-		void dispatch(
-			actions.setBillingData( { billingAddress: hydratedBillingData } )
-		);
+		void dispatch( actions.setBillingData( hydratedBillingData ) );
 	}, [ hydratedBillingData ] );
 	// set observers on ref so it's always current
 	useEffect( () => {

@@ -36,9 +36,7 @@ export const DEFAULT_STATE = {
 	nextStatus: STATUS.IDLE,
 	hasError: false,
 	calculatingCount: 0,
-	billingData: {
-		billingAddress: DEFAULT_BILLING_DATA,
-	},
+	billingData: DEFAULT_BILLING_DATA,
 };
 
 export const TYPES = {

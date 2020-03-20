@@ -115,12 +115,7 @@ export const usePaymentMethodInterface = () => {
 		onShippingRateSelectFail,
 		needsShipping,
 	} = useShippingMethodDataContext();
-	const {
-		billingAddress,
-		setBillingAddress,
-		email,
-		setEmail,
-	} = useBillingData();
+	const { billingData, setBillingData } = useBillingData();
 	const { order, isLoading: orderLoading } = useStoreOrder();
 	const { cartTotals } = useStoreCart();
 	const { appliedCoupons } = useStoreCartCoupons();
@@ -168,10 +163,8 @@ export const usePaymentMethodInterface = () => {
 			needsShipping,
 		},
 		billing: {
-			billingAddress,
-			setBillingAddress,
-			email,
-			setEmail,
+			billingData,
+			setBillingData,
 			order,
 			orderLoading,
 			cartTotal: currentCartTotal.current,
