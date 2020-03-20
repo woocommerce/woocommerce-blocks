@@ -7,13 +7,7 @@ import {
 	DEFAULT_PAYMENT_METHOD_DATA,
 } from './constants';
 import reducer from './reducer';
-import {
-	statusOnly,
-	error,
-	failed,
-	success,
-	setBillingData as setBilling,
-} from './actions';
+import { statusOnly, error, failed, success } from './actions';
 
 /**
  * External dependencies
@@ -120,8 +114,7 @@ export const PaymentMethodDataProvider = ( {
 				} )
 			),
 	} );
-	const setBillingData = ( billingData ) =>
-		dispatch( setBilling( billingData ) );
+
 	const currentStatus = {
 		isPristine: paymentStatus === PRISTINE,
 		isStarted: paymentStatus === STARTED,
@@ -138,12 +131,10 @@ export const PaymentMethodDataProvider = ( {
 		setPaymentStatus,
 		currentStatus,
 		paymentStatuses: STATUS,
-		billingData: paymentStatus.billingData,
 		paymentMethodData: paymentStatus.paymentMethodData,
 		errorMessage: paymentStatus.errorMessage,
 		activePaymentMethod,
 		setActivePaymentMethod,
-		setBillingData,
 	};
 	return (
 		<PaymentMethodDataContext.Provider value={ paymentData }>

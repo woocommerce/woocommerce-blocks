@@ -121,8 +121,8 @@ const Checkout = ( {
 	const {
 		billingAddress,
 		setBillingAddress,
-		emailAddress,
-		setEmailAddress,
+		email,
+		setEmail,
 	} = useBillingData();
 	const setShippingFields = useCallback(
 		( address ) => {

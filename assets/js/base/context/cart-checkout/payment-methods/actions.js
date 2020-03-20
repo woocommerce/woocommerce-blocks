@@ -9,8 +9,6 @@ import { STATUS } from './constants';
 
 const { ERROR, FAILED, SUCCESS } = STATUS;
 
-const SET_BILLING_DATA = 'set_billing_data';
-
 /**
  * Used to dispatch a status update only for the given type.
  *
@@ -81,17 +79,4 @@ export const success = ( { billingData, paymentMethodData } ) => ( {
 	type: SUCCESS,
 	billingData,
 	paymentMethodData,
-} );
-
-/**
- * Used to dispatch an action for updating the billing data in the state.
- *
- * @param {CartBillingAddress} billingData Billing data used for the failed
- *                                         payment.
- *
- * @return {Object} An action object.
- */
-export const setBillingData = ( billingData ) => ( {
-	type: SET_BILLING_DATA,
-	billingData,
 } );

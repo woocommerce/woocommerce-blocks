@@ -26,6 +26,7 @@ import {
 	useEffect,
 } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+import { getSetting } from '@woocommerce/settings';
 
 /**
  * @typedef {import('@woocommerce/type-defs/checkout').CheckoutDispatchActions} CheckoutDispatchActions
@@ -94,6 +95,12 @@ export const CheckoutProvider = ( {
 	const [ checkoutState, dispatch ] = useReducer( reducer, DEFAULT_STATE );
 	const [ observers, subscriber ] = useReducer( emitReducer, {} );
 	const currentObservers = useRef( observers );
+	const hydratedBillingData = getSetting( 'billingData' );
+	useEffect( () => {
+		void dispatch(
+			actions.setBillingData( { billingAddress: hydratedBillingData } )
+		);
+	}, [ hydratedBillingData ] );
 	// set observers on ref so it's always current
 	useEffect( () => {
 		currentObservers.current = observers;

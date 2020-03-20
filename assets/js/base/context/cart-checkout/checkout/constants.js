@@ -1,5 +1,7 @@
 /**
  * @type {import("@woocommerce/type-defs/checkout").CheckoutStatusConstants}
+ * @typedef {import('@woocommerce/type-defs/cart').CartBillingAddress} CartBillingAddress
+ *
  */
 export const STATUS = {
 	PRISTINE: 'pristine',
@@ -7,6 +9,23 @@ export const STATUS = {
 	CALCULATING: 'calculating',
 	PROCESSING: 'processing',
 	COMPLETE: 'complete',
+};
+
+/**
+ * @type {CartBillingAddress}
+ */
+const DEFAULT_BILLING_DATA = {
+	first_name: '',
+	last_name: '',
+	company: '',
+	email: '',
+	phone: '',
+	country: '',
+	address_1: '',
+	address_2: '',
+	city: '',
+	state: '',
+	postcode: '',
 };
 
 export const DEFAULT_STATE = {
@@ -18,18 +37,7 @@ export const DEFAULT_STATE = {
 	hasError: false,
 	calculatingCount: 0,
 	billingData: {
-		emailAddress: '',
-		billingAddress: {
-			first_name: '',
-			last_name: '',
-			company: '',
-			address_1: '',
-			address_2: '',
-			city: '',
-			state: '',
-			postcode: '',
-			country: '',
-		},
+		billingAddress: DEFAULT_BILLING_DATA,
 	},
 };
 

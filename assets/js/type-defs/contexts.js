@@ -119,8 +119,6 @@
  * @property {Object}                     paymentStatuses        An object of
  *                                                               payment status
  *                                                               constants.
- * @property {CartBillingAddress}         billingData            The current set
- *                                                               billing data.
  * @property {Object}                     paymentMethodData      Arbitrary data
  *                                                               to be passed
  *                                                               along for
@@ -140,9 +138,6 @@
  *                                                               setting the
  *                                                               active payment
  *                                                               method.
- * @property {function(Object)}           setBillingData         A function for
- *                                                               setting the
- *                                                               billing data.
  */
 
 /**
@@ -204,7 +199,7 @@
  * @property {boolean}                 isEditor           Indicates whether in
  *                                                        the editor context
  *                                                        (true) or not (false).
- * @property {Object}                  billingData        An object containing
+ * @property {CartBillingAddress}      billingData        An object containing
  *                                                        all billing info like
  *                                                        address, email and tokens.
  */

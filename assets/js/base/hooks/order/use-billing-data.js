@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * External dependencies
  */
@@ -12,20 +13,31 @@ export const useBillingData = () => {
 		billingData,
 		dispatchActions: { setBillingData },
 	} = useCheckoutContext();
-	const { billingAddress, emailAddress } = billingData;
+
+	const {
+		billingAddress: { email, ...billingAddress },
+	} = billingData;
 	const setBillingAddress = ( address ) =>
 		setBillingData( {
 			...billingData,
 			billingAddress: {
+				...billingAddress,
 				...address,
 			},
 		} );
 
-	const setEmailAddress = ( email ) =>
-		setBillingData( { ...billingData, emailAddress: email } );
+	const setEmail = ( address ) =>
+		setBillingData( {
+			...billingData,
+			billingAddress: {
+				...billingAddress,
+				email: address,
+			},
+		} );
+
 	return {
-		emailAddress,
-		setEmailAddress,
+		email,
+		setEmail,
 		billingAddress,
 		setBillingAddress,
 	};
