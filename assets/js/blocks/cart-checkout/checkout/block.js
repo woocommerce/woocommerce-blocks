@@ -58,10 +58,8 @@ const Block = ( {
 	const [ selectedShippingRate, setSelectedShippingRate ] = useState( {} );
 	const [ contactFields, setContactFields ] = useState( {} );
 	const [ shouldSavePayment, setShouldSavePayment ] = useState( true );
-	const [ billingFields, setBillingFields ] = useState( {} );
-	const [ useShippingAsBilling, setUseShippingAsBilling ] = useState(
-		attributes.useShippingAsBilling
-	);
+	const [ shippingAsBilling, setShippingAsBilling ] = useState( true );
+
 	const {
 		hasValidationErrors,
 		showAllValidationErrors,

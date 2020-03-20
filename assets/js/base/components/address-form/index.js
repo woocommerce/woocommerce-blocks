@@ -57,7 +57,7 @@ const AddressForm = ( {
 	fieldConfig = {},
 	onChange,
 	type = 'shipping',
-	values,
+	values = {},
 } ) => {
 	const {
 		getValidationError,

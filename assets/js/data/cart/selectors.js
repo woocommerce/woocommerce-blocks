@@ -155,4 +155,3 @@ export const areShippingRatesLoading = createRegistrySelector(
 		);
 	}
 );
-

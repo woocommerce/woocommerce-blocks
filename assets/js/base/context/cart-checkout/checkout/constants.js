@@ -17,6 +17,19 @@ export const DEFAULT_STATE = {
 	nextStatus: STATUS.IDLE,
 	hasError: false,
 	calculatingCount: 0,
+	billingData: {
+		billingAddress: {
+			first_name: '',
+			last_name: '',
+			company: '',
+			address_1: '',
+			address_2: '',
+			city: '',
+			state: '',
+			postcode: '',
+			country: '',
+		},
+	},
 };
 
 export const TYPES = {
@@ -28,4 +41,5 @@ export const TYPES = {
 	SET_NO_ERROR: 'set_checkout_no_error',
 	INCREMENT_CALCULATING: 'increment_calculating',
 	DECREMENT_CALCULATING: 'decrement_calculating',
+	SET_BILLING_DATA: 'set_billing_data',
 };

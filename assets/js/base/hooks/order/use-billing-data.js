@@ -1,30 +1,24 @@
 /**
  * External dependencies
  */
-import { useSelect } from '@wordpress/data';
-import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
+import { useCheckoutContext } from '@woocommerce/base-context';
 
 /**
  * Exposes billing data api interface from the payment method data context.
  *
  */
 export const useBillingData = () => {
-	const result = useSelect( ( select, { dispatch } ) => {
-		const store = select( storeKey );
-		const billingAddress = store.getBillingAddress();
-		const shippingAsBilling = store.getShippingAsBilling();
-		const { setBillingAddress, setShippingAsBilling } = dispatch(
-			storeKey
-		);
-
-		return {
-			billingAddress,
-			setBillingAddress,
-			shippingAsBilling,
-			setShippingAsBilling,
-		};
-	} );
+	const { billingData, dispatchActions } = useCheckoutContext();
+	const { billingAddress } = billingData;
+	const setBillingAddress = ( address ) =>
+		dispatchActions.setBillingData( {
+			...billingData,
+			billingAddress: {
+				...address,
+			},
+		} );
 	return {
-		...result,
+		billingAddress,
+		setBillingAddress,
 	};
 };
