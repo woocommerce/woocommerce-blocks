@@ -8,10 +8,13 @@ import { useCheckoutContext } from '@woocommerce/base-context';
  *
  */
 export const useBillingData = () => {
-	const { billingData, dispatchActions } = useCheckoutContext();
+	const {
+		billingData,
+		dispatchActions: { setBillingData },
+	} = useCheckoutContext();
 	const { billingAddress } = billingData;
 	const setBillingAddress = ( address ) =>
-		dispatchActions.setBillingData( {
+		setBillingData( {
 			...billingData,
 			billingAddress: {
 				...address,

@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { Fragment, useState } from '@wordpress/element';
+import { Fragment, useState, useCallback, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import AddressForm from '@woocommerce/base-components/address-form';
 import defaultAddressFields from '@woocommerce/base-components/address-form/default-address-fields';
@@ -46,12 +46,19 @@ import CheckoutSidebar from './sidebar.js';
 import './style.scss';
 import '../../../payment-methods-demo';
 
-const Block = ( {
+const Block = ( { isEditor = false, ...props } ) => (
+	<ValidationContextProvider>
+		<CheckoutProvider isEditor={ isEditor }>
+			<Checkout { ...props } isEditor={ isEditor } />
+		</CheckoutProvider>
+	</ValidationContextProvider>
+);
+
+const Checkout = ( {
 	attributes,
 	cartCoupons = [],
 	cartItems = [],
 	cartTotals = {},
-	isEditor = false,
 	shippingRates = [],
 	scrollToTop,
 } ) => {
@@ -93,7 +100,6 @@ const Block = ( {
 	} );
 
 	const showBillingFields = ! SHIPPING_ENABLED || ! shippingAsBilling;
-
 	const addressFields = {
 		...defaultAddressFields,
 		company: {
@@ -109,12 +115,27 @@ const Block = ( {
 
 	const {
 		shippingRatesLoading,
-		shippingAddress: shippingFields,
-		setShippingAddress: setShippingFields,
+		shippingAddress,
+		setShippingAddress,
 	} = useShippingRates();
 
+	const setShippingFields = useCallback(
+		( address ) => {
+			if ( shippingAsBilling ) {
+				setShippingAddress( address );
+				setBillingAddress( address );
+			} else {
+				setShippingAddress( address );
+			}
+		},
+		[ setShippingAddress, setBillingAddress ]
+	);
+	useEffect( () => {
+		if ( shippingAsBilling ) {
+			setBillingAddress( shippingAddress );
+		}
+	}, [ shippingAsBilling ] );
 	return (
-		<CheckoutProvider isEditor={ isEditor }>
 			<SidebarLayout className="wc-block-checkout">
 				<Main>
 					<ExpressCheckoutFormControl />
@@ -232,6 +253,7 @@ const Block = ( {
 									onChange={ ( isChecked ) =>
 										setUseShippingAsBilling( isChecked )
 									}
+									required={ attributes.requirePhoneField }
 								/>
 							</FormStep>
 						) }
@@ -368,7 +390,6 @@ const Block = ( {
 					/>
 				</Sidebar>
 			</SidebarLayout>
-		</CheckoutProvider>
 	);
 };
 
