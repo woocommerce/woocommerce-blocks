@@ -38,7 +38,7 @@ const NoPaymentMethodsPlaceholder = () => {
 		>
 			<span className="wc-block-checkout__no-payment-methods-description">
 				{ __(
-					'Your store does not have any payment methods configured. Once you have configured your payment methods they will appear here.',
+					'Your store does not have any payment methods configured that support the checkout block. Once you have configured a compatible payment method (e.g. Stripe) it will be shown here.',
 					'woo-gutenberg-products-block'
 				) }
 			</span>
