@@ -140,7 +140,7 @@
  *                                                               setting the
  *                                                               active payment
  *                                                               method.
- * @property {function()}                 setBillingData         A function for
+ * @property {function(Object)}           setBillingData         A function for
  *                                                               setting the
  *                                                               billing data.
  */
@@ -204,6 +204,9 @@
  * @property {boolean}                 isEditor           Indicates whether in
  *                                                        the editor context
  *                                                        (true) or not (false).
+ * @property {Object}                  billingData        An object containing
+ *                                                        all billing info like
+ *                                                        address, email and tokens.
  */
 
 /**

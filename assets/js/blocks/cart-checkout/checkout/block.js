@@ -118,7 +118,12 @@ const Checkout = ( {
 		shippingAddress,
 		setShippingAddress,
 	} = useShippingRates();
-
+	const {
+		billingAddress,
+		setBillingAddress,
+		emailAddress,
+		setEmailAddress,
+	} = useBillingData();
 	const setShippingFields = useCallback(
 		( address ) => {
 			if ( shippingAsBilling ) {

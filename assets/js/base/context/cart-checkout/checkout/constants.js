@@ -18,6 +18,7 @@ export const DEFAULT_STATE = {
 	hasError: false,
 	calculatingCount: 0,
 	billingData: {
+		emailAddress: '',
 		billingAddress: {
 			first_name: '',
 			last_name: '',

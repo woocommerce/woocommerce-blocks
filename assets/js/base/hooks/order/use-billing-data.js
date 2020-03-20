@@ -12,7 +12,7 @@ export const useBillingData = () => {
 		billingData,
 		dispatchActions: { setBillingData },
 	} = useCheckoutContext();
-	const { billingAddress } = billingData;
+	const { billingAddress, emailAddress } = billingData;
 	const setBillingAddress = ( address ) =>
 		setBillingData( {
 			...billingData,
@@ -20,7 +20,12 @@ export const useBillingData = () => {
 				...address,
 			},
 		} );
+
+	const setEmailAddress = ( email ) =>
+		setBillingData( { ...billingData, emailAddress: email } );
 	return {
+		emailAddress,
+		setEmailAddress,
 		billingAddress,
 		setBillingAddress,
 	};
