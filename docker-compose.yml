@@ -28,9 +28,11 @@ services:
       WORDPRESS_DB_USER:
       WORDPRESS_DB_PASSWORD:
       WORDPRESS_TABLE_PREFIX: wp_test_
+      WP_CORE_DIR: /var/www/html
+      WP_TESTS_DIR: /tmp/wordpress-tests-lib
     volumes:
       - './:/var/www/html/wp-content/plugins/woocommerce-gutenberg-products-block'
-      - '../woocommerce:/var/www/html/wp-content/plugins/woocommerce'
+      - wordpress:/var/www/html
 
   wordpress-www:
     depends_on:
