@@ -25,7 +25,7 @@
 		"deploy": "cross-env WOOCOMMERCE_BLOCKS_PHASE=stable composer install --no-dev && npm run build --loglevel error && sh ./bin/github-deploy.sh",
 		"release": "sh ./bin/wordpress-deploy.sh",
 		"build": "cross-env BABEL_ENV=default NODE_ENV=production webpack",
-		"build:ci": "npm run build && npm run lint:js && npm run lint:css",
+		"lint:ci": "npm run lint:js && npm run lint:css",
 		"build:e2e-test": "npm run build",
 		"dev": "cross-env BABEL_ENV=default webpack",
 		"docker:up": "docker-compose up -d",
