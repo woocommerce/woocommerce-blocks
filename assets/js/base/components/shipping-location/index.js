@@ -19,13 +19,15 @@ const ShippingLocation = ( { address } ) => {
 	}
 	const formattedCountry =
 		typeof SHIPPING_COUNTRIES[ address.country ] === 'string'
-			? SHIPPING_COUNTRIES[ address.country ]
+			? decodeEntities( SHIPPING_COUNTRIES[ address.country ] )
 			: '';
 
 	const formattedState =
 		typeof SHIPPING_STATES[ address.country ] === 'object' &&
 		typeof SHIPPING_STATES[ address.country ][ address.state ] === 'string'
-			? SHIPPING_STATES[ address.country ][ address.state ]
+			? decodeEntities(
+					SHIPPING_STATES[ address.country ][ address.state ]
+			  )
 			: address.state;
 
 	const addressParts = [];
@@ -35,10 +37,7 @@ const ShippingLocation = ( { address } ) => {
 	addressParts.push( formattedState );
 	addressParts.push( formattedCountry );
 
-	const formattedLocation = addressParts
-		.map( decodeEntities )
-		.filter( Boolean )
-		.join( ', ' );
+	const formattedLocation = addressParts.filter( Boolean ).join( ', ' );
 
 	return (
 		formattedLocation && (
