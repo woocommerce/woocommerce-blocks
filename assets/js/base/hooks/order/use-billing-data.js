@@ -24,11 +24,14 @@ export const useBillingData = () => {
 			} ),
 		[ setBillingData ]
 	);
-	const setEmail = ( address ) =>
-		setBillingData( {
-			...billingData,
-			email: address,
-		} );
+	const setEmail = useCallback(
+		( address ) =>
+			setBillingData( {
+				...billingData,
+				email: address,
+			} ),
+		[ setBillingData ]
+	);
 	return {
 		email,
 		setEmail,
