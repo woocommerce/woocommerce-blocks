@@ -23,6 +23,8 @@ import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-mone
 import {
 	CheckoutProvider,
 	useValidationContext,
+	ValidationContextProvider,
+	useCheckoutContext,
 } from '@woocommerce/base-context';
 import {
 	ExpressCheckoutFormControl,
@@ -49,7 +51,7 @@ import '../../../payment-methods-demo';
 const Block = ( { isEditor = false, ...props } ) => (
 	<ValidationContextProvider>
 		<CheckoutProvider isEditor={ isEditor }>
-			<Checkout { ...props } isEditor={ isEditor } />
+			<Checkout { ...props } />
 		</CheckoutProvider>
 	</ValidationContextProvider>
 );
@@ -62,6 +64,7 @@ const Checkout = ( {
 	shippingRates = [],
 	scrollToTop,
 } ) => {
+	const { isEditor } = useCheckoutContext();
 	const [ selectedShippingRate, setSelectedShippingRate ] = useState( {} );
 	const [ contactFields, setContactFields ] = useState( {} );
 	const [ shouldSavePayment, setShouldSavePayment ] = useState( true );
