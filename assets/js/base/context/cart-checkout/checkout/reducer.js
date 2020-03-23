@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import isShallowEqual from '@wordpress/is-shallow-equal';
+
+/**
  * Internal dependencies
  */
 import { TYPES, DEFAULT_STATE, STATUS } from './constants';
@@ -122,12 +127,14 @@ export const reducer = ( state = DEFAULT_STATE, { url, type, data } ) => {
 			};
 			break;
 		case SET_BILLING_DATA:
-			newState = {
-				...state,
-				billingData: {
-					...data,
-				},
-			};
+			newState = isShallowEqual( state.billingData, data )
+				? state
+				: {
+						...state,
+						billingData: {
+							...data,
+						},
+				  };
 			break;
 	}
 	// automatically update state to idle from pristine as soon as it
