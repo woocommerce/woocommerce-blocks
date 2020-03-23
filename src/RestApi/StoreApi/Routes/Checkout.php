@@ -137,7 +137,7 @@ class Checkout extends AbstractRoute {
 			$order->set_payment_method( $payment_method_object );
 			$order->save();
 
-			$payment_result = $this->get_payment_result( $payment_method_object->process_payment( $order->get_id() ) );
+			$payment_result = $this->get_payment_result( $order, $payment_method_object->process_payment( $order->get_id() ) );
 			$order          = wc_get_order( $order->get_id() );
 
 			if ( 'success' === $payment_result['result'] ) {
@@ -154,15 +154,16 @@ class Checkout extends AbstractRoute {
 	/**
 	 * Wrapper for process_payment to give consistent response.
 	 *
-	 * @param array $raw_result Raw result from the gateway process_payment method.
+	 * @param \WC_Order $order Order object.
+	 * @param array     $raw_result Raw result from the gateway process_payment method.
 	 * @return array
 	 */
-	protected function get_payment_result( $raw_result = array() ) {
+	protected function get_payment_result( \WC_Order $order, $raw_result = array() ) {
 		return wp_parse_args(
 			$raw_result,
 			[
-				'result'   => 'unknown',
-				'redirect' => '',
+				'result'   => 'success',
+				'redirect' => $order->get_checkout_order_received_url(),
 			]
 		);
 	}
@@ -196,11 +197,10 @@ class Checkout extends AbstractRoute {
 	 * @return \WP_REST_Response
 	 */
 	protected function get_checkout_response_for_order( \WC_Order $order, \WP_REST_Request $request, $payment_result = array() ) {
-		// @todo we need to determine the fields we want to return after processing e.g. redirect URLs.
 		return $this->prepare_item_for_response(
-			[
-				'order'        => $order,
-				'redirect_url' => $order->get_checkout_order_received_url(),
+			(object) [
+				'order'          => $order,
+				'payment_result' => $payment_result,
 			],
 			$request
 		);
@@ -215,7 +215,6 @@ class Checkout extends AbstractRoute {
 	 * @return \WP_REST_Response
 	 */
 	protected function get_checkout_success_response_for_order( \WC_Order $order, \WP_REST_Request $request, $payment_result = array() ) {
-		// @todo we need to determine the fields we want to return after processing e.g. redirect URLs.
 		$response = $this->get_checkout_response_for_order( $order, $request, $payment_result );
 		$response->set_status( 200 );
 		return $response;

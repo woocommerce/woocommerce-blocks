@@ -42,14 +42,16 @@ class CheckoutSchema extends AbstractSchema {
 	 *
 	 * @todo we need to determine the fields we want to return after processing e.g. redirect URLs.
 	 *
-	 * @param object $checkout_result Result from checkout action.
+	 * @param object $result Result from checkout action.
 	 * @return array
 	 */
-	public function get_item_response( $checkout_result ) {
+	public function get_item_response( $result ) {
 		$order_schema = new OrderSchema();
+
 		return [
-			'note'  => 'This is a placeholder',
-			'order' => $order_schema->get_item_response( $checkout_result['order'] ),
+			'note'     => 'This is a placeholder',
+			'redirect' => $result->payment_result['redirect'],
+			'order'    => $order_schema->get_item_response( $result->order ),
 		];
 	}
 }
