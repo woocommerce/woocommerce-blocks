@@ -71,10 +71,10 @@ class Checkout extends AbstractRoute {
 	 * @return \WP_REST_Response
 	 */
 	protected function get_route_post_response( \WP_REST_Request $request ) {
-		$order_id = $this->get_order_id(); // Get from session or args?
+		$order_id = absint( $request['order_id'] );
 
 		if ( ! $order_id ) {
-			throw new RouteException( 'woocommerce_rest_checkout_missing_order_id', __( 'No order was found for this session pending payment. Was an order created via /cart/create-order yet?', 'woo-gutenberg-products-block' ), 404 );
+			throw new RouteException( 'woocommerce_rest_checkout_missing_order_id', __( 'An order ID is required.', 'woo-gutenberg-products-block' ), 404 );
 		}
 
 		$order              = wc_get_order( $order_id );
@@ -85,17 +85,39 @@ class Checkout extends AbstractRoute {
 			throw new RouteException( 'woocommerce_rest_checkout_invalid_order', __( 'Invalid order. Please provide a valid order ID and key.', 'woo-gutenberg-products-block' ), 400 );
 		}
 
+		$statuses_for_payment = array_unique( apply_filters( 'woocommerce_valid_order_statuses_for_payment', [ 'checkout-draft', 'pending', 'failed' ] ) );
+
+		if ( ! $order->has_status( $statuses_for_payment ) ) {
+			throw new RouteException(
+				'woocommerce_rest_checkout_invalid_order',
+				sprintf(
+					// Translators: %1$s list of order stati. %2$s Current order status.
+					__( 'Only orders with status %1$s can be paid for. This order is %2$s.', 'woo-gutenberg-products-block' ),
+					'`' . implode( '`, `', $statuses_for_payment ) . '`',
+					$order->get_status()
+				),
+				400
+			);
+		}
+
 		if ( ! $order->needs_payment() ) {
 			return $this->process_checkout_without_payment( $order, $request );
 		}
 
-		// @todo Add order and payment gateway processing here.
 		$payment_method_id     = wc_clean( wp_unslash( $request['payment_method'] ) );
 		$available_gateways    = WC()->payment_gateways->get_available_payment_gateways();
 		$payment_method_object = isset( $available_gateways[ $payment_method_id ] ) ? $available_gateways[ $payment_method_id ] : false;
 
 		if ( ! $payment_method_object ) {
-			throw new RouteException( 'woocommerce_rest_checkout_invalid_payment_method', __( 'Invalid payment method provided.', 'woo-gutenberg-products-block' ), 400 );
+			throw new RouteException(
+				'woocommerce_rest_checkout_invalid_payment_method',
+				sprintf(
+					// Translators: %s list of gateway ids.
+					__( 'Invalid payment method provided. Please provide one of the following: %s', 'woo-gutenberg-products-block' ),
+					'`' . implode( '`, `', wp_list_pluck( $available_gateways, 'id' ) ) . '`'
+				),
+				400
+			);
 		}
 
 		try {
@@ -116,6 +138,7 @@ class Checkout extends AbstractRoute {
 			$order->save();
 
 			$payment_result = $this->get_payment_result( $payment_method_object->process_payment( $order->get_id() ) );
+			$order          = wc_get_order( $order->get_id() );
 
 			if ( 'success' === $payment_result['result'] ) {
 				return $this->get_checkout_success_response_for_order( $order, $request, $payment_result );
@@ -175,7 +198,7 @@ class Checkout extends AbstractRoute {
 	protected function get_checkout_response_for_order( \WC_Order $order, \WP_REST_Request $request, $payment_result = array() ) {
 		// @todo we need to determine the fields we want to return after processing e.g. redirect URLs.
 		return $this->prepare_item_for_response(
-			(object) [
+			[
 				'order'        => $order,
 				'redirect_url' => $order->get_checkout_order_received_url(),
 			],
@@ -184,7 +207,7 @@ class Checkout extends AbstractRoute {
 	}
 
 	/**
-	 * Get checkout response object.
+	 * Get checkout response object when successful.
 	 *
 	 * @param \WC_Order        $order Order object.
 	 * @param \WP_REST_Request $request Request object.
@@ -199,7 +222,7 @@ class Checkout extends AbstractRoute {
 	}
 
 	/**
-	 * Get checkout response object.
+	 * Get checkout response object for failures.
 	 *
 	 * @param \WC_Order        $order Order object.
 	 * @param \WP_REST_Request $request Request object.
@@ -207,7 +230,6 @@ class Checkout extends AbstractRoute {
 	 * @return \WP_REST_Response
 	 */
 	protected function get_checkout_fail_response_for_order( \WC_Order $order, \WP_REST_Request $request, $payment_result = array() ) {
-		// @todo we need to determine the fields we want to return after processing e.g. redirect URLs.
 		$response = $this->get_checkout_response_for_order( $order, $request, $payment_result );
 		$response->set_status( 400 );
 		return $response;

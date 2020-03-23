@@ -24,6 +24,7 @@ class Library {
 		add_action( 'init', array( __CLASS__, 'maybe_create_cronjobs' ) );
 		add_filter( 'wc_order_statuses', array( __CLASS__, 'register_draft_order_status' ) );
 		add_filter( 'woocommerce_register_shop_order_post_statuses', array( __CLASS__, 'register_draft_order_post_status' ) );
+		add_filter( 'woocommerce_valid_order_statuses_for_payment', array( __CLASS__, 'append_draft_order_post_status' ) );
 		add_action( 'woocommerce_cleanup_draft_orders', array( __CLASS__, 'delete_expired_draft_orders' ) );
 	}
 
@@ -161,6 +162,17 @@ class Library {
 			/* translators: %s: number of orders */
 			'label_count'               => _n_noop( 'Drafts <span class="count">(%s)</span>', 'Drafts <span class="count">(%s)</span>', 'woo-gutenberg-products-block' ),
 		];
+		return $statuses;
+	}
+
+	/**
+	 * Append draft status to a list of statuses.
+	 *
+	 * @param array $statuses Array of statuses.
+	 * @return array
+	 */
+	public static function append_draft_order_post_status( $statuses ) {
+		$statuses[] = 'checkout-draft';
 		return $statuses;
 	}
 
