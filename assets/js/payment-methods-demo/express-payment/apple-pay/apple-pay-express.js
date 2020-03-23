@@ -324,10 +324,10 @@ const ApplePayExpressComponent = ( {
 
 	return canMakePayment && paymentRequest ? (
 		<PaymentRequestButtonElement
-			paymentRequest={ paymentRequest }
 			onClick={ onButtonClick }
 			options={ {
 				style: paymentRequestButtonStyle,
+				paymentRequest,
 			} }
 		/>
 	) : null;
