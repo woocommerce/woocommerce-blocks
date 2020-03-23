@@ -18,7 +18,7 @@ services:
     depends_on:
       - db
     build:
-      context: ./bin/docker/wordpress-unit-tests
+      context: ./tests/bin
     ports:
       - 8085:80
     restart: on-failure
