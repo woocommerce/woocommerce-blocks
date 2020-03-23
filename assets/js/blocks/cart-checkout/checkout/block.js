@@ -23,7 +23,6 @@ import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-mone
 import {
 	CheckoutProvider,
 	useValidationContext,
-	ValidationContextProvider,
 	useCheckoutContext,
 } from '@woocommerce/base-context';
 import {
@@ -49,11 +48,9 @@ import './style.scss';
 import '../../../payment-methods-demo';
 
 const Block = ( { isEditor = false, ...props } ) => (
-	<ValidationContextProvider>
-		<CheckoutProvider isEditor={ isEditor }>
-			<Checkout { ...props } />
-		</CheckoutProvider>
-	</ValidationContextProvider>
+	<CheckoutProvider isEditor={ isEditor }>
+		<Checkout { ...props } />
+	</CheckoutProvider>
 );
 
 const Checkout = ( {
