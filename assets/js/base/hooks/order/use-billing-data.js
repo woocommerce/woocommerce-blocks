@@ -1,3 +1,5 @@
+/** @typedef { import('@woocommerce/type-defs/hooks').BillingData } BillingData */
+
 /**
  * External dependencies
  */
@@ -6,6 +8,7 @@ import { useCallback } from '@wordpress/element';
 /**
  * Exposes billing data api interface from the payment method data context.
  *
+ * @return {BillingData} object containing billing data.
  */
 export const useBillingData = () => {
 	const {

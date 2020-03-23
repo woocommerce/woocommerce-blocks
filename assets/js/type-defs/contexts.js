@@ -1,7 +1,7 @@
 /**
  * @typedef {import('./cart').CartShippingOption} CartShippingOption
  * @typedef {import('./cart').CartShippingAddress} CartShippingAddress
- * @typedef {import('./cart').CartBillingAddress} CartBillingAddress
+ * @typedef {import('./cart').CartBillingData} CartBillingData
  * @typedef {import('./checkout').CheckoutDispatchActions} CheckoutDispatchActions
  */
 
@@ -99,8 +99,8 @@
  * @property {function()} processing
  * @property {function()} completed
  * @property {function(string)} error
- * @property {function(string, CartBillingAddress, Object)} failed
- * @property {function(CartBillingAddress, Object)} success
+ * @property {function(string, CartBillingData, Object)} failed
+ * @property {function(CartBillingData, Object)} success
  */
 
 /**
@@ -199,7 +199,7 @@
  * @property {boolean}                 isEditor           Indicates whether in
  *                                                        the editor context
  *                                                        (true) or not (false).
- * @property {CartBillingAddress}      billingData        An object containing
+ * @property {CartBillingData}      billingData           An object containing
  *                                                        all billing info like
  *                                                        address, email and tokens.
  */

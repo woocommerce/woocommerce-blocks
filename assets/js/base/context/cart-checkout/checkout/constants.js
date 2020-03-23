@@ -5,7 +5,7 @@ import { getSetting } from '@woocommerce/settings';
 
 /**
  * @type {import("@woocommerce/type-defs/checkout").CheckoutStatusConstants}
- * @typedef {import('@woocommerce/type-defs/cart').CartBillingAddress} CartBillingAddress
+ * @typedef {import('@woocommerce/type-defs/cart').CartBillingData} CartBillingData
  *
  */
 export const STATUS = {
@@ -16,7 +16,7 @@ export const STATUS = {
 	COMPLETE: 'complete',
 };
 /**
- * @type {CartBillingAddress}
+ * @type {CartBillingData}
  */
 const HYDRATED_BILLING_DATA = getSetting( 'billingData' );
 
