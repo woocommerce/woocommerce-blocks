@@ -236,7 +236,7 @@
  *                                                               error to false.
  * @property {function()}               showAllValidationErrors  Sets the hidden prop of all
  *                                                               errors to false.
- * @property {function():boolean}       areThereValidationErrors Returns true if there is at least
+ * @property {function():boolean}       hasValidationErrors      Returns true if there is at least
  *                                                               one error.
  */
 

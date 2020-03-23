@@ -143,7 +143,7 @@ export const ValidationContextProvider = ( { children } ) => {
 	 *
 	 * @return {boolean} Whether there is at least one error.
 	 */
-	const areThereValidationErrors = () => {
+	const hasValidationErrors = () => {
 		return Object.keys( validationErrors ).length > 0;
 	};
 
@@ -168,7 +168,7 @@ export const ValidationContextProvider = ( { children } ) => {
 		hideValidationError,
 		showValidationError,
 		showAllValidationErrors,
-		areThereValidationErrors,
+		hasValidationErrors,
 	};
 	return (
 		<ValidationContext.Provider value={ context }>

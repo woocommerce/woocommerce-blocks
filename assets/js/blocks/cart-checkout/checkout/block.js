@@ -63,12 +63,12 @@ const Block = ( {
 		attributes.useShippingAsBilling
 	);
 	const {
-		areThereValidationErrors,
+		hasValidationErrors,
 		showAllValidationErrors,
 	} = useValidationContext();
 
 	const validateSubmit = () => {
-		if ( areThereValidationErrors() ) {
+		if ( hasValidationErrors() ) {
 			showAllValidationErrors();
 			scrollToTop( { focusableSelector: 'input:invalid' } );
 			return false;

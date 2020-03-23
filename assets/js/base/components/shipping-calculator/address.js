@@ -21,13 +21,13 @@ const ShippingCalculatorAddress = ( {
 } ) => {
 	const [ address, setAddress ] = useState( initialAddress );
 	const {
-		areThereValidationErrors,
+		hasValidationErrors,
 		showAllValidationErrors,
 	} = useValidationContext();
 
 	const validateSubmit = () => {
 		showAllValidationErrors();
-		if ( areThereValidationErrors() ) {
+		if ( hasValidationErrors() ) {
 			return false;
 		}
 		return true;
