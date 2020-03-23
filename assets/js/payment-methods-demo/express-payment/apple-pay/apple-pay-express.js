@@ -334,9 +334,9 @@ const ApplePayExpressComponent = ( {
 };
 
 export const stripePromise = async () => {
-	let stripe;
+	let stripe = Promise.resolve( null );
 	try {
-		stripe = await loadStripe( getApiKey() );
+		stripe = loadStripe( getApiKey() );
 	} catch ( error ) {
 		// eslint-disable-next-line no-console
 		console.error( error );
