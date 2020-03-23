@@ -25,12 +25,12 @@ import {
  * External dependencies
  */
 import { useRef, useState, useEffect } from '@wordpress/element';
+import { loadStripe } from '@stripe/stripe-js';
 import {
-	StripeProvider,
-	injectStripe,
 	Elements,
 	PaymentRequestButtonElement,
-} from 'react-stripe-elements';
+	useStripe,
+} from '@stripe/react-stripe-js';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -69,13 +69,13 @@ const ApplePayExpressComponent = ( {
 	onSubmit,
 	activePaymentMethod,
 	setActivePaymentMethod,
-	stripe,
 } ) => {
 	/**
 	 * @type {[ StripePaymentRequest|null, function( StripePaymentRequest ):StripePaymentRequest|null]}
 	 */
 	// @ts-ignore
 	const [ paymentRequest, setPaymentRequest ] = useState( null );
+	const stripe = useStripe();
 	const [ canMakePayment, setCanMakePayment ] = useState( false );
 	const eventHandlers = useRef( DEFAULT_STRIPE_EVENT_HANDLERS );
 	const currentBilling = useRef( billing );
@@ -326,12 +326,14 @@ const ApplePayExpressComponent = ( {
 		<PaymentRequestButtonElement
 			paymentRequest={ paymentRequest }
 			onClick={ onButtonClick }
-			style={ paymentRequestButtonStyle }
+			options={ {
+				style: paymentRequestButtonStyle,
+			} }
 		/>
 	) : null;
 };
 
-const StripeAppleExpressComponent = injectStripe( ApplePayExpressComponent );
+export const stripePromise = loadStripe( getApiKey() );
 
 /**
  * ApplePayExpress with stripe provider
@@ -341,11 +343,9 @@ const StripeAppleExpressComponent = injectStripe( ApplePayExpressComponent );
 export const ApplePayExpress = ( props ) => {
 	const { locale } = getStripeServerData().button;
 	return (
-		<StripeProvider apiKey={ getApiKey() }>
-			<Elements locale={ locale }>
-				<StripeAppleExpressComponent { ...props } />
-			</Elements>
-		</StripeProvider>
+		<Elements stripe={ stripePromise } locale={ locale }>
+			<ApplePayExpressComponent { ...props } />
+		</Elements>
 	);
 };
 

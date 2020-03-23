@@ -145,6 +145,8 @@
 		"npm": "6.13.7"
 	},
 	"dependencies": {
+		"@stripe/react-stripe-js": "^1.1.0",
+		"@stripe/stripe-js": "^1.2.0",
 		"@woocommerce/components": "4.0.0",
 		"@wordpress/notices": "2.0.0",
 		"classnames": "2.2.6",
@@ -153,7 +155,6 @@
 		"dinero.js": "1.8.1",
 		"downshift": "4.1.0",
 		"react-number-format": "4.4.1",
-		"react-stripe-elements": "^6.1.0",
 		"trim-html": "0.1.9",
 		"use-debounce": "3.4.0",
 		"wordpress-components": "npm:@wordpress/components@8.5.0",
