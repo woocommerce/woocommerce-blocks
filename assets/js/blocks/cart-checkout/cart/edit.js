@@ -87,12 +87,11 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 					) }
 					checked={ isShippingCalculatorEnabled }
 					onChange={ () => {
-						const newEnabled = ! isShippingCalculatorEnabled;
 						recordEditorEvent( 'cart_shipping_calculator_toggled', {
-							enabled: newEnabled,
+							enabled: ! isShippingCalculatorEnabled,
 						} );
 						setAttributes( {
-							isShippingCalculatorEnabled: newEnabled,
+							isShippingCalculatorEnabled: ! isShippingCalculatorEnabled,
 						} );
 					} }
 				/>
