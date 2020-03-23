@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { getSetting } from '@woocommerce/settings';
+
+/**
  * @type {import("@woocommerce/type-defs/checkout").CheckoutStatusConstants}
  * @typedef {import('@woocommerce/type-defs/cart').CartBillingAddress} CartBillingAddress
  *
@@ -10,23 +15,10 @@ export const STATUS = {
 	PROCESSING: 'processing',
 	COMPLETE: 'complete',
 };
-
 /**
  * @type {CartBillingAddress}
  */
-const DEFAULT_BILLING_DATA = {
-	first_name: '',
-	last_name: '',
-	company: '',
-	email: '',
-	phone: '',
-	country: '',
-	address_1: '',
-	address_2: '',
-	city: '',
-	state: '',
-	postcode: '',
-};
+const HYDRATED_BILLING_DATA = getSetting( 'billingData' );
 
 export const DEFAULT_STATE = {
 	redirectUrl: '',
@@ -36,7 +28,7 @@ export const DEFAULT_STATE = {
 	nextStatus: STATUS.IDLE,
 	hasError: false,
 	calculatingCount: 0,
-	billingData: DEFAULT_BILLING_DATA,
+	billingData: HYDRATED_BILLING_DATA,
 };
 
 export const TYPES = {

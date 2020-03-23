@@ -139,7 +139,7 @@ const Checkout = ( {
 		if ( shippingAsBilling ) {
 			setBillingAddress( shippingAddress );
 		}
-	}, [ shippingAsBilling ] );
+	}, [ shippingAsBilling, setBillingAddress ] );
 	return (
 			<SidebarLayout className="wc-block-checkout">
 				<Main>
