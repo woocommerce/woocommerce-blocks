@@ -8,7 +8,7 @@ function isTracksAvailable() {
 }
 
 export const recordEditorEvent = function( event, props ) {
-	if ( ! isTracksAvailable ) {
+	if ( ! isTracksAvailable() ) {
 		return;
 	}
 
