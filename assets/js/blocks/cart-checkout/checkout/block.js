@@ -154,12 +154,12 @@ const Block = ( {
 								) }
 								value={ contactFields.email }
 								autoComplete="email"
-								onChange={ ( newValue ) => {
+								onChange={ ( newValue ) =>
 									setContactFields( {
 										...contactFields,
 										email: newValue,
-									} );
-								} }
+									} )
+								}
 								required={ true }
 							/>
 							<CheckboxControl
