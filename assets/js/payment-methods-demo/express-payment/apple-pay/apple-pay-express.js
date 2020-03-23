@@ -333,7 +333,16 @@ const ApplePayExpressComponent = ( {
 	) : null;
 };
 
-export const stripePromise = loadStripe( getApiKey() );
+export const stripePromise = async () => {
+	let stripe;
+	try {
+		stripe = await loadStripe( getApiKey() );
+	} catch ( error ) {
+		// eslint-disable-next-line no-console
+		console.error( error );
+	}
+	return stripe;
+};
 
 /**
  * ApplePayExpress with stripe provider
