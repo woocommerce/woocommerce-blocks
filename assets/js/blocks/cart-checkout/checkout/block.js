@@ -133,7 +133,7 @@ const Checkout = ( {
 				setShippingAddress( address );
 			}
 		},
-		[ setShippingAddress, setBillingAddress ]
+		[ setShippingAddress, setBillingAddress, shippingAsBilling ]
 	);
 	useEffect( () => {
 		if ( shippingAsBilling ) {
