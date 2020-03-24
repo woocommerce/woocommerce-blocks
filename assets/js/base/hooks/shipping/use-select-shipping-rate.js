@@ -2,9 +2,10 @@
  * External dependencies
  */
 import { useDispatch } from '@wordpress/data';
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
-import { useThrowError } from '@woocommerce/base-hooks';
+import { useThrowError, usePrevious } from '@woocommerce/base-hooks';
+import isShallowEqual from '@wordpress/is-shallow-equal';
 
 /**
  * This is a custom hook for loading the selected shipping rate from the cart store and actions for selecting a rate.
@@ -19,7 +20,7 @@ See also: https://github.com/woocommerce/woocommerce-gutenberg-products-block/tr
  */
 export const useSelectShippingRate = ( shippingRates ) => {
 	const throwError = useThrowError();
-	const initiallySelectedRates = shippingRates
+	const derivedSelectedRates = shippingRates
 		.map(
 			// the API responds with those keys.
 			/* eslint-disable camelcase */
@@ -35,9 +36,15 @@ export const useSelectShippingRate = ( shippingRates ) => {
 			return obj;
 		}, {} );
 
+	const previousDerivedSelectedRates = usePrevious(derivedSelectedRates);
 	const [ selectedShippingRates, setSelectedShipping ] = useState(
-		initiallySelectedRates
-	);
+		derivedSelectedRates
+		);
+	useEffect(() => {
+		if (!isShallowEqual(previousDerivedSelectedRates, derivedSelectedRates)) {
+			setSelectedShipping(derivedSelectedRates)
+		}
+	}, [previousDerivedSelectedRates, derivedSelectedRates])
 	const { selectShippingRate } = useDispatch( storeKey );
 	const setRate = ( newShippingRate, packageId ) => {
 		setSelectedShipping( {
