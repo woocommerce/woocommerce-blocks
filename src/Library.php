@@ -228,8 +228,15 @@ class Library {
 			return;
 		}
 
+		$payment_method_object = $available_gateways[ $context->payment_method ];
+		$payment_method_object->validate_fields();
+
+		if ( 0 !== wc_notice_count( 'error' ) ) {
+			return;
+		}
+
 		// Process Payment.
-		$gateway_result = $available_gateways[ $context->payment_method ]->process_payment( $context->order->get_id() );
+		$gateway_result = $payment_method_object->process_payment( $context->order->get_id() );
 
 		// Restore $_POST data.
 		$_POST = $post_data;

@@ -89,13 +89,7 @@ class Checkout extends AbstractRoute {
 	protected function get_route_post_response( \WP_REST_Request $request ) {
 		$order = $this->get_request_order_object( $request );
 
-		/**
-		 * At this stage some logic is called that may not work or be needed in API context. @todo
-		 *  - gateway->validate_fields which won't work in this context
-		 *  - process_customer Creates accounts, updates customer data to match submitted order details such as addresses
-		 *  - order is created but we already have one
-		 *  - hooks such as woocommerce_checkout_no_payment_needed_redirect and woocommerce_payment_successful_result
-		 */
+		$this->update_order_before_payment( $order, $request );
 
 		if ( ! $order->needs_payment() ) {
 			$payment_result = $this->process_without_payment( $order, $request );
@@ -150,14 +144,9 @@ class Checkout extends AbstractRoute {
 	 * @param \WP_REST_Request $request Request object.
 	 * @return PaymentResult
 	 */
-	protected function process_payment( $order, $request ) {
+	protected function process_payment( \WC_Order $order, \WP_REST_Request $request ) {
 		$context = new PaymentContext();
 		$result  = new PaymentResult();
-
-		// Before sending the order to gateways for processing, update the status to pending payment and set the correct gateway.
-		$order->set_payment_method( $this->get_request_payment_method( $request ) );
-		$order->set_status( 'pending' );
-		$order->save();
 
 		$context->set_order( $order );
 		$context->set_payment_method( $this->get_request_payment_method_id( $request ) );
@@ -188,13 +177,60 @@ class Checkout extends AbstractRoute {
 	}
 
 	/**
+	 * Updates the order object before processing payment.
+	 *
+	 * @param \WC_Order        $order Order object.
+	 * @param \WP_REST_Request $request Request object.
+	 */
+	protected function update_order_before_payment( \WC_Order $order, \WP_REST_Request $request ) {
+		$this->update_customer_data_from_order( $order );
+
+		$order->set_payment_method( $this->get_request_payment_method( $request ) );
+		$order->set_status( 'pending' );
+		$order->save();
+	}
+
+	/**
+	 * Copies order data to customer data, so values persist for future checkouts.
+	 *
+	 * @param \WC_Order $order Order object.
+	 */
+	protected function update_customer_data_from_order( \WC_Order $order ) {
+		if ( $order->get_customer_id() ) {
+			$customer = new \WC_Customer( $order->get_customer_id() );
+			$customer->set_props(
+				[
+					'billing_first_name' => $order->get_billing_first_name(),
+					'billing_last_name'  => $order->get_billing_last_name(),
+					'billing_company'    => $order->get_billing_company(),
+					'billing_address_1'  => $order->get_billing_address_1(),
+					'billing_address_2'  => $order->get_billing_address_2(),
+					'billing_city'       => $order->get_billing_city(),
+					'billing_state'      => $order->get_billing_state(),
+					'billing_postcode'   => $order->get_billing_postcode(),
+					'billing_country'    => $order->get_billing_country(),
+					'billing_email'      => $order->get_billing_email(),
+					'billing_phone'      => $order->get_billing_phone(),
+					'shipping_address_1' => $order->get_shipping_address_1(),
+					'shipping_address_2' => $order->get_shipping_address_2(),
+					'shipping_city'      => $order->get_shipping_city(),
+					'shipping_state'     => $order->get_shipping_state(),
+					'shipping_postcode'  => $order->get_shipping_postcode(),
+					'shipping_country'   => $order->get_shipping_country(),
+				]
+			);
+			$customer->save();
+		};
+	}
+
+	/**
 	 * Gets the order object for the request, or throws an exception if invalid.
 	 *
 	 * @throws RouteException On error.
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WC_Order
 	 */
-	protected function get_request_order_object( $request ) {
+	protected function get_request_order_object( \WP_REST_Request $request ) {
 		$order_id = absint( $request['order_id'] );
 
 		if ( ! $order_id ) {
@@ -234,7 +270,7 @@ class Checkout extends AbstractRoute {
 	 * @param \WP_REST_Request $request Request object.
 	 * @return string
 	 */
-	protected function get_request_payment_method_id( $request ) {
+	protected function get_request_payment_method_id( \WP_REST_Request $request ) {
 		$payment_method = wc_clean( wp_unslash( $request['payment_method'] ) );
 		$valid_methods  = WC()->payment_gateways->get_payment_gateway_ids();
 
@@ -260,7 +296,7 @@ class Checkout extends AbstractRoute {
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WC_Payment_Gateway
 	 */
-	protected function get_request_payment_method( $request ) {
+	protected function get_request_payment_method( \WP_REST_Request $request ) {
 		$payment_method        = $this->get_request_payment_method_id( $request );
 		$gateways              = WC()->payment_gateways->payment_gateways();
 		$payment_method_object = isset( $gateways[ $payment_method ] ) ? $gateways[ $payment_method ] : false;
@@ -283,7 +319,7 @@ class Checkout extends AbstractRoute {
 	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	protected function get_request_payment_data( $request ) {
+	protected function get_request_payment_data( \WP_REST_Request $request ) {
 		$payment_data = [];
 
 		if ( ! empty( $request['payment_data'] ) ) {
