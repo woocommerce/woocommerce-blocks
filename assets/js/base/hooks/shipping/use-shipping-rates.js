@@ -3,7 +3,6 @@
  */
 import { useSelect } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
-import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Internal dependencies
@@ -30,15 +29,9 @@ export const useShippingRates = () => {
 		( select ) => select( storeKey ).areShippingRatesLoading(),
 		[]
 	);
-	const decodedShippingAddress = {};
-	Object.keys( shippingAddress ).forEach( ( key ) => {
-		decodedShippingAddress[ key ] = decodeEntities(
-			shippingAddress[ key ]
-		);
-	} );
 	return {
 		shippingRates,
-		shippingAddress: decodedShippingAddress,
+		shippingAddress,
 		setShippingAddress,
 		shippingRatesLoading,
 		shippingRatesErrors: cartErrors,
