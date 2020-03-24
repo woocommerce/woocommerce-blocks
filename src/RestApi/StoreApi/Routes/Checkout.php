@@ -10,6 +10,8 @@ namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Routes;
 defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\CartController;
+use Automattic\WooCommerce\Blocks\Payments\PaymentResult;
+use Automattic\WooCommerce\Blocks\Payments\PaymentContext;
 
 /**
  * Checkout class.
@@ -43,12 +45,7 @@ class Checkout extends AbstractRoute {
 			[
 				'methods'  => \WP_REST_Server::CREATABLE,
 				'callback' => [ $this, 'get_response' ],
-				// @todo Determine the args we want to accept here.
 				'args'     => [
-					'payment_method' => [
-						'description' => __( 'The ID of the payment method being used to process the payment.', 'woo-gutenberg-products-block' ),
-						'type'        => 'string',
-					],
 					'order_id'       => [
 						'description' => __( 'The order ID being processed.', 'woo-gutenberg-products-block' ),
 						'type'        => 'number',
@@ -57,6 +54,25 @@ class Checkout extends AbstractRoute {
 						'description' => __( 'The order key; used to validate the order is valid.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
 					],
+					'payment_method' => [
+						'description' => __( 'The ID of the payment method being used to process the payment.', 'woo-gutenberg-products-block' ),
+						'type'        => 'string',
+					],
+					'payment_data'   => [
+						'description' => __( 'Data needed to take payment via the chosen payment method. This is passed through to the gateway when processing the payment for the order.', 'woo-gutenberg-products-block' ),
+						'type'        => 'array',
+						'items'       => [
+							'type'       => 'object',
+							'properties' => [
+								'key'   => [
+									'type' => 'string',
+								],
+								'value' => [
+									'type' => 'string',
+								],
+							],
+						],
+					],
 				],
 			],
 			'schema' => [ $this->schema, 'get_public_item_schema' ],
@@ -64,13 +80,121 @@ class Checkout extends AbstractRoute {
 	}
 
 	/**
-	 * Convert the cart into a new draft order, or update an existing draft order, and return an updated cart response.
+	 * Process a given order and generate a response for the endpoint.
 	 *
 	 * @throws RouteException On error.
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response
 	 */
 	protected function get_route_post_response( \WP_REST_Request $request ) {
+		$order = $this->get_request_order_object( $request );
+
+		/**
+		 * At this stage some logic is called that may not work or be needed in API context. @todo
+		 *  - gateway->validate_fields which won't work in this context
+		 *  - process_customer Creates accounts, updates customer data to match submitted order details such as addresses
+		 *  - order is created but we already have one
+		 *  - hooks such as woocommerce_checkout_no_payment_needed_redirect and woocommerce_payment_successful_result
+		 */
+
+		if ( ! $order->needs_payment() ) {
+			$payment_result = $this->process_without_payment( $order, $request );
+		} else {
+			$payment_result = $this->process_payment( $order, $request );
+		}
+
+		$response = $this->prepare_item_for_response(
+			[
+				'order_id'       => $order->get_id(),
+				'payment_result' => $payment_result,
+			],
+			$request
+		);
+
+		switch ( $payment_result->status ) {
+			case 'success':
+				$response->set_status( 200 );
+				break;
+			case 'pending':
+				$response->set_status( 202 );
+				break;
+			case 'failure':
+				$response->set_status( 400 );
+				break;
+			case 'error':
+				$response->set_status( 500 );
+				break;
+		}
+
+		return $response;
+	}
+
+	/**
+	 * For orders which do not require payment, just update status.
+	 *
+	 * @param \WC_Order        $order Order object.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return PaymentResult
+	 */
+	protected function process_without_payment( \WC_Order $order, \WP_REST_Request $request ) {
+		$order->payment_complete();
+
+		return new PaymentResult( 'success' );
+	}
+
+	/**
+	 * Fires an action hook instructing active payment gateways to process the payment for an order and provide a result.
+	 *
+	 * @throws RouteException On error.
+	 * @param \WC_Order        $order Order object.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return PaymentResult
+	 */
+	protected function process_payment( $order, $request ) {
+		$context = new PaymentContext();
+		$result  = new PaymentResult();
+
+		// Before sending the order to gateways for processing, update the status to pending payment and set the correct gateway.
+		$order->set_payment_method( $this->get_request_payment_method( $request ) );
+		$order->set_status( 'pending' );
+		$order->save();
+
+		$context->set_order( $order );
+		$context->set_payment_method( $this->get_request_payment_method_id( $request ) );
+		$context->set_payment_data( $this->get_request_payment_data( $request ) );
+
+		try {
+			/**
+			 * Process payment with context.
+			 *
+			 * @hook woocommerce_rest_checkout_process_payment_with_context
+			 *
+			 * @throws \Exception If there is an error taking payment, an Exception object can be thrown
+			 *                                     with an error message.
+			 *
+			 * @param PaymentContext $context Holds context for the payment, including order ID and payment method.
+			 * @param PaymentResult  $result Result object for the transaction.
+			 */
+			do_action( 'woocommerce_rest_checkout_process_payment_with_context', $context, $result );
+
+			if ( ! $result instanceof PaymentResult ) {
+				throw new RouteException( 'woocommerce_rest_checkout_invalid_payment_result', __( 'Invalid payment result received from payment method.', 'woo-gutenberg-products-block' ), 500 );
+			}
+
+			return $result;
+		} catch ( \Exception $e ) {
+			throw new RouteException( 'woocommerce_rest_checkout_process_payment_error', $e->getMessage(), 400 );
+		}
+	}
+
+	/**
+	 * Gets the order object for the request, or throws an exception if invalid.
+	 *
+	 * @throws RouteException On error.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WC_Order
+	 */
+	protected function get_request_order_object( $request ) {
 		$order_id = absint( $request['order_id'] );
 
 		if ( ! $order_id ) {
@@ -100,137 +224,74 @@ class Checkout extends AbstractRoute {
 			);
 		}
 
-		if ( ! $order->needs_payment() ) {
-			return $this->process_checkout_without_payment( $order, $request );
-		}
+		return $order;
+	}
 
-		$payment_method_id     = wc_clean( wp_unslash( $request['payment_method'] ) );
-		$available_gateways    = WC()->payment_gateways->get_available_payment_gateways();
-		$payment_method_object = isset( $available_gateways[ $payment_method_id ] ) ? $available_gateways[ $payment_method_id ] : false;
+	/**
+	 * Gets the chosen payment method ID from the request.
+	 *
+	 * @throws RouteException On error.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return string
+	 */
+	protected function get_request_payment_method_id( $request ) {
+		$payment_method = wc_clean( wp_unslash( $request['payment_method'] ) );
+		$valid_methods  = WC()->payment_gateways->get_payment_gateway_ids();
 
-		if ( ! $payment_method_object ) {
+		if ( ! in_array( $payment_method, $valid_methods, true ) ) {
 			throw new RouteException(
 				'woocommerce_rest_checkout_invalid_payment_method',
 				sprintf(
 					// Translators: %s list of gateway ids.
 					__( 'Invalid payment method provided. Please provide one of the following: %s', 'woo-gutenberg-products-block' ),
-					'`' . implode( '`, `', wp_list_pluck( $available_gateways, 'id' ) ) . '`'
+					'`' . implode( '`, `', $valid_methods ) . '`'
 				),
 				400
 			);
 		}
 
-		try {
-			/**
-			 * At this stage some logic is called that may not work or be needed in API context. @todo
-			 *  - gateway->validate_fields which won't work in this context
-			 *  - process_customer Creates accounts, updates customer data to match submitted order details such as addresses
-			 *  - order is created but we already have one
-			 *
-			 * Also @todo there are filters ran by core - which should we apply here? e.g:
-			 *  - woocommerce_checkout_no_payment_needed_redirect
-			 *  - woocommerce_payment_successful_result
-			 */
-
-			// Before sending the order to gateways for processing, update the status to pending payment and set the correct gateway.
-			$order->set_status( 'pending' );
-			$order->set_payment_method( $payment_method_object );
-			$order->save();
-
-			$payment_result = $this->get_payment_result( $order, $payment_method_object->process_payment( $order->get_id() ) );
-			$order          = wc_get_order( $order->get_id() );
-
-			if ( 'success' === $payment_result['result'] ) {
-				return $this->get_checkout_success_response_for_order( $order, $request, $payment_result );
-			}
-
-			// If we reached this point, payment was not successful.
-			return $this->get_checkout_fail_response_for_order( $order, $request, $payment_result );
-		} catch ( Exception $e ) {
-			throw new RouteException( 'woocommerce_rest_checkout_payment_error', $e->getMessage(), 400 );
-		}
+		return $payment_method;
 	}
 
 	/**
-	 * Wrapper for process_payment to give consistent response.
+	 * Gets the chosen payment method from the request.
 	 *
-	 * @param \WC_Order $order Order object.
-	 * @param array     $raw_result Raw result from the gateway process_payment method.
+	 * @throws RouteException On error.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WC_Payment_Gateway
+	 */
+	protected function get_request_payment_method( $request ) {
+		$payment_method        = $this->get_request_payment_method_id( $request );
+		$gateways              = WC()->payment_gateways->payment_gateways();
+		$payment_method_object = isset( $gateways[ $payment_method ] ) ? $gateways[ $payment_method ] : false;
+
+		// The abstract gateway is available method uses the cart global, so instead, check enabled directly.
+		if ( ! $payment_method_object || ! wc_string_to_bool( $payment_method_object->enabled ) ) {
+			throw new RouteException(
+				'woocommerce_rest_checkout_payment_method_disabled',
+				__( 'This payment gateway is not available.', 'woo-gutenberg-products-block' ),
+				400
+			);
+		}
+
+		return $payment_method_object;
+	}
+
+	/**
+	 * Gets and formats payment request data.
+	 *
+	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	protected function get_payment_result( \WC_Order $order, $raw_result = array() ) {
-		return wp_parse_args(
-			$raw_result,
-			[
-				'result'   => 'success',
-				'redirect' => $order->get_checkout_order_received_url(),
-			]
-		);
-	}
+	protected function get_request_payment_data( $request ) {
+		$payment_data = [];
 
-	/**
-	 * For orders which do not require payment, just update status and create a response.
-	 *
-	 * @param \WC_Order        $order Order object.
-	 * @param \WP_REST_Request $request Request object.
-	 * @return \WP_REST_Response
-	 */
-	protected function process_checkout_without_payment( \WC_Order $order, \WP_REST_Request $request ) {
-		$order->payment_complete();
+		if ( ! empty( $request['payment_data'] ) ) {
+			foreach ( $request['payment_data'] as $data ) {
+				$payment_data[ sanitize_key( $data['key'] ) ] = wc_clean( $data['value'] );
+			}
+		}
 
-		return $this->get_checkout_success_response_for_order(
-			$order,
-			$request,
-			[
-				'result'   => 'success',
-				'redirect' => $order->get_checkout_order_received_url(),
-			]
-		);
-	}
-
-	/**
-	 * Get checkout response object.
-	 *
-	 * @param \WC_Order        $order Order object.
-	 * @param \WP_REST_Request $request Request object.
-	 * @param array            $payment_result Result of the payment.
-	 * @return \WP_REST_Response
-	 */
-	protected function get_checkout_response_for_order( \WC_Order $order, \WP_REST_Request $request, $payment_result = array() ) {
-		return $this->prepare_item_for_response(
-			(object) [
-				'order'          => $order,
-				'payment_result' => $payment_result,
-			],
-			$request
-		);
-	}
-
-	/**
-	 * Get checkout response object when successful.
-	 *
-	 * @param \WC_Order        $order Order object.
-	 * @param \WP_REST_Request $request Request object.
-	 * @param array            $payment_result Result of the payment.
-	 * @return \WP_REST_Response
-	 */
-	protected function get_checkout_success_response_for_order( \WC_Order $order, \WP_REST_Request $request, $payment_result = array() ) {
-		$response = $this->get_checkout_response_for_order( $order, $request, $payment_result );
-		$response->set_status( 200 );
-		return $response;
-	}
-
-	/**
-	 * Get checkout response object for failures.
-	 *
-	 * @param \WC_Order        $order Order object.
-	 * @param \WP_REST_Request $request Request object.
-	 * @param array            $payment_result Result of the payment.
-	 * @return \WP_REST_Response
-	 */
-	protected function get_checkout_fail_response_for_order( \WC_Order $order, \WP_REST_Request $request, $payment_result = array() ) {
-		$response = $this->get_checkout_response_for_order( $order, $request, $payment_result );
-		$response->set_status( 400 );
-		return $response;
+		return $payment_data;
 	}
 }
