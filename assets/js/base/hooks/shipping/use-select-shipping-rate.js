@@ -2,10 +2,9 @@
  * External dependencies
  */
 import { useDispatch } from '@wordpress/data';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useMemo } from '@wordpress/element';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
-import { useThrowError, usePrevious } from '@woocommerce/base-hooks';
-import isShallowEqual from '@wordpress/is-shallow-equal';
+import { useThrowError } from '@woocommerce/base-hooks';
 
 /**
  * This is a custom hook for loading the selected shipping rate from the cart store and actions for selecting a rate.
@@ -20,31 +19,37 @@ See also: https://github.com/woocommerce/woocommerce-gutenberg-products-block/tr
  */
 export const useSelectShippingRate = ( shippingRates ) => {
 	const throwError = useThrowError();
-	const derivedSelectedRates = shippingRates
-		.map(
-			// the API responds with those keys.
-			/* eslint-disable camelcase */
-			( p ) => [
-				p.package_id,
-				p.shipping_rates.find( ( rate ) => rate.selected )?.rate_id,
-			]
-			/* eslint-enable */
-		)
-		// A fromEntries ponyfill, creates an object from an array of arrays.
-		.reduce( ( obj, [ key, val ] ) => {
-			obj[ key ] = val;
-			return obj;
-		}, {} );
+	const derivedSelectedRates = useMemo(
+		() =>
+			shippingRates
+				.map(
+					// the API responds with those keys.
+					/* eslint-disable camelcase */
+					( p ) => [
+						p.package_id,
+						p.shipping_rates.find( ( rate ) => rate.selected )
+							?.rate_id,
+					]
+					/* eslint-enable */
+				)
+				// A fromEntries ponyfill, creates an object from an array of arrays.
+				.reduce( ( obj, [ key, val ] ) => {
+					obj[ key ] = val;
+					return obj;
+				}, {} ),
+		[ shippingRates ]
+	);
 
-	const previousDerivedSelectedRates = usePrevious(derivedSelectedRates);
 	const [ selectedShippingRates, setSelectedShipping ] = useState(
 		derivedSelectedRates
-		);
-	useEffect(() => {
-		if (!isShallowEqual(previousDerivedSelectedRates, derivedSelectedRates)) {
-			setSelectedShipping(derivedSelectedRates)
-		}
-	}, [previousDerivedSelectedRates, derivedSelectedRates])
+	);
+
+	// useState initial state is always remembered, so even if that value changes,
+	// useState won't update, we're forcing it to update if the initial value changes,
+	// useMemo helps us not running this function when we don't need to.
+	useEffect( () => {
+		setSelectedShipping( derivedSelectedRates );
+	}, [ derivedSelectedRates ] );
 	const { selectShippingRate } = useDispatch( storeKey );
 	const setRate = ( newShippingRate, packageId ) => {
 		setSelectedShipping( {
