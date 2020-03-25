@@ -24,6 +24,7 @@ import {
 	CheckoutProvider,
 	useValidationContext,
 	useCheckoutContext,
+	useShippingMethodDataContext,
 } from '@woocommerce/base-context';
 import {
 	ExpressCheckoutFormControl,
@@ -31,7 +32,7 @@ import {
 } from '@woocommerce/base-components/payment-methods';
 import { SHIPPING_ENABLED } from '@woocommerce/block-settings';
 import { decodeEntities } from '@wordpress/html-entities';
-import { useShippingRates, useBillingData } from '@woocommerce/base-hooks';
+import { useBillingData } from '@woocommerce/base-hooks';
 import {
 	Sidebar,
 	SidebarLayout,
@@ -43,7 +44,7 @@ import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 /**
  * Internal dependencies
  */
-import CheckoutSidebar from './sidebar.js';
+import CheckoutSidebar from './sidebar/index.js';
 import './style.scss';
 import '../../../payment-methods-demo';
 
@@ -62,15 +63,20 @@ const Checkout = ( {
 	scrollToTop,
 } ) => {
 	const { isEditor } = useCheckoutContext();
-	const [ selectedShippingRate, setSelectedShippingRate ] = useState( {} );
-	const [ contactFields, setContactFields ] = useState( {} );
-	const [ shouldSavePayment, setShouldSavePayment ] = useState( true );
-	const [ shippingAsBilling, setShippingAsBilling ] = useState( true );
-
+	const {
+		shippingRatesLoading,
+		shippingAddress,
+		setShippingAddress,
+	} = useShippingMethodDataContext();
 	const {
 		hasValidationErrors,
 		showAllValidationErrors,
 	} = useValidationContext();
+
+	const [ selectedShippingRate, setSelectedShippingRate ] = useState( {} );
+	const [ contactFields, setContactFields ] = useState( {} );
+	const [ shouldSavePayment, setShouldSavePayment ] = useState( true );
+	const [ shippingAsBilling, setShippingAsBilling ] = useState( true );
 
 	const validateSubmit = () => {
 		if ( hasValidationErrors() ) {
@@ -80,6 +86,7 @@ const Checkout = ( {
 		}
 		return true;
 	};
+
 	const renderShippingRatesControlOption = ( option ) => ( {
 		label: decodeEntities( option.name ),
 		value: option.rate_id,
@@ -108,16 +115,12 @@ const Checkout = ( {
 	};
 
 	const {
-		shippingRatesLoading,
-		shippingAddress,
-		setShippingAddress,
-	} = useShippingRates();
-	const {
 		email,
 		setEmail,
 		billingAddress,
 		setBillingAddress,
 	} = useBillingData();
+
 	const setShippingFields = useCallback(
 		( address ) => {
 			if ( shippingAsBilling ) {

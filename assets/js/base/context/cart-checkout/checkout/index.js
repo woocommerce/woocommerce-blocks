@@ -1,4 +1,17 @@
 /**
+ * External dependencies
+ */
+import {
+	createContext,
+	useContext,
+	useReducer,
+	useRef,
+	useMemo,
+	useEffect,
+} from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
+
+/**
  * Internal dependencies
  */
 import { PaymentMethodDataProvider } from '../payment-methods';
@@ -13,19 +26,7 @@ import {
 	emitEventWithAbort,
 	reducer as emitReducer,
 } from './event-emit';
-
-/**
- * External dependencies
- */
-import {
-	createContext,
-	useContext,
-	useReducer,
-	useRef,
-	useMemo,
-	useEffect,
-} from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
+import CheckoutProcessor from './processor';
 
 /**
  * @typedef {import('@woocommerce/type-defs/checkout').CheckoutDispatchActions} CheckoutDispatchActions
@@ -200,6 +201,7 @@ export const CheckoutProvider = ( {
 			>
 				<ShippingMethodDataProvider>
 					{ children }
+					<CheckoutProcessor />
 				</ShippingMethodDataProvider>
 			</PaymentMethodDataProvider>
 		</CheckoutContext.Provider>
