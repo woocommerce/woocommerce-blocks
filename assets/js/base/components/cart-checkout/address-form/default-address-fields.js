@@ -17,6 +17,7 @@ import { __ } from '@wordpress/i18n';
  * @property {AddressField} city       City name.
  * @property {AddressField} state      State name or code.
  * @property {AddressField} postcode   Postal code.
+ * @property {AddressField} phone      Phone number.
  */
 const AddressFields = {
 	first_name: {
@@ -114,6 +115,14 @@ const AddressFields = {
 		required: true,
 		hidden: false,
 		index: 9,
+	},
+	phone: {
+		label: __( 'Phone', 'woo-gutenberg-products-block' ),
+		optionalLabel: __( 'Phone (optional)', 'woo-gutenberg-products-block' ),
+		autocomplete: 'phone',
+		required: false,
+		hidden: false,
+		index: 10,
 	},
 };
 

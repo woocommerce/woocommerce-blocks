@@ -108,6 +108,11 @@ const Checkout = ( {
 			...defaultAddressFields.address_2,
 			hidden: ! attributes.showAddress2Field,
 		},
+		phone: {
+			...defaultAddressFields.phone,
+			hidden: ! attributes.showPhoneField,
+			required: attributes.requirePhoneField,
+		},
 	};
 
 	const setShippingFields = useCallback(
