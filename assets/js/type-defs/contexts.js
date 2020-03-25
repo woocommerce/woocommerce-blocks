@@ -1,7 +1,16 @@
 /**
+ * @typedef {import('./billing').BillingData} BillingData
  * @typedef {import('./cart').CartShippingOption} CartShippingOption
  * @typedef {import('./cart').CartShippingAddress} CartShippingAddress
  * @typedef {import('./checkout').CheckoutDispatchActions} CheckoutDispatchActions
+ */
+
+/**
+ * @typedef {Object} BillingDataContext
+ *
+ * @property {BillingData} billingData    The current billing data, including
+ *                                        address and email.
+ * @property {Function}    setBillingData A function for setting billing data.
  */
 
 /**

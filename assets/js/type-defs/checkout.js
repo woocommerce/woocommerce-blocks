@@ -1,5 +1,3 @@
-/* @typedef {import('./cart').CartBillingData} CartBillingData */
-
 /**
  * @typedef {Object} CheckoutDispatchActions
  *
