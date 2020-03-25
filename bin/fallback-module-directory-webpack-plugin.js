@@ -4,6 +4,7 @@
  * External dependencies
  */
 const fs = require( 'fs' );
+const path = require( 'path' );
 
 // Note, this has some inspiration from the AliasPlugin and its implementation
 // @see https://github.com/webpack/enhanced-resolve/blob/v4.1.0/lib/AliasPlugin.js
@@ -48,23 +49,22 @@ module.exports = class FallbackModuleDirectoryWebpackPlugin {
 		return alias;
 	}
 
-	getPathWithExtension( path ) {
-		const pathParts = path.split( '.' );
-		const pathHasExtension =
-			pathParts.length > 1 &&
-			! pathParts[ pathParts.length - 1 ].includes( '/' );
-		return pathHasExtension ? path : path + '.js';
+	getPathWithExtension( pathString ) {
+		if ( ! Boolean( path.extname( pathString ) ) ) {
+			return pathString + '.js';
+		}
+		return pathString;
 	}
 
-	applyFallback( path ) {
+	applyFallback( pathString ) {
 		if (
-			path.includes( this.search ) &&
-			! fs.existsSync( path ) &&
-			! fs.existsSync( this.getPathWithExtension( path ) )
+			pathString.includes( this.search ) &&
+			! fs.existsSync( pathString ) &&
+			! fs.existsSync( this.getPathWithExtension( pathString ) )
 		) {
-			return path.replace( this.search, this.replacement );
+			return pathString.replace( this.search, this.replacement );
 		}
-		return path;
+		return pathString;
 	}
 
 	doApply( resolver, source, target, alias ) {
