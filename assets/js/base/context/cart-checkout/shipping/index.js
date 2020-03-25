@@ -109,7 +109,10 @@ export const ShippingDataProvider = ( { children } ) => {
 	// will be setup similar to `useShippingRates` (or maybe in the same hook?)
 	const [ selectedRates, setSelectedRates ] = useState( [] );
 	const setShippingAddress = useCallback( ( address ) => {
-		setAddressState( ( prevAddress ) => ( { ...prevAddress, address } ) );
+		setAddressState( ( prevAddress ) => ( {
+			...prevAddress,
+			...address,
+		} ) );
 	}, [] );
 	const onShippingRateSuccess = emitterSubscribers( subscriber ).onSuccess;
 	const onShippingRateFail = emitterSubscribers( subscriber ).onFail;

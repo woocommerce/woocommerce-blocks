@@ -1,7 +1,12 @@
 /**
  * External dependencies
  */
-import { createContext, useContext, useState } from '@wordpress/element';
+import {
+	createContext,
+	useContext,
+	useState,
+	useCallback,
+} from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -22,7 +27,17 @@ export const useBillingDataContext = () => {
 };
 
 export const BillingDataProvider = ( { children } ) => {
-	const { billingData, setBillingData } = useState( DEFAULT_STATE );
+	const [ billingData, setBillingDataState ] = useState( DEFAULT_STATE );
+
+	const setBillingData = useCallback(
+		( newData ) => {
+			setBillingDataState( ( prevState ) => ( {
+				...prevState,
+				...newData,
+			} ) );
+		},
+		[ setBillingDataState ]
+	);
 
 	/**
 	 * @type {BillingDataContext}

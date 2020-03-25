@@ -16,7 +16,7 @@ const HYDRATED_BILLING_DATA = getSetting( 'billingData' );
 /**
  * @type {BillingData}
  */
-export const DEFAULT_STATE = {
+export const DEFAULT_BILLING_DATA = {
 	first_name: '',
 	last_name: '',
 	company: '',
@@ -28,6 +28,13 @@ export const DEFAULT_STATE = {
 	country: '',
 	email: '',
 	phone: '',
+};
+
+/**
+ * @type {BillingData}
+ */
+export const DEFAULT_STATE = {
+	...DEFAULT_BILLING_DATA,
 	...HYDRATED_BILLING_DATA,
 };
 
@@ -35,6 +42,6 @@ export const DEFAULT_STATE = {
  * @type {BillingDataContext}
  */
 export const DEFAULT_BILLING_CONTEXT_DATA = {
-	billingData: DEFAULT_STATE,
+	billingData: DEFAULT_BILLING_DATA,
 	setBillingData: () => null,
 };

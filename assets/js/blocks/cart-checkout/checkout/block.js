@@ -24,7 +24,8 @@ import {
 	CheckoutProvider,
 	useValidationContext,
 	useCheckoutContext,
-	useShippingMethodDataContext,
+	useShippingDataContext,
+	useBillingDataContext,
 } from '@woocommerce/base-context';
 import {
 	ExpressCheckoutFormControl,
@@ -32,7 +33,6 @@ import {
 } from '@woocommerce/base-components/payment-methods';
 import { SHIPPING_ENABLED } from '@woocommerce/block-settings';
 import { decodeEntities } from '@wordpress/html-entities';
-import { useBillingData } from '@woocommerce/base-hooks';
 import {
 	Sidebar,
 	SidebarLayout,
@@ -67,7 +67,8 @@ const Checkout = ( {
 		shippingRatesLoading,
 		shippingAddress,
 		setShippingAddress,
-	} = useShippingMethodDataContext();
+	} = useShippingDataContext();
+	const { billingData, setBillingData } = useBillingDataContext();
 	const {
 		hasValidationErrors,
 		showAllValidationErrors,
@@ -114,29 +115,22 @@ const Checkout = ( {
 		},
 	};
 
-	const {
-		email,
-		setEmail,
-		billingAddress,
-		setBillingAddress,
-	} = useBillingData();
-
 	const setShippingFields = useCallback(
 		( address ) => {
 			if ( shippingAsBilling ) {
 				setShippingAddress( address );
-				setBillingAddress( address );
+				setBillingData( address );
 			} else {
 				setShippingAddress( address );
 			}
 		},
-		[ setShippingAddress, setBillingAddress, shippingAsBilling ]
+		[ setShippingAddress, setBillingData, shippingAsBilling ]
 	);
 	useEffect( () => {
 		if ( shippingAsBilling ) {
-			setBillingAddress( shippingAddress );
+			setBillingData( shippingAddress );
 		}
-	}, [ shippingAsBilling, setBillingAddress ] );
+	}, [ shippingAsBilling, setBillingData ] );
 	return (
 		<SidebarLayout className="wc-block-checkout">
 			<Main>
@@ -174,11 +168,35 @@ const Checkout = ( {
 								'Email address',
 								'woo-gutenberg-products-block'
 							) }
-							value={ email }
+							value={ billingData.email }
 							autoComplete="email"
-							onChange={ ( newValue ) => setEmail( newValue ) }
+							onChange={ ( newValue ) =>
+								setBillingData( { email: newValue } )
+							}
 							required={ true }
 						/>
+						{ attributes.showPhoneField && (
+							<ValidatedTextInput
+								type="tel"
+								label={
+									attributes.requirePhoneField
+										? __(
+												'Phone',
+												'woo-gutenberg-products-block'
+										  )
+										: __(
+												'Phone (optional)',
+												'woo-gutenberg-products-block'
+										  )
+								}
+								value={ billingData.phone }
+								autoComplete="tel"
+								onChange={ ( newValue ) =>
+									setBillingData( { phone: newValue } )
+								}
+								required={ attributes.requirePhoneField }
+							/>
+						) }
 						<CheckboxControl
 							className="wc-block-checkout__keep-updated"
 							label={ __(
@@ -213,31 +231,6 @@ const Checkout = ( {
 								fields={ Object.keys( addressFields ) }
 								fieldConfig={ addressFields }
 							/>
-							{ attributes.showPhoneField && (
-								<ValidatedTextInput
-									type="tel"
-									label={
-										attributes.requirePhoneField
-											? __(
-													'Phone',
-													'woo-gutenberg-products-block'
-											  )
-											: __(
-													'Phone (optional)',
-													'woo-gutenberg-products-block'
-											  )
-									}
-									value={ shippingAddress.phone }
-									autoComplete="tel"
-									onChange={ ( newValue ) =>
-										setShippingFields( {
-											...shippingAddress,
-											phone: newValue,
-										} )
-									}
-									required={ attributes.requirePhoneField }
-								/>
-							) }
 							<CheckboxControl
 								className="wc-block-checkout__use-address-for-billing"
 								label={ __(
@@ -266,9 +259,9 @@ const Checkout = ( {
 							) }
 						>
 							<AddressForm
-								onChange={ setBillingAddress }
+								onChange={ setBillingData }
 								type="billing"
-								values={ billingAddress }
+								values={ billingData }
 								fields={ Object.keys( addressFields ) }
 								fieldConfig={ addressFields }
 							/>
@@ -297,7 +290,7 @@ const Checkout = ( {
 													address_1:
 														shippingAddress.address_1,
 													address_2:
-														shippingAddress.apartment,
+														shippingAddress.address_2,
 													city: shippingAddress.city,
 													state:
 														shippingAddress.state,

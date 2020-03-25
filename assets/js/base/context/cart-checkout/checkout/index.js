@@ -15,7 +15,8 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { PaymentMethodDataProvider } from '../payment-methods';
-import { ShippingMethodDataProvider } from '../shipping';
+import { ShippingDataProvider } from '../shipping';
+import { BillingDataProvider } from '../billing';
 import { actions } from './actions';
 import { reducer } from './reducer';
 import { DEFAULT_STATE, STATUS } from './constants';
@@ -42,7 +43,6 @@ const CheckoutContext = createContext( {
 	isProcessing: false,
 	hasError: false,
 	redirectUrl: '',
-	billingData: {},
 	onCheckoutCompleteSuccess: () => void null,
 	onCheckoutCompleteError: () => void null,
 	onCheckoutProcessing: () => void null,
@@ -53,7 +53,6 @@ const CheckoutContext = createContext( {
 		clearError: () => void null,
 		incrementCalculating: () => void null,
 		decrementCalculating: () => void null,
-		setBillingData: () => void null,
 	},
 } );
 
@@ -120,8 +119,6 @@ export const CheckoutProvider = ( {
 				void dispatch( actions.incrementCalculating() ),
 			decrementCalculating: () =>
 				void dispatch( actions.decrementCalculating() ),
-			setBillingData: ( data ) =>
-				void dispatch( actions.setBillingData( data ) ),
 		} ),
 		[]
 	);
@@ -180,7 +177,6 @@ export const CheckoutProvider = ( {
 	 */
 	const checkoutData = {
 		submitLabel,
-		billingData: checkoutState.billingData,
 		onSubmit,
 		isComplete: checkoutState.status === STATUS.COMPLETE,
 		isIdle: checkoutState.status === STATUS.IDLE,
@@ -196,14 +192,16 @@ export const CheckoutProvider = ( {
 	};
 	return (
 		<CheckoutContext.Provider value={ checkoutData }>
-			<PaymentMethodDataProvider
-				activePaymentMethod={ initialActivePaymentMethod }
-			>
-				<ShippingMethodDataProvider>
-					{ children }
-					<CheckoutProcessor />
-				</ShippingMethodDataProvider>
-			</PaymentMethodDataProvider>
+			<BillingDataProvider>
+				<PaymentMethodDataProvider
+					activePaymentMethod={ initialActivePaymentMethod }
+				>
+					<ShippingDataProvider>
+						{ children }
+						<CheckoutProcessor />
+					</ShippingDataProvider>
+				</PaymentMethodDataProvider>
+			</BillingDataProvider>
 		</CheckoutContext.Provider>
 	);
 };
