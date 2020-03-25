@@ -48,8 +48,20 @@ module.exports = class FallbackModuleDirectoryWebpackPlugin {
 		return alias;
 	}
 
+	getPathWithExtension( path ) {
+		const pathParts = path.split( '.' );
+		const pathHasExtension =
+			pathParts.length > 1 &&
+			! pathParts[ pathParts.length - 1 ].includes( '/' );
+		return pathHasExtension ? path : path + '.js';
+	}
+
 	applyFallback( path ) {
-		if ( path.includes( this.search ) && ! fs.existsSync( path ) ) {
+		if (
+			path.includes( this.search ) &&
+			! fs.existsSync( path ) &&
+			! fs.existsSync( this.getPathWithExtension( path ) )
+		) {
 			return path.replace( this.search, this.replacement );
 		}
 		return path;
@@ -86,9 +98,7 @@ module.exports = class FallbackModuleDirectoryWebpackPlugin {
 								return resolver.doResolve(
 									target,
 									obj,
-									`aliased with mapping '${
-										item.name
-									}' to '${ newRequestStr }'`,
+									`aliased with mapping '${ item.name }' to '${ newRequestStr }'`,
 									resolveContext,
 									( err, result ) => {
 										if ( err ) return callback( err );
