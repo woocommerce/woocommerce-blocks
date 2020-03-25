@@ -26,7 +26,7 @@ import {
 	emitEventWithAbort,
 	reducer as emitReducer,
 } from './event-emit';
-import CheckoutProcessor from './processor';
+import CheckoutProcessor from './processor/index.js';
 
 /**
  * @typedef {import('@woocommerce/type-defs/checkout').CheckoutDispatchActions} CheckoutDispatchActions
