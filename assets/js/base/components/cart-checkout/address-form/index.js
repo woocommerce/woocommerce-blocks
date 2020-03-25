@@ -164,6 +164,7 @@ const AddressForm = ( {
 
 				return (
 					<ValidatedTextInput
+						type={ field.type || 'text' }
 						key={ field.key }
 						className={ `wc-block-address-form__${ field.key }` }
 						label={

@@ -119,10 +119,11 @@ const AddressFields = {
 	phone: {
 		label: __( 'Phone', 'woo-gutenberg-products-block' ),
 		optionalLabel: __( 'Phone (optional)', 'woo-gutenberg-products-block' ),
-		autocomplete: 'phone',
+		autocomplete: 'tel',
 		required: false,
 		hidden: false,
 		index: 10,
+		type: 'tel',
 	},
 };
 
