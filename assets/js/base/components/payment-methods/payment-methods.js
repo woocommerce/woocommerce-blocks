@@ -51,7 +51,7 @@ const getPaymentMethod = ( id, paymentMethods, isEditor ) => {
  */
 const PaymentMethods = () => {
 	const { isEditor } = useCheckoutContext();
-	const { customerPaymentMethods } = usePaymentMethodDataContext();
+	const { customerPaymentMethods = {} } = usePaymentMethodDataContext();
 	const { isInitialized, paymentMethods } = usePaymentMethods();
 	const currentPaymentMethods = useRef( paymentMethods );
 	const {

@@ -81,7 +81,7 @@ export const PaymentMethodDataProvider = ( {
 	const [ activePaymentMethod, setActive ] = useState(
 		initialActivePaymentMethod
 	);
-	const customerPaymentMethods = getSetting( 'customerPaymentMethods', null );
+	const customerPaymentMethods = getSetting( 'customerPaymentMethods', {} );
 	const [ paymentStatus, dispatch ] = useReducer(
 		reducer,
 		DEFAULT_PAYMENT_DATA
