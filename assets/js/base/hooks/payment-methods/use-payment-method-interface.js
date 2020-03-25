@@ -5,6 +5,7 @@ import {
 	useCheckoutContext,
 	usePaymentMethodDataContext,
 	useShippingDataContext,
+	useBillingDataContext,
 } from '@woocommerce/base-context';
 import { __ } from '@wordpress/i18n';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
@@ -14,12 +15,7 @@ import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 /**
  * Internal dependencies
  */
-import {
-	useStoreOrder,
-	useStoreCartCoupons,
-	useStoreCart,
-	useBillingData,
-} from '..';
+import { useStoreOrder, useStoreCartCoupons, useStoreCart } from '..';
 
 /**
  * @typedef {import('@woocommerce/type-defs/registered-payment-method-props').RegisteredPaymentMethodProps} RegisteredPaymentMethodProps
@@ -115,7 +111,14 @@ export const usePaymentMethodInterface = () => {
 		onShippingRateSelectFail,
 		needsShipping,
 	} = useShippingDataContext();
-	const { billingData, setBillingData } = useBillingData();
+	const {
+		email,
+		setEmail,
+		phone,
+		setPhone,
+		billingAddress,
+		setBillingAddress,
+	} = useBillingDataContext();
 	const { order, isLoading: orderLoading } = useStoreOrder();
 	const { cartTotals } = useStoreCart();
 	const { appliedCoupons } = useStoreCartCoupons();
@@ -163,8 +166,12 @@ export const usePaymentMethodInterface = () => {
 			needsShipping,
 		},
 		billing: {
-			billingData,
-			setBillingData,
+			email,
+			setEmail,
+			phone,
+			setPhone,
+			billingAddress,
+			setBillingAddress,
 			order,
 			orderLoading,
 			cartTotal: currentCartTotal.current,

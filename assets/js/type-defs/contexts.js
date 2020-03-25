@@ -1,7 +1,6 @@
 /**
  * @typedef {import('./cart').CartShippingOption} CartShippingOption
  * @typedef {import('./cart').CartShippingAddress} CartShippingAddress
- * @typedef {import('./cart').CartBillingData} CartBillingData
  * @typedef {import('./checkout').CheckoutDispatchActions} CheckoutDispatchActions
  */
 
@@ -123,8 +122,8 @@
  * @property {function()} processing
  * @property {function()} completed
  * @property {function(string)} error
- * @property {function(string, CartBillingData, Object)} failed
- * @property {function(CartBillingData, Object)} success
+ * @property {function(string, Object)} failed
+ * @property {function(Object)} success
  */
 
 /**

@@ -15,8 +15,6 @@
  *                                                            the calculating state for checkout by one.
  * @property {function()}                decrementCalculating Dispatches an action that decrements
  *                                                            the calculating state for checkout by one.
- * @property {function(CartBillingData)} setBillingData       Dispatches an action that updates the
- *                                                            billing data.
  */
 
 /**
