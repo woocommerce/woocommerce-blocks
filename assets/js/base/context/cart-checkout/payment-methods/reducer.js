@@ -86,7 +86,7 @@ const reducer = (
 			return {
 				...state,
 				expressPaymentMethods: {
-					...state.expressPaymentMethod,
+					...state.expressPaymentMethods,
 					[ paymentMethod.id ]: paymentMethod,
 				},
 			};
