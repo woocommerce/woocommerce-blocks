@@ -6,7 +6,7 @@
  */
 
 /**
- * @typedef {Object} ShippingMethodDataContext
+ * @typedef {Object} ShippingDataContext
  *
  * @property {string}               shippingErrorStatus   The current error
  *                                                        status for shipping
@@ -227,9 +227,6 @@
  * @property {boolean}                 isEditor           Indicates whether in
  *                                                        the editor context
  *                                                        (true) or not (false).
- * @property {CartBillingData}         billingData        An object containing
- *                                                        all billing info like
- *                                                        address, email and tokens.
  */
 
 /**
