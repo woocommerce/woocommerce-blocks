@@ -114,18 +114,15 @@ const AddressForm = ( {
 							}
 							value={ values.country }
 							autoComplete={ field.autocomplete }
-							onChange={ ( newValue ) => {
-								if ( newValue === values.country ) {
-									return;
-								}
+							onChange={ ( newValue ) =>
 								onChange( {
 									...values,
 									country: newValue,
 									state: '',
 									city: '',
 									postcode: '',
-								} );
-							} }
+								} )
+							}
 							errorId={
 								type === 'shipping'
 									? 'shipping-missing-country'
@@ -153,15 +150,12 @@ const AddressForm = ( {
 							}
 							value={ values.state }
 							autoComplete={ field.autocomplete }
-							onChange={ ( newValue ) => {
-								if ( newValue === values.state ) {
-									return;
-								}
+							onChange={ ( newValue ) =>
 								onChange( {
 									...values,
 									state: newValue,
-								} );
-							} }
+								} )
+							}
 							errorMessage={ field.errorMessage }
 							required={ field.required }
 						/>
@@ -177,15 +171,12 @@ const AddressForm = ( {
 						}
 						value={ values[ field.key ] }
 						autoComplete={ field.autocomplete }
-						onChange={ ( newValue ) => {
-							if ( newValue === values[ field.key ] ) {
-								return;
-							}
+						onChange={ ( newValue ) =>
 							onChange( {
 								...values,
 								[ field.key ]: newValue,
-							} );
-						} }
+							} )
+						}
 						errorMessage={ field.errorMessage }
 						required={ field.required }
 					/>
