@@ -75,7 +75,6 @@ const Checkout = ( {
 	} = useValidationContext();
 
 	const [ contactFields, setContactFields ] = useState( {} );
-	const [ shouldSavePayment, setShouldSavePayment ] = useState( true );
 	const [ shippingAsBilling, setShippingAsBilling ] = useState( true );
 
 	const validateSubmit = () => {
