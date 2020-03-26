@@ -74,7 +74,6 @@ const Checkout = ( {
 		showAllValidationErrors,
 	} = useValidationContext();
 
-	const [ selectedShippingRate, setSelectedShippingRate ] = useState( {} );
 	const [ contactFields, setContactFields ] = useState( {} );
 	const [ shouldSavePayment, setShouldSavePayment ] = useState( true );
 	const [ shippingAsBilling, setShippingAsBilling ] = useState( true );
@@ -314,16 +313,12 @@ const Checkout = ( {
 									}
 								/>
 							) }
+							{ /*@todo This is not implemented*/ }
 							<CheckboxControl
 								className="wc-block-checkout__add-note"
 								label="Add order notes?"
-								checked={ selectedShippingRate.orderNote }
-								onChange={ () =>
-									setSelectedShippingRate( {
-										...selectedShippingRate,
-										orderNote: ! selectedShippingRate.orderNote,
-									} )
-								}
+								checked={ false }
+								onChange={ () => null }
 							/>
 						</FormStep>
 					) }
