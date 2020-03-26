@@ -19,7 +19,6 @@ export default class PaymentMethodConfig {
 		assertConfigHasProperties( config, [
 			'id',
 			'label',
-			'stepContent',
 			'ariaLabel',
 			'activeContent',
 			'edit',
@@ -29,7 +28,6 @@ export default class PaymentMethodConfig {
 			throw new Error( 'The id for the payment method must be a string' );
 		}
 		assertValidElement( config.label, 'label' );
-		assertValidElement( config.stepContent, 'stepContent' );
 		assertValidElement( config.activeContent, 'activeContent' );
 		assertValidElement( config.edit, 'edit' );
 		if ( typeof config.ariaLabel !== 'string' ) {
