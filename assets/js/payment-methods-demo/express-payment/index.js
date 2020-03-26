@@ -14,7 +14,24 @@ export const ApplePayConfig = {
 	id: PAYMENT_METHOD_NAME,
 	activeContent: <ApplePayExpress />,
 	edit: <ApplePayPreview />,
-	// for stripe apple pay, the rendering of the button will be determined by
-	// by the component so we let checkout know that it's okay to use this.
-	canMakePayment: stripePromise.then( ( stripe ) => stripe !== null ),
+	canMakePayment: stripePromise.then( ( stripe ) => {
+		if ( stripe === null ) {
+			return false;
+		}
+		// do a test payment request to check if apple pay can be done.
+		const paymentRequest = stripe.paymentRequest( {
+			total: {
+				label: 'Test total',
+				amount: 1000,
+			},
+			country: 'US',
+			currency: 'usd',
+		} );
+		return paymentRequest.canMakePayment().then( ( result ) => {
+			if ( result && result.applePay ) {
+				return true;
+			}
+			return false;
+		} );
+	} ),
 };
