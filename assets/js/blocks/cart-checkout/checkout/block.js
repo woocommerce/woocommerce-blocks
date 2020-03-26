@@ -335,18 +335,6 @@ const Checkout = ( {
 						) }
 					>
 						<PaymentMethods />
-						{ /*@todo this should be something the payment method controls*/ }
-						<CheckboxControl
-							className="wc-block-checkout__save-card-info"
-							label={ __(
-								'Save payment information to my account for future purchases.',
-								'woo-gutenberg-products-block'
-							) }
-							checked={ shouldSavePayment }
-							onChange={ () =>
-								setShouldSavePayment( ! shouldSavePayment )
-							}
-						/>
 					</FormStep>
 					<div className="wc-block-checkout__actions">
 						{ attributes.showReturnToCart && (
