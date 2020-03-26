@@ -7,7 +7,6 @@ import {
 	useState,
 	useReducer,
 	useEffect,
-	useCallback,
 	useRef,
 } from '@wordpress/element';
 import {
@@ -106,12 +105,6 @@ export const ShippingDataProvider = ( { children } ) => {
 	// @todo, this will need wired up to persistence (useSelectedRates?) which
 	// will be setup similar to `useShippingRates` (or maybe in the same hook?)
 	const [ selectedRates, setSelectedRates ] = useState( [] );
-	const setShippingAddressCallback = useCallback( ( address ) => {
-		setShippingAddress( ( prevAddress ) => ( {
-			...prevAddress,
-			...address,
-		} ) );
-	}, [] );
 	const onShippingRateSuccess = emitterSubscribers( subscriber ).onSuccess;
 	const onShippingRateFail = emitterSubscribers( subscriber ).onFail;
 	const onShippingRateSelectSuccess = emitterSubscribers( subscriber )
@@ -194,7 +187,7 @@ export const ShippingDataProvider = ( { children } ) => {
 		selectedRates,
 		setSelectedRates,
 		shippingAddress,
-		setShippingAddress: setShippingAddressCallback,
+		setShippingAddress,
 		onShippingRateSuccess,
 		onShippingRateFail,
 		onShippingRateSelectSuccess,
