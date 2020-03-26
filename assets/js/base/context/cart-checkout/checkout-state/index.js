@@ -143,7 +143,7 @@ export const CheckoutStateProvider = ( {
 				dispatch( actions.setComplete() );
 			} );
 		}
-		if ( checkoutState.isComplete ) {
+		if ( status === STATUS.COMPLETE ) {
 			if ( checkoutState.hasError ) {
 				emitEvent(
 					currentObservers.current,

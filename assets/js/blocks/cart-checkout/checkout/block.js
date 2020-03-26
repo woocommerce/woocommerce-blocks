@@ -62,7 +62,11 @@ const Checkout = ( {
 	scrollToTop,
 } ) => {
 	const { isEditor } = useEditorContext();
-	const { hasOrder } = useCheckoutContext();
+	const {
+		hasOrder,
+		onCheckoutProcessing,
+		onCheckoutCompleteError,
+	} = useCheckoutContext();
 	const {
 		shippingRatesLoading,
 		shippingAddress,
@@ -77,14 +81,14 @@ const Checkout = ( {
 	const [ contactFields, setContactFields ] = useState( {} );
 	const [ shippingAsBilling, setShippingAsBilling ] = useState( true );
 
-	const validateSubmit = () => {
-		if ( hasValidationErrors() ) {
+	useEffect( () => {
+		// @todo hasValidationErrors() doesn't return the updated value
+		onCheckoutProcessing( () => ! hasValidationErrors() );
+		onCheckoutCompleteError( () => {
 			showAllValidationErrors();
 			scrollToTop( { focusableSelector: 'input:invalid' } );
-			return false;
-		}
-		return true;
-	};
+		} );
+	}, [] );
 
 	const renderShippingRatesControlOption = ( option ) => ( {
 		label: decodeEntities( option.name ),
@@ -365,7 +369,7 @@ const Checkout = ( {
 								) }
 							/>
 						) }
-						<PlaceOrderButton validateSubmit={ validateSubmit } />
+						<PlaceOrderButton />
 					</div>
 					{ attributes.showPolicyLinks && <Policies /> }
 				</Main>
