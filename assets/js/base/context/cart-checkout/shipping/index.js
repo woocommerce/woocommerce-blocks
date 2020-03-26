@@ -1,15 +1,4 @@
 /**
- * Internal dependencies
- */
-import { ERROR_TYPES, DEFAULT_SHIPPING_CONTEXT_DATA } from './constants';
-import {
-	EMIT_TYPES,
-	emitterSubscribers,
-	reducer as emitReducer,
-	emitEvent,
-} from './event-emit';
-
-/**
  * External dependencies
  */
 import {
@@ -27,6 +16,17 @@ import {
 	useStoreCart,
 } from '@woocommerce/base-hooks';
 import { useCheckoutContext } from '@woocommerce/base-context';
+
+/**
+ * Internal dependencies
+ */
+import { ERROR_TYPES, DEFAULT_SHIPPING_CONTEXT_DATA } from './constants';
+import {
+	EMIT_TYPES,
+	emitterSubscribers,
+	reducer as emitReducer,
+	emitEvent,
+} from './event-emit';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').ShippingDataContext} ShippingDataContext
