@@ -11,6 +11,7 @@ import { __ } from '@wordpress/i18n';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import { useEffect, useRef } from '@wordpress/element';
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
+import { ValidationInputError } from '@woocommerce/base-components/validation';
 
 /**
  * Internal dependencies
@@ -177,6 +178,9 @@ export const usePaymentMethodInterface = () => {
 			onShippingRateFail,
 			onShippingRateSelectSuccess,
 			onShippingRateSelectFail,
+		},
+		components: {
+			ValidationInputError,
 		},
 		onSubmit,
 		activePaymentMethod,
