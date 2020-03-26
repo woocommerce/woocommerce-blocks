@@ -175,28 +175,6 @@ const Checkout = ( {
 							}
 							required={ true }
 						/>
-						{ attributes.showPhoneField && (
-							<ValidatedTextInput
-								type="tel"
-								label={
-									attributes.requirePhoneField
-										? __(
-												'Phone',
-												'woo-gutenberg-products-block'
-										  )
-										: __(
-												'Phone (optional)',
-												'woo-gutenberg-products-block'
-										  )
-								}
-								value={ billingData.phone }
-								autoComplete="tel"
-								onChange={ ( newValue ) =>
-									setBillingData( { phone: newValue } )
-								}
-								required={ attributes.requirePhoneField }
-							/>
-						) }
 						<CheckboxControl
 							className="wc-block-checkout__keep-updated"
 							label={ __(
@@ -231,6 +209,28 @@ const Checkout = ( {
 								fields={ Object.keys( addressFields ) }
 								fieldConfig={ addressFields }
 							/>
+							{ attributes.showPhoneField && (
+								<ValidatedTextInput
+									type="tel"
+									label={
+										attributes.requirePhoneField
+											? __(
+													'Phone',
+													'woo-gutenberg-products-block'
+											  )
+											: __(
+													'Phone (optional)',
+													'woo-gutenberg-products-block'
+											  )
+									}
+									value={ billingData.phone }
+									autoComplete="tel"
+									onChange={ ( newValue ) =>
+										setBillingData( { phone: newValue } )
+									}
+									required={ attributes.requirePhoneField }
+								/>
+							) }
 							<CheckboxControl
 								className="wc-block-checkout__use-address-for-billing"
 								label={ __(
