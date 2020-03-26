@@ -14,7 +14,7 @@ const stripePromise = new Promise( ( resolve ) => {
 		stripe = loadStripe( getApiKey() );
 	} catch ( error ) {
 		// eslint-disable-next-line no-console
-		console.error( error.message );
+		//console.error( error.message );
 	}
 	resolve( stripe );
 } );
