@@ -77,7 +77,7 @@ const PaymentMethods = () => {
 			);
 			return paymentMethod
 				? cloneElement( paymentMethod, {
-						activePaymentMethod: paymentMethod.id,
+						activePaymentMethod,
 						...currentPaymentMethodInterface.current,
 				  } )
 				: null;
@@ -110,6 +110,7 @@ const PaymentMethods = () => {
 				'Payment Methods',
 				'woo-gutenberg-products-block'
 			) }
+			id="wc-block-payment-methods"
 		>
 			{ getRenderedTab() }
 		</Tabs>
