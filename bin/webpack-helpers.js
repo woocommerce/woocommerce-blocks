@@ -30,7 +30,13 @@ const requestToExternal = ( request ) => {
 	// returning null for these packages ensures that the package installed
 	// in node_modules is used instead of the default external defined in the
 	// DependencyExtractionWebpackPlugin
-	if ( [ '@wordpress/primitives', '@wordpress/icons' ].includes( request ) ) {
+	if (
+		[
+			'@wordpress/primitives',
+			'@wordpress/icons',
+			'@wordpress/warning',
+		].includes( request )
+	) {
 		return null;
 	}
 	if ( wcDepMap[ request ] ) {

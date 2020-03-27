@@ -149,6 +149,7 @@
 		"@wordpress/icons": "^1.1.0",
 		"@wordpress/notices": "2.0.0",
 		"@wordpress/primitives": "^1.1.0",
+		"@wordpress/warning": "^1.0.0",
 		"classnames": "2.2.6",
 		"compare-versions": "3.6.0",
 		"config": "3.3.0",
