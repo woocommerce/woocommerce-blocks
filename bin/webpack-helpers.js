@@ -27,6 +27,12 @@ const requestToExternal = ( request ) => {
 		'@woocommerce/settings': [ 'wc', 'wcSettings' ],
 		'@woocommerce/block-data': [ 'wc', 'wcBlocksData' ],
 	};
+	// returning null for these packages ensures that the package installed
+	// in node_modules is used instead of the default external defined in the
+	// DependencyExtractionWebpackPlugin
+	if ( [ '@wordpress/primitives', '@wordpress/icons' ].includes( request ) ) {
+		return null;
+	}
 	if ( wcDepMap[ request ] ) {
 		return wcDepMap[ request ];
 	}
@@ -38,6 +44,8 @@ const requestToHandle = ( request ) => {
 		'@woocommerce/settings': 'wc-settings',
 		'@woocommerce/block-settings': 'wc-settings',
 		'@woocommerce/block-data': 'wc-blocks-data-store',
+		'@wordpress/primitives': '',
+		'@wordpress/icons': '',
 	};
 	if ( wcHandleMap[ request ] ) {
 		return wcHandleMap[ request ];
