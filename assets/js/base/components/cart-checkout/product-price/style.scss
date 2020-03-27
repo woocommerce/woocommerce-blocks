@@ -6,7 +6,7 @@
 	color: $core-grey-dark-400;
 	text-decoration: line-through;
 
-	+ .wc-block-product-price {
+	+ .screen-reader-text + .wc-block-product-price {
 		margin-left: 0.5em;
 	}
 }
