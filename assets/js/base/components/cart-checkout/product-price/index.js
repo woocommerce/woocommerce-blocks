@@ -41,7 +41,9 @@ const ProductPrice = ( { className, currency, regularValue, value } ) => {
 				</>
 			) }
 			<FormattedMonetaryAmount
-				className={ classNames( 'wc-block-product-price', className ) }
+				className={ classNames( 'wc-block-product-price', className, {
+					'is-discounted': isDiscounted,
+				} ) }
 				currency={ currency }
 				value={ value }
 			/>
