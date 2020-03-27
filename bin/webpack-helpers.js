@@ -38,8 +38,6 @@ const requestToHandle = ( request ) => {
 		'@woocommerce/settings': 'wc-settings',
 		'@woocommerce/block-settings': 'wc-settings',
 		'@woocommerce/block-data': 'wc-blocks-data-store',
-		'@wordpress/primitives': '',
-		'@wordpress/icons': '',
 	};
 	if ( wcHandleMap[ request ] ) {
 		return wcHandleMap[ request ];
