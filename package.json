@@ -15,7 +15,8 @@
 		"*.scss",
 		"./assets/js/atomic/blocks/product/**",
 		"./assets/js/filters/**",
-		"./assets/js/payment-methods-demo/**"
+		"./assets/js/payment-methods-demo/**",
+		"./aseets/js/settings/blocks/store-api-nonce"
 	],
 	"repository": {
 		"type": "git",
