@@ -95,32 +95,40 @@ const useElementOptions = ( overloadedOptions ) => {
 
 const baseTextInputStyles = 'wc-block-gateway-input';
 
-const InlineCard = ( props ) => {
-	const { options, onActive, error, setError } = useElementOptions();
-	const {
-		inputErrorComponent: ValidationInputError,
-		label,
-		onChange,
-	} = props;
+const InlineCard = ( {
+	inputErrorComponent: ValidationInputError,
+	onChange,
+} ) => {
+	const [ isEmpty, setIsEmpty ] = useState( true );
+	const { options, onActive, error, setError } = useElementOptions( {
+		hidePostalCode: true,
+	} );
+	const errorCallback = ( event ) => {
+		if ( event.error ) {
+			setError( event.error.message );
+		} else {
+			setError( '' );
+		}
+		setIsEmpty( event.empty );
+		onChange( event );
+	};
 	return (
 		<>
-			<div className="wc-block-gateway-container">
+			<div className="wc-block-gateway-container wc-inline-card-element">
 				<CardElement
-					id="wc-stripe-inline-card-element wc-stripe-card-element"
+					id="wc-stripe-inline-card-element"
 					className={ baseTextInputStyles }
 					options={ options }
-					onBlur={ onActive }
-					onFocus={ onActive }
-					onChange={ ( event ) => {
-						if ( event.error ) {
-							setError( event.error.message );
-						} else {
-							setError( '' );
-						}
-						onChange( event );
-					} }
+					onBlur={ () => onActive( isEmpty ) }
+					onFocus={ () => onActive( isEmpty ) }
+					onChange={ errorCallback }
 				/>
-				<label htmlFor="wc-stripe-inline-card-element">{ label }</label>
+				<label htmlFor="wc-stripe-inline-card-element">
+					{ __(
+						'Credit Card Information',
+						'woo-gutenberg-products-block'
+					) }
+				</label>
 			</div>
 			<ValidationInputError errorMessage={ error } />
 		</>

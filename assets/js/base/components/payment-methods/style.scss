@@ -90,6 +90,7 @@
 	&:focus {
 		background-color: #fff;
 	}
+
 	label {
 		position: absolute;
 		transform: translateY(#{$gap-small});
@@ -110,9 +111,22 @@
 		}
 	}
 
-	// &.wc-block-gateway-input:-webkit-autofill + label {
-	// 	transform: translateY(#{$gap-smallest}) scale(0.75);
-	// }
+	&.wc-inline-card-element {
+		label {
+			margin-left: $gap-largest;
+		}
+		.wc-block-gateway-input.focused.empty,
+		.wc-block-gateway-input:not(.empty) {
+			& + label {
+				margin-left: $gap;
+				transform: translateY(#{$gap-smallest}) scale(0.75);
+			}
+		}
+		& + .wc-block-form-input-validation-error {
+			position: static;
+			margin-top: -$gap-large;
+		}
+	}
 
 	.wc-block-gateway-input.focused.empty,
 	.wc-block-gateway-input:not(.empty) {
