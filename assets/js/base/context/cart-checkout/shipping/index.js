@@ -4,7 +4,6 @@
 import {
 	createContext,
 	useContext,
-	useState,
 	useReducer,
 	useEffect,
 	useRef,
@@ -13,6 +12,7 @@ import {
 	useShippingAddress,
 	useShippingRates,
 	useStoreCart,
+	useSelectShippingRate,
 } from '@woocommerce/base-hooks';
 import { useCheckoutContext } from '@woocommerce/base-context';
 
@@ -32,10 +32,6 @@ import {
  */
 
 const { NONE, INVALID_ADDRESS, UNKNOWN } = ERROR_TYPES;
-
-const setStatusAction = ( status ) => ( {
-	type: status,
-} );
 
 /**
  * Reducer for shipping status state
@@ -60,30 +56,6 @@ export const useShippingDataContext = () => {
 	return useContext( ShippingDataContext );
 };
 
-/**
- * Calculating component for shipping rates.
- *
- * //@todo this is currently invalid because it's based on an older api.
- * // this will need to be updated once shipping rate work is complete.
- *
- * @param {Object} props Incoming props for the component
- */
-const ShippingRateCalculation = ( { onChange } ) => {
-	// @todo, it'd be handy if we could pass through callbacks that are fired on
-	// successful rate retrieval vs callbacks fired on unsuccessful rates
-	// retrieval. That way emitters could just be fed into the hook directly.
-	const { shippingRates, shippingRatesLoading } = useShippingRates( [
-		'country',
-		'state',
-		'city',
-		'postcode',
-	] );
-	useEffect( () => {
-		onChange( shippingRates, shippingRatesLoading );
-	}, [ shippingRates, shippingRatesLoading ] );
-	return null;
-};
-
 // @todo wire up checkout context needed here (like isCalculating etc)
 // @todo useShippingRates needs to be wired up with error handling so we know
 // when an invalid address is provided for it (because payment methods might
@@ -98,13 +70,12 @@ export const ShippingDataProvider = ( { children } ) => {
 	const [ observers, subscriber ] = useReducer( emitReducer, {} );
 	const { shippingAddress, setShippingAddress } = useShippingAddress();
 	const currentObservers = useRef( observers );
-	const [ shippingOptions, setShippingOptions ] = useState( [] );
-	const [ shippingOptionsLoading, setShippingOptionsLoading ] = useState(
-		false
-	);
-	// @todo, this will need wired up to persistence (useSelectedRates?) which
-	// will be setup similar to `useShippingRates` (or maybe in the same hook?)
-	const [ selectedRates, setSelectedRates ] = useState( [] );
+	const { shippingRates, shippingRatesLoading } = useShippingRates();
+	const {
+		selectShippingRate: setSelectedRates,
+		selectedShippingRates: selectedRates,
+		isSelectingRate,
+	} = useSelectShippingRate( shippingRates );
 	const onShippingRateSuccess = emitterSubscribers( subscriber ).onSuccess;
 	const onShippingRateFail = emitterSubscribers( subscriber ).onFail;
 	const onShippingRateSelectSuccess = emitterSubscribers( subscriber )
@@ -119,28 +90,22 @@ export const ShippingDataProvider = ( { children } ) => {
 
 	// increment/decrement checkout calculating counts when shipping is loading
 	useEffect( () => {
-		if ( shippingOptionsLoading ) {
+		if ( shippingRatesLoading ) {
 			dispatchActions.incrementCalculating();
 		} else {
 			dispatchActions.decrementCalculating();
 		}
-	}, [ shippingOptionsLoading ] );
+	}, [ shippingRatesLoading ] );
 
-	// @todo need to add error handling to useShippingRates so that errors are
-	// exposed. We need error types exposed by the error handling as well.
-	// also we need to add similar logic for selection/unselection of rates and
-	// emit the events (see emit events block)
-	const onRateChange = ( shippingRates, shippingRatesLoading, error ) => {
-		setShippingOptions( shippingRates );
-		setShippingOptionsLoading( shippingRatesLoading );
-		if ( ! shippingRatesLoading && error && error.type ) {
-			// @todo this type might need normalizing to something recognized by
-			// the ERROR_TYPE constants.
-			dispatchErrorStatus( setStatusAction( error.type ) );
-		} else if ( ! shippingRatesLoading && shippingRates ) {
-			dispatchErrorStatus( NONE );
+	// increment/decrement checkout calculating counts when shipping rates are
+	// being selected.
+	useEffect( () => {
+		if ( isSelectingRate ) {
+			dispatchActions.incrementCalculating();
+		} else {
+			dispatchActions.decrementCalculating();
 		}
-	};
+	}, [ isSelectingRate ] );
 
 	const currentErrorStatus = {
 		isPristine: shippingErrorStatus === NONE,
@@ -154,22 +119,44 @@ export const ShippingDataProvider = ( { children } ) => {
 	// emit events
 	// @todo add emitters for shipping rate selection.
 	useEffect( () => {
-		if ( ! shippingOptionsLoading && currentErrorStatus.hasError ) {
+		if ( ! shippingRatesLoading && currentErrorStatus.hasError ) {
 			emitEvent(
 				currentObservers.current,
-				EMIT_TYPES.SHIPPING_RATES_SUCCESS,
+				EMIT_TYPES.SHIPPING_RATES_FAIL,
 				shippingErrorStatus
 			);
-		} else if ( ! shippingOptionsLoading && shippingOptions ) {
+		} else if ( ! shippingRatesLoading && shippingRates ) {
 			emitEvent(
 				currentObservers.current,
 				EMIT_TYPES.SHIPPING_RATES_SUCCESS,
-				shippingOptions
+				shippingRates
 			);
 		}
 	}, [
-		shippingOptions,
-		shippingOptionsLoading,
+		shippingRates,
+		shippingRatesLoading,
+		currentErrorStatus,
+		shippingErrorStatus,
+	] );
+
+	//emit shipping rate selection events
+	useEffect( () => {
+		if ( ! isSelectingRate && currentErrorStatus.hasError ) {
+			emitEvent(
+				currentObservers.current,
+				EMIT_TYPES.SHIPPING_RATE_SELECT_FAIL,
+				shippingErrorStatus
+			);
+		} else if ( ! isSelectingRate && selectedRates ) {
+			emitEvent(
+				currentObservers.current,
+				EMIT_TYPES.SHIPPING_RATE_SELECT_SUCCESS,
+				selectedRates
+			);
+		}
+	}, [
+		selectedRates,
+		isSelectingRate,
 		currentErrorStatus,
 		shippingErrorStatus,
 	] );
@@ -181,9 +168,9 @@ export const ShippingDataProvider = ( { children } ) => {
 		shippingErrorStatus,
 		dispatchErrorStatus,
 		shippingErrorTypes: ERROR_TYPES,
-		shippingRates: shippingOptions,
-		setShippingRates: setShippingOptions,
-		shippingRatesLoading: shippingOptionsLoading,
+		shippingRates,
+		setShippingRates: setSelectedRates,
+		shippingRatesLoading,
 		selectedRates,
 		setSelectedRates,
 		shippingAddress,
@@ -196,10 +183,6 @@ export const ShippingDataProvider = ( { children } ) => {
 	};
 	return (
 		<>
-			<ShippingRateCalculation
-				address={ shippingAddress }
-				onChange={ onRateChange }
-			/>
 			<ShippingDataContext.Provider value={ ShippingData }>
 				{ children }
 			</ShippingDataContext.Provider>
