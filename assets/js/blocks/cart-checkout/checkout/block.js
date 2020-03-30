@@ -128,6 +128,7 @@ const Checkout = ( {
 	}, [ shippingAsBilling, setBillingData ] );
 
 	if ( ! isEditor && ! hasDraftOrder ) {
+		// @todo add state here to handle this type of error.
 		return <div>No draft order - add error state.</div>;
 	}
 

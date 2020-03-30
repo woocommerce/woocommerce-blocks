@@ -138,7 +138,7 @@ class Checkout extends AbstractRoute {
 		if ( ! $order_object ) {
 			throw new RouteException(
 				'woocommerce_rest_checkout_invalid_order',
-				__( 'No order pending payment found.', 'woo-gutenberg-products-block' ),
+				__( 'This session has no orders pending payment.', 'woo-gutenberg-products-block' ),
 				500
 			);
 		}

@@ -72,7 +72,7 @@ class Checkout extends AbstractBlock {
 		$permalink = ! empty( $attributes['cartPageId'] ) ? get_permalink( $attributes['cartPageId'] ) : false;
 
 		if ( $permalink && ! $data_registry->exists( 'page-' . $attributes['cartPageId'] ) ) {
-			$data_registry->add( 'page-' . $attributes['cartPageId'], get_permalink( $attributes['cartPageId'] ) );
+			$data_registry->add( 'page-' . $attributes['cartPageId'], $permalink );
 		}
 
 		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : false;
