@@ -21,7 +21,6 @@ import {
 	useStripe,
 } from '@stripe/react-stripe-js';
 import { useState, useEffect, useRef, useCallback } from '@wordpress/element';
-import CheckboxControl from '@woocommerce/base-components/checkbox-control';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -340,7 +339,7 @@ const CreditCardComponent = ( {
 	eventRegistration,
 	components,
 } ) => {
-	const { ValidationInputError } = components;
+	const { ValidationInputError, CheckboxControl } = components;
 	const [ sourceId, setSourceId ] = useState( 0 );
 	const stripe = useStripe();
 	const [ shouldSavePayment, setShouldSavePayment ] = useState( true );
