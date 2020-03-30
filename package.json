@@ -15,7 +15,6 @@
 		"*.scss",
 		"./assets/js/atomic/blocks/product/**",
 		"./assets/js/filters/**",
-		"./assets/js/payment-methods-demo/**",
 		"./assets/js/settings/blocks/**"
 	],
 	"repository": {

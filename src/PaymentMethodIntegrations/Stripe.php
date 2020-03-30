@@ -31,6 +31,13 @@ class Stripe {
 	private $asset_registry;
 
 	/**
+	 * An instance of the Asset Api
+	 *
+	 * @var Api
+	 */
+	private $asset_api;
+
+	/**
 	 * Stripe settings from the WP options table
 	 *
 	 * @var array
@@ -40,11 +47,12 @@ class Stripe {
 	/**
 	 * Constructor for the class
 	 *
-	 * @param   AssetDataRegistry $asset_registry  Used for registering data
-	 * to pass along to the request.
+	 * @param AssetDataRegistry $asset_registry  Used for registering data to pass along to the request.
+	 * @param Api               $asset_api       Used for registering scripts and styles.
 	 */
-	public function __construct( AssetDataRegistry $asset_registry ) {
+	public function __construct( AssetDataRegistry $asset_registry, Api $asset_api ) {
 		$this->asset_registry  = $asset_registry;
+		$this->asset_api       = $asset_api;
 		$this->stripe_settings = get_option( 'woocommerce_stripe_settings', [] );
 	}
 
@@ -57,9 +65,10 @@ class Stripe {
 	public function register_assets() {
 		// only do when not in admin.
 		if ( ! is_admin() ) {
-			add_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before', [ $this, 'enqueue_stripe_and_data' ] );
-			add_action( 'woocommerce_blocks_enqueue_cart_block_scripts_before', [ $this, 'enqueue_stripe_and_data' ] );
+			add_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before', [ $this, 'enqueue_data' ] );
+			add_action( 'woocommerce_blocks_enqueue_cart_block_scripts_before', [ $this, 'enqueue_data' ] );
 		}
+		add_action( 'init', [ $this, 'register_scripts_and_styles' ] );
 	}
 
 	/**
@@ -84,14 +93,26 @@ class Stripe {
 		if ( ! $this->asset_registry->exists( 'stripe_data' ) ) {
 			$this->asset_registry->add( 'stripe_data', $data );
 		}
+		wp_enqueue_script( 'wc-payment-method-extensions' );
 	}
 
 	/**
-	 * Callback hooked into cart and checkout block script enqueue action.
+	 * Register scripts and styles for extension.
 	 */
-	public function enqueue_stripe_and_data() {
-		wp_enqueue_script( 'stripe', 'https://js.stripe.com/v3/', '', '3.0', true );
-		$this->enqueue_data();
+	public function register_scripts_and_styles() {
+		wp_register_script( 'stripe', 'https://js.stripe.com/v3/', '', '3.0', true );
+		$this->asset_api->register_script(
+			'wc-payment-method-extensions',
+			'build/wc-payment-method-extensions.js',
+			[ 'stripe' ]
+		);
+		$this->asset_api->register_style(
+			'wc-payment-method-extensions',
+			'build/wc-payment-method-extensions.css',
+			[ 'wc-block-style' ]
+		);
+		wp_style_add_data( 'wc-payment-method-extensions', 'rtl', 'replace' );
+
 	}
 
 	/**

@@ -46,7 +46,6 @@ import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
  */
 import CheckoutSidebar from './sidebar/index.js';
 import './style.scss';
-import '../../../payment-methods-demo';
 
 const Block = ( { isEditor = false, ...props } ) => (
 	<CheckoutProvider isEditor={ isEditor }>

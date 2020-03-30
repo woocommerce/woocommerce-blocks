@@ -180,7 +180,8 @@ class Bootstrap {
 			Stripe::class,
 			function( Container $container ) {
 				$asset_data_registry = $container->get( AssetDataRegistry::class );
-				return new Stripe( $asset_data_registry );
+				$asset_api           = $container->get( AssetApi::class );
+				return new Stripe( $asset_data_registry, $asset_api );
 			}
 		);
 		add_action(
