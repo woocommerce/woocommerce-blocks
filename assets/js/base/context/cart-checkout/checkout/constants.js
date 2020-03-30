@@ -14,7 +14,13 @@ export const STATUS = {
 	COMPLETE: 'complete',
 };
 
-const checkoutData = getSetting( 'checkoutData', { order_id: 0 } );
+const defaultCheckoutData = {
+	order_id: 0,
+};
+
+// Checkout data may be null in editor/admin.
+const checkoutData =
+	getSetting( 'checkoutData', defaultCheckoutData ) || defaultCheckoutData;
 
 export const DEFAULT_STATE = {
 	redirectUrl: '',
