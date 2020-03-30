@@ -11,10 +11,6 @@ $line-offset-from-circle-size: 8px;
 	padding: 0 $gap-larger $gap-larger $gap-larger;
 	background: none;
 	margin: 0;
-
-	&:last-child::before {
-		content: none;
-	}
 }
 
 .wc-block-checkout-step__heading {
@@ -82,4 +78,8 @@ $line-offset-from-circle-size: 8px;
 	position: absolute;
 	left: $circle-size/2;
 	top: $circle-size + $line-offset-from-circle-size;
+}
+
+.wc-block-checkout-step:last-child::after {
+	content: none;
 }
