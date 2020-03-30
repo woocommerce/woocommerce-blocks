@@ -56,10 +56,12 @@ export const useShippingDataContext = () => {
 	return useContext( ShippingDataContext );
 };
 
-// @todo wire up checkout context needed here (like isCalculating etc)
-// @todo useShippingRates needs to be wired up with error handling so we know
-// when an invalid address is provided for it (because payment methods might
-// provide an invalid address)
+/**
+ * The shipping data provider exposes the interface for shipping in the
+ * checkout/cart.
+ *
+ * @param {Object} props Incoming props for provider
+ */
 export const ShippingDataProvider = ( { children } ) => {
 	const { dispatchActions } = useCheckoutContext();
 	const { cartNeedsShipping: needsShipping } = useStoreCart();
