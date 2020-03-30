@@ -80,15 +80,21 @@ const Checkout = ( {
 
 	const [ contactFields, setContactFields ] = useState( {} );
 	const [ shippingAsBilling, setShippingAsBilling ] = useState( true );
+	const withErrors = hasValidationErrors();
 
 	useEffect( () => {
-		// @todo hasValidationErrors() doesn't return the updated value
-		onCheckoutProcessing( () => ! hasValidationErrors() );
-		onCheckoutCompleteError( () => {
+		const unsubscribeProcessing = onCheckoutProcessing(
+			() => ! withErrors
+		);
+		const unsubscribeCompleteError = onCheckoutCompleteError( () => {
 			showAllValidationErrors();
 			scrollToTop( { focusableSelector: 'input:invalid' } );
 		} );
-	}, [] );
+		return () => {
+			unsubscribeProcessing();
+			unsubscribeCompleteError();
+		};
+	}, [ onCheckoutProcessing, onCheckoutCompleteError, withErrors ] );
 
 	const renderShippingRatesControlOption = ( option ) => ( {
 		label: decodeEntities( option.name ),
