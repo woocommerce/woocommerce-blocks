@@ -18,6 +18,7 @@ import {
 	DISPLAY_CART_PRICES_INCLUDING_TAX,
 	SHIPPING_ENABLED,
 } from '@woocommerce/block-settings';
+import { CheckoutProvider } from '@woocommerce/base-context';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import { Card, CardBody } from 'wordpress-components';
 import {
@@ -44,6 +45,12 @@ import CartLineItemsTable from './cart-line-items-table';
 
 import './style.scss';
 import './editor.scss';
+
+const Block = ( props ) => (
+	<CheckoutProvider>
+		<Cart { ...props } />
+	</CheckoutProvider>
+);
 
 /**
  * Component that renders the Cart block when user has something in cart aka "full".
@@ -162,4 +169,4 @@ Cart.propTypes = {
 	attributes: PropTypes.object.isRequired,
 };
 
-export default Cart;
+export default Block;
