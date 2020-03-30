@@ -157,7 +157,10 @@ export const ValidationContextProvider = ( { children } ) => {
 	 */
 	const getValidationErrorId = ( errorId ) => {
 		const error = getValidationError( errorId );
-		return error && ! error.hidden ? `validate-error-${ errorId }` : '';
+		if ( ! error || error.hidden ) {
+			return '';
+		}
+		return `validate-error-${ errorId }`;
 	};
 
 	const context = {
