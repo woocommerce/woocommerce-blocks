@@ -2,9 +2,7 @@
  * External dependencies
  */
 import { useSelect } from '@wordpress/data';
-import { useEffect } from '@wordpress/element';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
-import { useCheckoutContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -25,20 +23,12 @@ import { useShippingAddress } from '../shipping/use-shipping-address';
  *                 - {Object} shippingAddress       True when address data exists.
  */
 export const useShippingRates = () => {
-	const { dispatchActions } = useCheckoutContext();
 	const { cartErrors, shippingRates } = useStoreCart();
 	const { shippingAddress, setShippingAddress } = useShippingAddress();
 	const shippingRatesLoading = useSelect(
 		( select ) => select( storeKey ).areShippingRatesLoading(),
 		[]
 	);
-	useEffect( () => {
-		if ( shippingRatesLoading ) {
-			dispatchActions.incrementCalculating();
-		} else {
-			dispatchActions.decrementCalculating();
-		}
-	}, [ shippingRatesLoading ] );
 	return {
 		shippingRates,
 		shippingAddress,
