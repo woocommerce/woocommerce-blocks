@@ -42,6 +42,7 @@ const CheckoutProcessor = () => {
 			method: 'POST',
 			data: {
 				payment_method: activePaymentMethod,
+				// @todo Hook this up to payment method data.
 				payment_data: [],
 				billing_address: currentBillingData.current,
 				shipping_address: currentShippingAddress.current,
