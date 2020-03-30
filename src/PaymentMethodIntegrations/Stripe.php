@@ -106,13 +106,6 @@ class Stripe {
 			'build/wc-payment-method-extensions.js',
 			[ 'stripe' ]
 		);
-		$this->asset_api->register_style(
-			'wc-payment-method-extensions',
-			'build/wc-payment-method-extensions.css',
-			[ 'wc-block-style' ]
-		);
-		wp_style_add_data( 'wc-payment-method-extensions', 'rtl', 'replace' );
-
 	}
 
 	/**
