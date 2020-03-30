@@ -114,6 +114,9 @@ const Checkout = ( {
 			required: attributes.requirePhoneField,
 		},
 	};
+	// We're removing phone from billing form and disregarding it.
+	// eslint-disable-next-line no-unused-vars
+	const { phone: _, ...billingFields } = addressFields;
 
 	const setShippingFields = useCallback(
 		( address ) => {
@@ -210,32 +213,6 @@ const Checkout = ( {
 									fields={ Object.keys( addressFields ) }
 									fieldConfig={ addressFields }
 								/>
-								{ attributes.showPhoneField && (
-									<ValidatedTextInput
-										type="tel"
-										label={
-											attributes.requirePhoneField
-												? __(
-														'Phone',
-														'woo-gutenberg-products-block'
-												  )
-												: __(
-														'Phone (optional)',
-														'woo-gutenberg-products-block'
-												  )
-										}
-										value={ billingData.phone }
-										autoComplete="tel"
-										onChange={ ( newValue ) =>
-											setBillingData( {
-												phone: newValue,
-											} )
-										}
-										required={
-											attributes.requirePhoneField
-										}
-									/>
-								) }
 								<CheckboxControl
 									className="wc-block-checkout__use-address-for-billing"
 									label={ __(
@@ -267,8 +244,8 @@ const Checkout = ( {
 									onChange={ setBillingData }
 									type="billing"
 									values={ billingData }
-									fields={ Object.keys( addressFields ) }
-									fieldConfig={ addressFields }
+									fields={ Object.keys( billingFields ) }
+									fieldConfig={ billingFields }
 								/>
 							</FormStep>
 						) }
