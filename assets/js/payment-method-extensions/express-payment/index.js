@@ -12,7 +12,7 @@ const ApplePayPreview = () => <img src={ applePayImage } alt="" />;
 
 export const ApplePayConfig = {
 	id: PAYMENT_METHOD_NAME,
-	activeContent: <ApplePayExpress />,
+	content: <ApplePayExpress />,
 	edit: <ApplePayPreview />,
 	canMakePayment: stripePromise.then( ( stripe ) => {
 		if ( stripe === null ) {

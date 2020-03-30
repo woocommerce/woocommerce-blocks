@@ -37,9 +37,7 @@ import SavedPaymentMethodOptions from './saved-payment-method-options';
 const getPaymentMethod = ( id, paymentMethods, isEditor ) => {
 	let paymentMethod = paymentMethods[ id ] || null;
 	if ( paymentMethod ) {
-		paymentMethod = isEditor
-			? paymentMethod.edit
-			: paymentMethod.activeContent;
+		paymentMethod = isEditor ? paymentMethod.edit : paymentMethod.content;
 	}
 	return paymentMethod;
 };

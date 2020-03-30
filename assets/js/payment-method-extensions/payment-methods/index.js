@@ -18,8 +18,11 @@ export const stripeCcPaymentMethod = {
 			{ __( 'Credit/Debit Card', 'woo-gutenberg-products-block' ) }
 		</strong>
 	),
-	activeContent: <StripeCreditCard />,
+	content: <StripeCreditCard />,
 	edit: <EditPlaceHolder />,
 	canMakePayment: stripePromise,
-	ariaLabel: 'Stripe Credit Card payment method',
+	ariaLabel: __(
+		'Stripe Credit Card payment method',
+		'woo-gutenberg-products-block'
+	),
 };

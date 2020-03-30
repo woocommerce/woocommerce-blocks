@@ -10,7 +10,7 @@ export default class PaymentMethodConfig {
 		this.id = config.id;
 		this.label = config.label;
 		this.ariaLabel = config.ariaLabel;
-		this.activeContent = config.activeContent;
+		this.content = config.content;
 		this.edit = config.edit;
 		this.canMakePayment = config.canMakePayment;
 	}
@@ -20,7 +20,7 @@ export default class PaymentMethodConfig {
 			'id',
 			'label',
 			'ariaLabel',
-			'activeContent',
+			'content',
 			'edit',
 			'canMakePayment',
 		] );
@@ -28,7 +28,7 @@ export default class PaymentMethodConfig {
 			throw new Error( 'The id for the payment method must be a string' );
 		}
 		assertValidElement( config.label, 'label' );
-		assertValidElement( config.activeContent, 'activeContent' );
+		assertValidElement( config.content, 'content' );
 		assertValidElement( config.edit, 'edit' );
 		if ( typeof config.ariaLabel !== 'string' ) {
 			throw new TypeError(
