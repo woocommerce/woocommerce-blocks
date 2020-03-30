@@ -96,7 +96,7 @@ const ApplePayExpressComponent = ( {
 
 	//set paymentRequest
 	useEffect( () => {
-		// can't do anything if stripe isn't available yet or we have zero total
+		// can't do anything if stripe isn't available yet or we have zero total.
 		if ( ! stripe || ! billing.cartTotal.value ) {
 			return;
 		}
@@ -115,7 +115,7 @@ const ApplePayExpressComponent = ( {
 			);
 		}
 		// otherwise we just update it (but only if payment processing hasn't
-		// already started)
+		// already started).
 		if (
 			! paymentStatus.currentStatus.isPristine &&
 			currentPaymentRequest.current
@@ -139,7 +139,7 @@ const ApplePayExpressComponent = ( {
 	] );
 
 	// whenever paymentRequest changes, then we need to update whether
-	// payment can be made
+	// payment can be made.
 	useEffect( () => {
 		if ( paymentRequest ) {
 			canDoApplePay( paymentRequest ).then( ( result ) => {
@@ -148,7 +148,7 @@ const ApplePayExpressComponent = ( {
 		}
 	}, [ paymentRequest ] );
 
-	// kick off payment processing
+	// kick off payment processing.
 	const onButtonClick = () => {
 		setActivePaymentMethod( PAYMENT_METHOD_NAME );
 		currentPaymentStatus.current.setPaymentStatus().processing();
@@ -180,7 +180,7 @@ const ApplePayExpressComponent = ( {
 		onSubmit();
 	};
 
-	// event callbacks
+	// event callbacks.
 	const onShippingRatesEvent = ( forSuccess = true ) => () => {
 		const handlers = eventHandlers.current;
 		if (
@@ -277,7 +277,7 @@ const ApplePayExpressComponent = ( {
 		}
 	}, [ paymentRequest, canMakePayment ] );
 
-	// subscribe to events
+	// subscribe to events.
 	useEffect( () => {
 		if ( canMakePayment && isActive.current ) {
 			const subscriber = currentEventRegistration.current;
@@ -310,7 +310,7 @@ const ApplePayExpressComponent = ( {
 		}
 	}, [ canMakePayment ] );
 
-	// locale is not a valid value for the paymentRequestButton style
+	// locale is not a valid value for the paymentRequestButton style.
 	const { theme } = getStripeServerData().button;
 
 	const paymentRequestButtonStyle = {
@@ -345,36 +345,3 @@ export const ApplePayExpress = ( props ) => {
 		</Elements>
 	);
 };
-
-/**
- * Notes for `stripe-payment-request`:
- *
- * - startPaymentRequest appears to be where the payment request button is setup,
- *   determination of whether the payment can be made and adding event handlers.
- * - much of this logic will be provided from the checkout/cart so the payment
- *   method handler here will just have to implement things like canMakePayment
- *   and expose the button with the appropriate onClick handler.
- * - this also utilizes paymentRequestType which comes from the `canMakePayment`
- *   call.
- * - because this is an apple pay express payment, we need to handle if apple_pay
- *  is not available.
- *
- * Note payment scripts are enqueued in `class-wc-stripe-payment-request` and that
- * includes enqueuing version 3 of the stripe js client (which is what is being
- * used for stripe payments in the stripe plugin)
- */
-
-// activeContent receives:
-// - checkoutData (which comes from useCheckoutData)
-// - paymentEvents (which is an object of `dispatch` and `select` from the usePaymentEvents hook)
-
-//@todo suggested endpoint for the checkout to do it's processing on submit:
-/**
-/store/checkout/payment/{order_id}
-body: {
-  paymentMethod: 'applePay',
-  // arbitrary things the payment needs to process - eg. token, payment.source.order_id
-  // that have no totals or anything and are simply used for processing the
-  // payment server side.
-}
- */
