@@ -238,7 +238,7 @@
  *                                                        (true) or not (false).
  * @property {number}                  orderId            This is the ID for the
  *                                                        draft order if one exists.
- * @property {boolean}                 hasDraftOrder      True when the checkout has
+ * @property {boolean}                 hasOrder           True when the checkout has
  *                                                        a draft order from the API.
  */
 

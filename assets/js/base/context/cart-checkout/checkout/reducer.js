@@ -12,7 +12,7 @@ const {
 	SET_NO_ERROR,
 	INCREMENT_CALCULATING,
 	DECREMENT_CALCULATING,
-	SET_DRAFT_ORDER,
+	SET_ORDER_ID,
 } = TYPES;
 
 const { PRISTINE, IDLE, CALCULATING, PROCESSING, COMPLETE } = STATUS;
@@ -121,7 +121,7 @@ export const reducer = ( state = DEFAULT_STATE, { url, type, orderId } ) => {
 				calculatingCount: Math.max( 0, state.calculatingCount - 1 ),
 			};
 			break;
-		case SET_DRAFT_ORDER:
+		case SET_ORDER_ID:
 			newState = {
 				...state,
 				orderId,

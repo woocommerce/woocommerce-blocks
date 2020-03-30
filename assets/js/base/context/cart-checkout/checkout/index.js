@@ -54,7 +54,7 @@ const CheckoutContext = createContext( {
 		clearError: () => void null,
 		incrementCalculating: () => void null,
 		decrementCalculating: () => void null,
-		setDraftOrder: () => void null,
+		setOrderId: () => void null,
 	},
 } );
 
@@ -127,8 +127,8 @@ export const CheckoutProvider = ( {
 				void dispatch( actions.incrementCalculating() ),
 			decrementCalculating: () =>
 				void dispatch( actions.decrementCalculating() ),
-			setDraftOrder: ( orderId ) =>
-				void dispatch( actions.setDraftOrder( orderId ) ),
+			setOrderId: ( orderId ) =>
+				void dispatch( actions.setOrderId( orderId ) ),
 		} ),
 		[]
 	);
@@ -200,7 +200,7 @@ export const CheckoutProvider = ( {
 		dispatchActions,
 		isEditor,
 		orderId: checkoutState.orderId,
-		hasDraftOrder: !! checkoutState.orderId,
+		hasOrder: !! checkoutState.orderId,
 	};
 	return (
 		<CheckoutContext.Provider value={ checkoutData }>

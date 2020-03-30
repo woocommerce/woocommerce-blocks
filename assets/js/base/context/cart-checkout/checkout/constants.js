@@ -34,7 +34,7 @@ export const TYPES = {
 	SET_PROCESSING: 'set_checkout_is_processing',
 	SET_HAS_ERROR: 'set_checkout_has_error',
 	SET_NO_ERROR: 'set_checkout_no_error',
-	SET_DRAFT_ORDER: 'set_checkout_draft_order',
+	SET_ORDER_ID: 'set_checkout_order_id',
 	INCREMENT_CALCULATING: 'increment_calculating',
 	DECREMENT_CALCULATING: 'decrement_calculating',
 };
