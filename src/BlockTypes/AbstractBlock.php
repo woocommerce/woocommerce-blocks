@@ -29,6 +29,13 @@ abstract class AbstractBlock {
 	protected $block_name = '';
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_editor_assets' ] );
+	}
+
+	/**
 	 * Registers the block type with WordPress.
 	 */
 	public function register_block_type() {
@@ -40,5 +47,12 @@ abstract class AbstractBlock {
 				'style'         => 'wc-block-style',
 			)
 		);
+	}
+
+	/**
+	 * Will enqueue any editor assets a block needs to load
+	 */
+	public function enqueue_editor_assets() {
+		// noop, expected that children will override if needed.
 	}
 }
