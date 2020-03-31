@@ -151,6 +151,7 @@ const Checkout = ( {
 							) }
 						>
 							<ValidatedTextInput
+								id="email"
 								type="email"
 								label={ __(
 									'Email address',
@@ -192,6 +193,7 @@ const Checkout = ( {
 								) }
 							>
 								<AddressForm
+									id="shipping"
 									onChange={ setShippingFields }
 									values={ shippingAddress }
 									fields={ Object.keys( addressFields ) }
@@ -199,6 +201,7 @@ const Checkout = ( {
 								/>
 								{ attributes.showPhoneField && (
 									<ValidatedTextInput
+										id="phone"
 										type="tel"
 										label={
 											attributes.requirePhoneField
@@ -251,6 +254,7 @@ const Checkout = ( {
 								) }
 							>
 								<AddressForm
+									id="billing"
 									onChange={ setBillingData }
 									type="billing"
 									values={ billingData }
