@@ -8,34 +8,24 @@
  * @since $VID:$
  */
 
-namespace Automattic\WooCommerce\Blocks\PaymentMethodIntegrations;
+namespace Automattic\WooCommerce\Blocks\Payments\Integrations;
 
 use Exception;
 use WC_Stripe_Payment_Request;
 use WC_Stripe_Helper;
-use Automattic\WooCommerce\Blocks\Assets\Api;
-use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 
 /**
  * Stripe payment method integration
  *
  * @since $VID:$
  */
-class Stripe {
-
+final class Stripe extends AbstractPaymentMethodIntegration {
 	/**
-	 * An instance of the AssetDataRegistry
+	 * Payment method name.
 	 *
-	 * @var AssetDataRegistry
+	 * @var string
 	 */
-	private $asset_registry;
-
-	/**
-	 * An instance of the Asset Api
-	 *
-	 * @var Api
-	 */
-	private $asset_api;
+	protected $payment_method_name = 'stripe';
 
 	/**
 	 * Stripe settings from the WP options table
@@ -45,40 +35,40 @@ class Stripe {
 	private $stripe_settings;
 
 	/**
-	 * Constructor for the class
-	 *
-	 * @param AssetDataRegistry $asset_registry  Used for registering data to pass along to the request.
-	 * @param Api               $asset_api       Used for registering scripts and styles.
+	 * Registers the block type with WordPress.
 	 */
-	public function __construct( AssetDataRegistry $asset_registry, Api $asset_api ) {
-		$this->asset_registry  = $asset_registry;
-		$this->asset_api       = $asset_api;
-		$this->stripe_settings = get_option( 'woocommerce_stripe_settings', [] );
-	}
-
-	/**
-	 * When called registers the stripe handle for enqueueing with cart and
-	 * checkout blocks.
-	 * Note: this assumes the stripe extension has registered this script.
-	 * This will also ensure stripe data is loaded with the blocks.
-	 */
-	public function register_assets() {
-		// only do when not in admin.
-		if ( ! is_admin() ) {
-			add_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before', [ $this, 'enqueue_data' ] );
+	public function register_payment_method() {
+		if ( class_exists( '\WC_Stripe' ) ) {
+			$this->stripe_settings = get_option( 'woocommerce_stripe_settings', [] );
+			parent::register_payment_method();
 		}
-		add_action( 'init', [ $this, 'register_scripts_and_styles' ] );
-		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_extension_assets' ] );
 	}
 
 	/**
-	 * When called, registers a stripe data object (with 'stripe_data' as the
-	 * key) for including everywhere stripe integration happens.
+	 * Returns an array of scripts/handles to be registered for this payment method.
+	 *
+	 * @return array
 	 */
-	public function enqueue_data() {
-		$available_gateways = WC()->payment_gateways->get_available_payment_gateways();
-		$stripe_gateway     = isset( $available_gateways['stripe'] ) && is_a( $available_gateways['stripe'], '\WC_Gateway_Stripe' ) ? $available_gateways['stripe'] : null;
-		$data               = [
+	protected function get_payment_method_scripts() {
+		// Register 3rd party script dependency.
+		wp_register_script( 'stripe', 'https://js.stripe.com/v3/', '', '3.0', true );
+
+		return [
+			[
+				'handle' => 'wc-payment-method-stripe',
+				'src'    => 'build/wc-payment-method-stripe.js',
+				'deps'   => [ 'stripe' ],
+			],
+		];
+	}
+
+	/**
+	 * Returns an array of key=>value pairs of data made available to the payment methods script.
+	 *
+	 * @return array
+	 */
+	protected function get_payment_method_script_data() {
+		return [
 			'stripeTotalLabel' => $this->get_total_label(),
 			'publicKey'        => $this->get_publishable_key(),
 			'allowPrepaidCard' => $this->get_allow_prepaid_card(),
@@ -88,31 +78,8 @@ class Stripe {
 				'height' => $this->get_button_height(),
 				'locale' => $this->get_button_locale(),
 			],
-			'inline_cc_form'   => $stripe_gateway && $stripe_gateway->inline_cc_form,
+			'inline_cc_form'   => $this->get_inline_cc_form(),
 		];
-		if ( ! $this->asset_registry->exists( 'stripe_data' ) ) {
-			$this->asset_registry->add( 'stripe_data', $data );
-		}
-		$this->enqueue_extension_assets();
-	}
-
-	/**
-	 * Register scripts and styles for extension.
-	 */
-	public function register_scripts_and_styles() {
-		wp_register_script( 'stripe', 'https://js.stripe.com/v3/', '', '3.0', true );
-		$this->asset_api->register_script(
-			'wc-payment-method-extensions',
-			'build/wc-payment-method-extensions.js',
-			[ 'stripe' ]
-		);
-	}
-
-	/**
-	 * Enqueues the payment method assets
-	 */
-	public function enqueue_extension_assets() {
-		wp_enqueue_script( 'wc-payment-method-extensions' );
 	}
 
 	/**
@@ -171,6 +138,15 @@ class Stripe {
 	 */
 	private function get_button_height() {
 		return isset( $this->stripe_settings['payment_request_button_height'] ) ? str_replace( 'px', '', $this->stripe_settings['payment_request_button_height'] ) : '64';
+	}
+
+	/**
+	 * Return the inline cc option.
+	 *
+	 * @return  string  A pixel value for the hight (defaults to '64')
+	 */
+	private function get_inline_cc_form() {
+		return isset( $this->stripe_settings['inline_cc_form'] ) && 'yes' === $this->stripe_settings['inline_cc_form'];
 	}
 
 	/**
