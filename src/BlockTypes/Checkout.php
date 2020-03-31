@@ -41,12 +41,6 @@ class Checkout extends AbstractBlock {
 		);
 	}
 
-	/**
-	 * Enqueues assets for the block editor context.
-	 */
-	public function enqueue_editor_assets() {
-		$this->enqueue_data();
-	}
 
 	/**
 	 * Append frontend scripts when rendering the block.

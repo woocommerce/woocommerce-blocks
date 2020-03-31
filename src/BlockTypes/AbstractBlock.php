@@ -53,6 +53,17 @@ abstract class AbstractBlock {
 	 * Will enqueue any editor assets a block needs to load
 	 */
 	public function enqueue_editor_assets() {
-		// noop, expected that children will override if needed.
+		$this->enqueue_data();
+	}
+
+	/**
+	 * Extra data passed through from server to client for block.
+	 *
+	 * @param array $attributes  Any attributes that currently are available from the block.
+	 *                           Note, this will be empty in the editor context when the block is
+	 *                           not in the post content on editor load.
+	 */
+	protected function enqueue_data( array $attributes = [] ) {
+		// noop. Child classes should override this if needed.
 	}
 }
