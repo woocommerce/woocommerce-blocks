@@ -468,7 +468,9 @@ const getFrontConfig = ( options = {} ) => {
 };
 
 const getPaymentMethodsExtensionConfig = ( options = {} ) => {
+	let { fileSuffix } = options;
 	const { alias, resolvePlugins = [] } = options;
+	fileSuffix = fileSuffix ? `-${ fileSuffix }` : '';
 	const resolve = alias
 		? {
 				alias,
@@ -479,13 +481,15 @@ const getPaymentMethodsExtensionConfig = ( options = {} ) => {
 		  };
 	return {
 		entry: {
-			'wc-payment-method-extensions':
-				'./assets/js/payment-method-extensions/index.js',
+			'wc-payment-method-stripe':
+				'./assets/js/payment-method-extensions/payment-methods/stripe/index.js',
+			'wc-payment-method-cheque':
+				'./assets/js/payment-method-extensions/payment-methods/cheque/index.js',
 		},
 		output: {
 			devtoolNamespace: 'wc',
 			path: path.resolve( __dirname, '../build/' ),
-			filename: `[name].js`,
+			filename: `[name]${ fileSuffix }.js`,
 			// This fixes an issue with multiple webpack projects using chunking
 			// overwriting each other's chunk loader function.
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
