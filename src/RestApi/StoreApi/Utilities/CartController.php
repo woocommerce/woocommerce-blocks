@@ -237,7 +237,12 @@ class CartController {
 					'woocommerce_rest_cart_product_no_stock',
 					sprintf(
 						/* translators: 1: quantity in stock, 2: product name  */
-						__( 'There are only %1$s units in stock remaining for &quot;%2$s&quot;.', 'woo-gutenberg-products-block' ),
+						_n(
+							'There is only %1$s unit of &quot;%2$s&quot; in stock.',
+							'There are only %1$s units of &quot;%2$s&quot; in stock.',
+							$product->get_stock_quantity(),
+							'woo-gutenberg-products-block'
+						),
 						wc_format_stock_quantity_for_display( $product->get_stock_quantity(), $product ),
 						$product->get_name()
 					),
