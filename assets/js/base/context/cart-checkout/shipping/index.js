@@ -50,7 +50,7 @@ const ShippingDataContext = createContext( DEFAULT_SHIPPING_CONTEXT_DATA );
 
 /**
  * @return {ShippingDataContext} Returns data and functions related to
- *                                     shipping methods.
+ *                               shipping methods.
  */
 export const useShippingDataContext = () => {
 	return useContext( ShippingDataContext );
@@ -85,12 +85,12 @@ export const ShippingDataProvider = ( { children } ) => {
 	const onShippingRateSelectFail = emitterSubscribers( subscriber )
 		.onShippingRateSelectFail;
 
-	// set observers on ref so it's always current
+	// set observers on ref so it's always current.
 	useEffect( () => {
 		currentObservers.current = observers;
 	}, [ observers ] );
 
-	// increment/decrement checkout calculating counts when shipping is loading
+	// increment/decrement checkout calculating counts when shipping is loading.
 	useEffect( () => {
 		if ( shippingRatesLoading ) {
 			dispatchActions.incrementCalculating();
@@ -118,7 +118,7 @@ export const ShippingDataProvider = ( { children } ) => {
 			shippingErrorStatus === INVALID_ADDRESS,
 	};
 
-	// emit events
+	// emit events.
 	// @todo add emitters for shipping rate selection.
 	useEffect( () => {
 		if ( ! shippingRatesLoading && currentErrorStatus.hasError ) {
@@ -141,7 +141,7 @@ export const ShippingDataProvider = ( { children } ) => {
 		shippingErrorStatus,
 	] );
 
-	//emit shipping rate selection events
+	// emit shipping rate selection events.
 	useEffect( () => {
 		if ( ! isSelectingRate && currentErrorStatus.hasError ) {
 			emitEvent(
