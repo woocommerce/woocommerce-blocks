@@ -243,50 +243,54 @@ const useStripeCheckoutSubscriptions = (
 			return await stripe.createSource( stripeBilling );
 		};
 		const onSubmit = async () => {
-			paymentStatus.setPaymentStatus().processing();
-			const { billingData } = billing;
-			// use token if it's set.
-			if ( sourceId !== 0 ) {
+			try {
+				paymentStatus.setPaymentStatus().processing();
+				const { billingData } = billing;
+				// use token if it's set.
+				if ( sourceId !== 0 ) {
+					paymentStatus.setPaymentStatus().success( billingData, {
+						paymentMethod: PAYMENT_METHOD_NAME,
+						paymentRequestType: 'cc',
+						sourceId,
+						shouldSavePayment,
+					} );
+					return true;
+				}
+				const stripeBilling = {
+					address: {
+						line1: billingData.address_1,
+						line2: billingData.address_2,
+						city: billingData.city,
+						state: billingData.state,
+						postal_code: billingData.postcode,
+						country: billingData.country,
+					},
+				};
+				if ( billingData.phone ) {
+					stripeBilling.phone = billingData.phone;
+				}
+				if ( billingData.email ) {
+					stripeBilling.email = billingData.email;
+				}
+				if ( billingData.first_name || billingData.last_name ) {
+					stripeBilling.name = `${ billingData.first_name } ${ billingData.last_name }`;
+				}
+
+				const response = await createSource( stripeBilling );
+				if ( response.error ) {
+					return onStripeError.current( response );
+				}
 				paymentStatus.setPaymentStatus().success( billingData, {
+					sourceId: response.source.id,
 					paymentMethod: PAYMENT_METHOD_NAME,
 					paymentRequestType: 'cc',
-					sourceId,
 					shouldSavePayment,
 				} );
+				setSourceId( response.source.id );
 				return true;
+			} catch ( e ) {
+				return e;
 			}
-			const stripeBilling = {
-				address: {
-					line1: billingData.address_1,
-					line2: billingData.address_2,
-					city: billingData.city,
-					state: billingData.state,
-					postal_code: billingData.postcode,
-					country: billingData.country,
-				},
-			};
-			if ( billingData.phone ) {
-				stripeBilling.phone = billingData.phone;
-			}
-			if ( billingData.email ) {
-				stripeBilling.email = billingData.email;
-			}
-			if ( billingData.first_name || billingData.last_name ) {
-				stripeBilling.name = `${ billingData.first_name } ${ billingData.last_name }`;
-			}
-
-			const response = await createSource( stripeBilling );
-			if ( response.error ) {
-				return onStripeError.current( response );
-			}
-			paymentStatus.setPaymentStatus().success( billingData, {
-				sourceId: response.source.id,
-				paymentMethod: PAYMENT_METHOD_NAME,
-				paymentRequestType: 'cc',
-				shouldSavePayment,
-			} );
-			setSourceId( response.source.id );
-			return true;
 		};
 		const onComplete = () => {
 			paymentStatus.setPaymentStatus().completed();
