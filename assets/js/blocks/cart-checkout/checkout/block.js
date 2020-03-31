@@ -20,7 +20,6 @@ import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import {
 	CheckoutProvider,
-	useValidationContext,
 	useCheckoutContext,
 	useEditorContext,
 	useShippingDataContext,
@@ -38,7 +37,6 @@ import {
 	Main,
 } from '@woocommerce/base-components/sidebar-layout';
 import { getSetting } from '@woocommerce/settings';
-import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 
 /**
  * Internal dependencies
@@ -59,42 +57,18 @@ const Checkout = ( {
 	cartItems = [],
 	cartTotals = {},
 	shippingRates = [],
-	scrollToTop,
 } ) => {
 	const { isEditor } = useEditorContext();
-	const {
-		hasOrder,
-		onCheckoutProcessing,
-		onCheckoutCompleteError,
-	} = useCheckoutContext();
+	const { hasOrder } = useCheckoutContext();
 	const {
 		shippingRatesLoading,
 		shippingAddress,
 		setShippingAddress,
 	} = useShippingDataContext();
 	const { billingData, setBillingData } = useBillingDataContext();
-	const {
-		hasValidationErrors,
-		showAllValidationErrors,
-	} = useValidationContext();
 
 	const [ contactFields, setContactFields ] = useState( {} );
 	const [ shippingAsBilling, setShippingAsBilling ] = useState( true );
-	const withErrors = hasValidationErrors();
-
-	useEffect( () => {
-		const unsubscribeProcessing = onCheckoutProcessing(
-			() => ! withErrors
-		);
-		const unsubscribeCompleteError = onCheckoutCompleteError( () => {
-			showAllValidationErrors();
-			scrollToTop( { focusableSelector: 'input:invalid' } );
-		} );
-		return () => {
-			unsubscribeProcessing();
-			unsubscribeCompleteError();
-		};
-	}, [ onCheckoutProcessing, onCheckoutCompleteError, withErrors ] );
 
 	const renderShippingRatesControlOption = ( option ) => ( {
 		label: decodeEntities( option.name ),
@@ -384,4 +358,4 @@ const Checkout = ( {
 	);
 };
 
-export default withScrollToTop( Block );
+export default Block;
