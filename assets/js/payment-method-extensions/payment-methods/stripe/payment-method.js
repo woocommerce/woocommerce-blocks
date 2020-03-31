@@ -18,6 +18,7 @@ import {
 	CardNumberElement,
 	CardExpiryElement,
 	CardCvcElement,
+	useElements,
 	useStripe,
 } from '@stripe/react-stripe-js';
 import { useState, useEffect, useRef, useCallback } from '@wordpress/element';
@@ -221,7 +222,8 @@ const useStripeCheckoutSubscriptions = (
 	sourceId,
 	setSourceId,
 	shouldSavePayment,
-	stripe
+	stripe,
+	elements
 ) => {
 	const onStripeError = useRef( ( event ) => {
 		return event;
@@ -239,8 +241,17 @@ const useStripeCheckoutSubscriptions = (
 			// inputs
 			return {};
 		};
-		const createSource = async ( stripeBilling ) => {
-			return await stripe.createSource( stripeBilling );
+		const createSource = async ( ownerInfo ) => {
+			const elementToGet = getStripeServerData().inline_cc_form
+				? CardElement
+				: CardNumberElement;
+			return await stripe.createSource(
+				elements.getElement( elementToGet ),
+				{
+					type: 'card',
+					owner: ownerInfo,
+				}
+			);
 		};
 		const onSubmit = async () => {
 			try {
@@ -256,7 +267,7 @@ const useStripeCheckoutSubscriptions = (
 					} );
 					return true;
 				}
-				const stripeBilling = {
+				const ownerInfo = {
 					address: {
 						line1: billingData.address_1,
 						line2: billingData.address_2,
@@ -267,16 +278,16 @@ const useStripeCheckoutSubscriptions = (
 					},
 				};
 				if ( billingData.phone ) {
-					stripeBilling.phone = billingData.phone;
+					ownerInfo.phone = billingData.phone;
 				}
 				if ( billingData.email ) {
-					stripeBilling.email = billingData.email;
+					ownerInfo.email = billingData.email;
 				}
 				if ( billingData.first_name || billingData.last_name ) {
-					stripeBilling.name = `${ billingData.first_name } ${ billingData.last_name }`;
+					ownerInfo.name = `${ billingData.first_name } ${ billingData.last_name }`;
 				}
 
-				const response = await createSource( stripeBilling );
+				const response = await createSource( ownerInfo );
 				if ( response.error ) {
 					return onStripeError.current( response );
 				}
@@ -347,6 +358,7 @@ const CreditCardComponent = ( {
 	const [ sourceId, setSourceId ] = useState( 0 );
 	const stripe = useStripe();
 	const [ shouldSavePayment, setShouldSavePayment ] = useState( true );
+	const elements = useElements();
 	const onStripeError = useStripeCheckoutSubscriptions(
 		eventRegistration,
 		paymentStatus,
@@ -354,7 +366,8 @@ const CreditCardComponent = ( {
 		sourceId,
 		setSourceId,
 		shouldSavePayment,
-		stripe
+		stripe,
+		elements
 	);
 	const onChange = ( paymentEvent ) => {
 		if ( paymentEvent.error ) {
