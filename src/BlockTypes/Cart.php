@@ -47,6 +47,7 @@ class Cart extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	public function render( $attributes = array(), $content = '' ) {
+		$this->enqueue_data();
 		do_action( 'woocommerce_blocks_enqueue_cart_block_scripts_before' );
 		\Automattic\WooCommerce\Blocks\Assets::register_block_script(
 			$this->block_name . '-frontend',
