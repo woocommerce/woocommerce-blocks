@@ -53,7 +53,18 @@ abstract class AbstractBlock {
 	 * Will enqueue any editor assets a block needs to load
 	 */
 	public function enqueue_editor_assets() {
-		$this->enqueue_data();
+		$this->enqueue_data_once();
+	}
+
+
+	/**
+	 * Ensures the enqueue_data method is only called once in a request.
+	 */
+	public function enqueue_data_once() {
+		static $has_run = false;
+		if ( ! $has_run ) {
+			$this->enqueue_data();
+		}
 	}
 
 	/**
