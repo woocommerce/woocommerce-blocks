@@ -348,6 +348,7 @@ const CreditCardComponent = ( {
 		paymentStatus,
 		billing,
 		sourceId,
+		setSourceId,
 		shouldSavePayment,
 		stripe
 	);
