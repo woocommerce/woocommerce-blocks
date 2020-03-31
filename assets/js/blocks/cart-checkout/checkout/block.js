@@ -43,7 +43,7 @@ import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
  * Internal dependencies
  */
 import CheckoutSidebar from './sidebar/index.js';
-import CheckoutError from './checkout-error/index.js';
+import CheckoutOrderError from './checkout-order-error/index.js';
 import './style.scss';
 
 const Block = ( { isEditor = false, ...props } ) => (
@@ -129,7 +129,7 @@ const Checkout = ( {
 	}, [ shippingAsBilling, setBillingData ] );
 
 	if ( ! isEditor && ! hasOrder ) {
-		return <CheckoutError />;
+		return <CheckoutOrderError />;
 	}
 
 	return (
