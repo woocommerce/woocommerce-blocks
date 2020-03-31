@@ -24,10 +24,6 @@ class OrderController {
 	 * @return \WC_Order A new order object.
 	 */
 	public function create_order_from_cart() {
-		if ( ! WC()->cart ) {
-			return;
-		}
-
 		if ( WC()->cart->is_empty() ) {
 			throw new RouteException(
 				'woocommerce_rest_cart_empty',

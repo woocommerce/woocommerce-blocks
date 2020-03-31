@@ -92,10 +92,6 @@ class Checkout extends AbstractRoute {
 	 * @return \WP_REST_Response
 	 */
 	protected function get_route_response( \WP_REST_Request $request ) {
-		if ( is_admin() ) {
-			return;
-		}
-
 		$order_object = $this->create_or_update_draft_order();
 
 		return $this->prepare_item_for_response(
@@ -188,10 +184,6 @@ class Checkout extends AbstractRoute {
 	 * @return array
 	 */
 	protected function get_draft_order_id() {
-		if ( ! WC()->session ) {
-			return 0;
-		}
-
 		return WC()->session->get( 'store_api_draft_order', 0 );
 	}
 
@@ -201,10 +193,6 @@ class Checkout extends AbstractRoute {
 	 * @param integer $order_id Draft order ID.
 	 */
 	protected function set_draft_order_id( $order_id ) {
-		if ( ! WC()->session ) {
-			return;
-		}
-
 		WC()->session->set( 'store_api_draft_order', $order_id );
 	}
 
