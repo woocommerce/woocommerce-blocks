@@ -8,13 +8,7 @@
  */
 import { getSetting } from '@woocommerce/settings';
 
-const defaultCheckoutData = {
-	billing_address: {},
-};
-
-// Checkout data may be null in editor/admin.
-const checkoutData =
-	getSetting( 'checkoutData', defaultCheckoutData ) || defaultCheckoutData;
+const checkoutData = getSetting( 'checkoutData', {} );
 
 /**
  * @type {BillingData}
