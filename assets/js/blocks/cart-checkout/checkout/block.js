@@ -110,7 +110,9 @@ const Checkout = ( {
 	);
 	useEffect( () => {
 		if ( shippingAsBilling ) {
-			setBillingData( shippingAddress );
+			setBillingData( { ...shippingAddress, shippingAsBilling } );
+		} else {
+			setBillingData( { shippingAsBilling } );
 		}
 	}, [ shippingAsBilling, setBillingData ] );
 
