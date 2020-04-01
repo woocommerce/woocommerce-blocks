@@ -49,10 +49,6 @@ const CheckoutProcessor = ( { scrollToTop } ) => {
 	 * @return {boolean} True if everything was successful.
 	 */
 	const processCheckout = useCallback( async () => {
-		if ( withErrors ) {
-			return false;
-		}
-
 		await triggerFetch( {
 			path: '/wc/store/checkout',
 			method: 'POST',
@@ -95,8 +91,6 @@ const CheckoutProcessor = ( { scrollToTop } ) => {
 					dispatchActions.setRedirectUrl(
 						response.payment_result.redirect_url
 					);
-
-					// @todo do we need to trigger more handling here?
 				} );
 			} )
 			.catch( ( error ) => {
@@ -114,6 +108,10 @@ const CheckoutProcessor = ( { scrollToTop } ) => {
 		withErrors,
 	] );
 
+	const checkValidation = useCallback( () => {
+		return ! withErrors;
+	}, [ withErrors ] );
+
 	/**
 	 * When the checkout is processing, process the order.
 	 */
@@ -123,6 +121,15 @@ const CheckoutProcessor = ( { scrollToTop } ) => {
 			unsubscribeProcessing();
 		};
 	}, [ onCheckoutProcessing, processCheckout ] );
+
+	useEffect( () => {
+		const unsubscribeCompleteSuccess = onCheckoutProcessing(
+			checkValidation
+		);
+		return () => {
+			unsubscribeCompleteSuccess();
+		};
+	}, [ onCheckoutProcessing, checkValidation ] );
 
 	useEffect( () => {
 		const unsubscribeCompleteError = onCheckoutCompleteError( () => {
