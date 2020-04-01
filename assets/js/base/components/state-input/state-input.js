@@ -14,6 +14,7 @@ import { ValidatedSelect } from '../select';
 
 const StateInput = ( {
 	className,
+	id,
 	states,
 	country,
 	label,
@@ -98,6 +99,7 @@ const StateInput = ( {
 	}
 	return (
 		<ValidatedTextInput
+			id={ id }
 			className={ className }
 			label={ label }
 			onChange={ onChangeState }
@@ -117,6 +119,7 @@ StateInput.propTypes = {
 	).isRequired,
 	onChange: PropTypes.func.isRequired,
 	autoComplete: PropTypes.string,
+	id: PropTypes.string,
 	className: PropTypes.string,
 	country: PropTypes.string,
 	label: PropTypes.string,
