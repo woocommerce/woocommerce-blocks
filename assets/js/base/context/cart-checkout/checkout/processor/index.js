@@ -21,6 +21,7 @@ import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
  */
 const CheckoutProcessor = ( { scrollToTop } ) => {
 	const {
+		hasError,
 		onCheckoutProcessing,
 		onCheckoutCompleteError,
 		dispatchActions,
@@ -31,12 +32,18 @@ const CheckoutProcessor = ( { scrollToTop } ) => {
 	} = useValidationContext();
 	const { shippingAddress } = useShippingDataContext();
 	const { billingData } = useBillingDataContext();
-	const { activePaymentMethod, errorMessage } = usePaymentMethodDataContext();
+	const {
+		activePaymentMethod,
+		currentStatus: currentPaymentStatus,
+		errorMessage,
+	} = usePaymentMethodDataContext();
 	const { addErrorNotice, removeNotice } = useStoreNotices();
 	const currentBillingData = useRef( billingData );
 	const currentShippingAddress = useRef( shippingAddress );
 
 	const withErrors = hasValidationErrors();
+	const paidAndWithoutErrors =
+		! hasError && ! withErrors && currentPaymentStatus.isSuccessful;
 
 	useEffect( () => {
 		currentBillingData.current = billingData;
@@ -53,13 +60,21 @@ const CheckoutProcessor = ( { scrollToTop } ) => {
 		}
 	}, [ errorMessage ] );
 
+	const checkValidation = useCallback( () => {
+		return ! withErrors;
+	}, [ withErrors ] );
+
 	/**
 	 * Process an order via the /wc/store/checkout endpoint.
 	 *
 	 * @return {boolean} True if everything was successful.
 	 */
-	const processCheckout = useCallback( async () => {
-		await triggerFetch( {
+	useEffect( () => {
+		if ( ! paidAndWithoutErrors ) {
+			return;
+		}
+
+		triggerFetch( {
 			path: '/wc/store/checkout',
 			method: 'POST',
 			data: {
@@ -108,29 +123,13 @@ const CheckoutProcessor = ( { scrollToTop } ) => {
 					id: 'checkout',
 				} );
 			} );
-
-		return true;
 	}, [
 		addErrorNotice,
 		activePaymentMethod,
 		currentBillingData,
 		currentShippingAddress,
-		withErrors,
+		paidAndWithoutErrors,
 	] );
-
-	const checkValidation = useCallback( () => {
-		return ! withErrors;
-	}, [ withErrors ] );
-
-	/**
-	 * When the checkout is processing, process the order.
-	 */
-	useEffect( () => {
-		const unsubscribeProcessing = onCheckoutProcessing( processCheckout );
-		return () => {
-			unsubscribeProcessing();
-		};
-	}, [ onCheckoutProcessing, processCheckout ] );
 
 	useEffect( () => {
 		const unsubscribeCompleteSuccess = onCheckoutProcessing(
