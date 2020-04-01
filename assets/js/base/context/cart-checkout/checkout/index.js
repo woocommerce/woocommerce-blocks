@@ -45,8 +45,8 @@ export const CheckoutProvider = ( {
 					activePaymentMethod={ initialActivePaymentMethod }
 				>
 					<ShippingDataProvider>
-						{ children }
 						<CheckoutProcessor />
+						{ children }
 					</ShippingDataProvider>
 				</PaymentMethodDataProvider>
 			</BillingDataProvider>
