@@ -31,23 +31,14 @@ class PaymentMethodAssets {
 	private $asset_registry;
 
 	/**
-	 * An instance of the Asset Api
-	 *
-	 * @var Api
-	 */
-	private $asset_api;
-
-	/**
 	 * Constructor for class
 	 *
 	 * @param PaymentMethodRegistry $payment_method_registry An instance of Payment Method Registry.
 	 * @param AssetDataRegistry     $asset_registry  Used for registering data to pass along to the request.
-	 * @param Api                   $asset_api       Used for registering scripts and styles.
 	 */
-	public function __construct( PaymentMethodRegistry $payment_method_registry, AssetDataRegistry $asset_registry, Api $asset_api ) {
+	public function __construct( PaymentMethodRegistry $payment_method_registry, AssetDataRegistry $asset_registry ) {
 		$this->payment_method_registry = $payment_method_registry;
 		$this->asset_registry          = $asset_registry;
-		$this->asset_api               = $asset_api;
 		$this->init();
 	}
 
@@ -60,25 +51,32 @@ class PaymentMethodAssets {
 	}
 
 	/**
-	 * Registered payment method scripts for usage.
+	 * Register payment method scripts for usage.
 	 */
 	public function register_payment_method_scripts() {
 		$payment_methods = $this->payment_method_registry->get_all_registered();
-
 		foreach ( $payment_methods as $payment_method ) {
-			$scripts = array_filter( (array) $payment_method->scripts );
-
-			if ( ! empty( $scripts ) ) {
-				foreach ( $scripts as $script ) {
-					$this->asset_api->register_script(
-						$script['handle'],
-						$script['src'],
-						$script['deps']
-					);
-					wp_enqueue_script( $script['handle'] );
+			$script_handles       = $payment_method->get_payment_method_script_handles();
+			$admin_script_handles = $payment_method->get_payment_method_script_handles_for_admin();
+			if ( is_admin() && ! empty( $admin_script_handles ) ) {
+				foreach ( $admin_script_handles as $script_handle ) {
+					wp_enqueue_script( $script_handle );
+				}
+			}
+			if ( ! is_admin() && ! empty( $script_handles ) ) {
+				foreach ( $script_handles as $script_handle ) {
+					wp_enqueue_script( $script_handle );
 				}
 			}
 		}
+	}
+
+	/**
+	 * Register payment method styles for usage.
+	 */
+	public function register_payment_method_styles() {
+		// @todo not sure where/how we should enqueue these yet. They can't
+		// be enqueued in the block render function.
 	}
 
 	/**
@@ -88,10 +86,10 @@ class PaymentMethodAssets {
 		$payment_methods = $this->payment_method_registry->get_all_registered();
 
 		foreach ( $payment_methods as $payment_method ) {
-			$asset_data_key = $payment_method->name . '_data';
+			$asset_data_key = $payment_method->get_name() . '_data';
 
 			if ( ! $this->asset_registry->exists( $asset_data_key ) ) {
-				$this->asset_registry->add( $asset_data_key, $payment_method->data );
+				$this->asset_registry->add( $asset_data_key, $payment_method->get_payment_method_data() );
 			}
 		}
 	}
