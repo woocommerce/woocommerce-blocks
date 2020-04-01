@@ -165,8 +165,10 @@ export const ShippingDataProvider = ( { children } ) => {
 
 	// dispatch checkout error if there's a shipping error.
 	useEffect( () => {
-		dispatchActions.setHasError( currentErrorStatus.hasError );
-	}, [ currentErrorStatus, dispatchActions.setHasError ] );
+		if ( currentErrorStatus.hasError ) {
+			dispatchActions.setHasError( true );
+		}
+	}, [ currentErrorStatus.hasError, dispatchActions.setHasError ] );
 
 	/**
 	 * @type {ShippingDataContext}
