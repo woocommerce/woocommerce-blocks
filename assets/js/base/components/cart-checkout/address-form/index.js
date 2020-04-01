@@ -57,10 +57,10 @@ const AddressForm = ( {
 	id,
 	fields = Object.keys( defaultAddressFields ),
 	fieldConfig = {},
+	instanceId,
 	onChange,
 	type = 'shipping',
 	values,
-	instanceId,
 } ) => {
 	const {
 		getValidationError,

@@ -65,6 +65,7 @@ const StateInput = ( {
 			<>
 				<ValidatedSelect
 					className={ className }
+					id={ id }
 					label={ label }
 					onChange={ onChangeState }
 					options={ options }
@@ -99,8 +100,8 @@ const StateInput = ( {
 	}
 	return (
 		<ValidatedTextInput
-			id={ id }
 			className={ className }
+			id={ id }
 			label={ label }
 			onChange={ onChangeState }
 			autoComplete={ autoComplete }
