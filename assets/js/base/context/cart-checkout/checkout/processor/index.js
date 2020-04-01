@@ -31,7 +31,7 @@ const CheckoutProcessor = ( { scrollToTop } ) => {
 	} = useValidationContext();
 	const { shippingAddress } = useShippingDataContext();
 	const { billingData } = useBillingDataContext();
-	const { activePaymentMethod } = usePaymentMethodDataContext();
+	const { activePaymentMethod, errorMessage } = usePaymentMethodDataContext();
 	const { addErrorNotice } = useStoreNotices();
 	const currentBillingData = useRef( billingData );
 	const currentShippingAddress = useRef( shippingAddress );
@@ -42,6 +42,12 @@ const CheckoutProcessor = ( { scrollToTop } ) => {
 		currentBillingData.current = billingData;
 		currentShippingAddress.current = shippingAddress;
 	}, [ billingData, shippingAddress ] );
+
+	useEffect( () => {
+		if ( errorMessage ) {
+			addErrorNotice( errorMessage );
+		}
+	}, [ errorMessage ] );
 
 	/**
 	 * Process an order via the /wc/store/checkout endpoint.
