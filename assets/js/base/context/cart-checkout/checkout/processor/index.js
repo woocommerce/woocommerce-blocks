@@ -32,7 +32,7 @@ const CheckoutProcessor = ( { scrollToTop } ) => {
 	const { shippingAddress } = useShippingDataContext();
 	const { billingData } = useBillingDataContext();
 	const { activePaymentMethod, errorMessage } = usePaymentMethodDataContext();
-	const { addErrorNotice } = useStoreNotices();
+	const { addErrorNotice, removeNotice } = useStoreNotices();
 	const currentBillingData = useRef( billingData );
 	const currentShippingAddress = useRef( shippingAddress );
 
@@ -45,7 +45,11 @@ const CheckoutProcessor = ( { scrollToTop } ) => {
 
 	useEffect( () => {
 		if ( errorMessage ) {
-			addErrorNotice( errorMessage );
+			addErrorNotice( errorMessage, {
+				id: 'payment-method-error',
+			} );
+		} else {
+			removeNotice( 'payment-method-error' );
 		}
 	}, [ errorMessage ] );
 
