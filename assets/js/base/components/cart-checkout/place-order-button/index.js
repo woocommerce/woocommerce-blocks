@@ -9,18 +9,13 @@ import { useCheckoutContext } from '@woocommerce/base-context';
 import Button from '../button';
 
 const PlaceOrderButton = () => {
-	const {
-		submitLabel,
-		onSubmit,
-		hasError,
-		isCalculating,
-	} = useCheckoutContext();
+	const { submitLabel, onSubmit, isCalculating } = useCheckoutContext();
 
 	return (
 		<Button
 			className="wc-block-components-checkout-place-order-button"
 			onClick={ onSubmit }
-			disabled={ hasError || isCalculating }
+			disabled={ isCalculating }
 		>
 			{ submitLabel }
 		</Button>
