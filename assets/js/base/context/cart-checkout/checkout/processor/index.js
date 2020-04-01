@@ -132,11 +132,9 @@ const CheckoutProcessor = ( { scrollToTop } ) => {
 	] );
 
 	useEffect( () => {
-		const unsubscribeCompleteSuccess = onCheckoutProcessing(
-			checkValidation
-		);
+		const unsubscribeProcessing = onCheckoutProcessing( checkValidation );
 		return () => {
-			unsubscribeCompleteSuccess();
+			unsubscribeProcessing();
 		};
 	}, [ onCheckoutProcessing, checkValidation ] );
 
