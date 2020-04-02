@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import FeedbackPrompt from '@woocommerce/block-components/feedback-prompt';
 import { InspectorControls } from '@wordpress/block-editor';
+import { useState } from '@wordpress/element';
 import {
 	Disabled,
 	PanelBody,
@@ -171,10 +172,16 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
  * Component to handle edit mode of "Cart Block".
  */
 const CartEditor = ( { className, attributes, setAttributes } ) => {
+	const defaultView = 'full';
+	const [ previousView, setPreviousView ] = useState( defaultView );
+
 	const viewRenderCallback = ( currentView ) => {
-		recordEditorEvent( 'cart_view', {
-			current_view: currentView,
-		} );
+		if ( previousView !== currentView ) {
+			recordEditorEvent( 'cart_view_toggle', {
+				current_view: currentView,
+			} );
+			setPreviousView( currentView );
+		}
 		return (
 			<>
 				{ currentView === 'full' && (
@@ -248,7 +255,7 @@ const CartEditor = ( { className, attributes, setAttributes } ) => {
 						),
 					},
 				] }
-				defaultView={ 'full' }
+				defaultView={ defaultView }
 				render={ viewRenderCallback }
 			/>
 		</div>
