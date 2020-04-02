@@ -13,20 +13,14 @@ namespace Automattic\WooCommerce\Blocks\Payments\Integrations;
 use Exception;
 use WC_Stripe_Payment_Request;
 use WC_Stripe_Helper;
+use Automattic\WooCommerce\Blocks\Assets\Api;
 
 /**
  * Cheque payment method integration
  *
  * @since $VID:$
  */
-final class Cheque extends AbstractPaymentMethodIntegration {
-	/**
-	 * Payment method name.
-	 *
-	 * @var string
-	 */
-	protected $payment_method_name = 'cheque';
-
+final class Cheque extends AbstractPaymentMethodType {
 	/**
 	 * Settings from the WP options table
 	 *
@@ -35,11 +29,28 @@ final class Cheque extends AbstractPaymentMethodIntegration {
 	private $cheque_settings;
 
 	/**
-	 * Registers the block type with WordPress.
+	 * An instance of the Asset Api
+	 *
+	 * @var Api
 	 */
-	public function register_payment_method() {
+	private $asset_api;
+
+	/**
+	 * Constructor
+	 *
+	 * @param string $name The name of the payment method type.
+	 * @param Api    $asset_api An instance of Api.
+	 */
+	public function __construct( $name, Api $asset_api ) {
+		$this->asset_api = $asset_api;
+		parent::__construct( $name );
+	}
+
+	/**
+	 * Initializes the payment method type.
+	 */
+	public function initialize() {
 		$this->cheque_settings = get_option( 'woocommerce_cheque_settings', [] );
-		parent::register_payment_method();
 	}
 
 	/**
@@ -47,14 +58,12 @@ final class Cheque extends AbstractPaymentMethodIntegration {
 	 *
 	 * @return array
 	 */
-	protected function get_payment_method_scripts() {
-		return [
-			[
-				'handle' => 'wc-payment-method-cheque',
-				'src'    => 'build/wc-payment-method-cheque.js',
-				'deps'   => [],
-			],
-		];
+	public function get_payment_method_script_handles() {
+		$this->asset_api->register_script(
+			'wc-payment-method-cheque',
+			'build/wc-payment-method-cheque.js'
+		);
+		return [ 'wc-payment-method-cheque' ];
 	}
 
 	/**
@@ -62,7 +71,7 @@ final class Cheque extends AbstractPaymentMethodIntegration {
 	 *
 	 * @return array
 	 */
-	protected function get_payment_method_script_data() {
+	public function get_payment_method_data() {
 		return [
 			'title'       => isset( $this->cheque_settings['title'] ) ? $this->cheque_settings['title'] : '',
 			'description' => isset( $this->cheque_settings['description'] ) ? $this->cheque_settings['description'] : '',

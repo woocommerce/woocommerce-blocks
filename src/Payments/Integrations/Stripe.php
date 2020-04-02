@@ -13,20 +13,15 @@ namespace Automattic\WooCommerce\Blocks\Payments\Integrations;
 use Exception;
 use WC_Stripe_Payment_Request;
 use WC_Stripe_Helper;
+use Automattic\WooCommerce\Blocks\Assets\Api;
+
 
 /**
  * Stripe payment method integration
  *
  * @since $VID:$
  */
-final class Stripe extends AbstractPaymentMethodIntegration {
-	/**
-	 * Payment method name.
-	 *
-	 * @var string
-	 */
-	protected $payment_method_name = 'stripe';
-
+final class Stripe extends AbstractPaymentMethodType {
 	/**
 	 * Stripe settings from the WP options table
 	 *
@@ -35,13 +30,28 @@ final class Stripe extends AbstractPaymentMethodIntegration {
 	private $stripe_settings;
 
 	/**
-	 * Registers the block type with WordPress.
+	 * An instance of the Asset Api
+	 *
+	 * @var Api
 	 */
-	public function register_payment_method() {
-		if ( class_exists( '\WC_Stripe' ) ) {
-			$this->stripe_settings = get_option( 'woocommerce_stripe_settings', [] );
-			parent::register_payment_method();
-		}
+	private $asset_api;
+
+	/**
+	 * Constructor
+	 *
+	 * @param string $name The name of the payment method type.
+	 * @param Api    $asset_api An instance of Api.
+	 */
+	public function __construct( $name, Api $asset_api ) {
+		$this->asset_api = $asset_api;
+		parent::__construct( $name );
+	}
+
+	/**
+	 * Initializes the payment method type.
+	 */
+	public function initialize() {
+		$this->stripe_settings = get_option( 'woocommerce_stripe_settings', [] );
 	}
 
 	/**
@@ -49,17 +59,15 @@ final class Stripe extends AbstractPaymentMethodIntegration {
 	 *
 	 * @return array
 	 */
-	protected function get_payment_method_scripts() {
+	public function get_payment_method_script_handles() {
 		// Register 3rd party script dependency.
 		wp_register_script( 'stripe', 'https://js.stripe.com/v3/', '', '3.0', true );
-
-		return [
-			[
-				'handle' => 'wc-payment-method-stripe',
-				'src'    => 'build/wc-payment-method-stripe.js',
-				'deps'   => [ 'stripe' ],
-			],
-		];
+		$this->asset_api->register_script(
+			'wc-payment-method-stripe',
+			'build/wc-payment-method-stripe.js',
+			[ 'stripe' ]
+		);
+		return [ 'wc-payment-method-stripe' ];
 	}
 
 	/**
@@ -67,7 +75,7 @@ final class Stripe extends AbstractPaymentMethodIntegration {
 	 *
 	 * @return array
 	 */
-	protected function get_payment_method_script_data() {
+	public function get_payment_method_data() {
 		return [
 			'stripeTotalLabel' => $this->get_total_label(),
 			'publicKey'        => $this->get_publishable_key(),

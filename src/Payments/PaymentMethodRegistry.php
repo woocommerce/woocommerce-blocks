@@ -17,60 +17,46 @@ final class PaymentMethodRegistry {
 	/**
 	 * Registered payment methods, as `$name => $instance` pairs.
 	 *
-	 * @var PaymentMethodType[]
+	 * @var PaymentMethodTypeInterface[]
 	 */
 	private $registered_payment_methods = [];
 
 	/**
-	 * Container for the main instance of the class.
-	 *
-	 * @var PaymentMethodRegistry|null
-	 */
-	private static $instance = null;
-
-	/**
 	 * Registers a payment method.
 	 *
-	 * @param string|PaymentMethodType $name Payment method name, or alternatively a PaymentMethodType instance.
-	 * @param array                    $args Optional. Array of payment method type arguments.
-	 * @return PaymentMethodType|false The registered payment method type on success, or false on failure.
+	 * @param PaymentMethodTypeInterface $payment_method_type An instance of PaymentMethodTypeInterface.
+	 *
+	 * @return boolean True means registered successfully.
 	 */
-	public function register( $name, $args = array() ) {
-		$payment_method = null;
-
-		if ( $name instanceof PaymentMethodType ) {
-			$payment_method = $name;
-			$name           = $payment_method->name;
-		}
-
-		if ( ! is_string( $name ) ) {
-			_doing_it_wrong( __METHOD__, esc_html__( 'Payment method names must be strings.', 'woo-gutenberg-products-block' ), '2.5.0' );
-			return false;
-		}
-
+	public function register( PaymentMethodTypeInterface $payment_method_type ) {
+		$name = $payment_method_type->get_name();
 		if ( $this->is_registered( $name ) ) {
 			/* translators: %s: Payment method name. */
 			_doing_it_wrong( __METHOD__, esc_html( sprintf( __( 'Payment method "%s" is already registered.', 'woo-gutenberg-products-block' ), $name ) ), '2.5.0' );
 			return false;
 		}
+		$this->registered_payment_methods[ $name ] = $payment_method_type;
+		return true;
+	}
 
-		if ( ! $payment_method ) {
-			$payment_method = new PaymentMethodType( $name, $args );
+	/**
+	 * Initializes all payment method types.
+	 */
+	public function initialize() {
+		$registered_payment_method_types = $this->get_all_registered();
+		foreach ( $registered_payment_method_types as $registered_type ) {
+			$registered_type->initialize();
 		}
-
-		$this->registered_payment_methods[ $name ] = $payment_method;
-
-		return $payment_method;
 	}
 
 	/**
 	 * Un-register a payment method.
 	 *
-	 * @param string|PaymentMethodType $name Payment method name, or alternatively a PaymentMethodType instance.
-	 * @return PaymentMethodType|false The unregistered payment method on success, or false on failure.
+	 * @param string|PaymentMethodTypeInterface $name Payment method name, or alternatively a PaymentMethodTypeInterface instance.
+	 * @return boolean True means unregistered successfully.
 	 */
 	public function unregister( $name ) {
-		if ( $name instanceof PaymentMethodType ) {
+		if ( $name instanceof PaymentMethodTypeInterface ) {
 			$name = $name->name;
 		}
 
@@ -90,7 +76,7 @@ final class PaymentMethodRegistry {
 	 * Retrieves a registered payment method.
 	 *
 	 * @param string $name Payment method name.
-	 * @return PaymentMethodType|null The registered payment method, or null if it is not registered.
+	 * @return PaymentMethodTypeInterface|null The registered payment method, or null if it is not registered.
 	 */
 	public function get_registered( $name ) {
 		if ( ! $this->is_registered( $name ) ) {
@@ -103,7 +89,7 @@ final class PaymentMethodRegistry {
 	/**
 	 * Retrieves all registered payment methods.
 	 *
-	 * @return PaymentMethodType[]
+	 * @return PaymentMethodTypeInterface[]
 	 */
 	public function get_all_registered() {
 		return $this->registered_payment_methods;
@@ -117,20 +103,5 @@ final class PaymentMethodRegistry {
 	 */
 	public function is_registered( $name ) {
 		return isset( $this->registered_payment_methods[ $name ] );
-	}
-
-	/**
-	 * Utility method to retrieve the main instance of the class.
-	 *
-	 * The instance will be created if it does not exist yet.
-	 *
-	 * @return PaymentMethodRegistry The main instance.
-	 */
-	public static function get_instance() {
-		if ( null === self::$instance ) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
 	}
 }
