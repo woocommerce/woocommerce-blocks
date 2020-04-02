@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { select } from '@wordpress/data-controls';
+
 /**
  * Internal dependencies
  */
