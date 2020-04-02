@@ -50,8 +50,10 @@ class Checkout extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	public function render( $attributes = array(), $content = '' ) {
+		do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before' );
 		$this->enqueue_data( $attributes );
 		$this->enqueue_scripts( $attributes );
+		do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_after' );
 		return $content . $this->get_skeleton();
 	}
 

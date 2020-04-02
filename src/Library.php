@@ -143,7 +143,7 @@ class Library {
 	 * Register payment methods.
 	 */
 	public static function register_payment_methods() {
-		$payment_method_registry = Package::container()->get( PaymentMethodRegistry::class )->initialize();
+		Package::container()->get( PaymentMethodRegistry::class )->initialize();
 	}
 
 	/**

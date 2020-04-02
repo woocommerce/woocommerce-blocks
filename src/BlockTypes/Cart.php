@@ -49,8 +49,10 @@ class Cart extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	public function render( $attributes = array(), $content = '' ) {
+		do_action( 'woocommerce_blocks_enqueue_cart_block_scripts_before' );
 		$this->enqueue_data( $attributes );
 		$this->enqueue_scripts( $attributes );
+		do_action( 'woocommerce_blocks_enqueue_cart_block_scripts_after' );
 		return $content . $this->get_skeleton();
 	}
 
@@ -114,8 +116,6 @@ class Cart extends AbstractBlock {
 	 */
 	protected function enqueue_scripts( array $attributes = [] ) {
 		Assets::register_block_script( $this->block_name . '-frontend', $this->block_name . '-block-frontend' );
-
-		do_action( 'woocommerce_blocks_cart_enqueue_scripts' );
 	}
 
 	/**
