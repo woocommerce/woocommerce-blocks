@@ -26,20 +26,6 @@ class CartItemSchema extends AbstractSchema {
 	protected $title = 'cart_item';
 
 	/**
-	 * We use product schema for line item price info.
-	 *
-	 * @var ProductSchema
-	 */
-	protected $product_schema;
-
-	/**
-	 * Constructor.
-	 */
-	public function __construct() {
-		$this->product_schema = new ProductSchema();
-	}
-
-	/**
 	 * Cart schema properties.
 	 *
 	 * @return array
@@ -56,18 +42,13 @@ class CartItemSchema extends AbstractSchema {
 				'description' => __( 'The cart item product or variation ID.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
-				'arg_options' => [
-					'sanitize_callback' => 'absint',
-					'validate_callback' => [ $this, 'product_id_exists' ],
-				],
+				'readonly'    => true,
 			],
 			'quantity'            => [
 				'description' => __( 'Quantity of this item in the cart.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
-				'arg_options' => [
-					'sanitize_callback' => 'wc_stock_amount',
-				],
+				'readonly'    => true,
 			],
 			'name'                => [
 				'description' => __( 'Product name.', 'woo-gutenberg-products-block' ),
@@ -79,16 +60,19 @@ class CartItemSchema extends AbstractSchema {
 				'description' => __( 'A short summary (or excerpt from the full description) for the product in HTML format.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
 			],
 			'short_description'   => [
 				'description' => __( 'Product short description in HTML format.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
 			],
 			'description'         => [
 				'description' => __( 'Product full description in HTML format.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
 			],
 			'sku'                 => [
 				'description' => __( 'Stock keeping unit, if applicable.', 'woo-gutenberg-products-block' ),
@@ -133,38 +117,45 @@ class CartItemSchema extends AbstractSchema {
 							'description' => __( 'Image ID.', 'woo-gutenberg-products-block' ),
 							'type'        => 'integer',
 							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
 						],
 						'src'       => [
 							'description' => __( 'Full size image URL.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'format'      => 'uri',
 							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
 						],
 						'thumbnail' => [
 							'description' => __( 'Thumbnail URL.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'format'      => 'uri',
 							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
 						],
 						'srcset'    => [
 							'description' => __( 'Thumbnail srcset for responsive images.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
 						],
 						'sizes'     => [
 							'description' => __( 'Thumbnail sizes for responsive images.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
 						],
 						'name'      => [
 							'description' => __( 'Image name.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
 						],
 						'alt'       => [
 							'description' => __( 'Image alternative text.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
 						],
 					],
 				],
@@ -173,6 +164,7 @@ class CartItemSchema extends AbstractSchema {
 				'description' => __( 'Chosen attributes (for variations).', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
 				'items'       => [
 					'type'       => 'object',
 					'properties' => [
@@ -180,11 +172,13 @@ class CartItemSchema extends AbstractSchema {
 							'description' => __( 'Variation attribute name.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
 						],
 						'value'     => [
 							'description' => __( 'Variation attribute value.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
 						],
 					],
 				],
@@ -309,17 +303,6 @@ class CartItemSchema extends AbstractSchema {
 	}
 
 	/**
-	 * Check given ID exists,
-	 *
-	 * @param integer $product_id Product ID.
-	 * @return bool
-	 */
-	public function product_id_exists( $product_id ) {
-		$post = get_post( (int) $product_id );
-		return $post && in_array( $post->post_type, [ 'product', 'product_variation' ], true );
-	}
-
-	/**
 	 * Convert a WooCommerce cart item to an object suitable for the response.
 	 *
 	 * @param array $cart_item Cart item array.
@@ -369,8 +352,11 @@ class CartItemSchema extends AbstractSchema {
 		$tax_display_mode = in_array( $tax_display_mode, [ 'incl', 'excl' ], true ) ? $tax_display_mode : get_option( 'woocommerce_tax_display_shop' );
 		$price_function   = 'incl' === $tax_display_mode ? 'wc_get_price_including_tax' : 'wc_get_price_excluding_tax';
 
-		// Get individual product prices from product schema.
-		$prices = $this->product_schema->get_prices( $product, $tax_display_mode );
+		// Get individual product prices.
+		$prices['price']         = $this->prepare_money_response( $price_function( $product ), wc_get_price_decimals() );
+		$prices['regular_price'] = $this->prepare_money_response( $price_function( $product, [ 'price' => $product->get_regular_price() ] ), wc_get_price_decimals() );
+		$prices['sale_price']    = $this->prepare_money_response( $price_function( $product, [ 'price' => $product->get_sale_price() ] ), wc_get_price_decimals() );
+		$prices['price_range']   = $this->get_price_range( $product );
 
 		// Add raw prices (prices with greater precision).
 		$prices['raw_prices'] = [
@@ -381,6 +367,47 @@ class CartItemSchema extends AbstractSchema {
 		];
 
 		return $prices;
+	}
+
+	/**
+	 * Get price range from certain product types.
+	 *
+	 * @param \WC_Product $product Product instance.
+	 * @return object|null
+	 */
+	protected function get_price_range( \WC_Product $product ) {
+		$tax_display_mode = get_option( 'woocommerce_tax_display_shop' );
+
+		if ( $product->is_type( 'variable' ) ) {
+			$prices = $product->get_variation_prices( true );
+
+			if ( min( $prices['price'] ) !== max( $prices['price'] ) ) {
+				return (object) [
+					'min_amount' => $this->prepare_money_response( min( $prices['price'] ), wc_get_price_decimals() ),
+					'max_amount' => $this->prepare_money_response( max( $prices['price'] ), wc_get_price_decimals() ),
+				];
+			}
+		}
+
+		if ( $product->is_type( 'grouped' ) ) {
+			$children       = array_filter( array_map( 'wc_get_product', $product->get_children() ), 'wc_products_array_filter_visible_grouped' );
+			$price_function = 'incl' === $tax_display_mode ? 'wc_get_price_including_tax' : 'wc_get_price_excluding_tax';
+
+			foreach ( $children as $child ) {
+				if ( '' !== $child->get_price() ) {
+					$child_prices[] = $price_function( $child );
+				}
+			}
+
+			if ( ! empty( $child_prices ) ) {
+				return (object) [
+					'min_amount' => $this->prepare_money_response( min( $child_prices ), wc_get_price_decimals() ),
+					'max_amount' => $this->prepare_money_response( max( $child_prices ), wc_get_price_decimals() ),
+				];
+			}
+		}
+
+		return null;
 	}
 
 	/**
