@@ -54,9 +54,9 @@ const Cart = ( { attributes } ) => {
 		cartItems,
 		cartTotals,
 		cartIsLoading,
-		needsShipping,
 		cartItemsCount,
 		cartItemErrors,
+		cartNeedsShipping,
 	} = useStoreCart();
 
 	const {
@@ -119,7 +119,7 @@ const Cart = ( { attributes } ) => {
 							removeCoupon={ removeCoupon }
 							values={ cartTotals }
 						/>
-						{ needsShipping && (
+						{ cartNeedsShipping && (
 							<TotalsShippingItem
 								showCalculator={ isShippingCalculatorEnabled }
 								showRatesWithoutAddress={
