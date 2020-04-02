@@ -43,7 +43,18 @@ final class PaymentMethodRegistry {
 	 * Initializes all payment method types.
 	 */
 	public function initialize() {
+		/**
+		 * Hook: payment_method_type_registration.
+		 *
+		 * Runs before payment methods are initialized allowing new methods to be registered for use.
+		 *
+		 * @param PaymentMethodRegistry $this Instance of the PaymentMethodRegistry class which exposes the
+		 *                                    PaymentMethodRegistry::register() method.
+		 */
+		do_action( 'woocommerce_blocks_payment_method_type_registration', $this );
+
 		$registered_payment_method_types = $this->get_all_registered();
+
 		foreach ( $registered_payment_method_types as $registered_type ) {
 			$registered_type->initialize();
 		}

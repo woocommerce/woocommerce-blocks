@@ -119,7 +119,7 @@ class Cart extends AbstractBlock {
 	}
 
 	/**
-	 * Hydrate the checkout block with data from the API.
+	 * Hydrate the cart block with data from the API.
 	 *
 	 * @param AssetDataRegistry $data_registry Data registry instance.
 	 */

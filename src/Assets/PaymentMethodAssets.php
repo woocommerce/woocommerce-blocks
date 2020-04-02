@@ -46,8 +46,23 @@ class PaymentMethodAssets {
 	 * Hook into WP asset registration for enqueueing asset data.
 	 */
 	protected function init() {
-		add_action( 'woocommerce_blocks_checkout_enqueue_scripts', array( $this, 'register_payment_method_scripts' ) );
 		add_action( 'woocommerce_blocks_checkout_enqueue_data', array( $this, 'register_payment_method_data' ) );
+		add_action( 'woocommerce_blocks_checkout_enqueue_scripts', array( $this, 'register_payment_method_scripts' ) );
+	}
+
+	/**
+	 * Adds data from payment methods to the asset registry.
+	 */
+	public function register_payment_method_data() {
+		$payment_methods = $this->payment_method_registry->get_all_registered();
+
+		foreach ( $payment_methods as $payment_method ) {
+			$asset_data_key = $payment_method->get_name() . '_data';
+
+			if ( ! $this->asset_registry->exists( $asset_data_key ) ) {
+				$this->asset_registry->add( $asset_data_key, $payment_method->get_payment_method_data() );
+			}
+		}
 	}
 
 	/**
@@ -62,21 +77,6 @@ class PaymentMethodAssets {
 				foreach ( $script_handles as $script_handle ) {
 					wp_enqueue_script( $script_handle );
 				}
-			}
-		}
-	}
-
-	/**
-	 * Adds data from payment methods to the asset registry.
-	 */
-	public function register_payment_method_data() {
-		$payment_methods = $this->payment_method_registry->get_all_registered();
-
-		foreach ( $payment_methods as $payment_method ) {
-			$asset_data_key = $payment_method->get_name() . '_data';
-
-			if ( ! $this->asset_registry->exists( $asset_data_key ) ) {
-				$this->asset_registry->add( $asset_data_key, $payment_method->get_payment_method_data() );
 			}
 		}
 	}

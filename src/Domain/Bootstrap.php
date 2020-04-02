@@ -211,7 +211,7 @@ class Bootstrap {
 			}
 		);
 		add_action(
-			'wc_blocks_library_payment_method_type_registration',
+			'woocommerce_blocks_payment_method_type_registration',
 			function( $payment_method_registry ) {
 				// This is temporarily registering Stripe until it's moved to the extension.
 				if ( class_exists( 'WC_Stripe' ) && ! $payment_method_registry->is_registered( 'stripe' ) ) {
