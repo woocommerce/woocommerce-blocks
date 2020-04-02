@@ -46,8 +46,8 @@ class PaymentMethodAssets {
 	 * Hook into WP asset registration for enqueueing asset data.
 	 */
 	protected function init() {
-		add_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before', array( $this, 'register_payment_method_scripts' ) );
-		add_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before', array( $this, 'register_payment_method_data' ) );
+		add_action( 'woocommerce_blocks_checkout_enqueue_scripts', array( $this, 'register_payment_method_scripts' ) );
+		add_action( 'woocommerce_blocks_checkout_enqueue_data', array( $this, 'register_payment_method_data' ) );
 	}
 
 	/**
