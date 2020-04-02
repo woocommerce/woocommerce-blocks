@@ -12,24 +12,19 @@ import {
 } from '@woocommerce/base-context';
 import { useEffect, useRef, useCallback } from '@wordpress/element';
 import { useStoreNotices } from '@woocommerce/base-hooks';
-import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 
 /**
  * CheckoutProcessor component. @todo Needs to consume all contexts.
  *
  * Subscribes to checkout context and triggers processing via the API.
  */
-const CheckoutProcessor = ( { scrollToTop } ) => {
+const CheckoutProcessor = () => {
 	const {
 		hasError,
 		onCheckoutProcessing,
-		onCheckoutCompleteError,
 		dispatchActions,
 	} = useCheckoutContext();
-	const {
-		hasValidationErrors,
-		showAllValidationErrors,
-	} = useValidationContext();
+	const { hasValidationErrors } = useValidationContext();
 	const { shippingAddress } = useShippingDataContext();
 	const { billingData } = useBillingDataContext();
 	const {
@@ -138,17 +133,7 @@ const CheckoutProcessor = ( { scrollToTop } ) => {
 		};
 	}, [ onCheckoutProcessing, checkValidation ] );
 
-	useEffect( () => {
-		const unsubscribeCompleteError = onCheckoutCompleteError( () => {
-			showAllValidationErrors();
-			scrollToTop( { focusableSelector: 'input:invalid' } );
-		} );
-		return () => {
-			unsubscribeCompleteError();
-		};
-	}, [ onCheckoutCompleteError ] );
-
 	return null;
 };
 
-export default withScrollToTop( CheckoutProcessor );
+export default CheckoutProcessor;

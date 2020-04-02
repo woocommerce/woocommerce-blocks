@@ -24,6 +24,7 @@ import {
 	useEditorContext,
 	useShippingDataContext,
 	useBillingDataContext,
+	useValidationContext,
 } from '@woocommerce/base-context';
 import {
 	ExpressCheckoutFormControl,
@@ -37,6 +38,7 @@ import {
 	Main,
 } from '@woocommerce/base-components/sidebar-layout';
 import { getSetting } from '@woocommerce/settings';
+import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 
 /**
  * Internal dependencies
@@ -56,10 +58,12 @@ const Checkout = ( {
 	cartCoupons = [],
 	cartItems = [],
 	cartTotals = {},
+	scrollToTop,
 	shippingRates = [],
 } ) => {
 	const { isEditor } = useEditorContext();
-	const { hasOrder } = useCheckoutContext();
+	const { hasOrder, onCheckoutCompleteError } = useCheckoutContext();
+	const { showAllValidationErrors } = useValidationContext();
 	const {
 		shippingRatesLoading,
 		shippingAddress,
@@ -115,6 +119,16 @@ const Checkout = ( {
 			setBillingData( { shippingAsBilling } );
 		}
 	}, [ shippingAsBilling, setBillingData ] );
+
+	useEffect( () => {
+		const unsubscribeCompleteError = onCheckoutCompleteError( () => {
+			showAllValidationErrors();
+			scrollToTop( { focusableSelector: 'input:invalid' } );
+		} );
+		return () => {
+			unsubscribeCompleteError();
+		};
+	}, [ onCheckoutCompleteError ] );
 
 	if ( ! isEditor && ! hasOrder ) {
 		return <CheckoutOrderError />;
@@ -364,4 +378,4 @@ const Checkout = ( {
 	);
 };
 
-export default Block;
+export default withScrollToTop( Block );
