@@ -138,7 +138,7 @@ final class Stripe extends AbstractPaymentMethodType {
 	/**
 	 * Return the height for the payment button.
 	 *
-	 * @return string A pixel value for the hight (defaults to '64').
+	 * @return string A pixel value for the height (defaults to '64').
 	 */
 	private function get_button_height() {
 		return isset( $this->settings['payment_request_button_height'] ) ? str_replace( 'px', '', $this->settings['payment_request_button_height'] ) : '64';
@@ -147,7 +147,7 @@ final class Stripe extends AbstractPaymentMethodType {
 	/**
 	 * Return the inline cc option.
 	 *
-	 * @return string A pixel value for the hight (defaults to '64').
+	 * @return string A pixel value for the height (defaults to '64').
 	 */
 	private function get_inline_cc_form() {
 		return isset( $this->settings['inline_cc_form'] ) && 'yes' === $this->settings['inline_cc_form'];
