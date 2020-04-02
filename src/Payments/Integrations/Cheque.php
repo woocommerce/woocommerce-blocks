@@ -22,6 +22,13 @@ use Automattic\WooCommerce\Blocks\Assets\Api;
  */
 final class Cheque extends AbstractPaymentMethodType {
 	/**
+	 * Payment method name defined by payment methods extending this class.
+	 *
+	 * @var string
+	 */
+	protected $name = 'cheque';
+
+	/**
 	 * Settings from the WP options table
 	 *
 	 * @var array

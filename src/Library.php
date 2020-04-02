@@ -143,9 +143,7 @@ class Library {
 	 * Register payment methods.
 	 */
 	public static function register_payment_methods() {
-		$payment_method_registry = Package::container()->get( PaymentMethodRegistry::class );
-		do_action( 'wc_blocks_library_payment_method_type_registration', $payment_method_registry );
-		$payment_method_registry->initialize();
+		$payment_method_registry = Package::container()->get( PaymentMethodRegistry::class )->initialize();
 	}
 
 	/**
