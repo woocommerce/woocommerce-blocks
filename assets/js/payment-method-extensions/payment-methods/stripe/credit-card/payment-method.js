@@ -2,11 +2,7 @@
  * Internal dependencies
  */
 import { PAYMENT_METHOD_NAME } from './constants';
-import {
-	getStripeServerData,
-	stripePromise,
-	getErrorMessageForTypeAndCode,
-} from '../stripe-utils';
+import { getStripeServerData, stripePromise } from '../stripe-utils';
 import { ccSvg } from './cc';
 import { useCheckoutSubscriptions } from './use-checkout-subscriptions';
 import { InlineCard, CardElements } from './elements';
