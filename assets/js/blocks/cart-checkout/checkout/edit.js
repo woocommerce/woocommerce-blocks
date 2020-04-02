@@ -26,6 +26,7 @@ import { useSelect } from '@wordpress/data';
 import { getAdminLink } from '@woocommerce/settings';
 import { __experimentalCreateInterpolateElement } from 'wordpress-element';
 import { EditorProvider, useEditorContext } from '@woocommerce/base-context';
+import { recordEditorEvent } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
@@ -95,11 +96,14 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 				<ToggleControl
 					label={ __( 'Company', 'woo-gutenberg-products-block' ) }
 					checked={ showCompanyField }
-					onChange={ () =>
+					onChange={ () => {
+						recordEditorEvent( 'checkout_settings_company_toggle', {
+							enabled: ! showCompanyField,
+						} );
 						setAttributes( {
 							showCompanyField: ! showCompanyField,
-						} )
-					}
+						} );
+					} }
 				/>
 				{ showCompanyField && (
 					<CheckboxControl
@@ -122,20 +126,29 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 						'woo-gutenberg-products-block'
 					) }
 					checked={ showAddress2Field }
-					onChange={ () =>
+					onChange={ () => {
+						recordEditorEvent(
+							'checkout_settings_apartment_toggle',
+							{
+								enabled: ! showAddress2Field,
+							}
+						);
 						setAttributes( {
 							showAddress2Field: ! showAddress2Field,
-						} )
-					}
+						} );
+					} }
 				/>
 				<ToggleControl
 					label={ __( 'Phone', 'woo-gutenberg-products-block' ) }
 					checked={ showPhoneField }
-					onChange={ () =>
+					onChange={ () => {
+						recordEditorEvent( 'checkout_settings_phone_toggle', {
+							enabled: ! showPhoneField,
+						} );
 						setAttributes( {
 							showPhoneField: ! showPhoneField,
-						} )
-					}
+						} );
+					} }
 				/>
 				{ showPhoneField && (
 					<CheckboxControl
@@ -172,11 +185,17 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 						'woo-gutenberg-products-block'
 					) }
 					checked={ showPolicyLinks }
-					onChange={ () =>
+					onChange={ () => {
+						recordEditorEvent(
+							'checkout_settings_policy_links_toggle',
+							{
+								enabled: ! showPolicyLinks,
+							}
+						);
 						setAttributes( {
 							showPolicyLinks: ! showPolicyLinks,
-						} )
-					}
+						} );
+					} }
 				/>
 				{ showPolicyLinks && ( ! PRIVACY_URL || ! TERMS_URL ) && (
 					<Notice
@@ -219,11 +238,18 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 						'woo-gutenberg-products-block'
 					) }
 					checked={ showReturnToCart }
-					onChange={ () =>
+					onChange={ () => {
+						recordEditorEvent(
+							'checkout_settings_return_to_cart_toggle',
+							{
+								enabled: ! showReturnToCart,
+							}
+						);
+
 						setAttributes( {
 							showReturnToCart: ! showReturnToCart,
-						} )
-					}
+						} );
+					} }
 				/>
 				{ showReturnToCart &&
 					( currentPostId !== CHECKOUT_PAGE_ID || !! cartPageId ) &&
