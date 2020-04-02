@@ -1,11 +1,11 @@
 /**
  * External dependencies
  */
-import { apiFetch, select } from '@wordpress/data-controls';
-
+import { select } from '@wordpress/data-controls';
 /**
  * Internal dependencies
  */
+import { apiFetchWithHeaders } from '../shared-controls';
 import { ACTION_TYPES as types } from './action-types';
 import { STORE_KEY as SCHEMA_STORE_KEY } from '../schema/constants';
 
@@ -80,15 +80,15 @@ export function* __experimentalPersistItemToCollection(
 	}
 
 	try {
-		const item = yield apiFetch( {
+		const { response } = yield apiFetchWithHeaders( {
 			path: route,
 			method: 'POST',
 			data,
 			cache: 'no-store',
 		} );
 
-		if ( item ) {
-			newCollection.push( item );
+		if ( response ) {
+			newCollection.push( response );
 			yield receiveCollection(
 				namespace,
 				resourceName,
