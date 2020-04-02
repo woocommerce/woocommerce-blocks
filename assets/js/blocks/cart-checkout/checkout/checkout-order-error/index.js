@@ -8,6 +8,15 @@ import { getSetting } from '@woocommerce/settings';
 import { decodeEntities } from '@wordpress/html-entities';
 
 /**
+ * Internal dependencies
+ */
+import {
+	PRODUCT_OUT_OF_STOCK,
+	PRODUCT_NOT_PURCHASABLE,
+	PRODUCT_NOT_ENOUGH_STOCK,
+} from './constants';
+
+/**
  * When an order was not created for the checkout, for example, when an item
  * was out of stock, this component will be shown instead of the checkout form.
  *
@@ -50,9 +59,9 @@ const ErrorTitle = ( { errorData } ) => {
 	let heading = __( 'Checkout error', 'woo-gutenberg-products-block' );
 
 	if (
-		errorData.code === 'woocommerce_product_out_of_stock' ||
-		errorData.code === 'woocommerce_rest_cart_product_is_not_purchasable' ||
-		errorData.code === 'woocommerce_rest_cart_product_no_stock'
+		errorData.code === PRODUCT_NOT_ENOUGH_STOCK ||
+		errorData.code === PRODUCT_NOT_PURCHASABLE ||
+		errorData.code === PRODUCT_OUT_OF_STOCK
 	) {
 		heading = __(
 			'There is a problem with your cart',
@@ -74,9 +83,9 @@ const ErrorMessage = ( { errorData } ) => {
 	let message = errorData.message;
 
 	if (
-		errorData.code === 'woocommerce_product_out_of_stock' ||
-		errorData.code === 'woocommerce_rest_cart_product_is_not_purchasable' ||
-		errorData.code === 'woocommerce_rest_cart_product_no_stock'
+		errorData.code === PRODUCT_NOT_ENOUGH_STOCK ||
+		errorData.code === PRODUCT_NOT_PURCHASABLE ||
+		errorData.code === PRODUCT_OUT_OF_STOCK
 	) {
 		message =
 			message +
@@ -100,9 +109,9 @@ const ErrorButton = ( { errorData } ) => {
 	let buttonUrl = 'javascript:window.location.reload(true)';
 
 	if (
-		errorData.code === 'woocommerce_product_out_of_stock' ||
-		errorData.code === 'woocommerce_rest_cart_product_is_not_purchasable' ||
-		errorData.code === 'woocommerce_rest_cart_product_no_stock'
+		errorData.code === PRODUCT_NOT_ENOUGH_STOCK ||
+		errorData.code === PRODUCT_NOT_PURCHASABLE ||
+		errorData.code === PRODUCT_OUT_OF_STOCK
 	) {
 		buttonText = __( 'Edit your cart', 'woo-gutenberg-products-block' );
 		buttonUrl = CART_URL;
