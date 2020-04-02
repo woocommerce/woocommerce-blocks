@@ -17,22 +17,12 @@ use Automattic\WooCommerce\Blocks\Payments\PaymentMethodTypeInterface;
  * @since $VID:$
  */
 abstract class AbstractPaymentMethodType implements PaymentMethodTypeInterface {
-
 	/**
-	 * Payment method name (defaults to the fqcn of the instance)
+	 * Payment method name defined by payment methods extending this class.
 	 *
 	 * @var string
 	 */
 	protected $name = '';
-
-	/**
-	 * Constructor
-	 *
-	 * @param string $name The name of the payment method.
-	 */
-	public function __construct( $name ) {
-		$this->name = $name;
-	}
 
 	/**
 	 * Returns the name of the payment method.
@@ -45,45 +35,21 @@ abstract class AbstractPaymentMethodType implements PaymentMethodTypeInterface {
 	 * Returns an array of script handles to enqueue for this payment method in
 	 * the frontend context
 	 *
-	 * @return []
+	 * @return string[]
 	 */
 	public function get_payment_method_script_handles() {
 		return [];
 	}
 
-
 	/**
 	 * Returns an array of script handles to enqueue for this payment method in
 	 * the admin context
 	 *
-	 * @return []
+	 * @return string[]
 	 */
 	public function get_payment_method_script_handles_for_admin() {
 		return [];
 	}
-
-
-	/**
-	 * Returns an array of style handles to enqueue for this payment method in
-	 * the frontend context.
-	 *
-	 * @return []
-	 */
-	public function get_payment_method_style_handles() {
-		return [];
-	}
-
-
-	/**
-	 * Returns an array of style handles to enqueue for this payment method in
-	 * the admin context.
-	 *
-	 * @return []
-	 */
-	public function get_payment_method_style_handles_for_admin() {
-		return [];
-	}
-
 
 	/**
 	 * An array of key, value pairs of data made available to payment methods

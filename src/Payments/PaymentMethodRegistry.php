@@ -8,7 +8,7 @@
 namespace Automattic\WooCommerce\Blocks\Payments;
 
 /**
- * Core class used for interacting with block types.
+ * Class used for interacting with payment method types.
  *
  * @since $VID:$
  */
@@ -57,7 +57,7 @@ final class PaymentMethodRegistry {
 	 */
 	public function unregister( $name ) {
 		if ( $name instanceof PaymentMethodTypeInterface ) {
-			$name = $name->name;
+			$name = $name->get_name();
 		}
 
 		if ( ! $this->is_registered( $name ) ) {

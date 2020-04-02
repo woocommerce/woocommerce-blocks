@@ -10,8 +10,6 @@ namespace Automattic\WooCommerce\Blocks\Payments;
 defined( 'ABSPATH' ) || exit;
 
 interface PaymentMethodTypeInterface {
-
-
 	/**
 	 * The name of the payment method
 	 *
@@ -29,7 +27,7 @@ interface PaymentMethodTypeInterface {
 	 * Returns an array of script handles to enqueue for this payment method in
 	 * the frontend context
 	 *
-	 * @return []
+	 * @return string[]
 	 */
 	public function get_payment_method_script_handles();
 
@@ -38,28 +36,9 @@ interface PaymentMethodTypeInterface {
 	 * Returns an array of script handles to enqueue for this payment method in
 	 * the admin context
 	 *
-	 * @return []
+	 * @return string[]
 	 */
 	public function get_payment_method_script_handles_for_admin();
-
-
-	/**
-	 * Returns an array of style handles to enqueue for this payment method in
-	 * the frontend context.
-	 *
-	 * @return []
-	 */
-	public function get_payment_method_style_handles();
-
-
-	/**
-	 * Returns an array of style handles to enqueue for this payment method in
-	 * the admin context.
-	 *
-	 * @return []
-	 */
-	public function get_payment_method_style_handles_for_admin();
-
 
 	/**
 	 * An array of key, value pairs of data made available to payment methods

@@ -1,6 +1,6 @@
 <?php
 /**
- * Enqueues assets for registered payment types.
+ * Handles assets for registered payment types.
  *
  * @package WooCommerce/Blocks
  */
@@ -56,27 +56,14 @@ class PaymentMethodAssets {
 	public function register_payment_method_scripts() {
 		$payment_methods = $this->payment_method_registry->get_all_registered();
 		foreach ( $payment_methods as $payment_method ) {
-			$script_handles       = $payment_method->get_payment_method_script_handles();
-			$admin_script_handles = $payment_method->get_payment_method_script_handles_for_admin();
-			if ( is_admin() && ! empty( $admin_script_handles ) ) {
-				foreach ( $admin_script_handles as $script_handle ) {
-					wp_enqueue_script( $script_handle );
-				}
-			}
-			if ( ! is_admin() && ! empty( $script_handles ) ) {
+			$script_handles = is_admin() ? $payment_method->get_payment_method_script_handles_for_admin() : $payment_method->get_payment_method_script_handles();
+
+			if ( ! empty( $script_handles ) ) {
 				foreach ( $script_handles as $script_handle ) {
 					wp_enqueue_script( $script_handle );
 				}
 			}
 		}
-	}
-
-	/**
-	 * Register payment method styles for usage.
-	 */
-	public function register_payment_method_styles() {
-		// @todo not sure where/how we should enqueue these yet. They can't
-		// be enqueued in the block render function.
 	}
 
 	/**

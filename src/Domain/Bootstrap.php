@@ -199,7 +199,7 @@ class Bootstrap {
 			Stripe::class,
 			function( Container $container ) {
 				$asset_api = $container->get( AssetApi::class );
-				return new Stripe( 'stripe', $asset_api );
+				return new Stripe( $asset_api );
 			}
 		);
 		// cheque registration.
@@ -207,14 +207,13 @@ class Bootstrap {
 			Cheque::class,
 			function( Container $container ) {
 				$asset_api = $container->get( AssetApi::class );
-				return new Cheque( 'cheque', $asset_api );
+				return new Cheque( $asset_api );
 			}
 		);
 		add_action(
 			'wc_blocks_library_payment_method_type_registration',
 			function( $payment_method_registry ) {
-				// This is temporarily registering Stripe until it's moved to the
-				// extension.
+				// This is temporarily registering Stripe until it's moved to the extension.
 				if ( class_exists( 'WC_Stripe' ) && ! $payment_method_registry->is_registered( 'stripe' ) ) {
 					$payment_method_registry->register(
 						$this->container->get( Stripe::class )
@@ -225,6 +224,5 @@ class Bootstrap {
 				);
 			}
 		);
-
 	}
 }

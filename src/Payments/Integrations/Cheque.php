@@ -26,7 +26,7 @@ final class Cheque extends AbstractPaymentMethodType {
 	 *
 	 * @var array
 	 */
-	private $cheque_settings;
+	private $settings;
 
 	/**
 	 * An instance of the Asset Api
@@ -38,19 +38,17 @@ final class Cheque extends AbstractPaymentMethodType {
 	/**
 	 * Constructor
 	 *
-	 * @param string $name The name of the payment method type.
-	 * @param Api    $asset_api An instance of Api.
+	 * @param Api $asset_api An instance of Api.
 	 */
-	public function __construct( $name, Api $asset_api ) {
+	public function __construct( Api $asset_api ) {
 		$this->asset_api = $asset_api;
-		parent::__construct( $name );
 	}
 
 	/**
 	 * Initializes the payment method type.
 	 */
 	public function initialize() {
-		$this->cheque_settings = get_option( 'woocommerce_cheque_settings', [] );
+		$this->settings = get_option( 'woocommerce_cheque_settings', [] );
 	}
 
 	/**
@@ -73,8 +71,8 @@ final class Cheque extends AbstractPaymentMethodType {
 	 */
 	public function get_payment_method_data() {
 		return [
-			'title'       => isset( $this->cheque_settings['title'] ) ? $this->cheque_settings['title'] : '',
-			'description' => isset( $this->cheque_settings['description'] ) ? $this->cheque_settings['description'] : '',
+			'title'       => isset( $this->settings['title'] ) ? $this->settings['title'] : '',
+			'description' => isset( $this->settings['description'] ) ? $this->settings['description'] : '',
 		];
 	}
 }
