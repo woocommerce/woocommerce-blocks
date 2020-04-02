@@ -32,6 +32,15 @@ abstract class AbstractPaymentMethodType implements PaymentMethodTypeInterface {
 	}
 
 	/**
+	 * Returns if this payment method should be active. If false, the scripts will not be enqueued.
+	 *
+	 * @return boolean
+	 */
+	public function is_active() {
+		return true;
+	}
+
+	/**
 	 * Returns an array of script handles to enqueue for this payment method in
 	 * the frontend context
 	 *

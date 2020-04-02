@@ -59,6 +59,15 @@ final class Cheque extends AbstractPaymentMethodType {
 	}
 
 	/**
+	 * Returns if this payment method should be active. If false, the scripts will not be enqueued.
+	 *
+	 * @return boolean
+	 */
+	public function is_active() {
+		return ! empty( $this->settings['enabled'] ) && 'yes' === $this->settings['enabled'];
+	}
+
+	/**
 	 * Returns an array of scripts/handles to be registered for this payment method.
 	 *
 	 * @return array

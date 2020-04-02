@@ -18,6 +18,13 @@ interface PaymentMethodTypeInterface {
 	public function get_name();
 
 	/**
+	 * Returns if this payment method should be active. If false, the scripts will not be enqueued.
+	 *
+	 * @return boolean
+	 */
+	public function is_active();
+
+	/**
 	 * When called invokes any initialization/setup for the payment method type
 	 * instance.
 	 */
@@ -30,7 +37,6 @@ interface PaymentMethodTypeInterface {
 	 * @return string[]
 	 */
 	public function get_payment_method_script_handles();
-
 
 	/**
 	 * Returns an array of script handles to enqueue for this payment method in

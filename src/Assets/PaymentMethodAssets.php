@@ -51,6 +51,9 @@ class PaymentMethodAssets {
 		$payment_methods = $this->payment_method_registry->get_all_registered();
 
 		foreach ( $payment_methods as $payment_method ) {
+			if ( ! $payment_method->is_active() ) {
+				continue;
+			}
 			$script_handles = array_merge(
 				$script_handles,
 				is_admin() ? $payment_method->get_payment_method_script_handles_for_admin() : $payment_method->get_payment_method_script_handles()
@@ -67,6 +70,9 @@ class PaymentMethodAssets {
 		$payment_methods = $this->payment_method_registry->get_all_registered();
 
 		foreach ( $payment_methods as $payment_method ) {
+			if ( ! $payment_method->is_active() ) {
+				continue;
+			}
 			$asset_data_key = $payment_method->get_name() . '_data';
 
 			if ( ! $this->asset_registry->exists( $asset_data_key ) ) {
