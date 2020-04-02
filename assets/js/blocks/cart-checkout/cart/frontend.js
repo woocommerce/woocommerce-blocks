@@ -99,7 +99,10 @@ const getErrorBoundaryProps = () => {
 			),
 			{
 				button: (
-					<button className="link-button" onClick={ reloadPage } />
+					<button
+						className="wp-block-link-button"
+						onClick={ reloadPage }
+					/>
 				),
 			}
 		),

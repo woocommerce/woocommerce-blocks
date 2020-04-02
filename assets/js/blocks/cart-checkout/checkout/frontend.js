@@ -57,7 +57,7 @@ const CheckoutFrontend = ( props ) => {
 						{
 							button: (
 								<button
-									className="link-button"
+									className="wp-block-link-button"
 									onClick={ reloadPage }
 								/>
 							),
@@ -118,7 +118,10 @@ const getErrorBoundaryProps = () => {
 			),
 			{
 				button: (
-					<button className="link-button" onClick={ reloadPage } />
+					<button
+						className="wp-block-link-button"
+						onClick={ reloadPage }
+					/>
 				),
 			}
 		),
