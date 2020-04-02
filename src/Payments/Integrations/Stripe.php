@@ -55,7 +55,7 @@ final class Stripe extends AbstractPaymentMethodType {
 	 * Initializes the payment method type.
 	 */
 	public function initialize() {
-		$this->settings = get_option( 'woocommerce_settings', [] );
+		$this->settings = get_option( 'woocommerce_stripe_settings', [] );
 	}
 
 	/**

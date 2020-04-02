@@ -48,7 +48,7 @@ abstract class AbstractPaymentMethodType implements PaymentMethodTypeInterface {
 	 * @return string[]
 	 */
 	public function get_payment_method_script_handles_for_admin() {
-		return [];
+		return $this->get_payment_method_script_handles();
 	}
 
 	/**
