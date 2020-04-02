@@ -1,3 +1,1 @@
-export const defaultPromise = new Promise( ( resolve ) => {
-	resolve( true );
-} );
+export const defaultPromise = Promise.resolve( true );
