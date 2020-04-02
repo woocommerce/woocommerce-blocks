@@ -12,7 +12,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 import { PAYMENT_METHOD_NAME } from './constants';
 import { defaultPromise } from '../../utils';
 
-const settings = getSetting( 'cheque_data', null );
+const settings = getSetting( 'cheque_data', {} );
 
 const EditPlaceHolder = () => <div>TODO: Edit preview soon...</div>;
 
@@ -20,7 +20,7 @@ const Content = ( props ) => {
 	const { activePaymentMethod } = props;
 
 	return activePaymentMethod === PAYMENT_METHOD_NAME ? (
-		<div>{ decodeEntities( settings.description ) }</div>
+		<div>{ decodeEntities( settings.description || '' ) }</div>
 	) : null;
 };
 
