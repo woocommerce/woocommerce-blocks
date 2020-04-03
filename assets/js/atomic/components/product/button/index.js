@@ -4,63 +4,10 @@
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { _n, sprintf } from '@wordpress/i18n';
-import { useMemo, useState, useEffect, useRef } from '@wordpress/element';
-import { useDispatch } from '@wordpress/data';
-import { find } from 'lodash';
-import { useStoreCart } from '@woocommerce/base-hooks';
-import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
+import { useEffect, useRef } from '@wordpress/element';
+import { useStoreAddToCart } from '@woocommerce/base-hooks';
 import { useProductLayoutContext } from '@woocommerce/base-context';
 import { decodeEntities } from '@wordpress/html-entities';
-
-/**
- * @typedef {import('@woocommerce/type-defs/hooks').StoreCartItemAddToCart} StoreCartItemAddToCart
- */
-
-/**
- * A custom hook for exposing cart related data for a given product id and an
- * action for adding a single quantity of the product _to_ the cart.
- *
- * Currently this is internal only to the ProductButton component until we have
- * a clearer idea of the pattern that should emerge for a cart hook.
- *
- * @param {number} productId  The product id for the product connection to the
- *                            cart.
- *
- * @return {StoreCartItemAddToCart} An object exposing data and actions relating
- *                                  to add to cart functionality.
- */
-const useAddToCart = ( productId ) => {
-	const [ addingToCart, setAddingToCart ] = useState( false );
-	const { cartItems, cartIsLoading } = useStoreCart();
-	const currentCartResults = useRef( cartItems );
-	const { addItemToCart } = useDispatch( storeKey );
-
-	const addToCart = () => {
-		setAddingToCart( true );
-		addItemToCart( productId );
-	};
-
-	const cartQuantity = useMemo( () => {
-		const productItem = find( cartItems, { id: productId } );
-		return productItem ? productItem.quantity : 0;
-	}, [ cartItems, productId ] );
-
-	useEffect( () => {
-		if ( currentCartResults.current !== cartItems ) {
-			if ( addingToCart ) {
-				setAddingToCart( false );
-			}
-			currentCartResults.current = cartItems;
-		}
-	}, [ cartItems, addingToCart ] );
-
-	return {
-		cartQuantity,
-		addingToCart,
-		cartIsLoading,
-		addToCart,
-	};
-};
 
 const Event = window.Event || null;
 
@@ -78,12 +25,12 @@ const ProductButton = ( { product, className } ) => {
 		addingToCart,
 		cartIsLoading,
 		addToCart,
-	} = useAddToCart( id );
+	} = useStoreAddToCart( id );
 	const { layoutStyleClassPrefix } = useProductLayoutContext();
-	const addedToCart = cartQuantity > 0;
+	const addedToCart = Number.isFinite( cartQuantity ) && cartQuantity > 0;
 	const firstMount = useRef( true );
 	const getButtonText = () => {
-		if ( Number.isFinite( cartQuantity ) && addedToCart ) {
+		if ( addedToCart ) {
 			return sprintf(
 				// translators: %s number of products in cart.
 				_n(
@@ -98,7 +45,7 @@ const ProductButton = ( { product, className } ) => {
 		return decodeEntities( productCartDetails.text );
 	};
 
-	// This is a hack to trigger cart updates till we migrate to block based card
+	// This is a hack to trigger cart updates till we migrate to block based cart
 	// that relies on the store, see
 	// https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1247
 	useEffect( () => {
