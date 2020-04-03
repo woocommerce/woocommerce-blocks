@@ -1,8 +1,8 @@
 const getObserversByPriority = ( observers, eventType ) => {
 	return observers[ eventType ]
-		? Array.from( observers[ eventType ].values() ).sort( ( a, b ) =>
-				a[ 1 ].priority > b[ 1 ].priority ? -1 : 1
-		  )
+		? Array.from( observers[ eventType ].values() ).sort( ( a, b ) => {
+				return a.priority > b.priority ? -1 : 1;
+		  } )
 		: [];
 };
 
