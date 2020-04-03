@@ -146,7 +146,7 @@ export const CheckoutStateProvider = ( {
 					setValidationErrors( response );
 					dispatchActions.setHasError();
 				}
-				dispatch( actions.setComplete() );
+				dispatch( actions.setProcessingComplete() );
 			} );
 		}
 		if ( status === STATUS.COMPLETE ) {
@@ -161,13 +161,7 @@ export const CheckoutStateProvider = ( {
 					currentObservers.current,
 					EMIT_TYPES.CHECKOUT_COMPLETE_WITH_SUCCESS,
 					{}
-				).then( () => {
-					// all observers have done their thing so let's redirect
-					// (if no error).
-					if ( ! checkoutState.hasError ) {
-						window.location = checkoutState.redirectUrl;
-					}
-				} );
+				);
 			}
 		}
 	}, [
@@ -175,6 +169,7 @@ export const CheckoutStateProvider = ( {
 		checkoutState.hasError,
 		checkoutState.isComplete,
 		checkoutState.redirectUrl,
+		setValidationErrors,
 	] );
 
 	const onSubmit = () => {
