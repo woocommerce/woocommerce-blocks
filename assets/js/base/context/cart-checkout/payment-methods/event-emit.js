@@ -1,7 +1,12 @@
 /**
  * Internal dependencies
  */
-import { actions, reducer, emitEvent, emitEventWithAbort } from '../event-emit';
+import {
+	reducer,
+	emitEvent,
+	emitEventWithAbort,
+	emitterCallback,
+} from '../event-emit';
 
 const EMIT_TYPES = {
 	PAYMENT_PROCESSING: 'payment_processing',
@@ -24,70 +29,13 @@ const EMIT_TYPES = {
  *                  registration functions
  */
 const emitterSubscribers = ( dispatcher ) => ( {
-	onPaymentProcessing: ( callback, priority ) => {
-		const action = actions.addEventCallback(
-			EMIT_TYPES.PAYMENT_PROCESSING,
-			callback,
-			priority
-		);
-		dispatcher( action );
-		return () => {
-			dispatcher(
-				actions.removeEventCallback(
-					EMIT_TYPES.PAYMENT_PROCESSING,
-					action.id
-				)
-			);
-		};
-	},
-	onPaymentSuccess: ( callback, priority ) => {
-		const action = actions.addEventCallback(
-			EMIT_TYPES.PAYMENT_SUCCESS,
-			callback,
-			priority
-		);
-		dispatcher( action );
-		return () => {
-			dispatcher(
-				actions.removeEventCallback(
-					EMIT_TYPES.PAYMENT_SUCCESS,
-					action.id
-				)
-			);
-		};
-	},
-	onPaymentFail: ( callback, priority ) => {
-		const action = actions.addEventCallback(
-			EMIT_TYPES.PAYMENT_FAIL,
-			callback,
-			priority
-		);
-		dispatcher( action );
-		return () => {
-			dispatcher(
-				actions.removeEventCallback(
-					EMIT_TYPES.PAYMENT_FAIL,
-					action.id
-				)
-			);
-		};
-	},
-	onPaymentError: ( callback, priority ) => {
-		const action = actions.addEventCallback(
-			EMIT_TYPES.PAYMENT_HAS_ERROR,
-			callback,
-			priority
-		);
-		dispatcher( action );
-		return () => {
-			dispatcher(
-				actions.removeEventCallback(
-					EMIT_TYPES.PAYMENT_HAS_ERROR,
-					action.id
-				)
-			);
-		};
-	},
+	onPaymentProcessing: emitterCallback(
+		EMIT_TYPES.PAYMENT_PROCESSING,
+		dispatcher
+	),
+	onPaymentSuccess: emitterCallback( EMIT_TYPES.PAYMENT_SUCCESS, dispatcher ),
+	onPaymentFail: emitterCallback( EMIT_TYPES.PAYMENT_FAIL, dispatcher ),
+	onPaymentError: emitterCallback( EMIT_TYPES.PAYMENT_ERROR, dispatcher ),
 } );
 
 export {

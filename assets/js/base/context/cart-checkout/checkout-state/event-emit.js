@@ -1,7 +1,12 @@
 /**
  * Internal dependencies
  */
-import { actions, reducer, emitEvent, emitEventWithAbort } from '../event-emit';
+import {
+	emitterCallback,
+	reducer,
+	emitEvent,
+	emitEventWithAbort,
+} from '../event-emit';
 
 const EMIT_TYPES = {
 	CHECKOUT_COMPLETE_WITH_SUCCESS: 'checkout_complete',
@@ -23,54 +28,18 @@ const EMIT_TYPES = {
  * @return {Object} An object with the `onCheckoutComplete` emmitter registration
  */
 const emitterSubscribers = ( dispatcher ) => ( {
-	onCheckoutCompleteSuccess: ( callback, priority ) => {
-		const action = actions.addEventCallback(
-			EMIT_TYPES.CHECKOUT_COMPLETE_WITH_SUCCESS,
-			callback,
-			priority
-		);
-		dispatcher( action );
-		return () => {
-			dispatcher(
-				actions.removeEventCallback(
-					EMIT_TYPES.CHECKOUT_COMPLETE_WITH_SUCCESS,
-					action.id
-				)
-			);
-		};
-	},
-	onCheckoutCompleteError: ( callback, priority ) => {
-		const action = actions.addEventCallback(
-			EMIT_TYPES.CHECKOUT_COMPLETE_WITH_ERROR,
-			callback,
-			priority
-		);
-		dispatcher( action );
-		return () => {
-			dispatcher(
-				actions.removeEventCallback(
-					EMIT_TYPES.CHECKOUT_COMPLETE_WITH_ERROR,
-					action.id
-				)
-			);
-		};
-	},
-	onCheckoutProcessing: ( callback, priority ) => {
-		const action = actions.addEventCallback(
-			EMIT_TYPES.CHECKOUT_PROCESSING,
-			callback,
-			priority
-		);
-		dispatcher( action );
-		return () => {
-			dispatcher(
-				actions.removeEventCallback(
-					EMIT_TYPES.CHECKOUT_PROCESSING,
-					action.id
-				)
-			);
-		};
-	},
+	onCheckoutCompleteSuccess: emitterCallback(
+		EMIT_TYPES.CHECKOUT_COMPLETE_WITH_SUCCESS,
+		dispatcher
+	),
+	onCheckoutCompleteError: emitterCallback(
+		EMIT_TYPES.CHECKOUT_COMPLETE_WITH_ERROR,
+		dispatcher
+	),
+	onCheckoutProcessing: emitterCallback(
+		EMIT_TYPES.CHECKOUT_PROCESSING,
+		dispatcher
+	),
 } );
 
 export {
