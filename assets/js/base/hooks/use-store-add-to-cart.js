@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { useMemo, useState, useEffect, useRef } from '@wordpress/element';
+import { useState, useEffect, useRef } from '@wordpress/element';
 import { useDispatch } from '@wordpress/data';
 import { find } from 'lodash';
 import { useStoreCart } from '@woocommerce/base-hooks';
@@ -10,6 +10,19 @@ import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 /**
  * @typedef {import('@woocommerce/type-defs/hooks').StoreCartItemAddToCart} StoreCartItemAddToCart
  */
+
+/**
+ * Get the quantity of a product in the cart.
+ *
+ * @param {Object} cartItems Array of items.
+ * @param {number} productId  The product id to look for.
+ * @return {number} Quantity in the cart.
+ */
+const getQuantityFromCartItems = ( cartItems, productId ) => {
+	const productItem = find( cartItems, { id: productId } );
+
+	return productItem ? productItem.quantity : 0;
+};
 
 /**
  * A custom hook for exposing cart related data for a given product id and an
@@ -24,7 +37,9 @@ import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 export const useStoreAddToCart = ( productId ) => {
 	const [ addingToCart, setAddingToCart ] = useState( false );
 	const { cartItems, cartIsLoading } = useStoreCart();
-	const currentCartItems = useRef( cartItems );
+	const currentCartItemQuantity = useRef(
+		getQuantityFromCartItems( cartItems, productId )
+	);
 	const { addItemToCart } = useDispatch( storeKey );
 
 	const addToCart = () => {
@@ -32,22 +47,19 @@ export const useStoreAddToCart = ( productId ) => {
 		addItemToCart( productId );
 	};
 
-	const cartQuantity = useMemo( () => {
-		const productItem = find( currentCartItems.current, { id: productId } );
-		return productItem ? productItem.quantity : 0;
-	}, [ currentCartItems.current, productId ] );
-
 	useEffect( () => {
-		if ( currentCartItems.current !== cartItems ) {
-			if ( addingToCart ) {
+		if ( addingToCart ) {
+			const quantity = getQuantityFromCartItems( cartItems, productId );
+
+			if ( quantity !== currentCartItemQuantity.current ) {
+				currentCartItemQuantity.current = quantity;
 				setAddingToCart( false );
 			}
-			currentCartItems.current = cartItems;
 		}
-	}, [ cartItems, addingToCart ] );
+	}, [ cartItems, productId ] );
 
 	return {
-		cartQuantity,
+		cartQuantity: currentCartItemQuantity.current,
 		addingToCart,
 		cartIsLoading,
 		addToCart,
