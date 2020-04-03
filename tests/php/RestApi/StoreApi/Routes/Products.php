@@ -103,8 +103,10 @@ class Products extends TestCase {
 	 * Test conversion of prdouct to rest response.
 	 */
 	public function test_prepare_item_for_response() {
-		$schema     = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas\ProductSchema();
-		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Routes\Products( $schema );
+		$schemas    = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\SchemaController();
+		$routes     = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\RoutesController( $schemas );
+		$schema     = $schemas->get( 'product' );
+		$controller = $routes->get( 'products' );
 		$response   = $controller->prepare_item_for_response( $this->products[0], new \WP_REST_Request() );
 		$data       = $response->get_data();
 
@@ -129,8 +131,10 @@ class Products extends TestCase {
 	 * Test collection params getter.
 	 */
 	public function test_get_collection_params() {
-		$schema     = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas\ProductSchema();
-		$controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Routes\Products( $schema );
+		$schemas    = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\SchemaController();
+		$routes     = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\RoutesController( $schemas );
+		$schema     = $schemas->get( 'product' );
+		$controller = $routes->get( 'products' );
 		$params     = $controller->get_collection_params();
 
 		$this->assertArrayHasKey( 'page', $params );

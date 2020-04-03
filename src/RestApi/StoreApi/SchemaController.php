@@ -41,7 +41,7 @@ class SchemaController {
 	 * @return AbstractSchema
 	 */
 	public function get( $name ) {
-		if ( ! isset( $this->schemas ) ) {
+		if ( ! isset( $this->schemas[ $name ] ) ) {
 			throw new Exception( $name . ' schema does not exist' );
 		}
 		return $this->schemas[ $name ];
