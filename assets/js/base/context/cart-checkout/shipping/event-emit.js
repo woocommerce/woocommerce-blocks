@@ -22,10 +22,11 @@ const EMIT_TYPES = {
  * @return {Object} An object with `onSuccess` and `onFail` emitter registration.
  */
 const emitterSubscribers = ( dispatcher ) => ( {
-	onSuccess: ( callback ) => {
+	onSuccess: ( callback, priority ) => {
 		const action = actions.addEventCallback(
 			EMIT_TYPES.SHIPPING_RATES_SUCCESS,
-			callback
+			callback,
+			priority
 		);
 		dispatcher( action );
 		return () => {
@@ -37,20 +38,22 @@ const emitterSubscribers = ( dispatcher ) => ( {
 			);
 		};
 	},
-	onFail: ( callback ) => {
+	onFail: ( callback, priority ) => {
 		const action = actions.removeEventCallback(
 			EMIT_TYPES.SHIPPING_RATES_FAIL,
-			callback
+			callback,
+			priority
 		);
 		dispatcher( action );
 		return () => {
 			dispatcher( EMIT_TYPES.SHIPPING_RATES_FAIL, action.id );
 		};
 	},
-	onSelectSuccess: ( callback ) => {
+	onSelectSuccess: ( callback, priority ) => {
 		const action = actions.addEventCallback(
 			EMIT_TYPES.SHIPPING_RATE_SELECT_SUCCESS,
-			callback
+			callback,
+			priority
 		);
 		dispatcher( action );
 		return () => {
@@ -62,10 +65,11 @@ const emitterSubscribers = ( dispatcher ) => ( {
 			);
 		};
 	},
-	onSelectFail: ( callback ) => {
+	onSelectFail: ( callback, priority ) => {
 		const action = actions.addEventCallback(
 			EMIT_TYPES.SHIPPING_RATE_SELECT_FAIL,
-			callback
+			callback,
+			priority
 		);
 		dispatcher( action );
 		return () => {

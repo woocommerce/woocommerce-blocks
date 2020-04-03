@@ -23,10 +23,11 @@ const EMIT_TYPES = {
  * @return {Object} An object with the `onCheckoutComplete` emmitter registration
  */
 const emitterSubscribers = ( dispatcher ) => ( {
-	onCheckoutCompleteSuccess: ( callback ) => {
+	onCheckoutCompleteSuccess: ( callback, priority ) => {
 		const action = actions.addEventCallback(
 			EMIT_TYPES.CHECKOUT_COMPLETE_WITH_SUCCESS,
-			callback
+			callback,
+			priority
 		);
 		dispatcher( action );
 		return () => {
@@ -38,10 +39,11 @@ const emitterSubscribers = ( dispatcher ) => ( {
 			);
 		};
 	},
-	onCheckoutCompleteError: ( callback ) => {
+	onCheckoutCompleteError: ( callback, priority ) => {
 		const action = actions.addEventCallback(
 			EMIT_TYPES.CHECKOUT_COMPLETE_WITH_ERROR,
-			callback
+			callback,
+			priority
 		);
 		dispatcher( action );
 		return () => {
@@ -53,10 +55,11 @@ const emitterSubscribers = ( dispatcher ) => ( {
 			);
 		};
 	},
-	onCheckoutProcessing: ( callback ) => {
+	onCheckoutProcessing: ( callback, priority ) => {
 		const action = actions.addEventCallback(
 			EMIT_TYPES.CHECKOUT_PROCESSING,
-			callback
+			callback,
+			priority
 		);
 		dispatcher( action );
 		return () => {
