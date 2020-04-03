@@ -63,7 +63,7 @@ describe( 'Testing emitters', () => {
 		);
 	} );
 	describe( 'Test Priority', () => {
-		it( 'Executes observers in expected order by priority', async () => {
+		it( 'executes observers in expected order by priority', async () => {
 			const a = jest.fn();
 			const b = jest.fn().mockReturnValue( false );
 			const observers = {
