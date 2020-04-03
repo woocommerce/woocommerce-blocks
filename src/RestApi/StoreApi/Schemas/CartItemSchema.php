@@ -17,7 +17,7 @@ use Automattic\WooCommerce\Blocks\RestApi\Utilities\ProductSummary;
  *
  * @since 2.5.0
  */
-class CartItemSchema extends AbstractSchema {
+class CartItemSchema extends ProductSchema {
 	/**
 	 * The schema item name.
 	 *
@@ -326,7 +326,7 @@ class CartItemSchema extends AbstractSchema {
 			'permalink'           => $product->get_permalink(),
 			'images'              => ( new ProductImages() )->images_to_array( $product ),
 			'variation'           => $this->format_variation_data( $cart_item['variation'], $product ),
-			'prices'              => (object) $this->get_prices( $product, get_option( 'woocommerce_tax_display_cart' ), wc_stock_amount( $cart_item['quantity'] ) ),
+			'prices'              => (object) $this->prepare_product_price_response( $product, get_option( 'woocommerce_tax_display_cart' ) ),
 			'totals'              => (object) array_merge(
 				$this->get_store_currency_response(),
 				[
@@ -340,23 +340,16 @@ class CartItemSchema extends AbstractSchema {
 	}
 
 	/**
-	 * Get an array of pricing data for the product line item.
+	 * Get an array of pricing data.
 	 *
 	 * @param \WC_Product $product Product instance.
 	 * @param string      $tax_display_mode If returned prices are incl or excl of tax.
-	 * @param int         $qty Line item quantity of this product.
 	 * @return array
 	 */
-	public function get_prices( \WC_Product $product, $tax_display_mode = '', $qty = 1 ) {
-		$prices           = $this->get_store_currency_response();
-		$tax_display_mode = in_array( $tax_display_mode, [ 'incl', 'excl' ], true ) ? $tax_display_mode : get_option( 'woocommerce_tax_display_shop' );
-		$price_function   = 'incl' === $tax_display_mode ? 'wc_get_price_including_tax' : 'wc_get_price_excluding_tax';
-
-		// Get individual product prices.
-		$prices['price']         = $this->prepare_money_response( $price_function( $product ), wc_get_price_decimals() );
-		$prices['regular_price'] = $this->prepare_money_response( $price_function( $product, [ 'price' => $product->get_regular_price() ] ), wc_get_price_decimals() );
-		$prices['sale_price']    = $this->prepare_money_response( $price_function( $product, [ 'price' => $product->get_sale_price() ] ), wc_get_price_decimals() );
-		$prices['price_range']   = $this->get_price_range( $product );
+	protected function prepare_product_price_response( \WC_Product $product, $tax_display_mode = '' ) {
+		$tax_display_mode = $this->get_tax_display_mode( $tax_display_mode );
+		$price_function   = $this->get_price_function_from_tax_display_mode( $tax_display_mode );
+		$prices           = parent::prepare_product_price_response( $product, $tax_display_mode );
 
 		// Add raw prices (prices with greater precision).
 		$prices['raw_prices'] = [
@@ -367,47 +360,6 @@ class CartItemSchema extends AbstractSchema {
 		];
 
 		return $prices;
-	}
-
-	/**
-	 * Get price range from certain product types.
-	 *
-	 * @param \WC_Product $product Product instance.
-	 * @return object|null
-	 */
-	protected function get_price_range( \WC_Product $product ) {
-		$tax_display_mode = get_option( 'woocommerce_tax_display_shop' );
-
-		if ( $product->is_type( 'variable' ) ) {
-			$prices = $product->get_variation_prices( true );
-
-			if ( min( $prices['price'] ) !== max( $prices['price'] ) ) {
-				return (object) [
-					'min_amount' => $this->prepare_money_response( min( $prices['price'] ), wc_get_price_decimals() ),
-					'max_amount' => $this->prepare_money_response( max( $prices['price'] ), wc_get_price_decimals() ),
-				];
-			}
-		}
-
-		if ( $product->is_type( 'grouped' ) ) {
-			$children       = array_filter( array_map( 'wc_get_product', $product->get_children() ), 'wc_products_array_filter_visible_grouped' );
-			$price_function = 'incl' === $tax_display_mode ? 'wc_get_price_including_tax' : 'wc_get_price_excluding_tax';
-
-			foreach ( $children as $child ) {
-				if ( '' !== $child->get_price() ) {
-					$child_prices[] = $price_function( $child );
-				}
-			}
-
-			if ( ! empty( $child_prices ) ) {
-				return (object) [
-					'min_amount' => $this->prepare_money_response( min( $child_prices ), wc_get_price_decimals() ),
-					'max_amount' => $this->prepare_money_response( max( $child_prices ), wc_get_price_decimals() ),
-				];
-			}
-		}
-
-		return null;
 	}
 
 	/**
@@ -434,27 +386,6 @@ class CartItemSchema extends AbstractSchema {
 
 		$reserved_stock = $reserve_stock->get_reserved_stock( $product, $draft_order );
 		return $product->get_stock_quantity() - $reserved_stock;
-	}
-
-	/**
-	 * If a product has low stock, return the remaining stock amount for display.
-	 *
-	 * Note; unlike the products API, this also factors in draft orders so the results are more up to date.
-	 *
-	 * @param \WC_Product $product Product instance.
-	 * @return integer|null
-	 */
-	protected function get_low_stock_remaining( \WC_Product $product ) {
-		$remaining_stock = $this->get_remaining_stock( $product );
-
-		if (
-			null !== $remaining_stock
-			&& $remaining_stock <= wc_get_low_stock_amount( $product )
-		) {
-			return $remaining_stock;
-		}
-
-		return null;
 	}
 
 	/**

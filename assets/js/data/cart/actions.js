@@ -211,7 +211,6 @@ export function* removeCoupon( couponCode ) {
  * - Calls API to add item.
  * - If successful, yields action to add item from store.
  * - If error, yields action to store error.
- * - Sets cart item as pending while API request is in progress.
  *
  * @param {number} productId Product ID to add to cart.
  * @param {number} quantity Number of product ID being added to cart.
