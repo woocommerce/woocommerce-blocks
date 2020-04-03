@@ -38,6 +38,7 @@ const CheckoutContext = createContext( {
 	isIdle: false,
 	isCalculating: false,
 	isProcessing: false,
+	isProcessingComplete: false,
 	hasError: false,
 	redirectUrl: '',
 	orderId: 0,
@@ -48,6 +49,7 @@ const CheckoutContext = createContext( {
 		resetCheckout: () => void null,
 		setRedirectUrl: ( url ) => void url,
 		setHasError: ( hasError ) => void hasError,
+		setComplete: () => void null,
 		incrementCalculating: () => void null,
 		decrementCalculating: () => void null,
 		setOrderId: ( id ) => void id,
@@ -124,6 +126,9 @@ export const CheckoutStateProvider = ( {
 				void dispatch( actions.decrementCalculating() ),
 			setOrderId: ( orderId ) =>
 				void dispatch( actions.setOrderId( orderId ) ),
+			setComplete: () => {
+				void dispatch( actions.setComplete() );
+			},
 		} ),
 		[]
 	);
@@ -186,6 +191,8 @@ export const CheckoutStateProvider = ( {
 		isIdle: checkoutState.status === STATUS.IDLE,
 		isCalculating: checkoutState.status === STATUS.CALCULATING,
 		isProcessing: checkoutState.status === STATUS.PROCESSING,
+		isProcessingComplete:
+			checkoutState.status === STATUS.PROCESSING_COMPLETE,
 		hasError: checkoutState.hasError,
 		redirectUrl: checkoutState.redirectUrl,
 		onCheckoutCompleteSuccess,
