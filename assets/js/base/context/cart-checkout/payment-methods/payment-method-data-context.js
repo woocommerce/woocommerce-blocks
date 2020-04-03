@@ -87,7 +87,7 @@ const isFailResponse = ( response ) => {
 };
 
 const isErrorResponse = ( response ) => {
-	return response && typeof response.error !== 'undefined';
+	return response && typeof response.errorMessage !== 'undefined';
 };
 
 /**
@@ -273,8 +273,8 @@ export const PaymentMethodDataProvider = ( {
 						response.fail.paymentMethodData
 					);
 				} else if ( isErrorResponse( response ) ) {
-					setPaymentStatus().error( response.error );
-					setValidationErrors( response );
+					setPaymentStatus().error( response.errorMessage );
+					setValidationErrors( response.validationErrors );
 				}
 			} );
 		}
