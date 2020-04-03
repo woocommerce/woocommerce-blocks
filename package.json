@@ -23,7 +23,6 @@
 	},
 	"license": "GPL-3.0+",
 	"scripts": {
-		"analyze": "source-map-explorer",
 		"build": "cross-env BABEL_ENV=default NODE_ENV=production webpack",
 		"build:e2e-test": "npm run build",
 		"build:map": "cross-env BABEL_ENV=default NODE_ENV=production FORCE_MAP=true webpack",
@@ -37,6 +36,7 @@
 		"docker:ssh": "docker exec -it woo-blocks_wordpress-www_1 /bin/bash",
 		"docker:up": "docker-compose up -d",
 		"docker:up:build": "docker-compose up --build -d",
+		"explore": "source-map-explorer",
 		"lint": "npm run lint:php && npm run lint:css && npm run lint:js",
 		"lint:ci": "npm run lint:js && npm run lint:css",
 		"lint:css": "stylelint 'assets/**/*.scss'",
