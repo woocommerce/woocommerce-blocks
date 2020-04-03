@@ -251,6 +251,12 @@ export const PaymentMethodDataProvider = ( {
 
 	// emit events.
 	useEffect( () => {
+		// @todo emitEventWithAbort can't be used for payment process events
+		// that are successful unless we somehow look at merging data.
+		// Probably what we need is a singleEventEmit (since there should only
+		// ever be one payment to process) event? However, do we need to account
+		// for scenarios where multiple payment methods might be used to pay
+		// the same transaction?
 		if ( currentStatus.isProcessing ) {
 			emitEventWithAbort(
 				currentObservers.current,
