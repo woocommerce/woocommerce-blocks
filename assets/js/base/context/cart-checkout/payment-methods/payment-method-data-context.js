@@ -20,6 +20,7 @@ import {
 	useExpressPaymentMethods,
 } from './use-payment-method-registration';
 import { useBillingDataContext } from '../billing';
+import { useCheckoutContext } from '../checkout-state';
 import {
 	EMIT_TYPES,
 	emitterSubscribers,
@@ -27,6 +28,7 @@ import {
 	emitEventWithAbort,
 	reducer as emitReducer,
 } from './event-emit';
+import { useValidationContext } from '../validation';
 
 /**
  * External dependencies
@@ -39,6 +41,7 @@ import {
 	useCallback,
 	useEffect,
 	useRef,
+	useMemo,
 } from '@wordpress/element';
 import { getSetting } from '@woocommerce/settings';
 
@@ -70,6 +73,23 @@ export const usePaymentMethodDataContext = () => {
 	return useContext( PaymentMethodDataContext );
 };
 
+const isSuccessResponse = ( response ) => {
+	return (
+		( typeof response === 'object' &&
+			typeof response.billingData !== 'undefined' &&
+			typeof response.paymentMethodData !== 'undefined' ) ||
+		response === true
+	);
+};
+
+const isFailResponse = ( response ) => {
+	return response && typeof response.fail === 'object';
+};
+
+const isErrorResponse = ( response ) => {
+	return response && typeof response.error !== 'undefined';
+};
+
 /**
  * PaymentMethodDataProvider is automatically included in the
  * CheckoutDataProvider.
@@ -88,6 +108,11 @@ export const PaymentMethodDataProvider = ( {
 	activePaymentMethod: initialActivePaymentMethod,
 } ) => {
 	const { setBillingData } = useBillingDataContext();
+	const {
+		isComplete: checkoutIsComplete,
+		isProcessingComplete: checkoutIsProcessingComplete,
+		hasError: checkoutHasError,
+	} = useCheckoutContext();
 	const [ activePaymentMethod, setActive ] = useState(
 		initialActivePaymentMethod
 	);
@@ -110,6 +135,8 @@ export const PaymentMethodDataProvider = ( {
 			dispatch( setRegisteredExpressPaymentMethod( paymentMethod ) );
 		}
 	);
+	const { setValidationErrors } = useValidationContext();
+
 	// ensure observers are always current.
 	useEffect( () => {
 		currentObservers.current = observers;
@@ -130,6 +157,15 @@ export const PaymentMethodDataProvider = ( {
 		() => emitterSubscribers( subscriber ).onPaymentError,
 		[ subscriber ]
 	);
+
+	// flip payment to processing if checkout processing is complete and there
+	// are no errors.
+	useEffect( () => {
+		if ( checkoutIsProcessingComplete && ! checkoutHasError ) {
+			setPaymentStatus().processing();
+		}
+	}, [ checkoutIsProcessingComplete, checkoutHasError ] );
+
 	// set initial active payment method if it's undefined.
 	useEffect( () => {
 		const paymentMethodKeys = Object.keys( paymentStatus.paymentMethods );
@@ -148,6 +184,21 @@ export const PaymentMethodDataProvider = ( {
 		paymentStatus.paymentMethods,
 	] );
 
+	const currentStatus = useMemo(
+		() => ( {
+			isPristine: paymentStatus.currentStatus === PRISTINE,
+			isStarted: paymentStatus.currentStatus === STARTED,
+			isProcessing: paymentStatus.currentStatus === PROCESSING,
+			isFinished: [ ERROR, FAILED, SUCCESS ].includes(
+				paymentStatus.currentStatus
+			),
+			hasError: paymentStatus.currentStatus === ERROR,
+			hasFailed: paymentStatus.currentStatus === FAILED,
+			isSuccessful: paymentStatus.currentStatus === SUCCESS,
+		} ),
+		[ paymentStatus.currentStatus ]
+	);
+
 	/**
 	 * @type {PaymentStatusDispatch}
 	 */
@@ -161,9 +212,11 @@ export const PaymentMethodDataProvider = ( {
 			 */
 			error: ( errorMessage ) => dispatch( error( errorMessage ) ),
 			/**
-			 * @param {string} errorMessage An error message
-			 * @param {Object} paymentMethodData Arbitrary payment method data to accompany the checkout submission.
-			 * @param {BillingData} billingData The billing data accompanying the payment method.
+			 * @param {string}           errorMessage      An error message
+			 * @param {Object}           paymentMethodData Arbitrary payment method data to
+			 *                                             accompany the checkout submission.
+			 * @param {BillingData|null} [billingData]     The billing data accompanying the
+			 *                                             payment method.
 			 */
 			failed: ( errorMessage, paymentMethodData, billingData = null ) => {
 				if ( billingData ) {
@@ -177,10 +230,12 @@ export const PaymentMethodDataProvider = ( {
 				);
 			},
 			/**
-			 * @param {Object} paymentMethodData Arbitrary payment method data to accompany the checkout.
-			 * @param {BillingData} billingData The billing data accompanying the payment method.
+			 * @param {Object}           [paymentMethodData] Arbitrary payment method data to
+			 *                                               accompany the checkout.
+			 * @param {BillingData|null} [billingData]       The billing data accompanying the
+			 *                                               payment method.
 			 */
-			success: ( paymentMethodData, billingData = null ) => {
+			success: ( paymentMethodData = {}, billingData = null ) => {
 				if ( billingData ) {
 					setBillingData( billingData );
 				}
@@ -194,15 +249,56 @@ export const PaymentMethodDataProvider = ( {
 		[ dispatch ]
 	);
 
-	const currentStatus = {
-		isPristine: paymentStatus === PRISTINE,
-		isStarted: paymentStatus === STARTED,
-		isProcessing: paymentStatus === PROCESSING,
-		isFinished: [ ERROR, FAILED, SUCCESS ].includes( paymentStatus ),
-		hasError: paymentStatus === ERROR,
-		hasFailed: paymentStatus === FAILED,
-		isSuccessful: paymentStatus === SUCCESS,
-	};
+	// emit events.
+	useEffect( () => {
+		if ( currentStatus.isProcessing ) {
+			emitEventWithAbort(
+				currentObservers.current,
+				EMIT_TYPES.PAYMENT_PROCESSING,
+				{}
+			).then( ( response ) => {
+				if ( isSuccessResponse( response ) ) {
+					setPaymentStatus().success(
+						response.paymentMethodData,
+						response.billingData
+					);
+				} else if ( isFailResponse( response ) ) {
+					setPaymentStatus().failed(
+						response.fail.errorMessage,
+						response.fail.paymentMethodData
+					);
+				} else if ( isErrorResponse( response ) ) {
+					setPaymentStatus().error( response.error );
+					setValidationErrors( response );
+				}
+			} );
+		}
+		if (
+			currentStatus.isSuccessful &&
+			checkoutIsComplete &&
+			! checkoutHasError
+		) {
+			emitEvent(
+				currentObservers.current,
+				EMIT_TYPES.PAYMENT_SUCCESS,
+				{}
+			).then( () => {
+				setPaymentStatus().completed();
+			} );
+		}
+		if ( currentStatus.hasFailed ) {
+			emitEvent( currentObservers.current, EMIT_TYPES.PAYMENT_FAIL, {} );
+		}
+		if ( currentStatus.hasError ) {
+			emitEvent( currentObservers.current, EMIT_TYPES.PAYMENT_ERROR, {} );
+		}
+	}, [
+		currentStatus,
+		setValidationErrors,
+		setPaymentStatus,
+		checkoutIsComplete,
+		checkoutHasError,
+	] );
 
 	/**
 	 * @type {PaymentMethodDataContext}
