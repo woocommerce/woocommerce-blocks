@@ -242,7 +242,7 @@ class ProductSchema extends AbstractSchema {
 	 * @param \WC_Product $product Product instance.
 	 * @return array
 	 */
-	public function get_item_response( \WC_Product $product ) {
+	public function get_item_response( $product ) {
 		return [
 			'id'                  => $product->get_id(),
 			'name'                => $this->prepare_html_response( $product->get_title() ),
