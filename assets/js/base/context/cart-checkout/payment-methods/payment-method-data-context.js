@@ -20,6 +20,13 @@ import {
 	useExpressPaymentMethods,
 } from './use-payment-method-registration';
 import { useBillingDataContext } from '../billing';
+import {
+	EMIT_TYPES,
+	emitterSubscribers,
+	emitEvent,
+	emitEventWithAbort,
+	reducer as emitReducer,
+} from './event-emit';
 
 /**
  * External dependencies
@@ -31,6 +38,7 @@ import {
 	useReducer,
 	useCallback,
 	useEffect,
+	useRef,
 } from '@wordpress/element';
 import { getSetting } from '@woocommerce/settings';
 
@@ -83,6 +91,8 @@ export const PaymentMethodDataProvider = ( {
 	const [ activePaymentMethod, setActive ] = useState(
 		initialActivePaymentMethod
 	);
+	const [ observers, subscriber ] = useReducer( emitReducer, {} );
+	const currentObservers = useRef( observers );
 	const customerPaymentMethods = getSetting( 'customerPaymentMethods', {} );
 	const [ paymentStatus, dispatch ] = useReducer(
 		reducer,
@@ -99,6 +109,26 @@ export const PaymentMethodDataProvider = ( {
 		( paymentMethod ) => {
 			dispatch( setRegisteredExpressPaymentMethod( paymentMethod ) );
 		}
+	);
+	// ensure observers are always current.
+	useEffect( () => {
+		currentObservers.current = observers;
+	}, [ observers ] );
+	const onPaymentProcessing = useMemo(
+		() => emitterSubscribers( subscriber ).onPaymentProcessing,
+		[ subscriber ]
+	);
+	const onPaymentSuccess = useMemo(
+		() => emitterSubscribers( subscriber ).onPaymentSuccess,
+		[ subscriber ]
+	);
+	const onPaymentFail = useMemo(
+		() => emitterSubscribers( subscriber ).onPaymentFail,
+		[ subscriber ]
+	);
+	const onPaymentError = useMemo(
+		() => emitterSubscribers( subscriber ).onPaymentError,
+		[ subscriber ]
 	);
 	// set initial active payment method if it's undefined.
 	useEffect( () => {
@@ -185,6 +215,10 @@ export const PaymentMethodDataProvider = ( {
 		errorMessage: paymentStatus.errorMessage,
 		activePaymentMethod,
 		setActivePaymentMethod,
+		onPaymentProcessing,
+		onPaymentSuccess,
+		onPaymentFail,
+		onPaymentError,
 		customerPaymentMethods,
 		paymentMethods: paymentStatus.paymentMethods,
 		expressPaymentMethods: paymentStatus.expressPaymentMethods,

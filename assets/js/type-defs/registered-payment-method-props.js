@@ -166,6 +166,18 @@
  * @property {function()}           onShippingRateSelectFail    Used to subscribe callbacks that
  *                                                              will fire after selecting a shipping
  *                                                              rate unsuccessfully.
+ * @property {function(function())} onPaymentProcessing         Event registration callback for
+ *                                                              registering observers for the
+ *                                                              payment processing event.
+ * @property {function(function())} onPaymentSuccess            Event registration callback for
+ *                                                              registering observers for the
+ *                                                              successful payment event.
+ * @property {function(function())} onPaymentFail               Event registration callback for
+ *                                                              registering observers for the
+ *                                                              failed payment event.
+ * @property {function(function())} onPaymentError              Event registration callback for
+ *                                                              registering observers for the
+ *                                                              payment error event.
  */
 
 /**

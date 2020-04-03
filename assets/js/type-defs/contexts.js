@@ -131,8 +131,8 @@
  * @property {function()}               processing
  * @property {function()}               completed
  * @property {function(string)}         error
- * @property {function(string, Object)} failed
- * @property {function(Object,Object)}  success
+ * @property {function(string, Object, Object=)} failed
+ * @property {function(Object=,Object=)}  success
  */
 
 /**
@@ -175,6 +175,24 @@
  * @property {boolean}                     expressPaymentMethodsInitialized True when all registered
  *                                                                          express payment methods
  *                                                                          have been initialized.
+ * @property {function(function())}        onPaymentProcessing              Event registration
+ *                                                                          callback for registering
+ *                                                                          observers for the
+ *                                                                          payment processing
+ *                                                                          event.
+ * @property {function(function())}        onPaymentSuccess                 Event registration
+ *                                                                          callback for registering
+ *                                                                          observers for the
+ *                                                                          successful payment
+ *                                                                          event.
+ * @property {function(function())}        onPaymentFail                    Event registration
+ *                                                                          callback for registering
+ *                                                                          observers for the
+ *                                                                          failed payment event.
+ * @property {function(function())}        onPaymentError                   Event registration
+ *                                                                          callback for registering
+ *                                                                          observers for the
+ *                                                                          payment error event.
  */
 
 /**
@@ -255,7 +273,7 @@
  *
  * @property {function(string):Object}  getValidationError       Return validation error for the
  *                                                               given property.
- * @property {function(Object<Object>)} setValidationErrors      Receive an object of properties and
+ * @property {function(Object)}         setValidationErrors      Receive an object of properties and
  *                                                               error messages as strings and adds
  *                                                               to the validation error state.
  * @property {function(string)}         clearValidationError     Clears a validation error for the
