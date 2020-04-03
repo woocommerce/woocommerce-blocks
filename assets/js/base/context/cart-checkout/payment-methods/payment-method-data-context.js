@@ -137,13 +137,16 @@ export const PaymentMethodDataProvider = ( {
 		}
 	);
 	const { setValidationErrors } = useValidationContext();
-	const { addErrorNotice } = useStoreNotices();
+	const { addErrorNotice, removeNotice } = useStoreNotices();
 
 	const setExpressPaymentError = ( message ) => {
 		addErrorNotice( message, {
 			context: 'wc/express-payment-area',
 			id: 'wc-express-payment-error',
 		} );
+		if ( ! message ) {
+			removeNotice( 'wc-express-payment-error' );
+		}
 	};
 	// ensure observers are always current.
 	useEffect( () => {

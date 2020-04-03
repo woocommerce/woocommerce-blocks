@@ -155,6 +155,7 @@ const ApplePayExpressComponent = ( {
 	// kick off payment processing.
 	const onButtonClick = () => {
 		setActivePaymentMethod( PAYMENT_METHOD_NAME );
+		setExpressPaymentError( '' );
 		setApplePayProcessing( true );
 	};
 
