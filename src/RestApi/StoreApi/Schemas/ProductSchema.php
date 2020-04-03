@@ -292,7 +292,7 @@ class ProductSchema extends AbstractSchema {
 	protected function get_low_stock_remaining( \WC_Product $product ) {
 		$remaining_stock = $this->get_remaining_stock( $product );
 
-		if ( ! is_null( $$remaining_stock ) && $remaining_stock <= wc_get_low_stock_amount( $product ) ) {
+		if ( ! is_null( $remaining_stock ) && $remaining_stock <= wc_get_low_stock_amount( $product ) ) {
 			return $remaining_stock;
 		}
 
