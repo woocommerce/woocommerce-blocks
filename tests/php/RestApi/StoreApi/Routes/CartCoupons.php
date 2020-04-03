@@ -156,9 +156,7 @@ class CartCoupons extends TestCase {
 	 * Test conversion of cart item to rest response.
 	 */
 	public function test_prepare_item_for_response() {
-		$schemas    = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\SchemaController();
-		$routes     = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\RoutesController( $schemas );
-		$schema     = $schemas->get( 'cart-coupon' );
+		$routes     = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\RoutesController( new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\SchemaController() );
 		$controller = $routes->get( 'cart-coupons' );
 
 		$response   = $controller->prepare_item_for_response( $this->coupon->get_code(), new \WP_REST_Request() );
@@ -172,10 +170,9 @@ class CartCoupons extends TestCase {
 	 * Test schema matches responses.
 	 */
 	public function test_schema_matches_response() {
-		$schemas    = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\SchemaController();
-		$routes     = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\RoutesController( $schemas );
-		$schema     = $schemas->get( 'cart-coupon' );
+		$routes     = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\RoutesController( new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\SchemaController() );
 		$controller = $routes->get( 'cart-coupons' );
+		$schema     = $controller->get_item_schema();
 		$response   = $controller->prepare_item_for_response( $this->coupon->get_code(), new \WP_REST_Request() );
 		$schema     = $controller->get_item_schema();
 		$validate   = new ValidateSchema( $schema );

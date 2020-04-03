@@ -84,9 +84,7 @@ class ProductAttributeTerms extends TestCase {
 	 * Test collection params getter.
 	 */
 	public function test_get_collection_params() {
-		$schemas    = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\SchemaController();
-		$routes     = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\RoutesController( $schemas );
-		$schema     = $schemas->get( 'term' );
+		$routes     = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\RoutesController( new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\SchemaController() );
 		$controller = $routes->get( 'product-attribute-terms' );
 		$params     = $controller->get_collection_params();
 
@@ -99,12 +97,10 @@ class ProductAttributeTerms extends TestCase {
 	 * Test schema matches responses.
 	 */
 	public function test_schema_matches_response() {
-		$schemas    = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\SchemaController();
-		$routes     = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\RoutesController( $schemas );
-		$schema     = $schemas->get( 'term' );
+		$routes     = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\RoutesController( new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\SchemaController() );
 		$controller = $routes->get( 'product-attribute-terms' );
-		$response   = $controller->prepare_item_for_response( get_term_by( 'name', 'test', 'pa_size' ), new \WP_REST_Request() );
 		$schema     = $controller->get_item_schema();
+		$response   = $controller->prepare_item_for_response( get_term_by( 'name', 'test', 'pa_size' ), new \WP_REST_Request() );
 		$validate   = new ValidateSchema( $schema );
 
 		$diff = $validate->get_diff_from_object( $response->get_data() );
