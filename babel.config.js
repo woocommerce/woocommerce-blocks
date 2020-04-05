@@ -9,4 +9,9 @@ module.exports = {
 			},
 		],
 	],
+	env: {
+		production: {
+			plugins: [ 'react-remove-prop-types' ],
+		},
+	},
 };
