@@ -440,12 +440,6 @@ const getFrontConfig = ( options = {} ) => {
 						loader: 'ignore-loader',
 					},
 				},
-				{
-					test: path.resolve( __dirname, `../assets/js/previews/` ),
-					use: {
-						loader: 'null-loader',
-					},
-				},
 			],
 		},
 		plugins: [
