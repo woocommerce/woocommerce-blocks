@@ -3,7 +3,8 @@
  */
 import { createContext, useContext } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
-
+import { previewCart } from '@woocommerce/resource-previews';
+import { SHIPPING_METHODS_EXIST } from '@woocommerce/block-settings';
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').EditorDataContext} EditorDataContext
  */
@@ -11,6 +12,7 @@ import { useSelect } from '@wordpress/data';
 const EditorContext = createContext( {
 	isEditor: false,
 	currentPostId: 0,
+	previewCart: {},
 } );
 
 /**
@@ -48,6 +50,12 @@ export const EditorProvider = ( { children, currentPostId = 0 } ) => {
 	const editorData = {
 		isEditor: true,
 		currentPostId: editingPostId,
+		previewCart: {
+			...previewCart,
+			shipping_rates: SHIPPING_METHODS_EXIST
+				? previewCart.shipping_rates
+				: [],
+		},
 	};
 
 	return (

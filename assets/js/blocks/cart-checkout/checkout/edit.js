@@ -3,10 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import FeedbackPrompt from '@woocommerce/block-components/feedback-prompt';
-import {
-	previewCart,
-	previewShippingRates,
-} from '@woocommerce/resource-previews';
 import { InspectorControls } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -20,7 +16,6 @@ import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundar
 import {
 	PRIVACY_URL,
 	TERMS_URL,
-	SHIPPING_METHODS_EXIST,
 	CHECKOUT_PAGE_ID,
 } from '@woocommerce/block-settings';
 import { useSelect } from '@wordpress/data';
@@ -295,17 +290,7 @@ const CheckoutEditor = ( { attributes, setAttributes } ) => {
 					) }
 				>
 					<Disabled>
-						<Block
-							attributes={ attributes }
-							cartItems={ previewCart.items }
-							cartTotals={ previewCart.totals }
-							isEditor={ true }
-							shippingRates={
-								SHIPPING_METHODS_EXIST
-									? previewShippingRates
-									: []
-							}
-						/>
+						<Block attributes={ attributes } />
 					</Disabled>
 				</BlockErrorBoundary>
 			</div>

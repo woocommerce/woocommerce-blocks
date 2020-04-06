@@ -25,6 +25,7 @@ import {
 	useBillingDataContext,
 	useValidationContext,
 } from '@woocommerce/base-context';
+import { useStoreCart } from '@woocommerce/base-hooks';
 import {
 	ExpressCheckoutFormControl,
 	PaymentMethods,
@@ -52,15 +53,9 @@ const Block = ( props ) => (
 	</CheckoutProvider>
 );
 
-const Checkout = ( {
-	attributes,
-	cartCoupons = [],
-	cartItems = [],
-	cartTotals = {},
-	scrollToTop,
-	shippingRates = [],
-} ) => {
+const Checkout = ( { attributes, cartCoupons = [], scrollToTop } ) => {
 	const { isEditor } = useEditorContext();
+	const { cartItems, cartTotals, shippingRates } = useStoreCart();
 	const {
 		hasOrder,
 		hasError: checkoutHasError,
