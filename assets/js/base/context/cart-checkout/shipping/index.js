@@ -128,7 +128,7 @@ export const ShippingDataProvider = ( { children } ) => {
 			emitEvent(
 				currentObservers.current,
 				EMIT_TYPES.SHIPPING_RATES_FAIL,
-				shippingErrorStatus
+				currentErrorStatus
 			);
 		} else if ( ! shippingRatesLoading && shippingRates ) {
 			emitEvent(
@@ -137,12 +137,7 @@ export const ShippingDataProvider = ( { children } ) => {
 				shippingRates
 			);
 		}
-	}, [
-		shippingRates,
-		shippingRatesLoading,
-		currentErrorStatus,
-		shippingErrorStatus,
-	] );
+	}, [ shippingRates, shippingRatesLoading, currentErrorStatus ] );
 
 	// emit shipping rate selection events.
 	useEffect( () => {
@@ -150,7 +145,7 @@ export const ShippingDataProvider = ( { children } ) => {
 			emitEvent(
 				currentObservers.current,
 				EMIT_TYPES.SHIPPING_RATE_SELECT_FAIL,
-				shippingErrorStatus
+				currentErrorStatus
 			);
 		} else if ( ! isSelectingRate && selectedRates ) {
 			emitEvent(
@@ -159,12 +154,7 @@ export const ShippingDataProvider = ( { children } ) => {
 				selectedRates
 			);
 		}
-	}, [
-		selectedRates,
-		isSelectingRate,
-		currentErrorStatus,
-		shippingErrorStatus,
-	] );
+	}, [ selectedRates, isSelectingRate, currentErrorStatus ] );
 
 	/**
 	 * @type {ShippingDataContext}
