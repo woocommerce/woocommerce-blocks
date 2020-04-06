@@ -14,7 +14,7 @@ import { useEffect, useRef, useCallback } from '@wordpress/element';
 import { useStoreNotices } from '@woocommerce/base-hooks';
 
 /**
- * @typedef {import('@woocommerce/type-defs/payments').PaymentDataResponse} PaymentDataResponse
+ * @typedef {import('@woocommerce/type-defs/payments').PaymentDataItem} PaymentDataItem
  */
 
 /**
@@ -23,8 +23,8 @@ import { useStoreNotices } from '@woocommerce/base-hooks';
  * @param {Object} paymentData Arbitrary payment data provided by the payment
  *                             method.
  *
- * @return {PaymentDataResponse[]} Returns the payment data as an array of
- *                                 PaymentDataResponse objects.
+ * @return {PaymentDataItem[]} Returns the payment data as an array of
+ *                                 PaymentDataItem objects.
  */
 const preparePaymentData = ( paymentData ) => {
 	return Object.keys( paymentData ).map( ( property ) => {
