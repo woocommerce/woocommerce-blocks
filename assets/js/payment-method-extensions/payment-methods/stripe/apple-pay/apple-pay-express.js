@@ -122,7 +122,7 @@ const ApplePayExpressComponent = ( {
 			! paymentStatus.isPristine &&
 			! applePayProcessing &&
 			currentPaymentRequest.current
-		 ) {
+		) {
 			updatePaymentRequest( {
 				// @ts-ignore
 				paymentRequest: currentPaymentRequest.current,
@@ -176,6 +176,7 @@ const ApplePayExpressComponent = ( {
 
 	const completePayment = ( paymentMethod ) => {
 		paymentMethod.complete( 'success' );
+		setApplePayProcessing( false );
 	};
 
 	// event callbacks.
@@ -246,8 +247,9 @@ const ApplePayExpressComponent = ( {
 		) {
 			if ( forSuccess ) {
 				completePayment( handlers.sourceEvent );
+			} else {
+				abortPayment( handlers.sourceEvent );
 			}
-			abortPayment( handlers.sourceEvent );
 		}
 	};
 
