@@ -235,7 +235,6 @@ export function* addItemToCart( productId, quantity = 1 ) {
 	} catch ( error ) {
 		yield receiveError( error );
 	}
-	yield itemIsPendingDelete( cartItemKey, false );
 }
 
 /**
@@ -261,6 +260,7 @@ export function* removeItemFromCart( cartItemKey ) {
 	} catch ( error ) {
 		yield receiveError( error );
 	}
+	yield itemIsPendingDelete( cartItemKey, false );
 }
 
 /**

@@ -88,9 +88,13 @@ export const useStoreCartItemQuantity = ( cartItem ) => {
 	useEffect( () => {
 		if ( isPendingDelete ) {
 			dispatchActions.incrementCalculating();
+		} else if ( ! isPendingDelete && cartErrors.length ) {
+			dispatchActions.decrementCalculating();
 		}
 		return () => {
-			dispatchActions.decrementCalculating();
+			if ( isPendingDelete ) {
+				dispatchActions.decrementCalculating();
+			}
 		};
 	}, [ isPendingDelete ] );
 
