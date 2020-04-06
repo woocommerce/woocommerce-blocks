@@ -243,6 +243,8 @@ export function* addItemToCart( productId, quantity = 1 ) {
  * @param {string} cartItemKey Cart item being updated.
  */
 export function* removeItemFromCart( cartItemKey ) {
+	yield receiveRemovedItem( cartItemKey );
+
 	try {
 		const { response } = yield apiFetchWithHeaders( {
 			path: `/wc/store/cart/remove-item/?key=${ cartItemKey }`,
