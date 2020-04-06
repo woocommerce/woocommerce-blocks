@@ -49,10 +49,7 @@ const CheckoutProcessor = () => {
 		isProcessingComplete: checkoutIsProcessingComplete,
 	} = useCheckoutContext();
 	const { hasValidationErrors } = useValidationContext();
-	const {
-		shippingAddress,
-		hasError: shippingHasError,
-	} = useShippingDataContext();
+	const { shippingAddress, shippingErrorStatus } = useShippingDataContext();
 	const { billingData } = useBillingDataContext();
 	const {
 		activePaymentMethod,
@@ -67,7 +64,7 @@ const CheckoutProcessor = () => {
 	const checkoutWillHaveError =
 		hasValidationErrors ||
 		currentPaymentStatus.hasError ||
-		shippingHasError;
+		shippingErrorStatus.hasError;
 
 	useEffect( () => {
 		if (

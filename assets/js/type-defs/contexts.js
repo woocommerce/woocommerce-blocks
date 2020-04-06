@@ -16,9 +16,9 @@
 /**
  * @typedef {Object} ShippingDataContext
  *
- * @property {string}               shippingErrorStatus   The current error
+ * @property {ShippingErrorStatus}  shippingErrorStatus   The current error
  *                                                        status for shipping
- *                                                        rates if present.
+ *                                                        rates.
  * @property {Function}             dispatchErrorStatus   A function for
  *                                                        dispatching a shipping
  *                                                        rate error status.
@@ -64,8 +64,15 @@
  * @property {boolean}              needsShipping         True if the cart has
  *                                                        items requiring
  *                                                        shipping.
- * @property {boolean}              hasError              True if shipping is in
- *                                                        an error state.
+ */
+
+/**
+ * @typedef {Object} ShippingErrorStatus
+ *
+ * @property {boolean} isPristine        Whether the status is pristine.
+ * @property {boolean} isValid           Whether the status is valid.
+ * @property {boolean} hasInvalidAddress Whether the address is invalid.
+ * @property {boolean} hasError          Whether an error has happened.
  */
 
 /**

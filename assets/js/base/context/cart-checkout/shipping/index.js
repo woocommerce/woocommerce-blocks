@@ -108,15 +108,14 @@ export const ShippingDataProvider = ( { children } ) => {
 			dispatchActions.decrementCalculating();
 		}
 	}, [ isSelectingRate ] );
-	const hasError =
-		shippingErrorStatus === UNKNOWN ||
-		shippingErrorStatus === INVALID_ADDRESS;
 
 	const currentErrorStatus = {
 		isPristine: shippingErrorStatus === NONE,
 		isValid: shippingErrorStatus === NONE,
 		hasInvalidAddress: shippingErrorStatus === INVALID_ADDRESS,
-		hasError,
+		hasError:
+			shippingErrorStatus === UNKNOWN ||
+			shippingErrorStatus === INVALID_ADDRESS,
 	};
 
 	// emit events.
@@ -167,7 +166,7 @@ export const ShippingDataProvider = ( { children } ) => {
 	 * @type {ShippingDataContext}
 	 */
 	const ShippingData = {
-		shippingErrorStatus,
+		shippingErrorStatus: currentErrorStatus,
 		dispatchErrorStatus,
 		shippingErrorTypes: ERROR_TYPES,
 		shippingRates,
@@ -182,7 +181,6 @@ export const ShippingDataProvider = ( { children } ) => {
 		onShippingRateSelectSuccess,
 		onShippingRateSelectFail,
 		needsShipping,
-		hasError,
 	};
 	return (
 		<>
