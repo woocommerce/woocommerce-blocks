@@ -336,7 +336,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 								'woo-gutenberg-products-block'
 							) }
 							description={
-								paymentMethods && paymentMethods.length > 1
+								Object.keys( paymentMethods ).length > 1
 									? __(
 											'Select a payment method below.',
 											'woo-gutenberg-products-block'
