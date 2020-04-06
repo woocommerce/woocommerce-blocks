@@ -121,14 +121,14 @@ export const getCartItem = ( state, cartItemKey ) => {
 };
 
 /**
- * Returns true if the specified cart item is being deleted.
+ * Returns true if the specified cart item quantity is being updated.
  *
  * @param {Object} state The current state.
  * @param {string} cartItemKey Key for a cart item.
- * @return {boolean} True if a item has a pending request to be deleted.
+ * @return {boolean} True if a item has a pending request to be updated.
  */
-export const isItemPendingDelete = ( state, cartItemKey ) => {
-	return state.cartItemsPendingDelete.includes( cartItemKey );
+export const isItemPendingQuantity = ( state, cartItemKey ) => {
+	return state.cartItemsPendingQuantity.includes( cartItemKey );
 };
 
 /**

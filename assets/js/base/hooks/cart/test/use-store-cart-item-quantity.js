@@ -41,7 +41,7 @@ describe( 'useStoreCartItemQuantity', () => {
 
 	let mockRemoveItemFromCart;
 	let mockChangeCartItemQuantity;
-	const setupMocks = ( { isPendingDelete } ) => {
+	const setupMocks = ( { isPendingQuantity } ) => {
 		mockRemoveItemFromCart = jest
 			.fn()
 			.mockReturnValue( { type: 'removeItemFromCartAction' } );
@@ -55,9 +55,9 @@ describe( 'useStoreCartItemQuantity', () => {
 				changeCartItemQuantity: mockChangeCartItemQuantity,
 			},
 			selectors: {
-				isItemPendingDelete: jest
+				isItemPendingQuantity: jest
 					.fn()
-					.mockReturnValue( isPendingDelete ),
+					.mockReturnValue( isPendingQuantity ),
 			},
 		} );
 	};
@@ -74,7 +74,7 @@ describe( 'useStoreCartItemQuantity', () => {
 
 	describe( 'with no errors and not pending', () => {
 		beforeEach( () => {
-			setupMocks( { isPendingDelete: false } );
+			setupMocks( { isPendingQuantity: false } );
 			mockUseStoreCart.useStoreCart.mockReturnValue( {
 				cartErrors: {},
 			} );
@@ -156,7 +156,7 @@ describe( 'useStoreCartItemQuantity', () => {
 
 	it( 'should expose store errors', () => {
 		const mockCartErrors = [ { message: 'Test error' } ];
-		setupMocks( { isPendingDelete: false } );
+		setupMocks( { isPendingQuantity: false } );
 		mockUseStoreCart.useStoreCart.mockReturnValue( {
 			cartErrors: mockCartErrors,
 		} );
@@ -179,8 +179,8 @@ describe( 'useStoreCartItemQuantity', () => {
 		expect( cartItemQuantityErrors ).toEqual( mockCartErrors );
 	} );
 
-	it( 'isPendingDelete should depend on the value provided by the store', () => {
-		setupMocks( { isPendingDelete: true } );
+	it( 'isPendingQuantity should depend on the value provided by the store', () => {
+		setupMocks( { isPendingQuantity: true } );
 		mockUseStoreCart.useStoreCart.mockReturnValue( {
 			cartErrors: {},
 		} );
@@ -196,8 +196,8 @@ describe( 'useStoreCartItemQuantity', () => {
 			);
 		} );
 
-		const { isPendingDelete } = renderer.root.findByType( 'div' ).props;
+		const { isPendingQuantity } = renderer.root.findByType( 'div' ).props;
 
-		expect( isPendingDelete ).toBe( true );
+		expect( isPendingQuantity ).toBe( true );
 	} );
 } );

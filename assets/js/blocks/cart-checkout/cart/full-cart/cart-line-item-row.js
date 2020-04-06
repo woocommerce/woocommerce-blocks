@@ -82,12 +82,9 @@ const CartLineItemRow = ( { lineItem } ) => {
 		},
 	} = lineItem;
 
-	const {
-		quantity,
-		changeQuantity,
-		removeItem,
-		isPendingDelete: itemQuantityDisabled,
-	} = useStoreCartItemQuantity( lineItem );
+	const { quantity, changeQuantity, removeItem } = useStoreCartItemQuantity(
+		lineItem
+	);
 
 	const currency = getCurrency( prices );
 	const regularAmount = Dinero( {
@@ -120,7 +117,6 @@ const CartLineItemRow = ( { lineItem } ) => {
 			</td>
 			<td className="wc-block-cart-item__quantity">
 				<QuantitySelector
-					disabled={ itemQuantityDisabled }
 					quantity={ quantity }
 					maximum={ getMaximumQuantity(
 						backOrdersAllowed,
@@ -130,14 +126,12 @@ const CartLineItemRow = ( { lineItem } ) => {
 					itemName={ name }
 				/>
 				<button
-					disabled={ itemQuantityDisabled }
 					className="wc-block-cart-item__remove-link"
 					onClick={ removeItem }
 				>
 					{ __( 'Remove item', 'woo-gutenberg-products-block' ) }
 				</button>
 				<button
-					disabled={ itemQuantityDisabled }
 					className="wc-block-cart-item__remove-icon"
 					onClick={ removeItem }
 				>
