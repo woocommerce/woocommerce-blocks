@@ -45,6 +45,10 @@ export const useStoreCartItemQuantity = ( cartItem ) => {
 
 	const isPendingQuantity = useSelect(
 		( select ) => {
+			if ( ! cartItemKey ) {
+				return false;
+			}
+
 			const store = select( storeKey );
 			return store.isItemPendingQuantity( cartItemKey );
 		},
