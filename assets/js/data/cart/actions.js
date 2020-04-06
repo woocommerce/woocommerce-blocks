@@ -87,15 +87,16 @@ export function receiveCartItem( response = {} ) {
  * Returns an action object to indicate if the specified cart item
  * quantity is being updated.
  *
- * @param {boolean} isPendingQuantity Flag for update state; true if API request is pending.
  * @param {string} cartItemKey Cart item being updated.
+ * @param {boolean} isPendingQuantity Flag for update state; true if API request
+ * is pending.
  * @return {Object} Object for action.
  */
-export function itemPendingQuantity( isPendingQuantity, cartItemKey ) {
+export function itemPendingQuantity( cartItemKey, isPendingQuantity = true ) {
 	return {
 		type: types.ITEM_PENDING_QUANTITY,
-		isPendingQuantity,
 		cartItemKey,
+		isPendingQuantity,
 	};
 }
 
@@ -269,7 +270,7 @@ export function* removeItemFromCart( cartItemKey ) {
  */
 export function* changeCartItemQuantity( cartItemKey, quantity ) {
 	const cartItem = yield select( CART_STORE_KEY, 'getCartItem', cartItemKey );
-	yield itemPendingQuantity( true, cartItemKey );
+	yield itemPendingQuantity( cartItemKey );
 
 	if ( cartItem?.quantity === quantity ) {
 		return;
@@ -289,7 +290,7 @@ export function* changeCartItemQuantity( cartItemKey, quantity ) {
 	} catch ( error ) {
 		yield receiveError( error );
 	}
-	yield itemPendingQuantity( false, cartItemKey );
+	yield itemPendingQuantity( cartItemKey, false );
 }
 
 /**
