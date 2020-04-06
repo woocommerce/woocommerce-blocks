@@ -12,6 +12,7 @@ import {
 } from '@woocommerce/base-context';
 import { useEffect, useRef, useCallback } from '@wordpress/element';
 import { useStoreNotices } from '@woocommerce/base-hooks';
+import makeTrashable from 'trashable';
 
 /**
  * @typedef {import('@woocommerce/type-defs/payments').PaymentDataItem} PaymentDataItem
@@ -59,6 +60,7 @@ const CheckoutProcessor = () => {
 	const { addErrorNotice, removeNotice } = useStoreNotices();
 	const currentBillingData = useRef( billingData );
 	const currentShippingAddress = useRef( shippingAddress );
+	const trashableProcessOrderPromise = useRef();
 
 	const withErrors = hasValidationErrors();
 	const paidAndWithoutErrors =
@@ -86,8 +88,15 @@ const CheckoutProcessor = () => {
 		return ! withErrors;
 	}, [ withErrors ] );
 
+	// Cancel API request if unmounted.
+	useEffect( () => {
+		return () => {
+			trashableProcessOrderPromise.current.trash();
+		};
+	}, [] );
+
 	const processOrder = useCallback( () => {
-		triggerFetch( {
+		const processOrderPromise = triggerFetch( {
 			path: '/wc/store/checkout',
 			method: 'POST',
 			data: {
@@ -99,7 +108,13 @@ const CheckoutProcessor = () => {
 			},
 			cache: 'no-store',
 			parse: false,
-		} )
+		} );
+
+		trashableProcessOrderPromise.current = makeTrashable(
+			processOrderPromise
+		);
+
+		processOrderPromise
 			.then( ( fetchResponse ) => {
 				// Update nonce.
 				triggerFetch.setNonce( fetchResponse.headers );
@@ -146,6 +161,7 @@ const CheckoutProcessor = () => {
 		currentShippingAddress,
 		paymentMethodData,
 	] );
+
 	// setup checkout processing event observers.
 	useEffect( () => {
 		const unsubscribeValidation = onCheckoutProcessing(

@@ -160,6 +160,7 @@
 		"dinero.js": "1.8.1",
 		"downshift": "4.1.0",
 		"react-number-format": "4.4.1",
+		"trashable": "^1.0.7",
 		"trim-html": "0.1.9",
 		"use-debounce": "3.4.0",
 		"wordpress-components": "npm:@wordpress/components@8.5.0",
