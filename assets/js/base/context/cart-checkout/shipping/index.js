@@ -6,6 +6,7 @@ import {
 	useContext,
 	useReducer,
 	useEffect,
+	useMemo,
 	useRef,
 } from '@wordpress/element';
 import {
@@ -109,14 +110,17 @@ export const ShippingDataProvider = ( { children } ) => {
 		}
 	}, [ isSelectingRate ] );
 
-	const currentErrorStatus = {
-		isPristine: shippingErrorStatus === NONE,
-		isValid: shippingErrorStatus === NONE,
-		hasInvalidAddress: shippingErrorStatus === INVALID_ADDRESS,
-		hasError:
-			shippingErrorStatus === UNKNOWN ||
-			shippingErrorStatus === INVALID_ADDRESS,
-	};
+	const currentErrorStatus = useMemo(
+		() => ( {
+			isPristine: shippingErrorStatus === NONE,
+			isValid: shippingErrorStatus === NONE,
+			hasInvalidAddress: shippingErrorStatus === INVALID_ADDRESS,
+			hasError:
+				shippingErrorStatus === UNKNOWN ||
+				shippingErrorStatus === INVALID_ADDRESS,
+		} ),
+		[ shippingErrorStatus ]
+	);
 
 	// emit events.
 	useEffect( () => {
