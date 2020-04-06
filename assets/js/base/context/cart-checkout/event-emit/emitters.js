@@ -24,7 +24,6 @@ const getObserversByPriority = ( observers, eventType ) => {
  */
 export const emitEvent = async ( observers, eventType, data ) => {
 	const observersByType = getObserversByPriority( observers, eventType );
-	let emitterResponse = {};
 	const observerResponses = [];
 	for ( const observer of observersByType ) {
 		try {
@@ -32,8 +31,6 @@ export const emitEvent = async ( observers, eventType, data ) => {
 				observer.callback( data )
 			);
 			if ( typeof observerResponse === 'object' ) {
-				emitterResponse = { ...emitterResponse, ...observerResponse };
-			} else {
 				observerResponses.push( observerResponse );
 			}
 		} catch ( e ) {
@@ -43,9 +40,7 @@ export const emitEvent = async ( observers, eventType, data ) => {
 			console.error( e );
 		}
 	}
-	return Object.keys( emitterResponse ).length
-		? emitterResponse
-		: observerResponses.every( ( response ) => response === true );
+	return observerResponses.length ? observerResponses : true;
 };
 
 /**

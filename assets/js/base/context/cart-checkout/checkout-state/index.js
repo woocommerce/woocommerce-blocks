@@ -10,6 +10,7 @@ import {
 	useEffect,
 } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+import { useStoreNotices } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -92,6 +93,8 @@ export const CheckoutStateProvider = ( {
 	const [ observers, subscriber ] = useReducer( emitReducer, {} );
 	const currentObservers = useRef( observers );
 	const { setValidationErrors } = useValidationContext();
+	const { addErrorNotice, removeNotices } = useStoreNotices();
+
 	// set observers on ref so it's always current.
 	useEffect( () => {
 		currentObservers.current = observers;
@@ -136,14 +139,20 @@ export const CheckoutStateProvider = ( {
 	useEffect( () => {
 		const { hasError, status } = checkoutState;
 		if ( status === STATUS.PROCESSING ) {
+			removeNotices( 'error' );
 			emitEvent(
 				currentObservers.current,
 				EMIT_TYPES.CHECKOUT_PROCESSING,
 				{}
 			).then( ( response ) => {
 				if ( response !== true || hasError ) {
-					if ( typeof response === 'object' ) {
-						setValidationErrors( response );
+					if ( Array.isArray( response ) ) {
+						response.forEach(
+							( { errorMessage, validationErrors } ) => {
+								addErrorNotice( errorMessage );
+								setValidationErrors( validationErrors );
+							}
+						);
 					}
 					dispatch( actions.setComplete() );
 				} else {

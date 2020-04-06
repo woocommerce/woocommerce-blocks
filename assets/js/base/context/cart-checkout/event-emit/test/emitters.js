@@ -39,7 +39,7 @@ describe( 'Testing emitters', () => {
 			expect( console ).toHaveErroredWith( 'an error' );
 			expect( observerA ).toHaveBeenCalledTimes( 1 );
 			expect( observerB ).toHaveBeenCalledWith( 'foo' );
-			expect( response ).toBe( false );
+			expect( response ).toBe( true );
 		} );
 	} );
 	describe( 'Testing emitEventWithAbort()', () => {

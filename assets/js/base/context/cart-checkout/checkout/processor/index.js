@@ -102,8 +102,37 @@ const CheckoutProcessor = () => {
 	}, [ errorMessage ] );
 
 	const checkValidation = useCallback( () => {
-		return ! checkoutWillHaveError;
-	}, [ checkoutWillHaveError ] );
+		if ( hasValidationErrors ) {
+			return {
+				errorMessage: __(
+					'Some input fields are invalid.',
+					'woo-gutenberg-products-block'
+				),
+			};
+		}
+		if ( currentPaymentStatus.hasError ) {
+			return {
+				errorMessage: __(
+					'There was a problem with your payment option.',
+					'woo-gutenberg-products-block'
+				),
+			};
+		}
+		if ( shippingErrorStatus.hasError ) {
+			return {
+				errorMessage: __(
+					'There was a problem with your shipping option.',
+					'woo-gutenberg-products-block'
+				),
+			};
+		}
+
+		return true;
+	}, [
+		hasValidationErrors,
+		currentPaymentStatus.hasError,
+		shippingErrorStatus.hasError,
+	] );
 
 	useEffect( () => {
 		const unsubscribeProcessing = onCheckoutProcessing(
