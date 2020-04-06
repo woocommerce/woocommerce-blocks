@@ -6,6 +6,7 @@ import { useState, useEffect } from '@wordpress/element';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { usePrevious } from '@woocommerce/base-hooks';
 import { useDebounce } from 'use-debounce';
+import { useCheckoutContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -31,6 +32,8 @@ import { useStoreCart } from './use-store-cart';
 export const useStoreCartItemQuantity = ( cartItem ) => {
 	const { key: cartItemKey = '', quantity: cartItemQuantity = 1 } = cartItem;
 	const { cartErrors } = useStoreCart();
+	const { dispatchActions } = useCheckoutContext();
+
 	// Store quantity in hook state. This is used to keep the UI
 	// updated while server request is updated.
 	const [ quantity, changeQuantity ] = useState( cartItemQuantity );
@@ -62,6 +65,13 @@ export const useStoreCartItemQuantity = ( cartItem ) => {
 			changeCartItemQuantity( cartItemKey, debouncedQuantity );
 		}
 	}, [ debouncedQuantity, cartItemKey ] );
+	useEffect( () => {
+		if ( isPending ) {
+			dispatchActions.incrementCalculating();
+		} else {
+			dispatchActions.decrementCalculating();
+		}
+	}, [ isPending ] );
 
 	return {
 		isPending,
