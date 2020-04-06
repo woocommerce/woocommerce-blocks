@@ -41,12 +41,11 @@ const preparePaymentData = ( paymentData ) => {
 const CheckoutProcessor = () => {
 	const {
 		hasError: checkoutHasError,
-		isProcessing,
-		isProcessingComplete,
 		onCheckoutProcessing,
 		onCheckoutCompleteSuccess,
 		dispatchActions,
 		redirectUrl,
+		isProcessing: checkoutIsProcessing,
 		isProcessingComplete: checkoutIsProcessingComplete,
 	} = useCheckoutContext();
 	const { hasValidationErrors } = useValidationContext();
@@ -70,25 +69,31 @@ const CheckoutProcessor = () => {
 		currentPaymentStatus.hasError ||
 		shippingHasError;
 
+	useEffect( () => {
+		if (
+			checkoutWillHaveError !== checkoutHasError &&
+			( checkoutIsProcessing || checkoutIsProcessingComplete )
+		) {
+			dispatchActions.setHasError( checkoutWillHaveError );
+		}
+		const unsubscribeProcessing = onCheckoutProcessing( () => {
+			return ! checkoutWillHaveError;
+		}, 0 );
+		return () => {
+			unsubscribeProcessing();
+		};
+	}, [
+		checkoutWillHaveError,
+		checkoutHasError,
+		checkoutIsProcessing,
+		checkoutIsProcessingComplete,
+	] );
+
 	const paidAndWithoutErrors =
 		! checkoutHasError &&
 		! checkoutWillHaveError &&
 		currentPaymentStatus.isSuccessful &&
 		checkoutIsProcessingComplete;
-
-	useEffect( () => {
-		if (
-			checkoutWillHaveError !== checkoutHasError &&
-			( isProcessing || isProcessingComplete )
-		) {
-			dispatchActions.setHasError( checkoutWillHaveError );
-		}
-	}, [
-		checkoutWillHaveError,
-		checkoutHasError,
-		isProcessing,
-		isProcessingComplete,
-	] );
 
 	useEffect( () => {
 		currentBillingData.current = billingData;

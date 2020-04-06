@@ -64,7 +64,7 @@ const Checkout = ( {
 	const {
 		hasOrder,
 		hasError: checkoutHasError,
-		onCheckoutProcessing,
+		isComplete: checkoutIsComplete,
 	} = useCheckoutContext();
 	const { showAllValidationErrors } = useValidationContext();
 	const {
@@ -125,21 +125,12 @@ const Checkout = ( {
 		}
 	}, [ shippingAsBilling, setBillingData ] );
 
-	const showErrors = useCallback( () => {
-		if ( checkoutHasError ) {
+	useEffect( () => {
+		if ( checkoutIsComplete && checkoutHasError ) {
 			showAllValidationErrors();
 			scrollToTop( { focusableSelector: 'input:invalid' } );
 		}
-		return ! checkoutHasError;
-	}, [ checkoutHasError ] );
-	useEffect( () => {
-		const unsubscribeProcessing = onCheckoutProcessing( () => {
-			showErrors();
-		}, 999 );
-		return () => {
-			unsubscribeProcessing();
-		};
-	}, [ onCheckoutProcessing, showErrors ] );
+	}, [ checkoutIsComplete, checkoutHasError ] );
 
 	if ( ! isEditor && ! hasOrder ) {
 		return <CheckoutOrderError />;

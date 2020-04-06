@@ -21,7 +21,6 @@ import {
 	EMIT_TYPES,
 	emitterSubscribers,
 	emitEvent,
-	emitEventWithAbort,
 	reducer as emitReducer,
 } from './event-emit';
 import { useValidationContext } from '../validation';
@@ -137,15 +136,19 @@ export const CheckoutStateProvider = ( {
 	useEffect( () => {
 		const { hasError, status } = checkoutState;
 		if ( status === STATUS.PROCESSING ) {
-			emitEventWithAbort(
+			emitEvent(
 				currentObservers.current,
 				EMIT_TYPES.CHECKOUT_PROCESSING,
 				{}
 			).then( ( response ) => {
-				if ( typeof response === 'object' ) {
-					setValidationErrors( response );
+				if ( response !== true || hasError ) {
+					if ( typeof response === 'object' ) {
+						setValidationErrors( response );
+					}
+					dispatch( actions.setComplete() );
+				} else {
+					dispatch( actions.setProcessingComplete() );
 				}
-				dispatch( actions.setProcessingComplete() );
 			} );
 		}
 		if ( status === STATUS.COMPLETE ) {
