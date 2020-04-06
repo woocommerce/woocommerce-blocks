@@ -25,7 +25,7 @@ import {
 	useBillingDataContext,
 	useValidationContext,
 } from '@woocommerce/base-context';
-import { useStoreCart } from '@woocommerce/base-hooks';
+import { useStoreCart, usePaymentMethods } from '@woocommerce/base-hooks';
 import {
 	ExpressCheckoutFormControl,
 	PaymentMethods,
@@ -74,6 +74,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		needsShipping,
 	} = useShippingDataContext();
 	const { billingData, setBillingData } = useBillingDataContext();
+	const { paymentMethods } = usePaymentMethods();
 
 	const [ shippingAsBilling, setShippingAsBilling ] = useState(
 		needsShipping
@@ -274,10 +275,14 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 									'Shipping options',
 									'woo-gutenberg-products-block'
 								) }
-								description={ __(
-									'Select a shipping method below.',
-									'woo-gutenberg-products-block'
-								) }
+								description={
+									shippingRates.length > 1
+										? __(
+												'Select a shipping method below.',
+												'woo-gutenberg-products-block'
+										  )
+										: ''
+								}
 							>
 								{ shippingRates.length === 0 && isEditor ? (
 									<NoShippingPlaceholder />
@@ -330,10 +335,14 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 								'Payment method',
 								'woo-gutenberg-products-block'
 							) }
-							description={ __(
-								'Select a payment method below.',
-								'woo-gutenberg-products-block'
-							) }
+							description={
+								paymentMethods && paymentMethods.length > 1
+									? __(
+											'Select a payment method below.',
+											'woo-gutenberg-products-block'
+									  )
+									: ''
+							}
 						>
 							<PaymentMethods />
 						</FormStep>
