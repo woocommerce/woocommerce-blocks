@@ -247,8 +247,9 @@ const ApplePayExpressComponent = ( {
 		) {
 			if ( forSuccess ) {
 				completePayment( handlers.sourceEvent );
+			} else {
+				abortPayment( handlers.sourceEvent );
 			}
-			abortPayment( handlers.sourceEvent );
 		}
 	};
 
