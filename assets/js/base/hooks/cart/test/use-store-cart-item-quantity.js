@@ -178,26 +178,4 @@ describe( 'useStoreCartItemQuantity', () => {
 
 		expect( cartItemQuantityErrors ).toEqual( mockCartErrors );
 	} );
-
-	it( 'isPendingQuantity should depend on the value provided by the store', () => {
-		setupMocks( { isPendingQuantity: true } );
-		mockUseStoreCart.useStoreCart.mockReturnValue( {
-			cartErrors: {},
-		} );
-
-		const TestComponent = getTestComponent( {
-			key: '123',
-			quantity: 1,
-		} );
-
-		act( () => {
-			renderer = TestRenderer.create(
-				getWrappedComponents( TestComponent )
-			);
-		} );
-
-		const { isPendingQuantity } = renderer.root.findByType( 'div' ).props;
-
-		expect( isPendingQuantity ).toBe( true );
-	} );
 } );
