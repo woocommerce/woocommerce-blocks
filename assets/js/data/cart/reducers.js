@@ -43,7 +43,7 @@ const cartItemsReducer = ( state = [], action ) => {
  */
 const reducer = (
 	state = {
-		cartItemsQuantityPending: [],
+		cartItemsPendingDelete: [],
 		cartData: {
 			coupons: [],
 			shippingRates: [],
@@ -129,18 +129,18 @@ const reducer = (
 			};
 			break;
 
-		case types.ITEM_QUANTITY_PENDING:
+		case types.ITEM_PENDING_DELETE:
 			// Remove key by default - handles isQuantityPending==false
 			// and prevents duplicates when isQuantityPending===true.
-			const newPendingKeys = state.cartItemsQuantityPending.filter(
+			const newPendingKeys = state.cartItemsPendingDelete.filter(
 				( key ) => key !== action.cartItemKey
 			);
-			if ( action.isQuantityPending ) {
+			if ( action.isPendingDelete ) {
 				newPendingKeys.push( action.cartItemKey );
 			}
 			state = {
 				...state,
-				cartItemsQuantityPending: newPendingKeys,
+				cartItemsPendingDelete: newPendingKeys,
 			};
 			break;
 

@@ -86,7 +86,7 @@ const CartLineItemRow = ( { lineItem } ) => {
 		quantity,
 		changeQuantity,
 		removeItem,
-		isPending: itemQuantityDisabled,
+		isPendingDelete: itemQuantityDisabled,
 	} = useStoreCartItemQuantity( lineItem );
 
 	const currency = getCurrency( prices );

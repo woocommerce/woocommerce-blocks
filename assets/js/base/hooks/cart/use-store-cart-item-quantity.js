@@ -43,13 +43,13 @@ export const useStoreCartItemQuantity = ( cartItem ) => {
 		storeKey
 	);
 
-	const isPending = useSelect(
+	const isPendingDelete = useSelect(
 		( select ) => {
 			if ( ! cartItemKey ) {
 				return false;
 			}
 			const store = select( storeKey );
-			return store.isItemQuantityPending( cartItemKey );
+			return store.isItemPendingDelete( cartItemKey );
 		},
 		[ cartItemKey ]
 	);
@@ -66,15 +66,15 @@ export const useStoreCartItemQuantity = ( cartItem ) => {
 		}
 	}, [ debouncedQuantity, cartItemKey ] );
 	useEffect( () => {
-		if ( isPending ) {
+		if ( isPendingDelete ) {
 			dispatchActions.incrementCalculating();
 		} else {
 			dispatchActions.decrementCalculating();
 		}
-	}, [ isPending ] );
+	}, [ isPendingDelete ] );
 
 	return {
-		isPending,
+		isPendingDelete,
 		quantity,
 		changeQuantity,
 		removeItem,
