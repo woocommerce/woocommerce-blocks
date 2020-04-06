@@ -41,7 +41,7 @@ describe( 'useStoreCartItemQuantity', () => {
 
 	let mockRemoveItemFromCart;
 	let mockChangeCartItemQuantity;
-	const setupMocks = ( { isPendingQuantity } ) => {
+	const setupMocks = ( { isPendingDelete, isPendingQuantity } ) => {
 		mockRemoveItemFromCart = jest
 			.fn()
 			.mockReturnValue( { type: 'removeItemFromCartAction' } );
@@ -55,6 +55,9 @@ describe( 'useStoreCartItemQuantity', () => {
 				changeCartItemQuantity: mockChangeCartItemQuantity,
 			},
 			selectors: {
+				isItemPendingDelete: jest
+					.fn()
+					.mockReturnValue( isPendingDelete ),
 				isItemPendingQuantity: jest
 					.fn()
 					.mockReturnValue( isPendingQuantity ),
@@ -74,7 +77,7 @@ describe( 'useStoreCartItemQuantity', () => {
 
 	describe( 'with no errors and not pending', () => {
 		beforeEach( () => {
-			setupMocks( { isPendingQuantity: false } );
+			setupMocks( { isPendingDelete: false, isPendingQuantity: false } );
 			mockUseStoreCart.useStoreCart.mockReturnValue( {
 				cartErrors: {},
 			} );
@@ -156,7 +159,7 @@ describe( 'useStoreCartItemQuantity', () => {
 
 	it( 'should expose store errors', () => {
 		const mockCartErrors = [ { message: 'Test error' } ];
-		setupMocks( { isPendingQuantity: false } );
+		setupMocks( { isPendingDelete: false, isPendingQuantity: false } );
 		mockUseStoreCart.useStoreCart.mockReturnValue( {
 			cartErrors: mockCartErrors,
 		} );
@@ -177,5 +180,27 @@ describe( 'useStoreCartItemQuantity', () => {
 		).props;
 
 		expect( cartItemQuantityErrors ).toEqual( mockCartErrors );
+	} );
+
+	it( 'isPendingDelete should depend on the value provided by the store', () => {
+		setupMocks( { isPendingDelete: true, isPendingQuantity: false } );
+		mockUseStoreCart.useStoreCart.mockReturnValue( {
+			cartErrors: {},
+		} );
+
+		const TestComponent = getTestComponent( {
+			key: '123',
+			quantity: 1,
+		} );
+
+		act( () => {
+			renderer = TestRenderer.create(
+				getWrappedComponents( TestComponent )
+			);
+		} );
+
+		const { isPendingDelete } = renderer.root.findByType( 'div' ).props;
+
+		expect( isPendingDelete ).toBe( true );
 	} );
 } );
