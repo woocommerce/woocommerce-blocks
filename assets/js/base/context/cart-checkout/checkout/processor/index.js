@@ -76,12 +76,6 @@ const CheckoutProcessor = () => {
 		) {
 			dispatchActions.setHasError( checkoutWillHaveError );
 		}
-		const unsubscribeProcessing = onCheckoutProcessing( () => {
-			return ! checkoutWillHaveError;
-		}, 0 );
-		return () => {
-			unsubscribeProcessing();
-		};
 	}, [
 		checkoutWillHaveError,
 		checkoutHasError,
@@ -109,6 +103,20 @@ const CheckoutProcessor = () => {
 			removeNotice( 'payment-method-error' );
 		}
 	}, [ errorMessage ] );
+
+	const checkValidation = useCallback( () => {
+		return ! checkoutWillHaveError;
+	}, [ checkoutWillHaveError ] );
+
+	useEffect( () => {
+		const unsubscribeProcessing = onCheckoutProcessing(
+			checkValidation,
+			0
+		);
+		return () => {
+			unsubscribeProcessing();
+		};
+	}, [ onCheckoutProcessing, checkValidation ] );
 
 	const processOrder = useCallback( () => {
 		triggerFetch( {
