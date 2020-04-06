@@ -87,15 +87,15 @@ export function receiveCartItem( response = {} ) {
  * Returns an action object to indicate if the specified cart item
  * is being removing.
  *
- * @param {string} cartItemKey Cart item being deleted.
  * @param {boolean} isPendingDelete Flag for update state; true if API request is pending.
+ * @param {string} cartItemKey Cart item being deleted.
  * @return {Object} Object for action.
  */
-export function itemPendingDelete( cartItemKey, isPendingDelete ) {
+export function itemPendingDelete( isPendingDelete, cartItemKey ) {
 	return {
 		type: types.ITEM_PENDING_DELETE,
-		cartItemKey,
 		isPendingDelete,
+		cartItemKey,
 	};
 }
 
@@ -243,7 +243,7 @@ export function* addItemToCart( productId, quantity = 1 ) {
  * @param {string} cartItemKey Cart item being updated.
  */
 export function* removeItemFromCart( cartItemKey ) {
-	yield itemPendingDelete( cartItemKey, true );
+	yield itemPendingDelete( true, cartItemKey );
 
 	try {
 		const { response } = yield apiFetchWithHeaders( {
@@ -257,7 +257,7 @@ export function* removeItemFromCart( cartItemKey ) {
 		yield receiveError( error );
 	}
 
-	yield itemPendingDelete( cartItemKey, false );
+	yield itemPendingDelete( false, cartItemKey );
 }
 
 /**
