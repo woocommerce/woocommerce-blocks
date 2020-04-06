@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import QuantitySelector from '@woocommerce/base-components/quantity-selector';
@@ -82,9 +83,12 @@ const CartLineItemRow = ( { lineItem } ) => {
 		},
 	} = lineItem;
 
-	const { quantity, changeQuantity, removeItem } = useStoreCartItemQuantity(
-		lineItem
-	);
+	const {
+		quantity,
+		changeQuantity,
+		removeItem,
+		isPendingDelete,
+	} = useStoreCartItemQuantity( lineItem );
 
 	const currency = getCurrency( prices );
 	const regularAmount = Dinero( {
@@ -99,7 +103,11 @@ const CartLineItemRow = ( { lineItem } ) => {
 	const firstImage = images.length ? images[ 0 ] : {};
 
 	return (
-		<tr className="wc-block-cart-items__row">
+		<tr
+			className={ classnames( 'wc-block-cart-items__row', {
+				'is-loading': isPendingDelete,
+			} ) }
+		>
 			{ /* If the image has no alt text, this link is unnecessary and can be hidden. */ }
 			<td
 				className="wc-block-cart-item__image"

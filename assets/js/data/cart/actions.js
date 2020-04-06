@@ -92,7 +92,7 @@ export function receiveCartItem( response = {} ) {
  * is pending.
  * @return {Object} Object for action.
  */
-export function itemPendingQuantity( cartItemKey, isPendingQuantity = true ) {
+export function itemIsPendingQuantity( cartItemKey, isPendingQuantity = true ) {
 	return {
 		type: types.ITEM_PENDING_QUANTITY,
 		cartItemKey,
@@ -104,12 +104,15 @@ export function itemPendingQuantity( cartItemKey, isPendingQuantity = true ) {
  * Returns an action object to remove a cart item from the store.
  *
  * @param {string} cartItemKey Cart item to remove.
+ * @param {boolean} isPendingDelete Flag for update state; true if API request
+ *  is pending.
  * @return {Object} Object for action.
  */
-export function receiveRemovedItem( cartItemKey ) {
+export function itemIsPendingDelete( cartItemKey, isPendingDelete = true ) {
 	return {
 		type: types.RECEIVE_REMOVED_ITEM,
 		cartItemKey,
+		isPendingDelete,
 	};
 }
 
@@ -232,6 +235,7 @@ export function* addItemToCart( productId, quantity = 1 ) {
 	} catch ( error ) {
 		yield receiveError( error );
 	}
+	yield itemIsPendingDelete( cartItemKey, false );
 }
 
 /**
@@ -244,7 +248,7 @@ export function* addItemToCart( productId, quantity = 1 ) {
  * @param {string} cartItemKey Cart item being updated.
  */
 export function* removeItemFromCart( cartItemKey ) {
-	yield receiveRemovedItem( cartItemKey );
+	yield itemIsPendingDelete( cartItemKey );
 
 	try {
 		const { response } = yield apiFetchWithHeaders( {
@@ -270,7 +274,7 @@ export function* removeItemFromCart( cartItemKey ) {
  */
 export function* changeCartItemQuantity( cartItemKey, quantity ) {
 	const cartItem = yield select( CART_STORE_KEY, 'getCartItem', cartItemKey );
-	yield itemPendingQuantity( cartItemKey );
+	yield itemIsPendingQuantity( cartItemKey );
 
 	if ( cartItem?.quantity === quantity ) {
 		return;
@@ -290,7 +294,7 @@ export function* changeCartItemQuantity( cartItemKey, quantity ) {
 	} catch ( error ) {
 		yield receiveError( error );
 	}
-	yield itemPendingQuantity( cartItemKey, false );
+	yield itemIsPendingQuantity( cartItemKey, false );
 }
 
 /**

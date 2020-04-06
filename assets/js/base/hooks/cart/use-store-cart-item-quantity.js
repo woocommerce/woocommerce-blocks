@@ -54,6 +54,18 @@ export const useStoreCartItemQuantity = ( cartItem ) => {
 		},
 		[ cartItemKey ]
 	);
+
+	const isPendingDelete = useSelect(
+		( select ) => {
+			if ( ! cartItemKey ) {
+				return false;
+			}
+
+			const store = select( storeKey );
+			return store.isItemPendingDelete( cartItemKey );
+		},
+		[ cartItemKey ]
+	);
 	const removeItem = () => {
 		return cartItemKey ? removeItemFromCart( cartItemKey ) : false;
 	};
@@ -73,7 +85,17 @@ export const useStoreCartItemQuantity = ( cartItem ) => {
 		}
 	}, [ isPendingQuantity ] );
 
+	useEffect( () => {
+		if ( isPendingDelete ) {
+			dispatchActions.incrementCalculating();
+		}
+		return () => {
+			dispatchActions.decrementCalculating();
+		};
+	}, [ isPendingDelete ] );
+
 	return {
+		isPendingDelete,
 		quantity,
 		changeQuantity,
 		removeItem,

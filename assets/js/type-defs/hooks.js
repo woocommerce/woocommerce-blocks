@@ -57,6 +57,8 @@
  *
  * @property {number}   quantity               The quantity of the item in the
  *                                             cart.
+ * @property {boolean}  isPendingDelete        Whether the cart item is being
+ *                                             deleted or not.
  * @property {Function} changeQuantity         Callback for changing quantity
  *                                             of item in cart.
  * @property {Function} removeItem             Callback for removing a cart item.
