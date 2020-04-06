@@ -135,22 +135,21 @@ export const CheckoutStateProvider = ( {
 
 	// emit events.
 	useEffect( () => {
-		const status = checkoutState.status;
+		const { hasError, status } = checkoutState;
 		if ( status === STATUS.PROCESSING ) {
 			emitEventWithAbort(
 				currentObservers.current,
 				EMIT_TYPES.CHECKOUT_PROCESSING,
 				{}
 			).then( ( response ) => {
-				if ( response !== true ) {
+				if ( typeof response === 'object' ) {
 					setValidationErrors( response );
-					dispatchActions.setHasError();
 				}
 				dispatch( actions.setProcessingComplete() );
 			} );
 		}
 		if ( status === STATUS.COMPLETE ) {
-			if ( checkoutState.hasError ) {
+			if ( hasError ) {
 				emitEvent(
 					currentObservers.current,
 					EMIT_TYPES.CHECKOUT_COMPLETE_WITH_ERROR,
@@ -164,13 +163,7 @@ export const CheckoutStateProvider = ( {
 				);
 			}
 		}
-	}, [
-		checkoutState.status,
-		checkoutState.hasError,
-		checkoutState.isComplete,
-		checkoutState.redirectUrl,
-		setValidationErrors,
-	] );
+	}, [ checkoutState.status, checkoutState.hasError, setValidationErrors ] );
 
 	const onSubmit = () => {
 		dispatch( actions.setProcessing() );

@@ -64,7 +64,7 @@ const Checkout = ( {
 	const {
 		hasOrder,
 		hasError: checkoutHasError,
-		isComplete: checkoutIsComplete,
+		onCheckoutProcessing,
 	} = useCheckoutContext();
 	const { showAllValidationErrors } = useValidationContext();
 	const {
@@ -75,7 +75,9 @@ const Checkout = ( {
 	} = useShippingDataContext();
 	const { billingData, setBillingData } = useBillingDataContext();
 
-	const [ shippingAsBilling, setShippingAsBilling ] = useState( true );
+	const [ shippingAsBilling, setShippingAsBilling ] = useState(
+		needsShipping
+	);
 
 	const renderShippingRatesControlOption = ( option ) => ( {
 		label: decodeEntities( option.name ),
@@ -123,12 +125,21 @@ const Checkout = ( {
 		}
 	}, [ shippingAsBilling, setBillingData ] );
 
-	useEffect( () => {
-		if ( checkoutIsComplete && checkoutHasError ) {
+	const showErrors = useCallback( () => {
+		if ( checkoutHasError ) {
 			showAllValidationErrors();
 			scrollToTop( { focusableSelector: 'input:invalid' } );
 		}
-	}, [ checkoutIsComplete, checkoutHasError ] );
+		return ! checkoutHasError;
+	}, [ checkoutHasError ] );
+	useEffect( () => {
+		const unsubscribeProcessing = onCheckoutProcessing( () => {
+			showErrors();
+		}, 999 );
+		return () => {
+			unsubscribeProcessing();
+		};
+	}, [ onCheckoutProcessing, showErrors ] );
 
 	if ( ! isEditor && ! hasOrder ) {
 		return <CheckoutOrderError />;

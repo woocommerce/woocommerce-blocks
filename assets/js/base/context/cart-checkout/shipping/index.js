@@ -108,14 +108,15 @@ export const ShippingDataProvider = ( { children } ) => {
 			dispatchActions.decrementCalculating();
 		}
 	}, [ isSelectingRate ] );
+	const hasError =
+		shippingErrorStatus === UNKNOWN ||
+		shippingErrorStatus === INVALID_ADDRESS;
 
 	const currentErrorStatus = {
 		isPristine: shippingErrorStatus === NONE,
 		isValid: shippingErrorStatus === NONE,
 		hasInvalidAddress: shippingErrorStatus === INVALID_ADDRESS,
-		hasError:
-			shippingErrorStatus === UNKNOWN ||
-			shippingErrorStatus === INVALID_ADDRESS,
+		hasError,
 	};
 
 	// emit events.
@@ -162,11 +163,6 @@ export const ShippingDataProvider = ( { children } ) => {
 		shippingErrorStatus,
 	] );
 
-	// dispatch checkout error if there's a shipping error.
-	useEffect( () => {
-		dispatchActions.setHasError( currentErrorStatus.hasError );
-	}, [ currentErrorStatus.hasError, dispatchActions.setHasError ] );
-
 	/**
 	 * @type {ShippingDataContext}
 	 */
@@ -186,6 +182,7 @@ export const ShippingDataProvider = ( { children } ) => {
 		onShippingRateSelectSuccess,
 		onShippingRateSelectFail,
 		needsShipping,
+		hasError,
 	};
 	return (
 		<>

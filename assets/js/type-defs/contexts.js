@@ -64,6 +64,8 @@
  * @property {boolean}              needsShipping         True if the cart has
  *                                                        items requiring
  *                                                        shipping.
+ * @property {boolean}              hasError              True if shipping is in
+ *                                                        an error state.
  */
 
 /**
@@ -285,8 +287,7 @@
  *                                                               error to false.
  * @property {function()}               showAllValidationErrors  Sets the hidden prop of all
  *                                                               errors to false.
- * @property {function():boolean}       hasValidationErrors      Returns true if there is at least
- *                                                               one error.
+ * @property {boolean}                  hasValidationErrors      True if there is at least one error.
  */
 
 export {};

@@ -40,7 +40,9 @@ const preparePaymentData = ( paymentData ) => {
  */
 const CheckoutProcessor = () => {
 	const {
-		hasError,
+		hasError: checkoutHasError,
+		isProcessing,
+		isProcessingComplete,
 		onCheckoutProcessing,
 		onCheckoutCompleteSuccess,
 		dispatchActions,
@@ -48,7 +50,10 @@ const CheckoutProcessor = () => {
 		isProcessingComplete: checkoutIsProcessingComplete,
 	} = useCheckoutContext();
 	const { hasValidationErrors } = useValidationContext();
-	const { shippingAddress } = useShippingDataContext();
+	const {
+		shippingAddress,
+		hasError: shippingHasError,
+	} = useShippingDataContext();
 	const { billingData } = useBillingDataContext();
 	const {
 		activePaymentMethod,
@@ -60,12 +65,30 @@ const CheckoutProcessor = () => {
 	const currentBillingData = useRef( billingData );
 	const currentShippingAddress = useRef( shippingAddress );
 
-	const withErrors = hasValidationErrors();
+	const checkoutWillHaveError =
+		hasValidationErrors ||
+		currentPaymentStatus.hasError ||
+		shippingHasError;
+
 	const paidAndWithoutErrors =
-		! hasError &&
-		! withErrors &&
+		! checkoutHasError &&
+		! checkoutWillHaveError &&
 		currentPaymentStatus.isSuccessful &&
 		checkoutIsProcessingComplete;
+
+	useEffect( () => {
+		if (
+			checkoutWillHaveError !== checkoutHasError &&
+			( isProcessing || isProcessingComplete )
+		) {
+			dispatchActions.setHasError( checkoutWillHaveError );
+		}
+	}, [
+		checkoutWillHaveError,
+		checkoutHasError,
+		isProcessing,
+		isProcessingComplete,
+	] );
 
 	useEffect( () => {
 		currentBillingData.current = billingData;
@@ -81,10 +104,6 @@ const CheckoutProcessor = () => {
 			removeNotice( 'payment-method-error' );
 		}
 	}, [ errorMessage ] );
-
-	const checkValidation = useCallback( () => {
-		return ! withErrors;
-	}, [ withErrors ] );
 
 	const processOrder = useCallback( () => {
 		triggerFetch( {
@@ -148,23 +167,13 @@ const CheckoutProcessor = () => {
 	] );
 	// setup checkout processing event observers.
 	useEffect( () => {
-		const unsubscribeValidation = onCheckoutProcessing(
-			checkValidation,
-			0
-		);
 		const unsubscribeRedirect = onCheckoutCompleteSuccess( () => {
 			window.location.href = redirectUrl;
 		}, 999 );
 		return () => {
-			unsubscribeValidation();
 			unsubscribeRedirect();
 		};
-	}, [
-		onCheckoutProcessing,
-		onCheckoutCompleteSuccess,
-		checkValidation,
-		redirectUrl,
-	] );
+	}, [ onCheckoutProcessing, onCheckoutCompleteSuccess, redirectUrl ] );
 
 	// process order if conditions are good.
 	useEffect( () => {
