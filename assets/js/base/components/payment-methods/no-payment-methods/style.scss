@@ -1,6 +1,9 @@
 .components-placeholder.wc-block-checkout__no-payment-methods-placeholder {
 	margin-bottom: $gap;
-	pointer-events: all; // Overrides parent disabled component in editor context
+
+	* {
+		pointer-events: all; // Overrides parent disabled component in editor context
+	}
 
 	.components-placeholder__fieldset {
 		display: block;
