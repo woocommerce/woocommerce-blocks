@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { normalizeLineItems } from '../apple-pay/normalize';
+import { normalizeLineItems } from './normalize';
 import { errorTypes, errorCodes } from './constants';
 
 /**
@@ -139,16 +139,19 @@ const updatePaymentRequest = ( {
  *
  * @param {StripePaymentRequest} paymentRequest A Stripe PaymentRequest instance.
  *
- * @return {Promise<boolean>}  True means apple pay can be done.
+ * @return {Promise<Object>}  True means apple pay can be done.
  */
-const canDoApplePay = ( paymentRequest ) => {
+const canDoPaymentRequest = ( paymentRequest ) => {
 	return new Promise( ( resolve ) => {
 		paymentRequest.canMakePayment().then( ( result ) => {
-			if ( result && result.applePay ) {
-				resolve( true );
+			if ( result ) {
+				const paymentRequestType = result.applePay
+					? 'apple_pay'
+					: 'payment_request_api';
+				resolve( { canPay: true, requestType: paymentRequestType } );
 				return;
 			}
-			resolve( false );
+			resolve( { canPay: false } );
 		} );
 	} );
 };
@@ -253,6 +256,6 @@ export {
 	getTotalPaymentItem,
 	getPaymentRequest,
 	updatePaymentRequest,
-	canDoApplePay,
+	canDoPaymentRequest,
 	getErrorMessageForTypeAndCode,
 };
