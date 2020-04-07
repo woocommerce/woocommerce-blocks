@@ -13,7 +13,6 @@ import { InlineCard, CardElements } from './elements';
 import { Elements, useElements, useStripe } from '@stripe/react-stripe-js';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { useCheckoutContext } from '@woocommerce/base-context';
 
 /**
  * @typedef {import('../stripe-utils/type-defs').Stripe} Stripe
@@ -28,7 +27,7 @@ import { useCheckoutContext } from '@woocommerce/base-context';
  */
 const CreditCardComponent = ( { billing, eventRegistration, components } ) => {
 	const { ValidationInputError, CheckboxControl } = components;
-	const { customerId } = useCheckoutContext();
+	const { customerId } = billing;
 	const [ sourceId, setSourceId ] = useState( 0 );
 	const stripe = useStripe();
 	const [ shouldSavePayment, setShouldSavePayment ] = useState(
