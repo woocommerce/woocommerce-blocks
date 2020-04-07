@@ -162,8 +162,8 @@ const PaymentRequestExpressComponent = ( {
 			},
 		};
 		paymentMethod.complete( 'fail' );
-		setIsFinished( true );
 		setIsProcessing( false );
+		setIsFinished( true );
 		return response;
 	};
 
