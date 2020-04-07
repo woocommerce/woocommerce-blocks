@@ -50,6 +50,10 @@ import CheckoutSidebar from './sidebar';
 import CheckoutOrderError from './checkout-order-error';
 import NoShippingPlaceholder from './no-shipping-placeholder';
 import './style.scss';
+import {
+	getShippingRatesPackageCount,
+	getShippingRatesRateCount,
+} from './utils';
 
 const Block = ( props ) => (
 	<CheckoutProvider>
