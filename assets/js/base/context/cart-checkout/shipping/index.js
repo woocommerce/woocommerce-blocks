@@ -138,12 +138,7 @@ export const ShippingDataProvider = ( { children } ) => {
 				currentErrorStatus
 			);
 		}
-	}, [
-		shippingRates,
-		shippingRatesLoading,
-		currentErrorStatus.hasError,
-		shippingErrorStatus,
-	] );
+	}, [ shippingRates, shippingRatesLoading, currentErrorStatus.hasError ] );
 
 	useEffect( () => {
 		if (
@@ -168,12 +163,7 @@ export const ShippingDataProvider = ( { children } ) => {
 				currentErrorStatus
 			);
 		}
-	}, [
-		selectedRates,
-		isSelectingRate,
-		currentErrorStatus,
-		shippingErrorStatus,
-	] );
+	}, [ selectedRates, isSelectingRate, currentErrorStatus.hasError ] );
 
 	useEffect( () => {
 		if (
