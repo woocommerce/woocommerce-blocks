@@ -53,7 +53,6 @@ import { __ } from '@wordpress/i18n';
  * @param {StripeRegisteredPaymentMethodProps} props Incoming props
  */
 const PaymentRequestExpressComponent = ( {
-	paymentStatus,
 	shippingData,
 	billing,
 	eventRegistration,
@@ -76,8 +75,6 @@ const PaymentRequestExpressComponent = ( {
 	const currentBilling = useRef( billing );
 	const currentShipping = useRef( shippingData );
 	const currentPaymentRequest = useRef( paymentRequest );
-	const currentPaymentStatus = useRef( paymentStatus );
-	const currentEventRegistration = useRef( eventRegistration );
 	// for keeping track of what the active payment method was before this
 	// payment button was clicked.
 	const originalActivePaymentMethod = useRef( activePaymentMethod );
@@ -87,9 +84,7 @@ const PaymentRequestExpressComponent = ( {
 		currentBilling.current = billing;
 		currentShipping.current = shippingData;
 		currentPaymentRequest.current = paymentRequest;
-		currentPaymentStatus.current = paymentStatus;
-		currentEventRegistration.current = eventRegistration;
-	}, [ billing, shippingData, paymentRequest, paymentStatus ] );
+	}, [ billing, shippingData, paymentRequest ] );
 
 	//set paymentRequest
 	useEffect( () => {
