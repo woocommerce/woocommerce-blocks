@@ -8,13 +8,14 @@ import { loadStripe } from '../stripe-utils';
 
 const ApplePayPreview = () => <img src={ applePayImage } alt="" />;
 
-const stripePromise = loadStripe();
+const canPayStripePromise = loadStripe();
+const componentStripePromise = loadStripe();
 
 const PaymentRequestPaymentMethod = {
 	id: PAYMENT_METHOD_NAME,
-	content: <PaymentRequestExpress stripe={ stripePromise } />,
+	content: <PaymentRequestExpress stripe={ componentStripePromise } />,
 	edit: <ApplePayPreview />,
-	canMakePayment: stripePromise.then( ( stripe ) => {
+	canMakePayment: canPayStripePromise.then( ( stripe ) => {
 		if ( stripe === null ) {
 			return false;
 		}
