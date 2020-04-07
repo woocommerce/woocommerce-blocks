@@ -152,7 +152,7 @@ export const PaymentMethodDataProvider = ( {
 				context: 'wc/express-payment-area',
 				id: 'wc-express-payment-error',
 			} );
-		} else if ( ! message ) {
+		} else {
 			removeNotice( 'wc-express-payment-error' );
 		}
 	};
