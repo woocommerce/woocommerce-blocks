@@ -53,9 +53,14 @@ const Block = ( props ) => (
 	</CheckoutProvider>
 );
 
-const Checkout = ( { attributes, cartCoupons = [], scrollToTop } ) => {
+const Checkout = ( { attributes, scrollToTop } ) => {
 	const { isEditor } = useEditorContext();
-	const { cartItems, cartTotals, shippingRates } = useStoreCart();
+	const {
+		cartItems,
+		cartTotals,
+		shippingRates,
+		cartCoupons,
+	} = useStoreCart();
 	const {
 		hasOrder,
 		hasError: checkoutHasError,

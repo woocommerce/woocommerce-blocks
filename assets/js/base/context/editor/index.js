@@ -25,15 +25,15 @@ export const useEditorContext = () => {
 /**
  * Editor provider
  *
- * @param {Object}   props                 Incoming props for the provider.
- * @param {*}        props.children        The children being wrapped.
- * @param {CartData} [props.previewCart]   The preview data for editor.
- * @param {number}   [props.currentPostId] The post being edited.
+ * @param {Object}          props                 Incoming props for the provider.
+ * @param {*}               props.children        The children being wrapped.
+ * @param {CartData|Object} [props.previewCart]   The preview data for editor.
+ * @param {number}          [props.currentPostId] The post being edited.
  */
 export const EditorProvider = ( {
 	children,
 	currentPostId = 0,
-	previewCart,
+	previewCart = {},
 } ) => {
 	/**
 	 * @type {number} editingPostId
