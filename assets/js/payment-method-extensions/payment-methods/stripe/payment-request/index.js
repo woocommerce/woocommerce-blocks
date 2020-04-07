@@ -30,12 +30,7 @@ const PaymentRequestPaymentMethod = {
 			country: 'CA',
 			currency: 'cad',
 		} );
-		return paymentRequest.canMakePayment().then( ( result ) => {
-			if ( result ) {
-				return true;
-			}
-			return false;
-		} );
+		return paymentRequest.canMakePayment().then( ( result ) => !! result );
 	} ),
 };
 
