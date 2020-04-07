@@ -1,13 +1,38 @@
 .wc-block-checkbox {
-	.components-checkbox-control__input[type="checkbox"]:checked {
+	display: block;
+	position: relative;
+}
+
+.wc-block-checkbox__input[type="checkbox"] {
+	appearance: none;
+	border: 1px solid;
+	height: 16px;
+	left: 0;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 16px;
+
+	&:checked {
 		background: currentColor;
-		border-color: currentColor;
 	}
-	.components-checkbox-control__input[type="checkbox"]:focus {
-		border-color: currentColor;
-		box-shadow: 0 0 2px currentColor;
-	}
-	.components-checkbox-control__label {
-		display: inline;
-	}
+}
+
+.wc-block-checkbox__input[type="checkbox"] + .wc-block-checkbox__label {
+	display: block;
+	padding-left: #{16px + $gap-smaller};
+}
+
+.wc-block-checkbox__input[type="checkbox"]:checked + .wc-block-checkbox__label::before {
+	color: #fff;
+	content: "\2713";
+	display: block;
+	height: 16px;
+	left: 0;
+	line-height: 16px;
+	position: absolute;
+	text-align: center;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 16px;
 }
