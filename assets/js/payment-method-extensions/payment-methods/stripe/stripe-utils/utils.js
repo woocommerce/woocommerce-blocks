@@ -60,7 +60,9 @@ const getApiKey = () => {
  */
 const getTotalPaymentItem = ( total ) => {
 	return {
-		label: getStripeServerData().stripeTotalLabel,
+		label:
+			getStripeServerData().stripeTotalLabel ||
+			__( 'Total', 'woo-gutenberg-products-block' ),
 		amount: total.value,
 	};
 };
