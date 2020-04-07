@@ -162,8 +162,8 @@ const PaymentRequestExpressComponent = ( {
 			},
 		};
 		paymentMethod.complete( 'fail' );
-		setIsProcessing( false );
 		setIsFinished( true );
+		setIsProcessing( false );
 		return response;
 	};
 
@@ -282,9 +282,9 @@ const PaymentRequestExpressComponent = ( {
 				onSubmit();
 			} );
 			paymentRequest.on( 'cancel', () => {
-				setActivePaymentMethod( originalActivePaymentMethod.current );
+				setIsFinished( true );
 				setIsProcessing( false );
-				setIsFinished( false );
+				setActivePaymentMethod( originalActivePaymentMethod.current );
 			} );
 		}
 	}, [
