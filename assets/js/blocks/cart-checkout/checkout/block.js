@@ -46,6 +46,10 @@ import CheckoutSidebar from './sidebar';
 import CheckoutOrderError from './checkout-order-error';
 import NoShippingPlaceholder from './no-shipping-placeholder';
 import './style.scss';
+import {
+	getShippingRatesPackageCount,
+	getShippingRatesRateCount,
+} from './utils';
 
 const Block = ( props ) => (
 	<CheckoutProvider>
@@ -55,12 +59,7 @@ const Block = ( props ) => (
 
 const Checkout = ( { attributes, scrollToTop } ) => {
 	const { isEditor } = useEditorContext();
-	const {
-		cartItems,
-		cartTotals,
-		shippingRates,
-		cartCoupons,
-	} = useStoreCart();
+	const { cartItems, cartTotals, cartCoupons } = useStoreCart();
 	const {
 		hasOrder,
 		hasError: checkoutHasError,
@@ -68,6 +67,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 	} = useCheckoutContext();
 	const { showAllValidationErrors } = useValidationContext();
 	const {
+		shippingRates,
 		shippingRatesLoading,
 		shippingAddress,
 		setShippingAddress,
@@ -276,15 +276,18 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 									'woo-gutenberg-products-block'
 								) }
 								description={
-									shippingRates.length > 1
+									getShippingRatesRateCount( shippingRates ) >
+									1
 										? __(
-												'Select a shipping method below.',
+												'Select shipping options below.',
 												'woo-gutenberg-products-block'
 										  )
 										: ''
 								}
 							>
-								{ shippingRates.length === 0 && isEditor ? (
+								{ getShippingRatesPackageCount(
+									shippingRates
+								) === 0 && isEditor ? (
 									<NoShippingPlaceholder />
 								) : (
 									<ShippingRatesControl
