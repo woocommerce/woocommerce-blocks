@@ -366,6 +366,8 @@ class CartController {
 	/**
 	 * Get shipping packages from the cart with calculated shipping rates.
 	 *
+	 * @todo this can be refactored once https://github.com/woocommerce/woocommerce/pull/26101 lands.
+	 *
 	 * @param bool $calculate_rates Should rates for the packages also be returned.
 	 * @return array
 	 */
