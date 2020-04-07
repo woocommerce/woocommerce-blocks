@@ -79,21 +79,21 @@ const PaymentRequestExpressComponent = ( {
 	// payment button was clicked.
 	const originalActivePaymentMethod = useRef( activePaymentMethod );
 
-	// update refs when any change
+	// update refs when any change.
 	useEffect( () => {
 		currentBilling.current = billing;
 		currentShipping.current = shippingData;
 		currentPaymentRequest.current = paymentRequest;
 	}, [ billing, shippingData, paymentRequest ] );
 
-	//set paymentRequest
+	// set paymentRequest.
 	useEffect( () => {
 		// can't do anything if stripe isn't available yet or we have zero total.
 		if ( ! stripe || ! billing.cartTotal.value ) {
 			return;
 		}
 
-		// if payment request hasn't been set yet then set it
+		// if payment request hasn't been set yet then set it.
 		if ( ! currentPaymentRequest.current && ! isFinished ) {
 			setPaymentRequest(
 				getPaymentRequest( {
