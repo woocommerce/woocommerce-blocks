@@ -91,7 +91,7 @@ export const usePaymentMethodInterface = () => {
 		onCheckoutCompleteError,
 		onCheckoutProcessing,
 		onSubmit,
-		customerId
+		customerId,
 	} = useCheckoutContext();
 	const {
 		currentStatus,
@@ -172,7 +172,7 @@ export const usePaymentMethodInterface = () => {
 			cartTotalItems: currentCartTotals.current,
 			displayPricesIncludingTax: DISPLAY_CART_PRICES_INCLUDING_TAX,
 			appliedCoupons,
-			customerId
+			customerId,
 		},
 		eventRegistration: {
 			onCheckoutCompleteSuccess,
