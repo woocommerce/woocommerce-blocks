@@ -105,7 +105,7 @@ const CartLineItemRow = ( { lineItem } ) => {
 	return (
 		<tr
 			className={ classnames( 'wc-block-cart-items__row', {
-				'is-loading': isPendingDelete,
+				'is-disabled': isPendingDelete,
 			} ) }
 		>
 			{ /* If the image has no alt text, this link is unnecessary and can be hidden. */ }
@@ -119,12 +119,17 @@ const CartLineItemRow = ( { lineItem } ) => {
 				</a>
 			</td>
 			<td className="wc-block-cart-item__product">
-				<ProductName permalink={ permalink } name={ name } />
+				<ProductName
+					permalink={ permalink }
+					name={ name }
+					disabled={ isPendingDelete }
+				/>
 				<ProductLowStockBadge lowStockRemaining={ lowStockRemaining } />
 				<ProductMetadata summary={ summary } variation={ variation } />
 			</td>
 			<td className="wc-block-cart-item__quantity">
 				<QuantitySelector
+					disabled={ isPendingDelete }
 					quantity={ quantity }
 					maximum={ getMaximumQuantity(
 						backOrdersAllowed,
@@ -136,6 +141,7 @@ const CartLineItemRow = ( { lineItem } ) => {
 				<button
 					className="wc-block-cart-item__remove-link"
 					onClick={ removeItem }
+					disabled={ isPendingDelete }
 				>
 					{ __( 'Remove item', 'woo-gutenberg-products-block' ) }
 				</button>

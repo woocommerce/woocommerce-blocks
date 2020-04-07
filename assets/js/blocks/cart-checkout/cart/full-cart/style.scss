@@ -92,7 +92,7 @@ table.wc-block-cart-items {
 			}
 		}
 
-		&.is-loading {
+		&.is-disabled {
 			opacity: 0.5;
 			pointer-events: none;
 			transition: opacity 200ms ease;
