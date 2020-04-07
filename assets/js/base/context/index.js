@@ -4,4 +4,3 @@ export * from './product-layout-context';
 export * from './query-state-context';
 export * from './store-notices-context';
 export * from './editor';
-export * from './editor/provider';

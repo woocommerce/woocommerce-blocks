@@ -2,9 +2,11 @@
  * External dependencies
  */
 import { createContext, useContext } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').EditorDataContext} EditorDataContext
+ * @typedef {import('@woocommerce/type-defs/cart').CartData} CartData
  */
 
 const EditorContext = createContext( {
@@ -20,4 +22,45 @@ export const useEditorContext = () => {
 	return useContext( EditorContext );
 };
 
-export const EditorContextProvider = EditorContext.Provider;
+/**
+ * Editor provider
+ *
+ * @param {Object}   props                 Incoming props for the provider.
+ * @param {*}        props.children        The children being wrapped.
+ * @param {CartData} [props.previewCart]   The preview data for editor.
+ * @param {number}   [props.currentPostId] The post being edited.
+ */
+export const EditorProvider = ( {
+	children,
+	currentPostId = 0,
+	previewCart,
+} ) => {
+	/**
+	 * @type {number} editingPostId
+	 */
+	const editingPostId = useSelect(
+		( select ) => {
+			if ( ! currentPostId ) {
+				const store = select( 'core/editor' );
+				return store.getCurrentPostId();
+			}
+			return currentPostId;
+		},
+		[ currentPostId ]
+	);
+
+	/**
+	 * @type {EditorDataContext}
+	 */
+	const editorData = {
+		isEditor: true,
+		currentPostId: editingPostId,
+		previewCart,
+	};
+
+	return (
+		<EditorContext.Provider value={ editorData }>
+			{ children }
+		</EditorContext.Provider>
+	);
+};
