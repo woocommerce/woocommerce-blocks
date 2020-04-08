@@ -176,7 +176,7 @@ const CheckoutProcessor = () => {
 						} else {
 							addErrorNotice(
 								__(
-									'Something went wrong. Please check your payment details and try again.',
+									'Something went wrong. Please contact us to get assistance.',
 									'woo-gutenberg-products-block'
 								),
 								{
@@ -199,7 +199,7 @@ const CheckoutProcessor = () => {
 				const message =
 					error.message ||
 					__(
-						'Something went wrong. Please contact the site administrator to get assistance.',
+						'Something went wrong. Please contact us to get assistance.',
 						'woo-gutenberg-products-block'
 					);
 				addErrorNotice( message, {
