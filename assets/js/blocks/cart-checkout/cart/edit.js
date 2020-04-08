@@ -165,7 +165,7 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
  * Component to handle edit mode of "Cart Block".
  */
 const CartEditor = ( { className, attributes, setAttributes } ) => {
-	if ( attributes?.isPreview ) {
+	if ( attributes.isPreview ) {
 		return cartBlockPreview;
 	}
 

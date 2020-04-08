@@ -270,9 +270,9 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 };
 
 const CheckoutEditor = ( { attributes, setAttributes } ) => {
-	const { className } = attributes;
+	const { className, isPreview } = attributes;
 
-	if ( attributes?.isPreview ) {
+	if ( isPreview ) {
 		return checkoutBlockPreview;
 	}
 
