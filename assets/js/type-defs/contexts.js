@@ -146,12 +146,12 @@
 /**
  * @typedef {Object} PaymentStatusDispatchers
  *
- * @property {function()}                        started
- * @property {function()}                        processing
- * @property {function()}                        completed
- * @property {function(string)}                  error
- * @property {function(string, Object, Object=)} failed
- * @property {function(Object=,Object=,Object=)} success
+ * @property {function()}                                started
+ * @property {function()}                                processing
+ * @property {function()}                                completed
+ * @property {function(string)}                          error
+ * @property {function(string, Object, Object=)}         failed
+ * @property {function(Object=,Object=,Object=,string=)} success
  */
 
 /**
@@ -219,6 +219,9 @@
  *                                                                          It receives an error
  *                                                                          message string. Does not
  *                                                                          change payment status.
+ * @property {string}                      processedPaymentMethodId         The payment method id
+ *                                                                          for the payment that was
+ *                                                                          processed.
  */
 
 /**
