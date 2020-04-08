@@ -170,6 +170,21 @@ export const PaymentMethodDataProvider = ( {
 		[ subscriber ]
 	);
 
+	const currentStatus = useMemo(
+		() => ( {
+			isPristine: paymentStatus.currentStatus === PRISTINE,
+			isStarted: paymentStatus.currentStatus === STARTED,
+			isProcessing: paymentStatus.currentStatus === PROCESSING,
+			isFinished: [ ERROR, FAILED, SUCCESS ].includes(
+				paymentStatus.currentStatus
+			),
+			hasError: paymentStatus.currentStatus === ERROR,
+			hasFailed: paymentStatus.currentStatus === FAILED,
+			isSuccessful: paymentStatus.currentStatus === SUCCESS,
+		} ),
+		[ paymentStatus.currentStatus ]
+	);
+
 	// flip payment to processing if checkout processing is complete and there
 	// are no errors.
 	useEffect( () => {
@@ -205,21 +220,6 @@ export const PaymentMethodDataProvider = ( {
 		paymentMethodsInitialized,
 		paymentStatus.paymentMethods,
 	] );
-
-	const currentStatus = useMemo(
-		() => ( {
-			isPristine: paymentStatus.currentStatus === PRISTINE,
-			isStarted: paymentStatus.currentStatus === STARTED,
-			isProcessing: paymentStatus.currentStatus === PROCESSING,
-			isFinished: [ ERROR, FAILED, SUCCESS ].includes(
-				paymentStatus.currentStatus
-			),
-			hasError: paymentStatus.currentStatus === ERROR,
-			hasFailed: paymentStatus.currentStatus === FAILED,
-			isSuccessful: paymentStatus.currentStatus === SUCCESS,
-		} ),
-		[ paymentStatus.currentStatus ]
-	);
 
 	/**
 	 * @type {PaymentStatusDispatch}
