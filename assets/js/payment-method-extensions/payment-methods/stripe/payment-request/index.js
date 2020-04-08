@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { getSetting } from '@woocommerce/settings';
+
+/**
  * Internal dependencies
  */
 import { PAYMENT_METHOD_NAME } from './constants';
@@ -10,13 +15,14 @@ const ApplePayPreview = () => <img src={ applePayImage } alt="" />;
 
 const canPayStripePromise = loadStripe();
 const componentStripePromise = loadStripe();
+const cartData = getSetting( 'cartData', null );
 
 const PaymentRequestPaymentMethod = {
 	id: PAYMENT_METHOD_NAME,
 	content: <PaymentRequestExpress stripe={ componentStripePromise } />,
 	edit: <ApplePayPreview />,
 	canMakePayment: canPayStripePromise.then( ( stripe ) => {
-		if ( stripe === null ) {
+		if ( stripe === null || cartData === null ) {
 			return false;
 		}
 		// do a test payment request to check if payment request payment can be
@@ -27,8 +33,10 @@ const PaymentRequestPaymentMethod = {
 				label: 'Test total',
 				amount: 1000,
 			},
-			country: 'CA',
-			currency: 'cad',
+			// eslint-disable-next-line camelcase
+			country: cartData?.shipping_address?.country,
+			// eslint-disable-next-line camelcase
+			currency: cartData?.totals?.currency_code?.toLowerCase(),
 		} );
 		return paymentRequest.canMakePayment().then( ( result ) => !! result );
 	} ),
