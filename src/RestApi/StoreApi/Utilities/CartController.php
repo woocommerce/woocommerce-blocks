@@ -372,7 +372,13 @@ class CartController {
 	 * @return array
 	 */
 	public function get_shipping_packages( $calculate_rates = true ) {
-		$cart     = $this->get_cart_instance();
+		$cart = $this->get_cart_instance();
+
+		// See if we need to calculate anything.
+		if ( ! $cart->needs_shipping() ) {
+			return [];
+		}
+
 		$packages = $cart->get_shipping_packages();
 
 		// Add package ID to array.
@@ -380,11 +386,6 @@ class CartController {
 			if ( ! isset( $packages[ $key ]['package_id'] ) ) {
 				$packages[ $key ]['package_id'] = $key;
 			}
-		}
-
-		// See if we need to calculate anything.
-		if ( ! WC()->cart->needs_shipping() ) {
-			return [];
 		}
 
 		return $calculate_rates ? WC()->shipping()->calculate_shipping( $packages ) : $packages;
