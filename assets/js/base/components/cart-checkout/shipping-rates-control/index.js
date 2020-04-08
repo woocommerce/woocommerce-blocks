@@ -11,6 +11,10 @@ import LoadingMask from '@woocommerce/base-components/loading-mask';
  * Internal dependencies
  */
 import Packages from './packages';
+import {
+	getShippingRatesPackageCount,
+	getShippingRatesRateCount,
+} from '../../../utils/shipping-rates';
 import './style.scss';
 
 const ShippingRatesControl = ( {
@@ -25,11 +29,8 @@ const ShippingRatesControl = ( {
 		if ( shippingRatesLoading ) {
 			return;
 		}
-		const packages = shippingRates.length;
-		const shippingOptions = shippingRates.reduce(
-			( acc, shippingRate ) => acc + shippingRate.shipping_rates.length,
-			0
-		);
+		const packages = getShippingRatesPackageCount( shippingRates );
+		const shippingOptions = getShippingRatesRateCount( shippingRates );
 		if ( shippingOptions === 0 ) {
 			speak(
 				__(

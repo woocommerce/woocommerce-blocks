@@ -45,11 +45,11 @@ import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import CheckoutSidebar from './sidebar';
 import CheckoutOrderError from './checkout-order-error';
 import NoShippingPlaceholder from './no-shipping-placeholder';
-import './style.scss';
 import {
 	getShippingRatesPackageCount,
 	getShippingRatesRateCount,
-} from './utils';
+} from '../../../base/utils/shipping-rates';
+import './style.scss';
 
 const Block = ( props ) => (
 	<CheckoutProvider>
