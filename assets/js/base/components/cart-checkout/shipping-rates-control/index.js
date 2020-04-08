@@ -6,15 +6,15 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { speak } from '@wordpress/a11y';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
+import {
+	getShippingRatesPackageCount,
+	getShippingRatesRateCount,
+} from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
 import Packages from './packages';
-import {
-	getShippingRatesPackageCount,
-	getShippingRatesRateCount,
-} from '../../../utils/shipping-rates';
 import './style.scss';
 
 const ShippingRatesControl = ( {

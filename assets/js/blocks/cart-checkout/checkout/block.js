@@ -15,7 +15,11 @@ import {
 } from '@woocommerce/base-components/cart-checkout';
 import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
 import CheckboxControl from '@woocommerce/base-components/checkbox-control';
-import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
+import {
+	getCurrencyFromPriceResponse,
+	getShippingRatesPackageCount,
+	getShippingRatesRateCount,
+} from '@woocommerce/base-utils';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import {
 	CheckoutProvider,
@@ -45,10 +49,6 @@ import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import CheckoutSidebar from './sidebar';
 import CheckoutOrderError from './checkout-order-error';
 import NoShippingPlaceholder from './no-shipping-placeholder';
-import {
-	getShippingRatesPackageCount,
-	getShippingRatesRateCount,
-} from '../../../base/utils/shipping-rates';
 import './style.scss';
 
 const Block = ( props ) => (
