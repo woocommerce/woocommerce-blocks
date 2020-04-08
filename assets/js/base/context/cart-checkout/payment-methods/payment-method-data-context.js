@@ -46,7 +46,6 @@ import {
 import { getSetting } from '@woocommerce/settings';
 import { useStoreNotices, useEmitResponse } from '@woocommerce/base-hooks';
 import { useEditorContext } from '@woocommerce/base-context';
-import { previewSavedPaymentMethods } from '@woocommerce/resource-previews';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').PaymentMethodDataContext} PaymentMethodDataContext
@@ -112,10 +111,11 @@ export const PaymentMethodDataProvider = ( {
 	const [ observers, subscriber ] = useReducer( emitReducer, {} );
 	const currentObservers = useRef( observers );
 
-	const { isEditor } = useEditorContext();
-	const customerPaymentMethods = isEditor
-		? previewSavedPaymentMethods
-		: getSetting( 'customerPaymentMethods', {} );
+	const { isEditor, previewData } = useEditorContext();
+	const customerPaymentMethods =
+		isEditor && previewData?.previewSavedPaymentMethods
+			? previewData?.previewSavedPaymentMethods
+			: getSetting( 'customerPaymentMethods', {} );
 	const [ paymentData, dispatch ] = useReducer(
 		reducer,
 		DEFAULT_PAYMENT_DATA
