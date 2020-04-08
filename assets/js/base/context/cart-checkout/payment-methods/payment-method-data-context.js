@@ -112,6 +112,7 @@ export const PaymentMethodDataProvider = ( {
 	const {
 		isComplete: checkoutIsComplete,
 		isProcessingComplete: checkoutIsProcessingComplete,
+		isCalculating: checkoutIsCalculating,
 		hasError: checkoutHasError,
 	} = useCheckoutContext();
 	const [ activePaymentMethod, setActive ] = useState(
@@ -172,10 +173,20 @@ export const PaymentMethodDataProvider = ( {
 	// flip payment to processing if checkout processing is complete and there
 	// are no errors.
 	useEffect( () => {
-		if ( checkoutIsProcessingComplete && ! checkoutHasError ) {
+		if (
+			checkoutIsProcessingComplete &&
+			! checkoutHasError &&
+			! checkoutIsCalculating &&
+			! currentStatus.isFinished
+		) {
 			setPaymentStatus().processing();
 		}
-	}, [ checkoutIsProcessingComplete, checkoutHasError ] );
+	}, [
+		checkoutIsProcessingComplete,
+		checkoutHasError,
+		checkoutIsCalculating,
+		currentStatus.isFinished,
+	] );
 
 	// set initial active payment method if it's undefined.
 	useEffect( () => {
