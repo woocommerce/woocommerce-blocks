@@ -29,7 +29,9 @@ const Content = ( { activePaymentMethod, eventRegistration } ) => {
 	// hook into payment processing event.
 	useEffect( () => {
 		const unsubscribeProcessing = eventRegistration.onPaymentProcessing(
-			() => true
+			() => ( {
+				paymentMethodId: PAYMENT_METHOD_NAME,
+			} )
 		);
 		return () => {
 			unsubscribeProcessing();
