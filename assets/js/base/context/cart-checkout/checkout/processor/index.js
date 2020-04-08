@@ -53,6 +53,7 @@ const CheckoutProcessor = () => {
 	const { billingData } = useBillingDataContext();
 	const { cartNeedsPayment } = useStoreCart();
 	const {
+		processedPaymentMethodId,
 		activePaymentMethod,
 		currentStatus: currentPaymentStatus,
 		errorMessage,
@@ -227,7 +228,7 @@ const CheckoutProcessor = () => {
 	}, [
 		addErrorNotice,
 		removeNotice,
-		activePaymentMethod,
+		processedPaymentMethodId,
 		paymentMethodData,
 		cartNeedsPayment,
 	] );
