@@ -86,13 +86,8 @@ export const usePaymentMethodDataContext = () => {
  * @param {Object} props                     Incoming props for provider
  * @param {Object} props.children            The wrapped components in this
  *                                           provider.
- * @param {string} props.activePaymentMethod The initial active payment method
- *                                           to set for the context.
  */
-export const PaymentMethodDataProvider = ( {
-	children,
-	activePaymentMethod: initialActivePaymentMethod,
-} ) => {
+export const PaymentMethodDataProvider = ( { children } ) => {
 	const { setBillingData } = useBillingDataContext();
 	const {
 		isProcessing: checkoutIsProcessing,
@@ -105,9 +100,7 @@ export const PaymentMethodDataProvider = ( {
 		isErrorResponse,
 		isFailResponse,
 	} = useEmitResponse();
-	const [ activePaymentMethod, setActive ] = useState(
-		initialActivePaymentMethod
-	);
+	const [ activePaymentMethod, setActive ] = useState( {} );
 	const [ observers, subscriber ] = useReducer( emitReducer, {} );
 	const currentObservers = useRef( observers );
 
