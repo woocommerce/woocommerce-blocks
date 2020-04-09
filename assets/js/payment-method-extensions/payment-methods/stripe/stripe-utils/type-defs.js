@@ -268,23 +268,27 @@
  */
 
 /**
+ * @typedef {Object} CCIcon
+ *
+ * @property {string} url  Url to icon.
+ * @property {string} alt  Alt text for icon.
+ */
+
+/**
  * @typedef {Object} StripeServerData
  *
- * @property {string}  stripeTotalLabel The string used for payment descriptor.
- * @property {string}  publicKey        The public api key for stripe requests.
- * @property {boolean} allowPrepaidCard True means that prepaid cards can be
- *                                      used for payment.
- * @property {Object}  button           Contains button styles
- * @property {string}  button.type      The type of button.
- * @property {string}  button.theme     The theme for the button.
- * @property {string}  button.height    The height (in pixels) for the button.
- * @property {string}  button.locale    The locale to use for stripe elements.
- * @property {boolean} inline_cc_form   Whether stripe cc should use inline cc
- *                                      form or separate inputs.
- * @property {Array}   icons            Contains supported cc icons.
- * @property {string}  icons.id         The card id.
- * @property {string}  icons.url        The card svg url.
- * @property {string}  icons.alt        The card alternative text.
+ * @property {string}              stripeTotalLabel The string used for payment descriptor.
+ * @property {string}              publicKey        The public api key for stripe requests.
+ * @property {boolean}             allowPrepaidCard True means that prepaid cards can be
+ *                                                  used for payment.
+ * @property {Object}              button           Contains button styles
+ * @property {string}              button.type      The type of button.
+ * @property {string}              button.theme     The theme for the button.
+ * @property {string}              button.height    The height (in pixels) for the button.
+ * @property {string}              button.locale    The locale to use for stripe elements.
+ * @property {boolean}             inline_cc_form   Whether stripe cc should use inline cc
+ *                                                  form or separate inputs.
+ * @property {{[k:string]:CCIcon}} icons            Contains supported cc icons.
  */
 
 /**

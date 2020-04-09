@@ -76,14 +76,16 @@ const CreditCardComponent = ( { billing, eventRegistration, components } ) => {
 				/>
 			) }
 			<div className="wc-blocks-credit-card-images">
-				{ getStripeServerData().icons.map( ( { id, url, alt } ) => (
-					<img
-						src={ url }
-						alt={ alt }
-						key={ id }
-						className={ `.wc-blocks-credit-${ id }-icon wc-blocks-credit-cart-icon` }
-					/>
-				) ) }
+				{ Object.entries( getStripeServerData().icons ).map(
+					( [ id, { url, alt } ] ) => (
+						<img
+							src={ url }
+							alt={ alt }
+							key={ id }
+							className={ `wc-blocks-credit-${ id }-icon wc-blocks-credit-cart-icon` }
+						/>
+					)
+				) }
 			</div>
 		</>
 	);
