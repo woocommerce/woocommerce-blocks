@@ -81,7 +81,7 @@ const CreditCardComponent = ( { billing, eventRegistration, components } ) => {
 						src={ url }
 						alt={ alt }
 						key={ id }
-						className={ `stripe-${ id }-icon stripe-icon` }
+						className={ `.wc-blocks-credit-${ id }-icon wc-blocks-credit-cart-icon` }
 					/>
 				) ) }
 			</div>
