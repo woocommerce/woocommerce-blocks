@@ -216,7 +216,7 @@ class Library {
 	 * @param PaymentContext $context Holds context for the payment.
 	 * @param PaymentResult  $result  Result of the payment.
 	 */
-	public static function process_legacy_payment( PaymentContext $context, PaymentResult $result ) {
+	public static function process_legacy_payment( PaymentContext $context, PaymentResult &$result ) {
 		if ( $result->status ) {
 			return;
 		}
