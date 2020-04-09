@@ -55,6 +55,7 @@ describe( 'useStoreCart', () => {
 		items: mockCartItems,
 		itemsCount: 1,
 		itemsWeight: 10,
+		needsPayment: true,
 		needsShipping: true,
 		shippingAddress: mockShippingAddress,
 		shippingRates: [],
