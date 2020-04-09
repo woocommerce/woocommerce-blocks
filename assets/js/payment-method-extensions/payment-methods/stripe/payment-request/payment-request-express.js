@@ -216,7 +216,6 @@ const PaymentRequestExpressComponent = ( {
 					paymentRequestType
 				),
 				shippingData: getShippingData( handlers.sourceEvent ),
-				paymentMethodId: 'stripe',
 			};
 			return response;
 		}
