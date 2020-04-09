@@ -53,7 +53,6 @@ const CheckoutProcessor = () => {
 	const { billingData } = useBillingDataContext();
 	const { cartNeedsPayment } = useStoreCart();
 	const {
-		processedPaymentMethodId,
 		activePaymentMethod,
 		currentStatus: currentPaymentStatus,
 		errorMessage,
@@ -225,13 +224,7 @@ const CheckoutProcessor = () => {
 				dispatchActions.setComplete();
 				setIsProcessingOrder( false );
 			} );
-	}, [
-		addErrorNotice,
-		removeNotice,
-		processedPaymentMethodId,
-		paymentMethodData,
-		cartNeedsPayment,
-	] );
+	}, [ addErrorNotice, removeNotice, activePaymentMethod, paymentMethodData ] );
 	// setup checkout processing event observers.
 	useEffect( () => {
 		const unsubscribeRedirect = onCheckoutCompleteSuccess( () => {
