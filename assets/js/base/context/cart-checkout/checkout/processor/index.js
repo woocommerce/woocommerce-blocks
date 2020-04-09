@@ -236,7 +236,13 @@ const CheckoutProcessor = () => {
 				dispatchActions.setComplete();
 				setIsProcessingOrder( false );
 			} );
-	}, [ addErrorNotice, removeNotice, paymentMethodId, paymentMethodData ] );
+	}, [
+		addErrorNotice,
+		removeNotice,
+		paymentMethodId,
+		paymentMethodData,
+		cartNeedsPayment,
+	] );
 	// setup checkout processing event observers.
 	useEffect( () => {
 		const unsubscribeRedirect = onCheckoutCompleteSuccess( () => {
