@@ -67,7 +67,7 @@ class CartRemoveCoupon extends AbstractCartRoute {
 		}
 
 		if ( ! $controller->has_coupon( $coupon_code ) ) {
-			throw new RouteException( 'woocommerce_rest_cart_coupon_invalid_code', __( 'Coupon is not applied to the cart.', 'woo-gutenberg-products-block' ), 409 );
+			throw new RouteException( 'woocommerce_rest_cart_coupon_invalid_code', __( 'Coupon cannot be removed because it is not already applied to the cart.', 'woo-gutenberg-products-block' ), 409 );
 		}
 
 		$cart = $controller->get_cart_instance();
