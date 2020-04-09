@@ -7,17 +7,17 @@ export default class ExpressPaymentMethodConfig {
 	constructor( config ) {
 		// validate config
 		ExpressPaymentMethodConfig.assertValidConfig( config );
-		this.id = config.id;
+		this.name = config.name;
 		this.content = config.content;
 		this.edit = config.edit;
 		this.canMakePayment = config.canMakePayment;
 	}
 
 	static assertValidConfig = ( config ) => {
-		assertConfigHasProperties( config, [ 'id', 'content', 'edit' ] );
-		if ( typeof config.id !== 'string' ) {
+		assertConfigHasProperties( config, [ 'name', 'content', 'edit' ] );
+		if ( typeof config.name !== 'string' ) {
 			throw new TypeError(
-				'The id for the express payment method must be a string'
+				'The name property for the express payment method must be a string'
 			);
 		}
 		assertValidElement( config.content, 'content' );

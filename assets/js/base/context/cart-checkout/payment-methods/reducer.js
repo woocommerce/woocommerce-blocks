@@ -99,7 +99,7 @@ const reducer = (
 				...state,
 				paymentMethods: {
 					...state.paymentMethods,
-					[ paymentMethod.id ]: paymentMethod,
+					[ paymentMethod.name ]: paymentMethod,
 				},
 			};
 		case SET_REGISTERED_EXPRESS_PAYMENT_METHOD:
@@ -107,7 +107,7 @@ const reducer = (
 				...state,
 				expressPaymentMethods: {
 					...state.expressPaymentMethods,
-					[ paymentMethod.id ]: paymentMethod,
+					[ paymentMethod.name ]: paymentMethod,
 				},
 			};
 		case SET_PROCESSED_PAYMENT_METHOD_ID:

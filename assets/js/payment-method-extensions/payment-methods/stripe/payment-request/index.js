@@ -12,7 +12,7 @@ const canPayStripePromise = loadStripe();
 const componentStripePromise = loadStripe();
 
 const PaymentRequestPaymentMethod = {
-	id: PAYMENT_METHOD_NAME,
+	name: PAYMENT_METHOD_NAME,
 	content: <PaymentRequestExpress stripe={ componentStripePromise } />,
 	edit: <ApplePayPreview />,
 	canMakePayment: ( cartData ) =>
