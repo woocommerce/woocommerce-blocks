@@ -36,6 +36,7 @@ const PaymentRequestPaymentMethod = {
 				.canMakePayment()
 				.then( ( result ) => !! result );
 		} ),
+	paymentMethodId: 'stripe',
 };
 
 export default PaymentRequestPaymentMethod;

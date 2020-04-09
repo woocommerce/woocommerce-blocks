@@ -13,6 +13,7 @@ export default class PaymentMethodConfig {
 		this.content = config.content;
 		this.edit = config.edit;
 		this.canMakePayment = config.canMakePayment;
+		this.paymentMethodId = config.paymentMethodId || this.name;
 	}
 
 	static assertValidConfig = ( config ) => {
@@ -27,6 +28,14 @@ export default class PaymentMethodConfig {
 		if ( typeof config.name !== 'string' ) {
 			throw new Error(
 				'The name property for the payment method must be a string'
+			);
+		}
+		if (
+			typeof config.paymentMethodId !== 'string' &&
+			typeof config.paymentMethodId !== 'undefined'
+		) {
+			throw new Error(
+				'The paymentMethodId property for the payment method must be a string or undefined (in which case it will be the value of the name property).'
 			);
 		}
 		assertValidElement( config.label, 'label' );
