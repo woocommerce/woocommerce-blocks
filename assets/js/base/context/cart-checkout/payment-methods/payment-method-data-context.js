@@ -14,7 +14,6 @@ import {
 	success,
 	setRegisteredPaymentMethod,
 	setRegisteredExpressPaymentMethod,
-	setProcessedPaymentMethodId,
 } from './actions';
 import {
 	usePaymentMethods,
@@ -80,8 +79,8 @@ export const usePaymentMethodDataContext = () => {
 const isSuccessResponse = ( response ) => {
 	return (
 		( typeof response === 'object' &&
-			typeof response.fail === 'undefined' &&
-			typeof response.errorMessage === 'undefined' ) ||
+			typeof response.billingData !== 'undefined' &&
+			typeof response.paymentMethodData !== 'undefined' ) ||
 		response === true
 	);
 };
@@ -124,7 +123,7 @@ export const PaymentMethodDataProvider = ( {
 	const [ observers, subscriber ] = useReducer( emitReducer, {} );
 	const currentObservers = useRef( observers );
 	const customerPaymentMethods = getSetting( 'customerPaymentMethods', {} );
-	const [ paymentData, dispatch ] = useReducer(
+	const [ paymentStatus, dispatch ] = useReducer(
 		reducer,
 		DEFAULT_PAYMENT_DATA
 	);
@@ -180,17 +179,17 @@ export const PaymentMethodDataProvider = ( {
 
 	const currentStatus = useMemo(
 		() => ( {
-			isPristine: paymentData.currentStatus === PRISTINE,
-			isStarted: paymentData.currentStatus === STARTED,
-			isProcessing: paymentData.currentStatus === PROCESSING,
+			isPristine: paymentStatus.currentStatus === PRISTINE,
+			isStarted: paymentStatus.currentStatus === STARTED,
+			isProcessing: paymentStatus.currentStatus === PROCESSING,
 			isFinished: [ ERROR, FAILED, SUCCESS ].includes(
-				paymentData.currentStatus
+				paymentStatus.currentStatus
 			),
-			hasError: paymentData.currentStatus === ERROR,
-			hasFailed: paymentData.currentStatus === FAILED,
-			isSuccessful: paymentData.currentStatus === SUCCESS,
+			hasError: paymentStatus.currentStatus === ERROR,
+			hasFailed: paymentStatus.currentStatus === FAILED,
+			isSuccessful: paymentStatus.currentStatus === SUCCESS,
 		} ),
-		[ paymentData.currentStatus ]
+		[ paymentStatus.currentStatus ]
 	);
 
 	// flip payment to processing if checkout processing is complete, there are
@@ -213,20 +212,20 @@ export const PaymentMethodDataProvider = ( {
 
 	// set initial active payment method if it's undefined.
 	useEffect( () => {
-		const paymentMethodKeys = Object.keys( paymentData.paymentMethods );
+		const paymentMethodKeys = Object.keys( paymentStatus.paymentMethods );
 		if (
 			paymentMethodsInitialized &&
 			! activePaymentMethod &&
 			paymentMethodKeys.length > 0
 		) {
 			setActivePaymentMethod(
-				Object.keys( paymentData.paymentMethods )[ 0 ]
+				Object.keys( paymentStatus.paymentMethods )[ 0 ]
 			);
 		}
 	}, [
 		activePaymentMethod,
 		paymentMethodsInitialized,
-		paymentData.paymentMethods,
+		paymentStatus.paymentMethods,
 	] );
 
 	/**
@@ -260,20 +259,17 @@ export const PaymentMethodDataProvider = ( {
 				);
 			},
 			/**
-			 * @param {Object}                    [paymentMethodData] Arbitrary payment method data
-			 *                                                        to accompany the checkout.
-			 * @param {BillingData|null}          [billingData]       The billing data accompanying
-			 *                                                        the payment method.
-			 * @param {ShippingDataResponse|null} [shippingData]      The shipping data accompanying
-			 *                                                        the payment method.
-			 * @param {string}                    [paymentMethodId]   The id for the payment method
-			 *                                                        used to process the payment
+			 * @param {Object} [paymentMethodData] Arbitrary payment method data to
+			 * accompany the checkout.
+			 * @param {BillingData|null} [billingData] The billing data accompanying the
+			 * payment method.
+			 * @param {ShippingDataResponse|null} [shippingData] The shipping data accompanying the
+			 * payment method.
 			 */
 			success: (
 				paymentMethodData = {},
 				billingData = null,
-				shippingData = null,
-				paymentMethodId = ''
+				shippingData = null
 			) => {
 				if ( shippingData !== null && shippingData?.address ) {
 					setShippingAddress( shippingData.address );
@@ -281,7 +277,6 @@ export const PaymentMethodDataProvider = ( {
 				if ( billingData ) {
 					setBillingData( billingData );
 				}
-				dispatch( setProcessedPaymentMethodId( paymentMethodId ) );
 				dispatch(
 					success( {
 						paymentMethodData,
@@ -309,8 +304,7 @@ export const PaymentMethodDataProvider = ( {
 					setPaymentStatus().success(
 						response.paymentMethodData,
 						response.billingData,
-						response.shippingData,
-						response.paymentMethodId
+						response.shippingData
 					);
 				} else if ( isFailResponse( response ) ) {
 					setPaymentStatus().failed(
@@ -354,12 +348,12 @@ export const PaymentMethodDataProvider = ( {
 	/**
 	 * @type {PaymentMethodDataContext}
 	 */
-	const paymentContextData = {
+	const paymentData = {
 		setPaymentStatus,
 		currentStatus,
 		paymentStatuses: STATUS,
-		paymentMethodData: paymentData.paymentMethodData,
-		errorMessage: paymentData.errorMessage,
+		paymentMethodData: paymentStatus.paymentMethodData,
+		errorMessage: paymentStatus.errorMessage,
 		activePaymentMethod,
 		setActivePaymentMethod,
 		onPaymentProcessing,
@@ -367,15 +361,14 @@ export const PaymentMethodDataProvider = ( {
 		onPaymentFail,
 		onPaymentError,
 		customerPaymentMethods,
-		paymentMethods: paymentData.paymentMethods,
-		expressPaymentMethods: paymentData.expressPaymentMethods,
+		paymentMethods: paymentStatus.paymentMethods,
+		expressPaymentMethods: paymentStatus.expressPaymentMethods,
 		paymentMethodsInitialized,
 		expressPaymentMethodsInitialized,
 		setExpressPaymentError,
-		processedPaymentMethodId: paymentData.processedPaymentMethodId,
 	};
 	return (
-		<PaymentMethodDataContext.Provider value={ paymentContextData }>
+		<PaymentMethodDataContext.Provider value={ paymentData }>
 			{ children }
 		</PaymentMethodDataContext.Provider>
 	);

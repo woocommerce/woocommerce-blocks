@@ -12,7 +12,6 @@ const {
 	COMPLETE,
 	SET_REGISTERED_PAYMENT_METHOD,
 	SET_REGISTERED_EXPRESS_PAYMENT_METHOD,
-	SET_PROCESSED_PAYMENT_METHOD_ID,
 } = ACTION_TYPES;
 
 /**
@@ -23,13 +22,7 @@ const {
  */
 const reducer = (
 	state = DEFAULT_PAYMENT_DATA,
-	{
-		type,
-		paymentMethodData,
-		errorMessage,
-		paymentMethod,
-		processedPaymentMethodId,
-	}
+	{ type, paymentMethodData, errorMessage, paymentMethod }
 ) => {
 	switch ( type ) {
 		case STARTED:
@@ -110,13 +103,6 @@ const reducer = (
 					[ paymentMethod.name ]: paymentMethod,
 				},
 			};
-		case SET_PROCESSED_PAYMENT_METHOD_ID:
-			return state.processedPaymentMethodId === processedPaymentMethodId
-				? state
-				: {
-						...state,
-						processedPaymentMethodId,
-				  };
 	}
 	return state;
 };

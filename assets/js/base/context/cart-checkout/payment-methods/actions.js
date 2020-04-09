@@ -3,13 +3,16 @@
  */
 import { ACTION_TYPES } from './constants';
 
+/**
+ * @typedef {import('@woocommerce/type-defs/cart').CartBillingData} CartBillingData
+ */
+
 const {
 	ERROR,
 	FAILED,
 	SUCCESS,
 	SET_REGISTERED_PAYMENT_METHOD,
 	SET_REGISTERED_EXPRESS_PAYMENT_METHOD,
-	SET_PROCESSED_PAYMENT_METHOD_ID,
 } = ACTION_TYPES;
 
 /**
@@ -96,18 +99,4 @@ export const setRegisteredPaymentMethod = ( paymentMethod ) => ( {
 export const setRegisteredExpressPaymentMethod = ( paymentMethod ) => ( {
 	type: SET_REGISTERED_EXPRESS_PAYMENT_METHOD,
 	paymentMethod,
-} );
-
-/**
- * Used to dispatch an action for updating a registered express payment
- * method in the state.
- *
- * @param {string} processedPaymentMethodId Id of payment method that was
- *                                          processed.
- *
- * @return {Object} An action object.
- */
-export const setProcessedPaymentMethodId = ( processedPaymentMethodId ) => ( {
-	type: SET_PROCESSED_PAYMENT_METHOD_ID,
-	processedPaymentMethodId,
 } );

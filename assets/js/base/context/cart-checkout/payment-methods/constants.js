@@ -17,7 +17,6 @@ export const ACTION_TYPES = {
 	SET_REGISTERED_PAYMENT_METHOD: 'set_registered_payment_method',
 	SET_REGISTERED_EXPRESS_PAYMENT_METHOD:
 		'set_registered_express_payment_method',
-	SET_PROCESSED_PAYMENT_METHOD_ID: 'set_processed_payment_method_id',
 };
 
 /**
@@ -35,7 +34,6 @@ export const DEFAULT_PAYMENT_DATA = {
 	errorMessage: '',
 	paymentMethods: {},
 	expressPaymentMethods: {},
-	processedPaymentMethodId: '',
 };
 
 /**
@@ -74,5 +72,4 @@ export const DEFAULT_PAYMENT_METHOD_DATA = {
 	onPaymentProcessing: () => void null,
 	onPaymentSuccess: () => void null,
 	onPaymentFail: () => void null,
-	processedPaymentMethodId: '',
 };
