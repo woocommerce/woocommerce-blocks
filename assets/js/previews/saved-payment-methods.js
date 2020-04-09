@@ -7,7 +7,7 @@ export const previewSavedPaymentMethods = {
 				brand: 'Visa',
 			},
 			expires: '12/20',
-			is_default: true,
+			is_default: false,
 			tokenId: 1,
 		},
 	],
