@@ -1,7 +1,9 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { useCheckoutContext } from '@woocommerce/base-context';
+import { Icon, done } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
@@ -14,16 +16,29 @@ const PlaceOrderButton = () => {
 		onSubmit,
 		isCalculating,
 		isProcessing,
+		isProcessingComplete,
+		isComplete,
+		hasError,
 	} = useCheckoutContext();
+
+	const processing = isProcessing || isProcessingComplete;
+	const completed = isComplete && ! hasError;
 
 	return (
 		<Button
 			className="wc-block-components-checkout-place-order-button"
 			onClick={ onSubmit }
-			disabled={ isCalculating || isProcessing }
-			showSpinner={ isProcessing }
+			disabled={ isCalculating || processing || completed }
+			showSpinner={ processing }
 		>
-			{ submitLabel }
+			{ completed ? (
+				<Icon
+					srcElement={ done }
+					alt={ __( 'Done', 'woo-gutenberg-products-block' ) }
+				/>
+			) : (
+				submitLabel
+			) }
 		</Button>
 	);
 };
