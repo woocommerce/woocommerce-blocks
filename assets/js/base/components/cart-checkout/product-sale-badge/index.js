@@ -27,8 +27,8 @@ const ProductSaleBadge = ( { currency, saleAmount } ) => {
 	return (
 		<div className="wc-block-sale-badge">
 			{ __experimentalCreateInterpolateElement(
-				/* translators: <price></price> will be replaced by the discount amount */
-				__( 'Save <price></price>!', 'woo-gutenberg-products-block' ),
+				/* translators: <price/> will be replaced by the discount amount */
+				__( 'Save <price/>!', 'woo-gutenberg-products-block' ),
 				{
 					price: (
 						<FormattedMonetaryAmount
