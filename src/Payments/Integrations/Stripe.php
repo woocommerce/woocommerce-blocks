@@ -190,7 +190,7 @@ final class Stripe extends AbstractPaymentMethodType {
 	 */
 	public function add_payment_request_order_meta( PaymentContext $context, PaymentResult $result ) {
 		$data = $context->payment_data;
-		if ( $data['payment_request_type'] && 'stripe' === $context->payment_method ) {
+		if ( ! empty( $data['payment_request_type'] ) && 'stripe' === $context->payment_method ) {
 			// phpcs:ignore WordPress.Security.NonceVerification
 			$post_data = $_POST;
 			$_POST     = $context->payment_data;
