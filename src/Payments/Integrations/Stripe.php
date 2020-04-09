@@ -104,6 +104,7 @@ final class Stripe extends AbstractPaymentMethodType {
 				'locale' => $this->get_button_locale(),
 			],
 			'inline_cc_form'   => $this->get_inline_cc_form(),
+			'icons'            => $this->get_icons(),
 		];
 	}
 
@@ -179,6 +180,53 @@ final class Stripe extends AbstractPaymentMethodType {
 	 */
 	private function get_button_locale() {
 		return apply_filters( 'wc_stripe_payment_request_button_locale', substr( get_locale(), 0, 2 ) );
+	}
+
+	/**
+	 * Return the icons urls.
+	 *
+	 * @return array Array containing arrays of icons metadata.
+	 */
+	private function get_icons() {
+		$icons_src = [
+			[
+				'id'  => 'visa',
+				'url' => WC_STRIPE_PLUGIN_URL . '/assets/images/visa.svg',
+				'alt' => __( 'Visa', 'woo-gutenberg-products-block' ),
+			],
+			[
+				'id'  => 'amex',
+				'url' => WC_STRIPE_PLUGIN_URL . '/assets/images/amex.svg',
+				'alt' => __( 'American Express', 'woo-gutenberg-products-block' ),
+			],
+			[
+				'id'  => 'mastercard',
+				'url' => WC_STRIPE_PLUGIN_URL . '/assets/images/mastercard.svg',
+				'alt' => __( 'Mastercard', 'woo-gutenberg-products-block' ),
+			],
+		];
+
+		if ( 'USD' === get_woocommerce_currency() ) {
+			array_push(
+				$icons_src,
+				[
+					'id'  => 'discover',
+					'url' => WC_STRIPE_PLUGIN_URL . '/assets/images/discover.svg',
+					'alt' => __( 'Discover', 'woo-gutenberg-products-block' ),
+				],
+				[
+					'id'  => 'jcb',
+					'url' => WC_STRIPE_PLUGIN_URL . '/assets/images/jcb.svg',
+					'alt' => __( 'JCB', 'woo-gutenberg-products-block' ),
+				],
+				[
+					'id'  => 'diners',
+					'url' => WC_STRIPE_PLUGIN_URL . '/assets/images/diners.svg',
+					'alt' => __( 'Diners', 'woo-gutenberg-products-block' ),
+				]
+			);
+		}
+		return $icons_src;
 	}
 
 	/**

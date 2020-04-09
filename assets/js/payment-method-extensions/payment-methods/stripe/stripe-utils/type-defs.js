@@ -281,6 +281,10 @@
  * @property {string}  button.locale    The locale to use for stripe elements.
  * @property {boolean} inline_cc_form   Whether stripe cc should use inline cc
  *                                      form or separate inputs.
+ * @property {Array}   icons            Contains supported cc icons.
+ * @property {string}  icons.id         The card id.
+ * @property {string}  icons.url        The card svg url.
+ * @property {string}  icons.alt        The card alternative text.
  */
 
 /**
