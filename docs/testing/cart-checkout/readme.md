@@ -1,42 +1,61 @@
 <!--
 taking a look from https://make.wordpress.org/test/handbook/call-for-testing/
-note: there will be many grammar mistakes since grammarly doesn't work here, but I will run
-this throu it later when I finish.
+note: there will be many grammar mistakes since Grammarly doesn't work here, but I will run
+this through it later when I finish.
 -->
 
 # Cart and Checkout testing plan
 
-[TOC]
+- [Cart and Checkout testing plan](#cart-and-checkout-testing-plan)
+  * [Introduction](#introduction)
+    + [Known limitations:](#known-limitations-)
+  * [Before you start](#before-you-start)
+  * [What are we testing?](#what-are-we-testing-)
+    + [Cart Block](#cart-block)
+      - [Features to test:](#features-to-test-)
+    + [Checkout Block](#checkout-block)
+      - [Features to test:](#features-to-test--1)
+  * [Testing Checklist](#testing-checklist)
+    + [Editor experience](#editor-experience)
+    + [Shipping](#shipping)
+      - [Setup](#setup)
+    + [Payments](#payments)
+      - [Setup](#setup-1)
+    + [Coupons](#coupons)
+      - [Setup](#setup-2)
+    + [Cart Items](#cart-items)
+      - [Setup](#setup-3)
+    + [Cross-platform and browser compatibility](#cross-platform-and-browser-compatibility)
 
 ## Introduction
 
 Welcome, and thank you for helping us test the Cart and Checkout blocks,
-in this document we will outline the general checklist for how to test
-the blocks, any requirements and expectations and feature parity, some
+in this document, we will outline the general checklist for how to test
+the blocks, any requirements, and expectations and feature parity, some
 will require simple coding skills, and some are straightforward, we will
-seperate them.
+separate them.
 
 ### Known limitations:
 <!-- Debating on where to put this section -->
 This is a list of all known limitation for Cart and Checkout blocks, it means
 we're aware of them, and will probably not tackle them in this first release:
 
-- Cart and Checkout blocks do not support third party plugins that integrate with
-	regular Cart and Checkout shortcode, if you somehow see a third party plugin working
-	well, this is pure concidence, the only exception is Stripe payment gateway.
+- Cart and Checkout blocks do not support third-party plugins that integrate with
+  regular Cart and Checkout shortcode, if you somehow see a third party plugin working
+  well, this is pure coincidence, the only exception is Stripe payment gateway.
 
 ## Before you start
 
-Depending on how far you will test, there are certain requiremnts, in general
+Depending on how far you will test, there are certain requirements, in general
 you will need the following:
 
 Basic:
-- A WordPress website running WooCommerce and ability to install a plugin and edit pages.
+- A WordPress website running WooCommerce and the ability to install a plugin and edit pages.
 
 Intermediate:
 - A code editor and/or the ability to modify plugin PHP files.
-	This could be either locally if you're hosting the code there or it could from the Plugins -> Plugin Editor
-	WordPress admin page.
+  This could be either locally if you're hosting the code there or it could from the Plugins -> Plugin Editor
+  WordPress admin page.
 
 Advanced:
 - A locally installed version of WordPress.
@@ -45,15 +64,15 @@ Advanced:
 
 Special Cases:
 <!-- This section should be moved to stripe payment testing -->
-To test Express payment methods there are some special reqiruments like
-- You need to be serving the website over https, try ephemeral webistes.
-- You need to be from a supported country <!-- Nadir: not yet sure about this condition and what kind of countries are exaclty supported or not. -->
+To test Express payment methods there are some special requirements like
+- You need to be serving the website over https, try ephemeral websites.
+- You need to be from a supported country <!-- Nadir: not yet sure about this condition and what kind of countries are exactly supported or not. -->
 - To test Apple Pay you will need to have an iOS or device.
 - To test Google Pay you will need to have Chrome installed and a payment method setup.
 - To test Microsoft Pay you will need to have Edge installed.
-- You will also need to be on a supported country, to better verify you compatiblity visit
-	[this page](https://stripe.com/docs/stripe-js/elements/payment-request-button#react-overview)
-	You should see if you're on a supported platform or not
+- You will also need to be on a supported country, to better verify your compatibility visit
+  [this page](https://stripe.com/docs/stripe-js/elements/payment-request-button#react-overview)
+  You should see if you're on a supported platform or not
 
 Unsupported:
 ![](https://i.imgur.com/EpkFrat.png)
@@ -95,7 +114,7 @@ You are also encouraged to compare behaviors with the regular Checkout block.
 ### Editor experience
 
 - [ ] You should be able to add, and only one Cart or Checkout block to a page.
-- [ ] The preview in the inserter should show sekelton of how the block structure should look like.
+- [ ] The preview in the inserter should show a skeleton of how the block structure should look like.
 - [ ] When inserting any of the blocks, it should have some data already in it.
 - [ ] You should not be able to interact directly with the block (except for some sections).
 - [ ] You should be able to see block settings on the sidebar when it is focused.
@@ -103,15 +122,18 @@ You are also encouraged to compare behaviors with the regular Checkout block.
 
 ### Shipping
 
-If you already have some shipping zones in your website:
+#### Setup
+
+
+With shipping zones available:
 
 - [ ] You should be able to see preview rates (that are not your actual rates) in the editor.
 - [ ] You should be able to see your actual rates on the frontend.
 - [ ] Selecting a shipping rate should update the totals.
 - [ ] Changing the address in Cart block should update the rates.
 - [ ] Try entering an address that does not have rates for, you should:
-	- [ ] See an error saying "No options were found".
-	- [ ] See the default shipping option if you have it setup.
+  - [ ] See an error saying "No options were found".
+  - [ ] See the default shipping option if you have it setup.
 - [ ] The countries in the shipping rates form should reflect the countries you have in WooCommerce -> Settings -> General -> Shipping location(s).
 - [ ] If your cart has only digital products, the Cart and Checkout blocks should act like shipping is disabled.
 
@@ -133,21 +155,27 @@ Breaking Shipping
 
 ### Payments
 
+#### Setup
+
 ### Coupons
+
+#### Setup
 
 ### Cart Items
 
+#### Setup
+
 ### Cross-platform and browser compatibility
 
-The main goal of this is to test in viraity of themes, browsers, platforms and setups, this is a list of things you can test with, with sane expectations.
+The main goal of this is to test in a variety of themes, browsers, platforms, and setups, this is a list of things you can test with, with sane expectations.
 
 The baseline for testing is:
 - WordPress 5.3 and up.
 - WooCommerce 4.0 and up
-- All Browsers supported by [those two versions](https://make.wordpress.org/core/handbook/best-practices/browser-support/) so this inlucde Internet Explorer 11, and latest two versions of each browser.
-- Storefront, TwentyTwenty, and TwentyNineteen themes, we use storefront as a basis for developement, and push fixes to it regularly, so make sure you run the latest version.
+- All Browsers supported by [those two versions](https://make.wordpress.org/core/handbook/best-practices/browser-support/) so this includes Internet Explorer 11, and latest two versions of each browser.
+- Storefront, TwentyTwenty, and TwentyNineteen themes, we use storefront as a basis for development and push fixes to it regularly, so make sure you run the latest version.
 
-As a basis for comperasion, you can use the blocks designs:
+As a basis for comparison, you can use the blocks designs:
 
 - Checkout Desktop.
 - Cart Desktop.
