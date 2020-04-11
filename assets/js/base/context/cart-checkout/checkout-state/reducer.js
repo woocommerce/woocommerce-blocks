@@ -5,8 +5,11 @@ import { TYPES, DEFAULT_STATE, STATUS } from './constants';
 
 const {
 	SET_PRISTINE,
+	SET_IDLE,
 	SET_PROCESSING,
 	SET_BEFORE_PROCESSING,
+	SET_AFTER_PROCESSING,
+	SET_PROCESSING_RESPONSE,
 	SET_REDIRECT_URL,
 	SET_COMPLETE,
 	SET_HAS_ERROR,
@@ -16,7 +19,40 @@ const {
 	SET_ORDER_ID,
 } = TYPES;
 
-const { PRISTINE, IDLE, PROCESSING, BEFORE_PROCESSING, COMPLETE } = STATUS;
+const {
+	PRISTINE,
+	IDLE,
+	PROCESSING,
+	BEFORE_PROCESSING,
+	AFTER_PROCESSING,
+	COMPLETE,
+} = STATUS;
+
+/**
+ * Prepares the payment_result data from the server checkout endpoint response.
+ *
+ * @param {Object}        data                 The value of `payment_result` from the checkout
+ *                                             processing endpoint response.
+ * @param {string}        data.payment_status  The payment status. One of 'success', 'failure',
+ *                                             'pending', 'error'.
+ * @param {Array<Object>} data.payment_details An array of Objects with a 'key' property that is a
+ *                                             string and value property that is a string. These are
+ *                                             converted to a flat object where the key becomes the
+ *                                             object property and value the property value.
+ *
+ * @return {Object} A new object with 'paymentStatus', and 'paymentDetails' as the properties.
+ */
+export const prepareResponseData = ( data ) => {
+	const responseData = {
+		paymentStatus: data.payment_status,
+		paymentDetails: {},
+	};
+	return Array.isArray( data.payment_details )
+		? data.payment_details.forEach( ( { key, value } ) => {
+				responseData.paymentDetails[ key ] = value;
+		  } )
+		: responseData;
+};
 
 /**
  * Reducer for the checkout state
@@ -24,11 +60,23 @@ const { PRISTINE, IDLE, PROCESSING, BEFORE_PROCESSING, COMPLETE } = STATUS;
  * @param {Object} state  Current state.
  * @param {Object} action Incoming action object.
  */
-export const reducer = ( state = DEFAULT_STATE, { url, type, orderId } ) => {
+export const reducer = (
+	state = DEFAULT_STATE,
+	{ url, type, orderId, data }
+) => {
 	let newState;
 	switch ( type ) {
 		case SET_PRISTINE:
 			newState = DEFAULT_STATE;
+			break;
+		case SET_IDLE:
+			newState =
+				state.state !== IDLE
+					? {
+							...state,
+							status: IDLE,
+					  }
+					: state;
 			break;
 		case SET_REDIRECT_URL:
 			newState =
@@ -39,6 +87,13 @@ export const reducer = ( state = DEFAULT_STATE, { url, type, orderId } ) => {
 					  }
 					: state;
 			break;
+		case SET_PROCESSING_RESPONSE:
+			newState = {
+				...state,
+				processingResponse: data,
+			};
+			break;
+
 		case SET_COMPLETE:
 			newState =
 				state.status !== COMPLETE
@@ -70,6 +125,15 @@ export const reducer = ( state = DEFAULT_STATE, { url, type, orderId } ) => {
 							...state,
 							status: BEFORE_PROCESSING,
 							hasError: false,
+					  }
+					: state;
+			break;
+		case SET_AFTER_PROCESSING:
+			newState =
+				state.status !== AFTER_PROCESSING
+					? {
+							...state,
+							status: AFTER_PROCESSING,
 					  }
 					: state;
 			break;

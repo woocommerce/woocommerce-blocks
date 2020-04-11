@@ -114,6 +114,7 @@ export const PaymentMethodDataProvider = ( {
 	const {
 		isComplete: checkoutIsComplete,
 		isProcessing: checkoutIsProcessing,
+		isIdle: checkoutIsIdle,
 		isCalculating: checkoutIsCalculating,
 		hasError: checkoutHasError,
 	} = useCheckoutContext();
@@ -209,6 +210,11 @@ export const PaymentMethodDataProvider = ( {
 		checkoutIsCalculating,
 		currentStatus.isFinished,
 	] );
+
+	// when checkout is returned to idle, set payment status to pristine.
+	useEffect( () => {
+		dispatch( statusOnly( PRISTINE ) );
+	}, [ checkoutIsIdle ] );
 
 	// set initial active payment method if it's undefined.
 	useEffect( () => {

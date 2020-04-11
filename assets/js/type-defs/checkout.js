@@ -7,8 +7,9 @@
  *                                                           redirectUrl to the given value.
  * @property {function(boolean=)}       setHasError          Dispatches an action that sets the
  *                                                           checkout status to having an error.
- * @property {function()}               setComplete          Dispatches an action that sets the
- *                                                           checkout status to complete.
+ * @property {function(Object)}         setAfterProcessing   Dispatches an action that sets the
+ *                                                           checkout status to after processing and
+ *                                                           also sets the response data accordingly.
  * @property {function()}               incrementCalculating Dispatches an action that increments
  *                                                           the calculating state for checkout by one.
  * @property {function()}               decrementCalculating Dispatches an action that decrements

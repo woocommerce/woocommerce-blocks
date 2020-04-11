@@ -144,8 +144,7 @@ export const useCheckoutSubscriptions = (
 			unsubscribeProcessing();
 		};
 	}, [
-		eventRegistration.onCheckoutCompleteSuccess,
-		eventRegistration.onCheckoutCompleteError,
+		eventRegistration.onPaymentProcessing,
 		stripe,
 		sourceId,
 		billing.billingData,

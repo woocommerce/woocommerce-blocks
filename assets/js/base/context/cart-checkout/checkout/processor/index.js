@@ -48,11 +48,11 @@ const CheckoutProcessor = () => {
 	const {
 		hasError: checkoutHasError,
 		onCheckoutBeforeProcessing,
-		onCheckoutCompleteSuccess,
 		dispatchActions,
 		redirectUrl,
 		isProcessing: checkoutIsProcessing,
 		isBeforeProcessing: checkoutIsBeforeProcessing,
+		isComplete: checkoutIsComplete,
 	} = useCheckoutContext();
 	const { hasValidationErrors } = useValidationContext();
 	const { shippingAddress, shippingErrorStatus } = useShippingDataContext();
@@ -219,13 +219,8 @@ const CheckoutProcessor = () => {
 							);
 						}
 						dispatchActions.setHasError();
-					} else {
-						dispatchActions.setRedirectUrl(
-							response.payment_result.redirect_url
-						);
 					}
-
-					dispatchActions.setComplete();
+					dispatchActions.setAfterProcessing( response );
 					setIsProcessingOrder( false );
 				} );
 			} )
@@ -240,7 +235,7 @@ const CheckoutProcessor = () => {
 					id: 'checkout',
 				} );
 				dispatchActions.setHasError();
-				dispatchActions.setComplete();
+				dispatchActions.setAfterProcessing( error );
 				setIsProcessingOrder( false );
 			} );
 	}, [
@@ -250,15 +245,12 @@ const CheckoutProcessor = () => {
 		paymentMethodData,
 		cartNeedsPayment,
 	] );
-	// setup checkout processing event observers.
+	// redirect when checkout is complete and there is a redirect url.
 	useEffect( () => {
-		const unsubscribeRedirect = onCheckoutCompleteSuccess( () => {
+		if ( redirectUrl ) {
 			window.location.href = redirectUrl;
-		}, 999 );
-		return () => {
-			unsubscribeRedirect();
-		};
-	}, [ onCheckoutCompleteSuccess, redirectUrl ] );
+		}
+	}, [ checkoutIsComplete, redirectUrl ] );
 
 	// process order if conditions are good.
 	useEffect( () => {

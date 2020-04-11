@@ -257,14 +257,14 @@
  * @property {string}                       redirectUrl                This is the url that checkout
  *                                                                     will redirect to when it's
  *                                                                     ready.
- * @property {function(function(),number=)} onCheckoutCompleteSuccess  Used to register a callback
- *                                                                     that will fire when the
- *                                                                     checkout is marked complete
- *                                                                     successfully.
- * @property {function(function(),number=)} onCheckoutCompleteError    Used to register a callback
- *                                                                     that will fire when the
- *                                                                     checkout is marked complete
- *                                                                     and has an error.
+ * @property {function(function(),number=)} onCheckoutAfterProcessingWithSuccess Used to register a
+ *                                                                     callback that will fire after
+ *                                                                     checkout has been processed
+ *                                                                     and there are no errors.
+ * @property {function(function(),number=)} onCheckoutAfterProcessingWithError Used to register a
+ *                                                                     callback that will fire when
+ *                                                                     the checkout has been
+ *                                                                     processed and has an error.
  * @property {function(function(),number=)} onCheckoutBeforeProcessing Used to register a callback
  *                                                                     that will fire when the
  *                                                                     checkout has been submitted

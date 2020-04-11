@@ -134,11 +134,11 @@
 /**
  * @typedef EventRegistrationProps
  *
- * @property {function(function())} onCheckoutCompleteSuccess   Used to subscribe callbacks firing
- *                                                              when checkout has completed
+ * @property {function(function())} onCheckoutAfterProcessingWithSuccess Used to subscribe callbacks
+ *                                                              firing when checkout has completed
  *                                                              processing successfully.
- * @property {function(function())} onCheckoutCompleteError     Used to subscribe callbacks firing
- *                                                              when checkout has completed
+ * @property {function(function())} onCheckoutAfterProcessingWithError Used to subscribe callbacks
+ *                                                              firing when checkout has completed
  *                                                              processing with an error.
  * @property {function(function())} onCheckoutBeforeProcessing  Used to subscribe callbacks that
  *                                                              will fire when checkout begins

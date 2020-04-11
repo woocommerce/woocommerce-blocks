@@ -224,15 +224,21 @@ const PaymentRequestExpressComponent = ( {
 
 	const onCheckoutComplete = ( forSuccess = true ) => () => {
 		const handlers = eventHandlers.current;
+		let response = { type: 'success' };
 		if ( handlers.sourceEvent && isProcessing ) {
 			if ( forSuccess ) {
 				completePayment( handlers.sourceEvent );
 			} else {
-				abortPayment( handlers.sourceEvent );
+				const paymentResponse = abortPayment( handlers.sourceEvent );
+				response = {
+					type: 'error',
+					message: paymentResponse.message,
+					retry: true,
+				};
 			}
 			handlers.sourceEvent = null;
 		}
-		return true;
+		return response;
 	};
 
 	// when canMakePayment is true, then we set listeners on payment request for
@@ -301,10 +307,10 @@ const PaymentRequestExpressComponent = ( {
 			const unsubscribePaymentProcessing = subscriber.onPaymentProcessing(
 				onPaymentProcessing
 			);
-			const unsubscribeCheckoutCompleteSuccess = subscriber.onCheckoutCompleteSuccess(
+			const unsubscribeCheckoutCompleteSuccess = subscriber.onCheckoutAfterProcessingWithSuccess(
 				onCheckoutComplete()
 			);
-			const unsubscribeCheckoutCompleteFail = subscriber.onCheckoutCompleteError(
+			const unsubscribeCheckoutCompleteFail = subscriber.onCheckoutAfterProcessingWithError(
 				onCheckoutComplete( false )
 			);
 			return () => {
@@ -326,8 +332,8 @@ const PaymentRequestExpressComponent = ( {
 		eventRegistration.onShippingRateSelectSuccess,
 		eventRegistration.onShippingRateSelectFail,
 		eventRegistration.onPaymentProcessing,
-		eventRegistration.onCheckoutCompleteSuccess,
-		eventRegistration.onCheckoutCompleteError,
+		eventRegistration.onCheckoutAfterProcessingWithSuccess,
+		eventRegistration.onCheckoutAfterProcessingWithError,
 	] );
 
 	// locale is not a valid value for the paymentRequestButton style.
