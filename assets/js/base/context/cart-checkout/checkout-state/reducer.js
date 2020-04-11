@@ -47,11 +47,12 @@ export const prepareResponseData = ( data ) => {
 		paymentStatus: data.payment_status,
 		paymentDetails: {},
 	};
-	return Array.isArray( data.payment_details )
-		? data.payment_details.forEach( ( { key, value } ) => {
-				responseData.paymentDetails[ key ] = value;
-		  } )
-		: responseData;
+	if ( Array.isArray( data.payment_details ) ) {
+		data.payment_details.forEach( ( { key, value } ) => {
+			responseData.paymentDetails[ key ] = value;
+		} );
+	}
+	return responseData;
 };
 
 /**

@@ -231,13 +231,13 @@ class Library {
 		$_POST = $context->payment_data;
 
 		// Call the process payment method of the chosen gatway.
-		$available_gateways = WC()->payment_gateways->get_available_payment_gateways();
+		$available_gateways    = WC()->payment_gateways->get_available_payment_gateways();
+		$payment_method_object = $context->get_payment_method_instance();
 
-		if ( ! isset( $available_gateways[ $context->payment_method ] ) ) {
+		if ( ! $payment_method_object instanceof \WC_Payment_Gateway ) {
 			return;
 		}
 
-		$payment_method_object = $available_gateways[ $context->payment_method ];
 		$payment_method_object->validate_fields();
 
 		if ( 0 !== wc_notice_count( 'error' ) ) {

@@ -69,6 +69,7 @@ const CheckoutProcessor = () => {
 	const { addErrorNotice, removeNotice } = useStoreNotices();
 	const currentBillingData = useRef( billingData );
 	const currentShippingAddress = useRef( shippingAddress );
+	const currentRedirectUrl = useRef( redirectUrl );
 	const [ isProcessingOrder, setIsProcessingOrder ] = useState( false );
 	const expressPaymentMethodActive = Object.keys(
 		expressPaymentMethods
@@ -109,7 +110,8 @@ const CheckoutProcessor = () => {
 	useEffect( () => {
 		currentBillingData.current = billingData;
 		currentShippingAddress.current = shippingAddress;
-	}, [ billingData, shippingAddress ] );
+		currentRedirectUrl.current = redirectUrl;
+	}, [ billingData, shippingAddress, redirectUrl ] );
 
 	useEffect( () => {
 		if ( errorMessage ) {
@@ -247,10 +249,10 @@ const CheckoutProcessor = () => {
 	] );
 	// redirect when checkout is complete and there is a redirect url.
 	useEffect( () => {
-		if ( redirectUrl ) {
-			window.location.href = redirectUrl;
+		if ( currentRedirectUrl.current ) {
+			window.location.href = currentRedirectUrl.current;
 		}
-	}, [ checkoutIsComplete, redirectUrl ] );
+	}, [ checkoutIsComplete ] );
 
 	// process order if conditions are good.
 	useEffect( () => {

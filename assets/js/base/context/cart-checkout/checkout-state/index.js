@@ -122,7 +122,6 @@ export const CheckoutStateProvider = ( {
 	const currentObservers = useRef( observers );
 	const { setValidationErrors } = useValidationContext();
 	const { addErrorNotice, removeNotices } = useStoreNotices();
-
 	const isCalculating = checkoutState.calculatingCount > 0;
 
 	// set observers on ref so it's always current.
@@ -163,7 +162,10 @@ export const CheckoutStateProvider = ( {
 				void dispatch( actions.setOrderId( orderId ) ),
 			setAfterProcessing: ( response ) => {
 				if ( response.payment_result ) {
-					if ( response.payment_result.redirect_url ) {
+					if (
+						// eslint-disable-next-line camelcase
+						response.payment_result?.redirect_url
+					) {
 						dispatch(
 							actions.setRedirectUrl(
 								response.payment_result.redirect_url
@@ -211,6 +213,13 @@ export const CheckoutStateProvider = ( {
 
 	useEffect( () => {
 		if ( checkoutState.status === STATUS.AFTER_PROCESSING ) {
+			const data = {
+				redirectUrl: checkoutState.redirectUrl,
+				orderId: checkoutState.orderId,
+				customerId: checkoutState.customerId,
+				customerNote: checkoutState.customerNote,
+				processingResponse: checkoutState.processingResponse,
+			};
 			if ( checkoutState.hasError ) {
 				// these observers can't abort, this event is just provided
 				// in case extensions need to reset or update something internal
@@ -218,26 +227,14 @@ export const CheckoutStateProvider = ( {
 				emitEvent(
 					currentObservers.current,
 					EMIT_TYPES.CHECKOUT_AFTER_PROCESSING_WITH_ERROR,
-					{
-						redirectUrl,
-						orderId: checkoutState.orderId,
-						customerId: checkoutState.customerId,
-						customerNote: checkoutState.customerNote,
-						paymentResponse: checkoutState.paymentResponse,
-					}
+					data
 				);
 				dispatch( actions.setIdle() );
 			} else {
 				emitEventWithAbort(
 					currentObservers.current,
 					EMIT_TYPES.CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS,
-					{
-						redirectUrl,
-						orderId: checkoutState.orderId,
-						customerId: checkoutState.customerId,
-						customerNote: checkoutState.customerNote,
-						paymentResponse: checkoutState.paymentResponse,
-					}
+					data
 				).then( ( response ) => {
 					if ( isSuccessResponse( response ) ) {
 						if ( response.redirectUrl ) {
@@ -269,11 +266,11 @@ export const CheckoutStateProvider = ( {
 	}, [
 		checkoutState.status,
 		checkoutState.hasError,
-		redirectUrl,
+		checkoutState.redirectUrl,
 		checkoutState.orderId,
 		checkoutState.customerId,
 		checkoutState.customerNote,
-		checkoutState.paymentResponse,
+		checkoutState.processingResponse,
 		dispatchActions,
 	] );
 

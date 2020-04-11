@@ -12,6 +12,7 @@ import {
 	getStripeServerData,
 	getErrorMessageForTypeAndCode,
 } from '../stripe-utils';
+import { usePaymentIntents } from './use-payment-intents';
 
 /**
  * @typedef {import('@woocommerce/type-defs/registered-payment-method-props').EventRegistrationProps} EventRegistrationProps
@@ -52,6 +53,10 @@ export const useCheckoutSubscriptions = (
 	const onStripeError = useRef( ( event ) => {
 		return event;
 	} );
+	usePaymentIntents(
+		stripe,
+		eventRegistration.onCheckoutAfterProcessingWithSuccess
+	);
 	// hook into and register callbacks for events.
 	useEffect( () => {
 		onStripeError.current = ( event ) => {
