@@ -237,22 +237,14 @@ export const CheckoutStateProvider = ( {
 					data
 				).then( ( response ) => {
 					if ( isSuccessResponse( response ) ) {
-						if ( response.redirectUrl ) {
-							dispatchActions.setRedirectUrl(
-								response.redirectUrl
-							);
-						}
-						dispatch( actions.setComplete() );
+						dispatch( actions.setComplete( response ) );
 					}
 					if ( isErrorResponse( response ) ) {
-						if ( response.redirectUrl ) {
-							dispatch( actions.setRedirectUrl( redirectUrl ) );
-						}
 						if ( response.message ) {
 							addErrorNotice( response.message );
 						}
 						if ( ! response.retry ) {
-							dispatch( actions.setComplete() );
+							dispatch( actions.setComplete( response ) );
 						} else {
 							// this will set an error which will end up
 							// triggering the onCheckoutAfterProcessingWithErrors emitter.

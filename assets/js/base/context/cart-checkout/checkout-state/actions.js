@@ -40,8 +40,9 @@ export const actions = {
 		type: SET_PROCESSING_RESPONSE,
 		data,
 	} ),
-	setComplete: () => ( {
+	setComplete: ( data ) => ( {
 		type: SET_COMPLETE,
+		data,
 	} ),
 	setBeforeProcessing: () => ( {
 		type: SET_BEFORE_PROCESSING,
