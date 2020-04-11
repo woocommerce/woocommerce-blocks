@@ -23,7 +23,7 @@ const openIntentModal = ( stripe, paymentDetails ) => {
 		return checkoutResponse;
 	}
 	const isSetupIntent = !! paymentDetails.setupIntent;
-	const verificationUrl = paymentDetails.verificationUrl;
+	const verificationUrl = paymentDetails.verification_endpoint;
 	const intentSecret = isSetupIntent
 		? paymentDetails.setup_intent
 		: paymentDetails.payment_intent_secret;
