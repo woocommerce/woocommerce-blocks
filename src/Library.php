@@ -252,7 +252,9 @@ class Library {
 
 		// Handle result.
 		$result->set_status( isset( $gateway_result['result'] ) && 'success' === $gateway_result['result'] ? 'success' : 'failure' );
-		$result->set_payment_details( [] );
+
+		// set payment_details from result.
+		$result->set_payment_details( $gateway_result );
 		$result->set_redirect_url( $gateway_result['redirect'] );
 	}
 }
