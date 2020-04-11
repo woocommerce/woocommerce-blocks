@@ -47,12 +47,12 @@ const preparePaymentData = ( paymentData ) => {
 const CheckoutProcessor = () => {
 	const {
 		hasError: checkoutHasError,
-		onCheckoutProcessing,
+		onCheckoutBeforeProcessing,
 		onCheckoutCompleteSuccess,
 		dispatchActions,
 		redirectUrl,
 		isProcessing: checkoutIsProcessing,
-		isProcessingComplete: checkoutIsProcessingComplete,
+		isBeforeProcessing: checkoutIsBeforeProcessing,
 	} = useCheckoutContext();
 	const { hasValidationErrors } = useValidationContext();
 	const { shippingAddress, shippingErrorStatus } = useShippingDataContext();
@@ -87,7 +87,7 @@ const CheckoutProcessor = () => {
 	useEffect( () => {
 		if (
 			checkoutWillHaveError !== checkoutHasError &&
-			( checkoutIsProcessing || checkoutIsProcessingComplete ) &&
+			( checkoutIsProcessing || checkoutIsBeforeProcessing ) &&
 			! expressPaymentMethodActive
 		) {
 			dispatchActions.setHasError( checkoutWillHaveError );
@@ -96,7 +96,7 @@ const CheckoutProcessor = () => {
 		checkoutWillHaveError,
 		checkoutHasError,
 		checkoutIsProcessing,
-		checkoutIsProcessingComplete,
+		checkoutIsBeforeProcessing,
 		expressPaymentMethodActive,
 	] );
 
@@ -104,7 +104,7 @@ const CheckoutProcessor = () => {
 		! checkoutHasError &&
 		! checkoutWillHaveError &&
 		( currentPaymentStatus.isSuccessful || ! cartNeedsPayment ) &&
-		checkoutIsProcessingComplete;
+		checkoutIsProcessing;
 
 	useEffect( () => {
 		currentBillingData.current = billingData;
@@ -157,14 +157,21 @@ const CheckoutProcessor = () => {
 	useEffect( () => {
 		let unsubscribeProcessing;
 		if ( ! expressPaymentMethodActive ) {
-			unsubscribeProcessing = onCheckoutProcessing( checkValidation, 0 );
+			unsubscribeProcessing = onCheckoutBeforeProcessing(
+				checkValidation,
+				0
+			);
 		}
 		return () => {
 			if ( ! expressPaymentMethodActive ) {
 				unsubscribeProcessing();
 			}
 		};
-	}, [ onCheckoutProcessing, checkValidation, expressPaymentMethodActive ] );
+	}, [
+		onCheckoutBeforeProcessing,
+		checkValidation,
+		expressPaymentMethodActive,
+	] );
 
 	const processOrder = useCallback( () => {
 		setIsProcessingOrder( true );

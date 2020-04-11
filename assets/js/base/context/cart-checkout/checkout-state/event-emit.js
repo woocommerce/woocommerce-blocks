@@ -11,7 +11,7 @@ import {
 const EMIT_TYPES = {
 	CHECKOUT_COMPLETE_WITH_SUCCESS: 'checkout_complete',
 	CHECKOUT_COMPLETE_WITH_ERROR: 'checkout_complete_error',
-	CHECKOUT_PROCESSING: 'checkout_processing',
+	CHECKOUT_BEFORE_PROCESSING: 'checkout_before_processing',
 };
 
 /**
@@ -36,8 +36,10 @@ const emitterSubscribers = ( dispatcher ) => ( {
 		EMIT_TYPES.CHECKOUT_COMPLETE_WITH_ERROR,
 		dispatcher
 	),
-	onCheckoutProcessing: emitterCallback(
-		EMIT_TYPES.CHECKOUT_PROCESSING,
+	onCheckoutBeforeProcessing: emitterCallback(
+		EMIT_TYPES.CHECKOUT_BEFORE_PROCESSING,
+		dispatcher
+	),
 		dispatcher
 	),
 } );

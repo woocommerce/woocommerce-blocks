@@ -11,7 +11,7 @@ export const STATUS = {
 	IDLE: 'idle',
 	PROCESSING: 'processing',
 	COMPLETE: 'complete',
-	PROCESSING_COMPLETE: 'processing_complete',
+	BEFORE_PROCESSING: 'before_processing',
 };
 
 const checkoutData = getSetting( 'checkoutData', {
@@ -32,7 +32,7 @@ export const TYPES = {
 	SET_PRISTINE: 'set_pristine',
 	SET_REDIRECT_URL: 'set_redirect_url',
 	SET_COMPLETE: 'set_checkout_complete',
-	SET_PROCESSING_COMPLETE: 'set_processing_complete',
+	SET_BEFORE_PROCESSING: 'set_before_processing',
 	SET_PROCESSING: 'set_checkout_is_processing',
 	SET_HAS_ERROR: 'set_checkout_has_error',
 	SET_NO_ERROR: 'set_checkout_no_error',

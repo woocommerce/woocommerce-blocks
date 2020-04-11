@@ -38,13 +38,13 @@ const CheckoutContext = createContext( {
 	isIdle: false,
 	isCalculating: false,
 	isProcessing: false,
-	isProcessingComplete: false,
+	isBeforeProcessing: false,
 	hasError: false,
 	redirectUrl: '',
 	orderId: 0,
 	onCheckoutCompleteSuccess: ( callback ) => void callback,
 	onCheckoutCompleteError: ( callback ) => void callback,
-	onCheckoutProcessing: ( callback ) => void callback,
+	onCheckoutBeforeProcessing: ( callback ) => void callback,
 	dispatchActions: {
 		resetCheckout: () => void null,
 		setRedirectUrl: ( url ) => void url,
@@ -109,8 +109,10 @@ export const CheckoutStateProvider = ( {
 		() => emitterSubscribers( subscriber ).onCheckoutCompleteError,
 		[ subscriber ]
 	);
-	const onCheckoutProcessing = useMemo(
-		() => emitterSubscribers( subscriber ).onCheckoutProcessing,
+	const onCheckoutBeforeProcessing = useMemo(
+		() => emitterSubscribers( subscriber ).onCheckoutBeforeProcessing,
+		[ subscriber ]
+	);
 		[ subscriber ]
 	);
 
@@ -140,11 +142,11 @@ export const CheckoutStateProvider = ( {
 	// emit events.
 	useEffect( () => {
 		const { status } = checkoutState;
-		if ( status === STATUS.PROCESSING ) {
+		if ( status === STATUS.BEFORE_PROCESSING ) {
 			removeNotices( 'error' );
 			emitEvent(
 				currentObservers.current,
-				EMIT_TYPES.CHECKOUT_PROCESSING,
+				EMIT_TYPES.CHECKOUT_BEFORE_PROCESSING,
 				{}
 			).then( ( response ) => {
 				if ( response !== true ) {
@@ -158,7 +160,7 @@ export const CheckoutStateProvider = ( {
 					}
 					dispatch( actions.setComplete() );
 				} else {
-					dispatch( actions.setProcessingComplete() );
+					dispatch( actions.setProcessing() );
 				}
 			} );
 		}
@@ -183,7 +185,7 @@ export const CheckoutStateProvider = ( {
 	}, [ checkoutState.status, checkoutState.hasError ] );
 
 	const onSubmit = () => {
-		dispatch( actions.setProcessing() );
+		dispatch( actions.setBeforeProcessing() );
 	};
 
 	/**
@@ -196,13 +198,12 @@ export const CheckoutStateProvider = ( {
 		isIdle: checkoutState.status === STATUS.IDLE,
 		isCalculating,
 		isProcessing: checkoutState.status === STATUS.PROCESSING,
-		isProcessingComplete:
-			checkoutState.status === STATUS.PROCESSING_COMPLETE,
+		isBeforeProcessing: checkoutState.status === STATUS.BEFORE_PROCESSING,
 		hasError: checkoutState.hasError,
 		redirectUrl: checkoutState.redirectUrl,
 		onCheckoutCompleteSuccess,
 		onCheckoutCompleteError,
-		onCheckoutProcessing,
+		onCheckoutBeforeProcessing,
 		dispatchActions,
 		isCart,
 		orderId: checkoutState.orderId,

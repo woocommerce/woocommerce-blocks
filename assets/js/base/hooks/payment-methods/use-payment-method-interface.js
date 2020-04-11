@@ -89,7 +89,7 @@ export const usePaymentMethodInterface = () => {
 		isProcessing,
 		onCheckoutCompleteSuccess,
 		onCheckoutCompleteError,
-		onCheckoutProcessing,
+		onCheckoutBeforeProcessing,
 		onSubmit,
 		customerId,
 	} = useCheckoutContext();
@@ -178,7 +178,7 @@ export const usePaymentMethodInterface = () => {
 		eventRegistration: {
 			onCheckoutCompleteSuccess,
 			onCheckoutCompleteError,
-			onCheckoutProcessing,
+			onCheckoutBeforeProcessing,
 			onShippingRateSuccess,
 			onShippingRateFail,
 			onShippingRateSelectSuccess,

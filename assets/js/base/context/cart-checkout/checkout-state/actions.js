@@ -6,7 +6,7 @@ import { TYPES } from './constants';
 const {
 	SET_PRISTINE,
 	SET_PROCESSING,
-	SET_PROCESSING_COMPLETE,
+	SET_BEFORE_PROCESSING,
 	SET_REDIRECT_URL,
 	SET_COMPLETE,
 	SET_HAS_ERROR,
@@ -33,8 +33,9 @@ export const actions = {
 	setComplete: () => ( {
 		type: SET_COMPLETE,
 	} ),
-	setProcessingComplete: () => ( {
-		type: SET_PROCESSING_COMPLETE,
+	setBeforeProcessing: () => ( {
+		type: SET_BEFORE_PROCESSING,
+	} ),
 	} ),
 	setHasError: ( hasError = true ) => {
 		const type = hasError ? SET_HAS_ERROR : SET_NO_ERROR;

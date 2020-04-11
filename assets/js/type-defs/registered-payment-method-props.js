@@ -140,7 +140,7 @@
  * @property {function(function())} onCheckoutCompleteError     Used to subscribe callbacks firing
  *                                                              when checkout has completed
  *                                                              processing with an error.
- * @property {function(function())} onCheckoutProcessing        Used to subscribe callbacks that
+ * @property {function(function())} onCheckoutBeforeProcessing  Used to subscribe callbacks that
  *                                                              will fire when checkout begins
  *                                                              processing (as a part of the
  *                                                              processing process).

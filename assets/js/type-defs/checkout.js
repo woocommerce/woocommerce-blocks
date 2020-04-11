@@ -20,18 +20,18 @@
 /**
  * @typedef {Object} CheckoutStatusConstants
  *
- * @property {string} PRISTINE            Checkout is in it's initialized state.
- * @property {string} IDLE                When checkout state has changed but
- *                                        there is no activity happening.
- * @property {string} PROCESSING          This is the state when the checkout
- *                                        button has been pressed and the
- *                                        checkout data has been sent to the
- *                                        server for processing.
- * @property {string} PROCESSING_COMPLETE This is the state when the checkout
- *                                        processing has been completed.
- * @property {string} COMPLETE            This is the status when the server has
- *                                        completed processing the data
- *                                        successfully.
+ * @property {string} PRISTINE                   Checkout is in it's initialized state.
+ * @property {string} IDLE                       When checkout state has changed but there is no
+ *                                               activity happening.
+ * @property {string} PROCESSING                 This is the state when the checkout button has been
+ *                                               pressed and the checkout data has been sent to the
+ *                                               server for processing.
+ * @property {string} BEFORE_PROCESSING          This is the state when the checkout processing has
+ *                                               been completed.
+ * @property {string} COMPLETE                   This is the status when the server has completed
+ *                                               processing the data successfully.
+ * @property {string} BEFORE_REDIRECT_ON_SUCCESS This is the status when the server has returned a
+ *                                               response and before any redirect happens.
  */
 
 export {};

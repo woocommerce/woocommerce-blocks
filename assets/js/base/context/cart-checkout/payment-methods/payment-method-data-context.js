@@ -113,7 +113,7 @@ export const PaymentMethodDataProvider = ( {
 	const { setBillingData } = useBillingDataContext();
 	const {
 		isComplete: checkoutIsComplete,
-		isProcessingComplete: checkoutIsProcessingComplete,
+		isProcessing: checkoutIsProcessing,
 		isCalculating: checkoutIsCalculating,
 		hasError: checkoutHasError,
 	} = useCheckoutContext();
@@ -196,7 +196,7 @@ export const PaymentMethodDataProvider = ( {
 	// no errors, and payment status is started.
 	useEffect( () => {
 		if (
-			checkoutIsProcessingComplete &&
+			checkoutIsProcessing &&
 			! checkoutHasError &&
 			! checkoutIsCalculating &&
 			! currentStatus.isFinished
@@ -204,7 +204,7 @@ export const PaymentMethodDataProvider = ( {
 			setPaymentStatus().processing();
 		}
 	}, [
-		checkoutIsProcessingComplete,
+		checkoutIsProcessing,
 		checkoutHasError,
 		checkoutIsCalculating,
 		currentStatus.isFinished,
