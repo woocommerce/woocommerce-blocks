@@ -27,7 +27,7 @@ const openIntentModal = ( stripe, paymentDetails ) => {
 	const intentSecret = isSetupIntent
 		? paymentDetails.setup_intent
 		: paymentDetails.payment_intent_secret;
-	stripe[ isSetupIntent ? 'confirmCardSetup' : 'confirmCardPayment' ](
+	return stripe[ isSetupIntent ? 'confirmCardSetup' : 'confirmCardPayment' ](
 		intentSecret
 	)
 		.then( function( response ) {
