@@ -224,7 +224,7 @@ final class Stripe extends AbstractPaymentMethodType {
 					'nonce'       => wp_create_nonce( 'wc_stripe_confirm_pi' ),
 					'redirect_to' => rawurlencode( $result->redirect_url ),
 				],
-				\WC_Ajax::get_endpoint( 'wc_stripe_verify_intent' )
+				home_url() . \WC_Ajax::get_endpoint( 'wc_stripe_verify_intent' )
 			);
 			$result->set_payment_details( $payment_details );
 			$result->set_status( 'success' );
