@@ -203,7 +203,7 @@ export const CheckoutStateProvider = ( {
 							}
 						);
 					}
-					dispatch( actions.setAfterProcessing() );
+					dispatch( actions.setIdle() );
 				} else {
 					dispatch( actions.setProcessing() );
 				}
