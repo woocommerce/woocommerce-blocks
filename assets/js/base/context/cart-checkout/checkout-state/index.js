@@ -219,8 +219,13 @@ export const CheckoutStateProvider = ( {
 							addErrorNotice( response.message, errorOptions );
 						}
 						// irrecoverable error so set complete
-						if ( ! response.retry ) {
+						if (
+							typeof response.retry !== 'undefined' &&
+							response.retry !== true
+						) {
 							dispatch( actions.setComplete( response ) );
+						} else {
+							dispatch( actions.setIdle() );
 						}
 					} else {
 						// no error handling in place by anything so let's fall
@@ -234,9 +239,9 @@ export const CheckoutStateProvider = ( {
 						addErrorNotice( message, {
 							id: 'checkout',
 						} );
+						dispatch( actions.setIdle() );
 					}
 				} );
-				dispatch( actions.setIdle() );
 			} else {
 				emitEventWithAbort(
 					currentObservers.current,
