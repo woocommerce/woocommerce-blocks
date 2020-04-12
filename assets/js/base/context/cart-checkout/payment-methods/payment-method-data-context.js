@@ -95,8 +95,8 @@ export const PaymentMethodDataProvider = ( {
 } ) => {
 	const { setBillingData } = useBillingDataContext();
 	const {
-		isComplete: checkoutIsComplete,
 		isProcessing: checkoutIsProcessing,
+		isAfterProcessing: checkoutAfterProcessing,
 		isIdle: checkoutIsIdle,
 		isCalculating: checkoutIsCalculating,
 		hasError: checkoutHasError,
@@ -319,7 +319,7 @@ export const PaymentMethodDataProvider = ( {
 		}
 		if (
 			currentStatus.isSuccessful &&
-			checkoutIsComplete &&
+			checkoutAfterProcessing &&
 			! checkoutHasError
 		) {
 			emitEvent(
@@ -340,7 +340,7 @@ export const PaymentMethodDataProvider = ( {
 		currentStatus,
 		setValidationErrors,
 		setPaymentStatus,
-		checkoutIsComplete,
+		checkoutAfterProcessing,
 		checkoutHasError,
 	] );
 

@@ -288,6 +288,7 @@ export const CheckoutStateProvider = ( {
 		isCalculating,
 		isProcessing: checkoutState.status === STATUS.PROCESSING,
 		isBeforeProcessing: checkoutState.status === STATUS.BEFORE_PROCESSING,
+		isAfterProcessing: checkoutState.status === STATUS.AFTER_PROCESSING,
 		hasError: checkoutState.hasError,
 		redirectUrl: checkoutState.redirectUrl,
 		onCheckoutAfterProcessingWithSuccess,

@@ -234,6 +234,8 @@
  *                                                                     executing logic before
  *                                                                     checkout processing (eg.
  *                                                                     validation).
+ * @property {boolean}                      isAfterProcessing          True when checkout status is
+ *                                                                     AFTER_PROCESSING.
  * @property {boolean}                      isIdle                     True when the checkout state
  *                                                                     has changed and checkout has
  *                                                                     no activity.
