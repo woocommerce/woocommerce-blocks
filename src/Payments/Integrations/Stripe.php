@@ -198,6 +198,20 @@ final class Stripe extends AbstractPaymentMethodType {
 			WC_Stripe_Payment_Request::add_order_meta( $context->order->id, $context->payment_data );
 			$_POST = $post_data;
 		}
+
+		// hook into stripe error processing so that we can capture the error to
+		// payment details (which is added to notices and thus not helpful for
+		// this context).
+		if ( 'stripe' === $context->payment_method ) {
+			add_action(
+				'wc_gateway_stripe_process_payment_error',
+				function( $error ) use ( &$result ) {
+					$payment_details                 = $result->payment_details;
+					$payment_details['errorMessage'] = $error->getLocalizedMessage();
+					$result->set_payment_details( $payment_details );
+				}
+			);
+		}
 	}
 
 	/**
