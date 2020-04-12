@@ -98,7 +98,11 @@ export const CheckoutStateProvider = ( {
 	const { setValidationErrors } = useValidationContext();
 	const { addErrorNotice, removeNotices } = useStoreNotices();
 	const isCalculating = checkoutState.calculatingCount > 0;
-	const { isSuccessResponse, isErrorResponse } = useEmitResponse();
+	const {
+		isSuccessResponse,
+		isErrorResponse,
+		isFailResponse,
+	} = useEmitResponse();
 
 	// set observers on ref so it's always current.
 	useEffect( () => {
@@ -204,11 +208,10 @@ export const CheckoutStateProvider = ( {
 					EMIT_TYPES.CHECKOUT_AFTER_PROCESSING_WITH_ERROR,
 					data
 				).then( ( response ) => {
-					if ( isSuccessResponse( response ) ) {
-						// a success! Something hooked in must have fixed the
-						// error.
-						dispatch( actions.setComplete( response ) );
-					} else if ( isErrorResponse( response ) ) {
+					if (
+						isErrorResponse( response ) ||
+						isFailResponse( response )
+					) {
 						if ( response.message ) {
 							const errorOptions = response.messageContext
 								? { context: response.messageContext }
@@ -243,7 +246,10 @@ export const CheckoutStateProvider = ( {
 					if ( isSuccessResponse( response ) ) {
 						dispatch( actions.setComplete( response ) );
 					}
-					if ( isErrorResponse( response ) ) {
+					if (
+						isErrorResponse( response ) ||
+						isFailResponse( response )
+					) {
 						if ( response.message ) {
 							const errorOptions = response.messageContext
 								? { context: response.messageContext }

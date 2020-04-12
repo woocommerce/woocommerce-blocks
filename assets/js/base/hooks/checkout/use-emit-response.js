@@ -13,7 +13,7 @@ const isResponseOf = ( response, type ) => {
  */
 const responseTypes = {
 	SUCCESS: 'success',
-	FAIL: 'fail',
+	FAIL: 'failure',
 	ERROR: 'error',
 };
 

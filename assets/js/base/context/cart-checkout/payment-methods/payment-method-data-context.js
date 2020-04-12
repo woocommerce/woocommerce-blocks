@@ -25,7 +25,6 @@ import { useShippingDataContext } from '../shipping';
 import {
 	EMIT_TYPES,
 	emitterSubscribers,
-	emitEvent,
 	emitEventWithAbort,
 	reducer as emitReducer,
 } from './event-emit';
@@ -96,7 +95,6 @@ export const PaymentMethodDataProvider = ( {
 	const { setBillingData } = useBillingDataContext();
 	const {
 		isProcessing: checkoutIsProcessing,
-		isAfterProcessing: checkoutAfterProcessing,
 		isIdle: checkoutIsIdle,
 		isCalculating: checkoutIsCalculating,
 		hasError: checkoutHasError,
@@ -151,18 +149,6 @@ export const PaymentMethodDataProvider = ( {
 	}, [ observers ] );
 	const onPaymentProcessing = useMemo(
 		() => emitterSubscribers( subscriber ).onPaymentProcessing,
-		[ subscriber ]
-	);
-	const onPaymentSuccess = useMemo(
-		() => emitterSubscribers( subscriber ).onPaymentSuccess,
-		[ subscriber ]
-	);
-	const onPaymentFail = useMemo(
-		() => emitterSubscribers( subscriber ).onPaymentFail,
-		[ subscriber ]
-	);
-	const onPaymentError = useMemo(
-		() => emitterSubscribers( subscriber ).onPaymentError,
 		[ subscriber ]
 	);
 
@@ -317,32 +303,7 @@ export const PaymentMethodDataProvider = ( {
 				}
 			} );
 		}
-		if (
-			currentStatus.isSuccessful &&
-			checkoutAfterProcessing &&
-			! checkoutHasError
-		) {
-			emitEvent(
-				currentObservers.current,
-				EMIT_TYPES.PAYMENT_SUCCESS,
-				{}
-			).then( () => {
-				setPaymentStatus().completed();
-			} );
-		}
-		if ( currentStatus.hasFailed ) {
-			emitEvent( currentObservers.current, EMIT_TYPES.PAYMENT_FAIL, {} );
-		}
-		if ( currentStatus.hasError ) {
-			emitEvent( currentObservers.current, EMIT_TYPES.PAYMENT_ERROR, {} );
-		}
-	}, [
-		currentStatus,
-		setValidationErrors,
-		setPaymentStatus,
-		checkoutAfterProcessing,
-		checkoutHasError,
-	] );
+	}, [ currentStatus, setValidationErrors, setPaymentStatus ] );
 
 	/**
 	 * @type {PaymentMethodDataContext}
@@ -356,9 +317,6 @@ export const PaymentMethodDataProvider = ( {
 		activePaymentMethod,
 		setActivePaymentMethod,
 		onPaymentProcessing,
-		onPaymentSuccess,
-		onPaymentFail,
-		onPaymentError,
 		customerPaymentMethods,
 		paymentMethods: paymentData.paymentMethods,
 		expressPaymentMethods: paymentData.expressPaymentMethods,

@@ -226,17 +226,27 @@ const PaymentRequestExpressComponent = ( {
 		return { type: emitResponse.responseTypes.SUCCESS };
 	};
 
-	const onCheckoutComplete = ( forSuccess = true ) => () => {
+	const onCheckoutComplete = ( checkoutResponse ) => {
 		const handlers = eventHandlers.current;
 		let response = { type: emitResponse.responseTypes.SUCCESS };
 		if ( handlers.sourceEvent && isProcessing ) {
-			if ( forSuccess ) {
+			const { paymentStatus, paymentDetails } = checkoutResponse;
+			if ( paymentStatus === emitResponse.responseTypes.SUCCESS ) {
 				completePayment( handlers.sourceEvent );
-			} else {
-				const paymentResponse = abortPayment( handlers.sourceEvent );
+			}
+			if (
+				paymentStatus === emitResponse.responseTypes.ERROR ||
+				paymentStatus === emitResponse.responseTypes.FAIL
+			) {
+				const paymentResponse = abortPayment(
+					handlers.sourceEvent,
+					paymentDetails?.errorMessage
+				);
 				response = {
 					type: emitResponse.responseTypes.ERROR,
 					message: paymentResponse.message,
+					messageContext:
+						emitResponse.noticeContexts.EXPRESS_PAYMENTS,
 					retry: true,
 				};
 			}
@@ -312,10 +322,10 @@ const PaymentRequestExpressComponent = ( {
 				onPaymentProcessing
 			);
 			const unsubscribeCheckoutCompleteSuccess = subscriber.onCheckoutAfterProcessingWithSuccess(
-				onCheckoutComplete()
+				onCheckoutComplete
 			);
 			const unsubscribeCheckoutCompleteFail = subscriber.onCheckoutAfterProcessingWithError(
-				onCheckoutComplete( false )
+				onCheckoutComplete
 			);
 			return () => {
 				unsubscribeCheckoutCompleteFail();
