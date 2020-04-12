@@ -13,6 +13,7 @@ import { useEffect, useRef } from '@wordpress/element';
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 import { ValidationInputError } from '@woocommerce/base-components/validation';
 import CheckboxControl from '@woocommerce/base-components/checkbox-control';
+import { useEmitResponse } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -122,6 +123,7 @@ export const usePaymentMethodInterface = () => {
 	const { order, isLoading: orderLoading } = useStoreOrder();
 	const { cartTotals } = useStoreCart();
 	const { appliedCoupons } = useStoreCartCoupons();
+	const { noticeContexts, responseTypes } = useEmitResponse();
 	const currentCartTotals = useRef(
 		prepareTotalItems( cartTotals, needsShipping )
 	);
@@ -191,6 +193,10 @@ export const usePaymentMethodInterface = () => {
 		components: {
 			ValidationInputError,
 			CheckboxControl,
+		},
+		emitResponse: {
+			noticeContexts,
+			responseTypes,
 		},
 		onSubmit,
 		activePaymentMethod,

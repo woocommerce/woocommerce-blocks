@@ -10,7 +10,7 @@ import {
 	useEffect,
 } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { useStoreNotices } from '@woocommerce/base-hooks';
+import { useStoreNotices, useEmitResponse } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -32,32 +32,6 @@ import { useValidationContext } from '../validation';
  * @typedef {import('@woocommerce/type-defs/contexts').CheckoutDataContext} CheckoutDataContext
  */
 
-/**
- * A success response is anything that has 'success' as the value for the type
- * property.
- *
- * @param {Object} response      A response object from an event observer.
- * @param {string} response.type The type of response.
- *
- * @return {boolean} True means this is a success response.
- */
-const isSuccessResponse = ( response ) => {
-	return !! response.type && response.type === 'success';
-};
-
-/**
- * An error response is anything that has 'error' as the value for the type
- * property.
- *
- * @param {Object} response      A response object from an event observer.
- * @param {string} response.type The type of response.
- *
- * @return {boolean} True means this is an error response.
- */
-const isErrorResponse = ( response ) => {
-	return !! response.type && response.type === 'error';
-};
-
 const CheckoutContext = createContext( {
 	submitLabel: '',
 	onSubmit: () => void null,
@@ -70,6 +44,7 @@ const CheckoutContext = createContext( {
 	hasError: false,
 	redirectUrl: '',
 	orderId: 0,
+	customerId: 0,
 	onCheckoutAfterProcessingWithSuccess: ( callback ) => void callback,
 	onCheckoutAfterProcessingWithError: ( callback ) => void callback,
 	onCheckoutBeforeProcessing: ( callback ) => void callback,
@@ -123,6 +98,7 @@ export const CheckoutStateProvider = ( {
 	const { setValidationErrors } = useValidationContext();
 	const { addErrorNotice, removeNotices } = useStoreNotices();
 	const isCalculating = checkoutState.calculatingCount > 0;
+	const { isSuccessResponse, isErrorResponse } = useEmitResponse();
 
 	// set observers on ref so it's always current.
 	useEffect( () => {
@@ -234,8 +210,8 @@ export const CheckoutStateProvider = ( {
 						dispatch( actions.setComplete( response ) );
 					} else if ( isErrorResponse( response ) ) {
 						if ( response.message ) {
-							const errorOptions = response.errorContext
-								? { context: response.errorContext }
+							const errorOptions = response.messageContext
+								? { context: response.messageContext }
 								: undefined;
 							addErrorNotice( response.message, errorOptions );
 						}
@@ -269,8 +245,8 @@ export const CheckoutStateProvider = ( {
 					}
 					if ( isErrorResponse( response ) ) {
 						if ( response.message ) {
-							const errorOptions = response.errorContext
-								? { context: response.errorContext }
+							const errorOptions = response.messageContext
+								? { context: response.messageContext }
 								: undefined;
 							addErrorNotice( response.message, errorOptions );
 						}

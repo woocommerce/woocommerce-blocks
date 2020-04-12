@@ -4,18 +4,21 @@
 import { useEffect } from '@wordpress/element';
 
 /**
+ * @typedef {import('@woocommerce/type-defs/registered-payment-method-props').EmitResponseProps} EmitResponseProps
+ * @typedef {import('../stripe-utils/type-defs').Stripe} Stripe
+ */
+
+/**
  * Opens the modal for PaymentIntent authorizations.
  *
- * @param {import('../stripe-utils/type-defs').Stripe} stripe The stripe object.
- * @param {Object} paymentDetails The payment details from the server after
- *                                checkout processing.
- *
- * @return {Object} A response object for checkout. Note. This also makes an
- *                  ajax request to the server that will result in a
- *                  redirect.
+ * @param {Stripe}           stripe         The stripe object.
+ * @param {Object}           paymentDetails The payment details from the server after checkout
+ *                                          processing.
+ * @param {EmitResponseProps} emitResponse  Various helpers for usage with observer response
+ *                                          objects.
  */
-const openIntentModal = ( stripe, paymentDetails ) => {
-	const checkoutResponse = { type: 'success' };
+const openIntentModal = ( stripe, paymentDetails, emitResponse ) => {
+	const checkoutResponse = { type: emitResponse.responseTypes.SUCCESS };
 	if (
 		! paymentDetails.setup_intent &&
 		! paymentDetails.payment_intent_secret
@@ -46,21 +49,22 @@ const openIntentModal = ( stripe, paymentDetails ) => {
 			return checkoutResponse;
 		} )
 		.catch( function( error ) {
-			checkoutResponse.type = 'error';
+			checkoutResponse.type = emitResponse.responseTypes.ERROR;
 			checkoutResponse.message = error.message;
 			checkoutResponse.retry = true;
-			checkoutResponse.errorContext = 'wc/payment-area';
+			checkoutResponse.messageContext =
+				emitResponse.noticeContexts.PAYMENTS;
 			// Reports back to the server.
 			window.fetch( verificationUrl + '&is_ajax' );
 			return checkoutResponse;
 		} );
 };
 
-export const usePaymentIntents = ( stripe, subscriber ) => {
+export const usePaymentIntents = ( stripe, subscriber, emitResponse ) => {
 	useEffect( () => {
 		const unsubscribe = subscriber( ( { processingResponse } ) => {
 			const paymentDetails = processingResponse.paymentDetails || {};
-			return openIntentModal( stripe, paymentDetails );
+			return openIntentModal( stripe, paymentDetails, emitResponse );
 		} );
 		return () => unsubscribe();
 	}, [ subscriber, stripe ] );

@@ -8,6 +8,8 @@
  * @typedef {import('@woocommerce/type-defs/contexts').ShippingErrorStatus} ShippingErrorStatus
  * @typedef {import('@woocommerce/type-defs/contexts').ShippingErrorTypes} ShippingErrorTypes
  * @typedef {import('@woocommerce/type-defs/settings').WooCommerceSiteCurrency} SiteCurrency
+ * @typedef {import('@woocommerce/type-defs/hooks').EmitResponseTypes} EmitResponseTypes
+ * @typedef {import('@woocommerce/type-defs/hooks').NoticeContexts} NoticeContexts
  */
 
 /**
@@ -181,6 +183,16 @@
  */
 
 /**
+ * @typedef EmitResponseProps
+ *
+ * @property {EmitResponseTypes} responseTypes  Response types that can be returned from emitter
+ *                                              observers.
+ * @property {NoticeContexts}    noticeContexts Available contexts that can be returned as the value
+ *                                              for the messageContext property on the object
+ *                                              returned from an emitter observer.
+ */
+
+/**
  * Registered payment method props
  *
  * @typedef {Object} RegisteredPaymentMethodProps
@@ -194,13 +206,15 @@
  * @property {EventRegistrationProps}     eventRegistration        Various event registration helpers
  *                                                                 for subscribing callbacks for
  *                                                                 events.
+ * @property {EmitResponseProps}          emitResponse             Utilities for usage in event
+ *                                                                 observer response objects.
  * @property {Function}                   [onSubmit]               Used to trigger checkout
  *                                                                 processing.
  * @property {string}                     [activePaymentMethod]    Indicates what the active payment
  *                                                                 method is.
  * @property {ComponentProps}             components               Components exposed to payment
  *                                                                 methods for use.
- * @property {function(string)}          [setExpressPaymentError]  For setting an error (error
+ * @property {function(string)}           [setExpressPaymentError] For setting an error (error
  *                                                                 message string) for express
  *                                                                 payment methods. Does not change
  *                                                                 payment status.

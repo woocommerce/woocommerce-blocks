@@ -45,7 +45,7 @@ import {
 	useMemo,
 } from '@wordpress/element';
 import { getSetting } from '@woocommerce/settings';
-import { useStoreNotices } from '@woocommerce/base-hooks';
+import { useStoreNotices, useEmitResponse } from '@woocommerce/base-hooks';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').PaymentMethodDataContext} PaymentMethodDataContext
@@ -76,23 +76,6 @@ export const usePaymentMethodDataContext = () => {
 	return useContext( PaymentMethodDataContext );
 };
 
-const isSuccessResponse = ( response ) => {
-	return (
-		( typeof response === 'object' &&
-			typeof response.fail === 'undefined' &&
-			typeof response.errorMessage === 'undefined' ) ||
-		response === true
-	);
-};
-
-const isFailResponse = ( response ) => {
-	return response && typeof response.fail === 'object';
-};
-
-const isErrorResponse = ( response ) => {
-	return response && typeof response.errorMessage !== 'undefined';
-};
-
 /**
  * PaymentMethodDataProvider is automatically included in the
  * CheckoutDataProvider.
@@ -118,6 +101,11 @@ export const PaymentMethodDataProvider = ( {
 		isCalculating: checkoutIsCalculating,
 		hasError: checkoutHasError,
 	} = useCheckoutContext();
+	const {
+		isSuccessResponse,
+		isErrorResponse,
+		isFailResponse,
+	} = useEmitResponse();
 	const [ activePaymentMethod, setActive ] = useState(
 		initialActivePaymentMethod
 	);
@@ -308,25 +296,25 @@ export const PaymentMethodDataProvider = ( {
 			).then( ( response ) => {
 				if ( isSuccessResponse( response ) ) {
 					setPaymentStatus().success(
-						response.paymentMethodData,
-						response.billingData,
-						response.shippingData
+						response?.meta?.paymentMethodData,
+						response?.meta?.billingData,
+						response?.meta?.shippingData
 					);
 				} else if ( isFailResponse( response ) ) {
-					addErrorNotice( response.fail.errorMessage, {
+					addErrorNotice( response.message, {
 						context: 'wc/payment-area',
 					} );
 					setPaymentStatus().failed(
-						response.fail.errorMessage,
-						response.fail.paymentMethodData,
-						response.fail.billingData
+						response.message,
+						response?.meta?.paymentMethodData,
+						response?.meta?.billingData
 					);
 				} else if ( isErrorResponse( response ) ) {
-					addErrorNotice( response.errorMessage, {
+					addErrorNotice( response.message, {
 						context: 'wc/payment-area',
 					} );
-					setPaymentStatus().error( response.errorMessage );
-					setValidationErrors( response.validationErrors );
+					setPaymentStatus().error( response.message );
+					setValidationErrors( response?.validationErrors );
 				}
 			} );
 		}

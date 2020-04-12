@@ -25,7 +25,12 @@ import { __ } from '@wordpress/i18n';
  *
  * @param {RegisteredPaymentMethodProps} props Incoming props
  */
-const CreditCardComponent = ( { billing, eventRegistration, components } ) => {
+const CreditCardComponent = ( {
+	billing,
+	eventRegistration,
+	emitResponse,
+	components,
+} ) => {
 	const { ValidationInputError, CheckboxControl } = components;
 	const { customerId } = billing;
 	const [ sourceId, setSourceId ] = useState( 0 );
@@ -40,6 +45,7 @@ const CreditCardComponent = ( { billing, eventRegistration, components } ) => {
 		sourceId,
 		setSourceId,
 		shouldSavePayment,
+		emitResponse,
 		stripe,
 		elements
 	);

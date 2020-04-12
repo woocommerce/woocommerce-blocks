@@ -55,6 +55,7 @@ const PaymentRequestExpressComponent = ( {
 	eventRegistration,
 	onSubmit,
 	setExpressPaymentError,
+	emitResponse,
 	onClick,
 	onClose,
 } ) => {
@@ -210,28 +211,31 @@ const PaymentRequestExpressComponent = ( {
 		const handlers = eventHandlers.current;
 		if ( handlers.sourceEvent && isProcessing ) {
 			const response = {
-				billingData: getBillingData( handlers.sourceEvent ),
-				paymentMethodData: getPaymentMethodData(
-					handlers.sourceEvent,
-					paymentRequestType
-				),
-				shippingData: getShippingData( handlers.sourceEvent ),
+				type: emitResponse.responseTypes.SUCCESS,
+				meta: {
+					billingData: getBillingData( handlers.sourceEvent ),
+					paymentMethodData: getPaymentMethodData(
+						handlers.sourceEvent,
+						paymentRequestType
+					),
+					shippingData: getShippingData( handlers.sourceEvent ),
+				},
 			};
 			return response;
 		}
-		return true;
+		return { type: emitResponse.responseTypes.SUCCESS };
 	};
 
 	const onCheckoutComplete = ( forSuccess = true ) => () => {
 		const handlers = eventHandlers.current;
-		let response = { type: 'success' };
+		let response = { type: emitResponse.responseTypes.SUCCESS };
 		if ( handlers.sourceEvent && isProcessing ) {
 			if ( forSuccess ) {
 				completePayment( handlers.sourceEvent );
 			} else {
 				const paymentResponse = abortPayment( handlers.sourceEvent );
 				response = {
-					type: 'error',
+					type: emitResponse.responseTypes.ERROR,
 					message: paymentResponse.message,
 					retry: true,
 				};
