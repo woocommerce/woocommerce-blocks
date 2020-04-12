@@ -221,14 +221,42 @@ export const CheckoutStateProvider = ( {
 				processingResponse: checkoutState.processingResponse,
 			};
 			if ( checkoutState.hasError ) {
-				// these observers can't abort, this event is just provided
-				// in case extensions need to reset or update something internal
-				// in their state on a server checkout processing error.
-				emitEvent(
+				// allow payment methods or other things to customize the error
+				// with a fallback if nothing customizes it.
+				emitEventWithAbort(
 					currentObservers.current,
 					EMIT_TYPES.CHECKOUT_AFTER_PROCESSING_WITH_ERROR,
 					data
-				);
+				).then( ( response ) => {
+					if ( isSuccessResponse( response ) ) {
+						// a success! Something hooked in must have fixed the
+						// error.
+						dispatch( actions.setComplete( response ) );
+					} else if ( isErrorResponse( response ) ) {
+						if ( response.message ) {
+							const errorOptions = response.errorContext
+								? { context: response.errorContext }
+								: undefined;
+							addErrorNotice( response.message, errorOptions );
+						}
+						// irrecoverable error so set complete
+						if ( ! response.retry ) {
+							dispatch( actions.setComplete( response ) );
+						}
+					} else {
+						// no error handling in place by anything so let's fall
+						// back to default
+						const message =
+							data.processingResponse.message ||
+							__(
+								'Something went wrong. Please contact us to get assistance.',
+								'woo-gutenberg-products-block'
+							);
+						addErrorNotice( message, {
+							id: 'checkout',
+						} );
+					}
+				} );
 				dispatch( actions.setIdle() );
 			} else {
 				emitEventWithAbort(
