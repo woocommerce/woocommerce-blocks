@@ -142,14 +142,30 @@ export const useCheckoutSubscriptions = (
 				};
 			}
 		};
+		const onError = ( { processingResponse } ) => {
+			if ( processingResponse?.paymentDetails?.errorMessage ) {
+				return {
+					type: 'error',
+					message: processingResponse.paymentDetails.errorMessage,
+					errorContext: 'wc/payment-area',
+				};
+			}
+			// leave for checkout to handle.
+			return null;
+		};
 		const unsubscribeProcessing = eventRegistration.onPaymentProcessing(
 			onSubmit
 		);
+		const unsubscribeAfterProcessing = eventRegistration.onCheckoutAfterProcessingWithError(
+			onError
+		);
 		return () => {
 			unsubscribeProcessing();
+			unsubscribeAfterProcessing();
 		};
 	}, [
 		eventRegistration.onPaymentProcessing,
+		eventRegistration.onCheckoutAfterProcessingWithError,
 		stripe,
 		sourceId,
 		billing.billingData,
