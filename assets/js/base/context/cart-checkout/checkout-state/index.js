@@ -241,7 +241,10 @@ export const CheckoutStateProvider = ( {
 					}
 					if ( isErrorResponse( response ) ) {
 						if ( response.message ) {
-							addErrorNotice( response.message );
+							const errorOptions = response.errorContext
+								? { context: response.errorContext }
+								: undefined;
+							addErrorNotice( response.message, errorOptions );
 						}
 						if ( ! response.retry ) {
 							dispatch( actions.setComplete( response ) );
