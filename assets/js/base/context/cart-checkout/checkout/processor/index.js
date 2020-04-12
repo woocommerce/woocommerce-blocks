@@ -227,18 +227,11 @@ const CheckoutProcessor = () => {
 				} );
 			} )
 			.catch( ( error ) => {
-				const message =
-					error.message ||
-					__(
-						'Something went wrong. Please contact us to get assistance.',
-						'woo-gutenberg-products-block'
-					);
-				addErrorNotice( message, {
-					id: 'checkout',
+				error.json().then( function( response ) {
+					dispatchActions.setHasError();
+					dispatchActions.setAfterProcessing( response );
+					setIsProcessingOrder( false );
 				} );
-				dispatchActions.setHasError();
-				dispatchActions.setAfterProcessing( error );
-				setIsProcessingOrder( false );
 			} );
 	}, [
 		addErrorNotice,
