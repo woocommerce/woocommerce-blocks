@@ -313,12 +313,18 @@ export const PaymentMethodDataProvider = ( {
 						response.shippingData
 					);
 				} else if ( isFailResponse( response ) ) {
+					addErrorNotice( response.fail.errorMessage, {
+						context: 'wc/payment-area',
+					} );
 					setPaymentStatus().failed(
 						response.fail.errorMessage,
 						response.fail.paymentMethodData,
 						response.fail.billingData
 					);
 				} else if ( isErrorResponse( response ) ) {
+					addErrorNotice( response.errorMessage, {
+						context: 'wc/payment-area',
+					} );
 					setPaymentStatus().error( response.errorMessage );
 					setValidationErrors( response.validationErrors );
 				}
