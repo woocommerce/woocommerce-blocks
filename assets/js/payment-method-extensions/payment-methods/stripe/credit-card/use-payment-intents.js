@@ -45,9 +45,14 @@ const openIntentModal = ( stripe, paymentDetails ) => {
 			checkoutResponse.redirectUrl = verificationUrl;
 			return checkoutResponse;
 		} )
-		.catch( function() {
-			// Reports back to the server and the server will redirect.
+		.catch( function( error ) {
+			checkoutResponse.type = 'error';
+			checkoutResponse.message = error.message;
+			checkoutResponse.retry = true;
+			checkoutResponse.errorContext = 'wc/payment-area';
+			// Reports back to the server.
 			window.fetch( verificationUrl + '&is_ajax' );
+			return checkoutResponse;
 		} );
 };
 
