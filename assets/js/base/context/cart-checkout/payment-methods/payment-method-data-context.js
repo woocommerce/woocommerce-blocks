@@ -283,9 +283,8 @@ export const PaymentMethodDataProvider = ( {
 
 	// emit events.
 	useEffect( () => {
-		// Note: the nature of this event emitter is that it will bail on a
-		// successful payment (that is an observer hooked in that returns an
-		// object in the shape of a successful payment). However, this still
+		// Note: the nature of this event emitter is that it will bail on any
+		// observer that returns a response that !== true. However, this still
 		// allows for other observers that return true for continuing through
 		// to the next observer (or bailing if there's a problem).
 		if ( currentStatus.isProcessing ) {
