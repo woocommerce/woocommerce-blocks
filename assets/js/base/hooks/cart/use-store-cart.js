@@ -52,7 +52,7 @@ export const defaultCartData = {
  */
 export const useStoreCart = ( options = { shouldSelect: true } ) => {
 	const { isEditor, previewData } = useEditorContext();
-	const { previewCart } = previewData;
+	const previewCart = previewData?.previewCart || {};
 	const { shouldSelect } = options;
 
 	const results = useSelect(
