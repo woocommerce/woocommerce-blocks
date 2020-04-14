@@ -80,6 +80,14 @@ Unsupported:
 Supported:
 <!-- someone should screenshot it for me -->
 
+## How to report issues
+
+<!-- We might want to create a more simplified template, that template
+assumes a lot of steps when it comes to accessability. -->
+Ideally, we would prefer if you can submit a issue via [this link](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/new?template=---bug-report.md), however, you can also submit issues here in this thread. <!-- assuming this will be a P2 -->
+
+<!-- This will link to all bugs (open or closed) within a milestone (2.6), if we have a better way to triage bugs, update it here. -->
+It would be preferable to have a look at this [list of issues](https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues?q=is%3Aissue+label%3A%22type%3A+bug%22+milestone%3A2.6.0+) to see if the issue you're submitting has already been submitted.
 
 ## What are we testing?
 
