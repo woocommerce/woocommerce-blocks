@@ -24,10 +24,6 @@ fieldset.wc-block-totals__shipping-options-fieldset {
 
 .wc-block-totals__change-address-button {
 	@include link-button;
-	box-shadow: none;
-	font-family: inherit;
-	display: inline;
-	vertical-align: middle;
 
 	&:hover,
 	&:focus,
