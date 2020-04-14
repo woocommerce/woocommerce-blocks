@@ -3,7 +3,6 @@
  */
 import { useValidationContext } from '@woocommerce/base-context';
 import PropTypes from 'prop-types';
-import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Internal dependencies
@@ -27,9 +26,7 @@ export const ValidationInputError = ( {
 
 	return (
 		<div className="wc-block-form-input-validation-error" role="alert">
-			<p id={ getValidationErrorId( elementId ) }>
-				{ decodeEntities( errorMessage ) }
-			</p>
+			<p id={ getValidationErrorId( elementId ) }>{ errorMessage }</p>
 		</div>
 	);
 };
