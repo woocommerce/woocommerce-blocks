@@ -100,7 +100,7 @@ export const PaymentMethodDataProvider = ( { children } ) => {
 		isErrorResponse,
 		isFailResponse,
 	} = useEmitResponse();
-	const [ activePaymentMethod, setActive ] = useState( {} );
+	const [ activePaymentMethod, setActive ] = useState( '' );
 	const [ observers, subscriber ] = useReducer( emitReducer, {} );
 	const currentObservers = useRef( observers );
 
