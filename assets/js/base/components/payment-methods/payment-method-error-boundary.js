@@ -22,14 +22,23 @@ class PaymentMethodErrorBoundary extends Component {
 		const { isEditor } = this.props;
 
 		if ( hasError ) {
+			let errorText = __(
+				'This site is experiencing difficulties with this payment method. Please contact the owner of the site for assistance.',
+				'woo-gutenberg-products-block'
+			);
+			if ( isEditor || CURRENT_USER_IS_ADMIN ) {
+				if ( errorMessage ) {
+					errorText = errorMessage;
+				} else {
+					errorText = __(
+						"There was an error with this payment method. Please verify it's configured correctly.",
+						'woo-gutenberg-products-block'
+					);
+				}
+			}
 			return (
 				<Notice isDismissible={ false } status="error">
-					{ errorMessage && ( isEditor || CURRENT_USER_IS_ADMIN )
-						? errorMessage
-						: __(
-								'There was an error loading the payment method.',
-								'woo-gutenberg-products-block'
-						  ) }
+					{ errorText }
 				</Notice>
 			);
 		}
