@@ -88,21 +88,6 @@ const usePaymentMethodRegistration = (
 				setIsInitialized( true );
 			}
 		};
-		const updateInvalidPaymentMethod = ( current, errorMessage = '' ) => {
-			updatePaymentMethod( current, false );
-			if ( CURRENT_USER_IS_ADMIN ) {
-				throw new Error(
-					sprintf(
-						__(
-							// translators: %s is the error method returned by the payment method.
-							'Problem with payment method initialization: %s',
-							'woo-gutenberg-products-block'
-						),
-						errorMessage
-					)
-				);
-			}
-		};
 		// loop through payment methods and see what the state is
 		for ( const paymentMethodName in registeredPaymentMethods ) {
 			const current = registeredPaymentMethods[ paymentMethodName ];
@@ -115,16 +100,25 @@ const usePaymentMethodRegistration = (
 				)
 					.then( ( canPay ) => {
 						if ( canPay.error ) {
-							updateInvalidPaymentMethod(
-								current,
-								canPay.error.message
-							);
+							throw new Error( canPay.error.message );
 						} else {
 							updatePaymentMethod( current, canPay );
 						}
 					} )
 					.catch( ( error ) => {
-						updateInvalidPaymentMethod( current, error.message );
+						updatePaymentMethod( current, false );
+						if ( CURRENT_USER_IS_ADMIN ) {
+							throw new Error(
+								sprintf(
+									__(
+										// translators: %s is the error method returned by the payment method.
+										'Problem with payment method initialization: %s',
+										'woo-gutenberg-products-block'
+									),
+									error.message
+								)
+							);
+						}
 					} );
 			}
 		}
