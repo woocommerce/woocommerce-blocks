@@ -152,6 +152,42 @@ class CartController {
 	}
 
 	/**
+	 * Based on core `set_quantity` method, but validates if an item is solve individually first.
+	 *
+	 * @throws RouteException Exception if invalid data is detected.
+	 *
+	 * @param string  $item_id Cart item id.
+	 * @param integer $quantity Cart quantity.
+	 */
+	public function set_cart_item_quantity( $item_id, $quantity = 1 ) {
+		$cart_item = $this->get_cart_item( $item_id );
+
+		if ( ! $cart_item ) {
+			throw new RouteException( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), 404 );
+		}
+
+		$product = $cart_item['data'];
+
+		if ( ! $product instanceof \WC_Product ) {
+			throw new RouteException( 'woocommerce_rest_cart_invalid_product', __( 'Cart item is invalid.', 'woo-gutenberg-products-block' ), 404 );
+		}
+
+		if ( $product->is_sold_individually() ) {
+			throw new RouteException(
+				'woocommerce_rest_cart_product_sold_individually',
+				sprintf(
+					/* translators: %s: product name */
+					__( '"%s" is already inside your cart.', 'woo-gutenberg-products-block' ),
+					$product->get_name()
+				),
+				403
+			);
+		}
+
+		wc()->cart->set_quantity( $item_id, $quantity );
+	}
+
+	/**
 	 * Validate all items in the cart and check for errors.
 	 *
 	 * @throws RouteException Exception if invalid data is detected.
