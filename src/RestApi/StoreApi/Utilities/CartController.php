@@ -172,7 +172,7 @@ class CartController {
 			throw new RouteException( 'woocommerce_rest_cart_invalid_product', __( 'Cart item is invalid.', 'woo-gutenberg-products-block' ), 404 );
 		}
 
-		if ( $product->is_sold_individually() ) {
+		if ( $product->is_sold_individually() && $quantity > 1 ) {
 			throw new RouteException(
 				'woocommerce_rest_cart_product_sold_individually',
 				sprintf(
@@ -251,7 +251,7 @@ class CartController {
 				'woocommerce_rest_cart_product_sold_individually',
 				sprintf(
 					/* translators: %s: product name */
-					__( 'Only one of "%s" is allowed per order.', 'woo-gutenberg-products-block' ),
+					__( 'There are too many &quot;%s&quot; in the cart. Only 1 can be purchased.', 'woo-gutenberg-products-block' ),
 					$product->get_name()
 				),
 				403
