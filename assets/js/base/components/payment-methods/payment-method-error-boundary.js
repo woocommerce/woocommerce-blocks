@@ -5,11 +5,6 @@ import { __ } from '@wordpress/i18n';
 import { Component } from 'react';
 import { Notice } from 'wordpress-components';
 
-/**
- * Internal dependencies
- */
-//import './editor.scss';
-
 class PaymentMethodErrorBoundary extends Component {
 	state = { errorMessage: '' };
 
