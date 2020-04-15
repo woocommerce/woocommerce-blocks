@@ -1,8 +1,11 @@
-# Products API
+# Products API <!-- omit in toc -->
 
 The store products API provides public product data so it can be rendered on the client side.
 
-## List products
+- [List Products](#list-products)
+- [Single Product](#single-product)
+
+## List Products
 
 ```http
 GET /products
@@ -65,7 +68,7 @@ GET /products?return_rating_counts=true
 curl "https://example-store.com/wp-json/wc/store/products"
 ```
 
-Example response:
+**Example response:**
 
 ```json
 [
@@ -117,7 +120,7 @@ Example response:
 ]
 ```
 
-## Single product
+## Single Product
 
 Get a single product.
 
@@ -133,7 +136,7 @@ GET /products/:id
 curl "https://example-store.com/wp-json/wc/store/products/34"
 ```
 
-Example response:
+**Example response:**
 
 ```json
 {
