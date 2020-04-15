@@ -35,12 +35,12 @@ There is no other mechanism in place for creating nonces.
 
 ## Disabling Nonces for Development
 
-If you want to test REST endpoints without providing a nonce, you can add the following constant to your `wp-config.php` file:
+If you want to test REST endpoints without providing a nonce, you can use the following filter:
 
 ```php
-define( 'WOOCOMMERCE_STORE_API_DISABLE_NONCE_CHECKS', true );
+add_filter( 'woocommerce_store_api_disable_nonce_check', '__return_true' );
 ```
 
-Nonce checks will be bypassed.
+Nonce checks will be bypassed if `woocommerce_store_api_disable_nonce_check` evaluates to `true`.
 
 NOTE: This should only be done on development sites where security is not important. Do not enable this in production.
