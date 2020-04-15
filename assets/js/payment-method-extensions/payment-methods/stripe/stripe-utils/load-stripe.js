@@ -10,14 +10,11 @@ import { getApiKey } from './utils';
 
 const stripePromise = () =>
 	new Promise( ( resolve ) => {
-		let stripe = null;
 		try {
-			stripe = loadStripe( getApiKey() );
+			resolve( loadStripe( getApiKey() ) );
 		} catch ( error ) {
-			// eslint-disable-next-line no-console
-			//console.error( error.message );
+			resolve( { error } );
 		}
-		resolve( stripe );
 	} );
 
 export { stripePromise as loadStripe };
