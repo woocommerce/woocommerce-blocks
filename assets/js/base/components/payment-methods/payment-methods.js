@@ -77,7 +77,7 @@ const PaymentMethods = () => {
 				isEditor
 			);
 			return paymentMethod ? (
-				<PaymentMethodErrorBoundary>
+				<PaymentMethodErrorBoundary isEditor={ isEditor }>
 					{ cloneElement( paymentMethod, {
 						activePaymentMethod,
 						...currentPaymentMethodInterface.current,
