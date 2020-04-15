@@ -13,6 +13,8 @@ const stripePromise = () =>
 		try {
 			resolve( loadStripe( getApiKey() ) );
 		} catch ( error ) {
+			// In order to avoid showing console error publicly to users,
+			// we resolve instead of rejecting when there is an error.
 			resolve( { error } );
 		}
 	} );

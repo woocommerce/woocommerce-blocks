@@ -13,26 +13,23 @@ import { PAYMENT_METHOD_NAME } from './constants';
 
 const stripePromise = loadStripe();
 
-const Edit = ( props ) => {
+const StripeComponent = ( props ) => {
 	const [ errorMessage, setErrorMessage ] = useState( '' );
-
 	useEffect( () => {
 		Promise.resolve( stripePromise ).then( ( { error } ) => {
-			setErrorMessage( error.message );
+			if ( error ) {
+				setErrorMessage( error.message );
+			}
 		} );
 	}, [ stripePromise, setErrorMessage ] );
 
-	return ! errorMessage ? (
-		<StripeCreditCard stripe={ stripePromise } { ...props } />
-	) : (
-		<div className="components-notice is-error">
-			{ errorMessage ||
-				__(
-					'There was an error loading Stripe.',
-					'woo-gutenberg-products-block'
-				) }
-		</div>
-	);
+	useEffect( () => {
+		if ( errorMessage ) {
+			throw new Error( errorMessage );
+		}
+	}, [ errorMessage ] );
+
+	return <StripeCreditCard stripe={ stripePromise } { ...props } />;
 };
 
 const stripeCcPaymentMethod = {
@@ -42,8 +39,8 @@ const stripeCcPaymentMethod = {
 			{ __( 'Credit/Debit Card', 'woo-gutenberg-products-block' ) }
 		</strong>
 	),
-	content: <StripeCreditCard stripe={ stripePromise } />,
-	edit: <Edit />,
+	content: <StripeComponent />,
+	edit: <StripeComponent />,
 	canMakePayment: () => stripePromise,
 	ariaLabel: __(
 		'Stripe Credit Card payment method',
