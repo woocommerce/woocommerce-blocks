@@ -15,23 +15,27 @@ const PlaceOrderButton = () => {
 		submitLabel,
 		onSubmit,
 		isCalculating,
+		isBeforeProcessing,
 		isProcessing,
-		isProcessingComplete,
+		isAfterProcessing,
 		isComplete,
 		hasError,
 	} = useCheckoutContext();
 
-	const processing = isProcessing || isProcessingComplete;
-	const completed = isComplete && ! hasError;
+	const waitingForProcessing =
+		isProcessing || isAfterProcessing || isBeforeProcessing;
+	const waitingForRedirect = isComplete && ! hasError;
+	const disabled =
+		isCalculating || waitingForProcessing || waitingForRedirect;
 
 	return (
 		<Button
 			className="wc-block-components-checkout-place-order-button"
 			onClick={ onSubmit }
-			disabled={ isCalculating || processing || completed }
-			showSpinner={ processing }
+			disabled={ disabled }
+			showSpinner={ waitingForProcessing }
 		>
-			{ completed ? (
+			{ waitingForRedirect ? (
 				<Icon
 					srcElement={ done }
 					alt={ __( 'Done', 'woo-gutenberg-products-block' ) }
