@@ -8,7 +8,7 @@ import { Icon, done } from '@woocommerce/icons';
 /**
  * Internal dependencies
  */
-import Button from '../../button';
+import Button from '../button';
 
 const PlaceOrderButton = () => {
 	const {
