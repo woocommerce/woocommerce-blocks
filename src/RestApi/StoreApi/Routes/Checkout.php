@@ -200,6 +200,33 @@ class Checkout extends AbstractRoute {
 	}
 
 	/**
+	 * Get route response when something went wrong.
+	 *
+	 * @param string $error_code String based error code.
+	 * @param string $error_message User facing error message.
+	 * @param int    $http_status_code HTTP status. Defaults to 500.
+	 * @return \WP_Error WP Error object.
+	 */
+	protected function get_route_error_response( $error_code, $error_message, $http_status_code = 500 ) {
+		switch ( $http_status_code ) {
+			case 409:
+				// If there was a conflict, return the cart so the client can resolve it.
+				$controller = new CartController();
+				$cart       = $controller->get_cart_instance();
+
+				return new \WP_Error(
+					$error_code,
+					$error_message,
+					[
+						'status' => $http_status_code,
+						'cart'   => wc()->api->get_endpoint_data( '/wc/store/cart' ),
+					]
+				);
+		}
+		return new \WP_Error( $error_code, $error_message, [ 'status' => $http_status_code ] );
+	}
+
+	/**
 	 * Gets draft order data from the customer session.
 	 *
 	 * @return array

@@ -98,6 +98,65 @@ class OrderController {
 	}
 
 	/**
+	 * Final validation ran before payment is taken.
+	 *
+	 * By this point we have an order populated with customer data and items.
+	 *
+	 * @throws RouteException Exception if invalid data is detected.
+	 *
+	 * @param \WC_Order $order Order object.
+	 */
+	public function validate_before_payment( \WC_Order $order ) {
+		$coupons = $order->get_coupon_codes();
+
+		foreach ( $coupons as $coupon_code ) {
+			$coupon = new \WC_Coupon( $coupon_code );
+
+			$this->validate_coupon_email_restriction( $coupon, $order );
+			$this->validate_coupon_usage_limit( $coupon, $order );
+		}
+	}
+
+	/**
+	 * Check email restrictions of a coupon against the order.
+	 *
+	 * @throws RouteException Exception if invalid data is detected.
+	 *
+	 * @param \WC_Coupon $coupon Coupon object applied to the cart.
+	 * @param \WC_Order  $order Order object.
+	 */
+	protected function validate_coupon_email_restriction( \WC_Coupon $coupon, $order ) {
+		$restrictions = $coupon->get_email_restrictions();
+
+		if ( ! empty( $restrictions ) && ! wc()->cart->is_coupon_emails_allowed( [ $order->get_billing_email() ], $restrictions ) ) {
+			wc()->cart->remove_coupon( $coupon->get_code() );
+			throw new RouteException( 'woocommerce_rest_cart_coupon_error', $coupon->get_coupon_error( \WC_Coupon::E_WC_COUPON_NOT_YOURS_REMOVED ), 409 );
+		}
+	}
+
+	/**
+	 * Check usage restrictions of a coupon against the order.
+	 *
+	 * @throws RouteException Exception if invalid data is detected.
+	 *
+	 * @param \WC_Coupon $coupon Coupon object applied to the cart.
+	 * @param \WC_Order  $order Order object.
+	 */
+	protected function validate_coupon_usage_limit( \WC_Coupon $coupon, $order ) {
+		$coupon_usage_limit = $coupon->get_usage_limit_per_user();
+
+		if ( $coupon_usage_limit > 0 ) {
+			$data_store  = $coupon->get_data_store();
+			$usage_count = $order->get_customer_id() ? $data_store->get_usage_by_user_id( $coupon, $order->get_customer_id() ) : $data_store->get_usage_by_email( $coupon, $order->get_billing_email() );
+
+			if ( $usage_count >= $coupon_usage_limit ) {
+				wc()->cart->remove_coupon( $coupon->get_code() );
+				throw new RouteException( 'woocommerce_rest_cart_coupon_error', $coupon->get_coupon_error( \WC_Coupon::E_WC_COUPON_USAGE_LIMIT_REACHED ), 409 );
+			}
+		}
+	}
+
+	/**
 	 * Changes default order status to draft for orders created via this API.
 	 *
 	 * @return string
