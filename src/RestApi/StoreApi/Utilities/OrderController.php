@@ -113,10 +113,8 @@ class OrderController {
 	 */
 	protected function update_line_items_from_cart( \WC_Order $order ) {
 		$cart_controller = new CartController();
-		$cart_controller->validate_cart_items();
-
-		$cart        = $cart_controller->get_cart_instance();
-		$cart_hashes = $cart_controller->get_cart_hashes();
+		$cart            = $cart_controller->get_cart_instance();
+		$cart_hashes     = $cart_controller->get_cart_hashes();
 
 		if ( $order->get_cart_hash() !== $cart_hashes['line_items'] ) {
 			$order->remove_order_items( 'line_item' );

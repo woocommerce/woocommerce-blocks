@@ -165,6 +165,7 @@ class Checkout extends AbstractRoute {
 
 		$this->update_order_from_request( $order_object, $request );
 		$order_controller->sync_customer_data_with_order( $order_object );
+		$order_controller->validate_before_payment( $order_object );
 
 		if ( ! $order_object->needs_payment() ) {
 			$payment_result = $this->process_without_payment( $order_object, $request );
@@ -246,13 +247,19 @@ class Checkout extends AbstractRoute {
 	 * Create or update a draft order based on the cart.
 	 *
 	 * @throws RouteException On error.
+	 *
 	 * @return \WC_Order Order object.
 	 */
 	protected function create_or_update_draft_order() {
+		$cart_controller  = new CartController();
 		$order_controller = new OrderController();
 		$reserve_stock    = \class_exists( '\Automattic\WooCommerce\Checkout\Helpers\ReserveStock' ) ? new \Automattic\WooCommerce\Checkout\Helpers\ReserveStock() : new ReserveStock();
 		$order_object     = $this->get_draft_order_object( $this->get_draft_order_id() );
 		$created          = false;
+
+		// Validate items etc are allowed in the order before it gets created.
+		$cart_controller->validate_cart_items();
+		$cart_controller->validate_cart_coupons();
 
 		if ( ! $order_object ) {
 			$order_object = $order_controller->create_order_from_cart();

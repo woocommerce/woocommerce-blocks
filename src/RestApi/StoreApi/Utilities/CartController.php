@@ -295,6 +295,34 @@ class CartController {
 	}
 
 	/**
+	 * Validate all coupons in the cart and check for errors.
+	 *
+	 * @throws RouteException Exception if invalid data is detected.
+	 */
+	public function validate_cart_coupons() {
+		$cart_coupons = $this->get_cart_coupons();
+
+		foreach ( $cart_coupons as $code ) {
+			$coupon = new \WC_Coupon( $code );
+			$this->validate_cart_coupon( $coupon );
+		}
+	}
+
+	/**
+	 * Validates an existing cart coupon and returns any errors.
+	 *
+	 * @throws RouteException Exception if invalid data is detected.
+	 *
+	 * @param \WC_Coupon $coupon Coupon object applied to the cart.
+	 */
+	protected function validate_cart_coupon( \WC_Coupon $coupon ) {
+		if ( ! $coupon->is_valid() ) {
+			wc()->cart->remove_coupon( $coupon->get_code() );
+			throw new RouteException( 'woocommerce_rest_cart_coupon_error', $coupon->get_error_message(), 409 );
+		}
+	}
+
+	/**
 	 * Gets the qty of a product across line items.
 	 *
 	 * @param \WC_Product $product Product object.
@@ -321,7 +349,7 @@ class CartController {
 			$reserve_stock_controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ReserveStock();
 		}
 
-		$draft_order  = WC()->session->get( 'store_api_draft_order', 0 );
+		$draft_order  = wc()->session->get( 'store_api_draft_order', 0 );
 		$qty_reserved = $reserve_stock_controller->get_reserved_stock( $product, $draft_order );
 
 		return $product->get_stock_quantity() - $qty_reserved;
@@ -370,11 +398,11 @@ class CartController {
 	 */
 	public function get_cart_hashes() {
 		return [
-			'line_items' => WC()->cart->get_cart_hash(),
-			'shipping'   => md5( wp_json_encode( WC()->cart->shipping_methods ) ),
-			'fees'       => md5( wp_json_encode( WC()->cart->get_fees() ) ),
-			'coupons'    => md5( wp_json_encode( WC()->cart->get_applied_coupons() ) ),
-			'taxes'      => md5( wp_json_encode( WC()->cart->get_taxes() ) ),
+			'line_items' => wc()->cart->get_cart_hash(),
+			'shipping'   => md5( wp_json_encode( wc()->cart->shipping_methods ) ),
+			'fees'       => md5( wp_json_encode( wc()->cart->get_fees() ) ),
+			'coupons'    => md5( wp_json_encode( wc()->cart->get_applied_coupons() ) ),
+			'taxes'      => md5( wp_json_encode( wc()->cart->get_taxes() ) ),
 		];
 	}
 
@@ -430,7 +458,7 @@ class CartController {
 			}
 		}
 
-		return $calculate_rates ? WC()->shipping()->calculate_shipping( $packages ) : $packages;
+		return $calculate_rates ? wc()->shipping()->calculate_shipping( $packages ) : $packages;
 	}
 
 	/**
@@ -441,10 +469,10 @@ class CartController {
 	 */
 	public function select_shipping_rate( $package_id, $rate_id ) {
 		$cart                        = $this->get_cart_instance();
-		$session_data                = WC()->session->get( 'chosen_shipping_methods' ) ? WC()->session->get( 'chosen_shipping_methods' ) : [];
+		$session_data                = wc()->session->get( 'chosen_shipping_methods' ) ? wc()->session->get( 'chosen_shipping_methods' ) : [];
 		$session_data[ $package_id ] = $rate_id;
 
-		WC()->session->set( 'chosen_shipping_methods', $session_data );
+		wc()->session->set( 'chosen_shipping_methods', $session_data );
 	}
 
 	/**
