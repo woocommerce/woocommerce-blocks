@@ -318,6 +318,7 @@ class CartController {
 	protected function validate_cart_coupon( \WC_Coupon $coupon ) {
 		if ( ! $coupon->is_valid() ) {
 			wc()->cart->remove_coupon( $coupon->get_code() );
+			wc()->cart->calculate_totals();
 			throw new RouteException( 'woocommerce_rest_cart_coupon_error', $coupon->get_error_message(), 409 );
 		}
 	}

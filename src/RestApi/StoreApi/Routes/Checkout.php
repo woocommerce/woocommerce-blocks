@@ -163,9 +163,17 @@ class Checkout extends AbstractRoute {
 			);
 		}
 
+		// Ensure order still matches cart.
+		$order_controller->update_order_from_cart( $order_object );
+
+		// If any form fields were posted, update the order.
 		$this->update_order_from_request( $order_object, $request );
+
+		// Check order is still valid.
+		$order_controller->validate_order_before_payment( $order_object );
+
+		// Persist customer address data to account.
 		$order_controller->sync_customer_data_with_order( $order_object );
-		$order_controller->validate_before_payment( $order_object );
 
 		if ( ! $order_object->needs_payment() ) {
 			$payment_result = $this->process_without_payment( $order_object, $request );
@@ -205,9 +213,10 @@ class Checkout extends AbstractRoute {
 	 * @param string $error_code String based error code.
 	 * @param string $error_message User facing error message.
 	 * @param int    $http_status_code HTTP status. Defaults to 500.
+	 * @param array  $additional_data  Extra data (key value pairs) to expose in the error response.
 	 * @return \WP_Error WP Error object.
 	 */
-	protected function get_route_error_response( $error_code, $error_message, $http_status_code = 500 ) {
+	protected function get_route_error_response( $error_code, $error_message, $http_status_code = 500, $additional_data = [] ) {
 		switch ( $http_status_code ) {
 			case 409:
 				// If there was a conflict, return the cart so the client can resolve it.
@@ -217,10 +226,13 @@ class Checkout extends AbstractRoute {
 				return new \WP_Error(
 					$error_code,
 					$error_message,
-					[
-						'status' => $http_status_code,
-						'cart'   => wc()->api->get_endpoint_data( '/wc/store/cart' ),
-					]
+					array_merge(
+						$additional_data,
+						[
+							'status' => $http_status_code,
+							'cart'   => wc()->api->get_endpoint_data( '/wc/store/cart' ),
+						]
+					)
 				);
 		}
 		return new \WP_Error( $error_code, $error_message, [ 'status' => $http_status_code ] );
