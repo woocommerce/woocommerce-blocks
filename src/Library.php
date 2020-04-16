@@ -277,6 +277,9 @@ class Library {
 
 		$error_notices = wc_get_notices( 'error' );
 
+		// Prevent notices from being output later on.
+		wc_clear_notices();
+
 		foreach ( $error_notices as $error_notice ) {
 			throw new \Exception( $error_notice['notice'] );
 		}
