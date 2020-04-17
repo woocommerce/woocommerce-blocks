@@ -44,6 +44,7 @@ describe( 'useStoreCart', () => {
 		shippingRates: previewCart.shipping_rates,
 		shippingRatesLoading: false,
 		hasShippingAddress: false,
+		receiveCart: () => {},
 	};
 
 	const mockCartItems = [ { key: '1', id: 1, name: 'Lorem Ipsum' } ];
@@ -79,6 +80,7 @@ describe( 'useStoreCart', () => {
 		shippingRates: [],
 		shippingRatesLoading: false,
 		hasShippingAddress: false,
+		receiveCart: () => {},
 	};
 
 	const getWrappedComponents = ( Component ) => (
@@ -103,10 +105,14 @@ describe( 'useStoreCart', () => {
 					.mockReturnValue( ! mockCartIsLoading ),
 				areShippingRatesLoading: jest.fn().mockReturnValue( false ),
 			},
+			actions: {
+				receiveCart: () => {},
+			},
 		};
 		registry.registerStore( storeKey, {
 			reducer: () => ( {} ),
 			selectors: mocks.selectors,
+			actions: mocks.actions,
 		} );
 	};
 
