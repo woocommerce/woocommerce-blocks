@@ -1,6 +1,6 @@
 # Checkout Block API overview
 
-This document gives an overview of some of the major architectural components/apis for the checkout block. If you haven't already you may also want to read about the [Checkout Flow and Events](../../extensibility/checkout-flow-and-events.md).
+This document gives an overview of some of the major architectural components/APIs for the checkout block. If you haven't already, you may also want to read about the [Checkout Flow and Events](../../extensibility/checkout-flow-and-events.md).
 
 ### Contexts
 
