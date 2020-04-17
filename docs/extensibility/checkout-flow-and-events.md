@@ -1,6 +1,6 @@
 # Checkout Block Flow
 
-In this document, I'm going to give an overview of the flow for the checkout in the WooCommerce checkout block and some general architectural overviews.
+This document will give an overview of the flow for the checkout in the WooCommerce checkout block and some general architectural overviews.
 
 The architecture of the Checkout Block is derived from the following principles:
 
