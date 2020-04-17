@@ -241,26 +241,6 @@ class CartController {
 	}
 
 	/**
-	 * Validate all items in the cart and get a list of errors.
-	 *
-	 * @throws RouteException Exception if invalid data is detected.
-	 */
-	public function get_cart_item_errors() {
-		$errors     = [];
-		$cart_items = $this->get_cart_items();
-
-		foreach ( $cart_items as $cart_item_key => $cart_item ) {
-			try {
-				$this->validate_cart_item( $cart_item );
-			} catch ( RouteException $error ) {
-				$errors[] = new \WP_Error( $error->getErrorCode(), $error->getMessage() );
-			}
-		}
-
-		return $errors;
-	}
-
-	/**
 	 * Validates an existing cart item and returns any errors.
 	 *
 	 * @throws RouteException Exception if invalid data is detected.
@@ -347,6 +327,47 @@ class CartController {
 			$coupon = new \WC_Coupon( $code );
 			$this->validate_cart_coupon( $coupon );
 		}
+	}
+
+	/**
+	 * Validate all items in the cart and get a list of errors.
+	 *
+	 * @throws RouteException Exception if invalid data is detected.
+	 */
+	public function get_cart_item_errors() {
+		$errors     = [];
+		$cart_items = $this->get_cart_items();
+
+		foreach ( $cart_items as $cart_item_key => $cart_item ) {
+			try {
+				$this->validate_cart_item( $cart_item );
+			} catch ( RouteException $error ) {
+				$errors[] = new \WP_Error( $error->getErrorCode(), $error->getMessage() );
+			}
+		}
+
+		return $errors;
+	}
+
+	/**
+	 * Validate all items in the cart and get a list of errors.
+	 *
+	 * @throws RouteException Exception if invalid data is detected.
+	 */
+	public function get_cart_coupon_errors() {
+		$errors       = [];
+		$cart_coupons = $this->get_cart_coupons();
+
+		foreach ( $cart_coupons as $code ) {
+			try {
+				$coupon = new \WC_Coupon( $code );
+				$this->validate_cart_coupon( $coupon );
+			} catch ( RouteException $error ) {
+				$errors[] = new \WP_Error( $error->getErrorCode(), $error->getMessage() );
+			}
+		}
+
+		return $errors;
 	}
 
 	/**
@@ -566,7 +587,16 @@ class CartController {
 		if ( ! $coupon->is_valid() ) {
 			wc()->cart->remove_coupon( $coupon->get_code() );
 			wc()->cart->calculate_totals();
-			throw new RouteException( 'woocommerce_rest_cart_coupon_error', wp_strip_all_tags( $coupon->get_error_message() ), 409 );
+			throw new RouteException(
+				'woocommerce_rest_cart_coupon_error',
+				sprintf(
+					// translators: %1$s coupon code, %2$s reason.
+					__( 'The "%1$s" coupon has been removed from your cart: %2$s', 'woo-gutenberg-products-block' ),
+					$coupon->get_code(),
+					wp_strip_all_tags( $coupon->get_error_message() )
+				),
+				409
+			);
 		}
 	}
 
