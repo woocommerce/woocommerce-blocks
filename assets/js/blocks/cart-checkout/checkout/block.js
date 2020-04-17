@@ -30,7 +30,11 @@ import {
 	useValidationContext,
 	StoreNoticesProvider,
 } from '@woocommerce/base-context';
-import { useStoreCart, usePaymentMethods } from '@woocommerce/base-hooks';
+import {
+	useStoreCart,
+	usePaymentMethods,
+	useStoreNotices,
+} from '@woocommerce/base-hooks';
 import {
 	ExpressCheckoutFormControl,
 	PaymentMethods,
@@ -84,6 +88,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 	} = useShippingDataContext();
 	const { billingData, setBillingData } = useBillingDataContext();
 	const { paymentMethods } = usePaymentMethods();
+	const { hasNoticesOfType } = useStoreNotices();
 
 	const [ shippingAsBilling, setShippingAsBilling ] = useState(
 		needsShipping
@@ -135,12 +140,15 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		}
 	}, [ shippingAsBilling, setBillingData ] );
 
+	const withNotices = hasNoticesOfType( 'default' );
 	useEffect( () => {
 		if ( checkoutIsIdle && checkoutHasError ) {
 			showAllValidationErrors();
-			scrollToTop( { focusableSelector: 'input:invalid' } );
+			if ( withNotices ) {
+				scrollToTop( { focusableSelector: 'input:invalid' } );
+			}
 		}
-	}, [ checkoutIsIdle, checkoutHasError ] );
+	}, [ checkoutIsIdle, checkoutHasError, withNotices ] );
 
 	if ( ! isEditor && ! hasOrder ) {
 		return <CheckoutOrderError />;
