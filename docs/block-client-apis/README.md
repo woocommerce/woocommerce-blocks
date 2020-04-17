@@ -1,6 +1,6 @@
 # Block Client APIs
 
-In this folder are documentation around api interfaces for the blocks. In _most cases_, these docs describe apis and interfaces that are _internal_ only and thus provided to assist with developing the blocks in this repository. Documentation will tend to focus on high level overviews.
+This folder contains documentation for API interfaces for Blocks. In _most cases_, these docs describe APIs and interfaces that are _internal_ only, and thus are provided to assist with developing the blocks in this repository. Documentation will tend to focus on high level overviews.
 
 For more details about extensibility points in the blocks, you can reference the [extensibility docs](../extensibility/README.md).
 
