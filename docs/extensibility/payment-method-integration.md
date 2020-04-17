@@ -4,6 +4,17 @@ The checkout block has an API interface for payment methods to integrate that co
 
 > **Note:** This API is fairly stable, but we're still really early in the checkout block release plan so it _is_ possible this might slightly change as more payment methods are integrated and we discover areas needing improvement. So monitoring this API will be needed.
 
+**Table of Contents**
+
+- [Payment Method Integration for the Checkout Block](#payment-method-integration-for-the-checkout-block)
+  - [Client Side integration](#client-side-integration)
+    - [Express payment methods - `registerExpressPaymentMethod( paymentMethodCreator )`](#express-payment-methods---registerexpresspaymentmethod-paymentmethodcreator-)
+    - [Payment Methods - `registerPaymentMethod( paymentMethodCreator )`](#payment-methods---registerpaymentmethod-paymentmethodcreator-)
+    - [Props Fed to Payment Method Nodes](#props-fed-to-payment-method-nodes)
+  - [Server Side Integration](#server-side-integration)
+    - [Processing Payment](#processing-payment)
+    - [Registering Assets](#registering-assets)
+
 ## Client Side integration
 
 The client side integration consists of an API for registering both _express_ payment methods (those that consist of a one button payment process initiated by the shopper such as Stripe ApplePay or GooglePay), and payment methods such as _cheque_, Paypal Standard, or Stripe Credit Card.

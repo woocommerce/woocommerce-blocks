@@ -2,6 +2,17 @@
 
 This document gives an overview of some of the major architectural components/APIs for the checkout block. If you haven't already, you may also want to read about the [Checkout Flow and Events](../../extensibility/checkout-flow-and-events.md).
 
+**Table of Contents**
+- [Checkout Block API overview](#checkout-block-api-overview)
+    - [Contexts](#contexts)
+      - [Notices Context](#notices-context)
+      - [Billing Data Context](#billing-data-context)
+      - [Shipping Method Data context](#shipping-method-data-context)
+      - [Payment Method Data Context](#payment-method-data-context)
+      - [Checkout Context](#checkout-context)
+  - [Hooks](#hooks)
+    - [`usePaymentMethodInterface`](#usepaymentmethodinterface)
+
 ### Contexts
 
 Much of the data and api interface for components in the Checkout Block are constructed and exposed via [usage of `React.Context`](https://reactjs.org/docs/context.html). In some cases the context maintains the "tree" state within the context itself (via `useReducer`) and in others it interacts with a global `wp.data` store (for data that communicates with the server).

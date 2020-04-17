@@ -2,6 +2,25 @@
 
 This document gives an overview of the flow for the checkout in the WooCommerce checkout block, and some general architectural overviews.
 
+**Table of Contents**
+
+- [Checkout Block Flow](#checkout-block-flow)
+  - [General Concepts](#general-concepts)
+    - [Tracking flow through status](#tracking-flow-through-status)
+      - [`CheckoutProvider` Exposed Statuses](#checkoutprovider-exposed-statuses)
+    - [Special States:](#special-states)
+      - [`ShippingProvider` Exposed Statuses](#shippingprovider-exposed-statuses)
+      - [`PaymentMethodDataProvider` Exposed Statuses](#paymentmethoddataprovider-exposed-statuses)
+    - [Emitting Events](#emitting-events)
+      - [`onCheckoutBeforeProcessing`](#oncheckoutbeforeprocessing)
+      - [`onPaymentProcessing`](#onpaymentprocessing)
+      - [`onCheckoutAfterProcessingWithSuccess`](#oncheckoutafterprocessingwithsuccess)
+      - [`onCheckoutAfterProcessingWithError`](#oncheckoutafterprocessingwitherror)
+      - [`onShippingRateSuccess`](#onshippingratesuccess)
+      - [`onShippingRateFail`](#onshippingratefail)
+      - [`onShippingRateSelectSuccess`](#onshippingrateselectsuccess)
+      - [`onShippingRateSelectFail`](#onshippingrateselectfail)
+
 The architecture of the Checkout Block is derived from the following principles:
 
 -   A single source of truth for data within the checkout flow.
