@@ -51,7 +51,7 @@ class CartController {
 			$request['cart_item_data']
 		);
 
-		$this->validate_add_to_cart( $product, $request['quantity'] );
+		$this->validate_add_to_cart( $product, $request );
 
 		$existing_cart_id = wc()->cart->find_product_in_cart( $cart_id );
 
