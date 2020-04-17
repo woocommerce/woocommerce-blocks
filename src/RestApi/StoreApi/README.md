@@ -1,6 +1,6 @@
 # WooCommerce Store API
 
-The WooCommerce Store API is a public-facing REST API; unlike the main WooCommerce REST API, this API does not require authentication and is intended to be used by customer facing client side code.
+The WooCommerce Store API is a public-facing (for internal use only currently) REST API. Unlike the main WooCommerce REST API, this API does not require authentication and is intended to be used by customer facing client side code.
 
 This documentation assumes knowledge of REST concepts.
 
@@ -29,7 +29,7 @@ GET /wp-json/wc/store/cart
 
 ## Authentication
 
-Requests to the store API do not require authentication. Only public data is returned, and most endpoints are read-only, with the exception of the cart API which only lets you manipulate data for the current user, and requires a [nonce token](https://developer.wordpress.org/plugins/security/nonces/).
+Requests to the store API do not require authentication. Only public data is returned, and most endpoints are read-only, with the exception of the cart API which only lets you manipulate data for the current session, and requires a [nonce token](https://developer.wordpress.org/plugins/security/nonces/).
 
 ## Status codes
 

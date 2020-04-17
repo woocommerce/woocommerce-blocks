@@ -1,6 +1,6 @@
 # Cart API <!-- omit in toc -->
 
-The cart API returns the current state of the cart for the current logged in user. 
+The cart API returns the current state of the cart for the current session or logged in user. 
 
 All POST endpoints require [Nonce Tokens](nonce-tokens.md) and return the updated state of the full cart once complete.
 
@@ -275,7 +275,7 @@ Some error responses indicate conflicts (error 409), for example, when an item c
 }
 ```
 
-This allows the client to remain in sync with the cart data without additional requests.
+This allows the client to remain in sync with the cart data without additional requests, should the cart change or become outdated.
 
 ## Get Cart
 
