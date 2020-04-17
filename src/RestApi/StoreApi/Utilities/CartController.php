@@ -512,7 +512,7 @@ class CartController {
 		if ( ! $coupon->is_valid() ) {
 			throw new RouteException(
 				'woocommerce_rest_cart_coupon_error',
-				$coupon->get_error_message(),
+				wp_strip_all_tags( $coupon->get_error_message() ),
 				403
 			);
 		}
@@ -566,7 +566,7 @@ class CartController {
 		if ( ! $coupon->is_valid() ) {
 			wc()->cart->remove_coupon( $coupon->get_code() );
 			wc()->cart->calculate_totals();
-			throw new RouteException( 'woocommerce_rest_cart_coupon_error', $coupon->get_error_message(), 409 );
+			throw new RouteException( 'woocommerce_rest_cart_coupon_error', wp_strip_all_tags( $coupon->get_error_message() ), 409 );
 		}
 	}
 
