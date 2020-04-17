@@ -1,0 +1,27 @@
+# Shipping
+
+## Setup
+
+## What to test
+
+With shipping zones available:
+
+- [ ] You should be able to see preview rates (that are not your actual rates) in the editor.
+- [ ] You should be able to see your actual rates on the frontend.
+- [ ] Selecting a shipping rate should update the totals.
+- [ ] Changing the address in Cart block should update the rates.
+- [ ] Try entering an address that does not have rates for, you should:
+  - [ ] See an error saying "No options were found".
+  - [ ] See the default shipping option if you have it setup.
+- [ ] The countries in the shipping rates form should reflect the countries you have in WooCommerce -> Settings -> General -> Shipping location(s).
+- [ ] If your cart has only digital products, the Cart and Checkout blocks should act like shipping is disabled.
+
+If you don't have any shipping zones set up and/or shipping is disabled:
+
+- [ ] You should only see the billing form in both editor and frontend for the Checkout Block.
+- [ ] The shipping options step should not be visible.
+- [ ] The shipping cost should not be visible in the sidebar.
+
+If you don't have any shipping zones set up but **shipping is enabled**:
+
+- [ ] In the editor, Checkout Block will show you a placeholder promoting you to set up shipping zones.
