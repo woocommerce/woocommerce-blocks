@@ -77,7 +77,7 @@ The provider receives two props:
 - `redirectUrl`: A string, this is used to indicate where the checkout redirects to when it is complete. This is optional and can be used to set a default url to redirect to.
 - `submitLabel`: This allows for customizing the checkout submit button label. It defaults to `Place Order`.
 
-Via the `useCheckoutContext`, the following are exposed:
+Via `useCheckoutContext`, the following are exposed:
 
 - `submitLabel`: This is whatever label was passed via the provider.
 - `onSubmit`: This is a callback to be invoked either by submitting the checkout button or by express payment methods to start checkout processing after they have finished their initialization process when their button has been clicked.
