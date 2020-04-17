@@ -1,4 +1,4 @@
-# Block Client Apis
+# Block Client APIs
 
 In this folder are documentation around api interfaces for the blocks. In _most cases_, these docs describe apis and interfaces that are _internal_ only and thus provided to assist with developing the blocks in this repository. Documentation will tend to focus on high level overviews.
 
