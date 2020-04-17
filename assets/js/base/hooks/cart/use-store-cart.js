@@ -83,7 +83,10 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 					shippingRates: previewCart.shipping_rates,
 					shippingRatesLoading: false,
 					hasShippingAddress: false,
-					receiveCart: () => {},
+					receiveCart:
+						typeof previewCart?.receiveCart === 'function'
+							? previewCart.receiveCart
+							: () => {},
 				};
 			}
 
