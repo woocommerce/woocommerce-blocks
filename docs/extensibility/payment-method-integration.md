@@ -87,7 +87,7 @@ The options you feed the configuration instance are the same as those for expres
 -   `label`: This should be a react node that will be used to output the label for the tab in the payment methods are. For example it might be `<strong>Credit/Debit Cart</strong>` or you might output images.
 -   `ariaLabel`: This is the label that will be read out via screen-readers when the payment method is selected.
 
-### Props fed to payment method nodes
+### Props Fed to Payment Method Nodes
 
 A big part of the payment method integration is the interface that is exposed for payment methods to use via props when the node provided is cloned and rendered on block mount. While all the props are listed below, you can find more details about what the props reference, their types etc via the [typedefs described in this file](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/master/assets/js/type-defs/registered-payment-method-props.js).
 

@@ -1,6 +1,6 @@
 # Checkout Block Flow
 
-This document will give an overview of the flow for the checkout in the WooCommerce checkout block and some general architectural overviews.
+This document gives an overview of the flow for the checkout in the WooCommerce checkout block, and some general architectural overviews.
 
 The architecture of the Checkout Block is derived from the following principles:
 
@@ -56,7 +56,7 @@ The following boolean flags available related to status are:
 
 **isComplete**: When the checkout status is `COMPLETE` this flag is true. Checkout will have this status after all observers on the events emitted during the `AFTER_PROCESSING` status are completed successfully. When checkout is at this status, the shopper's browser will be redirected to the value of `redirectUrl` at that point (usually the `order-received` route).
 
-Special states:
+### Special States:
 
 The following are booleans exposed via the checkout provider that are independent from each other and checkout statuses but can be used in combination to react to various state in the checkout.
 
