@@ -2,6 +2,9 @@
 
 ## Setup
 
+- You will need to setup shipping zones for a couple of countries.
+- You will need to have a free shipping method that is enabled with a coupon or a threshold.
+
 ## What to test
 
 With shipping zones available:
@@ -15,6 +18,10 @@ With shipping zones available:
   - [ ] See the default shipping option if you have it setup.
 - [ ] The countries in the shipping rates form should reflect the countries you have in WooCommerce -> Settings -> General -> Shipping location(s).
 - [ ] If your cart has only digital products, the Cart and Checkout blocks should act like shipping is disabled.
+- [ ] Your free shipping method should show up when you increase the cart quantity to above that limit.
+  - [ ] Once you decrease it, the shipping rate will disappear, the next rate will be selected.
+- [ ] The rate you select in Cart should still be selected in Checkout.
+- [ ] Updating your shipping address in Checkout should give you live updates about rates in your cart.
 
 If you don't have any shipping zones set up and/or shipping is disabled:
 

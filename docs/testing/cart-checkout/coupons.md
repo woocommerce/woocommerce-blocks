@@ -8,6 +8,7 @@ You will need to setup some types of coupon in order to test this.
 - An email limited coupon `a12s` that is limited to `*@automattic.com` emails.
 - A cart condition coupon that is limited to carts above x threshold (e.g $200) `above200`.
 - An individually used coupon `alone`.
+- A free shipping coupon `freeship`.
 
 ## What to test
 
@@ -28,3 +29,4 @@ With coupons enabled:
   - [ ] Adding a condition coupon then removing the condition (reduce cart total or remove related item) should remove the coupon from your cart with an error.
 - [ ] Adding a coupon then adding `alone` coupon should replace the first one.
 - [ ] Adding `alone` then trying to another coupon should result in an error.
+- [ ] Adding `freeship` should show the free shipping method you previously created.
