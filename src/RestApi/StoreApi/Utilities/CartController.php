@@ -165,7 +165,7 @@ class CartController {
 			);
 		}
 
-		if ( $product->managing_stock() ) {
+		if ( $product->managing_stock() && ! $product->backorders_allowed() ) {
 			$qty_remaining = $this->get_remaining_stock_for_product( $product );
 			$qty_in_cart   = $this->get_product_quantity_in_cart( $product );
 
@@ -282,7 +282,7 @@ class CartController {
 			);
 		}
 
-		if ( $product->managing_stock() ) {
+		if ( $product->managing_stock() && ! $product->backorders_allowed() ) {
 			$qty_remaining = $this->get_remaining_stock_for_product( $product );
 			$qty_in_cart   = $this->get_product_quantity_in_cart( $product );
 
