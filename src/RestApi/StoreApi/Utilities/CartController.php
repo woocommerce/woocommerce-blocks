@@ -176,7 +176,7 @@ class CartController {
 						/* translators: 1: product name 2: quantity in stock */
 						__( 'You cannot add that amount of &quot;%1$s&quot; to the cart because there is not enough stock (%2$s remaining).', 'woo-gutenberg-products-block' ),
 						$product->get_name(),
-						wc_format_stock_quantity_for_display( $product->get_stock_quantity(), $product )
+						wc_format_stock_quantity_for_display( $qty_remaining, $product )
 					),
 					403
 				);
@@ -294,10 +294,10 @@ class CartController {
 						_n(
 							'There is only %1$s unit of &quot;%2$s&quot; in stock.',
 							'There are only %1$s units of &quot;%2$s&quot; in stock.',
-							$product->get_stock_quantity(),
+							$qty_remaining,
 							'woo-gutenberg-products-block'
 						),
-						wc_format_stock_quantity_for_display( $product->get_stock_quantity(), $product ),
+						wc_format_stock_quantity_for_display( $qty_remaining, $product ),
 						$product->get_name()
 					),
 					403

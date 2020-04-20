@@ -358,10 +358,10 @@ class CartItemSchema extends ProductSchema {
 		if ( $product->is_sold_individually() ) {
 			$limits[] = 1;
 		} elseif ( ! $product->backorders_allowed() ) {
-			$limits[] = $product->get_stock_quantity();
+			$limits[] = $this->get_remaining_stock( $product );
 		}
 
-		return apply_filters( 'woocommerce_store_api_product_quantity_limit', min( array_filter( $limits ) ), $product );
+		return apply_filters( 'woocommerce_store_api_product_quantity_limit', max( min( array_filter( $limits ) ), 1 ), $product );
 	}
 
 	/**
