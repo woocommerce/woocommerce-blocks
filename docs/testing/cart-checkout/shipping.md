@@ -1,4 +1,4 @@
-[![Create Todo list](https://git-todo.netlify.app/github-button.png)](https://git-todo.netlify.app/create)
+[![Create Todo list](https://raw.githubusercontent.com/senadir/todo-my-markdown/master/public/github-button.svg?sanitize=true)](https://git-todo.netlify.app/create)
 
 # Shipping
 
