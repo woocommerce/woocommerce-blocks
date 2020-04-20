@@ -7,6 +7,7 @@
   - [Cart Block](#cart-block)
   - [Checkout Block](#checkout-block)
 - [Testing Checklist](#testing-checklist)
+  - [General Flow.](#general-flow)
   - [Editor.](#editor)
   - [Shipping.](#shipping)
   - [Payments.](#payments)
@@ -31,6 +32,9 @@ we're aware of them, and will probably not tackle them in this first release:
 - Cart and Checkout blocks do not support third-party plugins that integrate with
   regular Cart and Checkout shortcode, if you somehow see a third party plugin working
   well, this is pure coincidence, the only exception is Stripe payment gateway.
+
+- The only payment gateway supported are Check and Stripe.
+- Storefront and TwentyTwenty are expected to work fine, no guarantee is presented on other themes, but do report them if you feel like that's something we can fix on our end.
 
 <!-- Currently this is unneeded so I'm omitting this section -->.
 <!--
@@ -74,6 +78,7 @@ the Cart and Checkout shortcodes.
 
 ## Testing Checklist
 
+### [General Flow](general-flow.md).
 ### [Editor](editor.md).
 ### [Shipping](shipping.md).
 ### [Payments](payment.md).
