@@ -4,6 +4,7 @@
 
 - You will need to setup shipping zones for a couple of countries.
 - You will need to have a free shipping method that is enabled with a coupon or a threshold.
+[![Create Todo list](https://git-todo.netlify.app/github-button.png)](https://git-todo.netlify.app/create)
 
 ## What to test
 
