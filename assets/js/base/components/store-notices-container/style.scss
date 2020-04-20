@@ -27,8 +27,9 @@
 
 .components-snackbar-list {
 	position: fixed;
-	bottom: 100px;
-	left: 100px;
+	bottom: 40px;
+	left: 16px;
+	width: auto;
 
 	@include breakpoint( "<600px" ) {
 		position: fixed;
