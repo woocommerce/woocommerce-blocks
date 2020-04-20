@@ -229,6 +229,10 @@ class CartController {
 			$this->validate_cart_item( $cart_item );
 		}
 
+		// Before running the woocommerce_check_cart_items hook, unhook validation from the core cart.
+		remove_action( 'woocommerce_check_cart_items', array( wc()->cart, 'check_cart_items' ), 1 );
+		remove_action( 'woocommerce_check_cart_items', array( wc()->cart, 'check_cart_coupons' ), 1 );
+
 		/**
 		 * Hook: woocommerce_check_cart_items
 		 *
