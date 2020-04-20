@@ -1,5 +1,3 @@
-[![Create Todo list](https://raw.githubusercontent.com/senadir/todo-my-markdown/master/public/github-button.svg?sanitize=true)](https://git-todo.netlify.app/create)
-
 # Cross-platform and browser compatibility
 
 The main goal of this is to test in a variety of themes, browsers, platforms, and setups, this is a list of things you can test with, with sane expectations.

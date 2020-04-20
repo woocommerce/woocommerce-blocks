@@ -28,10 +28,10 @@ Unsupported:
 
 ## What to test
 
-If no payment method is setup:
+If no payment method is set up:
 
 - [ ] An error will show up in the frontend, saying that no payment method is available.
-- [ ] In the editor, you will be promoted to setup a payment method.
+- [ ] In the editor, you will be prompted to set up a payment method.
 
 If you have a payment method available:
 

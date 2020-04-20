@@ -16,5 +16,5 @@ taxes (if you have any), shipping and so on.
 - [ ] Mix in a limited stock product or a coupon.
 - [ ] Continue to checkout.
 - [ ] You should be able to fix your info, if you have them saved, they will show up.
-- [ ] Depending on what payment method you enabled (Credit Card, Check, Express payment), you can place order.
+- [ ] Depending on what payment method you enabled (Credit Card, Check, Express payment), you can place the order.
 - [ ] You should see an order received page.

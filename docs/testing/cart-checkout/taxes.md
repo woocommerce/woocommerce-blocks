@@ -15,4 +15,4 @@ With taxes disabled:
 With taxes enabled:
 
 - [ ] You should see "Taxes" line in the cart or checkout.
-- [ ] If the user address or store settings country don't have taxes in it, the value will be 0.
+- [ ] If the user address or store settings country doesn't have taxes in it, the value will be 0.

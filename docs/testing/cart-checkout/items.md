@@ -13,7 +13,7 @@
 - [ ] You should be able to add items to your cart.
 - [ ] You should be able to change item quantity in your Cart.
 - [ ] You should not be able to change "sold individually" items quantity.
-- [ ] Items that has quantity lower than the threshold should show "x Left in stock".
+- [ ] Items that have quantity lower than the threshold should show "x Left in stock".
 	- [ ] You should not be able to increase that item quantity to above that is left in stock.
 - [ ] If you try to increase an item quantity to above its stock quantity, you get an error.
 - [ ] You should be able to remove an item.
