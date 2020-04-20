@@ -112,14 +112,14 @@ class RestApi {
 		if ( ! function_exists( 'wc_load_cart' ) || \is_wp_error( $return ) || ! self::is_request_to_store_api() ) {
 			return $return;
 		}
-		// @todo Core should ensure these functions load with wc_load_cart() so we don't need to manually include.
+		// @todo Core should ensure these functions load with wc_load_cart(). See https://github.com/woocommerce/woocommerce/pull/26219
 		include_once WC_ABSPATH . 'includes/wc-cart-functions.php';
 		include_once WC_ABSPATH . 'includes/wc-notice-functions.php';
 
 		// Initializes the cart and session.
 		wc_load_cart();
 
-		// @todo Core should also do this inside wc_load_cart so the cart is loaded from session.
+		// @todo Core should also do this inside wc_load_cart so the cart is loaded from session. See https://github.com/woocommerce/woocommerce/pull/26219
 		wc()->cart->get_cart();
 
 		return $return;
