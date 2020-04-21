@@ -69,7 +69,11 @@ export const useStoreCartItemQuantity = ( cartItem ) => {
 	);
 
 	const removeItem = () => {
-		return cartItemKey ? removeItemFromCart( cartItemKey ) : false;
+		return cartItemKey
+			? removeItemFromCart( cartItemKey ).then( () => {
+					triggerFragmentRefresh();
+			  } )
+			: false;
 	};
 
 	// Observe debounced quantity value, fire action to update server on change.
