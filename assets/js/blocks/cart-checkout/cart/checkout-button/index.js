@@ -11,7 +11,7 @@ import { useCheckoutContext } from '@woocommerce/base-context';
  * Internal dependencies
  */
 import './style.scss';
-import PaymentMethodIcons from '../payment-method-icons';
+import PaymentMethods from '../payment-methods';
 
 /**
  * Checkout button rendered in the full cart page.
@@ -31,7 +31,7 @@ const CheckoutButton = ( { link } ) => {
 			>
 				{ __( 'Proceed to Checkout', 'woo-gutenberg-products-block' ) }
 			</Button>
-			<PaymentMethodIcons />
+			<PaymentMethods />
 		</div>
 	);
 };

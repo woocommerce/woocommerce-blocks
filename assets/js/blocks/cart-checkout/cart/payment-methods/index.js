@@ -2,13 +2,12 @@
  * External dependencies
  */
 import { usePaymentMethods } from '@woocommerce/base-hooks';
+import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
-import { AmericanExpressLogo } from './american-express-logo';
-import { MastercardLogo, VisaLogo } from './payment-logos'; // @todo we want to import this from `@automattic/composite-checkout` when it's published in NPM
 
 /**
  * Shows a list of registered payment method icons.
@@ -21,10 +20,17 @@ const PaymentMethodIcons = () => {
 	}
 
 	return (
-		<div className="wc-block-cart__payment-method-icons">
-			<MastercardLogo />
-			<AmericanExpressLogo />
-			<VisaLogo />
+		<div className="wc-block-cart__payment-methods">
+			{ Object.values( paymentMethods ).map( ( paymentMethod ) => {
+				if ( paymentMethod.icons !== null ) {
+					return (
+						<Fragment key={ paymentMethod.name }>
+							{ paymentMethod.icons }
+						</Fragment>
+					);
+				}
+				return null;
+			} ) }
 		</div>
 	);
 };
