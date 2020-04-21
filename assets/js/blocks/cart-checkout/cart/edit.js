@@ -38,7 +38,6 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 		checkoutPageId,
 	} = attributes;
 	const { currentPostId } = useEditorContext();
-
 	return (
 		<InspectorControls>
 			{ currentPostId !== CART_PAGE_ID && (
@@ -67,46 +66,50 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 					) }
 				</Notice>
 			) }
-			<PanelBody
-				title={ __( 'Shipping rates', 'woo-gutenberg-products-block' ) }
-			>
-				<ToggleControl
-					label={ __(
-						'Shipping calculator',
+			{ SHIPPING_ENABLED && (
+				<PanelBody
+					title={ __(
+						'Shipping rates',
 						'woo-gutenberg-products-block'
 					) }
-					help={ __(
-						'Allow customers to estimate shipping by entering their address.',
-						'woo-gutenberg-products-block'
-					) }
-					checked={ isShippingCalculatorEnabled }
-					onChange={ () =>
-						setAttributes( {
-							isShippingCalculatorEnabled: ! isShippingCalculatorEnabled,
-						} )
-					}
-				/>
-				<ToggleControl
-					label={ __(
-						'Hide shipping costs until an address is entered',
-						'woo-gutenberg-products-block'
-					) }
-					help={ __(
-						'If checked, shipping rates will be hidden until the customer uses the shipping calculator or enters their address during checkout.',
-						'woo-gutenberg-products-block'
-					) }
-					checked={ isShippingCostHidden }
-					onChange={ () =>
-						setAttributes( {
-							isShippingCostHidden: ! isShippingCostHidden,
-						} )
-					}
-				/>
-			</PanelBody>
+				>
+					<ToggleControl
+						label={ __(
+							'Shipping calculator',
+							'woo-gutenberg-products-block'
+						) }
+						help={ __(
+							'Allow customers to estimate shipping by entering their address.',
+							'woo-gutenberg-products-block'
+						) }
+						checked={ isShippingCalculatorEnabled }
+						onChange={ () =>
+							setAttributes( {
+								isShippingCalculatorEnabled: ! isShippingCalculatorEnabled,
+							} )
+						}
+					/>
+					<ToggleControl
+						label={ __(
+							'Hide shipping costs until an address is entered',
+							'woo-gutenberg-products-block'
+						) }
+						help={ __(
+							'If checked, shipping rates will be hidden until the customer uses the shipping calculator or enters their address during checkout.',
+							'woo-gutenberg-products-block'
+						) }
+						checked={ isShippingCostHidden }
+						onChange={ () =>
+							setAttributes( {
+								isShippingCostHidden: ! isShippingCostHidden,
+							} )
+						}
+					/>
+				</PanelBody>
+			) }
 			<PageSelector
 				pageId={ checkoutPageId }
 				setPageId={ ( id ) => setAttributes( { checkoutPageId: id } ) }
-				defaultPageId={ CART_PAGE_ID }
 				labels={ {
 					title: __(
 						'Proceed to Checkout button',
@@ -172,21 +175,17 @@ const CartEditor = ( { className, attributes, setAttributes } ) => {
 					>
 						{ currentView === 'full' && (
 							<>
-								{ SHIPPING_ENABLED && (
+								<EditorProvider previewData={ { previewCart } }>
 									<BlockSettings
 										attributes={ attributes }
 										setAttributes={ setAttributes }
 									/>
-								) }
-								<Disabled>
-									<EditorProvider
-										previewData={ { previewCart } }
-									>
+									<Disabled>
 										<CartProvider>
 											<Block attributes={ attributes } />
 										</CartProvider>
-									</EditorProvider>
-								</Disabled>
+									</Disabled>
+								</EditorProvider>
 							</>
 						) }
 						<EmptyCartEdit hidden={ currentView === 'full' } />

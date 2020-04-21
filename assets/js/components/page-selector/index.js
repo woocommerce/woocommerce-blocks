@@ -4,15 +4,13 @@
 import { __ } from '@wordpress/i18n';
 import { PanelBody, SelectControl } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
-import { useEditorContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
  */
 import { formatTitle } from '../utils';
 
-const PageSelector = ( { setPageId, pageId, defaultPageId, labels } ) => {
-	const { currentPostId } = useEditorContext();
+const PageSelector = ( { setPageId, pageId, labels } ) => {
 	const pages =
 		useSelect( ( select ) => {
 			return select( 'core' ).getEntityRecords( 'postType', 'page', {
@@ -22,7 +20,7 @@ const PageSelector = ( { setPageId, pageId, defaultPageId, labels } ) => {
 				per_page: 100,
 			} );
 		}, [] ) || null;
-	if ( ( currentPostId !== defaultPageId || pageId ) && pages ) {
+	if ( pages ) {
 		return (
 			<PanelBody title={ labels.title }>
 				<SelectControl
