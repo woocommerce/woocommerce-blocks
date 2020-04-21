@@ -12,6 +12,8 @@ import { decodeEntities } from '@wordpress/html-entities';
 import { PAYMENT_METHOD_NAME } from './constants';
 
 const settings = getSetting( 'cheque_data', {} );
+const defaultLabel = __( 'Check Payment', 'woo-gutenberg-products-block' );
+const label = decodeEntities( settings.title ) || defaultLabel;
 
 /**
  * @typedef {import('@woocommerce/type-defs/registered-payment-method-props').RegisteredPaymentMethodProps} RegisteredPaymentMethodProps
@@ -24,22 +26,16 @@ const Content = () => {
 	return <div>{ decodeEntities( settings.description || '' ) }</div>;
 };
 
+/**
+ * Cheque payment method config object.
+ */
 const offlineChequePaymentMethod = {
 	name: PAYMENT_METHOD_NAME,
-	label: (
-		<strong>
-			{ decodeEntities(
-				settings.title ||
-					__( 'Check Payment', 'woo-gutenberg-products-block' )
-			) }
-		</strong>
-	),
+	label,
 	content: <Content />,
 	edit: <Content />,
 	canMakePayment: () => true,
-	ariaLabel: decodeEntities(
-		settings.title || __( 'Check Payment', 'woo-gutenberg-products-block' )
-	),
+	ariaLabel: label,
 };
 
 registerPaymentMethod( ( Config ) => new Config( offlineChequePaymentMethod ) );

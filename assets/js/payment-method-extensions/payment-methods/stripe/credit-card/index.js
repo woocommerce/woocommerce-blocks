@@ -34,11 +34,7 @@ const StripeComponent = ( props ) => {
 
 const stripeCcPaymentMethod = {
 	name: PAYMENT_METHOD_NAME,
-	label: (
-		<strong>
-			{ __( 'Credit/Debit Card', 'woo-gutenberg-products-block' ) }
-		</strong>
-	),
+	label: __( 'Credit/Debit Card', 'woo-gutenberg-products-block' ),
 	content: <StripeComponent />,
 	edit: <StripeComponent />,
 	canMakePayment: () => stripePromise,
