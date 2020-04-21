@@ -8,11 +8,11 @@ import {
 	Disabled,
 	PanelBody,
 	ToggleControl,
-	SelectControl,
 	Notice,
 } from '@wordpress/components';
 import PropTypes from 'prop-types';
 import ViewSwitcher from '@woocommerce/block-components/view-switcher';
+import PageSelector from '@woocommerce/block-components/page-selector';
 import { SHIPPING_ENABLED, CART_PAGE_ID } from '@woocommerce/block-settings';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import {
@@ -20,7 +20,6 @@ import {
 	useEditorContext,
 	CartProvider,
 } from '@woocommerce/base-context';
-import { useSelect } from '@wordpress/data';
 import { __experimentalCreateInterpolateElement } from 'wordpress-element';
 import { getAdminLink } from '@woocommerce/settings';
 import { previewCart, cartBlockPreview } from '@woocommerce/resource-previews';
@@ -38,15 +37,6 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 		isShippingCostHidden,
 		checkoutPageId,
 	} = attributes;
-	const pages =
-		useSelect( ( select ) => {
-			return select( 'core' ).getEntityRecords( 'postType', 'page', {
-				status: 'publish',
-				orderby: 'title',
-				order: 'asc',
-				per_page: 100,
-			} );
-		}, [] ) || null;
 	const { currentPostId } = useEditorContext();
 
 	return (
@@ -113,44 +103,21 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 					}
 				/>
 			</PanelBody>
-			{ ( currentPostId !== CART_PAGE_ID || checkoutPageId ) && pages && (
-				<PanelBody
-					title={ __(
+			<PageSelector
+				pageId={ checkoutPageId }
+				setPageId={ ( id ) => setAttributes( { checkoutPageId: id } ) }
+				defaultPageId={ CART_PAGE_ID }
+				labels={ {
+					title: __(
 						'Proceed to Checkout button',
 						'woo-gutenberg-products-block'
-					) }
-				>
-					<SelectControl
-						label={ __(
-							'Link to',
-							'woo-gutenberg-products-block'
-						) }
-						value={ checkoutPageId }
-						options={ [
-							...[
-								{
-									label: __(
-										'WooCommerce Checkout Page',
-										'woo-gutenberg-products-block'
-									),
-									value: 0,
-								},
-							],
-							...Object.values( pages ).map( ( page ) => {
-								return {
-									label: page.title.raw,
-									value: parseInt( page.id, 10 ),
-								};
-							} ),
-						] }
-						onChange={ ( value ) =>
-							setAttributes( {
-								checkoutPageId: parseInt( value, 10 ),
-							} )
-						}
-					/>
-				</PanelBody>
-			) }
+					),
+					default: __(
+						'WooCommerce Checkout Page',
+						'woo-gutenberg-products-block'
+					),
+				} }
+			/>
 			<FeedbackPrompt
 				text={ __(
 					'We are currently working on improving our cart and checkout blocks, providing merchants with the tools and customization options they need.',
