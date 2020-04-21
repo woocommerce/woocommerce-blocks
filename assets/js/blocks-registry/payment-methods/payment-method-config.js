@@ -1,7 +1,11 @@
 /**
  * Internal dependencies
  */
-import { assertConfigHasProperties, assertValidElement } from './assertions';
+import {
+	assertConfigHasProperties,
+	assertValidElement,
+	assertValidElementOrString,
+} from './assertions';
 
 export default class PaymentMethodConfig {
 	constructor( config ) {
@@ -38,7 +42,7 @@ export default class PaymentMethodConfig {
 				'The paymentMethodId property for the payment method must be a string or undefined (in which case it will be the value of the name property).'
 			);
 		}
-		assertValidElement( config.label, 'label' );
+		assertValidElementOrString( config.label, 'label' );
 		assertValidElement( config.content, 'content' );
 		assertValidElement( config.edit, 'edit' );
 		if ( typeof config.ariaLabel !== 'string' ) {
