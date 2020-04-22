@@ -192,7 +192,7 @@ export const formatTitle = ( page, pages ) => {
 	if ( ! page.title.raw ) {
 		return page.slug;
 	}
-	const hasSimilar =
-		pages.filter( ( p ) => p.title.raw === page.title.raw ).length > 1;
-	return page.title.raw + ( hasSimilar ? ` - ${ page.slug }` : '' );
+	const isUnique =
+		pages.filter( ( p ) => p.title.raw === page.title.raw ).length === 1;
+	return page.title.raw + ( ! isUnique ? ` - ${ page.slug }` : '' );
 };
