@@ -110,6 +110,7 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 			<PageSelector
 				pageId={ checkoutPageId }
 				setPageId={ ( id ) => setAttributes( { checkoutPageId: id } ) }
+				defaultPageId={ CART_PAGE_ID }
 				labels={ {
 					title: __(
 						'Proceed to Checkout button',

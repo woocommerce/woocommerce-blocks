@@ -4,13 +4,14 @@
 import { __ } from '@wordpress/i18n';
 import { PanelBody, SelectControl } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
-
+import { useEditorContext } from '@woocommerce/base-context';
 /**
  * Internal dependencies
  */
 import { formatTitle } from '../utils';
 
-const PageSelector = ( { setPageId, pageId, labels } ) => {
+const PageSelector = ( { setPageId, pageId, defaultPageId, labels } ) => {
+	const { currentPostId } = useEditorContext();
 	const pages =
 		useSelect( ( select ) => {
 			return select( 'core' ).getEntityRecords( 'postType', 'page', {
@@ -20,7 +21,9 @@ const PageSelector = ( { setPageId, pageId, labels } ) => {
 				per_page: 100,
 			} );
 		}, [] ) || null;
-	if ( pages ) {
+	// We should not render this if this page is the default one page
+	// and the link to option is set to default.
+	if ( ! ( currentPostId === defaultPageId && pageId === 0 ) && pages ) {
 		return (
 			<PanelBody title={ labels.title }>
 				<SelectControl

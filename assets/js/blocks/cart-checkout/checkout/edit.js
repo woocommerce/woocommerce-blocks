@@ -221,6 +221,7 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 				<PageSelector
 					pageId={ cartPageId }
 					setPageId={ ( id ) => setAttributes( { cartPageId: id } ) }
+					defaultPageId={ CHECKOUT_PAGE_ID }
 					labels={ {
 						title: __(
 							'Return to Cart button',
