@@ -129,7 +129,6 @@ class RestApi {
 			'product-attribute-terms' => __NAMESPACE__ . '\RestApi\Controllers\ProductAttributeTerms',
 			'product-categories'      => __NAMESPACE__ . '\RestApi\Controllers\ProductCategories',
 			'product-tags'            => __NAMESPACE__ . '\RestApi\Controllers\ProductTags',
-			'products'                => __NAMESPACE__ . '\RestApi\Controllers\Products',
 			'variations'              => __NAMESPACE__ . '\RestApi\Controllers\Variations',
 			'product-reviews'         => __NAMESPACE__ . '\RestApi\Controllers\ProductReviews',
 		];
