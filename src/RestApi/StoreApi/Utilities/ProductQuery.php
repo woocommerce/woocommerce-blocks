@@ -9,7 +9,7 @@ namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities;
 
 defined( 'ABSPATH' ) || exit;
 
-use \WC_Tax;
+use WC_Tax;
 
 /**
  * Product Query class.

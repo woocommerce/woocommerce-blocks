@@ -9,7 +9,7 @@ namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas;
 
 defined( 'ABSPATH' ) || exit;
 
-use \WC_Shipping_Rate as ShippingRate;
+use WC_Shipping_Rate as ShippingRate;
 
 /**
  * CartShippingRateSchema class.
