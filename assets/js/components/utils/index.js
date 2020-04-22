@@ -11,7 +11,7 @@ import {
 } from '@woocommerce/block-settings';
 
 /**
- * Get product query requests.
+ * Get product query requests for the Store API.
  *
  * @param {Object} request A query object with the list of selected products and search term.
  * @param {string} request.selected Currently selected products.
@@ -26,21 +26,19 @@ const getProductsRequests = ( {
 	const defaultArgs = {
 		per_page: IS_LARGE_CATALOG ? 100 : -1,
 		catalog_visibility: 'any',
-		status: 'publish',
 		search,
 		orderby: 'title',
 		order: 'asc',
 	};
 	const requests = [
-		addQueryArgs( ENDPOINTS.products, { ...defaultArgs, ...queryArgs } ),
+		addQueryArgs( '/wc/store/products', { ...defaultArgs, ...queryArgs } ),
 	];
 
 	// If we have a large catalog, we might not get all selected products in the first page.
 	if ( IS_LARGE_CATALOG && selected.length ) {
 		requests.push(
-			addQueryArgs( ENDPOINTS.products, {
+			addQueryArgs( '/wc/store/products', {
 				catalog_visibility: 'any',
-				status: 'publish',
 				include: selected,
 			} )
 		);
@@ -50,7 +48,7 @@ const getProductsRequests = ( {
 };
 
 /**
- * Get a promise that resolves to a list of products from the API.
+ * Get a promise that resolves to a list of products from the Store API.
  *
  * @param {Object} request A query object with the list of selected products and search term.
  * @param {string} request.selected Currently selected products.
@@ -79,13 +77,13 @@ export const getProducts = ( {
 };
 
 /**
- * Get a promise that resolves to a product object from the API.
+ * Get a promise that resolves to a product object from the Store API.
  *
  * @param {number} productId Id of the product to retrieve.
  */
 export const getProduct = ( productId ) => {
 	return apiFetch( {
-		path: `${ ENDPOINTS.products }/${ productId }`,
+		path: `/wc/store/products/${ productId }`,
 	} );
 };
 

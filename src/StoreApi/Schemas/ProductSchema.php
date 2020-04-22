@@ -130,6 +130,12 @@ class ProductSchema extends AbstractSchema {
 					]
 				),
 			],
+			'price_html'          => array(
+				'description' => __( 'Price string formatted as HTML.', 'woo-gutenberg-products-block' ),
+				'type'        => 'string',
+				'context'     => array( 'view', 'edit' ),
+				'readonly'    => true,
+			),
 			'average_rating'      => [
 				'description' => __( 'Reviews average rating.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
@@ -254,6 +260,7 @@ class ProductSchema extends AbstractSchema {
 			'description'         => $this->prepare_html_response( wc_format_content( $product->get_description() ) ),
 			'on_sale'             => $product->is_on_sale(),
 			'prices'              => (object) $this->prepare_product_price_response( $product ),
+			'price_html'          => $product->get_price_html(),
 			'average_rating'      => $product->get_average_rating(),
 			'review_count'        => $product->get_review_count(),
 			'images'              => ( new ProductImages() )->images_to_array( $product ),
