@@ -5,11 +5,11 @@
  * @package WooCommerce/Blocks
  */
 
-namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities;
+namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;
 
 defined( 'ABSPATH' ) || exit;
 
-use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Routes\RouteException;
+use Automattic\WooCommerce\Blocks\StoreApi\Routes\RouteException;
 
 /**
  * OrderController class.

@@ -5,7 +5,7 @@
  * @package Automattic/WooCommerce/RestApi
  */
 
-namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities;
+namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;
 
 defined( 'ABSPATH' ) || exit;
 

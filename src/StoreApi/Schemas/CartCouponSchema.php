@@ -5,11 +5,11 @@
  * @package WooCommerce/Blocks
  */
 
-namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas;
+namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;
 
 defined( 'ABSPATH' ) || exit;
 
-use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\CartController;
+use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
 
 /**
  * CartCouponSchema class.

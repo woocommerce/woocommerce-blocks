@@ -6,12 +6,12 @@
  * @package WooCommerce/Blocks
  */
 
-namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Routes;
+namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
 
 defined( 'ABSPATH' ) || exit;
 
-use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\Pagination;
-use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ProductQuery;
+use Automattic\WooCommerce\Blocks\StoreApi\Utilities\Pagination;
+use Automattic\WooCommerce\Blocks\StoreApi\Utilities\ProductQuery;
 
 /**
  * Products class.

@@ -5,7 +5,7 @@
  * @package WooCommerce\Blocks\Tests
  */
 
-namespace Automattic\WooCommerce\Blocks\Tests\RestApi\StoreApi\Controllers;
+namespace Automattic\WooCommerce\Blocks\Tests\StoreApi\Controllers;
 
 use \WP_REST_Request;
 use \WC_REST_Unit_Test_Case as TestCase;
@@ -163,7 +163,7 @@ class ProductCollectionData extends TestCase {
 	 * Test collection params getter.
 	 */
 	public function test_get_collection_params() {
-		$routes     = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\RoutesController( new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\SchemaController() );
+		$routes     = new \Automattic\WooCommerce\Blocks\StoreApi\RoutesController( new \Automattic\WooCommerce\Blocks\StoreApi\SchemaController() );
 		$controller = $routes->get( 'product-collection-data' );
 		$params     = $controller->get_collection_params();
 
@@ -178,7 +178,7 @@ class ProductCollectionData extends TestCase {
 	public function test_schema_matches_response() {
 		ProductHelper::create_variation_product();
 
-		$routes     = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\RoutesController( new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\SchemaController() );
+		$routes     = new \Automattic\WooCommerce\Blocks\StoreApi\RoutesController( new \Automattic\WooCommerce\Blocks\StoreApi\SchemaController() );
 		$controller = $routes->get( 'product-collection-data' );
 		$schema     = $controller->get_item_schema();
 

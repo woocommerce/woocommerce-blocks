@@ -5,7 +5,7 @@
  * @package WooCommerce/Blocks
  */
 
-namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas;
+namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -406,7 +406,7 @@ class CartItemSchema extends ProductSchema {
 		if ( \class_exists( '\Automattic\WooCommerce\Checkout\Helpers\ReserveStock' ) ) {
 			$reserve_stock = new \Automattic\WooCommerce\Checkout\Helpers\ReserveStock();
 		} else {
-			$reserve_stock = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ReserveStock();
+			$reserve_stock = new \Automattic\WooCommerce\Blocks\StoreApi\Utilities\ReserveStock();
 		}
 
 		$reserved_stock = $reserve_stock->get_reserved_stock( $product, $draft_order );

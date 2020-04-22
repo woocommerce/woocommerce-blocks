@@ -5,7 +5,7 @@
  * @package WooCommerce\Blocks\Tests
  */
 
-namespace Automattic\WooCommerce\Blocks\Tests\RestApi\StoreApi\Controllers;
+namespace Automattic\WooCommerce\Blocks\Tests\StoreApi\Controllers;
 
 use \WP_REST_Request;
 use \WC_REST_Unit_Test_Case as TestCase;
@@ -103,8 +103,8 @@ class Products extends TestCase {
 	 * Test conversion of prdouct to rest response.
 	 */
 	public function test_prepare_item_for_response() {
-		$schemas    = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\SchemaController();
-		$routes     = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\RoutesController( $schemas );
+		$schemas    = new \Automattic\WooCommerce\Blocks\StoreApi\SchemaController();
+		$routes     = new \Automattic\WooCommerce\Blocks\StoreApi\RoutesController( $schemas );
 		$schema     = $schemas->get( 'product' );
 		$controller = $routes->get( 'products' );
 		$response   = $controller->prepare_item_for_response( $this->products[0], new \WP_REST_Request() );
@@ -131,7 +131,7 @@ class Products extends TestCase {
 	 * Test collection params getter.
 	 */
 	public function test_get_collection_params() {
-		$routes     = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\RoutesController( new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\SchemaController() );
+		$routes     = new \Automattic\WooCommerce\Blocks\StoreApi\RoutesController( new \Automattic\WooCommerce\Blocks\StoreApi\SchemaController() );
 		$controller = $routes->get( 'products' );
 		$params     = $controller->get_collection_params();
 
@@ -169,7 +169,7 @@ class Products extends TestCase {
 	 * Test schema matches responses.
 	 */
 	public function test_schema_matches_response() {
-		$routes     = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\RoutesController( new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\SchemaController() );
+		$routes     = new \Automattic\WooCommerce\Blocks\StoreApi\RoutesController( new \Automattic\WooCommerce\Blocks\StoreApi\SchemaController() );
 		$controller = $routes->get( 'products' );
 		$schema     = $controller->get_item_schema();
 		$response   = $controller->prepare_item_for_response( $this->products[0], new \WP_REST_Request() );

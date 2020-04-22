@@ -6,11 +6,11 @@
  * @package WooCommerce/Blocks
  */
 
-namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Routes;
+namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
 
 defined( 'ABSPATH' ) || exit;
 
-use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas\AbstractSchema;
+use Automattic\WooCommerce\Blocks\StoreApi\Schemas\AbstractSchema;
 
 /**
  * AbstractRoute class.

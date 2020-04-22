@@ -8,11 +8,11 @@
  * @package WooCommerce/Blocks
  */
 
-namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Routes;
+namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
 
 defined( 'ABSPATH' ) || exit;
 
-use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ProductQueryFilters;
+use Automattic\WooCommerce\Blocks\StoreApi\Utilities\ProductQueryFilters;
 
 /**
  * ProductCollectionData route.

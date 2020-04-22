@@ -5,12 +5,12 @@
  * @package WooCommerce/Blocks
  */
 
-namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities;
+namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;
 
 defined( 'ABSPATH' ) || exit;
 
-use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Routes\RouteException;
-use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\NoticeHandler;
+use Automattic\WooCommerce\Blocks\StoreApi\Routes\RouteException;
+use Automattic\WooCommerce\Blocks\StoreApi\Utilities\NoticeHandler;
 
 /**
  * Woo Cart Controller class.
@@ -630,7 +630,7 @@ class CartController {
 		if ( \class_exists( '\Automattic\WooCommerce\Checkout\Helpers\ReserveStock' ) ) {
 			$reserve_stock_controller = new \Automattic\WooCommerce\Checkout\Helpers\ReserveStock();
 		} else {
-			$reserve_stock_controller = new \Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\ReserveStock();
+			$reserve_stock_controller = new \Automattic\WooCommerce\Blocks\StoreApi\Utilities\ReserveStock();
 		}
 
 		$draft_order  = wc()->session->get( 'store_api_draft_order', 0 );

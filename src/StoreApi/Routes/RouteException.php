@@ -5,7 +5,7 @@
  * @package WooCommerce/Blocks
  */
 
-namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Routes;
+namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
 
 /**
  * ReserveStockRouteExceptionException class.
