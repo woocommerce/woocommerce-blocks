@@ -19,6 +19,7 @@ import {
 } from '@woocommerce/block-settings';
 import { getAdminLink } from '@woocommerce/settings';
 import { __experimentalCreateInterpolateElement } from 'wordpress-element';
+import { useRef } from '@wordpress/element';
 import { EditorProvider, useEditorContext } from '@woocommerce/base-context';
 import PageSelector from '@woocommerce/block-components/page-selector';
 import {
@@ -45,7 +46,7 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 		cartPageId,
 	} = attributes;
 	const { currentPostId } = useEditorContext();
-
+	const { current: savedCartPageId } = useRef( cartPageId );
 	return (
 		<InspectorControls>
 			{ currentPostId !== CHECKOUT_PAGE_ID && (
@@ -219,7 +220,7 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 			</PanelBody>
 			{ showReturnToCart &&
 				! (
-					currentPostId === CHECKOUT_PAGE_ID && cartPageId === 0
+					currentPostId === CHECKOUT_PAGE_ID && savedCartPageId === 0
 				) && (
 					<PageSelector
 						pageId={ cartPageId }

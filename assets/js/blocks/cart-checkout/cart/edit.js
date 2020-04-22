@@ -21,6 +21,7 @@ import {
 	CartProvider,
 } from '@woocommerce/base-context';
 import { __experimentalCreateInterpolateElement } from 'wordpress-element';
+import { useRef } from '@wordpress/element';
 import { getAdminLink } from '@woocommerce/settings';
 import { previewCart, cartBlockPreview } from '@woocommerce/resource-previews';
 
@@ -38,6 +39,7 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 		checkoutPageId,
 	} = attributes;
 	const { currentPostId } = useEditorContext();
+	const { current: savedCheckoutPageId } = useRef( checkoutPageId );
 	return (
 		<InspectorControls>
 			{ currentPostId !== CART_PAGE_ID && (
@@ -107,7 +109,9 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 					/>
 				</PanelBody>
 			) }
-			{ ! ( currentPostId === CART_PAGE_ID && checkoutPageId === 0 ) && (
+			{ ! (
+				currentPostId === CART_PAGE_ID && savedCheckoutPageId === 0
+			) && (
 				<PageSelector
 					pageId={ checkoutPageId }
 					setPageId={ ( id ) =>
