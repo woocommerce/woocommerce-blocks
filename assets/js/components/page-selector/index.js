@@ -19,8 +19,6 @@ const PageSelector = ( { setPageId, pageId, labels } ) => {
 				per_page: 100,
 			} );
 		}, [] ) || null;
-	// We should not render this if this page is the default one page
-	// and the link to option is set to default.
 	if ( pages ) {
 		return (
 			<PanelBody title={ labels.title }>
