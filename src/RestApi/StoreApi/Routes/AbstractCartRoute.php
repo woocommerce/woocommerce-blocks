@@ -26,13 +26,14 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	}
 
 	/**
-	 * Constructor.
+	 * Get the route response based on the type of request.
 	 *
-	 * @param AbstractSchema $schema Schema class for this route.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_Error|\WP_REST_Response
 	 */
-	public function __construct( AbstractSchema $schema ) {
-		$this->schema = $schema;
+	public function get_response( \WP_REST_Request $request ) {
 		$this->maybe_recalculate_totals();
+		return parent::get_response( $request );
 	}
 
 	/**
