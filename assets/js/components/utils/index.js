@@ -87,6 +87,15 @@ export const getProduct = ( productId ) => {
 	} );
 };
 
+/**
+ * Get a promise that resolves to a list of attribute objects from the Store API.
+ */
+export const getAttributes = () => {
+	return apiFetch( {
+		path: `wc/store/products/attributes`,
+	} );
+};
+
 const getProductTagsRequests = ( { selected = [], search } ) => {
 	const requests = [
 		addQueryArgs( `${ ENDPOINTS.products }/tags`, {
@@ -152,14 +161,6 @@ export const getCategories = ( queryArgs ) => {
 export const getProductVariations = ( product ) => {
 	return apiFetch( {
 		path: addQueryArgs( `${ ENDPOINTS.products }/${ product }/variations`, {
-			per_page: -1,
-		} ),
-	} );
-};
-
-export const getAttributes = () => {
-	return apiFetch( {
-		path: addQueryArgs( `${ ENDPOINTS.products }/attributes`, {
 			per_page: -1,
 		} ),
 	} );
