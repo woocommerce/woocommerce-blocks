@@ -10,7 +10,6 @@ namespace Automattic\WooCommerce\Blocks\RestApi\StoreApi\Routes;
 defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Utilities\CartController;
-use Automattic\WooCommerce\Blocks\RestApi\StoreApi\Schemas\AbstractSchema;
 
 /**
  * Cart class.
