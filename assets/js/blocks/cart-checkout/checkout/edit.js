@@ -217,23 +217,27 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 					}
 				/>
 			</PanelBody>
-			{ showReturnToCart && (
-				<PageSelector
-					pageId={ cartPageId }
-					setPageId={ ( id ) => setAttributes( { cartPageId: id } ) }
-					defaultPageId={ CHECKOUT_PAGE_ID }
-					labels={ {
-						title: __(
-							'Return to Cart button',
-							'woo-gutenberg-products-block'
-						),
-						default: __(
-							'WooCommerce Cart Page',
-							'woo-gutenberg-products-block'
-						),
-					} }
-				/>
-			) }
+			{ showReturnToCart &&
+				! (
+					currentPostId === CHECKOUT_PAGE_ID && cartPageId === 0
+				) && (
+					<PageSelector
+						pageId={ cartPageId }
+						setPageId={ ( id ) =>
+							setAttributes( { cartPageId: id } )
+						}
+						labels={ {
+							title: __(
+								'Return to Cart button',
+								'woo-gutenberg-products-block'
+							),
+							default: __(
+								'WooCommerce Cart Page',
+								'woo-gutenberg-products-block'
+							),
+						} }
+					/>
+				) }
 
 			<FeedbackPrompt
 				text={ __(

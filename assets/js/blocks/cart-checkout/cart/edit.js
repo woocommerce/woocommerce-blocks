@@ -107,21 +107,24 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 					/>
 				</PanelBody>
 			) }
-			<PageSelector
-				pageId={ checkoutPageId }
-				setPageId={ ( id ) => setAttributes( { checkoutPageId: id } ) }
-				defaultPageId={ CART_PAGE_ID }
-				labels={ {
-					title: __(
-						'Proceed to Checkout button',
-						'woo-gutenberg-products-block'
-					),
-					default: __(
-						'WooCommerce Checkout Page',
-						'woo-gutenberg-products-block'
-					),
-				} }
-			/>
+			{ ! ( currentPostId === CART_PAGE_ID && checkoutPageId === 0 ) && (
+				<PageSelector
+					pageId={ checkoutPageId }
+					setPageId={ ( id ) =>
+						setAttributes( { checkoutPageId: id } )
+					}
+					labels={ {
+						title: __(
+							'Proceed to Checkout button',
+							'woo-gutenberg-products-block'
+						),
+						default: __(
+							'WooCommerce Checkout Page',
+							'woo-gutenberg-products-block'
+						),
+					} }
+				/>
+			) }
 			<FeedbackPrompt
 				text={ __(
 					'We are currently working on improving our cart and checkout blocks, providing merchants with the tools and customization options they need.',
