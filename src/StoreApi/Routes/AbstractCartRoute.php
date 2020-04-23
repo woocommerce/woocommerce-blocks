@@ -22,6 +22,7 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	 * @return \WP_Error|\WP_REST_Response
 	 */
 	public function get_response( \WP_REST_Request $request ) {
+		$this->maybe_load_cart();
 		$this->maybe_recalculate_totals();
 		return parent::get_response( $request );
 	}

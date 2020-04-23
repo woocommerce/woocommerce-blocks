@@ -26,7 +26,6 @@ class RestApi {
 	 */
 	public static function init() {
 		add_action( 'rest_api_init', array( __CLASS__, 'register_rest_routes' ), 10 );
-		add_filter( 'rest_authentication_errors', array( __CLASS__, 'maybe_init_cart_session' ), 1 );
 		add_filter( 'rest_authentication_errors', array( __CLASS__, 'store_api_authentication' ) );
 		add_action( 'woocommerce_rest_checkout_process_payment_with_context', array( __CLASS__, 'process_legacy_payment' ), 999, 2 );
 	}
@@ -88,26 +87,7 @@ class RestApi {
 		if ( ! empty( $result ) || ! self::is_request_to_store_api() ) {
 			return $result;
 		}
-
 		return true;
-	}
-
-	/**
-	 * If we're making a cart request, we may need to load some additional classes from WC Core so we're ready to deal with requests.
-	 *
-	 * Note: We load the session here early so guest nonces are in place.
-	 *
-	 * @param mixed $return Value being filtered.
-	 * @return mixed
-	 */
-	public static function maybe_init_cart_session( $return ) {
-		if ( function_exists( 'wc_load_cart' ) && ! \is_wp_error( $return ) && self::is_request_to_store_api() ) {
-			// @todo Load Dependencies for wc_load_cart(). See https://github.com/woocommerce/woocommerce/pull/26219
-			include_once WC_ABSPATH . 'includes/wc-cart-functions.php';
-			include_once WC_ABSPATH . 'includes/wc-notice-functions.php';
-			wc_load_cart();
-		}
-		return $return;
 	}
 
 	/**

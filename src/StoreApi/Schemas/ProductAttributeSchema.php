@@ -88,7 +88,7 @@ class ProductAttributeSchema extends AbstractSchema {
 			'type'         => $attribute->type,
 			'order'        => $attribute->order_by,
 			'has_archives' => $attribute->has_archives,
-			'count'        => \wp_count_terms( $attribute->slug ),
+			'count'        => (int) \wp_count_terms( $attribute->slug ),
 		];
 	}
 }

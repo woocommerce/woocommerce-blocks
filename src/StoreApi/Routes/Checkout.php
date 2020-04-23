@@ -36,6 +36,7 @@ class Checkout extends AbstractRoute {
 	 * @return \WP_Error|\WP_REST_Response
 	 */
 	public function get_response( \WP_REST_Request $request ) {
+		$this->maybe_load_cart();
 		$response = null;
 		try {
 			$this->check_nonce( $request );
