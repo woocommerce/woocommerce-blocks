@@ -254,6 +254,8 @@ export function* addItemToCart( productId, quantity = 1 ) {
 		// Re-throw the error.
 		throw error;
 	}
+
+	return true;
 }
 
 /**

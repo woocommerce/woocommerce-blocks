@@ -42,7 +42,7 @@ const getQuantityFromCartItems = ( cartItems, productId ) => {
 export const useStoreAddToCart = ( productId ) => {
 	const { addItemToCart } = useDispatch( storeKey );
 	const { cartItems, cartIsLoading } = useStoreCart();
-	const { addErrorNotice } = useStoreNotices();
+	const { addErrorNotice, removeNotice } = useStoreNotices();
 
 	const [ addingToCart, setAddingToCart ] = useState( false );
 	const currentCartItemQuantity = useRef(
@@ -52,6 +52,11 @@ export const useStoreAddToCart = ( productId ) => {
 	const addToCart = () => {
 		setAddingToCart( true );
 		addItemToCart( productId )
+			.then( ( result ) => {
+				if ( result === true ) {
+					removeNotice( 'add-to-cart' );
+				}
+			} )
 			.catch( ( error ) => {
 				addErrorNotice( error.message, {
 					context: 'wc/all-products',
