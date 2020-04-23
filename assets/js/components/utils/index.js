@@ -96,6 +96,17 @@ export const getAttributes = () => {
 	} );
 };
 
+/**
+ * Get a promise that resolves to a list of attribute term objects from the Store API.
+ *
+ * @param {number} attribute Id of the attribute to retrieve terms for.
+ */
+export const getTerms = ( attribute ) => {
+	return apiFetch( {
+		path: `wc/store/products/attributes/${ attribute }/terms`,
+	} );
+};
+
 const getProductTagsRequests = ( { selected = [], search } ) => {
 	const requests = [
 		addQueryArgs( `${ ENDPOINTS.products }/tags`, {
@@ -163,17 +174,6 @@ export const getProductVariations = ( product ) => {
 		path: addQueryArgs( `${ ENDPOINTS.products }/${ product }/variations`, {
 			per_page: -1,
 		} ),
-	} );
-};
-
-export const getTerms = ( attribute ) => {
-	return apiFetch( {
-		path: addQueryArgs(
-			`${ ENDPOINTS.products }/attributes/${ attribute }/terms`,
-			{
-				per_page: -1,
-			}
-		),
 	} );
 };
 

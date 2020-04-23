@@ -125,11 +125,10 @@ class RestApi {
 	 */
 	protected static function get_controllers() {
 		return [
-			'product-attribute-terms' => __NAMESPACE__ . '\RestApi\Controllers\ProductAttributeTerms',
-			'product-categories'      => __NAMESPACE__ . '\RestApi\Controllers\ProductCategories',
-			'product-tags'            => __NAMESPACE__ . '\RestApi\Controllers\ProductTags',
-			'variations'              => __NAMESPACE__ . '\RestApi\Controllers\Variations',
-			'product-reviews'         => __NAMESPACE__ . '\RestApi\Controllers\ProductReviews',
+			'product-categories' => __NAMESPACE__ . '\RestApi\Controllers\ProductCategories',
+			'product-tags'       => __NAMESPACE__ . '\RestApi\Controllers\ProductTags',
+			'variations'         => __NAMESPACE__ . '\RestApi\Controllers\Variations',
+			'product-reviews'    => __NAMESPACE__ . '\RestApi\Controllers\ProductReviews',
 		];
 	}
 
