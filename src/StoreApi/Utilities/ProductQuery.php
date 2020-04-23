@@ -39,8 +39,27 @@ class ProductQuery {
 			'ignore_sticky_posts' => true,
 			'post_status'         => 'publish',
 			'date_query'          => [],
-			'post_type'           => empty( $request['sku'] ) ? 'product' : [ 'product', 'product_variation' ],
+			'post_type'           => 'product',
 		];
+
+		// If searching for a specific SKU, allow any post type.
+		if ( ! empty( $request['sku'] ) ) {
+			$args['post_type'] = [ 'product', 'product_variation' ];
+		}
+
+		// Filter product type by slug.
+		if ( ! empty( $request['type'] ) ) {
+			if ( 'variation' === $request['type'] ) {
+				$args['post_type'] = 'product_variation';
+			} else {
+				$args['post_type'] = 'product';
+				$tax_query[]       = [
+					'taxonomy' => 'product_type',
+					'field'    => 'slug',
+					'terms'    => $request['type'],
+				];
+			}
+		}
 
 		if ( 'date' === $args['orderby'] ) {
 			$args['orderby'] = 'date ID';
@@ -101,15 +120,6 @@ class ProductQuery {
 					'operator' => $operator,
 				];
 			}
-		}
-
-		// Filter product type by slug.
-		if ( ! empty( $request['type'] ) ) {
-			$tax_query[] = [
-				'taxonomy' => 'product_type',
-				'field'    => 'slug',
-				'terms'    => $request['type'],
-			];
 		}
 
 		// Filter by attributes.

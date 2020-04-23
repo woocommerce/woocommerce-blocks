@@ -58,7 +58,7 @@ class ProductSchema extends AbstractSchema {
 				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
 			],
-			'parent_id'           => [
+			'parent'              => [
 				'description' => __( 'ID of the parent product, if applicable.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
@@ -241,7 +241,7 @@ class ProductSchema extends AbstractSchema {
 		return [
 			'id'                  => $product->get_id(),
 			'name'                => $this->prepare_html_response( $product->get_title() ),
-			'parent_id'           => $product->get_parent_id(),
+			'parent'              => $product->get_parent_id(),
 			'variation'           => $this->prepare_html_response( $product->is_type( 'variation' ) ? wc_get_formatted_variation( $product, true, true, false ) : '' ),
 			'permalink'           => $product->get_permalink(),
 			'sku'                 => $this->prepare_html_response( $product->get_sku() ),

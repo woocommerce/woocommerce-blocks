@@ -179,7 +179,11 @@ export const getCategory = ( categoryId ) => {
  */
 export const getProductVariations = ( product ) => {
 	return apiFetch( {
-		path: addQueryArgs( `wc/store/products/${ product }/variations` ),
+		path: addQueryArgs( `wc/store/products`, {
+			per_page: 0,
+			type: 'variation',
+			parent: product,
+		} ),
 	} );
 };
 

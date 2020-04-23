@@ -106,7 +106,7 @@ class Products extends AbstractRoute {
 	 * @return array
 	 */
 	public function get_collection_params() {
-		$params                       = array();
+		$params                       = [];
 		$params['context']            = $this->get_context_param();
 		$params['context']['default'] = 'view';
 
@@ -169,7 +169,7 @@ class Products extends AbstractRoute {
 			'items'             => array(
 				'type' => 'integer',
 			),
-			'default'           => array(),
+			'default'           => [],
 			'sanitize_callback' => 'wp_parse_id_list',
 		);
 
@@ -179,7 +179,7 @@ class Products extends AbstractRoute {
 			'items'             => array(
 				'type' => 'integer',
 			),
-			'default'           => array(),
+			'default'           => [],
 			'sanitize_callback' => 'wp_parse_id_list',
 		);
 
@@ -224,8 +224,8 @@ class Products extends AbstractRoute {
 			'items'             => array(
 				'type' => 'integer',
 			),
+			'default'           => [],
 			'sanitize_callback' => 'wp_parse_id_list',
-			'default'           => array(),
 		);
 
 		$params['parent_exclude'] = array(
@@ -235,13 +235,13 @@ class Products extends AbstractRoute {
 				'type' => 'integer',
 			),
 			'sanitize_callback' => 'wp_parse_id_list',
-			'default'           => array(),
+			'default'           => [],
 		);
 
 		$params['type'] = array(
 			'description'       => __( 'Limit result set to products assigned a specific type.', 'woo-gutenberg-products-block' ),
 			'type'              => 'string',
-			'enum'              => array_keys( wc_get_product_types() ),
+			'enum'              => array_merge( array_keys( wc_get_product_types() ), [ 'variation' ] ),
 			'sanitize_callback' => 'sanitize_key',
 			'validate_callback' => 'rest_validate_request_arg',
 		);
@@ -349,7 +349,7 @@ class Products extends AbstractRoute {
 					),
 				),
 			),
-			'default'     => array(),
+			'default'     => [],
 		);
 
 		$params['attribute_relation'] = array(
@@ -376,7 +376,7 @@ class Products extends AbstractRoute {
 				'type' => 'integer',
 				'enum' => range( 1, 5 ),
 			),
-			'default'           => array(),
+			'default'           => [],
 			'sanitize_callback' => 'wp_parse_id_list',
 		);
 

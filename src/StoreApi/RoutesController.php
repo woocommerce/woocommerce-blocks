@@ -97,7 +97,6 @@ class RoutesController {
 			'product-tags'              => new Routes\ProductTags( $this->schemas->get( 'term' ) ),
 			'products'                  => new Routes\Products( $this->schemas->get( 'product' ) ),
 			'products-by-id'            => new Routes\ProductsById( $this->schemas->get( 'product' ) ),
-			'products-by-id-variations' => new Routes\ProductsByIdVariations( $this->schemas->get( 'product' ) ),
 		];
 	}
 }
