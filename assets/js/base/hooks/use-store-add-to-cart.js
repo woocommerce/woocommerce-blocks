@@ -61,6 +61,7 @@ export const useStoreAddToCart = ( productId ) => {
 				addErrorNotice( error.message, {
 					context: 'wc/all-products',
 					id: 'add-to-cart',
+					isDismissible: true,
 				} );
 			} )
 			.finally( () => {
