@@ -77,6 +77,9 @@ class SchemaController {
 				new Schemas\ImageAttachmentSchema()
 			),
 			'product-collection-data' => new Schemas\ProductCollectionDataSchema(),
+			'product-review'          => new Schemas\ProductReviewSchema(
+				new Schemas\ImageAttachmentSchema()
+			),
 			'term'                    => new Schemas\TermSchema(),
 		];
 	}

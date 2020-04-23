@@ -35,14 +35,6 @@ class RestApi {
 	 * Register REST API routes.
 	 */
 	public static function register_rest_routes() {
-		// Init the REST API.
-		$controllers = self::get_controllers();
-
-		foreach ( $controllers as $name => $class ) {
-			$instance = new $class();
-			$instance->register_routes();
-		}
-
 		// Init the Store API.
 		$schemas = new SchemaController();
 		$routes  = new RoutesController( $schemas );
@@ -116,17 +108,6 @@ class RestApi {
 			wc_load_cart();
 		}
 		return $return;
-	}
-
-	/**
-	 * Return a list of controller classes for this REST API namespace.
-	 *
-	 * @return array
-	 */
-	protected static function get_controllers() {
-		return [
-			'product-reviews' => __NAMESPACE__ . '\RestApi\Controllers\ProductReviews',
-		];
 	}
 
 	/**

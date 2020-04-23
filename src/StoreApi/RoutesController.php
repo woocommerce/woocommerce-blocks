@@ -93,6 +93,7 @@ class RoutesController {
 			'product-categories'        => new Routes\ProductCategories( $this->schemas->get( 'product-category' ) ),
 			'product-categories-by-id'  => new Routes\ProductCategoriesById( $this->schemas->get( 'product-category' ) ),
 			'product-collection-data'   => new Routes\ProductCollectionData( $this->schemas->get( 'product-collection-data' ) ),
+			'product-reviews'           => new Routes\ProductReviews( $this->schemas->get( 'product-review' ) ),
 			'product-tags'              => new Routes\ProductTags( $this->schemas->get( 'term' ) ),
 			'products'                  => new Routes\Products( $this->schemas->get( 'product' ) ),
 			'products-by-id'            => new Routes\ProductsById( $this->schemas->get( 'product' ) ),
