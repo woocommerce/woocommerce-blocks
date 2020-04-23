@@ -54,7 +54,12 @@ const CheckoutOrderSummaryItem = ( { cartItem } ) => {
 			</div>
 			<div className="wc-block-order-summary-item__description">
 				<div className="wc-block-order-summary-item__header">
-					<ProductName permalink={ permalink } name={ name } />
+					<ProductName
+						permalink={ permalink }
+						name={ name }
+						target="_blank"
+						rel="noopener noreferrer"
+					/>
 					<ProductPrice
 						className="wc-block-order-summary-item__total-price"
 						currency={ currency }
