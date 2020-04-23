@@ -2,4 +2,5 @@
 	color: $core-grey-dark-600;
 	font-size: 16px;
 	display: block;
+	@include wrapBreakWord();
 }
