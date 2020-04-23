@@ -8,6 +8,11 @@ import { useStoreCart } from '@woocommerce/base-hooks';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 
 /**
+ * Internal dependencies
+ */
+import { useStoreNotices } from './use-store-notices';
+
+/**
  * @typedef {import('@woocommerce/type-defs/hooks').StoreCartItemAddToCart} StoreCartItemAddToCart
  */
 
@@ -37,6 +42,7 @@ const getQuantityFromCartItems = ( cartItems, productId ) => {
 export const useStoreAddToCart = ( productId ) => {
 	const { addItemToCart } = useDispatch( storeKey );
 	const { cartItems, cartIsLoading } = useStoreCart();
+	const { addErrorNotice } = useStoreNotices();
 
 	const [ addingToCart, setAddingToCart ] = useState( false );
 	const currentCartItemQuantity = useRef(
@@ -45,9 +51,16 @@ export const useStoreAddToCart = ( productId ) => {
 
 	const addToCart = () => {
 		setAddingToCart( true );
-		addItemToCart( productId ).finally( () => {
-			setAddingToCart( false );
-		} );
+		addItemToCart( productId )
+			.catch( ( error ) => {
+				addErrorNotice( error.message, {
+					context: 'wc/all-products',
+					id: 'add-to-cart',
+				} );
+			} )
+			.finally( () => {
+				setAddingToCart( false );
+			} );
 	};
 
 	useEffect( () => {
