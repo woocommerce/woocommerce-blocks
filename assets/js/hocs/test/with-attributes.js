@@ -1,11 +1,11 @@
 /**
  * External dependencies
- */
+
 import TestRenderer from 'react-test-renderer';
 
 /**
  * Internal dependencies
- */
+
 import withAttributes from '../with-attributes';
 import * as mockUtils from '../../components/utils';
 import * as mockBaseUtils from '../../base/utils/errors';
@@ -143,3 +143,4 @@ describe( 'withAttributes Component', () => {
 		} );
 	} );
 } );
+*/
