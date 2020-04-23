@@ -125,7 +125,6 @@ class RestApi {
 	 */
 	protected static function get_controllers() {
 		return [
-			'variations'      => __NAMESPACE__ . '\RestApi\Controllers\Variations',
 			'product-reviews' => __NAMESPACE__ . '\RestApi\Controllers\ProductReviews',
 		];
 	}

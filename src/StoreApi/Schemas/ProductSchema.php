@@ -58,6 +58,12 @@ class ProductSchema extends AbstractSchema {
 				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
 			],
+			'parent_id'           => [
+				'description' => __( 'ID of the parent product, if applicable.', 'woo-gutenberg-products-block' ),
+				'type'        => 'integer',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+			],
 			'variation'           => [
 				'description' => __( 'Product variation attributes, if applicable.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
@@ -172,6 +178,12 @@ class ProductSchema extends AbstractSchema {
 					'properties' => $this->image_attachment_schema->get_properties(),
 				],
 			],
+			'variations'          => [
+				'description' => __( 'List of variation IDs, if applicable.', 'woo-gutenberg-products-block' ),
+				'type'        => 'array',
+				'context'     => [ 'view', 'edit' ],
+				'items'       => 'number',
+			],
 			'has_options'         => [
 				'description' => __( 'Does the product have options?', 'woo-gutenberg-products-block' ),
 				'type'        => 'boolean',
@@ -229,6 +241,7 @@ class ProductSchema extends AbstractSchema {
 		return [
 			'id'                  => $product->get_id(),
 			'name'                => $this->prepare_html_response( $product->get_title() ),
+			'parent_id'           => $product->get_parent_id(),
 			'variation'           => $this->prepare_html_response( $product->is_type( 'variation' ) ? wc_get_formatted_variation( $product, true, true, false ) : '' ),
 			'permalink'           => $product->get_permalink(),
 			'sku'                 => $this->prepare_html_response( $product->get_sku() ),
@@ -241,6 +254,7 @@ class ProductSchema extends AbstractSchema {
 			'average_rating'      => $product->get_average_rating(),
 			'review_count'        => $product->get_review_count(),
 			'images'              => $this->get_images( $product ),
+			'variations'          => $product->is_type( 'variable' ) ? $product->get_visible_children() : [],
 			'has_options'         => $product->has_options(),
 			'is_purchasable'      => $product->is_purchasable(),
 			'is_in_stock'         => $product->is_in_stock(),

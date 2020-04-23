@@ -4,11 +4,7 @@
 import { addQueryArgs } from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
 import { flatten, uniqBy } from 'lodash';
-import {
-	ENDPOINTS,
-	IS_LARGE_CATALOG,
-	LIMIT_TAGS,
-} from '@woocommerce/block-settings';
+import { IS_LARGE_CATALOG, LIMIT_TAGS } from '@woocommerce/block-settings';
 
 /**
  * Get product query requests for the Store API.
@@ -152,7 +148,7 @@ export const getProductTags = ( { selected = [], search } ) => {
 };
 
 /**
- * Get a promise that resolves to an array of category objects from the Store API.
+ * Get a promise that resolves to a list of category objects from the Store API.
  *
  * @param {Object} queryArgs Query args to pass in.
  */
@@ -176,11 +172,14 @@ export const getCategory = ( categoryId ) => {
 	} );
 };
 
+/**
+ * Get a promise that resolves to a list of variation objects from the Store API.
+ *
+ * @param {number} product Product ID.
+ */
 export const getProductVariations = ( product ) => {
 	return apiFetch( {
-		path: addQueryArgs( `${ ENDPOINTS.products }/${ product }/variations`, {
-			per_page: -1,
-		} ),
+		path: addQueryArgs( `wc/store/products/${ product }/variations` ),
 	} );
 };
 
