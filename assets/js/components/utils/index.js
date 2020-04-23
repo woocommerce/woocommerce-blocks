@@ -24,7 +24,7 @@ const getProductsRequests = ( {
 	queryArgs = [],
 } ) => {
 	const defaultArgs = {
-		per_page: IS_LARGE_CATALOG ? 100 : -1,
+		per_page: IS_LARGE_CATALOG ? 100 : 0,
 		catalog_visibility: 'any',
 		search,
 		orderby: 'title',
@@ -107,10 +107,17 @@ export const getTerms = ( attribute ) => {
 	} );
 };
 
+/**
+ * Get product tag query requests for the Store API.
+ *
+ * @param {Object} request A query object with the list of selected products and search term.
+ * @param {string} request.selected Currently selected tags.
+ * @param {string} request.search Search string.
+ */
 const getProductTagsRequests = ( { selected = [], search } ) => {
 	const requests = [
-		addQueryArgs( `${ ENDPOINTS.products }/tags`, {
-			per_page: LIMIT_TAGS ? 100 : -1,
+		addQueryArgs( `wc/store/products/tags`, {
+			per_page: LIMIT_TAGS ? 100 : 0,
 			orderby: LIMIT_TAGS ? 'count' : 'name',
 			order: LIMIT_TAGS ? 'desc' : 'asc',
 			search,
@@ -120,7 +127,7 @@ const getProductTagsRequests = ( { selected = [], search } ) => {
 	// If we have a large catalog, we might not get all selected products in the first page.
 	if ( LIMIT_TAGS && selected.length ) {
 		requests.push(
-			addQueryArgs( `${ ENDPOINTS.products }/tags`, {
+			addQueryArgs( `wc/store/products/tags`, {
 				include: selected,
 			} )
 		);
@@ -130,7 +137,7 @@ const getProductTagsRequests = ( { selected = [], search } ) => {
 };
 
 /**
- * Get a promise that resolves to a list of tags from the API.
+ * Get a promise that resolves to a list of tags from the Store API.
  *
  * @param {Object} - A query object with the list of selected products and search term.
  */
@@ -145,27 +152,27 @@ export const getProductTags = ( { selected = [], search } ) => {
 };
 
 /**
+ * Get a promise that resolves to an array of category objects from the Store API.
+ *
+ * @param {Object} queryArgs Query args to pass in.
+ */
+export const getCategories = ( queryArgs ) => {
+	return apiFetch( {
+		path: addQueryArgs( `wc/store/products/categories`, {
+			per_page: 0,
+			...queryArgs,
+		} ),
+	} );
+};
+
+/**
  * Get a promise that resolves to a category object from the API.
  *
  * @param {number} categoryId Id of the product to retrieve.
  */
 export const getCategory = ( categoryId ) => {
 	return apiFetch( {
-		path: `${ ENDPOINTS.categories }/${ categoryId }`,
-	} );
-};
-
-/**
- * Get a promise that resolves to an array of category objects from the API.
- *
- * @param {Object} queryArgs Query args to pass in.
- */
-export const getCategories = ( queryArgs ) => {
-	return apiFetch( {
-		path: addQueryArgs( `${ ENDPOINTS.products }/categories`, {
-			per_page: -1,
-			...queryArgs,
-		} ),
+		path: `wc/store/products/categories/${ categoryId }`,
 	} );
 };
 

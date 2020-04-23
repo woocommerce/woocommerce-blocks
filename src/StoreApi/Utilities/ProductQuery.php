@@ -31,7 +31,7 @@ class ProductQuery {
 			'paged'               => $request['page'],
 			'post__in'            => $request['include'],
 			'post__not_in'        => $request['exclude'],
-			'posts_per_page'      => $request['per_page'],
+			'posts_per_page'      => $request['per_page'] ? $request['per_page'] : -1,
 			'post_parent__in'     => $request['parent'],
 			'post_parent__not_in' => $request['parent_exclude'],
 			's'                   => $request['search'],
@@ -252,7 +252,7 @@ class ProductQuery {
 		return [
 			'results' => $results,
 			'total'   => (int) $total_posts,
-			'pages'   => (int) ceil( $total_posts / (int) $query->query_vars['posts_per_page'] ),
+			'pages'   => $query->query_vars['posts_per_page'] > 0 ? (int) ceil( $total_posts / (int) $query->query_vars['posts_per_page'] ) : 1,
 		];
 	}
 

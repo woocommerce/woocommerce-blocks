@@ -18,15 +18,6 @@ use Automattic\WooCommerce\Blocks\StoreApi\Utilities\ProductQuery;
  */
 class Products extends AbstractRoute {
 	/**
-	 * Get the namespace for this route.
-	 *
-	 * @return string
-	 */
-	public function get_namespace() {
-		return 'wc/store';
-	}
-
-	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string
@@ -129,10 +120,10 @@ class Products extends AbstractRoute {
 		);
 
 		$params['per_page'] = array(
-			'description'       => __( 'Maximum number of items to be returned in result set.', 'woo-gutenberg-products-block' ),
+			'description'       => __( 'Maximum number of items to be returned in result set. Defaults to no limit if left blank.', 'woo-gutenberg-products-block' ),
 			'type'              => 'integer',
 			'default'           => 10,
-			'minimum'           => 1,
+			'minimum'           => 0,
 			'maximum'           => 100,
 			'sanitize_callback' => 'absint',
 			'validate_callback' => 'rest_validate_request_arg',
