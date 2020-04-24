@@ -6,6 +6,7 @@ import { useDispatch } from '@wordpress/data';
 import { find } from 'lodash';
 import { useStoreCart } from '@woocommerce/base-hooks';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
+import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Internal dependencies
@@ -58,7 +59,7 @@ export const useStoreAddToCart = ( productId ) => {
 				}
 			} )
 			.catch( ( error ) => {
-				addErrorNotice( error.message, {
+				addErrorNotice( decodeEntities( error.message ), {
 					context: 'wc/all-products',
 					id: 'add-to-cart',
 					isDismissible: true,
