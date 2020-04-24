@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
  */
 import './style.scss';
 
-const ProductName = ( { name, permalink, disabled = false, ...rest } ) => {
+const ProductName = ( { name, permalink, disabled } ) => {
 	return (
 		// we use tabIndex -1 to prevent the link from being focused, pointer-events
 		// disabled click events, so we get an almost disabled link.
@@ -16,7 +16,6 @@ const ProductName = ( { name, permalink, disabled = false, ...rest } ) => {
 			className="wc-block-product-name"
 			href={ permalink }
 			tabIndex={ disabled ? -1 : 0 }
-			{ ...rest }
 		>
 			{ name }
 		</a>
@@ -24,9 +23,8 @@ const ProductName = ( { name, permalink, disabled = false, ...rest } ) => {
 };
 
 ProductName.propTypes = {
-	name: PropTypes.string.isRequired,
-	permalink: PropTypes.string.isRequired,
-	disabled: PropTypes.bool,
+	name: PropTypes.string,
+	permalink: PropTypes.string,
 };
 
 export default ProductName;

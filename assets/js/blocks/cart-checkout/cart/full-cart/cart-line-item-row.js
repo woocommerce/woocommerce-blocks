@@ -97,12 +97,7 @@ const CartLineItemRow = ( { lineItem } ) => {
 				aria-hidden={ ! firstImage.alt }
 			>
 				{ /* We don't need to make it focusable, because product name has the same link. */ }
-				<a
-					href={ permalink }
-					tabIndex={ -1 }
-					target="_blank"
-					rel="noopener noreferrer"
-				>
+				<a href={ permalink } tabIndex={ -1 }>
 					<ProductImage image={ firstImage } />
 				</a>
 			</td>
@@ -111,8 +106,6 @@ const CartLineItemRow = ( { lineItem } ) => {
 					permalink={ permalink }
 					name={ name }
 					disabled={ isPendingDelete }
-					target="_blank"
-					rel="noopener noreferrer"
 				/>
 				<ProductLowStockBadge lowStockRemaining={ lowStockRemaining } />
 				<ProductMetadata summary={ summary } variation={ variation } />
