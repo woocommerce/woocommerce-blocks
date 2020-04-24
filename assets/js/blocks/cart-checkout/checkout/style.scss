@@ -91,6 +91,8 @@
 	.wc-block-product-name {
 		flex-grow: 1;
 		margin-right: 0.5em;
+		// Required by IE11.
+		flex-basis: 0;
 	}
 
 	.wc-block-order-summary-item__prices {
