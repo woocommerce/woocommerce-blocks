@@ -73,7 +73,13 @@ class ProductCategorySchema extends TermSchema {
 	 * @return array
 	 */
 	public function get_item_response( $term ) {
-		$response                 = parent::get_item_response( $term );
+		$response = parent::get_item_response( $term );
+		$count    = get_term_meta( $term->term_id, 'product_count_product_cat', true );
+
+		if ( $count ) {
+			$response['count'] = (int) $count;
+		}
+
 		$response['image']        = $this->image_attachment_schema->get_item_response( get_term_meta( $term->term_id, 'thumbnail_id', true ) );
 		$response['review_count'] = $this->get_category_review_count( $term );
 		$response['permalink']    = get_term_link( $term->term_id, 'product_cat' );
