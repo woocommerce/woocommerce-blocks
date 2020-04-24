@@ -81,12 +81,7 @@ export const useStoreCartItemQuantity = ( cartItem ) => {
 		// Don't run it if quantity didn't change but it was set for the first time.
 		if ( cartItemKey && Number.isFinite( previousDebouncedQuantity ) ) {
 			changeCartItemQuantity( cartItemKey, debouncedQuantity ).then(
-				() => {
-					// This is a hack to trigger cart updates till we migrate to block based cart
-					// that relies on the store, see
-					// https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1247
-					triggerFragmentRefresh();
-				}
+				triggerFragmentRefresh
 			);
 		}
 	}, [ debouncedQuantity, cartItemKey ] );

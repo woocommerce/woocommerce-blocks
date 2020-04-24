@@ -45,9 +45,6 @@ const ProductButton = ( { product, className } ) => {
 
 	const firstMount = useRef( true );
 
-	// This is a hack to trigger cart updates till we migrate to block based cart
-	// that relies on the store, see
-	// https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1247
 	useEffect( () => {
 		// Avoid running on first mount when cart quantity is first set.
 		if ( firstMount.current ) {
