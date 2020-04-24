@@ -7,18 +7,17 @@
 
 namespace Automattic\WooCommerce\Blocks\Domain;
 
-use Automattic\WooCommerce\Blocks\Assets as OldAssets;
+use Automattic\WooCommerce\Blocks\Assets as BlockAssets;
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 use Automattic\WooCommerce\Blocks\Assets\BackCompatAssetDataRegistry;
-use Automattic\WooCommerce\Blocks\Assets\PaymentMethodAssets;
-use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
 use Automattic\WooCommerce\Blocks\Library;
 use Automattic\WooCommerce\Blocks\Registry\Container;
 use Automattic\WooCommerce\Blocks\RestApi;
+use Automattic\WooCommerce\Blocks\Payments\Api as PaymentsApi;
+use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\Stripe;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\Cheque;
-
 
 /**
  * Takes care of bootstrapping the plugin.
@@ -59,66 +58,24 @@ class Bootstrap {
 	/**
 	 * Init the package - load the blocks library and define constants.
 	 */
-	public function init() {
-		if ( ! $this->has_dependencies() ) {
+	protected function init() {
+		if ( ! $this->has_core_dependencies() ) {
 			return;
 		}
-
 		$this->remove_core_blocks();
+		$this->add_build_notice();
 		$this->define_feature_flag();
-
-		// register core dependencies with the container.
-		$this->container->register(
-			AssetApi::class,
-			function ( Container $container ) {
-				return new AssetApi( $container->get( Package::class ) );
-			}
-		);
-		$this->container->register(
-			AssetDataRegistry::class,
-			function( Container $container ) {
-				$asset_api        = $container->get( AssetApi::class );
-				$load_back_compat = defined( 'WC_ADMIN_VERSION_NUMBER' )
-					&& version_compare( WC_ADMIN_VERSION_NUMBER, '0.19.0', '<=' );
-				return $load_back_compat
-					? new BackCompatAssetDataRegistry( $asset_api )
-					: new AssetDataRegistry( $asset_api );
-			}
-		);
-		$this->container->register(
-			PaymentMethodRegistry::class,
-			function( Container $container ) {
-				return new PaymentMethodRegistry();
-			}
-		);
-		$this->container->register(
-			PaymentMethodAssets::class,
-			function( Container $container ) {
-				$payment_method_registry = $container->get( PaymentMethodRegistry::class );
-				$asset_data_registry     = $container->get( AssetDataRegistry::class );
-				return new PaymentMethodAssets( $payment_method_registry, $asset_data_registry );
-			}
-		);
-
-		// load AssetDataRegistry.
-		$this->container->get( AssetDataRegistry::class );
-
-		// load PaymentMethodAssets.
-		$this->container->get( PaymentMethodAssets::class );
-
-		$this->load_payment_method_integrations();
-
-		Library::init();
-		OldAssets::init();
-		RestApi::init();
+		$this->register_dependencies();
+		$this->register_payment_methods();
+		$this->initialize_dependencies();
 	}
 
 	/**
-	 * Check dependencies exist.
+	 * Check core dependencies exist.
 	 *
 	 * @return boolean
 	 */
-	protected function has_dependencies() {
+	protected function has_core_dependencies() {
 		return class_exists( 'WooCommerce' ) && function_exists( 'register_block_type' );
 	}
 
@@ -191,12 +148,55 @@ class Bootstrap {
 	}
 
 	/**
-	 * This is a temporary method that is used for setting up payment method
-	 * integrations with Cart and Checkout blocks. This logic should get moved
-	 * to the payment gateway extensions.
+	 * Register core dependencies with the container.
 	 */
-	protected function load_payment_method_integrations() {
-		// stripe registration.
+	protected function register_dependencies() {
+		$this->container->register(
+			AssetApi::class,
+			function ( Container $container ) {
+				return new AssetApi( $container->get( Package::class ) );
+			}
+		);
+		$this->container->register(
+			AssetDataRegistry::class,
+			function( Container $container ) {
+				$asset_api        = $container->get( AssetApi::class );
+				$load_back_compat = defined( 'WC_ADMIN_VERSION_NUMBER' )
+					&& version_compare( WC_ADMIN_VERSION_NUMBER, '0.19.0', '<=' );
+				return $load_back_compat
+					? new BackCompatAssetDataRegistry( $asset_api )
+					: new AssetDataRegistry( $asset_api );
+			}
+		);
+		$this->container->register(
+			PaymentMethodRegistry::class,
+			function( Container $container ) {
+				return new PaymentMethodRegistry();
+			}
+		);
+		$this->container->register(
+			PaymentsApi::class,
+			function ( Container $container ) {
+				$payment_method_registry = $container->get( PaymentMethodRegistry::class );
+				$asset_data_registry     = $container->get( AssetDataRegistry::class );
+				return new PaymentsApi( $payment_method_registry, $asset_data_registry );
+			}
+		);
+		$this->container->register(
+			RestApi::class,
+			function ( Container $container ) {
+				return new RestApi();
+			}
+		);
+	}
+
+	/**
+	 * Register payment method integrations with the container.
+	 *
+	 * @internal Stripe is a temporary method that is used for setting up payment method integrations with Cart and
+	 *           Checkout blocks. This logic should get moved to the payment gateway extensions.
+	 */
+	protected function register_payment_methods() {
 		$this->container->register(
 			Stripe::class,
 			function( Container $container ) {
@@ -204,7 +204,6 @@ class Bootstrap {
 				return new Stripe( $asset_api );
 			}
 		);
-		// cheque registration.
 		$this->container->register(
 			Cheque::class,
 			function( Container $container ) {
@@ -212,19 +211,16 @@ class Bootstrap {
 				return new Cheque( $asset_api );
 			}
 		);
-		add_action(
-			'woocommerce_blocks_payment_method_type_registration',
-			function( $payment_method_registry ) {
-				// This is temporarily registering Stripe until it's moved to the extension.
-				if ( class_exists( 'WC_Stripe' ) && ! $payment_method_registry->is_registered( 'stripe' ) ) {
-					$payment_method_registry->register(
-						$this->container->get( Stripe::class )
-					);
-				}
-				$payment_method_registry->register(
-					$this->container->get( Cheque::class )
-				);
-			}
-		);
+	}
+
+	/**
+	 * Initialize core dependencies that were registered in the container.
+	 */
+	protected function initialize_dependencies() {
+		$this->container->get( AssetDataRegistry::class );
+		$this->container->get( PaymentsApi::class );
+		$this->container->get( RestApi::class );
+		Library::init();
+		BlockAssets::init();
 	}
 }
