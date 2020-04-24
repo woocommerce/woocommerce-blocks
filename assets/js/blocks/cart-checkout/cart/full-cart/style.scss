@@ -211,10 +211,8 @@ table.wc-block-cart-items {
 				grid-column-end: 4;
 				grid-row-start: 1;
 				justify-self: stretch;
-				padding-bottom: $gap;
-			}
-			.wc-block-product-name {
 				margin-right: 24px;
+				padding-bottom: $gap;
 			}
 			.wc-block-cart-item__quantity {
 				grid-column-start: 2;
