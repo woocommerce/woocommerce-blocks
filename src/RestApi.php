@@ -13,7 +13,6 @@ use Automattic\WooCommerce\Blocks\StoreApi\RoutesController;
 use Automattic\WooCommerce\Blocks\StoreApi\SchemaController;
 use Automattic\WooCommerce\Blocks\Payments\PaymentResult;
 use Automattic\WooCommerce\Blocks\Payments\PaymentContext;
-use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\NoticeHandler;
 
 /**

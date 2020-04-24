@@ -65,11 +65,6 @@ class Bootstrap {
 		}
 
 		$this->remove_core_blocks();
-
-		if ( ! $this->is_built() ) {
-			$this->add_build_notice();
-		}
-
 		$this->define_feature_flag();
 
 		// register core dependencies with the container.
@@ -142,6 +137,9 @@ class Bootstrap {
 	 * Add a notice stating that the build has not been done yet.
 	 */
 	protected function add_build_notice() {
+		if ( $this->is_built() ) {
+			return;
+		}
 		add_action(
 			'admin_notices',
 			function() {
