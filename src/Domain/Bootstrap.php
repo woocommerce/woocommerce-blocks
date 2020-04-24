@@ -62,12 +62,22 @@ class Bootstrap {
 		if ( ! $this->has_core_dependencies() ) {
 			return;
 		}
-		$this->remove_core_blocks();
-		$this->add_build_notice();
-		$this->define_feature_flag();
 		$this->register_dependencies();
 		$this->register_payment_methods();
-		$this->initialize_dependencies();
+
+		$is_rest = wc()->is_rest_api_request();
+
+		// Load assets in admin and on the frontend.
+		if ( ! $is_rest ) {
+			$this->add_build_notice();
+			$this->define_feature_flag();
+			$this->container->get( AssetDataRegistry::class );
+			BlockAssets::init();
+		}
+
+		$this->container->get( PaymentsApi::class );
+		$this->container->get( RestApi::class );
+		Library::init();
 	}
 
 	/**
@@ -114,24 +124,7 @@ class Bootstrap {
 	}
 
 	/**
-	 * Remove core blocks.
-	 *
-	 * Older installs of WooCommerce (3.6 and below) did not use the blocks package and instead included classes directly.
-	 * This code disables those core classes when running blocks as a feature plugin. Newer versions which use the Blocks package are unaffected.
-	 *
-	 * When the feature plugin supports only WooCommerce 3.7+ this method can be removed.
-	 */
-	protected function remove_core_blocks() {
-		remove_action( 'init', array( 'WC_Block_Library', 'init' ) );
-		remove_action( 'init', array( 'WC_Block_Library', 'register_blocks' ) );
-		remove_action( 'init', array( 'WC_Block_Library', 'register_assets' ) );
-		remove_filter( 'block_categories', array( 'WC_Block_Library', 'add_block_category' ) );
-		remove_action( 'admin_print_footer_scripts', array( 'WC_Block_Library', 'print_script_settings' ), 1 );
-		remove_action( 'init', array( 'WGPB_Block_Library', 'init' ) );
-	}
-
-	/**
-	 * Define the global feature flag
+	 * Define the global feature flag.
 	 */
 	protected function define_feature_flag() {
 		$allowed_flags = [ 'experimental', 'stable' ];
@@ -211,16 +204,5 @@ class Bootstrap {
 				return new Cheque( $asset_api );
 			}
 		);
-	}
-
-	/**
-	 * Initialize core dependencies that were registered in the container.
-	 */
-	protected function initialize_dependencies() {
-		$this->container->get( AssetDataRegistry::class );
-		$this->container->get( PaymentsApi::class );
-		$this->container->get( RestApi::class );
-		Library::init();
-		BlockAssets::init();
 	}
 }
