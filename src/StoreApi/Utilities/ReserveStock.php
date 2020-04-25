@@ -14,6 +14,20 @@ defined( 'ABSPATH' ) || exit;
  */
 final class ReserveStock {
 	/**
+	 * Current DB version.
+	 *
+	 * @var integer
+	 */
+	private $db_version = 0;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->db_version = get_option( 'wc_blocks_db_schema_version', 0 );
+	}
+
+	/**
 	 * Query for any existing holds on stock for this item.
 	 *
 	 * @param \WC_Product $product Product to get reserved stock for.
@@ -23,6 +37,10 @@ final class ReserveStock {
 	 */
 	public function get_reserved_stock( \WC_Product $product, $exclude_order_id = 0 ) {
 		global $wpdb;
+
+		if ( $this->db_version < 260 ) {
+			return 0;
+		}
 
 		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
 		return (int) $wpdb->get_var( $this->get_query_for_reserved_stock( $product->get_stock_managed_by_id(), $exclude_order_id ) );
@@ -39,7 +57,7 @@ final class ReserveStock {
 	public function reserve_stock_for_order( \WC_Order $order, $minutes = 0 ) {
 		$minutes = $minutes ? $minutes : (int) get_option( 'woocommerce_hold_stock_minutes', 60 );
 
-		if ( ! $minutes ) {
+		if ( ! $minutes || $this->db_version < 260 ) {
 			return;
 		}
 
@@ -94,6 +112,10 @@ final class ReserveStock {
 	 */
 	public function release_stock_for_order( \WC_Order $order ) {
 		global $wpdb;
+
+		if ( $this->db_version < 260 ) {
+			return;
+		}
 
 		$wpdb->delete(
 			$wpdb->wc_reserved_stock,

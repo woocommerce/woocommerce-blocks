@@ -49,24 +49,19 @@ class Library {
 	 * Set up the database tables which the plugin needs to function.
 	 */
 	public static function maybe_create_tables() {
-		$db_version = get_option( 'wc_blocks_db_version', 0 );
+		global $wpdb;
 
-		if ( version_compare( $db_version, \Automattic\WooCommerce\Blocks\Package::get_version(), '>=' ) ) {
+		$schema_version    = 260;
+		$db_schema_version = (int) get_option( 'wc_blocks_db_schema_version', 0 );
+
+		if ( $db_schema_version < $schema_version ) {
 			return;
 		}
 
-		global $wpdb;
-
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-
-		$wpdb->hide_errors();
-		$collate = '';
-
-		if ( $wpdb->has_cap( 'collation' ) ) {
-			$collate = $wpdb->get_charset_collate();
-		}
-
-		dbDelta(
+		$table_name = $wpdb->prefix . 'wc_reserved_stock';
+		$collate    = $wpdb->has_cap( 'collation' ) ? $wpdb->get_charset_collate() : '';
+		$exists     = self::maybe_create_table(
+			$wpdb->prefix . 'wc_reserved_stock',
 			"
 			CREATE TABLE {$wpdb->prefix}wc_reserved_stock (
 				`order_id` bigint(20) NOT NULL,
@@ -79,7 +74,57 @@ class Library {
 			"
 		);
 
-		update_option( 'wc_blocks_db_version', \Automattic\WooCommerce\Blocks\Package::get_version() );
+		if ( ! $exists ) {
+			return self::add_create_table_notice( $table_name );
+		}
+
+		// Update succeeded. This is only updated when successful and validated.
+		// $schema_version should be incremented when changes to schema are made within this method.
+		update_option( 'wc_blocks_db_schema_version', $schema_version );
+	}
+
+	/**
+	 * Create database table, if it doesn't already exist.
+	 *
+	 * Based on admin/install-helper.php maybe_create_table function.
+	 *
+	 * @param string $table_name Database table name.
+	 * @param string $create_sql Create database table SQL.
+	 * @return bool False on error, true if already exists or success.
+	 */
+	protected static function maybe_create_table( $table_name, $create_sql ) {
+		global $wpdb;
+
+		if ( in_array( $table_name, $wpdb->get_col( 'SHOW TABLES', 0 ), true ) ) {
+			return true;
+		}
+
+		$wpdb->hide_errors();
+		$wpdb->query( $create_sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+
+		return in_array( $table_name, $wpdb->get_col( 'SHOW TABLES', 0 ), true );
+	}
+
+	/**
+	 * Add a notice if table creation fails.
+	 *
+	 * @param string $table_name Name of the missing table.
+	 */
+	protected static function add_create_table_notice( $table_name ) {
+		add_action(
+			'admin_notices',
+			function() use ( $table_name ) {
+				echo '<div class="error"><p>';
+				printf(
+					/* Translators: %1$s table name, %2$s database user, %3$s database name. */
+					esc_html__( 'WooCommerce %1$s table creation failed. Does the %2$s user have CREATE privileges on the %3$s database?', 'woo-gutenberg-products-block' ),
+					'<code>' . esc_html( $table_name ) . '</code>',
+					'<code>' . esc_html( DB_USER ) . '</code>',
+					'<code>' . esc_html( DB_NAME ) . '</code>'
+				);
+				echo '</p></div>';
+			}
+		);
 	}
 
 	/**
