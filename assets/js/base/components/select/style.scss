@@ -6,10 +6,10 @@
 	label {
 		@include font-size(16);
 		position: absolute;
-		transform: translateY(#{$gap-small});
+		transform: translateY(0.75em);
 		transform-origin: top left;
 		transition: all 200ms ease;
-		line-height: 22px;
+		line-height: 1.375;
 		color: $gray-50;
 		z-index: 1;
 		margin: 0 $gap;

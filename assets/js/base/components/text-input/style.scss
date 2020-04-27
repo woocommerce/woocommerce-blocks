@@ -6,7 +6,7 @@
 	label {
 		@include font-size(16);
 		position: absolute;
-		transform: translateY(#{$gap-small});
+		transform: translateY(0.75em);
 		left: 0;
 		top: 0;
 		transform-origin: top left;
