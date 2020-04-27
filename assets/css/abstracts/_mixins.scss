@@ -118,3 +118,7 @@
 	// IE11 doesn't support overflow-wrap neither word-break: break-word, so we fallback to -ms-work-break: break-all.
 	-ms-word-break: break-all;
 }
+
+@function rem($size, $base: 16px ) {
+	@return $size / $base * 1rem;
+}

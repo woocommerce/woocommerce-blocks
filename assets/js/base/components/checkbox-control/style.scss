@@ -6,15 +6,15 @@
 		appearance: none;
 		border: 2px solid currentColor;
 		border-radius: 2px;
-		height: calc(1rem * 18 / 16);
-		width: calc(1rem * 18 / 16);
+		height: rem(18px);
+		width: rem(18px);
 		margin: 0;
 		min-height: 18px;
 		min-width: 18px;
 		overflow: hidden;
 		position: static;
 		vertical-align: middle;
-		margin-right: calc(1rem * 8 / 16);
+		margin-right: 8px;
 
 		&:checked {
 			background: currentColor;
@@ -29,8 +29,8 @@
 	.wc-block-checkbox__mark {
 		fill: #fff;
 		position: absolute;
-		left: calc(1rem * 1 / 16);
-		top: calc(1rem * 6 / 16);
+		left: rem(1px);
+		top: rem(6px);
 		width: 1rem;
 		height: 1rem;
 	}
