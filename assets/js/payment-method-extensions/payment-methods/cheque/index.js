@@ -18,18 +18,10 @@ const settings = getSetting( 'cheque_data', {} );
  */
 
 /**
- * Cheque content component
- *
- * @param {RegisteredPaymentMethodProps|Object} props Incoming props
+ * Content component
  */
-const Content = ( { activePaymentMethod } ) => {
-	return activePaymentMethod === PAYMENT_METHOD_NAME ? (
-		<div>{ decodeEntities( settings.description || '' ) }</div>
-	) : null;
-};
-
-const Edit = ( props ) => {
-	return <Content { ...props } />;
+const Content = () => {
+	return <div>{ decodeEntities( settings.description || '' ) }</div>;
 };
 
 const offlineChequePaymentMethod = {
@@ -43,7 +35,7 @@ const offlineChequePaymentMethod = {
 		</strong>
 	),
 	content: <Content />,
-	edit: <Edit />,
+	edit: <Content />,
 	canMakePayment: () => true,
 	ariaLabel: decodeEntities(
 		settings.title || __( 'Check Payment', 'woo-gutenberg-products-block' )

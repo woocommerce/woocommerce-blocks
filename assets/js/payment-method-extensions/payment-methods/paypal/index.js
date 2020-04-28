@@ -3,7 +3,7 @@
  */
 import { registerPaymentMethod } from '@woocommerce/blocks-registry';
 import { __ } from '@wordpress/i18n';
-import { getSetting } from '@woocommerce/settings';
+import { getSetting, WC_ASSET_URL } from '@woocommerce/settings';
 import { decodeEntities } from '@wordpress/html-entities';
 
 /**
@@ -18,31 +18,27 @@ const settings = getSetting( 'paypal_data', {} );
  */
 
 /**
- * PayPal content component
- *
- * @param {RegisteredPaymentMethodProps|Object} props Incoming props
+ * Content component
  */
-const Content = ( { activePaymentMethod } ) => {
-	return activePaymentMethod === PAYMENT_METHOD_NAME ? (
-		<div>{ decodeEntities( settings.description || '' ) }</div>
-	) : null;
-};
-
-const Edit = ( props ) => {
-	return <Content { ...props } />;
+const Content = () => {
+	return <div>{ decodeEntities( settings.description || '' ) }</div>;
 };
 
 const paypalPaymentMethod = {
 	name: PAYMENT_METHOD_NAME,
 	label: (
 		<strong>
-			{ decodeEntities(
-				settings.title || __( 'PayPal', 'woo-gutenberg-products-block' )
-			) }
+			<img
+				src={ `${ WC_ASSET_URL }/images/paypal.png` }
+				alt={ decodeEntities(
+					settings.title ||
+						__( 'PayPal', 'woo-gutenberg-products-block' )
+				) }
+			/>
 		</strong>
 	),
 	content: <Content />,
-	edit: <Edit />,
+	edit: <Content />,
 	canMakePayment: () => true,
 	ariaLabel: decodeEntities(
 		settings.title ||
