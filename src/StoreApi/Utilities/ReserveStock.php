@@ -14,17 +14,26 @@ defined( 'ABSPATH' ) || exit;
  */
 final class ReserveStock {
 	/**
-	 * Current DB version.
+	 * Is stock reservation enabled?
 	 *
-	 * @var integer
+	 * @var boolean
 	 */
-	private $db_version = 0;
+	private $enabled = true;
 
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->db_version = get_option( 'wc_blocks_db_schema_version', 0 );
+		$this->enabled = get_option( 'wc_blocks_db_schema_version', 0 ) >= 260;
+	}
+
+	/**
+	 * Is stock reservation enabled?
+	 *
+	 * @return boolean
+	 */
+	protected function is_enabled() {
+		return $this->enabled;
 	}
 
 	/**
@@ -38,7 +47,7 @@ final class ReserveStock {
 	public function get_reserved_stock( \WC_Product $product, $exclude_order_id = 0 ) {
 		global $wpdb;
 
-		if ( $this->db_version < 260 ) {
+		if ( ! $this->is_enabled() ) {
 			return 0;
 		}
 
@@ -57,7 +66,7 @@ final class ReserveStock {
 	public function reserve_stock_for_order( \WC_Order $order, $minutes = 0 ) {
 		$minutes = $minutes ? $minutes : (int) get_option( 'woocommerce_hold_stock_minutes', 60 );
 
-		if ( ! $minutes || $this->db_version < 260 ) {
+		if ( ! $minutes || ! $this->is_enabled() ) {
 			return;
 		}
 
@@ -113,7 +122,7 @@ final class ReserveStock {
 	public function release_stock_for_order( \WC_Order $order ) {
 		global $wpdb;
 
-		if ( $this->db_version < 260 ) {
+		if ( ! $this->is_enabled() ) {
 			return;
 		}
 
