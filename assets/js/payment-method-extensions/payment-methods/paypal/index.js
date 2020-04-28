@@ -4,7 +4,6 @@
 import { registerPaymentMethod } from '@woocommerce/blocks-registry';
 import { __ } from '@wordpress/i18n';
 import { getSetting, WC_ASSET_URL } from '@woocommerce/settings';
-import { WC_BLOCKS_ASSET_URL } from '@woocommerce/block-settings';
 import { decodeEntities } from '@wordpress/html-entities';
 
 /**
@@ -40,13 +39,7 @@ const paypalPaymentMethod = {
 	),
 	content: <Content />,
 	edit: <Content />,
-	icons: [
-		{
-			id: 'paypal',
-			alt: __( 'PayPal', 'woo-gutenberg-products-block' ),
-			src: `${ WC_BLOCKS_ASSET_URL }img/paypal-mark.jpg`,
-		},
-	],
+	icons: null,
 	canMakePayment: () => true,
 	ariaLabel: decodeEntities(
 		settings.title ||
