@@ -10,12 +10,14 @@
 		margin: 2px 2px 0;
 		padding: 0;
 		width: auto;
+		min-width: 42px;
 
 		img,
 		svg {
 			width: auto;
 			height: 26px;
 			max-width: 42px;
+			margin: 0 auto;
 		}
 	}
 }

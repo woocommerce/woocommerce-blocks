@@ -9,19 +9,19 @@ export const normalizeIconConfig = ( icons ) => {
 	icons.forEach( ( raw ) => {
 		let icon = {};
 
-		if ( typeof icon === 'string' ) {
+		if ( typeof raw === 'string' ) {
 			icon = {
 				id: raw,
 				alt: raw,
 				src: null,
 			};
+		} else {
+			icon = {
+				id: raw.id,
+				alt: raw.alt,
+				src: raw.src,
+			};
 		}
-
-		icon = {
-			id: raw.id,
-			alt: raw.alt,
-			src: raw.src,
-		};
 
 		if ( ! normalizedIcons[ icon.id ] ) {
 			normalizedIcons[ icon.id ] = icon;
