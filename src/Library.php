@@ -58,9 +58,10 @@ class Library {
 			return;
 		}
 
-		$table_name = $wpdb->prefix . 'wc_reserved_stock';
-		$collate    = $wpdb->has_cap( 'collation' ) ? $wpdb->get_charset_collate() : '';
-		$exists     = self::maybe_create_table(
+		$show_errors = $wpdb->hide_errors();
+		$table_name  = $wpdb->prefix . 'wc_reserved_stock';
+		$collate     = $wpdb->has_cap( 'collation' ) ? $wpdb->get_charset_collate() : '';
+		$exists      = self::maybe_create_table(
 			$wpdb->prefix . 'wc_reserved_stock',
 			"
 			CREATE TABLE {$wpdb->prefix}wc_reserved_stock (
@@ -73,6 +74,10 @@ class Library {
 			) $collate;
 			"
 		);
+
+		if ( $show_errors ) {
+			$wpdb->show_errors();
+		}
 
 		if ( ! $exists ) {
 			return self::add_create_table_notice( $table_name );
@@ -99,7 +104,6 @@ class Library {
 			return true;
 		}
 
-		$wpdb->hide_errors();
 		$wpdb->query( $create_sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
 		return in_array( $table_name, $wpdb->get_col( 'SHOW TABLES', 0 ), true );
