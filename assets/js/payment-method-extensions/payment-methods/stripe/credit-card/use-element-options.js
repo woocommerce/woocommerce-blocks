@@ -37,7 +37,7 @@ const elementOptions = {
 			iconColor: '#666EE8',
 			color: '#31325F',
 			fontSize: getDocumentStyle( 'fontSize', '16px' ),
-			lineHeight: 1.375,
+			lineHeight: 1.375, // With a font-size of 16px, line-height will be 22px.
 			'::placeholder': {
 				color: '#fff',
 			},
