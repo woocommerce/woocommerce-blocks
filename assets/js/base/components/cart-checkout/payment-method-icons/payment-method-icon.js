@@ -14,11 +14,7 @@ const PaymentMethodIcon = ( { id, src = null, alt = '' } ) => {
 	if ( ! src ) {
 		return null;
 	}
-	return (
-		<li className={ getIconClassName( id ) }>
-			<img src={ src } alt={ alt } />
-		</li>
-	);
+	return <img className={ getIconClassName( id ) } src={ src } alt={ alt } />;
 };
 
 export default PaymentMethodIcon;

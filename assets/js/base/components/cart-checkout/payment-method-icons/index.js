@@ -21,7 +21,7 @@ export const PaymentMethodIcons = ( { icons = [] } ) => {
 	}
 
 	return (
-		<ul className="wc-block-cart__payment-method-icons">
+		<div className="wc-block-cart__payment-method-icons">
 			{ iconConfigs.map( ( icon ) => {
 				const iconProps = {
 					...icon,
@@ -34,7 +34,7 @@ export const PaymentMethodIcons = ( { icons = [] } ) => {
 					/>
 				);
 			} ) }
-		</ul>
+		</div>
 	);
 };
 

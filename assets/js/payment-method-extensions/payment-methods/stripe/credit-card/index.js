@@ -32,12 +32,24 @@ const StripeComponent = ( props ) => {
 	return <StripeCreditCard stripe={ stripePromise } { ...props } />;
 };
 
+const StripeLabel = ( { components = {} } ) => {
+	const { PaymentMethodIcons } = components;
+
+	if ( ! PaymentMethodIcons || cardIcons.length === 0 ) {
+		return __( 'Credit/Debit Card', 'woo-gutenberg-products-block' );
+	}
+
+	return <PaymentMethodIcons icons={ cardIcons } />;
+};
+
+const cardIcons = getStripeCreditCardIcons();
+
 const stripeCcPaymentMethod = {
 	name: PAYMENT_METHOD_NAME,
-	label: __( 'Credit/Debit Card', 'woo-gutenberg-products-block' ),
+	label: <StripeLabel />,
 	content: <StripeComponent />,
 	edit: <StripeComponent />,
-	icons: getStripeCreditCardIcons(),
+	icons: cardIcons,
 	canMakePayment: () => stripePromise,
 	ariaLabel: __(
 		'Stripe Credit Card payment method',

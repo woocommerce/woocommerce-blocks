@@ -2,22 +2,13 @@
 	display: block;
 	text-align: center;
 	margin: $gap 0 0;
-	list-style: none outside;
 
-	li {
-		list-style: none outside;
+	.wc-blocks-payment-method-icon {
 		display: inline-block;
-		margin: 2px 2px 0;
+		margin: 1px 2px;
 		padding: 0;
 		width: auto;
-		min-width: 42px;
-
-		img,
-		svg {
-			width: auto;
-			height: 26px;
-			max-width: 42px;
-			margin: 0 auto;
-		}
+		height: 26px;
+		vertical-align: middle;
 	}
 }

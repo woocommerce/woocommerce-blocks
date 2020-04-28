@@ -12,7 +12,6 @@ import { InlineCard, CardElements } from './elements';
 import { Elements, useElements, useStripe } from '@stripe/react-stripe-js';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { PaymentMethodIcons } from '@woocommerce/base-components/cart-checkout';
 
 /**
  * @typedef {import('../stripe-utils/type-defs').Stripe} Stripe
@@ -82,7 +81,6 @@ const CreditCardComponent = ( {
 					}
 				/>
 			) }
-			<PaymentMethodIcons icons={ getStripeCreditCardIcons() } />
 		</>
 	);
 };
