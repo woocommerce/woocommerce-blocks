@@ -87,6 +87,6 @@ Styles placed in a `style.scss` file will be built into `build/style.css`, to lo
 
 We want our font sizes to be declared with rem or em units instead of hardcoded px. That's important for accessibility because it allows users to make the text bigger and easier to read.
 
-We have a mixin named `font-size()` that helps converting px font sizes to rem. It accepts a second parameter which is the `line-height`. Notice `line-height` will need to be relative (no units) or rem/em as well. Setting a line-height with a px value when the font-size uses rem/em might cause the text to overlap when made bigger.
+We have a mixin named `font-size()` that given a number of the font size in px, it converts it to rem. It accepts a second parameter which is the line height, it will be divided by the font-size and the result will be the relative units for the `line-height` CSS property.
 
-In parallel to that, consider whether other size/distance units in your CSS need to be rem/em instead of px. In general, rem/em should be preferred if it doesn't break the design with big font sizes.
+In parallel to that, consider whether other size/distance units in your CSS need to be rem/em instead of px. In general, rem/em should be preferred if it doesn't break the design with big font sizes. There is another mixin named `rem()` that helps converting px units to rem (given a px size and optionally a base size).
