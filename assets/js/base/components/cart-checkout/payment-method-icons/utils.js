@@ -15,15 +15,17 @@ export const normalizeIconConfig = ( icons ) => {
 				alt: raw,
 				src: null,
 			};
-		} else {
+		}
+
+		if ( typeof raw === 'object' ) {
 			icon = {
-				id: raw.id,
-				alt: raw.alt,
-				src: raw.src,
+				id: raw.id || '',
+				alt: raw.alt || '',
+				src: raw.src || null,
 			};
 		}
 
-		if ( ! normalizedIcons[ icon.id ] ) {
+		if ( icon.id && ! normalizedIcons[ icon.id ] ) {
 			normalizedIcons[ icon.id ] = icon;
 		}
 	} );
