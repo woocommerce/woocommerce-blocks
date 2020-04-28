@@ -3,7 +3,7 @@
 	font-size: $sizeValue + px;
 	font-size: ($sizeValue / 16) + rem;
 	@if ($lineHeight) {
-		line-height: $lineHeight;
+		line-height: $lineHeight / $sizeValue;
 	}
 }
 
