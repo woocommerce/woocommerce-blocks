@@ -38,7 +38,7 @@ class Installer {
 	/**
 	 * Set up the database tables which the plugin needs to function.
 	 */
-	protected function maybe_create_tables() {
+	public function maybe_create_tables() {
 		global $wpdb;
 
 		$schema_version    = 260;
