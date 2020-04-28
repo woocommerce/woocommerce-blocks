@@ -12,6 +12,7 @@ import { InlineCard, CardElements } from './elements';
 import { Elements, useElements, useStripe } from '@stripe/react-stripe-js';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+import { PaymentMethodIcons } from '@woocommerce/base-components/cart-checkout';
 
 /**
  * @typedef {import('../stripe-utils/type-defs').Stripe} Stripe
@@ -81,9 +82,7 @@ const CreditCardComponent = ( {
 					}
 				/>
 			) }
-			<div className="wc-blocks-credit-card-images">
-				<StripeCreditCardIcons />
-			</div>
+			<PaymentMethodIcons icons={ getStripeCreditCardIcons() } />
 		</>
 	);
 };
@@ -99,15 +98,14 @@ export const StripeCreditCard = ( props ) => {
 	) : null;
 };
 
-export const StripeCreditCardIcons = () => {
-	return Object.entries(
-		getStripeServerData().icons
-	).map( ( [ id, { url, alt } ] ) => (
-		<img
-			src={ url }
-			alt={ alt }
-			key={ id }
-			className={ `wc-blocks-credit-${ id }-icon wc-blocks-credit-cart-icon` }
-		/>
-	) );
+export const getStripeCreditCardIcons = () => {
+	return Object.entries( getStripeServerData().icons ).map(
+		( [ id, { src, alt } ] ) => {
+			return {
+				id,
+				src,
+				alt,
+			};
+		}
+	);
 };

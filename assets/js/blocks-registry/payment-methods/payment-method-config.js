@@ -36,6 +36,15 @@ export default class PaymentMethodConfig {
 			);
 		}
 		if (
+			typeof config.icons !== 'undefined' &&
+			! Array.isArray( config.icons ) &&
+			config.icons !== null
+		) {
+			throw new Error(
+				'The icons property for the payment method must be an array or null.'
+			);
+		}
+		if (
 			typeof config.paymentMethodId !== 'string' &&
 			typeof config.paymentMethodId !== 'undefined'
 		) {
@@ -46,7 +55,6 @@ export default class PaymentMethodConfig {
 		assertValidElementOrString( config.label, 'label' );
 		assertValidElement( config.content, 'content' );
 		assertValidElement( config.edit, 'edit' );
-		assertValidElement( config.icons, 'icons' );
 		if ( typeof config.ariaLabel !== 'string' ) {
 			throw new TypeError(
 				'The ariaLabel property for the payment method must be a string'

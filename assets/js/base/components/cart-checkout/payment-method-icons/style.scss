@@ -1,0 +1,22 @@
+.wc-block-cart__payment-method-icons {
+	display: block;
+	text-align: center;
+	margin: $gap 0 0;
+	list-style: none outside;
+
+	li {
+		list-style: none outside;
+		display: inline-block;
+		margin: 3px 3px 0;
+		padding: 0;
+		width: auto;
+		box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+		border-radius: 3px;
+
+		img,
+		svg {
+			width: auto;
+			height: 24px;
+		}
+	}
+}
