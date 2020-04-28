@@ -57,7 +57,7 @@
 	&.is-active input[type="url"],
 	&.is-active input[type="text"],
 	&.is-active input[type="email"] {
-		padding: $gap-large $gap $gap-smallest;
+		padding: calc(1.25em + #{$gap-smallest}) $gap 0.25em; // With a font-size of 16px, this will be `24px 16px 4px`.
 	}
 
 	&.has-error input {

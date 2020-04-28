@@ -48,7 +48,7 @@
 		letter-spacing: inherit;
 		line-height: 1;
 		overflow: hidden;
-		padding: $gap-large $gap $gap-smallest;
+		padding: calc(1.25em + #{$gap-smallest}) $gap 0.25em; // With a font-size of 16px, this will be `24px 16px 4px`.
 		text-overflow: ellipsis;
 		text-transform: none;
 		white-space: nowrap;
