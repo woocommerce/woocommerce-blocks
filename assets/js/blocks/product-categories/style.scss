@@ -68,11 +68,11 @@
 	border: none;
 	cursor: pointer;
 	background: none;
-	padding: 0.615em;
+	padding: rem(8, 13);
 	color: #555d66;
 	position: relative;
 	overflow: hidden;
-	border-radius: 0.308em;
+	border-radius: rem(4, 13);
 	svg {
 		fill: currentColor;
 		outline: none;

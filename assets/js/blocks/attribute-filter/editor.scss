@@ -22,9 +22,8 @@
 		padding-top: 0;
 	}
 	.wc-block-attribute-filter__add_attribute_button {
-		@include font-size(14);
+		@include font-size(14, 24);
 		margin: 0 0 1em;
-		line-height: 1.714;
 		vertical-align: middle;
 		height: auto;
 		padding: 0.5em 1em;
