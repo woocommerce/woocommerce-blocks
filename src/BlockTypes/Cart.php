@@ -114,7 +114,6 @@ class Cart extends AbstractBlock {
 		Assets::register_block_script( $this->block_name . '-frontend', $this->block_name . '-block-frontend' );
 	}
 
-
 	/**
 	 * Hydrate the cart block with data from the API.
 	 *
