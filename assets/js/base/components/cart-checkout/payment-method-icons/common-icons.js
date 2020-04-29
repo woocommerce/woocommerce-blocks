@@ -6,7 +6,7 @@ import { WC_BLOCKS_ASSET_URL } from '@woocommerce/block-settings';
 /**
  * Array of common assets.
  */
-export const icons = [
+export const commonIcons = [
 	{
 		id: 'alipay',
 		alt: 'Alipay',
@@ -111,7 +111,7 @@ export const icons = [
  */
 export const getCommonIconProps = ( id ) => {
 	return (
-		icons.find( ( icon ) => {
+		commonIcons.find( ( icon ) => {
 			return icon.id === id;
 		} ) || {}
 	);
