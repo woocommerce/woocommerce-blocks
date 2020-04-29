@@ -312,7 +312,7 @@ export const PaymentMethodDataProvider = ( { children } ) => {
 				}
 			} );
 		}
-	}, [ currentStatus, setValidationErrors, setPaymentStatus ] );
+	}, [ currentStatus.isProcessing, setValidationErrors, setPaymentStatus ] );
 
 	/**
 	 * @type {PaymentMethodDataContext}
