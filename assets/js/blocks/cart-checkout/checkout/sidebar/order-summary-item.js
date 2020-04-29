@@ -40,7 +40,6 @@ const CheckoutOrderSummaryItem = ( { cartItem } ) => {
 	return (
 		<div className="wc-block-order-summary-item">
 			<div className="wc-block-order-summary-item__image">
-				<ProductImage image={ images.length ? images[ 0 ] : {} } />
 				<div className="wc-block-order-summary-item__quantity">
 					<Label
 						label={ quantity }
@@ -51,6 +50,7 @@ const CheckoutOrderSummaryItem = ( { cartItem } ) => {
 						) }
 					/>
 				</div>
+				<ProductImage image={ images.length ? images[ 0 ] : {} } />
 			</div>
 			<div className="wc-block-order-summary-item__description">
 				<div className="wc-block-order-summary-item__header">
