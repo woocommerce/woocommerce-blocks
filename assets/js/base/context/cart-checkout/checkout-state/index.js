@@ -287,7 +287,7 @@ export const CheckoutStateProvider = ( {
 		checkoutState.status,
 		checkoutState.hasError,
 		checkoutState.redirectUrl,
-		checkoutState.redirectUrl,
+		checkoutState.orderId,
 		checkoutState.customerId,
 		checkoutState.customerNote,
 		checkoutState.processingResponse,
