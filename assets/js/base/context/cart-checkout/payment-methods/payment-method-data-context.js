@@ -274,6 +274,7 @@ export const PaymentMethodDataProvider = ( { children } ) => {
 		// allows for other observers that return true for continuing through
 		// to the next observer (or bailing if there's a problem).
 		if ( currentStatus.isProcessing ) {
+			removeNotice( 'wc-payment-error' );
 			emitEventWithAbort(
 				currentObservers.current,
 				EMIT_TYPES.PAYMENT_PROCESSING,
@@ -287,6 +288,7 @@ export const PaymentMethodDataProvider = ( { children } ) => {
 					);
 				} else if ( isFailResponse( response ) ) {
 					addErrorNotice( response?.message, {
+						id: 'wc-payment-error',
 						context:
 							response?.messageContext || noticeContexts.PAYMENTS,
 					} );
@@ -297,6 +299,7 @@ export const PaymentMethodDataProvider = ( { children } ) => {
 					);
 				} else if ( isErrorResponse( response ) ) {
 					addErrorNotice( response?.message, {
+						id: 'wc-payment-error',
 						context:
 							response?.messageContext || noticeContexts.PAYMENTS,
 					} );
