@@ -140,7 +140,10 @@ export const PaymentMethodDataProvider = ( { children } ) => {
 				id: 'wc-express-payment-error',
 			} );
 		} else {
-			removeNotice( 'wc-express-payment-error' );
+			removeNotice(
+				'wc-express-payment-error',
+				'wc/express-payment-area'
+			);
 		}
 	};
 	// ensure observers are always current.
@@ -274,7 +277,7 @@ export const PaymentMethodDataProvider = ( { children } ) => {
 		// allows for other observers that return true for continuing through
 		// to the next observer (or bailing if there's a problem).
 		if ( currentStatus.isProcessing ) {
-			removeNotice( 'wc-payment-error' );
+			removeNotice( 'wc-payment-error', noticeContexts.PAYMENTS );
 			emitEventWithAbort(
 				currentObservers.current,
 				EMIT_TYPES.PAYMENT_PROCESSING,
