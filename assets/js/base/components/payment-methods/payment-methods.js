@@ -134,11 +134,12 @@ const PaymentMethods = () => {
 				setActivePaymentMethod( tabName );
 				removeNotice( 'wc-payment-error', noticeContexts.PAYMENTS );
 			} }
-			tabs={ Object.keys( paymentMethods ).map( ( name ) => {
-				const { label, ariaLabel } = paymentMethods[ name ];
-				return {
-					name,
-					title:
+			tabs={ Object.keys( paymentMethods ).map(
+				( name ) => {
+					const { label, ariaLabel } = paymentMethods[ name ];
+					return {
+						name,
+						title:
 						typeof label === 'string'
 							? label
 							: cloneElement( label, {
@@ -146,18 +147,19 @@ const PaymentMethods = () => {
 										currentPaymentMethodInterface.current
 											.components,
 							  } ),
-					ariaLabel,
-				};
-			} ) }
-			initialTabName={ activePaymentMethod }
+						ariaLabel,
+					};
+				}
+			) }
 			ariaLabel={ __(
 				'Payment Methods',
 				'woo-gutenberg-products-block'
 			) }
 			id="wc-block-payment-methods"
-		>
-			{ getRenderedTab }
-		</Tabs>
+			children={ paymentMethods }
+			renderTab={ getRenderedTab }
+		/>
+
 	);
 
 	const renderedSavedPaymentOptions = (
