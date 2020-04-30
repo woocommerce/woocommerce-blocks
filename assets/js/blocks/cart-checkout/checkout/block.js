@@ -60,6 +60,12 @@ import CheckoutOrderError from './checkout-order-error';
 import NoShippingPlaceholder from './no-shipping-placeholder';
 import './style.scss';
 
+/**
+ * Renders the Checkout block wrapped within the CheckoutProvider.
+ *
+ * @param {Object} props Component props.
+ * @return {*} The component.
+ */
 const Block = ( props ) => {
 	return (
 		<CheckoutProvider>
@@ -68,6 +74,30 @@ const Block = ( props ) => {
 	);
 };
 
+/**
+ * Renders a shipping rate control option.
+ *
+ * @param {Object} option Shipping Rate.
+ */
+const renderShippingRatesControlOption = ( option ) => ( {
+	label: decodeEntities( option.name ),
+	value: option.rate_id,
+	description: decodeEntities( option.description ),
+	secondaryLabel: (
+		<FormattedMonetaryAmount
+			currency={ getCurrencyFromPriceResponse( option ) }
+			value={ option.price }
+		/>
+	),
+	secondaryDescription: decodeEntities( option.delivery_time ),
+} );
+
+/**
+ * Main Checkout Component.
+ *
+ * @param {Object} props Component props.
+ * @return {*} The component.
+ */
 const Checkout = ( { attributes, scrollToTop } ) => {
 	const { isEditor } = useEditorContext();
 	const {
@@ -102,19 +132,6 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		needsShipping
 	);
 
-	const renderShippingRatesControlOption = ( option ) => ( {
-		label: decodeEntities( option.name ),
-		value: option.rate_id,
-		description: decodeEntities( option.description ),
-		secondaryLabel: (
-			<FormattedMonetaryAmount
-				currency={ getCurrencyFromPriceResponse( option ) }
-				value={ option.price }
-			/>
-		),
-		secondaryDescription: decodeEntities( option.delivery_time ),
-	} );
-
 	const showBillingFields = ! needsShipping || ! shippingAsBilling;
 	const addressFields = {
 		...defaultAddressFields,
@@ -140,11 +157,10 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		},
 		[ setShippingAddress, setBillingData, shippingAsBilling ]
 	);
+
 	useEffect( () => {
 		if ( shippingAsBilling ) {
-			setBillingData( { ...shippingAddress, shippingAsBilling } );
-		} else {
-			setBillingData( { shippingAsBilling } );
+			setBillingData( { ...shippingAddress } );
 		}
 	}, [ shippingAsBilling, setBillingData ] );
 
@@ -152,6 +168,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		checkoutIsIdle &&
 		checkoutHasError &&
 		( hasValidationErrors || hasNoticesOfType( 'default' ) );
+
 	useEffect( () => {
 		if ( hasErrorsToDisplay ) {
 			showAllValidationErrors();
