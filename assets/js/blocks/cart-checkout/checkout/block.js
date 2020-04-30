@@ -160,7 +160,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 	}
 
 	const loginPrompt = () =>
-		! CHECKOUT_SHOW_LOGIN_REMINDER ? null : (
+		CHECKOUT_SHOW_LOGIN_REMINDER && (
 			<>
 				{ __(
 					'Already have an account? ',
