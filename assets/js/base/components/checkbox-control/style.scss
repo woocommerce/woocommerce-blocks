@@ -3,15 +3,25 @@
 	position: relative;
 
 	.wc-block-checkbox__input[type="checkbox"] {
-		position: absolute;
-		opacity: 0;
+		appearance: none;
+		border: 2px solid currentColor;
+		border-radius: 2px;
+		height: rem(18px);
+		width: rem(18px);
+		margin: 0;
+		min-height: 18px;
+		min-width: 18px;
+		overflow: hidden;
+		position: static;
+		vertical-align: middle;
+		background-color: #fff;
 
-		&:checked + .wc-block-checkbox__box {
+		&:checked {
 			background: currentColor;
 			border-color: currentColor;
 		}
 
-		&:not(:checked) + .wc-block-checkbox__box + .wc-block-checkbox__mark {
+		&:not(:checked) + .wc-block-checkbox__mark {
 			display: none;
 		}
 	}
@@ -19,25 +29,14 @@
 	.wc-block-checkbox__mark {
 		fill: #fff;
 		position: absolute;
-		left: rem(2px);
-		top: rem(3px);
+		left: rem(1px);
+		top: rem(5px);
 		width: 16px;
 		height: 16px;
 	}
 
-	.wc-block-checkbox__box {
-		border: 2px solid currentColor;
-		position: absolute;
-		left: rem(1px);
-		top: rem(4.5px);
-		border-radius: 2px;
-		height: rem(18px);
-		width: rem(18px);
-		min-height: 18px;
-		min-width: 18px;
-	}
 	.wc-block-checkbox__label {
-		padding-left: $gap-large;
+		padding-left: $gap-smaller;
 		vertical-align: middle;
 	}
 }
