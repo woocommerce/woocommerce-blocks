@@ -38,7 +38,6 @@ const CheckboxControl = ( {
 				onChange={ ( event ) => onChange( event.target.checked ) }
 				{ ...rest }
 			/>
-			<div className="wc-block-checkbox__box"></div>
 			<svg
 				className="wc-block-components-checkbox__mark"
 				aria-hidden="true"

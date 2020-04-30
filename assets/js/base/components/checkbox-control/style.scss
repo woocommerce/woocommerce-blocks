@@ -19,7 +19,7 @@
 		vertical-align: middle;
 		background-color: #fff;
 
-		&:checked + .wc-block-checkbox__box {
+		&:checked {
 			background: currentColor;
 			border-color: currentColor;
 		}
