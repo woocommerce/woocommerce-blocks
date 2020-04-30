@@ -237,7 +237,7 @@
 	}
 }
 
-@include breakpoint( "<480px" ) {
+.is-mobile {
 	.wc-block-checkout__actions {
 		.wc-block-components-checkout-return-to-cart-button {
 			display: none;
@@ -249,7 +249,9 @@
 	}
 }
 
-@include breakpoint( "<782px" ) {
+.is-mobile,
+.is-small,
+.is-medium {
 	.wc-block-checkout__main {
 		order: 1;
 	}
@@ -264,7 +266,9 @@
 	}
 }
 
-@include breakpoint( ">480px" ) {
+.is-small,
+.is-medium,
+.is-large {
 	.wc-block-checkout__billing-fields,
 	.wc-block-checkout__shipping-fields {
 		.wc-block-address-form {
@@ -307,7 +311,7 @@
 	}
 }
 
-@include breakpoint( ">782px" ) {
+.is-large {
 	.wc-block-checkout__sidebar {
 		.wc-block-order-summary {
 			margin: -20px;

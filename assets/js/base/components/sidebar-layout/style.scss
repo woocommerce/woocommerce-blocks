@@ -2,6 +2,7 @@
 	display: flex;
 	flex-wrap: wrap;
 	margin: 0 auto $gap;
+	position: relative;
 
 	.wc-block-main {
 		margin: 0;
@@ -60,8 +61,10 @@
 	}
 }
 
-@include breakpoint( "<782px" ) {
-	.wc-block-sidebar-layout {
+.is-medium,
+.is-small,
+.is-mobile {
+	&.wc-block-sidebar-layout {
 		flex-direction: column;
 		margin: 0 0 $gap;
 
