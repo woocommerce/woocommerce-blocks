@@ -58,11 +58,16 @@ export const ValidationContextProvider = ( { children } ) => {
 	 * @param {string} property  The name of the property to clear if exists in
 	 *                           validation error state.
 	 */
-	const clearValidationError = ( property ) => {
-		if ( validationErrors[ property ] ) {
-			updateValidationErrors( omit( validationErrors, [ property ] ) );
-		}
-	};
+	const clearValidationError = useCallback(
+		( property ) => {
+			if ( validationErrors[ property ] ) {
+				updateValidationErrors(
+					omit( validationErrors, [ property ] )
+				);
+			}
+		},
+		[ validationErrors, updateValidationErrors ]
+	);
 
 	/**
 	 * Clears the entire validation error state.
@@ -119,9 +124,14 @@ export const ValidationContextProvider = ( { children } ) => {
 	 *                           value to true.
 	 */
 	const hideValidationError = ( property ) => {
-		updateValidationError( property, {
-			hidden: true,
-		} );
+		if (
+			validationErrors[ property ] &&
+			validationErrors[ property ].hidden !== true
+		) {
+			updateValidationError( property, {
+				hidden: true,
+			} );
+		}
 	};
 
 	/**
@@ -132,9 +142,14 @@ export const ValidationContextProvider = ( { children } ) => {
 	 *                           value to false.
 	 */
 	const showValidationError = ( property ) => {
-		updateValidationError( property, {
-			hidden: false,
-		} );
+		if (
+			validationErrors[ property ] &&
+			validationErrors[ property ].hidden !== false
+		) {
+			updateValidationError( property, {
+				hidden: false,
+			} );
+		}
 	};
 
 	/**
@@ -170,6 +185,7 @@ export const ValidationContextProvider = ( { children } ) => {
 	};
 
 	const context = {
+		validationErrors,
 		getValidationError,
 		setValidationErrors,
 		clearValidationError,

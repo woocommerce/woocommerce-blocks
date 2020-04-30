@@ -63,7 +63,7 @@ const ValidatedSelect = ( {
 		return () => {
 			clearValidationError( errorId );
 		};
-	}, [] );
+	}, [ clearValidationError ] );
 
 	const error = getValidationError( errorId ) || {};
 
