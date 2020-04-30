@@ -185,7 +185,6 @@ export const ValidationContextProvider = ( { children } ) => {
 	};
 
 	const context = {
-		validationErrors,
 		getValidationError,
 		setValidationErrors,
 		clearValidationError,
