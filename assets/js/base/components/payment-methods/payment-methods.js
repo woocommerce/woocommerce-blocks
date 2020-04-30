@@ -150,6 +150,7 @@ const PaymentMethods = () => {
 					};
 				}
 			) }
+			initialTabName={ activePaymentMethod }
 			ariaLabel={ __(
 				'Payment Methods',
 				'woo-gutenberg-products-block'
