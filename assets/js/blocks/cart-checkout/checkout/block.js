@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { useState, useCallback, useEffect } from '@wordpress/element';
+import { useState, useMemo, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import defaultAddressFields from '@woocommerce/base-components/cart-checkout/address-form/default-address-fields';
 import {
@@ -93,6 +93,19 @@ const renderShippingRatesControlOption = ( option ) => ( {
 } );
 
 /**
+ * Compare two addresses and see if they are the same.
+ *
+ * @param {object} address1 First address.
+ * @param {object} address2 Second address.
+ */
+const isSameAddress = ( address1, address2 ) => {
+	const diff = Object.keys( defaultAddressFields ).filter( ( field ) => {
+		return address1[ field ] !== address2[ field ];
+	} );
+	return diff.length === 0;
+};
+
+/**
  * Main Checkout Component.
  *
  * @param {Object} props Component props.
@@ -127,42 +140,20 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 	const { billingData, setBillingData } = useBillingDataContext();
 	const { paymentMethods } = usePaymentMethods();
 	const { hasNoticesOfType } = useStoreNotices();
-
-	const [ shippingAsBilling, setShippingAsBilling ] = useState(
-		needsShipping
-	);
-
-	const showBillingFields = ! needsShipping || ! shippingAsBilling;
-	const addressFields = {
-		...defaultAddressFields,
-		company: {
-			...defaultAddressFields.company,
-			hidden: ! attributes.showCompanyField,
-			required: attributes.requireCompanyField,
-		},
-		address_2: {
-			...defaultAddressFields.address_2,
-			hidden: ! attributes.showApartmentField,
-		},
-	};
-
-	const setShippingFields = useCallback(
-		( address ) => {
-			if ( shippingAsBilling ) {
-				setShippingAddress( address );
-				setBillingData( address );
-			} else {
-				setShippingAddress( address );
-			}
-		},
-		[ setShippingAddress, setBillingData, shippingAsBilling ]
-	);
-
-	useEffect( () => {
-		if ( shippingAsBilling ) {
-			setBillingData( { ...shippingAddress } );
-		}
-	}, [ shippingAsBilling, setBillingData ] );
+	const addressFields = useMemo( () => {
+		return {
+			...defaultAddressFields,
+			company: {
+				...defaultAddressFields.company,
+				hidden: ! attributes.showCompanyField,
+				required: attributes.requireCompanyField,
+			},
+			address_2: {
+				...defaultAddressFields.address_2,
+				hidden: ! attributes.showApartmentField,
+			},
+		};
+	}, [ defaultAddressFields, attributes ] );
 
 	const hasErrorsToDisplay =
 		checkoutIsIdle &&
@@ -175,6 +166,45 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 			scrollToTop( { focusableSelector: 'input:invalid' } );
 		}
 	}, [ hasErrorsToDisplay ] );
+
+	// These are the local states of address fields, which are persisted
+	// globally when changed. They default to the global shipping address which
+	// is populated from the current customer data or default location.
+	const [ shippingFields, setShippingFields ] = useState( shippingAddress );
+	const [ billingFields, setBillingFields ] = useState( billingData );
+
+	// This tracks the state of the "shipping as billing" address checkbox. It's
+	// initial value is true (if shipping is needed), however, if the user is
+	// logged in and they have a different billing address, we can toggle this off.
+	const [ shippingAsBilling, setShippingAsBilling ] = useState(
+		() =>
+			needsShipping &&
+			( ! customerId || isSameAddress( shippingAddress, billingData ) )
+	);
+
+	// Pushes to global state when changes are made locally.
+	useEffect( () => {
+		setShippingAddress( shippingFields );
+
+		if ( shippingAsBilling ) {
+			setBillingData( shippingFields );
+		}
+	}, [ shippingFields ] );
+
+	useEffect( () => {
+		setBillingData( billingFields );
+	}, [ billingFields ] );
+
+	useEffect( () => {
+		if ( shippingAsBilling ) {
+			setBillingData( shippingFields );
+		} else {
+			setBillingData( billingFields );
+		}
+	}, [ shippingAsBilling ] );
+
+	// Track if billing fields are visible.
+	const showBillingFields = ! needsShipping || ! shippingAsBilling;
 
 	if ( ! isEditor && ! hasOrder ) {
 		return <CheckoutOrderError />;
