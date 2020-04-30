@@ -162,7 +162,7 @@ class Assets {
 	 * @return array
 	 */
 	protected static function format_page_resource( $page ) {
-		if ( is_numeric( $page ) ) {
+		if ( is_numeric( $page ) && $page > 0 ) {
 			$page = get_post( $page );
 		}
 		if ( ! $page ) {
