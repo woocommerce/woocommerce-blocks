@@ -30,7 +30,7 @@ const TotalsDiscountItem = ( {
 	}
 
 	const discountTaxValue = parseInt( totalDiscountTax, 10 );
-	const displayDiscountValue = DISPLAY_CART_PRICES_INCLUDING_TAX
+	const discountTotalValue = DISPLAY_CART_PRICES_INCLUDING_TAX
 		? discountValue + discountTaxValue
 		: discountValue;
 
@@ -73,11 +73,11 @@ const TotalsDiscountItem = ( {
 				)
 			}
 			label={
-				displayDiscountValue
+				!! discountTotalValue
 					? __( 'Discount', 'woo-gutenberg-products-block' )
 					: __( 'Coupons', 'woo-gutenberg-products-block' )
 			}
-			value={ displayDiscountValue ? displayDiscountValue * -1 : '-' }
+			value={ discountTotalValue ? discountTotalValue * -1 : '-' }
 		/>
 	);
 };
