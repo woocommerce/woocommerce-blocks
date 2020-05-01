@@ -380,6 +380,15 @@ class Products extends AbstractRoute {
 			'sanitize_callback' => 'wp_parse_id_list',
 		);
 
+		$params['summary_max_words'] = array(
+			'description'       => __( 'Limits the word count of the summary field from the product. Defaults to 20.', 'woo-gutenberg-products-block' ),
+			'type'              => 'integer',
+			'default'           => 20,
+			'sanitize_callback' => 'absint',
+			'validate_callback' => 'rest_validate_request_arg',
+			'minimum'           => 1,
+		);
+
 		return $params;
 	}
 }
