@@ -213,10 +213,11 @@ class CartShippingRateSchema extends AbstractSchema {
 	/**
 	 * Convert a shipping rate from WooCommerce into a valid response.
 	 *
-	 * @param array $package Shipping package complete with rates from WooCommerce.
+	 * @param array            $package Shipping package complete with rates from WooCommerce.
+	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	public function get_item_response( $package ) {
+	public function get_item_response( $package, \WP_REST_Request $request = null ) {
 		// Add product names and quantities.
 		$items = array();
 		foreach ( $package['contents'] as $item_id => $values ) {

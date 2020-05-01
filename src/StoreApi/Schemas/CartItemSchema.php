@@ -281,10 +281,11 @@ class CartItemSchema extends ProductSchema {
 	/**
 	 * Convert a WooCommerce cart item to an object suitable for the response.
 	 *
-	 * @param array $cart_item Cart item array.
+	 * @param array            $cart_item Cart item array.
+	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	public function get_item_response( $cart_item ) {
+	public function get_item_response( $cart_item, \WP_REST_Request $request = null ) {
 		$product = $cart_item['data'];
 
 		return [

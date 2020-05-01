@@ -135,7 +135,7 @@ class ProductCollectionData extends AbstractRoute {
 			}
 		}
 
-		return rest_ensure_response( $this->schema->get_item_response( $data ) );
+		return rest_ensure_response( $this->schema->get_item_response( $data, $request ) );
 	}
 
 	/**

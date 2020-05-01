@@ -234,10 +234,11 @@ class ProductSchema extends AbstractSchema {
 	/**
 	 * Convert a WooCommerce product into an object suitable for the response.
 	 *
-	 * @param \WC_Product $product Product instance.
+	 * @param \WC_Product      $product Product instance.
+	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	public function get_item_response( $product ) {
+	public function get_item_response( $product, \WP_REST_Request $request = null ) {
 		return [
 			'id'                  => $product->get_id(),
 			'name'                => $this->prepare_html_response( $product->get_title() ),

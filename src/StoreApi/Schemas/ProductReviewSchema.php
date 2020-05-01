@@ -149,10 +149,11 @@ class ProductReviewSchema extends AbstractSchema {
 	/**
 	 * Convert a WooCommerce product into an object suitable for the response.
 	 *
-	 * @param \WP_Comment $review Product review object.
+	 * @param \WP_Comment      $review Product review object.
+	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	public function get_item_response( \WP_Comment $review ) {
+	public function get_item_response( \WP_Comment $review, \WP_REST_Request $request = null ) {
 		$context = ! empty( $request['context'] ) ? $request['context'] : 'view';
 		$rating  = get_comment_meta( $review->comment_ID, 'rating', true ) === '' ? null : (int) get_comment_meta( $review->comment_ID, 'rating', true );
 		$data    = [
@@ -163,7 +164,7 @@ class ProductReviewSchema extends AbstractSchema {
 			'product_id'             => (int) $review->comment_post_ID,
 			'product_name'           => get_the_title( (int) $review->comment_post_ID ),
 			'product_permalink'      => get_permalink( (int) $review->comment_post_ID ),
-			'product_image'          => $this->image_attachment_schema->get_item_response( get_post_thumbnail_id( (int) $review->comment_post_ID ) ),
+			'product_image'          => $this->image_attachment_schema->get_item_response( get_post_thumbnail_id( (int) $review->comment_post_ID ), $request ),
 			'reviewer'               => $review->comment_author,
 			'review'                 => $review->comment_content,
 			'rating'                 => $rating,

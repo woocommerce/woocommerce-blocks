@@ -67,6 +67,6 @@ class CartApplyCoupon extends AbstractCartRoute {
 			throw new RouteException( $e->getErrorCode(), $e->getMessage(), $e->getCode() );
 		}
 
-		return rest_ensure_response( $this->schema->get_item_response( $cart ) );
+		return rest_ensure_response( $this->schema->get_item_response( $cart, $request ) );
 	}
 }

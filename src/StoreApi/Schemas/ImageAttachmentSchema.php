@@ -70,10 +70,11 @@ class ImageAttachmentSchema extends AbstractSchema {
 	/**
 	 * Convert a WooCommerce product into an object suitable for the response.
 	 *
-	 * @param int $attachment_id Image attachment ID.
+	 * @param int              $attachment_id Image attachment ID.
+	 * @param \WP_REST_Request $request Request object.
 	 * @return array|null
 	 */
-	public function get_item_response( $attachment_id ) {
+	public function get_item_response( $attachment_id, \WP_REST_Request $request = null ) {
 		if ( ! $attachment_id ) {
 			return null;
 		}

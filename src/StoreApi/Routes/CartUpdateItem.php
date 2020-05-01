@@ -64,6 +64,6 @@ class CartUpdateItem extends AbstractCartRoute {
 			$controller->set_cart_item_quantity( $request['key'], $request['quantity'] );
 		}
 
-		return rest_ensure_response( $this->schema->get_item_response( $cart ) );
+		return rest_ensure_response( $this->schema->get_item_response( $cart, $request ) );
 	}
 }

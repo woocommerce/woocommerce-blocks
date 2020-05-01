@@ -65,7 +65,7 @@ class CartCoupons extends AbstractRoute {
 		$items        = [];
 
 		foreach ( $cart_coupons as $coupon_code ) {
-			$response = rest_ensure_response( $this->schema->get_item_response( $coupon_code ) );
+			$response = rest_ensure_response( $this->schema->get_item_response( $coupon_code, $request ) );
 			$response->add_links( $this->prepare_links( $coupon_code, $request ) );
 
 			$response = $this->prepare_response_for_collection( $response );

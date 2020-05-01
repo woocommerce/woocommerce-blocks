@@ -69,18 +69,19 @@ class ProductCategorySchema extends TermSchema {
 	/**
 	 * Convert a term object into an object suitable for the response.
 	 *
-	 * @param \WP_Term $term Term object.
+	 * @param \WP_Term         $term Term object.
+	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	public function get_item_response( $term ) {
-		$response = parent::get_item_response( $term );
+	public function get_item_response( $term, \WP_REST_Request $request = null ) {
+		$response = parent::get_item_response( $term, $request );
 		$count    = get_term_meta( $term->term_id, 'product_count_product_cat', true );
 
 		if ( $count ) {
 			$response['count'] = (int) $count;
 		}
 
-		$response['image']        = $this->image_attachment_schema->get_item_response( get_term_meta( $term->term_id, 'thumbnail_id', true ) );
+		$response['image']        = $this->image_attachment_schema->get_item_response( get_term_meta( $term->term_id, 'thumbnail_id', true ), $request );
 		$response['review_count'] = $this->get_category_review_count( $term );
 		$response['permalink']    = get_term_link( $term->term_id, 'product_cat' );
 

@@ -80,10 +80,11 @@ class CartCouponSchema extends AbstractSchema {
 	/**
 	 * Convert a WooCommerce cart item to an object suitable for the response.
 	 *
-	 * @param string $coupon_code Coupon code from the cart.
+	 * @param string           $coupon_code Coupon code from the cart.
+	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	public function get_item_response( $coupon_code ) {
+	public function get_item_response( $coupon_code, \WP_REST_Request $request = null ) {
 		$controller           = new CartController();
 		$cart                 = $controller->get_cart_instance();
 		$total_discounts      = $cart->get_coupon_discount_totals();

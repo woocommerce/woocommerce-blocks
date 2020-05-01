@@ -100,7 +100,7 @@ class CartAddItem extends AbstractCartRoute {
 			]
 		);
 
-		$response = rest_ensure_response( $this->schema->get_item_response( $cart ) );
+		$response = rest_ensure_response( $this->schema->get_item_response( $cart, $request ) );
 		$response->set_status( 201 );
 		return $response;
 	}

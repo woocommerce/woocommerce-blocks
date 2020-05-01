@@ -104,10 +104,11 @@ class ProductCollectionDataSchema extends AbstractSchema {
 	/**
 	 * Format data.
 	 *
-	 * @param array $data Collection data to format and return.
+	 * @param array            $data Collection data to format and return.
+	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	public function get_item_response( $data ) {
+	public function get_item_response( $data, \WP_REST_Request $request = null ) {
 		return [
 			'price_range'      => ! is_null( $data['min_price'] ) && ! is_null( $data['max_price'] ) ? (object) array_merge(
 				$this->get_store_currency_response(),

@@ -85,11 +85,11 @@ class ShippingAddressSchema extends AbstractSchema {
 	 * Convert a term object into an object suitable for the response.
 	 *
 	 * @param \WC_Order|\WC_Customer $address An object with shipping address.
-	 *
+	 * @param \WP_REST_Request       $request Request object.
 	 * @throws RouteException When the invalid object types are provided.
 	 * @return stdClass
 	 */
-	public function get_item_response( $address ) {
+	public function get_item_response( $address, \WP_REST_Request $request = null ) {
 		if ( ( $address instanceof \WC_Customer || $address instanceof \WC_Order ) ) {
 			return (object) $this->prepare_html_response(
 				[

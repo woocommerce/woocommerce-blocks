@@ -42,9 +42,9 @@ class Checkout extends AbstractRoute {
 			$this->check_nonce( $request );
 			$response = parent::get_response( $request );
 		} catch ( RouteException $error ) {
-			$response = $this->get_route_error_response( $error->getErrorCode(), $error->getMessage(), $error->getCode() );
+			$response = $this->get_route_error_response( $request, $error->getErrorCode(), $error->getMessage(), $error->getCode() );
 		} catch ( \Exception $error ) {
-			$response = $this->get_route_error_response( 'unknown_server_error', $error->getMessage(), 500 );
+			$response = $this->get_route_error_response( $request, 'unknown_server_error', $error->getMessage(), 500 );
 		}
 		return $response;
 	}
@@ -202,13 +202,14 @@ class Checkout extends AbstractRoute {
 	/**
 	 * Get route response when something went wrong.
 	 *
-	 * @param string $error_code String based error code.
-	 * @param string $error_message User facing error message.
-	 * @param int    $http_status_code HTTP status. Defaults to 500.
-	 * @param array  $additional_data  Extra data (key value pairs) to expose in the error response.
+	 * @param \WP_REST_Request $request Request object.
+	 * @param string           $error_code String based error code.
+	 * @param string           $error_message User facing error message.
+	 * @param int              $http_status_code HTTP status. Defaults to 500.
+	 * @param array            $additional_data  Extra data (key value pairs) to expose in the error response.
 	 * @return \WP_Error WP Error object.
 	 */
-	protected function get_route_error_response( $error_code, $error_message, $http_status_code = 500, $additional_data = [] ) {
+	protected function get_route_error_response( \WP_REST_Request $request, $error_code, $error_message, $http_status_code = 500, $additional_data = [] ) {
 		switch ( $http_status_code ) {
 			case 409:
 				// If there was a conflict, return the cart so the client can resolve it.

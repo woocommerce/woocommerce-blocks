@@ -263,10 +263,11 @@ class CartSchema extends AbstractSchema {
 	/**
 	 * Convert a woo cart into an object suitable for the response.
 	 *
-	 * @param \WC_Cart $cart Cart class instance.
+	 * @param \WC_Cart         $cart Cart class instance.
+	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	public function get_item_response( $cart ) {
+	public function get_item_response( $cart, \WP_REST_Request $request = null ) {
 		$controller = new CartController();
 
 		// Get cart errors first so if recalculations are performed, it's reflected in the response.
@@ -275,7 +276,7 @@ class CartSchema extends AbstractSchema {
 		return [
 			'coupons'          => array_values( array_map( [ $this->coupon_schema, 'get_item_response' ], array_filter( $cart->get_applied_coupons() ) ) ),
 			'shipping_rates'   => array_values( array_map( [ $this->shipping_rate_schema, 'get_item_response' ], $controller->get_shipping_packages() ) ),
-			'shipping_address' => $this->shipping_address_schema->get_item_response( wc()->customer ),
+			'shipping_address' => $this->shipping_address_schema->get_item_response( wc()->customer, $request ),
 			'items'            => array_values( array_map( [ $this->item_schema, 'get_item_response' ], array_filter( $cart->get_cart() ) ) ),
 			'items_count'      => $cart->get_cart_contents_count(),
 			'items_weight'     => wc_get_weight( $cart->get_cart_contents_weight(), 'g' ),

@@ -81,9 +81,9 @@ abstract class AbstractRoute implements RouteInterface {
 				$response->header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
 			}
 		} catch ( RouteException $error ) {
-			$response = $this->get_route_error_response( $error->getErrorCode(), $error->getMessage(), $error->getCode(), $error->getAdditionalData() );
+			$response = $this->get_route_error_response( $request, $error->getErrorCode(), $error->getMessage(), $error->getCode(), $error->getAdditionalData() );
 		} catch ( \Exception $error ) {
-			$response = $this->get_route_error_response( 'unknown_server_error', $error->getMessage(), 500 );
+			$response = $this->get_route_error_response( $request, 'unknown_server_error', $error->getMessage(), 500 );
 		}
 		return $response;
 	}
@@ -167,13 +167,14 @@ abstract class AbstractRoute implements RouteInterface {
 	/**
 	 * Get route response when something went wrong.
 	 *
-	 * @param string $error_code String based error code.
-	 * @param string $error_message User facing error message.
-	 * @param int    $http_status_code HTTP status. Defaults to 500.
-	 * @param array  $additional_data  Extra data (key value pairs) to expose in the error response.
+	 * @param \WP_REST_Request $request Request object.
+	 * @param string           $error_code String based error code.
+	 * @param string           $error_message User facing error message.
+	 * @param int              $http_status_code HTTP status. Defaults to 500.
+	 * @param array            $additional_data  Extra data (key value pairs) to expose in the error response.
 	 * @return \WP_Error WP Error object.
 	 */
-	protected function get_route_error_response( $error_code, $error_message, $http_status_code = 500, $additional_data = [] ) {
+	protected function get_route_error_response( \WP_REST_Request $request, $error_code, $error_message, $http_status_code = 500, $additional_data = [] ) {
 		return new \WP_Error( $error_code, $error_message, array_merge( $additional_data, [ 'status' => $http_status_code ] ) );
 	}
 
@@ -185,7 +186,7 @@ abstract class AbstractRoute implements RouteInterface {
 	 * @return \WP_REST_Response $response Response data.
 	 */
 	public function prepare_item_for_response( $item, \WP_REST_Request $request ) {
-		$response = rest_ensure_response( $this->schema->get_item_response( $item ) );
+		$response = rest_ensure_response( $this->schema->get_item_response( $item, $request ) );
 		$response->add_links( $this->prepare_links( $item, $request ) );
 
 		return $response;

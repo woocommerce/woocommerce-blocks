@@ -140,10 +140,11 @@ class CheckoutSchema extends AbstractSchema {
 	/**
 	 * Return the response for checkout.
 	 *
-	 * @param object $item Results from checkout action.
+	 * @param object           $item Results from checkout action.
+	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	public function get_item_response( $item ) {
+	public function get_item_response( $item, \WP_REST_Request $request = null ) {
 		return $this->get_checkout_response( $item->order, $item->payment_result );
 	}
 
@@ -161,8 +162,8 @@ class CheckoutSchema extends AbstractSchema {
 			'order_key'        => $order->get_order_key(),
 			'customer_note'    => $order->get_customer_note(),
 			'customer_id'      => $order->get_customer_id(),
-			'billing_address'  => $this->billing_address_schema->get_item_response( $order ),
-			'shipping_address' => $this->shipping_address_schema->get_item_response( $order ),
+			'billing_address'  => $this->billing_address_schema->get_item_response( $order, $request ),
+			'shipping_address' => $this->shipping_address_schema->get_item_response( $order, $request ),
 			'payment_method'   => $order->get_payment_method(),
 			'payment_result'   => [
 				'payment_status'  => $payment_result->status,

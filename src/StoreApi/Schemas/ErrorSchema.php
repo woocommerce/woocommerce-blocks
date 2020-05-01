@@ -47,10 +47,11 @@ class ErrorSchema extends AbstractSchema {
 	/**
 	 * Convert a WooCommerce product into an object suitable for the response.
 	 *
-	 * @param \WP_Error $error Error object.
+	 * @param \WP_Error        $error Error object.
+	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	public function get_item_response( \WP_Error $error ) {
+	public function get_item_response( \WP_Error $error, \WP_REST_Request $request = null ) {
 		return [
 			'code'    => $this->prepare_html_response( $error->get_error_code() ),
 			'message' => $this->prepare_html_response( $error->get_error_message() ),

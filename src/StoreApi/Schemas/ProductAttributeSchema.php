@@ -77,10 +77,11 @@ class ProductAttributeSchema extends AbstractSchema {
 	/**
 	 * Convert an attribute object into an object suitable for the response.
 	 *
-	 * @param object $attribute Attribute object.
+	 * @param object           $attribute Attribute object.
+	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	public function get_item_response( $attribute ) {
+	public function get_item_response( $attribute, \WP_REST_Request $request = null ) {
 		return [
 			'id'           => (int) $attribute->id,
 			'name'         => $this->prepare_html_response( $attribute->name ),

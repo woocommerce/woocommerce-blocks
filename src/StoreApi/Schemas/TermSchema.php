@@ -71,10 +71,11 @@ class TermSchema extends AbstractSchema {
 	/**
 	 * Convert a term object into an object suitable for the response.
 	 *
-	 * @param \WP_Term $term Term object.
+	 * @param \WP_Term         $term Term object.
+	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	public function get_item_response( $term ) {
+	public function get_item_response( $term, \WP_REST_Request $request = null ) {
 		return [
 			'id'          => (int) $term->term_id,
 			'name'        => $this->prepare_html_response( $term->name ),
