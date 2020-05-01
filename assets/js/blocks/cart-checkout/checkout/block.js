@@ -47,7 +47,11 @@ import {
 } from '@woocommerce/base-components/sidebar-layout';
 import { getSetting } from '@woocommerce/settings';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
-import { CHECKOUT_SHOW_LOGIN_REMINDER } from '@woocommerce/block-settings';
+import {
+	CHECKOUT_SHOW_LOGIN_REMINDER,
+	CHECKOUT_ALLOWS_GUEST,
+	CHECKOUT_ALLOWS_SIGNUP,
+} from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
