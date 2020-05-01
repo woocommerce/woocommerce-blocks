@@ -51,7 +51,6 @@ import {
 	CURRENT_USER_LOGGED_IN,
 	CHECKOUT_SHOW_LOGIN_REMINDER,
 	CHECKOUT_ALLOWS_GUEST,
-	CHECKOUT_ALLOWS_SIGNUP,
 } from '@woocommerce/block-settings';
 
 /**
@@ -164,11 +163,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		return <CheckoutOrderError />;
 	}
 
-	if (
-		! CURRENT_USER_LOGGED_IN &&
-		! CHECKOUT_ALLOWS_GUEST &&
-		! CHECKOUT_ALLOWS_SIGNUP
-	) {
+	if ( ! CURRENT_USER_LOGGED_IN && ! CHECKOUT_ALLOWS_GUEST ) {
 		return __(
 			'You must be logged in to checkout.',
 			'woo-gutenberg-products-block'
