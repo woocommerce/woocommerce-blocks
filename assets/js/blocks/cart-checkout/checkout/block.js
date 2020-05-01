@@ -48,6 +48,7 @@ import {
 import { getSetting } from '@woocommerce/settings';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import {
+	CURRENT_USER_LOGGED_IN,
 	CHECKOUT_SHOW_LOGIN_REMINDER,
 	CHECKOUT_ALLOWS_GUEST,
 	CHECKOUT_ALLOWS_SIGNUP,
@@ -161,6 +162,17 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 
 	if ( ! isEditor && ! hasOrder ) {
 		return <CheckoutOrderError />;
+	}
+
+	if (
+		! CURRENT_USER_LOGGED_IN &&
+		! CHECKOUT_ALLOWS_GUEST &&
+		! CHECKOUT_ALLOWS_SIGNUP
+	) {
+		return __(
+			'You must be logged in to checkout.',
+			'woo-gutenberg-products-block'
+		);
 	}
 
 	const loginPrompt = () =>
