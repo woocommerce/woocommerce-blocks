@@ -1,8 +1,7 @@
 /**
  * External dependencies
  */
-import { Component } from '@wordpress/element';
-import { createHigherOrderComponent } from '@wordpress/compose';
+import { useState, useEffect, useCallback } from '@wordpress/element';
 import { getProduct } from '@woocommerce/block-components/utils';
 
 /**
@@ -15,69 +14,56 @@ import { formatError } from '../base/utils/errors.js';
  *
  * @param {Function} OriginalComponent Component being wrapped.
  */
-const withProduct = createHigherOrderComponent( ( OriginalComponent ) => {
-	return class WrappedComponent extends Component {
-		state = {
-			error: null,
-			loading: false,
-			product:
-				this.props.attributes.productId === 'preview'
-					? this.props.attributes.previewProduct
-					: null,
-		};
+const withProduct = ( OriginalComponent ) => {
+	return ( props ) => {
+		const [ product, setProduct ] = useState( null );
+		const [ loading, setLoading ] = useState( true );
+		const [ error, setError ] = useState( null );
 
-		componentDidMount() {
-			this.loadProduct();
-		}
+		const productId = props.attributes.productId;
 
-		componentDidUpdate( prevProps ) {
-			if (
-				prevProps.attributes.productId !==
-				this.props.attributes.productId
-			) {
-				this.loadProduct();
-			}
-		}
-
-		loadProduct = () => {
-			const { productId } = this.props.attributes;
-
-			if ( productId === 'preview' ) {
-				return;
-			}
-
+		const loadProduct = useCallback( () => {
 			if ( ! productId ) {
-				this.setState( { product: null, loading: false, error: null } );
-				return;
+				return setProduct( null );
+			}
+			if ( productId === 'preview' ) {
+				return setProduct( props.attributes.previewProduct );
 			}
 
-			this.setState( { loading: true } );
+			setLoading( true );
 
 			getProduct( productId )
-				.then( ( product ) => {
-					this.setState( { product, loading: false, error: null } );
+				.then( ( apiProduct ) => {
+					setProduct( apiProduct );
+					setError( null );
 				} )
 				.catch( async ( e ) => {
-					const error = await formatError( e );
-
-					this.setState( { product: null, loading: false, error } );
+					const apiError = await formatError( e );
+					setProduct( null );
+					setError( apiError );
+				} )
+				.finally( () => {
+					setLoading( false );
 				} );
-		};
+		}, [ productId ] );
 
-		render() {
-			const { error, loading, product } = this.state;
+		useEffect( () => {
+			if ( productId === product?.id ) {
+				return;
+			}
+			loadProduct();
+		}, [ productId, loadProduct ] );
 
-			return (
-				<OriginalComponent
-					{ ...this.props }
-					error={ error }
-					getProduct={ this.loadProduct }
-					isLoading={ loading }
-					product={ product }
-				/>
-			);
-		}
+		return (
+			<OriginalComponent
+				{ ...props }
+				error={ error }
+				getProduct={ loadProduct }
+				isLoading={ loading }
+				product={ product }
+			/>
+		);
 	};
-}, 'withProduct' );
+};
 
 export default withProduct;
