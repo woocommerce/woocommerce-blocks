@@ -165,7 +165,7 @@ class Assets {
 		if ( is_numeric( $page ) && $page > 0 ) {
 			$page = get_post( $page );
 		}
-		if ( ! $page ) {
+		if ( ! is_a( $page, '\WP_Post' ) ) {
 			return [
 				'id'        => 0,
 				'title'     => '',
