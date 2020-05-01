@@ -55,6 +55,7 @@ const generateQuery = ( { sortValue, currentPage, attributes } ) => {
 		catalog_visibility: 'catalog',
 		per_page: columns * rows,
 		page: currentPage,
+		summary_max_words: 150,
 	};
 };
 
