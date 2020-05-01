@@ -74,7 +74,7 @@ class ImageAttachmentSchema extends AbstractSchema {
 	 * @param \WP_REST_Request $request Request object.
 	 * @return array|null
 	 */
-	public function get_item_response( $attachment_id, \WP_REST_Request $request = null ) {
+	public function get_item_response( $attachment_id, \WP_REST_Request $request ) {
 		if ( ! $attachment_id ) {
 			return null;
 		}

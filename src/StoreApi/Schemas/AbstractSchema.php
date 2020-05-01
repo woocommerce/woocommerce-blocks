@@ -116,6 +116,21 @@ abstract class AbstractSchema {
 	}
 
 	/**
+	 * Converts an array of objects to an array of items in schema format.
+	 *
+	 * @param array            $objects List of Item objects..
+	 * @param \WP_REST_Request $request Request object.
+	 * @return array
+	 */
+	public function get_item_responses( $objects, \WP_REST_Request $request ) {
+		$responses = [];
+		foreach ( $objects as $object ) {
+			$responses[] = $this->get_item_response( $object, $request );
+		}
+		return array_values( array_filter( $responses ) );
+	}
+
+	/**
 	 * Force all schema properties to be readonly.
 	 *
 	 * @param array $properties Schema.

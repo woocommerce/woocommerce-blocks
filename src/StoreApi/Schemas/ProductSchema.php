@@ -238,7 +238,7 @@ class ProductSchema extends AbstractSchema {
 	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	public function get_item_response( $product, \WP_REST_Request $request = null ) {
+	public function get_item_response( $product, \WP_REST_Request $request ) {
 		return [
 			'id'                  => $product->get_id(),
 			'name'                => $this->prepare_html_response( $product->get_title() ),
@@ -246,7 +246,7 @@ class ProductSchema extends AbstractSchema {
 			'variation'           => $this->prepare_html_response( $product->is_type( 'variation' ) ? wc_get_formatted_variation( $product, true, true, false ) : '' ),
 			'permalink'           => $product->get_permalink(),
 			'sku'                 => $this->prepare_html_response( $product->get_sku() ),
-			'summary'             => $this->prepare_html_response( ( new ProductSummary( $product ) )->get_summary( 150 ) ),
+			'summary'             => $this->prepare_html_response( ( new ProductSummary( $product ) )->get_summary( $request['summary_max_words'] ) ),
 			'short_description'   => $this->prepare_html_response( wc_format_content( $product->get_short_description() ) ),
 			'description'         => $this->prepare_html_response( wc_format_content( $product->get_description() ) ),
 			'on_sale'             => $product->is_on_sale(),
@@ -254,7 +254,7 @@ class ProductSchema extends AbstractSchema {
 			'price_html'          => $product->get_price_html(),
 			'average_rating'      => $product->get_average_rating(),
 			'review_count'        => $product->get_review_count(),
-			'images'              => $this->get_images( $product ),
+			'images'              => $this->get_images( $product, $request ),
 			'variations'          => $product->is_type( 'variable' ) ? $product->get_visible_children() : [],
 			'has_options'         => $product->has_options(),
 			'is_purchasable'      => $product->is_purchasable(),
@@ -272,13 +272,14 @@ class ProductSchema extends AbstractSchema {
 	/**
 	 * Get list of product images.
 	 *
-	 * @param \WC_Product $product Product instance.
+	 * @param \WC_Product      $product Product instance.
+	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	protected function get_images( \WC_Product $product ) {
+	protected function get_images( \WC_Product $product, \WP_REST_Request $request ) {
 		$attachment_ids = array_merge( [ $product->get_image_id() ], $product->get_gallery_image_ids() );
 
-		return array_filter( array_map( [ $this->image_attachment_schema, 'get_item_response' ], $attachment_ids ) );
+		return $this->image_attachment_schema->get_item_responses( $attachment_ids, $request );
 	}
 
 	/**

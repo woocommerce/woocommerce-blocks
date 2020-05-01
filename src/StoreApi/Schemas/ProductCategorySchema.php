@@ -73,7 +73,7 @@ class ProductCategorySchema extends TermSchema {
 	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	public function get_item_response( $term, \WP_REST_Request $request = null ) {
+	public function get_item_response( $term, \WP_REST_Request $request ) {
 		$response = parent::get_item_response( $term, $request );
 		$count    = get_term_meta( $term->term_id, 'product_count_product_cat', true );
 

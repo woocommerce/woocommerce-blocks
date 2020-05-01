@@ -98,7 +98,7 @@ class BillingAddressSchema extends AbstractSchema {
 	 * @throws RouteException When the invalid object types are provided.
 	 * @return stdClass
 	 */
-	public function get_item_response( $address, \WP_REST_Request $request = null ) {
+	public function get_item_response( $address, \WP_REST_Request $request ) {
 		if ( ( $address instanceof \WC_Customer || $address instanceof \WC_Order ) ) {
 			return (object) $this->prepare_html_response(
 				[

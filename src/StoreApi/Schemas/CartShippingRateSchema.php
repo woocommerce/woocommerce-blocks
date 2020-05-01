@@ -217,7 +217,7 @@ class CartShippingRateSchema extends AbstractSchema {
 	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	public function get_item_response( $package, \WP_REST_Request $request = null ) {
+	public function get_item_response( $package, \WP_REST_Request $request ) {
 		// Add product names and quantities.
 		$items = array();
 		foreach ( $package['contents'] as $item_id => $values ) {

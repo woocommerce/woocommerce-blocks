@@ -285,7 +285,7 @@ class CartItemSchema extends ProductSchema {
 	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	public function get_item_response( $cart_item, \WP_REST_Request $request = null ) {
+	public function get_item_response( $cart_item, \WP_REST_Request $request ) {
 		$product = $cart_item['data'];
 
 		return [
@@ -294,7 +294,7 @@ class CartItemSchema extends ProductSchema {
 			'quantity'            => wc_stock_amount( $cart_item['quantity'] ),
 			'quantity_limit'      => $this->get_product_quantity_limit( $product ),
 			'name'                => $this->prepare_html_response( $product->get_title() ),
-			'summary'             => $this->prepare_html_response( ( new ProductSummary( $product ) )->get_summary( 150 ) ),
+			'summary'             => $this->prepare_html_response( ( new ProductSummary( $product ) )->get_summary( $request['summary_max_words'] ) ),
 			'short_description'   => $this->prepare_html_response( wc_format_content( $product->get_short_description() ) ),
 			'description'         => $this->prepare_html_response( wc_format_content( $product->get_description() ) ),
 			'sku'                 => $this->prepare_html_response( $product->get_sku() ),
@@ -302,7 +302,7 @@ class CartItemSchema extends ProductSchema {
 			'backorders_allowed'  => (bool) $product->backorders_allowed(),
 			'sold_individually'   => $product->is_sold_individually(),
 			'permalink'           => $product->get_permalink(),
-			'images'              => $this->get_images( $product ),
+			'images'              => $this->get_images( $product, $request ),
 			'variation'           => $this->format_variation_data( $cart_item['variation'], $product ),
 			'prices'              => (object) $this->prepare_product_price_response( $product, get_option( 'woocommerce_tax_display_cart' ) ),
 			'totals'              => (object) array_merge(

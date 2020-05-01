@@ -267,17 +267,17 @@ class CartSchema extends AbstractSchema {
 	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	public function get_item_response( $cart, \WP_REST_Request $request = null ) {
+	public function get_item_response( $cart, \WP_REST_Request $request ) {
 		$controller = new CartController();
 
 		// Get cart errors first so if recalculations are performed, it's reflected in the response.
 		$cart_errors = $this->get_cart_errors( $cart );
 
 		return [
-			'coupons'          => array_values( array_map( [ $this->coupon_schema, 'get_item_response' ], array_filter( $cart->get_applied_coupons() ) ) ),
-			'shipping_rates'   => array_values( array_map( [ $this->shipping_rate_schema, 'get_item_response' ], $controller->get_shipping_packages() ) ),
+			'coupons'          => $this->coupon_schema->get_item_responses( array_filter( $cart->get_applied_coupons() ), $request ),
+			'shipping_rates'   => $this->shipping_rate_schema->get_item_responses( $controller->get_shipping_packages(), $request ),
 			'shipping_address' => $this->shipping_address_schema->get_item_response( wc()->customer, $request ),
-			'items'            => array_values( array_map( [ $this->item_schema, 'get_item_response' ], array_filter( $cart->get_cart() ) ) ),
+			'items'            => $this->item_schema->get_item_responses( array_filter( $cart->get_cart() ), $request ),
 			'items_count'      => $cart->get_cart_contents_count(),
 			'items_weight'     => wc_get_weight( $cart->get_cart_contents_weight(), 'g' ),
 			'needs_payment'    => $cart->needs_payment(),

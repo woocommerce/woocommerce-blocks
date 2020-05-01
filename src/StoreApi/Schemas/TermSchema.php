@@ -75,7 +75,7 @@ class TermSchema extends AbstractSchema {
 	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	public function get_item_response( $term, \WP_REST_Request $request = null ) {
+	public function get_item_response( $term, \WP_REST_Request $request ) {
 		return [
 			'id'          => (int) $term->term_id,
 			'name'        => $this->prepare_html_response( $term->name ),

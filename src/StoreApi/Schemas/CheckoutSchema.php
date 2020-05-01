@@ -144,7 +144,7 @@ class CheckoutSchema extends AbstractSchema {
 	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	public function get_item_response( $item, \WP_REST_Request $request = null ) {
+	public function get_item_response( $item, \WP_REST_Request $request ) {
 		return $this->get_checkout_response( $item->order, $item->payment_result );
 	}
 

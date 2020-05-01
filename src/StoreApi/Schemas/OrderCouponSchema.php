@@ -66,7 +66,7 @@ class OrderCouponSchema extends AbstractSchema {
 	 * @param \WP_REST_Request      $request Request object.
 	 * @return array
 	 */
-	public function get_item_response( \WC_Order_Item_Coupon $coupon, \WP_REST_Request $request = null ) {
+	public function get_item_response( \WC_Order_Item_Coupon $coupon, \WP_REST_Request $request ) {
 		return [
 			'code'   => $coupon->get_code(),
 			'totals' => (object) array_merge(

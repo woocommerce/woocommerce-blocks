@@ -84,7 +84,7 @@ class CartCouponSchema extends AbstractSchema {
 	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	public function get_item_response( $coupon_code, \WP_REST_Request $request = null ) {
+	public function get_item_response( $coupon_code, \WP_REST_Request $request ) {
 		$controller           = new CartController();
 		$cart                 = $controller->get_cart_instance();
 		$total_discounts      = $cart->get_coupon_discount_totals();
