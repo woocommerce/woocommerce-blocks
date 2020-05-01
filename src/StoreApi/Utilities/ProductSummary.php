@@ -101,7 +101,11 @@ final class ProductSummary {
 		$paragraph = \strstr( $content_p, '</p>' ) ? \substr( $content_p, 0, \strpos( $content_p, '</p>' ) + 4 ) : $content;
 
 		if ( $this->get_word_count( $paragraph ) > $max_words ) {
-			return \wp_trim_words( $paragraph, $max_words );
+			$trimmed_content = trim( \wp_trim_words( $paragraph, $max_words, '' ) );
+			if ( '.' !== substr( $trimmed_content, -1 ) ) {
+				$trimmed_content .= '&hellip;';
+			}
+			return $trimmed_content;
 		}
 
 		return $paragraph;

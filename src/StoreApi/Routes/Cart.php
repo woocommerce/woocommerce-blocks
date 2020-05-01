@@ -65,9 +65,9 @@ class Cart extends AbstractCartRoute {
 		$params['context']['default'] = 'view';
 
 		$params['summary_max_words'] = array(
-			'description'       => __( 'Limits the word count of the summary field from the product. Defaults to 20.', 'woo-gutenberg-products-block' ),
+			'description'       => __( 'Limits the word count of the summary field from the product. Defaults to 15.', 'woo-gutenberg-products-block' ),
 			'type'              => 'integer',
-			'default'           => 20,
+			'default'           => 15,
 			'sanitize_callback' => 'absint',
 			'validate_callback' => 'rest_validate_request_arg',
 			'minimum'           => 1,

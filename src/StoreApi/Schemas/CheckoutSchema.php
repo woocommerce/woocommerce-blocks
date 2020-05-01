@@ -145,17 +145,18 @@ class CheckoutSchema extends AbstractSchema {
 	 * @return array
 	 */
 	public function get_item_response( $item, \WP_REST_Request $request ) {
-		return $this->get_checkout_response( $item->order, $item->payment_result );
+		return $this->get_checkout_response( $item->order, $item->payment_result, $request );
 	}
 
 	/**
 	 * Get the checkout response based on the current order and any payments.
 	 *
-	 * @param \WC_Order     $order Order object.
-	 * @param PaymentResult $payment_result Payment result object.
+	 * @param \WC_Order        $order Order object.
+	 * @param PaymentResult    $payment_result Payment result object.
+	 * @param \WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	protected function get_checkout_response( \WC_Order $order, PaymentResult $payment_result = null ) {
+	protected function get_checkout_response( \WC_Order $order, PaymentResult $payment_result = null, \WP_REST_Request $request ) {
 		return [
 			'order_id'         => $order->get_id(),
 			'status'           => $order->get_status(),
