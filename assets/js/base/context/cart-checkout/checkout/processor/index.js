@@ -43,6 +43,7 @@ const preparePaymentData = ( paymentData ) => {
  * CheckoutProcessor component.
  *
  * @todo Needs to consume all contexts.
+ * @body Testing the body
  *
  * Subscribes to checkout context and triggers processing via the API.
  */
