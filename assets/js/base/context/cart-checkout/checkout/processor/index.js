@@ -48,6 +48,8 @@ const preparePaymentData = ( paymentData ) => {
  * Subscribes to checkout context and triggers processing via the API.
  */
 const CheckoutProcessor = () => {
+	// @todo another brief todo test
+	// @body with a body.
 	const {
 		hasError: checkoutHasError,
 		onCheckoutBeforeProcessing,
