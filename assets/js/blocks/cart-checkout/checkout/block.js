@@ -48,7 +48,6 @@ import {
 import { getSetting } from '@woocommerce/settings';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import {
-	CURRENT_USER_LOGGED_IN,
 	CHECKOUT_SHOW_LOGIN_REMINDER,
 	CHECKOUT_ALLOWS_GUEST,
 } from '@woocommerce/block-settings';
@@ -82,6 +81,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		hasError: checkoutHasError,
 		isIdle: checkoutIsIdle,
 		isProcessing: checkoutIsProcessing,
+		customerId,
 	} = useCheckoutContext();
 	const {
 		hasValidationErrors,
@@ -163,7 +163,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		return <CheckoutOrderError />;
 	}
 
-	if ( ! CURRENT_USER_LOGGED_IN && ! CHECKOUT_ALLOWS_GUEST ) {
+	if ( ! customerId && ! CHECKOUT_ALLOWS_GUEST ) {
 		return (
 			<>
 				{ __(
@@ -182,7 +182,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 
 	const loginPrompt = () =>
 		CHECKOUT_SHOW_LOGIN_REMINDER &&
-		! CURRENT_USER_LOGGED_IN && (
+		! customerId && (
 			<>
 				{ __(
 					'Already have an account? ',
