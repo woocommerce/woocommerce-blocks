@@ -164,9 +164,19 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 	}
 
 	if ( ! CURRENT_USER_LOGGED_IN && ! CHECKOUT_ALLOWS_GUEST ) {
-		return __(
-			'You must be logged in to checkout.',
-			'woo-gutenberg-products-block'
+		return (
+			<>
+				{ __(
+					'You must be logged in to checkout. ',
+					'woo-gutenberg-products-block'
+				) }
+				<a href="/wp-login.php">
+					{ __(
+						'Click here to log in.',
+						'woo-gutenberg-products-block'
+					) }
+				</a>
+			</>
 		);
 	}
 
