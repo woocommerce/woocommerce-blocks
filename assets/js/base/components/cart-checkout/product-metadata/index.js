@@ -1,8 +1,8 @@
 /**
  * External dependencies
  */
-import { RawHTML } from '@wordpress/element';
 import PropTypes from 'prop-types';
+import Summary from '@woocommerce/base-components/summary';
 
 /**
  * Internal dependencies
@@ -13,7 +13,7 @@ import './style.scss';
 const ProductMetadata = ( { summary, variation } ) => {
 	return (
 		<div className="wc-block-product-metadata">
-			{ summary && <RawHTML>{ summary }</RawHTML> }
+			{ summary && <Summary source={ summary } maxWords={ 15 } /> }
 			{ variation && <ProductVariationData variation={ variation } /> }
 		</div>
 	);

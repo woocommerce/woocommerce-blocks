@@ -4,22 +4,27 @@
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useProductLayoutContext } from '@woocommerce/base-context';
+import Summary from '@woocommerce/base-components/summary';
 
 const ProductSummary = ( { className, product } ) => {
 	const { layoutStyleClassPrefix } = useProductLayoutContext();
-	if ( ! product.summary ) {
+
+	if ( ! product.short_description && ! product.description ) {
 		return null;
 	}
 
 	return (
-		<div
+		<Summary
 			className={ classnames(
 				className,
 				`${ layoutStyleClassPrefix }__product-summary`
 			) }
-			dangerouslySetInnerHTML={ {
-				__html: product.summary,
-			} }
+			source={
+				product.short_description
+					? product.short_description
+					: product.description
+			}
+			maxWords={ 150 }
 		/>
 	);
 };
