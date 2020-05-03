@@ -153,6 +153,13 @@ class Assets {
 					'terms'    => self::format_page_resource( $page_ids['terms'] ),
 				],
 				'baseLocation'                  => wc_get_base_location(),
+
+				/*
+				 * translators: If your word count is based on single characters (e.g. East Asian characters),
+				 * enter 'characters_excluding_spaces' or 'characters_including_spaces'. Otherwise, enter 'words'.
+				 * Do not translate into your own language.
+				 */
+				'wordCountType'                 => _x( 'words', 'Word count type. Do not translate!', 'woo-gutenberg-products-block' ),
 			]
 		);
 	}
