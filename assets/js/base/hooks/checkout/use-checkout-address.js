@@ -17,7 +17,9 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
  * @param {Object} address2 Second address.
  */
 const isSameAddress = ( address1, address2 ) => {
-	return Object.keys( defaultAddressFields ).every( ( field ) => address1[ field ] === address2[ field ] );
+	return Object.keys( defaultAddressFields ).every(
+		( field ) => address1[ field ] === address2[ field ]
+	);
 };
 
 /**
