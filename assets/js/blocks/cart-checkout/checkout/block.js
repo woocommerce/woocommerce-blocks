@@ -163,6 +163,10 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		return <CheckoutOrderError />;
 	}
 
+	const loginToCheckoutUrl = `/wp-login.php?redirect_to=${ encodeURIComponent(
+		window.location.href
+	) }`;
+
 	if ( ! customerId && ! CHECKOUT_ALLOWS_GUEST ) {
 		return (
 			<>
@@ -170,7 +174,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 					'You must be logged in to checkout. ',
 					'woo-gutenberg-products-block'
 				) }
-				<a href="/wp-login.php">
+				<a href={ loginToCheckoutUrl }>
 					{ __(
 						'Click here to log in.',
 						'woo-gutenberg-products-block'
@@ -188,7 +192,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 					'Already have an account? ',
 					'woo-gutenberg-products-block'
 				) }
-				<a href="/wp-login.php">
+				<a href={ loginToCheckoutUrl }>
 					{ __( 'Log in.', 'woo-gutenberg-products-block' ) }
 				</a>
 			</>
