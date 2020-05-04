@@ -8,6 +8,7 @@ import {
 	useState,
 } from '@wordpress/element';
 import { omit, pickBy } from 'lodash';
+import isShallowEqual from '@wordpress/is-shallow-equal';
 
 /**
  * @typedef { import('@woocommerce/type-defs/contexts').ValidationContext } ValidationContext
@@ -102,10 +103,19 @@ export const ValidationContextProvider = ( { children } ) => {
 	);
 
 	const updateValidationError = ( property, newError ) => {
+		if (
+			isShallowEqual( validationErrors[ property ], {
+				...validationErrors[ property ],
+				...newError,
+			} )
+		) {
+			return;
+		}
 		updateValidationErrors( ( prevErrors ) => {
 			if ( ! prevErrors.hasOwnProperty( property ) ) {
 				return prevErrors;
 			}
+
 			return {
 				...prevErrors,
 				[ property ]: {
@@ -124,14 +134,9 @@ export const ValidationContextProvider = ( { children } ) => {
 	 *                           value to true.
 	 */
 	const hideValidationError = ( property ) => {
-		if (
-			validationErrors[ property ] &&
-			validationErrors[ property ].hidden !== true
-		) {
-			updateValidationError( property, {
-				hidden: true,
-			} );
-		}
+		updateValidationError( property, {
+			hidden: true,
+		} );
 	};
 
 	/**
@@ -142,14 +147,9 @@ export const ValidationContextProvider = ( { children } ) => {
 	 *                           value to false.
 	 */
 	const showValidationError = ( property ) => {
-		if (
-			validationErrors[ property ] &&
-			validationErrors[ property ].hidden !== false
-		) {
-			updateValidationError( property, {
-				hidden: false,
-			} );
-		}
+		updateValidationError( property, {
+			hidden: false,
+		} );
 	};
 
 	/**
