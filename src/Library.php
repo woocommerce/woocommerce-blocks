@@ -74,6 +74,7 @@ class Library {
 			$blocks[] = 'ActiveFilters';
 			$blocks[] = 'Checkout';
 			$blocks[] = 'Cart';
+			$blocks[] = 'SingleProduct';
 		}
 		foreach ( $blocks as $class ) {
 			$class    = __NAMESPACE__ . '\\BlockTypes\\' . $class;
