@@ -40,7 +40,7 @@ const CartLineItemRow = ( { lineItem } ) => {
 	const {
 		name = '',
 		short_description: shortDescription = '',
-		description = '',
+		description: fullDescription = '',
 		low_stock_remaining: lowStockRemaining = null,
 		quantity_limit: quantityLimit = 99,
 		permalink = '',
@@ -110,9 +110,8 @@ const CartLineItemRow = ( { lineItem } ) => {
 				/>
 				<ProductLowStockBadge lowStockRemaining={ lowStockRemaining } />
 				<ProductMetadata
-					summary={
-						shortDescription ? shortDescription : description
-					}
+					shortDescription={ shortDescription }
+					fullDescription={ fullDescription }
 					variation={ variation }
 				/>
 			</td>

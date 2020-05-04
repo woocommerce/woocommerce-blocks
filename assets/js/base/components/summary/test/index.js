@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { generateSummary } from '../index';
+import { generateSummary } from '../utils';
 
 describe( 'Summary Component', () => {
 	describe( 'Test the generateSummary utility', () => {
@@ -33,6 +33,26 @@ describe( 'Summary Component', () => {
 			const result = generateSummary( testContent, 1 );
 
 			expect( result.trim() ).toEqual( '<p>Lorem&hellip;</p>' );
+		} );
+		it( 'Limit to 15 characters, including spaces.', async () => {
+			const result = generateSummary(
+				testContent,
+				15,
+				'characters_including_spaces'
+			);
+
+			expect( result.trim() ).toEqual( '<p>Lorem ipsum dol&hellip;</p>' );
+		} );
+		it( 'Limit to 15 characters, excluding spaces.', async () => {
+			const result = generateSummary(
+				testContent,
+				15,
+				'characters_excluding_spaces'
+			);
+
+			expect( result.trim() ).toEqual(
+				'<p>Lorem ipsum dolor&hellip;</p>'
+			);
 		} );
 	} );
 	describe( 'Test the generateSummary utility with special chars', () => {

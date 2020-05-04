@@ -5,13 +5,19 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useProductLayoutContext } from '@woocommerce/base-context';
 import Summary from '@woocommerce/base-components/summary';
+import { getSetting } from '@woocommerce/settings';
 
 const ProductSummary = ( { className, product } ) => {
 	const { layoutStyleClassPrefix } = useProductLayoutContext();
+	const source = product.short_description
+		? product.short_description
+		: product.description;
 
-	if ( ! product.short_description && ! product.description ) {
+	if ( ! source ) {
 		return null;
 	}
+
+	const countType = getSetting( 'wordCountType', 'words' );
 
 	return (
 		<Summary
@@ -19,12 +25,9 @@ const ProductSummary = ( { className, product } ) => {
 				className,
 				`${ layoutStyleClassPrefix }__product-summary`
 			) }
-			source={
-				product.short_description
-					? product.short_description
-					: product.description
-			}
-			maxWords={ 150 }
+			source={ source }
+			maxLength={ 150 }
+			countType={ countType }
 		/>
 	);
 };
