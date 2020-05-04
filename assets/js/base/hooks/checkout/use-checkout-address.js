@@ -8,6 +8,7 @@ import {
 	useBillingDataContext,
 	useCheckoutContext,
 } from '@woocommerce/base-context';
+import isShallowEqual from '@wordpress/is-shallow-equal';
 
 /**
  * Compare two addresses and see if they are the same.
@@ -52,24 +53,19 @@ export const useCheckoutAddress = () => {
 
 	// Pushes to global state when changes are made locally.
 	useEffect( () => {
-		setShippingAddress( shippingFields );
-
-		if ( shippingAsBilling ) {
-			setBillingData( shippingFields );
+		// Update shipping address if it doesn't match local state.
+		if ( ! isShallowEqual( shippingFields, shippingAddress ) ) {
+			setShippingAddress( shippingFields );
 		}
-	}, [ shippingFields ] );
 
-	useEffect( () => {
-		setBillingData( billingFields );
-	}, [ billingFields ] );
+		const billingDataToSet = shippingAsBilling
+			? shippingFields
+			: billingFields;
 
-	useEffect( () => {
-		if ( shippingAsBilling ) {
-			setBillingData( shippingFields );
-		} else {
-			setBillingData( billingFields );
+		if ( ! isShallowEqual( billingDataToSet, billingData ) ) {
+			setBillingData( billingDataToSet );
 		}
-	}, [ shippingAsBilling ] );
+	}, [ shippingFields, billingFields, shippingAsBilling ] );
 
 	const setEmail = useCallback(
 		( value ) => {
