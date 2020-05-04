@@ -73,16 +73,16 @@ export const useCheckoutAddress = () => {
 
 	const setEmail = useCallback(
 		( value ) => {
-			setBillingData( { email: value } );
+			setBillingFields( { email: value } );
 		},
-		[ setBillingData ]
+		[ setBillingFields ]
 	);
 
 	const setPhone = useCallback(
 		( value ) => {
-			setBillingData( { phone: value } );
+			setBillingFields( { phone: value } );
 		},
-		[ setBillingData ]
+		[ setBillingFields ]
 	);
 
 	return {
