@@ -228,11 +228,9 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 									'Email address',
 									'woo-gutenberg-products-block'
 								) }
-								value={ billingData.email }
+								value={ billingFields.email }
 								autoComplete="email"
-								onChange={ ( newValue ) =>
-									setBillingData( { email: newValue } )
-								}
+								onChange={ setEmail }
 								required={ true }
 							/>
 						</FormStep>
@@ -253,7 +251,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 								<AddressForm
 									id="shipping"
 									onChange={ setShippingFields }
-									values={ shippingAddress }
+									values={ shippingFields }
 									fields={ Object.keys( addressFields ) }
 									fieldConfig={ addressFields }
 								/>
@@ -272,13 +270,9 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 														'woo-gutenberg-products-block'
 												  )
 										}
-										value={ billingData.phone }
+										value={ billingFields.phone }
 										autoComplete="tel"
-										onChange={ ( newValue ) =>
-											setBillingData( {
-												phone: newValue,
-											} )
-										}
+										onChange={ setPhone }
 										required={
 											attributes.requirePhoneField
 										}
@@ -313,9 +307,9 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 							>
 								<AddressForm
 									id="billing"
-									onChange={ setBillingData }
+									onChange={ setBillingFields }
 									type="billing"
-									values={ billingData }
+									values={ billingFields }
 									fields={ Object.keys( addressFields ) }
 									fieldConfig={ addressFields }
 								/>
@@ -340,30 +334,13 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 										: ''
 								}
 							>
-								{ getShippingRatesPackageCount(
+								{ isEditor &&
+								! getShippingRatesPackageCount(
 									shippingRates
-								) === 0 && isEditor ? (
+								) ? (
 									<NoShippingPlaceholder />
 								) : (
 									<ShippingRatesControl
-										address={
-											shippingAddress.country
-												? {
-														address_1:
-															shippingAddress.address_1,
-														address_2:
-															shippingAddress.address_2,
-														city:
-															shippingAddress.city,
-														state:
-															shippingAddress.state,
-														postcode:
-															shippingAddress.postcode,
-														country:
-															shippingAddress.country,
-												  }
-												: null
-										}
 										noResultsMessage={ __(
 											'There are no shipping options available. Please ensure that your address has been entered correctly, or contact us if you need any help.',
 											'woo-gutenberg-products-block'
