@@ -64,7 +64,7 @@ const ValidatedTextInput = ( {
 		return () => {
 			clearValidationError( errorId );
 		};
-	}, [] );
+	}, [ errorId ] );
 
 	const errorMessage = getValidationError( errorId ) || {};
 	const hasError = errorMessage.message && ! errorMessage.hidden;
