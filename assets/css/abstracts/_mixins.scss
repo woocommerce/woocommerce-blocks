@@ -1,7 +1,7 @@
 // Converts a font-size in px to rem and optionally sets a relative line-height.
-@mixin font-size($sizeValue: 16, $lineHeight: false ) {
-	font-size: $sizeValue + px;
-	font-size: ($sizeValue / 16) + rem;
+@mixin font-size($sizeValue: 16px, $lineHeight: false) {
+	font-size: ($sizeValue / 16px) + rem;
+
 	@if ($lineHeight) {
 		line-height: $lineHeight / $sizeValue;
 	}
