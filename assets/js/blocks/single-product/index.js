@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { InnerBlocks } from '@wordpress/block-editor';
 import { registerBlockType } from '@wordpress/blocks';
-import { Icon, reader } from '@woocommerce/icons';
 import classnames from 'classnames';
 
 /**
@@ -13,19 +12,17 @@ import classnames from 'classnames';
 import edit from './edit';
 import blockAttributes from './attributes';
 import './style.scss';
+import { BLOCK_TITLE, BLOCK_ICON, BLOCK_DESCRIPTION } from './constants';
 
 const settings = {
-	title: __( 'Single Product', 'woo-gutenberg-products-block' ),
+	title: BLOCK_TITLE,
 	icon: {
-		src: <Icon srcElement={ reader } />,
+		src: BLOCK_ICON,
 		foreground: '#96588a',
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
-	description: __(
-		'Display a single product with its details and quantity.',
-		'woo-gutenberg-products-block'
-	),
+	description: BLOCK_DESCRIPTION,
 	supports: {
 		align: [ 'wide', 'full' ],
 		html: false,

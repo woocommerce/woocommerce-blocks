@@ -1,1 +1,17 @@
-/* Placeholder */
+.wc-block-single-product {
+	&.components-placeholder {
+		// Reset the background for the placeholders.
+		background-color: rgba(139, 139, 150, 0.1);
+	}
+
+	.components-resizable-box__handle {
+		z-index: 10;
+	}
+}
+.wc-block-single-product__message {
+	margin-bottom: 16px;
+}
+
+.wc-block-single-product__selection {
+	width: 100%;
+}
