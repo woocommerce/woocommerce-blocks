@@ -10,7 +10,7 @@ import {
 import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
 import { renderProductLayout } from '@woocommerce/atomic-utils';
 
-const ProductListItem = ( { product, attributes, instanceId } ) => {
+const SingleProduct = ( { product, attributes, instanceId } ) => {
 	const { layoutConfig } = attributes;
 	const { parentName } = useInnerBlockConfigurationContext();
 	const { layoutStyleClassPrefix } = useProductLayoutContext();
@@ -20,22 +20,22 @@ const ProductListItem = ( { product, attributes, instanceId } ) => {
 	} );
 
 	return (
-		<li className={ classes } aria-hidden={ isLoading }>
+		<div className={ classes } aria-hidden={ isLoading }>
 			{ renderProductLayout(
 				parentName,
 				product,
 				layoutConfig,
 				instanceId
 			) }
-		</li>
+		</div>
 	);
 };
 
-ProductListItem.propTypes = {
+SingleProduct.propTypes = {
 	attributes: PropTypes.object.isRequired,
 	product: PropTypes.object,
 	// from withInstanceId
 	instanceId: PropTypes.number.isRequired,
 };
 
-export default withInstanceId( ProductListItem );
+export default withInstanceId( SingleProduct );

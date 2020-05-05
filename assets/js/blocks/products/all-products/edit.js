@@ -29,6 +29,7 @@ import {
 	InnerBlockConfigurationProvider,
 	ProductLayoutContextProvider,
 } from '@woocommerce/base-context';
+import { getBlockMap, getLayoutConfig } from '@woocommerce/atomic-utils';
 
 /**
  * Internal dependencies
@@ -38,11 +39,7 @@ import {
 	renderNoProductsPlaceholder,
 	getBlockClassName,
 } from '../utils';
-import {
-	DEFAULT_PRODUCT_LIST_LAYOUT,
-	getBlockMap,
-	getProductLayoutConfig,
-} from '../base-utils';
+import { DEFAULT_PRODUCT_LIST_LAYOUT } from '../constants';
 import { getSharedContentControls, getSharedListControls } from '../edit';
 import Block from './block';
 
@@ -162,7 +159,7 @@ class Editor extends Component {
 		const onDone = () => {
 			const { block, setAttributes } = this.props;
 			setAttributes( {
-				layoutConfig: getProductLayoutConfig( block.innerBlocks ),
+				layoutConfig: getLayoutConfig( block.innerBlocks ),
 			} );
 			this.setState( { innerBlocks: block.innerBlocks } );
 			this.togglePreview();

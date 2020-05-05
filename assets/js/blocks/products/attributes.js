@@ -6,7 +6,7 @@ import { DEFAULT_COLUMNS, DEFAULT_ROWS } from '@woocommerce/block-settings';
 /**
  * Internal dependencies
  */
-import { DEFAULT_PRODUCT_LIST_LAYOUT } from './base-utils';
+import { DEFAULT_PRODUCT_LIST_LAYOUT } from './constants';
 
 export const defaults = {
 	columns: DEFAULT_COLUMNS,
