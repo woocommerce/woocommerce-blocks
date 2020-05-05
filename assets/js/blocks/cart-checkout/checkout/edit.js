@@ -229,7 +229,7 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 						}
 						labels={ {
 							title: __(
-								'Return to cart button',
+								'Return to Cart button',
 								'woo-gutenberg-products-block'
 							),
 							default: __(
