@@ -7,7 +7,7 @@
 	}
 }
 
-@mixin hover-state {
+@mixin hover-state() {
 	&:hover,
 	&:active,
 	&:focus {
@@ -52,15 +52,6 @@
 	}
 }
 
-// Adds animation to transforms
-@mixin animate-transform( $duration: 0.2s ) {
-	transition: transform ease $duration;
-
-	@media screen and (prefers-reduced-motion: reduce) {
-		transition: none;
-	}
-}
-
 // Hide an element from sighted users, but availble to screen reader users.
 @mixin visually-hidden() {
 	clip: rect(1px, 1px, 1px, 1px);
@@ -72,16 +63,6 @@
 	/* Many screen reader and browser combinations announce broken words as they would appear visually. */
 	overflow-wrap: normal !important;
 	word-wrap: normal !important;
-}
-
-// Unhide a visually hidden element
-@mixin visually-shown() {
-	clip: auto;
-	clip-path: none;
-	height: auto;
-	width: auto;
-	margin: unset;
-	overflow: hidden;
 }
 
 // Reset <button> style so we can use link style for action buttons.
@@ -110,7 +91,7 @@
 }
 
 // Makes sure long words are broken if they overflow the container.
-@mixin wrapBreakWord {
+@mixin wrap-break-word() {
 	// This is the current standard, works in most browsers.
 	overflow-wrap: anywhere;
 	// Safari supports word-break.
@@ -119,6 +100,6 @@
 	-ms-word-break: break-all;
 }
 
-@function rem($size, $base: 16px ) {
+@function rem($size, $base: 16px) {
 	@return $size / $base * 1rem;
 }
