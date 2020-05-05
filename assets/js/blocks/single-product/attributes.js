@@ -1,7 +1,13 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
-const blockAttributes = {
+import { DEFAULT_PRODUCT_LAYOUT } from './constants';
+
+export const defaults = {
+	layoutConfig: DEFAULT_PRODUCT_LAYOUT,
+	isPreview: false,
+};
+export const blockAttributes = {
 	isPreview: {
 		type: 'boolean',
 		default: false,
@@ -12,6 +18,12 @@ const blockAttributes = {
 	 */
 	productId: {
 		type: 'number',
+	},
+	/**
+	 * Layout config.
+	 */
+	layoutConfig: {
+		type: 'array',
 	},
 };
 

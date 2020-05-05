@@ -13,3 +13,10 @@ export const BLOCK_DESCRIPTION = __(
 	'Display a single product with its details and quantity.',
 	'woo-gutenberg-products-block'
 );
+/**
+ * The default layout built from the default template.
+ */
+export const DEFAULT_PRODUCT_LAYOUT = [
+	[ 'woocommerce/product-title' ],
+	[ 'woocommerce/product-price' ],
+];

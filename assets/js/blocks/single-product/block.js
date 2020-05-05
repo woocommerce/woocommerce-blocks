@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { Component } from 'react';
-import PropTypes from 'prop-types';
 import {
 	InnerBlockConfigurationProvider,
 	ProductLayoutContextProvider,
 } from '@woocommerce/base-context';
+import SingleProduct from '@woocommerce/base-components/single-product';
+import { withProduct } from '@woocommerce/block-hocs';
 
 const layoutContextConfig = {
 	layoutStyleClassPrefix: 'wc-block-single-product',
@@ -15,37 +15,20 @@ const layoutContextConfig = {
 const parentBlockConfig = { parentName: 'woocommerce/single-product' };
 
 /**
- * The All Products Block.
+ * The Single Product Block.
  */
-class Block extends Component {
-	static propTypes = {
-		/**
-		 * The attributes for this block.
-		 */
-		attributes: PropTypes.object.isRequired,
-	};
-
-	render() {
-		const { attributes, urlParameterSuffix } = this.props;
-
-		if ( attributes.isPreview ) {
-			return null;
-		}
-
-		/**
-		 * Todo classes
-		 *
-		 * wp-block-{$this->block_name},
-		 * wc-block-{$this->block_name},
-		 */
-		return (
-			<InnerBlockConfigurationProvider value={ parentBlockConfig }>
-				<ProductLayoutContextProvider value={ layoutContextConfig }>
-					TODO
-				</ProductLayoutContextProvider>
-			</InnerBlockConfigurationProvider>
-		);
+const Block = ( { attributes, isLoading, product } ) => {
+	if ( isLoading || ! product ) {
+		return <>TODO</>;
 	}
-}
 
-export default Block;
+	return (
+		<InnerBlockConfigurationProvider value={ parentBlockConfig }>
+			<ProductLayoutContextProvider value={ layoutContextConfig }>
+				<SingleProduct product={ product } attributes={ attributes } />
+			</ProductLayoutContextProvider>
+		</InnerBlockConfigurationProvider>
+	);
+};
+
+export default withProduct( Block );

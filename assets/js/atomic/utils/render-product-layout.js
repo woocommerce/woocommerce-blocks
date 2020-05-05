@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getBlockMap } from '../../../blocks/products/base-utils';
+import { getBlockMap } from './get-block-map';
 
 /**
  * Maps a layout config into atomic components.
