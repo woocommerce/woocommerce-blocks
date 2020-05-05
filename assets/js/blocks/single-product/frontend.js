@@ -7,7 +7,11 @@ import { StoreNoticesProvider } from '@woocommerce/base-context';
  * Internal dependencies
  */
 import Block from './block';
-import renderFrontend from '../../utils/render-frontend.js';
+import blockAttributes from './attributes';
+import {
+	getAttributesFromDataset,
+	renderFrontend,
+} from '../../utils/render-frontend.js';
 
 /**
  * Wrapper component to supply the notice provider.
@@ -22,9 +26,11 @@ const FrontendBlock = ( props ) => {
 	);
 };
 
-const getProps = ( el ) => ( {
-	attributes: JSON.parse( el.dataset.attributes ),
-} );
+const getProps = ( el ) => {
+	return {
+		attributes: getAttributesFromDataset( blockAttributes, el.dataset ),
+	};
+};
 
 renderFrontend(
 	'.wp-block-woocommerce-single-product',

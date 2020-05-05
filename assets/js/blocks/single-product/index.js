@@ -10,7 +10,7 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import edit from './edit';
-import { blockAttributes, defaults } from './attributes';
+import blockAttributes from './attributes';
 import './style.scss';
 import { BLOCK_TITLE, BLOCK_ICON, BLOCK_DESCRIPTION } from './constants';
 
@@ -34,7 +34,6 @@ const settings = {
 		},
 	},
 	attributes: blockAttributes,
-	defaults,
 	edit,
 
 	/**
