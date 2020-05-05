@@ -7,6 +7,12 @@ const blockAttributes = {
 		default: false,
 		save: false,
 	},
+	/**
+	 * The product ID to display.
+	 */
+	productId: {
+		type: 'number',
+	},
 };
 
 export default blockAttributes;
