@@ -1,6 +1,6 @@
 // Converts a font-size in px to rem and optionally sets a relative line-height.
 @mixin font-size($sizeValue: 16px, $lineHeight: false) {
-	font-size: ($sizeValue / 16px) + rem;
+	font-size: ($sizeValue / 16px) * 1rem;
 
 	@if ($lineHeight) {
 		line-height: $lineHeight / $sizeValue;
@@ -44,7 +44,7 @@
 	}
 }
 
-// Hide an element from sighted users, but availble to screen reader users.
+// Hide an element from sighted users, but available to screen reader users.
 @mixin visually-hidden() {
 	clip: rect(1px, 1px, 1px, 1px);
 	clip-path: inset(50%);
@@ -92,6 +92,7 @@
 	-ms-word-break: break-all;
 }
 
+// Converts a px unit to rem.
 @function rem($size, $base: 16px) {
 	@return $size / $base * 1rem;
 }
