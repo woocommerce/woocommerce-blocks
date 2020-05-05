@@ -7,14 +7,6 @@
 	}
 }
 
-@mixin hover-state() {
-	&:hover,
-	&:active,
-	&:focus {
-		@content;
-	}
-}
-
 @keyframes loading-fade {
 	0% {
 		opacity: 0.7;
