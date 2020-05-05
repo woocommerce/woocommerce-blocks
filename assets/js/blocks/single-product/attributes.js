@@ -3,10 +3,6 @@
  */
 import { DEFAULT_PRODUCT_LAYOUT } from './constants';
 
-export const defaults = {
-	layoutConfig: DEFAULT_PRODUCT_LAYOUT,
-	isPreview: false,
-};
 export const blockAttributes = {
 	isPreview: {
 		type: 'boolean',
@@ -24,6 +20,7 @@ export const blockAttributes = {
 	 */
 	layoutConfig: {
 		type: 'array',
+		default: DEFAULT_PRODUCT_LAYOUT,
 	},
 };
 
