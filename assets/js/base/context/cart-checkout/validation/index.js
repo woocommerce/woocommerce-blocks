@@ -50,7 +50,29 @@ export const ValidationContextProvider = ( { children } ) => {
 	 *
 	 * @return {Object} The error object for the given property.
 	 */
-	const getValidationError = ( property ) => validationErrors[ property ];
+	const getValidationError = useCallback(
+		( property ) => validationErrors[ property ],
+		[ validationErrors ]
+	);
+
+	/**
+	 * Provides an id for the validation error that can be used to fill out
+	 * aria-describedby attribute values.
+	 *
+	 * @param {string} errorId The input css id the validation error is related
+	 *                         to.
+	 * @return {string} The id to use for the validation error container.
+	 */
+	const getValidationErrorId = useCallback(
+		( errorId ) => {
+			const error = validationErrors[ errorId ];
+			if ( ! error || error.hidden ) {
+				return '';
+			}
+			return `validate-error-${ errorId }`;
+		},
+		[ validationErrors ]
+	);
 
 	/**
 	 * Clears any validation error that exists in state for the given property
@@ -59,16 +81,14 @@ export const ValidationContextProvider = ( { children } ) => {
 	 * @param {string} property  The name of the property to clear if exists in
 	 *                           validation error state.
 	 */
-	const clearValidationError = useCallback(
-		( property ) => {
-			if ( validationErrors[ property ] ) {
-				updateValidationErrors(
-					omit( validationErrors, [ property ] )
-				);
+	const clearValidationError = ( property ) => {
+		updateValidationErrors( ( prevErrors ) => {
+			if ( ! prevErrors[ property ] ) {
+				return prevErrors;
 			}
-		},
-		[ validationErrors, updateValidationErrors ]
-	);
+			return omit( prevErrors, [ property ] );
+		} );
+	};
 
 	/**
 	 * Clears the entire validation error state.
@@ -82,47 +102,49 @@ export const ValidationContextProvider = ( { children } ) => {
 	 *                           validation error is for and values are the
 	 *                           validation error message displayed to the user.
 	 */
-	const setValidationErrors = useCallback(
-		( newErrors ) => {
-			if ( ! newErrors ) {
-				return;
-			}
-			// all values must be a string.
-			newErrors = pickBy(
-				newErrors,
-				( { message } ) => typeof message === 'string'
-			);
-			if ( Object.values( newErrors ).length > 0 ) {
-				updateValidationErrors( ( prevErrors ) => ( {
-					...prevErrors,
-					...newErrors,
-				} ) );
-			}
-		},
-		[ updateValidationErrors ]
-	);
-
-	const updateValidationError = ( property, newError ) => {
-		if (
-			isShallowEqual( validationErrors[ property ], {
-				...validationErrors[ property ],
-				...newError,
-			} )
-		) {
+	const setValidationErrors = ( newErrors ) => {
+		if ( ! newErrors ) {
 			return;
 		}
+		newErrors = pickBy(
+			newErrors,
+			( { message } ) => typeof message === 'string'
+		);
+		if ( Object.values( newErrors ).length === 0 ) {
+			return;
+		}
+		updateValidationErrors( ( prevErrors ) => {
+			const updatedErrors = {
+				...prevErrors,
+				...newErrors,
+			};
+			return isShallowEqual( prevErrors, updatedErrors )
+				? prevErrors
+				: updatedErrors;
+		} );
+	};
+
+	/**
+	 * Used to record a new validation error.
+	 *
+	 * @param {string} property The name of the property to update.
+	 * @param {Object} newError New validation error object.
+	 */
+	const updateValidationError = ( property, newError ) => {
 		updateValidationErrors( ( prevErrors ) => {
 			if ( ! prevErrors.hasOwnProperty( property ) ) {
 				return prevErrors;
 			}
-
-			return {
+			const updatedErrors = {
 				...prevErrors,
 				[ property ]: {
 					...prevErrors[ property ],
 					...newError,
 				},
 			};
+			return isShallowEqual( prevErrors, updatedErrors )
+				? prevErrors
+				: updatedErrors;
 		} );
 	};
 
@@ -133,11 +155,10 @@ export const ValidationContextProvider = ( { children } ) => {
 	 * @param {string} property  The name of the property to set the `hidden`
 	 *                           value to true.
 	 */
-	const hideValidationError = ( property ) => {
-		updateValidationError( property, {
+	const hideValidationError = ( property ) =>
+		void updateValidationError( property, {
 			hidden: true,
 		} );
-	};
 
 	/**
 	 * Given a property name and if an associated error exists, it sets its
@@ -146,43 +167,27 @@ export const ValidationContextProvider = ( { children } ) => {
 	 * @param {string} property  The name of the property to set the `hidden`
 	 *                           value to false.
 	 */
-	const showValidationError = ( property ) => {
-		updateValidationError( property, {
+	const showValidationError = ( property ) =>
+		void updateValidationError( property, {
 			hidden: false,
 		} );
-	};
 
 	/**
 	 * Sets the `hidden` value of all errors to `false`.
 	 */
-	const showAllValidationErrors = () => {
-		updateValidationErrors( ( prevErrors ) => {
-			const newErrors = {};
+	const showAllValidationErrors = () =>
+		void updateValidationErrors( ( prevErrors ) => {
+			const updatedErrors = {};
 			Object.keys( prevErrors ).forEach( ( property ) => {
-				newErrors[ property ] = {
+				updatedErrors[ property ] = {
 					...prevErrors[ property ],
 					hidden: false,
 				};
 			} );
-			return newErrors;
+			return isShallowEqual( prevErrors, updatedErrors )
+				? prevErrors
+				: updatedErrors;
 		} );
-	};
-
-	/**
-	 * Provides an id for the validation error that can be used to fill out
-	 * aria-describedby attribute values.
-	 *
-	 * @param {string} errorId The input css id the validation error is related
-	 *                         to.
-	 * @return {string} The id to use for the validation error container.
-	 */
-	const getValidationErrorId = ( errorId ) => {
-		const error = getValidationError( errorId );
-		if ( ! error || error.hidden ) {
-			return '';
-		}
-		return `validate-error-${ errorId }`;
-	};
 
 	const context = {
 		getValidationError,
@@ -195,6 +200,7 @@ export const ValidationContextProvider = ( { children } ) => {
 		hasValidationErrors: Object.keys( validationErrors ).length > 0,
 		getValidationErrorId,
 	};
+
 	return (
 		<ValidationContext.Provider value={ context }>
 			{ children }
