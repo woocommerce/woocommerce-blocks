@@ -2,7 +2,7 @@
  * External dependencies
  */
 import defaultAddressFields from '@woocommerce/base-components/cart-checkout/address-form/default-address-fields';
-import { useState, useCallback, useEffect } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import {
 	useShippingDataContext,
 	useBillingDataContext,
@@ -38,8 +38,10 @@ export const useCheckoutAddress = () => {
 	// These are the local states of address fields, which are persisted
 	// globally when changed. They default to the global shipping address which
 	// is populated from the current customer data or default location.
-	const [ shippingFields, setShippingFields ] = useState( shippingAddress );
-	const [ billingFields, setBillingFields ] = useState( billingData );
+	const [ shippingFields, updateShippingFields ] = useState(
+		shippingAddress
+	);
+	const [ billingFields, updateBillingFields ] = useState( billingData );
 
 	// This tracks the state of the "shipping as billing" address checkbox. It's
 	// initial value is true (if shipping is needed), however, if the user is
@@ -52,33 +54,43 @@ export const useCheckoutAddress = () => {
 
 	// Pushes to global state when changes are made locally.
 	useEffect( () => {
-		// Update shipping address if it doesn't match local state.
 		if ( ! isShallowEqual( shippingFields, shippingAddress ) ) {
 			setShippingAddress( shippingFields );
 		}
 
-		const billingDataToSet = shippingAsBilling
+		const newBillingData = shippingAsBilling
 			? shippingFields
 			: billingFields;
 
-		if ( ! isShallowEqual( billingDataToSet, billingData ) ) {
-			setBillingData( billingDataToSet );
+		if ( ! isShallowEqual( newBillingData, billingData ) ) {
+			setBillingData( newBillingData );
 		}
 	}, [ shippingFields, billingFields, shippingAsBilling ] );
 
-	const setEmail = useCallback(
-		( value ) => {
-			setBillingFields( { email: value } );
-		},
-		[ setBillingFields ]
-	);
+	/**
+	 * Wrapper for updateBillingFields (from useState) which handles merging.
+	 *
+	 * @param {Object} newValues New values to store to state.
+	 */
+	const setBillingFields = ( newValues ) =>
+		void updateBillingFields( ( prevState ) => ( {
+			...prevState,
+			...newValues,
+		} ) );
 
-	const setPhone = useCallback(
-		( value ) => {
-			setBillingFields( { phone: value } );
-		},
-		[ setBillingFields ]
-	);
+	/**
+	 * Wrapper for updateShippingFields (from useState) which handles merging.
+	 *
+	 * @param {Object} newValues New values to store to state.
+	 */
+	const setShippingFields = ( newValues ) =>
+		void updateShippingFields( ( prevState ) => ( {
+			...prevState,
+			...newValues,
+		} ) );
+
+	const setEmail = ( value ) => void setBillingFields( { email: value } );
+	const setPhone = ( value ) => void setBillingFields( { phone: value } );
 
 	return {
 		defaultAddressFields,
