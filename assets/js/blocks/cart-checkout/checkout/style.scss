@@ -260,10 +260,6 @@
 		margin-bottom: $gap-largest;
 		order: 0;
 	}
-
-	.wc-block-checkout__main-totals {
-		order: 2;
-	}
 }
 
 @include breakpoint( ">480px" ) {
