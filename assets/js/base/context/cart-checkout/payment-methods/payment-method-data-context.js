@@ -292,6 +292,7 @@ export const PaymentMethodDataProvider = ( { children } ) => {
 				} else if ( isFailResponse( response ) ) {
 					addErrorNotice( response?.message, {
 						id: 'wc-payment-error',
+						isDismissible: false,
 						context:
 							response?.messageContext || noticeContexts.PAYMENTS,
 					} );
@@ -303,6 +304,7 @@ export const PaymentMethodDataProvider = ( { children } ) => {
 				} else if ( isErrorResponse( response ) ) {
 					addErrorNotice( response?.message, {
 						id: 'wc-payment-error',
+						isDismissible: false,
 						context:
 							response?.messageContext || noticeContexts.PAYMENTS,
 					} );
