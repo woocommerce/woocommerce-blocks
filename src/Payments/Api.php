@@ -135,6 +135,15 @@ class Api {
 			return;
 		}
 
+		// if we have savedPaymentMethodToken in the request, then convert into
+		// the format expected by the post.
+		// phpcs:ignore WordPress.Security.NonceVerification
+		if ( isset( $_POST['savedpaymentmethodtoken'] ) ) {
+			$token_key = 'wc-' . $context->payment_method . '-payment-token';
+			// phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress . Security . ValidatedSanitizedInput . InputNotSanitized
+			$_POST[ $token_key ] = wc_clean( $_POST['savedpaymentmethodtoken'] );
+		}
+
 		$payment_method_object->validate_fields();
 
 		// If errors were thrown, we need to abort.
