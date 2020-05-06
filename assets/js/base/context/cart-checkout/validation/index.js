@@ -106,26 +106,28 @@ export const ValidationContextProvider = ( { children } ) => {
 		if ( ! newErrors ) {
 			return;
 		}
-		newErrors = pickBy(
-			newErrors,
-			( { message } ) => typeof message === 'string'
-		);
-		if ( Object.values( newErrors ).length === 0 ) {
-			return;
-		}
 		updateValidationErrors( ( prevErrors ) => {
-			const updatedErrors = {
+			newErrors = pickBy( newErrors, ( error, property ) => {
+				if ( typeof error.message !== 'string' ) {
+					return false;
+				}
+				if ( prevErrors.hasOwnProperty( property ) ) {
+					return ! isShallowEqual( prevErrors[ property ], error );
+				}
+				return true;
+			} );
+			if ( Object.values( newErrors ).length === 0 ) {
+				return prevErrors;
+			}
+			return {
 				...prevErrors,
 				...newErrors,
 			};
-			return isShallowEqual( prevErrors, updatedErrors )
-				? prevErrors
-				: updatedErrors;
 		} );
 	};
 
 	/**
-	 * Used to record a new validation error.
+	 * Used to update a validation error.
 	 *
 	 * @param {string} property The name of the property to update.
 	 * @param {Object} newError New validation error object.
@@ -135,16 +137,16 @@ export const ValidationContextProvider = ( { children } ) => {
 			if ( ! prevErrors.hasOwnProperty( property ) ) {
 				return prevErrors;
 			}
-			const updatedErrors = {
-				...prevErrors,
-				[ property ]: {
-					...prevErrors[ property ],
-					...newError,
-				},
+			const updatedError = {
+				...prevErrors[ property ],
+				...newError,
 			};
-			return isShallowEqual( prevErrors, updatedErrors )
+			return isShallowEqual( prevErrors[ property ], updatedError )
 				? prevErrors
-				: updatedErrors;
+				: {
+						...prevErrors,
+						[ property ]: updatedError,
+				  };
 		} );
 	};
 
@@ -178,15 +180,24 @@ export const ValidationContextProvider = ( { children } ) => {
 	const showAllValidationErrors = () =>
 		void updateValidationErrors( ( prevErrors ) => {
 			const updatedErrors = {};
+
 			Object.keys( prevErrors ).forEach( ( property ) => {
-				updatedErrors[ property ] = {
-					...prevErrors[ property ],
-					hidden: false,
-				};
+				if ( prevErrors[ property ].hidden ) {
+					updatedErrors[ property ] = {
+						...prevErrors[ property ],
+						hidden: false,
+					};
+				}
 			} );
-			return isShallowEqual( prevErrors, updatedErrors )
-				? prevErrors
-				: updatedErrors;
+
+			if ( Object.values( updatedErrors ).length === 0 ) {
+				return prevErrors;
+			}
+
+			return {
+				...prevErrors,
+				...updatedErrors,
+			};
 		} );
 
 	const context = {

@@ -8,7 +8,7 @@ import {
 	useBillingDataContext,
 	useCheckoutContext,
 } from '@woocommerce/base-context';
-import isShallowEqual from '@wordpress/is-shallow-equal';
+import { isEqual } from 'lodash';
 
 /**
  * Compare two addresses and see if they are the same.
@@ -54,7 +54,7 @@ export const useCheckoutAddress = () => {
 
 	// Pushes to global state when changes are made locally.
 	useEffect( () => {
-		if ( ! isShallowEqual( shippingFields, shippingAddress ) ) {
+		if ( ! isEqual( shippingFields, shippingAddress ) ) {
 			setShippingAddress( shippingFields );
 		}
 
@@ -62,7 +62,7 @@ export const useCheckoutAddress = () => {
 			? shippingFields
 			: billingFields;
 
-		if ( ! isShallowEqual( newBillingData, billingData ) ) {
+		if ( ! isEqual( newBillingData, billingData ) ) {
 			setBillingData( newBillingData );
 		}
 	}, [ shippingFields, billingFields, shippingAsBilling ] );
