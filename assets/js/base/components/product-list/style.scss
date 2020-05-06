@@ -56,8 +56,7 @@
 }
 
 // Extra specificity to avoid editor styles on linked images.
-.entry-content .wc-block-grid__product-image,
-.wc-block-grid__product-image {
+.wc-block-grid__products .wc-block-grid__product-image {
 	text-decoration: none;
 	display: block;
 	position: relative;
@@ -201,8 +200,8 @@
 	}
 }
 
-.editor-styles-wrapper .wc-block-grid__products .wc-block-grid__product .wc-block-grid__product-onsale,
-.wc-block-grid__product-onsale {
+// Extra classes for specificity.
+.wc-block-grid__products .wc-block-grid__product .wc-block-grid__product-onsale {
 	border: 1px solid #43454b;
 	color: #43454b;
 	background: #fff;
@@ -218,8 +217,9 @@
 	position: relative;
 	margin: $gap-smaller auto;
 }
-.editor-styles-wrapper .wc-block-grid__products .wc-block-grid__product .wc-block-grid__product-image,
-.wc-block-grid__product-image {
+
+// Extra classes for specificity.
+.wc-block-grid__products .wc-block-grid__product .wc-block-grid__product-image {
 	.wc-block-grid__product-onsale {
 		&.wc-block-grid__product-onsale--alignleft {
 			position: absolute;
