@@ -336,10 +336,8 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		return apply_filters(
 			'woocommerce_blocks_product_grid_item_html',
 			"<li class=\"wc-block-grid__product\">
-				<a href=\"{$data->permalink}\" class=\"wc-block-grid__product-link\">
-					{$data->image}
-					{$data->title}
-				</a>
+				{$data->image}
+				{$data->title}
 				{$data->badge}
 				{$data->price}
 				{$data->rating}
@@ -357,7 +355,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 * @return string
 	 */
 	protected function get_image_html( $product ) {
-		return '<div class="wc-block-grid__product-image">' . $product->get_image( 'woocommerce_thumbnail' ) . '</div>';
+		return '<div class="wc-block-grid__product-image"><a href="' . esc_url( $product->get_permalink() ) . '">' . $product->get_image( 'woocommerce_thumbnail' ) . '</a></div>';
 	}
 
 	/**
@@ -370,7 +368,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		if ( empty( $this->attributes['contentVisibility']['title'] ) ) {
 			return '';
 		}
-		return '<div class="wc-block-grid__product-title">' . $product->get_title() . '</div>';
+		return '<div class="wc-block-grid__product-title"><a href="' . esc_url( $product->get_permalink() ) . '">' . $product->get_title() . '</a></div>';
 	}
 
 	/**
