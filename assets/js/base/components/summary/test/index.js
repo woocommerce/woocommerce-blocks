@@ -55,6 +55,34 @@ describe( 'Summary Component', () => {
 			);
 		} );
 	} );
+	describe( 'Test the generateSummary utility with HTML tags in strings', () => {
+		const testContent =
+			'<p>Lorem <strong class="classname">ipsum</strong> dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>';
+
+		it( 'Limit string to 10 characters', async () => {
+			const result = generateSummary(
+				testContent,
+				10,
+				'characters_excluding_spaces'
+			);
+
+			expect( result.trim() ).toEqual( '<p>Lorem ipsum&hellip;</p>' );
+		} );
+		it( 'Limit string to 5 words', async () => {
+			const result = generateSummary( testContent, 5, 'words' );
+
+			expect( result.trim() ).toEqual(
+				'<p>Lorem ipsum dolor sit amet&hellip;</p>'
+			);
+		} );
+		it( 'First paragraph only - tags are not stripped.', async () => {
+			const result = generateSummary( testContent, 9999, 'words' );
+
+			expect( result.trim() ).toEqual(
+				'<p>Lorem <strong class="classname">ipsum</strong> dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>'
+			);
+		} );
+	} );
 	describe( 'Test the generateSummary utility with special chars', () => {
 		const testContent =
 			'<p>我不知道这是否行得通。</p><p>我是用中文写的说明，因此我们可以测试如何修剪产品摘要中的单词。</p>';
