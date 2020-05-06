@@ -106,9 +106,7 @@ const SavedPaymentMethodOptions = ( { onSelect } ) => {
 	const updateToken = useCallback(
 		( token ) => {
 			if ( token !== '0' ) {
-				// @todo this will need updated when the signature changes to
-				// allow no billing data included.
-				setPaymentStatus().success( null, {
+				setPaymentStatus().success( {
 					payment_method: activePaymentMethod,
 					savedPaymentMethodToken: token,
 				} );
