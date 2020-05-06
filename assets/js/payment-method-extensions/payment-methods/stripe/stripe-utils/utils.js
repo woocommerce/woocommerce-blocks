@@ -230,7 +230,7 @@ const getErrorMessageForCode = ( code ) => {
 			'woocommerce-gateway-stripe'
 		),
 	};
-	return messages[ code ] || '';
+	return messages[ code ] || null;
 };
 
 const getErrorMessageForTypeAndCode = ( type, code = '' ) => {
@@ -246,10 +246,11 @@ const getErrorMessageForTypeAndCode = ( type, code = '' ) => {
 				'woo-gutenberg-product-blocks'
 			);
 		case errorTypes.CARD_ERROR:
-		case errorTypes.VALIDATION_ERROR:
 			return getErrorMessageForCode( code );
+		case errorTypes.VALIDATION_ERROR:
+			return ''; // These are shown inline.
 	}
-	return '';
+	return null;
 };
 
 export {

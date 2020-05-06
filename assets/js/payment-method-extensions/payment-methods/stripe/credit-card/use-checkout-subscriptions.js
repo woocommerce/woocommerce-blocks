@@ -62,7 +62,9 @@ export const useCheckoutSubscriptions = (
 			const type = event.error.type;
 			const code = event.error.code || '';
 			let message = getErrorMessageForTypeAndCode( type, code );
-			message = message || event.error.message;
+			if ( message === null ) {
+				message = event.error.message;
+			}
 			setError( error );
 			return message;
 		};
