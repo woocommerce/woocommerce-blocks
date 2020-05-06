@@ -107,23 +107,9 @@
 .wc-block-grid__product-price {
 	display: block;
 
-	.wc-block-grid__product-price__regular {
-		font-size: 0.8em;
-		line-height: 1;
-		color: #555;
-		margin-top: -0.25em;
-		display: block;
-	}
 	.wc-block-grid__product-price__value {
-		letter-spacing: -1px;
-		font-weight: 600;
-		display: block;
-		font-size: 1.25em;
-		line-height: 1.25;
-		color: #000;
-		span {
-			white-space: nowrap;
-		}
+		margin-left: 0.5em;
+
 		.is-loading &::before {
 			@include placeholder();
 			content: ".";

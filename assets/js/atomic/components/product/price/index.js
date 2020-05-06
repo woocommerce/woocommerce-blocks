@@ -20,7 +20,7 @@ const ProductPrice = ( { className, product } ) => {
 			<div
 				className={ classnames(
 					className,
-					`${ layoutStyleClassPrefix }__product-price`
+					`${ layoutStyleClassPrefix }__product-price price`
 				) }
 			>
 				<span
@@ -44,7 +44,7 @@ const ProductPrice = ( { className, product } ) => {
 		<div
 			className={ classnames(
 				className,
-				`${ layoutStyleClassPrefix }__product-price`
+				`${ layoutStyleClassPrefix }__product-price price`
 			) }
 		>
 			{ prices.regular_price !== prices.price && (
