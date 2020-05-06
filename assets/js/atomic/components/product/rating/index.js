@@ -31,7 +31,7 @@ const ProductRating = ( { className, product } ) => {
 			) }
 		>
 			<div
-				className={ `${ layoutStyleClassPrefix }__product-rating__stars` }
+				className={ `${ layoutStyleClassPrefix }__product-rating__stars star-rating` }
 				role="img"
 				aria-label={ ratingText }
 			>
