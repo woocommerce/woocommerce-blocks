@@ -61,10 +61,9 @@ export const useCheckoutSubscriptions = (
 		onStripeError.current = ( event ) => {
 			const type = event.error.type;
 			const code = event.error.code || '';
-			let message = getErrorMessageForTypeAndCode( type, code );
-			if ( message === null ) {
-				message = event.error.message;
-			}
+			const message =
+				getErrorMessageForTypeAndCode( type, code ) ??
+				event.error.message;
 			setError( error );
 			return message;
 		};
