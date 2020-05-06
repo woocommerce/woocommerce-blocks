@@ -15,10 +15,8 @@ const ProductSummary = ( { shortDescription = '', fullDescription = '' } ) => {
 		return null;
 	}
 
-	const countType = getSetting( 'wordCountType', 'words' );
-
 	return (
-		<Summary source={ source } maxLength={ 15 } countType={ countType } />
+		<Summary source={ source } maxLength={ 15 } countType={ getSetting( 'wordCountType', 'words' ) } />
 	);
 };
 
