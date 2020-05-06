@@ -10,7 +10,7 @@ export const BLOCK_TITLE = __(
 );
 export const BLOCK_ICON = <Icon srcElement={ reader } />;
 export const BLOCK_DESCRIPTION = __(
-	'Display a single product with its details and quantity.',
+	'Display a single product.',
 	'woo-gutenberg-products-block'
 );
 /**
