@@ -155,8 +155,8 @@ abstract class AbstractBlock {
 
 			if ( containers.length ) {
 				Array.prototype.forEach.call( containers, function( el, i ) {
-					var w = el.offsetWidth;
-					var classname = '';
+					const w = el.offsetWidth;
+					let classname = '';
 
 					if ( w > 700 )
 						classname = 'is-large';
