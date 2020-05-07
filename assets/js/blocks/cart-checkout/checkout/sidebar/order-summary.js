@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { Card, CardBody, PanelBody, PanelRow } from 'wordpress-components';
 import { Icon, cart } from '@woocommerce/icons';
 import PropTypes from 'prop-types';
+import { useContainerQueryContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -12,6 +13,12 @@ import PropTypes from 'prop-types';
 import CheckoutOrderSummaryItem from './order-summary-item.js';
 
 const CheckoutOrderSummary = ( { cartItems = [] } ) => {
+	const { isLarge, isLoading } = useContainerQueryContext();
+
+	if ( isLoading ) {
+		return null;
+	}
+
 	return (
 		<Card isElevated={ true }>
 			<CardBody>
@@ -31,7 +38,7 @@ const CheckoutOrderSummary = ( { cartItems = [] } ) => {
 							</span>
 						</>
 					}
-					initialOpen={ true }
+					initialOpen={ isLarge }
 				>
 					<PanelRow className="wc-block-order-summary__row">
 						{ cartItems.map( ( cartItem ) => {

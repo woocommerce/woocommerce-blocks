@@ -3,7 +3,7 @@
  */
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { useContainerQueries } from '@woocommerce/base-hooks';
+import { ContainerQueryContextProvider } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -11,19 +11,12 @@ import { useContainerQueries } from '@woocommerce/base-hooks';
 import './style.scss';
 
 const SidebarLayout = ( { children, className } ) => {
-	const [ resizeListener, containerQueryClassName ] = useContainerQueries();
-
 	return (
-		<div
-			className={ classNames(
-				'wc-block-sidebar-layout',
-				className,
-				containerQueryClassName
-			) }
+		<ContainerQueryContextProvider
+			className={ classNames( 'wc-block-sidebar-layout', className ) }
 		>
-			{ resizeListener }
 			{ children }
-		</div>
+		</ContainerQueryContextProvider>
 	);
 };
 
