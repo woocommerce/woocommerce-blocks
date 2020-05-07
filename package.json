@@ -155,7 +155,6 @@
 		"@woocommerce/components": "4.0.0",
 		"@wordpress/autop": "^2.7.0",
 		"@wordpress/notices": "2.0.0",
-		"@wordpress/server-side-render": "^1.11.0",
 		"@wordpress/wordcount": "^2.8.0",
 		"classnames": "2.2.6",
 		"compare-versions": "3.6.0",
