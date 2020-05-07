@@ -57,6 +57,7 @@ const SavedPaymentMethodOptions = ( { onSelect } ) => {
 	const {
 		setPaymentStatus,
 		customerPaymentMethods,
+		setActivePaymentMethod,
 		activePaymentMethod,
 	} = usePaymentMethodDataContext();
 	const [ selectedToken, setSelectedToken ] = useState( '' );
@@ -106,6 +107,7 @@ const SavedPaymentMethodOptions = ( { onSelect } ) => {
 	const updateToken = useCallback(
 		( token ) => {
 			if ( token !== '0' ) {
+				setActivePaymentMethod( activePaymentMethod );
 				setPaymentStatus().success( {
 					payment_method: activePaymentMethod,
 					savedPaymentMethodToken: token,
