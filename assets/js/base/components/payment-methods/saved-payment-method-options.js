@@ -9,16 +9,24 @@ import {
 } from '@woocommerce/base-context';
 import RadioControl from '@woocommerce/base-components/radio-control';
 
-/** @typedef {import('@woocommerce/type-defs/contexts').CustomerPaymentMethod} CustomerPaymentMethod */
+/**
+ * @typedef {import('@woocommerce/type-defs/contexts').CustomerPaymentMethod} CustomerPaymentMethod
+ * @typedef {import('@woocommerce/type-defs/contexts').PaymentStatusDispatch} PaymentStatusDispatch
+ */
 
 /**
  * Returns the option object for a cc or echeck saved payment method token.
  *
  * @param {CustomerPaymentMethod} savedPaymentMethod
- *
+ * @param {function(string):void} setActivePaymentMethod
+ * @param {PaymentStatusDispatch} setPaymentStatus
  * @return {Object} An option objects to use for RadioControl.
  */
-const getCcOrEcheckPaymentMethodOption = ( { method, expires, tokenId } ) => {
+const getCcOrEcheckPaymentMethodOption = (
+	{ method, expires, tokenId },
+	setActivePaymentMethod,
+	setPaymentStatus
+) => {
 	return {
 		value: tokenId + '',
 		label: sprintf(
@@ -31,6 +39,14 @@ const getCcOrEcheckPaymentMethodOption = ( { method, expires, tokenId } ) => {
 			expires
 		),
 		name: `wc-saved-payment-method-token-${ tokenId }`,
+		onChange: ( token ) => {
+			const savedTokenKey = `wc-${ method.gateway }-payment-token`;
+			setActivePaymentMethod( method.gateway );
+			setPaymentStatus().success( {
+				payment_method: method.gateway,
+				[ savedTokenKey ]: token,
+			} );
+		},
 	};
 };
 
@@ -38,10 +54,16 @@ const getCcOrEcheckPaymentMethodOption = ( { method, expires, tokenId } ) => {
  * Returns the option object for any non specific saved payment method.
  *
  * @param {CustomerPaymentMethod} savedPaymentMethod
+ * @param {function(string):void} setActivePaymentMethod
+ * @param {PaymentStatusDispatch} setPaymentStatus
  *
  * @return {Object} An option objects to use for RadioControl.
  */
-const getDefaultPaymentMethodOptions = ( { method, tokenId } ) => {
+const getDefaultPaymentMethodOptions = (
+	{ method, tokenId },
+	setActivePaymentMethod,
+	setPaymentStatus
+) => {
 	return {
 		value: tokenId + '',
 		label: sprintf(
@@ -49,6 +71,14 @@ const getDefaultPaymentMethodOptions = ( { method, tokenId } ) => {
 			method.gateway
 		),
 		name: `wc-saved-payment-method-token-${ tokenId }`,
+		onChange: ( token ) => {
+			const savedTokenKey = `wc-${ method.gateway }-payment-token`;
+			setActivePaymentMethod( method.gateway );
+			setPaymentStatus().success( {
+				payment_method: method.gateway,
+				[ savedTokenKey ]: token,
+			} );
+		},
 	};
 };
 
@@ -58,7 +88,6 @@ const SavedPaymentMethodOptions = ( { onSelect } ) => {
 		setPaymentStatus,
 		customerPaymentMethods,
 		setActivePaymentMethod,
-		activePaymentMethod,
 	} = usePaymentMethodDataContext();
 	const [ selectedToken, setSelectedToken ] = useState( '' );
 
@@ -84,10 +113,14 @@ const SavedPaymentMethodOptions = ( { onSelect } ) => {
 							}
 							return type === 'cc' || type === 'echeck'
 								? getCcOrEcheckPaymentMethodOption(
-										paymentMethod
+										paymentMethod,
+										setActivePaymentMethod,
+										setPaymentStatus
 								  )
 								: getDefaultPaymentMethodOptions(
-										paymentMethod
+										paymentMethod,
+										setActivePaymentMethod,
+										setPaymentStatus
 								  );
 						} )
 					);
@@ -106,13 +139,7 @@ const SavedPaymentMethodOptions = ( { onSelect } ) => {
 	}, [ customerPaymentMethods, selectedToken ] );
 	const updateToken = useCallback(
 		( token ) => {
-			if ( token !== '0' ) {
-				setActivePaymentMethod( activePaymentMethod );
-				setPaymentStatus().success( {
-					payment_method: activePaymentMethod,
-					savedPaymentMethodToken: token,
-				} );
-			} else {
+			if ( token === '0' ) {
 				setPaymentStatus().started();
 			}
 			setSelectedToken( token );
@@ -130,7 +157,7 @@ const SavedPaymentMethodOptions = ( { onSelect } ) => {
 	const selectedOption = isEditor ? '0' : selectedToken + '';
 	return currentOptions.current.length > 0 ? (
 		<RadioControl
-			id={ 'wc-payment-method-stripe-saved-tokens' }
+			id={ 'wc-payment-method-saved-tokens' }
 			selected={ selectedOption }
 			onChange={ updateToken }
 			options={ currentOptions.current }
