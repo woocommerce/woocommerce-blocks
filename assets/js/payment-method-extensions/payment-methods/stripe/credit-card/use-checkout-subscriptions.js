@@ -22,13 +22,14 @@ import { usePaymentProcessing } from './use-payment-processing';
  * A custom hook for the Stripe processing and event observer logic.
  *
  * @param {EventRegistrationProps} eventRegistration Event registration functions.
- * @param {EmitResponseProps} emitResponse Various helpers for usage with observer
- * response objects.
- * @param {BillingDataProps} billing Various billing data items.
- * @param {string} sourceId Current set stripe source id.
- * @param {SourceIdDispatch} setSourceId Setter for stripe source id.
- * @param {boolean} shouldSavePayment Whether to save the payment or not.
- * @param {Stripe} stripe The stripe.js object.
+ * @param {BillingDataProps}       billing           Various billing data items.
+ * @param {string}                 sourceId          Current set stripe source id.
+ * @param {SourceIdDispatch}       setSourceId       Setter for stripe source id.
+ * @param {boolean}                shouldSavePayment Whether to save the payment or not.
+ * @param {EmitResponseProps}      emitResponse      Various helpers for usage with observer
+ *                                                   response objects.
+ * @param {Stripe}                 stripe            The stripe.js object.
+ *
  * @return {function(Object):Object} Returns a function for handling stripe error.
  */
 export const useCheckoutSubscriptions = (
