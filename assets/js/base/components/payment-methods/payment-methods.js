@@ -136,6 +136,11 @@ const PaymentMethods = () => {
 			tabs={ Object.keys( paymentMethods ).map(
 				( name ) => {
 					const { label, ariaLabel } = paymentMethods[ name ];
+					const paymentMethod = getPaymentMethod(
+						name,
+						currentPaymentMethods.current,
+						isEditor
+					);
 					return {
 						name,
 						title:
@@ -147,6 +152,14 @@ const PaymentMethods = () => {
 											.components,
 							  } ),
 						ariaLabel,
+						content: paymentMethod ? (
+							<PaymentMethodErrorBoundary isEditor={ isEditor }>
+								{ cloneElement( paymentMethod, {
+									activePaymentMethod,
+									...currentPaymentMethodInterface.current,
+								} ) }
+							</PaymentMethodErrorBoundary>
+						) : null,
 					};
 				}
 			) }
@@ -156,10 +169,7 @@ const PaymentMethods = () => {
 				'woo-gutenberg-products-block'
 			) }
 			id="wc-block-payment-methods"
-			children={ paymentMethods }
-			renderTab={ getRenderedTab }
 		/>
-
 	);
 
 	const renderedSavedPaymentOptions = (

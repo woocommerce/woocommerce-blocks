@@ -21,7 +21,6 @@ const Tabs = ( {
 	activeClass = 'is-active',
 	initialTabName,
 	ariaLabel = __( 'Tabbed Content', 'woo-gutenberg-products-block' ),
-	children,
 	instanceId,
 	id,
 } ) => {
@@ -70,7 +69,7 @@ const Tabs = ( {
 				) ) }
 			</TabList>
 
-			{ tabs.map( ( { name } ) => (
+			{ tabs.map( ( { name, content } ) => (
 				<TabPanel
 					{ ...tabState }
 					key={ name }
@@ -78,7 +77,7 @@ const Tabs = ( {
 					tabId={ `${ instanceId }-${ name }` }
 					className="wc-block-components-tabs__content"
 				>
-					{ children( name ) }
+					{ content }
 				</TabPanel>
 			) ) }
 		</div>
