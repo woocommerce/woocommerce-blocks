@@ -25,9 +25,11 @@ const Tabs = ( {
 	id,
 } ) => {
 	const tabState = useTabState( {
-		selectedId: `${ instanceId }-${
-			initialTabName ? initialTabName : tabs[ 0 ]?.name
-		}`,
+		selectedId:
+			( initialTabName || tabs.length ) &&
+			`${ instanceId }-${
+				initialTabName ? initialTabName : tabs[ 0 ].name
+			}`,
 	} );
 	if ( tabs.length === 0 ) {
 		return null;
