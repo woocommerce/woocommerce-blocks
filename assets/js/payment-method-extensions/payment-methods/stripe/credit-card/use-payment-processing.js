@@ -32,7 +32,7 @@ import { errorTypes } from '../stripe-utils/constants';
 
 /**
  * A custom hook that registers stripe payment processing with the
-onPaymentProcessing event from checkout.
+ * onPaymentProcessing event from checkout.
  *
  * @param {function(any):string} onStripeError       Sets an error for stripe.
  * @param {string}               error               Any set error message (an empty string if no
