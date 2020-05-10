@@ -105,23 +105,26 @@ const SavedPaymentMethodOptions = ( { onSelect } ) => {
 				if ( paymentMethods.length > 0 ) {
 					options = options.concat(
 						paymentMethods.map( ( paymentMethod ) => {
+							const option =
+								type === 'cc' || type === 'echeck'
+									? getCcOrEcheckPaymentMethodOption(
+											paymentMethod,
+											setActivePaymentMethod,
+											setPaymentStatus
+									  )
+									: getDefaultPaymentMethodOptions(
+											paymentMethod,
+											setActivePaymentMethod,
+											setPaymentStatus
+									  );
 							if (
 								paymentMethod.is_default &&
 								selectedToken === ''
 							) {
 								setSelectedToken( paymentMethod.tokenId + '' );
+								option.onChange( paymentMethod.tokenId );
 							}
-							return type === 'cc' || type === 'echeck'
-								? getCcOrEcheckPaymentMethodOption(
-										paymentMethod,
-										setActivePaymentMethod,
-										setPaymentStatus
-								  )
-								: getDefaultPaymentMethodOptions(
-										paymentMethod,
-										setActivePaymentMethod,
-										setPaymentStatus
-								  );
+							return option;
 						} )
 					);
 				}
