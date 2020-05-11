@@ -35,6 +35,9 @@
 	select {
 		@include font-size(16px);
 		background-color: #fff;
+		padding: $gap-small $gap;
+		border-radius: 4px;
+		border: 1px solid $input-border-gray;
 		box-shadow: none;
 		color: $input-text-active;
 		font-family: inherit;
