@@ -18,7 +18,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$minimum_wp_version = '5.0';
+$minimum_wp_version = '5.2';
 
 /**
  * Whether notices must be displayed in the current page (plugins and WooCommerce pages).
