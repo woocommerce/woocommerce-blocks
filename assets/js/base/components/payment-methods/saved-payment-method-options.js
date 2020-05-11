@@ -139,7 +139,12 @@ const SavedPaymentMethodOptions = ( { onSelect } ) => {
 				name: `wc-saved-payment-method-token-new`,
 			} );
 		}
-	}, [ customerPaymentMethods, selectedToken ] );
+	}, [
+		customerPaymentMethods,
+		selectedToken,
+		setActivePaymentMethod,
+		setPaymentStatus,
+	] );
 	const updateToken = useCallback(
 		( token ) => {
 			if ( token === '0' ) {
@@ -148,7 +153,7 @@ const SavedPaymentMethodOptions = ( { onSelect } ) => {
 			setSelectedToken( token );
 			onSelect( token );
 		},
-		[ setSelectedToken, setPaymentStatus, onSelect, activePaymentMethod ]
+		[ setSelectedToken, setPaymentStatus, onSelect ]
 	);
 	useEffect( () => {
 		if ( selectedToken && currentOptions.current.length > 0 ) {
