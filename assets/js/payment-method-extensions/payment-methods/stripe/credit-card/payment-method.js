@@ -11,7 +11,6 @@ import { InlineCard, CardElements } from './elements';
  */
 import { Elements, useStripe } from '@stripe/react-stripe-js';
 import { useState } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
 
 /**
  * @typedef {import('../stripe-utils/type-defs').Stripe} Stripe
@@ -30,19 +29,16 @@ const CreditCardComponent = ( {
 	emitResponse,
 	components,
 } ) => {
-	const { ValidationInputError, CheckboxControl } = components;
-	const { customerId } = billing;
+	const { ValidationInputError } = components;
 	const [ sourceId, setSourceId ] = useState( '' );
 	const stripe = useStripe();
-	// Saving payment method is always opt-in (based on previous/shortcode
-	// behaviour); so default to false.
-	const [ shouldSavePayment, setShouldSavePayment ] = useState( false );
+	const shouldSavePayment = false;
 	const onStripeError = useCheckoutSubscriptions(
 		eventRegistration,
 		billing,
 		sourceId,
 		setSourceId,
-		shouldSavePayment,
+		shouldSavePayment, // @todo I think we can get rid of this?
 		emitResponse,
 		stripe
 	);
@@ -63,24 +59,7 @@ const CreditCardComponent = ( {
 			inputErrorComponent={ ValidationInputError }
 		/>
 	);
-	return (
-		<>
-			{ renderedCardElement }
-			{ customerId > 0 && (
-				<CheckboxControl
-					className="wc-block-checkout__save-card-info"
-					label={ __(
-						'Save payment information to my account for future purchases.',
-						'woo-gutenberg-products-block'
-					) }
-					checked={ shouldSavePayment }
-					onChange={ () =>
-						setShouldSavePayment( ! shouldSavePayment )
-					}
-				/>
-			) }
-		</>
-	);
+	return renderedCardElement;
 };
 
 export const StripeCreditCard = ( props ) => {

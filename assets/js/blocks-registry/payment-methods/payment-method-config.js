@@ -20,6 +20,10 @@ export default class PaymentMethodConfig {
 		this.edit = config.edit;
 		this.canMakePayment = config.canMakePayment;
 		this.paymentMethodId = config.paymentMethodId || this.name;
+		this.options = {
+			allowSavePaymentToken: false,
+			...config.options,
+		};
 	}
 
 	static assertValidConfig = ( config ) => {

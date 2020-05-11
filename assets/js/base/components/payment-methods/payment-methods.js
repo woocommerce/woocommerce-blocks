@@ -16,10 +16,12 @@ import {
 } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import {
+	useCheckoutContext,
 	useEditorContext,
 	usePaymentMethodDataContext,
 } from '@woocommerce/base-context';
 import { PaymentMethodIcons } from '@woocommerce/base-components/cart-checkout';
+import CheckboxControl from '@woocommerce/base-components/checkbox-control';
 
 /**
  * Internal dependencies
@@ -67,6 +69,8 @@ const PaymentMethods = () => {
 	const [ selectedToken, setSelectedToken ] = useState( '0' );
 	const { noticeContexts } = useEmitResponse();
 	const { removeNotice } = useStoreNotices();
+	const { customerId } = useCheckoutContext();
+	const [ shouldSavePayment, setShouldSavePayment ] = useState( false );
 
 	// update ref on change.
 	useEffect( () => {
@@ -81,16 +85,38 @@ const PaymentMethods = () => {
 				currentPaymentMethods.current,
 				isEditor
 			);
+			const { options } = currentPaymentMethods.current[
+				activePaymentMethod
+			];
 			return paymentMethod ? (
 				<PaymentMethodErrorBoundary isEditor={ isEditor }>
 					{ cloneElement( paymentMethod, {
 						activePaymentMethod,
 						...currentPaymentMethodInterface.current,
 					} ) }
+					{ customerId > 0 && options.allowSavePaymentToken && (
+						<CheckboxControl
+							className="wc-block-checkout__save-card-info"
+							label={ __(
+								'Save payment information to my account for future purchases.',
+								'woo-gutenberg-products-block'
+							) }
+							checked={ shouldSavePayment }
+							onChange={ () =>
+								setShouldSavePayment( ! shouldSavePayment )
+							}
+						/>
+					) }
 				</PaymentMethodErrorBoundary>
 			) : null;
 		},
-		[ isEditor, activePaymentMethod ]
+		[
+			isEditor,
+			activePaymentMethod,
+			shouldSavePayment,
+			setShouldSavePayment,
+			customerId,
+		]
 	);
 
 	if (

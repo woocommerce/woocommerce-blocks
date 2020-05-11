@@ -187,7 +187,7 @@ export const usePaymentMethodInterface = () => {
 		},
 		components: {
 			ValidationInputError,
-			CheckboxControl,
+			CheckboxControl, // @todo Can we remove this now - I think it's only here for "save card for next time".
 			PaymentMethodIcons,
 		},
 		emitResponse: {
