@@ -96,7 +96,7 @@
  * @property {string}  expires    Short form of expiry for payment method.
  * @property {boolean} is_default Whether it is the default payment method of the customer or not.
  * @property {number}  tokenId    The id of the saved payment method.
- * @property {Object}  actions    Varies, actions that can be done to interact  with the payment
+ * @property {Object}  actions    Varies, actions that can be done to interact with the payment
  *                                method.
  */
 
