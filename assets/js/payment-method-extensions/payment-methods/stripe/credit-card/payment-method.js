@@ -34,9 +34,9 @@ const CreditCardComponent = ( {
 	const { customerId } = billing;
 	const [ sourceId, setSourceId ] = useState( '' );
 	const stripe = useStripe();
-	const [ shouldSavePayment, setShouldSavePayment ] = useState(
-		customerId ? true : false
-	);
+	// Saving payment method is always opt-in (based on previous/shortcode
+	// behaviour); so default to false.
+	const [ shouldSavePayment, setShouldSavePayment ] = useState( false );
 	const onStripeError = useCheckoutSubscriptions(
 		eventRegistration,
 		billing,
