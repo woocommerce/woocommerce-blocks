@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { Card, CardBody, PanelBody, PanelRow } from 'wordpress-components';
 import { Icon, cart } from '@woocommerce/icons';
 import PropTypes from 'prop-types';
-import { useContainerQueryContext } from '@woocommerce/base-context';
+import { useContainerWidthContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -13,9 +13,9 @@ import { useContainerQueryContext } from '@woocommerce/base-context';
 import CheckoutOrderSummaryItem from './order-summary-item.js';
 
 const CheckoutOrderSummary = ( { cartItems = [] } ) => {
-	const { isLarge, isLoading } = useContainerQueryContext();
+	const { isLarge, hasContainerWidth } = useContainerWidthContext();
 
-	if ( isLoading ) {
+	if ( hasContainerWidth ) {
 		return null;
 	}
 

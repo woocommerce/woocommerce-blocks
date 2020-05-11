@@ -3,7 +3,7 @@
  */
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { ContainerQueryContextProvider } from '@woocommerce/base-context';
+import { ContainerWidthContextProvider } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -12,11 +12,11 @@ import './style.scss';
 
 const SidebarLayout = ( { children, className } ) => {
 	return (
-		<ContainerQueryContextProvider
+		<ContainerWidthContextProvider
 			className={ classNames( 'wc-block-sidebar-layout', className ) }
 		>
 			{ children }
-		</ContainerQueryContextProvider>
+		</ContainerWidthContextProvider>
 	);
 };
 
