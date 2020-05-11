@@ -133,6 +133,7 @@ export const usePaymentProcessing = (
 					);
 				}
 				setSourceId( response.source.id );
+				const savePaymentMethodKey = `wc-${ PAYMENT_METHOD_NAME }-new-payment-method`;
 				return {
 					type: emitResponse.responseTypes.SUCCESS,
 					meta: {
@@ -140,7 +141,7 @@ export const usePaymentProcessing = (
 							stripe_source: response.source.id,
 							paymentMethod: PAYMENT_METHOD_NAME,
 							paymentRequestType: 'cc',
-							'wc-stripe-new-payment-method': shouldSavePayment,
+							[ savePaymentMethodKey ]: shouldSavePayment,
 						},
 						billingData,
 					},
