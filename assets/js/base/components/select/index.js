@@ -3,13 +3,11 @@
  */
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { CustomSelectControl } from 'wordpress-components';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
-
 const Select = ( {
 	className,
 	feedback,
@@ -18,22 +16,28 @@ const Select = ( {
 	onChange,
 	options,
 	value,
+	...rest
 } ) => {
 	return (
-		<div
-			id={ id }
-			className={ classnames( 'wc-block-select', className, {
-				'is-active': value,
-			} ) }
-		>
-			<CustomSelectControl
-				label={ label }
-				onChange={ ( { selectedItem } ) => {
-					onChange( selectedItem.key );
+		<div className={ classnames( 'wc-block-select', className ) }>
+			<label htmlFor={ id }>{ label }</label>
+			<select
+				id={ id }
+				onChange={ ( { target } ) => {
+					onChange( target.value );
 				} }
-				options={ options }
-				value={ value }
-			/>
+				onBlur={ ( { target } ) => {
+					onChange( target.value );
+				} }
+				value={ value?.key }
+				{ ...rest }
+			>
+				{ options.map( ( { name, key } ) => (
+					<option value={ key } key={ key }>
+						{ name }
+					</option>
+				) ) }
+			</select>
 			{ feedback }
 		</div>
 	);

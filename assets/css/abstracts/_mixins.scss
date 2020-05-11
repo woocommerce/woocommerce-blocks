@@ -96,3 +96,38 @@
 @function rem($size, $base: 16px) {
 	@return $size / $base * 1rem;
 }
+
+// Encodes an SVG to be used with in a background-image url.
+@function svg-encode($svg) {
+	// Add missing namespace
+	@if not str-index($svg, ' xmlns="http://www.w3.org/2000/svg"') {
+		$svg: str-insert($svg, ' xmlns="http://www.w3.org/2000/svg"', 5);
+	}
+
+	// Encode characters
+	$encode: (
+		'"': "%22",
+		"#": "%23",
+		"%": "%25",
+		"<": "%3C",
+		">": "%3E",
+		"{": "%7B",
+		"}": "%7D",
+	);
+
+	$string: "";
+	$character: "";
+
+	@for $i from 1 through str-length($svg) {
+		$character: str-slice($svg, $i, $i);
+
+		@if index(map-keys($encode), $character) {
+			$character: map-get($encode, $character);
+		}
+
+		$string: $string + $character;
+	}
+
+	// Return data URI
+	@return url("data:image/svg+xml,#{$string}");
+}

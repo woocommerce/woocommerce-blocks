@@ -42,30 +42,8 @@ const CountryInput = ( {
 				errorId={ errorId }
 				errorMessage={ errorMessage }
 				required={ required }
+				autoComplete={ autoComplete }
 			/>
-			{ autoComplete !== 'off' && (
-				<input
-					type="text"
-					aria-hidden={ true }
-					autoComplete={ autoComplete }
-					value={ value }
-					onChange={ ( event ) => {
-						const textValue = event.target.value;
-						const foundOption = options.find(
-							( option ) => option.key === textValue
-						);
-						onChange( foundOption ? foundOption.key : '' );
-					} }
-					style={ {
-						minHeight: '0',
-						height: '0',
-						border: '0',
-						padding: '0',
-						position: 'absolute',
-					} }
-					tabIndex={ -1 }
-				/>
-			) }
 		</div>
 	);
 };

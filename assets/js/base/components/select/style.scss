@@ -6,7 +6,7 @@
 	label {
 		@include font-size(16px, 22px);
 		position: absolute;
-		transform: translateY(0.75em);
+		transform: translateY(#{$gap-smallest}) scale(0.75);
 		transform-origin: top left;
 		transition: all 200ms ease;
 		color: $gray-50;
@@ -22,21 +22,17 @@
 		}
 	}
 
-	&.is-active label {
-		transform: translateY(#{$gap-smallest}) scale(0.75);
+	&.has-error select {
+		border-color: $error-red;
+		background-image: svg-encode('<svg xmlns="http://www.w3.org/2000/svg" width="292.4" height="292.4"><path fill="#{$error-red}" d="M287 69.4a17.6 17.6 0 0 0-13-5.4H18.4c-5 0-9.3 1.8-12.9 5.4A17.6 17.6 0 0 0 0 82.2c0 5 1.8 9.3 5.4 12.9l128 127.9c3.6 3.6 7.8 5.4 12.8 5.4s9.2-1.8 12.8-5.4L287 95c3.5-3.5 5.4-7.8 5.4-12.8 0-5-1.9-9.2-5.5-12.8z"/></svg>');
 	}
 
-	&.has-error {
-		.components-custom-select-control__button {
-			border-color: $error-red;
-		}
-	}
-
-	&.has-error label {
+	&.has-error label,
+	&.has-error select {
 		color: $error-red;
 	}
 
-	.components-custom-select-control__button {
+	select {
 		@include font-size(16px);
 		background-color: #fff;
 		box-shadow: none;
@@ -52,38 +48,16 @@
 		text-transform: none;
 		white-space: nowrap;
 		width: 100%;
-
+		appearance: none;
+		background-image: svg-encode('<svg xmlns="http://www.w3.org/2000/svg" width="292.4" height="292.4"><path fill="#{$input-text-active}" d="M287 69.4a17.6 17.6 0 0 0-13-5.4H18.4c-5 0-9.3 1.8-12.9 5.4A17.6 17.6 0 0 0 0 82.2c0 5 1.8 9.3 5.4 12.9l128 127.9c3.6 3.6 7.8 5.4 12.8 5.4s9.2-1.8 12.8-5.4L287 95c3.5-3.5 5.4-7.8 5.4-12.8 0-5-1.9-9.2-5.5-12.8z"/></svg>');
+		background-position: calc(100% - #{$gap - 4px}) center;
+		background-repeat: no-repeat;
+		background-size: 8px;
 		&:hover,
 		&:focus,
 		&:active {
 			background-color: #fff;
 			text-decoration: none;
 		}
-	}
-
-	.components-custom-select-control__button-icon {
-		right: #{$gap - 4px};
-	}
-
-	.components-custom-select-control__menu {
-		background-color: #fff;
-		margin: 0;
-		max-height: 300px;
-		overflow: auto;
-
-		// Required by IE11.
-		&:empty {
-			display: none;
-		}
-	}
-
-	.components-custom-select-control__item {
-		@include font-size(16px);
-		margin-left: 0;
-		padding-left: $gap;
-	}
-
-	.components-custom-select-control__item-icon {
-		display: none;
 	}
 }

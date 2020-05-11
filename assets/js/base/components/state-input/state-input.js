@@ -67,26 +67,8 @@ const StateInput = ( {
 						'woo-gutenberg-products-block'
 					) }
 					required={ required }
+					autoComplete={ autoComplete }
 				/>
-				{ autoComplete !== 'off' && (
-					<input
-						type="text"
-						aria-hidden={ true }
-						autoComplete={ autoComplete }
-						value={ value }
-						onChange={ ( event ) =>
-							onChangeState( event.target.value )
-						}
-						style={ {
-							minHeight: '0',
-							height: '0',
-							border: '0',
-							padding: '0',
-							position: 'absolute',
-						} }
-						tabIndex={ -1 }
-					/>
-				) }
 			</>
 		);
 	}
