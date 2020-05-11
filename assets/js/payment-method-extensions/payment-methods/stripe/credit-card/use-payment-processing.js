@@ -92,7 +92,9 @@ export const usePaymentProcessing = (
 								paymentMethod: PAYMENT_METHOD_NAME,
 								paymentRequestType: 'cc',
 								stripe_source: sourceId,
-								shouldSavePayment,
+								// I think this is a saved token, so `shouldSavePayment`
+								// is redundant.
+								// 'wc-stripe-new-payment-method': shouldSavePayment,
 							},
 							billingData,
 						},
@@ -138,7 +140,7 @@ export const usePaymentProcessing = (
 							stripe_source: response.source.id,
 							paymentMethod: PAYMENT_METHOD_NAME,
 							paymentRequestType: 'cc',
-							shouldSavePayment,
+							'wc-stripe-new-payment-method': shouldSavePayment,
 						},
 						billingData,
 					},
