@@ -61,6 +61,7 @@ const FeaturedProduct = ( {
 	product,
 	setAttributes,
 	setOverlayColor,
+	triggerUrlUpdate = () => void null,
 } ) => {
 	const renderApiError = () => (
 		<ErrorPlaceholder
@@ -108,6 +109,7 @@ const FeaturedProduct = ( {
 									mediaId: 0,
 									mediaSrc: '',
 								} );
+								triggerUrlUpdate();
 							} }
 						/>
 						<Button isDefault onClick={ onDone }>
@@ -447,6 +449,7 @@ FeaturedProduct.propTypes = {
 	setOverlayColor: PropTypes.func.isRequired,
 	// from withSpokenMessages
 	debouncedSpeak: PropTypes.func.isRequired,
+	triggerUrlUpdate: PropTypes.func,
 };
 
 export default compose( [
@@ -470,6 +473,9 @@ export default compose( [
 	} ),
 	createHigherOrderComponent( ( ProductComponent ) => {
 		class WrappedComponent extends Component {
+			state = {
+				doUrlUpdate: false,
+			};
 			componentDidUpdate() {
 				const {
 					attributes,
@@ -478,6 +484,7 @@ export default compose( [
 					product,
 				} = this.props;
 				if (
+					this.state.doUrlUpdate &&
 					! attributes.editMode &&
 					product?.permalink &&
 					currentButtonAttributes?.url &&
@@ -487,10 +494,19 @@ export default compose( [
 						...currentButtonAttributes,
 						url: product.permalink,
 					} );
+					this.setState( { doUrlUpdate: false } );
 				}
 			}
+			triggerUrlUpdate = () => {
+				this.setState( { doUrlUpdate: true } );
+			};
 			render() {
-				return <ProductComponent { ...this.props } />;
+				return (
+					<ProductComponent
+						triggerUrlUpdate={ this.triggerUrlUpdate }
+						{ ...this.props }
+					/>
+				);
 			}
 		}
 		return WrappedComponent;
