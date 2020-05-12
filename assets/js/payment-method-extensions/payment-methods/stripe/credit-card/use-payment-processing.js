@@ -92,9 +92,6 @@ export const usePaymentProcessing = (
 								paymentMethod: PAYMENT_METHOD_NAME,
 								paymentRequestType: 'cc',
 								stripe_source: sourceId,
-								// I think this is a saved token, so `shouldSavePayment`
-								// is redundant.
-								// 'wc-stripe-new-payment-method': shouldSavePayment,
 							},
 							billingData,
 						},
@@ -133,7 +130,6 @@ export const usePaymentProcessing = (
 					);
 				}
 				setSourceId( response.source.id );
-				const savePaymentMethodKey = `wc-${ PAYMENT_METHOD_NAME }-new-payment-method`;
 				return {
 					type: emitResponse.responseTypes.SUCCESS,
 					meta: {
@@ -141,7 +137,6 @@ export const usePaymentProcessing = (
 							stripe_source: response.source.id,
 							paymentMethod: PAYMENT_METHOD_NAME,
 							paymentRequestType: 'cc',
-							[ savePaymentMethodKey ]: shouldSavePayment,
 						},
 						billingData,
 					},

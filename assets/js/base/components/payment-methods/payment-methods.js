@@ -58,6 +58,8 @@ const PaymentMethods = () => {
 	const {
 		customerPaymentMethods = {},
 		setActivePaymentMethod,
+		shouldSavePayment,
+		setShouldSavePayment,
 	} = usePaymentMethodDataContext();
 	const { isInitialized, paymentMethods } = usePaymentMethods();
 	const currentPaymentMethods = useRef( paymentMethods );
@@ -70,7 +72,6 @@ const PaymentMethods = () => {
 	const { noticeContexts } = useEmitResponse();
 	const { removeNotice } = useStoreNotices();
 	const { customerId } = useCheckoutContext();
-	const [ shouldSavePayment, setShouldSavePayment ] = useState( false );
 
 	// update ref on change.
 	useEffect( () => {

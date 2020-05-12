@@ -28,15 +28,23 @@ import { useStoreCart, useStoreNotices } from '@woocommerce/base-hooks';
  *
  * @param {Object} paymentData Arbitrary payment data provided by the payment
  *                             method.
+ * @param {boolean} shouldSave Whether to save the payment method info to
+ *                             user account.
  *
  * @return {PaymentDataItem[]} Returns the payment data as an array of
- *                                 PaymentDataItem objects.
+ *                             PaymentDataItem objects.
  */
-const preparePaymentData = ( paymentData ) => {
-	return Object.keys( paymentData ).map( ( property ) => {
+const preparePaymentData = ( paymentData, shouldSave ) => {
+	const apiData = Object.keys( paymentData ).map( ( property ) => {
 		const value = paymentData[ property ];
 		return { key: property, value };
 	}, [] );
+	const savePaymentMethodKey = `wc-${ paymentData.paymentMethod }-new-payment-method`;
+	apiData.push( {
+		key: savePaymentMethodKey,
+		value: shouldSave,
+	} );
+	return apiData;
 };
 
 /**
@@ -66,6 +74,7 @@ const CheckoutProcessor = () => {
 		paymentMethodData,
 		expressPaymentMethods,
 		paymentMethods,
+		shouldSavePayment,
 	} = usePaymentMethodDataContext();
 	const { addErrorNotice, removeNotice } = useStoreNotices();
 	const currentBillingData = useRef( billingData );
@@ -179,7 +188,10 @@ const CheckoutProcessor = () => {
 			data = {
 				...data,
 				payment_method: paymentMethodId,
-				payment_data: preparePaymentData( paymentMethodData ),
+				payment_data: preparePaymentData(
+					paymentMethodData,
+					shouldSavePayment
+				),
 			};
 		}
 		triggerFetch( {
@@ -234,6 +246,7 @@ const CheckoutProcessor = () => {
 		removeNotice,
 		paymentMethodId,
 		paymentMethodData,
+		shouldSavePayment,
 		cartNeedsPayment,
 		receiveCart,
 		dispatchActions,
