@@ -37,6 +37,16 @@
 					margin: 0.2em 0 -0.2em;
 				}
 
+				.payment-method-label-with-icon {
+					display: inline-block;
+					vertical-align: middle;
+					> img,
+					> svg {
+						vertical-align: middle;
+						margin: -2px 4px 0 0;
+					}
+				}
+
 				.wc-block-cart__payment-method-icons {
 					margin: 0.2em 0 -0.2em;
 
@@ -50,5 +60,15 @@
 	}
 	.wc-block-components-tabs__content {
 		padding: $gap 0;
+	}
+}
+
+.is-mobile,
+.is-small {
+	.wc-block-components-tabs .wc-block-components-tabs__list .wc-block-components-tabs__item .wc-block-components-tabs__item-content .payment-method-label-with-icon {
+		> img,
+		> svg {
+			display: none;
+		}
 	}
 }
