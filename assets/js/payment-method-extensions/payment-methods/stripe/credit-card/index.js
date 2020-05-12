@@ -22,7 +22,7 @@ const StripeComponent = ( props ) => {
 				setErrorMessage( error.message );
 			}
 		} );
-	}, [] );
+	}, [ setErrorMessage ] );
 
 	useEffect( () => {
 		if ( errorMessage ) {
