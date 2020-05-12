@@ -58,8 +58,6 @@ const CreditCardComponent = ( {
 		}
 		setSourceId( '0' );
 	};
-	const showSaveCardCheckbox =
-		customerId > 0 && getStripeServerData().allowSavedCards === 'yes';
 	const cardIcons = getStripeCreditCardIcons();
 
 	const renderedCardElement = getStripeServerData().inline_cc_form ? (
