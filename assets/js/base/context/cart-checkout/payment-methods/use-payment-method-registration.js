@@ -6,7 +6,7 @@ import {
 	getPaymentMethods,
 	getExpressPaymentMethods,
 } from '@woocommerce/blocks-registry';
-import { useState, useEffect, useRef } from '@wordpress/element';
+import { useState, useEffect, useRef, useCallback } from '@wordpress/element';
 import {
 	useEditorContext,
 	useShippingDataContext,
@@ -53,15 +53,6 @@ const usePaymentMethodRegistration = (
 	registeredPaymentMethods
 ) => {
 	const [ isInitialized, setIsInitialized ] = useState( false );
-
-	/**
-	 * @type {Object} initializedMethodsDefault Holds payment methods that have been initialized.
-	 */
-	const [
-		initializedPaymentMethods,
-		setInitializedPaymentMethods,
-	] = useState( {} );
-
 	const { isEditor } = useEditorContext();
 	const { shippingAddress } = useShippingDataContext();
 	const { cartTotals, cartNeedsShipping } = useStoreCart();
@@ -71,22 +62,6 @@ const usePaymentMethodRegistration = (
 		shippingAddress,
 	} );
 
-	/**
-	 * Update initialized payment methods in local state.
-	 *
-	 * @param {Object} paymentMethod Payment method object that has been initialized.
-	 * @param {boolean} enabled True if the method can be used, or false if payment is not possible via this method.
-	 */
-	const setInitializedPaymentMethod = ( paymentMethod, enabled = true ) => {
-		setInitializedPaymentMethods( ( paymentMethods ) => ( {
-			...paymentMethods,
-			[ paymentMethod.name ]: {
-				enabled,
-				paymentMethod,
-			},
-		} ) );
-	};
-
 	useEffect( () => {
 		canPayArgument.current = {
 			cartTotals,
@@ -95,57 +70,48 @@ const usePaymentMethodRegistration = (
 		};
 	}, [ cartTotals, cartNeedsShipping, shippingAddress ] );
 
-	// Initialize payment methods on mount.
-	// Note: registeredPaymentMethods is not a dependency because this will not
-	// change in the life of the hook, it comes from an externally set value.
-	useEffect( () => {
+	const resolveCanMakePayments = useCallback( async () => {
+		let initializedPaymentMethods = {},
+			canPay;
+		const setInitializedPaymentMethods = ( paymentMethod ) => {
+			initializedPaymentMethods = {
+				...initializedPaymentMethods,
+				[ paymentMethod.name ]: paymentMethod,
+			};
+		};
 		for ( const paymentMethodName in registeredPaymentMethods ) {
 			const current = registeredPaymentMethods[ paymentMethodName ];
 
 			if ( isEditor ) {
-				setInitializedPaymentMethod( current );
+				setInitializedPaymentMethods( current );
 				continue;
 			}
 
-			Promise.resolve( current.canMakePayment( canPayArgument.current ) )
-				.then( ( canPay ) => {
+			try {
+				canPay = await Promise.resolve(
+					current.canMakePayment( canPayArgument.current )
+				);
+				if ( canPay ) {
 					if ( canPay.error ) {
 						throw new Error( canPay.error.message );
 					}
-					setInitializedPaymentMethod( current, canPay );
-				} )
-				.catch( handleRegistrationError );
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [ isEditor ] );
-
-	// As payment methods are initialized once promises resolve, see if we're finished, resort to be
-	// in the same order as registered and then set via the dispatcher.
-	// Note: registeredPaymentMethods is not a dependency because this will not
-	// change in the life of the hook, it comes from an externally set value.
-	useEffect( () => {
-		if (
-			! isInitialized &&
-			Object.keys( initializedPaymentMethods ).length ===
-				Object.keys( registeredPaymentMethods ).length
-		) {
-			const newSet = {};
-			for ( const paymentMethodName in registeredPaymentMethods ) {
-				if (
-					initializedPaymentMethods[ paymentMethodName ] &&
-					initializedPaymentMethods[ paymentMethodName ].enabled
-				) {
-					newSet[ paymentMethodName ] =
-						initializedPaymentMethods[
-							paymentMethodName
-						].paymentMethod;
+					setInitializedPaymentMethods( current );
 				}
+			} catch ( e ) {
+				handleRegistrationError( e );
 			}
-			dispatcher( newSet );
-			setIsInitialized( true );
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [ initializedPaymentMethods, dispatcher, isInitialized ] );
+		// all payment methods have been initialized so dispatch and set
+		dispatcher( initializedPaymentMethods );
+		setIsInitialized( true );
+	}, [ dispatcher, isEditor, registeredPaymentMethods ] );
+
+	// if not initialized invoke the callback to kick off resolving the payments.
+	useEffect( () => {
+		if ( ! isInitialized ) {
+			resolveCanMakePayments();
+		}
+	}, [ resolveCanMakePayments, isInitialized ] );
 
 	return isInitialized;
 };
