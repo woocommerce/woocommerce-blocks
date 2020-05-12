@@ -21,7 +21,7 @@ export default class PaymentMethodConfig {
 		this.canMakePayment = config.canMakePayment;
 		this.paymentMethodId = config.paymentMethodId || this.name;
 		this.options = {
-			allowSavePaymentToken: false,
+			allowSavePaymentInfo: false,
 			...config.options,
 		};
 	}

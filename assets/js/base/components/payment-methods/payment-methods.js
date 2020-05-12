@@ -95,7 +95,7 @@ const PaymentMethods = () => {
 						activePaymentMethod,
 						...currentPaymentMethodInterface.current,
 					} ) }
-					{ customerId > 0 && options.allowSavePaymentToken && (
+					{ customerId > 0 && options.allowSavePaymentInfo && (
 						<CheckboxControl
 							className="wc-block-checkout__save-card-info"
 							label={ __(

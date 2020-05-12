@@ -56,7 +56,7 @@ const stripeCcPaymentMethod = {
 		'woo-gutenberg-products-block'
 	),
 	options: {
-		allowSavePaymentToken: true,
+		allowSavePaymentInfo: true,
 	},
 };
 
