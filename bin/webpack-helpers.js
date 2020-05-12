@@ -2,6 +2,7 @@
  * External dependencies
  */
 const path = require( 'path' );
+const webpack = require( 'webpack' );
 const MergeExtractFilesPlugin = require( './merge-extract-files-webpack-plugin' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const ProgressBarPlugin = require( 'progress-bar-webpack-plugin' );
@@ -448,6 +449,10 @@ const getFrontConfig = ( options = {} ) => {
 					chalk.green( ':percent' ) +
 					' :msg (:elapsed seconds)',
 			} ),
+			new webpack.NormalModuleReplacementPlugin(
+				/^..[/\\]dashicon$/,
+				'lodash/noop'
+			),
 			new DependencyExtractionWebpackPlugin( {
 				injectPolyfill: true,
 				requestToExternal,
