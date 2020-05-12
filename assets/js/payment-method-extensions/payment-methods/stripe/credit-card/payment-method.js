@@ -32,13 +32,11 @@ const CreditCardComponent = ( {
 	const { ValidationInputError } = components;
 	const [ sourceId, setSourceId ] = useState( '' );
 	const stripe = useStripe();
-	const shouldSavePayment = false;
 	const onStripeError = useCheckoutSubscriptions(
 		eventRegistration,
 		billing,
 		sourceId,
 		setSourceId,
-		shouldSavePayment, // @todo I think we can get rid of this?
 		emitResponse,
 		stripe
 	);
