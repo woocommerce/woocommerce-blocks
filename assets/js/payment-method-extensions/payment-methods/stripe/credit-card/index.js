@@ -55,8 +55,8 @@ const stripeCcPaymentMethod = {
 		'Stripe Credit Card payment method',
 		'woo-gutenberg-products-block'
 	),
-	options: {
-		allowSavePaymentInfo: true,
+	supports: {
+		savePaymentInfo: true,
 	},
 };
 

@@ -86,7 +86,7 @@ const PaymentMethods = () => {
 				currentPaymentMethods.current,
 				isEditor
 			);
-			const { options } = currentPaymentMethods.current[
+			const { supports } = currentPaymentMethods.current[
 				activePaymentMethod
 			];
 			return paymentMethod ? (
@@ -95,7 +95,7 @@ const PaymentMethods = () => {
 						activePaymentMethod,
 						...currentPaymentMethodInterface.current,
 					} ) }
-					{ customerId > 0 && options.allowSavePaymentInfo && (
+					{ customerId > 0 && supports.savePaymentInfo && (
 						<CheckboxControl
 							className="wc-block-checkout__save-card-info"
 							label={ __(
