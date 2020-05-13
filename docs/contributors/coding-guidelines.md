@@ -90,3 +90,63 @@ We want our font sizes to be declared with rem or em units instead of hardcoded 
 We have a mixin named `font-size()` that given a number of the font size in px, it converts it to rem. It accepts a second parameter which is the line height, it will be divided by the font-size and the result will be the relative units for the `line-height` CSS property.
 
 In parallel to that, consider whether other size/distance units in your CSS need to be rem/em instead of px. In general, rem/em should be preferred if it doesn't break the design with big font sizes. There is another mixin named `rem()` that helps converting px units to rem (given a px size and optionally a base size).
+
+### CSS specificity wars with 3rd party popular themes
+
+We want our blocks to look good with as many themes as possible out of the box. Some times, our styles will conflict with theme styles that have higher specificity. In those cases, we might be tempted to increase the specificity of our selectors, but increasing it too much would make it harder for other themes to style our blocks. In the following lines, there is a set of rules that might help deciding when to increase specificity or not. They are not hard rules so feel free to apply your best judgement every time.
+
+Imagine we are styling the radio control input but our styles are conflicting with some themes. For example imagine two themes that have these styles:
+
+Theme A:
+
+```
+input[type="radio"] { // specificity 0, 1, 1
+	background: red;
+}
+```
+
+Theme B:
+
+```
+input[type="radio"]:checked { // specificity 0, 2, 1
+	background: blue;
+}
+```
+
+And these are the styles of your block:
+
+```
+.wc-block-radio-control__input { // specificity 0, 1, 0
+	background: #fff;
+}
+```
+
+As you can see, the styles coming from the themes have higher specificity, so our styles would be overriden. In order to solve this:
+
+1. Never use `!important` rules in CSS to engage in a specificity war with a theme.
+2. Never use ID selectors either.
+3. Try wrapping the entire component/block CSS with the root class name of that component:
+   For example:
+
+```
+.wc-block-radio-control {
+	.wc-block-radio-control__input { // specificity 0, 2, 0, we win theme A!
+		background: #fff;
+	}
+}
+```
+
+4. Try adding an extra class or tag with its only purpose of increasing specificity. When doing so, add a comment explaining it.
+
+```
+.wc-block-radio-control {
+	// Extra class for specificity.
+	.wc-block-radio-control__option .wc-block-radio-control__input { // specificity 0, 3, 0, we win theme B!
+		background: #fff;
+	}
+}
+```
+
+5. If these steps weren't enough, consider whether to stop increasing specificity. If it's just a minor visual issue, feel free to ignore it and assume the theme will update at some point. If it's completely breaking the block or component in that theme, consider sending feedback to theme authors so they can fix it.
+
+Notice in the worst case scenario we would have increased selector specificity by 2 classes (0, 2, 0). That shouldn't make it too difficult for other themes to write styles on top of ours.
