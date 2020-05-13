@@ -34,13 +34,6 @@ export const useCheckoutAddress = () => {
 		needsShipping,
 	} = useShippingDataContext();
 	const { billingData, setBillingData } = useBillingDataContext();
-
-	// These are the local states of address fields, which are persisted
-	// globally when changed. They default to the global shipping address which
-	// is populated from the current customer data or default location.
-	// const [ shippingFields, updateShippingFields ] = useState(
-	// 	shippingAddress
-	// );
 	const [ billingFields, updateBillingFields ] = useState( billingData );
 
 	// This tracks the state of the "shipping as billing" address checkbox. It's
