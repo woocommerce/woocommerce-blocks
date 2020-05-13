@@ -58,9 +58,13 @@ export const useCheckoutAddress = () => {
 			setShippingAddress( shippingFields );
 		}
 
-		const newBillingData = shippingAsBilling
-			? shippingFields
-			: billingFields;
+		// Uses shipping or billing fields depending on shippingAsBilling checkbox, but ensures
+		// billing only fields are also included.
+		const newBillingData = {
+			...( shippingAsBilling ? shippingFields : billingFields ),
+			email: billingFields.email,
+			phone: billingFields.phone,
+		};
 
 		if ( ! isEqual( newBillingData, billingData ) ) {
 			setBillingData( newBillingData );
