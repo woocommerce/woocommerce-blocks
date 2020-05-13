@@ -53,7 +53,6 @@ export const useCheckoutAddress = () => {
 	);
 
 	// Pushes to global state when changes are made locally.
-	// setBillingData and setShippingAddress are memoized from the contexts.
 	useEffect( () => {
 		if ( ! isEqual( shippingFields, shippingAddress ) ) {
 			setShippingAddress( shippingFields );
@@ -70,13 +69,14 @@ export const useCheckoutAddress = () => {
 		if ( ! isEqual( newBillingData, billingData ) ) {
 			setBillingData( newBillingData );
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		shippingFields,
 		billingFields,
 		shippingAsBilling,
 		billingData,
 		shippingAddress,
+		setBillingData,
+		setShippingAddress,
 	] );
 
 	/**
