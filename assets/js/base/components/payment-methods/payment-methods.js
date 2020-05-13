@@ -20,7 +20,6 @@ import {
 	useEditorContext,
 	usePaymentMethodDataContext,
 } from '@woocommerce/base-context';
-import { PaymentMethodIcons } from '@woocommerce/base-components/cart-checkout';
 import CheckboxControl from '@woocommerce/base-components/checkbox-control';
 
 /**
@@ -143,7 +142,8 @@ const PaymentMethods = () => {
 						typeof label === 'string'
 							? label
 							: cloneElement( label, {
-									components: { PaymentMethodIcons },
+									activePaymentMethod,
+									...currentPaymentMethodInterface.current,
 							  } ),
 					ariaLabel,
 				};

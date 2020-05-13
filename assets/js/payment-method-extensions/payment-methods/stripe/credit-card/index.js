@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
-import { Icon, card } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
@@ -34,12 +33,14 @@ const StripeComponent = ( props ) => {
 	return <StripeCreditCard stripe={ stripePromise } { ...props } />;
 };
 
-const StripeLabel = () => {
+const StripeLabel = ( props ) => {
+	const { PaymentMethodLabel } = props.components;
+
 	return (
-		<span className="payment-method-label-with-icon">
-			<Icon srcElement={ card } />
-			{ __( 'Credit / Debit Card', 'woo-gutenberg-products-block' ) }
-		</span>
+		<PaymentMethodLabel
+			icon="card"
+			text={ __( 'Credit / Debit Card', 'woo-gutenberg-products-block' ) }
+		/>
 	);
 };
 
