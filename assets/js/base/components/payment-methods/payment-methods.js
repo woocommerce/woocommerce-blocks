@@ -142,8 +142,10 @@ const PaymentMethods = () => {
 						typeof label === 'string'
 							? label
 							: cloneElement( label, {
-									activePaymentMethod,
-									components: { ...currentPaymentMethodInterface.current.components },
+									components: {
+										...currentPaymentMethodInterface.current
+											.components,
+									},
 							  } ),
 					ariaLabel,
 				};
