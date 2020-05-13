@@ -105,7 +105,7 @@ export const ShippingDataProvider = ( { children } ) => {
 		} else {
 			dispatchActions.decrementCalculating();
 		}
-	}, [ shippingRatesLoading ] );
+	}, [ shippingRatesLoading, dispatchActions ] );
 
 	// increment/decrement checkout calculating counts when shipping rates are
 	// being selected.
@@ -115,7 +115,7 @@ export const ShippingDataProvider = ( { children } ) => {
 		} else {
 			dispatchActions.decrementCalculating();
 		}
-	}, [ isSelectingRate ] );
+	}, [ isSelectingRate, dispatchActions ] );
 
 	const currentErrorStatus = useMemo(
 		() => ( {
@@ -138,7 +138,7 @@ export const ShippingDataProvider = ( { children } ) => {
 				currentErrorStatus
 			);
 		}
-	}, [ shippingRates, shippingRatesLoading, currentErrorStatus.hasError ] );
+	}, [ shippingRates, shippingRatesLoading, currentErrorStatus ] );
 
 	useEffect( () => {
 		if (
@@ -163,7 +163,7 @@ export const ShippingDataProvider = ( { children } ) => {
 				currentErrorStatus
 			);
 		}
-	}, [ selectedRates, isSelectingRate, currentErrorStatus.hasError ] );
+	}, [ selectedRates, isSelectingRate, currentErrorStatus ] );
 
 	useEffect( () => {
 		if (
