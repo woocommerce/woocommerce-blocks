@@ -51,8 +51,8 @@ export const useCheckoutAddress = () => {
 		// billing only fields are also included.
 		const newBillingData = {
 			...( shippingAsBilling ? shippingAddress : billingFields ),
-			email: billingFields.email,
-			phone: billingFields.phone,
+			email: billingFields.email || billingData.email,
+			phone: billingFields.phone || billingData.phone,
 		};
 
 		if ( ! isEqual( newBillingData, billingData ) ) {
