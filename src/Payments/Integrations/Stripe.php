@@ -109,7 +109,7 @@ final class Stripe extends AbstractPaymentMethodType {
 	}
 
 	/**
-	 * Determine if store allows payment via saved cards (and save card during checkout).
+	 * Determine if store allows cards to be saved during checkout.
 	 *
 	 * @return bool True if merchant allows shopper to save card (payment method) during checkout).
 	 */
