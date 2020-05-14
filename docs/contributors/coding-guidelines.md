@@ -97,7 +97,7 @@ We want our blocks to look good with as many themes as possible out of the box. 
 
 The following guidelines should help you decide _when_ to increase specificity, if at all. They are not hard rules so feel free to apply your best judgement on a case-by-case basis.
 
-Imagine we are styling the radio control input but our styles are conflicting with some themes. For example imagine two themes that have these styles:
+Imagine we are styling the radio control input but our styles are conflicting with some themes. For example, two themes that have the following styles:
 
 Theme A:
 
