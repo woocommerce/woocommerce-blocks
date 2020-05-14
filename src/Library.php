@@ -72,8 +72,11 @@ class Library {
 			$blocks[] = 'PriceFilter';
 			$blocks[] = 'AttributeFilter';
 			$blocks[] = 'ActiveFilters';
-			$blocks[] = 'Checkout';
-			$blocks[] = 'Cart';
+
+			if ( WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
+				$blocks[] = 'Checkout';
+				$blocks[] = 'Cart';
+			}
 		}
 		if ( 'experimental' === WOOCOMMERCE_BLOCKS_PHASE ) {
 			$blocks[] = 'SingleProduct';

@@ -49,4 +49,6 @@ const settings = {
 	},
 };
 
-registerBlockType( 'woocommerce/checkout', settings );
+if ( process.env.WOOCOMMERCE_BLOCKS_PHASE === 'experimental' ) {
+	registerBlockType( 'woocommerce/checkout', settings );
+}
