@@ -158,7 +158,8 @@ const experimentalMainEntry = {
 };
 
 const mainEntry =
-	process.env.WOOCOMMERCE_BLOCKS_PHASE === 'stable'
+	// env variables are strings, so we compare against a string, so we need to parse it.
+	parseInt( process.env.WOOCOMMERCE_BLOCKS_PHASE, 10 ) === 1
 		? stableMainEntry
 		: { ...stableMainEntry, ...experimentalMainEntry };
 
@@ -177,7 +178,8 @@ const experimentalFrontEndEntry = {
 };
 
 const frontEndEntry =
-	process.env.WOOCOMMERCE_BLOCKS_PHASE === 'stable'
+	// env variables are strings, so we compare against a string, so we need to parse it.
+	parseInt( process.env.WOOCOMMERCE_BLOCKS_PHASE, 10 ) === 1
 		? stableFrontEndEntry
 		: { ...stableFrontEndEntry, ...experimentalFrontEndEntry };
 
@@ -360,10 +362,8 @@ const getMainConfig = ( options = {} ) => {
 			} ),
 			new DefinePlugin( {
 				// Inject the `WOOCOMMERCE_BLOCKS_PHASE` global, used for feature flagging.
-				'process.env.WOOCOMMERCE_BLOCKS_PHASE': JSON.stringify(
-					// eslint-disable-next-line woocommerce/feature-flag
-					process.env.WOOCOMMERCE_BLOCKS_PHASE || 'experimental'
-				),
+				'process.env.WOOCOMMERCE_BLOCKS_PHASE':
+					process.env.WOOCOMMERCE_BLOCKS_PHASE || 3,
 			} ),
 		],
 		resolve,
@@ -462,10 +462,8 @@ const getFrontConfig = ( options = {} ) => {
 			} ),
 			new DefinePlugin( {
 				// Inject the `WOOCOMMERCE_BLOCKS_PHASE` global, used for feature flagging.
-				'process.env.WOOCOMMERCE_BLOCKS_PHASE': JSON.stringify(
-					// eslint-disable-next-line woocommerce/feature-flag
-					process.env.WOOCOMMERCE_BLOCKS_PHASE || 'experimental'
-				),
+				'process.env.WOOCOMMERCE_BLOCKS_PHASE':
+					process.env.WOOCOMMERCE_BLOCKS_PHASE || 3,
 			} ),
 		],
 		resolve,
@@ -601,10 +599,8 @@ const getPaymentMethodsExtensionConfig = ( options = {} ) => {
 			} ),
 			new DefinePlugin( {
 				// Inject the `WOOCOMMERCE_BLOCKS_PHASE` global, used for feature flagging.
-				'process.env.WOOCOMMERCE_BLOCKS_PHASE': JSON.stringify(
-					// eslint-disable-next-line woocommerce/feature-flag
-					process.env.WOOCOMMERCE_BLOCKS_PHASE || 'experimental'
-				),
+				'process.env.WOOCOMMERCE_BLOCKS_PHASE':
+					process.env.WOOCOMMERCE_BLOCKS_PHASE || 3,
 			} ),
 		],
 		resolve,

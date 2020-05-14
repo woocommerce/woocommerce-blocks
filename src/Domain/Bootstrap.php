@@ -130,17 +130,17 @@ class Bootstrap {
 	 * Define the global feature flag.
 	 */
 	protected function define_feature_flag() {
-		$allowed_flags = [ 'experimental', 'stable' ];
+		$allowed_flags = [ '1', '2', '3' ];
 		$flag          = getenv( 'WOOCOMMERCE_BLOCKS_PHASE' );
 		if ( ! in_array( $flag, $allowed_flags, true ) ) {
 			if ( file_exists( __DIR__ . '/../../blocks.ini' ) ) {
 				$woo_options = parse_ini_file( __DIR__ . '/../../blocks.ini' );
-				$flag        = is_array( $woo_options ) && 'experimental' === $woo_options['woocommerce_blocks_phase'] ? 'experimental' : 'stable';
+				$flag        = is_array( $woo_options ) && in_array( $woo_options['woocommerce_blocks_phase'], $allowed_flags, true ) ? $woo_options['woocommerce_blocks_phase'] : '1';
 			} else {
-				$flag = 'stable';
+				$flag = '1';
 			}
 		}
-		define( 'WOOCOMMERCE_BLOCKS_PHASE', $flag );
+		define( 'WOOCOMMERCE_BLOCKS_PHASE', intval( $flag ) );
 	}
 
 	/**

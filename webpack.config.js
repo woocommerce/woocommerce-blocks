@@ -91,20 +91,16 @@ const CoreConfig = {
 		new DependencyExtractionWebpackPlugin( { injectPolyfill: true } ),
 		new DefinePlugin( {
 			// Inject the `WOOCOMMERCE_BLOCKS_PHASE` global, used for feature flagging.
-			'process.env.WOOCOMMERCE_BLOCKS_PHASE': JSON.stringify(
-				// eslint-disable-next-line woocommerce/feature-flag
-				process.env.WOOCOMMERCE_BLOCKS_PHASE || 'experimental'
-			),
+			'process.env.WOOCOMMERCE_BLOCKS_PHASE':
+				process.env.WOOCOMMERCE_BLOCKS_PHASE || 3,
 		} ),
 		new CreateFileWebpack( {
 			path: './',
 			// file name
 			fileName: 'blocks.ini',
 			// content of the file
-			content: `woocommerce_blocks_phase = ${
-				// eslint-disable-next-line woocommerce/feature-flag
-				process.env.WOOCOMMERCE_BLOCKS_PHASE || 'experimental'
-			}`,
+			content: `woocommerce_blocks_phase = ${ process.env
+				.WOOCOMMERCE_BLOCKS_PHASE || 3 }`,
 		} ),
 	],
 };
