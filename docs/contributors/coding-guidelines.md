@@ -91,9 +91,9 @@ We have a mixin named `font-size()` that given a number of the font size in px, 
 
 In parallel to that, consider whether other size/distance units in your CSS need to be rem/em instead of px. In general, rem/em should be preferred if it doesn't break the design with big font sizes. There is another mixin named `rem()` that helps converting px units to rem (given a px size and optionally a base size).
 
-### CSS specificity wars with 3rd party popular themes
+### CSS specificity wars with 3rd party themes
 
-We want our blocks to look good with as many themes as possible out of the box. Sometimes our styles will conflict with theme styles that have higher specificity. In these cases it may be tempting to increase the specificity of selectors, but increasing them too much makes it harder for other themes to style our blocks. 
+We want our blocks to look good with as many themes as possible out of the box. Sometimes our styles will conflict with theme styles that have higher specificity. In these cases it may be tempting to increase the specificity of selectors, but increasing them too much makes it harder for other themes to style our blocks.
 
 The following guidelines should help you decide _when_ to increase specificity, if at all. They are not hard rules so feel free to apply your best judgement on a case-by-case basis.
 
