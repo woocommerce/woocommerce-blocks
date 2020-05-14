@@ -150,19 +150,22 @@ export const PaymentMethodDataProvider = ( { children } ) => {
 		[ dispatch ]
 	);
 
-	const setExpressPaymentError = ( message ) => {
-		if ( message ) {
-			addErrorNotice( message, {
-				context: 'wc/express-payment-area',
-				id: 'wc-express-payment-error',
-			} );
-		} else {
-			removeNotice(
-				'wc-express-payment-error',
-				'wc/express-payment-area'
-			);
-		}
-	};
+	const setExpressPaymentError = useCallback(
+		( message ) => {
+			if ( message ) {
+				addErrorNotice( message, {
+					context: 'wc/express-payment-area',
+					id: 'wc-express-payment-error',
+				} );
+			} else {
+				removeNotice(
+					'wc-express-payment-error',
+					'wc/express-payment-area'
+				);
+			}
+		},
+		[ addErrorNotice, removeNotice ]
+	);
 	// ensure observers are always current.
 	useEffect( () => {
 		currentObservers.current = observers;
