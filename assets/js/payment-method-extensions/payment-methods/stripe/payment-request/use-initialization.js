@@ -5,6 +5,7 @@ import { useEffect, useState, useRef, useCallback } from '@wordpress/element';
 import { useStripe } from '@stripe/react-stripe-js';
 import { getSetting } from '@woocommerce/settings';
 import { __ } from '@wordpress/i18n';
+import isShallowEqual from '@wordpress/is-shallow-equal';
 
 /**
  * Internal dependencies
@@ -18,6 +19,8 @@ import {
 	normalizeShippingAddressForCheckout,
 	normalizeShippingOptionSelectionsForCheckout,
 	getStripeServerData,
+	pluckAddress,
+	normalizeShippingOptions,
 } from '../stripe-utils';
 import { useEventHandlers } from './use-event-handlers';
 
@@ -150,13 +153,36 @@ export const useInitialization = ( {
 		if ( paymentRequest && canMakePayment && isProcessing ) {
 			// @ts-ignore
 			paymentRequest.on( 'shippingaddresschange', ( event ) => {
-				// @todo check if there is an address change, and if not, then
-				// just call updateWith and don't call setShippingAddress here
-				// because the state won't change upstream.
-				currentShipping.current.setShippingAddress(
-					normalizeShippingAddressForCheckout( event.shippingAddress )
+				const newShippingAddress = normalizeShippingAddressForCheckout(
+					event.shippingAddress
 				);
-				setPaymentRequestEventHandler( 'shippingAddressChange', event );
+				if (
+					isShallowEqual(
+						pluckAddress( newShippingAddress ),
+						pluckAddress( currentShipping.current.shippingAddress )
+					)
+				) {
+					// the address is the same so no change needed.
+					event.updateWith( {
+						status: 'success',
+						shippingOptions: normalizeShippingOptions(
+							currentShipping.current.shippingRates
+						),
+					} );
+				} else {
+					// the address is different so let's set the new address and
+					// register the handler to be picked up by the shipping rate
+					// change event.
+					currentShipping.current.setShippingAddress(
+						normalizeShippingAddressForCheckout(
+							event.shippingAddress
+						)
+					);
+					setPaymentRequestEventHandler(
+						'shippingAddressChange',
+						event
+					);
+				}
 			} );
 			// @ts-ignore
 			paymentRequest.on( 'shippingoptionchange', ( event ) => {
