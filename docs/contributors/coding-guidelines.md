@@ -115,7 +115,7 @@ input[type="radio"]:checked { // specificity 0, 2, 1
 }
 ```
 
-And these are the styles of your block:
+And these are the styles of the block:
 
 ```
 .wc-block-radio-control__input { // specificity 0, 1, 0
