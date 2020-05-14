@@ -149,6 +149,6 @@ As you can see, the styles coming from the themes have higher specificity, so ou
 }
 ```
 
-5. If these steps weren't enough, consider whether to stop increasing specificity. If it's just a minor visual issue, feel free to ignore it and assume the theme will update at some point. If it's completely breaking the block or component in that theme, consider sending feedback to theme authors so they can fix it.
+5. If these steps weren't enough, consider not increasing specificity at all. If it's just a minor visual issue, consider ignoring it and assume the theme will update its conflicting styles at some point. If it's completely breaking the block or component in that theme, consider sending feedback to theme authors so they can fix it on their side.
 
 Notice in the worst case scenario we would have increased selector specificity by 2 classes (0, 2, 0). That shouldn't make it too difficult for other themes to write styles on top of ours.
