@@ -233,11 +233,11 @@ export const PaymentMethodDataProvider = ( { children } ) => {
 				billingData = null,
 				shippingData = null
 			) => {
-				if ( shippingData !== null && shippingData?.address ) {
-					setShippingAddress( shippingData.address );
-				}
 				if ( billingData ) {
 					setBillingData( billingData );
+				}
+				if ( shippingData !== null && shippingData?.address ) {
+					setShippingAddress( shippingData.address );
 				}
 				dispatch(
 					success( {
