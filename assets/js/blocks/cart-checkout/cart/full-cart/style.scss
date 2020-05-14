@@ -1,7 +1,7 @@
 .wc-block-cart {
 	color: $core-grey-dark-600;
 
-	h2 {
+	.wc-block-cart__title {
 		@include font-size(20px);
 		font-weight: normal;
 	}

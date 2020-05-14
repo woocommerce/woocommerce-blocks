@@ -96,7 +96,7 @@ const Cart = ( { attributes } ) => {
 			<Sidebar className="wc-block-cart__sidebar">
 				<Card isElevated={ true }>
 					<CardBody>
-						<h2 className="wc-block-cart__totals-title">
+						<h2 className="wc-block-cart__title wc-block-cart__totals-title">
 							{ __(
 								'Cart totals',
 								'woo-gutenberg-products-block'
