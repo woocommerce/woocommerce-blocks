@@ -138,7 +138,7 @@ As you can see, the styles coming from the themes have higher specificity, so ou
 }
 ```
 
-4. Try adding an extra class or tag with its only purpose of increasing specificity. When doing so, add a comment explaining it.
+4. Try adding an extra css class (or tag selector) to increase specificity. When doing so, add a comment explaining it.
 
 ```
 .wc-block-radio-control {
