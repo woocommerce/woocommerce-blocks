@@ -33,7 +33,7 @@ import {
  *                                                                       registering observers to
  *                                                                       events.
  * @param {Object}                 props.paymentRequestEventHandlers     Cached handlers registered
- * \                                                                     for paymentRequest events.
+ *                                                                       for paymentRequest events.
  * @param {function(string):void}  props.clearPaymentRequestEventHandler Clears the cached payment
  *                                                                       request event handler.
  * @param {BillingDataProps}       props.billing
