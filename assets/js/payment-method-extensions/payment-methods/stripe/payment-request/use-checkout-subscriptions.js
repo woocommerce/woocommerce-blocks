@@ -93,14 +93,12 @@ export const useCheckoutSubscriptions = ( {
 
 	// subscribe to events.
 	useEffect( () => {
-		const onShippingRatesEvent = ( forSuccess = true ) => (
-			shippingRates
-		) => {
+		const onShippingRatesEvent = ( shippingRates ) => {
 			const handlers = eventHandlers.current;
 			const billingData = currentBilling.current;
 			if ( handlers.shippingAddressChange && isProcessing ) {
 				handlers.shippingAddressChange.updateWith( {
-					status: forSuccess ? 'success' : 'fail',
+					status: 'success',
 					shippingOptions: normalizeShippingOptions( shippingRates ),
 					total: getTotalPaymentItem( billingData.cartTotal ),
 					displayItems: normalizeLineItems(
@@ -109,6 +107,18 @@ export const useCheckoutSubscriptions = ( {
 				} );
 				clearPaymentRequestEventHandler( 'shippingAddressChange' );
 			}
+		};
+		const onShippingRatesEventFail = ( currentErrorStatus ) => {
+			const handlers = eventHandlers.current;
+			if ( handlers.shippingAddressChange && isProcessing ) {
+				handlers.shippingAddressChange.updateWith( {
+					status: currentErrorStatus.hasInvalidAddress
+						? 'invalid_shipping_address'
+						: 'fail',
+					shippingOptions: [],
+				} );
+			}
+			clearPaymentRequestEventHandler( 'shippingAddressChange' );
 		};
 		const onShippingSelectedRate = ( forSuccess = true ) => () => {
 			const handlers = eventHandlers.current;
@@ -181,16 +191,16 @@ export const useCheckoutSubscriptions = ( {
 		};
 		if ( canMakePayment && isProcessing ) {
 			const unsubscribeShippingRateSuccess = onShippingRateSuccess(
-				onShippingRatesEvent()
+				onShippingRatesEvent
 			);
 			const unsubscribeShippingRateFail = onShippingRateFail(
-				onShippingRatesEvent( false )
+				onShippingRatesEventFail
 			);
 			const unsubscribeShippingRateSelectSuccess = onShippingRateSelectSuccess(
 				onShippingSelectedRate()
 			);
 			const unsubscribeShippingRateSelectFail = onShippingRateSelectFail(
-				onShippingRatesEvent( false )
+				onShippingRatesEventFail
 			);
 			const unsubscribePaymentProcessing = onPaymentProcessing(
 				onProcessingPayment
