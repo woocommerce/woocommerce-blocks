@@ -93,7 +93,9 @@ In parallel to that, consider whether other size/distance units in your CSS need
 
 ### CSS specificity wars with 3rd party popular themes
 
-We want our blocks to look good with as many themes as possible out of the box. Some times, our styles will conflict with theme styles that have higher specificity. In those cases, we might be tempted to increase the specificity of our selectors, but increasing it too much would make it harder for other themes to style our blocks. In the following lines, there is a set of rules that might help deciding when to increase specificity or not. They are not hard rules so feel free to apply your best judgement every time.
+We want our blocks to look good with as many themes as possible out of the box. Sometimes our styles will conflict with theme styles that have higher specificity. In these cases it may be tempting to increase the specificity of selectors, but increasing them too much makes it harder for other themes to style our blocks. 
+
+The following guidelines should help you decide _when_ to increase specificity, if at all. They are not hard rules so feel free to apply your best judgement on a case-by-case basis.
 
 Imagine we are styling the radio control input but our styles are conflicting with some themes. For example imagine two themes that have these styles:
 
