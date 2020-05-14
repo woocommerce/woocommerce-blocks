@@ -1,6 +1,7 @@
 .wc-block-components-button:not(.is-link) {
 	align-items: center;
 	background-color: $black;
+	border: 0;
 	color: $white;
 	display: flex;
 	font-size: inherit;
