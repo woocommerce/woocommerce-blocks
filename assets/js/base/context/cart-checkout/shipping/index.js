@@ -167,10 +167,18 @@ export const ShippingDataProvider = ( { children } ) => {
 			emitEvent(
 				currentObservers.current,
 				EMIT_TYPES.SHIPPING_RATES_FAIL,
-				currentErrorStatus
+				{
+					hasInvalidAddress: currentErrorStatus.hasInvalidAddress,
+					hasError: currentErrorStatus.hasError,
+				}
 			);
 		}
-	}, [ shippingRates, shippingRatesLoading, currentErrorStatus ] );
+	}, [
+		shippingRates,
+		shippingRatesLoading,
+		currentErrorStatus.hasError,
+		currentErrorStatus.hasInvalidAddress,
+	] );
 
 	useEffect( () => {
 		if (
@@ -192,10 +200,18 @@ export const ShippingDataProvider = ( { children } ) => {
 			emitEvent(
 				currentObservers.current,
 				EMIT_TYPES.SHIPPING_RATE_SELECT_FAIL,
-				currentErrorStatus
+				{
+					hasError: currentErrorStatus.hasError,
+					hasInvalidAddress: currentErrorStatus.hasInvalidAddress,
+				}
 			);
 		}
-	}, [ selectedRates, isSelectingRate, currentErrorStatus ] );
+	}, [
+		selectedRates,
+		isSelectingRate,
+		currentErrorStatus.hasError,
+		currentErrorStatus.hasInvalidAddress,
+	] );
 
 	useEffect( () => {
 		if (
