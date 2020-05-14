@@ -131,7 +131,10 @@ export const ShippingDataProvider = ( { children } ) => {
 
 	// emit events.
 	useEffect( () => {
-		if ( ! shippingRatesLoading && currentErrorStatus.hasError ) {
+		if (
+			! shippingRatesLoading &&
+			( shippingRates.length === 0 || currentErrorStatus.hasError )
+		) {
 			emitEvent(
 				currentObservers.current,
 				EMIT_TYPES.SHIPPING_RATES_FAIL,
@@ -143,7 +146,7 @@ export const ShippingDataProvider = ( { children } ) => {
 	useEffect( () => {
 		if (
 			! shippingRatesLoading &&
-			shippingRates &&
+			shippingRates.length > 0 &&
 			! currentErrorStatus.hasError
 		) {
 			emitEvent(
