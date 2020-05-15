@@ -133,17 +133,11 @@ const PaymentMethods = () => {
 				setActivePaymentMethod( tabName );
 				removeNotice( 'wc-payment-error', noticeContexts.PAYMENTS );
 			} }
-			tabs={ Object.keys( paymentMethods ).map(
-				( name ) => {
-					const { label, ariaLabel } = paymentMethods[ name ];
-					const paymentMethod = getPaymentMethod(
-						name,
-						currentPaymentMethods.current,
-						isEditor
-					);
-					return {
-						name,
-						title:
+			tabs={ Object.keys( paymentMethods ).map( ( name ) => {
+				const { label, ariaLabel } = paymentMethods[ name ];
+				return {
+					name,
+					title:
 						typeof label === 'string'
 							? label
 							: cloneElement( label, {
@@ -151,18 +145,10 @@ const PaymentMethods = () => {
 										currentPaymentMethodInterface.current
 											.components,
 							  } ),
-						ariaLabel,
-						content: paymentMethod ? (
-							<PaymentMethodErrorBoundary isEditor={ isEditor }>
-								{ cloneElement( paymentMethod, {
-									activePaymentMethod,
-									...currentPaymentMethodInterface.current,
-								} ) }
-							</PaymentMethodErrorBoundary>
-						) : null,
-					};
-				}
-			) }
+					ariaLabel,
+					content: getRenderedTab( name ),
+				};
+			} ) }
 			initialTabName={ activePaymentMethod }
 			ariaLabel={ __(
 				'Payment Methods',

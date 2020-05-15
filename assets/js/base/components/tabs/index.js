@@ -1,10 +1,6 @@
 /**
  * External dependencies
  */
-<<<<<<< HEAD
-import { useState, useEffect } from '@wordpress/element';
-=======
->>>>>>> WIP
 import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
@@ -24,18 +20,14 @@ const Tabs = ( {
 	instanceId,
 	id,
 } ) => {
+	const initialTab =
+		( initialTabName || !! tabs.length ) &&
+		`${ instanceId }-${ initialTabName ? initialTabName : tabs[ 0 ].name }`;
 	const tabState = useTabState( {
-		selectedId:
-			( initialTabName || tabs.length ) &&
-			`${ instanceId }-${
-				initialTabName ? initialTabName : tabs[ 0 ].name
-			}`,
+		selectedId: initialTab,
 	} );
 	if ( tabs.length === 0 ) {
 		return null;
-	}
-	if ( ! tabState.selectedId ) {
-		throw new Error( 'There is no available tab for the selected item' );
 	}
 	return (
 		<div className={ classnames( 'wc-block-components-tabs', className ) }>
