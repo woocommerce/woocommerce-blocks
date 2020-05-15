@@ -177,12 +177,6 @@ class ProductSchema extends AbstractSchema {
 					'properties' => $this->image_attachment_schema->get_properties(),
 				],
 			],
-			'variations'          => [
-				'description' => __( 'List of variation IDs, if applicable.', 'woo-gutenberg-products-block' ),
-				'type'        => 'array',
-				'context'     => [ 'view', 'edit' ],
-				'items'       => 'number',
-			],
 			'categories'          => [
 				'description' => __( 'List of categories, if applicable.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
@@ -270,8 +264,8 @@ class ProductSchema extends AbstractSchema {
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
 						],
-						'slug'           => [
-							'description' => __( 'The attribute slug/taxonomy.', 'woo-gutenberg-products-block' ),
+						'taxonomy'       => [
+							'description' => __( 'The attribute taxonomy, or null if the attribute is not taxonomy based.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
@@ -297,6 +291,50 @@ class ProductSchema extends AbstractSchema {
 									],
 									'name' => [
 										'description' => __( 'The term name.', 'woo-gutenberg-products-block' ),
+										'type'        => 'string',
+										'context'     => [ 'view', 'edit' ],
+										'readonly'    => true,
+									],
+									'slug' => [
+										'description' => __( 'The term slug.', 'woo-gutenberg-products-block' ),
+										'type'        => 'string',
+										'context'     => [ 'view', 'edit' ],
+										'readonly'    => true,
+									],
+								],
+							],
+						],
+					],
+				],
+			],
+			'variations'          => [
+				'description' => __( 'List of variation IDs, if applicable.', 'woo-gutenberg-products-block' ),
+				'type'        => 'array',
+				'context'     => [ 'view', 'edit' ],
+				'items'       => [
+					'type'       => 'object',
+					'properties' => [
+						'id'         => [
+							'description' => __( 'The attribute ID, or 0 if the attribute is not taxonomy based.', 'woo-gutenberg-products-block' ),
+							'type'        => 'integer',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+						'attributes' => [
+							'description' => __( 'List of variation attributes.', 'woo-gutenberg-products-block' ),
+							'type'        => 'array',
+							'context'     => [ 'view', 'edit' ],
+							'items'       => [
+								'type'       => 'object',
+								'properties' => [
+									'name'  => [
+										'description' => __( 'The attribute name.', 'woo-gutenberg-products-block' ),
+										'type'        => 'string',
+										'context'     => [ 'view', 'edit' ],
+										'readonly'    => true,
+									],
+									'value' => [
+										'description' => __( 'The assigned attribute.', 'woo-gutenberg-products-block' ),
 										'type'        => 'string',
 										'context'     => [ 'view', 'edit' ],
 										'readonly'    => true,
@@ -401,10 +439,10 @@ class ProductSchema extends AbstractSchema {
 			'average_rating'      => $product->get_average_rating(),
 			'review_count'        => $product->get_review_count(),
 			'images'              => $this->get_images( $product ),
-			'variations'          => $product->is_type( 'variable' ) ? $product->get_visible_children() : null,
 			'categories'          => $this->get_term_list( $product, 'product_cat' ),
 			'tags'                => $this->get_term_list( $product, 'product_tag' ),
 			'attributes'          => $this->get_attributes( $product ),
+			'variations'          => $this->get_variations( $product ),
 			'has_options'         => $product->has_options(),
 			'is_purchasable'      => $product->is_purchasable(),
 			'is_in_stock'         => $product->is_in_stock(),
@@ -482,24 +520,111 @@ class ProductSchema extends AbstractSchema {
 	}
 
 	/**
+	 * Returns true if the given attribute is valid.
+	 *
+	 * @param mixed $attribute Object or variable to check.
+	 * @return boolean
+	 */
+	protected function filter_valid_attribute( $attribute ) {
+		return is_a( $attribute, '\WC_Product_Attribute' );
+	}
+
+	/**
+	 * Returns true if the given attribute is valid and used for variations.
+	 *
+	 * @param mixed $attribute Object or variable to check.
+	 * @return boolean
+	 */
+	protected function filter_variation_attribute( $attribute ) {
+		return $this->filter_valid_attribute( $attribute ) && $attribute->get_variation();
+	}
+
+	/**
+	 * Get variation IDs and attributes from the DB.
+	 *
+	 * @param \WC_Product $product Product instance.
+	 * @returns array
+	 */
+	protected function get_variations( \WC_Product $product ) {
+		if ( ! $product->is_type( 'variable' ) ) {
+			return null;
+		}
+		global $wpdb;
+
+		$variation_ids               = $product->get_visible_children();
+		$attributes                  = array_filter( $product->get_attributes(), [ $this, 'filter_variation_attribute' ] );
+		$default_variation_meta_data = array_reduce(
+			$attributes,
+			function( $defaults, $attribute ) {
+				$meta_key              = wc_variation_attribute_name( $attribute->get_name() );
+				$defaults[ $meta_key ] = [
+					'name'  => wc_attribute_label( $attribute->get_name(), $product ),
+					'value' => null,
+				];
+				return $defaults;
+			},
+			[]
+		);
+
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
+		$variation_meta_data = $wpdb->get_results(
+			"
+			SELECT post_id as variation_id, meta_key as attribute_key, meta_value as attribute_value
+			FROM {$wpdb->postmeta}
+			WHERE post_id IN (" . implode( ',', array_map( 'esc_sql', $variation_ids ) ) . ")
+			AND meta_key IN ('" . implode( "','", array_map( 'esc_sql', array_keys( $default_variation_meta_data ) ) ) . "')
+		"
+		);
+		// phpcs:enable
+
+		$attributes_by_variation = array_reduce(
+			$variation_meta_data,
+			function( $values, $data ) {
+				$values[ $data->variation_id ][ $data->attribute_key ] = $data->attribute_value;
+				return $values;
+			},
+			array_fill_keys( $variation_ids, [] )
+		);
+
+		$variations = [];
+
+		foreach ( $variation_ids as $variation_id ) {
+			$attribute_data = $default_variation_meta_data;
+
+			foreach ( $attributes_by_variation[ $variation_id ] as $meta_key => $meta_value ) {
+				if ( '' !== $meta_value ) {
+					$attribute_data[ $meta_key ]['value'] = $meta_value;
+				}
+			}
+
+			$variations[] = (object) [
+				'id'         => $variation_id,
+				'attributes' => array_values( $attribute_data ),
+			];
+		}
+
+		return $variations;
+	}
+
+	/**
 	 * Get list of product attributes and attribute terms.
 	 *
 	 * @param \WC_Product $product Product instance.
 	 * @return array
 	 */
 	protected function get_attributes( \WC_Product $product ) {
-		$attributes = $product->get_attributes();
+		$attributes = array_filter( $product->get_attributes(), [ $this, 'filter_valid_attribute' ] );
 		$return     = [];
 
 		foreach ( $attributes as $attribute_slug => $attribute ) {
 			// Only visible and variation attributes will be exposed by this API.
-			if ( ! is_a( $attribute, '\WC_Product_Attribute' ) || ( ! $attribute->get_visible() && ! $attribute->get_variation() ) ) {
+			if ( ! $attribute->get_visible() && ! $attribute->get_variation() ) {
 				continue;
 			}
 			$return[] = (object) [
 				'id'             => $attribute->get_id(),
 				'name'           => wc_attribute_label( $attribute->get_name(), $product ),
-				'slug'           => $attribute_slug,
+				'taxonomy'       => $attribute->is_taxonomy() ? $attribute->get_name() : null,
 				'has_variations' => true === $attribute->get_variation(),
 				'terms'          => $attribute->is_taxonomy() ? array_map( [ $this, 'prepare_product_attribute_taxonomy_value' ], $attribute->get_terms() ) : array_map( [ $this, 'prepare_product_attribute_value' ], $attribute->get_options() ),
 			];
@@ -515,7 +640,7 @@ class ProductSchema extends AbstractSchema {
 	 * @return object
 	 */
 	protected function prepare_product_attribute_taxonomy_value( \WP_Term $term ) {
-		return $this->prepare_product_attribute_value( $term->name, $term->term_id );
+		return $this->prepare_product_attribute_value( $term->name, $term->term_id, $term->slug );
 	}
 
 	/**
@@ -523,12 +648,14 @@ class ProductSchema extends AbstractSchema {
 	 *
 	 * @param string $name Attribute term name.
 	 * @param int    $id Attribute term ID.
+	 * @param string $slug Attribute term slug.
 	 * @return object
 	 */
-	protected function prepare_product_attribute_value( $name, $id = 0 ) {
+	protected function prepare_product_attribute_value( $name, $id = 0, $slug = '' ) {
 		return (object) [
 			'id'   => (int) $id,
 			'name' => $name,
+			'slug' => $slug ? $slug : $name,
 		];
 	}
 
