@@ -143,7 +143,7 @@ Whether notices are suppressed. If true, it will hide the notices from the front
 
 ### Statuses
 
-All notices must have one of the following status: `default`, `error`, `success`, `info`, `warning`.
+All notices must have one of the following statuses: `default`, `error`, `success`, `info`, `warning`.
 
 ## Example usage
 
