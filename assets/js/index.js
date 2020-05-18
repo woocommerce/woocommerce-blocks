@@ -28,6 +28,8 @@ import './filters/get-block-attributes';
 //
 // Let's see if this one works okay.
 
+// @todo Another test.
+
 setCategories( [
 	...getCategories().filter( ( { slug } ) => slug !== 'woocommerce' ),
 	// Add a WooCommerce block category
