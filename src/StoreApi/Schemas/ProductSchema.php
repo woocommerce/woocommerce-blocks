@@ -547,7 +547,7 @@ class ProductSchema extends AbstractSchema {
 	 */
 	protected function get_variations( \WC_Product $product ) {
 		if ( ! $product->is_type( 'variable' ) ) {
-			return null;
+			return [];
 		}
 		global $wpdb;
 

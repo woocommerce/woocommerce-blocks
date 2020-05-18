@@ -85,7 +85,7 @@ class ProductAttributes extends TestCase {
 
 		$this->assertArrayHasKey( 'id', $data );
 		$this->assertArrayHasKey( 'name', $data );
-		$this->assertArrayHasKey( 'slug', $data );
+		$this->assertArrayHasKey( 'taxonomy', $data );
 		$this->assertArrayHasKey( 'type', $data );
 		$this->assertArrayHasKey( 'order', $data );
 		$this->assertArrayHasKey( 'has_archives', $data );
