@@ -23,6 +23,11 @@ import './filters/get-block-attributes';
  * And that's it!
  */
 
+// @todo This is another todo comment test
+// with a sentence ending on the next line.
+//
+// Let's see if this one works okay.
+
 setCategories( [
 	...getCategories().filter( ( { slug } ) => slug !== 'woocommerce' ),
 	// Add a WooCommerce block category
