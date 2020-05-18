@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { useState, useEffect, useMemo } from '@wordpress/element';
 import { useProductLayoutContext } from '@woocommerce/base-context';
 import { decodeEntities } from '@wordpress/html-entities';
-import Select from '@woocommerce/base-components/select';
+import { SelectControl } from '@wordpress/components';
 import { keyBy } from 'lodash';
 
 /**
@@ -37,8 +37,8 @@ const getVariationAttributesMap = ( variations ) => {
 
 // Default option for select boxes.
 const selectAnOption = {
-	key: '',
-	name: __( 'Select an option', 'woo-gutenberg-products-block' ),
+	value: '',
+	label: __( 'Select an option', 'woo-gutenberg-products-block' ),
 };
 
 /**
@@ -53,13 +53,10 @@ const VariationAttributeSelect = ( {
 	onChange = () => {},
 } ) => {
 	return (
-		<Select
+		<SelectControl
 			className="wc-blocks-component-variation-attributes-select"
 			label={ decodeEntities( attributeName ) }
-			value={
-				options.find( ( option ) => option.key === selected ) ||
-				selectAnOption
-			}
+			value={ selected || '' }
 			options={ [ selectAnOption, ...options ] }
 			onChange={ onChange }
 		/>
@@ -131,8 +128,8 @@ const VariationAttributes = ( { className, product } ) => {
 						validTermSlugs.includes( slug )
 					) {
 						return {
-							key: slug,
-							name,
+							value: slug,
+							label: name,
 						};
 					}
 					return null;
