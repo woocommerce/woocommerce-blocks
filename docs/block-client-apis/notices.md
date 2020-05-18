@@ -1,10 +1,12 @@
-# useStoreNotices()
+# Frontend notices
+
+## useStoreNotices()
 
 The `useStoreNotices()` hook allows reading and manipulating notices in the frontend.
 
-## API
+### API
 
-### `addDefaultNotice( text = '', noticeProps = {} )`
+#### `addDefaultNotice( text = '', noticeProps = {} )`
 
 Create a new notice with `default` status. If the context is not specified in the `options` object, the current context is used.
 
@@ -13,7 +15,7 @@ Create a new notice with `default` status. If the context is not specified in th
 | `text`        | string | Text to be displayed in the notice.                                                                                                                                                      |
 | `noticeProps` | Object | Object with the notice props. Refer to the [Gutenberg docs](https://github.com/WordPress/gutenberg/blob/master/packages/notices/src/store/actions.js#L46) to know the available options. |
 
-### `addErrorNotice( text = '', noticeProps = {} )`
+#### `addErrorNotice( text = '', noticeProps = {} )`
 
 Create a new error notice. If the context is not specified in the `options` object, the current context is used.
 
@@ -22,7 +24,7 @@ Create a new error notice. If the context is not specified in the `options` obje
 | `text`        | string | Text to be displayed in the notice.                                                                                                                                                      |
 | `noticeProps` | Object | Object with the notice props. Refer to the [Gutenberg docs](https://github.com/WordPress/gutenberg/blob/master/packages/notices/src/store/actions.js#L46) to know the available options. |
 
-### `addWarningNotice( text = '', noticeProps = {} )`
+#### `addWarningNotice( text = '', noticeProps = {} )`
 
 Create a new warning notice. If the context is not specified in the `options` object, the current context is used.
 
@@ -31,7 +33,7 @@ Create a new warning notice. If the context is not specified in the `options` ob
 | `text`        | string | Text to be displayed in the notice.                                                                                                                                                      |
 | `noticeProps` | Object | Object with the notice props. Refer to the [Gutenberg docs](https://github.com/WordPress/gutenberg/blob/master/packages/notices/src/store/actions.js#L46) to know the available options. |
 
-### `addInfoNotice( text = '', noticeProps = {} )`
+#### `addInfoNotice( text = '', noticeProps = {} )`
 
 Create a new info notice. If the context is not specified in the `options` object, the current context is used.
 
@@ -40,7 +42,7 @@ Create a new info notice. If the context is not specified in the `options` objec
 | `text`        | string | Text to be displayed in the notice.                                                                                                                                                      |
 | `noticeProps` | Object | Object with the notice props. Refer to the [Gutenberg docs](https://github.com/WordPress/gutenberg/blob/master/packages/notices/src/store/actions.js#L46) to know the available options. |
 
-### `addSuccessNotice( text = '', noticeProps = {} )`
+#### `addSuccessNotice( text = '', noticeProps = {} )`
 
 Create a new success notice. If the context is not specified in the `options` object, the current context is used.
 
@@ -49,7 +51,7 @@ Create a new success notice. If the context is not specified in the `options` ob
 | `text`        | string | Text to be displayed in the notice.                                                                                                                                                      |
 | `noticeProps` | Object | Object with the notice props. Refer to the [Gutenberg docs](https://github.com/WordPress/gutenberg/blob/master/packages/notices/src/store/actions.js#L46) to know the available options. |
 
-### `addSnackbarNotice( text = '', noticeProps = {} )`
+#### `addSnackbarNotice( text = '', noticeProps = {} )`
 
 Create a new snackbar notice. If the context is not specified in the `options` object, the current context is used.
 
@@ -58,7 +60,7 @@ Create a new snackbar notice. If the context is not specified in the `options` o
 | `text`        | string | Text to be displayed in the notice.                                                                                                                                                      |
 | `noticeProps` | Object | Object with the notice props. Refer to the [Gutenberg docs](https://github.com/WordPress/gutenberg/blob/master/packages/notices/src/store/actions.js#L46) to know the available options. |
 
-### `hasNoticesOfType( type )`
+#### `hasNoticesOfType( type )`
 
 Checks whether there are notices of the provided type in the current context.
 
@@ -66,11 +68,11 @@ Checks whether there are notices of the provided type in the current context.
 | -------- | ------ | ----------------------------- |
 | `type`   | string | Type of the notices to check. |
 
-### `notices`
+#### `notices`
 
 An array of the notices in the current context.
 
-### `removeNotice( id, ctx )`
+#### `removeNotice( id, ctx )`
 
 Remove an existing notice. If the context is not specified, the current context is used.
 
@@ -79,7 +81,7 @@ Remove an existing notice. If the context is not specified, the current context 
 | `id`     | string | Id of the notice to remove.                                                                                 |
 | `ctx`    | string | Context where the notice to remove is stored. If the context is not specified, the current context is used. |
 
-### `removeNotices( status = null )`
+#### `removeNotices( status = null )`
 
 Remove all notices from the current context. If a `status` is provided, only the notices with that status are removed.
 
@@ -87,7 +89,7 @@ Remove all notices from the current context. If a `status` is provided, only the
 | -------- | ------ | ----------------------------------------------------------------------------------------------------- |
 | `status` | string | Status that notices must match to be removed. If not provided, all notices of any status are removed. |
 
-### `setIsSuppressed( val )`
+#### `setIsSuppressed( val )`
 
 Whether notices are suppressed. If true, it will hide the notices from the frontend.
 
@@ -95,15 +97,15 @@ Whether notices are suppressed. If true, it will hide the notices from the front
 | -------- | ------- | --------------------------- |
 | `val`    | boolean | Id of the notice to remove. |
 
-# StoreNoticesProvider
+## StoreNoticesProvider
 
 The `StoreNoticesProvider` allows managing notices in the frontend. Notices are rendered on top of the children, except notices of type snackbars, which are displayed in the bottom left corner and disappear after a certain time.
 
 Internally, it uses the `StoreNoticesContext` which relies on the [`notices` package](https://github.com/WordPress/gutenberg/tree/master/packages/notices) from Gutenberg.
 
-## Actions
+### Actions
 
-### `createNotice( status = 'default', content = '', options = {} )`
+#### `createNotice( status = 'default', content = '', options = {} )`
 
 This action creates a new notice. If the context is not specified in the `options` object, the current context is used.
 
@@ -113,7 +115,7 @@ This action creates a new notice. If the context is not specified in the `option
 | `content` | string | Text to be displayed in the notice.                                                                                                                                                        |
 | `options` | Object | Object with the notice options. Refer to the [Gutenberg docs](https://github.com/WordPress/gutenberg/blob/master/packages/notices/src/store/actions.js#L46) to know the available options. |
 
-### `createSnackbarNotice( content = '', options = {} )`
+#### `createSnackbarNotice( content = '', options = {} )`
 
 This action creates a new snackbar notice. If the context is not specified in the `options` object, the current context is used.
 
@@ -122,7 +124,7 @@ This action creates a new snackbar notice. If the context is not specified in th
 | `content` | string | Text to be displayed in the notice.                                                                                                                                                        |
 | `options` | Object | Object with the notice options. Refer to the [Gutenberg docs](https://github.com/WordPress/gutenberg/blob/master/packages/notices/src/store/actions.js#L46) to know the available options. |
 
-### `removeNotice( id, ctx )`
+#### `removeNotice( id, ctx )`
 
 This action removes an existing notice. If the context is not specified, the current context is used.
 
@@ -131,7 +133,7 @@ This action removes an existing notice. If the context is not specified, the cur
 | `id`     | string | Id of the notice to remove.                                                                                 |
 | `ctx`    | string | Context where the notice to remove is stored. If the context is not specified, the current context is used. |
 
-### `setIsSuppressed( val )`
+#### `setIsSuppressed( val )`
 
 Whether notices are suppressed. If true, it will hide the notices from the frontend.
 
@@ -139,15 +141,15 @@ Whether notices are suppressed. If true, it will hide the notices from the front
 | -------- | ------- | --------------------------- |
 | `val`    | boolean | Id of the notice to remove. |
 
-## Statuses
+### Statuses
 
 All notices must have one of the following status: `default`, `error`, `success`, `info`, `warning`.
 
-# Example usage
+## Example usage
 
 The following example shows a `CheckoutProcessor` component that displays an error notice when the payment process fails and it removes it every time the payment is started. When the payment is completed correctly, it shows a snackbar notice.
 
-```
+```JSX
 const CheckoutProcessor = () => {
 	const { addErrorNotice, addSnackbarNotice, removeNotice } = useStoreNotices();
 	// ...
@@ -164,7 +166,7 @@ const CheckoutProcessor = () => {
 };
 ```
 
-```
+```JSX
 <StoreNoticesProvider context="wc/checkout">
 	// ...
 	<CheckoutProcessor />
