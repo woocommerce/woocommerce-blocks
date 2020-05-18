@@ -13,6 +13,16 @@ import '../css/style.scss';
 import './filters/block-list-block';
 import './filters/get-block-attributes';
 
+/**
+ * @todo This is a test of some todos:
+ *
+ * - Todo one
+ * - Todo two
+ * - Todo Three
+ *
+ * And that's it!
+ */
+
 setCategories( [
 	...getCategories().filter( ( { slug } ) => slug !== 'woocommerce' ),
 	// Add a WooCommerce block category
