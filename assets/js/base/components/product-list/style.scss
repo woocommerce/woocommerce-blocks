@@ -83,9 +83,9 @@
 	}
 }
 
-// Extra classes for specificity. Otherwise some themes (ie TwentyTwenty),
-// were never using these styles.
-.wc-block-grid__products .wc-block-grid__product .wc-block-grid__product-title {
+.edit-post-visual-editor .editor-block-list__block .wc-block-grid__product-title,
+.editor-styles-wrapper .wc-block-grid__product-title,
+.wc-block-grid__product-title {
 	font-family: inherit;
 	line-height: 1.2em;
 	font-weight: 700;
@@ -199,8 +199,8 @@
 	}
 }
 
-// Extra classes for specificity.
-.wc-block-grid__products .wc-block-grid__product .wc-block-grid__product-onsale {
+.editor-styles-wrapper .wc-block-grid__products .wc-block-grid__product .wc-block-grid__product-onsale,
+.wc-block-grid__product-onsale {
 	border: 1px solid #43454b;
 	color: #43454b;
 	background: #fff;
@@ -217,8 +217,8 @@
 	margin: $gap-smaller auto;
 }
 
-// Extra classes for specificity.
-.wc-block-grid__products .wc-block-grid__product .wc-block-grid__product-image {
+.editor-styles-wrapper .wc-block-grid__products .wc-block-grid__product .wc-block-grid__product-image,
+.wc-block-grid__product-image {
 	.wc-block-grid__product-onsale {
 		&.wc-block-grid__product-onsale--alignleft {
 			position: absolute;
