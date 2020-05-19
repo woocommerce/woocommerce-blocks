@@ -5,7 +5,6 @@ import { createBlock } from '@wordpress/blocks';
 import { useEffect, useCallback, useRef } from '@wordpress/element';
 import { getLayoutConfig } from '@woocommerce/atomic-utils';
 import { useSelect } from '@wordpress/data';
-import isShallowEqual from '@wordpress/is-shallow-equal';
 
 /**
  * Internal dependencies
@@ -20,8 +19,8 @@ export const useSyncedLayoutConfig = ( {
 	initialLayoutConfig,
 	defaultLayoutConfig,
 } ) => {
+	const firstMount = useRef( true );
 	const layoutConfig = useRef( initialLayoutConfig );
-
 	const { innerBlockContainer, replaceInnerBlocks } = useSelect(
 		( select, { dispatch } ) => {
 			const { getBlock } = select( 'core/block-editor' );
@@ -41,11 +40,11 @@ export const useSyncedLayoutConfig = ( {
 	);
 
 	useEffect( () => {
-		const updatedLayoutConfig = getLayoutConfig( currentInnerBlocks );
-
-		if ( ! isShallowEqual( updatedLayoutConfig, layoutConfig ) ) {
-			layoutConfig.current = updatedLayoutConfig;
+		if ( firstMount.current ) {
+			firstMount.current = false;
+			return;
 		}
+		layoutConfig.current = getLayoutConfig( currentInnerBlocks );
 	}, [ currentInnerBlocks ] );
 
 	const resetLayout = useCallback( () => {
@@ -59,7 +58,7 @@ export const useSyncedLayoutConfig = ( {
 	}, [ clientId, defaultLayoutConfig, replaceInnerBlocks ] );
 
 	return {
-		layoutConfig: layoutConfig.current,
+		syncedLayoutConfig: layoutConfig.current,
 		resetLayout,
 	};
 };

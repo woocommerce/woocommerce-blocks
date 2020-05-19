@@ -12,7 +12,12 @@ import classnames from 'classnames';
 import edit from './edit';
 import blockAttributes from './attributes';
 import './style.scss';
-import { BLOCK_TITLE, BLOCK_ICON, BLOCK_DESCRIPTION } from './constants';
+import {
+	BLOCK_NAME,
+	BLOCK_TITLE,
+	BLOCK_ICON,
+	BLOCK_DESCRIPTION,
+} from './constants';
 
 const settings = {
 	title: BLOCK_TITLE,
@@ -47,4 +52,4 @@ const settings = {
 	},
 };
 
-registerBlockType( 'woocommerce/single-product', settings );
+registerBlockType( BLOCK_NAME, settings );
