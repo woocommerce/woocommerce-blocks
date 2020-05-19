@@ -7,11 +7,6 @@ import { useInnerBlockConfigurationContext } from '@woocommerce/base-context';
 import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
 import { renderProductLayout } from '@woocommerce/atomic-utils';
 
-/**
- * Internal dependencies
- */
-import './style.scss';
-
 const SingleProduct = ( { product, attributes, instanceId } ) => {
 	const { layoutConfig } = attributes;
 	const {

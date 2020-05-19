@@ -1,18 +1,15 @@
 /**
  * External dependencies
  */
-import {
-	InnerBlockConfigurationProvider,
-	ProductLayoutContextProvider,
-} from '@woocommerce/base-context';
+import { InnerBlockConfigurationProvider } from '@woocommerce/base-context';
 import SingleProduct from '@woocommerce/base-components/single-product';
 import { withProduct } from '@woocommerce/block-hocs';
 
-const layoutContextConfig = {
-	layoutStyleClassPrefix: 'wc-block-single-product',
-};
-
-const parentBlockConfig = { parentName: 'woocommerce/single-product' };
+/**
+ * Internal dependencies
+ */
+import { INNER_BLOCK_CONTEXT_CONFIG } from './constants';
+import './style.scss';
 
 /**
  * The Single Product Block.
@@ -23,10 +20,8 @@ const Block = ( { attributes, isLoading, product } ) => {
 	}
 
 	return (
-		<InnerBlockConfigurationProvider value={ parentBlockConfig }>
-			<ProductLayoutContextProvider value={ layoutContextConfig }>
-				<SingleProduct product={ product } attributes={ attributes } />
-			</ProductLayoutContextProvider>
+		<InnerBlockConfigurationProvider value={ INNER_BLOCK_CONTEXT_CONFIG }>
+			<SingleProduct product={ product } attributes={ attributes } />
 		</InnerBlockConfigurationProvider>
 	);
 };

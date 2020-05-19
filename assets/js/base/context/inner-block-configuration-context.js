@@ -31,8 +31,10 @@ const InnerBlockConfigurationContext = createContext( {
 	layoutStyleClassPrefix: '',
 } );
 
-export const useInnerBlockConfigurationContext = () =>
-	useContext( InnerBlockConfigurationContext );
+export const useInnerBlockConfigurationContext = () => {
+	return useContext( InnerBlockConfigurationContext );
+};
+
 export const InnerBlockConfigurationProvider = ( { value, children } ) => {
 	useEffect( () => {
 		assertValidContextValue(
@@ -41,6 +43,9 @@ export const InnerBlockConfigurationProvider = ( { value, children } ) => {
 			value
 		);
 	}, [ value ] );
+
+	console.log( value );
+
 	return (
 		<InnerBlockConfigurationContext.Provider value={ value }>
 			{ children }

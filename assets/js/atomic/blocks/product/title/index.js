@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { Fragment } from 'react';
 import { Disabled, PanelBody, ToggleControl } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 import { ProductTitle } from '@woocommerce/atomic-components/product';
@@ -50,7 +49,7 @@ const blockConfig = {
 		const { headingLevel, productLink } = attributes;
 
 		return (
-			<Fragment>
+			<>
 				<InspectorControls>
 					<PanelBody
 						title={ __(
@@ -93,7 +92,7 @@ const blockConfig = {
 						product={ attributes.product }
 					/>
 				</Disabled>
-			</Fragment>
+			</>
 		);
 	},
 };
