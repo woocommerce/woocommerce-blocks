@@ -23,6 +23,7 @@ export { default as radioSelected } from './library/radio-selected';
 export { default as radioUnselected } from './library/radio-unselected';
 export { default as reader } from './library/reader';
 export { default as removeCart } from './library/remove-cart';
+export { default as restore } from './library/restore';
 export { default as review } from './library/review';
 export { default as search } from './library/search';
 export { default as server } from './library/server';
