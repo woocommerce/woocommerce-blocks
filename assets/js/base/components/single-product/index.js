@@ -3,17 +3,21 @@
  */
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import {
-	useInnerBlockConfigurationContext,
-	useProductLayoutContext,
-} from '@woocommerce/base-context';
+import { useInnerBlockConfigurationContext } from '@woocommerce/base-context';
 import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
 import { renderProductLayout } from '@woocommerce/atomic-utils';
 
+/**
+ * Internal dependencies
+ */
+import './style.scss';
+
 const SingleProduct = ( { product, attributes, instanceId } ) => {
 	const { layoutConfig } = attributes;
-	const { parentName } = useInnerBlockConfigurationContext();
-	const { layoutStyleClassPrefix } = useProductLayoutContext();
+	const {
+		parentName,
+		layoutStyleClassPrefix,
+	} = useInnerBlockConfigurationContext();
 	const isLoading = Object.keys( product ).length === 0;
 	const classes = classnames( `${ layoutStyleClassPrefix }__product`, {
 		'is-loading': isLoading,
