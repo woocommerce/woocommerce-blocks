@@ -13,6 +13,10 @@ const validationMap = {
 		required: true,
 		type: 'string',
 	},
+	layoutStyleClassPrefix: {
+		required: true,
+		type: 'string',
+	},
 };
 
 /**
@@ -22,7 +26,10 @@ const validationMap = {
  *
  * @member {Object} InnerBlockConfigurationContext A react context object
  */
-const InnerBlockConfigurationContext = createContext( { parentName: null } );
+const InnerBlockConfigurationContext = createContext( {
+	parentName: null,
+	layoutStyleClassPrefix: '',
+} );
 
 export const useInnerBlockConfigurationContext = () =>
 	useContext( InnerBlockConfigurationContext );
