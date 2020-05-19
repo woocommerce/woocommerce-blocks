@@ -27,3 +27,12 @@ export const getBlockMap = ( blockName ) => ( {
 	'woocommerce/product-sale-badge': ProductSaleBadge,
 	...getRegisteredInnerBlocks( blockName ),
 } );
+
+/**
+ * Get a list of allowed inner blocks for a block.
+ *
+ * @param {string} blockName Name of the parent block. Used to get extension children.
+ */
+export const getAllowedInnerBlocks = ( blockName ) => {
+	return [ ...Object.keys( getBlockMap( blockName ) ) ];
+};
