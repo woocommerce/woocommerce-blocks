@@ -23,6 +23,10 @@ export const getAttributesFromDataset = ( blockAttributes, dataset ) => {
 				case 'number':
 					attributes[ key ] = parseInt( dataset[ key ], 10 );
 					break;
+				case 'array':
+				case 'object':
+					attributes[ key ] = JSON.parse( dataset[ key ] );
+					break;
 				default:
 					attributes[ key ] = dataset[ key ];
 					break;
