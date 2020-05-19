@@ -8,3 +8,4 @@ export { default as withSearchedProducts } from './with-searched-products';
 export { default as withTransformSingleSelectToMultipleSelect } from './with-transform-single-select-to-multiple-select';
 export { default as withRestApiHydration } from './with-rest-api-hydration';
 export { default as withStoreCartApiHydration } from './with-store-cart-api-hydration';
+export { default as withBlockErrorBoundary } from './with-block-error-boundary';
