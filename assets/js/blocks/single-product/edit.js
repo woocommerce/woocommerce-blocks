@@ -20,7 +20,6 @@ import {
 	BLOCK_ICON,
 	BLOCK_DESCRIPTION,
 	DEFAULT_PRODUCT_LAYOUT,
-	INNER_BLOCK_CONTEXT_CONFIG,
 	BLOCK_NAME,
 } from './constants';
 import {
@@ -29,31 +28,6 @@ import {
 	EditorBlockControls,
 	LayoutInspectorControls,
 } from './edit/index.js';
-
-/**
- * Layout/preview of single product data.
- */
-const LayoutEditor = ( { attributes, setAttributes, resetLayout } ) => {
-	return (
-		<>
-			<LayoutInspectorControls
-				attributes={ attributes }
-				setAttributes={ setAttributes }
-				onReset={ resetLayout }
-			/>
-			<InnerBlocks
-				template={ DEFAULT_PRODUCT_LAYOUT }
-				templateLock={ false }
-				allowedBlocks={ [
-					'core/columns',
-					'core/column',
-					...getAllowedInnerBlocks( BLOCK_NAME ),
-				] }
-				renderAppender={ false }
-			/>
-		</>
-	);
-};
 
 /**
  * Component to handle edit mode of the "Single Product Block".
@@ -96,43 +70,56 @@ const Editor = ( {
 	}
 
 	return (
-		<InnerBlockConfigurationProvider value={ INNER_BLOCK_CONTEXT_CONFIG }>
-			<div className={ className }>
-				<EditorBlockControls
-					setIsEditing={ setIsEditing }
-					isEditing={ isEditing }
-				/>
-				{ isEditing ? (
-					<Placeholder
-						icon={ BLOCK_ICON }
-						label={ BLOCK_TITLE }
-						className="wc-block-single-product"
-					>
-						{ BLOCK_DESCRIPTION }
-						<div className="wc-block-single-product__selection">
-							<SharedProductControl
-								attributes={ attributes }
-								setAttributes={ setAttributes }
-							/>
-							<Button
-								isDefault
-								onClick={ () => {
-									setIsEditing( false );
-								} }
-							>
-								{ __( 'Done', 'woo-gutenberg-products-block' ) }
-							</Button>
-						</div>
-					</Placeholder>
-				) : (
-					<LayoutEditor
+		<div className={ className }>
+			<EditorBlockControls
+				setIsEditing={ setIsEditing }
+				isEditing={ isEditing }
+			/>
+			{ isEditing ? (
+				<Placeholder
+					icon={ BLOCK_ICON }
+					label={ BLOCK_TITLE }
+					className="wc-block-single-product"
+				>
+					{ BLOCK_DESCRIPTION }
+					<div className="wc-block-single-product__selection">
+						<SharedProductControl
+							attributes={ attributes }
+							setAttributes={ setAttributes }
+						/>
+						<Button
+							isDefault
+							onClick={ () => {
+								setIsEditing( false );
+							} }
+						>
+							{ __( 'Done', 'woo-gutenberg-products-block' ) }
+						</Button>
+					</div>
+				</Placeholder>
+			) : (
+				<InnerBlockConfigurationProvider
+					parentName={ BLOCK_NAME }
+					layoutStyleClassPrefix="wc-block-single-product"
+				>
+					<LayoutInspectorControls
 						attributes={ attributes }
 						setAttributes={ setAttributes }
-						resetLayout={ resetLayout }
+						onReset={ resetLayout }
 					/>
-				) }
-			</div>
-		</InnerBlockConfigurationProvider>
+					<InnerBlocks
+						template={ DEFAULT_PRODUCT_LAYOUT }
+						templateLock={ false }
+						allowedBlocks={ [
+							'core/columns',
+							'core/column',
+							...getAllowedInnerBlocks( BLOCK_NAME ),
+						] }
+						renderAppender={ false }
+					/>
+				</InnerBlockConfigurationProvider>
+			) }
+		</div>
 	);
 };
 

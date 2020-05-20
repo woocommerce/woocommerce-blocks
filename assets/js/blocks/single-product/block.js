@@ -8,7 +8,7 @@ import { withProduct } from '@woocommerce/block-hocs';
 /**
  * Internal dependencies
  */
-import { INNER_BLOCK_CONTEXT_CONFIG } from './constants';
+import { BLOCK_NAME } from './constants';
 import './style.scss';
 
 /**
@@ -20,7 +20,10 @@ const Block = ( { attributes, isLoading, product } ) => {
 	}
 
 	return (
-		<InnerBlockConfigurationProvider value={ INNER_BLOCK_CONTEXT_CONFIG }>
+		<InnerBlockConfigurationProvider
+			parentName={ BLOCK_NAME }
+			layoutStyleClassPrefix="wc-block-single-product"
+		>
 			<SingleProduct product={ product } attributes={ attributes } />
 		</InnerBlockConfigurationProvider>
 	);
