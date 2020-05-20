@@ -1,23 +1,8 @@
 /**
  * External dependencies
  */
-import { createContext, useContext, useEffect } from '@wordpress/element';
-
-/**
- * Internal dependencies
- */
-import { assertValidContextValue } from './utils';
-
-const validationMap = {
-	parentName: {
-		required: true,
-		type: 'string',
-	},
-	layoutStyleClassPrefix: {
-		required: true,
-		type: 'string',
-	},
-};
+import PropTypes from 'prop-types';
+import { createContext, useContext } from '@wordpress/element';
 
 /**
  * This context is a configuration object used for connecting
@@ -27,28 +12,32 @@ const validationMap = {
  * @member {Object} InnerBlockConfigurationContext A react context object
  */
 const InnerBlockConfigurationContext = createContext( {
-	parentName: null,
+	parentName: '',
 	layoutStyleClassPrefix: '',
 } );
 
-export const useInnerBlockConfigurationContext = () => {
-	return useContext( InnerBlockConfigurationContext );
-};
+export const useInnerBlockConfigurationContext = () =>
+	useContext( InnerBlockConfigurationContext );
 
-export const InnerBlockConfigurationProvider = ( { value, children } ) => {
-	useEffect( () => {
-		assertValidContextValue(
-			'InnerBlockConfigurationProvider',
-			validationMap,
-			value
-		);
-	}, [ value ] );
-
-	console.log( value );
+export const InnerBlockConfigurationProvider = ( {
+	parentName = '',
+	layoutStyleClassPrefix = '',
+	children,
+} ) => {
+	const contextValue = {
+		parentName,
+		layoutStyleClassPrefix,
+	};
 
 	return (
-		<InnerBlockConfigurationContext.Provider value={ value }>
+		<InnerBlockConfigurationContext.Provider value={ contextValue }>
 			{ children }
 		</InnerBlockConfigurationContext.Provider>
 	);
+};
+
+InnerBlockConfigurationProvider.propTypes = {
+	children: PropTypes.node,
+	parentName: PropTypes.string,
+	layoutStyleClassPrefix: PropTypes.string,
 };

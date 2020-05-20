@@ -40,8 +40,3 @@ export const DEFAULT_PRODUCT_LAYOUT = [
 		],
 	],
 ];
-
-export const INNER_BLOCK_CONTEXT_CONFIG = {
-	parentName: BLOCK_NAME,
-	layoutStyleClassPrefix: 'wc-block-single-product',
-};

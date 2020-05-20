@@ -14,8 +14,6 @@ const ProductTitle = ( {
 } ) => {
 	const { layoutStyleClassPrefix } = useInnerBlockConfigurationContext();
 
-	console.log( 'title' );
-	console.log( layoutStyleClassPrefix );
 	if ( ! product.name ) {
 		return null;
 	}

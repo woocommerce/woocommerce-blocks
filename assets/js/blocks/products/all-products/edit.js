@@ -40,11 +40,6 @@ import { DEFAULT_PRODUCT_LIST_LAYOUT } from '../constants';
 import { getSharedContentControls, getSharedListControls } from '../edit';
 import Block from './block';
 
-const innerBlockConfig = {
-	parentName: 'woocommerce/all-products',
-	layoutStyleClassPrefix: 'wc-block-grid',
-};
-
 /**
  * Component to handle edit mode of "All Products".
  */
@@ -274,7 +269,10 @@ class Editor extends Component {
 		}
 
 		return (
-			<InnerBlockConfigurationProvider value={ innerBlockConfig }>
+			<InnerBlockConfigurationProvider
+				parentName="woocommerce/all-products"
+				layoutStyleClassPrefix="wc-block-grid"
+			>
 				<div
 					className={ getBlockClassName(
 						'wc-block-all-products',
