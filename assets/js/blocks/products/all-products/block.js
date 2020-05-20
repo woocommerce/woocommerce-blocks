@@ -4,7 +4,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import ProductListContainer from '@woocommerce/base-components/product-list/container';
-import { InnerBlockConfigurationProvider } from '@woocommerce/base-context';
+import { InnerBlockConfigurationProvider } from '@woocommerce/shared-context';
 import { gridBlockPreview } from '@woocommerce/resource-previews';
 
 /**

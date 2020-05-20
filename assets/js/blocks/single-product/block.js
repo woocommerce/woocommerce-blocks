@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { InnerBlockConfigurationProvider } from '@woocommerce/base-context';
+import { InnerBlockConfigurationProvider } from '@woocommerce/shared-context';
 import SingleProduct from '@woocommerce/base-components/single-product';
 import { withProduct } from '@woocommerce/block-hocs';
 

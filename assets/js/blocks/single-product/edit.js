@@ -8,7 +8,7 @@ import { Placeholder, Button } from '@wordpress/components';
 import { withProduct } from '@woocommerce/block-hocs';
 import { InnerBlocks } from '@wordpress/block-editor';
 import { getAllowedInnerBlocks } from '@woocommerce/atomic-utils';
-import { InnerBlockConfigurationProvider } from '@woocommerce/base-context';
+import { InnerBlockConfigurationProvider } from '@woocommerce/shared-context';
 import { useSyncedLayoutConfig } from '@woocommerce/base-hooks';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 
