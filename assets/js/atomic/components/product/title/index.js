@@ -3,7 +3,7 @@
  */
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { useInnerBlockConfigurationContext } from '@woocommerce/base-context';
+import { useInnerBlockConfigurationContext } from '@woocommerce/shared-context';
 import { decodeEntities } from '@wordpress/html-entities';
 
 const ProductTitle = ( {

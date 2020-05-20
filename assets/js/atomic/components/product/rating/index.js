@@ -4,7 +4,7 @@
 import PropTypes from 'prop-types';
 import { __, sprintf } from '@wordpress/i18n';
 import classnames from 'classnames';
-import { useInnerBlockConfigurationContext } from '@woocommerce/base-context';
+import { useInnerBlockConfigurationContext } from '@woocommerce/shared-context';
 
 const ProductRating = ( { className, product } ) => {
 	const rating = parseFloat( product.average_rating );

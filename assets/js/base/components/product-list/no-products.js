@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useInnerBlockConfigurationContext } from '@woocommerce/base-context';
+import { useInnerBlockConfigurationContext } from '@woocommerce/shared-context';
 import { Icon, notice } from '@woocommerce/icons';
 
 const NoProducts = () => {

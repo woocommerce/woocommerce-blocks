@@ -3,7 +3,7 @@
  */
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { useInnerBlockConfigurationContext } from '@woocommerce/base-context';
+import { useInnerBlockConfigurationContext } from '@woocommerce/shared-context';
 import Summary from '@woocommerce/base-components/summary';
 import { getSetting } from '@woocommerce/settings';
 

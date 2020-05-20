@@ -25,7 +25,7 @@ import PropTypes from 'prop-types';
 import { Icon, grid } from '@woocommerce/icons';
 import GridLayoutControl from '@woocommerce/block-components/grid-layout-control';
 import { HAS_PRODUCTS } from '@woocommerce/block-settings';
-import { InnerBlockConfigurationProvider } from '@woocommerce/base-context';
+import { InnerBlockConfigurationProvider } from '@woocommerce/shared-context';
 import { getBlockMap, getLayoutConfig } from '@woocommerce/atomic-utils';
 
 /**

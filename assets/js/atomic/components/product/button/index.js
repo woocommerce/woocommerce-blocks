@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { _n, sprintf } from '@wordpress/i18n';
 import { useEffect, useRef } from '@wordpress/element';
 import { useStoreAddToCart } from '@woocommerce/base-hooks';
-import { useInnerBlockConfigurationContext } from '@woocommerce/base-context';
+import { useInnerBlockConfigurationContext } from '@woocommerce/shared-context';
 import { decodeEntities } from '@wordpress/html-entities';
 import { triggerFragmentRefresh } from '@woocommerce/base-utils';
 
