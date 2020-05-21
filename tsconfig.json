@@ -19,8 +19,9 @@
 			"@woocommerce/atomic-components": [
 				"assets/js/base/atomic/components"
 			],
-			"@woocommerce/atomic-blocks": [ "assets/js/base/atomic/blocks" ],
-			"@woocommerce/atomic-utils": [ "assets/js/base/atomic/utils" ],
+			"@woocommerce/atomic-blocks": [ "assets/js/atomic/blocks" ],
+			"@woocommerce/atomic-components": [ "assets/js/atomic/components" ],
+			"@woocommerce/atomic-utils": [ "assets/js/atomic/utils" ],
 			"@woocommerce/base-components/*": [ "assets/js/base/components/*" ],
 			"@woocommerce/base-context": [ "assets/js/base/context" ],
 			"@woocommerce/base-hocs/*": [ "assets/js/base/hocs/*" ],
@@ -37,7 +38,7 @@
 			"@woocommerce/icons": [ "assets/js/icons" ],
 			"@woocommerce/resource-previews": [ "assets/js/previews" ],
 			"@woocommerce/settings": [ "assets/js/settings/shared" ],
-			"@woocommerce/shared-context": [ "assets/js/shared/content" ],
+			"@woocommerce/shared-context": [ "assets/js/shared/context" ],
 			"@woocommerce/type-defs/*": [ "assets/js/type-defs/*" ]
 		}
 	},
