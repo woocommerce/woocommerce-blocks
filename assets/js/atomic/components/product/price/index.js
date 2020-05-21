@@ -8,64 +8,86 @@ import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 
 const ProductPrice = ( { className, product } ) => {
 	const { layoutStyleClassPrefix } = useInnerBlockConfigurationContext();
-	const prices = product.prices || {};
-	const currency = getCurrencyFromPriceResponse( prices );
+	const componentClass = `${ layoutStyleClassPrefix }__product-price`;
 
-	if (
-		prices.price_range &&
-		prices.price_range.min_amount &&
-		prices.price_range.max_amount
-	) {
+	if ( ! product ) {
 		return (
 			<div
 				className={ classnames(
 					className,
-					`${ layoutStyleClassPrefix }__product-price`
+					componentClass,
+					'is-loading'
 				) }
-			>
-				<span
-					className={ `${ layoutStyleClassPrefix }__product-price__value` }
-				>
-					<FormattedMonetaryAmount
-						currency={ currency }
-						value={ prices.price_range.min_amount }
-					/>
-					&nbsp;&mdash;&nbsp;
-					<FormattedMonetaryAmount
-						currency={ currency }
-						value={ prices.price_range.max_amount }
-					/>
-				</span>
-			</div>
+			/>
 		);
 	}
 
+	const prices = product.prices || {};
+	const currency = getCurrencyFromPriceResponse( prices );
+
 	return (
-		<div
-			className={ classnames(
-				className,
-				`${ layoutStyleClassPrefix }__product-price`
+		<div className={ classnames( className, componentClass ) }>
+			{ hasPriceRange( prices ) ? (
+				<PriceRange
+					componentClass={ componentClass }
+					currency={ currency }
+					minAmount={ prices.price_range.min_amount }
+					maxAmount={ prices.price_range.max_amount }
+				/>
+			) : (
+				<Price
+					componentClass={ componentClass }
+					currency={ currency }
+					price={ prices.price }
+					regularPrice={ prices.regular_price }
+				/>
 			) }
-		>
-			{ prices.regular_price !== prices.price && (
-				<del
-					className={ `${ layoutStyleClassPrefix }__product-price__regular` }
-				>
+		</div>
+	);
+};
+
+const hasPriceRange = ( prices ) => {
+	return (
+		prices.price_range &&
+		prices.price_range.min_amount &&
+		prices.price_range.max_amount
+	);
+};
+
+const PriceRange = ( { componentClass, currency, minAmount, maxAmount } ) => {
+	return (
+		<span className={ `${ componentClass }__value` }>
+			<FormattedMonetaryAmount
+				currency={ currency }
+				value={ minAmount }
+			/>
+			&nbsp;&mdash;&nbsp;
+			<FormattedMonetaryAmount
+				currency={ currency }
+				value={ maxAmount }
+			/>
+		</span>
+	);
+};
+
+const Price = ( { componentClass, currency, price, regularPrice } ) => {
+	return (
+		<>
+			{ regularPrice !== price && (
+				<del className={ `${ componentClass }__regular` }>
 					<FormattedMonetaryAmount
 						currency={ currency }
-						value={ prices.regular_price }
+						value={ regularPrice }
 					/>
 				</del>
 			) }
-			<span
-				className={ `${ layoutStyleClassPrefix }__product-price__value` }
-			>
+			<span className={ `${ componentClass }__value` }>
 				<FormattedMonetaryAmount
 					currency={ currency }
-					value={ prices.price }
+					value={ price }
 				/>
 			</span>
-		</div>
+		</>
 	);
 };
 

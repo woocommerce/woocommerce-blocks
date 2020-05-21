@@ -25,8 +25,16 @@ import PropTypes from 'prop-types';
 import { Icon, grid } from '@woocommerce/icons';
 import GridLayoutControl from '@woocommerce/block-components/grid-layout-control';
 import { HAS_PRODUCTS } from '@woocommerce/block-settings';
-import { InnerBlockConfigurationProvider } from '@woocommerce/shared-context';
-import { getBlockMap, getLayoutConfig } from '@woocommerce/atomic-utils';
+import {
+	InnerBlockConfigurationProvider,
+	ProductDataContextProvider,
+} from '@woocommerce/shared-context';
+import {
+	getBlockMap,
+	getLayoutConfig,
+	getAllowedInnerBlocks,
+} from '@woocommerce/atomic-utils';
+import { previewProducts } from '@woocommerce/resource-previews';
 
 /**
  * Internal dependencies
@@ -39,6 +47,29 @@ import {
 import { DEFAULT_PRODUCT_LIST_LAYOUT } from '../constants';
 import { getSharedContentControls, getSharedListControls } from '../edit';
 import Block from './block';
+
+/**
+ * Component to handle inner blocks.
+ */
+const LayoutEditor = ( { product } ) => {
+	return (
+		<InnerBlockConfigurationProvider
+			parentName="woocommerce/all-products"
+			layoutStyleClassPrefix="wc-block-grid"
+		>
+			<ProductDataContextProvider product={ product }>
+				<InnerBlocks
+					template={ DEFAULT_PRODUCT_LIST_LAYOUT }
+					templateLock={ false }
+					allowedBlocks={ getAllowedInnerBlocks(
+						'woocommerce/all-products'
+					) }
+					renderAppender={ false }
+				/>
+			</ProductDataContextProvider>
+		</InnerBlockConfigurationProvider>
+	);
+};
 
 /**
  * Component to handle edit mode of "All Products".
@@ -174,16 +205,6 @@ class Editor extends Component {
 			this.setState( { innerBlocks: block.innerBlocks } );
 		};
 
-		const InnerBlockProps = {
-			template: this.props.attributes.layoutConfig,
-			templateLock: false,
-			allowedBlocks: Object.keys( this.blockMap ),
-		};
-
-		if ( this.props.attributes.layoutConfig.length !== 0 ) {
-			InnerBlockProps.renderAppender = false;
-		}
-
 		return (
 			<Placeholder icon={ this.getIcon() } label={ this.getTitle() }>
 				{ __(
@@ -200,7 +221,9 @@ class Editor extends Component {
 					<div className="wc-block-grid has-1-columns">
 						<ul className="wc-block-grid__products">
 							<li className="wc-block-grid__product">
-								<InnerBlocks { ...InnerBlockProps } />
+								<LayoutEditor
+									product={ previewProducts[ 0 ] }
+								/>
 							</li>
 						</ul>
 					</div>
@@ -269,23 +292,16 @@ class Editor extends Component {
 		}
 
 		return (
-			<InnerBlockConfigurationProvider
-				parentName="woocommerce/all-products"
-				layoutStyleClassPrefix="wc-block-grid"
+			<div
+				className={ getBlockClassName(
+					'wc-block-all-products',
+					attributes
+				) }
 			>
-				<div
-					className={ getBlockClassName(
-						'wc-block-all-products',
-						attributes
-					) }
-				>
-					{ this.getBlockControls() }
-					{ this.getInspectorControls() }
-					{ isEditing
-						? this.renderEditMode()
-						: this.renderViewMode() }
-				</div>
-			</InnerBlockConfigurationProvider>
+				{ this.getBlockControls() }
+				{ this.getInspectorControls() }
+				{ isEditing ? this.renderEditMode() : this.renderViewMode() }
+			</div>
 		);
 	};
 }
