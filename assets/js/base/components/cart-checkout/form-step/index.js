@@ -14,9 +14,11 @@ const StepHeading = ( { title, stepHeadingContent } ) => (
 		<h4 aria-hidden="true" className="wc-block-checkout-step__title">
 			{ title }
 		</h4>
-		<span className="wc-block-checkout-step__heading-content">
-			{ stepHeadingContent }
-		</span>
+		{ !! stepHeadingContent && (
+			<span className="wc-block-checkout-step__heading-content">
+				{ stepHeadingContent }
+			</span>
+		) }
 	</div>
 );
 
