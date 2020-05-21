@@ -389,14 +389,14 @@
 	.wc-block-grid__product-title {
 		font-family: $twentytwenty-headings;
 		color: #000;
-		font-size: 2.5rem;
+		font-size: 1.2em;
 	}
 
 	.wc-block-grid__product-price {
 		.wc-block-grid__product-price__value,
 		.woocommerce-Price-amount {
 			font-family: $twentytwenty-headings;
-			font-size: 1.8rem;
+			font-size: 0.9em;
 		}
 
 		del {
@@ -435,15 +435,15 @@
 
 	@media only screen and (min-width: 768px) {
 		.wc-block-grid__product-onsale {
-			font-size: 1.5rem;
+			font-size: 0.75em;
 			padding: 1rem;
 		}
 	}
 
 	@media only screen and (min-width: 1168px) {
 		.wc-block-grid__product-onsale {
-			font-size: 1.7rem;
-			padding: 1.5rem;
+			font-size: 0.85em;
+			padding: 0.75em;
 		}
 	}
 }
