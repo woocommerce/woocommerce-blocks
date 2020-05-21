@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { ProductSaleBadge } from '@woocommerce/atomic-components/product';
+import { ProductSaleBadge } from '@woocommerce/atomic-components';
 import { Icon, tag } from '@woocommerce/icons';
 
 /**
