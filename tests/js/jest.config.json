@@ -8,6 +8,9 @@
 	],
 	"moduleDirectories": [ "node_modules" ],
 	"moduleNameMapper": {
+		"@woocommerce/atomic-blocks": "assets/js/atomic/blocks",
+		"@woocommerce/atomic-utils": "assets/js/atomic/utils",
+		"@woocommerce/atomic-components": "assets/js/atomic/components",
 		"@woocommerce/icons": "assets/js/icons",
 		"@woocommerce/settings": "assets/js/settings/shared",
 		"@woocommerce/block-settings": "assets/js/settings/blocks",
@@ -20,7 +23,8 @@
 		"@woocommerce/base-hooks(.*)$": "assets/js/base/hooks/$1",
 		"@woocommerce/base-utils(.*)$": "assets/js/base/utils",
 		"@woocommerce/block-data": "assets/js/data",
-		"@woocommerce/resource-previews": "assets/js/previews"
+		"@woocommerce/resource-previews": "assets/js/previews",
+		"@woocommerce/shared-context": "assets/js/shared/context"
 	},
 	"setupFiles": [
 		"<rootDir>/node_modules/@wordpress/jest-preset-default/scripts/setup-globals.js",
