@@ -9,6 +9,20 @@ import { getSetting } from '@woocommerce/settings';
 
 const ProductSummary = ( { className, product } ) => {
 	const { layoutStyleClassPrefix } = useInnerBlockConfigurationContext();
+	const componentClass = `${ layoutStyleClassPrefix }__product-summary`;
+
+	if ( ! product ) {
+		return (
+			<div
+				className={ classnames(
+					className,
+					componentClass,
+					'is-loading'
+				) }
+			/>
+		);
+	}
+
 	const source = product.short_description
 		? product.short_description
 		: product.description;
@@ -21,10 +35,7 @@ const ProductSummary = ( { className, product } ) => {
 
 	return (
 		<Summary
-			className={ classnames(
-				className,
-				`${ layoutStyleClassPrefix }__product-summary`
-			) }
+			className={ classnames( className, componentClass ) }
 			source={ source }
 			maxLength={ 150 }
 			countType={ countType }
@@ -34,7 +45,7 @@ const ProductSummary = ( { className, product } ) => {
 
 ProductSummary.propTypes = {
 	className: PropTypes.string,
-	product: PropTypes.object.isRequired,
+	product: PropTypes.object,
 };
 
 export default ProductSummary;

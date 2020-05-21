@@ -8,33 +8,26 @@ import Label from '@woocommerce/base-components/label';
 
 const ProductSaleBadge = ( { className, product, align } ) => {
 	const { layoutStyleClassPrefix } = useInnerBlockConfigurationContext();
+	const componentClass = `${ layoutStyleClassPrefix }__product-onsale`;
 
-	const alignClass =
-		typeof align === 'string'
-			? `${ layoutStyleClassPrefix }__product-onsale--align${ align }`
-			: '';
-
-	if ( product && product.on_sale ) {
-		return (
-			<div
-				className={ classnames(
-					className,
-					alignClass,
-					`${ layoutStyleClassPrefix }__product-onsale`
-				) }
-			>
-				<Label
-					label={ __( 'Sale', 'woo-gutenberg-products-block' ) }
-					screenReaderLabel={ __(
-						'Product on sale',
-						'woo-gutenberg-products-block'
-					) }
-				/>
-			</div>
-		);
+	if ( ! product || ! product.on_sale ) {
+		return null;
 	}
 
-	return null;
+	const alignClass =
+		typeof align === 'string' ? `${ componentClass }--align${ align }` : '';
+
+	return (
+		<div className={ classnames( className, alignClass, componentClass ) }>
+			<Label
+				label={ __( 'Sale', 'woo-gutenberg-products-block' ) }
+				screenReaderLabel={ __(
+					'Product on sale',
+					'woo-gutenberg-products-block'
+				) }
+			/>
+		</div>
+	);
 };
 
 export default ProductSaleBadge;

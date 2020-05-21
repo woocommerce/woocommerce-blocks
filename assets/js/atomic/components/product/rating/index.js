@@ -6,11 +6,19 @@ import { __, sprintf } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { useInnerBlockConfigurationContext } from '@woocommerce/shared-context';
 
-const ProductRating = ( { className, product } ) => {
-	const rating = parseFloat( product.average_rating );
-	const { layoutStyleClassPrefix } = useInnerBlockConfigurationContext();
+const getAverageRating = ( product ) => {
+	// eslint-disable-next-line camelcase
+	const rating = parseFloat( product?.average_rating || 0 );
 
-	if ( ! Number.isFinite( rating ) || rating === 0 ) {
+	return Number.isFinite( rating ) && rating > 0 ? rating : 0;
+};
+
+const ProductRating = ( { className, product } ) => {
+	const { layoutStyleClassPrefix } = useInnerBlockConfigurationContext();
+	const componentClass = `${ layoutStyleClassPrefix }__product-rating`;
+	const rating = getAverageRating( product );
+
+	if ( ! rating ) {
 		return null;
 	}
 
@@ -24,14 +32,9 @@ const ProductRating = ( { className, product } ) => {
 	);
 
 	return (
-		<div
-			className={ classnames(
-				className,
-				`${ layoutStyleClassPrefix }__product-rating`
-			) }
-		>
+		<div className={ classnames( className, componentClass ) }>
 			<div
-				className={ `${ layoutStyleClassPrefix }__product-rating__stars` }
+				className={ `${ componentClass }__stars` }
 				role="img"
 				aria-label={ ratingText }
 			>
@@ -43,7 +46,7 @@ const ProductRating = ( { className, product } ) => {
 
 ProductRating.propTypes = {
 	className: PropTypes.string,
-	product: PropTypes.object.isRequired,
+	product: PropTypes.object,
 };
 
 export default ProductRating;

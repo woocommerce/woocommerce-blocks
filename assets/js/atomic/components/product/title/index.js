@@ -13,21 +13,29 @@ const ProductTitle = ( {
 	productLink = true,
 } ) => {
 	const { layoutStyleClassPrefix } = useInnerBlockConfigurationContext();
+	const TagName = `h${ headingLevel }`;
+	const componentClass = `${ layoutStyleClassPrefix }__product-title`;
 
-	if ( ! product.name ) {
-		return null;
+	if ( ! product ) {
+		return (
+			<TagName
+				className={ classnames(
+					className,
+					componentClass,
+					'is-loading'
+				) }
+			/>
+		);
 	}
 
 	const productName = decodeEntities( product.name );
-	const TagName = `h${ headingLevel }`;
+
+	if ( ! productName ) {
+		return null;
+	}
 
 	return (
-		<TagName
-			className={ classnames(
-				className,
-				`${ layoutStyleClassPrefix }__product-title`
-			) }
-		>
+		<TagName className={ classnames( className, componentClass ) }>
 			{ productLink ? (
 				<a href={ product.permalink } rel="nofollow">
 					{ productName }
@@ -41,7 +49,7 @@ const ProductTitle = ( {
 
 ProductTitle.propTypes = {
 	className: PropTypes.string,
-	product: PropTypes.object.isRequired,
+	product: PropTypes.object,
 	headingLevel: PropTypes.number,
 	productLink: PropTypes.bool,
 };

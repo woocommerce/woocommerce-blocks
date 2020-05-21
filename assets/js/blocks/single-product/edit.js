@@ -8,7 +8,10 @@ import { Placeholder, Button } from '@wordpress/components';
 import { withProduct } from '@woocommerce/block-hocs';
 import { InnerBlocks } from '@wordpress/block-editor';
 import { getAllowedInnerBlocks } from '@woocommerce/atomic-utils';
-import { InnerBlockConfigurationProvider } from '@woocommerce/shared-context';
+import {
+	InnerBlockConfigurationProvider,
+	ProductDataContextProvider,
+} from '@woocommerce/shared-context';
 import { useSyncedLayoutConfig } from '@woocommerce/base-hooks';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 
@@ -31,6 +34,31 @@ import {
 } from './edit/index.js';
 
 /**
+ * Component to handle inner blocks.
+ */
+const LayoutEditor = ( { product } ) => {
+	return (
+		<InnerBlockConfigurationProvider
+			parentName={ BLOCK_NAME }
+			layoutStyleClassPrefix="wc-block-single-product"
+		>
+			<ProductDataContextProvider product={ product }>
+				<InnerBlocks
+					template={ DEFAULT_PRODUCT_LAYOUT }
+					templateLock={ false }
+					allowedBlocks={ [
+						'core/columns',
+						'core/column',
+						...getAllowedInnerBlocks( BLOCK_NAME ),
+					] }
+					renderAppender={ false }
+				/>
+			</ProductDataContextProvider>
+		</InnerBlockConfigurationProvider>
+	);
+};
+
+/**
  * Component to handle edit mode of the "Single Product Block".
  */
 const Editor = ( {
@@ -39,6 +67,7 @@ const Editor = ( {
 	setAttributes,
 	error,
 	getProduct,
+	product,
 	isLoading,
 	clientId,
 } ) => {
@@ -105,26 +134,14 @@ const Editor = ( {
 						</div>
 					</Placeholder>
 				) : (
-					<InnerBlockConfigurationProvider
-						parentName={ BLOCK_NAME }
-						layoutStyleClassPrefix="wc-block-single-product"
-					>
+					<>
 						<LayoutInspectorControls
 							attributes={ attributes }
 							setAttributes={ setAttributes }
 							onReset={ resetLayout }
 						/>
-						<InnerBlocks
-							template={ DEFAULT_PRODUCT_LAYOUT }
-							templateLock={ false }
-							allowedBlocks={ [
-								'core/columns',
-								'core/column',
-								...getAllowedInnerBlocks( BLOCK_NAME ),
-							] }
-							renderAppender={ false }
-						/>
-					</InnerBlockConfigurationProvider>
+						<LayoutEditor product={ product } />
+					</>
 				) }
 			</BlockErrorBoundary>
 		</div>
