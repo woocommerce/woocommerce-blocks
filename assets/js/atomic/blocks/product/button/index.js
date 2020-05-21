@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import { Disabled } from '@wordpress/components';
 import { Icon, cart } from '@woocommerce/icons';
-import { ProductButton } from '@woocommerce/atomic-components/product';
+import { ProductButton } from '@woocommerce/atomic-components';
 
 /**
  * Internal dependencies

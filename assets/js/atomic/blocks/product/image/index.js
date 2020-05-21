@@ -8,7 +8,7 @@ import { Fragment } from '@wordpress/element';
 import { Disabled, PanelBody, ToggleControl } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 import ToggleButtonControl from '@woocommerce/block-components/toggle-button-control';
-import { ProductImage } from '@woocommerce/atomic-components/product';
+import { ProductImage } from '@woocommerce/atomic-components';
 import { previewProducts } from '@woocommerce/resource-previews';
 
 /**

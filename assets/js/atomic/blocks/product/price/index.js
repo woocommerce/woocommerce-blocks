@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import { Icon, bill } from '@woocommerce/icons';
-import { ProductPrice } from '@woocommerce/atomic-components/product';
+import { ProductPrice } from '@woocommerce/atomic-components';
 
 /**
  * Internal dependencies
