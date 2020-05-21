@@ -11,9 +11,9 @@ import './style.scss';
 
 const StepHeading = ( { title, stepHeadingContent } ) => (
 	<div className="wc-block-checkout-step__heading">
-		<h4 aria-hidden="true" className="wc-block-checkout-step__title">
+		<h2 aria-hidden="true" className="wc-block-checkout-step__title">
 			{ title }
-		</h4>
+		</h2>
 		{ !! stepHeadingContent && (
 			<span className="wc-block-checkout-step__heading-content">
 				{ stepHeadingContent }
