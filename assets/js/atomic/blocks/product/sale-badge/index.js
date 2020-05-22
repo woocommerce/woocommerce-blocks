@@ -2,13 +2,12 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType } from '@wordpress/blocks';
 import { Icon, tag } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
  */
-import sharedConfig from '../shared-config';
+import registerAtomicBlock from '../register-atomic-block';
 import edit from './edit';
 
 const blockConfig = {
@@ -27,7 +26,4 @@ const blockConfig = {
 	edit,
 };
 
-registerBlockType( 'woocommerce/product-sale-badge', {
-	...sharedConfig,
-	...blockConfig,
-} );
+registerAtomicBlock( 'woocommerce/product-sale-badge', blockConfig );

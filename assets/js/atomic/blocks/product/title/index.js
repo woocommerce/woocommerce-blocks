@@ -2,12 +2,11 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
-import sharedConfig from '../shared-config';
+import registerAtomicBlock from '../register-atomic-block';
 import edit from './edit';
 
 const blockConfig = {
@@ -33,7 +32,4 @@ const blockConfig = {
 	edit,
 };
 
-registerBlockType( 'woocommerce/product-title', {
-	...sharedConfig,
-	...blockConfig,
-} );
+registerAtomicBlock( 'woocommerce/product-title', blockConfig );

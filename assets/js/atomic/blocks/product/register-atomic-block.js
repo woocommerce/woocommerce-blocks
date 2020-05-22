@@ -3,12 +3,14 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Icon, grid } from '@woocommerce/icons';
-import { previewProducts } from '@woocommerce/resource-previews';
+import { registerBlockType } from '@wordpress/blocks';
 
 /**
- * Holds default config for this collection of blocks.
+ * Internal dependencies
  */
-export default {
+import save from './save';
+
+const sharedConfig = {
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	icon: {
@@ -17,13 +19,17 @@ export default {
 	},
 	supports: {
 		html: false,
+		lightBlockWrapper: true,
 	},
 	parent: [ 'woocommerce/all-products', 'woocommerce/single-product' ],
-	attributes: {
-		product: {
-			type: 'object',
-			default: previewProducts[ 0 ],
-		},
-	},
-	save() {},
+	save,
 };
+
+const registerAtomicBlock = ( blockName, blockConfig ) => {
+	registerBlockType( blockName, {
+		...sharedConfig,
+		...blockConfig,
+	} );
+};
+
+export default registerAtomicBlock;
