@@ -3,10 +3,14 @@
  */
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
-import { useInnerBlockConfigurationContext } from '@woocommerce/shared-context';
+import {
+	useInnerBlockConfigurationContext,
+	useProductDataContextContext,
+} from '@woocommerce/shared-context';
 import Label from '@woocommerce/base-components/label';
 
-const ProductSaleBadge = ( { className, product, align } ) => {
+const ProductSaleBadge = ( { className, align } ) => {
+	const { product } = useProductDataContextContext();
 	const { layoutStyleClassPrefix } = useInnerBlockConfigurationContext();
 	const componentClass = `${ layoutStyleClassPrefix }__product-onsale`;
 

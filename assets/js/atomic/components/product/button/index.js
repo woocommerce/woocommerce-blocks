@@ -6,11 +6,15 @@ import classnames from 'classnames';
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { useEffect, useRef } from '@wordpress/element';
 import { useStoreAddToCart } from '@woocommerce/base-hooks';
-import { useInnerBlockConfigurationContext } from '@woocommerce/shared-context';
+import {
+	useInnerBlockConfigurationContext,
+	useProductDataContextContext,
+} from '@woocommerce/shared-context';
 import { decodeEntities } from '@wordpress/html-entities';
 import { triggerFragmentRefresh } from '@woocommerce/base-utils';
 
-const ProductButton = ( { product, className } ) => {
+const ProductButton = ( { className } ) => {
+	const { product } = useProductDataContextContext();
 	const { layoutStyleClassPrefix } = useInnerBlockConfigurationContext();
 	const componentClass = `${ layoutStyleClassPrefix }__product-add-to-cart`;
 
