@@ -62,9 +62,9 @@ const getErrorBoundaryProps = () => {
 	};
 };
 
-renderFrontend(
-	'.wp-block-woocommerce-cart',
-	withStoreCartApiHydration( withRestApiHydration( CartFrontend ) ),
+renderFrontend( {
+	selector: '.wp-block-woocommerce-cart',
+	Block: withStoreCartApiHydration( withRestApiHydration( CartFrontend ) ),
 	getProps,
-	getErrorBoundaryProps
-);
+	getErrorBoundaryProps,
+} );

@@ -23,8 +23,8 @@ const getProps = ( el ) => {
 	};
 };
 
-renderFrontend(
-	'.wp-block-woocommerce-attribute-filter',
-	withRestApiHydration( Block ),
-	getProps
-);
+renderFrontend( {
+	selector: '.wp-block-woocommerce-attribute-filter',
+	Block: withRestApiHydration( Block ),
+	getProps,
+} );
