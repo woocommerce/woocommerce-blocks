@@ -305,8 +305,7 @@ export const CheckoutStateProvider = ( {
 		isSuccessResponse,
 	] );
 
-	const onSubmit = useCallback( ( event ) => {
-		event.preventDefault();
+	const onSubmit = useCallback( () => {
 		dispatch( actions.setBeforeProcessing() );
 	}, [] );
 
