@@ -73,7 +73,7 @@ const renderChildren = ( { children, blockMap, keyPrefix = '' } ) => {
 		if ( ! LayoutComponent ) {
 			const element = parse( el.outerHTML );
 
-			return children
+			return componentChildren
 				? cloneElement(
 						element,
 						layoutComponentProps,
