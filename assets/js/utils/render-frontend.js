@@ -3,6 +3,8 @@
  */
 import { render } from 'react-dom';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
+import { cloneElement } from '@wordpress/element';
+import parse from 'html-react-parser';
 
 /**
  * Given some block attributes, gets attributes from the dataset or uses defaults.
@@ -40,22 +42,72 @@ export const getAttributesFromDataset = ( blockAttributes, dataset ) => {
 };
 
 /**
+ * Render Inner Block Components from markup.
+ *
+ * @param {Object}   props           Render props.
+ * @param {Array} props.children  Child nodes.
+ * @param {string}   props.keyPrefix Prefix for keys.
+ * @param {Object}   props.blockMap  Child blocks will be mapped to components.
+ */
+const renderChildren = ( { children, blockMap, keyPrefix = '' } ) => {
+	return Array.from( children ).map( ( el, index ) => {
+		const componentChildren =
+			el.children && el.children.length
+				? renderChildren( {
+						children: el.children,
+						blockMap,
+						keyPrefix: `${ keyPrefix }_${ index }`,
+				  } )
+				: null;
+
+		const LayoutComponent =
+			el.dataset.blockName && blockMap[ el.dataset.blockName ]
+				? blockMap[ el.dataset.blockName ]
+				: null;
+
+		const layoutComponentProps = {
+			key: `${ keyPrefix }_${ index }`,
+			attributes: el.dataset,
+		};
+
+		if ( ! LayoutComponent ) {
+			const element = parse( el.outerHTML );
+
+			return children
+				? cloneElement(
+						element,
+						layoutComponentProps,
+						componentChildren
+				  )
+				: cloneElement( element, layoutComponentProps );
+		}
+
+		return (
+			// eslint-disable-next-line react/jsx-key
+			<LayoutComponent { ...layoutComponentProps }>
+				{ componentChildren }
+			</LayoutComponent>
+		);
+	} );
+};
+
+/**
  * Renders a block component in the place of a specified set of selectors.
  *
- * @param {string}   selector                CSS selector to match the elements
- * to replace.
- * @param {Function} Block                   React block to use as a replacement.
- * @param {Function} [getProps]              Function to generate the props
- * object for the block.
- * @param {Function} [getErrorBoundaryProps] Function to generate the props
- * object for the error boundary.
+ * @param {Object}   props                         Render props.
+ * @param {string}   props.selector                CSS selector to match the elements to replace.
+ * @param {Function} props.Block                   React component to use as a replacement.
+ * @param {Function} [props.getProps ]             Function to generate the props object for the block.
+ * @param {Function} [props.getErrorBoundaryProps] Function to generate the props object for the error boundary.
+ * @param {Object}   [props.blockMap]              If given, child blocks will be mapped to components.
  */
-export const renderFrontend = (
+export const renderFrontend = ( {
 	selector,
 	Block,
 	getProps = () => {},
-	getErrorBoundaryProps = () => {}
-) => {
+	getErrorBoundaryProps = () => {},
+	blockMap = null,
+} ) => {
 	const containers = document.querySelectorAll( selector );
 
 	if ( containers.length ) {
@@ -67,12 +119,24 @@ export const renderFrontend = (
 				...el.dataset,
 				...props.attributes,
 			};
+			const children =
+				el.children && el.children.length && blockMap
+					? renderChildren( {
+							children: el.children,
+							blockMap,
+							keyPrefix: 'single-product',
+					  } )
+					: null;
 
 			el.classList.remove( 'is-loading' );
 
 			render(
 				<BlockErrorBoundary { ...errorBoundaryProps }>
-					<Block { ...props } attributes={ attributes } />
+					<Block
+						{ ...props }
+						attributes={ attributes }
+						children={ children }
+					/>
 				</BlockErrorBoundary>,
 				el
 			);

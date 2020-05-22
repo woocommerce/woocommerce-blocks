@@ -161,6 +161,7 @@
 		"config": "3.3.1",
 		"dinero.js": "1.8.1",
 		"downshift": "4.1.0",
+		"html-react-parser": "^0.10.3",
 		"react-number-format": "4.4.1",
 		"trim-html": "0.1.9",
 		"use-debounce": "3.4.0",
