@@ -98,7 +98,7 @@ const Cart = ( { attributes } ) => {
 				<Card isElevated={ true }>
 					<CardBody>
 						<Title
-							level="2"
+							headingLevel="2"
 							className="wc-block-cart__totals-title"
 						>
 							{ __(

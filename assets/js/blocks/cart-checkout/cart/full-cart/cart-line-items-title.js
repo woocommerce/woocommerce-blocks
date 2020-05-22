@@ -16,7 +16,7 @@ const CartLineItemsTitle = ( {
 	const readableHeading = `${ title } – ${ itemCountHeading }`;
 
 	return (
-		<Title level="2" aria-label={ readableHeading }>
+		<Title headingLevel="2" aria-label={ readableHeading }>
 			<span>{ title } </span>
 			{ !! itemCount && (
 				<span className="wc-block-cart__item-count">

@@ -12,12 +12,12 @@ import './style.scss';
 /**
  * Component that renders a block title.
  */
-const Title = ( { children, className, level, ...props } ) => {
+const Title = ( { children, className, headingLevel, ...props } ) => {
 	const buttonClassName = classNames(
 		'wc-block-component__title',
 		className
 	);
-	const TagName = `h${ level }`;
+	const TagName = `h${ headingLevel }`;
 
 	return (
 		<TagName className={ buttonClassName } { ...props }>
@@ -27,7 +27,8 @@ const Title = ( { children, className, level, ...props } ) => {
 };
 
 Title.propTypes = {
-	level: PropTypes.oneOf( [ '1', '2', '3', '4', '5', '6' ] ).isRequired,
+	headingLevel: PropTypes.oneOf( [ '1', '2', '3', '4', '5', '6' ] )
+		.isRequired,
 	className: PropTypes.string,
 	children: PropTypes.node,
 };
