@@ -14,9 +14,9 @@ import './style.scss';
 /**
  * The Single Product Block.
  */
-const Block = ( { attributes, isLoading, product } ) => {
+const Block = ( { attributes, isLoading, product, children } ) => {
 	if ( isLoading || ! product ) {
-		return <>TODO</>;
+		return <>TODO</>; // @todo Block Loading state.
 	}
 
 	return (
@@ -24,7 +24,11 @@ const Block = ( { attributes, isLoading, product } ) => {
 			parentName={ BLOCK_NAME }
 			layoutStyleClassPrefix="wc-block-single-product"
 		>
-			<SingleProduct product={ product } attributes={ attributes } />
+			<SingleProduct
+				product={ product }
+				attributes={ attributes }
+				children={ children }
+			/>
 		</InnerBlockConfigurationProvider>
 	);
 };

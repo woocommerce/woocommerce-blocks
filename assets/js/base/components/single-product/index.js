@@ -3,16 +3,13 @@
  */
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { useInnerBlockConfigurationContext } from '@woocommerce/shared-context';
-import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
-import { renderProductLayout } from '@woocommerce/atomic-utils';
+import {
+	useInnerBlockConfigurationContext,
+	ProductDataContextProvider,
+} from '@woocommerce/shared-context';
 
-const SingleProduct = ( { product, attributes, instanceId } ) => {
-	const { layoutConfig } = attributes;
-	const {
-		parentName,
-		layoutStyleClassPrefix,
-	} = useInnerBlockConfigurationContext();
+const SingleProduct = ( { product, children } ) => {
+	const { layoutStyleClassPrefix } = useInnerBlockConfigurationContext();
 	const isLoading = Object.keys( product ).length === 0;
 	const classes = classnames( `${ layoutStyleClassPrefix }__product`, {
 		'is-loading': isLoading,
@@ -20,12 +17,9 @@ const SingleProduct = ( { product, attributes, instanceId } ) => {
 
 	return (
 		<div className={ classes } aria-hidden={ isLoading }>
-			{ renderProductLayout(
-				parentName,
-				product,
-				layoutConfig,
-				instanceId
-			) }
+			<ProductDataContextProvider product={ product }>
+				{ children }
+			</ProductDataContextProvider>
 		</div>
 	);
 };
@@ -33,8 +27,6 @@ const SingleProduct = ( { product, attributes, instanceId } ) => {
 SingleProduct.propTypes = {
 	attributes: PropTypes.object.isRequired,
 	product: PropTypes.object,
-	// from withInstanceId
-	instanceId: PropTypes.number.isRequired,
 };
 
-export default withInstanceId( SingleProduct );
+export default SingleProduct;

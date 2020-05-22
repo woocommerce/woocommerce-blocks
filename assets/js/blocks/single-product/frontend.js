@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { StoreNoticesProvider } from '@woocommerce/base-context';
+import { getBlockMap } from '@woocommerce/atomic-utils';
 
 /**
  * Internal dependencies
@@ -20,7 +21,7 @@ import {
  */
 const FrontendBlock = ( props ) => {
 	return (
-		<StoreNoticesProvider context="wc/single-product">
+		<StoreNoticesProvider context="woocommerce/single-product">
 			<Block { ...props } />
 		</StoreNoticesProvider>
 	);
@@ -29,11 +30,13 @@ const FrontendBlock = ( props ) => {
 const getProps = ( el ) => {
 	return {
 		attributes: getAttributesFromDataset( blockAttributes, el.dataset ),
+		blockName: 'woocommerce/single-product',
 	};
 };
 
-renderFrontend(
-	'.wp-block-woocommerce-single-product',
-	FrontendBlock,
-	getProps
-);
+renderFrontend( {
+	selector: '.wp-block-woocommerce-single-product',
+	Block: FrontendBlock,
+	getProps,
+	blockMap: getBlockMap( 'woocommerce/single-product' ),
+} );

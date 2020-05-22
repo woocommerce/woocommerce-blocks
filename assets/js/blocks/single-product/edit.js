@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
-import { useState, useEffect } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import { Placeholder, Button } from '@wordpress/components';
 import { withProduct } from '@woocommerce/block-hocs';
 import { InnerBlocks } from '@wordpress/block-editor';
@@ -12,7 +12,6 @@ import {
 	InnerBlockConfigurationProvider,
 	ProductDataContextProvider,
 } from '@woocommerce/shared-context';
-import { useSyncedLayoutConfig } from '@woocommerce/base-hooks';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 
 /**
@@ -69,21 +68,9 @@ const Editor = ( {
 	getProduct,
 	product,
 	isLoading,
-	clientId,
 } ) => {
-	const { productId, isPreview, layoutConfig } = attributes;
+	const { productId, isPreview } = attributes;
 	const [ isEditing, setIsEditing ] = useState( ! productId );
-	const { syncedLayoutConfig, resetLayout } = useSyncedLayoutConfig( {
-		clientId,
-		initialLayoutConfig: layoutConfig,
-		defaultLayoutConfig: DEFAULT_PRODUCT_LAYOUT,
-	} );
-
-	useEffect( () => {
-		setAttributes( {
-			layoutConfig: syncedLayoutConfig,
-		} );
-	}, [ setAttributes, syncedLayoutConfig ] );
 
 	if ( isPreview ) {
 		return null; // @todo Add preview state for single product block
@@ -138,7 +125,7 @@ const Editor = ( {
 						<LayoutInspectorControls
 							attributes={ attributes }
 							setAttributes={ setAttributes }
-							onReset={ resetLayout }
+							onReset={ () => {} }
 						/>
 						<LayoutEditor product={ product } />
 					</>

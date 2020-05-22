@@ -13,12 +13,6 @@ export const blockAttributes = {
 	productId: {
 		type: 'number',
 	},
-	/**
-	 * Layout config.
-	 */
-	layoutConfig: {
-		type: 'array',
-	},
 };
 
 export default blockAttributes;
