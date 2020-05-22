@@ -121,7 +121,7 @@ $font-sizes: (
 	-ms-word-break: break-all;
 }
 
-// Converts a px unit to rem.
-@function rem($size, $base: 16px) {
-	@return $size / $base * 1rem;
+// Converts a px unit to em.
+@function em($size, $base: 16px) {
+	@return $size / $base * 1em;
 }

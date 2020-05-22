@@ -1,5 +1,5 @@
 .wc-block-select {
-	height: rem(48px);
+	height: 3em;
 	position: relative;
 	margin-bottom: rem($gap-large);
 
@@ -45,11 +45,11 @@
 		color: $input-text-active;
 		font-family: inherit;
 		font-weight: normal;
-		height: rem(48px);
+		height: 3em;
 		letter-spacing: inherit;
 		line-height: 1;
 		overflow: hidden;
-		padding: rem($gap-large) $gap rem($gap-smallest);
+		padding: em($gap-large) $gap em($gap-smallest);
 		text-overflow: ellipsis;
 		text-transform: none;
 		white-space: nowrap;
