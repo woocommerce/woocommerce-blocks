@@ -87,7 +87,7 @@ Styles placed in a `style.scss` file will be built into `build/style.css`, to lo
 
 Font sizes must be defined using the `font-size()` mixin, it takes a size name (`smaller`, `small`, `regular`, `large`. `larger`) and returns a font-size declaration in em units. This allows having a consistent set of font sizes we use across blocks and using em means they are accessible and fit better in different themes.
 
-In parallel to that, consider whether other size/distance units in your CSS need to be em instead of px. In general, em should be preferred if it doesn't break the design with big font sizes. There is another mixin named `em()` that helps converting px units to em (given a px size and optionally a base size).
+In parallel to that, consider whether other size/distance units in your CSS need to be em instead of px. In general, em should be preferred if it doesn't break the layout with big font sizes. There is another mixin named `em()` that helps converting px units to em (given a px size and optionally a base size).
 
 ### CSS specificity wars with 3rd party themes
 
