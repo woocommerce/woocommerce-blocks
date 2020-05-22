@@ -70,7 +70,7 @@
 
 	.wc-block-gateway-input {
 		@include font-size(regular);
-		line-height: 1.375;
+		line-height: 1.375; // =22px when font-size is 16px.
 		background-color: #fff;
 		padding: em($gap-small) $gap;
 		border-radius: 4px;
@@ -94,7 +94,7 @@
 	label {
 		@include reset-typography();
 		@include font-size(regular);
-		line-height: 1.375;
+		line-height: 1.375; // =22px when font-size is 16px.
 		position: absolute;
 		transform: translateY(0.75em);
 		left: 0;
