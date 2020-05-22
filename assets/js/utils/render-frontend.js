@@ -65,26 +65,23 @@ const renderChildren = ( { children, blockMap, keyPrefix = '' } ) => {
 				? blockMap[ el.dataset.blockName ]
 				: null;
 
-		const layoutComponentProps = {
-			key: `${ keyPrefix }_${ index }`,
-			attributes: el.dataset,
-		};
-
 		if ( ! LayoutComponent ) {
 			const element = parse( el.outerHTML );
+			const elementProps = {
+				key: `${ keyPrefix }_${ index }`,
+			};
 
 			return componentChildren
-				? cloneElement(
-						element,
-						layoutComponentProps,
-						componentChildren
-				  )
-				: cloneElement( element, layoutComponentProps );
+				? cloneElement( element, elementProps, componentChildren )
+				: cloneElement( element, elementProps );
 		}
 
 		return (
 			// eslint-disable-next-line react/jsx-key
-			<LayoutComponent { ...layoutComponentProps }>
+			<LayoutComponent
+				key={ `${ keyPrefix }_${ index }` }
+				attributes={ el.dataset }
+			>
 				{ componentChildren }
 			</LayoutComponent>
 		);
