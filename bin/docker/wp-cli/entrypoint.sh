@@ -46,7 +46,7 @@ else
         --admin_email=${WORDPRESS_EMAIL} \
         --skip-email
 fi
-wp rewrite structure `/%postname%/`
+wp rewrite structure "/%postname%/" --hard
 wp plugin install https://github.com/WP-API/Basic-Auth/archive/master.zip --activate
 wp plugin install woocommerce --activate
 wp plugin activate woocommerce-gutenberg-products-block
