@@ -47,9 +47,10 @@ else
         --skip-email
 fi
 
+wp plugin install https://github.com/WP-API/Basic-Auth/archive/master.zip --activate
 wp plugin install woocommerce --activate
 wp plugin activate woocommerce-gutenberg-products-block
-wp theme install twentynineteen --activate
+wp theme install storefront --activate
 wp user create customer customer@woocommercecoree2etestsuite.com --user_pass=password --role=customer --path=/var/www/html
 wp post create --post_type=page --post_status=publish --post_title='Ready' --post_content='E2E-tests.'
 
