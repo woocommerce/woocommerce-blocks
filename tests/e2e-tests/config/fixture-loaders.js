@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 /**
  * External dependencies
@@ -6,15 +5,17 @@
 const WooCommerceRestApi = require( '@woocommerce/woocommerce-rest-api' )
 	.default;
 
+require( 'dotenv' ).config();
+
 const WooCommerce = new WooCommerceRestApi( {
-	url: 'http://localhost:8084/', // Your store URL
+	url: `${ process.env.WORDPRESS_BASE_URL }:${ process.env.WORDPRESS_PORT }/`, // Your store URL
 	consumerKey: 'consumer_key', // Your consumer key
 	consumerSecret: 'consumer_secret', // Your consumer secret
 	version: 'wc/v3', // WooCommerce WP REST API version
 	axiosConfig: {
 		auth: {
-			username: 'admin',
-			password: 'password',
+			username: process.env.WORDPRESS_LOGIN,
+			password: process.env.WORDPRESS_PASSWORD,
 		},
 	},
 } );
