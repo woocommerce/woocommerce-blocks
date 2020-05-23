@@ -238,44 +238,49 @@ const enablePaymentGateways = () => {
 };
 
 const createShippingMethods = () => {
-	return WooCommerce.post( 'shipping/zones', { name: 'UK' } )
-		.then( ( response ) => {
-			return response.data.id;
-		} )
-		.then( ( zoneId ) => {
-			WooCommerce.put( `shipping/zones/${ zoneId }/locations`, {
-				code: 'UK',
-			} );
-			return zoneId;
-		} )
-		.then( ( zoneId ) => {
-			WooCommerce.post( `shipping/zones/${ zoneId }/methods`, {
-				method_id: 'flat_rate',
-				settings: {
-					title: 'Normal Shipping',
-					cost: '20.00',
-				},
-			} );
-			return zoneId;
-		} )
-		.then( ( zoneId ) => {
-			WooCommerce.post( `shipping/zones/${ zoneId }/methods`, {
-				method_id: 'free_shipping',
-				settings: {
-					title: 'Free Shipping',
-					cost: '00.00',
-					requires: 'coupon',
-				},
-			} );
-			return zoneId;
-		} )
-		.catch( ( e ) => console.log( e.response.data.message ) );
+	const UKShipping = () =>
+		WooCommerce.post( 'shipping/zones', { name: 'UK' } )
+			.then( ( response ) => {
+				return response.data.id;
+			} )
+			.then( ( zoneId ) => {
+				WooCommerce.put( `shipping/zones/${ zoneId }/locations`, {
+					code: 'UK',
+				} );
+				return zoneId;
+			} )
+			.then( ( zoneId ) => {
+				WooCommerce.post( `shipping/zones/${ zoneId }/methods`, {
+					method_id: 'flat_rate',
+					settings: {
+						title: 'Normal Shipping',
+						cost: '20.00',
+					},
+				} );
+				return zoneId;
+			} )
+			.then( ( zoneId ) => {
+				WooCommerce.post( `shipping/zones/${ zoneId }/methods`, {
+					method_id: 'free_shipping',
+					settings: {
+						title: 'Free Shipping',
+						cost: '00.00',
+						requires: 'coupon',
+					},
+				} );
+				return zoneId;
+			} )
+			.catch( ( e ) => console.log( e.response.data.message ) );
+
+	return Promise.all( [ UKShipping() ] );
 };
 // deleting a zone will also delete methods and locations.
-const deleteShippingZone = ( id ) => {
-	WooCommerce.delete( `shipping/zones/${ id }`, {
-		force: true,
-	} ).catch( ( error ) => console.log( error ) );
+const deleteShippingZones = ( ids ) => {
+	const deleteZone = ( id ) =>
+		WooCommerce.delete( `shipping/zones/${ id }`, {
+			force: true,
+		} ).catch( ( error ) => console.log( error ) );
+	return Promise.all( ids.map( deleteZone ) );
 };
 module.exports = {
 	setupSettings,
@@ -287,5 +292,5 @@ module.exports = {
 	deleteProducts,
 	enablePaymentGateways,
 	createShippingMethods,
-	deleteShippingZone,
+	deleteShippingZones,
 };

@@ -5,16 +5,16 @@ const {
 	deleteTaxes,
 	deleteCoupons,
 	deleteProducts,
-	deleteShippingZone,
+	deleteShippingZones,
 } = require( './fixture-loaders' );
 const { teardown: teardownPuppeteer } = require( 'jest-environment-puppeteer' );
 module.exports = async ( globalConfig ) => {
 	await teardownPuppeteer( globalConfig );
-	const { taxes, coupons, products, shippingMethod } = global.wc;
+	const { taxes, coupons, products, shippingMethods } = global.wc;
 	Promise.all( [
 		deleteTaxes( taxes ),
 		deleteCoupons( coupons ),
 		deleteProducts( products ),
-		deleteShippingZone( shippingMethod ),
+		deleteShippingZones( shippingMethods ),
 	] );
 };

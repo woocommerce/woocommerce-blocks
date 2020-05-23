@@ -21,12 +21,12 @@ module.exports = async ( globalConfig ) => {
 		createShippingMethods(),
 		enablePaymentGateways(),
 	] ).then( ( results ) => {
-		const [ , taxes, coupons, products, shippingMethod ] = results;
+		const [ , taxes, coupons, products, shippingMethods ] = results;
 		global.wc = {
 			taxes,
 			coupons,
 			products,
-			shippingMethod,
+			shippingMethods,
 		};
 	} );
 };
