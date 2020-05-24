@@ -55,6 +55,7 @@
 		"test:e2e:up": "docker-compose up -d",
 		"test:e2e:up:build": "docker-compose up --build -d",
 		"test:e2e": "./tests/bin/e2e-test-integration.js",
+		"test:e2e:ci": "npm run test:e2e -- --runInBand",
 		"test:e2e-dev": "./tests/bin/e2e-test-integration.js --dev",
 		"test:e2e:update": "./tests/bin/e2e-test-integration.js -- --updateSnapshot",
 		"test:help": "wp-scripts test-unit-js --help",

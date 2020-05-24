@@ -82,7 +82,7 @@ jobs:
               - npm run test:e2e:up
               - composer install
               - npm run build:e2e-test
-              - npm run test:e2e
+              - npm run test:e2e:ci
           env:
               - WOOCOMMERCE_BLOCKS_PHASE=experimental
         - stage: deploy
