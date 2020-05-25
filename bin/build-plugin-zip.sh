@@ -41,6 +41,9 @@ SOURCE_PATH=$(pwd)
 cd "$(dirname "$0")"
 cd ..
 
+## Remove any existing zip file
+rm woocommerce-gutenberg-products-block.zip
+
 # Enable nicer messaging for build status.
 BLUE_BOLD='\033[1;34m';
 GREEN_BOLD='\033[1;32m';
@@ -141,7 +144,6 @@ else
 fi
 
 # Generate the plugin zip file.
-echo $SOURCE_PATH;
 status "Creating archive... 🎁"
 mkdir zip-file
 mkdir zip-file/build
