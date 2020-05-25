@@ -41,7 +41,7 @@ abstract class AbstractTermsRoute extends AbstractRoute {
 			'type'              => 'integer',
 			'minimum'           => 0,
 			'maximum'           => 100,
-			'sanitize_callback' => [$this, 'get_intval' ],
+			'sanitize_callback' => [ $this, 'get_intval' ],
 			'validate_callback' => 'rest_validate_request_arg',
 		);
 
@@ -164,6 +164,6 @@ abstract class AbstractTermsRoute extends AbstractRoute {
 	 * @return int
 	 */
 	public function get_intval( $value ) {
-		return intval( $value, 10 );
+		return intval( $value );
 	}
 }
