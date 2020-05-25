@@ -13,7 +13,7 @@ import {
 	createProducts,
 	createShippingZones,
 	enablePaymentGateways,
-} from './fixture-loaders';
+} from '../fixtures/fixture-loaders';
 
 module.exports = async ( globalConfig ) => {
 	// we need to load puppeteer global setup here.

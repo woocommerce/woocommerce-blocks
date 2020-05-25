@@ -12,7 +12,7 @@ import {
 	deleteCoupons,
 	deleteProducts,
 	deleteShippingZones,
-} from './fixture-loaders';
+} from '../fixtures/fixture-loaders';
 
 module.exports = async ( globalConfig ) => {
 	await teardownPuppeteer( globalConfig );
