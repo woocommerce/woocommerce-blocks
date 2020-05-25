@@ -1,4 +1,4 @@
-# WooCommerce Product Blocks
+# WooCommerce Product Blocks <!-- omit in toc -->
 
 [![Latest Tag](https://img.shields.io/github/tag/woocommerce/woocommerce-gutenberg-products-block.svg?style=flat&label=Latest%20Tag)](https://github.com/woocommerce/woocommerce-gutenberg-products-block/releases)
 [![Travis](https://travis-ci.com/woocommerce/woocommerce-gutenberg-products-block.svg?branch=master)](https://travis-ci.com/woocommerce/woocommerce-gutenberg-products-block)
@@ -8,21 +8,34 @@ Feature plugin for WooCommerce + Gutenberg. This plugin serves as a space to ite
 
 Use this plugin if you want access to the bleeding edge of available blocks for WooCommerce. However, stable blocks are bundled into WooCommerce, and can be added from the "WooCommerce" section in the block inserter.
 
+## Table of Contents <!-- omit in toc -->
+
+- [Documentation](#documentation)
+  - [Code Documentation](#code-documentation)
+  - [Contributing](#contributing)
+- [Contributing](#contributing-1)
+- [Installing the stable version](#installing-the-stable-version)
+- [Installing the development version](#installing-the-development-version)
+- [Getting started with block development](#getting-started-with-block-development)
+- [Vision for the Feature](#vision-for-the-feature)
+
 ## Documentation
 
 To find out more about the blocks and how to use them, [check out the documentation on WooCommerce.com](https://docs.woocommerce.com/document/woocommerce-blocks/).
 
 If you want to see what we're working on for future versions, or want to help out, read on.
 
-## Table of Contents
+### Code Documentation
 
-- [WooCommerce Product Blocks](#woocommerce-product-blocks)
-  - [Documentation](#documentation)
-  - [Table of Contents](#table-of-contents)
-  - [Installing the stable version](#installing-the-stable-version)
-  - [Installing the development version](#installing-the-development-version)
-  - [Getting started with block development](#getting-started-with-block-development)
-  - [Vision for the Feature](#vision-for-the-feature)
+- [Blocks](./assets/js/blocks)
+- [Components](assets/js/components)
+- [Other Docs](./docs)
+
+### Contributing
+
+- [Publishing a release](docs/releases/readme.md)
+
+## Contributing
 
 ## Installing the stable version
 
