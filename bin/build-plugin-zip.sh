@@ -141,6 +141,7 @@ else
 fi
 
 # Generate the plugin zip file.
+echo $SOURCE_PATH;
 status "Creating archive... 🎁"
 mkdir zip-file
 mkdir zip-file/build
