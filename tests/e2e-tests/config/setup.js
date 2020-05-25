@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * External dependencies
  */
@@ -10,26 +11,35 @@ import {
 	createTaxes,
 	createCoupons,
 	createProducts,
-	createShippingMethods,
+	createShippingZones,
 	enablePaymentGateways,
 } from './fixture-loaders';
 
 module.exports = async ( globalConfig ) => {
+	// we need to load puppeteer global setup here.
 	await setupPuppeteer( globalConfig );
-	Promise.all( [
+
+	/**
+	 * Promise.all will return an array of all promises resolved values.
+	 * Some functions like setupSettings and enablePaymentGateways resolve
+	 * to server data so we ignore the values here.
+	 */
+	return Promise.all( [
 		setupSettings(),
 		createTaxes(),
 		createCoupons(),
 		createProducts(),
-		createShippingMethods(),
+		createShippingZones(),
 		enablePaymentGateways(),
-	] ).then( ( results ) => {
-		const [ , taxes, coupons, products, shippingMethods ] = results;
-		global.wc = {
-			taxes,
-			coupons,
-			products,
-			shippingMethods,
-		};
-	} );
+	] )
+		.then( ( results ) => {
+			const [ , taxes, coupons, products, shippingZones ] = results;
+			global.wc = {
+				taxes,
+				coupons,
+				products,
+				shippingZones,
+			};
+		} )
+		.catch( console.log );
 };

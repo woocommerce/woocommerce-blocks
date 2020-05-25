@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * External dependencies
  */
@@ -15,11 +16,11 @@ import {
 
 module.exports = async ( globalConfig ) => {
 	await teardownPuppeteer( globalConfig );
-	const { taxes, coupons, products, shippingMethods } = global.wc;
-	Promise.all( [
+	const { taxes, coupons, products, shippingZones } = global.wc;
+	return Promise.all( [
 		deleteTaxes( taxes ),
 		deleteCoupons( coupons ),
 		deleteProducts( products ),
-		deleteShippingZones( shippingMethods ),
-	] );
+		deleteShippingZones( shippingZones ),
+	] ).catch( console.log );
 };
