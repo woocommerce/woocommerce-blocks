@@ -163,7 +163,7 @@ abstract class AbstractTermsRoute extends AbstractRoute {
 	 * @param mixed $value Value to convert to an int.
 	 * @return int
 	 */
-	protected function get_intval( $value ) {
+	public function get_intval( $value ) {
 		return intval( $value, 10 );
 	}
 }
