@@ -41,7 +41,7 @@ abstract class AbstractTermsRoute extends AbstractRoute {
 			'type'              => 'integer',
 			'minimum'           => 0,
 			'maximum'           => 100,
-			'sanitize_callback' => 'intval',
+			'sanitize_callback' => 'absint',
 			'validate_callback' => 'rest_validate_request_arg',
 		);
 
