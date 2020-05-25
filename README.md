@@ -4,9 +4,9 @@
 [![Travis](https://travis-ci.com/woocommerce/woocommerce-gutenberg-products-block.svg?branch=master)](https://travis-ci.com/woocommerce/woocommerce-gutenberg-products-block)
 [![View](https://img.shields.io/badge/Project%20Components-brightgreen.svg?style=flat)](https://woocommerce.github.io/woocommerce-gutenberg-products-block)
 
-Feature plugin for WooCommerce + Gutenberg. This plugin serves as a space to iterate and explore new Blocks for WooCommerce, and how WooCommerce might work with the block editor.
+Feature plugin for WooCommerce + Gutenberg. This plugin serves as a space to iterate and explore new Blocks and updates to existing blocks for WooCommerce, and how WooCommerce might work with the block editor.
 
-If you're just looking to use these blocks, update to the latest version of WooCommerce! The blocks are bundled into WooCommerce since version 3.6, and can be added from the "WooCommerce" section in the block inserter.
+Use this plugin if you want access to the bleeding edge of available blocks for WooCommerce. However, stable blocks are bundled into WooCommerce, and can be added from the "WooCommerce" section in the block inserter.
 
 ## Documentation
 
@@ -16,14 +16,13 @@ If you want to see what we're working on for future versions, or want to help ou
 
 ## Table of Contents
 
--   [Installing the stable version](#installing-the-stable-version)
--   [Installing the development version](#installing-the-development-version)
--   [Getting started with block development](#getting-started-with-block-development)
--   [Contributing](docs)
-    -   [Publishing a release](docs/releases/readme.md)
--   Code Documentation
-    -   [Blocks](assets/js/blocks)
-    -   [Components](assets/js/components)
+- [WooCommerce Product Blocks](#woocommerce-product-blocks)
+  - [Documentation](#documentation)
+  - [Table of Contents](#table-of-contents)
+  - [Installing the stable version](#installing-the-stable-version)
+  - [Installing the development version](#installing-the-development-version)
+  - [Getting started with block development](#getting-started-with-block-development)
+  - [Vision for the Feature](#vision-for-the-feature)
 
 ## Installing the stable version
 
