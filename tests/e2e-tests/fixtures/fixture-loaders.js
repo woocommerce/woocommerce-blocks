@@ -1,7 +1,8 @@
 /**
  * External dependencies
  */
-import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
+const WooCommerceRestApi = require( '@woocommerce/woocommerce-rest-api' )
+	.default;
 
 require( 'dotenv' ).config();
 
@@ -9,7 +10,7 @@ require( 'dotenv' ).config();
  * Internal dependencies
  */
 
-import * as fixtures from './fixture-data';
+const fixtures = require( './fixture-data' );
 
 /**
  * ConsumerKey and ConsumerSecret are not used, we use basic auth, but
@@ -237,6 +238,7 @@ const deleteShippingZones = ( ids ) => {
 	return Promise.all( ids.map( deleteZone ) );
 };
 
+deleteShippingZones( [ 16, 17, 18, 19, 20 ] );
 module.exports = {
 	setupSettings,
 	createTaxes,
