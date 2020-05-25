@@ -3,7 +3,6 @@
  * External dependencies
  */
 import { teardown as teardownPuppeteer } from 'jest-environment-puppeteer';
-
 /**
  * Internal dependencies
  */
