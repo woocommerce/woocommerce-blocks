@@ -1,15 +1,18 @@
 /**
+ * External dependencies
+ */
+import { setup as setupPuppeteer } from 'jest-environment-puppeteer';
+/**
  * Internal dependencies
  */
-const {
+import {
 	setupSettings,
 	createTaxes,
 	createCoupons,
 	createProducts,
 	createShippingMethods,
 	enablePaymentGateways,
-} = require( './fixture-loaders' );
-const { setup: setupPuppeteer } = require( 'jest-environment-puppeteer' );
+} from './fixture-loaders';
 
 module.exports = async ( globalConfig ) => {
 	await setupPuppeteer( globalConfig );

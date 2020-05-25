@@ -2,8 +2,7 @@
 /**
  * External dependencies
  */
-const WooCommerceRestApi = require( '@woocommerce/woocommerce-rest-api' )
-	.default;
+import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
 
 require( 'dotenv' ).config();
 
