@@ -1,3 +1,14 @@
+/**
+ * The default fixtures data is shaped according to WC REST API
+ *
+ * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs|WooCommerce REST API}
+ */
+
+/**
+ * Coupons fixture data, using the create batch endpoint
+ *
+ * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#batch-update-coupons|Batch update coupons}
+ */
 const Coupons = () => [
 	{
 		code: 'coupon',
@@ -37,6 +48,12 @@ const Coupons = () => [
 	},
 ];
 
+/**
+ * Reviews fixture data, using the create batch endpoint
+ *
+ * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#batch-update-product-reviews|Batch update product reviews}
+ * @param {number} id Product ID to add reviews to.
+ */
 const ReviewsInProduct = ( id ) => [
 	{
 		product_id: id,
@@ -61,6 +78,11 @@ const ReviewsInProduct = ( id ) => [
 	},
 ];
 
+/**
+ * Product fixture data, using the create batch endpoint
+ *
+ * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#batch-update-products|Batch update products}
+ */
 const Products = () => [
 	{
 		name: 'Woo Single #1',
@@ -84,6 +106,11 @@ const Products = () => [
 	},
 ];
 
+/**
+ * Settings fixture data, using the update batch endpoint.
+ *
+ * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#batch-update-setting-options|Batch update setting options}
+ */
 const Settings = () => [
 	{
 		id: 'woocommerce_store_address',
@@ -131,6 +158,14 @@ const Settings = () => [
 	},
 ];
 
+/**
+ * Shipping Zones fixture data, using the shipping zone endpoint, shipping
+ * location, and shipping method endpoint.
+ *
+ * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#create-a-shipping-zone|Create a shipping zone}
+ *  * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#update-a-locations-of-a-shipping-zone|Update a locations of a shipping zone}
+ *  * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#include-a-shipping-method-to-a-shipping-zone|Include a shipping method to a shipping zone}
+ */
 const Shipping = () => [
 	{
 		name: 'UK',
@@ -159,6 +194,11 @@ const Shipping = () => [
 	},
 ];
 
+/**
+ * Taxes rates fixture data, using the create batch endpoint.
+ *
+ * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#batch-update-tax-rates|Batch update tax rates}
+ */
 const Taxes = () => [
 	{
 		country: 'US',
