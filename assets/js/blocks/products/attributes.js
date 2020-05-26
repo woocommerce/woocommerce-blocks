@@ -6,7 +6,7 @@ import { DEFAULT_COLUMNS, DEFAULT_ROWS } from '@woocommerce/block-settings';
 /**
  * Internal dependencies
  */
-import { DEFAULT_PRODUCT_LIST_LAYOUT } from './constants';
+import { DEFAULT_INNER_BLOCKS } from './constants';
 
 export const defaults = {
 	columns: DEFAULT_COLUMNS,
@@ -16,7 +16,7 @@ export const defaults = {
 		orderBy: true,
 	},
 	orderby: 'date',
-	layoutConfig: DEFAULT_PRODUCT_LIST_LAYOUT,
+	layoutConfig: DEFAULT_INNER_BLOCKS,
 	isPreview: false,
 };
 
