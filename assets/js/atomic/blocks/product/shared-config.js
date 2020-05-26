@@ -3,14 +3,13 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Icon, grid } from '@woocommerce/icons';
-import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
 import save from './save';
 
-const sharedConfig = {
+export default {
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	icon: {
@@ -24,12 +23,3 @@ const sharedConfig = {
 	parent: [ 'woocommerce/all-products', 'woocommerce/single-product' ],
 	save,
 };
-
-const registerAtomicBlock = ( blockName, blockConfig ) => {
-	registerBlockType( blockName, {
-		...sharedConfig,
-		...blockConfig,
-	} );
-};
-
-export default registerAtomicBlock;
