@@ -32,23 +32,27 @@ const WooCommerce = new WooCommerceRestApi( {
 /**
  * prepare some store settings.
  *
+ * @param {Object[]} fixture An array of objects describing our data, defaults
+ *                           to our fixture.
  * @return {Promise} return a promise that resolves to the created data or
  * reject if the request failed.
  */
-const setupSettings = () =>
+const setupSettings = ( fixture = fixtures.Settings() ) =>
 	WooCommerce.post( 'settings/general/batch', {
-		update: fixtures.Settings(),
+		update: fixture,
 	} );
 
 /**
  * Create taxes.
  *
+ * @param {Object[]} fixture An array of objects describing our data, defaults
+ * to our fixture.
  * @return {Promise} a promise that resolves to an array of newly created taxes,
  * or rejects if the request failed.
  */
-const createTaxes = () =>
+const createTaxes = ( fixture = fixtures.Taxes() ) =>
 	WooCommerce.post( 'taxes/batch', {
-		create: fixtures.Taxes(),
+		create: fixture,
 	} ).then( ( response ) =>
 		response.data.create.map( ( taxes ) => taxes.id )
 	);
@@ -68,12 +72,14 @@ const deleteTaxes = ( ids ) =>
 /**
  * Create Coupons.
  *
+ * @param {Object[]} fixture An array of objects describing our data, defaults
+ * to our fixture.
  * @return {Promise} a promise that resolves to an array of newly created coupons,
  * or rejects if the request failed.
  */
-const createCoupons = () =>
+const createCoupons = ( fixture = fixtures.Coupons() ) =>
 	WooCommerce.post( 'coupons/batch', {
-		create: fixtures.Coupons(),
+		create: fixture,
 	} ).then( ( response ) =>
 		response.data.create.map( ( coupon ) => coupon.id )
 	);
@@ -93,15 +99,17 @@ const deleteCoupons = ( ids ) =>
 /**
  * Create Products and call createReviews.
  *
+ * @param {Object[]} fixture An array of objects describing our data, defaults
+ * to our fixture.
  * @return {Promise} a promise that resolves to an array of newly created products,
  * or rejects if the request failed.
  *
  * currently this only creates a single product for the sake of reviews.
  * @todo: add more products to e2e fixtures data.
  */
-const createProducts = () =>
+const createProducts = ( fixture = fixtures.Products() ) =>
 	WooCommerce.post( 'products/batch', {
-		create: fixtures.Products(),
+		create: fixture,
 	} ).then( ( products ) => {
 		createReviews( products.data.create[ 0 ].id );
 		return products.data.create.map( ( product ) => product.id );
@@ -124,18 +132,18 @@ const deleteProducts = ( ids ) =>
 
 /**
  * Create Reviews.
+ 
+This is not called directly but is called within createProducts.
  *
- * This is not called directly but is called within createProducts.
- *
- * @param {number} id product id to assign reviews to.
- *
+ * @param {number}   id      product id to assign reviews to.
+ * @param {Object[]} fixture An array of objects describing our reviews, defaults
+ *                           to our fixture.
  * @return {Promise} a promise that resolves to an server response data, or
  * rejects if the request failed.
- *
  */
-const createReviews = ( id ) =>
+const createReviews = ( id, fixture = fixtures.ReviewsInProduct( id ) ) =>
 	WooCommerce.post( 'products/reviews/batch', {
-		create: fixtures.ReviewsInProduct( id ),
+		create: fixture,
 	} );
 
 /**
@@ -177,17 +185,20 @@ const enablePaymentGateways = () =>
 
 /**
  * Create shipping zones.
+ 
+Shipping locations need to be assigned to a zone, and shipping methods need
+to be assigned to a shipping location, this create a shipping zone and location
+and methods.
  *
- * Shipping locations need to be assigned to a zone, and shipping methods need
- * to be assigned to a shipping location, this create a shipping zone and location
- * and methods.
- *
+ * @param {Object[]} fixture An array of objects describing our data, defaults
+ *                           to our fixture.
  * @return {Promise} a promise that resolves to an array of newly created shipping
  * zones IDs, or rejects if the request failed.
+ 
  */
-const createShippingZones = () => {
+const createShippingZones = ( fixture = fixtures.Shipping() ) => {
 	return Promise.all(
-		fixtures.Shipping().map( ( { name, locations, methods } ) => {
+		fixture.map( ( { name, locations, methods } ) => {
 			return WooCommerce.post( 'shipping/zones', { name } )
 				.then( ( response ) => {
 					return response.data.id;
