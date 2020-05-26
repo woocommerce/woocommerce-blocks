@@ -14,6 +14,7 @@ import {
 } from '@woocommerce/shared-context';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import { createBlocksFromTemplate } from '@woocommerce/atomic-utils';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -37,7 +38,14 @@ import {
 /**
  * Component to handle inner blocks.
  */
-const LayoutEditor = ( { product, attributes, setAttributes, clientId } ) => {
+const LayoutEditor = ( {
+	product,
+	attributes,
+	setAttributes,
+	clientId,
+	isLoading,
+} ) => {
+	const baseClassName = 'wc-block-single-product';
 	const { replaceInnerBlocks } = useDispatch( 'core/block-editor' );
 
 	const resetInnerBlocks = useCallback( () => {
@@ -51,20 +59,26 @@ const LayoutEditor = ( { product, attributes, setAttributes, clientId } ) => {
 	return (
 		<InnerBlockConfigurationProvider
 			parentName={ BLOCK_NAME }
-			layoutStyleClassPrefix="wc-block-single-product"
+			layoutStyleClassPrefix={ baseClassName }
 		>
-			<LayoutInspectorControls
-				attributes={ attributes }
-				setAttributes={ setAttributes }
-				onReset={ resetInnerBlocks }
-			/>
 			<ProductDataContextProvider product={ product }>
-				<InnerBlocks
-					template={ DEFAULT_INNER_BLOCKS }
-					allowedBlocks={ ALLOWED_INNER_BLOCKS }
-					templateLock={ false }
-					renderAppender={ false }
+				<LayoutInspectorControls
+					attributes={ attributes }
+					setAttributes={ setAttributes }
+					onReset={ resetInnerBlocks }
 				/>
+				<div
+					className={ classnames( baseClassName, {
+						'is-loading': isLoading,
+					} ) }
+				>
+					<InnerBlocks
+						template={ DEFAULT_INNER_BLOCKS }
+						allowedBlocks={ ALLOWED_INNER_BLOCKS }
+						templateLock={ false }
+						renderAppender={ false }
+					/>
+				</div>
 			</ProductDataContextProvider>
 		</InnerBlockConfigurationProvider>
 	);
@@ -140,6 +154,7 @@ const Editor = ( {
 						product={ product }
 						attributes={ attributes }
 						setAttributes={ setAttributes }
+						isLoading={ isLoading }
 					/>
 				) }
 			</BlockErrorBoundary>
