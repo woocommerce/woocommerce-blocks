@@ -55,7 +55,7 @@ async function setupBrowser() {
  */
 async function importSampleProducts() {
 	await switchUserToAdmin();
-	// Visit `/wp-admin/edit.php?post_type=product` so we can see a list of products and delete them.
+	// Visit `/wp-admin/edit.php?post_type=product` so we can see a list of products and decide if we should import them or not.
 	await visitAdminPage( 'edit.php', 'post_type=product' );
 	const emptyState = await page.evaluate( () =>
 		window.find( 'Ready to start selling something awesome' )
