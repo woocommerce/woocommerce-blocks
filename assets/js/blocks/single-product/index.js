@@ -10,7 +10,6 @@ import { registerBlockType } from '@wordpress/blocks';
 import edit from './edit';
 import save from './save';
 import attributes from './attributes';
-import './style.scss';
 import {
 	BLOCK_NAME,
 	BLOCK_TITLE,
