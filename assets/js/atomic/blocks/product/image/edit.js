@@ -6,10 +6,8 @@ import { Disabled, PanelBody, ToggleControl } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 import ToggleButtonControl from '@woocommerce/block-components/toggle-button-control';
 import { ProductImage } from '@woocommerce/atomic-components';
-import { useProductDataContextContext } from '@woocommerce/shared-context';
 
 const Edit = ( { attributes, setAttributes } ) => {
-	const { product } = useProductDataContextContext();
 	const { productLink, showSaleBadge, saleBadgeAlign } = attributes;
 
 	return (
@@ -89,7 +87,6 @@ const Edit = ( { attributes, setAttributes } ) => {
 			</InspectorControls>
 			<Disabled>
 				<ProductImage
-					product={ product }
 					productLink={ productLink }
 					showSaleBadge={ showSaleBadge }
 					saleBadgeAlign={ saleBadgeAlign }

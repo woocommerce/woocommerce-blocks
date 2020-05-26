@@ -18,8 +18,8 @@ const getProps = ( el ) => {
 	};
 };
 
-renderFrontend(
-	'.wp-block-woocommerce-price-filter',
-	withRestApiHydration( Block ),
-	getProps
-);
+renderFrontend( {
+	selector: '.wp-block-woocommerce-price-filter',
+	Block: withRestApiHydration( Block ),
+	getProps,
+} );

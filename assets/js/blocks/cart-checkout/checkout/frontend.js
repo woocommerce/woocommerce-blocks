@@ -100,9 +100,11 @@ const getErrorBoundaryProps = () => {
 	};
 };
 
-renderFrontend(
-	'.wp-block-woocommerce-checkout',
-	withStoreCartApiHydration( withRestApiHydration( CheckoutFrontend ) ),
+renderFrontend( {
+	selector: '.wp-block-woocommerce-checkout',
+	Block: withStoreCartApiHydration(
+		withRestApiHydration( CheckoutFrontend )
+	),
 	getProps,
-	getErrorBoundaryProps
-);
+	getErrorBoundaryProps,
+} );

@@ -4,7 +4,10 @@
 import PropTypes from 'prop-types';
 import { __, sprintf } from '@wordpress/i18n';
 import classnames from 'classnames';
-import { useInnerBlockConfigurationContext } from '@woocommerce/shared-context';
+import {
+	useInnerBlockConfigurationContext,
+	useProductDataContextContext,
+} from '@woocommerce/shared-context';
 
 const getAverageRating = ( product ) => {
 	// eslint-disable-next-line camelcase
@@ -13,7 +16,8 @@ const getAverageRating = ( product ) => {
 	return Number.isFinite( rating ) && rating > 0 ? rating : 0;
 };
 
-const ProductRating = ( { className, product } ) => {
+const ProductRating = ( { className } ) => {
+	const { product } = useProductDataContextContext();
 	const { layoutStyleClassPrefix } = useInnerBlockConfigurationContext();
 	const componentClass = `${ layoutStyleClassPrefix }__product-rating`;
 	const rating = getAverageRating( product );

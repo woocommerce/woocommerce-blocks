@@ -166,6 +166,7 @@
 		"dinero.js": "1.8.1",
 		"downshift": "4.1.0",
 		"jest-environment-jsdom-sixteen": "1.0.3",
+		"html-react-parser": "^0.10.3",
 		"react-number-format": "4.4.1",
 		"reakit": "1.0.2",
 		"trim-html": "0.1.9",

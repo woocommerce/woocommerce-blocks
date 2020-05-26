@@ -5,7 +5,10 @@ import PropTypes from 'prop-types';
 import { useState } from '@wordpress/element';
 import classnames from 'classnames';
 import { PLACEHOLDER_IMG_SRC } from '@woocommerce/block-settings';
-import { useInnerBlockConfigurationContext } from '@woocommerce/shared-context';
+import {
+	useInnerBlockConfigurationContext,
+	useProductDataContextContext,
+} from '@woocommerce/shared-context';
 
 /**
  * Internal dependencies
@@ -14,11 +17,11 @@ import { ProductSaleBadge } from '../../../components/product';
 
 const ProductImage = ( {
 	className,
-	product,
 	productLink = true,
 	showSaleBadge = true,
 	saleBadgeAlign = 'right',
 } ) => {
+	const { product } = useProductDataContextContext();
 	const { layoutStyleClassPrefix } = useInnerBlockConfigurationContext();
 	const componentClass = `${ layoutStyleClassPrefix }__product-image`;
 	const [ imageLoaded, setImageLoaded ] = useState( false );

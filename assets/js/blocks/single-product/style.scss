@@ -1,3 +1,14 @@
+// Waiting for render.
+.wp-block-woocommerce-single-product.is-loading {
+	display: none;
+}
+
+// Waiting for product data.
+.wc-block-single-product.is-loading {
+	p {
+		@include placeholder();
+	}
+}
 .wc-block-single-product {
 	&__product-image.is-loading {
 		@include placeholder();

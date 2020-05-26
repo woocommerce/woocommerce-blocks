@@ -10,8 +10,6 @@ import {
 	ProductRating,
 	ProductSummary,
 	ProductSaleBadge,
-	Columns,
-	Column,
 } from '@woocommerce/atomic-components';
 
 /**
@@ -27,8 +25,6 @@ export const getBlockMap = ( blockName ) => ( {
 	'woocommerce/product-button': ProductButton,
 	'woocommerce/product-summary': ProductSummary,
 	'woocommerce/product-sale-badge': ProductSaleBadge,
-	'core/columns': Columns,
-	'core/column': Column,
 	...getRegisteredInnerBlocks( blockName ),
 } );
 
@@ -37,6 +33,6 @@ export const getBlockMap = ( blockName ) => ( {
  *
  * @param {string} blockName Name of the parent block. Used to get extension children.
  */
-export const getAllowedInnerBlocks = ( blockName ) => {
-	return [ ...Object.keys( getBlockMap( blockName ) ) ];
+export const getBlockMapKeys = ( blockName ) => {
+	return Object.keys( getBlockMap( blockName ) );
 };

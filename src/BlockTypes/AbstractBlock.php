@@ -37,8 +37,13 @@ abstract class AbstractBlock {
 
 	/**
 	 * Constructor
+	 *
+	 * @param string $block_name Optional set block name during construct.
 	 */
-	public function __construct() {
+	public function __construct( $block_name = '' ) {
+		if ( $block_name ) {
+			$this->block_name = $block_name;
+		}
 		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_editor_assets' ] );
 	}
 

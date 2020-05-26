@@ -3,17 +3,18 @@
  */
 import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useCallback } from '@wordpress/element';
 import { Placeholder, Button } from '@wordpress/components';
+import { useDispatch } from '@wordpress/data';
 import { withProduct } from '@woocommerce/block-hocs';
 import { InnerBlocks } from '@wordpress/block-editor';
-import { getAllowedInnerBlocks } from '@woocommerce/atomic-utils';
 import {
 	InnerBlockConfigurationProvider,
 	ProductDataContextProvider,
 } from '@woocommerce/shared-context';
-import { useSyncedLayoutConfig } from '@woocommerce/base-hooks';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
+import { createBlocksFromTemplate } from '@woocommerce/atomic-utils';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -23,7 +24,8 @@ import {
 	BLOCK_TITLE,
 	BLOCK_ICON,
 	BLOCK_DESCRIPTION,
-	DEFAULT_PRODUCT_LAYOUT,
+	DEFAULT_INNER_BLOCKS,
+	ALLOWED_INNER_BLOCKS,
 	BLOCK_NAME,
 } from './constants';
 import {
@@ -36,23 +38,47 @@ import {
 /**
  * Component to handle inner blocks.
  */
-const LayoutEditor = ( { product } ) => {
+const LayoutEditor = ( {
+	product,
+	attributes,
+	setAttributes,
+	clientId,
+	isLoading,
+} ) => {
+	const baseClassName = 'wc-block-single-product';
+	const { replaceInnerBlocks } = useDispatch( 'core/block-editor' );
+
+	const resetInnerBlocks = useCallback( () => {
+		replaceInnerBlocks(
+			clientId,
+			createBlocksFromTemplate( DEFAULT_INNER_BLOCKS ),
+			false
+		);
+	}, [ clientId, replaceInnerBlocks ] );
+
 	return (
 		<InnerBlockConfigurationProvider
 			parentName={ BLOCK_NAME }
-			layoutStyleClassPrefix="wc-block-single-product"
+			layoutStyleClassPrefix={ baseClassName }
 		>
 			<ProductDataContextProvider product={ product }>
-				<InnerBlocks
-					template={ DEFAULT_PRODUCT_LAYOUT }
-					templateLock={ false }
-					allowedBlocks={ [
-						'core/columns',
-						'core/column',
-						...getAllowedInnerBlocks( BLOCK_NAME ),
-					] }
-					renderAppender={ false }
+				<LayoutInspectorControls
+					attributes={ attributes }
+					setAttributes={ setAttributes }
+					onReset={ resetInnerBlocks }
 				/>
+				<div
+					className={ classnames( baseClassName, {
+						'is-loading': isLoading,
+					} ) }
+				>
+					<InnerBlocks
+						template={ DEFAULT_INNER_BLOCKS }
+						allowedBlocks={ ALLOWED_INNER_BLOCKS }
+						templateLock={ false }
+						renderAppender={ false }
+					/>
+				</div>
 			</ProductDataContextProvider>
 		</InnerBlockConfigurationProvider>
 	);
@@ -71,19 +97,8 @@ const Editor = ( {
 	isLoading,
 	clientId,
 } ) => {
-	const { productId, isPreview, layoutConfig } = attributes;
+	const { productId, isPreview } = attributes;
 	const [ isEditing, setIsEditing ] = useState( ! productId );
-	const { syncedLayoutConfig, resetLayout } = useSyncedLayoutConfig( {
-		clientId,
-		initialLayoutConfig: layoutConfig,
-		defaultLayoutConfig: DEFAULT_PRODUCT_LAYOUT,
-	} );
-
-	useEffect( () => {
-		setAttributes( {
-			layoutConfig: syncedLayoutConfig,
-		} );
-	}, [ setAttributes, syncedLayoutConfig ] );
 
 	if ( isPreview ) {
 		return null; // @todo Add preview state for single product block
@@ -134,14 +149,13 @@ const Editor = ( {
 						</div>
 					</Placeholder>
 				) : (
-					<>
-						<LayoutInspectorControls
-							attributes={ attributes }
-							setAttributes={ setAttributes }
-							onReset={ resetLayout }
-						/>
-						<LayoutEditor product={ product } />
-					</>
+					<LayoutEditor
+						clientId={ clientId }
+						product={ product }
+						attributes={ attributes }
+						setAttributes={ setAttributes }
+						isLoading={ isLoading }
+					/>
 				) }
 			</BlockErrorBoundary>
 		</div>

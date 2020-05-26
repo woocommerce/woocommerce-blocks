@@ -3,11 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Icon, grid } from '@woocommerce/icons';
-import { previewProducts } from '@woocommerce/resource-previews';
 
 /**
- * Holds default config for this collection of blocks.
+ * Internal dependencies
  */
+import save from './save';
+
 export default {
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
@@ -17,13 +18,8 @@ export default {
 	},
 	supports: {
 		html: false,
+		lightBlockWrapper: true,
 	},
 	parent: [ 'woocommerce/all-products', 'woocommerce/single-product' ],
-	attributes: {
-		product: {
-			type: 'object',
-			default: previewProducts[ 0 ],
-		},
-	},
-	save() {},
+	save,
 };

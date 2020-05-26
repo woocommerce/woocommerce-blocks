@@ -1,9 +1,12 @@
 /**
  * External dependencies
  */
-import { InnerBlockConfigurationProvider } from '@woocommerce/shared-context';
-import SingleProduct from '@woocommerce/base-components/single-product';
+import {
+	InnerBlockConfigurationProvider,
+	ProductDataContextProvider,
+} from '@woocommerce/shared-context';
 import { withProduct } from '@woocommerce/block-hocs';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -14,17 +17,23 @@ import './style.scss';
 /**
  * The Single Product Block.
  */
-const Block = ( { attributes, isLoading, product } ) => {
-	if ( isLoading || ! product ) {
-		return <>TODO</>;
-	}
+const Block = ( { isLoading, product, children } ) => {
+	const baseClassName = 'wc-block-single-product';
 
 	return (
 		<InnerBlockConfigurationProvider
 			parentName={ BLOCK_NAME }
-			layoutStyleClassPrefix="wc-block-single-product"
+			layoutStyleClassPrefix={ baseClassName }
 		>
-			<SingleProduct product={ product } attributes={ attributes } />
+			<ProductDataContextProvider product={ product }>
+				<div
+					className={ classnames( baseClassName, {
+						'is-loading': isLoading,
+					} ) }
+				>
+					{ children }
+				</div>
+			</ProductDataContextProvider>
 		</InnerBlockConfigurationProvider>
 	);
 };

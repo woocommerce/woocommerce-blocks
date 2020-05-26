@@ -27,8 +27,8 @@ const getProps = ( el ) => ( {
 	attributes: JSON.parse( el.dataset.attributes ),
 } );
 
-renderFrontend(
-	'.wp-block-woocommerce-all-products',
-	withRestApiHydration( AllProductsFrontend ),
-	getProps
-);
+renderFrontend( {
+	selector: '.wp-block-woocommerce-all-products',
+	Block: withRestApiHydration( AllProductsFrontend ),
+	getProps,
+} );

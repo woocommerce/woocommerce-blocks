@@ -2,15 +2,14 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { InnerBlocks } from '@wordpress/block-editor';
 import { registerBlockType } from '@wordpress/blocks';
-import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
 import edit from './edit';
-import blockAttributes from './attributes';
+import save from './save';
+import attributes from './attributes';
 import './style.scss';
 import {
 	BLOCK_NAME,
@@ -37,19 +36,9 @@ const settings = {
 			isPreview: true,
 		},
 	},
-	attributes: blockAttributes,
+	attributes,
 	edit,
-
-	/**
-	 * Save the props to post content.
-	 */
-	save( { attributes } ) {
-		return (
-			<div className={ classnames( 'is-loading', attributes.className ) }>
-				<InnerBlocks.Content />
-			</div>
-		);
-	},
+	save,
 };
 
 registerBlockType( BLOCK_NAME, settings );

@@ -19,8 +19,8 @@ const getProps = ( el ) => {
 	};
 };
 
-renderFrontend(
-	'.wp-block-woocommerce-active-filters',
-	withRestApiHydration( Block ),
-	getProps
-);
+renderFrontend( {
+	selector: '.wp-block-woocommerce-active-filters',
+	Block: withRestApiHydration( Block ),
+	getProps,
+} );

@@ -3,13 +3,11 @@
  */
 import { __ } from '@wordpress/i18n';
 import { ProductTitle } from '@woocommerce/atomic-components';
-import { useProductDataContextContext } from '@woocommerce/shared-context';
 import { Disabled, PanelBody, ToggleControl } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 import HeadingToolbar from '@woocommerce/block-components/heading-toolbar';
 
 const Edit = ( { attributes, setAttributes } ) => {
-	const { product } = useProductDataContextContext();
 	const { headingLevel, productLink } = attributes;
 
 	return (
@@ -50,7 +48,6 @@ const Edit = ( { attributes, setAttributes } ) => {
 				<ProductTitle
 					headingLevel={ headingLevel }
 					productLink={ productLink }
-					product={ product }
 				/>
 			</Disabled>
 		</>
