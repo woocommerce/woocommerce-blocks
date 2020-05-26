@@ -33,6 +33,6 @@ export const getBlockMap = ( blockName ) => ( {
  *
  * @param {string} blockName Name of the parent block. Used to get extension children.
  */
-export const getAllowedInnerBlocks = ( blockName ) => {
-	return [ ...Object.keys( getBlockMap( blockName ) ) ];
+export const getBlockMapKeys = ( blockName ) => {
+	return Object.keys( getBlockMap( blockName ) );
 };

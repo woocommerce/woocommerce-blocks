@@ -2,8 +2,8 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Icon, notes } from '@woocommerce/icons';
 import { registerBlockType } from '@wordpress/blocks';
+import { Icon, notes } from '@woocommerce/icons';
 
 /**
  * Internal dependencies

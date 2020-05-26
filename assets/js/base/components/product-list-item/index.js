@@ -3,7 +3,10 @@
  */
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { useInnerBlockConfigurationContext } from '@woocommerce/shared-context';
+import {
+	useInnerBlockConfigurationContext,
+	ProductDataContextProvider,
+} from '@woocommerce/shared-context';
 import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
 import { renderProductLayout } from '@woocommerce/atomic-utils';
 
@@ -20,12 +23,14 @@ const ProductListItem = ( { product, attributes, instanceId } ) => {
 
 	return (
 		<li className={ classes } aria-hidden={ isLoading }>
-			{ renderProductLayout(
-				parentName,
-				product,
-				layoutConfig,
-				instanceId
-			) }
+			<ProductDataContextProvider product={ product }>
+				{ renderProductLayout(
+					parentName,
+					product,
+					layoutConfig,
+					instanceId
+				) }
+			</ProductDataContextProvider>
 		</li>
 	);
 };

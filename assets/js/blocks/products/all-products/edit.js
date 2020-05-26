@@ -29,11 +29,7 @@ import {
 	InnerBlockConfigurationProvider,
 	ProductDataContextProvider,
 } from '@woocommerce/shared-context';
-import {
-	getBlockMap,
-	getLayoutConfig,
-	getAllowedInnerBlocks,
-} from '@woocommerce/atomic-utils';
+import { getBlockMap, getLayoutConfig } from '@woocommerce/atomic-utils';
 import { previewProducts } from '@woocommerce/resource-previews';
 
 /**
@@ -44,7 +40,7 @@ import {
 	renderNoProductsPlaceholder,
 	getBlockClassName,
 } from '../utils';
-import { DEFAULT_PRODUCT_LIST_LAYOUT } from '../constants';
+import { DEFAULT_INNER_BLOCKS, ALLOWED_INNER_BLOCKS } from '../constants';
 import { getSharedContentControls, getSharedListControls } from '../edit';
 import Block from './block';
 
@@ -59,11 +55,9 @@ const LayoutEditor = ( { product } ) => {
 		>
 			<ProductDataContextProvider product={ product }>
 				<InnerBlocks
-					template={ DEFAULT_PRODUCT_LIST_LAYOUT }
+					template={ DEFAULT_INNER_BLOCKS }
 					templateLock={ false }
-					allowedBlocks={ getAllowedInnerBlocks(
-						'woocommerce/all-products'
-					) }
+					allowedBlocks={ ALLOWED_INNER_BLOCKS }
 					renderAppender={ false }
 				/>
 			</ProductDataContextProvider>
@@ -197,7 +191,7 @@ class Editor extends Component {
 		const onReset = () => {
 			const { block, replaceInnerBlocks } = this.props;
 			const newBlocks = [];
-			DEFAULT_PRODUCT_LIST_LAYOUT.map( ( [ name, attributes ] ) => {
+			DEFAULT_INNER_BLOCKS.map( ( [ name, attributes ] ) => {
 				newBlocks.push( createBlock( name, attributes ) );
 				return true;
 			} );
