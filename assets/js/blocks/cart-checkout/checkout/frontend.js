@@ -14,16 +14,16 @@ import {
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
 import { __experimentalCreateInterpolateElement } from 'wordpress-element';
+import {
+	getValidBlockAttributes,
+	renderFrontend,
+} from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
 import Block from './block.js';
 import blockAttributes from './attributes';
-import {
-	getAttributesFromDataset,
-	renderFrontend,
-} from '../../../utils/render-frontend.js';
 import EmptyCart from './empty-cart/index.js';
 
 const reloadPage = () => void window.location.reload( true );
@@ -75,7 +75,7 @@ const CheckoutFrontend = ( props ) => {
 
 const getProps = ( el ) => {
 	return {
-		attributes: getAttributesFromDataset( blockAttributes, el.dataset ),
+		attributes: getValidBlockAttributes( blockAttributes, el.dataset ),
 	};
 };
 

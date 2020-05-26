@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Icon, reader } from '@woocommerce/icons';
-import { getBlockMapKeys } from '@woocommerce/atomic-utils';
+import { getBlockMap } from '@woocommerce/atomic-utils';
 
 export const BLOCK_NAME = 'woocommerce/single-product';
 export const BLOCK_TITLE = __(
@@ -45,5 +45,5 @@ export const DEFAULT_INNER_BLOCKS = [
 export const ALLOWED_INNER_BLOCKS = [
 	'core/columns',
 	'core/column',
-	...getBlockMapKeys( BLOCK_NAME ),
+	...Object.keys( getBlockMap( BLOCK_NAME ) ),
 ];

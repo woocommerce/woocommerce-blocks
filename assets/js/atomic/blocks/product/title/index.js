@@ -9,6 +9,7 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 import sharedConfig from '../shared-config';
 import edit from './edit';
+import attributes from './attributes';
 
 const blockConfig = {
 	title: __( 'Product Title', 'woo-gutenberg-products-block' ),
@@ -20,16 +21,7 @@ const blockConfig = {
 		src: 'heading',
 		foreground: '#96588a',
 	},
-	attributes: {
-		headingLevel: {
-			type: 'number',
-			default: 2,
-		},
-		productLink: {
-			type: 'boolean',
-			default: true,
-		},
-	},
+	attributes,
 	edit,
 };
 

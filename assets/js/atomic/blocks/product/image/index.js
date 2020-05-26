@@ -10,6 +10,7 @@ import { Icon, image } from '@woocommerce/icons';
  */
 import sharedConfig from '../shared-config';
 import edit from './edit';
+import attributes from './attributes';
 
 const blockConfig = {
 	title: __( 'Product Image', 'woo-gutenberg-products-block' ),
@@ -21,20 +22,7 @@ const blockConfig = {
 		src: <Icon srcElement={ image } />,
 		foreground: '#96588a',
 	},
-	attributes: {
-		productLink: {
-			type: 'boolean',
-			default: true,
-		},
-		showSaleBadge: {
-			type: 'boolean',
-			default: true,
-		},
-		saleBadgeAlign: {
-			type: 'string',
-			default: 'right',
-		},
-	},
+	attributes,
 	edit,
 };
 

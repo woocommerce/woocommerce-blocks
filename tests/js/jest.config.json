@@ -10,7 +10,6 @@
 	"moduleNameMapper": {
 		"@woocommerce/atomic-blocks": "assets/js/atomic/blocks",
 		"@woocommerce/atomic-utils": "assets/js/atomic/utils",
-		"@woocommerce/atomic-components": "assets/js/atomic/components",
 		"@woocommerce/icons": "assets/js/icons",
 		"@woocommerce/settings": "assets/js/settings/shared",
 		"@woocommerce/block-settings": "assets/js/settings/blocks",

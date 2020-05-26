@@ -190,7 +190,7 @@
 		margin: $gap-smaller auto;
 	}
 	&__product-image {
-		&__product-onsale {
+		.wc-block-single-product__product-onsale {
 			&--alignleft {
 				position: absolute;
 				left: $gap-smaller/2;

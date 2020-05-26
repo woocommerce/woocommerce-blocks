@@ -3,16 +3,16 @@
  */
 import { StoreNoticesProvider } from '@woocommerce/base-context';
 import { getBlockMap } from '@woocommerce/atomic-utils';
+import {
+	getValidBlockAttributes,
+	renderFrontend,
+} from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
 import Block from './block';
 import blockAttributes from './attributes';
-import {
-	getAttributesFromDataset,
-	renderFrontend,
-} from '../../utils/render-frontend.js';
 
 /**
  * Wrapper component to supply the notice provider.
@@ -29,8 +29,7 @@ const FrontendBlock = ( props ) => {
 
 const getProps = ( el ) => {
 	return {
-		attributes: getAttributesFromDataset( blockAttributes, el.dataset ),
-		blockName: 'woocommerce/single-product',
+		attributes: getValidBlockAttributes( blockAttributes, el.dataset ),
 	};
 };
 

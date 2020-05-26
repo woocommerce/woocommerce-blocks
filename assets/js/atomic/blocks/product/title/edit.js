@@ -2,12 +2,16 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { ProductTitle } from '@woocommerce/atomic-components';
 import { Disabled, PanelBody, ToggleControl } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 import HeadingToolbar from '@woocommerce/block-components/heading-toolbar';
 
-const Edit = ( { attributes, setAttributes } ) => {
+/**
+ * Internal dependencies
+ */
+import Block from './block';
+
+export default ( { attributes, setAttributes } ) => {
 	const { headingLevel, productLink } = attributes;
 
 	return (
@@ -45,13 +49,8 @@ const Edit = ( { attributes, setAttributes } ) => {
 				</PanelBody>
 			</InspectorControls>
 			<Disabled>
-				<ProductTitle
-					headingLevel={ headingLevel }
-					productLink={ productLink }
-				/>
+				<Block { ...attributes } />
 			</Disabled>
 		</>
 	);
 };
-
-export default Edit;

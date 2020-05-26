@@ -3,12 +3,12 @@
  */
 import { withRestApiHydration } from '@woocommerce/block-hocs';
 import { StoreNoticesProvider } from '@woocommerce/base-context';
+import { renderFrontend } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
 import Block from './block';
-import renderFrontend from '../../../utils/render-frontend.js';
 
 /**
  * Wrapper component to supply the notice provider.

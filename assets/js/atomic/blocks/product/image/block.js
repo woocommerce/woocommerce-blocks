@@ -13,7 +13,7 @@ import {
 /**
  * Internal dependencies
  */
-import { ProductSaleBadge } from '../../../components/product';
+import ProductSaleBadge from '../sale-badge/block.js';
 
 const ProductImage = ( {
 	className,
@@ -48,10 +48,7 @@ const ProductImage = ( {
 			{ productLink ? (
 				<a href={ product.permalink } rel="nofollow">
 					{ showSaleBadge && (
-						<ProductSaleBadge
-							product={ product }
-							align={ saleBadgeAlign }
-						/>
+						<ProductSaleBadge align={ saleBadgeAlign } />
 					) }
 					<Image
 						componentClass={ componentClass }
@@ -63,10 +60,7 @@ const ProductImage = ( {
 			) : (
 				<>
 					{ showSaleBadge && (
-						<ProductSaleBadge
-							product={ product }
-							align={ saleBadgeAlign }
-						/>
+						<ProductSaleBadge align={ saleBadgeAlign } />
 					) }
 					<Image
 						componentClass={ componentClass }

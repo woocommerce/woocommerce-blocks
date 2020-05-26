@@ -2,15 +2,17 @@
  * External dependencies
  */
 import { getRegisteredInnerBlocks } from '@woocommerce/blocks-registry';
-import {
-	ProductTitle,
-	ProductPrice,
-	ProductButton,
-	ProductImage,
-	ProductRating,
-	ProductSummary,
-	ProductSaleBadge,
-} from '@woocommerce/atomic-components';
+
+/**
+ * Internal dependencies
+ */
+import ProductButton from '../blocks/product/button/frontend';
+import ProductImage from '../blocks/product/image/frontend';
+import ProductPrice from '../blocks/product/price/frontend';
+import ProductRating from '../blocks/product/rating/frontend';
+import ProductSaleBadge from '../blocks/product/sale-badge/frontend';
+import ProductSummary from '../blocks/product/summary/frontend';
+import ProductTitle from '../blocks/product/title/frontend';
 
 /**
  * Map blocks names to components.
@@ -27,12 +29,3 @@ export const getBlockMap = ( blockName ) => ( {
 	'woocommerce/product-sale-badge': ProductSaleBadge,
 	...getRegisteredInnerBlocks( blockName ),
 } );
-
-/**
- * Get a list of allowed inner blocks for a block.
- *
- * @param {string} blockName Name of the parent block. Used to get extension children.
- */
-export const getBlockMapKeys = ( blockName ) => {
-	return Object.keys( getBlockMap( blockName ) );
-};

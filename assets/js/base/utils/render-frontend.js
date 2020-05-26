@@ -7,30 +7,34 @@ import { cloneElement } from '@wordpress/element';
 import parse from 'html-react-parser';
 
 /**
- * Given some block attributes, gets attributes from the dataset or uses defaults.
+ * Using defined block attributes, parse an array of attributes to get valid values, or fallback to
+ * the default value.
  *
  * @param {Object} blockAttributes Object containing block attributes.
- * @param {Array} dataset Dataset from DOM.
+ * @param {Array} rawAttributes Dataset from DOM or an array of attributes.
  * @return {Array} Array of parsed attributes.
  */
-export const getAttributesFromDataset = ( blockAttributes, dataset ) => {
+export const getValidBlockAttributes = (
+	blockAttributes,
+	rawAttributes = []
+) => {
 	const attributes = [];
 
 	Object.keys( blockAttributes ).forEach( ( key ) => {
-		if ( typeof dataset[ key ] !== 'undefined' ) {
+		if ( typeof rawAttributes[ key ] !== 'undefined' ) {
 			switch ( blockAttributes[ key ].type ) {
 				case 'boolean':
-					attributes[ key ] = dataset[ key ] !== 'false';
+					attributes[ key ] = rawAttributes[ key ] !== 'false';
 					break;
 				case 'number':
-					attributes[ key ] = parseInt( dataset[ key ], 10 );
+					attributes[ key ] = parseInt( rawAttributes[ key ], 10 );
 					break;
 				case 'array':
 				case 'object':
-					attributes[ key ] = JSON.parse( dataset[ key ] );
+					attributes[ key ] = JSON.parse( rawAttributes[ key ] );
 					break;
 				default:
-					attributes[ key ] = dataset[ key ];
+					attributes[ key ] = rawAttributes[ key ];
 					break;
 			}
 		} else {

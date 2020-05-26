@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { getBlockMapKeys } from '@woocommerce/atomic-utils';
+import { getBlockMap } from '@woocommerce/atomic-utils';
 
 /**
  * The default layout built from the default template.
@@ -15,5 +15,5 @@ export const DEFAULT_INNER_BLOCKS = [
 ];
 
 export const ALLOWED_INNER_BLOCKS = [
-	...getBlockMapKeys( 'woocommerce/all-products' ),
+	...Object.keys( getBlockMap( 'woocommerce/all-products' ) ),
 ];

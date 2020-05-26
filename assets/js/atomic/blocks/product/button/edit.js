@@ -1,15 +1,17 @@
 /**
  * External dependencies
  */
-import { ProductButton } from '@woocommerce/atomic-components';
 import { Disabled } from '@wordpress/components';
 
-const Edit = () => {
+/**
+ * Internal dependencies
+ */
+import Block from './block';
+
+export default () => {
 	return (
 		<Disabled>
-			<ProductButton />
+			<Block />
 		</Disabled>
 	);
 };
-
-export default Edit;

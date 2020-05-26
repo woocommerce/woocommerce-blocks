@@ -9,16 +9,16 @@ import { __ } from '@wordpress/i18n';
 import { StoreNoticesProvider } from '@woocommerce/base-context';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
 import { __experimentalCreateInterpolateElement } from 'wordpress-element';
+import {
+	getValidBlockAttributes,
+	renderFrontend,
+} from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
 import Block from './block.js';
 import blockAttributes from './attributes';
-import {
-	getAttributesFromDataset,
-	renderFrontend,
-} from '../../../utils/render-frontend.js';
 
 const reloadPage = () => void window.location.reload( true );
 /**
@@ -37,7 +37,7 @@ const CartFrontend = ( props ) => {
 const getProps = ( el ) => {
 	return {
 		emptyCart: el.innerHTML,
-		attributes: getAttributesFromDataset( blockAttributes, el.dataset ),
+		attributes: getValidBlockAttributes( blockAttributes, el.dataset ),
 	};
 };
 

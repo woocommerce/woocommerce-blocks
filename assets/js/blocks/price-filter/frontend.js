@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { withRestApiHydration } from '@woocommerce/block-hocs';
+import { renderFrontend } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
-import renderFrontend from '../../utils/render-frontend.js';
 import Block from './block.js';
 
 const getProps = ( el ) => {

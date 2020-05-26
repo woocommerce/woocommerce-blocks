@@ -1,10 +1,8 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
-import { ProductSummary } from '@woocommerce/atomic-components';
+import Block from './block';
 
-const Edit = () => {
-	return <ProductSummary />;
+export default () => {
+	return <Block />;
 };
-
-export default Edit;

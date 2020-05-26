@@ -1,12 +1,8 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
-import { ProductSaleBadge } from '@woocommerce/atomic-components';
+import Block from './block';
 
-const Edit = ( { attributes } ) => {
-	const { align } = attributes;
-
-	return <ProductSaleBadge align={ align } />;
+export default () => {
+	return <Block />;
 };
-
-export default Edit;
