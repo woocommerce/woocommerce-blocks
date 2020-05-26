@@ -16,7 +16,7 @@ import {
 
 module.exports = async ( globalConfig ) => {
 	await teardownPuppeteer( globalConfig );
-	const { taxes, coupons, products, shippingZones } = global.wc;
+	const { taxes, coupons, products, shippingZones } = global.fixtureData;
 	return Promise.all( [
 		deleteTaxes( taxes ),
 		deleteCoupons( coupons ),

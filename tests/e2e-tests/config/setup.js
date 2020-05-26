@@ -33,8 +33,14 @@ module.exports = async ( globalConfig ) => {
 		enablePaymentGateways(),
 	] )
 		.then( ( results ) => {
+			/**
+			 * We save our data in global so we can share it with teardown test.
+			 * It is relativity safe to hold this data in global since the context
+			 * in which setup and teardown run in is separate from the one our
+			 * test use, so there is no risk of data bleeding.
+			 */
 			const [ , taxes, coupons, products, shippingZones ] = results;
-			global.wc = {
+			global.fixtureData = {
 				taxes,
 				coupons,
 				products,
