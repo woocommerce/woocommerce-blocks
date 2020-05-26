@@ -37,7 +37,7 @@ const Coupons = () => [
 	},
 ];
 
-const Reviews = ( id ) => [
+const ReviewsInProduct = ( id ) => [
 	{
 		product_id: id,
 		review: 'Looks fine',
@@ -184,7 +184,7 @@ const Taxes = () => [
 
 module.exports = {
 	Coupons,
-	Reviews,
+	ReviewsInProduct,
 	Products,
 	Settings,
 	Shipping,

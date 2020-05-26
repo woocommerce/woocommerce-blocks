@@ -135,7 +135,7 @@ const deleteProducts = ( ids ) =>
  */
 const createReviews = ( id ) =>
 	WooCommerce.post( 'products/reviews/batch', {
-		create: fixtures.Reviews( id ),
+		create: fixtures.ReviewsInProduct( id ),
 	} );
 
 /**
