@@ -126,22 +126,30 @@ class Library {
 	}
 
 	/**
-	 * Delete draft orders older than a day.
+	 * Delete draft orders older than a day in batches of 20.
 	 *
 	 * Ran on a daily cron schedule.
 	 */
 	public static function delete_expired_draft_orders() {
-		global $wpdb;
-
-		$wpdb->query(
-			"
-			DELETE posts, term_relationships, postmeta
-			FROM $wpdb->posts posts
-			LEFT JOIN $wpdb->term_relationships term_relationships ON ( posts.ID = term_relationships.object_id )
-			LEFT JOIN $wpdb->postmeta postmeta ON ( posts.ID = postmeta.post_id )
-			WHERE posts.post_status = 'wc-checkout-draft'
-			AND posts.post_modified <= ( NOW() - INTERVAL 1 DAY )
-			"
+		$orders = wc_get_orders(
+			[
+				'date_modified' => '<' . strtotime( '-1 DAY' ),
+				'limit'         => 20,
+				'status'        => 'wc-checkout-draft',
+				'type'          => 'shop_order',
+			]
 		);
+		$count  = 0;
+
+		if ( $orders ) {
+			foreach ( $orders as $order ) {
+				$order->delete( false );
+				$count ++;
+			}
+		}
+
+		if ( 20 === $count && function_exists( 'as_enqueue_async_action' ) ) {
+			as_enqueue_async_action( 'woocommerce_cleanup_draft_orders' );
+		}
 	}
 }
