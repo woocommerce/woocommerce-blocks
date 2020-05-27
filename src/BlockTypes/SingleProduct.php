@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 use Automattic\WooCommerce\Blocks\Assets;
 
 /**
- * FeaturedProduct class.
+ * SingleProduct class.
  */
 class SingleProduct extends AbstractBlock {
 	/**
