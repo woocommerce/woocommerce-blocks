@@ -1,6 +1,6 @@
 <?php
 /**
- * Single products block.
+ * Single Product block.
  *
  * @package WooCommerce\Blocks
  */
