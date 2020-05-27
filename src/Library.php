@@ -131,15 +131,16 @@ class Library {
 	 * Ran on a daily cron schedule.
 	 */
 	public static function delete_expired_draft_orders() {
-		$orders = wc_get_orders(
+		$count      = 0;
+		$batch_size = 20;
+		$orders     = wc_get_orders(
 			[
 				'date_modified' => '<' . strtotime( '-1 DAY' ),
-				'limit'         => 20,
+				'limit'         => $batch_size,
 				'status'        => 'wc-checkout-draft',
 				'type'          => 'shop_order',
 			]
 		);
-		$count  = 0;
 
 		if ( $orders ) {
 			foreach ( $orders as $order ) {
@@ -148,7 +149,7 @@ class Library {
 			}
 		}
 
-		if ( 20 === $count && function_exists( 'as_enqueue_async_action' ) ) {
+		if ( $batch_size === $count && function_exists( 'as_enqueue_async_action' ) ) {
 			as_enqueue_async_action( 'woocommerce_cleanup_draft_orders' );
 		}
 	}
