@@ -144,7 +144,7 @@ class Library {
 
 		if ( $orders ) {
 			foreach ( $orders as $order ) {
-				$order->delete( false );
+				$order->delete( true );
 				$count ++;
 			}
 		}
