@@ -135,7 +135,7 @@ class Library {
 		$batch_size = 20;
 		$orders     = wc_get_orders(
 			[
-				'date_modified' => '<' . strtotime( '-1 DAY' ),
+				'date_modified' => '<=' . strtotime( '-1 DAY' ),
 				'limit'         => $batch_size,
 				'status'        => 'wc-checkout-draft',
 				'type'          => 'shop_order',
