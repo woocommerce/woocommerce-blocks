@@ -17,8 +17,9 @@ export default {
 	},
 	supports: {
 		html: false,
+		lightBlockWrapper: true,
 	},
-	parent: [ 'woocommerce/all-products' ],
+	parent: [ 'woocommerce/all-products', 'woocommerce/single-product' ],
 	attributes: {
 		product: {
 			type: 'object',
