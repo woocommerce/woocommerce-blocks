@@ -8,10 +8,10 @@ import { Disabled } from '@wordpress/components';
  */
 import Block from './block';
 
-export default () => {
+export default ( { attributes } ) => {
 	return (
 		<Disabled>
-			<Block />
+			<Block { ...attributes } />
 		</Disabled>
 	);
 };

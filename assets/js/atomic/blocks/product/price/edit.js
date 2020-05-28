@@ -3,6 +3,6 @@
  */
 import Block from './block';
 
-export default () => {
-	return <Block />;
+export default ( { attributes } ) => {
+	return <Block { ...attributes } />;
 };
