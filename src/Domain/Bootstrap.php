@@ -130,21 +130,22 @@ class Bootstrap {
 	 * Define the global feature flag.
 	 */
 	protected function define_feature_flag() {
-		add_action(
-			'plugins_loaded',
-			function() {
-				global $woocommerce_blocks_phase;
-				$allowed_flags = [ '1', '2', '3' ];
-				if ( file_exists( __DIR__ . '/../../blocks.ini' ) ) {
-					$woo_options = parse_ini_file( __DIR__ . '/../../blocks.ini' );
-					$flag        = is_array( $woo_options ) && in_array( $woo_options['woocommerce_blocks_phase'], $allowed_flags, true ) ? $woo_options['woocommerce_blocks_phase'] : '1';
-				} else {
-					$flag = $woocommerce_blocks_phase;
-				}
-				define( 'WOOCOMMERCE_BLOCKS_PHASE', intval( $flag ) );
-			},
-			12
-		);
+		if ( defined( 'WC_BLOCKS_IS_FEATURE_PLUGIN' ) ) {
+			$default_flag = '2';
+		} else {
+			$default_flag = '1';
+		}
+
+		$allowed_flags = [ '1', '2', '3' ];
+
+		if ( file_exists( __DIR__ . '/../../blocks.ini' ) ) {
+			$woo_options = parse_ini_file( __DIR__ . '/../../blocks.ini' );
+			$flag        = is_array( $woo_options ) && in_array( $woo_options['woocommerce_blocks_phase'], $allowed_flags, true ) ? $woo_options['woocommerce_blocks_phase'] : $default_flag;
+		} else {
+			$flag = $default_flag;
+		}
+
+		define( 'WOOCOMMERCE_BLOCKS_PHASE', intval( $flag ) );
 	}
 
 	/**

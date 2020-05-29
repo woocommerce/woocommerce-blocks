@@ -44,25 +44,9 @@ class Package {
 	 * @since 2.5.0 Handled by new NewPackage.
 	 */
 	public static function init() {
-		self::initiate_feature_flag();
 		self::container()->get( Bootstrap::class );
 	}
 
-	/**
-	 * Initiate the feature flag.
-	 *
-	 * We don't need to do any loading or logic here, this will simply
-	 * define the phase as core:1, if we're running a feature plugin, this
-	 * will get redefined to stable:2, later down the execution cycle we will
-	 * check for blocks.ini and either set the flag to this value or the one
-	 * in the feature flag.
-	 *
-	 * @since 2.7.0
-	 */
-	protected static function initiate_feature_flag() {
-		global $woocommerce_blocks_phase;
-		$woocommerce_blocks_phase = '1';
-	}
 	/**
 	 * Return the version of the package.
 	 *
