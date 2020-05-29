@@ -77,10 +77,30 @@ class Library {
 		}
 		if ( 'experimental' === WOOCOMMERCE_BLOCKS_PHASE ) {
 			$blocks[] = 'SingleProduct';
+			self::register_atomic_blocks();
 		}
 		foreach ( $blocks as $class ) {
 			$class    = __NAMESPACE__ . '\\BlockTypes\\' . $class;
 			$instance = new $class();
+			$instance->register_block_type();
+		}
+	}
+
+	/**
+	 * Register atomic blocks on the PHP side.
+	 */
+	protected static function register_atomic_blocks() {
+		$atomic_blocks = [
+			'product-title',
+			'product-button',
+			'product-image',
+			'product-price',
+			'product-rating',
+			'product-sale-badge',
+			'product-summary',
+		];
+		foreach ( $atomic_blocks as $atomic_block ) {
+			$instance = new \Automattic\WooCommerce\Blocks\BlockTypes\AtomicBlock( $atomic_block );
 			$instance->register_block_type();
 		}
 	}
