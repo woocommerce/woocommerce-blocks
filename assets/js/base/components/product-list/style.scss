@@ -431,13 +431,15 @@
 	}
 
 	// Override style from WC Core that set its position to absolute.
-	// This ruleset can be removed once https://github.com/woocommerce/woocommerce/pull/26516 is released.
-	.wc-block-grid__products .wc-block-grid__product-onsale.wc-block-component__sale-badge {
+	// These rulesets can be removed once https://github.com/woocommerce/woocommerce/pull/26516 is released.
+	.wc-block-grid__products .wc-block-component__sale-badge {
 		position: static;
+	}
+	.wc-block-grid__products .wc-block-grid__product-image .wc-block-component__sale-badge {
+		position: absolute;
 	}
 
 	// These styles are not applied to the All Products atomic block, so it can be positioned normally.
-	.wc-block-grid__products .wc-block-grid__product-onsale.wc-block-grid__product-onsale--alignright,
 	.wc-block-grid__products .wc-block-grid__product-onsale:not(.wc-block-component__sale-badge) {
 		position: absolute;
 		right: 4px;
