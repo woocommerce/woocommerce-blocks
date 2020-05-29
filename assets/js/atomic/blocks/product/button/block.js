@@ -6,17 +6,26 @@ import classnames from 'classnames';
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { useEffect, useRef } from '@wordpress/element';
 import { useStoreAddToCart } from '@woocommerce/base-hooks';
+import { decodeEntities } from '@wordpress/html-entities';
+import { triggerFragmentRefresh } from '@woocommerce/base-utils';
 import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
-import { decodeEntities } from '@wordpress/html-entities';
-import { triggerFragmentRefresh } from '@woocommerce/base-utils';
 
-const ProductButton = ( props ) => {
-	const mergedProps = { ...useProductDataContext(), ...props };
-	const { product, className } = mergedProps;
+/**
+ * Product Button Block Component.
+ *
+ * @param {Object} props             Incoming props.
+ * @param {string} [props.className] CSS Class name for the component.
+ * @param {Object} [props.product]   Optional product object. Product from context will be used if
+ *                                   this is not provided.
+ * @return {*} The component.
+ */
+const ProductButton = ( { className, ...props } ) => {
+	const productDataContext = { ...useProductDataContext(), ...props };
 	const { layoutStyleClassPrefix } = useInnerBlockLayoutContext();
+	const { product } = productDataContext;
 	const componentClass = `${ layoutStyleClassPrefix }__product-add-to-cart`;
 
 	return (
@@ -114,7 +123,7 @@ const AddToCartButton = ( { product } ) => {
 
 	return (
 		<button
-			onClick={ addToCart }
+			onClick={ () => addToCart }
 			aria-label={ buttonAriaLabel }
 			className={ classnames(
 				'wp-block-button__link',

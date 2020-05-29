@@ -1,72 +1,114 @@
 /**
  * External dependencies
  */
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { useInnerBlockLayoutContext } from '@woocommerce/shared-context';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
+import {
+	useInnerBlockLayoutContext,
+	useProductDataContext,
+} from '@woocommerce/shared-context';
 
-const ProductPrice = ( { className, product } ) => {
+/**
+ * Product Price Block Component.
+ *
+ * @param {Object} props             Incoming props.
+ * @param {string} [props.className] CSS Class name for the component.
+ * @param {Object} [props.product]   Optional product object. Product from context will be used if
+ *                                   this is not provided.
+ * @return {*} The component.
+ */
+const ProductPrice = ( { className, ...props } ) => {
+	const productDataContext = { ...useProductDataContext(), ...props };
 	const { layoutStyleClassPrefix } = useInnerBlockLayoutContext();
-	const prices = product.prices || {};
-	const currency = getCurrencyFromPriceResponse( prices );
+	const { product } = productDataContext;
+	const componentClass = `${ layoutStyleClassPrefix }__product-price`;
 
-	if (
-		prices.price_range &&
-		prices.price_range.min_amount &&
-		prices.price_range.max_amount
-	) {
+	if ( ! product ) {
 		return (
 			<div
 				className={ classnames(
 					className,
-					`${ layoutStyleClassPrefix }__product-price`
+					componentClass,
+					'is-loading'
 				) }
-			>
-				<span
-					className={ `${ layoutStyleClassPrefix }__product-price__value` }
-				>
-					<FormattedMonetaryAmount
-						currency={ currency }
-						value={ prices.price_range.min_amount }
-					/>
-					&nbsp;&mdash;&nbsp;
-					<FormattedMonetaryAmount
-						currency={ currency }
-						value={ prices.price_range.max_amount }
-					/>
-				</span>
-			</div>
+			/>
 		);
 	}
 
+	const prices = product.prices || {};
+	const currency = getCurrencyFromPriceResponse( prices );
+
 	return (
-		<div
-			className={ classnames(
-				className,
-				`${ layoutStyleClassPrefix }__product-price`
+		<div className={ classnames( className, componentClass ) }>
+			{ hasPriceRange( prices ) ? (
+				<PriceRange
+					componentClass={ componentClass }
+					currency={ currency }
+					minAmount={ prices.price_range.min_amount }
+					maxAmount={ prices.price_range.max_amount }
+				/>
+			) : (
+				<Price
+					componentClass={ componentClass }
+					currency={ currency }
+					price={ prices.price }
+					regularPrice={ prices.regular_price }
+				/>
 			) }
-		>
-			{ prices.regular_price !== prices.price && (
-				<del
-					className={ `${ layoutStyleClassPrefix }__product-price__regular` }
-				>
+		</div>
+	);
+};
+
+const hasPriceRange = ( prices ) => {
+	return (
+		prices.price_range &&
+		prices.price_range.min_amount &&
+		prices.price_range.max_amount
+	);
+};
+
+const PriceRange = ( { componentClass, currency, minAmount, maxAmount } ) => {
+	return (
+		<span className={ `${ componentClass }__value` }>
+			<FormattedMonetaryAmount
+				currency={ currency }
+				value={ minAmount }
+			/>
+			&nbsp;&mdash;&nbsp;
+			<FormattedMonetaryAmount
+				currency={ currency }
+				value={ maxAmount }
+			/>
+		</span>
+	);
+};
+
+const Price = ( { componentClass, currency, price, regularPrice } ) => {
+	return (
+		<>
+			{ regularPrice !== price && (
+				<del className={ `${ componentClass }__regular` }>
 					<FormattedMonetaryAmount
 						currency={ currency }
-						value={ prices.regular_price }
+						value={ regularPrice }
 					/>
 				</del>
 			) }
-			<span
-				className={ `${ layoutStyleClassPrefix }__product-price__value` }
-			>
+			<span className={ `${ componentClass }__value` }>
 				<FormattedMonetaryAmount
 					currency={ currency }
-					value={ prices.price }
+					value={ price }
 				/>
 			</span>
-		</div>
+		</>
 	);
+};
+
+ProductPrice.propTypes = {
+	className: PropTypes.string,
+	product: PropTypes.object,
 };
 
 export default ProductPrice;
