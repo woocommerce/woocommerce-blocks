@@ -4,11 +4,11 @@
 import PropTypes from 'prop-types';
 import { __, sprintf } from '@wordpress/i18n';
 import classnames from 'classnames';
-import { useInnerBlockConfigurationContext } from '@woocommerce/shared-context';
+import { useInnerBlockLayoutContext } from '@woocommerce/shared-context';
 
 const ProductRating = ( { className, product } ) => {
 	const rating = parseFloat( product.average_rating );
-	const { layoutStyleClassPrefix } = useInnerBlockConfigurationContext();
+	const { layoutStyleClassPrefix } = useInnerBlockLayoutContext();
 
 	if ( ! Number.isFinite( rating ) || rating === 0 ) {
 		return null;

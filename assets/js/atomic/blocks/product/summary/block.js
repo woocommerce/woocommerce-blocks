@@ -3,12 +3,12 @@
  */
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { useInnerBlockConfigurationContext } from '@woocommerce/shared-context';
+import { useInnerBlockLayoutContext } from '@woocommerce/shared-context';
 import Summary from '@woocommerce/base-components/summary';
 import { getSetting } from '@woocommerce/settings';
 
 const ProductSummary = ( { className, product } ) => {
-	const { layoutStyleClassPrefix } = useInnerBlockConfigurationContext();
+	const { layoutStyleClassPrefix } = useInnerBlockLayoutContext();
 	const source = product.short_description
 		? product.short_description
 		: product.description;

@@ -3,7 +3,7 @@
  */
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { useInnerBlockConfigurationContext } from '@woocommerce/shared-context';
+import { useInnerBlockLayoutContext } from '@woocommerce/shared-context';
 import { decodeEntities } from '@wordpress/html-entities';
 
 const ProductTitle = ( {
@@ -12,7 +12,7 @@ const ProductTitle = ( {
 	headingLevel = 2,
 	productLink = true,
 } ) => {
-	const { layoutStyleClassPrefix } = useInnerBlockConfigurationContext();
+	const { layoutStyleClassPrefix } = useInnerBlockLayoutContext();
 	if ( ! product.name ) {
 		return null;
 	}

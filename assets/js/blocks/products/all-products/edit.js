@@ -25,7 +25,7 @@ import PropTypes from 'prop-types';
 import { Icon, grid } from '@woocommerce/icons';
 import GridLayoutControl from '@woocommerce/block-components/grid-layout-control';
 import { HAS_PRODUCTS } from '@woocommerce/block-settings';
-import { InnerBlockConfigurationProvider } from '@woocommerce/shared-context';
+import { useInnerBlockLayoutContextProvider } from '@woocommerce/shared-context';
 import { getBlockMap } from '@woocommerce/atomic-utils';
 
 /**
@@ -272,7 +272,7 @@ class Editor extends Component {
 		}
 
 		return (
-			<InnerBlockConfigurationProvider
+			<useInnerBlockLayoutContextProvider
 				parentName="woocommerce/all-products"
 				layoutStyleClassPrefix="wc-block-grid"
 			>
@@ -288,7 +288,7 @@ class Editor extends Component {
 						? this.renderEditMode()
 						: this.renderViewMode() }
 				</div>
-			</InnerBlockConfigurationProvider>
+			</useInnerBlockLayoutContextProvider>
 		);
 	};
 }

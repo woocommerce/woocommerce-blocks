@@ -3,11 +3,11 @@
  */
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
-import { useInnerBlockConfigurationContext } from '@woocommerce/shared-context';
+import { useInnerBlockLayoutContext } from '@woocommerce/shared-context';
 import Label from '@woocommerce/base-components/label';
 
 const ProductSaleBadge = ( { className, product, align } ) => {
-	const { layoutStyleClassPrefix } = useInnerBlockConfigurationContext();
+	const { layoutStyleClassPrefix } = useInnerBlockLayoutContext();
 	const alignClass =
 		typeof align === 'string'
 			? `${ layoutStyleClassPrefix }__product-onsale--align${ align }`

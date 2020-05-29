@@ -6,7 +6,7 @@ import { useCallback } from '@wordpress/element';
 import { useDispatch } from '@wordpress/data';
 import { InnerBlocks, InspectorControls } from '@wordpress/block-editor';
 import {
-	InnerBlockConfigurationProvider,
+	useInnerBlockLayoutContextProvider,
 	ProductDataContextProvider,
 } from '@woocommerce/shared-context';
 import { createBlocksFromTemplate } from '@woocommerce/atomic-utils';
@@ -39,7 +39,7 @@ const LayoutEditor = ( { product, clientId, isLoading } ) => {
 	}, [ clientId, replaceInnerBlocks ] );
 
 	return (
-		<InnerBlockConfigurationProvider
+		<useInnerBlockLayoutContextProvider
 			parentName={ BLOCK_NAME }
 			layoutStyleClassPrefix={ baseClassName }
 		>
@@ -79,7 +79,7 @@ const LayoutEditor = ( { product, clientId, isLoading } ) => {
 					/>
 				</div>
 			</ProductDataContextProvider>
-		</InnerBlockConfigurationProvider>
+		</useInnerBlockLayoutContextProvider>
 	);
 };
 
