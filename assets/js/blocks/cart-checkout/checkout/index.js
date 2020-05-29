@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import { Icon, card } from '@woocommerce/icons';
 import classnames from 'classnames';
+import { WOOCOMMERCE_BLOCKS_PHASE } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -49,6 +50,6 @@ const settings = {
 	},
 };
 
-if ( process.env.WOOCOMMERCE_BLOCKS_PHASE > 1 ) {
+if ( WOOCOMMERCE_BLOCKS_PHASE > 1 ) {
 	registerBlockType( 'woocommerce/checkout', settings );
 }

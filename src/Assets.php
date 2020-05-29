@@ -181,6 +181,7 @@ class Assets {
 				'checkoutAllowsGuest'           => 'yes' === get_option( 'woocommerce_enable_guest_checkout' ),
 				'checkoutAllowsSignup'          => 'yes' === get_option( 'woocommerce_enable_signup_and_login_from_checkout' ),
 				'baseLocation'                  => wc_get_base_location(),
+				'woocommerceBlocksPhase'        => WOOCOMMERCE_BLOCKS_PHASE,
 
 				/*
 				 * translators: If your word count is based on single characters (e.g. East Asian characters),
