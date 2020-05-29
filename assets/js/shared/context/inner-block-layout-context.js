@@ -19,7 +19,7 @@ const InnerBlockLayoutContext = createContext( {
 export const useInnerBlockLayoutContext = () =>
 	useContext( InnerBlockLayoutContext );
 
-export const useInnerBlockLayoutContextProvider = ( {
+export const InnerBlockLayoutContextProvider = ( {
 	parentName = '',
 	layoutStyleClassPrefix = '',
 	children,
@@ -36,7 +36,7 @@ export const useInnerBlockLayoutContextProvider = ( {
 	);
 };
 
-useInnerBlockLayoutContextProvider.propTypes = {
+InnerBlockLayoutContextProvider.propTypes = {
 	children: PropTypes.node,
 	parentName: PropTypes.string,
 	layoutStyleClassPrefix: PropTypes.string,
