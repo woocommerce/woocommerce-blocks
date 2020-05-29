@@ -123,7 +123,7 @@ const AddToCartButton = ( { product } ) => {
 
 	return (
 		<button
-			onClick={ () => addToCart }
+			onClick={ addToCart }
 			aria-label={ buttonAriaLabel }
 			className={ classnames(
 				'wp-block-button__link',
