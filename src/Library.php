@@ -78,7 +78,7 @@ class Library {
 				$blocks[] = 'Cart';
 			}
 		}
-		if ( 'experimental' === WOOCOMMERCE_BLOCKS_PHASE ) {
+		if ( WOOCOMMERCE_BLOCKS_PHASE > 2 ) {
 			$blocks[] = 'SingleProduct';
 		}
 		foreach ( $blocks as $class ) {

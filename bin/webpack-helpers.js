@@ -148,17 +148,17 @@ const stableMainEntry = {
 	'active-filters': './assets/js/blocks/active-filters/index.js',
 	'block-error-boundary':
 		'./assets/js/base/components/block-error-boundary/style.scss',
-	'single-product': './assets/js/blocks/single-product/index.js',
-};
-
-const experimentalMainEntry = {
 	cart: './assets/js/blocks/cart-checkout/cart/index.js',
 	checkout: './assets/js/blocks/cart-checkout/checkout/index.js',
 };
 
+const experimentalMainEntry = {
+	'single-product': './assets/js/blocks/single-product/index.js',
+};
+
 const mainEntry =
 	// env variables are strings, so we compare against a string, so we need to parse it.
-	parseInt( process.env.WOOCOMMERCE_BLOCKS_PHASE, 10 ) === 1
+	parseInt( process.env.WOOCOMMERCE_BLOCKS_PHASE, 10 ) < 3
 		? stableMainEntry
 		: { ...stableMainEntry, ...experimentalMainEntry };
 
@@ -168,17 +168,17 @@ const stableFrontEndEntry = {
 	'price-filter': './assets/js/blocks/price-filter/frontend.js',
 	'attribute-filter': './assets/js/blocks/attribute-filter/frontend.js',
 	'active-filters': './assets/js/blocks/active-filters/frontend.js',
-	'single-product': './assets/js/blocks/single-product/frontend.js',
-};
-
-const experimentalFrontEndEntry = {
 	cart: './assets/js/blocks/cart-checkout/cart/frontend.js',
 	checkout: './assets/js/blocks/cart-checkout/checkout/frontend.js',
 };
 
+const experimentalFrontEndEntry = {
+	'single-product': './assets/js/blocks/single-product/frontend.js',
+};
+
 const frontEndEntry =
 	// env variables are strings, so we compare against a string, so we need to parse it.
-	parseInt( process.env.WOOCOMMERCE_BLOCKS_PHASE, 10 ) === 1
+	parseInt( process.env.WOOCOMMERCE_BLOCKS_PHASE, 10 ) < 3
 		? stableFrontEndEntry
 		: { ...stableFrontEndEntry, ...experimentalFrontEndEntry };
 
