@@ -110,7 +110,20 @@ if ( is_readable( $autoloader ) ) {
 }
 
 add_action( 'plugins_loaded', array( '\Automattic\WooCommerce\Blocks\Package', 'init' ) );
+add_action( 'plugins_loaded', 'woocommerce_blocks_reinitialize_feature_flag', 11 );
 
+/**
+ * Reinitialize the feature flag.
+ *
+ * We want to redefine the lower feature flag to 2 if we're running from the feature plugin.
+ * This file (and code) will only run in the plugin and not WooCommerce core.
+ *
+ * @since 2.7.0
+ */
+function woocommerce_blocks_reinitialize_feature_flag() {
+	global $woocommerce_blocks_phase;
+	$woocommerce_blocks_phase = '2';
+}
 /**
  * Pre-filters script translations for the given file, script handle and text domain.
  *
