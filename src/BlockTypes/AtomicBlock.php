@@ -45,6 +45,6 @@ class AtomicBlock extends AbstractBlock {
 	 */
 	protected function get_html_data_attributes( array $attributes ) {
 		$data = parent::get_html_data_attributes( $attributes );
-		return trim( $data . ' data-atomic-block="' . esc_attr( $this->namespace . '/' . $this->block_name ) . '"' );
+		return trim( $data . ' data-block-name="' . esc_attr( $this->namespace . '/' . $this->block_name ) . '"' );
 	}
 }

@@ -12,6 +12,7 @@ import {
  */
 import Block from './block';
 import blockAttributes from './attributes';
+import { BLOCK_NAME } from './constants';
 
 /**
  * Wrapper component to supply the notice provider.
@@ -33,7 +34,8 @@ const getProps = ( el ) => {
 };
 
 renderFrontend( {
-	selector: '.wp-block-woocommerce-single-product',
 	Block: FrontendBlock,
+	blockName: BLOCK_NAME,
+	selector: '.wp-block-woocommerce-single-product',
 	getProps,
 } );
