@@ -81,8 +81,8 @@ const Package = ( {
 		return (
 			<DisclosureWidget
 				className="wc-block-shipping-rates-control__package"
-				buttonContent={ header }
 				initialOpen={ true }
+				title={ header }
 			>
 				{ body }
 			</DisclosureWidget>

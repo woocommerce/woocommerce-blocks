@@ -21,13 +21,13 @@ const CheckoutOrderSummary = ( { cartItems = [] } ) => {
 	return (
 		<DisclosureWidget
 			className="wc-block-order-summary"
-			buttonContent={
+			initialOpen={ isLarge }
+			title={
 				<span className="wc-block-order-summary__button-text">
 					{ __( 'Order summary', 'woo-gutenberg-products-block' ) }
 				</span>
 			}
-			initialOpen={ isLarge }
-			buttonWrapperTag="h2"
+			titleTag="h2"
 		>
 			<div className="wc-block-order-summary__content">
 				{ cartItems.map( ( cartItem ) => {

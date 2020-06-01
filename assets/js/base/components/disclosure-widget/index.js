@@ -12,15 +12,15 @@ import { Icon, chevronUp, chevronDown } from '@woocommerce/icons';
 import './style.scss';
 
 const DisclosureWidget = ( {
-	buttonContent,
-	buttonWrapperTag = 'div',
 	children,
 	className,
 	initialOpen = false,
+	title,
+	titleTag = 'div',
 } ) => {
 	const [ isOpen, setIsOpen ] = useState( initialOpen );
 
-	const TagName = `${ buttonWrapperTag }`;
+	const TagName = `${ titleTag }`;
 	return (
 		<div
 			className={ classNames(
@@ -38,7 +38,7 @@ const DisclosureWidget = ( {
 						className="wc-blocks-components-disclosure-widget__button-icon"
 						srcElement={ isOpen ? chevronUp : chevronDown }
 					/>
-					{ buttonContent }
+					{ title }
 				</button>
 			</TagName>
 			<div
@@ -52,10 +52,10 @@ const DisclosureWidget = ( {
 };
 
 DisclosureWidget.propTypes = {
-	buttonContent: PropTypes.element,
-	buttonWrapperTag: PropTypes.string,
 	className: PropTypes.string,
 	initialOpen: PropTypes.bool,
+	title: PropTypes.element,
+	titleTag: PropTypes.string,
 };
 
 export default DisclosureWidget;

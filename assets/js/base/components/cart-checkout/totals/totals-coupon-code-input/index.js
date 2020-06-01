@@ -43,7 +43,9 @@ const TotalsCouponCodeInput = ( {
 
 	return (
 		<DisclosureWidget
-			buttonContent={
+			className="wc-block-coupon-code"
+			initialOpen={ initialOpen }
+			title={
 				<Label
 					label={ __(
 						'Coupon Code?',
@@ -56,9 +58,7 @@ const TotalsCouponCodeInput = ( {
 					htmlFor={ textInputId }
 				/>
 			}
-			buttonWrapperTag="h2"
-			className="wc-block-coupon-code"
-			initialOpen={ initialOpen }
+			titleTag="h2"
 		>
 			<LoadingMask
 				screenReaderLabel={ __(
