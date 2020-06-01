@@ -16,11 +16,10 @@ const DisclosureWidget = ( {
 	className,
 	initialOpen = false,
 	title,
-	titleTag = 'div',
+	titleTag: TitleTag = 'div',
 } ) => {
 	const [ isOpen, setIsOpen ] = useState( initialOpen );
 
-	const TagName = `${ titleTag }`;
 	return (
 		<div
 			className={ classNames(
@@ -28,7 +27,7 @@ const DisclosureWidget = ( {
 				'wc-blocks-components-disclosure-widget'
 			) }
 		>
-			<TagName>
+			<TitleTag>
 				<button
 					className="wc-blocks-components-disclosure-widget__button"
 					onClick={ () => setIsOpen( ! isOpen ) }
@@ -40,7 +39,7 @@ const DisclosureWidget = ( {
 					/>
 					{ title }
 				</button>
-			</TagName>
+			</TitleTag>
 			<div
 				className="wc-blocks-components-disclosure-widget__content"
 				hidden={ ! isOpen }
