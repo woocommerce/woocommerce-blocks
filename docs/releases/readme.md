@@ -45,6 +45,10 @@ _Outcome_: **Team is aware of release and in agreement about what fixes & featur
     -   For _major_ and _minor_ releases, create branch: `release/X.X`.
     -   For _patch_ releases, the branch should already exist.
 
+#### Create a release pull request
+
+Using the [release pull request template](../../.github/pull_request_template.md), create a pull request for the release branch you just created. This pull request will *not* get merged to master but contains the checklist to go over as a part of the release along with being a place to contain all planning/communication around the release. The checklist should be completed and the pull request has an approved review from at least one team member before you do the Github deploy or release the plugin to WordPress.org.
+
 ### Patch releases against latest master
 
 If it's determined a patch release will include the latest master:
@@ -67,13 +71,13 @@ This is for releases where just fixes specific to the branch are released and no
     -   Or in some cases, manually craft a new PR with appropriate changes, targeting release branch.
 -   Push the release branch to origin (so changes are in GitHub repo).
 -   Label the PR: `status: cherry-picked 🍒`.
-    
+
 ### Minor/Major releases
 
 - Ensure your local checkout is updated to the tip of the release branch.
 
 
-_Outcome_: **Release branch has all relevant changes merged & pushed.**
+_Outcome_: **Release branch has all relevant changes merged & pushed and there is a corresponding release pull request created for the release.**
 
 ### Prepare release
 
@@ -103,6 +107,8 @@ _Outcome_: **Release branch has `readme.txt` is updated with release details.**
     -   Confidence check - check blocks are available and function.
     -   Test to confirm new features/fixes are working correctly.
     -   Smoke test – test a cross section of core functionality.
+    -   Tests performed should be recorded and listed in the release pull request.
+-   Ask a team member to review the changes in the release pull request and for anyone who has done testing that they approve the pull request. **Remember release pull requests are just used for tracking the release and are not merged into master**.
 
 _Outcome_: **Confident that source code is ready for release: intended fixes are working correctly, no release blockers or build issues.**
 
@@ -145,6 +151,24 @@ _Outcome_: **Customers can install/update via WPORG; WPORG plugin page is up to 
 -   Edit the milestone and add the current date as the due date (this basically is used for easy reference of when the milestone was completed).
 -   Close the milestone.
 -   If you didn't release a patch release, create a milestone for the next minor release.
+-   Close any epics that are completed as of this release and remove any unfinished issues in that from the epic.
+
+#### Update wiki with any changes
+
+- By now the testing notes for the release should have a document in `/docs/releases` along with updating the [table of contents there](../testing/releases/README.md).
+- Also update the [wiki sidebar](https://github.com/woocommerce/woocommerce-gutenberg-products-block/wiki/_Sidebar/_edit) with the new links for the release testing notes.
+
+#### Create pull request for updating the package in WooCommerce core.
+
+If the tagged release should be updated in WooCommerce core, do this immediately following our release.
+
+- Create the pull request in the [WooCommerce Core Repository](https://github.com/woocommerce/woocommerce/) that [bumps the package version](https://github.com/woocommerce/woocommerce/blob/master/composer.json) for the blocks pacakge to the version being pulled in.
+- Copy the release pull request notes for that tag (and merge any notes from previous tags if you're bumping up from non consecutive versions) into the pull request description.
+- Run through the testing checklist to ensure everything works in that branch for that package bump. **Note:** Testing should include ensuring any features/new blocks that are supposed to be behind feature gating for the core merge of this package update are working as expected.
+- Verify and make any additional edits to the pull request description for things like: Changelog to be included with WooCommerce core, additional communication that might be needed elsewhere, additional marketing communication notes that may be needed etc.
+- After the checklist is complete and the testing is done, it will be up to the WooCommerce core team to approve and merge the pull request.
+
+*Outcome:* The package is updated in WooCommerce core frequently and successfully merged to WooCommerce master as a stable release..
 
 ## Appendix: Versions
 
