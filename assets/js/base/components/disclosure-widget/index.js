@@ -29,6 +29,7 @@ const DisclosureWidget = ( {
 		>
 			<TitleTag>
 				<button
+					aria-expanded={ isOpen }
 					className="wc-blocks-components-disclosure-widget__button"
 					onClick={ () => setIsOpen( ! isOpen ) }
 				>
