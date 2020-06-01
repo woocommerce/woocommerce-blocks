@@ -97,29 +97,18 @@ const AddToCartButton = ( { product } ) => {
 					__( 'Add to cart', 'woo-gutenberg-products-block' )
 		  );
 
+	const ButtonTag = allowAddToCart ? 'button' : 'a';
+	const buttonProps = {};
+
 	if ( ! allowAddToCart ) {
-		return (
-			<a
-				href={ permalink }
-				aria-label={ buttonAriaLabel }
-				className={ classnames(
-					'wp-block-button__link',
-					'add_to_cart_button',
-					{
-						loading: addingToCart,
-						added: addedToCart,
-					}
-				) }
-				rel="nofollow"
-			>
-				{ buttonText }
-			</a>
-		);
+		buttonProps.href = permalink;
+		buttonProps.rel = 'nofollow';
+	} else {
+		buttonProps.onClick = addToCart;
 	}
 
 	return (
-		<button
-			onClick={ addToCart }
+		<ButtonTag
 			aria-label={ buttonAriaLabel }
 			className={ classnames(
 				'wp-block-button__link',
@@ -130,9 +119,10 @@ const AddToCartButton = ( { product } ) => {
 				}
 			) }
 			disabled={ addingToCart }
+			{ ...buttonProps }
 		>
 			{ buttonText }
-		</button>
+		</ButtonTag>
 	);
 };
 
