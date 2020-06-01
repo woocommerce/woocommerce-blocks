@@ -25,19 +25,14 @@ import {
 const ProductButton = ( { className, ...props } ) => {
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product;
-
-	const { layoutStyleClassPrefix } = useInnerBlockLayoutContext();
-	const componentClass = `${ layoutStyleClassPrefix }__product-add-to-cart`;
+	const { parentClassName } = useInnerBlockLayoutContext();
 
 	return (
 		<div
 			className={ classnames(
 				className,
-				componentClass,
 				'wp-block-button',
-				{
-					'is-loading': ! product,
-				}
+				`${ parentClassName }__product-add-to-cart`
 			) }
 		>
 			{ product ? (

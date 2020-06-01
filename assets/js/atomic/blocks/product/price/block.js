@@ -22,18 +22,15 @@ import {
 const ProductPrice = ( { className, ...props } ) => {
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product;
-
-	const { layoutStyleClassPrefix } = useInnerBlockLayoutContext();
-	const componentClass = `${ layoutStyleClassPrefix }__product-price`;
+	const { parentClassName } = useInnerBlockLayoutContext();
 
 	if ( ! product ) {
 		return (
 			<div
 				className={ classnames(
 					className,
-					componentClass,
-					'price',
-					'is-loading'
+					`${ parentClassName }__product-price`,
+					`price`
 				) }
 			/>
 		);
@@ -43,17 +40,23 @@ const ProductPrice = ( { className, ...props } ) => {
 	const currency = getCurrencyFromPriceResponse( prices );
 
 	return (
-		<div className={ classnames( className, componentClass, 'price' ) }>
+		<div
+			className={ classnames(
+				className,
+				`${ parentClassName }__product-price`,
+				`price`
+			) }
+		>
 			{ hasPriceRange( prices ) ? (
 				<PriceRange
-					componentClass={ componentClass }
+					parentClassName={ parentClassName }
 					currency={ currency }
 					minAmount={ prices.price_range.min_amount }
 					maxAmount={ prices.price_range.max_amount }
 				/>
 			) : (
 				<Price
-					componentClass={ componentClass }
+					parentClassName={ parentClassName }
 					currency={ currency }
 					price={ prices.price }
 					regularPrice={ prices.regular_price }
@@ -71,9 +74,9 @@ const hasPriceRange = ( prices ) => {
 	);
 };
 
-const PriceRange = ( { componentClass, currency, minAmount, maxAmount } ) => {
+const PriceRange = ( { parentClassName, currency, minAmount, maxAmount } ) => {
 	return (
-		<span className={ `${ componentClass }__value` }>
+		<span className={ `${ parentClassName }__product-price-value` }>
 			<FormattedMonetaryAmount
 				currency={ currency }
 				value={ minAmount }
@@ -87,18 +90,20 @@ const PriceRange = ( { componentClass, currency, minAmount, maxAmount } ) => {
 	);
 };
 
-const Price = ( { componentClass, currency, price, regularPrice } ) => {
+const Price = ( { parentClassName, currency, price, regularPrice } ) => {
 	return (
 		<>
 			{ regularPrice !== price && (
-				<del className={ `${ componentClass }__regular` }>
+				<del
+					className={ `${ parentClassName }__product-price-regular` }
+				>
 					<FormattedMonetaryAmount
 						currency={ currency }
 						value={ regularPrice }
 					/>
 				</del>
 			) }
-			<span className={ `${ componentClass }__value` }>
+			<span className={ `${ parentClassName }__product-price-value` }>
 				<FormattedMonetaryAmount
 					currency={ currency }
 					value={ price }

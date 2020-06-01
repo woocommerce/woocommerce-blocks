@@ -282,7 +282,7 @@ class Editor extends Component {
 		return (
 			<InnerBlockLayoutContextProvider
 				parentName="woocommerce/all-products"
-				layoutStyleClassPrefix="wc-block-grid"
+				parentClassName="wc-block-grid"
 			>
 				<div
 					className={ getBlockClassName(

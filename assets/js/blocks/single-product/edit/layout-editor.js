@@ -41,7 +41,7 @@ const LayoutEditor = ( { product, clientId, isLoading } ) => {
 	return (
 		<InnerBlockLayoutContextProvider
 			parentName={ BLOCK_NAME }
-			layoutStyleClassPrefix={ baseClassName }
+			parentClassName={ baseClassName }
 		>
 			<ProductDataContextProvider product={ product }>
 				<InspectorControls>

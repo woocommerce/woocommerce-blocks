@@ -158,7 +158,7 @@
 .wc-block-grid__product-rating {
 	display: block;
 
-	.wc-block-grid__product-rating__stars,
+	.wc-block-grid__product-rating-stars,
 	.star-rating {
 		overflow: hidden;
 		position: relative;
@@ -378,7 +378,7 @@
 	}
 
 	.wc-block-grid__product-price {
-		.wc-block-grid__product-price__value,
+		.wc-block-grid__product-price-value,
 		.woocommerce-Price-amount {
 			font-family: $twentytwenty-headings;
 			font-size: 0.9em;
@@ -394,7 +394,7 @@
 	}
 
 	.wc-block-grid__product-rating {
-		.wc-block-grid__product-rating__stars,
+		.wc-block-grid__product-rating-stars,
 		.star-rating {
 			font-size: 0.7em;
 		}

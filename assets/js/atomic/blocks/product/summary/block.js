@@ -22,17 +22,14 @@ import {
 const ProductSummary = ( { className, ...props } ) => {
 	const productDataContext = useProductDataContext();
 	const { product } = productDataContext || props;
-
-	const { layoutStyleClassPrefix } = useInnerBlockLayoutContext();
-	const componentClass = `${ layoutStyleClassPrefix }__product-summary`;
+	const { parentClassName } = useInnerBlockLayoutContext();
 
 	if ( ! product ) {
 		return (
 			<div
 				className={ classnames(
 					className,
-					componentClass,
-					'is-loading'
+					`${ parentClassName }__product-summary`
 				) }
 			/>
 		);
@@ -50,7 +47,10 @@ const ProductSummary = ( { className, ...props } ) => {
 
 	return (
 		<Summary
-			className={ classnames( className, componentClass ) }
+			className={ classnames(
+				className,
+				`${ parentClassName }__product-summary`
+			) }
 			source={ source }
 			maxLength={ 150 }
 			countType={ countType }

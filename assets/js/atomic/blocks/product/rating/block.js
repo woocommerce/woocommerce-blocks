@@ -21,10 +21,7 @@ import {
 const ProductRating = ( { className, ...props } ) => {
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product;
-
-	const { layoutStyleClassPrefix } = useInnerBlockLayoutContext();
-	const componentClass = `${ layoutStyleClassPrefix }__product-rating`;
-
+	const { parentClassName } = useInnerBlockLayoutContext();
 	const rating = getAverageRating( product );
 
 	if ( ! rating ) {
@@ -42,10 +39,14 @@ const ProductRating = ( { className, ...props } ) => {
 
 	return (
 		<div
-			className={ classnames( className, componentClass, 'star-rating' ) }
+			className={ classnames(
+				className,
+				`${ parentClassName }__product-rating`,
+				'star-rating'
+			) }
 		>
 			<div
-				className={ `${ componentClass }__stars` }
+				className={ `${ parentClassName }__product-rating-stars` }
 				role="img"
 				aria-label={ ratingText }
 			>

@@ -13,7 +13,7 @@ import { createContext, useContext } from '@wordpress/element';
  */
 const InnerBlockLayoutContext = createContext( {
 	parentName: '',
-	layoutStyleClassPrefix: '',
+	parentClassName: '',
 } );
 
 export const useInnerBlockLayoutContext = () =>
@@ -21,12 +21,12 @@ export const useInnerBlockLayoutContext = () =>
 
 export const InnerBlockLayoutContextProvider = ( {
 	parentName = '',
-	layoutStyleClassPrefix = '',
+	parentClassName = '',
 	children,
 } ) => {
 	const contextValue = {
 		parentName,
-		layoutStyleClassPrefix,
+		parentClassName,
 	};
 
 	return (
@@ -39,5 +39,5 @@ export const InnerBlockLayoutContextProvider = ( {
 InnerBlockLayoutContextProvider.propTypes = {
 	children: PropTypes.node,
 	parentName: PropTypes.string,
-	layoutStyleClassPrefix: PropTypes.string,
+	parentClassName: PropTypes.string,
 };

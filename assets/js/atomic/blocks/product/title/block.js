@@ -28,10 +28,7 @@ const ProductTitle = ( {
 } ) => {
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product;
-
-	const { layoutStyleClassPrefix } = useInnerBlockLayoutContext();
-	const componentClass = `${ layoutStyleClassPrefix }__product-title`;
-
+	const { parentClassName } = useInnerBlockLayoutContext();
 	const TagName = `h${ headingLevel }`;
 
 	if ( ! product ) {
@@ -40,8 +37,7 @@ const ProductTitle = ( {
 				// @ts-ignore
 				className={ classnames(
 					className,
-					componentClass,
-					'is-loading'
+					`${ parentClassName }__product-title`
 				) }
 			/>
 		);
@@ -51,7 +47,12 @@ const ProductTitle = ( {
 
 	return (
 		// @ts-ignore
-		<TagName className={ classnames( className, componentClass ) }>
+		<TagName
+			className={ classnames(
+				className,
+				`${ parentClassName }__product-title`
+			) }
+		>
 			{ productLink ? (
 				<a href={ product.permalink } rel="nofollow">
 					{ productName }

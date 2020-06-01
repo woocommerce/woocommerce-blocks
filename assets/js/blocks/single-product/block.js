@@ -17,16 +17,16 @@ import { BLOCK_NAME } from './constants';
  * The Single Product Block.
  */
 const Block = ( { isLoading, product, children } ) => {
-	const baseClassName = 'wc-block-single-product';
+	const className = 'wc-block-single-product';
 
 	return (
 		<InnerBlockLayoutContextProvider
 			parentName={ BLOCK_NAME }
-			layoutStyleClassPrefix={ baseClassName }
+			parentClassName={ className }
 		>
 			<ProductDataContextProvider product={ product }>
 				<div
-					className={ classnames( baseClassName, {
+					className={ classnames( className, {
 						'is-loading': isLoading,
 					} ) }
 				>

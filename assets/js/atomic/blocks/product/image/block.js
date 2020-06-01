@@ -36,10 +36,7 @@ const ProductImage = ( {
 } ) => {
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product;
-
-	const { layoutStyleClassPrefix } = useInnerBlockLayoutContext();
-	const componentClass = `${ layoutStyleClassPrefix }__product-image`;
-
+	const { parentClassName } = useInnerBlockLayoutContext();
 	const [ imageLoaded, setImageLoaded ] = useState( false );
 
 	if ( ! product ) {
@@ -47,11 +44,11 @@ const ProductImage = ( {
 			<div
 				className={ classnames(
 					className,
-					componentClass,
-					'is-loading'
+					`${ parentClassName }__product-image`,
+					`${ parentClassName }__product-image--placeholder`
 				) }
 			>
-				<ImagePlaceholder componentClass={ componentClass } />
+				<ImagePlaceholder />
 			</div>
 		);
 	}
@@ -60,14 +57,18 @@ const ProductImage = ( {
 		product?.images && product.images.length ? product.images[ 0 ] : null;
 
 	return (
-		<div className={ classnames( className, componentClass ) }>
+		<div
+			className={ classnames(
+				className,
+				`${ parentClassName }__product-image`
+			) }
+		>
 			{ productLink ? (
 				<a href={ product.permalink } rel="nofollow">
 					{ showSaleBadge && (
 						<ProductSaleBadge align={ saleBadgeAlign } />
 					) }
 					<Image
-						componentClass={ componentClass }
 						image={ image }
 						onLoad={ () => setImageLoaded( true ) }
 						loaded={ imageLoaded }
@@ -79,7 +80,6 @@ const ProductImage = ( {
 						<ProductSaleBadge align={ saleBadgeAlign } />
 					) }
 					<Image
-						componentClass={ componentClass }
 						image={ image }
 						onLoad={ () => setImageLoaded( true ) }
 						loaded={ imageLoaded }
@@ -90,26 +90,16 @@ const ProductImage = ( {
 	);
 };
 
-const ImagePlaceholder = ( { componentClass } ) => {
-	return (
-		<img
-			className={ classnames(
-				`${ componentClass }__image`,
-				`${ componentClass }__image_placeholder`
-			) }
-			src={ PLACEHOLDER_IMG_SRC }
-			alt=""
-		/>
-	);
+const ImagePlaceholder = () => {
+	return <img src={ PLACEHOLDER_IMG_SRC } alt="" />;
 };
 
-const Image = ( { componentClass, image, onLoad, loaded } ) => {
+const Image = ( { image, onLoad, loaded } ) => {
 	const { thumbnail, srcset, sizes, alt } = image || {};
 
 	return (
 		<>
 			<img
-				className={ classnames( `${ componentClass }__image` ) }
 				src={ thumbnail }
 				srcSet={ srcset }
 				sizes={ sizes }
@@ -117,9 +107,7 @@ const Image = ( { componentClass, image, onLoad, loaded } ) => {
 				onLoad={ onLoad }
 				hidden={ ! loaded }
 			/>
-			{ ! loaded && (
-				<ImagePlaceholder componentClass={ componentClass } />
-			) }
+			{ ! loaded && <ImagePlaceholder /> }
 		</>
 	);
 };

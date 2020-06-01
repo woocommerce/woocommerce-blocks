@@ -23,16 +23,16 @@ import {
 const ProductSaleBadge = ( { className, align, ...props } ) => {
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product;
-
-	const { layoutStyleClassPrefix } = useInnerBlockLayoutContext();
-	const componentClass = `${ layoutStyleClassPrefix }__product-onsale`;
+	const { parentClassName } = useInnerBlockLayoutContext();
 
 	if ( ! product || ! product.on_sale ) {
 		return null;
 	}
 
 	const alignClass =
-		typeof align === 'string' ? `${ componentClass }--align${ align }` : '';
+		typeof align === 'string'
+			? `${ parentClassName }__product-onsale--align${ align }`
+			: '';
 
 	return (
 		<div
@@ -40,7 +40,7 @@ const ProductSaleBadge = ( { className, align, ...props } ) => {
 				'wc-block-component__sale-badge',
 				className,
 				alignClass,
-				componentClass
+				`${ parentClassName }__product-onsale`
 			) }
 		>
 			<Label
