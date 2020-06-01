@@ -9,17 +9,16 @@
 		background-color: $white;
 		padding-left: $gap-small;
 		padding-right: $gap-small;
-		margin-top: -24px;
 		margin-left: $gap-small;
-		margin-bottom: $gap-small;
-		color: $black;
-		font-weight: bold;
 		display: inline-block;
 		vertical-align: middle;
+		transform: translateY(-50%);
+		position: absolute;
+		top: 0;
 	}
 
 	.wc-block-component-express-checkout__content {
-		padding: 0 $gap-large;
+		padding: $gap $gap-large 0;
 	}
 
 	.wc-block-component-express-checkout-payment-event-buttons {

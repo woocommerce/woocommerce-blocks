@@ -29,10 +29,7 @@ $line-offset-from-circle-size: 8px;
 	margin-bottom: $gap-smaller;
 
 	.wc-block-checkout-step__title {
-		@include font-size(regular);
 		line-height: 1.5;
-		color: $gray-80;
-		font-weight: 400;
 		margin: 0 $gap-small 0 0;
 	}
 }

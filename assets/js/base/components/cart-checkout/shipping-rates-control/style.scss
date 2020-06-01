@@ -1,7 +1,3 @@
-.wc-block-shipping-rates-control__package-title {
-	font-weight: bold;
-}
-
 .wc-block-shipping-rates-control__package-items {
 	@include font-size(small);
 	color: $core-grey-dark-400;
@@ -49,10 +45,6 @@
 		.components-panel__body-toggle {
 			padding-bottom: 14px;
 			padding-top: 14px;
-		}
-
-		.wc-block-shipping-rates-control__package-title {
-			font-weight: normal;
 		}
 
 		.wc-block-shipping-rates-control__package-items {

@@ -35,8 +35,8 @@
 	}
 
 	.components-panel__body-title {
-		@include text-heading();
 		background: transparent;
+		display: inline;
 
 		&:hover,
 		&:focus,
@@ -45,11 +45,14 @@
 		}
 	}
 
-	.components-panel__body-toggle {
+	.components-panel__body-toggle,
+	// This selector is needed to reset styles from `@wordpress/components`.
+	.components-panel__body-toggle.components-button:focus:not(:disabled):not([aria-disabled="true"]) {
 		@include reset-typography();
+	}
+
+	.components-panel__body-toggle {
 		background: transparent;
-		font-weight: normal;
-		font-size: inherit;
 		padding-left: 0;
 		padding-right: 36px;
 
