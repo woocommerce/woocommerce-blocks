@@ -15,22 +15,26 @@ import { getBlockMap } from './get-block-map';
  * @param {Object} props           Render props.
  * @param {Array}  props.children  Children/inner blocks to render.
  * @param {string} props.blockName Parent Block Name used to get the block map and for keys.
- * @param {number} props.depth     Depth of inner blocks being rendered.
+ * @param {number} [props.depth]   Depth of inner blocks being rendered.
  */
-export const renderInnerBlocks = ( { children, blockName, depth = 1 } ) => {
-	const blockMap = getBlockMap( blockName );
+export const renderInnerBlocks = ( {
+	children,
+	blockName: parentBlockName,
+	depth = 1,
+} ) => {
+	const blockMap = getBlockMap( parentBlockName );
 
 	return Array.from( children ).map( ( el, index ) => {
 		const componentProps = {
 			...el.dataset,
-			key: `${ blockName }_${ depth }_${ index }`,
+			key: `${ parentBlockName }_${ depth }_${ index }`,
 		};
 
 		const componentChildren =
 			el.children && el.children.length
 				? renderInnerBlocks( {
 						children: el.children,
-						blockName,
+						blockName: parentBlockName,
 						depth: depth + 1,
 				  } )
 				: null;
@@ -54,7 +58,7 @@ export const renderInnerBlocks = ( { children, blockName, depth = 1 } ) => {
 		return (
 			// eslint-disable-next-line react/jsx-key
 			<LayoutComponent
-				key={ `${ blockName }_${ index }` }
+				key={ `${ parentBlockName }_${ index }` }
 				{ ...componentProps }
 			>
 				{ componentChildren }
