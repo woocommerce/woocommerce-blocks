@@ -3,9 +3,9 @@
 	border: 2px solid $black;
 	border-radius: 5px;
 	padding: 8px;
+	position: relative;
 
 	.wc-block-component-express-checkout__title {
-		position: relative;
 		background-color: $white;
 		padding-left: $gap-small;
 		padding-right: $gap-small;

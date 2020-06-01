@@ -2,10 +2,9 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Card, CardBody, PanelBody, PanelRow } from 'wordpress-components';
-import { Icon, cart } from '@woocommerce/icons';
 import PropTypes from 'prop-types';
 import { useContainerWidthContext } from '@woocommerce/base-context';
+import DisclosureWidget from '@woocommerce/base-components/disclosure-widget';
 
 /**
  * Internal dependencies
@@ -20,39 +19,27 @@ const CheckoutOrderSummary = ( { cartItems = [] } ) => {
 	}
 
 	return (
-		<Card isElevated={ true }>
-			<CardBody>
-				<PanelBody
-					className="wc-block-order-summary"
-					title={
-						<>
-							<Icon
-								className="wc-block-order-summary__button-icon"
-								srcElement={ cart }
-							/>
-							<span className="wc-block-order-summary__button-text">
-								{ __(
-									'Order summary',
-									'woo-gutenberg-products-block'
-								) }
-							</span>
-						</>
-					}
-					initialOpen={ isLarge }
-				>
-					<PanelRow className="wc-block-order-summary__row">
-						{ cartItems.map( ( cartItem ) => {
-							return (
-								<CheckoutOrderSummaryItem
-									key={ cartItem.key }
-									cartItem={ cartItem }
-								/>
-							);
-						} ) }
-					</PanelRow>
-				</PanelBody>
-			</CardBody>
-		</Card>
+		<DisclosureWidget
+			className="wc-block-order-summary"
+			buttonContent={
+				<span className="wc-block-order-summary__button-text">
+					{ __( 'Order summary', 'woo-gutenberg-products-block' ) }
+				</span>
+			}
+			initialOpen={ isLarge }
+			buttonWrapperTag="h2"
+		>
+			<div className="wc-block-order-summary__content">
+				{ cartItems.map( ( cartItem ) => {
+					return (
+						<CheckoutOrderSummaryItem
+							key={ cartItem.key }
+							cartItem={ cartItem }
+						/>
+					);
+				} ) }
+			</div>
+		</DisclosureWidget>
 	);
 };
 

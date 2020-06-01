@@ -1,0 +1,33 @@
+.wc-blocks-components-disclosure-widget__button {
+	&,
+	&:hover,
+	&:focus,
+	&:active {
+		@include reset-box();
+		@include reset-typography();
+		background: transparent;
+		box-shadow: none;
+		height: auto;
+		padding-bottom: em($gap-small);
+		padding-top: em($gap-small);
+		position: relative;
+		text-align: left;
+		width: 100%;
+	}
+
+	> .wc-blocks-components-disclosure-widget__button-icon {
+		position: absolute;
+		right: 0;
+		top: 50%;
+		transform: translateY(-50%);
+		width: auto;
+	}
+}
+
+.wc-blocks-components-disclosure-widget__content {
+	padding-bottom: em($gap);
+}
+
+.theme-twentytwenty .wc-blocks-components-disclosure-widget__button {
+	background: transparent;
+}

@@ -13,57 +13,28 @@
 
 .wc-block-sidebar {
 	margin: 0;
-	padding-left: percentage($gap-largest / 1060px);
+	padding-left: percentage($gap-large / 1060px);
 	width: 35%;
 
-	// Reset Gutenberg <Panel> styles when used in the sidebar.
-	.components-panel__body {
+	.wc-blocks-components-disclosure-widget {
 		border-top: 1px solid $core-grey-light-600;
 		border-bottom: 1px solid $core-grey-light-600;
 
-		&.is-opened {
-			padding-left: 0;
-			padding-right: 0;
-			padding-top: 0;
+		+ .wc-blocks-components-disclosure-widget {
+			border-top: none;
+		}
 
-			> .components-panel__body-title {
-				margin-bottom: 0;
-				margin-left: 0;
-				margin-right: 0;
-			}
+		> h2 {
+			@include font-size(regular);
+			@include reset-box();
 		}
 	}
 
-	.components-panel__body-title {
-		background: transparent;
-		display: inline;
+	.wc-blocks-components-disclosure-widget__button {
+		min-height: 3em;
 
-		&:hover,
-		&:focus,
-		&:active {
-			background: transparent;
-		}
-	}
-
-	.components-panel__body-toggle,
-	// This selector is needed to reset styles from `@wordpress/components`.
-	.components-panel__body-toggle.components-button:focus:not(:disabled):not([aria-disabled="true"]) {
-		@include reset-typography();
-	}
-
-	.components-panel__body-toggle {
-		background: transparent;
-		padding-left: 0;
-		padding-right: 36px;
-
-		&:hover,
-		&:focus,
-		&:active {
-			background: transparent;
-		}
-
-		.components-panel__arrow {
-			right: 0;
+		> svg {
+			padding-right: $gap;
 		}
 	}
 }
@@ -82,17 +53,17 @@
 		.wc-block-sidebar {
 			padding: 0;
 			width: 100%;
+		}
+	}
+}
 
-			// Reset card component styling on mobile.
-			.components-card {
-				background: transparent;
-				box-shadow: none;
-				border: none;
-			}
-			.components-card__body {
-				border: none;
-				padding: 0;
-			}
+.is-large {
+	.wc-block-sidebar {
+		.wc-block-totals-table-item,
+		.wc-blocks-components-disclosure-widget__button,
+		.wc-blocks-components-disclosure-widget__content {
+			padding-left: $gap;
+			padding-right: $gap;
 		}
 	}
 }
