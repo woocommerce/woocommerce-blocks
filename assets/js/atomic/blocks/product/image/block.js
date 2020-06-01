@@ -3,17 +3,20 @@
  */
 import PropTypes from 'prop-types';
 import { useState } from '@wordpress/element';
+import { compose } from '@wordpress/compose';
 import classnames from 'classnames';
 import { PLACEHOLDER_IMG_SRC } from '@woocommerce/block-settings';
 import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
+import withFilteredAttributes from '@woocommerce/base-hocs/with-filtered-attributes';
 
 /**
  * Internal dependencies
  */
 import ProductSaleBadge from '../sale-badge/block.js';
+import attributes from './attributes';
 
 /**
  * Product Image Block Component.
@@ -120,4 +123,6 @@ ProductImage.propTypes = {
 	saleBadgeAlign: PropTypes.string,
 };
 
-export default ProductImage;
+export default compose( [ withFilteredAttributes( attributes ) ] )(
+	ProductImage
+);

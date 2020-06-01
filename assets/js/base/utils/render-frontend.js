@@ -9,23 +9,27 @@ import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundar
  * Given some block attributes, gets attributes from the dataset or uses defaults.
  *
  * @param {Object} blockAttributes Object containing block attributes.
- * @param {Array} dataset Dataset from DOM.
+ * @param {Array} rawAttributes Dataset from DOM.
  * @return {Array} Array of parsed attributes.
  */
-export const getAttributesFromDataset = ( blockAttributes, dataset ) => {
+export const getValidBlockAttributes = ( blockAttributes, rawAttributes ) => {
 	const attributes = [];
 
 	Object.keys( blockAttributes ).forEach( ( key ) => {
-		if ( typeof dataset[ key ] !== 'undefined' ) {
+		if ( typeof rawAttributes[ key ] !== 'undefined' ) {
 			switch ( blockAttributes[ key ].type ) {
 				case 'boolean':
-					attributes[ key ] = dataset[ key ] !== 'false';
+					attributes[ key ] = rawAttributes[ key ] !== 'false';
 					break;
 				case 'number':
-					attributes[ key ] = parseInt( dataset[ key ], 10 );
+					attributes[ key ] = parseInt( rawAttributes[ key ], 10 );
+					break;
+				case 'array':
+				case 'object':
+					attributes[ key ] = JSON.parse( rawAttributes[ key ] );
 					break;
 				default:
-					attributes[ key ] = dataset[ key ];
+					attributes[ key ] = rawAttributes[ key ];
 					break;
 			}
 		} else {

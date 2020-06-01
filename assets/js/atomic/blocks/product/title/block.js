@@ -3,11 +3,18 @@
  */
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { compose } from '@wordpress/compose';
 import { decodeEntities } from '@wordpress/html-entities';
 import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
+import withFilteredAttributes from '@woocommerce/base-hocs/with-filtered-attributes';
+
+/**
+ * Internal dependencies
+ */
+import attributes from './attributes';
 
 /**
  * Product Title Block Component.
@@ -71,4 +78,6 @@ ProductTitle.propTypes = {
 	productLink: PropTypes.bool,
 };
 
-export default ProductTitle;
+export default compose( [ withFilteredAttributes( attributes ) ] )(
+	ProductTitle
+);

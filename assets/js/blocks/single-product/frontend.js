@@ -4,7 +4,7 @@
 import { StoreNoticesProvider } from '@woocommerce/base-context';
 import {
 	renderFrontend,
-	getAttributesFromDataset,
+	getValidBlockAttributes,
 } from '@woocommerce/base-utils';
 
 /**
@@ -29,7 +29,7 @@ const FrontendBlock = ( props ) => {
 
 const getProps = ( el ) => {
 	return {
-		attributes: getAttributesFromDataset( blockAttributes, el.dataset ),
+		attributes: getValidBlockAttributes( blockAttributes, el.dataset ),
 	};
 };
 
