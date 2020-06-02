@@ -47,7 +47,7 @@ _Outcome_: **Team is aware of release and in agreement about what fixes & featur
 
 #### Create a release pull request
 
-Using the [release pull request template](../../.github/pull_request_template.md), create a pull request for the release branch you just created. This pull request will *not* get merged to master but contains the checklist to go over as a part of the release along with being a place to contain all planning/communication around the release. The checklist should be completed and the pull request has an approved review from at least one team member before you do the Github deploy or release the plugin to WordPress.org.
+Using the [release pull request template](../../.github/pull_request_template.md), create a pull request for the release branch you just created. This pull request will have changes merged to master but might not be a straight merge if it contains cherry-picked commits. The pull request also contains the checklist to go over as a part of the release along with being a place to contain all planning/communication around the release. The checklist should be completed and the pull request has an approved review from at least one team member before you do the Github deploy or release the plugin to WordPress.org.
 
 ### Patch releases against latest master
 
@@ -143,7 +143,8 @@ _Outcome_: **Customers can install/update via WPORG; WPORG plugin page is up to 
 
 #### Update `master` with release changes
 
--   Ensure changelog is up to date on master.
+-   Merge the release branch back into master (without the branch being up to date with master). This may have merge conflicts needing resolved if there are cherry-picked commits in the release branch.
+-   Do not delete the branch (release branches are kept open for potential patch releases for that version)
 -   For _major_ & _minor_ releases, update version on master with dev suffix, e.g. [`2.6-dev`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/commit/e27f053e7be0bf7c1d376f5bdb9d9999190ce158).
 
 #### Clean up release milestone / Zenhub
