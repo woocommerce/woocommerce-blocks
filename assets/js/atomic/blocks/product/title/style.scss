@@ -1,0 +1,20 @@
+.wc-block-components-product-title {
+	margin-top: 0;
+	margin-bottom: $gap-small;
+
+	.is-loading &::before {
+		@include placeholder();
+		content: ".";
+		display: inline-block;
+		width: 10em;
+	}
+}
+
+.wc-block-grid .wc-block-components-product-title {
+	line-height: 1.2em;
+	font-weight: 700;
+	padding: 0;
+	color: inherit;
+	font-size: inherit;
+	display: block;
+}

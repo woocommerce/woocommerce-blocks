@@ -57,12 +57,7 @@ const AddToCartButton = ( { product } ) => {
 		is_in_stock: isInStock,
 	} = product;
 
-	const {
-		cartQuantity,
-		addingToCart,
-		cartIsLoading,
-		addToCart,
-	} = useStoreAddToCart( id );
+	const { cartQuantity, addingToCart, addToCart } = useStoreAddToCart( id );
 
 	useEffect( () => {
 		// Avoid running on first mount when cart quantity is first set.
@@ -72,10 +67,6 @@ const AddToCartButton = ( { product } ) => {
 		}
 		triggerFragmentRefresh();
 	}, [ cartQuantity ] );
-
-	if ( cartIsLoading ) {
-		return <AddToCartButtonPlaceholder />;
-	}
 
 	const addedToCart = Number.isFinite( cartQuantity ) && cartQuantity > 0;
 	const allowAddToCart = ! hasOptions && isPurchasable && isInStock;
@@ -114,6 +105,7 @@ const AddToCartButton = ( { product } ) => {
 			className={ classnames(
 				'wp-block-button__link',
 				'add_to_cart_button',
+				`wc-block-components-product-button__button`,
 				{
 					loading: addingToCart,
 					added: addedToCart,
@@ -132,7 +124,9 @@ const AddToCartButtonPlaceholder = () => {
 		<button
 			className={ classnames(
 				'wp-block-button__link',
-				'add_to_cart_button'
+				'add_to_cart_button',
+				`wc-block-components-product-button__button`,
+				`wc-block-components-product-button__button--placeholder`
 			) }
 			disabled={ true }
 		/>

@@ -75,6 +75,4 @@ ProductTitle.propTypes = {
 	productLink: PropTypes.bool,
 };
 
-export default compose( [ withFilteredAttributes( attributes ) ] )(
-	ProductTitle
-);
+export default compose( withFilteredAttributes( attributes ) )( ProductTitle );

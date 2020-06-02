@@ -1,0 +1,31 @@
+.wc-block-components-product-price {
+	margin-top: 0;
+	margin-bottom: $gap-small;
+	display: block;
+
+	&__value {
+		letter-spacing: -1px;
+		font-weight: 600;
+		display: block;
+		font-size: 1.25em;
+		line-height: 1.25;
+		color: #000;
+		span {
+			white-space: nowrap;
+		}
+	}
+	&__regular {
+		font-size: 0.8em;
+		line-height: 1;
+		color: #555;
+		margin-top: -0.25em;
+		display: block;
+	}
+}
+
+.is-loading .wc-block-components-product-price::before {
+	@include placeholder();
+	content: ".";
+	display: inline-block;
+	width: 4em;
+}

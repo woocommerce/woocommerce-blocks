@@ -12,7 +12,7 @@ import withFilteredAttributes from '@woocommerce/base-hocs/with-filtered-attribu
 /**
  * Internal dependencies
  */
-import ProductSaleBadge from '../sale-badge/block.js';
+import ProductSaleBadge from './../sale-badge/block.js';
 import attributes from './attributes';
 import './style.scss';
 
@@ -65,8 +65,11 @@ const ProductImage = ( {
 		>
 			{ productLink ? (
 				<a href={ product.permalink } rel="nofollow">
-					{ showSaleBadge && (
-						<ProductSaleBadge align={ saleBadgeAlign } />
+					{ !! showSaleBadge && (
+						<ProductSaleBadge
+							align={ saleBadgeAlign }
+							product={ product }
+						/>
 					) }
 					<Image
 						image={ image }
@@ -76,8 +79,11 @@ const ProductImage = ( {
 				</a>
 			) : (
 				<>
-					{ showSaleBadge && (
-						<ProductSaleBadge align={ saleBadgeAlign } />
+					{ !! showSaleBadge && (
+						<ProductSaleBadge
+							align={ saleBadgeAlign }
+							product={ product }
+						/>
 					) }
 					<Image
 						image={ image }
@@ -120,6 +126,4 @@ ProductImage.propTypes = {
 	saleBadgeAlign: PropTypes.string,
 };
 
-export default compose( [ withFilteredAttributes( attributes ) ] )(
-	ProductImage
-);
+export default compose( withFilteredAttributes( attributes ) )( ProductImage );
