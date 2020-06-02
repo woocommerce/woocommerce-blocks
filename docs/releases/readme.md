@@ -154,11 +154,6 @@ _Outcome_: **Customers can install/update via WPORG; WPORG plugin page is up to 
 -   If you didn't release a patch release, create a milestone for the next minor release.
 -   Close any epics that are completed as of this release and remove any unfinished issues in that from the epic.
 
-#### Update wiki with any changes
-
-- By now the testing notes for the release should have a document in `/docs/releases` along with updating the [table of contents there](../testing/releases/README.md).
-- Also update the [wiki sidebar](https://github.com/woocommerce/woocommerce-gutenberg-products-block/wiki/_Sidebar/_edit) with the new links for the release testing notes.
-
 #### Create pull request for updating the package in WooCommerce core.
 
 If the tagged release should be updated in WooCommerce core, do this immediately following our release.
