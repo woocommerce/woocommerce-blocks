@@ -4,10 +4,12 @@
 import PropTypes from 'prop-types';
 import { __, sprintf } from '@wordpress/i18n';
 import classnames from 'classnames';
-import {
-	useInnerBlockLayoutContext,
-	useProductDataContext,
-} from '@woocommerce/shared-context';
+import { useProductDataContext } from '@woocommerce/shared-context';
+
+/**
+ * Internal dependencies
+ */
+import './style.scss';
 
 /**
  * Product Rating Block Component.
@@ -21,7 +23,6 @@ import {
 const ProductRating = ( { className, ...props } ) => {
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product;
-	const { parentClassName } = useInnerBlockLayoutContext();
 	const rating = getAverageRating( product );
 
 	if ( ! rating ) {
@@ -41,12 +42,12 @@ const ProductRating = ( { className, ...props } ) => {
 		<div
 			className={ classnames(
 				className,
-				`${ parentClassName }__product-rating`,
-				'star-rating'
+				'star-rating',
+				`wc-block-components-product-rating`
 			) }
 		>
 			<div
-				className={ `${ parentClassName }__product-rating-stars` }
+				className={ `wc-block-components-product-rating__stars` }
 				role="img"
 				aria-label={ ratingText }
 			>

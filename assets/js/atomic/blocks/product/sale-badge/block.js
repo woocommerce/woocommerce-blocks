@@ -5,10 +5,12 @@ import PropTypes from 'prop-types';
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import Label from '@woocommerce/base-components/label';
-import {
-	useInnerBlockLayoutContext,
-	useProductDataContext,
-} from '@woocommerce/shared-context';
+import { useProductDataContext } from '@woocommerce/shared-context';
+
+/**
+ * Internal dependencies
+ */
+import './style.scss';
 
 /**
  * Product Sale Badge Block Component.
@@ -23,7 +25,6 @@ import {
 const ProductSaleBadge = ( { className, align, ...props } ) => {
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product;
-	const { parentClassName } = useInnerBlockLayoutContext();
 
 	if ( ! product || ! product.on_sale ) {
 		return null;
@@ -31,16 +32,15 @@ const ProductSaleBadge = ( { className, align, ...props } ) => {
 
 	const alignClass =
 		typeof align === 'string'
-			? `${ parentClassName }__product-onsale--align${ align }`
+			? `wc-block-components-product-sale-badge--align${ align }`
 			: '';
 
 	return (
 		<div
 			className={ classnames(
-				'wc-block-component__sale-badge',
+				'wc-block-components-product-sale-badge',
 				className,
-				alignClass,
-				`${ parentClassName }__product-onsale`
+				alignClass
 			) }
 		>
 			<Label

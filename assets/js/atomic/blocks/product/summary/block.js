@@ -5,10 +5,12 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Summary from '@woocommerce/base-components/summary';
 import { getSetting } from '@woocommerce/settings';
-import {
-	useInnerBlockLayoutContext,
-	useProductDataContext,
-} from '@woocommerce/shared-context';
+import { useProductDataContext } from '@woocommerce/shared-context';
+
+/**
+ * Internal dependencies
+ */
+import './style.scss';
 
 /**
  * Product Summary Block Component.
@@ -22,14 +24,13 @@ import {
 const ProductSummary = ( { className, ...props } ) => {
 	const productDataContext = useProductDataContext();
 	const { product } = productDataContext || props;
-	const { parentClassName } = useInnerBlockLayoutContext();
 
 	if ( ! product ) {
 		return (
 			<div
 				className={ classnames(
 					className,
-					`${ parentClassName }__product-summary`
+					`wc-block-components-product-summary`
 				) }
 			/>
 		);
@@ -49,7 +50,7 @@ const ProductSummary = ( { className, ...props } ) => {
 		<Summary
 			className={ classnames(
 				className,
-				`${ parentClassName }__product-summary`
+				`wc-block-components-product-summary`
 			) }
 			source={ source }
 			maxLength={ 150 }

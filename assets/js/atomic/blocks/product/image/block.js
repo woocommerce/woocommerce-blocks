@@ -6,10 +6,7 @@ import { useState } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 import classnames from 'classnames';
 import { PLACEHOLDER_IMG_SRC } from '@woocommerce/block-settings';
-import {
-	useInnerBlockLayoutContext,
-	useProductDataContext,
-} from '@woocommerce/shared-context';
+import { useProductDataContext } from '@woocommerce/shared-context';
 import withFilteredAttributes from '@woocommerce/base-hocs/with-filtered-attributes';
 
 /**
@@ -17,6 +14,7 @@ import withFilteredAttributes from '@woocommerce/base-hocs/with-filtered-attribu
  */
 import ProductSaleBadge from '../sale-badge/block.js';
 import attributes from './attributes';
+import './style.scss';
 
 /**
  * Product Image Block Component.
@@ -39,7 +37,6 @@ const ProductImage = ( {
 } ) => {
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product;
-	const { parentClassName } = useInnerBlockLayoutContext();
 	const [ imageLoaded, setImageLoaded ] = useState( false );
 
 	if ( ! product ) {
@@ -47,8 +44,8 @@ const ProductImage = ( {
 			<div
 				className={ classnames(
 					className,
-					`${ parentClassName }__product-image`,
-					`${ parentClassName }__product-image--placeholder`
+					`wc-block-components-product-image`,
+					`wc-block-components-product-image--placeholder`
 				) }
 			>
 				<ImagePlaceholder />
@@ -63,7 +60,7 @@ const ProductImage = ( {
 		<div
 			className={ classnames(
 				className,
-				`${ parentClassName }__product-image`
+				`wc-block-components-product-image`
 			) }
 		>
 			{ productLink ? (

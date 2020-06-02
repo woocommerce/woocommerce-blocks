@@ -5,16 +5,14 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { compose } from '@wordpress/compose';
 import { decodeEntities } from '@wordpress/html-entities';
-import {
-	useInnerBlockLayoutContext,
-	useProductDataContext,
-} from '@woocommerce/shared-context';
+import { useProductDataContext } from '@woocommerce/shared-context';
 import withFilteredAttributes from '@woocommerce/base-hocs/with-filtered-attributes';
 
 /**
  * Internal dependencies
  */
 import attributes from './attributes';
+import './style.scss';
 
 /**
  * Product Title Block Component.
@@ -35,7 +33,6 @@ const ProductTitle = ( {
 } ) => {
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product;
-	const { parentClassName } = useInnerBlockLayoutContext();
 	const TagName = `h${ headingLevel }`;
 
 	if ( ! product ) {
@@ -44,7 +41,7 @@ const ProductTitle = ( {
 				// @ts-ignore
 				className={ classnames(
 					className,
-					`${ parentClassName }__product-title`
+					`wc-block-components-product-title`
 				) }
 			/>
 		);
@@ -57,7 +54,7 @@ const ProductTitle = ( {
 		<TagName
 			className={ classnames(
 				className,
-				`${ parentClassName }__product-title`
+				`wc-block-components-product-title`
 			) }
 		>
 			{ productLink ? (

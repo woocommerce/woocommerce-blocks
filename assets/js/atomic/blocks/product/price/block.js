@@ -5,10 +5,12 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
-import {
-	useInnerBlockLayoutContext,
-	useProductDataContext,
-} from '@woocommerce/shared-context';
+import { useProductDataContext } from '@woocommerce/shared-context';
+
+/**
+ * Internal dependencies
+ */
+import './style.scss';
 
 /**
  * Product Price Block Component.
@@ -22,15 +24,14 @@ import {
 const ProductPrice = ( { className, ...props } ) => {
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product;
-	const { parentClassName } = useInnerBlockLayoutContext();
 
 	if ( ! product ) {
 		return (
 			<div
 				className={ classnames(
 					className,
-					`${ parentClassName }__product-price`,
-					`price`
+					`price`,
+					`wc-block-components-product-price`
 				) }
 			/>
 		);
@@ -43,20 +44,18 @@ const ProductPrice = ( { className, ...props } ) => {
 		<div
 			className={ classnames(
 				className,
-				`${ parentClassName }__product-price`,
-				`price`
+				`price`,
+				`wc-block-components-product-price`
 			) }
 		>
 			{ hasPriceRange( prices ) ? (
 				<PriceRange
-					parentClassName={ parentClassName }
 					currency={ currency }
 					minAmount={ prices.price_range.min_amount }
 					maxAmount={ prices.price_range.max_amount }
 				/>
 			) : (
 				<Price
-					parentClassName={ parentClassName }
 					currency={ currency }
 					price={ prices.price }
 					regularPrice={ prices.regular_price }
@@ -74,9 +73,9 @@ const hasPriceRange = ( prices ) => {
 	);
 };
 
-const PriceRange = ( { parentClassName, currency, minAmount, maxAmount } ) => {
+const PriceRange = ( { currency, minAmount, maxAmount } ) => {
 	return (
-		<span className={ `${ parentClassName }__product-price-value` }>
+		<span className={ `wc-block-components-product-price__value` }>
 			<FormattedMonetaryAmount
 				currency={ currency }
 				value={ minAmount }
@@ -90,20 +89,18 @@ const PriceRange = ( { parentClassName, currency, minAmount, maxAmount } ) => {
 	);
 };
 
-const Price = ( { parentClassName, currency, price, regularPrice } ) => {
+const Price = ( { currency, price, regularPrice } ) => {
 	return (
 		<>
 			{ regularPrice !== price && (
-				<del
-					className={ `${ parentClassName }__product-price-regular` }
-				>
+				<del className={ `wc-block-components-product-price__regular` }>
 					<FormattedMonetaryAmount
 						currency={ currency }
 						value={ regularPrice }
 					/>
 				</del>
 			) }
-			<span className={ `${ parentClassName }__product-price-value` }>
+			<span className={ `wc-block-components-product-price__value` }>
 				<FormattedMonetaryAmount
 					currency={ currency }
 					value={ price }
