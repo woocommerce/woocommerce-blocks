@@ -14,8 +14,7 @@
 		box-shadow: none;
 	}
 
-	img,
-	svg {
+	img {
 		vertical-align: middle;
 		width: 100%;
 
@@ -24,8 +23,7 @@
 		}
 	}
 
-	.is-loading & img,
-	.is-loading & svg {
+	.is-loading & img {
 		@include placeholder();
 		height: 0;
 		padding-bottom: 100%;
