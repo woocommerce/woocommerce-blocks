@@ -16,7 +16,7 @@ import {
  * @param {string}  [props.className]    CSS Class name for the component.
  * @param {number}  [props.headingLevel] Heading level (h1, h2 etc)
  * @param {boolean} [props.productLink]  Whether or not to display a link to the product page.
- * @param {Object}  [props.product ]     Optional product object. Product from context will be used if
+ * @param {Object}  [props.product]      Optional product object. Product from context will be used if
  *                                       this is not provided.
  * @return {*} The component.
  */
