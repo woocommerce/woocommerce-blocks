@@ -7,36 +7,82 @@ This is the release pull request for {version} of the WooCommerce Blocks plugin.
   Please include any extra details with each item as needed.
 -->
 
-* [ ] What is being introduced in this release?
-* [ ] If this release has potentially **high customer impact**, is a blog post (section) ready? Provide a link if applicable.
-* [ ] Is the **relevant developer documentation updated**? Please provide links if applicable.
-* [ ] Any special instructions or helpful notes for Happiness engineers are posted (this might not be needed for every release).
+This release introduces:
+
+<!--
+In this section document an overview/summary of what this release includes. You can refer to
+the changelog for more information
+-->
+
+### Prepared Updates
+
+The following documentation, blog posts, and changelog updates are prepared for the release:
+
+<!--
+In this section you are highlighting all the public facing documentation that is related to the
+release. Feel free to remove anything that doesn't apply for this release.
+-->
+
+**Release announcement:** <!-- Link to release announcement post on developer.woocommerce.com (published after release) -->
+
+**Developer Notes** - The following issues require developer notes in the release post:
+
+<!--
+Issues or pulls needing a developer note are labelled with `status: needs-dev-note`. Review
+those and list here as checklist items. You can have different engineers write the notes
+(usually the engineer that did the changes) if needed, but they should be summarized and included in the release post.
+-->
+
+
+**Relevant developer documentation:** <!-- Link(s) to any developer documentation related to the release -->
+
+**Happiness Engineer:** <!-- Link to any special instructions or helpful notes for HE related to this release -->
+
+* [ ] The release includes a changelog entry in the readme.txt?
+
 
 ## Quality
 
 <!--
   This section is for any notes related to quality around the release.
-  Please include any extra details with each item as needed.
+  Please include any extra details with each item as needed. This can include notes about
+  Why something isn't checked or expanding info on your response to an item.
 -->
 
-* [ ] Have you **written tests** to cover the changes?
+* [ ] Changes in this release are covered by Automated Tests.
+     <!--
+      This section is for confirming that the release changeset is covered by automated tests. If not,
+      please leave some details on why not and any relevant information indicating confidence without
+      those tests.
+      -->
      * [ ] Unit tests
      * [ ] E2E tests
      * [ ] for each supported WordPress and WooCommerce core versions.
-* [ ] Have you tested on the applicable platforms?
+
+* This release has been tested on the following platforms:
      * [ ] mobile
      * [ ] desktop
-* [ ] Does this release affect API's and conform to API versioning policy?
-* [ ] Have you considered the impact of the changes in the release on **other extensions** and **backward compatibility**?
-     * [ ] Does the release change the signature of any public methods or functions?
-     * [ ] Are filters or hooks affected by the PR code changes?
-* [ ] Does the release include a changelog entry in the readme.txt?
-* [ ] Please provide a link to **testing instructions** for this release.
-* [ ] Have you reviewed impacts to performance (bundle sizes, query time etc)?
+
+* [ ] This release affects public facing REST APIs.
+    * [ ] It conforms to REST API versioning policy.
+
+* [ ] This release impacts **other extensions** or **backward compatibility**.
+    * [ ] The release changes the signature of public methods or functions
+        * [ ] This is documented (see: <!-- Enter a link to the documentation here -->)
+    * [ ] The release affects filters or action hooks.
+        * [ ] This is documented (see: <!-- Enter a link to the documentation here -->)
+
+* [ ] Link to **testing instructions** for this release: <!-- Enter a link to the testing instructions here -->
+
+* [ ] The release has a negative performance impact on sites.
+    * [ ] There are new assets (JavaScript or CSS bundles)
+    * [ ] There is an increase to the size of JavaScrip or CSS bundles) <!-- please include rationale for this increase -->
+    * [ ] Other negative performance impacts (if yes, include list below)
+
+* [ ] The release has positive performance impact on sites. If checked, please document these improvements here.
 
 ## Additional Notes
 
 <!--
   This section is for additional notes related to the release.
-  Please include any extra details with each item as needed.
 -->
