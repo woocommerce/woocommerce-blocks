@@ -26,9 +26,11 @@ import { Icon, grid } from '@woocommerce/icons';
 import GridLayoutControl from '@woocommerce/block-components/grid-layout-control';
 import { HAS_PRODUCTS } from '@woocommerce/block-settings';
 import {
-	InnerBlockConfigurationProvider,
-	ProductLayoutContextProvider,
-} from '@woocommerce/base-context';
+	InnerBlockLayoutContextProvider,
+	ProductDataContextProvider,
+} from '@woocommerce/shared-context';
+import { getBlockMap } from '@woocommerce/atomic-utils';
+import { previewProducts } from '@woocommerce/resource-previews';
 
 /**
  * Internal dependencies
@@ -40,17 +42,10 @@ import {
 } from '../utils';
 import {
 	DEFAULT_PRODUCT_LIST_LAYOUT,
-	getBlockMap,
 	getProductLayoutConfig,
 } from '../base-utils';
 import { getSharedContentControls, getSharedListControls } from '../edit';
 import Block from './block';
-
-const layoutContextConfig = {
-	layoutStyleClassPrefix: 'wc-block-grid',
-};
-
-const parentBlockConfig = { parentName: 'woocommerce/all-products' };
 
 /**
  * Component to handle edit mode of "All Products".
@@ -212,7 +207,11 @@ class Editor extends Component {
 					<div className="wc-block-grid has-1-columns">
 						<ul className="wc-block-grid__products">
 							<li className="wc-block-grid__product">
-								<InnerBlocks { ...InnerBlockProps } />
+								<ProductDataContextProvider
+									product={ previewProducts[ 0 ] }
+								>
+									<InnerBlocks { ...InnerBlockProps } />
+								</ProductDataContextProvider>
 							</li>
 						</ul>
 					</div>
@@ -281,22 +280,23 @@ class Editor extends Component {
 		}
 
 		return (
-			<InnerBlockConfigurationProvider value={ parentBlockConfig }>
-				<ProductLayoutContextProvider value={ layoutContextConfig }>
-					<div
-						className={ getBlockClassName(
-							'wc-block-all-products',
-							attributes
-						) }
-					>
-						{ this.getBlockControls() }
-						{ this.getInspectorControls() }
-						{ isEditing
-							? this.renderEditMode()
-							: this.renderViewMode() }
-					</div>
-				</ProductLayoutContextProvider>
-			</InnerBlockConfigurationProvider>
+			<InnerBlockLayoutContextProvider
+				parentName="woocommerce/all-products"
+				layoutStyleClassPrefix="wc-block-grid"
+			>
+				<div
+					className={ getBlockClassName(
+						'wc-block-all-products',
+						attributes
+					) }
+				>
+					{ this.getBlockControls() }
+					{ this.getInspectorControls() }
+					{ isEditing
+						? this.renderEditMode()
+						: this.renderViewMode() }
+				</div>
+			</InnerBlockLayoutContextProvider>
 		);
 	};
 }

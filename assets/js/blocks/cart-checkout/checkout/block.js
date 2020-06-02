@@ -111,6 +111,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		isIdle: checkoutIsIdle,
 		isProcessing: checkoutIsProcessing,
 		customerId,
+		onSubmit,
 	} = useCheckoutContext();
 	const {
 		hasValidationErrors,
@@ -135,9 +136,8 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		setShippingAsBilling,
 		showBillingFields,
 	} = useCheckoutAddress();
-	const addressFields = useMemo( () => {
+	const addressFieldsConfig = useMemo( () => {
 		return {
-			...defaultAddressFields,
 			company: {
 				...defaultAddressFields.company,
 				hidden: ! attributes.showCompanyField,
@@ -206,7 +206,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 			<SidebarLayout className="wc-block-checkout">
 				<Main className="wc-block-checkout__main">
 					{ cartNeedsPayment && <ExpressCheckoutFormControl /> }
-					<CheckoutForm>
+					<CheckoutForm onSubmit={ onSubmit }>
 						<FormStep
 							id="contact-fields"
 							disabled={ checkoutIsProcessing }
@@ -252,8 +252,10 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 									id="shipping"
 									onChange={ setShippingFields }
 									values={ shippingFields }
-									fields={ Object.keys( addressFields ) }
-									fieldConfig={ addressFields }
+									fields={ Object.keys(
+										defaultAddressFields
+									) }
+									fieldConfig={ addressFieldsConfig }
 								/>
 								{ attributes.showPhoneField && (
 									<ValidatedTextInput
@@ -310,8 +312,10 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 									onChange={ setBillingFields }
 									type="billing"
 									values={ billingFields }
-									fields={ Object.keys( addressFields ) }
-									fieldConfig={ addressFields }
+									fields={ Object.keys(
+										defaultAddressFields
+									) }
+									fieldConfig={ addressFieldsConfig }
 								/>
 							</FormStep>
 						) }

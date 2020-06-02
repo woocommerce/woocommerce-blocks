@@ -1,12 +1,22 @@
-# WooCommerce Product Blocks
+# WooCommerce Product Blocks <!-- omit in toc -->
 
 [![Latest Tag](https://img.shields.io/github/tag/woocommerce/woocommerce-gutenberg-products-block.svg?style=flat&label=Latest%20Tag)](https://github.com/woocommerce/woocommerce-gutenberg-products-block/releases)
 [![Travis](https://travis-ci.com/woocommerce/woocommerce-gutenberg-products-block.svg?branch=master)](https://travis-ci.com/woocommerce/woocommerce-gutenberg-products-block)
 [![View](https://img.shields.io/badge/Project%20Components-brightgreen.svg?style=flat)](https://woocommerce.github.io/woocommerce-gutenberg-products-block)
 
-Feature plugin for WooCommerce + Gutenberg. This plugin serves as a space to iterate and explore new Blocks for WooCommerce, and how WooCommerce might work with the block editor.
+This is the feature plugin for WooCommerce + Gutenberg. This plugin serves as a space to iterate and explore new Blocks and updates to existing blocks for WooCommerce, and how WooCommerce might work with the block editor.
 
-If you're just looking to use these blocks, update to the latest version of WooCommerce! The blocks are bundled into WooCommerce since version 3.6, and can be added from the "WooCommerce" section in the block inserter.
+Use this plugin if you want access to the bleeding edge of available blocks for WooCommerce. However, stable blocks are bundled into WooCommerce, and can be added from the "WooCommerce" section in the block inserter.
+
+## Table of Contents <!-- omit in toc -->
+
+- [Documentation](#documentation)
+  - [Code Documentation](#code-documentation)
+  - [Contributing](#contributing)
+- [Installing the plugin version](#installing-the-plugin-version)
+- [Installing the development version](#installing-the-development-version)
+- [Getting started with block development](#getting-started-with-block-development)
+- [Vision for the Feature](#vision-for-the-feature)
 
 ## Documentation
 
@@ -14,28 +24,27 @@ To find out more about the blocks and how to use them, [check out the documentat
 
 If you want to see what we're working on for future versions, or want to help out, read on.
 
-## Table of Contents
+### Code Documentation
 
--   [Installing the stable version](#installing-the-stable-version)
--   [Installing the development version](#installing-the-development-version)
--   [Getting started with block development](#getting-started-with-block-development)
--   [Contributing](docs)
-    -   [Publishing a release](docs/releases/readme.md)
--   Code Documentation
-    -   [Blocks](assets/js/blocks)
-    -   [Components](assets/js/components)
+- [Blocks](./assets/js/blocks)
+- [Components](assets/js/components)
+- [Other Docs](./docs)
 
-## Installing the stable version
+### Contributing
+
+- [Publishing a release](docs/releases/readme.md)
+
+## Installing the plugin version
 
 We release a new version of WooCommerce Blocks onto WordPress.org every few weeks, which can be used as an easier way to preview the features.
 
-1. Make sure you have WordPress 5.0+ and WooCommerce 3.7+
-2. The stable version is available on WordPress.org. [Download the stable version here.](https://wordpress.org/plugins/woo-gutenberg-products-block/)
+1. Make sure you have WordPress 5.2+ and WooCommerce 4.0+
+2. The plugin version is available on WordPress.org. [Download the plugin version here.](https://wordpress.org/plugins/woo-gutenberg-products-block/)
 3. Activate the plugin.
 
 ## Installing the development version
 
-1. Make sure you have WordPress 5.0+ and WooCommerce 3.7+
+1. Make sure you have WordPress 5.2+ and WooCommerce 4.0+
 2. Get a copy of this plugin using the green "Clone or download" button on the right.
 3. `npm install` to install the dependencies.
 4. `composer install` to install core dependencies.

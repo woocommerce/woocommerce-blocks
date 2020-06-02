@@ -180,6 +180,7 @@
 			position: absolute;
 			opacity: 0.5;
 			color: #aaa;
+			white-space: nowrap;
 		}
 		span {
 			overflow: hidden;
@@ -196,11 +197,11 @@
 			right: 0;
 			position: absolute;
 			color: #000;
+			white-space: nowrap;
 		}
 	}
 }
 
-.editor-styles-wrapper .wc-block-grid__products .wc-block-grid__product .wc-block-grid__product-onsale,
 .wc-block-grid__product-onsale {
 	border: 1px solid #43454b;
 	color: #43454b;
@@ -344,6 +345,7 @@
 		}
 	}
 }
+
 .theme-twentynineteen {
 	.wc-block-grid__product {
 		font-size: 0.88889em;
@@ -358,5 +360,91 @@
 	}
 	.wc-block-grid__product-onsale {
 		line-height: 1;
+	}
+}
+
+.theme-twentytwenty {
+	$twentytwenty-headings: -apple-system, blinkmacsystemfont, "Helvetica Neue", helvetica, sans-serif;
+	$twentytwenty-highlights-color: #cd2653;
+
+	.wc-block-grid__product-link {
+		color: #000;
+	}
+
+	.wc-block-grid__product-title {
+		font-family: $twentytwenty-headings;
+		color: #000;
+		font-size: 1.2em;
+	}
+
+	.wc-block-grid__product-price {
+		.wc-block-grid__product-price__value,
+		.woocommerce-Price-amount {
+			font-family: $twentytwenty-headings;
+			font-size: 0.9em;
+		}
+
+		del {
+			opacity: 0.5;
+		}
+
+		ins {
+			text-decoration: none;
+		}
+	}
+
+	.wc-block-grid__product-rating {
+		.wc-block-grid__product-rating__stars,
+		.star-rating {
+			font-size: 0.7em;
+		}
+	}
+
+	.wc-block-grid__product-add-to-cart > .wp-block-button__link {
+		font-family: $twentytwenty-headings;
+	}
+
+	.wc-block-grid__products .wc-block-grid__product-onsale {
+		background: $twentytwenty-highlights-color;
+		color: #fff;
+		font-family: $twentytwenty-headings;
+		font-weight: 700;
+		letter-spacing: -0.02em;
+		line-height: 1.2;
+		text-transform: uppercase;
+		font-size: 1.5rem;
+	}
+
+	// Override style from WC Core that set its position to absolute.
+	// These rulesets can be removed once https://github.com/woocommerce/woocommerce/pull/26516 is released.
+	.wc-block-grid__products .wc-block-component__sale-badge {
+		position: static;
+	}
+	.wc-block-grid__products .wc-block-grid__product-image .wc-block-component__sale-badge {
+		position: absolute;
+	}
+
+	// These styles are not applied to the All Products atomic block, so it can be positioned normally.
+	.wc-block-grid__products .wc-block-grid__product-onsale:not(.wc-block-component__sale-badge) {
+		position: absolute;
+		right: 4px;
+		top: 4px;
+		margin: 0;
+		padding: 1rem;
+		z-index: 1;
+	}
+
+	@media only screen and (min-width: 768px) {
+		.wc-block-grid__product-onsale {
+			font-size: 0.75em;
+			padding: 1rem;
+		}
+	}
+
+	@media only screen and (min-width: 1168px) {
+		.wc-block-grid__product-onsale {
+			font-size: 0.85em;
+			padding: 0.75em;
+		}
 	}
 }

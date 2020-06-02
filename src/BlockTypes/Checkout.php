@@ -50,7 +50,7 @@ class Checkout extends AbstractBlock {
 	 */
 	public function render( $attributes = array(), $content = '' ) {
 		if ( $this->is_checkout_endpoint() ) {
-			// @todo Currently the block only takes care of the main checkout form -- if an endpoint is set, refer to the
+			// Note: Currently the block only takes care of the main checkout form -- if an endpoint is set, refer to the
 			// legacy shortcode instead and do not render block.
 			return '[woocommerce_checkout]';
 		}
@@ -108,7 +108,7 @@ class Checkout extends AbstractBlock {
 			$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : false;
 
 			if ( $screen && $screen->is_block_editor() && ! $data_registry->exists( 'shippingMethodsExist' ) ) {
-				$methods_exist = wc_get_shipping_method_count() > 0;
+				$methods_exist = wc_get_shipping_method_count( false, true ) > 0;
 				$data_registry->add( 'shippingMethodsExist', $methods_exist );
 			}
 		}

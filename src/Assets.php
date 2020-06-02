@@ -26,6 +26,7 @@ class Assets {
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'register_assets' ) );
 		add_action( 'body_class', array( __CLASS__, 'add_theme_body_class' ), 1 );
+		add_action( 'admin_body_class', array( __CLASS__, 'add_theme_admin_body_class' ), 1 );
 		add_filter( 'woocommerce_shared_settings', array( __CLASS__, 'get_wc_block_data' ) );
 	}
 
@@ -49,6 +50,7 @@ class Assets {
 		self::register_script( 'wc-blocks', plugins_url( self::get_block_asset_build_path( 'blocks' ), __DIR__ ), [], false );
 		self::register_script( 'wc-vendors', plugins_url( self::get_block_asset_build_path( 'vendors' ), __DIR__ ), [], false );
 		self::register_script( 'wc-blocks-registry', plugins_url( 'build/wc-blocks-registry.js', __DIR__ ), [], false );
+		self::register_script( 'wc-shared-context', plugins_url( 'build/wc-shared-context.js', __DIR__ ), [], false );
 
 		// Inline data.
 		wp_add_inline_script(
@@ -81,6 +83,10 @@ class Assets {
 		self::register_script( 'wc-active-filters', plugins_url( self::get_block_asset_build_path( 'active-filters' ), __DIR__ ), $block_dependencies );
 		self::register_script( 'wc-checkout-block', plugins_url( self::get_block_asset_build_path( 'checkout' ), __DIR__ ), $block_dependencies );
 		self::register_script( 'wc-cart-block', plugins_url( self::get_block_asset_build_path( 'cart' ), __DIR__ ), $block_dependencies );
+
+		if ( 'experimental' === WOOCOMMERCE_BLOCKS_PHASE ) {
+			self::register_script( 'wc-single-product', plugins_url( self::get_block_asset_build_path( 'single-product' ), __DIR__ ), $block_dependencies );
+		}
 	}
 
 	/**
@@ -91,6 +97,17 @@ class Assets {
 	 */
 	public static function add_theme_body_class( $classes = [] ) {
 		$classes[] = 'theme-' . get_template();
+		return $classes;
+	}
+
+	/**
+	 * Add theme class to admin body.
+	 *
+	 * @param array $classes String with the CSS classnames.
+	 * @return array Modified string of CSS classnames.
+	 */
+	public static function add_theme_admin_body_class( $classes = '' ) {
+		$classes .= ' theme-' . get_template();
 		return $classes;
 	}
 

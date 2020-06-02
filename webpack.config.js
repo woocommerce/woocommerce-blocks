@@ -46,6 +46,7 @@ const CoreConfig = {
 		wcSettings: './assets/js/settings/shared/index.js',
 		wcBlocksData: './assets/js/data/index.js',
 		wcBlocksMiddleware: './assets/js/middleware/index.js',
+		wcSharedContext: './assets/js/shared/context/index.js',
 	},
 	output: {
 		filename: ( chunkData ) => {
@@ -148,6 +149,7 @@ const LegacyBlocksConfig = {
 			'active-filters',
 			'checkout',
 			'cart',
+			'single-product',
 		],
 	} ),
 };
@@ -171,6 +173,7 @@ const LegacyFrontendBlocksConfig = {
 			'active-filters',
 			'checkout',
 			'cart',
+			'single-product',
 		],
 	} ),
 };

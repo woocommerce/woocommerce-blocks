@@ -26,6 +26,7 @@ const requestToExternal = ( request ) => {
 		'@woocommerce/blocks-registry': [ 'wc', 'wcBlocksRegistry' ],
 		'@woocommerce/settings': [ 'wc', 'wcSettings' ],
 		'@woocommerce/block-data': [ 'wc', 'wcBlocksData' ],
+		'@woocommerce/shared-context': [ 'wc', 'wcSharedContext' ],
 	};
 	if ( wcDepMap[ request ] ) {
 		return wcDepMap[ request ];
@@ -38,6 +39,7 @@ const requestToHandle = ( request ) => {
 		'@woocommerce/settings': 'wc-settings',
 		'@woocommerce/block-settings': 'wc-settings',
 		'@woocommerce/block-data': 'wc-blocks-data-store',
+		'@woocommerce/shared-context': 'wc-shared-context',
 	};
 	if ( wcHandleMap[ request ] ) {
 		return wcHandleMap[ request ];
@@ -48,9 +50,13 @@ const getAlias = ( options = {} ) => {
 	let { pathPart } = options;
 	pathPart = pathPart ? `${ pathPart }/` : '';
 	return {
-		'@woocommerce/atomic-components': path.resolve(
+		'@woocommerce/atomic-blocks': path.resolve(
 			__dirname,
-			`../assets/js/${ pathPart }atomic/components/`
+			`../assets/js/${ pathPart }atomic/blocks`
+		),
+		'@woocommerce/atomic-utils': path.resolve(
+			__dirname,
+			`../assets/js/${ pathPart }atomic/utils`
 		),
 		'@woocommerce/base-components': path.resolve(
 			__dirname,
@@ -144,6 +150,7 @@ const stableMainEntry = {
 	'active-filters': './assets/js/blocks/active-filters/index.js',
 	'block-error-boundary':
 		'./assets/js/base/components/block-error-boundary/style.scss',
+	'single-product': './assets/js/blocks/single-product/index.js',
 };
 
 const experimentalMainEntry = {
@@ -162,6 +169,7 @@ const stableFrontEndEntry = {
 	'price-filter': './assets/js/blocks/price-filter/frontend.js',
 	'attribute-filter': './assets/js/blocks/attribute-filter/frontend.js',
 	'active-filters': './assets/js/blocks/active-filters/frontend.js',
+	'single-product': './assets/js/blocks/single-product/frontend.js',
 };
 
 const experimentalFrontEndEntry = {
