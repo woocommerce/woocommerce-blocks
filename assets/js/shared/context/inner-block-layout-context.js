@@ -31,7 +31,7 @@ export const InnerBlockLayoutContextProvider = ( {
 
 	return (
 		<InnerBlockLayoutContext.Provider value={ contextValue }>
-			{ children }
+			<div className="wc-block-layout">{ children }</div>
 		</InnerBlockLayoutContext.Provider>
 	);
 };

@@ -1,12 +1,12 @@
-.wc-block-components-product-summary {
+.wc-block-layout .wc-block-components-product-summary {
 	margin-top: 0;
 	margin-bottom: $gap-small;
+}
 
-	.is-loading &::before {
-		@include placeholder();
-		content: ".";
-		display: block;
-		width: 100%;
-		height: 6em;
-	}
+.is-loading .wc-block-components-product-summary::before {
+	@include placeholder();
+	content: ".";
+	display: block;
+	width: 100%;
+	height: 6em;
 }
