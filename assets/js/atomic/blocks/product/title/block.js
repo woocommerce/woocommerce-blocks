@@ -47,10 +47,6 @@ const ProductTitle = ( {
 
 	const productName = decodeEntities( product.name );
 
-	if ( ! productName ) {
-		return null;
-	}
-
 	return (
 		// @ts-ignore
 		<TagName className={ classnames( className, componentClass ) }>
