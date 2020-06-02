@@ -34,10 +34,12 @@ const ProductImage = ( {
 	saleBadgeAlign = 'right',
 	...props
 } ) => {
-	const productDataContext = { ...useProductDataContext(), ...props };
+	const productDataContext = useProductDataContext();
+	const { product } = productDataContext || props;
+
 	const { layoutStyleClassPrefix } = useInnerBlockLayoutContext();
-	const { product } = productDataContext;
 	const componentClass = `${ layoutStyleClassPrefix }__product-image`;
+
 	const [ imageLoaded, setImageLoaded ] = useState( false );
 
 	if ( ! product ) {

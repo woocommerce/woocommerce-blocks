@@ -20,9 +20,10 @@ import {
  * @return {*} The component.
  */
 const ProductSummary = ( { className, ...props } ) => {
-	const productDataContext = { ...useProductDataContext(), ...props };
+	const productDataContext = useProductDataContext();
+	const { product } = productDataContext || props;
+
 	const { layoutStyleClassPrefix } = useInnerBlockLayoutContext();
-	const { product } = productDataContext;
 	const componentClass = `${ layoutStyleClassPrefix }__product-summary`;
 
 	if ( ! product ) {

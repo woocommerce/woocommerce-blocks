@@ -19,10 +19,12 @@ import {
  * @return {*} The component.
  */
 const ProductRating = ( { className, ...props } ) => {
-	const productDataContext = { ...useProductDataContext(), ...props };
+	const productDataContext = useProductDataContext();
+	const { product } = productDataContext || props;
+
 	const { layoutStyleClassPrefix } = useInnerBlockLayoutContext();
-	const { product } = productDataContext;
 	const componentClass = `${ layoutStyleClassPrefix }__product-rating`;
+
 	const rating = getAverageRating( product );
 
 	if ( ! rating ) {

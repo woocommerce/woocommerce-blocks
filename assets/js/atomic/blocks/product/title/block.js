@@ -26,11 +26,13 @@ const ProductTitle = ( {
 	productLink = true,
 	...props
 } ) => {
-	const productDataContext = { ...useProductDataContext(), ...props };
+	const productDataContext = useProductDataContext();
+	const { product } = productDataContext || props;
+
 	const { layoutStyleClassPrefix } = useInnerBlockLayoutContext();
-	const { product } = productDataContext;
-	const TagName = `h${ headingLevel }`;
 	const componentClass = `${ layoutStyleClassPrefix }__product-title`;
+
+	const TagName = `h${ headingLevel }`;
 
 	if ( ! product ) {
 		return (

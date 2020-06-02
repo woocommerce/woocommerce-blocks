@@ -23,9 +23,10 @@ import {
  * @return {*} The component.
  */
 const ProductButton = ( { className, ...props } ) => {
-	const productDataContext = { ...useProductDataContext(), ...props };
+	const productDataContext = useProductDataContext();
+	const { product } = productDataContext || props;
+
 	const { layoutStyleClassPrefix } = useInnerBlockLayoutContext();
-	const { product } = productDataContext;
 	const componentClass = `${ layoutStyleClassPrefix }__product-add-to-cart`;
 
 	return (

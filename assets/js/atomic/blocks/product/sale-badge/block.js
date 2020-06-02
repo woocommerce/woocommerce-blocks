@@ -21,9 +21,10 @@ import {
  * @return {*} The component.
  */
 const ProductSaleBadge = ( { className, align, ...props } ) => {
-	const productDataContext = { ...useProductDataContext(), ...props };
+	const productDataContext = useProductDataContext();
+	const { product } = productDataContext || props;
+
 	const { layoutStyleClassPrefix } = useInnerBlockLayoutContext();
-	const { product } = productDataContext;
 	const componentClass = `${ layoutStyleClassPrefix }__product-onsale`;
 
 	if ( ! product || ! product.on_sale ) {
