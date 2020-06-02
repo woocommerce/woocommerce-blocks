@@ -20,7 +20,7 @@ import {
  */
 const ProductRating = ( { className, ...props } ) => {
 	const productDataContext = useProductDataContext();
-	const { product } = productDataContext || props;
+	const product = props.product || productDataContext.product;
 
 	const { layoutStyleClassPrefix } = useInnerBlockLayoutContext();
 	const componentClass = `${ layoutStyleClassPrefix }__product-rating`;
