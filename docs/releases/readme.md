@@ -162,7 +162,7 @@ _Outcome_: **Customers can install/update via WPORG; WPORG plugin page is up to 
 
 If the tagged release should be updated in WooCommerce core, do this immediately following our release.
 
-- Create the pull request in the [WooCommerce Core Repository](https://github.com/woocommerce/woocommerce/) that [bumps the package version](https://github.com/woocommerce/woocommerce/blob/master/composer.json) for the blocks pacakge to the version being pulled in.
+- Create the pull request in the [WooCommerce Core Repository](https://github.com/woocommerce/woocommerce/) that [bumps the package version](https://github.com/woocommerce/woocommerce/blob/master/composer.json) for the blocks package to the version being pulled in.
 - Copy the release pull request notes for that tag (and merge any notes from previous tags if you're bumping up from non consecutive versions) into the pull request description.
 - Run through the testing checklist to ensure everything works in that branch for that package bump. **Note:** Testing should include ensuring any features/new blocks that are supposed to be behind feature gating for the core merge of this package update are working as expected.
 - Verify and make any additional edits to the pull request description for things like: Changelog to be included with WooCommerce core, additional communication that might be needed elsewhere, additional marketing communication notes that may be needed etc.

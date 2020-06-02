@@ -8,7 +8,7 @@ This is the release pull request for {version} of the WooCommerce Blocks plugin.
 -->
 
 * [ ] What is being introduced in this release?
-* [ ]  If this release has potentially **high customer impact**, is a blog post (section) ready? Provide a link if applicable.
+* [ ] If this release has potentially **high customer impact**, is a blog post (section) ready? Provide a link if applicable.
 * [ ] Is the **relevant developer documentation updated**? Please provide links if applicable.
 * [ ] Any special instructions or helpful notes for Happiness engineers are posted (this might not be needed for every release).
 
