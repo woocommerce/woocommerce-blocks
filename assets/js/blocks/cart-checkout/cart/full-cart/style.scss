@@ -6,8 +6,8 @@
 		padding-top: 1.3em;
 	}
 
-	.wc-block-cart__item-count {
-		float: right;
+	.wc-block-cart__product-count + .wc-block-cart__item-count::before {
+		content: " - ";
 	}
 
 	.wc-block-cart__shipping-calculator {
