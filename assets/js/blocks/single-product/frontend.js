@@ -4,7 +4,6 @@
 import { StoreNoticesProvider } from '@woocommerce/base-context';
 import { getValidBlockAttributes } from '@woocommerce/base-utils';
 import { renderParentBlock } from '@woocommerce/atomic-utils';
-import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 
 /**
  * Internal dependencies
@@ -20,11 +19,9 @@ import { BLOCK_NAME } from './constants';
  */
 const FrontendBlock = ( props ) => {
 	return (
-		<BlockErrorBoundary>
-			<StoreNoticesProvider context="woocommerce/single-product">
-				<Block { ...props } />
-			</StoreNoticesProvider>
-		</BlockErrorBoundary>
+		<StoreNoticesProvider context="woocommerce/single-product">
+			<Block { ...props } />
+		</StoreNoticesProvider>
 	);
 };
 

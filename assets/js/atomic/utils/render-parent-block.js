@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { render } from 'react-dom';
+import { renderFrontend } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
@@ -23,34 +23,19 @@ export const renderParentBlock = ( {
 	blockName = '',
 	getProps = () => {},
 } ) => {
-	const containers = document.querySelectorAll( selector );
-
-	if ( containers.length ) {
-		// Use Array.forEach for IE11 compatibility.
-		Array.prototype.forEach.call( containers, ( el, i ) => {
-			const props = getProps( el, i );
-			const attributes = {
-				...el.dataset,
-				...props.attributes,
-			};
-			const children =
-				el.children && el.children.length
-					? renderInnerBlocks( {
-							blockName,
-							children: el.children,
-					  } )
-					: null;
-
-			el.classList.remove( 'is-loading' );
-
-			render(
-				<Block
-					{ ...props }
-					attributes={ attributes }
-					children={ children }
-				/>,
-				el
-			);
-		} );
-	}
+	const getPropsWithChildren = ( el, i ) => {
+		const children =
+			el.children && el.children.length
+				? renderInnerBlocks( {
+						blockName,
+						children: el.children,
+				  } )
+				: null;
+		return { ...getProps( el, i ), children };
+	};
+	renderFrontend( {
+		Block,
+		selector,
+		getProps: getPropsWithChildren,
+	} );
 };
