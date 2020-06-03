@@ -50,6 +50,7 @@ export const IS_SHIPPING_COST_HIDDEN = getSetting(
 	false
 );
 export const WC_BLOCKS_ASSET_URL = getSetting( 'wcBlocksAssetUrl', '' );
+export const WC_BLOCKS_BUILD_URL = getSetting( 'wcBlocksBuildUrl', '' );
 export const SHIPPING_COUNTRIES = getSetting( 'shippingCountries', {} );
 export const ALLOWED_COUNTRIES = getSetting( 'allowedCountries', {} );
 export const SHIPPING_STATES = getSetting( 'shippingStates', {} );
