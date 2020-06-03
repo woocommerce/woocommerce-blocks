@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { render } from 'react-dom';
-import { renderInnerBlocks } from '@woocommerce/atomic-utils';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 
 /**
@@ -44,14 +43,12 @@ export const getValidBlockAttributes = ( blockAttributes, rawAttributes ) => {
  * Renders a block component in the place of a specified set of selectors.
  *
  * @param {Object}   props                         Render props.
- * @param {string}   [props.blockName]             Optional Block Name. Used for inner block component mapping.
  * @param {Function} props.Block                   React component to use as a replacement.
  * @param {string}   props.selector                CSS selector to match the elements to replace.
  * @param {Function} [props.getProps ]             Function to generate the props object for the block.
  * @param {Function} [props.getErrorBoundaryProps] Function to generate the props object for the error boundary.
  */
 export const renderFrontend = ( {
-	blockName = '',
 	Block,
 	selector,
 	getProps = () => {},
@@ -68,23 +65,11 @@ export const renderFrontend = ( {
 				...el.dataset,
 				...props.attributes,
 			};
-			const children =
-				el.children && el.children.length
-					? renderInnerBlocks( {
-							blockName,
-							children: el.children,
-					  } )
-					: null;
-
 			el.classList.remove( 'is-loading' );
 
 			render(
 				<BlockErrorBoundary { ...errorBoundaryProps }>
-					<Block
-						{ ...props }
-						attributes={ attributes }
-						children={ children }
-					/>
+					<Block { ...props } attributes={ attributes } />
 				</BlockErrorBoundary>,
 				el
 			);

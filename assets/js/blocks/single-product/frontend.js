@@ -2,10 +2,9 @@
  * External dependencies
  */
 import { StoreNoticesProvider } from '@woocommerce/base-context';
-import {
-	renderFrontend,
-	getValidBlockAttributes,
-} from '@woocommerce/base-utils';
+import { getValidBlockAttributes } from '@woocommerce/base-utils';
+import { renderParentBlock } from '@woocommerce/atomic-utils';
+import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 
 /**
  * Internal dependencies
@@ -21,9 +20,11 @@ import { BLOCK_NAME } from './constants';
  */
 const FrontendBlock = ( props ) => {
 	return (
-		<StoreNoticesProvider context="woocommerce/single-product">
-			<Block { ...props } />
-		</StoreNoticesProvider>
+		<BlockErrorBoundary>
+			<StoreNoticesProvider context="woocommerce/single-product">
+				<Block { ...props } />
+			</StoreNoticesProvider>
+		</BlockErrorBoundary>
 	);
 };
 
@@ -33,7 +34,7 @@ const getProps = ( el ) => {
 	};
 };
 
-renderFrontend( {
+renderParentBlock( {
 	Block: FrontendBlock,
 	blockName: BLOCK_NAME,
 	selector: '.wp-block-woocommerce-single-product',
