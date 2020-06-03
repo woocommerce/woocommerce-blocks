@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import { useContainerWidthContext } from '@woocommerce/base-context';
-import DisclosureWidget from '@woocommerce/base-components/disclosure-widget';
+import Panel from '@woocommerce/base-components/panel';
 
 /**
  * Internal dependencies
@@ -19,7 +19,7 @@ const CheckoutOrderSummary = ( { cartItems = [] } ) => {
 	}
 
 	return (
-		<DisclosureWidget
+		<Panel
 			className="wc-block-order-summary"
 			initialOpen={ isLarge }
 			title={
@@ -39,7 +39,7 @@ const CheckoutOrderSummary = ( { cartItems = [] } ) => {
 					);
 				} ) }
 			</div>
-		</DisclosureWidget>
+		</Panel>
 	);
 };
 

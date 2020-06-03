@@ -6,7 +6,7 @@ import { _n, sprintf } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
 import Label from '@woocommerce/base-components/label';
 import Title from '@woocommerce/base-components/title';
-import DisclosureWidget from '@woocommerce/base-components/disclosure-widget';
+import Panel from '@woocommerce/base-components/panel';
 import classNames from 'classnames';
 
 /**
@@ -79,13 +79,13 @@ const Package = ( {
 	);
 	if ( collapsible ) {
 		return (
-			<DisclosureWidget
+			<Panel
 				className="wc-block-shipping-rates-control__package"
 				initialOpen={ true }
 				title={ header }
 			>
 				{ body }
-			</DisclosureWidget>
+			</Panel>
 		);
 	}
 	return (

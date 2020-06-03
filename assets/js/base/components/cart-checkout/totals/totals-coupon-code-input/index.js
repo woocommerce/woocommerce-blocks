@@ -11,7 +11,7 @@ import LoadingMask from '@woocommerce/base-components/loading-mask';
 import PropTypes from 'prop-types';
 import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
 import { useValidationContext } from '@woocommerce/base-context';
-import DisclosureWidget from '@woocommerce/base-components/disclosure-widget';
+import Panel from '@woocommerce/base-components/panel';
 
 /**
  * Internal dependencies
@@ -42,7 +42,7 @@ const TotalsCouponCodeInput = ( {
 	const textInputId = `wc-block-coupon-code__input-${ instanceId }`;
 
 	return (
-		<DisclosureWidget
+		<Panel
 			className="wc-block-coupon-code"
 			initialOpen={ initialOpen }
 			title={
@@ -108,7 +108,7 @@ const TotalsCouponCodeInput = ( {
 					/>
 				</div>
 			</LoadingMask>
-		</DisclosureWidget>
+		</Panel>
 	);
 };
 
