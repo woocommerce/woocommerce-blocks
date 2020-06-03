@@ -66,6 +66,23 @@ class Package {
 	}
 
 	/**
+	 * Checks if we're executing the code in an experimental build mode.
+	 *
+	 * @return boolean
+	 */
+	public static function is_experimental_build() {
+		return WOOCOMMERCE_FEATURE_FLAG > 2;
+	}
+
+	/**
+	 * Checks if we're executing the code in an feature plugin or experimental build mode.
+	 *
+	 * @return boolean
+	 */
+	public static function is_feature_plugin_build() {
+		return WOOCOMMERCE_FEATURE_FLAG > 1;
+	}
+	/**
 	 * Loads the dependency injection container for woocommerce blocks.
 	 *
 	 * @param boolean $reset Used to reset the container to a fresh instance.

@@ -9,6 +9,8 @@ namespace Automattic\WooCommerce\Blocks;
 
 defined( 'ABSPATH' ) || exit;
 
+use Automattic\WooCommerce\Blocks\Package;
+
 /**
  * Library class.
  */
@@ -73,12 +75,12 @@ class Library {
 			$blocks[] = 'AttributeFilter';
 			$blocks[] = 'ActiveFilters';
 
-			if ( WOOCOMMERCE_BLOCKS_PHASE > 1 ) {
+			if ( Package::is_feature_plugin_build() ) {
 				$blocks[] = 'Checkout';
 				$blocks[] = 'Cart';
 			}
 		}
-		if ( WOOCOMMERCE_BLOCKS_PHASE > 2 ) {
+		if ( Package::is_experimental_build() ) {
 			$blocks[] = 'SingleProduct';
 		}
 		foreach ( $blocks as $class ) {
