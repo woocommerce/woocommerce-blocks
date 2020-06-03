@@ -70,20 +70,22 @@
 	.wc-block-order-summary-item__quantity {
 		@include font-size(smaller);
 		align-items: center;
-		background: #fff;
-		border: 2px solid currentColor;
-		border-radius: 50%;
-		// Use box-shadow to apply an extra border to the quantity.
-		// This distinguishes it from the product image.
-		box-shadow: 0 0 0 2px #fff;
+		background: #000;
+		border: 2px solid #fff;
+		border-radius: 1em;
+		box-shadow: 0 0 0 2px #000;
+		color: #fff;
 		display: flex;
 		line-height: 1;
-		min-height: 22px;
+		min-height: 20px;
+		padding: 0 0.4em;
 		position: absolute;
 		justify-content: center;
-		min-width: 22px;
-		right: -10px;
-		margin: -10px 0 0 0;
+		min-width: 20px;
+		right: 0;
+		top: $gap;
+		transform: translate(50%, -50%);
+		z-index: 1;
 	}
 
 	.wc-block-order-summary-item__description {
