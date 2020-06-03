@@ -187,3 +187,12 @@
 		margin-left: $gap-smaller;
 	}
 }
+
+// For Twenty Twenty we need to increase specificity of the title.
+.theme-twentytwenty {
+	.wc-block-component-express-checkout .wc-block-component-express-checkout__title {
+		padding-left: $gap-small;
+		padding-right: $gap-small;
+		margin-left: $gap-small;
+	}
+}

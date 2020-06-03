@@ -67,3 +67,11 @@
 		}
 	}
 }
+
+// For Twenty Twenty we need to increase specificity a bit more.
+.theme-twentytwenty {
+	.wc-block-sidebar .wc-blocks-components-panel > h2 {
+		@include font-size(regular);
+		@include reset-box();
+	}
+}
