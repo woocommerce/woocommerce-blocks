@@ -357,7 +357,6 @@
 	.wc-block-components-product-sale-badge {
 		font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 	}
-	.wc-block-grid__product-title::before,
 	.wc-block-grid__product-title::before {
 		display: none;
 	}
@@ -403,6 +402,7 @@
 		}
 	}
 
+	.wc-block-grid__product-rating,
 	.star-rating {
 		font-size: 0.7em;
 
