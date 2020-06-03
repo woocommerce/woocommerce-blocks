@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useInnerBlockLayoutContext } from '@woocommerce/shared-context';
 import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
-import { Suspense } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -23,14 +22,12 @@ const ProductListItem = ( { product, attributes, instanceId } ) => {
 
 	return (
 		<li className={ classes } aria-hidden={ isLoading }>
-			<Suspense fallback={ null }>
-				{ renderProductLayout(
-					parentName,
-					product,
-					layoutConfig,
-					instanceId
-				) }
-			</Suspense>
+			{ renderProductLayout(
+				parentName,
+				product,
+				layoutConfig,
+				instanceId
+			) }
 		</li>
 	);
 };

@@ -2,8 +2,6 @@
  * External dependencies
  */
 import { render } from 'react-dom';
-import { Suspense } from '@wordpress/element';
-import { Spinner } from 'wordpress-components';
 
 /**
  * Internal dependencies
@@ -46,13 +44,11 @@ export const renderParentBlock = ( {
 			el.classList.remove( 'is-loading' );
 
 			render(
-				<Suspense fallback={ <Spinner /> }>
-					<Block
-						{ ...props }
-						attributes={ attributes }
-						children={ children }
-					/>
-				</Suspense>,
+				<Block
+					{ ...props }
+					attributes={ attributes }
+					children={ children }
+				/>,
 				el
 			);
 		} );
