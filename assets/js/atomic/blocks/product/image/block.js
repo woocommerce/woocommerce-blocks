@@ -12,7 +12,7 @@ import withFilteredAttributes from '@woocommerce/base-hocs/with-filtered-attribu
 /**
  * Internal dependencies
  */
-import ProductSaleBadge from './../sale-badge/block.js';
+import { ProductSaleBadge } from '../block-components';
 import attributes from './attributes';
 import './style.scss';
 
