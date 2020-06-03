@@ -9,7 +9,7 @@
 	display: block;
 }
 
-.is-loading .wc-block-components-product-title::before {
+.wc-block-layout--is-loading .wc-block-components-product-title::before {
 	@include placeholder();
 	content: ".";
 	display: inline-block;

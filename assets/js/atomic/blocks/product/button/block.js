@@ -33,7 +33,7 @@ const ProductButton = ( { className, ...props } ) => {
 			className={ classnames(
 				className,
 				'wp-block-button',
-				`wc-block-components-product-button`
+				'wc-block-components-product-button'
 			) }
 		>
 			{ product ? (
@@ -105,7 +105,7 @@ const AddToCartButton = ( { product } ) => {
 			className={ classnames(
 				'wp-block-button__link',
 				'add_to_cart_button',
-				`wc-block-components-product-button__button`,
+				'wc-block-components-product-button__button',
 				{
 					loading: addingToCart,
 					added: addedToCart,
@@ -125,8 +125,8 @@ const AddToCartButtonPlaceholder = () => {
 			className={ classnames(
 				'wp-block-button__link',
 				'add_to_cart_button',
-				`wc-block-components-product-button__button`,
-				`wc-block-components-product-button__button--placeholder`
+				'wc-block-components-product-button__button',
+				'wc-block-components-product-button__button--placeholder'
 			) }
 			disabled={ true }
 		/>

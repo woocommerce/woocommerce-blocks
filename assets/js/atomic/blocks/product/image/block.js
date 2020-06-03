@@ -44,8 +44,8 @@ const ProductImage = ( {
 			<div
 				className={ classnames(
 					className,
-					`wc-block-components-product-image`,
-					`wc-block-components-product-image--placeholder`
+					'wc-block-components-product-image',
+					'wc-block-components-product-image--placeholder'
 				) }
 			>
 				<ImagePlaceholder />
@@ -60,7 +60,7 @@ const ProductImage = ( {
 		<div
 			className={ classnames(
 				className,
-				`wc-block-components-product-image`
+				'wc-block-components-product-image'
 			) }
 		>
 			{ productLink ? (

@@ -8,7 +8,7 @@
 	}
 }
 
-.is-loading .wc-block-components-product-price::before {
+.wc-block-layout--is-loading .wc-block-components-product-price::before {
 	@include placeholder();
 	content: ".";
 	display: inline-block;

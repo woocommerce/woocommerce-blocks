@@ -6,7 +6,6 @@ import {
 	InnerBlockLayoutContextProvider,
 	ProductDataContextProvider,
 } from '@woocommerce/shared-context';
-import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -23,15 +22,10 @@ const Block = ( { isLoading, product, children } ) => {
 		<InnerBlockLayoutContextProvider
 			parentName={ BLOCK_NAME }
 			parentClassName={ className }
+			isLoading={ isLoading }
 		>
 			<ProductDataContextProvider product={ product }>
-				<div
-					className={ classnames( className, {
-						'is-loading': isLoading,
-					} ) }
-				>
-					{ children }
-				</div>
+				<div className={ className }>{ children }</div>
 			</ProductDataContextProvider>
 		</InnerBlockLayoutContextProvider>
 	);

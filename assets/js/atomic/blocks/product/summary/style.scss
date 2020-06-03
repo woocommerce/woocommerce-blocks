@@ -3,7 +3,7 @@
 	margin-bottom: $gap-small;
 }
 
-.is-loading .wc-block-components-product-summary::before {
+.wc-block-layout--is-loading .wc-block-components-product-summary::before {
 	@include placeholder();
 	content: ".";
 	display: block;

@@ -19,7 +19,7 @@
 	}
 }
 
-.is-loading .wc-block-components-product-button > .wc-block-components-product-button__button {
+.wc-block-layout--is-loading .wc-block-components-product-button > .wc-block-components-product-button__button {
 	@include placeholder();
 	min-width: 8em;
 	min-height: 3em;
