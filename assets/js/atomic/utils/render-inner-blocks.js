@@ -57,10 +57,7 @@ export const renderInnerBlocks = ( {
 
 		return (
 			// eslint-disable-next-line react/jsx-key
-			<LayoutComponent
-				key={ `${ parentBlockName }_${ index }` }
-				{ ...componentProps }
-			>
+			<LayoutComponent { ...componentProps }>
 				{ componentChildren }
 			</LayoutComponent>
 		);
