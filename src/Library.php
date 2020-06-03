@@ -77,13 +77,13 @@ class Library {
 		}
 		if ( 'experimental' === WOOCOMMERCE_BLOCKS_PHASE ) {
 			$blocks[] = 'SingleProduct';
-			self::register_atomic_blocks();
 		}
 		foreach ( $blocks as $class ) {
 			$class    = __NAMESPACE__ . '\\BlockTypes\\' . $class;
 			$instance = new $class();
 			$instance->register_block_type();
 		}
+		self::register_atomic_blocks();
 	}
 
 	/**
