@@ -21,7 +21,7 @@ import './style.scss';
  *                                   this is not provided.
  * @return {*} The component.
  */
-const ProductPrice = ( { className, ...props } ) => {
+const Block = ( { className, ...props } ) => {
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product;
 
@@ -110,9 +110,9 @@ const Price = ( { currency, price, regularPrice } ) => {
 	);
 };
 
-ProductPrice.propTypes = {
+Block.propTypes = {
 	className: PropTypes.string,
 	product: PropTypes.object,
 };
 
-export default ProductPrice;
+export default Block;

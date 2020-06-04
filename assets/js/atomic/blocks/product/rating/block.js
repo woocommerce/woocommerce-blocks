@@ -20,7 +20,7 @@ import './style.scss';
  *                                   this is not provided.
  * @return {*} The component.
  */
-const ProductRating = ( { className, ...props } ) => {
+const Block = ( { className, ...props } ) => {
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product;
 	const rating = getAverageRating( product );
@@ -64,9 +64,9 @@ const getAverageRating = ( product ) => {
 	return Number.isFinite( rating ) && rating > 0 ? rating : 0;
 };
 
-ProductRating.propTypes = {
+Block.propTypes = {
 	className: PropTypes.string,
 	product: PropTypes.object,
 };
 
-export default ProductRating;
+export default Block;

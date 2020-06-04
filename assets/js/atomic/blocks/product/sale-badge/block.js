@@ -22,7 +22,7 @@ import './style.scss';
  *                                   this is not provided.
  * @return {*} The component.
  */
-const ProductSaleBadge = ( { className, align, ...props } ) => {
+const Block = ( { className, align, ...props } ) => {
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product;
 
@@ -54,10 +54,10 @@ const ProductSaleBadge = ( { className, align, ...props } ) => {
 	);
 };
 
-ProductSaleBadge.propTypes = {
+Block.propTypes = {
 	className: PropTypes.string,
 	align: PropTypes.string,
 	product: PropTypes.object,
 };
 
-export default ProductSaleBadge;
+export default Block;

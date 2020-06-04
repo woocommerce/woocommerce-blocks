@@ -21,7 +21,7 @@ import './style.scss';
  *                                   this is not provided.
  * @return {*} The component.
  */
-const ProductSummary = ( { className, ...props } ) => {
+const Block = ( { className, ...props } ) => {
 	const productDataContext = useProductDataContext();
 	const { product } = productDataContext || props;
 
@@ -59,9 +59,9 @@ const ProductSummary = ( { className, ...props } ) => {
 	);
 };
 
-ProductSummary.propTypes = {
+Block.propTypes = {
 	className: PropTypes.string,
 	product: PropTypes.object,
 };
 
-export default ProductSummary;
+export default Block;

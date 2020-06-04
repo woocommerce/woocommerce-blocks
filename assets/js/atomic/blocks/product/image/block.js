@@ -3,17 +3,14 @@
  */
 import PropTypes from 'prop-types';
 import { useState } from '@wordpress/element';
-import { compose } from '@wordpress/compose';
 import classnames from 'classnames';
 import { PLACEHOLDER_IMG_SRC } from '@woocommerce/block-settings';
 import { useProductDataContext } from '@woocommerce/shared-context';
-import withFilteredAttributes from '@woocommerce/base-hocs/with-filtered-attributes';
 
 /**
  * Internal dependencies
  */
-import { ProductSaleBadge } from '../block-components';
-import attributes from './attributes';
+import ProductSaleBadge from './../sale-badge/block';
 import './style.scss';
 
 /**
@@ -28,10 +25,10 @@ import './style.scss';
  *                                        this is not provided.
  * @return {*} The component.
  */
-const ProductImage = ( {
+const Block = ( {
 	className,
 	productLink = true,
-	showSaleBadge = true,
+	showSaleBadge,
 	saleBadgeAlign = 'right',
 	...props
 } ) => {
@@ -118,7 +115,7 @@ const Image = ( { image, onLoad, loaded } ) => {
 	);
 };
 
-ProductImage.propTypes = {
+Block.propTypes = {
 	className: PropTypes.string,
 	product: PropTypes.object,
 	productLink: PropTypes.bool,
@@ -126,4 +123,4 @@ ProductImage.propTypes = {
 	saleBadgeAlign: PropTypes.string,
 };
 
-export default compose( withFilteredAttributes( attributes ) )( ProductImage );
+export default Block;

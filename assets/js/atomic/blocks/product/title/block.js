@@ -3,15 +3,12 @@
  */
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { compose } from '@wordpress/compose';
 import { decodeEntities } from '@wordpress/html-entities';
 import { useProductDataContext } from '@woocommerce/shared-context';
-import withFilteredAttributes from '@woocommerce/base-hocs/with-filtered-attributes';
 
 /**
  * Internal dependencies
  */
-import attributes from './attributes';
 import './style.scss';
 
 /**
@@ -25,7 +22,7 @@ import './style.scss';
  *                                       this is not provided.
  * @return {*} The component.
  */
-const ProductTitle = ( {
+export const Block = ( {
 	className,
 	headingLevel = 2,
 	productLink = true,
@@ -68,11 +65,11 @@ const ProductTitle = ( {
 	);
 };
 
-ProductTitle.propTypes = {
+Block.propTypes = {
 	className: PropTypes.string,
 	product: PropTypes.object,
 	headingLevel: PropTypes.number,
 	productLink: PropTypes.bool,
 };
 
-export default compose( withFilteredAttributes( attributes ) )( ProductTitle );
+export default Block;
