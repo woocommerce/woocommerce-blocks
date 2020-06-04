@@ -4,7 +4,10 @@
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { decodeEntities } from '@wordpress/html-entities';
-import { useProductDataContext } from '@woocommerce/shared-context';
+import {
+	useInnerBlockLayoutContext,
+	useProductDataContext,
+} from '@woocommerce/shared-context';
 
 /**
  * Internal dependencies
@@ -28,6 +31,7 @@ export const Block = ( {
 	productLink = true,
 	...props
 } ) => {
+	const { parentClassName } = useInnerBlockLayoutContext();
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product;
 	const TagName = `h${ headingLevel }`;
@@ -38,7 +42,8 @@ export const Block = ( {
 				// @ts-ignore
 				className={ classnames(
 					className,
-					`wc-block-components-product-title`
+					'wc-block-components-product-title',
+					`${ parentClassName }__product-title`
 				) }
 			/>
 		);
@@ -51,7 +56,8 @@ export const Block = ( {
 		<TagName
 			className={ classnames(
 				className,
-				`wc-block-components-product-title`
+				'wc-block-components-product-title',
+				`${ parentClassName }__product-title`
 			) }
 		>
 			{ productLink ? (

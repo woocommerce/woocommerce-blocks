@@ -5,7 +5,10 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
-import { useProductDataContext } from '@woocommerce/shared-context';
+import {
+	useInnerBlockLayoutContext,
+	useProductDataContext,
+} from '@woocommerce/shared-context';
 
 /**
  * Internal dependencies
@@ -22,6 +25,7 @@ import './style.scss';
  * @return {*} The component.
  */
 const Block = ( { className, ...props } ) => {
+	const { parentClassName } = useInnerBlockLayoutContext();
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product;
 
@@ -30,8 +34,9 @@ const Block = ( { className, ...props } ) => {
 			<div
 				className={ classnames(
 					className,
-					`price`,
-					`wc-block-components-product-price`
+					'price',
+					'wc-block-components-product-price',
+					`${ parentClassName }__product-price`
 				) }
 			/>
 		);
@@ -44,8 +49,9 @@ const Block = ( { className, ...props } ) => {
 		<div
 			className={ classnames(
 				className,
-				`price`,
-				`wc-block-components-product-price`
+				'price',
+				'wc-block-components-product-price',
+				`${ parentClassName }__product-price`
 			) }
 		>
 			{ hasPriceRange( prices ) ? (
@@ -74,8 +80,15 @@ const hasPriceRange = ( prices ) => {
 };
 
 const PriceRange = ( { currency, minAmount, maxAmount } ) => {
+	const { parentClassName } = useInnerBlockLayoutContext();
+
 	return (
-		<span className={ `wc-block-components-product-price__value` }>
+		<span
+			className={ classnames(
+				'wc-block-components-product-price__value',
+				`${ parentClassName }__product-price__value`
+			) }
+		>
 			<FormattedMonetaryAmount
 				currency={ currency }
 				value={ minAmount }
@@ -90,17 +103,29 @@ const PriceRange = ( { currency, minAmount, maxAmount } ) => {
 };
 
 const Price = ( { currency, price, regularPrice } ) => {
+	const { parentClassName } = useInnerBlockLayoutContext();
+
 	return (
 		<>
 			{ regularPrice !== price && (
-				<del className={ `wc-block-components-product-price__regular` }>
+				<del
+					className={ classnames(
+						'wc-block-components-product-price__regular',
+						`${ parentClassName }__product-price__regular`
+					) }
+				>
 					<FormattedMonetaryAmount
 						currency={ currency }
 						value={ regularPrice }
 					/>
 				</del>
 			) }
-			<span className={ `wc-block-components-product-price__value` }>
+			<span
+				className={ classnames(
+					'wc-block-components-product-price__value',
+					`${ parentClassName }__product-price__value`
+				) }
+			>
 				<FormattedMonetaryAmount
 					currency={ currency }
 					value={ price }

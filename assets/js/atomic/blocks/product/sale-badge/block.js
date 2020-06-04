@@ -5,7 +5,10 @@ import PropTypes from 'prop-types';
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import Label from '@woocommerce/base-components/label';
-import { useProductDataContext } from '@woocommerce/shared-context';
+import {
+	useInnerBlockLayoutContext,
+	useProductDataContext,
+} from '@woocommerce/shared-context';
 
 /**
  * Internal dependencies
@@ -23,6 +26,7 @@ import './style.scss';
  * @return {*} The component.
  */
 const Block = ( { className, align, ...props } ) => {
+	const { parentClassName } = useInnerBlockLayoutContext();
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product;
 
@@ -40,7 +44,8 @@ const Block = ( { className, align, ...props } ) => {
 			className={ classnames(
 				'wc-block-components-product-sale-badge',
 				className,
-				alignClass
+				alignClass,
+				`${ parentClassName }__product-onsale`
 			) }
 		>
 			<Label

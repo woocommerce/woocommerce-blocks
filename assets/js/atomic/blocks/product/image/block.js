@@ -5,7 +5,10 @@ import PropTypes from 'prop-types';
 import { useState } from '@wordpress/element';
 import classnames from 'classnames';
 import { PLACEHOLDER_IMG_SRC } from '@woocommerce/block-settings';
-import { useProductDataContext } from '@woocommerce/shared-context';
+import {
+	useInnerBlockLayoutContext,
+	useProductDataContext,
+} from '@woocommerce/shared-context';
 
 /**
  * Internal dependencies
@@ -32,6 +35,7 @@ const Block = ( {
 	saleBadgeAlign = 'right',
 	...props
 } ) => {
+	const { parentClassName } = useInnerBlockLayoutContext();
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product;
 	const [ imageLoaded, setImageLoaded ] = useState( false );
@@ -42,7 +46,8 @@ const Block = ( {
 				className={ classnames(
 					className,
 					'wc-block-components-product-image',
-					'wc-block-components-product-image--placeholder'
+					'wc-block-components-product-image--placeholder',
+					`${ parentClassName }__product-image`
 				) }
 			>
 				<ImagePlaceholder />
@@ -57,7 +62,8 @@ const Block = ( {
 		<div
 			className={ classnames(
 				className,
-				'wc-block-components-product-image'
+				'wc-block-components-product-image',
+				`${ parentClassName }__product-image`
 			) }
 		>
 			{ productLink ? (

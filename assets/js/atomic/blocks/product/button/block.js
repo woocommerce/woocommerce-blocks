@@ -8,7 +8,10 @@ import { useEffect, useRef } from '@wordpress/element';
 import { useStoreAddToCart } from '@woocommerce/base-hooks';
 import { decodeEntities } from '@wordpress/html-entities';
 import { triggerFragmentRefresh } from '@woocommerce/base-utils';
-import { useProductDataContext } from '@woocommerce/shared-context';
+import {
+	useInnerBlockLayoutContext,
+	useProductDataContext,
+} from '@woocommerce/shared-context';
 
 /**
  * Internal dependencies
@@ -25,6 +28,7 @@ import './style.scss';
  * @return {*} The component.
  */
 const Block = ( { className, ...props } ) => {
+	const { parentClassName } = useInnerBlockLayoutContext();
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product;
 
@@ -33,7 +37,8 @@ const Block = ( { className, ...props } ) => {
 			className={ classnames(
 				className,
 				'wp-block-button',
-				'wc-block-components-product-button'
+				'wc-block-components-product-button',
+				`${ parentClassName }__product-add-to-cart`
 			) }
 		>
 			{ product ? (
