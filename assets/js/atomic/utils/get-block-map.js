@@ -15,7 +15,7 @@ import ProductSummary from '../blocks/product/summary/block';
 import ProductTitle from '../blocks/product/title/frontend';
 
 /**
- * Map blocks to components suitable for use onm the frontend.
+ * Map blocks to components suitable for use on the frontend.
  *
  * @param {string} blockName Name of the parent block. Used to get extension children.
  */
