@@ -15,7 +15,7 @@ import { renderInnerBlocks } from './render-inner-blocks';
  * @param {Function} props.Block                   React component to use as a replacement.
  * @param {string}   props.selector                CSS selector to match the elements to replace.
  * @param {string}   [props.blockName]             Optional Block Name. Used for inner block component mapping.
- * @param {Function} [props.getProps ]             Function to generate the props object for the block.
+ * @param {Function} [props.getProps]              Function to generate the props object for the block.
  */
 export const renderParentBlock = ( {
 	Block,
