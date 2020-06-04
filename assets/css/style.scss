@@ -21,12 +21,6 @@
 		&[hidden] {
 			display: none;
 		}
-
-		.is-loading & {
-			@include placeholder();
-			height: 0;
-			padding-bottom: 100%;
-		}
 	}
 }
 .edit-post-visual-editor .editor-block-list__block .wc-block-grid__product-title,
@@ -39,26 +33,12 @@
 	color: inherit;
 	font-size: inherit;
 	display: block;
-
-	.is-loading &::before {
-		@include placeholder();
-		content: ".";
-		display: inline-block;
-		width: 6em;
-	}
 }
 .wc-block-grid__product-price {
 	display: block;
 
-	.wc-block-grid__product-price__value {
-		margin-left: 0.5em;
-
-		.is-loading &::before {
-			@include placeholder();
-			content: ".";
-			display: inline-block;
-			width: 3em;
-		}
+	.wc-block-grid__product-price__regular {
+		margin-right: 0.5em;
 	}
 }
 .wc-block-grid__product-add-to-cart {
@@ -90,11 +70,6 @@
 			font-family: WooCommerce; /* stylelint-disable-line */
 			content: "\e031";
 			animation: spin 2s linear infinite;
-		}
-
-		.is-loading & {
-			@include placeholder();
-			min-width: 7em;
 		}
 	}
 }
@@ -148,8 +123,8 @@
 	border: 1px solid #43454b;
 	color: #43454b;
 	background: #fff;
-	padding: 0.202em 0.6180469716em;
-	font-size: 0.875rem;
+	@include font-size(small);
+	padding: em($gap-smallest);
 	text-align: center;
 	text-transform: uppercase;
 	font-weight: 600;
@@ -158,33 +133,6 @@
 	border-radius: 3px;
 	z-index: 9;
 	position: relative;
-	margin: $gap-smaller auto;
-}
-.editor-styles-wrapper .wc-block-grid__products .wc-block-grid__product .wc-block-grid__product-image,
-.wc-block-grid__product-image {
-	.wc-block-grid__product-onsale {
-		&.wc-block-grid__product-onsale--alignleft {
-			position: absolute;
-			left: $gap-smaller/2;
-			top: $gap-smaller/2;
-			right: auto;
-			margin: 0;
-		}
-		&.wc-block-grid__product-onsale--aligncenter {
-			position: absolute;
-			top: $gap-smaller/2;
-			left: 50%;
-			transform: translateX(-50%);
-			margin: 0;
-		}
-		&.wc-block-grid__product-onsale--alignright {
-			position: absolute;
-			right: $gap-smaller/2;
-			top: $gap-smaller/2;
-			left: auto;
-			margin: 0;
-		}
-	}
 }
 // Element spacing.
 .wc-block-grid__product {
@@ -192,7 +140,8 @@
 	.wc-block-grid__product-title,
 	.wc-block-grid__product-price,
 	.wc-block-grid__product-rating,
-	.wc-block-grid__product-add-to-cart {
+	.wc-block-grid__product-add-to-cart,
+	.wc-block-grid__product-onsale {
 		margin-top: 0;
 		margin-bottom: $gap-small;
 	}
@@ -279,7 +228,7 @@
 	}
 
 	.wc-block-grid__products .wc-block-grid__product-onsale,
-	.wc-block-components-product-sale-badge {
+	.wc-block-layout .wc-block-components-product-sale-badge {
 		background: $twentytwenty-highlights-color;
 		color: #fff;
 		font-family: $twentytwenty-headings;
@@ -287,7 +236,6 @@
 		letter-spacing: -0.02em;
 		line-height: 1.2;
 		text-transform: uppercase;
-		font-size: 1.5rem;
 	}
 
 	// These styles are not applied to the All Products atomic block, so it can be positioned normally.
@@ -295,24 +243,37 @@
 		position: absolute;
 		right: 4px;
 		top: 4px;
-		margin: 0;
-		padding: 1rem;
+		z-index: 1;
+	}
+
+	// Override style from WC Core that set its position to absolute.
+	// These rulesets can be removed once https://github.com/woocommerce/woocommerce/pull/26516 is released.
+	.wc-block-grid__products .wc-block-components-product-sale-badge {
+		position: static;
+	}
+	.wc-block-grid__products .wc-block-grid__product-image .wc-block-components-product-sale-badge {
+		position: absolute;
+	}
+
+	// These styles are not applied to the All Products atomic block, so it can be positioned normally.
+	.wc-block-grid__products .wc-block-grid__product-onsale:not(.wc-block-components-product-sale-badge) {
+		position: absolute;
+		right: 4px;
+		top: 4px;
 		z-index: 1;
 	}
 
 	@media only screen and (min-width: 768px) {
-		.wc-block-grid__product-onsale,
-		.wc-block-components-product-sale-badge {
-			font-size: 0.75em;
-			padding: 1rem;
+		.wc-block-grid__products .wc-block-grid__product-onsale {
+			@include font-size(small);
+			padding: em($gap-smaller);
 		}
 	}
 
 	@media only screen and (min-width: 1168px) {
-		.wc-block-grid__product-onsale,
-		.wc-block-components-product-sale-badge {
-			font-size: 0.85em;
-			padding: 0.75em;
+		.wc-block-grid__products .wc-block-grid__product-onsale {
+			@include font-size(small);
+			padding: em($gap-smaller);
 		}
 	}
 }
