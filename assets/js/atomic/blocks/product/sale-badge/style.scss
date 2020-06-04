@@ -1,17 +1,16 @@
-.wc-block-layout .wc-block-components-product-sale-badge {
+.wc-block-components-product-sale-badge {
+	margin: 0 auto $gap-small;
 	@include font-size(small);
-	margin-top: 0;
-	margin-bottom: $gap-small;
-	padding: em($gap-smaller);
+	padding: em($gap-smallest) em($gap-small);
+	display: inline-block;
+	width: auto;
 	border: 1px solid #43454b;
+	border-radius: 3px;
 	color: #43454b;
 	background: #fff;
 	text-align: center;
 	text-transform: uppercase;
 	font-weight: 600;
-	display: inline-block;
-	width: auto;
-	border-radius: 3px;
 	z-index: 9;
 	position: relative;
 }

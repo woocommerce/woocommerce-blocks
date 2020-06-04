@@ -120,20 +120,21 @@
 	}
 }
 .wc-block-grid__product-onsale {
+	@include font-size(small);
+	padding: em($gap-smallest) em($gap-small);
+	display: inline-block;
+	width: auto;
 	border: 1px solid #43454b;
+	border-radius: 3px;
 	color: #43454b;
 	background: #fff;
-	@include font-size(small);
-	padding: em($gap-smallest);
 	text-align: center;
 	text-transform: uppercase;
 	font-weight: 600;
-	display: inline-block;
-	width: auto;
-	border-radius: 3px;
 	z-index: 9;
 	position: relative;
 }
+
 // Element spacing.
 .wc-block-grid__product {
 	.wc-block-grid__product-image,
@@ -142,8 +143,7 @@
 	.wc-block-grid__product-rating,
 	.wc-block-grid__product-add-to-cart,
 	.wc-block-grid__product-onsale {
-		margin-top: 0;
-		margin-bottom: $gap-small;
+		margin: 0 auto $gap-small;
 	}
 }
 
