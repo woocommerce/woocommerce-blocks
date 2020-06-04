@@ -3,7 +3,6 @@
 	color: #43454b;
 	background: #fff;
 	padding: 0.202em 0.6180469716em;
-	font-size: 0.875rem;
 	text-align: center;
 	text-transform: uppercase;
 	font-weight: 600;
@@ -12,5 +11,7 @@
 	border-radius: 3px;
 	z-index: 9;
 	position: relative;
-	margin: $gap-smaller auto;
+	margin-top: 0;
+	margin-bottom: $gap-smaller;
+	@include font-size(small);
 }
