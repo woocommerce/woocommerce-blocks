@@ -47,8 +47,6 @@
 	}
 }
 
-.wc-block-layout--is-loading .wc-block-components-product-image img {
+.wc-block-layout--is-loading .wc-block-components-product-image {
 	@include placeholder();
-	height: 0;
-	padding-bottom: 100%;
 }
