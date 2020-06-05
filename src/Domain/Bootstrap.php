@@ -130,12 +130,7 @@ class Bootstrap {
 	 * Define the global feature flag.
 	 */
 	protected function define_feature_flag() {
-		if ( defined( 'WC_BLOCKS_IS_FEATURE_PLUGIN' ) ) {
-			$default_flag = '2';
-		} else {
-			$default_flag = '1';
-		}
-
+		$default_flag  = defined( 'WC_BLOCKS_IS_FEATURE_PLUGIN' ) ? '2' : '1';
 		$allowed_flags = [ '1', '2', '3' ];
 
 		if ( file_exists( __DIR__ . '/../../blocks.ini' ) ) {
