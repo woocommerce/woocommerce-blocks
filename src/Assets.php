@@ -83,7 +83,7 @@ class Assets {
 		self::register_script( 'wc-active-filters', plugins_url( self::get_block_asset_build_path( 'active-filters' ), __DIR__ ), $block_dependencies );
 
 		if ( Package::is_experimental_build() ) {
-			self::register_script( 'wc-single-product', plugins_url( self::get_block_asset_build_path( 'single-product' ), __DIR__ ), $block_dependencies );
+			self::register_script( 'wc-single-product-block', plugins_url( self::get_block_asset_build_path( 'single-product' ), __DIR__ ), $block_dependencies );
 		}
 
 		if ( Package::is_feature_plugin_build() ) {
