@@ -249,7 +249,6 @@ const deleteShippingZones = ( ids ) => {
 	return Promise.all( ids.map( deleteZone ) );
 };
 
-deleteShippingZones( [ 16, 17, 18, 19, 20 ] );
 module.exports = {
 	setupSettings,
 	createTaxes,
