@@ -9,7 +9,7 @@ The item quantity badge is the number that appears next to the image in the _Ord
 By default, it uses a combination of black and white borders and shadows so it has enough contrast with themes with light and dark backgrounds. Themes can modify the colors with their own palette with a single CSS selector and four properties. For example:
 
 ```CSS
-.wc-block-order-summary-item__quantity {
+.wc-block-components-order-summary-item__quantity {
 	background: #f9f4ee;
 	border-color: #4b3918;
 	box-shadow: 0 0 0 2px #f9f4ee;
