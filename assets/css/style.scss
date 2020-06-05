@@ -138,7 +138,10 @@
 // Element spacing.
 .wc-block-grid__product {
 	.wc-block-grid__product-image,
-	.wc-block-grid__product-title,
+	.wc-block-grid__product-title {
+		margin: 0 0 $gap-small;
+	}
+	// If centered when toggling alignment on, use auto margins to prevent flexbox stretching it.
 	.wc-block-grid__product-price,
 	.wc-block-grid__product-rating,
 	.wc-block-grid__product-add-to-cart,
