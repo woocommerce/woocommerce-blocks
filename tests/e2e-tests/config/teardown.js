@@ -12,6 +12,7 @@ import {
 	deleteProducts,
 	deleteShippingZones,
 	deleteBlockPages,
+	deleteProductAttributes,
 } from '../fixtures/fixture-loaders';
 
 module.exports = async ( globalConfig ) => {
@@ -22,6 +23,7 @@ module.exports = async ( globalConfig ) => {
 		products,
 		shippingZones,
 		pages,
+		attributes,
 	} = global.fixtureData;
 	return Promise.all( [
 		deleteTaxes( taxes ),
@@ -29,5 +31,6 @@ module.exports = async ( globalConfig ) => {
 		deleteProducts( products ),
 		deleteShippingZones( shippingZones ),
 		deleteBlockPages( pages ),
+		deleteProductAttributes( attributes ),
 	] ).catch( console.log );
 };

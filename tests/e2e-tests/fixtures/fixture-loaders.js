@@ -338,6 +338,50 @@ const deleteBlockPages = ( ids ) => {
 		)
 	);
 };
+/**
+ * Create Products attributes and terms.
+ *
+ * @param {Object[]} fixture An array of objects describing our data, defaults
+ *                           to our fixture.
+ * @return {Promise} a promise that resolves to an array of newly created product attributes IDs, or rejects if the request failed.
+ */
+const createProductAttributes = ( fixture = fixtures.Attributes() ) => {
+	return Promise.all(
+		fixture.map( ( { attribute, terms } ) => {
+			return WooCommerce.post( 'products/attributes', attribute )
+				.then( ( response ) => {
+					return response.data.id;
+				} )
+				.then( ( attributeId ) => {
+					const termsPromise = WooCommerce.put(
+						`products/attributes/${ attributeId }/terms/batch`,
+						{ create: terms }
+					);
+
+					return [ attributeId, termsPromise ];
+				} )
+				.then( ( [ attributeId, termsPromise ] ) =>
+					Promise.all( [ attributeId, termsPromise ] ).then(
+						() => attributeId
+					)
+				);
+		} )
+	);
+};
+
+/**
+ * Delete Products attributes.
+ *
+ * Deleting all passed product attributes, will also delete terms within it.
+ *
+ * @param {number[]} ids an array of product attributes IDs to delete.
+ *
+ * @return {Promise} return a promise that resolves to an array of deleted data or
+ * reject if the request failed.
+ */
+const deleteProductAttributes = ( ids ) => {
+	return WooCommerce.post( 'products/attributes/batch', { delete: ids } );
+};
 
 module.exports = {
 	setupSettings,
@@ -355,4 +399,6 @@ module.exports = {
 	deleteShippingZones,
 	createBlockPages,
 	deleteBlockPages,
+	createProductAttributes,
+	deleteProductAttributes,
 };
