@@ -71,7 +71,7 @@ class Package {
 	 * @return boolean
 	 */
 	public static function is_experimental_build() {
-		return WOOCOMMERCE_BLOCKS_PHASE > 2;
+		return self::get_package()->is_experimental_build();
 	}
 
 	/**
@@ -80,7 +80,7 @@ class Package {
 	 * @return boolean
 	 */
 	public static function is_feature_plugin_build() {
-		return WOOCOMMERCE_BLOCKS_PHASE > 1;
+		return self::get_package()->is_feature_plugin_build();
 	}
 	/**
 	 * Loads the dependency injection container for woocommerce blocks.
