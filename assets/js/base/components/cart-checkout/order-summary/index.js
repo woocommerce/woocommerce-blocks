@@ -10,6 +10,7 @@ import Panel from '@woocommerce/base-components/panel';
  * Internal dependencies
  */
 import OrderSummaryItem from './order-summary-item.js';
+import './style.scss';
 
 const OrderSummary = ( { cartItems = [] } ) => {
 	const { isLarge, hasContainerWidth } = useContainerWidthContext();
