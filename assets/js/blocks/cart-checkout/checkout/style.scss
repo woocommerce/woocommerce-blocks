@@ -70,11 +70,11 @@
 	.wc-block-order-summary-item__quantity {
 		@include font-size(smaller);
 		align-items: center;
-		background: #000;
-		border: 2px solid #fff;
+		background: #fff;
+		border: 2px solid;
 		border-radius: 1em;
-		box-shadow: 0 0 0 2px #000;
-		color: #fff;
+		box-shadow: 0 0 0 2px #fff;
+		color: #000;
 		display: flex;
 		line-height: 1;
 		min-height: 20px;
