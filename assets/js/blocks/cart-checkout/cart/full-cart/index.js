@@ -88,10 +88,7 @@ const Cart = ( { attributes } ) => {
 	return (
 		<SidebarLayout className={ cartClassName }>
 			<Main className="wc-block-cart__main">
-				<CartLineItemsTitle
-					productCount={ cartItems.length }
-					itemCount={ cartItemsCount }
-				/>
+				<CartLineItemsTitle itemCount={ cartItemsCount } />
 				<CartLineItemsTable
 					lineItems={ cartItems }
 					isLoading={ cartIsLoading }
