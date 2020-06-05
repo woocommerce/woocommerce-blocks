@@ -25,14 +25,12 @@
 		}
 
 		> h2 {
-			@include font-size(regular);
+			@include font-size(large);
 			@include reset-box();
 		}
 	}
 
 	.wc-blocks-components-panel__button {
-		min-height: 3em;
-
 		> svg {
 			padding-right: $gap;
 		}
@@ -71,7 +69,7 @@
 // For Twenty Twenty we need to increase specificity a bit more.
 .theme-twentytwenty {
 	.wc-block-sidebar .wc-blocks-components-panel > h2 {
-		@include font-size(regular);
+		@include font-size(large);
 		@include reset-box();
 	}
 }

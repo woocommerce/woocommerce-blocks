@@ -27,6 +27,7 @@ $line-offset-from-circle-size: 8px;
 	align-content: center;
 	flex-wrap: wrap;
 	margin-bottom: $gap-smaller;
+	position: relative;
 
 	.wc-block-checkout-step__title {
 		line-height: 1.5;
@@ -36,8 +37,9 @@ $line-offset-from-circle-size: 8px;
 
 .wc-block-checkout-step__heading-content {
 	@include font-size(smaller);
-	line-height: 2;
 	color: $gray-80;
+	position: absolute;
+	right: 0;
 
 	a {
 		font-weight: bold;
