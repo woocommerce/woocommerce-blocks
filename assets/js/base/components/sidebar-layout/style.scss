@@ -29,12 +29,6 @@
 			@include reset-box();
 		}
 	}
-
-	.wc-blocks-components-panel__button {
-		> svg {
-			padding-right: $gap;
-		}
-	}
 }
 
 .is-medium,
