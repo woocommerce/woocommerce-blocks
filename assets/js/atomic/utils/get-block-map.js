@@ -15,6 +15,7 @@ import ProductSummary from '../blocks/product/summary/block';
 import ProductTitle from '../blocks/product/title/frontend';
 import ProductSku from '../blocks/product/sku/block';
 import ProductCategoryList from '../blocks/product/category-list/block';
+import ProductTagList from '../blocks/product/tag-list/block';
 
 /**
  * Map blocks to components suitable for use on the frontend.
@@ -31,5 +32,6 @@ export const getBlockMap = ( blockName ) => ( {
 	'woocommerce/product-sale-badge': ProductSaleBadge,
 	'woocommerce/product-sku': ProductSku,
 	'woocommerce/product-category-list': ProductCategoryList,
+	'woocommerce/product-tag-list': ProductTagList,
 	...getRegisteredInnerBlocks( blockName ),
 } );

@@ -15,7 +15,7 @@ import {
 import './style.scss';
 
 /**
- * Product Category Block Component.
+ * Product Tag List Block Component.
  *
  * @param {Object} props             Incoming props.
  * @param {string} [props.className] CSS Class name for the component.
@@ -28,7 +28,7 @@ const Block = ( { className, ...props } ) => {
 	const productDataContext = useProductDataContext();
 	const { product } = productDataContext || props;
 
-	if ( ! product || ! product.categories ) {
+	if ( ! product || ! product.tags ) {
 		return null;
 	}
 
@@ -36,16 +36,16 @@ const Block = ( { className, ...props } ) => {
 		<div
 			className={ classnames(
 				className,
-				'wc-block-components-product-category-list',
-				`${ parentClassName }__product-category-list`
+				'wc-block-components-product-tag-list',
+				`${ parentClassName }__product-tag-list`
 			) }
 		>
-			{ __( 'Categories:', 'woo-gutenberg-products-block' ) }{ ' ' }
+			{ __( 'Tags:', 'woo-gutenberg-products-block' ) }{ ' ' }
 			<ul>
-				{ Object.values( product.categories ).map(
+				{ Object.values( product.tags ).map(
 					( { name, link, slug } ) => {
 						return (
-							<li key={ `category-list-item-${ slug }` }>
+							<li key={ `tag-list-item-${ slug }` }>
 								<a href={ link }>{ name }</a>
 							</li>
 						);

@@ -10,3 +10,4 @@ import './product/summary';
 import './product/sale-badge';
 import './product/sku';
 import './product/category-list';
+import './product/tag-list';
