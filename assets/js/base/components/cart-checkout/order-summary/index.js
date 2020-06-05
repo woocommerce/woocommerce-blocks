@@ -30,7 +30,7 @@ const OrderSummary = ( { cartItems = [] } ) => {
 			}
 			titleTag="h2"
 		>
-			<div className="wc-block-order-components-summary__content">
+			<div className="wc-block-order-components-order-summary__content">
 				{ cartItems.map( ( cartItem ) => {
 					return (
 						<OrderSummaryItem
