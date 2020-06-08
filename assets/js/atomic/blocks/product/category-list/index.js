@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { Icon, notes } from '@woocommerce/icons';
+import { Icon, folder } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
@@ -18,7 +18,7 @@ const blockConfig = {
 		'woo-gutenberg-products-block'
 	),
 	icon: {
-		src: <Icon srcElement={ notes } />,
+		src: <Icon srcElement={ folder } />,
 		foreground: '#96588a',
 	},
 	edit,
