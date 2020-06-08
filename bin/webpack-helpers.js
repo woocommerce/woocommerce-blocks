@@ -6,10 +6,13 @@ const MergeExtractFilesPlugin = require( './merge-extract-files-webpack-plugin' 
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const ProgressBarPlugin = require( 'progress-bar-webpack-plugin' );
 const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
+const { NormalModuleReplacementPlugin } = require( 'webpack' );
 const WebpackRTLPlugin = require( 'webpack-rtl-plugin' );
 const chalk = require( 'chalk' );
 const { omit } = require( 'lodash' );
 const NODE_ENV = process.env.NODE_ENV || 'development';
+
+const dashiconsNoop = {};
 
 function findModuleMatch( module, match ) {
 	if ( module.request && match.test( module.request ) ) {
@@ -359,6 +362,10 @@ const getMainConfig = ( options = {} ) => {
 				requestToExternal,
 				requestToHandle,
 			} ),
+			new NormalModuleReplacementPlugin(
+				/dashicon/,
+				() => dashiconsNoop
+			),
 		],
 		resolve,
 	};
@@ -454,6 +461,10 @@ const getFrontConfig = ( options = {} ) => {
 				requestToExternal,
 				requestToHandle,
 			} ),
+			new NormalModuleReplacementPlugin(
+				/dashicon/,
+				() => dashiconsNoop
+			),
 		],
 		resolve,
 	};
@@ -586,6 +597,10 @@ const getPaymentMethodsExtensionConfig = ( options = {} ) => {
 				requestToExternal,
 				requestToHandle,
 			} ),
+			new NormalModuleReplacementPlugin(
+				/dashicon/,
+				() => dashiconsNoop
+			),
 		],
 		resolve,
 	};
