@@ -80,6 +80,7 @@
 		box-sizing: border-box;
 		height: 3em;
 		color: $input-text-active;
+		cursor: text;
 
 		&:focus {
 			background-color: #fff;
@@ -105,6 +106,7 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		max-width: calc(100% - #{2 * $gap});
+		cursor: text;
 
 		@media screen and (prefers-reduced-motion: reduce) {
 			transition: none;
