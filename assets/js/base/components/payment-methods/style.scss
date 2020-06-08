@@ -150,6 +150,19 @@
 	}
 }
 
+// These elements have available space below, so we can display errors with a
+// larger line height.
+.is-medium,
+.is-large {
+	.wc-card-expiry-element,
+	.wc-card-cvc-element {
+		.wc-block-form-input-validation-error > p {
+			line-height: 16px;
+			padding-top: 4px;
+		}
+	}
+}
+
 .wc-blocks-credit-card-images {
 	padding-top: $gap-small;
 	display: flex;
