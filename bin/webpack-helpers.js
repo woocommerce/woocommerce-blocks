@@ -12,7 +12,7 @@ const chalk = require( 'chalk' );
 const { omit } = require( 'lodash' );
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
-const dashIconReplacmentModule = path.resolve(
+const dashIconReplacementModule = path.resolve(
 	__dirname,
 	'../assets/js/module_replacements/dashicon.js'
 );
@@ -367,7 +367,7 @@ const getMainConfig = ( options = {} ) => {
 			} ),
 			new NormalModuleReplacementPlugin(
 				/dashicon/,
-				( result ) => ( result.resource = dashIconReplacmentModule )
+				( result ) => ( result.resource = dashIconReplacementModule )
 			),
 		],
 		resolve,
@@ -466,7 +466,7 @@ const getFrontConfig = ( options = {} ) => {
 			} ),
 			new NormalModuleReplacementPlugin(
 				/dashicon/,
-				( result ) => ( result.resource = dashIconReplacmentModule )
+				( result ) => ( result.resource = dashIconReplacementModule )
 			),
 		],
 		resolve,
@@ -602,7 +602,7 @@ const getPaymentMethodsExtensionConfig = ( options = {} ) => {
 			} ),
 			new NormalModuleReplacementPlugin(
 				/dashicon/,
-				( result ) => ( result.resource = dashIconReplacmentModule )
+				( result ) => ( result.resource = dashIconReplacementModule )
 			),
 		],
 		resolve,
