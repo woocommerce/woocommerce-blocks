@@ -54,7 +54,7 @@
 
 .wc-block-gateway-container {
 	position: relative;
-	margin-bottom: $gap;
+	margin-bottom: em($gap-large);
 	white-space: nowrap;
 
 	&.wc-card-number-element {
