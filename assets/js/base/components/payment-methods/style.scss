@@ -163,6 +163,16 @@
 	}
 }
 
+.is-mobile,
+.is-small {
+	.wc-card-expiry-element,
+	.wc-card-cvc-element {
+		.wc-block-form-input-validation-error > p {
+			min-height: 28px;
+		}
+	}
+}
+
 .wc-blocks-credit-card-images {
 	padding-top: $gap-small;
 	display: flex;
