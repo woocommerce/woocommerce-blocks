@@ -30,7 +30,10 @@
 		"<rootDir>/tests/js/setup-globals.js",
 		"<rootDir>/tests/js/setup-fetch.js"
 	],
-	"setupFilesAfterEnv": [ "<rootDir>/tests/js/setup-after-env.js" ],
+	"setupFilesAfterEnv": [
+		"<rootDir>/tests/js/setup-after-env.js",
+		"@wordpress/jest-console"
+	],
 	"testPathIgnorePatterns": [
 		"<rootDir>/tests/",
 		"<rootDir>/node_modules/",
