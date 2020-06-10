@@ -27,19 +27,10 @@ import { useAddToCartFormContext } from '../context';
  * @return {*} The component.
  */
 const Block = ( { className, showQuantity = true, ...props } ) => {
-	const {
-		quantity,
-		setQuantity,
-		allowSubmit,
-		onSubmit,
-		addingToCart,
-		cartQuantity,
-	} = useAddToCartFormContext();
+	const context = useAddToCartFormContext();
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product || {};
 	const firstMount = useRef( true );
-
-	const [ addedToCart, setAddedToCart ] = useState( false );
 
 	useEffect( () => {
 		// Avoid running on first mount when cart quantity is first set.
@@ -48,21 +39,57 @@ const Block = ( { className, showQuantity = true, ...props } ) => {
 			return;
 		}
 		triggerFragmentRefresh();
-	}, [ cartQuantity ] );
+	}, [ context.cartQuantity ] );
 
+	return (
+		<div
+			className={ classnames(
+				className,
+				'wc-block-components-product-add-to-cart-form-button',
+				{
+					'wc-block-components-product-add-to-cart-form-button--placeholder': isEmpty(
+						product
+					),
+				}
+			) }
+		>
+			{ showQuantity && (
+				<QuantityInput product={ product } context={ context } />
+			) }
+			<AddToCartButton product={ product } context={ context } />
+		</div>
+	);
+};
+
+const QuantityInput = ( { product, context } ) => {
+	const { quantity_limit: quantityLimit = 99 } = product;
+	const { quantity, addingToCart, setQuantity } = context;
 	const qtyProps = {
 		value: quantity,
 		min: 1,
-		max: product.quantity_limit || undefined,
-		hidden: product.quantity_limit && product.quantity_limit === 1,
-		disabled: ! allowSubmit,
+		max: quantityLimit,
+		hidden: quantityLimit === 1,
+		disabled: addingToCart || isEmpty( product ),
 		onChange: ( e ) => {
 			setQuantity( e.target.value );
 		},
 	};
 
+	return (
+		<input
+			className="wc-block-components-product-add-to-cart-form-button__qty"
+			type="number"
+			{ ...qtyProps }
+		/>
+	);
+};
+
+const AddToCartButton = ( { product, context } ) => {
+	const [ addedToCart, setAddedToCart ] = useState( false );
+	const { onSubmit, addingToCart, cartQuantity } = context;
+
 	const buttonProps = {
-		disabled: ! allowSubmit,
+		disabled: addingToCart || isEmpty( product ),
 		showSpinner: addingToCart,
 		onClick: ( e ) => {
 			e.preventDefault();
@@ -70,11 +97,6 @@ const Block = ( { className, showQuantity = true, ...props } ) => {
 			setAddedToCart( true );
 		},
 	};
-
-	if ( isEmpty( product ) ) {
-		buttonProps.disabled = true;
-		qtyProps.disabled = true;
-	}
 
 	const buttonText =
 		addedToCart && Number.isFinite( cartQuantity ) && cartQuantity > 0
@@ -91,37 +113,18 @@ const Block = ( { className, showQuantity = true, ...props } ) => {
 			: __( 'Add to cart', 'woo-gutenberg-products-block' );
 
 	return (
-		<div
-			className={ classnames(
-				className,
-				'wc-block-components-product-add-to-cart-form-button',
-				{
-					'wc-block-components-product-add-to-cart-form-button--placeholder': isEmpty(
-						product
-					),
-				}
-			) }
+		<Button
+			className="wc-block-components-product-add-to-cart-form-button__button"
+			{ ...buttonProps }
 		>
-			{ showQuantity && (
-				<input
-					className="wc-block-components-product-add-to-cart-form-button__qty"
-					type="number"
-					{ ...qtyProps }
+			{ buttonText }
+			{ addedToCart && (
+				<Icon
+					srcElement={ done }
+					alt={ __( 'Done', 'woo-gutenberg-products-block' ) }
 				/>
 			) }
-			<Button
-				className="wc-block-components-product-add-to-cart-form-button__button"
-				{ ...buttonProps }
-			>
-				{ buttonText }
-				{ addedToCart && (
-					<Icon
-						srcElement={ done }
-						alt={ __( 'Done', 'woo-gutenberg-products-block' ) }
-					/>
-				) }
-			</Button>
-		</div>
+		</Button>
 	);
 };
 

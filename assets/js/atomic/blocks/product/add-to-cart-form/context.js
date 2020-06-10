@@ -15,10 +15,8 @@ const AddToCartFormContext = createContext( {
 	variationId: 0,
 	setQuantity: ( quantity ) => void { quantity },
 	setVariationId: ( variationId ) => void { variationId },
-	allowSubmit: false,
 	onSubmit: () => void {},
 	addingToCart: false,
-	addedToCart: false,
 } );
 
 /**
@@ -45,14 +43,12 @@ export const AddToCartFormContextProvider = ( { children, product } ) => {
 		addToCart( quantity );
 	}, [ addToCart, quantity ] );
 
-	const allowSubmit = ! addingToCart;
 	const contextValue = {
 		quantity,
 		cartQuantity,
 		variationId,
 		setQuantity,
 		setVariationId,
-		allowSubmit,
 		onSubmit,
 		addingToCart,
 	};
