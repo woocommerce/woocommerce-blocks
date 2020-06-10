@@ -275,6 +275,18 @@ class ProductSchema extends AbstractSchema {
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
+			'sold_individually'   => [
+				'description' => __( 'If true, only one item of this product is allowed for purchase in a single order.', 'woo-gutenberg-products-block' ),
+				'type'        => 'boolean',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+			],
+			'quantity_limit'      => [
+				'description' => __( 'The maximum quantity than can be added to the cart at once.', 'woo-gutenberg-products-block' ),
+				'type'        => 'integer',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+			],
 			'add_to_cart'         => [
 				'description' => __( 'Add to cart button parameters.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
@@ -328,6 +340,8 @@ class ProductSchema extends AbstractSchema {
 			'is_in_stock'         => $product->is_in_stock(),
 			'is_on_backorder'     => 'onbackorder' === $product->get_stock_status(),
 			'low_stock_remaining' => $this->get_low_stock_remaining( $product ),
+			'sold_individually'   => $product->is_sold_individually(),
+			'quantity_limit'      => $this->get_product_quantity_limit( $product ),
 			'add_to_cart'         => (object) $this->prepare_html_response(
 				[
 					'text'        => $product->add_to_cart_text(),
@@ -376,6 +390,24 @@ class ProductSchema extends AbstractSchema {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Get the quantity limit for an item in the cart.
+	 *
+	 * @param \WC_Product $product Product instance.
+	 * @return int
+	 */
+	protected function get_product_quantity_limit( \WC_Product $product ) {
+		$limits = [ 99 ];
+
+		if ( $product->is_sold_individually() ) {
+			$limits[] = 1;
+		} elseif ( ! $product->backorders_allowed() ) {
+			$limits[] = $this->get_remaining_stock( $product );
+		}
+
+		return apply_filters( 'woocommerce_store_api_product_quantity_limit', max( min( array_filter( $limits ) ), 1 ), $product );
 	}
 
 	/**

@@ -4,10 +4,12 @@
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
-import {
-	useInnerBlockLayoutContext,
-	useProductDataContext,
-} from '@woocommerce/shared-context';
+import { useProductDataContext } from '@woocommerce/shared-context';
+
+/**
+ * Internal dependencies
+ */
+import { useAddToCartFormContext } from '../context';
 
 /**
  * Add to Cart Form Qty + Button Block Component.
@@ -19,50 +21,62 @@ import {
  * @return {*} The component.
  */
 const Block = ( { className, ...props } ) => {
-	const { parentClassName } = useInnerBlockLayoutContext();
+	const {
+		quantity,
+		setQuantity,
+		allowSubmit,
+		onSubmit,
+	} = useAddToCartFormContext();
 	const productDataContext = useProductDataContext();
-	const product = props.product || productDataContext.product || null;
+	const product = props.product || productDataContext.product || {};
+
+	const qtyProps = {
+		value: quantity,
+		min: 1,
+		max: product.quantity_limit || undefined,
+		hidden: product.quantity_limit && product.quantity_limit === 1,
+		disabled: ! allowSubmit,
+		onChange: ( event ) => {
+			setQuantity( event.target.value );
+		},
+	};
+
+	const buttonProps = {
+		disabled: ! allowSubmit,
+		onClick: onSubmit,
+	};
+
+	if ( ! product ) {
+		buttonProps.disabled = true;
+		qtyProps.disabled = true;
+	}
 
 	return (
 		<div
 			className={ classnames(
 				className,
 				'wp-block-button',
-				'wc-block-components-product-button',
-				`${ parentClassName }__product-add-to-cart`
+				'wc-block-components-product-add-to-cart-form-button'
 			) }
 		>
-			<input type="number" value="1" />
-			{ product ? <AddToCartButton /> : <AddToCartButtonPlaceholder /> }
+			<input
+				className="wc-block-components-product-add-to-cart-form-button__qty"
+				type="number"
+				{ ...qtyProps }
+			/>
+			<button
+				className={ classnames(
+					'wp-block-button__link',
+					'wc-block-components-product-add-to-cart-form-button__button',
+					{
+						'wc-block-components-product-add-to-cart-form-button__button--placeholder': ! product,
+					}
+				) }
+				{ ...buttonProps }
+			>
+				{ __( 'Add to cart', 'woo-gutenberg-products-block' ) }
+			</button>
 		</div>
-	);
-};
-
-const AddToCartButton = () => {
-	return (
-		<button
-			className={ classnames(
-				'wp-block-button__link',
-				'add_to_cart_button',
-				'wc-block-components-product-button__button'
-			) }
-		>
-			{ __( 'Add to cart', 'woo-gutenberg-products-block' ) }
-		</button>
-	);
-};
-
-const AddToCartButtonPlaceholder = () => {
-	return (
-		<button
-			className={ classnames(
-				'wp-block-button__link',
-				'add_to_cart_button',
-				'wc-block-components-product-button__button',
-				'wc-block-components-product-button__button--placeholder'
-			) }
-			disabled={ true }
-		/>
 	);
 };
 

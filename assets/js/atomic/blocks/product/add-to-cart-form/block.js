@@ -3,15 +3,13 @@
  */
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import {
-	useInnerBlockLayoutContext,
-	useProductDataContext,
-} from '@woocommerce/shared-context';
+import { useProductDataContext } from '@woocommerce/shared-context';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+import { AddToCartFormContextProvider } from './context';
 
 /**
  * Product Add to Form Block Component.
@@ -24,7 +22,6 @@ import './style.scss';
  * @return {*} The component.
  */
 const Block = ( { className, children, ...props } ) => {
-	const { parentClassName } = useInnerBlockLayoutContext();
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product;
 
@@ -36,11 +33,12 @@ const Block = ( { className, children, ...props } ) => {
 		<div
 			className={ classnames(
 				className,
-				'wc-block-components-product-add-to-cart-form',
-				`${ parentClassName }__product-add-to-cart-form`
+				'wc-block-components-product-add-to-cart-form'
 			) }
 		>
-			{ children }
+			<AddToCartFormContextProvider product={ product }>
+				{ children }
+			</AddToCartFormContextProvider>
 		</div>
 	);
 };

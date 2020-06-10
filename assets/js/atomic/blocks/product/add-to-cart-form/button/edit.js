@@ -3,6 +3,7 @@
  */
 import EditProductLink from '@woocommerce/block-components/edit-product-link';
 import { useProductDataContext } from '@woocommerce/shared-context';
+import { Disabled } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -16,7 +17,9 @@ export default ( { attributes } ) => {
 	return (
 		<>
 			<EditProductLink productId={ product.id } />
-			<Block { ...attributes } />
+			<Disabled>
+				<Block { ...attributes } />
+			</Disabled>
 		</>
 	);
 };

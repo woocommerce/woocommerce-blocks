@@ -4,16 +4,25 @@
 import EditProductLink from '@woocommerce/block-components/edit-product-link';
 import { useProductDataContext } from '@woocommerce/shared-context';
 import { InnerBlocks } from '@wordpress/block-editor';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
-export default () => {
+import './style.scss';
+
+export default ( { attributes } ) => {
 	const productDataContext = useProductDataContext();
 	const product = productDataContext.product || {};
+	const { className } = attributes;
 
 	return (
-		<>
+		<div
+			className={ classnames(
+				className,
+				'wc-block-components-product-add-to-cart-form'
+			) }
+		>
 			<EditProductLink productId={ product.id } />
 			<InnerBlocks
 				template={ [
@@ -21,6 +30,6 @@ export default () => {
 				] }
 				templateLock="insert"
 			/>
-		</>
+		</div>
 	);
 };
