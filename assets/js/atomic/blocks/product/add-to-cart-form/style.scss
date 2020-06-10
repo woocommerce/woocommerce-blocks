@@ -1,0 +1,20 @@
+.wc-block-layout {
+	.wc-block-components-product-add-to-cart-form {
+		margin-top: 0;
+		margin-bottom: $gap-small;
+		display: flex;
+
+		.wc-block-components-product-add-to-cart-form-quantity {
+			margin-right: 1em;
+
+			input {
+				width: 5em;
+				text-align: center;
+				background: $white;
+				border: 1px solid #ccc;
+				border-radius: 2px;
+				box-sizing: border-box;
+			}
+		}
+	}
+}

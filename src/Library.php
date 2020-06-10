@@ -107,6 +107,8 @@ class Library {
 			'product-category-list',
 			'product-tag-list',
 			'product-stock-indicator',
+			'product-add-to-cart-form',
+			'product-add-to-cart-form-button',
 		];
 		foreach ( $atomic_blocks as $atomic_block ) {
 			$instance = new \Automattic\WooCommerce\Blocks\BlockTypes\AtomicBlock( $atomic_block );

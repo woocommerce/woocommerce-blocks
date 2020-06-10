@@ -25,6 +25,7 @@ export { default as more } from './library/more';
 export { default as noAlt } from './library/no-alt';
 export { default as notes } from './library/notes';
 export { default as notice } from './library/notice';
+export { default as qty } from './library/qty';
 export { default as radioSelected } from './library/radio-selected';
 export { default as radioUnselected } from './library/radio-unselected';
 export { default as reader } from './library/reader';
