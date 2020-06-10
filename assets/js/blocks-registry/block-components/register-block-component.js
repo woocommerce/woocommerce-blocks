@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { registeredBlocks } from './registered-blocks-init';
+import { registeredBlockComponents } from './registered-block-components-init';
 
 /**
  * Asserts that an option is of the given type. Otherwise, throws an error.
@@ -24,20 +24,24 @@ const assertOption = ( options, optionName, expectedType ) => {
  *
  * @export
  * @param {Object}   options           Options to use when registering the block.
- * @param {string}   options.main      Name of the parent block.
+ * @param {string}   [options.parent]  Name of the parent block, or blank to register globally.
  * @param {string}   options.blockName Name of the child block being registered.
  * @param {Function} options.component React component used to render the child block.
  */
-export function registerInnerBlock( options ) {
-	assertOption( options, 'main', 'string' );
+export function registerBlockComponent( options ) {
+	if ( ! options.parent ) {
+		options.parent = 'global';
+	}
+
+	assertOption( options, 'parent', 'string' );
 	assertOption( options, 'blockName', 'string' );
 	assertOption( options, 'component', 'function' );
 
-	const { main, blockName, component } = options;
+	const { parent, blockName, component } = options;
 
-	if ( ! registeredBlocks[ main ] ) {
-		registeredBlocks[ main ] = {};
+	if ( ! registeredBlockComponents[ parent ] ) {
+		registeredBlockComponents[ parent ] = {};
 	}
 
-	registeredBlocks[ main ][ blockName ] = component;
+	registeredBlockComponents[ parent ][ blockName ] = component;
 }
