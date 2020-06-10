@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType } from '@wordpress/blocks';
+import { registerExperimentalBlockType } from '@woocommerce/block-settings';
 import { Icon, box } from '@woocommerce/icons';
 
 /**
@@ -24,7 +24,7 @@ const blockConfig = {
 	edit,
 };
 
-registerBlockType( 'woocommerce/product-stock-indicator', {
+registerExperimentalBlockType( 'woocommerce/product-stock-indicator', {
 	...sharedConfig,
 	...blockConfig,
 } );
