@@ -1,16 +1,15 @@
 /**
+ * External dependencies
+ */
+import { render, screen, waitFor } from '@testing-library/react';
+import { previewCart } from '@woocommerce/resource-previews';
+import { dispatch } from '@wordpress/data';
+import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
+/**
  * Internal dependencies
  */
 import CartBlock from '../block';
 import { defaultCartState } from '../../../../data/default-states';
-
-/**
- * External dependencies
- */
-import { render, screen, waitFor } from '@testing-library/react';
-import { previewCart } from '@woocommerce/resource-previews/cart';
-import { dispatch } from '@wordpress/data';
-import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 
 describe( 'Testing cart', () => {
 	beforeEach( async () => {
