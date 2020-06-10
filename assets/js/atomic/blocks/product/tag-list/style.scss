@@ -5,11 +5,11 @@
 	ul {
 		margin: 0;
 		padding: 0;
-		list-style: none outside;
 		display: inline;
 
 		li {
 			display: inline;
+			list-style: none;
 		}
 
 		li::after {
