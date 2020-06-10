@@ -112,6 +112,7 @@ jobs:
               - npm run test:e2e:up
               - composer install
               - npm run build:e2e-test
+              - npm install @wordpress/e2e-test-utils@latest
               - npm run test:e2e
           env:
               - WP_VERSION=5.4
