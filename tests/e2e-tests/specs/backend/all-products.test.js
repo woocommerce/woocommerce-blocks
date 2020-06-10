@@ -15,6 +15,10 @@ const block = {
 	class: '.wc-block-all-products',
 };
 
+if ( process.env.WP_VERSION < 5.3 )
+	// eslint-disable-next-line jest/no-focused-tests
+	test.only( 'skipping all other things', () => {} );
+
 describe( `${ block.name } Block`, () => {
 	beforeAll( async () => {
 		await switchUserToAdmin();
