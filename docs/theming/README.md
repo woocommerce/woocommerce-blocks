@@ -74,3 +74,4 @@ WooCommerce Blocks avoids using legacy unprefixed classes as much as possible. H
 
 ## Other docs
 -   [Product grid blocks style update in 2.7.0](./product-grid-270.md)
+-   [Class names update in 2.8.0](./class-names-update-280.md)
