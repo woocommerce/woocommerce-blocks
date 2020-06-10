@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType } from '@wordpress/blocks';
+import { registerExperimentalBlockType } from '@woocommerce/block-settings';
 import { Icon, folder } from '@woocommerce/icons';
 
 /**
@@ -24,7 +24,7 @@ const blockConfig = {
 	edit,
 };
 
-registerBlockType( 'woocommerce/product-category-list', {
+registerExperimentalBlockType( 'woocommerce/product-category-list', {
 	...sharedConfig,
 	...blockConfig,
 } );

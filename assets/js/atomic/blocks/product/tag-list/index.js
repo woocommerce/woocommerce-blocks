@@ -2,8 +2,8 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType } from '@wordpress/blocks';
 import { Icon, tag } from '@woocommerce/icons';
+import { registerExperimentalBlockType } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -24,7 +24,7 @@ const blockConfig = {
 	edit,
 };
 
-registerBlockType( 'woocommerce/product-tag-list', {
+registerExperimentalBlockType( 'woocommerce/product-tag-list', {
 	...sharedConfig,
 	...blockConfig,
 } );
