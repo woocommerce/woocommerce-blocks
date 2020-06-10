@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { getRegisteredInnerBlocks } from '@woocommerce/blocks-registry';
+import { getRegisteredBlockComponents } from '@woocommerce/blocks-registry';
 
 /**
  * Internal dependencies
