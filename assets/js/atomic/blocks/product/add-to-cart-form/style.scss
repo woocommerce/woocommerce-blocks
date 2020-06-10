@@ -4,6 +4,20 @@
 		margin-bottom: $gap-small;
 		display: flex;
 
+		.wc-block-components-product-add-to-cart-form-button__button {
+			.wc-block-components-button__text {
+				display: block;
+
+				> svg {
+					fill: currentColor;
+					vertical-align: top;
+					width: 1.5em;
+					height: 1.5em;
+					margin: -0.25em 0 -0.25em 0.5em;
+				}
+			}
+		}
+
 		.wc-block-components-product-add-to-cart-form-button__qty {
 			margin-right: 1em;
 			width: 5em;
@@ -14,6 +28,13 @@
 			color: #43454b;
 			box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.125);
 			text-align: center;
+		}
+
+		.wc-block-components-product-add-to-cart-form-button--placeholder {
+			.wc-block-components-product-add-to-cart-form-button__qty,
+			.wc-block-components-product-add-to-cart-form-button__button {
+				@include placeholder();
+			}
 		}
 	}
 }

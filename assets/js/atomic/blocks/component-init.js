@@ -15,7 +15,7 @@ import ProductSummary from './product/summary/block';
 import ProductTitle from './product/title/frontend';
 import ProductSku from './product/sku/block';
 import ProductAddToCartForm from './product/add-to-cart-form/block';
-import ProductAddToCartFormButton from './product/add-to-cart-form/button/block';
+import ProductAddToCartFormButton from './product/add-to-cart-form/button/frontend';
 
 registerBlockComponent( {
 	blockName: 'woocommerce/product-price',

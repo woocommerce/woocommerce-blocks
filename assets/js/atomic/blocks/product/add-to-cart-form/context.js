@@ -11,11 +11,14 @@ import { useStoreAddToCart } from '@woocommerce/base-hooks';
 
 const AddToCartFormContext = createContext( {
 	quantity: 1,
+	cartQuantity: 0,
 	variationId: 0,
 	setQuantity: ( quantity ) => void { quantity },
 	setVariationId: ( variationId ) => void { variationId },
 	allowSubmit: false,
 	onSubmit: () => void {},
+	addingToCart: false,
+	addedToCart: false,
 } );
 
 /**
@@ -33,21 +36,25 @@ export const useAddToCartFormContext = () => {
 export const AddToCartFormContextProvider = ( { children, product } ) => {
 	const [ quantity, setQuantity ] = useState( 1 );
 	const [ variationId, setVariationId ] = useState( 0 );
-	const { addToCart, addingToCart } = useStoreAddToCart( product.id );
+	const { addToCart, addingToCart, cartQuantity } = useStoreAddToCart(
+		product.id || 0
+	);
 
+	// @todo Add Notices to Single Product Block to catch add to cart errors
 	const onSubmit = useCallback( () => {
 		addToCart( quantity );
 	}, [ addToCart, quantity ] );
 
 	const allowSubmit = ! addingToCart;
-
 	const contextValue = {
 		quantity,
+		cartQuantity,
 		variationId,
 		setQuantity,
 		setVariationId,
 		allowSubmit,
 		onSubmit,
+		addingToCart,
 	};
 
 	return (

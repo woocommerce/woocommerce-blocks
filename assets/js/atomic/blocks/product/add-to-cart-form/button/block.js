@@ -3,8 +3,13 @@
  */
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { __ } from '@wordpress/i18n';
+import { __, _n, sprintf } from '@wordpress/i18n';
 import { useProductDataContext } from '@woocommerce/shared-context';
+import Button from '@woocommerce/base-components/button';
+import { isEmpty } from 'lodash';
+import { Icon, done } from '@woocommerce/icons';
+import { useEffect, useRef, useState } from '@wordpress/element';
+import { triggerFragmentRefresh } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
@@ -14,21 +19,36 @@ import { useAddToCartFormContext } from '../context';
 /**
  * Add to Cart Form Qty + Button Block Component.
  *
- * @param {Object} props             Incoming props.
- * @param {string} [props.className] CSS Class name for the component.
- * @param {Object} [props.product]   Optional product object. Product from context will be used if
- *                                   this is not provided.
+ * @param {Object} props              Incoming props.
+ * @param {string} [props.className]  CSS Class name for the component.
+ * @param {Object} props.showQuantity Should qty selector be shown.
+ * @param {Object} [props.product]    Optional product object. Product from context will be used if
+ *                                    this is not provided.
  * @return {*} The component.
  */
-const Block = ( { className, ...props } ) => {
+const Block = ( { className, showQuantity = true, ...props } ) => {
 	const {
 		quantity,
 		setQuantity,
 		allowSubmit,
 		onSubmit,
+		addingToCart,
+		cartQuantity,
 	} = useAddToCartFormContext();
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product || {};
+	const firstMount = useRef( true );
+
+	const [ addedToCart, setAddedToCart ] = useState( false );
+
+	useEffect( () => {
+		// Avoid running on first mount when cart quantity is first set.
+		if ( firstMount.current ) {
+			firstMount.current = false;
+			return;
+		}
+		triggerFragmentRefresh();
+	}, [ cartQuantity ] );
 
 	const qtyProps = {
 		value: quantity,
@@ -36,46 +56,71 @@ const Block = ( { className, ...props } ) => {
 		max: product.quantity_limit || undefined,
 		hidden: product.quantity_limit && product.quantity_limit === 1,
 		disabled: ! allowSubmit,
-		onChange: ( event ) => {
-			setQuantity( event.target.value );
+		onChange: ( e ) => {
+			setQuantity( e.target.value );
 		},
 	};
 
 	const buttonProps = {
 		disabled: ! allowSubmit,
-		onClick: onSubmit,
+		showSpinner: addingToCart,
+		onClick: ( e ) => {
+			e.preventDefault();
+			onSubmit();
+			setAddedToCart( true );
+		},
 	};
 
-	if ( ! product ) {
+	if ( isEmpty( product ) ) {
 		buttonProps.disabled = true;
 		qtyProps.disabled = true;
 	}
+
+	const buttonText =
+		addedToCart && Number.isFinite( cartQuantity ) && cartQuantity > 0
+			? sprintf(
+					// translators: %s number of products in cart.
+					_n(
+						'%d in cart',
+						'%d in cart',
+						cartQuantity,
+						'woo-gutenberg-products-block'
+					),
+					cartQuantity
+			  )
+			: __( 'Add to cart', 'woo-gutenberg-products-block' );
 
 	return (
 		<div
 			className={ classnames(
 				className,
-				'wp-block-button',
-				'wc-block-components-product-add-to-cart-form-button'
+				'wc-block-components-product-add-to-cart-form-button',
+				{
+					'wc-block-components-product-add-to-cart-form-button--placeholder': isEmpty(
+						product
+					),
+				}
 			) }
 		>
-			<input
-				className="wc-block-components-product-add-to-cart-form-button__qty"
-				type="number"
-				{ ...qtyProps }
-			/>
-			<button
-				className={ classnames(
-					'wp-block-button__link',
-					'wc-block-components-product-add-to-cart-form-button__button',
-					{
-						'wc-block-components-product-add-to-cart-form-button__button--placeholder': ! product,
-					}
-				) }
+			{ showQuantity && (
+				<input
+					className="wc-block-components-product-add-to-cart-form-button__qty"
+					type="number"
+					{ ...qtyProps }
+				/>
+			) }
+			<Button
+				className="wc-block-components-product-add-to-cart-form-button__button"
 				{ ...buttonProps }
 			>
-				{ __( 'Add to cart', 'woo-gutenberg-products-block' ) }
-			</button>
+				{ buttonText }
+				{ addedToCart && (
+					<Icon
+						srcElement={ done }
+						alt={ __( 'Done', 'woo-gutenberg-products-block' ) }
+					/>
+				) }
+			</Button>
 		</div>
 	);
 };

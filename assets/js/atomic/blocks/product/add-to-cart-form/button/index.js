@@ -11,6 +11,7 @@ import classnames from 'classnames';
  */
 import sharedConfig from '../../shared-config';
 import edit from './edit';
+import attributes from './attributes';
 
 const blockConfig = {
 	title: __( 'Add to Cart Form Button', 'woo-gutenberg-products-block' ),
@@ -23,12 +24,9 @@ const blockConfig = {
 		foreground: '#96588a',
 	},
 	edit,
-	save: ( { attributes } ) => {
-		return (
-			<div
-				className={ classnames( 'is-loading', attributes.className ) }
-			/>
-		);
+	attributes,
+	save: ( { attributes: atts } ) => {
+		return <div className={ classnames( 'is-loading', atts.className ) } />;
 	},
 };
 

@@ -23,11 +23,7 @@ import { AddToCartFormContextProvider } from './context';
  */
 const Block = ( { className, children, ...props } ) => {
 	const productDataContext = useProductDataContext();
-	const product = props.product || productDataContext.product;
-
-	if ( ! product ) {
-		return null;
-	}
+	const product = props.product || productDataContext.product || {};
 
 	return (
 		<div
