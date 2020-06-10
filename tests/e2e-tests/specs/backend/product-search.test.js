@@ -41,7 +41,11 @@ describe( `${ block.name } Block`, () => {
 			)
 		).toBeNull();
 
+<<<<<<< HEAD
 		await expect( page ).toMatchElement( block.class );
+=======
+		expect( await getEditedPostContent() ).toMatchSnapshot( snapshotTag );
+>>>>>>> tag snapshots
 	} );
 
 	it( 'can toggle field label', async () => {
@@ -78,6 +82,6 @@ describe( `${ block.name } Block`, () => {
 			'The Placeholder'
 		);
 
-		expect( await getEditedPostContent() ).toMatchSnapshot();
+		expect( await getEditedPostContent() ).toMatchSnapshot( snapshotTag );
 	} );
 } );
