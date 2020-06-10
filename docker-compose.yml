@@ -39,7 +39,7 @@ services:
     build:
       context: ./bin/docker/wordpress
       args:
-        WORDPRESS_VERSION: ${WORDPRESS_VERSION}
+        WP_VERSION: ${WP_VERSION}
     ports:
       - ${WORDPRESS_PORT}:80
     restart: on-failure
