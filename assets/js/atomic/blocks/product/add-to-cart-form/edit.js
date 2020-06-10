@@ -26,6 +26,7 @@ export default ( { attributes } ) => {
 			<EditProductLink productId={ product.id } />
 			<InnerBlocks
 				template={ [
+					// @todo Add Blocks for Grouped and Variable add to cart forms.
 					[ 'woocommerce/product-add-to-cart-form-button' ],
 				] }
 				templateLock="insert"
