@@ -51,13 +51,13 @@ const Block = ( { className, ...props } ) => {
 			) }
 		>
 			{ lowStock
-				? lowStockText( { lowStock } )
-				: stockText( { inStock, isBackordered } ) }
+				? lowStockText( lowStock )
+				: stockText( inStock, isBackordered ) }
 		</div>
 	);
 };
 
-const lowStockText = ( { lowStock } ) => {
+const lowStockText = ( lowStock ) => {
 	return sprintf(
 		/* translators: %d stock amount (number of items in stock for product) */
 		__( '%d left in stock', 'woo-gutenberg-products-block' ),
@@ -65,7 +65,7 @@ const lowStockText = ( { lowStock } ) => {
 	);
 };
 
-const stockText = ( { inStock, isBackordered } ) => {
+const stockText = ( inStock, isBackordered ) => {
 	if ( isBackordered ) {
 		return __( 'Available on backorder', 'woo-gutenberg-products-block' );
 	}
