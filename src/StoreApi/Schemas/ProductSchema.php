@@ -62,6 +62,12 @@ class ProductSchema extends AbstractSchema {
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
+			'type'                => [
+				'description' => __( 'Product type.', 'woo-gutenberg-products-block' ),
+				'type'        => 'string',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+			],
 			'variation'           => [
 				'description' => __( 'Product variation attributes, if applicable.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
@@ -305,6 +311,12 @@ class ProductSchema extends AbstractSchema {
 						'context'     => [ 'view', 'edit' ],
 						'readonly'    => true,
 					],
+					'url'         => [
+						'description' => __( 'Add to cart URL.', 'woo-gutenberg-products-block' ),
+						'type'        => 'string',
+						'context'     => [ 'view', 'edit' ],
+						'readonly'    => true,
+					],
 				],
 			],
 		];
@@ -321,6 +333,7 @@ class ProductSchema extends AbstractSchema {
 			'id'                  => $product->get_id(),
 			'name'                => $this->prepare_html_response( $product->get_title() ),
 			'parent'              => $product->get_parent_id(),
+			'type'                => $product->get_type(),
 			'variation'           => $this->prepare_html_response( $product->is_type( 'variation' ) ? wc_get_formatted_variation( $product, true, true, false ) : '' ),
 			'permalink'           => $product->get_permalink(),
 			'sku'                 => $this->prepare_html_response( $product->get_sku() ),
@@ -346,6 +359,7 @@ class ProductSchema extends AbstractSchema {
 				[
 					'text'        => $product->add_to_cart_text(),
 					'description' => $product->add_to_cart_description(),
+					'url'         => $product->add_to_cart_url(),
 				]
 			),
 		];
