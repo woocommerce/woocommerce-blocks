@@ -10,7 +10,6 @@ This page includes all documentation regarding WooCommerce Blocks and themes.
 WooCommerce Blocks follows BEM for class names, as [stated in our coding guidelines](../contributors/coding-guidelines.md). All classes start with one of these two prefixes:
 
 * `.wc-block-`: class names specific to a single block.
-
 * `.wc-block-components-`: class names specific to a component. The component might be reused by different blocks.
 
 The combination of block class names and component class names allows themes to style each component either globally or only in specific blocks. As an example, you could style all prices to be italics with:
@@ -45,7 +44,7 @@ Those classes are:
 | >700px | `is-large` |
 | 521px-700px | `is-medium` |
 | 401px-520px | `is-small` |
-| <=400px  | `is-mobile` |
+| <=400px | `is-mobile` |
 
 As an example, if we wanted to do the Checkout font size 10% larger when the container has a width of 521px or wider, we could do so with this code:
 

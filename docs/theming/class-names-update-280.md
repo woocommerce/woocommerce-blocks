@@ -1,6 +1,6 @@
 # Class names update in 2.8.0
 
-In WC Blocks 2.8.0, some class names were updated in order so simplify them, fix inconsistencies and make it easier to diferentiate frontend components from editor components.
+In WC Blocks 2.8.0, some class names were updated in order so simplify them, fix inconsistencies and make it easier to differentiate frontend components from editor components.
 
 ## Replaced classes
 
