@@ -524,13 +524,18 @@ class ProductSchema extends AbstractSchema {
 			return [];
 		}
 
-		$return = [];
+		$return           = [];
+		$default_category = (int) get_option( 'default_product_cat', 0 );
 
 		foreach ( $terms as $term ) {
 			$link = get_term_link( $term, $taxonomy );
 
 			if ( is_wp_error( $link ) ) {
-				$link = false;
+				continue;
+			}
+
+			if ( $term->term_id === $default_category ) {
+				continue;
 			}
 
 			$return[] = (object) [
