@@ -24,6 +24,10 @@
 		}
 	}
 
+	.wc-block-shipping-rates-control__no-results-notice {
+		margin-bottom: em($gap-small);
+	}
+
 	.wc-block-shipping-totals__change-address-button {
 		@include link-button();
 
