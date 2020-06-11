@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { InspectorControls, PlainText } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl } from '@wordpress/components';
-import { withInstanceId } from '@wordpress/compose';
+import { useInstanceId } from '@wordpress/compose';
 
 /**
  * Internal dependencies
@@ -19,7 +19,6 @@ import './style.scss';
  */
 const Edit = ( {
 	attributes: { label, placeholder, formId, className, hasLabel, align },
-	instanceId,
 	setAttributes,
 } ) => {
 	const classes = classnames(
@@ -28,6 +27,7 @@ const Edit = ( {
 		className
 	);
 
+	const instanceId = useInstanceId( Edit );
 	if ( ! formId ) {
 		setAttributes( {
 			formId: `wc-block-product-search-${ instanceId }`,
@@ -127,4 +127,4 @@ Edit.propTypes = {
 	setAttributes: PropTypes.func,
 };
 
-export default withInstanceId( Edit );
+export default Edit;
