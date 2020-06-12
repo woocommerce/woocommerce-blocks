@@ -35,18 +35,24 @@ export const useAddToCartFormContext = () => {
 /**
  * Provides an interface for blocks within the Add to Cart Form context to control events.
  */
-export const AddToCartFormContextProvider = ( { children, product } ) => {
+export const AddToCartFormContextProvider = ( {
+	children,
+	product,
+	showFormElements,
+} ) => {
 	const firstMount = useRef( true );
 	const [ quantity, setQuantity ] = useState( 1 );
 	const [ variationId, setVariationId ] = useState( 0 );
-	const { addToCart, addingToCart, cartQuantity } = useStoreAddToCart(
-		product.id || 0
-	);
+	const {
+		addToCart: storeAddToCart,
+		addingToCart,
+		cartQuantity,
+	} = useStoreAddToCart( product.id || 0 );
 
 	// @todo Add Notices to Single Product Block to catch add to cart errors
-	const onSubmit = useCallback( () => {
-		addToCart( quantity );
-	}, [ addToCart, quantity ] );
+	const addToCart = useCallback( () => {
+		storeAddToCart( quantity );
+	}, [ storeAddToCart, quantity ] );
 
 	// This will ensure any add to cart events update legacy fragments using jQuery.
 	useEffect( () => {
@@ -64,12 +70,16 @@ export const AddToCartFormContextProvider = ( { children, product } ) => {
 	const needsVariationPicker = type === 'variable';
 	const needsVariation = needsVariationPicker && variationId === 0;
 
+	const hasProduct = ! isEmpty( product );
+
 	// The cart button is disabled when loading or when the form is incomplete.
-	const disabled =
-		! isPurchasable || addingToCart || needsVariation || isEmpty( product );
+	const canAddToCart =
+		! addingToCart && hasProduct && isPurchasable && ! needsVariation;
 
 	const contextValue = {
+		hasProduct,
 		product,
+		showFormElements,
 		// Qty selected and in cart.
 		quantity,
 		setQuantity,
@@ -80,9 +90,9 @@ export const AddToCartFormContextProvider = ( { children, product } ) => {
 		needsVariationPicker,
 		needsVariation,
 		// Cart button.
-		onSubmit,
 		addingToCart,
-		disabled,
+		canAddToCart,
+		addToCart,
 	};
 
 	return (

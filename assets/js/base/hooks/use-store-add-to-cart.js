@@ -78,7 +78,9 @@ export const useStoreAddToCart = ( productId ) => {
 	}, [ cartItems, productId ] );
 
 	return {
-		cartQuantity: currentCartItemQuantity.current,
+		cartQuantity: Number.isFinite( currentCartItemQuantity.current )
+			? currentCartItemQuantity.current
+			: 0,
 		addingToCart,
 		cartIsLoading,
 		addToCart,

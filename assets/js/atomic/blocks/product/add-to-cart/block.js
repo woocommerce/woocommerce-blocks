@@ -4,15 +4,19 @@
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useProductDataContext } from '@woocommerce/shared-context';
+import { isEmpty } from 'lodash';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
-import { AddToCartFormContextProvider } from './context';
-import VariationPicker from './variation-picker';
-import GroupedProducts from './grouped-products';
-import AddToCartButton from './add-to-cart-button';
+import { AddToCartFormContextProvider, AddToCartButton } from './shared';
+import {
+	SimpleProductForm,
+	VariableProductForm,
+	ExternalProductForm,
+	GroupedProductForm,
+} from './product-types';
 
 /**
  * Product Add to Form Block Component.
@@ -27,39 +31,50 @@ import AddToCartButton from './add-to-cart-button';
 const Block = ( { className, showFormElements, ...props } ) => {
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product || {};
-
-	// Get data from the product to determine what to show.
-	const {
-		is_in_stock: isInStock = true,
-		type: productType = 'simple',
-	} = product;
-
-	// If the product is out of stock we do not show the add to cart form at all.
-	if ( ! isInStock ) {
-		return null;
-	}
+	const componentClass = classnames(
+		className,
+		'wc-block-components-product-add-to-cart',
+		{
+			'wc-block-components-product-add-to-cart--placeholder': isEmpty(
+				product
+			),
+		}
+	);
 
 	return (
-		<div
-			className={ classnames(
-				className,
-				'wc-block-components-product-add-to-cart'
-			) }
+		<AddToCartFormContextProvider
+			product={ product }
+			showFormElements={ showFormElements }
 		>
-			<AddToCartFormContextProvider
-				product={ product }
-				showFormElements={ showFormElements }
-			>
-				{ productType === 'variable' && (
-					<VariationPicker product={ product } />
-				) }
-				{ productType === 'grouped' && (
-					<GroupedProducts product={ product } />
-				) }
-				<AddToCartButton product={ product } />
-			</AddToCartFormContextProvider>
-		</div>
+			<div className={ componentClass }>
+				<>
+					{ showFormElements ? (
+						<AddToCartForm
+							productType={ product.type || 'simple' }
+						/>
+					) : (
+						<AddToCartButton />
+					) }
+				</>
+			</div>
+		</AddToCartFormContextProvider>
 	);
+};
+
+const AddToCartForm = ( { productType } ) => {
+	if ( productType === 'variable' ) {
+		return <VariableProductForm />;
+	}
+	if ( productType === 'grouped' ) {
+		return <GroupedProductForm />;
+	}
+	if ( productType === 'external' ) {
+		return <ExternalProductForm />;
+	}
+	if ( productType === 'simple' || productType === 'variation' ) {
+		return <SimpleProductForm />;
+	}
+	return null;
 };
 
 Block.propTypes = {

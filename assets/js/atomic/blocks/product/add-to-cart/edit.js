@@ -18,7 +18,6 @@ export default ( { attributes, setAttributes } ) => {
 	const productDataContext = useProductDataContext();
 	const product = productDataContext.product || {};
 	const { className, showFormElements } = attributes;
-	const { id: productId = 0, is_purchasable: isPurchasable = true } = product;
 
 	return (
 		<div
@@ -27,8 +26,8 @@ export default ( { attributes, setAttributes } ) => {
 				'wc-block-components-product-add-to-cart'
 			) }
 		>
-			<EditProductLink productId={ productId } />
-			{ isPurchasable && (
+			<EditProductLink productId={ product.id || 0 } />
+			{ product.type !== 'external' && (
 				<InspectorControls>
 					<PanelBody
 						title={ __( 'Layout', 'woo-gutenberg-products-block' ) }
