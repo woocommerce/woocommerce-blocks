@@ -125,7 +125,7 @@
 				transform: translateY(#{$gap-smallest}) scale(0.75);
 			}
 		}
-		& + .wc-block-form-input-validation-error {
+		& + .wc-block-components-validation-error {
 			position: static;
 			margin-top: -$gap-large;
 		}
@@ -157,7 +157,7 @@
 .is-large {
 	.wc-card-expiry-element,
 	.wc-card-cvc-element {
-		.wc-block-form-input-validation-error > p {
+		.wc-block-components-validation-error > p {
 			line-height: 16px;
 			padding-top: 4px;
 		}
@@ -168,7 +168,7 @@
 .is-small {
 	.wc-card-expiry-element,
 	.wc-card-cvc-element {
-		.wc-block-form-input-validation-error > p {
+		.wc-block-components-validation-error > p {
 			min-height: 28px;
 		}
 	}

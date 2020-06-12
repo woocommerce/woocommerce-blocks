@@ -25,7 +25,7 @@ const ProductVariationData = ( { variation = [] } ) => {
 		.join( ' / ' );
 
 	return (
-		<div className="wc-block-product-variation-data">
+		<div className="wc-block-components-product-variation-data">
 			{ variationsText }
 		</div>
 	);

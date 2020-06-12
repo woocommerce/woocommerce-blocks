@@ -236,19 +236,19 @@ const PriceSlider = ( {
 	return (
 		<div className={ classes }>
 			<div
-				className="wc-block-price-filter__range-input-wrapper"
+				className="wc-block-price-filter__range-input-wrapper wc-block-components-price-filter__range-input-wrapper"
 				onMouseMove={ findClosestRange }
 				onFocus={ findClosestRange }
 			>
 				{ hasValidConstraints && (
 					<div aria-hidden={ showInputFields }>
 						<div
-							className="wc-block-price-filter__range-input-progress"
+							className="wc-block-price-filter__range-input-progress wc-block-components-price-filter__range-input-progress"
 							style={ progressStyles }
 						/>
 						<input
 							type="range"
-							className="wc-block-price-filter__range-input wc-block-price-filter__range-input--min"
+							className="wc-block-price-filter__range-input wc-block-price-filter__range-input--min wc-block-components-price-filter__range-input wc-block-components-price-filter__range-input--min"
 							aria-label={ __(
 								'Filter products by minimum price',
 								'woo-gutenberg-products-block'
@@ -268,7 +268,7 @@ const PriceSlider = ( {
 						/>
 						<input
 							type="range"
-							className="wc-block-price-filter__range-input wc-block-price-filter__range-input--max"
+							className="wc-block-price-filter__range-input wc-block-price-filter__range-input--max wc-block-components-price-filter__range-input wc-block-components-price-filter__range-input--max"
 							aria-label={ __(
 								'Filter products by maximum price',
 								'woo-gutenberg-products-block'
@@ -295,7 +295,7 @@ const PriceSlider = ( {
 						<FormattedMonetaryAmount
 							currency={ currency }
 							displayType="input"
-							className="wc-block-price-filter__amount wc-block-price-filter__amount--min wc-block-form-text-input"
+							className="wc-block-price-filter__amount wc-block-price-filter__amount--min wc-block-form-text-input wc-block-components-price-filter__amount wc-block-components-price-filter__amount--min"
 							aria-label={ __(
 								'Filter products by minimum price',
 								'woo-gutenberg-products-block'
@@ -313,7 +313,7 @@ const PriceSlider = ( {
 						<FormattedMonetaryAmount
 							currency={ currency }
 							displayType="input"
-							className="wc-block-price-filter__amount wc-block-price-filter__amount--max wc-block-form-text-input"
+							className="wc-block-price-filter__amount wc-block-price-filter__amount--max wc-block-form-text-input wc-block-components-price-filter__amount wc-block-components-price-filter__amount--max"
 							aria-label={ __(
 								'Filter products by maximum price',
 								'woo-gutenberg-products-block'
@@ -334,7 +334,7 @@ const PriceSlider = ( {
 					! isLoading &&
 					Number.isFinite( minPrice ) &&
 					Number.isFinite( maxPrice ) && (
-						<div className="wc-block-price-filter__range-text">
+						<div className="wc-block-price-filter__range-text wc-block-components-price-filter__range-text">
 							{ __( 'Price', 'woo-gutenberg-products-block' ) }
 							: &nbsp;
 							<FormattedMonetaryAmount
@@ -352,7 +352,7 @@ const PriceSlider = ( {
 					) }
 				{ showFilterButton && (
 					<FilterSubmitButton
-						className="wc-block-price-filter__button"
+						className="wc-block-price-filter__button wc-block-components-price-filter__button"
 						disabled={ isLoading || ! hasValidConstraints }
 						onClick={ onSubmit }
 						screenReaderLabel={ __(
