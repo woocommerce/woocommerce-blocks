@@ -15,9 +15,9 @@ import { visitBlockPage } from '@woocommerce/blocks-test-utils';
 import { deleteBlockPages } from '../../fixtures/fixture-loaders';
 
 const block = {
-	name: 'All Products',
-	slug: 'woocommerce/all-products',
-	class: '.wc-block-all-products',
+	name: 'Single Product',
+	slug: 'woocommerce/single-product',
+	class: '.wc-block-single-product',
 };
 
 describe( `${ block.name } Block`, () => {
@@ -32,9 +32,11 @@ describe( `${ block.name } Block`, () => {
 			await deleteBlockPages( [ maybePageId ] );
 		}
 	} );
-
-	it( 'can only be inserted once', async () => {
+	it( 'can be inserted more than once', async () => {
 		await insertBlock( block.name );
+		expect( await getAllBlocks() ).toHaveLength( 2 );
+		await page.keyboard.press( 'Tab' );
+		await page.keyboard.press( 'Delete' );
 		expect( await getAllBlocks() ).toHaveLength( 1 );
 	} );
 
