@@ -6,8 +6,12 @@ import {
 	useContext,
 	useState,
 	useCallback,
+	useRef,
+	useEffect,
 } from '@wordpress/element';
 import { useStoreAddToCart } from '@woocommerce/base-hooks';
+import { triggerFragmentRefresh } from '@woocommerce/base-utils';
+import { isEmpty } from 'lodash';
 
 const AddToCartFormContext = createContext( {
 	quantity: 1,
@@ -32,6 +36,7 @@ export const useAddToCartFormContext = () => {
  * Provides an interface for blocks within the Add to Cart Form context to control events.
  */
 export const AddToCartFormContextProvider = ( { children, product } ) => {
+	const firstMount = useRef( true );
 	const [ quantity, setQuantity ] = useState( 1 );
 	const [ variationId, setVariationId ] = useState( 0 );
 	const { addToCart, addingToCart, cartQuantity } = useStoreAddToCart(
@@ -43,14 +48,41 @@ export const AddToCartFormContextProvider = ( { children, product } ) => {
 		addToCart( quantity );
 	}, [ addToCart, quantity ] );
 
+	// This will ensure any add to cart events update legacy fragments using jQuery.
+	useEffect( () => {
+		// Avoid running on first mount when cart quantity is first set.
+		if ( firstMount.current ) {
+			firstMount.current = false;
+			return;
+		}
+		triggerFragmentRefresh();
+	}, [ cartQuantity ] );
+
+	const { type = 'simple', is_purchasable: isPurchasable = false } = product;
+
+	// If dealing with a variable product, a variation needs to be selected.
+	const needsVariationPicker = type === 'variable';
+	const needsVariation = needsVariationPicker && variationId === 0;
+
+	// The cart button is disabled when loading or when the form is incomplete.
+	const disabled =
+		! isPurchasable || addingToCart || needsVariation || isEmpty( product );
+
 	const contextValue = {
+		product,
+		// Qty selected and in cart.
 		quantity,
-		cartQuantity,
-		variationId,
 		setQuantity,
+		cartQuantity,
+		// Variation data.
+		variationId,
 		setVariationId,
+		needsVariationPicker,
+		needsVariation,
+		// Cart button.
 		onSubmit,
 		addingToCart,
+		disabled,
 	};
 
 	return (

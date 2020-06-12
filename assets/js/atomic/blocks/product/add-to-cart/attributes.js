@@ -1,7 +1,7 @@
 export const blockAttributes = {
-	showQuantity: {
+	showFormElements: {
 		type: 'boolean',
-		default: true,
+		default: false,
 	},
 };
 

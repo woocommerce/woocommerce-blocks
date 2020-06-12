@@ -4,19 +4,18 @@
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import { Icon, cart } from '@woocommerce/icons';
-import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
-import sharedConfig from '../../shared-config';
+import sharedConfig from '../shared-config';
 import edit from './edit';
 import attributes from './attributes';
 
 const blockConfig = {
-	title: __( 'Add to Cart Form Button', 'woo-gutenberg-products-block' ),
+	title: __( 'Add to Cart', 'woo-gutenberg-products-block' ),
 	description: __(
-		'Displays a call to action for the add to cart form.',
+		'Displays an add to cart button. Optionally displays other add to cart form elements.',
 		'woo-gutenberg-products-block'
 	),
 	icon: {
@@ -25,12 +24,9 @@ const blockConfig = {
 	},
 	edit,
 	attributes,
-	save: ( { attributes: atts } ) => {
-		return <div className={ classnames( 'is-loading', atts.className ) } />;
-	},
 };
 
-registerBlockType( 'woocommerce/product-add-to-cart-form-button', {
+registerBlockType( 'woocommerce/product-add-to-cart', {
 	...sharedConfig,
 	...blockConfig,
 } );

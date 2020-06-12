@@ -12,4 +12,4 @@ import './product/sku';
 import './product/category-list';
 import './product/tag-list';
 import './product/stock-indicator';
-import './product/add-to-cart-form';
+import './product/add-to-cart';

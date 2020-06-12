@@ -36,7 +36,10 @@ export const DEFAULT_INNER_BLOCKS = [
 					[ 'woocommerce/product-price' ],
 					[ 'woocommerce/product-summary' ],
 					[ 'woocommerce/product-stock-indicator' ],
-					[ 'woocommerce/product-add-to-cart-form' ],
+					[
+						'woocommerce/product-add-to-cart',
+						{ showFormElements: true },
+					],
 					[ 'woocommerce/product-sku' ],
 					[ 'woocommerce/product-category-list' ],
 					[ 'woocommerce/product-tag-list' ],
