@@ -16,21 +16,10 @@ async function visitPage( link ) {
 	const isWelcomeGuideActive = await page.evaluate( () =>
 		wp.data.select( 'core/edit-post' ).isFeatureActive( 'welcomeGuide' )
 	);
-	const isFullscreenMode = await page.evaluate( () =>
-		wp.data.select( 'core/edit-post' ).isFeatureActive( 'fullscreenMode' )
-	);
 
 	if ( isWelcomeGuideActive ) {
 		await page.evaluate( () =>
 			wp.data.dispatch( 'core/edit-post' ).toggleFeature( 'welcomeGuide' )
-		);
-	}
-
-	if ( isFullscreenMode ) {
-		await page.evaluate( () =>
-			wp.data
-				.dispatch( 'core/edit-post' )
-				.toggleFeature( 'fullscreenMode' )
 		);
 	}
 }
