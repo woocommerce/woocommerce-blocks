@@ -12,7 +12,6 @@ import { visitBlockPage } from '@woocommerce/blocks-test-utils';
 /**
  * Internal dependencies
  */
-import { deleteBlockPages } from '../../fixtures/fixture-loaders';
 
 const block = {
 	name: 'Product Search',
@@ -21,16 +20,9 @@ const block = {
 };
 
 describe( `${ block.name } Block`, () => {
-	let maybePageId;
 	beforeAll( async () => {
 		await switchUserToAdmin();
-		maybePageId = await visitBlockPage( `${ block.name } Block` );
-	} );
-
-	afterAll( async () => {
-		if ( maybePageId ) {
-			await deleteBlockPages( [ maybePageId ] );
-		}
+		await visitBlockPage( `${ block.name } Block` );
 	} );
 
 	it( 'renders without crashing', async () => {

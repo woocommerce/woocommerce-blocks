@@ -12,7 +12,6 @@ import { visitBlockPage } from '@woocommerce/blocks-test-utils';
 /**
  * Internal dependencies
  */
-import { deleteBlockPages } from '../../fixtures/fixture-loaders';
 
 const block = {
 	name: 'All Products',
@@ -21,16 +20,9 @@ const block = {
 };
 
 describe( `${ block.name } Block`, () => {
-	let maybePageId;
 	beforeAll( async () => {
 		await switchUserToAdmin();
-		maybePageId = await visitBlockPage( `${ block.name } Block` );
-	} );
-
-	afterAll( async () => {
-		if ( maybePageId ) {
-			await deleteBlockPages( [ maybePageId ] );
-		}
+		await visitBlockPage( `${ block.name } Block` );
 	} );
 
 	it( 'can only be inserted once', async () => {
