@@ -53,7 +53,7 @@
 		"test:e2e:down:reset": "docker-compose down -v",
 		"test:e2e:ssh": "docker exec -it woo-blocks_wordpress-www_1 /bin/bash",
 		"test:e2e:up": "docker-compose up -d",
-		"test:e2e:up:build": "docker-compose up --build -d",
+		"test:e2e:up:build": "docker-compose up --build -d --quiet-pull",
 		"test:e2e": "./tests/bin/e2e-test-integration.js",
 		"test:e2e-dev": "./tests/bin/e2e-test-integration.js --dev",
 		"test:e2e:update": "./tests/bin/e2e-test-integration.js -- --updateSnapshot",
