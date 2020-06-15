@@ -255,10 +255,11 @@ const deleteShippingZones = ( ids ) => {
 
 const createBlockPages = () => {
 	return glob( `${ dirname( __filename ) }/../specs/**/*.fixture.json` ).then(
-		async ( files ) => {
-			const file = await readJson( file );
+		( files ) => {
 			return Promise.all(
-				files.map( ( { title, pageContent: content } ) => {
+				files.map( async ( filePath ) => {
+					const file = await readJson( filePath );
+					const { title, pageContent: content } = file;
 					return axios
 						.post(
 							WPAPI,
