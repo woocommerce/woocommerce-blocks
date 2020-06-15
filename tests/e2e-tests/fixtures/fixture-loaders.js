@@ -254,11 +254,9 @@ const deleteShippingZones = ( ids ) => {
 };
 
 const createBlockPages = () => {
-	return glob( `${ dirname( __filename ) }/../specs/**/*.fixture.json` )
-		.then( ( files ) => {
-			return Promise.all( files.map( ( file ) => readJson( file ) ) );
-		} )
-		.then( ( files ) => {
+	return glob( `${ dirname( __filename ) }/../specs/**/*.fixture.json` ).then(
+		async ( files ) => {
+			const file = await readJson( file );
 			return Promise.all(
 				files.map( ( { title, pageContent: content } ) => {
 					return axios
@@ -279,7 +277,8 @@ const createBlockPages = () => {
 						.then( ( response ) => response.data.id );
 				} )
 			);
-		} );
+		}
+	);
 };
 
 const deleteBlockPages = ( ids ) => {
