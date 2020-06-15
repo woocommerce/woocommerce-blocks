@@ -9,10 +9,6 @@ import {
 
 import { visitBlockPage } from '@woocommerce/blocks-test-utils';
 
-/**
- * Internal dependencies
- */
-
 const block = {
 	name: 'Cart',
 	slug: 'woocommerce/cart',

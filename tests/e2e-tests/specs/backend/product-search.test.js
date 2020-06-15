@@ -9,10 +9,6 @@ import {
 import { clearAndFillInput } from '@woocommerce/e2e-tests/utils';
 import { visitBlockPage } from '@woocommerce/blocks-test-utils';
 
-/**
- * Internal dependencies
- */
-
 const block = {
 	name: 'Product Search',
 	slug: 'woocommerce/product-search',
