@@ -41,15 +41,7 @@ describe( `${ block.name } Block`, () => {
 			)
 		).toBeNull();
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 		await expect( page ).toMatchElement( block.class );
-=======
-		expect( await getEditedPostContent() ).toMatchSnapshot( snapshotTag );
->>>>>>> tag snapshots
-=======
-		expect( await getEditedPostContent() ).toMatchSnapshot();
->>>>>>> Revert "tag snapshots"
 	} );
 
 	it( 'can toggle field label', async () => {
