@@ -19,7 +19,8 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
 
 **API documentation**
 
--   [Store API documentation](../src/RestApi/StoreApi/README.md)
+-   [Block Client APIs](block-client-apis/README.md)
+-   [Store API documentation](../src/StoreApi/README.md)
 
 **For themes**
 
