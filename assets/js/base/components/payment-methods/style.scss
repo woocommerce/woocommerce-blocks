@@ -13,6 +13,7 @@ $border-width: 1px;
 		top: 0;
 		vertical-align: middle;
 
+		// Pseudo-elements used to show the border before and after the title.
 		&::before {
 			border: $border-width solid transparent;
 			border-left-color: currentColor;
