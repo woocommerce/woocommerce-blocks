@@ -1,6 +1,7 @@
 .is-loading {
 	.wc-block-components-review-list-item__text {
 		@include placeholder();
+		@include force-content();
 		display: block;
 		width: 60%;
 	}
@@ -8,12 +9,14 @@
 	.wc-block-components-review-list-item__info {
 		.wc-block-components-review-list-item__image {
 			@include placeholder();
+			@include force-content();
 		}
 
 		.wc-block-components-review-list-item__meta {
 			.wc-block-components-review-list-item__author {
 				@include placeholder();
 				@include font-size(regular);
+				@include force-content();
 				width: 80px;
 			}
 
@@ -30,6 +33,7 @@
 
 		.wc-block-components-review-list-item__published-date {
 			@include placeholder();
+			@include force-content();
 			height: 1em;
 			width: 120px;
 		}
