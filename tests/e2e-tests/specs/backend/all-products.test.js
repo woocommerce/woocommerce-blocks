@@ -15,6 +15,9 @@ const block = {
 	class: '.wc-block-all-products',
 };
 
+/**
+ * @todo: write helpers to simplify version and feature gating tests.
+ */
 if ( process.env.WP_VERSION < 5.3 )
 	// eslint-disable-next-line jest/no-focused-tests
 	test.only( 'skipping all other things', () => {} );
