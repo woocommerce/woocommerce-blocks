@@ -74,7 +74,7 @@ class ProductCollectionData extends AbstractRoute {
 			$taxonomy__and_queries = [];
 
 			foreach ( $request['calculate_attribute_counts'] as $attributes_to_count ) {
-				if ( 'or' === $attributes_to_count['query_type'] ) {
+				if ( empty( $attributes_to_count['query_type'] ) || 'or' === $attributes_to_count['query_type'] ) {
 					$taxonomy__or_queries[] = $attributes_to_count['taxonomy'];
 				} else {
 					$taxonomy__and_queries[] = $attributes_to_count['taxonomy'];
