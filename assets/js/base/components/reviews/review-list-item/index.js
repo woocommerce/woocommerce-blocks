@@ -117,7 +117,7 @@ function getReviewDate( review ) {
 	} = review;
 	return (
 		<time
-			className="wc-block-review-list-item__published-date wc-block--components-review-list-item__published-date"
+			className="wc-block-review-list-item__published-date wc-block-components-review-list-item__published-date"
 			dateTime={ dateCreated }
 		>
 			{ formattedDateCreated }
@@ -131,9 +131,9 @@ function getReviewRating( review ) {
 		width: ( rating / 5 ) * 100 + '%' /* stylelint-disable-line */,
 	};
 	return (
-		<div className="wc-block-review-list-item__rating wc-block-components--review-list-item__rating">
+		<div className="wc-block-review-list-item__rating wc-block-components-review-list-item__rating">
 			<div
-				className="wc-block-review-list-item__rating__stars wc-block-components--review-list-item__rating__stars"
+				className="wc-block-review-list-item__rating__stars wc-block-components-review-list-item__rating__stars"
 				role="img"
 			>
 				<span style={ starStyle }>

@@ -71,8 +71,8 @@ Some classes that were introduced in previous versions or that have shipped in W
 | `wc-block-pagination-ellipsis`    | `wc-block-components-pagination__ellipsis`   |
 | `wc-block-review-list`            | `wc-block-components-review-list`            |
 | `wc-block-review-sort-select`     | `wc-block-components-review-sort-select`     |
-| `wc-block-price-filter`           | `wc-block-components-price-filter`           |
-| `wc-block-form-text-input`        | `wc-block-components-price-filter__amount`   |
+| `wc-block-price-filter`           | `wc-block-components-price-slider`           |
+| `wc-block-form-text-input`        | `wc-block-components-price-slider__amount`   |
 
 -   **Note:** if not listed, all items in the table above include derived classes.
     : For example: given that `wc-block-error` changed to `wc-block-components-error`
