@@ -91,7 +91,7 @@ export const AddToCartFormContextProvider = ( {
 	// Events.
 	const onSubmit = useCallback( () => {
 		/**
-		 * @todo Surface add to cart errors in the single product block
+		 * @todo Surface add to cart errors in the single product block.
 		 *
 		 * If the addToCart function within useStoreAddToCart fails, a notice should be shown on the product page.
 		 */
@@ -99,11 +99,11 @@ export const AddToCartFormContextProvider = ( {
 	}, [ storeAddToCart, quantity ] );
 
 	/**
-	 * @todo Add Event Callbacks to the Add to Cart Form
+	 * @todo Add Event Callbacks to the Add to Cart Form.
 	 *
-	 * onChange should trigger when a form element changes, so for example, a variation picker could indicate that it's ready.
-	 * onSuccess should trigger after a successful add to cart. This could be used to reset form elements, do a redirect, or show something to the user.
-	 * onFail should trigger when adding to cart fails. Form elements might show extra notices or reset. A fallback might be to redirect to the core product page in case of incompatibilities.
+	 * - onChange should trigger when a form element changes, so for example, a variation picker could indicate that it's ready.
+	 * - onSuccess should trigger after a successful add to cart. This could be used to reset form elements, do a redirect, or show something to the user.
+	 * - onFail should trigger when adding to cart fails. Form elements might show extra notices or reset. A fallback might be to redirect to the core product page in case of incompatibilities.
 	 */
 	const onChange = useCallback( () => {}, [] );
 	const onSuccess = useCallback( () => {}, [] );
