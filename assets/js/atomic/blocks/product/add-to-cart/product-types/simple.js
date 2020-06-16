@@ -2,40 +2,31 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useAddToCartFormContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
  */
-import {
-	useAddToCartFormContext,
-	AddToCartButton,
-	QuantityInput,
-	ProductUnavailable,
-} from '../shared';
+import { AddToCartButton, QuantityInput, ProductUnavailable } from '../shared';
 
 /**
  * Simple Product Add To Cart Form
  */
 const Simple = () => {
 	const {
-		hasProduct,
 		product,
 		quantity,
+		minQuantity,
+		maxQuantity,
 		setQuantity,
-		addingToCart,
+		formDisabled,
 	} = useAddToCartFormContext();
 
-	const {
-		is_in_stock: isInStock = true,
-		is_purchasable: isPurchasable = true,
-		quantity_limit: quantityLimit = 99,
-	} = product;
-
-	if ( ! isPurchasable ) {
+	if ( product.id && ! product.is_purchasable ) {
 		return <ProductUnavailable />;
 	}
 
-	if ( ! isInStock ) {
+	if ( product.id && ! product.is_in_stock ) {
 		return (
 			<ProductUnavailable
 				reason={ __(
@@ -50,9 +41,9 @@ const Simple = () => {
 		<>
 			<QuantityInput
 				value={ quantity }
-				min={ 1 }
-				max={ quantityLimit }
-				disabled={ addingToCart || ! hasProduct }
+				min={ minQuantity }
+				max={ maxQuantity }
+				disabled={ formDisabled }
 				onChange={ setQuantity }
 			/>
 			<AddToCartButton />

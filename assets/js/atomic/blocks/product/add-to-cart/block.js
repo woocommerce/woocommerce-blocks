@@ -3,6 +3,7 @@
  */
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { AddToCartFormContextProvider } from '@woocommerce/base-context';
 import { useProductDataContext } from '@woocommerce/shared-context';
 import { isEmpty } from 'lodash';
 
@@ -10,7 +11,7 @@ import { isEmpty } from 'lodash';
  * Internal dependencies
  */
 import './style.scss';
-import { AddToCartFormContextProvider, AddToCartButton } from './shared';
+import { AddToCartButton } from './shared';
 import {
 	SimpleProductForm,
 	VariableProductForm,

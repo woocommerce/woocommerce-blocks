@@ -13,7 +13,7 @@ import './style.scss';
 /**
  * Component that visually renders a button but semantically might be `<button>` or `<a>` depending on the props.
  *
- * @todo Update cart and checkout to use button component instead of cart-checkout/button.
+ * @todo Update cart and checkout button component. Cart and checkout should use base/components/button instead of cart-checkout/button.
  */
 const Button = ( { className, showSpinner = false, children, ...props } ) => {
 	const buttonClassName = classNames(

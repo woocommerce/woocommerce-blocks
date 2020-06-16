@@ -5,23 +5,19 @@ import { __, _n, sprintf } from '@wordpress/i18n';
 import Button from '@woocommerce/base-components/button';
 import { Icon, done as doneIcon } from '@woocommerce/icons';
 import { useState } from '@wordpress/element';
-
-/**
- * Internal dependencies
- */
-import { useAddToCartFormContext } from './context';
+import { useAddToCartFormContext } from '@woocommerce/base-context';
 
 /**
  * Add to Cart Form Qty + Button Block Component.
  */
 const AddToCartButton = () => {
 	const {
-		product,
 		showFormElements,
-		cartQuantity,
-		addToCart,
-		canAddToCart,
-		addingToCart,
+		product,
+		quantityInCart,
+		formDisabled,
+		formSubmitting,
+		onSubmit,
 	} = useAddToCartFormContext();
 
 	const {
@@ -37,10 +33,10 @@ const AddToCartButton = () => {
 		return (
 			<ButtonComponent
 				className="wc-block-components-product-add-to-cart-button"
-				cartQuantity={ cartQuantity }
-				disabled={ ! canAddToCart }
-				loading={ addingToCart }
-				onClick={ addToCart }
+				quantityInCart={ quantityInCart }
+				disabled={ formDisabled }
+				loading={ formSubmitting }
+				onClick={ onSubmit }
 			/>
 		);
 	}
@@ -73,7 +69,7 @@ const LinkComponent = ( { className, href, text } ) => {
  */
 const ButtonComponent = ( {
 	className,
-	cartQuantity,
+	quantityInCart,
 	loading,
 	disabled,
 	onClick,
@@ -91,16 +87,16 @@ const ButtonComponent = ( {
 				setWasClicked( true );
 			} }
 		>
-			{ cartQuantity > 0
+			{ quantityInCart > 0
 				? sprintf(
 						// translators: %s number of products in cart.
 						_n(
 							'%d in cart',
 							'%d in cart',
-							cartQuantity,
+							quantityInCart,
 							'woo-gutenberg-products-block'
 						),
-						cartQuantity
+						quantityInCart
 				  )
 				: __( 'Add to cart', 'woo-gutenberg-products-block' ) }
 			{ wasClicked && (
