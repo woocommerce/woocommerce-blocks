@@ -53,6 +53,7 @@ before_script:
           npm ci
           JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "config": { "SCRIPT_DEBUG": false } }'
           echo $JSON > .wp-env.override.json
+          npm run build:e2e-test
           chmod -R 767 ./
           npm run wp-env start
         fi
@@ -102,7 +103,6 @@ jobs:
               - WOOCOMMERCE_BLOCKS_PHASE=3
         - name: E2E Tests (WP 5.2)
           script:
-              - npm run build:e2e-test
               - npm run test:e2e
           env:
               - WP_VERSION=5.2
@@ -110,7 +110,6 @@ jobs:
               - WOOCOMMERCE_BLOCKS_PHASE=3
         - name: E2E Tests (WP 5.3)
           script:
-              - npm run build:e2e-test
               - npm run test:e2e
           env:
               - WP_VERSION=5.3
@@ -118,7 +117,6 @@ jobs:
               - WOOCOMMERCE_BLOCKS_PHASE=3
         - name: E2E Tests (WP 5.4)
           script:
-              - npm run build:e2e-test
               - npm run test:e2e
           env:
               - WP_VERSION=5.4
@@ -126,9 +124,9 @@ jobs:
               - WOOCOMMERCE_BLOCKS_PHASE=3
         - name: E2E Tests (WP 5.4 with Gutenberg plugin)
           script:
-              - npm run build:e2e-test
-              - npm install @wordpress/e2e-test-utils@latest
               - npm run wp-env run tests-cli wp plugin install gutenberg --activate
+              - npm install @wordpress/e2e-test-utils@latest
+              - chmod -R 767 ./
               - npm run test:e2e
           env:
               - WP_VERSION=5.4
