@@ -128,7 +128,7 @@ jobs:
               - WOOCOMMERCE_BLOCKS_PHASE=3
         - name: E2E Tests (WP 5.4 with Gutenberg plugin)
           script:
-              - npm run wp-env run tests-cli wp plugin install gutenberg --activate
+              - npm run wp-env run tests-cli wp plugin install gutenberg -- --activate
               - npm install @wordpress/e2e-test-utils@latest
               - chmod -R 767 ./
               - npm run test:e2e
