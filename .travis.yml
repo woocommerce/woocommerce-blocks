@@ -46,7 +46,6 @@ before_script:
     - |
         if [[ ! -z "$PHP_UNIT" ]]; then
           composer install --no-dev
-          npm ci
           # bash tests/bin/install-wp-tests.sh wgpb_admin root '' localhost $WP_VERSION
           # composer global require "phpunit/phpunit=4.8.*|5.7.*"
         fi
@@ -54,8 +53,9 @@ before_script:
         if [[ ! -z "$E2E_TESTS" ]]; then
           composer install --no-dev
           npm ci
-          JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "config": { "SCRIPT_DEBUG": false } }'
+          JSON='{"core": "WordPress/WordPress\#'"$WP_VERSION"'", "config": { "SCRIPT_DEBUG": false } }'
           echo $JSON > .wp-env.override.json
+          cat .wp-env.override.json
           chmod -R 767 ./
           npm run wp-env start
         fi
