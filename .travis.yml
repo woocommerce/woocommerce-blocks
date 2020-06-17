@@ -53,7 +53,7 @@ before_script:
         if [[ ! -z "$E2E_TESTS" ]]; then
           composer install --no-dev
           npm ci
-          JSON='{"core": "WordPress/WordPress\#'"$WP_VERSION"'", "config": { "SCRIPT_DEBUG": false } }'
+          JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "config": { "SCRIPT_DEBUG": false } }'
           echo $JSON > .wp-env.override.json
           cat .wp-env.override.json
           chmod -R 767 ./
