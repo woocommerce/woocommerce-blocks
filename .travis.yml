@@ -29,10 +29,17 @@ before_script:
           echo "xdebug.ini does not exist"
         fi
     - |
-        if [[ ! -z "$WP_VERSION" ]] ; then
+        if [[ ! -z "$WP_VERSION" && ! -z "$PHP_UNIT"]] ; then
           composer install --no-dev
           bash tests/bin/install-wp-tests.sh wgpb_admin root '' localhost $WP_VERSION
           composer global require "phpunit/phpunit=4.8.*|5.7.*"
+        fi
+    - |
+        if [[ ! -z "$E2E_TESTS" ]] ; then
+          composer install --no-dev
+          echo '{ "config": { "SCRIPT_DEBUG": false, "core": "$WP_VERSION" } }' > .wp-env.override.json
+          chmod -R 767 ./
+          npm run wp-env start
         fi
     - |
         if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
@@ -48,6 +55,7 @@ jobs:
           env:
               - WP_VERSION=latest
               - WOOCOMMERCE_BLOCKS_PHASE=3
+              - PHP_UNIT=1
           script:
               - phpunit
         - name: PHP 5.6/unit-tests/Latest WP
@@ -55,6 +63,7 @@ jobs:
           env:
               - WP_VERSION=latest
               - WOOCOMMERCE_BLOCKS_PHASE=3
+              - PHP_UNIT=1
           script:
               - phpunit
         - name: PHP Linting Check
@@ -79,43 +88,40 @@ jobs:
         - name: E2E Tests (WP 5.2)
           script:
               - npm ci
-              - npm run test:e2e:up
-              - composer install
               - npm run build:e2e-test
               - npm run test:e2e
           env:
               - WP_VERSION=5.2
+              - E2E_TESTS=1
               - WOOCOMMERCE_BLOCKS_PHASE=3
         - name: E2E Tests (WP 5.3)
           script:
               - npm ci
-              - npm run test:e2e:up
-              - composer install
               - npm run build:e2e-test
               - npm run test:e2e
           env:
               - WP_VERSION=5.3
+              - E2E_TESTS=1
               - WOOCOMMERCE_BLOCKS_PHASE=3
         - name: E2E Tests (WP 5.4)
           script:
               - npm ci
-              - npm run test:e2e:up
-              - composer install
               - npm run build:e2e-test
               - npm run test:e2e
           env:
               - WP_VERSION=5.4
+              - E2E_TESTS=1
               - WOOCOMMERCE_BLOCKS_PHASE=3
         - name: E2E Tests (WP 5.4 with Gutenberg plugin)
           script:
               - npm ci
-              - npm run test:e2e:up
-              - composer install
               - npm run build:e2e-test
               - npm install @wordpress/e2e-test-utils@latest
+              - npm run wp-env run tests-cli wp plugin install gutenberg --activate
               - npm run test:e2e
           env:
               - WP_VERSION=5.4
+              - E2E_TESTS=1
               - GUTENBERG_LATEST=true
               - WOOCOMMERCE_BLOCKS_PHASE=3
         - stage: deploy
