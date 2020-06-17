@@ -29,6 +29,9 @@ const AddToCartButton = () => {
 		},
 	} = product;
 
+	// If we are showing form elements, OR if the product has no additional form options, we can show
+	// a functional direct add to cart button, provided that the product is purchasable.
+	// No link is required to the full form under these circumstances.
 	if ( ( showFormElements || ! hasOptions ) && isPurchasable ) {
 		return (
 			<ButtonComponent
