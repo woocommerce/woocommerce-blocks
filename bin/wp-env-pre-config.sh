@@ -14,7 +14,7 @@ fi
 
 ## set permalinks for easier wp-json
 npm run wp-env run tests-cli wp rewrite structure '/%postname%/'
-npm run wp-env run tests-cli wp rewrite flush --hard
+npm run wp-env run tests-cli wp rewrite flush -- --hard
 npm run wp-env run tests-cli wp plugin list
 npm run wp-env run tests-cli wp option get 'siteurl'
 exit $EXIT_CODE
