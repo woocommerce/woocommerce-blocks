@@ -1,13 +1,16 @@
-language: php
+language: generic
 
 dist: trusty
+
+services:
+  - docker
 
 sudo: false
 
 cache:
     directories:
-        - vendor
-        - node_modules
+        - $HOME/.jest-cache
+        - $HOME/.nvm/.cache
         - $HOME/.npm
         - $HOME/.composer/cache
 
