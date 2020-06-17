@@ -16,8 +16,4 @@ fi
 npm run wp-env run tests-cli wp rewrite structure '/%postname%/'
 npm run wp-env run tests-cli wp plugin list
 
-# update permissions of plugins folder
-npm run wp-env run tests-cli chmod 767 wp-content/
-npm run wp-env run tests-cli chmod 767 wp-content/plugins
-
 exit $EXIT_CODE
