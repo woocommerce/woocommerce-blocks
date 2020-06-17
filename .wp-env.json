@@ -6,5 +6,8 @@
 	],
 	"themes": [
 		"https://downloads.wordpress.org/theme/storefront.latest-stable.zip"
-	]
+	],
+	"mappings": {
+		".htaccess": "./bin/.htaccess"
+	}
 }
