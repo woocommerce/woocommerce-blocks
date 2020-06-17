@@ -74,7 +74,6 @@ export function registerInnerBlock( options ) {
 		plugin: 'WooCommerce Blocks',
 		hint: '"main" has been replaced with "context" and is now optional.',
 	} );
-
 	assertOption( options, 'main', 'string' );
 	registerBlockComponent( {
 		...options,

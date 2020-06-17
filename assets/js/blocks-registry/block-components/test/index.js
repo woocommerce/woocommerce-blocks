@@ -1,7 +1,12 @@
 /**
  * Internal dependencies
  */
-import { getRegisteredBlockComponents, registerBlockComponent } from '../index';
+import {
+	getRegisteredBlockComponents,
+	registerBlockComponent,
+	registerInnerBlock,
+	getRegisteredInnerBlocks,
+} from '../index';
 
 describe( 'blocks registry', () => {
 	const context = '@woocommerce/all-products';
@@ -35,6 +40,43 @@ describe( 'blocks registry', () => {
 			expect(
 				getRegisteredBlockComponents( '@woocommerce/all-products' )
 			).toEqual( { [ blockName ]: component } );
+		} );
+	} );
+
+	describe( 'registerInnerBlock (deprecated)', () => {
+		const invokeTest = ( args ) => () => {
+			registerInnerBlock( args );
+		};
+
+		it( 'throws an error when registered block is missing `main`', () => {
+			const options = { main: null };
+			expect( invokeTest( options ) ).toThrowError( /main/ );
+			expect( console ).toHaveWarned();
+		} );
+		it( 'throws an error when registered block is missing `blockName`', () => {
+			const options = { main: context, blockName: null };
+			expect( invokeTest( options ) ).toThrowError( /blockName/ );
+		} );
+		it( 'throws an error when registered block is missing `component`', () => {
+			const options = { main: context, blockName, component: null };
+			expect( invokeTest( options ) ).toThrowError( /component/ );
+		} );
+	} );
+
+	describe( 'getRegisteredInnerBlocks (deprecated)', () => {
+		it( 'gets an empty object when parent has no inner blocks', () => {
+			expect(
+				getRegisteredInnerBlocks( '@woocommerce/test-parent' )
+			).toEqual( {} );
+			expect( console ).toHaveWarned();
+		} );
+		it( 'gets a block that was successfully registered', () => {
+			registerBlockComponent( { context, blockName, component } );
+			expect(
+				getRegisteredInnerBlocks( '@woocommerce/all-products' )
+			).toEqual( {
+				[ blockName ]: component,
+			} );
 		} );
 	} );
 } );
