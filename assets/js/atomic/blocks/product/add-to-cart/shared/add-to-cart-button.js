@@ -8,7 +8,7 @@ import { useState } from '@wordpress/element';
 import { useAddToCartFormContext } from '@woocommerce/base-context';
 
 /**
- * Add to Cart Form Qty + Button Block Component.
+ * Add to Cart Form Button Component.
  */
 const AddToCartButton = () => {
 	const {
