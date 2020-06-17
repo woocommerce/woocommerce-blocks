@@ -81,8 +81,7 @@ const ButtonComponent = ( {
 			className={ className }
 			disabled={ disabled }
 			showSpinner={ loading }
-			onClick={ ( e ) => {
-				e.preventDefault();
+			onClick={ () => {
 				onClick();
 				setWasClicked( true );
 			} }
