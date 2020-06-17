@@ -29,7 +29,7 @@ before_script:
           echo "xdebug.ini does not exist"
         fi
     - |
-        if [[ ! -z "$WP_VERSION" && ! -z "$PHP_UNIT"]] ; then
+        if [[ ! -z "$PHP_UNIT"]] ; then
           composer install --no-dev
           bash tests/bin/install-wp-tests.sh wgpb_admin root '' localhost $WP_VERSION
           composer global require "phpunit/phpunit=4.8.*|5.7.*"
