@@ -56,7 +56,7 @@ In most cases, it should be safe to do a search & replace in the stylesheet repl
 
 ## Deprecated classes
 
-Some classes that were introduced in previous versions or that have shipped in WooCommerce Core, have not been removed but are deprecated. Those classes will not be removed until the next major version but all themes are encouraged to update to the new ones:
+Some classes that were introduced in previous versions or that have shipped in WooCommerce Core, have not been removed but are deprecated. Those classes will not be removed until the next major version but all themes are encouraged to update to the new ones as soon as possible:
 
 | Deprecated                        | New class name                               |
 | --------------------------------- | -------------------------------------------- |
