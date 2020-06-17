@@ -293,7 +293,7 @@ const PriceSlider = ( {
 					</div>
 				) }
 			</div>
-			<div className="wc-block-price-filter__controls">
+			<div className="wc-block-price-filter__controls wc-block-components-price-slider__controls">
 				{ showInputFields && (
 					<Fragment>
 						<FormattedMonetaryAmount
