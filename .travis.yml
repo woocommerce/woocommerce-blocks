@@ -37,6 +37,7 @@ before_script:
     - |
         if [[ ! -z "$E2E_TESTS" ]]; then
           composer install --no-dev
+          npm ci
           echo '{ "config": { "SCRIPT_DEBUG": false, "core": "$WP_VERSION" } }' > .wp-env.override.json
           chmod -R 767 ./
           npm run wp-env start
@@ -87,7 +88,6 @@ jobs:
               - WOOCOMMERCE_BLOCKS_PHASE=3
         - name: E2E Tests (WP 5.2)
           script:
-              - npm ci
               - npm run build:e2e-test
               - npm run test:e2e
           env:
@@ -96,7 +96,6 @@ jobs:
               - WOOCOMMERCE_BLOCKS_PHASE=3
         - name: E2E Tests (WP 5.3)
           script:
-              - npm ci
               - npm run build:e2e-test
               - npm run test:e2e
           env:
@@ -105,7 +104,6 @@ jobs:
               - WOOCOMMERCE_BLOCKS_PHASE=3
         - name: E2E Tests (WP 5.4)
           script:
-              - npm ci
               - npm run build:e2e-test
               - npm run test:e2e
           env:
@@ -114,7 +112,6 @@ jobs:
               - WOOCOMMERCE_BLOCKS_PHASE=3
         - name: E2E Tests (WP 5.4 with Gutenberg plugin)
           script:
-              - npm ci
               - npm run build:e2e-test
               - npm install @wordpress/e2e-test-utils@latest
               - npm run wp-env run tests-cli wp plugin install gutenberg --activate
