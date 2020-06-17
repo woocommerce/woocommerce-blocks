@@ -45,7 +45,7 @@ before_script:
         fi
     - |
         if [[ ! -z "$PHP_UNIT" ]]; then
-          composer install --no-dev
+          composer install
           # bash tests/bin/install-wp-tests.sh wgpb_admin root '' localhost $WP_VERSION
           # composer global require "phpunit/phpunit=4.8.*|5.7.*"
         fi
