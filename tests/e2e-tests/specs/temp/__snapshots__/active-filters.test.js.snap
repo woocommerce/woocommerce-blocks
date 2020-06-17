@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Active Product Filters Block Title can be manipulated 1`] = `
+"<!-- wp:woocommerce/active-filters {\\"heading\\":\\"New Title\\",\\"headingLevel\\":6} -->
+<div class=\\"wp-block-woocommerce-active-filters is-loading\\" data-display-style=\\"list\\" data-heading=\\"New Title\\" data-heading-level=\\"6\\"><span aria-hidden=\\"true\\" class=\\"wc-block-active-product-filters__placeholder\\"></span></div>
+<!-- /wp:woocommerce/active-filters -->"
+`;
+
+exports[`Active Product Filters Block can be created 1`] = `
+"<!-- wp:woocommerce/active-filters -->
+<div class=\\"wp-block-woocommerce-active-filters is-loading\\" data-display-style=\\"list\\" data-heading=\\"Active filters\\" data-heading-level=\\"3\\"><span aria-hidden=\\"true\\" class=\\"wc-block-active-product-filters__placeholder\\"></span></div>
+<!-- /wp:woocommerce/active-filters -->"
+`;

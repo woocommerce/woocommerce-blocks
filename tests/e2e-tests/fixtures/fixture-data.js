@@ -12,35 +12,34 @@
  */
 const Attributes = () => [
 	{
-		attribute: { name: 'Color' },
+		attribute: { name: 'Capacity' },
 		terms: [
 			{
-				name: 'Blue',
+				name: '32gb',
 			},
 			{
-				name: 'Green',
+				name: '64gb',
 			},
 			{
-				name: 'White',
+				name: '128gb',
 			},
 		],
 	},
 	{
-		attribute: { name: 'Size' },
+		attribute: { name: 'Shade' },
 		terms: [
 			{
-				name: 'S',
+				name: 'Red',
 			},
 			{
-				name: 'M',
+				name: 'Blue',
 			},
 			{
-				name: 'L',
+				name: 'Black',
 			},
 		],
 	},
 ];
-
 /**
  * Coupons fixture data, using the create batch endpoint
  *

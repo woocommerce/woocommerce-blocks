@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Filter Products by Price Block allows title can be manipulated 1`] = `
+"<!-- wp:woocommerce/price-filter {\\"heading\\":\\"New Title\\",\\"headingLevel\\":6} -->
+<div class=\\"wp-block-woocommerce-price-filter is-loading\\" data-showinputfields=\\"true\\" data-showfilterbutton=\\"false\\" data-heading=\\"New Title\\" data-heading-level=\\"6\\"><span aria-hidden=\\"true\\" class=\\"wc-block-product-categories__placeholder\\"></span></div>
+<!-- /wp:woocommerce/price-filter -->"
+`;
+
+exports[`Filter Products by Price Block allows you to toggle go button 1`] = `
+"<!-- wp:woocommerce/price-filter {\\"showFilterButton\\":true} -->
+<div class=\\"wp-block-woocommerce-price-filter is-loading\\" data-showinputfields=\\"true\\" data-showfilterbutton=\\"true\\" data-heading=\\"Filter by price\\" data-heading-level=\\"3\\"><span aria-hidden=\\"true\\" class=\\"wc-block-product-categories__placeholder\\"></span></div>
+<!-- /wp:woocommerce/price-filter -->"
+`;
+
+exports[`Filter Products by Price Block can be created 1`] = `
+"<!-- wp:woocommerce/price-filter -->
+<div class=\\"wp-block-woocommerce-price-filter is-loading\\" data-showinputfields=\\"true\\" data-showfilterbutton=\\"false\\" data-heading=\\"Filter by price\\" data-heading-level=\\"3\\"><span aria-hidden=\\"true\\" class=\\"wc-block-product-categories__placeholder\\"></span></div>
+<!-- /wp:woocommerce/price-filter -->"
+`;

@@ -17,7 +17,7 @@ import kebabCase from 'lodash/kebabCase';
  *
  * This will visit a GB page or post, and will hide the welcome guide.
  */
-async function visitPage( link ) {
+export async function visitPage( link ) {
 	await page.goto( link );
 	const isWelcomeGuideActive = await page.evaluate( () =>
 		wp.data.select( 'core/edit-post' ).isFeatureActive( 'welcomeGuide' )
@@ -81,5 +81,3 @@ export async function visitBlockPage( title ) {
 		);
 	}
 }
-
-export default visitBlockPage;

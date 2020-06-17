@@ -25,7 +25,7 @@ module.exports = async ( globalConfig ) => {
 		pages,
 		attributes,
 	} = global.fixtureData;
-	return Promise.all( [
+	return Promise.allSettled( [
 		deleteTaxes( taxes ),
 		deleteCoupons( coupons ),
 		deleteProducts( products ),

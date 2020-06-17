@@ -63,7 +63,12 @@ async function importSampleProducts() {
 	const noProduct = await page.evaluate( () =>
 		window.find( 'No products found' )
 	);
-	if ( emptyState || noProduct ) {
+
+	const fewProducts = await page.$$eval(
+		'#the-list tr',
+		( items ) => items.length < 2
+	);
+	if ( emptyState || noProduct || fewProducts ) {
 		// Visit Import Products page.
 		await visitAdminPage(
 			'edit.php',

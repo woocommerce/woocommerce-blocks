@@ -384,6 +384,7 @@ const deleteProductAttributes = ( ids ) => {
 };
 
 module.exports = {
+	WooCommerce,
 	setupSettings,
 	createTaxes,
 	deleteTaxes,

@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Filter Products by Attribute Block allows title can be manipulated 1`] = `
+"<!-- wp:woocommerce/attribute-filter {\\"attributeId\\":1,\\"heading\\":\\"New TitleFilter by Color\\",\\"headingLevel\\":6} -->
+<div class=\\"wp-block-woocommerce-attribute-filter is-loading\\" data-attribute-id=\\"1\\" data-show-counts=\\"true\\" data-query-type=\\"or\\" data-heading=\\"New TitleFilter by Color\\" data-heading-level=\\"6\\"><span aria-hidden=\\"true\\" class=\\"wc-block-product-attribute-filter__placeholder\\"></span></div>
+<!-- /wp:woocommerce/attribute-filter -->"
+`;
+
+exports[`Filter Products by Attribute Block can be created 1`] = `
+"<!-- wp:woocommerce/attribute-filter {\\"attributeId\\":1,\\"heading\\":\\"Filter by Color\\"} -->
+<div class=\\"wp-block-woocommerce-attribute-filter is-loading\\" data-attribute-id=\\"1\\" data-show-counts=\\"true\\" data-query-type=\\"or\\" data-heading=\\"Filter by Color\\" data-heading-level=\\"3\\"><span aria-hidden=\\"true\\" class=\\"wc-block-product-attribute-filter__placeholder\\"></span></div>
+<!-- /wp:woocommerce/attribute-filter -->"
+`;
