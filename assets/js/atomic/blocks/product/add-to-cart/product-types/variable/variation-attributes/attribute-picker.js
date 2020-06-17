@@ -19,6 +19,8 @@ import {
  */
 const AttributePicker = ( { attributes, variationAttributes } ) => {
 	const [ variationId, setVariationId ] = useState( 0 );
+
+	// @todo Variation Attribute Picker: Support default selected attributes.
 	const [ selectedAttributes, setSelectedAttributes ] = useState( [] );
 
 	const attributeNames = Object.keys( attributes );
@@ -86,6 +88,7 @@ const AttributePicker = ( { attributes, variationAttributes } ) => {
 		hasSelectedAllAttributes,
 	] );
 
+	// @todo Variation Attribute Picker: Hook up Variation Selection to Cart Form.
 	return (
 		<div className="wc-block-components-product-add-to-cart-attribute-picker">
 			{ attributeNames.map( ( attributeName ) => (
