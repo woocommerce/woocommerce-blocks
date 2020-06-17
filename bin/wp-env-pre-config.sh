@@ -15,6 +15,6 @@ fi
 ## set permalinks for easier wp-json
 npm run wp-env run tests-cli wp rewrite structure '/%postname%/'
 ## make sure db is updated
-npm run wp-env run tests-cli wp core update-db
+npm run wp-env run tests-cli wp plugin list
 npm run wp-env run tests-cli wp option get 'siteurl'
 exit $EXIT_CODE
