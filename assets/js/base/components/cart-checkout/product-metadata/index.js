@@ -22,7 +22,10 @@ const ProductMetadata = ( {
 				shortDescription={ shortDescription }
 				fullDescription={ fullDescription }
 			/>
-			<ProductVariationData variation={ variation } />
+			<ProductVariationData
+				className="wc-block-components-product-metadata__variation-data"
+				variation={ variation }
+			/>
 		</div>
 	);
 };
