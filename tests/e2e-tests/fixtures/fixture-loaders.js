@@ -14,7 +14,7 @@ require( 'dotenv' ).config();
  */
 const fixtures = require( './fixture-data' );
 
-global.process.env.WORDPRESS_BASE_URL = `${ process.env.WORDPRESS_BASE_URL }:8889`;
+// global.process.env.WORDPRESS_BASE_URL = `${ process.env.WORDPRESS_BASE_URL }:8889`;
 
 /**
  * ConsumerKey and ConsumerSecret are not used, we use basic auth, but
