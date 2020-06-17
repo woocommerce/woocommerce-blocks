@@ -16,9 +16,25 @@ branches:
         - main
         - /release\/.*/
 
+# Make sure NodeGit gets the correct C libs.
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - libstdc++-4.9-dev
+
 before_install:
     - timedatectl
     - nvm install --latest-npm
+    - |
+      if [[ ! -z "$E2E_TESTS" ]]; then
+        # Upgrade docker-compose.
+        sudo rm /usr/local/bin/docker-compose
+        curl -sL https://github.com/docker/compose/releases/download/1.24.0/docker-compose-`uname -s`-`uname -m` > docker-compose
+        chmod +x docker-compose
+        sudo mv docker-compose /usr/local/bin
+      fi
 
 before_script:
     - export PATH="$HOME/.composer/vendor/bin:$PATH"
