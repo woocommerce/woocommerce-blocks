@@ -6,10 +6,27 @@
 
 		.wc-block-components-product-add-to-cart-variation-picker,
 		.wc-block-components-product-add-to-cart-group-list {
-			margin: 0 0 em($gap-small) 0;
+			margin: 0;
 			flex-basis: 100%;
-			border: 1px solid #000;
-			padding: 2em;
+
+			label {
+				display: block;
+				@include font-size(regular);
+			}
+
+			.wc-block-components-product-add-to-cart-variation-picker-select {
+				margin: 0 0 em($gap-small) 0;
+
+				select {
+					min-width: 60%;
+					border: em($gap-smallest) solid transparent;
+					box-shadow: 0 0 0 1px #ccc;
+					border-radius: 3px;
+					padding: 0;
+					background: $white;
+					color: #43454b;
+				}
+			}
 		}
 
 		.wc-block-components-product-add-to-cart-button {

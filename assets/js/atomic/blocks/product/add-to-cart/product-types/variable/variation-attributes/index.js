@@ -2,17 +2,10 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import classnames from 'classnames';
 import { useState, useEffect, useMemo } from '@wordpress/element';
-import { useProductLayoutContext } from '@woocommerce/base-context';
 import { decodeEntities } from '@wordpress/html-entities';
 import { SelectControl } from '@wordpress/components';
 import { keyBy } from 'lodash';
-
-/**
- * Internal dependencies
- */
-import './style.scss';
 
 /**
  * Format variations from the API into a map of just the attribute names and values.
@@ -54,7 +47,7 @@ const VariationAttributeSelect = ( {
 } ) => {
 	return (
 		<SelectControl
-			className="wc-blocks-component-variation-attributes-select"
+			className="wc-block-components-product-add-to-cart-variation-picker-select"
 			label={ decodeEntities( attributeName ) }
 			value={ selected || '' }
 			options={ [ selectAnOption, ...options ] }
@@ -68,8 +61,7 @@ const VariationAttributeSelect = ( {
  *
  * @param {*} props Component props.
  */
-const VariationAttributes = ( { className, product } ) => {
-	const { layoutStyleClassPrefix } = useProductLayoutContext();
+const VariationAttributes = ( { product } ) => {
 	const [ selectedAttributes, setSelectedAttributes ] = useState( {} );
 	const [ variationId, setVariationId ] = useState( 0 );
 	const [ isLoading, setIsLoading ] = useState( true );
@@ -184,13 +176,7 @@ const VariationAttributes = ( { className, product } ) => {
 	}
 
 	return (
-		<div
-			className={ classnames(
-				className,
-				'wc-blocks-component-variation-attributes',
-				`${ layoutStyleClassPrefix }__product-variation-attribute-picker`
-			) }
-		>
+		<div className="wc-block-components-product-add-to-cart-variation-picker">
 			{ Object.keys( attributesByName ).map( ( name ) => (
 				<VariationAttributeSelect
 					key={ name }
