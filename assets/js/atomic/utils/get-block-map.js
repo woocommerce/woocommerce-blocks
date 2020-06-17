@@ -9,9 +9,9 @@ import { getRegisteredBlockComponents } from '@woocommerce/blocks-registry';
 import '../blocks/component-init';
 
 /**
- * Map blocks to components suitable for use on the frontend.
+ * Map named Blocks to defined React Components to render on the frontend.
  *
- * @param {string} blockName Name of the parent block. Used to get extension children.
+ * @param {string} blockName Name of the parent block.
  */
 export const getBlockMap = ( blockName ) =>
 	getRegisteredBlockComponents( blockName );

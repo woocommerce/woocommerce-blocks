@@ -1,7 +1,46 @@
 /**
+ * External dependencies
+ */
+import deprecated from '@wordpress/deprecated';
+
+/**
  * Internal dependencies
  */
 import { registeredBlockComponents } from './registered-block-components-init';
+
+/**
+ * Register a Block Component.
+ *
+ * WooCommerce Blocks allows React Components to be used on the frontend of the store in place of
+ * Blocks instead of just serving static content.
+ *
+ * Registering a Block Component allows you to define which React Component should be used in place
+ * of a registered Block. The Component, when rendered, will be passed all Block Attributes.
+ *
+ * @export
+ * @param {Object}   options           Options to use when registering the block.
+ * @param {Function} options.component React component that will be rendered.
+ * @param {string}   options.blockName Name of the block that this component belongs to.
+ * @param {string}   [options.context] To make this component available only under a certain context
+ *                                     (named parent Block) define it here. If left blank, the
+ *                                     Component will be available for all contexts.
+ */
+export function registerBlockComponent( options ) {
+	if ( ! options.context ) {
+		options.context = 'any';
+	}
+	assertOption( options, 'context', 'string' );
+	assertOption( options, 'blockName', 'string' );
+	assertOption( options, 'component', 'function' );
+
+	const { context, blockName, component } = options;
+
+	if ( ! registeredBlockComponents[ context ] ) {
+		registeredBlockComponents[ context ] = {};
+	}
+
+	registeredBlockComponents[ context ][ blockName ] = component;
+}
 
 /**
  * Asserts that an option is of the given type. Otherwise, throws an error.
@@ -20,28 +59,25 @@ const assertOption = ( options, optionName, expectedType ) => {
 };
 
 /**
- * Registers an inner block that can be added as a child of another block.
+ * Alias of registerBlockComponent kept for backwards compatibility.
  *
  * @export
  * @param {Object}   options           Options to use when registering the block.
- * @param {string}   [options.parent]  Name of the parent block, or blank to register globally.
+ * @param {string}   options.main      Name of the parent block.
  * @param {string}   options.blockName Name of the child block being registered.
  * @param {Function} options.component React component used to render the child block.
  */
-export function registerBlockComponent( options ) {
-	if ( ! options.parent ) {
-		options.parent = 'global';
-	}
+export function registerInnerBlock( options ) {
+	deprecated( 'registerInnerBlock', {
+		version: '2.8.0',
+		alternative: 'registerBlockComponent',
+		plugin: 'WooCommerce Blocks',
+		hint: '"main" has been replaced with "context" and is now optional.',
+	} );
 
-	assertOption( options, 'parent', 'string' );
-	assertOption( options, 'blockName', 'string' );
-	assertOption( options, 'component', 'function' );
-
-	const { parent, blockName, component } = options;
-
-	if ( ! registeredBlockComponents[ parent ] ) {
-		registeredBlockComponents[ parent ] = {};
-	}
-
-	registeredBlockComponents[ parent ][ blockName ] = component;
+	assertOption( options, 'main', 'string' );
+	registerBlockComponent( {
+		...options,
+		context: options.main,
+	} );
 }
