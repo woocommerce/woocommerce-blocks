@@ -1,21 +1,23 @@
 #!/bin/bash
 
 ## Check if user already exists
-wp user get customer 2> /dev/null
+npm run wp-env run tests-cli wp user get customer 2> /dev/null
 
 ## if 0 is the exit code then we can leave otherwise we'll try creating the user
 if [ $? -eq 0 ]
 then
 	EXIT_CODE=0
 else
-  wp user create customer customer@woocommercecoree2etestsuite.com --user_pass=password --role=customer
+  npm run wp-env run tests-cli wp user create customer customer@woocommercecoree2etestsuite.com --user_pass=password --role=customer
   EXIT_CODE=$?
 fi
 
 ## set permalinks for easier wp-json
-wp rewrite structure '/%postname%/'
-wp plugin list
-wp option get 'siteurl'
-wp eval 'echo rest_url();'
+npm run wp-env run tests-cli wp rewrite structure '/%postname%/'
+npm run wp-env run tests-cli wp plugin list
+npm run wp-env run tests-cli wp option get 'siteurl'
+npm run wp-env run tests-cli "wp eval 'echo rest_url();'"
+
+sleep 10
 
 exit $EXIT_CODE
