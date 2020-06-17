@@ -1,11 +1,7 @@
 language: generic
 
-dist: trusty
-
 services:
   - docker
-
-sudo: false
 
 cache:
     directories:
