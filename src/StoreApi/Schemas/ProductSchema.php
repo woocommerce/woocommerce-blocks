@@ -618,7 +618,7 @@ class ProductSchema extends AbstractSchema {
 
 		foreach ( $attributes as $attribute_slug => $attribute ) {
 			// Only visible and variation attributes will be exposed by this API.
-			if ( ! $attribute->get_visible() && ! $attribute->get_variation() ) {
+			if ( ! $attribute->get_visible() || ! $attribute->get_variation() ) {
 				continue;
 			}
 			$return[] = (object) [
