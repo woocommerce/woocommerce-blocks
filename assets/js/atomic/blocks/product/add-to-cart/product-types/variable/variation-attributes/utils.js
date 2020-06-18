@@ -88,25 +88,25 @@ export const getVariationsMatchingSelectedAttributes = ( {
 	attributeNames,
 	exclude = '',
 } ) => {
+	const filteredAttributeNames = attributeNames.filter(
+		( attributeName ) => attributeName !== exclude
+	);
 	return Object.keys( variationAttributes ).filter( ( variationId ) =>
-		attributeNames
-			.filter( ( attributeName ) => attributeName !== exclude )
-			.every( ( attributeName ) => {
-				const selectedAttribute =
-					selectedAttributes[ attributeName ] || '';
-				const variationAttribute =
-					variationAttributes[ variationId ][ attributeName ];
+		filteredAttributeNames.every( ( attributeName ) => {
+			const selectedAttribute = selectedAttributes[ attributeName ] || '';
+			const variationAttribute =
+				variationAttributes[ variationId ][ attributeName ];
 
-				// If there is no selected attribute, consider this a match.
-				if ( selectedAttribute === '' ) {
-					return true;
-				}
-				// If the variation attributes for this attribute are set to null, it matches all values.
-				if ( variationAttribute === null ) {
-					return true;
-				}
-				// Otherwise, only match if the selected values are the same.
-				return variationAttribute === selectedAttribute;
-			} )
+			// If there is no selected attribute, consider this a match.
+			if ( selectedAttribute === '' ) {
+				return true;
+			}
+			// If the variation attributes for this attribute are set to null, it matches all values.
+			if ( variationAttribute === null ) {
+				return true;
+			}
+			// Otherwise, only match if the selected values are the same.
+			return variationAttribute === selectedAttribute;
+		} )
 	);
 };
