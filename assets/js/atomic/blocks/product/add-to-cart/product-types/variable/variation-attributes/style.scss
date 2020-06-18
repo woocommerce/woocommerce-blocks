@@ -11,13 +11,8 @@
 		margin: 0 0 em($gap-small) 0;
 
 		select {
-			@include font-size(regular);
-			font-family: inherit;
 			min-width: 60%;
 			min-height: 1.75em;
-			border: 1px solid $input-border-gray;
-			border-radius: 4px;
-			margin: 0;
 		}
 	}
 }
