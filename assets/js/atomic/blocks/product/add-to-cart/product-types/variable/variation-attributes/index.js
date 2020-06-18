@@ -23,7 +23,7 @@ const VariationAttributes = ( { product } ) => {
 	const attributes = getAttributes( productAttributes );
 	const variationAttributes = getVariationAttributes( productVariations );
 
-	if ( isEmpty( attributes ) || isEmpty( variationAttributes ) ) {
+	if ( Object.keys( attributes ).length === 0 || variationAttributes.length === 0 ) {
 		return null;
 	}
 
