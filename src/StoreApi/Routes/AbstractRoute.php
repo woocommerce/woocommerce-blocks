@@ -279,4 +279,42 @@ abstract class AbstractRoute implements RouteInterface {
 			wc_load_cart();
 		}
 	}
+
+	/**
+	 * Gets a cached response from the transients API.
+	 *
+	 * @param int $item_id Item ID to get.
+	 * @return string|boolean Response string or false if there is no cache.
+	 */
+	protected function get_cached_response( $item_id ) {
+		$schema          = $this->schema->get_item_schema();
+		$cache_key       = 'wc_store_api_' . $schema['title'] . '_' . $item_id;
+		$cached_response = get_transient( $cache_key );
+
+		if ( ! $cached_response || ! isset( $cached_response['last_modified'], $cached_response['version'] ) || $schema['version'] !== $cached_response['version'] ) {
+			return false;
+		}
+
+		return $cached_response['response'];
+	}
+
+	/**
+	 * Store response in transients cache.
+	 *
+	 * @param int    $item_id Item ID to store.
+	 * @param string $response Response to store.
+	 */
+	protected function set_cached_response( $item_id, $response ) {
+		$schema    = $this->schema->get_item_schema();
+		$cache_key = 'wc_store_api_' . $schema['title'] . '_' . $item_id;
+
+		set_transient(
+			$cache_key,
+			[
+				'version'  => $schema['version'],
+				'response' => $response,
+			],
+			WEEK_IN_SECONDS
+		);
+	}
 }
