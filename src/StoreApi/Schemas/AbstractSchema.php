@@ -25,17 +25,29 @@ abstract class AbstractSchema {
 	protected $title = 'Schema';
 
 	/**
+	 * Caches schema_data.
+	 *
+	 * @var array
+	 */
+	protected $schema_data = [];
+
+	/**
 	 * Returns the full item schema.
 	 *
 	 * @return array
 	 */
 	public function get_item_schema() {
-		return array(
-			'$schema'    => 'http://json-schema.org/draft-04/schema#',
-			'title'      => $this->title,
-			'type'       => 'object',
-			'properties' => $this->get_properties(),
-		);
+		if ( ! $this->schema_data ) {
+			$properties        = $this->get_properties();
+			$this->schema_data = array(
+				'$schema'    => 'http://json-schema.org/draft-04/schema#',
+				'title'      => $this->title,
+				'type'       => 'object',
+				'properties' => $properties,
+				'version'    => md5( wp_json_encode( $properties ) ),
+			);
+		}
+		return $this->schema_data;
 	}
 
 	/**
