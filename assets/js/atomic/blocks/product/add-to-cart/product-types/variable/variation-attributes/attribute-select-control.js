@@ -24,7 +24,7 @@ const AttributeSelectControl = ( {
 } ) => {
 	return (
 		<SelectControl
-			className="wc-block-components-product-add-to-cart-attribute-picker-select"
+			className="wc-block-components-product-add-to-cart-attribute-picker__select"
 			label={ decodeEntities( attributeName ) }
 			value={ selected || '' }
 			options={ [ selectAnOption, ...options ] }

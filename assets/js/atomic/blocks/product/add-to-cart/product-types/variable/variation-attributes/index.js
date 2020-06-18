@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
-
-/**
  * Internal dependencies
  */
+import './style.scss';
 import AttributePicker from './attribute-picker';
 import { getAttributes, getVariationAttributes } from './utils';
 
@@ -23,7 +19,10 @@ const VariationAttributes = ( { product } ) => {
 	const attributes = getAttributes( productAttributes );
 	const variationAttributes = getVariationAttributes( productVariations );
 
-	if ( Object.keys( attributes ).length === 0 || variationAttributes.length === 0 ) {
+	if (
+		Object.keys( attributes ).length === 0 ||
+		variationAttributes.length === 0
+	) {
 		return null;
 	}
 
