@@ -11,15 +11,13 @@
 		margin: 0 0 em($gap-small) 0;
 
 		select {
-			appearance: menulist;
+			@include font-size(regular);
+			font-family: inherit;
 			min-width: 60%;
-			border: em($gap-smallest) solid $white;
-			box-shadow: 0 0 0 1px #ccc;
-			margin: 1px;
-			border-radius: 3px;
-			padding: 0;
-			background: $white;
-			color: #43454b;
+			min-height: 1.75em;
+			border: 1px solid $input-border-gray;
+			border-radius: 4px;
+			margin: 0;
 		}
 	}
 }
