@@ -45,6 +45,11 @@ class ProductsById extends AbstractRoute {
 							'default' => 'view',
 						)
 					),
+					'cache'   => array(
+						'description' => __( 'Controls whether to not to bypass the cache.', 'woo-gutenberg-products-block' ),
+						'type'        => 'boolean',
+						'default'     => true,
+					),
 				),
 			],
 			'schema' => [ $this->schema, 'get_public_item_schema' ],
@@ -59,12 +64,22 @@ class ProductsById extends AbstractRoute {
 	 * @return \WP_REST_Response
 	 */
 	protected function get_route_response( \WP_REST_Request $request ) {
-		$object = wc_get_product( (int) $request['id'] );
+		$product_id = (int) $request['id'];
+		$response   = $request['cache'] ? $this->get_cached_response( $product_id ) : false;
 
-		if ( ! $object || 0 === $object->get_id() ) {
-			throw new RouteException( 'woocommerce_rest_product_invalid_id', __( 'Invalid product ID.', 'woo-gutenberg-products-block' ), 404 );
+		if ( ! $response ) {
+			$object = wc_get_product( $product_id );
+
+			if ( ! $object || 0 === $object->get_id() ) {
+				throw new RouteException( 'woocommerce_rest_product_invalid_id', __( 'Invalid product ID.', 'woo-gutenberg-products-block' ), 404 );
+			}
+
+			$response = $this->schema->get_item_response( $object );
+			if ( $request['cache'] ) {
+				$this->set_cached_response( $product_id, $response );
+			}
 		}
 
-		return rest_ensure_response( $this->schema->get_item_response( $object ) );
+		return rest_ensure_response( $response );
 	}
 }
