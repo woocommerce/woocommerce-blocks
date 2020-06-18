@@ -57,9 +57,10 @@ class Products extends AbstractRoute {
 		if ( \WP_REST_Server::READABLE === $request->get_method() ) {
 			$query_results    = $product_query->get_objects( $request );
 			$response_objects = [];
+			$requested_fields = $this->get_fields_for_response( $request );
 
 			foreach ( $query_results['objects'] as $object ) {
-				$data               = rest_ensure_response( $this->schema->get_item_response( $object ) );
+				$data               = rest_ensure_response( $this->schema->get_item_response( $object, $requested_fields ) );
 				$response_objects[] = $this->prepare_response_for_collection( $data );
 			}
 

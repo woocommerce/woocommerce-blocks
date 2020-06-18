@@ -248,6 +248,52 @@ abstract class AbstractRoute implements RouteInterface {
 	}
 
 	/**
+	 * Gets an array of fields to be included on the response.
+	 *
+	 * Included fields are based on item schema and `_fields=` request argument.
+	 *
+	 * @param \WP_REST_Request $request Full details about the request.
+	 * @return array Fields to be included in the response.
+	 */
+	protected function get_fields_for_response( \WP_REST_Request $request ) {
+		$schema     = $this->get_item_schema();
+		$properties = isset( $schema['properties'] ) ? $schema['properties'] : [];
+		$fields     = array_keys( $properties );
+
+		if ( ! isset( $request['_fields'] ) ) {
+			return $fields;
+		}
+
+		$requested_fields = wp_parse_list( $request['_fields'] );
+
+		if ( 0 === count( $requested_fields ) ) {
+			return $fields;
+		}
+
+		$requested_fields = array_map( 'trim', $requested_fields );
+
+		// Return the list of all requested fields which appear in the schema.
+		return array_reduce(
+			$requested_fields,
+			function( $response_fields, $field ) use ( $fields ) {
+				if ( in_array( $field, $fields, true ) ) {
+					$response_fields[] = $field;
+					return $response_fields;
+				}
+				// Check for nested fields if $field is not a direct match.
+				$nested_fields = explode( '.', $field );
+				// A nested field is included so long as its top-level property
+				// is present in the schema.
+				if ( in_array( $nested_fields[0], $fields, true ) ) {
+					$response_fields[] = $field;
+				}
+				return $response_fields;
+			},
+			[]
+		);
+	}
+
+	/**
 	 * Prepare links for the request.
 	 *
 	 * @param mixed            $item Item to prepare.

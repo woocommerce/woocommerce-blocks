@@ -65,6 +65,8 @@ class ProductsById extends AbstractRoute {
 			throw new RouteException( 'woocommerce_rest_product_invalid_id', __( 'Invalid product ID.', 'woo-gutenberg-products-block' ), 404 );
 		}
 
-		return rest_ensure_response( $this->schema->get_item_response( $object ) );
+		$requested_fields = $this->get_fields_for_response( $request );
+
+		return rest_ensure_response( $this->schema->get_item_response( $object, $requested_fields ) );
 	}
 }

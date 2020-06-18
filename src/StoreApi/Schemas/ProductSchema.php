@@ -419,45 +419,110 @@ class ProductSchema extends AbstractSchema {
 	/**
 	 * Convert a WooCommerce product into an object suitable for the response.
 	 *
-	 * @param \WC_Product $product Product instance.
+	 * @param \WC_Product $product          Product instance.
+	 * @param  array       $requested_fields Limits the returned response data.
 	 * @return array
 	 */
-	public function get_item_response( $product ) {
-		return [
-			'id'                  => $product->get_id(),
-			'name'                => $this->prepare_html_response( $product->get_title() ),
-			'parent'              => $product->get_parent_id(),
-			'type'                => $product->get_type(),
-			'variation'           => $this->prepare_html_response( $product->is_type( 'variation' ) ? wc_get_formatted_variation( $product, true, true, false ) : '' ),
-			'permalink'           => $product->get_permalink(),
-			'sku'                 => $this->prepare_html_response( $product->get_sku() ),
-			'short_description'   => $this->prepare_html_response( wc_format_content( $product->get_short_description() ) ),
-			'description'         => $this->prepare_html_response( wc_format_content( $product->get_description() ) ),
-			'on_sale'             => $product->is_on_sale(),
-			'prices'              => (object) $this->prepare_product_price_response( $product ),
-			'price_html'          => $product->get_price_html(),
-			'average_rating'      => $product->get_average_rating(),
-			'review_count'        => $product->get_review_count(),
-			'images'              => $this->get_images( $product ),
-			'categories'          => $this->get_term_list( $product, 'product_cat' ),
-			'tags'                => $this->get_term_list( $product, 'product_tag' ),
-			'attributes'          => $this->get_attributes( $product ),
-			'variations'          => $this->get_variations( $product ),
-			'has_options'         => $product->has_options(),
-			'is_purchasable'      => $product->is_purchasable(),
-			'is_in_stock'         => $product->is_in_stock(),
-			'is_on_backorder'     => 'onbackorder' === $product->get_stock_status(),
-			'low_stock_remaining' => $this->get_low_stock_remaining( $product ),
-			'sold_individually'   => $product->is_sold_individually(),
-			'quantity_limit'      => $this->get_product_quantity_limit( $product ),
-			'add_to_cart'         => (object) $this->prepare_html_response(
-				[
-					'text'        => $product->add_to_cart_text(),
-					'description' => $product->add_to_cart_description(),
-					'url'         => $product->add_to_cart_url(),
-				]
-			),
-		];
+	public function get_item_response( $product, $requested_fields = [] ) {
+		$response = [];
+
+		foreach ( $requested_fields as $requested_field ) {
+			$field_value = '';
+			$property    = strstr( $requested_field, '.' ) ? current( explode( '.', $requested_field ) ) : $requested_field;
+
+			switch ( $property ) {
+				case 'id':
+					$field_value = $product->get_id();
+					break;
+				case 'name':
+					$field_value = $this->prepare_html_response( $product->get_title() );
+					break;
+				case 'parent':
+					$field_value = $product->get_parent_id();
+					break;
+				case 'type':
+					$field_value = $product->get_type();
+					break;
+				case 'variation':
+					$field_value = $this->prepare_html_response( $product->is_type( 'variation' ) ? wc_get_formatted_variation( $product, true, true, false ) : '' );
+					break;
+				case 'permalink':
+					$field_value = $product->get_permalink();
+					break;
+				case 'sku':
+					$field_value = $this->prepare_html_response( $product->get_sku() );
+					break;
+				case 'short_description':
+					$field_value = $this->prepare_html_response( wc_format_content( $product->get_short_description() ) );
+					break;
+				case 'description':
+					$field_value = $this->prepare_html_response( wc_format_content( $product->get_description() ) );
+					break;
+				case 'on_sale':
+					$field_value = $product->is_on_sale();
+					break;
+				case 'prices':
+					$field_value = (object) $this->prepare_product_price_response( $product );
+					break;
+				case 'price_html':
+					$field_value = $product->get_price_html();
+					break;
+				case 'average_rating':
+					$field_value = $product->get_average_rating();
+					break;
+				case 'review_count':
+					$field_value = $product->get_review_count();
+					break;
+				case 'images':
+					$field_value = $this->get_images( $product );
+					break;
+				case 'categories':
+					$field_value = $this->get_term_list( $product, 'product_cat' );
+					break;
+				case 'tags':
+					$field_value = $this->get_term_list( $product, 'product_tag' );
+					break;
+				case 'attributes':
+					$field_value = $this->get_attributes( $product );
+					break;
+				case 'variations':
+					$field_value = $this->get_variations( $product );
+					break;
+				case 'has_options':
+					$field_value = $product->has_options();
+					break;
+				case 'is_purchasable':
+					$field_value = $product->is_purchasable();
+					break;
+				case 'is_in_stock':
+					$field_value = $product->is_in_stock();
+					break;
+				case 'is_on_backorder':
+					$field_value = 'onbackorder' === $product->get_stock_status();
+					break;
+				case 'low_stock_remaining':
+					$field_value = $this->get_low_stock_remaining( $product );
+					break;
+				case 'sold_individually':
+					$field_value = $product->is_sold_individually();
+					break;
+				case 'quantity_limit':
+					$field_value = $this->get_product_quantity_limit( $product );
+					break;
+				case 'add_to_cart':
+					$field_value = (object) $this->prepare_html_response(
+						[
+							'text'        => $product->add_to_cart_text(),
+							'description' => $product->add_to_cart_description(),
+							'url'         => $product->add_to_cart_url(),
+						]
+					);
+					break;
+			}
+			$response[ $property ] = $field_value;
+		}
+
+		return $response;
 	}
 
 	/**
