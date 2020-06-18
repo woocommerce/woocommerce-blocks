@@ -37,12 +37,14 @@ const AttributePicker = ( { attributes, variationAttributes } ) => {
 
 		attributeNames.forEach( ( attributeName ) => {
 			const currentAttribute = attributes[ attributeName ];
+			const attributeNamesExcludingCurrentAttribute = attributeNames.filter(
+				( name ) => name !== attributeName
+			);
 			const matchingVariationIds = hasSelectedAttributes
 				? getVariationsMatchingSelectedAttributes( {
 						selectedAttributes,
 						variationAttributes,
-						attributeNames,
-						exclude: attributeName,
+						attributeNames: attributeNamesExcludingCurrentAttribute,
 				  } )
 				: null;
 			const validAttributeTerms =

@@ -79,20 +79,15 @@ export const getSelectControlOptions = (
  * @param {Object} props.selectedAttributes List of selected attributes.
  * @param {Object} props.variationAttributes List of variations and their attributes.
  * @param {Object} props.attributeNames List of all possible attribute names.
- * @param {string} [props.exclude] Optionally exclude an attribute from the matching by name.
  * @return {Array} List of matching variation IDs.
  */
 export const getVariationsMatchingSelectedAttributes = ( {
 	selectedAttributes,
 	variationAttributes,
 	attributeNames,
-	exclude = '',
 } ) => {
-	const filteredAttributeNames = attributeNames.filter(
-		( attributeName ) => attributeName !== exclude
-	);
 	return Object.keys( variationAttributes ).filter( ( variationId ) =>
-		filteredAttributeNames.every( ( attributeName ) => {
+		attributeNames.every( ( attributeName ) => {
 			const selectedAttribute = selectedAttributes[ attributeName ] || '';
 			const variationAttribute =
 				variationAttributes[ variationId ][ attributeName ];
