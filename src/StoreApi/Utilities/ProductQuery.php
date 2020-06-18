@@ -25,21 +25,24 @@ class ProductQuery {
 	 */
 	public function prepare_objects_query( $request ) {
 		$args = [
-			'offset'              => $request['offset'],
-			'order'               => $request['order'],
-			'orderby'             => $request['orderby'],
-			'paged'               => $request['page'],
-			'post__in'            => $request['include'],
-			'post__not_in'        => $request['exclude'],
-			'posts_per_page'      => $request['per_page'] ? $request['per_page'] : -1,
-			'post_parent__in'     => $request['parent'],
-			'post_parent__not_in' => $request['parent_exclude'],
-			's'                   => $request['search'],
-			'fields'              => 'ids',
-			'ignore_sticky_posts' => true,
-			'post_status'         => 'publish',
-			'date_query'          => [],
-			'post_type'           => 'product',
+			'offset'                 => $request['offset'],
+			'order'                  => $request['order'],
+			'orderby'                => $request['orderby'],
+			'paged'                  => $request['page'],
+			'post__in'               => $request['include'],
+			'post__not_in'           => $request['exclude'],
+			'posts_per_page'         => $request['per_page'] ? $request['per_page'] : -1,
+			'post_parent__in'        => $request['parent'],
+			'post_parent__not_in'    => $request['parent_exclude'],
+			's'                      => $request['search'],
+			'fields'                 => 'ids',
+			'ignore_sticky_posts'    => true,
+			'post_status'            => 'publish',
+			'date_query'             => [],
+			'post_type'              => 'product',
+			'cache_results'          => false,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
 		];
 
 		// If searching for a specific SKU, allow any post type.
@@ -231,7 +234,12 @@ class ProductQuery {
 			$args['meta_key'] = $ordering_args['meta_key']; // phpcs:ignore
 		}
 
-		return $args;
+		return array_filter(
+			$args,
+			function( $value ) {
+				return ! empty( $value ) || false === $value;
+			}
+		);
 	}
 
 	/**
@@ -260,7 +268,7 @@ class ProductQuery {
 		remove_filter( 'posts_clauses', [ $this, 'add_query_clauses' ], 10 );
 
 		return [
-			'results' => $results,
+			'results' => array_map( 'absint', $results ),
 			'total'   => (int) $total_posts,
 			'pages'   => $query->query_vars['posts_per_page'] > 0 ? (int) ceil( $total_posts / (int) $query->query_vars['posts_per_page'] ) : 1,
 		];
