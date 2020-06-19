@@ -23,18 +23,6 @@ table.wc-block-cart-items {
 	table-layout: fixed;
 	width: 100%;
 
-	th {
-		padding: 0.25rem $gap 0.25rem 0;
-		white-space: nowrap;
-	}
-	td {
-		padding: $gap $gap $gap 0;
-		vertical-align: top;
-	}
-	th:last-child,
-	td:last-child {
-		padding-right: 0;
-	}
 	.wc-block-cart-items__header {
 		@include font-size(smaller);
 		text-transform: uppercase;
@@ -248,10 +236,18 @@ table.wc-block-cart-items {
 	.wc-block-cart-items {
 		@include with-translucent-border(0 0 1px);
 
+		th {
+			padding: 0.25rem $gap 0.25rem 0;
+			white-space: nowrap;
+		}
 		td {
 			@include with-translucent-border(1px 0 0);
 			padding: $gap $gap $gap 0;
 			vertical-align: top;
+		}
+		th:last-child,
+		td:last-child {
+			padding-right: 0;
 		}
 	}
 	.wc-block-components-radio-control__option {
