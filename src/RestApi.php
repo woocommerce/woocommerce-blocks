@@ -28,7 +28,11 @@ class RestApi {
 	 */
 	protected function init() {
 		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ), 10 );
-		add_filter( 'rest_authentication_errors', array( $this, 'store_api_authentication' ) );
+
+		if ( $this->is_request_to_store_api() ) {
+			add_filter( 'rest_authentication_errors', array( $this, 'store_api_authentication' ) );
+			add_filter( 'rest_pre_serve_request', array( $this, 'store_api_serve_request' ), 10, 4 );
+		}
 	}
 
 	/**
@@ -68,9 +72,43 @@ class RestApi {
 	 */
 	public function store_api_authentication( $result ) {
 		// Pass through errors from other authentication methods used before this one.
-		if ( ! empty( $result ) || ! self::is_request_to_store_api() ) {
+		if ( ! empty( $result ) ) {
 			return $result;
 		}
+		return true;
+	}
+
+	/**
+	 * Optimized version of serve_request incorporating this fix:
+	 * https://core.trac.wordpress.org/ticket/41358
+	 *
+	 * Improves performance if the site has lots of shutdown hooks active. Removes jsonp/embed support which is not being
+	 * used.
+	 *
+	 * @param bool              $served  Whether the request has already been served.
+	 * @param \WP_HTTP_Response $result  Result to send to the client. Usually a WP_REST_Response.
+	 * @param \WP_REST_Request  $request Request used to generate the response.
+	 * @param \WP_REST_Server   $server  Server instance.
+	 * @return boolean
+	 */
+	public function store_api_serve_request( $served, $result, $request, $server ) {
+		if ( empty( $result ) || 'HEAD' === $request->get_method() ) {
+			return $served;
+		}
+
+		$code   = $result->get_status();
+		$result = $server->response_to_data( $result, false );
+
+		if ( 204 === $code || null === $result ) {
+			return $served;
+		}
+
+		echo wp_json_encode( $result );
+
+		if ( function_exists( 'fastcgi_finish_request' ) && version_compare( phpversion(), '7.0.16', '>=' ) ) {
+			fastcgi_finish_request();
+		}
+
 		return true;
 	}
 
