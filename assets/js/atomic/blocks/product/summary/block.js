@@ -28,7 +28,7 @@ const Block = ( { className, ...props } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const productDataContext = useProductDataContext( [
 		'short_description',
-		'short_description',
+		'description',
 	] );
 	const { product } = productDataContext || props;
 
