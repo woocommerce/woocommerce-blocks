@@ -30,7 +30,7 @@ import {
  * @return {*} The component.
  */
 const Block = ( { className, showFormElements, ...props } ) => {
-	const productDataContext = useProductDataContext();
+	const productDataContext = useProductDataContext( [ 'type' ] );
 	const product = props.product || productDataContext.product || {};
 	const componentClass = classnames(
 		className,

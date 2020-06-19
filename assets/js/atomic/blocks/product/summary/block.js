@@ -26,7 +26,10 @@ import './style.scss';
  */
 const Block = ( { className, ...props } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
-	const productDataContext = useProductDataContext();
+	const productDataContext = useProductDataContext( [
+		'short_description',
+		'short_description',
+	] );
 	const { product } = productDataContext || props;
 
 	if ( ! product ) {

@@ -313,12 +313,12 @@ class CartItemSchema extends ProductSchema {
 	 *
 	 * @param \WC_Product $product Product instance.
 	 * @param string      $tax_display_mode If returned prices are incl or excl of tax.
-	 * @return array
+	 * @return object
 	 */
 	protected function prepare_product_price_response( \WC_Product $product, $tax_display_mode = '' ) {
 		$tax_display_mode = $this->get_tax_display_mode( $tax_display_mode );
 		$price_function   = $this->get_price_function_from_tax_display_mode( $tax_display_mode );
-		$prices           = parent::prepare_product_price_response( $product, $tax_display_mode );
+		$prices           = (array) parent::prepare_product_price_response( $product, $tax_display_mode );
 
 		// Add raw prices (prices with greater precision).
 		$prices['raw_prices'] = [
@@ -328,7 +328,7 @@ class CartItemSchema extends ProductSchema {
 			'sale_price'    => $this->prepare_money_response( $price_function( $product, [ 'price' => $product->get_sale_price() ] ), wc_get_rounding_precision() ),
 		];
 
-		return $prices;
+		return (object) $prices;
 	}
 
 	/**

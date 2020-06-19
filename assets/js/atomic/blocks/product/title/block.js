@@ -32,7 +32,7 @@ export const Block = ( {
 	...props
 } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
-	const productDataContext = useProductDataContext();
+	const productDataContext = useProductDataContext( [ 'name', 'permalink' ] );
 	const product = props.product || productDataContext.product;
 	const TagName = `h${ headingLevel }`;
 

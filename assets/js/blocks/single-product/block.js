@@ -1,10 +1,10 @@
 /**
  * External dependencies
  */
-import { withProduct } from '@woocommerce/block-hocs';
 import {
 	InnerBlockLayoutContextProvider,
 	ProductDataContextProvider,
+	useProductDataContext,
 } from '@woocommerce/shared-context';
 
 /**
@@ -15,8 +15,17 @@ import { BLOCK_NAME } from './constants';
 /**
  * The Single Product Block.
  */
-const Block = ( { isLoading, product, children } ) => {
+const Block = ( { attributes, children } ) => {
+	return (
+		<ProductDataContextProvider productId={ attributes.productId }>
+			<Layout children={ children } />
+		</ProductDataContextProvider>
+	);
+};
+
+const Layout = ( { children } ) => {
 	const className = 'wc-block-single-product';
+	const { isLoading } = useProductDataContext();
 
 	return (
 		<InnerBlockLayoutContextProvider
@@ -24,11 +33,9 @@ const Block = ( { isLoading, product, children } ) => {
 			parentClassName={ className }
 			isLoading={ isLoading }
 		>
-			<ProductDataContextProvider product={ product }>
-				<div className={ className }>{ children }</div>
-			</ProductDataContextProvider>
+			<div className={ className }>{ children }</div>
 		</InnerBlockLayoutContextProvider>
 	);
 };
 
-export default withProduct( { fields: [] } )( Block );
+export default Block;

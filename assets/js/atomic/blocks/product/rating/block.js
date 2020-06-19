@@ -25,7 +25,7 @@ import './style.scss';
  */
 const Block = ( { className, ...props } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
-	const productDataContext = useProductDataContext();
+	const productDataContext = useProductDataContext( [ 'average_rating' ] );
 	const product = props.product || productDataContext.product;
 	const rating = getAverageRating( product );
 

@@ -36,7 +36,10 @@ const Block = ( {
 	...props
 } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
-	const productDataContext = useProductDataContext();
+	const productDataContext = useProductDataContext( [
+		'images',
+		'permalink',
+	] );
 	const product = props.product || productDataContext.product;
 	const [ imageLoaded, setImageLoaded ] = useState( false );
 

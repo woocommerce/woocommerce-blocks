@@ -26,7 +26,12 @@ import './style.scss';
  */
 const Block = ( { className, ...props } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
-	const productDataContext = useProductDataContext();
+	const productDataContext = useProductDataContext( [
+		'is_purchasable',
+		'is_in_stock',
+		'low_stock_remaining',
+		'is_on_backorder',
+	] );
 	const product = props.product || productDataContext.product || {};
 
 	if ( isEmpty( product ) || ! product.is_purchasable ) {

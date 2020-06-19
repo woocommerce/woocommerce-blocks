@@ -26,7 +26,7 @@ import './style.scss';
  */
 const Block = ( { className, ...props } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
-	const productDataContext = useProductDataContext();
+	const productDataContext = useProductDataContext( [ 'categories' ] );
 	const { product } = productDataContext || props || {};
 
 	if ( isEmpty( product ) || isEmpty( product.categories ) ) {
