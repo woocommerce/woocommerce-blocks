@@ -2,18 +2,24 @@
  * External dependencies
  */
 import {
-	insertBlock,
 	getEditedPostContent,
-	createNewPost,
 	switchUserToAdmin,
+	openDocumentSettingsSidebar,
 } from '@wordpress/e2e-test-utils';
 import { getDocument, queries } from 'pptr-testing-library';
 
-describe( 'Filter Products by Attribute Block', () => {
-	beforeEach( async () => {
+import { visitBlockPage } from '@woocommerce/blocks-test-utils';
+
+const block = {
+	name: 'Filter Products by Attribute',
+	slug: 'woocommerce/attribute-filter',
+	class: '.wc-block-attribute-filter',
+};
+
+describe( `${ block.name } Block`, () => {
+	beforeAll( async () => {
 		await switchUserToAdmin();
-		await createNewPost();
-		await insertBlock( 'Filter Products by Attribute' );
+		await visitBlockPage( `${ block.name } Block` );
 		await page.type(
 			'.wc-block-attribute-filter__selection .components-text-control__input',
 			'Color'
@@ -113,9 +119,11 @@ describe( 'Filter Products by Attribute Block', () => {
 		).toEqual( 3 );
 	} );
 
-	it.only( 'renders on the frontend', async () => {
-		await PublishAndVisitPost();
-
+	it( 'renders on the frontend', async () => {
+		await openDocumentSettingsSidebar();
+		await page.click(
+			'a.components-external-link edit-post-post-link__link'
+		);
 		await page.waitForSelector( '.wp-block-woocommerce-attribute-filter' );
 
 		await expect( page ).toMatchElement(
