@@ -22,6 +22,9 @@ describe( 'Testing cart', () => {
 		await dispatch( storeKey ).invalidateResolutionForStore();
 		await dispatch( storeKey ).receiveCart( defaultCartState );
 	} );
+	afterEach( () => {
+		fetchMock.resetMocks();
+	} );
 	it( 'renders cart if there are items in the cart', async () => {
 		render(
 			<CartBlock
@@ -32,11 +35,10 @@ describe( 'Testing cart', () => {
 				} }
 			/>
 		);
-		await waitFor( () => {
-			expect(
-				screen.getByText( /Proceed to Checkout/ )
-			).toBeInTheDocument();
-		} );
+		await waitFor( () => expect( fetchMock ).toHaveBeenCalledTimes( 1 ) );
+		expect(
+			screen.getByText( /Proceed to Checkout/i )
+		).toBeInTheDocument();
 	} );
 	it( 'renders empty cart if there are no items in the cart', async () => {
 		fetchMock.mockResponseOnce( ( req ) => {
@@ -53,6 +55,7 @@ describe( 'Testing cart', () => {
 				} }
 			/>
 		);
-		expect( await screen.findByText( /Empty Cart/ ) ).toBeInTheDocument();
+		await waitFor( () => expect( fetchMock ).toHaveBeenCalledTimes( 1 ) );
+		expect( screen.getByText( /Empty Cart/i ) ).toBeInTheDocument();
 	} );
 } );
