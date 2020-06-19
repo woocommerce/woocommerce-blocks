@@ -113,4 +113,4 @@ const Editor = ( {
 	);
 };
 
-export default withProduct( Editor );
+export default withProduct( { fields: [] } )( Editor );

@@ -20,7 +20,7 @@ jest.mock( '../../base/utils/errors', () => ( {
 
 const mockProduct = { name: 'T-Shirt' };
 const attributes = { productId: 1 };
-const TestComponent = withProduct( ( props ) => {
+const TestComponent = withProduct( { fields: [] } )( ( props ) => {
 	return (
 		<div
 			error={ props.error }

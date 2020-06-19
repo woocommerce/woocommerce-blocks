@@ -31,4 +31,4 @@ const Block = ( { isLoading, product, children } ) => {
 	);
 };
 
-export default withProduct( Block );
+export default withProduct( { fields: [] } )( Block );

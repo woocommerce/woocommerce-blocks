@@ -12,9 +12,10 @@ import { formatError } from '../base/utils/errors.js';
 /**
  * HOC that queries a product for a component.
  *
- * @param {*} OriginalComponent Component being wrapped.
+ * @param {Object} props          Props to pass to HOC.
+ * @param {Array}  [props.fields] Product fields to get from the API.
  */
-const withProduct = ( OriginalComponent ) => {
+const withProduct = ( { fields = [] } ) => ( OriginalComponent ) => {
 	return ( props ) => {
 		const { productId, previewProduct = null } = props.attributes;
 		const [ loading, setLoading ] = useState( true );
@@ -22,21 +23,15 @@ const withProduct = ( OriginalComponent ) => {
 		const [ product, setProduct ] = useState(
 			productId === 'preview' ? previewProduct : null
 		);
-		const [ productFields, setProductFields ] = useState( [] );
 
 		const loadProduct = useCallback( () => {
-			if ( productId === 'preview' ) {
-				return;
-			}
-
-			if ( ! productId ) {
+			if ( productId === 'preview' || ! productId ) {
 				setLoading( false );
 				return;
 			}
 
 			setLoading( true );
-
-			getProduct( productId, productFields )
+			getProduct( productId, fields )
 				.then( ( theProduct ) => {
 					setProduct( theProduct );
 					setError( null );
@@ -49,7 +44,7 @@ const withProduct = ( OriginalComponent ) => {
 				.finally( () => {
 					setLoading( false );
 				} );
-		}, [ productId, productFields ] );
+		}, [ productId ] );
 
 		useEffect( () => {
 			loadProduct();
@@ -62,7 +57,6 @@ const withProduct = ( OriginalComponent ) => {
 				getProduct={ loadProduct }
 				isLoading={ loading }
 				product={ product }
-				setProductField={ setProductFields }
 			/>
 		);
 	};
