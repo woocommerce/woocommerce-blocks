@@ -45,11 +45,6 @@ class ProductsById extends AbstractRoute {
 							'default' => 'view',
 						)
 					),
-					'cache'   => array(
-						'description' => __( 'Controls whether to not to bypass the cache.', 'woo-gutenberg-products-block' ),
-						'type'        => 'boolean',
-						'default'     => true,
-					),
 				),
 			],
 			'schema' => [ $this->schema, 'get_public_item_schema' ],
@@ -65,7 +60,7 @@ class ProductsById extends AbstractRoute {
 	 */
 	protected function get_route_response( \WP_REST_Request $request ) {
 		$product_id = (int) $request['id'];
-		$response   = $request['cache'] ? $this->get_cached_response( $product_id ) : false;
+		$response   = $this->get_cached_response( $product_id );
 
 		if ( ! $response ) {
 			$object = wc_get_product( $product_id );
@@ -75,9 +70,7 @@ class ProductsById extends AbstractRoute {
 			}
 
 			$response = $this->schema->get_item_response( $object );
-			if ( $request['cache'] ) {
-				$this->set_cached_response( $product_id, $response );
-			}
+			$this->set_cached_response( $product_id, $response );
 		}
 
 		return rest_ensure_response( $response );

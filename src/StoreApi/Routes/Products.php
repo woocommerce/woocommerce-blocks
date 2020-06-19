@@ -58,7 +58,7 @@ class Products extends AbstractRoute {
 			$query_results = $product_query->get_results( $request );
 
 			foreach ( $query_results['results'] as $product_id ) {
-				$data = $request['cache'] ? $this->get_cached_response( $product_id ) : false;
+				$data = $this->get_cached_response( $product_id );
 
 				if ( ! $data ) {
 					$object = wc_get_product( $product_id );
@@ -68,9 +68,7 @@ class Products extends AbstractRoute {
 					}
 
 					$data = $this->schema->get_item_response( $object );
-					if ( $request['cache'] ) {
-						$this->set_cached_response( $product_id, $data );
-					}
+					$this->set_cached_response( $product_id, $data );
 				}
 
 				$response_objects[] = $this->prepare_response_for_collection( rest_ensure_response( $data ) );
@@ -121,12 +119,6 @@ class Products extends AbstractRoute {
 		$params                       = [];
 		$params['context']            = $this->get_context_param();
 		$params['context']['default'] = 'view';
-
-		$params['cache'] = array(
-			'description' => __( 'Controls whether to not to bypass the cache.', 'woo-gutenberg-products-block' ),
-			'type'        => 'boolean',
-			'default'     => true,
-		);
 
 		$params['page'] = array(
 			'description'       => __( 'Current page of the collection.', 'woo-gutenberg-products-block' ),
