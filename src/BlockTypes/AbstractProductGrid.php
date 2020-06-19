@@ -91,10 +91,11 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		return array(
 			'type'       => 'object',
 			'properties' => array(
-				'title'  => $this->get_schema_boolean( true ),
-				'price'  => $this->get_schema_boolean( true ),
-				'rating' => $this->get_schema_boolean( true ),
-				'button' => $this->get_schema_boolean( true ),
+				'title'       => $this->get_schema_boolean( true ),
+				'price'       => $this->get_schema_boolean( true ),
+				'rating'      => $this->get_schema_boolean( true ),
+				'button'      => $this->get_schema_boolean( true ),
+				'description' => $this->get_schema_boolean( true ),
 			),
 		);
 	}
@@ -324,13 +325,14 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		}
 
 		$data = (object) array(
-			'permalink' => esc_url( $product->get_permalink() ),
-			'image'     => $this->get_image_html( $product ),
-			'title'     => $this->get_title_html( $product ),
-			'rating'    => $this->get_rating_html( $product ),
-			'price'     => $this->get_price_html( $product ),
-			'badge'     => $this->get_sale_badge_html( $product ),
-			'button'    => $this->get_button_html( $product ),
+			'permalink'   => esc_url( $product->get_permalink() ),
+			'image'       => $this->get_image_html( $product ),
+			'title'       => $this->get_title_html( $product ),
+			'rating'      => $this->get_rating_html( $product ),
+			'price'       => $this->get_price_html( $product ),
+			'badge'       => $this->get_sale_badge_html( $product ),
+			'description' => $this->get_description( $product ),
+			'button'      => $this->get_button_html( $product ),
 		);
 
 		return apply_filters(
@@ -343,6 +345,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 				{$data->badge}
 				{$data->price}
 				{$data->rating}
+				{$data->description}
 				{$data->button}
 			</li>",
 			$data,
@@ -444,6 +447,22 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			return '';
 		}
 		return '<div class="wp-block-button wc-block-grid__product-add-to-cart">' . $this->get_add_to_cart( $product ) . '</div>';
+	}
+
+
+	/**
+	 * Render product description.
+	 *
+	 * @param \WC_Product $product Product.
+	 * @return string Rendered description markup.
+	 */
+	protected function get_description( $product ) {
+		if ( empty( $this->attributes['contentVisibility']['description'] ) ) {
+			return '';
+		}
+		$short_description = apply_filters( 'woocommerce_short_description', $product->get_short_description() ? $product->get_short_description() : wc_trim_string( $product->get_description(), 400 ) );
+
+		return '<div class="wc-block-grid__product-description">' . $short_description . '</div>';
 	}
 
 	/**

@@ -11,6 +11,8 @@ import { ToggleControl } from '@wordpress/components';
  */
 const GridContentControl = ( { onChange, settings } ) => {
 	const { button, price, rating, title } = settings;
+	const description = settings?.description ?? false;
+
 	return (
 		<Fragment>
 			<ToggleControl
@@ -63,6 +65,27 @@ const GridContentControl = ( { onChange, settings } ) => {
 			/>
 			<ToggleControl
 				label={ __(
+					'Short description',
+					'woo-gutenberg-products-block'
+				) }
+				help={
+					description
+						? __(
+								'Product description is visible.',
+								'woo-gutenberg-products-block'
+						  )
+						: __(
+								'Product description is hidden.',
+								'woo-gutenberg-products-block'
+						  )
+				}
+				checked={ description }
+				onChange={ () =>
+					onChange( { ...settings, description: ! description } )
+				}
+			/>
+			<ToggleControl
+				label={ __(
 					'Add to Cart button',
 					'woo-gutenberg-products-block'
 				) }
@@ -93,6 +116,7 @@ GridContentControl.propTypes = {
 		price: PropTypes.bool.isRequired,
 		rating: PropTypes.bool.isRequired,
 		title: PropTypes.bool.isRequired,
+		description: PropTypes.bool,
 	} ).isRequired,
 	/**
 	 * Callback to update the layout settings.
