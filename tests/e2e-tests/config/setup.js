@@ -23,7 +23,6 @@ module.exports = async ( globalConfig ) => {
 	// we need to load puppeteer global setup here.
 	await setupPuppeteer( globalConfig );
 
-
 	try {
 		/**
 		 * Promise.all will return an array of all promises resolved values.
@@ -66,7 +65,7 @@ module.exports = async ( globalConfig ) => {
 			products,
 			shippingZones,
 			pages,
-			attributes
+			attributes,
 		};
 	} catch ( e ) {
 		console.log( e );
