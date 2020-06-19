@@ -260,7 +260,7 @@ abstract class AbstractRoute implements RouteInterface {
 		$properties = isset( $schema['properties'] ) ? $schema['properties'] : [];
 		$fields     = array_keys( $properties );
 
-		if ( ! isset( $request['_fields'] ) ) {
+		if ( ! empty( $request['_fields'] ) ) {
 			return $fields;
 		}
 
@@ -277,14 +277,6 @@ abstract class AbstractRoute implements RouteInterface {
 			$requested_fields,
 			function( $response_fields, $field ) use ( $fields ) {
 				if ( in_array( $field, $fields, true ) ) {
-					$response_fields[] = $field;
-					return $response_fields;
-				}
-				// Check for nested fields if $field is not a direct match.
-				$nested_fields = explode( '.', $field );
-				// A nested field is included so long as its top-level property
-				// is present in the schema.
-				if ( in_array( $nested_fields[0], $fields, true ) ) {
 					$response_fields[] = $field;
 				}
 				return $response_fields;

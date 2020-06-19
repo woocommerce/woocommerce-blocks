@@ -28,7 +28,7 @@ import {
 	withSpokenMessages,
 } from '@wordpress/components';
 import classnames from 'classnames';
-import { Fragment, Component } from '@wordpress/element';
+import { useEffect, Fragment, Component } from '@wordpress/element';
 import { compose, createHigherOrderComponent } from '@wordpress/compose';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
@@ -55,6 +55,7 @@ const FeaturedProduct = ( {
 	debouncedSpeak,
 	error,
 	getProduct,
+	setProductFields,
 	isLoading,
 	isSelected,
 	overlayColor,
@@ -63,6 +64,16 @@ const FeaturedProduct = ( {
 	setOverlayColor,
 	triggerUrlUpdate = () => void null,
 } ) => {
+	useEffect( () => {
+		setProductFields( [
+			'name',
+			'variation',
+			'short_description',
+			'price_html',
+			'permalink',
+		] );
+	}, [ setProductFields ] );
+
 	const renderApiError = () => (
 		<ErrorPlaceholder
 			className="wc-block-featured-product-error"
@@ -436,6 +447,7 @@ FeaturedProduct.propTypes = {
 	// from withProduct
 	error: PropTypes.object,
 	getProduct: PropTypes.func,
+	setProductFields: PropTypes.func,
 	isLoading: PropTypes.bool,
 	product: PropTypes.shape( {
 		name: PropTypes.node,

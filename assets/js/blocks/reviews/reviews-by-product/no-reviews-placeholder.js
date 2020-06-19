@@ -7,8 +7,25 @@ import PropTypes from 'prop-types';
 import ErrorPlaceholder from '@woocommerce/block-components/error-placeholder';
 import { Icon, comment } from '@woocommerce/icons';
 import { withProduct } from '@woocommerce/block-hocs';
+import { useEffect } from '@wordpress/element';
 
-const NoReviewsPlaceholder = ( { error, getProduct, isLoading, product } ) => {
+const NoReviewsPlaceholder = ( {
+	error,
+	getProduct,
+	isLoading,
+	product,
+	setProductFields,
+} ) => {
+	useEffect( () => {
+		setProductFields( [
+			'name',
+			'variation',
+			'short_description',
+			'price_html',
+			'permalink',
+		] );
+	}, [ setProductFields ] );
+
 	const renderApiError = () => (
 		<ErrorPlaceholder
 			className="wc-block-featured-product-error"
@@ -55,6 +72,7 @@ NoReviewsPlaceholder.propTypes = {
 	// from withProduct
 	error: PropTypes.object,
 	isLoading: PropTypes.bool,
+	setProductFields: PropTypes.func,
 	product: PropTypes.shape( {
 		name: PropTypes.node,
 		review_count: PropTypes.number,

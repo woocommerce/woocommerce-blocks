@@ -426,13 +426,26 @@ class ProductSchema extends AbstractSchema {
 	public function get_item_response( $product, $requested_fields = [] ) {
 		$response = [];
 
-		foreach ( $requested_fields as $requested_field ) {
+		foreach ( $requested_fields as $field ) {
 			$field_value = '';
-			$property    = strstr( $requested_field, '.' ) ? current( explode( '.', $requested_field ) ) : $requested_field;
 
-			switch ( $property ) {
+			switch ( $field ) {
 				case 'id':
-					$field_value = $product->get_id();
+				case 'type':
+				case 'permalink':
+				case 'price_html':
+				case 'average_rating':
+				case 'review_count':
+					$field_value = $product->{"get_$field"}();
+					break;
+				case 'has_options':
+				case 'is_purchasable':
+				case 'is_in_stock':
+					$field_value = $product->$field();
+					break;
+				case 'on_sale':
+				case 'sold_individually':
+					$field_value = $product->{"is_$field"}();
 					break;
 				case 'name':
 					$field_value = $this->prepare_html_response( $product->get_title() );
@@ -440,14 +453,8 @@ class ProductSchema extends AbstractSchema {
 				case 'parent':
 					$field_value = $product->get_parent_id();
 					break;
-				case 'type':
-					$field_value = $product->get_type();
-					break;
 				case 'variation':
 					$field_value = $this->prepare_html_response( $product->is_type( 'variation' ) ? wc_get_formatted_variation( $product, true, true, false ) : '' );
-					break;
-				case 'permalink':
-					$field_value = $product->get_permalink();
 					break;
 				case 'sku':
 					$field_value = $this->prepare_html_response( $product->get_sku() );
@@ -458,20 +465,8 @@ class ProductSchema extends AbstractSchema {
 				case 'description':
 					$field_value = $this->prepare_html_response( wc_format_content( $product->get_description() ) );
 					break;
-				case 'on_sale':
-					$field_value = $product->is_on_sale();
-					break;
 				case 'prices':
-					$field_value = (object) $this->prepare_product_price_response( $product );
-					break;
-				case 'price_html':
-					$field_value = $product->get_price_html();
-					break;
-				case 'average_rating':
-					$field_value = $product->get_average_rating();
-					break;
-				case 'review_count':
-					$field_value = $product->get_review_count();
+					$field_value = $this->prepare_product_price_response( $product );
 					break;
 				case 'images':
 					$field_value = $this->get_images( $product );
@@ -488,26 +483,14 @@ class ProductSchema extends AbstractSchema {
 				case 'variations':
 					$field_value = $this->get_variations( $product );
 					break;
-				case 'has_options':
-					$field_value = $product->has_options();
-					break;
-				case 'is_purchasable':
-					$field_value = $product->is_purchasable();
-					break;
-				case 'is_in_stock':
-					$field_value = $product->is_in_stock();
-					break;
 				case 'is_on_backorder':
 					$field_value = 'onbackorder' === $product->get_stock_status();
 					break;
-				case 'low_stock_remaining':
-					$field_value = $this->get_low_stock_remaining( $product );
-					break;
-				case 'sold_individually':
-					$field_value = $product->is_sold_individually();
-					break;
 				case 'quantity_limit':
 					$field_value = $this->get_product_quantity_limit( $product );
+					break;
+				case 'low_stock_remaining':
+					$field_value = $this->get_low_stock_remaining( $product );
 					break;
 				case 'add_to_cart':
 					$field_value = (object) $this->prepare_html_response(
@@ -519,7 +502,7 @@ class ProductSchema extends AbstractSchema {
 					);
 					break;
 			}
-			$response[ $property ] = $field_value;
+			$response[ $field ] = $field_value;
 		}
 
 		return $response;
@@ -729,7 +712,7 @@ class ProductSchema extends AbstractSchema {
 	 *
 	 * @param \WC_Product $product Product instance.
 	 * @param string      $tax_display_mode If returned prices are incl or excl of tax.
-	 * @return array
+	 * @return object
 	 */
 	protected function prepare_product_price_response( \WC_Product $product, $tax_display_mode = '' ) {
 		$prices           = $this->get_store_currency_response();
@@ -741,7 +724,7 @@ class ProductSchema extends AbstractSchema {
 		$prices['sale_price']    = $this->prepare_money_response( $price_function( $product, [ 'price' => $product->get_sale_price() ] ), wc_get_price_decimals() );
 		$prices['price_range']   = $this->get_price_range( $product, $tax_display_mode );
 
-		return $prices;
+		return (object) $prices;
 	}
 
 	/**

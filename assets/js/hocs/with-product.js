@@ -1,8 +1,7 @@
 /**
  * External dependencies
  */
-import { Component } from '@wordpress/element';
-import { createHigherOrderComponent } from '@wordpress/compose';
+import { useState, useCallback, useEffect } from '@wordpress/element';
 import { getProduct } from '@woocommerce/block-components/utils';
 
 /**
@@ -13,71 +12,60 @@ import { formatError } from '../base/utils/errors.js';
 /**
  * HOC that queries a product for a component.
  *
- * @param {Function} OriginalComponent Component being wrapped.
+ * @param {*} OriginalComponent Component being wrapped.
  */
-const withProduct = createHigherOrderComponent( ( OriginalComponent ) => {
-	return class WrappedComponent extends Component {
-		state = {
-			error: null,
-			loading: false,
-			product:
-				this.props.attributes.productId === 'preview'
-					? this.props.attributes.previewProduct
-					: null,
-		};
+const withProduct = ( OriginalComponent ) => {
+	return ( props ) => {
+		const { productId, previewProduct = null } = props.attributes;
+		const [ loading, setLoading ] = useState( true );
+		const [ error, setError ] = useState( null );
+		const [ product, setProduct ] = useState(
+			productId === 'preview' ? previewProduct : null
+		);
+		const [ productFields, setProductFields ] = useState( [] );
 
-		componentDidMount() {
-			this.loadProduct();
-		}
-
-		componentDidUpdate( prevProps ) {
-			if (
-				prevProps.attributes.productId !==
-				this.props.attributes.productId
-			) {
-				this.loadProduct();
-			}
-		}
-
-		loadProduct = () => {
-			const { productId } = this.props.attributes;
-
+		const loadProduct = useCallback( () => {
 			if ( productId === 'preview' ) {
 				return;
 			}
 
 			if ( ! productId ) {
-				this.setState( { product: null, loading: false, error: null } );
+				setLoading( false );
 				return;
 			}
 
-			this.setState( { loading: true } );
+			setLoading( true );
 
-			getProduct( productId )
-				.then( ( product ) => {
-					this.setState( { product, loading: false, error: null } );
+			getProduct( productId, productFields )
+				.then( ( theProduct ) => {
+					setProduct( theProduct );
+					setError( null );
 				} )
 				.catch( async ( e ) => {
-					const error = await formatError( e );
-
-					this.setState( { product: null, loading: false, error } );
+					const errorMessage = await formatError( e );
+					setProduct( null );
+					setError( errorMessage );
+				} )
+				.finally( () => {
+					setLoading( false );
 				} );
-		};
+		}, [ productId, productFields ] );
 
-		render() {
-			const { error, loading, product } = this.state;
+		useEffect( () => {
+			loadProduct();
+		}, [ productId, loadProduct ] );
 
-			return (
-				<OriginalComponent
-					{ ...this.props }
-					error={ error }
-					getProduct={ this.loadProduct }
-					isLoading={ loading }
-					product={ product }
-				/>
-			);
-		}
+		return (
+			<OriginalComponent
+				{ ...props }
+				error={ error }
+				getProduct={ loadProduct }
+				isLoading={ loading }
+				product={ product }
+				setProductField={ setProductFields }
+			/>
+		);
 	};
-}, 'withProduct' );
+};
 
 export default withProduct;

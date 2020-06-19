@@ -76,10 +76,13 @@ export const getProducts = ( {
  * Get a promise that resolves to a product object from the Store API.
  *
  * @param {number} productId Id of the product to retrieve.
+ * @param {Array} [fields]   List of top level product fields to get from the API.
  */
-export const getProduct = ( productId ) => {
+export const getProduct = ( productId, fields = [] ) => {
 	return apiFetch( {
-		path: `/wc/store/products/${ productId }`,
+		path: addQueryArgs( `/wc/store/products/${ productId }`, {
+			_fields: fields,
+		} ),
 	} );
 };
 
