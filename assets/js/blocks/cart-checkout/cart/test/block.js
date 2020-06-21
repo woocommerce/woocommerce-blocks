@@ -35,10 +35,11 @@ describe( 'Testing cart', () => {
 				} }
 			/>
 		);
-		await waitFor( () => expect( fetchMock ).toHaveBeenCalledTimes( 1 ) );
+		await waitFor( () => expect( fetchMock ).toHaveBeenCalled() );
 		expect(
-			screen.getByText( /Proceed to Checkout/i )
+			await screen.getByText( /Proceed to Checkout/i )
 		).toBeInTheDocument();
+		expect( fetchMock ).toHaveBeenCalledTimes( 1 );
 	} );
 	it( 'renders empty cart if there are no items in the cart', async () => {
 		fetchMock.mockResponseOnce( ( req ) => {
@@ -55,7 +56,9 @@ describe( 'Testing cart', () => {
 				} }
 			/>
 		);
-		await waitFor( () => expect( fetchMock ).toHaveBeenCalledTimes( 1 ) );
-		expect( screen.getByText( /Empty Cart/i ) ).toBeInTheDocument();
+
+		await waitFor( () => expect( fetchMock ).toHaveBeenCalled() );
+		expect( await screen.getByText( /Empty Cart/i ) ).toBeInTheDocument();
+		expect( fetchMock ).toHaveBeenCalledTimes( 1 );
 	} );
 } );
