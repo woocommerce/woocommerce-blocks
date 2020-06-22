@@ -436,7 +436,6 @@ FeaturedProduct.propTypes = {
 	// from withProduct
 	error: PropTypes.object,
 	getProduct: PropTypes.func,
-	setProductFields: PropTypes.func,
 	isLoading: PropTypes.bool,
 	product: PropTypes.shape( {
 		name: PropTypes.node,
