@@ -10,7 +10,7 @@ import { useEffect } from '@wordpress/element';
  */
 const ProductDataQuery = ( { productId, fields, setProduct } ) => {
 	useEffect( () => {
-		if ( ! productId || ! fields ) {
+		if ( ! productId || fields === undefined ) {
 			return;
 		}
 		apiFetch( {
