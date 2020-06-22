@@ -8,7 +8,6 @@ import {
 	useEffect,
 	useCallback,
 	useRef,
-	useMemo,
 } from '@wordpress/element';
 import { flatten } from 'lodash';
 
