@@ -9,7 +9,7 @@ import {
 	useCallback,
 	useRef,
 } from '@wordpress/element';
-import { flatten } from 'lodash';
+import { flatten, uniq } from 'lodash';
 
 /**
  * Internal dependencies
@@ -41,7 +41,7 @@ const useProductDataFieldPromises = () => {
 	// Based on the solution in https://stackoverflow.com/questions/55800263/waiting-for-values-from-unknown-children-component-number-before-effet
 	useEffect( () => {
 		Promise.all( promises.current ).then( ( resolvedFields ) => {
-			setFields( flatten( resolvedFields ) );
+			setFields( uniq( flatten( resolvedFields ) ) );
 		} );
 	}, [] );
 
