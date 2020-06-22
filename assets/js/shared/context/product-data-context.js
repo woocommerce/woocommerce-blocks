@@ -70,7 +70,10 @@ export const useProductDataContext = ( fields = [] ) => {
 		ProductDataContext
 	);
 	const addFields = useProductDataFieldPromise();
-	addFields( fields );
+
+	if ( typeof addFields === 'function' ) {
+		addFields( fields );
+	}
 
 	return context;
 };
