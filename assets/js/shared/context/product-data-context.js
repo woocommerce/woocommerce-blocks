@@ -22,9 +22,10 @@ import ProductDataQuery from './product-data-query';
  * @member {Object} ProductDataContext A react context object
  */
 const ProductDataContext = createContext( {
-	product: null,
+	product: undefined,
 	isLoading: true,
-	useProductDataFieldPromise: () => {}, // Used internally: this is not exposed to consumers.
+	// eslint-disable-next-line no-unused-vars
+	useProductDataFieldPromise: () => ( _fields ) => {}, // Used internally: this is not exposed to consumers.
 } );
 
 /**
@@ -61,20 +62,16 @@ const useProductDataFieldPromises = () => {
 
 /**
  * Consumers of this hook can receive Product Data Properties. Specific product properties can be
- * requested to make API requests more efficient. Omitting fields will return __all__ product fields.
+ * requested to make API requests more efficient.
  *
- * @param {Array} fields Array of API fields names.
+ * @param {Array|null} fields Array of API fields names.
  */
-export const useProductDataContext = ( fields = [] ) => {
+export const useProductDataContext = ( fields = null ) => {
 	const { useProductDataFieldPromise, ...context } = useContext(
 		ProductDataContext
 	);
 	const addFields = useProductDataFieldPromise();
-
-	if ( typeof addFields === 'function' ) {
-		addFields( fields );
-	}
-
+	addFields( fields );
 	return context;
 };
 
@@ -88,7 +85,7 @@ export const useProductDataContext = ( fields = [] ) => {
  * @param {*}      props.children Children in the tree.
  */
 export const ProductDataContextProvider = ( {
-	product: productContext = null,
+	product: productContext = undefined,
 	productId = 0,
 	children,
 } ) => {
@@ -102,7 +99,7 @@ export const ProductDataContextProvider = ( {
 		setProduct( productContext );
 	}, [ productContext ] );
 
-	const isLoading = product === null;
+	const isLoading = product === undefined;
 	const contextValue = {
 		product,
 		isLoading,
