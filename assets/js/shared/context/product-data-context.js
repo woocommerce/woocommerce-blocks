@@ -10,6 +10,7 @@ import {
 	useRef,
 } from '@wordpress/element';
 import { flatten, uniq } from 'lodash';
+import isShallowEqual from '@wordpress/is-shallow-equal';
 
 /**
  * Internal dependencies
@@ -22,10 +23,9 @@ import ProductDataQuery from './product-data-query';
  * @member {Object} ProductDataContext A react context object
  */
 const ProductDataContext = createContext( {
-	product: undefined,
+	product: {},
 	isLoading: true,
-	// eslint-disable-next-line no-unused-vars
-	useProductDataFieldPromise: () => ( _fields ) => {}, // Used internally: this is not exposed to consumers.
+	productDataFieldPromise: ( fields ) => fields, // Used internally: this is not exposed to consumers.
 } );
 
 /**
@@ -36,26 +36,45 @@ const useProductDataFieldPromises = () => {
 	const defaultPromises = [];
 	const promises = useRef( defaultPromises );
 	const [ fields, setFields ] = useState( undefined );
+	const [ initializing, setInitializing ] = useState( true );
+	const [ resolving, setResolving ] = useState( false );
+
+	const resolvePromises = ( promisesToResolve, setResults ) => {
+		Promise.all( promisesToResolve ).then( ( resolved ) => {
+			const results = uniq( flatten( resolved ) ).filter( Boolean );
+			setResults( results );
+		} );
+	};
 
 	// This useEffect will be deferred until after the initialization of all children so promises are
 	// created in time.
 	// Based on the solution in https://stackoverflow.com/questions/55800263/waiting-for-values-from-unknown-children-component-number-before-effet
 	useEffect( () => {
-		Promise.all( promises.current ).then( ( resolvedFields ) => {
-			setFields( uniq( flatten( resolvedFields ) ) );
-		} );
+		resolvePromises( promises.current, setFields );
+		setInitializing( false );
+		setResolving( false );
 	}, [] );
 
+	// This useEffect tracks changes to fields after the initial promises resolve.
+	useEffect( () => {
+		if ( initializing === false && resolving ) {
+			resolvePromises( promises.current, setFields );
+			setResolving( false );
+		}
+	}, [ initializing, resolving ] );
+
 	// Function that returns a new promise to add fields to.
-	const productDataFieldPromise = useCallback( () => {
-		let resolvePromise = null;
-		promises.current.push(
-			new Promise( ( resolve ) => {
-				resolvePromise = resolve;
-			} )
-		);
-		return resolvePromise;
-	}, [ promises ] );
+	const productDataFieldPromise = useCallback(
+		( addFields ) => {
+			promises.current.push(
+				new Promise( ( resolve ) => {
+					resolve( addFields );
+				} )
+			);
+			setResolving( true );
+		},
+		[ promises ]
+	);
 
 	return [ fields, productDataFieldPromise ];
 };
@@ -67,11 +86,18 @@ const useProductDataFieldPromises = () => {
  * @param {Array|null} fields Array of API fields names.
  */
 export const useProductDataContext = ( fields = null ) => {
-	const { useProductDataFieldPromise, ...context } = useContext(
+	const fieldsRef = useRef( null );
+	const { productDataFieldPromise, ...context } = useContext(
 		ProductDataContext
 	);
-	const addFields = useProductDataFieldPromise();
-	addFields( fields );
+
+	useEffect( () => {
+		if ( ! isShallowEqual( fields, fieldsRef.current ) ) {
+			fieldsRef.current = fields;
+			productDataFieldPromise( fields );
+		}
+	}, [ fields, productDataFieldPromise ] );
+
 	return context;
 };
 
@@ -79,9 +105,9 @@ export const useProductDataContext = ( fields = null ) => {
  * This context provider passes product data down to all children blocks in a given tree.
  *
  * @param {Object} props Provider props.
- * @param {Object} props.product If a product is given, this product will be passed to children - no API
+ * @param {Object} [props.product] If a product is given, this product will be passed to children - no API
  *                 requests will be made.
- * @param {number} props.productId Provide a product ID to query from the API.
+ * @param {number} [props.productId] Provide a product ID to query from the API.
  * @param {*}      props.children Children in the tree.
  */
 export const ProductDataContextProvider = ( {
@@ -89,27 +115,26 @@ export const ProductDataContextProvider = ( {
 	productId = 0,
 	children,
 } ) => {
-	const [ product, setProduct ] = useState( productContext );
-	const [
-		fields,
-		useProductDataFieldPromise,
-	] = useProductDataFieldPromises();
+	const [ product, setProduct ] = useState( productContext || {} );
+	const [ fields, productDataFieldPromise ] = useProductDataFieldPromises();
 
 	useEffect( () => {
-		setProduct( productContext );
+		if ( productContext ) {
+			setProduct( productContext );
+		}
 	}, [ productContext ] );
 
-	const isLoading = product === undefined;
+	const isLoading = Object.keys( product ).length === 0;
 	const contextValue = {
 		product,
 		isLoading,
-		useProductDataFieldPromise,
+		productDataFieldPromise,
 	};
 
 	return (
 		<ProductDataContext.Provider value={ contextValue }>
 			{ children }
-			{ ! productContext && (
+			{ !! productId && (
 				<ProductDataQuery
 					productId={ productId }
 					fields={ fields }
