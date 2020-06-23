@@ -25,46 +25,79 @@ const Chip = ( {
 	onRemove = () => {},
 	disabled = false,
 	radius = 'small',
+	removeOnClick = false,
+	/* translators: Remove chip. */
+	ariaLabel = __( 'Remove', 'woo-gutenberg-products-block' ),
+	...props
 } ) => {
-	const Wrapper = element;
+	const Wrapper = removeOnClick ? 'button' : element;
 	const wrapperClassName = classNames(
 		className,
 		'wc-block-components-chip',
 		'wc-block-components-chip--radius-' + radius
 	);
+	const RemoveElement = ! removeOnClick ? 'button' : 'span';
+	const clickableElementProps = {
+		'aria-label':
+			ariaLabel || typeof text !== 'string'
+				? ariaLabel
+				: sprintf(
+						/* translators: %s text of the chip to remove. */
+						__( 'Remove "%s"', 'woo-gutenberg-products-block' ),
+						text
+				  ),
+		disabled,
+		onClick: onRemove,
+		onKeyDown: ( e ) => {
+			if ( e.key === 'Backspace' || e.key === 'Delete' ) {
+				onRemove();
+			}
+		},
+	};
+	const wrapperProps = removeOnClick ? clickableElementProps : {};
+	const removeProps = removeOnClick
+		? { 'aria-hidden': true }
+		: clickableElementProps;
+	const showScreenReaderText = screenReaderText && screenReaderText !== text;
 
 	return (
 		// @ts-ignore
-		<Wrapper className={ wrapperClassName }>
-			<span aria-hidden="true" className="wc-block-components-chip__text">
+		<Wrapper
+			className={ wrapperClassName }
+			{ ...wrapperProps }
+			{ ...props }
+		>
+			<span
+				aria-hidden={ showScreenReaderText }
+				className="wc-block-components-chip__text"
+			>
 				{ text }
 			</span>
-			<span className="screen-reader-text">
-				{ screenReaderText ? screenReaderText : text }
-			</span>
-			<button
+			{ showScreenReaderText && (
+				<span className="screen-reader-text">
+					{ screenReaderText ? screenReaderText : text }
+				</span>
+			) }
+			<RemoveElement
 				className="wc-block-components-chip__remove"
-				onClick={ onRemove }
-				disabled={ disabled }
-				aria-label={ sprintf(
-					/* translators: %s chip text. */
-					__( 'Remove coupon "%s"', 'woo-gutenberg-products-block' ),
-					text
-				) }
+				{ ...removeProps }
 			>
 				✕
-			</button>
+			</RemoveElement>
 		</Wrapper>
 	);
 };
 
 Chip.propTypes = {
-	text: PropTypes.string.isRequired,
+	text: PropTypes.node.isRequired,
 	screenReaderText: PropTypes.string,
 	element: PropTypes.elementType,
 	className: PropTypes.string,
 	onRemove: PropTypes.func,
+	disabled: PropTypes.bool,
 	radius: PropTypes.oneOf( [ 'none', 'small', 'medium', 'large' ] ),
+	removeOnClick: PropTypes.func,
+	ariaLabel: PropTypes.string,
 };
 
 export default Chip;

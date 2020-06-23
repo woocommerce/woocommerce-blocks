@@ -68,6 +68,14 @@ const TotalsDiscountItem = ( {
 										removeCoupon( cartCoupon.code );
 									} }
 									radius="large"
+									ariaLabel={ sprintf(
+										/* Translators: %s is a coupon code. */
+										__(
+											'Remove coupon "%s"',
+											'woo-gutenberg-products-block'
+										),
+										cartCoupon.code
+									) }
 								/>
 							) ) }
 						</ul>
