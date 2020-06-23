@@ -40,18 +40,18 @@
 		&:active {
 			outline: 0;
 		}
+	}
 
-		&:not(:first-child):focus {
-			margin-bottom: 1.5px;
-			margin-top: 1.5px;
-		}
+	.is-single.has-checked.is-open & {
+		margin-bottom: 1.5px;
+		margin-top: 1.5px;
+	}
 
-		&:not(:first-child):not(:focus) {
-			@include visually-hidden();
-			// Fixes an issue in Firefox that `flex: wrap` in the container was making
-			// this element to still occupy one line.
-			position: absolute;
-		}
+	.is-single.has-checked:not(.is-open) & {
+		@include visually-hidden();
+		// Fixes an issue in Firefox that `flex: wrap` in the container was making
+		// this element to still occupy one line.
+		position: absolute;
 	}
 
 	.is-multiple & {
