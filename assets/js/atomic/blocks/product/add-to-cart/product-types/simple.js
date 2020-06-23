@@ -14,7 +14,9 @@ import { AddToCartButton, QuantityInput, ProductUnavailable } from '../shared';
  */
 const Simple = () => {
 	const {
-		product,
+		productId,
+		isPurchasable,
+		isInStock,
 		quantity,
 		minQuantity,
 		maxQuantity,
@@ -22,11 +24,11 @@ const Simple = () => {
 		formDisabled,
 	} = useAddToCartFormContext();
 
-	if ( product.id && ! product.is_purchasable ) {
+	if ( productId && ! isPurchasable ) {
 		return <ProductUnavailable />;
 	}
 
-	if ( product.id && ! product.is_in_stock ) {
+	if ( productId && ! isInStock ) {
 		return (
 			<ProductUnavailable
 				reason={ __(

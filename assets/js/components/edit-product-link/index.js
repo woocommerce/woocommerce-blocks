@@ -13,8 +13,7 @@ import { useProductDataContext } from '@woocommerce/shared-context';
  * @param {Object} props Component props.
  */
 const EditProductLink = ( props ) => {
-	const productDataContext = useProductDataContext( [ 'id' ] );
-	const product = productDataContext.product || {};
+	const { product } = useProductDataContext( [ 'id' ] );
 	const productId = product.id || props.productId || 0;
 
 	if ( ! productId ) {

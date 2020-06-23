@@ -21,14 +21,11 @@ import './style.scss';
  * @param {Object} props             Incoming props.
  * @param {string} [props.className] CSS Class name for the component.
  * @param {string} [props.align]     Alignment of the badge.
- * @param {Object} [props.product]   Optional product object. Product from context will be used if
- *                                   this is not provided.
  * @return {*} The component.
  */
-const Block = ( { className, align, ...props } ) => {
+const Block = ( { className, align } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
-	const productDataContext = useProductDataContext( [ 'on_sale' ] );
-	const product = props.product || productDataContext.product;
+	const { product } = useProductDataContext( [ 'on_sale' ] );
 
 	if ( ! product || ! product.on_sale ) {
 		return null;

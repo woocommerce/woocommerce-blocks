@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { AddToCartFormContextProvider } from '@woocommerce/base-context';
 import { useProductDataContext } from '@woocommerce/shared-context';
@@ -25,13 +24,19 @@ import {
  * @param {Object} props                     Incoming props.
  * @param {string} [props.className]         CSS Class name for the component.
  * @param {boolean} [props.showFormElements] Should form elements be shown?
- * @param {Object} [props.product]           Optional product object. Product from context will be
- *                                           used if this is not provided.
  * @return {*} The component.
  */
-const Block = ( { className, showFormElements, ...props } ) => {
-	const productDataContext = useProductDataContext( [ 'type' ] );
-	const product = props.product || productDataContext.product || {};
+const Block = ( { className, showFormElements } ) => {
+	const { product } = useProductDataContext( [
+		'id',
+		'type',
+		'quantity_limit',
+		'is_purchasable',
+		'is_in_stock',
+		'variations',
+		'attributes',
+	] );
+
 	const componentClass = classnames(
 		className,
 		'wc-block-components-product-add-to-cart',
@@ -44,7 +49,10 @@ const Block = ( { className, showFormElements, ...props } ) => {
 
 	return (
 		<AddToCartFormContextProvider
-			product={ product }
+			productId={ product.id || 0 }
+			isPurchasable={ product.is_purchasable || true }
+			isInStock={ product.is_in_stock || true }
+			quantityLimit={ product.quantity_limit || 99 }
 			showFormElements={ showFormElements }
 		>
 			<div className={ componentClass }>
@@ -52,6 +60,8 @@ const Block = ( { className, showFormElements, ...props } ) => {
 					{ showFormElements ? (
 						<AddToCartForm
 							productType={ product.type || 'simple' }
+							variations={ product.variations }
+							attributes={ product.attributes }
 						/>
 					) : (
 						<AddToCartButton />
@@ -62,9 +72,14 @@ const Block = ( { className, showFormElements, ...props } ) => {
 	);
 };
 
-const AddToCartForm = ( { productType } ) => {
+const AddToCartForm = ( { productType, variations, attributes } ) => {
 	if ( productType === 'variable' ) {
-		return <VariableProductForm />;
+		return (
+			<VariableProductForm
+				variations={ variations }
+				attributes={ attributes }
+			/>
+		);
 	}
 	if ( productType === 'grouped' ) {
 		return <GroupedProductForm />;
@@ -76,11 +91,6 @@ const AddToCartForm = ( { productType } ) => {
 		return <SimpleProductForm />;
 	}
 	return null;
-};
-
-Block.propTypes = {
-	className: PropTypes.string,
-	product: PropTypes.object,
 };
 
 export default Block;

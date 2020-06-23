@@ -19,17 +19,13 @@ import './style.scss';
  *
  * @param {Object} props             Incoming props.
  * @param {string} [props.className] CSS Class name for the component.
- * @param {Object} [props.product]   Optional product object. Product from context will be used if
- *                                   this is not provided.
  * @return {*} The component.
  */
-const Block = ( { className, ...props } ) => {
+const Block = ( { className } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
-	const productDataContext = useProductDataContext( [ 'sku' ] );
-	const product = props.product || productDataContext.product || {};
-	const sku = product.sku || '';
+	const { product } = useProductDataContext( [ 'sku' ] );
 
-	if ( ! sku ) {
+	if ( ! product || ! product.sku ) {
 		return null;
 	}
 
@@ -42,7 +38,7 @@ const Block = ( { className, ...props } ) => {
 			) }
 		>
 			{ __( 'SKU:', 'woo-gutenberg-products-block' ) }{ ' ' }
-			<strong>{ sku }</strong>
+			<strong>{ product.sku }</strong>
 		</div>
 	);
 };

@@ -16,10 +16,14 @@ import VariationAttributes from './variation-attributes';
 
 /**
  * Variable Product Add To Cart Form
+ *
+ * @param {Object} props Component props.
  */
-const Variable = () => {
+const Variable = ( props ) => {
 	const {
-		product,
+		productId,
+		isPurchasable,
+		isInStock,
 		quantity,
 		minQuantity,
 		maxQuantity,
@@ -27,11 +31,11 @@ const Variable = () => {
 		formDisabled,
 	} = useAddToCartFormContext();
 
-	if ( product.id && ! product.is_purchasable ) {
+	if ( productId && ! isPurchasable ) {
 		return <ProductUnavailable />;
 	}
 
-	if ( product.id && ! product.is_in_stock ) {
+	if ( productId && ! isInStock ) {
 		return (
 			<ProductUnavailable
 				reason={ __(
@@ -44,7 +48,7 @@ const Variable = () => {
 
 	return (
 		<>
-			<VariationAttributes product={ product } />
+			<VariationAttributes { ...props } />
 			<QuantityInput
 				value={ quantity }
 				min={ minQuantity }

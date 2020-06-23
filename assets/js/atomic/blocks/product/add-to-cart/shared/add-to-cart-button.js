@@ -6,6 +6,7 @@ import Button from '@woocommerce/base-components/button';
 import { Icon, done as doneIcon } from '@woocommerce/icons';
 import { useState } from '@wordpress/element';
 import { useAddToCartFormContext } from '@woocommerce/base-context';
+import { useProductDataContext } from '@woocommerce/shared-context';
 
 /**
  * Add to Cart Form Button Component.
@@ -13,21 +14,22 @@ import { useAddToCartFormContext } from '@woocommerce/base-context';
 const AddToCartButton = () => {
 	const {
 		showFormElements,
-		product,
 		quantityInCart,
 		formDisabled,
 		formSubmitting,
 		onSubmit,
 	} = useAddToCartFormContext();
-
-	const {
-		is_purchasable: isPurchasable = true,
-		has_options: hasOptions,
-		add_to_cart: addToCartButtonData = {
-			url: '',
-			text: '',
-		},
-	} = product;
+	const { product } = useProductDataContext( [
+		'is_purchasable',
+		'has_options',
+		'add_to_cart',
+	] );
+	const isPurchasable = product.is_purchasable || true;
+	const hasOptions = product.has_options || false;
+	const addToCartButtonData = product.add_to_cart || {
+		url: '',
+		text: '',
+	};
 
 	// If we are showing form elements, OR if the product has no additional form options, we can show
 	// a functional direct add to cart button, provided that the product is purchasable.

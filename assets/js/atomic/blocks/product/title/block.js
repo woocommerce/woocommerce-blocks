@@ -8,6 +8,7 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
+import { isEmpty } from 'lodash';
 
 /**
  * Internal dependencies
@@ -21,22 +22,18 @@ import './style.scss';
  * @param {string}  [props.className]    CSS Class name for the component.
  * @param {number}  [props.headingLevel] Heading level (h1, h2 etc)
  * @param {boolean} [props.productLink]  Whether or not to display a link to the product page.
- * @param {Object}  [props.product]      Optional product object. Product from context will be used if
- *                                       this is not provided.
  * @return {*} The component.
  */
 export const Block = ( {
 	className,
 	headingLevel = 2,
 	productLink = true,
-	...props
 } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
-	const productDataContext = useProductDataContext( [ 'name', 'permalink' ] );
-	const product = props.product || productDataContext.product;
+	const { product } = useProductDataContext( [ 'name', 'permalink' ] );
 	const TagName = `h${ headingLevel }`;
 
-	if ( ! product ) {
+	if ( isEmpty( product ) ) {
 		return (
 			<TagName
 				// @ts-ignore

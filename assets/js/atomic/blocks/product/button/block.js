@@ -12,6 +12,7 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
+import { isEmpty } from 'lodash';
 
 /**
  * Internal dependencies
@@ -23,13 +24,11 @@ import './style.scss';
  *
  * @param {Object} props             Incoming props.
  * @param {string} [props.className] CSS Class name for the component.
- * @param {Object} [props.product]   Optional product object. Product from context will be used if
- *                                   this is not provided.
  * @return {*} The component.
  */
-const Block = ( { className, ...props } ) => {
+const Block = ( { className } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
-	const productDataContext = useProductDataContext( [
+	const { product } = useProductDataContext( [
 		'id',
 		'permalink',
 		'add_to_cart',
@@ -37,7 +36,6 @@ const Block = ( { className, ...props } ) => {
 		'is_purchasable',
 		'is_in_stock',
 	] );
-	const product = props.product || productDataContext.product;
 
 	return (
 		<div
@@ -48,7 +46,7 @@ const Block = ( { className, ...props } ) => {
 				`${ parentClassName }__product-add-to-cart`
 			) }
 		>
-			{ product ? (
+			{ ! isEmpty( product ) ? (
 				<AddToCartButton product={ product } />
 			) : (
 				<AddToCartButtonPlaceholder />
@@ -108,7 +106,9 @@ const AddToCartButton = ( { product } ) => {
 		buttonProps.href = permalink;
 		buttonProps.rel = 'nofollow';
 	} else {
-		buttonProps.onClick = addToCart;
+		buttonProps.onClick = () => {
+			addToCart();
+		};
 	}
 
 	return (

@@ -10,12 +10,10 @@ import { getAttributes, getVariationAttributes } from './utils';
  *
  * @param {*} props Component props.
  */
-const VariationAttributes = ( { product } ) => {
-	const {
-		attributes: productAttributes = {},
-		variations: productVariations = [],
-	} = product;
-
+const VariationAttributes = ( {
+	attributes: productAttributes = {},
+	variations: productVariations = {},
+} ) => {
 	const attributes = getAttributes( productAttributes );
 	const variationAttributes = getVariationAttributes( productVariations );
 

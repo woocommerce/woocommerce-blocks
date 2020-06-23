@@ -9,6 +9,7 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
+import { isEmpty } from 'lodash';
 
 /**
  * Internal dependencies
@@ -24,8 +25,6 @@ import './style.scss';
  * @param {boolean} [props.productLink]   Whether or not to display a link to the product page.
  * @param {boolean} [props.showSaleBadge] Whether or not to display the on sale badge.
  * @param {string} [props.saleBadgeAlign] How should the sale badge be aligned if displayed.
- * @param {Object} [props.product]        Optional product object. Product from context will be used if
- *                                        this is not provided.
  * @return {*} The component.
  */
 const Block = ( {
@@ -33,17 +32,12 @@ const Block = ( {
 	productLink = true,
 	showSaleBadge,
 	saleBadgeAlign = 'right',
-	...props
 } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
-	const productDataContext = useProductDataContext( [
-		'images',
-		'permalink',
-	] );
-	const product = props.product || productDataContext.product;
+	const { product } = useProductDataContext( [ 'images', 'permalink' ] );
 	const [ imageLoaded, setImageLoaded ] = useState( false );
 
-	if ( ! product ) {
+	if ( isEmpty( product ) ) {
 		return (
 			<div
 				className={ classnames(
@@ -72,10 +66,7 @@ const Block = ( {
 			{ productLink ? (
 				<a href={ product.permalink } rel="nofollow">
 					{ !! showSaleBadge && (
-						<ProductSaleBadge
-							align={ saleBadgeAlign }
-							product={ product }
-						/>
+						<ProductSaleBadge align={ saleBadgeAlign } />
 					) }
 					<Image
 						image={ image }
@@ -86,10 +77,7 @@ const Block = ( {
 			) : (
 				<>
 					{ !! showSaleBadge && (
-						<ProductSaleBadge
-							align={ saleBadgeAlign }
-							product={ product }
-						/>
+						<ProductSaleBadge align={ saleBadgeAlign } />
 					) }
 					<Image
 						image={ image }

@@ -15,8 +15,7 @@ import './style.scss';
 import Block from './block';
 
 export default ( { attributes, setAttributes } ) => {
-	const productDataContext = useProductDataContext( [ 'id', 'type' ] );
-	const product = productDataContext.product || {};
+	const { product } = useProductDataContext( [ 'id', 'type' ] );
 	const { className, showFormElements } = attributes;
 
 	return (

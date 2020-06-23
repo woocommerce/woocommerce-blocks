@@ -20,19 +20,16 @@ import './style.scss';
  *
  * @param {Object} props             Incoming props.
  * @param {string} [props.className] CSS Class name for the component.
- * @param {Object} [props.product]   Optional product object. Product from context will be used if
- *                                   this is not provided.
  * @return {*} The component.
  */
-const Block = ( { className, ...props } ) => {
+const Block = ( { className } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
-	const productDataContext = useProductDataContext( [
+	const { product } = useProductDataContext( [
 		'is_purchasable',
 		'is_in_stock',
 		'low_stock_remaining',
 		'is_on_backorder',
 	] );
-	const product = props.product || productDataContext.product || {};
 
 	if ( isEmpty( product ) || ! product.is_purchasable ) {
 		return null;
