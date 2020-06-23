@@ -41,6 +41,7 @@ const ActiveFiltersBlock = ( {
 				setMinPrice( undefined );
 				setMaxPrice( undefined );
 			},
+			displayStyle: blockAttributes.displayStyle,
 		} );
 	}, [ minPrice, maxPrice, formatPriceRange ] );
 
@@ -52,6 +53,7 @@ const ActiveFiltersBlock = ( {
 			return (
 				<ActiveAttributeFilters
 					attributeObject={ attributeObject }
+					displayStyle={ blockAttributes.displayStyle }
 					slugs={ attribute.slug }
 					key={ attribute.attribute }
 					operator={ attribute.operator }
