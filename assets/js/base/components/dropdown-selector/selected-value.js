@@ -47,7 +47,7 @@ const DropdownSelectorSelectedValue = ( { onClick, onRemoveItem, option } ) => {
 					option.name
 				) }
 			>
-				𝘅
+				✕
 			</button>
 		</div>
 	);
