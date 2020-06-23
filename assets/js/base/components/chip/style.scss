@@ -1,6 +1,7 @@
 .wc-block-components-chip {
 	@include reset-typography();
 	align-items: center;
+	border: 0;
 	display: inline-flex;
 	padding: em($gap-smallest) 0.5em;
 	margin: 0 0.365em 0.365em 0;
@@ -37,9 +38,6 @@
 		border: 0;
 		color: inherit;
 		appearance: none;
-		float: none;
-		vertical-align: middle;
-		line-height: 1.33em;
 		padding: 0;
 	}
 }
@@ -50,6 +48,7 @@ button.wc-block-components-chip:focus > .wc-block-components-chip__remove,
 .wc-block-components-chip__remove:focus {
 	color: #d94f4f;
 }
+
 button.wc-block-components-chip:disabled > .wc-block-components-chip__remove,
 .wc-block-components-chip__remove:disabled {
 	color: $core-grey-dark-100;
