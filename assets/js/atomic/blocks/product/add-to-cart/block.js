@@ -27,15 +27,7 @@ import {
  * @return {*} The component.
  */
 const Block = ( { className, showFormElements } ) => {
-	const { product } = useProductDataContext( [
-		'id',
-		'type',
-		'quantity_limit',
-		'is_purchasable',
-		'is_in_stock',
-		'variations',
-		'attributes',
-	] );
+	const { product } = useProductDataContext( [ 'type' ] );
 
 	const componentClass = classnames(
 		className,
@@ -47,22 +39,16 @@ const Block = ( { className, showFormElements } ) => {
 		}
 	);
 
+	const FormComponentName = getFormComponentNameFromType(
+		product.type || 'simple'
+	);
+
 	return (
-		<AddToCartFormContextProvider
-			productId={ product.id || 0 }
-			isPurchasable={ product.is_purchasable || true }
-			isInStock={ product.is_in_stock || true }
-			quantityLimit={ product.quantity_limit || 99 }
-			showFormElements={ showFormElements }
-		>
+		<AddToCartFormContextProvider showFormElements={ showFormElements }>
 			<div className={ componentClass }>
 				<>
 					{ showFormElements ? (
-						<AddToCartForm
-							productType={ product.type || 'simple' }
-							variations={ product.variations }
-							attributes={ product.attributes }
-						/>
+						<FormComponentName product={ product } />
 					) : (
 						<AddToCartButton />
 					) }
@@ -72,25 +58,17 @@ const Block = ( { className, showFormElements } ) => {
 	);
 };
 
-const AddToCartForm = ( { productType, variations, attributes } ) => {
+const getFormComponentNameFromType = ( productType ) => {
 	if ( productType === 'variable' ) {
-		return (
-			<VariableProductForm
-				variations={ variations }
-				attributes={ attributes }
-			/>
-		);
+		return VariableProductForm;
 	}
 	if ( productType === 'grouped' ) {
-		return <GroupedProductForm />;
+		return GroupedProductForm;
 	}
 	if ( productType === 'external' ) {
-		return <ExternalProductForm />;
+		return ExternalProductForm;
 	}
-	if ( productType === 'simple' || productType === 'variation' ) {
-		return <SimpleProductForm />;
-	}
-	return null;
+	return SimpleProductForm;
 };
 
 export default Block;

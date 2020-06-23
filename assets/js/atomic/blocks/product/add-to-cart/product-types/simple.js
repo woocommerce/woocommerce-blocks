@@ -15,14 +15,14 @@ import { AddToCartButton, QuantityInput, ProductUnavailable } from '../shared';
 const Simple = () => {
 	const {
 		productId,
-		isPurchasable,
-		isInStock,
+		productData,
 		quantity,
 		minQuantity,
 		maxQuantity,
 		setQuantity,
 		formDisabled,
 	} = useAddToCartFormContext();
+	const { isPurchasable, isInStock } = productData;
 
 	if ( productId && ! isPurchasable ) {
 		return <ProductUnavailable />;

@@ -260,8 +260,8 @@
 /**
  * @typedef {Object} AddToCartFormContext
  *
- * @property {Object}                product          The product object.
  * @property {number}                productId        The product ID being added to the cart.
+ * @property {Object}                productData      Data about the product needed for forms.
  * @property {number}                variationId      The variation ID being added to the cart, or 0.
  * @property {Object}                variationData    Object containing variation attribute/value data.
  * @property {Object}                cartItemData     Object containing custom cart item data.

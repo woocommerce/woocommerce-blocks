@@ -11,13 +11,20 @@ import {
 	useStoreAddToCart,
 	useTriggerFragmentRefresh,
 } from '@woocommerce/base-hooks';
+import { useProductDataContext } from '@woocommerce/shared-context';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').AddToCartFormContext} AddToCartFormContext
  */
 
 const AddToCartFormContext = createContext( {
-	product: {},
+	productData: {
+		isPurchasable: true,
+		isInStock: true,
+		quantityLimit: 99,
+		variations: {},
+		attributes: {},
+	},
 	productId: 0,
 	variationId: 0,
 	variationData: {},
@@ -50,17 +57,27 @@ export const useAddToCartFormContext = () => {
 /**
  * Provides an interface for blocks to control the add to cart form for a product.
  *
- * @param {Object} props                     Incoming props for the provider.
- * @param {*}      props.children            The children being wrapped.
- * @param {Object} [props.product]           The product for which the form belongs to.
- * @param {boolean} [props.showFormElements] Should form elements be shown.
+ * @param {Object} props Incoming props for the provider.
  */
 export const AddToCartFormContextProvider = ( {
-	children,
-	product,
 	showFormElements,
+	children,
 } ) => {
+	const { product } = useProductDataContext( [
+		'id',
+		'type',
+		'quantity_limit',
+		'is_purchasable',
+		'is_in_stock',
+		'variations',
+		'attributes',
+	] );
 	const productId = product.id || 0;
+	const isPurchasable = product.is_purchasable || true;
+	const isInStock = product.is_in_stock || true;
+	const quantityLimit = product.quantity_limit || 99;
+	const variations = product.variations || {};
+	const attributes = product.attributes || {};
 	const [ variationId, setVariationId ] = useState( 0 );
 	const [ variationData, setVariationData ] = useState( {} );
 	const [ cartItemData, setCartItemData ] = useState( {} );
@@ -83,10 +100,7 @@ export const AddToCartFormContextProvider = ( {
 	 * validation notices.
 	 */
 	const formInitialized = ! cartIsLoading && productId > 0;
-	const formDisabled =
-		formSubmitting ||
-		! formInitialized ||
-		! productIsPurchasable( product );
+	const formDisabled = formSubmitting || ! formInitialized || ! isPurchasable;
 
 	// Events.
 	const onSubmit = useCallback( () => {
@@ -113,14 +127,20 @@ export const AddToCartFormContextProvider = ( {
 	 * @type {AddToCartFormContext}
 	 */
 	const contextValue = {
-		product,
 		productId,
+		productData: {
+			isPurchasable,
+			isInStock,
+			quantityLimit,
+			variations,
+			attributes,
+		},
 		variationId,
 		variationData,
 		cartItemData,
 		quantity,
 		minQuantity: 1,
-		maxQuantity: product.quantity_limit || 99,
+		maxQuantity: quantityLimit,
 		quantityInCart,
 		setQuantity,
 		setVariationId,
@@ -141,15 +161,4 @@ export const AddToCartFormContextProvider = ( {
 			{ children }
 		</AddToCartFormContext.Provider>
 	);
-};
-
-/**
- * Check a product object to see if it can be purchased.
- *
- * @param {Object} product Product object.
- */
-const productIsPurchasable = ( product ) => {
-	const { is_purchasable: isPurchasable = false } = product;
-
-	return isPurchasable;
 };
