@@ -1,12 +1,21 @@
 .wc-block-components-chip {
-	display: inline-block;
-	background: $core-grey-light-500;
-	padding: 0.365em 0.5em;
+	@include reset-typography();
+	align-items: center;
+	display: inline-flex;
+	padding: em($gap-smallest) 0.5em;
 	margin: 0 0.365em 0.365em 0;
-	color: $core-grey-dark-800;
 	border-radius: 0;
-	line-height: 1em;
+	line-height: 1.25;
 	max-width: 100%;
+
+	// Chip might be a button, so we need to override theme styles.
+	&,
+	&:hover,
+	&:focus,
+	&:active {
+		background: $core-grey-light-500;
+		color: $core-grey-dark-800;
+	}
 
 	&.wc-block-components-chip--radius-small {
 		border-radius: 3px;
@@ -15,30 +24,34 @@
 		border-radius: 0.433em;
 	}
 	&.wc-block-components-chip--radius-large {
-		border-radius: 0.865em;
-		padding: 0.365em 0.75em;
+		border-radius: 2em;
+		padding: em($gap-smallest) 0.75em;
 	}
 	.wc-block-components-chip__text {
+		flex-grow: 1;
 		padding-right: 0.5em;
 	}
 	.wc-block-components-chip__remove {
 		@include font-size(smaller);
 		background: transparent;
 		border: 0;
+		color: inherit;
 		appearance: none;
 		float: none;
 		vertical-align: middle;
 		line-height: 1.33em;
-		padding: 0.66em; // Should equate to ~8px; chip has ~6px padding, and font size difference/2 is 2px.
-		margin: -0.66em;
-
-		&:hover,
-		&:focus {
-			color: #d94f4f;
-		}
-		&:disabled {
-			color: $core-grey-dark-100;
-			cursor: not-allowed;
-		}
+		padding: 0;
 	}
+}
+
+button.wc-block-components-chip:hover > .wc-block-components-chip__remove,
+button.wc-block-components-chip:focus > .wc-block-components-chip__remove,
+.wc-block-components-chip__remove:hover,
+.wc-block-components-chip__remove:focus {
+	color: #d94f4f;
+}
+button.wc-block-components-chip:disabled > .wc-block-components-chip__remove,
+.wc-block-components-chip__remove:disabled {
+	color: $core-grey-dark-100;
+	cursor: not-allowed;
 }
