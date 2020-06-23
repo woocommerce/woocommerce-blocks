@@ -96,7 +96,7 @@ Chip.propTypes = {
 	onRemove: PropTypes.func,
 	disabled: PropTypes.bool,
 	radius: PropTypes.oneOf( [ 'none', 'small', 'medium', 'large' ] ),
-	removeOnClick: PropTypes.func,
+	removeOnClick: PropTypes.bool,
 	ariaLabel: PropTypes.string,
 };
 

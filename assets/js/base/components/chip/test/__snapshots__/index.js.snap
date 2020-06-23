@@ -5,25 +5,63 @@ exports[`Chip with custom wrapper should render a chip made up of a div instead 
   className="wc-block-components-chip wc-block-components-chip--radius-small"
 >
   <span
-    aria-hidden="true"
+    className="wc-block-components-chip__text"
+  >
+    Test
+  </span>
+  <button
+    aria-label="Remove"
+    className="wc-block-components-chip__remove"
+    disabled={false}
+    onClick={[Function]}
+    onKeyDown={[Function]}
+  >
+    ✕
+  </button>
+</div>
+`;
+
+exports[`Chip with removeOnClick should be a button when removeOnClick is set to true 1`] = `
+<button
+  aria-label="Remove"
+  className="wc-block-components-chip wc-block-components-chip--radius-small"
+  disabled={false}
+  onClick={[Function]}
+  onKeyDown={[Function]}
+>
+  <span
     className="wc-block-components-chip__text"
   >
     Test
   </span>
   <span
-    className="screen-reader-text"
+    aria-hidden={true}
+    className="wc-block-components-chip__remove"
+  >
+    ✕
+  </span>
+</button>
+`;
+
+exports[`Chip without custom wrapper should render custom aria label 1`] = `
+<li
+  className="wc-block-components-chip wc-block-components-chip--radius-small"
+>
+  <span
+    className="wc-block-components-chip__text"
   >
     Test
   </span>
   <button
-    aria-label="Remove coupon \\"Test\\""
+    aria-label="Aria test"
     className="wc-block-components-chip__remove"
     disabled={false}
     onClick={[Function]}
+    onKeyDown={[Function]}
   >
     ✕
   </button>
-</div>
+</li>
 `;
 
 exports[`Chip without custom wrapper should render defined radius 1`] = `
@@ -31,7 +69,51 @@ exports[`Chip without custom wrapper should render defined radius 1`] = `
   className="wc-block-components-chip wc-block-components-chip--radius-large"
 >
   <span
-    aria-hidden="true"
+    className="wc-block-components-chip__text"
+  >
+    Test
+  </span>
+  <button
+    aria-label="Remove"
+    className="wc-block-components-chip__remove"
+    disabled={false}
+    onClick={[Function]}
+    onKeyDown={[Function]}
+  >
+    ✕
+  </button>
+</li>
+`;
+
+exports[`Chip without custom wrapper should render nodes as the text 1`] = `
+<li
+  className="wc-block-components-chip wc-block-components-chip--radius-small"
+>
+  <span
+    className="wc-block-components-chip__text"
+  >
+    <h1>
+      Test
+    </h1>
+  </span>
+  <button
+    aria-label="Remove"
+    className="wc-block-components-chip__remove"
+    disabled={false}
+    onClick={[Function]}
+    onKeyDown={[Function]}
+  >
+    ✕
+  </button>
+</li>
+`;
+
+exports[`Chip without custom wrapper should render screen reader text 1`] = `
+<li
+  className="wc-block-components-chip wc-block-components-chip--radius-small"
+>
+  <span
+    aria-hidden={true}
     className="wc-block-components-chip__text"
   >
     Test
@@ -39,13 +121,14 @@ exports[`Chip without custom wrapper should render defined radius 1`] = `
   <span
     className="screen-reader-text"
   >
-    Test
+    Test 2
   </span>
   <button
-    aria-label="Remove coupon \\"Test\\""
+    aria-label="Remove"
     className="wc-block-components-chip__remove"
     disabled={false}
     onClick={[Function]}
+    onKeyDown={[Function]}
   >
     ✕
   </button>
@@ -57,21 +140,16 @@ exports[`Chip without custom wrapper should render text and the remove button 1`
   className="wc-block-components-chip wc-block-components-chip--radius-small"
 >
   <span
-    aria-hidden="true"
     className="wc-block-components-chip__text"
   >
     Test
   </span>
-  <span
-    className="screen-reader-text"
-  >
-    Test
-  </span>
   <button
-    aria-label="Remove coupon \\"Test\\""
+    aria-label="Remove"
     className="wc-block-components-chip__remove"
     disabled={false}
     onClick={[Function]}
+    onKeyDown={[Function]}
   >
     ✕
   </button>
@@ -83,21 +161,16 @@ exports[`Chip without custom wrapper should render with disabled remove button 1
   className="wc-block-components-chip wc-block-components-chip--radius-small"
 >
   <span
-    aria-hidden="true"
     className="wc-block-components-chip__text"
   >
     Test
   </span>
-  <span
-    className="screen-reader-text"
-  >
-    Test
-  </span>
   <button
-    aria-label="Remove coupon \\"Test\\""
+    aria-label="Remove"
     className="wc-block-components-chip__remove"
     disabled={true}
     onClick={[Function]}
+    onKeyDown={[Function]}
   >
     ✕
   </button>
