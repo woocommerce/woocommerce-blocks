@@ -36,7 +36,7 @@
 		"lint:ci": "npm run lint:js && npm run lint:css",
 		"lint:css": "stylelint 'assets/**/*.scss'",
 		"lint:css-fix": "stylelint 'assets/**/*.scss' --fix",
-		"lint:js": "wp-scripts lint-js",
+		"lint:js": "wp-scripts lint-js -f codeframe",
 		"lint:js-fix": "eslint assets/js --ext=js,jsx --fix",
 		"lint:php": "composer run-script phpcs ./src",
 		"package-plugin": "./bin/build-plugin-zip.sh",
@@ -186,11 +186,11 @@
 	},
 	"lint-staged": {
 		"*.scss": [
-			"npm run lint:css"
+			"npm run lint:css -s"
 		],
 		"*.js": [
 			"prettier --write",
-			"npm run lint:js"
+			"npm run lint:js -s"
 		],
 		"*.php": [
 			"php -d display_errors=1 -l",
