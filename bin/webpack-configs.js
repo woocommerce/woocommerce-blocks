@@ -304,6 +304,7 @@ const getFrontConfig = ( options = {} ) => {
 			devtoolNamespace: 'wc',
 			path: path.resolve( __dirname, '../build/' ),
 			filename: `[name]-frontend${ fileSuffix }.js`,
+			chunkFilename: '[name].js',
 			// This fixes an issue with multiple webpack projects using chunking
 			// overwriting each other's chunk loader function.
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
