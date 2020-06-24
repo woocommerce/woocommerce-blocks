@@ -12,9 +12,9 @@
 			"packageNames": [ "automattic/jetpack-autoloader" ],
 			"rangeStrategy": "bump"
 		},
-    {
-      "updateTypes": ["minor", "patch", "pin", "digest"],
-      "automerge": true
-    }
-  ]	]
+		{
+			"updateTypes": ["minor", "patch", "pin", "digest"],
+			"automerge": true
+		}
+	]
 }
