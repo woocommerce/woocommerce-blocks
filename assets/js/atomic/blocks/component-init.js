@@ -2,22 +2,73 @@
  * External dependencies
  */
 import { registerBlockComponent } from '@woocommerce/blocks-registry';
+import { lazy } from '@wordpress/element';
+import { WC_BLOCKS_BUILD_URL } from '@woocommerce/block-settings';
 
-/**
- * Internal dependencies
- */
-import ProductButton from './product/button/block';
-import ProductImage from './product/image/frontend';
-import ProductPrice from './product/price/block';
-import ProductRating from './product/rating/block';
-import ProductSaleBadge from './product/sale-badge/block';
-import ProductSummary from './product/summary/block';
-import ProductTitle from './product/title/frontend';
-import ProductSku from './product/sku/block';
-import ProductCategoryList from './product/category-list/block';
-import ProductTagList from './product/tag-list/block';
-import ProductStockIndicator from './product/stock-indicator/block';
-import ProductAddToCart from './product/add-to-cart/frontend';
+// Modify webpack pubilcPath at runtime based on location of WordPress Plugin.
+// eslint-disable-next-line no-undef,camelcase
+__webpack_public_path__ = WC_BLOCKS_BUILD_URL;
+
+const ProductTitle = lazy( () =>
+	import(
+		/* webpackChunkName: "atomic-block-components-title" */ './product/title/frontend'
+	)
+);
+const ProductPrice = lazy( () =>
+	import(
+		/* webpackChunkName: "atomic-block-components-price" */ './product/price/block'
+	)
+);
+const ProductButton = lazy( () =>
+	import(
+		/* webpackChunkName: "atomic-block-components-button" */ './product/button/block'
+	)
+);
+const ProductImage = lazy( () =>
+	import(
+		/* webpackChunkName: "atomic-block-components-image" */ './product/image/frontend'
+	)
+);
+const ProductRating = lazy( () =>
+	import(
+		/* webpackChunkName: "atomic-block-components-rating" */ './product/rating/block'
+	)
+);
+const ProductSummary = lazy( () =>
+	import(
+		/* webpackChunkName: "atomic-block-components-summary" */ './product/summary/block'
+	)
+);
+const ProductSaleBadge = lazy( () =>
+	import(
+		/* webpackChunkName: "atomic-block-components-sale-badge" */ './product/sale-badge/block'
+	)
+);
+const ProductSku = lazy( () =>
+	import(
+		/* webpackChunkName: "atomic-block-components-sku" */ './product/sku/block'
+	)
+);
+const ProductCategoryList = lazy( () =>
+	import(
+		/* webpackChunkName: "atomic-block-components-category-list" */ './product/category-list/block'
+	)
+);
+const ProductTagList = lazy( () =>
+	import(
+		/* webpackChunkName: "atomic-block-components-tag-list" */ './product/tag-list/block'
+	)
+);
+const ProductStockIndicator = lazy( () =>
+	import(
+		/* webpackChunkName: "atomic-block-components-stock-indicator" */ './product/stock-indicator/block'
+	)
+);
+const ProductAddToCart = lazy( () =>
+	import(
+		/* webpackChunkName: "atomic-block-components-add-to-cart" */ './product/add-to-cart/frontend'
+	)
+);
 
 registerBlockComponent( {
 	blockName: 'woocommerce/product-price',

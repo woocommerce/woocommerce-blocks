@@ -31,7 +31,6 @@ export function registerBlockComponent( options ) {
 	}
 	assertOption( options, 'context', 'string' );
 	assertOption( options, 'blockName', 'string' );
-	assertOption( options, 'component', 'function' );
 
 	const { context, blockName, component } = options;
 
@@ -51,9 +50,10 @@ export function registerBlockComponent( options ) {
  * @param {string} expectedType Type expected for the option.
  */
 const assertOption = ( options, optionName, expectedType ) => {
-	if ( typeof options[ optionName ] !== expectedType ) {
+	const actualType = typeof options[ optionName ];
+	if ( actualType !== expectedType ) {
 		throw new Error(
-			`Incorrect value for the ${ optionName } argument when registering an inner block. It must be a ${ expectedType }.`
+			`Incorrect value for the ${ optionName } argument when registering an inner block. It was a ${ actualType }, but must be a ${ expectedType }.`
 		);
 	}
 };

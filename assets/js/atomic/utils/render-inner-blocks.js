@@ -1,8 +1,9 @@
 /**
  * External dependencies
  */
-import { cloneElement, isValidElement } from '@wordpress/element';
+import { Suspense, cloneElement, isValidElement } from '@wordpress/element';
 import parse from 'html-react-parser';
+import { Spinner } from 'wordpress-components';
 
 /**
  * Internal dependencies
@@ -25,10 +26,7 @@ export const renderInnerBlocks = ( {
 	const blockMap = getBlockMap( parentBlockName );
 
 	return Array.from( children ).map( ( el, index ) => {
-		const componentProps = {
-			...el.dataset,
-			key: `${ parentBlockName }_${ depth }_${ index }`,
-		};
+		const componentProps = el.dataset;
 
 		const componentChildren =
 			el.children && el.children.length
@@ -56,10 +54,14 @@ export const renderInnerBlocks = ( {
 		}
 
 		return (
-			// eslint-disable-next-line react/jsx-key
-			<LayoutComponent { ...componentProps }>
-				{ componentChildren }
-			</LayoutComponent>
+			<Suspense
+				key={ `${ parentBlockName }_${ depth }_${ index }` }
+				fallback={ <Spinner /> }
+			>
+				<LayoutComponent { ...componentProps }>
+					{ componentChildren }
+				</LayoutComponent>
+			</Suspense>
 		);
 	} );
 };
