@@ -36,7 +36,9 @@ module.exports = {
 			if ( source.startsWith( '.' ) ) {
 				return 'Internal';
 			}
-
+			if ( source.startsWith( '@woocommerce' ) ) {
+				return 'WooCommerce';
+			}
 			return 'External';
 		}
 
@@ -133,8 +135,41 @@ module.exports = {
 			return false;
 		}
 
+		/**
+		 * Tests if the locality is defined in the correct order (External, WooCommerce, Internal).
+		 *
+		 * @param {espree.Node}       child    Node to test.
+		 * @param {WCPackageLocality} locality Package locality.
+		 * @param {WCPackageLocality} previousLocality Previous package locality.
+		 */
+		function checkLocalityOrder( child, locality, previousLocality ) {
+			switch ( locality ) {
+				case 'External':
+					if (
+						previousLocality === 'Internal' ||
+						previousLocality === 'WooCommerce'
+					) {
+						context.report( {
+							node: child,
+							message: `Expected "External dependencies" to be defined before ${ previousLocality }`,
+						} );
+					}
+					break;
+				case 'WooCommerce':
+					if ( previousLocality === 'Internal' ) {
+						context.report( {
+							node: child,
+							message: `Expected "WooCommerce dependencies" to be defined before ${ previousLocality }`,
+						} );
+					}
+					break;
+			}
+		}
+
 		return {
 			Program( node ) {
+				let previousLocality = null;
+
 				// Since we only care to enforce imports which occur at the
 				// top-level scope, match on Program and test its children,
 				// rather than matching the import nodes directly.
@@ -163,6 +198,10 @@ module.exports = {
 					}
 
 					const locality = getPackageLocality( source );
+
+					checkLocalityOrder( child, locality, previousLocality );
+
+					previousLocality = locality;
 
 					if ( isNodeInLocality( child, locality ) ) {
 						return;
