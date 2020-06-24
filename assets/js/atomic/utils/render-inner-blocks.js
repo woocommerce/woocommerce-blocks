@@ -3,7 +3,6 @@
  */
 import { Suspense, cloneElement, isValidElement } from '@wordpress/element';
 import parse from 'html-react-parser';
-import { Spinner } from 'wordpress-components';
 
 /**
  * Internal dependencies
@@ -56,7 +55,7 @@ export const renderInnerBlocks = ( {
 		return (
 			<Suspense
 				key={ `${ parentBlockName }_${ depth }_${ index }` }
-				fallback={ <Spinner /> }
+				fallback={ <div className="wc-block-placeholder" /> }
 			>
 				<LayoutComponent { ...componentProps }>
 					{ componentChildren }

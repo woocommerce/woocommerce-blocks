@@ -11,62 +11,62 @@ __webpack_public_path__ = WC_BLOCKS_BUILD_URL;
 
 const ProductTitle = lazy( () =>
 	import(
-		/* webpackChunkName: "atomic-block-components-title" */ './product/title/frontend'
+		/* webpackChunkName: "atomic-block-components/title" */ './product/title/frontend'
 	)
 );
 const ProductPrice = lazy( () =>
 	import(
-		/* webpackChunkName: "atomic-block-components-price" */ './product/price/block'
+		/* webpackChunkName: "atomic-block-components/price" */ './product/price/block'
 	)
 );
 const ProductButton = lazy( () =>
 	import(
-		/* webpackChunkName: "atomic-block-components-button" */ './product/button/block'
+		/* webpackChunkName: "atomic-block-components/button" */ './product/button/block'
 	)
 );
 const ProductImage = lazy( () =>
 	import(
-		/* webpackChunkName: "atomic-block-components-image" */ './product/image/frontend'
+		/* webpackChunkName: "atomic-block-components/image" */ './product/image/frontend'
 	)
 );
 const ProductRating = lazy( () =>
 	import(
-		/* webpackChunkName: "atomic-block-components-rating" */ './product/rating/block'
+		/* webpackChunkName: "atomic-block-components/rating" */ './product/rating/block'
 	)
 );
 const ProductSummary = lazy( () =>
 	import(
-		/* webpackChunkName: "atomic-block-components-summary" */ './product/summary/block'
+		/* webpackChunkName: "atomic-block-components/summary" */ './product/summary/block'
 	)
 );
 const ProductSaleBadge = lazy( () =>
 	import(
-		/* webpackChunkName: "atomic-block-components-sale-badge" */ './product/sale-badge/block'
+		/* webpackChunkName: "atomic-block-components/sale-badge" */ './product/sale-badge/block'
 	)
 );
 const ProductSku = lazy( () =>
 	import(
-		/* webpackChunkName: "atomic-block-components-sku" */ './product/sku/block'
+		/* webpackChunkName: "atomic-block-components/sku" */ './product/sku/block'
 	)
 );
 const ProductCategoryList = lazy( () =>
 	import(
-		/* webpackChunkName: "atomic-block-components-category-list" */ './product/category-list/block'
+		/* webpackChunkName: "atomic-block-components/category-list" */ './product/category-list/block'
 	)
 );
 const ProductTagList = lazy( () =>
 	import(
-		/* webpackChunkName: "atomic-block-components-tag-list" */ './product/tag-list/block'
+		/* webpackChunkName: "atomic-block-components/tag-list" */ './product/tag-list/block'
 	)
 );
 const ProductStockIndicator = lazy( () =>
 	import(
-		/* webpackChunkName: "atomic-block-components-stock-indicator" */ './product/stock-indicator/block'
+		/* webpackChunkName: "atomic-block-components/stock-indicator" */ './product/stock-indicator/block'
 	)
 );
 const ProductAddToCart = lazy( () =>
 	import(
-		/* webpackChunkName: "atomic-block-components-add-to-cart" */ './product/add-to-cart/frontend'
+		/* webpackChunkName: "atomic-block-components/add-to-cart" */ './product/add-to-cart/frontend'
 	)
 );
 
