@@ -3,6 +3,10 @@
  */
 import { getCategories, setCategories } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
+
+/**
+ * WooCommerce dependencies
+ */
 import { woo as Icon } from '@woocommerce/icons';
 
 /**
@@ -15,7 +19,7 @@ import './filters/get-block-attributes';
 
 setCategories( [
 	...getCategories().filter( ( { slug } ) => slug !== 'woocommerce' ),
-	// Add a WooCommerce block category
+	// Add a WooCommerce block category.
 	{
 		slug: 'woocommerce',
 		title: __( 'WooCommerce', 'woo-gutenberg-products-block' ),
