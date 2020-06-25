@@ -19,7 +19,7 @@ import './style.scss';
  */
 const Chip = ( {
 	text,
-	screenReaderText,
+	screenReaderText = '',
 	element = 'li',
 	className = '',
 	onRemove = () => void null,
