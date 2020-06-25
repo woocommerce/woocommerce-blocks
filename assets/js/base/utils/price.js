@@ -85,7 +85,7 @@ export const getCurrencyFromPriceResponse = ( currencyData ) => {
 /**
  * Gets currency information in normalized format, allowing overrides.
  *
- * @param {Object} currencyData Currency data object.
+ * @param {Object} [currencyData] Currency data object.
  * @return {Object} Normalized currency info.
  */
 export const getCurrency = ( currencyData = {} ) => {
@@ -100,14 +100,14 @@ export const getCurrency = ( currencyData = {} ) => {
  * decimal complete with currency symbols using current store settings.
  *
  * @param {number|string} price Price in minor unit, e.g. cents.
- * @param {Object} currencyData Currency data object.
+ * @param {Object} [currencyData] Currency data object.
  */
-export const formatPrice = ( price, currencyData ) => {
+export const formatPrice = ( price, currencyData = {} ) => {
 	if ( price === '' || price === undefined ) {
 		return '';
 	}
 
-	const priceInt = parseInt( price, 10 );
+	const priceInt = typeof price === 'string' ? parseInt( price, 10 ) : price;
 
 	if ( ! Number.isFinite( priceInt ) ) {
 		return '';
