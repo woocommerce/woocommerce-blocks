@@ -36,7 +36,7 @@ const Chip = ( {
 		'wc-block-components-chip',
 		'wc-block-components-chip--radius-' + radius
 	);
-	const RemoveElement = ! removeOnClick ? 'button' : 'span';
+	const RemoveElement = removeOnClick ? 'span' : 'button';
 	const clickableElementProps = {
 		'aria-label':
 			ariaLabel || typeof text !== 'string'
