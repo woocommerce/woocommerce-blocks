@@ -38,8 +38,8 @@ const PriceSlider = ( {
 	isLoading = false,
 	onSubmit = () => {},
 } ) => {
-	const minRange = useRef();
-	const maxRange = useRef();
+	const minRange = useRef( null );
+	const maxRange = useRef( null );
 
 	// We want step to default to 10 major units, e.g. $10.
 	const stepValue = step ? step : 10 * 10 ** currency.minorUnit;
@@ -102,7 +102,6 @@ const PriceSlider = ( {
 		minConstraint,
 		maxConstraint,
 		hasValidConstraints,
-		stepValue,
 	] );
 
 	/**
@@ -116,12 +115,14 @@ const PriceSlider = ( {
 			if ( isLoading || ! hasValidConstraints ) {
 				return;
 			}
+			const currentMinRange = minRange.current;
+			const currentMaxRange = maxRange.current;
 			const bounds = event.target.getBoundingClientRect();
 			const x = event.clientX - bounds.left;
-			const minWidth = minRange.current.offsetWidth;
-			const minValue = minRange.current.value;
-			const maxWidth = maxRange.current.offsetWidth;
-			const maxValue = maxRange.current.value;
+			const minWidth = currentMinRange?.offsetWidth;
+			const minValue = currentMinRange?.value;
+			const maxWidth = currentMaxRange?.offsetWidth;
+			const maxValue = currentMaxRange?.value;
 
 			const minX = minWidth * ( minValue / maxConstraint );
 			const maxX = maxWidth * ( maxValue / maxConstraint );
@@ -134,11 +135,11 @@ const PriceSlider = ( {
 			 * slider should be at the front and has no meaning beyond
 			 */
 			if ( minXDiff > maxXDiff ) {
-				minRange.current.style.zIndex = 20;
-				maxRange.current.style.zIndex = 21;
+				currentMinRange.style.zIndex = 20;
+				currentMaxRange.style.zIndex = 21;
 			} else {
-				minRange.current.style.zIndex = 21;
-				maxRange.current.style.zIndex = 20;
+				currentMinRange.style.zIndex = 21;
+				currentMaxRange.style.zIndex = 20;
 			}
 		},
 		[ isLoading, maxConstraint, hasValidConstraints ]
@@ -176,7 +177,14 @@ const PriceSlider = ( {
 				parseInt( values[ 1 ], 10 ),
 			] );
 		},
-		[ minPrice, maxPrice, minConstraint, maxConstraint, stepValue ]
+		[
+			minPrice,
+			maxPrice,
+			minConstraint,
+			maxConstraint,
+			stepValue,
+			onChange,
+		]
 	);
 
 	/**
@@ -211,14 +219,7 @@ const PriceSlider = ( {
 				parseInt( values[ 1 ], 10 ),
 			] );
 		},
-		[
-			minConstraint,
-			maxConstraint,
-			stepValue,
-			minPriceInput,
-			maxPriceInput,
-			currency,
-		]
+		[ stepValue, minPriceInput, maxPriceInput, onChange ]
 	);
 
 	const classes = classnames(
@@ -249,6 +250,7 @@ const PriceSlider = ( {
 					<div aria-hidden={ showInputFields }>
 						<div
 							className="wc-block-price-filter__range-input-progress wc-block-components-price-slider__range-input-progress"
+							// @ts-ignore
 							style={ progressStyles }
 						/>
 						<input
@@ -269,7 +271,7 @@ const PriceSlider = ( {
 							max={ maxConstraint }
 							ref={ minRange }
 							disabled={ isLoading }
-							tabIndex={ showInputFields ? '-1' : '0' }
+							tabIndex={ showInputFields ? -1 : 0 }
 						/>
 						<input
 							type="range"
@@ -289,7 +291,7 @@ const PriceSlider = ( {
 							max={ maxConstraint }
 							ref={ maxRange }
 							disabled={ isLoading }
-							tabIndex={ showInputFields ? '-1' : '0' }
+							tabIndex={ showInputFields ? -1 : 0 }
 						/>
 					</div>
 				) }
