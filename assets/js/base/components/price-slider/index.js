@@ -311,6 +311,9 @@ const PriceSlider = ( {
 								if ( value === minPriceInput ) {
 									return;
 								}
+								if ( ! Number.isFinite( value ) ) {
+									value = 0;
+								}
 								setMinPriceInput( value );
 							} }
 							onBlur={ priceInputOnBlur }
@@ -329,6 +332,9 @@ const PriceSlider = ( {
 							onValueChange={ ( value ) => {
 								if ( value === maxPriceInput ) {
 									return;
+								}
+								if ( ! Number.isFinite( value ) ) {
+									value = maxPriceInput;
 								}
 								setMaxPriceInput( value );
 							} }
