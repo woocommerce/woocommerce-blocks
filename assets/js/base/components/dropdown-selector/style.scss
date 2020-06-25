@@ -123,13 +123,13 @@ $dropdown-selector-line-height: 17/14;
 		line-height: 1;
 		padding: 0 0 0 0.3em;
 	}
-}
 
-.wc-block-components-dropdown-selector__selected-chip {
-	@include font-size(small);
-	margin-top: em($gap-small/4);
-	margin-bottom: em($gap-small/4);
-	line-height: $dropdown-selector-line-height;
+	.wc-block-components-dropdown-selector__selected-chip {
+		@include font-size(small);
+		margin-top: em($gap-small/4);
+		margin-bottom: em($gap-small/4);
+		line-height: $dropdown-selector-line-height;
+	}
 }
 
 .wc-block-components-dropdown-selector__list {
