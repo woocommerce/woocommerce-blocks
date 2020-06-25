@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import {
-	Fragment,
 	useState,
 	useEffect,
 	useCallback,
@@ -44,6 +43,8 @@ const PriceSlider = ( {
 
 	// We want step to default to 10 major units, e.g. $10.
 	const stepValue = step ? step : 10 * 10 ** currency.minorUnit;
+	const inputSize =
+		( maxConstraint / 10 ** currency.minorUnit + '' ).length + 3;
 
 	const [ minPriceInput, setMinPriceInput ] = useState( minPrice );
 	const [ maxPriceInput, setMaxPriceInput ] = useState( maxPrice );
@@ -295,7 +296,7 @@ const PriceSlider = ( {
 			</div>
 			<div className="wc-block-price-filter__controls wc-block-components-price-slider__controls">
 				{ showInputFields && (
-					<Fragment>
+					<>
 						<FormattedMonetaryAmount
 							currency={ currency }
 							displayType="input"
@@ -313,6 +314,7 @@ const PriceSlider = ( {
 							onBlur={ priceInputOnBlur }
 							disabled={ isLoading || ! hasValidConstraints }
 							value={ minPriceInput }
+							size={ inputSize }
 						/>
 						<FormattedMonetaryAmount
 							currency={ currency }
@@ -331,8 +333,9 @@ const PriceSlider = ( {
 							onBlur={ priceInputOnBlur }
 							disabled={ isLoading || ! hasValidConstraints }
 							value={ maxPriceInput }
+							size={ inputSize }
 						/>
-					</Fragment>
+					</>
 				) }
 				{ ! showInputFields &&
 					! isLoading &&
