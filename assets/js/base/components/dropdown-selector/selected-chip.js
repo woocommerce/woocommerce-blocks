@@ -8,7 +8,7 @@ const DropdownSelectorSelectedChip = ( { onRemoveItem, option } ) => {
 	return (
 		<Chip
 			className="wc-block-dropdown-selector__selected-chip wc-block-components-dropdown-selector__selected-chip"
-			removeOnClick={ true }
+			removeOnAnyClick={ true }
 			onClick={ () => {
 				onRemoveItem( option.value );
 			} }

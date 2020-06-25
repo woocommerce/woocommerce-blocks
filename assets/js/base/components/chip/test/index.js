@@ -67,10 +67,10 @@ describe( 'Chip', () => {
 		} );
 	} );
 
-	describe( 'with removeOnClick', () => {
-		test( 'should be a button when removeOnClick is set to true', () => {
+	describe( 'with removeOnAnyClick', () => {
+		test( 'should be a button when removeOnAnyClick is set to true', () => {
 			const component = TestRenderer.create(
-				<Chip text="Test" removeOnClick={ true } />
+				<Chip text="Test" removeOnAnyClick={ true } />
 			);
 
 			expect( component.toJSON() ).toMatchSnapshot();
