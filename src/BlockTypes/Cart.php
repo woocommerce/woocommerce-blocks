@@ -107,7 +107,7 @@ class Cart extends AbstractBlock {
 	 * @return array Sorted array.
 	 */
 	protected function deep_sort_with_accents( $array ) {
-		if ( ! is_array( $array ) ) {
+		if ( ! is_array( $array ) || empty( $array ) ) {
 			return $array;
 		}
 
@@ -115,9 +115,8 @@ class Cart extends AbstractBlock {
 			return array_map( [ $this, 'deep_sort_with_accents' ], $array );
 		}
 
-		$array_without_accents = array_map( 'remove_accents', $array );
+		$array_without_accents = array_map( 'remove_accents', array_map( 'wc_strtolower', array_map( 'html_entity_decode', $array ) ) );
 		asort( $array_without_accents );
-
 		return array_replace( $array_without_accents, $array );
 	}
 
