@@ -41,29 +41,26 @@ if ( process.env.WP_VERSION < 5.3 )
 describe( `${ block.name } Block`, () => {
 	beforeAll( async () => {
 		await switchUserToAdmin();
-		await visitBlockPage( `${ block.name } Block` );
-		await page.type(
-			'.wc-block-attribute-filter__selection .components-text-control__input',
-			'Color'
+		await visitBlockPage(
+			`${ block.name } Block`,
+			async ( _page ) => {
+				await _page.type(
+					'.wc-block-attribute-filter__selection .components-text-control__input',
+					'Color'
+				);
+				await _page.click(
+					'.woocommerce-search-list__list .components-menu-item__button:first-child'
+				);
+				await _page.click(
+					'.wc-block-attribute-filter__selection > button'
+				);
+			},
+			[ page ]
 		);
-		await page.click(
-			'.woocommerce-search-list__list .components-menu-item__button:first-child'
-		);
-		await page.click( '.wc-block-attribute-filter__selection > button' );
 	} );
 
 	it( 'renders without crashing', async () => {
 		await expect( page ).toRenderBlock( block );
-	} );
-
-	it( 'renders correctly', async () => {
-		expect(
-			await page.$$eval(
-				'.wc-block-attribute-filter-list li',
-				( attributes ) => attributes.length
-			)
-			// our test data loads 5 for the color attribute.
-		).toBeGreaterThanOrEqual( 2 );
 	} );
 
 	it( 'allows title can be manipulated', async () => {
@@ -91,6 +88,16 @@ describe( `${ block.name } Block`, () => {
 		await page.click(
 			'.components-toolbar button[aria-label="Heading 3"]'
 		);
+	} );
+
+	it( 'renders correctly', async () => {
+		expect(
+			await page.$$eval(
+				'.wc-block-attribute-filter-list li',
+				( attributes ) => attributes.length
+			)
+			// our test data loads 5 for the color attribute.
+		).toBeGreaterThanOrEqual( 2 );
 	} );
 
 	it( 'can hide product count', async () => {
@@ -167,7 +174,6 @@ describe( `${ block.name } Block`, () => {
 		);
 		await page.goto( link, { waitUntil: 'networkidle2' } );
 		await page.waitForSelector( '.wp-block-woocommerce-attribute-filter' );
-
 		await expect( page ).toMatchElement(
 			'.wp-block-woocommerce-attribute-filter h3',
 			{

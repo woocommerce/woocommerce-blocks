@@ -31,15 +31,16 @@ export async function visitPage( link ) {
 }
 
 /**
- *
  * @param {string} title the page title, written as `BLOCK_NAME block`
  *
  * This function will attempt to search for a page with the `title`
  * if that block is found, it will open it, if it's not found, it will open
  * a new page, insert the block, save the page content and title as a fixture file.
  * In both cases, this page will end up with a page open with the block inserted.
+ * @param callback
+ * @param args
  */
-export async function visitBlockPage( title ) {
+export async function visitBlockPage( title, callback, args = [] ) {
 	let link = '';
 	// Visit Import Products page.
 	await visitAdminPage( 'edit.php', 'post_type=page' );
@@ -63,6 +64,7 @@ export async function visitBlockPage( title ) {
 	} else {
 		await createNewPost( { postType: 'page', title } );
 		await insertBlock( title.replace( /block/i, '' ).trim() );
+		await callback( ...args );
 		const pageContent = await getEditedPostContent();
 		await outputFile(
 			`${ dirname(

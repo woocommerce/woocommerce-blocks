@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Filter Products by Attribute Block allows title can be manipulated 1`] = `
-"<!-- wp:woocommerce/attribute-filter {\\"attributeId\\":11,\\"heading\\":\\"New Title\\",\\"headingLevel\\":6} -->
-<div class=\\"wp-block-woocommerce-attribute-filter is-loading\\" data-attribute-id=\\"11\\" data-show-counts=\\"true\\" data-query-type=\\"or\\" data-heading=\\"New Title\\" data-heading-level=\\"6\\"><span aria-hidden=\\"true\\" class=\\"wc-block-product-attribute-filter__placeholder\\"></span></div>
+"<!-- wp:woocommerce/attribute-filter {\\"attributeId\\":3,\\"heading\\":\\"New Title\\",\\"headingLevel\\":6} -->
+<div class=\\"wp-block-woocommerce-attribute-filter is-loading\\" data-attribute-id=\\"3\\" data-show-counts=\\"true\\" data-query-type=\\"or\\" data-heading=\\"New Title\\" data-heading-level=\\"6\\"><span aria-hidden=\\"true\\" class=\\"wc-block-product-attribute-filter__placeholder\\"></span></div>
 <!-- /wp:woocommerce/attribute-filter -->"
 `;
