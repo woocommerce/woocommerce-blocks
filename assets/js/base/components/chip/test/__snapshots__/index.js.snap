@@ -5,6 +5,7 @@ exports[`Chip with custom wrapper should render a chip made up of a div instead 
   className="wc-block-components-chip wc-block-components-chip--radius-small"
 >
   <span
+    aria-hidden={false}
     className="wc-block-components-chip__text"
   >
     Test
@@ -16,12 +17,12 @@ exports[`Chip with custom wrapper should render a chip made up of a div instead 
     onClick={[Function]}
     onKeyDown={[Function]}
   >
-    ✕
+    🗙
   </button>
 </div>
 `;
 
-exports[`Chip with removeOnClick should be a button when removeOnClick is set to true 1`] = `
+exports[`Chip with removeOnAnyClick should be a button when removeOnAnyClick is set to true 1`] = `
 <button
   aria-label="Remove"
   className="wc-block-components-chip wc-block-components-chip--radius-small"
@@ -30,6 +31,7 @@ exports[`Chip with removeOnClick should be a button when removeOnClick is set to
   onKeyDown={[Function]}
 >
   <span
+    aria-hidden={false}
     className="wc-block-components-chip__text"
   >
     Test
@@ -38,7 +40,7 @@ exports[`Chip with removeOnClick should be a button when removeOnClick is set to
     aria-hidden={true}
     className="wc-block-components-chip__remove"
   >
-    ✕
+    🗙
   </span>
 </button>
 `;
@@ -48,6 +50,7 @@ exports[`Chip without custom wrapper should render custom aria label 1`] = `
   className="wc-block-components-chip wc-block-components-chip--radius-small"
 >
   <span
+    aria-hidden={false}
     className="wc-block-components-chip__text"
   >
     Test
@@ -59,7 +62,7 @@ exports[`Chip without custom wrapper should render custom aria label 1`] = `
     onClick={[Function]}
     onKeyDown={[Function]}
   >
-    ✕
+    🗙
   </button>
 </li>
 `;
@@ -69,6 +72,7 @@ exports[`Chip without custom wrapper should render defined radius 1`] = `
   className="wc-block-components-chip wc-block-components-chip--radius-large"
 >
   <span
+    aria-hidden={false}
     className="wc-block-components-chip__text"
   >
     Test
@@ -80,7 +84,7 @@ exports[`Chip without custom wrapper should render defined radius 1`] = `
     onClick={[Function]}
     onKeyDown={[Function]}
   >
-    ✕
+    🗙
   </button>
 </li>
 `;
@@ -90,6 +94,7 @@ exports[`Chip without custom wrapper should render nodes as the text 1`] = `
   className="wc-block-components-chip wc-block-components-chip--radius-small"
 >
   <span
+    aria-hidden={false}
     className="wc-block-components-chip__text"
   >
     <h1>
@@ -103,7 +108,7 @@ exports[`Chip without custom wrapper should render nodes as the text 1`] = `
     onClick={[Function]}
     onKeyDown={[Function]}
   >
-    ✕
+    🗙
   </button>
 </li>
 `;
@@ -130,7 +135,7 @@ exports[`Chip without custom wrapper should render screen reader text 1`] = `
     onClick={[Function]}
     onKeyDown={[Function]}
   >
-    ✕
+    🗙
   </button>
 </li>
 `;
@@ -140,6 +145,7 @@ exports[`Chip without custom wrapper should render text and the remove button 1`
   className="wc-block-components-chip wc-block-components-chip--radius-small"
 >
   <span
+    aria-hidden={false}
     className="wc-block-components-chip__text"
   >
     Test
@@ -151,7 +157,7 @@ exports[`Chip without custom wrapper should render text and the remove button 1`
     onClick={[Function]}
     onKeyDown={[Function]}
   >
-    ✕
+    🗙
   </button>
 </li>
 `;
@@ -161,6 +167,7 @@ exports[`Chip without custom wrapper should render with disabled remove button 1
   className="wc-block-components-chip wc-block-components-chip--radius-small"
 >
   <span
+    aria-hidden={false}
     className="wc-block-components-chip__text"
   >
     Test
@@ -172,7 +179,7 @@ exports[`Chip without custom wrapper should render with disabled remove button 1
     onClick={[Function]}
     onKeyDown={[Function]}
   >
-    ✕
+    🗙
   </button>
 </li>
 `;
