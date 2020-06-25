@@ -74,9 +74,7 @@ const Chip = ( {
 				{ text }
 			</span>
 			{ showScreenReaderText && (
-				<span className="screen-reader-text">
-					{ screenReaderText }
-				</span>
+				<span className="screen-reader-text">{ screenReaderText }</span>
 			) }
 			<RemoveElement
 				className="wc-block-components-chip__remove"
