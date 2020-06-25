@@ -22,7 +22,7 @@ const Chip = ( {
 	screenReaderText,
 	element = 'li',
 	className = '',
-	onRemove = () => {},
+	onRemove = () => void null,
 	disabled = false,
 	radius = 'small',
 	removeOnClick = false,
