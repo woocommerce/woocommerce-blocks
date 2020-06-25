@@ -55,6 +55,7 @@ describe( `${ block.name } Block`, () => {
 	} );
 
 	it( 'allows title can be manipulated', async () => {
+		await openDocumentSettingsSidebar();
 		await expect( page ).toFill(
 			'.wp-block[data-type="woocommerce/attribute-filter"] textarea.wc-block-editor-components-title',
 			'New Title'
@@ -81,6 +82,7 @@ describe( `${ block.name } Block`, () => {
 	} );
 
 	it( 'can hide product count', async () => {
+		await openDocumentSettingsSidebar();
 		await expect( page ).toMatchElement(
 			'.wc-block-attribute-filter-list-count'
 		);
@@ -112,6 +114,7 @@ describe( `${ block.name } Block`, () => {
 	} );
 
 	it( 'can switch attribute', async () => {
+		await openDocumentSettingsSidebar();
 		const document = await getDocument( page );
 
 		const attributePickerPanel = await queries.getByText(
