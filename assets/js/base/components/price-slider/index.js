@@ -239,6 +239,13 @@ const PriceSlider = ( {
 	const maxRangeStep =
 		maxRange && document.activeElement === maxRange.current ? stepValue : 1;
 
+	const minRangeValue = Number.isFinite( minPrice )
+		? minPrice
+		: minConstraint;
+	const maxRangeValue = Number.isFinite( maxPrice )
+		? maxPrice
+		: maxConstraint;
+
 	return (
 		<div className={ classes }>
 			<div
@@ -260,10 +267,9 @@ const PriceSlider = ( {
 								'Filter products by minimum price',
 								'woo-gutenberg-products-block'
 							) }
-							value={
-								Number.isFinite( minPrice )
-									? minPrice
-									: minConstraint
+							value={ minRangeValue }
+							aria-valuetext={
+								minRangeValue / 10 ** currency.minorUnit + ''
 							}
 							onChange={ rangeInputOnChange }
 							step={ minRangeStep }
@@ -280,10 +286,9 @@ const PriceSlider = ( {
 								'Filter products by maximum price',
 								'woo-gutenberg-products-block'
 							) }
-							value={
-								Number.isFinite( maxPrice )
-									? maxPrice
-									: maxConstraint
+							value={ maxRangeValue }
+							aria-valuetext={
+								maxRangeValue / 10 ** currency.minorUnit + ''
 							}
 							onChange={ rangeInputOnChange }
 							step={ maxRangeStep }
