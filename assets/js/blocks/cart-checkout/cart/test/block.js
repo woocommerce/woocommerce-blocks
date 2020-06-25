@@ -13,11 +13,6 @@ import { defaultCartState } from '../../../../data/default-states';
 
 describe( 'Testing cart', () => {
 	beforeEach( async () => {
-		fetchMock.mockResponseOnce( ( req ) => {
-			if ( req.url.match( /wc\/store\/cart/ ) ) {
-				return Promise.resolve( JSON.stringify( previewCart ) );
-			}
-		} );
 		// need to clear the store resolution state between tests.
 		await dispatch( storeKey ).invalidateResolutionForStore();
 		await dispatch( storeKey ).receiveCart( defaultCartState );
@@ -26,6 +21,11 @@ describe( 'Testing cart', () => {
 		fetchMock.resetMocks();
 	} );
 	it( 'renders cart if there are items in the cart', async () => {
+		fetchMock.mockResponse( ( req ) => {
+			if ( req.url.match( /wc\/store\/cart/ ) ) {
+				return Promise.resolve( JSON.stringify( previewCart ) );
+			}
+		} );
 		render(
 			<CartBlock
 				emptyCart={ null }
@@ -39,7 +39,7 @@ describe( 'Testing cart', () => {
 		expect(
 			await screen.getByText( /Proceed to Checkout/i )
 		).toBeInTheDocument();
-		expect( fetchMock ).toHaveBeenCalledTimes( 1 );
+		expect( fetchMock ).toHaveBeenCalledTimes( 2 );
 	} );
 	it( 'renders empty cart if there are no items in the cart', async () => {
 		fetchMock.mockResponseOnce( ( req ) => {
