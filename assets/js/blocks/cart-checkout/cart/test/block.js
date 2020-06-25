@@ -45,7 +45,7 @@ describe( 'Testing cart', () => {
 		expect( fetchMock ).toHaveBeenCalledTimes( 2 );
 	} );
 	it( 'renders empty cart if there are no items in the cart', async () => {
-		fetchMock.mockResponseOnce( ( req ) => {
+		fetchMock.mockResponse( ( req ) => {
 			if ( req.url.match( /wc\/store\/cart/ ) ) {
 				return Promise.resolve( JSON.stringify( defaultCartState ) );
 			}
