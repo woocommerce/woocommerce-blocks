@@ -99,12 +99,9 @@
 		}
 
 		.wc-block-components-chip {
+			@include font-size(small);
 			margin-top: em($gap-small/4);
 			margin-bottom: em($gap-small/4);
-		}
-
-		.wc-block-components-chip__text {
-			@include font-size(small);
 		}
 	}
 }

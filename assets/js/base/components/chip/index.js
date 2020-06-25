@@ -82,7 +82,7 @@ const Chip = ( {
 				className="wc-block-components-chip__remove"
 				{ ...removeProps }
 			>
-				✕
+				🗙
 			</RemoveElement>
 		</Wrapper>
 	);
