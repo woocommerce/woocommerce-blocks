@@ -75,7 +75,7 @@ const Chip = ( {
 			</span>
 			{ showScreenReaderText && (
 				<span className="screen-reader-text">
-					{ screenReaderText ? screenReaderText : text }
+					{ screenReaderText }
 				</span>
 			) }
 			<RemoveElement
