@@ -5,19 +5,27 @@ import {
 	getEditedPostContent,
 	switchUserToAdmin,
 	openDocumentSettingsSidebar,
+	publishPost,
 } from '@wordpress/e2e-test-utils';
 import { getDocument, queries } from 'pptr-testing-library';
 
 import { visitBlockPage } from '@woocommerce/blocks-test-utils';
 
 async function saveOrPublish() {
-	const publishButton = await page.$(
-		'.editor-post-publish-button.editor-post-publish-button__button:not([aria-disabled="true"])'
+	const link = await page.evaluate( () =>
+		wp.data.select( 'core/editor' ).getPermalink()
 	);
-	if ( publishButton ) {
-		await publishButton.click();
-		// A success notice should show up
-		return page.waitForSelector( '.components-snackbar' );
+	if ( link.match( 'auto-draft' ) ) {
+		await publishPost();
+	} else {
+		const publishButton = await page.$(
+			'.editor-post-publish-button.editor-post-publish-button__button:not([aria-disabled="true"])'
+		);
+		if ( publishButton ) {
+			await publishButton.click();
+			// A success notice should show up
+			await page.waitForSelector( '.components-snackbar' );
+		}
 	}
 }
 const block = {
@@ -154,20 +162,10 @@ describe( `${ block.name } Block`, () => {
 
 	it( 'renders on the frontend', async () => {
 		await saveOrPublish();
-		await openDocumentSettingsSidebar();
-		await page.click(
-			'button.edit-post-sidebar__panel-tab[data-label="Document"]'
+		const link = await page.evaluate( () =>
+			wp.data.select( 'core/editor' ).getPermalink()
 		);
-		const document = await getDocument( page );
-		const PermalinkTab = await queries.getByText( document, /permalink/i, {
-			selector: '.components-button.components-panel__body-toggle',
-		} );
-		await PermalinkTab.click();
-		const link = await page.$eval(
-			'a.components-external-link.edit-post-post-link__link',
-			( a ) => a.getAttribute( 'href' )
-		);
-		await page.goto( link );
+		await page.goto( link, { waitUntil: 'networkidle2' } );
 		await page.waitForSelector( '.wp-block-woocommerce-attribute-filter' );
 
 		await expect( page ).toMatchElement(
