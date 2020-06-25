@@ -8,6 +8,7 @@ import {
 	publishPost,
 } from '@wordpress/e2e-test-utils';
 import { getDocument, queries } from 'pptr-testing-library';
+import { clearAndFillInput } from '@woocommerce/e2e-tests/utils';
 
 import { visitBlockPage } from '@woocommerce/blocks-test-utils';
 
@@ -65,7 +66,8 @@ describe( `${ block.name } Block`, () => {
 
 	it( 'allows title can be manipulated', async () => {
 		await openDocumentSettingsSidebar();
-		await expect( page ).toFill(
+
+		await clearAndFillInput(
 			'.wp-block[data-type="woocommerce/attribute-filter"] textarea.wc-block-editor-components-title',
 			'New Title'
 		);
@@ -80,8 +82,7 @@ describe( `${ block.name } Block`, () => {
 		);
 
 		expect( await getEditedPostContent() ).toMatchSnapshot();
-
-		await expect( page ).toFill(
+		await clearAndFillInput(
 			'.wp-block[data-type="woocommerce/attribute-filter"] textarea.wc-block-editor-components-title',
 			'Filter by Color'
 		);

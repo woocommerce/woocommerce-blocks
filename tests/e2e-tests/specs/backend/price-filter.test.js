@@ -8,6 +8,7 @@ import {
 	switchUserToAdmin,
 	getAllBlocks,
 } from '@wordpress/e2e-test-utils';
+import { clearAndFillInput } from '@woocommerce/e2e-tests/utils';
 
 import { getDocument, queries } from 'pptr-testing-library';
 
@@ -40,10 +41,11 @@ describe( `${ block.name } Block`, () => {
 
 	it( 'allows title can be manipulated', async () => {
 		await openDocumentSettingsSidebar();
-		await expect( page ).toFill(
+		await clearAndFillInput(
 			'.wp-block[data-type="woocommerce/price-filter"] textarea.wc-block-editor-components-title',
 			'New Title'
 		);
+
 		await page.click(
 			'.components-toolbar button[aria-label="Heading 6"]'
 		);
@@ -55,11 +57,11 @@ describe( `${ block.name } Block`, () => {
 		);
 
 		expect( await getEditedPostContent() ).toMatchSnapshot();
-
-		await expect( page ).toFill(
+		await clearAndFillInput(
 			'.wp-block[data-type="woocommerce/price-filter"] textarea.wc-block-editor-components-title',
 			'Filter by price'
 		);
+
 		await page.click(
 			'.components-toolbar button[aria-label="Heading 3"]'
 		);
