@@ -66,8 +66,9 @@ async function importSampleProducts() {
 
 	const fewProducts = await page.$$eval(
 		'#the-list tr',
-		( items ) => items.length < 2
+		( items ) => items.length < 3
 	);
+
 	if ( emptyState || noProduct || fewProducts ) {
 		// Visit Import Products page.
 		await visitAdminPage(

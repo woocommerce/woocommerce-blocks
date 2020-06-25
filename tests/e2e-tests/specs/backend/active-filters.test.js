@@ -4,34 +4,38 @@
 import {
 	insertBlock,
 	getEditedPostContent,
-	createNewPost,
 	getAllBlocks,
 	switchUserToAdmin,
+	openDocumentSettingsSidebar,
 } from '@wordpress/e2e-test-utils';
 
-describe( 'Active Product Filters Block', () => {
-	beforeEach( async () => {
-		await switchUserToAdmin();
-		await createNewPost();
-	} );
+import { visitBlockPage } from '@woocommerce/blocks-test-utils';
 
-	it( 'can be created', async () => {
-		await insertBlock( 'Active Product Filters' );
-		expect( await getEditedPostContent() ).toMatchSnapshot();
+const block = {
+	name: 'Active Product Filters',
+	slug: 'woocommerce/active-filters',
+	class: '.wc-block-active-filters',
+};
+
+describe( `${ block.name } Block`, () => {
+	beforeAll( async () => {
+		await switchUserToAdmin();
+		await visitBlockPage( `${ block.name } Block` );
 	} );
 
 	it( 'can only be inserted once', async () => {
-		await insertBlock( 'Active Product Filters' );
-		expect( await getAllBlocks() ).toHaveLength( 1 );
-
-		await insertBlock( 'Active Product Filters' );
+		await insertBlock( block.name );
 		expect( await getAllBlocks() ).toHaveLength( 1 );
 	} );
 
+	it( 'renders without crashing', async () => {
+		await expect( page ).toRenderBlock( block );
+	} );
+
 	it( 'allows title can be manipulated', async () => {
-		await insertBlock( 'Active Product Filters' );
+		await openDocumentSettingsSidebar();
 		await expect( page ).toFill(
-			'.wp-block[data-type="woocommerce/active-filters"] textarea.wc-block-component-title',
+			'.wp-block[data-type="woocommerce/active-filters"] textarea.wc-block-editor-components-title',
 			'New Title'
 		);
 		await page.click(
@@ -45,13 +49,21 @@ describe( 'Active Product Filters Block', () => {
 		);
 
 		expect( await getEditedPostContent() ).toMatchSnapshot();
+		await expect( page ).toFill(
+			'.wp-block[data-type="woocommerce/active-filters"] textarea.wc-block-editor-components-title',
+			'Active filters'
+		);
+		await page.click(
+			'.components-toolbar button[aria-label="Heading 3"]'
+		);
 	} );
 
 	it( 'Display style to change', async () => {
-		await insertBlock( 'Active Product Filters' );
+		await openDocumentSettingsSidebar();
 		await page.click( 'button[aria-label="Display Style: Chips"]' );
 		await expect( page ).toMatchElement(
 			'.wc-block-active-filters__list.wc-block-active-filters__list--chips'
 		);
+		await page.click( 'button[aria-label="Display Style: List"]' );
 	} );
 } );
