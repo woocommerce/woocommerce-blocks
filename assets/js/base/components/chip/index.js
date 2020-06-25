@@ -58,7 +58,9 @@ const Chip = ( {
 	const removeProps = removeOnClick
 		? { 'aria-hidden': true }
 		: clickableElementProps;
-	const showScreenReaderText = screenReaderText && screenReaderText !== text;
+	const showScreenReaderText = Boolean(
+		screenReaderText && screenReaderText !== text
+	);
 
 	return (
 		// @ts-ignore
