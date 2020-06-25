@@ -41,36 +41,42 @@ const PriceSlider = ( {
 	const minRange = useRef( null );
 	const maxRange = useRef( null );
 
-	// We want step to default to 10 major units, e.g. $10.
-	const stepValue = step ? step : 10 * 10 ** currency.minorUnit;
+	const minRangeValue = Number.isFinite( minPrice )
+		? minPrice
+		: minConstraint;
+	const maxRangeValue = Number.isFinite( maxPrice )
+		? maxPrice
+		: maxConstraint;
+	const stepValue = step ? step : 10 * 10 ** currency.minorUnit; // We want step to default to 10 major units, e.g. $10.
 	const inputSize =
 		( maxConstraint / 10 ** currency.minorUnit + '' ).length + 3;
+	const hasValidConstraints =
+		Number.isFinite( minConstraint ) && Number.isFinite( maxConstraint );
 
 	const [ minPriceInput, setMinPriceInput ] = useState( minPrice );
 	const [ maxPriceInput, setMaxPriceInput ] = useState( maxPrice );
 
 	useEffect( () => {
+		if ( minRange.current ) {
+			minRange.current.value = minPrice;
+		}
 		setMinPriceInput( minPrice );
 	}, [ minPrice ] );
 
 	useEffect( () => {
+		if ( maxRange.current ) {
+			maxRange.current.value = maxPrice;
+		}
 		setMaxPriceInput( maxPrice );
 	}, [ maxPrice ] );
-
-	/**
-	 * Checks if the min and max constraints are valid.
-	 */
-	const hasValidConstraints = useMemo( () => {
-		return isFinite( minConstraint ) && isFinite( maxConstraint );
-	}, [ minConstraint, maxConstraint ] );
 
 	/**
 	 * Handles styles for the shaded area of the range slider.
 	 */
 	const progressStyles = useMemo( () => {
 		if (
-			! isFinite( minPrice ) ||
-			! isFinite( maxPrice ) ||
+			! Number.isFinite( minPrice ) ||
+			! Number.isFinite( maxPrice ) ||
 			! hasValidConstraints
 		) {
 			return {
@@ -165,17 +171,15 @@ const PriceSlider = ( {
 						minPrice,
 						Math.round( targetValue / stepValue ) * stepValue,
 				  ];
-			const values = constrainRangeSliderValues(
-				currentValues,
-				minConstraint,
-				maxConstraint,
-				stepValue,
-				isMin
+			onChange(
+				constrainRangeSliderValues(
+					currentValues,
+					minConstraint,
+					maxConstraint,
+					stepValue,
+					isMin
+				)
 			);
-			onChange( [
-				parseInt( values[ 0 ], 10 ),
-				parseInt( values[ 1 ], 10 ),
-			] );
 		},
 		[
 			minPrice,
@@ -207,17 +211,23 @@ const PriceSlider = ( {
 			const isMin = event.target.classList.contains(
 				'wc-block-price-filter__amount--min'
 			);
-			const values = constrainRangeSliderValues(
+			const [ minValue, maxValue ] = constrainRangeSliderValues(
 				[ minPriceInput, maxPriceInput ],
 				null,
 				null,
 				stepValue,
 				isMin
 			);
-			onChange( [
-				parseInt( values[ 0 ], 10 ),
-				parseInt( values[ 1 ], 10 ),
-			] );
+
+			// Update sliders.
+			if ( minRange.current ) {
+				minRange.current.value = minValue;
+			}
+			if ( minRange.current ) {
+				maxRange.current.value = maxValue;
+			}
+
+			onChange( [ minValue, maxValue ] );
 		},
 		[ stepValue, minPriceInput, maxPriceInput, onChange ]
 	);
@@ -233,18 +243,6 @@ const PriceSlider = ( {
 		isLoading && 'is-loading',
 		! hasValidConstraints && 'is-disabled'
 	);
-
-	const minRangeStep =
-		minRange && document.activeElement === minRange.current ? stepValue : 1;
-	const maxRangeStep =
-		maxRange && document.activeElement === maxRange.current ? stepValue : 1;
-
-	const minRangeValue = Number.isFinite( minPrice )
-		? minPrice
-		: minConstraint;
-	const maxRangeValue = Number.isFinite( maxPrice )
-		? maxPrice
-		: maxConstraint;
 
 	return (
 		<div className={ classes }>
@@ -267,12 +265,11 @@ const PriceSlider = ( {
 								'Filter products by minimum price',
 								'woo-gutenberg-products-block'
 							) }
-							value={ minRangeValue }
 							aria-valuetext={
 								minRangeValue / 10 ** currency.minorUnit + ''
 							}
 							onChange={ rangeInputOnChange }
-							step={ minRangeStep }
+							step={ stepValue }
 							min={ minConstraint }
 							max={ maxConstraint }
 							ref={ minRange }
@@ -286,12 +283,11 @@ const PriceSlider = ( {
 								'Filter products by maximum price',
 								'woo-gutenberg-products-block'
 							) }
-							value={ maxRangeValue }
 							aria-valuetext={
 								maxRangeValue / 10 ** currency.minorUnit + ''
 							}
 							onChange={ rangeInputOnChange }
-							step={ maxRangeStep }
+							step={ stepValue }
 							min={ minConstraint }
 							max={ maxConstraint }
 							ref={ maxRange }
