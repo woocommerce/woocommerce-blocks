@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { formatPrice } from '@woocommerce/base-utils';
+import { formatPriceAsString } from '@woocommerce/base-utils';
 import { RemovableChip } from '@woocommerce/base-components/chip';
 
 /**
@@ -16,8 +16,8 @@ export const formatPriceRange = ( minPrice, maxPrice ) => {
 		return sprintf(
 			/* translators: %s min price, %s max price */
 			__( 'Between %s and %s', 'woo-gutenberg-products-block' ),
-			formatPrice( minPrice ),
-			formatPrice( maxPrice )
+			formatPriceAsString( minPrice ),
+			formatPriceAsString( maxPrice )
 		);
 	}
 
@@ -25,14 +25,14 @@ export const formatPriceRange = ( minPrice, maxPrice ) => {
 		return sprintf(
 			/* translators: %s min price */
 			__( 'From %s', 'woo-gutenberg-products-block' ),
-			formatPrice( minPrice )
+			formatPriceAsString( minPrice )
 		);
 	}
 
 	return sprintf(
 		/* translators: %s max price */
 		__( 'Up to %s', 'woo-gutenberg-products-block' ),
-		formatPrice( maxPrice )
+		formatPriceAsString( maxPrice )
 	);
 };
 

@@ -2,6 +2,12 @@
  * External dependencies
  */
 import { CURRENCY } from '@woocommerce/settings';
+import { renderToString } from '@wordpress/element';
+
+/**
+ * Internal dependencies
+ */
+import FormattedMonetaryAmount from '../components/formatted-monetary-amount';
 
 /**
  * Get currency prefix.
@@ -102,7 +108,7 @@ export const getCurrency = ( currencyData = {} ) => {
  * @param {number|string} price Price in minor unit, e.g. cents.
  * @param {Object} [currencyData] Currency data object.
  */
-export const formatPrice = ( price, currencyData = {} ) => {
+export const formatPriceAsString = ( price, currencyData = {} ) => {
 	if ( price === '' || price === undefined ) {
 		return '';
 	}
@@ -114,11 +120,15 @@ export const formatPrice = ( price, currencyData = {} ) => {
 	}
 
 	const currency = getCurrency( currencyData );
-	const formattedPrice = priceInt / 10 ** currency.minorUnit;
-	const formattedValue = currency.prefix + formattedPrice + currency.suffix;
+	const formattedPrice = renderToString(
+		<FormattedMonetaryAmount
+			currency={ currency }
+			displayType="text"
+			value={ priceInt }
+		/>
+	);
 
-	// This uses a textarea to magically decode HTML currency symbols.
-	const txt = document.createElement( 'textarea' );
-	txt.innerHTML = formattedValue;
-	return txt.value;
+	// Remove HTML.
+	const tagsRegExp = /<\/?[a-z][^>]*?>/gi;
+	return formattedPrice.replace( tagsRegExp, '' );
 };

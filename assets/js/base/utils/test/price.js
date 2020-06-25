@@ -1,9 +1,9 @@
 /**
  * Internal dependencies
  */
-import { formatPrice, getCurrency } from '../price';
+import { formatPriceAsString, getCurrency } from '../price';
 
-describe( 'formatPrice', () => {
+describe( 'formatPriceAsString', () => {
 	test.each`
 		value        | prefix | suffix | expected
 		${1000}      | ${'€'} | ${''}  | ${'€10'}
@@ -17,7 +17,7 @@ describe( 'formatPrice', () => {
 	`(
 		'correctly formats price given "$value", "$prefix" prefix, and "$suffix" suffix',
 		( { value, prefix, suffix, expected } ) => {
-			const formattedPrice = formatPrice(
+			const formattedPrice = formatPriceAsString(
 				value,
 				getCurrency( { prefix, suffix } )
 			);
