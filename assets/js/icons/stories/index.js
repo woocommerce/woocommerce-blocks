@@ -20,7 +20,7 @@ export default {
 const LibraryExample = () => {
 	const [ filter, setFilter ] = useState( '' );
 	const filteredIcons = omitBy( availableIcons, ( _icon, name ) => {
-		return name.indexOf( filter ) === -1;
+		return ! name.includes( filter );
 	} );
 	return (
 		<div style={ { padding: '20px' } }>
