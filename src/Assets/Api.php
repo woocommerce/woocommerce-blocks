@@ -146,7 +146,7 @@ class Api {
 	 */
 	public function get_block_asset_build_path( $filename, $type = 'js' ) {
 		global $wp_version;
-		$suffix = version_compare( $wp_version, '5.2', '>' )
+		$suffix = version_compare( $wp_version, '5.3', '>=' )
 			? ''
 			: '-legacy';
 		return "build/$filename$suffix.$type";
