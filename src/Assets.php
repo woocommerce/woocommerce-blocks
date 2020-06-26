@@ -262,10 +262,11 @@ class Assets {
 	}
 
 	/**
-	 * Queues a block script.
+	 * Queues a block script in the frontend.
 	 *
 	 * @since 2.3.0
 	 * @since 2.6.0 Changed $name to $script_name and added $handle argument.
+	 * @since 2.9.0 Made it so scripts are not loaded in admin pages.
 	 *
 	 * @param string $script_name  Name of the script used to identify the file inside build folder.
 	 * @param string $handle       Optional. Provided if the handle should be different than the script name. `wc-` prefix automatically added.
