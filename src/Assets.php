@@ -10,6 +10,7 @@ namespace Automattic\WooCommerce\Blocks;
 defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Blocks\Package;
+use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 
 /**
  * Assets class.
@@ -38,17 +39,18 @@ class Assets {
 	 * as part of ongoing refactoring.
 	 */
 	public static function register_assets() {
-		self::register_style( 'wc-block-vendors-style', plugins_url( self::get_block_asset_build_path( 'vendors-style', 'css' ), __DIR__ ), [] );
-		self::register_style( 'wc-block-editor', plugins_url( self::get_block_asset_build_path( 'editor', 'css' ), __DIR__ ), array( 'wp-edit-blocks' ) );
+		$asset_api = Package::container()->get( AssetApi::class );
+		self::register_style( 'wc-block-vendors-style', plugins_url( $asset_api->get_block_asset_build_path( 'vendors-style', 'css' ), __DIR__ ), [] );
+		self::register_style( 'wc-block-editor', plugins_url( $asset_api->get_block_asset_build_path( 'editor', 'css' ), __DIR__ ), array( 'wp-edit-blocks' ) );
 		wp_style_add_data( 'wc-block-editor', 'rtl', 'replace' );
-		self::register_style( 'wc-block-style', plugins_url( self::get_block_asset_build_path( 'style', 'css' ), __DIR__ ), array( 'wc-block-vendors-style' ) );
+		self::register_style( 'wc-block-style', plugins_url( $asset_api->get_block_asset_build_path( 'style', 'css' ), __DIR__ ), array( 'wc-block-vendors-style' ) );
 		wp_style_add_data( 'wc-block-style', 'rtl', 'replace' );
 
 		// Shared libraries and components across all blocks.
 		self::register_script( 'wc-blocks-middleware', plugins_url( 'build/wc-blocks-middleware.js', __DIR__ ), [], false );
 		self::register_script( 'wc-blocks-data-store', plugins_url( 'build/wc-blocks-data.js', __DIR__ ), [ 'wc-blocks-middleware' ], false );
-		self::register_script( 'wc-blocks', plugins_url( self::get_block_asset_build_path( 'blocks' ), __DIR__ ), [], false );
-		self::register_script( 'wc-vendors', plugins_url( self::get_block_asset_build_path( 'vendors' ), __DIR__ ), [], false );
+		self::register_script( 'wc-blocks', plugins_url( $asset_api->get_block_asset_build_path( 'blocks' ), __DIR__ ), [], false );
+		self::register_script( 'wc-vendors', plugins_url( $asset_api->get_block_asset_build_path( 'vendors' ), __DIR__ ), [], false );
 		self::register_script( 'wc-blocks-registry', plugins_url( 'build/wc-blocks-registry.js', __DIR__ ), [], false );
 		self::register_script( 'wc-shared-context', plugins_url( 'build/wc-shared-context.js', __DIR__ ), [], false );
 
@@ -62,33 +64,33 @@ class Assets {
 		// Individual blocks.
 		$block_dependencies = array( 'wc-vendors', 'wc-blocks' );
 
-		self::register_script( 'wc-handpicked-products', plugins_url( self::get_block_asset_build_path( 'handpicked-products' ), __DIR__ ), $block_dependencies );
-		self::register_script( 'wc-product-best-sellers', plugins_url( self::get_block_asset_build_path( 'product-best-sellers' ), __DIR__ ), $block_dependencies );
-		self::register_script( 'wc-product-category', plugins_url( self::get_block_asset_build_path( 'product-category' ), __DIR__ ), $block_dependencies );
-		self::register_script( 'wc-product-new', plugins_url( self::get_block_asset_build_path( 'product-new' ), __DIR__ ), $block_dependencies );
-		self::register_script( 'wc-product-on-sale', plugins_url( self::get_block_asset_build_path( 'product-on-sale' ), __DIR__ ), $block_dependencies );
-		self::register_script( 'wc-product-top-rated', plugins_url( self::get_block_asset_build_path( 'product-top-rated' ), __DIR__ ), $block_dependencies );
-		self::register_script( 'wc-products-by-attribute', plugins_url( self::get_block_asset_build_path( 'products-by-attribute' ), __DIR__ ), $block_dependencies );
-		self::register_script( 'wc-featured-product', plugins_url( self::get_block_asset_build_path( 'featured-product' ), __DIR__ ), $block_dependencies );
-		self::register_script( 'wc-featured-category', plugins_url( self::get_block_asset_build_path( 'featured-category' ), __DIR__ ), $block_dependencies );
-		self::register_script( 'wc-product-categories', plugins_url( self::get_block_asset_build_path( 'product-categories' ), __DIR__ ), $block_dependencies );
-		self::register_script( 'wc-product-tag', plugins_url( self::get_block_asset_build_path( 'product-tag' ), __DIR__ ), $block_dependencies );
-		self::register_script( 'wc-all-reviews', plugins_url( self::get_block_asset_build_path( 'all-reviews' ), __DIR__ ), $block_dependencies );
-		self::register_script( 'wc-reviews-by-product', plugins_url( self::get_block_asset_build_path( 'reviews-by-product' ), __DIR__ ), $block_dependencies );
-		self::register_script( 'wc-reviews-by-category', plugins_url( self::get_block_asset_build_path( 'reviews-by-category' ), __DIR__ ), $block_dependencies );
-		self::register_script( 'wc-product-search', plugins_url( self::get_block_asset_build_path( 'product-search' ), __DIR__ ), $block_dependencies );
-		self::register_script( 'wc-all-products', plugins_url( self::get_block_asset_build_path( 'all-products' ), __DIR__ ), $block_dependencies );
-		self::register_script( 'wc-price-filter', plugins_url( self::get_block_asset_build_path( 'price-filter' ), __DIR__ ), $block_dependencies );
-		self::register_script( 'wc-attribute-filter', plugins_url( self::get_block_asset_build_path( 'attribute-filter' ), __DIR__ ), $block_dependencies );
-		self::register_script( 'wc-active-filters', plugins_url( self::get_block_asset_build_path( 'active-filters' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-handpicked-products', plugins_url( $asset_api->get_block_asset_build_path( 'handpicked-products' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-product-best-sellers', plugins_url( $asset_api->get_block_asset_build_path( 'product-best-sellers' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-product-category', plugins_url( $asset_api->get_block_asset_build_path( 'product-category' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-product-new', plugins_url( $asset_api->get_block_asset_build_path( 'product-new' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-product-on-sale', plugins_url( $asset_api->get_block_asset_build_path( 'product-on-sale' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-product-top-rated', plugins_url( $asset_api->get_block_asset_build_path( 'product-top-rated' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-products-by-attribute', plugins_url( $asset_api->get_block_asset_build_path( 'products-by-attribute' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-featured-product', plugins_url( $asset_api->get_block_asset_build_path( 'featured-product' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-featured-category', plugins_url( $asset_api->get_block_asset_build_path( 'featured-category' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-product-categories', plugins_url( $asset_api->get_block_asset_build_path( 'product-categories' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-product-tag', plugins_url( $asset_api->get_block_asset_build_path( 'product-tag' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-all-reviews', plugins_url( $asset_api->get_block_asset_build_path( 'all-reviews' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-reviews-by-product', plugins_url( $asset_api->get_block_asset_build_path( 'reviews-by-product' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-reviews-by-category', plugins_url( $asset_api->get_block_asset_build_path( 'reviews-by-category' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-product-search', plugins_url( $asset_api->get_block_asset_build_path( 'product-search' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-all-products', plugins_url( $asset_api->get_block_asset_build_path( 'all-products' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-price-filter', plugins_url( $asset_api->get_block_asset_build_path( 'price-filter' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-attribute-filter', plugins_url( $asset_api->get_block_asset_build_path( 'attribute-filter' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-active-filters', plugins_url( $asset_api->get_block_asset_build_path( 'active-filters' ), __DIR__ ), $block_dependencies );
 
 		if ( Package::is_experimental_build() ) {
-			self::register_script( 'wc-single-product-block', plugins_url( self::get_block_asset_build_path( 'single-product' ), __DIR__ ), $block_dependencies );
+			self::register_script( 'wc-single-product-block', plugins_url( $asset_api->get_block_asset_build_path( 'single-product' ), __DIR__ ), $block_dependencies );
 		}
 
 		if ( Package::is_feature_plugin_build() ) {
-			self::register_script( 'wc-checkout-block', plugins_url( self::get_block_asset_build_path( 'checkout' ), __DIR__ ), $block_dependencies );
-			self::register_script( 'wc-cart-block', plugins_url( self::get_block_asset_build_path( 'cart' ), __DIR__ ), $block_dependencies );
+			self::register_script( 'wc-checkout-block', plugins_url( $asset_api->get_block_asset_build_path( 'checkout' ), __DIR__ ), $block_dependencies );
+			self::register_script( 'wc-cart-block', plugins_url( $asset_api->get_block_asset_build_path( 'cart' ), __DIR__ ), $block_dependencies );
 		}
 	}
 
@@ -270,9 +272,8 @@ class Assets {
 	 * @param array  $dependencies Optional. An array of registered script handles this script depends on. Default empty array.
 	 */
 	public static function register_block_script( $script_name, $handle = '', $dependencies = [] ) {
-		$handle = '' !== $handle ? $handle : $script_name;
-		self::register_script( 'wc-' . $handle, plugins_url( self::get_block_asset_build_path( $script_name ), __DIR__ ), $dependencies );
-		wp_enqueue_script( 'wc-' . $handle );
+		$asset_api = Package::container()->get( AssetApi::class );
+		$asset_api->register_block_script( $script_name, $handle, $dependencies );
 	}
 
 	/**
@@ -290,22 +291,5 @@ class Assets {
 		$filename = str_replace( plugins_url( '/', __DIR__ ), '', $src );
 		$ver      = self::get_file_version( $filename );
 		wp_register_style( $handle, $src, $deps, $ver, $media );
-	}
-
-	/**
-	 * Returns the appropriate asset path for loading either legacy builds or
-	 * current builds.
-	 *
-	 * @param   string $filename  Filename for asset path (without extension).
-	 * @param   string $type      File type (.css or .js).
-	 *
-	 * @return  string             The generated path.
-	 */
-	protected static function get_block_asset_build_path( $filename, $type = 'js' ) {
-		global $wp_version;
-		$suffix = version_compare( $wp_version, '5.2', '>' )
-			? ''
-			: '-legacy';
-		return "build/$filename$suffix.$type";
 	}
 }

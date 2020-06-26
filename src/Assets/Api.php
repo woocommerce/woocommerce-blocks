@@ -40,7 +40,7 @@ class Api {
 	 * @return string The cache buster value to use for the given file.
 	 */
 	protected function get_file_version( $file ) {
-		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG && file_exists( $this->package->get_path() . $file ) ) {
 			return filemtime( $this->package->get_path( trim( $file, '/' ) ) );
 		}
 		return $this->package->get_version();
@@ -101,13 +101,14 @@ class Api {
 	 * @since 2.5.0
 	 * @since 2.6.0 Changed $name to $script_name and added $handle argument.
 	 *
-	 * @param string $script_name Name of the script used to identify the file inside build folder .
-	 * @param string $handle      Provided if the handle should be different than the script name . `wc-` prefix automatically added .
+	 * @param string $script_name  Name of the script used to identify the file inside build folder.
+	 * @param string $handle       Optional. Provided if the handle should be different than the script name. `wc-` prefix automatically added.
+	 * @param array  $dependencies Optional. An array of registered script handles this script depends on. Default empty array.
 	 */
-	public function register_block_script( $script_name, $handle = '' ) {
-		$src    = 'build/' . $script_name . '.js';
-		$handle = '' !== $handle ? 'wc-' . $handle : 'wc-' . $script_name;
-		$this->register_script( $handle, $src );
+	public function register_block_script( $script_name, $handle = '', $dependencies = [] ) {
+		$relative_src = $this->get_block_asset_build_path( $script_name );
+		$handle       = '' !== $handle ? 'wc-' . $handle : 'wc-' . $script_name;
+		$this->register_script( $handle, $relative_src, $dependencies );
 		wp_enqueue_script( $handle );
 	}
 
@@ -128,5 +129,22 @@ class Api {
 		$src      = $this->get_asset_url( $relative_src );
 		$ver      = $this->get_file_version( $filename );
 		wp_register_style( $handle, $src, $deps, $ver, $media );
+	}
+
+	/**
+	 * Returns the appropriate asset path for loading either legacy builds or
+	 * current builds.
+	 *
+	 * @param   string $filename  Filename for asset path (without extension).
+	 * @param   string $type      File type (.css or .js).
+	 *
+	 * @return  string             The generated path.
+	 */
+	public function get_block_asset_build_path( $filename, $type = 'js' ) {
+		global $wp_version;
+		$suffix = version_compare( $wp_version, '5.2', '>' )
+			? ''
+			: '-legacy';
+		return "build/$filename$suffix.$type";
 	}
 }
