@@ -5,7 +5,7 @@ import { registerBlockComponent } from '@woocommerce/blocks-registry';
 import { lazy } from '@wordpress/element';
 import { WC_BLOCKS_BUILD_URL } from '@woocommerce/block-settings';
 
-// Modify webpack pubilcPath at runtime based on location of WordPress Plugin.
+// Modify webpack publicPath at runtime based on location of WordPress Plugin.
 // eslint-disable-next-line no-undef,camelcase
 __webpack_public_path__ = WC_BLOCKS_BUILD_URL;
 
