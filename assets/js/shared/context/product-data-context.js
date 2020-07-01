@@ -29,6 +29,19 @@ const ProductDataContext = createContext( {
 } );
 
 /**
+ * Resolves an array of promises and sets the results using the provided callback function.
+ *
+ * @param {Array} promisesToResolve An array of promises.
+ * @param {Function} setResults Receives the resolved promises.
+ */
+const resolvePromises = ( promisesToResolve, setResults ) => {
+	Promise.all( promisesToResolve ).then( ( resolved ) => {
+		const results = uniq( flatten( resolved ) ).filter( Boolean );
+		setResults( results );
+	} );
+};
+
+/**
  * Allows fields to be added as promises. Once all fields are added, the promises resolve so fields
  * are ready for the API request.
  */
@@ -38,13 +51,6 @@ const useProductDataFieldPromises = () => {
 	const [ fields, setFields ] = useState( undefined );
 	const [ initializing, setInitializing ] = useState( true );
 	const [ resolving, setResolving ] = useState( false );
-
-	const resolvePromises = ( promisesToResolve, setResults ) => {
-		Promise.all( promisesToResolve ).then( ( resolved ) => {
-			const results = uniq( flatten( resolved ) ).filter( Boolean );
-			setResults( results );
-		} );
-	};
 
 	// This useEffect will be deferred until after the initialization of all children so promises are
 	// created in time.
