@@ -34,20 +34,23 @@ export const constrainRangeSliderValues = (
 	let minValue = parseValid( values[ 0 ], minConstraint );
 	let maxValue = parseValid( values[ 1 ], maxConstraint );
 
-	if ( hasMinConstraint && minConstraint > minValue ) {
-		minValue = minConstraint;
+	if ( hasMinConstraint ) {
+		if ( minConstraint > minValue ) {
+			minValue = minConstraint;
+		}
+		if ( minConstraint >= maxValue ) {
+			maxValue = minConstraint + step;
+		}
 	}
 
-	if ( hasMaxConstraint && maxConstraint <= minValue ) {
-		minValue = maxConstraint - step;
-	}
+	if ( hasMaxConstraint ) {
+		if ( maxConstraint <= minValue ) {
+			minValue = maxConstraint - step;
+		}
 
-	if ( hasMinConstraint && minConstraint >= maxValue ) {
-		maxValue = minConstraint + step;
-	}
-
-	if ( hasMaxConstraint && maxConstraint < maxValue ) {
-		maxValue = maxConstraint;
+		if ( maxConstraint < maxValue ) {
+			maxValue = maxConstraint;
+		}
 	}
 
 	if ( ! isMin && minValue >= maxValue ) {
@@ -56,10 +59,6 @@ export const constrainRangeSliderValues = (
 
 	if ( isMin && maxValue <= minValue ) {
 		maxValue = minValue + step;
-	}
-
-	if ( minValue < 0 ) {
-		minValue = 0;
 	}
 
 	return [ minValue, maxValue ];

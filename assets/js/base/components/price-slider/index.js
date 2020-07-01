@@ -213,11 +213,19 @@ const PriceSlider = ( {
 			);
 			const [ minValue, maxValue ] = constrainRangeSliderValues(
 				[ minPriceInput, maxPriceInput ],
-				null,
-				null,
+				minConstraint,
+				maxConstraint,
 				stepValue,
 				isMin
 			);
+
+			// Update inputs.
+			if ( minPriceInput !== minValue ) {
+				setMinPriceInput( minValue );
+			}
+			if ( maxPriceInput !== maxValue ) {
+				setMaxPriceInput( maxValue );
+			}
 
 			// Update sliders.
 			if ( minRange.current ) {
@@ -229,7 +237,14 @@ const PriceSlider = ( {
 
 			onChange( [ minValue, maxValue ] );
 		},
-		[ stepValue, minPriceInput, maxPriceInput, onChange ]
+		[
+			stepValue,
+			minPriceInput,
+			maxPriceInput,
+			onChange,
+			maxConstraint,
+			minConstraint,
+		]
 	);
 
 	const classes = classnames(
