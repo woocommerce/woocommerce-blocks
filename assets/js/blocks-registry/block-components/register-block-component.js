@@ -2,6 +2,7 @@
  * External dependencies
  */
 import deprecated from '@wordpress/deprecated';
+import { isValidElement } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -19,7 +20,8 @@ import { registeredBlockComponents } from './registered-block-components-init';
  *
  * @export
  * @param {Object}   options           Options to use when registering the block.
- * @param {Function} options.component React component that will be rendered.
+ * @param {Function} options.component React component that will be rendered, or a lazy callback if
+ *                                     dynamically imported.
  * @param {string}   options.blockName Name of the block that this component belongs to.
  * @param {string}   [options.context] To make this component available only under a certain context
  *                                     (named parent Block) define it here. If left blank, the
@@ -31,6 +33,7 @@ export function registerBlockComponent( options ) {
 	}
 	assertOption( options, 'context', 'string' );
 	assertOption( options, 'blockName', 'string' );
+	assertBlockComponent( options, 'component' );
 
 	const { context, blockName, component } = options;
 
@@ -40,6 +43,28 @@ export function registerBlockComponent( options ) {
 
 	registeredBlockComponents[ context ][ blockName ] = component;
 }
+
+/**
+ * Asserts that an option is a valid react element or lazy callback. Otherwise, throws an error.
+ *
+ * @throws Will throw an error if the type of the option doesn't match the expected type.
+ * @param {Object} options      Object containing the option to validate.
+ * @param {string} optionName   Name of the option to validate.
+ */
+const assertBlockComponent = ( options, optionName ) => {
+	if ( isValidElement( options[ optionName ] ) ) {
+		return;
+	}
+	if (
+		options[ optionName ].$$typeof &&
+		options[ optionName ].$$typeof === Symbol.for( 'react.lazy' )
+	) {
+		return;
+	}
+	throw new Error(
+		`Incorrect value for the ${ optionName } argument when registering a block component. Component must be a valid React Element or Lazy callback.`
+	);
+};
 
 /**
  * Asserts that an option is of the given type. Otherwise, throws an error.
@@ -53,7 +78,7 @@ const assertOption = ( options, optionName, expectedType ) => {
 	const actualType = typeof options[ optionName ];
 	if ( actualType !== expectedType ) {
 		throw new Error(
-			`Incorrect value for the ${ optionName } argument when registering an inner block. It was a ${ actualType }, but must be a ${ expectedType }.`
+			`Incorrect value for the ${ optionName } argument when registering a block component. It was a ${ actualType }, but must be a ${ expectedType }.`
 		);
 	}
 };
