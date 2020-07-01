@@ -71,11 +71,7 @@ const useProductDataFieldPromises = () => {
 
 	// Function that returns a new promise to add fields to.
 	const productDataFieldPromise = useCallback( ( addFields ) => {
-		promises.current.push(
-			new Promise( ( resolve ) => {
-				resolve( addFields );
-			} )
-		);
+		promises.current.push( Promise.resolve( addFields ) );
 		setResolving( true );
 	}, [] );
 
