@@ -2,7 +2,6 @@
  * External dependencies
  */
 import deprecated from '@wordpress/deprecated';
-import { isValidElement } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -52,14 +51,16 @@ export function registerBlockComponent( options ) {
  * @param {string} optionName   Name of the option to validate.
  */
 const assertBlockComponent = ( options, optionName ) => {
-	if ( isValidElement( options[ optionName ] ) ) {
-		return;
-	}
-	if (
-		options[ optionName ].$$typeof &&
-		options[ optionName ].$$typeof === Symbol.for( 'react.lazy' )
-	) {
-		return;
+	if ( options[ optionName ] ) {
+		if ( typeof options[ optionName ] === 'function' ) {
+			return;
+		}
+		if (
+			options[ optionName ].$$typeof &&
+			options[ optionName ].$$typeof === Symbol.for( 'react.lazy' )
+		) {
+			return;
+		}
 	}
 	throw new Error(
 		`Incorrect value for the ${ optionName } argument when registering a block component. Component must be a valid React Element or Lazy callback.`
