@@ -2,6 +2,7 @@
 	@include reset-typography();
 	align-items: center;
 	background-color: $black;
+	border: 0;
 	color: $white;
 	display: inline-flex;
 	font-weight: bold;
