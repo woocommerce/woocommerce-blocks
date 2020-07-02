@@ -14,14 +14,6 @@
 	text-transform: none;
 	position: relative;
 
-	&:disabled,
-	&:hover,
-	&:focus,
-	&:active {
-		background-color: $black;
-		color: $white;
-	}
-
 	.wc-block-components-button__text {
 		display: block;
 
