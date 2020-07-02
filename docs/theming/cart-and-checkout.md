@@ -10,7 +10,7 @@ By default, it uses a combination of black and white borders and shadows so it h
 
 ```CSS
 .wc-block-components-order-summary-item__quantity {
-	background: #f9f4ee;
+	background-color: #f9f4ee;
 	border-color: #4b3918;
 	box-shadow: 0 0 0 2px #f9f4ee;
 	color: #4b3918;
