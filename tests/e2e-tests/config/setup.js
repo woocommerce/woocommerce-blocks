@@ -39,9 +39,11 @@ module.exports = async ( globalConfig ) => {
 		const [ , taxes, coupons, products, shippingZones, pages ] = results;
 
 		/**
-		 * Create fixture reviews data on first product.
+		 * Create fixture reviews data for each product.
 		 */
-		await createReviews( products[ 0 ] );
+		products.forEach( async ( productId ) => {
+			await createReviews( productId );
+		} );
 
 		global.fixtureData = {
 			taxes,
