@@ -11,11 +11,13 @@ We have two kinds of JavaScript tests:
 
 These tests are all run automatically on open PRs by Travis CI.
 
+All the following tests require that the dependencies are installed (`npm install` `composer install`). Ensure you've followed the [Getting Started Guide](getting-started.md) to set up node and other dependencies before running any tests.
+
 ## How to run JavaScript unit tests
 
 Unit tests are implemented near the code they test, in `*.test.js` files.
 
-Assuming you've already followed the [Getting Started Guide](getting-started.md) on setting up node and other dependencies, unit tests are ran from the command line using the following command:
+Use the following command to run the unit tests:
 
 ```
 $ npm run test
@@ -43,7 +45,7 @@ Then, to run the tests:
 
 - `npm run test:e2e` 
 
-When you're iterating on a new test you'll run this repeatedly until your test is just right.
+When you're iterating on a new test you'll often run this repeatedly, as you develop, until your test is just right.
 
 When you're done, you may want to shut down the test environment:
 
