@@ -39,7 +39,11 @@ describe( 'Testing cart', () => {
 		expect(
 			await screen.getByText( /Proceed to Checkout/i )
 		).toBeInTheDocument();
-		/* We have an unfixed bug in our test in which the full cart triggers a POST
+
+		/**
+		 * @todo Investigate extra POST request on initial cart render.
+		 *
+		 * We have an unfixed bug in our test in which the full cart triggers a POST
 		 * request to `wc/store/cart/update-item` causing the fetch to be called twice.
 		 */
 		expect( fetchMock ).toHaveBeenCalledTimes( 2 );
