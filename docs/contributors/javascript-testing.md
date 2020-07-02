@@ -51,4 +51,4 @@ When you're done, you may want to shut down the test environment:
 
 - `npm run wp-env stop` to stop the test environment
 
-**Note:** There are a number of other useful `wp-env` commands. You find out more [in wp-env docs](https://github.com/WordPress/gutenberg/blob/master/packages/env/README.md).
+**Note:** There are a number of other useful `wp-env` commands. You can find out more in the [wp-env docs](https://github.com/WordPress/gutenberg/blob/master/packages/env/README.md).
