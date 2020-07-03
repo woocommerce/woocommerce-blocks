@@ -12,8 +12,9 @@ Themes can still style them to match theme colors or styles as follows:
 .wc-block-components-button {
 	background-color: #d5502f;
 	color: #fff;
-	/* You can add more rules to modify the border, shadow, etc. */
+	/* More rules can be added to modify the border, shadow, etc. */
 }
+/* It might be needed to modify the hover, focus, active and disabled states too */
 ```
 
 <img src="https://user-images.githubusercontent.com/3616980/86381505-b6b5cd80-bc8d-11ea-8ceb-cfbe84b411d4.png" alt="Button screenshot with custom styles" width="239" />
@@ -34,7 +35,7 @@ By default, the container has a white background so it plays well with the butto
 }
 ```
 
-Take into consideration the container has a top box shadow that might not play well with some dark background colors. If needed, it can be modified directly setting the `color` property (internally, shadow color uses `currentColor`, so it honored the `color` property):
+Take into consideration the container has a top box shadow that might not play well with some dark background colors. If needed, it can be modified directly setting the `color` property (internally, shadow color uses `currentColor`, so it honors the `color` property):
 
 ```CSS
 .wc-block-cart__submit-container::before {
