@@ -47,7 +47,7 @@ alternatively, themes can override the `box-shadow` property completely:
 
 ```CSS
 .wc-block-cart__submit-container::before {
-	box-shadow: 0 -10px 20px 10px rgba(214,209,203,0.5);
+	box-shadow: 0 -10px 20px 10px rgba(214, 209, 203, 0.5);
 }
 ```
 
