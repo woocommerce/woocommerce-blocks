@@ -2,16 +2,13 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import Chip from '@woocommerce/base-components/chip';
+import { RemovableChip } from '@woocommerce/base-components/chip';
 
 const DropdownSelectorSelectedChip = ( { onRemoveItem, option } ) => {
 	return (
-		<Chip
+		<RemovableChip
 			className="wc-block-dropdown-selector__selected-chip wc-block-components-dropdown-selector__selected-chip"
 			removeOnAnyClick={ true }
-			onClick={ () => {
-				onRemoveItem( option.value );
-			} }
 			onRemove={ () => {
 				onRemoveItem( option.value );
 			} }

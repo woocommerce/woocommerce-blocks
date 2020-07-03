@@ -1,5 +1,78 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Chip should render children nodes 1`] = `
+<li
+  className="wc-block-components-chip wc-block-components-chip--radius-small"
+>
+  <span
+    aria-hidden={false}
+    className="wc-block-components-chip__text"
+  >
+    Test
+  </span>
+  Lorem Ipsum
+</li>
+`;
+
+exports[`Chip should render defined radius 1`] = `
+<li
+  className="wc-block-components-chip wc-block-components-chip--radius-large"
+>
+  <span
+    aria-hidden={false}
+    className="wc-block-components-chip__text"
+  >
+    Test
+  </span>
+</li>
+`;
+
+exports[`Chip should render nodes as the text 1`] = `
+<li
+  className="wc-block-components-chip wc-block-components-chip--radius-small"
+>
+  <span
+    aria-hidden={false}
+    className="wc-block-components-chip__text"
+  >
+    <h1>
+      Test
+    </h1>
+  </span>
+</li>
+`;
+
+exports[`Chip should render screen reader text 1`] = `
+<li
+  className="wc-block-components-chip wc-block-components-chip--radius-small"
+>
+  <span
+    aria-hidden={true}
+    className="wc-block-components-chip__text"
+  >
+    Test
+  </span>
+  <span
+    className="screen-reader-text"
+  >
+    Test 2
+  </span>
+</li>
+`;
+
+exports[`Chip should render text 1`] = `
+<li
+  className="wc-block-components-chip wc-block-components-chip--radius-small"
+>
+  <span
+    aria-hidden={false}
+    className="wc-block-components-chip__text"
+  >
+    Test
+  </span>
+</li>
+`;
+
 exports[`Chip with custom wrapper should render a chip made up of a div instead of a li 1`] = `
 <div
   className="wc-block-components-chip wc-block-components-chip--radius-small"
@@ -10,50 +83,20 @@ exports[`Chip with custom wrapper should render a chip made up of a div instead 
   >
     Test
   </span>
-  <button
-    aria-label="Remove \\"Test\\""
-    className="wc-block-components-chip__remove"
-    disabled={false}
-    onClick={[Function]}
-    onKeyDown={[Function]}
-  >
-    🗙
-  </button>
 </div>
 `;
 
-exports[`Chip with removeOnAnyClick should be a button when removeOnAnyClick is set to true 1`] = `
-<button
-  aria-label="Remove \\"Test\\""
-  className="wc-block-components-chip wc-block-components-chip--radius-small"
-  disabled={false}
-  onClick={[Function]}
-  onKeyDown={[Function]}
->
-  <span
-    aria-hidden={false}
-    className="wc-block-components-chip__text"
-  >
-    Test
-  </span>
-  <span
-    aria-hidden={true}
-    className="wc-block-components-chip__remove"
-  >
-    🗙
-  </span>
-</button>
-`;
-
-exports[`Chip without custom wrapper should render custom aria label 1`] = `
+exports[`RemovableChip should render custom aria label 1`] = `
 <li
-  className="wc-block-components-chip wc-block-components-chip--radius-small"
+  className="is-removable wc-block-components-chip wc-block-components-chip--radius-small"
 >
   <span
     aria-hidden={false}
     className="wc-block-components-chip__text"
   >
-    Test
+    <h1>
+      Test
+    </h1>
   </span>
   <button
     aria-label="Aria test"
@@ -67,42 +110,25 @@ exports[`Chip without custom wrapper should render custom aria label 1`] = `
 </li>
 `;
 
-exports[`Chip without custom wrapper should render defined radius 1`] = `
+exports[`RemovableChip should render default aria label if text is a node 1`] = `
 <li
-  className="wc-block-components-chip wc-block-components-chip--radius-large"
+  className="is-removable wc-block-components-chip wc-block-components-chip--radius-small"
 >
   <span
-    aria-hidden={false}
-    className="wc-block-components-chip__text"
-  >
-    Test
-  </span>
-  <button
-    aria-label="Remove \\"Test\\""
-    className="wc-block-components-chip__remove"
-    disabled={false}
-    onClick={[Function]}
-    onKeyDown={[Function]}
-  >
-    🗙
-  </button>
-</li>
-`;
-
-exports[`Chip without custom wrapper should render nodes as the text 1`] = `
-<li
-  className="wc-block-components-chip wc-block-components-chip--radius-small"
->
-  <span
-    aria-hidden={false}
+    aria-hidden={true}
     className="wc-block-components-chip__text"
   >
     <h1>
       Test
     </h1>
   </span>
+  <span
+    className="screen-reader-text"
+  >
+    Test 2
+  </span>
   <button
-    aria-label="Remove"
+    aria-label="Remove \\"Test 2\\""
     className="wc-block-components-chip__remove"
     disabled={false}
     onClick={[Function]}
@@ -113,9 +139,9 @@ exports[`Chip without custom wrapper should render nodes as the text 1`] = `
 </li>
 `;
 
-exports[`Chip without custom wrapper should render screen reader text 1`] = `
+exports[`RemovableChip should render screen reader text aria label 1`] = `
 <li
-  className="wc-block-components-chip wc-block-components-chip--radius-small"
+  className="is-removable wc-block-components-chip wc-block-components-chip--radius-small"
 >
   <span
     aria-hidden={true}
@@ -140,9 +166,9 @@ exports[`Chip without custom wrapper should render screen reader text 1`] = `
 </li>
 `;
 
-exports[`Chip without custom wrapper should render text and the remove button 1`] = `
+exports[`RemovableChip should render text and the remove button 1`] = `
 <li
-  className="wc-block-components-chip wc-block-components-chip--radius-small"
+  className="is-removable wc-block-components-chip wc-block-components-chip--radius-small"
 >
   <span
     aria-hidden={false}
@@ -162,9 +188,9 @@ exports[`Chip without custom wrapper should render text and the remove button 1`
 </li>
 `;
 
-exports[`Chip without custom wrapper should render with disabled remove button 1`] = `
+exports[`RemovableChip should render with disabled remove button 1`] = `
 <li
-  className="wc-block-components-chip wc-block-components-chip--radius-small"
+  className="is-removable wc-block-components-chip wc-block-components-chip--radius-small"
 >
   <span
     aria-hidden={false}
@@ -182,4 +208,27 @@ exports[`Chip without custom wrapper should render with disabled remove button 1
     🗙
   </button>
 </li>
+`;
+
+exports[`RemovableChip with removeOnAnyClick should be a button when removeOnAnyClick is set to true 1`] = `
+<button
+  aria-label="Remove \\"Test\\""
+  className="is-removable wc-block-components-chip wc-block-components-chip--radius-small"
+  disabled={false}
+  onClick={[Function]}
+  onKeyDown={[Function]}
+>
+  <span
+    aria-hidden={false}
+    className="wc-block-components-chip__text"
+  >
+    Test
+  </span>
+  <span
+    aria-hidden={true}
+    className="wc-block-components-chip__remove"
+  >
+    🗙
+  </span>
+</button>
 `;

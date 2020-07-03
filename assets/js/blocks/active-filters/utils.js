@@ -3,7 +3,7 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { formatPrice } from '@woocommerce/base-utils';
-import Chip from '@woocommerce/base-components/chip';
+import { RemovableChip } from '@woocommerce/base-components/chip';
 
 /**
  * Format a min/max price range to display.
@@ -82,7 +82,7 @@ export const renderRemovableListItem = ( {
 				</span>
 			) }
 			{ displayStyle === 'chips' ? (
-				<Chip
+				<RemovableChip
 					element="span"
 					text={ prefixedName }
 					onRemove={ removeCallback }

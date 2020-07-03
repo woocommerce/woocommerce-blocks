@@ -30,6 +30,8 @@
 	}
 	.wc-block-components-chip__text {
 		flex-grow: 1;
+	}
+	&.is-removable .wc-block-components-chip__text {
 		padding-right: 0.5em;
 	}
 	.wc-block-components-chip__remove {
