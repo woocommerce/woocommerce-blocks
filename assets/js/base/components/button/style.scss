@@ -2,7 +2,6 @@
 	@include reset-typography();
 	align-items: center;
 	background-color: $black;
-	border: 0;
 	color: $white;
 	display: inline-flex;
 	font-weight: bold;
@@ -15,15 +14,11 @@
 	text-transform: none;
 	position: relative;
 
+	&:disabled,
 	&:hover,
 	&:focus,
 	&:active {
 		background-color: $black;
-		color: $white;
-	}
-
-	&:disabled {
-		background-color: transparentize($black, 0.3);
 		color: $white;
 	}
 
