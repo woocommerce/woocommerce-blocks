@@ -15,6 +15,18 @@
 	text-transform: none;
 	position: relative;
 
+	&:hover,
+	&:focus,
+	&:active {
+		background-color: $black;
+		color: $white;
+	}
+
+	&:disabled {
+		background-color: transparentize($black, 0.3);
+		color: $white;
+	}
+
 	.wc-block-components-button__text {
 		display: block;
 
