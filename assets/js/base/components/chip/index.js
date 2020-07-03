@@ -26,8 +26,7 @@ const Chip = ( {
 	disabled = false,
 	radius = 'small',
 	removeOnAnyClick = false,
-	/* translators: Remove chip. */
-	ariaLabel = __( 'Remove', 'woo-gutenberg-products-block' ),
+	ariaLabel,
 	...props
 } ) => {
 	const Wrapper = removeOnAnyClick ? 'button' : element;
@@ -37,15 +36,25 @@ const Chip = ( {
 		'wc-block-components-chip--radius-' + radius
 	);
 	const RemoveElement = removeOnAnyClick ? 'span' : 'button';
-	const clickableElementProps = {
-		'aria-label':
-			ariaLabel || typeof text !== 'string'
-				? ariaLabel
+
+	if ( ! ariaLabel ) {
+		const ariaLabelText =
+			screenReaderText && typeof screenReaderText === 'string'
+				? screenReaderText
+				: text;
+		ariaLabel =
+			typeof ariaLabelText !== 'string'
+				? /* translators: Remove chip. */
+				  __( 'Remove', 'woo-gutenberg-products-block' )
 				: sprintf(
 						/* translators: %s text of the chip to remove. */
 						__( 'Remove "%s"', 'woo-gutenberg-products-block' ),
-						text
-				  ),
+						ariaLabelText
+				  );
+	}
+
+	const clickableElementProps = {
+		'aria-label': ariaLabel,
 		disabled,
 		onClick: onRemove,
 		onKeyDown: ( e ) => {
