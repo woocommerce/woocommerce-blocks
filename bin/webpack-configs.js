@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * External dependencies
  */
@@ -29,6 +30,7 @@ const dashIconReplacementModule = path.resolve(
 );
 
 const getCoreConfig = ( options = {} ) => {
+	const isLegacy = options.fileSuffix && options.fileSuffix === 'legacy';
 	return {
 		entry: getEntryConfig( 'core', options.exclude || [] ),
 		output: {
@@ -69,6 +71,15 @@ const getCoreConfig = ( options = {} ) => {
 					' [:bar] ' +
 					chalk.green( ':percent' ) +
 					' :msg (:elapsed seconds)',
+				summary: false,
+				customSummary: ( time ) => {
+					const prefix = isLegacy ? 'Legacy' : '';
+					console.log(
+						chalk.green.bold(
+							`${ prefix } Core assets build completed (${ time }s)`
+						)
+					);
+				},
 			} ),
 			new DependencyExtractionWebpackPlugin( { injectPolyfill: true } ),
 			new CreateFileWebpack( {
@@ -86,6 +97,7 @@ const getCoreConfig = ( options = {} ) => {
 const getMainConfig = ( options = {} ) => {
 	let { fileSuffix } = options;
 	const { alias, resolvePlugins = [] } = options;
+	const isLegacy = fileSuffix === 'legacy';
 	fileSuffix = fileSuffix ? `-${ fileSuffix }` : '';
 	const resolve = alias
 		? {
@@ -249,6 +261,15 @@ const getMainConfig = ( options = {} ) => {
 					' [:bar] ' +
 					chalk.green( ':percent' ) +
 					' :msg (:elapsed seconds)',
+				summary: false,
+				customSummary: ( time ) => {
+					const prefix = isLegacy ? 'Legacy' : '';
+					console.log(
+						chalk.green.bold(
+							`${ prefix } Main assets build completed (${ time }s)`
+						)
+					);
+				},
 			} ),
 			new DependencyExtractionWebpackPlugin( {
 				injectPolyfill: true,
@@ -267,6 +288,7 @@ const getMainConfig = ( options = {} ) => {
 const getFrontConfig = ( options = {} ) => {
 	let { fileSuffix } = options;
 	const { alias, resolvePlugins = [] } = options;
+	const isLegacy = fileSuffix === 'legacy';
 	fileSuffix = fileSuffix ? `-${ fileSuffix }` : '';
 	const resolve = alias
 		? {
@@ -348,6 +370,15 @@ const getFrontConfig = ( options = {} ) => {
 					' [:bar] ' +
 					chalk.green( ':percent' ) +
 					' :msg (:elapsed seconds)',
+				summary: false,
+				customSummary: ( time ) => {
+					const prefix = isLegacy ? 'Legacy' : '';
+					console.log(
+						chalk.green.bold(
+							`${ prefix } Frontend assets build completed (${ time }s)`
+						)
+					);
+				},
 			} ),
 			new DependencyExtractionWebpackPlugin( {
 				injectPolyfill: true,
@@ -365,6 +396,7 @@ const getFrontConfig = ( options = {} ) => {
 
 const getPaymentsConfig = ( options = {} ) => {
 	const { alias, resolvePlugins = [] } = options;
+	const isLegacy = options.fileSuffix && options.fileSuffix === 'legacy';
 	const resolve = alias
 		? {
 				alias,
@@ -477,6 +509,15 @@ const getPaymentsConfig = ( options = {} ) => {
 					' [:bar] ' +
 					chalk.green( ':percent' ) +
 					' :msg (:elapsed seconds)',
+				summary: false,
+				customSummary: ( time ) => {
+					const prefix = isLegacy ? 'Legacy' : '';
+					console.log(
+						chalk.green.bold(
+							`${ prefix } Payment Method Extension assets build completed (${ time }s)`
+						)
+					);
+				},
 			} ),
 			new DependencyExtractionWebpackPlugin( {
 				injectPolyfill: true,
