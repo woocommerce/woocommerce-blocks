@@ -86,9 +86,9 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 == Changelog ==
 
 = 2.9.0 - 2020-07-07 =
-- bug: Add storybook story for icon library [#2787](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/2787) 
-- dev: Add custom jest e2e matcher [#2780](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/2780) 
-- dev: Correctly sort states after translation on Block Checkout. [#2779](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/2779) 
+- bug: Add storybook story for icon library. [#2787](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/2787) 
+- dev: Add custom jest matcher `toRenderBlock`, used for confirming blocks are available in the editor in e2e tests.. [#2780](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/2780) 
+- dev: Correctly sort translated state and country drop-down menus in Checkout block. [#2779](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/2779) 
 - dev: Use consistent Button component in Cart & Checkout blocks. [#2781](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/2781) 
 
 
