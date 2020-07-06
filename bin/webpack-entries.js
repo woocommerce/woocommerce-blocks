@@ -14,6 +14,8 @@ const stable = {
 		'snackbar-notice-style':
 			'./node_modules/wordpress-components/src/snackbar/style.scss',
 
+		// Falta legacy
+		'wc-blocks-storybook-styles': glob.sync( './storybook/style.scss' ),
 		'wc-blocks-base-styles': glob.sync( './assets/js/base/**/*.scss' ),
 		'wc-blocks-atomic-styles': glob.sync( './assets/js/atomic/**/*.scss' ),
 		'wc-blocks-styles': glob.sync( './assets/js/blocks/**/*.scss', {
