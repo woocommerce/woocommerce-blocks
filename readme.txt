@@ -85,6 +85,13 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 2.9.0 - 2020-07-07 =
+- bug: Add storybook story for icon library [#2787](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/2787) 
+- dev: Add custom jest e2e matcher [#2780](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/2780) 
+- dev: Correctly sort states after translation on Block Checkout. [#2779](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/2779) 
+- dev: Use consistent Button component in Cart & Checkout blocks. [#2781](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/2781) 
+
+
 = 2.8.0 - 2020-06-23 =
 - bug: Cart and Checkout blocks display shipping methods with tax rates if that's how it's set in the settings. [#2748](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/2748)
 - bug: Fix an error appearing in the Product Categories List block with _Full Width_ align. [#2700](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/2700)
