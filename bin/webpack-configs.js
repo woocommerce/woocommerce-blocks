@@ -76,7 +76,7 @@ const getCoreConfig = ( options = {} ) => {
 					const prefix = isLegacy ? 'Legacy' : '';
 					console.log(
 						chalk.green.bold(
-							`${ prefix } Core assets build completed (${ time }s)`
+							`${ prefix } Core assets build completed (${ time })`
 						)
 					);
 				},
@@ -266,7 +266,7 @@ const getMainConfig = ( options = {} ) => {
 					const prefix = isLegacy ? 'Legacy' : '';
 					console.log(
 						chalk.green.bold(
-							`${ prefix } Main assets build completed (${ time }s)`
+							`${ prefix } Main assets build completed (${ time })`
 						)
 					);
 				},
@@ -375,7 +375,7 @@ const getFrontConfig = ( options = {} ) => {
 					const prefix = isLegacy ? 'Legacy' : '';
 					console.log(
 						chalk.green.bold(
-							`${ prefix } Frontend assets build completed (${ time }s)`
+							`${ prefix } Frontend assets build completed (${ time })`
 						)
 					);
 				},
@@ -514,7 +514,7 @@ const getPaymentsConfig = ( options = {} ) => {
 					const prefix = isLegacy ? 'Legacy' : '';
 					console.log(
 						chalk.green.bold(
-							`${ prefix } Payment Method Extension assets build completed (${ time }s)`
+							`${ prefix } Payment Method Extension assets build completed (${ time })`
 						)
 					);
 				},
