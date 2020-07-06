@@ -8,6 +8,7 @@ const {
 	getMainConfig,
 	getFrontConfig,
 	getPaymentsConfig,
+	getStylingConfig,
 } = require( './bin/webpack-configs.js' );
 
 // Only options shared between all configs should be defined here.
@@ -42,10 +43,6 @@ const MainConfig = {
 	...sharedConfig,
 	...getMainConfig( {
 		alias: getAlias(),
-		// This file is already imported by the All Products dependencies, so we can safely exclude
-		// it from the default build. It's still needed in the legacy build because it doesn't
-		// include the All Products block.
-		exclude: [ 'product-list-style' ],
 	} ),
 };
 
@@ -114,6 +111,11 @@ const LegacyFrontendConfig = {
 	} ),
 };
 
+const StylingConfig = {
+	...sharedConfig,
+	...getStylingConfig( { alias: getAlias() } ),
+};
+
 module.exports = [
 	CoreConfig,
 	MainConfig,
@@ -121,4 +123,5 @@ module.exports = [
 	PaymentsConfig,
 	LegacyMainConfig,
 	LegacyFrontendConfig,
+	StylingConfig,
 ];

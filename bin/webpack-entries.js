@@ -2,8 +2,27 @@
  * External dependencies
  */
 const { omit } = require( 'lodash' );
+const glob = require( 'glob' );
 
 const stable = {
+	styling: {
+		// @wordpress/components styles
+		'custom-select-control-style':
+			'./node_modules/wordpress-components/src/custom-select-control/style.scss',
+		'spinner-style':
+			'./node_modules/wordpress-components/src/spinner/style.scss',
+		'snackbar-notice-style':
+			'./node_modules/wordpress-components/src/snackbar/style.scss',
+
+		'wc-blocks-base-styles': glob.sync( './assets/js/base/**/*.scss' ),
+		'wc-blocks-atomic-styles': glob.sync( './assets/js/atomic/**/*.scss' ),
+		'wc-blocks-styles': glob.sync( './assets/js/blocks/**/*.scss', {
+			ignore: [
+				'./assets/js/blocks/**/stories/style.scss',
+				'./assets/js/blocks/single-product/**',
+			],
+		} ),
+	},
 	core: {
 		wcBlocksRegistry: './assets/js/blocks-registry/index.js',
 		wcSettings: './assets/js/settings/shared/index.js',
@@ -14,21 +33,6 @@ const stable = {
 	main: {
 		// Shared blocks code
 		blocks: './assets/js/index.js',
-
-		// @wordpress/components styles
-		'custom-select-control-style':
-			'./node_modules/wordpress-components/src/custom-select-control/style.scss',
-		'spinner-style':
-			'./node_modules/wordpress-components/src/spinner/style.scss',
-		'snackbar-notice-style':
-			'./node_modules/wordpress-components/src/snackbar/style.scss',
-
-		// Styles for grid blocks. WP <=5.2 doesn't have the All Products block,
-		// so this file would not be included if not explicitly declared here.
-		// This file is excluded from the default build so CSS styles are included
-		// in the other the components are imported.
-		'product-list-style':
-			'./assets/js/base/components/product-list/style.scss',
 
 		// Blocks
 		'handpicked-products':
@@ -55,8 +59,6 @@ const stable = {
 		'price-filter': './assets/js/blocks/price-filter/index.js',
 		'attribute-filter': './assets/js/blocks/attribute-filter/index.js',
 		'active-filters': './assets/js/blocks/active-filters/index.js',
-		'block-error-boundary':
-			'./assets/js/base/components/block-error-boundary/style.scss',
 		cart: './assets/js/blocks/cart-checkout/cart/index.js',
 		checkout: './assets/js/blocks/cart-checkout/checkout/index.js',
 	},
@@ -82,6 +84,11 @@ const stable = {
 };
 
 const experimental = {
+	styling: {
+		'single-product': glob.sync(
+			'./assets/js/blocks/single-product/**/*.scss'
+		),
+	},
 	core: {},
 	main: {
 		'single-product': './assets/js/blocks/single-product/index.js',
