@@ -72,7 +72,7 @@ const getCoreConfig = ( options = {} ) => {
 			} ),
 			new DependencyExtractionWebpackPlugin( { injectPolyfill: true } ),
 			new CreateFileWebpack( {
-				path: '../',
+				path: './',
 				// file name
 				fileName: 'blocks.ini',
 				// content of the file
