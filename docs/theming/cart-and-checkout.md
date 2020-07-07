@@ -43,7 +43,7 @@ Take into consideration the container has a top box shadow that might not play w
 }
 ```
 
-alternatively, themes can override the `box-shadow` property completely:
+Alternatively, themes can override the `box-shadow` property completely:
 
 ```CSS
 .wc-block-cart__submit-container::before {
