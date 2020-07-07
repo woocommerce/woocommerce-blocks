@@ -3,17 +3,20 @@
  */
 import { registerPaymentMethod } from '@woocommerce/blocks-registry';
 import { __ } from '@wordpress/i18n';
+import { getSetting } from '@woocommerce/settings';
+import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Internal dependencies
  */
 import { PAYMENT_METHOD_NAME } from './constants';
 
+const settings = getSetting( 'bacs_data', {} );
 const defaultLabel = __(
 	'Direct bank transfer',
 	'woo-gutenberg-products-block'
 );
-const label = defaultLabel;
+const label = decodeEntities( settings.title ) || defaultLabel;
 
 /**
  * @typedef {import('@woocommerce/type-defs/registered-payment-method-props').RegisteredPaymentMethodProps} RegisteredPaymentMethodProps
@@ -23,7 +26,7 @@ const label = defaultLabel;
  * Content component
  */
 const Content = () => {
-	return <div>Bank tranfer stuff</div>;
+	return <div>{ decodeEntities( settings.description || '' ) }</div>;
 };
 
 /**

@@ -74,6 +74,9 @@ final class BankTransfer extends AbstractPaymentMethodType {
 	 * @return array
 	 */
 	public function get_payment_method_data() {
-		return [];
+		return [
+			'title'       => isset( $this->settings['title'] ) ? $this->settings['title'] : '',
+			'description' => isset( $this->settings['description'] ) ? $this->settings['description'] : '',
+		];
 	}
 }
