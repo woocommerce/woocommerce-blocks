@@ -14,11 +14,7 @@ const stable = {
 		'snackbar-notice-style':
 			'./node_modules/wordpress-components/src/snackbar/style.scss',
 
-		// Falta legacy
-		'wc-blocks-storybook-styles': glob.sync( './storybook/style.scss' ),
-		'wc-blocks-base-styles': glob.sync( './assets/js/base/**/*.scss' ),
-		'wc-blocks-atomic-styles': glob.sync( './assets/js/atomic/**/*.scss' ),
-		'wc-blocks-styles': glob.sync( './assets/js/blocks/**/*.scss', {
+		'wc-blocks-styles': glob.sync( './assets/**/*.scss', {
 			ignore: [
 				'./assets/js/blocks/**/stories/style.scss',
 				'./assets/js/blocks/single-product/**',
@@ -87,7 +83,7 @@ const stable = {
 
 const experimental = {
 	styling: {
-		'single-product': glob.sync(
+		'single-product-styles': glob.sync(
 			'./assets/js/blocks/single-product/**/*.scss'
 		),
 	},
