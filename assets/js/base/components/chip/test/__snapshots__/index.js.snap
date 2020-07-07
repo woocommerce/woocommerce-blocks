@@ -105,7 +105,20 @@ exports[`RemovableChip should render custom aria label 1`] = `
     onClick={[Function]}
     onKeyDown={[Function]}
   >
-    🗙
+    <svg
+      aria-hidden="true"
+      className="dashicon dashicons-arrow-down-alt2"
+      focusable="false"
+      height={16}
+      role="img"
+      viewBox="0 0 20 20"
+      width={16}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M14.95 6.46L11.41 10l3.54 3.54-1.41 1.41L10 11.42l-3.53 3.53-1.42-1.42L8.58 10 5.05 6.47l1.42-1.42L10 8.58l3.54-3.53z"
+      />
+    </svg>
   </button>
 </li>
 `;
@@ -134,7 +147,20 @@ exports[`RemovableChip should render default aria label if text is a node 1`] = 
     onClick={[Function]}
     onKeyDown={[Function]}
   >
-    🗙
+    <svg
+      aria-hidden="true"
+      className="dashicon dashicons-arrow-down-alt2"
+      focusable="false"
+      height={16}
+      role="img"
+      viewBox="0 0 20 20"
+      width={16}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M14.95 6.46L11.41 10l3.54 3.54-1.41 1.41L10 11.42l-3.53 3.53-1.42-1.42L8.58 10 5.05 6.47l1.42-1.42L10 8.58l3.54-3.53z"
+      />
+    </svg>
   </button>
 </li>
 `;
@@ -161,7 +187,20 @@ exports[`RemovableChip should render screen reader text aria label 1`] = `
     onClick={[Function]}
     onKeyDown={[Function]}
   >
-    🗙
+    <svg
+      aria-hidden="true"
+      className="dashicon dashicons-arrow-down-alt2"
+      focusable="false"
+      height={16}
+      role="img"
+      viewBox="0 0 20 20"
+      width={16}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M14.95 6.46L11.41 10l3.54 3.54-1.41 1.41L10 11.42l-3.53 3.53-1.42-1.42L8.58 10 5.05 6.47l1.42-1.42L10 8.58l3.54-3.53z"
+      />
+    </svg>
   </button>
 </li>
 `;
@@ -183,7 +222,20 @@ exports[`RemovableChip should render text and the remove button 1`] = `
     onClick={[Function]}
     onKeyDown={[Function]}
   >
-    🗙
+    <svg
+      aria-hidden="true"
+      className="dashicon dashicons-arrow-down-alt2"
+      focusable="false"
+      height={16}
+      role="img"
+      viewBox="0 0 20 20"
+      width={16}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M14.95 6.46L11.41 10l3.54 3.54-1.41 1.41L10 11.42l-3.53 3.53-1.42-1.42L8.58 10 5.05 6.47l1.42-1.42L10 8.58l3.54-3.53z"
+      />
+    </svg>
   </button>
 </li>
 `;
@@ -205,7 +257,20 @@ exports[`RemovableChip should render with disabled remove button 1`] = `
     onClick={[Function]}
     onKeyDown={[Function]}
   >
-    🗙
+    <svg
+      aria-hidden="true"
+      className="dashicon dashicons-arrow-down-alt2"
+      focusable="false"
+      height={16}
+      role="img"
+      viewBox="0 0 20 20"
+      width={16}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M14.95 6.46L11.41 10l3.54 3.54-1.41 1.41L10 11.42l-3.53 3.53-1.42-1.42L8.58 10 5.05 6.47l1.42-1.42L10 8.58l3.54-3.53z"
+      />
+    </svg>
   </button>
 </li>
 `;
@@ -228,7 +293,20 @@ exports[`RemovableChip with removeOnAnyClick should be a button when removeOnAny
     aria-hidden={true}
     className="wc-block-components-chip__remove"
   >
-    🗙
+    <svg
+      aria-hidden="true"
+      className="dashicon dashicons-arrow-down-alt2"
+      focusable="false"
+      height={16}
+      role="img"
+      viewBox="0 0 20 20"
+      width={16}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M14.95 6.46L11.41 10l3.54 3.54-1.41 1.41L10 11.42l-3.53 3.53-1.42-1.42L8.58 10 5.05 6.47l1.42-1.42L10 8.58l3.54-3.53z"
+      />
+    </svg>
   </span>
 </button>
 `;

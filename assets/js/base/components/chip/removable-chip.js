@@ -4,6 +4,7 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { __, sprintf } from '@wordpress/i18n';
+import { Icon, noAlt } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
@@ -71,7 +72,7 @@ const RemovableChip = ( {
 				className="wc-block-components-chip__remove"
 				{ ...removeProps }
 			>
-				🗙
+				<Icon srcElement={ noAlt } size={ 16 } />
 			</RemoveElement>
 		</Chip>
 	);
