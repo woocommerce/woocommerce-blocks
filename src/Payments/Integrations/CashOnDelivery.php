@@ -56,6 +56,15 @@ final class CashOnDelivery extends AbstractPaymentMethodType {
 	}
 
 	/**
+	 * Return enable_for_virtual option.
+	 *
+	 * @return boolean True if store allows COD payment for orders containing only virtual products.
+	 */
+	private function get_enable_for_virtual() {
+		return isset( $this->settings['enable_for_virtual'] ) && 'yes' === $this->settings['enable_for_virtual'];
+	}
+
+	/**
 	 * Returns an array of scripts/handles to be registered for this payment method.
 	 *
 	 * @return array
@@ -74,9 +83,11 @@ final class CashOnDelivery extends AbstractPaymentMethodType {
 	 * @return array
 	 */
 	public function get_payment_method_data() {
+		$allow_virtual = ! empty( $this->settings['enable_for_virtual'] ) && 'yes' === $this->settings['enable_for_virtual'];
 		return [
-			'title'       => isset( $this->settings['title'] ) ? $this->settings['title'] : '',
-			'description' => isset( $this->settings['description'] ) ? $this->settings['description'] : '',
+			'title'            => isset( $this->settings['title'] ) ? $this->settings['title'] : '',
+			'description'      => isset( $this->settings['description'] ) ? $this->settings['description'] : '',
+			'enableForVirtual' => $this->get_enable_for_virtual(),
 		];
 	}
 }
