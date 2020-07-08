@@ -47,6 +47,9 @@ table.wc-block-cart-items {
 			width: 100%;
 			margin: 0;
 		}
+		.wc-block-cart-item__backorder-notification {
+			@include font-size(smaller);
+		}
 		.wc-block-cart-item__quantity {
 			.wc-block-cart-item__remove-link {
 				@include link-button;

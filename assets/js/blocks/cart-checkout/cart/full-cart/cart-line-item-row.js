@@ -45,6 +45,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 		short_description: shortDescription = '',
 		description: fullDescription = '',
 		low_stock_remaining: lowStockRemaining = null,
+		show_backorder_notification: showBackorderNotification = false,
 		quantity_limit: quantityLimit = 99,
 		permalink = '',
 		images = [],
@@ -117,6 +118,14 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 					fullDescription={ fullDescription }
 					variation={ variation }
 				/>
+				{ showBackorderNotification && (
+					<p className="wc-block-cart-item__backorder-notification">
+						{ __(
+							'Available on backorder',
+							'woo-gutenberg-products-block'
+						) }
+					</p>
+				) }
 			</td>
 			<td className="wc-block-cart-item__quantity">
 				<QuantitySelector
