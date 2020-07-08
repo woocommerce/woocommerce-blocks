@@ -40,6 +40,22 @@ const Label = ( props ) => {
 };
 
 /**
+ * Determine whether COD is available for this cart/order.
+ *
+ * @param boolean cartNeedsShipping True if the cart contains any physical/shippable products.
+ * @return boolean True if COD payment method should be displayed as a payment option.
+ */
+const canMakePayment = ( { cartNeedsShipping } ) => {
+	// If store allows COD for virtual orders, good to go.
+	if ( settings.enableForVirtual ) {
+		return true;
+	}
+
+	// Otherwise COD is only available if the cart needs shipping.
+	return cartNeedsShipping;
+};
+
+/**
  * Cash on Delivery (COD) payment method config object.
  */
 const cashOnDeliveryPaymentMethod = {
@@ -48,7 +64,7 @@ const cashOnDeliveryPaymentMethod = {
 	content: <Content />,
 	edit: <Content />,
 	icons: null,
-	canMakePayment: () => true,
+	canMakePayment,
 	ariaLabel: label,
 };
 
