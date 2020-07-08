@@ -45,14 +45,28 @@ const Label = ( props ) => {
  * @param boolean cartNeedsShipping True if the cart contains any physical/shippable products.
  * @return boolean True if COD payment method should be displayed as a payment option.
  */
-const canMakePayment = ( { cartNeedsShipping } ) => {
-	// If store allows COD for virtual orders, good to go.
-	if ( settings.enableForVirtual ) {
+const canMakePayment = ( { cartNeedsShipping, selectedShippingMethods } ) => {
+	if ( ! settings.enableForVirtual && ! cartNeedsShipping ) {
+		// Store doesn't allow COD for virtual orders AND
+		// order doesn't contain any shippable products.
+		return false;
+	}
+
+	if ( ! settings.enableForShippingMethods ) {
+		// Store does not limit COD to specific shipping methods.
 		return true;
 	}
 
-	// Otherwise COD is only available if the cart needs shipping.
-	return cartNeedsShipping;
+	// Look for an not-supported shipping method in the user's selected
+	// shipping methods. If one is found, then COD is not allowed.
+	const selectedNotSupported = Object.values( selectedShippingMethods ).find(
+		( shippingMethodId ) => {
+			return ! settings.enableForShippingMethods.includes(
+				shippingMethodId
+			);
+		}
+	);
+	return ! selectedNotSupported;
 };
 
 /**

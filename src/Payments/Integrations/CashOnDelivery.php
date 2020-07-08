@@ -65,6 +65,16 @@ final class CashOnDelivery extends AbstractPaymentMethodType {
 	}
 
 	/**
+	 * Return enable_for_methods option.
+	 *
+	 * @return array Array of shipping methods (string ids) that allow COD. (If empty, all support COD.)
+	 */
+	private function get_enable_for_methods() {
+		return $this->settings['enable_for_methods'];
+	}
+
+
+	/**
 	 * Returns an array of scripts/handles to be registered for this payment method.
 	 *
 	 * @return array
@@ -83,11 +93,11 @@ final class CashOnDelivery extends AbstractPaymentMethodType {
 	 * @return array
 	 */
 	public function get_payment_method_data() {
-		$allow_virtual = ! empty( $this->settings['enable_for_virtual'] ) && 'yes' === $this->settings['enable_for_virtual'];
 		return [
-			'title'            => isset( $this->settings['title'] ) ? $this->settings['title'] : '',
-			'description'      => isset( $this->settings['description'] ) ? $this->settings['description'] : '',
-			'enableForVirtual' => $this->get_enable_for_virtual(),
+			'title'                    => isset( $this->settings['title'] ) ? $this->settings['title'] : '',
+			'description'              => isset( $this->settings['description'] ) ? $this->settings['description'] : '',
+			'enableForVirtual'         => $this->get_enable_for_virtual(),
+			'enableForShippingMethods' => $this->get_enable_for_methods(),
 		];
 	}
 }
