@@ -4,6 +4,116 @@
 const { omit } = require( 'lodash' );
 const glob = require( 'glob' );
 
+const blocks = {
+	'handpicked-products': {
+		dir: 'handpicked-products',
+	},
+	'product-best-sellers': {
+		dir: 'product-best-sellers',
+	},
+	'product-category': {
+		dir: 'product-category',
+	},
+	'product-categories': {
+		dir: 'product-categories',
+	},
+	'product-new': {
+		dir: 'product-new',
+	},
+	'product-on-sale': {
+		dir: 'product-on-sale',
+	},
+	'product-top-rated': {
+		dir: 'product-top-rated',
+	},
+	'products-by-attribute': {
+		dir: 'products-by-attribute',
+	},
+	'featured-product': {
+		dir: 'featured-product',
+	},
+	'all-reviews': {
+		dir: 'reviews/all-reviews',
+		frontend: 'reviews/frontend.js',
+	},
+	'reviews-by-product': {
+		dir: 'reviews/reviews-by-product',
+		frontend: 'reviews/frontend.js',
+	},
+	'reviews-by-category': {
+		dir: 'reviews/reviews-by-category',
+		frontend: 'reviews/frontend.js',
+	},
+	'product-search': {
+		dir: 'product-search',
+	},
+	'product-tag': {
+		dir: 'product-tag',
+	},
+	'featured-category': {
+		dir: 'featured-category',
+	},
+	'all-products': {
+		dir: 'products/all-products',
+		frontend: 'products/all-products/frontend.js',
+	},
+	'price-filter': {
+		dir: 'price-filter',
+		frontend: 'price-filter/frontend.js',
+	},
+	'attribute-filter': {
+		dir: 'attribute-filter',
+		frontend: 'attribute-filter/frontend.js',
+	},
+	'active-filters': {
+		dir: 'active-filters',
+		frontend: 'active-filters/frontend.js',
+	},
+	cart: {
+		dir: 'cart-checkout/cart',
+		frontend: 'cart-checkout/cart/frontend.js',
+	},
+	checkout: {
+		dir: 'cart-checkout/checkout',
+		frontend: 'cart-checkout/checkout/frontend.js',
+	},
+	'single-product': {
+		dir: 'single-product',
+		frontend: 'single-product/frontend.js',
+		isExperimental: true,
+	},
+};
+
+const getBlockEntries = ( type, experimental = false ) => {
+	return Object.fromEntries(
+		Object.entries( blocks )
+			.filter(
+				( [ , config ] ) =>
+					config.hasOwnProperty( type ) &&
+					( ! config.isExperimental ||
+						config.isExperimental === experimental )
+			)
+			.map( ( [ blockCode, config ] ) => [
+				blockCode,
+				'./assets/js/blocks/' + config[ type ],
+			] )
+	);
+};
+
+const getStyleBlockEntries = ( experimental = false ) => {
+	const entries = getBlockEntries( 'dir', experimental );
+	return Object.fromEntries(
+		Object.entries( entries )
+			.map( ( [ blockCode, dir ] ) => {
+				return [
+					`${ blockCode }-styles`,
+					glob.sync( `${ dir }/**/*.scss` ),
+				];
+			} )
+			.filter( ( [ , blockEntries ] ) => blockEntries.length )
+	);
+};
+
 const stable = {
 	styling: {
 		// @wordpress/components styles
@@ -14,12 +124,14 @@ const stable = {
 		'snackbar-notice-style':
 			'./node_modules/wordpress-components/src/snackbar/style.scss',
 
-		'wc-blocks-styles': glob.sync( './assets/**/*.scss', {
+		'block-styles': glob.sync( './assets/**/*.scss', {
 			ignore: [
-				'./assets/js/blocks/**/stories/style.scss',
-				'./assets/js/blocks/single-product/**',
+				'./assets/js/**/stories/style.scss',
+				'./assets/js/blocks/*/*.scss',
 			],
 		} ),
+
+		...getStyleBlockEntries(),
 	},
 	core: {
 		wcBlocksRegistry: './assets/js/blocks-registry/index.js',
@@ -33,41 +145,10 @@ const stable = {
 		blocks: './assets/js/index.js',
 
 		// Blocks
-		'handpicked-products':
-			'./assets/js/blocks/handpicked-products/index.js',
-		'product-best-sellers':
-			'./assets/js/blocks/product-best-sellers/index.js',
-		'product-category': './assets/js/blocks/product-category/index.js',
-		'product-categories': './assets/js/blocks/product-categories/index.js',
-		'product-new': './assets/js/blocks/product-new/index.js',
-		'product-on-sale': './assets/js/blocks/product-on-sale/index.js',
-		'product-top-rated': './assets/js/blocks/product-top-rated/index.js',
-		'products-by-attribute':
-			'./assets/js/blocks/products-by-attribute/index.js',
-		'featured-product': './assets/js/blocks/featured-product/index.js',
-		'all-reviews': './assets/js/blocks/reviews/all-reviews/index.js',
-		'reviews-by-product':
-			'./assets/js/blocks/reviews/reviews-by-product/index.js',
-		'reviews-by-category':
-			'./assets/js/blocks/reviews/reviews-by-category/index.js',
-		'product-search': './assets/js/blocks/product-search/index.js',
-		'product-tag': './assets/js/blocks/product-tag/index.js',
-		'featured-category': './assets/js/blocks/featured-category/index.js',
-		'all-products': './assets/js/blocks/products/all-products/index.js',
-		'price-filter': './assets/js/blocks/price-filter/index.js',
-		'attribute-filter': './assets/js/blocks/attribute-filter/index.js',
-		'active-filters': './assets/js/blocks/active-filters/index.js',
-		cart: './assets/js/blocks/cart-checkout/cart/index.js',
-		checkout: './assets/js/blocks/cart-checkout/checkout/index.js',
+		...getBlockEntries( 'dir' ),
 	},
 	frontend: {
-		reviews: './assets/js/blocks/reviews/frontend.js',
-		'all-products': './assets/js/blocks/products/all-products/frontend.js',
-		'price-filter': './assets/js/blocks/price-filter/frontend.js',
-		'attribute-filter': './assets/js/blocks/attribute-filter/frontend.js',
-		'active-filters': './assets/js/blocks/active-filters/frontend.js',
-		cart: './assets/js/blocks/cart-checkout/cart/frontend.js',
-		checkout: './assets/js/blocks/cart-checkout/checkout/frontend.js',
+		...getBlockEntries( 'frontend' ),
 	},
 	payments: {
 		'wc-payment-method-stripe':
@@ -83,16 +164,14 @@ const stable = {
 
 const experimental = {
 	styling: {
-		'single-product-styles': glob.sync(
-			'./assets/js/blocks/single-product/**/*.scss'
-		),
+		...getStyleBlockEntries( true ),
 	},
 	core: {},
 	main: {
-		'single-product': './assets/js/blocks/single-product/index.js',
+		...getBlockEntries( 'dir', true ),
 	},
 	frontend: {
-		'single-product': './assets/js/blocks/single-product/frontend.js',
+		...getBlockEntries( 'frontend', true ),
 	},
 	payments: {},
 };

@@ -62,6 +62,14 @@ const PaymentsConfig = {
 };
 
 /**
+ * Config to generate the CSS files.
+ */
+const StylingConfig = {
+	...sharedConfig,
+	...getStylingConfig( { alias: getAlias() } ),
+};
+
+/**
  * Legacy Configs are for builds targeting < WP5.3 and handle backwards compatibility and disabling
  * unsupported features.
  */
@@ -111,9 +119,27 @@ const LegacyFrontendConfig = {
 	} ),
 };
 
-const StylingConfig = {
+const LegacyStylingConfig = {
 	...sharedConfig,
-	...getStylingConfig( { alias: getAlias() } ),
+	...getStylingConfig( {
+		fileSuffix: 'legacy',
+		resolvePlugins: [
+			new FallbackModuleDirectoryPlugin(
+				'/legacy/',
+				'/',
+				getAlias( { pathPart: 'legacy' } )
+			),
+		],
+		exclude: [
+			'all-products',
+			'price-filter',
+			'attribute-filter',
+			'active-filters',
+			'checkout',
+			'cart',
+			'single-product',
+		],
+	} ),
 };
 
 module.exports = [
@@ -121,7 +147,8 @@ module.exports = [
 	MainConfig,
 	FrontendConfig,
 	PaymentsConfig,
+	StylingConfig,
 	LegacyMainConfig,
 	LegacyFrontendConfig,
-	StylingConfig,
+	LegacyStylingConfig,
 ];

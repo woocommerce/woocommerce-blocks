@@ -48,138 +48,6 @@ const getProgressBarPluginConfig = ( name, fileSuffix ) => {
 	};
 };
 
-const getStylingConfig = ( options = {} ) => {
-	let { fileSuffix } = options;
-	const { alias, resolvePlugins = [] } = options;
-	fileSuffix = fileSuffix ? `-${ fileSuffix }` : '';
-	const resolve = alias
-		? {
-				alias,
-				plugins: resolvePlugins,
-		  }
-		: {
-				plugins: resolvePlugins,
-		  };
-	return {
-		entry: getEntryConfig( 'styling', options.exclude || [] ),
-		output: {
-			devtoolNamespace: 'wc',
-			path: path.resolve( __dirname, '../build/' ),
-			filename: `[name]${ fileSuffix }.js`,
-			library: [ 'wc', 'blocks', '[name]' ],
-			libraryTarget: 'this',
-			// This fixes an issue with multiple webpack projects using chunking
-			// overwriting each other's chunk loader function.
-			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
-			jsonpFunction: 'webpackWcBlocksJsonp',
-		},
-		optimization: {
-			splitChunks: {
-				minSize: 0,
-				cacheGroups: {
-					editor: {
-						// Capture all `editor` stylesheets and the components stylesheets.
-						test: ( module = {} ) =>
-							module.constructor.name === 'CssModule' &&
-							( findModuleMatch( module, /editor\.scss$/ ) ||
-								findModuleMatch(
-									module,
-									/[\\/]assets[\\/]js[\\/]components[\\/]/
-								) ),
-						name: 'editor',
-						chunks: 'all',
-						priority: 10,
-					},
-					'vendors-style': {
-						test: /\/node_modules\/.*?style\.s?css$/,
-						name: 'vendors-style',
-						chunks: 'all',
-						priority: 7,
-					},
-					style: {
-						test: /style\.scss$/,
-						name: 'style',
-						chunks: 'all',
-						priority: 5,
-					},
-				},
-			},
-		},
-		module: {
-			rules: [
-				{
-					test: /\/node_modules\/.*?style\.s?css$/,
-					use: [
-						MiniCssExtractPlugin.loader,
-						{ loader: 'css-loader', options: { importLoaders: 1 } },
-						'postcss-loader',
-						{
-							loader: 'sass-loader',
-							query: {
-								includePaths: [ 'node_modules' ],
-								data: [
-									'colors',
-									'breakpoints',
-									'variables',
-									'mixins',
-									'animations',
-									'z-index',
-								]
-									.map(
-										( imported ) =>
-											`@import "~@wordpress/base-styles/${ imported }";`
-									)
-									.join( ' ' ),
-							},
-						},
-					],
-				},
-				{
-					test: /\.s?css$/,
-					exclude: /node_modules/,
-					use: [
-						MiniCssExtractPlugin.loader,
-						{ loader: 'css-loader', options: { importLoaders: 1 } },
-						'postcss-loader',
-						{
-							loader: 'sass-loader',
-							query: {
-								includePaths: [ 'assets/css/abstracts' ],
-								data: [
-									'_colors',
-									'_variables',
-									'_breakpoints',
-									'_mixins',
-								]
-									.map(
-										( imported ) =>
-											`@import "${ imported }";`
-									)
-									.join( ' ' ),
-							},
-						},
-					],
-				},
-			],
-		},
-		plugins: [
-			new ProgressBarPlugin(
-				getProgressBarPluginConfig( 'Styles', options.fileSuffix )
-			),
-			new WebpackRTLPlugin( {
-				filename: `[name]${ fileSuffix }-rtl.css`,
-				minify: {
-					safe: true,
-				},
-			} ),
-			new MiniCssExtractPlugin( {
-				filename: `[name]${ fileSuffix }.css`,
-			} ),
-		],
-		resolve,
-	};
-};
-
 const getCoreConfig = ( options = {} ) => {
 	return {
 		entry: getEntryConfig( 'core', options.exclude || [] ),
@@ -541,6 +409,138 @@ const getPaymentsConfig = ( options = {} ) => {
 				/dashicon/,
 				( result ) => ( result.resource = dashIconReplacementModule )
 			),
+		],
+		resolve,
+	};
+};
+
+const getStylingConfig = ( options = {} ) => {
+	let { fileSuffix } = options;
+	const { alias, resolvePlugins = [] } = options;
+	fileSuffix = fileSuffix ? `-${ fileSuffix }` : '';
+	const resolve = alias
+		? {
+				alias,
+				plugins: resolvePlugins,
+		  }
+		: {
+				plugins: resolvePlugins,
+		  };
+	return {
+		entry: getEntryConfig( 'styling', options.exclude || [] ),
+		output: {
+			devtoolNamespace: 'wc',
+			path: path.resolve( __dirname, '../build/' ),
+			filename: `[name]${ fileSuffix }.js`,
+			library: [ 'wc', 'blocks', '[name]' ],
+			libraryTarget: 'this',
+			// This fixes an issue with multiple webpack projects using chunking
+			// overwriting each other's chunk loader function.
+			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
+			jsonpFunction: 'webpackWcBlocksJsonp',
+		},
+		optimization: {
+			splitChunks: {
+				minSize: 0,
+				cacheGroups: {
+					editor: {
+						// Capture all `editor` stylesheets and the components stylesheets.
+						test: ( module = {} ) =>
+							module.constructor.name === 'CssModule' &&
+							( findModuleMatch( module, /editor\.scss$/ ) ||
+								findModuleMatch(
+									module,
+									/[\\/]assets[\\/]js[\\/]components[\\/]/
+								) ),
+						name: 'editor',
+						chunks: 'all',
+						priority: 10,
+					},
+					'vendors-style': {
+						test: /\/node_modules\/.*?style\.s?css$/,
+						name: 'vendors-style',
+						chunks: 'all',
+						priority: 7,
+					},
+					style: {
+						test: /style\.scss$/,
+						name: 'style',
+						chunks: 'all',
+						priority: 5,
+					},
+				},
+			},
+		},
+		module: {
+			rules: [
+				{
+					test: /\/node_modules\/.*?style\.s?css$/,
+					use: [
+						MiniCssExtractPlugin.loader,
+						{ loader: 'css-loader', options: { importLoaders: 1 } },
+						'postcss-loader',
+						{
+							loader: 'sass-loader',
+							query: {
+								includePaths: [ 'node_modules' ],
+								data: [
+									'colors',
+									'breakpoints',
+									'variables',
+									'mixins',
+									'animations',
+									'z-index',
+								]
+									.map(
+										( imported ) =>
+											`@import "~@wordpress/base-styles/${ imported }";`
+									)
+									.join( ' ' ),
+							},
+						},
+					],
+				},
+				{
+					test: /\.s?css$/,
+					exclude: /node_modules/,
+					use: [
+						MiniCssExtractPlugin.loader,
+						{ loader: 'css-loader', options: { importLoaders: 1 } },
+						'postcss-loader',
+						{
+							loader: 'sass-loader',
+							query: {
+								includePaths: [ 'assets/css/abstracts' ],
+								data: [
+									'_colors',
+									'_variables',
+									'_breakpoints',
+									'_mixins',
+								]
+									.map(
+										( imported ) =>
+											`@import "${ imported }";`
+									)
+									.join( ' ' ),
+							},
+						},
+					],
+				},
+			],
+		},
+		plugins: [
+			new ProgressBarPlugin(
+				getProgressBarPluginConfig( 'Styles', options.fileSuffix )
+			),
+			new WebpackRTLPlugin( {
+				filename: `[name]${ fileSuffix }-rtl.css`,
+				minify: {
+					safe: true,
+				},
+			} ),
+			new MiniCssExtractPlugin( {
+				filename: `[name]${ fileSuffix }.css`,
+			} ),
 		],
 		resolve,
 	};
