@@ -86,7 +86,7 @@ const blocks = {
 
 const getBlockEntries = ( type ) => {
 	const experimental =
-		parseInt( process.env.WOOCOMMERCE_BLOCKS_PHASE, 10 ) < 3;
+		! parseInt( process.env.WOOCOMMERCE_BLOCKS_PHASE, 10 ) < 3;
 
 	return Object.fromEntries(
 		Object.entries( blocks )
