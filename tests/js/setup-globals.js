@@ -30,6 +30,10 @@ global.wcSettings = {
 	},
 };
 
+global.jQuery = () => ( {
+	on: () => void null,
+} );
+
 const wordPressPackages = [
 	'blocks',
 	'components',
