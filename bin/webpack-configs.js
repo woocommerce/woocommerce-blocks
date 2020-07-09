@@ -543,7 +543,7 @@ const getStylingConfig = ( options = {} ) => {
 				filename: `[name]${ fileSuffix }.css`,
 			} ),
 			new MergeExtractFilesPlugin(
-				`./build/*-styles${ fileSuffix }.js`,
+				`./build/*-style${ fileSuffix }.js`,
 				`build/vendors${ fileSuffix }.js`
 			),
 		],
