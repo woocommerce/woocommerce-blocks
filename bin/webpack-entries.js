@@ -84,7 +84,10 @@ const blocks = {
 	},
 };
 
-const getBlockEntries = ( type, experimental = false ) => {
+const getBlockEntries = ( type ) => {
+	const experimental =
+		parseInt( process.env.WOOCOMMERCE_BLOCKS_PHASE, 10 ) < 3;
+
 	return Object.fromEntries(
 		Object.entries( blocks )
 			.filter(
@@ -100,8 +103,8 @@ const getBlockEntries = ( type, experimental = false ) => {
 	);
 };
 
-const getStyleBlockEntries = ( experimental = false ) => {
-	const entries = getBlockEntries( 'dir', experimental );
+const getStyleBlockEntries = () => {
+	const entries = getBlockEntries( 'dir' );
 	return Object.fromEntries(
 		Object.entries( entries )
 			.map( ( [ blockCode, dir ] ) => {
@@ -114,7 +117,7 @@ const getStyleBlockEntries = ( experimental = false ) => {
 	);
 };
 
-const stable = {
+const entries = {
 	styling: {
 		// @wordpress/components styles
 		'custom-select-control-style':
@@ -162,27 +165,8 @@ const stable = {
 	},
 };
 
-const experimental = {
-	styling: {
-		...getStyleBlockEntries( true ),
-	},
-	core: {},
-	main: {
-		...getBlockEntries( 'dir', true ),
-	},
-	frontend: {
-		...getBlockEntries( 'frontend', true ),
-	},
-	payments: {},
-};
-
 const getEntryConfig = ( type = 'main', exclude = [] ) => {
-	return omit(
-		parseInt( process.env.WOOCOMMERCE_BLOCKS_PHASE, 10 ) < 3
-			? stable[ type ]
-			: { ...stable[ type ], ...experimental[ type ] },
-		exclude
-	);
+	return omit( entries[ type ], exclude );
 };
 
 module.exports = {
