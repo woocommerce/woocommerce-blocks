@@ -11,6 +11,7 @@ import {
 	CartProvider,
 } from '@woocommerce/base-context';
 import { translateJQueryEventToNative } from '@woocommerce/base-utils';
+import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 
 /**
  * Internal dependencies
@@ -20,13 +21,14 @@ import FullCart from './full-cart';
 // Make it so we can read jQuery events triggered by WC Core elements.
 translateJQueryEventToNative( 'added_to_cart', 'wc-blocks_added_to_cart' );
 
-const Block = ( { emptyCart, attributes } ) => {
+const Block = ( { emptyCart, attributes, scrollToTop } ) => {
 	const { cartItems, cartIsLoading } = useStoreCart();
 
 	useEffect( () => {
 		const invalidateCartData = () => {
 			if ( cartItems.length === 0 ) {
 				dispatch( storeKey ).invalidateResolutionForStore();
+				scrollToTop();
 			}
 		};
 
@@ -61,4 +63,4 @@ const Block = ( { emptyCart, attributes } ) => {
 	);
 };
 
-export default Block;
+export default withScrollToTop( Block );
