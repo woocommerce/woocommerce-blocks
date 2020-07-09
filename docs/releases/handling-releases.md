@@ -51,7 +51,7 @@ _Outcome_: __There is a branch on origin repo for the release.__ (Note - it may 
 
 #### Create a release pull request
 
-Using the [release pull request template](../../.github/release_pull_request_template.md), create a pull request for the release branch. This contains a checklist to go over, and serves as a place to contain all planning/communication around the release. The release process can span a few days, so it's this PR is an essential way for the team to keep track.
+Using the [release pull request template](../../.github/release_pull_request_template.md), create a pull request for the release branch. This contains a checklist to go over, and serves as a place to contain all planning/communication around the release. The release process can span a few days, so this PR is an essential way for the team to keep track.
 
 You'll work through the checklist over the rest of the process below. The PR will remain open and unmerged until the release is live - you'll merge it much later (see `After release` below).
 
