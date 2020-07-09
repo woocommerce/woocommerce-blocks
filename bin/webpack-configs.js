@@ -3,6 +3,7 @@
  * External dependencies
  */
 const path = require( 'path' );
+const MergeExtractFilesPlugin = require( './merge-extract-files-webpack-plugin' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const ProgressBarPlugin = require( 'progress-bar-webpack-plugin' );
 const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
@@ -541,6 +542,10 @@ const getStylingConfig = ( options = {} ) => {
 			new MiniCssExtractPlugin( {
 				filename: `[name]${ fileSuffix }.css`,
 			} ),
+			new MergeExtractFilesPlugin(
+				`./build/*-styles${ fileSuffix }.js`,
+				`build/vendors${ fileSuffix }.js`
+			),
 		],
 		resolve,
 	};
