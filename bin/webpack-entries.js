@@ -34,15 +34,12 @@ const blocks = {
 	},
 	'all-reviews': {
 		dir: 'reviews/all-reviews',
-		frontend: 'reviews/frontend.js',
 	},
 	'reviews-by-product': {
 		dir: 'reviews/reviews-by-product',
-		frontend: 'reviews/frontend.js',
 	},
 	'reviews-by-category': {
 		dir: 'reviews/reviews-by-category',
-		frontend: 'reviews/frontend.js',
 	},
 	'product-search': {
 		dir: 'product-search',
@@ -151,6 +148,7 @@ const entries = {
 		...getBlockEntries( 'dir' ),
 	},
 	frontend: {
+		reviews: './assets/js/blocks/reviews/frontend.js',
 		...getBlockEntries( 'frontend' ),
 	},
 	payments: {
