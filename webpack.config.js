@@ -123,13 +123,6 @@ const LegacyStylingConfig = {
 	...sharedConfig,
 	...getStylingConfig( {
 		fileSuffix: 'legacy',
-		resolvePlugins: [
-			new FallbackModuleDirectoryPlugin(
-				'/legacy/',
-				'/',
-				getAlias( { pathPart: 'legacy' } )
-			),
-		],
 		exclude: [
 			'all-products',
 			'price-filter',

@@ -81,6 +81,24 @@ const blocks = {
 	},
 };
 
+// Extracts a property from each object in the `blocks` array.
+// For example, given `type=frontend`, it converts an array like
+// [
+// 	cart: {
+// 		dir: 'cart-checkout/cart',
+// 		frontend: 'cart-checkout/cart/frontend.js',
+// 	},
+// 	checkout: {
+// 		dir: 'cart-checkout/checkout',
+// 		frontend: 'cart-checkout/checkout/frontend.js',
+// 	}
+// ]
+// into
+// [
+// 	cart: 'cart-checkout/cart/frontend.js',
+// 	checkout: 'cart-checkout/checkout/frontend.js',
+// ]
+// It also filters out elements with undefined props and experimental blocks.
 const getBlockEntries = ( type ) => {
 	const experimental =
 		! parseInt( process.env.WOOCOMMERCE_BLOCKS_PHASE, 10 ) < 3;
@@ -100,12 +118,16 @@ const getBlockEntries = ( type ) => {
 	);
 };
 
+// Generates an array of CSS entries from the `blocks` array based on the `dir`
+// property of each block. All block styles should be `scss` files inside that
+// directory.
 const getStyleBlockEntries = () => {
 	const entries = getBlockEntries( 'dir' );
+
 	return Object.fromEntries(
 		Object.entries( entries )
 			.map( ( [ blockCode, dir ] ) => {
-				return [ `${ blockCode }`, glob.sync( `${ dir }/**/*.scss` ) ];
+				return [ blockCode, glob.sync( `${ dir }/**/*.scss` ) ];
 			} )
 			.filter( ( [ , blockEntries ] ) => blockEntries.length )
 	);
@@ -123,7 +145,7 @@ const entries = {
 
 		'general-style': glob.sync( './assets/**/*.scss', {
 			ignore: [
-				'./assets/js/**/stories/style.scss',
+				// Block styles are added below.
 				'./assets/js/blocks/*/*.scss',
 			],
 		} ),
