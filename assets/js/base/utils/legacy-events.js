@@ -45,6 +45,10 @@ export const translateJQueryEventToNative = (
 	cancelable = false
 ) => {
 	// @ts-ignore -- jQuery is window global
+	if ( typeof jQuery !== 'function' ) {
+		return;
+	}
+	// @ts-ignore -- jQuery is window global
 	jQuery( document ).on( jQueryEventName, () => {
 		dispatchEvent( nativeEventName, bubbles, cancelable );
 	} );
