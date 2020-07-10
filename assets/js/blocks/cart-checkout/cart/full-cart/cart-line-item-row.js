@@ -9,6 +9,7 @@ import { getCurrency } from '@woocommerce/base-utils';
 import { useStoreCartItemQuantity } from '@woocommerce/base-hooks';
 import { Icon, trash } from '@woocommerce/icons';
 import {
+	ProductBackorderNotification,
 	ProductImage,
 	ProductLowStockBadge,
 	ProductMetadata,
@@ -113,19 +114,14 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 					disabled={ isPendingDelete }
 				/>
 				<ProductLowStockBadge lowStockRemaining={ lowStockRemaining } />
+				{ showBackorderNotification && (
+					<ProductBackorderNotification />
+				) }
 				<ProductMetadata
 					shortDescription={ shortDescription }
 					fullDescription={ fullDescription }
 					variation={ variation }
 				/>
-				{ showBackorderNotification && (
-					<p className="wc-block-cart-item__backorder-notification">
-						{ __(
-							'Available on backorder',
-							'woo-gutenberg-products-block'
-						) }
-					</p>
-				) }
 			</td>
 			<td className="wc-block-cart-item__quantity">
 				<QuantitySelector
