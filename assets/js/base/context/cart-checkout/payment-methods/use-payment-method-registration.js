@@ -11,7 +11,7 @@ import {
 	useEditorContext,
 	useShippingDataContext,
 } from '@woocommerce/base-context';
-import { useStoreCart } from '@woocommerce/base-hooks';
+import { useStoreCart, useShallowEqual } from '@woocommerce/base-hooks';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
 
 /**
@@ -54,10 +54,8 @@ const usePaymentMethodRegistration = (
 ) => {
 	const [ isInitialized, setIsInitialized ] = useState( false );
 	const { isEditor } = useEditorContext();
-	const {
-		selectedRates: selectedShippingMethods,
-		shippingAddress,
-	} = useShippingDataContext();
+	const { selectedRates, shippingAddress } = useShippingDataContext();
+	const selectedShippingMethods = useShallowEqual( selectedRates );
 	const { cartTotals, cartNeedsShipping } = useStoreCart();
 	const canPayArgument = useRef( {
 		cartTotals,
