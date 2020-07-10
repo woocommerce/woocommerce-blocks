@@ -355,46 +355,14 @@ const getPaymentsConfig = ( options = {} ) => {
 					},
 				},
 				{
-					test: /\.s?css$/,
-					exclude: /node_modules/,
-					use: [
-						MiniCssExtractPlugin.loader,
-						{ loader: 'css-loader', options: { importLoaders: 1 } },
-						'postcss-loader',
-						{
-							loader: 'sass-loader',
-							query: {
-								includePaths: [
-									'assets/css/abstracts',
-									'node_modules',
-								],
-								data: [
-									'_colors',
-									'_variables',
-									'_breakpoints',
-									'_mixins',
-								]
-									.map(
-										( imported ) =>
-											`@import "${ imported }";`
-									)
-									.join( ' ' ),
-							},
-						},
-					],
+					test: /\.s[c|a]ss$/,
+					use: {
+						loader: 'ignore-loader',
+					},
 				},
 			],
 		},
 		plugins: [
-			new WebpackRTLPlugin( {
-				filename: `[name]-rtl.css`,
-				minify: {
-					safe: true,
-				},
-			} ),
-			new MiniCssExtractPlugin( {
-				filename: `[name].css`,
-			} ),
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig(
 					'Payment Method Extensions',
