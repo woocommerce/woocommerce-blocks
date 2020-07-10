@@ -464,7 +464,9 @@ const getStylingConfig = ( options = {} ) => {
 						priority: 7,
 					},
 					style: {
-						test: /style\.scss$/,
+						// Capture all stylesheets with name `style` or
+						// name that starts with underscore (abstracts).
+						test: /(style|_.*)\.scss$/,
 						name: 'style',
 						chunks: 'all',
 						priority: 5,

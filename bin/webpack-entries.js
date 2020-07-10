@@ -124,7 +124,7 @@ const entries = {
 		'snackbar-notice-style':
 			'./node_modules/wordpress-components/src/snackbar/style.scss',
 
-		'block-style': glob.sync( './assets/**/*.scss', {
+		'general-style': glob.sync( './assets/**/*.scss', {
 			ignore: [
 				'./assets/js/**/stories/style.scss',
 				'./assets/js/blocks/*/*.scss',
