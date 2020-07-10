@@ -9,11 +9,11 @@ import { __ } from '@wordpress/i18n';
 import ProductBadge from '../product-badge';
 
 /**
- * Returns a low stock badge.
+ * Returns a backorder notification badge.
  */
 const ProductBackorderNotification = () => {
 	return (
-		<ProductBadge className="wc-block-cart-item__backorder-notification">
+		<ProductBadge className="wc-block-components-product-backorder-notification">
 			{ __( 'Available on backorder', 'woo-gutenberg-products-block' ) }
 		</ProductBadge>
 	);
