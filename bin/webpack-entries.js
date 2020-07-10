@@ -105,10 +105,7 @@ const getStyleBlockEntries = () => {
 	return Object.fromEntries(
 		Object.entries( entries )
 			.map( ( [ blockCode, dir ] ) => {
-				return [
-					`${ blockCode }-style`,
-					glob.sync( `${ dir }/**/*.scss` ),
-				];
+				return [ `${ blockCode }`, glob.sync( `${ dir }/**/*.scss` ) ];
 			} )
 			.filter( ( [ , blockEntries ] ) => blockEntries.length )
 	);
