@@ -52,7 +52,7 @@ final class BankTransfer extends AbstractPaymentMethodType {
 	 * @return boolean
 	 */
 	public function is_active() {
-		return ! empty( $this->settings['enabled'] ) && 'yes' === $this->settings['enabled'];
+		return filter_var( $this->settings['enabled'], FILTER_VALIDATE_BOOLEAN );
 	}
 
 	/**
