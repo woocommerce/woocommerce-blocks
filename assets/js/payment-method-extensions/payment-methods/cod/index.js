@@ -59,7 +59,7 @@ const canMakePayment = ( { cartNeedsShipping, selectedShippingMethods } ) => {
 
 	// Look for an not-supported shipping method in the user's selected
 	// shipping methods. If one is found, then COD is not allowed.
-	const selectedNotSupported = Object.values( selectedShippingMethods ).find(
+	const selectedNotSupported = Object.values( selectedShippingMethods ).some(
 		( shippingMethodId ) => {
 			return ! settings.enableForShippingMethods.includes(
 				shippingMethodId
