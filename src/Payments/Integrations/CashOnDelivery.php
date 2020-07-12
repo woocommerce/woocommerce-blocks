@@ -3,7 +3,7 @@
  * Cash on Delivery (COD) (core) gateway implementation.
  *
  * @package WooCommerce/Blocks
- * @since 2.10.0
+ * @since $VID:$
  */
 
 namespace Automattic\WooCommerce\Blocks\Payments\Integrations;
@@ -13,7 +13,7 @@ use Automattic\WooCommerce\Blocks\Assets\Api;
 /**
  * Cash on Delivery (COD) payment method integration
  *
- * @since 2.10.0
+ * @since $VID:$
  */
 final class CashOnDelivery extends AbstractPaymentMethodType {
 	/**
