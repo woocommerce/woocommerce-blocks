@@ -15,8 +15,17 @@ import {
 	useEditorContext,
 	useValidationContext,
 } from '@woocommerce/base-context';
+import {
+	useStoreCart,
+	usePaymentMethods,
+	useStoreNotices,
+	useCheckoutAddress,
 import { useStoreCart, useStoreNotices } from '@woocommerce/base-hooks';
+import {
+	CheckoutExpressPayment,
+	PaymentMethods,
 import { CheckoutExpressPayment } from '@woocommerce/base-components/payment-methods';
+import { decodeEntities } from '@wordpress/html-entities';
 import {
 	Sidebar,
 	SidebarLayout,
@@ -47,6 +56,29 @@ const Block = ( props ) => {
 			<Checkout { ...props } />
 		</CheckoutProvider>
 	);
+};
+
+/**
+ * Renders a shipping rate control option.
+ *
+ * @param {Object} option Shipping Rate.
+ */
+const renderShippingRatesControlOption = ( option ) => {
+	const priceWithTaxes = DISPLAY_CART_PRICES_INCLUDING_TAX
+		? parseInt( option.price, 10 ) + parseInt( option.taxes, 10 )
+		: parseInt( option.price, 10 );
+	return {
+		label: decodeEntities( option.name ),
+		value: option.rate_id,
+		description: decodeEntities( option.description ),
+		secondaryLabel: (
+			<FormattedMonetaryAmount
+				currency={ getCurrencyFromPriceResponse( option ) }
+				value={ priceWithTaxes }
+			/>
+		),
+		secondaryDescription: decodeEntities( option.delivery_time ),
+	};
 };
 
 /**
@@ -91,6 +123,10 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		return <CheckoutOrderError />;
 	}
 
+	const loginToCheckoutUrl = `/wp-login.php?redirect_to=${ encodeURIComponent(
+		window.location.href
+	) }`;
+
 	if ( ! isEditor && ! customerId && ! CHECKOUT_ALLOWS_GUEST ) {
 		return (
 			<>
@@ -117,6 +153,58 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 				<Main className="wc-block-checkout__main">
 					{ cartNeedsPayment && <CheckoutExpressPayment /> }
 					<CheckoutForm
+						<FormStep
+							id="contact-fields"
+							disabled={ checkoutIsProcessing }
+							className="wc-block-checkout__contact-fields"
+							title={ __(
+								'Contact information',
+								'woo-gutenberg-products-block'
+							) }
+							description={ __(
+								"We'll use this email to send you details and updates about your order.",
+								'woo-gutenberg-products-block'
+							) }
+							stepHeadingContent={ loginPrompt }
+						>
+							<ValidatedTextInput
+								id="email"
+								type="email"
+								label={ __(
+									'Email address',
+									'woo-gutenberg-products-block'
+								) }
+								value={ billingFields.email }
+								autoComplete="email"
+								onChange={ setEmail }
+								required={ true }
+							/>
+							<CheckboxControl
+								className="wc-block-checkout__create-account"
+								label={ __(
+									'Create an account?',
+									'woo-gutenberg-products-block'
+								) }
+								checked={ false }
+								onChange={ () => {} }
+							/>
+						</FormStep>
+						{ needsShipping && (
+							<FormStep
+								id="shipping-fields"
+								disabled={ checkoutIsProcessing }
+								className="wc-block-checkout__shipping-fields"
+								title={ __(
+									'Shipping address',
+									'woo-gutenberg-products-block'
+								) }
+								description={ __(
+									'Enter the physical address where you want us to deliver your order.',
+									'woo-gutenberg-products-block'
+								) }
+							>
+								<AddressForm
+									id="shipping"
 						showApartmentField={ attributes.showApartmentField }
 						showCompanyField={ attributes.showCompanyField }
 						showOrderNotes={ attributes.showOrderNotes }
