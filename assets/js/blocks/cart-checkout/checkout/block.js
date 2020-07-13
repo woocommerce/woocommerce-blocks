@@ -8,7 +8,15 @@ import {
 	PlaceOrderButton,
 	Policies,
 	ReturnToCartButton,
+	ShippingRatesControl,
+	SignupForm,
 } from '@woocommerce/base-components/cart-checkout';
+import {
+	getCurrencyFromPriceResponse,
+	getShippingRatesPackageCount,
+	getShippingRatesRateCount,
+} from '@woocommerce/base-utils';
+import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import {
 	CheckoutProvider,
 	useCheckoutContext,
@@ -33,7 +41,14 @@ import {
 } from '@woocommerce/base-components/sidebar-layout';
 import { getSetting } from '@woocommerce/settings';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
-import { CHECKOUT_ALLOWS_GUEST } from '@woocommerce/block-settings';
+import {
+	CHECKOUT_SHOW_LOGIN_REMINDER,
+	CHECKOUT_ALLOWS_GUEST,
+	CHECKOUT_ALLOWS_SIGNUP,
+	DISPLAY_CART_PRICES_INCLUDING_TAX,
+	SIGNUP_GENERATE_USERNAME,
+	SIGNUP_GENERATE_PASSWORD,
+} from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -144,6 +159,20 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		);
 	}
 
+	const loginPrompt = () =>
+		CHECKOUT_SHOW_LOGIN_REMINDER &&
+		! customerId && (
+			<>
+				{ __(
+					'Already have an account? ',
+					'woo-gutenberg-products-block'
+				) }
+				<a href={ loginToCheckoutUrl }>
+					{ __( 'Log in.', 'woo-gutenberg-products-block' ) }
+				</a>
+			</>
+		);
+
 	const checkoutClassName = classnames( 'wc-block-checkout', {
 		'has-dark-controls': attributes.hasDarkControls,
 	} );
@@ -179,15 +208,16 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 								onChange={ setEmail }
 								required={ true }
 							/>
-							<CheckboxControl
-								className="wc-block-checkout__create-account"
-								label={ __(
-									'Create an account?',
-									'woo-gutenberg-products-block'
-								) }
-								checked={ false }
-								onChange={ () => {} }
-							/>
+							{ CHECKOUT_ALLOWS_SIGNUP && (
+								<SignupForm
+									showUsernameField={
+										! SIGNUP_GENERATE_USERNAME
+									}
+									showPasswordField={
+										! SIGNUP_GENERATE_PASSWORD
+									}
+								/>
+							) }
 						</FormStep>
 						{ needsShipping && (
 							<FormStep
