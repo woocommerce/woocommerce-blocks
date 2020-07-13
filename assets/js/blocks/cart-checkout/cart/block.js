@@ -18,13 +18,6 @@ import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
  */
 import FullCart from './full-cart';
 
-// Make it so we can read jQuery events triggered by WC Core elements.
-translateJQueryEventToNative( 'added_to_cart', 'wc-blocks_added_to_cart' );
-translateJQueryEventToNative(
-	'removed_from_cart',
-	'wc-blocks_removed_from_cart'
-);
-
 const Block = ( { emptyCart, attributes, scrollToTop } ) => {
 	const { cartItems, cartIsLoading } = useStoreCart();
 
@@ -33,6 +26,16 @@ const Block = ( { emptyCart, attributes, scrollToTop } ) => {
 			dispatch( storeKey ).invalidateResolutionForStore();
 			scrollToTop();
 		};
+
+		// Make it so we can read jQuery events triggered by WC Core elements.
+		const removeJQueryAddedToCartEvent = translateJQueryEventToNative(
+			'added_to_cart',
+			'wc-blocks_added_to_cart'
+		);
+		const removeJQueryRemovedFromCartEvent = translateJQueryEventToNative(
+			'removed_from_cart',
+			'wc-blocks_removed_from_cart'
+		);
 
 		document.body.addEventListener(
 			'wc-blocks_added_to_cart',
@@ -44,6 +47,9 @@ const Block = ( { emptyCart, attributes, scrollToTop } ) => {
 		);
 
 		return () => {
+			removeJQueryAddedToCartEvent();
+			removeJQueryRemovedFromCartEvent();
+
 			document.body.removeEventListener(
 				'wc-blocks_added_to_cart',
 				invalidateCartData

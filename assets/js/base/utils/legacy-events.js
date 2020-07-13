@@ -37,6 +37,9 @@ export const triggerFragmentRefresh = () => {
  * @param {string}  nativeEventName Name of the native event to dispatch.
  * @param {boolean} bubbles         Whether the event bubbles.
  * @param {boolean} cancelable      Whether the event is cancelable.
+ *
+ * @returns {Function} Function to remove the jQuery event handler. Ideally it
+ * should be used when the component is unmounted.
  */
 export const translateJQueryEventToNative = (
 	jQueryEventName,
@@ -46,10 +49,15 @@ export const translateJQueryEventToNative = (
 ) => {
 	// @ts-ignore -- jQuery is window global
 	if ( typeof jQuery !== 'function' ) {
-		return;
+		return () => void null;
 	}
-	// @ts-ignore -- jQuery is window global
-	jQuery( document ).on( jQueryEventName, () => {
+
+	const eventDispatcher = () => {
 		dispatchEvent( nativeEventName, bubbles, cancelable );
-	} );
+	};
+
+	// @ts-ignore -- jQuery is window global
+	jQuery( document ).on( jQueryEventName, eventDispatcher );
+	// @ts-ignore -- jQuery is window global
+	return () => jQuery( document ).off( jQueryEventName, eventDispatcher );
 };
