@@ -53,7 +53,7 @@ const Block = ( { emptyCart, attributes, scrollToTop } ) => {
 				invalidateCartData
 			);
 		};
-	}, [ cartItems.length, scrollToTop ] );
+	}, [ scrollToTop ] );
 
 	return (
 		<>
