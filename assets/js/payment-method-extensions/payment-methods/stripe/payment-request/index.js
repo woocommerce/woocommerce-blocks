@@ -16,20 +16,21 @@ const ApplePayPreview = () => <img src={ applePayImage } alt="" />;
 const canPayStripePromise = loadStripe();
 const componentStripePromise = loadStripe();
 
-let apiInitialized = false,
+let isStripeInitialized = false,
 	canPay = false;
 
 // Initialise stripe API client and determine if payment method can be used
 // in current environment (e.g. geo + shopper has payment settings configured).
 function paymentRequestAvailable( currencyCode ) {
 	// If we've already initialised, return the cached results.
-	if ( apiInitialized ) {
+	if ( isStripeInitialized ) {
 		return canPay;
 	}
 
 	return canPayStripePromise.then( ( stripe ) => {
 		if ( stripe === null ) {
-			return false;
+			isStripeInitialized = true;
+			return canPay;
 		}
 		// Do a test payment to confirm if payment method is available.
 		const paymentRequest = stripe.paymentRequest( {
@@ -42,7 +43,7 @@ function paymentRequestAvailable( currencyCode ) {
 		} );
 		return paymentRequest.canMakePayment().then( ( result ) => {
 			canPay = !! result;
-			apiInitialized = true;
+			isStripeInitialized = true;
 			return canPay;
 		} );
 	} );
