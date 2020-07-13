@@ -12,6 +12,12 @@ import CheckboxControl from '@woocommerce/base-components/checkbox-control';
  */
 const SignupForm = ( {
 	instanceId: id,
+	createAccount = false,
+	username = '',
+	password = '',
+	setCreateAccount = () => {},
+	setUsername = () => {},
+	setPassword = () => {},
 	showUsernameField = false,
 	showPasswordField = false,
 } ) => {
@@ -25,8 +31,8 @@ const SignupForm = ( {
 					'Create an account?',
 					'woo-gutenberg-products-block'
 				) }
-				checked={ false }
-				onChange={ () => {} }
+				checked={ createAccount }
+				onChange={ ( value ) => setCreateAccount( value ) }
 			/>
 			{ showUsernameField && (
 				<ValidatedTextInput
@@ -37,19 +43,22 @@ const SignupForm = ( {
 						'woo-gutenberg-products-block'
 					) }
 					required={ true }
-					onChange={ () => {} }
+					value={ username }
+					onChange={ ( value ) => setUsername( value ) }
 				/>
 			) }
 			{ showPasswordField && (
 				<ValidatedTextInput
 					id={ `${ id }-password` }
 					className={ 'wc-block-components-signup-form__password' }
+					type="password"
 					label={ __(
 						'Create account password',
 						'woo-gutenberg-products-block'
 					) }
 					required={ true }
-					onChange={ () => {} }
+					value={ password }
+					onChange={ ( value ) => setPassword( value ) }
 				/>
 			) }
 		</div>
@@ -57,6 +66,12 @@ const SignupForm = ( {
 };
 
 SignupForm.propTypes = {
+	createAccount: PropTypes.bool,
+	username: PropTypes.string,
+	password: PropTypes.string,
+	setCreateAccount: PropTypes.func,
+	setUsername: PropTypes.func,
+	setPassword: PropTypes.func,
 	showUsernameField: PropTypes.bool,
 	showPasswordField: PropTypes.bool,
 };
