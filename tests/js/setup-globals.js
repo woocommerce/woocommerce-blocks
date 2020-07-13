@@ -32,6 +32,7 @@ global.wcSettings = {
 
 global.jQuery = () => ( {
 	on: () => void null,
+	off: () => void null,
 } );
 
 const wordPressPackages = [
