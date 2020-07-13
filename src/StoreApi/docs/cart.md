@@ -115,7 +115,7 @@ All endpoints under `/cart` (listed in this doc) return responses in the same fo
       "sku": "woo-beanie",
       "low_stock_remaining": null,
       "backorders_allowed": false,
-      "show_backorder_notification": false,
+      "show_backorder_badge": false,
       "sold_individually": false,
       "permalink": "https:\/\/local.wordpress.test\/product\/beanie\/",
       "images": [
@@ -175,7 +175,7 @@ All endpoints under `/cart` (listed in this doc) return responses in the same fo
       "sku": "wp-pennant",
       "low_stock_remaining": null,
       "backorders_allowed": false,
-      "show_backorder_notification": false,
+      "show_backorder_badge": false,
       "sold_individually": false,
       "permalink": "https:\/\/local.wordpress.test\/product\/wordpress-pennant\/",
       "images": [

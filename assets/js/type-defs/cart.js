@@ -143,7 +143,7 @@
  * @property {boolean}             backorders_allowed  True if backorders are
  *                                                     allowed past stock
  *                                                     availability.
- * @property {boolean}             show_backorder_notification  Whether a notification
+ * @property {boolean}             show_backorder_badge  Whether a notification
  *                                                     should be shown about the
  *                                                     product being available on
  *                                                     backorder.

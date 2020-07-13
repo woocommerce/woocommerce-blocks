@@ -35,7 +35,7 @@ curl "https://example-store.com/wp-json/wc/store/cart/items"
     "sku": "woo-beanie",
     "low_stock_remaining": null,
     "backorders_allowed": false,
-    "show_backorder_notification": false,
+    "show_backorder_badge": false,
     "sold_individually": false,
     "permalink": "https:\/\/local.wordpress.test\/product\/beanie\/",
     "images": [
@@ -107,7 +107,7 @@ curl "https://example-store.com/wp-json/wc/store/cart/items"
     "sku": "wp-pennant",
     "low_stock_remaining": null,
     "backorders_allowed": false,
-    "show_backorder_notification": false,
+    "show_backorder_badge": false,
     "sold_individually": false,
     "permalink": "https:\/\/local.wordpress.test\/product\/wordpress-pennant\/",
     "images": [
@@ -201,7 +201,7 @@ curl "https://example-store.com/wp-json/wc/store/cart/items/e369853df766fa44e1ed
   "sku": "wp-pennant",
   "low_stock_remaining": null,
   "backorders_allowed": false,
-  "show_backorder_notification": false,
+  "show_backorder_badge": false,
   "sold_individually": false,
   "permalink": "https:\/\/local.wordpress.test\/product\/wordpress-pennant\/",
   "images": [
