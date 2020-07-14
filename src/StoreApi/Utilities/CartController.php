@@ -61,7 +61,7 @@ class CartController {
 					'woocommerce_rest_cart_product_sold_individually',
 					sprintf(
 						/* translators: %s: product name */
-						__( '"%s" is already inside your cart.', 'woo-gutenberg-products-block' ),
+						__( 'You cannot add another "%s" to your cart.', 'woo-gutenberg-products-block' ),
 						$product->get_name()
 					),
 					400
@@ -130,7 +130,7 @@ class CartController {
 				'woocommerce_rest_cart_product_sold_individually',
 				sprintf(
 					/* translators: %s: product name */
-					__( '"%s" is already inside your cart.', 'woo-gutenberg-products-block' ),
+					__( 'You cannot add another "%s" to your cart.', 'woo-gutenberg-products-block' ),
 					$product->get_name()
 				),
 				400
