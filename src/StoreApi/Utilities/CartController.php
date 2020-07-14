@@ -311,7 +311,7 @@ class CartController {
 
 		/**
 		 * Fire action to validate add to cart. Functions hooking into this should throw an \Exception to prevent
-		 * add to cart from occuring.
+		 * add to cart from occurring.
 		 *
 		 * @param \WC_Product $product Product object being added to the cart.
 		 * @param array       $cart_item Cart item array.
