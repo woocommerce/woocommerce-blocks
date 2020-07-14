@@ -12,11 +12,11 @@ import { Toolbar } from '@wordpress/components';
 import HeadingLevelIcon from './heading-level-icon';
 
 /**
- * HeadingToolbar component.
+ * HeadingSwitcher component.
  *
  * Allows the heading level to be chosen for a title block.
  */
-class HeadingToolbar extends Component {
+class HeadingSwitcher extends Component {
 	createLevelControl( targetLevel, selectedLevel, onChange ) {
 		const isActive = targetLevel === selectedLevel;
 		return {
@@ -49,4 +49,4 @@ class HeadingToolbar extends Component {
 	}
 }
 
-export default HeadingToolbar;
+export default HeadingSwitcher;

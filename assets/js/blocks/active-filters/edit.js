@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { Disabled, PanelBody, withSpokenMessages } from '@wordpress/components';
-import HeadingToolbar from '@woocommerce/block-components/heading-toolbar';
+import { HeadingSwitcher } from '@woocommerce/block-components/heading-control';
 import BlockTitle from '@woocommerce/block-components/block-title';
 
 /**
@@ -60,7 +60,7 @@ const Edit = ( { attributes, setAttributes } ) => {
 							'woo-gutenberg-products-block'
 						) }
 					</p>
-					<HeadingToolbar
+					<HeadingSwitcher
 						isCollapsed={ false }
 						minLevel={ 2 }
 						maxLevel={ 7 }
