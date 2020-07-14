@@ -26,10 +26,11 @@ class NoticeHandler {
 	 *
 	 * @throws RouteException If an error notice is detected, Exception is thrown.
 	 *
-	 * @param string $error_code Error code for the thrown exceptions.
+	 * @param string  $error_code           Error code for the thrown exceptions.
+	 * @param integer $initial_notice_count Notice count to consider as the base. Default to 0.
 	 */
-	public static function convert_notices_to_exceptions( $error_code = 'unknown_server_error' ) {
-		if ( 0 === wc_notice_count( 'error' ) ) {
+	public static function convert_notices_to_exceptions( $error_code = 'unknown_server_error', $initial_notice_count = 0 ) {
+		if ( wc_notice_count( 'error' ) === $initial_notice_count ) {
 			return;
 		}
 

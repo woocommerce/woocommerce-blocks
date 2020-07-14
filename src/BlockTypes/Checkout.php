@@ -190,7 +190,13 @@ class Checkout extends AbstractBlock {
 		}
 		if ( ! $data_registry->exists( 'checkoutData' ) ) {
 			add_filter( 'woocommerce_store_api_disable_nonce_check', '__return_true' );
-			$data_registry->add( 'checkoutData', WC()->api->get_endpoint_data( '/wc/store/checkout' ) );
+			$checkout_data = WC()->api->get_endpoint_data( '/wc/store/checkout' );
+			$notices       = wc_get_notices( 'error' );
+			if ( is_array( $notices ) && count( $notices ) > 0 ) {
+				$notice        = wp_strip_all_tags( $notices[0]['notice'] );
+				$checkout_data = array_merge( $checkout_data, [ 'notice' => $notice ] );
+			}
+			$data_registry->add( 'checkoutData', $checkout_data );
 			remove_filter( 'woocommerce_store_api_disable_nonce_check', '__return_true' );
 		}
 	}
