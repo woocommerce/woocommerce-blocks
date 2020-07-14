@@ -189,7 +189,7 @@ const CheckoutProcessor = () => {
 			billing_address: currentBillingData.current,
 			shipping_address: currentShippingAddress.current,
 			customer_note: orderNotes,
-			createAccount,
+			create_account: createAccount,
 		};
 		if ( cartNeedsPayment ) {
 			data = {
