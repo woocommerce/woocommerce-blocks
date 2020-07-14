@@ -18,6 +18,7 @@ const {
 	DECREMENT_CALCULATING,
 	SET_ORDER_ID,
 	SET_ORDER_NOTES,
+	SET_CREATE_ACCOUNT,
 } = TYPES;
 
 const {
@@ -67,7 +68,7 @@ export const prepareResponseData = ( data ) => {
  */
 export const reducer = (
 	state = DEFAULT_STATE,
-	{ url, type, orderId, orderNotes, data }
+	{ url, type, orderId, orderNotes, createAccount, data }
 ) => {
 	let newState = state;
 	switch ( type ) {
@@ -185,6 +186,11 @@ export const reducer = (
 				orderId,
 			};
 			break;
+		case SET_CREATE_ACCOUNT:
+			newState = {
+				...state,
+				createAccount,
+			};
 		case SET_ORDER_NOTES:
 			if ( state.orderNotes !== orderNotes ) {
 				newState = {
