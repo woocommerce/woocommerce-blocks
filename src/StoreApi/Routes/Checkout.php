@@ -184,6 +184,7 @@ class Checkout extends AbstractRoute {
 			}
 
 			wc_set_customer_auth_cookie( $customer_id );
+			$order_object->set_customer_id( get_current_user_id() );
 		}
 
 		// Persist customer address data to account.
