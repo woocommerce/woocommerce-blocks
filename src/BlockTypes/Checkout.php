@@ -180,6 +180,15 @@ class Checkout extends AbstractBlock {
 	}
 
 	/**
+	 * Removes HTML tags and its content.
+	 *
+	 * @param string $text Text to remove tags from.
+	 */
+	protected function strip_tags_content( $text ) {
+		return preg_replace( '@<(\w+)\b.*?>.*?</\1>@si', '', $text );
+	}
+
+	/**
 	 * Hydrate the checkout block with data from the API.
 	 *
 	 * @param AssetDataRegistry $data_registry Data registry instance.
@@ -193,7 +202,7 @@ class Checkout extends AbstractBlock {
 			$checkout_data = WC()->api->get_endpoint_data( '/wc/store/checkout' );
 			$notices       = wc_get_notices( 'error' );
 			if ( is_array( $notices ) && count( $notices ) > 0 ) {
-				$notice        = wp_strip_all_tags( $notices[0]['notice'] );
+				$notice        = $this->strip_tags_content( $notices[0]['notice'] );
 				$checkout_data = array_merge( $checkout_data, [ 'notice' => $notice ] );
 			}
 			$data_registry->add( 'checkoutData', $checkout_data );
