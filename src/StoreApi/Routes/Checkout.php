@@ -161,6 +161,31 @@ class Checkout extends AbstractRoute {
 		// Check order is still valid.
 		$order_controller->validate_order_before_payment( $order_object );
 
+		// Create a new user account as necessary.
+		if ( ! is_user_logged_in() && ( WC()->checkout()->is_registration_required() || ! empty( $request['create_account'] ) ) ) {
+			$username    = '';
+			$password    = '';
+			$customer_id = wc_create_new_customer(
+				$order_object->get_billing_email(),
+				$username,
+				$password,
+				array(
+					'first_name' => $order_object->get_billing_first_name(),
+					'last_name'  => $order_object->get_billing_last_name(),
+				)
+			);
+
+			if ( is_wp_error( $customer_id ) ) {
+				return $this->get_route_error_response(
+					400,
+					__( 'Unable to create new customer account for order.', 'woo-gutenberg-products-block' ),
+					'woocommerce_rest_checkout_create_account_failure'
+				);
+			}
+
+			wc_set_customer_auth_cookie( $customer_id );
+		}
+
 		// Persist customer address data to account.
 		$order_controller->sync_customer_data_with_order( $order_object );
 
