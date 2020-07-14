@@ -114,6 +114,11 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		hasError: checkoutHasError,
 		isIdle: checkoutIsIdle,
 		customerId,
+		onSubmit,
+		orderNotes,
+		dispatchActions,
+		createAccount,
+		setCreateAccount,
 	} = useCheckoutContext();
 	const { setOrderNotes } = dispatchActions;
 	const {

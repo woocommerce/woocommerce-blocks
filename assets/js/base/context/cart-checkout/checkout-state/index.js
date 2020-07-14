@@ -335,6 +335,9 @@ export const CheckoutStateProvider = ( {
 		hasOrder: !! checkoutState.orderId,
 		customerId: checkoutState.customerId,
 		orderNotes: checkoutState.orderNotes,
+		createAccount: checkoutState.createAccount,
+		setCreateAccount: ( value ) =>
+			dispatch( actions.setCreateAccount( value ) ),
 	};
 	return (
 		<CheckoutContext.Provider value={ checkoutData }>
