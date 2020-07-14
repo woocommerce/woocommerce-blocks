@@ -7,6 +7,21 @@ export const blockAttributes = {
 		type: 'boolean',
 		default: true,
 	},
+	align: {
+		type: 'string',
+	},
+	color: {
+		type: 'string',
+	},
+	customColor: {
+		type: 'string',
+	},
+	fontSize: {
+		type: 'string',
+	},
+	customFontSize: {
+		type: 'number',
+	},
 };
 
 export default blockAttributes;

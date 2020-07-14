@@ -13,7 +13,7 @@ import {
 } from '@wordpress/components';
 import { PRODUCT_COUNT } from '@woocommerce/block-settings';
 import { getAdminLink } from '@woocommerce/settings';
-import { HeadingSwitcher } from '@woocommerce/block-components/heading-control';
+import HeadingToolbar from '@woocommerce/block-components/heading-toolbar';
 import BlockTitle from '@woocommerce/block-components/block-title';
 import { Icon, bill, external } from '@woocommerce/icons';
 
@@ -99,7 +99,7 @@ export default function( { attributes, setAttributes } ) {
 							'woo-gutenberg-products-block'
 						) }
 					</p>
-					<HeadingSwitcher
+					<HeadingToolbar
 						isCollapsed={ false }
 						minLevel={ 2 }
 						maxLevel={ 7 }

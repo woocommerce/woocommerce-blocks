@@ -3,33 +3,62 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Disabled, PanelBody, ToggleControl } from '@wordpress/components';
-import { InspectorControls } from '@wordpress/block-editor';
-import { HeadingSwitcher } from '@woocommerce/block-components/heading-control';
+import { compose } from '@wordpress/compose';
+import {
+	InspectorControls,
+	BlockControls,
+	AlignmentToolbar,
+	withColors,
+	PanelColorSettings,
+	FontSizePicker,
+	withFontSizes,
+} from '@wordpress/block-editor';
+
+import HeadingToolbar from '@woocommerce/block-components/heading-toolbar';
 
 /**
  * Internal dependencies
  */
 import Block from './block';
 
-export default ( { attributes, setAttributes } ) => {
-	const { headingLevel, productLink } = attributes;
-
+const TitleEdit = ( {
+	color,
+	fontSize,
+	setFontSize,
+	setColor,
+	attributes,
+	setAttributes,
+} ) => {
+	const { headingLevel, productLink, align } = attributes;
 	return (
 		<>
+			<BlockControls>
+				<HeadingToolbar
+					isCollapsed={ true }
+					minLevel={ 1 }
+					maxLevel={ 7 }
+					selectedLevel={ headingLevel }
+					onChange={ ( newLevel ) =>
+						setAttributes( { headingLevel: newLevel } )
+					}
+				/>
+				<AlignmentToolbar
+					value={ align }
+					onChange={ ( nextAlign ) => {
+						setAttributes( { align: nextAlign } );
+					} }
+				/>
+			</BlockControls>
 			<InspectorControls>
+				<PanelBody title={ __( 'Text settings' ) }>
+					<FontSizePicker
+						value={ fontSize.size }
+						onChange={ setFontSize }
+					/>
+				</PanelBody>
 				<PanelBody
 					title={ __( 'Content', 'woo-gutenberg-products-block' ) }
 				>
-					<p>{ __( 'Level', 'woo-gutenberg-products-block' ) }</p>
-					<HeadingSwitcher
-						isCollapsed={ false }
-						minLevel={ 1 }
-						maxLevel={ 7 }
-						selectedLevel={ headingLevel }
-						onChange={ ( newLevel ) =>
-							setAttributes( { headingLevel: newLevel } )
-						}
-					/>
 					<ToggleControl
 						label={ __(
 							'Link to Product Page',
@@ -47,6 +76,16 @@ export default ( { attributes, setAttributes } ) => {
 						}
 					/>
 				</PanelBody>
+				<PanelColorSettings
+					title={ __( 'Color settings' ) }
+					colorSettings={ [
+						{
+							value: color.color,
+							onChange: setColor,
+							label: __( 'Text color' ),
+						},
+					] }
+				></PanelColorSettings>
 			</InspectorControls>
 			<Disabled>
 				<Block { ...attributes } />
@@ -54,3 +93,8 @@ export default ( { attributes, setAttributes } ) => {
 		</>
 	);
 };
+
+export default compose( [
+	withFontSizes( 'fontSize' ),
+	withColors( 'color', { textColor: 'color' } ),
+] )( TitleEdit );

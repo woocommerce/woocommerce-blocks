@@ -18,7 +18,7 @@ import { SearchListControl } from '@woocommerce/components';
 import { mapValues, toArray, sortBy, find } from 'lodash';
 import { ATTRIBUTES } from '@woocommerce/block-settings';
 import { getAdminLink } from '@woocommerce/settings';
-import { HeadingSwitcher } from '@woocommerce/block-components/heading-control';
+import HeadingToolbar from '@woocommerce/block-components/heading-toolbar';
 import BlockTitle from '@woocommerce/block-components/block-title';
 
 /**
@@ -97,7 +97,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 							'woo-gutenberg-products-block'
 						) }
 					</p>
-					<HeadingSwitcher
+					<HeadingToolbar
 						isCollapsed={ false }
 						minLevel={ 2 }
 						maxLevel={ 7 }
