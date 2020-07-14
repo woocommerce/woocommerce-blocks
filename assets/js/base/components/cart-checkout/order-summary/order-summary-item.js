@@ -62,12 +62,15 @@ const OrderSummaryItem = ( { cartItem } ) => {
 						value={ linePrice }
 					/>
 				</div>
-				{ ! showBackorderBadge && (
-					<ProductLowStockBadge
-						lowStockRemaining={ lowStockRemaining }
-					/>
+				{ showBackorderBadge ? (
+					<ProductBackorderBadge />
+				) : (
+					lowStockRemaining && (
+						<ProductLowStockBadge
+							lowStockRemaining={ lowStockRemaining }
+						/>
+					)
 				) }
-				{ showBackorderBadge && <ProductBackorderBadge /> }
 				<ProductMetadata
 					shortDescription={ shortDescription }
 					fullDescription={ fullDescription }

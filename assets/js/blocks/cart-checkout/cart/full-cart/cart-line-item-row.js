@@ -113,10 +113,14 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 					name={ name }
 					disabled={ isPendingDelete }
 				/>
-				{ ! showBackorderBadge && (
-					<ProductLowStockBadge
-						lowStockRemaining={ lowStockRemaining }
-					/>
+				{ showBackorderBadge ? (
+					<ProductBackorderBadge />
+				) : (
+					lowStockRemaining && (
+						<ProductLowStockBadge
+							lowStockRemaining={ lowStockRemaining }
+						/>
+					)
 				) }
 				{ showBackorderBadge && <ProductBackorderBadge /> }
 				<ProductMetadata
