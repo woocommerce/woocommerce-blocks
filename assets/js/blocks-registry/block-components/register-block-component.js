@@ -19,7 +19,7 @@ import { registeredBlockComponents } from './registered-block-components-init';
  *
  * @export
  * @param {Object}   options           Options to use when registering the block.
- * @param {Function} options.component React component that will be rendered, or a lazy callback if
+ * @param {Function} options.component React component that will be rendered, or the return value from  React.lazy if
  *                                     dynamically imported.
  * @param {string}   options.blockName Name of the block that this component belongs to.
  * @param {string}   [options.context] To make this component available only under a certain context
