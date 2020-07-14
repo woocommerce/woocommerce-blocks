@@ -106,6 +106,7 @@ Via `useCheckoutContext`, the following are exposed:
 -   `orderId`: The order id for the order attached to the current checkout.
 -   `isCart`: This is true if the cart is being viewed. Note: usage of `CheckoutProvider` will automatically set this to false. There is also a `CartProvider` that wraps children in the `ShippingDataProvider` and exposes the same api as checkout context. The `CartProvider` automatically sets `isCart` to true. This allows components that implement `useCheckoutContext` to use the same api in either the cart or checkout context but still have specific behaviour to whether `isCart` is true or not.
 -   `hasOrder`: This is true when orderId is truthy.
+-   `notice`: A notice or message associated to the current checkout data. For example, errors from the server which are not blocking the purchase process but have to be shown to the user.
 -   `customerId`: The ID of the customer if the customer has an account, or `0` for guests.
 
 ## Hooks

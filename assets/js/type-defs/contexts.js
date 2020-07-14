@@ -247,6 +247,8 @@
  *                                                                     user in the checkout form.
  * @property {boolean}                      hasOrder                   True when the checkout has a
  *                                                                     draft order from the API.
+ * @property {string}                       notice                     Notice associated to the
+ *                                                                     current checkout data.
  * @property {boolean}                      isCart                     When true, means the provider
  *                                                                     is providing data for the cart.
  * @property {number}                       customerId                 This is the ID of the customer
