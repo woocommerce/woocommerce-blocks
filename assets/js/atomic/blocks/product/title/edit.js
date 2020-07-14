@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { Disabled, PanelBody, ToggleControl } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
-import HeadingToolbar from '@woocommerce/block-components/heading-toolbar';
+import { HeadingSwitcher } from '@woocommerce/block-components/heading-control';
 
 /**
  * Internal dependencies
@@ -21,7 +21,7 @@ export default ( { attributes, setAttributes } ) => {
 					title={ __( 'Content', 'woo-gutenberg-products-block' ) }
 				>
 					<p>{ __( 'Level', 'woo-gutenberg-products-block' ) }</p>
-					<HeadingToolbar
+					<HeadingSwitcher
 						isCollapsed={ false }
 						minLevel={ 1 }
 						maxLevel={ 7 }
