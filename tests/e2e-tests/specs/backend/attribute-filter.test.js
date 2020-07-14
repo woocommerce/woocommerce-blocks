@@ -8,9 +8,11 @@ import {
 	publishPost,
 } from '@wordpress/e2e-test-utils';
 import { getDocument, queries } from 'pptr-testing-library';
-import { clearAndFillInput } from '@woocommerce/e2e-tests/utils';
 
-import { visitBlockPage } from '@woocommerce/blocks-test-utils';
+import {
+	visitBlockPage,
+	clearAndFillInput,
+} from '@woocommerce/blocks-test-utils';
 
 async function saveOrPublish() {
 	const link = await page.evaluate( () =>

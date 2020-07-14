@@ -6,8 +6,10 @@ import {
 	getEditedPostContent,
 	openDocumentSettingsSidebar,
 } from '@wordpress/e2e-test-utils';
-import { clearAndFillInput } from '@woocommerce/e2e-tests/utils';
-import { visitBlockPage } from '@woocommerce/blocks-test-utils';
+import {
+	visitBlockPage,
+	clearAndFillInput,
+} from '@woocommerce/blocks-test-utils';
 
 const block = {
 	name: 'Product Search',

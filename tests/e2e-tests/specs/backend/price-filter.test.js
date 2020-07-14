@@ -8,11 +8,13 @@ import {
 	switchUserToAdmin,
 	getAllBlocks,
 } from '@wordpress/e2e-test-utils';
-import { clearAndFillInput } from '@woocommerce/e2e-tests/utils';
 
 import { getDocument, queries } from 'pptr-testing-library';
 
-import { visitBlockPage } from '@woocommerce/blocks-test-utils';
+import {
+	visitBlockPage,
+	clearAndFillInput,
+} from '@woocommerce/blocks-test-utils';
 
 const block = {
 	name: 'Filter Products by Price',
