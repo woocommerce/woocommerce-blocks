@@ -70,8 +70,8 @@ export const Block = ( {
 					titleClasses
 				) }
 				style={ {
-					customColor,
-					customFontSize,
+					color: customColor,
+					fontSize: customFontSize,
 				} }
 			/>
 		);
@@ -91,7 +91,7 @@ export const Block = ( {
 				}
 			) }
 			style={ {
-				customFontSize,
+				fontSize: customFontSize,
 			} }
 		>
 			{ productLink ? (
@@ -100,7 +100,7 @@ export const Block = ( {
 					rel="nofollow"
 					className={ titleClasses }
 					style={ {
-						customColor,
+						color: customColor,
 					} }
 				>
 					{ productName }
