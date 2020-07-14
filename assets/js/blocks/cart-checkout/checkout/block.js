@@ -157,7 +157,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		window.location.href
 	) }`;
 
-	if ( ! isEditor && ! customerId && ! CHECKOUT_ALLOWS_GUEST ) {
+	if ( ! isEditor && ! customerId && ! CHECKOUT_ALLOWS_GUEST && ! CHECKOUT_ALLOWS_SIGNUP ) {
 		return (
 			<>
 				{ __(
@@ -173,6 +173,15 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 			</>
 		);
 	}
+
+	const createAccountUI = ! customerId && CHECKOUT_ALLOWS_SIGNUP && (
+		<CheckboxControl
+			className="wc-block-checkout__create-account"
+			label={ __( 'Create an account?', 'woo-gutenberg-products-block' ) }
+			checked={ createAccount }
+			onChange={ ( value ) => setCreateAccount( value ) }
+		/>
+	);
 
 	const loginPrompt = () =>
 		CHECKOUT_SHOW_LOGIN_REMINDER &&
@@ -223,19 +232,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 								onChange={ setEmail }
 								required={ true }
 							/>
-							{ CHECKOUT_ALLOWS_SIGNUP && (
-								<CheckboxControl
-									className="wc-block-checkout__create-account"
-									label={ __(
-										'Create an account?',
-										'woo-gutenberg-products-block'
-									) }
-									checked={ createAccount }
-									onChange={ ( value ) =>
-										setCreateAccount( value )
-									}
-								/>
-							) }
+							{ createAccountUI }
 						</FormStep>
 						{ needsShipping && (
 							<FormStep
