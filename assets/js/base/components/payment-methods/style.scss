@@ -100,12 +100,13 @@ $border-radius: 5px;
 
 	&.wc-card-number-element {
 		flex: auto;
+		width: $card-element-width;
 	}
 
 	&.wc-card-expiry-element,
 	&.wc-card-cvc-element {
-		width: $card-element-width;
 		margin-left: $gap-small;
+		width: $card-element-small-width;
 	}
 
 	.wc-block-gateway-input {
