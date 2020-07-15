@@ -11,6 +11,7 @@ import { createContext, useContext } from '@wordpress/element';
  */
 const ProductDataContext = createContext( {
 	product: null,
+	hasContext: false,
 } );
 
 export const useProductDataContext = () => useContext( ProductDataContext );
@@ -18,6 +19,7 @@ export const useProductDataContext = () => useContext( ProductDataContext );
 export const ProductDataContextProvider = ( { product = null, children } ) => {
 	const contextValue = {
 		product,
+		hasContext: true,
 	};
 
 	return (
