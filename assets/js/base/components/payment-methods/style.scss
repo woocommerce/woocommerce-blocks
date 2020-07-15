@@ -156,7 +156,10 @@ $border-radius: 5px;
 
 	&.wc-inline-card-element {
 		label {
-			margin-left: $gap-largest;
+			// $gap is the padding of the input box, 1.5em the width of the card
+			// icon and $gap-smaller the space between the card
+			// icon and the label.
+			margin-left: calc(#{$gap + $gap-smaller} + 1.5em);
 		}
 		.wc-block-gateway-input.focused.empty,
 		.wc-block-gateway-input:not(.empty) {
