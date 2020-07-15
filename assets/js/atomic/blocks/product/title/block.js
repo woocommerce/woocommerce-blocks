@@ -9,6 +9,7 @@ import {
 	useProductDataContext,
 } from '@woocommerce/shared-context';
 import { getColorClassName, getFontSizeClass } from '@wordpress/block-editor';
+import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -46,6 +47,7 @@ export const Block = ( {
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product;
 	const TagName = `h${ headingLevel }`;
+
 	const colorClass = getColorClassName( 'color', color );
 	const fontSizeClass = getFontSizeClass( fontSize );
 
@@ -65,14 +67,19 @@ export const Block = ( {
 					'wc-block-components-product-title',
 					`${ parentClassName }__product-title`,
 					{
-						[ `wc-block-components-product-title__align-${ align }` ]: align,
+						[ `wc-block-components-product-title__align-${ align }` ]:
+							align && isFeaturePluginBuild(),
 					},
-					titleClasses
+					{ [ titleClasses ]: isFeaturePluginBuild() }
 				) }
-				style={ {
-					color: customColor,
-					fontSize: customFontSize,
-				} }
+				style={
+					isFeaturePluginBuild()
+						? {
+								color: customColor,
+								fontSize: customFontSize,
+						  }
+						: {}
+				}
 			/>
 		);
 	}
@@ -87,21 +94,32 @@ export const Block = ( {
 				'wc-block-components-product-title',
 				`${ parentClassName }__product-title`,
 				{
-					[ `wc-block-components-product-title__align-${ align }` ]: align,
+					[ `wc-block-components-product-title__align-${ align }` ]:
+						align && isFeaturePluginBuild(),
 				}
 			) }
-			style={ {
-				fontSize: customFontSize,
-			} }
+			style={
+				isFeaturePluginBuild()
+					? {
+							fontSize: customFontSize,
+					  }
+					: {}
+			}
 		>
 			{ productLink ? (
 				<a
 					href={ product.permalink }
 					rel="nofollow"
-					className={ titleClasses }
-					style={ {
-						color: customColor,
-					} }
+					className={ classnames( {
+						[ titleClasses ]: isFeaturePluginBuild(),
+					} ) }
+					style={
+						isFeaturePluginBuild()
+							? {
+									color: customColor,
+							  }
+							: {}
+					}
 				>
 					{ productName }
 				</a>

@@ -13,7 +13,7 @@ import {
 	FontSizePicker,
 	withFontSizes,
 } from '@wordpress/block-editor';
-
+import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import HeadingToolbar from '@woocommerce/block-components/heading-toolbar';
 
 /**
@@ -42,20 +42,24 @@ const TitleEdit = ( {
 						setAttributes( { headingLevel: newLevel } )
 					}
 				/>
-				<AlignmentToolbar
-					value={ align }
-					onChange={ ( nextAlign ) => {
-						setAttributes( { align: nextAlign } );
-					} }
-				/>
+				{ isFeaturePluginBuild() && (
+					<AlignmentToolbar
+						value={ align }
+						onChange={ ( nextAlign ) => {
+							setAttributes( { align: nextAlign } );
+						} }
+					/>
+				) }
 			</BlockControls>
 			<InspectorControls>
-				<PanelBody title={ __( 'Text settings' ) }>
-					<FontSizePicker
-						value={ fontSize.size }
-						onChange={ setFontSize }
-					/>
-				</PanelBody>
+				{ isFeaturePluginBuild() && (
+					<PanelBody title={ __( 'Text settings' ) }>
+						<FontSizePicker
+							value={ fontSize.size }
+							onChange={ setFontSize }
+						/>
+					</PanelBody>
+				) }
 				<PanelBody
 					title={ __( 'Content', 'woo-gutenberg-products-block' ) }
 				>
@@ -76,16 +80,18 @@ const TitleEdit = ( {
 						}
 					/>
 				</PanelBody>
-				<PanelColorSettings
-					title={ __( 'Color settings' ) }
-					colorSettings={ [
-						{
-							value: color.color,
-							onChange: setColor,
-							label: __( 'Text color' ),
-						},
-					] }
-				></PanelColorSettings>
+				{ isFeaturePluginBuild() && (
+					<PanelColorSettings
+						title={ __( 'Color settings' ) }
+						colorSettings={ [
+							{
+								value: color.color,
+								onChange: setColor,
+								label: __( 'Text color' ),
+							},
+						] }
+					></PanelColorSettings>
+				) }
 			</InspectorControls>
 			<Disabled>
 				<Block { ...attributes } />
@@ -94,7 +100,11 @@ const TitleEdit = ( {
 	);
 };
 
-export default compose( [
-	withFontSizes( 'fontSize' ),
-	withColors( 'color', { textColor: 'color' } ),
-] )( TitleEdit );
+const Title = isFeaturePluginBuild()
+	? compose( [
+			withFontSizes( 'fontSize' ),
+			withColors( 'color', { textColor: 'color' } ),
+	  ] )( TitleEdit )
+	: TitleEdit;
+
+export default Title;
