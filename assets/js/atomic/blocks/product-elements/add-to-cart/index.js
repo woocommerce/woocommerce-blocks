@@ -1,9 +1,7 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { registerExperimentalBlockType } from '@woocommerce/block-settings';
-import { Icon, cart } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
@@ -11,16 +9,18 @@ import { Icon, cart } from '@woocommerce/icons';
 import sharedConfig from '../shared/config';
 import edit from './edit';
 import attributes from './attributes';
+import {
+	BLOCK_TITLE as title,
+	BLOCK_ICON as icon,
+	BLOCK_DESCRIPTION as description,
+} from './constants';
 
 const blockConfig = {
-	title: __( 'Add to Cart', 'woo-gutenberg-products-block' ),
-	description: __(
-		'Displays an add to cart button. Optionally displays other add to cart form elements.',
-		'woo-gutenberg-products-block'
-	),
+	title,
+	description,
 	icon: {
-		src: <Icon srcElement={ cart } />,
-		foreground: '#96588a',
+		src: icon,
+		foreground: '#874FB9',
 	},
 	edit,
 	attributes,

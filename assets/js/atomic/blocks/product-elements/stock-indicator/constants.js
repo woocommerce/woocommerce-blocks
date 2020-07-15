@@ -2,14 +2,14 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { bookmark, Icon } from '@woocommerce/icons';
+import { box, Icon } from '@woocommerce/icons';
 
 export const BLOCK_TITLE = __(
-	'Product Title',
+	'Product Stock Indicator',
 	'woo-gutenberg-products-block'
 );
-export const BLOCK_ICON = <Icon srcElement={ bookmark } />;
+export const BLOCK_ICON = <Icon srcElement={ box } />;
 export const BLOCK_DESCRIPTION = __(
-	'Display the title of a product.',
+	'Display product stock status.',
 	'woo-gutenberg-products-block'
 );

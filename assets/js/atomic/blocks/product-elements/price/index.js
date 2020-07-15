@@ -20,7 +20,7 @@ const blockConfig = {
 	description,
 	icon: {
 		src: icon,
-		foreground: '#96588a',
+		foreground: '#874FB9',
 	},
 	attributes,
 	edit,

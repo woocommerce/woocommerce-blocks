@@ -1,25 +1,25 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { Icon, star } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
  */
 import sharedConfig from '../shared/config';
 import edit from './edit';
+import {
+	BLOCK_TITLE as title,
+	BLOCK_ICON as icon,
+	BLOCK_DESCRIPTION as description,
+} from './constants';
 
 const blockConfig = {
-	title: __( 'Product Rating', 'woo-gutenberg-products-block' ),
-	description: __(
-		'Display the average rating of a product.',
-		'woo-gutenberg-products-block'
-	),
+	title,
+	description,
 	icon: {
-		src: <Icon srcElement={ star } />,
-		foreground: '#96588a',
+		src: icon,
+		foreground: '#874FB9',
 	},
 	edit,
 };

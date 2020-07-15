@@ -1,9 +1,7 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { Icon, image } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
@@ -11,16 +9,18 @@ import { Icon, image } from '@woocommerce/icons';
 import sharedConfig from '../shared/config';
 import attributes from './attributes';
 import edit from './edit';
+import {
+	BLOCK_TITLE as title,
+	BLOCK_ICON as icon,
+	BLOCK_DESCRIPTION as description,
+} from './constants';
 
 const blockConfig = {
-	title: __( 'Product Image', 'woo-gutenberg-products-block' ),
-	description: __(
-		'Display the main product image',
-		'woo-gutenberg-products-block'
-	),
+	title,
+	description,
 	icon: {
-		src: <Icon srcElement={ image } />,
-		foreground: '#96588a',
+		src: icon,
+		foreground: '#874FB9',
 	},
 	attributes,
 	edit,
