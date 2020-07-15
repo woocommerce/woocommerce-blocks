@@ -162,25 +162,14 @@ class Checkout extends AbstractRoute {
 		$order_controller->validate_order_before_payment( $order_object );
 
 		// Create a new user account as necessary.
-		if ( ! is_user_logged_in() && ( WC()->checkout()->is_registration_required() || ! empty( $request['create_account'] ) ) ) {
-			$customer_id = wc_create_new_customer(
+		if ( $this->should_create_customer_account( $request ) ) {
+			$customer_id = $this->create_customer_account(
 				$order_object->get_billing_email(),
-				'',
-				'',
-				array(
-					'first_name' => $order_object->get_billing_first_name(),
-					'last_name'  => $order_object->get_billing_last_name(),
-				)
+				$order_object->get_billing_first_name(),
+				$order_object->get_billing_last_name()
 			);
 
-			if ( is_wp_error( $customer_id ) ) {
-				return $this->get_route_error_response(
-					400,
-					__( 'Unable to create new customer account for order.', 'woo-gutenberg-products-block' ),
-					'woocommerce_rest_checkout_create_account_failure'
-				);
-			}
-
+			// Log the customer in and associate with the order.
 			wc_set_customer_auth_cookie( $customer_id );
 			$order_object->set_customer_id( get_current_user_id() );
 		}
@@ -336,6 +325,75 @@ class Checkout extends AbstractRoute {
 		}
 
 		return $order_object;
+	}
+
+	/**
+	 * Check request options and store (shop) config to determine if a user account
+	 * should be created as part of order processing.
+	 *
+	 * @param \WP_REST_Request $request The current request object being handled.
+	 *
+	 * @return boolean True if a new user account should be created.
+	 */
+	protected function should_create_customer_account( $request ) {
+		if ( is_user_logged_in() ) {
+			return false;
+		}
+
+		$checkout_requires_account = true === filter_var( get_option( 'woocommerce_checkout_registration_required' ), FILTER_VALIDATE_BOOLEAN );
+		if ( $checkout_requires_account ) {
+			return true;
+		}
+
+		$user_requested_account = ! empty( $request['create_account'] ) && true === filter_var( $request['create_account'], FILTER_VALIDATE_BOOLEAN );
+		if ( $user_requested_account ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Create a new account for a customer.
+	 *
+	 * @throws RouteException If an error is encountered when creating the user account.
+	 *
+	 * @param string $user_email The email address to use for the new account.
+	 * @param string $first_name The first name to use for the new account.
+	 * @param string $last_name  The last name to use for the new account.
+	 *
+	 * @return int User id if successful
+	 */
+	protected function create_customer_account( $user_email, $first_name, $last_name ) {
+		$customer_id = wc_create_new_customer(
+			$user_email,
+			'',
+			'',
+			array(
+				'first_name' => $first_name,
+				'last_name'  => $last_name,
+			)
+		);
+
+		if ( is_wp_error( $customer_id ) ) {
+			switch ( $customer_id->get_error_code() ) {
+				case 'registration-error-email-exists':
+					throw new RouteException(
+						'woocommerce_rest_checkout_create_account_failure',
+						__( 'Unable to create user account - requested email is used by another account.', 'woo-gutenberg-products-block' ),
+						400
+					);
+
+				default:
+					throw new RouteException(
+						'woocommerce_rest_checkout_create_account_failure',
+						__( 'Unable to create user account.', 'woo-gutenberg-products-block' ),
+						500
+					);
+			}
+		}
+
+		return $customer_id;
 	}
 
 	/**
