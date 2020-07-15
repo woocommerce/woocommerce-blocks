@@ -99,21 +99,25 @@ $border-radius: 5px;
 	white-space: nowrap;
 
 	&.wc-card-number-element {
-		flex: auto;
 		flex-basis: 15em;
-		min-width: 14.75em;
+		flex-grow: 1;
+		// Currently, min() CSS function calls need to be wrapped with unquote.
+		min-width: unquote("min(15em, 60%)");
 	}
 
 	&.wc-card-expiry-element {
 		flex-basis: 7em;
 		margin-left: $gap-small;
-		min-width: 5em;
+		min-width: unquote("min(7em, calc(24% - #{$gap-small}))");
 	}
 
 	&.wc-card-cvc-element {
 		flex-basis: 7em;
 		margin-left: $gap-small;
-		min-width: 3.5em;
+		// Notice the min width ems value is smaller than flex-basis. That's because
+		// by default we want it to have the same width as `expiry-element`, but
+		// if available space is scarce, `cvc-element` should get smaller faster.
+		min-width: unquote("min( 5em, calc(16% - #{$gap-small}))");
 	}
 
 	.wc-block-gateway-input {
