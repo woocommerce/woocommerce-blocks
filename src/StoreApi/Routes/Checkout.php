@@ -163,12 +163,10 @@ class Checkout extends AbstractRoute {
 
 		// Create a new user account as necessary.
 		if ( ! is_user_logged_in() && ( WC()->checkout()->is_registration_required() || ! empty( $request['create_account'] ) ) ) {
-			$username    = '';
-			$password    = '';
 			$customer_id = wc_create_new_customer(
 				$order_object->get_billing_email(),
-				$username,
-				$password,
+				'',
+				'',
 				array(
 					'first_name' => $order_object->get_billing_first_name(),
 					'last_name'  => $order_object->get_billing_last_name(),
