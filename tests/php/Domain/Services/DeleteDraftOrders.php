@@ -52,6 +52,21 @@ class DeleteDraftOrders extends TestCase {
 				'ID' => $order->get_id()
 			)
 		);
+
+		// set a non-draft order to make sure it's unaffected
+		$order = new WC_Order();
+		$order->set_status( 'wc-on-hold' );
+		$order->save();
+		$wpdb->update(
+			$wpdb->posts,
+			array(
+				'post_modified'     => date( 'Y-m-d H:i:s', strtotime( '-2 DAY', current_time( 'timestamp' ) ) ),
+				'post_modified_gmt' => gmdate( 'Y-m-d H:i:s', strtotime( '-2 DAY' ) )
+			),
+			array(
+				'ID' => $order->get_id()
+			)
+		);
 	}
 
 	/**
@@ -70,5 +85,8 @@ class DeleteDraftOrders extends TestCase {
 
 		// Only 1 should remain.
 		$this->assertEquals( 1, (int) $wpdb->get_var( "SELECT COUNT(ID) from $wpdb->posts posts WHERE posts.post_status = 'wc-checkout-draft'" ) );
+
+		// The non-draft order should still be present
+		$this->assertEquals( 1, (int) $wpdb->get_var( "SELECT COUNT(ID) from $wpdb->posts posts WHERE posts.post_status = 'wc-on-hold'" ) );
 	}
 }
