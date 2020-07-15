@@ -15,6 +15,10 @@ export const blockAttributes = {
 		type: 'string',
 		default: 'full-size',
 	},
+	productId: {
+		type: 'number',
+		default: 0,
+	},
 };
 
 export default blockAttributes;

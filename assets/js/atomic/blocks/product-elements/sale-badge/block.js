@@ -14,6 +14,7 @@ import {
  * Internal dependencies
  */
 import './style.scss';
+import withProductDataContext from '../shared/with-product-data-context';
 
 /**
  * Product Sale Badge Block Component.
@@ -21,14 +22,11 @@ import './style.scss';
  * @param {Object} props             Incoming props.
  * @param {string} [props.className] CSS Class name for the component.
  * @param {string} [props.align]     Alignment of the badge.
- * @param {Object} [props.product]   Optional product object. Product from context will be used if
- *                                   this is not provided.
  * @return {*} The component.
  */
-const Block = ( { className, align, ...props } ) => {
+const Block = ( { className, align } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
-	const productDataContext = useProductDataContext();
-	const product = props.product || productDataContext.product;
+	const { product } = useProductDataContext();
 
 	if ( ! product || ! product.on_sale ) {
 		return null;
@@ -62,7 +60,6 @@ const Block = ( { className, align, ...props } ) => {
 Block.propTypes = {
 	className: PropTypes.string,
 	align: PropTypes.string,
-	product: PropTypes.object,
 };
 
-export default Block;
+export default withProductDataContext( Block );

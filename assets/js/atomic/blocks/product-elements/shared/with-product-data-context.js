@@ -13,26 +13,31 @@ import { useState, useEffect } from '@wordpress/element';
  *
  * @param {Object} props Component props.
  */
-const ContextWrapper = ( props ) => {
-	const { productId, children } = props;
+const OriginalComponentWithContext = ( props ) => {
+	const { productId, OriginalComponent } = props;
 	const [ product, setProduct ] = useState( null );
 
 	useEffect( () => {
-		if ( productId < 1 ) {
-			setProduct( null );
+		if ( !! props.product ) {
+			setProduct( props.product );
 		}
-		getProduct( productId )
-			.then( ( receivedProduct ) => {
-				setProduct( receivedProduct );
-			} )
-			.catch( async () => {
-				setProduct( null );
-			} );
+	}, [ props.product ] );
+
+	useEffect( () => {
+		if ( productId > 0 ) {
+			getProduct( productId )
+				.then( ( receivedProduct ) => {
+					setProduct( receivedProduct );
+				} )
+				.catch( async () => {
+					setProduct( null );
+				} );
+		}
 	}, [ productId ] );
 
 	return (
 		<ProductDataContextProvider product={ product }>
-			{ children }
+			<OriginalComponent { ...props } />
 		</ProductDataContextProvider>
 	);
 };
@@ -47,15 +52,17 @@ const withProductDataContext = ( OriginalComponent ) => {
 	return ( props ) => {
 		const productDataContext = useProductDataContext();
 
-		if ( productDataContext.hasContext || !! props.product ) {
-			return <OriginalComponent { ...props } />;
+		// If a product prop was provided, use this as the context for the tree.
+		if ( !! props.product || ! productDataContext.hasContext ) {
+			return (
+				<OriginalComponentWithContext
+					{ ...props }
+					OriginalComponent={ OriginalComponent }
+				/>
+			);
 		}
 
-		return (
-			<ContextWrapper productId={ props.productId || 0 }>
-				<OriginalComponent { ...props } />
-			</ContextWrapper>
-		);
+		return <OriginalComponent { ...props } />;
 	};
 };
 

@@ -7,6 +7,7 @@ import { registerBlockType } from '@wordpress/blocks';
  * Internal dependencies
  */
 import sharedConfig from '../shared/config';
+import attributes from './attributes';
 import edit from './edit';
 import {
 	BLOCK_TITLE as title,
@@ -24,6 +25,7 @@ const blockConfig = {
 	supports: {
 		html: false,
 	},
+	attributes,
 	edit,
 };
 

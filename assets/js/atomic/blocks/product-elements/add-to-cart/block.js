@@ -18,6 +18,7 @@ import {
 	ExternalProductForm,
 	GroupedProductForm,
 } from './product-types';
+import withProductDataContext from '../shared/with-product-data-context';
 
 /**
  * Product Add to Form Block Component.
@@ -25,13 +26,10 @@ import {
  * @param {Object} props                     Incoming props.
  * @param {string} [props.className]         CSS Class name for the component.
  * @param {boolean} [props.showFormElements] Should form elements be shown?
- * @param {Object} [props.product]           Optional product object. Product from context will be
- *                                           used if this is not provided.
  * @return {*} The component.
  */
-const Block = ( { className, showFormElements, ...props } ) => {
-	const productDataContext = useProductDataContext();
-	const product = props.product || productDataContext.product || {};
+const Block = ( { className, showFormElements } ) => {
+	const { product } = useProductDataContext();
 	const componentClass = classnames(
 		className,
 		'wc-block-components-product-add-to-cart',
@@ -44,14 +42,14 @@ const Block = ( { className, showFormElements, ...props } ) => {
 
 	return (
 		<AddToCartFormContextProvider
-			product={ product }
+			product={ product || {} }
 			showFormElements={ showFormElements }
 		>
 			<div className={ componentClass }>
 				<>
 					{ showFormElements ? (
 						<AddToCartForm
-							productType={ product.type || 'simple' }
+							productType={ product?.type || 'simple' }
 						/>
 					) : (
 						<AddToCartButton />
@@ -80,7 +78,6 @@ const AddToCartForm = ( { productType } ) => {
 
 Block.propTypes = {
 	className: PropTypes.string,
-	product: PropTypes.object,
 };
 
-export default Block;
+export default withProductDataContext( Block );

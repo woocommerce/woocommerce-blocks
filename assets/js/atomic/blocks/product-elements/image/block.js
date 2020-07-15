@@ -15,17 +15,17 @@ import {
  */
 import ProductSaleBadge from './../sale-badge/block';
 import './style.scss';
+import withProductDataContext from '../shared/with-product-data-context';
 
 /**
  * Product Image Block Component.
  *
  * @param {Object} props                  Incoming props.
  * @param {string} [props.className]      CSS Class name for the component.
+ * @param {string} [props.imageSizing]    Size of image to use.
  * @param {boolean} [props.productLink]   Whether or not to display a link to the product page.
  * @param {boolean} [props.showSaleBadge] Whether or not to display the on sale badge.
  * @param {string} [props.saleBadgeAlign] How should the sale badge be aligned if displayed.
- * @param {Object} [props.product]        Optional product object. Product from context will be used if
- *                                        this is not provided.
  * @return {*} The component.
  */
 const Block = ( {
@@ -34,11 +34,9 @@ const Block = ( {
 	productLink = true,
 	showSaleBadge,
 	saleBadgeAlign = 'right',
-	...props
 } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
-	const productDataContext = useProductDataContext();
-	const product = props.product || productDataContext.product;
+	const { product } = useProductDataContext();
 	const [ imageLoaded, setImageLoaded ] = useState( false );
 
 	if ( ! product ) {
@@ -135,10 +133,9 @@ const Image = ( { image, onLoad, loaded, showFullSize } ) => {
 
 Block.propTypes = {
 	className: PropTypes.string,
-	product: PropTypes.object,
 	productLink: PropTypes.bool,
 	showSaleBadge: PropTypes.bool,
 	saleBadgeAlign: PropTypes.string,
 };
 
-export default Block;
+export default withProductDataContext( Block );

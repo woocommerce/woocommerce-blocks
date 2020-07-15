@@ -13,8 +13,10 @@ import { InspectorControls } from '@wordpress/block-editor';
  */
 import './style.scss';
 import Block from './block';
+import withProductSelector from '../shared/with-product-selector';
+import { BLOCK_TITLE, BLOCK_ICON } from './constants';
 
-export default ( { attributes, setAttributes } ) => {
+const Edit = ( { attributes, setAttributes } ) => {
 	const productDataContext = useProductDataContext();
 	const product = productDataContext.product || {};
 	const { className, showFormElements } = attributes;
@@ -57,3 +59,12 @@ export default ( { attributes, setAttributes } ) => {
 		</div>
 	);
 };
+
+export default withProductSelector( Edit, {
+	icon: BLOCK_ICON,
+	label: BLOCK_TITLE,
+	description: __(
+		"Choose a product to display it's add to cart form.",
+		'woo-gutenberg-products-block'
+	),
+} );

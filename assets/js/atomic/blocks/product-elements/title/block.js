@@ -117,7 +117,6 @@ export const Block = ( {
 
 Block.propTypes = {
 	className: PropTypes.string,
-	product: PropTypes.object,
 	headingLevel: PropTypes.number,
 	productLink: PropTypes.bool,
 	align: PropTypes.string,

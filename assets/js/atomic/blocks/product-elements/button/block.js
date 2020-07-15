@@ -17,20 +17,18 @@ import {
  * Internal dependencies
  */
 import './style.scss';
+import withProductDataContext from '../shared/with-product-data-context';
 
 /**
  * Product Button Block Component.
  *
  * @param {Object} props             Incoming props.
  * @param {string} [props.className] CSS Class name for the component.
- * @param {Object} [props.product]   Optional product object. Product from context will be used if
- *                                   this is not provided.
  * @return {*} The component.
  */
-const Block = ( { className, ...props } ) => {
+const Block = ( { className } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
-	const productDataContext = useProductDataContext();
-	const product = props.product || productDataContext.product;
+	const { product } = useProductDataContext();
 
 	return (
 		<div
@@ -142,7 +140,6 @@ const AddToCartButtonPlaceholder = () => {
 
 Block.propTypes = {
 	className: PropTypes.string,
-	product: PropTypes.object,
 };
 
-export default Block;
+export default withProductDataContext( Block );
