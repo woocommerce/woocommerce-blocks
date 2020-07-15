@@ -4,7 +4,7 @@ namespace Automattic\WooCommerce\Blocks\Tests\Library;
 
 use PHPUnit\Framework\TestCase;
 use \WC_Order;
-use Automattic\WooCommerce\Blocks\Library;
+use Automattic\WooCommerce\Blocks\Domain\Services\DraftOrders;
 
 /**
  * Tests Delete Draft Orders functionality
@@ -66,7 +66,7 @@ class DeleteDraftOrders extends TestCase {
 		$this->assertEquals( 3, (int) $wpdb->get_var( "SELECT COUNT(ID) from $wpdb->posts posts WHERE posts.post_status = 'wc-checkout-draft'" ) );
 
 		// Run delete query.
-		Library::delete_expired_draft_orders();
+		DraftOrders::delete_expired_draft_orders();
 
 		// Only 1 should remain.
 		$this->assertEquals( 1, (int) $wpdb->get_var( "SELECT COUNT(ID) from $wpdb->posts posts WHERE posts.post_status = 'wc-checkout-draft'" ) );
