@@ -9,12 +9,12 @@ import {
 	useProductDataContext,
 } from '@woocommerce/shared-context';
 import { isEmpty } from 'lodash';
+import { withProductDataContext } from '@woocommerce/shared-hocs';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
-import withProductDataContext from '../shared/with-product-data-context';
 
 /**
  * Product Tag List Block Component.

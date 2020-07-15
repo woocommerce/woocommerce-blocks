@@ -11,11 +11,12 @@ import {
 } from '@woocommerce/shared-context';
 import { getColorClassName, getFontSizeClass } from '@wordpress/block-editor';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
+import { withProductDataContext } from '@woocommerce/shared-hocs';
+
 /**
  * Internal dependencies
  */
 import './style.scss';
-import withProductDataContext from '../shared/with-product-data-context';
 
 /**
  * Product Price Block Component.

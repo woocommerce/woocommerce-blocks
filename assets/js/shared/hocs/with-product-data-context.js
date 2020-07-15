@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { getProduct } from '@woocommerce/block-components/utils';
+import apiFetch from '@wordpress/api-fetch';
 import {
 	ProductDataContextProvider,
 	useProductDataContext,
@@ -25,7 +25,9 @@ const OriginalComponentWithContext = ( props ) => {
 
 	useEffect( () => {
 		if ( productId > 0 ) {
-			getProduct( productId )
+			apiFetch( {
+				path: `/wc/store/products/${ productId }`,
+			} )
 				.then( ( receivedProduct ) => {
 					setProduct( receivedProduct );
 				} )
@@ -48,7 +50,7 @@ const OriginalComponentWithContext = ( props ) => {
  *
  * @param {Function} OriginalComponent Component being wrapped.
  */
-const withProductDataContext = ( OriginalComponent ) => {
+export const withProductDataContext = ( OriginalComponent ) => {
 	return ( props ) => {
 		const productDataContext = useProductDataContext();
 
@@ -65,5 +67,3 @@ const withProductDataContext = ( OriginalComponent ) => {
 		return <OriginalComponent { ...props } />;
 	};
 };
-
-export default withProductDataContext;

@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import { AddToCartFormContextProvider } from '@woocommerce/base-context';
 import { useProductDataContext } from '@woocommerce/shared-context';
 import { isEmpty } from 'lodash';
+import { withProductDataContext } from '@woocommerce/shared-hocs';
 
 /**
  * Internal dependencies
@@ -18,7 +19,6 @@ import {
 	ExternalProductForm,
 	GroupedProductForm,
 } from './product-types';
-import withProductDataContext from '../shared/with-product-data-context';
 
 /**
  * Product Add to Form Block Component.

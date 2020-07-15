@@ -9,13 +9,13 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
+import { withProductDataContext } from '@woocommerce/shared-hocs';
 
 /**
  * Internal dependencies
  */
 import ProductSaleBadge from './../sale-badge/block';
 import './style.scss';
-import withProductDataContext from '../shared/with-product-data-context';
 
 /**
  * Product Image Block Component.

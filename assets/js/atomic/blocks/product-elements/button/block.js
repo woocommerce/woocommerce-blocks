@@ -12,12 +12,12 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
+import { withProductDataContext } from '@woocommerce/shared-hocs';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
-import withProductDataContext from '../shared/with-product-data-context';
 
 /**
  * Product Button Block Component.

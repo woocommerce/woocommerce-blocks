@@ -11,11 +11,12 @@ import {
 import { getColorClassName, getFontSizeClass } from '@wordpress/block-editor';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { gatedStyledText } from '@woocommerce/atomic-utils';
+import { withProductDataContext } from '@woocommerce/shared-hocs';
+
 /**
  * Internal dependencies
  */
 import './style.scss';
-import withProductDataContext from '../shared/with-product-data-context';
 
 /**
  * Product Title Block Component.
