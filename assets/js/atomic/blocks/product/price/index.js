@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { Icon, bill } from '@woocommerce/icons';
+import { CURRENCY } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -18,7 +18,7 @@ const blockConfig = {
 		'woo-gutenberg-products-block'
 	),
 	icon: {
-		src: <Icon srcElement={ bill } />,
+		src: <b style={ { color: '$96588a' } }>{ CURRENCY.symbol }</b>,
 		foreground: '#96588a',
 	},
 	edit,
