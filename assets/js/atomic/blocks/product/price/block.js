@@ -9,7 +9,8 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
-
+import { getColorClassName, getFontSizeClass } from '@wordpress/block-editor';
+import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 /**
  * Internal dependencies
  */
@@ -18,17 +19,64 @@ import './style.scss';
 /**
  * Product Price Block Component.
  *
- * @param {Object} props             Incoming props.
- * @param {string} [props.className] CSS Class name for the component.
- * @param {Object} [props.product]   Optional product object. Product from context will be used if
- *                                   this is not provided.
+ * @param {Object} props                      Incoming props.
+ * @param {string} [props.className]          CSS Class name for the component.
+ * @param {string} [props.fontSize]           Normal Price font size name.
+ * @param {number} [props.customFontSize]     Normal Price custom font size.
+ * @param {string} [props.saleFontSize]       Sale Price font size name.
+ * @param {number} [props.customSaleFontSize] Sale Price custom font size.
+ * @param {string} [props.color]              Normal Price text color.
+ * @param {string} [props.customColor]        Normal Price custom text color.
+ * @param {string} [props.saleColor]          Sale Price text color.
+ * @param {string} [props.customSaleColor]    Sale Price custom text color.
+ * @param {Object} [props.product]            Optional product object. Product from
+ * context will be used if this is not provided.
  * @return {*} The component.
  */
-const Block = ( { className, ...props } ) => {
+const Block = ( {
+	className,
+	fontSize,
+	customFontSize,
+	saleFontSize,
+	customSaleFontSize,
+	color,
+	customColor,
+	saleColor,
+	customSaleColor,
+	...props
+} ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const productDataContext = useProductDataContext();
 	const product = props.product || productDataContext.product;
 
+	const colorClass = getColorClassName( 'color', color );
+	const saleColorClass = getColorClassName( 'color', saleColor );
+	const fontSizeClass = getFontSizeClass( fontSize );
+	const saleFontSizeClass = getFontSizeClass( saleFontSize );
+
+	const classes = classnames( {
+		'has-text-color': color || customColor,
+		'has-font-size': fontSize || customFontSize,
+		[ colorClass ]: colorClass,
+		[ fontSizeClass ]: fontSizeClass,
+	} );
+
+	const saleClasses = classnames( {
+		'has-text-color': saleColor || customSaleColor,
+		'has-font-size': saleFontSize || customSaleFontSize,
+		[ saleColorClass ]: saleColorClass,
+		[ saleFontSizeClass ]: saleFontSizeClass,
+	} );
+
+	const style = {
+		color: customColor,
+		fontSize: customFontSize,
+	};
+
+	const saleStyle = {
+		color: customSaleColor,
+		fontSize: customSaleFontSize,
+	};
 	if ( ! product ) {
 		return (
 			<div
@@ -65,6 +113,10 @@ const Block = ( { className, ...props } ) => {
 					currency={ currency }
 					price={ prices.price }
 					regularPrice={ prices.regular_price }
+					classes={ classes }
+					style={ style }
+					saleClasses={ saleClasses }
+					saleStyle={ saleStyle }
 				/>
 			) }
 		</div>
@@ -102,17 +154,28 @@ const PriceRange = ( { currency, minAmount, maxAmount } ) => {
 	);
 };
 
-const Price = ( { currency, price, regularPrice } ) => {
+const Price = ( {
+	currency,
+	price,
+	regularPrice,
+	classes = '',
+	style = {},
+	saleClasses = '',
+	saleStyle = {},
+} ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
-
+	saleClasses = regularPrice === price ? classes : saleClasses;
+	saleStyle = regularPrice === price ? style : saleStyle;
 	return (
 		<>
 			{ regularPrice !== price && (
 				<del
 					className={ classnames(
 						'wc-block-components-product-price__regular',
-						`${ parentClassName }__product-price__regular`
+						`${ parentClassName }__product-price__regular`,
+						{ [ classes ]: isFeaturePluginBuild() }
 					) }
+					style={ isFeaturePluginBuild ? style : {} }
 				>
 					<FormattedMonetaryAmount
 						currency={ currency }
@@ -123,8 +186,10 @@ const Price = ( { currency, price, regularPrice } ) => {
 			<span
 				className={ classnames(
 					'wc-block-components-product-price__value',
-					`${ parentClassName }__product-price__value`
+					`${ parentClassName }__product-price__value`,
+					{ [ saleClasses ]: isFeaturePluginBuild() }
 				) }
+				style={ isFeaturePluginBuild ? saleStyle : {} }
 			>
 				<FormattedMonetaryAmount
 					currency={ currency }

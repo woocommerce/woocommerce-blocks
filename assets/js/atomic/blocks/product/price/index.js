@@ -9,6 +9,7 @@ import { CURRENCY } from '@woocommerce/settings';
  * Internal dependencies
  */
 import sharedConfig from '../shared-config';
+import attributes from './attributes';
 import edit from './edit';
 
 const blockConfig = {
@@ -22,6 +23,7 @@ const blockConfig = {
 		foreground: '#96588a',
 	},
 	edit,
+	attributes,
 };
 
 registerBlockType( 'woocommerce/product-price', {
