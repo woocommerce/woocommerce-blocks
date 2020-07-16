@@ -21,6 +21,7 @@ import './style.scss';
  *
  * @param {Object} props                      Incoming props.
  * @param {string} [props.className]          CSS Class name for the component.
+ * @param {string} [props.align]              Text alignment.
  * @param {string} [props.fontSize]           Normal Price font size name.
  * @param {number} [props.customFontSize]     Normal Price custom font size.
  * @param {string} [props.saleFontSize]       Sale Price font size name.
@@ -35,6 +36,7 @@ import './style.scss';
  */
 const Block = ( {
 	className,
+	align,
 	fontSize,
 	customFontSize,
 	saleFontSize,
@@ -99,7 +101,11 @@ const Block = ( {
 				className,
 				'price',
 				'wc-block-components-product-price',
-				`${ parentClassName }__product-price`
+				`${ parentClassName }__product-price`,
+				{
+					[ `wc-block-components-product-price__align-${ align }` ]:
+						align && isFeaturePluginBuild(),
+				}
 			) }
 		>
 			{ hasPriceRange( prices ) ? (
