@@ -5,6 +5,7 @@ namespace Automattic\WooCommerce\Blocks\Tests\Library;
 use PHPUnit\Framework\TestCase;
 use \WC_Order;
 use Automattic\WooCommerce\Blocks\Domain\Services\DraftOrders;
+use Automattic\WooCommerce\Blocks\Domain\Package;
 
 /**
  * Tests Delete Draft Orders functionality
@@ -13,6 +14,9 @@ use Automattic\WooCommerce\Blocks\Domain\Services\DraftOrders;
  * @group testing
  */
 class DeleteDraftOrders extends TestCase {
+
+	private $draft_orders_instance;
+
 	/**
 	 * During setup create some draft orders.
 	 *
@@ -21,12 +25,14 @@ class DeleteDraftOrders extends TestCase {
 	public function setUp() {
 		global $wpdb;
 
+		$this->draft_orders_instance = new DraftOrders( new Package( 'test', './') );
+
 		$order = new WC_Order();
-		$order->set_status( 'checkout-draft' );
+		$order->set_status( DraftOrders::STATUS );
 		$order->save();
 
 		$order = new WC_Order();
-		$order->set_status( 'checkout-draft' );
+		$order->set_status( DraftOrders::STATUS );
 		$order->save();
 		$wpdb->update(
 			$wpdb->posts,
@@ -40,7 +46,7 @@ class DeleteDraftOrders extends TestCase {
 		);
 
 		$order = new WC_Order();
-		$order->set_status( 'checkout-draft' );
+		$order->set_status( DraftOrders::STATUS );
 		$order->save();
 		$wpdb->update(
 			$wpdb->posts,
@@ -69,6 +75,10 @@ class DeleteDraftOrders extends TestCase {
 		);
 	}
 
+	public function tearDown() {
+		$this->draft_orders_instance = null;
+	}
+
 	/**
 	 * Delete draft orders older than a day.
 	 *
@@ -76,15 +86,16 @@ class DeleteDraftOrders extends TestCase {
 	 */
 	public function test_delete_expired_draft_orders() {
 		global $wpdb;
+		$status = DraftOrders::DB_STATUS;
 
 		// Check there are 3 draft orders from our setup before running tests.
-		$this->assertEquals( 3, (int) $wpdb->get_var( "SELECT COUNT(ID) from $wpdb->posts posts WHERE posts.post_status = 'wc-checkout-draft'" ) );
+		$this->assertEquals( 3, (int) $wpdb->get_var( "SELECT COUNT(ID) from $wpdb->posts posts WHERE posts.post_status = '$status'" ) );
 
 		// Run delete query.
-		DraftOrders::delete_expired_draft_orders();
+		$this->draft_orders_instance->delete_expired_draft_orders();
 
 		// Only 1 should remain.
-		$this->assertEquals( 1, (int) $wpdb->get_var( "SELECT COUNT(ID) from $wpdb->posts posts WHERE posts.post_status = 'wc-checkout-draft'" ) );
+		$this->assertEquals( 1, (int) $wpdb->get_var( "SELECT COUNT(ID) from $wpdb->posts posts WHERE posts.post_status = '$status'" ) );
 
 		// The non-draft order should still be present
 		$this->assertEquals( 1, (int) $wpdb->get_var( "SELECT COUNT(ID) from $wpdb->posts posts WHERE posts.post_status = 'wc-on-hold'" ) );
