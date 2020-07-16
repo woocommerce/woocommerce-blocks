@@ -8,11 +8,16 @@
 namespace Automattic\WooCommerce\Blocks\Domain\Services;
 
 use Automattic\WooCommerce\Blocks\Domain\Package;
+use Exception;
+use WC_Order;
 
 /**
  * Service class for adding DraftOrder functionality to WooCommerce core.
  */
 class DraftOrders {
+
+	const DB_STATUS = 'wc-checkout-draft';
+	const STATUS    = 'checkout-draft';
 
 	/**
 	 * Holds the Package instance
@@ -35,35 +40,33 @@ class DraftOrders {
 	 */
 	public function init() {
 		if ( $this->package->is_feature_plugin_build() ) {
-			add_filter( 'wc_order_statuses', [ __CLASS__, 'register_draft_order_status' ] );
-			add_filter( 'woocommerce_register_shop_order_post_statuses', [ __CLASS__, 'register_draft_order_post_status' ] );
-			add_filter( 'woocommerce_valid_order_statuses_for_payment', [ __CLASS__, 'append_draft_order_post_status' ] );
-			add_action( 'woocommerce_cleanup_draft_orders', [ __CLASS__, 'delete_expired_draft_orders' ] );
+			add_filter( 'wc_order_statuses', [ $this, 'register_draft_order_status' ] );
+			add_filter( 'woocommerce_register_shop_order_post_statuses', [ $this, 'register_draft_order_post_status' ] );
+			add_filter( 'woocommerce_valid_order_statuses_for_payment', [ $this, 'append_draft_order_post_status' ] );
+			add_action( 'woocommerce_cleanup_draft_orders', [ $this, 'delete_expired_draft_orders' ] );
 			add_action( 'admin_init', [ $this, 'install' ] );
 		} else {
 			// Maybe remove existing cronjob if present because it shouldn't be needed in the environment.
-			$this->maybe_remove_cronjobs();
+			add_action( 'admin_init', [ $this, 'uninstall' ] );
 		}
 	}
 
 	/**
 	 * Installation related logic for Draft order functionality.
+	 *
+	 * @internal
 	 */
 	public function install() {
 		$this->maybe_create_cronjobs();
 	}
 
-
 	/**
 	 * Remove cronjobs if they exist (but only from admin).
+	 *
+	 * @internal
 	 */
-	protected function maybe_remove_cronjobs() {
-		if ( ! is_admin() ) {
-			return;
-		}
-		if ( function_exists( 'as_next_scheduled_action' ) && true === as_next_scheduled_action( 'woocommerce_cleanup_draft_orders' ) ) {
-			as_unschedule_all_actions( 'woocommerce_cleanup_draft_orders' );
-		}
+	protected function uninstall() {
+		$this->maybe_remove_cronjobs();
 	}
 
 	/**
@@ -75,6 +78,14 @@ class DraftOrders {
 		}
 	}
 
+	/**
+	 * Unschedule cron jobs that are present.
+	 */
+	protected function maybe_remove_cronjobs() {
+		if ( function_exists( 'as_next_scheduled_action' ) && true === as_next_scheduled_action( 'woocommerce_cleanup_draft_orders' ) ) {
+			as_unschedule_all_actions( 'woocommerce_cleanup_draft_orders' );
+		}
+	}
 
 	/**
 	 * Register custom order status for orders created via the API during checkout.
@@ -82,10 +93,11 @@ class DraftOrders {
 	 * Draft order status is used before payment is attempted, during checkout, when a cart is converted to an order.
 	 *
 	 * @param array $statuses Array of statuses.
+	 * @internal
 	 * @return array
 	 */
-	public static function register_draft_order_status( array $statuses ) {
-		$statuses['wc-checkout-draft'] = _x( 'Draft', 'Order status', 'woo-gutenberg-products-block' );
+	public function register_draft_order_status( array $statuses ) {
+		$statuses[ self::DB_STATUS ] = _x( 'Draft', 'Order status', 'woo-gutenberg-products-block' );
 		return $statuses;
 	}
 
@@ -93,10 +105,12 @@ class DraftOrders {
 	 * Register custom order post status for orders created via the API during checkout.
 	 *
 	 * @param array $statuses Array of statuses.
+	 * @internal
+
 	 * @return array
 	 */
-	public static function register_draft_order_post_status( array $statuses ) {
-		$statuses['wc-checkout-draft'] = [
+	public function register_draft_order_post_status( array $statuses ) {
+		$statuses[ self::DB_STATUS ] = [
 			'label'                     => _x( 'Draft', 'Order status', 'woo-gutenberg-products-block' ),
 			'public'                    => false,
 			'exclude_from_search'       => false,
@@ -112,10 +126,12 @@ class DraftOrders {
 	 * Append draft status to a list of statuses.
 	 *
 	 * @param array $statuses Array of statuses.
+	 * @internal
+
 	 * @return array
 	 */
-	public static function append_draft_order_post_status( $statuses ) {
-		$statuses[] = 'checkout-draft';
+	public function append_draft_order_post_status( $statuses ) {
+		$statuses[] = self::STATUS;
 		return $statuses;
 	}
 
@@ -123,29 +139,70 @@ class DraftOrders {
 	 * Delete draft orders older than a day in batches of 20.
 	 *
 	 * Ran on a daily cron schedule.
+	 *
+	 * @internal
 	 */
-	public static function delete_expired_draft_orders() {
+	public function delete_expired_draft_orders() {
 		$count      = 0;
 		$batch_size = 20;
 		$orders     = wc_get_orders(
 			[
 				'date_modified' => '<=' . strtotime( '-1 DAY' ),
 				'limit'         => $batch_size,
-				'status'        => 'wc-checkout-draft',
+				'status'        => self::DB_STATUS,
 				'type'          => 'shop_order',
 			]
 		);
 
-		if ( $orders ) {
-			foreach ( $orders as $order ) {
-				$order->delete( true );
-				$count ++;
+		// do we bail because the query results are unexpected?
+		try {
+			$this->assert_order_results( $orders, $batch_size );
+			if ( $orders ) {
+				foreach ( $orders as $order ) {
+					$order->delete( true );
+					$count ++;
+				}
 			}
-		}
-
-		if ( $batch_size === $count && function_exists( 'as_enqueue_async_action' ) ) {
-			as_enqueue_async_action( 'woocommerce_cleanup_draft_orders' );
+			if ( $batch_size === $count && function_exists( 'as_enqueue_async_action' ) ) {
+				as_enqueue_async_action( 'woocommerce_cleanup_draft_orders' );
+			}
+		} catch ( Exception $error ) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			error_log( $error->getMessage() );
 		}
 	}
 
+	/**
+	 * Asserts whether incoming order results are expected given the query
+	 * this service class executes.
+	 *
+	 * @param WC_Order[] $order_results The order results being asserted.
+	 * @param int        $expected_batch_size The expected batch size for the results.
+	 * @throws Exception If any assertions fail, an exception is thrown.
+	 */
+	private function assert_order_results( $order_results, $expected_batch_size ) {
+		// if not an array, then just return because it won't get handled
+		// anyways.
+		if ( ! is_array( $order_results ) ) {
+			return;
+		}
+
+		$prefix = __CLASS__ . '::delete_expired_draft_orders ';
+		$suffix = ' This is an indicator that something is filtering WooCommerce or WordPress queries and modifying the query parameters.';
+
+		// if count is greater than our expected batch size, then that's a problem.
+		if ( count( $order_results ) > 20 ) {
+			throw new Exception( $prefix . ' is getting an unexpected number of results returned from the query.' . $suffix );
+		}
+
+		// if any of the returned orders are not draft (or not a WC_Order), then that's a problem.
+		foreach ( $order_results as $order ) {
+			if ( ! ( $order instanceof WC_Order ) ) {
+				throw new Exception( $prefix . ' returned results containing a value that is not a WC_Order.' . $suffix );
+			}
+			if ( ! $order->has_status( self::STATUS ) ) {
+				throw new Exception( $prefix . ' has an order that is not a `wc-checkout-draft` status in the results.' . $suffix );
+			}
+		}
+	}
 }
