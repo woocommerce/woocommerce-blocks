@@ -148,18 +148,6 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 						className="components-base-control--nested"
 					/>
 				) }
-				<ToggleControl
-					label={ __(
-						'Allow customers to optionally add order notes',
-						'woo-gutenberg-products-block'
-					) }
-					checked={ showOrderNotes }
-					onChange={ () =>
-						setAttributes( {
-							showOrderNotes: ! showOrderNotes,
-						} )
-					}
-				/>
 			</PanelBody>
 			<PanelBody
 				title={ __( 'Order notes', 'woo-gutenberg-products-block' ) }
