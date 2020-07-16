@@ -25,6 +25,7 @@ import './style.scss';
  * @param {string}  [props.className]      CSS Class name for the component.
  * @param {number}  [props.headingLevel]   Heading level (h1, h2 etc)
  * @param {boolean} [props.productLink]    Whether or not to display a link to the product page.
+ * @param {Element|null} [props.placeholder] Placeholder content should nothing be rendered.
  * @param {string}  [props.align]          Title alignment.
  * @param {string}  [props.color]          Title color name.
  * @param {string}  [props.customColor]    Custom title color value.
@@ -38,6 +39,7 @@ export const Block = ( {
 	className,
 	headingLevel = 2,
 	productLink = true,
+	placeholder = null,
 	align,
 	color,
 	customColor,
@@ -65,12 +67,14 @@ export const Block = ( {
 				className={ classnames(
 					className,
 					'wc-block-components-product-title',
-					`${ parentClassName }__product-title`,
+					'wc-block-components-product-title--placeholder',
 					{
+						[ `${ parentClassName }__product-title` ]: parentClassName,
 						[ `wc-block-components-product-title--align-${ align }` ]:
 							align && isFeaturePluginBuild(),
+						[ titleClasses ]: isFeaturePluginBuild()
 					},
-					{ [ titleClasses ]: isFeaturePluginBuild() }
+
 				) }
 				style={ gatedStyledText( {
 					color: customColor,
@@ -82,17 +86,21 @@ export const Block = ( {
 
 	const productName = decodeEntities( product.name );
 
+	if ( ! productName ) {
+		return placeholder;
+	}
+
 	return (
 		// @ts-ignore
 		<TagName
 			className={ classnames(
 				className,
 				'wc-block-components-product-title',
-				`${ parentClassName }__product-title`,
 				{
+					[ `${ parentClassName }__product-title` ]: parentClassName,
 					[ `wc-block-components-product-title__align-${ align }` ]:
 						align && isFeaturePluginBuild(),
-				}
+				},
 			) }
 		>
 			{ productLink ? (

@@ -21,6 +21,7 @@ import HeadingToolbar from '@woocommerce/block-components/heading-toolbar';
  */
 import Block from './block';
 import withProductSelector from '../shared/with-product-selector';
+import ContentPlaceholder from '../shared/content-placeholder';
 import { BLOCK_TITLE, BLOCK_ICON } from './constants';
 
 const TitleEdit = ( {
@@ -107,7 +108,17 @@ const TitleEdit = ( {
 				) }
 			</InspectorControls>
 			<Disabled>
-				<Block { ...attributes } />
+				<Block
+					{ ...attributes }
+					placeholder={
+						<ContentPlaceholder
+							label={ __(
+								'The selected product does not have a title.',
+								'woo-gutenberg-products-block'
+							) }
+						/>
+					}
+				/>
 			</Disabled>
 		</>
 	);
