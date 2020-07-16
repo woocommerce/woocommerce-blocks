@@ -65,7 +65,7 @@ class DraftOrders {
 	 *
 	 * @internal
 	 */
-	protected function uninstall() {
+	public function uninstall() {
 		$this->maybe_remove_cronjobs();
 	}
 
