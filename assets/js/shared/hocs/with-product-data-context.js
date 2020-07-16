@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import classnames from 'classnames';
 import apiFetch from '@wordpress/api-fetch';
 import {
 	ProductDataContextProvider,
@@ -16,6 +17,7 @@ import { useState, useEffect } from '@wordpress/element';
 const OriginalComponentWithContext = ( props ) => {
 	const { productId, OriginalComponent } = props;
 	const [ product, setProduct ] = useState( null );
+	const [ isLoading, setIsLoading ] = useState( true );
 
 	useEffect( () => {
 		if ( !! props.product ) {
@@ -25,22 +27,31 @@ const OriginalComponentWithContext = ( props ) => {
 
 	useEffect( () => {
 		if ( productId > 0 ) {
+			setIsLoading( true );
 			apiFetch( {
 				path: `/wc/store/products/${ productId }`,
 			} )
 				.then( ( receivedProduct ) => {
 					setProduct( receivedProduct );
+					setIsLoading( false );
 				} )
 				.catch( async () => {
 					setProduct( null );
+					setIsLoading( false );
 				} );
 		}
 	}, [ productId ] );
 
 	return (
-		<ProductDataContextProvider product={ product }>
-			<OriginalComponent { ...props } />
-		</ProductDataContextProvider>
+		<div
+			className={ classnames( 'wc-block-layout', {
+				'wc-block-layout--is-loading': isLoading,
+			} ) }
+		>
+			<ProductDataContextProvider product={ product }>
+				<OriginalComponent { ...props } />
+			</ProductDataContextProvider>
+		</div>
 	);
 };
 

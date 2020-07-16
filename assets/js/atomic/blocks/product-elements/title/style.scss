@@ -11,24 +11,16 @@
 		font-size: inherit;
 		display: block;
 	}
-}
-
-.wc-block-components-product-title--placeholder::before {
-	@include placeholder();
-	content: ".";
-	display: inline-block;
-	width: 7em;
-}
-
-.wc-block-layout--is-loading {
-	.wc-block-components-product-title::before {
-		@include placeholder();
-		content: ".";
-		display: inline-block;
-		width: 7em;
-	}
-	.wc-block-grid .wc-block-components-product-title::before {
-		width: 10em;
+	&--is-loading {
+		.wc-block-components-product-title::before {
+			@include placeholder();
+			content: ".";
+			display: inline-block;
+			width: 7em;
+		}
+		.wc-block-grid .wc-block-components-product-title::before {
+			width: 10em;
+		}
 	}
 	/*rtl:begin:ignore*/
 	.wc-block-components-product-title--align-left {
