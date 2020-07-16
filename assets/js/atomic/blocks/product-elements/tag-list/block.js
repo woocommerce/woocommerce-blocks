@@ -36,7 +36,9 @@ const Block = ( { className } ) => {
 			className={ classnames(
 				className,
 				'wc-block-components-product-tag-list',
-				`${ parentClassName }__product-tag-list`
+				{
+					[ `${ parentClassName }__product-tag-list` ]: parentClassName,
+				}
 			) }
 		>
 			{ __( 'Tags:', 'woo-gutenberg-products-block' ) }{ ' ' }

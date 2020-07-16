@@ -39,8 +39,8 @@ const Block = ( { className } ) => {
 			className={ classnames(
 				className,
 				'wc-block-components-product-stock-indicator',
-				`${ parentClassName }__stock-indicator`,
 				{
+					[ `${ parentClassName }__stock-indicator` ]: parentClassName,
 					'wc-block-components-product-stock-indicator--in-stock': inStock,
 					'wc-block-components-product-stock-indicator--out-of-stock': ! inStock,
 					'wc-block-components-product-stock-indicator--low-stock': !! lowStock,

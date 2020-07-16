@@ -87,7 +87,9 @@ const Block = ( {
 					className,
 					'price',
 					'wc-block-components-product-price',
-					`${ parentClassName }__product-price`
+					{
+						[ `${ parentClassName }__product-price` ]: parentClassName,
+					}
 				) }
 			/>
 		);
@@ -102,8 +104,8 @@ const Block = ( {
 				className,
 				'price',
 				'wc-block-components-product-price',
-				`${ parentClassName }__product-price`,
 				{
+					[ `${ parentClassName }__product-price` ]: parentClassName,
 					[ `wc-block-components-product-price__align-${ align }` ]:
 						align && isFeaturePluginBuild(),
 				}
@@ -155,8 +157,10 @@ const PriceRange = ( { currency, minAmount, maxAmount, classes, style } ) => {
 		<span
 			className={ classnames(
 				'wc-block-components-product-price__value',
-				`${ parentClassName }__product-price__value`,
-				{ [ classes ]: isFeaturePluginBuild() }
+				{
+					[ `${ parentClassName }__product-price__value` ]: parentClassName,
+					[ classes ]: isFeaturePluginBuild()
+				}
 			) }
 			style={ isFeaturePluginBuild() ? style : {} }
 		>
@@ -188,8 +192,9 @@ const SalePrice = ( {
 			<del
 				className={ classnames(
 					'wc-block-components-product-price__regular',
-					`${ parentClassName }__product-price__regular`,
-					{ [ classes ]: isFeaturePluginBuild() }
+					{
+						[ `${ parentClassName }__product-price__regular` ]: parentClassName,
+						[ classes ]: isFeaturePluginBuild() }
 				) }
 				style={ isFeaturePluginBuild() ? style : {} }
 			>
@@ -201,8 +206,9 @@ const SalePrice = ( {
 			<span
 				className={ classnames(
 					'wc-block-components-product-price__value',
-					`${ parentClassName }__product-price__value`,
-					{ [ saleClasses ]: isFeaturePluginBuild() }
+					{
+						[ `${ parentClassName }__product-price__value` ]: parentClassName,
+						[ saleClasses ]: isFeaturePluginBuild() }
 				) }
 				style={ isFeaturePluginBuild() ? saleStyle : {} }
 			>

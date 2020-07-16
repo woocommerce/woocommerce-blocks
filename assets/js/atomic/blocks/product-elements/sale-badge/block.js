@@ -43,7 +43,9 @@ const Block = ( { className, align } ) => {
 				'wc-block-components-product-sale-badge',
 				className,
 				alignClass,
-				`${ parentClassName }__product-onsale`
+				{
+					[ `${ parentClassName }__product-onsale` ]: parentClassName,
+				}
 			) }
 		>
 			<Label

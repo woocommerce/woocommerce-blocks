@@ -36,7 +36,9 @@ const Block = ( { className } ) => {
 				className,
 				'wp-block-button',
 				'wc-block-components-product-button',
-				`${ parentClassName }__product-add-to-cart`
+				{
+					[ `${ parentClassName }__product-add-to-cart` ]: parentClassName,
+				}
 			) }
 		>
 			{ product ? (

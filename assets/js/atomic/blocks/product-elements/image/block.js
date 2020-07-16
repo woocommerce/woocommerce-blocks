@@ -46,7 +46,9 @@ const Block = ( {
 					className,
 					'wc-block-components-product-image',
 					'wc-block-components-product-image--placeholder',
-					`${ parentClassName }__product-image`
+					{
+						[ `${ parentClassName }__product-image` ]: parentClassName,
+					}
 				) }
 			>
 				<ImagePlaceholder />
@@ -62,7 +64,9 @@ const Block = ( {
 			className={ classnames(
 				className,
 				'wc-block-components-product-image',
-				`${ parentClassName }__product-image`
+				{
+					[ `${ parentClassName }__product-image` ]: parentClassName,
+				}
 			) }
 		>
 			{ productLink ? (

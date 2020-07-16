@@ -32,7 +32,10 @@ const Block = ( { className } ) => {
 			<div
 				className={ classnames(
 					className,
-					`wc-block-components-product-summary`
+					`wc-block-components-product-summary`,
+					{
+						[ `${ parentClassName }__product-summary` ]: parentClassName,
+					}
 				) }
 			/>
 		);
@@ -53,7 +56,9 @@ const Block = ( { className } ) => {
 			className={ classnames(
 				className,
 				`wc-block-components-product-summary`,
-				`${ parentClassName }__product-summary`
+				{
+					[ `${ parentClassName }__product-summary` ]: parentClassName,
+				}
 			) }
 			source={ source }
 			maxLength={ 150 }
