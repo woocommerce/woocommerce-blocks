@@ -167,8 +167,7 @@ class DraftOrders {
 				as_enqueue_async_action( 'woocommerce_cleanup_draft_orders' );
 			}
 		} catch ( Exception $error ) {
-			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-			error_log( $error->getMessage() );
+			wc_caught_exception( $error, __METHOD__ );
 		}
 	}
 
@@ -187,21 +186,20 @@ class DraftOrders {
 			return;
 		}
 
-		$prefix = __CLASS__ . '::delete_expired_draft_orders ';
 		$suffix = ' This is an indicator that something is filtering WooCommerce or WordPress queries and modifying the query parameters.';
 
 		// if count is greater than our expected batch size, then that's a problem.
 		if ( count( $order_results ) > 20 ) {
-			throw new Exception( $prefix . ' is getting an unexpected number of results returned from the query.' . $suffix );
+			throw new Exception( 'There are an unexpected number of results returned from the query.' . $suffix );
 		}
 
 		// if any of the returned orders are not draft (or not a WC_Order), then that's a problem.
 		foreach ( $order_results as $order ) {
 			if ( ! ( $order instanceof WC_Order ) ) {
-				throw new Exception( $prefix . ' returned results containing a value that is not a WC_Order.' . $suffix );
+				throw new Exception( 'The returned results contain a value that is not a WC_Order.' . $suffix );
 			}
 			if ( ! $order->has_status( self::STATUS ) ) {
-				throw new Exception( $prefix . ' has an order that is not a `wc-checkout-draft` status in the results.' . $suffix );
+				throw new Exception( 'The results contain an order that is not a `wc-checkout-draft` status in the results.' . $suffix );
 			}
 		}
 	}
