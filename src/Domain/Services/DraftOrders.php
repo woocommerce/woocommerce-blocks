@@ -82,7 +82,7 @@ class DraftOrders {
 	 * Unschedule cron jobs that are present.
 	 */
 	protected function maybe_remove_cronjobs() {
-		if ( function_exists( 'as_next_scheduled_action' ) && true === as_next_scheduled_action( 'woocommerce_cleanup_draft_orders' ) ) {
+		if ( function_exists( 'as_next_scheduled_action' ) && as_next_scheduled_action( 'woocommerce_cleanup_draft_orders' ) ) {
 			as_unschedule_all_actions( 'woocommerce_cleanup_draft_orders' );
 		}
 	}
