@@ -3,7 +3,7 @@
 }
 
 .wc-block-checkout__use-address-for-billing {
-	margin-top: $gap;
+	margin-top: em($gap-large);
 }
 
 .wc-block-checkout__shipping-option {
@@ -183,7 +183,6 @@
 .is-large {
 	.wc-block-checkout__billing-fields,
 	.wc-block-checkout__shipping-fields {
-
 		.wc-block-components-address-form {
 			margin-left: #{-$gap-small / 2};
 			margin-right: #{-$gap-small / 2};

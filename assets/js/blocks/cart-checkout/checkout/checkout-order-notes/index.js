@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import CheckboxControl from '@woocommerce/base-components/checkbox-control';
 import Textarea from '@woocommerce/base-components/textarea';
@@ -18,7 +19,10 @@ const CheckoutOrderNotes = ( { disabled, onChange, placeholder, value } ) => {
 		<div className="wc-block-checkout__add-note">
 			<CheckboxControl
 				disabled={ disabled }
-				label="Add a note to your order"
+				label={ __(
+					'Add a note to your order',
+					'woo-gutenberg-products-block'
+				) }
 				checked={ withOrderNotes }
 				onChange={ ( isChecked ) => {
 					setWithOrderNotes( isChecked );

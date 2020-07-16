@@ -12,8 +12,8 @@ import './style.scss';
 const Textarea = ( {
 	className = '',
 	disabled = false,
-	placeholder,
 	onChange,
+	placeholder,
 	value = '',
 } ) => {
 	return (
