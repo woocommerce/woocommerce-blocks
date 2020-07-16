@@ -119,7 +119,10 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		isProcessing: checkoutIsProcessing,
 		customerId,
 		onSubmit,
+		orderNotes,
+		dispatchActions,
 	} = useCheckoutContext();
+	const { setOrderNotes } = dispatchActions;
 	const {
 		hasValidationErrors,
 		showAllValidationErrors,
