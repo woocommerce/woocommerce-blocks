@@ -35,22 +35,34 @@ const FormStep = ( {
 	description,
 	children,
 	disabled = false,
+	showCounter = false,
 	stepHeadingContent = () => {},
 } ) => {
+	const Element = legend || title ? 'fieldset' : 'div';
+
 	return (
-		<fieldset
+		<Element
 			className={ classnames(
 				className,
-				'wc-block-components-checkout-step'
+				'wc-block-components-checkout-step',
+				{
+					'wc-block-components-checkout-step--with-counter': showCounter,
+				}
 			) }
 			id={ id }
 			disabled={ disabled }
 		>
-			<legend className="screen-reader-text">{ legend || title }</legend>
-			<StepHeading
-				title={ title }
-				stepHeadingContent={ stepHeadingContent() }
-			/>
+			{ !! ( legend || title ) && (
+				<legend className="screen-reader-text">
+					{ legend || title }
+				</legend>
+			) }
+			{ !! title && (
+				<StepHeading
+					title={ title }
+					stepHeadingContent={ stepHeadingContent() }
+				/>
+			) }
 			<div className="wc-block-components-checkout-step__container">
 				{ !! description && (
 					<p className="wc-block-components-checkout-step__description">
@@ -61,7 +73,7 @@ const FormStep = ( {
 					{ children }
 				</div>
 			</div>
-		</fieldset>
+		</Element>
 	);
 };
 
@@ -71,6 +83,7 @@ FormStep.propTypes = {
 	title: PropTypes.string,
 	description: PropTypes.string,
 	children: PropTypes.node,
+	showCounter: PropTypes.bool,
 	stepHeadingContent: PropTypes.func,
 	disabled: PropTypes.bool,
 	legend: PropTypes.string,
