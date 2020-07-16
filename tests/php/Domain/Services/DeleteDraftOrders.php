@@ -11,7 +11,6 @@ use Automattic\WooCommerce\Blocks\Domain\Package;
  * Tests Delete Draft Orders functionality
  *
  * @since $VID:$
- * @group testing
  */
 class DeleteDraftOrders extends TestCase {
 
@@ -96,13 +95,13 @@ class DeleteDraftOrders extends TestCase {
 		$status = DraftOrders::DB_STATUS;
 
 		// Check there are 3 draft orders from our setup before running tests.
-		$this->assertEquals( 3, (int) $wpdb->get_var( "SELECT COUNT(ID) from $wpdb->posts posts WHERE posts.post_status = '$status'" ) );
+		$this->assertEquals( 3, (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) from $wpdb->posts posts WHERE posts.post_status = '%s'", [ $status ] ) ) );
 
 		// Run delete query.
 		$this->draft_orders_instance->delete_expired_draft_orders();
 
 		// Only 1 should remain.
-		$this->assertEquals( 1, (int) $wpdb->get_var( "SELECT COUNT(ID) from $wpdb->posts posts WHERE posts.post_status = '$status'" ) );
+		$this->assertEquals( 1, (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) from $wpdb->posts posts WHERE posts.post_status = '%s'", [ $status ] ) ) );
 
 		// The non-draft order should still be present
 		$this->assertEquals( 1, (int) $wpdb->get_var( "SELECT COUNT(ID) from $wpdb->posts posts WHERE posts.post_status = 'wc-on-hold'" ) );
