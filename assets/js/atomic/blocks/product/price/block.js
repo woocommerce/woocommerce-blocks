@@ -19,18 +19,18 @@ import './style.scss';
 /**
  * Product Price Block Component.
  *
- * @param {Object} props                      Incoming props.
- * @param {string} [props.className]          CSS Class name for the component.
- * @param {string} [props.align]              Text alignment.
- * @param {string} [props.fontSize]           Normal Price font size name.
- * @param {number} [props.customFontSize]     Normal Price custom font size.
- * @param {string} [props.saleFontSize]       Sale Price font size name.
- * @param {number} [props.customSaleFontSize] Sale Price custom font size.
- * @param {string} [props.color]              Normal Price text color.
- * @param {string} [props.customColor]        Normal Price custom text color.
- * @param {string} [props.saleColor]          Sale Price text color.
- * @param {string} [props.customSaleColor]    Sale Price custom text color.
- * @param {Object} [props.product]            Optional product object. Product from
+ * @param {Object} props                          Incoming props.
+ * @param {string} [props.className]              CSS Class name for the component.
+ * @param {string} [props.align]                  Text alignment.
+ * @param {string} [props.fontSize]               Normal Price font size name.
+ * @param {number} [props.customFontSize]         Normal Price custom font size.
+ * @param {string} [props.saleFontSize]           Original Price font size name.
+ * @param {number} [props.customSaleFontSize]     Original Price custom font size.
+ * @param {string} [props.color]                  Normal Price text color.
+ * @param {string} [props.customColor]            Normal Price custom text color.
+ * @param {string} [props.saleColor]              Original Price text color.
+ * @param {string} [props.customSaleColor]        Original Price custom text color.
+ * @param {Object} [props.product]                Optional product object. Product from
  * context will be used if this is not provided.
  * @return {*} The component.
  */
@@ -52,8 +52,8 @@ const Block = ( {
 	const product = props.product || productDataContext.product;
 
 	const colorClass = getColorClassName( 'color', color );
-	const saleColorClass = getColorClassName( 'color', saleColor );
 	const fontSizeClass = getFontSizeClass( fontSize );
+	const saleColorClass = getColorClassName( 'color', saleColor );
 	const saleFontSizeClass = getFontSizeClass( saleFontSize );
 
 	const classes = classnames( {
@@ -79,6 +79,7 @@ const Block = ( {
 		color: customSaleColor,
 		fontSize: customSaleFontSize,
 	};
+
 	if ( ! product ) {
 		return (
 			<div
@@ -108,21 +109,31 @@ const Block = ( {
 				}
 			) }
 		>
+			{ /* eslint-disable-next-line no-nested-ternary */ }
 			{ hasPriceRange( prices ) ? (
 				<PriceRange
 					currency={ currency }
 					minAmount={ prices.price_range.min_amount }
 					maxAmount={ prices.price_range.max_amount }
+					classes={ classes }
+					style={ style }
+				/>
+			) : prices.price !== prices.regular_price ? (
+				<SalePrice
+					currency={ currency }
+					price={ prices.price }
+					regularPrice={ prices.regular_price }
+					saleClasses={ saleClasses }
+					saleStyle={ saleStyle }
+					classes={ classes }
+					style={ style }
 				/>
 			) : (
 				<Price
 					currency={ currency }
 					price={ prices.price }
-					regularPrice={ prices.regular_price }
 					classes={ classes }
 					style={ style }
-					saleClasses={ saleClasses }
-					saleStyle={ saleStyle }
 				/>
 			) }
 		</div>
@@ -137,15 +148,17 @@ const hasPriceRange = ( prices ) => {
 	);
 };
 
-const PriceRange = ( { currency, minAmount, maxAmount } ) => {
+const PriceRange = ( { currency, minAmount, maxAmount, classes, style } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
 
 	return (
 		<span
 			className={ classnames(
 				'wc-block-components-product-price__value',
-				`${ parentClassName }__product-price__value`
+				`${ parentClassName }__product-price__value`,
+				{ [ classes ]: isFeaturePluginBuild() }
 			) }
+			style={ isFeaturePluginBuild ? style : {} }
 		>
 			<FormattedMonetaryAmount
 				currency={ currency }
@@ -160,35 +173,31 @@ const PriceRange = ( { currency, minAmount, maxAmount } ) => {
 	);
 };
 
-const Price = ( {
+const SalePrice = ( {
 	currency,
 	price,
 	regularPrice,
-	classes = '',
-	style = {},
 	saleClasses = '',
 	saleStyle = {},
+	classes = '',
+	style = {},
 } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
-	saleClasses = regularPrice === price ? classes : saleClasses;
-	saleStyle = regularPrice === price ? style : saleStyle;
 	return (
 		<>
-			{ regularPrice !== price && (
-				<del
-					className={ classnames(
-						'wc-block-components-product-price__regular',
-						`${ parentClassName }__product-price__regular`,
-						{ [ classes ]: isFeaturePluginBuild() }
-					) }
-					style={ isFeaturePluginBuild ? style : {} }
-				>
-					<FormattedMonetaryAmount
-						currency={ currency }
-						value={ regularPrice }
-					/>
-				</del>
-			) }
+			<del
+				className={ classnames(
+					'wc-block-components-product-price__regular',
+					`${ parentClassName }__product-price__regular`,
+					{ [ classes ]: isFeaturePluginBuild() }
+				) }
+				style={ isFeaturePluginBuild ? style : {} }
+			>
+				<FormattedMonetaryAmount
+					currency={ currency }
+					value={ regularPrice }
+				/>
+			</del>
 			<span
 				className={ classnames(
 					'wc-block-components-product-price__value',
@@ -206,9 +215,34 @@ const Price = ( {
 	);
 };
 
+const Price = ( { currency, price, classes = '', style = {} } ) => {
+	const { parentClassName } = useInnerBlockLayoutContext();
+	return (
+		<span
+			className={ classnames(
+				'wc-block-components-product-price__value',
+				`${ parentClassName }__product-price__value`,
+				{ [ classes ]: isFeaturePluginBuild() }
+			) }
+			style={ isFeaturePluginBuild ? style : {} }
+		>
+			<FormattedMonetaryAmount currency={ currency } value={ price } />
+		</span>
+	);
+};
+
 Block.propTypes = {
 	className: PropTypes.string,
 	product: PropTypes.object,
+	align: PropTypes.string,
+	fontSize: PropTypes.string,
+	customFontSize: PropTypes.number,
+	saleFontSize: PropTypes.string,
+	customSaleFontSize: PropTypes.number,
+	color: PropTypes.string,
+	customColor: PropTypes.string,
+	saleColor: PropTypes.string,
+	customSaleColor: PropTypes.string,
 };
 
 export default Block;

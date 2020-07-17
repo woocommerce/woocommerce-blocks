@@ -2,14 +2,14 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { PanelBody } from '@wordpress/components';
+import { PanelBody, BaseControl } from '@wordpress/components';
 import { compose } from '@wordpress/compose';
 import {
 	InspectorControls,
 	BlockControls,
 	AlignmentToolbar,
 	withColors,
-	PanelColorSettings,
+	ColorPalette,
 	FontSizePicker,
 	withFontSizes,
 } from '@wordpress/block-editor';
@@ -19,6 +19,26 @@ import { isFeaturePluginBuild } from '@woocommerce/block-settings';
  */
 import Block from './block';
 
+const TextControl = ( {
+	fontSize,
+	setFontSize,
+	color,
+	setColor,
+	colorLabel,
+} ) => (
+	<>
+		<FontSizePicker value={ fontSize.size } onChange={ setFontSize } />
+		{ /* ColorPalette doesn't accept an id. */
+		/* eslint-disable-next-line @wordpress/no-base-control-with-label-without-id */ }
+		<BaseControl label={ colorLabel }>
+			<ColorPalette
+				value={ color.color }
+				onChange={ setColor }
+				label={ __( 'Color' ) }
+			/>
+		</BaseControl>
+	</>
+);
 const PriceEdit = ( {
 	fontSize,
 	saleFontSize,
@@ -47,38 +67,40 @@ const PriceEdit = ( {
 			<InspectorControls>
 				{ isFeaturePluginBuild() && (
 					<>
-						<PanelBody title={ __( 'Normal price' ) }>
-							<FontSizePicker
-								value={ fontSize.size }
-								onChange={ setFontSize }
+						<PanelBody
+							title={ __(
+								'Price',
+								'woo-gutenberg-products-block'
+							) }
+						>
+							<TextControl
+								color={ color }
+								setColor={ setColor }
+								fontSize={ fontSize }
+								setFontSize={ setFontSize }
+								colorLabel={ __(
+									'Color',
+									'woo-gutenberg-products-block'
+								) }
 							/>
 						</PanelBody>
-						<PanelColorSettings
-							title={ __( 'Normal price color' ) }
-							colorSettings={ [
-								{
-									value: color.color,
-									onChange: setColor,
-									label: __( 'Color' ),
-								},
-							] }
-						></PanelColorSettings>
-						<PanelBody title={ __( 'Sale price' ) }>
-							<FontSizePicker
-								value={ saleFontSize.size }
-								onChange={ setSaleFontSize }
+						<PanelBody
+							title={ __(
+								'Sale price',
+								'woo-gutenberg-products-block'
+							) }
+						>
+							<TextControl
+								color={ saleColor }
+								setColor={ setSaleColor }
+								fontSize={ saleFontSize }
+								setFontSize={ setSaleFontSize }
+								colorLabel={ __(
+									'Color',
+									'woo-gutenberg-products-block'
+								) }
 							/>
 						</PanelBody>
-						<PanelColorSettings
-							title={ __( 'Sale price color' ) }
-							colorSettings={ [
-								{
-									value: saleColor.color,
-									onChange: setSaleColor,
-									label: __( 'Color' ),
-								},
-							] }
-						></PanelColorSettings>
 					</>
 				) }
 			</InspectorControls>
@@ -91,8 +113,10 @@ const Price = isFeaturePluginBuild()
 	? compose( [
 			withFontSizes( 'fontSize' ),
 			withFontSizes( 'saleFontSize' ),
+			withFontSizes( 'originalFontSize' ),
 			withColors( 'color', { textColor: 'color' } ),
 			withColors( 'saleColor', { textColor: 'saleColor' } ),
+			withColors( 'originalColor', { textColor: 'originalColor' } ),
 	  ] )( PriceEdit )
 	: PriceEdit;
 
