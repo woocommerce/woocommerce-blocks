@@ -23,11 +23,11 @@ import './style.scss';
  * @param {string}  [props.className]      CSS Class name for the component.
  * @param {number}  [props.headingLevel]   Heading level (h1, h2 etc)
  * @param {boolean} [props.productLink]    Whether or not to display a link to the product page.
- * @param {boolean} [props.align]          Title alignment.
- * @param {boolean} [props.color]          Title color name.
- * @param {boolean} [props.customColor]    Custom title color value.
- * @param {boolean} [props.fontSize]       Title font size name.
- * @param {boolean} [props.customFontSize] Custom font size value.
+ * @param {string}  [props.align]          Title alignment.
+ * @param {string}  [props.color]          Title color name.
+ * @param {string}  [props.customColor]    Custom title color value.
+ * @param {string}  [props.fontSize]       Title font size name.
+ * @param {number } [props.customFontSize] Custom font size value.
  * @param {Object}  [props.product]        Optional product object. Product from context
  * will be used if this is not provided.
  * @return {*} The component.
