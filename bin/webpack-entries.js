@@ -4,102 +4,56 @@
 const { omit } = require( 'lodash' );
 const glob = require( 'glob' );
 
+// List of blocks that should be used as webpack entry points. They are expected
+// to be in `/assets/js/blocks/[BLOCK_NAME]`. If they are not, their relative
+// path should be defined in the `customDir` property. The scripts below will
+// take care of looking for `index.js`, `frontend.js` and `*.scss` files in each
+// block directory.
+// If a block is experimental, it should be marked with the `isExperimental`
+// property.
 const blocks = {
-	'handpicked-products': {
-		dir: 'handpicked-products',
-	},
-	'product-best-sellers': {
-		dir: 'product-best-sellers',
-	},
-	'product-category': {
-		dir: 'product-category',
-	},
-	'product-categories': {
-		dir: 'product-categories',
-	},
-	'product-new': {
-		dir: 'product-new',
-	},
-	'product-on-sale': {
-		dir: 'product-on-sale',
-	},
-	'product-top-rated': {
-		dir: 'product-top-rated',
-	},
-	'products-by-attribute': {
-		dir: 'products-by-attribute',
-	},
-	'featured-product': {
-		dir: 'featured-product',
-	},
+	'handpicked-products': {},
+	'product-best-sellers': {},
+	'product-category': {},
+	'product-categories': {},
+	'product-new': {},
+	'product-on-sale': {},
+	'product-top-rated': {},
+	'products-by-attribute': {},
+	'featured-product': {},
 	'all-reviews': {
-		dir: 'reviews/all-reviews',
+		customDir: 'reviews/all-reviews',
 	},
 	'reviews-by-product': {
-		dir: 'reviews/reviews-by-product',
+		customDir: 'reviews/reviews-by-product',
 	},
 	'reviews-by-category': {
-		dir: 'reviews/reviews-by-category',
+		customDir: 'reviews/reviews-by-category',
 	},
-	'product-search': {
-		dir: 'product-search',
-	},
-	'product-tag': {
-		dir: 'product-tag',
-	},
-	'featured-category': {
-		dir: 'featured-category',
-	},
+	'product-search': {},
+	'product-tag': {},
+	'featured-category': {},
 	'all-products': {
-		dir: 'products/all-products',
-		frontend: 'products/all-products/frontend.js',
+		customDir: 'products/all-products',
 	},
-	'price-filter': {
-		dir: 'price-filter',
-		frontend: 'price-filter/frontend.js',
-	},
-	'attribute-filter': {
-		dir: 'attribute-filter',
-		frontend: 'attribute-filter/frontend.js',
-	},
-	'active-filters': {
-		dir: 'active-filters',
-		frontend: 'active-filters/frontend.js',
-	},
+	'price-filter': {},
+	'attribute-filter': {},
+	'active-filters': {},
 	cart: {
-		dir: 'cart-checkout/cart',
-		frontend: 'cart-checkout/cart/frontend.js',
+		customDir: 'cart-checkout/cart',
 	},
 	checkout: {
-		dir: 'cart-checkout/checkout',
-		frontend: 'cart-checkout/checkout/frontend.js',
+		customDir: 'cart-checkout/checkout',
 	},
 	'single-product': {
-		dir: 'single-product',
-		frontend: 'single-product/frontend.js',
 		isExperimental: true,
 	},
 };
 
-// Extracts a property from each object in the `blocks` array.
-// For example, given `type=frontend`, it converts an array like
-// [
-// 	cart: {
-// 		dir: 'cart-checkout/cart',
-// 		frontend: 'cart-checkout/cart/frontend.js',
-// 	},
-// 	checkout: {
-// 		dir: 'cart-checkout/checkout',
-// 		frontend: 'cart-checkout/checkout/frontend.js',
-// 	}
-// ]
-// into
-// [
-// 	cart: 'cart-checkout/cart/frontend.js',
-// 	checkout: 'cart-checkout/checkout/frontend.js',
-// ]
+// Returns the entries for each block given a relative path (ie: `index.js`,
+// `**/*.scss`...).
 // It also filters out elements with undefined props and experimental blocks.
-const getBlockEntries = ( type ) => {
+const getBlockEntries = ( relativePath ) => {
 	const experimental =
 		! parseInt( process.env.WOOCOMMERCE_BLOCKS_PHASE, 10 ) < 3;
 
@@ -107,29 +61,20 @@ const getBlockEntries = ( type ) => {
 		Object.entries( blocks )
 			.filter(
 				( [ , config ] ) =>
-					config.hasOwnProperty( type ) &&
-					( ! config.isExperimental ||
-						config.isExperimental === experimental )
+					! config.isExperimental ||
+					config.isExperimental === experimental
 			)
-			.map( ( [ blockCode, config ] ) => [
-				blockCode,
-				'./assets/js/blocks/' + config[ type ],
-			] )
-	);
-};
-
-// Generates an array of CSS entries from the `blocks` array based on the `dir`
-// property of each block. All block styles should be `scss` files inside that
-// directory.
-const getStyleBlockEntries = () => {
-	const entries = getBlockEntries( 'dir' );
-
-	return Object.fromEntries(
-		Object.entries( entries )
-			.map( ( [ blockCode, dir ] ) => {
-				return [ blockCode, glob.sync( `${ dir }/**/*.scss` ) ];
+			.map( ( [ blockCode, config ] ) => {
+				const filePaths = glob.sync(
+					`./assets/js/blocks/${ config.customDir || blockCode }/` +
+						relativePath
+				);
+				if ( filePaths.length > 0 ) {
+					return [ blockCode, filePaths ];
+				}
+				return null;
 			} )
-			.filter( ( [ , blockEntries ] ) => blockEntries.length )
+			.filter( Boolean )
 	);
 };
 
@@ -150,7 +95,7 @@ const entries = {
 			],
 		} ),
 
-		...getStyleBlockEntries(),
+		...getBlockEntries( '**/*.scss' ),
 	},
 	core: {
 		wcBlocksRegistry: './assets/js/blocks-registry/index.js',
@@ -164,11 +109,11 @@ const entries = {
 		blocks: './assets/js/index.js',
 
 		// Blocks
-		...getBlockEntries( 'dir' ),
+		...getBlockEntries( 'index.js' ),
 	},
 	frontend: {
 		reviews: './assets/js/blocks/reviews/frontend.js',
-		...getBlockEntries( 'frontend' ),
+		...getBlockEntries( 'frontend.js' ),
 	},
 	payments: {
 		'wc-payment-method-stripe':
