@@ -45,8 +45,8 @@ const TitleEdit = ( {
 				{ isFeaturePluginBuild() && (
 					<AlignmentToolbar
 						value={ align }
-						onChange={ ( nextAlign ) => {
-							setAttributes( { align: nextAlign } );
+						onChange={ ( newAlign ) => {
+							setAttributes( { align: newAlign } );
 						} }
 					/>
 				) }
