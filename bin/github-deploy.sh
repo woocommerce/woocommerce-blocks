@@ -87,6 +87,11 @@ echo
 git commit -am "Bumping version strings to new version." --no-verify
 git push origin $CURRENTBRANCH
 
+# Tag existing version for reference
+DEVTAG="v${VERSION}-dev"
+git tag $DEVTAG
+git push origin $DEVTAG
+
 if [ ! -d "build" ]; then
 	output 3 "Build directory not found. Aborting."
 	exit 1
