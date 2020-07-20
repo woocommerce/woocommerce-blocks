@@ -53,7 +53,12 @@ const TitleEdit = ( {
 			</BlockControls>
 			<InspectorControls>
 				{ isFeaturePluginBuild() && (
-					<PanelBody title={ __( 'Text settings' ) }>
+					<PanelBody
+						title={ __(
+							'Text settings',
+							'woo-gutenberg-products-block'
+						) }
+					>
 						<FontSizePicker
 							value={ fontSize.size }
 							onChange={ setFontSize }
@@ -82,12 +87,18 @@ const TitleEdit = ( {
 				</PanelBody>
 				{ isFeaturePluginBuild() && (
 					<PanelColorSettings
-						title={ __( 'Color settings' ) }
+						title={ __(
+							'Color settings',
+							'woo-gutenberg-products-block'
+						) }
 						colorSettings={ [
 							{
 								value: color.color,
 								onChange: setColor,
-								label: __( 'Text color' ),
+								label: __(
+									'Text color',
+									'woo-gutenberg-products-block'
+								),
 							},
 						] }
 					></PanelColorSettings>
