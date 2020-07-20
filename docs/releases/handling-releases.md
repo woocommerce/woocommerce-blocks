@@ -29,7 +29,7 @@ _Outcome_: **You are equipped to ship a release!**
 -   Ensure all issues/PRs intended for this release are merged, closed and linked to release.
 -   All PRs should have changelog entry, or `skip-changelog` tag.
 -   Check with the team to confirm any outstanding or in progress work.
--   Review recent [dependency updates](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pulls?q=is%3Apr+is%3Aclosed+author%3Aapp%2Frenovate) to be included in this release, and ensure they have been adequately tested. 
+-   Review recent [dependency updates](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pulls?q=is%3Apr+is%3Aclosed+author%3Aapp%2Frenovate) to be included in this release, and ensure they have been adequately tested.
 
 Note: changelog should be formatted like this in PR description. Note the preceding `>` - this is required by changelog script.
 
@@ -107,7 +107,7 @@ _Outcome_: **Release branch has `readme.txt` is updated with release details.**
 -   Ensure you are on the tip of the release branch, e.g. `git pull origin release/2.5`
 -   Update dependencies – `$ npm ci`.
 -   Run a production build - `$ npm run build`.
--   Run package script to get a zip to test `$ npm run package-plugin`.
+-   Run package script to get a zip to test `$ npm run package-plugin:deploy`.
 -   Smoke test built release zip:
     -   At least one other person should test the built zip - ask a teammate to help out.
     -   Test in a clean environment, e.g. Jurassic.Ninja site.
