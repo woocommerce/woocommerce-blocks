@@ -53,3 +53,5 @@ storybook-static/
 blocks.ini
 /wp-content/
 /.wp-env.override.json
+/before.json
+/after.json
