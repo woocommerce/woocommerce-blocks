@@ -10,7 +10,7 @@ import {
 } from '@woocommerce/shared-context';
 import { getColorClassName, getFontSizeClass } from '@wordpress/block-editor';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
-
+import { gatedStyledText } from '@woocommerce/atomic-utils';
 /**
  * Internal dependencies
  */
@@ -72,14 +72,10 @@ export const Block = ( {
 					},
 					{ [ titleClasses ]: isFeaturePluginBuild() }
 				) }
-				style={
-					isFeaturePluginBuild()
-						? {
-								color: customColor,
-								fontSize: customFontSize,
-						  }
-						: {}
-				}
+				style={ gatedStyledText( {
+					color: customColor,
+					fontSize: customFontSize,
+				} ) }
 			/>
 		);
 	}
@@ -98,13 +94,6 @@ export const Block = ( {
 						align && isFeaturePluginBuild(),
 				}
 			) }
-			style={
-				isFeaturePluginBuild()
-					? {
-							fontSize: customFontSize,
-					  }
-					: {}
-			}
 		>
 			{ productLink ? (
 				<a
@@ -113,13 +102,10 @@ export const Block = ( {
 					className={ classnames( {
 						[ titleClasses ]: isFeaturePluginBuild(),
 					} ) }
-					style={
-						isFeaturePluginBuild()
-							? {
-									color: customColor,
-							  }
-							: {}
-					}
+					style={ gatedStyledText( {
+						color: customColor,
+						fontSize: customFontSize,
+					} ) }
 				>
 					{ productName }
 				</a>
