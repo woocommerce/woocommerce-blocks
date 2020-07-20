@@ -67,7 +67,7 @@ export const Block = ( {
 					'wc-block-components-product-title',
 					`${ parentClassName }__product-title`,
 					{
-						[ `wc-block-components-product-title__align-${ align }` ]:
+						[ `wc-block-components-product-title--align-${ align }` ]:
 							align && isFeaturePluginBuild(),
 					},
 					{ [ titleClasses ]: isFeaturePluginBuild() }
