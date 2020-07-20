@@ -131,6 +131,7 @@ Note - the PR is not merged here either - read on :)
 
 #### Tag release on GitHub
 
+-   Create a manual tag of the current branch and label it `v${versionString}-dev` where `${versionString}` is the version released. This will provide us with tagged snapshots of the *development* version of that release (in case we need to do rebuilds, or the original branch for the release is lost etc).
 -   Prepare tagged release on github `$ npm run deploy`.
     -   Note: the script automatically updates version numbers (commits on your behalf).
 -   Edit release, add changelog info to Github release notes.
