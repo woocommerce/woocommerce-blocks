@@ -48,6 +48,22 @@ const setupSettings = ( fixture = fixtures.Settings() ) =>
 		update: fixture,
 	} );
 
+const setupPageSettings = () => {
+	axios
+		.get( WPAPI, {
+			auth: {
+				username: process.env.WORDPRESS_LOGIN,
+				password: process.env.WORDPRESS_PASSWORD,
+			},
+		} )
+		.then( ( response ) => {
+			const fixture = fixtures.PageSettings( response.data );
+			WooCommerce.post( 'settings/advanced/batch', {
+				update: fixture,
+			} );
+		} );
+};
+
 /**
  * Create taxes.
  *
@@ -341,6 +357,7 @@ const deleteBlockPages = ( ids ) => {
 
 module.exports = {
 	setupSettings,
+	setupPageSettings,
 	createTaxes,
 	deleteTaxes,
 	createCoupons,
