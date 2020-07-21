@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Icon, grid } from '@woocommerce/icons';
-
+import { isExperimentalBuild } from '@woocommerce/block-settings';
 /**
  * Internal dependencies
  */
@@ -22,6 +22,9 @@ export default {
 	supports: {
 		html: false,
 	},
+	parent: isExperimentalBuild()
+		? []
+		: [ '@woocommerce/all-products', '@woocommerce/single-product' ],
 	save,
 	deprecated: [
 		{
