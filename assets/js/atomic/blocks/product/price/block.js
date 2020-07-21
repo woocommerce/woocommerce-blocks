@@ -158,7 +158,7 @@ const PriceRange = ( { currency, minAmount, maxAmount, classes, style } ) => {
 				`${ parentClassName }__product-price__value`,
 				{ [ classes ]: isFeaturePluginBuild() }
 			) }
-			style={ isFeaturePluginBuild ? style : {} }
+			style={ isFeaturePluginBuild() ? style : {} }
 		>
 			<FormattedMonetaryAmount
 				currency={ currency }
@@ -191,7 +191,7 @@ const SalePrice = ( {
 					`${ parentClassName }__product-price__regular`,
 					{ [ classes ]: isFeaturePluginBuild() }
 				) }
-				style={ isFeaturePluginBuild ? style : {} }
+				style={ isFeaturePluginBuild() ? style : {} }
 			>
 				<FormattedMonetaryAmount
 					currency={ currency }
@@ -204,7 +204,7 @@ const SalePrice = ( {
 					`${ parentClassName }__product-price__value`,
 					{ [ saleClasses ]: isFeaturePluginBuild() }
 				) }
-				style={ isFeaturePluginBuild ? saleStyle : {} }
+				style={ isFeaturePluginBuild() ? saleStyle : {} }
 			>
 				<FormattedMonetaryAmount
 					currency={ currency }
@@ -224,7 +224,7 @@ const Price = ( { currency, price, classes = '', style = {} } ) => {
 				`${ parentClassName }__product-price__value`,
 				{ [ classes ]: isFeaturePluginBuild() }
 			) }
-			style={ isFeaturePluginBuild ? style : {} }
+			style={ isFeaturePluginBuild() ? style : {} }
 		>
 			<FormattedMonetaryAmount currency={ currency } value={ price } />
 		</span>
