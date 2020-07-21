@@ -17,8 +17,7 @@ import withProductSelector from '../shared/with-product-selector';
 import { BLOCK_TITLE, BLOCK_ICON } from './constants';
 
 const Edit = ( { attributes, setAttributes } ) => {
-	const productDataContext = useProductDataContext();
-	const product = productDataContext.product || {};
+	const { product } = useProductDataContext();
 	const { className, showFormElements } = attributes;
 
 	return (
@@ -28,7 +27,7 @@ const Edit = ( { attributes, setAttributes } ) => {
 				'wc-block-components-product-add-to-cart'
 			) }
 		>
-			<EditProductLink productId={ product.id || 0 } />
+			<EditProductLink productId={ product.id } />
 			{ product.type !== 'external' && (
 				<InspectorControls>
 					<PanelBody

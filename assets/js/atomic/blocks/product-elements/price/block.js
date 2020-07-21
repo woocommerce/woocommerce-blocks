@@ -80,7 +80,7 @@ const Block = ( {
 		fontSize: customSaleFontSize,
 	};
 
-	if ( ! product ) {
+	if ( ! product.id ) {
 		return (
 			<div
 				className={ classnames(
@@ -95,7 +95,7 @@ const Block = ( {
 		);
 	}
 
-	const prices = product.prices || {};
+	const prices = product.prices;
 	const currency = getCurrencyFromPriceResponse( prices );
 
 	return (

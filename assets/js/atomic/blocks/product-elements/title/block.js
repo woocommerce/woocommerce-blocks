@@ -58,7 +58,7 @@ export const Block = ( {
 		[ fontSizeClass ]: fontSizeClass,
 	} );
 
-	if ( ! product ) {
+	if ( ! product.id ) {
 		return (
 			<TagName
 				// @ts-ignore

@@ -27,7 +27,7 @@ const Block = ( { className } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
 
-	if ( ! product || isEmpty( product.categories ) ) {
+	if ( isEmpty( product.categories ) ) {
 		return null;
 	}
 

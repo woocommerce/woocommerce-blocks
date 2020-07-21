@@ -25,7 +25,7 @@ import './style.scss';
 const Block = ( { className } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
-	const sku = product && product.sku ? product.sku : '';
+	const sku = product.sku;
 
 	if ( ! sku ) {
 		return null;

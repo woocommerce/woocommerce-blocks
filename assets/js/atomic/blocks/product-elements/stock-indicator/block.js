@@ -26,7 +26,7 @@ const Block = ( { className } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
 
-	if ( ! product || ! product.is_purchasable ) {
+	if ( ! product.id || ! product.is_purchasable ) {
 		return null;
 	}
 

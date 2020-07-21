@@ -33,14 +33,19 @@ const OriginalComponentWithContext = ( props ) => {
 			} )
 				.then( ( receivedProduct ) => {
 					setProduct( receivedProduct );
-					setIsLoading( false );
 				} )
 				.catch( async () => {
 					setProduct( null );
+				} )
+				.finally( () => {
 					setIsLoading( false );
 				} );
 		}
 	}, [ productId ] );
+
+	if ( ! isLoading && ! product ) {
+		return null;
+	}
 
 	return (
 		<ProductDataContextProvider product={ product } isLoading={ isLoading }>

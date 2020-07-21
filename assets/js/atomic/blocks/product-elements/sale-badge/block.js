@@ -28,7 +28,7 @@ const Block = ( { className, align } ) => {
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
 
-	if ( ! product || ! product.on_sale ) {
+	if ( ! product.id || ! product.on_sale ) {
 		return null;
 	}
 

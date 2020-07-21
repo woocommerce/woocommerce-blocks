@@ -10,6 +10,7 @@ import {
 	useProductDataContext,
 } from '@woocommerce/shared-context';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
+import { isEmpty } from 'lodash';
 
 /**
  * Internal dependencies
@@ -39,7 +40,7 @@ const Block = ( {
 	const { product } = useProductDataContext();
 	const [ imageLoaded, setImageLoaded ] = useState( false );
 
-	if ( ! product ) {
+	if ( ! product.id ) {
 		return (
 			<div
 				className={ classnames(
@@ -56,8 +57,7 @@ const Block = ( {
 		);
 	}
 
-	const image =
-		product?.images && product.images.length ? product.images[ 0 ] : null;
+	const image = ! isEmpty( product.images ) ? product.images[ 0 ] : null;
 
 	return (
 		<div

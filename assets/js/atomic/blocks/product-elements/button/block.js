@@ -41,7 +41,7 @@ const Block = ( { className } ) => {
 				}
 			) }
 		>
-			{ product ? (
+			{ product.id ? (
 				<AddToCartButton product={ product } />
 			) : (
 				<AddToCartButtonPlaceholder />

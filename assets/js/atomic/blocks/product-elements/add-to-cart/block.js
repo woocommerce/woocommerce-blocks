@@ -42,15 +42,13 @@ const Block = ( { className, showFormElements } ) => {
 
 	return (
 		<AddToCartFormContextProvider
-			product={ product || {} }
+			product={ product }
 			showFormElements={ showFormElements }
 		>
 			<div className={ componentClass }>
 				<>
 					{ showFormElements ? (
-						<AddToCartForm
-							productType={ product?.type || 'simple' }
-						/>
+						<AddToCartForm productType={ product.type } />
 					) : (
 						<AddToCartButton />
 					) }
