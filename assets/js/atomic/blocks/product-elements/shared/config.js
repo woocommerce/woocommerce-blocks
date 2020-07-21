@@ -23,7 +23,7 @@ export default {
 		html: false,
 	},
 	parent: isExperimentalBuild()
-		? []
+		? null
 		: [ '@woocommerce/all-products', '@woocommerce/single-product' ],
 	save,
 	deprecated: [
