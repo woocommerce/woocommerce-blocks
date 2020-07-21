@@ -46,7 +46,6 @@ describe( `${ block.name } Block`, () => {
 
 	it( 'can toggle Shipping calculator', async () => {
 		await openDocumentSettingsSidebar();
-		// Focus on the block.
 		await page.click( block.class );
 		const toggle = await findToggleWithLabel( 'Shipping calculator' );
 		await toggle.click();
@@ -61,7 +60,6 @@ describe( `${ block.name } Block`, () => {
 
 	it( 'can toggle shipping costs', async () => {
 		await openDocumentSettingsSidebar();
-		// we focus on the block
 		await page.click( block.class );
 		const toggle = await findToggleWithLabel(
 			'Hide shipping costs until an address is entered'
@@ -78,7 +76,6 @@ describe( `${ block.name } Block`, () => {
 
 	it( 'shows empty cart when changing the view', async () => {
 		await openDocumentSettingsSidebar();
-		// we focus on the block
 		await page.click( block.class );
 		await expect( page ).toMatchElement(
 			'[hidden] .wc-block-cart__empty-cart__title'

@@ -197,25 +197,23 @@ const Settings = () => [
  * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#batch-update-setting-options|Batch update setting options}
  */
 const PageSettings = ( pages = [] ) => {
-	const pageSettings = pages
-		.map( ( page ) => {
-			if ( page.slug.includes( 'cart-block' ) ) {
-				return {
-					id: 'woocommerce_cart_page_id',
-					value: page.id.toString(),
-				};
-			}
-			if ( page.slug.includes( 'checkout-block' ) ) {
-				return {
-					id: 'woocommerce_checkout_page_id',
-					value: page.id.toString(),
-				};
-			}
-			return null;
-		} )
-		.filter( Boolean );
+	const cartPage = pages.find( ( page ) =>
+		page.slug.includes( 'cart-block' )
+	);
+	const checkoutPage = pages.find( ( page ) =>
+		page.slug.includes( 'checkout-block' )
+	);
 
-	return pageSettings;
+	return [
+		{
+			id: 'woocommerce_cart_page_id',
+			value: cartPage.id.toString(),
+		},
+		{
+			id: 'woocommerce_checkout_page_id',
+			value: checkoutPage.id.toString(),
+		},
+	];
 };
 
 /**
