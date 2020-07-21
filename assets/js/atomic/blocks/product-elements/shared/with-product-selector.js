@@ -40,7 +40,9 @@ const withProductSelector = ( OriginalComponent, selectorArgs ) => {
 						label={ selectorArgs.label || '' }
 						className="wc-atomic-blocks-product"
 					>
-						{ selectorArgs.description || '' }
+						{ !! selectorArgs.description && (
+							<div>{ selectorArgs.description }</div>
+						) }
 						<div className="wc-atomic-blocks-product__selection">
 							<ProductControl
 								selected={ productId || 0 }
