@@ -59,11 +59,11 @@ const Edit = ( { attributes, setAttributes } ) => {
 	);
 };
 
-export default withProductSelector( Edit, {
+export default withProductSelector( {
 	icon: BLOCK_ICON,
 	label: BLOCK_TITLE,
 	description: __(
 		"Choose a product to display it's add to cart form.",
 		'woo-gutenberg-products-block'
 	),
-} );
+} )( Edit );

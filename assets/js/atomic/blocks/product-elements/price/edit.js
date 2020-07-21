@@ -18,7 +18,6 @@ import { isFeaturePluginBuild } from '@woocommerce/block-settings';
  * Internal dependencies
  */
 import Block from './block';
-
 import withProductSelector from '../shared/with-product-selector';
 import { BLOCK_TITLE, BLOCK_ICON } from './constants';
 
@@ -120,16 +119,15 @@ const Price = isFeaturePluginBuild()
 			withColors( 'color', { textColor: 'color' } ),
 			withColors( 'saleColor', { textColor: 'saleColor' } ),
 			withColors( 'originalColor', { textColor: 'originalColor' } ),
-	  ] )(
-			withProductSelector( PriceEdit, {
+			withProductSelector( {
 				icon: BLOCK_ICON,
 				label: BLOCK_TITLE,
 				description: __(
 					"Choose a product to display it's price.",
 					'woo-gutenberg-products-block'
 				),
-			} )
-	  )
+			} ),
+	  ] )( PriceEdit )
 	: PriceEdit;
 
 export default Price;

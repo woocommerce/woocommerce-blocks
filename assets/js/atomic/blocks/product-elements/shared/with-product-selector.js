@@ -17,11 +17,10 @@ import './editor.scss';
 /**
  * This HOC shows a product selection interface if context is not present in the editor.
  *
- * @param {Function} OriginalComponent Component being wrapped.
  * @param {Object} selectorArgs Options for the selector.
  *
  */
-const withProductSelector = ( OriginalComponent, selectorArgs ) => {
+const withProductSelector = ( selectorArgs ) => ( OriginalComponent ) => {
 	return ( props ) => {
 		const productDataContext = useProductDataContext();
 		const { attributes, setAttributes } = props;

@@ -117,14 +117,15 @@ const Title = isFeaturePluginBuild()
 	? compose( [
 			withFontSizes( 'fontSize' ),
 			withColors( 'color', { textColor: 'color' } ),
-	  ] )( withProductSelector( TitleEdit, {
-			icon: BLOCK_ICON,
-			label: BLOCK_TITLE,
-			description: __(
-				"Choose a product to display it's title.",
-				'woo-gutenberg-products-block'
-			),
-		} ) )
+			withProductSelector( {
+				icon: BLOCK_ICON,
+				label: BLOCK_TITLE,
+				description: __(
+					"Choose a product to display it's title.",
+					'woo-gutenberg-products-block'
+				),
+			} ),
+	  ] )( TitleEdit )
 	: TitleEdit;
 
 export default Title;

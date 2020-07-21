@@ -14,11 +14,11 @@ const Edit = ( { attributes } ) => {
 	return <Block { ...attributes } />;
 };
 
-export default withProductSelector( Edit, {
+export default withProductSelector( {
 	icon: BLOCK_ICON,
 	label: BLOCK_TITLE,
 	description: __(
 		"Choose a product to display it's sale-badge.",
 		'woo-gutenberg-products-block'
 	),
-} );
+} )( Edit );
