@@ -52,19 +52,6 @@ const TitleEdit = ( {
 				) }
 			</BlockControls>
 			<InspectorControls>
-				{ isFeaturePluginBuild() && (
-					<PanelBody
-						title={ __(
-							'Text settings',
-							'woo-gutenberg-products-block'
-						) }
-					>
-						<FontSizePicker
-							value={ fontSize.size }
-							onChange={ setFontSize }
-						/>
-					</PanelBody>
-				) }
 				<PanelBody
 					title={ __( 'Content', 'woo-gutenberg-products-block' ) }
 				>
@@ -86,22 +73,35 @@ const TitleEdit = ( {
 					/>
 				</PanelBody>
 				{ isFeaturePluginBuild() && (
-					<PanelColorSettings
-						title={ __(
-							'Color settings',
-							'woo-gutenberg-products-block'
-						) }
-						colorSettings={ [
-							{
-								value: color.color,
-								onChange: setColor,
-								label: __(
-									'Text color',
-									'woo-gutenberg-products-block'
-								),
-							},
-						] }
-					></PanelColorSettings>
+					<>
+						<PanelBody
+							title={ __(
+								'Text settings',
+								'woo-gutenberg-products-block'
+							) }
+						>
+							<FontSizePicker
+								value={ fontSize.size }
+								onChange={ setFontSize }
+							/>
+						</PanelBody>
+						<PanelColorSettings
+							title={ __(
+								'Color settings',
+								'woo-gutenberg-products-block'
+							) }
+							colorSettings={ [
+								{
+									value: color.color,
+									onChange: setColor,
+									label: __(
+										'Text color',
+										'woo-gutenberg-products-block'
+									),
+								},
+							] }
+						></PanelColorSettings>
+					</>
 				) }
 			</InspectorControls>
 			<Disabled>
