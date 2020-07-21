@@ -1,8 +1,6 @@
 #!/bin/sh
 
 RELEASER_PATH=$(pwd)
-PLUGIN_SLUG="woocommerce-gutenberg-products-block"
-GITHUB_ORG="woocommerce"
 IS_PRE_RELEASE=false
 
 # Functions
