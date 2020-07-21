@@ -1,5 +1,5 @@
-.editor-styles-wrapper .wc-block-layout .wc-block-grid__products .wc-block-grid__product .wc-block-components-product-image,
-.wc-block-layout .wc-block-components-product-image {
+.editor-styles-wrapper .wc-block-grid__products .wc-block-grid__product .wc-block-components-product-image,
+.wc-block-components-product-image {
 	margin-top: 0;
 	margin-bottom: $gap-small;
 	text-decoration: none;
@@ -48,6 +48,6 @@
 	}
 }
 
-.wc-block-layout--is-loading .wc-block-components-product-image {
+.is-loading .wc-block-components-product-image {
 	@include placeholder();
 }

@@ -105,7 +105,9 @@ const Block = ( {
 };
 
 const ImagePlaceholder = () => {
-	return <img src={ PLACEHOLDER_IMG_SRC } alt="" />;
+	return (
+		<img src={ PLACEHOLDER_IMG_SRC } alt="" width={ 500 } height={ 500 } />
+	);
 };
 
 const Image = ( { image, onLoad, loaded, showFullSize } ) => {

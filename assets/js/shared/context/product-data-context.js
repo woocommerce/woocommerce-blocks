@@ -16,7 +16,11 @@ const ProductDataContext = createContext( {
 
 export const useProductDataContext = () => useContext( ProductDataContext );
 
-export const ProductDataContextProvider = ( { product = null, children } ) => {
+export const ProductDataContextProvider = ( {
+	product = null,
+	children,
+	isLoading = false,
+} ) => {
 	const contextValue = {
 		product,
 		hasContext: true,
@@ -24,7 +28,11 @@ export const ProductDataContextProvider = ( { product = null, children } ) => {
 
 	return (
 		<ProductDataContext.Provider value={ contextValue }>
-			{ children }
+			{ isLoading ? (
+				<div className="is-loading">{ children }</div>
+			) : (
+				children
+			) }
 		</ProductDataContext.Provider>
 	);
 };

@@ -1,9 +1,8 @@
-.wc-block-layout .wc-block-components-product-summary {
+.wc-block-components-product-summary {
 	margin-top: 0;
 	margin-bottom: $gap-small;
 }
-
-.wc-block-layout--is-loading .wc-block-components-product-summary::before {
+.is-loading .wc-block-components-product-summary::before {
 	@include placeholder();
 	content: ".";
 	display: block;
