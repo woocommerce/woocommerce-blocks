@@ -380,7 +380,7 @@ class Checkout extends AbstractRoute {
 				case 'registration-error-email-exists':
 					throw new RouteException(
 						'woocommerce_rest_checkout_create_account_failure',
-						__( 'Unable to create user account - requested email is used by another account.', 'woo-gutenberg-products-block' ),
+						__( 'An account is already registered with your email address. Please log in.', 'woo-gutenberg-products-block' ),
 						400
 					);
 
