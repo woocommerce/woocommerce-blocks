@@ -354,6 +354,34 @@ class Checkout extends AbstractRoute {
 	}
 
 	/**
+	 * Convert a WooCommerce core account creation error to a Store API error.
+	 *
+	 * @param \WP_Error $error An error object.
+	 *
+	 * @return RouteException API error object with error details.
+	 */
+	private function map_create_account_error( \WP_Error $error ) {
+		switch ( $error->get_error_code() ) {
+			case 'registration-error-invalid-email':
+			case 'registration-error-email-exists':
+			case 'registration-error-invalid-username':
+			case 'registration-error-username-exists':
+			case 'registration-error-missing-password':
+				return new RouteException(
+					'woocommerce_rest_checkout_create_account_failure',
+					$error->get_error_message(),
+					400
+				);
+		}
+
+		return new RouteException(
+			'woocommerce_rest_checkout_create_account_failure',
+			__( 'Unable to create user account.', 'woo-gutenberg-products-block' ),
+			400
+		);
+	}
+
+	/**
 	 * Create a new account for a customer.
 	 *
 	 * @throws RouteException If an error is encountered when creating the user account.
@@ -376,21 +404,7 @@ class Checkout extends AbstractRoute {
 		);
 
 		if ( is_wp_error( $customer_id ) ) {
-			switch ( $customer_id->get_error_code() ) {
-				case 'registration-error-email-exists':
-					throw new RouteException(
-						'woocommerce_rest_checkout_create_account_failure',
-						__( 'An account is already registered with your email address. Please log in.', 'woo-gutenberg-products-block' ),
-						400
-					);
-
-				default:
-					throw new RouteException(
-						'woocommerce_rest_checkout_create_account_failure',
-						__( 'Unable to create user account.', 'woo-gutenberg-products-block' ),
-						500
-					);
-			}
+			throw $this->map_create_account_error( $customer_id );
 		}
 
 		return $customer_id;
