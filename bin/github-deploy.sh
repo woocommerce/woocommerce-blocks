@@ -81,6 +81,11 @@ output 3 "Will this release get published to WordPress.org (if no, then only a t
 read -r DO_WP_DEPLOY
 echo
 
+if [ ! -d "build" ]; then
+	output 3 "Build directory not found. Aborting."
+	exit 1
+fi
+
 # Safety check, if a patch release is detected ask for verification.
 VERSION_PIECES=${VERSION//[^.]}
 if [[ "${#VERSION_PIECES}" -ge "2" && "$(echo "${DO_WP_DEPLOY:-n}" | tr "[:upper:]" "[:lower:]")" = "y" ]]; then
@@ -90,16 +95,11 @@ if [[ "${#VERSION_PIECES}" -ge "2" && "$(echo "${DO_WP_DEPLOY:-n}" | tr "[:upper
 		output 1 "Release cancelled!"
 		exit 1
 	fi
+else
+	printf "Ready to proceed? [y/N]: "
+	read -r PROCEED
+	echo
 fi
-
-if [ ! -d "build" ]; then
-	output 3 "Build directory not found. Aborting."
-	exit 1
-fi
-
-printf "Ready to proceed? [y/N]: "
-read -r PROCEED
-echo
 
 if [ "$(echo "${PROCEED:-n}" | tr "[:upper:]" "[:lower:]")" != "y" ]; then
   output 1 "Release cancelled!"
