@@ -76,7 +76,7 @@ export const useAddToCartFormContext = () => {
  * @param {Object} [props.product]           The product for which the form belongs to.
  * @param {boolean} [props.showFormElements] Should form elements be shown.
  */
-export const AddToCartFormContextProvider = ( {
+export const AddToCartFormStateContextProvider = ( {
 	children,
 	product,
 	showFormElements,
