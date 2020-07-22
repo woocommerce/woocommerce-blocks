@@ -4,6 +4,7 @@
  * @typedef {import('./cart').CartShippingAddress} CartShippingAddress
  * @typedef {import('./cart').CartData} CartData
  * @typedef {import('./checkout').CheckoutDispatchActions} CheckoutDispatchActions
+ * @typedef {import('./add-to-cart-form').AddToCartFormDispatchActions} AddToCartFormDispatchActions
  */
 
 /**
@@ -260,27 +261,23 @@
 /**
  * @typedef {Object} AddToCartFormContext
  *
- * @property {Object}                product          The product object.
- * @property {number}                productId        The product ID being added to the cart.
- * @property {number}                variationId      The variation ID being added to the cart, or 0.
- * @property {Object}                variationData    Object containing variation attribute/value data.
- * @property {Object}                cartItemData     Object containing custom cart item data.
- * @property {number}                quantity         Stores the quantity being added to the cart.
- * @property {number}                minQuantity      Min quantity that can be added to the cart.
- * @property {number}                maxQuantity      Max quantity than can be added to the cart.
- * @property {number}                quantityInCart   Stores how many of a product are already in the cart.
- * @property {function(number):void} setQuantity      Sets the quantity being added to the cart.
- * @property {function(number):void} setVariationId   Sets the variation ID being added to the cart.
- * @property {function(Object):void} setVariationData Sets variation data attribute=>value pairs.
- * @property {function(Object):void} setCartItemData  Sets cart item data attribute=>value pairs.
- * @property {boolean}               showFormElements True if showing a full add to cart form.
- * @property {boolean}               formInitialized  True once the cart form is ready.
- * @property {boolean}               formDisabled     True if the cart form cannot yet be submitted.
- * @property {boolean}               formSubmitting   True when the cart form is busy adding to the cart.
- * @property {function():void}       onChange         Triggered when a form element changes.
- * @property {function():void}       onSubmit         Submits the form.
- * @property {function():void}       onSuccess        Triggered when the add to cart request is successful.
- * @property {function():void}       onFail           Triggered when the add to cart request fails.
+ * @property {boolean}                                   showFormElements   True if showing a full add to cart form.
+ * @property {number}                                    productId          The product ID being added to the cart.
+ * @property {Object}                                    product            The product object.
+ * @property {number}                                    quantity           Stores the quantity being added to the cart.
+ * @property {number}                                    minQuantity        Min quantity that can be added to the cart.
+ * @property {number}                                    maxQuantity        Max quantity than can be added to the cart.
+ * @property {function():void}                           onSubmit           The callback to register with the form submit button.
+ * @property {boolean}                                   isIdle             True when the form state has changed and has no activity.
+ * @property {boolean}                                   isDisabled         True when the form cannot be submitted.
+ * @property {boolean}                                   isProcessing       True when the form has been submitted and is being processed.
+ * @property {boolean}                                   isBeforeProcessing True during any observers executing logic before form processing (eg. validation).
+ * @property {boolean}                                   isAfterProcessing  True when form status is AFTER_PROCESSING.
+ * @property {boolean}                                   hasError           True when the form is in an error state. Whatever caused the error (validation/payment method) will likely have triggered a notice.
+ * @property {function(function():boolean,number=):void} onAddToCartAfterProcessingWithSuccess Used to register a callback that will fire after form has been processed and there are no errors.
+ * @property {function(function():boolean,number=):void} onAddToCartAfterProcessingWithError   Used to register a callback that will fire when the form has been processed and has an error.
+ * @property {function(function():boolean,number=):void} onAddToCartBeforeProcessing           Used to register a callback that will fire when the form has been submitted before being sent off to the server.
+ * @property {AddToCartFormDispatchActions}              dispatchActions    Various actions that can be dispatched for the add to cart form context data.
  */
 
 /**

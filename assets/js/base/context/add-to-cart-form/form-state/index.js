@@ -28,16 +28,23 @@ import {
 } from './event-emit';
 import { useValidationContext } from '../../shared/validation';
 
-const AddToCartFormStateContext = createContext( {
+/**
+ * @typedef {import('@woocommerce/type-defs/add-to-cart-form').AddToCartFormDispatchActions} AddToCartFormDispatchActions
+ * @typedef {import('@woocommerce/type-defs/contexts').AddToCartFormContext} AddToCartFormContext
+ */
+
+const AddToCartFormContext = createContext( {
 	showFormElements: false,
-	isDisabled: true,
 	productId: 0,
 	product: {},
 	quantity: 0,
 	minQuantity: 1,
 	maxQuantity: 99,
 	isIdle: false,
+	isDisabled: false,
 	isProcessing: false,
+	isBeforeProcessing: false,
+	isAfterProcessing: false,
 	hasError: false,
 	onSubmit: () => void null,
 	onAddToCartAfterProcessingWithSuccess: ( callback ) => void callback,
@@ -52,8 +59,11 @@ const AddToCartFormStateContext = createContext( {
 	},
 } );
 
+/**
+ * @return {AddToCartFormContext} Returns the add to cart form data context value
+ */
 export const useAddToCartFormContext = () => {
-	return useContext( AddToCartFormStateContext );
+	return useContext( AddToCartFormContext );
 };
 
 /**
@@ -66,7 +76,7 @@ export const useAddToCartFormContext = () => {
  * @param {Object} [props.product]           The product for which the form belongs to.
  * @param {boolean} [props.showFormElements] Should form elements be shown.
  */
-export const AddToCartFormStateContextProvider = ( {
+export const AddToCartFormContextProvider = ( {
 	children,
 	product,
 	showFormElements,
@@ -107,6 +117,9 @@ export const AddToCartFormStateContextProvider = ( {
 		[ subscriber ]
 	);
 
+	/**
+	 * @type {AddToCartFormDispatchActions}
+	 */
 	const dispatchActions = useMemo(
 		() => ( {
 			resetForm: () => void dispatch( actions.setPristine() ),
@@ -256,6 +269,9 @@ export const AddToCartFormStateContextProvider = ( {
 		dispatch( actions.setBeforeProcessing() );
 	}, [] );
 
+	/**
+	 * @type {AddToCartFormContext}
+	 */
 	const contextData = {
 		showFormElements: showFormElements && productIsPurchasable( product ),
 		productId: product.id || 0,
@@ -278,9 +294,9 @@ export const AddToCartFormStateContextProvider = ( {
 		dispatchActions,
 	};
 	return (
-		<AddToCartFormStateContext.Provider value={ contextData }>
+		<AddToCartFormContext.Provider value={ contextData }>
 			{ children }
-		</AddToCartFormStateContext.Provider>
+		</AddToCartFormContext.Provider>
 	);
 };
 

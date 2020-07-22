@@ -15,6 +15,9 @@ export const DEFAULT_STATE = {
 	formData: {},
 };
 
+/**
+ * @type {import("@woocommerce/type-defs/add-to-cart-form").AddToCartFormStatusConstants}
+ */
 export const ACTION_TYPES = {
 	SET_PRISTINE: 'set_pristine',
 	SET_IDLE: 'set_idle',
