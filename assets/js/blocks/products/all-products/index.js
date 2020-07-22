@@ -81,10 +81,10 @@ const blockSettings = {
  */
 registerBlockType( 'woocommerce/all-products', {
 	...blockSettings,
-	/**
-	 * Deprecation rule to handle the previous default rows which was 1 instead of 3.
-	 */
 	deprecated: [
+		/**
+		 * Deprecation rule to handle the previous default rows which was 1 instead of 3.
+		 */
 		{
 			attributes: Object.assign( {}, blockSettings.attributes, {
 				rows: { type: 'number', default: 1 },
@@ -92,6 +92,34 @@ registerBlockType( 'woocommerce/all-products', {
 			save( { attributes } ) {
 				const data = {
 					'data-attributes': JSON.stringify( attributes ),
+				};
+				return (
+					<div
+						className={ getBlockClassName(
+							'wc-block-all-products',
+							attributes
+						) }
+						{ ...data }
+					>
+						<InnerBlocks.Content />
+					</div>
+				);
+			},
+		},
+		/**
+		 * Deprecation rule to handle the block without the 'is-loading' class.
+		 */
+		{
+			attributes: blockSettings.attributes,
+			save( { attributes } ) {
+				const dataAttributes = {};
+				Object.keys( attributes )
+					.sort()
+					.forEach( ( key ) => {
+						dataAttributes[ key ] = attributes[ key ];
+					} );
+				const data = {
+					'data-attributes': JSON.stringify( dataAttributes ),
 				};
 				return (
 					<div
