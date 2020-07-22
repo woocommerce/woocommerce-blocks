@@ -14,7 +14,7 @@ const {
 	SET_HAS_ERROR,
 	SET_NO_ERROR,
 	SET_QUANTITY,
-	SET_FORM_DATA,
+	SET_REQUEST_PARAMS,
 } = ACTION_TYPES;
 
 const {
@@ -65,10 +65,13 @@ export const reducer = ( state = DEFAULT_STATE, { quantity, type, data } ) => {
 					  }
 					: state;
 			break;
-		case SET_FORM_DATA:
+		case SET_REQUEST_PARAMS:
 			newState = {
 				...state,
-				formData: data,
+				requestParams: {
+					...state.requestParams,
+					...data,
+				},
 			};
 			break;
 		case SET_PROCESSING_RESPONSE:

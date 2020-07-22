@@ -40,6 +40,7 @@ const AddToCartFormContext = createContext( {
 	quantity: 0,
 	minQuantity: 1,
 	maxQuantity: 99,
+	requestParams: {},
 	isIdle: false,
 	isDisabled: false,
 	isProcessing: false,
@@ -55,7 +56,7 @@ const AddToCartFormContext = createContext( {
 		setQuantity: ( quantity ) => void quantity,
 		setHasError: ( hasError ) => void hasError,
 		setAfterProcessing: ( response ) => void response,
-		setFormData: ( data ) => void data,
+		setRequestParams: ( data ) => void data,
 	},
 } );
 
@@ -127,8 +128,8 @@ export const AddToCartFormStateContextProvider = ( {
 				void dispatch( actions.setQuantity( quantity ) ),
 			setHasError: ( hasError ) =>
 				void dispatch( actions.setHasError( hasError ) ),
-			setFormData: ( data ) =>
-				void dispatch( actions.setFormData( data ) ),
+			setRequestParams: ( data ) =>
+				void dispatch( actions.setRequestParams( data ) ),
 			setAfterProcessing: ( response ) => {
 				dispatch( actions.setProcessingResponse( response ) );
 				void dispatch( actions.setAfterProcessing() );
@@ -169,8 +170,12 @@ export const AddToCartFormStateContextProvider = ( {
 					if ( Array.isArray( response ) ) {
 						response.forEach(
 							( { errorMessage, validationErrors } ) => {
-								addErrorNotice( errorMessage );
-								setValidationErrors( validationErrors );
+								if ( errorMessage ) {
+									addErrorNotice( errorMessage );
+								}
+								if ( validationErrors ) {
+									setValidationErrors( validationErrors );
+								}
 							}
 						);
 					}
@@ -279,6 +284,7 @@ export const AddToCartFormStateContextProvider = ( {
 		quantity: addToCartFormState.quantity,
 		minQuantity: 1,
 		maxQuantity: product.quantity_limit || 99,
+		requestParams: addToCartFormState.requestParams,
 		onSubmit,
 		isIdle: addToCartFormState.status === STATUS.IDLE,
 		isDisabled: addToCartFormState.status === STATUS.DISABLED,

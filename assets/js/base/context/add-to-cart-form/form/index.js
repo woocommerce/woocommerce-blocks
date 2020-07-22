@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { ValidationContextProvider } from '@woocommerce/base-context';
+
+/**
  * Internal dependencies
  */
 import { AddToCartFormStateContextProvider } from '../form-state';
@@ -24,8 +29,10 @@ export const AddToCartFormContextProvider = ( {
 			product={ product }
 			showFormElements={ showFormElements }
 		>
-			{ children }
-			<FormSubmit />
+			<ValidationContextProvider>
+				{ children }
+				<FormSubmit />
+			</ValidationContextProvider>
 		</AddToCartFormStateContextProvider>
 	);
 };

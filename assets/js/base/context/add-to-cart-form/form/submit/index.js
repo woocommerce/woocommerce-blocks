@@ -24,47 +24,53 @@ const FormSubmit = () => {
 		onAddToCartBeforeProcessing,
 		hasError,
 		isProcessing,
+		requestParams,
 	} = useAddToCartFormContext();
-	const { hasValidationErrors } = useValidationContext();
+	const {
+		hasValidationErrors,
+		showAllValidationErrors,
+	} = useValidationContext();
 	const { addErrorNotice, removeNotice } = useStoreNotices();
 	const { receiveCart } = useStoreCart();
 	const [ isSubmitting, setIsSubmitting ] = useState( false );
 	const doSubmit = ! hasError && isProcessing;
 
-	const checkValidation = useCallback( () => {
+	const checkValidationContext = useCallback( () => {
 		if ( hasValidationErrors ) {
+			showAllValidationErrors();
 			return {
-				errorMessage: __(
-					'Some fields are invalid.',
-					'woo-gutenberg-products-block'
-				),
+				type: 'error',
 			};
 		}
 		return true;
-	}, [ hasValidationErrors ] );
+	}, [ hasValidationErrors, showAllValidationErrors ] );
 
 	// Subscribe to emitter before processing.
 	useEffect( () => {
 		const unsubscribeProcessing = onAddToCartBeforeProcessing(
-			checkValidation,
+			checkValidationContext,
 			0
 		);
 		return () => {
 			unsubscribeProcessing();
 		};
-	}, [ onAddToCartBeforeProcessing, checkValidation ] );
+	}, [ onAddToCartBeforeProcessing, checkValidationContext ] );
 
 	// Triggers form submission to the API.
 	const submitForm = useCallback( () => {
 		setIsSubmitting( true );
 		removeNotice( 'add-to-cart' );
+
+		const fetchData = {
+			id: productId,
+			quantity,
+			...requestParams,
+		};
+
 		triggerFetch( {
 			path: '/wc/store/cart/add-item',
 			method: 'POST',
-			data: {
-				id: productId,
-				quantity,
-			},
+			data: fetchData,
 			cache: 'no-store',
 			parse: false,
 		} )
@@ -120,6 +126,7 @@ const FormSubmit = () => {
 		dispatchActions,
 		productId,
 		quantity,
+		requestParams,
 	] );
 
 	useEffect( () => {

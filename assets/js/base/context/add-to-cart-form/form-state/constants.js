@@ -1,3 +1,6 @@
+/**
+ * @type {import("@woocommerce/type-defs/add-to-cart-form").AddToCartFormStatusConstants}
+ */
 export const STATUS = {
 	PRISTINE: 'pristine',
 	IDLE: 'idle',
@@ -12,12 +15,8 @@ export const DEFAULT_STATE = {
 	hasError: false,
 	quantity: 1,
 	processingResponse: null,
-	formData: {},
+	requestParams: {},
 };
-
-/**
- * @type {import("@woocommerce/type-defs/add-to-cart-form").AddToCartFormStatusConstants}
- */
 export const ACTION_TYPES = {
 	SET_PRISTINE: 'set_pristine',
 	SET_IDLE: 'set_idle',
@@ -29,5 +28,5 @@ export const ACTION_TYPES = {
 	SET_HAS_ERROR: 'set_has_error',
 	SET_NO_ERROR: 'set_no_error',
 	SET_QUANTITY: 'set_quantity',
-	SET_FORM_DATA: 'set_form_data',
+	SET_REQUEST_PARAMS: 'set_request_params',
 };

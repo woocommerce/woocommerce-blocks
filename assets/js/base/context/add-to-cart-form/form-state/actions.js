@@ -14,7 +14,7 @@ const {
 	SET_HAS_ERROR,
 	SET_NO_ERROR,
 	SET_QUANTITY,
-	SET_FORM_DATA,
+	SET_REQUEST_PARAMS,
 } = ACTION_TYPES;
 
 /**
@@ -51,8 +51,8 @@ export const actions = {
 		type: SET_QUANTITY,
 		quantity,
 	} ),
-	setFormData: ( data ) => ( {
-		type: SET_FORM_DATA,
+	setRequestParams: ( data ) => ( {
+		type: SET_REQUEST_PARAMS,
 		data,
 	} ),
 };

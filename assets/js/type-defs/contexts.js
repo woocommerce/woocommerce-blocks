@@ -267,6 +267,7 @@
  * @property {number}                                    quantity           Stores the quantity being added to the cart.
  * @property {number}                                    minQuantity        Min quantity that can be added to the cart.
  * @property {number}                                    maxQuantity        Max quantity than can be added to the cart.
+ * @property {Object}                                    requestParams      List of params to send to the API.
  * @property {function():void}                           onSubmit           The callback to register with the form submit button.
  * @property {boolean}                                   isIdle             True when the form state has changed and has no activity.
  * @property {boolean}                                   isDisabled         True when the form cannot be submitted.
@@ -274,9 +275,9 @@
  * @property {boolean}                                   isBeforeProcessing True during any observers executing logic before form processing (eg. validation).
  * @property {boolean}                                   isAfterProcessing  True when form status is AFTER_PROCESSING.
  * @property {boolean}                                   hasError           True when the form is in an error state. Whatever caused the error (validation/payment method) will likely have triggered a notice.
- * @property {function(function():boolean,number=):void} onAddToCartAfterProcessingWithSuccess Used to register a callback that will fire after form has been processed and there are no errors.
- * @property {function(function():boolean,number=):void} onAddToCartAfterProcessingWithError   Used to register a callback that will fire when the form has been processed and has an error.
- * @property {function(function():boolean,number=):void} onAddToCartBeforeProcessing           Used to register a callback that will fire when the form has been submitted before being sent off to the server.
+ * @property {function(function():boolean,number=):function():void} onAddToCartAfterProcessingWithSuccess Used to register a callback that will fire after form has been processed and there are no errors.
+ * @property {function(function():boolean,number=):function():void} onAddToCartAfterProcessingWithError   Used to register a callback that will fire when the form has been processed and has an error.
+ * @property {function(function():boolean,number=):function():void} onAddToCartBeforeProcessing           Used to register a callback that will fire when the form has been submitted before being sent off to the server.
  * @property {AddToCartFormDispatchActions}              dispatchActions    Various actions that can be dispatched for the add to cart form context data.
  */
 

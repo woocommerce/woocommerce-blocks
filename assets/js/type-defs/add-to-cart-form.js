@@ -5,8 +5,8 @@
  *                                                        pristine state.
  * @property {function(number):void}   setQuantity        Dispatches an action that sets the quantity to
  *                                                        the given value.
- * @property {function(Object):void}   setFormData        Dispatches an action that sets the form data
- *                                                        for the add to cart request to the given value.
+ * @property {function(Object):void}   setRequestParams   Dispatches an action that sets params for the
+ *                                                        add to cart request (key value pairs).
  * @property {function(boolean=):void} setHasError        Dispatches an action that sets the status to
  *                                                        having an error.
  * @property {function(Object):void}   setAfterProcessing Dispatches an action that sets the status to
