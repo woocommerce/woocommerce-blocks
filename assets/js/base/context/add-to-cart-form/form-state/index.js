@@ -257,7 +257,7 @@ export const AddToCartFormStateContextProvider = ( {
 	}, [] );
 
 	const contextData = {
-		showFormElements,
+		showFormElements: showFormElements && productIsPurchasable( product ),
 		productId: product.id || 0,
 		product,
 		quantity: addToCartFormState.quantity,

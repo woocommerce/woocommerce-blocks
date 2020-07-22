@@ -99,6 +99,7 @@ const FormSubmit = () => {
 						receiveCart( response );
 					}
 					dispatchActions.setAfterProcessing( response );
+					setIsSubmitting( false );
 				} );
 			} )
 			.catch( ( error ) => {
@@ -109,10 +110,8 @@ const FormSubmit = () => {
 					}
 					dispatchActions.setHasError();
 					dispatchActions.setAfterProcessing( response );
+					setIsSubmitting( false );
 				} );
-			} )
-			.finally( () => {
-				setIsSubmitting( false );
 			} );
 	}, [
 		addErrorNotice,
