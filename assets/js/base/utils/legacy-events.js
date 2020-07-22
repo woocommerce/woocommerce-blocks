@@ -7,7 +7,7 @@ const Event = window.Event || null;
  * @param {boolean} bubbles    Whether the event bubbles.
  * @param {boolean} cancelable Whether the event is cancelable.
  */
-const dispatchEvent = ( name, bubbles = false, cancelable = false ) => {
+export const dispatchEvent = ( name, bubbles = false, cancelable = false ) => {
 	// In IE, Event is an object and can't be instantiated with `new Event()`.
 	if ( typeof Event === 'function' ) {
 		const event = new Event( name, {

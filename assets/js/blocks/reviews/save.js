@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import classNames from 'classnames';
+
+/**
  * Internal dependencies
  */
 import './editor.scss';
@@ -38,7 +43,10 @@ export default ( { attributes } ) => {
 
 	return (
 		<div
-			className={ getBlockClassName( className, attributes ) }
+			className={ classNames(
+				'is-loading',
+				getBlockClassName( className, attributes )
+			) }
 			{ ...data }
 		/>
 	);

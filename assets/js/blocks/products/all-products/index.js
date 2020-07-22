@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { InnerBlocks } from '@wordpress/block-editor';
 import { registerBlockType } from '@wordpress/blocks';
 import { Icon, grid } from '@woocommerce/icons';
+import classNames from 'classnames';
 import '@woocommerce/atomic-blocks';
 
 /**
@@ -63,9 +64,9 @@ const blockSettings = {
 		};
 		return (
 			<div
-				className={ getBlockClassName(
-					'wc-block-all-products',
-					attributes
+				className={ classNames(
+					'is-loading',
+					getBlockClassName( 'wc-block-all-products', attributes )
 				) }
 				{ ...data }
 			>
