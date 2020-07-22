@@ -12,7 +12,7 @@ import { useStoreCart, useStoreNotices } from '@woocommerce/base-hooks';
 import { decodeEntities } from '@wordpress/html-entities';
 
 /**
- * FormSubmit component.
+ * FormSubmit.
  *
  * Subscribes to add to cart form context and triggers processing via the API.
  */
@@ -22,11 +22,14 @@ const FormSubmit = () => {
 		productId,
 		quantity,
 		onAddToCartBeforeProcessing,
+		hasError,
+		isProcessing,
 	} = useAddToCartFormContext();
 	const { hasValidationErrors } = useValidationContext();
 	const { addErrorNotice, removeNotice } = useStoreNotices();
 	const { receiveCart } = useStoreCart();
 	const [ isSubmitting, setIsSubmitting ] = useState( false );
+	const doSubmit = ! hasError && isProcessing;
 
 	const checkValidation = useCallback( () => {
 		if ( hasValidationErrors ) {
@@ -121,10 +124,10 @@ const FormSubmit = () => {
 	] );
 
 	useEffect( () => {
-		if ( ! isSubmitting ) {
+		if ( doSubmit && ! isSubmitting ) {
 			submitForm();
 		}
-	}, [ submitForm, isSubmitting ] );
+	}, [ doSubmit, submitForm, isSubmitting ] );
 
 	return null;
 };

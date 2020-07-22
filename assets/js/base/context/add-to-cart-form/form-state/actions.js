@@ -6,6 +6,7 @@ import { ACTION_TYPES } from './constants';
 const {
 	SET_PRISTINE,
 	SET_IDLE,
+	SET_DISABLED,
 	SET_PROCESSING,
 	SET_BEFORE_PROCESSING,
 	SET_AFTER_PROCESSING,
@@ -25,6 +26,9 @@ export const actions = {
 	} ),
 	setIdle: () => ( {
 		type: SET_IDLE,
+	} ),
+	setDisabled: () => ( {
+		type: SET_DISABLED,
 	} ),
 	setProcessing: () => ( {
 		type: SET_PROCESSING,

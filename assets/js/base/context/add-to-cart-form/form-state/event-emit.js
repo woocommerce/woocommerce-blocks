@@ -1,7 +1,6 @@
 /**
  * Internal dependencies
  */
-import { EMIT_TYPES } from './constants';
 import {
 	emitterCallback,
 	reducer,
@@ -9,11 +8,13 @@ import {
 	emitEventWithAbort,
 } from '../../shared/event-emit';
 
-const {
-	ADD_TO_CART_AFTER_PROCESSING_WITH_SUCCESS,
-	ADD_TO_CART_AFTER_PROCESSING_WITH_ERROR,
-	ADD_TO_CART_BEFORE_PROCESSING,
-} = EMIT_TYPES;
+const EMIT_TYPES = {
+	ADD_TO_CART_BEFORE_PROCESSING: 'add_to_cart_before_processing',
+	ADD_TO_CART_AFTER_PROCESSING_WITH_SUCCESS:
+		'add_to_cart_after_processing_with_success',
+	ADD_TO_CART_AFTER_PROCESSING_WITH_ERROR:
+		'add_to_cart_after_processing_with_error',
+};
 
 /**
  * Receives a reducer dispatcher and returns an object with the
@@ -30,15 +31,15 @@ const {
  */
 const emitterSubscribers = ( dispatcher ) => ( {
 	onAddToCartAfterProcessingWithSuccess: emitterCallback(
-		ADD_TO_CART_AFTER_PROCESSING_WITH_SUCCESS,
+		EMIT_TYPES.ADD_TO_CART_AFTER_PROCESSING_WITH_SUCCESS,
 		dispatcher
 	),
 	onAddToCartProcessingWithError: emitterCallback(
-		ADD_TO_CART_AFTER_PROCESSING_WITH_ERROR,
+		EMIT_TYPES.ADD_TO_CART_AFTER_PROCESSING_WITH_ERROR,
 		dispatcher
 	),
 	onAddToCartBeforeProcessing: emitterCallback(
-		ADD_TO_CART_BEFORE_PROCESSING,
+		EMIT_TYPES.ADD_TO_CART_BEFORE_PROCESSING,
 		dispatcher
 	),
 } );

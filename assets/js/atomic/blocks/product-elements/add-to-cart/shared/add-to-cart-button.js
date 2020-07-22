@@ -6,6 +6,7 @@ import Button from '@woocommerce/base-components/button';
 import { Icon, done as doneIcon } from '@woocommerce/icons';
 import { useState } from '@wordpress/element';
 import { useAddToCartFormContext } from '@woocommerce/base-context';
+import { useStoreAddToCart } from '@woocommerce/base-hooks';
 
 /**
  * Add to Cart Form Button Component.
@@ -14,11 +15,11 @@ const AddToCartButton = () => {
 	const {
 		showFormElements,
 		product,
-		quantityInCart,
-		formDisabled,
-		formSubmitting,
+		isDisabled,
+		isProcessing,
 		onSubmit,
 	} = useAddToCartFormContext();
+	const { cartQuantity } = useStoreAddToCart( product.id || 0 );
 
 	const {
 		is_purchasable: isPurchasable = true,
@@ -36,9 +37,9 @@ const AddToCartButton = () => {
 		return (
 			<ButtonComponent
 				className="wc-block-components-product-add-to-cart-button"
-				quantityInCart={ quantityInCart }
-				disabled={ formDisabled }
-				loading={ formSubmitting }
+				quantityInCart={ cartQuantity }
+				disabled={ isDisabled }
+				loading={ isProcessing }
 				onClick={ onSubmit }
 			/>
 		);

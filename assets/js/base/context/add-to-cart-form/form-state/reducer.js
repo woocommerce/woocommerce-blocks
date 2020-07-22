@@ -6,6 +6,7 @@ import { ACTION_TYPES, DEFAULT_STATE, STATUS } from './constants';
 const {
 	SET_PRISTINE,
 	SET_IDLE,
+	SET_DISABLED,
 	SET_PROCESSING,
 	SET_BEFORE_PROCESSING,
 	SET_AFTER_PROCESSING,
@@ -19,6 +20,7 @@ const {
 const {
 	PRISTINE,
 	IDLE,
+	DISABLED,
 	PROCESSING,
 	BEFORE_PROCESSING,
 	AFTER_PROCESSING,
@@ -42,6 +44,15 @@ export const reducer = ( state = DEFAULT_STATE, { quantity, type, data } ) => {
 					? {
 							...state,
 							status: IDLE,
+					  }
+					: state;
+			break;
+		case SET_DISABLED:
+			newState =
+				state.state !== DISABLED
+					? {
+							...state,
+							status: DISABLED,
 					  }
 					: state;
 			break;

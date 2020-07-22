@@ -30,6 +30,7 @@ import { useValidationContext } from '../../shared/validation';
 
 const AddToCartFormStateContext = createContext( {
 	showFormElements: false,
+	isDisabled: true,
 	productId: 0,
 	product: {},
 	quantity: 0,
@@ -123,7 +124,24 @@ export const AddToCartFormStateContextProvider = ( {
 		[]
 	);
 
-	// emit events.
+	/**
+	 * This Effect is responsible for disabling or enabling the form based on the provided product.
+	 */
+	useEffect( () => {
+		const status = addToCartFormState.status;
+		const willBeDisabled =
+			! product.id || ! productIsPurchasable( product );
+
+		if ( status === STATUS.DISABLED && ! willBeDisabled ) {
+			dispatch( actions.setIdle() );
+		} else if ( status !== STATUS.DISABLED && willBeDisabled ) {
+			dispatch( actions.setDisabled() );
+		}
+	}, [ addToCartFormState.status, product, dispatch ] );
+
+	/**
+	 * This Effect performs events before processing starts.
+	 */
 	useEffect( () => {
 		const status = addToCartFormState.status;
 
@@ -157,6 +175,9 @@ export const AddToCartFormStateContextProvider = ( {
 		dispatch,
 	] );
 
+	/**
+	 * This Effect performs events after processing is complete.
+	 */
 	useEffect( () => {
 		if ( addToCartFormState.status === STATUS.AFTER_PROCESSING ) {
 			const data = {
@@ -244,6 +265,7 @@ export const AddToCartFormStateContextProvider = ( {
 		maxQuantity: product.quantity_limit || 99,
 		onSubmit,
 		isIdle: addToCartFormState.status === STATUS.IDLE,
+		isDisabled: addToCartFormState.status === STATUS.DISABLED,
 		isProcessing: addToCartFormState.status === STATUS.PROCESSING,
 		isBeforeProcessing:
 			addToCartFormState.status === STATUS.BEFORE_PROCESSING,
@@ -260,4 +282,15 @@ export const AddToCartFormStateContextProvider = ( {
 			{ children }
 		</AddToCartFormStateContext.Provider>
 	);
+};
+
+/**
+ * Check a product object to see if it can be purchased.
+ *
+ * @param {Object} product Product object.
+ */
+const productIsPurchasable = ( product ) => {
+	const { is_purchasable: isPurchasable = false } = product;
+
+	return isPurchasable;
 };
