@@ -53,6 +53,7 @@ const AddToCartFormContext = createContext( {
 	},
 	dispatchActions: {
 		resetForm: () => void null,
+		submitForm: () => void null,
 		setQuantity: ( quantity ) => void quantity,
 		setHasError: ( hasError ) => void hasError,
 		setAfterProcessing: ( response ) => void response,
@@ -107,14 +108,14 @@ export const AddToCartFormStateContextProvider = ( {
 	 */
 	const eventRegistration = useMemo(
 		() => ( {
-			onAddToCartAfterProcessingWithSuccess: () =>
-				emitterSubscribers( subscriber )
-					.onAddToCartAfterProcessingWithSuccess,
-			onAddToCartAfterProcessingWithError: () =>
-				emitterSubscribers( subscriber )
-					.onAddToCartAfterProcessingWithError,
-			onAddToCartBeforeProcessing: () =>
-				emitterSubscribers( subscriber ).onAddToCartBeforeProcessing,
+			onAddToCartAfterProcessingWithSuccess: emitterSubscribers(
+				subscriber
+			).onAddToCartAfterProcessingWithSuccess,
+			onAddToCartAfterProcessingWithError: emitterSubscribers(
+				subscriber
+			).onAddToCartAfterProcessingWithError,
+			onAddToCartBeforeProcessing: emitterSubscribers( subscriber )
+				.onAddToCartBeforeProcessing,
 		} ),
 		[ subscriber ]
 	);

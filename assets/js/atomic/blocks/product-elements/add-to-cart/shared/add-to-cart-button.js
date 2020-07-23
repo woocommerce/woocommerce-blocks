@@ -23,8 +23,8 @@ const AddToCartButton = () => {
 	} = useAddToCartFormContext();
 	const { cartQuantity } = useStoreAddToCart( product.id || 0 );
 	const [ addedToCart, setAddedToCart ] = useState( false );
-	const isPurchasable = product.is_purchasable || true;
-	const hasOptions = product.has_options || false;
+	const isPurchasable = product.is_purchasable;
+	const hasOptions = product.has_options;
 	const addToCartButtonData = product.add_to_cart || {
 		url: '',
 		text: '',
@@ -50,7 +50,7 @@ const AddToCartButton = () => {
 	// If we are showing form elements, OR if the product has no additional form options, we can show
 	// a functional direct add to cart button, provided that the product is purchasable.
 	// No link is required to the full form under these circumstances.
-	if ( showFormElements || ( ! hasOptions && isPurchasable ) ) {
+	if ( ( showFormElements || ! hasOptions ) && isPurchasable ) {
 		return (
 			<ButtonComponent
 				className="wc-block-components-product-add-to-cart-button"
@@ -58,7 +58,7 @@ const AddToCartButton = () => {
 				isDisabled={ isDisabled }
 				isProcessing={ isProcessing }
 				isDone={ addedToCart }
-				onClick={ dispatchActions.submitForm }
+				onClick={ () => dispatchActions.submitForm() }
 			/>
 		);
 	}
@@ -102,9 +102,7 @@ const ButtonComponent = ( {
 			className={ className }
 			disabled={ isDisabled }
 			showSpinner={ isProcessing }
-			onClick={ () => {
-				onClick();
-			} }
+			onClick={ onClick }
 		>
 			{ isDone && quantityInCart > 0
 				? sprintf(

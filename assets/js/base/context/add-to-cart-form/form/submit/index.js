@@ -57,7 +57,7 @@ const FormSubmit = () => {
 	}, [ eventRegistration, checkValidationContext ] );
 
 	// Triggers form submission to the API.
-	const submitForm = useCallback( () => {
+	const submitFormCallback = useCallback( () => {
 		setIsSubmitting( true );
 		removeNotice( 'add-to-cart' );
 
@@ -131,9 +131,9 @@ const FormSubmit = () => {
 
 	useEffect( () => {
 		if ( doSubmit && ! isSubmitting ) {
-			submitForm();
+			submitFormCallback();
 		}
-	}, [ doSubmit, submitForm, isSubmitting ] );
+	}, [ doSubmit, submitFormCallback, isSubmitting ] );
 
 	return null;
 };
