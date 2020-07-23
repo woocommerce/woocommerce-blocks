@@ -340,7 +340,7 @@ class Checkout extends AbstractRoute {
 			return false;
 		}
 
-		$checkout_requires_account = true === filter_var( get_option( 'woocommerce_checkout_registration_required' ), FILTER_VALIDATE_BOOLEAN );
+		$checkout_requires_account = false === filter_var( get_option( 'woocommerce_enable_guest_checkout' ), FILTER_VALIDATE_BOOLEAN );
 		if ( $checkout_requires_account ) {
 			return true;
 		}
