@@ -369,7 +369,7 @@ class Checkout extends AbstractRoute {
 			case 'registration-error-missing-password':
 				return new RouteException(
 					'woocommerce_rest_checkout_create_account_failure',
-					$error->get_error_message(),
+					wp_strip_all_tags( $error->get_error_message() ),
 					400
 				);
 		}
