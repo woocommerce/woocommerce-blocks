@@ -175,7 +175,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		);
 	}
 
-	const createAccountUI = ! customerId && CHECKOUT_ALLOWS_SIGNUP && (
+	const createAccountUI = ! customerId && ( CHECKOUT_ALLOWS_SIGNUP || ! CHECKOUT_ALLOWS_GUEST ) && (
 		<CheckboxControl
 			className="wc-block-checkout__create-account"
 			label={ __( 'Create an account?', 'woo-gutenberg-products-block' ) }
