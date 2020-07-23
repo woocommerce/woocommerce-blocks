@@ -19,9 +19,9 @@ import { decodeEntities } from '@wordpress/html-entities';
 const FormSubmit = () => {
 	const {
 		dispatchActions,
-		productId,
+		product,
 		quantity,
-		onAddToCartBeforeProcessing,
+		eventRegistration,
 		hasError,
 		isProcessing,
 		requestParams,
@@ -47,14 +47,14 @@ const FormSubmit = () => {
 
 	// Subscribe to emitter before processing.
 	useEffect( () => {
-		const unsubscribeProcessing = onAddToCartBeforeProcessing(
+		const unsubscribeProcessing = eventRegistration.onAddToCartBeforeProcessing(
 			checkValidationContext,
 			0
 		);
 		return () => {
 			unsubscribeProcessing();
 		};
-	}, [ onAddToCartBeforeProcessing, checkValidationContext ] );
+	}, [ eventRegistration, checkValidationContext ] );
 
 	// Triggers form submission to the API.
 	const submitForm = useCallback( () => {
@@ -62,7 +62,7 @@ const FormSubmit = () => {
 		removeNotice( 'add-to-cart' );
 
 		const fetchData = {
-			id: productId,
+			id: product.id || 0,
 			quantity,
 			...requestParams,
 		};
@@ -120,11 +120,11 @@ const FormSubmit = () => {
 				} );
 			} );
 	}, [
+		product,
 		addErrorNotice,
 		removeNotice,
 		receiveCart,
 		dispatchActions,
-		productId,
 		quantity,
 		requestParams,
 	] );

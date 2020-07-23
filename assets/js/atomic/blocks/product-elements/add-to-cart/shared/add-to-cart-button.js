@@ -17,9 +17,9 @@ const AddToCartButton = () => {
 		product,
 		isDisabled,
 		isProcessing,
-		onSubmit,
-		onAddToCartAfterProcessingWithSuccess,
+		eventRegistration,
 		hasError,
+		dispatchActions,
 	} = useAddToCartFormContext();
 	const { cartQuantity } = useStoreAddToCart( product.id || 0 );
 	const [ addedToCart, setAddedToCart ] = useState( false );
@@ -38,14 +38,14 @@ const AddToCartButton = () => {
 			}
 			return true;
 		};
-		const unsubscribeProcessing = onAddToCartAfterProcessingWithSuccess(
+		const unsubscribeProcessing = eventRegistration.onAddToCartAfterProcessingWithSuccess(
 			onSuccess,
 			0
 		);
 		return () => {
 			unsubscribeProcessing();
 		};
-	}, [ onAddToCartAfterProcessingWithSuccess, hasError ] );
+	}, [ eventRegistration, hasError ] );
 
 	// If we are showing form elements, OR if the product has no additional form options, we can show
 	// a functional direct add to cart button, provided that the product is purchasable.
@@ -58,7 +58,7 @@ const AddToCartButton = () => {
 				isDisabled={ isDisabled }
 				isProcessing={ isProcessing }
 				isDone={ addedToCart }
-				onClick={ onSubmit }
+				onClick={ dispatchActions.submitForm }
 			/>
 		);
 	}

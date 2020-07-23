@@ -8,7 +8,6 @@ import {
 	useRef,
 	useMemo,
 	useEffect,
-	useCallback,
 } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { useStoreNotices, useEmitResponse } from '@woocommerce/base-hooks';
@@ -30,12 +29,12 @@ import { useValidationContext } from '../../shared/validation';
 
 /**
  * @typedef {import('@woocommerce/type-defs/add-to-cart-form').AddToCartFormDispatchActions} AddToCartFormDispatchActions
+ * @typedef {import('@woocommerce/type-defs/add-to-cart-form').AddToCartFormEventRegistration} AddToCartFormEventRegistration
  * @typedef {import('@woocommerce/type-defs/contexts').AddToCartFormContext} AddToCartFormContext
  */
 
 const AddToCartFormContext = createContext( {
 	showFormElements: false,
-	productId: 0,
 	product: {},
 	quantity: 0,
 	minQuantity: 1,
@@ -47,10 +46,11 @@ const AddToCartFormContext = createContext( {
 	isBeforeProcessing: false,
 	isAfterProcessing: false,
 	hasError: false,
-	onSubmit: () => void null,
-	onAddToCartAfterProcessingWithSuccess: ( callback ) => void callback,
-	onAddToCartAfterProcessingWithError: ( callback ) => void callback,
-	onAddToCartBeforeProcessing: ( callback ) => void callback,
+	eventRegistration: {
+		onAddToCartAfterProcessingWithSuccess: ( callback ) => void callback,
+		onAddToCartAfterProcessingWithError: ( callback ) => void callback,
+		onAddToCartBeforeProcessing: ( callback ) => void callback,
+	},
 	dispatchActions: {
 		resetForm: () => void null,
 		setQuantity: ( quantity ) => void quantity,
@@ -64,6 +64,7 @@ const AddToCartFormContext = createContext( {
  * @return {AddToCartFormContext} Returns the add to cart form data context value
  */
 export const useAddToCartFormContext = () => {
+	// @ts-ignore
 	return useContext( AddToCartFormContext );
 };
 
@@ -101,20 +102,20 @@ export const AddToCartFormStateContextProvider = ( {
 		currentObservers.current = observers;
 	}, [ observers ] );
 
-	const onAddToCartAfterProcessingWithSuccess = useMemo(
-		() =>
-			emitterSubscribers( subscriber )
-				.onAddToCartAfterProcessingWithSuccess,
-		[ subscriber ]
-	);
-	const onAddToCartAfterProcessingWithError = useMemo(
-		() =>
-			emitterSubscribers( subscriber )
-				.onAddToCartAfterProcessingWithError,
-		[ subscriber ]
-	);
-	const onAddToCartBeforeProcessing = useMemo(
-		() => emitterSubscribers( subscriber ).onAddToCartBeforeProcessing,
+	/**
+	 * @type {AddToCartFormEventRegistration}
+	 */
+	const eventRegistration = useMemo(
+		() => ( {
+			onAddToCartAfterProcessingWithSuccess: () =>
+				emitterSubscribers( subscriber )
+					.onAddToCartAfterProcessingWithSuccess,
+			onAddToCartAfterProcessingWithError: () =>
+				emitterSubscribers( subscriber )
+					.onAddToCartAfterProcessingWithError,
+			onAddToCartBeforeProcessing: () =>
+				emitterSubscribers( subscriber ).onAddToCartBeforeProcessing,
+		} ),
 		[ subscriber ]
 	);
 
@@ -124,6 +125,7 @@ export const AddToCartFormStateContextProvider = ( {
 	const dispatchActions = useMemo(
 		() => ( {
 			resetForm: () => void dispatch( actions.setPristine() ),
+			submitForm: () => void dispatch( actions.setBeforeProcessing() ),
 			setQuantity: ( quantity ) =>
 				void dispatch( actions.setQuantity( quantity ) ),
 			setHasError: ( hasError ) =>
@@ -270,22 +272,16 @@ export const AddToCartFormStateContextProvider = ( {
 		isSuccessResponse,
 	] );
 
-	const onSubmit = useCallback( () => {
-		dispatch( actions.setBeforeProcessing() );
-	}, [] );
-
 	/**
 	 * @type {AddToCartFormContext}
 	 */
 	const contextData = {
 		showFormElements: showFormElements && productIsPurchasable( product ),
-		productId: product.id || 0,
 		product,
 		quantity: addToCartFormState.quantity,
 		minQuantity: 1,
 		maxQuantity: product.quantity_limit || 99,
 		requestParams: addToCartFormState.requestParams,
-		onSubmit,
 		isIdle: addToCartFormState.status === STATUS.IDLE,
 		isDisabled: addToCartFormState.status === STATUS.DISABLED,
 		isProcessing: addToCartFormState.status === STATUS.PROCESSING,
@@ -294,13 +290,14 @@ export const AddToCartFormStateContextProvider = ( {
 		isAfterProcessing:
 			addToCartFormState.status === STATUS.AFTER_PROCESSING,
 		hasError: addToCartFormState.hasError,
-		onAddToCartAfterProcessingWithSuccess,
-		onAddToCartAfterProcessingWithError,
-		onAddToCartBeforeProcessing,
+		eventRegistration,
 		dispatchActions,
 	};
 	return (
-		<AddToCartFormContext.Provider value={ contextData }>
+		<AddToCartFormContext.Provider
+			// @ts-ignore
+			value={ contextData }
+		>
 			{ children }
 		</AddToCartFormContext.Provider>
 	);

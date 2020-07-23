@@ -3,6 +3,7 @@
  *
  * @property {function():void}         resetForm          Dispatches an action that resets the form to a
  *                                                        pristine state.
+ * @property {function():void}         submitForm         Dispatches an action that tells the form to submit.
  * @property {function(number):void}   setQuantity        Dispatches an action that sets the quantity to
  *                                                        the given value.
  * @property {function(Object):void}   setRequestParams   Dispatches an action that sets params for the
@@ -12,6 +13,14 @@
  * @property {function(Object):void}   setAfterProcessing Dispatches an action that sets the status to
  *                                                        after processing and also sets the response
  *                                                        data accordingly.
+ */
+
+/**
+ * @typedef {Object} AddToCartFormEventRegistration
+ *
+ * @property {function(function():boolean|Object,number=):function():void} onAddToCartAfterProcessingWithSuccess Used to register a callback that will fire after form has been processed and there are no errors.
+ * @property {function(function():boolean|Object,number=):function():void} onAddToCartAfterProcessingWithError   Used to register a callback that will fire when the form has been processed and has an error.
+ * @property {function(function():boolean|Object,number=):function():void} onAddToCartBeforeProcessing           Used to register a callback that will fire when the form has been submitted before being sent off to the server.
  */
 
 /**
