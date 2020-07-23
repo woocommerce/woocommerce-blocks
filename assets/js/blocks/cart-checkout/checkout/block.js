@@ -157,6 +157,11 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		window.location.href
 	) }`;
 
+	// If:
+	// - shopper is not logged in
+	// - checkout requires account
+	// - there is no way to create an account with checkout
+	// then show login prompt.
 	if ( ! isEditor && ! customerId && ! CHECKOUT_ALLOWS_GUEST && ! CHECKOUT_ALLOWS_SIGNUP ) {
 		return (
 			<>
@@ -174,7 +179,12 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		);
 	}
 
-	const createAccountUI = ! customerId && ( CHECKOUT_ALLOWS_SIGNUP || ! CHECKOUT_ALLOWS_GUEST ) && (
+	// If:
+	// - shopper is not logged in
+	// - checkout allows signup
+	// - checkout doesn't require signup
+	// then show create account checkbox.
+	const createAccountUI = ! customerId && CHECKOUT_ALLOWS_SIGNUP && CHECKOUT_ALLOWS_GUEST && (
 		<CheckboxControl
 			className="wc-block-checkout__create-account"
 			label={ __( 'Create an account?', 'woo-gutenberg-products-block' ) }
