@@ -80,8 +80,7 @@ class DeleteDraftOrders extends TestCase {
 			$this->caught_exception = $exception_object;
 		});
 
-		// temporarily hide error logging we don't care (and keeps from polluting)
-		// stdout
+		// temporarily hide error logging we don't care about (and keeps from polluting stdout)
 		$this->original_logging_destination = ini_get('error_log');
 		ini_set('error_log', '/dev/null');
 	}
