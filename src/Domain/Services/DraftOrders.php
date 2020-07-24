@@ -188,7 +188,7 @@ class DraftOrders {
 	 * validation checks.
 	 */
 	private function ensure_draft_status_registered() {
-		$is_registered = get_post_stati( [ self::DB_STATUS ] );
+		$is_registered = get_post_stati( [ 'name' => self::DB_STATUS ] );
 		if ( empty( $is_registered ) ) {
 			register_post_status(
 				self::DB_STATUS,
