@@ -82,6 +82,11 @@ class DeleteDraftOrders extends TestCase {
 
 	public function tearDown() {
 		$this->draft_orders_instance = null;
+		// delete all orders
+		$orders = wc_get_orders([]);
+		foreach( $orders as $order ) {
+			$order->delete( true );
+		}
 		remove_all_actions( 'woocommerce_caught_exception' );
 	}
 
@@ -138,6 +143,31 @@ class DeleteDraftOrders extends TestCase {
 		$this->draft_orders_instance->delete_expired_draft_orders();
 		$this->assertContains( 'order that is not a `wc-checkout-draft`', $this->caught_exception->getMessage() );
 		$this->unset_mock_results_for_wc_query( $sample_results );
+	}
+	public function test_order_status_verification() {
+		global $wp_post_statuses, $wpdb;
+		$original_statuses = $wp_post_statuses;
+		// simulate registered draft status getting clobbered
+		foreach( $wp_post_statuses as $index => $status ) {
+			if ( DraftOrders::DB_STATUS === $status->name ) {
+				unset( $wp_post_statuses[ $index ] );
+				break;
+			}
+		}
+		$status = DraftOrders::DB_STATUS;
+		// Check there are 3 draft orders from our setup before running tests.
+		$this->assertEquals( 3, (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) from $wpdb->posts posts WHERE posts.post_status = '%s'", [ $status ] ) ) );
+
+		// Run delete query.
+		$this->draft_orders_instance->delete_expired_draft_orders();
+
+		// Only 1 should remain.
+		$this->assertEquals( 1, (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) from $wpdb->posts posts WHERE posts.post_status = '%s'", [ $status ] ) ) );
+
+		// The non-draft order should still be present
+		$this->assertEquals( 1, (int) $wpdb->get_var( "SELECT COUNT(ID) from $wpdb->posts posts WHERE posts.post_status = 'wc-on-hold'" ) );
+		// restore global
+		$wp_post_statuses = $original_statuses;
 	}
 
 	private function mock_results_for_wc_query( $mock_callback ) {
