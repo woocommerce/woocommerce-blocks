@@ -16,6 +16,7 @@ class DeleteDraftOrders extends TestCase {
 
 	private $draft_orders_instance;
 	private $caught_exception;
+	private $original_logging_destination;
 
 	/**
 	 * During setup create some draft orders.
@@ -78,6 +79,11 @@ class DeleteDraftOrders extends TestCase {
 		add_action( 'woocommerce_caught_exception', function($exception_object){
 			$this->caught_exception = $exception_object;
 		});
+
+		// temporarily hide error logging we don't care (and keeps from polluting)
+		// stdout
+		$this->original_logging_destination = ini_get('error_log');
+		ini_set('error_log', '/dev/null');
 	}
 
 	public function tearDown() {
@@ -88,6 +94,8 @@ class DeleteDraftOrders extends TestCase {
 			$order->delete( true );
 		}
 		remove_all_actions( 'woocommerce_caught_exception' );
+		//restore original logging destination
+		ini_set('error_log', $this->original_logging_destination);
 	}
 
 	/**
@@ -144,6 +152,7 @@ class DeleteDraftOrders extends TestCase {
 		$this->assertContains( 'order that is not a `wc-checkout-draft`', $this->caught_exception->getMessage() );
 		$this->unset_mock_results_for_wc_query( $sample_results );
 	}
+
 	public function test_order_status_verification() {
 		global $wp_post_statuses, $wpdb;
 		$original_statuses = $wp_post_statuses;
