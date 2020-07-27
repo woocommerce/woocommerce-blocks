@@ -382,6 +382,18 @@ class Checkout extends AbstractRoute {
 	}
 
 	/**
+	 * Callback for filtering pre_option to force "yes".
+	 *
+	 * Used to force-enable autogenerate username/password site options,
+	 * since we don't support user-supplied username/password in checkout block.
+	 *
+	 * @return string "yes" (aka WooCommerce option true value)
+	 */
+	public function force_option_yes() {
+		return 'yes';
+	}
+
+	/**
 	 * Create a new account for a customer.
 	 *
 	 * @throws RouteException If an error is encountered when creating the user account.
@@ -393,6 +405,18 @@ class Checkout extends AbstractRoute {
 	 * @return int User id if successful
 	 */
 	protected function create_customer_account( $user_email, $first_name, $last_name ) {
+		// Temporarily force autogenerate options - we only support autogenerate.
+		add_filter(
+			'pre_option_woocommerce_registration_generate_username',
+			[ __CLASS__, 'force_option_yes' ],
+			10
+		);
+		add_filter(
+			'pre_option_woocommerce_registration_generate_password',
+			[ __CLASS__, 'force_option_yes' ],
+			10
+		);
+
 		$customer_id = wc_create_new_customer(
 			$user_email,
 			'',
@@ -401,6 +425,18 @@ class Checkout extends AbstractRoute {
 				'first_name' => $first_name,
 				'last_name'  => $last_name,
 			)
+		);
+
+		// Remove filters forcing autogenerate options to yes.
+		remove_filter(
+			'pre_option_woocommerce_registration_generate_username',
+			[ __CLASS__, 'force_option_yes' ],
+			10
+		);
+		remove_filter(
+			'pre_option_woocommerce_registration_generate_password',
+			[ __CLASS__, 'force_option_yes' ],
+			10
 		);
 
 		if ( is_wp_error( $customer_id ) ) {
