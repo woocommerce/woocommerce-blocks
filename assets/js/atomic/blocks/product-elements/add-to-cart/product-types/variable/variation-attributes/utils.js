@@ -63,33 +63,41 @@ export const getVariationsMatchingSelectedAttributes = (
 	variationAttributes,
 	selectedAttributes
 ) => {
+	const variationIds = Object.values( variationAttributes ).map(
+		( { id: variationId } ) => {
+			return variationId;
+		}
+	);
+
+	// If nothing is selected yet, just return all variations.
+	if (
+		Object.values( selectedAttributes ).every( ( value ) => value === '' )
+	) {
+		return variationIds;
+	}
+
 	const attributeNames = Object.keys( attributes );
 
-	return Object.values( variationAttributes )
-		.map( ( { id: variationId } ) => {
-			return variationId;
-		} )
-		.filter( ( variationId ) =>
-			attributeNames.every( ( attributeName ) => {
-				const selectedAttribute =
-					selectedAttributes[ attributeName ] || '';
-				const variationAttribute =
-					variationAttributes[ 'id:' + variationId ].attributes[
-						attributeName
-					];
+	return variationIds.filter( ( variationId ) =>
+		attributeNames.every( ( attributeName ) => {
+			const selectedAttribute = selectedAttributes[ attributeName ] || '';
+			const variationAttribute =
+				variationAttributes[ 'id:' + variationId ].attributes[
+					attributeName
+				];
 
-				// If there is no selected attribute, consider this a match.
-				if ( selectedAttribute === '' ) {
-					return true;
-				}
-				// If the variation attributes for this attribute are set to null, it matches all values.
-				if ( variationAttribute === null ) {
-					return true;
-				}
-				// Otherwise, only match if the selected values are the same.
-				return variationAttribute === selectedAttribute;
-			} )
-		);
+			// If there is no selected attribute, consider this a match.
+			if ( selectedAttribute === '' ) {
+				return true;
+			}
+			// If the variation attributes for this attribute are set to null, it matches all values.
+			if ( variationAttribute === null ) {
+				return true;
+			}
+			// Otherwise, only match if the selected values are the same.
+			return variationAttribute === selectedAttribute;
+		} )
+	);
 };
 
 /**
