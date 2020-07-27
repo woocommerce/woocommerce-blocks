@@ -55,7 +55,7 @@ const AttributePicker = ( {
 		);
 	}, [ selectedAttributes ] );
 
-	// Select variations when selections are hange.
+	// Select variations when selections are change.
 	useEffect( () => {
 		const hasSelectedAllAttributes =
 			Object.values( selectedAttributes ).filter(
