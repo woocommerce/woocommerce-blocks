@@ -44,7 +44,10 @@ const Variable = () => {
 
 	return (
 		<>
-			<VariationAttributes product={ product } />
+			<VariationAttributes
+				product={ product }
+				dispatchers={ dispatchActions }
+			/>
 			<QuantityInput
 				value={ quantity }
 				min={ minQuantity }

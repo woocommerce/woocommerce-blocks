@@ -8,7 +8,7 @@ import { getAttributes, getVariationAttributes } from './utils';
 /**
  * VariationAttributes component.
  */
-const VariationAttributes = ( { product } ) => {
+const VariationAttributes = ( { product, dispatchers } ) => {
 	const attributes = getAttributes( product.attributes );
 	const variationAttributes = getVariationAttributes( product.variations );
 
@@ -23,6 +23,7 @@ const VariationAttributes = ( { product } ) => {
 		<AttributePicker
 			attributes={ attributes }
 			variationAttributes={ variationAttributes }
+			setRequestParams={ dispatchers.setRequestParams }
 		/>
 	);
 };

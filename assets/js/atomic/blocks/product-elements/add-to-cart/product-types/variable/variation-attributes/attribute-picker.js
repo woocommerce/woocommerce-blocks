@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { useState, useEffect, useMemo } from '@wordpress/element';
-import { useAddToCartFormContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -18,10 +17,13 @@ import {
  *
  * @param {*} props Component props.
  */
-const AttributePicker = ( { attributes, variationAttributes } ) => {
+const AttributePicker = ( {
+	attributes,
+	variationAttributes,
+	setRequestParams,
+} ) => {
 	const [ variationId, setVariationId ] = useState( 0 );
 	const [ selectedAttributes, setSelectedAttributes ] = useState( {} );
-	const { dispatchActions } = useAddToCartFormContext();
 
 	const attributeNames = Object.keys( attributes );
 	const hasSelectedAllAttributes =
@@ -65,7 +67,7 @@ const AttributePicker = ( { attributes, variationAttributes } ) => {
 
 	// Set requests params as variation ID and data changes.
 	useEffect( () => {
-		dispatchActions.setRequestParams( {
+		setRequestParams( {
 			id: variationId,
 			variation: Object.keys( selectedAttributes ).map(
 				( attributeName ) => {
@@ -76,7 +78,7 @@ const AttributePicker = ( { attributes, variationAttributes } ) => {
 				}
 			),
 		} );
-	}, [ dispatchActions, variationId, selectedAttributes ] );
+	}, [ setRequestParams, variationId, selectedAttributes ] );
 
 	return (
 		<div className="wc-block-components-product-add-to-cart-attribute-picker">
