@@ -17,17 +17,16 @@ const EMIT_TYPES = {
 };
 
 /**
- * Receives a reducer dispatcher and returns an object with the
- * callback registration function for the checkout emit
- * events.
+ * Receives a reducer dispatcher and returns an object with the callback registration function for
+ * the add to cart emit events.
  *
- * Calling the event registration function with the callback will register it
- * for the event emitter and will return a dispatcher for removing the
- * registered callback (useful for implementation in `useEffect`).
+ * Calling the event registration function with the callback will register it for the event emitter
+ * and will return a dispatcher for removing the registered callback (useful for implementation
+ * in `useEffect`).
  *
  * @param {Function} dispatcher The emitter reducer dispatcher.
  *
- * @return {Object} An object with the checkout emitter registration
+ * @return {Object} An object with the add to cart form emitter registration
  */
 const emitterSubscribers = ( dispatcher ) => ( {
 	onAddToCartAfterProcessingWithSuccess: emitterCallback(
