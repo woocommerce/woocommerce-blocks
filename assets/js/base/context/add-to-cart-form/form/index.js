@@ -25,14 +25,14 @@ export const AddToCartFormContextProvider = ( {
 	showFormElements,
 } ) => {
 	return (
-		<AddToCartFormStateContextProvider
-			product={ product }
-			showFormElements={ showFormElements }
-		>
-			<ValidationContextProvider>
+		<ValidationContextProvider>
+			<AddToCartFormStateContextProvider
+				product={ product }
+				showFormElements={ showFormElements }
+			>
 				{ children }
 				<FormSubmit />
-			</ValidationContextProvider>
-		</AddToCartFormStateContextProvider>
+			</AddToCartFormStateContextProvider>
+		</ValidationContextProvider>
 	);
 };
