@@ -40,7 +40,7 @@ export const reducer = ( state = DEFAULT_STATE, { quantity, type, data } ) => {
 			break;
 		case SET_IDLE:
 			newState =
-				state.state !== IDLE
+				state.status !== IDLE
 					? {
 							...state,
 							status: IDLE,
