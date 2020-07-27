@@ -49,7 +49,7 @@ export const reducer = ( state = DEFAULT_STATE, { quantity, type, data } ) => {
 			break;
 		case SET_DISABLED:
 			newState =
-				state.state !== DISABLED
+				state.status !== DISABLED
 					? {
 							...state,
 							status: DISABLED,
