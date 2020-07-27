@@ -28,12 +28,6 @@ const AttributePicker = ( {
 	const [ variationId, setVariationId ] = useState( 0 );
 	const [ selectedAttributes, setSelectedAttributes ] = useState( {} );
 
-	const attributeNames = Object.keys( attributesRef.current );
-	const hasSelectedAllAttributes =
-		Object.values( selectedAttributes ).filter(
-			( selected ) => selected !== ''
-		).length === attributeNames.length;
-
 	// Keeps refs in sync.
 	useEffect( () => {
 		if ( ! isShallowEqual( attributesRef.current, attributes ) ) {
@@ -61,30 +55,26 @@ const AttributePicker = ( {
 		);
 	}, [ selectedAttributes ] );
 
-	// Select variation when selections change.
+	// Select variations when selections are hange.
 	useEffect( () => {
+		const hasSelectedAllAttributes =
+			Object.values( selectedAttributes ).filter(
+				( selected ) => selected !== ''
+			).length === Object.keys( attributesRef.current ).length;
+
 		if ( hasSelectedAllAttributes ) {
 			setVariationId(
 				getVariationMatchingSelectedAttributes(
-					attributes,
-					variationAttributes,
+					attributesRef.current,
+					variationAttributesRef.current,
 					selectedAttributes
 				)
 			);
-		}
-	}, [
-		attributes,
-		variationAttributes,
-		selectedAttributes,
-		hasSelectedAllAttributes,
-	] );
-
-	// Unset variation when form is incomplete.
-	useEffect( () => {
-		if ( ! hasSelectedAllAttributes && variationId > 0 ) {
+		} else if ( variationId > 0 ) {
+			// Unset variation when form is incomplete.
 			setVariationId( 0 );
 		}
-	}, [ hasSelectedAllAttributes, variationId ] );
+	}, [ selectedAttributes, variationId ] );
 
 	// Set requests params as variation ID and data changes.
 	useEffect( () => {
@@ -103,7 +93,7 @@ const AttributePicker = ( {
 
 	return (
 		<div className="wc-block-components-product-add-to-cart-attribute-picker">
-			{ attributeNames.map( ( attributeName ) => (
+			{ Object.keys( attributesRef.current ).map( ( attributeName ) => (
 				<AttributeSelectControl
 					key={ attributeName }
 					attributeName={ attributeName }
