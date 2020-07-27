@@ -16,13 +16,16 @@ export const getAttributes = ( attributes ) => {
 				),
 				'name'
 		  )
-		: [];
+		: {};
 };
 
 /**
  * Format variations from the API into a map of just the attribute names and values.
  *
- * @param {Array} variations Variations array.
+ * Note, each item is keyed by the variation ID with an id: prefix. This is to prevent the object
+ * being reordered when iterated.
+ *
+ * @param {Object} variations List of Variation objects and attributes keyed by variation ID.
  */
 export const getVariationAttributes = ( variations ) => {
 	if ( ! variations ) {
@@ -32,23 +35,93 @@ export const getVariationAttributes = ( variations ) => {
 	const attributesMap = {};
 
 	variations.forEach( ( { id, attributes } ) => {
-		attributesMap[ id ] = attributes.reduce( ( acc, { name, value } ) => {
-			acc[ name ] = value;
-			return acc;
-		}, [] );
+		attributesMap[ `id:${ id }` ] = {
+			id,
+			attributes: attributes.reduce( ( acc, { name, value } ) => {
+				acc[ name ] = value;
+				return acc;
+			}, {} ),
+		};
 	} );
 
 	return attributesMap;
 };
 
 /**
+ * Given a list of variations and a list of attribute values, return variations which match.
+ *
+ * Allows an attribute to be excluded by name. This is used to filter displayed options for
+ * individual attribute selects.
+ *
+ * @param {Object} attributes List of attribute names and terms.
+ * @param {Object} variationAttributes Attributes for each variation keyed by variation ID.
+ * @param {Object} selectedAttributes Attribute Name Value pairs of current selections by the user.
+ * @return {Array} List of matching variation IDs.
+ */
+export const getVariationsMatchingSelectedAttributes = (
+	attributes,
+	variationAttributes,
+	selectedAttributes
+) => {
+	const attributeNames = Object.keys( attributes );
+
+	return Object.values( variationAttributes )
+		.map( ( { id: variationId } ) => {
+			return variationId;
+		} )
+		.filter( ( variationId ) =>
+			attributeNames.every( ( attributeName ) => {
+				const selectedAttribute =
+					selectedAttributes[ attributeName ] || '';
+				const variationAttribute =
+					variationAttributes[ 'id:' + variationId ].attributes[
+						attributeName
+					];
+
+				// If there is no selected attribute, consider this a match.
+				if ( selectedAttribute === '' ) {
+					return true;
+				}
+				// If the variation attributes for this attribute are set to null, it matches all values.
+				if ( variationAttribute === null ) {
+					return true;
+				}
+				// Otherwise, only match if the selected values are the same.
+				return variationAttribute === selectedAttribute;
+			} )
+		);
+};
+
+/**
+ * Given a list of variations and a list of attribute values, returns the first matched variation ID.
+ *
+ * @param {Object} attributes List of attribute names and terms.
+ * @param {Object} variationAttributes Attributes for each variation keyed by variation ID.
+ * @param {Object} selectedAttributes Attribute Name Value pairs of current selections by the user.
+ * @return {number} Variation ID.
+ */
+export const getVariationMatchingSelectedAttributes = (
+	attributes,
+	variationAttributes,
+	selectedAttributes
+) => {
+	const matchingVariationIds = getVariationsMatchingSelectedAttributes(
+		attributes,
+		variationAttributes,
+		selectedAttributes
+	);
+	return matchingVariationIds[ 0 ] || 0;
+};
+
+/**
  * Given a list of terms, filter them and return valid options for the select boxes.
  *
+ * @see getActiveSelectControlOptions
  * @param {Object} attributeTerms List of attribute term objects.
  * @param {?Array} validAttributeTerms Valid values if selections have been made already.
  * @return {Array} Value/Label pairs of select box options.
  */
-export const getValidSelectControlOptions = (
+const getValidSelectControlOptions = (
 	attributeTerms,
 	validAttributeTerms = null
 ) => {
@@ -76,35 +149,38 @@ export const getValidSelectControlOptions = (
  * @param {Object} attributes List of attribute names and terms.
  * @param {Object} variationAttributes Attributes for each variation keyed by variation ID.
  * @param {Object} selectedAttributes Attribute Name Value pairs of current selections by the user.
- * @return {Array} Select box options.
+ * @return {Object} Select box options.
  */
 export const getActiveSelectControlOptions = (
 	attributes,
 	variationAttributes,
 	selectedAttributes
 ) => {
-	const options = [];
+	const options = {};
 	const attributeNames = Object.keys( attributes );
 	const hasSelectedAttributes =
 		Object.values( selectedAttributes ).filter( Boolean ).length > 0;
 
 	attributeNames.forEach( ( attributeName ) => {
 		const currentAttribute = attributes[ attributeName ];
-		const attributeNamesExcludingCurrentAttribute = attributeNames.filter(
-			( name ) => name !== attributeName
-		);
+		const selectedAttributesExcludingCurrentAttribute = {
+			...selectedAttributes,
+			[ attributeName ]: null,
+		};
 		const matchingVariationIds = hasSelectedAttributes
 			? getVariationsMatchingSelectedAttributes(
-					selectedAttributes,
+					attributes,
 					variationAttributes,
-					attributeNamesExcludingCurrentAttribute
+					selectedAttributesExcludingCurrentAttribute
 			  )
 			: null;
 		const validAttributeTerms =
 			matchingVariationIds !== null
 				? matchingVariationIds.map(
 						( varId ) =>
-							variationAttributes[ varId ][ attributeName ]
+							variationAttributes[ 'id:' + varId ].attributes[
+								attributeName
+							]
 				  )
 				: null;
 		options[ attributeName ] = getValidSelectControlOptions(
@@ -114,63 +190,4 @@ export const getActiveSelectControlOptions = (
 	} );
 
 	return options;
-};
-
-/**
- * Given a list of variations and a list of attribute values, return variations which match.
- *
- * Allows an attribute to be excluded by name. This is used to filter displayed options for
- * individual attribute selects.
- *
- * @param {Object} attributes List of attribute names and terms.
- * @param {Object} variationAttributes Attributes for each variation keyed by variation ID.
- * @param {Object} selectedAttributes Attribute Name Value pairs of current selections by the user.
- * @return {Array} List of matching variation IDs.
- */
-export const getVariationsMatchingSelectedAttributes = (
-	attributes,
-	variationAttributes,
-	selectedAttributes
-) => {
-	const attributeNames = Object.keys( attributes );
-
-	return Object.keys( variationAttributes ).filter( ( variationId ) =>
-		attributeNames.every( ( attributeName ) => {
-			const selectedAttribute = selectedAttributes[ attributeName ] || '';
-			const variationAttribute =
-				variationAttributes[ variationId ][ attributeName ];
-
-			// If there is no selected attribute, consider this a match.
-			if ( selectedAttribute === '' ) {
-				return true;
-			}
-			// If the variation attributes for this attribute are set to null, it matches all values.
-			if ( variationAttribute === null ) {
-				return true;
-			}
-			// Otherwise, only match if the selected values are the same.
-			return variationAttribute === selectedAttribute;
-		} )
-	);
-};
-
-/**
- * Given a list of variations and a list of attribute values, returns the first matched variation ID.
- *
- * @param {Object} attributes List of attribute names and terms.
- * @param {Object} variationAttributes Attributes for each variation keyed by variation ID.
- * @param {Object} selectedAttributes Attribute Name Value pairs of current selections by the user.
- * @return {number} Variation ID.
- */
-export const getVariationMatchingSelectedAttributes = (
-	attributes,
-	variationAttributes,
-	selectedAttributes
-) => {
-	const matchingVariationIds = getVariationsMatchingSelectedAttributes(
-		attributes,
-		variationAttributes,
-		selectedAttributes
-	);
-	return matchingVariationIds[ 0 ] || 0;
 };
