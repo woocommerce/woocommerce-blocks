@@ -155,7 +155,7 @@ export const getVariationsMatchingSelectedAttributes = (
 };
 
 /**
- * Given a list of variations and a list of attribute values, return the best match.
+ * Given a list of variations and a list of attribute values, returns the first matched variation ID.
  *
  * @param {Object} attributes List of attribute names and terms.
  * @param {Object} variationAttributes Attributes for each variation keyed by variation ID.
