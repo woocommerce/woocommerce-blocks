@@ -175,6 +175,10 @@ export const getActiveSelectControlOptions = (
 			...selectedAttributes,
 			[ attributeName ]: null,
 		};
+		// This finds matching variations for selected attributes apart from this one. This will be
+		// used to get valid attribute terms of the current attribute narrowed down by those matching
+		// variation IDs. For example, if I had Large Blue Shirts and Medium Red Shirts, I want to only
+		// show Red shirts if Medium is selected.
 		const matchingVariationIds = hasSelectedAttributes
 			? getVariationsMatchingSelectedAttributes(
 					attributes,
@@ -182,6 +186,7 @@ export const getActiveSelectControlOptions = (
 					selectedAttributesExcludingCurrentAttribute
 			  )
 			: null;
+		// Uses the above matching variation IDs to get the attributes from just those variations.
 		const validAttributeTerms =
 			matchingVariationIds !== null
 				? matchingVariationIds.map(
@@ -191,6 +196,7 @@ export const getActiveSelectControlOptions = (
 							]
 				  )
 				: null;
+		// Intersects attributes with valid attributes.
 		options[ attributeName ] = getValidSelectControlOptions(
 			currentAttribute.terms,
 			validAttributeTerms
