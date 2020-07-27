@@ -1,7 +1,8 @@
 /**
  * External dependencies
  */
-import { useState, useEffect, useMemo } from '@wordpress/element';
+import { useState, useEffect, useMemo, useRef } from '@wordpress/element';
+import isShallowEqual from '@wordpress/is-shallow-equal';
 
 /**
  * Internal dependencies
@@ -22,23 +23,43 @@ const AttributePicker = ( {
 	variationAttributes,
 	setRequestParams,
 } ) => {
+	const attributesRef = useRef( attributes );
+	const variationAttributesRef = useRef( variationAttributes );
 	const [ variationId, setVariationId ] = useState( 0 );
 	const [ selectedAttributes, setSelectedAttributes ] = useState( {} );
 
-	const attributeNames = Object.keys( attributes );
+	const attributeNames = Object.keys( attributesRef.current );
 	const hasSelectedAllAttributes =
 		Object.values( selectedAttributes ).filter(
 			( selected ) => selected !== ''
 		).length === attributeNames.length;
 
+	// Keeps refs in sync.
+	useEffect( () => {
+		if ( ! isShallowEqual( attributesRef.current, attributes ) ) {
+			attributesRef.current = attributes;
+		}
+	}, [ attributes ] );
+
+	useEffect( () => {
+		if (
+			! isShallowEqual(
+				variationAttributesRef.current,
+				variationAttributes
+			)
+		) {
+			variationAttributesRef.current = variationAttributes;
+		}
+	}, [ variationAttributes ] );
+
 	// Get options for each attribute picker.
 	const filteredAttributeOptions = useMemo( () => {
 		return getActiveSelectControlOptions(
-			attributes,
-			variationAttributes,
+			attributesRef.current,
+			variationAttributesRef.current,
 			selectedAttributes
 		);
-	}, [ attributes, variationAttributes, selectedAttributes ] );
+	}, [ selectedAttributes ] );
 
 	// Select variation when selections change.
 	useEffect( () => {
