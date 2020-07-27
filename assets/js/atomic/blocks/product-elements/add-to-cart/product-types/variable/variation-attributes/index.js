@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { useAddToCartFormContext } from '@woocommerce/base-context';
-
-/**
  * Internal dependencies
  */
 import './style.scss';
@@ -13,8 +8,7 @@ import { getAttributes, getVariationAttributes } from './utils';
 /**
  * VariationAttributes component.
  */
-const VariationAttributes = () => {
-	const { product } = useAddToCartFormContext();
+const VariationAttributes = ( { product } ) => {
 	const attributes = getAttributes( product.attributes );
 	const variationAttributes = getVariationAttributes( product.variations );
 
