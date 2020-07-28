@@ -9,7 +9,7 @@ import { getSetting } from '@woocommerce/settings';
 import { PAYMENT_METHOD_NAME } from './constants';
 import { PaymentRequestExpress } from './payment-request-express';
 import { applePayImage } from './apple-pay-preview';
-import { loadStripe } from '../stripe-utils';
+import { getStripeServerData, loadStripe } from '../stripe-utils';
 
 const ApplePayPreview = () => <img src={ applePayImage } alt="" />;
 
@@ -22,6 +22,10 @@ let isStripeInitialized = false,
 // Initialise stripe API client and determine if payment method can be used
 // in current environment (e.g. geo + shopper has payment settings configured).
 function paymentRequestAvailable( currencyCode ) {
+	if ( ! getStripeServerData().allowPaymentRequest ) {
+		return false;
+	}
+
 	// If we've already initialised, return the cached results.
 	if ( isStripeInitialized ) {
 		return canPay;
