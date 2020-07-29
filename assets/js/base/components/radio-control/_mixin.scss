@@ -1,9 +1,15 @@
 @mixin radio-control-styles {
 	.wc-block-components-radio-control__option {
 		@include reset-typography();
-		@include with-translucent-border(0 0 1px);
 		display: block;
 		padding: $gap-small $gap-small 0 #{$gap-larger * 2};
+
+		&:not(:last-child) {
+			@include with-translucent-border(0 0 1px);
+		}
+		&:last-child {
+			@include with-translucent-border(0 0 1px, 0);
+		}
 	}
 
 	.wc-block-components-radio-control__option-layout {

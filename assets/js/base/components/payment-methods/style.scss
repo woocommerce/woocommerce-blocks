@@ -246,6 +246,15 @@ $border-radius: 5px;
 
 .wc-block-components-checkout-payment-methods * {
 	pointer-events: all; // Overrides parent disabled component in editor context
+
+}
+
+.wc-block-components-checkout-payment-methods {
+	@include with-translucent-border(1px);
+
+	&::after {
+		border-radius: 4px;
+	}
 }
 
 .is-mobile,
