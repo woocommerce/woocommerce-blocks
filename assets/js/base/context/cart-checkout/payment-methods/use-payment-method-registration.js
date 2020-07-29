@@ -12,7 +12,10 @@ import {
 	useShippingDataContext,
 } from '@woocommerce/base-context';
 import { useStoreCart, useShallowEqual } from '@woocommerce/base-hooks';
-import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
+import {
+	CURRENT_USER_IS_ADMIN,
+	PAYMENT_GATEWAY_ORDER,
+} from '@woocommerce/block-settings';
 
 /**
  * If there was an error registering a payment method, alert the admin.
@@ -86,8 +89,13 @@ const usePaymentMethodRegistration = (
 				[ paymentMethod.name ]: paymentMethod,
 			};
 		};
-		for ( const paymentMethodName in registeredPaymentMethods ) {
+
+		for ( let i=0; i<PAYMENT_GATEWAY_ORDER.length; i++  ) {
+			const paymentMethodName = PAYMENT_GATEWAY_ORDER[i];
 			const paymentMethod = registeredPaymentMethods[ paymentMethodName ];
+			if ( ! paymentMethod ) {
+				continue;
+			}
 
 			// In editor, shortcut so all payment methods show as available.
 			if ( isEditor ) {
