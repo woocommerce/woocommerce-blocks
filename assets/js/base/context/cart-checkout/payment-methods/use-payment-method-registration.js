@@ -14,7 +14,7 @@ import {
 import { useStoreCart, useShallowEqual } from '@woocommerce/base-hooks';
 import {
 	CURRENT_USER_IS_ADMIN,
-	PAYMENT_GATEWAY_ORDER,
+	PAYMENT_GATEWAY_SORT_ORDER,
 } from '@woocommerce/block-settings';
 
 /**
@@ -90,8 +90,8 @@ const usePaymentMethodRegistration = (
 			};
 		};
 
-		for ( let i=0; i<PAYMENT_GATEWAY_ORDER.length; i++  ) {
-			const paymentMethodName = PAYMENT_GATEWAY_ORDER[i];
+		for ( let i=0; i<PAYMENT_GATEWAY_SORT_ORDER.length; i++  ) {
+			const paymentMethodName = PAYMENT_GATEWAY_SORT_ORDER[i];
 			const paymentMethod = registeredPaymentMethods[ paymentMethodName ];
 			if ( ! paymentMethod ) {
 				continue;

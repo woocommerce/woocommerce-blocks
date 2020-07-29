@@ -64,7 +64,7 @@ export const SHIPPING_METHODS_EXIST = getSetting(
 	false
 );
 
-export const PAYMENT_GATEWAY_ORDER = getSetting( 'paymentGatewayOrder', [] );
+export const PAYMENT_GATEWAY_SORT_ORDER = getSetting( 'paymentGatewaySortOrder', [] );
 
 export const CHECKOUT_SHOW_LOGIN_REMINDER = getSetting(
 	'checkoutShowLoginReminder',
