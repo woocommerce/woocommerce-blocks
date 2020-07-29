@@ -22,6 +22,7 @@ export const renderFrontend = ( {
 	const containers = document.querySelectorAll( selector );
 
 	if ( containers.length ) {
+		// @todo Remove Suspense compatibility fix once WP 5.2 is no longer supported.
 		// If Suspense is not available (WP 5.2), use a noop component instead.
 		const noopComponent = ( { children } ) => {
 			return <>{ children }</>;
