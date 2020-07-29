@@ -21,6 +21,7 @@ import {
 	usePaymentMethodDataContext,
 } from '@woocommerce/base-context';
 import CheckboxControl from '@woocommerce/base-components/checkbox-control';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -120,15 +121,25 @@ const PaymentMethods = () => {
 			customerId,
 		]
 	);
-	if (
-		isInitialized &&
-		Object.keys( currentPaymentMethods.current ).length === 0
-	) {
+	const paymentMethodCount = Object.keys( currentPaymentMethods.current )
+		.length;
+	if ( isInitialized && paymentMethodCount === 0 ) {
 		return <NoPaymentMethods />;
 	}
+
 	const renderedTabs = (
 		<Tabs
-			className="wc-block-components-checkout-payment-methods"
+			className={ classnames(
+				'wc-block-components-checkout-payment-methods',
+				{
+					'wc-block-components-checkout-payment-methods--single':
+						paymentMethodCount === 1,
+				},
+				{
+					'wc-block-components-checkout-payment-methods--pair':
+						paymentMethodCount === 2,
+				}
+			) }
 			onSelect={ ( tabName ) => {
 				setActivePaymentMethod( tabName );
 				removeNotice( 'wc-payment-error', noticeContexts.PAYMENTS );
