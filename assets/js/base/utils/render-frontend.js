@@ -22,6 +22,12 @@ export const renderFrontend = ( {
 	const containers = document.querySelectorAll( selector );
 
 	if ( containers.length ) {
+		// If Suspense is not available (WP 5.2), use a noop component instead.
+		const noopComponent = ( { children } ) => {
+			return <>{ children }</>;
+		};
+		const SuspenseComponent = Suspense || noopComponent;
+
 		// Use Array.forEach for IE11 compatibility.
 		Array.prototype.forEach.call( containers, ( el, i ) => {
 			const props = getProps( el, i );
@@ -34,11 +40,11 @@ export const renderFrontend = ( {
 
 			render(
 				<BlockErrorBoundary { ...errorBoundaryProps }>
-					<Suspense
+					<SuspenseComponent
 						fallback={ <div className="wc-block-placeholder" /> }
 					>
 						<Block { ...props } attributes={ attributes } />
-					</Suspense>
+					</SuspenseComponent>
 				</BlockErrorBoundary>,
 				el
 			);
