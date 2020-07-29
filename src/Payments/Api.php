@@ -80,8 +80,12 @@ class Api {
 	 * Add payment method data to Asset Registry.
 	 */
 	public function add_payment_method_script_data() {
-		$script_data = $this->payment_method_registry->get_all_registered_script_data();
+		// Enqueue the order of enabled gateways as `paymentGatewayOrder`.
+		$available_gateways = WC()->payment_gateways->get_available_payment_gateways();
+		$this->asset_registry->add( 'paymentGatewayOrder', array_keys( $available_gateways ) );
 
+		// Enqueue all registered gateway data (settings/config etc).
+		$script_data = $this->payment_method_registry->get_all_registered_script_data();
 		foreach ( $script_data as $asset_data_key => $asset_data_value ) {
 			if ( ! $this->asset_registry->exists( $asset_data_key ) ) {
 				$this->asset_registry->add( $asset_data_key, $asset_data_value );
