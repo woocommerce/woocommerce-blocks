@@ -186,10 +186,12 @@ export const reducer = (
 			};
 			break;
 		case SET_ORDER_NOTES:
-			newState = {
-				...state,
-				orderNotes,
-			};
+			if ( state.orderNotes !== orderNotes ) {
+				newState = {
+					...state,
+					orderNotes,
+				};
+			}
 			break;
 	}
 	// automatically update state to idle from pristine as soon as it
