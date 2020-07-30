@@ -35,7 +35,7 @@ const FormStep = ( {
 	description,
 	children,
 	disabled = false,
-	showCounter = false,
+	showStepNumber = false,
 	stepHeadingContent = () => {},
 } ) => {
 	const Element = legend || title ? 'fieldset' : 'div';
@@ -46,7 +46,7 @@ const FormStep = ( {
 				className,
 				'wc-block-components-checkout-step',
 				{
-					'wc-block-components-checkout-step--with-counter': showCounter,
+					'wc-block-components-checkout-step--with-counter': showStepNumber,
 				}
 			) }
 			id={ id }
@@ -83,7 +83,7 @@ FormStep.propTypes = {
 	title: PropTypes.string,
 	description: PropTypes.string,
 	children: PropTypes.node,
-	showCounter: PropTypes.bool,
+	showStepNumber: PropTypes.bool,
 	stepHeadingContent: PropTypes.func,
 	disabled: PropTypes.bool,
 	legend: PropTypes.string,
