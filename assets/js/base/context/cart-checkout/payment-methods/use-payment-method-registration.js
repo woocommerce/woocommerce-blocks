@@ -7,12 +7,7 @@ import {
 	getPaymentMethods,
 	getExpressPaymentMethods,
 } from '@woocommerce/blocks-registry';
-import {
-	useState,
-	useEffect,
-	useRef,
-	useCallback,
-} from '@wordpress/element';
+import { useState, useEffect, useRef, useCallback } from '@wordpress/element';
 import {
 	useEditorContext,
 	useShippingDataContext,
@@ -137,7 +132,12 @@ const usePaymentMethodRegistration = (
 		// Example: Stripe CC, Stripe Payment Request.
 		// That's why we track "is initialised" state here.
 		setIsInitialized( true );
-	}, [ dispatcher, isEditor, registeredPaymentMethods, paymentMethodsSortOrder ] );
+	}, [
+		dispatcher,
+		isEditor,
+		registeredPaymentMethods,
+		paymentMethodsSortOrder,
+	] );
 
 	// Determine which payment methods are available initially and whenever
 	// shipping methods change.
