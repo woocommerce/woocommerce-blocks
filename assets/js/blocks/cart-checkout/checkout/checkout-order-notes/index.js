@@ -42,7 +42,7 @@ const CheckoutOrderNotes = ( { disabled, onChange, placeholder, value } ) => {
 };
 
 Textarea.propTypes = {
-	onChange: PropTypes.func.isRequired,
+	onTextChange: PropTypes.func.isRequired,
 	disabled: PropTypes.bool,
 	placeholder: PropTypes.string,
 	value: PropTypes.string,
