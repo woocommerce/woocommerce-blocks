@@ -32,7 +32,7 @@ const CheckoutOrderNotes = ( { disabled, onChange, placeholder, value } ) => {
 			{ withOrderNotes && (
 				<Textarea
 					disabled={ disabled }
-					onChange={ onChange }
+					onTextChange={ onChange }
 					placeholder={ placeholder }
 					value={ value }
 				/>

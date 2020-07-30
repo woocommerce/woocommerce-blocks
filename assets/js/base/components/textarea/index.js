@@ -12,7 +12,7 @@ import './style.scss';
 const Textarea = ( {
 	className = '',
 	disabled = false,
-	onChange,
+	onTextChange,
 	placeholder,
 	value = '',
 } ) => {
@@ -24,7 +24,7 @@ const Textarea = ( {
 			) }
 			disabled={ disabled }
 			onChange={ ( event ) => {
-				onChange( event.target.value );
+				onTextChange( event.target.value );
 			} }
 			placeholder={ placeholder }
 			rows={ 2 }
@@ -34,7 +34,7 @@ const Textarea = ( {
 };
 
 Textarea.propTypes = {
-	onChange: PropTypes.func.isRequired,
+	onTextChange: PropTypes.func.isRequired,
 	disabled: PropTypes.bool,
 	placeholder: PropTypes.string,
 	value: PropTypes.string,
