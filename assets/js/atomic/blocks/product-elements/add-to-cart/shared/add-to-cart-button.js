@@ -17,6 +17,7 @@ const AddToCartButton = () => {
 		productIsPurchasable,
 		productHasOptions,
 		product,
+		productType,
 		isDisabled,
 		isProcessing,
 		eventRegistration,
@@ -57,7 +58,9 @@ const AddToCartButton = () => {
 	 * Otherwise we show a link instead.
 	 */
 	const showButton =
-		( showFormElements || ! productHasOptions ) && productIsPurchasable;
+		( showFormElements ||
+			( ! productHasOptions && productType === 'simple' ) ) &&
+		productIsPurchasable;
 
 	return showButton ? (
 		<ButtonComponent
