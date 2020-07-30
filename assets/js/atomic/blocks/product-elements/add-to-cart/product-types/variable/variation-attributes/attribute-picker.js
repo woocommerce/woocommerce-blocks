@@ -1,8 +1,8 @@
 /**
  * External dependencies
  */
-import { useState, useEffect, useMemo, useRef } from '@wordpress/element';
-import isShallowEqual from '@wordpress/is-shallow-equal';
+import { useState, useEffect, useMemo } from '@wordpress/element';
+import { useShallowEqual } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -23,50 +23,32 @@ const AttributePicker = ( {
 	variationAttributes,
 	setRequestParams,
 } ) => {
-	const attributesRef = useRef( attributes );
-	const variationAttributesRef = useRef( variationAttributes );
+	const currentAttributes = useShallowEqual( attributes );
+	const currentVariationAttributes = useShallowEqual( variationAttributes );
 	const [ variationId, setVariationId ] = useState( 0 );
 	const [ selectedAttributes, setSelectedAttributes ] = useState( {} );
-
-	// Keeps refs in sync.
-	useEffect( () => {
-		if ( ! isShallowEqual( attributesRef.current, attributes ) ) {
-			attributesRef.current = attributes;
-		}
-	}, [ attributes ] );
-
-	useEffect( () => {
-		if (
-			! isShallowEqual(
-				variationAttributesRef.current,
-				variationAttributes
-			)
-		) {
-			variationAttributesRef.current = variationAttributes;
-		}
-	}, [ variationAttributes ] );
 
 	// Get options for each attribute picker.
 	const filteredAttributeOptions = useMemo( () => {
 		return getActiveSelectControlOptions(
-			attributesRef.current,
-			variationAttributesRef.current,
+			currentAttributes,
+			currentVariationAttributes,
 			selectedAttributes
 		);
-	}, [ selectedAttributes ] );
+	}, [ selectedAttributes, currentAttributes, currentVariationAttributes ] );
 
 	// Select variations when selections are change.
 	useEffect( () => {
 		const hasSelectedAllAttributes =
 			Object.values( selectedAttributes ).filter(
 				( selected ) => selected !== ''
-			).length === Object.keys( attributesRef.current ).length;
+			).length === Object.keys( currentAttributes ).length;
 
 		if ( hasSelectedAllAttributes ) {
 			setVariationId(
 				getVariationMatchingSelectedAttributes(
-					attributesRef.current,
-					variationAttributesRef.current,
+					currentAttributes,
+					currentVariationAttributes,
 					selectedAttributes
 				)
 			);
@@ -74,7 +56,12 @@ const AttributePicker = ( {
 			// Unset variation when form is incomplete.
 			setVariationId( 0 );
 		}
-	}, [ selectedAttributes, variationId ] );
+	}, [
+		selectedAttributes,
+		variationId,
+		currentAttributes,
+		currentVariationAttributes,
+	] );
 
 	// Set requests params as variation ID and data changes.
 	useEffect( () => {
@@ -93,7 +80,7 @@ const AttributePicker = ( {
 
 	return (
 		<div className="wc-block-components-product-add-to-cart-attribute-picker">
-			{ Object.keys( attributesRef.current ).map( ( attributeName ) => (
+			{ Object.keys( currentAttributes ).map( ( attributeName ) => (
 				<AttributeSelectControl
 					key={ attributeName }
 					attributeName={ attributeName }
