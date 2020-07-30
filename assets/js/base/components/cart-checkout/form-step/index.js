@@ -38,6 +38,8 @@ const FormStep = ( {
 	showStepNumber = false,
 	stepHeadingContent = () => {},
 } ) => {
+	// If the form step doesn't have a legend or title, render a <div> instead
+	// of a <fieldset>.
 	const Element = legend || title ? 'fieldset' : 'div';
 
 	return (
