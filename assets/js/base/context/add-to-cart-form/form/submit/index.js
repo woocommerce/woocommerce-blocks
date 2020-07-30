@@ -10,6 +10,7 @@ import {
 import { useEffect, useCallback, useState } from '@wordpress/element';
 import { useStoreCart, useStoreNotices } from '@woocommerce/base-hooks';
 import { decodeEntities } from '@wordpress/html-entities';
+import { triggerFragmentRefresh } from '@woocommerce/base-utils';
 
 /**
  * FormSubmit.
@@ -106,6 +107,7 @@ const FormSubmit = () => {
 					}
 					dispatchActions.setAfterProcessing( response );
 					setIsSubmitting( false );
+					triggerFragmentRefresh();
 				} );
 			} )
 			.catch( ( error ) => {
