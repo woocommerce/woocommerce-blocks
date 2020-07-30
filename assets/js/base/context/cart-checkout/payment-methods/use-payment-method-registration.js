@@ -90,8 +90,8 @@ const usePaymentMethodRegistration = (
 			};
 		};
 
-		for ( let i=0; i<PAYMENT_GATEWAY_SORT_ORDER.length; i++  ) {
-			const paymentMethodName = PAYMENT_GATEWAY_SORT_ORDER[i];
+		for ( let i = 0; i < PAYMENT_GATEWAY_SORT_ORDER.length; i++ ) {
+			const paymentMethodName = PAYMENT_GATEWAY_SORT_ORDER[ i ];
 			const paymentMethod = registeredPaymentMethods[ paymentMethodName ];
 			if ( ! paymentMethod ) {
 				continue;
