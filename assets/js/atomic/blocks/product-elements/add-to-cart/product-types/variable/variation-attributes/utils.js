@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { keyBy } from 'lodash';
+import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Key an array of attributes by name,
@@ -142,7 +143,7 @@ const getValidSelectControlOptions = (
 			) {
 				return {
 					value: slug,
-					label: name,
+					label: decodeEntities( name ),
 				};
 			}
 			return null;
