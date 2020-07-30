@@ -6,7 +6,7 @@ import {
 	getPaymentMethods,
 	getExpressPaymentMethods,
 } from '@woocommerce/blocks-registry';
-import { useState, useEffect, useRef, useCallback } from '@wordpress/element';
+import { useState, useEffect, useRef, useCallback, useMemo } from '@wordpress/element';
 import {
 	useEditorContext,
 	useShippingDataContext,
@@ -90,12 +90,8 @@ const usePaymentMethodRegistration = (
 			};
 		};
 
-		for ( let i = 0; i < PAYMENT_GATEWAY_SORT_ORDER.length; i++ ) {
-			const paymentMethodName = PAYMENT_GATEWAY_SORT_ORDER[ i ];
+		for ( const paymentMethodName in registeredPaymentMethods ) {
 			const paymentMethod = registeredPaymentMethods[ paymentMethodName ];
-			if ( ! paymentMethod ) {
-				continue;
-			}
 
 			// In editor, shortcut so all payment methods show as available.
 			if ( isEditor ) {
@@ -139,7 +135,20 @@ const usePaymentMethodRegistration = (
 	return isInitialized;
 };
 
-export const usePaymentMethods = ( dispatcher ) =>
-	usePaymentMethodRegistration( dispatcher, getPaymentMethods() );
+export const usePaymentMethods = ( dispatcher ) => {
+	const paymentMethods = getPaymentMethods();
+	const orderedPaymentMethods = useMemo( () => {
+		const ordered = [];
+		for ( let i = 0; i < PAYMENT_GATEWAY_SORT_ORDER.length; i++ ) {
+			const paymentMethodName = PAYMENT_GATEWAY_SORT_ORDER[ i ];
+			const paymentMethod = paymentMethods[ paymentMethodName ];
+			if ( paymentMethod ) {
+				ordered.push( paymentMethods[ paymentMethodName ] );
+			}
+		}
+		return ordered;
+	}, [ paymentMethods, PAYMENT_GATEWAY_SORT_ORDER ] );
+	return usePaymentMethodRegistration( dispatcher, orderedPaymentMethods );
+}
 export const useExpressPaymentMethods = ( dispatcher ) =>
 	usePaymentMethodRegistration( dispatcher, getExpressPaymentMethods() );
