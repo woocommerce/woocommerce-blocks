@@ -34,7 +34,7 @@ exports[`FormStep fieldset legend should default to legend prop when title and l
 
 exports[`FormStep should apply correct class when showStepNumber is true 1`] = `
 <fieldset
-  className="wc-block-components-checkout-step wc-block-components-checkout-step--with-counter"
+  className="wc-block-components-checkout-step wc-block-components-checkout-step--with-step-number"
   disabled={false}
 >
   <legend

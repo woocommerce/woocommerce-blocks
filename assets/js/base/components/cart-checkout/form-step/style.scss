@@ -60,7 +60,7 @@
 	margin-bottom: $gap;
 }
 
-.wc-block-components-checkout-step--with-counter {
+.wc-block-components-checkout-step--with-step-number {
 	.wc-block-components-checkout-step__title::before {
 		@include reset-box();
 		background: transparent;
