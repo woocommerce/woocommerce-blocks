@@ -6,7 +6,13 @@ import {
 	getPaymentMethods,
 	getExpressPaymentMethods,
 } from '@woocommerce/blocks-registry';
-import { useState, useEffect, useRef, useCallback, useMemo } from '@wordpress/element';
+import {
+	useState,
+	useEffect,
+	useRef,
+	useCallback,
+	useMemo,
+} from '@wordpress/element';
 import {
 	useEditorContext,
 	useShippingDataContext,
@@ -149,6 +155,6 @@ export const usePaymentMethods = ( dispatcher ) => {
 		return ordered;
 	}, [ paymentMethods, PAYMENT_GATEWAY_SORT_ORDER ] );
 	return usePaymentMethodRegistration( dispatcher, orderedPaymentMethods );
-}
+};
 export const useExpressPaymentMethods = ( dispatcher ) =>
 	usePaymentMethodRegistration( dispatcher, getExpressPaymentMethods() );
