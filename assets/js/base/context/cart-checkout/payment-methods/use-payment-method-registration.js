@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { union } from 'lodash';
 import { __, sprintf } from '@wordpress/i18n';
 import {
 	getPaymentMethods,
@@ -11,7 +12,6 @@ import {
 	useEffect,
 	useRef,
 	useCallback,
-	useMemo,
 } from '@wordpress/element';
 import {
 	useEditorContext,
@@ -53,13 +53,17 @@ const handleRegistrationError = ( error ) => {
  *                                                               state.
  * @param  {Object}                     registeredPaymentMethods Registered payment methods to
  *                                                               process.
+ * @param  {Array}                      paymentMethodsSortOrder  Array of payment method names to
+ *                                                               sort by. This should match keys of
+ *                                                               registeredPaymentMethods.
  *
  * @return {boolean} Whether the payment methods have been initialized or not. True when all payment
  *                   methods have been initialized.
  */
 const usePaymentMethodRegistration = (
 	dispatcher,
-	registeredPaymentMethods
+	registeredPaymentMethods,
+	paymentMethodsSortOrder
 ) => {
 	const [ isInitialized, setIsInitialized ] = useState( false );
 	const { isEditor } = useEditorContext();
@@ -96,8 +100,12 @@ const usePaymentMethodRegistration = (
 			};
 		};
 
-		for ( const paymentMethodName in registeredPaymentMethods ) {
+		for ( let i = 0; i < paymentMethodsSortOrder.length; i++ ) {
+			const paymentMethodName = paymentMethodsSortOrder[ i ];
 			const paymentMethod = registeredPaymentMethods[ paymentMethodName ];
+			if ( ! paymentMethod ) {
+				continue;
+			}
 
 			// In editor, shortcut so all payment methods show as available.
 			if ( isEditor ) {
@@ -129,7 +137,7 @@ const usePaymentMethodRegistration = (
 		// Example: Stripe CC, Stripe Payment Request.
 		// That's why we track "is initialised" state here.
 		setIsInitialized( true );
-	}, [ dispatcher, isEditor, registeredPaymentMethods ] );
+	}, [ dispatcher, isEditor, registeredPaymentMethods, paymentMethodsSortOrder ] );
 
 	// Determine which payment methods are available initially and whenever
 	// shipping methods change.
@@ -142,19 +150,21 @@ const usePaymentMethodRegistration = (
 };
 
 export const usePaymentMethods = ( dispatcher ) => {
-	const paymentMethods = getPaymentMethods();
-	const orderedPaymentMethods = useMemo( () => {
-		const ordered = [];
-		for ( let i = 0; i < PAYMENT_GATEWAY_SORT_ORDER.length; i++ ) {
-			const paymentMethodName = PAYMENT_GATEWAY_SORT_ORDER[ i ];
-			const paymentMethod = paymentMethods[ paymentMethodName ];
-			if ( paymentMethod ) {
-				ordered.push( paymentMethods[ paymentMethodName ] );
-			}
-		}
-		return ordered;
-	}, [ paymentMethods, PAYMENT_GATEWAY_SORT_ORDER ] );
-	return usePaymentMethodRegistration( dispatcher, orderedPaymentMethods );
+	const standardMethods = getPaymentMethods();
+	// Ensure all methods are present in order.
+	// Some payment methods may not be present in PAYMENT_GATEWAY_SORT_ORDER if they
+	// depend on state, e.g. COD can depend on shipping method.
+	const displayOrder = union(
+		PAYMENT_GATEWAY_SORT_ORDER,
+		Object.keys( standardMethods )
+	);
+	usePaymentMethodRegistration( dispatcher, standardMethods, displayOrder );
 };
-export const useExpressPaymentMethods = ( dispatcher ) =>
-	usePaymentMethodRegistration( dispatcher, getExpressPaymentMethods() );
+export const useExpressPaymentMethods = ( dispatcher ) => {
+	const expressMethods = getExpressPaymentMethods();
+	return usePaymentMethodRegistration(
+		dispatcher,
+		expressMethods,
+		Object.keys( expressMethods )
+	);
+};
