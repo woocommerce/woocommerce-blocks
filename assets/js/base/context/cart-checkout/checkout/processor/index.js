@@ -56,7 +56,7 @@ const preparePaymentData = ( paymentData, shouldSave, activePaymentMethod ) => {
 const CheckoutProcessor = () => {
 	const {
 		hasError: checkoutHasError,
-		notice: checkoutNotice,
+		notices: checkoutNotices,
 		onCheckoutBeforeProcessing,
 		dispatchActions,
 		redirectUrl,
@@ -102,12 +102,12 @@ const CheckoutProcessor = () => {
 	}, [ expressPaymentMethodActive, setIsSuppressed ] );
 
 	useEffect( () => {
-		if ( checkoutNotice ) {
-			addErrorNotice( checkoutNotice, {
-				id: 'checkout',
+		if ( Array.isArray( checkoutNotices ) ) {
+			checkoutNotices.forEach( ( notice ) => {
+				addErrorNotice( notice );
 			} );
 		}
-	}, [ addErrorNotice, checkoutNotice ] );
+	}, [ addErrorNotice, checkoutNotices ] );
 
 	useEffect( () => {
 		if (

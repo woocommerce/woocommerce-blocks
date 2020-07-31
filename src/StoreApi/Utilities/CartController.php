@@ -223,8 +223,7 @@ class CartController {
 	 * @throws RouteException Exception if invalid data is detected.
 	 */
 	public function validate_cart_items() {
-		$notice_count = wc_notice_count( 'error' );
-		$cart_items   = $this->get_cart_items();
+		$cart_items = $this->get_cart_items();
 
 		foreach ( $cart_items as $cart_item_key => $cart_item ) {
 			$this->validate_cart_item( $cart_item );
@@ -242,7 +241,7 @@ class CartController {
 		 * notices and convert to exceptions instead.
 		 */
 		do_action( 'woocommerce_check_cart_items' );
-		NoticeHandler::convert_notices_to_exceptions( 'woocommerce_rest_cart_item_error', $notice_count );
+		NoticeHandler::convert_notices_to_exceptions( 'woocommerce_rest_cart_item_error' );
 	}
 
 	/**
