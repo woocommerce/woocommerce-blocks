@@ -35,7 +35,7 @@ const FormStep = ( {
 	description,
 	children,
 	disabled = false,
-	showStepNumber = false,
+	showStepNumber = true,
 	stepHeadingContent = () => {},
 } ) => {
 	// If the form step doesn't have a legend or title, render a <div> instead

@@ -53,9 +53,9 @@ describe( 'FormStep', () => {
 		expect( component.toJSON() ).toMatchSnapshot();
 	} );
 
-	test( 'should apply correct class when showStepNumber is true', () => {
+	test( 'should remove step number CSS class if prop is false', () => {
 		const component = TestRenderer.create(
-			<FormStep title="Lorem Ipsum" showStepNumber={ true }>
+			<FormStep title="Lorem Ipsum" showStepNumber={ false }>
 				Dolor sit amet
 			</FormStep>
 		);

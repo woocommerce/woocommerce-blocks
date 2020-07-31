@@ -230,7 +230,6 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 								'woo-gutenberg-products-block'
 							) }
 							stepHeadingContent={ loginPrompt }
-							showStepNumber={ true }
 						>
 							<ValidatedTextInput
 								id="email"
@@ -258,7 +257,6 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 									'Enter the physical address where you want us to deliver your order.',
 									'woo-gutenberg-products-block'
 								) }
-								showStepNumber={ true }
 							>
 								<AddressForm
 									id="shipping"
@@ -318,7 +316,6 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 									'Enter the address that matches your card or payment method.',
 									'woo-gutenberg-products-block'
 								) }
-								showStepNumber={ true }
 							>
 								<AddressForm
 									id="billing"
@@ -350,7 +347,6 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 										  )
 										: ''
 								}
-								showStepNumber={ true }
 							>
 								{ isEditor &&
 								! getShippingRatesPackageCount(
@@ -391,7 +387,6 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 										  )
 										: ''
 								}
-								showStepNumber={ true }
 							>
 								<StoreNoticesProvider context="wc/payment-area">
 									<PaymentMethods />
@@ -399,7 +394,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 							</FormStep>
 						) }
 						{ attributes.showOrderNotes && (
-							<FormStep id="order-notes">
+							<FormStep id="order-notes" showStepNumber={ false }>
 								<CheckoutOrderNotes
 									disabled={ checkoutIsProcessing }
 									onChange={ setOrderNotes }
