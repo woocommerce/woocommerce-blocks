@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { union } from 'lodash';
 import { __, sprintf } from '@wordpress/i18n';
 import {
 	getPaymentMethods,
@@ -155,11 +154,12 @@ export const usePaymentMethods = ( dispatcher ) => {
 	// Ensure all methods are present in order.
 	// Some payment methods may not be present in PAYMENT_GATEWAY_SORT_ORDER if they
 	// depend on state, e.g. COD can depend on shipping method.
-	const displayOrder = union(
-		PAYMENT_GATEWAY_SORT_ORDER,
-		Object.keys( standardMethods )
-	);
-	usePaymentMethodRegistration( dispatcher, standardMethods, displayOrder );
+	const displayOrder = new Set( [
+		...PAYMENT_GATEWAY_SORT_ORDER,
+		...Object.keys( standardMethods )
+
+	] );
+	usePaymentMethodRegistration( dispatcher, standardMethods, Array.from( displayOrder ) );
 };
 export const useExpressPaymentMethods = ( dispatcher ) => {
 	const expressMethods = getExpressPaymentMethods();
