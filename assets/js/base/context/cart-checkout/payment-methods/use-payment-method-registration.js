@@ -156,10 +156,13 @@ export const usePaymentMethods = ( dispatcher ) => {
 	// depend on state, e.g. COD can depend on shipping method.
 	const displayOrder = new Set( [
 		...PAYMENT_GATEWAY_SORT_ORDER,
-		...Object.keys( standardMethods )
-
+		...Object.keys( standardMethods ),
 	] );
-	usePaymentMethodRegistration( dispatcher, standardMethods, Array.from( displayOrder ) );
+	usePaymentMethodRegistration(
+		dispatcher,
+		standardMethods,
+		Array.from( displayOrder )
+	);
 };
 export const useExpressPaymentMethods = ( dispatcher ) => {
 	const expressMethods = getExpressPaymentMethods();
