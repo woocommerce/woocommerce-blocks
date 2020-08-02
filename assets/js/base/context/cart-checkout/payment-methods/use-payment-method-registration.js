@@ -64,6 +64,7 @@ const usePaymentMethodRegistration = (
 	const { isEditor } = useEditorContext();
 	const { selectedRates, shippingAddress } = useShippingDataContext();
 	const selectedShippingMethods = useShallowEqual( selectedRates );
+	const paymentMethodsOrder = useShallowEqual( paymentMethodsSortOrder );
 	const { cartTotals, cartNeedsShipping } = useStoreCart();
 	const canPayArgument = useRef( {
 		cartTotals,
@@ -95,8 +96,8 @@ const usePaymentMethodRegistration = (
 			};
 		};
 
-		for ( let i = 0; i < paymentMethodsSortOrder.length; i++ ) {
-			const paymentMethodName = paymentMethodsSortOrder[ i ];
+		for ( let i = 0; i < paymentMethodsOrder.length; i++ ) {
+			const paymentMethodName = paymentMethodsOrder[ i ];
 			const paymentMethod = registeredPaymentMethods[ paymentMethodName ];
 			if ( ! paymentMethod ) {
 				continue;
@@ -136,7 +137,7 @@ const usePaymentMethodRegistration = (
 		dispatcher,
 		isEditor,
 		registeredPaymentMethods,
-		paymentMethodsSortOrder,
+		paymentMethodsOrder,
 	] );
 
 	// Determine which payment methods are available initially and whenever
