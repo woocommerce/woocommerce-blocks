@@ -41,9 +41,6 @@ const renderBlockFrontend = ( {
 
 		// Use Array.forEach for IE11 compatibility.
 		Array.prototype.forEach.call( containers, ( el, i ) => {
-			if ( ! el.classList.contains( 'is-loading' ) ) {
-				return;
-			}
 			for ( let j = 0; j < parentSelectorsToSkip.length; j++ ) {
 				if ( el.parentNode.closest( parentSelectorsToSkip[ j ] ) ) {
 					return;

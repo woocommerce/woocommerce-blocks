@@ -12,19 +12,7 @@ import '../editor.scss';
 import Editor from './edit';
 import sharedAttributes from '../attributes';
 import save from '../save.js';
-import getDeprecatedProperty from '../deprecated.js';
 import { example } from '../example';
-
-const attributes = {
-	...sharedAttributes,
-	/**
-	 * Show the product name.
-	 */
-	showProductName: {
-		type: 'boolean',
-		default: true,
-	},
-};
 
 /**
  * Register and run the "All Reviews" block.
@@ -52,7 +40,16 @@ registerBlockType( 'woocommerce/all-reviews', {
 			showProductName: true,
 		},
 	},
-	attributes,
+	attributes: {
+		...sharedAttributes,
+		/**
+		 * Show the product name.
+		 */
+		showProductName: {
+			type: 'boolean',
+			default: true,
+		},
+	},
 
 	/**
 	 * Renders and manages the block.
@@ -67,6 +64,4 @@ registerBlockType( 'woocommerce/all-reviews', {
 	 * Save the props to post content.
 	 */
 	save,
-
-	deprecated: getDeprecatedProperty( attributes ),
 } );

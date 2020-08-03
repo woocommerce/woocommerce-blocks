@@ -11,18 +11,7 @@ import '../editor.scss';
 import Editor from './edit';
 import sharedAttributes from '../attributes';
 import save from '../save.js';
-import getDeprecatedProperty from '../deprecated.js';
 import { example } from '../example';
-
-const attributes = {
-	...sharedAttributes,
-	/**
-	 * The id of the product to load reviews for.
-	 */
-	productId: {
-		type: 'number',
-	},
-};
 
 /**
  * Register and run the "Reviews by Product" block.
@@ -49,7 +38,15 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 			productId: 1,
 		},
 	},
-	attributes,
+	attributes: {
+		...sharedAttributes,
+		/**
+		 * The id of the product to load reviews for.
+		 */
+		productId: {
+			type: 'number',
+		},
+	},
 
 	/**
 	 * Renders and manages the block.
@@ -64,6 +61,4 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 	 * Save the props to post content.
 	 */
 	save,
-
-	deprecated: getDeprecatedProperty( attributes ),
 } );
