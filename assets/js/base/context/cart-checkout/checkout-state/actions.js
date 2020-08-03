@@ -69,6 +69,7 @@ export const actions = {
 	setCreateAccount: ( createAccount ) => ( {
 		type: SET_CREATE_ACCOUNT,
 		createAccount,
+	} ),
 	setOrderNotes: ( orderNotes ) => ( {
 		type: SET_ORDER_NOTES,
 		orderNotes,
