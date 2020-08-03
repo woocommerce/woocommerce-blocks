@@ -31,7 +31,7 @@ class EditorContainerBlock extends Component {
 	}
 
 	render() {
-		const { attributes, noReviewsPlaceholder } = this.props;
+		const { attributes, className, noReviewsPlaceholder } = this.props;
 		const {
 			categoryIds,
 			productId,
@@ -57,7 +57,7 @@ class EditorContainerBlock extends Component {
 		}
 
 		return (
-			<div className={ getBlockClassName( attributes ) }>
+			<div className={ getBlockClassName( className, attributes ) }>
 				<EditorBlock
 					attributes={ attributes }
 					categoryIds={ categoryIds }

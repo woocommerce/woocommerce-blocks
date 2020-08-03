@@ -62,6 +62,7 @@ const AllReviewsEditor = ( { attributes, setAttributes } ) => {
 			{ getInspectorControls() }
 			<EditorContainerBlock
 				attributes={ attributes }
+				className="wc-block-all-reviews"
 				icon={
 					<Icon
 						icon={ discussion }
