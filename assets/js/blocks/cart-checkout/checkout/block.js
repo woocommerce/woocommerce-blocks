@@ -44,7 +44,6 @@ import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import {
 	CHECKOUT_SHOW_LOGIN_REMINDER,
 	CHECKOUT_ALLOWS_GUEST,
-	CHECKOUT_ALLOWS_SIGNUP,
 	DISPLAY_CART_PRICES_INCLUDING_TAX,
 } from '@woocommerce/block-settings';
 
@@ -162,7 +161,12 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 	// - checkout requires account
 	// - there is no way to create an account with checkout
 	// then show login prompt.
-	if ( ! isEditor && ! customerId && ! CHECKOUT_ALLOWS_GUEST && ! CHECKOUT_ALLOWS_SIGNUP ) {
+	if (
+		! isEditor &&
+		! customerId &&
+		! CHECKOUT_ALLOWS_GUEST &&
+		! attributes.allowCreateAccount
+	) {
 		return (
 			<>
 				{ __(
@@ -184,14 +188,19 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 	// - checkout allows signup
 	// - checkout doesn't require signup
 	// then show create account checkbox.
-	const createAccountUI = ! customerId && CHECKOUT_ALLOWS_SIGNUP && CHECKOUT_ALLOWS_GUEST && (
-		<CheckboxControl
-			className="wc-block-checkout__create-account"
-			label={ __( 'Create an account?', 'woo-gutenberg-products-block' ) }
-			checked={ createAccount }
-			onChange={ ( value ) => setCreateAccount( value ) }
-		/>
-	);
+	const createAccountUI = ! customerId &&
+		attributes.allowCreateAccount &&
+		CHECKOUT_ALLOWS_GUEST && (
+			<CheckboxControl
+				className="wc-block-checkout__create-account"
+				label={ __(
+					'Create an account?',
+					'woo-gutenberg-products-block'
+				) }
+				checked={ createAccount }
+				onChange={ ( value ) => setCreateAccount( value ) }
+			/>
+		);
 
 	const loginPrompt = () =>
 		CHECKOUT_SHOW_LOGIN_REMINDER &&
