@@ -6,9 +6,9 @@ import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundar
 
 // Some blocks take care of rendering their inner blocks automatically. For example,
 // the empty cart. In those cases, we don't want to trigger the render functions of
-// inner components on `DOMContentLoaded`. Instead, those wrapper blocks can trigger
+// inner components on load. Instead, the wrapper block can trigger
 // `wc-blocks_render_blocks_frontend` to render its inner blocks.
-const selectorsToSkipOnDOMLoaded = [ '.wp-block-woocommerce-cart' ];
+const selectorsToSkipOnLoad = [ '.wp-block-woocommerce-cart' ];
 
 /**
  * Renders a block component in the place of a specified set of selectors.
@@ -16,18 +16,20 @@ const selectorsToSkipOnDOMLoaded = [ '.wp-block-woocommerce-cart' ];
  * @param {Object}   props                         Render props.
  * @param {Function} props.Block                   React component to use as a replacement.
  * @param {string}   props.selector                CSS selector to match the elements to replace.
- * @param {Function} [props.getProps ]             Function to generate the props object for the block.
+ * @param {Function} [props.getProps]              Function to generate the props object for the block.
  * @param {Function} [props.getErrorBoundaryProps] Function to generate the props object for the error boundary.
- * @param {boolean}  [props.renderOnDOMLoaded]     Whether this function was triggered by a `DOMContentLoaded` event.
+ * @param {string}   [props.parentSelectorsToSkip] If a parent element matches this selector, skip rendering.
+ * @param {HTMLNode} [props.wrapper]               HTML Node to query the selector inside.
  */
 const renderBlockFrontend = ( {
 	Block,
 	selector,
 	getProps = () => {},
 	getErrorBoundaryProps = () => {},
-	renderOnDOMLoaded = false,
+	parentSelectorsToSkip = [],
+	wrapper = document,
 } ) => {
-	const containers = document.querySelectorAll( selector );
+	const containers = wrapper.querySelectorAll( selector );
 
 	if ( containers.length ) {
 		// @todo Remove Suspense compatibility fix once WP 5.2 is no longer supported.
@@ -42,13 +44,9 @@ const renderBlockFrontend = ( {
 			if ( ! el.classList.contains( 'is-loading' ) ) {
 				return;
 			}
-			if ( renderOnDOMLoaded ) {
-				for ( let j = 0; j < selectorsToSkipOnDOMLoaded.length; j++ ) {
-					if (
-						el.parentNode.closest( selectorsToSkipOnDOMLoaded[ j ] )
-					) {
-						return;
-					}
+			for ( let j = 0; j < parentSelectorsToSkip.length; j++ ) {
+				if ( el.parentNode.closest( parentSelectorsToSkip[ j ] ) ) {
+					return;
 				}
 			}
 			const props = getProps( el, i );
@@ -79,13 +77,30 @@ const renderBlockFrontend = ( {
  * @param {Object} props Render props.
  */
 export const renderFrontend = ( props ) => {
-	document.body.addEventListener( 'wc-blocks_render_blocks_frontend', () => {
-		renderBlockFrontend( props );
+	const wrapperSelectors = selectorsToSkipOnLoad.filter(
+		// Filter out selectors which are not in page. We will use them later every time
+		// we render the frontend of blocks, so better remove them early if they are
+		// not in the current page.
+		( selector ) => document.body.querySelector( selector )
+	);
+	renderBlockFrontend( {
+		...props,
+		parentSelectorsToSkip: wrapperSelectors,
 	} );
 
-	document.addEventListener( 'DOMContentLoaded', () => {
-		renderBlockFrontend( { ...props, renderOnDOMLoaded: true } );
-	} );
+	if ( wrapperSelectors.length > 0 ) {
+		const wrappers = document.body.querySelectorAll(
+			wrapperSelectors.join( ',' )
+		);
+		wrappers.forEach( ( wrapper ) => {
+			wrapper.addEventListener(
+				'wc-blocks_render_blocks_frontend',
+				( e ) => {
+					renderBlockFrontend( { ...props, wrapper: e.target } );
+				}
+			);
+		} );
+	}
 };
 
 export default renderFrontend;

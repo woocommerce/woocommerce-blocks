@@ -23,7 +23,9 @@ import FullCart from './full-cart';
 
 const EmptyCart = ( { content } ) => {
 	useEffect( () => {
-		dispatchEvent( 'wc-blocks_render_blocks_frontend' );
+		dispatchEvent( 'wc-blocks_render_blocks_frontend', {
+			element: document.querySelector( '.wp-block-woocommerce-cart' ),
+		} );
 	}, [] );
 	return <RawHTML>{ content }</RawHTML>;
 };
