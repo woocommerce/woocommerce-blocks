@@ -10,24 +10,33 @@ import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundar
 // `wc-blocks_render_blocks_frontend` to render its inner blocks.
 const selectorsToSkipOnLoad = [ '.wp-block-woocommerce-cart' ];
 
+// Given an element and a list of wrappers, check if the element is inside at least
+// one of the wrappers.
+const isElementInsideWrappers = ( el, wrappers ) => {
+	return Array.prototype.some.call(
+		wrappers,
+		( wrapper ) => wrapper.contains( el ) && ! wrapper.isSameNode( el )
+	);
+};
+
 /**
  * Renders a block component in the place of a specified set of selectors.
  *
- * @param {Object}   props                         Render props.
- * @param {Function} props.Block                   React component to use as a replacement.
- * @param {string}   props.selector                CSS selector to match the elements to replace.
- * @param {Function} [props.getProps]              Function to generate the props object for the block.
- * @param {Function} [props.getErrorBoundaryProps] Function to generate the props object for the error boundary.
- * @param {string[]} [props.parentSelectorsToSkip] If a parent element matches this selector, skip rendering.
- * @param {Element}  [props.wrapper]               Element to query the selector inside.
+ * @param {Object}    props                         Render props.
+ * @param {Function}  props.Block                   React component to use as a replacement.
+ * @param {string}    props.selector                CSS selector to match the elements to replace.
+ * @param {Function}  [props.getProps]              Function to generate the props object for the block.
+ * @param {Function}  [props.getErrorBoundaryProps] Function to generate the props object for the error boundary.
+ * @param {Element}   [props.wrapper]               Element to query the selector inside. Defaults to the document body.
+ * @param {Element[]} [props.wrappersToSkip]        Don't render inner blocks of this parent.
  */
 const renderBlockFrontend = ( {
 	Block,
 	selector,
 	getProps = () => {},
 	getErrorBoundaryProps = () => {},
-	parentSelectorsToSkip = [],
-	wrapper = document,
+	wrapper = document.body,
+	wrappersToSkip = [],
 } ) => {
 	const containers = wrapper.querySelectorAll( selector );
 
@@ -41,11 +50,13 @@ const renderBlockFrontend = ( {
 
 		// Use Array.forEach for IE11 compatibility.
 		Array.prototype.forEach.call( containers, ( el, i ) => {
-			for ( let j = 0; j < parentSelectorsToSkip.length; j++ ) {
-				if ( el.parentNode.closest( parentSelectorsToSkip[ j ] ) ) {
-					return;
-				}
+			if (
+				wrappersToSkip.length > 0 &&
+				isElementInsideWrappers( el, wrappersToSkip )
+			) {
+				return;
 			}
+
 			const props = getProps( el, i );
 			const errorBoundaryProps = getErrorBoundaryProps( el, i );
 			const attributes = {
@@ -74,30 +85,21 @@ const renderBlockFrontend = ( {
  * @param {Object} props Render props.
  */
 export const renderFrontend = ( props ) => {
-	const wrapperSelectors = selectorsToSkipOnLoad.filter(
-		// Filter out selectors which are not in page. We will use them later every time
-		// we render the frontend of blocks, so better remove them early if they are
-		// not in the current page.
-		( selector ) => document.body.querySelector( selector )
+	const wrappersToSkipOnLoad = document.body.querySelectorAll(
+		selectorsToSkipOnLoad.join( ',' )
 	);
+	// Render on page load.
 	renderBlockFrontend( {
 		...props,
-		parentSelectorsToSkip: wrapperSelectors,
+		wrappersToSkip: wrappersToSkipOnLoad,
 	} );
-
-	if ( wrapperSelectors.length > 0 ) {
-		const wrappers = document.body.querySelectorAll(
-			wrapperSelectors.join( ',' )
-		);
-		wrappers.forEach( ( wrapper ) => {
-			wrapper.addEventListener(
-				'wc-blocks_render_blocks_frontend',
-				( e ) => {
-					renderBlockFrontend( { ...props, wrapper: e.target } );
-				}
-			);
+	// Render wrappers inner blocks when the event `wc-blocks_render_blocks_frontend`
+	// is triggered.
+	wrappersToSkipOnLoad.forEach( ( wrapper ) => {
+		wrapper.addEventListener( 'wc-blocks_render_blocks_frontend', ( e ) => {
+			renderBlockFrontend( { ...props, wrapper: e.target } );
 		} );
-	}
+	} );
 };
 
 export default renderFrontend;
