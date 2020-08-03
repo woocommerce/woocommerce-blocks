@@ -17,6 +17,10 @@ const blockAttributes = {
 		type: 'boolean',
 		default: false,
 	},
+	allowCreateAccount: {
+		type: 'boolean',
+		default: false,
+	},
 	showApartmentField: {
 		type: 'boolean',
 		default: true,

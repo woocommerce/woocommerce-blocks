@@ -45,6 +45,7 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 		showPhoneField,
 		requireCompanyField,
 		requirePhoneField,
+		allowCreateAccount,
 		showOrderNotes,
 		showPolicyLinks,
 		showReturnToCart,
@@ -153,6 +154,25 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 						className="components-base-control--nested"
 					/>
 				) }
+			</PanelBody>
+			<PanelBody
+				title={ __(
+					'Account options',
+					'woo-gutenberg-products-block'
+				) }
+			>
+				<ToggleControl
+					label={ __(
+						'Allow shopper to sign up for a user account during checkout',
+						'woo-gutenberg-products-block'
+					) }
+					checked={ allowCreateAccount }
+					onChange={ () =>
+						setAttributes( {
+							allowCreateAccount: ! allowCreateAccount,
+						} )
+					}
+				/>
 			</PanelBody>
 			<PanelBody
 				title={ __( 'Order notes', 'woo-gutenberg-products-block' ) }
