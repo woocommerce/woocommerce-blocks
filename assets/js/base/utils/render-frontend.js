@@ -5,8 +5,8 @@ import { render, Suspense } from '@wordpress/element';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 
 // Some blocks take care of rendering their inner blocks automatically. For example,
-// the empty cart. In those cases, we don't want to trigger the render functions of
-// inner components on load. Instead, the wrapper block can trigger
+// the empty cart. In those cases, we don't want to trigger the render function of
+// inner components on load. Instead, the wrapper block can trigger the event
 // `wc-blocks_render_blocks_frontend` to render its inner blocks.
 const selectorsToSkipOnLoad = [ '.wp-block-woocommerce-cart' ];
 
@@ -18,8 +18,8 @@ const selectorsToSkipOnLoad = [ '.wp-block-woocommerce-cart' ];
  * @param {string}   props.selector                CSS selector to match the elements to replace.
  * @param {Function} [props.getProps]              Function to generate the props object for the block.
  * @param {Function} [props.getErrorBoundaryProps] Function to generate the props object for the error boundary.
- * @param {string}   [props.parentSelectorsToSkip] If a parent element matches this selector, skip rendering.
- * @param {HTMLNode} [props.wrapper]               HTML Node to query the selector inside.
+ * @param {string[]} [props.parentSelectorsToSkip] If a parent element matches this selector, skip rendering.
+ * @param {Element}  [props.wrapper]               Element to query the selector inside.
  */
 const renderBlockFrontend = ( {
 	Block,
