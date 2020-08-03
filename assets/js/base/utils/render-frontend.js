@@ -95,7 +95,7 @@ export const renderFrontend = ( props ) => {
 	} );
 	// Render wrappers inner blocks when the event `wc-blocks_render_blocks_frontend`
 	// is triggered.
-	wrappersToSkipOnLoad.forEach( ( wrapper ) => {
+	Array.prototype.forEach.call( wrappersToSkipOnLoad, ( wrapper ) => {
 		wrapper.addEventListener( 'wc-blocks_render_blocks_frontend', ( e ) => {
 			renderBlockFrontend( { ...props, wrapper: e.target } );
 		} );
