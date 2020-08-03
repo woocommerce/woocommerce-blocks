@@ -3,7 +3,7 @@
  */
 import { getBlockClassName, getDataAttrs } from './utils.js';
 
-export default function getDeprecatedPropert( atts ) {
+export default function getDeprecatedProperty( atts ) {
 	return [
 		/**
 		 * Deprecation rule to handle the block without the 'is-loading' class.
