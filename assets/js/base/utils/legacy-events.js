@@ -13,8 +13,11 @@ const Event = window.Event || null;
  */
 export const dispatchEvent = (
 	name,
-	{ bubbles = false, cancelable = false, element = document.body }
+	{ bubbles = false, cancelable = false, element }
 ) => {
+	if ( ! element ) {
+		element = document.body;
+	}
 	// In IE, Event is an object and can't be instantiated with `new Event()`.
 	if ( typeof Event === 'function' ) {
 		const event = new Event( name, {
