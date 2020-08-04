@@ -163,7 +163,7 @@ class Checkout extends AbstractRoute {
 
 		// Create a new user account as necessary.
 		if ( $this->should_create_customer_account( $request ) ) {
-			$customer_id = $this->create_customer_account_new(
+			$customer_id = $this->create_customer_account(
 				$order_object->get_billing_email(),
 				$order_object->get_billing_first_name(),
 				$order_object->get_billing_last_name()
@@ -410,7 +410,7 @@ class Checkout extends AbstractRoute {
 	 *
 	 * @return int User id if successful
 	 */
-	protected function create_customer_account_new( $user_email, $first_name, $last_name ) {
+	protected function create_customer_account( $user_email, $first_name, $last_name ) {
 		$customer_id = 0;
 
 		if ( empty( $user_email ) || ! is_email( $user_email ) ) {
@@ -442,59 +442,6 @@ class Checkout extends AbstractRoute {
 
 		// Create the user account using WP core API.
 		$customer_id = register_new_user( $username, $user_email );
-
-		if ( is_wp_error( $customer_id ) ) {
-			throw $this->map_create_account_error( $customer_id );
-		}
-
-		return $customer_id;
-	}
-
-	/**
-	 * Create a new account for a customer using WooCommerce core API (wc_create_new_customer).
-	 *
-	 * @throws RouteException If an error is encountered when creating the user account.
-	 *
-	 * @param string $user_email The email address to use for the new account.
-	 * @param string $first_name The first name to use for the new account.
-	 * @param string $last_name  The last name to use for the new account.
-	 *
-	 * @return int User id if successful
-	 */
-	protected function create_customer_account_woocore( $user_email, $first_name, $last_name ) {
-		// Temporarily force autogenerate options - we only support autogenerate.
-		add_filter(
-			'pre_option_woocommerce_registration_generate_username',
-			[ __CLASS__, 'force_option_yes' ],
-			10
-		);
-		add_filter(
-			'pre_option_woocommerce_registration_generate_password',
-			[ __CLASS__, 'force_option_yes' ],
-			10
-		);
-
-		$customer_id = wc_create_new_customer(
-			$user_email,
-			'',
-			'',
-			array(
-				'first_name' => $first_name,
-				'last_name'  => $last_name,
-			)
-		);
-
-		// Remove filters forcing autogenerate options to yes.
-		remove_filter(
-			'pre_option_woocommerce_registration_generate_username',
-			[ __CLASS__, 'force_option_yes' ],
-			10
-		);
-		remove_filter(
-			'pre_option_woocommerce_registration_generate_password',
-			[ __CLASS__, 'force_option_yes' ],
-			10
-		);
 
 		if ( is_wp_error( $customer_id ) ) {
 			throw $this->map_create_account_error( $customer_id );
