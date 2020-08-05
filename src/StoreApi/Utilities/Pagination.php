@@ -1,8 +1,6 @@
 <?php
 /**
  * Pagination helper.
- *
- * @package Automattic/WooCommerce/RestApi
  */
 
 namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;

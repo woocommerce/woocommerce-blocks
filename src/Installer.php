@@ -1,8 +1,6 @@
 <?php
 /**
  * Handles installation of Blocks plugin dependencies.
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks;

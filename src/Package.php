@@ -7,8 +7,6 @@
  *
  * In the context of WooCommere core, it handles init and is called from
  * WooCommerce's package loader. The main plugin file is _not_ loaded.
- *
- * @package Automattic/WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks;

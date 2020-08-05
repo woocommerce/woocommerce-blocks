@@ -1,8 +1,6 @@
 <?php
 /**
  * Cart select shipping rate route.
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;

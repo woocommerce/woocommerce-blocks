@@ -1,8 +1,6 @@
 <?php
 /**
  * Exceptions for rest routes.
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;

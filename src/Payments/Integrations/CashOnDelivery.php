@@ -1,8 +1,6 @@
 <?php
 /**
  * Cash on Delivery (COD) (core) gateway implementation.
- *
- * @package WooCommerce/Blocks
  * @since 3.0.0
  */
 

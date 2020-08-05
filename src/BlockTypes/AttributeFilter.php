@@ -1,8 +1,6 @@
 <?php
 /**
  * Attribute filter block.
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks\BlockTypes;

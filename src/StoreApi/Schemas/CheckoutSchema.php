@@ -1,8 +1,6 @@
 <?php
 /**
  * Checkout schema for the Store API.
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;

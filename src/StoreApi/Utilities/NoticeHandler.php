@@ -1,8 +1,6 @@
 <?php
 /**
  * Helper class to convert notices to exceptions.
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;

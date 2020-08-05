@@ -1,8 +1,6 @@
 <?php
 /**
  * Handle product stock reservation during checkout.
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;

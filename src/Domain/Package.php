@@ -1,8 +1,6 @@
 <?php
 /**
  * Returns information about the package and handles init.
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks\Domain;

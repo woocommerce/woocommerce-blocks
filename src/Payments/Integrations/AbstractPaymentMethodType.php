@@ -1,8 +1,6 @@
 <?php
 /**
  * Abstract payment method type class.
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks\Payments\Integrations;

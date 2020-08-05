@@ -1,8 +1,6 @@
 <?php
 /**
  * Payment Api class.
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks\Payments;

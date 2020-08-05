@@ -1,8 +1,6 @@
 <?php
 /**
  * Product Query filters helper.
- *
- * @package Automattic/WooCommerce/RestApi
  */
 
 namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;

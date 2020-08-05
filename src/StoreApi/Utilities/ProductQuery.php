@@ -1,8 +1,6 @@
 <?php
 /**
  * Helper class to handle product queries for the API.
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;

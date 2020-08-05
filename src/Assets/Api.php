@@ -1,8 +1,6 @@
 <?php
 /**
  * Contains asset api methods
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks\Assets;

@@ -1,8 +1,6 @@
 <?php
 /**
  * Product Collection Data Schema.
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;

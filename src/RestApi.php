@@ -1,8 +1,6 @@
 <?php
 /**
  * Registers controllers in the blocks REST API namespace.
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks;

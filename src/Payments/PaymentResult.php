@@ -1,8 +1,6 @@
 <?php
 /**
  * Payment result.
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks\Payments;

@@ -1,8 +1,6 @@
 <?php
 /**
  * Initializes blocks in WordPress.
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks;

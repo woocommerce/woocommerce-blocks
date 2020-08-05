@@ -3,8 +3,6 @@
  * Abstract Schema.
  *
  * Rest API schema class.
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;

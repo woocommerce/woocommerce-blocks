@@ -1,8 +1,6 @@
 <?php
 /**
  * Helper class to bridge the gap between the cart API and Woo core.
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;

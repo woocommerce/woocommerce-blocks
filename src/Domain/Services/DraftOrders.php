@@ -1,8 +1,6 @@
 <?php
 /**
  * Sets up all logic related to the Checkout Draft Orders service
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks\Domain\Services;

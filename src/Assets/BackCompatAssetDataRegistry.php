@@ -1,8 +1,6 @@
 <?php
 /**
  * Backwards Compatibility file for plugins using wcSettings in prior versions
- *
- * @package WooCommerce/Blocks
  * @since 2.5.0
  */
 

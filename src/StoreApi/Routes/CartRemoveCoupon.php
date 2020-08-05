@@ -1,8 +1,6 @@
 <?php
 /**
  * Cart remove coupon route.
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;

@@ -1,8 +1,6 @@
 <?php
 /**
  * Single Product block.
- *
- * @package WooCommerce\Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks\BlockTypes;

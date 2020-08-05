@@ -1,8 +1,6 @@
 <?php
 /**
  * Shipping Address Schema.
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;

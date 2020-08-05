@@ -3,8 +3,6 @@
  * Wrapper for WP Query with additonal helper methods.
  *
  * Allows query args to be set and parsed without doing running it, so that a cache can be used.
- *
- * @package Automattic/WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks\Utils;

@@ -1,8 +1,6 @@
 <?php
 /**
  * Helper class which creates and syncs orders with the cart.
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;

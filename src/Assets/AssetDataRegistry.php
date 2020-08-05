@@ -2,8 +2,6 @@
 /**
  * Holds data registered for output on the current view session when
  * `wc-settings` is enqueued (directly or via dependency)
- *
- * @package WooCommerce/Blocks
  * @since 2.5.0
  */
 

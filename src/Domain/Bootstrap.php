@@ -1,8 +1,6 @@
 <?php
 /**
  * Contains the Bootstrap class
- *
- * @package WooCommerce/Blocks
  */
 
 namespace Automattic\WooCommerce\Blocks\Domain;
