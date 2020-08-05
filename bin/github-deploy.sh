@@ -121,12 +121,15 @@ git commit -m "Adding /vendor directory to release" --no-verify
 # Push branch upstream
 git push origin $BRANCH
 
+git tag "v${VERSION}"
+git push origin "v${VERSION}"
+
 # Create the new release.
-if [ $IS_PRE_RELEASE = true ]; then
-	hub release create -m $VERSION -m "Release of version $VERSION. See readme.txt for details." -t $BRANCH --prerelease "v${VERSION}"
-else
-	hub release create -m $VERSION -m "Release of version $VERSION. See readme.txt for details." -t $BRANCH "v${VERSION}"
-fi
+# if [ $IS_PRE_RELEASE = true ]; then
+# 	hub release create -m $VERSION -m "Release of version $VERSION. See readme.txt for details." -t $BRANCH --prerelease "v${VERSION}"
+# else
+# 	hub release create -m $VERSION -m "Release of version $VERSION. See readme.txt for details." -t $BRANCH "v${VERSION}"
+# fi
 
 git checkout $CURRENTBRANCH
 git branch -D $BRANCH
