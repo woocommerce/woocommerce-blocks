@@ -31,6 +31,7 @@ export const DISPLAY_ITEMIZED_TAXES = getSetting(
 	'displayItemizedTaxes',
 	false
 );
+export const HAS_DARK_STYLES = getSetting( 'hasDarkStyles', false );
 export const DISPLAY_SHOP_PRICES_INCLUDING_TAX = getSetting(
 	'displayShopPricesIncludingTax',
 	false
@@ -64,7 +65,10 @@ export const SHIPPING_METHODS_EXIST = getSetting(
 	false
 );
 
-export const PAYMENT_GATEWAY_SORT_ORDER = getSetting( 'paymentGatewaySortOrder', [] );
+export const PAYMENT_GATEWAY_SORT_ORDER = getSetting(
+	'paymentGatewaySortOrder',
+	[]
+);
 
 export const CHECKOUT_SHOW_LOGIN_REMINDER = getSetting(
 	'checkoutShowLoginReminder',
