@@ -447,6 +447,10 @@ class Checkout extends AbstractRoute {
 			throw $this->map_create_account_error( $customer_id );
 		}
 
+		// Set user role to `Customer`.
+		$user = new \WP_User( $customer_id );
+		$user->set_role( 'customer' );
+
 		return $customer_id;
 	}
 
