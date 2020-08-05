@@ -27,6 +27,15 @@
 		&:not(:checked) + .wc-block-components-checkbox__mark {
 			display: none;
 		}
+
+		.has-dark-styles & {
+			border-color: $controls-border-dark;
+
+			&:checked {
+				background: transparent;
+				border-color: $controls-border-dark;
+			}
+		}
 	}
 
 	.wc-block-components-checkbox__mark {

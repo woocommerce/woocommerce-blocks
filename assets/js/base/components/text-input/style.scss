@@ -57,9 +57,12 @@
 		.has-dark-styles & {
 			background-color: rgba(#000, 0.1);
 			border: 1px solid $input-border-dark;
-			color: $input-text-dark;
+			color: #fff;
 			&:focus {
 				background-color: rgba(#000, 0.1);
+			}
+			&::placeholder {
+				color: $input-text-dark;
 			}
 		}
 	}
