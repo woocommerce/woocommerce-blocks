@@ -149,6 +149,13 @@ const usePaymentMethodRegistration = (
 	return isInitialized;
 };
 
+/**
+ * Custom hook for setting up payment methods (standard, non-express).
+ *
+ * @param  {function(Object):undefined} dispatcher
+ *
+ * @return {boolean} True when standard payment methods have been initialized.
+ */
 export const usePaymentMethods = ( dispatcher ) => {
 	const standardMethods = getPaymentMethods();
 	// Ensure all methods are present in order.
@@ -164,6 +171,14 @@ export const usePaymentMethods = ( dispatcher ) => {
 		Array.from( displayOrder )
 	);
 };
+
+/**
+ * Custom hook for setting up express payment methods.
+ *
+ * @param  {function(Object):undefined} dispatcher
+ *
+ * @return {boolean} True when express payment methods have been initialized.
+ */
 export const useExpressPaymentMethods = ( dispatcher ) => {
 	const expressMethods = getExpressPaymentMethods();
 	return usePaymentMethodRegistration(
