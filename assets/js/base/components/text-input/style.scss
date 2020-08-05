@@ -54,6 +54,14 @@
 		&:focus {
 			background-color: #fff;
 		}
+		.has-dark-styles & {
+			background-color: rgba(#000, 0.1);
+			border: 1px solid $input-border-dark;
+			color: $input-text-dark;
+			&:focus {
+				background-color: rgba(#000, 0.1);
+			}
+		}
 	}
 
 	&.is-active input[type="tel"],

@@ -67,6 +67,11 @@
 			text-transform: none;
 			white-space: nowrap;
 			width: 100%;
+			.has-dark-styles & {
+				background-color: rgba(#000, 0.1);
+				border: 1px solid $input-border-dark;
+				color: $input-text-dark;
+			}
 		}
 	}
 
@@ -84,12 +89,23 @@
 		&:empty {
 			display: none;
 		}
+		.has-dark-styles & {
+			background-color: #1e1e1e;
+			color: $input-text-dark;
+		}
 	}
 
 	.components-custom-select-control__item {
 		@include font-size(regular);
 		margin-left: 0;
 		padding-left: $gap;
+		&:hover,
+		&:focus,
+		&.is-highlighted {
+			.has-dark-styles & {
+				background-color: rgba(#000, 0.1);
+			}
+		}
 	}
 
 	.components-custom-select-control__item-icon {

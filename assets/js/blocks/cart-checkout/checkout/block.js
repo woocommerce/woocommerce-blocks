@@ -213,7 +213,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		);
 
 	const checkoutClassName = classnames( 'wc-block-checkout', {
-		'wc-block-checkout--has-dark-styles': attributes.darkInputs,
+		'has-dark-styles': attributes.darkInputs,
 	} );
 	return (
 		<>
