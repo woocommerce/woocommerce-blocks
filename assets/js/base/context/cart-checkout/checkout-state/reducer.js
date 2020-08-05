@@ -196,6 +196,7 @@ export const reducer = (
 				...state,
 				createAccount,
 			};
+			break;
 		case SET_ORDER_NOTES:
 			if ( state.orderNotes !== orderNotes ) {
 				newState = {
