@@ -158,7 +158,7 @@ export const usePaymentMethods = ( dispatcher ) => {
 		...PAYMENT_GATEWAY_SORT_ORDER,
 		...Object.keys( standardMethods ),
 	] );
-	usePaymentMethodRegistration(
+	return usePaymentMethodRegistration(
 		dispatcher,
 		standardMethods,
 		Array.from( displayOrder )
