@@ -4,6 +4,7 @@
 import {
 	IS_SHIPPING_CALCULATOR_ENABLED,
 	IS_SHIPPING_COST_HIDDEN,
+	HAS_DARK_STYLES,
 } from '@woocommerce/block-settings';
 
 const blockAttributes = {
@@ -23,6 +24,10 @@ const blockAttributes = {
 	checkoutPageId: {
 		type: 'number',
 		default: 0,
+	},
+	darkInputs: {
+		type: 'boolean',
+		default: HAS_DARK_STYLES,
 	},
 };
 

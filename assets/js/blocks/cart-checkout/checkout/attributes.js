@@ -1,3 +1,8 @@
+/**
+ * External dependencies
+ */
+import { HAS_DARK_STYLES } from '@woocommerce/block-settings';
+
 const blockAttributes = {
 	isPreview: {
 		type: 'boolean',
@@ -39,6 +44,10 @@ const blockAttributes = {
 	cartPageId: {
 		type: 'number',
 		default: 0,
+	},
+	darkInputs: {
+		type: 'boolean',
+		default: HAS_DARK_STYLES,
 	},
 };
 

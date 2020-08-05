@@ -47,7 +47,11 @@ import './style.scss';
  * Component that renders the Cart block when user has something in cart aka "full".
  */
 const Cart = ( { attributes } ) => {
-	const { isShippingCalculatorEnabled, isShippingCostHidden } = attributes;
+	const {
+		isShippingCalculatorEnabled,
+		isShippingCostHidden,
+		darkInputs,
+	} = attributes;
 
 	const {
 		cartItems,
@@ -82,6 +86,7 @@ const Cart = ( { attributes } ) => {
 
 	const cartClassName = classnames( 'wc-block-cart', {
 		'wc-block-cart--is-loading': cartIsLoading,
+		'wc-block-cart--has-dark-styles': darkInputs,
 	} );
 
 	return (

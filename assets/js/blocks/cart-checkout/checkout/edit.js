@@ -45,6 +45,7 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 		showPolicyLinks,
 		showReturnToCart,
 		cartPageId,
+		darkInputs,
 	} = attributes;
 	const { currentPostId } = useEditorContext();
 	const { current: savedCartPageId } = useRef( cartPageId );
@@ -76,6 +77,24 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 					) }
 				</Notice>
 			) }
+			<PanelBody title={ __( 'Styles', 'woo-gutenberg-products-block' ) }>
+				<ToggleControl
+					label={ __(
+						'Dark inputs',
+						'woo-gutenberg-products-block'
+					) }
+					help={ __(
+						'Enables dark colors and backgrounds for inputs.',
+						'woo-gutenberg-products-block'
+					) }
+					checked={ darkInputs }
+					onChange={ () =>
+						setAttributes( {
+							darkInputs: ! darkInputs,
+						} )
+					}
+				/>
+			</PanelBody>
 			<PanelBody
 				title={ __(
 					'Address options',
