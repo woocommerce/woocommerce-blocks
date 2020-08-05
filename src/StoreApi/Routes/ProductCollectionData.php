@@ -3,7 +3,6 @@
  * Products collection data route. Get aggregate data from a collection of products.
  *
  * Supports the same parameters as /products, but returns a different response.
- *
  */
 
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;

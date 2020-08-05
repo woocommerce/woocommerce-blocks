@@ -1,7 +1,6 @@
 <?php
 /**
  * Register Schemas.
- *
  */
 
 namespace Automattic\WooCommerce\Blocks\StoreApi;

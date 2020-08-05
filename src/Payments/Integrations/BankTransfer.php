@@ -1,6 +1,7 @@
 <?php
 /**
  * Bank Transfer (BACS) (core) gateway implementation.
+ *
  * @since 3.0.0
  */
 

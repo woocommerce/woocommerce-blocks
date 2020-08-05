@@ -1,7 +1,6 @@
 <?php
 /**
  * Product Attribute Terms route.
- *
  */
 
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;

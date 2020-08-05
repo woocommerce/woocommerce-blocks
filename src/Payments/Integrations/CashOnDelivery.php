@@ -1,6 +1,7 @@
 <?php
 /**
  * Cash on Delivery (COD) (core) gateway implementation.
+ *
  * @since 3.0.0
  */
 

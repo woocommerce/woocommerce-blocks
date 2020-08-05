@@ -1,7 +1,6 @@
 <?php
 /**
  * Cart Coupons route.
- *
  */
 
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;

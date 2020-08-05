@@ -3,6 +3,7 @@
  * Temporary integration of the stripe payment method for the new cart and
  * checkout blocks. Once the api is demonstrated to be stable, this integration
  * will be moved to the Stripe extension
+ *
  * @since 2.6.0
  */
 

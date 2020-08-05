@@ -2,6 +2,7 @@
 /**
  * Holds data registered for output on the current view session when
  * `wc-settings` is enqueued (directly or via dependency)
+ *
  * @since 2.5.0
  */
 

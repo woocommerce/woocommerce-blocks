@@ -1,7 +1,6 @@
 <?php
 /**
  * Register Routes.
- *
  */
 
 namespace Automattic\WooCommerce\Blocks\StoreApi;

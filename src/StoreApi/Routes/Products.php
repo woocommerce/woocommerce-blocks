@@ -1,7 +1,6 @@
 <?php
 /**
  * Products route.
- *
  */
 
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;

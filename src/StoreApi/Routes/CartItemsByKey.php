@@ -1,7 +1,6 @@
 <?php
 /**
  * Cart item route.
- *
  */
 
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;

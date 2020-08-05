@@ -1,6 +1,7 @@
 <?php
 /**
  * Backwards Compatibility file for plugins using wcSettings in prior versions
+ *
  * @since 2.5.0
  */
 

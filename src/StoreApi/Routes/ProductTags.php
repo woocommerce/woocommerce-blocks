@@ -1,7 +1,6 @@
 <?php
 /**
  * Product Tags route.
- *
  */
 
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
