@@ -2,7 +2,7 @@
 name: "✨ Feature request"
 about: If you have an idea to improve an existing WooCommerce + Gutenberg related
   feature, please let us know or submit a Pull Request!
-
+labels: "type: enhancement"
 ---
 
 **Is your feature request related to a problem? Please describe.**

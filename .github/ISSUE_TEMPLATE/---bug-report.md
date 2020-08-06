@@ -1,7 +1,7 @@
 ---
 name: "\U0001F41E Bug report"
 about: Let us know if something isn't working as you expect it to.
-
+labels: "type: bug" 
 ---
 
 **Describe the bug**

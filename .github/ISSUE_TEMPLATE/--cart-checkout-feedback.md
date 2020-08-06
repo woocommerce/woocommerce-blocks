@@ -1,7 +1,7 @@
 ---
 name: "\U0001F4AC Feedback – Cart & Checkout Blocks"
-about: .
-
+about: Submit feedback about the new block-based Cart & Checkout.
+labels: "type: support", "◼️ block: cart", "◼️ block: checkout"
 ---
 
 <!-- 

@@ -2,7 +2,7 @@
 name: "❓ Support Question"
 about: If you have a question please see our docs or use our forums, helpdesk, or
   Slack Community!
-
+labels: "type: support"
 ---
 
 We don't offer technical support on GitHub so we recommend using the following:
