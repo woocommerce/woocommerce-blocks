@@ -83,7 +83,7 @@ class Api {
 	 * @return boolean
 	 */
 	private function is_payment_gateway_enabled( $gateway ) {
-		return 'yes' === $gateway->enabled;
+		return filter_var( $gateway->enabled, FILTER_VALIDATE_BOOLEAN );
 	}
 
 	/**
