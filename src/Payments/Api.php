@@ -92,8 +92,8 @@ class Api {
 	public function add_payment_method_script_data() {
 		// Enqueue the order of enabled gateways as `paymentGatewaySortOrder`.
 		if ( ! $this->asset_registry->exists( 'paymentGatewaySortOrder' ) ) {
-			$available_gateways = WC()->payment_gateways->payment_gateways();
-			$enabled_gateways   = array_filter( $available_gateways, array( $this, 'is_payment_gateway_enabled' ) );
+			$payment_gateways = WC()->payment_gateways->payment_gateways();
+			$enabled_gateways = array_filter( $payment_gateways, array( $this, 'is_payment_gateway_enabled' ) );
 			$this->asset_registry->add( 'paymentGatewaySortOrder', array_keys( $enabled_gateways ) );
 		}
 
