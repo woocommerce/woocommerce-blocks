@@ -93,6 +93,11 @@ table.wc-block-cart-items {
 	}
 }
 
+.wc-block-cart__express-payment-methods {
+	padding-left: $gap;
+	padding-right: $gap;
+}
+
 // Loading placeholder state.
 .wc-block-cart--is-loading {
 	th span,

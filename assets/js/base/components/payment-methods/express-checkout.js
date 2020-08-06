@@ -40,7 +40,25 @@ const ExpressCheckoutContainer = ( { children } ) => {
 	);
 };
 
-const ExpressCheckoutFormControl = () => {
+const CompactExpressCheckoutContainer = ( { children } ) => {
+	return (
+		<>
+			<div className="wc-block-components-express-checkout is-compact">
+				<div className="wc-block-components-express-checkout__content">
+					<StoreNoticesProvider context="wc/express-payment-area">
+						{ children }
+					</StoreNoticesProvider>
+				</div>
+			</div>
+			<div className="wc-block-components-express-checkout-continue-rule is-compact">
+				{ /* translators: Shown in the Cart block between the express payment methods and the Proceed to Checkout button */ }
+				{ __( 'Or', 'woo-gutenberg-products-block' ) }
+			</div>
+		</>
+	);
+};
+
+const ExpressCheckoutFormControl = ( { isCompact = false } ) => {
 	const { paymentMethods, isInitialized } = useExpressPaymentMethods();
 
 	if (
@@ -48,6 +66,14 @@ const ExpressCheckoutFormControl = () => {
 		( isInitialized && Object.keys( paymentMethods ).length === 0 )
 	) {
 		return null;
+	}
+
+	if ( isCompact ) {
+		return (
+			<CompactExpressCheckoutContainer>
+				<ExpressPaymentMethods />
+			</CompactExpressCheckoutContainer>
+		);
 	}
 
 	return (

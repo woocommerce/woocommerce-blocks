@@ -5,59 +5,61 @@ $border-radius: 5px;
 	margin: auto;
 	position: relative;
 
-	.wc-block-components-express-checkout__title-container {
-		display: flex;
-		flex-direction: row;
-		left: 0;
-		position: absolute;
-		right: 0;
-		top: -$border-radius;
-		vertical-align: middle;
+	&:not(.is-compact) {
+		.wc-block-components-express-checkout__title-container {
+			display: flex;
+			flex-direction: row;
+			left: 0;
+			position: absolute;
+			right: 0;
+			top: -$border-radius;
+			vertical-align: middle;
 
-		// Pseudo-elements used to show the border before and after the title.
-		&::before {
-			border-left: $border-width solid currentColor;
-			border-top: $border-width solid currentColor;
-			border-radius: $border-radius 0 0 0;
-			content: "";
-			display: block;
-			height: $border-radius - $border-width;
-			margin-right: $gap-small;
-			opacity: 0.3;
-			pointer-events: none;
-			width: #{$gap-larger - $gap-small - $border-width * 2};
+			// Pseudo-elements used to show the border before and after the title.
+			&::before {
+				border-left: $border-width solid currentColor;
+				border-top: $border-width solid currentColor;
+				border-radius: $border-radius 0 0 0;
+				content: "";
+				display: block;
+				height: $border-radius - $border-width;
+				margin-right: $gap-small;
+				opacity: 0.3;
+				pointer-events: none;
+				width: #{$gap-larger - $gap-small - $border-width * 2};
+			}
+
+			&::after {
+				border-right: $border-width solid currentColor;
+				border-top: $border-width solid currentColor;
+				border-radius: 0 $border-radius 0 0;
+				content: "";
+				display: block;
+				height: $border-radius - $border-width;
+				margin-left: $gap-small;
+				opacity: 0.3;
+				pointer-events: none;
+				flex-grow: 1;
+			}
 		}
 
-		&::after {
-			border-right: $border-width solid currentColor;
-			border-top: $border-width solid currentColor;
-			border-radius: 0 $border-radius 0 0;
-			content: "";
-			display: block;
-			height: $border-radius - $border-width;
-			margin-left: $gap-small;
-			opacity: 0.3;
-			pointer-events: none;
-			flex-grow: 1;
-		}
-	}
-
-	.wc-block-components-express-checkout__title {
-		flex-grow: 0;
-		transform: translateY(-50%);
-	}
-
-	.wc-block-components-express-checkout__content {
-		@include with-translucent-border(0 $border-width $border-width);
-		margin-top: calc(0.75em + #{$border-radius});
-		padding: em($gap-large) #{$gap-larger - $border-width} em($gap) #{$gap-larger - $border-width};
-
-		&::after {
-			border-radius: 0 0 $border-radius $border-radius;
+		.wc-block-components-express-checkout__title {
+			flex-grow: 0;
+			transform: translateY(-50%);
 		}
 
-		> p {
-			margin-bottom: em($gap);
+		.wc-block-components-express-checkout__content {
+			@include with-translucent-border(0 $border-width $border-width);
+			margin-top: calc(0.75em + #{$border-radius});
+			padding: em($gap-large) #{$gap-larger - $border-width} em($gap) #{$gap-larger - $border-width};
+
+			&::after {
+				border-radius: 0 0 $border-radius $border-radius;
+			}
+
+			> p {
+				margin-bottom: em($gap);
+			}
 		}
 	}
 
@@ -84,6 +86,13 @@ $border-radius: 5px;
 		}
 		> li:nth-child(odd) {
 			padding-right: $gap-smaller;
+		}
+	}
+
+	&.is-compact .wc-block-components-express-checkout-payment-event-buttons {
+		> li {
+			padding: 0;
+			width: auto;
 		}
 	}
 }
@@ -207,6 +216,32 @@ $border-radius: 5px;
 
 	.wc-block-gateway-input.has-error + label {
 		color: $error-red;
+	}
+}
+
+.wc-block-components-express-checkout-continue-rule {
+	display: flex;
+	align-items: center;
+	text-align: center;
+	padding: 0 $gap-larger;
+	margin: $gap-large 0;
+
+	&.is-compact {
+		margin: $gap 0;
+		text-transform: uppercase;
+	}
+	&::before {
+		margin-right: 10px;
+	}
+	&::after {
+		margin-left: 10px;
+	}
+	&::before,
+	&::after {
+		content: " ";
+		flex: 1;
+		border-bottom: 1px solid;
+		opacity: 0.3;
 	}
 }
 
