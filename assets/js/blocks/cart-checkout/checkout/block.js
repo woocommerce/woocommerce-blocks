@@ -156,11 +156,6 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		window.location.href
 	) }`;
 
-	// If:
-	// - shopper is not logged in
-	// - checkout requires account
-	// - there is no way to create an account with checkout
-	// then show login prompt.
 	if (
 		! isEditor &&
 		! customerId &&
@@ -183,11 +178,6 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		);
 	}
 
-	// If:
-	// - shopper is not logged in
-	// - checkout allows signup
-	// - checkout doesn't require signup
-	// then show create account checkbox.
 	const createAccountUI = ! customerId &&
 		attributes.allowCreateAccount &&
 		CHECKOUT_ALLOWS_GUEST && (
