@@ -384,18 +384,6 @@ class Checkout extends AbstractRoute {
 	}
 
 	/**
-	 * Callback for filtering pre_option to force "yes".
-	 *
-	 * Used to force-enable autogenerate username/password site options,
-	 * since we don't support user-supplied username/password in checkout block.
-	 *
-	 * @return string "yes" (aka WooCommerce option true value)
-	 */
-	public function force_option_yes() {
-		return 'yes';
-	}
-
-	/**
 	 * Create a new account for a customer (using a new blocks-specific PHP API).
 	 *
 	 * The account is created with a generated username. The customer is sent
