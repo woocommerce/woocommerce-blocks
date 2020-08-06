@@ -1,5 +1,5 @@
 ---
-name: "\U0001F41E Feedback – Cart & Checkout Blocks"
+name: "\U0001F4AC Feedback – Cart & Checkout Blocks"
 about: .
 
 ---
