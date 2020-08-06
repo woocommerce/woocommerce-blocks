@@ -354,7 +354,7 @@ class Checkout extends AbstractRoute {
 	}
 
 	/**
-	 * Convert a WordPress core account creation error to a Store API error.
+	 * Convert a account creation error to a Store API error.
 	 *
 	 * @param \WP_Error $error An error object.
 	 *
