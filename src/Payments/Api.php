@@ -76,6 +76,17 @@ class Api {
 		return array_merge( $dependencies, $this->payment_method_registry->get_all_registered_script_handles() );
 	}
 
+
+	/**
+	 * Returns true if the payment gateway is enabled.
+	 *
+	 * @param object $gateway Payment gateway.
+	 * @return boolean
+	 */
+	private function is_payment_gateway_enabled( $gateway ) {
+		return 'yes' === $gateway->enabled;
+	}
+
 	/**
 	 * Add payment method data to Asset Registry.
 	 */
@@ -83,7 +94,8 @@ class Api {
 		// Enqueue the order of enabled gateways as `paymentGatewaySortOrder`.
 		if ( ! $this->asset_registry->exists( 'paymentGatewaySortOrder' ) ) {
 			$available_gateways = WC()->payment_gateways->payment_gateways();
-			$this->asset_registry->add( 'paymentGatewaySortOrder', array_keys( $available_gateways ) );
+			$enabled_gateways   = array_filter( $available_gateways, array( $this, 'is_payment_gateway_enabled' ) );
+			$this->asset_registry->add( 'paymentGatewaySortOrder', array_keys( $enabled_gateways ) );
 		}
 
 		// Enqueue all registered gateway data (settings/config etc).

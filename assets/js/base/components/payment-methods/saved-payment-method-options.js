@@ -8,6 +8,7 @@ import {
 	usePaymentMethodDataContext,
 } from '@woocommerce/base-context';
 import RadioControl from '@woocommerce/base-components/radio-control';
+import { PAYMENT_GATEWAY_SORT_ORDER } from '@woocommerce/block-settings';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').CustomerPaymentMethod} CustomerPaymentMethod
@@ -104,9 +105,15 @@ const SavedPaymentMethodOptions = ( { onSelect } ) => {
 		if ( paymentMethodKeys.length > 0 ) {
 			paymentMethodKeys.forEach( ( type ) => {
 				const paymentMethods = customerPaymentMethods[ type ];
-				if ( paymentMethods.length > 0 ) {
+				const enabledPaymentMethods = paymentMethods.filter(
+					( paymentMethod ) =>
+						PAYMENT_GATEWAY_SORT_ORDER.includes(
+							paymentMethod.method.gateway
+						)
+				);
+				if ( enabledPaymentMethods.length > 0 ) {
 					options = options.concat(
-						paymentMethods.map( ( paymentMethod ) => {
+						enabledPaymentMethods.map( ( paymentMethod ) => {
 							const option =
 								type === 'cc' || type === 'echeck'
 									? getCcOrEcheckPaymentMethodOption(
@@ -131,15 +138,17 @@ const SavedPaymentMethodOptions = ( { onSelect } ) => {
 					);
 				}
 			} );
-			currentOptions.current = options;
-			currentOptions.current.push( {
-				value: '0',
-				label: __(
-					'Use a new payment method',
-					'woo-gutenberg-product-blocks'
-				),
-				name: `wc-saved-payment-method-token-new`,
-			} );
+			if ( options.length > 0 ) {
+				currentOptions.current = options;
+				currentOptions.current.push( {
+					value: '0',
+					label: __(
+						'Use a new payment method',
+						'woo-gutenberg-product-blocks'
+					),
+					name: `wc-saved-payment-method-token-new`,
+				} );
+			}
 		}
 	}, [
 		customerPaymentMethods,
