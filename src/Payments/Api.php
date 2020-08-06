@@ -76,7 +76,6 @@ class Api {
 		return array_merge( $dependencies, $this->payment_method_registry->get_all_registered_script_handles() );
 	}
 
-
 	/**
 	 * Returns true if the payment gateway is enabled.
 	 *
