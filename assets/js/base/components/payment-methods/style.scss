@@ -92,7 +92,8 @@ $border-radius: 5px;
 	&.is-compact .wc-block-components-express-checkout-payment-event-buttons {
 		> li {
 			padding: 0;
-			width: auto;
+			text-align: center;
+			width: 100%;
 		}
 	}
 }
