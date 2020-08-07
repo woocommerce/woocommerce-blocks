@@ -46,6 +46,14 @@ const openIntentModal = ( stripe, paymentDetails, emitResponse ) => {
 				return checkoutResponse;
 			}
 			checkoutResponse.redirectUrl = verificationUrl;
+			if ( response?.status === 'requires_payment_method' ) {
+				// This status indicates a 3D-secure auth has failed or been cancelled.
+				// Reset checkout so shopper can try again.
+				return {
+					type: 'error',
+					retry: true,
+				};
+			}
 			return checkoutResponse;
 		} )
 		.catch( function( error ) {
