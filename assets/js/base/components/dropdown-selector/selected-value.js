@@ -3,6 +3,7 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { useEffect, useRef } from '@wordpress/element';
+import { Icon, noAlt } from '@woocommerce/icons';
 
 const DropdownSelectorSelectedValue = ( { onClick, onRemoveItem, option } ) => {
 	const labelRef = useRef( null );
@@ -12,10 +13,10 @@ const DropdownSelectorSelectedValue = ( { onClick, onRemoveItem, option } ) => {
 	}, [ labelRef ] );
 
 	return (
-		<div className="wc-block-dropdown-selector__selected-value">
+		<div className="wc-block-dropdown-selector__selected-value wc-block-components-dropdown-selector__selected-value">
 			<button
 				ref={ labelRef }
-				className="wc-block-dropdown-selector__selected-value__label"
+				className="wc-block-dropdown-selector__selected-value__label wc-block-components-dropdown-selector__selected-value__label"
 				onClick={ ( e ) => {
 					e.stopPropagation();
 					onClick( option.value );
@@ -32,7 +33,7 @@ const DropdownSelectorSelectedValue = ( { onClick, onRemoveItem, option } ) => {
 				{ option.label }
 			</button>
 			<button
-				className="wc-block-dropdown-selector__selected-value__remove"
+				className="wc-block-dropdown-selector__selected-value__remove wc-block-components-dropdown-selector__selected-value__remove"
 				onClick={ () => {
 					onRemoveItem( option.value );
 				} }
@@ -47,7 +48,7 @@ const DropdownSelectorSelectedValue = ( { onClick, onRemoveItem, option } ) => {
 					option.name
 				) }
 			>
-				𝘅
+				<Icon srcElement={ noAlt } size={ 16 } />
 			</button>
 		</div>
 	);

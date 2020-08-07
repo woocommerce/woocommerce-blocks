@@ -1,8 +1,11 @@
-.wc-block-checkbox {
-	display: block;
+.wc-block-components-checkbox {
+	@include reset-typography();
+	align-items: center;
+	display: flex;
+	height: 1em;
 	position: relative;
 
-	.wc-block-checkbox__input[type="checkbox"] {
+	.wc-block-components-checkbox__input[type="checkbox"] {
 		appearance: none;
 		border: 2px solid currentColor;
 		border-radius: 2px;
@@ -21,12 +24,12 @@
 			border-color: currentColor;
 		}
 
-		&:not(:checked) + .wc-block-checkbox__mark {
+		&:not(:checked) + .wc-block-components-checkbox__mark {
 			display: none;
 		}
 	}
 
-	.wc-block-checkbox__mark {
+	.wc-block-components-checkbox__mark {
 		fill: #fff;
 		position: absolute;
 		left: rem(1px);
@@ -35,7 +38,7 @@
 		height: 16px;
 	}
 
-	.wc-block-checkbox__label {
+	.wc-block-components-checkbox__label {
 		padding-left: $gap-smaller;
 		vertical-align: middle;
 	}

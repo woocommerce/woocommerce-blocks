@@ -2,37 +2,48 @@
  * External dependencies
  */
 import {
-	insertBlock,
-	getEditedPostContent,
-	createNewPost,
 	switchUserToAdmin,
+	getEditedPostContent,
+	openDocumentSettingsSidebar,
 } from '@wordpress/e2e-test-utils';
 import { clearAndFillInput } from '@woocommerce/e2e-tests/utils';
+import {
+	findToggleWithLabel,
+	visitBlockPage,
+} from '@woocommerce/blocks-test-utils';
 
-describe( 'Product Search', () => {
-	beforeEach( async () => {
+const block = {
+	name: 'Product Search',
+	slug: 'woocommerce/product-search',
+	class: '.wc-block-product-search',
+};
+
+describe( `${ block.name } Block`, () => {
+	beforeAll( async () => {
 		await switchUserToAdmin();
-		await createNewPost();
+		await visitBlockPage( `${ block.name } Block` );
 	} );
 
-	it( 'can be created', async () => {
-		await insertBlock( 'Product Search' );
-
-		expect( await getEditedPostContent() ).toMatchSnapshot();
+	it( 'renders without crashing', async () => {
+		await expect( page ).toRenderBlock( block );
 	} );
 
 	it( 'can toggle field label', async () => {
-		await insertBlock( 'Product Search' );
-		await page.click( '.components-form-toggle__input' );
-
+		await openDocumentSettingsSidebar();
+		// we focus on the block
+		await page.click( block.class );
+		const toggle = await findToggleWithLabel( 'Show search field label' );
+		await toggle.click();
 		await expect( page ).not.toMatchElement(
-			'.wc-block-product-search .wc-block-product-search__label'
+			`${ block.class } .wc-block-product-search__label`
+		);
+		await toggle.click();
+		await expect( page ).toMatchElement(
+			`${ block.class } .wc-block-product-search__label`
 		);
 	} );
 
 	it( 'can change field labels in editor', async () => {
-		await insertBlock( 'Product Search' );
-
 		await expect( page ).toFill(
 			'textarea.wc-block-product-search__label',
 			'I am a new label'

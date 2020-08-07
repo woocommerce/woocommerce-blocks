@@ -12,6 +12,7 @@ import {
  * Internal dependencies
  */
 import TotalsItem from '../totals-item';
+import './style.scss';
 
 const TotalsTaxesItem = ( { currency, values } ) => {
 	const { total_tax: totalTax, tax_lines: taxLines } = values;
@@ -23,6 +24,7 @@ const TotalsTaxesItem = ( { currency, values } ) => {
 	if ( ! DISPLAY_ITEMIZED_TAXES ) {
 		return (
 			<TotalsItem
+				className="wc-block-components-totals-taxes"
 				currency={ currency }
 				label={ __( 'Taxes', 'woo-gutenberg-products-block' ) }
 				value={ parseInt( totalTax, 10 ) }
@@ -35,6 +37,7 @@ const TotalsTaxesItem = ( { currency, values } ) => {
 			{ taxLines.map( ( { name, price }, i ) => (
 				<TotalsItem
 					key={ `tax-line-${ i }` }
+					className="wc-block-components-totals-taxes"
 					currency={ currency }
 					label={ name }
 					value={ parseInt( price, 10 ) }

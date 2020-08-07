@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { useExpressPaymentMethods } from '@woocommerce/base-hooks';
 import { StoreNoticesProvider } from '@woocommerce/base-context';
+import Title from '@woocommerce/base-components/title';
 
 /**
  * Internal dependencies
@@ -14,17 +15,25 @@ import './style.scss';
 const ExpressCheckoutContainer = ( { children } ) => {
 	return (
 		<>
-			<div className="wc-block-component-express-checkout">
-				<div className="wc-block-component-express-checkout__title">
-					{ __( 'Express checkout', 'woo-gutenberg-products-block' ) }
+			<div className="wc-block-components-express-checkout">
+				<div className="wc-block-components-express-checkout__title-container">
+					<Title
+						className="wc-block-components-express-checkout__title"
+						headingLevel="2"
+					>
+						{ __(
+							'Express checkout',
+							'woo-gutenberg-products-block'
+						) }
+					</Title>
 				</div>
-				<div className="wc-block-component-express-checkout__content">
+				<div className="wc-block-components-express-checkout__content">
 					<StoreNoticesProvider context="wc/express-payment-area">
 						{ children }
 					</StoreNoticesProvider>
 				</div>
 			</div>
-			<div className="wc-block-component-express-checkout-continue-rule">
+			<div className="wc-block-components-express-checkout-continue-rule">
 				{ __( 'Or continue below', 'woo-gutenberg-products-block' ) }
 			</div>
 		</>
@@ -34,8 +43,6 @@ const ExpressCheckoutContainer = ( { children } ) => {
 const ExpressCheckoutFormControl = () => {
 	const { paymentMethods, isInitialized } = useExpressPaymentMethods();
 
-	// determine whether we even show this
-	// @todo if in the editor we probably would want to show a placeholder maybe?
 	if (
 		! isInitialized ||
 		( isInitialized && Object.keys( paymentMethods ).length === 0 )

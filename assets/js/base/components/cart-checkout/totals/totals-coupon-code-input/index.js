@@ -3,8 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect, useRef } from '@wordpress/element';
-import { PanelBody, PanelRow } from 'wordpress-components';
-import { Button } from '@woocommerce/base-components/cart-checkout';
+import Button from '@woocommerce/base-components/button';
 import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
 import Label from '@woocommerce/base-components/label';
 import { ValidationInputError } from '@woocommerce/base-components/validation';
@@ -12,6 +11,7 @@ import LoadingMask from '@woocommerce/base-components/loading-mask';
 import PropTypes from 'prop-types';
 import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
 import { useValidationContext } from '@woocommerce/base-context';
+import Panel from '@woocommerce/base-components/panel';
 
 /**
  * Internal dependencies
@@ -39,11 +39,13 @@ const TotalsCouponCodeInput = ( {
 		}
 	}, [ isLoading, couponValue, validationError ] );
 
-	const textInputId = `wc-block-coupon-code__input-${ instanceId }`;
+	const textInputId = `wc-block-components-totals-coupon__input-${ instanceId }`;
 
 	return (
-		<PanelBody
-			className="wc-block-coupon-code"
+		<Panel
+			className="wc-block-components-totals-coupon"
+			hasBorder={ true }
+			initialOpen={ initialOpen }
 			title={
 				<Label
 					label={ __(
@@ -57,7 +59,7 @@ const TotalsCouponCodeInput = ( {
 					htmlFor={ textInputId }
 				/>
 			}
-			initialOpen={ initialOpen }
+			titleTag="h2"
 		>
 			<LoadingMask
 				screenReaderLabel={ __(
@@ -67,12 +69,12 @@ const TotalsCouponCodeInput = ( {
 				isLoading={ isLoading }
 				showSpinner={ false }
 			>
-				<PanelRow className="wc-block-coupon-code__row">
-					<form className="wc-block-coupon-code__form">
+				<div className="wc-block-components-totals-coupon__content">
+					<form className="wc-block-components-totals-coupon__form">
 						<ValidatedTextInput
 							id={ textInputId }
 							errorId="coupon"
-							className="wc-block-coupon-code__input"
+							className="wc-block-components-totals-coupon__input"
 							label={ __(
 								'Enter code',
 								'woo-gutenberg-products-block'
@@ -85,10 +87,11 @@ const TotalsCouponCodeInput = ( {
 								setCouponValue( newCouponValue );
 							} }
 							validateOnMount={ false }
+							focusOnMount={ true }
 							showError={ false }
 						/>
 						<Button
-							className="wc-block-coupon-code__button"
+							className="wc-block-components-totals-coupon__button"
 							disabled={ isLoading || ! couponValue }
 							showSpinner={ isLoading }
 							onClick={ ( e ) => {
@@ -104,9 +107,9 @@ const TotalsCouponCodeInput = ( {
 						propertyName="coupon"
 						elementId={ textInputId }
 					/>
-				</PanelRow>
+				</div>
 			</LoadingMask>
-		</PanelBody>
+		</Panel>
 	);
 };
 

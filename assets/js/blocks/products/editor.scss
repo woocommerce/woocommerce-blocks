@@ -11,17 +11,11 @@
 	}
 	.components-placeholder__fieldset {
 		display: block; /* Disable flex box */
-
-		p {
-			font-size: 14px;
-		}
 	}
-	.wc-block-products__add_product_button {
+	.wc-block-products__add-product-button {
 		margin: 0 0 1em;
-		line-height: 24px;
 		vertical-align: middle;
 		height: auto;
-		font-size: 14px;
 		padding: 0.5em 1em;
 
 		svg {

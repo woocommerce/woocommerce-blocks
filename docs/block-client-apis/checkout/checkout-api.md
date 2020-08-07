@@ -17,7 +17,7 @@ This document gives an overview of some of the major architectural components/AP
 
 Much of the data and api interface for components in the Checkout Block are constructed and exposed via [usage of `React.Context`](https://reactjs.org/docs/context.html). In some cases the context maintains the "tree" state within the context itself (via `useReducer`) and in others it interacts with a global `wp.data` store (for data that communicates with the server).
 
-You can find type definitions (`typedef`) for contexts in [this file](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/master/assets/js/type-defs/contexts.js).
+You can find type definitions (`typedef`) for contexts in [this file](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/main/assets/js/type-defs/contexts.js).
 
 #### Notices Context
 
@@ -83,14 +83,12 @@ The payment method data context exposes the api interfaces for the following thi
 
 This context is the main one. Internally via the `<CheckoutProvider>` it handles wrapping children in `<ShippingMethodDataProvider>`, `<BillingDataProvider>` and `<PaymentMethodDataProvider>`. So the checkout components just need to be wrapped by `<CheckoutProvider>`.
 
-The provider receives two props:
+The provider receives the following props:
 
 -   `redirectUrl`: A string, this is used to indicate where the checkout redirects to when it is complete. This is optional and can be used to set a default url to redirect to.
--   `submitLabel`: This allows for customizing the checkout submit button label. It defaults to `Place Order`.
 
 Via `useCheckoutContext`, the following are exposed:
 
--   `submitLabel`: This is whatever label was passed via the provider.
 -   `onSubmit`: This is a callback to be invoked either by submitting the checkout button, or by express payment methods to start checkout processing after they have finished their initialization process when their button has been clicked.
 -   `isComplete`: True when checkout has finished processing and the subscribed checkout processing callbacks have all been invoked along with a successful processing of the checkout by the server.
 -   `isIdle`: When the checkout status is `IDLE` this flag is true. Checkout will be this status after any change to checkout state after the block is loaded. It will also be this status when retrying a purchase is possible after processing happens with an error.
@@ -116,7 +114,7 @@ These docs currently don't go into detail for all the hooks as that is fairly st
 
 ### `usePaymentMethodInterface`
 
-This hook is used to expose all the interfaces for the registered payment method components to utilize. Essentially the result from this hook is fed in as props on the registered payment components when they are setup by checkout. You can use the typedef ([`RegisteredPaymentMethodProps`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/master/assets/js/type-defs/registered-payment-method-props.js)) to see what is fed to payment methods as props from this hook.
+This hook is used to expose all the interfaces for the registered payment method components to utilize. Essentially the result from this hook is fed in as props on the registered payment components when they are setup by checkout. You can use the typedef ([`RegisteredPaymentMethodProps`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/main/assets/js/type-defs/registered-payment-method-props.js)) to see what is fed to payment methods as props from this hook.
 
 _Why don't payment methods just implement this hook_?
 

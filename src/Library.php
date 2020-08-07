@@ -9,6 +9,8 @@ namespace Automattic\WooCommerce\Blocks;
 
 defined( 'ABSPATH' ) || exit;
 
+use Automattic\WooCommerce\Blocks\Package;
+
 /**
  * Library class.
  */
@@ -20,10 +22,6 @@ class Library {
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'register_blocks' ) );
 		add_action( 'init', array( __CLASS__, 'define_tables' ) );
-		add_filter( 'wc_order_statuses', array( __CLASS__, 'register_draft_order_status' ) );
-		add_filter( 'woocommerce_register_shop_order_post_statuses', array( __CLASS__, 'register_draft_order_post_status' ) );
-		add_filter( 'woocommerce_valid_order_statuses_for_payment', array( __CLASS__, 'append_draft_order_post_status' ) );
-		add_action( 'woocommerce_cleanup_draft_orders', array( __CLASS__, 'delete_expired_draft_orders' ) );
 	}
 
 	/**
@@ -65,83 +63,51 @@ class Library {
 			'ProductSearch',
 			'ProductTag',
 		];
-		// @todo after refactoring dynamic block registration, this will be moved
+		// Note: as a part of refactoring dynamic block registration, this will be moved
 		// to block level config.
-		if ( version_compare( $wp_version, '5.2', '>' ) ) {
+		if ( version_compare( $wp_version, '5.3', '>=' ) ) {
 			$blocks[] = 'AllProducts';
 			$blocks[] = 'PriceFilter';
 			$blocks[] = 'AttributeFilter';
 			$blocks[] = 'ActiveFilters';
-			$blocks[] = 'Checkout';
-			$blocks[] = 'Cart';
+
+			if ( Package::is_feature_plugin_build() ) {
+				$blocks[] = 'Checkout';
+				$blocks[] = 'Cart';
+			}
+		}
+		if ( Package::is_experimental_build() ) {
+			$blocks[] = 'SingleProduct';
 		}
 		foreach ( $blocks as $class ) {
 			$class    = __NAMESPACE__ . '\\BlockTypes\\' . $class;
 			$instance = new $class();
 			$instance->register_block_type();
 		}
+		self::register_atomic_blocks();
 	}
 
 	/**
-	 * Register custom order status for orders created via the API during checkout.
-	 *
-	 * Draft order status is used before payment is attempted, during checkout, when a cart is converted to an order.
-	 *
-	 * @param array $statuses Array of statuses.
-	 * @return array
+	 * Register atomic blocks on the PHP side.
 	 */
-	public static function register_draft_order_status( array $statuses ) {
-		$statuses['wc-checkout-draft'] = _x( 'Draft', 'Order status', 'woo-gutenberg-products-block' );
-		return $statuses;
-	}
-
-	/**
-	 * Register custom order post status for orders created via the API during checkout.
-	 *
-	 * @param array $statuses Array of statuses.
-	 * @return array
-	 */
-	public static function register_draft_order_post_status( array $statuses ) {
-		$statuses['wc-checkout-draft'] = [
-			'label'                     => _x( 'Draft', 'Order status', 'woo-gutenberg-products-block' ),
-			'public'                    => false,
-			'exclude_from_search'       => false,
-			'show_in_admin_all_list'    => false,
-			'show_in_admin_status_list' => true,
-			/* translators: %s: number of orders */
-			'label_count'               => _n_noop( 'Drafts <span class="count">(%s)</span>', 'Drafts <span class="count">(%s)</span>', 'woo-gutenberg-products-block' ),
+	protected static function register_atomic_blocks() {
+		$atomic_blocks = [
+			'product-title',
+			'product-button',
+			'product-image',
+			'product-price',
+			'product-rating',
+			'product-sale-badge',
+			'product-summary',
+			'product-sku',
+			'product-category-list',
+			'product-tag-list',
+			'product-stock-indicator',
+			'product-add-to-cart',
 		];
-		return $statuses;
-	}
-
-	/**
-	 * Append draft status to a list of statuses.
-	 *
-	 * @param array $statuses Array of statuses.
-	 * @return array
-	 */
-	public static function append_draft_order_post_status( $statuses ) {
-		$statuses[] = 'checkout-draft';
-		return $statuses;
-	}
-
-	/**
-	 * Delete draft orders older than a day.
-	 *
-	 * Ran on a daily cron schedule.
-	 */
-	public static function delete_expired_draft_orders() {
-		global $wpdb;
-
-		$wpdb->query(
-			"
-			DELETE posts, term_relationships, postmeta
-			FROM $wpdb->posts posts
-			LEFT JOIN $wpdb->term_relationships term_relationships ON ( posts.ID = term_relationships.object_id )
-			LEFT JOIN $wpdb->postmeta postmeta ON ( posts.ID = postmeta.post_id )
-			WHERE posts.post_status = 'wc-checkout-draft'
-			AND posts.post_modified <= ( NOW() - INTERVAL 1 DAY )
-			"
-		);
+		foreach ( $atomic_blocks as $atomic_block ) {
+			$instance = new \Automattic\WooCommerce\Blocks\BlockTypes\AtomicBlock( $atomic_block );
+			$instance->register_block_type();
+		}
 	}
 }

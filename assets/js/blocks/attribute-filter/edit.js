@@ -237,7 +237,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 				) }
 			</p>
 			<Button
-				className="wc-block-attribute-filter__add_attribute_button"
+				className="wc-block-attribute-filter__add-attribute-button"
 				isDefault
 				isLarge
 				href={ getAdminLink(
@@ -369,7 +369,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 			>
 				<div className="wc-block-attribute-filter__selection">
 					{ renderAttributeControl() }
-					<Button isDefault onClick={ onDone }>
+					<Button isPrimary onClick={ onDone }>
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }
 					</Button>
 				</div>

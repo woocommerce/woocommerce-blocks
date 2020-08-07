@@ -49,7 +49,12 @@ export const IS_SHIPPING_COST_HIDDEN = getSetting(
 	'isShippingCostHidden',
 	false
 );
+export const WOOCOMMERCE_BLOCKS_PHASE = getSetting(
+	'woocommerceBlocksPhase',
+	1
+);
 export const WC_BLOCKS_ASSET_URL = getSetting( 'wcBlocksAssetUrl', '' );
+export const WC_BLOCKS_BUILD_URL = getSetting( 'wcBlocksBuildUrl', '' );
 export const SHIPPING_COUNTRIES = getSetting( 'shippingCountries', {} );
 export const ALLOWED_COUNTRIES = getSetting( 'allowedCountries', {} );
 export const SHIPPING_STATES = getSetting( 'shippingStates', {} );
@@ -57,6 +62,13 @@ export const ALLOWED_STATES = getSetting( 'allowedStates', {} );
 export const SHIPPING_METHODS_EXIST = getSetting(
 	'shippingMethodsExist',
 	false
+);
+
+export const PAYMENT_GATEWAY_SORT_ORDER = getSetting( 'paymentGatewaySortOrder', [] );
+
+export const CHECKOUT_SHOW_LOGIN_REMINDER = getSetting(
+	'checkoutShowLoginReminder',
+	true
 );
 
 const defaultPage = {
@@ -84,3 +96,9 @@ export const TERMS_PAGE_NAME = storePages.terms.title;
 
 export const CART_PAGE_ID = storePages.cart.id;
 export const CART_URL = storePages.cart.permalink;
+
+export const CHECKOUT_ALLOWS_GUEST = getSetting( 'checkoutAllowsGuest', false );
+export const CHECKOUT_ALLOWS_SIGNUP = getSetting(
+	'checkoutAllowsSignup',
+	false
+);

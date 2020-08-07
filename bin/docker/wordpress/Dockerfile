@@ -1,1 +1,2 @@
-FROM wordpress:5.3
+ARG WP_VERSION
+FROM wordpress:${WP_VERSION}

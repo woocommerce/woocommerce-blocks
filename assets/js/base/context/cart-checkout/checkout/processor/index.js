@@ -26,21 +26,30 @@ import { useStoreCart, useStoreNotices } from '@woocommerce/base-hooks';
 /**
  * Utility function for preparing payment data for the request.
  *
- * @param {Object} paymentData Arbitrary payment data provided by the payment
- *                             method.
+ * @param {Object}  paymentData          Arbitrary payment data provided by the payment method.
+ * @param {boolean} shouldSave           Whether to save the payment method info to user account.
+ * @param {Object}  activePaymentMethod  The current active payment method.
  *
  * @return {PaymentDataItem[]} Returns the payment data as an array of
- *                                 PaymentDataItem objects.
+ *                             PaymentDataItem objects.
  */
-const preparePaymentData = ( paymentData ) => {
-	return Object.keys( paymentData ).map( ( property ) => {
+const preparePaymentData = ( paymentData, shouldSave, activePaymentMethod ) => {
+	const apiData = Object.keys( paymentData ).map( ( property ) => {
 		const value = paymentData[ property ];
 		return { key: property, value };
 	}, [] );
+	const savePaymentMethodKey = `wc-${ activePaymentMethod }-new-payment-method`;
+	apiData.push( {
+		key: savePaymentMethodKey,
+		value: shouldSave,
+	} );
+	return apiData;
 };
 
 /**
- * CheckoutProcessor component. @todo Needs to consume all contexts.
+ * CheckoutProcessor component.
+ *
+ * @todo Needs to consume all contexts.
  *
  * Subscribes to checkout context and triggers processing via the API.
  */
@@ -53,6 +62,7 @@ const CheckoutProcessor = () => {
 		isProcessing: checkoutIsProcessing,
 		isBeforeProcessing: checkoutIsBeforeProcessing,
 		isComplete: checkoutIsComplete,
+		orderNotes,
 	} = useCheckoutContext();
 	const { hasValidationErrors } = useValidationContext();
 	const { shippingAddress, shippingErrorStatus } = useShippingDataContext();
@@ -64,8 +74,9 @@ const CheckoutProcessor = () => {
 		paymentMethodData,
 		expressPaymentMethods,
 		paymentMethods,
+		shouldSavePayment,
 	} = usePaymentMethodDataContext();
-	const { addErrorNotice, removeNotice } = useStoreNotices();
+	const { addErrorNotice, removeNotice, setIsSuppressed } = useStoreNotices();
 	const currentBillingData = useRef( billingData );
 	const currentShippingAddress = useRef( shippingAddress );
 	const currentRedirectUrl = useRef( redirectUrl );
@@ -84,6 +95,11 @@ const CheckoutProcessor = () => {
 		currentPaymentStatus.hasError ||
 		shippingErrorStatus.hasError;
 
+	// If express payment method is active, let's suppress notices
+	useEffect( () => {
+		setIsSuppressed( expressPaymentMethodActive );
+	}, [ expressPaymentMethodActive, setIsSuppressed ] );
+
 	useEffect( () => {
 		if (
 			checkoutWillHaveError !== checkoutHasError &&
@@ -98,6 +114,7 @@ const CheckoutProcessor = () => {
 		checkoutIsProcessing,
 		checkoutIsBeforeProcessing,
 		expressPaymentMethodActive,
+		dispatchActions,
 	] );
 
 	const paidAndWithoutErrors =
@@ -170,13 +187,17 @@ const CheckoutProcessor = () => {
 		let data = {
 			billing_address: currentBillingData.current,
 			shipping_address: currentShippingAddress.current,
-			customer_note: '',
+			customer_note: orderNotes,
 		};
 		if ( cartNeedsPayment ) {
 			data = {
 				...data,
 				payment_method: paymentMethodId,
-				payment_data: preparePaymentData( paymentMethodData ),
+				payment_data: preparePaymentData(
+					paymentMethodData,
+					shouldSavePayment,
+					activePaymentMethod
+				),
 			};
 		}
 		triggerFetch( {
@@ -230,8 +251,13 @@ const CheckoutProcessor = () => {
 		addErrorNotice,
 		removeNotice,
 		paymentMethodId,
+		activePaymentMethod,
 		paymentMethodData,
+		shouldSavePayment,
 		cartNeedsPayment,
+		receiveCart,
+		dispatchActions,
+		orderNotes,
 	] );
 	// redirect when checkout is complete and there is a redirect url.
 	useEffect( () => {

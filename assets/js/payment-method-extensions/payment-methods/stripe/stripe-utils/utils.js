@@ -1,14 +1,14 @@
 /**
- * Internal dependencies
- */
-import { normalizeLineItems } from './normalize';
-import { errorTypes, errorCodes } from './constants';
-
-/**
  * External dependencies
  */
 import { getSetting } from '@woocommerce/settings';
 import { __ } from '@wordpress/i18n';
+
+/**
+ * Internal dependencies
+ */
+import { normalizeLineItems } from './normalize';
+import { errorTypes, errorCodes } from './constants';
 
 /**
  * @typedef {import('./type-defs').StripeServerData} StripeServerData
@@ -17,11 +17,6 @@ import { __ } from '@wordpress/i18n';
  * @typedef {import('@woocommerce/type-defs/registered-payment-method-props').PreparedCartTotalItem} CartTotalItem
  */
 
-// @todo this can't be in the file because the block might not show up unless it's
-// rendered! (which also means it won't get passed from the server until it is rendered).
-// so we need to work out a loading process for when the cart or checkout hasn't been added to the
-// content yet - definitely don't want to load stripe without the block in the page. So that means
-// checkout will need to have some sort of editor preview for stripe.
 /**
  * Stripe data comes form the server passed on a global object.
  *
@@ -174,15 +169,15 @@ const getErrorMessageForCode = ( code ) => {
 			'woocommerce-gateway-stripe'
 		),
 		[ errorCodes.INVALID_EXPIRY_MONTH ]: __(
-			"The card's expiration month is invalid.",
+			'The card expiration month is invalid.',
 			'woocommerce-gateway-stripe'
 		),
 		[ errorCodes.INVALID_EXPIRY_YEAR ]: __(
-			"The card's expiration year is invalid.",
+			'The card expiration year is invalid.',
 			'woocommerce-gateway-stripe'
 		),
 		[ errorCodes.INVALID_CVC ]: __(
-			"The card's security code is invalid.",
+			'The card security code is invalid.',
 			'woocommerce-gateway-stripe'
 		),
 		[ errorCodes.INCORRECT_NUMBER ]: __(
@@ -194,11 +189,11 @@ const getErrorMessageForCode = ( code ) => {
 			'woocommerce-gateway-stripe'
 		),
 		[ errorCodes.INCOMPLETE_CVC ]: __(
-			"The card's security code is incomplete.",
+			'The card security code is incomplete.',
 			'woocommerce-gateway-stripe'
 		),
 		[ errorCodes.INCOMPLETE_EXPIRY ]: __(
-			"The card's expiration date is incomplete.",
+			'The card expiration date is incomplete.',
 			'woocommerce-gateway-stripe'
 		),
 		[ errorCodes.EXPIRED_CARD ]: __(
@@ -206,15 +201,15 @@ const getErrorMessageForCode = ( code ) => {
 			'woocommerce-gateway-stripe'
 		),
 		[ errorCodes.INCORRECT_CVC ]: __(
-			"The card's security code is incorrect.",
+			'The card security code is incorrect.',
 			'woocommerce-gateway-stripe'
 		),
 		[ errorCodes.INCORRECT_ZIP ]: __(
-			"The card's zip code failed validation.",
+			'The card zip code failed validation.',
 			'woocommerce-gateway-stripe'
 		),
 		[ errorCodes.INVALID_EXPIRY_YEAR_PAST ]: __(
-			"The card's expiration year is in the past",
+			'The card expiration year is in the past',
 			'woocommerce-gateway-stripe'
 		),
 		[ errorCodes.CARD_DECLINED ]: __(
@@ -230,7 +225,7 @@ const getErrorMessageForCode = ( code ) => {
 			'woocommerce-gateway-stripe'
 		),
 	};
-	return messages[ code ] || '';
+	return messages[ code ] || null;
 };
 
 const getErrorMessageForTypeAndCode = ( type, code = '' ) => {
@@ -246,11 +241,27 @@ const getErrorMessageForTypeAndCode = ( type, code = '' ) => {
 				'woo-gutenberg-product-blocks'
 			);
 		case errorTypes.CARD_ERROR:
-		case errorTypes.VALIDATION_ERROR:
 			return getErrorMessageForCode( code );
+		case errorTypes.VALIDATION_ERROR:
+			return ''; // These are shown inline.
 	}
-	return '';
+	return null;
 };
+
+/**
+ * pluckAddress takes a full address object and returns relevant fields for calculating
+ * shipping, so we can track when one of them change to update rates.
+ *
+ * @param {Object} address          An object containing all address information
+ *
+ * @return {Object} pluckedAddress  An object containing shipping address that are needed to fetch an address.
+ */
+const pluckAddress = ( { country, state, city, postcode } ) => ( {
+	country,
+	state,
+	city,
+	postcode: postcode.replace( ' ', '' ).toUpperCase(),
+} );
 
 export {
 	getStripeServerData,
@@ -260,4 +271,5 @@ export {
 	updatePaymentRequest,
 	canDoPaymentRequest,
 	getErrorMessageForTypeAndCode,
+	pluckAddress,
 };

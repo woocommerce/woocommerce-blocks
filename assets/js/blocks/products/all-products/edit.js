@@ -26,9 +26,11 @@ import { Icon, grid } from '@woocommerce/icons';
 import GridLayoutControl from '@woocommerce/block-components/grid-layout-control';
 import { HAS_PRODUCTS } from '@woocommerce/block-settings';
 import {
-	InnerBlockConfigurationProvider,
-	ProductLayoutContextProvider,
-} from '@woocommerce/base-context';
+	InnerBlockLayoutContextProvider,
+	ProductDataContextProvider,
+} from '@woocommerce/shared-context';
+import { getBlockMap } from '@woocommerce/atomic-utils';
+import { previewProducts } from '@woocommerce/resource-previews';
 
 /**
  * Internal dependencies
@@ -40,17 +42,10 @@ import {
 } from '../utils';
 import {
 	DEFAULT_PRODUCT_LIST_LAYOUT,
-	getBlockMap,
 	getProductLayoutConfig,
 } from '../base-utils';
 import { getSharedContentControls, getSharedListControls } from '../edit';
 import Block from './block';
-
-const layoutContextConfig = {
-	layoutStyleClassPrefix: 'wc-block-grid',
-};
-
-const parentBlockConfig = { parentName: 'woocommerce/all-products' };
 
 /**
  * Component to handle edit mode of "All Products".
@@ -209,13 +204,22 @@ class Editor extends Component {
 							'woo-gutenberg-products-block'
 						) }
 					</Tip>
-					<div className="wc-block-grid has-1-columns">
-						<ul className="wc-block-grid__products">
-							<li className="wc-block-grid__product">
-								<InnerBlocks { ...InnerBlockProps } />
-							</li>
-						</ul>
-					</div>
+					<InnerBlockLayoutContextProvider
+						parentName="woocommerce/all-products"
+						parentClassName="wc-block-grid"
+					>
+						<div className="wc-block-grid wc-block-layout has-1-columns">
+							<ul className="wc-block-grid__products">
+								<li className="wc-block-grid__product">
+									<ProductDataContextProvider
+										product={ previewProducts[ 0 ] }
+									>
+										<InnerBlocks { ...InnerBlockProps } />
+									</ProductDataContextProvider>
+								</li>
+							</ul>
+						</div>
+					</InnerBlockLayoutContextProvider>
 					<div className="wc-block-all-products__actions">
 						<Button
 							className="wc-block-all-products__done-button"
@@ -281,22 +285,16 @@ class Editor extends Component {
 		}
 
 		return (
-			<InnerBlockConfigurationProvider value={ parentBlockConfig }>
-				<ProductLayoutContextProvider value={ layoutContextConfig }>
-					<div
-						className={ getBlockClassName(
-							'wc-block-all-products',
-							attributes
-						) }
-					>
-						{ this.getBlockControls() }
-						{ this.getInspectorControls() }
-						{ isEditing
-							? this.renderEditMode()
-							: this.renderViewMode() }
-					</div>
-				</ProductLayoutContextProvider>
-			</InnerBlockConfigurationProvider>
+			<div
+				className={ getBlockClassName(
+					'wc-block-all-products',
+					attributes
+				) }
+			>
+				{ this.getBlockControls() }
+				{ this.getInspectorControls() }
+				{ isEditing ? this.renderEditMode() : this.renderViewMode() }
+			</div>
 		);
 	};
 }

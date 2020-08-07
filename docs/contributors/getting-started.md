@@ -12,6 +12,23 @@ To do so from the command line, ensure you have [`git`](https://git-scm.com) ins
 $ git clone https://github.com/woocommerce/woocommerce-gutenberg-products-block.git
 ```
 
+## Configuring your WordPress site
+
+When developing this plugin, you'll must add the following to the `wp-config.php` file attached to the WordPress instance you are using to test the plugin against:
+
+```php
+define( 'JETPACK_AUTOLOAD_DEV', true );
+```
+
+The above constant definition ensures that classes in the cloned plugin are always overriding what's included with WooCommerce core via the Woo Blocks package.
+
+It's also _recommended_ you add the following constant definitions to your `wp-config.php` file as well to make sure you are catching any PHP notices and/or errors introduced:
+
+```php
+define( 'WP_DEBUG', true );
+define( 'SCRIPT_DEBUG', true );
+```
+
 ## Installing dependencies
 
 To install dependencies, you will need the following tools installed on your machine:
@@ -63,9 +80,9 @@ Run `$ npm run lint` to check code against our linting rules.
 
 This script runs 3 sub-commands: `lint:php`, `lint:css`, `lint:js`. Use these to run linters across the codebase (linters check for valid syntax).
 
--   `lint:php` runs phpcs via composer, which uses the [phpcs.xml](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/master/phpcs.xml) rule set.
--   `lint:css` runs stylelint over all the scss code in `assets/css`, using the rules in [.stylelintrc.json.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/master/.stylelintrc.json)
--   `lint:js` runs eslint over all the JavaScript, using the rules in [.eslintrc.js.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/master/.eslintrc.js)
+-   `lint:php` runs phpcs via composer, which uses the [phpcs.xml](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/main/phpcs.xml) rule set.
+-   `lint:css` runs stylelint over all the scss code in `assets/css`, using the rules in [.stylelintrc.json.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/main/.stylelintrc.json)
+-   `lint:js` runs eslint over all the JavaScript, using the rules in [.eslintrc.js.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/main/.eslintrc.js)
 
 Note; linters are also ran before commits via Git. If there are any violations, you will not be able to commit your changes until they are fixed, unless you add the `--no-verify` flag to your commit command.
 

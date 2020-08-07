@@ -4,13 +4,14 @@
 import { __, sprintf } from '@wordpress/i18n';
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
-import Chip from '@woocommerce/base-components/chip';
+import { RemovableChip } from '@woocommerce/base-components/chip';
 import PropTypes from 'prop-types';
 
 /**
  * Internal dependencies
  */
 import TotalsItem from '../totals-item';
+import './style.scss';
 
 const TotalsDiscountItem = ( {
 	cartCoupons = [],
@@ -30,9 +31,13 @@ const TotalsDiscountItem = ( {
 	}
 
 	const discountTaxValue = parseInt( totalDiscountTax, 10 );
+	const discountTotalValue = DISPLAY_CART_PRICES_INCLUDING_TAX
+		? discountValue + discountTaxValue
+		: discountValue;
 
 	return (
 		<TotalsItem
+			className="wc-block-components-totals-discount"
 			currency={ currency }
 			description={
 				cartCoupons.length !== 0 && (
@@ -44,11 +49,11 @@ const TotalsDiscountItem = ( {
 						isLoading={ isRemovingCoupon }
 						showSpinner={ false }
 					>
-						<ul className="wc-block-cart-coupon-list">
+						<ul className="wc-block-components-totals-discount__coupon-list">
 							{ cartCoupons.map( ( cartCoupon ) => (
-								<Chip
+								<RemovableChip
 									key={ 'coupon-' + cartCoupon.code }
-									className="wc-block-cart-coupon-list__item"
+									className="wc-block-components-totals-discount__coupon-list-item"
 									text={ cartCoupon.code }
 									screenReaderText={ sprintf(
 										/* Translators: %s Coupon code. */
@@ -63,18 +68,26 @@ const TotalsDiscountItem = ( {
 										removeCoupon( cartCoupon.code );
 									} }
 									radius="large"
+									ariaLabel={ sprintf(
+										/* Translators: %s is a coupon code. */
+										__(
+											'Remove coupon "%s"',
+											'woo-gutenberg-products-block'
+										),
+										cartCoupon.code
+									) }
 								/>
 							) ) }
 						</ul>
 					</LoadingMask>
 				)
 			}
-			label={ __( 'Discount', 'woo-gutenberg-products-block' ) }
-			value={
-				( DISPLAY_CART_PRICES_INCLUDING_TAX
-					? discountValue + discountTaxValue
-					: discountValue ) * -1
+			label={
+				!! discountTotalValue
+					? __( 'Discount', 'woo-gutenberg-products-block' )
+					: __( 'Coupons', 'woo-gutenberg-products-block' )
 			}
+			value={ discountTotalValue ? discountTotalValue * -1 : '-' }
 		/>
 	);
 };

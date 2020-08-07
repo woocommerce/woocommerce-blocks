@@ -15,11 +15,13 @@ use Automattic\WooCommerce\Blocks\StoreApi\Utilities\NoticeHandler;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\Stripe;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\Cheque;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\PayPal;
+use Automattic\WooCommerce\Blocks\Payments\Integrations\BankTransfer;
+use Automattic\WooCommerce\Blocks\Payments\Integrations\CashOnDelivery;
 
 /**
  *  The Api class provides an interface to payment method registration.
  *
- * @since $VID:$
+ * @since 2.6.0
  */
 class Api {
 	/**
@@ -52,7 +54,7 @@ class Api {
 	 * Initialize class features.
 	 */
 	protected function init() {
-		add_action( 'init', array( $this->payment_method_registry, 'initialize' ) );
+		add_action( 'init', array( $this->payment_method_registry, 'initialize' ), 5 );
 		add_filter( 'woocommerce_blocks_register_script_dependencies', array( $this, 'add_payment_method_script_dependencies' ), 10, 2 );
 		add_action( 'woocommerce_blocks_checkout_enqueue_data', array( $this, 'add_payment_method_script_data' ) );
 		add_action( 'woocommerce_blocks_cart_enqueue_data', array( $this, 'add_payment_method_script_data' ) );
@@ -78,8 +80,14 @@ class Api {
 	 * Add payment method data to Asset Registry.
 	 */
 	public function add_payment_method_script_data() {
-		$script_data = $this->payment_method_registry->get_all_registered_script_data();
+		// Enqueue the order of enabled gateways as `paymentGatewaySortOrder`.
+		if ( ! $this->asset_registry->exists( 'paymentGatewaySortOrder' ) ) {
+			$available_gateways = WC()->payment_gateways->payment_gateways();
+			$this->asset_registry->add( 'paymentGatewaySortOrder', array_keys( $available_gateways ) );
+		}
 
+		// Enqueue all registered gateway data (settings/config etc).
+		$script_data = $this->payment_method_registry->get_all_registered_script_data();
 		foreach ( $script_data as $asset_data_key => $asset_data_value ) {
 			if ( ! $this->asset_registry->exists( $asset_data_key ) ) {
 				$this->asset_registry->add( $asset_data_key, $asset_data_value );
@@ -104,6 +112,12 @@ class Api {
 		);
 		$payment_method_registry->register(
 			Package::container()->get( PayPal::class )
+		);
+		$payment_method_registry->register(
+			Package::container()->get( BankTransfer::class )
+		);
+		$payment_method_registry->register(
+			Package::container()->get( CashOnDelivery::class )
 		);
 	}
 

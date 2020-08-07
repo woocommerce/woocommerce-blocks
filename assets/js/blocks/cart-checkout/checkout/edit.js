@@ -41,6 +41,7 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 		showPhoneField,
 		requireCompanyField,
 		requirePhoneField,
+		showOrderNotes,
 		showPolicyLinks,
 		showReturnToCart,
 		cartPageId,
@@ -76,11 +77,14 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 				</Notice>
 			) }
 			<PanelBody
-				title={ __( 'Form options', 'woo-gutenberg-products-block' ) }
+				title={ __(
+					'Address options',
+					'woo-gutenberg-products-block'
+				) }
 			>
 				<p className="wc-block-checkout__controls-text">
 					{ __(
-						'Choose whether your checkout form requires extra information from customers.',
+						'Include additional address fields in the checkout form.',
 						'woo-gutenberg-products-block'
 					) }
 				</p>
@@ -146,21 +150,40 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 				) }
 			</PanelBody>
 			<PanelBody
-				title={ __( 'Content', 'woo-gutenberg-products-block' ) }
+				title={ __( 'Order notes', 'woo-gutenberg-products-block' ) }
 			>
 				<p className="wc-block-checkout__controls-text">
 					{ __(
-						'Choose additional content to display.',
+						'Reduce the number of fields to checkout.',
 						'woo-gutenberg-products-block'
 					) }
 				</p>
+				<ToggleControl
+					label={ __(
+						'Allow customers to optionally add order notes',
+						'woo-gutenberg-products-block'
+					) }
+					checked={ showOrderNotes }
+					onChange={ () =>
+						setAttributes( {
+							showOrderNotes: ! showOrderNotes,
+						} )
+					}
+				/>
+			</PanelBody>
+			<PanelBody
+				title={ __(
+					'Navigation options',
+					'woo-gutenberg-products-block'
+				) }
+			>
 				<ToggleControl
 					label={ __(
 						'Show links to policies',
 						'woo-gutenberg-products-block'
 					) }
 					help={ __(
-						'Shows a list of links to your "terms and conditions" and "privacy policy" pages.',
+						'Shows links to your "terms and conditions" and "privacy policy" pages.',
 						'woo-gutenberg-products-block'
 					) }
 					checked={ showPolicyLinks }
@@ -207,7 +230,7 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 				) }
 				<ToggleControl
 					label={ __(
-						'Show a "return to cart" link',
+						'Show a "Return to Cart" link',
 						'woo-gutenberg-products-block'
 					) }
 					checked={ showReturnToCart }

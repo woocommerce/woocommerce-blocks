@@ -1,21 +1,22 @@
-.wc-block-select {
-	height: 48px;
+.wc-block-components-select {
+	height: 3em;
 	position: relative;
-	margin-bottom: $gap-large;
+	margin-bottom: em($gap-large);
 
 	label {
-		@include font-size(16);
+		@include reset-typography();
+		@include font-size(regular);
+		line-height: 1.375; // =22px when font-size is 16px.
 		position: absolute;
-		transform: translateY(#{$gap-small});
+		transform: translateY(0.75em);
 		transform-origin: top left;
 		transition: all 200ms ease;
-		line-height: 22px;
 		color: $gray-50;
 		z-index: 1;
-		margin: 0 $gap;
+		margin: 0 0 0 #{$gap + 1px};
 		overflow: hidden;
 		text-overflow: ellipsis;
-		max-width: calc(100% - #{  2 * $gap });
+		max-width: calc(100% - #{2 * $gap});
 		white-space: nowrap;
 
 		@media screen and (prefers-reduced-motion: reduce) {
@@ -38,27 +39,26 @@
 	}
 
 	.components-custom-select-control__button {
-		@include font-size(16);
-		background-color: #fff;
-		box-shadow: none;
-		color: $input-text-active;
-		font-family: inherit;
-		font-weight: normal;
-		height: 3em;
-		letter-spacing: inherit;
-		line-height: 1;
-		overflow: hidden;
-		padding: $gap-large $gap $gap-smallest;
-		text-overflow: ellipsis;
-		text-transform: none;
-		white-space: nowrap;
-		width: 100%;
-
+		&,
 		&:hover,
 		&:focus,
 		&:active {
+			@include font-size(regular);
 			background-color: #fff;
-			text-decoration: none;
+			box-shadow: none;
+			color: $input-text-active;
+			font-family: inherit;
+			font-weight: normal;
+			height: 3em;
+			letter-spacing: inherit;
+			line-height: 1;
+			overflow: hidden;
+			padding: em($gap-large) $gap em($gap-smallest);
+			text-align: left;
+			text-overflow: ellipsis;
+			text-transform: none;
+			white-space: nowrap;
+			width: 100%;
 		}
 	}
 
@@ -79,7 +79,7 @@
 	}
 
 	.components-custom-select-control__item {
-		@include font-size(16);
+		@include font-size(regular);
 		margin-left: 0;
 		padding-left: $gap;
 	}

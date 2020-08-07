@@ -24,6 +24,7 @@ const TextInput = forwardRef(
 			screenReaderLabel,
 			disabled,
 			help,
+			autoCapitalize = 'off',
 			autoComplete = 'off',
 			value = '',
 			onChange,
@@ -37,15 +38,20 @@ const TextInput = forwardRef(
 
 		return (
 			<div
-				className={ classnames( 'wc-block-text-input', className, {
-					'is-active': isActive || value,
-				} ) }
+				className={ classnames(
+					'wc-block-components-text-input',
+					className,
+					{
+						'is-active': isActive || value,
+					}
+				) }
 			>
 				<input
 					type={ type }
 					id={ id }
 					value={ value }
 					ref={ ref }
+					autoCapitalize={ autoCapitalize }
 					autoComplete={ autoComplete }
 					onChange={ ( event ) => {
 						onChange( event.target.value );
@@ -76,7 +82,7 @@ const TextInput = forwardRef(
 				{ !! help && (
 					<p
 						id={ id + '__help' }
-						className="wc-block-text-input__help"
+						className="wc-block-components-text-input__help"
 					>
 						{ help }
 					</p>
@@ -97,6 +103,7 @@ TextInput.propTypes = {
 	screenReaderLabel: PropTypes.string,
 	disabled: PropTypes.bool,
 	help: PropTypes.string,
+	autoCapitalize: PropTypes.string,
 	autoComplete: PropTypes.string,
 	required: PropTypes.bool,
 };

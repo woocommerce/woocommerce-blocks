@@ -1,38 +1,78 @@
-.wc-block-component-express-checkout {
+$border-width: 1px;
+$border-radius: 5px;
+
+.wc-block-components-express-checkout {
 	margin: auto;
-	border: 2px solid $black;
-	border-radius: 5px;
-	padding: 8px;
+	position: relative;
 
-	.wc-block-component-express-checkout__title {
-		position: relative;
-		background-color: $white;
-		padding-left: $gap-small;
-		padding-right: $gap-small;
-		margin-top: -24px;
-		margin-left: $gap-small;
-		margin-bottom: $gap-small;
-		color: $black;
-		font-weight: bold;
-		display: inline-block;
+	.wc-block-components-express-checkout__title-container {
+		display: flex;
+		flex-direction: row;
+		left: 0;
+		position: absolute;
+		right: 0;
+		top: -$border-radius;
 		vertical-align: middle;
+
+		// Pseudo-elements used to show the border before and after the title.
+		&::before {
+			border-left: $border-width solid currentColor;
+			border-top: $border-width solid currentColor;
+			border-radius: $border-radius 0 0 0;
+			content: "";
+			display: block;
+			height: $border-radius - $border-width;
+			margin-right: $gap-small;
+			opacity: 0.3;
+			pointer-events: none;
+			width: #{$gap-larger - $gap-small - $border-width * 2};
+		}
+
+		&::after {
+			border-right: $border-width solid currentColor;
+			border-top: $border-width solid currentColor;
+			border-radius: 0 $border-radius 0 0;
+			content: "";
+			display: block;
+			height: $border-radius - $border-width;
+			margin-left: $gap-small;
+			opacity: 0.3;
+			pointer-events: none;
+			flex-grow: 1;
+		}
 	}
 
-	.wc-block-component-express-checkout__content {
-		padding: 0 $gap-large;
+	.wc-block-components-express-checkout__title {
+		flex-grow: 0;
+		transform: translateY(-50%);
 	}
 
-	.wc-block-component-express-checkout-payment-event-buttons {
+	.wc-block-components-express-checkout__content {
+		@include with-translucent-border(0 $border-width $border-width);
+		margin-top: calc(0.75em + #{$border-radius});
+		padding: em($gap-large) #{$gap-larger - $border-width} em($gap) #{$gap-larger - $border-width};
+
+		&::after {
+			border-radius: 0 0 $border-radius $border-radius;
+		}
+
+		> p {
+			margin-bottom: em($gap);
+		}
+	}
+
+	.wc-block-components-express-checkout-payment-event-buttons {
 		list-style: none;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
 		width: 100%;
 		padding: 0;
-		margin: 0 0 $gap;
+		margin: 0;
 		overflow: hidden;
 		> li {
 			display: inline-block;
+			margin: 0;
 			width: 50%;
 			> img {
 				width: 100%;
@@ -51,36 +91,53 @@
 .wc-block-card-elements {
 	display: flex;
 	width: 100%;
+
+	.wc-block-components-validation-error {
+		position: static;
+	}
 }
 
 .wc-block-gateway-container {
 	position: relative;
-	margin-bottom: $gap-large;
+	margin-bottom: em($gap-large);
 	white-space: nowrap;
 
 	&.wc-card-number-element {
-		flex: auto;
+		flex-basis: 15em;
+		flex-grow: 1;
+		// Currently, min() CSS function calls need to be wrapped with unquote.
+		min-width: unquote("min(15em, 60%)");
 	}
 
-	&.wc-card-expiry-element,
-	&.wc-card-cvc-element {
-		width: $card-element-width;
+	&.wc-card-expiry-element {
+		flex-basis: 7em;
 		margin-left: $gap-small;
+		min-width: unquote("min(7em, calc(24% - #{$gap-small}))");
+	}
+
+	&.wc-card-cvc-element {
+		flex-basis: 7em;
+		margin-left: $gap-small;
+		// Notice the min width ems value is smaller than flex-basis. That's because
+		// by default we want it to have the same width as `expiry-element`, but
+		// if available space is scarce, `cvc-element` should get smaller faster.
+		min-width: unquote("min( 5em, calc(16% - #{$gap-small}))");
 	}
 
 	.wc-block-gateway-input {
+		@include font-size(regular);
+		line-height: 1.375; // =22px when font-size is 16px.
 		background-color: #fff;
-		padding: $gap-small $gap;
+		padding: em($gap-small) 0 em($gap-small) $gap;
 		border-radius: 4px;
 		border: 1px solid $input-border-gray;
 		width: 100%;
-		font-size: 16px;
-		line-height: 22px;
 		font-family: inherit;
 		margin: 0;
 		box-sizing: border-box;
-		height: 48px;
+		height: 3em;
 		color: $input-text-active;
+		cursor: text;
 
 		&:focus {
 			background-color: #fff;
@@ -92,19 +149,21 @@
 	}
 
 	label {
+		@include reset-typography();
+		@include font-size(regular);
+		line-height: 1.375; // =22px when font-size is 16px.
 		position: absolute;
-		transform: translateY(#{$gap-small});
+		transform: translateY(0.75em);
 		left: 0;
 		top: 0;
 		transform-origin: top left;
-		font-size: 16px;
-		line-height: 22px;
 		color: $gray-50;
 		transition: transform 200ms ease;
-		margin: 0 $gap;
+		margin: 0 0 0 #{$gap + 1px};
 		overflow: hidden;
 		text-overflow: ellipsis;
-		max-width: calc(100% - #{2 * $gap});
+		max-width: calc(100% - #{$gap + $gap-smaller});
+		cursor: text;
 
 		@media screen and (prefers-reduced-motion: reduce) {
 			transition: none;
@@ -113,7 +172,10 @@
 
 	&.wc-inline-card-element {
 		label {
-			margin-left: $gap-largest;
+			// $gap is the padding of the input box, 1.5em the width of the card
+			// icon and $gap-smaller the space between the card
+			// icon and the label.
+			margin-left: calc(#{$gap + $gap-smaller} + 1.5em);
 		}
 		.wc-block-gateway-input.focused.empty,
 		.wc-block-gateway-input:not(.empty) {
@@ -122,7 +184,7 @@
 				transform: translateY(#{$gap-smallest}) scale(0.75);
 			}
 		}
-		& + .wc-block-form-input-validation-error {
+		& + .wc-block-components-validation-error {
 			position: static;
 			margin-top: -$gap-large;
 		}
@@ -130,7 +192,7 @@
 
 	.wc-block-gateway-input.focused.empty,
 	.wc-block-gateway-input:not(.empty) {
-		padding: $gap-large $gap $gap-smallest;
+		padding: em($gap-large) 0 em($gap-smallest) $gap;
 		& + label {
 			transform: translateY(#{$gap-smallest}) scale(0.75);
 		}
@@ -145,6 +207,29 @@
 
 	.wc-block-gateway-input.has-error + label {
 		color: $error-red;
+	}
+}
+
+// These elements have available space below, so we can display errors with a
+// larger line height.
+.is-medium,
+.is-large {
+	.wc-card-expiry-element,
+	.wc-card-cvc-element {
+		.wc-block-components-validation-error > p {
+			line-height: 16px;
+			padding-top: 4px;
+		}
+	}
+}
+
+.is-mobile,
+.is-small {
+	.wc-card-expiry-element,
+	.wc-card-cvc-element {
+		.wc-block-components-validation-error > p {
+			min-height: 28px;
+		}
 	}
 }
 
@@ -167,7 +252,8 @@
 	pointer-events: all; // Overrides parent disabled component in editor context
 }
 
-@include breakpoint( "<782px" ) {
+.is-mobile,
+.is-small {
 	.wc-block-card-elements {
 		flex-wrap: wrap;
 	}
@@ -185,5 +271,19 @@
 	.wc-block-gateway-container.wc-card-cvc-element {
 		flex-basis: calc(50% - #{$gap-smaller});
 		margin-left: $gap-smaller;
+	}
+}
+
+.theme-twentynineteen {
+	.wc-block-components-express-checkout__title::before {
+		display: none;
+	}
+}
+
+// For Twenty Twenty we need to increase specificity of the title.
+.theme-twentytwenty {
+	.wc-block-components-express-checkout .wc-block-components-express-checkout__title {
+		padding-left: $gap-small;
+		padding-right: $gap-small;
 	}
 }

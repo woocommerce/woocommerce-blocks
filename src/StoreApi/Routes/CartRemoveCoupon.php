@@ -32,9 +32,10 @@ class CartRemoveCoupon extends AbstractCartRoute {
 	public function get_args() {
 		return [
 			[
-				'methods'  => \WP_REST_Server::CREATABLE,
-				'callback' => [ $this, 'get_response' ],
-				'args'     => [
+				'methods'             => \WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'get_response' ],
+				'permission_callback' => '__return_true',
+				'args'                => [
 					'code' => [
 						'description' => __( 'Unique identifier for the coupon within the cart.', 'woo-gutenberg-products-block' ),
 						'type'        => 'string',
@@ -63,7 +64,7 @@ class CartRemoveCoupon extends AbstractCartRoute {
 		$coupon      = new \WC_Coupon( $coupon_code );
 
 		if ( $coupon->get_code() !== $coupon_code || ! $coupon->is_valid() ) {
-			throw new RouteException( 'woocommerce_rest_cart_coupon_error', __( 'Invalid coupon code.', 'woo-gutenberg-products-block' ), 403 );
+			throw new RouteException( 'woocommerce_rest_cart_coupon_error', __( 'Invalid coupon code.', 'woo-gutenberg-products-block' ), 400 );
 		}
 
 		if ( ! $controller->has_coupon( $coupon_code ) ) {

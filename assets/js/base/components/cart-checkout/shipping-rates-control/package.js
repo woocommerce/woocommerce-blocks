@@ -5,8 +5,9 @@ import PropTypes from 'prop-types';
 import { _n, sprintf } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
 import Label from '@woocommerce/base-components/label';
+import Title from '@woocommerce/base-components/title';
+import Panel from '@woocommerce/base-components/panel';
 import classNames from 'classnames';
-import { PanelBody, PanelRow } from 'wordpress-components';
 
 /**
  * Internal dependencies
@@ -28,19 +29,22 @@ const Package = ( {
 	const header = (
 		<>
 			{ title && (
-				<div className="wc-block-shipping-rates-control__package-title">
+				<Title
+					className="wc-block-components-shipping-rates-control__package-title"
+					headingLevel="3"
+				>
 					{ title }
-				</div>
+				</Title>
 			) }
 			{ showItems && (
-				<ul className="wc-block-shipping-rates-control__package-items">
+				<ul className="wc-block-components-shipping-rates-control__package-items">
 					{ Object.values( shippingRate.items ).map( ( v ) => {
 						const name = decodeEntities( v.name );
 						const quantity = v.quantity;
 						return (
 							<li
 								key={ name }
-								className="wc-block-shipping-rates-control__package-item"
+								className="wc-block-components-shipping-rates-control__package-item"
 							>
 								<Label
 									label={ `${ name } ×${ quantity }` }
@@ -75,19 +79,20 @@ const Package = ( {
 	);
 	if ( collapsible ) {
 		return (
-			<PanelBody
-				className="wc-block-shipping-rates-control__package"
-				title={ header }
+			<Panel
+				className="wc-block-components-shipping-rates-control__package"
+				hasBorder={ true }
 				initialOpen={ true }
+				title={ header }
 			>
-				<PanelRow>{ body }</PanelRow>
-			</PanelBody>
+				{ body }
+			</Panel>
 		);
 	}
 	return (
 		<div
 			className={ classNames(
-				'wc-block-shipping-rates-control__package',
+				'wc-block-components-shipping-rates-control__package',
 				className
 			) }
 		>

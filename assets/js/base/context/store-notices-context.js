@@ -2,21 +2,36 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import { createContext, useContext, useCallback } from '@wordpress/element';
+import {
+	createContext,
+	useContext,
+	useCallback,
+	useState,
+} from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 import {
 	StoreNoticesContainer,
 	SnackbarNoticesContainer,
 } from '@woocommerce/base-components/store-notices-container';
 
+/**
+ * @typedef {import('@woocommerce/type-defs/contexts').NoticeContext} NoticeContext
+ */
+
 const StoreNoticesContext = createContext( {
 	notices: [],
 	createNotice: ( status, text, props ) => void { status, text, props },
-	createSnackBarNotice: () => void null,
-	removeNotice: ( id ) => void id,
+	createSnackbarNotice: ( content, options ) => void { content, options },
+	removeNotice: ( id, ctxt ) => void { id, ctxt },
+	setIsSuppressed: ( val ) => void { val },
 	context: 'wc/core',
 } );
 
+/**
+ * Returns the notices context values.
+ *
+ * @return {NoticeContext} The notice context value from the notice context.
+ */
 export const useStoreNoticesContext = () => {
 	return useContext( StoreNoticesContext );
 };
@@ -38,6 +53,7 @@ export const StoreNoticesProvider = ( {
 	context = 'wc/core',
 } ) => {
 	const { createNotice, removeNotice } = useDispatch( 'core/notices' );
+	const [ isSuppressed, setIsSuppressed ] = useState( false );
 
 	const createNoticeWithContext = useCallback(
 		( status = 'default', content = '', options = {} ) => {
@@ -50,10 +66,10 @@ export const StoreNoticesProvider = ( {
 	);
 
 	const removeNoticeWithContext = useCallback(
-		( id ) => {
-			removeNotice( id, context );
+		( id, ctxt = context ) => {
+			removeNotice( id, ctxt );
 		},
-		[ createNotice, context ]
+		[ removeNotice, context ]
 	);
 
 	const createSnackbarNotice = useCallback(
@@ -81,18 +97,25 @@ export const StoreNoticesProvider = ( {
 		createSnackbarNotice,
 		removeNotice: removeNoticeWithContext,
 		context,
+		setIsSuppressed,
 	};
+
+	const noticeOutput = isSuppressed ? null : (
+		<StoreNoticesContainer
+			className={ className }
+			notices={ contextValue.notices }
+		/>
+	);
+
+	const snackbarNoticeOutput = isSuppressed ? null : (
+		<SnackbarNoticesContainer />
+	);
 
 	return (
 		<StoreNoticesContext.Provider value={ contextValue }>
-			{ createNoticeContainer && (
-				<StoreNoticesContainer
-					className={ className }
-					notices={ contextValue.notices }
-				/>
-			) }
+			{ createNoticeContainer && noticeOutput }
 			{ children }
-			<SnackbarNoticesContainer />
+			{ snackbarNoticeOutput }
 		</StoreNoticesContext.Provider>
 	);
 };

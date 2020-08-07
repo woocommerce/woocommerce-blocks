@@ -41,13 +41,21 @@ const FormattedMonetaryAmount = ( {
 	onValueChange,
 	...props
 } ) => {
-	const priceValue = value / 10 ** currency.minorUnit;
-
-	if ( ! Number.isFinite( priceValue ) && priceValue === '-' ) {
+	if ( value === '-' ) {
 		return null;
 	}
 
-	const classes = classNames( 'wc-block-formatted-money-amount', className );
+	const priceValue = value / 10 ** currency.minorUnit;
+
+	if ( ! Number.isFinite( priceValue ) ) {
+		return null;
+	}
+
+	const classes = classNames(
+		'wc-block-formatted-money-amount',
+		'wc-block-components-formatted-money-amount',
+		className
+	);
 	const numberFormatProps = {
 		displayType: 'text',
 		...props,

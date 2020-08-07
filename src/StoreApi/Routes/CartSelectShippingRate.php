@@ -32,9 +32,10 @@ class CartSelectShippingRate extends AbstractCartRoute {
 	public function get_args() {
 		return [
 			[
-				'methods'  => \WP_REST_Server::CREATABLE,
-				'callback' => [ $this, 'get_response' ],
-				'args'     => [
+				'methods'             => \WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'get_response' ],
+				'permission_callback' => '__return_true',
+				'args'                => [
 					'package_id' => array(
 						'description' => __( 'The ID of the package being shipped.', 'woo-gutenberg-products-block' ),
 						'type'        => 'integer',
@@ -64,7 +65,7 @@ class CartSelectShippingRate extends AbstractCartRoute {
 		}
 
 		if ( ! isset( $request['package_id'] ) || ! is_numeric( $request['package_id'] ) ) {
-			throw new RouteException( 'woocommerce_rest_cart_missing_package_id', __( 'Invalid Package ID.', 'woo-gutenberg-products-block' ), 403 );
+			throw new RouteException( 'woocommerce_rest_cart_missing_package_id', __( 'Invalid Package ID.', 'woo-gutenberg-products-block' ), 400 );
 		}
 
 		$controller = new CartController();

@@ -8,6 +8,8 @@
 	],
 	"moduleDirectories": [ "node_modules" ],
 	"moduleNameMapper": {
+		"@woocommerce/atomic-blocks": "assets/js/atomic/blocks",
+		"@woocommerce/atomic-utils": "assets/js/atomic/utils",
 		"@woocommerce/icons": "assets/js/icons",
 		"@woocommerce/settings": "assets/js/settings/shared",
 		"@woocommerce/block-settings": "assets/js/settings/blocks",
@@ -20,11 +22,19 @@
 		"@woocommerce/base-hooks(.*)$": "assets/js/base/hooks/$1",
 		"@woocommerce/base-utils(.*)$": "assets/js/base/utils",
 		"@woocommerce/block-data": "assets/js/data",
-		"@woocommerce/resource-previews": "assets/js/previews"
+		"@woocommerce/resource-previews": "assets/js/previews",
+		"@woocommerce/shared-context": "assets/js/shared/context",
+		"@woocommerce/shared-hocs": "assets/js/shared/hocs",
+		"@woocommerce/blocks-test-utils": "tests/utils"
 	},
 	"setupFiles": [
 		"<rootDir>/node_modules/@wordpress/jest-preset-default/scripts/setup-globals.js",
-		"<rootDir>/tests/js/setup-globals.js"
+		"<rootDir>/tests/js/setup-globals.js",
+		"<rootDir>/tests/js/setup-fetch.js"
+	],
+	"setupFilesAfterEnv": [
+		"<rootDir>/tests/js/setup-after-env.js",
+		"@wordpress/jest-console"
 	],
 	"testPathIgnorePatterns": [
 		"<rootDir>/tests/",
@@ -32,6 +42,7 @@
 		"<rootDir>/vendor/"
 	],
 	"transformIgnorePatterns": [ "node_modules/(?!(simple-html-tokenizer)/)" ],
+	"testEnvironment": "jest-environment-jsdom-sixteen",
 	"preset": "@wordpress/jest-preset-default",
 	"transform": {
 		"^.+\\.js$": "<rootDir>/tests/js/jestPreprocess.js"

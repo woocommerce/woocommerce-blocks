@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { InspectorControls } from '@wordpress/editor';
+import { InspectorControls } from '@wordpress/block-editor';
 import {
 	Button,
 	PanelBody,
@@ -125,6 +125,7 @@ const ReviewsByProductEditor = ( {
 					'Reviews by Product',
 					'woo-gutenberg-products-block'
 				) }
+				className="wc-block-reviews-by-product"
 			>
 				{ __(
 					'Show reviews of your product to build trust',
@@ -143,7 +144,7 @@ const ReviewsByProductEditor = ( {
 						} }
 						renderItem={ renderProductControlItem }
 					/>
-					<Button isDefault onClick={ onDone }>
+					<Button isPrimary onClick={ onDone }>
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }
 					</Button>
 				</div>
@@ -161,7 +162,6 @@ const ReviewsByProductEditor = ( {
 			{ getInspectorControls() }
 			<EditorContainerBlock
 				attributes={ attributes }
-				className="wc-block-all-reviews"
 				icon={
 					<Icon
 						icon={ comment }

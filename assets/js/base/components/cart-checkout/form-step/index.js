@@ -3,6 +3,7 @@
  */
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import Title from '@woocommerce/base-components/title';
 
 /**
  * Internal dependencies
@@ -10,13 +11,19 @@ import PropTypes from 'prop-types';
 import './style.scss';
 
 const StepHeading = ( { title, stepHeadingContent } ) => (
-	<div className="wc-block-checkout-step__heading">
-		<h4 aria-hidden="true" className="wc-block-checkout-step__title">
+	<div className="wc-block-components-checkout-step__heading">
+		<Title
+			aria-hidden="true"
+			className="wc-block-components-checkout-step__title"
+			headingLevel="2"
+		>
 			{ title }
-		</h4>
-		<span className="wc-block-checkout-step__heading-content">
-			{ stepHeadingContent }
-		</span>
+		</Title>
+		{ !! stepHeadingContent && (
+			<span className="wc-block-components-checkout-step__heading-content">
+				{ stepHeadingContent }
+			</span>
+		) }
 	</div>
 );
 
@@ -28,26 +35,47 @@ const FormStep = ( {
 	description,
 	children,
 	disabled = false,
+	showStepNumber = true,
 	stepHeadingContent = () => {},
 } ) => {
+	// If the form step doesn't have a legend or title, render a <div> instead
+	// of a <fieldset>.
+	const Element = legend || title ? 'fieldset' : 'div';
+
 	return (
-		<fieldset
-			className={ classnames( className, 'wc-block-checkout-step' ) }
+		<Element
+			className={ classnames(
+				className,
+				'wc-block-components-checkout-step',
+				{
+					'wc-block-components-checkout-step--with-step-number': showStepNumber,
+				}
+			) }
 			id={ id }
 			disabled={ disabled }
 		>
-			<legend className="screen-reader-text">{ legend || title }</legend>
-			<StepHeading
-				title={ title }
-				stepHeadingContent={ stepHeadingContent() }
-			/>
-			{ !! description && (
-				<p className="wc-block-checkout-step__description">
-					{ description }
-				</p>
+			{ !! ( legend || title ) && (
+				<legend className="screen-reader-text">
+					{ legend || title }
+				</legend>
 			) }
-			<div className="wc-block-checkout-step__content">{ children }</div>
-		</fieldset>
+			{ !! title && (
+				<StepHeading
+					title={ title }
+					stepHeadingContent={ stepHeadingContent() }
+				/>
+			) }
+			<div className="wc-block-components-checkout-step__container">
+				{ !! description && (
+					<p className="wc-block-components-checkout-step__description">
+						{ description }
+					</p>
+				) }
+				<div className="wc-block-components-checkout-step__content">
+					{ children }
+				</div>
+			</div>
+		</Element>
 	);
 };
 
@@ -57,6 +85,7 @@ FormStep.propTypes = {
 	title: PropTypes.string,
 	description: PropTypes.string,
 	children: PropTypes.node,
+	showStepNumber: PropTypes.bool,
 	stepHeadingContent: PropTypes.func,
 	disabled: PropTypes.bool,
 	legend: PropTypes.string,

@@ -12,7 +12,7 @@ import {
 	PanelColorSettings,
 	withColors,
 	RichText,
-} from '@wordpress/editor';
+} from '@wordpress/block-editor';
 import {
 	Button,
 	FocalPointPicker,
@@ -214,7 +214,7 @@ const FeaturedCategory = ( {
 						} }
 						isSingle
 					/>
-					<Button isDefault onClick={ onDone }>
+					<Button isPrimary onClick={ onDone }>
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }
 					</Button>
 				</div>

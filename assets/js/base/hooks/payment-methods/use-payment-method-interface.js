@@ -12,14 +12,16 @@ import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import { useEffect, useRef } from '@wordpress/element';
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 import { ValidationInputError } from '@woocommerce/base-components/validation';
-import CheckboxControl from '@woocommerce/base-components/checkbox-control';
 import { useEmitResponse } from '@woocommerce/base-hooks';
-import { PaymentMethodIcons } from '@woocommerce/base-components/cart-checkout';
+import {
+	PaymentMethodIcons,
+	PaymentMethodLabel,
+} from '@woocommerce/base-components/cart-checkout';
 
 /**
  * Internal dependencies
  */
-import { useStoreOrder, useStoreCartCoupons, useStoreCart } from '..';
+import { useStoreCartCoupons, useStoreCart } from '..';
 
 /**
  * @typedef {import('@woocommerce/type-defs/registered-payment-method-props').RegisteredPaymentMethodProps} RegisteredPaymentMethodProps
@@ -77,9 +79,6 @@ export const prepareTotalItems = ( totals, needsShipping ) => {
 	return newTotals;
 };
 
-// @todo This will expose the consistent properties used as the payment method
-// interface pulled from the various contexts exposing data for the interface.
-// @todo need to also include notices interfaces here (maybe?).
 /**
  * @return {RegisteredPaymentMethodProps} Interface to use as payment method props.
  */
@@ -117,8 +116,7 @@ export const usePaymentMethodInterface = () => {
 		onShippingRateSelectFail,
 		needsShipping,
 	} = useShippingDataContext();
-	const { billingData, setBillingData } = useBillingDataContext();
-	const { order, isLoading: orderLoading } = useStoreOrder();
+	const { billingData } = useBillingDataContext();
 	const { cartTotals } = useStoreCart();
 	const { appliedCoupons } = useStoreCartCoupons();
 	const { noticeContexts, responseTypes } = useEmitResponse();
@@ -165,9 +163,6 @@ export const usePaymentMethodInterface = () => {
 		},
 		billing: {
 			billingData,
-			setBillingData,
-			order,
-			orderLoading,
 			cartTotal: currentCartTotal.current,
 			currency: getCurrencyFromPriceResponse( cartTotals ),
 			cartTotalItems: currentCartTotals.current,
@@ -187,8 +182,8 @@ export const usePaymentMethodInterface = () => {
 		},
 		components: {
 			ValidationInputError,
-			CheckboxControl,
 			PaymentMethodIcons,
+			PaymentMethodLabel,
 		},
 		emitResponse: {
 			noticeContexts,

@@ -18,7 +18,6 @@ import {
 	DISPLAY_CART_PRICES_INCLUDING_TAX,
 } from '@woocommerce/block-settings';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
-import { Card, CardBody } from 'wordpress-components';
 import {
 	useStoreCartCoupons,
 	useStoreCart,
@@ -30,6 +29,7 @@ import {
 	SidebarLayout,
 	Main,
 } from '@woocommerce/base-components/sidebar-layout';
+import Title from '@woocommerce/base-components/title';
 import { getSetting } from '@woocommerce/settings';
 import { useEffect } from '@wordpress/element';
 import { decodeEntities } from '@wordpress/html-entities';
@@ -42,7 +42,6 @@ import CartLineItemsTitle from './cart-line-items-title';
 import CartLineItemsTable from './cart-line-items-table';
 
 import './style.scss';
-import './editor.scss';
 
 /**
  * Component that renders the Cart block when user has something in cart aka "full".
@@ -95,63 +94,54 @@ const Cart = ( { attributes } ) => {
 				/>
 			</Main>
 			<Sidebar className="wc-block-cart__sidebar">
-				<Card isElevated={ true }>
-					<CardBody>
-						<h2 className="wc-block-cart__totals-title">
-							{ __(
-								'Cart totals',
-								'woo-gutenberg-products-block'
-							) }
-						</h2>
-						<SubtotalsItem
-							currency={ totalsCurrency }
-							values={ cartTotals }
-						/>
-						<TotalsFeesItem
-							currency={ totalsCurrency }
-							values={ cartTotals }
-						/>
-						<TotalsDiscountItem
-							cartCoupons={ appliedCoupons }
-							currency={ totalsCurrency }
-							isRemovingCoupon={ isRemovingCoupon }
-							removeCoupon={ removeCoupon }
-							values={ cartTotals }
-						/>
-						{ cartNeedsShipping && (
-							<TotalsShippingItem
-								showCalculator={ isShippingCalculatorEnabled }
-								showRatesWithoutAddress={
-									! isShippingCostHidden
-								}
-								values={ cartTotals }
-								currency={ totalsCurrency }
-							/>
-						) }
-						{ ! DISPLAY_CART_PRICES_INCLUDING_TAX && (
-							<TotalsTaxesItem
-								currency={ totalsCurrency }
-								values={ cartTotals }
-							/>
-						) }
-						{ COUPONS_ENABLED && (
-							<TotalsCouponCodeInput
-								onSubmit={ applyCoupon }
-								isLoading={ isApplyingCoupon }
-							/>
-						) }
-						<TotalsFooterItem
-							currency={ totalsCurrency }
-							values={ cartTotals }
-						/>
-						<CheckoutButton
-							link={ getSetting(
-								'page-' + attributes?.checkoutPageId,
-								false
-							) }
-						/>
-					</CardBody>
-				</Card>
+				<Title headingLevel="2" className="wc-block-cart__totals-title">
+					{ __( 'Cart totals', 'woo-gutenberg-products-block' ) }
+				</Title>
+				<SubtotalsItem
+					currency={ totalsCurrency }
+					values={ cartTotals }
+				/>
+				<TotalsFeesItem
+					currency={ totalsCurrency }
+					values={ cartTotals }
+				/>
+				<TotalsDiscountItem
+					cartCoupons={ appliedCoupons }
+					currency={ totalsCurrency }
+					isRemovingCoupon={ isRemovingCoupon }
+					removeCoupon={ removeCoupon }
+					values={ cartTotals }
+				/>
+				{ cartNeedsShipping && (
+					<TotalsShippingItem
+						showCalculator={ isShippingCalculatorEnabled }
+						showRatesWithoutAddress={ ! isShippingCostHidden }
+						values={ cartTotals }
+						currency={ totalsCurrency }
+					/>
+				) }
+				{ ! DISPLAY_CART_PRICES_INCLUDING_TAX && (
+					<TotalsTaxesItem
+						currency={ totalsCurrency }
+						values={ cartTotals }
+					/>
+				) }
+				{ COUPONS_ENABLED && (
+					<TotalsCouponCodeInput
+						onSubmit={ applyCoupon }
+						isLoading={ isApplyingCoupon }
+					/>
+				) }
+				<TotalsFooterItem
+					currency={ totalsCurrency }
+					values={ cartTotals }
+				/>
+				<CheckoutButton
+					link={ getSetting(
+						'page-' + attributes?.checkoutPageId,
+						false
+					) }
+				/>
 			</Sidebar>
 		</SidebarLayout>
 	);

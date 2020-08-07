@@ -119,10 +119,6 @@
  * @typedef BillingDataProps
  *
  * @property {BillingData}             billingData               The address used for billing.
- * @property {Function}                setBillingData            Used to set the cart billing
- *                                                               address.
- * @property {Object}                  order                     The order object for the purchase.
- * @property {boolean}                 orderLoading              True if the order is being loaded.
  * @property {PreparedCartTotalItem}   cartTotal                 The total item for the cart.
  * @property {SiteCurrency}            currency                  Currency object.
  * @property {PreparedCartTotalItem[]} cartTotalItems            The various subtotal amounts.
@@ -146,17 +142,17 @@
  *                                                              will fire when checkout begins
  *                                                              processing (as a part of the
  *                                                              processing process).
- * @property {function()}           onShippingRateSuccess       Used to subscribe callbacks that
+ * @property {function(function())} onShippingRateSuccess       Used to subscribe callbacks that
  *                                                              will fire when shipping rates for a
  *                                                              given address have been received
  *                                                              successfully.
- * @property {function()}           onShippingRateFail          Used to subscribe callbacks that
+ * @property {function(function())} onShippingRateFail          Used to subscribe callbacks that
  *                                                              will fire when retrieving shipping
  *                                                              rates failed.
- * @property {function()}           onShippingRateSelectSuccess Used to subscribe callbacks that
+ * @property {function(function())} onShippingRateSelectSuccess Used to subscribe callbacks that
  *                                                              will fire after selecting a
  *                                                              shipping rate successfully.
- * @property {function()}           onShippingRateSelectFail    Used to subscribe callbacks that
+ * @property {function(function())} onShippingRateSelectFail    Used to subscribe callbacks that
  *                                                              will fire after selecting a shipping
  *                                                              rate unsuccessfully.
  * @property {function(function())} onPaymentProcessing         Event registration callback for
@@ -169,8 +165,10 @@
  *
  * @property {function(Object):Object} ValidationInputError  A container for holding validation
  *                                                           errors
- * @property {function(Object):Object} CheckboxControl       A checkbox control, usually used for
- *                                                           saved payment method functionality
+ * @property {function(Object):Object} PaymentMethodIcons    A component used for displaying payment
+ *                                                           method icons.
+ * @property {function(Object):Object} PaymentMethodLabel    A component used for displaying payment
+ *                                                           method labels, including an icon.
  */
 
 /**
@@ -209,6 +207,17 @@
  *                                                                 message string) for express
  *                                                                 payment methods. Does not change
  *                                                                 payment status.
+ * @property {function()}                 [onClick]                Provided to express payment
+ *                                                                 methods that should be triggered
+ *                                                                 when the payment method button
+ *                                                                 is clicked (which will signal to
+ *                                                                 checkout the payment method has
+ *                                                                 taken over payment processing)
+ * @property {function()}                 [onClose]                Provided to express payment
+ *                                                                 methods that should be triggered
+ *                                                                 when the express payment method
+ *                                                                 modal closes and control is
+ *                                                                 returned to checkout.
  */
 
 export {};

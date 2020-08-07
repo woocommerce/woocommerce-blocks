@@ -8,6 +8,7 @@ import {
 	useRef,
 	useMemo,
 	useEffect,
+	useCallback,
 } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { useStoreNotices, useEmitResponse } from '@woocommerce/base-hooks';
@@ -25,7 +26,7 @@ import {
 	emitEventWithAbort,
 	reducer as emitReducer,
 } from './event-emit';
-import { useValidationContext } from '../validation';
+import { useValidationContext } from '../../shared/validation';
 
 /**
  * @typedef {import('@woocommerce/type-defs/checkout').CheckoutDispatchActions} CheckoutDispatchActions
@@ -33,8 +34,6 @@ import { useValidationContext } from '../validation';
  */
 
 const CheckoutContext = createContext( {
-	submitLabel: '',
-	onSubmit: () => void null,
 	isComplete: false,
 	isIdle: false,
 	isCalculating: false,
@@ -44,7 +43,9 @@ const CheckoutContext = createContext( {
 	hasError: false,
 	redirectUrl: '',
 	orderId: 0,
+	orderNotes: '',
 	customerId: 0,
+	onSubmit: () => void null,
 	onCheckoutAfterProcessingWithSuccess: ( callback ) => void callback,
 	onCheckoutAfterProcessingWithError: ( callback ) => void callback,
 	onCheckoutBeforeProcessing: ( callback ) => void callback,
@@ -56,6 +57,7 @@ const CheckoutContext = createContext( {
 		incrementCalculating: () => void null,
 		decrementCalculating: () => void null,
 		setOrderId: ( id ) => void id,
+		setOrderNotes: ( orderNotes ) => void orderNotes,
 	},
 	hasOrder: false,
 	isCart: false,
@@ -78,8 +80,6 @@ export const useCheckoutContext = () => {
  * @param {string}  props.redirectUrl         Initialize what the checkout will
  *                                            redirect to after successful
  *                                            submit.
- * @param {string}  props.submitLabel         What will be used for the checkout
- *                                            submit button label.
  * @param {boolean} props.isCart              If context provider is being used
  *                                            in cart context.
  */
@@ -87,7 +87,6 @@ export const CheckoutStateProvider = ( {
 	children,
 	redirectUrl,
 	isCart = false,
-	submitLabel = __( 'Place Order', 'woo-gutenberg-product-block' ),
 } ) => {
 	// note, this is done intentionally so that the default state now has
 	// the redirectUrl for when checkout is reset to PRISTINE state.
@@ -140,6 +139,8 @@ export const CheckoutStateProvider = ( {
 				void dispatch( actions.decrementCalculating() ),
 			setOrderId: ( orderId ) =>
 				void dispatch( actions.setOrderId( orderId ) ),
+			setOrderNotes: ( orderNotes ) =>
+				void dispatch( actions.setOrderNotes( orderNotes ) ),
 			setAfterProcessing: ( response ) => {
 				// capture general error message if this is an error response.
 				if (
@@ -177,7 +178,7 @@ export const CheckoutStateProvider = ( {
 
 	// emit events.
 	useEffect( () => {
-		const { status } = checkoutState;
+		const status = checkoutState.status;
 		if ( status === STATUS.BEFORE_PROCESSING ) {
 			removeNotices( 'error' );
 			emitEvent(
@@ -200,7 +201,13 @@ export const CheckoutStateProvider = ( {
 				}
 			} );
 		}
-	}, [ checkoutState.status, setValidationErrors ] );
+	}, [
+		checkoutState.status,
+		setValidationErrors,
+		addErrorNotice,
+		removeNotices,
+		dispatch,
+	] );
 
 	useEffect( () => {
 		if ( checkoutState.status === STATUS.AFTER_PROCESSING ) {
@@ -296,17 +303,20 @@ export const CheckoutStateProvider = ( {
 		checkoutState.customerNote,
 		checkoutState.processingResponse,
 		dispatchActions,
+		addErrorNotice,
+		isErrorResponse,
+		isFailResponse,
+		isSuccessResponse,
 	] );
 
-	const onSubmit = () => {
+	const onSubmit = useCallback( () => {
 		dispatch( actions.setBeforeProcessing() );
-	};
+	}, [] );
 
 	/**
 	 * @type {CheckoutDataContext}
 	 */
 	const checkoutData = {
-		submitLabel,
 		onSubmit,
 		isComplete: checkoutState.status === STATUS.COMPLETE,
 		isIdle: checkoutState.status === STATUS.IDLE,
@@ -324,6 +334,7 @@ export const CheckoutStateProvider = ( {
 		orderId: checkoutState.orderId,
 		hasOrder: !! checkoutState.orderId,
 		customerId: checkoutState.customerId,
+		orderNotes: checkoutState.orderNotes,
 	};
 	return (
 		<CheckoutContext.Provider value={ checkoutData }>

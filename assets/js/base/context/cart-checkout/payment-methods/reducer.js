@@ -12,7 +12,14 @@ const {
 	COMPLETE,
 	SET_REGISTERED_PAYMENT_METHODS,
 	SET_REGISTERED_EXPRESS_PAYMENT_METHODS,
+	SET_SHOULD_SAVE_PAYMENT_METHOD,
 } = ACTION_TYPES;
+
+const hasSavedPaymentToken = ( paymentMethodData ) => {
+	return !! (
+		typeof paymentMethodData === 'object' && paymentMethodData.isSavedToken
+	);
+};
 
 /**
  * Reducer for payment data state
@@ -22,7 +29,13 @@ const {
  */
 const reducer = (
 	state = DEFAULT_PAYMENT_DATA,
-	{ type, paymentMethodData, errorMessage, paymentMethods }
+	{
+		type,
+		paymentMethodData,
+		shouldSavePaymentMethod,
+		errorMessage,
+		paymentMethods,
+	}
 ) => {
 	switch ( type ) {
 		case STARTED:
@@ -57,6 +70,9 @@ const reducer = (
 						currentStatus: SUCCESS,
 						paymentMethodData:
 							paymentMethodData || state.paymentMethodData,
+						hasSavedToken: hasSavedPaymentToken(
+							paymentMethodData
+						),
 				  }
 				: state;
 		case PROCESSING:
@@ -86,14 +102,12 @@ const reducer = (
 				expressPaymentMethods: {
 					...state.expressPaymentMethods,
 				},
+				shouldSavePaymentMethod: state.shouldSavePaymentMethod,
 			};
 		case SET_REGISTERED_PAYMENT_METHODS:
 			return {
 				...state,
-				paymentMethods: {
-					...state.paymentMethods,
-					...paymentMethods,
-				},
+				paymentMethods,
 			};
 		case SET_REGISTERED_EXPRESS_PAYMENT_METHODS:
 			return {
@@ -102,6 +116,11 @@ const reducer = (
 					...state.expressPaymentMethods,
 					...paymentMethods,
 				},
+			};
+		case SET_SHOULD_SAVE_PAYMENT_METHOD:
+			return {
+				...state,
+				shouldSavePaymentMethod,
 			};
 	}
 	return state;

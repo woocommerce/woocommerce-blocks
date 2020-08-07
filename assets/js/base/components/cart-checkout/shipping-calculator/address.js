@@ -3,10 +3,8 @@
  */
 import PropTypes from 'prop-types';
 import { __ } from '@wordpress/i18n';
-import {
-	AddressForm,
-	Button,
-} from '@woocommerce/base-components/cart-checkout';
+import { AddressForm } from '@woocommerce/base-components/cart-checkout';
+import Button from '@woocommerce/base-components/button';
 import { useState } from '@wordpress/element';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { useValidationContext } from '@woocommerce/base-context';
@@ -53,7 +51,7 @@ const ShippingCalculatorAddress = ( {
 	} );
 
 	return (
-		<form className="wc-block-shipping-calculator-address">
+		<form className="wc-block-components-shipping-calculator-address">
 			<AddressForm
 				fields={ addressFields }
 				fieldConfig={ fieldConfig }
@@ -61,7 +59,7 @@ const ShippingCalculatorAddress = ( {
 				values={ address }
 			/>
 			<Button
-				className="wc-block-shipping-calculator-address__button"
+				className="wc-block-components-shipping-calculator-address__button"
 				disabled={ isShallowEqual( address, initialAddress ) }
 				onClick={ ( e ) => {
 					e.preventDefault();

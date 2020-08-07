@@ -15,7 +15,7 @@ import { previewShippingRates } from './shipping-rates';
 
 // Sample data for cart block.
 // This closely resembles the data returned from the Store API /cart endpoint.
-// https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/master/src/RestApi/StoreApi#cart-api
+// https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/main/src/RestApi/StoreApi#cart-api
 export const previewCart = {
 	coupons: [],
 	shipping_rates: SHIPPING_METHODS_EXIST ? previewShippingRates : [],
@@ -25,10 +25,6 @@ export const previewCart = {
 			id: 1,
 			quantity: 2,
 			name: __( 'Beanie', 'woo-gutenberg-products-block' ),
-			summary: __(
-				'Warm hat for winter',
-				'woo-gutenberg-products-block'
-			),
 			short_description: __(
 				'Warm hat for winter',
 				'woo-gutenberg-products-block'
@@ -39,6 +35,7 @@ export const previewCart = {
 			permalink: 'https://example.org',
 			low_stock_remaining: 2,
 			backorders_allowed: false,
+			show_backorder_badge: false,
 			sold_individually: false,
 			images: [
 				{
@@ -98,10 +95,6 @@ export const previewCart = {
 			id: 2,
 			quantity: 1,
 			name: __( 'Cap', 'woo-gutenberg-products-block' ),
-			summary: __(
-				'Lightweight baseball cap',
-				'woo-gutenberg-products-block'
-			),
 			short_description: __(
 				'Lightweight baseball cap',
 				'woo-gutenberg-products-block'
@@ -111,6 +104,7 @@ export const previewCart = {
 			sku: 'woo-cap',
 			permalink: 'https://example.org',
 			backorders_allowed: false,
+			show_backorder_badge: false,
 			sold_individually: false,
 			images: [
 				{

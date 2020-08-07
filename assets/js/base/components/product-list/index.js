@@ -16,7 +16,7 @@ import {
 	useQueryStateByKey,
 } from '@woocommerce/base-hooks';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
-import { useProductLayoutContext } from '@woocommerce/base-context';
+import { useInnerBlockLayoutContext } from '@woocommerce/shared-context';
 import { speak } from '@wordpress/a11y';
 
 /**
@@ -114,7 +114,7 @@ const ProductList = ( {
 	const { products, totalProducts, productsLoading } = useStoreProducts(
 		queryState
 	);
-	const { layoutStyleClassPrefix } = useProductLayoutContext();
+	const { parentClassName } = useInnerBlockLayoutContext();
 	const totalQuery = extractPaginationAndSortAttributes( queryState );
 
 	// These are possible filters.
@@ -162,7 +162,7 @@ const ProductList = ( {
 		const alignClass = typeof align !== 'undefined' ? 'align' + align : '';
 
 		return classnames(
-			layoutStyleClassPrefix,
+			parentClassName,
 			alignClass,
 			'has-' + columns + '-columns',
 			{
@@ -206,7 +206,7 @@ const ProductList = ( {
 			) }
 			{ ! hasProducts && ! hasFilters && <NoProducts /> }
 			{ hasProducts && (
-				<ul className={ `${ layoutStyleClassPrefix }__products` }>
+				<ul className={ `${ parentClassName }__products` }>
 					{ listProducts.map( ( product = {}, i ) => (
 						<ProductListItem
 							key={ product.id || i }

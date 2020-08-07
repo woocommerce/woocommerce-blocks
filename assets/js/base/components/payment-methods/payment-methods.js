@@ -4,20 +4,23 @@
 import {
 	usePaymentMethods,
 	usePaymentMethodInterface,
+	useStoreNotices,
+	useEmitResponse,
 } from '@woocommerce/base-hooks';
 import {
-	useCallback,
 	cloneElement,
 	useRef,
 	useEffect,
 	useState,
+	useCallback,
 } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import {
+	useCheckoutContext,
 	useEditorContext,
 	usePaymentMethodDataContext,
 } from '@woocommerce/base-context';
-import { PaymentMethodIcons } from '@woocommerce/base-components/cart-checkout';
+import CheckboxControl from '@woocommerce/base-components/checkbox-control';
 
 /**
  * Internal dependencies
@@ -54,6 +57,8 @@ const PaymentMethods = () => {
 	const {
 		customerPaymentMethods = {},
 		setActivePaymentMethod,
+		shouldSavePayment,
+		setShouldSavePayment,
 	} = usePaymentMethodDataContext();
 	const { isInitialized, paymentMethods } = usePaymentMethods();
 	const currentPaymentMethods = useRef( paymentMethods );
@@ -62,7 +67,10 @@ const PaymentMethods = () => {
 		...paymentMethodInterface
 	} = usePaymentMethodInterface();
 	const currentPaymentMethodInterface = useRef( paymentMethodInterface );
-	const [ selectedToken, setSelectedToken ] = useState( 0 );
+	const [ selectedToken, setSelectedToken ] = useState( '0' );
+	const { noticeContexts } = useEmitResponse();
+	const { removeNotice } = useStoreNotices();
+	const { customerId } = useCheckoutContext();
 
 	// update ref on change.
 	useEffect( () => {
@@ -71,26 +79,49 @@ const PaymentMethods = () => {
 	}, [ paymentMethods, paymentMethodInterface, activePaymentMethod ] );
 
 	const getRenderedTab = useCallback(
-		() => ( selectedTab ) => {
+		( selectedTab ) => {
 			const paymentMethod = getPaymentMethod(
 				selectedTab,
 				currentPaymentMethods.current,
 				isEditor
 			);
-			return paymentMethod ? (
+			const { supports = {} } =
+				paymentMethod &&
+				currentPaymentMethods.current[ activePaymentMethod ]
+					? currentPaymentMethods.current[ activePaymentMethod ]
+					: {};
+			return paymentMethod && activePaymentMethod ? (
 				<PaymentMethodErrorBoundary isEditor={ isEditor }>
 					{ cloneElement( paymentMethod, {
 						activePaymentMethod,
 						...currentPaymentMethodInterface.current,
 					} ) }
+					{ customerId > 0 && supports.savePaymentInfo && (
+						<CheckboxControl
+							className="wc-block-components-payment-methods__save-card-info"
+							label={ __(
+								'Save payment information to my account for future purchases.',
+								'woo-gutenberg-products-block'
+							) }
+							checked={ shouldSavePayment }
+							onChange={ () =>
+								setShouldSavePayment( ! shouldSavePayment )
+							}
+						/>
+					) }
 				</PaymentMethodErrorBoundary>
 			) : null;
 		},
-		[ isEditor, activePaymentMethod ]
+		[
+			isEditor,
+			activePaymentMethod,
+			shouldSavePayment,
+			setShouldSavePayment,
+			customerId,
+		]
 	);
-
 	if (
-		! isInitialized ||
+		isInitialized &&
 		Object.keys( currentPaymentMethods.current ).length === 0
 	) {
 		return <NoPaymentMethods />;
@@ -98,33 +129,33 @@ const PaymentMethods = () => {
 	const renderedTabs = (
 		<Tabs
 			className="wc-block-components-checkout-payment-methods"
-			onSelect={ ( tabName ) => setActivePaymentMethod( tabName ) }
-			tabs={ Object.keys( currentPaymentMethods.current ).map(
-				( name ) => {
-					const { label, ariaLabel } = currentPaymentMethods.current[
-						name
-					];
-					return {
-						name,
-						title:
-							typeof label === 'string'
-								? label
-								: cloneElement( label, {
-										components: { PaymentMethodIcons },
-								  } ),
-						ariaLabel,
-					};
-				}
-			) }
+			onSelect={ ( tabName ) => {
+				setActivePaymentMethod( tabName );
+				removeNotice( 'wc-payment-error', noticeContexts.PAYMENTS );
+			} }
+			tabs={ Object.keys( paymentMethods ).map( ( name ) => {
+				const { label, ariaLabel } = paymentMethods[ name ];
+				return {
+					name,
+					title:
+						typeof label === 'string'
+							? label
+							: cloneElement( label, {
+									components:
+										currentPaymentMethodInterface.current
+											.components,
+							  } ),
+					ariaLabel,
+					content: getRenderedTab( name ),
+				};
+			} ) }
 			initialTabName={ activePaymentMethod }
 			ariaLabel={ __(
 				'Payment Methods',
 				'woo-gutenberg-products-block'
 			) }
 			id="wc-block-payment-methods"
-		>
-			{ getRenderedTab() }
-		</Tabs>
+		/>
 	);
 
 	const renderedSavedPaymentOptions = (
@@ -139,7 +170,7 @@ const PaymentMethods = () => {
 	);
 
 	return Object.keys( customerPaymentMethods ).length > 0 &&
-		selectedToken !== 0
+		selectedToken !== '0'
 		? renderedSavedPaymentOptions
 		: renderedTabsAndSavedPaymentOptions;
 };

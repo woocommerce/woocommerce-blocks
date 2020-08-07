@@ -3,10 +3,7 @@
  */
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import {
-	useInnerBlockConfigurationContext,
-	useProductLayoutContext,
-} from '@woocommerce/base-context';
+import { useInnerBlockLayoutContext } from '@woocommerce/shared-context';
 import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
 
 /**
@@ -16,12 +13,15 @@ import { renderProductLayout } from './utils';
 
 const ProductListItem = ( { product, attributes, instanceId } ) => {
 	const { layoutConfig } = attributes;
-	const { parentName } = useInnerBlockConfigurationContext();
-	const { layoutStyleClassPrefix } = useProductLayoutContext();
+	const { parentClassName, parentName } = useInnerBlockLayoutContext();
 	const isLoading = Object.keys( product ).length === 0;
-	const classes = classnames( `${ layoutStyleClassPrefix }__product`, {
-		'is-loading': isLoading,
-	} );
+	const classes = classnames(
+		`${ parentClassName }__product`,
+		'wc-block-layout',
+		{
+			'is-loading': isLoading,
+		}
+	);
 
 	return (
 		<li className={ classes } aria-hidden={ isLoading }>

@@ -11,22 +11,16 @@
 	}
 	.components-placeholder__fieldset {
 		display: block; /* Disable flex box */
-
-		p {
-			font-size: 14px;
-		}
 	}
 	.woocommerce-search-list__search {
 		border-top: 0;
 		margin-top: 0;
 		padding-top: 0;
 	}
-	.wc-block-attribute-filter__add_attribute_button {
+	.wc-block-attribute-filter__add-attribute-button {
 		margin: 0 0 1em;
-		line-height: 24px;
 		vertical-align: middle;
 		height: auto;
-		font-size: 14px;
 		padding: 0.5em 1em;
 
 		svg {

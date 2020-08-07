@@ -16,27 +16,37 @@ As a WordPress plugin, Blocks has to play nicely with other plugins and themes, 
 
 #### Naming
 
-All class names assigned to an element must be prefixed with the following, each joined by a dash (`-`):
+All class names assigned to an element must be prefixed. We use different prefixes to differentiate frontend and editor elements as well as identifying if they are components or not:
 
--   The `wc-block` plugin prefix.
--   The name of the sub-package (where applicable, e.g. if there was a distributed sub-package called `components` living within the blocks plugin, the prefix would be `wc-block-components-`).
--   The name of the directory in which the component resides.
+-   `wc-block` for classes applied to a single block.
+-   `wc-block-components` for classes applied to a component, which might be used by several blocks.
+-   `wc-block-editor` for classes applied to a single block but only used in the editor UI.
+-   `wc-block-editor-components` for classes applied to an editor component.
 
-Any descendant of the component's root element must append a dash-delimited descriptor, separated from the base by two consecutive underscores `__`.
+As a rule of thumb, this is the relation between location in the source tree and class name used:
 
-    Example, `assets/base/components/checkbox-list` uses the class name: `wc-block-checkbox-list`.
+| Location in the tree      | Class names used                                      | Can be styled by themes? |
+| ------------------------- | ----------------------------------------------------- | :----------------------: |
+| assets/js/atomic/blocks   | `.wc-block-components-`                               |            ✓             |
+| assets/js/base/components | `.wc-block-components-`                               |            ✓             |
+| assets/js/blocks          | Frontend: `.wc-block-`<br>Editor: `.wc-block-editor-` |          ✓<br>✘          |
+| assets/js/components      | `.wc-block-editor-components-`                        |            ✘             |
+
+After the prefix, class names are built using BEM:
 
 A **root element** (or **Block** in BEM notation) is a standalone entity that is meaningful on its own. Whilst they can be nested and interact with each other, semantically they remain equal; there is no precedence or hierarchy.
 
-    Example: `wc-block-package-directory`
+    Example: `wc-block-directory-name`
+
+Any descendant of the component's root element must append a dash-delimited descriptor, separated from the base by two consecutive underscores `__`.
 
 A **child element** (or **Element** in BEM notation) has no standalone meaning and is semantically tied to its block.
 
-    Example: `wc-block-package-directory__descriptor-foo-bar`
+    Example: `wc-block-directory-name__descriptor-foo-bar`
 
 Finally, A **modifier** is a flag on an element which can be used to change appearance, behavior or state.
 
-    Example: `wc-block-package-directory__descriptor-foo-bar--state`
+    Example: `wc-block-directory-name__descriptor-foo-bar--state`
 
 The **root element** is considered to be the highest ancestor element returned by the default export in the index.js. Notably, if your folder contains multiple files, each with their own default exported component, only the element rendered by that of index.js can be considered the root. All others should be treated as **descendants**.
 
@@ -44,10 +54,10 @@ Naming is not strictly tied to the DOM so it **doesn’t matter how many nested 
 
 **Nesting Example:**
 
--   `wc-block-dropdown-selector` (Root Element/BEM Block)
--   ├── `wc-block-dropdown-selector__input` (Child Element/BEM Element)
--   ├── `wc-block-dropdown-selector__input--hidden` (Modifier)
--   └── `wc-block-dropdown-selector__placeholder` (Child Element/BEM Element)
+-   `wc-block-components-dropdown-selector` (Root Element/BEM Block)
+-   ├── `wc-block-components-dropdown-selector__input` (Child Element/BEM Element)
+-   ├── `wc-block-components-dropdown-selector__input--hidden` (Modifier)
+-   └── `wc-block-components-dropdown-selector__placeholder` (Child Element/BEM Element)
 
 ### RTL Styles
 
@@ -82,3 +92,71 @@ Or exclude blocks of CSS:
 The build process will split SCSS from within the blocks library directory into two separate CSS files when Webpack runs.
 
 Styles placed in a `style.scss` file will be built into `build/style.css`, to load on the front end theme as well as in the editor. If you need additional styles specific to the block's display in the editor, add them to an `editor.scss`.
+
+### Accessible font sizes
+
+Font sizes must be defined using the `font-size()` mixin, it takes a named size (`smaller`, `small`, `regular`, `large`. `larger`) and returns a font-size declaration in `em` units. This provides a consistent set of font sizes to be used across blocks, and by using `em` it increases the likelihood that blocks are accessible and fit better within different themes.
+
+In parallel to that, consider whether other size/distance units in your CSS need to be em instead of px. In general, em should be preferred if it doesn't break the layout with big font sizes. There is another mixin named `em()` that helps converting px units to em (given a px size and optionally a base size).
+
+### CSS specificity wars with 3rd party themes
+
+We want our blocks to look good with as many themes as possible out of the box. Sometimes our styles will conflict with theme styles that have higher specificity. In these cases it may be tempting to increase the specificity of selectors, but increasing them too much makes it harder for other themes to style our blocks.
+
+The following guidelines should help you decide _when_ to increase specificity, if at all. They are not hard rules so feel free to apply your best judgement on a case-by-case basis.
+
+Imagine we are styling the radio control input but our styles are conflicting with some themes. For example, two themes that have the following styles:
+
+Theme A:
+
+```
+input[type="radio"] { // specificity 0, 1, 1
+	background: red;
+}
+```
+
+Theme B:
+
+```
+input[type="radio"]:checked { // specificity 0, 2, 1
+	background: blue;
+}
+```
+
+And these are the styles of the block:
+
+```
+.wc-block-components-radio-control__input { // specificity 0, 1, 0
+	background: #fff;
+}
+```
+
+As you can see, the styles coming from the themes have higher specificity, so our styles would be overriden. In order to solve this:
+
+1. Never use `!important` rules in CSS to engage in a specificity war with a theme.
+2. Never use ID selectors.
+3. Try wrapping the entire component/block CSS with the root class name of that component:
+   For example:
+
+```
+.wc-block-components-radio-control {
+	.wc-block-components-radio-control__input { // specificity 0, 2, 0, we win theme A!
+		background: #fff;
+	}
+}
+```
+
+4. Try adding an extra css class (or tag selector) to increase specificity. When doing so, add a comment explaining it.
+
+```
+.wc-block-components-radio-control {
+	// Extra class for specificity.
+	.wc-block-components-radio-control__option .wc-block-components-radio-control__input { // specificity 0, 3, 0, we win theme B!
+		background: #fff;
+	}
+}
+```
+
+5. If these steps weren't enough, consider not increasing specificity at all. If it's just a minor visual issue, consider ignoring it and assume the theme will update its conflicting styles at some point. If it's completely breaking the block or component in that theme, consider sending feedback to theme authors so they can fix it on their side.
+
+Notice in the worst case scenario we would have increased selector specificity by 2 classes (0, 2, 0). That shouldn't make it too difficult for other themes to write styles on top of ours.

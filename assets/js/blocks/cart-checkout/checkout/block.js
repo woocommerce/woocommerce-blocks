@@ -1,9 +1,8 @@
 /**
  * External dependencies
  */
-import { Fragment, useState, useCallback, useEffect } from '@wordpress/element';
+import { useMemo, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import defaultAddressFields from '@woocommerce/base-components/cart-checkout/address-form/default-address-fields';
 import {
 	AddressForm,
 	FormStep,
@@ -26,7 +25,6 @@ import {
 	useCheckoutContext,
 	useEditorContext,
 	useShippingDataContext,
-	useBillingDataContext,
 	useValidationContext,
 	StoreNoticesProvider,
 } from '@woocommerce/base-context';
@@ -34,6 +32,7 @@ import {
 	useStoreCart,
 	usePaymentMethods,
 	useStoreNotices,
+	useCheckoutAddress,
 } from '@woocommerce/base-hooks';
 import {
 	ExpressCheckoutFormControl,
@@ -47,15 +46,27 @@ import {
 } from '@woocommerce/base-components/sidebar-layout';
 import { getSetting } from '@woocommerce/settings';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
+import {
+	CHECKOUT_SHOW_LOGIN_REMINDER,
+	CHECKOUT_ALLOWS_GUEST,
+	DISPLAY_CART_PRICES_INCLUDING_TAX,
+} from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
 import CheckoutSidebar from './sidebar';
 import CheckoutOrderError from './checkout-order-error';
+import CheckoutOrderNotes from './checkout-order-notes';
 import NoShippingPlaceholder from './no-shipping-placeholder';
 import './style.scss';
 
+/**
+ * Renders the Checkout block wrapped within the CheckoutProvider.
+ *
+ * @param {Object} props Component props.
+ * @return {*} The component.
+ */
 const Block = ( props ) => {
 	return (
 		<CheckoutProvider>
@@ -64,6 +75,35 @@ const Block = ( props ) => {
 	);
 };
 
+/**
+ * Renders a shipping rate control option.
+ *
+ * @param {Object} option Shipping Rate.
+ */
+const renderShippingRatesControlOption = ( option ) => {
+	const priceWithTaxes = DISPLAY_CART_PRICES_INCLUDING_TAX
+		? parseInt( option.price, 10 ) + parseInt( option.taxes, 10 )
+		: parseInt( option.price, 10 );
+	return {
+		label: decodeEntities( option.name ),
+		value: option.rate_id,
+		description: decodeEntities( option.description ),
+		secondaryLabel: (
+			<FormattedMonetaryAmount
+				currency={ getCurrencyFromPriceResponse( option ) }
+				value={ priceWithTaxes }
+			/>
+		),
+		secondaryDescription: decodeEntities( option.delivery_time ),
+	};
+};
+
+/**
+ * Main Checkout Component.
+ *
+ * @param {Object} props Component props.
+ * @return {*} The component.
+ */
 const Checkout = ( { attributes, scrollToTop } ) => {
 	const { isEditor } = useEditorContext();
 	const {
@@ -77,7 +117,12 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		hasError: checkoutHasError,
 		isIdle: checkoutIsIdle,
 		isProcessing: checkoutIsProcessing,
+		customerId,
+		onSubmit,
+		orderNotes,
+		dispatchActions,
 	} = useCheckoutContext();
+	const { setOrderNotes } = dispatchActions;
 	const {
 		hasValidationErrors,
 		showAllValidationErrors,
@@ -85,85 +130,93 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 	const {
 		shippingRates,
 		shippingRatesLoading,
-		shippingAddress,
-		setShippingAddress,
 		needsShipping,
 	} = useShippingDataContext();
-	const { billingData, setBillingData } = useBillingDataContext();
 	const { paymentMethods } = usePaymentMethods();
 	const { hasNoticesOfType } = useStoreNotices();
-
-	const [ shippingAsBilling, setShippingAsBilling ] = useState(
-		needsShipping
-	);
-
-	const renderShippingRatesControlOption = ( option ) => ( {
-		label: decodeEntities( option.name ),
-		value: option.rate_id,
-		description: decodeEntities( option.description ),
-		secondaryLabel: (
-			<FormattedMonetaryAmount
-				currency={ getCurrencyFromPriceResponse( option ) }
-				value={ option.price }
-			/>
-		),
-		secondaryDescription: decodeEntities( option.delivery_time ),
-	} );
-
-	const showBillingFields = ! needsShipping || ! shippingAsBilling;
-	const addressFields = {
-		...defaultAddressFields,
-		company: {
-			...defaultAddressFields.company,
-			hidden: ! attributes.showCompanyField,
-			required: attributes.requireCompanyField,
-		},
-		address_2: {
-			...defaultAddressFields.address_2,
-			hidden: ! attributes.showApartmentField,
-		},
-	};
-
-	const setShippingFields = useCallback(
-		( address ) => {
-			if ( shippingAsBilling ) {
-				setShippingAddress( address );
-				setBillingData( address );
-			} else {
-				setShippingAddress( address );
-			}
-		},
-		[ setShippingAddress, setBillingData, shippingAsBilling ]
-	);
-	useEffect( () => {
-		if ( shippingAsBilling ) {
-			setBillingData( { ...shippingAddress, shippingAsBilling } );
-		} else {
-			setBillingData( { shippingAsBilling } );
-		}
-	}, [ shippingAsBilling, setBillingData ] );
+	const {
+		defaultAddressFields,
+		shippingFields,
+		setShippingFields,
+		billingFields,
+		setBillingFields,
+		setEmail,
+		setPhone,
+		shippingAsBilling,
+		setShippingAsBilling,
+		showBillingFields,
+	} = useCheckoutAddress();
+	const addressFieldsConfig = useMemo( () => {
+		return {
+			company: {
+				...defaultAddressFields.company,
+				hidden: ! attributes.showCompanyField,
+				required: attributes.requireCompanyField,
+			},
+			address_2: {
+				...defaultAddressFields.address_2,
+				hidden: ! attributes.showApartmentField,
+			},
+		};
+	}, [ defaultAddressFields, attributes ] );
 
 	const hasErrorsToDisplay =
 		checkoutIsIdle &&
 		checkoutHasError &&
 		( hasValidationErrors || hasNoticesOfType( 'default' ) );
+
 	useEffect( () => {
 		if ( hasErrorsToDisplay ) {
 			showAllValidationErrors();
 			scrollToTop( { focusableSelector: 'input:invalid' } );
 		}
-	}, [ hasErrorsToDisplay ] );
+	}, [ hasErrorsToDisplay, scrollToTop, showAllValidationErrors ] );
 
 	if ( ! isEditor && ! hasOrder ) {
 		return <CheckoutOrderError />;
 	}
+
+	const loginToCheckoutUrl = `/wp-login.php?redirect_to=${ encodeURIComponent(
+		window.location.href
+	) }`;
+
+	if ( ! isEditor && ! customerId && ! CHECKOUT_ALLOWS_GUEST ) {
+		return (
+			<>
+				{ __(
+					'You must be logged in to checkout. ',
+					'woo-gutenberg-products-block'
+				) }
+				<a href={ loginToCheckoutUrl }>
+					{ __(
+						'Click here to log in.',
+						'woo-gutenberg-products-block'
+					) }
+				</a>
+			</>
+		);
+	}
+
+	const loginPrompt = () =>
+		CHECKOUT_SHOW_LOGIN_REMINDER &&
+		! customerId && (
+			<>
+				{ __(
+					'Already have an account? ',
+					'woo-gutenberg-products-block'
+				) }
+				<a href={ loginToCheckoutUrl }>
+					{ __( 'Log in.', 'woo-gutenberg-products-block' ) }
+				</a>
+			</>
+		);
 
 	return (
 		<>
 			<SidebarLayout className="wc-block-checkout">
 				<Main className="wc-block-checkout__main">
 					{ cartNeedsPayment && <ExpressCheckoutFormControl /> }
-					<CheckoutForm>
+					<CheckoutForm onSubmit={ onSubmit }>
 						<FormStep
 							id="contact-fields"
 							disabled={ checkoutIsProcessing }
@@ -176,20 +229,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 								"We'll use this email to send you details and updates about your order.",
 								'woo-gutenberg-products-block'
 							) }
-							stepHeadingContent={ () => (
-								<Fragment>
-									{ __(
-										'Already have an account? ',
-										'woo-gutenberg-products-block'
-									) }
-									<a href="/wp-login.php">
-										{ __(
-											'Log in.',
-											'woo-gutenberg-products-block'
-										) }
-									</a>
-								</Fragment>
-							) }
+							stepHeadingContent={ loginPrompt }
 						>
 							<ValidatedTextInput
 								id="email"
@@ -198,11 +238,9 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 									'Email address',
 									'woo-gutenberg-products-block'
 								) }
-								value={ billingData.email }
+								value={ billingFields.email }
 								autoComplete="email"
-								onChange={ ( newValue ) =>
-									setBillingData( { email: newValue } )
-								}
+								onChange={ setEmail }
 								required={ true }
 							/>
 						</FormStep>
@@ -223,9 +261,11 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 								<AddressForm
 									id="shipping"
 									onChange={ setShippingFields }
-									values={ shippingAddress }
-									fields={ Object.keys( addressFields ) }
-									fieldConfig={ addressFields }
+									values={ shippingFields }
+									fields={ Object.keys(
+										defaultAddressFields
+									) }
+									fieldConfig={ addressFieldsConfig }
 								/>
 								{ attributes.showPhoneField && (
 									<ValidatedTextInput
@@ -242,13 +282,9 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 														'woo-gutenberg-products-block'
 												  )
 										}
-										value={ billingData.phone }
+										value={ billingFields.phone }
 										autoComplete="tel"
-										onChange={ ( newValue ) =>
-											setBillingData( {
-												phone: newValue,
-											} )
-										}
+										onChange={ setPhone }
 										required={
 											attributes.requirePhoneField
 										}
@@ -283,11 +319,13 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 							>
 								<AddressForm
 									id="billing"
-									onChange={ setBillingData }
+									onChange={ setBillingFields }
 									type="billing"
-									values={ billingData }
-									fields={ Object.keys( addressFields ) }
-									fieldConfig={ addressFields }
+									values={ billingFields }
+									fields={ Object.keys(
+										defaultAddressFields
+									) }
+									fieldConfig={ addressFieldsConfig }
 								/>
 							</FormStep>
 						) }
@@ -310,30 +348,13 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 										: ''
 								}
 							>
-								{ getShippingRatesPackageCount(
+								{ isEditor &&
+								! getShippingRatesPackageCount(
 									shippingRates
-								) === 0 && isEditor ? (
+								) ? (
 									<NoShippingPlaceholder />
 								) : (
 									<ShippingRatesControl
-										address={
-											shippingAddress.country
-												? {
-														address_1:
-															shippingAddress.address_1,
-														address_2:
-															shippingAddress.address_2,
-														city:
-															shippingAddress.city,
-														state:
-															shippingAddress.state,
-														postcode:
-															shippingAddress.postcode,
-														country:
-															shippingAddress.country,
-												  }
-												: null
-										}
 										noResultsMessage={ __(
 											'There are no shipping options available. Please ensure that your address has been entered correctly, or contact us if you need any help.',
 											'woo-gutenberg-products-block'
@@ -372,16 +393,27 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 								</StoreNoticesProvider>
 							</FormStep>
 						) }
+						{ attributes.showOrderNotes && (
+							<FormStep id="order-notes" showStepNumber={ false }>
+								<CheckoutOrderNotes
+									disabled={ checkoutIsProcessing }
+									onChange={ setOrderNotes }
+									placeholder={
+										needsShipping
+											? __(
+													'Notes about your order, e.g. special notes for delivery.',
+													'woo-gutenberg-products-block'
+											  )
+											: __(
+													'Notes about your order.',
+													'woo-gutenberg-products-block'
+											  )
+									}
+									value={ orderNotes }
+								/>
+							</FormStep>
+						) }
 					</CheckoutForm>
-				</Main>
-				<Sidebar className="wc-block-checkout__sidebar">
-					<CheckoutSidebar
-						cartCoupons={ cartCoupons }
-						cartItems={ cartItems }
-						cartTotals={ cartTotals }
-					/>
-				</Sidebar>
-				<Main className="wc-block-checkout__main-totals">
 					<div className="wc-block-checkout__actions">
 						{ attributes.showReturnToCart && (
 							<ReturnToCartButton
@@ -395,6 +427,13 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 					</div>
 					{ attributes.showPolicyLinks && <Policies /> }
 				</Main>
+				<Sidebar className="wc-block-checkout__sidebar">
+					<CheckoutSidebar
+						cartCoupons={ cartCoupons }
+						cartItems={ cartItems }
+						cartTotals={ cartTotals }
+					/>
+				</Sidebar>
 			</SidebarLayout>
 		</>
 	);

@@ -42,7 +42,7 @@ class CartItems extends TestCase {
 		$this->products[0]->save();
 
 		// Create a test variable product.
-		$this->products[1] = ProductHelper::create_variation_product( false );
+		$this->products[1] = ProductHelper::create_variation_product();
 		$this->products[1]->set_weight( 10 );
 		$this->products[1]->set_regular_price( 10 );
 		$this->products[1]->save();
@@ -148,7 +148,7 @@ class CartItems extends TestCase {
 		);
 		$response = $this->server->dispatch( $request );
 
-		$this->assertEquals( 403, $response->get_status() );
+		$this->assertEquals( 400, $response->get_status() );
 	}
 
 	/**
@@ -229,6 +229,7 @@ class CartItems extends TestCase {
 		$this->assertArrayHasKey( 'variation', $data );
 		$this->assertArrayHasKey( 'low_stock_remaining', $data );
 		$this->assertArrayHasKey( 'backorders_allowed', $data );
+		$this->assertArrayHasKey( 'show_backorder_badge', $data );
 		$this->assertArrayHasKey( 'short_description', $data );
 	}
 

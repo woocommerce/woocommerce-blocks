@@ -1,4 +1,10 @@
 /**
+ * External dependencies
+ */
+import { Elements, useStripe } from '@stripe/react-stripe-js';
+import { useState } from '@wordpress/element';
+
+/**
  * Internal dependencies
  */
 import { PAYMENT_METHOD_NAME } from './constants';
@@ -7,17 +13,22 @@ import { useCheckoutSubscriptions } from './use-checkout-subscriptions';
 import { InlineCard, CardElements } from './elements';
 
 /**
- * External dependencies
- */
-import { Elements, useElements, useStripe } from '@stripe/react-stripe-js';
-import { useState } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
-
-/**
  * @typedef {import('../stripe-utils/type-defs').Stripe} Stripe
  * @typedef {import('../stripe-utils/type-defs').StripePaymentRequest} StripePaymentRequest
  * @typedef {import('@woocommerce/type-defs/registered-payment-method-props').RegisteredPaymentMethodProps} RegisteredPaymentMethodProps
  */
+
+export const getStripeCreditCardIcons = () => {
+	return Object.entries( getStripeServerData().icons ).map(
+		( [ id, { src, alt } ] ) => {
+			return {
+				id,
+				src,
+				alt,
+			};
+		}
+	);
+};
 
 /**
  * Stripe Credit Card component
@@ -30,30 +41,25 @@ const CreditCardComponent = ( {
 	emitResponse,
 	components,
 } ) => {
-	const { ValidationInputError, CheckboxControl } = components;
-	const { customerId } = billing;
-	const [ sourceId, setSourceId ] = useState( 0 );
+	const { ValidationInputError, PaymentMethodIcons } = components;
+	const [ sourceId, setSourceId ] = useState( '' );
 	const stripe = useStripe();
-	const [ shouldSavePayment, setShouldSavePayment ] = useState(
-		customerId ? true : false
-	);
-	const elements = useElements();
 	const onStripeError = useCheckoutSubscriptions(
 		eventRegistration,
 		billing,
 		sourceId,
 		setSourceId,
-		shouldSavePayment,
 		emitResponse,
-		stripe,
-		elements
+		stripe
 	);
 	const onChange = ( paymentEvent ) => {
 		if ( paymentEvent.error ) {
 			onStripeError( paymentEvent );
 		}
-		setSourceId( 0 );
+		setSourceId( '0' );
 	};
+	const cardIcons = getStripeCreditCardIcons();
+
 	const renderedCardElement = getStripeServerData().inline_cc_form ? (
 		<InlineCard
 			onChange={ onChange }
@@ -68,18 +74,8 @@ const CreditCardComponent = ( {
 	return (
 		<>
 			{ renderedCardElement }
-			{ customerId > 0 && (
-				<CheckboxControl
-					className="wc-block-checkout__save-card-info"
-					label={ __(
-						'Save payment information to my account for future purchases.',
-						'woo-gutenberg-products-block'
-					) }
-					checked={ shouldSavePayment }
-					onChange={ () =>
-						setShouldSavePayment( ! shouldSavePayment )
-					}
-				/>
+			{ PaymentMethodIcons && cardIcons.length && (
+				<PaymentMethodIcons icons={ cardIcons } align="left" />
 			) }
 		</>
 	);
@@ -94,16 +90,4 @@ export const StripeCreditCard = ( props ) => {
 			<CreditCardComponent { ...props } />
 		</Elements>
 	) : null;
-};
-
-export const getStripeCreditCardIcons = () => {
-	return Object.entries( getStripeServerData().icons ).map(
-		( [ id, { src, alt } ] ) => {
-			return {
-				id,
-				src,
-				alt,
-			};
-		}
-	);
 };

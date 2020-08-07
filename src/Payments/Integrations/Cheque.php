@@ -3,7 +3,7 @@
  * Cheque (core) gateway implementation.
  *
  * @package WooCommerce/Blocks
- * @since $VID:$
+ * @since 2.6.0
  */
 
 namespace Automattic\WooCommerce\Blocks\Payments\Integrations;
@@ -16,7 +16,7 @@ use Automattic\WooCommerce\Blocks\Assets\Api;
 /**
  * Cheque payment method integration
  *
- * @since $VID:$
+ * @since 2.6.0
  */
 final class Cheque extends AbstractPaymentMethodType {
 	/**
@@ -25,13 +25,6 @@ final class Cheque extends AbstractPaymentMethodType {
 	 * @var string
 	 */
 	protected $name = 'cheque';
-
-	/**
-	 * Settings from the WP options table
-	 *
-	 * @var array
-	 */
-	private $settings;
 
 	/**
 	 * An instance of the Asset Api
@@ -62,7 +55,7 @@ final class Cheque extends AbstractPaymentMethodType {
 	 * @return boolean
 	 */
 	public function is_active() {
-		return ! empty( $this->settings['enabled'] ) && 'yes' === $this->settings['enabled'];
+		return filter_var( $this->get_setting( 'enabled', false ), FILTER_VALIDATE_BOOLEAN );
 	}
 
 	/**
@@ -85,8 +78,8 @@ final class Cheque extends AbstractPaymentMethodType {
 	 */
 	public function get_payment_method_data() {
 		return [
-			'title'       => isset( $this->settings['title'] ) ? $this->settings['title'] : '',
-			'description' => isset( $this->settings['description'] ) ? $this->settings['description'] : '',
+			'title'       => $this->get_setting( 'title' ),
+			'description' => $this->get_setting( 'description' ),
 		];
 	}
 }
