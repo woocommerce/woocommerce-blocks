@@ -217,6 +217,9 @@
 			.wc-block-components-checkbox {
 				clear: both;
 			}
+			& + .wc-block-components-text-input {
+				margin-top: 1.5em;
+			}
 		}
 	}
 }
