@@ -84,7 +84,6 @@ class Bootstrap {
 		$this->container->get( PaymentsApi::class );
 		$this->container->get( RestApi::class );
 		Library::init();
-		add_theme_support( 'dark-editor-style' );
 	}
 
 	/**

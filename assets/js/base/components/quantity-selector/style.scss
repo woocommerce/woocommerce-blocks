@@ -8,6 +8,9 @@
 	&:focus {
 		outline: 2px solid $core-grey-light-600;
 	}
+	.has-dark-styles &:focus {
+		outline-width: 1px;
+	}
 }
 
 .wc-block-components-quantity-selector {
@@ -16,6 +19,13 @@
 	border: 1px solid $core-grey-light-600;
 	background: #fff;
 	border-radius: 4px;
+	// needed so that buttons fill the container.
+	box-sizing: content-box;
+
+	.has-dark-styles & {
+		background-color: transparent;
+		border-color: $input-border-dark;
+	}
 
 	// Extra label for specificity needed in the editor.
 	input.wc-block-components-quantity-selector__input {
@@ -41,6 +51,18 @@
 		&:disabled {
 			color: $core-grey-dark-100;
 		}
+
+		.has-dark-styles & {
+			color: #fff;
+
+			&:focus {
+				background: transparent;
+				outline: 1px solid $core-grey-light-600;
+			}
+			&:disabled {
+				color: $input-disabled-dark;
+			}
+		}
 	}
 	input::-webkit-outer-spin-button,
 	input::-webkit-inner-spin-button {
@@ -65,6 +87,19 @@
 			color: $core-grey-dark-100;
 			cursor: default;
 			@include reset-button;
+		}
+
+		.has-dark-styles & {
+			color: #fff;
+
+			&:hover,
+			&:focus {
+				color: #fff;
+			}
+			&:disabled {
+				color: $input-disabled-dark;
+				cursor: default;
+			}
 		}
 	}
 	.wc-block-components-quantity-selector__button--minus {
