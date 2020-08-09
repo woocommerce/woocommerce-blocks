@@ -1,7 +1,7 @@
 ---
 name: "\U0001F4AC Feedback – Cart & Checkout Blocks"
 about: Submit feedback about the new block-based Cart & Checkout.
-labels: "type: support", "◼️ block: cart", "◼️ block: checkout"
+labels: "type: feedback", "◼️ block: cart", "◼️ block: checkout"
 ---
 
 <!-- 
@@ -10,6 +10,6 @@ We read every single one of these reports and use them as we plan and consider w
 future efforts on improving the blocks.
 -->
 
-## What do you like about the blocks?
+## What do you like about the Cart & Checkout blocks?
 
-## What frustrates you or you think is missing?
+## What do you think is missing from the Cart & Checkout blocks?
