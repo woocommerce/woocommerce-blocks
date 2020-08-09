@@ -7,6 +7,7 @@ use Automattic\WooCommerce\Blocks\StoreApi\Utilities\ReserveStock;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\ReserveStockException;
 use Automattic\WooCommerce\Blocks\Payments\PaymentResult;
 use Automattic\WooCommerce\Blocks\Payments\PaymentContext;
+use \Exception;
 
 /**
  * Checkout class.
@@ -162,16 +163,10 @@ class Checkout extends AbstractRoute {
 		$order_controller->validate_order_before_payment( $order_object );
 
 		// Create a new user account as necessary.
-		if ( $this->should_create_customer_account( $request ) ) {
-			$customer_id = $this->create_customer_account(
-				$order_object->get_billing_email(),
-				$order_object->get_billing_first_name(),
-				$order_object->get_billing_last_name()
-			);
-
-			// Log the customer in and associate with the order.
-			wc_set_customer_auth_cookie( $customer_id );
-			$order_object->set_customer_id( get_current_user_id() );
+		try {
+			do_action( 'woocommerceblocks_create_account_for_order_request', $order_object, $request );
+		} catch ( Exception $error ) {
+			$this->handle_create_account_error( $error );
 		}
 
 		// Persist customer address data to account.
@@ -356,90 +351,30 @@ class Checkout extends AbstractRoute {
 	/**
 	 * Convert a account creation error to a Store API error.
 	 *
-	 * @param \WP_Error $error An error object.
+	 * @param \Exception $error Caught exception.
 	 *
-	 * @return RouteException API error object with error details.
+	 * @throws RouteException API error object with error details.
 	 */
-	private function map_create_account_error( \WP_Error $error ) {
-		switch ( $error->get_error_code() ) {
-			// WordPress core error codes.
-			case 'empty_username':
-			case 'invalid_username':
-			case 'empty_email':
-			case 'invalid_email':
-			case 'email_exists':
-			case 'registerfail':
-				return new RouteException(
-					'woocommerce_rest_checkout_create_account_failure',
-					wp_strip_all_tags( $error->get_error_message() ),
+	private function handle_create_account_error( Exception $error ) {
+		// woocommerce_rest_checkout_create_account_failure ?
+		switch ( $error->getMessage() ) {
+			case 'registration-error-invalid-email':
+				throw new RouteException(
+					'registration-error-invalid-email',
+					__( 'Please provide a valid email address.', 'woo-gutenberg-products-block' ),
+					400
+				);
+
+			case 'registration-error-email-exists':
+				throw new RouteException(
+					'registration-error-email-exists',
+					apply_filters(
+						'woocommerce_registration_error_email_exists',
+						__( 'An account is already registered with your email address. Please log in.', 'woo-gutenberg-products-block' )
+					),
 					400
 				);
 		}
-
-		return new RouteException(
-			'woocommerce_rest_checkout_create_account_failure',
-			__( 'Unable to create user account.', 'woo-gutenberg-products-block' ),
-			400
-		);
-	}
-
-	/**
-	 * Create a new account for a customer (using a new blocks-specific PHP API).
-	 *
-	 * The account is created with a generated username. The customer is sent
-	 * an email notifying them about the account and containing a link to set
-	 * their (initial) password.
-	 *
-	 * @throws RouteException If an error is encountered when creating the user account.
-	 *
-	 * @param string $user_email The email address to use for the new account.
-	 * @param string $first_name The first name to use for the new account.
-	 * @param string $last_name  The last name to use for the new account.
-	 *
-	 * @return int User id if successful
-	 */
-	protected function create_customer_account( $user_email, $first_name, $last_name ) {
-		$customer_id = 0;
-
-		if ( empty( $user_email ) || ! is_email( $user_email ) ) {
-			throw new RouteException(
-				'registration-error-invalid-email',
-				__( 'Please provide a valid email address.', 'woo-gutenberg-products-block' ),
-				400
-			);
-		}
-		if ( email_exists( $user_email ) ) {
-			throw new RouteException(
-				'registration-error-email-exists',
-				apply_filters(
-					'woocommerce_registration_error_email_exists',
-					__( 'An account is already registered with your email address. Please log in.', 'woo-gutenberg-products-block' )
-				),
-				400
-			);
-		}
-
-		// Generate a username for the account.
-		$username = wc_create_new_customer_username(
-			$user_email,
-			[
-				'first_name' => $first_name,
-				'last_name'  => $last_name,
-			]
-		);
-
-		// Create the user account using WP core API.
-		$customer_id = register_new_user( $username, $user_email );
-
-		if ( is_wp_error( $customer_id ) ) {
-			throw $this->map_create_account_error( $customer_id );
-		}
-
-		// Set user role to `Customer`.
-		$user = new \WP_User( $customer_id );
-		$user->set_role( 'customer' );
-
-		return $customer_id;
 	}
 
 	/**
