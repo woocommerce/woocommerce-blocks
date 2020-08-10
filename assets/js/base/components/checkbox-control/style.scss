@@ -43,3 +43,9 @@
 		vertical-align: middle;
 	}
 }
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+	.wc-block-components-checkbox__mark {
+		display: none;
+	}
+}
