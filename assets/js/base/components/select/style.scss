@@ -1,7 +1,7 @@
 .wc-block-components-select {
 	height: 3em;
 	position: relative;
-	margin-bottom: em($gap-large);
+	margin-top: em($gap-large);
 
 	label {
 		@include reset-typography();
