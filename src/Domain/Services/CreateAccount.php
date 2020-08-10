@@ -117,36 +117,51 @@ class CreateAccount {
 	 * @return int User id if successful
 	 */
 	protected function create_customer_account( $user_email, $first_name, $last_name ) {
-		$customer_id = 0;
-
 		if ( empty( $user_email ) || ! is_email( $user_email ) ) {
 			throw new \Exception( 'registration-error-invalid-email' );
 		}
+
 		if ( email_exists( $user_email ) ) {
 			throw new \Exception( 'registration-error-email-exists' );
 		}
 
-		// Generate a username for the account.
-		$username = wc_create_new_customer_username(
-			$user_email,
-			[
+		$username = wc_create_new_customer_username( $user_email );
+
+		// Handle password creation.
+		$password           = wp_generate_password();
+		$password_generated = true;
+
+		// Use WP_Error to handle registration errors.
+		$errors = new \WP_Error();
+
+		do_action( 'woocommerce_register_post', $username, $user_email, $errors );
+
+		$errors = apply_filters( 'woocommerce_registration_errors', $errors, $username, $user_email );
+
+		if ( $errors->get_error_code() ) {
+			return $errors;
+		}
+
+		$new_customer_data = apply_filters(
+			'woocommerce_new_customer_data',
+			array(
+				'user_login' => $username,
+				'user_pass'  => $password,
+				'user_email' => $user_email,
 				'first_name' => $first_name,
 				'last_name'  => $last_name,
-			]
+				'role'       => 'customer',
+			)
 		);
 
-		// Create the user account using WP core API.
-		$customer_id = register_new_user( $username, $user_email );
+		$customer_id = wp_insert_user( $new_customer_data );
 
 		if ( is_wp_error( $customer_id ) ) {
 			throw $this->map_create_account_error( $customer_id );
 		}
 
-		// Set user role to `Customer`.
-		$user = new \WP_User( $customer_id );
-		$user->set_role( 'customer' );
+		do_action( 'woocommerce_created_customer', $customer_id, $new_customer_data, $password_generated );
 
 		return $customer_id;
 	}
-
 }
