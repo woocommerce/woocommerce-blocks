@@ -194,7 +194,8 @@
 			}
 
 			.wc-block-components-text-input,
-			.wc-block-components-country-input {
+			.wc-block-components-country-input,
+			.wc-block-components-state-input {
 				float: left;
 				margin-left: #{$gap-small / 2};
 				margin-right: #{$gap-small / 2};

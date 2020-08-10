@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import { decodeEntities } from '@wordpress/html-entities';
 import { useCallback } from '@wordpress/element';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -56,7 +57,10 @@ const StateInput = ( {
 		return (
 			<>
 				<ValidatedSelect
-					className={ className }
+					className={ classnames(
+						className,
+						'wc-block-components-state-input'
+					) }
 					id={ id }
 					label={ label }
 					onChange={ onChangeState }
