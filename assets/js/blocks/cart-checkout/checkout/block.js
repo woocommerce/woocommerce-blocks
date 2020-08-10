@@ -116,8 +116,8 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		onSubmit,
 		orderNotes,
 		dispatchActions,
-		createAccount,
-		setCreateAccount,
+		shouldCreateAccount,
+		setShouldCreateAccount,
 	} = useCheckoutContext();
 	const { setOrderNotes } = dispatchActions;
 	const {
@@ -188,8 +188,8 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 					'Create an account?',
 					'woo-gutenberg-products-block'
 				) }
-				checked={ createAccount }
-				onChange={ ( value ) => setCreateAccount( value ) }
+				checked={ shouldCreateAccount }
+				onChange={ ( value ) => setShouldCreateAccount( value ) }
 			/>
 		);
 
