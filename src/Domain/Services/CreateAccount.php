@@ -70,7 +70,7 @@ class CreateAccount {
 			return true;
 		}
 
-		$user_requested_account = ! empty( $request['create_account'] ) && true === filter_var( $request['create_account'], FILTER_VALIDATE_BOOLEAN );
+		$user_requested_account = ! empty( $request['should_create_account'] ) && true === filter_var( $request['should_create_account'], FILTER_VALIDATE_BOOLEAN );
 		if ( $user_requested_account ) {
 			return true;
 		}

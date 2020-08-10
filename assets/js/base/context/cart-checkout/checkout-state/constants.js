@@ -28,7 +28,7 @@ export const DEFAULT_STATE = {
 	orderId: checkoutData.order_id,
 	orderNotes: '',
 	customerId: checkoutData.customer_id,
-	createAccount: false,
+	shouldCreateAccount: false,
 	processingResponse: null,
 };
 
