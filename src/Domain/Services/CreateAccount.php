@@ -108,6 +108,8 @@ class CreateAccount {
 	 * an email notifying them about the account and containing a link to set
 	 * their (initial) password.
 	 *
+	 * Intended as a replacement for wc_create_new_customer in WC core.
+	 *
 	 * @throws \Exception If an error is encountered when creating the user account.
 	 *
 	 * @param string $user_email The email address to use for the new account.
@@ -139,7 +141,7 @@ class CreateAccount {
 		$errors = apply_filters( 'woocommerce_registration_errors', $errors, $username, $user_email );
 
 		if ( $errors->get_error_code() ) {
-			return $errors;
+			throw new \Exception( $errors->get_error_code() );
 		}
 
 		$new_customer_data = apply_filters(
@@ -159,6 +161,9 @@ class CreateAccount {
 		if ( is_wp_error( $customer_id ) ) {
 			throw $this->map_create_account_error( $customer_id );
 		}
+
+		// Set account flag to remind customer to update generated password.
+		update_user_option( $user_id, 'default_password_nag', true, true );
 
 		do_action( 'woocommerce_created_customer', $customer_id, $new_customer_data, $password_generated );
 

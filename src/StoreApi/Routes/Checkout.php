@@ -164,6 +164,7 @@ class Checkout extends AbstractRoute {
 
 		// Create a new user account as necessary.
 		try {
+			// TODO full docs for new hook, including throw.
 			do_action( 'woocommerceblocks_create_account_for_order_request', $order_object, $request );
 		} catch ( Exception $error ) {
 			$this->handle_create_account_error( $error );
