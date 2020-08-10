@@ -82,7 +82,8 @@ export const usePaymentMethodDataContext = () => {
  * disabled ones.
  *
  * @param {Object[]} availablePaymentMethods List of available payment methods.
- * @return {Object} Object containing the payment methods saved for a specific user which are available.
+ * @return {Object} Object containing the payment methods saved for a specific
+ *                  user which are available.
  */
 const getCustomerPaymentMethods = ( availablePaymentMethods = [] ) => {
 	const customerPaymentMethods = getSetting( 'customerPaymentMethods', {} );
@@ -176,7 +177,10 @@ export const PaymentMethodDataProvider = ( { children } ) => {
 		if ( isEditor && previewData.previewSavedPaymentMethods ) {
 			return previewData.previewSavedPaymentMethods;
 		}
-		if ( ! paymentMethodsInitialized ) {
+		if (
+			! paymentMethodsInitialized ||
+			paymentData.paymentMethods.length === 0
+		) {
 			return {};
 		}
 		return getCustomerPaymentMethods( paymentData.paymentMethods );
