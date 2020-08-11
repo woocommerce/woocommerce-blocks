@@ -22,12 +22,6 @@ class CreateAccount {
 	public $new_account_email = null;
 
 	/**
-	 * Constructor.
-	 */
-	public function __construct() {
-	}
-
-	/**
 	 * Init - register custom hook handler.
 	 */
 	public function init() {
@@ -120,18 +114,26 @@ class CreateAccount {
 	 *
 	 * @return boolean True if a new user account should be created.
 	 */
-	protected function should_create_customer_account( $request ) {
+	protected function should_create_customer_account( \WP_REST_Request $request ) {
 		if ( is_user_logged_in() ) {
+			// User is already logged in - no need to create an account.
 			return false;
 		}
 
-		$checkout_requires_account = false === filter_var( get_option( 'woocommerce_enable_guest_checkout' ), FILTER_VALIDATE_BOOLEAN );
-		if ( $checkout_requires_account ) {
+		// From here we know that the shopper is not logged in.
+
+		if ( false === filter_var( get_option( 'woocommerce_enable_guest_checkout' ), FILTER_VALIDATE_BOOLEAN ) ) {
+			// Store requires an account for all checkouts (purchases).
+			// Create an account independent of shopper option in $request.
+			// Note - checkbox is not displayed to shopper in this case.
 			return true;
 		}
 
-		$user_requested_account = ! empty( $request['should_create_account'] ) && true === filter_var( $request['should_create_account'], FILTER_VALIDATE_BOOLEAN );
-		if ( $user_requested_account ) {
+		// From here we know that the store allows guest checkout;
+		// shopper can choose whether they sign up (`should_create_account`).
+
+		if ( true === filter_var( $request['should_create_account'], FILTER_VALIDATE_BOOLEAN ) ) {
+			// User has requested an account as part of checkout processing.
 			return true;
 		}
 
