@@ -12,6 +12,7 @@ import classnames from 'classnames';
  */
 import { ValidatedTextInput } from '../text-input';
 import { ValidatedSelect } from '../select';
+import './style.scss';
 
 const StateInput = ( {
 	className,
