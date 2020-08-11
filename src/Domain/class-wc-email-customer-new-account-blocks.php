@@ -76,7 +76,7 @@ if ( ! class_exists( 'WC_Email_Customer_New_Account_Blocks', false ) ) :
 		 * @return string
 		 */
 		public function get_default_subject() {
-			return __( 'Your {site_title} account NEW EMAIL has been created!', 'woo-gutenberg-products-block' );
+			return __( 'Your {site_title} account has been created!', 'woo-gutenberg-products-block' );
 		}
 
 		/**
@@ -86,7 +86,7 @@ if ( ! class_exists( 'WC_Email_Customer_New_Account_Blocks', false ) ) :
 		 * @return string
 		 */
 		public function get_default_heading() {
-			return __( 'Welcome to {site_title} NEW EMAIL', 'woo-gutenberg-products-block' );
+			return __( 'Welcome to {site_title}', 'woo-gutenberg-products-block' );
 		}
 
 		/**
