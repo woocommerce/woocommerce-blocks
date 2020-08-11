@@ -57,7 +57,10 @@ if ( ! class_exists( 'WC_Email_Customer_New_Account_Blocks', false ) ) :
 		 * Constructor.
 		 */
 		public function __construct() {
-			$this->id                    = 'customer_new_account_blocks';
+			// Note - we're using the same ID as the real email.
+			// This ensures that any merchant tweaks (Settings > Emails)
+			// apply to this email (consistent with the core email).
+			$this->id                    = 'customer_new_account';
 			$this->customer_email        = true;
 			$this->title                 = __( 'New account', 'woo-gutenberg-products-block' );
 			$this->description           = __( 'Customer "new account" emails are sent to the customer when a customer signs up via checkout or account blocks.', 'woo-gutenberg-products-block' );
