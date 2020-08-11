@@ -5,7 +5,7 @@
  * @package  WooCommerce/Blocks
  */
 
-use WC_Email;
+use \WC_Email;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.

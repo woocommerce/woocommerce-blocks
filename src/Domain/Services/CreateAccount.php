@@ -7,8 +7,8 @@
 
 namespace Automattic\WooCommerce\Blocks\Domain\Services;
 
-use WP_REST_Request;
-use WC_Order;
+use \WP_REST_Request;
+use \WC_Order;
 
 /**
  * Service class implementing new create account behaviour for order processing.
