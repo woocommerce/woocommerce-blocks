@@ -40,6 +40,13 @@ if ( ! class_exists( 'WC_Email_Customer_New_Account_Blocks', false ) ) :
 		public $user_email;
 
 		/**
+		 * Magic link to set initial password.
+		 *
+		 * @var string
+		 */
+		public $set_password_url;
+
+		/**
 		 * Override (force) default template path
 		 *
 		 * @var string
@@ -50,7 +57,7 @@ if ( ! class_exists( 'WC_Email_Customer_New_Account_Blocks', false ) ) :
 		 * Constructor.
 		 */
 		public function __construct() {
-			$this->id                    = 'customer_new_account';
+			$this->id                    = 'customer_new_account_blocks';
 			$this->customer_email        = true;
 			$this->title                 = __( 'New account', 'woo-gutenberg-products-block' );
 			$this->description           = __( 'Customer "new account" emails are sent to the customer when a customer signs up via checkout or account blocks.', 'woo-gutenberg-products-block' );
@@ -95,13 +102,22 @@ if ( ! class_exists( 'WC_Email_Customer_New_Account_Blocks', false ) ) :
 			if ( $user_id ) {
 				$this->object = new WP_User( $user_id );
 
+				// Generate a magic link so user can set initial password.
+				$key = get_password_reset_key( $this->object );
+				if ( ! is_wp_error( $key ) ) {
+					$this->set_password_url = network_site_url(
+						"wp-login.php?action=rp&key=$key&login=" . rawurlencode( $this->object->user_login ),
+						'login'
+					);
+				}
+
 				$this->user_login = stripslashes( $this->object->user_login );
 				$this->user_email = stripslashes( $this->object->user_email );
 				$this->recipient  = $this->user_email;
 			}
 
 			if ( $this->is_enabled() && $this->get_recipient() ) {
-				$this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
+				$this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments(), $this->set_password_url );
 			}
 
 			$this->restore_locale();
@@ -121,7 +137,7 @@ if ( ! class_exists( 'WC_Email_Customer_New_Account_Blocks', false ) ) :
 					'user_login'         => $this->user_login,
 					'user_pass'          => $this->user_pass,
 					'blogname'           => $this->get_blogname(),
-					'password_generated' => $this->password_generated,
+					'set_password_url'   => $this->set_password_url,
 					'sent_to_admin'      => false,
 					'plain_text'         => false,
 					'email'              => $this,
@@ -145,7 +161,7 @@ if ( ! class_exists( 'WC_Email_Customer_New_Account_Blocks', false ) ) :
 					'user_login'         => $this->user_login,
 					'user_pass'          => $this->user_pass,
 					'blogname'           => $this->get_blogname(),
-					'password_generated' => $this->password_generated,
+					'set_password_url'   => $this->set_password_url,
 					'sent_to_admin'      => false,
 					'plain_text'         => true,
 					'email'              => $this,
