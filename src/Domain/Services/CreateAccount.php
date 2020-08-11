@@ -15,6 +15,13 @@ use WC_Order;
  */
 class CreateAccount {
 	/**
+	 * Instance of new account email class.
+	 *
+	 * @var WC_Email
+	 */
+	public $new_account_email = null;
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
@@ -24,7 +31,58 @@ class CreateAccount {
 	 * Init - register custom hook handler.
 	 */
 	public function init() {
+		// Register handler for signup during block-based checkout.
 		add_action( 'woocommerceblocks_create_account_for_order_request', [ $this, 'from_order_request' ], 10, 2 );
+
+		// Override core email handlers to add our new improved "new account" email.
+		add_action(
+			'woocommerce_email',
+			function ( $wc_emails_instance ) {
+				$this->new_account_email = require_once dirname( __DIR__ ) . '/class-wc-email-customer-new-account-blocks.php';
+
+				// Remove core "new account" handler; we are going to replace it.
+				remove_action( 'woocommerce_created_customer_notification', array( $wc_emails_instance, 'customer_new_account' ), 10, 3 );
+
+				// Add custom "new account" handler.
+				add_action(
+					'woocommerce_created_customer_notification',
+					function( $customer_id, $new_customer_data = array(), $password_generated = false ) use ( $wc_emails_instance ) {
+						// If this is a block-based signup, send a new email
+						// with password reset link (no password in email).
+						if ( isset( $new_customer_data['is_checkout_block_customer_signup'] ) ) {
+							$this->customer_new_account( $customer_id, $new_customer_data );
+							return;
+						}
+
+						// Otherwise, trigger the existing legacy email (with new password inline).
+						$wc_emails_instance->customer_new_account( $customer_id, $new_customer_data, $password_generated );
+					},
+					10,
+					3
+				);
+			}
+		);
+	}
+
+	/**
+	 * Trigger new account email.
+	 * This is intended as a replacement to WC_Emails::customer_new_account(),
+	 * with a set password link instead of emailing the new password in email
+	 * content.
+	 *
+	 * @param int   $customer_id       The ID of the new customer account.
+	 * @param array $new_customer_data Assoc array of data for the new account.
+	 */
+	public function customer_new_account( $customer_id = 0, array $new_customer_data = array() ) {
+		if ( ! $customer_id ) {
+			return;
+		}
+
+		if ( ! $this->new_account_email ) {
+			return;
+		}
+
+		$this->new_account_email->trigger( $customer_id, $new_customer_data );
 	}
 
 	/**
@@ -39,17 +97,19 @@ class CreateAccount {
 	 * @throws Exception On error.
 	 */
 	public function from_order_request( \WC_Order $order, \WP_REST_Request $request ) {
-		if ( $this->should_create_customer_account( $request ) ) {
-			$customer_id = $this->create_customer_account(
-				$order->get_billing_email(),
-				$order->get_billing_first_name(),
-				$order->get_billing_last_name()
-			);
-
-			// Log the customer in and associate with the order.
-			wc_set_customer_auth_cookie( $customer_id );
-			$order->set_customer_id( get_current_user_id() );
+		if ( ! $this->should_create_customer_account( $request ) ) {
+			return;
 		}
+
+		$customer_id = $this->create_customer_account(
+			$order->get_billing_email(),
+			$order->get_billing_first_name(),
+			$order->get_billing_last_name()
+		);
+
+		// Log the customer in and associate with the order.
+		wc_set_customer_auth_cookie( $customer_id );
+		$order->set_customer_id( get_current_user_id() );
 	}
 
 	/**
@@ -62,6 +122,7 @@ class CreateAccount {
 	 */
 	protected function should_create_customer_account( $request ) {
 		if ( is_user_logged_in() ) {
+			wc_get_logger()->debug( 'CreateAccount::should_create_customer_account - no wtf' );
 			return false;
 		}
 
@@ -147,12 +208,13 @@ class CreateAccount {
 		$new_customer_data = apply_filters(
 			'woocommerce_new_customer_data',
 			array(
-				'user_login' => $username,
-				'user_pass'  => $password,
-				'user_email' => $user_email,
-				'first_name' => $first_name,
-				'last_name'  => $last_name,
-				'role'       => 'customer',
+				'is_checkout_block_customer_signup' => true,
+				'user_login'                        => $username,
+				'user_pass'                         => $password,
+				'user_email'                        => $user_email,
+				'first_name'                        => $first_name,
+				'last_name'                         => $last_name,
+				'role'                              => 'customer',
 			)
 		);
 
