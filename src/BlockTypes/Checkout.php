@@ -180,36 +180,22 @@ class Checkout extends AbstractBlock {
 	}
 
 	/**
-	 * Removes HTML tags and its content.
+	 * Returns current notices and clears them.
 	 *
-	 * @param string $text Text to remove tags from.
+	 * @return array $captured_notices Notices returned by `wc_get_notices`.
 	 */
-	protected function strip_tags_content( $text ) {
-		return preg_replace( '@<(\w+)\b.*?>.*?</\1>@si', '', $text );
-	}
-
 	protected function capture_and_clear_notices() {
 		// Save previous notices so we can return them in a `captured_notices`
 		// property to be used in the frontend.
-		$previous_notices = wc_get_notices();
-		
+		$captured_notices = wc_get_notices();
+
 		// Prevent carried notices from being converted to exceptions when getting
 		// the Cart and Checkout endpoints.
 		wc_clear_notices();
 
-		if ( is_array( $previous_notices ) && count( $previous_notices ) > 0 ) {
-			$captured_hydrate_notices = array();
-			foreach ( $previous_notices as $type => $notices) {
-				$captured_hydrate_notices[ $type ] = array();
-				foreach ( $notices as $notice ) {
-					$notice = array_merge( $notice, [ 'notice' => trim( $this->strip_tags_content( $notice['notice'] ) ) ] );
-					array_push( $captured_hydrate_notices[ $type ], $notice );
-				}
-			}
-		}
-
-		return $captured_hydrate_notices;
+		return $captured_notices;
 	}
+
 	/**
 	 * Hydrate the checkout block with data from the API.
 	 *

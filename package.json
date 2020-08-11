@@ -170,6 +170,7 @@
 		"compare-versions": "3.6.0",
 		"config": "3.3.1",
 		"dinero.js": "1.8.1",
+		"dompurify": "^2.0.12",
 		"downshift": "4.1.0",
 		"html-react-parser": "0.13.0",
 		"jest-environment-jsdom-sixteen": "1.0.3",

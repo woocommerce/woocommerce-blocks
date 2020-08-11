@@ -18,6 +18,7 @@ import {
 	useMemo,
 } from '@wordpress/element';
 import { useStoreCart, useStoreNotices } from '@woocommerce/base-hooks';
+import { stripTagsAndContents } from '@woocommerce/base-utils';
 
 /**
  * @typedef {import('@woocommerce/type-defs/payments').PaymentDataItem} PaymentDataItem
@@ -78,6 +79,7 @@ const CheckoutProcessor = () => {
 		shouldSavePayment,
 	} = usePaymentMethodDataContext();
 	const {
+		addDefaultNotice,
 		addErrorNotice,
 		addSuccessNotice,
 		removeNotice,
@@ -114,16 +116,23 @@ const CheckoutProcessor = () => {
 			const notices = hydratedNotices[ type ];
 			if ( Array.isArray( notices ) ) {
 				notices.forEach( ( notice ) => {
+					const text = stripTagsAndContents( notice.notice );
 					if ( type === 'error' ) {
-						addErrorNotice( notice.notice );
-					}
-					if ( type === 'success' ) {
-						addSuccessNotice( notice.notice );
+						addErrorNotice( text );
+					} else if ( type === 'success' ) {
+						addSuccessNotice( text );
+					} else {
+						addDefaultNotice( text );
 					}
 				} );
 			}
 		} );
-	}, [ addErrorNotice, addSuccessNotice, hydratedNotices ] );
+	}, [
+		addDefaultNotice,
+		addErrorNotice,
+		addSuccessNotice,
+		hydratedNotices,
+	] );
 
 	useEffect( () => {
 		if (
