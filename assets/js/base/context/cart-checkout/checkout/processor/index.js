@@ -109,6 +109,9 @@ const CheckoutProcessor = () => {
 	}, [ expressPaymentMethodActive, setIsSuppressed ] );
 
 	useEffect( () => {
+		if ( ! hydratedNotices ) {
+			return;
+		}
 		// If hydrated data has some notices captured before the block logic run,
 		// for example, if the user was trying to add an individually-sold
 		// product to the Cart more than once, show them now.
