@@ -28,7 +28,7 @@ export const DEFAULT_STATE = {
 	orderId: checkoutData.order_id,
 	orderNotes: '',
 	customerId: checkoutData.customer_id,
-	notices: checkoutData.notices,
+	hydratedNotices: checkoutData.captured_notices,
 	processingResponse: null,
 };
 

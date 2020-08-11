@@ -56,7 +56,7 @@ const preparePaymentData = ( paymentData, shouldSave, activePaymentMethod ) => {
 const CheckoutProcessor = () => {
 	const {
 		hasError: checkoutHasError,
-		notices: checkoutNotices,
+		hydratedNotices,
 		onCheckoutBeforeProcessing,
 		dispatchActions,
 		redirectUrl,
@@ -77,7 +77,12 @@ const CheckoutProcessor = () => {
 		paymentMethods,
 		shouldSavePayment,
 	} = usePaymentMethodDataContext();
-	const { addErrorNotice, removeNotice, setIsSuppressed } = useStoreNotices();
+	const {
+		addErrorNotice,
+		addSuccessNotice,
+		removeNotice,
+		setIsSuppressed,
+	} = useStoreNotices();
 	const currentBillingData = useRef( billingData );
 	const currentShippingAddress = useRef( shippingAddress );
 	const currentRedirectUrl = useRef( redirectUrl );
@@ -102,12 +107,23 @@ const CheckoutProcessor = () => {
 	}, [ expressPaymentMethodActive, setIsSuppressed ] );
 
 	useEffect( () => {
-		if ( Array.isArray( checkoutNotices ) ) {
-			checkoutNotices.forEach( ( notice ) => {
-				addErrorNotice( notice );
-			} );
-		}
-	}, [ addErrorNotice, checkoutNotices ] );
+		// If hydrated data has some notices captured before the block logic run,
+		// for example, if the user was trying to add an individually-sold
+		// product to the Cart more than once, show them now.
+		Object.keys( hydratedNotices ).forEach( ( type ) => {
+			const notices = hydratedNotices[ type ];
+			if ( Array.isArray( notices ) ) {
+				notices.forEach( ( notice ) => {
+					if ( type === 'error' ) {
+						addErrorNotice( notice.notice );
+					}
+					if ( type === 'success' ) {
+						addSuccessNotice( notice.notice );
+					}
+				} );
+			}
+		} );
+	}, [ addErrorNotice, addSuccessNotice, hydratedNotices ] );
 
 	useEffect( () => {
 		if (

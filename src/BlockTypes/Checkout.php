@@ -188,18 +188,35 @@ class Checkout extends AbstractBlock {
 		return preg_replace( '@<(\w+)\b.*?>.*?</\1>@si', '', $text );
 	}
 
+	protected function capture_and_clear_notices() {
+		// Save previous notices so we can return them in a `captured_notices`
+		// property to be used in the frontend.
+		$previous_notices = wc_get_notices();
+		
+		// Prevent carried notices from being converted to exceptions when getting
+		// the Cart and Checkout endpoints.
+		wc_clear_notices();
+
+		if ( is_array( $previous_notices ) && count( $previous_notices ) > 0 ) {
+			$captured_hydrate_notices = array();
+			foreach ( $previous_notices as $type => $notices) {
+				$captured_hydrate_notices[ $type ] = array();
+				foreach ( $notices as $notice ) {
+					$notice = array_merge( $notice, [ 'notice' => trim( $this->strip_tags_content( $notice['notice'] ) ) ] );
+					array_push( $captured_hydrate_notices[ $type ], $notice );
+				}
+			}
+		}
+
+		return $captured_hydrate_notices;
+	}
 	/**
 	 * Hydrate the checkout block with data from the API.
 	 *
 	 * @param AssetDataRegistry $data_registry Data registry instance.
 	 */
 	protected function hydrate_from_api( AssetDataRegistry $data_registry ) {
-		// Save previous notices so we can return them in a `notices` property to
-		// be used in the frontend.
-		$previous_notices = wc_get_notices( 'error' );
-		// Prevent carried notices from being converted to exceptions when getting
-		// the Cart and Checkout endpoints..
-		wc_clear_notices();
+		$captured_notices = $this->capture_and_clear_notices();
 
 		if ( ! $data_registry->exists( 'cartData' ) ) {
 			$data_registry->add( 'cartData', WC()->api->get_endpoint_data( '/wc/store/cart' ) );
@@ -207,12 +224,8 @@ class Checkout extends AbstractBlock {
 		if ( ! $data_registry->exists( 'checkoutData' ) ) {
 			add_filter( 'woocommerce_store_api_disable_nonce_check', '__return_true' );
 			$checkout_data = WC()->api->get_endpoint_data( '/wc/store/checkout' );
-			if ( is_array( $previous_notices ) && count( $previous_notices ) > 0 ) {
-				$notices = array();
-				foreach ( $previous_notices as $notice ) {
-					array_push( $notices, trim( $this->strip_tags_content( $notice['notice'] ) ) );
-				}
-				$checkout_data = array_merge( $checkout_data, [ 'notices' => $notices ] );
+			if ( is_array( $captured_notices ) && count( $captured_notices ) > 0 ) {
+				$checkout_data = array_merge( $checkout_data, [ 'captured_notices' => $captured_notices ] );
 			}
 			$data_registry->add( 'checkoutData', $checkout_data );
 			remove_filter( 'woocommerce_store_api_disable_nonce_check', '__return_true' );
