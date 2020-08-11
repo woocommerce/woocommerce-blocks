@@ -122,7 +122,6 @@ class CreateAccount {
 	 */
 	protected function should_create_customer_account( $request ) {
 		if ( is_user_logged_in() ) {
-			wc_get_logger()->debug( 'CreateAccount::should_create_customer_account - no wtf' );
 			return false;
 		}
 
