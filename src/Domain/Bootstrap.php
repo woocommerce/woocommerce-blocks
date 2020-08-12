@@ -18,6 +18,7 @@ use Automattic\WooCommerce\Blocks\Payments\Integrations\BankTransfer;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\CashOnDelivery;
 use Automattic\WooCommerce\Blocks\Domain\Services\DraftOrders;
 use Automattic\WooCommerce\Blocks\Domain\Services\CreateAccount;
+use Automattic\WooCommerce\Blocks\Domain\Services\Email\CustomerNewAccount;
 
 /**
  * Takes care of bootstrapping the plugin.
@@ -198,7 +199,7 @@ class Bootstrap {
 		$this->container->register(
 			CreateAccount::class,
 			function( Container $container ) {
-				return new CreateAccount();
+				return new CreateAccount( $container->get( Package::class ) );
 			}
 		);
 	}
