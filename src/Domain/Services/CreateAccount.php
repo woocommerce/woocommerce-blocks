@@ -40,12 +40,9 @@ class CreateAccount {
 	}
 
 	/**
-	 * Init - register custom hook handler.
+	 * Init - register handlers for WooCommerce core email hooks.
 	 */
 	public function init() {
-		// Register handler for signup during block-based checkout.
-		add_action( 'woocommerceblocks_create_account_for_order_request', [ $this, 'from_order_request' ], 10, 2 );
-
 		// Override core email handlers to add our new improved "new account" email.
 		add_action(
 			'woocommerce_email',
