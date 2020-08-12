@@ -9,6 +9,7 @@ namespace Automattic\WooCommerce\Blocks\Domain\Services;
 
 use \WP_REST_Request;
 use \WC_Order;
+use Automattic\WooCommerce\Blocks\Domain\Package;
 use Automattic\WooCommerce\Blocks\Domain\Services\Email\CustomerNewAccount;
 
 /**
@@ -20,7 +21,23 @@ class CreateAccount {
 	 *
 	 * @var WC_Email
 	 */
-	public $new_account_email = null;
+	public $new_account_email;
+
+	/**
+	 * Reference to the Package instance
+	 *
+	 * @var Package
+	 */
+	private $package;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param Package $package An instance of (Woo Blocks) Package.
+	 */
+	public function __construct( Package $package ) {
+		$this->package = $package;
+	}
 
 	/**
 	 * Init - register custom hook handler.
@@ -33,7 +50,11 @@ class CreateAccount {
 		add_action(
 			'woocommerce_email',
 			function ( $wc_emails_instance ) {
-				$this->new_account_email = new CustomerNewAccount();
+				// Late instantiate CustomerNewAccount because it depends on WC_Email,
+				// which is not available at `init()` time.
+				if ( ! $this->new_account_email ) {
+					$this->new_account_email = new CustomerNewAccount( $this->package );
+				}
 
 				// Remove core "new account" handler; we are going to replace it.
 				remove_action( 'woocommerce_created_customer_notification', array( $wc_emails_instance, 'customer_new_account' ), 10, 3 );

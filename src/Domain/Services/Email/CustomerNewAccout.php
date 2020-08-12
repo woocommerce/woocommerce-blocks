@@ -9,6 +9,7 @@ namespace Automattic\WooCommerce\Blocks\Domain\Services\Email;
 
 use \WP_User;
 use \WC_Email;
+use Automattic\WooCommerce\Blocks\Domain\Package;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -56,8 +57,10 @@ class CustomerNewAccount extends \WC_Email {
 
 	/**
 	 * Constructor.
+	 *
+	 * @param Package $package An instance of (Woo Blocks) Package.
 	 */
-	public function __construct() {
+	public function __construct( Package $package ) {
 		// Note - we're using the same ID as the real email.
 		// This ensures that any merchant tweaks (Settings > Emails)
 		// apply to this email (consistent with the core email).
@@ -67,7 +70,7 @@ class CustomerNewAccount extends \WC_Email {
 		$this->description           = __( 'Customer "new account" emails are sent to the customer when a customer signs up via checkout or account blocks.', 'woo-gutenberg-products-block' );
 		$this->template_html         = 'emails/customer-new-account-blocks.php';
 		$this->template_plain        = 'emails/plain/customer-new-account-blocks.php';
-		$this->default_template_path = plugin_dir_path( __FILE__ ) . 'templates/';
+		$this->default_template_path = $package->get_path( '/templates/' );
 
 		// Call parent constructor.
 		parent::__construct();
