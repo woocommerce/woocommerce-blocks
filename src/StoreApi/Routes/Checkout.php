@@ -1,6 +1,9 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
 
+use \Exception;
+use Automattic\WooCommerce\Blocks\Package;
+use Automattic\WooCommerce\Blocks\Domain\Services\CreateAccount;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\OrderController;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\ReserveStock;
@@ -164,8 +167,9 @@ class Checkout extends AbstractRoute {
 
 		// Create a new user account as necessary.
 		try {
-			// TODO full docs for new hook, including throw.
-			do_action( 'woocommerceblocks_create_account_for_order_request', $order_object, $request );
+			$create_account = Package::container()->get( CreateAccount::class );
+			$create_account->from_order_request( $order_object, $request );
+
 		} catch ( Exception $error ) {
 			$this->handle_create_account_error( $error );
 		}
