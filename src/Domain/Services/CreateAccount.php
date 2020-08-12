@@ -9,6 +9,7 @@ namespace Automattic\WooCommerce\Blocks\Domain\Services;
 
 use \WP_REST_Request;
 use \WC_Order;
+use Automattic\WooCommerce\Blocks\Domain\Services\Email\CustomerNewAccount;
 
 /**
  * Service class implementing new create account behaviour for order processing.
@@ -32,7 +33,7 @@ class CreateAccount {
 		add_action(
 			'woocommerce_email',
 			function ( $wc_emails_instance ) {
-				$this->new_account_email = require_once dirname( __DIR__ ) . '/class-wc-email-customer-new-account-blocks.php';
+				$this->new_account_email = new CustomerNewAccount();
 
 				// Remove core "new account" handler; we are going to replace it.
 				remove_action( 'woocommerce_created_customer_notification', array( $wc_emails_instance, 'customer_new_account' ), 10, 3 );
