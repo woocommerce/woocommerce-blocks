@@ -18,7 +18,6 @@ import {
 	useMemo,
 } from '@wordpress/element';
 import { useStoreCart, useStoreNotices } from '@woocommerce/base-hooks';
-import { stripTagsAndContents } from '@woocommerce/base-utils';
 
 /**
  * @typedef {import('@woocommerce/type-defs/payments').PaymentDataItem} PaymentDataItem
@@ -57,7 +56,6 @@ const preparePaymentData = ( paymentData, shouldSave, activePaymentMethod ) => {
 const CheckoutProcessor = () => {
 	const {
 		hasError: checkoutHasError,
-		hydratedNotices,
 		onCheckoutBeforeProcessing,
 		dispatchActions,
 		redirectUrl,
@@ -78,13 +76,7 @@ const CheckoutProcessor = () => {
 		paymentMethods,
 		shouldSavePayment,
 	} = usePaymentMethodDataContext();
-	const {
-		addDefaultNotice,
-		addErrorNotice,
-		addSuccessNotice,
-		removeNotice,
-		setIsSuppressed,
-	} = useStoreNotices();
+	const { addErrorNotice, removeNotice, setIsSuppressed } = useStoreNotices();
 	const currentBillingData = useRef( billingData );
 	const currentShippingAddress = useRef( shippingAddress );
 	const currentRedirectUrl = useRef( redirectUrl );
@@ -107,35 +99,6 @@ const CheckoutProcessor = () => {
 	useEffect( () => {
 		setIsSuppressed( expressPaymentMethodActive );
 	}, [ expressPaymentMethodActive, setIsSuppressed ] );
-
-	useEffect( () => {
-		if ( ! hydratedNotices ) {
-			return;
-		}
-		// If hydrated data has some notices captured before the block logic run,
-		// for example, if the user was trying to add an individually-sold
-		// product to the Cart more than once, show them now.
-		Object.keys( hydratedNotices ).forEach( ( type ) => {
-			const notices = hydratedNotices[ type ];
-			if ( Array.isArray( notices ) ) {
-				notices.forEach( ( notice ) => {
-					const text = stripTagsAndContents( notice.notice );
-					if ( type === 'error' ) {
-						addErrorNotice( text );
-					} else if ( type === 'success' ) {
-						addSuccessNotice( text );
-					} else {
-						addDefaultNotice( text );
-					}
-				} );
-			}
-		} );
-	}, [
-		addDefaultNotice,
-		addErrorNotice,
-		addSuccessNotice,
-		hydratedNotices,
-	] );
 
 	useEffect( () => {
 		if (

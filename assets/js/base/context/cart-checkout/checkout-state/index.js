@@ -61,7 +61,6 @@ const CheckoutContext = createContext( {
 	},
 	hasOrder: false,
 	isCart: false,
-	hydratedNotices: '',
 } );
 
 /**
@@ -334,7 +333,6 @@ export const CheckoutStateProvider = ( {
 		isCart,
 		orderId: checkoutState.orderId,
 		hasOrder: !! checkoutState.orderId,
-		hydratedNotices: checkoutState.hydratedNotices,
 		customerId: checkoutState.customerId,
 		orderNotes: checkoutState.orderNotes,
 	};

@@ -180,40 +180,21 @@ class Checkout extends AbstractBlock {
 	}
 
 	/**
-	 * Returns current notices and clears them.
-	 *
-	 * @return array $captured_notices Notices returned by `wc_get_notices`.
-	 */
-	protected function capture_and_clear_notices() {
-		// Save previous notices so we can return them in a `captured_notices`
-		// property to be used in the frontend.
-		$captured_notices = wc_get_notices();
-
-		// Prevent carried notices from being converted to exceptions when getting
-		// the Cart and Checkout endpoints.
-		wc_clear_notices();
-
-		return $captured_notices;
-	}
-
-	/**
 	 * Hydrate the checkout block with data from the API.
 	 *
 	 * @param AssetDataRegistry $data_registry Data registry instance.
 	 */
 	protected function hydrate_from_api( AssetDataRegistry $data_registry ) {
-		$captured_notices = $this->capture_and_clear_notices();
+		// Print existing notices now, otherwise they are caught by the Cart
+		// Controller and converted to exceptions.
+		wc_print_notices();
 
 		if ( ! $data_registry->exists( 'cartData' ) ) {
 			$data_registry->add( 'cartData', WC()->api->get_endpoint_data( '/wc/store/cart' ) );
 		}
 		if ( ! $data_registry->exists( 'checkoutData' ) ) {
 			add_filter( 'woocommerce_store_api_disable_nonce_check', '__return_true' );
-			$checkout_data = WC()->api->get_endpoint_data( '/wc/store/checkout' );
-			if ( is_array( $captured_notices ) && count( $captured_notices ) > 0 ) {
-				$checkout_data = array_merge( $checkout_data, [ 'captured_notices' => $captured_notices ] );
-			}
-			$data_registry->add( 'checkoutData', $checkout_data );
+			$data_registry->add( 'checkoutData', WC()->api->get_endpoint_data( '/wc/store/checkout' ) );
 			remove_filter( 'woocommerce_store_api_disable_nonce_check', '__return_true' );
 		}
 	}

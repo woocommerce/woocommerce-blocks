@@ -6,4 +6,3 @@ export * from './legacy-events';
 export * from './render-frontend';
 export * from './get-valid-block-attributes';
 export * from './product-data';
-export * from './strip-tags-and-contents';

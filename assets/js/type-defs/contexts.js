@@ -247,11 +247,6 @@
  *                                                                     user in the checkout form.
  * @property {boolean}                      hasOrder                   True when the checkout has a
  *                                                                     draft order from the API.
- * @property {string}                       hydratedNotices            Before the block logic runs,
- *                                                                     there might be some old notices.
- *                                                                     They shouldn't block the normal
- *                                                                     purchase process but must be
- *                                                                     shown to the user.
  * @property {boolean}                      isCart                     When true, means the provider
  *                                                                     is providing data for the cart.
  * @property {number}                       customerId                 This is the ID of the customer
