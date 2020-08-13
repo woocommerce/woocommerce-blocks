@@ -71,7 +71,7 @@
 			white-space: nowrap;
 			width: 100%;
 			.has-dark-controls & {
-				background-color: rgba(#000, 0.1);
+				background-color: $input-background-dark;
 				border-color: $input-border-dark;
 				color: $input-text-dark;
 			}

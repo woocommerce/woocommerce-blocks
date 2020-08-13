@@ -89,7 +89,7 @@
 				border-color: $controls-border-dark;
 
 				&:checked::before {
-					background: #fff;
+					background: $input-text-dark;
 				}
 			}
 		}
