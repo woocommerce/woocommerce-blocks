@@ -51,6 +51,7 @@
 
 		.has-dark-controls & {
 			color: $input-text-dark;
+			background: transparent;
 
 			&:focus {
 				background: transparent;
