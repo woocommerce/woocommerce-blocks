@@ -8,9 +8,6 @@
 	&:focus {
 		outline: 2px solid $core-grey-light-600;
 	}
-	.has-dark-controls &:focus {
-		outline-width: 1px;
-	}
 }
 
 .wc-block-components-quantity-selector {
@@ -53,7 +50,7 @@
 		}
 
 		.has-dark-controls & {
-			color: #fff;
+			color: $input-text-dark;
 
 			&:focus {
 				background: transparent;
@@ -90,11 +87,11 @@
 		}
 
 		.has-dark-controls & {
-			color: #fff;
+			color: $input-text-dark;
 
 			&:hover,
 			&:focus {
-				color: #fff;
+				color: $input-text-dark;
 			}
 			&:disabled {
 				color: $input-disabled-dark;

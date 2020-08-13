@@ -18,6 +18,9 @@
 		max-width: calc(100% - #{2 * $gap});
 		white-space: nowrap;
 
+		.has-dark-controls & {
+			color: $input-placeholder-dark;
+		}
 		@media screen and (prefers-reduced-motion: reduce) {
 			transition: none;
 		}
@@ -70,7 +73,7 @@
 			.has-dark-controls & {
 				background-color: rgba(#000, 0.1);
 				border-color: $input-border-dark;
-				color: #fff;
+				color: $input-text-dark;
 			}
 		}
 	}
@@ -78,12 +81,12 @@
 	.components-custom-select-control__button-icon {
 		right: #{$gap - 4px};
 		.has-dark-controls & {
-			fill: #fff;
+			fill: $input-text-dark;
 		}
 	}
 
 	.components-custom-select-control__menu {
-		background-color: #fff;
+		background-color: $select-dropdown-dark;
 		margin: 0;
 		max-height: 300px;
 		overflow: auto;
@@ -93,7 +96,7 @@
 			display: none;
 		}
 		.has-dark-controls & {
-			background-color: #1e1e1e;
+			background-color: $select-dropdown-dark;
 			color: $input-text-dark;
 		}
 	}
@@ -106,7 +109,7 @@
 		&:focus,
 		&.is-highlighted {
 			.has-dark-controls & {
-				background-color: rgba(#000, 0.4);
+				background-color: $select-item-dark;
 			}
 		}
 	}
