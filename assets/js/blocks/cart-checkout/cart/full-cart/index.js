@@ -50,7 +50,7 @@ const Cart = ( { attributes } ) => {
 	const {
 		isShippingCalculatorEnabled,
 		isShippingCostHidden,
-		darkInputs,
+		hasDarkControls,
 	} = attributes;
 
 	const {
@@ -86,7 +86,7 @@ const Cart = ( { attributes } ) => {
 
 	const cartClassName = classnames( 'wc-block-cart', {
 		'wc-block-cart--is-loading': cartIsLoading,
-		'has-dark-styles': darkInputs,
+		'has-dark-controls': hasDarkControls,
 	} );
 
 	return (

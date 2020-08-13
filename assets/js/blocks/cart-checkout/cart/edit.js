@@ -37,7 +37,7 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 		isShippingCalculatorEnabled,
 		isShippingCostHidden,
 		checkoutPageId,
-		darkInputs,
+		hasDarkControls,
 	} = attributes;
 	const { currentPostId } = useEditorContext();
 	const { current: savedCheckoutPageId } = useRef( checkoutPageId );
@@ -69,20 +69,20 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 					) }
 				</Notice>
 			) }
-			<PanelBody title={ __( 'Styles', 'woo-gutenberg-products-block' ) }>
+			<PanelBody title={ __( 'Style', 'woo-gutenberg-products-block' ) }>
 				<ToggleControl
 					label={ __(
-						'Dark inputs',
+						'Dark mode inputs',
 						'woo-gutenberg-products-block'
 					) }
 					help={ __(
-						'Enables dark colors and backgrounds for inputs.',
+						'Inputs styled specifically for use on dark background colors.',
 						'woo-gutenberg-products-block'
 					) }
-					checked={ darkInputs }
+					checked={ hasDarkControls }
 					onChange={ () =>
 						setAttributes( {
-							darkInputs: ! darkInputs,
+							hasDarkControls: ! hasDarkControls,
 						} )
 					}
 				/>

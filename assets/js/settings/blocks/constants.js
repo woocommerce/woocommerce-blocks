@@ -31,7 +31,10 @@ export const DISPLAY_ITEMIZED_TAXES = getSetting(
 	'displayItemizedTaxes',
 	false
 );
-export const HAS_DARK_STYLES = getSetting( 'hasDarkStyles', false );
+export const HAS_DARK_EDITOR_STYLE_SUPPORT = getSetting(
+	'hasDarkEditorStyleSupport',
+	false
+);
 export const DISPLAY_SHOP_PRICES_INCLUDING_TAX = getSetting(
 	'displayShopPricesIncludingTax',
 	false

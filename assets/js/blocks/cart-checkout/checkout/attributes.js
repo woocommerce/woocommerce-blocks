@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { HAS_DARK_STYLES } from '@woocommerce/block-settings';
+import { HAS_DARK_EDITOR_STYLE_SUPPORT } from '@woocommerce/block-settings';
 
 const blockAttributes = {
 	isPreview: {
@@ -45,9 +45,9 @@ const blockAttributes = {
 		type: 'number',
 		default: 0,
 	},
-	darkInputs: {
+	hasDarkControls: {
 		type: 'boolean',
-		default: HAS_DARK_STYLES,
+		default: HAS_DARK_EDITOR_STYLE_SUPPORT,
 	},
 };
 
