@@ -56,7 +56,7 @@
 		}
 		.has-dark-styles & {
 			background-color: rgba(#000, 0.1);
-			border: 1px solid $input-border-dark;
+			border-color: $input-border-dark;
 			color: #fff;
 			&:focus {
 				background-color: rgba(#000, 0.1);
