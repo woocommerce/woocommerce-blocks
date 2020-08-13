@@ -11,7 +11,6 @@ import {
 	usePaymentMethods,
 	usePositionRelativeToViewport,
 } from '@woocommerce/base-hooks';
-import classNames from 'classnames';
 
 /**
  * Internal dependencies
@@ -60,12 +59,7 @@ const CheckoutButton = ( { link } ) => {
 				{ submitContainerContents }
 			</div>
 			{ position === 'below' && (
-				<div
-					className={ classNames(
-						'wc-block-cart__submit-container',
-						'wc-block-cart__submit-container--sticky'
-					) }
-				>
+				<div className="wc-block-cart__submit-container wc-block-cart__submit-container--sticky">
 					{ submitContainerContents }
 				</div>
 			) }

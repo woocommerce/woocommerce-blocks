@@ -3,6 +3,7 @@
  */
 import { useRef, useEffect, useState } from '@wordpress/element';
 
+/** @type {React.CSSProperties} */
 const style = {
 	bottom: 0,
 	left: 0,
