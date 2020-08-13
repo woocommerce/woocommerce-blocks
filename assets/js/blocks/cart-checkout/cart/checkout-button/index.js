@@ -7,7 +7,11 @@ import { PaymentMethodIcons } from '@woocommerce/base-components/cart-checkout';
 import Button from '@woocommerce/base-components/button';
 import { CHECKOUT_URL } from '@woocommerce/block-settings';
 import { useCheckoutContext } from '@woocommerce/base-context';
-import { usePaymentMethods } from '@woocommerce/base-hooks';
+import {
+	usePaymentMethods,
+	usePositionRelativeToViewport,
+} from '@woocommerce/base-hooks';
+import classNames from 'classnames';
 
 /**
  * Internal dependencies
@@ -28,11 +32,12 @@ const getIconsFromPaymentMethods = ( paymentMethods ) => {
  */
 const CheckoutButton = ( { link } ) => {
 	const { isCalculating } = useCheckoutContext();
+	const [ positionObserver, position ] = usePositionRelativeToViewport();
 	const [ showSpinner, setShowSpinner ] = useState( false );
 	const { paymentMethods } = usePaymentMethods();
 
-	return (
-		<div className="wc-block-cart__submit-container">
+	const submitContainerContents = (
+		<>
 			<Button
 				className="wc-block-cart__submit-button"
 				href={ link || CHECKOUT_URL }
@@ -45,6 +50,25 @@ const CheckoutButton = ( { link } ) => {
 			<PaymentMethodIcons
 				icons={ getIconsFromPaymentMethods( paymentMethods ) }
 			/>
+		</>
+	);
+
+	return (
+		<div className="wc-block-cart__submit">
+			{ positionObserver }
+			<div className="wc-block-cart__submit-container">
+				{ submitContainerContents }
+			</div>
+			{ position === 'below' && (
+				<div
+					className={ classNames(
+						'wc-block-cart__submit-container',
+						'wc-block-cart__submit-container--sticky'
+					) }
+				>
+					{ submitContainerContents }
+				</div>
+			) }
 		</div>
 	);
 };
