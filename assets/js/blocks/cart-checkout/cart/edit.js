@@ -69,24 +69,6 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 					) }
 				</Notice>
 			) }
-			<PanelBody title={ __( 'Style', 'woo-gutenberg-products-block' ) }>
-				<ToggleControl
-					label={ __(
-						'Dark mode inputs',
-						'woo-gutenberg-products-block'
-					) }
-					help={ __(
-						'Inputs styled specifically for use on dark background colors.',
-						'woo-gutenberg-products-block'
-					) }
-					checked={ hasDarkControls }
-					onChange={ () =>
-						setAttributes( {
-							hasDarkControls: ! hasDarkControls,
-						} )
-					}
-				/>
-			</PanelBody>
 			{ SHIPPING_ENABLED && (
 				<PanelBody
 					title={ __(
@@ -148,6 +130,24 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 					} }
 				/>
 			) }
+			<PanelBody title={ __( 'Style', 'woo-gutenberg-products-block' ) }>
+				<ToggleControl
+					label={ __(
+						'Dark mode inputs',
+						'woo-gutenberg-products-block'
+					) }
+					help={ __(
+						'Inputs styled specifically for use on dark background colors.',
+						'woo-gutenberg-products-block'
+					) }
+					checked={ hasDarkControls }
+					onChange={ () =>
+						setAttributes( {
+							hasDarkControls: ! hasDarkControls,
+						} )
+					}
+				/>
+			</PanelBody>
 			<CartCheckoutFeedbackPrompt />
 		</InspectorControls>
 	);
