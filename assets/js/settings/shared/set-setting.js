@@ -19,7 +19,7 @@ import deprecated from '@wordpress/deprecated';
  *                                               to sanitize the setting (eg.
  *                                               ensure it's a number)
  *
- * @todo  Remove setSetting function from `@woocommerce/settings`
+ * @todo  Remove setSetting function from `@woocommerce/settings`.
  *
  *  The `wc.wcSettings.setSetting` function was deprecated beginning with WooCommerce Blocks 3.2.0
  *  and can be removed completely with WooCommerce Blocks 3.8.0 (that gives 6 versions of the
