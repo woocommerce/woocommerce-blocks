@@ -23,7 +23,7 @@ import deprecated from '@wordpress/deprecated';
  *
  *  The `wc.wcSettings.setSetting` function was deprecated beginning with WooCommerce Blocks 3.2.0
  *  and can be removed completely with WooCommerce Blocks 3.8.0 (that gives 6 versions of the
- *  feature plugin for warning and 2 versions of WooCommerce core).
+ *  feature plugin for warning and 3 versions of WooCommerce core).
  */
 export function setSetting( name, value, filter = ( val ) => val ) {
 	deprecated( 'setSetting', {
