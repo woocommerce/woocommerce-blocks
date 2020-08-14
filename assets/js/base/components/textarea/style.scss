@@ -12,11 +12,11 @@
 
 	.has-dark-controls & {
 		background-color: $input-background-dark;
-		border-color: rgba(255, 255, 255, 0.4);
-		color: #fff;
+		border-color: $input-border-dark;
+		color: $input-text-dark;
 
 		&::placeholder {
-			color: rgba(255, 255, 255, 0.6);
+			color: $input-placeholder-dark;
 		}
 	}
 }
