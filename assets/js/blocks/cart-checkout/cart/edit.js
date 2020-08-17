@@ -16,6 +16,8 @@ import ViewSwitcher from '@woocommerce/block-components/view-switcher';
 import PageSelector from '@woocommerce/block-components/page-selector';
 import { SHIPPING_ENABLED, CART_PAGE_ID } from '@woocommerce/block-settings';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
+import CompatibilityNotice from '@woocommerce/block-components/compatibility-notice';
+
 import {
 	EditorProvider,
 	useEditorContext,
@@ -221,6 +223,7 @@ const CartEditor = ( { className, attributes, setAttributes } ) => {
 					</BlockErrorBoundary>
 				) }
 			/>
+			<CompatibilityNotice />
 		</div>
 	);
 };

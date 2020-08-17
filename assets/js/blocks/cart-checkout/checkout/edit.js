@@ -23,6 +23,7 @@ import { __experimentalCreateInterpolateElement } from 'wordpress-element';
 import { useRef } from '@wordpress/element';
 import { EditorProvider, useEditorContext } from '@woocommerce/base-context';
 import PageSelector from '@woocommerce/block-components/page-selector';
+import CompatibilityNotice from '@woocommerce/block-components/compatibility-notice';
 import {
 	previewCart,
 	previewSavedPaymentMethods,
@@ -289,43 +290,46 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 const CheckoutEditor = ( { attributes, setAttributes } ) => {
 	const { className, isPreview } = attributes;
 	return (
-		<EditorProvider
-			previewData={ { previewCart, previewSavedPaymentMethods } }
-		>
-			<div
-				className={ classnames(
-					className,
-					'wp-block-woocommerce-checkout',
-					{
-						'is-editor-preview': isPreview,
-					}
-				) }
+		<>
+			<EditorProvider
+				previewData={ { previewCart, previewSavedPaymentMethods } }
 			>
-				<BlockSettings
-					attributes={ attributes }
-					setAttributes={ setAttributes }
-				/>
-				<BlockErrorBoundary
-					header={ __(
-						'Checkout Block Error',
-						'woo-gutenberg-products-block'
-					) }
-					text={ __(
-						'There was an error whilst rendering the checkout block. If this problem continues, try re-creating the block.',
-						'woo-gutenberg-products-block'
-					) }
-					showErrorMessage={ true }
-					errorMessagePrefix={ __(
-						'Error message:',
-						'woo-gutenberg-products-block'
+				<div
+					className={ classnames(
+						className,
+						'wp-block-woocommerce-checkout',
+						{
+							'is-editor-preview': isPreview,
+						}
 					) }
 				>
-					<Disabled>
-						<Block attributes={ attributes } />
-					</Disabled>
-				</BlockErrorBoundary>
-			</div>
-		</EditorProvider>
+					<BlockSettings
+						attributes={ attributes }
+						setAttributes={ setAttributes }
+					/>
+					<BlockErrorBoundary
+						header={ __(
+							'Checkout Block Error',
+							'woo-gutenberg-products-block'
+						) }
+						text={ __(
+							'There was an error whilst rendering the checkout block. If this problem continues, try re-creating the block.',
+							'woo-gutenberg-products-block'
+						) }
+						showErrorMessage={ true }
+						errorMessagePrefix={ __(
+							'Error message:',
+							'woo-gutenberg-products-block'
+						) }
+					>
+						<Disabled>
+							<Block attributes={ attributes } />
+						</Disabled>
+					</BlockErrorBoundary>
+				</div>
+			</EditorProvider>
+			<CompatibilityNotice />
+		</>
 	);
 };
 
