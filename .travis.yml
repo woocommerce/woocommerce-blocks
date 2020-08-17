@@ -104,13 +104,6 @@ jobs:
               - npm run lint:ci
           env:
               - WOOCOMMERCE_BLOCKS_PHASE=3
-        - name: E2E Tests (WP 5.2)
-          script:
-              - npm run test:e2e
-          env:
-              - WP_VERSION=5.2
-              - E2E_TESTS=1
-              - WOOCOMMERCE_BLOCKS_PHASE=3
         - name: E2E Tests (WP 5.3)
           script:
               - npm run test:e2e
