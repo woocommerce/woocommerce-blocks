@@ -118,14 +118,21 @@ jobs:
               - WP_VERSION=5.4
               - E2E_TESTS=1
               - WOOCOMMERCE_BLOCKS_PHASE=3
-        - name: E2E Tests (WP 5.4 with Gutenberg plugin)
+        - name: E2E Tests (WP 5.5)
+          script:
+              - npm run test:e2e
+          env:
+              - WP_VERSION=5.5
+              - E2E_TESTS=1
+              - WOOCOMMERCE_BLOCKS_PHASE=3
+        - name: E2E Tests (WP 5.5 with Gutenberg plugin)
           script:
               - npm run wp-env run tests-cli "wp plugin install gutenberg --activate"
               - npm install @wordpress/e2e-test-utils@latest
               - chmod -R 767 ./
               - npm run test:e2e
           env:
-              - WP_VERSION=5.4
+              - WP_VERSION=5.5
               - E2E_TESTS=1
               - GUTENBERG_LATEST=true
               - WOOCOMMERCE_BLOCKS_PHASE=3
