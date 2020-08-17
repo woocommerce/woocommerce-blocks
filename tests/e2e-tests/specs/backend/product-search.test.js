@@ -45,21 +45,21 @@ describe( `${ block.name } Block`, () => {
 
 	it( 'can change field labels in editor', async () => {
 		await expect( page ).toFill(
-			'textarea.wc-block-product-search__label',
+			'.wc-block-product-search__label input',
 			'I am a new label'
 		);
 
 		await expect( page ).toFill(
-			'textarea.wc-block-product-search__field',
+			'.wc-block-product-search__field input',
 			'I am a new placeholder'
 		);
 
 		await clearAndFillInput(
-			'textarea.wc-block-product-search__label',
+			'.wc-block-product-search__label input',
 			'The Label'
 		);
 		await clearAndFillInput(
-			'textarea.wc-block-product-search__field',
+			'.wc-block-product-search__field input',
 			'The Placeholder'
 		);
 
