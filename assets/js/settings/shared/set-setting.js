@@ -28,7 +28,7 @@ import deprecated from '@wordpress/deprecated';
 export function setSetting( name, value, filter = ( val ) => val ) {
 	deprecated( 'setSetting', {
 		version: '3.8.0',
-		alternative: `a locally scoped value for "${ name }" instead`,
+		alternative: `a locally scoped value for "${ name }"`,
 		plugin: 'WooCommerce Blocks',
 		hint:
 			'wc.wcSettings is a global settings configuration object that should not be mutated during a session. Hence the removal of this function.',
