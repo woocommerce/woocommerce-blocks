@@ -17,13 +17,6 @@ use Automattic\WooCommerce\Blocks\Domain\Services\Email\CustomerNewAccount;
  */
 class CreateAccount {
 	/**
-	 * Instance of new account email class.
-	 *
-	 * @var WC_Email
-	 */
-	public $new_account_email;
-
-	/**
 	 * Reference to the Package instance
 	 *
 	 * @var Package
