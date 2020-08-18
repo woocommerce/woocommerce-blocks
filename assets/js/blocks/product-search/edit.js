@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { InspectorControls } from '@wordpress/block-editor';
+import { InspectorControls, PlainText } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl, TextControl } from '@wordpress/components';
 import { withInstanceId } from '@wordpress/compose';
 
@@ -66,7 +66,7 @@ const Edit = ( {
 			</InspectorControls>
 			<div className={ classes }>
 				{ !! hasLabel && (
-					<TextControl
+					<PlainText
 						className="wc-block-product-search__label"
 						value={ label }
 						onChange={ ( value ) =>
