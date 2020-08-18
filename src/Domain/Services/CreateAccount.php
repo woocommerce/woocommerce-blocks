@@ -47,12 +47,6 @@ class CreateAccount {
 		add_action(
 			'woocommerce_email',
 			function ( $wc_emails_instance ) {
-				// Late instantiate CustomerNewAccount because it depends on WC_Email,
-				// which is not available at `init()` time.
-				if ( ! $this->new_account_email ) {
-					$this->new_account_email = new CustomerNewAccount( $this->package );
-				}
-
 				// Remove core "new account" handler; we are going to replace it.
 				remove_action( 'woocommerce_created_customer_notification', array( $wc_emails_instance, 'customer_new_account' ), 10, 3 );
 
@@ -91,11 +85,8 @@ class CreateAccount {
 			return;
 		}
 
-		if ( ! $this->new_account_email ) {
-			return;
-		}
-
-		$this->new_account_email->trigger( $customer_id, $new_customer_data );
+		$new_account_email = new CustomerNewAccount( $this->package );
+		$new_account_email->trigger( $customer_id, $new_customer_data );
 	}
 
 	/**
