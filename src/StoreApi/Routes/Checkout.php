@@ -169,9 +169,8 @@ class Checkout extends AbstractRoute {
 		try {
 			$create_account = Package::container()->get( CreateAccount::class );
 			$create_account->from_order_request( $order_object, $request );
-
 		} catch ( Exception $error ) {
-			$this->handle_create_account_error( $error );
+			$this->handle_error( $error );
 		}
 
 		// Persist customer address data to account.
@@ -360,7 +359,7 @@ class Checkout extends AbstractRoute {
 	 *
 	 * @throws RouteException API error object with error details.
 	 */
-	private function handle_create_account_error( Exception $error ) {
+	private function handle_error( Exception $error ) {
 		// woocommerce_rest_checkout_create_account_failure ?
 		switch ( $error->getMessage() ) {
 			case 'registration-error-invalid-email':
