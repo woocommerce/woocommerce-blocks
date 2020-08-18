@@ -11,10 +11,6 @@ use \WP_User;
 use \WC_Email;
 use Automattic\WooCommerce\Blocks\Domain\Package;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
-
 /**
  * Customer New Account.
  *
