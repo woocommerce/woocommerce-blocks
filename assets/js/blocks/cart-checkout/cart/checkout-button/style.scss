@@ -3,7 +3,7 @@
 }
 
 .wc-block-cart__submit-container {
-	padding: $gap;
+	padding-bottom: $gap;
 }
 
 .wc-block-cart__submit-button {
@@ -36,6 +36,7 @@
 		background: $white;
 		bottom: 0;
 		left: 0;
+		padding: $gap;
 		position: fixed;
 		width: 100%;
 		z-index: 9999;

@@ -253,15 +253,13 @@ table.wc-block-cart-items {
 	.wc-block-components-sidebar {
 		> .wc-block-cart__totals-title,
 		.wc-block-components-shipping-calculator,
-		.wc-block-components-shipping-rates-control__package:not(.wc-blocks-components-panel),
-		> .wc-block-cart__submit-container {
+		.wc-block-components-shipping-rates-control__package:not(.wc-blocks-components-panel) {
 			padding-left: $gap;
 			padding-right: $gap;
 		}
 	}
 
-	.wc-block-cart__express-payment-methods {
-		padding-left: $gap;
-		padding-right: $gap;
+	.wc-block-cart__payment-options {
+		padding: $gap;
 	}
 }

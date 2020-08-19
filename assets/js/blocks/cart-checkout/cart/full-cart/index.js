@@ -143,17 +143,19 @@ const Cart = ( { attributes } ) => {
 					currency={ totalsCurrency }
 					values={ cartTotals }
 				/>
-				{ cartNeedsPayment && (
-					<div className="wc-block-cart__express-payment-methods">
-						<ExpressCheckoutFormControl isCompact={ true } />
-					</div>
-				) }
-				<CheckoutButton
-					link={ getSetting(
-						'page-' + attributes?.checkoutPageId,
-						false
+				<div className="wc-block-cart__payment-options">
+					{ cartNeedsPayment && (
+						<div className="wc-block-cart__express-payment-methods">
+							<ExpressCheckoutFormControl isCompact={ true } />
+						</div>
 					) }
-				/>
+					<CheckoutButton
+						link={ getSetting(
+							'page-' + attributes?.checkoutPageId,
+							false
+						) }
+					/>
+				</div>
 			</Sidebar>
 		</SidebarLayout>
 	);
