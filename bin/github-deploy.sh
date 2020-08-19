@@ -130,6 +130,9 @@ source $RELEASER_PATH/bin/version-changes.sh
 
 composer dump-autoload
 
+# remove composer.json version bump after autoload regen (we don't commit it)
+git checkout -- composer.json
+
 output 2 "Committing version change..."
 echo
 
