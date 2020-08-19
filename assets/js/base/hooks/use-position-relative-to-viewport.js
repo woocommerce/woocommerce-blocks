@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { useRef, useEffect, useState } from '@wordpress/element';
+import { useRef, useLayoutEffect, useState } from '@wordpress/element';
 
 /** @type {React.CSSProperties} */
 const style = {
@@ -63,7 +63,7 @@ export const usePositionRelativeToViewport = () => {
 		)
 	);
 
-	useEffect( () => {
+	useLayoutEffect( () => {
 		const referenceElementNode = referenceElementRef.current;
 		const observer = intersectionObserver.current;
 
