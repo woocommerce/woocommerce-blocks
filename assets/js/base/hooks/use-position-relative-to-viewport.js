@@ -45,7 +45,7 @@ export const usePositionRelativeToViewport = () => {
 		positionRelativeToViewport,
 		setPositionRelativeToViewport,
 	] = useState( '' );
-	const visibilityObserverRef = useRef( null );
+	const referenceElementRef = useRef( null );
 	const intersectionObserver = useRef(
 		new IntersectionObserver(
 			( entries ) => {
@@ -64,22 +64,22 @@ export const usePositionRelativeToViewport = () => {
 	);
 
 	useEffect( () => {
-		const visibilityObserverNode = visibilityObserverRef.current;
+		const referenceElementNode = referenceElementRef.current;
 		const observer = intersectionObserver.current;
 
-		if ( visibilityObserverNode ) {
-			observer.observe( visibilityObserverNode );
+		if ( referenceElementNode ) {
+			observer.observe( referenceElementNode );
 		}
 
 		return () => {
-			observer.unobserve( visibilityObserverNode );
+			observer.unobserve( referenceElementNode );
 		};
 	}, [] );
 
 	const referenceElement = (
 		<div
 			aria-hidden={ true }
-			ref={ visibilityObserverRef }
+			ref={ referenceElementRef }
 			style={ style }
 		></div>
 	);
