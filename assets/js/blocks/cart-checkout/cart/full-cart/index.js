@@ -18,7 +18,7 @@ import {
 	DISPLAY_CART_PRICES_INCLUDING_TAX,
 } from '@woocommerce/block-settings';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
-import { ExpressCheckoutFormControl } from '@woocommerce/base-components/payment-methods';
+import { CartExpressPayment } from '@woocommerce/base-components/payment-methods';
 import {
 	useStoreCartCoupons,
 	useStoreCart,
@@ -144,11 +144,7 @@ const Cart = ( { attributes } ) => {
 					values={ cartTotals }
 				/>
 				<div className="wc-block-cart__payment-options">
-					{ cartNeedsPayment && (
-						<div className="wc-block-cart__express-payment-methods">
-							<ExpressCheckoutFormControl isCompact={ true } />
-						</div>
-					) }
+					{ cartNeedsPayment && <CartExpressPayment /> }
 					<CheckoutButton
 						link={ getSetting(
 							'page-' + attributes?.checkoutPageId,
