@@ -1,6 +1,6 @@
 {
 	"plugins": [
-		"https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip",
+		"https://downloads.wordpress.org/plugin/woocommerce.4.3.3.zip",
 		"https://github.com/WP-API/Basic-Auth/archive/master.zip",
 		"."
 	],
