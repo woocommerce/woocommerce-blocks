@@ -104,7 +104,7 @@ if [[ "${#VERSION_PIECES}" -lt "2" ]]; then
 	fi
 fi
 
-if [[ "${#VERSION_PIECES}" -ge "2" && "${3}" -eq "0" && "$(echo "${DO_WP_DEPLOY:-n}" | tr "[:upper:]" "[:lower:]")" = "y" ]]; then
+if [[ "${#VERSION_PIECES}" -ge "2" && "${3}" -ne "0" && "$(echo "${DO_WP_DEPLOY:-n}" | tr "[:upper:]" "[:lower:]")" = "y" ]]; then
 	output 1 "The version you entered (${VERSION}) looks like a patch version. Since this version will be deployed to WordPress.org, it will become the latest available version. Are you sure you want that (no will abort)?: [y/N]"
 	read -r ABORT
 	echo
