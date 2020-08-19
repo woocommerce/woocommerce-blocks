@@ -3,7 +3,7 @@
 # Exit if any command fails.
 set -e
 
-TYPE='PRODUCTION';
+TYPE='PRODUCTION'
 
 print_usage() {
 	echo "build-plugin-zip - attempt to build a plugin"
@@ -33,6 +33,17 @@ while getopts 'hdz' flag; do
 	esac
 done
 
+# Tool for grabbing version from package.json
+get_version() {
+	grep '\"version\"' package.json \
+	| cut -d ':' -f 2 \
+	| sed 's/"//g' \
+	| sed 's/,//g' \
+	| sed 's/ //g'
+}
+
+# Set version
+VERSION=$(get_version)
 
 # Store paths
 SOURCE_PATH=$(pwd)
@@ -80,6 +91,11 @@ if [ -z "$NO_CHECKS" ]; then
 	fi
 fi
 
+# Add version to composer.json
+echo $(pwd)
+perl -i -pe "s/\"type\":*.+/\"type\":\"wordpress-plugin\",\n\t\"version\": \"${VERSION}\",/" composer.json
+
+
 # Run the build.
 npm list webpack
 if [ $TYPE = 'DEV' ]; then
@@ -117,5 +133,8 @@ cd $(pwd)/zip-file
 zip -r ../woocommerce-gutenberg-products-block.zip ./
 cd ..
 rm -r zip-file
+
+# cleanup composer.json
+git checkout -- composer.json
 
 success "Done. You've built WooCommerce Blocks! 🎉"
