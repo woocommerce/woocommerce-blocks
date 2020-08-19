@@ -8,6 +8,7 @@ const FORCE_MAP = process.env.FORCE_MAP || false;
 
 const wcDepMap = {
 	'@woocommerce/blocks-registry': [ 'wc', 'wcBlocksRegistry' ],
+	'@woocommerce/components': [ 'wc', 'components' ],
 	'@woocommerce/settings': [ 'wc', 'wcSettings' ],
 	'@woocommerce/block-data': [ 'wc', 'wcBlocksData' ],
 	'@woocommerce/shared-context': [ 'wc', 'wcSharedContext' ],
@@ -16,6 +17,7 @@ const wcDepMap = {
 
 const wcHandleMap = {
 	'@woocommerce/blocks-registry': 'wc-blocks-registry',
+	'@woocommerce/components': 'wc-components',
 	'@woocommerce/settings': 'wc-settings',
 	'@woocommerce/block-settings': 'wc-settings',
 	'@woocommerce/block-data': 'wc-blocks-data-store',
