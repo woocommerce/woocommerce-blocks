@@ -88,14 +88,32 @@ fi
 
 # Safety check, if a patch release is detected ask for verification.
 VERSION_PIECES=${VERSION//[^.]}
-if [[ "${#VERSION_PIECES}" -ge "2" && "$(echo "${DO_WP_DEPLOY:-n}" | tr "[:upper:]" "[:lower:]")" = "y" ]]; then
+
+# explode version parts
+SAVEIFS=${IFS}
+IFS='.'
+set -- $(echo ${VERSION})
+IFS=${SAVEIFS}
+
+# IF VERSION_PIECES is less than 2 then its invalid so let's update it and notify
+if [[ "${#VERSION_PIECES}" -lt "2" ]]; then
+	if [[ ${#VERSION_PIECES} -eq "0" ]]; then
+		VERSION=${VERSION}.0.0
+	else
+		VERSION=${VERSION}.0
+	fi
+fi
+
+if [[ "${#VERSION_PIECES}" -ge "2" && "${3}" -eq "0" && "$(echo "${DO_WP_DEPLOY:-n}" | tr "[:upper:]" "[:lower:]")" = "y" ]]; then
 	output 1 "The version you entered (${VERSION}) looks like a patch version. Since this version will be deployed to WordPress.org, it will become the latest available version. Are you sure you want that (no will abort)?: [y/N]"
 	read -r ABORT
+	echo
 	if [ "$(echo "${ABORT:-n}" | tr "[:upper:]" "[:lower:]")" != "y" ]; then
 		output 1 "Release cancelled!"
 		exit 1
 	fi
 else
+	echo "$(output 4 "The version is set as ") $(output 3 "${VERSION}") $(output 4 " and the next step will be to bump all the version strings in relevant files.")"
 	printf "Ready to proceed? [y/N]: "
 	read -r PROCEED
 	echo
