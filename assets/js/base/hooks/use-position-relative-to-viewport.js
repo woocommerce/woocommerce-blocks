@@ -16,40 +16,43 @@ const style = {
 };
 
 /**
- * Returns a positionObserver element and a string  (`above`, `visible` or
- * `below`) based on the element position relative to the viewport.
- * _Note: `usePositionRelativeToViewport` will return an empty position ``
+ * Returns an element and a string (`above`, `visible` or `below`) based on the
+ * element position relative to the viewport.
+ * _Note: `usePositionRelativeToViewport` will return an empty position (``)
  * until after first render_
  *
- * @return {Array} An array of {Element} `positionObserver` and {string} `position`.
+ * @return {Array} An array of {Element} `referenceElement` and {string} `positionRelativeToViewport`.
  *
  * @example
  *
  * ```js
  * const App = () => {
- * 	const [ positionObserver, position ] = useContainerQueries();
+ * 	const [ referenceElement, positionRelativeToViewport ] = useContainerQueries();
  *
  * 	return (
  * 		<>
- * 			{ positionObserver }
- * 			{ position === 'below' && <p>Observer is below the viewport.</p> }
- * 			{ position === 'visible' && <p>Observer is visible in the viewport.</p> }
- * 			{ position === 'above' && <p>Observer is above the viewport.</p> }
+ * 			{ referenceElement }
+ * 			{ positionRelativeToViewport === 'below' && <p>Reference element is below the viewport.</p> }
+ * 			{ positionRelativeToViewport === 'visible' && <p>Reference element is visible in the viewport.</p> }
+ * 			{ positionRelativeToViewport === 'above' && <p>Reference element is above the viewport.</p> }
  * 		</>
  * 	);
  * };
  * ```
  */
 export const usePositionRelativeToViewport = () => {
-	const [ position, setPosition ] = useState( '' );
+	const [
+		positionRelativeToViewport,
+		setPositionRelativeToViewport,
+	] = useState( '' );
 	const visibilityObserverRef = useRef( null );
 	const intersectionObserver = useRef(
 		new IntersectionObserver(
 			( entries ) => {
 				if ( entries[ 0 ].isIntersecting ) {
-					setPosition( 'visible' );
+					setPositionRelativeToViewport( 'visible' );
 				} else {
-					setPosition(
+					setPositionRelativeToViewport(
 						entries[ 0 ].boundingClientRect.top > 0
 							? 'below'
 							: 'above'
@@ -73,7 +76,7 @@ export const usePositionRelativeToViewport = () => {
 		};
 	}, [] );
 
-	const positionObserver = (
+	const referenceElement = (
 		<div
 			aria-hidden={ true }
 			ref={ visibilityObserverRef }
@@ -81,5 +84,5 @@ export const usePositionRelativeToViewport = () => {
 		></div>
 	);
 
-	return [ positionObserver, position ];
+	return [ referenceElement, positionRelativeToViewport ];
 };

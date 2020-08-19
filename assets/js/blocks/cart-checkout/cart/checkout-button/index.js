@@ -31,7 +31,10 @@ const getIconsFromPaymentMethods = ( paymentMethods ) => {
  */
 const CheckoutButton = ( { link } ) => {
 	const { isCalculating } = useCheckoutContext();
-	const [ positionObserver, position ] = usePositionRelativeToViewport();
+	const [
+		positionReferenceElement,
+		positionRelativeToViewport,
+	] = usePositionRelativeToViewport();
 	const [ showSpinner, setShowSpinner ] = useState( false );
 	const { paymentMethods } = usePaymentMethods();
 
@@ -54,11 +57,12 @@ const CheckoutButton = ( { link } ) => {
 
 	return (
 		<div className="wc-block-cart__submit">
-			{ positionObserver }
+			{ positionReferenceElement }
 			<div className="wc-block-cart__submit-container">
 				{ submitContainerContents }
 			</div>
-			{ position === 'below' && (
+			{ /* If the positionReferenceElement is below the viewport, display the sticky container. */ }
+			{ positionRelativeToViewport === 'below' && (
 				<div className="wc-block-cart__submit-container wc-block-cart__submit-container--sticky">
 					{ submitContainerContents }
 				</div>
