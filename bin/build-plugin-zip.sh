@@ -110,6 +110,7 @@ if [ $TYPE = 'DEV' ]; then
 	npm run dev
 	status "==========================="
 elif [ $TYPE = 'ZIP_ONLY' ]; then
+	composer dump-autoload
 	status "Skipping build commands - using current built assets on disk for built archive...👷‍♀️"
 	status "==========================="
 else
