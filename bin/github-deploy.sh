@@ -90,10 +90,12 @@ fi
 VERSION_PIECES=${VERSION//[^.]}
 
 # explode version parts
-SAVEIFS=${IFS}
-IFS='.'
-set -- $(echo ${VERSION})
-IFS=${SAVEIFS}
+split_version() {
+	echo ${VERSION} \
+	| sed 's/\./ /g'
+}
+
+SPLIT_VERSION=($(split_version))
 
 # IF VERSION_PIECES is less than 2 then its invalid so let's update it and notify
 if [[ "${#VERSION_PIECES}" -lt "2" ]]; then
@@ -104,7 +106,7 @@ if [[ "${#VERSION_PIECES}" -lt "2" ]]; then
 	fi
 fi
 
-if [[ "${#VERSION_PIECES}" -ge "2" && "${3}" -ne "0" && "$(echo "${DO_WP_DEPLOY:-n}" | tr "[:upper:]" "[:lower:]")" = "y" ]]; then
+if [[ "${#VERSION_PIECES}" -ge "2" && "${SPLIT_VERSION[2]}" -ne "0" && "$(echo "${DO_WP_DEPLOY:-n}" | tr "[:upper:]" "[:lower:]")" = "y" ]]; then
 	output 1 "The version you entered (${VERSION}) looks like a patch version. Since this version will be deployed to WordPress.org, it will become the latest available version. Are you sure you want that (no will abort)?: [y/N]"
 	read -r ABORT
 	echo
