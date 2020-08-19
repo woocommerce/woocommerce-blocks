@@ -179,4 +179,7 @@ git checkout $CURRENTBRANCH
 git branch -D $BRANCH
 git push origin --delete $BRANCH
 
+# regenerate classmap for development
+composer dump-autoload
+
 output 2 "GitHub release complete."

@@ -138,4 +138,7 @@ rm -r zip-file
 # cleanup composer.json
 git checkout -- composer.json
 
+# regenerate classmap for development use
+composer dump-autoload
+
 success "Done. You've built WooCommerce Blocks! 🎉"
