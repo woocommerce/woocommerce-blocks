@@ -24,5 +24,6 @@ rsync ./ "$2"/ --recursive --delete --delete-excluded \
 	--exclude=tsconfig.json \
 	--exclude=woocommerce-gutenberg-products-block.zip \
 	--exclude="zip-file/" \
-	--exclude=globals.d.ts
+	--exclude=globals.d.ts \
+	--exclude=storybook/
 echo -e "\nDone copying files!\n"
