@@ -23,14 +23,14 @@ const CartExpressPayment = () => {
 
 	return (
 		<>
-			<div className="wc-block-components-express-checkout is-compact">
-				<div className="wc-block-components-express-checkout__content">
+			<div className="wc-block-components-express-payment wc-block-components-express-payment--cart">
+				<div className="wc-block-components-express-payment__content">
 					<StoreNoticesProvider context="wc/express-payment-area">
 						<ExpressPaymentMethods />
 					</StoreNoticesProvider>
 				</div>
 			</div>
-			<div className="wc-block-components-express-checkout-continue-rule is-compact">
+			<div className="wc-block-components-express-payment-continue-rule wc-block-components-express-payment-continue-rule--cart">
 				{ /* translators: Shown in the Cart block between the express payment methods and the Proceed to Checkout button */ }
 				{ __( 'Or', 'woo-gutenberg-products-block' ) }
 			</div>

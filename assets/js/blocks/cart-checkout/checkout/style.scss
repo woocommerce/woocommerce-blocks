@@ -49,15 +49,15 @@
 
 // Loading placeholder state.
 .wc-block-checkout--is-loading {
-	.wc-block-components-express-checkout,
+	.wc-block-components-express-payment,
 	.wc-block-checkout__actions button {
 		@include placeholder();
 		@include force-content();
 	}
-	.wc-block-components-express-checkout {
+	.wc-block-components-express-payment {
 		min-height: 150px;
 	}
-	.wc-block-components-express-checkout-continue-rule > span {
+	.wc-block-components-express-payment-continue-rule > span {
 		@include placeholder();
 		@include force-content();
 		width: 150px;

@@ -24,10 +24,10 @@ const CheckoutExpressPayment = () => {
 
 	return (
 		<>
-			<div className="wc-block-components-express-checkout">
-				<div className="wc-block-components-express-checkout__title-container">
+			<div className="wc-block-components-express-payment wc-block-components-express-payment--checkout">
+				<div className="wc-block-components-express-payment__title-container">
 					<Title
-						className="wc-block-components-express-checkout__title"
+						className="wc-block-components-express-payment__title"
 						headingLevel="2"
 					>
 						{ __(
@@ -36,7 +36,7 @@ const CheckoutExpressPayment = () => {
 						) }
 					</Title>
 				</div>
-				<div className="wc-block-components-express-checkout__content">
+				<div className="wc-block-components-express-payment__content">
 					<StoreNoticesProvider context="wc/express-payment-area">
 						<p>
 							{ __(
@@ -48,7 +48,7 @@ const CheckoutExpressPayment = () => {
 					</StoreNoticesProvider>
 				</div>
 			</div>
-			<div className="wc-block-components-express-checkout-continue-rule">
+			<div className="wc-block-components-express-payment-continue-rule wc-block-components-express-payment-continue-rule--checkout">
 				{ __( 'Or continue below', 'woo-gutenberg-products-block' ) }
 			</div>
 		</>
