@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { useRef, useLayoutEffect, useState } from '@wordpress/element';
+import { getIntersectionObserver } from '@woocommerce/base-utils';
 
 /** @type {React.CSSProperties} */
 const style = {
@@ -47,7 +48,7 @@ export const usePositionRelativeToViewport = () => {
 	] = useState( '' );
 	const referenceElementRef = useRef( null );
 	const intersectionObserver = useRef(
-		new IntersectionObserver(
+		getIntersectionObserver(
 			( entries ) => {
 				if ( entries[ 0 ].isIntersecting ) {
 					setPositionRelativeToViewport( 'visible' );
