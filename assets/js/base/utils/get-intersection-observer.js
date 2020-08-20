@@ -9,6 +9,8 @@
  * @param {object}                       options  Intersection Observer options.
  * @return {object|IntersectionObserver} Intersection Observer if available,
  *                                       otherwise a shim object.
+ *
+ * @todo Remove IntersectionObserver shim when we drop IE11 support.
  */
 export const getIntersectionObserver = ( callback, options ) => {
 	if ( typeof IntersectionObserver !== 'function' ) {
