@@ -77,11 +77,7 @@ export const usePositionRelativeToViewport = () => {
 	}, [] );
 
 	const referenceElement = (
-		<div
-			aria-hidden={ true }
-			ref={ referenceElementRef }
-			style={ style }
-		></div>
+		<div aria-hidden={ true } ref={ referenceElementRef } style={ style } />
 	);
 
 	return [ referenceElement, positionRelativeToViewport ];
