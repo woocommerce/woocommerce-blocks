@@ -13,14 +13,17 @@ We have components in a few folders, for different contexts.
 - [`assets/js/components`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/main/assets/js/components)
 - [`assets/js/icons`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/main/assets/js/icons)
 
-__`assets/js/base/components`__ are used in front-end code (as well as editor & admin). 
-These components are typically general purpose (and the largest collection). 
-These components help us build consistent interfaces across the front end (shopper) experience and elsewhere. 
-In time, some of these components may move to a general purpose lib, such as [`@wordpress/components` in Gutenberg](https://github.com/WordPress/gutenberg/tree/master/packages/components).
+__`assets/js/base/components`__ are used in front-end code, as well as editor & admin. 
+These components help us build consistent interfaces across the front end (shopper) experience and elsewhere.
+Because they can be used in the front end and editor, components in this folder should:
+
+-  Perform efficiently - i.e. not adversely affect page performance/experience.
+-  Have lean dependencies - i.e. not bloat the payload unnecessarily.
+-  Look consistent in common themes; ideally should allow themes to adjust appearance as necessary.
 
 __`assets/js/components`__ are used in the editor UI for our blocks. 
 These components are typically more specialised to WooCommerce Blocks. 
-They allow us to build a consistent and powerful UI for merchants for authoring content relating to Woo data - e.g. selecting products or product attributes.
+They allow us to build a consistent and powerful UI for merchants for authoring content relating to Woo data - e.g. selecting products or product attributes. Because they are focused on the editor, they can rely on known editor dependencies and optimise styling for the editor only.
 
 __`assets/js/icons`__ is a suite of icons and SVG images that we use in our interfaces. 
 
