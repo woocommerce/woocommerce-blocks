@@ -33,6 +33,8 @@ There are several aliases for internal imports which make importing files across
 +import { useStoreCartCoupons } from '@woocommerce/base-hooks';
 ```
 
+Aliases also ease refactors because imports no longer depend on the exact location of the file.
+
 All available aliases can be found in [`webpack-helpers.js`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/main/bin/webpack-helpers.js#L26-L84).
 
 ## Styling
