@@ -3,7 +3,7 @@
 WooCommerce Blocks uses Webpack to build the files that will be consumed by browsers. There are several different Webpack configs in order to build files for different contexts of the plugin. They can all be found in [`webpack.config.js`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/main/webpack.config.js#L148-L160), but this is a quick summary:
 
 -   `CoreConfig`: config for shared libraries like settings, blocks data or some HOCs and context.
--   `MainConfig`: config that builds the JS files used by blocks in the editor and responsible for registering the blocks in Gutenberg.
+-   `MainConfig`: config that builds the JS files used by blocks in the editor and is responsible for registering the blocks in Gutenberg.
 -   `FrontendConfig`: config that builds the JS files used by blocks in the store frontend.
 -   `PaymentsConfig`: config that builds the JS files used by payment methods in the Cart and Checkout blocks.
 -   `StylingConfig`: config that builds CSS files. You can read more about it in the page [CSS build system](css-build-system.md).
