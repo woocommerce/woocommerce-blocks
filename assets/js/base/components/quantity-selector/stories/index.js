@@ -10,7 +10,7 @@ import { useState } from 'react';
 import QuantitySelector from '../';
 
 export default {
-	title: 'WooCommerce Blocks/@base-components/QuantitySelector',
+	title: 'WooCommerce Blocks/@base-components/QuantitySelectorOld',
 	component: QuantitySelector,
 };
 
