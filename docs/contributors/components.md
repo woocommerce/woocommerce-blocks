@@ -22,7 +22,6 @@ Because they can be used in the front end and editor, components in this folder 
 -  Look consistent in common themes; ideally should allow themes to adjust appearance as necessary.
 
 __`assets/js/components`__ are used in the editor UI for our blocks. 
-These components are typically more specialised to WooCommerce Blocks. 
 They allow us to build a consistent and powerful UI for merchants for authoring content relating to Woo data - e.g. selecting products or product attributes. Because they are focused on the editor, they can rely on known editor dependencies and optimise styling for the editor only.
 
 __`assets/js/icons`__ is a suite of icons and SVG images that we use in our interfaces. 
