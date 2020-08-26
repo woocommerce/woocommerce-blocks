@@ -7,6 +7,11 @@ import {
 	findElementWithText,
 } from '@woocommerce/blocks-test-utils';
 
+/**
+ * Internal dependencies
+ */
+import { Products as fixtureProducts } from '../../fixtures/fixture-data';
+
 const block = {
 	name: 'Reviews by Product',
 	slug: 'woocommerce/reviews-by-product',
@@ -36,8 +41,8 @@ describe( `${ block.name } Block`, () => {
 			`${ block.class } .woocommerce-search-list__item-count`
 		);
 		const productWithReviews = await findElementWithText(
-			`.woocommerce-search-list__item-count`,
-			'[1-9]+ Reviews'
+			`.woocommerce-search-list__item`,
+			fixtureProducts[ 0 ].name
 		);
 		await productWithReviews.click();
 		await clickButton( 'Done' );
