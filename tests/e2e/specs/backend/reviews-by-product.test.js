@@ -42,7 +42,7 @@ describe( `${ block.name } Block`, () => {
 		);
 		const productWithReviews = await findElementWithText(
 			`.woocommerce-search-list__item`,
-			fixtureProducts[ 0 ].name
+			fixtureProducts()[ 0 ].name
 		);
 		await productWithReviews.click();
 		await clickButton( 'Done' );
