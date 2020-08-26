@@ -77,7 +77,7 @@ fi
 
 
 echo
-output 3 "Will this release get published to WordPress.org (if no, then only a tag will be created)? [y/N]:"
+output 3 "Will this release get published to WordPress.org? Note: If the version on WordPress.org is greater ${VERSION}, then you should answer 'N' here. [y/N]:"
 read -r DO_WP_DEPLOY
 echo
 
