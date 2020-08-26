@@ -7,10 +7,7 @@ import {
 	openDocumentSettingsSidebar,
 } from '@wordpress/e2e-test-utils';
 import { clearAndFillInput } from '@woocommerce/e2e-tests/utils';
-import {
-	findToggleWithLabel,
-	visitBlockPage,
-} from '@woocommerce/blocks-test-utils';
+import { visitBlockPage } from '@woocommerce/blocks-test-utils';
 
 const block = {
 	name: 'Product Search',
@@ -30,17 +27,10 @@ describe( `${ block.name } Block`, () => {
 
 	it( 'can toggle field label', async () => {
 		await openDocumentSettingsSidebar();
-		// we focus on the block
 		await page.click( block.class );
-		const toggle = await findToggleWithLabel( 'Show search field label' );
-		await toggle.click();
-		await expect( page ).not.toMatchElement(
-			`${ block.class } .wc-block-product-search__label`
-		);
-		await toggle.click();
-		await expect( page ).toMatchElement(
-			`${ block.class } .wc-block-product-search__label`
-		);
+		const selector = `${ block.class } .wc-block-product-search__label`;
+		const toggleText = 'Show search field label';
+		await expect( toggleText ).toToggleVisibilityOf( selector );
 	} );
 
 	it( 'can change field labels in editor', async () => {

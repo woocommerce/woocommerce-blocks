@@ -8,11 +8,7 @@ import {
 	openDocumentSettingsSidebar,
 	switchUserToAdmin,
 } from '@wordpress/e2e-test-utils';
-
-import {
-	findToggleWithLabel,
-	visitBlockPage,
-} from '@woocommerce/blocks-test-utils';
+import { visitBlockPage } from '@woocommerce/blocks-test-utils';
 
 const block = {
 	name: 'Cart',
@@ -44,34 +40,24 @@ describe( `${ block.name } Block`, () => {
 		await expect( page ).toRenderBlock( block );
 	} );
 
-	it( 'can toggle Shipping calculator', async () => {
-		await openDocumentSettingsSidebar();
-		await page.click( block.class );
-		const toggle = await findToggleWithLabel( 'Shipping calculator' );
-		await toggle.click();
-		await expect( page ).not.toMatchElement(
-			`${ block.class } .wc-block-components-totals-shipping__change-address-button`
-		);
-		await toggle.click();
-		await expect( page ).toMatchElement(
-			`${ block.class } .wc-block-components-totals-shipping__change-address-button`
-		);
-	} );
+	describe( 'attributes', () => {
+		beforeEach( async () => {
+			await openDocumentSettingsSidebar();
+			await page.click( block.class );
+		} );
 
-	it( 'can toggle shipping costs', async () => {
-		await openDocumentSettingsSidebar();
-		await page.click( block.class );
-		const toggle = await findToggleWithLabel(
-			'Hide shipping costs until an address is entered'
-		);
-		await toggle.click();
-		await expect( page ).not.toMatchElement(
-			`${ block.class } .wc-block-components-totals-shipping__fieldset`
-		);
-		await toggle.click();
-		await expect( page ).toMatchElement(
-			`${ block.class } .wc-block-components-totals-shipping__fieldset`
-		);
+		it( 'can toggle Shipping calculator', async () => {
+			const selector = `${ block.class } .wc-block-components-totals-shipping__change-address-button`;
+			const toggleText = 'Shipping calculator';
+			await expect( toggleText ).toToggleVisibilityOf( selector );
+		} );
+
+		it( 'can toggle shipping costs', async () => {
+			const selector = `${ block.class } .wc-block-components-totals-shipping__fieldset`;
+			const toggleText =
+				'Hide shipping costs until an address is entered';
+			await expect( toggleText ).toToggleVisibilityOf( selector );
+		} );
 	} );
 
 	it( 'shows empty cart when changing the view', async () => {
