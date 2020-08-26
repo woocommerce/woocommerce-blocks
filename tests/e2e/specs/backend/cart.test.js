@@ -3,8 +3,6 @@
  */
 import {
 	clickButton,
-	getAllBlocks,
-	insertBlock,
 	openDocumentSettingsSidebar,
 	switchUserToAdmin,
 } from '@wordpress/e2e-test-utils';
@@ -19,6 +17,7 @@ const block = {
 	class: '.wc-block-cart',
 };
 
+// eslint-disable-next-line no-unused-vars
 const closeInserter = async () => {
 	await page.click( '.edit-post-header [aria-label="Add block"]' );
 };
@@ -31,12 +30,6 @@ describe( `${ block.name } Block`, () => {
 	beforeAll( async () => {
 		await switchUserToAdmin();
 		await visitBlockPage( `${ block.name } Block` );
-	} );
-
-	it( 'can only be inserted once', async () => {
-		await insertBlock( block.name );
-		await closeInserter();
-		expect( await getAllBlocks() ).toHaveLength( 1 );
 	} );
 
 	it( 'renders without crashing', async () => {

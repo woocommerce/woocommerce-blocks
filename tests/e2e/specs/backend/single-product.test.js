@@ -1,11 +1,7 @@
 /**
  * External dependencies
  */
-import {
-	insertBlock,
-	getAllBlocks,
-	switchUserToAdmin,
-} from '@wordpress/e2e-test-utils';
+import { switchUserToAdmin } from '@wordpress/e2e-test-utils';
 
 import { visitBlockPage } from '@woocommerce/blocks-test-utils';
 

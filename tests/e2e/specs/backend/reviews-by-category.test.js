@@ -2,7 +2,10 @@
  * External dependencies
  */
 import { switchUserToAdmin, clickButton } from '@wordpress/e2e-test-utils';
-import { visitBlockPage } from '@woocommerce/blocks-test-utils';
+import {
+	visitBlockPage,
+	findElementWithText,
+} from '@woocommerce/blocks-test-utils';
 
 const block = {
 	name: 'Reviews by Category',
@@ -32,7 +35,11 @@ describe( `${ block.name } Block`, () => {
 		await page.waitForSelector(
 			`${ block.class } .woocommerce-search-list__item`
 		);
-		await page.click( `${ block.class } .woocommerce-search-list__item` );
+		const productWithReviews = await findElementWithText(
+			`.woocommerce-search-list__item-count`,
+			'[1-9]+ Reviews'
+		);
+		await productWithReviews.click();
 		await clickButton( 'Done' );
 		// Selected.
 		await page.waitForSelector(
