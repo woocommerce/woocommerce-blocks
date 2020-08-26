@@ -92,9 +92,7 @@ if [ -z "$NO_CHECKS" ]; then
 fi
 
 # Add version to composer.json
-echo $(pwd)
 perl -i -pe "s/\"type\":*.+/\"type\":\"wordpress-plugin\",\n\t\"version\": \"${VERSION}\",/" composer.json
-
 
 # Run the build.
 npm list webpack
