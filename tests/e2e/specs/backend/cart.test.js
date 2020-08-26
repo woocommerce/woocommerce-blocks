@@ -3,23 +3,20 @@
  */
 import {
 	clickButton,
+	searchForBlock,
 	openDocumentSettingsSidebar,
 	switchUserToAdmin,
 } from '@wordpress/e2e-test-utils';
 import {
 	findLabelWithText,
 	visitBlockPage,
+	closeInserter,
 } from '@woocommerce/blocks-test-utils';
 
 const block = {
 	name: 'Cart',
 	slug: 'woocommerce/cart',
 	class: '.wc-block-cart',
-};
-
-// eslint-disable-next-line no-unused-vars
-const closeInserter = async () => {
-	await page.click( '.edit-post-header [aria-label="Add block"]' );
 };
 
 if ( process.env.WP_VERSION < 5.3 || process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 )
@@ -30,6 +27,18 @@ describe( `${ block.name } Block`, () => {
 	beforeAll( async () => {
 		await switchUserToAdmin();
 		await visitBlockPage( `${ block.name } Block` );
+	} );
+
+	it( 'can only be inserted once', async () => {
+		await searchForBlock( block.name );
+		const disabledInsertButton = await findElementWithText(
+			'button.editor-block-list-item-woocommerce-cart',
+			block.name
+		);
+		expect(
+			await disabledInsertButton.evaluate( ( button ) => button.disabled )
+		).toBe( true );
+		await closeInserter();
 	} );
 
 	it( 'renders without crashing', async () => {

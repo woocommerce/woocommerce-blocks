@@ -1,9 +1,13 @@
 /**
  * External dependencies
  */
-import { switchUserToAdmin } from '@wordpress/e2e-test-utils';
+import { searchForBlock, switchUserToAdmin } from '@wordpress/e2e-test-utils';
 
-import { visitBlockPage } from '@woocommerce/blocks-test-utils';
+import {
+	visitBlockPage,
+	findElementWithText,
+	closeInserter,
+} from '@woocommerce/blocks-test-utils';
 
 if ( process.env.WP_VERSION < 5.3 || process.env.WOOCOMMERCE_BLOCKS_PHASE < 3 )
 	// eslint-disable-next-line jest/no-focused-tests
