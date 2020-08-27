@@ -7,12 +7,12 @@ import { __ } from '@wordpress/i18n';
 import {
 	AddressForm,
 	FormStep,
-	CheckoutForm,
 	PlaceOrderButton,
 	Policies,
 	ReturnToCartButton,
 	ShippingRatesControl,
 } from '@woocommerce/base-components/cart-checkout';
+import { Form } from '@woocommerce/base-components/form';
 import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
 import CheckboxControl from '@woocommerce/base-components/checkbox-control';
 import {
@@ -220,7 +220,10 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 			<SidebarLayout className={ checkoutClassName }>
 				<Main className="wc-block-checkout__main">
 					{ cartNeedsPayment && <CheckoutExpressPayment /> }
-					<CheckoutForm onSubmit={ onSubmit }>
+					<Form
+						className="wc-block-components-checkout-form"
+						onSubmit={ onSubmit }
+					>
 						<FormStep
 							id="contact-fields"
 							disabled={ checkoutIsProcessing }
@@ -417,7 +420,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 								/>
 							</FormStep>
 						) }
-					</CheckoutForm>
+					</Form>
 					<div className="wc-block-checkout__actions">
 						{ attributes.showReturnToCart && (
 							<ReturnToCartButton
