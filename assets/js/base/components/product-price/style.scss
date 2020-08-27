@@ -10,6 +10,12 @@
 }
 /*rtl:end:ignore*/
 
+.wc-block-components-product-price__value {
+	&.is-discounted {
+		margin-left: 0.5em;
+	}
+}
+
 .is-loading {
 	.wc-block-components-product-price::before {
 		@include placeholder();
