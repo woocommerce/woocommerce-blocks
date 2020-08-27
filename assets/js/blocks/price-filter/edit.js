@@ -15,6 +15,7 @@ import { PRODUCT_COUNT } from '@woocommerce/block-settings';
 import { getAdminLink } from '@woocommerce/settings';
 import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
 import BlockTitle from '@woocommerce/editor-components/block-title';
+import ToggleButtonControl from '@woocommerce/editor-components/toggle-button-control';
 import { Icon, bill, external } from '@woocommerce/icons';
 
 /**
@@ -22,7 +23,6 @@ import { Icon, bill, external } from '@woocommerce/icons';
  */
 import Block from './block.js';
 import './editor.scss';
-import ToggleButtonControl from '../../components/toggle-button-control';
 
 export default function( { attributes, setAttributes } ) {
 	const {
