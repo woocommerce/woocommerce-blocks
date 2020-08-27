@@ -30,16 +30,14 @@ import {
 } from '@woocommerce/base-hooks';
 import { PaymentMethods } from '@woocommerce/base-components/payment-methods';
 import { decodeEntities } from '@wordpress/html-entities';
-import {
-	CHECKOUT_SHOW_LOGIN_REMINDER,
-	DISPLAY_CART_PRICES_INCLUDING_TAX,
-} from '@woocommerce/block-settings';
+import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 import PropTypes from 'prop-types';
 
 /**
  * Internal dependencies
  */
 import CheckoutOrderNotes from './order-notes';
+import LoginPrompt from './login-prompt';
 import NoShippingPlaceholder from './no-shipping-placeholder';
 import './style.scss';
 
@@ -79,7 +77,6 @@ const CheckoutForm = ( {
 	const { cartNeedsPayment } = useStoreCart();
 	const {
 		isProcessing: checkoutIsProcessing,
-		customerId,
 		onSubmit,
 		orderNotes,
 		dispatchActions,
@@ -122,20 +119,6 @@ const CheckoutForm = ( {
 		showApartmentField,
 	] );
 
-	const loginPrompt = () =>
-		CHECKOUT_SHOW_LOGIN_REMINDER &&
-		! customerId && (
-			<>
-				{ __(
-					'Already have an account? ',
-					'woo-gutenberg-products-block'
-				) }
-				<a href={ loginToCheckoutUrl }>
-					{ __( 'Log in.', 'woo-gutenberg-products-block' ) }
-				</a>
-			</>
-		);
-
 	return (
 		<Form className="wc-block-checkout__form" onSubmit={ onSubmit }>
 			<FormStep
@@ -150,7 +133,9 @@ const CheckoutForm = ( {
 					"We'll use this email to send you details and updates about your order.",
 					'woo-gutenberg-products-block'
 				) }
-				stepHeadingContent={ loginPrompt }
+				stepHeadingContent={ () => (
+					<LoginPrompt loginToCheckoutUrl={ loginToCheckoutUrl } />
+				) }
 			>
 				<ValidatedTextInput
 					id="email"
