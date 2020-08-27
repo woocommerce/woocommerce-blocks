@@ -18,8 +18,8 @@ import { SearchListControl } from '@woocommerce/components';
 import { mapValues, toArray, sortBy, find } from 'lodash';
 import { ATTRIBUTES } from '@woocommerce/block-settings';
 import { getAdminLink } from '@woocommerce/settings';
-import HeadingToolbar from '@woocommerce/block-components/heading-toolbar';
-import BlockTitle from '@woocommerce/block-components/block-title';
+import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
+import BlockTitle from '@woocommerce/editor-components/block-title';
 
 /**
  * Internal dependencies
