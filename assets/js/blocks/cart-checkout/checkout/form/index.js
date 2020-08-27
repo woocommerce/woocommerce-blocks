@@ -38,8 +38,9 @@ import {
 /**
  * Internal dependencies
  */
-import CheckoutOrderNotes from '../checkout-order-notes';
-import NoShippingPlaceholder from '../no-shipping-placeholder';
+import CheckoutOrderNotes from './order-notes';
+import NoShippingPlaceholder from './no-shipping-placeholder';
+import './style.scss';
 
 /**
  * Renders a shipping rate control option.
@@ -135,10 +136,7 @@ const CheckoutForm = ( {
 		);
 
 	return (
-		<Form
-			className="wc-block-components-checkout-form"
-			onSubmit={ onSubmit }
-		>
+		<Form className="wc-block-checkout__form" onSubmit={ onSubmit }>
 			<FormStep
 				id="contact-fields"
 				disabled={ checkoutIsProcessing }
