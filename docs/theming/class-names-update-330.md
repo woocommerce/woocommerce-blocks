@@ -45,4 +45,8 @@ WC Blocks 3.3.0, introduced express payment methods in the Cart block. In order 
 		<td><code>wc-block-components-express-checkout-payment-event-buttons</code></td>
 		<td><code>wc-block-components-express-payment__event-buttons</code></td>
 	</tr>
+	<tr>
+		<td><code>wc-block-components-checkout-form</code></td>
+		<td><code>wc-block-checkout__form</code></td>
+	</tr>
 </table>
