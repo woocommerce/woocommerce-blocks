@@ -34,6 +34,7 @@ import {
 	CHECKOUT_SHOW_LOGIN_REMINDER,
 	DISPLAY_CART_PRICES_INCLUDING_TAX,
 } from '@woocommerce/block-settings';
+import PropTypes from 'prop-types';
 
 /**
  * Internal dependencies
@@ -322,6 +323,16 @@ const CheckoutForm = ( {
 			) }
 		</Form>
 	);
+};
+
+CheckoutForm.propTypes = {
+	loginToCheckoutUrl: PropTypes.string.isRequired,
+	requireCompanyField: PropTypes.bool.isRequired,
+	requirePhoneField: PropTypes.bool.isRequired,
+	showApartmentField: PropTypes.bool.isRequired,
+	showCompanyField: PropTypes.bool.isRequired,
+	showOrderNotes: PropTypes.bool.isRequired,
+	showPhoneField: PropTypes.bool.isRequired,
 };
 
 export default CheckoutForm;
