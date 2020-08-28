@@ -158,9 +158,13 @@ const QuantitySelector = ( {
 };
 
 QuantitySelector.propTypes = {
+	/** CSS class(es). **/
 	className: PropTypes.string,
+	/** Value to display. **/
 	quantity: PropTypes.number,
+	// test
 	minimum: PropTypes.number,
+	// and the rest
 	maximum: PropTypes.number,
 	onChange: PropTypes.func,
 	itemName: PropTypes.string,
