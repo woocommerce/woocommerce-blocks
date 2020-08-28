@@ -13,6 +13,19 @@ import { DOWN, UP } from '@wordpress/keycodes';
  */
 import './style.scss';
 
+/**
+ * @typedef QuantitySelector
+ *
+ * @param {Object} props Component props.
+ * @param {string} props.className CSS class(es).
+ * @param {number} props.quantity Value to display.
+ * @param {number} props.minimum Minimum value.
+ * @param {number} props.maximum Maximum value.
+ * @param {Function} props.onChange Called when the value changes.
+ * @param {string} props.itemName The item/value (e.g. product) that the quantity applies to - used for an accessibility message.
+ * @param {boolean} props.disabled Render the component as disabled and prevent user input.
+ * @return {*} QuantitySelector component markup.
+ */
 const QuantitySelector = ( {
 	className,
 	quantity = 1,
