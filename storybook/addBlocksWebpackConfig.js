@@ -26,7 +26,7 @@ const aliases = Object.keys( tsConfig.compilerOptions.paths ).reduce(
 	{}
 );
 
-module.exports = ( { config: storybookConfig } ) => {
+module.exports = ( storybookConfig ) => {
 	const wooBlocksConfig = getMainConfig( { alias: getAlias() } );
 	const wooStylingConfig = getStylingConfig();
 	storybookConfig.resolve.alias = {
