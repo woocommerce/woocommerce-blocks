@@ -9,6 +9,8 @@ module.exports = {
 	stories: [
 		// WooCommerce Blocks stuff (anywhere in repo!)
 		'../assets/js/**/stories/*.js',
+		// Hack-test typescript examples
+		'../assets/js/**/stories/*.tsx',
 	],
 	addons: [
 		'@storybook/addon-essentials',
