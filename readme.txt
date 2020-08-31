@@ -45,7 +45,7 @@ Use this plugin if you want access to the bleeding edge of available blocks for 
 = Minimum Requirements =
 
 * WordPress 5.3 or greater
-* WooCommerce 4.0 or greater
+* WooCommerce 4.2 or greater
 * PHP version 5.6 or greater (PHP 7.2 or greater is recommended)
 * MySQL version 5.0 or greater (MySQL 5.6 or greater is recommended)
 
