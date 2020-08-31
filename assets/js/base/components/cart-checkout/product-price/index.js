@@ -21,16 +21,14 @@ const ProductPrice = ( { className, currency, regularValue, value } ) => {
 				<span className="screen-reader-text">
 					{ __( 'Previous price:', 'woo-gutenberg-products-block' ) }
 				</span>
-				<del>
-					<FormattedMonetaryAmount
-						className={ classNames(
-							'wc-block-components-product-price__regular',
-							className
-						) }
-						currency={ currency }
-						value={ regularValue }
-					/>
-				</del>
+				<FormattedMonetaryAmount
+					className={ classNames(
+						'wc-block-components-product-price__regular',
+						className
+					) }
+					currency={ currency }
+					value={ regularValue }
+				/>
 				<span className="screen-reader-text">
 					{ __(
 						'Discounted price:',

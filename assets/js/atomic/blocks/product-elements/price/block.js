@@ -159,7 +159,7 @@ const PriceRange = ( { currency, minAmount, maxAmount, classes, style } ) => {
 				'wc-block-components-product-price__value',
 				{
 					[ `${ parentClassName }__product-price__value` ]: parentClassName,
-					[ classes ]: isFeaturePluginBuild()
+					[ classes ]: isFeaturePluginBuild(),
 				}
 			) }
 			style={ isFeaturePluginBuild() ? style : {} }
@@ -189,27 +189,26 @@ const SalePrice = ( {
 	const { parentClassName } = useInnerBlockLayoutContext();
 	return (
 		<>
-			<del
+			<FormattedMonetaryAmount
+				currency={ currency }
+				value={ regularPrice }
 				className={ classnames(
 					'wc-block-components-product-price__regular',
 					{
 						[ `${ parentClassName }__product-price__regular` ]: parentClassName,
-						[ classes ]: isFeaturePluginBuild() }
+						[ classes ]: isFeaturePluginBuild(),
+					}
 				) }
 				style={ isFeaturePluginBuild() ? style : {} }
-			>
-				<FormattedMonetaryAmount
-					currency={ currency }
-					value={ regularPrice }
-				/>
-			</del>
+			/>
 			<span
 				className={ classnames(
 					'wc-block-components-product-price__value',
 					'is-discounted',
 					{
 						[ `${ parentClassName }__product-price__value` ]: parentClassName,
-						[ saleClasses ]: isFeaturePluginBuild() }
+						[ saleClasses ]: isFeaturePluginBuild(),
+					}
 				) }
 				style={ isFeaturePluginBuild() ? saleStyle : {} }
 			>
