@@ -65,7 +65,6 @@ const renderShippingRatesControlOption = ( option ) => {
 };
 
 const CheckoutForm = ( {
-	loginToCheckoutUrl,
 	requireCompanyField,
 	requirePhoneField,
 	showApartmentField,
@@ -133,9 +132,7 @@ const CheckoutForm = ( {
 					"We'll use this email to send you details and updates about your order.",
 					'woo-gutenberg-products-block'
 				) }
-				stepHeadingContent={ () => (
-					<LoginPrompt loginToCheckoutUrl={ loginToCheckoutUrl } />
-				) }
+				stepHeadingContent={ () => <LoginPrompt /> }
 			>
 				<ValidatedTextInput
 					id="email"
@@ -311,7 +308,6 @@ const CheckoutForm = ( {
 };
 
 CheckoutForm.propTypes = {
-	loginToCheckoutUrl: PropTypes.string.isRequired,
 	requireCompanyField: PropTypes.bool.isRequired,
 	requirePhoneField: PropTypes.bool.isRequired,
 	showApartmentField: PropTypes.bool.isRequired,

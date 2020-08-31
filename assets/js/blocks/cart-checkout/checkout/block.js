@@ -32,6 +32,7 @@ import { CHECKOUT_ALLOWS_GUEST } from '@woocommerce/block-settings';
 import CheckoutForm from './form';
 import CheckoutSidebar from './sidebar';
 import CheckoutOrderError from './checkout-order-error';
+import { LOGIN_TO_CHECKOUT_URL } from './utils';
 import './style.scss';
 
 /**
@@ -90,10 +91,6 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 		return <CheckoutOrderError />;
 	}
 
-	const loginToCheckoutUrl = `/wp-login.php?redirect_to=${ encodeURIComponent(
-		window.location.href
-	) }`;
-
 	if ( ! isEditor && ! customerId && ! CHECKOUT_ALLOWS_GUEST ) {
 		return (
 			<>
@@ -101,7 +98,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 					'You must be logged in to checkout. ',
 					'woo-gutenberg-products-block'
 				) }
-				<a href={ loginToCheckoutUrl }>
+				<a href={ LOGIN_TO_CHECKOUT_URL }>
 					{ __(
 						'Click here to log in.',
 						'woo-gutenberg-products-block'
@@ -120,7 +117,6 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 				<Main className="wc-block-checkout__main">
 					{ cartNeedsPayment && <CheckoutExpressPayment /> }
 					<CheckoutForm
-						loginToCheckoutUrl={ loginToCheckoutUrl }
 						showApartmentField={ attributes.showApartmentField }
 						showCompanyField={ attributes.showCompanyField }
 						showOrderNotes={ attributes.showOrderNotes }
