@@ -49,14 +49,14 @@ describe( `${ block.name } Block`, () => {
 		it( 'can toggle Shipping calculator', async () => {
 			const selector = `${ block.class } .wc-block-components-totals-shipping__change-address-button`;
 			const toggleText = 'Shipping calculator';
-			await expect( toggleText ).toToggleVisibilityOf( selector );
+			await expect( toggleText ).toToggleElement( selector );
 		} );
 
 		it( 'can toggle shipping costs', async () => {
 			const selector = `${ block.class } .wc-block-components-totals-shipping__fieldset`;
 			const toggleText =
 				'Hide shipping costs until an address is entered';
-			await expect( toggleText ).toToggleVisibilityOf( selector );
+			await expect( toggleText ).toToggleElement( selector );
 		} );
 	} );
 

@@ -4,16 +4,16 @@
 import { findLabelWithText } from '@woocommerce/blocks-test-utils';
 
 expect.extend( {
-	async toToggleVisibilityOf( toggleText, selector ) {
+	async toToggleElement( toggleText, selector ) {
 		if ( ! selector ) {
 			return {
 				message: () =>
-					`a selector is required to test element's visibility`,
+					`a selector is required to test element's presence`,
 				pass: false,
 			};
 		}
-		const isElementVisible = async () => !! ( await page.$( selector ) );
-		const isElementInitiallyVisible = await isElementVisible();
+		const hasSelectorMatch = async () => !! ( await page.$( selector ) );
+		const initiallyHadSelectorMatch = await hasSelectorMatch();
 		const toggleLabel = await findLabelWithText( toggleText );
 
 		if ( ! toggleLabel ) {
@@ -26,15 +26,15 @@ expect.extend( {
 
 		await toggleLabel.click();
 
-		if ( isElementInitiallyVisible && ( await isElementVisible() ) ) {
+		if ( initiallyHadSelectorMatch && ( await hasSelectorMatch() ) ) {
 			return {
 				message: () =>
 					`element matching selector '${ selector }' found but none was expected after one click.`,
 				pass: false,
 			};
 		} else if (
-			! isElementInitiallyVisible &&
-			! ( await isElementVisible() )
+			! initiallyHadSelectorMatch &&
+			! ( await hasSelectorMatch() )
 		) {
 			return {
 				message: () =>
@@ -45,15 +45,15 @@ expect.extend( {
 
 		await toggleLabel.click();
 
-		if ( isElementInitiallyVisible && ! ( await isElementVisible() ) ) {
+		if ( initiallyHadSelectorMatch && ! ( await hasSelectorMatch() ) ) {
 			return {
 				message: () =>
 					`element matching selector '${ selector }' not found but at least one was expected after two clicks.`,
 				pass: false,
 			};
 		} else if (
-			! isElementInitiallyVisible &&
-			( await isElementVisible() )
+			! initiallyHadSelectorMatch &&
+			( await hasSelectorMatch() )
 		) {
 			return {
 				message: () =>
@@ -63,7 +63,7 @@ expect.extend( {
 		}
 
 		return {
-			message: () => `element visibility reacted to toggle changes.`,
+			message: () => `element presence reacted to toggle changes.`,
 			pass: true,
 		};
 	},

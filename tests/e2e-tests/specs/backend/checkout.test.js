@@ -54,7 +54,7 @@ describe( `${ block.name } Block`, () => {
 			const requiredCheckboxText = 'Require company name?';
 
 			it( 'visibility can be toggled', async () => {
-				await expect( toggleText ).toToggleVisibilityOf( selector );
+				await expect( toggleText ).toToggleElement( selector );
 			} );
 
 			it( 'required attribute can be toggled', async () => {
@@ -72,7 +72,7 @@ describe( `${ block.name } Block`, () => {
 			it( 'visibility can be toggled', async () => {
 				const selector = `${ block.class } .wc-block-components-address-form__address_2 input`;
 				const toggleText = 'Apartment, suite, etc.';
-				await expect( toggleText ).toToggleVisibilityOf( selector );
+				await expect( toggleText ).toToggleElement( selector );
 			} );
 		} );
 
@@ -82,7 +82,7 @@ describe( `${ block.name } Block`, () => {
 			const requiredCheckboxText = 'Require phone number?';
 
 			it( 'visibility can be toggled', async () => {
-				await expect( toggleText ).toToggleVisibilityOf( selector );
+				await expect( toggleText ).toToggleElement( selector );
 			} );
 
 			it( 'required attribute can be toggled', async () => {
@@ -97,7 +97,7 @@ describe( `${ block.name } Block`, () => {
 				const selector = `${ block.class } .wc-block-checkout__add-note`;
 				const toggleText =
 					'Allow customers to optionally add order notes';
-				await expect( toggleText ).toToggleVisibilityOf( selector );
+				await expect( toggleText ).toToggleElement( selector );
 			} );
 		} );
 
@@ -105,7 +105,7 @@ describe( `${ block.name } Block`, () => {
 			it( 'visibility can be toggled', async () => {
 				const selector = `${ block.class } .wc-block-components-checkout-policies`;
 				const toggleText = 'Show links to policies';
-				await expect( toggleText ).toToggleVisibilityOf( selector );
+				await expect( toggleText ).toToggleElement( selector );
 			} );
 		} );
 
@@ -113,7 +113,7 @@ describe( `${ block.name } Block`, () => {
 			it( 'visibility can be toggled', async () => {
 				const selector = `${ block.class } .wc-block-components-checkout-return-to-cart-button`;
 				const toggleText = 'Show a "Return to Cart" link';
-				await expect( toggleText ).toToggleVisibilityOf( selector );
+				await expect( toggleText ).toToggleElement( selector );
 			} );
 		} );
 

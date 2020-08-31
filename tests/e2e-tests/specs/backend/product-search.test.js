@@ -30,7 +30,7 @@ describe( `${ block.name } Block`, () => {
 		await page.click( block.class );
 		const selector = `${ block.class } .wc-block-product-search__label`;
 		const toggleText = 'Show search field label';
-		await expect( toggleText ).toToggleVisibilityOf( selector );
+		await expect( toggleText ).toToggleElement( selector );
 	} );
 
 	it( 'can change field labels in editor', async () => {
