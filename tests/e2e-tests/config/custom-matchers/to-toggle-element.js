@@ -7,10 +7,12 @@ expect.extend( {
 				pass: false,
 			};
 		}
+
 		const hasSelectorMatch = async () => !! ( await page.$( selector ) );
 		const initiallyHadSelectorMatch = await hasSelectorMatch();
 		const noChangeError = {
-			message: () => `element presence did not react to toggle click`,
+			message: () =>
+				`element presence did not change after clicking the toggle`,
 			pass: false,
 		};
 

@@ -3,7 +3,7 @@ expect.extend( {
 		if ( ! selector ) {
 			return {
 				message: () =>
-					`a selector is required to test element's visibility`,
+					`a selector is required to test element's required attribute`,
 				pass: false,
 			};
 		}
@@ -13,7 +13,7 @@ expect.extend( {
 		const wasInitiallyRequired = await isRequired();
 		const noChangeError = {
 			message: () =>
-				`input did not change its required attribute after clicking the checkbox`,
+				`input's (${ selector }) required attribute did not change after clicking the checkbox`,
 			pass: false,
 		};
 
@@ -31,7 +31,7 @@ expect.extend( {
 
 		return {
 			message: () =>
-				`input required attribute reacted to checkbox changes.`,
+				`input's (${ selector }) required attribute reacted to checkbox changes.`,
 			pass: true,
 		};
 	},
