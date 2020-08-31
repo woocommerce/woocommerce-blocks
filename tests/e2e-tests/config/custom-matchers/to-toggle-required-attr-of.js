@@ -11,15 +11,22 @@ expect.extend( {
 		const isRequired = async () =>
 			!! ( await page.$eval( selector, ( e ) => e.required ) );
 		const wasInitiallyRequired = await isRequired();
+		const noChangeError = {
+			message: () =>
+				`input did not change its required attribute after clicking the checkbox`,
+			pass: false,
+		};
 
 		await checkboxLabel.click();
 
-		if ( isRequired() === wasInitiallyRequired ) {
-			return {
-				message: () =>
-					`input did not changes it's required attribute after clicking the checkbox`,
-				pass: false,
-			};
+		if ( wasInitiallyRequired === ( await isRequired() ) ) {
+			return noChangeError;
+		}
+
+		await checkboxLabel.click();
+
+		if ( wasInitiallyRequired !== ( await isRequired() ) ) {
+			return noChangeError;
 		}
 
 		return {

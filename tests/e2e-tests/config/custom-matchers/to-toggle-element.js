@@ -9,43 +9,21 @@ expect.extend( {
 		}
 		const hasSelectorMatch = async () => !! ( await page.$( selector ) );
 		const initiallyHadSelectorMatch = await hasSelectorMatch();
+		const noChangeError = {
+			message: () => `element presence did not react to toggle click`,
+			pass: false,
+		};
 
 		await toggleLabel.click();
 
-		if ( initiallyHadSelectorMatch && ( await hasSelectorMatch() ) ) {
-			return {
-				message: () =>
-					`element matching selector '${ selector }' found but none was expected after one click.`,
-				pass: false,
-			};
-		} else if (
-			! initiallyHadSelectorMatch &&
-			! ( await hasSelectorMatch() )
-		) {
-			return {
-				message: () =>
-					`element matching selector '${ selector }' not found but at least one was expected after one click.`,
-				pass: false,
-			};
+		if ( initiallyHadSelectorMatch === ( await hasSelectorMatch() ) ) {
+			return noChangeError;
 		}
 
 		await toggleLabel.click();
 
-		if ( initiallyHadSelectorMatch && ! ( await hasSelectorMatch() ) ) {
-			return {
-				message: () =>
-					`element matching selector '${ selector }' not found but at least one was expected after two clicks.`,
-				pass: false,
-			};
-		} else if (
-			! initiallyHadSelectorMatch &&
-			( await hasSelectorMatch() )
-		) {
-			return {
-				message: () =>
-					`element matching selector '${ selector }' found but none was expected after two clicks.`,
-				pass: false,
-			};
+		if ( initiallyHadSelectorMatch !== ( await hasSelectorMatch() ) ) {
+			return noChangeError;
 		}
 
 		return {
