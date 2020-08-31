@@ -1,10 +1,5 @@
-/**
- * External dependencies
- */
-import { findLabelWithText } from '@woocommerce/blocks-test-utils';
-
 expect.extend( {
-	async toToggleElement( toggleText, selector ) {
+	async toToggleElement( toggleLabel, selector ) {
 		if ( ! selector ) {
 			return {
 				message: () =>
@@ -14,15 +9,6 @@ expect.extend( {
 		}
 		const hasSelectorMatch = async () => !! ( await page.$( selector ) );
 		const initiallyHadSelectorMatch = await hasSelectorMatch();
-		const toggleLabel = await findLabelWithText( toggleText );
-
-		if ( ! toggleLabel ) {
-			return {
-				message: () =>
-					`no label could be found with text ${ toggleText }`,
-				pass: false,
-			};
-		}
 
 		await toggleLabel.click();
 

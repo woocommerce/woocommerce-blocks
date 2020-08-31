@@ -1,10 +1,5 @@
-/**
- * External dependencies
- */
-import { findLabelWithText } from '@woocommerce/blocks-test-utils';
-
 expect.extend( {
-	async toToggleRequiredAttrOf( requiredCheckboxText, selector ) {
+	async toToggleRequiredAttrOf( checkboxLabel, selector ) {
 		if ( ! selector ) {
 			return {
 				message: () =>
@@ -18,12 +13,11 @@ expect.extend( {
 		if ( isRequired ) {
 			return {
 				message: () =>
-					`input is set to required before clicking the checkbox (${ requiredCheckboxText })`,
+					`input is set to required before clicking the checkbox`,
 				pass: false,
 			};
 		}
 
-		const checkboxLabel = await findLabelWithText( requiredCheckboxText );
 		await checkboxLabel.click();
 
 		isRequired = await page.$eval( selector, ( e ) => e.required );
@@ -31,7 +25,7 @@ expect.extend( {
 		if ( ! isRequired ) {
 			return {
 				message: () =>
-					`input is not set to required after clicking the checkbox (${ requiredCheckboxText })`,
+					`input is not set to required after clicking the checkbox`,
 				pass: false,
 			};
 		}

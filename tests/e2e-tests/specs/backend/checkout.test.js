@@ -50,19 +50,21 @@ describe( `${ block.name } Block`, () => {
 
 		describe( 'Company input', () => {
 			const selector = `${ block.class } .wc-block-components-address-form__company input`;
-			const toggleText = 'Company';
-			const requiredCheckboxText = 'Require company name?';
 
 			it( 'visibility can be toggled', async () => {
-				await expect( toggleText ).toToggleElement( selector );
+				const toggleLabel = await findLabelWithText( 'Company' );
+				await expect( toggleLabel ).toToggleElement( selector );
 			} );
 
 			it( 'required attribute can be toggled', async () => {
 				// Company is disabled by default, so first we need to enable it.
-				const toggleLabel = await findLabelWithText( toggleText );
+				const toggleLabel = await findLabelWithText( 'Company' );
 				await toggleLabel.click();
+				const checkboxLabel = await findLabelWithText(
+					'Require company name?'
+				);
 
-				await expect( requiredCheckboxText ).toToggleRequiredAttrOf(
+				await expect( checkboxLabel ).toToggleRequiredAttrOf(
 					selector
 				);
 			} );
@@ -71,22 +73,26 @@ describe( `${ block.name } Block`, () => {
 		describe( 'Apartment input', () => {
 			it( 'visibility can be toggled', async () => {
 				const selector = `${ block.class } .wc-block-components-address-form__address_2 input`;
-				const toggleText = 'Apartment, suite, etc.';
-				await expect( toggleText ).toToggleElement( selector );
+				const toggleLabel = await findLabelWithText(
+					'Apartment, suite, etc.'
+				);
+				await expect( toggleLabel ).toToggleElement( selector );
 			} );
 		} );
 
 		describe( 'Phone input', () => {
 			const selector = `${ block.class } #phone`;
-			const toggleText = 'Phone';
-			const requiredCheckboxText = 'Require phone number?';
 
 			it( 'visibility can be toggled', async () => {
-				await expect( toggleText ).toToggleElement( selector );
+				const toggleLabel = await findLabelWithText( 'Phone' );
+				await expect( toggleLabel ).toToggleElement( selector );
 			} );
 
 			it( 'required attribute can be toggled', async () => {
-				await expect( requiredCheckboxText ).toToggleRequiredAttrOf(
+				const checkboxLabel = await findLabelWithText(
+					'Require phone number?'
+				);
+				await expect( checkboxLabel ).toToggleRequiredAttrOf(
 					selector
 				);
 			} );
@@ -95,25 +101,30 @@ describe( `${ block.name } Block`, () => {
 		describe( 'Order notes checkbox', () => {
 			it( 'visibility can be toggled', async () => {
 				const selector = `${ block.class } .wc-block-checkout__add-note`;
-				const toggleText =
-					'Allow customers to optionally add order notes';
-				await expect( toggleText ).toToggleElement( selector );
+				const toggleLabel = await findLabelWithText(
+					'Allow customers to optionally add order notes'
+				);
+				await expect( toggleLabel ).toToggleElement( selector );
 			} );
 		} );
 
 		describe( 'Links to polices', () => {
 			it( 'visibility can be toggled', async () => {
 				const selector = `${ block.class } .wc-block-components-checkout-policies`;
-				const toggleText = 'Show links to policies';
-				await expect( toggleText ).toToggleElement( selector );
+				const toggleLabel = await findLabelWithText(
+					'Show links to policies'
+				);
+				await expect( toggleLabel ).toToggleElement( selector );
 			} );
 		} );
 
 		describe( 'Return to cart link', () => {
 			it( 'visibility can be toggled', async () => {
 				const selector = `${ block.class } .wc-block-components-checkout-return-to-cart-button`;
-				const toggleText = 'Show a "Return to Cart" link';
-				await expect( toggleText ).toToggleElement( selector );
+				const toggleLabel = await findLabelWithText(
+					'Show a "Return to Cart" link'
+				);
+				await expect( toggleLabel ).toToggleElement( selector );
 			} );
 		} );
 

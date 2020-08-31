@@ -8,7 +8,10 @@ import {
 	openDocumentSettingsSidebar,
 	switchUserToAdmin,
 } from '@wordpress/e2e-test-utils';
-import { visitBlockPage } from '@woocommerce/blocks-test-utils';
+import {
+	findLabelWithText,
+	visitBlockPage,
+} from '@woocommerce/blocks-test-utils';
 
 const block = {
 	name: 'Cart',
@@ -48,15 +51,18 @@ describe( `${ block.name } Block`, () => {
 
 		it( 'can toggle Shipping calculator', async () => {
 			const selector = `${ block.class } .wc-block-components-totals-shipping__change-address-button`;
-			const toggleText = 'Shipping calculator';
-			await expect( toggleText ).toToggleElement( selector );
+			const toggleLabel = await findLabelWithText(
+				'Shipping calculator'
+			);
+			await expect( toggleLabel ).toToggleElement( selector );
 		} );
 
 		it( 'can toggle shipping costs', async () => {
 			const selector = `${ block.class } .wc-block-components-totals-shipping__fieldset`;
-			const toggleText =
-				'Hide shipping costs until an address is entered';
-			await expect( toggleText ).toToggleElement( selector );
+			const toggleLabel = await findLabelWithText(
+				'Hide shipping costs until an address is entered'
+			);
+			await expect( toggleLabel ).toToggleElement( selector );
 		} );
 	} );
 
