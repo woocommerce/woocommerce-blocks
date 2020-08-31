@@ -34,7 +34,9 @@ export const useSelectShippingRate = ( shippingRates ) => {
 				)
 				// A fromEntries ponyfill, creates an object from an array of arrays.
 				.reduce( ( obj, [ key, val ] ) => {
-					obj[ key ] = val;
+					if ( val ) {
+						obj[ key ] = val;
+					}
 					return obj;
 				}, {} ),
 		[ shippingRates ]
