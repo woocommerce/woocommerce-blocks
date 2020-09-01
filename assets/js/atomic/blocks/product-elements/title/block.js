@@ -111,7 +111,17 @@ export const Block = ( {
 					{ productName }
 				</a>
 			) : (
-				productName
+				<span
+					className={ classnames( {
+						[ titleClasses ]: isFeaturePluginBuild(),
+					} ) }
+					style={ gatedStyledText( {
+						color: customColor,
+						fontSize: customFontSize,
+					} ) }
+				>
+					{ productName }
+				</span>
 			) }
 		</TagName>
 	);
