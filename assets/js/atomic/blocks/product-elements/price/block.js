@@ -189,18 +189,20 @@ const SalePrice = ( {
 	const { parentClassName } = useInnerBlockLayoutContext();
 	return (
 		<>
-			<FormattedMonetaryAmount
-				currency={ currency }
-				value={ regularPrice }
-				className={ classnames(
-					'wc-block-components-product-price__regular',
-					{
-						[ `${ parentClassName }__product-price__regular` ]: parentClassName,
-						[ classes ]: isFeaturePluginBuild(),
-					}
-				) }
-				style={ isFeaturePluginBuild() ? style : {} }
-			/>
+			<del>
+				<FormattedMonetaryAmount
+					currency={ currency }
+					value={ regularPrice }
+					className={ classnames(
+						'wc-block-components-product-price__regular',
+						{
+							[ `${ parentClassName }__product-price__regular` ]: parentClassName,
+							[ classes ]: isFeaturePluginBuild(),
+						}
+					) }
+					style={ isFeaturePluginBuild() ? style : {} }
+				/>
+			</del>
 			<span
 				className={ classnames(
 					'wc-block-components-product-price__value',
