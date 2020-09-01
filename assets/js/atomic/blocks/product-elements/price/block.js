@@ -106,7 +106,7 @@ const Block = ( {
 				'wc-block-components-product-price',
 				{
 					[ `${ parentClassName }__product-price` ]: parentClassName,
-					[ `wc-block-components-product-price__align-${ align }` ]:
+					[ `wc-block-components-product-price--align-${ align }` ]:
 						align && isFeaturePluginBuild(),
 				}
 			) }
