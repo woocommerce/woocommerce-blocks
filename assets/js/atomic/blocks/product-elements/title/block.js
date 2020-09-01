@@ -69,9 +69,8 @@ export const Block = ( {
 						[ `${ parentClassName }__product-title` ]: parentClassName,
 						[ `wc-block-components-product-title--align-${ align }` ]:
 							align && isFeaturePluginBuild(),
-						[ titleClasses ]: isFeaturePluginBuild()
-					},
-
+						[ titleClasses ]: isFeaturePluginBuild(),
+					}
 				) }
 				style={ gatedStyledText( {
 					color: customColor,
