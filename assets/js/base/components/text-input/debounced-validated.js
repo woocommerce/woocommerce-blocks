@@ -9,17 +9,21 @@ import PropTypes from 'prop-types';
 
 const DebouncedValidatedTextInput = ( { onChange, value = '', ...props } ) => {
 	// Keep a local copy of the value so we can debounce updates.
-	const [ val, setVal ] = useState( value );
-	const [ debouncedCallback ] = useDebouncedCallback( ( fields ) => {
-		onChange( fields );
+	const [ inputValue, setInputValue ] = useState( value );
+	const [ debouncedCallback ] = useDebouncedCallback( ( newValue ) => {
+		onChange( newValue );
 	}, 400 );
 	const debouncedOnChange = useShallowEqual( debouncedCallback );
 	useEffect( () => {
-		debouncedOnChange( val );
-	}, [ debouncedOnChange, val ] );
+		debouncedOnChange( inputValue );
+	}, [ debouncedOnChange, inputValue ] );
 
 	return (
-		<ValidatedTextInput onChange={ setVal } value={ val } { ...props } />
+		<ValidatedTextInput
+			onChange={ setInputValue }
+			value={ inputValue }
+			{ ...props }
+		/>
 	);
 };
 
