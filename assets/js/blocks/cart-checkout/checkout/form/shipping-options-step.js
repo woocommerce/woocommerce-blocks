@@ -13,12 +13,12 @@ import {
 } from '@woocommerce/base-utils';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import {
+	useCheckoutContext,
 	useEditorContext,
 	useShippingDataContext,
 } from '@woocommerce/base-context';
 import { decodeEntities } from '@wordpress/html-entities';
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
-import PropTypes from 'prop-types';
 
 /**
  * Internal dependencies
@@ -48,7 +48,8 @@ const renderShippingRatesControlOption = ( option ) => {
 	};
 };
 
-const ShippingOptionsStep = ( { disabled } ) => {
+const ShippingOptionsStep = () => {
+	const { isProcessing: checkoutIsProcessing } = useCheckoutContext();
 	const { isEditor } = useEditorContext();
 	const {
 		shippingRates,
@@ -63,7 +64,7 @@ const ShippingOptionsStep = ( { disabled } ) => {
 	return (
 		<FormStep
 			id="shipping-option"
-			disabled={ disabled }
+			disabled={ checkoutIsProcessing }
 			className="wc-block-checkout__shipping-option"
 			title={ __( 'Shipping options', 'woo-gutenberg-products-block' ) }
 			description={
@@ -90,10 +91,6 @@ const ShippingOptionsStep = ( { disabled } ) => {
 			) }
 		</FormStep>
 	);
-};
-
-ShippingOptionsStep.propTypes = {
-	disabled: PropTypes.bool,
 };
 
 export default ShippingOptionsStep;

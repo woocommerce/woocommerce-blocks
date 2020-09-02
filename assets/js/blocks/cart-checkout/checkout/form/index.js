@@ -8,11 +8,9 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import BillingFieldsStep from './billing-fields-step';
-import ContactFieldsStep from './contact-fields-step';
+import AddressStep from './address-step';
 import OrderNotesStep from './order-notes-step';
 import PaymentMethodStep from './payment-method-step';
-import ShippingFieldsStep from './shipping-fields-step';
 import ShippingOptionsStep from './shipping-options-step';
 import './style.scss';
 
@@ -21,33 +19,22 @@ const CheckoutForm = ( {
 	requirePhoneField,
 	showApartmentField,
 	showCompanyField,
-	showPhoneField,
 	showOrderNotes,
+	showPhoneField,
 } ) => {
-	const {
-		isProcessing: checkoutIsProcessing,
-		onSubmit,
-	} = useCheckoutContext();
+	const { onSubmit } = useCheckoutContext();
 
 	return (
 		<Form className="wc-block-checkout__form" onSubmit={ onSubmit }>
-			<ContactFieldsStep disabled={ checkoutIsProcessing } />
-			<ShippingFieldsStep
-				disabled={ checkoutIsProcessing }
+			<AddressStep
 				requireCompanyField={ requireCompanyField }
 				requirePhoneField={ requirePhoneField }
 				showApartmentField={ showApartmentField }
 				showCompanyField={ showCompanyField }
 				showPhoneField={ showPhoneField }
 			/>
-			<BillingFieldsStep
-				disabled={ checkoutIsProcessing }
-				requireCompanyField={ requireCompanyField }
-				showApartmentField={ showApartmentField }
-				showCompanyField={ showCompanyField }
-			/>
-			<ShippingOptionsStep disabled={ checkoutIsProcessing } />
-			<PaymentMethodStep disabled={ checkoutIsProcessing } />
+			<ShippingOptionsStep />
+			<PaymentMethodStep />
 			<OrderNotesStep showOrderNotes={ showOrderNotes } />
 		</Form>
 	);

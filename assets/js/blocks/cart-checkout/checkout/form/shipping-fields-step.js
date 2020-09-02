@@ -8,48 +8,27 @@ import {
 } from '@woocommerce/base-components/cart-checkout';
 import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
 import CheckboxControl from '@woocommerce/base-components/checkbox-control';
-import { useShippingDataContext } from '@woocommerce/base-context';
-import { useCheckoutAddress } from '@woocommerce/base-hooks';
+import { useCheckoutContext } from '@woocommerce/base-context';
 import PropTypes from 'prop-types';
 
-/**
- * Internal dependencies
- */
-import { useAddressFieldsConfig } from '../utils';
-
 const ShippingFieldsStep = ( {
-	disabled,
-	requireCompanyField,
-	requirePhoneField,
-	showApartmentField,
-	showCompanyField,
+	addressFieldsConfig,
+	defaultAddressFields,
+	billingFields,
+	setPhone,
+	shippingAsBilling,
+	shippingFields,
 	showPhoneField,
+	setShippingFields,
+	setShippingAsBilling,
+	requirePhoneField,
 } ) => {
-	const { needsShipping } = useShippingDataContext();
-	const {
-		defaultAddressFields,
-		billingFields,
-		setPhone,
-		shippingAsBilling,
-		shippingFields,
-		setShippingFields,
-		setShippingAsBilling,
-	} = useCheckoutAddress();
-	const addressFieldsConfig = useAddressFieldsConfig( {
-		defaultAddressFields,
-		showCompanyField,
-		requireCompanyField,
-		showApartmentField,
-	} );
-
-	if ( ! needsShipping ) {
-		return null;
-	}
+	const { isProcessing: checkoutIsProcessing } = useCheckoutContext();
 
 	return (
 		<FormStep
 			id="shipping-fields"
-			disabled={ disabled }
+			disabled={ checkoutIsProcessing }
 			className="wc-block-checkout__shipping-fields"
 			title={ __( 'Shipping address', 'woo-gutenberg-products-block' ) }
 			description={ __(
@@ -96,11 +75,15 @@ const ShippingFieldsStep = ( {
 };
 
 ShippingFieldsStep.propTypes = {
-	disabled: PropTypes.bool.isRequired,
-	requireCompanyField: PropTypes.bool.isRequired,
+	addressFieldsConfig: PropTypes.object.isRequired,
+	billingFields: PropTypes.object.isRequired,
+	defaultAddressFields: PropTypes.object.isRequired,
 	requirePhoneField: PropTypes.bool.isRequired,
-	showApartmentField: PropTypes.bool.isRequired,
-	showCompanyField: PropTypes.bool.isRequired,
+	setPhone: PropTypes.func.isRequired,
+	shippingAsBilling: PropTypes.bool.isRequired,
+	setShippingAsBilling: PropTypes.func.isRequired,
+	setShippingFields: PropTypes.func.isRequired,
+	shippingFields: PropTypes.object.isRequired,
 	showPhoneField: PropTypes.bool.isRequired,
 };
 

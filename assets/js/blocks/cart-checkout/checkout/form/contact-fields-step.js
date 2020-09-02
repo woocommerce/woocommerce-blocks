@@ -4,21 +4,20 @@
 import { __ } from '@wordpress/i18n';
 import { FormStep } from '@woocommerce/base-components/cart-checkout';
 import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
-import { useCheckoutAddress } from '@woocommerce/base-hooks';
-import PropTypes from 'prop-types';
+import { useCheckoutContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
  */
 import LoginPrompt from './login-prompt';
 
-const ContactFieldsStep = ( { disabled } ) => {
-	const { billingFields, setEmail } = useCheckoutAddress();
+const ContactFieldsStep = ( { emailValue, onChangeEmail } ) => {
+	const { isProcessing: checkoutIsProcessing } = useCheckoutContext();
 
 	return (
 		<FormStep
 			id="contact-fields"
-			disabled={ disabled }
+			disabled={ checkoutIsProcessing }
 			className="wc-block-checkout__contact-fields"
 			title={ __(
 				'Contact information',
@@ -34,17 +33,13 @@ const ContactFieldsStep = ( { disabled } ) => {
 				id="email"
 				type="email"
 				label={ __( 'Email address', 'woo-gutenberg-products-block' ) }
-				value={ billingFields.email }
+				value={ emailValue }
 				autoComplete="email"
-				onChange={ setEmail }
+				onChange={ onChangeEmail }
 				required={ true }
 			/>
 		</FormStep>
 	);
-};
-
-ContactFieldsStep.propTypes = {
-	disabled: PropTypes.bool.isRequired,
 };
 
 export default ContactFieldsStep;

@@ -6,41 +6,21 @@ import {
 	AddressForm,
 	FormStep,
 } from '@woocommerce/base-components/cart-checkout';
-import { useCheckoutAddress } from '@woocommerce/base-hooks';
+import { useCheckoutContext } from '@woocommerce/base-context';
 import PropTypes from 'prop-types';
 
-/**
- * Internal dependencies
- */
-import { useAddressFieldsConfig } from '../utils';
-
 const BillingFieldsStep = ( {
-	disabled,
-	requireCompanyField,
-	showApartmentField,
-	showCompanyField,
+	addressFieldsConfig,
+	billingFields,
+	defaultAddressFields,
+	setBillingFields,
 } ) => {
-	const {
-		defaultAddressFields,
-		billingFields,
-		setBillingFields,
-		showBillingFields,
-	} = useCheckoutAddress();
-	const addressFieldsConfig = useAddressFieldsConfig( {
-		defaultAddressFields,
-		showCompanyField,
-		requireCompanyField,
-		showApartmentField,
-	} );
-
-	if ( ! showBillingFields ) {
-		return null;
-	}
+	const { isProcessing: checkoutIsProcessing } = useCheckoutContext();
 
 	return (
 		<FormStep
 			id="billing-fields"
-			disabled={ disabled }
+			disabled={ checkoutIsProcessing }
 			className="wc-block-checkout__billing-fields"
 			title={ __( 'Billing address', 'woo-gutenberg-products-block' ) }
 			description={ __(
@@ -61,10 +41,10 @@ const BillingFieldsStep = ( {
 };
 
 BillingFieldsStep.propTypes = {
-	disabled: PropTypes.bool.isRequired,
-	requireCompanyField: PropTypes.bool.isRequired,
-	showApartmentField: PropTypes.bool.isRequired,
-	showCompanyField: PropTypes.bool.isRequired,
+	addressFieldsConfig: PropTypes.object.isRequired,
+	billingFields: PropTypes.object.isRequired,
+	defaultAddressFields: PropTypes.object.isRequired,
+	setBillingFields: PropTypes.func.isRequired,
 };
 
 export default BillingFieldsStep;

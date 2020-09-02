@@ -3,12 +3,15 @@
  */
 import { __ } from '@wordpress/i18n';
 import { FormStep } from '@woocommerce/base-components/cart-checkout';
-import { StoreNoticesProvider } from '@woocommerce/base-context';
+import {
+	useCheckoutContext,
+	StoreNoticesProvider,
+} from '@woocommerce/base-context';
 import { usePaymentMethods, useStoreCart } from '@woocommerce/base-hooks';
 import { PaymentMethods } from '@woocommerce/base-components/payment-methods';
-import PropTypes from 'prop-types';
 
-const PaymentMethodStep = ( { disabled } ) => {
+const PaymentMethodStep = () => {
+	const { isProcessing: checkoutIsProcessing } = useCheckoutContext();
 	const { cartNeedsPayment } = useStoreCart();
 	const { paymentMethods } = usePaymentMethods();
 
@@ -19,7 +22,7 @@ const PaymentMethodStep = ( { disabled } ) => {
 	return (
 		<FormStep
 			id="payment-method"
-			disabled={ disabled }
+			disabled={ checkoutIsProcessing }
 			className="wc-block-checkout__payment-method"
 			title={ __( 'Payment method', 'woo-gutenberg-products-block' ) }
 			description={
@@ -36,10 +39,6 @@ const PaymentMethodStep = ( { disabled } ) => {
 			</StoreNoticesProvider>
 		</FormStep>
 	);
-};
-
-PaymentMethodStep.propTypes = {
-	disabled: PropTypes.bool.isRequired,
 };
 
 export default PaymentMethodStep;
