@@ -59,7 +59,6 @@ class ProductReviewSchema extends AbstractSchema {
 			'formatted_date_created' => [
 				'description' => __( "The date the review was created, in the site's timezone in human-readable format.", 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
-				'format'      => 'date-time',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
