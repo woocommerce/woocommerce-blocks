@@ -1,11 +1,5 @@
 <?php
-/**
- * Abstract payment method type class.
- */
-
 namespace Automattic\WooCommerce\Blocks\Payments\Integrations;
-
-defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Blocks\Payments\PaymentMethodTypeInterface;
 

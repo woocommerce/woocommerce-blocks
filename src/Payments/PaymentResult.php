@@ -1,11 +1,5 @@
 <?php
-/**
- * Payment result.
- */
-
 namespace Automattic\WooCommerce\Blocks\Payments;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * PaymentResult class.

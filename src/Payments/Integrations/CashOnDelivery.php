@@ -1,10 +1,4 @@
 <?php
-/**
- * Cash on Delivery (COD) (core) gateway implementation.
- *
- * @since 3.0.0
- */
-
 namespace Automattic\WooCommerce\Blocks\Payments\Integrations;
 
 use Automattic\WooCommerce\Blocks\Assets\Api;

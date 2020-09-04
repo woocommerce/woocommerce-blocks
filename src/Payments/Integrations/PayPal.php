@@ -1,10 +1,4 @@
 <?php
-/**
- * PayPal Standard (core) gateway implementation.
- *
- * @since 2.6.0
- */
-
 namespace Automattic\WooCommerce\Blocks\Payments\Integrations;
 
 use Exception;
