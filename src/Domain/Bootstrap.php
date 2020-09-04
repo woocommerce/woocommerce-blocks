@@ -1,8 +1,4 @@
 <?php
-/**
- * Contains the Bootstrap class
- */
-
 namespace Automattic\WooCommerce\Blocks\Domain;
 
 use Automattic\WooCommerce\Blocks\Assets as BlockAssets;

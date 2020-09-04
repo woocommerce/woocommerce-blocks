@@ -1,8 +1,4 @@
 <?php
-/**
- * Sets up all logic related to the Checkout Draft Orders service
- */
-
 namespace Automattic\WooCommerce\Blocks\Domain\Services;
 
 use Automattic\WooCommerce\Blocks\Domain\Package;
@@ -11,6 +7,10 @@ use WC_Order;
 
 /**
  * Service class for adding DraftOrder functionality to WooCommerce core.
+ *
+ * Sets up all logic related to the Checkout Draft Orders service
+ *
+ * @internal
  */
 class DraftOrders {
 
