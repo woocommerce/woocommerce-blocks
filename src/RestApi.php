@@ -1,17 +1,14 @@
 <?php
-/**
- * Registers controllers in the blocks REST API namespace.
- */
-
 namespace Automattic\WooCommerce\Blocks;
-
-defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Blocks\StoreApi\RoutesController;
 use Automattic\WooCommerce\Blocks\StoreApi\SchemaController;
 
 /**
  * RestApi class.
+ * Registers controllers in the blocks REST API namespace.
+ *
+ * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 class RestApi {
 	/**

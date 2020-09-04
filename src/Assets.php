@@ -1,17 +1,14 @@
 <?php
-/**
- * Initializes block assets.
- */
-
 namespace Automattic\WooCommerce\Blocks;
-
-defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 
 /**
  * Assets class.
+ * Initializes block assets.
+ *
+ * @internal
  */
 class Assets {
 

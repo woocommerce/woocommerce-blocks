@@ -1,16 +1,13 @@
 <?php
-/**
- * Initializes blocks in WordPress.
- */
-
 namespace Automattic\WooCommerce\Blocks;
-
-defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Blocks\Package;
 
 /**
  * Library class.
+ * Initializes blocks in WordPress.
+ *
+ * @internal
  */
 class Library {
 

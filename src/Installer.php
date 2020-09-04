@@ -1,14 +1,11 @@
 <?php
-/**
- * Handles installation of Blocks plugin dependencies.
- */
-
 namespace Automattic\WooCommerce\Blocks;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * Installer class.
+ * Handles installation of Blocks plugin dependencies.
+ *
+ * @internal
  */
 class Installer {
 	/**
