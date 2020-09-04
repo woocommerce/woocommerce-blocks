@@ -1,11 +1,5 @@
 <?php
-/**
- * Billing Address Schema.
- */
-
 namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;
-
-defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Blocks\RestApi\Routes;
 
@@ -13,6 +7,8 @@ use Automattic\WooCommerce\Blocks\RestApi\Routes;
  * BillingAddressSchema class.
  *
  * Provides a generic billing address schema for composition in other schemas.
+ *
+ * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 class BillingAddressSchema extends AbstractSchema {
 	/**

@@ -1,12 +1,11 @@
 <?php
-/**
- * Exceptions for stock reservation.
- */
-
 namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;
 
 /**
  * ReserveStockException class.
+ * Exceptions for stock reservation.
+ *
+ * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 class ReserveStockException extends \Exception {
 	/**

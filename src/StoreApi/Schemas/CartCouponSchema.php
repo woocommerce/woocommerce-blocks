@@ -1,17 +1,12 @@
 <?php
-/**
- * Cart Coupon Schema.
- */
-
 namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;
-
-defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
 
 /**
  * CartCouponSchema class.
  *
+ * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  * @since 2.5.0
  */
 class CartCouponSchema extends AbstractSchema {

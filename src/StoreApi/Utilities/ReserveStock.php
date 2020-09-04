@@ -1,14 +1,11 @@
 <?php
-/**
- * Handle product stock reservation during checkout.
- */
-
 namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * Stock Reservation class.
+ * Handle product stock reservation during checkout.
+ *
+ * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 final class ReserveStock {
 	/**

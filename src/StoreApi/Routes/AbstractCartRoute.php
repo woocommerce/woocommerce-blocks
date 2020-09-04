@@ -1,16 +1,12 @@
 <?php
-/**
- * Abstract Cart route.
- */
-
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
-
-defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
 
 /**
- * Cart class.
+ * Abstract Cart Route
+ *
+ * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 abstract class AbstractCartRoute extends AbstractRoute {
 	/**

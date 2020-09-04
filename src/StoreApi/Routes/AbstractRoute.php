@@ -1,16 +1,12 @@
 <?php
-/**
- * Abstract route.
- */
-
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
-
-defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Blocks\StoreApi\Schemas\AbstractSchema;
 
 /**
  * AbstractRoute class.
+ *
+ * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 abstract class AbstractRoute implements RouteInterface {
 	/**

@@ -1,17 +1,13 @@
 <?php
-/**
- * Product Reviews route.
- */
-
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
-
-defined( 'ABSPATH' ) || exit;
 
 use WP_Comment_Query;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\Pagination;
 
 /**
  * ProductReviews class.
+ *
+ * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 class ProductReviews extends AbstractRoute {
 	/**

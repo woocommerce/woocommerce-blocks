@@ -1,17 +1,12 @@
 <?php
-/**
- * Product Query filters helper.
- */
-
 namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;
-
-defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\ProductQuery;
 
 /**
  * Product Query filters class.
  *
+ * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  * @since 2.5.0
  */
 class ProductQueryFilters {

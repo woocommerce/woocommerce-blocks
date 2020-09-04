@@ -1,15 +1,10 @@
 <?php
-/**
- * Term Schema.
- */
-
 namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * TermSchema class.
  *
+ * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  * @since 2.5.0
  */
 class TermSchema extends AbstractSchema {

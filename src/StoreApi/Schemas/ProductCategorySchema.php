@@ -1,14 +1,10 @@
 <?php
-/**
- * Product Category Schema.
- */
-
 namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * ProductCategorySchema class.
+ *
+ * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 class ProductCategorySchema extends TermSchema {
 	/**
