@@ -1,8 +1,4 @@
 <?php
-/**
- * Holds the SharedType class definition
- */
-
 namespace Automattic\WooCommerce\Blocks\Registry;
 
 /**

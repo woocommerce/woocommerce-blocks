@@ -1,8 +1,4 @@
 <?php
-/**
- * Holds the FactoryType class
- */
-
 namespace Automattic\WooCommerce\Blocks\Registry;
 
 /**
