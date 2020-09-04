@@ -1,11 +1,5 @@
 <?php
-/**
- * Featured category block.
- */
-
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * FeaturedCategory class.

@@ -1,10 +1,4 @@
 <?php
-/**
- * Backwards Compatibility file for plugins using wcSettings in prior versions
- *
- * @since 2.5.0
- */
-
 namespace Automattic\WooCommerce\Blocks\Assets;
 
 /**
@@ -12,6 +6,7 @@ namespace Automattic\WooCommerce\Blocks\Assets;
  *
  * Note: This will be removed at some point.
  *
+ * @internal
  * @since 2.5.0
  */
 class BackCompatAssetDataRegistry extends AssetDataRegistry {

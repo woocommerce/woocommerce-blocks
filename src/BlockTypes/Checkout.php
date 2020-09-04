@@ -1,18 +1,14 @@
 <?php
-/**
- * Checkout block.
- */
-
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Assets;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 
-defined( 'ABSPATH' ) || exit;
-
 /**
  * Checkout class.
+ *
+ * @internal
  */
 class Checkout extends AbstractBlock {
 

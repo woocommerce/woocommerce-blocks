@@ -1,11 +1,5 @@
 <?php
-/**
- * Top rated products block.
- */
-
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * ProductTopRated class.

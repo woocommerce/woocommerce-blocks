@@ -1,11 +1,5 @@
 <?php
-/**
- * Product category block.
- */
-
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * ProductCategory class.

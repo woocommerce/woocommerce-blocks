@@ -1,11 +1,5 @@
 <?php
-/**
- * On-sale products block.
- */
-
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * ProductOnSale class.

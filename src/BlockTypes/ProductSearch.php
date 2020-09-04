@@ -1,11 +1,5 @@
 <?php
-/**
- * Product search block.
- */
-
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * ProductSearch class.

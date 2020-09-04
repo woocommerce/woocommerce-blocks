@@ -1,11 +1,5 @@
 <?php
-/**
- * Single Product block.
- */
-
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
-
-defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Blocks\Assets;
 

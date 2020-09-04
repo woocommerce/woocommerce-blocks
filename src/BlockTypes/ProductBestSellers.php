@@ -1,11 +1,5 @@
 <?php
-/**
- * Product best sellers block.
- */
-
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * ProductBestSellers class.
