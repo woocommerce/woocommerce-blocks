@@ -1,4 +1,5 @@
 module.exports = {
+	rootDir: '../../../',
 	// Automatically clear mock calls and instances between every test
 	clearMocks: true,
 
@@ -29,8 +30,8 @@ module.exports = {
 	// The glob patterns Jest uses to detect test files
 	testMatch: [ '**/*.(test|spec).js' ],
 
-	// Sort test path alphabetically. This is needed so that `activate-and-setup` tests run first
-	testSequencer: '<rootDir>/tests/e2e-tests/config/jest-custom-sequencer.js',
+	// // Sort test path alphabetically. This is needed so that `activate-and-setup` tests run first
+	// testSequencer: '<rootDir>/tests/e2e-tests/config/jest-custom-sequencer.js',
 
 	transformIgnorePatterns: [ 'node_modules/(?!(woocommerce)/)' ],
 };
