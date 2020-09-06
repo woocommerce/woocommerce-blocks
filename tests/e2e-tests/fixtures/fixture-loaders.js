@@ -35,6 +35,8 @@ const WooCommerce = new WooCommerceRestApi( {
 
 const WPAPI = `${ process.env.WORDPRESS_BASE_URL }/wp-json/wp/v2/pages`;
 
+console.log( WPAPI );
+
 /**
  * prepare some store settings.
  *
