@@ -1,4 +1,5 @@
 module.exports = {
+	...require( '@wordpress/scripts/config/jest-e2e.config' ),
 	rootDir: '../../../',
 	// Automatically clear mock calls and instances between every test
 	clearMocks: true,
@@ -12,8 +13,6 @@ module.exports = {
 		'@woocommerce/blocks-test-utils': '<rootDir>/tests/utils',
 	},
 
-	preset: 'jest-puppeteer',
-
 	// Where to look for test files
 	roots: [ '<rootDir>/tests/e2e-tests/specs' ],
 	globalSetup: '<rootDir>/tests/e2e-tests/config/setup.js',
@@ -26,12 +25,6 @@ module.exports = {
 		'<rootDir>/tests/e2e-tests/config/jest.setup.js',
 		'expect-puppeteer',
 	],
-
-	// The glob patterns Jest uses to detect test files
-	testMatch: [ '**/*.(test|spec).js' ],
-
-	// // Sort test path alphabetically. This is needed so that `activate-and-setup` tests run first
-	// testSequencer: '<rootDir>/tests/e2e-tests/config/jest-custom-sequencer.js',
 
 	transformIgnorePatterns: [ 'node_modules/(?!(woocommerce)/)' ],
 };
