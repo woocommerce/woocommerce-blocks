@@ -306,6 +306,7 @@ const deleteShippingZones = ( ids ) => {
 const createBlockPages = () => {
 	return glob( `${ dirname( __filename ) }/../specs/**/*.fixture.json` ).then(
 		( files ) => {
+			console.log( files );
 			return Promise.all(
 				files.map( async ( filePath ) => {
 					const file = await readJson( filePath );
