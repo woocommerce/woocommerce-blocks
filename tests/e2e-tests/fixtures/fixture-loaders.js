@@ -35,8 +35,6 @@ const WooCommerce = new WooCommerceRestApi( {
 
 const WPAPI = `${ process.env.WORDPRESS_BASE_URL }/wp-json/wp/v2/pages`;
 
-console.log( WPAPI );
-
 /**
  * prepare some store settings.
  *
@@ -52,7 +50,6 @@ const setupSettings = ( fixture = fixtures.Settings() ) =>
 
 const setupPageSettings = () => {
 	axios.get( WPAPI ).then( ( response ) => {
-		console.log( response );
 		const fixture = fixtures.PageSettings( response.data );
 		WooCommerce.post( 'settings/advanced/batch', {
 			update: fixture,
