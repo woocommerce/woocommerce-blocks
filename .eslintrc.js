@@ -5,7 +5,10 @@ module.exports = {
 		fetchMock: true,
 		jQuery: 'readonly',
 		IntersectionObserver: 'readonly',
-		// e2e related - should be moved to custom config.
+		// @todo Move E2E related ESLint configuration into custom config.
+		//
+		// We should have linting properties only included for files that they
+		// are specific to as opposed to globally.
 		page: 'readonly',
 		browser: 'readonly',
 		context: 'readonly',
