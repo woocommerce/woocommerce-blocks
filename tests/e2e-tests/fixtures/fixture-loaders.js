@@ -310,6 +310,7 @@ const createBlockPages = () => {
 			return Promise.all(
 				files.map( async ( filePath ) => {
 					const file = await readJson( filePath );
+					console.log( file, '\n' );
 					const { title, pageContent: content } = file;
 					return axios
 						.post(
