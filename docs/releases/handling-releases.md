@@ -1,6 +1,6 @@
 # Handling Releases
 
-The WooCommerce Blocks project has a number of automations that aid with making releases. The following is the steps you should take for making a release:
+The WooCommerce Blocks project has a number of automations that aid with making releases. The following are the steps you should take for making a release:
 
 * Create a GitHub milestone for the next release.
 * Double-check any merged pulls since the last release that should be included in the release notes are assigned to the milestone for this release. **Note:** You don't need to include renovate pull requests in the milestone.
