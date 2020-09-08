@@ -37,14 +37,14 @@ We have _major_, _minor_ and _patch_ releases.
 For example:
 
 -   version == 2.5.11
-    -   2 == _major_ version; has breaking changes or major new features
+    -   2 == _major_ version; Is functionally the same as a "minor" version bump.
     -   5 == _minor_ version; has new features
     -   11 == _patch_, aka point / revision / fix; has bug fixes and improvements to existing features
 -   2.0 is a _major_ release
 -   2.5 is a _minor_ release
 -   2.5.11 is a _patch_ release
 
-There are some differences to our release process for each kind of release - these are detailed in the steps above.
+Note that in this project there is generally no difference between a major release and minor release. We never do a `2.xx.x` version bump. The next release after `2.9.0` is `3.0.0`, after `3.9.0` it is `4.0.0` and so on.
 
 ## Appendix: updating a specific file on WPORG
 
