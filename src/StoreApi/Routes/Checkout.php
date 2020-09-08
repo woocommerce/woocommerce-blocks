@@ -10,7 +10,6 @@ use Automattic\WooCommerce\Blocks\StoreApi\Utilities\ReserveStock;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\ReserveStockException;
 use Automattic\WooCommerce\Blocks\Payments\PaymentResult;
 use Automattic\WooCommerce\Blocks\Payments\PaymentContext;
-use \Exception;
 
 /**
  * Checkout class.
@@ -324,32 +323,6 @@ class Checkout extends AbstractRoute {
 		}
 
 		return $order_object;
-	}
-
-	/**
-	 * Check request options and store (shop) config to determine if a user account
-	 * should be created as part of order processing.
-	 *
-	 * @param \WP_REST_Request $request The current request object being handled.
-	 *
-	 * @return boolean True if a new user account should be created.
-	 */
-	protected function should_create_customer_account( $request ) {
-		if ( is_user_logged_in() ) {
-			return false;
-		}
-
-		$checkout_requires_account = false === filter_var( get_option( 'woocommerce_enable_guest_checkout' ), FILTER_VALIDATE_BOOLEAN );
-		if ( $checkout_requires_account ) {
-			return true;
-		}
-
-		$user_requested_account = ! empty( $request['create_account'] ) && true === filter_var( $request['create_account'], FILTER_VALIDATE_BOOLEAN );
-		if ( $user_requested_account ) {
-			return true;
-		}
-
-		return false;
 	}
 
 	/**

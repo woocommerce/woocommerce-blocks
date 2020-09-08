@@ -5,15 +5,39 @@ import { __ } from '@wordpress/i18n';
 import { FormStep } from '@woocommerce/base-components/cart-checkout';
 import { DebouncedValidatedTextInput } from '@woocommerce/base-components/text-input';
 import { useCheckoutContext } from '@woocommerce/base-context';
+import { CHECKOUT_ALLOWS_GUEST } from '@woocommerce/block-settings';
+import CheckboxControl from '@woocommerce/base-components/checkbox-control';
 
 /**
  * Internal dependencies
  */
 import LoginPrompt from './login-prompt';
 
-const ContactFieldsStep = ( { emailValue, onChangeEmail } ) => {
-	const { isProcessing: checkoutIsProcessing } = useCheckoutContext();
+const ContactFieldsStep = ( {
+	emailValue,
+	onChangeEmail,
+	allowCreateAccount,
+} ) => {
+	const {
+		isProcessing: checkoutIsProcessing,
+		customerId,
+		shouldCreateAccount,
+		setShouldCreateAccount,
+	} = useCheckoutContext();
 
+	const createAccountUI = ! customerId &&
+		allowCreateAccount &&
+		CHECKOUT_ALLOWS_GUEST && (
+			<CheckboxControl
+				className="wc-block-checkout__create-account"
+				label={ __(
+					'Create an account?',
+					'woo-gutenberg-products-block'
+				) }
+				checked={ shouldCreateAccount }
+				onChange={ ( value ) => setShouldCreateAccount( value ) }
+			/>
+		);
 	return (
 		<FormStep
 			id="contact-fields"
@@ -38,6 +62,7 @@ const ContactFieldsStep = ( { emailValue, onChangeEmail } ) => {
 				onChange={ onChangeEmail }
 				required={ true }
 			/>
+			{ createAccountUI }
 		</FormStep>
 	);
 };
