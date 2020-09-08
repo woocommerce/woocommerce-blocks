@@ -1,10 +1,12 @@
-This is the release pull request for WooCommerce Blocks plugin {{version}}.
+This is the release pull request for WooCommerce Blocks plugin `{{version}}`.
 
 ## Changelog
 
 ---
 
+```
 {{changelog}}
+```
 
 ---
 

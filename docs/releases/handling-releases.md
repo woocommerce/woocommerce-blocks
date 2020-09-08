@@ -3,6 +3,7 @@
 The WooCommerce Blocks project has a number of automations that aid with making releases. The following is the steps you should take for making a release:
 
 * Create a GitHub milestone for the next release.
+* Double-check any merged pulls since the last release that should be included in the release notes are assigned to the milestone for this release. **Note:** You don't need to include renovate pull requests in the milestone.
 * If there are any remaining open issues in the milestone for the release, do a final check with the team to verify none of those *need* to go into the release. After verifying, go through and move any open issues/pulls into the next milestone (except for any that have the `type: blocker` label). After this any `type: blocker` labelled issues must be complete and merged into the release branch (cherry-pick if necessary) before continuing.
 * Use the [GitHub UI](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-and-deleting-branches-within-your-repository#creating-a-branch) to create a release branch for the version being released. The format for the branch name should be `release/x.x` where `x.x` is the version being released.
 * A GitHub workflow is kicked off that will do the following:
