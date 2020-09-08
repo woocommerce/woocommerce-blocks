@@ -1,10 +1,4 @@
 <?php
-/**
- * Service class implementing new create account behaviour for order processing.
- *
- * @package WooCommerce/Blocks
- */
-
 namespace Automattic\WooCommerce\Blocks\Domain\Services;
 
 use \WP_REST_Request;

@@ -1,10 +1,4 @@
 <?php
-/**
- * Class CustomerNewAccount file.
- *
- * @package  WooCommerce/Blocks
- */
-
 namespace Automattic\WooCommerce\Blocks\Domain\Services\Email;
 
 use \WP_User;
