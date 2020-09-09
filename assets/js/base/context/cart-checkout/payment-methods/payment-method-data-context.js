@@ -341,6 +341,11 @@ export const PaymentMethodDataProvider = ( { children } ) => {
 			return;
 		}
 
+		// Customer has saved card/payment methods - no need to set a default.
+		if ( customerPaymentMethods ) {
+			return;
+		}
+
 		// If there's no active payment method, or the active payment method has
 		// been removed (e.g. COD vs shipping methods), set one as active.
 		if (
@@ -356,6 +361,7 @@ export const PaymentMethodDataProvider = ( { children } ) => {
 		paymentMethodsInitialized,
 		paymentData.paymentMethods,
 		setActivePaymentMethod,
+		customerPaymentMethods,
 	] );
 
 	// emit events.
