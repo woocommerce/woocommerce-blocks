@@ -353,12 +353,7 @@ export const PaymentMethodDataProvider = ( { children } ) => {
 			}
 			return currentActivePaymentMethod;
 		} );
-	}, [
-		paymentMethodsInitialized,
-		paymentData.paymentMethods,
-		setActive,
-		customerPaymentMethods,
-	] );
+	}, [ paymentMethodsInitialized, paymentData.paymentMethods, setActive ] );
 
 	// emit events.
 	useEffect( () => {
