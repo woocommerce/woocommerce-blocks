@@ -144,51 +144,40 @@ const SavedPaymentMethodOptions = ( { onSelect } ) => {
 			customerPaymentMethods
 		);
 
-		let options = [];
-		const paymentMethodKeys = Object.keys( filteredPaymentMethods );
-		if ( paymentMethodKeys.length > 0 ) {
-			paymentMethodKeys.forEach( ( type ) => {
-				const paymentMethods = filteredPaymentMethods[ type ];
-				if ( paymentMethods.length > 0 ) {
-					options = options.concat(
-						paymentMethods.map( ( paymentMethod ) => {
-							const option =
-								type === 'cc' || type === 'echeck'
-									? getCcOrEcheckPaymentMethodOption(
-											paymentMethod,
-											setActivePaymentMethod,
-											setPaymentStatus
-									  )
-									: getDefaultPaymentMethodOptions(
-											paymentMethod,
-											setActivePaymentMethod,
-											setPaymentStatus
-									  );
-							if (
-								paymentMethod.is_default &&
-								selectedToken === ''
-							) {
-								setSelectedToken( paymentMethod.tokenId + '' );
-								option.onChange( paymentMethod.tokenId );
-							}
-							return option;
-						} )
-					);
+		const types = Object.keys( filteredPaymentMethods );
+		const options = types.flatMap( ( type ) => {
+			const typeMethods = filteredPaymentMethods[ type ];
+			return typeMethods.map( ( paymentMethod ) => {
+				const option =
+					type === 'cc' || type === 'echeck'
+						? getCcOrEcheckPaymentMethodOption(
+								paymentMethod,
+								setActivePaymentMethod,
+								setPaymentStatus
+						  )
+						: getDefaultPaymentMethodOptions(
+								paymentMethod,
+								setActivePaymentMethod,
+								setPaymentStatus
+						  );
+				if ( paymentMethod.is_default && selectedToken === '' ) {
+					setSelectedToken( paymentMethod.tokenId + '' );
+					option.onChange( paymentMethod.tokenId );
 				}
+				return option;
 			} );
-			if ( options.length > 0 ) {
-				currentOptions.current = options;
-				currentOptions.current.push( {
-					value: '0',
-					label: __(
-						'Use a new payment method',
-						'woo-gutenberg-product-blocks'
-					),
-					name: `wc-saved-payment-method-token-new`,
-				} );
-			}
-		}
-		currentOptions.current = options;
+		} );
+		currentOptions.current = [
+			...options,
+			{
+				value: '0',
+				label: __(
+					'Use a new payment method',
+					'woo-gutenberg-product-blocks'
+				),
+				name: `wc-saved-payment-method-token-new`,
+			},
+		];
 	}, [
 		customerPaymentMethods,
 		isEditor,
@@ -219,7 +208,7 @@ const SavedPaymentMethodOptions = ( { onSelect } ) => {
 
 	// In the editor, show `Use a new payment method` option as selected.
 	const selectedOption = isEditor ? '0' : selectedToken + '';
-	return currentOptions.current.length > 0 ? (
+	return currentOptions.current.length > 1 ? (
 		<RadioControl
 			id={ 'wc-payment-method-saved-tokens' }
 			selected={ selectedOption }
