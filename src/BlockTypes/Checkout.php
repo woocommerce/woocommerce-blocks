@@ -1,20 +1,14 @@
 <?php
-/**
- * Checkout block.
- *
- * @package WooCommerce/Blocks
- */
-
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Assets;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 
-defined( 'ABSPATH' ) || exit;
-
 /**
  * Checkout class.
+ *
+ * @internal
  */
 class Checkout extends AbstractBlock {
 
@@ -208,7 +202,7 @@ class Checkout extends AbstractBlock {
 				<div class="wc-block-components-main wc-block-checkout__main">
 					<div class="wc-block-components-express-payment wc-block-components-express-payment--checkout"></div>
 					<div class="wc-block-components-express-payment-continue-rule wc-block-components-express-payment-continue-rule--checkout"><span></span></div>
-					<form class="wc-block-components-checkout-form">
+					<form class="wc-block-checkout__form">
 						<fieldset class="wc-block-checkout__contact-fields wc-block-components-checkout-step">
 							<div class="wc-block-components-checkout-step__heading">
 								<div class="wc-block-components-checkout-step__title"></div>

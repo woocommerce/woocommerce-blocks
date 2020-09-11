@@ -97,8 +97,9 @@ const getCoreConfig = ( options = {} ) => {
 				// file name
 				fileName: 'blocks.ini',
 				// content of the file
-				content: `woocommerce_blocks_phase = ${ process.env
-					.WOOCOMMERCE_BLOCKS_PHASE || 3 }`,
+				content: `woocommerce_blocks_phase = ${
+					process.env.WOOCOMMERCE_BLOCKS_PHASE || 3
+				}`,
 			} ),
 		],
 	};
@@ -411,13 +412,13 @@ const getStylingConfig = ( options = {} ) => {
 				minSize: 0,
 				cacheGroups: {
 					editor: {
-						// Capture all `editor` stylesheets and the components stylesheets.
+						// Capture all `editor` stylesheets and editor-components stylesheets.
 						test: ( module = {} ) =>
 							module.constructor.name === 'CssModule' &&
 							( findModuleMatch( module, /editor\.scss$/ ) ||
 								findModuleMatch(
 									module,
-									/[\\/]assets[\\/]js[\\/]components[\\/]/
+									/[\\/]assets[\\/]js[\\/]editor-components[\\/]/
 								) ),
 						name: 'editor',
 						chunks: 'all',
