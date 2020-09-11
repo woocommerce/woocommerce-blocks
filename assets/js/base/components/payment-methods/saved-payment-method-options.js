@@ -6,8 +6,12 @@ import { __, sprintf } from '@wordpress/i18n';
 import {
 	useEditorContext,
 	usePaymentMethodDataContext,
+	useShippingDataContext,
 } from '@woocommerce/base-context';
 import RadioControl from '@woocommerce/base-components/radio-control';
+import { useStoreCart, useShallowEqual } from '@woocommerce/base-hooks';
+import { getPaymentMethods } from '@woocommerce/blocks-registry';
+import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').CustomerPaymentMethod} CustomerPaymentMethod
@@ -92,18 +96,59 @@ const SavedPaymentMethodOptions = ( { onSelect } ) => {
 		setActivePaymentMethod,
 	} = usePaymentMethodDataContext();
 	const [ selectedToken, setSelectedToken ] = useState( '' );
+	const standardMethods = getPaymentMethods();
+	const { selectedRates, shippingAddress } = useShippingDataContext();
+	const selectedShippingMethods = useShallowEqual( selectedRates );
+	const { cartTotals, cartNeedsShipping } = useStoreCart();
+	const canPayArgument = useRef( {
+		cartTotals,
+		cartNeedsShipping,
+		shippingAddress,
+		selectedShippingMethods,
+	} );
 
 	/**
 	 * @type      {Object} Options
 	 * @property  {Array}  current  The current options on the type.
 	 */
 	const currentOptions = useRef( [] );
-	useEffect( () => {
+	const updateOptions = useCallback( async () => {
+		// Admin users have all payment methods enabled, so we need to filter
+		// the ones that do not accept payments.
+		const getFilteredPaymentMethods = async ( paymentMethods ) => {
+			if ( isEditor || ! CURRENT_USER_IS_ADMIN ) {
+				return paymentMethods;
+			}
+			const filteredMethods = {};
+			for ( const type in paymentMethods ) {
+				const typeMethods = paymentMethods[ type ];
+				const filteredTypeMethods = [];
+				for ( let i = 0; i < typeMethods.length; i++ ) {
+					const method =
+						standardMethods[ typeMethods[ i ].method.gateway ];
+					// Check if the current payment method accepts payments.
+					const canPay = await Promise.resolve(
+						method.canMakePayment( canPayArgument.current )
+					);
+
+					if ( canPay && ! canPay.error ) {
+						filteredTypeMethods.push( typeMethods[ i ] );
+					}
+				}
+				filteredMethods[ type ] = filteredTypeMethods;
+			}
+			return filteredMethods;
+		};
+
+		const filteredPaymentMethods = await getFilteredPaymentMethods(
+			customerPaymentMethods
+		);
+
 		let options = [];
-		const paymentMethodKeys = Object.keys( customerPaymentMethods );
+		const paymentMethodKeys = Object.keys( filteredPaymentMethods );
 		if ( paymentMethodKeys.length > 0 ) {
 			paymentMethodKeys.forEach( ( type ) => {
-				const paymentMethods = customerPaymentMethods[ type ];
+				const paymentMethods = filteredPaymentMethods[ type ];
 				if ( paymentMethods.length > 0 ) {
 					options = options.concat(
 						paymentMethods.map( ( paymentMethod ) => {
@@ -143,12 +188,19 @@ const SavedPaymentMethodOptions = ( { onSelect } ) => {
 				} );
 			}
 		}
+		currentOptions.current = options;
 	}, [
 		customerPaymentMethods,
+		isEditor,
 		selectedToken,
 		setActivePaymentMethod,
 		setPaymentStatus,
+		standardMethods,
 	] );
+	useEffect( () => {
+		updateOptions();
+	}, [ updateOptions ] );
+
 	const updateToken = useCallback(
 		( token ) => {
 			if ( token === '0' ) {
