@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
 import {
 	getPaymentMethods,
 	getExpressPaymentMethods,
@@ -16,26 +15,6 @@ import {
 	CURRENT_USER_IS_ADMIN,
 	PAYMENT_GATEWAY_SORT_ORDER,
 } from '@woocommerce/block-settings';
-
-/**
- * If there was an error registering a payment method, alert the admin.
- *
- * @param {Object} error Error object.
- */
-const handleRegistrationError = ( error ) => {
-	if ( CURRENT_USER_IS_ADMIN ) {
-		throw new Error(
-			sprintf(
-				__(
-					// translators: %s is the error method returned by the payment method.
-					'Problem with payment method initialization: %s',
-					'woo-gutenberg-products-block'
-				),
-				error.message
-			)
-		);
-	}
-};
 
 /**
  * This hook handles initializing registered payment methods and exposing all
@@ -102,26 +81,20 @@ const usePaymentMethodRegistration = (
 				continue;
 			}
 
-			// In editor, shortcut so all payment methods show as available.
-			if ( isEditor ) {
+			// In editor and for admin users in the frontend, shortcut so all
+			// payment methods show as available and let the payment method
+			// error boundary handle any errors.
+			if ( isEditor || CURRENT_USER_IS_ADMIN ) {
 				addAvailablePaymentMethod( paymentMethod );
 				continue;
 			}
 
 			// In front end, ask payment method if it should be available.
-			try {
-				const canPay = await Promise.resolve(
-					paymentMethod.canMakePayment( canPayArgument.current )
-				);
-				if ( canPay ) {
-					if ( canPay.error ) {
-						throw new Error( canPay.error.message );
-					}
-					addAvailablePaymentMethod( paymentMethod );
-				}
-			} catch ( e ) {
-				// If user is admin, show payment `canMakePayment` errors as a notice.
-				handleRegistrationError( e );
+			const canPay = await Promise.resolve(
+				paymentMethod.canMakePayment( canPayArgument.current )
+			);
+			if ( canPay && ! canPay.error ) {
+				addAvailablePaymentMethod( paymentMethod );
 			}
 		}
 
