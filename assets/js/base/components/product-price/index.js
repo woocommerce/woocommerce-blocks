@@ -178,7 +178,7 @@ const ProductPrice = ( {
 };
 
 ProductPrice.propTypes = {
-	align: PropTypes.string,
+	align: PropTypes.oneOf( [ 'left', 'center', 'right' ] ),
 	className: PropTypes.string,
 	currency: PropTypes.object,
 	price: PropTypes.oneOfType( [ PropTypes.number, PropTypes.string ] ),
