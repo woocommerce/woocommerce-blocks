@@ -24,7 +24,7 @@ When creating testing notes, please write them from the perspective of a "user" 
   * At least one other person should test the built zip - ask a teammate to help out.
   * Test in a clean environment, e.g. Jurassic.Ninja site.
   * Test existing WooCommerce Blocks content works correctly after update (no block validation errors).
-  * Test to confirm blocks are available and work correctly in oldest supported WordPress version (e.g. 5.0).
+  * Test to confirm blocks are available and work correctly in oldest supported WordPress version (e.g. 5.3).
   * Confidence check - check blocks are available and function.
   * Test to confirm new features/fixes are working correctly.
   * Smoke test – test a cross section of core functionality.
