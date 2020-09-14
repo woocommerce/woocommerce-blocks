@@ -4,7 +4,7 @@ The release pull request has been created! This checklist is a guide to follow f
 
 ## Initial Prep - changelog and meta data changes
 
-* [ ] Copy the changelog from the pull request description into the `readme.txt` file to the top of the changelog section. Create a new section here for this release, eg.g. `= {{version}} - 2020-01-20 =`.
+* [ ] Copy the changelog from the pull request description into the `readme.txt` file to the top of the changelog section. Create a new section here for this release, eg. `= {{version}} - 2020-01-20 =`.
 * [ ] Make any other changes to plugin metadata as necessary (no version changes needed, that's handled by script later in the process).
   * [ ] `readme.txt` - support versions changing, reference new blocks if necessary.
   * [ ] `woocommerce-gutenberg-products-block.php` - requirements/tested up to versions etc.
