@@ -108,7 +108,7 @@ const Block = ( {
 			// Range price props
 			minPrice={ prices?.price_range?.min_amount }
 			maxPrice={ prices?.price_range?.max_amount }
-			// On sale price props
+			// This is the regular or original price when the `price` value is a sale price.
 			regularPrice={ prices.regular_price }
 			regularPriceClassName={ classnames( {
 				[ `${ parentClassName }__product-price__regular` ]: parentClassName,
