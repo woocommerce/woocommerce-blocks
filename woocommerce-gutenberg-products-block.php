@@ -10,7 +10,7 @@
  * Requires at least: 5.3
  * Requires PHP: 5.6
  * WC requires at least: 4.2
- * WC tested up to: 4.4
+ * WC tested up to: 4.5
  *
  * @package WooCommerce\Blocks
  * @internal This file is only used when running as a feature plugin.
