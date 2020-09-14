@@ -51,7 +51,7 @@ const Block = ( {
 	} );
 
 	if ( ! product.id ) {
-		return <ProductPrice className={ wrapperClassName } />;
+		return <ProductPrice align={ align } className={ wrapperClassName } />;
 	}
 
 	const colorClass = getColorClassName( 'color', color );
