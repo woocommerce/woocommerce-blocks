@@ -6,7 +6,7 @@ The release pull request has been created! This checklist is a guide to follow f
 
 The below only needs done if this patch release is the **_latest_** release of the plugin.
 
-* [ ] Copy the changelog from the pull request description into the `readme.txt` file in the changelog section. Create a new section here for this release, eg.g. `= {{version}} - 2020-01-20 =`.
+* [ ] Copy the changelog from the pull request description into the `readme.txt` file to the top of the changelog section. Create a new section here for this release, eg.g. `= {{version}} - 2020-01-20 =`.
 * [ ] Make any other changes to plugin metadata as necessary (no version changes needed, that's handled by script later in the process).
   * [ ] `readme.txt` - support versions changing, reference new blocks if necessary.
   * [ ] `woocommerce-gutenberg-products-block.php` - requirements/tested up to versions etc.
@@ -41,7 +41,7 @@ When creating testing notes, please write them from the perspective of a "user" 
 
 ## If this release is deployed to WordPress.org...
 
-* [ ] Edit the GitHub release and copy changelog into the release notes.
+* [ ] Edit the [GitHub release](https://github.com/woocommerce/woocommerce-gutenberg-products-block/releases) and copy changelog into the release notes.
 * [ ] The `#team-rubik` slack instance will be notified about the progress with the WordPress.org deploy. Watch for that. If anything goes wrong, an error will be reported and you can followup via the GitHub actions tab and the log for that workflow.
 * [ ] After the wp.org workflow completes, confirm the following
   * [ ] Changelog, Version, and Last Updated on [WP.org plugin page](https://wordpress.org/plugins/woo-gutenberg-products-block/) is correct.
