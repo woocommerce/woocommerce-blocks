@@ -106,8 +106,8 @@ const Block = ( {
 			priceClassName={ priceClassName }
 			priceStyle={ isFeaturePluginBuild() ? priceStyle : {} }
 			// Range price props
-			minPrice={ prices.price_range && prices.price_range.min_amount }
-			maxPrice={ prices.price_range && prices.price_range.max_amount }
+			minPrice={ prices?.price_range?.min_amount }
+			maxPrice={ prices?.price_range?.max_amount }
 			// On sale price props
 			regularPrice={ prices.regular_price }
 			regularPriceClassName={ classnames( {
