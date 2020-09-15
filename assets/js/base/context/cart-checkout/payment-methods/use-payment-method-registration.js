@@ -81,10 +81,8 @@ const usePaymentMethodRegistration = (
 				continue;
 			}
 
-			// In editor and for admin users in the frontend, shortcut so all
-			// payment methods show as available and let the payment method
-			// error boundary handle any errors.
-			if ( isEditor || CURRENT_USER_IS_ADMIN ) {
+			// In editor, shortcut so all payment methods show as available.
+			if ( isEditor ) {
 				addAvailablePaymentMethod( paymentMethod );
 				continue;
 			}
@@ -93,8 +91,14 @@ const usePaymentMethodRegistration = (
 			const canPay = await Promise.resolve(
 				paymentMethod.canMakePayment( canPayArgument.current )
 			);
-			if ( canPay && ! canPay.error ) {
-				addAvailablePaymentMethod( paymentMethod );
+			if ( canPay ) {
+				if ( ! canPay.error ) {
+					addAvailablePaymentMethod( paymentMethod );
+				} else if ( CURRENT_USER_IS_ADMIN ) {
+					// For admins, show payment methods that failed so the error
+					// boundary can make the error visible.
+					addAvailablePaymentMethod( paymentMethod );
+				}
 			}
 		}
 
