@@ -167,17 +167,7 @@ const SavedPaymentMethodOptions = ( { onSelect } ) => {
 				return option;
 			} );
 		} );
-		currentOptions.current = [
-			...options,
-			{
-				value: '0',
-				label: __(
-					'Use a new payment method',
-					'woo-gutenberg-product-blocks'
-				),
-				name: `wc-saved-payment-method-token-new`,
-			},
-		];
+		currentOptions.current = options;
 	}, [
 		customerPaymentMethods,
 		isEditor,
@@ -208,12 +198,17 @@ const SavedPaymentMethodOptions = ( { onSelect } ) => {
 
 	// In the editor, show `Use a new payment method` option as selected.
 	const selectedOption = isEditor ? '0' : selectedToken + '';
-	return currentOptions.current.length > 1 ? (
+	const newPaymentMethodOption = {
+		value: '0',
+		label: __( 'Use a new payment method', 'woo-gutenberg-product-blocks' ),
+		name: `wc-saved-payment-method-token-new`,
+	};
+	return currentOptions.current.length > 0 ? (
 		<RadioControl
 			id={ 'wc-payment-method-saved-tokens' }
 			selected={ selectedOption }
 			onChange={ updateToken }
-			options={ currentOptions.current }
+			options={ [ ...currentOptions.current, newPaymentMethodOption ] }
 		/>
 	) : null;
 };
