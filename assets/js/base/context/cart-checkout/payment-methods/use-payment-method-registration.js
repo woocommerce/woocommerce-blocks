@@ -102,6 +102,13 @@ const usePaymentMethodRegistration = (
 				// If user is admin, add payment methods that failed so the error
 				// boundary can make the error visible.
 				if ( CURRENT_USER_IS_ADMIN ) {
+					const ComponentWithError = ( { error } ) => {
+						throw new Error( error );
+					};
+					paymentMethod.content = <ComponentWithError error={ e } />;
+					if ( paymentMethod?.supports?.savePaymentInfo ) {
+						paymentMethod.supports.savePaymentInfo = false;
+					}
 					addAvailablePaymentMethod( paymentMethod );
 				}
 			}

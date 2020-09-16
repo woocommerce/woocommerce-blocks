@@ -6,12 +6,9 @@ import { __, sprintf } from '@wordpress/i18n';
 import {
 	useEditorContext,
 	usePaymentMethodDataContext,
-	useShippingDataContext,
 } from '@woocommerce/base-context';
 import RadioControl from '@woocommerce/base-components/radio-control';
-import { useStoreCart, useShallowEqual } from '@woocommerce/base-hooks';
 import { getPaymentMethods } from '@woocommerce/blocks-registry';
-import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').CustomerPaymentMethod} CustomerPaymentMethod
@@ -97,88 +94,51 @@ const SavedPaymentMethodOptions = ( { onSelect } ) => {
 	} = usePaymentMethodDataContext();
 	const [ selectedToken, setSelectedToken ] = useState( '' );
 	const standardMethods = getPaymentMethods();
-	const { selectedRates, shippingAddress } = useShippingDataContext();
-	const selectedShippingMethods = useShallowEqual( selectedRates );
-	const { cartTotals, cartNeedsShipping } = useStoreCart();
-	const canPayArgument = useRef( {
-		cartTotals,
-		cartNeedsShipping,
-		shippingAddress,
-		selectedShippingMethods,
-	} );
 
 	/**
 	 * @type      {Object} Options
 	 * @property  {Array}  current  The current options on the type.
 	 */
 	const currentOptions = useRef( [] );
-	const updateOptions = useCallback( async () => {
-		// Admin users have all payment methods enabled, so we need to filter
-		// the ones that do not accept payments.
-		const getFilteredPaymentMethods = async ( paymentMethods ) => {
-			if ( isEditor || ! CURRENT_USER_IS_ADMIN ) {
-				return paymentMethods;
-			}
-			const filteredMethods = {};
-			for ( const type in paymentMethods ) {
-				const typeMethods = paymentMethods[ type ];
-				const filteredTypeMethods = [];
-				for ( let i = 0; i < typeMethods.length; i++ ) {
+	useEffect( () => {
+		const types = Object.keys( customerPaymentMethods );
+		const options = types
+			.flatMap( ( type ) => {
+				const typeMethods = customerPaymentMethods[ type ];
+				return typeMethods.map( ( paymentMethod ) => {
 					const method =
-						standardMethods[ typeMethods[ i ].method.gateway ];
-					// Check if the current payment method accepts payments.
-					const canPay = await Promise.resolve(
-						method.canMakePayment( canPayArgument.current )
-					);
-
-					if ( canPay && ! canPay.error ) {
-						filteredTypeMethods.push( typeMethods[ i ] );
+						standardMethods[ paymentMethod.method.gateway ];
+					if ( ! method?.supports?.savePaymentInfo ) {
+						return null;
 					}
-				}
-				filteredMethods[ type ] = filteredTypeMethods;
-			}
-			return filteredMethods;
-		};
-
-		const filteredPaymentMethods = await getFilteredPaymentMethods(
-			customerPaymentMethods
-		);
-
-		const types = Object.keys( filteredPaymentMethods );
-		const options = types.flatMap( ( type ) => {
-			const typeMethods = filteredPaymentMethods[ type ];
-			return typeMethods.map( ( paymentMethod ) => {
-				const option =
-					type === 'cc' || type === 'echeck'
-						? getCcOrEcheckPaymentMethodOption(
-								paymentMethod,
-								setActivePaymentMethod,
-								setPaymentStatus
-						  )
-						: getDefaultPaymentMethodOptions(
-								paymentMethod,
-								setActivePaymentMethod,
-								setPaymentStatus
-						  );
-				if ( paymentMethod.is_default && selectedToken === '' ) {
-					setSelectedToken( paymentMethod.tokenId + '' );
-					option.onChange( paymentMethod.tokenId );
-				}
-				return option;
-			} );
-		} );
+					const option =
+						type === 'cc' || type === 'echeck'
+							? getCcOrEcheckPaymentMethodOption(
+									paymentMethod,
+									setActivePaymentMethod,
+									setPaymentStatus
+							  )
+							: getDefaultPaymentMethodOptions(
+									paymentMethod,
+									setActivePaymentMethod,
+									setPaymentStatus
+							  );
+					if ( paymentMethod.is_default && selectedToken === '' ) {
+						setSelectedToken( paymentMethod.tokenId + '' );
+						option.onChange( paymentMethod.tokenId );
+					}
+					return option;
+				} );
+			} )
+			.filter( Boolean );
 		currentOptions.current = options;
 	}, [
 		customerPaymentMethods,
-		isEditor,
 		selectedToken,
 		setActivePaymentMethod,
 		setPaymentStatus,
 		standardMethods,
 	] );
-	useEffect( () => {
-		updateOptions();
-	}, [ updateOptions ] );
 
 	const updateToken = useCallback(
 		( token ) => {
