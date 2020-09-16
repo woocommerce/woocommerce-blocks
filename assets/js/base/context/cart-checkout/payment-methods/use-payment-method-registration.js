@@ -88,15 +88,20 @@ const usePaymentMethodRegistration = (
 			}
 
 			// In front end, ask payment method if it should be available.
-			const canPay = await Promise.resolve(
-				paymentMethod.canMakePayment( canPayArgument.current )
-			);
-			if ( canPay ) {
-				if ( ! canPay.error ) {
+			try {
+				const canPay = await Promise.resolve(
+					paymentMethod.canMakePayment( canPayArgument.current )
+				);
+				if ( canPay ) {
+					if ( canPay.error ) {
+						throw new Error( canPay.error.message );
+					}
 					addAvailablePaymentMethod( paymentMethod );
-				} else if ( CURRENT_USER_IS_ADMIN ) {
-					// For admins, show payment methods that failed so the error
-					// boundary can make the error visible.
+				}
+			} catch ( e ) {
+				// If user is admin, add payment methods that failed so the error
+				// boundary can make the error visible.
+				if ( CURRENT_USER_IS_ADMIN ) {
 					addAvailablePaymentMethod( paymentMethod );
 				}
 			}
