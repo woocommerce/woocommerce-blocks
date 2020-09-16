@@ -38,6 +38,7 @@ class PaymentMethodErrorBoundary extends Component {
 			}
 			const notices = [
 				{
+					id: '0',
 					content: errorText,
 					isDismissible: false,
 					status: 'error',
