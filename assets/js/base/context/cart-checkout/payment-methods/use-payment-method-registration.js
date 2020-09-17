@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { __, sprintf } from '@wordpress/i18n';
 import {
 	getPaymentMethods,
 	getExpressPaymentMethods,
@@ -10,7 +11,12 @@ import {
 	useEditorContext,
 	useShippingDataContext,
 } from '@woocommerce/base-context';
-import { useStoreCart, useShallowEqual } from '@woocommerce/base-hooks';
+import {
+	useEmitResponse,
+	useShallowEqual,
+	useStoreCart,
+	useStoreNotices,
+} from '@woocommerce/base-hooks';
 import {
 	CURRENT_USER_IS_ADMIN,
 	PAYMENT_GATEWAY_SORT_ORDER,
@@ -50,6 +56,8 @@ const usePaymentMethodRegistration = (
 		shippingAddress,
 		selectedShippingMethods,
 	} );
+	const { addErrorNotice, removeNotice } = useStoreNotices();
+	const { noticeContexts } = useEmitResponse();
 
 	useEffect( () => {
 		canPayArgument.current = {
@@ -97,24 +105,24 @@ const usePaymentMethodRegistration = (
 						throw new Error( canPay.error.message );
 					}
 					addAvailablePaymentMethod( paymentMethod );
+					removeNotice(
+						`wc-${ paymentMethod.paymentMethodId }-registration-error`
+					);
 				}
 			} catch ( e ) {
-				// If user is admin, add payment methods that failed so the error
-				// boundary can make the error visible.
 				if ( CURRENT_USER_IS_ADMIN ) {
-					// Create a simple component whose only responsibility is to
-					// throw an error and use it as the `content` of the failing
-					// payment method.
-					const ComponentWithError = ( { error } ) => {
-						throw new Error( error );
-					};
-					paymentMethod.content = <ComponentWithError error={ e } />;
-					// If `savePaymentInfo` is true, make it false so saved
-					// payment methods will not show up in the UI.
-					if ( paymentMethod?.supports?.savePaymentInfo ) {
-						paymentMethod.supports.savePaymentInfo = false;
-					}
-					addAvailablePaymentMethod( paymentMethod );
+					const errorText = sprintf(
+						/* translators: %s the name of the payment method being registered (bank transfer, Stripe...) */
+						__(
+							`There was an error registering the payment method with id '%s': `,
+							'woo-gutenberg-products-block'
+						),
+						paymentMethod.paymentMethodId
+					);
+					addErrorNotice( `${ errorText } ${ e }`, {
+						context: noticeContexts.PAYMENTS,
+						id: `wc-${ paymentMethod.paymentMethodId }-registration-error`,
+					} );
 				}
 			}
 		}
@@ -127,10 +135,13 @@ const usePaymentMethodRegistration = (
 		// That's why we track "is initialised" state here.
 		setIsInitialized( true );
 	}, [
+		addErrorNotice,
 		dispatcher,
 		isEditor,
-		registeredPaymentMethods,
+		noticeContexts.PAYMENTS,
 		paymentMethodsOrder,
+		registeredPaymentMethods,
+		removeNotice,
 	] );
 
 	// Determine which payment methods are available initially and whenever
