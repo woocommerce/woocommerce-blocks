@@ -115,7 +115,7 @@ const usePaymentMethodRegistration = (
 					);
 					addErrorNotice( `${ errorText } ${ e }`, {
 						context: noticeContext,
-						id: `wc-${ paymentMethod.paymentMethodId }-registration-error-${ noticeContext }`,
+						id: `wc-${ paymentMethod.paymentMethodId }-registration-error`,
 					} );
 				}
 			}
