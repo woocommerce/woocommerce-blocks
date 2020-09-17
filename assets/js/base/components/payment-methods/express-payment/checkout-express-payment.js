@@ -3,7 +3,10 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useExpressPaymentMethods } from '@woocommerce/base-hooks';
-import { StoreNoticesProvider } from '@woocommerce/base-context';
+import {
+	StoreNoticesProvider,
+	useEditorContext,
+} from '@woocommerce/base-context';
 import Title from '@woocommerce/base-components/title';
 
 /**
@@ -11,14 +14,23 @@ import Title from '@woocommerce/base-components/title';
  */
 import ExpressPaymentMethods from '../express-payment-methods';
 import './style.scss';
+import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
 
 const CheckoutExpressPayment = () => {
 	const { paymentMethods, isInitialized } = useExpressPaymentMethods();
+	const { isEditor } = useEditorContext();
 
 	if (
 		! isInitialized ||
 		( isInitialized && Object.keys( paymentMethods ).length === 0 )
 	) {
+		// Make sure errors are shown in the editor and for admins. For example,
+		// when a payment method fails to register.
+		if ( isEditor || CURRENT_USER_IS_ADMIN ) {
+			return (
+				<StoreNoticesProvider context="wc/express-payment-area"></StoreNoticesProvider>
+			);
+		}
 		return null;
 	}
 

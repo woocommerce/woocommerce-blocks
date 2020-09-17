@@ -89,12 +89,6 @@ const usePaymentMethodRegistration = (
 				continue;
 			}
 
-			// In editor, shortcut so all payment methods show as available.
-			if ( isEditor ) {
-				addAvailablePaymentMethod( paymentMethod );
-				continue;
-			}
-
 			// In front end, ask payment method if it should be available.
 			try {
 				const canPay = await Promise.resolve(
@@ -110,9 +104,9 @@ const usePaymentMethodRegistration = (
 					);
 				}
 			} catch ( e ) {
-				if ( CURRENT_USER_IS_ADMIN ) {
+				if ( CURRENT_USER_IS_ADMIN || isEditor ) {
 					const errorText = sprintf(
-						/* translators: %s the name of the payment method being registered (bank transfer, Stripe...) */
+						/* translators: %s the id of the payment method being registered (bank transfer, Stripe...) */
 						__(
 							`There was an error registering the payment method with id '%s': `,
 							'woo-gutenberg-products-block'
