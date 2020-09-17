@@ -42,7 +42,8 @@ import {
 const usePaymentMethodRegistration = (
 	dispatcher,
 	registeredPaymentMethods,
-	paymentMethodsSortOrder
+	paymentMethodsSortOrder,
+	noticeContext
 ) => {
 	const [ isInitialized, setIsInitialized ] = useState( false );
 	const { isEditor } = useEditorContext();
@@ -57,7 +58,6 @@ const usePaymentMethodRegistration = (
 		selectedShippingMethods,
 	} );
 	const { addErrorNotice, removeNotice } = useStoreNotices();
-	const { noticeContexts } = useEmitResponse();
 
 	useEffect( () => {
 		canPayArgument.current = {
@@ -120,8 +120,8 @@ const usePaymentMethodRegistration = (
 						paymentMethod.paymentMethodId
 					);
 					addErrorNotice( `${ errorText } ${ e }`, {
-						context: noticeContexts.PAYMENTS,
-						id: `wc-${ paymentMethod.paymentMethodId }-registration-error`,
+						context: noticeContext,
+						id: `wc-${ paymentMethod.paymentMethodId }-registration-error-${ noticeContext }`,
 					} );
 				}
 			}
@@ -138,7 +138,7 @@ const usePaymentMethodRegistration = (
 		addErrorNotice,
 		dispatcher,
 		isEditor,
-		noticeContexts.PAYMENTS,
+		noticeContext,
 		paymentMethodsOrder,
 		registeredPaymentMethods,
 		removeNotice,
@@ -163,6 +163,7 @@ const usePaymentMethodRegistration = (
  */
 export const usePaymentMethods = ( dispatcher ) => {
 	const standardMethods = getPaymentMethods();
+	const { noticeContexts } = useEmitResponse();
 	// Ensure all methods are present in order.
 	// Some payment methods may not be present in PAYMENT_GATEWAY_SORT_ORDER if they
 	// depend on state, e.g. COD can depend on shipping method.
@@ -173,7 +174,8 @@ export const usePaymentMethods = ( dispatcher ) => {
 	return usePaymentMethodRegistration(
 		dispatcher,
 		standardMethods,
-		Array.from( displayOrder )
+		Array.from( displayOrder ),
+		noticeContexts.PAYMENTS
 	);
 };
 
@@ -186,9 +188,11 @@ export const usePaymentMethods = ( dispatcher ) => {
  */
 export const useExpressPaymentMethods = ( dispatcher ) => {
 	const expressMethods = getExpressPaymentMethods();
+	const { noticeContexts } = useEmitResponse();
 	return usePaymentMethodRegistration(
 		dispatcher,
 		expressMethods,
-		Object.keys( expressMethods )
+		Object.keys( expressMethods ),
+		noticeContexts.EXPRESS_PAYMENTS
 	);
 };
