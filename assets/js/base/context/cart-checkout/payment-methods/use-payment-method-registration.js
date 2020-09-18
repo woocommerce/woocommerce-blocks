@@ -35,6 +35,8 @@ import {
  * @param  {Array}                      paymentMethodsSortOrder  Array of payment method names to
  *                                                               sort by. This should match keys of
  *                                                               registeredPaymentMethods.
+ * @param  {string}                     noticeContext            Id of the context to append
+ *                                                               notices to.
  *
  * @return {boolean} Whether the payment methods have been initialized or not. True when all payment
  *                   methods have been initialized.
