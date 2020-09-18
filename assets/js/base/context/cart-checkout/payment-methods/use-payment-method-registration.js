@@ -59,7 +59,7 @@ const usePaymentMethodRegistration = (
 		shippingAddress,
 		selectedShippingMethods,
 	} );
-	const { addErrorNotice, removeNotice } = useStoreNotices();
+	const { addErrorNotice } = useStoreNotices();
 
 	useEffect( () => {
 		canPayArgument.current = {
@@ -101,9 +101,6 @@ const usePaymentMethodRegistration = (
 						throw new Error( canPay.error.message );
 					}
 					addAvailablePaymentMethod( paymentMethod );
-					removeNotice(
-						`wc-${ paymentMethod.paymentMethodId }-registration-error`
-					);
 				}
 			} catch ( e ) {
 				if ( CURRENT_USER_IS_ADMIN || isEditor ) {
@@ -137,7 +134,6 @@ const usePaymentMethodRegistration = (
 		noticeContext,
 		paymentMethodsOrder,
 		registeredPaymentMethods,
-		removeNotice,
 	] );
 
 	// Determine which payment methods are available initially and whenever
