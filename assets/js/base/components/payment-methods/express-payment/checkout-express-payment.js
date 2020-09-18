@@ -2,7 +2,10 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useExpressPaymentMethods } from '@woocommerce/base-hooks';
+import {
+	useEmitResponse,
+	useExpressPaymentMethods,
+} from '@woocommerce/base-hooks';
 import {
 	StoreNoticesProvider,
 	useEditorContext,
@@ -19,6 +22,7 @@ import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
 const CheckoutExpressPayment = () => {
 	const { paymentMethods, isInitialized } = useExpressPaymentMethods();
 	const { isEditor } = useEditorContext();
+	const { noticeContexts } = useEmitResponse();
 
 	if (
 		! isInitialized ||
@@ -28,7 +32,9 @@ const CheckoutExpressPayment = () => {
 		// when a payment method fails to register.
 		if ( isEditor || CURRENT_USER_IS_ADMIN ) {
 			return (
-				<StoreNoticesProvider context="wc/express-payment-area"></StoreNoticesProvider>
+				<StoreNoticesProvider
+					context={ noticeContexts.EXPRESS_PAYMENTS }
+				></StoreNoticesProvider>
 			);
 		}
 		return null;
@@ -49,7 +55,9 @@ const CheckoutExpressPayment = () => {
 					</Title>
 				</div>
 				<div className="wc-block-components-express-payment__content">
-					<StoreNoticesProvider context="wc/express-payment-area">
+					<StoreNoticesProvider
+						context={ noticeContexts.EXPRESS_PAYMENTS }
+					>
 						<p>
 							{ __(
 								'In a hurry? Use one of our express checkout options below:',
