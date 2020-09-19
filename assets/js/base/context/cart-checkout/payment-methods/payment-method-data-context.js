@@ -344,10 +344,10 @@ export const PaymentMethodDataProvider = ( { children } ) => {
 		setActive( ( currentActivePaymentMethod ) => {
 			// If there's no active payment method, or the active payment method has
 			// been removed (e.g. COD vs shipping methods), set one as active.
-			if (
-				! currentActivePaymentMethod ||
-				! paymentMethodKeys.includes( currentActivePaymentMethod )
-			) {
+			// Note: It's possible that the active payment method might be an
+			// express payment method. So we only reset this if there's no
+			// current active payment method.
+			if ( ! currentActivePaymentMethod ) {
 				dispatch( statusOnly( PRISTINE ) );
 				return Object.keys( paymentData.paymentMethods )[ 0 ];
 			}
