@@ -337,6 +337,10 @@ export const PaymentMethodDataProvider = ( { children } ) => {
 	// Set active (selected) payment method as needed.
 	useEffect( () => {
 		const paymentMethodKeys = Object.keys( paymentData.paymentMethods );
+		const allPaymentMethodKeys = [
+			...paymentMethodKeys,
+			...Object.keys( paymentData.expressPaymentMethods ),
+		];
 		if ( ! paymentMethodsInitialized || ! paymentMethodKeys.length ) {
 			return;
 		}
@@ -345,15 +349,23 @@ export const PaymentMethodDataProvider = ( { children } ) => {
 			// If there's no active payment method, or the active payment method has
 			// been removed (e.g. COD vs shipping methods), set one as active.
 			// Note: It's possible that the active payment method might be an
-			// express payment method. So we only reset this if there's no
-			// current active payment method.
-			if ( ! currentActivePaymentMethod ) {
+			// express payment method. So registered express payment methods are
+			// included in the check here.
+			if (
+				! currentActivePaymentMethod ||
+				! allPaymentMethodKeys.includes( currentActivePaymentMethod )
+			) {
 				dispatch( statusOnly( PRISTINE ) );
 				return Object.keys( paymentData.paymentMethods )[ 0 ];
 			}
 			return currentActivePaymentMethod;
 		} );
-	}, [ paymentMethodsInitialized, paymentData.paymentMethods, setActive ] );
+	}, [
+		paymentMethodsInitialized,
+		paymentData.paymentMethods,
+		paymentData.expressPaymentMethods,
+		setActive,
+	] );
 
 	// emit events.
 	useEffect( () => {
