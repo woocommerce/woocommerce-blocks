@@ -41,7 +41,6 @@ module.exports = {
 		// - @worpdress/no-unused-vars-before-return
 		// - testing-library/no-await-sync-query
 		// - @woocommerce/dependency-group
-		'jsdoc/require-returns-type': 'off',
 		'jsdoc/newline-after-description': 'off',
 		'@wordpress/i18n-translator-comments': 'off',
 		'@wordpress/valid-sprintf': 'off',
