@@ -45,7 +45,6 @@ module.exports = {
 		'jsdoc/no-undefined-types': 'off',
 		'jsdoc/check-types': 'off',
 		'jsdoc/require-returns-description': 'off',
-		'jsdoc/require-param-type': 'off',
 		'jsdoc/require-returns-type': 'off',
 		'jsdoc/newline-after-description': 'off',
 		'@wordpress/i18n-translator-comments': 'off',
