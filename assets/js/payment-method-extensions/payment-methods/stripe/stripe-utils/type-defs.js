@@ -265,6 +265,7 @@
 
 /**
  * @typedef {Object} Stripe Stripe api object.
+ * @property {any} api Various api properties
  */
 
 /**
