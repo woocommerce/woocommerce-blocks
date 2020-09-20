@@ -42,6 +42,7 @@ const { NONE, INVALID_ADDRESS, UNKNOWN } = ERROR_TYPES;
  *
  * @param {string} state  The current status.
  * @param {Object} action The incoming action.
+ * @param {string} action.type The type of action.
  */
 const errorStatusReducer = ( state, { type } ) => {
 	if ( Object.values( ERROR_TYPES ).includes( type ) ) {
@@ -75,8 +76,8 @@ const hasInvalidShippingAddress = ( errors ) => {
 /**
  * The shipping data provider exposes the interface for shipping in the
  * checkout/cart.
- *
  * @param {Object} props Incoming props for provider
+ * @param props.children
  */
 export const ShippingDataProvider = ( { children } ) => {
 	const { dispatchActions } = useCheckoutContext();

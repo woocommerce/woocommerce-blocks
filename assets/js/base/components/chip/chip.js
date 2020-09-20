@@ -14,6 +14,15 @@ import './style.scss';
  *
  * Each chip defaults to a list element but this can be customized by providing
  * a wrapperElement.
+ *
+ * @param {Object} props Incoming props for the component.
+ * @param {string} props.text Text for chip content.
+ * @param {string} props.screenReaderText Screenreader text for the content.
+ * @param {string} props.element The element type for the chip.
+ * @param {string} props.className CSS class used.
+ * @param {string} props.radius Radius size.
+ * @param {React.ReactChildren|null} props.children React children.
+ * @param {Object} props.props Rest of props passed through to component.
  */
 const Chip = ( {
 	text,

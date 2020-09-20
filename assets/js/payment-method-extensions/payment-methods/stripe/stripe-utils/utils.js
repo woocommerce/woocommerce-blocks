@@ -253,6 +253,10 @@ const getErrorMessageForTypeAndCode = ( type, code = '' ) => {
  * shipping, so we can track when one of them change to update rates.
  *
  * @param {Object} address          An object containing all address information
+ * @param {string} address.country
+ * @param {string} address.state
+ * @param {string} address.city
+ * @param {string} address.postcode
  *
  * @return {Object} pluckedAddress  An object containing shipping address that are needed to fetch an address.
  */

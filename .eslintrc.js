@@ -38,7 +38,6 @@ module.exports = {
 		// - @worpdress/no-unused-vars-before-return
 		// - testing-library/no-await-sync-query
 		// - @woocommerce/dependency-group
-		'jsdoc/require-param': 'off',
 		'jsdoc/check-tag-names': 'off',
 		'jsdoc/check-param-names': 'off',
 		'jsdoc/require-property-description': 'off',
