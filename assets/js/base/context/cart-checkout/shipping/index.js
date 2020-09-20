@@ -77,7 +77,7 @@ const hasInvalidShippingAddress = ( errors ) => {
  * The shipping data provider exposes the interface for shipping in the
  * checkout/cart.
  * @param {Object} props Incoming props for provider
- * @param props.children
+ * @param {React.ReactElement} props.children
  */
 export const ShippingDataProvider = ( { children } ) => {
 	const { dispatchActions } = useCheckoutContext();
