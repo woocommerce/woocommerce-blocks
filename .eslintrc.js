@@ -14,6 +14,9 @@ module.exports = {
 		context: 'readonly',
 		jestPuppeteer: 'readonly',
 	},
+	settings: {
+		jsdoc: { mode: 'typescript' },
+	},
 	rules: {
 		'woocommerce/feature-flag': 'off',
 		// @todo Remove temporary disabling of various eslint rules.
@@ -38,7 +41,6 @@ module.exports = {
 		// - @worpdress/no-unused-vars-before-return
 		// - testing-library/no-await-sync-query
 		// - @woocommerce/dependency-group
-		'jsdoc/valid-types': 'off',
 		'jsdoc/require-property': 'off',
 		'jsdoc/no-undefined-types': 'off',
 		'jsdoc/check-types': 'off',

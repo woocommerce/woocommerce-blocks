@@ -274,6 +274,8 @@
  * @property {string} alt  Alt text for icon.
  */
 
+/* eslint-disable jsdoc/valid-types */
+// [k:string]:CreditCardIcon triggers the above rule even though VSCode interprets it fine.
 /**
  * @typedef {Object} StripeServerData
  *
@@ -299,6 +301,7 @@
  * @property {boolean}                     allowPaymentRequest  True if merchant has enabled payment
  *                                                              request (Chrome/Apple Pay).
  */
+/* eslint-enable jsdoc/valid-types */
 
 /**
  * @typedef {Object} StripeElementOptions
