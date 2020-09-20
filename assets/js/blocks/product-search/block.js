@@ -14,6 +14,7 @@ import './style.scss';
 
 /**
  * Component displaying a product search form.
+ *
  * @param {Object} props Incoming props for the component.
  * @param {Object} props.attributes Incoming block attributes.
  * @param {string} props.attributes.label

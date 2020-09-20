@@ -113,6 +113,7 @@
  *
  * This is an object where the keys are payment gateway slugs and the values are an array of
  * CustomerPaymentMethod objects.
+ *
  * @typedef {Object} SavedCustomerPaymentMethods
  * @property {any} any Various payment methods
  */

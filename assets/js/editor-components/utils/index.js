@@ -134,6 +134,7 @@ const getProductTagsRequests = ( { selected = [], search } ) => {
 
 /**
  * Get a promise that resolves to a list of tags from the Store API.
+ *
  * @param {Object} props A query object with the list of selected products and search term.
  * @param {Array} props.selected
  * @param {string} props.search

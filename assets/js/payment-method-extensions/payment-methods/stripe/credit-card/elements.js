@@ -68,6 +68,7 @@ export const InlineCard = ( {
 
 /**
  * CardElements component.
+ *
  * @param {Object} props
  * @param {function(any):any} props.onChange
  * @param {React.ReactElement} props.inputErrorComponent
