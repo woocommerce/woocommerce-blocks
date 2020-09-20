@@ -54,6 +54,5 @@ module.exports = {
 		'@wordpress/valid-sprintf': 'off',
 		'@wordpress/no-unused-vars-before-return': 'off',
 		'testing-library/no-await-sync-query': 'off',
-		'@woocommerce/dependency-group': 'off',
 	},
 };
