@@ -8,6 +8,7 @@ import classNames from 'classnames';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').ContainerWidthContext} ContainerWidthContext
+ * @typedef {import('react')} React
  */
 
 const ContainerWidthContext = createContext( {

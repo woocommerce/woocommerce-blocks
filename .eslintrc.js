@@ -41,7 +41,6 @@ module.exports = {
 		// - @worpdress/no-unused-vars-before-return
 		// - testing-library/no-await-sync-query
 		// - @woocommerce/dependency-group
-		'jsdoc/no-undefined-types': 'off',
 		'jsdoc/check-types': 'off',
 		'jsdoc/require-returns-description': 'off',
 		'jsdoc/require-returns-type': 'off',

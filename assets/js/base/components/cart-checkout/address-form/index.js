@@ -55,7 +55,7 @@ const validateShippingCountry = (
  *
  * @param {Object} props Incoming props for component.
  * @param {string} props.id Id for component.
- * @param {array}  props.fields Array of fields in form.
+ * @param {Array}  props.fields Array of fields in form.
  * @param {Object} props.fieldConfig Field configuration for fields in form.
  * @param {string} props.instanceId Unique id for form.
  * @param {function(any):any} props.onChange Function to all for an form onChange event.

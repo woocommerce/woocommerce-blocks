@@ -10,6 +10,8 @@ import classNames from 'classnames';
  */
 import './style.scss';
 
+/** @typedef {import('react')} React */
+
 /**
  * Component that visually renders a button but semantically might be `<button>` or `<a>` depending
  * on the props.

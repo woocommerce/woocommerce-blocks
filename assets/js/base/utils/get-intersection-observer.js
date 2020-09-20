@@ -1,3 +1,5 @@
+/** @typedef {import('window').IntersectionObserverCallback} IntersectionObserverCallback */
+
 /**
  * Util that returns an IntersectionObserver if supported by the browser. If
  * it's not supported, it returns a shim object with the methods to prevent JS

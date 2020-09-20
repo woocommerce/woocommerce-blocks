@@ -16,6 +16,7 @@ import {
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').NoticeContext} NoticeContext
+ * @typedef {import('react')} React
  */
 
 const StoreNoticesContext = createContext( {

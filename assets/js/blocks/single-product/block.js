@@ -13,6 +13,8 @@ import { StoreNoticesProvider } from '@woocommerce/base-context';
  */
 import { BLOCK_NAME } from './constants';
 
+/** @typedef {import('react')} React */
+
 /**
  * The Single Product Block.
  *

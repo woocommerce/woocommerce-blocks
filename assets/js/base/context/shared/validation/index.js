@@ -12,6 +12,7 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
 
 /**
  * @typedef { import('@woocommerce/type-defs/contexts').ValidationContext } ValidationContext
+ * @typedef {import('react')} React
  */
 
 const ValidationContext = createContext( {

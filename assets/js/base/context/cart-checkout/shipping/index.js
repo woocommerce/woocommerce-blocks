@@ -33,6 +33,7 @@ import {
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').ShippingDataContext} ShippingDataContext
+ * @typedef {import('react')} React
  */
 
 const { NONE, INVALID_ADDRESS, UNKNOWN } = ERROR_TYPES;

@@ -15,6 +15,8 @@ import {
  */
 import { useElementOptions } from './use-element-options';
 
+/** @typedef {import('react')} React */
+
 const baseTextInputStyles = 'wc-block-gateway-input';
 
 /**

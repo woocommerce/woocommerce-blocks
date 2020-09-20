@@ -9,6 +9,8 @@ import PropTypes from 'prop-types';
  */
 import './style.scss';
 
+/** @typedef {import('react')} React */
+
 /**
  * Component that renders a block title.
  *

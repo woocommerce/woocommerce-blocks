@@ -9,6 +9,8 @@ import classNames from 'classnames';
  */
 import './style.scss';
 
+/** @typedef {import('react')} React */
+
 /**
  * Component used to render a "chip" -- a list item containing some text.
  *
