@@ -20,7 +20,7 @@ import { errorTypes, errorCodes } from './constants';
 /**
  * Stripe data comes form the server passed on a global object.
  *
- * @return  {StripeServerData}
+ * @return  {StripeServerData} Stripe server data.
  */
 const getStripeServerData = () => {
 	const stripeServerData = getSetting( 'stripe_data', null );
