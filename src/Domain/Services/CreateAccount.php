@@ -30,6 +30,15 @@ class CreateAccount {
 	 * Init - register handlers for WooCommerce core email hooks.
 	 */
 	public function init() {
+		// This new checkout signup flow is gated to dev builds for now.
+		// The main reason for this is that we are waiting on an new
+		// set-password endpoint/form in WooCommerce Core.
+		// When that's available we can review this and include in feature
+		// plugin alongside checkout block.
+		if ( ! $this->package->is_experimental_build() ) {
+			return;
+		}
+
 		// Override core email handlers to add our new improved "new account" email.
 		add_action(
 			'woocommerce_email',
@@ -139,7 +148,6 @@ class CreateAccount {
 
 	/**
 	 * Convert an account creation error to an exception.
-	 * THIS WILL BE GONE - temporary!
 	 *
 	 * @param \WP_Error $error An error object.
 	 *
