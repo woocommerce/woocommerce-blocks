@@ -328,7 +328,7 @@ class Checkout extends AbstractRoute {
 	}
 
 	/**
-	 * Convert a account creation error to a Store API error.
+	 * Convert an account creation error to a Store API error.
 	 *
 	 * @param \Exception $error Caught exception.
 	 *
