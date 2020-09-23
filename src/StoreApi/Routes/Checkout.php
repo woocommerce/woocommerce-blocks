@@ -335,7 +335,6 @@ class Checkout extends AbstractRoute {
 	 * @throws RouteException API error object with error details.
 	 */
 	private function handle_error( Exception $error ) {
-		// woocommerce_rest_checkout_create_account_failure ?
 		switch ( $error->getMessage() ) {
 			case 'registration-error-invalid-email':
 				throw new RouteException(
