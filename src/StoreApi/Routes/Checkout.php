@@ -165,18 +165,13 @@ class Checkout extends AbstractRoute {
 		$order_controller->validate_order_before_payment( $order_object );
 
 		// Create a new user account as necessary.
-		// This new checkout signup flow is gated to dev builds for now.
-		// The main reason for this is that we are waiting on an new
-		// set-password endpoint/form in WooCommerce Core.
-		// When that's available we can review this and include in feature
-		// plugin alongside checkout block.
-		if ( $this->package->is_experimental_build() ) {
-			try {
-				$create_account = Package::container()->get( CreateAccount::class );
-				$create_account->from_order_request( $order_object, $request );
-			} catch ( Exception $error ) {
-				$this->handle_error( $error );
-			}
+		// Note - CreateAccount class includes feature gating logic (i.e. this
+		// may not create an account depending on build).
+		try {
+			$create_account = Package::container()->get( CreateAccount::class );
+			$create_account->from_order_request( $order_object, $request );
+		} catch ( Exception $error ) {
+			$this->handle_error( $error );
 		}
 
 		// Persist customer address data to account.

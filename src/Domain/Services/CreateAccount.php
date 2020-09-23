@@ -27,15 +27,24 @@ class CreateAccount {
 	}
 
 	/**
-	 * Init - register handlers for WooCommerce core email hooks.
+	 * Single method for feature gating logic. Used to gate all non-private methods.
+	 *
+	 * @return True if Checkout sign-up feature should be made available.
 	 */
-	public function init() {
+	private static function is_feature_enabled() {
 		// This new checkout signup flow is gated to dev builds for now.
 		// The main reason for this is that we are waiting on an new
 		// set-password endpoint/form in WooCommerce Core.
 		// When that's available we can review this and include in feature
 		// plugin alongside checkout block.
-		if ( ! $this->package->is_experimental_build() ) {
+		return Package::is_experimental_build();
+	}
+
+	/**
+	 * Init - register handlers for WooCommerce core email hooks.
+	 */
+	public function init() {
+		if ( ! self::is_feature_enabled() ) {
 			return;
 		}
 
@@ -77,6 +86,10 @@ class CreateAccount {
 	 * @param array $new_customer_data Assoc array of data for the new account.
 	 */
 	public function customer_new_account( $customer_id = 0, array $new_customer_data = array() ) {
+		if ( ! self::is_feature_enabled() ) {
+			return;
+		}
+
 		if ( ! $customer_id ) {
 			return;
 		}
@@ -97,6 +110,10 @@ class CreateAccount {
 	 * @throws Exception On error.
 	 */
 	public function from_order_request( \WC_Order $order, \WP_REST_Request $request ) {
+		if ( ! self::is_feature_enabled() ) {
+			return;
+		}
+
 		if ( ! $this->should_create_customer_account( $request ) ) {
 			return;
 		}
