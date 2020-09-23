@@ -156,7 +156,7 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 					/>
 				) }
 			</PanelBody>
-			{ isExperimentalBuild && (
+			{ isExperimentalBuild() && (
 				<PanelBody
 					title={ __(
 						'Account options',

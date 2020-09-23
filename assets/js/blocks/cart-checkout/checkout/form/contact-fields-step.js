@@ -31,7 +31,7 @@ const ContactFieldsStep = ( {
 	const createAccountUI = ! customerId &&
 		allowCreateAccount &&
 		CHECKOUT_ALLOWS_GUEST &&
-		isExperimentalBuild && (
+		isExperimentalBuild() && (
 			<CheckboxControl
 				className="wc-block-checkout__create-account"
 				label={ __(
