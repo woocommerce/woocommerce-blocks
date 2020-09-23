@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { getSetting } from '@woocommerce/settings';
+import { isExperimentalBuild } from '@woocommerce/block-settings';
 
 export const CURRENT_USER_IS_ADMIN = getSetting( 'currentUserIsAdmin', false );
 export const REVIEW_RATINGS_ENABLED = getSetting(
@@ -105,8 +106,6 @@ export const CART_PAGE_ID = storePages.cart.id;
 export const CART_URL = storePages.cart.permalink;
 
 export const CHECKOUT_ALLOWS_GUEST = getSetting( 'checkoutAllowsGuest', false );
-export const CHECKOUT_ALLOWS_SIGNUP = getSetting(
-	'checkoutAllowsSignup',
-	false
-);
+export const CHECKOUT_ALLOWS_SIGNUP =
+	isExperimentalBuild() && getSetting( 'checkoutAllowsSignup', false );
 export const LOGIN_URL = getSetting( 'loginUrl', '/wp-login.php' );
