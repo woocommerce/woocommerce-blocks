@@ -49,8 +49,7 @@ before_script:
     - |
         if [[ ! -z "$E2E_TESTS" ]]; then
           composer install --no-dev
-          # needs to be install so appropriate browser binary is installed.
-          npm install
+          npm ci
           if [[ ! -z "$GUTENBERG_LATEST" ]]; then
             JSON='{"config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
           else
