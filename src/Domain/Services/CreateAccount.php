@@ -202,7 +202,7 @@ class CreateAccount {
 	 *
 	 * @return int User id if successful
 	 */
-	protected function create_customer_account( $user_email, $first_name, $last_name ) {
+	public function create_customer_account( $user_email, $first_name, $last_name ) {
 		if ( empty( $user_email ) || ! is_email( $user_email ) ) {
 			throw new \Exception( 'registration-error-invalid-email' );
 		}
@@ -248,7 +248,7 @@ class CreateAccount {
 		}
 
 		// Set account flag to remind customer to update generated password.
-		update_user_option( $user_id, 'default_password_nag', true, true );
+		update_user_option( $customer_id, 'default_password_nag', true, true );
 
 		do_action( 'woocommerce_created_customer', $customer_id, $new_customer_data, $password_generated );
 
