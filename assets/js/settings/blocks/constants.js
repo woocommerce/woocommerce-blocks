@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { getSetting } from '@woocommerce/settings';
-import { isExperimentalBuild } from '@woocommerce/block-settings';
+
+/**
+ * Internal dependencies
+ */
+import { isExperimentalBuild } from './feature-flags';
 
 export const CURRENT_USER_IS_ADMIN = getSetting( 'currentUserIsAdmin', false );
 export const REVIEW_RATINGS_ENABLED = getSetting(
