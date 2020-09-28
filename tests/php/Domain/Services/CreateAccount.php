@@ -98,13 +98,24 @@ class CreateAccount extends WP_UnitTestCase {
 					'enable_guest_checkout' => true,
 				],
         	],
+       	    // User requested an account + site doesn't allow guest.
         	[
-        		'henrykissinger@fbi.gov',
-        		'Henry',
-        		'Kissinger',
+        		'maryjones@testperson.net',
+        		'Mary',
+        		'Jones',
 				[
 					'should_create_account' => true,
 					'enable_guest_checkout' => false,
+				],
+        	],
+        	// User requested an account; name fields are not required.
+        	[
+        		'private_person@hotmail.com',
+        		'',
+        		'',
+				[
+					'should_create_account' => true,
+					'enable_guest_checkout' => true,
 				],
         	],
         	// Store does not allow guest - signup is required (automatic).
