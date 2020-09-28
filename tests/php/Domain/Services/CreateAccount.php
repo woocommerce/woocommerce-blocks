@@ -72,6 +72,12 @@ class CreateAccount extends WP_UnitTestCase {
      * @dataProvider create_customer_data
      */
 	public function test_create_customer_from_order( $email, $first_name, $last_name, $options ) {
+		if ( ! TestedCreateAccount::is_feature_enabled() ) {
+            $this->markTestSkipped(
+              'Skipping CreateAccount test - experimental feature flag is disabled.'
+            );
+		}
+
 		$result = $this->execute_create_customer_from_order(
 			$email,
 			$first_name,
@@ -142,6 +148,12 @@ class CreateAccount extends WP_UnitTestCase {
      * Test exception is thrown if user already signed up.
      */
 	public function test_customer_already_exists() {
+		if ( ! TestedCreateAccount::is_feature_enabled() ) {
+            $this->markTestSkipped(
+              'Skipping CreateAccount test - experimental feature flag is disabled.'
+            );
+		}
+
 		$user_id = $this->factory()->user->create( [
 			'user_email' => 'maryjones@testperson.net',
 		] );
@@ -165,6 +177,12 @@ class CreateAccount extends WP_UnitTestCase {
      * @dataProvider invalid_email_data
      */
 	public function test_invalid_email( $email ) {
+		if ( ! TestedCreateAccount::is_feature_enabled() ) {
+            $this->markTestSkipped(
+              'Skipping CreateAccount test - experimental feature flag is disabled.'
+            );
+		}
+
 		$this->expectException( \Exception::class );
 
 		$result = $this->execute_create_customer_from_order(
@@ -192,6 +210,12 @@ class CreateAccount extends WP_UnitTestCase {
      * Test that a user is not created if not requested (and the site allows guest checkout).
      */
 	public function test_no_account_requested() {
+		if ( ! TestedCreateAccount::is_feature_enabled() ) {
+            $this->markTestSkipped(
+              'Skipping CreateAccount test - experimental feature flag is disabled.'
+            );
+		}
+
 		$site_user_counts = count_users();
 
 		$result = $this->execute_create_customer_from_order(
