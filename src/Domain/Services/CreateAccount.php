@@ -37,9 +37,7 @@ class CreateAccount {
 		// set-password endpoint/form in WooCommerce Core.
 		// When that's available we can review this and include in feature
 		// plugin alongside checkout block.
-		// return Package::is_experimental_build();
-		// Force enable feature - are feature flags working in PHPUnit tests?
-		return true;
+		return Package::is_experimental_build();
 	}
 
 	/**
