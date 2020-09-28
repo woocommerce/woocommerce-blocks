@@ -20,6 +20,12 @@ class CreateAccount extends WP_UnitTestCase {
 		return new TestedCreateAccount( new Package( 'test', './' ) );
 	}
 
+	/**
+	 * Generalised routine for setting up test input and store state
+	 * and calling from_order_request. Used for all tests.
+	 *
+	 * @return assoc array with keys [ 'user_id', 'order' ] if successful.
+	 */
 	private function execute_create_customer_from_order( $email, $first_name, $last_name, $options = [] ) {
 		/// -- Test-specific setup start.
 
@@ -54,6 +60,8 @@ class CreateAccount extends WP_UnitTestCase {
 	}
 
     /**
+     * Test successful user signup cases.
+     *
      * @dataProvider create_customer_data
      */
 	public function test_create_customer_from_order( $email, $first_name, $last_name ) {
@@ -101,6 +109,8 @@ class CreateAccount extends WP_UnitTestCase {
     }
 
     /**
+     * Test user signup cases that should fail with an exception.
+     *
      * @dataProvider create_customer_error_data
      */
 	public function test_create_customer_from_order_error( $email, $first_name, $last_name, $exception = \Exception::class ) {
@@ -136,4 +146,40 @@ class CreateAccount extends WP_UnitTestCase {
         	],
         ];
     }
+
+    /**
+     * Test user signup cases that should fail cleanly (new user should not be created).
+     *
+     * @dataProvider dont_create_customer_data
+     */
+	public function test_dont_create_customer_from_order( $email, $first_name, $last_name, $options ) {
+		$site_user_counts = count_users();
+
+		$result = $this->execute_create_customer_from_order(
+			$email,
+			$first_name,
+			$last_name,
+			$options,
+		);
+
+		$site_user_counts_after = count_users();
+
+		$this->assertEquals( $site_user_counts['total_users'], $site_user_counts_after['total_users'] );
+	}
+
+    public function dont_create_customer_data()
+    {
+        return [
+        	[
+        		'maryjones@testperson.net',
+        		'Mary',
+        		'Jones',
+				[
+					'should_create_account' => false,
+					'enable_guest_checkout' => true,
+				],
+        	],
+        ];
+    }
+
 }
