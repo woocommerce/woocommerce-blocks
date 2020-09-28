@@ -45,7 +45,6 @@
 		"package-plugin:zip-only": "./bin/build-plugin-zip.sh -z",
 		"package-plugin:deploy": "npm run build:deploy && npm run package-plugin:zip-only",
 		"phpunit": "docker-compose up -d db && docker-compose up -d --build wordpress-unit-tests && docker exec -it --workdir /var/www/html/wp-content/plugins/woocommerce-gutenberg-products-block wordpress_test php ./vendor/bin/phpunit",
-		"phpunit:quick": "docker exec -it --workdir /var/www/html/wp-content/plugins/woocommerce-gutenberg-products-block wordpress_test php ./vendor/bin/phpunit",
 		"reformat-files": "prettier --ignore-path .eslintignore --write \"**/*.{js,jsx,json,ts,tsx}\"",
 		"release": "sh ./bin/wordpress-deploy.sh",
 		"start": "rimraf build/* && cross-env BABEL_ENV=default webpack --watch --info-verbosity none",
