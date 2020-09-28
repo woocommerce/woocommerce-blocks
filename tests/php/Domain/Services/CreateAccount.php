@@ -29,19 +29,8 @@ class CreateAccount extends WP_UnitTestCase {
 		$this->get_test_instance()->create_customer_account( 'fake@person.net', 'Fake', 'Person' );
 	}
 
-	public function test_create_customer() {
-		$user_id = $this->get_test_instance()->create_customer_account( 'fake@person.net', 'Fake', 'Person' );
-
-		$test_user = $this->factory()->user->get_object_by_id( $user_id );
-
-		$this->assertEquals( $test_user->first_name, 'Fake' );
-		$this->assertEquals( $test_user->last_name, 'Person' );
-		$this->assertEquals( $test_user->user_email, 'fake@person.net' );
-		$this->assertArraySubset( $test_user->roles, [ 'customer' ] );
-	}
-
 	public function test_create_customer_from_order() {
-		/// -- test specific setup start
+		/// -- Test-specific setup start.
 
 		// Can't log out the user in a unit test ("headers already sent" error).
 		// So - we are assuming the tests run in an environment where the user is logged out.
@@ -58,7 +47,7 @@ class CreateAccount extends WP_UnitTestCase {
 		$test_order->set_billing_first_name( 'Fake' );
 		$test_order->set_billing_last_name( 'Person' );
 
-		/// -- test specific setup end
+		/// -- End test-specific setup.
 
 		$user_id = $this->get_test_instance()->from_order_request( $test_order, $test_request );
 
@@ -73,7 +62,7 @@ class CreateAccount extends WP_UnitTestCase {
 
 		$this->assertEquals( $test_order->get_customer_id(), $user_id );
 
-		/// -- undo test specific setup
+		/// -- Undo test-specific setup; leave things how they were.
 		update_option( 'woocommerce_enable_guest_checkout', $enable_guest_checkout );
 	}
 
