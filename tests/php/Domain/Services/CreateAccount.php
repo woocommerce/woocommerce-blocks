@@ -153,13 +153,15 @@ class CreateAccount extends WP_UnitTestCase {
 	}
 
     /**
-     * Test exception is thrown if email is malformed.
+     * Test exception is thrown if email is invalid or malformed.
+     *
+     * @dataProvider invalid_email_data
      */
-	public function test_malformed_email() {
+	public function test_invalid_email( $email ) {
 		$this->expectException( \Exception::class );
 
 		$result = $this->execute_create_customer_from_order(
-    		'maryjones AT testperson DOT net',
+    		$email,
     		'Mary',
     		'Jones',
 			[
@@ -168,6 +170,16 @@ class CreateAccount extends WP_UnitTestCase {
 			],
 		);
 	}
+
+    public function invalid_email_data()
+    {
+        return [
+        	[ 'maryjones AT testperson DOT net' ],
+        	[ 'lean@fast' ],
+        	[ '' ],
+        	[ '   ' ],
+        ];
+    }
 
     /**
      * Test user is not created if they don't request an account (and the site allows guest checkout).
