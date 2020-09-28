@@ -108,14 +108,15 @@ class CreateAccount {
 	 * @param \WP_REST_Request $request The current request object being handled.
 	 *
 	 * @throws Exception On error.
+	 * @return int The new user id, or 0 if no user was created.
 	 */
 	public function from_order_request( \WC_Order $order, \WP_REST_Request $request ) {
 		if ( ! self::is_feature_enabled() ) {
-			return;
+			return 0;
 		}
 
 		if ( ! $this->should_create_customer_account( $request ) ) {
-			return;
+			return 0;
 		}
 
 		$customer_id = $this->create_customer_account(
@@ -127,6 +128,8 @@ class CreateAccount {
 		// Log the customer in and associate with the order.
 		wc_set_customer_auth_cookie( $customer_id );
 		$order->set_customer_id( get_current_user_id() );
+
+		return $customer_id;
 	}
 
 	/**
