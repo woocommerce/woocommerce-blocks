@@ -205,7 +205,7 @@ class CreateAccount {
 	 *
 	 * @return int User id if successful
 	 */
-	public function create_customer_account( $user_email, $first_name, $last_name ) {
+	private function create_customer_account( $user_email, $first_name, $last_name ) {
 		if ( empty( $user_email ) || ! is_email( $user_email ) ) {
 			throw new \Exception( 'registration-error-invalid-email' );
 		}
