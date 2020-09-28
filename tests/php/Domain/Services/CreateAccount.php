@@ -182,7 +182,7 @@ class CreateAccount extends WP_UnitTestCase {
     }
 
     /**
-     * Test user is not created if they don't request an account (and the site allows guest checkout).
+     * Test that a user is not created if not requested (and the site allows guest checkout).
      */
 	public function test_no_account_requested() {
 		$site_user_counts = count_users();
