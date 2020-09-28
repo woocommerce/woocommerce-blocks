@@ -64,15 +64,12 @@ class CreateAccount extends WP_UnitTestCase {
      *
      * @dataProvider create_customer_data
      */
-	public function test_create_customer_from_order( $email, $first_name, $last_name ) {
+	public function test_create_customer_from_order( $email, $first_name, $last_name, $options ) {
 		$result = $this->execute_create_customer_from_order(
 			$email,
 			$first_name,
 			$last_name,
-			[
-				'should_create_account' => true,
-				'enable_guest_checkout' => true,
-			],
+			$options
 		);
 
 		$test_user = $this->factory()->user->get_object_by_id( $result['user_id'] );
@@ -91,19 +88,34 @@ class CreateAccount extends WP_UnitTestCase {
     public function create_customer_data()
     {
         return [
+        	// User requested an account.
         	[
         		'maryjones@testperson.net',
         		'Mary',
         		'Jones',
-        		true,
-        		true,
+				[
+					'should_create_account' => true,
+					'enable_guest_checkout' => true,
+				],
         	],
         	[
         		'henrykissinger@fbi.gov',
         		'Henry',
         		'Kissinger',
-        		true,
-        		true,
+				[
+					'should_create_account' => true,
+					'enable_guest_checkout' => false,
+				],
+        	],
+        	// Store does not allow guest - signup is required (automatic).
+        	[
+        		'henrykissinger@fbi.gov',
+        		'Henry',
+        		'Kissinger',
+				[
+					'should_create_account' => false,
+					'enable_guest_checkout' => false,
+				],
         	],
         ];
     }
@@ -148,38 +160,24 @@ class CreateAccount extends WP_UnitTestCase {
     }
 
     /**
-     * Test user signup cases that should fail cleanly (new user should not be created).
-     *
-     * @dataProvider dont_create_customer_data
+     * Test user is not created if they don't request an account (and the site allows guest checkout).
      */
-	public function test_dont_create_customer_from_order( $email, $first_name, $last_name, $options ) {
+	public function test_no_account_requested() {
 		$site_user_counts = count_users();
 
 		$result = $this->execute_create_customer_from_order(
-			$email,
-			$first_name,
-			$last_name,
-			$options,
+    		'maryjones@testperson.net',
+    		'Mary',
+    		'Jones',
+			[
+				'should_create_account' => false,
+				'enable_guest_checkout' => true,
+			],
 		);
 
 		$site_user_counts_after = count_users();
 
 		$this->assertEquals( $site_user_counts['total_users'], $site_user_counts_after['total_users'] );
 	}
-
-    public function dont_create_customer_data()
-    {
-        return [
-        	[
-        		'maryjones@testperson.net',
-        		'Mary',
-        		'Jones',
-				[
-					'should_create_account' => false,
-					'enable_guest_checkout' => true,
-				],
-        	],
-        ];
-    }
 
 }
