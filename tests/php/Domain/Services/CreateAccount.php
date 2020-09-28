@@ -142,6 +142,23 @@ class CreateAccount extends WP_UnitTestCase {
 	}
 
     /**
+     * Test exception is thrown if email is malformed.
+     */
+	public function test_malformed_email() {
+		$this->expectException( \Exception::class );
+
+		$result = $this->execute_create_customer_from_order(
+    		'maryjones AT testperson DOT net',
+    		'Mary',
+    		'Jones',
+			[
+				'should_create_account' => true,
+				'enable_guest_checkout' => true,
+			],
+		);
+	}
+
+    /**
      * Test user is not created if they don't request an account (and the site allows guest checkout).
      */
 	public function test_no_account_requested() {
