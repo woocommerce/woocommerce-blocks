@@ -29,7 +29,10 @@ class CreateAccount extends WP_UnitTestCase {
 		$this->get_test_instance()->create_customer_account( 'fake@person.net', 'Fake', 'Person' );
 	}
 
-	public function test_create_customer_from_order() {
+    /**
+     * @dataProvider create_customer_provider
+     */
+	public function test_create_customer_from_order( $email, $first_name, $last_name ) {
 		/// -- Test-specific setup start.
 
 		// Can't log out the user in a unit test ("headers already sent" error).
@@ -43,9 +46,9 @@ class CreateAccount extends WP_UnitTestCase {
 		$test_request->set_param( 'should_create_account', true );
 
 		$test_order = new \WC_Order();
-		$test_order->set_billing_email( 'fake@person.net' );
-		$test_order->set_billing_first_name( 'Fake' );
-		$test_order->set_billing_last_name( 'Person' );
+		$test_order->set_billing_email( $email );
+		$test_order->set_billing_first_name( $first_name );
+		$test_order->set_billing_last_name( $last_name );
 
 		/// -- End test-specific setup.
 
@@ -55,9 +58,9 @@ class CreateAccount extends WP_UnitTestCase {
 
 		$this->assertEquals( get_current_user_id(), $user_id );
 
-		$this->assertEquals( $test_user->first_name, 'Fake' );
-		$this->assertEquals( $test_user->last_name, 'Person' );
-		$this->assertEquals( $test_user->user_email, 'fake@person.net' );
+		$this->assertEquals( $test_user->first_name, $first_name );
+		$this->assertEquals( $test_user->last_name, $last_name );
+		$this->assertEquals( $test_user->user_email, $email );
 		$this->assertArraySubset( $test_user->roles, [ 'customer' ] );
 
 		$this->assertEquals( $test_order->get_customer_id(), $user_id );
@@ -66,4 +69,24 @@ class CreateAccount extends WP_UnitTestCase {
 		update_option( 'woocommerce_enable_guest_checkout', $enable_guest_checkout );
 	}
 
+
+    public function create_customer_provider()
+    {
+        return [
+        	[
+        		'maryjones@testperson.net',
+        		'Mary',
+        		'Jones',
+        		true,
+        		true,
+        	],
+        	[
+        		'henrykissinger@fbi.gov',
+        		'Henry',
+        		'Kissinger',
+        		true,
+        		true,
+        	],
+        ];
+    }
 }
