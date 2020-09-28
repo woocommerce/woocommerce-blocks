@@ -11,6 +11,13 @@ use Automattic\WooCommerce\Blocks\Domain\Services\CreateAccount as TestedCreateA
 /**
  * Tests CreateAccount service class.
  *
+ * Note: this is a PHPUnit test, but is not a strict unit test - more of an integration test.
+ * This is consistent with WordPress approach to testing:
+ * - Set up site state.
+ * - Run logic you want to test.
+ * - Confirm correct output &/or changes to site state.
+ * https://make.wordpress.org/core/handbook/testing/automated-testing/writing-phpunit-tests/
+ *
  * @since $VID:$
  */
 class CreateAccount extends WP_UnitTestCase {
