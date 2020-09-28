@@ -121,43 +121,25 @@ class CreateAccount extends WP_UnitTestCase {
     }
 
     /**
-     * Test user signup cases that should fail with an exception.
-     *
-     * @dataProvider create_customer_error_data
+     * Test exception is thrown if user already signed up.
      */
-	public function test_create_customer_from_order_error( $email, $first_name, $last_name, $exception = \Exception::class ) {
+	public function test_customer_already_exists() {
 		$user_id = $this->factory()->user->create( [
-			'user_email' => $email,
+			'user_email' => 'maryjones@testperson.net',
 		] );
 
-		$this->expectException( $exception );
+		$this->expectException( \Exception::class );
 
 		$result = $this->execute_create_customer_from_order(
-			$email,
-			$first_name,
-			$last_name,
+    		'maryjones@testperson.net',
+    		'Mary',
+    		'Jones',
 			[
 				'should_create_account' => true,
 				'enable_guest_checkout' => true,
 			],
 		);
 	}
-
-    public function create_customer_error_data()
-    {
-        return [
-        	[
-        		'maryjones@testperson.net',
-        		'Mary',
-        		'Jones',
-        	],
-        	[
-        		'henrykissinger@fbi.gov',
-        		'Henry',
-        		'Kissinger',
-        	],
-        ];
-    }
 
     /**
      * Test user is not created if they don't request an account (and the site allows guest checkout).
