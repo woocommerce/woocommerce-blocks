@@ -11,13 +11,6 @@ use Automattic\WooCommerce\Blocks\Domain\Services\CreateAccount as TestedCreateA
 /**
  * Tests CreateAccount service class.
  *
- * Note: this is a PHPUnit test, but is not a strict unit test - more of an integration test.
- * This is consistent with WordPress approach to testing:
- * - Set up site state.
- * - Run logic you want to test.
- * - Confirm correct output &/or changes to site state.
- * https://make.wordpress.org/core/handbook/testing/automated-testing/writing-phpunit-tests/
- *
  * @since $VID:$
  */
 class CreateAccount extends WP_UnitTestCase {
@@ -66,16 +59,16 @@ class CreateAccount extends WP_UnitTestCase {
 		];
 	}
 
-    /**
-     * Test successful user signup cases.
-     *
-     * @dataProvider create_customer_data
-     */
+	/**
+	 * Test successful user signup cases.
+	 *
+	 * @dataProvider create_customer_data
+	 */
 	public function test_create_customer_from_order( $email, $first_name, $last_name, $options ) {
 		if ( ! TestedCreateAccount::is_feature_enabled() ) {
-            $this->markTestSkipped(
-              'Skipping CreateAccount test - experimental feature flag is disabled.'
-            );
+			$this->markTestSkipped(
+			  'Skipping CreateAccount test - experimental feature flag is disabled.'
+			);
 		}
 
 		$result = $this->execute_create_customer_from_order(
@@ -98,60 +91,60 @@ class CreateAccount extends WP_UnitTestCase {
 		$this->assertEquals( $test_order->get_customer_id(), $result['user_id'] );
 	}
 
-    public function create_customer_data()
-    {
-        return [
-        	// User requested an account.
-        	[
-        		'maryjones@testperson.net',
-        		'Mary',
-        		'Jones',
+	public function create_customer_data()
+	{
+		return [
+			// User requested an account.
+			[
+				'maryjones@testperson.net',
+				'Mary',
+				'Jones',
 				[
 					'should_create_account' => true,
 					'enable_guest_checkout' => true,
 				],
-        	],
-       	    // User requested an account + site doesn't allow guest.
-        	[
-        		'maryjones@testperson.net',
-        		'Mary',
-        		'Jones',
+			],
+			// User requested an account + site doesn't allow guest.
+			[
+				'maryjones@testperson.net',
+				'Mary',
+				'Jones',
 				[
 					'should_create_account' => true,
 					'enable_guest_checkout' => false,
 				],
-        	],
-        	// User requested an account; name fields are not required.
-        	[
-        		'private_person@hotmail.com',
-        		'',
-        		'',
+			],
+			// User requested an account; name fields are not required.
+			[
+				'private_person@hotmail.com',
+				'',
+				'',
 				[
 					'should_create_account' => true,
 					'enable_guest_checkout' => true,
 				],
-        	],
-        	// Store does not allow guest - signup is required (automatic).
-        	[
-        		'henrykissinger@fbi.gov',
-        		'Henry',
-        		'Kissinger',
+			],
+			// Store does not allow guest - signup is required (automatic).
+			[
+				'henrykissinger@fbi.gov',
+				'Henry',
+				'Kissinger',
 				[
 					'should_create_account' => false,
 					'enable_guest_checkout' => false,
 				],
-        	],
-        ];
-    }
+			],
+		];
+	}
 
-    /**
-     * Test exception is thrown if user already signed up.
-     */
+	/**
+	 * Test exception is thrown if user already signed up.
+	 */
 	public function test_customer_already_exists() {
 		if ( ! TestedCreateAccount::is_feature_enabled() ) {
-            $this->markTestSkipped(
-              'Skipping CreateAccount test - experimental feature flag is disabled.'
-            );
+			$this->markTestSkipped(
+				'Skipping CreateAccount test - experimental feature flag is disabled.'
+			);
 		}
 
 		$user_id = $this->factory()->user->create( [
@@ -161,9 +154,9 @@ class CreateAccount extends WP_UnitTestCase {
 		$this->expectException( \Exception::class );
 
 		$result = $this->execute_create_customer_from_order(
-    		'maryjones@testperson.net',
-    		'Mary',
-    		'Jones',
+			'maryjones@testperson.net',
+			'Mary',
+			'Jones',
 			[
 				'should_create_account' => true,
 				'enable_guest_checkout' => true,
@@ -171,24 +164,24 @@ class CreateAccount extends WP_UnitTestCase {
 		);
 	}
 
-    /**
-     * Test exception is thrown if email is invalid or malformed.
-     *
-     * @dataProvider invalid_email_data
-     */
+	/**
+	 * Test exception is thrown if email is invalid or malformed.
+	 *
+	 * @dataProvider invalid_email_data
+	 */
 	public function test_invalid_email( $email ) {
 		if ( ! TestedCreateAccount::is_feature_enabled() ) {
-            $this->markTestSkipped(
-              'Skipping CreateAccount test - experimental feature flag is disabled.'
-            );
+			$this->markTestSkipped(
+			  'Skipping CreateAccount test - experimental feature flag is disabled.'
+			);
 		}
 
 		$this->expectException( \Exception::class );
 
 		$result = $this->execute_create_customer_from_order(
-    		$email,
-    		'Mary',
-    		'Jones',
+			$email,
+			'Mary',
+			'Jones',
 			[
 				'should_create_account' => true,
 				'enable_guest_checkout' => true,
@@ -196,32 +189,32 @@ class CreateAccount extends WP_UnitTestCase {
 		);
 	}
 
-    public function invalid_email_data()
-    {
-        return [
-        	[ 'maryjones AT testperson DOT net' ],
-        	[ 'lean@fast' ],
-        	[ '' ],
-        	[ '   ' ],
-        ];
-    }
+	public function invalid_email_data()
+	{
+		return [
+			[ 'maryjones AT testperson DOT net' ],
+			[ 'lean@fast' ],
+			[ '' ],
+			[ '   ' ],
+		];
+	}
 
-    /**
-     * Test that a user is not created if not requested (and the site allows guest checkout).
-     */
+	/**
+	 * Test that a user is not created if not requested (and the site allows guest checkout).
+	 */
 	public function test_no_account_requested() {
 		if ( ! TestedCreateAccount::is_feature_enabled() ) {
-            $this->markTestSkipped(
-              'Skipping CreateAccount test - experimental feature flag is disabled.'
-            );
+			$this->markTestSkipped(
+			  'Skipping CreateAccount test - experimental feature flag is disabled.'
+			);
 		}
 
 		$site_user_counts = count_users();
 
 		$result = $this->execute_create_customer_from_order(
-    		'maryjones@testperson.net',
-    		'Mary',
-    		'Jones',
+			'maryjones@testperson.net',
+			'Mary',
+			'Jones',
 			[
 				'should_create_account' => false,
 				'enable_guest_checkout' => true,
