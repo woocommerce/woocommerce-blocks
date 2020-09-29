@@ -111,11 +111,7 @@ class CreateAccount {
 	 * @return int The new user id, or 0 if no user was created.
 	 */
 	public function from_order_request( \WC_Order $order, \WP_REST_Request $request ) {
-		if ( ! self::is_feature_enabled() ) {
-			return 0;
-		}
-
-		if ( ! $this->should_create_customer_account( $request ) ) {
+		if ( ! self::is_feature_enabled() || ! $this->should_create_customer_account( $request ) ) {
 			return 0;
 		}
 
