@@ -29,9 +29,8 @@ class CreateAccount extends WP_UnitTestCase {
 	private function execute_create_customer_from_order( $email, $first_name, $last_name, $options = [] ) {
 		/// -- Test-specific setup start.
 
-		// Can't log out the user in a unit test ("headers already sent" error).
-		// So - we are assuming the tests run in an environment where the user is logged out.
-		// wp_logout();
+		// Simulate (force) logged out user – if the user is logged in, no account will be created.
+		wp_set_current_user( 0 );
 
 		$tmp_enable_guest_checkout = get_option( 'woocommerce_enable_guest_checkout' );
 		$enable_guest_checkout = array_key_exists( 'enable_guest_checkout', $options ) ? $options['enable_guest_checkout'] : false;
