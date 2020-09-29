@@ -69,6 +69,7 @@ export const prepareResponseData = ( data ) => {
  * @param {string} action.type Type of action.
  * @param {string} action.orderId Order ID.
  * @param {Array} action.orderNotes Order notes.
+ * @param {boolean} action.shouldCreateAccount True if shopper has requested a user account (signup checkbox).
  * @param {Object} action.data Other action payload.
  */
 export const reducer = (
