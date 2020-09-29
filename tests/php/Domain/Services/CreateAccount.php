@@ -11,12 +11,16 @@ use Automattic\WooCommerce\Blocks\Domain\Services\CreateAccount as TestedCreateA
 /**
  * Tests CreateAccount service class.
  *
+ * Note: this feature is currently feature gated. This test class assumes
+ * that woocommerce_blocks_phase===3, i.e. dev build. Tests will fail
+ * with other builds (release feature plugin, woo core package).
+ * Related: https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/3211
+ *
  * @since $VID:$
  */
 class CreateAccount extends WP_UnitTestCase {
 
 	private function get_test_instance() {
-		// Would be good to find a way to use a mock Package, e.g. to control experimental flag.
 		return new TestedCreateAccount( new Package( 'test', './' ) );
 	}
 
@@ -64,12 +68,6 @@ class CreateAccount extends WP_UnitTestCase {
 	 * @dataProvider create_customer_data
 	 */
 	public function test_create_customer_from_order( $email, $first_name, $last_name, $options ) {
-		if ( ! TestedCreateAccount::is_feature_enabled() ) {
-			$this->markTestSkipped(
-			  'Skipping CreateAccount test - experimental feature flag is disabled.'
-			);
-		}
-
 		$result = $this->execute_create_customer_from_order(
 			$email,
 			$first_name,
@@ -140,12 +138,6 @@ class CreateAccount extends WP_UnitTestCase {
 	 * Test exception is thrown if user already signed up.
 	 */
 	public function test_customer_already_exists() {
-		if ( ! TestedCreateAccount::is_feature_enabled() ) {
-			$this->markTestSkipped(
-				'Skipping CreateAccount test - experimental feature flag is disabled.'
-			);
-		}
-
 		$user_id = $this->factory()->user->create( [
 			'user_email' => 'maryjones@testperson.net',
 		] );
@@ -169,12 +161,6 @@ class CreateAccount extends WP_UnitTestCase {
 	 * @dataProvider invalid_email_data
 	 */
 	public function test_invalid_email( $email ) {
-		if ( ! TestedCreateAccount::is_feature_enabled() ) {
-			$this->markTestSkipped(
-			  'Skipping CreateAccount test - experimental feature flag is disabled.'
-			);
-		}
-
 		$this->expectException( \Exception::class );
 
 		$result = $this->execute_create_customer_from_order(
@@ -202,12 +188,6 @@ class CreateAccount extends WP_UnitTestCase {
 	 * Test that a user is not created if not requested (and the site allows guest checkout).
 	 */
 	public function test_no_account_requested() {
-		if ( ! TestedCreateAccount::is_feature_enabled() ) {
-			$this->markTestSkipped(
-			  'Skipping CreateAccount test - experimental feature flag is disabled.'
-			);
-		}
-
 		$site_user_counts = count_users();
 
 		$result = $this->execute_create_customer_from_order(

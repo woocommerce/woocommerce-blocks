@@ -31,7 +31,7 @@ class CreateAccount {
 	 *
 	 * @return True if Checkout sign-up feature should be made available.
 	 */
-	public static function is_feature_enabled() {
+	private static function is_feature_enabled() {
 		// This new checkout signup flow is gated to dev builds for now.
 		// The main reason for this is that we are waiting on an new
 		// set-password endpoint/form in WooCommerce Core.
