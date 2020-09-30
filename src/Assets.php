@@ -35,7 +35,17 @@ class Assets {
 	 */
 	public static function register_assets() {
 		$asset_api = Package::container()->get( AssetApi::class );
-		self::register_style( 'wc-block-vendors-style', plugins_url( $asset_api->get_block_asset_build_path( 'vendors-style', 'css' ), __DIR__ ), [] );
+
+		// In the editor, we want our stylesheets to load after editor CSS (see #3068).
+		// This might be no longer necessary when https://github.com/WordPress/gutenberg/issues/20797
+		// is merged.
+		if ( is_admin() ) {
+			$block_style_dependencies = array( 'wp-edit-post' );
+		} else {
+			$block_style_dependencies = array();
+		}
+
+		self::register_style( 'wc-block-vendors-style', plugins_url( $asset_api->get_block_asset_build_path( 'vendors-style', 'css' ), __DIR__ ), $block_style_dependencies );
 		self::register_style( 'wc-block-editor', plugins_url( $asset_api->get_block_asset_build_path( 'editor', 'css' ), __DIR__ ), array( 'wp-edit-blocks' ) );
 		wp_style_add_data( 'wc-block-editor', 'rtl', 'replace' );
 		self::register_style( 'wc-block-style', plugins_url( $asset_api->get_block_asset_build_path( 'style', 'css' ), __DIR__ ), array( 'wc-block-vendors-style' ) );
