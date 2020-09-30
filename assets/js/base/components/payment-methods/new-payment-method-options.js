@@ -48,7 +48,7 @@ const NewPaymentMethodOptions = () => {
 											.components,
 							  } ),
 					ariaLabel,
-					content: <NewPaymentMethodTab selectedTab={ name } />,
+					content: <NewPaymentMethodTab paymentMethodName={ name } />,
 				};
 			} ) }
 			initialTabName={ activePaymentMethod }

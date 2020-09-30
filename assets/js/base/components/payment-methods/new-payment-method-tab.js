@@ -19,24 +19,7 @@ import CheckboxControl from '@woocommerce/base-components/checkbox-control';
  */
 import PaymentMethodErrorBoundary from './payment-method-error-boundary';
 
-/**
- * Returns a payment method for the given context.
- *
- * @param {string} name The payment method slug to return.
- * @param {Object} paymentMethods The current registered payment methods
- * @param {boolean} isEditor Whether in the editor context (true) or not (false).
- *
- * @return {Object} The payment method matching the name for the given context.
- */
-const getPaymentMethod = ( name, paymentMethods, isEditor ) => {
-	let paymentMethod = paymentMethods[ name ] || null;
-	if ( paymentMethod ) {
-		paymentMethod = isEditor ? paymentMethod.edit : paymentMethod.content;
-	}
-	return paymentMethod;
-};
-
-const NewPaymentMethodTab = ( { selectedTab } ) => {
+const NewPaymentMethodTab = ( { paymentMethodName } ) => {
 	const { isEditor } = useEditorContext();
 	const {
 		shouldSavePayment,
@@ -44,6 +27,8 @@ const NewPaymentMethodTab = ( { selectedTab } ) => {
 	} = usePaymentMethodDataContext();
 	const { paymentMethods } = usePaymentMethods();
 	const currentPaymentMethods = useRef( paymentMethods );
+	const currentPaymentMethod =
+		currentPaymentMethods.current[ paymentMethodName ] || {};
 	const {
 		activePaymentMethod,
 		...paymentMethodInterface
@@ -51,24 +36,19 @@ const NewPaymentMethodTab = ( { selectedTab } ) => {
 	const currentPaymentMethodInterface = useRef( paymentMethodInterface );
 	const { customerId } = useCheckoutContext();
 
-	const paymentMethod = getPaymentMethod(
-		selectedTab,
-		currentPaymentMethods.current,
-		isEditor
-	);
+	const paymentMethodComponent = isEditor
+		? currentPaymentMethod?.edit
+		: currentPaymentMethod?.content;
 
-	if ( ! paymentMethod || ! activePaymentMethod ) {
+	if ( ! paymentMethodComponent ) {
 		return null;
 	}
 
-	const { supports = {} } =
-		paymentMethod && currentPaymentMethods.current[ activePaymentMethod ]
-			? currentPaymentMethods.current[ activePaymentMethod ]
-			: {};
+	const { supports = {} } = currentPaymentMethod;
 
 	return (
 		<PaymentMethodErrorBoundary isEditor={ isEditor }>
-			{ cloneElement( paymentMethod, {
+			{ cloneElement( paymentMethodComponent, {
 				activePaymentMethod,
 				...currentPaymentMethodInterface.current,
 			} ) }
