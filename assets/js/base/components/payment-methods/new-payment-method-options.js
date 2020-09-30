@@ -7,47 +7,19 @@ import {
 	useStoreNotices,
 	useEmitResponse,
 } from '@woocommerce/base-hooks';
-import { cloneElement, useRef, useCallback } from '@wordpress/element';
+import { cloneElement, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import {
-	useCheckoutContext,
-	useEditorContext,
-	usePaymentMethodDataContext,
-} from '@woocommerce/base-context';
-import CheckboxControl from '@woocommerce/base-components/checkbox-control';
+import { usePaymentMethodDataContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
  */
 import Tabs from '../tabs';
-import PaymentMethodErrorBoundary from './payment-method-error-boundary';
-
-/**
- * Returns a payment method for the given context.
- *
- * @param {string} name The payment method slug to return.
- * @param {Object} paymentMethods The current registered payment methods
- * @param {boolean} isEditor Whether in the editor context (true) or not (false).
- *
- * @return {Object} The payment method matching the name for the given context.
- */
-const getPaymentMethod = ( name, paymentMethods, isEditor ) => {
-	let paymentMethod = paymentMethods[ name ] || null;
-	if ( paymentMethod ) {
-		paymentMethod = isEditor ? paymentMethod.edit : paymentMethod.content;
-	}
-	return paymentMethod;
-};
+import NewPaymentMethodTab from './new-payment-method-tab';
 
 const NewPaymentMethodOptions = () => {
-	const { isEditor } = useEditorContext();
-	const {
-		setActivePaymentMethod,
-		shouldSavePayment,
-		setShouldSavePayment,
-	} = usePaymentMethodDataContext();
+	const { setActivePaymentMethod } = usePaymentMethodDataContext();
 	const { paymentMethods } = usePaymentMethods();
-	const currentPaymentMethods = useRef( paymentMethods );
 	const {
 		activePaymentMethod,
 		...paymentMethodInterface
@@ -55,50 +27,6 @@ const NewPaymentMethodOptions = () => {
 	const currentPaymentMethodInterface = useRef( paymentMethodInterface );
 	const { noticeContexts } = useEmitResponse();
 	const { removeNotice } = useStoreNotices();
-	const { customerId } = useCheckoutContext();
-
-	const getRenderedTab = useCallback(
-		( selectedTab ) => {
-			const paymentMethod = getPaymentMethod(
-				selectedTab,
-				currentPaymentMethods.current,
-				isEditor
-			);
-			const { supports = {} } =
-				paymentMethod &&
-				currentPaymentMethods.current[ activePaymentMethod ]
-					? currentPaymentMethods.current[ activePaymentMethod ]
-					: {};
-			return paymentMethod && activePaymentMethod ? (
-				<PaymentMethodErrorBoundary isEditor={ isEditor }>
-					{ cloneElement( paymentMethod, {
-						activePaymentMethod,
-						...currentPaymentMethodInterface.current,
-					} ) }
-					{ customerId > 0 && supports.savePaymentInfo && (
-						<CheckboxControl
-							className="wc-block-components-payment-methods__save-card-info"
-							label={ __(
-								'Save payment information to my account for future purchases.',
-								'woo-gutenberg-products-block'
-							) }
-							checked={ shouldSavePayment }
-							onChange={ () =>
-								setShouldSavePayment( ! shouldSavePayment )
-							}
-						/>
-					) }
-				</PaymentMethodErrorBoundary>
-			) : null;
-		},
-		[
-			isEditor,
-			activePaymentMethod,
-			shouldSavePayment,
-			setShouldSavePayment,
-			customerId,
-		]
-	);
 
 	return (
 		<Tabs
@@ -120,7 +48,7 @@ const NewPaymentMethodOptions = () => {
 											.components,
 							  } ),
 					ariaLabel,
-					content: getRenderedTab( name ),
+					content: <NewPaymentMethodTab selectedTab={ name } />,
 				};
 			} ) }
 			initialTabName={ activePaymentMethod }
