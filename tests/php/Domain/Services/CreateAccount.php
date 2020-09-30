@@ -87,8 +87,7 @@ class CreateAccount extends WP_UnitTestCase {
 		$this->assertEquals( $test_order->get_customer_id(), $result['user_id'] );
 	}
 
-	public function create_customer_data()
-	{
+	public function create_customer_data() {
 		return [
 			// User requested an account.
 			[
@@ -173,8 +172,7 @@ class CreateAccount extends WP_UnitTestCase {
 		);
 	}
 
-	public function invalid_email_data()
-	{
+	public function invalid_email_data() {
 		return [
 			[ 'maryjones AT testperson DOT net' ],
 			[ 'lean@fast' ],
