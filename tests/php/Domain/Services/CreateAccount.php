@@ -28,13 +28,12 @@ class CreateAccount extends WP_UnitTestCase {
 	 * Generalised routine for setting up test input and store state
 	 * and calling from_order_request. Used for all tests.
 	 *
+	 * Note – this requires (assumes) that there is no logged-in user.
+	 *
 	 * @return assoc array with keys [ 'user_id', 'order' ] if successful.
 	 */
 	private function execute_create_customer_from_order( $email, $first_name, $last_name, $options = [] ) {
 		/// -- Test-specific setup start.
-
-		// Simulate (force) logged out user – if the user is logged in, no account will be created.
-		wp_set_current_user( 0 );
 
 		$tmp_enable_guest_checkout = get_option( 'woocommerce_enable_guest_checkout' );
 		$enable_guest_checkout = array_key_exists( 'enable_guest_checkout', $options ) ? $options['enable_guest_checkout'] : false;
