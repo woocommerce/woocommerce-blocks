@@ -1,11 +1,6 @@
 /**
  * External dependencies
  */
-import {
-	usePaymentMethods,
-	usePaymentMethodInterface,
-} from '@woocommerce/base-hooks';
-import { cloneElement } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import {
 	useCheckoutContext,
@@ -19,37 +14,18 @@ import CheckboxControl from '@woocommerce/base-components/checkbox-control';
  */
 import PaymentMethodErrorBoundary from './payment-method-error-boundary';
 
-const NewPaymentMethodTab = ( { paymentMethodName } ) => {
+const NewPaymentMethodTab = ( { children, allowsSaving } ) => {
 	const { isEditor } = useEditorContext();
 	const {
 		shouldSavePayment,
 		setShouldSavePayment,
 	} = usePaymentMethodDataContext();
-	const { paymentMethods } = usePaymentMethods();
-	const paymentMethod = paymentMethods[ paymentMethodName ] || {};
-	const {
-		activePaymentMethod,
-		...paymentMethodInterface
-	} = usePaymentMethodInterface();
 	const { customerId } = useCheckoutContext();
-
-	const paymentMethodComponent = isEditor
-		? paymentMethod?.edit
-		: paymentMethod?.content;
-
-	if ( ! paymentMethodComponent ) {
-		return null;
-	}
-
-	const { supports = {} } = paymentMethod;
 
 	return (
 		<PaymentMethodErrorBoundary isEditor={ isEditor }>
-			{ cloneElement( paymentMethodComponent, {
-				activePaymentMethod,
-				...paymentMethodInterface,
-			} ) }
-			{ customerId > 0 && supports.savePaymentInfo && (
+			{ children }
+			{ customerId > 0 && allowsSaving && (
 				<CheckboxControl
 					className="wc-block-components-payment-methods__save-card-info"
 					label={ __(

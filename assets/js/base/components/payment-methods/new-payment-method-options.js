@@ -9,7 +9,10 @@ import {
 } from '@woocommerce/base-hooks';
 import { cloneElement } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { usePaymentMethodDataContext } from '@woocommerce/base-context';
+import {
+	useEditorContext,
+	usePaymentMethodDataContext,
+} from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -26,6 +29,7 @@ const NewPaymentMethodOptions = () => {
 	} = usePaymentMethodInterface();
 	const { noticeContexts } = useEmitResponse();
 	const { removeNotice } = useStoreNotices();
+	const { isEditor } = useEditorContext();
 
 	return (
 		<Tabs
@@ -35,7 +39,14 @@ const NewPaymentMethodOptions = () => {
 				removeNotice( 'wc-payment-error', noticeContexts.PAYMENTS );
 			} }
 			tabs={ Object.keys( paymentMethods ).map( ( name ) => {
-				const { label, ariaLabel } = paymentMethods[ name ];
+				const {
+					ariaLabel,
+					edit,
+					content,
+					label,
+					supports,
+				} = paymentMethods[ name ];
+				const component = isEditor ? edit : content;
 				return {
 					name,
 					title:
@@ -46,7 +57,16 @@ const NewPaymentMethodOptions = () => {
 										paymentMethodInterface.components,
 							  } ),
 					ariaLabel,
-					content: <NewPaymentMethodTab paymentMethodName={ name } />,
+					content: (
+						<NewPaymentMethodTab
+							allowsSaving={ supports.savePaymentInfo }
+						>
+							{ cloneElement( component, {
+								activePaymentMethod,
+								...paymentMethodInterface,
+							} ) }
+						</NewPaymentMethodTab>
+					),
 				};
 			} ) }
 			initialTabName={ activePaymentMethod }
