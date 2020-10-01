@@ -7,7 +7,7 @@ import {
 	useStoreNotices,
 	useEmitResponse,
 } from '@woocommerce/base-hooks';
-import { cloneElement, useRef } from '@wordpress/element';
+import { cloneElement } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { usePaymentMethodDataContext } from '@woocommerce/base-context';
 
@@ -24,7 +24,6 @@ const NewPaymentMethodOptions = () => {
 		activePaymentMethod,
 		...paymentMethodInterface
 	} = usePaymentMethodInterface();
-	const currentPaymentMethodInterface = useRef( paymentMethodInterface );
 	const { noticeContexts } = useEmitResponse();
 	const { removeNotice } = useStoreNotices();
 
@@ -44,8 +43,7 @@ const NewPaymentMethodOptions = () => {
 							? label
 							: cloneElement( label, {
 									components:
-										currentPaymentMethodInterface.current
-											.components,
+										paymentMethodInterface.components,
 							  } ),
 					ariaLabel,
 					content: <NewPaymentMethodTab paymentMethodName={ name } />,

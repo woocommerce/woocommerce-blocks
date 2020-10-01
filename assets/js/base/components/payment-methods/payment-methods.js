@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { usePaymentMethods } from '@woocommerce/base-hooks';
-import { useRef, useEffect } from '@wordpress/element';
 import { usePaymentMethodDataContext } from '@woocommerce/base-context';
 
 /**
@@ -19,22 +18,12 @@ import SavedPaymentMethodOptions from './saved-payment-method-options';
  */
 const PaymentMethods = () => {
 	const {
-		activePaymentMethod,
 		customerPaymentMethods = {},
 		paymentMethodData,
 	} = usePaymentMethodDataContext();
 	const { isInitialized, paymentMethods } = usePaymentMethods();
-	const currentPaymentMethods = useRef( paymentMethods );
 
-	// update ref on change.
-	useEffect( () => {
-		currentPaymentMethods.current = paymentMethods;
-	}, [ paymentMethods, activePaymentMethod ] );
-
-	if (
-		isInitialized &&
-		Object.keys( currentPaymentMethods.current ).length === 0
-	) {
+	if ( isInitialized && Object.keys( paymentMethods ).length === 0 ) {
 		return <NoPaymentMethods />;
 	}
 

@@ -5,7 +5,7 @@ import {
 	usePaymentMethods,
 	usePaymentMethodInterface,
 } from '@woocommerce/base-hooks';
-import { cloneElement, useRef } from '@wordpress/element';
+import { cloneElement } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import {
 	useCheckoutContext,
@@ -26,31 +26,28 @@ const NewPaymentMethodTab = ( { paymentMethodName } ) => {
 		setShouldSavePayment,
 	} = usePaymentMethodDataContext();
 	const { paymentMethods } = usePaymentMethods();
-	const currentPaymentMethods = useRef( paymentMethods );
-	const currentPaymentMethod =
-		currentPaymentMethods.current[ paymentMethodName ] || {};
+	const paymentMethod = paymentMethods[ paymentMethodName ] || {};
 	const {
 		activePaymentMethod,
 		...paymentMethodInterface
 	} = usePaymentMethodInterface();
-	const currentPaymentMethodInterface = useRef( paymentMethodInterface );
 	const { customerId } = useCheckoutContext();
 
 	const paymentMethodComponent = isEditor
-		? currentPaymentMethod?.edit
-		: currentPaymentMethod?.content;
+		? paymentMethod?.edit
+		: paymentMethod?.content;
 
 	if ( ! paymentMethodComponent ) {
 		return null;
 	}
 
-	const { supports = {} } = currentPaymentMethod;
+	const { supports = {} } = paymentMethod;
 
 	return (
 		<PaymentMethodErrorBoundary isEditor={ isEditor }>
 			{ cloneElement( paymentMethodComponent, {
 				activePaymentMethod,
-				...currentPaymentMethodInterface.current,
+				...paymentMethodInterface,
 			} ) }
 			{ customerId > 0 && supports.savePaymentInfo && (
 				<CheckboxControl
