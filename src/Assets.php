@@ -36,9 +36,9 @@ class Assets {
 	public static function register_assets() {
 		$asset_api = Package::container()->get( AssetApi::class );
 
-		// In the editor, we want our stylesheets to load after editor CSS (see #3068).
-		// This might be no longer necessary when https://github.com/WordPress/gutenberg/issues/20797
-		// is merged.
+		// @todo Remove fix to load our stylesheets after editor CSS.
+		// See #3068 for the rationale of this fix. It should be no longer
+		// necessary when the editor is loaded in an iframe (https://github.com/WordPress/gutenberg/issues/20797).
 		if ( is_admin() ) {
 			$block_style_dependencies = array( 'wp-edit-post' );
 		} else {
