@@ -105,7 +105,7 @@ class CustomerNewAccount extends \WC_Email {
 			// Generate a magic link so user can set initial password.
 			$key = get_password_reset_key( $this->object );
 			if ( ! is_wp_error( $key ) ) {
-				$this->set_password_url = wc_get_account_endpoint_url( 'lost-password' ) . "?action=rp&key=$key&login=" . rawurlencode( $this->object->user_login );
+				$this->set_password_url = wc_get_account_endpoint_url( 'set-password' ) . "?action=rp&key=$key&login=" . rawurlencode( $this->object->user_login );
 			}
 
 			$this->user_login = stripslashes( $this->object->user_login );
