@@ -105,7 +105,16 @@ class CustomerNewAccount extends \WC_Email {
 			// Generate a magic link so user can set initial password.
 			$key = get_password_reset_key( $this->object );
 			if ( ! is_wp_error( $key ) ) {
-				$this->set_password_url = wc_get_account_endpoint_url( 'set-password' ) . "?action=rp&key=$key&login=" . rawurlencode( $this->object->user_login );
+				if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '4.7', '<' ) ) {
+					// Fall back to wp-admin/unbranded reset password route/handler.
+					$this->set_password_url = network_site_url(
+						"wp-login.php?action=rp&key=$key&login=" . rawurlencode( $this->object->user_login ),
+						'login'
+					);
+				} else {
+					// From v4.7 (TBC) WooCommerce core has a themed set-password endpoint we can use.
+					$this->set_password_url = wc_get_account_endpoint_url( 'set-password' ) . "?action=rp&key=$key&login=" . rawurlencode( $this->object->user_login );
+				}
 			}
 
 			$this->user_login = stripslashes( $this->object->user_login );
