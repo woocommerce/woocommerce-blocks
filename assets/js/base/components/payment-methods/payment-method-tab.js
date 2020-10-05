@@ -14,7 +14,7 @@ import CheckboxControl from '@woocommerce/base-components/checkbox-control';
  */
 import PaymentMethodErrorBoundary from './payment-method-error-boundary';
 
-const NewPaymentMethodTab = ( { children, allowsSaving } ) => {
+const PaymentMethodTab = ( { children, allowsSaving } ) => {
 	const { isEditor } = useEditorContext();
 	const {
 		shouldSavePayment,
@@ -42,4 +42,4 @@ const NewPaymentMethodTab = ( { children, allowsSaving } ) => {
 	);
 };
 
-export default NewPaymentMethodTab;
+export default PaymentMethodTab;

@@ -8,7 +8,7 @@ import { usePaymentMethodDataContext } from '@woocommerce/base-context';
  * Internal dependencies
  */
 import NoPaymentMethods from './no-payment-methods';
-import NewPaymentMethodOptions from './new-payment-method-options';
+import PaymentMethodOptions from './payment-method-options';
 import SavedPaymentMethodOptions from './saved-payment-method-options';
 
 /**
@@ -33,7 +33,7 @@ const PaymentMethods = () => {
 	) : (
 		<>
 			<SavedPaymentMethodOptions />
-			<NewPaymentMethodOptions />
+			<PaymentMethodOptions />
 		</>
 	);
 };

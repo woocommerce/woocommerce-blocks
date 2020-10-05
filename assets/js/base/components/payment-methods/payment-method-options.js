@@ -18,9 +18,9 @@ import {
  * Internal dependencies
  */
 import Tabs from '../tabs';
-import NewPaymentMethodTab from './new-payment-method-tab';
+import PaymentMethodTab from './payment-method-tab';
 
-const NewPaymentMethodOptions = () => {
+const PaymentMethodOptions = () => {
 	const { setActivePaymentMethod } = usePaymentMethodDataContext();
 	const { paymentMethods } = usePaymentMethods();
 	const {
@@ -58,14 +58,14 @@ const NewPaymentMethodOptions = () => {
 							  } ),
 					ariaLabel,
 					content: (
-						<NewPaymentMethodTab
+						<PaymentMethodTab
 							allowsSaving={ supports.savePaymentInfo }
 						>
 							{ cloneElement( component, {
 								activePaymentMethod,
 								...paymentMethodInterface,
 							} ) }
-						</NewPaymentMethodTab>
+						</PaymentMethodTab>
 					),
 				};
 			} ) }
@@ -79,4 +79,4 @@ const NewPaymentMethodOptions = () => {
 	);
 };
 
-export default NewPaymentMethodOptions;
+export default PaymentMethodOptions;
