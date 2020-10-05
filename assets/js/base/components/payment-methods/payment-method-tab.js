@@ -8,6 +8,7 @@ import {
 	usePaymentMethodDataContext,
 } from '@woocommerce/base-context';
 import CheckboxControl from '@woocommerce/base-components/checkbox-control';
+import PropTypes from 'prop-types';
 
 /**
  * Internal dependencies
@@ -50,6 +51,11 @@ const PaymentMethodTab = ( { children, allowsSaving } ) => {
 			) }
 		</PaymentMethodErrorBoundary>
 	);
+};
+
+PaymentMethodTab.propTypes = {
+	allowsSaving: PropTypes.string,
+	children: PropTypes.node,
 };
 
 export default PaymentMethodTab;
