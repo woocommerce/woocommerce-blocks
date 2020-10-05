@@ -14,6 +14,16 @@ import CheckboxControl from '@woocommerce/base-components/checkbox-control';
  */
 import PaymentMethodErrorBoundary from './payment-method-error-boundary';
 
+/**
+ * Component used to render the contents of a payment method tab.
+ *
+ * @param {Object}  props              Incoming props for the component.
+ * @param {boolean} props.allowsSaving Whether that payment method allows saving
+ *                                     the data for future purchases.
+ * @param {Object}  props.children     Content of the payment method tab.
+ *
+ * @return {*} The rendered component.
+ */
 const PaymentMethodTab = ( { children, allowsSaving } ) => {
 	const { isEditor } = useEditorContext();
 	const {

@@ -20,6 +20,11 @@ import {
 import Tabs from '../tabs';
 import PaymentMethodTab from './payment-method-tab';
 
+/**
+ * Component used to render all non-saved payment method options.
+ *
+ * @return {*} The rendered component.
+ */
 const PaymentMethodOptions = () => {
 	const { setActivePaymentMethod } = usePaymentMethodDataContext();
 	const { paymentMethods } = usePaymentMethods();
