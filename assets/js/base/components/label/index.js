@@ -11,10 +11,10 @@ import classNames from 'classnames';
  * specified via props.
  *
  * @param {Object} props Incoming props for the component.
- * @param {string} props.label Label content.
- * @param {string} props.screenReaderLabel Content for screen readers.
- * @param {string} props.wrapperElement What element is used to wrap the label.
- * @param {Object} props.wrapperProps Props passed into wrapper element.
+ * @param {string} [props.label] Label content.
+ * @param {string} [props.screenReaderLabel] Content for screen readers.
+ * @param {string} [props.wrapperElement] What element is used to wrap the label.
+ * @param {Object} [props.wrapperProps] Props passed into wrapper element.
  */
 const Label = ( {
 	label,
