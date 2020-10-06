@@ -87,7 +87,7 @@ const getDefaultPaymentMethodOptions = (
 	};
 };
 
-const SavedPaymentMethodOptions = () => {
+const SavedPaymentMethodOptions = ( { onChange } ) => {
 	const { isEditor } = useEditorContext();
 	const {
 		setPaymentStatus,
@@ -154,8 +154,9 @@ const SavedPaymentMethodOptions = () => {
 	useEffect( () => {
 		if ( selectedToken && currentOptions.current.length > 0 ) {
 			updateToken( selectedToken );
+			onChange( selectedToken );
 		}
-	}, [ selectedToken, updateToken ] );
+	}, [ onChange, selectedToken, updateToken ] );
 
 	// In the editor, show `Use a new payment method` option as selected.
 	const selectedOption = isEditor ? '0' : selectedToken + '';
@@ -168,7 +169,10 @@ const SavedPaymentMethodOptions = () => {
 		<RadioControl
 			id={ 'wc-payment-method-saved-tokens' }
 			selected={ selectedOption }
-			onChange={ updateToken }
+			onChange={ ( token ) => {
+				updateToken( token );
+				onChange( token );
+			} }
 			options={ [ ...currentOptions.current, newPaymentMethodOption ] }
 		/>
 	) : null;
