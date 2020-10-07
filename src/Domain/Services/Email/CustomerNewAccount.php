@@ -102,7 +102,14 @@ class CustomerNewAccount extends \WC_Email {
 			// Generate a magic link so user can set initial password.
 			$key = get_password_reset_key( $this->object );
 			if ( ! is_wp_error( $key ) ) {
-				$this->set_password_url = wc_get_account_endpoint_url( 'lost-password' ) . "?action=rp&key=$key&login=" . rawurlencode( $this->object->user_login );
+				// In Woo 4.7 (tbc) and newer, we can use different `action` values
+				// to customise the "Lost password" page title.
+				// In older versions of Woo, we use lost-password endpoint as is.
+				$action = 'newaccount';
+				if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '4.7', '<' ) ) {
+					$action = 'rp';
+				}
+				$this->set_password_url = wc_get_account_endpoint_url( 'lost-password' ) . "?action=$action&key=$key&login=" . rawurlencode( $this->object->user_login );
 			}
 
 			$this->user_login = stripslashes( $this->object->user_login );
