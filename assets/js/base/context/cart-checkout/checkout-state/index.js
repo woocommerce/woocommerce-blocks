@@ -280,7 +280,7 @@ export const CheckoutStateProvider = ( {
 							dispatch( actions.setComplete( response ) );
 						} else {
 							// this will set an error which will end up
-							// triggering the onCheckoutAfterProcessingWithErrors emitter.
+							// triggering the onCheckoutAfterProcessingWithError emitter.
 							// and then setting checkout to IDLE state.
 							dispatch( actions.setHasError( true ) );
 						}
