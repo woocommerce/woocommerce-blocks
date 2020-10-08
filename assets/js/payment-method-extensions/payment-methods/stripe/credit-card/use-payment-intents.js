@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { useEffect } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * @typedef {import('@woocommerce/type-defs/registered-payment-method-props').EmitResponseProps} EmitResponseProps
@@ -60,12 +60,49 @@ const openIntentModal = ( stripe, paymentDetails, emitResponse ) => {
 		} );
 };
 
-export const usePaymentIntents = ( stripe, subscriber, emitResponse ) => {
+export const usePaymentIntents = (
+	stripe,
+	onCheckoutAfterProcessingWithSuccess,
+	onCheckoutAfterProcessingWithError,
+	emitResponse
+) => {
+	const [ error, setError ] = useState( null );
 	useEffect( () => {
-		const unsubscribe = subscriber( ( { processingResponse } ) => {
-			const paymentDetails = processingResponse.paymentDetails || {};
-			return openIntentModal( stripe, paymentDetails, emitResponse );
+		const unsubscribe = onCheckoutAfterProcessingWithSuccess(
+			async ( { processingResponse } ) => {
+				const paymentDetails = processingResponse.paymentDetails || {};
+				const response = await openIntentModal(
+					stripe,
+					paymentDetails,
+					emitResponse
+				);
+				if (
+					response.type === emitResponse.responseTypes.ERROR &&
+					response.retry
+				) {
+					setError( {
+						type: response.type,
+						message: response.message,
+						retry: response.retry,
+						messageContext: response.messageContext,
+					} );
+					return { type: response.type, retry: response.retry };
+				}
+
+				setError( null );
+				return response;
+			}
+		);
+		return () => unsubscribe();
+	}, [ onCheckoutAfterProcessingWithSuccess, setError, stripe ] );
+
+	useEffect( () => {
+		const unsubscribe = onCheckoutAfterProcessingWithError( () => {
+			if ( error ) {
+				return error;
+			}
+			return true;
 		} );
 		return () => unsubscribe();
-	}, [ subscriber, stripe ] );
+	}, [ error, onCheckoutAfterProcessingWithError ] );
 };
