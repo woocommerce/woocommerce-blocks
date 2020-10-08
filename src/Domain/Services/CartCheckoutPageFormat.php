@@ -33,7 +33,7 @@ class CartCheckoutPageFormat {
 					// which don't have numeric indices.
 					// This could break if Woo core $pages content changes,
 					// or if other extensions filter/modify this index.
-					$insert_after_index = $insert_after_index + 2;
+					$insert_after_index = $insert_after_index + 3;
 				}
 				$insert_after_index    = min( count( $pages ), $insert_after_index );
 				$checkout_format_items = self::get_checkout_format_items();
