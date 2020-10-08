@@ -123,6 +123,7 @@ class CreateAccount {
 		// Log the customer in and associate with the order.
 		wc_set_customer_auth_cookie( $customer_id );
 		$order->set_customer_id( get_current_user_id() );
+		$order->save();
 
 		return $customer_id;
 	}
