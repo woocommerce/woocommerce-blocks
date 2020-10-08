@@ -60,7 +60,14 @@ class CartCheckoutPageFormat {
 		$items[] = [
 			'title' => __( 'Cart and checkout format', 'woo-gutenberg-products-block' ),
 			'type'  => 'title',
-			'desc'  => __( 'Choose between block or shortcode formats. Learn more.', 'woo-gutenberg-products-block' ),
+
+			'desc'  => sprintf(
+				// Translators: %s Documentation url.
+				__( 'Choose between block or shortcode formats. <a href="%s">Learn more.</a>', 'woo-gutenberg-products-block' ),
+				'https://docs.woocommerce.com/document/cart-checkout-blocks-support-status/'
+			),
+
+			__( 'Choose between block or shortcode formats. Learn more.', 'woo-gutenberg-products-block' ),
 			'id'    => 'cart_checkout_format_options_title',
 		];
 
