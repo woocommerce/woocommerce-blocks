@@ -20,7 +20,7 @@ const Label = ( {
 	label,
 	screenReaderLabel,
 	wrapperElement,
-	wrapperProps,
+	wrapperProps = {},
 } ) => {
 	let Wrapper;
 
@@ -62,10 +62,6 @@ Label.propTypes = {
 	screenReaderLabel: PropTypes.node,
 	wrapperElement: PropTypes.elementType,
 	wrapperProps: PropTypes.object,
-};
-
-Label.defaultProps = {
-	wrapperProps: {},
 };
 
 export default Label;
