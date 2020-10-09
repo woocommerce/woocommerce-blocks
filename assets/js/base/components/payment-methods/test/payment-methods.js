@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import * as mockBaseHooks from '@woocommerce/base-hooks';
+import {
+	registerPaymentMethod,
+	__experimentalDeRegisterPaymentMethod,
+} from '@woocommerce/blocks-registry';
+import { PaymentMethodDataProvider } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -23,22 +27,36 @@ jest.mock( '../saved-payment-method-options', () => ( { onChange } ) => (
 	</>
 ) );
 
-jest.mock( '@woocommerce/base-hooks', () => ( {
-	...jest.requireActual( '@woocommerce/base-hooks' ),
-	usePaymentMethods: jest.fn(),
-} ) );
+const registerMockPaymentMethods = () => {
+	[ 'cheque' ].forEach( ( name ) => {
+		registerPaymentMethod(
+			( Config ) =>
+				new Config( {
+					name,
+					label: name,
+					content: <div>A payment method</div>,
+					edit: <div>A payment method</div>,
+					icons: null,
+					canMakePayment: () => true,
+					ariaLabel: name,
+				} )
+		);
+	} );
+};
+
+const resetMockPaymentMethods = () => {
+	[ 'cheque' ].forEach( ( name ) => {
+		__experimentalDeRegisterPaymentMethod( name );
+	} );
+};
 
 describe( 'PaymentMethods', () => {
-	afterEach( () => {
-		mockBaseHooks.usePaymentMethods.mockReset();
-	} );
-
 	test( 'should show no payment methods component when there are no payment methods', async () => {
-		mockBaseHooks.usePaymentMethods.mockImplementation( () => ( {
-			isInitialized: true,
-			paymentMethods: {},
-		} ) );
-		render( <PaymentMethods /> );
+		render(
+			<PaymentMethodDataProvider>
+				<PaymentMethods />
+			</PaymentMethodDataProvider>
+		);
 
 		await waitFor( () => {
 			const noPaymentMethods = screen.queryByText( /No payment methods/ );
@@ -47,21 +65,12 @@ describe( 'PaymentMethods', () => {
 	} );
 
 	test( 'should hide/show PaymentMethodOptions when a saved payment method is checked/unchecked', async () => {
-		mockBaseHooks.usePaymentMethods.mockImplementation( () => ( {
-			isInitialized: true,
-			paymentMethods: {
-				cheque: {
-					name: 'cheque',
-					label: 'Cheque',
-					content: <div>Cheque payment method</div>,
-					edit: <div>Cheque payment method</div>,
-					icons: null,
-					canMakePayment: () => true,
-					ariaLabel: 'Cheque',
-				},
-			},
-		} ) );
-		render( <PaymentMethods /> );
+		registerMockPaymentMethods();
+		render(
+			<PaymentMethodDataProvider>
+				<PaymentMethods />
+			</PaymentMethodDataProvider>
+		);
 
 		await waitFor( () => {
 			const savedPaymentMethodOptions = screen.queryByText(
@@ -99,5 +108,6 @@ describe( 'PaymentMethods', () => {
 			expect( savedPaymentMethodOptions ).not.toBeNull();
 			expect( paymentMethodOptions ).not.toBeNull();
 		} );
+		resetMockPaymentMethods();
 	} );
 } );
