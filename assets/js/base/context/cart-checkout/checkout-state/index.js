@@ -278,7 +278,10 @@ export const CheckoutStateProvider = ( {
 								: undefined;
 							addErrorNotice( response.message, errorOptions );
 						}
-						if ( ! response.retry ) {
+						if (
+							typeof response.retry !== 'undefined' &&
+							response.retry !== true
+						) {
 							dispatch( actions.setComplete( response ) );
 						} else {
 							// this will set an error which will end up
