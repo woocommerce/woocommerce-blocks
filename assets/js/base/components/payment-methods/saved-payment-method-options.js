@@ -9,6 +9,7 @@ import {
 } from '@woocommerce/base-context';
 import RadioControl from '@woocommerce/base-components/radio-control';
 import { getPaymentMethods } from '@woocommerce/blocks-registry';
+import PropTypes from 'prop-types';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').CustomerPaymentMethod} CustomerPaymentMethod
@@ -170,6 +171,10 @@ const SavedPaymentMethodOptions = ( { onChange } ) => {
 			options={ [ ...currentOptions.current, newPaymentMethodOption ] }
 		/>
 	) : null;
+};
+
+SavedPaymentMethodOptions.propTypes = {
+	onChange: PropTypes.func.isRequired,
 };
 
 export default SavedPaymentMethodOptions;
