@@ -174,6 +174,7 @@ const Component = () => {
 		isFailResponse,
 		noticeContexts,
 		responseTypes,
+		shouldRetry,
 	} = useEmitResponse;
 	return null;
 };
@@ -186,6 +187,7 @@ The properties of the object returned by this hook are:
     -   `PAYMENTS`: This is a reference to the notice area in the payment methods step.
     -   `EXPRESS_PAYMENTS`: This is a reference to the notice area in the express payment methods step.
 -   `responseTypes`: This is an object containing properties referencing the various response types that can be returned by observers for some event emitters. It makes it easier for autocompleting the types and avoiding typos due to human error. The types are `SUCCESS`, `FAIL`, `ERROR`. The values for these types also correspond to the [payment status types](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/34e17c3622637dbe8b02fac47b5c9b9ebf9e3596/src/Payments/PaymentResult.php#L21) from the [checkout endpoint response from the server](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/34e17c3622637dbe8b02fac47b5c9b9ebf9e3596/src/RestApi/StoreApi/Schemas/CheckoutSchema.php#L103-L113).
+-   `shouldRetry`: This is a function containing the logic whether the checkout flow should allow the user to retry the payment after a previous payment failed. It receives the `response` object and by default checks whether the `retry` property is true/undefined or false. Refer to the [`onCheckoutAfterProcessingWithSuccess`](#oncheckoutafterprocessingwithsuccess) documentation for more details.
 
 Note: `noticeContexts` and `responseTypes` are exposed to payment methods via the `emitResponse` prop given to their component:
 
