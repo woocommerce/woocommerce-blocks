@@ -13,9 +13,6 @@ import { PaymentMethodDataProvider } from '@woocommerce/base-context';
  */
 import PaymentMethods from '../payment-methods';
 
-jest.mock( '../no-payment-methods', () => () => (
-	<span>No payment methods</span>
-) );
 jest.mock( '../payment-method-options', () => () => (
 	<span>Payment method options</span>
 ) );
@@ -59,7 +56,9 @@ describe( 'PaymentMethods', () => {
 		);
 
 		await waitFor( () => {
-			const noPaymentMethods = screen.queryByText( /No payment methods/ );
+			const noPaymentMethods = screen.queryByText(
+				/no payment methods available/
+			);
 			expect( noPaymentMethods ).not.toBeNull();
 		} );
 	} );
