@@ -158,12 +158,6 @@ class Checkout extends AbstractRoute {
 		// Ensure order still matches cart.
 		$order_controller->update_order_from_cart( $order_object );
 
-		// If any form fields were posted, update the order.
-		$this->update_order_from_request( $order_object, $request );
-
-		// Check order is still valid.
-		$order_controller->validate_order_before_payment( $order_object );
-
 		// Create a new user account as necessary.
 		// Note - CreateAccount class includes feature gating logic (i.e. this
 		// may not create an account depending on build).
@@ -178,6 +172,11 @@ class Checkout extends AbstractRoute {
 				$this->handle_error( $error );
 			}
 		}
+		// If any form fields were posted, update the order.
+		$this->update_order_from_request( $order_object, $request );
+
+		// Check order is still valid.
+		$order_controller->validate_order_before_payment( $order_object );
 
 		// Persist customer address data to account.
 		$order_controller->sync_customer_data_with_order( $order_object );

@@ -115,15 +115,13 @@ class CreateAccount {
 		}
 
 		$customer_id = $this->create_customer_account(
-			$order->get_billing_email(),
-			$order->get_billing_first_name(),
-			$order->get_billing_last_name()
+			$request['billing_address']['email'],
+			$request['billing_address']['first_name'],
+			$request['billing_address']['last_name']
 		);
-
 		// Log the customer in and associate with the order.
 		wc_set_customer_auth_cookie( $customer_id );
 		$order->set_customer_id( get_current_user_id() );
-		$order->save();
 
 		return $customer_id;
 	}
