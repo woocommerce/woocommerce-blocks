@@ -29,10 +29,13 @@ class CartCheckoutPageFormat {
 					true
 				);
 				if ( $insert_after_index ) {
-					// This includes +2 fudge factor to account for SSL items
+					// This includes a fudge factor to account for SSL items
 					// which don't have numeric indices.
 					// This could break if Woo core $pages content changes,
 					// or if other extensions filter/modify this index.
+					// If that happened, the items would be rendered in the
+					// wrong place in the settings page, so should only be a UX/
+					// cosmetic issue.
 					$insert_after_index = $insert_after_index + 3;
 				}
 				$insert_after_index    = min( count( $pages ), $insert_after_index );
