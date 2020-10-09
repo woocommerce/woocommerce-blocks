@@ -57,6 +57,7 @@ export const useCheckoutSubscriptions = (
 		stripe,
 		onCheckoutAfterProcessingWithSuccess,
 		onCheckoutAfterProcessingWithError,
+		setSourceId,
 		emitResponse
 	);
 	usePaymentProcessing(

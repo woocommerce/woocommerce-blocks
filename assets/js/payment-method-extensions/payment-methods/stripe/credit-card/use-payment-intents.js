@@ -71,6 +71,7 @@ export const usePaymentIntents = (
 	stripe,
 	onCheckoutAfterProcessingWithSuccess,
 	onCheckoutAfterProcessingWithError,
+	setSourceId,
 	emitResponse
 ) => {
 	const [ error, setError ] = useState( null );
@@ -95,6 +96,7 @@ export const usePaymentIntents = (
 						retry: response.retry,
 						messageContext: response.messageContext,
 					} );
+					setSourceId( '0' );
 					return { type: response.type, retry: response.retry };
 				}
 
@@ -109,6 +111,7 @@ export const usePaymentIntents = (
 		emitResponse.responseTypes.ERROR,
 		emitResponse.responseTypes.SUCCESS,
 		setError,
+		setSourceId,
 		stripe,
 	] );
 
