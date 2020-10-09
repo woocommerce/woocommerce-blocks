@@ -42,11 +42,13 @@ class CreateAccount extends WP_UnitTestCase {
 		$test_request = new \WP_REST_Request();
 		$should_create_account = array_key_exists( 'should_create_account', $options ) ? $options['should_create_account'] : false;
 		$test_request->set_param( 'should_create_account', $should_create_account );
+		$test_request->set_param( 'billing_address', [
+			'email'      => $email,
+			'first_name' => $first_name,
+			'last_name'  => $last_name
+		]);
 
 		$test_order = new \WC_Order();
-		$test_order->set_billing_email( $email );
-		$test_order->set_billing_first_name( $first_name );
-		$test_order->set_billing_last_name( $last_name );
 
 		/// -- End test-specific setup.
 
