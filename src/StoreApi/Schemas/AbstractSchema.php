@@ -230,7 +230,7 @@ abstract class AbstractSchema {
 	 * @param int          $rounding_mode Defaults to the PHP_ROUND_HALF_UP constant.
 	 * @return string      The new amount.
 	 */
-	protected function prepare_money_response( $amount, $decimals = 2, $rounding_mode = PHP_ROUND_HALF_UP ) {
+	public function prepare_money_response( $amount, $decimals = 2, $rounding_mode = PHP_ROUND_HALF_UP ) {
 		return (string) intval(
 			round(
 				( (float) wc_format_decimal( $amount ) ) * ( 10 ** $decimals ),
