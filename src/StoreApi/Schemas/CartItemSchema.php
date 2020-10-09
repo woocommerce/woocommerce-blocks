@@ -278,7 +278,7 @@ class CartItemSchema extends ProductSchema {
 	public function get_item_response( $cart_item ) {
 		$product = $cart_item['data'];
 
-		return [
+		$item_data = [
 			'key'                  => $cart_item['key'],
 			'id'                   => $product->get_id(),
 			'quantity'             => wc_stock_amount( $cart_item['quantity'] ),
@@ -305,6 +305,9 @@ class CartItemSchema extends ProductSchema {
 				]
 			),
 		];
+
+		// This filter will be delete an replaced by a proper register mechanism, don't use it.
+		return apply_filters( '__internal_woocommerce_blocks_cart_item', $item_data, $cart_item, $product, $this );
 	}
 
 	/**
