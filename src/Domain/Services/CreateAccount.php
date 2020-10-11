@@ -32,12 +32,12 @@ class CreateAccount {
 	 * @return True if Checkout sign-up feature should be made available.
 	 */
 	private static function is_feature_enabled() {
-		// This new checkout signup flow is gated to dev builds for now.
-		// The main reason for this is that we are waiting on an new
-		// set-password endpoint/form in WooCommerce Core.
-		// When that's available we can review this and include in feature
-		// plugin alongside checkout block.
-		return Package::is_experimental_build();
+		// Checkout signup is feature gated to WooCommerce 4.7 and newer;
+		// uses updated my-account/lost-password screen from 4.7+ for
+		// setting initial password.
+		// Also currently gated to dev builds only.
+		$woo_47_or_newer = ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '4.7', '>=' ) );
+		return Package::is_experimental_build() && $woo_47_or_newer;
 	}
 
 	/**
