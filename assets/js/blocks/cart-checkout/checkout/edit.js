@@ -19,11 +19,7 @@ import {
 	CHECKOUT_PAGE_ID,
 	isExperimentalBuild,
 } from '@woocommerce/block-settings';
-import {
-	compareVersions,
-	getAdminLink,
-	getSetting,
-} from '@woocommerce/settings';
+import { compareWithWooVersion, getAdminLink } from '@woocommerce/settings';
 import { createInterpolateElement } from 'wordpress-element';
 import { useRef } from '@wordpress/element';
 import {
@@ -64,8 +60,7 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 	// setting initial password.
 	// Also currently gated to dev builds only.
 	const showCreateAccountOption =
-		isExperimentalBuild() &&
-		compareVersions( getSetting( 'wcVersion' ), '4.7', '>=' );
+		isExperimentalBuild() && compareWithWooVersion( '4.7.0', '<=' );
 	return (
 		<InspectorControls>
 			{ currentPostId !== CHECKOUT_PAGE_ID && (

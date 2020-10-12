@@ -27,7 +27,7 @@ import {
 	CHECKOUT_ALLOWS_GUEST,
 	isExperimentalBuild,
 } from '@woocommerce/block-settings';
-import { compareVersions, getSetting } from '@woocommerce/settings';
+import { compareWithWooVersion, getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -91,7 +91,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 	const allowCreateAccount =
 		attributes.allowCreateAccount &&
 		isExperimentalBuild() &&
-		compareVersions( getSetting( 'wcVersion' ), '4.7', '>=' );
+		compareWithWooVersion( '4.7.0', '<=' );
 
 	useEffect( () => {
 		if ( hasErrorsToDisplay ) {
