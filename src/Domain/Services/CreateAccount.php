@@ -36,15 +36,14 @@ class CreateAccount {
 		// uses updated my-account/lost-password screen from 4.7+ for
 		// setting initial password.
 		// Also currently gated to dev builds only.
-		$woo_47_or_newer = ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '4.7', '>=' ) );
-		return Package::is_experimental_build() && $woo_47_or_newer;
+		return Package::is_experimental_build();
 	}
 
 	/**
 	 * Init - register handlers for WooCommerce core email hooks.
 	 */
 	public function init() {
-		if ( ! self::is_feature_enabled() ) {
+		if ( ! self::is_feature_enabled() || defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '4.7', '<' ) ) {
 			return;
 		}
 
