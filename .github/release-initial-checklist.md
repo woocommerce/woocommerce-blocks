@@ -54,7 +54,7 @@ When creating testing notes, please write them from the perspective of a "user" 
 * [ ] Update version on the `trunk` branch to be for the next version of the plugin and include the `dev` suffix (e.g. something like [`2.6-dev`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/commit/e27f053e7be0bf7c1d376f5bdb9d9999190ce158)) for the next version.
 * [ ] Update the schedules p2 with the shipped date for the release (Pca54o-1N-p2).
 * [ ] Clean up the release milestone and Zenhub.
-  * [ ] Edit the GitHub milestone and add the current date as the due date (this is used to track ship date as well).
+  * [ ] Edit the [GitHub milestone](https://github.com/woocommerce/woocommerce-gutenberg-products-block/milestones) and add the current date as the due date (this is used to track ship date as well).
   * [ ] Close the milestone.
   * [ ] Remove any unfinished issues from the Zenhub epics completed by this release and then close the epics.
 
