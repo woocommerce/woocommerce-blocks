@@ -44,6 +44,7 @@ class CartCheckoutPageFormat {
 				return $pages;
 			}
 		);
+
 	}
 
 	/**
@@ -130,38 +131,14 @@ class CartCheckoutPageFormat {
 	}
 
 	/**
-	 * Get blocks from a woocommerce page.
-	 *
-	 * @param string $woo_page_name A woocommerce page e.g. `checkout` or `cart`.
-	 * @return array Array of blocks as returned by parse_blocks().
-	 */
-	private static function get_all_blocks_from_page( $woo_page_name ) {
-		$page_id = wc_get_page_id( $woo_page_name );
-
-		$page = get_post( $page_id );
-		if ( ! $page ) {
-			return array();
-		}
-
-		$blocks = parse_blocks( $page->post_content );
-		if ( ! $blocks ) {
-			return array();
-		}
-
-		return $blocks;
-	}
-
-	/**
 	 * Get all instances of the specified block on a specific woo page
 	 * (e.g. `cart` or `checkout` page).
 	 *
 	 * @param string $block_name The name (id) of a block, e.g. `woocommerce/cart`.
-	 * @param string $woo_page_name The woo page to search, e.g. `cart`.
+	 * @param array  $page_blocks Array of blocks returned by parse_blocks().
 	 * @return array Array of blocks as returned by parse_blocks().
 	 */
-	private static function get_blocks_from_page( $block_name, $woo_page_name ) {
-		$page_blocks = self::get_all_blocks_from_page( $woo_page_name );
-
+	private static function filter_blocks( $block_name, $page_blocks ) {
 		// Get any instances of the specified block.
 		return array_values(
 			array_filter(
@@ -174,43 +151,15 @@ class CartCheckoutPageFormat {
 	}
 
 	/**
-	 * Search for a  specific block type on a woocommerce page.
+	 * Search for a specified block type.
 	 *
 	 * @param string $block_name The name (id) of a block, e.g. `woocommerce/cart`.
-	 * @param string $woo_page_name The woo page to search, e.g. `cart`.
-	 * @return boolean True if page contains block.
+	 * @param array  $page_blocks Array of blocks returned by parse_blocks().
+	 * @return boolean True if the block is present.
 	 */
-	public static function page_contains_block( $block_name, $woo_page_name ) {
-		$blocks = self::get_blocks_from_page( $block_name, $woo_page_name );
-
-		return ( $blocks && count( $blocks ) );
-	}
-
-	/**
-	 * Search a specific post for text content.
-	 *
-	 * @param integer $post_id The id of the post to search.
-	 * @param string  $text    The text to search for.
-	 * @return booleam True if post contains $text.
-	 */
-	public static function post_contains_text( $post_id, $text ) {
-		global $wpdb;
-
-		// Search for the text anywhere in the post.
-		$wildcarded = "%{$text}%";
-
-		$result = $wpdb->get_var(
-			$wpdb->prepare(
-				"
-				SELECT COUNT( * ) FROM {$wpdb->prefix}posts
-				WHERE ID=%d
-				AND {$wpdb->prefix}posts.post_content LIKE %s
-				",
-				array( $post_id, $wildcarded )
-			)
-		);
-
-		return ( '0' !== $result );
+	private static function is_block_present( $block_name, $page_blocks ) {
+		$blocks = self::filter_blocks( $block_name, $page_blocks );
+		return ( $blocks && count( $blocks ) > 0 );
 	}
 
 	/**
@@ -218,32 +167,46 @@ class CartCheckoutPageFormat {
 	 *
 	 * Note: this code is adapted from WooCommerce core: https://github.com/woocommerce/woocommerce/blob/60d6510cb049836ae5c92482f0c8853436e42726/includes/class-wc-tracker.php#L755
 	 *
-	 * @return array Array with page ids and whether cart or checkout blocks/shortcodes are present.
+	 * @return array|boolean Array with page ids and whether cart or checkout
+	 * blocks/shortcodes are present.
 	 */
 	public function get_cart_checkout_status() {
+		$info = [
+			'cart_page_id'                              => 0,
+			'checkout_page_id'                          => 0,
+			'cart_page_contains_cart_shortcode'         => false,
+			'checkout_page_contains_checkout_shortcode' => false,
+			'cart_page_contains_cart_block'             => false,
+			'checkout_page_contains_checkout_block'     => false,
+		];
+
 		$cart_page_id     = wc_get_page_id( 'cart' );
 		$checkout_page_id = wc_get_page_id( 'checkout' );
 
-		return array(
-			'cart_page_id'                              => $cart_page_id,
-			'checkout_page_id'                          => $checkout_page_id,
-			'cart_page_contains_cart_shortcode'         => self::post_contains_text(
-				$cart_page_id,
-				'[woocommerce_cart]'
-			),
-			'checkout_page_contains_checkout_shortcode' => self::post_contains_text(
-				$checkout_page_id,
-				'[woocommerce_checkout]'
-			),
-			'cart_page_contains_cart_block'             => self::page_contains_block(
-				'woocommerce/cart',
-				'cart'
-			),
-			'checkout_page_contains_checkout_block'     => self::page_contains_block(
-				'woocommerce/checkout',
-				'checkout'
-			),
-		);
+		if ( ! $cart_page_id || ! $checkout_page_id ) {
+			return $info;
+		}
+
+		$info['cart_page_id']     = $cart_page_id;
+		$info['checkout_page_id'] = $checkout_page_id;
+
+		$cart_page     = get_post( $cart_page_id );
+		$checkout_page = get_post( $checkout_page_id );
+
+		if ( ! $cart_page || ! $checkout_page ) {
+			return $info;
+		}
+
+		$info['cart_page_contains_cart_shortcode']         = has_shortcode( $cart_page->post_content, 'woocommerce_cart' );
+		$info['checkout_page_contains_checkout_shortcode'] = has_shortcode( $checkout_page->post_content, 'woocommerce_checkout' );
+
+		$cart_page_blocks     = parse_blocks( $cart_page->post_content );
+		$checkout_page_blocks = parse_blocks( $checkout_page->post_content );
+
+		$info['cart_page_contains_cart_block']         = self::is_block_present( $cart_page_blocks, 'woocommerce/cart' );
+		$info['checkout_page_contains_checkout_block'] = self::is_block_present( $checkout_page_blocks, 'woocommerce/checkout' );
+
+		return $info;
 	}
 
 }
