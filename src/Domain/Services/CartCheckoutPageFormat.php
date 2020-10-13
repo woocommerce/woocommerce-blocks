@@ -11,6 +11,30 @@ class CartCheckoutPageFormat {
 	 */
 	public function init() {
 		add_action( 'admin_init', [ $this, 'admin_init' ] );
+
+		add_action(
+			'woocommerce_update_options_advanced',
+			function() {
+				$desired_cart_format     = $_POST['cart_checkout_format_options_cart_format'];
+				$desired_checkout_format = $_POST['cart_checkout_format_options_checkout_format'];
+
+				$info = self::get_cart_checkout_status();
+
+				if ( $desired_cart_format === 'shortcode' && ! $info['cart_page_contains_cart_shortcode'] ) {
+					// Coming soon.
+				} elseif ( $desired_cart_format === 'block' && ! $info['cart_page_contains_cart_block'] ) {
+					self::set_cart_page_format_block(
+						$info['cart_page']
+					);
+				}
+
+				if ( $desired_checkout_format === 'shortcode' && ! $info['checkout_page_contains_checkout_shortcode'] ) {
+					// Coming soon.
+				} elseif ( $desired_cart_format === 'block' && ! $info['checkout_page_contains_checkout_block'] ) {
+					// Coming soon.
+				}
+			}
+		);
 	}
 
 	/**
@@ -130,6 +154,31 @@ class CartCheckoutPageFormat {
 		return $items;
 	}
 
+	private static function set_cart_page_format_block( $cart_page ) {
+		$shortcode_block_start = '<\!\-\- wp:shortcode \-\->';
+		$shortcode_block_end   = '<\!\-\- \/wp:shortcode \-\->';
+		$shortcode_regex       = get_shortcode_regex( [ 'woocommerce_cart' ] );
+		$optional_whitespace   = '\s*';
+		$shortcode_block_regex = '/' .
+			$shortcode_block_start .
+			$optional_whitespace .
+			$shortcode_regex .
+			$optional_whitespace .
+			$shortcode_block_end .
+			'/';
+
+		$cart_block_content = '<!-- wp:woocommerce/cart --><div class="wp-block-woocommerce-cart is-loading"></div><!-- /wp:woocommerce/cart -->';
+
+		$cart_page->post_content = preg_replace(
+			$shortcode_block_regex,
+			$cart_block_content,
+			$cart_page->post_content
+		);
+
+		wp_update_post( $cart_page );
+		wp_save_post_revision( $cart_page->ID );
+	}
+
 	/**
 	 * Get all instances of the specified block on a specific woo page
 	 * (e.g. `cart` or `checkout` page).
@@ -196,6 +245,9 @@ class CartCheckoutPageFormat {
 		if ( ! $cart_page || ! $checkout_page ) {
 			return $info;
 		}
+
+		$info['cart_page']     = $cart_page;
+		$info['checkout_page'] = $checkout_page;
 
 		$info['cart_page_contains_cart_shortcode']         = has_shortcode( $cart_page->post_content, 'woocommerce_cart' );
 		$info['checkout_page_contains_checkout_shortcode'] = has_shortcode( $checkout_page->post_content, 'woocommerce_checkout' );
