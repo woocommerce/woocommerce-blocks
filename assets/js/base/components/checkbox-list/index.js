@@ -142,6 +142,7 @@ const CheckboxList = ( {
 		);
 	}, [
 		options,
+		onChange,
 		checked,
 		showExpanded,
 		limit,
