@@ -56,11 +56,11 @@ export const useQueryStateByContext = ( context ) => {
  * "Query State" is a wp.data store that keeps track of an arbitrary object of
  * query keys and their values.
  *
- * @param {*}      queryKey     The specific query key to retrieve the value for.
- * @param {*}      defaultValue Default value if query does not exist.
- * @param {string} [context]    What context to retrieve the query state for. If
- *                              not provided will attempt to use what is provided
- *                              by query state context.
+ * @param {*}      queryKey       The specific query key to retrieve the value for.
+ * @param {*}      [defaultValue] Default value if query does not exist.
+ * @param {string} [context]      What context to retrieve the query state for. If
+ *                                not provided will attempt to use what is provided
+ *                                by query state context.
  *
  * @return {*}  Whatever value is set at the query state index using the
  *              provided context and query key.
