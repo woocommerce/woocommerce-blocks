@@ -96,6 +96,11 @@ const announceLoadingCompletion = ( totalProducts ) => {
 	}
 };
 
+const areQueryTotalsDifferent = (
+	{ totalQuery: nextQuery, totalProducts: nextProducts },
+	{ totalQuery: currentQuery } = {}
+) => ! isEqual( nextQuery, currentQuery ) && Number.isFinite( nextProducts );
+
 const ProductList = ( {
 	attributes,
 	currentPage,
@@ -129,12 +134,7 @@ const ProductList = ( {
 	// the total number of products is a finite number.
 	const previousQueryTotals = usePrevious(
 		{ totalQuery, totalProducts },
-		(
-			{ totalQuery: nextQuery, totalProducts: nextProducts },
-			{ totalQuery: currentQuery } = {}
-		) =>
-			! isEqual( nextQuery, currentQuery ) &&
-			Number.isFinite( nextProducts )
+		areQueryTotalsDifferent
 	);
 	const isPreviousTotalQueryEqual =
 		typeof previousQueryTotals === 'object' &&
