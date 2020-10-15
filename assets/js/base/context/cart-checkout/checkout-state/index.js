@@ -10,7 +10,12 @@ import {
 	useEffect,
 	useCallback,
 } from '@wordpress/element';
-import { useStoreNotices, useEmitResponse } from '@woocommerce/base-hooks';
+import { __ } from '@wordpress/i18n';
+import {
+	useCheckoutNotices,
+	useStoreNotices,
+	useEmitResponse,
+} from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -102,6 +107,11 @@ export const CheckoutStateProvider = ( {
 		isFailResponse,
 		shouldRetry,
 	} = useEmitResponse();
+	const {
+		checkoutNotices,
+		paymentNotices,
+		expressPaymentNotices,
+	} = useCheckoutNotices();
 
 	// set observers on ref so it's always current.
 	useEffect( () => {
@@ -239,11 +249,30 @@ export const CheckoutStateProvider = ( {
 						// irrecoverable error so set complete
 						if ( ! shouldRetry( response ) ) {
 							dispatch( actions.setComplete( response ) );
-							return;
+						} else {
+							dispatch( actions.setIdle() );
 						}
-					}
+					} else {
+						if (
+							checkoutNotices.length === 0 &&
+							paymentNotices.length === 0 &&
+							expressPaymentNotices.length === 0
+						) {
+							// no error handling in place by anything so let's fall
+							// back to default
+							const message =
+								data.processingResponse?.message ||
+								__(
+									'Something went wrong. Please contact us to get assistance.',
+									'woo-gutenberg-products-block'
+								);
+							addErrorNotice( message, {
+								id: 'checkout',
+							} );
+						}
 
-					dispatch( actions.setIdle() );
+						dispatch( actions.setIdle() );
+					}
 				} );
 			} else {
 				emitEventWithAbort(
@@ -293,6 +322,8 @@ export const CheckoutStateProvider = ( {
 		isFailResponse,
 		isSuccessResponse,
 		shouldRetry,
+		paymentNotices,
+		expressPaymentNotices,
 	] );
 
 	const onSubmit = useCallback( () => {
