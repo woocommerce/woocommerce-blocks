@@ -292,6 +292,7 @@ export const CheckoutStateProvider = ( {
 		isErrorResponse,
 		isFailResponse,
 		isSuccessResponse,
+		shouldRetry,
 	] );
 
 	const onSubmit = useCallback( () => {
