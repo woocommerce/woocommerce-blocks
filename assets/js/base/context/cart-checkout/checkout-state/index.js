@@ -265,8 +265,8 @@ export const CheckoutStateProvider = ( {
 					} else {
 						if (
 							checkoutNotices.length === 0 &&
-							paymentNotices.length === 0 &&
-							expressPaymentNotices.length === 0
+							expressPaymentNotices.length === 0 &&
+							paymentNotices.length === 0
 						) {
 							// no error handling in place by anything so let's fall
 							// back to default
@@ -335,8 +335,8 @@ export const CheckoutStateProvider = ( {
 		isSuccessResponse,
 		shouldRetry,
 		checkoutNotices,
-		paymentNotices,
 		expressPaymentNotices,
+		paymentNotices,
 	] );
 
 	const onSubmit = useCallback( () => {
