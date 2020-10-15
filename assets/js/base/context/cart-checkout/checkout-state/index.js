@@ -15,6 +15,7 @@ import {
 	useCheckoutNotices,
 	useStoreNotices,
 	useEmitResponse,
+	usePrevious,
 } from '@woocommerce/base-hooks';
 
 /**
@@ -219,7 +220,16 @@ export const CheckoutStateProvider = ( {
 		dispatch,
 	] );
 
+	const previousStatus = usePrevious( checkoutState.status );
+	const previousHasError = usePrevious( checkoutState.hasError );
+
 	useEffect( () => {
+		if (
+			checkoutState.status === previousStatus &&
+			checkoutState.hasError === previousHasError
+		) {
+			return;
+		}
 		if ( checkoutState.status === STATUS.AFTER_PROCESSING ) {
 			const data = {
 				redirectUrl: checkoutState.redirectUrl,
@@ -316,12 +326,15 @@ export const CheckoutStateProvider = ( {
 		checkoutState.customerId,
 		checkoutState.customerNote,
 		checkoutState.processingResponse,
+		previousStatus,
+		previousHasError,
 		dispatchActions,
 		addErrorNotice,
 		isErrorResponse,
 		isFailResponse,
 		isSuccessResponse,
 		shouldRetry,
+		checkoutNotices,
 		paymentNotices,
 		expressPaymentNotices,
 	] );
