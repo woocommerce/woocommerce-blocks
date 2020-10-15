@@ -10,7 +10,6 @@ import {
 	useEffect,
 	useCallback,
 } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
 import { useStoreNotices, useEmitResponse } from '@woocommerce/base-hooks';
 
 /**
@@ -240,23 +239,11 @@ export const CheckoutStateProvider = ( {
 						// irrecoverable error so set complete
 						if ( ! shouldRetry( response ) ) {
 							dispatch( actions.setComplete( response ) );
-						} else {
-							dispatch( actions.setIdle() );
+							return;
 						}
-					} else {
-						// no error handling in place by anything so let's fall
-						// back to default
-						const message =
-							data.processingResponse?.message ||
-							__(
-								'Something went wrong. Please contact us to get assistance.',
-								'woo-gutenberg-products-block'
-							);
-						addErrorNotice( message, {
-							id: 'checkout',
-						} );
-						dispatch( actions.setIdle() );
 					}
+
+					dispatch( actions.setIdle() );
 				} );
 			} else {
 				emitEventWithAbort(

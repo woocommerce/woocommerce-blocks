@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect } from '@wordpress/element';
 
 /**
  * @typedef {import('@woocommerce/type-defs/registered-payment-method-props').EmitResponseProps} EmitResponseProps
@@ -69,59 +69,36 @@ const openIntentModal = ( {
 
 export const usePaymentIntents = (
 	stripe,
-	onCheckoutAfterProcessingWithSuccess,
-	onCheckoutAfterProcessingWithError,
+	subscriber,
 	setSourceId,
 	emitResponse
 ) => {
-	const [ error, setError ] = useState( null );
 	useEffect( () => {
-		const unsubscribe = onCheckoutAfterProcessingWithSuccess(
-			async ( { processingResponse } ) => {
-				const paymentDetails = processingResponse.paymentDetails || {};
-				const response = await openIntentModal( {
-					stripe,
-					paymentDetails,
-					errorContext: emitResponse.noticeContexts.PAYMENTS,
-					errorType: emitResponse.responseTypes.ERROR,
-					successType: emitResponse.responseTypes.SUCCESS,
-				} );
-				if (
-					response.type === emitResponse.responseTypes.ERROR &&
-					response.retry
-				) {
-					setError( {
-						type: response.type,
-						message: response.message,
-						retry: response.retry,
-						messageContext: response.messageContext,
-					} );
-					setSourceId( '0' );
-					return { type: response.type, retry: response.retry };
-				}
-
-				setError( null );
-				return response;
+		const unsubscribe = subscriber( async ( { processingResponse } ) => {
+			const paymentDetails = processingResponse.paymentDetails || {};
+			const response = await openIntentModal( {
+				stripe,
+				paymentDetails,
+				errorContext: emitResponse.noticeContexts.PAYMENTS,
+				errorType: emitResponse.responseTypes.ERROR,
+				successType: emitResponse.responseTypes.SUCCESS,
+			} );
+			if (
+				response.type === emitResponse.responseTypes.ERROR &&
+				response.retry
+			) {
+				setSourceId( '0' );
 			}
-		);
+
+			return response;
+		} );
 		return () => unsubscribe();
 	}, [
-		onCheckoutAfterProcessingWithSuccess,
+		subscriber,
 		emitResponse.noticeContexts.PAYMENTS,
 		emitResponse.responseTypes.ERROR,
 		emitResponse.responseTypes.SUCCESS,
-		setError,
 		setSourceId,
 		stripe,
 	] );
-
-	useEffect( () => {
-		const unsubscribe = onCheckoutAfterProcessingWithError( () => {
-			if ( error ) {
-				return error;
-			}
-			return true;
-		} );
-		return () => unsubscribe();
-	}, [ error, onCheckoutAfterProcessingWithError ] );
 };
