@@ -80,9 +80,9 @@ class CartCheckoutPageFormat {
 		$block_status = self::get_cart_checkout_status();
 
 		$block_shortcode_options = [
-			'block'     => 'Block',
-			'shortcode' => 'Shortcode',
-			'error'     => 'Unknown',
+			'block'     => __( 'Block', 'woo-gutenberg-products-block' ),
+			'shortcode' => __( 'Shortcode', 'woo-gutenberg-products-block' ),
+			'custom'    => __( 'Custom', 'woo-gutenberg-products-block' ),
 		];
 
 		$items[] = [
@@ -107,19 +107,13 @@ class CartCheckoutPageFormat {
 				__( '<a href="%s">Edit cart page</a>', 'woo-gutenberg-products-block' ),
 				get_edit_post_link( $block_status['cart_page_id'] )
 			);
-			$value = 'unknown';
-			if ( $block_status['cart_page_contains_cart_shortcode'] ) {
-				$value = 'shortcode';
-			} elseif ( $block_status['cart_page_contains_cart_block'] ) {
-				$value = 'block';
-			}
 		}
 		$items[]     = [
 			'title'   => __( 'Cart format', 'woo-gutenberg-products-block' ),
 			'desc'    => $description,
 			'type'    => 'select',
 			'id'      => 'cart_checkout_format_options_cart_format',
-			'value'   => $value,
+			'value'   => $block_status['cart_page_format'],
 			'options' => $block_shortcode_options,
 		];
 		$description = 'Checkout page is not set – select a page in the section above.';
@@ -130,19 +124,13 @@ class CartCheckoutPageFormat {
 				__( '<a href="%s">Edit checkout page</a>', 'woo-gutenberg-products-block' ),
 				get_edit_post_link( $block_status['checkout_page_id'] )
 			);
-			$value = 'unknown';
-			if ( $block_status['checkout_page_contains_checkout_shortcode'] ) {
-				$value = 'shortcode';
-			} elseif ( $block_status['checkout_page_contains_checkout_block'] ) {
-				$value = 'block';
-			}
 		}
 		$items[] = [
 			'title'   => __( 'Checkout format', 'woo-gutenberg-products-block' ),
 			'desc'    => $description,
 			'type'    => 'select',
 			'id'      => 'cart_checkout_format_options_checkout_format',
-			'value'   => $value,
+			'value'   => $block_status['checkout_page_format'],
 			'options' => $block_shortcode_options,
 		];
 
@@ -155,8 +143,8 @@ class CartCheckoutPageFormat {
 	}
 
 	private static function set_cart_page_format_block( $cart_page ) {
-		$shortcode_block_start = '<\!\-\- wp:shortcode \-\->';
-		$shortcode_block_end   = '<\!\-\- \/wp:shortcode \-\->';
+		$shortcode_block_start = self::block_start_regex( 'wp:shortcode' );
+		$shortcode_block_end   = self::block_end_regex( 'wp:shortcode' );
 		$shortcode_regex       = get_shortcode_regex( [ 'woocommerce_cart' ] );
 		$optional_whitespace   = '\s*';
 		$shortcode_block_regex = '/' .
@@ -211,6 +199,74 @@ class CartCheckoutPageFormat {
 		return ( $blocks && count( $blocks ) > 0 );
 	}
 
+
+	private static function block_start_regex( $block_type ) {
+		// TODO This needs to handle block attributes/props.
+		return '<\!\-\- wp:' . preg_quote( $block_type, '/' ) . ' \-\->';
+	}
+
+	private static function block_end_regex( $block_type ) {
+		return '<\!\-\- \/wp:' . preg_quote( $block_type, '/' ) . ' \-\->';
+	}
+
+	/**
+	 * Sniff page content and determine if it's a clean cart or checkout page,
+	 * and if so, whether it's using block or shortcode.
+	 *
+	 * If the page contains any other content, we return 'custom'.
+	 *
+	 * TODO this is a great candidate for unit tests.
+	 *
+	 * @return string 'block' | 'shortcode' | 'custom'
+	 */
+	private static function sniff_page_format( $page_content, $block_type, $shortcode ) {
+		$shortcode_block_start = self::block_start_regex( 'shortcode' );
+		$shortcode_block_end   = self::block_end_regex( 'shortcode' );
+		$shortcode_regex       = get_shortcode_regex( [ $shortcode ] );
+		$optional_whitespace   = '\s*';
+
+		// The target shortcode, with optional whitespace before/after.
+		$shortcode_matcher = '/^' .
+			$optional_whitespace .
+			$shortcode_regex .
+			$optional_whitespace .
+			'$/';
+
+		// The target shortcode, in a shortcode block, with optional whitespace between elements.
+		$shortcode_block_matcher = '/^' .
+			$optional_whitespace .
+			$shortcode_block_start .
+			$optional_whitespace .
+			$shortcode_regex .
+			$optional_whitespace .
+			$shortcode_block_end .
+			$optional_whitespace .
+			'$/s';
+
+		if ( preg_match( $shortcode_matcher, $page_content) || preg_match( $shortcode_block_matcher, $page_content)  ) {
+			return 'shortcode';
+		}
+
+		$target_block_start  = self::block_start_regex( $block_type );
+		$target_block_end    = self::block_end_regex( $block_type );
+		$wildcard            = '.*';
+
+		// The target block start/end tags, with any content between, and optional whitespace before/after.
+		$block_matcher = '/' .
+			$optional_whitespace .
+			$target_block_start .
+			$wildcard .
+			$target_block_end .
+			$optional_whitespace .
+			'/s';
+
+		if ( preg_match( $block_matcher, $page_content ) ) {
+			return 'block';
+		}
+
+		return 'custom';
+	}
+
 	/**
 	 * Get info about what blocks & shortcodes are used on the cart & checkout pages.
 	 *
@@ -257,6 +313,9 @@ class CartCheckoutPageFormat {
 
 		$info['cart_page_contains_cart_block']         = self::is_block_present( $cart_page_blocks, 'woocommerce/cart' );
 		$info['checkout_page_contains_checkout_block'] = self::is_block_present( $checkout_page_blocks, 'woocommerce/checkout' );
+
+		$info['cart_page_format'] = self::sniff_page_format( $cart_page->post_content, 'woocommerce/cart', 'woocommerce_cart' );
+		$info['checkout_page_format'] = self::sniff_page_format( $checkout_page->post_content, 'woocommerce/checkout', 'woocommerce_checkout' );
 
 		return $info;
 	}
