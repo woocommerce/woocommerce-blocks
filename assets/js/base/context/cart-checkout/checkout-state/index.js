@@ -263,11 +263,17 @@ export const CheckoutStateProvider = ( {
 							dispatch( actions.setIdle() );
 						}
 					} else {
-						if (
-							checkoutNotices.length === 0 &&
-							expressPaymentNotices.length === 0 &&
-							paymentNotices.length === 0
-						) {
+						const hasErrorNotices =
+							checkoutNotices.some(
+								( notice ) => notice.status === 'error'
+							) ||
+							expressPaymentNotices.some(
+								( notice ) => notice.status === 'error'
+							) ||
+							paymentNotices.some(
+								( notice ) => notice.status === 'error'
+							);
+						if ( ! hasErrorNotices ) {
 							// no error handling in place by anything so let's fall
 							// back to default
 							const message =
