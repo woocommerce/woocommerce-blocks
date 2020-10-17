@@ -36,7 +36,9 @@ jobs:
         npm install
         npm run build
     - name: Lint JavaScript
-      run: npm run lint:js
+      uses: tinovyatkin/action-eslint@v1
+      with:
+        repo-token: ${{secrets.GITHUB_TOKEN}}
     - name: Lint CSS
       run: npm run lint:css
-      
+
