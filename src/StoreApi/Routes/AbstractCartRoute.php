@@ -13,7 +13,7 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	 * Get the route response based on the type of request.
 	 *
 	 * @param \WP_REST_Request $request Request object.
-	 * @return \WP_Error|\WP_REST_Response
+	 * @return
 	 */
 	public function get_response( \WP_REST_Request $request ) {
 		$this->maybe_load_cart();
