@@ -39,7 +39,7 @@ jobs:
       uses: tinovyatkin/action-eslint@v1
       with:
         repo-token: ${{secrets.GITHUB_TOKEN}}
-        check-name: JavaScript
+        check-name: All
     - name: Lint CSS
       run: npm run lint:css
 
