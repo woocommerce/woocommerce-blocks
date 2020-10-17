@@ -19,8 +19,7 @@ import { useStoreNotices } from './use-store-notices';
 /**
  * Get the quantity of a product in the cart.
  *
- * @param {Object} Array of items.
- * @param cartItems
+ * @param {Object} cartItems Array of items.
  * @param {number} productId  The product id to look for.
  * @return {number} Quantity in the cart.
  */
@@ -35,7 +34,7 @@ const getQuantityFromCartItems = ( cartItems, productId ) => {
  * action for adding a single quantity of the product _to_ the cart.
  *
  *
- * @param {} productId  The product id to be added to the cart.
+ * @param {number} productId  The product id to be added to the cart.
  *
  * @return {StoreCartItemAddToCart} An object exposing data and actions relating
  *                                  to add to cart functionality.
