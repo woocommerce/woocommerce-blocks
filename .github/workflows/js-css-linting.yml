@@ -30,11 +30,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-
-    - name: Npm install and build
+    - name: Npm install
       run: |
         npm install
-        npm run build
     - name: Lint JavaScript
       uses: bradennapier/eslint-plus-action@v3.4.2
     - name: Lint CSS
