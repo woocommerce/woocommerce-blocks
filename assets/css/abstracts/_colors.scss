@@ -1,3 +1,5 @@
+@import "node_modules/@automattic/color-studio/dist/color-variables";
+
 // Greys
 $core-grey-light-100: #f8f9f9;
 $core-grey-light-200: #f3f4f5;
@@ -21,15 +23,18 @@ $core-grey-dark-900: #191e23;
 $gray-text: $core-grey-dark-500;
 
 // WooCommerce Purples
-$woocommerce-100: #ffd7ff;
-$woocommerce-200: #e2a5d7;
-$woocommerce-300: #c88bbd;
-$woocommerce-400: #af72a4;
-$woocommerce-500: #95588a;
-$woocommerce-600: #7c3f71;
-$woocommerce-700: #622557;
-$woocommerce-800: #490c3e;
-$woocommerce-900: #2f0024;
+$woocommerce-0: $studio-purple-0;
+$woocommerce-50: $studio-purple-5;
+$woocommerce-100: $studio-purple-10;
+$woocommerce-200: $studio-purple-20;
+$woocommerce-300: $studio-purple-30;
+$woocommerce-400: $studio-purple-40;
+$woocommerce-500: $studio-purple-50;
+$woocommerce-600: $studio-purple-60;
+$woocommerce-700: $studio-purple-70;
+$woocommerce-800: $studio-purple-80;
+$woocommerce-900: $studio-purple-90;
+$woocommerce-1000: $studio-purple-100;
 $woocommerce: $woocommerce-500;
 
 $wp-admin-background: #f1f1f1;

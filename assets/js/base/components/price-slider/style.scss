@@ -65,7 +65,7 @@
 			left: 0;
 			top: 0;
 			--track-background: linear-gradient(to right, transparent var(--low), var(--range-color) 0, var(--range-color) var(--high), transparent 0) no-repeat 0 100% / 100% 100%;
-			--range-color: #a8739d;
+			--range-color: #{$woocommerce-400};
 			/*rtl:ignore*/
 			background: var(--track-background);
 		}
@@ -203,7 +203,7 @@
 .rtl {
 	.wc-block-components-price-slider .wc-block-components-price-slider__range-input-wrapper .wc-block-components-price-slider__range-input-progress {
 		--track-background: linear-gradient(to left, transparent var(--low), var(--range-color) 0, var(--range-color) var(--high), transparent 0) no-repeat 0 100% / 100% 100%;
-		--range-color: #a8739d;
+		--range-color: #{$woocommerce-400};
 		background: var(--track-background);
 	}
 }
@@ -216,7 +216,7 @@
 			height: 24px;
 
 			.wc-block-components-price-slider__range-input-progress {
-				background: #a8739d;
+				background: #{$woocommerce-400};
 				box-shadow: 0 0 0 1px inset $woocommerce-500;
 				width: 100%;
 				top: 7px;
