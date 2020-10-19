@@ -226,7 +226,7 @@ class CartCheckoutPageFormat {
 	 * @param string $shortcode    Shortcode to search for, e.g. woocommerce_cart.
 	 * @return string 'block' | 'shortcode' | 'custom'
 	 */
-	private static function sniff_page_format( $page_content, $block_type, $shortcode ) {
+	public static function sniff_page_format( $page_content, $block_type, $shortcode ) {
 		$shortcode_block_start = self::block_start_regex( 'shortcode' );
 		$shortcode_block_end   = self::block_end_regex( 'shortcode' );
 		$shortcode_regex       = get_shortcode_regex( [ $shortcode ] );
