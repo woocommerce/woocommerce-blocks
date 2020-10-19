@@ -1,6 +1,7 @@
 @import "node_modules/@wordpress/base-styles/colors";
 @import "node_modules/@automattic/color-studio/dist/color-variables";
 
+// @todo remove when `@woocommerce/base-styles` is updated.
 // Greys
 $black: #000;			// Use only when you truly need pure black. For UI, use $gray-900.
 $gray-100: #f0f0f0;		// Used for light gray backgrounds.
