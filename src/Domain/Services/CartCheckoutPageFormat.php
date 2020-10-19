@@ -20,17 +20,17 @@ class CartCheckoutPageFormat {
 
 				$info = self::get_cart_checkout_status();
 
-				if ( $desired_cart_format === 'shortcode' && ! $info['cart_page_contains_cart_shortcode'] ) {
+				if ( $desired_cart_format === 'shortcode' && $info['cart_page_format'] !== 'shortcode' ) {
 					// Coming soon.
-				} elseif ( $desired_cart_format === 'block' && ! $info['cart_page_contains_cart_block'] ) {
+				} elseif ( $desired_cart_format === 'block' && $info['cart_page_format'] !== 'block' ) {
 					self::set_cart_page_format_block(
 						$info['cart_page']
 					);
 				}
 
-				if ( $desired_checkout_format === 'shortcode' && ! $info['checkout_page_contains_checkout_shortcode'] ) {
+				if ( $desired_checkout_format === 'shortcode' && $info['checkout_page_format'] !== 'shortcode' ) {
 					// Coming soon.
-				} elseif ( $desired_cart_format === 'block' && ! $info['checkout_page_contains_checkout_block'] ) {
+				} elseif ( $desired_checkout_format === 'block' && $info['checkout_page_format'] !== 'block' ) {
 					// Coming soon.
 				}
 			}
@@ -279,6 +279,12 @@ class CartCheckoutPageFormat {
 		$info = [
 			'cart_page_id'                              => 0,
 			'checkout_page_id'                          => 0,
+			'cart_page_format'                          => 'custom',
+			'checkout_page_format'                      => 'custom',
+			// We're also returning these values, similar to the values in
+			// wc-tracker (see doc block above). Before merging this PR,
+			// evaluate if we should share code with core for these values.
+			// This PR uses a more robust & flexible technique (regex + has_shortcode).
 			'cart_page_contains_cart_shortcode'         => false,
 			'checkout_page_contains_checkout_shortcode' => false,
 			'cart_page_contains_cart_block'             => false,
