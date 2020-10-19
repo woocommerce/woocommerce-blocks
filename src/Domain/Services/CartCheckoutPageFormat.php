@@ -15,9 +15,9 @@ class CartCheckoutPageFormat {
 		add_action(
 			'woocommerce_update_options_advanced',
 			function() {
+				// TODO Is this actually required? I suspect that woo is bailing for bad nonce before firing hook.
 				$nonce = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 				if ( ! wp_verify_nonce( $nonce, 'woocommerce-settings' ) ) {
-					// TODO Show a notice for nonce failure?
 					return;
 				}
 
