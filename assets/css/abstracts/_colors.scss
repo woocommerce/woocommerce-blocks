@@ -1,42 +1,22 @@
+@import "node_modules/@wordpress/base-styles/colors";
 @import "node_modules/@automattic/color-studio/dist/color-variables";
 
 // Greys
-$core-grey-light-100: #f8f9f9;
-$core-grey-light-200: #f3f4f5;
-$core-grey-light-300: #edeff0;
-$core-grey-light-400: #e8eaeb;
-$core-grey-light-500: #e2e4e7;
-$core-grey-light-600: #d7dade;
-$core-grey-light-700: #ccd0d4;
-$core-grey-light-800: #b5bcc2;
-$core-grey-light-900: #a2aab2;
-$core-grey-dark-100: #86909b;
-$core-grey-dark-200: #78848f;
-$core-grey-dark-300: #6c7781; // This & below have 4.5+ contrast against white
-$core-grey-dark-400: #606a73;
-$core-grey-dark-500: #555d66;
-$core-grey-dark-600: #40464d;
-$core-grey-dark-700: #32373c;
-$core-grey-dark-800: #23282d;
-$core-grey-dark-900: #191e23;
+$gray-100: #f0f0f0;		// Used for light gray backgrounds.
+$gray-200: #e0e0e0;		// Used sparingly for light borders.
+$gray-300: #ddd;		// Used for most borders.
+$gray-400: #ccc;
+$gray-600: #949494;		// Meets 3:1 UI or large text contrast against white.
+$gray-700: #757575;		// Meets 4.6:1 text contrast against white.
+$gray-900: #1e1e1e;
 
-$gray-text: $core-grey-dark-500;
-
-$wp-admin-background: #f1f1f1;
 $black: #24292d; // same as wp-admin sidebar
-
 $white: #fff;
 
 // Bright colors
 $no-stock-color: $alert-red;
 $low-stock-color: $alert-yellow;
 $in-stock-color: $alert-green;
-
-$gray-10: #c3c4c7;
-$gray-20: #a7aaad;
-$gray-50: #646970;
-$gray-60: #50575e;
-$gray-80: #2c3338;
 
 $input-border-gray: #8d96a0;
 $input-border-dark: rgba(255, 255, 255, 0.4);
