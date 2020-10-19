@@ -58,6 +58,45 @@ class CartCheckoutPageFormat extends TestCase {
 				'woocommerce_cart',
 				'block'
 			],
+			// Block cart page, no inner blocks, extra whitespace.
+			[
+				'  <!-- wp:woocommerce/cart -->  		  <!-- /wp:woocommerce/cart -->  ',
+				'woocommerce/cart',
+				'woocommerce_cart',
+				'block'
+			],
+			// Shortcode block cart page.
+			[
+				'<!-- wp:shortcode -->
+[woocommerce_cart]
+<!-- /wp:shortcode -->',
+				'woocommerce/cart',
+				'woocommerce_cart',
+				'shortcode'
+			],
+			// Classic shortcode cart page.
+			[
+				'[woocommerce_cart]',
+				'woocommerce/cart',
+				'woocommerce_cart',
+				'shortcode'
+			],
+			// Shortcode block cart page with whitespace.
+			[
+				'  <!-- wp:shortcode -->
+   	  	 [woocommerce_cart]
+  <!-- /wp:shortcode -->				',
+				'woocommerce/cart',
+				'woocommerce_cart',
+				'shortcode'
+			],
+			// Full shortcode format cart page with whitespace.
+			[
+				'  [woocommerce_cart]  [/woocommerce_cart]   ',
+				'woocommerce/cart',
+				'woocommerce_cart',
+				'shortcode'
+			],
 		];
 	}
 
