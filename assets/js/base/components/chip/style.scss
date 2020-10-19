@@ -55,7 +55,7 @@ button.wc-block-components-chip:hover > .wc-block-components-chip__remove,
 button.wc-block-components-chip:focus > .wc-block-components-chip__remove,
 .wc-block-components-chip__remove:hover,
 .wc-block-components-chip__remove:focus {
-	fill: #d94f4f;
+	fill: $error-red;
 }
 
 button.wc-block-components-chip:disabled > .wc-block-components-chip__remove,
