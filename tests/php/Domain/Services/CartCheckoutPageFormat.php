@@ -18,6 +18,7 @@ class CartCheckoutPageFormat extends TestCase {
 	 *
 	 * @dataProvider block_cart_page_data
 	 * @dataProvider shortcode_cart_page_data
+	 * @dataProvider custom_cart_page_data
 	 */
 	public function test_sniff_page_format( $page_content, $block_type, $shortcode, $expected_format ) {
 		$result = TestedCartCheckoutPageFormat::sniff_page_format( $page_content, $block_type, $shortcode );
@@ -67,6 +68,46 @@ class CartCheckoutPageFormat extends TestCase {
 	}
 
 	public function shortcode_cart_page_data() {
+		return [
+			// Shortcode block AND cart block cart page.
+// 			[
+// 				'<!-- wp:shortcode -->
+// [woocommerce_cart]
+// <!-- /wp:shortcode --> <!-- wp:woocommerce/cart -->  		  <!-- /wp:woocommerce/cart -->',
+// 				'woocommerce/cart',
+// 				'woocommerce_cart',
+// 				'custom'
+// 			],
+			// Classic shortcode cart page with a heading and paragraph.
+			[
+				'<h1>Buy now!</h1>
+[woocommerce_cart],
+<p>Click proceed to pay and get your stuff!</p>',
+				'woocommerce/cart',
+				'woocommerce_cart',
+				'custom'
+			],
+			// Shortcode block page with the wrong shortcode (checkout instead of block).
+			[
+				'  <!-- wp:shortcode -->
+   	  	 [woocommerce_checkout]
+  <!-- /wp:shortcode -->				',
+				'woocommerce/cart',
+				'woocommerce_cart',
+				'custom'
+			],
+			// Full shortcode format with broken terminator.
+			[
+				'  [woocommerce_cart]  [/woocommerce_car]   ',
+				'woocommerce/cart',
+				'woocommerce_cart',
+				'custom'
+			],
+		];
+	}
+
+
+	public function custom_cart_page_data() {
 		return [
 			// Shortcode block cart page.
 			[
