@@ -16,7 +16,8 @@ class CartCheckoutPageFormat extends TestCase {
 	/**
 	 * Test sniff_page_format().
 	 *
-	 * @dataProvider sniff_page_format_data
+	 * @dataProvider block_cart_page_data
+	 * @dataProvider shortcode_cart_page_data
 	 */
 	public function test_sniff_page_format( $page_content, $block_type, $shortcode, $expected_format ) {
 		$result = TestedCartCheckoutPageFormat::sniff_page_format( $page_content, $block_type, $shortcode );
@@ -24,10 +25,7 @@ class CartCheckoutPageFormat extends TestCase {
 		$this->assertEquals( $expected_format, $result );
 	}
 
-	/**
-	 * Test data for sniff_page_format().
-	 */
-	public function sniff_page_format_data() {
+	public function block_cart_page_data() {
 		return [
 			// Typical/default block cart page.
 			[
@@ -65,6 +63,11 @@ class CartCheckoutPageFormat extends TestCase {
 				'woocommerce_cart',
 				'block'
 			],
+		];
+	}
+
+	public function shortcode_cart_page_data() {
+		return [
 			// Shortcode block cart page.
 			[
 				'<!-- wp:shortcode -->
