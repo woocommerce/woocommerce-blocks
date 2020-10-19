@@ -109,14 +109,14 @@
 	}
 
 	.wc-block-gateway-input.has-error {
-		border-color: $error-red;
+		border-color: $alert-red;
 		&:focus {
-			outline-color: $error-red;
+			outline-color: $alert-red;
 		}
 	}
 
 	.wc-block-gateway-input.has-error + label {
-		color: $error-red;
+		color: $alert-red;
 	}
 }
 

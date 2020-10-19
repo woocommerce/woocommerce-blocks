@@ -28,11 +28,9 @@ $black: #24292d; // same as wp-admin sidebar
 $white: #fff;
 
 // Bright colors
-$valid-green: #4ab866;
-$notice-yellow: #ffb900;
-$error-red: #d94f4f;
-$box-shadow-blue: #5b9dd9;
-$core-orange: #ca4a1f;
+$no-stock-color: $alert-red;
+$low-stock-color: $alert-yellow;
+$in-stock-color: $alert-green;
 
 $gray-10: #c3c4c7;
 $gray-20: #a7aaad;
