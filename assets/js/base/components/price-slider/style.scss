@@ -49,46 +49,6 @@
 .wc-block-components-price-slider {
 	margin-bottom: $gap-large;
 
-	.wc-block-components-price-slider__range-input-wrapper {
-		@include reset;
-		height: 9px;
-		clear: both;
-		position: relative;
-		box-shadow: 0 0 0 1px inset rgba(0, 0, 0, 0.1);
-		background: #e1e1e1;
-		margin: 15px 0;
-
-		.wc-block-components-price-slider__range-input-progress {
-			height: 9px;
-			width: 100%;
-			position: absolute;
-			left: 0;
-			top: 0;
-			--track-background: linear-gradient(to right, transparent var(--low), var(--range-color) 0, var(--range-color) var(--high), transparent 0) no-repeat 0 100% / 100% 100%;
-			--range-color: #{$woocommerce-400};
-			/*rtl:ignore*/
-			background: var(--track-background);
-		}
-	}
-
-	.wc-block-components-price-slider__controls {
-		display: flex;
-
-		.wc-block-components-price-slider__amount {
-			margin: 0;
-			border-radius: 4px;
-			width: auto;
-			max-width: 100px;
-			min-width: 0;
-
-			&.wc-block-components-price-slider__amount--min {
-				margin-right: 10px;
-			}
-			&.wc-block-components-price-slider__amount--max {
-				margin-left: auto;
-			}
-		}
-	}
 	&.wc-block-components-price-slider--has-filter-button {
 		.wc-block-components-price-slider__controls {
 			justify-content: flex-end;
@@ -96,87 +56,6 @@
 			.wc-block-components-price-slider__amount.wc-block-components-price-slider__amount--max {
 				margin-left: 0;
 				margin-right: 10px;
-			}
-		}
-	}
-	.wc-block-components-price-slider__range-input {
-		@include reset;
-		width: 100%;
-		height: 0;
-		display: block;
-		position: relative;
-		pointer-events: none;
-		outline: none !important;
-
-		&::-webkit-slider-runnable-track {
-			@include track;
-		}
-		&::-webkit-slider-thumb {
-			@include thumb;
-			margin: -6px 0 0 0;
-		}
-		&::-webkit-slider-progress {
-			@include reset;
-		}
-
-		&::-moz-focus-outer {
-			border: 0;
-		}
-		&::-moz-range-track {
-			@include track;
-		}
-		&::-moz-range-progress {
-			@include reset;
-		}
-		&::-moz-range-thumb {
-			@include thumb;
-		}
-
-		&::-ms-thumb {
-			@include thumb;
-		}
-
-		&:focus {
-			&::-webkit-slider-thumb {
-				@include thumbFocus;
-			}
-			&::-moz-range-thumb {
-				@include thumbFocus;
-			}
-			&::-ms-thumb {
-				@include thumbFocus;
-			}
-		}
-
-		&.wc-block-components-price-slider__range-input--min {
-			z-index: 21;
-
-			&::-webkit-slider-thumb {
-				margin-left: -2px;
-				background-position-x: left;
-			}
-			&::-moz-range-thumb {
-				background-position-x: left;
-				transform: translate(-2px, 4px);
-			}
-			&::-ms-thumb {
-				background-position-x: left;
-			}
-		}
-
-		&.wc-block-components-price-slider__range-input--max {
-			z-index: 20;
-
-			&::-webkit-slider-thumb {
-				background-position-x: right;
-				margin-left: 2px;
-			}
-			&::-moz-range-thumb {
-				background-position-x: right;
-				transform: translate(2px, 4px);
-			}
-			&::-ms-thumb {
-				background-position-x: right;
 			}
 		}
 	}
@@ -200,8 +79,130 @@
 	}
 }
 
+.wc-block-components-price-slider__range-input-wrapper {
+	@include reset;
+	height: 9px;
+	clear: both;
+	position: relative;
+	box-shadow: 0 0 0 1px inset rgba(0, 0, 0, 0.1);
+	background: #e1e1e1;
+	margin: 15px 0;
+}
+
+.wc-block-components-price-slider__range-input-progress {
+	height: 9px;
+	width: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	--track-background: linear-gradient(to right, transparent var(--low), var(--range-color) 0, var(--range-color) var(--high), transparent 0) no-repeat 0 100% / 100% 100%;
+	--range-color: #{$woocommerce-400};
+	/*rtl:ignore*/
+	background: var(--track-background);
+}
+
+.wc-block-components-price-slider__controls {
+	display: flex;
+
+	.wc-block-components-price-slider__amount {
+		margin: 0;
+		border-radius: 4px;
+		width: auto;
+		max-width: 100px;
+		min-width: 0;
+
+		&.wc-block-components-price-slider__amount--min {
+			margin-right: 10px;
+		}
+		&.wc-block-components-price-slider__amount--max {
+			margin-left: auto;
+		}
+	}
+}
+.wc-block-components-price-slider__range-input {
+	@include reset;
+	width: 100%;
+	height: 0;
+	display: block;
+	position: relative;
+	pointer-events: none;
+	outline: none !important;
+
+	&::-webkit-slider-runnable-track {
+		@include track;
+	}
+	&::-webkit-slider-thumb {
+		@include thumb;
+		margin: -6px 0 0 0;
+	}
+	&::-webkit-slider-progress {
+		@include reset;
+	}
+
+	&::-moz-focus-outer {
+		border: 0;
+	}
+	&::-moz-range-track {
+		@include track;
+	}
+	&::-moz-range-progress {
+		@include reset;
+	}
+	&::-moz-range-thumb {
+		@include thumb;
+	}
+
+	&::-ms-thumb {
+		@include thumb;
+	}
+
+	&:focus {
+		&::-webkit-slider-thumb {
+			@include thumbFocus;
+		}
+		&::-moz-range-thumb {
+			@include thumbFocus;
+		}
+		&::-ms-thumb {
+			@include thumbFocus;
+		}
+	}
+
+	&.wc-block-components-price-slider__range-input--min {
+		z-index: 21;
+
+		&::-webkit-slider-thumb {
+			margin-left: -2px;
+			background-position-x: left;
+		}
+		&::-moz-range-thumb {
+			background-position-x: left;
+			transform: translate(-2px, 4px);
+		}
+		&::-ms-thumb {
+			background-position-x: left;
+		}
+	}
+
+	&.wc-block-components-price-slider__range-input--max {
+		z-index: 20;
+
+		&::-webkit-slider-thumb {
+			background-position-x: right;
+			margin-left: 2px;
+		}
+		&::-moz-range-thumb {
+			background-position-x: right;
+			transform: translate(2px, 4px);
+		}
+		&::-ms-thumb {
+			background-position-x: right;
+		}
+	}
+}
+
 .rtl {
-	.wc-block-components-price-slider .wc-block-components-price-slider__range-input-wrapper .wc-block-components-price-slider__range-input-progress {
+	.wc-block-components-price-slider__range-input-progress {
 		--track-background: linear-gradient(to left, transparent var(--low), var(--range-color) 0, var(--range-color) var(--high), transparent 0) no-repeat 0 100% / 100% 100%;
 		--range-color: #{$woocommerce-400};
 		background: var(--track-background);
@@ -209,74 +210,71 @@
 }
 
 @mixin ie {
-	.wc-block-components-price-slider {
-		.wc-block-components-price-slider__range-input-wrapper {
+	.wc-block-components-price-slider__range-input-wrapper {
+		background: transparent;
+		box-shadow: none;
+		height: 24px;
+	}
+	.wc-block-components-price-slider__range-input-progress {
+		background: #{$woocommerce-400};
+		box-shadow: 0 0 0 1px inset $woocommerce-500;
+		width: 100%;
+		top: 7px;
+	}
+	.wc-block-components-price-slider__range-input {
+		height: 24px;
+		pointer-events: auto;
+		position: absolute;
+		left: 0;
+		top: 0;
+
+		&::-ms-track {
+			/*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
 			background: transparent;
-			box-shadow: none;
-			height: 24px;
 
-			.wc-block-components-price-slider__range-input-progress {
-				background: #{$woocommerce-400};
-				box-shadow: 0 0 0 1px inset $woocommerce-500;
-				width: 100%;
-				top: 7px;
-			}
+			/*leave room for the larger thumb to overflow with a transparent border */
+			border-color: transparent;
+			border-width: 7px 0;
+
+			/*remove default tick marks*/
+			color: transparent;
 		}
-		.wc-block-components-price-slider__range-input {
-			height: 24px;
+		&::-ms-fill-lower {
+			background: #e1e1e1;
+			box-shadow: 0 0 0 1px inset #b8b8b8;
+		}
+		&::-ms-fill-upper {
+			background: transparent;
+		}
+		&::-ms-tooltip {
+			display: none;
+		}
+		&::-ms-thumb {
+			transform: translate(1px, 0);
 			pointer-events: auto;
-			position: absolute;
-			left: 0;
-			top: 0;
-
-			&::-ms-track {
-				/*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
-				background: transparent;
-
-				/*leave room for the larger thumb to overflow with a transparent border */
-				border-color: transparent;
-				border-width: 7px 0;
-
-				/*remove default tick marks*/
-				color: transparent;
-			}
-			&::-ms-fill-lower {
-				background: #e1e1e1;
-				box-shadow: 0 0 0 1px inset #b8b8b8;
-			}
-			&::-ms-fill-upper {
-				background: transparent;
-			}
-			&::-ms-tooltip {
-				display: none;
-			}
-			&::-ms-thumb {
-				transform: translate(1px, 0);
-				pointer-events: auto;
-			}
 		}
-		.wc-block-components-price-slider__range-input--max {
-			&::-ms-fill-upper {
-				background: #e1e1e1;
-				box-shadow: 0 0 0 1px inset #b8b8b8;
-			}
-			&::-ms-fill-lower {
-				background: transparent;
-			}
+	}
+	.wc-block-components-price-slider__range-input--max {
+		&::-ms-fill-upper {
+			background: #e1e1e1;
+			box-shadow: 0 0 0 1px inset #b8b8b8;
 		}
-
-		&.is-loading,
-		&.is-disabled {
-			.wc-block-components-price-slider__range-input-wrapper {
-				@include placeholder();
-				box-shadow: none;
-			}
+		&::-ms-fill-lower {
+			background: transparent;
 		}
+	}
 
-		&.is-disabled:not(.is-loading) {
-			.wc-block-components-price-slider__range-input-wrapper {
-				animation: none;
-			}
+	&.is-loading,
+	&.is-disabled {
+		.wc-block-components-price-slider__range-input-wrapper {
+			@include placeholder();
+			box-shadow: none;
+		}
+	}
+
+	&.is-disabled:not(.is-loading) {
+		.wc-block-components-price-slider__range-input-wrapper {
+			animation: none;
 		}
 	}
 }
