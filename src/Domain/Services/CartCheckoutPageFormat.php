@@ -15,24 +15,24 @@ class CartCheckoutPageFormat {
 		add_action(
 			'woocommerce_update_options_advanced',
 			function() {
-				$desired_cart_format     = $_POST['cart_checkout_format_options_cart_format'];
-				$desired_checkout_format = $_POST['cart_checkout_format_options_checkout_format'];
+				$nonce = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
+				if ( ! wp_verify_nonce( $nonce, 'woocommerce-settings' ) ) {
+					// TODO Show a notice for nonce failure?
+					return;
+				}
+
+				$desired_cart_format     = isset( $_POST['cart_checkout_format_options_cart_format'] ) ? sanitize_text_field( wp_unslash( $_POST['cart_checkout_format_options_cart_format'] ) ) : '';
+				$desired_checkout_format = isset( $_POST['cart_checkout_format_options_checkout_format'] ) ? sanitize_text_field( wp_unslash( $_POST['cart_checkout_format_options_checkout_format'] ) ) : '';
 
 				$info = self::get_cart_checkout_status();
 
-				if ( $desired_cart_format === 'shortcode' && $info['cart_page_format'] !== 'shortcode' ) {
-					// Coming soon.
-				} elseif ( $desired_cart_format === 'block' && $info['cart_page_format'] !== 'block' ) {
+				if ( 'block' === $desired_cart_format && 'block' !== $info['cart_page_format'] ) {
 					self::set_cart_page_format_block(
 						$info['cart_page']
 					);
 				}
 
-				if ( $desired_checkout_format === 'shortcode' && $info['checkout_page_format'] !== 'shortcode' ) {
-					// Coming soon.
-				} elseif ( $desired_checkout_format === 'block' && $info['checkout_page_format'] !== 'block' ) {
-					// Coming soon.
-				}
+				// Other cases coming soon - ( block | shortcode ) x ( cart | checkout ).
 			}
 		);
 	}
