@@ -67,17 +67,17 @@ class CartCheckoutPageFormat extends TestCase {
 		];
 	}
 
-	public function shortcode_cart_page_data() {
+	public function custom_cart_page_data() {
 		return [
 			// Shortcode block AND cart block cart page.
-// 			[
-// 				'<!-- wp:shortcode -->
-// [woocommerce_cart]
-// <!-- /wp:shortcode --> <!-- wp:woocommerce/cart -->  		  <!-- /wp:woocommerce/cart -->',
-// 				'woocommerce/cart',
-// 				'woocommerce_cart',
-// 				'custom'
-// 			],
+			[
+				'<!-- wp:shortcode -->
+[woocommerce_cart]
+<!-- /wp:shortcode --> <!-- wp:woocommerce/cart -->  		  <!-- /wp:woocommerce/cart -->',
+				'woocommerce/cart',
+				'woocommerce_cart',
+				'custom'
+			],
 			// Classic shortcode cart page with a heading and paragraph.
 			[
 				'<h1>Buy now!</h1>
@@ -107,7 +107,7 @@ class CartCheckoutPageFormat extends TestCase {
 	}
 
 
-	public function custom_cart_page_data() {
+	public function shortcode_cart_page_data() {
 		return [
 			// Shortcode block cart page.
 			[

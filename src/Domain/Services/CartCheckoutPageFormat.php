@@ -259,13 +259,13 @@ class CartCheckoutPageFormat {
 		$wildcard           = '.*';
 
 		// The target block start/end tags, with any content between, and optional whitespace before/after.
-		$block_matcher = '/' .
+		$block_matcher = '/^' .
 			$optional_whitespace .
 			$target_block_start .
 			$wildcard .
 			$target_block_end .
 			$optional_whitespace .
-			'/s';
+			'$/s';
 
 		if ( preg_match( $block_matcher, $page_content ) ) {
 			return 'block';
