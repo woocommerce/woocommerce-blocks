@@ -55,7 +55,7 @@ When you're done, you may want to shut down the test environment:
 
 ### How to update end-to-end tests suites
 
-We follow the same WordPress support policy as WooCommerce, this means we need to support the latest version, and the two previous one (L-2).
+We follow the same WordPress support policy as WooCommerce, this means we need to support the latest version, and the two previous ones (L-2).
 
 For that, we run end-to-end tests against all of those versions, and because we use packages published by Gutenberg, we also run tests against the latest version of Gutenberg plugin.
 
