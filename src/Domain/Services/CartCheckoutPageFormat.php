@@ -142,26 +142,18 @@ class CartCheckoutPageFormat {
 		return $items;
 	}
 
+	/**
+	 * Replace the contents of specified page with a cart block.
+	 * Work in progress!
+	 *
+	 * @param Object $cart_page WP page object for cart page, e.g. return value of `get_post()`.
+	 */
 	private static function set_cart_page_format_block( $cart_page ) {
-		$shortcode_block_start = self::block_start_regex( 'wp:shortcode' );
-		$shortcode_block_end   = self::block_end_regex( 'wp:shortcode' );
-		$shortcode_regex       = get_shortcode_regex( [ 'woocommerce_cart' ] );
-		$optional_whitespace   = '\s*';
-		$shortcode_block_regex = '/' .
-			$shortcode_block_start .
-			$optional_whitespace .
-			$shortcode_regex .
-			$optional_whitespace .
-			$shortcode_block_end .
-			'/';
-
+		// TODO this is hard-coded sample content. Should we store somewhere else?
+		// Should we add a hook to allow customise?
 		$cart_block_content = '<!-- wp:woocommerce/cart --><div class="wp-block-woocommerce-cart is-loading"></div><!-- /wp:woocommerce/cart -->';
 
-		$cart_page->post_content = preg_replace(
-			$shortcode_block_regex,
-			$cart_block_content,
-			$cart_page->post_content
-		);
+		$cart_page->post_content = $cart_block_content;
 
 		wp_update_post( $cart_page );
 		wp_save_post_revision( $cart_page->ID );
