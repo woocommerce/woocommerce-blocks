@@ -188,9 +188,9 @@ class CartCheckoutPageFormat {
 	}
 
 	/**
-	 * Search for a specified block type.
+	 * Search for a specific block type in an array of blocks (from content).
 	 *
-	 * @param string $block_name The name (id) of a block, e.g. `woocommerce/cart`.
+	 * @param string $block_name  The name (id) of a block, e.g. `woocommerce/cart`.
 	 * @param array  $page_blocks Array of blocks returned by parse_blocks().
 	 * @return boolean True if the block is present.
 	 */
@@ -200,13 +200,25 @@ class CartCheckoutPageFormat {
 	}
 
 
-	private static function block_start_regex( $block_type ) {
+	/**
+	 * Return a regular expression for matching the start tag of a specified block.
+	 *
+	 * @param string $block_name The name (id) of a block, e.g. `woocommerce/cart`.
+	 * @return string Regex.
+	 */
+	private static function block_start_regex( $block_name ) {
 		// TODO This needs to handle block attributes/props.
-		return '<\!\-\- wp:' . preg_quote( $block_type, '/' ) . ' \-\->';
+		return '<\!\-\- wp:' . preg_quote( $block_name, '/' ) . ' \-\->';
 	}
 
-	private static function block_end_regex( $block_type ) {
-		return '<\!\-\- \/wp:' . preg_quote( $block_type, '/' ) . ' \-\->';
+	/**
+	 * Return a regular expression for matching the end tag of a specified block.
+	 *
+	 * @param string $block_name The name (id) of a block, e.g. `woocommerce/cart`.
+	 * @return string Regex.
+	 */
+	private static function block_end_regex( $block_name ) {
+		return '<\!\-\- \/wp:' . preg_quote( $block_name, '/' ) . ' \-\->';
 	}
 
 	/**
@@ -217,6 +229,9 @@ class CartCheckoutPageFormat {
 	 *
 	 * TODO this is a great candidate for unit tests.
 	 *
+	 * @param string $page_content Page content to inspect.
+	 * @param string $block_type   Block name (id) to search for, e.g. `woocommerce/cart`.
+	 * @param string $shortcode    Shortcode to search for, e.g. woocommerce_cart.
 	 * @return string 'block' | 'shortcode' | 'custom'
 	 */
 	private static function sniff_page_format( $page_content, $block_type, $shortcode ) {
@@ -243,13 +258,13 @@ class CartCheckoutPageFormat {
 			$optional_whitespace .
 			'$/s';
 
-		if ( preg_match( $shortcode_matcher, $page_content) || preg_match( $shortcode_block_matcher, $page_content)  ) {
+		if ( preg_match( $shortcode_matcher, $page_content ) || preg_match( $shortcode_block_matcher, $page_content ) ) {
 			return 'shortcode';
 		}
 
-		$target_block_start  = self::block_start_regex( $block_type );
-		$target_block_end    = self::block_end_regex( $block_type );
-		$wildcard            = '.*';
+		$target_block_start = self::block_start_regex( $block_type );
+		$target_block_end   = self::block_end_regex( $block_type );
+		$wildcard           = '.*';
 
 		// The target block start/end tags, with any content between, and optional whitespace before/after.
 		$block_matcher = '/' .
@@ -320,7 +335,7 @@ class CartCheckoutPageFormat {
 		$info['cart_page_contains_cart_block']         = self::is_block_present( $cart_page_blocks, 'woocommerce/cart' );
 		$info['checkout_page_contains_checkout_block'] = self::is_block_present( $checkout_page_blocks, 'woocommerce/checkout' );
 
-		$info['cart_page_format'] = self::sniff_page_format( $cart_page->post_content, 'woocommerce/cart', 'woocommerce_cart' );
+		$info['cart_page_format']     = self::sniff_page_format( $cart_page->post_content, 'woocommerce/cart', 'woocommerce_cart' );
 		$info['checkout_page_format'] = self::sniff_page_format( $checkout_page->post_content, 'woocommerce/checkout', 'woocommerce_checkout' );
 
 		return $info;
