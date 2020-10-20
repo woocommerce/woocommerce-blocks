@@ -16,6 +16,8 @@ import PropTypes from 'prop-types';
 import TotalsItem from '../totals-item';
 import './style.scss';
 
+const SHOW_TAXES = TAXES_ENABLED && DISPLAY_CART_PRICES_INCLUDING_TAX;
+
 const TotalsFooterItem = ( { currency, values } ) => {
 	const { total_price: totalPrice, total_tax: totalTax } = values;
 
@@ -26,8 +28,7 @@ const TotalsFooterItem = ( { currency, values } ) => {
 			label={ __( 'Total', 'woo-gutenberg-products-block' ) }
 			value={ parseInt( totalPrice, 10 ) }
 			description={
-				TAXES_ENABLED &&
-				DISPLAY_CART_PRICES_INCLUDING_TAX && (
+				SHOW_TAXES && (
 					<p className="wc-block-components-totals-footer-item-tax">
 						{ createInterpolateElement(
 							__(
