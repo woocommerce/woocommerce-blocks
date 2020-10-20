@@ -200,6 +200,7 @@ table.wc-block-cart-items {
 				vertical-align: bottom;
 				padding-right: $gap;
 				align-self: end;
+				padding-top: $gap;
 
 				.wc-block-cart-item__remove-link {
 					display: none;
@@ -212,6 +213,8 @@ table.wc-block-cart-items {
 				grid-column: 2 / span 2;
 				grid-row-start: 2;
 				align-self: end;
+				justify-self: end;
+				width: fit-content;
 
 				.wc-block-components-formatted-money-amount {
 					display: inline-block;
