@@ -20,7 +20,7 @@ class CartCheckoutPageFormat extends TestCase {
 	 * @dataProvider shortcode_cart_page_data
 	 * @dataProvider custom_cart_page_data
 	 * @dataProvider block_checkout_page_data
-	 * @dataProvider shortcode_checkout_page_data
+	 * @ dataProvider shortcode_checkout_page_data
 	 * @dataProvider misc_content
 	 */
 	public function test_sniff_page_format( $page_content, $block_type, $shortcode, $expected_format ) {
@@ -164,6 +164,15 @@ class CartCheckoutPageFormat extends TestCase {
 				'woocommerce_checkout',
 				'block'
 			],
+			// Checkout page with non-default block attributes.
+			[
+				'<!-- wp:woocommerce/checkout {"showCompanyField":true,"allowCreateAccount":true,"requirePhoneField":true} -->
+<div class="wp-block-woocommerce-checkout is-loading"></div>
+<!-- /wp:woocommerce/checkout -->',
+				'woocommerce/checkout',
+				'woocommerce_checkout',
+				'block'
+			]
 		];
 	}
 
@@ -192,21 +201,21 @@ class CartCheckoutPageFormat extends TestCase {
 			],
 			// Shortcode block checkout page, with terminator, extra whitespace.
 			[
-				'<!-- wp:shortcode -->  [woocommerce_checkout][/woocommerce_checkout]  <!-- /wp:shortcode -->',
+				'<!-- wp:shortcode -->[woocommerce_checkout][/woocommerce_checkout]<!-- /wp:shortcode -->',
 				'woocommerce/checkout',
 				'woocommerce_checkout',
 				'shortcode'
 			],
 			// Shortcode block checkout page, extra whitespace.
 			[
-				' <!-- wp:shortcode --> [woocommerce_checkout] <!-- /wp:shortcode -->  ',
+				' <!-- wp:shortcode --> [woocommerce_checkout] <!-- /wp:shortcode -->',
 				'woocommerce/checkout',
 				'woocommerce_checkout',
 				'shortcode'
 			],
 			// Shortcode block checkout page, with terminator, extra whitespace.
 			[
-				'  <!-- wp:shortcode -->  [woocommerce_checkout]  [/woocommerce_checkout] <!-- /wp:shortcode -->           ',
+				'<!-- wp:shortcode -->[woocommerce_checkout][/woocommerce_checkout]<!-- /wp:shortcode -->',
 				'woocommerce/checkout',
 				'woocommerce_checkout',
 				'shortcode'

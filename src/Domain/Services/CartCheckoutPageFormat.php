@@ -202,8 +202,12 @@ class CartCheckoutPageFormat {
 	 * @return string Regex.
 	 */
 	private static function block_start_regex( $block_name ) {
-		// TODO This needs to handle block attributes/props.
-		return '<\!\-\- wp:' . preg_quote( $block_name, '/' ) . ' \-\->';
+		// Primitive matcher for optional block attributes, including leading space.
+		$block_attributes = '( \{.*\})?';
+		return '<\!\-\- wp:' .
+			preg_quote( $block_name, '/' ) .
+			$block_attributes .
+			' \-\->';
 	}
 
 	/**
@@ -213,7 +217,12 @@ class CartCheckoutPageFormat {
 	 * @return string Regex.
 	 */
 	private static function block_end_regex( $block_name ) {
-		return '<\!\-\- \/wp:' . preg_quote( $block_name, '/' ) . ' \-\->';
+		// Primitive matcher for optional block attributes, including leading space.
+		$block_attributes = '( \{.*\})?';
+		return '<\!\-\- \/wp:' .
+			preg_quote( $block_name, '/' ) .
+			$block_attributes .
+			' \-\->';
 	}
 
 	/**
@@ -233,12 +242,17 @@ class CartCheckoutPageFormat {
 		$shortcode_regex       = get_shortcode_regex( [ $shortcode ] );
 		$optional_whitespace   = '\s*';
 
+		// All regex:
+		// - Use ^ and $ to match entire content (not partial),
+		// by anchoring to start (^) and end ($).
+		// - Use `/s` to match content across multiple lines.
+
 		// The target shortcode, with optional whitespace before/after.
 		$shortcode_matcher = '/^' .
 			$optional_whitespace .
 			$shortcode_regex .
 			$optional_whitespace .
-			'$/';
+			'$/s';
 
 		// The target shortcode, in a shortcode block, with optional whitespace between elements.
 		$shortcode_block_matcher = '/^' .
