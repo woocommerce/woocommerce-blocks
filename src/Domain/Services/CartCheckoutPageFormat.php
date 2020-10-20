@@ -30,8 +30,14 @@ class CartCheckoutPageFormat {
 				$info = self::get_cart_checkout_status();
 
 				if ( 'block' === $desired_cart_format && 'block' !== $info['cart_page_format'] ) {
-					self::set_cart_page_format_block(
-						$info['cart_page']
+					self::recreate_cart_page(
+						$info['cart_page'],
+						true
+					);
+				} elseif ( 'shortcode' === $desired_cart_format && 'shortcode' !== $info['cart_page_format'] ) {
+					self::recreate_cart_page(
+						$info['cart_page'],
+						false
 					);
 				}
 
@@ -146,17 +152,23 @@ class CartCheckoutPageFormat {
 	}
 
 	/**
-	 * Replace the contents of specified page with a cart block.
-	 * Work in progress!
+	 * Recreate the cart page as a single block or shortcode.
 	 *
-	 * @param Object $cart_page WP page object for cart page, e.g. return value of `get_post()`.
+	 * @param Object  $cart_page    WP page object for cart page, e.g. return value of `get_post()`.
+	 * @param boolean $block_format Pass true to generate a block, otherwise generates a shortcode.
 	 */
-	private static function set_cart_page_format_block( $cart_page ) {
+	private static function recreate_cart_page( $cart_page, $block_format ) {
 		// TODO this is hard-coded sample content. Should we store somewhere else?
 		// Should we add a hook to allow customise?
 		$cart_block_content = '<!-- wp:woocommerce/cart --><div class="wp-block-woocommerce-cart is-loading"></div><!-- /wp:woocommerce/cart -->';
+		// TODO Should we pull this from core, can stores hook the cart shortcode content?
+		$cart_shortcode_content = '[woocommerce_cart]';
 
-		$cart_page->post_content = $cart_block_content;
+		if ( $block_format ) {
+			$cart_page->post_content = $cart_block_content;
+		} else {
+			$cart_page->post_content = $cart_shortcode_content;
+		}
 
 		wp_update_post( $cart_page );
 		wp_save_post_revision( $cart_page->ID );
