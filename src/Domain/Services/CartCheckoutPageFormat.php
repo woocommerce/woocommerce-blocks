@@ -41,7 +41,17 @@ class CartCheckoutPageFormat {
 					);
 				}
 
-				// Other cases coming soon - ( block | shortcode ) x ( cart | checkout ).
+				if ( 'block' === $desired_checkout_format && 'block' !== $info['checkout_page_format'] ) {
+					self::recreate_checkout_page(
+						$info['checkout_page'],
+						true
+					);
+				} elseif ( 'shortcode' === $desired_checkout_format && 'shortcode' !== $info['checkout_page_format'] ) {
+					self::recreate_checkout_page(
+						$info['checkout_page'],
+						false
+					);
+				}
 			}
 		);
 	}
@@ -154,24 +164,50 @@ class CartCheckoutPageFormat {
 	/**
 	 * Recreate the cart page as a single block or shortcode.
 	 *
-	 * @param Object  $cart_page    WP page object for cart page, e.g. return value of `get_post()`.
+	 * @param Object  $page         WP page object for cart page, e.g. return value of `get_post()`.
 	 * @param boolean $block_format Pass true to generate a block, otherwise generates a shortcode.
 	 */
-	private static function recreate_cart_page( $cart_page, $block_format ) {
+	private static function recreate_cart_page( $page, $block_format ) {
 		// TODO this is hard-coded sample content. Should we store somewhere else?
 		// Should we add a hook to allow customise?
+		// Do we hard-code default inner blocks for empty cart view?
 		$cart_block_content = '<!-- wp:woocommerce/cart --><div class="wp-block-woocommerce-cart is-loading"></div><!-- /wp:woocommerce/cart -->';
-		// TODO Should we pull this from core, can stores hook the cart shortcode content?
+		// TODO Should we pull this from core, can stores hook the cart shortcode content? And should we wrap in a shortcode block?
 		$cart_shortcode_content = '[woocommerce_cart]';
 
 		if ( $block_format ) {
-			$cart_page->post_content = $cart_block_content;
+			$page->post_content = $cart_block_content;
 		} else {
-			$cart_page->post_content = $cart_shortcode_content;
+			$page->post_content = $cart_shortcode_content;
 		}
 
-		wp_update_post( $cart_page );
-		wp_save_post_revision( $cart_page->ID );
+		wp_update_post( $page );
+		wp_save_post_revision( $page->ID );
+	}
+
+	/**
+	 * Recreate the checkout page as a single block or shortcode.
+	 *
+	 * @param Object  $page         WP page object for checkout page, e.g. return value of `get_post()`.
+	 * @param boolean $block_format Pass true to generate a block, otherwise generates a shortcode.
+	 */
+	private static function recreate_checkout_page( $page, $block_format ) {
+		// TODO this is hard-coded sample content. Should we store somewhere else?
+		// Should we add a hook to allow customise?
+		$checkout_block_content = '<!-- wp:woocommerce/checkout -->
+<div class="wp-block-woocommerce-checkout is-loading"></div>
+<!-- /wp:woocommerce/checkout -->';
+		// TODO Should we pull this from core, can stores hook the shortcode content? And should we wrap in a shortcode block?
+		$checkout_shortcode_content = '[woocommerce_checkout]';
+
+		if ( $block_format ) {
+			$page->post_content = $checkout_block_content;
+		} else {
+			$page->post_content = $checkout_shortcode_content;
+		}
+
+		wp_update_post( $page );
+		wp_save_post_revision( $page->ID );
 	}
 
 	/**
