@@ -12,10 +12,13 @@ class CartCheckoutPageFormat {
 	public function init() {
 		add_action( 'admin_init', [ $this, 'admin_init' ] );
 
+		// On options save, if the request is valid, convert format of cart
+		// and/or checkout pages as requested, if needed.
 		add_action(
 			'woocommerce_update_options_advanced',
 			function() {
-				// TODO Is this actually required? I suspect that woo is bailing for bad nonce before firing hook.
+				// I suspect Woo core checks this nonce before firing the hook.
+				// Added our own nonce check to placate the linter.
 				$nonce = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 				if ( ! wp_verify_nonce( $nonce, 'woocommerce-settings' ) ) {
 					return;
@@ -218,8 +221,6 @@ class CartCheckoutPageFormat {
 	 * and if so, whether it's using block or shortcode.
 	 *
 	 * If the page contains any other content, we return 'custom'.
-	 *
-	 * TODO this is a great candidate for unit tests.
 	 *
 	 * @param string $page_content Page content to inspect.
 	 * @param string $block_type   Block name (id) to search for, e.g. `woocommerce/cart`.
