@@ -147,3 +147,13 @@ $fontSizes: (
 @function em($size, $base: 16px) {
 	@return $size / $base * 1em;
 }
+
+// Encodes hex colors so they can be used in URL content.
+@function encode-color($color) {
+	@if type-of($color) != "color" or str-index(#{$color}, "#") != 1 {
+		@return $color;
+	}
+
+	$hex: str-slice(ie-hex-str($color), 4);
+	@return "%23" + unquote("#{$hex}");
+}
