@@ -21,6 +21,7 @@ class CartCheckoutPageFormat extends TestCase {
 	 * @dataProvider custom_cart_page_data
 	 * @dataProvider block_checkout_page_data
 	 * @dataProvider shortcode_checkout_page_data
+	 * @dataProvider misc_content
 	 */
 	public function test_sniff_page_format( $page_content, $block_type, $shortcode, $expected_format ) {
 		$result = TestedCartCheckoutPageFormat::sniff_page_format( $page_content, $block_type, $shortcode );
@@ -212,4 +213,87 @@ class CartCheckoutPageFormat extends TestCase {
 			],
 		];
 	}
+
+	public function misc_content() {
+		$all_products_content = '<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":33.33} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:woocommerce/price-filter -->
+<div class="wp-block-woocommerce-price-filter is-loading" data-showinputfields="true" data-showfilterbutton="false" data-heading="Filter by price" data-heading-level="3"><span aria-hidden="true" class="wc-block-product-categories__placeholder"></span></div>
+<!-- /wp:woocommerce/price-filter -->
+
+<!-- wp:woocommerce/attribute-filter {"attributeId":2,"heading":"Filter by Size"} -->
+<div class="wp-block-woocommerce-attribute-filter is-loading" data-attribute-id="2" data-show-counts="true" data-query-type="or" data-heading="Filter by Size" data-heading-level="3"><span aria-hidden="true" class="wc-block-product-attribute-filter__placeholder"></span></div>
+<!-- /wp:woocommerce/attribute-filter -->
+
+<!-- wp:woocommerce/active-filters -->
+<div class="wp-block-woocommerce-active-filters is-loading" data-display-style="list" data-heading="Active filters" data-heading-level="3"><span aria-hidden="true" class="wc-block-active-product-filters__placeholder"></span></div>
+<!-- /wp:woocommerce/active-filters --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":66.66} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:woocommerce/all-products {"columns":3,"rows":3,"alignButtons":false,"contentVisibility":{"orderBy":true},"orderby":"date","layoutConfig":[["woocommerce/product-image",{"productLink":true,"showSaleBadge":true,"saleBadgeAlign":"right","imageSizing":"full-size","productId":0,"children":[]}],["woocommerce/product-title",{"headingLevel":2,"productLink":true,"productId":0,"color":"vivid-red","fontSize":"medium","children":[]}],["woocommerce/product-price",{"productId":0,"children":[]}],["woocommerce/product-rating",{"productId":0,"children":[]}],["woocommerce/product-button",{"productId":0,"children":[]}]]} -->
+<div class="wp-block-woocommerce-all-products wc-block-all-products" data-attributes="{&quot;alignButtons&quot;:false,&quot;columns&quot;:3,&quot;contentVisibility&quot;:{&quot;orderBy&quot;:true},&quot;isPreview&quot;:false,&quot;layoutConfig&quot;:[[&quot;woocommerce/product-image&quot;,{&quot;productLink&quot;:true,&quot;showSaleBadge&quot;:true,&quot;saleBadgeAlign&quot;:&quot;right&quot;,&quot;imageSizing&quot;:&quot;full-size&quot;,&quot;productId&quot;:0,&quot;children&quot;:[]}],[&quot;woocommerce/product-title&quot;,{&quot;headingLevel&quot;:2,&quot;productLink&quot;:true,&quot;productId&quot;:0,&quot;color&quot;:&quot;vivid-red&quot;,&quot;fontSize&quot;:&quot;medium&quot;,&quot;children&quot;:[]}],[&quot;woocommerce/product-price&quot;,{&quot;productId&quot;:0,&quot;children&quot;:[]}],[&quot;woocommerce/product-rating&quot;,{&quot;productId&quot;:0,&quot;children&quot;:[]}],[&quot;woocommerce/product-button&quot;,{&quot;productId&quot;:0,&quot;children&quot;:[]}]],&quot;orderby&quot;:&quot;date&quot;,&quot;rows&quot;:3}"><!-- wp:woocommerce/product-image -->
+<div class="wp-block-woocommerce-product-image is-loading"></div>
+<!-- /wp:woocommerce/product-image -->
+
+<!-- wp:woocommerce/product-title {"color":"vivid-red","fontSize":"medium"} -->
+<div class="wp-block-woocommerce-product-title is-loading"></div>
+<!-- /wp:woocommerce/product-title -->
+
+<!-- wp:woocommerce/product-price -->
+<div class="wp-block-woocommerce-product-price is-loading"></div>
+<!-- /wp:woocommerce/product-price -->
+
+<!-- wp:woocommerce/product-rating -->
+<div class="wp-block-woocommerce-product-rating is-loading"></div>
+<!-- /wp:woocommerce/product-rating -->
+
+<!-- wp:woocommerce/product-button -->
+<div class="wp-block-woocommerce-product-button is-loading"></div>
+<!-- /wp:woocommerce/product-button --></div>
+<!-- /wp:woocommerce/all-products --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->';
+
+		$generic_html_content = '<div class="hero-content-left">
+			<h1>Build exactly the eCommerce website you want</h1>
+			<p>
+				WooCommerce is a customizable, open-source eCommerce platform built on WordPress.
+				Get started quickly and make your way.
+			</p>
+			<a href="/start/" class="button xl wc-button">Start a New Store</a>
+			or
+			<a href="/product-category/woocommerce-extensions/" class="hero-customize-cta">Customize &amp; Extend</a>
+		</div>';
+
+		return [
+			// Classic All Products blocks layout, no cart or checkout.
+			[
+				$all_products_content,
+				'woocommerce/cart',
+				'woocommerce_cart',
+				'custom'
+			],
+			[
+				$all_products_content,
+				'woocommerce/checkout',
+				'woocommerce_checkout',
+				'custom'
+			],
+			// Random html, no cart or checkout
+			[
+				$generic_html_content,
+				'woocommerce/cart',
+				'woocommerce_cart',
+				'custom'
+			],
+			[
+				$generic_html_content,
+				'woocommerce/checkout',
+				'woocommerce_checkout',
+				'custom'
+			],
+		];
+	}
+
 }
