@@ -20,7 +20,7 @@ class CartCheckoutPageFormat extends TestCase {
 	 * @dataProvider shortcode_cart_page_data
 	 * @dataProvider custom_cart_page_data
 	 * @dataProvider block_checkout_page_data
-	 * @ dataProvider shortcode_checkout_page_data
+	 * @dataProvider shortcode_checkout_page_data
 	 * @dataProvider misc_content
 	 */
 	public function test_sniff_page_format( $page_content, $block_type, $shortcode, $expected_format ) {

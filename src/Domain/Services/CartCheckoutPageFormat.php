@@ -194,6 +194,17 @@ class CartCheckoutPageFormat {
 		return ( $blocks && count( $blocks ) > 0 );
 	}
 
+	/**
+	 * Return a regular expression for matching optional block attributes.
+	 *
+	 * @return string Regex.
+	 */
+	private static function block_attributes_regex() {
+		// Primitive matcher for optional block attributes, including leading space.
+		// Note we are not capturing (`?:`) to prevent breaking the shortcode
+		// regex which uses numbered captured content.
+		return '(?: \{.*\})?';
+	}
 
 	/**
 	 * Return a regular expression for matching the start tag of a specified block.
@@ -202,11 +213,9 @@ class CartCheckoutPageFormat {
 	 * @return string Regex.
 	 */
 	private static function block_start_regex( $block_name ) {
-		// Primitive matcher for optional block attributes, including leading space.
-		$block_attributes = '( \{.*\})?';
 		return '<\!\-\- wp:' .
 			preg_quote( $block_name, '/' ) .
-			$block_attributes .
+			self::block_attributes_regex() .
 			' \-\->';
 	}
 
@@ -217,11 +226,9 @@ class CartCheckoutPageFormat {
 	 * @return string Regex.
 	 */
 	private static function block_end_regex( $block_name ) {
-		// Primitive matcher for optional block attributes, including leading space.
-		$block_attributes = '( \{.*\})?';
 		return '<\!\-\- \/wp:' .
 			preg_quote( $block_name, '/' ) .
-			$block_attributes .
+			self::block_attributes_regex() .
 			' \-\->';
 	}
 
@@ -246,6 +253,13 @@ class CartCheckoutPageFormat {
 		// - Use ^ and $ to match entire content (not partial),
 		// by anchoring to start (^) and end ($).
 		// - Use `/s` to match content across multiple lines.
+
+		// We are concatenating regex together, so care must be taken.
+		// In particular, get_shortcode_regex() returns a regex which uses
+		// numbered capture groups. This means we can't use any capture
+		// groups in earlier regex, or else the numbering will be offset,
+		// and it won't match. See block_attributes_regex() above; uses `?:`
+		// to avoid this issue.
 
 		// The target shortcode, with optional whitespace before/after.
 		$shortcode_matcher = '/^' .
