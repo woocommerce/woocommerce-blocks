@@ -67,6 +67,17 @@ class CartCheckoutPageFormat extends TestCase {
 				'woocommerce_cart',
 				'block'
 			],
+			// Block cart page with custom attributes and custom innerblocks.
+			[
+				'<!-- wp:woocommerce/cart {"hasDarkControls":true} -->
+<div class="wp-block-woocommerce-cart is-loading"><!-- wp:paragraph -->
+<p>Your cart is empty!</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:woocommerce/cart -->',
+				'woocommerce/cart',
+				'woocommerce_cart',
+				'block'
+			]
 		];
 	}
 
