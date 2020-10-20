@@ -195,10 +195,11 @@ table.wc-block-cart-items {
 				padding-bottom: $gap;
 			}
 			.wc-block-cart-item__quantity {
-				grid-column-start: 2;
+				grid-column-start: 1;
 				grid-row-start: 2;
 				vertical-align: bottom;
 				padding-right: $gap;
+				align-self: end;
 
 				.wc-block-cart-item__remove-link {
 					display: none;
@@ -208,9 +209,9 @@ table.wc-block-cart-items {
 				}
 			}
 			.wc-block-cart-item__total {
-				grid-column-start: 3;
+				grid-column: 2 / span 2;
 				grid-row-start: 2;
-				align-self: center;
+				align-self: end;
 
 				.wc-block-components-formatted-money-amount {
 					display: inline-block;
