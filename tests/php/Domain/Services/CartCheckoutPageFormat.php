@@ -19,6 +19,8 @@ class CartCheckoutPageFormat extends TestCase {
 	 * @dataProvider block_cart_page_data
 	 * @dataProvider shortcode_cart_page_data
 	 * @dataProvider custom_cart_page_data
+	 * @dataProvider block_checkout_page_data
+	 * @dataProvider shortcode_checkout_page_data
 	 */
 	public function test_sniff_page_format( $page_content, $block_type, $shortcode, $expected_format ) {
 		$result = TestedCartCheckoutPageFormat::sniff_page_format( $page_content, $block_type, $shortcode );
@@ -106,7 +108,6 @@ class CartCheckoutPageFormat extends TestCase {
 		];
 	}
 
-
 	public function shortcode_cart_page_data() {
 		return [
 			// Shortcode block cart page.
@@ -144,4 +145,71 @@ class CartCheckoutPageFormat extends TestCase {
 		];
 	}
 
+	public function block_checkout_page_data() {
+		return [
+			// Typical/default block checkout page, extra whitespace.
+			[
+				'  <!-- wp:woocommerce/checkout -->
+    <div class="wp-block-woocommerce-checkout is-loading">    </div>
+<!-- /wp:woocommerce/checkout -->  ',
+				'woocommerce/checkout',
+				'woocommerce_checkout',
+				'block'
+			],
+			// Minimal block checkout page, no inner blocks.
+			[
+				'<!-- wp:woocommerce/checkout --><!-- /wp:woocommerce/checkout -->',
+				'woocommerce/checkout',
+				'woocommerce_checkout',
+				'block'
+			],
+		];
+	}
+
+	public function shortcode_checkout_page_data() {
+		return [
+			// Minimal shortcode checkout page.
+			[
+				'[woocommerce_checkout]',
+				'woocommerce/checkout',
+				'woocommerce_checkout',
+				'shortcode'
+			],
+			// Shortcode checkout with terminator.
+			[
+				'[woocommerce_checkout][/woocommerce_checkout]',
+				'woocommerce/checkout',
+				'woocommerce_checkout',
+				'shortcode'
+			],
+			// Shortcode block checkout page, extra whitespace.
+			[
+				'          <!-- wp:shortcode --> [woocommerce_checkout]  <!-- /wp:shortcode -->  ',
+				'woocommerce/checkout',
+				'woocommerce_checkout',
+				'shortcode'
+			],
+			// Shortcode block checkout page, with terminator, extra whitespace.
+			[
+				'<!-- wp:shortcode -->  [woocommerce_checkout][/woocommerce_checkout]  <!-- /wp:shortcode -->',
+				'woocommerce/checkout',
+				'woocommerce_checkout',
+				'shortcode'
+			],
+			// Shortcode block checkout page, extra whitespace.
+			[
+				' <!-- wp:shortcode --> [woocommerce_checkout] <!-- /wp:shortcode -->  ',
+				'woocommerce/checkout',
+				'woocommerce_checkout',
+				'shortcode'
+			],
+			// Shortcode block checkout page, with terminator, extra whitespace.
+			[
+				'  <!-- wp:shortcode -->  [woocommerce_checkout]  [/woocommerce_checkout] <!-- /wp:shortcode -->           ',
+				'woocommerce/checkout',
+				'woocommerce_checkout',
+				'shortcode'
+			],
+		];
+	}
 }
