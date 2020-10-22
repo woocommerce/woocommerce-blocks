@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { useEffect } from 'react';
 import { useValidationContext } from '@woocommerce/base-context';
-import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
+import { useShallowEqual } from '@woocommerce/base-hooks';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
@@ -34,7 +34,6 @@ const ValidatedSelect = ( {
 
 	// Prevents re-renders when value is an object, e.g. {key: "NY", name: "New York"}
 	const currentValue = useShallowEqual( value );
-	const previousValue = usePrevious( currentValue );
 
 	const {
 		getValidationError,
@@ -43,24 +42,21 @@ const ValidatedSelect = ( {
 	} = useValidationContext();
 
 	useEffect( () => {
-		if ( currentValue !== previousValue ) {
-			if ( ! required || currentValue ) {
-				clearValidationError( errorId );
-			} else {
-				setValidationErrors( {
-					[ errorId ]: {
-						message: errorMessage,
-						hidden: true,
-					},
-				} );
-			}
+		if ( ! required || currentValue ) {
+			clearValidationError( errorId );
+		} else {
+			setValidationErrors( {
+				[ errorId ]: {
+					message: errorMessage,
+					hidden: true,
+				},
+			} );
 		}
 	}, [
 		clearValidationError,
 		currentValue,
 		errorId,
 		errorMessage,
-		previousValue,
 		required,
 		setValidationErrors,
 	] );
