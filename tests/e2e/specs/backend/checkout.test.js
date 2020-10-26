@@ -13,7 +13,7 @@ import {
 
 import {
 	insertBlockDontWaitForInsertClose,
-	closeInserter
+	closeInserter,
 } from '../../utils.js';
 
 const block = {
