@@ -66,18 +66,18 @@ const ValidatedTextInput = ( {
 			if ( focusOnMount ) {
 				inputRef.current.focus();
 			}
+			setIsPristine( false );
+		}
+	}, [ focusOnMount, isPristine, setIsPristine ] );
+
+	useEffect( () => {
+		if ( isPristine ) {
 			if ( validateOnMount ) {
 				validateInput();
 			}
 			setIsPristine( false );
 		}
-	}, [
-		focusOnMount,
-		isPristine,
-		setIsPristine,
-		validateOnMount,
-		validateInput,
-	] );
+	}, [ isPristine, setIsPristine, validateOnMount, validateInput ] );
 
 	// Remove validation errors when unmounted.
 	useEffect( () => {
