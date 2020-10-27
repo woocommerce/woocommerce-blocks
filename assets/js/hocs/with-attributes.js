@@ -30,7 +30,7 @@ const getAttributeData = ( attributeId, attributeList, matchField = 'id' ) => {
 const withAttributes = ( OriginalComponent ) => {
 	return ( props ) => {
 		const { selected = [] } = props;
-		const selectedSlug = selected.length ? selected[ 0 ]?.attr_slug : null;
+		const selectedSlug = selected.length ? selected[ 0 ].attr_slug : null;
 		const [ attributes, setAttributes ] = useState( null );
 		const [ expandedAttribute, setExpandedAttribute ] = useState( 0 );
 		const [ termsList, setTermsList ] = useState( {} );
