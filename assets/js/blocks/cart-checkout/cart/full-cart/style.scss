@@ -214,7 +214,7 @@ table.wc-block-cart-items {
 				grid-row-start: 2;
 				align-self: end;
 				justify-self: end;
-				width: fit-content;
+				padding-bottom: 0.375em;
 
 				.wc-block-components-formatted-money-amount {
 					display: inline-block;
