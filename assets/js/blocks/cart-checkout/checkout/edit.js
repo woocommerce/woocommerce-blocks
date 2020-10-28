@@ -57,8 +57,8 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 	// Checkout signup is feature gated to WooCommerce 4.7 and newer;
 	// uses updated my-account/lost-password screen from 4.7+ for
 	// setting initial password.
-	// Also implicitly gated to feature plugin, because Checkout 
-	// block is gated to plugin.
+	// Also implicitly gated to feature plugin, because Checkout
+	// block is gated to plugin
 	const showCreateAccountOption = compareWithWooVersion( '4.7.0', '<=' );
 	return (
 		<InspectorControls>
