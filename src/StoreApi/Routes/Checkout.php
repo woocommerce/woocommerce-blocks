@@ -168,7 +168,7 @@ class Checkout extends AbstractRoute {
 			try {
 				$create_account = Package::container()->get( CreateAccount::class );
 				$create_account->from_order_request( $request );
-				$order->set_customer_id( get_current_user_id() );
+				$order_object->set_customer_id( get_current_user_id() );
 			} catch ( Exception $error ) {
 				$this->handle_error( $error );
 			}
