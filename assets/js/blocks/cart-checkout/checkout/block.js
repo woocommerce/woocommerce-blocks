@@ -85,8 +85,7 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 	// uses updated my-account/lost-password screen from 4.7+ for
 	// setting initial password.
 	const allowCreateAccount =
-		attributes.allowCreateAccount &&
-		compareWithWooVersion( '4.7.0', '<=' );
+		attributes.allowCreateAccount && compareWithWooVersion( '4.7.0', '<=' );
 
 	useEffect( () => {
 		if ( hasErrorsToDisplay ) {
