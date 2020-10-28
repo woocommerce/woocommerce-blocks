@@ -52,7 +52,8 @@ class CreateAccount extends WP_UnitTestCase {
 
 		/// -- End test-specific setup.
 
-		$user_id = $this->get_test_instance()->from_order_request( $test_order, $test_request );
+		$user_id = $this->get_test_instance()->from_order_request( $test_request );
+		$test_order->set_customer_id( $user_id );
 
 		/// -- Undo test-specific setup; restore previous state.
 		update_option( 'woocommerce_enable_guest_checkout', $tmp_enable_guest_checkout );
