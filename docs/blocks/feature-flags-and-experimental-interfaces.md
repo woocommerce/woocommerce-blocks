@@ -42,7 +42,7 @@ We also have individual features or code blocks behind a feature flag, this is a
 
 *   Inserting Product Element blocks globally from the inserter ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/shared/config.js#L25-L27)).
 
-## Processes and commands that uses a flag
+## Processes and commands that use a flag
 
 *   `npm run build:deploy` uses the feature plugin flag ([env flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c0de18ec0a798c072420c67a689e4cc4d3ac77c9/package.json#L28)).
 *   travis uses the experimental flag when running tests ([env flags](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/d6a506c19056d42d40743ae0126153fb81004672/.travis.yml#L68-L143)).
