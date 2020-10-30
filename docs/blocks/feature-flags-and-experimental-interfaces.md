@@ -4,9 +4,10 @@ We have feature gating system setup in our plugin that defines what is accessibl
 *   **Feature plugin flag** `**WOOCOMMERCE_BLOCKS_PHASE=**2`**:** anything that is behind this flag is code that is shipped to our [feature plugin](https://wordpress.org/plugins/woo-gutenberg-products-block/), the files of blocks behind this flag are also present in WooCommerce Core, just not active.
 *   **Experimental flag** `**WOOCOMMERCE_BLOCKS_PHASE**=3`: This flag contains things that we're not shipping yet, so unfinished work mostly. These features are only available in developer builds of the plugin.
 
-We also utilize the following for indicating interfaces that are experimental and thus should not be used in production builds:
+We also use an `__experimental` prefix for any experimental interfaces. This is a signal to those reading our code that it should not be implemented in for production use. Currently this prefix is used in the following ways:
 
-- `__experimental` prefix is used in any PHP actions or filter slugs and also for any JS functions.
+* Prefixing references that are experimental. An example would be PHP action or filter slugs.
+* Prefixing functions or methods that are experimental.
 
 ## Blocks behind flags
 
