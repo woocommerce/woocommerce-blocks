@@ -41,7 +41,6 @@ We also have individual features or code blocks behind a feature flag, this is a
 ### Experimental plugin flag
 
 *   Inserting Product Element blocks globally from the inserter ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/shared/config.js#L25-L27)).
-*   Support for signup / create account during checkout ([see PR for details](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/2851)).
 
 ## Processes and commands that uses a flag
 
