@@ -126,7 +126,6 @@ class CartCheckoutPageFormat {
 				'https://docs.woocommerce.com/document/cart-checkout-blocks-support-status/'
 			),
 
-			__( 'Choose between block or shortcode formats. Learn more.', 'woo-gutenberg-products-block' ),
 			'id'    => 'cart_checkout_format_options_title',
 		];
 
