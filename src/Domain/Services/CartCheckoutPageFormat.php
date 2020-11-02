@@ -385,24 +385,27 @@ class CartCheckoutPageFormat {
 		$cart_page     = get_post( $cart_page_id );
 		$checkout_page = get_post( $checkout_page_id );
 
-		if ( ! $cart_page || ! $checkout_page ) {
-			return $info;
+		if ( $cart_page ) {
+			$info['cart_page'] = $cart_page;
+
+			$info['cart_page_contains_cart_shortcode'] = has_shortcode( $cart_page->post_content, 'woocommerce_cart' );
+
+			$cart_page_blocks                      = parse_blocks( $cart_page->post_content );
+			$info['cart_page_contains_cart_block'] = self::is_block_present( $cart_page_blocks, 'woocommerce/cart' );
+
+			$info['cart_page_format'] = self::sniff_page_format( $cart_page->post_content, 'woocommerce/cart', 'woocommerce_cart' );
 		}
 
-		$info['cart_page']     = $cart_page;
-		$info['checkout_page'] = $checkout_page;
+		if ( $checkout_page ) {
+			$info['checkout_page'] = $checkout_page;
 
-		$info['cart_page_contains_cart_shortcode']         = has_shortcode( $cart_page->post_content, 'woocommerce_cart' );
-		$info['checkout_page_contains_checkout_shortcode'] = has_shortcode( $checkout_page->post_content, 'woocommerce_checkout' );
+			$info['checkout_page_contains_checkout_shortcode'] = has_shortcode( $checkout_page->post_content, 'woocommerce_checkout' );
 
-		$cart_page_blocks     = parse_blocks( $cart_page->post_content );
-		$checkout_page_blocks = parse_blocks( $checkout_page->post_content );
+			$checkout_page_blocks                          = parse_blocks( $checkout_page->post_content );
+			$info['checkout_page_contains_checkout_block'] = self::is_block_present( $checkout_page_blocks, 'woocommerce/checkout' );
 
-		$info['cart_page_contains_cart_block']         = self::is_block_present( $cart_page_blocks, 'woocommerce/cart' );
-		$info['checkout_page_contains_checkout_block'] = self::is_block_present( $checkout_page_blocks, 'woocommerce/checkout' );
-
-		$info['cart_page_format']     = self::sniff_page_format( $cart_page->post_content, 'woocommerce/cart', 'woocommerce_cart' );
-		$info['checkout_page_format'] = self::sniff_page_format( $checkout_page->post_content, 'woocommerce/checkout', 'woocommerce_checkout' );
+			$info['checkout_page_format'] = self::sniff_page_format( $checkout_page->post_content, 'woocommerce/checkout', 'woocommerce_checkout' );
+		}
 
 		return $info;
 	}
