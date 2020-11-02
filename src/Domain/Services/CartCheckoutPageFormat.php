@@ -129,8 +129,8 @@ class CartCheckoutPageFormat {
 			'id'    => 'cart_checkout_format_options_title',
 		];
 
-		$description = 'Cart page is not set – select a page in the section above.';
-		if ( $block_status['cart_page_id'] ) {
+		$description = __( 'Cart page is not set – select a page in the section above.', 'woo-gutenberg-products-block' );
+		if ( $block_status['cart_page'] ) {
 			$edit_url    = get_edit_post_link( $block_status['cart_page_id'] );
 			$description = sprintf(
 				// Translators: %s edit url for the page.
@@ -138,7 +138,7 @@ class CartCheckoutPageFormat {
 				get_edit_post_link( $block_status['cart_page_id'] )
 			);
 		}
-		$items[]     = [
+		$items[] = [
 			'title'   => __( 'Cart format', 'woo-gutenberg-products-block' ),
 			'desc'    => $description,
 			'type'    => 'select',
@@ -146,8 +146,9 @@ class CartCheckoutPageFormat {
 			'value'   => $block_status['cart_page_format'],
 			'options' => $block_shortcode_options,
 		];
-		$description = 'Checkout page is not set – select a page in the section above.';
-		if ( $block_status['checkout_page_id'] ) {
+
+		$description = __( 'Checkout page is not set – select a page in the section above.', 'woo-gutenberg-products-block' );
+		if ( $block_status['checkout_page'] ) {
 			$edit_url    = get_edit_post_link( $block_status['checkout_page_id'] );
 			$description = sprintf(
 				// Translators: %s edit url for the page.
@@ -357,8 +358,10 @@ class CartCheckoutPageFormat {
 	 */
 	public function get_cart_checkout_status() {
 		$info = [
-			'cart_page_id'                              => 0,
-			'checkout_page_id'                          => 0,
+			'cart_page_id'                              => -1,
+			'checkout_page_id'                          => -1,
+			'cart_page'                                 => false,
+			'checkout_page'                             => false,
 			'cart_page_format'                          => 'custom',
 			'checkout_page_format'                      => 'custom',
 			// We're also returning these values, similar to the values in
