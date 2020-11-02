@@ -138,7 +138,7 @@ class CartCheckoutPageFormat {
 				get_edit_post_link( $block_status['cart_page_id'] )
 			);
 		}
-		$items[] = [
+		$cart_item = [
 			'title'   => __( 'Cart format', 'woo-gutenberg-products-block' ),
 			'desc'    => $description,
 			'type'    => 'select',
@@ -146,6 +146,10 @@ class CartCheckoutPageFormat {
 			'value'   => $block_status['cart_page_format'],
 			'options' => $block_shortcode_options,
 		];
+		if ( ! $block_status['cart_page'] ) {
+			$cart_item['custom_attributes'] = [ 'disabled' => true ];
+		}
+		$items[] = $cart_item;
 
 		$description = __( 'Checkout page is not set – select a page in the section above.', 'woo-gutenberg-products-block' );
 		if ( $block_status['checkout_page'] ) {
@@ -156,7 +160,7 @@ class CartCheckoutPageFormat {
 				get_edit_post_link( $block_status['checkout_page_id'] )
 			);
 		}
-		$items[] = [
+		$checkout_item = [
 			'title'   => __( 'Checkout format', 'woo-gutenberg-products-block' ),
 			'desc'    => $description,
 			'type'    => 'select',
@@ -164,6 +168,10 @@ class CartCheckoutPageFormat {
 			'value'   => $block_status['checkout_page_format'],
 			'options' => $block_shortcode_options,
 		];
+		if ( ! $block_status['checkout_page'] ) {
+			$checkout_item['custom_attributes'] = [ 'disabled' => true ];
+		}
+		$items[] = $checkout_item;
 
 		$items[] = [
 			'type' => 'sectionend',
