@@ -88,7 +88,8 @@ class ExtendRestApi {
 				);
 			}
 
-			return $schema[ $namespace ] = $schema_data;
+			$schema[ $namespace ] = $schema_data;
+			return $schema;
 		}, 10, 1 );
 
 		add_filter( '__internal_extend_cart_item_data', function( $data, $cart_item ) use ( $data_callback, $namespace ) {
@@ -105,7 +106,8 @@ class ExtendRestApi {
 				$this->throw_exception( '$endpoint_data must return an array.' );
 			}
 
-			return $data[ $namespace ] = $endpoint_data;
+			$data[ $namespace ] = $endpoint_data;
+			return $data;
 		},
 		10, 2 );
 	}
