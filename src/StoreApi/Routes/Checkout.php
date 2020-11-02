@@ -188,7 +188,7 @@ class Checkout extends AbstractRoute {
 		* NOTE: this hook is still experimental, and might change or get removed.
 		* @todo: Document and stabilize __experimental_woocommerce_blocks_checkout_order_processed
 		*/
-		do_action( '__experimental_woocommerce_blocks_checkout_order_processed', $order_object->get_id(), $order_object );
+		do_action( '__experimental_woocommerce_blocks_checkout_order_processed', $order_object );
 
 		if ( ! $order_object->needs_payment() ) {
 			$payment_result = $this->process_without_payment( $order_object, $request );
