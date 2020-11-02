@@ -129,7 +129,7 @@ class CartCheckoutPageFormat {
 			'id'    => 'cart_checkout_format_options_title',
 		];
 
-		$description = __( 'Cart page is not set – select a page in the section above.', 'woo-gutenberg-products-block' );
+		$description = __( 'Cart page is not set – select a page in Page setup above.', 'woo-gutenberg-products-block' );
 		if ( $block_status['cart_page'] ) {
 			$edit_url    = get_edit_post_link( $block_status['cart_page_id'] );
 			$description = sprintf(
@@ -151,7 +151,7 @@ class CartCheckoutPageFormat {
 		}
 		$items[] = $cart_item;
 
-		$description = __( 'Checkout page is not set – select a page in the section above.', 'woo-gutenberg-products-block' );
+		$description = __( 'Checkout page is not set – select a page in Page setup above.', 'woo-gutenberg-products-block' );
 		if ( $block_status['checkout_page'] ) {
 			$edit_url    = get_edit_post_link( $block_status['checkout_page_id'] );
 			$description = sprintf(
