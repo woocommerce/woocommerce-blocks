@@ -6,6 +6,18 @@ namespace Automattic\WooCommerce\Blocks\Domain\Services;
  */
 class CartCheckoutPageFormat {
 
+	// TODO Consider hard-coded default inner blocks for empty cart view.
+	const CART_CONTENT_BLOCK     = '<!-- wp:woocommerce/cart --><div class="wp-block-woocommerce-cart is-loading"></div><!-- /wp:woocommerce/cart -->';
+	const CHECKOUT_CONTENT_BLOCK = '<!-- wp:woocommerce/checkout -->
+<div class="wp-block-woocommerce-checkout is-loading"></div>
+<!-- /wp:woocommerce/checkout -->';
+
+	// TODO Finalise hard-coded cart/checkout shortcode content.
+	// Should we pull these from core, can stores hook the cart shortcode content?
+	// And should we wrap in a shortcode block?
+	const CART_CONTENT_SHORTCODE     = '[woocommerce_cart]';
+	const CHECKOUT_CONTENT_SHORTCODE = '[woocommerce_checkout]';
+
 	/**
 	 * Init.
 	 */
@@ -168,17 +180,10 @@ class CartCheckoutPageFormat {
 	 * @param boolean $block_format Pass true to generate a block, otherwise generates a shortcode.
 	 */
 	private static function recreate_cart_page( $page, $block_format ) {
-		// TODO this is hard-coded sample content. Should we store somewhere else?
-		// Should we add a hook to allow customise?
-		// Do we hard-code default inner blocks for empty cart view?
-		$cart_block_content = '<!-- wp:woocommerce/cart --><div class="wp-block-woocommerce-cart is-loading"></div><!-- /wp:woocommerce/cart -->';
-		// TODO Should we pull this from core, can stores hook the cart shortcode content? And should we wrap in a shortcode block?
-		$cart_shortcode_content = '[woocommerce_cart]';
-
 		if ( $block_format ) {
-			$page->post_content = $cart_block_content;
+			$page->post_content = self::CART_CONTENT_BLOCK;
 		} else {
-			$page->post_content = $cart_shortcode_content;
+			$page->post_content = self::CART_CONTENT_SHORTCODE;
 		}
 
 		wp_update_post( $page );
@@ -192,18 +197,10 @@ class CartCheckoutPageFormat {
 	 * @param boolean $block_format Pass true to generate a block, otherwise generates a shortcode.
 	 */
 	private static function recreate_checkout_page( $page, $block_format ) {
-		// TODO this is hard-coded sample content. Should we store somewhere else?
-		// Should we add a hook to allow customise?
-		$checkout_block_content = '<!-- wp:woocommerce/checkout -->
-<div class="wp-block-woocommerce-checkout is-loading"></div>
-<!-- /wp:woocommerce/checkout -->';
-		// TODO Should we pull this from core, can stores hook the shortcode content? And should we wrap in a shortcode block?
-		$checkout_shortcode_content = '[woocommerce_checkout]';
-
 		if ( $block_format ) {
-			$page->post_content = $checkout_block_content;
+			$page->post_content = self::CHECKOUT_CONTENT_BLOCK;
 		} else {
-			$page->post_content = $checkout_shortcode_content;
+			$page->post_content = self::CHECKOUT_CONTENT_SHORTCODE;
 		}
 
 		wp_update_post( $page );
