@@ -1,7 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\Domain\Services;
 
-use Exception;
+use Throwable;
 
 /**
  * Service class to provide utility functions to extend REST API.
