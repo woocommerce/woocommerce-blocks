@@ -12,6 +12,7 @@ import {
 	TotalsFooterItem,
 	TotalsShipping,
 	TotalsTaxes,
+	OrderReview,
 } from '@woocommerce/base-components/cart-checkout';
 import {
 	COUPONS_ENABLED,
@@ -155,6 +156,7 @@ const Cart = ( { attributes } ) => {
 					currency={ totalsCurrency }
 					values={ cartTotals }
 				/>
+				<OrderReview.Slot />
 				<div className="wc-block-cart__payment-options">
 					{ cartNeedsPayment && <CartExpressPayment /> }
 					<CheckoutButton
