@@ -364,8 +364,7 @@ export function* selectShippingRate( rateId, packageId = 0 ) {
 }
 
 /**
- * Applies a coupon code and either invalidates caches, or receives an error if
-the coupon cannot be applied.
+ * Updates the shipping address for the customer and returns an updated cart.
  *
  * @param {Object} address shipping address to be updated
  */
