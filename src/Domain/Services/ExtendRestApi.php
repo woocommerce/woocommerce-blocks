@@ -2,19 +2,11 @@
 namespace Automattic\WooCommerce\Blocks\Domain\Services;
 
 use Exception;
-use Automattic\WooCommerce\Blocks\Domain\Package;
 
 /**
  * Service class to provide utility functions to extend REST API.
  */
 class ExtendRestApi {
-	/**
-	 * Holds the Package instance
-	 *
-	 * @var Package
-	 */
-	private $package;
-
 	/**
 	 * Valid endpoints to extend
 	 *
@@ -72,50 +64,60 @@ class ExtendRestApi {
 	public function register_cart_item_endpoint_data( $namespace, $schema_callback, $data_callback ) {
 		$this->validate_endpoint_data( 'item', $namespace, $schema_callback, $data_callback );
 
-		add_filter( '__internal_extend_cart_item_schema', function( $schema ) use ( $schema_callback, $namespace ) {
-			$schema_data = [];
+		add_filter(
+			'__internal_extend_cart_item_schema',
+			function( $schema ) use ( $schema_callback, $namespace ) {
+				$schema_data = [];
 
-			try {
-				$schema_data = $schema_callback();
-			} catch ( Exception $e ) {
-				$this->throw_exception( $e );
+				try {
+					$schema_data = $schema_callback();
+				} catch ( Throwable $e ) {
+					$this->throw_exception( $e );
+					return $schema;
+				}
+
+				if ( ! is_array( $schema_data ) ) {
+					return $this->throw_exception(
+						'$schema_callback must return an array.'
+					);
+				}
+
+				$schema[ $namespace ] = $schema_data;
 				return $schema;
-			}
+			},
+			10,
+			1
+		);
 
-			if ( ! is_array( $schema_data ) ) {
-				$this->throw_exception(
-					'$schema_callback must return an array.'
-				);
-			}
+		add_filter(
+			'__internal_extend_cart_item_data',
+			function( $data, $cart_item ) use ( $data_callback, $namespace ) {
+				$endpoint_data = [];
 
-			$schema[ $namespace ] = $schema_data;
-			return $schema;
-		}, 10, 1 );
+				try {
+					$endpoint_data = $data_callback( $cart_item );
+				} catch ( Throwable $e ) {
+					$this->throw_exception( $e );
+					return $data;
+				}
 
-		add_filter( '__internal_extend_cart_item_data', function( $data, $cart_item ) use ( $data_callback, $namespace ) {
-			$endpoint_data = [];
+				if ( ! is_array( $endpoint_data ) ) {
+					return $this->throw_exception( '$endpoint_data must return an array.' );
+				}
 
-			try {
-				$endpoint_data = $data_callback( $cart_item );
-			} catch ( Exception $e ) {
-				$this->throw_exception( $e );
+				$data[ $namespace ] = $endpoint_data;
 				return $data;
-			}
-
-			if ( ! is_array( $endpoint_data ) ) {
-				$this->throw_exception( '$endpoint_data must return an array.' );
-			}
-
-			$data[ $namespace ] = $endpoint_data;
-			return $data;
-		},
-		10, 2 );
+			},
+			10,
+			2
+		);
 	}
 
 	/**
 	 * Throws error or silently logs it.
 	 *
 	 * @param string|Exception $exception_or_error Error message or Exception.
+	 * @throws Exception An error to throw if we have debug enabled and user is admin.
 	 */
 	private function throw_exception( $exception_or_error ) {
 		if ( $exception_or_error instanceof Exception ) {
@@ -124,7 +126,7 @@ class ExtendRestApi {
 			$exception = Exception( $exception_or_error );
 		}
 
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && current_user_can( 'manage_woocommerce' ) ) {
 			throw $exception;
 		} else {
 			wc_caught_exception( $exception_or_error );
