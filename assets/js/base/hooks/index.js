@@ -1,6 +1,7 @@
 export * from './cart';
 export * from './checkout';
 export * from './payment-methods';
+export * from './billing';
 export * from './shipping';
 export * from './use-collection';
 export * from './use-collection-header';

@@ -1,17 +1,13 @@
 /**
  * External dependencies
  */
-import {
-	createContext,
-	useContext,
-	useState,
-	useCallback,
-} from '@wordpress/element';
+import { createContext, useContext } from '@wordpress/element';
+import { useBillingData } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
  */
-import { DEFAULT_STATE, DEFAULT_BILLING_CONTEXT_DATA } from './constants';
+import { DEFAULT_BILLING_CONTEXT_DATA } from './constants';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').BillingDataContext} BillingDataContext
@@ -27,14 +23,7 @@ export const useBillingDataContext = () => {
 };
 
 export const BillingDataProvider = ( { children } ) => {
-	const [ billingData, setBillingDataState ] = useState( DEFAULT_STATE );
-
-	const setBillingData = useCallback( ( newData ) => {
-		setBillingDataState( ( prevState ) => ( {
-			...prevState,
-			...newData,
-		} ) );
-	}, [] );
+	const { billingData, setBillingData } = useBillingData();
 
 	/**
 	 * @type {BillingDataContext}

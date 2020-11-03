@@ -4,15 +4,6 @@
  */
 
 /**
- * External dependencies
- */
-import { getSetting } from '@woocommerce/settings';
-import { mapValues } from 'lodash';
-import { decodeEntities } from '@wordpress/html-entities';
-
-const checkoutData = getSetting( 'checkoutData', {} );
-
-/**
  * @type {BillingData}
  */
 export const DEFAULT_BILLING_DATA = {
@@ -27,18 +18,6 @@ export const DEFAULT_BILLING_DATA = {
 	country: '',
 	email: '',
 	phone: '',
-};
-
-const billingAddress = mapValues( checkoutData.billing_address, ( value ) =>
-	decodeEntities( value )
-);
-
-/**
- * @type {BillingData}
- */
-export const DEFAULT_STATE = {
-	...DEFAULT_BILLING_DATA,
-	...billingAddress,
 };
 
 /**
