@@ -9,6 +9,18 @@ import { useEditorContext } from '@woocommerce/base-context';
 import { decodeEntities } from '@wordpress/html-entities';
 import { mapValues } from 'lodash';
 
+const defaultShippingAddress = {
+	first_name: '',
+	last_name: '',
+	company: '',
+	address_1: '',
+	address_2: '',
+	city: '',
+	state: '',
+	postcode: '',
+	country: '',
+};
+
 /**
  * @constant
  * @type  {StoreCart} Object containing cart data.
@@ -24,17 +36,7 @@ export const defaultCartData = {
 	cartTotals: {},
 	cartIsLoading: true,
 	cartErrors: [],
-	shippingAddress: {
-		first_name: '',
-		last_name: '',
-		company: '',
-		address_1: '',
-		address_2: '',
-		city: '',
-		state: '',
-		postcode: '',
-		country: '',
-	},
+	shippingAddress: defaultShippingAddress,
 	shippingRates: [],
 	shippingRatesLoading: false,
 	cartHasCalculatedShipping: false,
@@ -76,17 +78,7 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 					cartTotals: previewCart.totals,
 					cartIsLoading: false,
 					cartErrors: [],
-					shippingAddress: {
-						first_name: '',
-						last_name: '',
-						company: '',
-						address_1: '',
-						address_2: '',
-						city: '',
-						state: '',
-						postcode: '',
-						country: '',
-					},
+					shippingAddress: defaultShippingAddress,
 					shippingRates: previewCart.shipping_rates,
 					shippingRatesLoading: false,
 					cartHasCalculatedShipping:
@@ -107,10 +99,13 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 			);
 			const shippingRatesLoading = store.areShippingRatesLoading();
 			const { receiveCart } = dispatch( storeKey );
-			const shippingAddress = mapValues(
-				cartData.shippingAddress,
-				( value ) => decodeEntities( value )
-			);
+
+			// Only get address data if needed.
+			const shippingAddress = cartData.needsShipping
+				? mapValues( cartData.shippingAddress, ( value ) =>
+						decodeEntities( value )
+				  )
+				: defaultShippingAddress;
 
 			return {
 				cartCoupons: cartData.coupons,
