@@ -7,6 +7,7 @@ import {
 	TotalsFees,
 	TotalsCoupon,
 	TotalsDiscount,
+	OrderReview,
 	TotalsFooterItem,
 	TotalsShipping,
 	TotalsTaxes,
@@ -71,6 +72,7 @@ const CheckoutSidebar = ( {
 				currency={ totalsCurrency }
 				values={ cartTotals }
 			/>
+			<OrderReview.Slot />
 		</>
 	);
 };
