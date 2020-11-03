@@ -15,12 +15,6 @@ class ExtendRestApi {
 	private $endpoints = [ 'item' ];
 
 	/**
-	 * Init - register handlers for internal hooks.
-	 */
-	public function init() {
-
-	}
-	/**
 	 * An endpoint that validates registration method call
 	 *
 	 * @param string   $endpoint The endpoint to extend.
