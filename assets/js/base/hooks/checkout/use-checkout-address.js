@@ -67,6 +67,14 @@ export const useCheckoutAddress = () => {
 		setShippingAddress,
 	] );
 
+	// When the billing address changes, if shipping fields are not being used, we still need to
+	// push the address as the shipping address since this is what taxes are based on.
+	useEffect( () => {
+		if ( ! needsShipping ) {
+			setShippingAddress( billingData );
+		}
+	}, [ billingData, needsShipping, setShippingAddress ] );
+
 	/**
 	 * Wrapper for updateBillingFields (from useState) which handles merging.
 	 *
