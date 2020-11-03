@@ -23,8 +23,7 @@ const isSameAddress = ( address1, address2 ) => {
 };
 
 /**
- * Custom hook for tracking address field state on checkout and persisting it to
- * context globally on change.
+ * Custom hook for tracking address field state on checkout and persisting it to context on change.
  */
 export const useCheckoutAddress = () => {
 	const { customerId } = useCheckoutContext();
@@ -36,16 +35,17 @@ export const useCheckoutAddress = () => {
 	const { billingData, setBillingData } = useBillingDataContext();
 	const [ billingFields, updateBillingFields ] = useState( billingData );
 
-	// This tracks the state of the "shipping as billing" address checkbox. It's
-	// initial value is true (if shipping is needed), however, if the user is
-	// logged in and they have a different billing address, we can toggle this off.
+	// This tracks the state of the "shipping as billing" address CHECKBOX input.
+	// The initial value is true if shipping is required, however, if the user is logged in and they
+	// have already have different billing and shipping addresses, we can default this to off so
+	// that both addresses are used.
 	const [ shippingAsBilling, setShippingAsBilling ] = useState(
 		() =>
 			needsShipping &&
 			( ! customerId || isSameAddress( shippingAddress, billingData ) )
 	);
 
-	// Pushes to global state when changes are made locally.
+	// When the shipping and/or billing address changes, push to global state.
 	useEffect( () => {
 		// Uses shipping address or billing fields depending on shippingAsBilling checkbox, but ensures
 		// billing only fields are also included.
