@@ -57,6 +57,12 @@ class SchemaController {
 	 */
 	protected function initialize() {
 		$this->schemas = [
+			Schemas\BillingAddressSchema::IDENTIFIER   => new Schemas\BillingAddressSchema(
+				$this->extend
+			),
+			Schemas\ShippingAddressSchema::IDENTIFIER  => new Schemas\ShippingAddressSchema(
+				$this->extend
+			),
 			Schemas\CartSchema::IDENTIFIER             => new Schemas\CartSchema(
 				$this->extend,
 				new Schemas\CartItemSchema(
