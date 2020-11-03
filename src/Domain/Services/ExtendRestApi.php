@@ -71,9 +71,10 @@ class ExtendRestApi {
 				}
 
 				if ( ! is_array( $schema_data ) ) {
-					return $this->throw_exception(
+					$this->throw_exception(
 						'$schema_callback must return an array.'
 					);
+					return $schema;
 				}
 
 				$schema[ $namespace ] = $schema_data;
@@ -96,7 +97,8 @@ class ExtendRestApi {
 				}
 
 				if ( ! is_array( $endpoint_data ) ) {
-					return $this->throw_exception( '$endpoint_data must return an array.' );
+					$this->throw_exception( '$endpoint_data must return an array.' );
+					return $data;
 				}
 
 				$data[ $namespace ] = $endpoint_data;
