@@ -133,6 +133,7 @@ const getMainConfig = ( options = {} ) => {
 		optimization: {
 			splitChunks: {
 				minSize: 0,
+				automaticNameDelimiter: '--',
 				cacheGroups: {
 					commons: {
 						test: /[\\/]node_modules[\\/]/,
@@ -410,6 +411,7 @@ const getStylingConfig = ( options = {} ) => {
 		optimization: {
 			splitChunks: {
 				minSize: 0,
+				automaticNameDelimiter: '--',
 				cacheGroups: {
 					editor: {
 						// Capture all `editor` stylesheets and editor-components stylesheets.
