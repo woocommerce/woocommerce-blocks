@@ -146,7 +146,7 @@ class CreateAccount {
 			return false;
 		}
 
-		if ( false === filter_var( $checkout->is_registration_required(), FILTER_VALIDATE_BOOLEAN ) ) {
+		if ( true === filter_var( $checkout->is_registration_required(), FILTER_VALIDATE_BOOLEAN ) ) {
 			// Store requires an account for all checkouts (purchases).
 			// Create an account independent of shopper option in $request.
 			// Note - checkbox is not displayed to shopper in this case.

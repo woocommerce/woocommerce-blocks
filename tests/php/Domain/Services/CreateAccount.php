@@ -15,6 +15,7 @@ use Automattic\WooCommerce\Blocks\Domain\Services\CreateAccount as TestedCreateA
  * that woocommerce_blocks_phase===3, i.e. dev build. Tests will fail
  * with other builds (release feature plugin, woo core package).
  * Related: https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/3211
+ * @group TESTS
  *
  * @since $VID:$
  */
@@ -37,13 +38,13 @@ class CreateAccount extends WP_UnitTestCase {
 
 		$tmp_enable_guest_checkout = get_option( 'woocommerce_enable_guest_checkout' );
 		$tmp_can_register = get_option('woocommerce_enable_signup_and_login_from_checkout');
-		$enable_guest_checkout = array_key_exists( 'enable_guest_checkout', $options ) ? $options['enable_guest_checkout'] : false;
+		$enable_guest_checkout = array_key_exists( 'enable_guest_checkout', $options ) ? $options['enable_guest_checkout'] : 'no';
 		$can_register = array_key_exists( 'can_register', $options ) ? $options['can_register'] : 'yes';
 		update_option( 'woocommerce_enable_guest_checkout', $enable_guest_checkout );
 		update_option( 'woocommerce_enable_signup_and_login_from_checkout', $can_register );
 
 		$test_request = new \WP_REST_Request();
-		$should_create_account = array_key_exists( 'should_create_account', $options ) ? $options['should_create_account'] : false;
+		$should_create_account = array_key_exists( 'should_create_account', $options ) ? $options['should_create_account'] : 'no';
 		$test_request->set_param( 'should_create_account', $should_create_account );
 		$test_request->set_param( 'billing_address', [
 			'email'      => $email,
@@ -102,8 +103,8 @@ class CreateAccount extends WP_UnitTestCase {
 				'Mary',
 				'Jones',
 				[
-					'should_create_account' => true,
-					'enable_guest_checkout' => true,
+					'should_create_account' => 'yes',
+					'enable_guest_checkout' => 'yes',
 				],
 			],
 			// User requested an account + site doesn't allow guest.
@@ -112,8 +113,8 @@ class CreateAccount extends WP_UnitTestCase {
 				'Mary',
 				'Jones',
 				[
-					'should_create_account' => true,
-					'enable_guest_checkout' => false,
+					'should_create_account' => 'yes',
+					'enable_guest_checkout' => 'no',
 				],
 			],
 			// User requested an account; name fields are not required.
@@ -122,8 +123,8 @@ class CreateAccount extends WP_UnitTestCase {
 				'',
 				'',
 				[
-					'should_create_account' => true,
-					'enable_guest_checkout' => true,
+					'should_create_account' => 'yes',
+					'enable_guest_checkout' => 'yes',
 				],
 			],
 			// Store does not allow guest - signup is required (automatic).
@@ -132,8 +133,8 @@ class CreateAccount extends WP_UnitTestCase {
 				'Henry',
 				'Kissinger',
 				[
-					'should_create_account' => false,
-					'enable_guest_checkout' => false,
+					'should_create_account' => 'no',
+					'enable_guest_checkout' => 'no',
 				],
 			],
 		];
@@ -154,8 +155,8 @@ class CreateAccount extends WP_UnitTestCase {
 			'Mary',
 			'Jones',
 			[
-				'should_create_account' => true,
-				'enable_guest_checkout' => true,
+				'should_create_account' => 'yes',
+				'enable_guest_checkout' => 'yes',
 			],
 		);
 	}
@@ -173,8 +174,8 @@ class CreateAccount extends WP_UnitTestCase {
 			'Mary',
 			'Jones',
 			[
-				'should_create_account' => true,
-				'enable_guest_checkout' => true,
+				'should_create_account' => 'yes',
+				'enable_guest_checkout' => 'yes',
 			],
 		);
 	}
@@ -199,22 +200,22 @@ class CreateAccount extends WP_UnitTestCase {
 			'Mary',
 			'Jones',
 			[
-				'should_create_account' => false,
-				'enable_guest_checkout' => true,
+				'should_create_account' => 'no',
+				'enable_guest_checkout' => 'yes',
 			],
 		);
 
 		// test with explicitly turning off global registration
-		$this->execute_create_customer_from_order(
-			'maryjones@testperson.net',
-			'Mary',
-			'Jones',
-			[
-				'can_register' => false,
-				'should_create_account' => false,
-				'enable_guest_checkout' => true,
-			],
-		);
+		// $this->execute_create_customer_from_order(
+		// 	'maryjones@testperson.net',
+		// 	'Mary',
+		// 	'Jones',
+		// 	[
+		// 		'can_register' => 'no',
+		// 		'should_create_account' => 'yes',
+		// 		'enable_guest_checkout' => 'yes',
+		// 	],
+		// );
 
 		$site_user_counts_after = count_users();
 
