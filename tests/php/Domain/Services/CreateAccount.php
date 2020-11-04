@@ -15,7 +15,6 @@ use Automattic\WooCommerce\Blocks\Domain\Services\CreateAccount as TestedCreateA
  * that woocommerce_blocks_phase===3, i.e. dev build. Tests will fail
  * with other builds (release feature plugin, woo core package).
  * Related: https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/3211
- * @group TESTS
  *
  * @since $VID:$
  */
@@ -206,16 +205,16 @@ class CreateAccount extends WP_UnitTestCase {
 		);
 
 		// test with explicitly turning off global registration
-		// $this->execute_create_customer_from_order(
-		// 	'maryjones@testperson.net',
-		// 	'Mary',
-		// 	'Jones',
-		// 	[
-		// 		'can_register' => 'no',
-		// 		'should_create_account' => 'yes',
-		// 		'enable_guest_checkout' => 'yes',
-		// 	],
-		// );
+		$this->execute_create_customer_from_order(
+			'maryjones@testperson.net',
+			'Mary',
+			'Jones',
+			[
+				'can_register' => 'no',
+				'should_create_account' => 'yes',
+				'enable_guest_checkout' => 'yes',
+			],
+		);
 
 		$site_user_counts_after = count_users();
 
