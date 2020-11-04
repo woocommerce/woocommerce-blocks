@@ -123,6 +123,17 @@ class Assets {
 	}
 
 	/**
+	 * Check whether store is configured to allow shoppers to sign up for
+	 * an account at checkout.
+	 * Inspired by WC_Checkout::is_registration_enabled().
+	 *
+	 * @return Boolean True if store is configured to allow signup.
+	 */
+	public static function is_checkout_signup_allowed() {
+		return apply_filters( 'woocommerce_checkout_registration_enabled', 'yes' === get_option( 'woocommerce_enable_signup_and_login_from_checkout' ) );
+	}
+
+	/**
 	 * Returns block-related data for enqueued wc-block-settings script.
 	 *
 	 * This is used to map site settings & data into JS-accessible variables.
@@ -188,7 +199,7 @@ class Assets {
 					'terms'    => self::format_page_resource( $page_ids['terms'] ),
 				],
 				'checkoutAllowsGuest'           => filter_var( get_option( 'woocommerce_enable_guest_checkout' ), FILTER_VALIDATE_BOOLEAN ),
-				'checkoutAllowsSignup'          => filter_var( get_option( 'woocommerce_enable_signup_and_login_from_checkout' ), FILTER_VALIDATE_BOOLEAN ),
+				'checkoutAllowsSignup'          => self::is_checkout_signup_allowed(),
 				'baseLocation'                  => wc_get_base_location(),
 				'woocommerceBlocksPhase'        => WOOCOMMERCE_BLOCKS_PHASE,
 				'hasDarkEditorStyleSupport'     => current_theme_supports( 'dark-editor-style' ),
