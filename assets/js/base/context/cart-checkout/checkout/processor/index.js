@@ -10,7 +10,6 @@ import {
 	usePaymentMethodDataContext,
 	useValidationContext,
 } from '@woocommerce/base-context';
-import { useDispatch } from '@wordpress/data';
 import {
 	useEffect,
 	useRef,
@@ -18,6 +17,7 @@ import {
 	useState,
 	useMemo,
 } from '@wordpress/element';
+import { useDispatch } from '@wordpress/data';
 import { useStoreCart, useStoreNotices } from '@woocommerce/base-hooks';
 import { useDebounce } from 'use-debounce';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
@@ -35,8 +35,6 @@ import { preparePaymentData, shouldUpdateAddressStore } from './utils';
  * Subscribes to checkout context and triggers processing via the API.
  */
 const CheckoutProcessor = () => {
-	const [ isProcessingOrder, setIsProcessingOrder ] = useState( false );
-
 	const {
 		hasError: checkoutHasError,
 		onCheckoutBeforeProcessing,
@@ -51,6 +49,7 @@ const CheckoutProcessor = () => {
 	const { hasValidationErrors } = useValidationContext();
 	const { shippingAddress, shippingErrorStatus } = useShippingDataContext();
 	const { billingData } = useBillingDataContext();
+	const { cartNeedsPayment, receiveCart } = useStoreCart();
 	const {
 		activePaymentMethod,
 		currentStatus: currentPaymentStatus,
@@ -59,13 +58,24 @@ const CheckoutProcessor = () => {
 		paymentMethods,
 		shouldSavePayment,
 	} = usePaymentMethodDataContext();
-
-	const { cartNeedsPayment, receiveCart } = useStoreCart();
 	const { addErrorNotice, removeNotice, setIsSuppressed } = useStoreNotices();
-
 	const currentBillingData = useRef( billingData );
 	const currentShippingAddress = useRef( shippingAddress );
 	const currentRedirectUrl = useRef( redirectUrl );
+	const [ isProcessingOrder, setIsProcessingOrder ] = useState( false );
+	const expressPaymentMethodActive = Object.keys(
+		expressPaymentMethods
+	).includes( activePaymentMethod );
+
+	const paymentMethodId = useMemo( () => {
+		const merged = { ...expressPaymentMethods, ...paymentMethods };
+		return merged?.[ activePaymentMethod ]?.paymentMethodId;
+	}, [ activePaymentMethod, expressPaymentMethods, paymentMethods ] );
+
+	const checkoutWillHaveError =
+		( hasValidationErrors && ! expressPaymentMethodActive ) ||
+		currentPaymentStatus.hasError ||
+		shippingErrorStatus.hasError;
 
 	const { updateCustomerAddress } = useDispatch( storeKey );
 	const previousBillingData = useRef( billingData );
@@ -73,14 +83,27 @@ const CheckoutProcessor = () => {
 	const [ debouncedBillingData ] = useDebounce( billingData, 400 );
 	const [ debouncedShippingAddress ] = useDebounce( shippingAddress, 400 );
 
-	const expressPaymentMethodActive = Object.keys(
-		expressPaymentMethods
-	).includes( activePaymentMethod );
+	// If express payment method is active, let's suppress notices
+	useEffect( () => {
+		setIsSuppressed( expressPaymentMethodActive );
+	}, [ expressPaymentMethodActive, setIsSuppressed ] );
 
-	const checkoutWillHaveError =
-		( hasValidationErrors && ! expressPaymentMethodActive ) ||
-		currentPaymentStatus.hasError ||
-		shippingErrorStatus.hasError;
+	useEffect( () => {
+		if (
+			checkoutWillHaveError !== checkoutHasError &&
+			( checkoutIsProcessing || checkoutIsBeforeProcessing ) &&
+			! expressPaymentMethodActive
+		) {
+			dispatchActions.setHasError( checkoutWillHaveError );
+		}
+	}, [
+		checkoutWillHaveError,
+		checkoutHasError,
+		checkoutIsProcessing,
+		checkoutIsBeforeProcessing,
+		expressPaymentMethodActive,
+		dispatchActions,
+	] );
 
 	const paidAndWithoutErrors =
 		! checkoutHasError &&
@@ -88,10 +111,11 @@ const CheckoutProcessor = () => {
 		( currentPaymentStatus.isSuccessful || ! cartNeedsPayment ) &&
 		checkoutIsProcessing;
 
-	const paymentMethodId = useMemo( () => {
-		const merged = { ...expressPaymentMethods, ...paymentMethods };
-		return merged?.[ activePaymentMethod ]?.paymentMethodId;
-	}, [ activePaymentMethod, expressPaymentMethods, paymentMethods ] );
+	useEffect( () => {
+		currentBillingData.current = billingData;
+		currentShippingAddress.current = shippingAddress;
+		currentRedirectUrl.current = redirectUrl;
+	}, [ billingData, shippingAddress, redirectUrl ] );
 
 	const checkValidation = useCallback( () => {
 		if ( hasValidationErrors ) {
@@ -124,6 +148,25 @@ const CheckoutProcessor = () => {
 		hasValidationErrors,
 		currentPaymentStatus.hasError,
 		shippingErrorStatus.hasError,
+	] );
+
+	useEffect( () => {
+		let unsubscribeProcessing;
+		if ( ! expressPaymentMethodActive ) {
+			unsubscribeProcessing = onCheckoutBeforeProcessing(
+				checkValidation,
+				0
+			);
+		}
+		return () => {
+			if ( ! expressPaymentMethodActive ) {
+				unsubscribeProcessing();
+			}
+		};
+	}, [
+		onCheckoutBeforeProcessing,
+		checkValidation,
+		expressPaymentMethodActive,
 	] );
 
 	const processOrder = useCallback( () => {
@@ -206,56 +249,19 @@ const CheckoutProcessor = () => {
 		orderNotes,
 		shouldCreateAccount,
 	] );
-
-	// Subscribe validation.
+	// redirect when checkout is complete and there is a redirect url.
 	useEffect( () => {
-		let unsubscribeProcessing;
-		if ( ! expressPaymentMethodActive ) {
-			unsubscribeProcessing = onCheckoutBeforeProcessing(
-				checkValidation,
-				0
-			);
+		if ( currentRedirectUrl.current ) {
+			window.location.href = currentRedirectUrl.current;
 		}
-		return () => {
-			if ( ! expressPaymentMethodActive ) {
-				unsubscribeProcessing();
-			}
-		};
-	}, [
-		onCheckoutBeforeProcessing,
-		checkValidation,
-		expressPaymentMethodActive,
-	] );
+	}, [ checkoutIsComplete ] );
 
-	// If express payment method is active then suppress notices.
+	// process order if conditions are good.
 	useEffect( () => {
-		setIsSuppressed( expressPaymentMethodActive );
-	}, [ expressPaymentMethodActive, setIsSuppressed ] );
-
-	// If an error is about to occur, dispatch it.
-	useEffect( () => {
-		if (
-			checkoutWillHaveError !== checkoutHasError &&
-			( checkoutIsProcessing || checkoutIsBeforeProcessing ) &&
-			! expressPaymentMethodActive
-		) {
-			dispatchActions.setHasError( checkoutWillHaveError );
+		if ( paidAndWithoutErrors && ! isProcessingOrder ) {
+			processOrder();
 		}
-	}, [
-		checkoutWillHaveError,
-		checkoutHasError,
-		checkoutIsProcessing,
-		checkoutIsBeforeProcessing,
-		expressPaymentMethodActive,
-		dispatchActions,
-	] );
-
-	// Keep refs up to date.
-	useEffect( () => {
-		currentBillingData.current = billingData;
-		currentShippingAddress.current = shippingAddress;
-		currentRedirectUrl.current = redirectUrl;
-	}, [ billingData, shippingAddress, redirectUrl ] );
+	}, [ processOrder, paidAndWithoutErrors, isProcessingOrder ] );
 
 	// When the billing or shipping address changes we need to push the changes to the server to
 	// get an updated cart--things such as taxes may be affected. This will push both billing and
@@ -293,20 +299,6 @@ const CheckoutProcessor = () => {
 		addErrorNotice,
 		updateCustomerAddress,
 	] );
-
-	// redirect when checkout is complete and there is a redirect url.
-	useEffect( () => {
-		if ( currentRedirectUrl.current ) {
-			window.location.href = currentRedirectUrl.current;
-		}
-	}, [ checkoutIsComplete ] );
-
-	// process order if conditions are good.
-	useEffect( () => {
-		if ( paidAndWithoutErrors && ! isProcessingOrder ) {
-			processOrder();
-		}
-	}, [ processOrder, paidAndWithoutErrors, isProcessingOrder ] );
 
 	return null;
 };
