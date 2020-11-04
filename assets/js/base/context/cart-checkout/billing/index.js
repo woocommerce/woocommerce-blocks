@@ -7,13 +7,16 @@ import { useBillingData } from '@woocommerce/base-hooks';
 /**
  * Internal dependencies
  */
-import { DEFAULT_BILLING_CONTEXT_DATA } from './constants';
+import { defaultBillingData } from './../../../shared';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').BillingDataContext} BillingDataContext
  */
 
-const BillingDataContext = createContext( DEFAULT_BILLING_CONTEXT_DATA );
+const BillingDataContext = createContext( {
+	billingData: defaultBillingData,
+	setBillingData: () => null,
+} );
 
 /**
  * @return {BillingDataContext} Returns data and functions related to billing.
