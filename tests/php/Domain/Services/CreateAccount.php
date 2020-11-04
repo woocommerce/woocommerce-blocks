@@ -36,8 +36,11 @@ class CreateAccount extends WP_UnitTestCase {
 		/// -- Test-specific setup start.
 
 		$tmp_enable_guest_checkout = get_option( 'woocommerce_enable_guest_checkout' );
+		$tmp_can_register = get_option('woocommerce_enable_signup_and_login_from_checkout');
 		$enable_guest_checkout = array_key_exists( 'enable_guest_checkout', $options ) ? $options['enable_guest_checkout'] : false;
+		$can_register = array_key_exists( 'can_register', $options ) ? $options['can_register'] : 'yes';
 		update_option( 'woocommerce_enable_guest_checkout', $enable_guest_checkout );
+		update_option( 'woocommerce_enable_signup_and_login_from_checkout', $can_register );
 
 		$test_request = new \WP_REST_Request();
 		$should_create_account = array_key_exists( 'should_create_account', $options ) ? $options['should_create_account'] : false;
@@ -57,6 +60,7 @@ class CreateAccount extends WP_UnitTestCase {
 
 		/// -- Undo test-specific setup; restore previous state.
 		update_option( 'woocommerce_enable_guest_checkout', $tmp_enable_guest_checkout );
+		update_option( 'woocommerce_enable_signup_and_login_from_checkout', $tmp_can_register );
 
 		return [
 			'user_id' => $user_id,
@@ -190,11 +194,23 @@ class CreateAccount extends WP_UnitTestCase {
 	public function test_no_account_requested() {
 		$site_user_counts = count_users();
 
-		$result = $this->execute_create_customer_from_order(
+		$this->execute_create_customer_from_order(
 			'maryjones@testperson.net',
 			'Mary',
 			'Jones',
 			[
+				'should_create_account' => false,
+				'enable_guest_checkout' => true,
+			],
+		);
+
+		// test with explicitly turning off global registration
+		$this->execute_create_customer_from_order(
+			'maryjones@testperson.net',
+			'Mary',
+			'Jones',
+			[
+				'can_register' => false,
 				'should_create_account' => false,
 				'enable_guest_checkout' => true,
 			],
