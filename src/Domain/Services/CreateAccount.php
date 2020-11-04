@@ -147,6 +147,13 @@ class CreateAccount {
 			return true;
 		}
 
+		// check for whether account creation is enabled at the global level.
+		$checkout = WC()->checkout();
+		if ( $checkout instanceof \WC_Checkout && false === filter_var( $checkout->is_registration_enabled(), FILTER_VALIDATE_BOOLEAN ) ) {
+			// Registration is not enabled for the store, so return false.
+			return false;
+		}
+
 		// From here we know that the store allows guest checkout;
 		// shopper can choose whether they sign up (`should_create_account`).
 
