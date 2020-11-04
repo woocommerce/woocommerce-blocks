@@ -8,12 +8,9 @@ import {
 	useEffect,
 	useMemo,
 	useRef,
+	useState,
 } from '@wordpress/element';
-import {
-	useShippingAddress,
-	useStoreCart,
-	useSelectShippingRate,
-} from '@woocommerce/base-hooks';
+import { useStoreCart, useSelectShippingRate } from '@woocommerce/base-hooks';
 import { useCheckoutContext } from '@woocommerce/base-context';
 
 /**
@@ -84,18 +81,19 @@ const hasInvalidShippingAddress = ( errors ) => {
 export const ShippingDataProvider = ( { children } ) => {
 	const { dispatchActions } = useCheckoutContext();
 	const {
+		shippingAddress: initialAddress,
 		cartNeedsShipping: needsShipping,
 		cartHasCalculatedShipping: hasCalculatedShipping,
 		shippingRates,
 		shippingRatesLoading,
 		cartErrors,
 	} = useStoreCart();
+	const [ shippingAddress, setShippingAddress ] = useState( initialAddress );
 	const [ shippingErrorStatus, dispatchErrorStatus ] = useReducer(
 		errorStatusReducer,
 		NONE
 	);
 	const [ observers, subscriber ] = useReducer( emitReducer, {} );
-	const { shippingAddress, setShippingAddress } = useShippingAddress();
 	const currentObservers = useRef( observers );
 	const {
 		selectShippingRate: setSelectedRates,
