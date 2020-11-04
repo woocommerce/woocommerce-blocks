@@ -142,7 +142,7 @@ class CreateAccount {
 		// check for whether account creation is enabled at the global level.
 		$checkout = WC()->checkout();
 
-		if ( $checkout instanceof \WC_Checkout && false === filter_var(
+		if ( $checkout instanceof \WC_Checkout && true === filter_var(
 			$checkout->is_registration_required(),
 			FILTER_VALIDATE_BOOLEAN
 		) ) {
