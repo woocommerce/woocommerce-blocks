@@ -1,18 +1,39 @@
 /**
  * External dependencies
  */
-import { createContext, useContext } from '@wordpress/element';
-import { useBillingData } from '@woocommerce/base-hooks';
-
-/**
- * Internal dependencies
- */
-import { defaultBillingData } from './../../../shared';
+import {
+	createContext,
+	useContext,
+	useState,
+	useCallback,
+} from '@wordpress/element';
+import { useStoreCart } from '@woocommerce/base-hooks';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').BillingDataContext} BillingDataContext
+ * @typedef {import('@woocommerce/type-defs/billing').BillingData} BillingData
  */
 
+/**
+ * @type {BillingData}
+ */
+const defaultBillingData = {
+	first_name: '',
+	last_name: '',
+	company: '',
+	address_1: '',
+	address_2: '',
+	city: '',
+	state: '',
+	postcode: '',
+	country: '',
+	email: '',
+	phone: '',
+};
+
+/**
+ * Creates BillingDataContext
+ */
 const BillingDataContext = createContext( {
 	billingData: defaultBillingData,
 	setBillingData: () => null,
@@ -25,8 +46,22 @@ export const useBillingDataContext = () => {
 	return useContext( BillingDataContext );
 };
 
+/**
+ * Billing Data context provider.
+ *
+ * @param {Object}  props          Incoming props for the provider.
+ * @param {Object}  props.children The children being wrapped.
+ */
 export const BillingDataProvider = ( { children } ) => {
-	const { billingData, setBillingData } = useBillingData();
+	const { billingAddress: initalBillingData } = useStoreCart();
+	const [ billingData, setBillingDataState ] = useState( initalBillingData );
+
+	const setBillingData = useCallback( ( newData ) => {
+		setBillingDataState( ( prevState ) => ( {
+			...prevState,
+			...newData,
+		} ) );
+	}, [] );
 
 	/**
 	 * @type {BillingDataContext}
@@ -35,6 +70,7 @@ export const BillingDataProvider = ( { children } ) => {
 		billingData,
 		setBillingData,
 	};
+
 	return (
 		<BillingDataContext.Provider value={ billingDataValue }>
 			{ children }
