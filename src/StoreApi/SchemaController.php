@@ -72,6 +72,7 @@ class SchemaController {
 				new Schemas\CartCouponSchema( $this->extend ),
 				new Schemas\CartShippingRateSchema( $this->extend ),
 				new Schemas\ShippingAddressSchema( $this->extend ),
+				new Schemas\BillingAddressSchema( $this->extend ),
 				new Schemas\ErrorSchema( $this->extend )
 			),
 			Schemas\CartCouponSchema::IDENTIFIER       => new Schemas\CartCouponSchema( $this->extend ),
