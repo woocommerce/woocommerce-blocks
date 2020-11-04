@@ -191,7 +191,7 @@ class CreateAccount extends WP_UnitTestCase {
 	/**
 	 * Test that a user is not created if not requested (and the site allows guest checkout).
 	 */
-	public function test_no_account_requested() {
+	public function test_no_account_created() {
 		$site_user_counts = count_users();
 
 		$this->execute_create_customer_from_order(
