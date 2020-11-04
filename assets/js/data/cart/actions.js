@@ -396,24 +396,32 @@ export function* updateShippingAddress( address ) {
 }
 
 /**
- * Updates the shipping and billing address for the customer and returns an updated cart.
+ * Updates the shipping and/or billing address for the customer and returns an updated cart.
  *
- * @param {Object} address Address data to be updated; can contain both billing_address and shipping_address.
+ * @param {Object} addressData Address data to be updated; can contain both billing_address and shipping_address.
  */
-export function* updateCustomerAddress( address ) {
-	yield shippingRatesAreResolving( true );
+export function* updateCustomerAddress( addressData ) {
+	const updatingShipping = !! addressData.shipping_address;
+
+	if ( updatingShipping ) {
+		yield shippingRatesAreResolving( true );
+	}
+
 	try {
 		const { response } = yield apiFetchWithHeaders( {
 			path: '/wc/store/cart/update-customer-address',
 			method: 'POST',
-			data: address,
+			data: addressData,
 			cache: 'no-store',
 		} );
 
 		yield receiveCart( response );
 	} catch ( error ) {
 		yield receiveError( error );
-		yield shippingRatesAreResolving( false );
+
+		if ( updatingShipping ) {
+			yield shippingRatesAreResolving( false );
+		}
 
 		// If updated cart state was returned, also update that.
 		if ( error.data?.cart ) {
@@ -423,6 +431,10 @@ export function* updateCustomerAddress( address ) {
 		// rethrow error.
 		throw error;
 	}
-	yield shippingRatesAreResolving( false );
+
+	if ( updatingShipping ) {
+		yield shippingRatesAreResolving( false );
+	}
+
 	return true;
 }

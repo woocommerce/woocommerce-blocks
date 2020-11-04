@@ -267,27 +267,34 @@ const CheckoutProcessor = () => {
 	// get an updated cart--things such as taxes may be affected. This will push both billing and
 	// shipping addresses to the server and get an updated cart in a single request.
 	useEffect( () => {
-		if (
-			shouldUpdateAddressStore(
-				previousBillingData.current,
-				currentBillingData.current
-			) ||
-			shouldUpdateAddressStore(
-				previousShippingAddress.current,
-				currentShippingAddress.current
-			)
-		) {
+		const updateBilling = shouldUpdateAddressStore(
+			previousBillingData.current,
+			currentBillingData.current
+		);
+		const updateShipping = shouldUpdateAddressStore(
+			previousShippingAddress.current,
+			currentShippingAddress.current
+		);
+		if ( updateBilling || updateShipping ) {
+			// Keep refs in sync to avoid multiple calls to API if debounce triggers again.
 			previousBillingData.current = currentBillingData.current;
 			previousShippingAddress.current = currentShippingAddress.current;
 
-			updateCustomerAddress( {
-				shipping_address: currentShippingAddress.current,
-				billing_address: {
+			const addressData = {};
+
+			if ( updateBilling ) {
+				addressData.billing_address = {
 					...currentBillingData.current,
 					phone: currentBillingData.current.phone || null,
 					email: currentBillingData.current.email || null,
-				},
-			} ).catch( ( error ) => {
+				};
+			}
+
+			if ( updateShipping ) {
+				addressData.shipping_address = currentShippingAddress.current;
+			}
+
+			updateCustomerAddress( addressData ).catch( ( error ) => {
 				addErrorNotice( error.message, {
 					id: 'checkout',
 				} );
