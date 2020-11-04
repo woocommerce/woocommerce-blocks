@@ -152,16 +152,9 @@ class CartUpdateCustomerAddress extends AbstractCartRoute {
 	 * @return array
 	 */
 	protected function prepare_address_fields( $address, $allowed_countries ) {
+		// Country is required--return no address if missing.
 		if ( empty( $address['country'] ) ) {
-			throw new RouteException(
-				'woocommerce_rest_cart_missing_country',
-				sprintf(
-					/* translators: 1: valid country codes */
-					__( 'No address country code was given. Please provide one of the following: %s', 'woo-gutenberg-products-block' ),
-					implode( ', ', array_keys( $allowed_countries ) )
-				),
-				400
-			);
+			return [];
 		}
 
 		$address['country'] = wc_strtoupper( $address['country'] );
