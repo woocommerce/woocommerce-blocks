@@ -42,7 +42,13 @@ export const useBillingData = () => {
 				debouncedBillingData
 			)
 		) {
-			updateCustomerAddress( { billing_address: debouncedBillingData } )
+			updateCustomerAddress( {
+				billing_address: {
+					...debouncedBillingData,
+					phone: debouncedBillingData?.phone || null,
+					email: debouncedBillingData?.email || null,
+				},
+			} )
 				.then( () => {
 					previousBillingData.current = debouncedBillingData;
 				} )
