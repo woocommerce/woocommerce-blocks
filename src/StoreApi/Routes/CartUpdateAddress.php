@@ -7,13 +7,13 @@ use Automattic\WooCommerce\Blocks\StoreApi\Schemas\BillingAddressSchema;
 use Automattic\WooCommerce\Blocks\StoreApi\Schemas\ShippingAddressSchema;
 
 /**
- * CartUpdateCustomerAddress class.
+ * CartUpdateAddress class.
  *
  * Updates the customer billing and shipping address and returns an updated cart--things such as taxes may be recalculated.
  *
  * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
-class CartUpdateCustomerAddress extends AbstractCartRoute {
+class CartUpdateAddress extends AbstractCartRoute {
 	/**
 	 * Billing address schema instance.
 	 *
@@ -56,7 +56,7 @@ class CartUpdateCustomerAddress extends AbstractCartRoute {
 	 * @return string
 	 */
 	public function get_path() {
-		return '/cart/update-customer-address';
+		return '/cart/update-address';
 	}
 
 	/**

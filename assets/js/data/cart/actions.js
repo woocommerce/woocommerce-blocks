@@ -409,7 +409,7 @@ export function* updateCustomerAddress( addressData ) {
 
 	try {
 		const { response } = yield apiFetchWithHeaders( {
-			path: '/wc/store/cart/update-customer-address',
+			path: '/wc/store/cart/update-address',
 			method: 'POST',
 			data: addressData,
 			cache: 'no-store',
