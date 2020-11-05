@@ -204,6 +204,7 @@ class CreateAccount extends WP_UnitTestCase {
 			],
 		);
 
+
 		// test with explicitly turning off global registration
 		$this->execute_create_customer_from_order(
 			'maryjones@testperson.net',
@@ -213,6 +214,18 @@ class CreateAccount extends WP_UnitTestCase {
 				'can_register' => 'no',
 				'should_create_account' => 'yes',
 				'enable_guest_checkout' => 'yes',
+			],
+		);
+
+		// test with guest checkout off and global registration off.
+		$this->execute_create_customer_from_order(
+			'maryjones@testperson.net',
+			'Mary',
+			'Jones',
+			[
+				'can_register' => 'no',
+				'should_create_account' => 'yes',
+				'enable_guest_checkout' => 'no',
 			],
 		);
 

@@ -146,16 +146,16 @@ class CreateAccount {
 			return false;
 		}
 
+		if ( false === filter_var( $checkout->is_registration_enabled(), FILTER_VALIDATE_BOOLEAN ) ) {
+			// Registration is not enabled for the store, so return false.
+			return false;
+		}
+
 		if ( true === filter_var( $checkout->is_registration_required(), FILTER_VALIDATE_BOOLEAN ) ) {
 			// Store requires an account for all checkouts (purchases).
 			// Create an account independent of shopper option in $request.
 			// Note - checkbox is not displayed to shopper in this case.
 			return true;
-		}
-
-		if ( false === filter_var( $checkout->is_registration_enabled(), FILTER_VALIDATE_BOOLEAN ) ) {
-			// Registration is not enabled for the store, so return false.
-			return false;
 		}
 
 		// From here we know that the store allows guest checkout;
