@@ -28,7 +28,11 @@ const OrderNotesStep = ( { showOrderNotes } ) => {
 	}
 
 	return (
-		<FormStep id="order-notes" showStepNumber={ false }>
+		<FormStep
+			id="order-notes"
+			showStepNumber={ false }
+			className="wc-block-checkout__order-notes"
+		>
 			<CheckoutOrderNotes
 				disabled={ checkoutIsProcessing }
 				onChange={ setOrderNotes }
