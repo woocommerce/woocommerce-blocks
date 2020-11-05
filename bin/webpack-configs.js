@@ -64,6 +64,11 @@ const getCoreConfig = ( options = {} ) => {
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
 			jsonpFunction: 'webpackWcBlocksJsonp',
 		},
+		optimization: {
+			splitChunks: {
+				automaticNameDelimiter: '--',
+			},
+		},
 		module: {
 			rules: [
 				{
@@ -215,6 +220,11 @@ const getFrontConfig = ( options = {} ) => {
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
 			jsonpFunction: 'webpackWcBlocksJsonp',
 		},
+		optimization: {
+			splitChunks: {
+				automaticNameDelimiter: '--',
+			},
+		},
 		module: {
 			rules: [
 				{
@@ -307,6 +317,11 @@ const getPaymentsConfig = ( options = {} ) => {
 			// overwriting each other's chunk loader function.
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
 			jsonpFunction: 'webpackWcBlocksPaymentMethodExtensionJsonp',
+		},
+		optimization: {
+			splitChunks: {
+				automaticNameDelimiter: '--',
+			},
 		},
 		module: {
 			rules: [
