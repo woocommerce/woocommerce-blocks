@@ -6,6 +6,7 @@ import { ShippingDataProvider } from '../shipping';
 import { BillingDataProvider } from '../billing';
 import { CheckoutStateProvider } from '../checkout-state';
 import CheckoutProcessor from './processor';
+import AddressProcessor from '../address-processor';
 
 /**
  * Checkout provider
@@ -31,6 +32,7 @@ export const CheckoutProvider = ( {
 				<ShippingDataProvider>
 					<PaymentMethodDataProvider>
 						{ children }
+						<AddressProcessor />
 						<CheckoutProcessor />
 					</PaymentMethodDataProvider>
 				</ShippingDataProvider>

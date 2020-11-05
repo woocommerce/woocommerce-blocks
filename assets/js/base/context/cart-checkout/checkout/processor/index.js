@@ -17,15 +17,12 @@ import {
 	useState,
 	useMemo,
 } from '@wordpress/element';
-import { useDispatch } from '@wordpress/data';
 import { useStoreCart, useStoreNotices } from '@woocommerce/base-hooks';
-import { useDebounce } from 'use-debounce';
-import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
-import { preparePaymentData, shouldUpdateAddressStore } from './utils';
+import { preparePaymentData } from './utils';
 
 /**
  * CheckoutProcessor component.
@@ -76,12 +73,6 @@ const CheckoutProcessor = () => {
 		( hasValidationErrors && ! expressPaymentMethodActive ) ||
 		currentPaymentStatus.hasError ||
 		shippingErrorStatus.hasError;
-
-	const { updateCustomerAddress } = useDispatch( storeKey );
-	const previousBillingData = useRef( billingData );
-	const previousShippingAddress = useRef( shippingAddress );
-	const [ debouncedBillingData ] = useDebounce( billingData, 400 );
-	const [ debouncedShippingAddress ] = useDebounce( shippingAddress, 400 );
 
 	// If express payment method is active, let's suppress notices
 	useEffect( () => {
@@ -262,50 +253,6 @@ const CheckoutProcessor = () => {
 			processOrder();
 		}
 	}, [ processOrder, paidAndWithoutErrors, isProcessingOrder ] );
-
-	// When the billing or shipping address changes we need to push the changes to the server to
-	// get an updated cart--things such as taxes may be affected. This will push both billing and
-	// shipping addresses to the server and get an updated cart in a single request.
-	useEffect( () => {
-		const updateBilling = shouldUpdateAddressStore(
-			previousBillingData.current,
-			currentBillingData.current
-		);
-		const updateShipping = shouldUpdateAddressStore(
-			previousShippingAddress.current,
-			currentShippingAddress.current
-		);
-		if ( updateBilling || updateShipping ) {
-			// Keep refs in sync to avoid multiple calls to API if debounce triggers again.
-			previousBillingData.current = currentBillingData.current;
-			previousShippingAddress.current = currentShippingAddress.current;
-
-			const addressData = {};
-
-			if ( updateBilling ) {
-				addressData.billing_address = {
-					...currentBillingData.current,
-					phone: currentBillingData.current.phone || null,
-					email: currentBillingData.current.email || null,
-				};
-			}
-
-			if ( updateShipping ) {
-				addressData.shipping_address = currentShippingAddress.current;
-			}
-
-			updateCustomerAddress( addressData ).catch( ( error ) => {
-				addErrorNotice( error.message, {
-					id: 'checkout',
-				} );
-			} );
-		}
-	}, [
-		debouncedBillingData,
-		debouncedShippingAddress,
-		addErrorNotice,
-		updateCustomerAddress,
-	] );
 
 	return null;
 };
