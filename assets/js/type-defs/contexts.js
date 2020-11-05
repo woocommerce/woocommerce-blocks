@@ -202,7 +202,7 @@
  * @property {number}                       customerId                           This is the ID of the customer the
  *                                                                               draft order belongs to.
  * @property {boolean}                      shouldCreateAccount                  Should a user account be created?
- * @property {function()}                   setShouldCreateAccount               Function to update the
+ * @property {function(boolean)}            setShouldCreateAccount               Function to update the
  *                                                                               shouldCreateAccount property.
  */
 
