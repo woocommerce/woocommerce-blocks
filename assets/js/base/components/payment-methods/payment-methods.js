@@ -51,7 +51,7 @@ const PaymentMethods = () => {
 					className: 'wc-block-components-checkout-step__description',
 				} }
 			/>
-			{ showNewPaymentMethods && <PaymentMethodOptions /> }
+			<PaymentMethodOptions />
 		</>
 	);
 };
