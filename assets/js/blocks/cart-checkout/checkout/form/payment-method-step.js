@@ -33,7 +33,7 @@ const PaymentMethodStep = () => {
 			description={
 				Object.keys( paymentMethods ).length > 1
 					? __(
-							'Select a payment method below.',
+							'Select a payment method below',
 							'woo-gutenberg-products-block'
 					  )
 					: ''
