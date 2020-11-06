@@ -3,10 +3,7 @@
  */
 import { useEffect, useState, useRef, useCallback } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
-import {
-	useEditorContext,
-	usePaymentMethodDataContext,
-} from '@woocommerce/base-context';
+import { usePaymentMethodDataContext } from '@woocommerce/base-context';
 import RadioControl from '@woocommerce/base-components/radio-control';
 import { getPaymentMethods } from '@woocommerce/blocks-registry';
 import PropTypes from 'prop-types';
@@ -89,7 +86,6 @@ const getDefaultPaymentMethodOptions = (
 };
 
 const SavedPaymentMethodOptions = ( { onChange } ) => {
-	const { isEditor } = useEditorContext();
 	const {
 		setPaymentStatus,
 		customerPaymentMethods,
@@ -156,12 +152,10 @@ const SavedPaymentMethodOptions = ( { onChange } ) => {
 		standardMethods,
 	] );
 
-	// In the editor, show `Use a new payment method` option as selected.
-	const selectedOption = isEditor ? '0' : selectedToken + '';
 	return currentOptions.current.length > 0 ? (
 		<RadioControl
 			id={ 'wc-payment-method-saved-tokens' }
-			selected={ selectedOption }
+			selected={ selectedToken }
 			onChange={ updateToken }
 			options={ currentOptions.current }
 		/>
