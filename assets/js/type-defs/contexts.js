@@ -50,6 +50,7 @@
  *                                                              retrieving shipping rates.
  * @property {boolean}              needsShipping               True if the cart has items requiring
  *                                                              shipping.
+ * @property {boolean}              hasCalculatedShipping       True if the cart has calculated shipping costs.
  */
 
 /**

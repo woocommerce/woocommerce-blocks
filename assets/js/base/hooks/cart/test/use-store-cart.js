@@ -50,7 +50,7 @@ describe( 'useStoreCart', () => {
 		},
 		shippingRates: previewCart.shipping_rates,
 		shippingRatesLoading: false,
-		hasShippingAddress: false,
+		hasCalculatedShipping: false,
 	};
 
 	const mockCartItems = [ { key: '1', id: 1, name: 'Lorem Ipsum' } ];
@@ -86,7 +86,7 @@ describe( 'useStoreCart', () => {
 		shippingAddress: mockShippingAddress,
 		shippingRates: [],
 		shippingRatesLoading: false,
-		hasShippingAddress: false,
+		hasCalculatedShipping: false,
 		receiveCart: undefined,
 	};
 

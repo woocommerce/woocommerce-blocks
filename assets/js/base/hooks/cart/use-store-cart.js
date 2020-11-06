@@ -37,7 +37,7 @@ export const defaultCartData = {
 	},
 	shippingRates: [],
 	shippingRatesLoading: false,
-	hasShippingAddress: false,
+	cartHasCalculatedShipping: false,
 	receiveCart: () => {},
 };
 
@@ -89,7 +89,7 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 					},
 					shippingRates: previewCart.shipping_rates,
 					shippingRatesLoading: false,
-					hasShippingAddress: false,
+					cartHasCalculatedShipping: false,
 					receiveCart:
 						typeof previewCart?.receiveCart === 'function'
 							? previewCart.receiveCart
@@ -125,7 +125,7 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 				shippingAddress,
 				shippingRates: cartData.shippingRates || [],
 				shippingRatesLoading,
-				hasShippingAddress: !! shippingAddress.country,
+				cartHasCalculatedShipping: cartData.hasCalculatedShipping,
 				receiveCart,
 			};
 		},
