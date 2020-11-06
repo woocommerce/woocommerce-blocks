@@ -30,33 +30,37 @@ const RadioControlAccordion = ( {
 			>
 				{ options.map( ( option ) => {
 					const hasOptionContent = 'content' in option;
-					const checked = option.value === selected
-					return <>
-						<RadioControlOption
-							key={ option.value }
-							name={ `radio-control-${ radioControlId }` }
-							checked={ checked }
-							option={ option }
-							onChange={ ( value ) => {
-								onChange( value );
-								if ( typeof option.onChange === 'function' ) {
-									option.onChange( value );
-								}
-							} }
-						/>
-						{ hasOptionContent &&
-							<div
-								className={ classnames(
-									'wc-block-components-radio-control-accordion-content',
-									{ 
-										'wc-block-components-radio-control-accordion-content-hide' : ! checked
+					const checked = option.value === selected;
+					return (
+						<>
+							<RadioControlOption
+								key={ option.value }
+								name={ `radio-control-${ radioControlId }` }
+								checked={ checked }
+								option={ option }
+								onChange={ ( value ) => {
+									onChange( value );
+									if (
+										typeof option.onChange === 'function'
+									) {
+										option.onChange( value );
 									}
-								) }
-							>
-								{ option.content }
-							</div>
-						}
-					</>;
+								} }
+							/>
+							{ hasOptionContent && (
+								<div
+									className={ classnames(
+										'wc-block-components-radio-control-accordion-content',
+										{
+											'wc-block-components-radio-control-accordion-content-hide': ! checked,
+										}
+									) }
+								>
+									{ option.content }
+								</div>
+							) }
+						</>
+					);
 				} ) }
 			</div>
 		)
