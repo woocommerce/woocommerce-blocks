@@ -147,7 +147,7 @@ class Checkout extends AbstractRoute {
 		$order_controller = new OrderController();
 		$order_object     = $this->get_draft_order_object( $this->get_draft_order_id() );
 
-		if ( ! $order_object ) {
+		if ( ! $order_object instanceof \WC_Order ) {
 			throw new RouteException(
 				'woocommerce_rest_checkout_invalid_order',
 				__( 'This session has no orders pending payment.', 'woo-gutenberg-products-block' ),
@@ -315,7 +315,7 @@ class Checkout extends AbstractRoute {
 		$cart_controller->validate_cart_items();
 		$cart_controller->validate_cart_coupons();
 
-		if ( ! $order_object ) {
+		if ( ! $order_object instanceof \WC_Order ) {
 			$order_object = $order_controller->create_order_from_cart();
 			$created      = true;
 		} else {
