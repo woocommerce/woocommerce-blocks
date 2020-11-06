@@ -192,13 +192,13 @@ class CartSchema extends AbstractSchema {
 						],
 						'total_shipping'     => [
 							'description' => __( 'Total price of shipping.', 'woo-gutenberg-products-block' ),
-							'type'        => 'string',
+							'type'        => [ 'string', 'null' ],
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
 						],
 						'total_shipping_tax' => [
 							'description' => __( 'Total tax on shipping.', 'woo-gutenberg-products-block' ),
-							'type'        => 'string',
+							'type'        => [ 'string', 'null' ],
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
 						],
@@ -267,7 +267,7 @@ class CartSchema extends AbstractSchema {
 
 		return [
 			'coupons'          => array_values( array_map( [ $this->coupon_schema, 'get_item_response' ], array_filter( $cart->get_applied_coupons() ) ) ),
-			'shipping_rates'   => array_values( array_map( [ $this->shipping_rate_schema, 'get_item_response' ], $controller->get_shipping_packages() ) ),
+			'shipping_rates'   => $cart->show_shipping() ? array_values( array_map( [ $this->shipping_rate_schema, 'get_item_response' ], $controller->get_shipping_packages() ) ) : [],
 			'shipping_address' => $this->shipping_address_schema->get_item_response( wc()->customer ),
 			'items'            => array_values( array_map( [ $this->item_schema, 'get_item_response' ], array_filter( $cart->get_cart() ) ) ),
 			'items_count'      => $cart->get_cart_contents_count(),
@@ -283,8 +283,8 @@ class CartSchema extends AbstractSchema {
 					'total_fees_tax'     => $this->prepare_money_response( $cart->get_fee_tax(), wc_get_price_decimals() ),
 					'total_discount'     => $this->prepare_money_response( $cart->get_discount_total(), wc_get_price_decimals() ),
 					'total_discount_tax' => $this->prepare_money_response( $cart->get_discount_tax(), wc_get_price_decimals() ),
-					'total_shipping'     => $this->prepare_money_response( $cart->get_shipping_total(), wc_get_price_decimals() ),
-					'total_shipping_tax' => $this->prepare_money_response( $cart->get_shipping_tax(), wc_get_price_decimals() ),
+					'total_shipping'     => $cart->show_shipping() ? $this->prepare_money_response( $cart->get_shipping_total(), wc_get_price_decimals() ) : null,
+					'total_shipping_tax' => $cart->show_shipping() ? $this->prepare_money_response( $cart->get_shipping_tax(), wc_get_price_decimals() ) : null,
 
 					// Explicitly request context='edit'; default ('view') will render total as markup.
 					'total_price'        => $this->prepare_money_response( $cart->get_total( 'edit' ), wc_get_price_decimals() ),
