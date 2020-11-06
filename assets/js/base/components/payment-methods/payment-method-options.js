@@ -21,9 +21,9 @@ import RadioControlAccordion from '../radio-control-accordion';
 
 /**
  * Component used to render all non-saved payment method options.
- * 
+ *
  * @param {Object} props Incoming props for the component.
- * @param {function():any} props.onChange Function to call on the change event.
+ * @param {function(string):void} props.onChange Function to call on the change event.
  * @param {string} props.selectedMethod Selected method. Empty strin means no method is selected.
  * @return {*} The rendered component.
  */
