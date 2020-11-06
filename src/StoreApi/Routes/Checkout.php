@@ -280,7 +280,7 @@ class Checkout extends AbstractRoute {
 	protected function get_draft_order_object( $order_id ) {
 		$draft_order_object = $order_id ? wc_get_order( $order_id ) : false;
 
-		if ( ! $draft_order_object ) {
+		if ( ! $draft_order_object instanceof \WC_Order ) {
 			return false;
 		}
 
