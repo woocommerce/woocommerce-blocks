@@ -32,9 +32,11 @@ const RadioControlAccordion = ( {
 					const hasOptionContent = 'content' in option;
 					const checked = option.value === selected;
 					return (
-						<>
+						<div
+							className="wc-block-components-radio-control-accordion-option"
+							key={ option.value }
+						>
 							<RadioControlOption
-								key={ option.value }
 								name={ `radio-control-${ radioControlId }` }
 								checked={ checked }
 								option={ option }
@@ -59,7 +61,7 @@ const RadioControlAccordion = ( {
 									{ option.content }
 								</div>
 							) }
-						</>
+						</div>
 					);
 				} ) }
 			</div>

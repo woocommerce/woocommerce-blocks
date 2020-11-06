@@ -2,3 +2,25 @@
 
 @include radio-control-styles;
 @include radio-control-input-styles;
+
+.wc-block-components-radio-control-accordion-option {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: $gray-200;
+}
+
+.wc-block-components-radio-control-accordion-option:last-child {
+	border-width: 1px;
+}
+
+.wc-block-components-radio-control-accordion-option {
+	.wc-block-components-radio-control__option {
+		&::after {
+			content: none;
+		}
+	}
+}
+
+.wc-block-components-radio-control-accordion-content {
+	padding: 8px 16px 16px 16px;
+}
