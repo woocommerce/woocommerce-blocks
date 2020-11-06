@@ -89,7 +89,8 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 					},
 					shippingRates: previewCart.shipping_rates,
 					shippingRatesLoading: false,
-					cartHasCalculatedShipping: false,
+					cartHasCalculatedShipping:
+						previewCart.has_calculated_shipping,
 					receiveCart:
 						typeof previewCart?.receiveCart === 'function'
 							? previewCart.receiveCart

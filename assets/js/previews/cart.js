@@ -160,6 +160,7 @@ export const previewCart = {
 	items_weight: 0,
 	needs_payment: true,
 	needs_shipping: SHIPPING_ENABLED,
+	has_calculated_shipping: true,
 	totals: {
 		currency_code: 'USD',
 		currency_symbol: '$',
