@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { useEffect, useState, useRef, useCallback } from '@wordpress/element';
+import { useEffect, useRef, useCallback } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import { usePaymentMethodDataContext } from '@woocommerce/base-context';
 import RadioControl from '@woocommerce/base-components/radio-control';
@@ -85,13 +85,12 @@ const getDefaultPaymentMethodOptions = (
 	};
 };
 
-const SavedPaymentMethodOptions = ( { onChange } ) => {
+const SavedPaymentMethodOptions = ( { selectedToken = '0', onChange } ) => {
 	const {
 		setPaymentStatus,
 		customerPaymentMethods,
 		setActivePaymentMethod,
 	} = usePaymentMethodDataContext();
-	const [ selectedToken, setSelectedToken ] = useState( '' );
 	const standardMethods = getPaymentMethods();
 
 	/**
@@ -105,10 +104,9 @@ const SavedPaymentMethodOptions = ( { onChange } ) => {
 			if ( token === '0' ) {
 				setPaymentStatus().started();
 			}
-			setSelectedToken( token );
 			onChange( token );
 		},
-		[ onChange, setSelectedToken, setPaymentStatus ]
+		[ onChange, setPaymentStatus ]
 	);
 
 	useEffect( () => {

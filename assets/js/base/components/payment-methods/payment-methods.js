@@ -20,14 +20,23 @@ import SavedPaymentMethodOptions from './saved-payment-method-options';
  */
 const PaymentMethods = () => {
 	const { isInitialized, paymentMethods } = usePaymentMethods();
-	const [ showNewPaymentMethods, setShowNewPaymentMethods ] = useState(
-		true
-	);
-	const onChange = useCallback(
+	const [ savedMethodsToken, setSavedMethodsToken ] = useState( '' );
+	const [ paymentMethodsName, setPaymentMethodsName ] = useState( '' );
+
+	const onChangeSavedMethods = useCallback(
 		( token ) => {
-			setShowNewPaymentMethods( token === '0' );
+			setSavedMethodsToken( token );
+			setPaymentMethodsName( '' );
 		},
-		[ setShowNewPaymentMethods ]
+		[ setSavedMethodsToken, setPaymentMethodsName ]
+	);
+
+	const onChangePaymentMethods = useCallback(
+		( method ) => {
+			setPaymentMethodsName( method );
+			setSavedMethodsToken( '0' );
+		},
+		[ setSavedMethodsToken, setPaymentMethodsName ]
 	);
 
 	if ( isInitialized && Object.keys( paymentMethods ).length === 0 ) {
@@ -36,7 +45,10 @@ const PaymentMethods = () => {
 
 	return (
 		<>
-			<SavedPaymentMethodOptions onChange={ onChange } />
+			<SavedPaymentMethodOptions
+				selectedToken={ savedMethodsToken }
+				onChange={ onChangeSavedMethods }
+			/>
 			<Label
 				label={ __(
 					'Use another payment method',
@@ -51,7 +63,10 @@ const PaymentMethods = () => {
 					className: 'wc-block-components-checkout-step__description',
 				} }
 			/>
-			<PaymentMethodOptions />
+			<PaymentMethodOptions
+				selectedMethod={ paymentMethodsName }
+				onChange={ onChangePaymentMethods }
+			/>
 		</>
 	);
 };

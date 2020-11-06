@@ -47,7 +47,7 @@ const RadioControlAccordion = ( {
 									}
 								} }
 							/>
-							{ hasOptionContent && (
+							{ hasOptionContent && checked && (
 								<div
 									className={ classnames(
 										'wc-block-components-radio-control-accordion-content',
