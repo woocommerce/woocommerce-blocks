@@ -15,8 +15,13 @@
 
 .wc-block-components-radio-control-accordion-option {
 	.wc-block-components-radio-control__option {
+		padding-left: 44px;
 		&::after {
 			content: none;
+		}
+
+		.wc-block-components-radio-control__input {
+			left: 16px;
 		}
 	}
 }
