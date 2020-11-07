@@ -8,7 +8,7 @@ import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
  * Internal dependencies
  */
 import RadioControlOption from '../radio-control/option';
-import './style.scss';
+import '../radio-control/style.scss';
 
 const RadioControlAccordion = ( {
 	className,
