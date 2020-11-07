@@ -23,7 +23,7 @@ const PaymentMethods = () => {
 	const { isInitialized, paymentMethods } = usePaymentMethods();
 	const [ savedMethodsToken, setSavedMethodsToken ] = useState( '' );
 	const [ paymentMethodsName, setPaymentMethodsName ] = useState( '' );
-	const { customerPaymentMethods } = usePaymentMethodDataContext()
+	const { customerPaymentMethods } = usePaymentMethodDataContext();
 
 	const onChangeSavedMethods = useCallback(
 		( token ) => {
@@ -51,7 +51,7 @@ const PaymentMethods = () => {
 				selectedToken={ savedMethodsToken }
 				onChange={ onChangeSavedMethods }
 			/>
-			{ Object.keys( customerPaymentMethods).length > 0 && (
+			{ Object.keys( customerPaymentMethods ).length > 0 && (
 				<Label
 					label={ __(
 						'Use another payment method',
@@ -63,7 +63,8 @@ const PaymentMethods = () => {
 					) }
 					wrapperElement="p"
 					wrapperProps={ {
-						className: 'wc-block-components-checkout-step__description',
+						className:
+							'wc-block-components-checkout-step__description',
 					} }
 				/>
 			) }
