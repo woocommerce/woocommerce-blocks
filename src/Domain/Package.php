@@ -1,6 +1,9 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\Domain;
 
+use Automattic\WooCommerce\Blocks\Package as NewPackage;
+use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
+
 /**
  * Main package class.
  *
@@ -70,20 +73,12 @@ class Package {
 	}
 
 	/**
-	 * Checks if we're executing the code in an experimental build mode.
+	 * Returns an instance of the the FeatureGating class.
 	 *
-	 * @return boolean
+	 * @return FeatureGating
 	 */
-	public static function is_experimental_build() {
-		return WOOCOMMERCE_BLOCKS_PHASE > 2;
-	}
-
-	/**
-	 * Checks if we're executing the code in an feature plugin or experimental build mode.
-	 *
-	 * @return boolean
-	 */
-	public static function is_feature_plugin_build() {
-		return WOOCOMMERCE_BLOCKS_PHASE > 1;
+	public function feature() {
+		$feature_gating = NewPackage::container()->get( FeatureGating::class );
+		return $feature_gating;
 	}
 }
