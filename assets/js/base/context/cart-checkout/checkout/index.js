@@ -3,10 +3,9 @@
  */
 import { PaymentMethodDataProvider } from '../payment-methods';
 import { ShippingDataProvider } from '../shipping';
-import { BillingDataProvider } from '../billing';
+import { CustomerDataProvider } from '../customer';
 import { CheckoutStateProvider } from '../checkout-state';
 import CheckoutProcessor from './processor';
-import AddressProcessor from '../address-processor';
 
 /**
  * Checkout provider
@@ -27,16 +26,15 @@ export const CheckoutProvider = ( {
 	redirectUrl,
 } ) => {
 	return (
-		<CheckoutStateProvider redirectUrl={ redirectUrl } isCart={ isCart }>
-			<BillingDataProvider>
+		<CheckoutStateProvider redirectUrl={ redirectUrl } isCart={ false }>
+			<CustomerDataProvider>
 				<ShippingDataProvider>
 					<PaymentMethodDataProvider>
 						{ children }
-						<AddressProcessor />
 						<CheckoutProcessor />
 					</PaymentMethodDataProvider>
 				</ShippingDataProvider>
-			</BillingDataProvider>
+			</CustomerDataProvider>
 		</CheckoutStateProvider>
 	);
 };

@@ -6,7 +6,7 @@ import triggerFetch from '@wordpress/api-fetch';
 import {
 	useCheckoutContext,
 	useShippingDataContext,
-	useBillingDataContext,
+	useCustomerDataContext,
 	usePaymentMethodDataContext,
 	useValidationContext,
 } from '@woocommerce/base-context';
@@ -44,8 +44,8 @@ const CheckoutProcessor = () => {
 		shouldCreateAccount,
 	} = useCheckoutContext();
 	const { hasValidationErrors } = useValidationContext();
-	const { shippingAddress, shippingErrorStatus } = useShippingDataContext();
-	const { billingData } = useBillingDataContext();
+	const { shippingErrorStatus } = useShippingDataContext();
+	const { billingData, shippingAddress } = useCustomerDataContext();
 	const { cartNeedsPayment, receiveCart } = useStoreCart();
 	const {
 		activePaymentMethod,

@@ -8,10 +8,12 @@ import {
 	useEffect,
 	useMemo,
 	useRef,
-	useState,
 } from '@wordpress/element';
 import { useStoreCart, useSelectShippingRate } from '@woocommerce/base-hooks';
-import { useCheckoutContext } from '@woocommerce/base-context';
+import {
+	useCheckoutContext,
+	useCustomerDataContext,
+} from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -80,15 +82,14 @@ const hasInvalidShippingAddress = ( errors ) => {
  */
 export const ShippingDataProvider = ( { children } ) => {
 	const { dispatchActions } = useCheckoutContext();
+	const { shippingAddress, setShippingAddress } = useCustomerDataContext();
 	const {
-		shippingAddress: initialAddress,
 		cartNeedsShipping: needsShipping,
 		cartHasCalculatedShipping: hasCalculatedShipping,
 		shippingRates,
 		shippingRatesLoading,
 		cartErrors,
 	} = useStoreCart();
-	const [ shippingAddress, setShippingAddress ] = useState( initialAddress );
 	const [ shippingErrorStatus, dispatchErrorStatus ] = useReducer(
 		errorStatusReducer,
 		NONE

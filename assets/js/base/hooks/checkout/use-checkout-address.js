@@ -5,7 +5,7 @@ import defaultAddressFields from '@woocommerce/base-components/cart-checkout/add
 import { useState, useEffect, useCallback } from '@wordpress/element';
 import {
 	useShippingDataContext,
-	useBillingDataContext,
+	useCustomerDataContext,
 	useCheckoutContext,
 } from '@woocommerce/base-context';
 import { isEqual } from 'lodash';
@@ -28,12 +28,13 @@ const isSameAddress = ( address1, address2 ) => {
  */
 export const useCheckoutAddress = () => {
 	const { customerId } = useCheckoutContext();
+	const { needsShipping } = useShippingDataContext();
 	const {
+		billingData,
+		setBillingData,
 		shippingAddress,
 		setShippingAddress,
-		needsShipping,
-	} = useShippingDataContext();
-	const { billingData, setBillingData } = useBillingDataContext();
+	} = useCustomerDataContext();
 	const [ billingFields, updateBillingFields ] = useState( billingData );
 
 	// This tracks the state of the "shipping as billing" address checkbox. It's

@@ -398,10 +398,10 @@ export function* updateShippingAddress( address ) {
 /**
  * Updates the shipping and/or billing address for the customer and returns an updated cart.
  *
- * @param {Object} addressData Address data to be updated; can contain both billing_address and shipping_address.
+ * @param {Object} customerData Address data to be updated; can contain both billing_address and shipping_address.
  */
-export function* updateCustomerAddress( addressData ) {
-	const updatingShipping = !! addressData.shipping_address;
+export function* updateCustomerData( customerData ) {
+	const updatingShipping = !! customerData.shipping_address;
 
 	if ( updatingShipping ) {
 		yield shippingRatesAreResolving( true );
@@ -411,7 +411,7 @@ export function* updateCustomerAddress( addressData ) {
 		const { response } = yield apiFetchWithHeaders( {
 			path: '/wc/store/cart/update-address',
 			method: 'POST',
-			data: addressData,
+			data: customerData,
 			cache: 'no-store',
 		} );
 
