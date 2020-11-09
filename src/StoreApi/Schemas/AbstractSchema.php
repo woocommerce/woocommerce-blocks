@@ -26,6 +26,10 @@ abstract class AbstractSchema {
 	 */
 	protected $extend;
 
+	public function __construct( ExtendRestAPI $extend_schema ) {
+		$this->extend = $extend_schema;
+	}
+
 	/**
 	 * Returns the full item schema.
 	 *
@@ -63,7 +67,6 @@ abstract class AbstractSchema {
 	 * @return array the data that will get added.
 	 */
 	protected function get_extended_data( $endpoint, ...$passed_args ) {
-		$this->extend = Package::container()->get( ExtendRestApi::class );
 		return $this->extend->get_endpoint_data( $endpoint, $passed_args );
 	}
 
@@ -75,7 +78,6 @@ abstract class AbstractSchema {
 	 * @return array the data that will get added.
 	 */
 	protected function get_extended_schema( $endpoint, ...$passed_args ) {
-		$this->extend = Package::container()->get( ExtendRestApi::class );
 		return $this->extend->get_endpoint_schema( $endpoint, $passed_args );
 	}
 	/**

@@ -2,6 +2,8 @@
 namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;
 
 use Automattic\WooCommerce\Blocks\Payments\PaymentResult;
+use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
+
 
 /**
  * CheckoutSchema class.
@@ -43,9 +45,10 @@ class CheckoutSchema extends AbstractSchema {
 	 * @param BillingAddressSchema  $billing_address_schema Billing address schema instance.
 	 * @param ShippingAddressSchema $shipping_address_schema Shipping address schema instance.
 	 */
-	public function __construct( BillingAddressSchema $billing_address_schema, ShippingAddressSchema $shipping_address_schema ) {
+	public function __construct( ExtendRestAPI $extend_schema, BillingAddressSchema $billing_address_schema, ShippingAddressSchema $shipping_address_schema ) {
 		$this->billing_address_schema  = $billing_address_schema;
 		$this->shipping_address_schema = $shipping_address_schema;
+		parent::__construct( $extend_schema );
 	}
 
 	/**

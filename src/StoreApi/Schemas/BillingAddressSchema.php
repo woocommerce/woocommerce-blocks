@@ -3,6 +3,7 @@ namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;
 
 use Automattic\WooCommerce\Blocks\RestApi\Routes;
 
+
 /**
  * BillingAddressSchema class.
  *

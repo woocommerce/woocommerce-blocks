@@ -183,7 +183,7 @@ class Bootstrap {
 		$this->container->register(
 			RestApi::class,
 			function ( Container $container ) {
-				return new RestApi();
+				return new RestApi( $container->get( ExtendRestApi::class ) );
 			}
 		);
 		$this->container->register(

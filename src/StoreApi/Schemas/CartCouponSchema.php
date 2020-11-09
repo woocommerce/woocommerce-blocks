@@ -2,6 +2,8 @@
 namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;
 
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
+use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
+
 
 /**
  * CartCouponSchema class.

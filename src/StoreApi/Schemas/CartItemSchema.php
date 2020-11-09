@@ -1,6 +1,9 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;
 
+use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
+
+
 /**
  * CartItemSchema class.
  *
@@ -21,22 +24,6 @@ class CartItemSchema extends ProductSchema {
 	 * @var string
 	 */
 	const IDENTIFIER = 'cart-item';
-
-	/**
-	 * Image attachment schema instance.
-	 *
-	 * @var ImageAttachmentSchema
-	 */
-	protected $image_attachment_schema;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param ImageAttachmentSchema $image_attachment_schema Image attachment schema instance.
-	 */
-	public function __construct( ImageAttachmentSchema $image_attachment_schema ) {
-		$this->image_attachment_schema = $image_attachment_schema;
-	}
 
 	/**
 	 * Cart schema properties.
