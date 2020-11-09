@@ -45,7 +45,7 @@ class SchemaController {
 	 */
 	protected function initialize() {
 		$this->schemas = [
-			'cart'                    => new Schemas\CartSchema(
+			Schemas\CartSchema::IDENTIFIER             => new Schemas\CartSchema(
 				new Schemas\CartItemSchema(
 					new Schemas\ImageAttachmentSchema()
 				),
@@ -54,26 +54,26 @@ class SchemaController {
 				new Schemas\ShippingAddressSchema(),
 				new Schemas\ErrorSchema()
 			),
-			'cart-coupon'             => new Schemas\CartCouponSchema(),
-			'cart-item'               => new Schemas\CartItemSchema(
+			Schemas\CartCouponSchema::IDENTIFIER       => new Schemas\CartCouponSchema(),
+			Schemas\CartItemSchema::IDENTIFIER         => new Schemas\CartItemSchema(
 				new Schemas\ImageAttachmentSchema()
 			),
-			'checkout'                => new Schemas\CheckoutSchema(
+			Schemas\CheckoutSchema::IDENTIFIER         => new Schemas\CheckoutSchema(
 				new Schemas\BillingAddressSchema(),
 				new Schemas\ShippingAddressSchema()
 			),
-			'product'                 => new Schemas\ProductSchema(
+			Schemas\ProductSchema::IDENTIFIER          => new Schemas\ProductSchema(
 				new Schemas\ImageAttachmentSchema()
 			),
-			'product-attribute'       => new Schemas\ProductAttributeSchema(),
-			'product-category'        => new Schemas\ProductCategorySchema(
+			Schemas\ProductAttributeSchema::IDENTIFIER => new Schemas\ProductAttributeSchema(),
+			Schemas\ProductCategorySchema::IDENTIFIER  => new Schemas\ProductCategorySchema(
 				new Schemas\ImageAttachmentSchema()
 			),
-			'product-collection-data' => new Schemas\ProductCollectionDataSchema(),
-			'product-review'          => new Schemas\ProductReviewSchema(
+			Schemas\ProductCollectionDataSchema::IDENTIFIER => new Schemas\ProductCollectionDataSchema(),
+			Schemas\ProductReviewSchema::IDENTIFIER    => new Schemas\ProductReviewSchema(
 				new Schemas\ImageAttachmentSchema()
 			),
-			'term'                    => new Schemas\TermSchema(),
+			Schemas\TermSchema::IDENTIFIER             => new Schemas\TermSchema(),
 		];
 	}
 }

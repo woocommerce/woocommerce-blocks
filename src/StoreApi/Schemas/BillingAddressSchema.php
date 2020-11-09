@@ -19,6 +19,13 @@ class BillingAddressSchema extends AbstractSchema {
 	protected $title = 'billing_address';
 
 	/**
+	 * The schema item identifier.
+	 *
+	 * @var string
+	 */
+	const IDENTIFIER = 'billing-address';
+
+	/**
 	 * Term properties.
 	 *
 	 * @return array

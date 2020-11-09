@@ -15,6 +15,13 @@ class ProductReviewSchema extends AbstractSchema {
 	protected $title = 'product_review';
 
 	/**
+	 * The schema item identifier.
+	 *
+	 * @var string
+	 */
+	const IDENTIFIER = 'product-review';
+
+	/**
 	 * Image attachment schema instance.
 	 *
 	 * @var ImageAttachmentSchema

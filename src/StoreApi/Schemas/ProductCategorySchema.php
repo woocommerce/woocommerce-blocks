@@ -15,6 +15,13 @@ class ProductCategorySchema extends TermSchema {
 	protected $title = 'product-category';
 
 	/**
+	 * The schema item identifier.
+	 *
+	 * @var string
+	 */
+	const IDENTIFIER = 'product-category';
+
+	/**
 	 * Image attachment schema instance.
 	 *
 	 * @var ImageAttachmentSchema

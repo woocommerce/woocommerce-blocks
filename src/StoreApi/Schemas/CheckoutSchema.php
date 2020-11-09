@@ -17,6 +17,13 @@ class CheckoutSchema extends AbstractSchema {
 	protected $title = 'checkout';
 
 	/**
+	 * The schema item identifier.
+	 *
+	 * @var string
+	 */
+	const IDENTIFIER = 'checkout';
+
+	/**
 	 * Billing address schema instance.
 	 *
 	 * @var BillingAddressSchema

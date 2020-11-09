@@ -18,6 +18,13 @@ class CartSchema extends AbstractSchema {
 	protected $title = 'cart';
 
 	/**
+	 * The schema item identifier.
+	 *
+	 * @var string
+	 */
+	const IDENTIFIER = 'cart';
+
+	/**
 	 * Item schema instance.
 	 *
 	 * @var CartItemSchema

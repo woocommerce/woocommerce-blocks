@@ -16,6 +16,13 @@ class CartItemSchema extends ProductSchema {
 	protected $title = 'cart_item';
 
 	/**
+	 * The schema item identifier.
+	 *
+	 * @var string
+	 */
+	const IDENTIFIER = 'cart-item';
+
+	/**
 	 * Image attachment schema instance.
 	 *
 	 * @var ImageAttachmentSchema
@@ -271,7 +278,7 @@ class CartItemSchema extends ProductSchema {
 				'type'        => 'array',
 				'context'     => [ 'view' ],
 				'readonly'    => true,
-				'properties'  => apply_filters( '__internal_extend_cart_item_schema', [] ),
+				'properties'  => $this->get_extended_schema( self::IDENTIFIER ),
 			],
 		];
 	}
@@ -311,7 +318,7 @@ class CartItemSchema extends ProductSchema {
 					'line_total_tax'    => $this->prepare_money_response( $cart_item['line_tax'], wc_get_price_decimals() ),
 				]
 			),
-			'extensions'           => apply_filters( '__internal_extend_cart_item_data', [], $cart_item ),
+			'extensions'           => $this->get_extended_data( self::IDENTIFIER, [ $cart_item ] ),
 		];
 	}
 

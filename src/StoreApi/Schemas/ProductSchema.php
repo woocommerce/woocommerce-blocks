@@ -16,6 +16,13 @@ class ProductSchema extends AbstractSchema {
 	protected $title = 'product';
 
 	/**
+	 * The schema item identifier.
+	 *
+	 * @var string
+	 */
+	const IDENTIFIER = 'product';
+
+	/**
 	 * Image attachment schema instance.
 	 *
 	 * @var ImageAttachmentSchema
