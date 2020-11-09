@@ -66,6 +66,7 @@ describe( 'useStoreCart', () => {
 		needsShipping: true,
 		shippingAddress: mockShippingAddress,
 		shippingRates: [],
+		hasCalculatedShipping: true,
 	};
 	const mockCartTotals = {
 		currency_code: 'USD',
