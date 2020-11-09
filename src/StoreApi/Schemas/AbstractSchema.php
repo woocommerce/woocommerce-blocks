@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;
 
+use Automattic\WooCommerce\Blocks\Package;
+use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
 /**
  * AbstractSchema class.
  *
@@ -16,6 +18,13 @@ abstract class AbstractSchema {
 	 * @var string
 	 */
 	protected $title = 'Schema';
+
+	/**
+	 * Rest extend instance
+	 *
+	 * @var ExtendRestApi
+	 */
+	protected $extend;
 
 	/**
 	 * Returns the full item schema.
@@ -46,6 +55,29 @@ abstract class AbstractSchema {
 		return $schema;
 	}
 
+	/**
+	 * Returns extended data for a specific endpoint
+	 *
+	 * @param string $endpoint The endpoint identifer.
+	 * @param array  ...$passed_args An array of arguments to be passed to callbacks.
+	 * @return array the data that will get added.
+	 */
+	protected function get_extended_data( $endpoint, ...$passed_args ) {
+		$this->extend = Package::container()->get( ExtendRestApi::class );
+		return $this->extend->get_endpoint_data( $endpoint, $passed_args );
+	}
+
+	/**
+	 * Returns extended schema for a specific endpoint
+	 *
+	 * @param string $endpoint The endpoint identifer.
+	 * @param array  ...$passed_args An array of arguments to be passed to callbacks.
+	 * @return array the data that will get added.
+	 */
+	protected function get_extended_schema( $endpoint, ...$passed_args ) {
+		$this->extend = Package::container()->get( ExtendRestApi::class );
+		return $this->extend->get_endpoint_schema( $endpoint, $passed_args );
+	}
 	/**
 	 * Retrieves an array of endpoint arguments from the item schema for the controller.
 	 *

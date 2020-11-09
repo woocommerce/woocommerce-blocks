@@ -318,7 +318,7 @@ class CartItemSchema extends ProductSchema {
 					'line_total_tax'    => $this->prepare_money_response( $cart_item['line_tax'], wc_get_price_decimals() ),
 				]
 			),
-			'extensions'           => $this->get_extended_data( self::IDENTIFIER, [ $cart_item ] ),
+			'extensions'           => $this->get_extended_data( self::IDENTIFIER, $cart_item, $product ),
 		];
 	}
 

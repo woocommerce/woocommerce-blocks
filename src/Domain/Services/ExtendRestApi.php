@@ -1,18 +1,43 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\Domain\Services;
 
+use Automattic\WooCommerce\Blocks\Domain\Package;
+use Automattic\WooCommerce\Blocks\StoreApi\Schemas\CartItemSchema;
 use Throwable;
+use Exception;
 
 /**
  * Service class to provide utility functions to extend REST API.
  */
 class ExtendRestApi {
 	/**
+	 * Holds the Package instance
+	 *
+	 * @var Package
+	 */
+	private $package;
+
+	/**
+	 * Constructor
+	 *
+	 * @param Package $package An instance of the package class.
+	 */
+	public function __construct( Package $package ) {
+		$this->package = $package;
+	}
+	/**
 	 * Valid endpoints to extend
 	 *
 	 * @var array
 	 */
-	private $endpoints = [ 'item' ];
+	private $endpoints = [ CartItemSchema::IDENTIFIER ];
+
+	/**
+	 * Data to be extended
+	 *
+	 * @var array
+	 */
+	private $extend_data = [];
 
 	/**
 	 * An endpoint that validates registration method call
@@ -21,8 +46,11 @@ class ExtendRestApi {
 	 * @param string   $namespace Plugin namespace.
 	 * @param callable $schema_callback Callback executed to add schema data.
 	 * @param callable $data_callback Callback executed to add endpoint data.
+	 *
+	 * @throws Exception On failure to register.
+	 * @return boolean True on success.
 	 */
-	private function validate_endpoint_data( $endpoint, $namespace, $schema_callback, $data_callback ) {
+	public function register_endpoint_data( $endpoint, $namespace, $schema_callback, $data_callback ) {
 		if ( ! is_string( $namespace ) ) {
 			$this->throw_exception(
 				'You must provide a plugin namespace when extending a Store REST endpoint.'
@@ -31,7 +59,7 @@ class ExtendRestApi {
 
 		if ( ! is_string( $endpoint ) || ! in_array( $endpoint, $this->endpoints, true ) ) {
 			$this->throw_exception(
-				'You must provide a valid Store REST endpoint to extend, valid endpoints are: ' . implode( ', ', $this->endpoints )
+				sprintf( 'You must provide a valid Store REST endpoint to extend, valid endpoints are: %s1. You provided %s2.', implode( ', ', $this->endpoints ), $endpoint )
 			);
 		}
 
@@ -46,86 +74,108 @@ class ExtendRestApi {
 				'$data_callback must be a callable function.'
 			);
 		}
+
+		$this->extend_data[ $endpoint ][ $namespace ] = [
+			'schema_callback' => $schema_callback,
+			'data_callback'   => $data_callback,
+		];
+
+		return true;
 	}
 
 	/**
-	 * Extends the items in store/cart endpoint
+	 * Returns the registered endpoint data
 	 *
-	 * @param string   $namespace Plugin namespace.
-	 * @param callable $schema_callback Callback executed to add schema data.
-	 * @param callable $data_callback Callback executed to add endpoint data, gets cart item data as param.
+	 * @param string $endpoint    A valid identifier.
+	 * @param array  $passed_args Passed arguments from the Schema class.
+	 * @return array Returns an array with registered endpoint data.
+	 * @throws Exception If a registered callback throws an error, or silently logs it.
 	 */
-	public function register_cart_item_endpoint_data( $namespace, $schema_callback, $data_callback ) {
-		$this->validate_endpoint_data( 'item', $namespace, $schema_callback, $data_callback );
+	public function get_endpoint_data( $endpoint, array $passed_args = [] ) {
+		$registered_data = [];
+		if ( ! isset( $this->extend_data[ $endpoint ] ) ) {
+			return [];
+		}
+		foreach ( $this->extend_data[ $endpoint ] as $namespace => $callbacks ) {
+			$data = [];
 
-		add_filter(
-			'__internal_extend_cart_item_schema',
-			function( $schema ) use ( $schema_callback, $namespace ) {
-				$schema_data = [];
-
-				try {
-					$schema_data = $schema_callback();
-				} catch ( Throwable $e ) {
-					$this->throw_exception( $e );
-					return $schema;
+			try {
+				if ( empty( $passed_args ) ) {
+					$data = $callbacks['data_callback']();
+				} else {
+					$passed_args_values = \array_values( $passed_args );
+					$data               = $callbacks['data_callback']( ...$passed_args_values );
 				}
+			} catch ( Throwable $e ) {
+				$this->throw_exception( $e );
+				continue;
+			}
 
-				if ( ! is_array( $schema_data ) ) {
-					$this->throw_exception(
-						'$schema_callback must return an array.'
-					);
-					return $schema;
-				}
+			if ( ! is_array( $data ) ) {
+				$this->throw_exception( '$data_callback must return an array.' );
+				continue;
+			}
 
-				$schema[ $namespace ] = $schema_data;
-				return $schema;
-			},
-			10,
-			1
-		);
-
-		add_filter(
-			'__internal_extend_cart_item_data',
-			function( $data, $cart_item ) use ( $data_callback, $namespace ) {
-				$endpoint_data = [];
-
-				try {
-					$endpoint_data = $data_callback( $cart_item );
-				} catch ( Throwable $e ) {
-					$this->throw_exception( $e );
-					return $data;
-				}
-
-				if ( ! is_array( $endpoint_data ) ) {
-					$this->throw_exception( '$endpoint_data must return an array.' );
-					return $data;
-				}
-
-				$data[ $namespace ] = $endpoint_data;
-				return $data;
-			},
-			10,
-			2
-		);
+			$registered_data[ $namespace ] = $data;
+		}
+		return $registered_data;
 	}
 
 	/**
-	 * Throws error or silently logs it.
+	 * Returns the registered endpoint schema
 	 *
-	 * @param string|Exception $exception_or_error Error message or Exception.
+	 * @param string $endpoint    A valid identifier.
+	 * @param array  $passed_args Passed arguments from the Schema class.
+	 * @return array Returns an array with registered schema data.
+	 * @throws Exception If a registered callback throws an error, or silently logs it.
+	 */
+	public function get_endpoint_schema( $endpoint, array $passed_args = [] ) {
+		$registered_schema = [];
+		if ( ! isset( $this->extend_data[ $endpoint ] ) ) {
+			return [];
+		}
+
+		foreach ( $this->extend_data[ $endpoint ] as $namespace => $callbacks ) {
+			$schema = [];
+
+			try {
+				if ( empty( $passed_args ) ) {
+					$schema = $callbacks['schema_callback']();
+				} else {
+					$passed_args_values = \array_values( $passed_args );
+					$schema             = $callbacks['schema_callback']( ...$passed_args_values );
+				}
+			} catch ( Throwable $e ) {
+				$this->throw_exception( $e );
+				continue;
+			}
+
+			if ( ! is_array( $schema ) ) {
+				$this->throw_exception( '$schema_callback must return an array.' );
+				continue;
+			}
+
+			$registered_schema[ $namespace ] = $schema;
+		}
+		return $registered_schema;
+	}
+
+	/**
+	 * Throws error and/or silently logs it.
+	 *
+	 * @param string|Throwable $exception_or_error Error message or Exception.
 	 * @throws Exception An error to throw if we have debug enabled and user is admin.
 	 */
 	private function throw_exception( $exception_or_error ) {
-		if ( $exception_or_error instanceof Exception ) {
-			$exception = $exception_or_error;
+		if ( is_string( $exception_or_error ) ) {
+			$exception = new Exception( $exception_or_error );
 		} else {
-			$exception = Exception( $exception_or_error );
+			$exception = $exception_or_error;
 		}
-
+		// Always log an error.
+		wc_caught_exception( $exception );
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && current_user_can( 'manage_woocommerce' ) ) {
 			throw $exception;
-		} else {
-			wc_caught_exception( $exception_or_error );
 		}
 	}
 }
