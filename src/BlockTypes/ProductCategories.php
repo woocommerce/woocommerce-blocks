@@ -129,7 +129,7 @@ class ProductCategories extends AbstractDynamicBlock {
 			]
 		);
 
-		if ( ! is_array( $terms ) || empty( $categories ) ) {
+		if ( ! is_array( $categories ) || empty( $categories ) ) {
 			return [];
 		}
 
