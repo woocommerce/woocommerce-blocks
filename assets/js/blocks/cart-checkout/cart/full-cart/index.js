@@ -51,11 +51,7 @@ import './style.scss';
  * @param {Object} props.attributes Incoming attributes for block.
  */
 const Cart = ( { attributes } ) => {
-	const {
-		isShippingCalculatorEnabled,
-		isShippingCostHidden,
-		hasDarkControls,
-	} = attributes;
+	const { isShippingCalculatorEnabled, hasDarkControls } = attributes;
 
 	const {
 		cartItems,
@@ -125,7 +121,7 @@ const Cart = ( { attributes } ) => {
 				{ cartNeedsShipping && (
 					<TotalsShippingItem
 						showCalculator={ isShippingCalculatorEnabled }
-						showRatesWithoutAddress={ ! isShippingCostHidden }
+						showRateSelector={ true }
 						values={ cartTotals }
 						currency={ totalsCurrency }
 					/>

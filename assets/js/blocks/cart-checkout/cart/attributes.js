@@ -17,6 +17,8 @@ const blockAttributes = {
 		type: 'boolean',
 		default: IS_SHIPPING_CALCULATOR_ENABLED,
 	},
+	// This setting is no longer being shown due to conflicts with the global setting. Here for backwards compat
+	// and possible future re-introduction.
 	isShippingCostHidden: {
 		type: 'boolean',
 		default: IS_SHIPPING_COST_HIDDEN,
