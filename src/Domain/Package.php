@@ -81,4 +81,22 @@ class Package {
 		$feature_gating = NewPackage::container()->get( FeatureGating::class );
 		return $feature_gating;
 	}
+
+	/**
+	 * Checks if we're executing the code in an experimental build mode.
+	 *
+	 * @return boolean
+	 */
+	public static function is_experimental_build() {
+		return self::feature()->is_experimental_build();
+	}
+
+	/**
+	 * Checks if we're executing the code in an feature plugin or experimental build mode.
+	 *
+	 * @return boolean
+	 */
+	public static function is_feature_plugin_build() {
+		return self::feature()->is_feature_plugin_build();
+	}
 }
