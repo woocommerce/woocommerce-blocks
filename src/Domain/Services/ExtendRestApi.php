@@ -100,12 +100,7 @@ class ExtendRestApi {
 			$data = [];
 
 			try {
-				if ( empty( $passed_args ) ) {
-					$data = $callbacks['data_callback']();
-				} else {
-					$passed_args_values = \array_values( $passed_args );
-					$data               = $callbacks['data_callback']( ...$passed_args_values );
-				}
+				$data = $callbacks['data_callback']( ...$passed_args );
 			} catch ( Throwable $e ) {
 				$this->throw_exception( $e );
 				continue;
@@ -139,12 +134,7 @@ class ExtendRestApi {
 			$schema = [];
 
 			try {
-				if ( empty( $passed_args ) ) {
-					$schema = $callbacks['schema_callback']();
-				} else {
-					$passed_args_values = \array_values( $passed_args );
-					$schema             = $callbacks['schema_callback']( ...$passed_args_values );
-				}
+				$schema = $callbacks['schema_callback']( ...$passed_args );
 			} catch ( Throwable $e ) {
 				$this->throw_exception( $e );
 				continue;
