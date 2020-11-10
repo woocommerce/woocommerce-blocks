@@ -99,21 +99,12 @@ class CartUpdateCustomer extends AbstractCartRoute {
 	protected function get_route_post_response( \WP_REST_Request $request ) {
 		$controller = new CartController();
 		$cart       = $controller->get_cart_instance();
-
-		if ( ! isset( $request['billing_address'] ) ) {
-			$request['billing_address'] = [];
-		}
-
-		if ( ! isset( $request['shipping_address'] ) ) {
-			$request['shipping_address'] = [];
-		}
+		$billing    = isset( $request['billing_address'] ) ? $this->prepare_address_fields( $request['billing_address'], wc()->countries->get_allowed_countries() ) : [];
+		$shipping   = isset( $request['shipping_address'] ) ? $this->prepare_address_fields( $request['shipping_address'], wc()->countries->get_shipping_countries() ) : [];
 
 		if ( ! $cart->needs_shipping() ) {
-			$request['shipping_address'] = $request['billing_address'];
+			$shipping = $billing;
 		}
-
-		$billing  = $this->prepare_address_fields( $request['billing_address'], wc()->countries->get_allowed_countries() );
-		$shipping = $this->prepare_address_fields( $request['shipping_address'], wc()->countries->get_shipping_countries() );
 
 		wc()->customer->set_props(
 			array(
@@ -152,9 +143,16 @@ class CartUpdateCustomer extends AbstractCartRoute {
 	 * @return array
 	 */
 	protected function prepare_address_fields( $address, $allowed_countries ) {
-		// Country is required--return no address if missing.
 		if ( empty( $address['country'] ) ) {
-			return [];
+			throw new RouteException(
+				'woocommerce_rest_cart_invalid_country',
+				sprintf(
+					/* translators: 1: valid country codes */
+					__( 'Address country is missing. Please provide one of the following: %s', 'woo-gutenberg-products-block' ),
+					implode( ', ', array_keys( $allowed_countries ) )
+				),
+				400
+			);
 		}
 
 		$address['country'] = wc_strtoupper( $address['country'] );
