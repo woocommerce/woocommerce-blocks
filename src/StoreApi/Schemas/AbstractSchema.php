@@ -27,6 +27,13 @@ abstract class AbstractSchema {
 	protected $extend;
 
 	/**
+	 * Extending key that gets added to endpoint.
+	 *
+	 * @var string
+	 */
+	const EXTENDING_KEY = 'extensions';
+
+	/**
 	 * Constructor.
 	 *
 	 * @param ExtendRestApi $extend Rest Extending instance.
@@ -83,7 +90,13 @@ abstract class AbstractSchema {
 	 * @return array the data that will get added.
 	 */
 	protected function get_extended_schema( $endpoint, ...$passed_args ) {
-		return $this->extend->get_endpoint_schema( $endpoint, $passed_args );
+		return [
+			'description' => __( 'Extensions data.', 'woo-gutenberg-products-block' ),
+			'type'        => 'object',
+			'context'     => [ 'view', 'edit' ],
+			'readonly'    => true,
+			'properties'  => $this->extend->get_endpoint_schema( $endpoint, $passed_args ),
+		];
 	}
 	/**
 	 * Retrieves an array of endpoint arguments from the item schema for the controller.

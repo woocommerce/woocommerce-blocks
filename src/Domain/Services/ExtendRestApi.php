@@ -53,25 +53,26 @@ class ExtendRestApi {
 	public function register_endpoint_data( $endpoint, $namespace, $schema_callback, $data_callback ) {
 		if ( ! is_string( $namespace ) ) {
 			$this->throw_exception(
-				'You must provide a plugin namespace when extending a Store REST endpoint.'
+				__( 'You must provide a plugin namespace when extending a Store REST endpoint.', 'woo-gutenberg-products-block' )
 			);
 		}
 
 		if ( ! is_string( $endpoint ) || ! in_array( $endpoint, $this->endpoints, true ) ) {
 			$this->throw_exception(
-				sprintf( 'You must provide a valid Store REST endpoint to extend, valid endpoints are: %s1. You provided %s2.', implode( ', ', $this->endpoints ), $endpoint )
+				/* translators: 1: a list of endpoints. 2: endpoint provided by user. */
+				sprintf( __( 'You must provide a valid Store REST endpoint to extend, valid endpoints are: %1$s. You provided %2$s.', 'woo-gutenberg-products-block' ), implode( ', ', $this->endpoints ), $endpoint )
 			);
 		}
 
 		if ( ! is_callable( $schema_callback ) ) {
 			$this->throw_exception(
-				'$schema_callback must be a callable function.'
+				__( '$schema_callback must be a callable function.', 'woo-gutenberg-products-block' )
 			);
 		}
 
 		if ( ! is_callable( $data_callback ) ) {
 			$this->throw_exception(
-				'$data_callback must be a callable function.'
+				__( '$data_callback must be a callable function.', 'woo-gutenberg-products-block' )
 			);
 		}
 
@@ -107,7 +108,7 @@ class ExtendRestApi {
 			}
 
 			if ( ! is_array( $data ) ) {
-				$this->throw_exception( '$data_callback must return an array.' );
+				$this->throw_exception( __( '$data_callback must return an array.', 'woo-gutenberg-products-block' ) );
 				continue;
 			}
 
@@ -141,9 +142,11 @@ class ExtendRestApi {
 			}
 
 			if ( ! is_array( $schema ) ) {
-				$this->throw_exception( '$schema_callback must return an array.' );
+				$this->throw_exception( __( '$schema_callback must return an array.', 'woo-gutenberg-products-block' ) );
 				continue;
 			}
+
+			$schema = $this->format_extensions_properties( $namespace, $schema );
 
 			$registered_schema[ $namespace ] = $schema;
 		}
@@ -167,5 +170,24 @@ class ExtendRestApi {
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && current_user_can( 'manage_woocommerce' ) ) {
 			throw $exception;
 		}
+	}
+
+	/**
+	 * Format schema for an extension.
+	 *
+	 * @param string $namespace Error message or Exception.
+	 * @param array  $schema An error to throw if we have debug enabled and user is admin.
+	 *
+	 * @return array Formatted schema.
+	 */
+	private function format_extensions_properties( $namespace, $schema ) {
+		return [
+			/* translators: extension namespace */
+			'description' => sprintf( __( 'Extension data registered by %s', 'woo-gutenberg-products-block' ), $namespace ),
+			'type'        => 'object',
+			'context'     => [ 'view', 'edit' ],
+			'readonly'    => true,
+			'properties'  => $schema,
+		];
 	}
 }

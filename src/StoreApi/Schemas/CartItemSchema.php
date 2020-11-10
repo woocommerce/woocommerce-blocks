@@ -260,13 +260,7 @@ class CartItemSchema extends ProductSchema {
 					]
 				),
 			],
-			'extensions'           => [
-				'description' => __( 'Extra data attached by extensions', 'woo-gutenberg-products-block' ),
-				'type'        => 'array',
-				'context'     => [ 'view' ],
-				'readonly'    => true,
-				'properties'  => $this->get_extended_schema( self::IDENTIFIER ),
-			],
+			self::EXTENDING_KEY    => $this->get_extended_schema( self::IDENTIFIER ),
 		];
 	}
 
@@ -305,7 +299,7 @@ class CartItemSchema extends ProductSchema {
 					'line_total_tax'    => $this->prepare_money_response( $cart_item['line_tax'], wc_get_price_decimals() ),
 				]
 			),
-			'extensions'           => $this->get_extended_data( self::IDENTIFIER, $cart_item, $product ),
+			self::EXTENDING_KEY    => $this->get_extended_data( self::IDENTIFIER, $cart_item ),
 		];
 	}
 
