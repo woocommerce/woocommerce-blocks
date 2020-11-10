@@ -1,7 +1,7 @@
 /**
  * @typedef {import('./billing').BillingData} BillingData
  * @typedef {import('./cart').CartShippingOption} CartShippingOption
- * @typedef {import('./cart').CartShippingAddress} CartShippingAddress
+ * @typedef {import('./shipping').ShippingAddress} CartShippingAddress
  * @typedef {import('./cart').CartData} CartData
  * @typedef {import('./checkout').CheckoutDispatchActions} CheckoutDispatchActions
  * @typedef {import('./add-to-cart-form').AddToCartFormDispatchActions} AddToCartFormDispatchActions

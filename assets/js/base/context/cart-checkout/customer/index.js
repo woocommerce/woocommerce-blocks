@@ -7,7 +7,7 @@ import { useCustomerData } from '@woocommerce/base-hooks';
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').CustomerDataContext} CustomerDataContext
  * @typedef {import('@woocommerce/type-defs/billing').BillingData} BillingData
- * @typedef {import('@woocommerce/type-defs/cart').CartShippingAddress} CartShippingAddress
+ * @typedef {import('@woocommerce/type-defs/shipping').ShippingAddress} ShippingAddress
  */
 
 /**
@@ -28,7 +28,7 @@ const defaultBillingData = {
 };
 
 /**
- * @type {CartShippingAddress}
+ * @type {ShippingAddress}
  */
 export const defaultShippingAddress = {
 	first_name: '',
