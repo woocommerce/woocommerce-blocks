@@ -63,8 +63,10 @@ const PaymentMethods = () => {
 					) }
 					wrapperElement="p"
 					wrapperProps={ {
-						className:
+						className: [
 							'wc-block-components-checkout-step__description',
+							'wc-block-components-checkout-step__description-payments-aligned',
+						],
 					} }
 				/>
 			) }
