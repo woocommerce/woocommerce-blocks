@@ -175,7 +175,7 @@ class CartUpdateCustomer extends AbstractCartRoute {
 			);
 		}
 
-		$address['postcode'] = $address['postcode'] ? wc_format_postcode( $address['postcode'], $address['country'] ) : null;
+		$address['postcode'] = isset( $address['postcode'] ) ? wc_format_postcode( $address['postcode'], $address['country'] ) : null;
 
 		if ( ! empty( $address['state'] ) ) {
 			$valid_states = wc()->countries->get_states( $address['country'] );
