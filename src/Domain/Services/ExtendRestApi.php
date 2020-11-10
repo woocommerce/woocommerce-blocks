@@ -93,9 +93,9 @@ class ExtendRestApi {
 	 * @throws Exception If a registered callback throws an error, or silently logs it.
 	 */
 	public function get_endpoint_data( $endpoint, array $passed_args = [] ) {
-		$registered_data = [];
+		$registered_data = (object) [];
 		if ( ! isset( $this->extend_data[ $endpoint ] ) ) {
-			return [];
+			return $registered_data;
 		}
 		foreach ( $this->extend_data[ $endpoint ] as $namespace => $callbacks ) {
 			$data = [];

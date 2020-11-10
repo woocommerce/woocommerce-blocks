@@ -92,7 +92,7 @@ abstract class AbstractSchema {
 	protected function get_extended_schema( $endpoint, ...$passed_args ) {
 		return [
 			'description' => __( 'Extensions data.', 'woo-gutenberg-products-block' ),
-			'type'        => 'object',
+			'type'        => [ 'object' ],
 			'context'     => [ 'view', 'edit' ],
 			'readonly'    => true,
 			'properties'  => $this->extend->get_endpoint_schema( $endpoint, $passed_args ),
