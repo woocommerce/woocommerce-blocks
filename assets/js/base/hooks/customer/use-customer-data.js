@@ -19,12 +19,12 @@ export const useCustomerData = () => {
 	const { updateCustomerData } = useDispatch( storeKey );
 	const { addErrorNotice, removeNotice } = useStoreNotices();
 	const {
-		billingAddress: initalBillingData,
+		billingAddress: initialBillingData,
 		shippingAddress: initialShippingAddress,
 	} = useStoreCart();
 
 	const [ customerData, setCustomerData ] = useState( {
-		billingData: initalBillingData,
+		billingData: initialBillingData,
 		shippingAddress: initialShippingAddress,
 	} );
 	const previousCustomerData = useRef( customerData );
