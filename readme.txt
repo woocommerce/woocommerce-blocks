@@ -2,7 +2,7 @@
 Contributors: automattic, woocommerce, claudiulodro, tiagonoronha, jameskoster, ryelle, levinmedia, aljullu, mikejolley, nerrad, joshuawold, assassinateur, haszari
 Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
 Requires at least: 5.3
-Tested up to: 5.5
+Tested up to: 5.8
 Requires PHP: 7.0
 Stable tag: 3.8.0-dev
 License: GPLv3
