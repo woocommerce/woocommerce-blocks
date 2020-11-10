@@ -26,8 +26,8 @@ abstract class AbstractSchema {
 	 */
 	protected $extend;
 
-	public function __construct( ExtendRestAPI $extend_schema ) {
-		$this->extend = $extend_schema;
+	public function __construct( ExtendRestAPI $extend ) {
+		$this->extend = $extend;
 	}
 
 	/**

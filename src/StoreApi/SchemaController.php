@@ -25,8 +25,8 @@ class SchemaController {
 	/**
 	 * Constructor.
 	 */
-	public function __construct( ExtendRestApi $extend_schema ) {
-		$this->extend = $extend_schema;
+	public function __construct( ExtendRestApi $extend ) {
+		$this->extend = $extend;
 		$this->initialize();
 	}
 

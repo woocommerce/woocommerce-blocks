@@ -71,7 +71,7 @@ class CartSchema extends AbstractSchema {
 	 * @param ErrorSchema            $error_schema Error schema instance.
 	 */
 	public function __construct(
-		ExtendRestAPI $extend_schema,
+		ExtendRestAPI $extend,
 		CartItemSchema $item_schema,
 		CartCouponSchema $coupon_schema,
 		CartShippingRateSchema $shipping_rate_schema,
@@ -83,7 +83,7 @@ class CartSchema extends AbstractSchema {
 		$this->shipping_rate_schema    = $shipping_rate_schema;
 		$this->shipping_address_schema = $shipping_address_schema;
 		$this->error_schema            = $error_schema;
-		parent::__construct( $extend_schema );
+		parent::__construct( $extend );
 	}
 
 	/**

@@ -36,9 +36,9 @@ class ProductReviewSchema extends AbstractSchema {
 	 *
 	 * @param ImageAttachmentSchema $image_attachment_schema Image attachment schema instance.
 	 */
-	public function __construct( ExtendRestAPI $extend_schema, ImageAttachmentSchema $image_attachment_schema ) {
+	public function __construct( ExtendRestAPI $extend, ImageAttachmentSchema $image_attachment_schema ) {
 		$this->image_attachment_schema = $image_attachment_schema;
-		parent::__construct( $extend_schema );
+		parent::__construct( $extend );
 	}
 
 	/**
