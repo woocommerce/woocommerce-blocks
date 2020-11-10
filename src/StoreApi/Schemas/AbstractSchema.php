@@ -26,7 +26,12 @@ abstract class AbstractSchema {
 	 */
 	protected $extend;
 
-	public function __construct( ExtendRestAPI $extend ) {
+	/**
+	 * Constructor.
+	 *
+	 * @param ExtendRestApi $extend Rest Extending instance.
+	 */
+	public function __construct( ExtendRestApi $extend ) {
 		$this->extend = $extend;
 	}
 

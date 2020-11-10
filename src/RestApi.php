@@ -13,11 +13,17 @@ use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
  * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 class RestApi {
-
+	/**
+	 * Stores Rest Extending instance
+	 *
+	 * @var ExtendRestApi
+	 */
 	private $extend;
 
 	/**
 	 * Constructor
+	 *
+	 * @param ExtendRestApi $extend Rest Extending instance.
 	 */
 	public function __construct( ExtendRestApi $extend ) {
 		$this->extend = $extend;

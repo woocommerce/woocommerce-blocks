@@ -20,10 +20,17 @@ class SchemaController {
 	 */
 	protected $schemas = [];
 
+	/**
+	 * Stores Rest Extending instance
+	 *
+	 * @var ExtendRestApi
+	 */
 	private $extend;
 
 	/**
 	 * Constructor.
+	 *
+	 * @param ExtendRestApi $extend Rest Extending instance.
 	 */
 	public function __construct( ExtendRestApi $extend ) {
 		$this->extend = $extend;

@@ -42,10 +42,11 @@ class CheckoutSchema extends AbstractSchema {
 	/**
 	 * Constructor.
 	 *
+	 * @param ExtendRestApi         $extend Rest Extending instance.
 	 * @param BillingAddressSchema  $billing_address_schema Billing address schema instance.
 	 * @param ShippingAddressSchema $shipping_address_schema Shipping address schema instance.
 	 */
-	public function __construct( ExtendRestAPI $extend, BillingAddressSchema $billing_address_schema, ShippingAddressSchema $shipping_address_schema ) {
+	public function __construct( ExtendRestApi $extend, BillingAddressSchema $billing_address_schema, ShippingAddressSchema $shipping_address_schema ) {
 		$this->billing_address_schema  = $billing_address_schema;
 		$this->shipping_address_schema = $shipping_address_schema;
 		parent::__construct( $extend );

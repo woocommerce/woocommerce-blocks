@@ -64,6 +64,7 @@ class CartSchema extends AbstractSchema {
 	/**
 	 * Constructor.
 	 *
+	 * @param ExtendRestApi          $extend Rest Extending instance.
 	 * @param CartItemSchema         $item_schema Item schema instance.
 	 * @param CartCouponSchema       $coupon_schema Coupon schema instance.
 	 * @param CartShippingRateSchema $shipping_rate_schema Shipping rates schema instance.
@@ -71,7 +72,7 @@ class CartSchema extends AbstractSchema {
 	 * @param ErrorSchema            $error_schema Error schema instance.
 	 */
 	public function __construct(
-		ExtendRestAPI $extend,
+		ExtendRestApi $extend,
 		CartItemSchema $item_schema,
 		CartCouponSchema $coupon_schema,
 		CartShippingRateSchema $shipping_rate_schema,
