@@ -88,12 +88,14 @@ class DeleteDraftOrders extends TestCase {
 	}
 
 	public function tearDown() {
-		$this->draft_orders_instance = null;
 		// delete all orders
+		add_filter( 'woocommerce_order_query_args', [ $this->draft_orders_instance, 'add_draft_order_post_status_to_args' ] );
 		$orders = wc_get_orders([]);
+		remove_filter( 'woocommerce_order_query_args', [ $this->draft_orders_instance, 'add_draft_order_post_status_to_args' ] );
 		foreach( $orders as $order ) {
 			$order->delete( true );
 		}
+		$this->draft_orders_instance = null;
 		remove_all_actions( 'woocommerce_caught_exception' );
 		//restore original logging destination
 		ini_set('error_log', $this->original_logging_destination);
