@@ -28,14 +28,23 @@ class Package {
 	private $path;
 
 	/**
+	 * Holds the feature gating class instance.
+	 *
+	 * @var FeatureGating
+	 */
+	private $feature_gating;
+
+	/**
 	 * Constructor
 	 *
-	 * @param string $version      Version of the plugin.
-	 * @param string $plugin_path  Path to the main plugin file.
+	 * @param string        $version        Version of the plugin.
+	 * @param string        $plugin_path    Path to the main plugin file.
+	 * @param FeatureGating $feature_gating Feature gating class instance.
 	 */
-	public function __construct( $version, $plugin_path ) {
-		$this->version = $version;
-		$this->path    = $plugin_path;
+	public function __construct( $version, $plugin_path, FeatureGating $feature_gating ) {
+		$this->version        = $version;
+		$this->path           = $plugin_path;
+		$this->feature_gating = $feature_gating;
 	}
 
 	/**
@@ -78,8 +87,7 @@ class Package {
 	 * @return FeatureGating
 	 */
 	public function feature() {
-		$feature_gating = NewPackage::container()->get( FeatureGating::class );
-		return $feature_gating;
+		return $this->feature_gating;
 	}
 
 	/**

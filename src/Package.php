@@ -4,6 +4,7 @@ namespace Automattic\WooCommerce\Blocks;
 use Automattic\WooCommerce\Blocks\Domain\Package as NewPackage;
 use Automattic\WooCommerce\Blocks\Domain\Bootstrap;
 use Automattic\WooCommerce\Blocks\Registry\Container;
+use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 
 /**
  * Main package class.
@@ -108,7 +109,8 @@ class Package {
 					$version = '3.8.0-dev';
 					return new NewPackage(
 						$version,
-						dirname( __DIR__ )
+						dirname( __DIR__ ),
+						new FeatureGating()
 					);
 				}
 			);
