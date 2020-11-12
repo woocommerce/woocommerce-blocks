@@ -95,8 +95,8 @@ class Package {
 	 *
 	 * @return boolean
 	 */
-	public static function is_experimental_build() {
-		return self::feature()->is_experimental_build();
+	public function is_experimental_build() {
+		return $this->feature()->is_experimental_build();
 	}
 
 	/**
@@ -104,7 +104,7 @@ class Package {
 	 *
 	 * @return boolean
 	 */
-	public static function is_feature_plugin_build() {
-		return self::feature()->is_feature_plugin_build();
+	public function is_feature_plugin_build() {
+		return $this->feature()->is_feature_plugin_build();
 	}
 }
