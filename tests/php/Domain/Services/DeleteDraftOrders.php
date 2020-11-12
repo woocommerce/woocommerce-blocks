@@ -88,10 +88,11 @@ class DeleteDraftOrders extends TestCase {
 	}
 
 	public function tearDown() {
-		// delete all orders
+		// Temporarily reinstate checkout draft orders so they are picked up by query for deletion.
 		add_filter( 'woocommerce_order_query_args', [ $this->draft_orders_instance, 'add_draft_order_post_status_to_args' ] );
 		$orders = wc_get_orders([]);
 		remove_filter( 'woocommerce_order_query_args', [ $this->draft_orders_instance, 'add_draft_order_post_status_to_args' ] );
+		// Delete all orders.
 		foreach( $orders as $order ) {
 			$order->delete( true );
 		}
