@@ -40,7 +40,6 @@ class DraftOrders {
 		if ( $this->package->feature()->is_feature_plugin_build() ) {
 			add_filter( 'wc_order_statuses', [ $this, 'register_draft_order_status' ] );
 			add_filter( 'woocommerce_register_shop_order_post_statuses', [ $this, 'register_draft_order_post_status' ] );
-			add_filter( 'woocommerce_order_query_args', [ $this, 'delete_draft_order_post_status_from_args' ] );
 			add_filter( 'woocommerce_analytics_excluded_order_statuses', [ $this, 'append_draft_order_post_status' ] );
 			add_filter( 'woocommerce_valid_order_statuses_for_payment', [ $this, 'append_draft_order_post_status' ] );
 			add_filter( 'woocommerce_valid_order_statuses_for_payment_complete', [ $this, 'append_draft_order_post_status' ] );
@@ -133,40 +132,6 @@ class DraftOrders {
 	}
 
 	/**
-	 * Remove draft status from the 'status' argument of an $args array.
-	 *
-	 * @param array $args Array of arguments containing statuses in the status key.
-	 * @internal
-
-	 * @return array
-	 */
-	public function delete_draft_order_post_status_from_args( $args ) {
-		if ( self::DB_STATUS === $args['status'] ) {
-			$args['status'] = '';
-		} elseif ( is_array( $args['status'] ) ) {
-			$args['status'] = array_diff( $args['status'], array( self::DB_STATUS ) );
-		}
-		return $args;
-	}
-
-	/**
-	 * Add draft status to the 'status' argument of an $args array.
-	 *
-	 * @param array $args Array of arguments containing statuses in the status key.
-	 * @internal
-
-	 * @return array
-	 */
-	public function add_draft_order_post_status_to_args( $args ) {
-		if ( '' === $args['status'] ) {
-			$args['status'] = self::DB_STATUS;
-		} elseif ( is_array( $args['status'] ) ) {
-			$args['status'][] = self::DB_STATUS;
-		}
-		return $args;
-	}
-
-	/**
 	 * Append draft status to a list of statuses.
 	 *
 	 * @param array $statuses Array of statuses.
@@ -190,8 +155,6 @@ class DraftOrders {
 		$count      = 0;
 		$batch_size = 20;
 		$this->ensure_draft_status_registered();
-
-		add_filter( 'woocommerce_order_query_args', [ $this, 'add_draft_order_post_status_to_args' ] );
 		$orders = wc_get_orders(
 			[
 				'date_modified' => '<=' . strtotime( '-1 DAY' ),
@@ -200,7 +163,6 @@ class DraftOrders {
 				'type'          => 'shop_order',
 			]
 		);
-		remove_filter( 'woocommerce_order_query_args', [ $this, 'add_draft_order_post_status_to_args' ] );
 
 		// do we bail because the query results are unexpected?
 		try {
