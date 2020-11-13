@@ -76,7 +76,7 @@ abstract class AbstractSchema {
 	 *
 	 * @param string $endpoint The endpoint identifer.
 	 * @param array  ...$passed_args An array of arguments to be passed to callbacks.
-	 * @return array the data that will get added.
+	 * @return object the data that will get added.
 	 */
 	protected function get_extended_data( $endpoint, ...$passed_args ) {
 		return $this->extend->get_endpoint_data( $endpoint, $passed_args );

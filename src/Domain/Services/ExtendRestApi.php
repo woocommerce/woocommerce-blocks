@@ -25,6 +25,7 @@ class ExtendRestApi {
 	public function __construct( Package $package ) {
 		$this->package = $package;
 	}
+
 	/**
 	 * Valid endpoints to extend
 	 *
@@ -52,28 +53,21 @@ class ExtendRestApi {
 	 */
 	public function register_endpoint_data( $endpoint, $namespace, $schema_callback, $data_callback ) {
 		if ( ! is_string( $namespace ) ) {
-			$this->throw_exception(
-				__( 'You must provide a plugin namespace when extending a Store REST endpoint.', 'woo-gutenberg-products-block' )
-			);
+			$this->throw_exception( 'You must provide a plugin namespace when extending a Store REST endpoint.' );
 		}
 
 		if ( ! is_string( $endpoint ) || ! in_array( $endpoint, $this->endpoints, true ) ) {
 			$this->throw_exception(
-				/* translators: 1: a list of endpoints. 2: endpoint provided by user. */
-				sprintf( __( 'You must provide a valid Store REST endpoint to extend, valid endpoints are: %1$s. You provided %2$s.', 'woo-gutenberg-products-block' ), implode( ', ', $this->endpoints ), $endpoint )
+				sprintf( 'You must provide a valid Store REST endpoint to extend, valid endpoints are: %1$s. You provided %2$s.', implode( ', ', $this->endpoints ), $endpoint )
 			);
 		}
 
 		if ( ! is_callable( $schema_callback ) ) {
-			$this->throw_exception(
-				__( '$schema_callback must be a callable function.', 'woo-gutenberg-products-block' )
-			);
+			$this->throw_exception( '$schema_callback must be a callable function.' );
 		}
 
 		if ( ! is_callable( $data_callback ) ) {
-			$this->throw_exception(
-				__( '$data_callback must be a callable function.', 'woo-gutenberg-products-block' )
-			);
+			$this->throw_exception( '$data_callback must be a callable function.' );
 		}
 
 		$this->extend_data[ $endpoint ][ $namespace ] = [
@@ -89,11 +83,11 @@ class ExtendRestApi {
 	 *
 	 * @param string $endpoint    A valid identifier.
 	 * @param array  $passed_args Passed arguments from the Schema class.
-	 * @return array Returns an array with registered endpoint data.
+	 * @return object Returns an casted object with registered endpoint data.
 	 * @throws Exception If a registered callback throws an error, or silently logs it.
 	 */
 	public function get_endpoint_data( $endpoint, array $passed_args = [] ) {
-		$registered_data = (object) [];
+		$registered_data = [];
 		if ( ! isset( $this->extend_data[ $endpoint ] ) ) {
 			return $registered_data;
 		}
@@ -102,19 +96,18 @@ class ExtendRestApi {
 
 			try {
 				$data = $callbacks['data_callback']( ...$passed_args );
+
+				if ( ! is_array( $data ) ) {
+					throw new Exception( '$data_callback must return an array.' );
+				}
 			} catch ( Throwable $e ) {
 				$this->throw_exception( $e );
 				continue;
 			}
 
-			if ( ! is_array( $data ) ) {
-				$this->throw_exception( __( '$data_callback must return an array.', 'woo-gutenberg-products-block' ) );
-				continue;
-			}
-
 			$registered_data[ $namespace ] = $data;
 		}
-		return $registered_data;
+		return (object) $registered_data;
 	}
 
 	/**
@@ -136,13 +129,12 @@ class ExtendRestApi {
 
 			try {
 				$schema = $callbacks['schema_callback']( ...$passed_args );
+
+				if ( ! is_array( $schema ) ) {
+					throw new Exception( '$schema_callback must return an array.' );
+				}
 			} catch ( Throwable $e ) {
 				$this->throw_exception( $e );
-				continue;
-			}
-
-			if ( ! is_array( $schema ) ) {
-				$this->throw_exception( __( '$schema_callback must return an array.', 'woo-gutenberg-products-block' ) );
 				continue;
 			}
 
@@ -182,7 +174,7 @@ class ExtendRestApi {
 	 */
 	private function format_extensions_properties( $namespace, $schema ) {
 		return [
-			/* translators: extension namespace */
+			/* translators: %s: extension namespace */
 			'description' => sprintf( __( 'Extension data registered by %s', 'woo-gutenberg-products-block' ), $namespace ),
 			'type'        => 'object',
 			'context'     => [ 'view', 'edit' ],
