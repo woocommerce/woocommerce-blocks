@@ -2,7 +2,7 @@
  * External dependencies
  */
 import defaultAddressFields from '@woocommerce/base-components/cart-checkout/address-form/default-address-fields';
-import { useState, useEffect, useCallback } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import {
 	useShippingDataContext,
 	useCustomerDataContext,
@@ -34,7 +34,6 @@ export const useCheckoutAddress = () => {
 		shippingAddress,
 		setShippingAddress,
 	} = useCustomerDataContext();
-	const [ billingFields, updateBillingFields ] = useState( billingData );
 
 	// This tracks the state of the "shipping as billing" address checkbox. It's
 	// initial value is true (if shipping is needed), however, if the user is
@@ -45,46 +44,22 @@ export const useCheckoutAddress = () => {
 			( ! customerId || isSameAddress( shippingAddress, billingData ) )
 	);
 
-	// Pushes to global state when changes are made locally.
+	// This syncs billing data with shipping data if the checkbox is checked.
 	useEffect( () => {
-		const billingAddress = shippingAsBilling
-			? shippingAddress
-			: billingFields;
-
-		if ( ! isSameAddress( billingAddress, billingData ) ) {
-			setBillingData( billingAddress );
+		if ( shippingAsBilling ) {
+			setBillingData( shippingAddress );
 		}
-	}, [
-		billingFields,
-		shippingAsBilling,
-		billingData,
-		shippingAddress,
-		setBillingData,
-	] );
+	}, [ shippingAddress, shippingAsBilling, setBillingData ] );
 
-	/**
-	 * Wrapper for updateBillingFields (from useState) which handles merging.
-	 *
-	 * @param {Object} newValues New values to store to state.
-	 */
-	const setBillingFields = useCallback(
-		( newValues ) =>
-			void updateBillingFields( ( prevState ) => ( {
-				...prevState,
-				...newValues,
-			} ) ),
-		[]
-	);
-
-	const setEmail = ( value ) => void setBillingFields( { email: value } );
-	const setPhone = ( value ) => void setBillingFields( { phone: value } );
+	const setEmail = ( value ) => void setBillingData( { email: value } );
+	const setPhone = ( value ) => void setBillingData( { phone: value } );
 
 	return {
 		defaultAddressFields,
 		shippingFields: shippingAddress,
 		setShippingFields: setShippingAddress,
-		billingFields,
-		setBillingFields,
+		billingFields: billingData,
+		setBillingFields: setBillingData,
 		setEmail,
 		setPhone,
 		shippingAsBilling,
