@@ -2,7 +2,7 @@
  * External dependencies
  */
 import defaultAddressFields from '@woocommerce/base-components/cart-checkout/address-form/default-address-fields';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useCallback, useRef } from '@wordpress/element';
 import {
 	useShippingDataContext,
 	useCustomerDataContext,
@@ -22,8 +22,7 @@ const isSameAddress = ( address1, address2 ) => {
 };
 
 /**
- * Custom hook for tracking address field state on checkout and persisting it to
- * context globally on change.
+ * Custom hook for exposing address related functionality for the checkout address form.
  */
 export const useCheckoutAddress = () => {
 	const { customerId } = useCheckoutContext();
@@ -44,12 +43,39 @@ export const useCheckoutAddress = () => {
 			( ! customerId || isSameAddress( shippingAddress, billingData ) )
 	);
 
-	// This syncs billing data with shipping data if the checkbox is checked.
+	const currentShippingAsBilling = useRef( shippingAsBilling );
+	const previousBillingData = useRef( billingData );
+
+	/**
+	 * Sets shipping address data, and also billing if using the same address.
+	 */
+	const setShippingFields = useCallback(
+		( value ) => {
+			setShippingAddress( value );
+
+			if ( shippingAsBilling ) {
+				setBillingData( value );
+			}
+		},
+		[ shippingAsBilling, setShippingAddress, setBillingData ]
+	);
+
+	// This syncs billing data with shipping data if the checkbox is enabled.
 	useEffect( () => {
-		if ( shippingAsBilling ) {
-			setBillingData( shippingAddress );
+		if ( currentShippingAsBilling.current !== shippingAsBilling ) {
+			if ( shippingAsBilling ) {
+				previousBillingData.current = billingData;
+				setBillingData( shippingAddress );
+			} else {
+				setBillingData( {
+					...previousBillingData.current,
+					email: undefined,
+					phone: undefined,
+				} );
+			}
+			currentShippingAsBilling.current = shippingAsBilling;
 		}
-	}, [ shippingAddress, shippingAsBilling, setBillingData ] );
+	}, [ shippingAsBilling, setBillingData, shippingAddress, billingData ] );
 
 	const setEmail = ( value ) => void setBillingData( { email: value } );
 	const setPhone = ( value ) => void setBillingData( { phone: value } );
@@ -57,13 +83,14 @@ export const useCheckoutAddress = () => {
 	return {
 		defaultAddressFields,
 		shippingFields: shippingAddress,
-		setShippingFields: setShippingAddress,
+		setShippingFields,
 		billingFields: billingData,
 		setBillingFields: setBillingData,
 		setEmail,
 		setPhone,
 		shippingAsBilling,
 		setShippingAsBilling,
-		showBillingFields: ! needsShipping || ! shippingAsBilling,
+		showBillingFields:
+			! needsShipping || ! currentShippingAsBilling.current,
 	};
 };

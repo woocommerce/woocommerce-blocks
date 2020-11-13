@@ -50,15 +50,12 @@ export const useCustomerData = () => {
 	 */
 	const setBillingData = useCallback( ( newData ) => {
 		setCustomerData( ( prevState ) => {
-			if ( newData.email === undefined ) {
-				newData.email = prevState.email || '';
-			}
-			if ( newData.phone === undefined ) {
-				newData.phone = prevState.phone || '';
-			}
 			return {
 				...prevState,
-				billingData: newData,
+				billingData: {
+					...prevState.billingData,
+					...newData,
+				},
 			};
 		} );
 	}, [] );
