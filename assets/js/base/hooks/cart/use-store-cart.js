@@ -9,20 +9,6 @@ import { useEditorContext } from '@woocommerce/base-context';
 import { decodeEntities } from '@wordpress/html-entities';
 import { mapValues } from 'lodash';
 
-const defaultBillingAddress = {
-	first_name: '',
-	last_name: '',
-	company: '',
-	address_1: '',
-	address_2: '',
-	city: '',
-	state: '',
-	postcode: '',
-	country: '',
-	email: '',
-	phone: '',
-};
-
 const defaultShippingAddress = {
 	first_name: '',
 	last_name: '',
@@ -33,6 +19,12 @@ const defaultShippingAddress = {
 	state: '',
 	postcode: '',
 	country: '',
+};
+
+const defaultBillingAddress = {
+	...defaultShippingAddress,
+	email: '',
+	phone: '',
 };
 
 const decodeAddress = ( address ) =>
