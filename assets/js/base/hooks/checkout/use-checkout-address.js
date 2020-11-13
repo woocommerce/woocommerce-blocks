@@ -8,7 +8,6 @@ import {
 	useCustomerDataContext,
 	useCheckoutContext,
 } from '@woocommerce/base-context';
-import { isEqual } from 'lodash';
 
 /**
  * Compare two addresses and see if they are the same.
@@ -48,16 +47,12 @@ export const useCheckoutAddress = () => {
 
 	// Pushes to global state when changes are made locally.
 	useEffect( () => {
-		// Uses shipping address or billing fields depending on shippingAsBilling checkbox, but ensures
-		// billing only fields are also included.
-		const newBillingData = {
-			...( shippingAsBilling ? shippingAddress : billingFields ),
-			email: billingFields.email || billingData.email,
-			phone: billingFields.phone || billingData.phone,
-		};
+		const billingAddress = shippingAsBilling
+			? shippingAddress
+			: billingFields;
 
-		if ( ! isEqual( newBillingData, billingData ) ) {
-			setBillingData( newBillingData );
+		if ( ! isSameAddress( billingAddress, billingData ) ) {
+			setBillingData( billingAddress );
 		}
 	}, [
 		billingFields,
@@ -65,7 +60,6 @@ export const useCheckoutAddress = () => {
 		billingData,
 		shippingAddress,
 		setBillingData,
-		setShippingAddress,
 	] );
 
 	/**

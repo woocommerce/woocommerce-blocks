@@ -369,11 +369,7 @@ export function* selectShippingRate( rateId, packageId = 0 ) {
  * @param {Object} customerData Address data to be updated; can contain both billing_address and shipping_address.
  */
 export function* updateCustomerData( customerData ) {
-	const updatingShipping = !! customerData.shipping_address;
-
-	if ( updatingShipping ) {
-		yield shippingRatesAreResolving( true );
-	}
+	yield shippingRatesAreResolving( true );
 
 	try {
 		const { response } = yield apiFetchWithHeaders( {
@@ -386,10 +382,7 @@ export function* updateCustomerData( customerData ) {
 		yield receiveCart( response );
 	} catch ( error ) {
 		yield receiveError( error );
-
-		if ( updatingShipping ) {
-			yield shippingRatesAreResolving( false );
-		}
+		yield shippingRatesAreResolving( false );
 
 		// If updated cart state was returned, also update that.
 		if ( error.data?.cart ) {
@@ -400,9 +393,6 @@ export function* updateCustomerData( customerData ) {
 		throw error;
 	}
 
-	if ( updatingShipping ) {
-		yield shippingRatesAreResolving( false );
-	}
-
+	yield shippingRatesAreResolving( false );
 	return true;
 }
