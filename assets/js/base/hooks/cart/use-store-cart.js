@@ -108,7 +108,7 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 			const cartIsLoading = ! store.hasFinishedResolution(
 				'getCartData'
 			);
-			const shippingRatesLoading = store.areShippingRatesLoading();
+			const shippingRatesLoading = store.isCustomerDataUpdating();
 			const { receiveCart } = dispatch( storeKey );
 			const billingAddress = decodeAddress( cartData.billingAddress );
 			const shippingAddress = cartData.needsShipping

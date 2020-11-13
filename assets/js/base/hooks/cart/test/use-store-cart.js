@@ -126,7 +126,7 @@ describe( 'useStoreCart', () => {
 				hasFinishedResolution: jest
 					.fn()
 					.mockReturnValue( ! mockCartIsLoading ),
-				areShippingRatesLoading: jest.fn().mockReturnValue( false ),
+				isCustomerDataUpdating: jest.fn().mockReturnValue( false ),
 			},
 		};
 		registry.registerStore( storeKey, {
