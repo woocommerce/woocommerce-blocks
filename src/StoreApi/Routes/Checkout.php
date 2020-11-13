@@ -147,6 +147,14 @@ class Checkout extends AbstractRoute {
 		$order_controller = new OrderController();
 		$order_object     = $this->get_draft_order_object( $this->get_draft_order_id() );
 
+		// In some cases, the order might not be created yet, that might happen
+		// when trying to checkout directly from the Cart block with an express
+		// payment method. In that case, try creating a draft order first.
+		if ( ! $order_object instanceof \WC_Order ) {
+			$order_object = $this->create_or_update_draft_order();
+		}
+
+		// If there is still no order object, throw an error.
 		if ( ! $order_object instanceof \WC_Order ) {
 			throw new RouteException(
 				'woocommerce_rest_checkout_invalid_order',
