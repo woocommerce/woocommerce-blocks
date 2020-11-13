@@ -35,58 +35,57 @@ class BillingAddressSchema extends AbstractSchema {
 		return [
 			'first_name' => [
 				'description' => __( 'First name', 'woo-gutenberg-products-block' ),
-				'type'        => [ 'string', 'null' ],
+				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
 			],
 			'last_name'  => [
 				'description' => __( 'Last name', 'woo-gutenberg-products-block' ),
-				'type'        => [ 'string', 'null' ],
+				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
 			],
 			'company'    => [
 				'description' => __( 'Company', 'woo-gutenberg-products-block' ),
-				'type'        => [ 'string', 'null' ],
+				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
 			],
 			'address_1'  => [
 				'description' => __( 'Address', 'woo-gutenberg-products-block' ),
-				'type'        => [ 'string', 'null' ],
+				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
 			],
 			'address_2'  => [
 				'description' => __( 'Apartment, suite, etc.', 'woo-gutenberg-products-block' ),
-				'type'        => [ 'string', 'null' ],
+				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
 			],
 			'city'       => [
 				'description' => __( 'City', 'woo-gutenberg-products-block' ),
-				'type'        => [ 'string', 'null' ],
+				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
 			],
 			'state'      => [
 				'description' => __( 'State/County code, or name of the state, county, province, or district.', 'woo-gutenberg-products-block' ),
-				'type'        => [ 'string', 'null' ],
+				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
 			],
 			'postcode'   => [
 				'description' => __( 'Postal code', 'woo-gutenberg-products-block' ),
-				'type'        => [ 'string', 'null' ],
+				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
 			],
 			'country'    => [
 				'description' => __( 'Country/Region code in ISO 3166-1 alpha-2 format.', 'woo-gutenberg-products-block' ),
-				'type'        => [ 'string', 'null' ],
+				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
 			],
 			'email'      => [
 				'description' => __( 'Email', 'woo-gutenberg-products-block' ),
-				'type'        => [ 'string', 'null' ],
-				'format'      => 'email',
+				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
 			],
 			'phone'      => [
 				'description' => __( 'Phone', 'woo-gutenberg-products-block' ),
-				'type'        => [ 'string', 'null' ],
+				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
 			],
 		];

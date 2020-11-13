@@ -104,10 +104,7 @@ export const useCustomerData = () => {
 		}
 		removeNotice( 'address' );
 		updateCustomerData( {
-			billing_address: {
-				...debouncedCustomerData.billingData,
-				email: debouncedCustomerData.billingData.email || null,
-			},
+			billing_address: debouncedCustomerData.billingData,
 			shipping_address: debouncedCustomerData.shippingAddress,
 		} ).catch( ( error ) => {
 			addErrorNotice( error.message, {

@@ -110,20 +110,22 @@ class CartUpdateCustomer extends AbstractCartRoute {
 			array(
 				'billing_first_name'  => isset( $billing['first_name'] ) ? $billing['first_name'] : null,
 				'billing_last_name'   => isset( $billing['last_name'] ) ? $billing['last_name'] : null,
-				'billing_country'     => isset( $billing['country'] ) ? $billing['country'] : null,
-				'billing_state'       => isset( $billing['state'] ) ? $billing['state'] : null,
-				'billing_postcode'    => isset( $billing['postcode'] ) ? $billing['postcode'] : null,
-				'billing_city'        => isset( $billing['city'] ) ? $billing['city'] : null,
 				'billing_address_1'   => isset( $billing['address_1'] ) ? $billing['address_1'] : null,
 				'billing_address_2'   => isset( $billing['address_2'] ) ? $billing['address_2'] : null,
+				'billing_city'        => isset( $billing['city'] ) ? $billing['city'] : null,
+				'billing_state'       => isset( $billing['state'] ) ? $billing['state'] : null,
+				'billing_postcode'    => isset( $billing['postcode'] ) ? $billing['postcode'] : null,
+				'billing_country'     => isset( $billing['country'] ) ? $billing['country'] : null,
+				'billing_email'       => isset( $request['billing_address'], $request['billing_address']['email'] ) ? $request['billing_address']['email'] : null,
+				'billing_phone'       => isset( $request['billing_address'], $request['billing_address']['phone'] ) ? $request['billing_address']['phone'] : null,
 				'shipping_first_name' => isset( $shipping['first_name'] ) ? $shipping['first_name'] : null,
 				'shipping_last_name'  => isset( $shipping['last_name'] ) ? $shipping['last_name'] : null,
-				'shipping_country'    => isset( $shipping['country'] ) ? $shipping['country'] : null,
-				'shipping_state'      => isset( $shipping['state'] ) ? $shipping['state'] : null,
-				'shipping_postcode'   => isset( $shipping['postcode'] ) ? $shipping['postcode'] : null,
-				'shipping_city'       => isset( $shipping['city'] ) ? $shipping['city'] : null,
 				'shipping_address_1'  => isset( $shipping['address_1'] ) ? $shipping['address_1'] : null,
 				'shipping_address_2'  => isset( $shipping['address_2'] ) ? $shipping['address_2'] : null,
+				'shipping_city'       => isset( $shipping['city'] ) ? $shipping['city'] : null,
+				'shipping_state'      => isset( $shipping['state'] ) ? $shipping['state'] : null,
+				'shipping_postcode'   => isset( $shipping['postcode'] ) ? $shipping['postcode'] : null,
+				'shipping_country'    => isset( $shipping['country'] ) ? $shipping['country'] : null,
 			)
 		);
 		wc()->customer->save();
@@ -135,7 +137,7 @@ class CartUpdateCustomer extends AbstractCartRoute {
 	}
 
 	/**
-	 * Validate address fields and return the formatted results.
+	 * Format provided address fields.
 	 *
 	 * @throws RouteException Thrown on error.
 	 * @param array $address Address fields.
@@ -143,16 +145,9 @@ class CartUpdateCustomer extends AbstractCartRoute {
 	 * @return array
 	 */
 	protected function prepare_address_fields( $address, $allowed_countries ) {
+		// Addresses require a country, otherwise are not valid--return an empty address.
 		if ( empty( $address['country'] ) ) {
-			throw new RouteException(
-				'woocommerce_rest_cart_invalid_country',
-				sprintf(
-					/* translators: 1: valid country codes */
-					__( 'Address country is missing. Please provide one of the following: %s', 'woo-gutenberg-products-block' ),
-					implode( ', ', array_keys( $allowed_countries ) )
-				),
-				400
-			);
+			return [];
 		}
 
 		$address['country'] = wc_strtoupper( $address['country'] );
