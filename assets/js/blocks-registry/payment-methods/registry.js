@@ -8,12 +8,15 @@ import { default as ExpressPaymentMethodConfig } from './express-payment-method-
 const paymentMethods = {};
 const expressPaymentMethods = {};
 
-export const registerPaymentMethod = ( paymentMethodCreator ) => {
-	assertValidPaymentMethodCreator(
-		paymentMethodCreator,
-		'PaymentMethodConfig'
-	);
-	const paymentMethodConfig = paymentMethodCreator( PaymentMethodConfig );
+export const registerPaymentMethod = ( options ) => {
+	let paymentMethodConfig;
+	if ( typeof options === 'function' ) {
+		// Legacy fallback for previous API, where client passes a function:
+		// registerPaymentMethod( ( Config ) => new Config( options ) );
+		paymentMethodConfig = options( PaymentMethodConfig );
+	} else {
+		paymentMethodConfig = new PaymentMethodConfig( options );
+	}
 	if ( paymentMethodConfig instanceof PaymentMethodConfig ) {
 		paymentMethods[ paymentMethodConfig.name ] = paymentMethodConfig;
 	}
