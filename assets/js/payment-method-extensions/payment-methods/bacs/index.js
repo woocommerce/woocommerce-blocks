@@ -52,4 +52,4 @@ const bankTransferPaymentMethod = {
 	ariaLabel: label,
 };
 
-registerPaymentMethod( ( Config ) => new Config( bankTransferPaymentMethod ) );
+registerPaymentMethod( bankTransferPaymentMethod );

@@ -82,6 +82,4 @@ const cashOnDeliveryPaymentMethod = {
 	ariaLabel: label,
 };
 
-registerPaymentMethod(
-	( Config ) => new Config( cashOnDeliveryPaymentMethod )
-);
+registerPaymentMethod( cashOnDeliveryPaymentMethod );

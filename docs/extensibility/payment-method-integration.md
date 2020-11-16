@@ -7,7 +7,7 @@ The checkout block has an API interface for payment methods to integrate that co
 ## Table of Contents <!-- omit in toc -->
 
 - [Client Side integration](#client-side-integration)
-  - [Express payment methods - `registerExpressPaymentMethod( paymentMethodCreator )`](#express-payment-methods---registerexpresspaymentmethod-paymentmethodcreator-)
+  - [Express payment methods - `registerExpressPaymentMethod( options )`](#express-payment-methods---registerexpresspaymentmethod-paymentmethodcreator-)
   - [Payment Methods - `registerPaymentMethod( paymentMethodCreator )`](#payment-methods---registerpaymentmethod-paymentmethodcreator-)
   - [Props Fed to Payment Method Nodes](#props-fed-to-payment-method-nodes)
 - [Server Side Integration](#server-side-integration)
@@ -66,7 +66,7 @@ Here's some more details on the configuration options:
 -   `canMakePayment` (required): A callback to determine whether the payment method should be available as an option for the shopper. The function will be passed an object containing data about the current order. Return a boolean value - true if payment method is available for use. If your gateway needs to perform async initialisation to determine availability, you can return a promise (resolving to boolean). This allows a payment method to be hidden based on the cart, e.g. if the cart has physical/shippable products (example: `Cash on delivery`); or for payment methods to control whether they are available depending on other conditions. Keep in mind this function could be invoked multiple times in the lifecycle of the checkout and thus any expensive logic in the callback provided on this property should be memoized.
 -   `paymentMethodId`: This is the only optional configuration object. The value of this property is what will accompany the checkout processing request to the server and used to identify what payment method gateway class to load for processing the payment (if the shopper selected the gateway). So for instance if this is `stripe`, then `WC_Gateway_Stripe::process_payment` will be invoked for processing the payment.
 
-### Payment Methods - `registerPaymentMethod( paymentMethodCreator )`
+### Payment Methods - `registerPaymentMethod( options )`
 
 ![Payment Method Area](https://user-images.githubusercontent.com/1429108/79565774-5d230700-807f-11ea-9335-0111ec306a47.png)
 
@@ -84,19 +84,17 @@ _wc global_
 const { registerPaymentMethod } = wc.wcBlocksRegistry;
 ```
 
-The registry function expects a function that will receive an `PaymentMethodConfig` creator as an argument and is expected to return a valid `PaymentMethodConfig` instance. As a very basic example, something like this:
+The registry function expects a javascript object with options specific to the payment method:
 
 ```js
-registerPaymentMethod(
-	( PaymentMethodConfig ) => new PaymentMethodConfig( options )
-);
+registerPaymentMethod( options );
 ```
 
 The options you feed the configuration instance are the same as those for express payment methods with the following additions:
 
 -   `label`: This should be a react node that will be used to output the label for the tab in the payment methods are. For example it might be `<strong>Credit/Debit Cart</strong>` or you might output images.
 -   `ariaLabel`: This is the label that will be read out via screen-readers when the payment method is selected.
-- `placeOrderButtonLabel`: This is an optional label which will change the default "Place Order" button text to something else when the payment method is selected.
+-   `placeOrderButtonLabel`: This is an optional label which will change the default "Place Order" button text to something else when the payment method is selected.
 
 ### Props Fed to Payment Method Nodes
 

@@ -49,4 +49,4 @@ const offlineChequePaymentMethod = {
 	ariaLabel: label,
 };
 
-registerPaymentMethod( ( Config ) => new Config( offlineChequePaymentMethod ) );
+registerPaymentMethod( offlineChequePaymentMethod );

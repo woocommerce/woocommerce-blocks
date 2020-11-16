@@ -48,4 +48,4 @@ const paypalPaymentMethod = {
 	),
 };
 
-registerPaymentMethod( ( Config ) => new Config( paypalPaymentMethod ) );
+registerPaymentMethod( paypalPaymentMethod );
