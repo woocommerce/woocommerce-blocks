@@ -250,9 +250,14 @@ export const CheckoutStateProvider = ( {
 						isFailResponse( response )
 					) {
 						if ( response.message ) {
-							const errorOptions = response.messageContext
-								? { context: response.messageContext }
-								: undefined;
+							const errorOptions = {
+								context: response.messageContext
+									? response.messageContext
+									: undefined,
+								id: response.messageId
+									? response.messageId
+									: undefined,
+							};
 							addErrorNotice( response.message, errorOptions );
 						}
 						// irrecoverable error so set complete
