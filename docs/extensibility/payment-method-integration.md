@@ -8,7 +8,7 @@ The checkout block has an API interface for payment methods to integrate that co
 
 - [Client Side integration](#client-side-integration)
   - [Express payment methods - `registerExpressPaymentMethod( options )`](#express-payment-methods---registerexpresspaymentmethod-paymentmethodcreator-)
-  - [Payment Methods - `registerPaymentMethod( paymentMethodCreator )`](#payment-methods---registerpaymentmethod-paymentmethodcreator-)
+  - [Payment Methods - `registerPaymentMethod( options )`](#payment-methods---registerpaymentmethod-paymentmethodcreator-)
   - [Props Fed to Payment Method Nodes](#props-fed-to-payment-method-nodes)
 - [Server Side Integration](#server-side-integration)
   - [Processing Payment](#processing-payment)
@@ -20,7 +20,7 @@ The client side integration consists of an API for registering both _express_ pa
 
 In both cases, the client side integration is done using registration methods exposed on the `blocks-registry` API. You can access this via the `wc` global in a WooCommerce environment (`wc.wcBlocksRegistry`). You'll see that we also Webpack configured in the blocks repository to expose this API on `@woocommerce/blocks-registry` which you can implement in your own build process as well.
 
-### Express payment methods - `registerExpressPaymentMethod( paymentMethodCreator )`
+### Express payment methods - `registerExpressPaymentMethod( options )`
 
 ![Express Payment Area](https://user-images.githubusercontent.com/1429108/79565636-17fed500-807f-11ea-8e5d-9af32e43b71d.png)
 
@@ -38,12 +38,10 @@ _wc global_
 const { registerExpressPaymentMethod } = wc.wcBlocksRegistry;
 ```
 
-The registry function expects a function that will receive an `ExpressPaymentMethodConfig` creator as an argument and is expected to return a valid `ExpressPaymentMethodConfig` instance. As a very basic example, something like this:
+The registry function expects a javascript object with options specific to the payment method:
 
 ```js
-registerExpressPaymentMethod(
-	( ExpressPaymentMethodConfig ) => new ExpressPaymentMethodConfig( options )
-);
+registerExpressPaymentMethod( options );
 ```
 
 The options you feed the configuration instance should be an object in this shape:

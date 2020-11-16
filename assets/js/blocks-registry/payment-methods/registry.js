@@ -1,7 +1,6 @@
 /**
  * Internal dependencies
  */
-import { assertValidPaymentMethodCreator } from './assertions';
 import { default as PaymentMethodConfig } from './payment-method-config';
 import { default as ExpressPaymentMethodConfig } from './express-payment-method-config';
 
@@ -22,14 +21,15 @@ export const registerPaymentMethod = ( options ) => {
 	}
 };
 
-export const registerExpressPaymentMethod = ( expressPaymentMethodCreator ) => {
-	assertValidPaymentMethodCreator(
-		expressPaymentMethodCreator,
-		'ExpressPaymentMethodConfig'
-	);
-	const paymentMethodConfig = expressPaymentMethodCreator(
-		ExpressPaymentMethodConfig
-	);
+export const registerExpressPaymentMethod = ( options ) => {
+	let paymentMethodConfig;
+	if ( typeof options === 'function' ) {
+		// Legacy fallback for previous API, where client passes a function:
+		// registerExpressPaymentMethod( ( Config ) => new Config( options ) );
+		paymentMethodConfig = options( ExpressPaymentMethodConfig );
+	} else {
+		paymentMethodConfig = new ExpressPaymentMethodConfig( options );
+	}
 	if ( paymentMethodConfig instanceof ExpressPaymentMethodConfig ) {
 		expressPaymentMethods[ paymentMethodConfig.name ] = paymentMethodConfig;
 	}

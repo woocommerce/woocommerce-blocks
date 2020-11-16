@@ -18,7 +18,5 @@ registerPaymentMethod( stripeCcPaymentMethod );
 
 // Register Stripe Payment Request (Apple/Chrome Pay) if enabled.
 if ( getStripeServerData().allowPaymentRequest ) {
-	registerExpressPaymentMethod(
-		( Config ) => new Config( PaymentRequestPaymentMethod )
-	);
+	registerExpressPaymentMethod( PaymentRequestPaymentMethod );
 }
