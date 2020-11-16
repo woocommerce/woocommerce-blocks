@@ -89,7 +89,7 @@ class ExtendRestApi {
 	public function get_endpoint_data( $endpoint, array $passed_args = [] ) {
 		$registered_data = [];
 		if ( ! isset( $this->extend_data[ $endpoint ] ) ) {
-			return $registered_data;
+			return (object) $registered_data;
 		}
 		foreach ( $this->extend_data[ $endpoint ] as $namespace => $callbacks ) {
 			$data = [];
@@ -121,7 +121,7 @@ class ExtendRestApi {
 	public function get_endpoint_schema( $endpoint, array $passed_args = [] ) {
 		$registered_schema = [];
 		if ( ! isset( $this->extend_data[ $endpoint ] ) ) {
-			return [];
+			return (object) $registered_schema;
 		}
 
 		foreach ( $this->extend_data[ $endpoint ] as $namespace => $callbacks ) {
@@ -142,7 +142,7 @@ class ExtendRestApi {
 
 			$registered_schema[ $namespace ] = $schema;
 		}
-		return $registered_schema;
+		return (object) $registered_schema;
 	}
 
 	/**
