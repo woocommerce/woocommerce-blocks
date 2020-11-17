@@ -60,7 +60,9 @@ export const useCheckoutAddress = () => {
 		[ shippingAsBilling, setShippingAddress, setBillingData ]
 	);
 
-	// This syncs billing data with shipping data if the checkbox is enabled.
+	// When the "Use same address" checkbox is toggled we need to update the current billing address to reflect this;
+	// that is either setting the billing address to the shipping address, or restoring the billing address to it's
+	// previous state.
 	useEffect( () => {
 		if ( currentShippingAsBilling.current !== shippingAsBilling ) {
 			if ( shippingAsBilling ) {
