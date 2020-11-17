@@ -38,7 +38,7 @@ _wc global_
 const { registerExpressPaymentMethod } = wc.wcBlocksRegistry;
 ```
 
-The registry function expects a javascript object with options specific to the payment method:
+The registry function expects a JavaScript object with options specific to the payment method:
 
 ```js
 registerExpressPaymentMethod( options );
@@ -82,7 +82,7 @@ _wc global_
 const { registerPaymentMethod } = wc.wcBlocksRegistry;
 ```
 
-The registry function expects a javascript object with options specific to the payment method:
+The registry function expects a JavaScript object with options specific to the payment method:
 
 ```js
 registerPaymentMethod( options );
