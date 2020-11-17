@@ -114,7 +114,6 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 			const shippingAddress = cartData.needsShipping
 				? decodeAddress( cartData.shippingAddress )
 				: defaultShippingAddress;
-
 			return {
 				cartCoupons: cartData.coupons,
 				cartItems: cartData.items || [],
