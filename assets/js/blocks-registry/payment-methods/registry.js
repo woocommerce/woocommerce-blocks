@@ -31,6 +31,11 @@ export const registerPaymentMethod = ( options ) => {
 	}
 };
 
+/**
+ * Register an express payment method.
+ *
+ * @param {ExpressPaymentMethodRegistrationOptions} options  Configuration options for the payment method.
+ */
 export const registerExpressPaymentMethod = ( options ) => {
 	let paymentMethodConfig;
 	if ( typeof options === 'function' ) {
