@@ -1,4 +1,9 @@
 /**
+ * @typedef {import('@woocommerce/type-defs/payments').PaymentMethodRegistrationOptions} PaymentMethodRegistrationOptions
+ * @typedef {import('@woocommerce/type-defs/payments').ExpressPaymentMethodRegistrationOptions} ExpressPaymentMethodRegistrationOptions
+ */
+
+/**
  * Internal dependencies
  */
 import { default as PaymentMethodConfig } from './payment-method-config';
@@ -7,6 +12,11 @@ import { default as ExpressPaymentMethodConfig } from './express-payment-method-
 const paymentMethods = {};
 const expressPaymentMethods = {};
 
+/**
+ * Register a regular payment method.
+ *
+ * @param {PaymentMethodRegistrationOptions} options  Configuration options for the payment method.
+ */
 export const registerPaymentMethod = ( options ) => {
 	let paymentMethodConfig;
 	if ( typeof options === 'function' ) {

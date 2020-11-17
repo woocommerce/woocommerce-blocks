@@ -77,7 +77,6 @@ const cashOnDeliveryPaymentMethod = {
 	label: <Label />,
 	content: <Content />,
 	edit: <Content />,
-	icons: null,
 	canMakePayment,
 	ariaLabel: label,
 };

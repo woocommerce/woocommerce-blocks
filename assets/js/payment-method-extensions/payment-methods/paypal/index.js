@@ -40,7 +40,6 @@ const paypalPaymentMethod = {
 	),
 	content: <Content />,
 	edit: <Content />,
-	icons: null,
 	canMakePayment: () => true,
 	ariaLabel: decodeEntities(
 		settings.title ||
