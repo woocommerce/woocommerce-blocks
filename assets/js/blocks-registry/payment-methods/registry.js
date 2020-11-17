@@ -4,6 +4,11 @@
  */
 
 /**
+ * External dependencies
+ */
+import deprecated from '@wordpress/deprecated';
+
+/**
  * Internal dependencies
  */
 import { default as PaymentMethodConfig } from './payment-method-config';
@@ -15,7 +20,7 @@ const expressPaymentMethods = {};
 /**
  * Register a regular payment method.
  *
- * @param {PaymentMethodRegistrationOptions} options  Configuration options for the payment method.
+ * @param {PaymentMethodRegistrationOptions} options Configuration options for the payment method.
  */
 export const registerPaymentMethod = ( options ) => {
 	let paymentMethodConfig;
@@ -23,6 +28,12 @@ export const registerPaymentMethod = ( options ) => {
 		// Legacy fallback for previous API, where client passes a function:
 		// registerPaymentMethod( ( Config ) => new Config( options ) );
 		paymentMethodConfig = options( PaymentMethodConfig );
+		deprecated( 'Passing a callback to registerPaymentMethod()', {
+			alternative: 'a config options object',
+			plugin: 'woocommerce-gutenberg-products-block',
+			link:
+				'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3404',
+		} );
 	} else {
 		paymentMethodConfig = new PaymentMethodConfig( options );
 	}
@@ -34,7 +45,7 @@ export const registerPaymentMethod = ( options ) => {
 /**
  * Register an express payment method.
  *
- * @param {ExpressPaymentMethodRegistrationOptions} options  Configuration options for the payment method.
+ * @param {ExpressPaymentMethodRegistrationOptions} options Configuration options for the payment method.
  */
 export const registerExpressPaymentMethod = ( options ) => {
 	let paymentMethodConfig;
@@ -42,6 +53,12 @@ export const registerExpressPaymentMethod = ( options ) => {
 		// Legacy fallback for previous API, where client passes a function:
 		// registerExpressPaymentMethod( ( Config ) => new Config( options ) );
 		paymentMethodConfig = options( ExpressPaymentMethodConfig );
+		deprecated( 'Passing a callback to registerExpressPaymentMethod()', {
+			alternative: 'a config options object',
+			plugin: 'woocommerce-gutenberg-products-block',
+			link:
+				'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3404',
+		} );
 	} else {
 		paymentMethodConfig = new ExpressPaymentMethodConfig( options );
 	}
