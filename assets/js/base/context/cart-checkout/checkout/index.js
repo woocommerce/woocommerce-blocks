@@ -26,7 +26,7 @@ export const CheckoutProvider = ( {
 	redirectUrl,
 } ) => {
 	return (
-		<CheckoutStateProvider redirectUrl={ redirectUrl } isCart={ false }>
+		<CheckoutStateProvider redirectUrl={ redirectUrl } isCart={ isCart }>
 			<CustomerDataProvider>
 				<ShippingDataProvider>
 					<PaymentMethodDataProvider>
