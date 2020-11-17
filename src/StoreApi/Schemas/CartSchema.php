@@ -197,13 +197,13 @@ class CartSchema extends AbstractSchema {
 							'readonly'    => true,
 						],
 						'total_shipping'     => [
-							'description' => __( 'Total price of shipping.', 'woo-gutenberg-products-block' ),
+							'description' => __( 'Total price of shipping. If shipping has not been calculated, a null response will be sent.', 'woo-gutenberg-products-block' ),
 							'type'        => [ 'string', 'null' ],
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
 						],
 						'total_shipping_tax' => [
-							'description' => __( 'Total tax on shipping.', 'woo-gutenberg-products-block' ),
+							'description' => __( 'Total tax on shipping. If shipping has not been calculated, a null response will be sent.', 'woo-gutenberg-products-block' ),
 							'type'        => [ 'string', 'null' ],
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
