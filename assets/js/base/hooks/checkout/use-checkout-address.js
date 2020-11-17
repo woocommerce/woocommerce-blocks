@@ -80,6 +80,8 @@ export const useCheckoutAddress = () => {
 	const setEmail = ( value ) => void setBillingData( { email: value } );
 	const setPhone = ( value ) => void setBillingData( { phone: value } );
 
+	// Note that currentShippingAsBilling is returned rather than the current state of shippingAsBilling--this is so that
+	// the billing fields are not rendered before sync (billing field values are debounced and would be outdated)
 	return {
 		defaultAddressFields,
 		shippingFields: shippingAddress,
