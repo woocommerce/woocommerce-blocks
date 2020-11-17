@@ -251,12 +251,8 @@ export const CheckoutStateProvider = ( {
 					) {
 						if ( response.message ) {
 							const errorOptions = {
-								context: response.messageContext
-									? response.messageContext
-									: undefined,
-								id: response.messageId
-									? response.messageId
-									: undefined,
+								id: response?.messageContext,
+								context: response?.messageContext,
 							};
 							addErrorNotice( response.message, errorOptions );
 						}

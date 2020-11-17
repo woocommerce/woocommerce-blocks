@@ -181,7 +181,6 @@ export const useCheckoutSubscriptions = ( {
 					response = {
 						type: responseTypes.ERROR,
 						message: paymentDetails?.errorMessage,
-						messageId: noticeContexts.EXPRESS_PAYMENTS, // This will allow only 1 express payment error to show at once.
 						messageContext: noticeContexts.EXPRESS_PAYMENTS,
 						retry: true,
 					};

@@ -193,16 +193,16 @@ export const PaymentMethodDataProvider = ( { children } ) => {
 
 	const setExpressPaymentError = useCallback(
 		( message ) => {
-			removeNotice(
-				'wc-express-payment-error',
-				noticeContexts.EXPRESS_PAYMENTS
-			);
-
 			if ( message ) {
 				addErrorNotice( message, {
-					context: noticeContexts.EXPRESS_PAYMENTS,
 					id: 'wc-express-payment-error',
+					context: noticeContexts.EXPRESS_PAYMENTS,
 				} );
+			} else {
+				removeNotice(
+					'wc-express-payment-error',
+					noticeContexts.EXPRESS_PAYMENTS
+				);
 			}
 		},
 		[ addErrorNotice, noticeContexts.EXPRESS_PAYMENTS, removeNotice ]
