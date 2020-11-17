@@ -28,9 +28,7 @@ export const useCustomerData = () => {
 		billingData: cartBillingData,
 		shippingAddress: cartShippingAddress,
 	} );
-
-	const currentBillingData = useRef( cartBillingData );
-	const currentShippingAddress = useRef( cartShippingAddress );
+	const currentCustomerData = useRef( customerData );
 	const [ debouncedCustomerData ] = useDebounce( customerData, 400, {
 		equalityFn: ( prevData, newData ) => {
 			return ! (
@@ -68,31 +66,33 @@ export const useCustomerData = () => {
 	}, [] );
 
 	useEffect( () => {
-		if ( ! isShallowEqual( currentBillingData.current, cartBillingData ) ) {
-			currentBillingData.current = cartBillingData;
-		}
-	}, [ cartBillingData ] );
-
-	useEffect( () => {
 		if (
 			! isShallowEqual(
-				currentShippingAddress.current,
+				currentCustomerData.current.billingData,
+				cartBillingData
+			)
+		) {
+			currentCustomerData.current.billingData = cartBillingData;
+		}
+		if (
+			! isShallowEqual(
+				currentCustomerData.current.shippingAddress,
 				cartShippingAddress
 			)
 		) {
-			currentShippingAddress.current = cartShippingAddress;
+			currentCustomerData.current.shippingAddress = cartShippingAddress;
 		}
-	}, [ cartShippingAddress ] );
+	}, [ cartBillingData, cartShippingAddress ] );
 
 	useEffect( () => {
 		if (
 			! (
 				shouldUpdateAddressStore(
-					currentBillingData.current,
+					currentCustomerData.current.billingData,
 					debouncedCustomerData.billingData
 				) ||
 				shouldUpdateAddressStore(
-					currentShippingAddress.current,
+					currentCustomerData.current.shippingAddress,
 					debouncedCustomerData.shippingAddress
 				)
 			)
