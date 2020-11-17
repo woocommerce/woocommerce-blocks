@@ -44,7 +44,7 @@ The registry function expects a JavaScript object with options specific to the p
 registerExpressPaymentMethod( options );
 ```
 
-The options you feed the configuration instance should be an object in this shape:
+The options you feed the configuration instance should be an object in this shape (see `ExpressPaymentMethodRegistrationOptions` typedef):
 
 ```js
 const options = {
@@ -82,7 +82,7 @@ _wc global_
 const { registerPaymentMethod } = wc.wcBlocksRegistry;
 ```
 
-The registry function expects a JavaScript object with options specific to the payment method:
+The registry function expects a JavaScript object with options specific to the payment method (see `PaymentMethodRegistrationOptions` typedef):
 
 ```js
 registerPaymentMethod( options );
