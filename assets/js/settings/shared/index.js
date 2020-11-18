@@ -2,7 +2,6 @@
  * External dependencies
  */
 import compareVersions from 'compare-versions';
-import { addFilter } from '@wordpress/hooks';
 
 /**
  * Internal dependencies
@@ -11,6 +10,7 @@ import { getSetting } from './get-setting';
 
 export * from './default-constants';
 export { setSetting } from './set-setting';
+import './exclude-draft-status-from-analytics';
 
 /**
  * Note: this attempts to coerce the wpVersion to a semver for comparison
@@ -67,40 +67,3 @@ export { compareVersions, getSetting };
  * @return {string} Full admin URL.
  */
 export const getAdminLink = ( path ) => getSetting( 'adminUrl' ) + path;
-
-addFilter(
-	'woocommerce_admin_analytics_settings',
-	'woocommerce-admin',
-	( settings ) => {
-		const removeCheckoutDraft = ( optionsGroup ) => {
-			if ( optionsGroup.key === 'customStatuses' ) {
-				return {
-					...optionsGroup,
-					options: optionsGroup.options.filter(
-						( option ) => option.value !== 'checkout-draft'
-					),
-				};
-			}
-			return optionsGroup;
-		};
-
-		const actionableStatusesOptions = settings.woocommerce_actionable_order_statuses.options.map(
-			removeCheckoutDraft
-		);
-		const excludedStatusesOptions = settings.woocommerce_excluded_report_order_statuses.options.map(
-			removeCheckoutDraft
-		);
-
-		return {
-			...settings,
-			woocommerce_actionable_order_statuses: {
-				...settings.woocommerce_actionable_order_statuses,
-				options: actionableStatusesOptions,
-			},
-			woocommerce_excluded_report_order_statuses: {
-				...settings.woocommerce_excluded_report_order_statuses,
-				options: excludedStatusesOptions,
-			},
-		};
-	}
-);
