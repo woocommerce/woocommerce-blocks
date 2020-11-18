@@ -5,7 +5,7 @@ import { addFilter } from '@wordpress/hooks';
 
 addFilter(
 	'woocommerce_admin_analytics_settings',
-	'woocommerce-admin',
+	'woocommerce-blocks/exclude-draft-status-from-analytics',
 	( settings ) => {
 		const removeCheckoutDraft = ( optionsGroup ) => {
 			if ( optionsGroup.key === 'customStatuses' ) {
