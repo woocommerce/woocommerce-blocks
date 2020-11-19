@@ -91,8 +91,8 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 	} ).multiply( quantity );
 	const saleAmount = regularAmount.subtract( purchaseAmount );
 	const firstImage = images.length ? images[ 0 ] : {};
-	const shouldLinkToProduct =
-		catalogVisibility !== 'hidden' && catalogVisibility !== 'search';
+	const isProductHiddenFromCatalog =
+		catalogVisibility === 'hidden' || catalogVisibility === 'search';
 
 	return (
 		<tr
@@ -106,20 +106,19 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 				aria-hidden={ ! firstImage.alt }
 			>
 				{ /* We don't need to make it focusable, because product name has the same link. */ }
-				{ shouldLinkToProduct ? (
+				{ isProductHiddenFromCatalog ? (
+					<ProductImage image={ firstImage } />
+				) : (
 					<a href={ permalink } tabIndex={ -1 }>
 						<ProductImage image={ firstImage } />
 					</a>
-				) : (
-					<ProductImage image={ firstImage } />
 				) }
 			</td>
 			<td className="wc-block-cart-item__product">
 				<ProductName
 					permalink={ permalink }
 					name={ name }
-					disabled={ isPendingDelete }
-					hasLink={ shouldLinkToProduct }
+					disabled={ isPendingDelete || isProductHiddenFromCatalog }
 				/>
 				{ showBackorderBadge ? (
 					<ProductBackorderBadge />
