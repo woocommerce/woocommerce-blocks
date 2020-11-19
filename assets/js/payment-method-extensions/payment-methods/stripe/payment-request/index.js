@@ -65,7 +65,7 @@ const PaymentRequestPaymentMethod = {
 	canMakePayment: ( cartData ) =>
 		paymentRequestAvailable( {
 			currencyCode: cartData?.cartTotals?.currency_code?.toLowerCase(),
-			totalPrice: parseInt( cartData?.cartTotals?.total_price, 10 ),
+			totalPrice: parseInt( cartData?.cartTotals?.total_price || 0, 10 ),
 		} ),
 	paymentMethodId: 'stripe',
 };
