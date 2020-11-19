@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ProductName should not render a link if hasLink is false 1`] = `
+exports[`ProductName should not render a link if disabled is true 1`] = `
 <span
   className="wc-block-components-product-name"
 >
@@ -8,19 +8,17 @@ exports[`ProductName should not render a link if hasLink is false 1`] = `
 </span>
 `;
 
-exports[`ProductName should render a link if hasLink is not defined 1`] = `
+exports[`ProductName should render a link if disabled is false 1`] = `
 <a
   className="wc-block-components-product-name"
-  tabIndex={0}
 >
   Test product
 </a>
 `;
 
-exports[`ProductName should render a link if hasLink is true 1`] = `
+exports[`ProductName should render a link if disabled is not defined 1`] = `
 <a
   className="wc-block-components-product-name"
-  tabIndex={0}
 >
   Test product
 </a>

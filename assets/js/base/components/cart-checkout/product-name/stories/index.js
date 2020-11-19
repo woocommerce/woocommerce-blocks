@@ -14,11 +14,11 @@ export default {
 };
 
 export const Default = () => {
-	const hasLink = boolean( 'hasLink', true );
+	const disabled = boolean( 'disabled', false );
 
 	return (
 		<ProductName
-			hasLink={ hasLink }
+			disabled={ disabled }
 			name={ 'Test product' }
 			permalink={ '/' }
 		/>
