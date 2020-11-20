@@ -262,7 +262,7 @@
 			background: transparent;
 		}
 	}
-
+	/*
 	&.is-loading,
 	&.is-disabled {
 		.wc-block-components-price-slider__range-input-wrapper {
@@ -276,6 +276,7 @@
 			animation: none;
 		}
 	}
+	*/
 }
 
 /* IE 11 will not support multi-range slider due to poor pointer-events support on the thumb. Reverts to 2 sliders. */

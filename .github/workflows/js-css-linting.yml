@@ -26,10 +26,8 @@ jobs:
           ${{ runner.os }}-build-${{ env.cache-name }}-
           ${{ runner.os }}-build-
           ${{ runner.os }}-
-    - name: Use Node.js 12.x
-      uses: actions/setup-node@v1
-      with:
-        node-version: 12.x
+    - name: Install npm 7
+      run: npm install -g npm@7
     - name: Npm install
       run: |
         npm install

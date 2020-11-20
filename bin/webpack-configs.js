@@ -469,6 +469,7 @@ const getStylingConfig = ( options = {} ) => {
 						{
 							loader: 'sass-loader',
 							query: {
+								implementation: require( 'sass' ),
 								includePaths: [ 'node_modules' ],
 								data: [
 									'colors',
@@ -497,6 +498,7 @@ const getStylingConfig = ( options = {} ) => {
 						{
 							loader: 'sass-loader',
 							query: {
+								implementation: require( 'sass' ),
 								includePaths: [ 'assets/css/abstracts' ],
 								data: [
 									'_colors',
