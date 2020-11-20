@@ -58,10 +58,13 @@ export const useInitialization = ( {
 
 	// Create the initial paymentRequest object. Note, we can't do anything if stripe isn't available yet or we have zero total.
 	useEffect( () => {
-		if ( ! stripe || ! billing.cartTotal.value ) {
-			return;
-		}
-		if ( isFinished || isProcessing || paymentRequest ) {
+		if (
+			! stripe ||
+			! billing.cartTotal.value ||
+			isFinished ||
+			isProcessing ||
+			paymentRequest
+		) {
 			return;
 		}
 		const pr = getPaymentRequest( {
