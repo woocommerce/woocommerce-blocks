@@ -7,7 +7,9 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - run: npm install -g npm@7
+            - uses: actions/setup-node@v2-beta
+              with:
+                node-version: '15'
             - uses: actions/checkout@v2
               with:
                   fetch-depth: 1

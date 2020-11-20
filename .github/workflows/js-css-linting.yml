@@ -26,8 +26,9 @@ jobs:
           ${{ runner.os }}-build-${{ env.cache-name }}-
           ${{ runner.os }}-build-
           ${{ runner.os }}-
-    - name: Install npm 7
-      run: npm install -g npm@7
+    - uses: actions/setup-node@v2-beta
+      with:
+        node-version: '15'
     - name: Npm install
       run: |
         npm install
