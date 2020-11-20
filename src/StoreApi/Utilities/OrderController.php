@@ -139,7 +139,7 @@ class OrderController {
 			$this->update_order_from_cart( $order );
 
 			// Return exception so customer can review before payment.
-			throw new RouteException(
+			return new RouteException(
 				'woocommerce_rest_cart_coupon_errors',
 				sprintf(
 					// Translators: %s Coupon codes.
@@ -152,6 +152,7 @@ class OrderController {
 				]
 			);
 		}
+
 	}
 
 	/**
