@@ -31,7 +31,7 @@ jobs:
         node-version: '15'
     - name: Npm install
       run: |
-        npm install
+        npm ci
     - name: Lint JavaScript
       uses: bradennapier/eslint-plus-action@v3.4.2
       with:
