@@ -145,7 +145,7 @@ class CartUpdateCustomer extends AbstractCartRoute {
 	 * @return array
 	 */
 	protected function prepare_address_fields( $address, $allowed_countries ) {
-		// Addresses require a country, otherwise they are not valid. This return an empty address. There is no address
+		// Addresses require a country, otherwise they are not valid. This returns an empty address. There is no address
 		// validation in this case because we do not want to block updates of other data such as email address.
 		if ( empty( $address['country'] ) ) {
 			return [];
