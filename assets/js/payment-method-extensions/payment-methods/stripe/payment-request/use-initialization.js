@@ -125,78 +125,6 @@ export const useInitialization = ( {
 		setIsProcessing( false );
 	}, [] );
 
-	const cancelHandler = useCallback( () => {
-		setIsFinished( false );
-		setIsProcessing( false );
-		setPaymentRequest( null );
-		onClose();
-	}, [ onClose ] );
-
-	const shippingAddressChangeHandler = useCallback(
-		( event ) => {
-			const newShippingAddress = normalizeShippingAddressForCheckout(
-				event.shippingAddress
-			);
-			if (
-				isShallowEqual(
-					pluckAddress( newShippingAddress ),
-					pluckAddress( currentShipping.current.shippingAddress )
-				)
-			) {
-				// the address is the same so no change needed.
-				event.updateWith( {
-					status: 'success',
-					shippingOptions: normalizeShippingOptions(
-						currentShipping.current.shippingRates
-					),
-				} );
-			} else {
-				// the address is different so let's set the new address and
-				// register the handler to be picked up by the shipping rate
-				// change event.
-				currentShipping.current.setShippingAddress(
-					normalizeShippingAddressForCheckout( event.shippingAddress )
-				);
-				setPaymentRequestEventHandler( 'shippingAddressChange', event );
-			}
-		},
-		[ setPaymentRequestEventHandler ]
-	);
-
-	const shippingOptionChangeHandler = useCallback(
-		( event ) => {
-			currentShipping.current.setSelectedRates(
-				normalizeShippingOptionSelectionsForCheckout(
-					event.shippingOption
-				)
-			);
-			setPaymentRequestEventHandler( 'shippingOptionChange', event );
-		},
-		[ setPaymentRequestEventHandler ]
-	);
-
-	const sourceHandler = useCallback(
-		( paymentMethod ) => {
-			if (
-				// eslint-disable-next-line no-undef
-				! getStripeServerData().allowPrepaidCard &&
-				paymentMethod.source.card.funding
-			) {
-				setExpressPaymentError(
-					__(
-						"Sorry, we're not accepting prepaid cards at this time.",
-						'woocommerce-gateway-stripe'
-					)
-				);
-				return;
-			}
-			setPaymentRequestEventHandler( 'sourceEvent', paymentMethod );
-			// kick off checkout processing step.
-			onSubmit();
-		},
-		[ setPaymentRequestEventHandler, setExpressPaymentError, onSubmit ]
-	);
-
 	// whenever paymentRequest changes, hook in event listeners.
 	useEffect( () => {
 		const noop = { removeAllListeners: () => void null };
@@ -206,6 +134,74 @@ export const useInitialization = ( {
 			cancelChangeEvent = noop;
 
 		if ( paymentRequest ) {
+			const cancelHandler = () => {
+				setIsFinished( false );
+				setIsProcessing( false );
+				setPaymentRequest( null );
+				onClose();
+			};
+
+			const shippingAddressChangeHandler = ( event ) => {
+				const newShippingAddress = normalizeShippingAddressForCheckout(
+					event.shippingAddress
+				);
+				if (
+					isShallowEqual(
+						pluckAddress( newShippingAddress ),
+						pluckAddress( currentShipping.current.shippingAddress )
+					)
+				) {
+					// the address is the same so no change needed.
+					event.updateWith( {
+						status: 'success',
+						shippingOptions: normalizeShippingOptions(
+							currentShipping.current.shippingRates
+						),
+					} );
+				} else {
+					// the address is different so let's set the new address and
+					// register the handler to be picked up by the shipping rate
+					// change event.
+					currentShipping.current.setShippingAddress(
+						normalizeShippingAddressForCheckout(
+							event.shippingAddress
+						)
+					);
+					setPaymentRequestEventHandler(
+						'shippingAddressChange',
+						event
+					);
+				}
+			};
+
+			const shippingOptionChangeHandler = ( event ) => {
+				currentShipping.current.setSelectedRates(
+					normalizeShippingOptionSelectionsForCheckout(
+						event.shippingOption
+					)
+				);
+				setPaymentRequestEventHandler( 'shippingOptionChange', event );
+			};
+
+			const sourceHandler = ( paymentMethod ) => {
+				if (
+					// eslint-disable-next-line no-undef
+					! getStripeServerData().allowPrepaidCard &&
+					paymentMethod.source.card.funding
+				) {
+					setExpressPaymentError(
+						__(
+							"Sorry, we're not accepting prepaid cards at this time.",
+							'woocommerce-gateway-stripe'
+						)
+					);
+					return;
+				}
+				setPaymentRequestEventHandler( 'sourceEvent', paymentMethod );
+				// kick off checkout processing step.
+				onSubmit();
+			};
+
 			// @ts-ignore
 			shippingAddressChangeEvent = paymentRequest.on(
 				'shippingaddresschange',
@@ -237,10 +233,7 @@ export const useInitialization = ( {
 		setPaymentRequestEventHandler,
 		setExpressPaymentError,
 		onSubmit,
-		cancelHandler,
-		sourceHandler,
-		shippingAddressChangeHandler,
-		shippingOptionChangeHandler,
+		onClose,
 	] );
 
 	return {
