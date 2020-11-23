@@ -28,8 +28,8 @@ $fontSizes: (
 	animation: loading-fade 1.2s ease-in-out infinite;
 	background-color: $placeholder-color !important;
 	color: $placeholder-color !important;
-	outline: 0;
-	border: 0;
+	outline: 0 !important;
+	border: 0 !important;
 	box-shadow: none;
 	pointer-events: none;
 	max-width: 100%;
