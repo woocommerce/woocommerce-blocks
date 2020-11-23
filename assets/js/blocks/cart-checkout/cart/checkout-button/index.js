@@ -42,8 +42,8 @@ const CheckoutButton = ( { link } ) => {
 	const { paymentMethods } = usePaymentMethods();
 
 	useEffect( () => {
-		//add a listener for when the page is unloaded (specifically needed for Safari)
-		//to remove the spinner on the checkout button, so the saved page snapshot does not
+		// Add a listener for when the page is unloaded (specifically needed for Safari)
+		// to remove the spinner on the checkout button, so the saved page snapshot does not
 		// contain the spinner class. See https://archive.is/lOEW0 for why this is needed.
 
 		if (
