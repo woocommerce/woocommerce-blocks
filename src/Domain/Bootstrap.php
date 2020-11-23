@@ -16,8 +16,10 @@ use Automattic\WooCommerce\Blocks\Payments\Integrations\Cheque;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\PayPal;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\BankTransfer;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\CashOnDelivery;
+use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 use Automattic\WooCommerce\Blocks\Domain\Services\DraftOrders;
 use Automattic\WooCommerce\Blocks\Domain\Services\CreateAccount;
+use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
 use Automattic\WooCommerce\Blocks\Domain\Services\Email\CustomerNewAccount;
 
 /**
@@ -63,7 +65,6 @@ class Bootstrap {
 		if ( ! $this->has_core_dependencies() ) {
 			return;
 		}
-		$this->define_feature_flag();
 		$this->register_dependencies();
 		$this->register_payment_methods();
 
@@ -78,6 +79,7 @@ class Bootstrap {
 		}
 		$this->container->get( DraftOrders::class )->init();
 		$this->container->get( CreateAccount::class )->init();
+		$this->container->get( ExtendRestApi::class );
 		$this->container->get( PaymentsApi::class );
 		$this->container->get( RestApi::class );
 		Library::init();
@@ -127,26 +129,15 @@ class Bootstrap {
 	}
 
 	/**
-	 * Define the global feature flag.
-	 */
-	protected function define_feature_flag() {
-		$default_flag  = defined( 'WC_BLOCKS_IS_FEATURE_PLUGIN' ) ? '2' : '1';
-		$allowed_flags = [ '1', '2', '3' ];
-
-		if ( file_exists( __DIR__ . '/../../blocks.ini' ) ) {
-			$woo_options = parse_ini_file( __DIR__ . '/../../blocks.ini' );
-			$flag        = is_array( $woo_options ) && in_array( $woo_options['woocommerce_blocks_phase'], $allowed_flags, true ) ? $woo_options['woocommerce_blocks_phase'] : $default_flag;
-		} else {
-			$flag = $default_flag;
-		}
-
-		define( 'WOOCOMMERCE_BLOCKS_PHASE', intval( $flag ) );
-	}
-
-	/**
 	 * Register core dependencies with the container.
 	 */
 	protected function register_dependencies() {
+		$this->container->register(
+			FeatureGating::class,
+			function ( Container $container ) {
+				return new FeatureGating();
+			}
+		);
 		$this->container->register(
 			AssetApi::class,
 			function ( Container $container ) {
@@ -181,7 +172,7 @@ class Bootstrap {
 		$this->container->register(
 			RestApi::class,
 			function ( Container $container ) {
-				return new RestApi();
+				return new RestApi( $container->get( ExtendRestApi::class ) );
 			}
 		);
 		$this->container->register(
@@ -200,6 +191,12 @@ class Bootstrap {
 			CreateAccount::class,
 			function( Container $container ) {
 				return new CreateAccount( $container->get( Package::class ) );
+			}
+		);
+		$this->container->register(
+			ExtendRestApi::class,
+			function( Container $container ) {
+				return new ExtendRestApi( $container->get( Package::class ) );
 			}
 		);
 	}

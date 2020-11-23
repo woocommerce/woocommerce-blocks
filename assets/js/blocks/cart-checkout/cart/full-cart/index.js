@@ -34,6 +34,7 @@ import Title from '@woocommerce/base-components/title';
 import { getSetting } from '@woocommerce/settings';
 import { useEffect } from '@wordpress/element';
 import { decodeEntities } from '@wordpress/html-entities';
+import { CartProvider } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -44,6 +45,14 @@ import CartLineItemsTable from './cart-line-items-table';
 
 import './style.scss';
 
+const Block = ( props ) => {
+	return (
+		<CartProvider>
+			<Cart { ...props } />
+		</CartProvider>
+	);
+};
+
 /**
  * Component that renders the Cart block when user has something in cart aka "full".
  *
@@ -51,11 +60,7 @@ import './style.scss';
  * @param {Object} props.attributes Incoming attributes for block.
  */
 const Cart = ( { attributes } ) => {
-	const {
-		isShippingCalculatorEnabled,
-		isShippingCostHidden,
-		hasDarkControls,
-	} = attributes;
+	const { isShippingCalculatorEnabled, hasDarkControls } = attributes;
 
 	const {
 		cartItems,
@@ -125,7 +130,7 @@ const Cart = ( { attributes } ) => {
 				{ cartNeedsShipping && (
 					<TotalsShippingItem
 						showCalculator={ isShippingCalculatorEnabled }
-						showRatesWithoutAddress={ ! isShippingCostHidden }
+						showRateSelector={ true }
 						values={ cartTotals }
 						currency={ totalsCurrency }
 					/>
@@ -164,4 +169,4 @@ Cart.propTypes = {
 	attributes: PropTypes.object.isRequired,
 };
 
-export default Cart;
+export default Block;

@@ -9,11 +9,17 @@ use \WP_REST_Request;
 use \WC_REST_Unit_Test_Case as TestCase;
 use \WC_Helper_Product as ProductHelper;
 use Automattic\WooCommerce\Blocks\Tests\Helpers\ValidateSchema;
+use Automattic\WooCommerce\Blocks\Domain\Package;
+use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
+use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 
 /**
  * Product Attributes Controller Tests.
  */
 class ProductAttributes extends TestCase {
+
+	private $mock_extend;
+
 	/**
 	 * Setup test products data. Called before every test.
 	 */
@@ -21,6 +27,7 @@ class ProductAttributes extends TestCase {
 		parent::setUp();
 
 		wp_set_current_user( 0 );
+		$this->mock_extend = new ExtendRestApi( new Package( '', '', new FeatureGating() ) );
 
 		$color_attribute = ProductHelper::create_attribute( 'color', [ 'red', 'green', 'blue' ] );
 		$size_attribute  = ProductHelper::create_attribute( 'size', [ 'small', 'medium', 'large' ] );
@@ -76,7 +83,7 @@ class ProductAttributes extends TestCase {
 	 * Test conversion of product to rest response.
 	 */
 	public function test_prepare_item_for_response() {
-		$routes     = new \Automattic\WooCommerce\Blocks\StoreApi\RoutesController( new \Automattic\WooCommerce\Blocks\StoreApi\SchemaController() );
+		$routes     = new \Automattic\WooCommerce\Blocks\StoreApi\RoutesController( new \Automattic\WooCommerce\Blocks\StoreApi\SchemaController( $this->mock_extend ) );
 		$controller = $routes->get( 'product-attributes' );
 		$response   = $controller->prepare_item_for_response( $this->attributes[0], new \WP_REST_Request() );
 		$data       = $response->get_data();
@@ -93,7 +100,7 @@ class ProductAttributes extends TestCase {
 	 * Test schema matches responses.
 	 */
 	public function test_schema_matches_response() {
-		$routes     = new \Automattic\WooCommerce\Blocks\StoreApi\RoutesController( new \Automattic\WooCommerce\Blocks\StoreApi\SchemaController() );
+		$routes     = new \Automattic\WooCommerce\Blocks\StoreApi\RoutesController( new \Automattic\WooCommerce\Blocks\StoreApi\SchemaController( $this->mock_extend ) );
 		$controller = $routes->get( 'product-attributes' );
 		$schema     = $controller->get_item_schema();
 		$response   = $controller->prepare_item_for_response( $this->attributes[0], new \WP_REST_Request() );

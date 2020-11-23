@@ -90,11 +90,11 @@ class Assets {
 		$asset_api->register_script( 'wc-attribute-filter', $asset_api->get_block_asset_build_path( 'attribute-filter' ), $block_dependencies );
 		$asset_api->register_script( 'wc-active-filters', $asset_api->get_block_asset_build_path( 'active-filters' ), $block_dependencies );
 
-		if ( Package::is_experimental_build() ) {
+		if ( Package::feature()->is_experimental_build() ) {
 			$asset_api->register_script( 'wc-single-product-block', $asset_api->get_block_asset_build_path( 'single-product' ), $block_dependencies );
 		}
 
-		if ( Package::is_feature_plugin_build() ) {
+		if ( Package::feature()->is_feature_plugin_build() ) {
 			$asset_api->register_script( 'wc-checkout-block', $asset_api->get_block_asset_build_path( 'checkout' ), $block_dependencies );
 			$asset_api->register_script( 'wc-cart-block', $asset_api->get_block_asset_build_path( 'cart' ), $block_dependencies );
 		}
@@ -174,7 +174,6 @@ class Assets {
 				'productCount'                  => array_sum( (array) $product_counts ),
 				'attributes'                    => array_values( wc_get_attribute_taxonomies() ),
 				'isShippingCalculatorEnabled'   => filter_var( get_option( 'woocommerce_enable_shipping_calc' ), FILTER_VALIDATE_BOOLEAN ),
-				'isShippingCostHidden'          => filter_var( get_option( 'woocommerce_shipping_cost_requires_address' ), FILTER_VALIDATE_BOOLEAN ),
 				'wcBlocksAssetUrl'              => plugins_url( 'assets/', __DIR__ ),
 				'wcBlocksBuildUrl'              => plugins_url( 'build/', __DIR__ ),
 				'restApiRoutes'                 => [
@@ -197,7 +196,7 @@ class Assets {
 					FILTER_VALIDATE_BOOLEAN
 				),
 				'baseLocation'                  => wc_get_base_location(),
-				'woocommerceBlocksPhase'        => WOOCOMMERCE_BLOCKS_PHASE,
+				'woocommerceBlocksPhase'        => Package::feature()->get_flag(),
 				'hasDarkEditorStyleSupport'     => current_theme_supports( 'dark-editor-style' ),
 				'loginUrl'                      => wp_login_url(),
 
