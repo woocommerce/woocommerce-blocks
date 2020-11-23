@@ -54,7 +54,7 @@ const PaymentMethods = () => {
 			{ Object.keys( customerPaymentMethods ).length > 0 && (
 				<Label
 					label={ __(
-						'Use another payment method',
+						'Use another payment method.',
 						'woo-gutenberg-products-block'
 					) }
 					screenReaderLabel={ __(
