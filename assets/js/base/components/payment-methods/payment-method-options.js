@@ -28,12 +28,18 @@ import RadioControlAccordion from '../radio-control-accordion';
  * @return {*} The rendered component.
  */
 const PaymentMethodOptions = ( { onChange, selectedMethod = '' } ) => {
-	const { setActivePaymentMethod } = usePaymentMethodDataContext();
+	const {
+		setActivePaymentMethod,
+		expressPaymentMethods,
+	} = usePaymentMethodDataContext();
 	const { paymentMethods } = usePaymentMethods();
 	const {
 		activePaymentMethod,
 		...paymentMethodInterface
 	} = usePaymentMethodInterface();
+	const expressPaymentMethodActive = Object.keys(
+		expressPaymentMethods
+	).includes( activePaymentMethod );
 	const { noticeContexts } = useEmitResponse();
 	const { removeNotice } = useStoreNotices();
 	const { isEditor } = useEditorContext();
@@ -67,7 +73,7 @@ const PaymentMethodOptions = ( { onChange, selectedMethod = '' } ) => {
 		removeNotice( 'wc-payment-error', noticeContexts.PAYMENTS );
 	};
 
-	return (
+	return expressPaymentMethodActive ? null : (
 		<RadioControlAccordion
 			id={ 'wc-payment-method-options' }
 			selected={ selectedMethod }

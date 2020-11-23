@@ -21,7 +21,12 @@ let isStripeInitialized = false,
 
 // Initialise stripe API client and determine if payment method can be used
 // in current environment (e.g. geo + shopper has payment settings configured).
-function paymentRequestAvailable( currencyCode ) {
+function paymentRequestAvailable( { currencyCode, totalPrice } ) {
+	// Stripe only supports carts of greater value than 30 cents.
+	if ( totalPrice < 30 ) {
+		return false;
+	}
+
 	// If we've already initialised, return the cached results.
 	if ( isStripeInitialized ) {
 		return canPay;
@@ -38,8 +43,9 @@ function paymentRequestAvailable( currencyCode ) {
 		// Do a test payment to confirm if payment method is available.
 		const paymentRequest = stripe.paymentRequest( {
 			total: {
-				label: 'Test total',
-				amount: 1000,
+				label: 'Total',
+				amount: totalPrice,
+				pending: true,
 			},
 			country: getSetting( 'baseLocation', {} )?.country,
 			currency: currencyCode,
@@ -52,16 +58,16 @@ function paymentRequestAvailable( currencyCode ) {
 	} );
 }
 
-const PaymentRequestPaymentMethod = {
+const paymentRequestPaymentMethod = {
 	name: PAYMENT_METHOD_NAME,
 	content: <PaymentRequestExpress stripe={ componentStripePromise } />,
 	edit: <ApplePayPreview />,
 	canMakePayment: ( cartData ) =>
-		paymentRequestAvailable(
-			// eslint-disable-next-line camelcase
-			cartData?.cartTotals?.currency_code?.toLowerCase()
-		),
+		paymentRequestAvailable( {
+			currencyCode: cartData?.cartTotals?.currency_code?.toLowerCase(),
+			totalPrice: parseInt( cartData?.cartTotals?.total_price || 0, 10 ),
+		} ),
 	paymentMethodId: 'stripe',
 };
 
-export default PaymentRequestPaymentMethod;
+export default paymentRequestPaymentMethod;
