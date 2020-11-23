@@ -227,3 +227,9 @@
 .wc-block-components-radio-control-accordion-content {
 	padding: 8px 16px 16px 16px;
 }
+
+.wc-block-checkout__order-notes {
+	.wc-block-components-checkout-step__content {
+		padding-bottom: 0;
+	}
+}
