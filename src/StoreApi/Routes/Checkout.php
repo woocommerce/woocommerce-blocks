@@ -139,53 +139,45 @@ class Checkout extends AbstractRoute {
 	}
 
 	/**
-	 * Update and process payment for the order.
+	 * Update and process an order.
+	 *
+	 * 1. Obtain Draft Order
+	 * 2. Process Request
+	 * 3. Process Customer
+	 * 4. Validate Order
+	 * 5. Process Payment
 	 *
 	 * @throws RouteException On error.
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response
 	 */
 	protected function get_route_post_response( \WP_REST_Request $request ) {
+		// --
+		// 1. Obtain Draft Order
+
 		// Update customer first since orders will be created using that data.
 		$this->update_customer_from_request( $request );
 
-		$order_controller = new OrderController();
-		$order_object     = $this->get_draft_order_object( $this->get_draft_order_id() );
+		// Get the order, including validation and reserving stock.
+		$order = $this->create_or_update_draft_order();
 
-		if ( ! $order_object instanceof \WC_Order ) {
-			throw new RouteException(
-				'woocommerce_rest_checkout_invalid_order',
-				__( 'This session has no orders pending payment.', 'woo-gutenberg-products-block' ),
-				500
-			);
+		// --
+		// 2. Process Request
+
+		// If any form fields were posted, update the order (e.g. order note, payment method).
+		$this->update_order_from_request( $order, $request );
+
+		// Validate payment method before proceeding.
+		if ( $order->needs_payment() ) {
+			// Will throw and return 400 if payment method missing or invalid.
+			$this->get_request_payment_method_id( $request );
 		}
 
-		// Ensure order still matches cart.
-		$order_controller->update_order_from_cart( $order_object );
+		// --
+		// 3. Process Customer
 
-		// Create a new user account as necessary.
-		// Note - CreateAccount class includes feature gating logic (i.e. this
-		// may not create an account depending on build).
-		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '4.7', '>=' ) ) {
-			// Checkout signup is feature gated to WooCommerce 4.7 and newer;
-			// Because it requires updated my-account/lost-password screen in 4.7+
-			// for setting initial password.
-			try {
-				$create_account = Package::container()->get( CreateAccount::class );
-				$create_account->from_order_request( $request );
-				$order_object->set_customer_id( get_current_user_id() );
-			} catch ( Exception $error ) {
-				$this->handle_error( $error );
-			}
-		}
-		// If any form fields were posted, update the order.
-		$this->update_order_from_request( $order_object, $request );
-
-		// Check order is still valid.
-		$order_controller->validate_order_before_payment( $order_object );
-
-		// Persist customer address data to account.
-		$order_controller->sync_customer_data_with_order( $order_object );
+		// Update order with customer details, and sign up a user account as necessary.
+		$this->process_customer( $order, $request );
 
 		/*
 		* Fire woocommerce_blocks_checkout_order_processed, should work the same way as woocommerce_checkout_order_processed
@@ -193,17 +185,30 @@ class Checkout extends AbstractRoute {
 		* NOTE: this hook is still experimental, and might change or get removed.
 		* @todo: Document and stabilize __experimental_woocommerce_blocks_checkout_order_processed
 		*/
-		do_action( '__experimental_woocommerce_blocks_checkout_order_processed', $order_object );
+		do_action( '__experimental_woocommerce_blocks_checkout_order_processed', $order );
 
-		if ( ! $order_object->needs_payment() ) {
-			$payment_result = $this->process_without_payment( $order_object, $request );
+		// --
+		// 4. Validate Order
+
+		// Check order is still valid.
+		$order_controller = new OrderController();
+		$order_controller->validate_order_before_payment( $order );
+
+		// --
+		// 5. Process Payment
+
+		if ( ! $order->needs_payment() ) {
+			$payment_result = $this->process_without_payment( $order, $request );
 		} else {
-			$payment_result = $this->process_payment( $order_object, $request );
+			$payment_result = $this->process_payment( $order, $request );
 		}
+
+		// --
+		// Generate response & return.
 
 		$response = $this->prepare_item_for_response(
 			(object) [
-				'order'          => wc_get_order( $order_object ),
+				'order'          => wc_get_order( $order ),
 				'payment_result' => $payment_result,
 			],
 			$request
@@ -574,4 +579,38 @@ class Checkout extends AbstractRoute {
 
 		return $payment_data;
 	}
+
+	/**
+	 * Order processing relating to customer account.
+	 *
+	 * - Creates a customer account as needed (based on request & store settings).
+	 *   - If so, updates the order with the new customer ID.
+	 * - Updates the order with user details (e.g. address).
+	 *
+	 * @param \WC_Order        $order   Order object.
+	 * @param \WP_REST_Request $request Request object.
+	 */
+	protected function process_customer( \WC_Order $order, \WP_REST_Request $request ) {
+		$order_controller = new OrderController();
+
+		// Create a new user account as necessary.
+		// Note - CreateAccount class includes feature gating logic (i.e. this
+		// may not create an account depending on build).
+		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '4.7', '>=' ) ) {
+			// Checkout signup is feature gated to WooCommerce 4.7 and newer;
+			// Because it requires updated my-account/lost-password screen in 4.7+
+			// for setting initial password.
+			try {
+				$create_account = Package::container()->get( CreateAccount::class );
+				$create_account->from_order_request( $request );
+				$order->set_customer_id( get_current_user_id() );
+			} catch ( Exception $error ) {
+				$this->handle_error( $error );
+			}
+		}
+
+		// Persist customer address data to account.
+		$order_controller->sync_customer_data_with_order( $order );
+	}
+
 }
