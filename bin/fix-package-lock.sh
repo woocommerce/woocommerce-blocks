@@ -1,22 +1,24 @@
 #!/bin/bash
 
+# Enable nicer messaging for build status.
+BLUE_BOLD='\033[1;34m';
 RED_BOLD='\033[1;31m';
 COLOR_RESET='\033[0m';
 GREEN_BOLD='\033[1;32m';
 RED_BOLD='\033[1;31m';
 YELLOW_BOLD='\033[1;33m';
 error () {
-	echo -e "\n${RED_BOLD}$1${COLOR_RESET}\n";
+	echo -e "${RED_BOLD}$1${COLOR_RESET}\n";
 	exit 0;
 }
 status () {
-	echo -e "\n${BLUE_BOLD}$1${COLOR_RESET}\n"
+	echo -e "${BLUE_BOLD}$1${COLOR_RESET}\n"
 }
 success () {
-	echo -e "\n${GREEN_BOLD}$1${COLOR_RESET}\n"
+	echo -e "${GREEN_BOLD}$1${COLOR_RESET}\n"
 }
 warning () {
-	echo -e "\n${YELLOW_BOLD}$1${COLOR_RESET}\n"
+	echo -e "${YELLOW_BOLD}$1${COLOR_RESET}\n"
 }
 
 [[ -z "$1" ]] && {
@@ -29,9 +31,9 @@ git pull
 
 if ! git checkout $1
 then
-	error "Unable to checkout branch $i";
+	error "Unable to checkout branch";
 else
-	success "Checked out branch $i"
+	success "Checked out branch"
 fi
 
 status "Rebasing branch with trunk...";
@@ -39,9 +41,9 @@ git pull
 
 if ! git rebase -Xours trunk
 then
-	error "Unable to rebase branch $i";
+	error "Unable to rebase branch";
 else
-	success "Rebased branch $i with trunk"
+	success "Rebased branch with trunk"
 fi
 
 status "Removing package-lock.json...";
