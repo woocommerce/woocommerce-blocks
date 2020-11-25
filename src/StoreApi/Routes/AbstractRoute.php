@@ -47,7 +47,7 @@ abstract class AbstractRoute implements RouteInterface {
 	 * Get the route response based on the type of request.
 	 *
 	 * @param \WP_REST_Request $request Request object.
-	 * @return \WP_Error|\WP_REST_Response
+	 * @return \WP_REST_Response
 	 */
 	public function get_response( \WP_REST_Request $request ) {
 		$response = null;
@@ -70,15 +70,67 @@ abstract class AbstractRoute implements RouteInterface {
 					$response = $this->get_route_response( $request );
 					break;
 			}
-			if ( 'GET' !== $request->get_method() && ! is_wp_error( $response ) ) {
-				$response->header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
-			}
 		} catch ( RouteException $error ) {
 			$response = $this->get_route_error_response( $error->getErrorCode(), $error->getMessage(), $error->getCode(), $error->getAdditionalData() );
 		} catch ( \Exception $error ) {
 			$response = $this->get_route_error_response( 'unknown_server_error', $error->getMessage(), 500 );
 		}
+
+		if ( is_wp_error( $response ) ) {
+			$response = $this->error_to_response( $response );
+		}
+
+		return $this->add_response_headers( $response );
+	}
+
+	/**
+	 * Add Store API headers to a response object.
+	 *
+	 * @param \WP_REST_Response $response Response object.
+	 * @return \WP_REST_Response
+	 */
+	protected function add_response_headers( $response ) {
+		$response->header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
 		return $response;
+	}
+
+	/**
+	 * Converts an error to a response object.
+	 *
+	 * Based on WP_REST_Server (wp-includes/rest-api/class-wp-rest-server.php).
+	 *
+	 * @param WP_Error $error WP_Error instance.
+	 * @return WP_REST_Response List of associative arrays with code and message keys.
+	 */
+	protected function error_to_response( $error ) {
+		$error_data = $error->get_error_data();
+
+		if ( is_array( $error_data ) && isset( $error_data['status'] ) ) {
+			$status = $error_data['status'];
+		} else {
+			$status = 500;
+		}
+
+		$errors = array();
+
+		foreach ( (array) $error->errors as $code => $messages ) {
+			foreach ( (array) $messages as $message ) {
+				$errors[] = array(
+					'code'    => $code,
+					'message' => $message,
+					'data'    => $error->get_error_data( $code ),
+				);
+			}
+		}
+
+		$data = $errors[0];
+		if ( count( $errors ) > 1 ) {
+			// Remove the primary error.
+			array_shift( $errors );
+			$data['additional_errors'] = $errors;
+		}
+
+		return new \WP_REST_Response( $data, $status );
 	}
 
 	/**
