@@ -9,6 +9,7 @@ const FORCE_MAP = process.env.FORCE_MAP || false;
 // Some packages are not available in legacy versions of WordPress, so we don't
 // want to extract them.
 const requiredPackagesInWPLegacy = [
+	'@wordpress/compose', // WP 5.3 version doesn't include `useResizeObserver`.
 	'@wordpress/primitives', // Not included in WP 5.3.
 	'@wordpress/warning', // Not included in WP 5.3.
 ];
