@@ -25,9 +25,7 @@ warning () {
 	error "You must specify a branch to fix, for example: npm run fix-package-lock your/branch";
 }
 
-status "Updating trunk...";
-git checkout trunk
-git pull
+git fetch
 
 if ! git checkout $1
 then
@@ -37,9 +35,8 @@ else
 fi
 
 status "Rebasing branch with trunk...";
-git pull
 
-if ! git rebase -Xours trunk
+if ! git rebase -Xours origin/trunk
 then
 	error "Unable to rebase branch";
 else
