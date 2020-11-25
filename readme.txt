@@ -85,7 +85,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
-= 3.9.0 - 2020-11-24 =
+= 3.9.0 - 2020-11-25 =
 
 See release post [here](https://developer.woocommerce.com/?p=8234)
 
