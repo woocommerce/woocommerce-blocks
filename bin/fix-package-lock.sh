@@ -38,7 +38,14 @@ status "Rebasing branch with trunk...";
 
 if ! git rebase origin/trunk
 then
-	error "Unable to rebase branch";
+	git rm package-lock.json
+	if ! git rebase --continue
+	then
+		git rebase --abort
+		error "Unable to rebase branch";
+	else
+		success "Rebased branch with trunk"
+	fi
 else
 	success "Rebased branch with trunk"
 fi
