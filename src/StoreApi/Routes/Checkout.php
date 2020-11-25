@@ -250,7 +250,7 @@ class Checkout extends AbstractRoute {
 	 * @return \WP_Error WP Error object.
 	 */
 	protected function get_route_error_response( $error_code, $error_message, $http_status_code = 500, $additional_data = [] ) {
-		// Always return the user ID. Checkout may create an account and log user in
+		// Return user ID with all errors. Checkout may create an account and log user in
 		// (CreateAccount service). If there is an error elsewhere in checkout processing,
 		// return the user id so the checkout UX can update where needed.
 		// For example: out of stock, or coupon fails validation.
