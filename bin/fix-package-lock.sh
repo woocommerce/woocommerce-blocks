@@ -6,17 +6,17 @@ GREEN_BOLD='\033[1;32m';
 RED_BOLD='\033[1;31m';
 YELLOW_BOLD='\033[1;33m';
 error () {
-	echo "\n${RED_BOLD}$1${COLOR_RESET}\n";
+	echo -e "\n${RED_BOLD}$1${COLOR_RESET}\n";
 	exit 0;
 }
 status () {
-	echo "\n${BLUE_BOLD}$1${COLOR_RESET}\n"
+	echo -e "\n${BLUE_BOLD}$1${COLOR_RESET}\n"
 }
 success () {
-	echo "\n${GREEN_BOLD}$1${COLOR_RESET}\n"
+	echo -e "\n${GREEN_BOLD}$1${COLOR_RESET}\n"
 }
 warning () {
-	echo "\n${YELLOW_BOLD}$1${COLOR_RESET}\n"
+	echo -e "\n${YELLOW_BOLD}$1${COLOR_RESET}\n"
 }
 
 [[ -z "$1" ]] && {
@@ -27,7 +27,7 @@ status "Updating trunk...";
 git checkout trunk
 git pull
 
-if git checkout $1
+if ! git checkout $1
 then
 	error "Unable to checkout branch $i";
 else
@@ -37,7 +37,7 @@ fi
 status "Rebasing branch with trunk...";
 git pull
 
-if git rebase -Xours trunk
+if ! git rebase -Xours trunk
 then
 	error "Unable to rebase branch $i";
 else
