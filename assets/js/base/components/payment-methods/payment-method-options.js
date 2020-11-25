@@ -24,10 +24,9 @@ import RadioControlAccordion from '../radio-control-accordion';
  *
  * @param {Object} props Incoming props for the component.
  * @param {function(string):void} props.onChange Function to call on the change event.
- * @param {string} props.selectedMethod Selected method. Empty strin means no method is selected.
  * @return {*} The rendered component.
  */
-const PaymentMethodOptions = ( { onChange, selectedMethod = '' } ) => {
+const PaymentMethodOptions = ( { onChange } ) => {
 	const {
 		setActivePaymentMethod,
 		expressPaymentMethods,
@@ -76,7 +75,7 @@ const PaymentMethodOptions = ( { onChange, selectedMethod = '' } ) => {
 	return expressPaymentMethodActive ? null : (
 		<RadioControlAccordion
 			id={ 'wc-payment-method-options' }
-			selected={ selectedMethod }
+			selected={ activePaymentMethod }
 			onChange={ updateToken }
 			options={ options }
 		/>
