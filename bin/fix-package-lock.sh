@@ -6,17 +6,17 @@ GREEN_BOLD='\033[1;32m';
 RED_BOLD='\033[1;31m';
 YELLOW_BOLD='\033[1;33m';
 error () {
-	echo -e "\n${RED_BOLD}$1${COLOR_RESET}\n";
+	echo "\n${RED_BOLD}$1${COLOR_RESET}\n";
 	exit 0;
 }
 status () {
-	echo -e "\n${BLUE_BOLD}$1${COLOR_RESET}\n"
+	echo "\n${BLUE_BOLD}$1${COLOR_RESET}\n"
 }
 success () {
-	echo -e "\n${GREEN_BOLD}$1${COLOR_RESET}\n"
+	echo "\n${GREEN_BOLD}$1${COLOR_RESET}\n"
 }
 warning () {
-	echo -e "\n${YELLOW_BOLD}$1${COLOR_RESET}\n"
+	echo "\n${YELLOW_BOLD}$1${COLOR_RESET}\n"
 }
 
 [[ -z "$1" ]] && {
