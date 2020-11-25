@@ -152,6 +152,16 @@ class OrderController {
 				]
 			);
 		}
+
+		// Ensure all items in cart are still in stock.
+		$cart_stock_check_result = wc()->cart->check_cart_item_stock();
+		if ( $cart_stock_check_result instanceof \WP_Error ) {
+			throw new RouteException(
+				'woocommerce_rest_checkout_items_out_of_stock_error',
+				implode( ', ', $cart_stock_check_result->get_error_messages() ),
+				400
+			);
+		}
 	}
 
 	/**
