@@ -87,6 +87,8 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 = 3.9.0 - 2020-11-24 =
 
+See release post [here](https://developer.woocommerce.com/?p=8234)
+
 #### Enhancements
 
 - Expose `discount_type` in Store API coupon endpoints. ([3399](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3399))
