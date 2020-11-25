@@ -200,6 +200,8 @@ class Checkout extends AbstractRoute {
 		* Introduced: WooCommerce Blocks 3.8.0.
 		* https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3238
 		*/
+		// Save the order so the param and database match (extensions may access DB).
+		$order->save();
 		do_action( '__experimental_woocommerce_blocks_checkout_order_processed', $order );
 
 		// --
