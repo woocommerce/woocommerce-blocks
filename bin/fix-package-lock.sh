@@ -36,7 +36,7 @@ fi
 
 status "Rebasing branch with trunk...";
 
-if ! git rebase -Xours origin/trunk --no-keep-empty
+if ! git rebase origin/trunk
 then
 	error "Unable to rebase branch";
 else
