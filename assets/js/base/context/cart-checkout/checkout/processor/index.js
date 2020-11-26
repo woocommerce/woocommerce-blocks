@@ -221,18 +221,11 @@ const CheckoutProcessor = () => {
 					// Update nonce.
 					triggerFetch.setNonce( errorResponse.headers );
 
-					if ( response.errors ) {
-						// Request includes error info - show as notice(s).
-						response.errors.forEach( ( err ) => {
-							addErrorNotice( err.message, {
-								id: 'checkout',
-							} );
-						} );
-					}
-
 					// If new customer ID returned, update the store.
-					if ( response.customer_id ) {
-						dispatchActions.setCustomerId( response.customer_id );
+					if ( response?.data?.user_id ) {
+						dispatchActions.setCustomerId(
+							response?.data?.user_id
+						);
 					}
 
 					// If updated cart state was returned, update the store.
