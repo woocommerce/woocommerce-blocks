@@ -154,19 +154,39 @@ class OrderController {
 		}
 
 		// Ensure all items on draft order are still in stock.
+		$out_of_stock_products = [];
 		foreach ( $order->get_items() as $item ) {
 			$product = wc_get_product( $item->get_data()['product_id'] );
+
 			if ( ! $product->is_in_stock() ) {
-				throw new RouteException(
-					'woocommerce_rest_checkout_item_out_of_stock_error',
-					sprintf(
-						// Translators: %s Out of stock item name.
-						__( 'Sorry, "%s" is not in stock. Please edit your basket and try again. We apologise for any inconvenience caused.', 'woo-gutenberg-products-block' ),
-						$product->get_name()
-					),
-					400
-				);
+				$out_of_stock_products[] = $product->get_name();
+				continue;
 			}
+
+			if ( $product->managing_stock() && ! $product->backorders_allowed() ) {
+				$qty_remaining = $product->get_stock_quantity();
+				$qty_on_order  = $item->get_quantity();
+
+				if ( $qty_remaining < $qty_on_order ) {
+					$out_of_stock_products[] = $product->get_name();
+				}
+			}
+		}
+
+		if ( count( $out_of_stock_products ) > 0 ) {
+			throw new RouteException(
+				'woocommerce_rest_checkout_item_out_of_stock_error',
+				sprintf(
+					// Translators: %s Sorry "item name(s)" is/are out of stock.
+					__( '%s Please edit your basket and try again. We apologise for any inconvenience caused.', 'woo-gutenberg-products-block' ),
+					sprintf(
+						// Translators: %s Out of stock item names.
+						_n( 'Sorry, "%s" is not in stock.', 'Sorry, "%s" are not in stock.', count( $out_of_stock_products ), 'woo-gutenberg-products-block' ),
+						implode( ', ', $out_of_stock_products )
+					)
+				),
+				400
+			);
 		}
 	}
 
