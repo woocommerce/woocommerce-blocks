@@ -16,6 +16,7 @@ class OrderControllerTests extends TestCase {
 	public function test_validate_order_before_payment() {
 		$class = new OrderController();
 		$product = ProductHelper::create_simple_product();
+		wc()->cart->empty_cart();
 		wc()->cart->add_to_cart( $product->get_id() );
 		$order = $class->create_order_from_cart();
 		$product->set_stock_status( 'outofstock' );
