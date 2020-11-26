@@ -153,14 +153,20 @@ class OrderController {
 			);
 		}
 
-		// Ensure all items in cart are still in stock.
-		$cart_stock_check_result = wc()->cart->check_cart_item_stock();
-		if ( $cart_stock_check_result instanceof \WP_Error ) {
-			throw new RouteException(
-				'woocommerce_rest_checkout_items_out_of_stock_error',
-				implode( ', ', $cart_stock_check_result->get_error_messages() ),
-				400
-			);
+		// Ensure all items on draft order are still in stock.
+		foreach ( $order->get_items() as $item ) {
+			$product = wc_get_product( $item->get_data()['product_id'] );
+			if ( ! $product->is_in_stock() ) {
+				throw new RouteException(
+					'woocommerce_rest_checkout_item_out_of_stock_error',
+					sprintf(
+						// Translators: %s Out of stock item name.
+						__( 'Sorry, "%s" is not in stock. Please edit your basket and try again. We apologise for any inconvenience caused.', 'woo-gutenberg-products-block' ),
+						$product->get_name()
+					),
+					400
+				);
+			}
 		}
 	}
 
