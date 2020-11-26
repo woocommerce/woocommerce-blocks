@@ -6,7 +6,6 @@ import { __, sprintf } from '@wordpress/i18n';
 import { usePaymentMethodDataContext } from '@woocommerce/base-context';
 import RadioControl from '@woocommerce/base-components/radio-control';
 import { getPaymentMethods } from '@woocommerce/blocks-registry';
-import PropTypes from 'prop-types';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').CustomerPaymentMethod} CustomerPaymentMethod
@@ -85,11 +84,14 @@ const getDefaultPaymentMethodOptions = (
 	};
 };
 
-const SavedPaymentMethodOptions = ( { selectedToken = '0', onChange } ) => {
+const SavedPaymentMethodOptions = () => {
 	const {
 		setPaymentStatus,
 		customerPaymentMethods,
+		activePaymentMethod,
 		setActivePaymentMethod,
+		activeSavedToken,
+		setActiveSavedToken,
 	} = usePaymentMethodDataContext();
 	const standardMethods = getPaymentMethods();
 
@@ -104,9 +106,9 @@ const SavedPaymentMethodOptions = ( { selectedToken = '0', onChange } ) => {
 			if ( token === '0' ) {
 				setPaymentStatus().started();
 			}
-			onChange( token );
+			setActiveSavedToken( token );
 		},
-		[ onChange, setPaymentStatus ]
+		[ setActiveSavedToken, setPaymentStatus ]
 	);
 
 	useEffect( () => {
@@ -132,7 +134,11 @@ const SavedPaymentMethodOptions = ( { selectedToken = '0', onChange } ) => {
 									setActivePaymentMethod,
 									setPaymentStatus
 							  );
-					if ( paymentMethod.is_default && selectedToken === '' ) {
+					if (
+						! activePaymentMethod &&
+						paymentMethod.is_default &&
+						activeSavedToken === ''
+					) {
 						updateToken( paymentMethod.tokenId + '' );
 						option.onChange( paymentMethod.tokenId );
 					}
@@ -144,7 +150,8 @@ const SavedPaymentMethodOptions = ( { selectedToken = '0', onChange } ) => {
 	}, [
 		customerPaymentMethods,
 		updateToken,
-		selectedToken,
+		activeSavedToken,
+		activePaymentMethod,
 		setActivePaymentMethod,
 		setPaymentStatus,
 		standardMethods,
@@ -153,15 +160,13 @@ const SavedPaymentMethodOptions = ( { selectedToken = '0', onChange } ) => {
 	return currentOptions.current.length > 0 ? (
 		<RadioControl
 			id={ 'wc-payment-method-saved-tokens' }
-			selected={ selectedToken }
-			onChange={ updateToken }
+			selected={ activeSavedToken }
+			onChange={ ( ...args ) => {
+				updateToken( ...args );
+			} }
 			options={ currentOptions.current }
 		/>
 	) : null;
-};
-
-SavedPaymentMethodOptions.propTypes = {
-	onChange: PropTypes.func.isRequired,
 };
 
 export default SavedPaymentMethodOptions;

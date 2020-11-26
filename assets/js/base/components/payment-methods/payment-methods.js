@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { usePaymentMethods } from '@woocommerce/base-hooks';
-import { useCallback, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import Label from '@woocommerce/base-components/label';
 import { usePaymentMethodDataContext } from '@woocommerce/base-context';
@@ -21,25 +20,7 @@ import SavedPaymentMethodOptions from './saved-payment-method-options';
  */
 const PaymentMethods = () => {
 	const { isInitialized, paymentMethods } = usePaymentMethods();
-	const [ savedMethodsToken, setSavedMethodsToken ] = useState( '' );
-	const [ paymentMethodsName, setPaymentMethodsName ] = useState( '' );
 	const { customerPaymentMethods } = usePaymentMethodDataContext();
-
-	const onChangeSavedMethods = useCallback(
-		( token ) => {
-			setSavedMethodsToken( token );
-			setPaymentMethodsName( '' );
-		},
-		[ setSavedMethodsToken, setPaymentMethodsName ]
-	);
-
-	const onChangePaymentMethods = useCallback(
-		( method ) => {
-			setPaymentMethodsName( method );
-			setSavedMethodsToken( '0' );
-		},
-		[ setSavedMethodsToken, setPaymentMethodsName ]
-	);
 
 	if ( isInitialized && Object.keys( paymentMethods ).length === 0 ) {
 		return <NoPaymentMethods />;
@@ -47,10 +28,7 @@ const PaymentMethods = () => {
 
 	return (
 		<>
-			<SavedPaymentMethodOptions
-				selectedToken={ savedMethodsToken }
-				onChange={ onChangeSavedMethods }
-			/>
+			<SavedPaymentMethodOptions />
 			{ Object.keys( customerPaymentMethods ).length > 0 && (
 				<Label
 					label={ __(
@@ -69,10 +47,7 @@ const PaymentMethods = () => {
 					} }
 				/>
 			) }
-			<PaymentMethodOptions
-				selectedMethod={ paymentMethodsName }
-				onChange={ onChangePaymentMethods }
-			/>
+			<PaymentMethodOptions />
 		</>
 	);
 };
