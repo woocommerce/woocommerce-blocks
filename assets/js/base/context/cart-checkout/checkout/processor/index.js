@@ -37,6 +37,7 @@ const CheckoutProcessor = () => {
 		onCheckoutBeforeProcessing,
 		dispatchActions,
 		redirectUrl,
+		customerId,
 		isProcessing: checkoutIsProcessing,
 		isBeforeProcessing: checkoutIsBeforeProcessing,
 		isComplete: checkoutIsComplete,
@@ -55,7 +56,12 @@ const CheckoutProcessor = () => {
 		paymentMethods,
 		shouldSavePayment,
 	} = usePaymentMethodDataContext();
-	const { addErrorNotice, removeNotice, setIsSuppressed } = useStoreNotices();
+	const {
+		addErrorNotice,
+		addSnackbarNotice,
+		removeNotice,
+		setIsSuppressed,
+	} = useStoreNotices();
 	const currentBillingData = useRef( billingData );
 	const currentShippingAddress = useRef( shippingAddress );
 	const currentRedirectUrl = useRef( redirectUrl );
@@ -223,9 +229,16 @@ const CheckoutProcessor = () => {
 
 					// If new customer ID returned, update the store.
 					if ( response?.data?.user_id ) {
-						dispatchActions.setCustomerId(
-							response?.data?.user_id
-						);
+						const newCustomerId = response?.data?.user_id;
+						dispatchActions.setCustomerId( newCustomerId );
+						if ( ! customerId && newCustomerId !== customerId ) {
+							addSnackbarNotice(
+								__(
+									'Welcome! Your user account has been created.',
+									'woo-gutenberg-products-block'
+								)
+							);
+						}
 					}
 
 					// If updated cart state was returned, update the store.
@@ -238,7 +251,9 @@ const CheckoutProcessor = () => {
 				} );
 			} );
 	}, [
+		customerId,
 		addErrorNotice,
+		addSnackbarNotice,
 		removeNotice,
 		paymentMethodId,
 		activePaymentMethod,
