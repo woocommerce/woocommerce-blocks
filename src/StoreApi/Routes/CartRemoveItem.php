@@ -61,19 +61,4 @@ class CartRemoveItem extends AbstractCartRoute {
 
 		return rest_ensure_response( $this->schema->get_item_response( $cart ) );
 	}
-
-	/**
-	 * If items are removed from the cart and a draft order exists, free up stock.
-	 *
-	 * @return void
-	 */
-	protected function maybe_release_stock() {
-		$draft_order = wc()->session->get( 'store_api_draft_order', 0 );
-
-		if ( ! $draft_order ) {
-			return;
-		}
-
-		wc_release_stock_for_order( $draft_order );
-	}
 }
