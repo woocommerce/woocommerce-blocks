@@ -234,7 +234,7 @@ const CheckoutProcessor = () => {
 					if ( response.customer_id ) {
 						dispatchActions.setCustomerId( response.customer_id );
 					}
-					
+
 					// If updated cart state was returned, update the store.
 					if ( response.data?.cart ) {
 						receiveCart( response.data.cart );
