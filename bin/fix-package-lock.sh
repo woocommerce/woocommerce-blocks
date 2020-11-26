@@ -39,6 +39,7 @@ status "Rebasing branch with trunk...";
 if ! git rebase origin/trunk
 then
 	git rm package-lock.json
+	git add .
 	if ! git rebase --continue
 	then
 		git rebase --abort
