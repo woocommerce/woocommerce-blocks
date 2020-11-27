@@ -30,11 +30,9 @@ class OrderControllerTests extends TestCase {
 		$order = $class->create_order_from_cart();
 
 		$unmanaged_product->set_stock_status( 'outofstock' );
-		$unmanaged_product->save_meta_data();
 		$unmanaged_product->save();
 
 		$managed_product->set_stock_quantity( 1 );
-		$managed_product->save_meta_data();
 		$managed_product->save();
 
 		$this->expectException( RouteException::class );
