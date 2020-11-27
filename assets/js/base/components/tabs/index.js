@@ -27,12 +27,17 @@ const Tabs = ( {
 	if ( tabs.length === 0 ) {
 		return null;
 	}
+	const singleTabMode = tabs.length === 1;
 	return (
-		<div className={ classnames( 'wc-block-components-tabs', className ) }>
+		<div
+			className={ classnames( 'wc-block-components-tabs', className, {
+				'wc-block-components-tabs--single': singleTabMode,
+			} ) }
+		>
 			<TabList
 				{ ...tabState }
 				id={ id }
-				className={ 'wc-block-components-tabs__list' }
+				className="wc-block-components-tabs__list"
 				aria-label={ ariaLabel }
 			>
 				{ tabs.map( ( { name, title, ariaLabel: tabAriaLabel } ) => (
@@ -50,7 +55,7 @@ const Tabs = ( {
 							}
 						) }
 						onClick={ () => onSelect( name ) }
-						type="button"
+						type={ 'button' }
 						key={ name }
 						aria-label={ tabAriaLabel }
 					>
