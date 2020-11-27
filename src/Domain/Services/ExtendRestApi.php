@@ -181,7 +181,7 @@ class ExtendRestApi {
 		return [
 			/* translators: %s: extension namespace */
 			'description' => sprintf( __( 'Extension data registered by %s', 'woo-gutenberg-products-block' ), $namespace ),
-			'type'        => 'object',
+			'type'        => [ 'object', 'null' ],
 			'context'     => [ 'view', 'edit' ],
 			'readonly'    => true,
 			'properties'  => $schema,
