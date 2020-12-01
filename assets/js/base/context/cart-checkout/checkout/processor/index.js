@@ -216,10 +216,10 @@ const CheckoutProcessor = () => {
 					setIsProcessingOrder( false );
 				} );
 			} )
-			.catch( ( fetchResponse ) => {
-				fetchResponse.json().then( function ( response ) {
+			.catch( ( errorResponse ) => {
+				errorResponse.json().then( function ( response ) {
 					// Update nonce.
-					triggerFetch.setNonce( fetchResponse.headers );
+					triggerFetch.setNonce( errorResponse.headers );
 
 					// If updated cart state was returned, also update that.
 					if ( response.data?.cart ) {
