@@ -6,6 +6,7 @@ use \WP_Error;
 use \WP_REST_Server;
 use \WP_REST_Request;
 use \WP_REST_Response;
+use \WC_Order;
 use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Domain\Services\CreateAccount;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
@@ -21,6 +22,13 @@ use Automattic\WooCommerce\Blocks\Payments\PaymentContext;
  * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 class Checkout extends AbstractRoute {
+	/**
+	 * Holds the current order being processed.
+	 *
+	 * @var WC_Order
+	 */
+	private $order = null;
+
 	/**
 	 * Get the path of this REST route.
 	 *
@@ -101,6 +109,36 @@ class Checkout extends AbstractRoute {
 	}
 
 	/**
+	 * Prepare a single item for response. Handles setting the status based on the payment result.
+	 *
+	 * @param mixed            $item Item to format to schema.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_REST_Response $response Response data.
+	 */
+	public function prepare_item_for_response( $item, \WP_REST_Request $request ) {
+		$response = parent::prepare_item_for_response( $item, $request );
+
+		if ( isset( $item->payment_result ) && $item->payment_result instanceof PaymentResult ) {
+			switch ( $item->payment_result->status ) {
+				case 'success':
+					$response->set_status( 200 );
+					break;
+				case 'pending':
+					$response->set_status( 202 );
+					break;
+				case 'failure':
+					$response->set_status( 400 );
+					break;
+				case 'error':
+					$response->set_status( 500 );
+					break;
+			}
+		}
+
+		return $response;
+	}
+
+	/**
 	 * Convert the cart into a new draft order, or update an existing draft order, and return an updated cart response.
 	 *
 	 * @throws RouteException On error.
@@ -108,11 +146,11 @@ class Checkout extends AbstractRoute {
 	 * @return WP_REST_Response
 	 */
 	protected function get_route_response( WP_REST_Request $request ) {
-		$order_object = $this->create_or_update_draft_order();
+		$this->create_or_update_draft_order();
 
 		return $this->prepare_item_for_response(
 			(object) [
-				'order'          => $order_object,
+				'order'          => $this->order,
 				'payment_result' => new PaymentResult(),
 			],
 			$request
@@ -120,22 +158,22 @@ class Checkout extends AbstractRoute {
 	}
 
 	/**
-	 * Update the order.
+	 * Update the current order.
+	 *
+	 * @internal Customer data is updated first so OrderController::update_addresses_from_cart uses up to date data.
 	 *
 	 * @throws RouteException On error.
 	 * @param WP_REST_Request $request Request object.
 	 * @return WP_REST_Response
 	 */
 	protected function get_route_update_response( WP_REST_Request $request ) {
-		// Update customer first since orders will be created using that data.
 		$this->update_customer_from_request( $request );
-
-		$order_object = $this->create_or_update_draft_order();
-		$this->update_order_from_request( $order_object, $request );
+		$this->create_or_update_draft_order();
+		$this->update_order_from_request( $request );
 
 		return $this->prepare_item_for_response(
 			(object) [
-				'order'          => $order_object,
+				'order'          => $this->order,
 				'payment_result' => new PaymentResult(),
 			],
 			$request
@@ -145,7 +183,9 @@ class Checkout extends AbstractRoute {
 	/**
 	 * Update and process an order.
 	 *
-	 * 1. Obtain Draft Order
+	 * Logic runs in this order:
+	 *
+	 * 1. Obtain Draft Order. Note: Customer data is updated first for OrderController::update_addresses_from_cart.
 	 * 2. Process Request
 	 * 3. Process Customer
 	 * 4. Validate Order
@@ -156,23 +196,18 @@ class Checkout extends AbstractRoute {
 	 * @return WP_REST_Response
 	 */
 	protected function get_route_post_response( WP_REST_Request $request ) {
-		// --
-		// 1. Obtain Draft Order
-
-		// Update customer first since orders will be created using that data.
+		/**
+		 * Obtain Draft Order and process request data.
+		 *
+		 * Note: Customer data is persisted from the request first so that OrderController::update_addresses_from_cart
+		 * uses the up to date customer address.
+		 */
 		$this->update_customer_from_request( $request );
-
-		// Get the order, including validation and reserving stock.
-		$order = $this->create_or_update_draft_order();
-
-		// --
-		// 2. Process Request
-
-		// If any form fields were posted, update the order (e.g. order note, payment method).
-		$this->update_order_from_request( $order, $request );
+		$this->create_or_update_draft_order();
+		$this->update_order_from_request( $request );
 
 		// Validate payment method before proceeding.
-		if ( $order->needs_payment() && empty( $request['payment_method'] ) ) {
+		if ( $this->order->needs_payment() && empty( $request['payment_method'] ) ) {
 			throw new RouteException(
 				'woocommerce_rest_checkout_missing_payment_method',
 				__( 'No payment method provided.', 'woo-gutenberg-products-block' ),
@@ -180,21 +215,20 @@ class Checkout extends AbstractRoute {
 			);
 		}
 
-		// --
-		// 3. Process Customer
+		/**
+		 * Process customer data.
+		 *
+		 * Update order with customer details, and sign up a user account as necessary.
+		 */
+		$this->process_customer( $request );
 
-		// Update order with customer details, and sign up a user account as necessary.
-		$this->process_customer( $order, $request );
-
-		// --
-		// 4. Validate Order
-
-		// Check order is still valid.
+		/**
+		 * Validate order.
+		 *
+		 * This logic ensures the order is valid before payment is attempted.
+		 */
 		$order_controller = new OrderController();
-		$order_controller->validate_order_before_payment( $order );
-
-		// Save the order so the param and database match (extensions may access DB).
-		$order->save();
+		$order_controller->validate_order_before_payment( $this->order );
 
 		/**
 		 * WooCommerce Blocks Checkout Order Processed (experimental).
@@ -209,42 +243,22 @@ class Checkout extends AbstractRoute {
 		 * @internal This Hook is experimental and may change or be removed.
 		 * @since 3.8.0
 		 *
-		 * @param \WC_Order  $order Order object.
+		 * @param WC_Order $order Order object.
 		 */
-		do_action( '__experimental_woocommerce_blocks_checkout_order_processed', $order );
+		do_action( '__experimental_woocommerce_blocks_checkout_order_processed', $this->order );
 
-		// --
-		// 5. Process Payment
+		/**
+		 * Process the payment and return the results.
+		 */
+		$payment_result = $this->order->needs_payment() ? $this->process_payment( $request ) : $this->process_without_payment( $request );
 
-		$payment_result = $order->needs_payment() ? $this->process_payment( $order, $request ) : $this->process_without_payment( $order, $request );
-
-		// --
-		// Generate response & return.
-
-		$response = $this->prepare_item_for_response(
+		return $this->prepare_item_for_response(
 			(object) [
-				'order'          => wc_get_order( $order ),
+				'order'          => wc_get_order( $this->order ),
 				'payment_result' => $payment_result,
 			],
 			$request
 		);
-
-		switch ( $payment_result->status ) {
-			case 'success':
-				$response->set_status( 200 );
-				break;
-			case 'pending':
-				$response->set_status( 202 );
-				break;
-			case 'failure':
-				$response->set_status( 400 );
-				break;
-			case 'error':
-				$response->set_status( 500 );
-				break;
-		}
-
-		return $response;
 	}
 
 	/**
@@ -322,52 +336,43 @@ class Checkout extends AbstractRoute {
 	}
 
 	/**
-	 * Get an order object, either using a current draft order, or returning a new one.
-	 *
-	 * If an order ID doesn't exist or it doesn't match a draft order, a new draft order is created. This might happen
-	 * when trying to checkout directly from the cart with an express payment method for example, where a draft order
-	 * has not been created yet.
-	 *
-	 * @param integer $order_id Draft order ID.
-	 * @return \WC_Order|boolean Either the draft order, or false if one has not yet been created.
-	 */
-	private function get_draft_order_object( $order_id ) {
-		$draft_order_object = $order_id ? wc_get_order( $order_id ) : false;
-
-		return $this->is_valid_draft_order( $draft_order_object ) ? $draft_order_object : $this->create_or_update_draft_order();
-	}
-
-	/**
 	 * Create or update a draft order based on the cart.
 	 *
 	 * @throws RouteException On error.
-	 *
-	 * @return \WC_Order Order object.
 	 */
 	private function create_or_update_draft_order() {
 		$cart_controller  = new CartController();
 		$order_controller = new OrderController();
 		$reserve_stock    = \class_exists( '\Automattic\WooCommerce\Checkout\Helpers\ReserveStock' ) ? new \Automattic\WooCommerce\Checkout\Helpers\ReserveStock() : new ReserveStock();
-		$order_object     = $this->get_draft_order_id() ? wc_get_order( $this->get_draft_order_id() ) : null;
 		$created          = false;
+		$this->order      = $this->get_draft_order_id() ? wc_get_order( $this->get_draft_order_id() ) : null;
 
 		// Validate items etc are allowed in the order before it gets created.
 		$cart_controller->validate_cart_items();
 		$cart_controller->validate_cart_coupons();
 
-		if ( ! $this->is_valid_draft_order( $order_object ) ) {
-			$order_object = $order_controller->create_order_from_cart();
-			$created      = true;
+		if ( ! $this->is_valid_draft_order( $this->order ) ) {
+			$this->order = $order_controller->create_order_from_cart();
+			$created     = true;
 		} else {
-			$order_controller->update_order_from_cart( $order_object );
+			$order_controller->update_order_from_cart( $this->order );
+		}
+
+		// Confirm order is valid before proceeding further.
+		if ( ! $this->order instanceof WC_Order ) {
+			throw new RouteException(
+				'woocommerce_rest_checkout_missing_order',
+				__( 'Unable to create order', 'woo-gutenberg-products-block' ),
+				500
+			);
 		}
 
 		// Store order ID to session.
-		$this->set_draft_order_id( $order_object->get_id() );
+		$this->set_draft_order_id( $this->order->get_id() );
 
 		// Try to reserve stock for 10 mins, if available.
 		try {
-			$reserve_stock->reserve_stock_for_order( $order_object, 10 );
+			$reserve_stock->reserve_stock_for_order( $this->order, 10 );
 		} catch ( ReserveStockException $e ) {
 			$error_data = $e->getErrorData();
 			throw new RouteException(
@@ -375,36 +380,6 @@ class Checkout extends AbstractRoute {
 				$e->getMessage(),
 				$e->getCode()
 			);
-		}
-
-		return $order_object;
-	}
-
-	/**
-	 * Convert an account creation error to a Store API error.
-	 *
-	 * @param \Exception $error Caught exception.
-	 *
-	 * @throws RouteException API error object with error details.
-	 */
-	private function handle_error( Exception $error ) {
-		switch ( $error->getMessage() ) {
-			case 'registration-error-invalid-email':
-				throw new RouteException(
-					'registration-error-invalid-email',
-					__( 'Please provide a valid email address.', 'woo-gutenberg-products-block' ),
-					400
-				);
-
-			case 'registration-error-email-exists':
-				throw new RouteException(
-					'registration-error-email-exists',
-					apply_filters(
-						'woocommerce_registration_error_email_exists',
-						__( 'An account is already registered with your email address. Please log in.', 'woo-gutenberg-products-block' )
-					),
-					400
-				);
 		}
 	}
 
@@ -441,35 +416,34 @@ class Checkout extends AbstractRoute {
 	}
 
 	/**
-	 * Update an order using the posted values from the request.
+	 * Update the current order using the posted values from the request.
 	 *
-	 * @param \WC_Order       $order Object to prepare for the response.
 	 * @param WP_REST_Request $request Full details about the request.
 	 */
-	private function update_order_from_request( \WC_Order $order, WP_REST_Request $request ) {
+	private function update_order_from_request( WP_REST_Request $request ) {
 		if ( isset( $request['customer_note'] ) ) {
-			$order->set_customer_note( $request['customer_note'] );
+			$this->order->set_customer_note( $request['customer_note'] );
 		}
 
 		if ( isset( $request['payment_method'] ) ) {
-			$order->set_payment_method( $this->get_request_payment_method( $request ) );
+			$this->order->set_payment_method( $this->get_request_payment_method( $request ) );
 		}
 
-		$order->save();
+		$this->order->save();
 	}
 
 	/**
 	 * For orders which do not require payment, just update status.
 	 *
-	 * @param \WC_Order       $order Order object.
 	 * @param WP_REST_Request $request Request object.
 	 * @return PaymentResult
 	 */
-	private function process_without_payment( \WC_Order $order, WP_REST_Request $request ) {
-		$order->payment_complete();
+	private function process_without_payment( WP_REST_Request $request ) {
+		$this->order->payment_complete();
 
 		$result = new PaymentResult( 'success' );
-		$result->set_redirect_url( $order->get_checkout_order_received_url() );
+		$result->set_redirect_url( $this->order->get_checkout_order_received_url() );
+
 		return $result;
 	}
 
@@ -477,17 +451,16 @@ class Checkout extends AbstractRoute {
 	 * Fires an action hook instructing active payment gateways to process the payment for an order and provide a result.
 	 *
 	 * @throws RouteException On error.
-	 * @param \WC_Order       $order Order object.
 	 * @param WP_REST_Request $request Request object.
 	 * @return PaymentResult
 	 */
-	private function process_payment( \WC_Order $order, WP_REST_Request $request ) {
+	private function process_payment( WP_REST_Request $request ) {
+		$this->order->update_status( 'pending' );
+
 		$context = new PaymentContext();
 		$result  = new PaymentResult();
 
-		$order->update_status( 'pending' );
-
-		$context->set_order( $order );
+		$context->set_order( $this->order );
 		$context->set_payment_method( $this->get_request_payment_method_id( $request ) );
 		$context->set_payment_data( $this->get_request_payment_data( $request ) );
 
@@ -580,10 +553,10 @@ class Checkout extends AbstractRoute {
 	 *
 	 * @todo OrderController (and CartController) should be injected into Checkout Route Class.
 	 *
-	 * @param \WC_Order       $order   Order object.
+	 * @throws RouteException API error object with error details.
 	 * @param WP_REST_Request $request Request object.
 	 */
-	private function process_customer( \WC_Order $order, WP_REST_Request $request ) {
+	private function process_customer( WP_REST_Request $request ) {
 		$order_controller = new OrderController();
 
 		// Create a new user account as necessary.
@@ -596,14 +569,31 @@ class Checkout extends AbstractRoute {
 			try {
 				$create_account = Package::container()->get( CreateAccount::class );
 				$create_account->from_order_request( $request );
-				$order->set_customer_id( get_current_user_id() );
+				$this->order->set_customer_id( get_current_user_id() );
+				$this->order->save();
 			} catch ( Exception $error ) {
-				$this->handle_error( $error );
+				switch ( $error->getMessage() ) {
+					case 'registration-error-invalid-email':
+						throw new RouteException(
+							'registration-error-invalid-email',
+							__( 'Please provide a valid email address.', 'woo-gutenberg-products-block' ),
+							400
+						);
+					case 'registration-error-email-exists':
+						throw new RouteException(
+							'registration-error-email-exists',
+							apply_filters(
+								'woocommerce_registration_error_email_exists',
+								__( 'An account is already registered with your email address. Please log in.', 'woo-gutenberg-products-block' )
+							),
+							400
+						);
+				}
 			}
 		}
 
 		// Persist customer address data to account.
-		$order_controller->sync_customer_data_with_order( $order );
+		$order_controller->sync_customer_data_with_order( $this->order );
 	}
 
 }
