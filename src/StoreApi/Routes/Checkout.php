@@ -189,22 +189,24 @@ class Checkout extends AbstractRoute {
 		$order_controller = new OrderController();
 		$order_controller->validate_order_before_payment( $order );
 
-		/*
-		* Action: woocommerce_blocks_checkout_order_processed (experimental).
-		* This hook informs extensions that $order has completed processing and is ready
-		* for payment.
-		*
-		* This is similar to existing core hook woocommerce_checkout_order_processed.
-		* We're using a new action:
-		* - To keep the interface focused (only pass $order, not passing request data).
-		* - This also explicitly indicates these orders are from checkout block/StoreAPI.
-		*
-		* Status: experimental; may change or be removed.
-		* Introduced: WooCommerce Blocks 3.8.0.
-		* https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3238
-		*/
 		// Save the order so the param and database match (extensions may access DB).
 		$order->save();
+
+		/**
+		 * WooCommerce Blocks Checkout Order Processed (experimental).
+		 *
+		 * This hook informs extensions that $order has completed processing and is ready for payment.
+		 *
+		 * This is similar to existing core hook woocommerce_checkout_order_processed. We're using a new action:
+		 * - To keep the interface focused (only pass $order, not passing request data).
+		 * - This also explicitly indicates these orders are from checkout block/StoreAPI.
+		 *
+		 * @see https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3238
+		 * @internal This Hook is experimental and may change or be removed.
+		 * @since 3.8.0
+		 *
+		 * @param \WC_Order  $order Order object.
+		 */
 		do_action( '__experimental_woocommerce_blocks_checkout_order_processed', $order );
 
 		// --
