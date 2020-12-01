@@ -42,7 +42,7 @@ class Checkout extends AbstractRoute {
 	 * Enforce nonces for all checkout endpoints.
 	 *
 	 * @param WP_REST_Request $request Request object.
-	 * @return WP_Error| WP_REST_Response
+	 * @return WP_Error|WP_REST_Response
 	 */
 	public function get_response( WP_REST_Request $request ) {
 		$this->maybe_load_cart();
