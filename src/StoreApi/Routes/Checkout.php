@@ -168,9 +168,12 @@ class Checkout extends AbstractRoute {
 		$this->update_order_from_request( $order, $request );
 
 		// Validate payment method before proceeding.
-		if ( $order->needs_payment() ) {
-			// Will throw and return 400 if payment method missing or invalid.
-			$this->get_request_payment_method_id( $request );
+		if ( $order->needs_payment() && empty( $request['payment_method'] ) ) {
+			throw new RouteException(
+				'woocommerce_rest_checkout_missing_payment_method',
+				__( 'No payment method provided.', 'woo-gutenberg-products-block' ),
+				400
+			);
 		}
 
 		// --
@@ -532,32 +535,9 @@ class Checkout extends AbstractRoute {
 	 * @return string
 	 */
 	protected function get_request_payment_method_id( \WP_REST_Request $request ) {
-		$payment_method = isset( $request['payment_method'] )
+		return isset( $request['payment_method'] )
 			? wc_clean( wp_unslash( $request['payment_method'] ) )
 			: '';
-		$valid_methods  = wc()->payment_gateways->get_payment_gateway_ids();
-
-		if ( empty( $payment_method ) ) {
-			throw new RouteException(
-				'woocommerce_rest_checkout_missing_payment_method',
-				__( 'No payment method provided.', 'woo-gutenberg-products-block' ),
-				400
-			);
-		}
-
-		if ( ! in_array( $payment_method, $valid_methods, true ) ) {
-			throw new RouteException(
-				'woocommerce_rest_checkout_invalid_payment_method',
-				sprintf(
-					// Translators: %s list of gateway ids.
-					__( 'Invalid payment method provided. Please provide one of the following: %s', 'woo-gutenberg-products-block' ),
-					'`' . implode( '`, `', $valid_methods ) . '`'
-				),
-				400
-			);
-		}
-
-		return $payment_method;
 	}
 
 	/**
@@ -568,9 +548,9 @@ class Checkout extends AbstractRoute {
 	 * @return \WC_Payment_Gateway
 	 */
 	protected function get_request_payment_method( \WP_REST_Request $request ) {
-		$payment_method        = $this->get_request_payment_method_id( $request );
+		$payment_method_id     = $this->get_request_payment_method_id( $request );
 		$gateways              = wc()->payment_gateways->payment_gateways();
-		$payment_method_object = isset( $gateways[ $payment_method ] ) ? $gateways[ $payment_method ] : false;
+		$payment_method_object = isset( $gateways[ $payment_method_id ] ) ? $gateways[ $payment_method_id ] : false;
 
 		// The abstract gateway is available method uses the cart global, so instead, check enabled directly.
 		if ( ! $payment_method_object || ! wc_string_to_bool( $payment_method_object->enabled ) ) {
