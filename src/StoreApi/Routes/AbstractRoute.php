@@ -85,23 +85,15 @@ abstract class AbstractRoute implements RouteInterface {
 	}
 
 	/**
-	 * Converts an error to a response object.
-	 *
-	 * Based on WP_REST_Server (wp-includes/rest-api/class-wp-rest-server.php).
+	 * Converts an error to a response object. Based on \WP_REST_Server.
 	 *
 	 * @param WP_Error $error WP_Error instance.
 	 * @return WP_REST_Response List of associative arrays with code and message keys.
 	 */
 	protected function error_to_response( $error ) {
 		$error_data = $error->get_error_data();
-
-		if ( is_array( $error_data ) && isset( $error_data['status'] ) ) {
-			$status = $error_data['status'];
-		} else {
-			$status = 500;
-		}
-
-		$errors = array();
+		$status     = isset( $error_data, $error_data['status'] ) ? $error_data['status'] : 500;
+		$errors     = [];
 
 		foreach ( (array) $error->errors as $code => $messages ) {
 			foreach ( (array) $messages as $message ) {
@@ -113,10 +105,9 @@ abstract class AbstractRoute implements RouteInterface {
 			}
 		}
 
-		$data = $errors[0];
-		if ( count( $errors ) > 1 ) {
-			// Remove the primary error.
-			array_shift( $errors );
+		$data = array_shift( $errors );
+
+		if ( count( $errors ) ) {
 			$data['additional_errors'] = $errors;
 		}
 
