@@ -80,16 +80,6 @@ abstract class AbstractRoute implements RouteInterface {
 			$response = $this->error_to_response( $response );
 		}
 
-		return $this->add_response_headers( $response );
-	}
-
-	/**
-	 * Add Store API headers to a response object.
-	 *
-	 * @param \WP_REST_Response $response Response object.
-	 * @return \WP_REST_Response
-	 */
-	protected function add_response_headers( $response ) {
 		$response->header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
 		return $response;
 	}
