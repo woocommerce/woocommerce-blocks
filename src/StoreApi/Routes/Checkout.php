@@ -2,6 +2,10 @@
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
 
 use \Exception;
+use \WP_Error;
+use \WP_REST_Server;
+use \WP_REST_Request;
+use \WP_REST_Response;
 use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Domain\Services\CreateAccount;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
@@ -29,10 +33,10 @@ class Checkout extends AbstractRoute {
 	/**
 	 * Enforce nonces for all checkout endpoints.
 	 *
-	 * @param \WP_REST_Request $request Request object.
-	 * @return \WP_Error|\WP_REST_Response
+	 * @param WP_REST_Request $request Request object.
+	 * @return WP_Error| WP_REST_Response
 	 */
-	public function get_response( \WP_REST_Request $request ) {
+	public function get_response( WP_REST_Request $request ) {
 		$this->maybe_load_cart();
 		$response = null;
 		try {
@@ -40,7 +44,7 @@ class Checkout extends AbstractRoute {
 			$response = parent::get_response( $request );
 		} catch ( RouteException $error ) {
 			$response = $this->get_route_error_response( $error->getErrorCode(), $error->getMessage(), $error->getCode() );
-		} catch ( \Exception $error ) {
+		} catch ( Exception $error ) {
 			$response = $this->get_route_error_response( 'unknown_server_error', $error->getMessage(), 500 );
 		}
 		return $response;
@@ -54,7 +58,7 @@ class Checkout extends AbstractRoute {
 	public function get_args() {
 		return [
 			[
-				'methods'             => \WP_REST_Server::READABLE,
+				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => [ $this, 'get_response' ],
 				'permission_callback' => '__return_true',
 				'args'                => [
@@ -62,13 +66,13 @@ class Checkout extends AbstractRoute {
 				],
 			],
 			[
-				'methods'             => \WP_REST_Server::EDITABLE,
+				'methods'             => WP_REST_Server::EDITABLE,
 				'callback'            => array( $this, 'get_response' ),
 				'permission_callback' => '__return_true',
-				'args'                => $this->schema->get_endpoint_args_for_item_schema( \WP_REST_Server::EDITABLE ),
+				'args'                => $this->schema->get_endpoint_args_for_item_schema( WP_REST_Server::EDITABLE ),
 			],
 			[
-				'methods'             => \WP_REST_Server::CREATABLE,
+				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => [ $this, 'get_response' ],
 				'permission_callback' => '__return_true',
 				'args'                => array_merge(
@@ -89,7 +93,7 @@ class Checkout extends AbstractRoute {
 							],
 						],
 					],
-					$this->schema->get_endpoint_args_for_item_schema( \WP_REST_Server::CREATABLE )
+					$this->schema->get_endpoint_args_for_item_schema( WP_REST_Server::CREATABLE )
 				),
 			],
 			'schema' => [ $this->schema, 'get_public_item_schema' ],
@@ -100,10 +104,10 @@ class Checkout extends AbstractRoute {
 	 * Convert the cart into a new draft order, or update an existing draft order, and return an updated cart response.
 	 *
 	 * @throws RouteException On error.
-	 * @param \WP_REST_Request $request Request object.
-	 * @return \WP_REST_Response
+	 * @param WP_REST_Request $request Request object.
+	 * @return WP_REST_Response
 	 */
-	protected function get_route_response( \WP_REST_Request $request ) {
+	protected function get_route_response( WP_REST_Request $request ) {
 		$order_object = $this->create_or_update_draft_order();
 
 		return $this->prepare_item_for_response(
@@ -119,10 +123,10 @@ class Checkout extends AbstractRoute {
 	 * Update the order.
 	 *
 	 * @throws RouteException On error.
-	 * @param \WP_REST_Request $request Request object.
-	 * @return \WP_REST_Response
+	 * @param WP_REST_Request $request Request object.
+	 * @return WP_REST_Response
 	 */
-	protected function get_route_update_response( \WP_REST_Request $request ) {
+	protected function get_route_update_response( WP_REST_Request $request ) {
 		// Update customer first since orders will be created using that data.
 		$this->update_customer_from_request( $request );
 
@@ -148,10 +152,10 @@ class Checkout extends AbstractRoute {
 	 * 5. Process Payment
 	 *
 	 * @throws RouteException On error.
-	 * @param \WP_REST_Request $request Request object.
-	 * @return \WP_REST_Response
+	 * @param WP_REST_Request $request Request object.
+	 * @return WP_REST_Response
 	 */
-	protected function get_route_post_response( \WP_REST_Request $request ) {
+	protected function get_route_post_response( WP_REST_Request $request ) {
 		// --
 		// 1. Obtain Draft Order
 
@@ -212,11 +216,7 @@ class Checkout extends AbstractRoute {
 		// --
 		// 5. Process Payment
 
-		if ( ! $order->needs_payment() ) {
-			$payment_result = $this->process_without_payment( $order, $request );
-		} else {
-			$payment_result = $this->process_payment( $order, $request );
-		}
+		$payment_result = $order->needs_payment() ? $this->process_payment( $order, $request ) : $this->process_without_payment( $order, $request );
 
 		// --
 		// Generate response & return.
@@ -254,7 +254,7 @@ class Checkout extends AbstractRoute {
 	 * @param string $error_message User facing error message.
 	 * @param int    $http_status_code HTTP status. Defaults to 500.
 	 * @param array  $additional_data  Extra data (key value pairs) to expose in the error response.
-	 * @return \WP_Error WP Error object.
+	 * @return WP_Error WP Error object.
 	 */
 	protected function get_route_error_response( $error_code, $error_message, $http_status_code = 500, $additional_data = [] ) {
 		switch ( $http_status_code ) {
@@ -263,7 +263,7 @@ class Checkout extends AbstractRoute {
 				$controller = new CartController();
 				$cart       = $controller->get_cart_instance();
 
-				return new \WP_Error(
+				return new WP_Error(
 					$error_code,
 					$error_message,
 					array_merge(
@@ -275,7 +275,7 @@ class Checkout extends AbstractRoute {
 					)
 				);
 		}
-		return new \WP_Error( $error_code, $error_message, [ 'status' => $http_status_code ] );
+		return new WP_Error( $error_code, $error_message, [ 'status' => $http_status_code ] );
 	}
 
 	/**
@@ -283,7 +283,7 @@ class Checkout extends AbstractRoute {
 	 *
 	 * @return array
 	 */
-	protected function get_draft_order_id() {
+	private function get_draft_order_id() {
 		return wc()->session->get( 'store_api_draft_order', 0 );
 	}
 
@@ -292,7 +292,7 @@ class Checkout extends AbstractRoute {
 	 *
 	 * @param integer $order_id Draft order ID.
 	 */
-	protected function set_draft_order_id( $order_id ) {
+	private function set_draft_order_id( $order_id ) {
 		wc()->session->set( 'store_api_draft_order', $order_id );
 	}
 
@@ -303,7 +303,7 @@ class Checkout extends AbstractRoute {
 	 * @param \WC_Order $order_object Order object to check.
 	 * @return boolean Whether the order is valid as a draft order.
 	 */
-	protected function is_valid_draft_order( $order_object ) {
+	private function is_valid_draft_order( $order_object ) {
 		if ( ! $order_object instanceof \WC_Order ) {
 			return false;
 		}
@@ -324,14 +324,14 @@ class Checkout extends AbstractRoute {
 	/**
 	 * Get an order object, either using a current draft order, or returning a new one.
 	 *
+	 * If an order ID doesn't exist or it doesn't match a draft order, a new draft order is created. This might happen
+	 * when trying to checkout directly from the cart with an express payment method for example, where a draft order
+	 * has not been created yet.
+	 *
 	 * @param integer $order_id Draft order ID.
 	 * @return \WC_Order|boolean Either the draft order, or false if one has not yet been created.
 	 */
-	protected function get_draft_order_object( $order_id ) {
-		// If order ID doesn't exist or it doesn't match a draft order, create
-		// a new draft order. That might happen when trying to checkout directly
-		// from the Cart block with an express payment method and the draft
-		// order hasn't been created yet.
+	private function get_draft_order_object( $order_id ) {
 		$draft_order_object = $order_id ? wc_get_order( $order_id ) : false;
 
 		return $this->is_valid_draft_order( $draft_order_object ) ? $draft_order_object : $this->create_or_update_draft_order();
@@ -344,7 +344,7 @@ class Checkout extends AbstractRoute {
 	 *
 	 * @return \WC_Order Order object.
 	 */
-	protected function create_or_update_draft_order() {
+	private function create_or_update_draft_order() {
 		$cart_controller  = new CartController();
 		$order_controller = new OrderController();
 		$reserve_stock    = \class_exists( '\Automattic\WooCommerce\Checkout\Helpers\ReserveStock' ) ? new \Automattic\WooCommerce\Checkout\Helpers\ReserveStock() : new ReserveStock();
@@ -413,9 +413,9 @@ class Checkout extends AbstractRoute {
 	 *
 	 * Address session data is synced to the order itself later on by OrderController::update_order_from_cart()
 	 *
-	 * @param \WP_REST_Request $request Full details about the request.
+	 * @param WP_REST_Request $request Full details about the request.
 	 */
-	protected function update_customer_from_request( \WP_REST_Request $request ) {
+	private function update_customer_from_request( WP_REST_Request $request ) {
 		$schema   = $this->get_item_schema();
 		$customer = wc()->customer;
 
@@ -443,10 +443,10 @@ class Checkout extends AbstractRoute {
 	/**
 	 * Update an order using the posted values from the request.
 	 *
-	 * @param \WC_Order        $order Object to prepare for the response.
-	 * @param \WP_REST_Request $request Full details about the request.
+	 * @param \WC_Order       $order Object to prepare for the response.
+	 * @param WP_REST_Request $request Full details about the request.
 	 */
-	protected function update_order_from_request( \WC_Order $order, \WP_REST_Request $request ) {
+	private function update_order_from_request( \WC_Order $order, WP_REST_Request $request ) {
 		if ( isset( $request['customer_note'] ) ) {
 			$order->set_customer_note( $request['customer_note'] );
 		}
@@ -461,11 +461,11 @@ class Checkout extends AbstractRoute {
 	/**
 	 * For orders which do not require payment, just update status.
 	 *
-	 * @param \WC_Order        $order Order object.
-	 * @param \WP_REST_Request $request Request object.
+	 * @param \WC_Order       $order Order object.
+	 * @param WP_REST_Request $request Request object.
 	 * @return PaymentResult
 	 */
-	protected function process_without_payment( \WC_Order $order, \WP_REST_Request $request ) {
+	private function process_without_payment( \WC_Order $order, WP_REST_Request $request ) {
 		$order->payment_complete();
 
 		$result = new PaymentResult( 'success' );
@@ -477,11 +477,11 @@ class Checkout extends AbstractRoute {
 	 * Fires an action hook instructing active payment gateways to process the payment for an order and provide a result.
 	 *
 	 * @throws RouteException On error.
-	 * @param \WC_Order        $order Order object.
-	 * @param \WP_REST_Request $request Request object.
+	 * @param \WC_Order       $order Order object.
+	 * @param WP_REST_Request $request Request object.
 	 * @return PaymentResult
 	 */
-	protected function process_payment( \WC_Order $order, \WP_REST_Request $request ) {
+	private function process_payment( \WC_Order $order, WP_REST_Request $request ) {
 		$context = new PaymentContext();
 		$result  = new PaymentResult();
 
@@ -519,10 +519,10 @@ class Checkout extends AbstractRoute {
 	 * Gets the chosen payment method ID from the request.
 	 *
 	 * @throws RouteException On error.
-	 * @param \WP_REST_Request $request Request object.
+	 * @param WP_REST_Request $request Request object.
 	 * @return string
 	 */
-	protected function get_request_payment_method_id( \WP_REST_Request $request ) {
+	private function get_request_payment_method_id( WP_REST_Request $request ) {
 		return isset( $request['payment_method'] )
 			? wc_clean( wp_unslash( $request['payment_method'] ) )
 			: '';
@@ -532,10 +532,10 @@ class Checkout extends AbstractRoute {
 	 * Gets the chosen payment method from the request.
 	 *
 	 * @throws RouteException On error.
-	 * @param \WP_REST_Request $request Request object.
+	 * @param WP_REST_Request $request Request object.
 	 * @return \WC_Payment_Gateway
 	 */
-	protected function get_request_payment_method( \WP_REST_Request $request ) {
+	private function get_request_payment_method( WP_REST_Request $request ) {
 		$payment_method_id     = $this->get_request_payment_method_id( $request );
 		$gateways              = wc()->payment_gateways->payment_gateways();
 		$payment_method_object = isset( $gateways[ $payment_method_id ] ) ? $gateways[ $payment_method_id ] : false;
@@ -555,10 +555,10 @@ class Checkout extends AbstractRoute {
 	/**
 	 * Gets and formats payment request data.
 	 *
-	 * @param \WP_REST_Request $request Request object.
+	 * @param WP_REST_Request $request Request object.
 	 * @return array
 	 */
-	protected function get_request_payment_data( \WP_REST_Request $request ) {
+	private function get_request_payment_data( WP_REST_Request $request ) {
 		static $payment_data = [];
 		if ( ! empty( $payment_data ) ) {
 			return $payment_data;
@@ -580,10 +580,10 @@ class Checkout extends AbstractRoute {
 	 *
 	 * @todo OrderController (and CartController) should be injected into Checkout Route Class.
 	 *
-	 * @param \WC_Order        $order   Order object.
-	 * @param \WP_REST_Request $request Request object.
+	 * @param \WC_Order       $order   Order object.
+	 * @param WP_REST_Request $request Request object.
 	 */
-	protected function process_customer( \WC_Order $order, \WP_REST_Request $request ) {
+	private function process_customer( \WC_Order $order, WP_REST_Request $request ) {
 		$order_controller = new OrderController();
 
 		// Create a new user account as necessary.
