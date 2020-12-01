@@ -183,9 +183,7 @@ class Checkout extends AbstractRoute {
 	/**
 	 * Update and process an order.
 	 *
-	 * Logic runs in this order:
-	 *
-	 * 1. Obtain Draft Order. Note: Customer data is updated first for OrderController::update_addresses_from_cart.
+	 * 1. Obtain Draft Order.
 	 * 2. Process Request
 	 * 3. Process Customer
 	 * 4. Validate Order
