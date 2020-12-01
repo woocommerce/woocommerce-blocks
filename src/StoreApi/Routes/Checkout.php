@@ -587,9 +587,10 @@ class Checkout extends AbstractRoute {
 	/**
 	 * Order processing relating to customer account.
 	 *
-	 * - Creates a customer account as needed (based on request & store settings).
-	 *   - If so, updates the order with the new customer ID.
-	 * - Updates the order with user details (e.g. address).
+	 * Creates a customer account as needed (based on request & store settings) and  updates the order with the new customer ID.
+	 * Updates the order with user details (e.g. address).
+	 *
+	 * @todo OrderController (and CartController) should be injected into Checkout Route Class.
 	 *
 	 * @param \WC_Order        $order   Order object.
 	 * @param \WP_REST_Request $request Request object.
