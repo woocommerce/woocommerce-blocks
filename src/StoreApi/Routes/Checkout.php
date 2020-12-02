@@ -542,6 +542,9 @@ class Checkout extends AbstractRoute {
 	 * Creates a customer account as needed (based on request & store settings) and  updates the order with the new customer ID.
 	 * Updates the order with user details (e.g. address).
 	 *
+	 * @internal CreateAccount class includes feature gating logic (i.e. this may not create an account depending on build).
+	 * @internal Checkout signup is feature gated to WooCommerce 4.7 and newer; Because it requires updated my-account/lost-password screen in 4.7+ for setting initial password.
+
 	 * @todo OrderController (and CartController) should be injected into Checkout Route Class.
 	 *
 	 * @throws RouteException API error object with error details.
@@ -550,13 +553,7 @@ class Checkout extends AbstractRoute {
 	private function process_customer( WP_REST_Request $request ) {
 		$order_controller = new OrderController();
 
-		// Create a new user account as necessary.
-		// Note - CreateAccount class includes feature gating logic (i.e. this
-		// may not create an account depending on build).
 		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '4.7', '>=' ) ) {
-			// Checkout signup is feature gated to WooCommerce 4.7 and newer;
-			// Because it requires updated my-account/lost-password screen in 4.7+
-			// for setting initial password.
 			try {
 				$create_account = Package::container()->get( CreateAccount::class );
 				$create_account->from_order_request( $request );
