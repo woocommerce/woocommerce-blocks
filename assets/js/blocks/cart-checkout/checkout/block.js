@@ -28,6 +28,7 @@ import {
 	CHECKOUT_ALLOWS_SIGNUP,
 } from '@woocommerce/block-settings';
 import { compareWithWooVersion, getSetting } from '@woocommerce/settings';
+import { PluginArea } from '@wordpress/plugins';
 
 /**
  * Internal dependencies
@@ -48,6 +49,7 @@ const Block = ( props ) => {
 	return (
 		<CheckoutProvider>
 			<Checkout { ...props } />
+			<PluginArea />
 		</CheckoutProvider>
 	);
 };
