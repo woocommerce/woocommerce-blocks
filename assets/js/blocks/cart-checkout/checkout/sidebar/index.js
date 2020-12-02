@@ -3,7 +3,7 @@
  */
 import {
 	OrderSummary,
-	OrderReview,
+	ExperimentalOrderMeta,
 	Subtotal,
 	TotalsFees,
 	TotalsCoupon,
@@ -72,7 +72,7 @@ const CheckoutSidebar = ( {
 				currency={ totalsCurrency }
 				values={ cartTotals }
 			/>
-			<OrderReview.Slot />
+			<ExperimentalOrderMeta.Slot />
 		</>
 	);
 };

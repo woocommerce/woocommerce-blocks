@@ -4,24 +4,29 @@
 import { createSlotFill } from 'wordpress-components';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import classnames from 'classnames';
-const { Fill, Slot } = createSlotFill( '__experimentalOrderReview' );
+import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
 
-function OrderReview( { children } ) {
+const { Fill, Slot } = createSlotFill( '__experimentalOrderMeta' );
+
+function ExperimentalOrderMeta( { children } ) {
 	return <Fill>{ children }</Fill>;
 }
 
-function OrderReviewSlot( { className } ) {
+function OrderMetaSlot( { className } ) {
 	return (
 		<Slot
 			bubblesVirtually
 			className={ classnames(
 				className,
-				'wc-block-components-order-reviews'
+				'wc-block-components-order-meta'
 			) }
 		>
 			{ ( fills ) => {
 				fills.map( ( fill, i ) => (
-					<BlockErrorBoundary showErrorMessage={ false } key={ i }>
+					<BlockErrorBoundary
+						render={ CURRENT_USER_IS_ADMIN ? null : () => null }
+						key={ i }
+					>
 						{ fill }
 					</BlockErrorBoundary>
 				) );
@@ -30,6 +35,6 @@ function OrderReviewSlot( { className } ) {
 	);
 }
 
-OrderReview.Slot = OrderReviewSlot;
+ExperimentalOrderMeta.Slot = OrderMetaSlot;
 
-export default OrderReview;
+export default ExperimentalOrderMeta;
