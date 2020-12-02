@@ -204,15 +204,6 @@ class Checkout extends AbstractRoute {
 		$this->create_or_update_draft_order();
 		$this->update_order_from_request( $request );
 
-		// Validate payment method before proceeding.
-		if ( $this->order->needs_payment() && empty( $request['payment_method'] ) ) {
-			throw new RouteException(
-				'woocommerce_rest_checkout_missing_payment_method',
-				__( 'No payment method provided.', 'woo-gutenberg-products-block' ),
-				400
-			);
-		}
-
 		/**
 		 * Process customer data.
 		 *
@@ -420,11 +411,7 @@ class Checkout extends AbstractRoute {
 		if ( isset( $request['customer_note'] ) ) {
 			$this->order->set_customer_note( $request['customer_note'] );
 		}
-
-		if ( isset( $request['payment_method'] ) ) {
-			$this->order->set_payment_method( $this->get_request_payment_method( $request ) );
-		}
-
+		$this->order->set_payment_method( $this->order->needs_payment() ? $this->get_request_payment_method( $request ) : '' );
 		$this->order->save();
 	}
 
@@ -451,16 +438,16 @@ class Checkout extends AbstractRoute {
 	 * @return PaymentResult
 	 */
 	private function process_payment( WP_REST_Request $request ) {
-		$this->order->update_status( 'pending' );
-
-		$context = new PaymentContext();
-		$result  = new PaymentResult();
-
-		$context->set_order( $this->order );
-		$context->set_payment_method( $this->get_request_payment_method_id( $request ) );
-		$context->set_payment_data( $this->get_request_payment_data( $request ) );
-
 		try {
+			$result  = new PaymentResult();
+			$context = new PaymentContext();
+			$context->set_payment_method( $this->get_request_payment_method_id( $request ) );
+			$context->set_payment_data( $this->get_request_payment_data( $request ) );
+
+			// Orders are made pending before attempting payment.
+			$this->order->update_status( 'pending' );
+			$context->set_order( $this->order );
+
 			/**
 			 * Process payment with context.
 			 *
@@ -492,9 +479,19 @@ class Checkout extends AbstractRoute {
 	 * @return string
 	 */
 	private function get_request_payment_method_id( WP_REST_Request $request ) {
-		return isset( $request['payment_method'] )
+		$payment_method_id = isset( $request['payment_method'] )
 			? wc_clean( wp_unslash( $request['payment_method'] ) )
 			: '';
+
+		if ( empty( $payment_method_id ) ) {
+			throw new RouteException(
+				'woocommerce_rest_checkout_missing_payment_method',
+				__( 'No payment method provided.', 'woo-gutenberg-products-block' ),
+				400
+			);
+		}
+
+		return $payment_method_id;
 	}
 
 	/**
@@ -505,12 +502,10 @@ class Checkout extends AbstractRoute {
 	 * @return \WC_Payment_Gateway
 	 */
 	private function get_request_payment_method( WP_REST_Request $request ) {
-		$payment_method_id     = $this->get_request_payment_method_id( $request );
-		$gateways              = wc()->payment_gateways->payment_gateways();
-		$payment_method_object = isset( $gateways[ $payment_method_id ] ) ? $gateways[ $payment_method_id ] : false;
+		$payment_method_id  = $this->get_request_payment_method_id( $request );
+		$available_gateways = WC()->payment_gateways->get_available_payment_gateways();
 
-		// The abstract gateway is available method uses the cart global, so instead, check enabled directly.
-		if ( ! $payment_method_object || ! wc_string_to_bool( $payment_method_object->enabled ) ) {
+		if ( ! isset( $available_gateways[ $payment_method_id ] ) ) {
 			throw new RouteException(
 				'woocommerce_rest_checkout_payment_method_disabled',
 				__( 'This payment gateway is not available.', 'woo-gutenberg-products-block' ),
@@ -518,7 +513,7 @@ class Checkout extends AbstractRoute {
 			);
 		}
 
-		return $payment_method_object;
+		return $available_gateways[ $payment_method_id ];
 	}
 
 	/**
