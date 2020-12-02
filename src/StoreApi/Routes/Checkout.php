@@ -466,7 +466,7 @@ class Checkout extends AbstractRoute {
 			 *
 			 * @hook woocommerce_rest_checkout_process_payment_with_context
 			 *
-			 * @throws \Exception If there is an error taking payment, an Exception object can be thrown
+			 * @throws Exception If there is an error taking payment, an Exception object can be thrown
 			 *                                     with an error message.
 			 *
 			 * @param PaymentContext $context Holds context for the payment, including order ID and payment method.
@@ -479,7 +479,7 @@ class Checkout extends AbstractRoute {
 			}
 
 			return $result;
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			throw new RouteException( 'woocommerce_rest_checkout_process_payment_error', $e->getMessage(), 400 );
 		}
 	}
@@ -578,10 +578,7 @@ class Checkout extends AbstractRoute {
 					case 'registration-error-email-exists':
 						throw new RouteException(
 							'registration-error-email-exists',
-							apply_filters(
-								'woocommerce_registration_error_email_exists',
-								__( 'An account is already registered with your email address. Please log in.', 'woo-gutenberg-products-block' )
-							),
+							__( 'An account is already registered with your email address. Please log in before proceeding.', 'woo-gutenberg-products-block' ),
 							400
 						);
 				}
