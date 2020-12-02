@@ -163,10 +163,9 @@ class CheckoutSchema extends AbstractSchema {
 	 *
 	 * @param \WC_Order     $order Order object.
 	 * @param PaymentResult $payment_result Payment result object.
-	 * @param array         $errors Any errors that occured during request processing.
 	 * @return array
 	 */
-	protected function get_checkout_response( \WC_Order $order, PaymentResult $payment_result = null, $errors = [] ) {
+	protected function get_checkout_response( \WC_Order $order, PaymentResult $payment_result = null ) {
 		return [
 			'order_id'         => $order->get_id(),
 			'status'           => $order->get_status(),
