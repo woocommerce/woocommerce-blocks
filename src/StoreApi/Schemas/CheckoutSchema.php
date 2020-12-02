@@ -145,15 +145,6 @@ class CheckoutSchema extends AbstractSchema {
 					],
 				],
 			],
-			'errors'           => [
-				'description' => __( 'List of checkout errors, for example, invalid coupons or items out of stock.', 'woo-gutenberg-products-block' ),
-				'type'        => 'array',
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
-				'items'       => [
-					'type' => 'object',
-				],
-			],
 		];
 	}
 
@@ -164,7 +155,7 @@ class CheckoutSchema extends AbstractSchema {
 	 * @return array
 	 */
 	public function get_item_response( $item ) {
-		return $this->get_checkout_response( $item->order, $item->payment_result, $item->errors );
+		return $this->get_checkout_response( $item->order, $item->payment_result );
 	}
 
 	/**
@@ -190,7 +181,6 @@ class CheckoutSchema extends AbstractSchema {
 				'payment_details' => $this->prepare_payment_details_for_response( $payment_result->payment_details ),
 				'redirect_url'    => $payment_result->redirect_url,
 			],
-			'errors'           => $errors,
 		];
 	}
 
