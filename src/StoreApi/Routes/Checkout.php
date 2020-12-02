@@ -342,7 +342,6 @@ class Checkout extends AbstractRoute {
 		$cart_controller  = new CartController();
 		$order_controller = new OrderController();
 		$reserve_stock    = \class_exists( '\Automattic\WooCommerce\Checkout\Helpers\ReserveStock' ) ? new \Automattic\WooCommerce\Checkout\Helpers\ReserveStock() : new ReserveStock();
-		$created          = false;
 		$this->order      = $this->get_draft_order_id() ? wc_get_order( $this->get_draft_order_id() ) : null;
 
 		// Validate items etc are allowed in the order before it gets created.
@@ -351,7 +350,6 @@ class Checkout extends AbstractRoute {
 
 		if ( ! $this->is_valid_draft_order( $this->order ) ) {
 			$this->order = $order_controller->create_order_from_cart();
-			$created     = true;
 		} else {
 			$order_controller->update_order_from_cart( $this->order );
 		}
