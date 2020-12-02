@@ -39,10 +39,14 @@ class BlockErrorBoundary extends Component {
 			showErrorMessage,
 			text,
 			errorMessagePrefix,
+			render,
 		} = this.props;
 		const { errorMessage, hasError } = this.state;
 
 		if ( hasError ) {
+			if ( render ) {
+				return render( { errorMessage } );
+			}
 			return (
 				<BlockError
 					errorMessage={ showErrorMessage ? errorMessage : null }
@@ -85,6 +89,10 @@ BlockErrorBoundary.propTypes = {
 	 * Text preceeding the error message.
 	 */
 	errorMessagePrefix: PropTypes.string,
+	/**
+	 * Render function to show a custom error component.
+	 */
+	render: PropTypes.func,
 };
 
 BlockErrorBoundary.defaultProps = {
