@@ -37,7 +37,6 @@ const CheckoutProcessor = () => {
 		onCheckoutBeforeProcessing,
 		dispatchActions,
 		redirectUrl,
-		customerId,
 		isProcessing: checkoutIsProcessing,
 		isBeforeProcessing: checkoutIsBeforeProcessing,
 		isComplete: checkoutIsComplete,
@@ -56,12 +55,7 @@ const CheckoutProcessor = () => {
 		paymentMethods,
 		shouldSavePayment,
 	} = usePaymentMethodDataContext();
-	const {
-		addErrorNotice,
-		addSnackbarNotice,
-		removeNotice,
-		setIsSuppressed,
-	} = useStoreNotices();
+	const { addErrorNotice, removeNotice, setIsSuppressed } = useStoreNotices();
 	const currentBillingData = useRef( billingData );
 	const currentShippingAddress = useRef( shippingAddress );
 	const currentRedirectUrl = useRef( redirectUrl );
@@ -197,6 +191,11 @@ const CheckoutProcessor = () => {
 				// Update nonce.
 				triggerFetch.setNonce( fetchResponse.headers );
 
+				// Update user using headers.
+				dispatchActions.setCustomerId(
+					fetchResponse.headers.get( 'X-WC-Store-API-User' )
+				);
+
 				// Handle response.
 				fetchResponse.json().then( function ( response ) {
 					if ( ! fetchResponse.ok ) {
@@ -228,17 +227,10 @@ const CheckoutProcessor = () => {
 					triggerFetch.setNonce( errorResponse.headers );
 
 					// If new customer ID returned, update the store.
-					if ( response?.data?.user_id ) {
-						const newCustomerId = response?.data?.user_id;
-						dispatchActions.setCustomerId( newCustomerId );
-						if ( ! customerId && newCustomerId !== customerId ) {
-							addSnackbarNotice(
-								__(
-									'Welcome! Your user account has been created.',
-									'woo-gutenberg-products-block'
-								)
-							);
-						}
+					if ( errorResponse.headers?.get( 'X-WC-Store-API-User' ) ) {
+						dispatchActions.setCustomerId(
+							errorResponse.headers.get( 'X-WC-Store-API-User' )
+						);
 					}
 
 					// If updated cart state was returned, update the store.
@@ -251,9 +243,7 @@ const CheckoutProcessor = () => {
 				} );
 			} );
 	}, [
-		customerId,
 		addErrorNotice,
-		addSnackbarNotice,
 		removeNotice,
 		paymentMethodId,
 		activePaymentMethod,
