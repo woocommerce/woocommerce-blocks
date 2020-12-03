@@ -26,11 +26,8 @@ import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import {
 	CHECKOUT_ALLOWS_GUEST,
 	CHECKOUT_ALLOWS_SIGNUP,
-	CURRENT_USER_IS_ADMIN,
 } from '@woocommerce/block-settings';
 import { compareWithWooVersion, getSetting } from '@woocommerce/settings';
-import { PluginArea } from '@wordpress/plugins';
-import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 
 /**
  * Internal dependencies
@@ -51,13 +48,6 @@ const Block = ( props ) => {
 	return (
 		<CheckoutProvider>
 			<Checkout { ...props } />
-			{ /* If the current user is an admin, we let BlockErrorBoundary render
-			the error, or we simply die silently. */ }
-			<BlockErrorBoundary
-				render={ CURRENT_USER_IS_ADMIN ? null : () => null }
-			>
-				<PluginArea />
-			</BlockErrorBoundary>
 		</CheckoutProvider>
 	);
 };
