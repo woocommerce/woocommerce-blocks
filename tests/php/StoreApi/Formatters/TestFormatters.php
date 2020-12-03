@@ -10,6 +10,7 @@ use Automattic\WooCommerce\Blocks\StoreApi\Formatters;
 use Automattic\WooCommerce\Blocks\StoreApi\Formatters\MoneyFormatter;
 use Automattic\WooCommerce\Blocks\StoreApi\Formatters\HtmlFormatter;
 use Automattic\WooCommerce\Blocks\StoreApi\Formatters\DefaultFormatter;
+use Automattic\WooCommerce\Blocks\StoreApi\Formatters\CurrencyFormatter;
 
 /**
  * TestFormatters tests.
@@ -27,6 +28,7 @@ class TestFormatters extends TestCase {
 		$this->mock_formatters = new Formatters();
 		$this->mock_formatters->register( 'money', MoneyFormatter::class );
 		$this->mock_formatters->register( 'html', HtmlFormatter::class );
+		$this->mock_formatters->register( 'currency', CurrencyFormatter::class );
 	}
 
 	/**
@@ -35,6 +37,7 @@ class TestFormatters extends TestCase {
 	public function test_get_formatter() {
 		$this->assertInstanceOf( MoneyFormatter::class, $this->mock_formatters->money );
 		$this->assertInstanceOf( HtmlFormatter::class, $this->mock_formatters->html );
+		$this->assertInstanceOf( CurrencyFormatter::class, $this->mock_formatters->currency );
 	}
 
 	/**

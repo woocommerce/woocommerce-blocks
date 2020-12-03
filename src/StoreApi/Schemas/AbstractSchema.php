@@ -232,45 +232,13 @@ abstract class AbstractSchema {
 	}
 
 	/**
-	 * Prepares a list of store currency data to return in responses.
+	 * Adds currency data to an array of monetary values.
 	 *
-	 * @todo Core could use a more defined currency object format, making use of
-	 * constants for currency format rather than strings, and holding this type
-	 * of information instead of plugins/blocks needed to normalize things
-	 * themselves.
-	 *
-	 * @return array
+	 * @param array $values Monetary amounts.
+	 * @return array Monetary amounts with currency data appended.
 	 */
-	protected function get_store_currency_response() {
-		$position = get_option( 'woocommerce_currency_pos' );
-		$symbol   = html_entity_decode( get_woocommerce_currency_symbol() );
-		$prefix   = '';
-		$suffix   = '';
-
-		switch ( $position ) {
-			case 'left_space':
-				$prefix = $symbol . ' ';
-				break;
-			case 'left':
-				$prefix = $symbol;
-				break;
-			case 'right_space':
-				$suffix = ' ' . $symbol;
-				break;
-			case 'right':
-				$suffix = $symbol;
-				break;
-		}
-
-		return [
-			'currency_code'               => get_woocommerce_currency(),
-			'currency_symbol'             => $symbol,
-			'currency_minor_unit'         => wc_get_price_decimals(),
-			'currency_decimal_separator'  => wc_get_price_decimal_separator(),
-			'currency_thousand_separator' => wc_get_price_thousand_separator(),
-			'currency_prefix'             => $prefix,
-			'currency_suffix'             => $suffix,
-		];
+	protected function prepare_currency_response( $values ) {
+		return $this->extend->formatters->currency->format( $values );
 	}
 
 	/**

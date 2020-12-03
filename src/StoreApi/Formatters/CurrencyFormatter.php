@@ -1,0 +1,52 @@
+<?php
+namespace Automattic\WooCommerce\Blocks\StoreApi\Formatters;
+
+/**
+ * Currency Formatter.
+ *
+ * Formats an array of monetary values by inserting currency data.
+ *
+ * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
+ */
+class CurrencyFormatter extends AbstractFormatter {
+	/**
+	 * Format a given value and return the result.
+	 *
+	 * @param array $value Value to format.
+	 * @return array
+	 */
+	public function format( $value ) {
+		$position = get_option( 'woocommerce_currency_pos' );
+		$symbol   = html_entity_decode( get_woocommerce_currency_symbol() );
+		$prefix   = '';
+		$suffix   = '';
+
+		switch ( $position ) {
+			case 'left_space':
+				$prefix = $symbol . ' ';
+				break;
+			case 'left':
+				$prefix = $symbol;
+				break;
+			case 'right_space':
+				$suffix = ' ' . $symbol;
+				break;
+			case 'right':
+				$suffix = $symbol;
+				break;
+		}
+
+		return array_merge(
+			(array) $value,
+			[
+				'currency_code'               => get_woocommerce_currency(),
+				'currency_symbol'             => $symbol,
+				'currency_minor_unit'         => wc_get_price_decimals(),
+				'currency_decimal_separator'  => wc_get_price_decimal_separator(),
+				'currency_thousand_separator' => wc_get_price_thousand_separator(),
+				'currency_prefix'             => $prefix,
+				'currency_suffix'             => $suffix,
+			]
+		);
+	}
+}

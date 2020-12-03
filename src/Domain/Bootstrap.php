@@ -24,6 +24,7 @@ use Automattic\WooCommerce\Blocks\Domain\Services\Email\CustomerNewAccount;
 use Automattic\WooCommerce\Blocks\StoreApi\Formatters;
 use Automattic\WooCommerce\Blocks\StoreApi\Formatters\MoneyFormatter;
 use Automattic\WooCommerce\Blocks\StoreApi\Formatters\HtmlFormatter;
+use Automattic\WooCommerce\Blocks\StoreApi\Formatters\CurrencyFormatter;
 
 /**
  * Takes care of bootstrapping the plugin.
@@ -202,6 +203,7 @@ class Bootstrap {
 				$formatters = new Formatters();
 				$formatters->register( 'money', MoneyFormatter::class );
 				$formatters->register( 'html', HtmlFormatter::class );
+				$formatters->register( 'currency', CurrencyFormatter::class );
 				return $formatters;
 			}
 		);
