@@ -1,9 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\StoreApi;
 
-use Exception;
-use Schemas\AbstractSchema;
-use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
+use \Exception;
 use Automattic\WooCommerce\Blocks\StoreApi\Formatters\AbstractFormatter;
 use Automattic\WooCommerce\Blocks\StoreApi\Formatters\DefaultFormatter;
 
@@ -23,11 +21,16 @@ class Formatters {
 	/**
 	 * Get a new instance of a formatter class.
 	 *
+	 * @throws Exception An Exception is thrown if a non-existing formatter is used and the user is admin.
+	 *
 	 * @param string $name Name of the formatter.
 	 * @return AbstractFormatter Formatter class instance.
 	 */
 	public function __get( $name ) {
 		if ( ! isset( $this->formatters[ $name ] ) ) {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG && current_user_can( 'manage_woocommerce' ) ) {
+				throw new Exception( $name . ' formatter does not exist' );
+			}
 			return new DefaultFormatter();
 		}
 		return new $this->formatters[ $name ]();
