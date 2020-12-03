@@ -4,6 +4,7 @@ namespace Automattic\WooCommerce\Blocks\Payments\Integrations;
 use Exception;
 use WC_Stripe_Payment_Request;
 use WC_Stripe_Helper;
+use WC_Gateway_Stripe;
 use Automattic\WooCommerce\Blocks\Assets\Api;
 use Automattic\WooCommerce\Blocks\Payments\PaymentContext;
 use Automattic\WooCommerce\Blocks\Payments\PaymentResult;
@@ -94,6 +95,7 @@ final class Stripe extends AbstractPaymentMethodType {
 			'icons'               => $this->get_icons(),
 			'allowSavedCards'     => $this->get_allow_saved_cards(),
 			'allowPaymentRequest' => $this->get_allow_payment_request(),
+			'supports'            => $this->get_supported_features(),
 		];
 	}
 
@@ -109,6 +111,18 @@ final class Stripe extends AbstractPaymentMethodType {
 		// See https://github.com/woocommerce/woocommerce-gateway-stripe/blob/ad19168b63df86176cbe35c3e95203a245687640/includes/class-wc-gateway-stripe.php#L271 and
 		// https://github.com/woocommerce/woocommerce/wiki/Payment-Token-API .
 		return apply_filters( 'wc_stripe_display_save_payment_method_checkbox', filter_var( $saved_cards, FILTER_VALIDATE_BOOLEAN ) );
+	}
+
+	/**
+	 * Returns a list of features supported by Stripe.
+	 *
+	 * @return Array Array of supported features as strings.
+	 */
+	private function get_supported_features() {
+		$gateway = new WC_Gateway_Stripe();
+		// We may need to support filtering via `woocommerce_payment_gateway_supports`,
+		// e.g. loop over each pass through `WC_Payment_Gateway::supports( .. )`.
+		return $gateway->supports;
 	}
 
 	/**
