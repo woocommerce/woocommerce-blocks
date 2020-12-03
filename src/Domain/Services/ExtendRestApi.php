@@ -4,6 +4,7 @@ namespace Automattic\WooCommerce\Blocks\Domain\Services;
 use Automattic\WooCommerce\Blocks\Domain\Package;
 use Automattic\WooCommerce\Blocks\StoreApi\Schemas\CartItemSchema;
 use Automattic\WooCommerce\Blocks\StoreApi\Schemas\CartSchema;
+use Automattic\WooCommerce\Blocks\StoreApi\Formatters;
 use Throwable;
 use Exception;
 
@@ -19,12 +20,33 @@ class ExtendRestApi {
 	private $package;
 
 	/**
+	 * Holds the formatters class instance.
+	 *
+	 * @var Formatters
+	 */
+	private $formatters;
+
+	/**
 	 * Constructor
 	 *
-	 * @param Package $package An instance of the package class.
+	 * @param Package    $package An instance of the package class.
+	 * @param Formatters $formatters An instance of the formatters class.
 	 */
-	public function __construct( Package $package ) {
-		$this->package = $package;
+	public function __construct( Package $package, Formatters $formatters ) {
+		$this->package    = $package;
+		$this->formatters = $formatters;
+	}
+
+	/**
+	 * Magic getter for protected properties.
+	 *
+	 * @param string $name Property name.
+	 */
+	public function __get( $name ) {
+		if ( in_array( $name, [ 'formatters' ], true ) ) {
+			return $this->$name;
+		}
+		return null;
 	}
 
 	/**
