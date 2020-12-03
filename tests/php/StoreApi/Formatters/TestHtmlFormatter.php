@@ -28,6 +28,6 @@ class TestHtmlFormatter extends TestCase {
 	 * Test formatting.
 	 */
 	public function test_format() {
-		$this->assertEquals( "&quot;Quotes&quot;", $this->mock_formatter->format( '"Quotes"' ) );
+		$this->assertEquals( "&#8220;Quotes&#8221;", $this->mock_formatter->format( '"Quotes"' ) );
 	}
 }
