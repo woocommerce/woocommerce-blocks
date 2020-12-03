@@ -93,13 +93,13 @@ const getCustomerPaymentMethods = ( availablePaymentMethods = [] ) => {
 	}
 	const enabledCustomerPaymentMethods = {};
 	paymentMethodKeys.forEach( ( type ) => {
-		const methods = customerPaymentMethods[
-			type
-		].filter( ( paymentMethod ) => {
-			return Object.keys( availablePaymentMethods ).includes(
-				paymentMethod.method.gateway
-			);
-		} );
+		const methods = customerPaymentMethods[ type ].filter(
+			( paymentMethod ) => {
+				return Object.keys( availablePaymentMethods ).includes(
+					paymentMethod.method.gateway
+				);
+			}
+		);
 		if ( methods.length ) {
 			enabledCustomerPaymentMethods[ type ] = methods;
 		}
