@@ -36,7 +36,6 @@ class TestMoneyFormatter extends TestCase {
 	 * Test formatting with custom DP.
 	 */
 	public function test_format_dp() {
-		$this->mock_formatter->set_option( 'decimals', 4 );
 		$this->assertEquals( "100000", $this->mock_formatter->format( 10, [ 'decimals' => 4 ] ) );
 		$this->assertEquals( "100000", $this->mock_formatter->format( "10", [ 'decimals' => 4 ] ) );
 	}
