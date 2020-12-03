@@ -14,7 +14,9 @@ use Automattic\WooCommerce\Blocks\Tests\Helpers\ValidateSchema;
 use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
 use Automattic\WooCommerce\Blocks\Domain\Package;
 use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
-
+use Automattic\WooCommerce\Blocks\StoreApi\Formatters;
+use Automattic\WooCommerce\Blocks\StoreApi\Formatters\MoneyFormatter;
+use Automattic\WooCommerce\Blocks\StoreApi\Formatters\HtmlFormatter;
 
 /**
  * Cart Controller Tests.
@@ -35,7 +37,10 @@ class Cart extends TestCase {
 
 		$this->products = [];
 
-		$this->mock_extend = new ExtendRestApi( new Package( '', '', new FeatureGating( 2 ) ) );
+		$this->mock_formatters = new Formatters();
+		$this->mock_formatters->register( 'money', MoneyFormatter::class );
+		$this->mock_formatters->register( 'html', HtmlFormatter::class );
+		$this->mock_extend = new ExtendRestApi( new Package( '', '', new FeatureGating( 2 ) ), $this->mock_formatters );
 
 		// Create some test products.
 		$this->products[0] = ProductHelper::create_simple_product( false );
