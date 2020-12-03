@@ -283,13 +283,10 @@ abstract class AbstractSchema {
 	 * @return string      The new amount.
 	 */
 	protected function prepare_money_response( $amount, $decimals = 2, $rounding_mode = PHP_ROUND_HALF_UP ) {
-		return (string) intval(
-			round(
-				( (float) wc_format_decimal( $amount ) ) * ( 10 ** $decimals ),
-				0,
-				absint( $rounding_mode )
-			)
-		);
+		$formatter = $this->extend->formatters->money;
+		$formatter->set_option( 'decimals', $decimals );
+		$formatter->set_option( 'rounding_mode', $rounding_mode );
+		return $formatter->format( $amount );
 	}
 
 	/**
@@ -302,9 +299,6 @@ abstract class AbstractSchema {
 	 * @return string|array Formatted data.
 	 */
 	protected function prepare_html_response( $response ) {
-		if ( is_array( $response ) ) {
-			return array_map( [ $this, 'prepare_html_response' ], $response );
-		}
-		return is_scalar( $response ) ? wp_kses_post( trim( convert_chars( wptexturize( $response ) ) ) ) : $response;
+		return $this->extend->formatters->html->format( $response );
 	}
 }
