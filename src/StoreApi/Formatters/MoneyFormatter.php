@@ -31,7 +31,7 @@ class MoneyFormatter extends AbstractFormatter {
 	 * @return int
 	 */
 	private function get_decimals() {
-		return absint( $this->get_option( 'decimals', 2 ) );
+		return absint( $this->get_option( 'decimals', wc_get_price_decimals() ) );
 	}
 
 	/**
