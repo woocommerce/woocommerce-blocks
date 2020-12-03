@@ -2,7 +2,7 @@
 namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;
 
 use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
-
+use Automattic\WooCommerce\Checkout\Helpers\ReserveStock;
 
 /**
  * CartItemSchema class.
@@ -260,6 +260,12 @@ class CartItemSchema extends ProductSchema {
 					]
 				),
 			],
+			'catalog_visibility'   => [
+				'description' => __( 'Whether the product is visible in the catalog', 'woo-gutenberg-products-block' ),
+				'type'        => 'string',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+			],
 			self::EXTENDING_KEY    => $this->get_extended_schema( self::IDENTIFIER ),
 		];
 	}
@@ -299,6 +305,7 @@ class CartItemSchema extends ProductSchema {
 					'line_total_tax'    => $this->prepare_money_response( $cart_item['line_tax'], wc_get_price_decimals() ),
 				]
 			),
+			'catalog_visibility'   => $product->get_catalog_visibility(),
 			self::EXTENDING_KEY    => $this->get_extended_data( self::IDENTIFIER, $cart_item ),
 		];
 	}
@@ -339,15 +346,10 @@ class CartItemSchema extends ProductSchema {
 			return null;
 		}
 
-		$draft_order = wc()->session->get( 'store_api_draft_order', 0 );
-
-		if ( \class_exists( '\Automattic\WooCommerce\Checkout\Helpers\ReserveStock' ) ) {
-			$reserve_stock = new \Automattic\WooCommerce\Checkout\Helpers\ReserveStock();
-		} else {
-			$reserve_stock = new \Automattic\WooCommerce\Blocks\StoreApi\Utilities\ReserveStock();
-		}
-
+		$draft_order    = wc()->session->get( 'store_api_draft_order', 0 );
+		$reserve_stock  = new ReserveStock();
 		$reserved_stock = $reserve_stock->get_reserved_stock( $product, $draft_order );
+
 		return $product->get_stock_quantity() - $reserved_stock;
 	}
 
