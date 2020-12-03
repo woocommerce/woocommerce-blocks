@@ -86,10 +86,6 @@ class Api {
 		if ( ! $this->asset_registry->exists( 'paymentGatewaySortOrder' ) ) {
 			$payment_gateways = WC()->payment_gateways->payment_gateways();
 			$enabled_gateways = array_filter( $payment_gateways, array( $this, 'is_payment_gateway_enabled' ) );
-			$enabled_gateways = array_filter(
-				(array) apply_filters( 'woocommerce_available_payment_gateways', $enabled_gateways ),
-				array( $this, 'filter_valid_gateway_class' )
-			);
 			$this->asset_registry->add( 'paymentGatewaySortOrder', array_keys( $enabled_gateways ) );
 		}
 
@@ -100,16 +96,6 @@ class Api {
 				$this->asset_registry->add( $asset_data_key, $asset_data_value );
 			}
 		}
-	}
-
-	/**
-	 * Callback used to filter out invalid results of woocommerce_available_payment_gateways.
-	 *
-	 * @param object $gateway Potential payment gateway object.
-	 * @return bool True if the arg is a valid payment gateway.
-	 */
-	private function filter_valid_gateway_class( $gateway ) {
-		return $gateway && $gateway instanceof \WC_Payment_Gateway;
 	}
 
 	/**
