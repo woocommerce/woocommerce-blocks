@@ -8,14 +8,15 @@ namespace Automattic\WooCommerce\Blocks\StoreApi\Formatters;
  *
  * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
-class CurrencyFormatter extends AbstractFormatter {
+class CurrencyFormatter implements FormatterInterface {
 	/**
 	 * Format a given value and return the result.
 	 *
 	 * @param array $value Value to format.
+	 * @param array $options Options that influence the formatting.
 	 * @return array
 	 */
-	public function format( $value ) {
+	public function format( $value, array $options = [] ) {
 		$position = get_option( 'woocommerce_currency_pos' );
 		$symbol   = html_entity_decode( get_woocommerce_currency_symbol() );
 		$prefix   = '';

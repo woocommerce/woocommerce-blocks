@@ -8,38 +8,29 @@ namespace Automattic\WooCommerce\Blocks\StoreApi\Formatters;
  *
  * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
-class MoneyFormatter extends AbstractFormatter {
+class MoneyFormatter implements FormatterInterface {
 	/**
 	 * Format a given value and return the result.
 	 *
 	 * @param mixed $value Value to format.
+	 * @param array $options Options that influence the formatting.
 	 * @return mixed
 	 */
-	public function format( $value ) {
+	public function format( $value, array $options = [] ) {
+		$options = wp_parse_args(
+			$options,
+			[
+				'decimals'      => wc_get_price_decimals(),
+				'rounding_mode' => PHP_ROUND_HALF_UP,
+			]
+		);
+
 		return (string) intval(
 			round(
-				( (float) wc_format_decimal( $value ) ) * ( 10 ** $this->get_decimals() ),
+				( (float) wc_format_decimal( $value ) ) * ( 10 ** absint( $options['decimals'] ) ),
 				0,
-				$this->get_rounding_mode()
+				absint( $options['rounding_mode'] )
 			)
 		);
-	}
-
-	/**
-	 * Gets the number of decimals precision to format monetary values with.
-	 *
-	 * @return int
-	 */
-	private function get_decimals() {
-		return absint( $this->get_option( 'decimals', wc_get_price_decimals() ) );
-	}
-
-	/**
-	 * Gets the rounding mode for rounding monetary values.
-	 *
-	 * @return int
-	 */
-	private function get_rounding_mode() {
-		return absint( $this->get_option( 'rounding_mode', PHP_ROUND_HALF_UP ) );
 	}
 }

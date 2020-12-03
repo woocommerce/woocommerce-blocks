@@ -238,7 +238,7 @@ abstract class AbstractSchema {
 	 * @return array Monetary amounts with currency data appended.
 	 */
 	protected function prepare_currency_response( $values ) {
-		return $this->extend->formatters->currency->format( $values );
+		return $this->extend->get_formatter( 'currency' )->format( $values );
 	}
 
 	/**
@@ -251,22 +251,22 @@ abstract class AbstractSchema {
 	 * @return string      The new amount.
 	 */
 	protected function prepare_money_response( $amount, $decimals = 2, $rounding_mode = PHP_ROUND_HALF_UP ) {
-		$formatter = $this->extend->formatters->money;
-		$formatter->set_option( 'decimals', $decimals );
-		$formatter->set_option( 'rounding_mode', $rounding_mode );
-		return $formatter->format( $amount );
+		return $this->extend->get_formatter( 'money' )->format(
+			$amount,
+			[
+				'decimals'      => $decimals,
+				'rounding_mode' => $rounding_mode,
+			]
+		);
 	}
 
 	/**
 	 * Prepares HTML based content, such as post titles and content, for the API response.
 	 *
-	 * The wptexturize, convert_chars, and trim functions are also used in the `the_title` filter.
-	 * The function wp_kses_post removes disallowed HTML tags.
-	 *
 	 * @param string|array $response Data to format.
 	 * @return string|array Formatted data.
 	 */
 	protected function prepare_html_response( $response ) {
-		return $this->extend->formatters->html->format( $response );
+		return $this->extend->get_formatter( 'html' )->format( $response );
 	}
 }

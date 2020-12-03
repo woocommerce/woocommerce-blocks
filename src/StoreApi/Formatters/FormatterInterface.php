@@ -11,24 +11,8 @@ interface FormatterInterface {
 	 * Format a given value and return the result.
 	 *
 	 * @param mixed $value Value to format.
+	 * @param array $options Options that influence the formatting.
 	 * @return mixed
 	 */
-	public function format( $value );
-
-	/**
-	 * Gets a formatter option.
-	 *
-	 * @param string $name Option name.
-	 * @param string $default Default returned if the option is not set.
-	 * @return string
-	 */
-	public function get_option( $name, $default = '' );
-
-	/**
-	 * Sets a formatter option.
-	 *
-	 * @param string $name Option name.
-	 * @param string $value Option value.
-	 */
-	public function set_option( $name, $value );
+	public function format( $value, array $options = [] );
 }

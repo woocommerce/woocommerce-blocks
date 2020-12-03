@@ -46,15 +46,4 @@ class TestFormatters extends TestCase {
 	public function test_get_default_formatter() {
 		$this->assertInstanceOf( DefaultFormatter::class, $this->mock_formatters->wrong );
 	}
-
-	/**
-	 * Test setting options.
-	 */
-	public function test_options() {
-		$formatter = $this->mock_formatters->money;
-		$formatter->set_option( 'option_name', 'option_value' );
-
-		$this->assertEquals( 'option_value', $formatter->get_option( 'option_name' ) );
-		$this->assertEquals( 'default_value', $formatter->get_option( 'non_existing_option', 'default_value' ) );
-	}
 }

@@ -38,15 +38,13 @@ class ExtendRestApi {
 	}
 
 	/**
-	 * Magic getter for protected properties.
+	 * Returns a formatter instance.
 	 *
-	 * @param string $name Property name.
+	 * @param string $name Formatter name.
+	 * @return FormatterInterface
 	 */
-	public function __get( $name ) {
-		if ( in_array( $name, [ 'formatters' ], true ) ) {
-			return $this->$name;
-		}
-		return null;
+	public function get_formatter( $name ) {
+		return $this->formatters->$name;
 	}
 
 	/**
