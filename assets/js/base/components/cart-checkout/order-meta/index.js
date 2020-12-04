@@ -6,37 +6,33 @@ import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundar
 import classnames from 'classnames';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
 
-const { Fill, Slot } = createSlotFill( '__experimentalOrderMeta' );
+const slotName = '__experimentalOrderMeta';
+const { Fill, Slot: OrderMetaSlot } = createSlotFill( slotName );
 
 function ExperimentalOrderMeta( { children } ) {
-	return <Fill>{ children }</Fill>;
+	return (
+		<Fill>
+			<BlockErrorBoundary
+				renderError={ CURRENT_USER_IS_ADMIN ? null : () => null }
+			>
+				{ children }
+			</BlockErrorBoundary>
+		</Fill>
+	);
 }
 
-function OrderMetaSlot( { className } ) {
+function Slot( { className } ) {
 	return (
-		<Slot
+		<OrderMetaSlot
 			bubblesVirtually
 			className={ classnames(
 				className,
 				'wc-block-components-order-meta'
 			) }
-		>
-			{ ( fills ) => {
-				fills.map( ( fill, i ) => (
-					<BlockErrorBoundary
-						renderError={
-							CURRENT_USER_IS_ADMIN ? null : () => null
-						}
-						key={ i }
-					>
-						{ fill }
-					</BlockErrorBoundary>
-				) );
-			} }
-		</Slot>
+		/>
 	);
 }
 
-ExperimentalOrderMeta.Slot = OrderMetaSlot;
+ExperimentalOrderMeta.Slot = Slot;
 
 export default ExperimentalOrderMeta;
