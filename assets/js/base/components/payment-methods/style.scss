@@ -222,12 +222,21 @@
 		border-width: 1px;
 		border-style: solid;
 		border-color: $gray-200;
-		padding: 8px 16px 16px 16px;
+		padding: 12px 16px 16px 16px;
+	}
+
+	.wc-block-components-checkout-payment-methods__single-option-content {
+		padding: 8px 16px 16px 0;
 	}
 
 	.wc-block-components-checkout-step__description-payments-aligned {
 		padding-top: 14px;
 		height: 28px;
+	}
+
+	.wc-block-components-checkout-payment-methods__single-option-content-label {
+		padding-bottom: 12px;
+		font-weight: bold;
 	}
 }
 

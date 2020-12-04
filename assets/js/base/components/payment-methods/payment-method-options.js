@@ -88,9 +88,15 @@ const PaymentMethodOptions = () => {
 			/>
 		);
 	} else if ( options.length === 1 ) {
+		const option = options[ 0 ];
 		paymentMethodsSelectorUI = (
 			<div className="wc-block-components-checkout-payment-methods__single-option">
-				{ options[ 0 ].content }
+				<div className="wc-block-components-checkout-payment-methods__single-option-content-label">
+					{ option.label }
+				</div>
+				<div className="wc-block-components-checkout-payment-methods__single-option-content">
+					{ option.content }
+				</div>
 			</div>
 		);
 	} else {
