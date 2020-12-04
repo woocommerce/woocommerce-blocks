@@ -17,7 +17,6 @@ import {
 import {
 	COUPONS_ENABLED,
 	DISPLAY_CART_PRICES_INCLUDING_TAX,
-	CURRENT_USER_IS_ADMIN,
 } from '@woocommerce/block-settings';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import { CartExpressPayment } from '@woocommerce/base-components/payment-methods';
@@ -36,9 +35,7 @@ import Title from '@woocommerce/base-components/title';
 import { getSetting } from '@woocommerce/settings';
 import { useEffect } from '@wordpress/element';
 import { decodeEntities } from '@wordpress/html-entities';
-import { PluginArea } from '@wordpress/plugins';
 import { CartProvider } from '@woocommerce/base-context';
-import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 
 /**
  * Internal dependencies
@@ -53,13 +50,6 @@ const Block = ( props ) => {
 	return (
 		<CartProvider>
 			<Cart { ...props } />
-			{ /* If the current user is an admin, we let BlockErrorBoundary render
-			the error, or we simply die silently. */ }
-			<BlockErrorBoundary
-				render={ CURRENT_USER_IS_ADMIN ? null : () => null }
-			>
-				<PluginArea />
-			</BlockErrorBoundary>
 		</CartProvider>
 	);
 };
