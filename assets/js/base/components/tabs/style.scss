@@ -58,17 +58,3 @@
 		text-transform: none;
 	}
 }
-
-// This --single modifier is a special case for when there is a
-// single payment method tab. (I'm assuming Tabs component is not
-// used elsewhere - @haszari.)
-.wc-block-components-tabs--single {
-	.wc-block-components-tabs__list {
-		> .wc-block-components-tabs__item.is-active {
-			text-align: left;
-			box-shadow: none;
-			padding-left: 0;
-			padding-bottom: 0;
-		}
-	}
-}
