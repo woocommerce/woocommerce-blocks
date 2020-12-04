@@ -24,7 +24,9 @@ function OrderMetaSlot( { className } ) {
 			{ ( fills ) => {
 				fills.map( ( fill, i ) => (
 					<BlockErrorBoundary
-						render={ CURRENT_USER_IS_ADMIN ? null : () => null }
+						renderError={
+							CURRENT_USER_IS_ADMIN ? null : () => null
+						}
 						key={ i }
 					>
 						{ fill }
