@@ -105,6 +105,7 @@ const entries = {
 		wcBlocksMiddleware: './assets/js/middleware/index.js',
 		wcSharedContext: './assets/js/shared/context/index.js',
 		wcSharedHocs: './assets/js/shared/hocs/index.js',
+		wcCheckoutPackages: './assets/js/checkout/index.js',
 	},
 	main: {
 		// Shared blocks code

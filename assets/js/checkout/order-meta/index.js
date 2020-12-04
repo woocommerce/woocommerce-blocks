@@ -9,7 +9,13 @@ import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
 const { Fill, Slot } = createSlotFill( '__experimentalOrderMeta' );
 
 function ExperimentalOrderMeta( { children } ) {
-	return <Fill>{ children }</Fill>;
+	return (
+		<BlockErrorBoundary
+			renderError={ CURRENT_USER_IS_ADMIN ? null : () => null }
+		>
+			<Fill>{ children }</Fill>
+		</BlockErrorBoundary>
+	);
 }
 
 function OrderMetaSlot( { className } ) {
@@ -20,20 +26,7 @@ function OrderMetaSlot( { className } ) {
 				className,
 				'wc-block-components-order-meta'
 			) }
-		>
-			{ ( fills ) => {
-				fills.map( ( fill, i ) => (
-					<BlockErrorBoundary
-						renderError={
-							CURRENT_USER_IS_ADMIN ? null : () => null
-						}
-						key={ i }
-					>
-						{ fill }
-					</BlockErrorBoundary>
-				) );
-			} }
-		</Slot>
+		/>
 	);
 }
 
