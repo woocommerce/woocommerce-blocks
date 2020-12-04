@@ -21,7 +21,10 @@ export default class PaymentMethodConfig {
 		this.canMakePayment = config.canMakePayment;
 		this.paymentMethodId = config.paymentMethodId || this.name;
 		this.supports = {
+			// Supply a default for `savePaymentInfo`.
 			savePaymentInfo: config?.supports?.savePaymentInfo || false,
+			// Pass through any `supports` feature string (open-ended API).
+			...config?.supports,
 		};
 	}
 

@@ -52,7 +52,7 @@ const usePaymentMethodRegistration = (
 	const { selectedRates, shippingAddress } = useShippingDataContext();
 	const selectedShippingMethods = useShallowEqual( selectedRates );
 	const paymentMethodsOrder = useShallowEqual( paymentMethodsSortOrder );
-	const { cartTotals, cartNeedsShipping } = useStoreCart();
+	const { cartItems, cartTotals, cartNeedsShipping } = useStoreCart();
 	const canPayArgument = useRef( {
 		cartTotals,
 		cartNeedsShipping,
@@ -85,6 +85,10 @@ const usePaymentMethodRegistration = (
 			};
 		};
 
+		const subscriptionCartItems = cartItems.filter(
+			( cartItem ) => cartItem?.extensions?.subscriptions?.billing_period
+		);
+
 		for ( let i = 0; i < paymentMethodsOrder.length; i++ ) {
 			const paymentMethodName = paymentMethodsOrder[ i ];
 			const paymentMethod = registeredPaymentMethods[ paymentMethodName ];
@@ -97,12 +101,22 @@ const usePaymentMethodRegistration = (
 				const canPay = await Promise.resolve(
 					paymentMethod.canMakePayment( canPayArgument.current )
 				);
-				if ( canPay ) {
-					if ( canPay.error ) {
-						throw new Error( canPay.error.message );
-					}
-					addAvailablePaymentMethod( paymentMethod );
+				if ( ! canPay ) {
+					continue;
 				}
+
+				if ( canPay.error ) {
+					throw new Error( canPay.error.message );
+				}
+
+				if (
+					subscriptionCartItems.length > 0 &&
+					! paymentMethod?.supports?.subscriptions
+				) {
+					continue;
+				}
+
+				addAvailablePaymentMethod( paymentMethod );
 			} catch ( e ) {
 				if ( CURRENT_USER_IS_ADMIN || isEditor ) {
 					const errorText = sprintf(
@@ -135,6 +149,7 @@ const usePaymentMethodRegistration = (
 		noticeContext,
 		paymentMethodsOrder,
 		registeredPaymentMethods,
+		cartItems,
 	] );
 
 	// Determine which payment methods are available initially and whenever
