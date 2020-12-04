@@ -77,19 +77,24 @@ const PaymentMethodOptions = () => {
 
 	const customerHasSavedCards =
 		Object.keys( customerPaymentMethods ).length > 0;
-	const paymentMethodsSelectorUI =
-		options.length > 2 || customerHasSavedCards ? (
-			// Show radiobutton style UI if store has more than 2 payment methods.
-			// If there are saved payment options, always show radiobutton style UI.
+	let paymentMethodsSelectorUI = null;
+	if ( options.length > 2 || customerHasSavedCards ) {
+		paymentMethodsSelectorUI = (
 			<RadioControlAccordion
 				id={ 'wc-payment-method-options' }
 				selected={ activeSavedToken ? null : activePaymentMethod }
 				onChange={ updateToken }
 				options={ options }
 			/>
-		) : (
-			// Show tab style UI if store has two payment methods (and no user saved cards).
-			// Todo - show no selector UI if single payment method available.
+		);
+	} else if ( options.length === 1 ) {
+		paymentMethodsSelectorUI = (
+			<div className="wc-block-components-checkout-payment-methods__single-option">
+				{ options[ 0 ].content }
+			</div>
+		);
+	} else {
+		paymentMethodsSelectorUI = (
 			<Tabs
 				className="wc-block-components-checkout-payment-methods"
 				onSelect={ ( tabName ) => {
@@ -135,6 +140,7 @@ const PaymentMethodOptions = () => {
 				id="wc-block-payment-methods"
 			/>
 		);
+	}
 
 	return expressPaymentMethodActive ? null : paymentMethodsSelectorUI;
 };
