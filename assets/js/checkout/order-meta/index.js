@@ -2,9 +2,13 @@
  * External dependencies
  */
 import { createSlotFill } from 'wordpress-components';
-import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import classnames from 'classnames';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
+
+/**
+ * Internal dependencies
+ */
+import BlockErrorBoundary from '../error-boundary';
 
 const slotName = '__experimentalOrderMeta';
 const { Fill, Slot: OrderMetaSlot } = createSlotFill( slotName );

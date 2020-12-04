@@ -4,7 +4,7 @@
 import { PluginArea } from '@wordpress/plugins';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
-import { SlotFillProvider } from 'wordpress-components';
+import { SlotFillProvider } from '@woocommerce/checkout';
 
 /**
  * Internal dependencies
