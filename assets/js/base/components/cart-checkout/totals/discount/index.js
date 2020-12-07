@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import TotalsItem from '../totals-item';
+import TotalsItem from '../item';
 import './style.scss';
 
 const TotalsDiscount = ( {

@@ -14,7 +14,7 @@ import { useStoreCart } from '@woocommerce/base-hooks';
 /**
  * Internal dependencies
  */
-import TotalsItem from '../totals-item';
+import TotalsItem from '../item';
 import ShippingRateSelector from './shipping-rate-selector';
 import hasShippingRate from './has-shipping-rate';
 import './style.scss';
