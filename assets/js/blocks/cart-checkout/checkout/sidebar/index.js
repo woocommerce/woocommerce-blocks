@@ -9,7 +9,7 @@ import {
 	TotalsDiscount,
 	TotalsFooterItem,
 	TotalsShipping,
-	TotalsTaxesItem,
+	TotalsTaxes,
 } from '@woocommerce/base-components/cart-checkout';
 import { useShippingDataContext } from '@woocommerce/base-context';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
@@ -55,7 +55,7 @@ const CheckoutSidebar = ( {
 				/>
 			) }
 			{ ! DISPLAY_CART_PRICES_INCLUDING_TAX && (
-				<TotalsTaxesItem
+				<TotalsTaxes
 					currency={ totalsCurrency }
 					values={ cartTotals }
 				/>

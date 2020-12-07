@@ -11,7 +11,7 @@ import {
 	TotalsDiscount,
 	TotalsFooterItem,
 	TotalsShipping,
-	TotalsTaxesItem,
+	TotalsTaxes,
 } from '@woocommerce/base-components/cart-checkout';
 import {
 	COUPONS_ENABLED,
@@ -130,7 +130,7 @@ const Cart = ( { attributes } ) => {
 					/>
 				) }
 				{ ! DISPLAY_CART_PRICES_INCLUDING_TAX && (
-					<TotalsTaxesItem
+					<TotalsTaxes
 						currency={ totalsCurrency }
 						values={ cartTotals }
 					/>

@@ -5,4 +5,4 @@ export { default as TotalsFees } from './fees';
 export { default as TotalsFooterItem } from './footer-item';
 export { default as TotalsItem } from './item';
 export { default as TotalsShipping } from './shipping';
-export { default as TotalsTaxesItem } from './totals-taxes-item';
+export { default as TotalsTaxes } from './taxes';
