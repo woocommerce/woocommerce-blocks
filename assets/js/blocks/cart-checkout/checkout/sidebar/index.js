@@ -8,7 +8,7 @@ import {
 	TotalsCoupon,
 	TotalsDiscount,
 	TotalsFooterItem,
-	TotalsShippingItem,
+	TotalsShipping,
 	TotalsTaxesItem,
 } from '@woocommerce/base-components/cart-checkout';
 import { useShippingDataContext } from '@woocommerce/base-context';
@@ -47,7 +47,7 @@ const CheckoutSidebar = ( {
 				values={ cartTotals }
 			/>
 			{ needsShipping && (
-				<TotalsShippingItem
+				<TotalsShipping
 					showCalculator={ false }
 					showRateSelector={ false }
 					values={ cartTotals }

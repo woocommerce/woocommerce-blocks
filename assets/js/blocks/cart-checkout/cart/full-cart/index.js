@@ -10,7 +10,7 @@ import {
 	TotalsCoupon,
 	TotalsDiscount,
 	TotalsFooterItem,
-	TotalsShippingItem,
+	TotalsShipping,
 	TotalsTaxesItem,
 } from '@woocommerce/base-components/cart-checkout';
 import {
@@ -122,7 +122,7 @@ const Cart = ( { attributes } ) => {
 					values={ cartTotals }
 				/>
 				{ cartNeedsShipping && (
-					<TotalsShippingItem
+					<TotalsShipping
 						showCalculator={ isShippingCalculatorEnabled }
 						showRateSelector={ true }
 						values={ cartTotals }
