@@ -4,7 +4,7 @@
 import {
 	OrderSummary,
 	Subtotal,
-	TotalsFeesItem,
+	TotalsFees,
 	TotalsCoupon,
 	TotalsDiscount,
 	TotalsFooterItem,
@@ -38,7 +38,7 @@ const CheckoutSidebar = ( {
 		<>
 			<OrderSummary cartItems={ cartItems } />
 			<Subtotal currency={ totalsCurrency } values={ cartTotals } />
-			<TotalsFeesItem currency={ totalsCurrency } values={ cartTotals } />
+			<TotalsFees currency={ totalsCurrency } values={ cartTotals } />
 			<TotalsDiscount
 				cartCoupons={ cartCoupons }
 				currency={ totalsCurrency }
