@@ -5,7 +5,7 @@
 import PropTypes from 'prop-types';
 import { __ } from '@wordpress/i18n';
 import {
-	SubtotalsItem,
+	Subtotal,
 	TotalsFeesItem,
 	TotalsCoupon,
 	TotalsDiscountItem,
@@ -112,10 +112,7 @@ const Cart = ( { attributes } ) => {
 				<Title headingLevel="2" className="wc-block-cart__totals-title">
 					{ __( 'Cart totals', 'woo-gutenberg-products-block' ) }
 				</Title>
-				<SubtotalsItem
-					currency={ totalsCurrency }
-					values={ cartTotals }
-				/>
+				<Subtotal currency={ totalsCurrency } values={ cartTotals } />
 				<TotalsFeesItem
 					currency={ totalsCurrency }
 					values={ cartTotals }

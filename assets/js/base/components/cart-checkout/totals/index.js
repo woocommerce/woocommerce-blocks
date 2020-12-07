@@ -1,4 +1,4 @@
-export { default as SubtotalsItem } from './subtotals-item';
+export { default as Subtotal } from './subtotal';
 export { default as TotalsCoupon } from './coupon';
 export { default as TotalsDiscountItem } from './totals-discount-item';
 export { default as TotalsFeesItem } from './totals-fees-item';
