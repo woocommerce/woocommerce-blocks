@@ -1,6 +1,6 @@
 export { default as Subtotal } from './subtotal';
 export { default as TotalsCoupon } from './coupon';
-export { default as TotalsDiscountItem } from './totals-discount-item';
+export { default as TotalsDiscount } from './discount';
 export { default as TotalsFeesItem } from './totals-fees-item';
 export { default as TotalsFooterItem } from './totals-footer-item';
 export { default as TotalsItem } from './totals-item';

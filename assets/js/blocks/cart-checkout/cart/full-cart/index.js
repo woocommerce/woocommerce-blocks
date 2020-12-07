@@ -8,7 +8,7 @@ import {
 	Subtotal,
 	TotalsFeesItem,
 	TotalsCoupon,
-	TotalsDiscountItem,
+	TotalsDiscount,
 	TotalsFooterItem,
 	TotalsShippingItem,
 	TotalsTaxesItem,
@@ -117,7 +117,7 @@ const Cart = ( { attributes } ) => {
 					currency={ totalsCurrency }
 					values={ cartTotals }
 				/>
-				<TotalsDiscountItem
+				<TotalsDiscount
 					cartCoupons={ appliedCoupons }
 					currency={ totalsCurrency }
 					isRemovingCoupon={ isRemovingCoupon }
