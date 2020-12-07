@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
 import {
 	SubtotalsItem,
 	TotalsFeesItem,
-	TotalsCouponCodeInput,
+	TotalsCoupon,
 	TotalsDiscountItem,
 	TotalsFooterItem,
 	TotalsShippingItem,
@@ -142,7 +142,7 @@ const Cart = ( { attributes } ) => {
 					/>
 				) }
 				{ COUPONS_ENABLED && (
-					<TotalsCouponCodeInput
+					<TotalsCoupon
 						onSubmit={ applyCoupon }
 						isLoading={ isApplyingCoupon }
 					/>

@@ -5,7 +5,7 @@ import {
 	OrderSummary,
 	SubtotalsItem,
 	TotalsFeesItem,
-	TotalsCouponCodeInput,
+	TotalsCoupon,
 	TotalsDiscountItem,
 	TotalsFooterItem,
 	TotalsShippingItem,
@@ -61,7 +61,7 @@ const CheckoutSidebar = ( {
 				/>
 			) }
 			{ COUPONS_ENABLED && (
-				<TotalsCouponCodeInput
+				<TotalsCoupon
 					onSubmit={ applyCoupon }
 					initialOpen={ false }
 					isLoading={ isApplyingCoupon }

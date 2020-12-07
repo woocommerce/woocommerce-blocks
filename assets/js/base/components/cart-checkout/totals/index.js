@@ -1,5 +1,5 @@
 export { default as SubtotalsItem } from './subtotals-item';
-export { default as TotalsCouponCodeInput } from './totals-coupon-code-input';
+export { default as TotalsCoupon } from './coupon';
 export { default as TotalsDiscountItem } from './totals-discount-item';
 export { default as TotalsFeesItem } from './totals-fees-item';
 export { default as TotalsFooterItem } from './totals-footer-item';
