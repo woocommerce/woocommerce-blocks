@@ -93,13 +93,6 @@ jobs:
               - npm run test
           env:
               - WOOCOMMERCE_BLOCKS_PHASE=3
-        - name: E2E Tests (WP 5.3)
-          script:
-              - npm run test:e2e
-          env:
-              - WP_VERSION=5.3-branch
-              - E2E_TESTS=1
-              - WOOCOMMERCE_BLOCKS_PHASE=3
         - name: E2E Tests (WP 5.4)
           script:
               - npm run test:e2e
