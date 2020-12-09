@@ -2,12 +2,12 @@
  * External dependencies
  */
 import { number, select } from '@storybook/addon-knobs';
+import { currencyKnob } from '@woocommerce/knobs';
 
 /**
  * Internal dependencies
  */
 import ProductPrice from '../';
-import currencyKnob from '../../../../../../storybook/currency-knob.js';
 
 export default {
 	title: 'WooCommerce Blocks/@base-components/ProductPrice',

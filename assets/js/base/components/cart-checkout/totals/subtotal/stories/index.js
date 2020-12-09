@@ -2,12 +2,12 @@
  * External dependencies
  */
 import { text } from '@storybook/addon-knobs';
+import { currencyKnob } from '@woocommerce/knobs';
 
 /**
  * Internal dependencies
  */
 import Subtotal from '../';
-import currencyKnob from '../../../../../../../../storybook/currency-knob.js';
 
 export default {
 	title: 'WooCommerce Blocks/@base-components/cart-checkout/totals/Subtotal',

@@ -2,12 +2,12 @@
  * External dependencies
  */
 import { text, boolean } from '@storybook/addon-knobs';
+import { currencyKnob } from '@woocommerce/knobs';
 
 /**
  * Internal dependencies
  */
 import TotalsDiscount from '../';
-import currencyKnob from '../../../../../../../../storybook/currency-knob.js';
 
 export default {
 	title:

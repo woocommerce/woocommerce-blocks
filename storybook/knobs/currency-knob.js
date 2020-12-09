@@ -3,7 +3,7 @@
  */
 import { select } from '@storybook/addon-knobs';
 
-const currencyKnob = () => {
+export const currencyKnob = () => {
 	const currencies = [
 		{
 			label: 'USD',
@@ -28,5 +28,3 @@ const currencyKnob = () => {
 	];
 	return select( 'Currency', currencies, currencies[ 0 ] );
 };
-
-export default currencyKnob;

@@ -38,6 +38,7 @@ module.exports = ( { config: storybookConfig } ) => {
 		'@woocommerce/base-hooks': require.resolve(
 			'./__mocks__/woocommerce-base-hooks.js'
 		),
+		'@woocommerce/storybook': require.resolve( './knobs/index.js' ),
 	};
 	storybookConfig.module.rules.push(
 		{
