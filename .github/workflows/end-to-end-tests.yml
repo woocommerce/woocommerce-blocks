@@ -47,7 +47,7 @@ jobs:
         run: |
           sudo -E apt-add-repository -y "ppa:ubuntu-toolchain-r/test"
           sudo apt-get update
-          sudo -E apt-get -yq --no-install-suggests --no-install-recommends $(travis_apt_get_options) install libstdc++-4.9-dev
+          sudo -E apt-get -yq --no-install-suggests --no-install-recommends install libstdc++-4.9-dev
 
       - name: Npm install and build
         run: |
