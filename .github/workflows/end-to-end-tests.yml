@@ -42,6 +42,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14.x
+          
+      - name: Get correct C lib for Nodegit
+        run: |
+          sudo apt-get install libstdc++-4.9-dev
 
       - name: Npm install and build
         run: |
