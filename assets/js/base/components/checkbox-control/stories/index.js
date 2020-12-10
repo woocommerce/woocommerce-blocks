@@ -7,18 +7,18 @@ import { useState } from 'react';
 /**
  * Internal dependencies
  */
-import Component from '../';
+import CheckboxControl from '../';
 
 export default {
 	title: 'WooCommerce Blocks/@base-components/CheckboxControl',
 	component: CheckboxControl,
 };
 
-export const CheckboxControl = () => {
+export const Default = () => {
 	const [ checked, setChecked ] = useState( false );
 
 	return (
-		<Component
+		<CheckboxControl
 			label={ text( 'Label', 'Yes please' ) }
 			checked={ checked }
 			onChange={ ( value ) => setChecked( value ) }
