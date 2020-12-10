@@ -17,7 +17,7 @@ export default {
 
 export const Default = () => {
 	const currency = currencyKnob();
-	const totalPrice = text( 'Total price', '1000' );
+	const totalPrice = text( 'Total price', '1200' );
 	const totalTax = text( 'Total tax', '200' );
 
 	return (
