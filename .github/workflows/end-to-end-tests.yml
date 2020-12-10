@@ -58,6 +58,9 @@ jobs:
           npm run wp-env start
       - name: Running the tests
         run: |
+          npm run wp-env run tests-cli "wp plugin install gutenberg --activate"
+          npm install @wordpress/e2e-test-utils@latest
+          chmod -R 767 ./
           npm run test:e2e
       - name: Archive debug artifacts (screenshots, HTML snapshots)
         uses: actions/upload-artifact@v2
