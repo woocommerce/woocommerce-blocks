@@ -45,8 +45,8 @@ jobs:
           
       - name: Get correct C lib for Nodegit
         run: |
-          apt-get update
-          apt-get --assume-yes install libkrb5-dev
+          sudo apt-get update
+          sudo apt-get --assume-yes install libkrb5-dev
           
       - name: Npm install and build
         run: |
