@@ -1,7 +1,7 @@
 name: End-to-End Tests
 
 on:
-  pull_request:
+  push:
     branches:
       - add/github-actions-for-tests
     paths-ignore:
