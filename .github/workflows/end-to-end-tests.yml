@@ -56,7 +56,7 @@ jobs:
         run: |
           chmod -R 767 ./ # TODO: Possibly integrate in wp-env
           npm run wp-env start
-      - name: Running the tests
+      - name: E2E Tests (WP 5.6 with Gutenberg plugin)
         env:
           WOOCOMMERCE_BLOCKS_PHASE: 3
           E2E_TESTS: 1
@@ -80,6 +80,77 @@ jobs:
           npm install @wordpress/e2e-test-utils@latest
           chmod -R 767 ./
           npm run test:e2e
+
+      - name: E2E Tests (WP 5.6)
+        env:
+          WOOCOMMERCE_BLOCKS_PHASE: 3
+          E2E_TESTS: 1
+          WP_VERSION: 5.6-branch
+        run: |
+          if [[ ! -z "$E2E_TESTS" ]]; then
+            composer install --no-dev
+            npm ci
+            if [[ ! -z "$GUTENBERG_LATEST" ]]; then
+              JSON='{"config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
+            else
+              JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
+            fi
+            echo $JSON > .wp-env.override.json
+            npm run build:e2e-test
+            chmod -R 767 ./
+            npm run wp-env start
+          fi
+          npm install @wordpress/e2e-test-utils@latest
+          chmod -R 767 ./
+          npm run test:e2e
+
+
+      - name: E2E Tests (WP 5.5)
+        env:
+          WOOCOMMERCE_BLOCKS_PHASE: 3
+          E2E_TESTS: 1
+          WP_VERSION: 5.5-branch
+        run: |
+          if [[ ! -z "$E2E_TESTS" ]]; then
+            composer install --no-dev
+            npm ci
+            if [[ ! -z "$GUTENBERG_LATEST" ]]; then
+              JSON='{"config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
+            else
+              JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
+            fi
+            echo $JSON > .wp-env.override.json
+            npm run build:e2e-test
+            chmod -R 767 ./
+            npm run wp-env start
+          fi
+          npm install @wordpress/e2e-test-utils@latest
+          chmod -R 767 ./
+          npm run test:e2e
+
+      - name: E2E Tests (WP 5.4)
+          env:
+            WOOCOMMERCE_BLOCKS_PHASE: 3
+            E2E_TESTS: 1
+            WP_VERSION: 5.4-branch
+          run: |
+            if [[ ! -z "$E2E_TESTS" ]]; then
+              composer install --no-dev
+              npm ci
+              if [[ ! -z "$GUTENBERG_LATEST" ]]; then
+                JSON='{"config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
+              else
+                JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
+              fi
+              echo $JSON > .wp-env.override.json
+              npm run build:e2e-test
+              chmod -R 767 ./
+              npm run wp-env start
+            fi
+            npm install @wordpress/e2e-test-utils@latest
+            chmod -R 767 ./
+            npm run test:e2e    
+
       - name: Archive debug artifacts (screenshots, HTML snapshots)
         uses: actions/upload-artifact@v2
         if: always()
