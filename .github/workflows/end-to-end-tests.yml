@@ -54,7 +54,7 @@ jobs:
           FORCE_REDUCED_MOTION=true npm run build
       - name: Install WordPress
         run: |
-          chmod -R 767 ./ # TODO: Possibly integrate in wp-env
+          sudo chmod -R 767 ./ # TODO: Possibly integrate in wp-env
           npm run wp-env start
       - name: E2E Tests (WP 5.6 with Gutenberg plugin)
         env:
@@ -73,14 +73,14 @@ jobs:
             fi
             echo $JSON > .wp-env.override.json
             npm run build:e2e-test
-            chmod -R 767 ./
-            chmod -R 767 /home/runner/wp-env/
+            sudo chmod -R 767 ./
+            sudo chmod -R 767 /home/runner/wp-env/
             npm run wp-env start
           fi
           npm run wp-env run tests-cli "wp plugin install gutenberg --activate"
           npm install @wordpress/e2e-test-utils@latest
-          chmod -R 767 ./
-          chmod -R 767 /home/runner/wp-env/
+          sudo chmod -R 767 ./
+          sudo chmod -R 767 /home/runner/wp-env/
           npm run test:e2e
 
       - name: E2E Tests (WP 5.6)
@@ -99,13 +99,13 @@ jobs:
             fi
             echo $JSON > .wp-env.override.json
             npm run build:e2e-test
-            chmod -R 767 ./
-            chmod -R 767 /home/runner/wp-env/
+            sudo chmod -R 767 ./
+            sudo chmod -R 767 /home/runner/wp-env/
             npm run wp-env start
           fi
           npm install @wordpress/e2e-test-utils@latest
-          chmod -R 767 ./
-          chmod -R 767 /home/runner/wp-env/
+          sudo chmod -R 767 ./
+          sudo chmod -R 767 /home/runner/wp-env/
           npm run test:e2e
 
       - name: E2E Tests (WP 5.5)
@@ -124,13 +124,13 @@ jobs:
             fi
             echo $JSON > .wp-env.override.json
             npm run build:e2e-test
-            chmod -R 767 ./
-            chmod -R 767 /home/runner/wp-env/
+            sudo chmod -R 767 ./
+            sudo chmod -R 767 /home/runner/wp-env/
             npm run wp-env start
           fi
           npm install @wordpress/e2e-test-utils@latest
-          chmod -R 767 ./
-          chmod -R 767 /home/runner/wp-env/
+          sudo chmod -R 767 ./
+          sudo chmod -R 767 /home/runner/wp-env/
           npm run test:e2e
 
       - name: E2E Tests (WP 5.4)
@@ -149,13 +149,13 @@ jobs:
             fi
             echo $JSON > .wp-env.override.json
             npm run build:e2e-test
-            chmod -R 767 ./
-            chmod -R 767 /home/runner/wp-env/
+            sudo chmod -R 767 ./
+            sudo chmod -R 767 /home/runner/wp-env/
             npm run wp-env start
           fi
           npm install @wordpress/e2e-test-utils@latest
-          chmod -R 767 ./
-          chmod -R 767 /home/runner/wp-env/
+          sudo chmod -R 767 ./
+          sudo chmod -R 767 /home/runner/wp-env/
           npm run test:e2e    
 
       - name: Archive debug artifacts (screenshots, HTML snapshots)
