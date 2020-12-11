@@ -57,6 +57,11 @@ jobs:
           chmod -R 767 ./ # TODO: Possibly integrate in wp-env
           npm run wp-env start
       - name: Running the tests
+        env:
+          WOOCOMMERCE_BLOCKS_PHASE: 3
+          E2E_TESTS: 1
+          GUTENBERG_LATEST: true
+          WP_VERSION: 5.6-branch
         run: |
           npm run wp-env run tests-cli "wp plugin install gutenberg --activate"
           npm install @wordpress/e2e-test-utils@latest
