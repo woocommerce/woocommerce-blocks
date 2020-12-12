@@ -123,9 +123,9 @@ jobs:
             fi
             echo $JSON > .wp-env.override.json
             npm run build:e2e-test
+            npm run wp-env start
             sudo chmod -R 767 ./
             sudo chmod -R 767 /home/runner/wp-env/
-            npm run wp-env start
           fi
           sudo chmod -R 767 ./
           sudo chmod -R 767 /home/runner/wp-env/
@@ -146,10 +146,10 @@ jobs:
               JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
             fi
             echo $JSON > .wp-env.override.json
+            npm run wp-env start
             npm run build:e2e-test
             sudo chmod -R 767 ./
             sudo chmod -R 767 /home/runner/wp-env/
-            npm run wp-env start
           fi
           sudo chmod -R 767 ./
           sudo chmod -R 767 /home/runner/wp-env/
