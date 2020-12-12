@@ -137,6 +137,7 @@ jobs:
           E2E_TESTS: 1
           WP_VERSION: 5.4-branch
         run: |
+          export PATH="$HOME/.composer/vendor/bin:$PATH"
           if [[ ! -z "$E2E_TESTS" ]]; then
             composer install --no-dev
             npm ci
@@ -146,14 +147,14 @@ jobs:
               JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
             fi
             echo $JSON > .wp-env.override.json
-            npm run wp-env start
             npm run build:e2e-test
+            npm run wp-env start
             sudo chmod -R 767 ./
             sudo chmod -R 767 /home/runner/wp-env/
           fi
           sudo chmod -R 767 ./
           sudo chmod -R 767 /home/runner/wp-env/
-          npm run test:e2e    
+          npm run test:e2e  
 
       - name: Archive debug artifacts (screenshots, HTML snapshots)
         uses: actions/upload-artifact@v2
