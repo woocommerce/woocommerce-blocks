@@ -261,6 +261,17 @@ class Checkout extends AbstractRoute {
 	 */
 	protected function get_route_error_response( $error_code, $error_message, $http_status_code = 500, $additional_data = [] ) {
 		switch ( $http_status_code ) {
+			case 400:
+				return new WP_Error(
+					$error_code,
+					$error_message,
+					array_merge(
+						$additional_data,
+						[
+							'status' => $http_status_code,
+						]
+					)
+				);
 			case 409:
 				// If there was a conflict, return the cart so the client can resolve it.
 				$controller = new CartController();
@@ -371,6 +382,53 @@ class Checkout extends AbstractRoute {
 	}
 
 	/**
+	 * Format provided address fields.
+	 *
+	 * @internal This does not validate whether an address is valid or not, just that provided values are valid. Address validation is done before payment.
+	 *
+	 * @throws RouteException Thrown on error.
+	 * @param array $address Address fields.
+	 * @return array
+	 */
+	private function prepare_address_fields( $address ) {
+		$address['country']  = wc_strtoupper( $address['country'] );
+		$address['postcode'] = isset( $address['postcode'] ) ? wc_format_postcode( $address['postcode'], $address['country'] ) : null;
+
+		if ( ! empty( $address['email'] ) ) {
+			$address['email'] = sanitize_email( $address['email'] );
+		}
+
+		if ( ! empty( $address['state'] ) ) {
+			$valid_states = wc()->countries->get_states( $address['country'] );
+
+			if ( is_array( $valid_states ) && count( $valid_states ) > 0 ) {
+				$valid_state_values = array_map( 'wc_strtoupper', array_flip( array_map( 'wc_strtoupper', $valid_states ) ) );
+				$address['state']   = wc_strtoupper( $address['state'] );
+
+				if ( isset( $valid_state_values[ $address['state'] ] ) ) {
+					// With this part we consider state value to be valid as well,
+					// convert it to the state key for the valid_states check below.
+					$address['state'] = $valid_state_values[ $address['state'] ];
+				}
+
+				if ( ! in_array( $address['state'], $valid_state_values, true ) ) {
+					throw new RouteException(
+						'woocommerce_rest_checkout_invalid_state',
+						sprintf(
+							/* translators: 1: valid states */
+							__( 'Address state is not valid. Please enter one of the following: %s', 'woo-gutenberg-products-block' ),
+							implode( ', ', $valid_states )
+						),
+						400
+					);
+				}
+			}
+		}
+
+		return $address;
+	}
+
+	/**
 	 * Updates the current customer session using data from the request (e.g. address data).
 	 *
 	 * Address session data is synced to the order itself later on by OrderController::update_order_from_cart()
@@ -378,24 +436,19 @@ class Checkout extends AbstractRoute {
 	 * @param WP_REST_Request $request Full details about the request.
 	 */
 	private function update_customer_from_request( WP_REST_Request $request ) {
-		$schema   = $this->get_item_schema();
-		$customer = wc()->customer;
+		$customer         = wc()->customer;
+		$billing_address  = $this->prepare_address_fields( $request['billing_address'] );
+		$shipping_address = $this->prepare_address_fields( isset( $request['shipping_address'] ) ? $request['shipping_address'] : $request['shipping_address'] );
 
-		if ( isset( $request['billing_address'] ) ) {
-			$allowed_billing_values = array_intersect_key( $request['billing_address'], $schema['properties']['billing_address']['properties'] );
-			foreach ( $allowed_billing_values as $key => $value ) {
-				if ( is_callable( [ $customer, "set_billing_$key" ] ) ) {
-					$customer->{"set_billing_$key"}( $value );
-				}
+		foreach ( $billing_address as $key => $value ) {
+			if ( is_callable( [ $customer, "set_shipping_$key" ] ) ) {
+				$customer->{"set_shipping_$key"}( $value );
 			}
 		}
 
-		if ( isset( $request['shipping_address'] ) ) {
-			$allowed_shipping_values = array_intersect_key( $request['shipping_address'], $schema['properties']['shipping_address']['properties'] );
-			foreach ( $allowed_shipping_values as $key => $value ) {
-				if ( is_callable( [ $customer, "set_shipping_$key" ] ) ) {
-					$customer->{"set_shipping_$key"}( $value );
-				}
+		foreach ( $shipping_address as $key => $value ) {
+			if ( is_callable( [ $customer, "set_shipping_$key" ] ) ) {
+				$customer->{"set_shipping_$key"}( $value );
 			}
 		}
 
