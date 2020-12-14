@@ -130,7 +130,7 @@ abstract class AbstractSchema {
 			}
 
 			if ( \WP_REST_Server::CREATABLE === $method && ! empty( $params['required'] ) ) {
-				$endpoint_args[ $field_id ]['required'] = true;
+				$endpoint_args[ $field_id ]['required'] = $params['required'];
 			}
 
 			foreach ( array( 'type', 'format', 'enum', 'items', 'properties', 'additionalProperties' ) as $schema_prop ) {

@@ -74,12 +74,6 @@ class Checkout extends AbstractRoute {
 				],
 			],
 			[
-				'methods'             => WP_REST_Server::EDITABLE,
-				'callback'            => array( $this, 'get_response' ),
-				'permission_callback' => '__return_true',
-				'args'                => $this->schema->get_endpoint_args_for_item_schema( WP_REST_Server::EDITABLE ),
-			],
-			[
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => [ $this, 'get_response' ],
 				'permission_callback' => '__return_true',
@@ -103,6 +97,12 @@ class Checkout extends AbstractRoute {
 					],
 					$this->schema->get_endpoint_args_for_item_schema( WP_REST_Server::CREATABLE )
 				),
+			],
+			[
+				'methods'             => WP_REST_Server::EDITABLE,
+				'callback'            => array( $this, 'get_response' ),
+				'permission_callback' => '__return_true',
+				'args'                => $this->schema->get_endpoint_args_for_item_schema( WP_REST_Server::EDITABLE ),
 			],
 			'schema' => [ $this->schema, 'get_public_item_schema' ],
 		];
