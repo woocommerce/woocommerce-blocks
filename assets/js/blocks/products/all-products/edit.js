@@ -45,6 +45,7 @@ import {
 } from '../base-utils';
 import { getSharedContentControls, getSharedListControls } from '../edit';
 import Block from './block';
+import './editor.scss';
 
 /**
  * Component to handle edit mode of "All Products".
