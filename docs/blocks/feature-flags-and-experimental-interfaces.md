@@ -51,3 +51,7 @@ We also have individual features or code blocks behind a feature flag, this is a
 *   certain e2e tests are skipped if the environment is not met ([env flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/50e7411aee51afb3fbfa8561e297085ee44e40c0/tests/e2e-tests/specs/backend/cart.test.js#L18)).
 
 ## Usages of `__experimental` prefix
+
+-   `__experimental_woocommerce_blocks_checkout_order_processed` hook when order has completed processing and is ready for payment ([experimental hook](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/accd1bbf402e043b9fc322f118ab614ba7437c92/src/StoreApi/Routes/Checkout.php#L237)).
+-   `__experimentalDeRegisterPaymentMethod` function used to deregister a payment method, only used in tests ([experimental function](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b07883b8b76feeb439d655b255507b24fc59e091/assets/js/blocks-registry/payment-methods/registry.js#L70)).
+-   `__experimentalDeRegisterExpressPaymentMethod` function used to deregister an express payment method, only used in tests ([experimental function](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b07883b8b76feeb439d655b255507b24fc59e091/assets/js/blocks-registry/payment-methods/registry.js#L74)).

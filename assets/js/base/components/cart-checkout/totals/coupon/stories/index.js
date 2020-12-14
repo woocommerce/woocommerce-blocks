@@ -10,11 +10,12 @@ import {
 /**
  * Internal dependencies
  */
-import CouponInput from '../';
+import TotalsCoupon from '../';
 
 export default {
-	title: 'WooCommerce Blocks/@base-components/CouponInput',
-	component: CouponInput,
+	title:
+		'WooCommerce Blocks/@base-components/cart-checkout/totals/TotalsCoupon',
+	component: TotalsCoupon,
 };
 
 const StoryComponent = ( { validCoupon, isLoading, invalidCouponText } ) => {
@@ -24,7 +25,7 @@ const StoryComponent = ( { validCoupon, isLoading, invalidCouponText } ) => {
 			setValidationErrors( { coupon: invalidCouponText } );
 		}
 	};
-	return <CouponInput isLoading={ isLoading } onSubmit={ onSubmit } />;
+	return <TotalsCoupon isLoading={ isLoading } onSubmit={ onSubmit } />;
 };
 
 export const Default = () => {
