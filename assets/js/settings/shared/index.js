@@ -42,6 +42,17 @@ const compareVersionSettingIgnorePrerelease = (
 	return compareVersions.compare( version, replacement, operator );
 };
 
+/**
+ * Compare the provided `version` param with the current WP version using the
+ * `operator`.
+ *
+ * For example `compareWithWpVersion( '5.6', '<=' )` returns true if `5.6` is
+ * smaller or equal than the site WP version.
+ *
+ * @param {string} version Version to use to compare against the current wpVersion.
+ * @param {string} operator Operator to use in the comparison.
+ */
+
 export const compareWithWpVersion = ( version, operator ) => {
 	return compareVersionSettingIgnorePrerelease(
 		version,
@@ -50,6 +61,16 @@ export const compareWithWpVersion = ( version, operator ) => {
 	);
 };
 
+/**
+ * Compare the provided `version` param with the current WC version using the
+ * `operator`.
+ *
+ * For example `compareWithWooVersion( '4.9.0', '<=' )` returns true if `4.9` is
+ * smaller or equal than the site WC version.
+ *
+ * @param {string} version Version to use to compare against the current wcVersion.
+ * @param {string} operator Operator to use in the comparison.
+ */
 export const compareWithWooVersion = ( version, operator ) => {
 	return compareVersionSettingIgnorePrerelease(
 		version,
