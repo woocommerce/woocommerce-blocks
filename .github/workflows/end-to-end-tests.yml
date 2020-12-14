@@ -43,10 +43,10 @@ jobs:
         with:
           node-version: 14.x
 #          
-#      - name: Get correct C lib for Nodegit
-#        run: |
-#          sudo apt-get update
-#          sudo apt-get --assume-yes install libkrb5-dev
+      - name: Get correct C lib for Nodegit
+        run: |
+          sudo apt-get update
+          sudo apt-get --assume-yes install libkrb5-dev
 #          
 #      - name: Npm install and build
 #        run: |
