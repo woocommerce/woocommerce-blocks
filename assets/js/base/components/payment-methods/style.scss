@@ -238,6 +238,17 @@
 		padding-bottom: 12px;
 		font-weight: bold;
 	}
+
+	.wc-block-components-checkout-payment-methods {
+		border-width: 1px;
+		border-style: solid;
+		border-color: $gray-200;
+	}
+
+	.wc-block-components-tabs .wc-block-components-tabs__content {
+		padding: 16px;
+	}
+
 }
 
 .wc-block-components-radio-control-accordion-content {
