@@ -24,6 +24,7 @@ const ValidatedTextInput = ( {
 	validateOnMount = true,
 	focusOnMount = false,
 	onChange,
+	onBlur = ( event ) => void event,
 	showError = true,
 	...rest
 } ) => {
@@ -42,13 +43,20 @@ const ValidatedTextInput = ( {
 
 	const validateInput = useCallback(
 		( errorsHidden = true ) => {
-			if ( inputRef.current.checkValidity() ) {
+			const inputObject = inputRef.current || null;
+			if ( ! inputObject ) {
+				return;
+			}
+			// Trim white space before validation.
+			inputObject.value = inputObject.value.trim();
+			const inputIsValid = inputObject.checkValidity();
+			if ( inputIsValid ) {
 				clearValidationError( errorId );
 			} else {
 				setValidationErrors( {
 					[ errorId ]: {
 						message:
-							inputRef.current.validationMessage ||
+							inputObject.validationMessage ||
 							__(
 								'Invalid value.',
 								'woo-gutenberg-products-block'
@@ -99,7 +107,8 @@ const ValidatedTextInput = ( {
 				'has-error': hasError,
 			} ) }
 			id={ textInputId }
-			onBlur={ () => {
+			onBlur={ ( event ) => {
+				onBlur( event );
 				validateInput( false );
 			} }
 			feedback={
@@ -107,8 +116,8 @@ const ValidatedTextInput = ( {
 			}
 			ref={ inputRef }
 			onChange={ ( val ) => {
-				hideValidationError( errorId );
 				onChange( val );
+				hideValidationError( errorId );
 			} }
 			ariaDescribedBy={ describedBy }
 			{ ...rest }
@@ -118,6 +127,7 @@ const ValidatedTextInput = ( {
 
 ValidatedTextInput.propTypes = {
 	onChange: PropTypes.func.isRequired,
+	onBlur: PropTypes.func,
 	id: PropTypes.string,
 	value: PropTypes.string,
 	ariaDescribedBy: PropTypes.string,

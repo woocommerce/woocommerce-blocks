@@ -21,6 +21,11 @@ const DebouncedValidatedTextInput = ( { onChange, value = '', ...props } ) => {
 	return (
 		<ValidatedTextInput
 			onChange={ setInputValue }
+			onBlur={ () => {
+				if ( inputValue.trim() !== inputValue ) {
+					setInputValue( inputValue.trim() );
+				}
+			} }
 			value={ inputValue }
 			{ ...props }
 		/>
