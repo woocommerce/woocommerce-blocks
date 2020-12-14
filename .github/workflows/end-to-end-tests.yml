@@ -52,84 +52,84 @@ jobs:
         run: |
           npm ci
           FORCE_REDUCED_MOTION=true npm run build
-#      - name: E2E Tests (WP 5.6 with Gutenberg plugin)
-#        env:
-#          WOOCOMMERCE_BLOCKS_PHASE: 3
-#          E2E_TESTS: 1
-#          GUTENBERG_LATEST: true
-#          WP_VERSION: 5.6-branch
-#        run: |
-#          export PATH="$HOME/.composer/vendor/bin:$PATH"
-#          if [[ ! -z "$E2E_TESTS" ]]; then
-#            composer install --no-dev
-#            npm ci
-#            if [[ ! -z "$GUTENBERG_LATEST" ]]; then
-#              JSON='{"config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
-#            else
-#              JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
-#            fi
-#            echo $JSON > .wp-env.override.json
-#            npm run build:e2e-test
-#            sudo chmod -R 767 ./
-#            sudo chmod -R 767 /home/runner/wp-env/
-#            npm run wp-env start
-#          fi
-#          npm run wp-env run tests-cli "wp plugin install gutenberg --activate"
-#          npm install @wordpress/e2e-test-utils@latest
-#          sudo chmod -R 767 ./
-#          sudo chmod -R 767 /home/runner/wp-env/
-#          npm run test:e2e
-#
-#      - name: E2E Tests (WP 5.6)
-#        env:
-#          WOOCOMMERCE_BLOCKS_PHASE: 3
-#          E2E_TESTS: 1
-#          WP_VERSION: 5.6-branch
-#        run: |
-#          export PATH="$HOME/.composer/vendor/bin:$PATH"
-#          if [[ ! -z "$E2E_TESTS" ]]; then
-#            composer install --no-dev
-#            npm ci
-#            if [[ ! -z "$GUTENBERG_LATEST" ]]; then
-#              JSON='{"config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
-#            else
-#              JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
-#            fi
-#            echo $JSON > .wp-env.override.json
-#            npm run build:e2e-test
-#            sudo chmod -R 767 ./
-#            sudo chmod -R 767 /home/runner/wp-env/
-#            npm run wp-env start
-#          fi
-#          npm install @wordpress/e2e-test-utils@latest
-#          sudo chmod -R 767 ./
-#          sudo chmod -R 767 /home/runner/wp-env/
-#          npm run test:e2e
-#
-#      - name: E2E Tests (WP 5.5)
-#        env:
-#          WOOCOMMERCE_BLOCKS_PHASE: 3
-#          E2E_TESTS: 1
-#          WP_VERSION: 5.5-branch
-#        run: |
-#          export PATH="$HOME/.composer/vendor/bin:$PATH"
-#          if [[ ! -z "$E2E_TESTS" ]]; then
-#            composer install --no-dev
-#            npm ci
-#            if [[ ! -z "$GUTENBERG_LATEST" ]]; then
-#              JSON='{"config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
-#            else
-#              JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
-#            fi
-#            echo $JSON > .wp-env.override.json
-#            npm run build:e2e-test
-#            npm run wp-env start
-#            sudo chmod -R 767 ./
-#            sudo chmod -R 767 /home/runner/wp-env/
-#          fi
-#          sudo chmod -R 767 ./
-#          sudo chmod -R 767 /home/runner/wp-env/
-#          npm run test:e2e
+      - name: E2E Tests (WP 5.6 with Gutenberg plugin)
+        env:
+          WOOCOMMERCE_BLOCKS_PHASE: 3
+          E2E_TESTS: 1
+          GUTENBERG_LATEST: true
+          WP_VERSION: 5.6-branch
+        run: |
+          export PATH="$HOME/.composer/vendor/bin:$PATH"
+          if [[ ! -z "$E2E_TESTS" ]]; then
+            composer install --no-dev
+            npm ci
+            if [[ ! -z "$GUTENBERG_LATEST" ]]; then
+              JSON='{"config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
+            else
+              JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
+            fi
+            echo $JSON > .wp-env.override.json
+            npm run build:e2e-test
+            sudo chmod -R 767 ./
+            sudo chmod -R 767 /home/runner/wp-env/
+            npm run wp-env start
+          fi
+          npm run wp-env run tests-cli "wp plugin install gutenberg --activate"
+          npm install @wordpress/e2e-test-utils@latest
+          sudo chmod -R 767 ./
+          sudo chmod -R 767 /home/runner/wp-env/
+          npm run test:e2e
+
+      - name: E2E Tests (WP 5.6)
+        env:
+          WOOCOMMERCE_BLOCKS_PHASE: 3
+          E2E_TESTS: 1
+          WP_VERSION: 5.6-branch
+        run: |
+          export PATH="$HOME/.composer/vendor/bin:$PATH"
+          if [[ ! -z "$E2E_TESTS" ]]; then
+            composer install --no-dev
+            npm ci
+            if [[ ! -z "$GUTENBERG_LATEST" ]]; then
+              JSON='{"config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
+            else
+              JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
+            fi
+            echo $JSON > .wp-env.override.json
+            npm run build:e2e-test
+            sudo chmod -R 767 ./
+            sudo chmod -R 767 /home/runner/wp-env/
+            npm run wp-env start
+          fi
+          npm install @wordpress/e2e-test-utils@latest
+          sudo chmod -R 767 ./
+          sudo chmod -R 767 /home/runner/wp-env/
+          npm run test:e2e
+
+      - name: E2E Tests (WP 5.5)
+        env:
+          WOOCOMMERCE_BLOCKS_PHASE: 3
+          E2E_TESTS: 1
+          WP_VERSION: 5.5-branch
+        run: |
+          export PATH="$HOME/.composer/vendor/bin:$PATH"
+          if [[ ! -z "$E2E_TESTS" ]]; then
+            composer install --no-dev
+            npm ci
+            if [[ ! -z "$GUTENBERG_LATEST" ]]; then
+              JSON='{"config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
+            else
+              JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
+            fi
+            echo $JSON > .wp-env.override.json
+            npm run build:e2e-test
+            npm run wp-env start
+            sudo chmod -R 767 ./
+            sudo chmod -R 767 /home/runner/wp-env/
+          fi
+          sudo chmod -R 767 ./
+          sudo chmod -R 767 /home/runner/wp-env/
+          npm run test:e2e
 
       - name: E2E Tests (WP 5.4)
         env:
