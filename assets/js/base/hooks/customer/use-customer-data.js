@@ -31,9 +31,10 @@ export const useCustomerData = () => {
 	} );
 	const currentCustomerData = useRef( customerData );
 	const [ debouncedCustomerData ] = useDebounce( customerData, 400, {
+		// Default equalityFn is prevData === newData.
 		equalityFn: ( prevData, newData ) => {
-			return ! (
-				isShallowEqual( prevData.billingData, newData.billingData ) ||
+			return (
+				isShallowEqual( prevData.billingData, newData.billingData ) &&
 				isShallowEqual(
 					prevData.shippingAddress,
 					newData.shippingAddress
@@ -66,6 +67,9 @@ export const useCustomerData = () => {
 		} ) );
 	}, [] );
 
+	/**
+	 * This tracks the value of the shipping and billing addresses coming from the cart API.
+	 */
 	useEffect( () => {
 		if (
 			! isShallowEqual(
@@ -85,6 +89,9 @@ export const useCustomerData = () => {
 		}
 	}, [ cartBillingData, cartShippingAddress ] );
 
+	/**
+	 * This pushes changes to the API when the local state differs from the address in the cart.
+	 */
 	useEffect( () => {
 		if (
 			! (
