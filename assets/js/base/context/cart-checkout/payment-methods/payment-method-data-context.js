@@ -95,9 +95,13 @@ const getCustomerPaymentMethods = ( availablePaymentMethods = [] ) => {
 	paymentMethodKeys.forEach( ( type ) => {
 		const methods = customerPaymentMethods[ type ].filter(
 			( paymentMethod ) => {
-				return Object.keys( availablePaymentMethods ).includes(
-					paymentMethod.method.gateway
-				);
+				const { gateway } = paymentMethod.method;
+				const gatewayAvailable = Object.keys( availablePaymentMethods ).includes( gateway );
+				if ( ! gatewayAvailable ) {
+					return false;
+				}
+				const supportsSavedPayments = availablePaymentMethods[gateway].supports?.savePaymentInfo;
+				return supportsSavedPayments;
 			}
 		);
 		if ( methods.length ) {
