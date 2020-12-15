@@ -118,3 +118,18 @@
 		display: none;
 	}
 }
+
+// This class is set on the body by Twenty Twenty-One when dark mode is active.
+.is-dark-theme {
+	// If the theme is in dark mode, as well as the block, then this selector will match.
+	.has-dark-controls {
+		.components-custom-select-control__item {
+			color: $input-text-dark;
+		}
+	}
+
+	// If the theme is in dark mode, but the block isn't, then this selector will match.
+	.components-custom-select-control__item {
+		color: $input-text-active;
+	}
+}
