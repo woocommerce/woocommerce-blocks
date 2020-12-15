@@ -211,13 +211,45 @@ class OrderController {
 	 * @param \WC_Order $order Order object.
 	 */
 	protected function validate_addresses( \WC_Order $order ) {
-		$errors         = new \WP_Error();
-		$needs_shipping = wc()->cart->needs_shipping();
+		$errors           = new \WP_Error();
+		$needs_shipping   = wc()->cart->needs_shipping();
+		$billing_address  = $order->get_address( 'billing' );
+		$shipping_address = $order->get_address( 'shipping' );
+
+		if ( $needs_shipping && ! $this->validate_allowed_country( $shipping_address['country'], wc()->countries->get_shipping_countries() ) ) {
+			throw new RouteException(
+				'woocommerce_rest_invalid_address_country',
+				sprintf(
+					// Translators: %s country code.
+					__( 'Sorry, we do not ship orders to the provided country (%s)', 'woo-gutenberg-products-block' ),
+					$shipping_address['country']
+				),
+				400,
+				[
+					'allowed_countries' => array_keys( wc()->countries->get_shipping_countries() ),
+				]
+			);
+		}
+
+		if ( ! $this->validate_allowed_country( $billing_address['country'], wc()->countries->get_allowed_countries() ) ) {
+			throw new RouteException(
+				'woocommerce_rest_invalid_address_country',
+				sprintf(
+					// Translators: %s country code.
+					__( 'Sorry, we do not allow orders from the provided country (%s)', 'woo-gutenberg-products-block' ),
+					$billing_address['country']
+				),
+				400,
+				[
+					'allowed_countries' => array_keys( wc()->countries->get_allowed_countries() ),
+				]
+			);
+		}
 
 		if ( $needs_shipping ) {
-			$this->validate_required_address_fields( $order->get_address( 'shipping' ), 'shipping', $errors );
+			$this->validate_address_fields( $shipping_address, 'shipping', $errors );
 		}
-		$this->validate_required_address_fields( $order->get_address( 'billing' ), 'billing', $errors );
+		$this->validate_address_fields( $billing_address, 'billing', $errors );
 
 		if ( ! $errors->has_errors() ) {
 			return;
@@ -229,25 +261,39 @@ class OrderController {
 			$errors_by_code[ $code ] = $errors->get_error_messages( $code );
 		}
 
-		if ( ! empty( $errors_by_code['shipping'] ) ) {
+		// Surface errors from first code.
+		foreach ( $errors_by_code as $code => $error_messages ) {
 			throw new RouteException(
 				'woocommerce_rest_invalid_address',
-				__( 'There was a problem with the provided shipping address:', 'woo-gutenberg-products-block' ) . ' ' . implode( ', ', $errors_by_code['shipping'] ),
+				sprintf(
+					// Translators: %s Address type.
+					__( 'There was a problem with the provided %s:', 'woo-gutenberg-products-block' ) . ' ' . implode( ', ', $error_messages ),
+					'shipping' === $code ? __( 'shipping address', 'woo-gutenberg-products-block' ) : __( 'billing address', 'woo-gutenberg-products-block' )
+				),
 				400,
 				[
 					'errors' => $errors_by_code,
 				]
 			);
 		}
+	}
 
-		throw new RouteException(
-			'woocommerce_rest_invalid_address',
-			__( 'There was a problem with the provided billing address:', 'woo-gutenberg-products-block' ) . ' ' . implode( ', ', $errors_by_code['billing'] ),
-			400,
-			[
-				'errors' => $errors_by_code,
-			]
-		);
+	/**
+	 * Check all required address fields are set and return errors if not.
+	 *
+	 * @param string $country Country code.
+	 * @param array  $allowed_countries List of valid country codes.
+	 * @return boolean True if valid.
+	 */
+	protected function validate_allowed_country( $country, $allowed_countries ) {
+		if (
+			is_array( $allowed_countries ) &&
+			count( $allowed_countries ) > 0 &&
+			! array_key_exists( $country, $allowed_countries )
+		) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -257,15 +303,13 @@ class OrderController {
 	 * @param string    $address_type billing or shipping address, used in error messages.
 	 * @param \WP_Error $errors Error object.
 	 */
-	protected function validate_required_address_fields( $address, $address_type = 'billing', \WP_Error &$errors ) {
+	protected function validate_address_fields( $address, $address_type = 'billing', \WP_Error &$errors ) {
 		$all_locales    = wc()->countries->get_country_locale();
 		$current_locale = isset( $all_locales[ $address['country'] ] ) ? $all_locales[ $address['country'] ] : [];
 
 		/**
 		 * We are not using wc()->counties->get_default_address_fields() here because that is filtered. Instead, this array
 		 * is based on assets/js/base/components/cart-checkout/address-form/default-address-fields.js
-		 *
-		 * @todo Define default address fields somewhere (PHP) and pass to the client (assets/js/base/components/cart-checkout/address-form/default-address-fields.js)
 		 */
 		$address_fields = [
 			'first_name' => [
