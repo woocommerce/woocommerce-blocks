@@ -18,6 +18,7 @@ import {
 	useMemo,
 } from '@wordpress/element';
 import { useStoreCart, useStoreNotices } from '@woocommerce/base-hooks';
+import { formatStoreApiErrorMessage } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
@@ -161,29 +162,6 @@ const CheckoutProcessor = () => {
 	] );
 
 	const processOrder = useCallback( () => {
-		const handleApiErrorResponse = ( response ) => {
-			if ( response.data && response.code === 'rest_invalid_param' ) {
-				const invalidParams = Object.values( response.data.params );
-				if ( invalidParams[ 0 ] ) {
-					addErrorNotice( invalidParams[ 0 ], {
-						id: 'checkout',
-					} );
-					return;
-				}
-			}
-
-			addErrorNotice(
-				response?.message ||
-					__(
-						'Something went wrong. Please contact us to get assistance.',
-						'woo-gutenberg-products-block'
-					),
-				{
-					id: 'checkout',
-				}
-			);
-		};
-
 		setIsProcessingOrder( true );
 		removeNotice( 'checkout' );
 		let data = {
@@ -223,7 +201,12 @@ const CheckoutProcessor = () => {
 				fetchResponse.json().then( function ( response ) {
 					if ( ! fetchResponse.ok ) {
 						// We received an error response.
-						handleApiErrorResponse( response );
+						addErrorNotice(
+							formatStoreApiErrorMessage( response ),
+							{
+								id: 'checkout',
+							}
+						);
 						dispatchActions.setHasError();
 					}
 					dispatchActions.setAfterProcessing( response );
@@ -246,7 +229,9 @@ const CheckoutProcessor = () => {
 					if ( response.data?.cart ) {
 						receiveCart( response.data.cart );
 					}
-					handleApiErrorResponse( response );
+					addErrorNotice( formatStoreApiErrorMessage( response ), {
+						id: 'checkout',
+					} );
 					dispatchActions.setHasError();
 					dispatchActions.setAfterProcessing( response );
 					setIsProcessingOrder( false );

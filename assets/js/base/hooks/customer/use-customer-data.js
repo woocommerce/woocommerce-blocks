@@ -7,6 +7,7 @@ import { useStoreNotices, useStoreCart } from '@woocommerce/base-hooks';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useDebounce } from 'use-debounce';
 import isShallowEqual from '@wordpress/is-shallow-equal';
+import { formatStoreApiErrorMessage } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
@@ -99,13 +100,13 @@ export const useCustomerData = () => {
 		) {
 			return;
 		}
-		removeNotice( 'address' );
+		removeNotice( 'checkout' );
 		updateCustomerData( {
 			billing_address: debouncedCustomerData.billingData,
 			shipping_address: debouncedCustomerData.shippingAddress,
-		} ).catch( ( error ) => {
-			addErrorNotice( error.message, {
-				id: 'address',
+		} ).catch( ( response ) => {
+			addErrorNotice( formatStoreApiErrorMessage( response ), {
+				id: 'checkout',
 			} );
 		} );
 	}, [

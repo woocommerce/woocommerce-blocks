@@ -163,7 +163,7 @@ abstract class AbstractAddressSchema extends AbstractSchema {
 				'invalid_state',
 				sprintf(
 					/* translators: %s valid states */
-					__( 'The provided state is not valid. Please enter one of the following: %s', 'woo-gutenberg-products-block' ),
+					__( 'The provided state is not valid. Must be one of: %s', 'woo-gutenberg-products-block' ),
 					implode( ', ', $states )
 				)
 			);
