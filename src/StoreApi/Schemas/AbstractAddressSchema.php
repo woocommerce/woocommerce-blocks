@@ -86,7 +86,7 @@ abstract class AbstractAddressSchema extends AbstractSchema {
 	 * @return array
 	 */
 	public function sanitize_callback( $address, $request, $param ) {
-		$address               = array_merge( array_fill_keys( array_keys( $this->get_properties() ), '' ), $address );
+		$address               = array_merge( array_fill_keys( array_keys( $this->get_properties() ), '' ), (array) $address );
 		$address['country']    = wc_strtoupper( wc_clean( $address['country'] ) );
 		$address['first_name'] = wc_clean( wp_unslash( $address['first_name'] ) );
 		$address['last_name']  = wc_clean( wp_unslash( $address['last_name'] ) );
