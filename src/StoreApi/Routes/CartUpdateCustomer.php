@@ -72,16 +72,22 @@ class CartUpdateCustomer extends AbstractCartRoute {
 				'permission_callback' => '__return_true',
 				'args'                => [
 					'billing_address'  => [
-						'description' => __( 'Billing address.', 'woo-gutenberg-products-block' ),
-						'type'        => 'object',
-						'context'     => [ 'view', 'edit' ],
-						'properties'  => $this->billing_address_schema->get_properties(),
+						'description'       => __( 'Billing address.', 'woo-gutenberg-products-block' ),
+						'type'              => 'object',
+						'context'           => [ 'view', 'edit' ],
+						'properties'        => $this->billing_address_schema->get_properties(),
+						'sanitize_callback' => [ $this->billing_address_schema, 'sanitize_callback' ],
+						'validate_callback' => [ $this->billing_address_schema, 'validate_callback' ],
+						'required'          => true,
 					],
 					'shipping_address' => [
-						'description' => __( 'Shipping address.', 'woo-gutenberg-products-block' ),
-						'type'        => 'object',
-						'context'     => [ 'view', 'edit' ],
-						'properties'  => $this->shipping_address_schema->get_properties(),
+						'description'       => __( 'Shipping address.', 'woo-gutenberg-products-block' ),
+						'type'              => 'object',
+						'context'           => [ 'view', 'edit' ],
+						'properties'        => $this->shipping_address_schema->get_properties(),
+						'sanitize_callback' => [ $this->shipping_address_schema, 'sanitize_callback' ],
+						'validate_callback' => [ $this->shipping_address_schema, 'validate_callback' ],
+						'required'          => true,
 					],
 				],
 			],
@@ -99,8 +105,8 @@ class CartUpdateCustomer extends AbstractCartRoute {
 	protected function get_route_post_response( \WP_REST_Request $request ) {
 		$controller = new CartController();
 		$cart       = $controller->get_cart_instance();
-		$billing    = isset( $request['billing_address'] ) ? $this->prepare_address_fields( $request['billing_address'], wc()->countries->get_allowed_countries() ) : [];
-		$shipping   = isset( $request['shipping_address'] ) ? $this->prepare_address_fields( $request['shipping_address'], wc()->countries->get_shipping_countries() ) : [];
+		$billing    = isset( $request['billing_address'] ) ? $request['billing_address'] : [];
+		$shipping   = isset( $request['shipping_address'] ) ? $request['shipping_address'] : [];
 
 		if ( ! $cart->needs_shipping() ) {
 			$shipping = $billing;
@@ -134,70 +140,5 @@ class CartUpdateCustomer extends AbstractCartRoute {
 		$cart->calculate_totals();
 
 		return rest_ensure_response( $this->schema->get_item_response( $cart ) );
-	}
-
-	/**
-	 * Format provided address fields.
-	 *
-	 * @throws RouteException Thrown on error.
-	 * @param array $address Address fields.
-	 * @param array $allowed_countries Countries that must be used.
-	 * @return array
-	 */
-	protected function prepare_address_fields( $address, $allowed_countries ) {
-		// Addresses require a country, otherwise they are not valid. This returns an empty address. There is no address
-		// validation in this case because we do not want to block updates of other data such as email address.
-		if ( empty( $address['country'] ) ) {
-			return [];
-		}
-
-		$address['country'] = wc_strtoupper( $address['country'] );
-
-		if (
-			is_array( $allowed_countries ) &&
-			count( $allowed_countries ) > 0 &&
-			! array_key_exists( $address['country'], $allowed_countries )
-		) {
-			throw new RouteException(
-				'woocommerce_rest_cart_invalid_country',
-				sprintf(
-					/* translators: 1: valid country codes */
-					__( 'Address country is not valid. Please provide one of the following: %s', 'woo-gutenberg-products-block' ),
-					implode( ', ', array_keys( $allowed_countries ) )
-				),
-				400
-			);
-		}
-
-		$address['postcode'] = isset( $address['postcode'] ) ? wc_format_postcode( $address['postcode'], $address['country'] ) : null;
-
-		if ( ! empty( $address['state'] ) ) {
-			$valid_states = wc()->countries->get_states( $address['country'] );
-
-			if ( is_array( $valid_states ) && count( $valid_states ) > 0 ) {
-				$valid_state_values = array_map( 'wc_strtoupper', array_flip( array_map( 'wc_strtoupper', $valid_states ) ) );
-				$address['state']   = wc_strtoupper( $address['state'] );
-
-				if ( isset( $valid_state_values[ $address['state'] ] ) ) {
-					// With this part we consider state value to be valid as well,
-					// convert it to the state key for the valid_states check below.
-					$address['state'] = $valid_state_values[ $address['state'] ];
-				}
-
-				if ( ! in_array( $address['state'], $valid_state_values, true ) ) {
-					throw new RouteException(
-						'woocommerce_rest_cart_invalid_state',
-						sprintf(
-							/* translators: 1: valid states */
-							__( 'Address state is not valid. Please enter one of the following: %s', 'woo-gutenberg-products-block' ),
-							implode( ', ', $valid_states )
-						),
-						400
-					);
-				}
-			}
-		}
-
-		return $address;
 	}
 }
