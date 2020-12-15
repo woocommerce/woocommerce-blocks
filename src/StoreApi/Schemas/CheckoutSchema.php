@@ -100,7 +100,7 @@ class CheckoutSchema extends AbstractSchema {
 				'required'    => true,
 			],
 			'shipping_address' => [
-				'description' => __( 'Shipping address. If a shipping address is not provided, the billing address will be used instead.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Shipping address.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
 				'context'     => [ 'view', 'edit' ],
 				'properties'  => $this->shipping_address_schema->get_properties(),
