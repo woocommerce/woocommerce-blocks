@@ -20,17 +20,24 @@ import { shouldUpdateAddressStore } from './utils';
 export const useCustomerData = () => {
 	const { updateCustomerData } = useDispatch( storeKey );
 	const { addErrorNotice, removeNotice } = useStoreNotices();
+
+	// Grab the initial values from the store cart hook.
 	const {
-		billingAddress: cartBillingData,
-		shippingAddress: cartShippingAddress,
+		billingAddress: initialBillingAddress,
+		shippingAddress: initialShippingAddress,
 	} = useStoreCart();
 
+	// State of customer data is tracked here from this point, using the initial values from the useStoreCart hook.
 	const [ customerData, setCustomerData ] = useState( {
-		billingData: cartBillingData,
-		shippingAddress: cartShippingAddress,
+		billingData: initialBillingAddress,
+		shippingAddress: initialShippingAddress,
 	} );
-	const currentCustomerData = useRef( customerData );
-	const [ debouncedCustomerData ] = useDebounce( customerData, 400, {
+
+	// Store values last sent to the server in a ref to avoid requests unless important fields are changed.
+	const previousCustomerData = useRef( customerData );
+
+	// Debounce updates to the customerData state so it's not triggered excessively.
+	const [ debouncedCustomerData ] = useDebounce( customerData, 1000, {
 		// Default equalityFn is prevData === newData.
 		equalityFn: ( prevData, newData ) => {
 			return (
@@ -60,6 +67,9 @@ export const useCustomerData = () => {
 		} );
 	}, [] );
 
+	/**
+	 * Set shipping data.
+	 */
 	const setShippingAddress = useCallback( ( newData ) => {
 		setCustomerData( ( prevState ) => ( {
 			...prevState,
@@ -68,54 +78,35 @@ export const useCustomerData = () => {
 	}, [] );
 
 	/**
-	 * This tracks the value of the shipping and billing addresses coming from the cart API.
-	 */
-	useEffect( () => {
-		if (
-			! isShallowEqual(
-				currentCustomerData.current.billingData,
-				cartBillingData
-			)
-		) {
-			currentCustomerData.current.billingData = cartBillingData;
-		}
-		if (
-			! isShallowEqual(
-				currentCustomerData.current.shippingAddress,
-				cartShippingAddress
-			)
-		) {
-			currentCustomerData.current.shippingAddress = cartShippingAddress;
-		}
-	}, [ cartBillingData, cartShippingAddress ] );
-
-	/**
 	 * This pushes changes to the API when the local state differs from the address in the cart.
 	 */
 	useEffect( () => {
+		// Only push updates when enough fields are populated.
 		if (
-			! (
-				shouldUpdateAddressStore(
-					currentCustomerData.current.billingData,
-					debouncedCustomerData.billingData
-				) ||
-				shouldUpdateAddressStore(
-					currentCustomerData.current.shippingAddress,
-					debouncedCustomerData.shippingAddress
-				)
+			! shouldUpdateAddressStore(
+				previousCustomerData.current.billingData,
+				debouncedCustomerData.billingData
+			) &&
+			! shouldUpdateAddressStore(
+				previousCustomerData.current.shippingAddress,
+				debouncedCustomerData.shippingAddress
 			)
 		) {
 			return;
 		}
-		removeNotice( 'checkout' );
+		previousCustomerData.current = debouncedCustomerData;
 		updateCustomerData( {
 			billing_address: debouncedCustomerData.billingData,
 			shipping_address: debouncedCustomerData.shippingAddress,
-		} ).catch( ( response ) => {
-			addErrorNotice( formatStoreApiErrorMessage( response ), {
-				id: 'checkout',
+		} )
+			.then( () => {
+				removeNotice( 'checkout' );
+			} )
+			.catch( ( response ) => {
+				addErrorNotice( formatStoreApiErrorMessage( response ), {
+					id: 'checkout',
+				} );
 			} );
-		} );
 	}, [
 		debouncedCustomerData,
 		addErrorNotice,

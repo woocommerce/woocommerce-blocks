@@ -24,7 +24,6 @@ const ValidatedTextInput = ( {
 	validateOnMount = true,
 	focusOnMount = false,
 	onChange,
-	onBlur = ( event ) => void event,
 	showError = true,
 	...rest
 } ) => {
@@ -107,8 +106,7 @@ const ValidatedTextInput = ( {
 				'has-error': hasError,
 			} ) }
 			id={ textInputId }
-			onBlur={ ( event ) => {
-				onBlur( event );
+			onBlur={ () => {
 				validateInput( false );
 			} }
 			feedback={
@@ -127,7 +125,6 @@ const ValidatedTextInput = ( {
 
 ValidatedTextInput.propTypes = {
 	onChange: PropTypes.func.isRequired,
-	onBlur: PropTypes.func,
 	id: PropTypes.string,
 	value: PropTypes.string,
 	ariaDescribedBy: PropTypes.string,
