@@ -3,7 +3,6 @@
  */
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { decodeEntities } from '@wordpress/html-entities';
 import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
@@ -80,8 +79,6 @@ export const Block = ( {
 		);
 	}
 
-	const productName = decodeEntities( product.name );
-
 	return (
 		// @ts-ignore
 		<TagName
@@ -100,7 +97,7 @@ export const Block = ( {
 					[ titleClasses ]: isFeaturePluginBuild(),
 				} ) }
 				disabled={ ! productLink }
-				name={ productName }
+				name={ product.name }
 				permalink={ product.permalink }
 				rel={ productLink ? 'nofollow' : null }
 				style={ gatedStyledText( {
