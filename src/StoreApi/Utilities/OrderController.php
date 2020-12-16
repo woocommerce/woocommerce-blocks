@@ -344,7 +344,7 @@ class OrderController {
 		];
 
 		if ( $current_locale ) {
-			foreach ( $locale_address_fields as $key => $field ) {
+			foreach ( $current_locale as $key => $field ) {
 				if ( isset( $address_fields[ $key ] ) ) {
 					$address_fields[ $key ]['label']    = isset( $field['label'] ) ? $field['label'] : $address_fields[ $key ]['label'];
 					$address_fields[ $key ]['required'] = isset( $field['required'] ) ? $field['required'] : $address_fields[ $key ]['required'];
