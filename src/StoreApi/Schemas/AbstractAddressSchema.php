@@ -82,7 +82,7 @@ abstract class AbstractAddressSchema extends AbstractSchema {
 	 *
 	 * @param array            $address Value being sanitized.
 	 * @param \WP_REST_Request $request The Request.
-	 * @param string           $param THe param being sanitized.
+	 * @param string           $param The param being sanitized.
 	 * @return array
 	 */
 	public function sanitize_callback( $address, $request, $param ) {
