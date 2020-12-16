@@ -12,6 +12,7 @@ import { getColorClassName, getFontSizeClass } from '@wordpress/block-editor';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { gatedStyledText } from '@woocommerce/atomic-utils';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
+import ProductName from '@woocommerce/base-components/product-name';
 
 /**
  * Internal dependencies
@@ -94,33 +95,19 @@ export const Block = ( {
 				}
 			) }
 		>
-			{ productLink ? (
-				<a
-					href={ product.permalink }
-					rel="nofollow"
-					className={ classnames( {
-						[ titleClasses ]: isFeaturePluginBuild(),
-					} ) }
-					style={ gatedStyledText( {
-						color: customColor,
-						fontSize: customFontSize,
-					} ) }
-				>
-					{ productName }
-				</a>
-			) : (
-				<span
-					className={ classnames( {
-						[ titleClasses ]: isFeaturePluginBuild(),
-					} ) }
-					style={ gatedStyledText( {
-						color: customColor,
-						fontSize: customFontSize,
-					} ) }
-				>
-					{ productName }
-				</span>
-			) }
+			<ProductName
+				className={ classnames( {
+					[ titleClasses ]: isFeaturePluginBuild(),
+				} ) }
+				disabled={ ! productLink }
+				name={ productName }
+				permalink={ product.permalink }
+				rel={ productLink ? 'nofollow' : null }
+				style={ gatedStyledText( {
+					color: customColor,
+					fontSize: customFontSize,
+				} ) }
+			/>
 		</TagName>
 	);
 };
