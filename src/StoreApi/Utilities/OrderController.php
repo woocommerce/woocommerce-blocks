@@ -216,7 +216,7 @@ class OrderController {
 		$billing_address  = $order->get_address( 'billing' );
 		$shipping_address = $order->get_address( 'shipping' );
 
-		if ( $needs_shipping && ! $this->validate_allowed_country( $shipping_address['country'], wc()->countries->get_shipping_countries() ) ) {
+		if ( $needs_shipping && ! $this->validate_allowed_country( $shipping_address['country'], (array) wc()->countries->get_shipping_countries() ) ) {
 			throw new RouteException(
 				'woocommerce_rest_invalid_address_country',
 				sprintf(
@@ -231,7 +231,7 @@ class OrderController {
 			);
 		}
 
-		if ( ! $this->validate_allowed_country( $billing_address['country'], wc()->countries->get_allowed_countries() ) ) {
+		if ( ! $this->validate_allowed_country( $billing_address['country'], (array) wc()->countries->get_allowed_countries() ) ) {
 			throw new RouteException(
 				'woocommerce_rest_invalid_address_country',
 				sprintf(
@@ -285,15 +285,8 @@ class OrderController {
 	 * @param array  $allowed_countries List of valid country codes.
 	 * @return boolean True if valid.
 	 */
-	protected function validate_allowed_country( $country, $allowed_countries ) {
-		if (
-			is_array( $allowed_countries ) &&
-			count( $allowed_countries ) > 0 &&
-			! array_key_exists( $country, $allowed_countries )
-		) {
-			return false;
-		}
-		return true;
+	protected function validate_allowed_country( $country, array $allowed_countries ) {
+		return array_key_exists( $country, $allowed_countries );
 	}
 
 	/**
