@@ -8,6 +8,9 @@ This is the feature plugin for WooCommerce + Gutenberg. This plugin serves as a 
 
 Use this plugin if you want access to the bleeding edge of available blocks for WooCommerce. However, stable blocks are bundled into WooCommerce, and can be added from the "WooCommerce" section in the block inserter.
 
+- [WCCOM product page](https://woocommerce.com/products/woocommerce-gutenberg-products-block/)
+- [User documentation](https://docs.woocommerce.com/document/woocommerce-blocks/)
+
 ## Table of Contents <!-- omit in toc -->
 
 - [Documentation](#documentation)
