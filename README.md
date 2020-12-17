@@ -1,4 +1,4 @@
-# WooCommerce Product Blocks <!-- omit in toc -->
+# WooCommerce Blocks <!-- omit in toc -->
 
 [![Latest Tag](https://img.shields.io/github/tag/woocommerce/woocommerce-gutenberg-products-block.svg?style=flat&label=Latest%20Tag)](https://github.com/woocommerce/woocommerce-gutenberg-products-block/releases)
 [![Travis](https://travis-ci.com/woocommerce/woocommerce-gutenberg-products-block.svg?branch=trunk)](https://travis-ci.com/woocommerce/woocommerce-gutenberg-products-block)
@@ -69,6 +69,6 @@ Other useful docs to explore:
 -   [`apiFetch`](https://wordpress.org/gutenberg/handbook/designers-developers/developers/packages/packages-api-fetch/)
 -   [`@wordpress/editor`](https://github.com/WordPress/gutenberg/blob/master/packages/editor/README.md)
 
-## Vision for the Feature
+## Long-term vision
 
-Users should be able to insert a variety of products from their store (specific products, products in a category, with assorted layouts and visual styles, etc.) into their post content using a simple and powerful visual editor.
+WooCommerce Blocks are the easiest, most flexible way to build your store user interface and showcase your products.
