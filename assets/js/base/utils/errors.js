@@ -48,8 +48,11 @@ export const formatStoreApiErrorMessage = ( response ) => {
 		}
 	}
 
-	return response?.message || __(
-		'Something went wrong. Please contact us to get assistance.',
-		'woo-gutenberg-products-block'
+	return (
+		response?.message ||
+		__(
+			'Something went wrong. Please contact us to get assistance.',
+			'woo-gutenberg-products-block'
+		)
 	);
 };
