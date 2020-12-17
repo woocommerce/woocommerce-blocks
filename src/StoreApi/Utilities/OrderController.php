@@ -129,20 +129,22 @@ class OrderController {
 	 * @param \WC_Order $order Order object.
 	 */
 	protected function validate_coupons( \WC_Order $order ) {
-		$coupon_errors = [];
 		$coupon_codes  = $order->get_coupon_codes();
-		$coupons       = array_map( [ $this, 'get_coupon' ], $coupon_codes );
+		$coupons       = array_filter( array_map( [ $this, 'get_coupon' ], $coupon_codes ) );
 		$validators    = [ 'validate_coupon_email_restriction', 'validate_coupon_usage_limit' ];
+		$coupon_errors = [];
 
 		foreach ( $coupons as $coupon ) {
-			$coupon = new \WC_Coupon( $coupon_code );
-
-			foreach ( $validators as $validator ) {
-				try {
-					$this->$validator( $coupon, $order );
-				} catch ( Exception $error ) {
-					$coupon_errors[ $coupon->get_code() ] = $error->getMessage();
-				}
+			try {
+				array_walk(
+					$validators,
+					function( $validator, $index, $params ) {
+						call_user_func_array( [ $this, $validator ], $params );
+					},
+					[ $coupon, $order ]
+				);
+			} catch ( Exception $error ) {
+				$coupon_errors[ $coupon->get_code() ] = $error->getMessage();
 			}
 		}
 
@@ -367,7 +369,7 @@ class OrderController {
 	 * @param \WC_Coupon $coupon Coupon object applied to the cart.
 	 * @param \WC_Order  $order Order object.
 	 */
-	protected function validate_coupon_email_restriction( \WC_Coupon $coupon, $order ) {
+	protected function validate_coupon_email_restriction( \WC_Coupon $coupon, \WC_Order $order ) {
 		$restrictions = $coupon->get_email_restrictions();
 
 		if ( ! empty( $restrictions ) && $order->get_billing_email() && ! wc()->cart->is_coupon_emails_allowed( [ $order->get_billing_email() ], $restrictions ) ) {
@@ -382,7 +384,7 @@ class OrderController {
 	 * @param \WC_Coupon $coupon Coupon object applied to the cart.
 	 * @param \WC_Order  $order Order object.
 	 */
-	protected function validate_coupon_usage_limit( \WC_Coupon $coupon, $order ) {
+	protected function validate_coupon_usage_limit( \WC_Coupon $coupon, \WC_Order $order ) {
 		$coupon_usage_limit = $coupon->get_usage_limit_per_user();
 
 		if ( $coupon_usage_limit > 0 ) {
