@@ -3,7 +3,7 @@
  */
 import PropTypes from 'prop-types';
 import { decodeEntities } from '@wordpress/html-entities';
-import classNames from 'classnames';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -11,13 +11,13 @@ import classNames from 'classnames';
 import './style.scss';
 
 const ProductName = ( {
-	className,
-	name,
-	permalink,
+	className = '',
 	disabled = false,
+	name,
+	permalink = '',
 	...props
 } ) => {
-	const classes = classNames( 'wc-block-components-product-name', className );
+	const classes = classnames( 'wc-block-components-product-name', className );
 	return disabled ? (
 		<span className={ classes } { ...props }>
 			{ decodeEntities( name ) }

@@ -116,9 +116,9 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 			</td>
 			<td className="wc-block-cart-item__product">
 				<ProductName
-					permalink={ permalink }
-					name={ name }
 					disabled={ isPendingDelete || isProductHiddenFromCatalog }
+					name={ name }
+					permalink={ permalink }
 				/>
 				{ showBackorderBadge ? (
 					<ProductBackorderBadge />

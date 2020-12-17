@@ -3,6 +3,7 @@
 exports[`ProductName should merge classes and props 1`] = `
 <a
   className="wc-block-components-product-name lorem-ipsum"
+  href="/"
   rel="nofollow"
 >
   Test product
@@ -20,6 +21,7 @@ exports[`ProductName should not render a link if disabled is true 1`] = `
 exports[`ProductName should render a link if disabled is false 1`] = `
 <a
   className="wc-block-components-product-name"
+  href="/"
 >
   Test product
 </a>
@@ -28,6 +30,7 @@ exports[`ProductName should render a link if disabled is false 1`] = `
 exports[`ProductName should render a link if disabled is not defined 1`] = `
 <a
   className="wc-block-components-product-name"
+  href="/"
 >
   Test product
 </a>
