@@ -25,6 +25,33 @@ warning () {
 	error "You must specify a branch to fix, for example: npm run fix-package-lock your/branch";
 }
 
+echo -e "${YELLOW_BOLD} ___ ___ ___
+|   |   |   |
+|___|___|___|
+|   |   |   |
+|___|___|___|
+|   |   |   |
+|___|___|___|
+
+FIX PACKAGE LOCK
+================
+This script will attempt to rebase a Renovate PR and update the package.lock file.
+Usage: npm run fix-package-lock branch/name
+${COLOR_RESET}"
+
+echo -e "${RED_BOLD}BEFORE PROCEEDING\n=================
+You should check the PR on GitHub to see if it already has conflicts with trunk.
+If it does, use the checkbox in the PR to force Renovate to rebase it for you.
+Once the PR has been rebased, you can run this script, and then do a squash merge on GitHub.${COLOR_RESET}"
+
+printf "Ready to proceed? [y/N]: "
+read -r PROCEED
+echo
+
+if [ "$(echo "${PROCEED:-n}" | tr "[:upper:]" "[:lower:]")" != "y" ]; then
+	exit
+fi
+
 git fetch
 
 if ! git checkout $1
@@ -38,11 +65,12 @@ status "Removing package-lock.json...";
 rm package-lock.json
 
 status "Installing dependencies...";
+npm cache verify
 npm install
 
 status "Comitting updated package-lock.json...";
 git add package-lock.json
 git commit -m 'update package-lock.json'
-git push -f
+git push --force-with-lease
 
 success "Done. Package Lock has been updated. 🎉"
