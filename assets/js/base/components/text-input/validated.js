@@ -114,8 +114,8 @@ const ValidatedTextInput = ( {
 			}
 			ref={ inputRef }
 			onChange={ ( val ) => {
-				onChange( val );
 				hideValidationError( errorId );
+				onChange( val );
 			} }
 			ariaDescribedBy={ describedBy }
 			{ ...rest }
