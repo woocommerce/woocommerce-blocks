@@ -464,11 +464,23 @@ const getStylingConfig = ( options = {} ) => {
 					test: /\/node_modules\/.*?style\.s?css$/,
 					use: [
 						MiniCssExtractPlugin.loader,
-						{ loader: 'css-loader', options: { importLoaders: 1 } },
-						'postcss-loader',
+						{
+							loader: 'css-loader',
+							options: {
+								importLoaders: 1,
+								sourceMap: true,
+							},
+						},
+						{
+							loader: 'postcss-loader',
+							options: {
+								sourceMap: true,
+							},
+						},
 						{
 							loader: 'sass-loader',
-							query: {
+							options: {
+								sourceMap: true,
 								includePaths: [ 'node_modules' ],
 								data: [
 									'colors',
@@ -492,11 +504,23 @@ const getStylingConfig = ( options = {} ) => {
 					exclude: /node_modules/,
 					use: [
 						MiniCssExtractPlugin.loader,
-						{ loader: 'css-loader', options: { importLoaders: 1 } },
-						'postcss-loader',
+						{
+							loader: 'css-loader',
+							options: {
+								importLoaders: 1,
+								sourceMap: true,
+							},
+						},
+						{
+							loader: 'postcss-loader',
+							options: {
+								sourceMap: true,
+							},
+						},
 						{
 							loader: 'sass-loader',
-							query: {
+							options: {
+								sourceMap: true,
 								includePaths: [ 'assets/css/abstracts' ],
 								data: [
 									'_colors',
