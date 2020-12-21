@@ -62,7 +62,6 @@ jobs:
           sudo chmod -R 767 ./
           npm run wp-env start
           npm run wp-env clean all
-          npm run wp-env run tests wp rewrite flush
           sudo chmod -R 767 /home/runner/wp-env/
           npm run wp-env run tests-cli "wp plugin install gutenberg --activate"
           npm install @wordpress/e2e-test-utils@latest
