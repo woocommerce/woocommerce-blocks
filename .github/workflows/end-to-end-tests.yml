@@ -118,7 +118,7 @@ jobs:
           WP_VERSION: 5.6-branch
         run: |
           composer install --no-dev
-          JSON='{"phpVersion": "8"}'         
+          JSON='{"phpVersion": "8.0"}'         
           sudo chmod -R 767 ./
           npm run wp-env start
           npm run wp-env clean all
@@ -133,7 +133,7 @@ jobs:
           WP_VERSION: 5.6-branch
         run: |
           composer install --no-dev
-          JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "phpVersion": "8"}'
+          JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "phpVersion": "8.0"}'
           echo $JSON > .wp-env.override.json
           sudo chmod -R 767 ./
           npm run wp-env start
@@ -148,7 +148,7 @@ jobs:
           WP_VERSION: 5.5-branch
         run: |
           composer install --no-dev
-          JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "phpVersion": "8"}'
+          JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "phpVersion": "8.0"}'
           echo $JSON > .wp-env.override.json
           sudo chmod -R 767 ./
           sudo chmod -R 767 /home/runner/wp-env/
@@ -163,7 +163,7 @@ jobs:
           WP_VERSION: 5.4-branch
         run: |
           composer install --no-dev
-          JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "phpVersion": "8"}'
+          JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "phpVersion": "8.0"}'
           echo $JSON > .wp-env.override.json
           sudo chmod -R 767 ./
           sudo chmod -R 767 /home/runner/wp-env/
