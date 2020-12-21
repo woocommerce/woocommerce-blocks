@@ -45,10 +45,10 @@ jobs:
 #          sudo apt-get update
 #          sudo apt-get --assume-yes install libkrb5-dev
 #          
-#      - name: Npm install and build
-#        run: |
-#          npm ci
-#          FORCE_REDUCED_MOTION=true npm run build
+      - name: Npm install and build
+        run: |
+          npm ci
+          FORCE_REDUCED_MOTION=true npm run build:e2e
       - name: E2E Tests (WP 5.6 with Gutenberg plugin)
         env:
           WOOCOMMERCE_BLOCKS_PHASE: 3
@@ -57,14 +57,11 @@ jobs:
           WP_VERSION: 5.6-branch
         run: |
           composer install --no-dev
-          npm ci
-          npm run build:e2e-test
           sudo chmod -R 767 ./
           npm run wp-env start
           npm run wp-env clean all
           sudo chmod -R 767 /home/runner/wp-env/
           npm run wp-env run tests-cli "wp plugin install gutenberg --activate"
-          npm install @wordpress/e2e-test-utils@latest
           npm run test:e2e
 
       - name: E2E Tests (WP 5.6)
@@ -74,15 +71,12 @@ jobs:
           WP_VERSION: 5.6-branch
         run: |
           composer install --no-dev
-          npm ci
           JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'"}'
           echo $JSON > .wp-env.override.json
-          npm run build:e2e-test
           sudo chmod -R 767 ./
           npm run wp-env start
           sudo chmod -R 767 /home/runner/wp-env/
           npm run wp-env clean all
-          npm install @wordpress/e2e-test-utils@latest
           npm run test:e2e
 
       - name: E2E Tests (WP 5.5)
@@ -92,15 +86,12 @@ jobs:
           WP_VERSION: 5.5-branch
         run: |
           composer install --no-dev
-          npm ci
           JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'"}'
           echo $JSON > .wp-env.override.json
-          npm run build:e2e-test
           sudo chmod -R 767 ./
           sudo chmod -R 767 /home/runner/wp-env/
           npm run wp-env start
           npm run wp-env clean all
-          npm install @wordpress/e2e-test-utils@latest
           npm run test:e2e
 
       - name: E2E Tests (WP 5.4)
@@ -110,15 +101,12 @@ jobs:
           WP_VERSION: 5.4-branch
         run: |
           composer install --no-dev
-          npm ci
           JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'"}'
           echo $JSON > .wp-env.override.json
-          npm run build:e2e-test
           sudo chmod -R 767 ./
           sudo chmod -R 767 /home/runner/wp-env/
           npm run wp-env start
           npm run wp-env clean all
-          npm install @wordpress/e2e-test-utils@latest
           npm run test:e2e
 
       - name: Archive debug artifacts (screenshots, HTML snapshots)
