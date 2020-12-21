@@ -49,6 +49,37 @@ jobs:
         run: |
           npm ci
           FORCE_REDUCED_MOTION=true npm run build:e2e-test
+
+      - name: E2E Tests (WP 5.6 with Gutenberg plugin PHP 8)
+        env:
+          WOOCOMMERCE_BLOCKS_PHASE: 3
+          E2E_TESTS: 1
+          GUTENBERG_LATEST: true
+          WP_VERSION: 5.6-branch
+        run: |
+          composer install --no-dev
+          JSON='{"phpVersion": "8.0"}'         
+          sudo chmod -R 767 ./
+          npm run wp-env start
+          npm run wp-env clean all
+          sudo chmod -R 767 /home/runner/wp-env/
+          npm run wp-env run tests-cli "wp plugin install gutenberg --activate"
+          npm run test:e2e
+
+      - name: E2E Tests (WP 5.6 PHP 8)
+        env:
+          WOOCOMMERCE_BLOCKS_PHASE: 3
+          E2E_TESTS: 1
+          WP_VERSION: 5.6-branch
+        run: |
+          composer install --no-dev
+          JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "phpVersion": "8.0"}'
+          echo $JSON > .wp-env.override.json
+          sudo chmod -R 767 ./
+          npm run wp-env start
+          sudo chmod -R 767 /home/runner/wp-env/
+          npm run wp-env clean all
+          npm run test:e2e
           
       - name: E2E Tests (WP 5.6 with Gutenberg plugin)
         env:
@@ -103,67 +134,6 @@ jobs:
         run: |
           composer install --no-dev
           JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'"}'
-          echo $JSON > .wp-env.override.json
-          sudo chmod -R 767 ./
-          sudo chmod -R 767 /home/runner/wp-env/
-          npm run wp-env start
-          npm run wp-env clean all
-          npm run test:e2e
-          
-      - name: E2E Tests (WP 5.6 with Gutenberg plugin PHP 8)
-        env:
-          WOOCOMMERCE_BLOCKS_PHASE: 3
-          E2E_TESTS: 1
-          GUTENBERG_LATEST: true
-          WP_VERSION: 5.6-branch
-        run: |
-          composer install --no-dev
-          JSON='{"phpVersion": "8.0"}'         
-          sudo chmod -R 767 ./
-          npm run wp-env start
-          npm run wp-env clean all
-          sudo chmod -R 767 /home/runner/wp-env/
-          npm run wp-env run tests-cli "wp plugin install gutenberg --activate"
-          npm run test:e2e
-          
-      - name: E2E Tests (WP 5.6 PHP 8)
-        env:
-          WOOCOMMERCE_BLOCKS_PHASE: 3
-          E2E_TESTS: 1
-          WP_VERSION: 5.6-branch
-        run: |
-          composer install --no-dev
-          JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "phpVersion": "8.0"}'
-          echo $JSON > .wp-env.override.json
-          sudo chmod -R 767 ./
-          npm run wp-env start
-          sudo chmod -R 767 /home/runner/wp-env/
-          npm run wp-env clean all
-          npm run test:e2e   
-
-      - name: E2E Tests (WP 5.5 PHP 8)
-        env:
-          WOOCOMMERCE_BLOCKS_PHASE: 3
-          E2E_TESTS: 1
-          WP_VERSION: 5.5-branch
-        run: |
-          composer install --no-dev
-          JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "phpVersion": "8.0"}'
-          echo $JSON > .wp-env.override.json
-          sudo chmod -R 767 ./
-          sudo chmod -R 767 /home/runner/wp-env/
-          npm run wp-env start
-          npm run wp-env clean all
-          npm run test:e2e    
-
-      - name: E2E Tests (WP 5.4 PHP 8)
-        env:
-          WOOCOMMERCE_BLOCKS_PHASE: 3
-          E2E_TESTS: 1
-          WP_VERSION: 5.4-branch
-        run: |
-          composer install --no-dev
-          JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "phpVersion": "8.0"}'
           echo $JSON > .wp-env.override.json
           sudo chmod -R 767 ./
           sudo chmod -R 767 /home/runner/wp-env/
