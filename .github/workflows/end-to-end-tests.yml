@@ -98,8 +98,8 @@ jobs:
           npm run build:e2e-test
           sudo chmod -R 767 ./
           npm run wp-env clean all
-          npm run wp-env start
           sudo chmod -R 767 /home/runner/wp-env/
+          npm run wp-env start
           npm install @wordpress/e2e-test-utils@latest
           npm run test:e2e
 
@@ -116,8 +116,8 @@ jobs:
           npm run build:e2e-test
           sudo chmod -R 767 ./
           npm run wp-env clean all
-          npm run wp-env start
           sudo chmod -R 767 /home/runner/wp-env/
+          npm run wp-env start
           npm install @wordpress/e2e-test-utils@latest
           npm run test:e2e
 
