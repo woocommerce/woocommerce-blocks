@@ -102,7 +102,6 @@ const FeaturedCategory = ( {
 					} }
 					allowedTypes={ [ 'image' ] }
 					value={ mediaId }
-					disabled={ ! category }
 				/>
 			</BlockControls>
 		);
