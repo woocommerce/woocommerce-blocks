@@ -19,10 +19,7 @@ jobs:
 
     strategy:
       fail-fast: false
-#      matrix:
-#        wp_version: [1, 2, 3, 4]
-
-
+      
     steps:
       - uses: actions/checkout@v2
 
@@ -43,10 +40,10 @@ jobs:
         with:
           node-version: 14.x
 #          
-      - name: Get correct C lib for Nodegit
-        run: |
-          sudo apt-get update
-          sudo apt-get --assume-yes install libkrb5-dev
+#      - name: Get correct C lib for Nodegit
+#        run: |
+#          sudo apt-get update
+#          sudo apt-get --assume-yes install libkrb5-dev
 #          
 #      - name: Npm install and build
 #        run: |
@@ -61,10 +58,9 @@ jobs:
         run: |
           composer install --no-dev
           npm ci
-          JSON='{"config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
-          echo $JSON > .wp-env.override.json
           npm run build:e2e-test
           sudo chmod -R 767 ./
+          npm run wp-env clean all
           npm run wp-env start
           sudo chmod -R 767 /home/runner/wp-env/
           npm run wp-env run tests-cli "wp plugin install gutenberg --activate"
@@ -79,10 +75,11 @@ jobs:
         run: |
           composer install --no-dev
           npm ci
-          JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
+          JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'"}'
           echo $JSON > .wp-env.override.json
           npm run build:e2e-test
           sudo chmod -R 767 ./
+          npm run wp-env clean all
           npm run wp-env start
           sudo chmod -R 767 /home/runner/wp-env/
           npm install @wordpress/e2e-test-utils@latest
@@ -96,10 +93,11 @@ jobs:
         run: |
           composer install --no-dev
           npm ci
-          JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
+          JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'"}'
           echo $JSON > .wp-env.override.json
           npm run build:e2e-test
           sudo chmod -R 767 ./
+          npm run wp-env clean all
           npm run wp-env start
           sudo chmod -R 767 /home/runner/wp-env/
           npm install @wordpress/e2e-test-utils@latest
@@ -113,10 +111,11 @@ jobs:
         run: |
           composer install --no-dev
           npm ci
-          JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'", "config": { "SCRIPT_DEBUG": false, "JETPACK_AUTOLOAD_DEV": true } }'
+          JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'"}'
           echo $JSON > .wp-env.override.json
           npm run build:e2e-test
           sudo chmod -R 767 ./
+          npm run wp-env clean all
           npm run wp-env start
           sudo chmod -R 767 /home/runner/wp-env/
           npm install @wordpress/e2e-test-utils@latest
