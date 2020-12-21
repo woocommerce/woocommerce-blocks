@@ -2,14 +2,9 @@ name: End-to-End Tests
 
 on:
   push:
-    branches:
-      - add/github-actions-for-tests
-    paths-ignore:
-      - '**.md'
-#  push:
-#    branches: [master]
-#    paths-ignore:
-#    - '**.md'
+    branches: [trunk]
+  pull_request:
+    branches: [trunk]
 
 jobs:
   E2E_Tests:
@@ -39,16 +34,15 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14.x
-#          
-#      - name: Get correct C lib for Nodegit
-#        run: |
-#          sudo apt-get update
-#          sudo apt-get --assume-yes install libkrb5-dev
-#          
+          
       - name: Npm install and build
         run: |
           npm ci
           FORCE_REDUCED_MOTION=true npm run build:e2e-test
+          
+      - name: JS Unit Tests
+        run: |
+          npm run test
 
       - name: E2E Tests (WP 5.6 with Gutenberg plugin)
         env:
@@ -104,10 +98,3 @@ jobs:
           npm run wp-env start
           npm run wp-env clean all
           npm run test:e2e
-
-      - name: Archive debug artifacts (screenshots, HTML snapshots)
-        uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: failures-artifacts
-          path: artifacts
