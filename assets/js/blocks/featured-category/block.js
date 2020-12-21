@@ -101,7 +101,6 @@ const FeaturedCategory = ( {
 						} );
 					} }
 					allowedTypes={ [ 'image' ] }
-					value={ mediaId }
 				/>
 			</BlockControls>
 		);

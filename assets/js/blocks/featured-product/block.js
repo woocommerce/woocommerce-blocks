@@ -155,7 +155,6 @@ const FeaturedProduct = ( {
 						} );
 					} }
 					allowedTypes={ [ 'image' ] }
-					value={ mediaId }
 				/>
 
 				<ToolbarGroup
