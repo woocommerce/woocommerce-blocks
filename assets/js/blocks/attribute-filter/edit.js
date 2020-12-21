@@ -238,7 +238,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 			</p>
 			<Button
 				className="wc-block-attribute-filter__add-attribute-button"
-				isDefault
+				isSecondary
 				href={ getAdminLink(
 					'edit.php?post_type=product&page=product_attributes'
 				) }
