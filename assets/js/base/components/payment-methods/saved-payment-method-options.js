@@ -117,11 +117,6 @@ const SavedPaymentMethodOptions = () => {
 			.flatMap( ( type ) => {
 				const typeMethods = customerPaymentMethods[ type ];
 				return typeMethods.map( ( paymentMethod ) => {
-					const method =
-						standardMethods[ paymentMethod.method.gateway ];
-					if ( ! method?.supports?.savePaymentInfo ) {
-						return null;
-					}
 					const option =
 						type === 'cc' || type === 'echeck'
 							? getCcOrEcheckPaymentMethodOption(
