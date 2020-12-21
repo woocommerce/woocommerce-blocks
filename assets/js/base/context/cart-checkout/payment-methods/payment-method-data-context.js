@@ -88,9 +88,6 @@ export const usePaymentMethodDataContext = () => {
 const getCustomerPaymentMethods = ( availablePaymentMethods = {} ) => {
 	const customerPaymentMethods = getSetting( 'customerPaymentMethods', {} );
 	const paymentMethodKeys = Object.keys( customerPaymentMethods );
-	if ( paymentMethodKeys.length === 0 ) {
-		return {};
-	}
 	const enabledCustomerPaymentMethods = {};
 	paymentMethodKeys.forEach( ( type ) => {
 		const methods = customerPaymentMethods[ type ].filter(
