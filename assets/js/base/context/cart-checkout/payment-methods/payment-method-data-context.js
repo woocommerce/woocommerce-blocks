@@ -81,11 +81,11 @@ export const usePaymentMethodDataContext = () => {
  * Gets the payment methods saved for the current user after filtering out
  * disabled ones.
  *
- * @param {Object} availablePaymentMethods List of available payment methods.
+ * @param {Object[]} availablePaymentMethods List of available payment methods.
  * @return {Object} Object containing the payment methods saved for a specific
  *                  user which are available.
  */
-const getCustomerPaymentMethods = ( availablePaymentMethods = {} ) => {
+const getCustomerPaymentMethods = ( availablePaymentMethods = [] ) => {
 	const customerPaymentMethods = getSetting( 'customerPaymentMethods', {} );
 	const paymentMethodKeys = Object.keys( customerPaymentMethods );
 	if ( paymentMethodKeys.length === 0 ) {
@@ -95,8 +95,10 @@ const getCustomerPaymentMethods = ( availablePaymentMethods = {} ) => {
 	paymentMethodKeys.forEach( ( type ) => {
 		const methods = customerPaymentMethods[ type ].filter(
 			( { method: { gateway } } ) => {
-				const isAvailable = gateway in availablePaymentMethods;
-				return isAvailable && availablePaymentMethods[ gateway ].supports?.savePaymentInfo;
+				const isAvailable =
+					gateway in availablePaymentMethods;
+				return isAvailable &&
+					availablePaymentMethods[ gateway ].supports?.savePaymentInfo;
 			}
 		);
 		if ( methods.length ) {
@@ -181,7 +183,7 @@ export const PaymentMethodDataProvider = ( { children } ) => {
 		}
 		if (
 			! paymentMethodsInitialized ||
-			Object.keys( paymentData.paymentMethods ).length === 0
+			paymentData.paymentMethods.length === 0
 		) {
 			return {};
 		}
