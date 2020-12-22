@@ -1,7 +1,6 @@
 # WooCommerce Product Blocks <!-- omit in toc -->
 
 [![Latest Tag](https://img.shields.io/github/tag/woocommerce/woocommerce-gutenberg-products-block.svg?style=flat&label=Latest%20Tag)](https://github.com/woocommerce/woocommerce-gutenberg-products-block/releases)
-[![Travis](https://travis-ci.com/woocommerce/woocommerce-gutenberg-products-block.svg?branch=trunk)](https://travis-ci.com/woocommerce/woocommerce-gutenberg-products-block)
 [![View](https://img.shields.io/badge/Project%20Components-brightgreen.svg?style=flat)](https://woocommerce.github.io/woocommerce-gutenberg-products-block)
 ![JavaScript and CSS Linting](https://github.com/woocommerce/woocommerce-gutenberg-products-block/workflows/JavaScript%20and%20CSS%20Linting/badge.svg)
 ![PHP Coding Standards](https://github.com/woocommerce/woocommerce-gutenberg-products-block/workflows/PHP%20Coding%20Standards/badge.svg)
