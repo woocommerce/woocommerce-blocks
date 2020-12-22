@@ -61,7 +61,7 @@ In these cases, Blocks include some CSS resets to undo most default styles intro
 
 ### Hidden elements
 
-WC Blocks use the [`hidden` HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/hidden) in order to hide some elements from the UI so they are not displayed in screens neither read by assistive technologies. If your theme has some generic styles that tweak the CSS display property of a specific tag (ie: `div { display: block; }`). Make sure you account for the hidden case: `div[hidden] { display: none; }`.
+WC Blocks use the [`hidden` HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/hidden) to hide some elements from the UI so they are not displayed in screens neither read by assistive technologies. If your theme has some generic styles that tweak the CSS display property of blocks elements (ie: `div { display: block; }`), make sure you correctly handle the hidden attribute: `div[hidden] { display: none; }`.
 
 ### Legacy classes from WooCommerce (.price, .star-rating, .button...)
 
