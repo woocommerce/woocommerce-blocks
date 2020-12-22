@@ -61,7 +61,7 @@ jobs:
           
       - name: Composer install
         run: |
-          composer install --no-dev
+          composer install
           
       - name: Run PHP tests
         run: |
