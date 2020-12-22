@@ -1,11 +1,11 @@
-name: PHP WordPress Integration (Unit) Tests
+name: PHP Tests
 
 on:
   pull_request:
 
 jobs:
   PHP_Tests:
-    name: PHP WP Tests
+    name: PHP Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -19,4 +19,4 @@ jobs:
 
       - name: Build WooCommerce Blocks
         run: |
-          npm install
+          npm install --verbose
