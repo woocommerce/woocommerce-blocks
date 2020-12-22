@@ -23,4 +23,11 @@ jobs:
 
       - name: Build WooCommerce Blocks
         run: |
-          npm install --verbose
+          npm install
+          composer install
+          npm run build
+
+      - name: Run PHP tests
+        run: |
+          npm run phpunit
+
