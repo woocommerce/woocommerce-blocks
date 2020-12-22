@@ -41,6 +41,13 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          coverage: none
+          tools: composer
             
       - name: Use Node.js 14.x
         uses: actions/setup-node@v1
@@ -55,6 +62,10 @@ jobs:
       - name: Composer install
         run: |
           composer install --no-dev
+          
+      - name: Run PHP tests
+        run: |
+          npm run phpunit
           
       - name: JS Unit Tests
         run: |
