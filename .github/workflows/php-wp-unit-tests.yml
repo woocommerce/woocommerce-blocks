@@ -16,6 +16,10 @@ jobs:
         with:
           node-version: 14.x
 
+      - name: Install devtools for nodegit (dep) build 🤨
+        run: |
+          sudo apt-get update
+          sudo apt-get --assume-yes install libkrb5-dev
 
       - name: Build WooCommerce Blocks
         run: |
