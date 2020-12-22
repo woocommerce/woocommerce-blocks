@@ -133,6 +133,40 @@ class ProductCategories extends AbstractDynamicBlock {
 			return [];
 		}
 
+		if ( ! $attributes['hasEmpty'] ) {
+
+			if ( get_option( 'woocommerce_hide_out_of_stock_items' ) === 'yes' ) {
+				$terms = [ 'outofstock', 'exclude-from-catalog' ];
+			} else {
+				$terms = [ 'exclude-from-catalog' ];
+			}
+
+			foreach ( $categories as $i => $category ) {
+				$args = array(
+					'post_type' => 'product',
+					'tax_query' => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+						'relation' => 'AND',
+						array(
+							'taxonomy' => 'product_cat',
+							'field'    => 'term_id',
+							'terms'    => $category->term_id,
+						),
+						array(
+							'taxonomy' => 'product_visibility',
+							'field'    => 'name',
+							'terms'    => $terms,
+							'operator' => 'NOT IN',
+						),
+					),
+				);
+
+				$posts = get_posts( $args );
+				if ( ! $posts ) {
+					unset( $categories[ $i ] );
+				}
+			}
+		}
+
 		return $hierarchical ? $this->build_category_tree( $categories ) : $categories;
 	}
 
