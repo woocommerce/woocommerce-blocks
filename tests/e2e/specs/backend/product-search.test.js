@@ -31,7 +31,7 @@ describe( `${ block.name } Block`, () => {
 	it( 'can toggle field label', async () => {
 		await openDocumentSettingsSidebar();
 		await page.click( block.class );
-		const selector = `${ block.class } .wc-block-product-search__label`;
+		const selector = `${ block.class } .wc-block-product-search__labelzzz`;
 		const toggleLabel = await findLabelWithText(
 			'Show search field label'
 		);

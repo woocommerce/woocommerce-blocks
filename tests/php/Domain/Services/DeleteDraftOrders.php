@@ -119,7 +119,7 @@ class DeleteDraftOrders extends TestCase {
 		$this->assertEquals( 1, (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) from $wpdb->posts posts WHERE posts.post_status = '%s'", [ $status ] ) ) );
 
 		// The non-draft order should still be present
-		$this->assertEquals( 1, (int) $wpdb->get_var( "SELECT COUNT(ID) from $wpdb->posts posts WHERE posts.post_status = 'wc-on-hold'" ) );
+		$this->assertEquals( 2, (int) $wpdb->get_var( "SELECT COUNT(ID) from $wpdb->posts posts WHERE posts.post_status = 'wc-on-hold'" ) );
 	}
 
 	public function test_greater_than_batch_results_error() {
