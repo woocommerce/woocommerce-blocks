@@ -7,12 +7,15 @@ jobs:
   PHP_Tests:
     name: 'PHP WP Tests'
     runs-on: ubuntu-latest
+
   steps:
     - uses: actions/checkout@v2
+
     - name: 'Install Node.js'
       uses: actions/setup-node@v1
       with:
         node-version: 14.x
+
     - name: 'Build WooCommerce Blocks'
       run: |
         npm ci
