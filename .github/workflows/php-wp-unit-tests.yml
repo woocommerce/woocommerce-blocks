@@ -16,6 +16,13 @@ jobs:
         with:
           node-version: 14.x
 
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          coverage: none
+          tools: composer, cs2pr
+
       - name: Install devtools for nodegit (dep) build 🤨
         run: |
           sudo apt-get update
