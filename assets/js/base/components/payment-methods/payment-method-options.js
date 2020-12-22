@@ -107,37 +107,12 @@ const PaymentMethodOptions = () => {
 					setActivePaymentMethod( tabName );
 					removeNotice( 'wc-payment-error', noticeContexts.PAYMENTS );
 				} }
-				tabs={ Object.keys( paymentMethods ).map( ( name ) => {
-					const {
-						ariaLabel,
-						edit,
-						content,
-						label,
-						supports,
-					} = paymentMethods[ name ];
-					const component = isEditor ? edit : content;
-					return {
-						name,
-						title:
-							typeof label === 'string'
-								? label
-								: cloneElement( label, {
-										components:
-											paymentMethodInterface.components,
-								  } ),
-						ariaLabel,
-						content: (
-							<PaymentMethodTab
-								allowsSaving={ supports.savePaymentInfo }
-							>
-								{ cloneElement( component, {
-									activePaymentMethod,
-									...paymentMethodInterface,
-								} ) }
-							</PaymentMethodTab>
-						),
-					};
-				} ) }
+				tabs={ options.map( ( { value, label, content } ) => ( {
+					name: value,
+					title: label,
+					ariaLabel: paymentMethods[ value ].ariaLabel,
+					content,
+				} ) ) }
 				initialTabName={ activePaymentMethod }
 				ariaLabel={ __(
 					'Payment Methods',
