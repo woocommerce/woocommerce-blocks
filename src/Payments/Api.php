@@ -38,7 +38,7 @@ class Api {
 	 */
 	public function __construct( PaymentMethodRegistry $payment_method_registry, AssetDataRegistry $asset_registry ) {
 		$this->payment_method_registry = $payment_method_registry;
-		$this->asset_registry     = $asset_registry;
+		$this->asset_registry          = $asset_registry;
 		$this->init();
 	}
 
