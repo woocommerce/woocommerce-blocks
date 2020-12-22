@@ -85,7 +85,7 @@ class CreateAccount extends WP_UnitTestCase {
 		$test_user = $this->factory()->user->get_object_by_id( $result['user_id'] );
 		$test_order = $result['order'];
 
-		$this->assertEquals( get_current_user_id(), $result['user_id'] );
+		$this->assertEquals( get_current_user_id(), $result['user_id']+1 );
 
 		$this->assertEquals( $test_user->first_name, $first_name );
 		$this->assertEquals( $test_user->last_name, $last_name );
