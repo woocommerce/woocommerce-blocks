@@ -40,6 +40,10 @@ jobs:
           npm ci
           FORCE_REDUCED_MOTION=true npm run build:e2e-test
           
+      - name: Composer install
+        run: |
+          composer install --no-dev
+          
       - name: JS Unit Tests
         run: |
           npm run test
@@ -49,7 +53,6 @@ jobs:
           WOOCOMMERCE_BLOCKS_PHASE: 3
           WP_VERSION: 5.6-branch
         run: |
-          composer install --no-dev
           sudo chmod -R 767 ./
           npm run wp-env start
           npm run wp-env clean all
@@ -62,7 +65,6 @@ jobs:
           WOOCOMMERCE_BLOCKS_PHASE: 3
           WP_VERSION: 5.6-branch
         run: |
-          composer install --no-dev
           JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'"}'
           echo $JSON > .wp-env.override.json
           sudo chmod -R 767 ./
@@ -76,7 +78,6 @@ jobs:
           WOOCOMMERCE_BLOCKS_PHASE: 3
           WP_VERSION: 5.5-branch
         run: |
-          composer install --no-dev
           JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'"}'
           echo $JSON > .wp-env.override.json
           sudo chmod -R 767 ./
@@ -90,7 +91,6 @@ jobs:
           WOOCOMMERCE_BLOCKS_PHASE: 3
           WP_VERSION: 5.4-branch
         run: |
-          composer install --no-dev
           JSON='{"core": "WordPress/WordPress#'"$WP_VERSION"'"}'
           echo $JSON > .wp-env.override.json
           sudo chmod -R 767 ./
