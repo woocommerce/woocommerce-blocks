@@ -2,14 +2,13 @@
 	@include reset-typography();
 	@include with-translucent-border( 0 0 1px );
 	display: block;
-	padding: $gap-small $gap-small 0 #{$gap-larger * 2};
+	padding: $gap 0 $gap #{$gap-larger + 4};
 }
 
 .wc-block-components-radio-control__option-layout {
 	@include with-translucent-border( 0 0 1px );
 	display: table;
 	width: 100%;
-	padding-bottom: $gap-small;
 }
 
 .wc-block-components-radio-control__option .wc-block-components-radio-control__option-layout {
@@ -35,7 +34,6 @@
 
 .wc-block-components-radio-control__label,
 .wc-block-components-radio-control__secondary-label {
-	line-height: 20px;
 	// Currently, max() CSS function calls need to be wrapped with unquote.
 	// See: https://github.com/sass/sass/issues/2378#issuecomment-367490840
 	line-height: unquote("max(1rem, 20px)");
@@ -51,28 +49,28 @@
 .wc-block-components-radio-control {
 	.wc-block-components-radio-control__input {
 		appearance: none;
-		background: transparent;
+		background: #fff;
 		border: 2px solid currentColor;
 		border-radius: 50%;
 		display: inline-block;
 		height: 1.25rem;
-		left: $gap-large;
-		min-height: 20px;
-		min-width: 20px;
+		left: 0px;
+		min-height: 24px;
+		min-width: 24px;
 		position: absolute;
 		top: $gap-small;
 		width: 1.25rem;
 
 		&:checked::before {
-			background: currentColor;
+			background: #000;
 			border-radius: 50%;
 			content: "";
 			display: block;
 			height: 0.625em;
 			left: 50%;
 			margin: 0;
-			min-height: 10px;
-			min-width: 10px;
+			min-height: 8px;
+			min-width: 8px;
 			position: absolute;
 			top: 50%;
 			transform: translate(-50%, -50%);
@@ -81,6 +79,7 @@
 
 		.has-dark-controls & {
 			border-color: $controls-border-dark;
+			background-color: $input-background-dark;
 
 			&:checked::before {
 				background: $input-text-dark;
@@ -92,14 +91,14 @@
 		.wc-block-components-radio-control__input {
 			height: 1rem;
 			margin-top: 2px;
-			min-height: 16px;
-			min-width: 16px;
+			min-height: 24px;
+			min-width: 24px;
 			width: 1rem;
 
 			&:checked::before {
 				height: 0.5em;
-				min-height: 8px;
-				min-width: 8px;
+				min-height: 12px;
+				min-width: 12px;
 				width: 0.5em;
 			}
 		}
