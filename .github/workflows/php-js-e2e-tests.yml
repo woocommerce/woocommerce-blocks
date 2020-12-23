@@ -1,20 +1,16 @@
-name: PHP, JavaScript, and E2E tests
+name: Automated tests
 
 on:
   push:
     branches: [trunk]
   pull_request:
-    branches: [trunk]
 
 jobs:
-  E2E_Tests:
-    name: End to end tests
+  Setup:
+    name: Setup
 
     runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      
+    
     steps:
       - uses: actions/checkout@v2
 
@@ -48,28 +44,52 @@ jobs:
           php-version: 7.4
           coverage: none
           tools: composer
-            
+
       - name: Use Node.js 14.x
         uses: actions/setup-node@v1
         with:
           node-version: 14.x
-          
+
       - name: Npm install and build
         run: |
           npm ci
           FORCE_REDUCED_MOTION=true npm run build:e2e-test
-          
+
       - name: Composer install
         run: |
           composer install
+
+      - name: Blocks.init setup
+        run: |
+          echo 'woocommerce_blocks_phase = 3' > blocks.ini
           
+  PHPUnitTests:
+    name: PHP Unit Tests
+    needs: Setup
+    runs-on: ubuntu-latest
+
+    steps:
+
       - name: Run PHP tests
         run: |
           npm run phpunit
           
-      - name: JS Unit Tests
-        run: |
-          npm run test
+  JSUnitTests:
+    name: JavaScript Unit Tests
+    needs: Setup
+    runs-on: ubuntu-latest
+    
+    steps:
+    
+    - name: Run JavaScript Unit tests
+      run: |
+        npm run test
+    
+  JSE2ETests:
+    name: JavaScipt E2E Tests
+    needs: Setup
+    runs-on: ubuntu-latest
+    steps:
 
       - name: E2E Tests (WP 5.6 with Gutenberg plugin)
         env:
