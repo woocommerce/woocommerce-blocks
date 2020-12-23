@@ -58,8 +58,8 @@ jobs:
         run: |
           composer install
   
-  PHP74UnitTests:
-    name: PHP 7.4 Unit Tests
+  PHPUnitTests:
+    name: PHP Unit Tests
     needs: Setup
 
     runs-on: ubuntu-latest
@@ -74,93 +74,14 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ job.name }}-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-composer-${{ job.name }}-
+            ${{ runner.os }}-composer-
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: 7.4
-          coverage: none
-          tools: composer
-
-      - name: Composer install
-        run: |
-          composer install
-
-      - name: blocks.ini setup
-        run: |
-          echo 'woocommerce_blocks_phase = 3' > blocks.ini
-
-      - name: Run PHP Unit tests
-        run: |
-          npm run phpunit
-          
-  
-  PHP80UnitTests:
-    name: PHP 8.0 Unit Tests
-    needs: Setup
-
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ job.name }}-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-${{ job.name }}-
-
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.0
-          coverage: none
-          tools: composer
-
-      - name: Composer install
-        run: |
-          composer install
-
-      - name: blocks.ini setup
-        run: |
-          echo 'woocommerce_blocks_phase = 3' > blocks.ini
-
-      - name: Run PHP Unit tests
-        run: |
-          npm run phpunit
-          
-  PHP56UnitTests:
-    name: PHP 5.6 Unit Tests
-    needs: Setup
-
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ job.name }}-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-${{ job.name }}-
-
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 5.6
           coverage: none
           tools: composer
 
