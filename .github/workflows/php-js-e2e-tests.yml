@@ -127,6 +127,7 @@ jobs:
 
       - name: Composer install
         run: |
+          composer update
           composer install
 
       - name: blocks.ini setup
@@ -166,6 +167,7 @@ jobs:
 
       - name: Composer install
         run: |
+          composer update
           composer install
 
       - name: blocks.ini setup
