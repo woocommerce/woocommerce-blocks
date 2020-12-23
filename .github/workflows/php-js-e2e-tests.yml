@@ -89,7 +89,7 @@ jobs:
         run: |
           composer install
 
-      - name: Blocks.init setup
+      - name: blocks.ini setup
         run: |
           echo 'woocommerce_blocks_phase = 3' > blocks.ini
 
@@ -129,7 +129,7 @@ jobs:
           npm ci
           FORCE_REDUCED_MOTION=true npm run build:e2e-test
 
-      - name: Blocks.init setup
+      - name: blocks.ini setup
         run: |
           echo 'woocommerce_blocks_phase = 3' > blocks.ini
 
@@ -168,7 +168,7 @@ jobs:
           npm ci
           FORCE_REDUCED_MOTION=true npm run build:e2e-test
 
-      - name: Blocks.init setup
+      - name: blocks.ini setup
         run: |
           echo 'woocommerce_blocks_phase = 3' > blocks.ini
       - name: Get Composer Cache Directory
@@ -233,7 +233,7 @@ jobs:
           npm ci
           FORCE_REDUCED_MOTION=true npm run build:e2e-test
 
-      - name: Blocks.init setup
+      - name: blocks.ini setup
         run: |
           echo 'woocommerce_blocks_phase = 3' > blocks.ini
       - name: Get Composer Cache Directory
@@ -299,7 +299,7 @@ jobs:
           npm ci
           FORCE_REDUCED_MOTION=true npm run build:e2e-test
 
-      - name: Blocks.init setup
+      - name: blocks.ini setup
         run: |
           echo 'woocommerce_blocks_phase = 3' > blocks.ini
       - name: Get Composer Cache Directory
@@ -365,7 +365,7 @@ jobs:
           npm ci
           FORCE_REDUCED_MOTION=true npm run build:e2e-test
 
-      - name: Blocks.init setup
+      - name: blocks.ini setup
         run: |
           echo 'woocommerce_blocks_phase = 3' > blocks.ini
       - name: Get Composer Cache Directory
