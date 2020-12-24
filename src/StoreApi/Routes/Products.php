@@ -9,7 +9,7 @@ use Automattic\WooCommerce\Blocks\StoreApi\Utilities\ProductQuery;
  *
  * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
-class Products extends AbstractCartRoute {
+class Products extends AbstractRoute {
 	/**
 	 * Get the path of this REST route.
 	 *
@@ -44,6 +44,8 @@ class Products extends AbstractCartRoute {
 	 * @return \WP_REST_Response
 	 */
 	protected function get_route_response( \WP_REST_Request $request ) {
+		// we load so that we have the same session, this is done so that Add to Cart can function.
+		$this->maybe_load_cart();
 		$response      = new \WP_REST_Response();
 		$product_query = new ProductQuery();
 
