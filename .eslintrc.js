@@ -1,5 +1,8 @@
 module.exports = {
-	extends: [ 'plugin:@woocommerce/eslint-plugin/recommended' ],
+	extends: [
+		'plugin:@woocommerce/eslint-plugin/recommended',
+		'plugin:you-dont-need-lodash-underscore/compatible',
+	],
 	globals: {
 		wcStoreApiNonce: 'readonly',
 		fetchMock: true,
