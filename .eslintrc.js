@@ -25,4 +25,12 @@ module.exports = {
 		'react-hooks/exhaustive-deps': 'error',
 		'react/jsx-fragments': [ 'error', 'syntax' ],
 	},
+	overrides: [
+		{
+			files: [ '**/bin/**.js', '**/storybook/**.js', '**/stories/**.js' ],
+			rules: {
+				'you-dont-need-lodash-underscore/omit': 'off',
+			},
+		},
+	],
 };
