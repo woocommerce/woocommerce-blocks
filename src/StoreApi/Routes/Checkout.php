@@ -89,7 +89,7 @@ class Checkout extends AbstractRoute {
 										'type' => 'string',
 									],
 									'value' => [
-										'type' => [ 'string', 'boolean' ],
+										'type' => [ 'string', 'boolean', 'integer' ],
 									],
 								],
 							],
