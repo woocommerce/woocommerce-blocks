@@ -5,7 +5,6 @@ import { isWpVersion } from '..';
 import { allSettings } from '../settings-init';
 
 describe( 'isWpVersion', () => {
-	let initial = true;
 	it.each`
 		version               | operator | result
 		${ '5.3-beta1' }      | ${ '<' } | ${ true }
@@ -21,12 +20,6 @@ describe( 'isWpVersion', () => {
 		( { version, operator, result } ) => {
 			// eslint-disable-next-line
 			allSettings[ 'wpVersion' ] = version;
-			// deprecated caches messages once per session, so we only check
-			// console warn on initial call.
-			if ( initial ) {
-				expect( console ).toHaveWarned();
-			}
-			initial = false;
 			expect( isWpVersion( '5.3', operator ) ).toBe( result );
 		}
 	);
