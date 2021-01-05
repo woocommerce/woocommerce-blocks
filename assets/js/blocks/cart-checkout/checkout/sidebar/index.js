@@ -3,7 +3,6 @@
  */
 import {
 	OrderSummary,
-	ExperimentalOrderMeta,
 	Subtotal,
 	TotalsFees,
 	TotalsCoupon,
@@ -12,6 +11,7 @@ import {
 	TotalsShipping,
 	TotalsTaxes,
 } from '@woocommerce/base-components/cart-checkout';
+import { ExperimentalOrderMeta } from '@woocommerce/checkout';
 import { useShippingDataContext } from '@woocommerce/base-context';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import {
