@@ -3,7 +3,7 @@
  */
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { ExperimentalOrderMeta } from '@woocommerce/checkout';
+import { ExperimentalOrderMeta } from '@woocommerce/blocks-checkout';
 
 const Sidebar = ( { children, className } ) => {
 	return (
