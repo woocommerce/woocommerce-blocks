@@ -7,7 +7,7 @@
 
 	.wc-block-components-checkbox__input[type="checkbox"] {
 		appearance: none;
-		border: 2px solid #50575E;
+		border: 2px solid #50575e;
 		border-radius: 2px;
 		height: em(24px);
 		width: em(24px);
@@ -21,7 +21,7 @@
 
 		&:checked {
 			background: #fff;
-			border-color: #50575E;;
+			border-color: #50575e;
 		}
 
 		&:not(:checked) + .wc-block-components-checkbox__mark {
