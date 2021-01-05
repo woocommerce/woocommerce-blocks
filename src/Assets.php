@@ -59,7 +59,6 @@ class Assets {
 		$asset_api->register_script( 'wc-blocks-registry', 'build/wc-blocks-registry.js', [], false );
 		$asset_api->register_script( 'wc-shared-context', 'build/wc-shared-context.js', [], false );
 		$asset_api->register_script( 'wc-shared-hocs', 'build/wc-shared-hocs.js', [], false );
-		$asset_api->register_script( 'wc-blocks-checkout', 'build/wc-blocks-checkout.js', [], false );
 
 		// Inline data.
 		wp_add_inline_script(
@@ -96,6 +95,7 @@ class Assets {
 		}
 
 		if ( Package::feature()->is_feature_plugin_build() ) {
+			$asset_api->register_script( 'wc-blocks-checkout', 'build/wc-blocks-checkout.js', [], false );
 			$asset_api->register_script( 'wc-checkout-block', $asset_api->get_block_asset_build_path( 'checkout' ), $block_dependencies );
 			$asset_api->register_script( 'wc-cart-block', $asset_api->get_block_asset_build_path( 'cart' ), $block_dependencies );
 		}
