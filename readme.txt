@@ -85,6 +85,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 4.2.0 - 2021-01-05 =
+
+#### Bug Fixes
+
+- Fix an error that was blocking checkout with some user saved payment methods. ([3627](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3627))
+
 = 4.1.0 - 2020-12-24 =
 
 #### Enhancements
@@ -112,8 +118,6 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 - Removed compatibility with packages in WordPress 5.3. ([3541](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3541))
 - Bumped the minimum WP required version to 5.4. ([3537](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3537))
-
-
 
 = 4.0.0 - 2020-12-07 =
 
