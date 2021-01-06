@@ -14,8 +14,8 @@ class BlockErrorBoundary extends Component {
 			return {
 				errorMessage: (
 					<>
-						<strong>{ error.status }</strong>:&nbsp;
-						{ error.statusText }
+						<strong>{ error.status }</strong>
+						{ ': ' + error.statusText }
 					</>
 				),
 				hasError: true,
@@ -26,9 +26,13 @@ class BlockErrorBoundary extends Component {
 	}
 
 	render() {
+		const { renderError } = this.props;
 		const { errorMessage, hasError } = this.state;
 
 		if ( hasError ) {
+			if ( typeof renderError === 'function' ) {
+				return renderError( errorMessage );
+			}
 			return <p>{ errorMessage }</p>;
 		}
 
