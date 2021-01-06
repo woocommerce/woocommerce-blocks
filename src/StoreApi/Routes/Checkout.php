@@ -1,6 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
 
+use Automattic\WooCommerce\Blocks\StoreApi\Utilities\StockAvailabilityException;
 use \Exception;
 use \WP_Error;
 use \WP_REST_Server;
@@ -190,6 +191,7 @@ class Checkout extends AbstractRoute {
 	 * 5. Process Payment
 	 *
 	 * @throws RouteException On error.
+	 * @throws StockAvailabilityException On error.
 	 * @param WP_REST_Request $request Request object.
 	 * @return WP_REST_Response
 	 */
@@ -253,15 +255,18 @@ class Checkout extends AbstractRoute {
 	/**
 	 * Get route response when something went wrong.
 	 *
-	 * @param string $error_code String based error code.
-	 * @param string $error_message User facing error message.
-	 * @param int    $http_status_code HTTP status. Defaults to 500.
-	 * @param array  $additional_data  Extra data (key value pairs) to expose in the error response.
+	 * @param string          $error_code String based error code.
+	 * @param string|WP_Error $error_message User facing error message.
+	 * @param int             $http_status_code HTTP status. Defaults to 500.
+	 * @param array           $additional_data  Extra data (key value pairs) to expose in the error response.
 	 * @return WP_Error WP Error object.
 	 */
 	protected function get_route_error_response( $error_code, $error_message, $http_status_code = 500, $additional_data = [] ) {
 		switch ( $http_status_code ) {
 			case 400:
+				if ( is_wp_error( $error_message ) ) {
+					return $error_message;
+				}
 				return new WP_Error(
 					$error_code,
 					$error_message,
@@ -276,6 +281,19 @@ class Checkout extends AbstractRoute {
 				// If there was a conflict, return the cart so the client can resolve it.
 				$controller = new CartController();
 				$cart       = $controller->get_cart_instance();
+
+				if ( is_wp_error( $error_message ) ) {
+					$error_message->add_data(
+						array_merge(
+							$error_message->error_data,
+							[
+								'status' => $http_status_code,
+								'cart'   => wc()->api->get_endpoint_data( '/wc/store/cart' ),
+							]
+						)
+					);
+					return $error_message;
+				}
 
 				return new WP_Error(
 					$error_code,
