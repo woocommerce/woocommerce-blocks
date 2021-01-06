@@ -468,21 +468,26 @@ const getStylingConfig = ( options = {} ) => {
 						'postcss-loader',
 						{
 							loader: 'sass-loader',
-							query: {
-								includePaths: [ 'node_modules' ],
-								data: [
-									'colors',
-									'breakpoints',
-									'variables',
-									'mixins',
-									'animations',
-									'z-index',
-								]
-									.map(
-										( imported ) =>
-											`@import "~@wordpress/base-styles/${ imported }";`
-									)
-									.join( ' ' ),
+							options: {
+								sassOptions: {
+									includePaths: [ 'node_modules' ],
+								},
+								additionalData: ( content ) => {
+									const styleImports = [
+										'colors',
+										'breakpoints',
+										'variables',
+										'mixins',
+										'animations',
+										'z-index',
+									]
+										.map(
+											( imported ) =>
+												`@import "~@wordpress/base-styles/${ imported }";`
+										)
+										.join( ' ' );
+									return styleImports + content;
+								},
 							},
 						},
 					],
@@ -496,19 +501,36 @@ const getStylingConfig = ( options = {} ) => {
 						'postcss-loader',
 						{
 							loader: 'sass-loader',
-							query: {
-								includePaths: [ 'assets/css/abstracts' ],
-								data: [
-									'_colors',
-									'_variables',
-									'_breakpoints',
-									'_mixins',
-								]
-									.map(
-										( imported ) =>
-											`@import "${ imported }";`
-									)
-									.join( ' ' ),
+							options: {
+								sassOptions: {
+									includePaths: [ 'assets/css/abstracts' ],
+								},
+								additionalData: ( content, loaderContext ) => {
+									const {
+										resourcePath,
+										rootContext,
+									} = loaderContext;
+									const relativePath = path.relative(
+										rootContext,
+										resourcePath
+									);
+
+									if (
+										relativePath.startsWith(
+											'assets/css/abstracts/'
+										)
+									) {
+										return content;
+									}
+
+									return (
+										'@import "_colors"; ' +
+										'@import "_variables"; ' +
+										'@import "_breakpoints"; ' +
+										'@import "_mixins"; ' +
+										content
+									);
+								},
 							},
 						},
 					],
