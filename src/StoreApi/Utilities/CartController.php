@@ -271,8 +271,8 @@ class CartController {
 					sprintf(
 						/* translators: %s: product names  */
 						_n(
-							'"%s" is out of stock and cannot be purchased.',
-							'"%s" are out of stock and cannot be purchased.',
+							'"%s" is out of stock and cannot be purchased. It has been removed from your cart.',
+							'"%s" are out of stock and cannot be purchased. They have been removed from your cart.',
 							count( $out_of_stock_products ),
 							'woo-gutenberg-products-block'
 						),
@@ -293,7 +293,12 @@ class CartController {
 					409,
 					sprintf(
 						/* translators: %s: product names  */
-						'"%s" cannot be purchased.',
+						_n(
+							'"%s" cannot be purchased. It has been removed from your cart.',
+							'"%s" cannot be purchased. They have been removed from your cart.',
+							count( $too_many_in_cart_products ),
+							'woo-gutenberg-products-block'
+						),
 						ArrayUtils::natural_language_join( $not_purchasable_product_names )
 					)
 				);
@@ -312,8 +317,8 @@ class CartController {
 					sprintf(
 					/* translators: %s: product names  */
 						_n(
-							'There are too many "%s" in the cart. Only 1 can be purchased. The quantity in your cart has been adjusted.',
-							'There are too many "%s" in the cart. Only 1 of each can be purchased. The quantities in your cart have been adjusted',
+							'There are too many "%s" in the cart. Only 1 can be purchased. The quantity in your cart has been reduced.',
+							'There are too many "%s" in the cart. Only 1 of each can be purchased. The quantities in your cart have been reduced',
 							count( $too_many_in_cart_products ),
 							'woo-gutenberg-products-block'
 						),
@@ -335,8 +340,8 @@ class CartController {
 					sprintf(
 						/* translators: %s: product names  */
 						_n(
-							'There is not enough "%s" in stock. Its quantity in your cart has been reduced.',
-							'There are not enough "%s" in stock. Their quantities in your cart have been reduced..',
+							'There is not enough "%s" in stock. The quantity in your cart has been reduced.',
+							'There are not enough "%s" in stock. The quantities in your cart have been reduced.',
 							count( $partial_out_of_stock_products ),
 							'woo-gutenberg-products-block'
 						),
