@@ -3,7 +3,7 @@
  */
 import { Component } from 'react';
 
-class BlockErrorBoundary extends Component {
+class CheckoutSlotErrorBoundary extends Component {
 	state = { errorMessage: '', hasError: false };
 
 	static getDerivedStateFromError( error ) {
@@ -40,4 +40,4 @@ class BlockErrorBoundary extends Component {
 	}
 }
 
-export default BlockErrorBoundary;
+export default CheckoutSlotErrorBoundary;
