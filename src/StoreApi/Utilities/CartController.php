@@ -474,6 +474,8 @@ class CartController {
 				$errors[] = new \WP_Error( $error->getErrorCode(), $error->getMessage() );
 			} catch ( PartialOutOfStockException $error ) {
 				$errors[] = new \WP_Error( $error->getErrorCode(), $error->getMessage() );
+			} catch ( TooManyInCartException $error ) {
+				$errors[] = new \WP_Error( $error->getErrorCode(), $error->getMessage() );
 			}
 		}
 
