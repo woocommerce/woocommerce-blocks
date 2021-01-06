@@ -95,6 +95,12 @@ const getCoreConfig = ( options = {} ) => {
 						},
 					},
 				},
+				{
+					test: /\.s[c|a]ss$/,
+					use: {
+						loader: 'ignore-loader',
+					},
+				},
 			],
 		},
 		plugins: [
