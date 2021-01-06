@@ -2,6 +2,7 @@
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
 
 use Automattic\WooCommerce\Blocks\StoreApi\Schemas\AbstractSchema;
+use Automattic\WooCommerce\Blocks\StoreApi\Utilities\StockAvailabilityException;
 
 /**
  * AbstractRoute class.
@@ -72,6 +73,8 @@ abstract class AbstractRoute implements RouteInterface {
 			}
 		} catch ( RouteException $error ) {
 			$response = $this->get_route_error_response( $error->getErrorCode(), $error->getMessage(), $error->getCode(), $error->getAdditionalData() );
+		} catch ( StockAvailabilityException $error ) {
+			$response = $this->get_route_error_response( $error->getErrorCode(), $error->getError(), $error->getCode(), $error->getAdditionalData() );
 		} catch ( \Exception $error ) {
 			$response = $this->get_route_error_response( 'unknown_server_error', $error->getMessage(), 500 );
 		}
