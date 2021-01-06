@@ -2,7 +2,7 @@
 	"name": "@woocommerce/block-library",
 	"title": "WooCommerce Blocks",
 	"author": "Automattic",
-	"version": "4.0.0",
+	"version": "4.1.0",
 	"description": "WooCommerce blocks for the Gutenberg editor.",
 	"homepage": "https://github.com/woocommerce/woocommerce-gutenberg-products-block/",
 	"keywords": [
@@ -35,6 +35,7 @@
 		"explore": "source-map-explorer",
 		"labels:dry": "github-label-sync --labels ./.github/label-sync-config.json --allow-added-labels --dry-run woocommerce/woocommerce-gutenberg-products-block",
 		"labels:sync": "github-label-sync --labels ./.github/label-sync-config.json --allow-added-labels woocommerce/woocommerce-gutenberg-products-block",
+		"fix-package-lock": "./bin/fix-package-lock.sh",
 		"lint": "npm run lint:php && npm run lint:css && npm run lint:js",
 		"lint:ci": "npm run lint:js && npm run lint:css",
 		"lint:css": "stylelint 'assets/**/*.scss'",
