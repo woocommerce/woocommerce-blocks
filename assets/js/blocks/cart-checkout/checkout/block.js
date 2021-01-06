@@ -28,8 +28,6 @@ import {
 	CHECKOUT_ALLOWS_SIGNUP,
 } from '@woocommerce/block-settings';
 import { isWcVersion, getSetting } from '@woocommerce/settings';
-import { PluginArea } from '@wordpress/plugins';
-import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 
 /**
  * Internal dependencies

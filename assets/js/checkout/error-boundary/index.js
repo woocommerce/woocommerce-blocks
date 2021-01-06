@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { Component, Fragment } from 'react';
+import { Component } from 'react';
 
 class BlockErrorBoundary extends Component {
 	state = { errorMessage: '', hasError: false };
@@ -13,10 +13,10 @@ class BlockErrorBoundary extends Component {
 		) {
 			return {
 				errorMessage: (
-					<Fragment>
+					<>
 						<strong>{ error.status }</strong>:&nbsp;
 						{ error.statusText }
-					</Fragment>
+					</>
 				),
 				hasError: true,
 			};

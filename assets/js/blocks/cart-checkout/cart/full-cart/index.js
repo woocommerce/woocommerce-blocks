@@ -12,7 +12,6 @@ import {
 	TotalsFooterItem,
 	TotalsShipping,
 	TotalsTaxes,
-	ExperimentalOrderMeta,
 } from '@woocommerce/base-components/cart-checkout';
 import { ExperimentalOrderMeta } from '@woocommerce/checkout';
 import {
