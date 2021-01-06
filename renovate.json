@@ -15,7 +15,12 @@
 		{
 			"updateTypes": [ "minor", "patch", "pin", "digest" ],
 			"automerge": true
-		}
+		},
+		{
+			"updateTypes": [ "major", "minor", "patch", "pin", "digest" ],
+			"depTypeList": [ "devDependencies" ],
+			"automerge": true
+		  }
 	],
 	"rebaseWhen": "conflicted"
 }
