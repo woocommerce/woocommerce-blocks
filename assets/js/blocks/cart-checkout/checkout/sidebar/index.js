@@ -11,7 +11,6 @@ import {
 	TotalsShipping,
 	TotalsTaxes,
 } from '@woocommerce/base-components/cart-checkout';
-import { ExperimentalOrderMeta } from '@woocommerce/blocks-checkout';
 import { useShippingDataContext } from '@woocommerce/base-context';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import {
@@ -72,7 +71,6 @@ const CheckoutSidebar = ( {
 				currency={ totalsCurrency }
 				values={ cartTotals }
 			/>
-			<ExperimentalOrderMeta.Slot />
 		</>
 	);
 };

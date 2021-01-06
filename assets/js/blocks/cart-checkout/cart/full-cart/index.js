@@ -13,7 +13,6 @@ import {
 	TotalsShipping,
 	TotalsTaxes,
 } from '@woocommerce/base-components/cart-checkout';
-import { ExperimentalOrderMeta } from '@woocommerce/blocks-checkout';
 import {
 	COUPONS_ENABLED,
 	DISPLAY_CART_PRICES_INCLUDING_TAX,
@@ -146,7 +145,6 @@ const Cart = ( { attributes } ) => {
 					currency={ totalsCurrency }
 					values={ cartTotals }
 				/>
-				<ExperimentalOrderMeta.Slot />
 				<div className="wc-block-cart__payment-options">
 					{ cartNeedsPayment && <CartExpressPayment /> }
 					<CheckoutButton
