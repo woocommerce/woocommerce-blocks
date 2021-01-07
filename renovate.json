@@ -20,7 +20,7 @@
 			"updateTypes": [ "major", "minor", "patch", "pin", "digest" ],
 			"depTypeList": [ "devDependencies" ],
 			"automerge": true
-		  }
+		}
 	],
 	"rebaseWhen": "conflicted"
 }
