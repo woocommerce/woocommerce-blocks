@@ -2,7 +2,7 @@
 	@include reset-typography();
 	@include with-translucent-border( 0 0 1px );
 	display: block;
-	padding: $gap 0 $gap #{$gap-larger + 4};
+	padding: em($gap) 0 em($gap) em($gap-largest);
 }
 
 .wc-block-components-radio-control__option-layout {
@@ -36,7 +36,8 @@
 .wc-block-components-radio-control__secondary-label {
 	// Currently, max() CSS function calls need to be wrapped with unquote.
 	// See: https://github.com/sass/sass/issues/2378#issuecomment-367490840
-	line-height: unquote("max(1rem, 20px)");
+	// These values should be the same as the control input height.
+	line-height: unquote("max(1.5rem, 24px)");
 }
 
 .wc-block-components-radio-control__description,
@@ -53,20 +54,22 @@
 		border: 2px solid currentColor;
 		border-radius: 50%;
 		display: inline-block;
-		height: 1.25rem;
-		left: 0;
+		height: em(24px); // =1.5rem
 		min-height: 24px;
 		min-width: 24px;
+		width: em(24px);
+		// The code belows centers the input vertically.
 		position: absolute;
-		top: $gap-small;
-		width: 1.25rem;
+		left: 0;
+		top: 50%;
+		transform: translate(0, -50%);
 
 		&:checked::before {
 			background: #000;
 			border-radius: 50%;
 			content: "";
 			display: block;
-			height: 0.625em;
+			height: em(8px);
 			left: 50%;
 			margin: 0;
 			min-height: 8px;
@@ -74,7 +77,7 @@
 			position: absolute;
 			top: 50%;
 			transform: translate(-50%, -50%);
-			width: 0.625em;
+			width: em(8px);
 		}
 
 		.has-dark-controls & {
@@ -89,17 +92,11 @@
 
 	@include breakpoint( ">782px" ) {
 		.wc-block-components-radio-control__input {
-			height: 1rem;
-			margin-top: 2px;
-			min-height: 24px;
-			min-width: 24px;
-			width: 1rem;
-
 			&:checked::before {
-				height: 0.5em;
+				height: em(12px);
 				min-height: 12px;
 				min-width: 12px;
-				width: 0.5em;
+				width: em(12px);
 			}
 		}
 	}
