@@ -7,11 +7,11 @@ import {
 	TotalsFees,
 	TotalsCoupon,
 	TotalsDiscount,
-	ExperimentalOrderMeta,
 	TotalsFooterItem,
 	TotalsShipping,
 	TotalsTaxes,
 } from '@woocommerce/base-components/cart-checkout';
+import { ExperimentalOrderMeta } from '@woocommerce/blocks-checkout';
 import { useShippingDataContext } from '@woocommerce/base-context';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import {
