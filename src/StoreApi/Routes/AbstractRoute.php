@@ -3,6 +3,7 @@ namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
 
 use Automattic\WooCommerce\Blocks\StoreApi\Schemas\AbstractSchema;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\StockAvailabilityException;
+use WP_Error;
 
 /**
  * AbstractRoute class.
@@ -74,7 +75,7 @@ abstract class AbstractRoute implements RouteInterface {
 		} catch ( RouteException $error ) {
 			$response = $this->get_route_error_response( $error->getErrorCode(), $error->getMessage(), $error->getCode(), $error->getAdditionalData() );
 		} catch ( StockAvailabilityException $error ) {
-			$response = $this->get_route_error_response( $error->getErrorCode(), $error->getError(), $error->getCode(), $error->getAdditionalData() );
+			$response = $this->get_route_error_response_from_object( $error->getError(), $error->getCode(), $error->getAdditionalData() );
 		} catch ( \Exception $error ) {
 			$response = $this->get_route_error_response( 'unknown_server_error', $error->getMessage(), 500 );
 		}
@@ -205,6 +206,19 @@ abstract class AbstractRoute implements RouteInterface {
 	 */
 	protected function get_route_error_response( $error_code, $error_message, $http_status_code = 500, $additional_data = [] ) {
 		return new \WP_Error( $error_code, $error_message, array_merge( $additional_data, [ 'status' => $http_status_code ] ) );
+	}
+
+	/**
+	 * Get route response when something went wrong and the supplied error is a WP_Error. This happens when
+	 *
+	 * @param WP_Error $error_object The WP_Error object containing the error.
+	 * @param int      $http_status_code HTTP status. Defaults to 500.
+	 * @param array    $additional_data  Extra data (key value pairs) to expose in the error response.
+	 * @return WP_Error WP Error object.
+	 */
+	protected function get_route_error_response_from_object( $error_object, $http_status_code = 500, $additional_data = [] ) {
+		$error_object->add_data( array_merge( $additional_data, [ 'status' => $http_status_code ] ) );
+		return $error_object;
 	}
 
 	/**
