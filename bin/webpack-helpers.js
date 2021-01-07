@@ -19,10 +19,7 @@ const wcDepMap = {
 	'@woocommerce/block-data': [ 'wc', 'wcBlocksData' ],
 	'@woocommerce/shared-context': [ 'wc', 'wcSharedContext' ],
 	'@woocommerce/shared-hocs': [ 'wc', 'wcSharedHocs' ],
-<<<<<<< HEAD
 	'@woocommerce/blocks-checkout': [ 'wc', 'wcBlocksCheckout' ],
-=======
->>>>>>> remove custom checkout package
 };
 
 const wcHandleMap = {
