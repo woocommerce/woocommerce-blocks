@@ -51,7 +51,7 @@
 	.wc-block-components-radio-control__input {
 		appearance: none;
 		background: #fff;
-		border: 2px solid currentColor;
+		border: 2px solid $input-border-gray;
 		border-radius: 50%;
 		display: inline-block;
 		height: em(24px); // =1.5rem
