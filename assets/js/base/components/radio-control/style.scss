@@ -69,15 +69,15 @@
 			border-radius: 50%;
 			content: "";
 			display: block;
-			height: em(8px);
+			height: em(12px);
 			left: 50%;
 			margin: 0;
-			min-height: 8px;
-			min-width: 8px;
+			min-height: 12px;
+			min-width: 12px;
 			position: absolute;
 			top: 50%;
 			transform: translate(-50%, -50%);
-			width: em(8px);
+			width: em(12px);
 		}
 
 		.has-dark-controls & {
@@ -86,17 +86,6 @@
 
 			&:checked::before {
 				background: $input-text-dark;
-			}
-		}
-	}
-
-	@include breakpoint( ">782px" ) {
-		.wc-block-components-radio-control__input {
-			&:checked::before {
-				height: em(12px);
-				min-height: 12px;
-				min-width: 12px;
-				width: em(12px);
 			}
 		}
 	}
