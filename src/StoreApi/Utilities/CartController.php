@@ -235,7 +235,7 @@ class CartController {
 	/**
 	 * Validate all items in the cart and check for errors.
 	 *
-	 * @throws StockAvailabilityException Exception if invalid data is detected due to insufficient stock levels.
+	 * @throws InvalidStockLevelsInCartException Exception if invalid data is detected due to insufficient stock levels.
 	 */
 	public function validate_cart_items() {
 		$cart       = $this->get_cart_instance();
@@ -347,7 +347,7 @@ class CartController {
 			// Calculate totals here because we didn't do it in validate_item.
 			WC()->cart->calculate_totals();
 
-			throw new StockAvailabilityException(
+			throw new InvalidStockLevelsInCartException(
 				'woocommerce_stock_availability_error',
 				$error
 			);
