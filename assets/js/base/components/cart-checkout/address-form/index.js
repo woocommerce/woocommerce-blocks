@@ -12,7 +12,7 @@ import {
 	ShippingStateInput,
 } from '@woocommerce/base-components/state-input';
 import { useValidationContext } from '@woocommerce/base-context';
-import { useEffect } from '@wordpress/element';
+import { useEffect, useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
 
@@ -79,11 +79,10 @@ const AddressForm = ( {
 
 	const countryValidationError =
 		getValidationError( 'shipping-missing-country' ) || {};
-	const addressFields = prepareAddressFields( fieldConfig, values.country );
-	const addressFormFields = fields.map( ( field ) => ( {
-		key: field,
-		...addressFields[ field ],
-	} ) );
+
+	const addressFormFields = useMemo( () => {
+		return prepareAddressFields( fields, fieldConfig, values.country );
+	}, [ fields, fieldConfig, values.country ] );
 
 	useEffect( () => {
 		if ( type === 'shipping' ) {
