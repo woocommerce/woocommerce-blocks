@@ -20,7 +20,9 @@ import {
 } from '@woocommerce/base-components/cart-checkout';
 import Dinero from 'dinero.js';
 
-const CartLineItemProductName = withFilters( 'woocommerce-blocks.cart-line-item-row-product-name' )( ProductName );
+const CartLineItemProductName = withFilters(
+	'woocommerce-blocks.cart-line-item-row-product-name'
+)( ProductName );
 
 /**
  * @typedef {import('@woocommerce/type-defs/cart').CartItem} CartItem
