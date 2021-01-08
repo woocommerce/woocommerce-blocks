@@ -215,13 +215,27 @@ class CartController {
 		do_action( 'wooocommerce_store_api_validate_add_to_cart', $product, $request );
 	}
 
-	// phpcs:disable Squiz.Commenting.FunctionCommentThrowTag.WrongNumber -- this method _does_ throw a RouteException
-	// in convert_notices_to_exceptions.
+	/**
+	 * Generates the error message for out of stock products and adds product names to it.
+	 *
+	 * @param string $singular The message to use when only one product is in the list.
+	 * @param string $plural The message to use when more than one product is in the list.
+	 * @param array  $items The list of cart items whose names should be inserted into the message.
+	 * @returns string The translated and correctly pluralised message.
+	 */
+	private function add_product_names_to_message( $singular, $plural, $items ) {
+		$product_names = wc_list_pluck( $items, 'getProductName' );
+		$message       = ( count( $items ) > 1 ) ? $plural : $singular;
+		return sprintf(
+			$message,
+			ArrayUtils::natural_language_join( $product_names, true )
+		);
+	}
+
 	/**
 	 * Validate all items in the cart and check for errors.
 	 *
 	 * @throws StockAvailabilityException Exception if invalid data is detected due to insufficient stock levels.
-	 * @throws RouteException Exception if invalid data is detected but not due to insufficient stock levels.
 	 */
 	public function validate_cart_items() {
 		$cart       = $this->get_cart_instance();
@@ -259,94 +273,74 @@ class CartController {
 			$error = new WP_Error();
 
 			if ( count( $out_of_stock_products ) > 0 ) {
-				$out_of_stock_product_names = array_map(
-					function( $product ) {
-						return $product->getProductName();
-					},
-					$out_of_stock_products
+				// translators: %s: product names.
+				$singular_error = __(
+					'%s is out of stock and cannot be purchased. It has been removed from your cart.',
+					'woo-gutenberg-products-block'
+				);
+				// translators: %s: product names.
+				$plural_error = __(
+					'%s are out of stock and cannot be purchased. They have been removed from your cart.',
+					'woo-gutenberg-products-block'
 				);
 
 				$error->add(
 					409,
-					sprintf(
-						/* translators: %s: product names  */
-						_n(
-							'"%s" is out of stock and cannot be purchased. It has been removed from your cart.',
-							'"%s" are out of stock and cannot be purchased. They have been removed from your cart.',
-							count( $out_of_stock_products ),
-							'woo-gutenberg-products-block'
-						),
-						ArrayUtils::natural_language_join( $out_of_stock_product_names )
-					)
+					$this->add_product_names_to_message( $singular_error, $plural_error, $out_of_stock_products )
 				);
 			}
 
 			if ( count( $not_purchasable_products ) > 0 ) {
-				$not_purchasable_product_names = array_map(
-					function( $product ) {
-						return $product->getProductName();
-					},
-					$not_purchasable_products
+				// translators: %s: product names.
+				$singular_error = __(
+					'%s cannot be purchased. It has been removed from your cart.',
+					'woo-gutenberg-products-block'
+				);
+				// translators: %s: product names.
+				$plural_error = __(
+					'%s cannot be purchased. They have been removed from your cart.',
+					'woo-gutenberg-products-block'
 				);
 
 				$error->add(
 					409,
-					sprintf(
-						/* translators: %s: product names  */
-						_n(
-							'"%s" cannot be purchased. It has been removed from your cart.',
-							'"%s" cannot be purchased. They have been removed from your cart.',
-							count( $too_many_in_cart_products ),
-							'woo-gutenberg-products-block'
-						),
-						ArrayUtils::natural_language_join( $not_purchasable_product_names )
-					)
+					$this->add_product_names_to_message( $singular_error, $plural_error, $not_purchasable_products )
 				);
 			}
 
 			if ( count( $too_many_in_cart_products ) > 0 ) {
-				$too_many_in_cart_product_names = array_map(
-					function( $product ) {
-						return $product->getProductName();
-					},
-					$too_many_in_cart_products
+				// translators: %s: product names.
+				$singular_error = __(
+					'There are too many %s in the cart. Only 1 can be purchased. The quantity in your cart has been reduced.',
+					'woo-gutenberg-products-block'
+				);
+				// translators: %s: product names.
+				$plural_error = __(
+					'There are too many %s in the cart. Only 1 of each can be purchased. The quantities in your cart have been reduced.',
+					'woo-gutenberg-products-block'
 				);
 
 				$error->add(
 					409,
-					sprintf(
-					/* translators: %s: product names  */
-						_n(
-							'There are too many "%s" in the cart. Only 1 can be purchased. The quantity in your cart has been reduced.',
-							'There are too many "%s" in the cart. Only 1 of each can be purchased. The quantities in your cart have been reduced',
-							count( $too_many_in_cart_products ),
-							'woo-gutenberg-products-block'
-						),
-						ArrayUtils::natural_language_join( $too_many_in_cart_product_names )
-					)
+					$this->add_product_names_to_message( $singular_error, $plural_error, $too_many_in_cart_products )
 				);
 			}
 
 			if ( count( $partial_out_of_stock_products ) > 0 ) {
-				$partial_out_of_stock_product_names = array_map(
-					function( $product ) {
-						return $product->getProductName();
-					},
-					$partial_out_of_stock_products
+				// translators: %s: product names.
+				$singular_error = __(
+					'There is not enough %s in stock. The quantity in your cart has been reduced.',
+					'woo-gutenberg-products-block'
+				);
+				// translators: %s: product names.
+				$plural_error = __(
+					'There are not enough %s in stock. The quantities in your cart have been reduced.',
+					'woo-gutenberg-products-block'
 				);
 
 				$error->add(
-					$partial_out_of_stock_products[0]->getErrorCode(),
-					sprintf(
-						/* translators: %s: product names  */
-						_n(
-							'There is not enough "%s" in stock. The quantity in your cart has been reduced.',
-							'There are not enough "%s" in stock. The quantities in your cart have been reduced.',
-							count( $partial_out_of_stock_products ),
-							'woo-gutenberg-products-block'
-						),
-						ArrayUtils::natural_language_join( $partial_out_of_stock_product_names )
-					)
+					409,
+					$this->add_product_names_to_message( $singular_error, $plural_error, $partial_out_of_stock_products )
 				);
 			}
 
@@ -374,7 +368,6 @@ class CartController {
 		do_action( 'woocommerce_check_cart_items' );
 		NoticeHandler::convert_notices_to_exceptions( 'woocommerce_rest_cart_item_error' );
 	}
-	// phpcs:enable
 
 	/**
 	 * Validates an existing cart item and returns any errors.
