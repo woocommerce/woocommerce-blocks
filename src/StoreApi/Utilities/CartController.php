@@ -344,9 +344,6 @@ class CartController {
 				);
 			}
 
-			// Calculate totals here because we didn't do it in validate_item.
-			WC()->cart->calculate_totals();
-
 			throw new InvalidStockLevelsInCartException(
 				'woocommerce_stock_availability_error',
 				$error
