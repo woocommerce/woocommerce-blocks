@@ -1,13 +1,11 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;
 
-use WP_Error;
-
 /**
  * StockAvailabilityException class.
  *
- * @internal This API is used internally by Blocks, this exception is thrown if any items are out of stock
- * after each product on a draft order has been stock checked.
+ * @internal This API is used internally by Blocks, this exception is thrown when more than one of a product that
+ * can only be purchased individually is in a cart.
  */
 class StockAvailabilityException extends \Exception {
 	/**
@@ -18,6 +16,13 @@ class StockAvailabilityException extends \Exception {
 	public $error_code;
 
 	/**
+	 * The name of the product that can only be purchased individually.
+	 *
+	 * @var string
+	 */
+	public $product_name;
+
+	/**
 	 * Additional error data.
 	 *
 	 * @var array
@@ -25,24 +30,17 @@ class StockAvailabilityException extends \Exception {
 	public $additional_data = [];
 
 	/**
-	 * All errors to display to the user.
-	 *
-	 * @var WP_Error
-	 */
-	public $error;
-
-	/**
 	 * Setup exception.
 	 *
-	 * @param string   $error_code      Machine-readable error code, e.g `woocommerce_invalid_product_id`.
-	 * @param WP_Error $error           The WP_Error object containing all errors relating to stock availability.
-	 * @param array    $additional_data Extra data (key value pairs) to expose in the error response.
+	 * @param string $error_code       Machine-readable error code, e.g `woocommerce_invalid_product_id`.
+	 * @param string $product_name     The name of the product that can only be purchased individually.
+	 * @param array  $additional_data  Extra data (key value pairs) to expose in the error response.
 	 */
-	public function __construct( $error_code, $error, $additional_data = [] ) {
+	public function __construct( $error_code, $product_name, $additional_data = [] ) {
 		$this->error_code      = $error_code;
-		$this->error           = $error;
+		$this->product_name    = $product_name;
 		$this->additional_data = array_filter( (array) $additional_data );
-		parent::__construct( '', 409 );
+		parent::__construct();
 	}
 
 	/**
@@ -55,21 +53,21 @@ class StockAvailabilityException extends \Exception {
 	}
 
 	/**
-	 * Returns the list of messages.
-	 *
-	 * @return WP_Error
-	 */
-	public function getError() {
-		return $this->error;
-	}
-
-	/**
 	 * Returns additional error data.
 	 *
 	 * @return array
 	 */
 	public function getAdditionalData() {
 		return $this->additional_data;
+	}
+
+	/**
+	 * Returns the product name.
+	 *
+	 * @return string
+	 */
+	public function getProductName() {
+		return $this->product_name;
 	}
 
 }

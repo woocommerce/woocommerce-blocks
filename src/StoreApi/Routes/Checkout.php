@@ -1,7 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
 
-use Automattic\WooCommerce\Blocks\StoreApi\Utilities\StockAvailabilityException;
+use Automattic\WooCommerce\Blocks\StoreApi\Utilities\InvalidStockLevelsInCartException;
 use \Exception;
 use \WP_Error;
 use \WP_REST_Server;
@@ -191,8 +191,10 @@ class Checkout extends AbstractRoute {
 	 * 5. Process Payment
 	 *
 	 * @throws RouteException On error.
-	 * @throws StockAvailabilityException On error.
+	 * @throws InvalidStockLevelsInCartException On error.
+	 *
 	 * @param WP_REST_Request $request Request object.
+	 *
 	 * @return WP_REST_Response
 	 */
 	protected function get_route_post_response( WP_REST_Request $request ) {
