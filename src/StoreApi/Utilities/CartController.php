@@ -461,13 +461,7 @@ class CartController {
 				$this->validate_cart_item( $cart_item );
 			} catch ( RouteException $error ) {
 				$errors[] = new WP_Error( $error->getErrorCode(), $error->getMessage() );
-			} catch ( NotPurchasableException $error ) {
-				$errors[] = new WP_Error( $error->getErrorCode(), $error->getMessage() );
-			} catch ( OutOfStockException $error ) {
-				$errors[] = new WP_Error( $error->getErrorCode(), $error->getMessage() );
-			} catch ( PartialOutOfStockException $error ) {
-				$errors[] = new WP_Error( $error->getErrorCode(), $error->getMessage() );
-			} catch ( TooManyInCartException $error ) {
+			} catch ( StockAvailabilityException $error ) {
 				$errors[] = new WP_Error( $error->getErrorCode(), $error->getMessage() );
 			}
 		}
