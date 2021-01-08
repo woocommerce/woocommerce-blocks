@@ -24,6 +24,10 @@ const CartLineItemProductName = withFilters(
 	'woocommerce-blocks.cart-line-item-row-product-name'
 )( ProductName );
 
+const CartLineItemProductPrice = withFilters(
+	'woocommerce-blocks.cart-line-item-row-product-price'
+)( ProductPrice );
+
 /**
  * @typedef {import('@woocommerce/type-defs/cart').CartItem} CartItem
  */
@@ -168,13 +172,14 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 				</button>
 			</td>
 			<td className="wc-block-cart-item__total">
-				<ProductPrice
+				<CartLineItemProductPrice
 					currency={ currency }
 					regularPrice={ getAmountFromRawPrice(
 						regularAmount,
 						currency
 					) }
 					price={ getAmountFromRawPrice( purchaseAmount, currency ) }
+					extensions={ extensions }
 				/>
 				<ProductSaleBadge
 					currency={ currency }
