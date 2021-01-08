@@ -42,6 +42,7 @@ import { CartProvider } from '@woocommerce/base-context';
 import CheckoutButton from '../checkout-button';
 import CartLineItemsTitle from './cart-line-items-title';
 import CartLineItemsTable from './cart-line-items-table';
+import SubscriptionsRecurringTotals from './wcs/subscriptions-recurring-totals';
 
 import './style.scss';
 
@@ -145,6 +146,7 @@ const Cart = ( { attributes } ) => {
 					currency={ totalsCurrency }
 					values={ cartTotals }
 				/>
+				<SubscriptionsRecurringTotals />
 				<div className="wc-block-cart__payment-options">
 					{ cartNeedsPayment && <CartExpressPayment /> }
 					<CheckoutButton
