@@ -8,6 +8,7 @@ import QuantitySelector from '@woocommerce/base-components/quantity-selector';
 import ProductPrice from '@woocommerce/base-components/product-price';
 import ProductName from '@woocommerce/base-components/product-name';
 import { getCurrency } from '@woocommerce/base-utils';
+import { withFilters } from '@wordpress/components';
 import { useStoreCartItemQuantity } from '@woocommerce/base-hooks';
 import { Icon, trash } from '@woocommerce/icons';
 import {
@@ -18,6 +19,8 @@ import {
 	ProductSaleBadge,
 } from '@woocommerce/base-components/cart-checkout';
 import Dinero from 'dinero.js';
+
+const CartLineItemProductName = withFilters( 'woocommerce-blocks.cart-line-item-row-product-name' )( ProductName );
 
 /**
  * @typedef {import('@woocommerce/type-defs/cart').CartItem} CartItem
@@ -52,6 +55,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 		permalink = '',
 		images = [],
 		variation = [],
+		extensions = {},
 		prices = {
 			currency_code: 'USD',
 			currency_minor_unit: 2,
@@ -115,10 +119,11 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 				) }
 			</td>
 			<td className="wc-block-cart-item__product">
-				<ProductName
+				<CartLineItemProductName
 					disabled={ isPendingDelete || isProductHiddenFromCatalog }
 					name={ name }
 					permalink={ permalink }
+					extensions={ extensions }
 				/>
 				{ showBackorderBadge ? (
 					<ProductBackorderBadge />
