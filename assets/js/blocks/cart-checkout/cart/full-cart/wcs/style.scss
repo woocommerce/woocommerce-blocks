@@ -1,7 +1,13 @@
 .wcs-recurring-totals-panel.has-border {
 	@include with-translucent-border( 1px 0 );
-
 	+ .wcs-recurring-totals-panel.has-border::after {
 		border-top-width: 0;
+	}
+}
+
+.wc-block-components-totals-item.no-border {
+	border: none;
+	+ .wc-block-components-totals-item.no-border::after {
+		border: none;
 	}
 }

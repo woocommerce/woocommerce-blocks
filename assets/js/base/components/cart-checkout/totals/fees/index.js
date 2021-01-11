@@ -5,8 +5,9 @@ import { __ } from '@wordpress/i18n';
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 import PropTypes from 'prop-types';
 import { TotalsItem } from '@woocommerce/blocks-checkout';
+import classnames from 'classnames';
 
-const TotalsFees = ( { currency, values } ) => {
+const TotalsFees = ( { currency, values, className, ...props } ) => {
 	const { total_fees: totalFees, total_fees_tax: totalFeesTax } = values;
 	const feesValue = parseInt( totalFees, 10 );
 
@@ -18,7 +19,10 @@ const TotalsFees = ( { currency, values } ) => {
 
 	return (
 		<TotalsItem
-			className="wc-block-components-totals-fees"
+			className={ classnames(
+				'wc-block-components-totals-fees',
+				className
+			) }
 			currency={ currency }
 			label={ __( 'Fees', 'woo-gutenberg-products-block' ) }
 			value={
@@ -26,6 +30,7 @@ const TotalsFees = ( { currency, values } ) => {
 					? feesValue + feesTaxValue
 					: feesValue
 			}
+			{ ...props }
 		/>
 	);
 };

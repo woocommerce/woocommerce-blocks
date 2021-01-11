@@ -11,13 +11,22 @@ import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-mone
  */
 import './style.scss';
 
-const TotalsItem = ( { className, currency, label, value, description } ) => {
+const TotalsItem = ( {
+	className,
+	currency,
+	label,
+	value,
+	description,
+	children,
+	...props
+} ) => {
 	return (
 		<div
 			className={ classnames(
 				'wc-block-components-totals-item',
 				className
 			) }
+			{ ...props }
 		>
 			<span className="wc-block-components-totals-item__label">
 				{ label }
@@ -37,6 +46,7 @@ const TotalsItem = ( { className, currency, label, value, description } ) => {
 			<div className="wc-block-components-totals-item__description">
 				{ description }
 			</div>
+			{ children }
 		</div>
 	);
 };
@@ -47,6 +57,7 @@ TotalsItem.propTypes = {
 	value: PropTypes.oneOfType( [ PropTypes.number, PropTypes.node ] ),
 	className: PropTypes.string,
 	description: PropTypes.node,
+	props: PropTypes.object,
 };
 
 export default TotalsItem;

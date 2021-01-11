@@ -8,13 +8,14 @@ import {
 	DISPLAY_ITEMIZED_TAXES,
 } from '@woocommerce/block-settings';
 import { TotalsItem } from '@woocommerce/blocks-checkout';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
 
-const TotalsTaxes = ( { currency, values } ) => {
+const TotalsTaxes = ( { currency, values, className, ...props } ) => {
 	const { total_tax: totalTax, tax_lines: taxLines } = values;
 
 	if ( ! TAXES_ENABLED ) {
@@ -24,10 +25,14 @@ const TotalsTaxes = ( { currency, values } ) => {
 	if ( ! DISPLAY_ITEMIZED_TAXES ) {
 		return (
 			<TotalsItem
-				className="wc-block-components-totals-taxes"
+				className={ classnames(
+					'wc-block-components-totals-taxes',
+					className
+				) }
 				currency={ currency }
 				label={ __( 'Taxes', 'woo-gutenberg-products-block' ) }
 				value={ parseInt( totalTax, 10 ) }
+				{ ...props }
 			/>
 		);
 	}
@@ -37,10 +42,14 @@ const TotalsTaxes = ( { currency, values } ) => {
 			{ taxLines.map( ( { name, price }, i ) => (
 				<TotalsItem
 					key={ `tax-line-${ i }` }
-					className="wc-block-components-totals-taxes"
+					className={ classnames(
+						'wc-block-components-totals-taxes',
+						className
+					) }
 					currency={ currency }
 					label={ name }
 					value={ parseInt( price, 10 ) }
+					{ ...props }
 				/>
 			) ) }{ ' ' }
 		</>
@@ -52,6 +61,7 @@ TotalsTaxes.propTypes = {
 	values: PropTypes.shape( {
 		total_tax: PropTypes.string,
 	} ).isRequired,
+	className: PropTypes.string,
 };
 
 export default TotalsTaxes;

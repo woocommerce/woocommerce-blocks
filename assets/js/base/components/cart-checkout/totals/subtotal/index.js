@@ -6,7 +6,7 @@ import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 import PropTypes from 'prop-types';
 import { TotalsItem } from '@woocommerce/blocks-checkout';
 
-const Subtotal = ( { currency, values } ) => {
+const Subtotal = ( { currency, values, ...props } ) => {
 	const { total_items: totalItems, total_items_tax: totalItemsTax } = values;
 	const itemsValue = parseInt( totalItems, 10 );
 	const itemsTaxValue = parseInt( totalItemsTax, 10 );
@@ -20,6 +20,7 @@ const Subtotal = ( { currency, values } ) => {
 					? itemsValue + itemsTaxValue
 					: itemsValue
 			}
+			{ ...props }
 		/>
 	);
 };

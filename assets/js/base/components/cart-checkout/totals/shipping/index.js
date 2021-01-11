@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import { useState } from '@wordpress/element';
 import { useStoreCart } from '@woocommerce/base-hooks';
 import { TotalsItem } from '@woocommerce/blocks-checkout';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -27,12 +28,15 @@ import './style.scss';
  * @param {Object} props.values Values in use.
  * @param {boolean} props.showRateSelector Whether to display the rate selector below the shipping total.
  * @param {boolean} props.showCalculator Whether to show shipping calculator or not.
+ * @param {string} props.className Classname.
  */
 const TotalsShipping = ( {
 	currency,
 	values,
 	showCalculator = true,
 	showRateSelector = true,
+	className,
+	...props
 } ) => {
 	const [ isShippingCalculatorOpen, setIsShippingCalculatorOpen ] = useState(
 		false
@@ -55,32 +59,36 @@ const TotalsShipping = ( {
 	};
 
 	return (
-		<div className="wc-block-components-totals-shipping">
-			<TotalsItem
-				label={ __( 'Shipping', 'woo-gutenberg-products-block' ) }
-				value={
-					cartHasCalculatedShipping ? (
-						totalShippingValue
-					) : (
-						<NoShippingPlaceholder
+		<TotalsItem
+			className={ classnames(
+				'wc-block-components-totals-shipping',
+				className
+			) }
+			label={ __( 'Shipping', 'woo-gutenberg-products-block' ) }
+			value={
+				cartHasCalculatedShipping ? (
+					totalShippingValue
+				) : (
+					<NoShippingPlaceholder
+						showCalculator={ showCalculator }
+						{ ...calculatorButtonProps }
+					/>
+				)
+			}
+			description={
+				<>
+					{ cartHasCalculatedShipping && (
+						<ShippingAddress
+							shippingAddress={ shippingAddress }
 							showCalculator={ showCalculator }
 							{ ...calculatorButtonProps }
 						/>
-					)
-				}
-				description={
-					<>
-						{ cartHasCalculatedShipping && (
-							<ShippingAddress
-								shippingAddress={ shippingAddress }
-								showCalculator={ showCalculator }
-								{ ...calculatorButtonProps }
-							/>
-						) }
-					</>
-				}
-				currency={ currency }
-			/>
+					) }
+				</>
+			}
+			currency={ currency }
+			{ ...props }
+		>
 			{ showCalculator && isShippingCalculatorOpen && (
 				<ShippingCalculator
 					onUpdate={ () => {
@@ -95,7 +103,7 @@ const TotalsShipping = ( {
 					shippingRatesLoading={ shippingRatesLoading }
 				/>
 			) }
-		</div>
+		</TotalsItem>
 	);
 };
 
