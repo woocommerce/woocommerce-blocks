@@ -32,4 +32,13 @@
 	.wc-blocks-components-panel__content {
 		padding-bottom: 0;
 	}
+	.wc-block-components-radio-control__option-layout {
+		padding-bottom: 0;
+	}
+	.wc-block-components-radio-control__option:last-child {
+		margin-bottom: $gap-small;
+	}
+	.wc-block-components-radio-control__option::after {
+		border-bottom: 0;
+	}
 }
