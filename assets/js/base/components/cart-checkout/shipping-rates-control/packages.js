@@ -65,7 +65,10 @@ Packages.propTypes = {
 					quantity: PropTypes.number,
 				} )
 			).isRequired,
-			package_id: PropTypes.number,
+			package_id: PropTypes.oneOfType( [
+				PropTypes.string,
+				PropTypes.number,
+			] ),
 			name: PropTypes.string,
 			destination: PropTypes.object,
 			shipping_rates: PropTypes.arrayOf( PropTypes.object ),
