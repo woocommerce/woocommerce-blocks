@@ -303,6 +303,9 @@ class CartSchema extends AbstractSchema {
 		// calculated so we can avoid returning costs and rates prematurely.
 		$has_calculated_shipping = $cart->show_shipping();
 
+		// Get the extended data before returning the cart - this is because the cart may be modified by extensions.
+		$extended_data = $this->get_extended_data( self::IDENTIFIER );
+
 		return [
 			'coupons'                 => array_values( array_map( [ $this->coupon_schema, 'get_item_response' ], array_filter( $cart->get_applied_coupons() ) ) ),
 			'shipping_rates'          => $has_calculated_shipping ? array_values( array_map( [ $this->shipping_rate_schema, 'get_item_response' ], $controller->get_shipping_packages() ) ) : [],
@@ -332,7 +335,7 @@ class CartSchema extends AbstractSchema {
 				]
 			),
 			'errors'                  => $cart_errors,
-			self::EXTENDING_KEY       => $this->get_extended_data( self::IDENTIFIER ),
+			self::EXTENDING_KEY       => $extended_data,
 		];
 	}
 
