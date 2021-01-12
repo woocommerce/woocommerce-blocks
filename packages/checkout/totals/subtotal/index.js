@@ -4,7 +4,11 @@
 import { __ } from '@wordpress/i18n';
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 import PropTypes from 'prop-types';
-import { TotalsItem } from '@woocommerce/blocks-checkout';
+
+/**
+ * Internal dependencies
+ */
+import { TotalsItem } from '../';
 
 const Subtotal = ( { currency, values } ) => {
 	const { total_items: totalItems, total_items_tax: totalItemsTax } = values;

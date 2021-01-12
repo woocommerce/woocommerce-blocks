@@ -6,11 +6,11 @@ import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 import PropTypes from 'prop-types';
 import { useState } from '@wordpress/element';
 import { useStoreCart } from '@woocommerce/base-hooks';
-import { TotalsItem } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
  */
+import { TotalsItem } from '../';
 import ShippingRateSelector from './shipping-rate-selector';
 import hasShippingRate from './has-shipping-rate';
 import ShippingCalculator from '../../shipping-calculator';
