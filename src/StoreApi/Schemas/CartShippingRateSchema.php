@@ -271,6 +271,43 @@ class CartShippingRateSchema extends AbstractSchema {
 	}
 
 	/**
+	 * Gets and formats the destination address of a package.
+	 *
+	 * @param array $package Shipping package complete with rates from WooCommerce.
+	 * @return object
+	 */
+	protected function prepare_package_destination_response( $package ) {
+		return (object) $this->prepare_html_response(
+			[
+				'address_1' => $package['destination']['address_1'],
+				'address_2' => $package['destination']['address_2'],
+				'city'      => $package['destination']['city'],
+				'state'     => $package['destination']['state'],
+				'postcode'  => $package['destination']['postcode'],
+				'country'   => $package['destination']['country'],
+			]
+		);
+	}
+
+	/**
+	 * Gets items from a package and creates an array of strings containing product names and quantities.
+	 *
+	 * @param array $package Shipping package complete with rates from WooCommerce.
+	 * @return array
+	 */
+	protected function prepare_package_items_response( $package ) {
+		$items = array();
+		foreach ( $package['contents'] as $item_id => $values ) {
+			$items[] = [
+				'key'      => $item_id,
+				'name'     => $values['data']->get_name(),
+				'quantity' => $values['quantity'],
+			];
+		}
+		return $items;
+	}
+
+	/**
 	 * Prepare an array of rates from a package for the response.
 	 *
 	 * @param array $package Shipping package complete with rates from WooCommerce.
