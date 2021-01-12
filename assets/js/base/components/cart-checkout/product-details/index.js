@@ -2,6 +2,7 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
+import { kebabCase } from 'lodash';
 import { decodeEntities } from '@wordpress/html-entities';
 
 /**
@@ -18,8 +19,13 @@ const ProductDetails = ( { details = [] } ) => {
 	return (
 		<ul className="wc-block-components-product-details">
 			{ details.map( ( detail ) => {
+				const className = detail.name
+					? `wc-block-components-product-details__${ kebabCase(
+							detail.name
+					  ) }`
+					: '';
 				return (
-					<li key={ detail.name }>
+					<li key={ detail.name } className={ className }>
 						{ detail.name && (
 							<>
 								<span className="wc-block-components-product-details__name">
