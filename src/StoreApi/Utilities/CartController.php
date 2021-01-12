@@ -459,7 +459,6 @@ class CartController {
 	 * Get shipping packages from the cart with calculated shipping rates.
 	 *
 	 * @todo this can be refactored once https://github.com/woocommerce/woocommerce/pull/26101 lands.
-	 *
 	 * @param bool $calculate_rates Should rates for the packages also be returned.
 	 * @return array
 	 */
@@ -471,7 +470,7 @@ class CartController {
 			return [];
 		}
 
-		$packages = $cart->get_shipping_packages();
+		$packages = apply_filters( '__experimental_woocommerce_store_api_cart_shipping_packages', $cart->get_shipping_packages() );
 
 		// Add extra package data to array.
 		if ( count( $packages ) ) {
@@ -515,7 +514,7 @@ class CartController {
 	/**
 	 * Selects a shipping rate.
 	 *
-	 * @param int    $package_id ID of the package to choose a rate for.
+	 * @param string $package_id ID of the package to choose a rate for.
 	 * @param string $rate_id ID of the rate being chosen.
 	 */
 	public function select_shipping_rate( $package_id, $rate_id ) {
