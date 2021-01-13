@@ -1,5 +1,8 @@
 module.exports = {
-	extends: [ 'plugin:@woocommerce/eslint-plugin/recommended' ],
+	extends: [
+		'plugin:@woocommerce/eslint-plugin/recommended',
+		'plugin:you-dont-need-lodash-underscore/compatible',
+	],
 	globals: {
 		wcStoreApiNonce: 'readonly',
 		fetchMock: true,
@@ -21,5 +24,14 @@ module.exports = {
 		'woocommerce/feature-flag': 'off',
 		'react-hooks/exhaustive-deps': 'error',
 		'react/jsx-fragments': [ 'error', 'syntax' ],
+		'@wordpress/no-global-active-element': 'warn',
 	},
+	overrides: [
+		{
+			files: [ '**/bin/**.js', '**/storybook/**.js', '**/stories/**.js' ],
+			rules: {
+				'you-dont-need-lodash-underscore/omit': 'off',
+			},
+		},
+	],
 };

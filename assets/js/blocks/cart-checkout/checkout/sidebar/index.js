@@ -11,6 +11,7 @@ import {
 	TotalsShipping,
 	TotalsTaxes,
 } from '@woocommerce/base-components/cart-checkout';
+import { ExperimentalOrderMeta } from '@woocommerce/blocks-checkout';
 import { useShippingDataContext } from '@woocommerce/base-context';
 import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import {
@@ -22,6 +23,7 @@ import { useStoreCartCoupons } from '@woocommerce/base-hooks';
 const CheckoutSidebar = ( {
 	cartCoupons = [],
 	cartItems = [],
+	cartFees = [],
 	cartTotals = {},
 } ) => {
 	const {
@@ -38,7 +40,7 @@ const CheckoutSidebar = ( {
 		<>
 			<OrderSummary cartItems={ cartItems } />
 			<Subtotal currency={ totalsCurrency } values={ cartTotals } />
-			<TotalsFees currency={ totalsCurrency } values={ cartTotals } />
+			<TotalsFees currency={ totalsCurrency } cartFees={ cartFees } />
 			<TotalsDiscount
 				cartCoupons={ cartCoupons }
 				currency={ totalsCurrency }
@@ -71,6 +73,7 @@ const CheckoutSidebar = ( {
 				currency={ totalsCurrency }
 				values={ cartTotals }
 			/>
+			<ExperimentalOrderMeta.Slot />
 		</>
 	);
 };
