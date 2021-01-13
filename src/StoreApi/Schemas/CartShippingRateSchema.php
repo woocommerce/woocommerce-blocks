@@ -279,7 +279,7 @@ class CartShippingRateSchema extends AbstractSchema {
 	protected function prepare_package_shipping_rates_response( $package ) {
 		$rates          = $package['rates'];
 		$selected_rates = wc()->session->get( 'chosen_shipping_methods', array() );
-		$selected_rate  = isset( $chosen_shipping_methods[ $package['package_id'] ] ) ? $chosen_shipping_methods[ $package['package_id'] ] : '';
+		$selected_rate  = isset( $selected_rates[ $package['package_id'] ] ) ? $selected_rates[ $package['package_id'] ] : '';
 
 		if ( empty( $selected_rate ) && ! empty( $package['rates'] ) ) {
 			$selected_rate = wc_get_chosen_shipping_method_for_package( $package['package_id'], $package );
