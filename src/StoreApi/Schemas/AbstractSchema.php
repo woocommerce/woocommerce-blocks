@@ -198,23 +198,6 @@ abstract class AbstractSchema {
 	}
 
 	/**
-	 * Apply a schema get_item_response callback to an array of items and return the result.
-	 *
-	 * @param AbstractSchema $schema Schema class instance.
-	 * @param array          $items Array of items.
-	 * @return array Array of values from the callback function.
-	 */
-	protected function get_item_responses_from_schema( AbstractSchema $schema, $items ) {
-		$items = array_filter( $items );
-
-		if ( empty( $items ) ) {
-			return [];
-		}
-
-		return array_values( array_map( [ $schema, 'get_item_response' ], $items ) );
-	}
-
-	/**
 	 * Returns consistent currency schema used across endpoints for prices.
 	 *
 	 * @return array
