@@ -12,12 +12,11 @@ import {
 	useEditorContext,
 	usePaymentMethodDataContext,
 } from '@woocommerce/base-context';
-import { __ } from '@wordpress/i18n';
+import classNames from 'classnames';
 
 /**
  * Internal dependencies
  */
-import Tabs from '../tabs';
 import PaymentMethodTab from './payment-method-tab';
 import RadioControlAccordion from '../radio-control-accordion';
 
@@ -75,55 +74,23 @@ const PaymentMethodOptions = () => {
 		removeNotice( 'wc-payment-error', noticeContexts.PAYMENTS );
 	};
 
-	const customerHasSavedCards =
-		Object.keys( customerPaymentMethods ).length > 0;
-	let paymentMethodsSelectorUI = null;
-	if ( options.length > 2 || customerHasSavedCards ) {
-		paymentMethodsSelectorUI = (
-			<RadioControlAccordion
-				id={ 'wc-payment-method-options' }
-				selected={ activeSavedToken ? null : activePaymentMethod }
-				onChange={ updateToken }
-				options={ options }
-			/>
-		);
-	} else if ( options.length === 1 ) {
-		const option = options[ 0 ];
-		paymentMethodsSelectorUI = (
-			<div className="wc-block-components-checkout-payment-methods__single-option">
-				<div className="wc-block-components-checkout-payment-methods__single-option-content-label">
-					{ option.label }
-				</div>
-				<div className="wc-block-components-checkout-payment-methods__single-option-content">
-					{ option.content }
-				</div>
-			</div>
-		);
-	} else {
-		paymentMethodsSelectorUI = (
-			<Tabs
-				className="wc-block-components-checkout-payment-methods"
-				onSelect={ ( tabName ) => {
-					setActivePaymentMethod( tabName );
-					removeNotice( 'wc-payment-error', noticeContexts.PAYMENTS );
-				} }
-				tabs={ options.map( ( { value, label, content } ) => ( {
-					name: value,
-					title: label,
-					ariaLabel: paymentMethods[ value ].ariaLabel,
-					content,
-				} ) ) }
-				initialTabName={ activePaymentMethod }
-				ariaLabel={ __(
-					'Payment Methods',
-					'woo-gutenberg-products-block'
-				) }
-				id="wc-block-payment-methods"
-			/>
-		);
-	}
+	const isSinglePaymentMethod =
+		Object.keys( customerPaymentMethods ).length === 0 &&
+		Object.keys( paymentMethods ).length === 1;
 
-	return expressPaymentMethodActive ? null : paymentMethodsSelectorUI;
+	const singleOptionClass = classNames( {
+		'disable-radio-control': isSinglePaymentMethod,
+	} );
+
+	return expressPaymentMethodActive ? null : (
+		<RadioControlAccordion
+			id={ 'wc-payment-method-options' }
+			className={ singleOptionClass }
+			selected={ activeSavedToken ? null : activePaymentMethod }
+			onChange={ updateToken }
+			options={ options }
+		/>
+	);
 };
 
 export default PaymentMethodOptions;
