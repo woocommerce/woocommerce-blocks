@@ -338,9 +338,10 @@ export function* selectShippingRate( rateId, packageId = 0 ) {
 	try {
 		yield shippingRatesBeingSelected( true );
 		const { response } = yield apiFetchWithHeaders( {
-			path: `/wc/store/cart/select-shipping-rate/${ packageId }`,
+			path: `/wc/store/cart/select-shipping-rate`,
 			method: 'POST',
 			data: {
+				package_id: packageId,
 				rate_id: rateId,
 			},
 			cache: 'no-store',

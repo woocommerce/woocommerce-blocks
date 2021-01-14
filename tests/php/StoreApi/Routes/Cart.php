@@ -76,7 +76,7 @@ class Cart extends TestCase {
 		$this->assertArrayHasKey( '/wc/store/cart/apply-coupon', $routes );
 		$this->assertArrayHasKey( '/wc/store/cart/remove-coupon', $routes );
 		$this->assertArrayHasKey( '/wc/store/cart/update-customer', $routes );
-		$this->assertArrayHasKey( '/wc/store/cart/select-shipping-rate/(?P<package_id>[\d]+)', $routes );
+		$this->assertArrayHasKey( '/wc/store/cart/select-shipping-rate', $routes );
 	}
 
 	/**
