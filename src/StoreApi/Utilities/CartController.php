@@ -332,13 +332,13 @@ class CartController {
 				409,
 				$this->add_product_names_to_message( $singular_error, $plural_error, $partial_out_of_stock_products )
 			);
+		}
 
-			if ( $error->has_errors() ) {
-				throw new InvalidStockLevelsInCartException(
-					'woocommerce_stock_availability_error',
-					$error
-				);
-			}
+		if ( $error->has_errors() ) {
+			throw new InvalidStockLevelsInCartException(
+				'woocommerce_stock_availability_error',
+				$error
+			);
 		}
 
 		// Before running the woocommerce_check_cart_items hook, unhook validation from the core cart.
