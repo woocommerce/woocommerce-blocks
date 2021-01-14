@@ -419,7 +419,7 @@ class Checkout extends AbstractRoute {
 		if ( isset( $request['customer_note'] ) ) {
 			$this->order->set_customer_note( $request['customer_note'] );
 		}
-		$this->order->set_payment_method( $this->order->needs_payment() ? $this->get_request_payment_method( $request ) : '' );
+		$this->order->set_payment_method( $this->order->needs_payment() ? $this->get_request_payment_method( $request ) : $this->safely_get_request_payment_method( $request ) );
 		$this->order->save();
 	}
 
@@ -522,6 +522,20 @@ class Checkout extends AbstractRoute {
 		}
 
 		return $available_gateways[ $payment_method_id ];
+	}
+
+	/**
+	 * Gets the chosen payment method from the request, or an empty string if one is not present.
+	 *
+	 * @param WP_REST_Request $request Request object.
+	 * @return \WC_Payment_Gateway|string
+	 */
+	private function safely_get_request_payment_method( WP_REST_Request $request ) {
+		try {
+			return $this->get_request_payment_method( $request );
+		} catch ( Exception $e ) {
+			return '';
+		}
 	}
 
 	/**
