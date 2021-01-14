@@ -210,7 +210,9 @@ abstract class AbstractRoute implements RouteInterface {
 	}
 
 	/**
-	 * Get route response when something went wrong and the supplied error is a WP_Error. This happens when
+	 * Get route response when something went wrong and the supplied error is a WP_Error. This currently only happens
+	 * when an item in the cart is out of stock, partially out of stock, can only be bought individually, or when the
+	 * item is not purchasable.
 	 *
 	 * @param WP_Error $error_object The WP_Error object containing the error.
 	 * @param int      $http_status_code HTTP status. Defaults to 500.
