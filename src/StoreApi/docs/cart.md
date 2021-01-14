@@ -445,7 +445,7 @@ POST /cart/select-shipping-rate
 
 | Attribute    | Type    | Required | Description                                     |
 | :----------- | :------ | :------: | :---------------------------------------------- |
-| `package_id` | integer |    yes    | The ID of the shipping package within the cart. |
+| `package_id` | integer|string |    yes    | The ID of the shipping package within the cart. |
 | `rate_id`    | string  |    yes    | The chosen rate ID for the package.             |
 
 ```http
