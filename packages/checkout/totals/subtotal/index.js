@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import { TotalsItem } from '../';
+import TotalsItem from '../item';
 
 const Subtotal = ( { currency, values } ) => {
 	const { total_items: totalItems, total_items_tax: totalItemsTax } = values;

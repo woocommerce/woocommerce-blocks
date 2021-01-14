@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import { TotalsItem } from '../';
+import TotalsItem from '../item';
 
 const TotalsFees = ( { currency, cartFees } ) => {
 	return (
