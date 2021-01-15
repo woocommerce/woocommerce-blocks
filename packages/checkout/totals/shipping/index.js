@@ -11,6 +11,7 @@ import {
 	ShippingCalculator,
 	ShippingLocation,
 } from '@woocommerce/base-components/cart-checkout';
+import { useShippingDataContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -40,12 +41,12 @@ const TotalsShipping = ( {
 	const [ isShippingCalculatorOpen, setIsShippingCalculatorOpen ] = useState(
 		false
 	);
+	const { shippingAddress, cartHasCalculatedShipping } = useStoreCart();
 	const {
 		shippingRates,
 		shippingRatesLoading,
-		shippingAddress,
-		cartHasCalculatedShipping,
-	} = useStoreCart();
+		setSelectedRates,
+	} = useShippingDataContext();
 
 	const totalShippingValue = DISPLAY_CART_PRICES_INCLUDING_TAX
 		? parseInt( values.total_shipping, 10 ) +
@@ -100,6 +101,7 @@ const TotalsShipping = ( {
 				<ShippingRateSelector
 					hasRates={ hasRates }
 					shippingRates={ shippingRates }
+					selectShippingRate={ setSelectedRates }
 					shippingRatesLoading={ shippingRatesLoading }
 				/>
 			) }

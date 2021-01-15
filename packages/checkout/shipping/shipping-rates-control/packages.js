@@ -2,7 +2,6 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import { useSelectShippingRate } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -16,36 +15,33 @@ const Packages = ( {
 	noResultsMessage = null,
 	renderOption,
 	shippingRates = [],
+	selectShippingRate,
 } ) => {
-	const { selectShippingRate, selectedShippingRates } = useSelectShippingRate(
-		shippingRates
-	);
-
 	if ( ! shippingRates.length ) {
 		return noResultsMessage;
 	}
 
-	/* eslint-disable camelcase */
 	return (
 		<div className="wc-block-components-shipping-rates-control">
-			{ shippingRates.map( ( { package_id, ...shippingRate } ) => (
-				<Package
-					key={ package_id }
-					className={ className }
-					collapsible={ collapsible }
-					noResultsMessage={ noResultsMessage }
-					onChange={ ( newShippingRate ) => {
-						selectShippingRate( newShippingRate, package_id );
-					} }
-					renderOption={ renderOption }
-					selected={ selectedShippingRates[ package_id ] }
-					shippingRate={ shippingRate }
-					showItems={ shippingRates.length > 1 }
-					title={
-						shippingRates.length > 1 ? shippingRate.name : null
-					}
-				/>
-			) ) }
+			{ shippingRates.map(
+				( { package_id: packageId, ...packageData } ) => (
+					<Package
+						key={ packageId }
+						packageData={ packageData }
+						className={ className }
+						collapsible={ collapsible }
+						noResultsMessage={ noResultsMessage }
+						onSelectRate={ ( newShippingRate ) => {
+							selectShippingRate( newShippingRate, packageId );
+						} }
+						renderOption={ renderOption }
+						showItems={ shippingRates.length > 1 }
+						title={
+							shippingRates.length > 1 ? packageData.name : null
+						}
+					/>
+				)
+			) }
 		</div>
 	);
 	/* eslint-enable */
@@ -74,6 +70,7 @@ Packages.propTypes = {
 			shipping_rates: PropTypes.arrayOf( PropTypes.object ),
 		} ).isRequired
 	).isRequired,
+	selectShippingRate: PropTypes.func.isRequired,
 };
 
 export default Packages;

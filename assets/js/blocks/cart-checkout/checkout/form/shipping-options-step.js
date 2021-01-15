@@ -58,6 +58,7 @@ const ShippingOptionsStep = () => {
 		shippingRatesLoading,
 		needsShipping,
 		hasCalculatedShipping,
+		setSelectedRates,
 	} = useShippingDataContext();
 
 	if ( ! needsShipping ) {
@@ -65,6 +66,7 @@ const ShippingOptionsStep = () => {
 	}
 
 	const packageCount = getShippingRatesPackageCount( shippingRates );
+	const rateCount = getShippingRatesRateCount( shippingRates );
 
 	return (
 		<FormStep
@@ -73,7 +75,7 @@ const ShippingOptionsStep = () => {
 			className="wc-block-checkout__shipping-option"
 			title={ __( 'Shipping options', 'woo-gutenberg-products-block' ) }
 			description={
-				getShippingRatesRateCount( shippingRates ) > 1
+				rateCount > 1
 					? __(
 							'Select shipping options below.',
 							'woo-gutenberg-products-block'
@@ -109,6 +111,7 @@ const ShippingOptionsStep = () => {
 					renderOption={ renderShippingRatesControlOption }
 					shippingRates={ shippingRates }
 					shippingRatesLoading={ shippingRatesLoading }
+					selectShippingRate={ setSelectedRates }
 				/>
 			) }
 		</FormStep>

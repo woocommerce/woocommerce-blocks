@@ -41,6 +41,7 @@ const renderShippingRatesControlOption = ( option ) => {
 const ShippingRateSelector = ( {
 	hasRates,
 	shippingRates,
+	selectShippingRate,
 	shippingRatesLoading,
 } ) => {
 	return (
@@ -73,6 +74,7 @@ const ShippingRateSelector = ( {
 				renderOption={ renderShippingRatesControlOption }
 				shippingRates={ shippingRates }
 				shippingRatesLoading={ shippingRatesLoading }
+				selectShippingRate={ selectShippingRate }
 			/>
 		</fieldset>
 	);

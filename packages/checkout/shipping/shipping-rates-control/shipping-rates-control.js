@@ -19,6 +19,7 @@ import './style.scss';
 
 const ShippingRatesControl = ( {
 	shippingRates,
+	selectShippingRate,
 	shippingRatesLoading,
 	className,
 	collapsibleWhenMultiple = false,
@@ -29,7 +30,7 @@ const ShippingRatesControl = ( {
 		if ( shippingRatesLoading ) {
 			return;
 		}
-		const packages = getShippingRatesPackageCount( shippingRates );
+		const packageCount = getShippingRatesPackageCount( shippingRates );
 		const shippingOptions = getShippingRatesRateCount( shippingRates );
 		if ( shippingOptions === 0 ) {
 			speak(
@@ -38,7 +39,7 @@ const ShippingRatesControl = ( {
 					'woo-gutenberg-products-block'
 				)
 			);
-		} else if ( packages === 1 ) {
+		} else if ( packageCount === 1 ) {
 			speak(
 				sprintf(
 					// translators: %d number of shipping options found.
@@ -58,10 +59,10 @@ const ShippingRatesControl = ( {
 					_n(
 						'Shipping option searched for %d package.',
 						'Shipping options searched for %d packages.',
-						packages,
+						packageCount,
 						'woo-gutenberg-products-block'
 					),
-					packages
+					packageCount
 				) +
 					' ' +
 					sprintf(
@@ -95,6 +96,7 @@ const ShippingRatesControl = ( {
 				noResultsMessage={ noResultsMessage }
 				renderOption={ renderOption }
 				shippingRates={ shippingRates }
+				selectShippingRate={ selectShippingRate }
 			/>
 		</LoadingMask>
 	);

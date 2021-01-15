@@ -11,18 +11,17 @@ import classNames from 'classnames';
 /**
  * Internal dependencies
  */
-import PackageOptions from './package-options';
 import Panel from '../../panel';
+import PackageRates from './package-rates';
 import './style.scss';
 
 const Package = ( {
 	className,
 	collapsible = false,
 	noResultsMessage,
-	onChange,
+	onSelectRate,
 	renderOption,
-	selected,
-	shippingRate,
+	packageData,
 	showItems,
 	title,
 } ) => {
@@ -38,7 +37,7 @@ const Package = ( {
 			) }
 			{ showItems && (
 				<ul className="wc-block-components-shipping-rates-control__package-items">
-					{ Object.values( shippingRate.items ).map( ( v ) => {
+					{ Object.values( packageData.items ).map( ( v ) => {
 						const name = decodeEntities( v.name );
 						const quantity = v.quantity;
 						return (
@@ -68,13 +67,12 @@ const Package = ( {
 		</>
 	);
 	const body = (
-		<PackageOptions
+		<PackageRates
 			className={ className }
 			noResultsMessage={ noResultsMessage }
-			onChange={ onChange }
-			options={ shippingRate.shipping_rates }
+			rates={ packageData.shipping_rates }
+			onSelectRate={ onSelectRate }
 			renderOption={ renderOption }
-			selected={ selected }
 		/>
 	);
 	if ( collapsible ) {
@@ -103,9 +101,9 @@ const Package = ( {
 };
 
 Package.propTypes = {
-	onChange: PropTypes.func.isRequired,
+	onSelectRate: PropTypes.func.isRequired,
 	renderOption: PropTypes.func.isRequired,
-	shippingRate: PropTypes.shape( {
+	packageData: PropTypes.shape( {
 		shipping_rates: PropTypes.arrayOf( PropTypes.object ).isRequired,
 		items: PropTypes.arrayOf(
 			PropTypes.shape( {
@@ -118,7 +116,6 @@ Package.propTypes = {
 	className: PropTypes.string,
 	collapsible: PropTypes.bool,
 	noResultsMessage: PropTypes.node,
-	selected: PropTypes.string,
 	showItems: PropTypes.bool,
 	title: PropTypes.string,
 };
