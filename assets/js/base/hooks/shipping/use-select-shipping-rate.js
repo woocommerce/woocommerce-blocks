@@ -24,49 +24,31 @@ See also: https://github.com/woocommerce/woocommerce-gutenberg-products-block/tr
  *
  */
 export const useSelectShippingRate = ( shippingRates ) => {
-	const throwError = useThrowError();
-	const derivedSelectedRates = useMemo(
-		() =>
-			shippingRates
-				.map(
-					// the API responds with those keys.
-					/* eslint-disable camelcase */
-					( p ) => [
-						p.package_id,
-						p.shipping_rates.find( ( rate ) => rate.selected )
-							?.rate_id,
-					]
-					/* eslint-enable */
-				)
-				// A fromEntries ponyfill, creates an object from an array of arrays.
-				.reduce( ( obj, [ key, val ] ) => {
-					if ( val ) {
-						obj[ key ] = val;
-					}
-					return obj;
-				}, {} ),
-		[ shippingRates ]
-	);
-
-	const [ selectedShippingRates, setSelectedShipping ] = useState(
-		derivedSelectedRates
-	);
-
-	// useState initial state is always remembered, so even if that value changes,
-	// useState won't update, we're forcing it to update if the initial value changes,
-	// useMemo helps us not running this function when we don't need to.
-	useEffect( () => {
-		setSelectedShipping( derivedSelectedRates );
-	}, [ derivedSelectedRates ] );
 	const { selectShippingRate } = useDispatch( storeKey );
+	const throwError = useThrowError();
+	const selectedShippingRates = shippingRates
+		.map(
+			// the API responds with those keys.
+			/* eslint-disable camelcase */
+			( p ) => [
+				p.package_id,
+				p.shipping_rates.find( ( rate ) => rate.selected )?.rate_id,
+			]
+			/* eslint-enable */
+		)
+		// A fromEntries ponyfill, creates an object from an array of arrays.
+		.reduce( ( obj, [ key, val ] ) => {
+			if ( val ) {
+				obj[ key ] = val;
+			}
+			return obj;
+		}, {} );
+
 	const isSelectingRate = useSelect( ( select ) => {
 		return select( storeKey ).isShippingRateBeingSelected();
 	}, [] );
+
 	const setRate = ( newShippingRate, packageId ) => {
-		setSelectedShipping( {
-			...selectedShippingRates,
-			[ packageId ]: newShippingRate,
-		} );
 		selectShippingRate( newShippingRate, packageId ).catch( ( error ) => {
 			// we throw this error because an error on selecting a rate
 			// is problematic.
