@@ -12,6 +12,7 @@ const WebpackRTLPlugin = require( 'webpack-rtl-plugin' );
 const chalk = require( 'chalk' );
 const { kebabCase } = require( 'lodash' );
 const CreateFileWebpack = require( 'create-file-webpack' );
+const CircularDependencyPlugin = require( 'circular-dependency-plugin' );
 
 /**
  * Internal dependencies
@@ -104,6 +105,11 @@ const getCoreConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
+			new CircularDependencyPlugin( {
+				exclude: /a\.js|node_modules/,
+				failOnError: true,
+				cwd: process.cwd(),
+			} ),
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Core', options.fileSuffix )
 			),
@@ -196,6 +202,11 @@ const getMainConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
+			new CircularDependencyPlugin( {
+				exclude: /a\.js|node_modules/,
+				failOnError: true,
+				cwd: process.cwd(),
+			} ),
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Main', options.fileSuffix )
 			),
@@ -296,6 +307,11 @@ const getFrontConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
+			new CircularDependencyPlugin( {
+				exclude: /a\.js|node_modules/,
+				failOnError: true,
+				cwd: process.cwd(),
+			} ),
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Frontend', options.fileSuffix )
 			),
