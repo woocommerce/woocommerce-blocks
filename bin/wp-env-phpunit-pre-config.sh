@@ -10,7 +10,7 @@ echo $WOO_DIR
 # TODO: Local installs won't refresh this automatically. For now I wanted to
 #       avoid excessive unnecessary cloning, but we probably should have this
 #       refreshed somehow (maybe based on age of directory?).
-if [ ! -d $WOO_DIR ]; then
+if [ ! -d "$WOO_DIR/tests" ]; then
 	git clone --depth 1 "https://github.com/woocommerce/woocommerce.git" "$WOO_DIR"
 fi
 npm run wp-env run phpunit 'php -v'
