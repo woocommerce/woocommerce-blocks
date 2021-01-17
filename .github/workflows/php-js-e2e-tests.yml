@@ -84,10 +84,9 @@ jobs:
         with:
           node-version: 14.x
 
-      - name: Npm install and build
+      - name: Npm install #build is not needed
         run: |
           npm ci
-          npm run build
 
       - name: blocks.ini setup
         run: |
