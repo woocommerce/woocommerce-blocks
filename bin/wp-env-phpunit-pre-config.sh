@@ -3,17 +3,15 @@ BASENAME=$(basename "`pwd`")
 WOO_DIR=$(pwd)
 WOO_DIR="$WOO_DIR/bin/woocommerce"
 echo $WOO_DIR
-# Clone Woo Core so tests helpers are available (the `tests` dir is mapped in
-# the `.wp-env.json` file)
+
+# Clone Woo Core so tests helpers are available. The phpunit bootstrap will check
+# this folder for tests files.
 # TODO: This is always bringing in the latest test helpers, eventually we'll
 #       need to bring in the helpers for the version of Woo being tested.
-# TODO: Local installs won't refresh this automatically. For now I wanted to
-#       avoid excessive unnecessary cloning, but we probably should have this
-#       refreshed somehow (maybe based on age of directory?).
-if [ ! -d "$WOO_DIR/src" ]; then
-	# remove mapped directory created by wp-env so git clone will work.
-	rm -rf "$WOO_DIR/tests"
-	git clone --depth 1 "https://github.com/woocommerce/woocommerce.git" "$WOO_DIR"
-fi
+npm run wp-env run composer './bin/wp-env-phpunit-config.sh ${BASENAME}'
+
+# print php version in phpunit environment for verification
 npm run wp-env run phpunit 'php -v'
+
+# run phpunit
 npm run wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/'$BASENAME'/phpunit.xml.dist --verbose'

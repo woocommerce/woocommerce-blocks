@@ -38,8 +38,7 @@ if ( ! file_exists( $_tests_dir . '/includes/functions.php' ) ) {
 require_once $_tests_dir . '/includes/functions.php';
 
 /**
- * Returns WooCommerce main directory.
- *
+ * WooCommerce Main directory
  * @return string
  */
 function wc_dir() {
@@ -63,6 +62,38 @@ function wc_dir() {
 }
 
 /**
+ * Returns WooCommerce tests directory.
+ *
+ * @return string
+ */
+function wc_tests_dir() {
+	static $dir = '';
+	if ( $dir === '' ) {
+		if ( file_exists( __DIR__ . '/../bin/woocommerce/woocommerce.php' ) ) {
+			$dir = __DIR__ . '/../bin/woocommerce';
+			echo "Found WooCommerce plugin in bin." . PHP_EOL;
+		} elseif ( file_exists( WP_CONTENT_DIR . '/plugins/woocommerce/woocommerce.php' ) ) {
+			$dir = WP_CONTENT_DIR . '/plugins/woocommerce';
+			echo "Found WooCommerce plugin in content dir." . PHP_EOL;
+		} elseif ( file_exists( dirname( dirname( __DIR__ ) ) . '/woocommerce/woocommerce.php' ) ) {
+			$dir = dirname( dirname( __DIR__ ) ) . '/woocommerce';
+			echo "Found WooCommerce plugin in relative dir." . PHP_EOL;
+		} elseif ( file_exists( '/tmp/wordpress/wp-content/plugins/woocommerce/woocommerce.php' ) ) {
+			$dir = '/tmp/wordpress/wp-content/plugins/woocommerce';
+			echo "Found WooCommerce plugin in tmp dir." . PHP_EOL;
+		} else {
+			echo "Could not find WooCommerce plugin." . PHP_EOL;
+			exit( 1 );
+		}
+		if ( ! file_exists( $dir . '/tests' ) ) {
+			echo "Unable to find tests directory." . PHP_EOL;
+			exit( 1 );
+		}
+	}
+	return $dir;
+}
+
+/**
  * Install WC Blocks
  */
 function wc_blocks_install() {
@@ -74,7 +105,7 @@ function wc_blocks_install() {
  * Adds WooCommerce testing framework classes.
  */
 function wc_test_includes() {
-	$wc_tests_framework_base_dir = wc_dir() . '/tests/legacy';
+	$wc_tests_framework_base_dir = wc_tests_dir() . '/tests/legacy';
 	// WooCommerce test classes.
 	// Framework.
 	require_once $wc_tests_framework_base_dir . '/framework/class-wc-unit-test-factory.php';
