@@ -107,7 +107,7 @@ const getCoreConfig = ( options = {} ) => {
 		plugins: [
 			new CircularDependencyPlugin( {
 				exclude: /a\.js|node_modules/,
-				failOnError: true,
+				failOnError: 'warn',
 				cwd: process.cwd(),
 			} ),
 			new ProgressBarPlugin(
@@ -204,7 +204,7 @@ const getMainConfig = ( options = {} ) => {
 		plugins: [
 			new CircularDependencyPlugin( {
 				exclude: /a\.js|node_modules/,
-				failOnError: true,
+				failOnError: 'warn',
 				cwd: process.cwd(),
 			} ),
 			new ProgressBarPlugin(
@@ -309,7 +309,7 @@ const getFrontConfig = ( options = {} ) => {
 		plugins: [
 			new CircularDependencyPlugin( {
 				exclude: /a\.js|node_modules/,
-				failOnError: true,
+				failOnError: 'warn',
 				cwd: process.cwd(),
 			} ),
 			new ProgressBarPlugin(
