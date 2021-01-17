@@ -84,6 +84,14 @@ class Api {
 			$version = $this->get_file_version( $relative_src );
 		}
 
+		if ( in_array( $handle, $dependencies, true ) ) {
+			$dependencies = array_diff( $dependencies, [ $handle ] );
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				// phpcs:ignore
+				trigger_error( sprintf( 'Script with handle %s had a dependency on itself which we removed. This is an indicator that your JS code has a circular dependency that can cause bugs.', $handle ), E_USER_WARNING );
+			}
+		}
+
 		wp_register_script( $handle, $src, apply_filters( 'woocommerce_blocks_register_script_dependencies', $dependencies, $handle ), $version, true );
 
 		if ( $has_i18n && function_exists( 'wp_set_script_translations' ) ) {
