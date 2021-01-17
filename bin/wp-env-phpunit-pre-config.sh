@@ -1,6 +1,6 @@
 #!/bin/sh
 BASENAME=$(basename "`pwd`")
-WOO_DIR=$(PWD)
+WOO_DIR=$(pwd)
 WOO_DIR="$WOO_DIR/bin/woocommerce"
 echo $WOO_DIR
 # Clone Woo Core so tests helpers are available (the `tests` dir is mapped in
