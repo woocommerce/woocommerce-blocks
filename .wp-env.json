@@ -13,5 +13,12 @@
 	"config": {
 		"JETPACK_AUTOLOAD_DEV": true,
 	  	"SCRIPT_DEBUG": false
+	},
+	"env": {
+		"tests": {
+			"mappings": {
+				"wp-content/plugins/woocommerce/tests": "./bin/woocommerce/tests"
+			}
+		}
 	}
 }
