@@ -2,14 +2,14 @@
  * External dependencies
  */
 import { useDispatch, useSelect } from '@wordpress/data';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useRef, useCallback } from '@wordpress/element';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
+import isShallowEqual from '@wordpress/is-shallow-equal';
 
 /**
  * Internal dependencies
  */
 import { useThrowError } from '../use-throw-error';
-import { useShallowEqual } from '../use-shallow-equal';
 
 /**
  * Selected rates are derived by looping over the shipping rates. The selected rates will have a true selected prop.
@@ -45,35 +45,50 @@ See also: https://github.com/woocommerce/woocommerce-gutenberg-products-block/tr
  */
 export const useSelectShippingRate = ( shippingRates ) => {
 	const throwError = useThrowError();
-	const currentShippingRates = useShallowEqual( shippingRates );
-	const { selectShippingRate } = useDispatch( storeKey );
 
 	// Selected rates are stored in state.
-	const [ selectedShippingRates, setSelectedShipping ] = useState( () =>
-		deriveSelectedRates( currentShippingRates )
-	);
+	const [ selectedShippingRates, setSelectedShipping ] = useState( () => {
+		console.log( 'inital' );
+		return deriveSelectedRates( shippingRates );
+	} );
 
-	// When the incoming shipping rates change, update our local state.
+	// This ref is used to track when changes come in via the props.
+	const currentSelectedRates = useRef( selectedShippingRates );
+
+	// When the incoming shipping rates change, update our local state if there are changes to selected methods.
 	useEffect( () => {
-		setSelectedShipping( deriveSelectedRates( currentShippingRates ) );
-	}, [ currentShippingRates ] );
+		const newSelectedRates = deriveSelectedRates( shippingRates );
+		if (
+			! isShallowEqual( currentSelectedRates.current, newSelectedRates )
+		) {
+			currentSelectedRates.current = newSelectedRates;
+			setSelectedShipping( newSelectedRates );
+		}
+	}, [ shippingRates ] );
 
-	// Selects if rates are currently resolving.
+	// Tracks when rates are currently resolving.
 	const isSelectingRate = useSelect( ( select ) => {
 		return select( storeKey ).isShippingRateBeingSelected();
 	}, [] );
 
+	const { selectShippingRate } = useDispatch( storeKey );
+
 	// Sets a rate for a package in state (so changes are shown right away to consumers of the hook) and in the stores.
-	const setRate = ( newShippingRate, packageId ) => {
-		setSelectedShipping( {
-			...selectedShippingRates,
-			[ packageId ]: newShippingRate,
-		} );
-		selectShippingRate( newShippingRate, packageId ).catch( ( error ) => {
-			// we throw this error because an error on selecting a rate is problematic.
-			throwError( error );
-		} );
-	};
+	const setRate = useCallback(
+		( newShippingRate, packageId ) => {
+			setSelectedShipping( {
+				...selectedShippingRates,
+				[ packageId ]: newShippingRate,
+			} );
+			selectShippingRate( newShippingRate, packageId ).catch(
+				( error ) => {
+					// we throw this error because an error on selecting a rate is problematic.
+					throwError( error );
+				}
+			);
+		},
+		[ selectedShippingRates, throwError, selectShippingRate ]
+	);
 
 	return {
 		selectShippingRate: setRate,
