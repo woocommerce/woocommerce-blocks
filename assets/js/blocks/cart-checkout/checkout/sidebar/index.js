@@ -13,9 +13,9 @@ import {
 	TotalsTaxes,
 	TotalsShipping,
 	ExperimentalOrderMeta,
+	getCurrencyFromPriceResponse,
 } from '@woocommerce/blocks-checkout';
 import { useShippingDataContext } from '@woocommerce/base-context';
-import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import {
 	COUPONS_ENABLED,
 	DISPLAY_CART_PRICES_INCLUDING_TAX,

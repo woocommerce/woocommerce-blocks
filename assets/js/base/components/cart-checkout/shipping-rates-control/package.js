@@ -6,7 +6,7 @@ import { _n, sprintf } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
 import Label from '@woocommerce/base-components/label';
 import Title from '@woocommerce/base-components/title';
-import Panel from '@woocommerce/base-components/panel';
+import { Panel } from '@woocommerce/blocks-checkout';
 import classNames from 'classnames';
 
 /**

@@ -15,12 +15,12 @@ import {
 	TotalsTaxes,
 	TotalsShipping,
 	ExperimentalOrderMeta,
+	getCurrencyFromPriceResponse,
 } from '@woocommerce/blocks-checkout';
 import {
 	COUPONS_ENABLED,
 	DISPLAY_CART_PRICES_INCLUDING_TAX,
 } from '@woocommerce/block-settings';
-import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
 import { CartExpressPayment } from '@woocommerce/base-components/payment-methods';
 import {
 	useStoreCartCoupons,
