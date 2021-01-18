@@ -153,7 +153,8 @@ final class PaymentMethodRegistry {
 		$payment_methods = $this->get_all_active_registered();
 
 		foreach ( $payment_methods as $payment_method ) {
-			$script_data[ $payment_method->get_name() . '_data' ] = $payment_method->get_payment_method_data();
+			$script_data[ $payment_method->get_name() . '_data' ] =
+				array_merge( $payment_method->get_payment_method_data(), $payment_method->get_supported_features() );
 		}
 
 		return array_filter( $script_data );
