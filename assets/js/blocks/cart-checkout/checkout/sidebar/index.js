@@ -20,7 +20,7 @@ import {
 	COUPONS_ENABLED,
 	DISPLAY_CART_PRICES_INCLUDING_TAX,
 } from '@woocommerce/block-settings';
-import { useStoreCart, useStoreCartCoupons } from '@woocommerce/base-hooks';
+import { useStoreCartCoupons } from '@woocommerce/base-hooks';
 
 const CheckoutSidebar = ( {
 	cartCoupons = [],
@@ -28,7 +28,6 @@ const CheckoutSidebar = ( {
 	cartFees = [],
 	cartTotals = {},
 } ) => {
-	const cart = useStoreCart();
 	const {
 		applyCoupon,
 		removeCoupon,
@@ -76,7 +75,7 @@ const CheckoutSidebar = ( {
 				currency={ totalsCurrency }
 				values={ cartTotals }
 			/>
-			<ExperimentalOrderMeta.Slot cart={ cart } />
+			<ExperimentalOrderMeta.Slot />
 		</>
 	);
 };

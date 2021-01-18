@@ -65,7 +65,6 @@ const Block = ( props ) => {
 const Cart = ( { attributes } ) => {
 	const { isShippingCalculatorEnabled, hasDarkControls } = attributes;
 
-	const cart = useStoreCart();
 	const {
 		cartItems,
 		cartFees,
@@ -75,7 +74,7 @@ const Cart = ( { attributes } ) => {
 		cartItemErrors,
 		cartNeedsPayment,
 		cartNeedsShipping,
-	} = cart;
+	} = useStoreCart();
 
 	const {
 		applyCoupon,
@@ -150,7 +149,7 @@ const Cart = ( { attributes } ) => {
 					currency={ totalsCurrency }
 					values={ cartTotals }
 				/>
-				<ExperimentalOrderMeta.Slot cart={ cart } />
+				<ExperimentalOrderMeta.Slot />
 				<div className="wc-block-cart__payment-options">
 					{ cartNeedsPayment && <CartExpressPayment /> }
 					<CheckoutButton
