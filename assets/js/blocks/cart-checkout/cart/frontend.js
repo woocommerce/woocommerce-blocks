@@ -19,11 +19,7 @@ import { registerPlugin } from '@wordpress/plugins';
 import { ShippingRatesControl } from '@woocommerce/base-components/cart-checkout';
 import { Notice } from 'wordpress-components';
 import classnames from 'classnames';
-import { decodeEntities } from '@wordpress/html-entities';
-import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
-import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
-import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
-import { useStoreCart, useSelectShippingRate } from '@woocommerce/base-hooks';
+import { useStoreCart } from '@woocommerce/base-hooks';
 import { useShallowEqual } from '@woocommerce/base-hooks';
 import { useMemo } from '@wordpress/element';
 
@@ -82,43 +78,18 @@ renderFrontend( {
 	getErrorBoundaryProps,
 } );
 
-const renderShippingRatesControlOption = ( option ) => {
-	const priceWithTaxes = DISPLAY_CART_PRICES_INCLUDING_TAX
-		? parseInt( option.price, 10 ) + parseInt( option.taxes, 10 )
-		: parseInt( option.price, 10 );
-	return {
-		label: decodeEntities( option.name ),
-		value: option.rate_id,
-		description: (
-			<>
-				{ Number.isFinite( priceWithTaxes ) && (
-					<FormattedMonetaryAmount
-						currency={ getCurrencyFromPriceResponse( option ) }
-						value={ priceWithTaxes }
-					/>
-				) }
-				{ Number.isFinite( priceWithTaxes ) && option.delivery_time
-					? ' — '
-					: null }
-				{ decodeEntities( option.delivery_time ) }
-			</>
-		),
-	};
-};
-
 /**
  * Temporarily building this here - it will be moved to subs once packages are exported.
  */
 const RenderSubscriptionPackages = () => {
 	const { extensions, shippingRatesLoading } = useStoreCart();
-	const recurringCarts = extensions.subscriptions || {};
-	const currentRecurringCarts = useShallowEqual( recurringCarts );
+	const { subscriptions = {} } = extensions;
 
 	// Flatten all packages from recurring carts.
 	const packages = useMemo( () => {
 		const newPackages = [];
 
-		Object.values( currentRecurringCarts ).forEach( ( recurringCart ) => {
+		Object.values( subscriptions ).forEach( ( recurringCart ) => {
 			const recurringCartPackages = recurringCart.shipping_rates || [];
 
 			recurringCartPackages.forEach( ( recurringCartPackage ) => {
@@ -127,9 +98,11 @@ const RenderSubscriptionPackages = () => {
 		} );
 
 		return newPackages;
-	}, [ currentRecurringCarts ] );
+	}, [ subscriptions ] );
 
-	const { selectShippingRate } = useSelectShippingRate( packages );
+	if ( ! packages ) {
+		return null;
+	}
 
 	const SubscriptionShippingRates = () => {
 		return (
@@ -158,10 +131,8 @@ const RenderSubscriptionPackages = () => {
 								) }
 							</Notice>
 						}
-						renderOption={ renderShippingRatesControlOption }
 						shippingRates={ packages }
 						shippingRatesLoading={ shippingRatesLoading }
-						selectShippingRate={ selectShippingRate }
 					/>
 				</fieldset>
 			</div>
