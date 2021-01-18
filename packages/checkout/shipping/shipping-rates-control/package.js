@@ -47,7 +47,11 @@ const Package = ( {
 								className="wc-block-components-shipping-rates-control__package-item"
 							>
 								<Label
-									label={ `${ name } ×${ quantity }` }
+									label={
+										quantity > 1
+											? `${ name } ×${ quantity }`
+											: `${ name }`
+									}
 									screenReaderLabel={ sprintf(
 										// translators: %1$s name of the product (ie: Sunglasses), %2$d number of units in the current cart package
 										_n(
