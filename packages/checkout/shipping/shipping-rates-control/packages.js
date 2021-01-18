@@ -2,6 +2,7 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
+import { useSelectShippingRate } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -15,8 +16,11 @@ const Packages = ( {
 	noResultsMessage = null,
 	renderOption,
 	shippingRates = [],
-	selectShippingRate,
 } ) => {
+	const { selectShippingRate, selectedShippingRates } = useSelectShippingRate(
+		shippingRates
+	);
+
 	if ( ! shippingRates.length ) {
 		return noResultsMessage;
 	}
@@ -34,6 +38,7 @@ const Packages = ( {
 						onSelectRate={ ( newShippingRate ) => {
 							selectShippingRate( newShippingRate, packageId );
 						} }
+						selected={ selectedShippingRates[ packageId ] }
 						renderOption={ renderOption }
 						showItems={ shippingRates.length > 1 }
 						title={
@@ -70,7 +75,6 @@ Packages.propTypes = {
 			shipping_rates: PropTypes.arrayOf( PropTypes.object ),
 		} ).isRequired
 	).isRequired,
-	selectShippingRate: PropTypes.func.isRequired,
 };
 
 export default Packages;

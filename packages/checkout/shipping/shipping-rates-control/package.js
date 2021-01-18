@@ -24,6 +24,7 @@ const Package = ( {
 	packageData,
 	showItems,
 	title,
+	selected,
 } ) => {
 	const header = (
 		<>
@@ -72,6 +73,7 @@ const Package = ( {
 			noResultsMessage={ noResultsMessage }
 			rates={ packageData.shipping_rates }
 			onSelectRate={ onSelectRate }
+			selected={ selected }
 			renderOption={ renderOption }
 		/>
 	);
@@ -103,6 +105,7 @@ const Package = ( {
 Package.propTypes = {
 	onSelectRate: PropTypes.func.isRequired,
 	renderOption: PropTypes.func.isRequired,
+	selected: PropTypes.string,
 	packageData: PropTypes.shape( {
 		shipping_rates: PropTypes.arrayOf( PropTypes.object ).isRequired,
 		items: PropTypes.arrayOf(

@@ -15,16 +15,16 @@ import {
  * Internal dependencies
  */
 import Packages from './packages';
+import { renderPackageRateOption } from './render-package-rate-option';
 import './style.scss';
 
 const ShippingRatesControl = ( {
 	shippingRates,
-	selectShippingRate,
 	shippingRatesLoading,
 	className,
 	collapsibleWhenMultiple = false,
 	noResultsMessage,
-	renderOption,
+	renderOption = null,
 } ) => {
 	useEffect( () => {
 		if ( shippingRatesLoading ) {
@@ -94,9 +94,8 @@ const ShippingRatesControl = ( {
 					shippingRates.length > 1 && collapsibleWhenMultiple
 				}
 				noResultsMessage={ noResultsMessage }
-				renderOption={ renderOption }
+				renderOption={ renderOption || renderPackageRateOption }
 				shippingRates={ shippingRates }
-				selectShippingRate={ selectShippingRate }
 			/>
 		</LoadingMask>
 	);
@@ -104,7 +103,7 @@ const ShippingRatesControl = ( {
 
 ShippingRatesControl.propTypes = {
 	noResultsMessage: PropTypes.node.isRequired,
-	renderOption: PropTypes.func.isRequired,
+	renderOption: PropTypes.func,
 	className: PropTypes.string,
 	collapsibleWhenMultiple: PropTypes.bool,
 	shippingRates: PropTypes.array,

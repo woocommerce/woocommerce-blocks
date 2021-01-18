@@ -5,13 +5,6 @@ import PropTypes from 'prop-types';
 import RadioControl, {
 	RadioControlOptionLayout,
 } from '@woocommerce/base-components/radio-control';
-import { useState, useEffect } from '@wordpress/element';
-import { useShallowEqual } from '@woocommerce/base-hooks';
-
-// Selected rate can be derived from the data.
-const deriveSelected = ( rates ) => {
-	return rates.find( ( rate ) => rate.selected )?.rate_id;
-};
 
 const PackageRates = ( {
 	className,
@@ -19,15 +12,8 @@ const PackageRates = ( {
 	onSelectRate,
 	rates,
 	renderOption,
+	selected,
 } ) => {
-	const [ selected, setSelected ] = useState( () => deriveSelected( rates ) );
-	const currentRates = useShallowEqual( rates );
-
-	// If selected rate changes in incoming prop, update local state.
-	useEffect( () => {
-		setSelected( deriveSelected( currentRates ) );
-	}, [ currentRates ] );
-
 	if ( rates.length === 0 ) {
 		return noResultsMessage;
 	}
@@ -37,7 +23,6 @@ const PackageRates = ( {
 			<RadioControl
 				className={ className }
 				onChange={ ( selectedRateId ) => {
-					setSelected( selectedRateId );
 					onSelectRate( selectedRateId );
 				} }
 				selected={ selected }
@@ -69,6 +54,7 @@ PackageRates.propTypes = {
 	renderOption: PropTypes.func.isRequired,
 	className: PropTypes.string,
 	noResultsMessage: PropTypes.node,
+	selected: PropTypes.string,
 };
 
 export default PackageRates;

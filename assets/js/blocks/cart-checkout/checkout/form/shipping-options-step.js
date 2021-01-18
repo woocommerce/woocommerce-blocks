@@ -58,7 +58,6 @@ const ShippingOptionsStep = () => {
 		shippingRatesLoading,
 		needsShipping,
 		hasCalculatedShipping,
-		setSelectedRates,
 	} = useShippingDataContext();
 
 	if ( ! needsShipping ) {
@@ -111,7 +110,6 @@ const ShippingOptionsStep = () => {
 					renderOption={ renderShippingRatesControlOption }
 					shippingRates={ shippingRates }
 					shippingRatesLoading={ shippingRatesLoading }
-					selectShippingRate={ setSelectedRates }
 				/>
 			) }
 		</FormStep>
