@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import {
@@ -14,7 +15,7 @@ import {
 import TotalsItem from '../item';
 import './style.scss';
 
-const TotalsTaxes = ( { currency, values } ) => {
+const TotalsTaxes = ( { currency, values, className } ) => {
 	const { total_tax: totalTax, tax_lines: taxLines } = values;
 
 	if ( ! TAXES_ENABLED ) {
@@ -24,7 +25,10 @@ const TotalsTaxes = ( { currency, values } ) => {
 	if ( ! DISPLAY_ITEMIZED_TAXES ) {
 		return (
 			<TotalsItem
-				className="wc-block-components-totals-taxes"
+				className={ classnames(
+					'wc-block-components-totals-taxes',
+					className
+				) }
 				currency={ currency }
 				label={ __( 'Taxes', 'woo-gutenberg-products-block' ) }
 				value={ parseInt( totalTax, 10 ) }
@@ -52,6 +56,7 @@ TotalsTaxes.propTypes = {
 	values: PropTypes.shape( {
 		total_tax: PropTypes.string,
 	} ).isRequired,
+	className: PropTypes.string,
 };
 
 export default TotalsTaxes;

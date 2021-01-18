@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 import PropTypes from 'prop-types';
@@ -25,12 +26,14 @@ import './style.scss';
  * @param {Object} props.values Values in use.
  * @param {boolean} props.showRateSelector Whether to display the rate selector below the shipping total.
  * @param {boolean} props.showCalculator Whether to show shipping calculator or not.
+ * @param {string} props.className CSS Class supplied by consumer.
  */
 const TotalsShipping = ( {
 	currency,
 	values,
 	showCalculator = true,
 	showRateSelector = true,
+	className,
 } ) => {
 	const [ isShippingCalculatorOpen, setIsShippingCalculatorOpen ] = useState(
 		false
@@ -53,7 +56,12 @@ const TotalsShipping = ( {
 	};
 
 	return (
-		<div className="wc-block-components-totals-shipping">
+		<div
+			className={ classnames(
+				'wc-block-components-totals-shipping',
+				className
+			) }
+		>
 			<TotalsItem
 				label={ __( 'Shipping', 'woo-gutenberg-products-block' ) }
 				value={
@@ -170,6 +178,7 @@ TotalsShipping.propTypes = {
 	} ).isRequired,
 	showRateSelector: PropTypes.bool,
 	showCalculator: PropTypes.bool,
+	className: PropTypes.string,
 };
 
 export default TotalsShipping;
