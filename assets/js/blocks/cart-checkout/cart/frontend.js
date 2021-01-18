@@ -15,12 +15,10 @@ import {
 } from '@woocommerce/base-utils';
 import { ExperimentalOrderMeta } from '@woocommerce/blocks-checkout';
 import { registerPlugin } from '@wordpress/plugins';
-
 import { ShippingRatesControl } from '@woocommerce/base-components/cart-checkout';
 import { Notice } from 'wordpress-components';
 import classnames from 'classnames';
 import { useStoreCart } from '@woocommerce/base-hooks';
-import { useShallowEqual } from '@woocommerce/base-hooks';
 import { useMemo } from '@wordpress/element';
 
 /**
@@ -81,7 +79,7 @@ renderFrontend( {
 /**
  * Temporarily building this here - it will be moved to subs once packages are exported.
  */
-const RenderSubscriptionPackages = () => {
+const SubscriptionShippingRates = () => {
 	const { extensions, shippingRatesLoading } = useStoreCart();
 	const { subscriptions = {} } = extensions;
 
@@ -104,47 +102,45 @@ const RenderSubscriptionPackages = () => {
 		return null;
 	}
 
-	const SubscriptionShippingRates = () => {
-		return (
-			<div className="wc-block-components-totals-shipping">
-				<fieldset className="wc-block-components-totals-shipping__fieldset">
-					<legend className="screen-reader-text">
-						{ __(
-							'Recurring Shipping Options',
-							'woo-gutenberg-products-block'
-						) }
-					</legend>
-					<ShippingRatesControl
-						className="wc-block-components-totals-shipping__options"
-						collapsibleWhenMultiple={ true }
-						noResultsMessage={
-							<Notice
-								isDismissible={ false }
-								className={ classnames(
-									'wc-block-components-shipping-rates-control__no-results-notice',
-									'woocommerce-error'
-								) }
-							>
-								{ __(
-									'No shipping options were found.',
-									'woo-gutenberg-products-block'
-								) }
-							</Notice>
-						}
-						shippingRates={ packages }
-						shippingRatesLoading={ shippingRatesLoading }
-					/>
-				</fieldset>
-			</div>
-		);
-	};
-
 	return (
-		<ExperimentalOrderMeta>
-			<SubscriptionShippingRates />
-		</ExperimentalOrderMeta>
+		<div className="wc-block-components-totals-shipping">
+			<fieldset className="wc-block-components-totals-shipping__fieldset">
+				<legend className="screen-reader-text">
+					{ __(
+						'Recurring Shipping Options',
+						'woo-gutenberg-products-block'
+					) }
+				</legend>
+				<ShippingRatesControl
+					className="wc-block-components-totals-shipping__options"
+					collapsibleWhenMultiple={ true }
+					noResultsMessage={
+						<Notice
+							isDismissible={ false }
+							className={ classnames(
+								'wc-block-components-shipping-rates-control__no-results-notice',
+								'woocommerce-error'
+							) }
+						>
+							{ __(
+								'No shipping options were found.',
+								'woo-gutenberg-products-block'
+							) }
+						</Notice>
+					}
+					shippingRates={ packages }
+					shippingRatesLoading={ shippingRatesLoading }
+				/>
+			</fieldset>
+		</div>
 	);
 };
+
+const RenderSubscriptionPackages = () => (
+	<ExperimentalOrderMeta>
+		<SubscriptionShippingRates />
+	</ExperimentalOrderMeta>
+);
 
 registerPlugin( 'woocommerce-subscriptions-shipping', {
 	render: RenderSubscriptionPackages,

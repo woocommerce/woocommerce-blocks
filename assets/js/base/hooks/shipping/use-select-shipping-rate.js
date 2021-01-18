@@ -32,25 +32,22 @@ const deriveSelectedRates = ( shippingRates ) =>
 
 /**
  * This is a custom hook for loading the selected shipping rate from the cart store and actions for selecting a rate.
-See also: https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/trunk/src/RestApi/StoreApi
+ *
+ * @see https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/trunk/src/RestApi/StoreApi
  *
  * @param {Array} shippingRates an array of packages with shipping rates.
- * @return {Object} This hook will return an object with two properties:
- * - selectShippingRate    A function that immediately returns the selected
- * rate and dispatches an action generator.
- * - selectedShippingRates An object of selected shipping rates and package id as key, maintained
- * locally by a state and updated optimistically, this will only return packages that has selected
- * shipping rates.
- *
+ * @return {Object} This hook will return an object with these properties:
+ * 		- selectShippingRate: A function that immediately returns the selected rate and dispatches an action generator.
+ * 		- selectedShippingRates: An object of selected shipping rates and package id as key, maintained locally by a state and updated optimistically, this will only return packages that has selected shipping rates.
+ *		- isSelectingRate: True when rates are being resolved to the API.
  */
 export const useSelectShippingRate = ( shippingRates ) => {
 	const throwError = useThrowError();
 
 	// Selected rates are stored in state.
-	const [ selectedShippingRates, setSelectedShipping ] = useState( () => {
-		console.log( 'inital' );
-		return deriveSelectedRates( shippingRates );
-	} );
+	const [ selectedShippingRates, setSelectedShipping ] = useState( () =>
+		deriveSelectedRates( shippingRates )
+	);
 
 	// This ref is used to track when changes come in via the props.
 	const currentSelectedRates = useRef( selectedShippingRates );
