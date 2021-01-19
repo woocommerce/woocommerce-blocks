@@ -356,6 +356,8 @@ class Checkout extends AbstractRoute {
 			$order_controller->update_order_from_cart( $this->order );
 		}
 
+		do_action( '__experimental_woocommerce_blocks_checkout_update_order_meta', $this->order );
+
 		// Confirm order is valid before proceeding further.
 		if ( ! $this->order instanceof WC_Order ) {
 			throw new RouteException(
