@@ -97,7 +97,6 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Create get_item_responses_from_schema abstraction. ([3679](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3679))
 - Show itemized fee rows in the cart/checkout blocks. ([3678](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3678))
 - Extensibility: Show item data in Cart and Checkout blocks and update the variation data styles. ([3665](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3665))
-- Improve error displayed to customers when an item's stock status changes during checkout. ([3656](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3656))
 - Introduce SlotFill for Sidebar. ([3361](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3361))
 
 = 4.2.0 - 2021-01-06 =
