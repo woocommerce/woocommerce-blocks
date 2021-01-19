@@ -2,7 +2,7 @@
 namespace Automattic\WooCommerce\Blocks\Assets;
 
 use Automattic\WooCommerce\Blocks\Domain\Package;
-
+use Exception;
 /**
  * The Api class provides an interface to various asset registration helpers.
  *
@@ -69,6 +69,8 @@ class Api {
 	 * @param bool   $has_i18n      Optional. Whether to add a script
 	 *                              translation call to this file. Default:
 	 *                              true.
+	 *
+	 * @throws Exception If the registered script has a dependency on itself.
 	 */
 	public function register_script( $handle, $relative_src, $dependencies = [], $has_i18n = true ) {
 		$src        = $this->get_asset_url( $relative_src );
@@ -85,10 +87,8 @@ class Api {
 		}
 
 		if ( in_array( $handle, $dependencies, true ) ) {
-			$dependencies = array_diff( $dependencies, [ $handle ] );
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				// phpcs:ignore
-				trigger_error( sprintf( 'Script with handle %s had a dependency on itself which we removed. This is an indicator that your JS code has a circular dependency that can cause bugs.', $handle ), E_USER_WARNING );
+			if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+				throw new Exception( sprintf( 'Script with handle %s had a dependency on itself which we removed. This is an indicator that your JS code has a circular dependency that can cause bugs.', $handle ) );
 			}
 		}
 
