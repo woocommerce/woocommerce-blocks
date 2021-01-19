@@ -7,6 +7,7 @@ import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 import PropTypes from 'prop-types';
 import { useState } from '@wordpress/element';
 import { useStoreCart } from '@woocommerce/base-hooks';
+import { ShippingCalculator, ShippingLocation } from '@woocommerce/base-components/cart-checkout';
 
 /**
  * Internal dependencies
@@ -14,8 +15,6 @@ import { useStoreCart } from '@woocommerce/base-hooks';
 import TotalsItem from '../item';
 import ShippingRateSelector from './shipping-rate-selector';
 import hasShippingRate from './has-shipping-rate';
-import ShippingCalculator from '../../shipping-calculator';
-import ShippingLocation from '../../shipping-location';
 import './style.scss';
 
 /**

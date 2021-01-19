@@ -12,7 +12,6 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import ShippingRatesControl from '../../shipping-rates-control';
 import { getCurrencyFromPriceResponse } from '../../utils';
 
 const renderShippingRatesControlOption = ( option ) => {
