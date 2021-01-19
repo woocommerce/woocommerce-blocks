@@ -88,7 +88,7 @@ class Api {
 
 		if ( in_array( $handle, $dependencies, true ) ) {
 			if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
-				throw new Exception( sprintf( 'Script with handle %s had a dependency on itself which we removed. This is an indicator that your JS code has a circular dependency that can cause bugs.', $handle ) );
+				throw new Exception( sprintf( 'Script with handle %s had a dependency on itself. This is an indicator that your JS code has a circular dependency that can cause bugs.', $handle ) );
 			}
 		}
 
