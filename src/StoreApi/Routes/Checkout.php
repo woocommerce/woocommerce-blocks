@@ -230,7 +230,6 @@ class Checkout extends AbstractRoute {
 		 *
 		 * @see https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3238
 		 * @internal This Hook is experimental and may change or be removed.
-		 * @since 3.8.0
 		 *
 		 * @param WC_Order $order Order object.
 		 */
