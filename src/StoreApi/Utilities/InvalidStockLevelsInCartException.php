@@ -72,4 +72,8 @@ class InvalidStockLevelsInCartException extends \Exception {
 		return $this->additional_data;
 	}
 
+	public function getMessages() {
+		return $this->error->get_error_messages();
+	}
+
 }

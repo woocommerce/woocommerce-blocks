@@ -232,13 +232,8 @@ class CartController {
 		);
 	}
 
-	/**
-	 * Validate all items in the cart and check for errors.
-	 *
-	 * @throws InvalidStockLevelsInCartException Exception if invalid data is detected due to insufficient stock levels.
-	 */
-	public function validate_cart_items() {
-		$cart       = $this->get_cart_instance();
+
+	public function validate_cart_items_inner() {
 		$cart_items = $this->get_cart_items();
 
 		$out_of_stock_products         = [];
@@ -340,6 +335,16 @@ class CartController {
 				$error
 			);
 		}
+	}
+
+	/**
+	 * Validate all items in the cart and check for errors.
+	 *
+	 * @throws InvalidStockLevelsInCartException Exception if invalid data is detected due to insufficient stock levels.
+	 */
+	public function validate_cart_items() {
+		$cart = $this->get_cart_instance();
+		$this->validate_cart_items_inner();
 
 		// Before running the woocommerce_check_cart_items hook, unhook validation from the core cart.
 		remove_action( 'woocommerce_check_cart_items', array( $cart, 'check_cart_items' ), 1 );
@@ -440,17 +445,14 @@ class CartController {
 	 * @throws RouteException Exception if invalid data is detected.
 	 */
 	public function get_cart_item_errors() {
-		$errors     = [];
-		$cart_items = $this->get_cart_items();
+		$errors = [];
 
-		foreach ( $cart_items as $cart_item_key => $cart_item ) {
-			try {
-				$this->validate_cart_item( $cart_item );
-			} catch ( RouteException $error ) {
-				$errors[] = new WP_Error( $error->getErrorCode(), $error->getMessage() );
-			} catch ( StockAvailabilityException $error ) {
-				$errors[] = new WP_Error( $error->getErrorCode(), $error->getMessage() );
-			}
+		try {
+			$this->validate_cart_items_inner();
+		} catch ( RouteException $error ) {
+			$errors[] = new WP_Error( $error->getErrorCode(), $error->getMessage() );
+		} catch ( InvalidStockLevelsInCartException $error ) {
+			$errors[] = new WP_Error( $error->getErrorCode(), $error->getMessages() );
 		}
 
 		return $errors;
