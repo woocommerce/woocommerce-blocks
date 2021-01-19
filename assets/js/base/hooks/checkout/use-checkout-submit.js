@@ -26,7 +26,7 @@ export const useCheckoutSubmit = () => {
 		isComplete,
 		hasError,
 	} = useCheckoutContext();
-	const { paymentMethods } = usePaymentMethods();
+	const { paymentMethods = {} } = usePaymentMethods();
 	const { activePaymentMethod } = usePaymentMethodDataContext();
 	const paymentMethod = paymentMethods[ activePaymentMethod ] || {};
 
