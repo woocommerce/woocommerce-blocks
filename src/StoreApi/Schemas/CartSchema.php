@@ -395,7 +395,12 @@ class CartSchema extends AbstractSchema {
 	 */
 	protected function get_cart_errors( $cart ) {
 		$controller    = new CartController();
-		$item_errors   = $controller->get_cart_item_errors();
+		$item_errors   = array_filter(
+			[ $controller->get_cart_item_errors() ],
+			function( \WP_Error  $error ) {
+				return $error->has_errors();
+			}
+		);
 		$coupon_errors = $controller->get_cart_coupon_errors();
 
 		return array_values( array_map( [ $this->error_schema, 'get_item_response' ], array_merge( $item_errors, $coupon_errors ) ) );
