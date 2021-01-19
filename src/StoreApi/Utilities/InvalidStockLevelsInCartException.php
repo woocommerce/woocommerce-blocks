@@ -73,7 +73,7 @@ class InvalidStockLevelsInCartException extends \Exception {
 	}
 
 	public function getMessages() {
-		return $this->error->get_error_messages();
+		return esc_html( join( "\n", $this->error->get_error_messages() ) );
 	}
 
 }
