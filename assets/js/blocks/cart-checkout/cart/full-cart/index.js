@@ -10,12 +10,17 @@ import {
 	TotalsFooterItem,
 } from '@woocommerce/base-components/cart-checkout';
 import {
+<<<<<<< HEAD
 	Subtotal,
 	TotalsFees,
 	TotalsTaxes,
 	TotalsShipping,
 	ExperimentalOrderMeta,
 	getCurrencyFromPriceResponse,
+=======
+	ExperimentalOrderMeta,
+	ExperimentalOrderShipping,
+>>>>>>> Shipping slot fill
 } from '@woocommerce/blocks-checkout';
 import {
 	COUPONS_ENABLED,
@@ -131,7 +136,9 @@ const Cart = ( { attributes } ) => {
 						showRateSelector={ true }
 						values={ cartTotals }
 						currency={ totalsCurrency }
-					/>
+					>
+						<ExperimentalOrderShipping.Slot />
+					</TotalsShipping>
 				) }
 				{ ! DISPLAY_CART_PRICES_INCLUDING_TAX && (
 					<TotalsTaxes

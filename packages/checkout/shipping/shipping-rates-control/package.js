@@ -49,7 +49,7 @@ const Package = ( {
 								<Label
 									label={
 										quantity > 1
-											? `${ name } ×${ quantity }`
+											? `${ name } × ${ quantity }`
 											: `${ name }`
 									}
 									screenReaderLabel={ sprintf(

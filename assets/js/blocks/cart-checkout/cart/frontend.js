@@ -13,7 +13,7 @@ import {
 	renderFrontend,
 	getValidBlockAttributes,
 } from '@woocommerce/base-utils';
-import { ExperimentalOrderMeta } from '@woocommerce/blocks-checkout';
+import { ExperimentalOrderShipping } from '@woocommerce/blocks-checkout';
 import { registerPlugin } from '@wordpress/plugins';
 import { ShippingRatesControl } from '@woocommerce/base-components/cart-checkout';
 import { Notice } from 'wordpress-components';
@@ -137,9 +137,9 @@ const SubscriptionShippingRates = () => {
 };
 
 const RenderSubscriptionPackages = () => (
-	<ExperimentalOrderMeta>
+	<ExperimentalOrderShipping>
 		<SubscriptionShippingRates />
-	</ExperimentalOrderMeta>
+	</ExperimentalOrderShipping>
 );
 
 registerPlugin( 'woocommerce-subscriptions-shipping', {

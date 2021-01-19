@@ -8,12 +8,17 @@ import {
 	TotalsFooterItem,
 } from '@woocommerce/base-components/cart-checkout';
 import {
+<<<<<<< HEAD
 	Subtotal,
 	TotalsFees,
 	TotalsTaxes,
 	TotalsShipping,
 	ExperimentalOrderMeta,
 	getCurrencyFromPriceResponse,
+=======
+	ExperimentalOrderMeta,
+	ExperimentalOrderShipping,
+>>>>>>> Shipping slot fill
 } from '@woocommerce/blocks-checkout';
 import { useShippingDataContext } from '@woocommerce/base-context';
 import {
@@ -56,7 +61,9 @@ const CheckoutSidebar = ( {
 					showRateSelector={ false }
 					values={ cartTotals }
 					currency={ totalsCurrency }
-				/>
+				>
+					<ExperimentalOrderShipping.Slot />
+				</TotalsShipping>
 			) }
 			{ ! DISPLAY_CART_PRICES_INCLUDING_TAX && (
 				<TotalsTaxes
