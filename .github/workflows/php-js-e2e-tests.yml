@@ -91,8 +91,7 @@ jobs:
 
       - name: blocks.ini setup
         run: |
-          echo 'woocommerce_blocks_phase = 3 > blocks.ini
-          echo 'woocommerce_blocks_env = tests' >> blocks.ini
+          echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = tests' > blocks.ini
 
       - name: Run PHP Unit tests
         run: |
@@ -132,8 +131,7 @@ jobs:
 
       - name: blocks.ini setup
         run: |
-          echo 'woocommerce_blocks_phase = 3 > blocks.ini
-          echo 'woocommerce_blocks_env = tests' >> blocks.ini
+          echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = tests' > blocks.ini
 
       - name: Run JavaScript Unit tests
         run: |
@@ -172,8 +170,7 @@ jobs:
 
       - name: blocks.ini setup
         run: |
-          echo 'woocommerce_blocks_phase = 3 > blocks.ini
-          echo 'woocommerce_blocks_env = tests' >> blocks.ini
+          echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = tests' > blocks.ini
       - name: Get Composer Cache Directory
         id: composer-cache
         run: |
@@ -238,8 +235,7 @@ jobs:
 
       - name: blocks.ini setup
         run: |
-          echo 'woocommerce_blocks_phase = 3 > blocks.ini
-          echo 'woocommerce_blocks_env = tests' >> blocks.ini
+          echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = tests' > blocks.ini
       - name: Get Composer Cache Directory
         id: composer-cache
         run: |
@@ -305,8 +301,7 @@ jobs:
 
       - name: blocks.ini setup
         run: |
-          echo 'woocommerce_blocks_phase = 3 > blocks.ini
-          echo 'woocommerce_blocks_env = tests' >> blocks.ini
+          echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = tests' > blocks.ini
       - name: Get Composer Cache Directory
         id: composer-cache
         run: |
@@ -372,8 +367,7 @@ jobs:
 
       - name: blocks.ini setup
         run: |
-          echo 'woocommerce_blocks_phase = 3 > blocks.ini
-          echo 'woocommerce_blocks_env = tests' >> blocks.ini
+          echo -e 'woocommerce_blocks_phase = 3\nwoocommerce_blocks_env = tests' > blocks.ini
       - name: Get Composer Cache Directory
         id: composer-cache
         run: |
