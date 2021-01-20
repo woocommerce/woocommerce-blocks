@@ -119,7 +119,7 @@ const getCoreConfig = ( options = {} ) => {
 				// content of the file
 				content: `
 woocommerce_blocks_phase = ${ process.env.WOOCOMMERCE_BLOCKS_PHASE || 3 }
-${ NODE_ENV === 'development' ? 'woocommerce_blocks_env = development' : '' }
+woocommerce_blocks_env = ${ NODE_ENV }
 `.trim(),
 			} ),
 		],
