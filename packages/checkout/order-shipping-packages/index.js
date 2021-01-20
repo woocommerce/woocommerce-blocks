@@ -6,7 +6,6 @@ import {
 	__experimentalUseSlot as useSlot,
 } from 'wordpress-components';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
-import classnames from 'classnames';
 import { Children, cloneElement } from 'wordpress-element';
 
 /**
@@ -37,20 +36,27 @@ function ExperimentalOrderShippingPackages( { children } ) {
 	);
 }
 
-function Slot( { className, collapsibleWhenMultiple, collapsible } ) {
+function Slot( {
+	className,
+	collapsibleWhenMultiple,
+	collapsible,
+	noResultsMessage,
+	renderOption,
+} ) {
 	const { fills } = useSlot( slotName );
-
+	const hasMultiplePackages = fills.length > 1;
 	return (
 		<SlotComponent
 			bubblesVirtually
-			className={ classnames(
-				className,
-				'wc-block-components-order-shipping-packages'
-			) }
+			className="wc-block-components-shipping-rates-control"
 			fillProps={ {
+				className,
 				collapsible:
 					collapsibleWhenMultiple &&
-					( collapsible || fills.length > 1 ),
+					( collapsible || hasMultiplePackages ),
+				showItems: hasMultiplePackages,
+				noResultsMessage,
+				renderOption,
 			} }
 		/>
 	);

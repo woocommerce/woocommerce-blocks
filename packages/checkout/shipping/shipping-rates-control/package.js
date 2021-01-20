@@ -2,11 +2,11 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { _n, sprintf } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
 import Label from '@woocommerce/base-components/label';
 import Title from '@woocommerce/base-components/title';
-import classNames from 'classnames';
 
 /**
  * Internal dependencies

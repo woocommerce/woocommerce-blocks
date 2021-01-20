@@ -3,9 +3,9 @@
  */
 import { ExperimentalOrderShippingPackages } from '@woocommerce/blocks-checkout';
 import { registerPlugin } from '@wordpress/plugins';
-import { useStoreCart } from '@woocommerce/base-hooks';
+import { useStoreCart, useSelectShippingRate } from '@woocommerce/base-hooks';
 import { useMemo } from '@wordpress/element';
-import Packages from '@woocommerce/base-components/cart-checkout/shipping-rates-control/packages.js';
+import Package from '@woocommerce/base-components/cart-checkout/shipping-rates-control/package.js';
 
 const RenderSubscriptionPackages = () => {
 	const {
@@ -27,19 +27,26 @@ const RenderSubscriptionPackages = () => {
 		return newPackages;
 	}, [ subscriptions ] );
 
-	if ( ! packages.length ) {
-		return null;
-	}
-
-	return (
-		<ExperimentalOrderShippingPackages>
-			<SubscriptionShippingRates packages={ packages } />
-		</ExperimentalOrderShippingPackages>
+	const { selectShippingRate, selectedShippingRates } = useSelectShippingRate(
+		packages
 	);
+
+	return packages.map( ( { package_id: packageId, ...packageData } ) => (
+		<ExperimentalOrderShippingPackages key={ packageId }>
+			<SubscriptionPackage
+				key={ packageId }
+				packageData={ packageData }
+				onSelectRate={ ( newShippingRate ) => {
+					selectShippingRate( newShippingRate, packageId );
+				} }
+				selected={ selectedShippingRates[ packageId ] }
+			/>
+		</ExperimentalOrderShippingPackages>
+	) );
 };
 
-const SubscriptionShippingRates = ( { collapsible, packages } ) => {
-	return <Packages collapsible={ collapsible } shippingRates={ packages } />;
+const SubscriptionPackage = ( props ) => {
+	return <Package { ...props } />;
 };
 
 registerPlugin( 'woocommerce-subscriptions-shipping', {
