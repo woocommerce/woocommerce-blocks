@@ -81,20 +81,21 @@ final class Stripe extends AbstractPaymentMethodType {
 	 */
 	public function get_payment_method_data() {
 		return [
-			'stripeTotalLabel'    => $this->get_total_label(),
-			'publicKey'           => $this->get_publishable_key(),
-			'allowPrepaidCard'    => $this->get_allow_prepaid_card(),
-			'title'               => $this->get_title(),
-			'button'              => [
+			'stripeTotalLabel'                 => $this->get_total_label(),
+			'publicKey'                        => $this->get_publishable_key(),
+			'allowPrepaidCard'                 => $this->get_allow_prepaid_card(),
+			'title'                            => $this->get_title(),
+			'button'                           => [
 				'type'   => $this->get_button_type(),
 				'theme'  => $this->get_button_theme(),
 				'height' => $this->get_button_height(),
 				'locale' => $this->get_button_locale(),
 			],
-			'inline_cc_form'      => $this->get_inline_cc_form(),
-			'icons'               => $this->get_icons(),
-			'allowSavedCards'     => $this->get_allow_saved_cards(),
-			'allowPaymentRequest' => $this->get_allow_payment_request(),
+			'inline_cc_form'                   => $this->get_inline_cc_form(),
+			'icons'                            => $this->get_icons(),
+			'allowSavedCards'                  => $this->get_allow_saved_cards(),
+			'allowPaymentRequest'              => $this->get_allow_payment_request(),
+			'displaySavePaymentMethodCheckbox' => $this->get_display_save_payment_method_checkbox(),
 		];
 	}
 
