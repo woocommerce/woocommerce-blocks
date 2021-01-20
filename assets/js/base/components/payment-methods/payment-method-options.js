@@ -71,6 +71,9 @@ const PaymentMethodOptions = () => {
 					content: (
 						<PaymentMethodTab
 							allowsSaving={ supports.savePaymentInfo }
+							displaySavePaymentMethodCheckbox={
+								supports.displaySavePaymentMethodCheckbox
+							}
 						>
 							{ cloneElement( component, {
 								activePaymentMethod,

@@ -57,6 +57,8 @@ const stripeCcPaymentMethod = {
 	),
 	supports: {
 		savePaymentInfo: getStripeServerData().allowSavedCards,
+		displaySavePaymentMethodCheckbox: getStripeServerData()
+			.displaySavePaymentMethodCheckbox,
 	},
 };
 
