@@ -47,10 +47,28 @@ final class PaymentMethodRegistry {
 		 */
 		do_action( 'woocommerce_blocks_payment_method_type_registration', $this );
 
+		add_action( '__experimental_woocommerce_blocks_available_gateways_maybe_changed', array( $this, 'unregister_all_gateways_except' ) );
+
 		$registered_payment_method_types = $this->get_all_registered();
 
 		foreach ( $registered_payment_method_types as $registered_type ) {
 			$registered_type->initialize();
+		}
+	}
+
+	/**
+	 * This method will take an array of WC_Payment_Gateways and unregister every gateway that is not in the array.
+	 * Extensions can do the action __experimental_woocommerce_blocks_available_gateways_maybe_changed to tell this
+	 * plugin that available gateways may have changed, and that we should process this.
+	 *
+	 * @param \WC_Payment_Gateway $available_gateways The list of available payment gateways.
+	 */
+	public function unregister_all_gateways_except( $available_gateways ) {
+		$available_gateway_names = wc_list_pluck( $available_gateways, 'id' );
+		foreach ( $this->registered_payment_methods as $registered_payment_method ) {
+			if ( ! in_array( $registered_payment_method->get_name(), $available_gateway_names, true ) ) {
+				$this->unregister( $registered_payment_method->get_name() );
+			}
 		}
 	}
 
