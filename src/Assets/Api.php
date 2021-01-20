@@ -87,7 +87,11 @@ class Api {
 		}
 
 		if ( in_array( $handle, $dependencies, true ) ) {
-			if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+			if ( Package::feature()->is_development_environment() ) {
+				$dependencies = array_diff( $dependencies, [ $handle ] );
+				// phpcs:ignore
+				trigger_error( sprintf( 'Script with handle %s had a dependency on itself which has been removed. This is an indicator that your JS code has a circular dependency that can cause bugs.', $handle ), E_USER_WARNING );
+			} else {
 				throw new Exception( sprintf( 'Script with handle %s had a dependency on itself. This is an indicator that your JS code has a circular dependency that can cause bugs.', $handle ) );
 			}
 		}
