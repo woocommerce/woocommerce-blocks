@@ -85,7 +85,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
-= 4.3.0 - 2021-01-19 =
+= 4.3.0 - 2021-01-20 =
 
 #### Bug Fixes
 
