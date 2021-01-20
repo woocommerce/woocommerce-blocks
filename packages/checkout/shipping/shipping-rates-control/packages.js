@@ -41,9 +41,6 @@ const Packages = ( {
 						selected={ selectedShippingRates[ packageId ] }
 						renderOption={ renderOption }
 						showItems={ shippingRates.length > 1 }
-						title={
-							shippingRates.length > 1 ? packageData.name : null
-						}
 					/>
 				)
 			) }
@@ -53,7 +50,7 @@ const Packages = ( {
 };
 
 Packages.propTypes = {
-	renderOption: PropTypes.func.isRequired,
+	renderOption: PropTypes.func,
 	className: PropTypes.string,
 	collapsible: PropTypes.bool,
 	noResultsMessage: PropTypes.node,

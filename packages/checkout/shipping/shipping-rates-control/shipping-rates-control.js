@@ -10,12 +10,13 @@ import {
 	getShippingRatesPackageCount,
 	getShippingRatesRateCount,
 } from '@woocommerce/base-utils';
+import { ExperimentalOrderShippingPackages } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
  */
 import Packages from './packages';
-import { renderPackageRateOption } from './render-package-rate-option';
+import Package from './package';
 import './style.scss';
 
 const ShippingRatesControl = ( {
@@ -24,7 +25,7 @@ const ShippingRatesControl = ( {
 	className,
 	collapsibleWhenMultiple = false,
 	noResultsMessage,
-	renderOption = null,
+	renderOption,
 } ) => {
 	useEffect( () => {
 		if ( shippingRatesLoading ) {
@@ -88,15 +89,18 @@ const ShippingRatesControl = ( {
 			) }
 			showSpinner={ true }
 		>
-			<Packages
-				className={ className }
-				collapsible={
-					shippingRates.length > 1 && collapsibleWhenMultiple
-				}
-				noResultsMessage={ noResultsMessage }
-				renderOption={ renderOption || renderPackageRateOption }
-				shippingRates={ shippingRates }
+			<ExperimentalOrderShippingPackages.Slot
+				collapsibleWhenMultiple={ collapsibleWhenMultiple }
+				collapsible={ shippingRates.length > 1 }
 			/>
+			<ExperimentalOrderShippingPackages>
+				<Packages
+					className={ className }
+					noResultsMessage={ noResultsMessage }
+					renderOption={ renderOption }
+					shippingRates={ shippingRates }
+				/>
+			</ExperimentalOrderShippingPackages>
 		</LoadingMask>
 	);
 };
@@ -111,3 +115,7 @@ ShippingRatesControl.propTypes = {
 };
 
 export default ShippingRatesControl;
+<<<<<<< HEAD:packages/checkout/shipping/shipping-rates-control/shipping-rates-control.js
+=======
+export { Packages, Package };
+>>>>>>> Working slot fills:assets/js/base/components/cart-checkout/shipping-rates-control/index.js

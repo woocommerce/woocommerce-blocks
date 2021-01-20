@@ -31,7 +31,6 @@ import './style.scss';
  * @param {boolean} props.showRateSelector Whether to display the rate selector below the shipping total.
  * @param {boolean} props.showCalculator Whether to show shipping calculator or not.
  * @param {string} props.className CSS Class supplied by consumer.
- * @param {React.ReactChildren} props.children Child components passed in.
  */
 const TotalsShipping = ( {
 	currency,
@@ -39,7 +38,6 @@ const TotalsShipping = ( {
 	showCalculator = true,
 	showRateSelector = true,
 	className,
-	children,
 } ) => {
 	const [ isShippingCalculatorOpen, setIsShippingCalculatorOpen ] = useState(
 		false
@@ -107,7 +105,6 @@ const TotalsShipping = ( {
 					shippingRatesLoading={ shippingRatesLoading }
 				/>
 			) }
-			{ children }
 		</div>
 	);
 };

@@ -13,19 +13,14 @@ import {
 	renderFrontend,
 	getValidBlockAttributes,
 } from '@woocommerce/base-utils';
-import { ExperimentalOrderShipping } from '@woocommerce/blocks-checkout';
-import { registerPlugin } from '@wordpress/plugins';
-import { ShippingRatesControl } from '@woocommerce/base-components/cart-checkout';
-import { Notice } from 'wordpress-components';
-import classnames from 'classnames';
-import { useStoreCart } from '@woocommerce/base-hooks';
-import { useMemo } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import Block from './block.js';
 import blockAttributes from './attributes';
+
+import '../subscriptions-integration';
 
 const reloadPage = () => void window.location.reload( true );
 /**
@@ -74,74 +69,4 @@ renderFrontend( {
 	Block: withStoreCartApiHydration( withRestApiHydration( CartFrontend ) ),
 	getProps,
 	getErrorBoundaryProps,
-} );
-
-/**
- * Temporarily building this here - it will be moved to subs once packages are exported.
- */
-const SubscriptionShippingRates = () => {
-	const { extensions, shippingRatesLoading } = useStoreCart();
-	const { subscriptions = {} } = extensions;
-
-	// Flatten all packages from recurring carts.
-	const packages = useMemo( () => {
-		const newPackages = [];
-
-		Object.values( subscriptions ).forEach( ( recurringCart ) => {
-			const recurringCartPackages = recurringCart.shipping_rates || [];
-
-			recurringCartPackages.forEach( ( recurringCartPackage ) => {
-				newPackages.push( recurringCartPackage );
-			} );
-		} );
-
-		return newPackages;
-	}, [ subscriptions ] );
-
-	if ( ! packages ) {
-		return null;
-	}
-
-	return (
-		<div className="wc-block-components-totals-shipping">
-			<fieldset className="wc-block-components-totals-shipping__fieldset">
-				<legend className="screen-reader-text">
-					{ __(
-						'Recurring Shipping Options',
-						'woo-gutenberg-products-block'
-					) }
-				</legend>
-				<ShippingRatesControl
-					className="wc-block-components-totals-shipping__options"
-					collapsibleWhenMultiple={ true }
-					noResultsMessage={
-						<Notice
-							isDismissible={ false }
-							className={ classnames(
-								'wc-block-components-shipping-rates-control__no-results-notice',
-								'woocommerce-error'
-							) }
-						>
-							{ __(
-								'No shipping options were found.',
-								'woo-gutenberg-products-block'
-							) }
-						</Notice>
-					}
-					shippingRates={ packages }
-					shippingRatesLoading={ shippingRatesLoading }
-				/>
-			</fieldset>
-		</div>
-	);
-};
-
-const RenderSubscriptionPackages = () => (
-	<ExperimentalOrderShipping>
-		<SubscriptionShippingRates />
-	</ExperimentalOrderShipping>
-);
-
-registerPlugin( 'woocommerce-subscriptions-shipping', {
-	render: RenderSubscriptionPackages,
 } );

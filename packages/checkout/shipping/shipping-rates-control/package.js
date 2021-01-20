@@ -17,23 +17,22 @@ import './style.scss';
 
 const Package = ( {
 	className,
-	collapsible = false,
 	noResultsMessage,
 	onSelectRate,
 	renderOption,
 	packageData,
-	showItems,
-	title,
-	selected,
+	collapsible = false,
+	showItems = false,
+	selected = '',
 } ) => {
 	const header = (
 		<>
-			{ title && (
+			{ ( showItems || collapsible ) && (
 				<Title
 					className="wc-block-components-shipping-rates-control__package-title"
 					headingLevel="3"
 				>
-					{ title }
+					{ packageData.name }
 				</Title>
 			) }
 			{ showItems && (
@@ -108,7 +107,7 @@ const Package = ( {
 
 Package.propTypes = {
 	onSelectRate: PropTypes.func.isRequired,
-	renderOption: PropTypes.func.isRequired,
+	renderOption: PropTypes.func,
 	selected: PropTypes.string,
 	packageData: PropTypes.shape( {
 		shipping_rates: PropTypes.arrayOf( PropTypes.object ).isRequired,
@@ -124,7 +123,6 @@ Package.propTypes = {
 	collapsible: PropTypes.bool,
 	noResultsMessage: PropTypes.node,
 	showItems: PropTypes.bool,
-	title: PropTypes.string,
 };
 
 export default Package;

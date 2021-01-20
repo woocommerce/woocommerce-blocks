@@ -6,12 +6,17 @@ import RadioControl, {
 	RadioControlOptionLayout,
 } from '@woocommerce/base-components/radio-control';
 
+/**
+ * Internal dependencies
+ */
+import { renderPackageRateOption } from './render-package-rate-option';
+
 const PackageRates = ( {
 	className,
 	noResultsMessage,
 	onSelectRate,
 	rates,
-	renderOption,
+	renderOption = renderPackageRateOption,
 	selected,
 } ) => {
 	if ( rates.length === 0 ) {
@@ -51,7 +56,7 @@ const PackageRates = ( {
 PackageRates.propTypes = {
 	onSelectRate: PropTypes.func.isRequired,
 	rates: PropTypes.arrayOf( PropTypes.object ).isRequired,
-	renderOption: PropTypes.func.isRequired,
+	renderOption: PropTypes.func,
 	className: PropTypes.string,
 	noResultsMessage: PropTypes.node,
 	selected: PropTypes.string,

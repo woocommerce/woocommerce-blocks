@@ -26,6 +26,8 @@ import Block from './block.js';
 import blockAttributes from './attributes';
 import EmptyCart from './empty-cart/index.js';
 
+import '../subscriptions-integration';
+
 const reloadPage = () => void window.location.reload( true );
 
 /**
