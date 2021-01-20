@@ -16,7 +16,6 @@ import { ExperimentalOrderShippingPackages } from '@woocommerce/blocks-checkout'
  * Internal dependencies
  */
 import Packages from './packages';
-import Package from './package';
 import './style.scss';
 
 const ShippingRatesControl = ( {
@@ -115,7 +114,4 @@ ShippingRatesControl.propTypes = {
 };
 
 export default ShippingRatesControl;
-<<<<<<< HEAD:packages/checkout/shipping/shipping-rates-control/shipping-rates-control.js
-=======
-export { Packages, Package };
->>>>>>> Working slot fills:assets/js/base/components/cart-checkout/shipping-rates-control/index.js
+export { Packages };

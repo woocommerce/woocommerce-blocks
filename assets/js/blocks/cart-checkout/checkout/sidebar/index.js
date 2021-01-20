@@ -7,23 +7,14 @@ import {
 	TotalsDiscount,
 	TotalsFooterItem,
 } from '@woocommerce/base-components/cart-checkout';
-<<<<<<< HEAD
 import {
-<<<<<<< HEAD
 	Subtotal,
 	TotalsFees,
 	TotalsTaxes,
 	TotalsShipping,
 	ExperimentalOrderMeta,
 	getCurrencyFromPriceResponse,
-=======
-	ExperimentalOrderMeta,
-	ExperimentalOrderShipping,
->>>>>>> Shipping slot fill
 } from '@woocommerce/blocks-checkout';
-=======
-import { ExperimentalOrderMeta } from '@woocommerce/blocks-checkout';
->>>>>>> Working slot fills
 import { useShippingDataContext } from '@woocommerce/base-context';
 import {
 	COUPONS_ENABLED,
