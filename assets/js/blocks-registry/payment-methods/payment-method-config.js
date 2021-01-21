@@ -12,6 +12,8 @@ import {
 	assertValidElementOrString,
 } from './assertions';
 
+import { canMakePaymentWithFeaturesCheck } from './payment-method-config-helper';
+
 export default class PaymentMethodConfig {
 	constructor( config ) {
 		// validate config
@@ -23,7 +25,6 @@ export default class PaymentMethodConfig {
 		this.content = config.content;
 		this.icons = config.icons;
 		this.edit = config.edit;
-		this.canMakePayment = config.canMakePayment;
 		this.paymentMethodId = config.paymentMethodId || this.name;
 		this.supports = {
 			showSavedCards:
@@ -33,6 +34,10 @@ export default class PaymentMethodConfig {
 			showSaveOption: config?.supports?.showSaveOption || false,
 			features: config?.supports?.features || [],
 		};
+		this.canMakePayment = canMakePaymentWithFeaturesCheck(
+			config.canMakePayment,
+			this.supports.features
+		);
 	}
 
 	static assertValidConfig = ( config ) => {

@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import { assertConfigHasProperties, assertValidElement } from './assertions';
+import { canMakePaymentWithFeaturesCheck } from './payment-method-config-helper';
 
 export default class ExpressPaymentMethodConfig {
 	constructor( config ) {
@@ -10,11 +11,14 @@ export default class ExpressPaymentMethodConfig {
 		this.name = config.name;
 		this.content = config.content;
 		this.edit = config.edit;
-		this.canMakePayment = config.canMakePayment;
 		this.paymentMethodId = config.paymentMethodId || this.name;
 		this.supports = {
 			features: config?.supports?.features || [],
 		};
+		this.canMakePayment = canMakePaymentWithFeaturesCheck(
+			config.canMakePayment,
+			this.supports.features
+		);
 	}
 
 	static assertValidConfig = ( config ) => {

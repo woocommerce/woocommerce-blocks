@@ -64,6 +64,7 @@ const usePaymentMethodRegistration = (
 		cartNeedsShipping,
 		shippingAddress,
 		selectedShippingMethods,
+		paymentRequirements,
 	} );
 	const { addErrorNotice } = useStoreNotices();
 
@@ -73,12 +74,14 @@ const usePaymentMethodRegistration = (
 			cartNeedsShipping,
 			shippingAddress,
 			selectedShippingMethods,
+			paymentRequirements,
 		};
 	}, [
 		cartTotals,
 		cartNeedsShipping,
 		shippingAddress,
 		selectedShippingMethods,
+		paymentRequirements,
 	] );
 
 	const refreshCanMakePayments = useCallback( async () => {
@@ -95,17 +98,6 @@ const usePaymentMethodRegistration = (
 			const paymentMethodName = paymentMethodsOrder[ i ];
 			const paymentMethod = registeredPaymentMethods[ paymentMethodName ];
 			if ( ! paymentMethod ) {
-				continue;
-			}
-			// Filter out payment methods by supported features and cart requirement.
-			const requirements = paymentRequirements || [];
-			const features = paymentMethod?.supports?.features || [];
-			if (
-				requirements.length > 0 &&
-				! requirements.every( ( requirement ) =>
-					features.includes( requirement )
-				)
-			) {
 				continue;
 			}
 
@@ -152,7 +144,6 @@ const usePaymentMethodRegistration = (
 		noticeContext,
 		paymentMethodsOrder,
 		registeredPaymentMethods,
-		paymentRequirements,
 	] );
 
 	// Determine which payment methods are available initially and whenever
