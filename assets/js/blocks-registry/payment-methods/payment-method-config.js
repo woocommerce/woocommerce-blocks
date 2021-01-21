@@ -100,7 +100,8 @@ export default class PaymentMethodConfig {
 				{
 					alternative: 'Pass showSavedCards and showSaveOption',
 					plugin: 'woocommerce-gutenberg-products-block',
-					link: 'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3686'
+					link:
+						'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3686',
 				}
 			);
 		}
