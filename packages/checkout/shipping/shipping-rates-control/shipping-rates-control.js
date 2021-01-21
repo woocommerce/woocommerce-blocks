@@ -10,13 +10,13 @@ import {
 	getShippingRatesPackageCount,
 	getShippingRatesRateCount,
 } from '@woocommerce/base-utils';
-import { ExperimentalOrderShippingPackages } from '@woocommerce/blocks-checkout';
 import { useSelectShippingRate } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
  */
 import Package from './package';
+import ExperimentalOrderShippingPackages from '../../order-shipping-packages';
 import './style.scss';
 
 /**
@@ -29,7 +29,7 @@ import './style.scss';
  * @param {Object} props Incoming props.
  * @param {Array} props.shippingRates Array of packages containing shipping rates.
  * @param {boolean} props.shippingRatesLoading True when rates are being loaded.
- * @param {string} props.className Classname for package rates.
+ * @param {string} props.className Class name for package rates.
  * @param {boolean} props.collapsibleWhenMultiple If true, when multiple packages are rendered they can be toggled open and closed.
  * @param {React.ReactElement} props.noResultsMessage Rendered when there are no packages.
  * @param {Function} props.renderOption Function to render a shipping rate.
@@ -159,4 +159,3 @@ ShippingRatesControl.propTypes = {
 };
 
 export default ShippingRatesControl;
-export { ShippingRatesControl, Package };

@@ -1,11 +1,13 @@
 /**
  * External dependencies
  */
-import { ExperimentalOrderShippingPackages } from '@woocommerce/blocks-checkout';
+import {
+	ExperimentalOrderShippingPackages,
+	ShippingRatesControlPackage,
+} from '@woocommerce/blocks-checkout';
 import { registerPlugin } from '@wordpress/plugins';
 import { useStoreCart, useSelectShippingRate } from '@woocommerce/base-hooks';
 import { useMemo } from '@wordpress/element';
-import Package from '@woocommerce/base-components/cart-checkout/shipping-rates-control/package.js';
 
 const RenderSubscriptionPackages = () => {
 	const {
@@ -46,7 +48,7 @@ const RenderSubscriptionPackages = () => {
 };
 
 const SubscriptionPackage = ( props ) => {
-	return <Package { ...props } />;
+	return <ShippingRatesControlPackage { ...props } />;
 };
 
 registerPlugin( 'woocommerce-subscriptions-shipping', {

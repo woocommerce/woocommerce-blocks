@@ -4,7 +4,11 @@
 import { decodeEntities } from '@wordpress/html-entities';
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
-import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
+
+/**
+ * Internal dependencies
+ */
+import { getCurrencyFromPriceResponse } from '../../utils';
 
 /**
  * Default render function for package rate options.
