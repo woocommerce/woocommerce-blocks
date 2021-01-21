@@ -302,6 +302,12 @@ class CartSchema extends AbstractSchema {
 					'properties' => $this->force_schema_readonly( $this->error_schema->get_properties() ),
 				],
 			],
+			'payment_requirements'    => [
+				'description' => __( 'List of required payment gateway features to process the order.', 'woo-gutenberg-products-block' ),
+				'type'        => 'array',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+			],
 			self::EXTENDING_KEY       => $this->get_extended_schema( self::IDENTIFIER ),
 		];
 	}
@@ -356,6 +362,7 @@ class CartSchema extends AbstractSchema {
 				]
 			),
 			'errors'                  => $cart_errors,
+			'payment_requirements'    => apply_filters( 'woocommerce_blocks_store_api_cart_payment_requirements', array( 'products' ), $cart ),
 			self::EXTENDING_KEY       => $this->get_extended_data( self::IDENTIFIER ),
 		];
 	}
