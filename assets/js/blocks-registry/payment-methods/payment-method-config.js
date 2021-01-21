@@ -21,8 +21,11 @@ export default class PaymentMethodConfig {
 		this.canMakePayment = config.canMakePayment;
 		this.paymentMethodId = config.paymentMethodId || this.name;
 		this.supports = {
-			savePaymentInfo: config?.supports?.savePaymentInfo || false,
-			requiresSaving: config?.supports?.requiresSaving || false,
+			showSavedCards:
+				config?.supports?.showSavedCards ||
+				config?.supports?.savePaymentInfo || // Kept for backward compatibility if methods still pas this when registering.
+				false,
+			showSaveOption: config?.supports?.showSaveOption || false,
 		};
 	}
 
@@ -80,20 +83,20 @@ export default class PaymentMethodConfig {
 		}
 		if (
 			config.supports &&
-			typeof config.supports.savePaymentInfo !== 'undefined' &&
-			typeof config.supports.savePaymentInfo !== 'boolean'
+			typeof config.supports.showSavedCards !== 'undefined' &&
+			typeof config.supports.showSavedCards !== 'boolean'
 		) {
 			throw new TypeError(
-				'If the payment method includes the `supports.savePaymentInfo` property, it must be a boolean'
+				'If the payment method includes the `supports.showSavedCards` property, it must be a boolean'
 			);
 		}
 		if (
 			config.supports &&
-			typeof config.supports.requiresSaving !== 'undefined' &&
-			typeof config.supports.requiresSaving !== 'boolean'
+			typeof config.supports.showSaveOption !== 'undefined' &&
+			typeof config.supports.showSaveOption !== 'boolean'
 		) {
 			throw new TypeError(
-				'If the payment method includes the `supports.requiresSaving` property, it must be a boolean'
+				'If the payment method includes the `supports.showSaveOption` property, it must be a boolean'
 			);
 		}
 	};
