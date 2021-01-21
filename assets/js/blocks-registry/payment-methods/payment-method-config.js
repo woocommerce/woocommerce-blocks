@@ -96,7 +96,12 @@ export default class PaymentMethodConfig {
 		}
 		if ( typeof config.supports?.savePaymentInfo !== 'undefined' ) {
 			deprecated(
-				'Passing savePaymentInfo when registering a payment method is deprecated, instead you should pass showSavedCards and showSaveOption'
+				'Passing savePaymentInfo when registering a payment method.',
+				{
+					alternative: 'Pass showSavedCards and showSaveOption',
+					plugin: 'woocommerce-gutenberg-products-block',
+					link: 'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3686'
+				}
 			);
 		}
 		if (
