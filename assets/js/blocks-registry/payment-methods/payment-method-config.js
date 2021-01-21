@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import deprecated from '@wordpress/deprecated';
+
+/**
  * Internal dependencies
  */
 import {
@@ -88,6 +93,14 @@ export default class PaymentMethodConfig {
 		) {
 			throw new TypeError(
 				'If the payment method includes the `supports.showSavedCards` property, it must be a boolean'
+			);
+		}
+		if (
+			config.supports &&
+			typeof config.supports.savePaymentInfo !== 'undefined'
+		) {
+			deprecated(
+				'Passing savePaymentInfo when registering a payment method is deprecated, instead you should pass showSavedCards and showSaveOption'
 			);
 		}
 		if (
