@@ -93,9 +93,9 @@ final class Stripe extends AbstractPaymentMethodType {
 			],
 			'inline_cc_form'      => $this->get_inline_cc_form(),
 			'icons'               => $this->get_icons(),
-			'allowSavedCards'     => $this->get_allow_saved_cards(),
+			'showSavedCards'      => $this->get_show_saved_cards(),
 			'allowPaymentRequest' => $this->get_allow_payment_request(),
-			'requiresSaving'      => $this->get_requires_saving(),
+			'showSaveOption'      => $this->get_show_save_option(),
 		];
 	}
 
