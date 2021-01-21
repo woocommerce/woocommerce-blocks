@@ -87,26 +87,21 @@ export default class PaymentMethodConfig {
 			);
 		}
 		if (
-			config.supports &&
-			typeof config.supports.showSavedCards !== 'undefined' &&
-			typeof config.supports.showSavedCards !== 'boolean'
+			typeof config.supports?.showSavedCards !== 'undefined' &&
+			typeof config.supports?.showSavedCards !== 'boolean'
 		) {
 			throw new TypeError(
 				'If the payment method includes the `supports.showSavedCards` property, it must be a boolean'
 			);
 		}
-		if (
-			config.supports &&
-			typeof config.supports.savePaymentInfo !== 'undefined'
-		) {
+		if ( typeof config.supports?.savePaymentInfo !== 'undefined' ) {
 			deprecated(
 				'Passing savePaymentInfo when registering a payment method is deprecated, instead you should pass showSavedCards and showSaveOption'
 			);
 		}
 		if (
-			config.supports &&
-			typeof config.supports.showSaveOption !== 'undefined' &&
-			typeof config.supports.showSaveOption !== 'boolean'
+			typeof config.supports?.showSaveOption !== 'undefined' &&
+			typeof config.supports?.showSaveOption !== 'boolean'
 		) {
 			throw new TypeError(
 				'If the payment method includes the `supports.showSaveOption` property, it must be a boolean'
