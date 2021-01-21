@@ -70,8 +70,7 @@ const PaymentMethodOptions = () => {
 					ariaLabel,
 					content: (
 						<PaymentMethodTab
-							allowsSaving={ supports.savePaymentInfo }
-							requiresSaving={ supports.requiresSaving }
+							showSaveOption={ supports.showSaveOption }
 						>
 							{ cloneElement( component, {
 								activePaymentMethod,
