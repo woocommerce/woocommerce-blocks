@@ -56,8 +56,8 @@ const stripeCcPaymentMethod = {
 		'woo-gutenberg-products-block'
 	),
 	supports: {
-		savePaymentInfo: getStripeServerData().allowSavedCards,
-		requiresSaving: getStripeServerData().requiresSaving,
+		showSavedCards: getStripeServerData().showSavedCards,
+		showSaveOption: getStripeServerData().showSaveOption,
 	},
 };
 
