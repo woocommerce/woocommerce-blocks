@@ -44,7 +44,7 @@ const StripeLabel = ( props ) => {
 };
 
 const getSupportedFeatures = () => {
-	const features = getStripeServerData().supports ?? [];
+	const features = getStripeServerData()?.supports ?? [];
 	return features.reduce( ( supported, supportedKey ) => {
 		supported[ supportedKey ] = true;
 		return supported;
@@ -66,7 +66,7 @@ const stripeCcPaymentMethod = {
 	supports: {
 		showSavedCards: getStripeServerData().showSavedCards,
 		showSaveOption: getStripeServerData().showSaveOption,
-		...getSupportedFeatures(),
+		features: getSupportedFeatures(),
 	},
 };
 
