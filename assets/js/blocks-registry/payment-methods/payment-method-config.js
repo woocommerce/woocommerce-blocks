@@ -31,6 +31,7 @@ export default class PaymentMethodConfig {
 				config?.supports?.savePaymentInfo || // Kept for backward compatibility if methods still pass this when registering.
 				false,
 			showSaveOption: config?.supports?.showSaveOption || false,
+			features: config?.supports?.features || [],
 		};
 	}
 

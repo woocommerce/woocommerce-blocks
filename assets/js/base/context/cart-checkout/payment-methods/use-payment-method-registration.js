@@ -54,7 +54,11 @@ const usePaymentMethodRegistration = (
 	const { selectedRates, shippingAddress } = useShippingDataContext();
 	const selectedShippingMethods = useShallowEqual( selectedRates );
 	const paymentMethodsOrder = useShallowEqual( paymentMethodsSortOrder );
-	const { cartTotals, cartNeedsShipping } = useStoreCart();
+	const {
+		cartTotals,
+		cartNeedsShipping,
+		paymentRequirements,
+	} = useStoreCart();
 	const canPayArgument = useRef( {
 		cartTotals,
 		cartNeedsShipping,
@@ -91,6 +95,17 @@ const usePaymentMethodRegistration = (
 			const paymentMethodName = paymentMethodsOrder[ i ];
 			const paymentMethod = registeredPaymentMethods[ paymentMethodName ];
 			if ( ! paymentMethod ) {
+				continue;
+			}
+			// Filter out payment methods by supported features and cart requirement.
+			const requirements = paymentRequirements || [];
+			const features = paymentMethod?.supports?.features || [];
+			if (
+				requirements.length > 0 &&
+				! requirements.every( ( requirement ) =>
+					features.includes( requirement )
+				)
+			) {
 				continue;
 			}
 
@@ -137,6 +152,7 @@ const usePaymentMethodRegistration = (
 		noticeContext,
 		paymentMethodsOrder,
 		registeredPaymentMethods,
+		paymentRequirements,
 	] );
 
 	// Determine which payment methods are available initially and whenever
@@ -144,7 +160,12 @@ const usePaymentMethodRegistration = (
 	// Some payment methods (e.g. COD) can be disabled for specific shipping methods.
 	useEffect( () => {
 		refreshCanMakePayments();
-	}, [ refreshCanMakePayments, cartTotals, selectedShippingMethods ] );
+	}, [
+		refreshCanMakePayments,
+		cartTotals,
+		selectedShippingMethods,
+		paymentRequirements,
+	] );
 
 	return isInitialized;
 };

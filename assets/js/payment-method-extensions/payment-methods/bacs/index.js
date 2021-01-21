@@ -39,14 +39,6 @@ const Label = ( props ) => {
 	return <PaymentMethodLabel text={ label } />;
 };
 
-const getSupportedFeatures = () => {
-	const features = settings?.supports ?? [];
-	return features.reduce( ( supported, supportedKey ) => {
-		supported[ supportedKey ] = true;
-		return supported;
-	}, {} );
-};
-
 /**
  * Bank transfer (BACS) payment method config object.
  */
@@ -58,7 +50,7 @@ const bankTransferPaymentMethod = {
 	canMakePayment: () => true,
 	ariaLabel: label,
 	supports: {
-		features: getSupportedFeatures(),
+		features: settings?.supports ?? [],
 	},
 };
 

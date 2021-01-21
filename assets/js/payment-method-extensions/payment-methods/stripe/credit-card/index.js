@@ -43,14 +43,6 @@ const StripeLabel = ( props ) => {
 	return <PaymentMethodLabel text={ labelText } />;
 };
 
-const getSupportedFeatures = () => {
-	const features = getStripeServerData()?.supports ?? [];
-	return features.reduce( ( supported, supportedKey ) => {
-		supported[ supportedKey ] = true;
-		return supported;
-	}, {} );
-};
-
 const cardIcons = getStripeCreditCardIcons();
 const stripeCcPaymentMethod = {
 	name: PAYMENT_METHOD_NAME,
@@ -66,7 +58,7 @@ const stripeCcPaymentMethod = {
 	supports: {
 		showSavedCards: getStripeServerData().showSavedCards,
 		showSaveOption: getStripeServerData().showSaveOption,
-		features: getSupportedFeatures(),
+		features: getStripeServerData()?.supports ?? [],
 	},
 };
 

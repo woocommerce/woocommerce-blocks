@@ -12,6 +12,9 @@ export default class ExpressPaymentMethodConfig {
 		this.edit = config.edit;
 		this.canMakePayment = config.canMakePayment;
 		this.paymentMethodId = config.paymentMethodId || this.name;
+		this.supports = {
+			features: config?.supports?.features || [],
+		};
 	}
 
 	static assertValidConfig = ( config ) => {
