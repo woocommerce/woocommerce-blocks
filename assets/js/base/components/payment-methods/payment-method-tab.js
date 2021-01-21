@@ -55,8 +55,7 @@ const PaymentMethodTab = ( { children, showSaveOption } ) => {
 };
 
 PaymentMethodTab.propTypes = {
-	allowsSaving: PropTypes.bool,
-	requiresSaving: PropTypes.bool,
+	showSaveOption: PropTypes.bool,
 	children: PropTypes.node,
 };
 
