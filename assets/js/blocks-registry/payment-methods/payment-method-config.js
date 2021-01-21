@@ -22,8 +22,7 @@ export default class PaymentMethodConfig {
 		this.paymentMethodId = config.paymentMethodId || this.name;
 		this.supports = {
 			savePaymentInfo: config?.supports?.savePaymentInfo || false,
-			displaySavePaymentMethodCheckbox:
-				config?.supports?.displaySavePaymentMethodCheckbox || false,
+			requiresSaving: config?.supports?.requiresSaving || false,
 		};
 	}
 
@@ -90,13 +89,11 @@ export default class PaymentMethodConfig {
 		}
 		if (
 			config.supports &&
-			typeof config.supports.displaySavePaymentMethodCheckbox !==
-				'undefined' &&
-			typeof config.supports.displaySavePaymentMethodCheckbox !==
-				'boolean'
+			typeof config.supports.requiresSaving !== 'undefined' &&
+			typeof config.supports.requiresSaving !== 'boolean'
 		) {
 			throw new TypeError(
-				'If the payment method includes the `supports.displaySavePaymentMethodCheckbox` property, it must be a boolean'
+				'If the payment method includes the `supports.requiresSaving` property, it must be a boolean'
 			);
 		}
 	};
