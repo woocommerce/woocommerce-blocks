@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 import PropTypes from 'prop-types';
+import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Internal dependencies
@@ -32,7 +33,8 @@ const TotalsFees = ( { currency, cartFees, className } ) => {
 						) }
 						currency={ currency }
 						label={
-							name || __( 'Fee', 'woo-gutenberg-products-block' )
+							decodeEntities( name ) ||
+							__( 'Fee', 'woo-gutenberg-products-block' )
 						}
 						value={
 							DISPLAY_CART_PRICES_INCLUDING_TAX
