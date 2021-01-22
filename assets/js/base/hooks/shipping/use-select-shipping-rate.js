@@ -15,6 +15,7 @@ import { useThrowError } from '../use-throw-error';
  * Selected rates are derived by looping over the shipping rates. The selected rates will have a true selected prop.
  *
  * @param {Array} shippingRates of shipping rates.
+ * @return {Object} Object containing the package IDs and selected rates in the format: { [packageId:string]: rateId:string }
  */
 const deriveSelectedRates = ( shippingRates ) =>
 	shippingRates
