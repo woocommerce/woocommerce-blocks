@@ -15,19 +15,14 @@ const RenderSubscriptionPackages = () => {
 	} = useStoreCart();
 
 	// Flatten all packages from recurring carts.
-	const packages = useMemo( () => {
-		const newPackages = [];
-
-		Object.values( subscriptions ).forEach( ( recurringCart ) => {
-			const recurringCartPackages = recurringCart.shipping_rates || [];
-
-			recurringCartPackages.forEach( ( recurringCartPackage ) => {
-				newPackages.push( recurringCartPackage );
-			} );
-		} );
-
-		return newPackages;
-	}, [ subscriptions ] );
+const packages = useMemo(
+		() =>
+			Object.values( subscriptions )
+				.map( ( recurringCart ) => recurringCart.shipping_rates )
+				.filter( Boolean )
+				.flat(),
+		[ subscriptions ]
+	);
 
 	const { selectShippingRate, selectedShippingRates } = useSelectShippingRate(
 		packages
