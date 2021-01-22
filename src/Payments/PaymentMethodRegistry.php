@@ -154,7 +154,10 @@ final class PaymentMethodRegistry {
 
 		foreach ( $payment_methods as $payment_method ) {
 			$script_data[ $payment_method->get_name() . '_data' ] =
-				array_merge( $payment_method->get_payment_method_data(), $payment_method->get_supported_features() );
+				array_merge(
+					$payment_method->get_payment_method_data(),
+					array( 'supports' => apply_filters( 'woocommerce_blocks_payment_gateway_features_list', $payment_method->get_supported_features(), $payment_method->get_name() ) )
+				);
 		}
 
 		return array_filter( $script_data );

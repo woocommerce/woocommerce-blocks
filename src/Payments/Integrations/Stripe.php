@@ -342,8 +342,6 @@ final class Stripe extends AbstractPaymentMethodType {
 	 */
 	public function get_supported_features() {
 		$gateway = new WC_Gateway_Stripe();
-		return array(
-			'supports' => array_filter( $gateway->supports, array( $gateway, 'supports' ) ),
-		);
+		return array_filter( $gateway->supports, array( $gateway, 'supports' ) );
 	}
 }
