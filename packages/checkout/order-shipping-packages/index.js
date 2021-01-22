@@ -14,7 +14,7 @@ import { Children, cloneElement } from 'wordpress-element';
 import BlockErrorBoundary from '../error-boundary';
 
 const slotName = '__experimentalOrderShippingPackages';
-const { Fill, Slot: SlotComponent } = createSlotFill( slotName );
+const { Fill, Slot: OrderShippingPackagesSlot } = createSlotFill( slotName );
 
 function ExperimentalOrderShippingPackages( { children } ) {
 	return (
@@ -46,7 +46,7 @@ function Slot( {
 	const { fills } = useSlot( slotName );
 	const hasMultiplePackages = fills.length > 1;
 	return (
-		<SlotComponent
+		<OrderShippingPackagesSlot
 			bubblesVirtually
 			className="wc-block-components-shipping-rates-control"
 			fillProps={ {
