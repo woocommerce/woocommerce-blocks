@@ -192,10 +192,9 @@ table.wc-block-cart-items {
 			}
 			.wc-block-cart-item__product {
 				grid-column-start: 2;
-				grid-column-end: 4;
+				grid-column-end: 3;
 				grid-row-start: 1;
 				justify-self: stretch;
-				margin-right: 24px;
 				padding-bottom: $gap;
 			}
 			.wc-block-cart-item__quantity {
@@ -205,20 +204,9 @@ table.wc-block-cart-items {
 				padding-right: $gap;
 				align-self: end;
 				padding-top: $gap;
-
-				.wc-block-cart-item__remove-link {
-					display: none;
-				}
-				.wc-block-cart-item__remove-icon {
-					display: block;
-				}
 			}
 			.wc-block-cart-item__total {
-				grid-column: 2 / span 2;
-				grid-row-start: 2;
-				align-self: end;
-				justify-self: end;
-				padding-bottom: 0.375em;
+				grid-row-start: 1;
 
 				.wc-block-components-formatted-money-amount {
 					display: inline-block;
