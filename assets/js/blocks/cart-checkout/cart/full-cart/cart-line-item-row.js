@@ -82,14 +82,19 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 	} = useStoreCartItemQuantity( lineItem );
 
 	const currency = getCurrency( prices );
-	const regularAmount = Dinero( {
+	const regularAmountSingle = Dinero( {
 		amount: parseInt( prices.raw_prices.regular_price, 10 ),
 		precision: parseInt( prices.raw_prices.precision, 10 ),
-	} ).multiply( quantity );
-	const purchaseAmount = Dinero( {
+	} );
+	const purchaseAmountSingle = Dinero( {
 		amount: parseInt( prices.raw_prices.price, 10 ),
 		precision: parseInt( prices.raw_prices.precision, 10 ),
-	} ).multiply( quantity );
+	} );
+	const regularAmount = regularAmountSingle.multiply( quantity );
+	const purchaseAmount = purchaseAmountSingle.multiply( quantity );
+	const saleAmountSingle = regularAmountSingle.subtract(
+		purchaseAmountSingle
+	);
 	const saleAmount = regularAmount.subtract( purchaseAmount );
 	const firstImage = images.length ? images[ 0 ] : {};
 	const isProductHiddenFromCatalog =
