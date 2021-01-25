@@ -64,9 +64,6 @@ const ShippingOptionsStep = () => {
 		return null;
 	}
 
-	const packageCount = getShippingRatesPackageCount( shippingRates );
-	const rateCount = getShippingRatesRateCount( shippingRates );
-
 	return (
 		<FormStep
 			id="shipping-option"
@@ -74,7 +71,7 @@ const ShippingOptionsStep = () => {
 			className="wc-block-checkout__shipping-option"
 			title={ __( 'Shipping options', 'woo-gutenberg-products-block' ) }
 			description={
-				rateCount > 1
+				getShippingRatesRateCount( shippingRates ) > 1
 					? __(
 							'Select shipping options below.',
 							'woo-gutenberg-products-block'
@@ -82,7 +79,7 @@ const ShippingOptionsStep = () => {
 					: ''
 			}
 		>
-			{ isEditor && ! packageCount ? (
+			{ isEditor && ! getShippingRatesPackageCount( shippingRates ) ? (
 				<NoShippingPlaceholder />
 			) : (
 				<ShippingRatesControl
