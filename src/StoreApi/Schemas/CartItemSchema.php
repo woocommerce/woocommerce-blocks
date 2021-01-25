@@ -429,7 +429,7 @@ class CartItemSchema extends ProductSchema {
 	}
 
 	/**
-	 * Remove HTML tags from cart item data and sets the `hidden` property to
+	 * Remove HTML tags from cart item data and set the `hidden` property to
 	 * `__experimental_woocommerce_blocks_hidden`.
 	 *
 	 * @param array $item_data_element Individual element of a cart item data.
