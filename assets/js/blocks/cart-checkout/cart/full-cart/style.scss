@@ -64,15 +64,6 @@ table.wc-block-cart-items {
 				text-transform: none;
 				white-space: nowrap;
 			}
-			.wc-block-cart-item__remove-icon {
-				@include link-button;
-
-				fill: currentColor;
-				position: absolute;
-				top: $gap;
-				right: 0;
-				display: none;
-			}
 		}
 		.wc-block-components-product-name {
 			display: block;
@@ -127,8 +118,7 @@ table.wc-block-cart-items {
 				margin-top: 0.25em;
 				min-width: 8em;
 			}
-			.wc-block-cart-item__remove-link,
-			.wc-block-cart-item__remove-icon {
+			.wc-block-cart-item__remove-link {
 				visibility: hidden;
 			}
 			.wc-block-cart-item__image a {
