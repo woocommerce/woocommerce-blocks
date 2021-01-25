@@ -4,11 +4,15 @@
 import { __ } from '@wordpress/i18n';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import { decodeEntities } from '@wordpress/html-entities';
-import { getCurrencyFromPriceResponse } from '@woocommerce/base-utils';
-import { ShippingRatesControl } from '@woocommerce/base-components/cart-checkout';
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 import { Notice } from 'wordpress-components';
 import classnames from 'classnames';
+
+/**
+ * Internal dependencies
+ */
+import { getCurrencyFromPriceResponse } from '../../utils';
+import { ShippingRatesControl } from '../../shipping';
 
 const renderShippingRatesControlOption = ( option ) => {
 	const priceWithTaxes = DISPLAY_CART_PRICES_INCLUDING_TAX

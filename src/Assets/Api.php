@@ -2,7 +2,7 @@
 namespace Automattic\WooCommerce\Blocks\Assets;
 
 use Automattic\WooCommerce\Blocks\Domain\Package;
-
+use Exception;
 /**
  * The Api class provides an interface to various asset registration helpers.
  *
@@ -69,6 +69,8 @@ class Api {
 	 * @param bool   $has_i18n      Optional. Whether to add a script
 	 *                              translation call to this file. Default:
 	 *                              true.
+	 *
+	 * @throws Exception If the registered script has a dependency on itself.
 	 */
 	public function register_script( $handle, $relative_src, $dependencies = [], $has_i18n = true ) {
 		$src        = $this->get_asset_url( $relative_src );
@@ -82,6 +84,23 @@ class Api {
 			$version      = ! empty( $asset['version'] ) ? $asset['version'] : $this->get_file_version( $relative_src );
 		} else {
 			$version = $this->get_file_version( $relative_src );
+		}
+
+		if ( in_array( $handle, $dependencies, true ) ) {
+			if ( $this->package->feature()->is_development_environment() ) {
+				$dependencies = array_diff( $dependencies, [ $handle ] );
+					add_action(
+						'admin_notices',
+						function() use ( $handle ) {
+								echo '<div class="error"><p>';
+								// Translators: %s file handle name.
+								printf( esc_html__( 'Script with handle %s had a dependency on itself which has been removed. This is an indicator that your JS code has a circular dependency that can cause bugs.', 'woo-gutenberg-products-block' ), esc_html( $handle ) );
+								echo '</p></div>';
+						}
+					);
+			} else {
+				throw new Exception( sprintf( 'Script with handle %s had a dependency on itself. This is an indicator that your JS code has a circular dependency that can cause bugs.', $handle ) );
+			}
 		}
 
 		wp_register_script( $handle, $src, apply_filters( 'woocommerce_blocks_register_script_dependencies', $dependencies, $handle ), $version, true );

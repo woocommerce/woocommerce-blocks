@@ -2,18 +2,20 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { getCurrency } from '@woocommerce/base-utils';
 import Label from '@woocommerce/base-components/label';
 import ProductPrice from '@woocommerce/base-components/product-price';
 import ProductName from '@woocommerce/base-components/product-name';
-import {
-	ProductBackorderBadge,
-	ProductImage,
-	ProductLowStockBadge,
-	ProductMetadata,
-} from '@woocommerce/base-components/cart-checkout';
+import { getCurrency } from '@woocommerce/blocks-checkout';
 import PropTypes from 'prop-types';
 import Dinero from 'dinero.js';
+
+/**
+ * Internal dependencies
+ */
+import ProductBackorderBadge from '../product-backorder-badge';
+import ProductImage from '../product-image';
+import ProductLowStockBadge from '../product-low-stock-badge';
+import ProductMetadata from '../product-metadata';
 
 const OrderSummaryItem = ( { cartItem } ) => {
 	const {
