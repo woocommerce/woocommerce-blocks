@@ -28,7 +28,7 @@ const RadioControlAccordion = ( {
 				) }
 			>
 				{ options.map( ( option ) => {
-					const hasOptionContent = 'content' in option;
+					const hasOptionContent = ( typeof option === 'object' ) && 'content' in option;
 					const checked = option.value === selected;
 					return (
 						<div
