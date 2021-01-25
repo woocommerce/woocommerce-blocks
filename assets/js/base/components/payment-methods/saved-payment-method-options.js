@@ -156,9 +156,7 @@ const SavedPaymentMethodOptions = () => {
 		<RadioControl
 			id={ 'wc-payment-method-saved-tokens' }
 			selected={ activeSavedToken }
-			onChange={ ( ...args ) => {
-				updateToken( ...args );
-			} }
+			onChange={ updateToken }
 			options={ currentOptions.current }
 		/>
 	) : null;
