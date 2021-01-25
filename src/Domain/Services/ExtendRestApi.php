@@ -13,7 +13,7 @@ use Exception;
 /**
  * Service class to provide utility functions to extend REST API.
  */
-class ExtendRestApi {
+final class ExtendRestApi {
 	/**
 	 * Holds the Container instance
 	 *
