@@ -15,7 +15,7 @@ const RenderSubscriptionPackages = () => {
 	} = useStoreCart();
 
 	// Flatten all packages from recurring carts.
-const packages = useMemo(
+	const packages = useMemo(
 		() =>
 			Object.values( subscriptions )
 				.map( ( recurringCart ) => recurringCart.shipping_rates )
