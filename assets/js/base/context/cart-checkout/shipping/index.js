@@ -9,7 +9,9 @@ import {
 	useMemo,
 	useRef,
 } from '@wordpress/element';
-import { useStoreCart, useSelectShippingRate } from '@woocommerce/base-hooks';
+import { useStoreCart, useSelectShippingRates } from '@woocommerce/base-hooks';
+import isShallowEqual from '@wordpress/is-shallow-equal';
+import { deriveSelectedShippingRates } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
@@ -57,11 +59,7 @@ export const ShippingDataProvider = ( { children } ) => {
 		shippingRatesLoading,
 		cartErrors,
 	} = useStoreCart();
-	const {
-		selectShippingRate: setSelectedRates,
-		selectedShippingRates: selectedRates,
-		isSelectingRate,
-	} = useSelectShippingRate( shippingRates );
+	const { selectShippingRate, isSelectingRate } = useSelectShippingRates();
 	const [ shippingErrorStatus, dispatchErrorStatus ] = useReducer(
 		errorStatusReducer,
 		NONE
@@ -84,6 +82,19 @@ export const ShippingDataProvider = ( { children } ) => {
 	useEffect( () => {
 		currentObservers.current = observers;
 	}, [ observers ] );
+
+	// set selected rates on ref so it's always current.
+	const selectedRates = useRef( () =>
+		deriveSelectedShippingRates( shippingRates )
+	);
+	useEffect( () => {
+		const derivedSelectedRates = deriveSelectedShippingRates(
+			shippingRates
+		);
+		if ( ! isShallowEqual( selectedRates.current, derivedSelectedRates ) ) {
+			selectedRates.current = derivedSelectedRates;
+		}
+	}, [ shippingRates ] );
 
 	// increment/decrement checkout calculating counts when shipping is loading.
 	useEffect( () => {
@@ -165,7 +176,10 @@ export const ShippingDataProvider = ( { children } ) => {
 
 	// emit shipping rate selection events.
 	useEffect( () => {
-		if ( ! isSelectingRate && currentErrorStatus.hasError ) {
+		if ( isSelectingRate ) {
+			return;
+		}
+		if ( currentErrorStatus.hasError ) {
 			emitEvent(
 				currentObservers.current,
 				EMIT_TYPES.SHIPPING_RATE_SELECT_FAIL,
@@ -174,27 +188,18 @@ export const ShippingDataProvider = ( { children } ) => {
 					hasInvalidAddress: currentErrorStatus.hasInvalidAddress,
 				}
 			);
+		} else {
+			emitEvent(
+				currentObservers.current,
+				EMIT_TYPES.SHIPPING_RATE_SELECT_SUCCESS,
+				selectedRates.current
+			);
 		}
 	}, [
-		selectedRates,
 		isSelectingRate,
 		currentErrorStatus.hasError,
 		currentErrorStatus.hasInvalidAddress,
 	] );
-
-	useEffect( () => {
-		if (
-			! isSelectingRate &&
-			selectedRates &&
-			! currentErrorStatus.hasError
-		) {
-			emitEvent(
-				currentObservers.current,
-				EMIT_TYPES.SHIPPING_RATE_SELECT_SUCCESS,
-				selectedRates
-			);
-		}
-	}, [ selectedRates, isSelectingRate, currentErrorStatus.hasError ] );
 
 	/**
 	 * @type {ShippingDataContext}
@@ -205,8 +210,8 @@ export const ShippingDataProvider = ( { children } ) => {
 		shippingErrorTypes: ERROR_TYPES,
 		shippingRates,
 		shippingRatesLoading,
-		selectedRates,
-		setSelectedRates,
+		selectedRates: selectedRates.current,
+		setSelectedRates: selectShippingRate,
 		isSelectingRate,
 		shippingAddress,
 		setShippingAddress,
@@ -214,6 +219,7 @@ export const ShippingDataProvider = ( { children } ) => {
 		hasCalculatedShipping,
 		...eventSubscribers,
 	};
+
 	return (
 		<>
 			<ShippingDataContext.Provider value={ ShippingData }>

@@ -10,7 +10,6 @@ import {
 	getShippingRatesPackageCount,
 	getShippingRatesRateCount,
 } from '@woocommerce/base-utils';
-import { useSelectShippingRate } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -127,10 +126,6 @@ const ShippingRatesControl = ( {
  * @return {React.ReactElement|Array} Rendered components.
  */
 const Packages = ( { packages, noResultsMessage } ) => {
-	const { selectShippingRate, selectedShippingRates } = useSelectShippingRate(
-		packages
-	);
-
 	if ( ! packages.length ) {
 		return noResultsMessage;
 	}
@@ -139,11 +134,8 @@ const Packages = ( { packages, noResultsMessage } ) => {
 		<ExperimentalOrderShippingPackages key={ packageId }>
 			<Package
 				key={ packageId }
+				packageId={ packageId }
 				packageData={ packageData }
-				onSelectRate={ ( newShippingRate ) => {
-					selectShippingRate( newShippingRate, packageId );
-				} }
-				selected={ selectedShippingRates[ packageId ] }
 			/>
 		</ExperimentalOrderShippingPackages>
 	) );

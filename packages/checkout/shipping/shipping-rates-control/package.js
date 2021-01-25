@@ -7,6 +7,7 @@ import { _n, sprintf } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
 import Label from '@woocommerce/base-components/label';
 import Title from '@woocommerce/base-components/title';
+import { useSelectShippingRate } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -16,15 +17,19 @@ import PackageRates from './package-rates';
 import './style.scss';
 
 const Package = ( {
+	packageId,
 	className,
 	noResultsMessage,
-	onSelectRate,
 	renderOption,
 	packageData,
 	collapsible = false,
 	showItems = false,
-	selected = '',
 } ) => {
+	const { selectShippingRate, selectedShippingRate } = useSelectShippingRate(
+		packageId,
+		packageData.shipping_rates
+	);
+
 	const header = (
 		<>
 			{ ( showItems || collapsible ) && (
@@ -75,8 +80,8 @@ const Package = ( {
 			className={ className }
 			noResultsMessage={ noResultsMessage }
 			rates={ packageData.shipping_rates }
-			onSelectRate={ onSelectRate }
-			selected={ selected }
+			onSelectRate={ selectShippingRate }
+			selected={ selectedShippingRate }
 			renderOption={ renderOption }
 		/>
 	);
@@ -106,9 +111,7 @@ const Package = ( {
 };
 
 Package.propTypes = {
-	onSelectRate: PropTypes.func.isRequired,
 	renderOption: PropTypes.func,
-	selected: PropTypes.string,
 	packageData: PropTypes.shape( {
 		shipping_rates: PropTypes.arrayOf( PropTypes.object ).isRequired,
 		items: PropTypes.arrayOf(

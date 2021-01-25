@@ -6,7 +6,7 @@ import {
 	ShippingRatesControlPackage,
 } from '@woocommerce/blocks-checkout';
 import { registerPlugin } from '@wordpress/plugins';
-import { useStoreCart, useSelectShippingRate } from '@woocommerce/base-hooks';
+import { useStoreCart } from '@woocommerce/base-hooks';
 import { useMemo } from '@wordpress/element';
 
 const RenderSubscriptionPackages = () => {
@@ -24,19 +24,12 @@ const RenderSubscriptionPackages = () => {
 		[ subscriptions ]
 	);
 
-	const { selectShippingRate, selectedShippingRates } = useSelectShippingRate(
-		packages
-	);
-
 	return packages.map( ( { package_id: packageId, ...packageData } ) => (
 		<ExperimentalOrderShippingPackages key={ packageId }>
 			<SubscriptionPackage
 				key={ packageId }
+				packageId={ packageId }
 				packageData={ packageData }
-				onSelectRate={ ( newShippingRate ) => {
-					selectShippingRate( newShippingRate, packageId );
-				} }
-				selected={ selectedShippingRates[ packageId ] }
 			/>
 		</ExperimentalOrderShippingPackages>
 	) );
