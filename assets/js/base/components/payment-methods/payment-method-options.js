@@ -17,7 +17,7 @@ import classNames from 'classnames';
 /**
  * Internal dependencies
  */
-import PaymentMethodTab from './payment-method-tab';
+import PaymentMethodCard from './payment-method-card';
 import RadioControlAccordion from '../radio-control-accordion';
 
 /**
@@ -58,12 +58,12 @@ const PaymentMethodOptions = () => {
 					  } ),
 			name: `wc-saved-payment-method-token-${ name }`,
 			content: (
-				<PaymentMethodTab allowsSaving={ supports.savePaymentInfo }>
+				<PaymentMethodCard allowsSaving={ supports.savePaymentInfo }>
 					{ cloneElement( component, {
 						activePaymentMethod,
 						...paymentMethodInterface,
 					} ) }
-				</PaymentMethodTab>
+				</PaymentMethodCard>
 			),
 		};
 	} );
