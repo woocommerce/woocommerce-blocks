@@ -15,13 +15,6 @@ use Exception;
  */
 final class ExtendRestApi {
 	/**
-	 * Holds the Container instance
-	 *
-	 * @var Container
-	 */
-	private $container;
-
-	/**
 	 * Holds the Package instance
 	 *
 	 * @var Package
@@ -38,24 +31,12 @@ final class ExtendRestApi {
 	/**
 	 * Constructor
 	 *
-	 * @param Container  $container An instance of the container class.
 	 * @param Package    $package An instance of the package class.
 	 * @param Formatters $formatters An instance of the formatters class.
 	 */
-	public function __construct( Container $container, Package $package, Formatters $formatters ) {
-		$this->container  = $container;
+	public function __construct( Package $package, Formatters $formatters ) {
 		$this->package    = $package;
 		$this->formatters = $formatters;
-	}
-
-	/**
-	 * Returns StoreApi Schemas.
-	 *
-	 * @param string $name Formatter name.
-	 * @return AbstractSchema
-	 */
-	public function get_schema( $name ) {
-		return $this->container->get( SchemaController::class )->get( $name );
 	}
 
 	/**

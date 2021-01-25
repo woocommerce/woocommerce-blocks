@@ -224,7 +224,7 @@ class Bootstrap {
 		$this->container->register(
 			ExtendRestApi::class,
 			function( Container $container ) {
-				return new ExtendRestApi( $container, $container->get( Package::class ), $container->get( Formatters::class ) );
+				return new ExtendRestApi( $container->get( Package::class ), $container->get( Formatters::class ) );
 			}
 		);
 	}

@@ -38,7 +38,7 @@ class Products extends TestCase {
 		$formatters->register( 'money', MoneyFormatter::class );
 		$formatters->register( 'html', HtmlFormatter::class );
 		$formatters->register( 'currency', CurrencyFormatter::class );
-		$this->mock_extend = new ExtendRestApi( Package::container(), new DomainPackage( '', '', new FeatureGating( 2 ) ), $formatters );
+		$this->mock_extend = new ExtendRestApi( new DomainPackage( '', '', new FeatureGating( 2 ) ), $formatters );
 
 		$this->products    = [];
 		$this->products[0] = ProductHelper::create_simple_product( true );
