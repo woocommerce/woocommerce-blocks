@@ -3,6 +3,7 @@
  */
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
+import { applyFilters } from '@wordpress/hooks';
 import PropTypes from 'prop-types';
 import QuantitySelector from '@woocommerce/base-components/quantity-selector';
 import ProductPrice from '@woocommerce/base-components/product-price';
@@ -18,7 +19,6 @@ import {
 import { getCurrency } from '@woocommerce/price-format';
 import { __EXPERIMENTAL_PRICE_FORMAT_FILTER } from '@woocommerce/blocks-checkout';
 import Dinero from 'dinero.js';
-import { applyFilters } from '@wordpress/hooks';
 
 /**
  * @typedef {import('@woocommerce/type-defs/cart').CartItem} CartItem
@@ -191,8 +191,8 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 			</td>
 			<td className="wc-block-cart-item__total">
 				<ProductPrice
-					format={ productPriceFormat }
 					currency={ currency }
+					format={ productPriceFormat }
 					price={ getAmountFromRawPrice( purchaseAmount, currency ) }
 				/>
 
