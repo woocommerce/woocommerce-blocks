@@ -13,8 +13,9 @@
 .wc-block-components-order-summary-item {
 	@include with-translucent-border(0 0 1px);
 	@include font-size(small);
-	display: table-row;
+	display: flex;
 	padding-bottom: 1px;
+	padding-top: $gap;
 	width: 100%;
 
 	&:last-child {
@@ -40,7 +41,6 @@
 
 .wc-block-components-order-summary-item__image {
 	width: #{$gap-large * 2};
-	padding-top: $gap;
 	padding-bottom: $gap;
 	position: relative;
 
@@ -73,7 +73,6 @@
 
 .wc-block-components-order-summary-item__description {
 	padding-left: $gap-large;
-	padding-top: $gap;
 	padding-bottom: $gap;
 	line-height: 1.375;
 
@@ -84,13 +83,12 @@
 	}
 }
 
-.wc-block-components-order-summary-item__header {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
+.wc-block-components-order-summary-item__total-price {
+	font-weight: bold;
+	margin-left: auto;
 }
 
 
-.wc-block-components-order-summary-item__total-price {
-	font-weight: bold;
+.wc-block-components-order-summary-item__individual-prices {
+	display: block;
 }
