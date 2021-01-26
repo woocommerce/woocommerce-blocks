@@ -362,7 +362,7 @@ class CartSchema extends AbstractSchema {
 				]
 			),
 			'errors'                  => $cart_errors,
-			'payment_requirements'    => apply_filters( 'woocommerce_blocks_store_api_cart_payment_requirements', array( 'products' ) ),
+			'payment_requirements'    => $this->extend->get_payment_requirements(),
 			self::EXTENDING_KEY       => $this->get_extended_data( self::IDENTIFIER ),
 		];
 	}
