@@ -80,7 +80,17 @@ class Cart extends AbstractBlock {
 		}
 
 		if ( ! $data_registry->exists( 'countryLocale' ) ) {
-			$data_registry->add( 'countryLocale', wc()->countries->get_country_locale() );
+			// Merge country and state data to work around https://github.com/woocommerce/woocommerce/issues/28944.
+			$country_locale = wc()->countries->get_country_locale();
+			$states         = wc()->countries->get_states();
+
+			foreach ( $states as $country => $states ) {
+				if ( empty( $states ) ) {
+					$country_locale[ $country ]['state']['required'] = false;
+					$country_locale[ $country ]['state']['hidden']   = true;
+				}
+			}
+			$data_registry->add( 'countryLocale', $country_locale );
 		}
 
 		$permalink = ! empty( $attributes['checkoutPageId'] ) ? get_permalink( $attributes['checkoutPageId'] ) : false;
