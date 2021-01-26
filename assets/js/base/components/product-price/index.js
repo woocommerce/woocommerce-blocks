@@ -13,7 +13,6 @@ import { createInterpolateElement } from 'wordpress-element';
 import './style.scss';
 
 const PriceRange = ( {
-	className,
 	currency,
 	maxPrice,
 	minPrice,
@@ -21,7 +20,7 @@ const PriceRange = ( {
 	priceStyle,
 } ) => {
 	return (
-		<span className={ className }>
+		<>
 			<FormattedMonetaryAmount
 				className={ classNames(
 					'wc-block-components-product-price__value',
@@ -41,12 +40,11 @@ const PriceRange = ( {
 				value={ maxPrice }
 				style={ priceStyle }
 			/>
-		</span>
+		</>
 	);
 };
 
 const SalePrice = ( {
-	className,
 	currency,
 	regularPriceClassName,
 	regularPriceStyle,
@@ -56,7 +54,7 @@ const SalePrice = ( {
 	price,
 } ) => {
 	return (
-		<span className={ className }>
+		<>
 			<span className="screen-reader-text">
 				{ __( 'Previous price:', 'woo-gutenberg-products-block' ) }
 			</span>
@@ -94,7 +92,7 @@ const SalePrice = ( {
 				) }
 				value={ price }
 			/>
-		</span>
+		</>
 	);
 };
 
@@ -128,10 +126,18 @@ const ProductPrice = ( {
 
 	const isDiscounted = regularPrice && price !== regularPrice;
 
+	let priceComponent = (
+		<span
+			className={ classNames(
+				'wc-block-components-product-price__value',
+				priceClassName
+			) }
+		/>
+	);
+
 	if ( isDiscounted ) {
-		return (
+		priceComponent = (
 			<SalePrice
-				className={ wrapperClassName }
 				currency={ currency }
 				price={ price }
 				priceClassName={ priceClassName }
@@ -144,9 +150,8 @@ const ProductPrice = ( {
 	}
 
 	if ( minPrice !== null && maxPrice !== null ) {
-		return (
+		priceComponent = (
 			<PriceRange
-				className={ wrapperClassName }
 				currency={ currency }
 				maxPrice={ maxPrice }
 				minPrice={ minPrice }
@@ -157,33 +162,24 @@ const ProductPrice = ( {
 	}
 
 	if ( price !== null ) {
-		return (
-			<span className={ wrapperClassName }>
-				{ createInterpolateElement( format, {
-					price: (
-						<FormattedMonetaryAmount
-							className={ classNames(
-								'wc-block-components-product-price__value',
-								priceClassName
-							) }
-							currency={ currency }
-							value={ price }
-							style={ priceStyle }
-						/>
-					),
-				} ) }
-			</span>
+		priceComponent = (
+			<FormattedMonetaryAmount
+				className={ classNames(
+					'wc-block-components-product-price__value',
+					priceClassName
+				) }
+				currency={ currency }
+				value={ price }
+				style={ priceStyle }
+			/>
 		);
 	}
 
 	return (
 		<span className={ wrapperClassName }>
-			<span
-				className={ classNames(
-					'wc-block-components-product-price__value',
-					priceClassName
-				) }
-			/>
+			{ createInterpolateElement( format, {
+				price: priceComponent,
+			} ) }
 		</span>
 	);
 };
