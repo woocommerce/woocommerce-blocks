@@ -16,7 +16,9 @@ import {
 	ProductSaleBadge,
 } from '@woocommerce/base-components/cart-checkout';
 import { getCurrency } from '@woocommerce/price-format';
+import { __EXPERIMENTAL_PRICE_FORMAT_FILTER } from '@woocommerce/blocks-checkout';
 import Dinero from 'dinero.js';
+import { applyFilters } from '@wordpress/hooks';
 
 /**
  * @typedef {import('@woocommerce/type-defs/cart').CartItem} CartItem
@@ -98,6 +100,12 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 	const firstImage = images.length ? images[ 0 ] : {};
 	const isProductHiddenFromCatalog =
 		catalogVisibility === 'hidden' || catalogVisibility === 'search';
+
+	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
+	const productPriceFormat = applyFilters(
+		__EXPERIMENTAL_PRICE_FORMAT_FILTER,
+		'<price/>'
+	);
 
 	return (
 		<tr
@@ -183,6 +191,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 			</td>
 			<td className="wc-block-cart-item__total">
 				<ProductPrice
+					format={ productPriceFormat }
 					currency={ currency }
 					price={ getAmountFromRawPrice( purchaseAmount, currency ) }
 				/>
