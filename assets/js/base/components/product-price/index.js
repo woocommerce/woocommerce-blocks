@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { createInterpolateElement } from 'wordpress-element';
 
 /**
  * Internal dependencies
@@ -101,6 +102,7 @@ const ProductPrice = ( {
 	align,
 	className,
 	currency,
+	format = '<price/>',
 	maxPrice = null,
 	minPrice = null,
 	price = null,
@@ -118,6 +120,11 @@ const ProductPrice = ( {
 			[ `wc-block-components-product-price--align-${ align }` ]: align,
 		}
 	);
+
+	if ( ! format.includes( '<price/>' ) ) {
+		format = '<price/>';
+		console.error( 'Price formats need to include the `<price/>` tag.' );
+	}
 
 	const isDiscounted = regularPrice && price !== regularPrice;
 
@@ -152,15 +159,19 @@ const ProductPrice = ( {
 	if ( price !== null ) {
 		return (
 			<span className={ wrapperClassName }>
-				<FormattedMonetaryAmount
-					className={ classNames(
-						'wc-block-components-product-price__value',
-						priceClassName
-					) }
-					currency={ currency }
-					value={ price }
-					style={ priceStyle }
-				/>
+				{ createInterpolateElement( format, {
+					price: (
+						<FormattedMonetaryAmount
+							className={ classNames(
+								'wc-block-components-product-price__value',
+								priceClassName
+							) }
+							currency={ currency }
+							value={ price }
+							style={ priceStyle }
+						/>
+					),
+				} ) }
 			</span>
 		);
 	}
@@ -181,6 +192,7 @@ ProductPrice.propTypes = {
 	align: PropTypes.oneOf( [ 'left', 'center', 'right' ] ),
 	className: PropTypes.string,
 	currency: PropTypes.object,
+	format: PropTypes.string,
 	price: PropTypes.oneOfType( [ PropTypes.number, PropTypes.string ] ),
 	priceClassName: PropTypes.string,
 	priceStyle: PropTypes.object,
