@@ -45,7 +45,7 @@ global.wcSettings = {
 		},
 		AT: {
 			postcode: { priority: 65 },
-			state: { required: false },
+			state: { required: false, hidden: true },
 		},
 		CA: {
 			postcode: { label: 'Postal code' },
