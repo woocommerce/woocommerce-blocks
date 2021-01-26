@@ -39,12 +39,17 @@ const OrderSummaryItem = ( { cartItem } ) => {
 	} )
 		.convertPrecision( currency.minorUnit )
 		.getAmount();
-	const convertedLinePrice = Dinero( {
+	const unconvertedLinePrice = Dinero( {
 		amount: parseInt( prices.raw_prices.price, 10 ),
 		precision: parseInt( prices.raw_prices.precision, 10 ),
-	} ).convertPrecision( currency.minorUnit );
-	const linePriceSingle = convertedLinePrice.getAmount();
-	const linePrice = convertedLinePrice.multiply( quantity ).getAmount();
+	} );
+	const linePriceSingle = unconvertedLinePrice
+		.convertPrecision( currency.minorUnit )
+		.getAmount();
+	const linePrice = unconvertedLinePrice
+		.multiply( quantity )
+		.convertPrecision( currency.minorUnit )
+		.getAmount();
 
 	return (
 		<div className="wc-block-components-order-summary-item">
