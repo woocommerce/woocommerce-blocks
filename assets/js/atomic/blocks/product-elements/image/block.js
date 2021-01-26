@@ -29,7 +29,7 @@ import './style.scss';
  * @param {string} [props.saleBadgeAlign] How should the sale badge be aligned if displayed.
  * @return {*} The component.
  */
-const Block = ( {
+export const Block = ( {
 	className,
 	imageSizing = 'full-size',
 	// @todo Rename productLink to showProductLink to better reflect it's a Boolean
@@ -118,8 +118,10 @@ const Image = ( { image, onLoad, loaded, showFullSize, fallbackAlt } ) => {
 
 	return (
 		<>
-			{ /* eslint-disable-next-line jsx-a11y/alt-text */ }
-			{ imageProps.src && <img { ...imageProps } /> }
+			{ imageProps.src && (
+				/* eslint-disable-next-line jsx-a11y/alt-text */
+				<img data-testid="product-image" { ...imageProps } />
+			) }
 			{ ! loaded && <ImagePlaceholder /> }
 		</>
 	);
