@@ -200,7 +200,6 @@ class Assets {
 					$checkout->is_registration_enabled(),
 					FILTER_VALIDATE_BOOLEAN
 				),
-				'checkoutCountryLocale'         => wc()->countries->get_country_locale(),
 				'baseLocation'                  => wc_get_base_location(),
 				'woocommerceBlocksPhase'        => Package::feature()->get_flag(),
 				'hasDarkEditorStyleSupport'     => current_theme_supports( 'dark-editor-style' ),

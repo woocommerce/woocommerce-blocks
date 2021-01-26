@@ -14,7 +14,7 @@ import { getSetting } from '@woocommerce/settings';
  *
  * This supports new properties such as optionalLabel which are not used by core (yet).
  */
-const coreLocale = getSetting( 'checkoutCountryLocale', {} );
+const coreLocale = getSetting( 'countryLocale', {} );
 
 /**
  * Get supported props from the core locale and map to the correct format.

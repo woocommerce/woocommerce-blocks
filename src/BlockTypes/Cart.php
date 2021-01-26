@@ -79,6 +79,10 @@ class Cart extends AbstractBlock {
 			$data_registry->add( 'shippingStates', $this->deep_sort_with_accents( WC()->countries->get_shipping_country_states() ) );
 		}
 
+		if ( ! $data_registry->exists( 'countryLocale' ) ) {
+			$data_registry->add( 'countryLocale', wc()->countries->get_country_locale() );
+		}
+
 		$permalink = ! empty( $attributes['checkoutPageId'] ) ? get_permalink( $attributes['checkoutPageId'] ) : false;
 
 		if ( $permalink && ! $data_registry->exists( 'page-' . $attributes['checkoutPageId'] ) ) {
