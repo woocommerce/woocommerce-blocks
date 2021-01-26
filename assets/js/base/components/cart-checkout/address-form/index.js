@@ -15,6 +15,7 @@ import { useValidationContext } from '@woocommerce/base-context';
 import { useEffect, useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
+import { useShallowEqual } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -77,12 +78,18 @@ const AddressForm = ( {
 		clearValidationError,
 	} = useValidationContext();
 
+	const currentFields = useShallowEqual( fields );
+
 	const countryValidationError =
 		getValidationError( 'shipping-missing-country' ) || {};
 
 	const addressFormFields = useMemo( () => {
-		return prepareAddressFields( fields, fieldConfig, values.country );
-	}, [ fields, fieldConfig, values.country ] );
+		return prepareAddressFields(
+			currentFields,
+			fieldConfig,
+			values.country
+		);
+	}, [ currentFields, fieldConfig, values.country ] );
 
 	useEffect( () => {
 		if ( type === 'shipping' ) {
