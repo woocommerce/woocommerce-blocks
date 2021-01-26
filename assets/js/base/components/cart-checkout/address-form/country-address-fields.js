@@ -50,7 +50,7 @@ const getSupportedProps = ( localeField ) => {
 	}
 
 	if ( localeField.priority ) {
-		fields.index = parseInt( localeField.priority, 10 ) / 10;
+		fields.index = parseInt( localeField.priority, 10 );
 	}
 
 	if ( localeField.hidden === true ) {
