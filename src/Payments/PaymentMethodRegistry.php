@@ -153,11 +153,7 @@ final class PaymentMethodRegistry {
 		$payment_methods = $this->get_all_active_registered();
 
 		foreach ( $payment_methods as $payment_method ) {
-			$script_data[ $payment_method->get_name() . '_data' ] =
-				array_merge(
-					$payment_method->get_payment_method_data(),
-					array( 'supports' => apply_filters( 'woocommerce_blocks_payment_gateway_features_list', $payment_method->get_supported_features(), $payment_method->get_name() ) )
-				);
+			$script_data[ $payment_method->get_name() . '_data' ] = $payment_method->get_payment_method_data();
 		}
 
 		return array_filter( $script_data );

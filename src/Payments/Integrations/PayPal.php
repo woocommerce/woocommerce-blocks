@@ -71,6 +71,7 @@ final class PayPal extends AbstractPaymentMethodType {
 		return [
 			'title'       => $this->get_setting( 'title' ),
 			'description' => $this->get_setting( 'description' ),
+			'supports'    => apply_filters( 'woocommerce_blocks_payment_gateway_features_list', $this->get_supported_features(), $this->get_name() ),
 		];
 	}
 
