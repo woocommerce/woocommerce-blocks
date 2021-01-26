@@ -1,15 +1,16 @@
 .wc-block-components-error {
 	display: flex;
-	background-color: #f3f3f4;
-	border-left: 4px solid #6d6d6d;
+	background-color: $gray-100;
+	border-left: 4px solid $gray-300;
 	padding: $gap-larger $gap;
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
+	color: $gray-700;
 }
 
 .wc-block-components-error__header {
-	@include font-size(larger);
+	@include font-size( larger );
 	font-weight: bold;
 	margin: 0;
 }
