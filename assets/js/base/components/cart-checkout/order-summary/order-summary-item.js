@@ -2,10 +2,14 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
+import { applyFilters } from '@wordpress/hooks';
 import Label from '@woocommerce/base-components/label';
 import ProductPrice from '@woocommerce/base-components/product-price';
 import ProductName from '@woocommerce/base-components/product-name';
-import { getCurrency } from '@woocommerce/blocks-checkout';
+import {
+	__EXPERIMENTAL_PRICE_FORMAT_FILTER,
+	getCurrency,
+} from '@woocommerce/blocks-checkout';
 import PropTypes from 'prop-types';
 import Dinero from 'dinero.js';
 
@@ -51,6 +55,13 @@ const OrderSummaryItem = ( { cartItem } ) => {
 		.convertPrecision( currency.minorUnit )
 		.getAmount();
 
+	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
+	const productPriceFormat = applyFilters(
+		__EXPERIMENTAL_PRICE_FORMAT_FILTER,
+		'<price/>',
+		cartItem
+	);
+
 	return (
 		<div className="wc-block-components-order-summary-item">
 			<div className="wc-block-components-order-summary-item__image">
@@ -74,6 +85,7 @@ const OrderSummaryItem = ( { cartItem } ) => {
 				/>
 				<ProductPrice
 					currency={ currency }
+					format={ productPriceFormat }
 					price={ linePriceSingle }
 					regularPrice={ regularPriceSingle }
 					className="wc-block-components-order-summary-item__individual-prices"
