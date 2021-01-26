@@ -20,7 +20,6 @@ import ProductMetadata from '../product-metadata';
 const OrderSummaryItem = ( { cartItem } ) => {
 	const {
 		images,
-		catalog_visibility: catalogVisibility = '',
 		low_stock_remaining: lowStockRemaining = null,
 		show_backorder_badge: showBackorderBadge = false,
 		name,
@@ -34,15 +33,18 @@ const OrderSummaryItem = ( { cartItem } ) => {
 	} = cartItem;
 
 	const currency = getCurrency( prices );
-	const linePrice = Dinero( {
-		amount: parseInt( prices.raw_prices.price, 10 ),
+	const regularPriceSingle = Dinero( {
+		amount: parseInt( prices.raw_prices.regular_price, 10 ),
 		precision: parseInt( prices.raw_prices.precision, 10 ),
 	} )
-		.multiply( quantity )
 		.convertPrecision( currency.minorUnit )
 		.getAmount();
-	const isProductHiddenFromCatalog =
-		catalogVisibility === 'hidden' || catalogVisibility === 'search';
+	const convertedLinePrice = Dinero( {
+		amount: parseInt( prices.raw_prices.price, 10 ),
+		precision: parseInt( prices.raw_prices.precision, 10 ),
+	} ).convertPrecision( currency.minorUnit );
+	const linePriceSingle = convertedLinePrice.getAmount();
+	const linePrice = convertedLinePrice.multiply( quantity ).getAmount();
 
 	return (
 		<div className="wc-block-components-order-summary-item">
@@ -81,6 +83,12 @@ const OrderSummaryItem = ( { cartItem } ) => {
 						/>
 					)
 				) }
+				<ProductPrice
+					currency={ currency }
+					price={ linePriceSingle }
+					regularPrice={ regularPriceSingle }
+					priceClassName="wc-block-components-order-summary-item__individual-price"
+				/>
 				<ProductMetadata
 					shortDescription={ shortDescription }
 					fullDescription={ fullDescription }
