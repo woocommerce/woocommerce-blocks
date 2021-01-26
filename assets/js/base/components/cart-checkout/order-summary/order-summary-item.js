@@ -53,53 +53,48 @@ const OrderSummaryItem = ( { cartItem } ) => {
 
 	return (
 		<div className="wc-block-components-order-summary-item">
-			<div className="wc-block-components-order-summary-item__product-details">
-				<div className="wc-block-components-order-summary-item__image">
-					<div className="wc-block-components-order-summary-item__quantity">
-						<Label
-							label={ quantity }
-							screenReaderLabel={ sprintf(
-								/* translators: %d number of products of the same type in the cart */
-								__(
-									'%d items',
-									'woo-gutenberg-products-block'
-								),
-								quantity
-							) }
+			<div className="wc-block-components-order-summary-item__image">
+				<div className="wc-block-components-order-summary-item__quantity">
+					<Label
+						label={ quantity }
+						screenReaderLabel={ sprintf(
+							/* translators: %d number of products of the same type in the cart */
+							__( '%d items', 'woo-gutenberg-products-block' ),
+							quantity
+						) }
+					/>
+				</div>
+				<ProductImage image={ images.length ? images[ 0 ] : {} } />
+			</div>
+			<div className="wc-block-components-order-summary-item__description">
+				<ProductName
+					disabled={ true }
+					name={ name }
+					permalink={ permalink }
+				/>
+				<ProductPrice
+					currency={ currency }
+					price={ linePriceSingle }
+					regularPrice={ regularPriceSingle }
+					className="wc-block-components-order-summary-item__individual-prices"
+					priceClassName="wc-block-components-order-summary-item__individual-price"
+					regularPriceClassName="wc-block-components-order-summary-item__regular-individual-price"
+				/>
+				{ showBackorderBadge ? (
+					<ProductBackorderBadge />
+				) : (
+					!! lowStockRemaining && (
+						<ProductLowStockBadge
+							lowStockRemaining={ lowStockRemaining }
 						/>
-					</div>
-					<ProductImage image={ images.length ? images[ 0 ] : {} } />
-				</div>
-				<div className="wc-block-components-order-summary-item__description">
-					<ProductName
-						disabled={ true }
-						name={ name }
-						permalink={ permalink }
-					/>
-					<ProductPrice
-						currency={ currency }
-						price={ linePriceSingle }
-						regularPrice={ regularPriceSingle }
-						className="wc-block-components-order-summary-item__individual-prices"
-						priceClassName="wc-block-components-order-summary-item__individual-price"
-						regularPriceClassName="wc-block-components-order-summary-item__regular-individual-price"
-					/>
-					{ showBackorderBadge ? (
-						<ProductBackorderBadge />
-					) : (
-						!! lowStockRemaining && (
-							<ProductLowStockBadge
-								lowStockRemaining={ lowStockRemaining }
-							/>
-						)
-					) }
-					<ProductMetadata
-						shortDescription={ shortDescription }
-						fullDescription={ fullDescription }
-						itemData={ itemData }
-						variation={ variation }
-					/>
-				</div>
+					)
+				) }
+				<ProductMetadata
+					shortDescription={ shortDescription }
+					fullDescription={ fullDescription }
+					itemData={ itemData }
+					variation={ variation }
+				/>
 			</div>
 			<div className="wc-block-components-order-summary-item__total-price">
 				<ProductPrice currency={ currency } price={ linePrice } />
