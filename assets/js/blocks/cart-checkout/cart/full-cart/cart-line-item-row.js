@@ -106,7 +106,8 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
 	const productPriceFormat = applyFilters(
 		__EXPERIMENTAL_PRICE_FORMAT_FILTER,
-		'<price/>'
+		'<price/>',
+		lineItem
 	);
 
 	return (
