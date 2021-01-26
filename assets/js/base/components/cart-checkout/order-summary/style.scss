@@ -12,6 +12,7 @@
 
 .wc-block-components-order-summary-item {
 	@include with-translucent-border(0 0 1px);
+	@include font-size(small);
 	display: table-row;
 	padding-bottom: 1px;
 	width: 100%;
@@ -24,6 +25,10 @@
 		&::after {
 			display: none;
 		}
+	}
+
+	.wc-block-components-product-metadata {
+		@include font-size(regular);
 	}
 }
 
@@ -46,7 +51,6 @@
 }
 
 .wc-block-components-order-summary-item__quantity {
-	@include font-size(smaller);
 	align-items: center;
 	background: #fff;
 	border: 2px solid;
@@ -84,4 +88,9 @@
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
+}
+
+
+.wc-block-components-order-summary-item__total-price {
+	font-weight: bold;
 }
