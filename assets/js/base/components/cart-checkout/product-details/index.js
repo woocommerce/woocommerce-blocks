@@ -12,6 +12,10 @@ import './style.scss';
 
 // Component to display cart item data and variations.
 const ProductDetails = ( { details = [] } ) => {
+	if ( ! Array.isArray( details ) ) {
+		return null;
+	}
+
 	details = details.filter( ( detail ) => ! detail.hidden );
 
 	if ( details.length === 0 ) {
