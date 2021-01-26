@@ -62,7 +62,7 @@ const OrderSummaryItem = ( { cartItem } ) => {
 			<div className="wc-block-components-order-summary-item__description">
 				<div className="wc-block-components-order-summary-item__header">
 					<ProductName
-						disabled={ isProductHiddenFromCatalog }
+						disabled={ true }
 						name={ name }
 						permalink={ permalink }
 					/>
