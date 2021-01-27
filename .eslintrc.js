@@ -48,7 +48,7 @@ module.exports = {
 			'requireindex',
 		],
 		'import/resolver': {
-			Node: {},
+			node: {},
 			webpack: {},
 		},
 	},
