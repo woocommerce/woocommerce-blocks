@@ -70,12 +70,6 @@ table.wc-block-cart-items {
 			@include font-size(regular);
 			text-align: right;
 			line-height: 1.25;
-
-			.wc-block-components-product-price__regular,
-			.wc-block-components-product-price__value {
-				display: block;
-				font-weight: bold;
-			}
 		}
 		.wc-block-components-product-metadata {
 			margin-bottom: 0.75em;
