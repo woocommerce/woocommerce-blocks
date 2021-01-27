@@ -121,6 +121,7 @@ const ProductPrice = ( {
 
 	if ( ! format.includes( '<price/>' ) ) {
 		format = '<price/>';
+		// eslint-disable-next-line no-console
 		console.error( 'Price formats need to include the `<price/>` tag.' );
 	}
 
