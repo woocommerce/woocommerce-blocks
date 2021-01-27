@@ -7,7 +7,7 @@ import Label from '@woocommerce/base-components/label';
 import ProductPrice from '@woocommerce/base-components/product-price';
 import ProductName from '@woocommerce/base-components/product-name';
 import { getCurrency } from '@woocommerce/price-format';
-import { __EXPERIMENTAL_PRICE_FORMAT_FILTER } from '@woocommerce/blocks-checkout';
+import { __EXPERIMENTAL_CART_ITEM_PRICE_FILTER } from '@woocommerce/blocks-checkout';
 import PropTypes from 'prop-types';
 import Dinero from 'dinero.js';
 
@@ -55,9 +55,10 @@ const OrderSummaryItem = ( { cartItem } ) => {
 
 	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
 	const productPriceFormat = applyFilters(
-		__EXPERIMENTAL_PRICE_FORMAT_FILTER,
+		__EXPERIMENTAL_CART_ITEM_PRICE_FILTER,
 		'<price/>',
-		cartItem
+		cartItem,
+		'checkout'
 	);
 
 	return (

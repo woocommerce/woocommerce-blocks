@@ -17,7 +17,7 @@ import {
 	ProductSaleBadge,
 } from '@woocommerce/base-components/cart-checkout';
 import { getCurrency } from '@woocommerce/price-format';
-import { __EXPERIMENTAL_PRICE_FORMAT_FILTER } from '@woocommerce/blocks-checkout';
+import { __EXPERIMENTAL_CART_ITEM_PRICE_FILTER } from '@woocommerce/blocks-checkout';
 import Dinero from 'dinero.js';
 
 /**
@@ -103,9 +103,10 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 
 	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
 	const productPriceFormat = applyFilters(
-		__EXPERIMENTAL_PRICE_FORMAT_FILTER,
+		__EXPERIMENTAL_CART_ITEM_PRICE_FILTER,
 		'<price/>',
-		lineItem
+		lineItem,
+		'cart'
 	);
 
 	return (
