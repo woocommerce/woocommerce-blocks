@@ -158,6 +158,7 @@ class Cart extends AbstractBlock {
 								</td>
 								<td class="wc-block-cart-item__product">
 									<div class="wc-block-cart-item__product-name"></div>
+									<div class="wc-block-cart-item__individual-price"></div>
 									<div class="wc-block-cart-item__product-metadata"></div>
 									<div class="wc-block-components-quantity-selector">
 										<input class="wc-block-components-quantity-selector__input" type="number" step="1" min="0" value="1" />
@@ -175,6 +176,7 @@ class Cart extends AbstractBlock {
 								</td>
 								<td class="wc-block-cart-item__product">
 									<div class="wc-block-cart-item__product-name"></div>
+									<div class="wc-block-cart-item__individual-price"></div>
 									<div class="wc-block-cart-item__product-metadata"></div>
 									<div class="wc-block-components-quantity-selector">
 										<input class="wc-block-components-quantity-selector__input" type="number" step="1" min="0" value="1" />
@@ -192,6 +194,7 @@ class Cart extends AbstractBlock {
 								</td>
 								<td class="wc-block-cart-item__product">
 									<div class="wc-block-cart-item__product-name"></div>
+									<div class="wc-block-cart-item__individual-price"></div>
 									<div class="wc-block-cart-item__product-metadata"></div>
 									<div class="wc-block-components-quantity-selector">
 										<input class="wc-block-components-quantity-selector__input" type="number" step="1" min="0" value="1" />

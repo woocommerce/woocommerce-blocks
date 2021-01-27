@@ -104,6 +104,7 @@ table.wc-block-cart-items {
 	.wc-block-cart-items {
 		.wc-block-cart-items__row {
 			.wc-block-cart-item__price,
+			.wc-block-cart-item__individual-price,
 			.wc-block-cart-item__product-metadata,
 			.wc-block-cart-item__image > *,
 			.wc-block-components-quantity-selector {
@@ -124,6 +125,12 @@ table.wc-block-cart-items {
 			}
 			.wc-block-cart-item__image a {
 				display: block;
+			}
+			.wc-block-cart-item__individual-price {
+				@include force-content();
+				max-width: 3em;
+				display: block;
+				margin-top: 0.25em;
 			}
 			.wc-block-cart-item__total {
 				> span,
