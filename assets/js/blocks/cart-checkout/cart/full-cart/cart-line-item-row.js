@@ -73,7 +73,16 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 				sale_price: '0',
 			},
 		},
-		totals,
+		totals = {
+			currency_code: 'USD',
+			currency_minor_unit: 2,
+			currency_symbol: '$',
+			currency_prefix: '$',
+			currency_suffix: '',
+			currency_decimal_separator: '.',
+			currency_thousand_separator: ',',
+			line_total: '0',
+		},
 	} = lineItem;
 
 	const {
