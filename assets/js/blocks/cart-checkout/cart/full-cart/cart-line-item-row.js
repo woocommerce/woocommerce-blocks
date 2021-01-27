@@ -207,10 +207,10 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 
 				{ quantity > 1 && (
 					<ProductSaleBadge
-						currency={ totalsCurrency }
+						currency={ priceCurrency }
 						saleAmount={ getAmountFromRawPrice(
 							saleAmount,
-							totalsCurrency
+							priceCurrency
 						) }
 					/>
 				) }
