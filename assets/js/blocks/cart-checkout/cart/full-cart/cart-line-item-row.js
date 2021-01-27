@@ -75,6 +75,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 				sale_price: '0',
 			},
 		},
+		totals,
 	} = lineItem;
 
 	const {
@@ -84,7 +85,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 		isPendingDelete,
 	} = useStoreCartItemQuantity( lineItem );
 
-	const currency = getCurrency( prices );
+	const priceCurrency = getCurrency( prices );
 	const regularAmountSingle = Dinero( {
 		amount: parseInt( prices.raw_prices.regular_price, 10 ),
 		precision: parseInt( prices.raw_prices.precision, 10 ),
@@ -93,12 +94,15 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 		amount: parseInt( prices.raw_prices.price, 10 ),
 		precision: parseInt( prices.raw_prices.precision, 10 ),
 	} );
-	const regularAmount = regularAmountSingle.multiply( quantity );
-	const purchaseAmount = purchaseAmountSingle.multiply( quantity );
 	const saleAmountSingle = regularAmountSingle.subtract(
 		purchaseAmountSingle
 	);
-	const saleAmount = regularAmount.subtract( purchaseAmount );
+	const saleAmount = saleAmountSingle.multiply( quantity );
+	const totalsCurrency = getCurrency( totals );
+	const totalsPrice = Dinero( {
+		amount: parseInt( totals.line_total, 10 ),
+	} );
+
 	const firstImage = images.length ? images[ 0 ] : {};
 	const isProductHiddenFromCatalog =
 		catalogVisibility === 'hidden' || catalogVisibility === 'search';
@@ -149,23 +153,23 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 
 				<div className="wc-block-cart-item__prices">
 					<ProductPrice
-						currency={ currency }
+						currency={ priceCurrency }
 						regularPrice={ getAmountFromRawPrice(
 							regularAmountSingle,
-							currency
+							priceCurrency
 						) }
 						price={ getAmountFromRawPrice(
 							purchaseAmountSingle,
-							currency
+							priceCurrency
 						) }
 					/>
 				</div>
 
 				<ProductSaleBadge
-					currency={ currency }
+					currency={ priceCurrency }
 					saleAmount={ getAmountFromRawPrice(
 						saleAmountSingle,
-						currency
+						priceCurrency
 					) }
 				/>
 
@@ -195,17 +199,20 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 			</td>
 			<td className="wc-block-cart-item__total">
 				<ProductPrice
-					currency={ currency }
+					currency={ totalsCurrency }
 					format={ productPriceFormat }
-					price={ getAmountFromRawPrice( purchaseAmount, currency ) }
+					price={ getAmountFromRawPrice(
+						totalsPrice,
+						totalsCurrency
+					) }
 				/>
 
 				{ quantity > 1 && (
 					<ProductSaleBadge
-						currency={ currency }
+						currency={ totalsCurrency }
 						saleAmount={ getAmountFromRawPrice(
 							saleAmount,
-							currency
+							totalsCurrency
 						) }
 					/>
 				) }

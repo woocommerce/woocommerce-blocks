@@ -34,25 +34,27 @@ const OrderSummaryItem = ( { cartItem } ) => {
 		description: fullDescription,
 		item_data: itemData = [],
 		variation,
+		totals,
 	} = cartItem;
 
-	const currency = getCurrency( prices );
+	const priceCurrency = getCurrency( prices );
 	const regularPriceSingle = Dinero( {
 		amount: parseInt( prices.raw_prices.regular_price, 10 ),
 		precision: parseInt( prices.raw_prices.precision, 10 ),
 	} )
-		.convertPrecision( currency.minorUnit )
+		.convertPrecision( priceCurrency.minorUnit )
 		.getAmount();
-	const unconvertedLinePrice = Dinero( {
+	const priceSingle = Dinero( {
 		amount: parseInt( prices.raw_prices.price, 10 ),
 		precision: parseInt( prices.raw_prices.precision, 10 ),
-	} );
-	const linePriceSingle = unconvertedLinePrice
-		.convertPrecision( currency.minorUnit )
+	} )
+		.convertPrecision( priceCurrency.minorUnit )
 		.getAmount();
-	const linePrice = unconvertedLinePrice
-		.multiply( quantity )
-		.convertPrecision( currency.minorUnit )
+	const totalsCurrency = getCurrency( totals );
+	const totalsPrice = Dinero( {
+		amount: parseInt( totals.line_total, 10 ),
+	} )
+		.convertPrecision( totals.currency_minor_unit )
 		.getAmount();
 
 	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
@@ -85,9 +87,8 @@ const OrderSummaryItem = ( { cartItem } ) => {
 					permalink={ permalink }
 				/>
 				<ProductPrice
-					currency={ currency }
-					format={ productPriceFormat }
-					price={ linePriceSingle }
+					currency={ priceCurrency }
+					price={ priceSingle }
 					regularPrice={ regularPriceSingle }
 					className="wc-block-components-order-summary-item__individual-prices"
 					priceClassName="wc-block-components-order-summary-item__individual-price"
@@ -110,7 +111,11 @@ const OrderSummaryItem = ( { cartItem } ) => {
 				/>
 			</div>
 			<div className="wc-block-components-order-summary-item__total-price">
-				<ProductPrice currency={ currency } price={ linePrice } />
+				<ProductPrice
+					currency={ totalsCurrency }
+					format={ productPriceFormat }
+					price={ totalsPrice }
+				/>
 			</div>
 		</div>
 	);
