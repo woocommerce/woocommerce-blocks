@@ -25,6 +25,9 @@ import './style.scss';
 /**
  * Renders the shipping rates control element.
  *
+ * @todo Move ShippingRatesControl, TotalsShipping, and ShippingRateSelector to our base components folder.
+ * they're too coupled with our base implementation to be exported and we should only export Package.
+ *
  * @param {Object} props Incoming props.
  * @param {Array} props.shippingRates Array of packages containing shipping rates.
  * @param {boolean} props.shippingRatesLoading True when rates are being loaded.

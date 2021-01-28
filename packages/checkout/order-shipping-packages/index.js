@@ -1,4 +1,7 @@
 /**
+ * @todo Create guards against __experimentalUseSlot use.
+ */
+/**
  * External dependencies
  */
 import classnames from 'classnames';
