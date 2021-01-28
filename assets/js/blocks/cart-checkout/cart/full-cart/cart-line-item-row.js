@@ -18,6 +18,7 @@ import {
 } from '@woocommerce/base-components/cart-checkout';
 import {
 	__EXPERIMENTAL_CART_ITEM_SUBTOTAL_FILTER,
+	__EXPERIMENTAL_CART_ITEM_SALE_BADGE_FILTER,
 	__EXPERIMENTAL_CART_ITEM_PRICE_FILTER,
 	getCurrency,
 } from '@woocommerce/blocks-checkout';
@@ -125,22 +126,18 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 		'cart'
 	);
 
-	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
+	// Allow extensions to filter how the price is displayed in the individual product subtotal.
 	const productPriceSubtotalFormat = applyFilters(
 		__EXPERIMENTAL_CART_ITEM_SUBTOTAL_FILTER,
 		'<price/>',
-		lineItem,
-		'cart',
-		'ProductPrice'
+		lineItem
 	);
 
-	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
+	// Allow extensions to filter how the price is displayed in the sale badge.
 	const productSaleBadgeFormat = applyFilters(
-		__EXPERIMENTAL_CART_ITEM_SUBTOTAL_FILTER,
+		__EXPERIMENTAL_CART_ITEM_SALE_BADGE_FILTER,
 		'<price/>',
-		lineItem,
-		'cart',
-		'SaleBadge'
+		lineItem
 	);
 
 	return (
