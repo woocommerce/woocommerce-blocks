@@ -32,7 +32,6 @@ import './style.scss';
 export const Block = ( {
 	className,
 	imageSizing = 'full-size',
-	// @todo Rename productLink to showProductLink to better reflect it's a Boolean
 	productLink: showProductLink = true,
 	showSaleBadge,
 	saleBadgeAlign = 'right',
