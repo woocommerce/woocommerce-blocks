@@ -52,6 +52,7 @@ export const defaultCartData = {
 	shippingRatesLoading: false,
 	cartHasCalculatedShipping: false,
 	receiveCart: () => {},
+	extensions: {},
 };
 
 /**
