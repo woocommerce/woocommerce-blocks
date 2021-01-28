@@ -20,8 +20,6 @@ import {
 import Block from './block.js';
 import blockAttributes from './attributes';
 
-import '../subscriptions-integration';
-
 const reloadPage = () => void window.location.reload( true );
 /**
  * Wrapper component to supply API data and show empty cart view as needed.
