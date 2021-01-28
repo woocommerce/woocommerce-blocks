@@ -126,11 +126,21 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 	);
 
 	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
-	const productSubtotalFormat = applyFilters(
+	const productPriceSubtotalFormat = applyFilters(
 		__EXPERIMENTAL_CART_ITEM_SUBTOTAL_FILTER,
 		'<price/>',
 		lineItem,
-		'cart'
+		'cart',
+		'ProductPrice'
+	);
+
+	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
+	const productSaleBadgeFormat = applyFilters(
+		__EXPERIMENTAL_CART_ITEM_SUBTOTAL_FILTER,
+		'<price/>',
+		lineItem,
+		'cart',
+		'SaleBadge'
 	);
 
 	return (
@@ -180,7 +190,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 							purchaseAmountSingle,
 							priceCurrency
 						) }
-						format={ productSubtotalFormat }
+						format={ productPriceSubtotalFormat }
 					/>
 				</div>
 
@@ -190,6 +200,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 						saleAmountSingle,
 						priceCurrency
 					) }
+					format={ productSaleBadgeFormat }
 				/>
 
 				<ProductMetadata
@@ -233,6 +244,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 							saleAmount,
 							priceCurrency
 						) }
+						format={ productSaleBadgeFormat }
 					/>
 				) }
 			</td>
