@@ -108,7 +108,6 @@ describe( 'useStoreCart', () => {
 		shippingRatesLoading: false,
 		cartHasCalculatedShipping: true,
 		receiveCart: undefined,
-		extensions: {},
 	};
 
 	const getWrappedComponents = ( Component ) => (

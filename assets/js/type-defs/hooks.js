@@ -42,7 +42,6 @@
  * @property {boolean}             cartHasCalculatedShipping Whether or not the cart has calculated shipping yet.
  * @property {function(Object):any} receiveCart         Dispatcher to receive
  *                                                      updated cart.
- * @property {Object}              extensions           Data appended by extensions.
  */
 
 /**

@@ -136,7 +136,6 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 				shippingRatesLoading,
 				cartHasCalculatedShipping: cartData.hasCalculatedShipping,
 				receiveCart,
-				extensions: cartData.extensions || {},
 			};
 		},
 		[ shouldSelect ]
