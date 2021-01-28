@@ -118,9 +118,9 @@ export const useStoreCart = ( options = { shouldSelect: true } ) => {
 			const shippingAddress = cartData.needsShipping
 				? decodeValues( cartData.shippingAddress )
 				: billingAddress;
-			const cartFees = Array.isArray( cartData.fees )
-				? cartData.fees.map( ( fee ) => decodeValues( fee ) )
-				: [];
+			const cartFees = cartData.fees.map( ( fee ) =>
+				decodeValues( fee )
+			);
 			return {
 				cartCoupons: cartData.coupons,
 				cartItems: cartData.items || [],
