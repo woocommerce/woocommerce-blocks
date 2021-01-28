@@ -23,6 +23,7 @@ const Package = ( {
 	renderOption,
 	packageData,
 	collapsible = false,
+	collapse = false,
 	showItems = false,
 } ) => {
 	const { selectShippingRate, selectedShippingRate } = useSelectShippingRate(
@@ -90,7 +91,7 @@ const Package = ( {
 			<Panel
 				className="wc-block-components-shipping-rates-control__package"
 				hasBorder={ true }
-				initialOpen={ true }
+				initialOpen={ ! collapse }
 				title={ header }
 			>
 				{ body }

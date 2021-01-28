@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { useEffect } from 'react';
+import { useEffect } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import { speak } from '@wordpress/a11y';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
@@ -29,7 +29,7 @@ import './style.scss';
  * @param {Array} props.shippingRates Array of packages containing shipping rates.
  * @param {boolean} props.shippingRatesLoading True when rates are being loaded.
  * @param {string} props.className Class name for package rates.
- * @param {boolean} props.collapsibleWhenMultiple If true, when multiple packages are rendered they can be toggled open and closed.
+ * @param {boolean} props.collapsible If true, when multiple packages are rendered they can be toggled open and closed.
  * @param {React.ReactElement} props.noResultsMessage Rendered when there are no packages.
  * @param {Function} props.renderOption Function to render a shipping rate.
  */
@@ -37,7 +37,7 @@ const ShippingRatesControl = ( {
 	shippingRates,
 	shippingRatesLoading,
 	className,
-	collapsibleWhenMultiple = false,
+	collapsible = false,
 	noResultsMessage,
 	renderOption,
 } ) => {
@@ -105,14 +105,16 @@ const ShippingRatesControl = ( {
 		>
 			<ExperimentalOrderShippingPackages.Slot
 				className={ className }
-				collapsibleWhenMultiple={ collapsibleWhenMultiple }
+				collapsible={ collapsible }
 				noResultsMessage={ noResultsMessage }
 				renderOption={ renderOption }
 			/>
-			<Packages
-				packages={ shippingRates }
-				noResultsMessage={ noResultsMessage }
-			/>
+			<ExperimentalOrderShippingPackages>
+				<Packages
+					packages={ shippingRates }
+					noResultsMessage={ noResultsMessage }
+				/>
+			</ExperimentalOrderShippingPackages>
 		</LoadingMask>
 	);
 };
@@ -123,21 +125,33 @@ const ShippingRatesControl = ( {
  * @param {Object} props Incoming props.
  * @param {Array} props.packages Array of packages.
  * @param {React.ReactElement} props.noResultsMessage Rendered when there are no packages.
+ * @param {boolean} props.collapsible If the package should be rendered as a
+ * collapsible panel.
+ * @param {boolean} props.collapse If the panel should be collapsed by default,
+ * only works if collapsible is true.
+ * @param {boolean} props.showItems If we should items below the package name.
  * @return {React.ReactElement|Array} Rendered components.
  */
-const Packages = ( { packages, noResultsMessage } ) => {
+const Packages = ( {
+	packages,
+	collapse,
+	showItems,
+	collapsible,
+	noResultsMessage,
+} ) => {
 	if ( ! packages.length ) {
 		return noResultsMessage;
 	}
 
 	return packages.map( ( { package_id: packageId, ...packageData } ) => (
-		<ExperimentalOrderShippingPackages key={ packageId }>
-			<Package
-				key={ packageId }
-				packageId={ packageId }
-				packageData={ packageData }
-			/>
-		</ExperimentalOrderShippingPackages>
+		<Package
+			key={ packageId }
+			packageId={ packageId }
+			packageData={ packageData }
+			collapsible={ collapsible }
+			collapse={ collapse }
+			showItems={ showItems }
+		/>
 	) );
 };
 
@@ -145,9 +159,8 @@ ShippingRatesControl.propTypes = {
 	noResultsMessage: PropTypes.node.isRequired,
 	renderOption: PropTypes.func,
 	className: PropTypes.string,
-	collapsibleWhenMultiple: PropTypes.bool,
+	collapsible: PropTypes.bool,
 	shippingRates: PropTypes.array,
 	shippingRatesLoading: PropTypes.bool,
 };
-
 export default ShippingRatesControl;

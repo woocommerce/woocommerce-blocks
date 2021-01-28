@@ -1,12 +1,14 @@
 /**
  * External dependencies
  */
+import classnames from 'classnames';
 import {
 	createSlotFill,
 	__experimentalUseSlot as useSlot,
 } from 'wordpress-components';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
-import { Children, cloneElement } from 'wordpress-element';
+import { Children, cloneElement } from '@wordpress/element';
+import { useStoreCart } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -36,27 +38,27 @@ function ExperimentalOrderShippingPackages( { children } ) {
 	);
 }
 
-function Slot( {
-	className,
-	collapsibleWhenMultiple,
-	collapsible,
-	noResultsMessage,
-	renderOption,
-} ) {
+function Slot( { className, collapsible, noResultsMessage, renderOption } ) {
+	// We need to pluck out receiveCart.
+	// eslint-disable-next-line no-unused-vars
+	const { extensions, receiveCart, ...cart } = useStoreCart();
 	const { fills } = useSlot( slotName );
 	const hasMultiplePackages = fills.length > 1;
 	return (
 		<OrderShippingPackagesSlot
 			bubblesVirtually
-			className="wc-block-components-shipping-rates-control"
+			className={ classnames(
+				'wc-block-components-shipping-rates-control',
+				className
+			) }
 			fillProps={ {
-				className,
-				collapsible:
-					collapsibleWhenMultiple &&
-					( collapsible || hasMultiplePackages ),
+				collapsible,
+				collapse: hasMultiplePackages,
 				showItems: hasMultiplePackages,
 				noResultsMessage,
 				renderOption,
+				extensions,
+				cart,
 			} }
 		/>
 	);

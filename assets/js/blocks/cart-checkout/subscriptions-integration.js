@@ -6,13 +6,17 @@ import {
 	ShippingRatesControlPackage,
 } from '@woocommerce/blocks-checkout';
 import { registerPlugin } from '@wordpress/plugins';
-import { useStoreCart } from '@woocommerce/base-hooks';
 import { useMemo } from '@wordpress/element';
 
-const RenderSubscriptionPackages = () => {
-	const {
-		extensions: { subscriptions },
-	} = useStoreCart();
+const SubscriptionsRecurringPackages = ( {
+	extensions,
+	collapsible,
+	collapse,
+	showItems,
+	noResultsMessage,
+	renderOption,
+} ) => {
+	const { subscriptions = [] } = extensions;
 
 	// Flatten all packages from recurring carts.
 	const packages = useMemo(
@@ -23,21 +27,33 @@ const RenderSubscriptionPackages = () => {
 				.flat(),
 		[ subscriptions ]
 	);
-
+	const shouldCollapse = useMemo( () => packages.length > 1 || collapse, [
+		packages.length,
+		collapse,
+	] );
+	const shouldShowItems = useMemo( () => packages.length > 1 || showItems, [
+		packages.length,
+		showItems,
+	] );
 	return packages.map( ( { package_id: packageId, ...packageData } ) => (
-		<ExperimentalOrderShippingPackages key={ packageId }>
-			<SubscriptionPackage
-				key={ packageId }
-				packageId={ packageId }
-				packageData={ packageData }
-			/>
-		</ExperimentalOrderShippingPackages>
+		<ShippingRatesControlPackage
+			key={ packageId }
+			packageId={ packageId }
+			packageData={ packageData }
+			collapsible={ collapsible }
+			collapse={ shouldCollapse }
+			showItems={ shouldShowItems }
+			noResultsMessage={ noResultsMessage }
+			renderOption={ renderOption }
+		/>
 	) );
 };
 
-const SubscriptionPackage = ( props ) => {
-	return <ShippingRatesControlPackage { ...props } />;
-};
+const RenderSubscriptionPackages = () => (
+	<ExperimentalOrderShippingPackages>
+		<SubscriptionsRecurringPackages />
+	</ExperimentalOrderShippingPackages>
+);
 
 registerPlugin( 'woocommerce-subscriptions-shipping', {
 	render: RenderSubscriptionPackages,
