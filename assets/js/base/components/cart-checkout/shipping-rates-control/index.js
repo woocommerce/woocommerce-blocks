@@ -44,14 +44,7 @@ const ShippingRatesControl = ( {
 		}
 		const packageCount = getShippingRatesPackageCount( shippingRates );
 		const shippingOptions = getShippingRatesRateCount( shippingRates );
-		if ( shippingOptions === 0 ) {
-			speak(
-				__(
-					'No shipping options were found.',
-					'woo-gutenberg-products-block'
-				)
-			);
-		} else if ( packageCount === 1 ) {
+		if ( packageCount === 1 ) {
 			speak(
 				sprintf(
 					// translators: %d number of shipping options found.
@@ -121,13 +114,13 @@ const ShippingRatesControl = ( {
  *
  * @param {Object} props Incoming props.
  * @param {Array} props.packages Array of packages.
- * @param {React.ReactElement} props.noResultsMessage Rendered when there are no packages.
+ * @param {React.ReactElement} props.noResultsMessage Rendered when there are no rates in a package.
  * @param {boolean} props.collapsible If the package should be rendered as a
  * collapsible panel.
  * @param {boolean} props.collapse If the panel should be collapsed by default,
  * only works if collapsible is true.
  * @param {boolean} props.showItems If we should items below the package name.
- * @return {React.ReactElement|Array} Rendered components.
+ * @return {React.ReactElement|Array|null} Rendered components.
  */
 const Packages = ( {
 	packages,
@@ -136,8 +129,9 @@ const Packages = ( {
 	collapsible,
 	noResultsMessage,
 } ) => {
+	// If there are no packages, return nothing.
 	if ( ! packages.length ) {
-		return noResultsMessage;
+		return null;
 	}
 
 	return packages.map( ( { package_id: packageId, ...packageData } ) => (
@@ -148,6 +142,7 @@ const Packages = ( {
 			collapsible={ collapsible }
 			collapse={ collapse }
 			showItems={ showItems }
+			noResultsMessage={ noResultsMessage }
 		/>
 	) );
 };
