@@ -38,7 +38,7 @@ export default class ExpressPaymentMethodConfig {
 		}
 		if ( ! Array.isArray( config.supports?.features ) ) {
 			throw new Error(
-				'The features property for the payment method must be an array or null.'
+				'The features property for the payment method must be an array.'
 			);
 		}
 		assertValidElement( config.content, 'content' );
