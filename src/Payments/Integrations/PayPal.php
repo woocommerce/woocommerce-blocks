@@ -71,7 +71,7 @@ final class PayPal extends AbstractPaymentMethodType {
 		return [
 			'title'       => $this->get_setting( 'title' ),
 			'description' => $this->get_setting( 'description' ),
-			'supports'    => apply_filters( '__experimental_woocommerce_blocks_payment_gateway_features_list', $this->get_supported_features(), $this->get_name() ),
+			'supports'    => $this->get_supported_features(),
 		];
 	}
 
@@ -81,7 +81,8 @@ final class PayPal extends AbstractPaymentMethodType {
 	 * @return string[]
 	 */
 	public function get_supported_features() {
-		$gateway = new WC_Gateway_Paypal();
-		return array_filter( $gateway->supports, array( $gateway, 'supports' ) );
+		$gateway  = new WC_Gateway_Paypal();
+		$features = array_filter( $gateway->supports, array( $gateway, 'supports' ) );
+		return apply_filters( '__experimental_woocommerce_blocks_payment_gateway_features_list', $features, $this->get_name() );
 	}
 }
