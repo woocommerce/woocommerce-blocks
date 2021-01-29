@@ -36,7 +36,7 @@ const registerMockPaymentMethods = () => {
 			ariaLabel: name,
 			supports: {
 				features: [ 'products' ],
-			}
+			},
 		} );
 	} );
 };

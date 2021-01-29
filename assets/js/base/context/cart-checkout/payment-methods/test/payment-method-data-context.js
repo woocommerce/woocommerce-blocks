@@ -106,7 +106,7 @@ const registerMockPaymentMethods = () => {
 			paymentMethodId: name,
 			supports: {
 				features: [ 'products' ],
-			}
+			},
 		} );
 	} );
 };
