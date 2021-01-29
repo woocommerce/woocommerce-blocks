@@ -130,16 +130,14 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 	const productPriceSubtotalFormat = applyFilters(
 		__EXPERIMENTAL_CART_ITEM_SUBTOTAL_FILTER,
 		'<price/>',
-		lineItem,
-		'cart'
+		lineItem
 	);
 
 	// Allow extensions to filter how the price is displayed in the sale badge.
 	const productSaleBadgeFormat = applyFilters(
 		__EXPERIMENTAL_CART_ITEM_SALE_BADGE_FILTER,
 		'<price/>',
-		lineItem,
-		'cart'
+		lineItem
 	);
 
 	return (
