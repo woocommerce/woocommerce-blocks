@@ -111,6 +111,11 @@ export default class PaymentMethodConfig {
 				}
 			);
 		}
+		if ( ! Array.isArray( config.supports?.features ) ) {
+			throw new Error(
+				'The features property for the payment method must be an array or null.'
+			);
+		}
 		if (
 			typeof config.supports?.showSaveOption !== 'undefined' &&
 			typeof config.supports?.showSaveOption !== 'boolean'
