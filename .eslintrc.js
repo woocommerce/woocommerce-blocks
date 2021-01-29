@@ -19,6 +19,38 @@ module.exports = {
 	},
 	settings: {
 		jsdoc: { mode: 'typescript' },
+		// List of modules that are externals in our webpack config.
+		// This helps the `import/no-extraneous-dependencies` and
+		//`import/no-unresolved` rules account for them.
+		'import/core-modules': [
+			'@woocommerce/block-data',
+			'@woocommerce/blocks-checkout',
+			'@woocommerce/settings',
+			'@woocommerce/shared-context',
+			'@woocommerce/shared-hocs',
+			'@woocommerce/knobs',
+			'@wordpress/a11y',
+			'@wordpress/api-fetch',
+			'@wordpress/block-editor',
+			'@wordpress/compose',
+			'@wordpress/data',
+			'@wordpress/escape-html',
+			'@wordpress/hooks',
+			'@wordpress/keycodes',
+			'@wordpress/url',
+			'babel-jest',
+			'dotenv',
+			'jest-environment-puppeteer',
+			'lodash/kebabCase',
+			'lodash',
+			'prop-types',
+			'react',
+			'requireindex',
+		],
+		'import/resolver': {
+			node: {},
+			webpack: {},
+		},
 	},
 	rules: {
 		'woocommerce/feature-flag': 'off',
