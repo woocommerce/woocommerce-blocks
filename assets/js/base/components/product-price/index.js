@@ -180,6 +180,7 @@ const ProductPrice = ( {
 		<span className={ wrapperClassName }>
 			{ createInterpolateElement( format, {
 				price: priceComponent,
+				br: <br />,
 			} ) }
 		</span>
 	);

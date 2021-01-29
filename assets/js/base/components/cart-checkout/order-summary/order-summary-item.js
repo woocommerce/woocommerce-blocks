@@ -8,6 +8,7 @@ import ProductPrice from '@woocommerce/base-components/product-price';
 import ProductName from '@woocommerce/base-components/product-name';
 import {
 	__EXPERIMENTAL_CART_ITEM_PRICE_FILTER,
+	__EXPERIMENTAL_CART_ITEM_SUBTOTAL_FILTER,
 	getCurrency,
 } from '@woocommerce/blocks-checkout';
 import PropTypes from 'prop-types';
@@ -64,7 +65,13 @@ const OrderSummaryItem = ( { cartItem } ) => {
 		cartItem,
 		'checkout'
 	);
-
+	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
+	const subtotalPriceFormat = applyFilters(
+		__EXPERIMENTAL_CART_ITEM_SUBTOTAL_FILTER,
+		'<price/>',
+		cartItem,
+		'checkout'
+	);
 	return (
 		<div className="wc-block-components-order-summary-item">
 			<div className="wc-block-components-order-summary-item__image">
@@ -93,6 +100,7 @@ const OrderSummaryItem = ( { cartItem } ) => {
 					className="wc-block-components-order-summary-item__individual-prices"
 					priceClassName="wc-block-components-order-summary-item__individual-price"
 					regularPriceClassName="wc-block-components-order-summary-item__regular-individual-price"
+					format={ subtotalPriceFormat }
 				/>
 				{ showBackorderBadge ? (
 					<ProductBackorderBadge />
