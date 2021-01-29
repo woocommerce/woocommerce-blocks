@@ -67,6 +67,14 @@ class Products extends AbstractRoute {
 		$response = ( new Pagination() )->add_headers( $response, $request, $query_results['total'], $query_results['pages'] );
 		$response->header( 'Last-Modified', $product_query->get_last_modified() );
 
+		/*
+		 * Setup Cache-Control not to cache this request response.
+		 * This forces the browser to re-do this request when user clicks the navigation back button.
+		 * This in turn allows the code to send an updated store api nonce.
+		 * Without this logged out users could potentially be using stale nonce.
+		 */
+		$response->header( 'Cache-Control', 'no-store, max-age=0' );
+
 		return $response;
 	}
 
