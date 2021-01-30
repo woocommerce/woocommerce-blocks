@@ -1,19 +1,23 @@
 {
 	"compilerOptions": {
+		"outDir": "./build",
+		"sourceMap": true,
 		"baseUrl": ".",
-		"module": "commonjs",
+		"module": "esnext",
+		// Don't emit; allow Babel to transform files
+		"noEmit": true,
+		// Import non-ES modules as default imports.
+		"esModuleInterop": true,
+		"resolveJsonModule": true,
+		// Preserve JSX, allows compatibility with wp-element jsx babel transforms
+		"jsx": "preserve",
+		"target": "esnext",
+		"allowJs": true,
 		"moduleResolution": "node",
 		"lib": [ "dom", "esnext" ],
-		"allowJs": true,
 		"checkJs": true,
-		"noEmit": true,
-		"traceResolution": true,
+		"strict": true,
 		"strictNullChecks": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"noImplicitReturns": true,
-		"noFallthroughCasesInSwitch": true,
-		"jsx": "preserve",
 		"allowSyntheticDefaultImports": true,
 		"paths": {
 			"@woocommerce/atomic-blocks": [ "assets/js/base/atomic/blocks" ],
@@ -43,8 +47,9 @@
 			"@woocommerce/knobs": [ "storybook/knobs" ],
 			"@woocommerce/settings": [ "assets/js/settings/shared" ],
 			"@woocommerce/shared-context": [ "assets/js/shared/context" ],
-			"@woocommerce/type-defs/*": [ "assets/js/type-defs/*" ]
+			"@woocommerce/type-defs/*": [ "assets/js/type-defs/*" ],
+			"@woocommerce/types": [ "assets/js/type-defs" ]
 		}
 	},
-	"include": [ "./assets/js/**/*.js", "./globals.d.ts" ]
+	"include": [ "./assets/js/**/*.js", "./globals.d.ts", "./assets/js/**/*.ts" ]
 }
