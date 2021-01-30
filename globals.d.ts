@@ -1,1 +1,1 @@
-declare var fetchMock: any;
+declare let fetchMock: never;

@@ -81,7 +81,7 @@ const getCoreConfig = ( options = {} ) => {
 		module: {
 			rules: [
 				{
-					test: /\.jsx?$/,
+					test: /\.(t|j)sx?$/,
 					exclude: /node_modules/,
 					use: {
 						loader: 'babel-loader?cacheDirectory',
@@ -169,7 +169,7 @@ const getMainConfig = ( options = {} ) => {
 		module: {
 			rules: [
 				{
-					test: /\.jsx?$/,
+					test: /\.(j|t)sx?$/,
 					exclude: /node_modules/,
 					use: {
 						loader: 'babel-loader?cacheDirectory',
@@ -245,7 +245,7 @@ const getFrontConfig = ( options = {} ) => {
 		module: {
 			rules: [
 				{
-					test: /\.jsx?$/,
+					test: /\.(j|t)sx?$/,
 					exclude: /node_modules/,
 					use: {
 						loader: 'babel-loader?cacheDirectory',
@@ -343,7 +343,7 @@ const getPaymentsConfig = ( options = {} ) => {
 		module: {
 			rules: [
 				{
-					test: /\.jsx?$/,
+					test: /\.(j|t)sx?$/,
 					exclude: /node_modules/,
 					use: {
 						loader: 'babel-loader?cacheDirectory',
