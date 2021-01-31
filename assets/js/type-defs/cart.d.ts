@@ -1,37 +1,38 @@
+/* eslint-disable camelcase -- API responses have camelcase properties */
+
 /**
  * Internal dependencies
  */
-import { ShippingRateItemItem, MetaKeyValue } from './cart-response';
-
+import { MetaKeyValue, ShippingRateItemItem } from './cart-response';
 export interface CurrencyInfo {
-	currencyCode: string;
-	currencySymbol: string;
-	currencyMinorUnit: number;
-	currencyDecimalSeparator: string;
-	currencyThousandSeparator: string;
-	currencyPrefix: string;
-	currencySuffix: string;
+	currency_code: string;
+	currency_symbol: string;
+	currency_minor_unit: number;
+	currency_decimal_separator: string;
+	currency_thousand_separator: string;
+	currency_prefix: string;
+	currency_suffix: string;
 }
 
 export interface CartTotalsItem extends CurrencyInfo {
-	totalDiscount: string;
-	totalDiscountTax: string;
+	total_discount: string;
+	total_discount_tax: string;
 }
 
 export interface CartCouponItem {
 	code: string;
-	discountType: string;
+	discount_type: string;
 	totals: CartTotalsItem;
 }
 
 export interface FirstNameLastName {
-	firstName: string;
-	lastName: string;
+	first_name: string;
+	last_name: string;
 }
 
 export interface BaseAddress {
-	address1: string;
-	address2: string;
+	address_1: string;
+	address_2: string;
 	city: string;
 	state: string;
 	postcode: string;
@@ -39,24 +40,24 @@ export interface BaseAddress {
 }
 
 export interface CartShippingRateItemShippingRate extends CurrencyInfo {
-	rateId: string;
+	rate_id: string;
 	name: string;
 	description: string;
-	deliveryTime: string;
+	delivery_time: string;
 	price: string;
 	taxes: string;
-	instanceId: number;
-	methodId: string;
-	metaData: [ MetaKeyValue ];
+	instance_id: number;
+	method_id: string;
+	meta_data: Array< MetaKeyValue >;
 	selected: boolean;
 }
 
 export interface CartShippingRateItem {
-	packageId: number;
+	package_id: number;
 	name: string;
 	destination: BaseAddress;
-	items: [ ShippingRateItemItem ];
-	shippingRates: [ CartShippingRateItemShippingRate ];
+	items: Array< ShippingRateItemItem >;
+	shipping_rates: Array< CartShippingRateItemShippingRate >;
 }
 
 export interface CartShippingAddress extends BaseAddress, FirstNameLastName {
@@ -68,7 +69,6 @@ export interface CartBillingAddress extends CartShippingAddress {
 	email: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface CartImageItem {
 	id: number;
 	src: string;
@@ -86,41 +86,41 @@ export interface CartVariationItem {
 
 export interface CartItemPrices extends CurrencyInfo {
 	price: string;
-	regularPrice: string;
-	salePrice: string;
-	priceRange: null | { minAmount: string; maxAmount: string };
-	rawPrices: {
+	regular_price: string;
+	sale_price: string;
+	price_range: null | { min_amount: string; max_amount: string };
+	raw_prices: {
 		precision: number;
 		price: string;
-		regularPrice: string;
-		salePrice: string;
+		regular_price: string;
+		sale_price: string;
 	};
 }
 
 export interface CartItemTotals extends CurrencyInfo {
-	lineSubtotal: string;
-	lineSubtotalTax: string;
-	lineTotal: string;
-	lineTotalTax: string;
+	line_subtotal: string;
+	line_subtotal_tax: string;
+	line_total: string;
+	line_total_tax: string;
 }
 
 export interface CartItem {
 	key: string;
 	id: number;
 	quantity: number;
-	quantityLimit: number;
+	quantity_limit: number;
 	name: string;
 	summary: string;
-	shortDescription: string;
+	short_description: string;
 	description: string;
 	sku: string;
-	lowStockRemaining: string;
-	backordersAllowed: boolean;
-	showBackorderBadge: boolean;
-	soldIndividually: boolean;
+	low_stock_remaining: string;
+	backorders_allowed: boolean;
+	show_backorder_badge: boolean;
+	sold_individually: boolean;
 	permalink: string;
-	images: [ CartImageItem ];
-	variation: [ CartVariationItem ];
+	images: Array< CartImageItem >;
+	variation: Array< CartVariationItem >;
 	prices: CartItemPrices;
 	totals: CartItemTotals;
 }
@@ -132,7 +132,7 @@ export interface CartTotalsTaxLineItem {
 
 export interface CartFeeItemTotals extends CurrencyInfo {
 	total: string;
-	totalTax: string;
+	total_tax: string;
 }
 
 export interface CartFeeItem {
@@ -142,17 +142,17 @@ export interface CartFeeItem {
 }
 
 export interface CartTotals extends CurrencyInfo {
-	totalItems: string;
-	totalItemsTax: string;
-	totalFees: string;
-	totalFeesTax: string;
-	totalDiscount: string;
-	totalDiscountTax: string;
-	totalShipping: string;
-	totalShippingTax: string;
-	totalPrice: string;
-	totalTax: string;
-	taxLines: [ CartTotalsTaxLineItem ];
+	total_items: string;
+	total_items_tax: string;
+	total_fees: string;
+	total_fees_tax: string;
+	total_discount: string;
+	total_discount_tax: string;
+	total_shipping: string;
+	total_shipping_tax: string;
+	total_price: string;
+	total_tax: string;
+	tax_lines: Array< CartTotalsTaxLineItem >;
 }
 
 export interface CartErrorItem {
@@ -163,21 +163,26 @@ export interface CartErrorItem {
 export interface CartExtensionItem {
 	[ key: string ]: unknown;
 }
-
 export interface Cart {
-	coupons: [ CartCouponItem ];
-	shippingRates: [ CartShippingRateItem ];
+	coupons: Array< CartCouponItem >;
+	shippingRates: Array< CartShippingRateItem >;
 	shippingAddress: CartShippingAddress;
 	billingAddress: CartBillingAddress;
-	items: [ CartItem ];
+	items: Array< CartItem >;
 	itemsCount: number;
 	itemsWeight: number;
 	needsPayment: boolean;
 	needsShipping: boolean;
 	hasCalculatedShipping: boolean;
-	fees: [ CartFeeItem ];
-	totals: CartTotalsItem;
-	errors: [ CartErrorItem ];
-	paymentRequirements: [ unknown ];
-	extensions: [ CartExtensionItem ];
+	fees: Array< CartFeeItem >;
+	totals: CartTotals;
+	errors: Array< CartErrorItem >;
+	paymentRequirements: Array< unknown >;
+	extensions: Array< CartExtensionItem >;
+}
+export interface CartMeta {
+	updatingCustomerData: boolean;
+	updatingSelectedRate: boolean;
+	applyingCoupon: string;
+	removingCoupon: string;
 }

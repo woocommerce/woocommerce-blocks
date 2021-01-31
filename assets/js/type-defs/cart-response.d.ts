@@ -55,7 +55,7 @@ export interface CartResponseShippingRateItemShippingRate
 	taxes: string;
 	instance_id: number;
 	method_id: string;
-	meta_data: [ MetaKeyValue ];
+	meta_data: Array< MetaKeyValue >;
 	selected: boolean;
 }
 
@@ -63,8 +63,8 @@ export interface CartResponseShippingRateItem {
 	package_id: number;
 	name: string;
 	destination: ResponseBaseAddress;
-	items: [ ShippingRateItemItem ];
-	shipping_rates: [ CartResponseShippingRateItemShippingRate ];
+	items: Array< ShippingRateItemItem >;
+	shipping_rates: Array< CartResponseShippingRateItemShippingRate >;
 }
 
 export interface CartResponseShippingAddress
@@ -129,8 +129,8 @@ export interface CartResponseItem {
 	show_backorder_badge: boolean;
 	sold_individually: boolean;
 	permalink: string;
-	images: [ CartResponseImageItem ];
-	variation: [ CartResponseVariationItem ];
+	images: Array< CartResponseImageItem >;
+	variation: Array< CartResponseVariationItem >;
 	prices: CartResponseItemPrices;
 	totals: CartResponseItemTotals;
 }
@@ -162,7 +162,7 @@ export interface CartResponseTotals extends CurrencyResponseInfo {
 	total_shipping_tax: string;
 	total_price: string;
 	total_tax: string;
-	tax_lines: [ CartResponseTotalsTaxLineItem ];
+	tax_lines: Array< CartResponseTotalsTaxLineItem >;
 }
 
 export interface CartResponseErrorItem {
@@ -175,19 +175,19 @@ export interface CartResponseExtensionItem {
 }
 
 export interface CartResponse {
-	coupons: [ CartResponseCouponItem ];
-	shipping_rates: [ CartResponseShippingRateItem ];
+	coupons: Array< CartResponseCouponItem >;
+	shipping_rates: Array< CartResponseShippingRateItem >;
 	shipping_address: CartResponseShippingAddress;
 	billing_address: CartResponseBillingAddress;
-	items: [ CartResponseItem ];
+	items: Array< CartResponseItem >;
 	items_count: number;
 	items_weight: number;
 	needs_payment: boolean;
 	needs_shipping: boolean;
 	has_calculated_shipping: boolean;
-	fees: [ CartResponseFeeItem ];
+	fees: Array< CartResponseFeeItem >;
 	totals: CartResponseTotalsItem;
-	errors: [ CartResponseErrorItem ];
-	payment_requirements: [ unknown ];
-	extensions: [ CartResponseExtensionItem ];
+	errors: Array< CartResponseErrorItem >;
+	payment_requirements: Array< unknown >;
+	extensions: Array< CartResponseExtensionItem >;
 }

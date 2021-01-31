@@ -2,6 +2,14 @@
  * External dependencies
  */
 import { select } from '@wordpress/data-controls';
+import type {
+	Cart,
+	CartResponse,
+	CartResponseItem,
+	CartBillingAddress,
+	CartShippingAddress,
+} from '@woocommerce/types';
+import { camelCase, mapKeys } from 'lodash';
 
 /**
  * Internal dependencies
@@ -9,6 +17,34 @@ import { select } from '@wordpress/data-controls';
 import { ACTION_TYPES as types } from './action-types';
 import { STORE_KEY as CART_STORE_KEY } from './constants';
 import { apiFetchWithHeaders } from '../shared-controls';
+import type { ResponseError } from '../types';
+
+/** Additional types and interfaces. */
+
+export type ReceiveCartAction = {
+	type: string;
+	response: Cart;
+};
+
+export type ReceiveErrorAction = {
+	type: string;
+	error: ResponseError | null;
+};
+
+export type CouponCodeAction = {
+	type: string;
+	couponCode: string;
+};
+
+export type ResponseCartItemAction = {
+	type: string;
+	cartItem: CartResponseItem | null;
+};
+
+export type ResolvingActionType = {
+	type: string;
+	isResolving: boolean;
+};
 
 /**
  * Returns an action object used in updating the store with the provided items
@@ -16,28 +52,32 @@ import { apiFetchWithHeaders } from '../shared-controls';
  *
  * This is a generic response action.
  *
- * @param {Object}   [response={}]    An object containing the response from the
- *                                    request.
- * @return {Object} Object for action.
+ * @param  {CartResponse}      response
+ * @return {ReceiveCartAction}          Action object.
  */
-export function receiveCart( response = {} ) {
+export function receiveCart( response: CartResponse ): ReceiveCartAction {
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore -- unclear how to type a transform from one type to another here.
+	const cart: Cart = mapKeys( response, ( _, key ) => camelCase( key ) );
 	return {
 		type: types.RECEIVE_CART,
-		response,
+		response: cart,
 	};
 }
 
 /**
- * Returns an action object used for receiving customer facing errors from the
- * API.
+ * Returns an action object used for receiving customer facing errors from the API.
  *
- * @param {Object}  [error={}]     An error object containing the error message
- *                                 and response code.
- * @param {boolean} [replace=true] Should existing errors be replaced, or should
- *                                 the error be appended.
- * @return {Object} Object for action.
+ * @param   {ResponseError|null} [error=null]     An error object containing the error
+ *                                         message and response code.
+ * @param   {boolean}       [replace=true] Should existing errors be replaced,
+ *                                         or should the error be appended.
+ * @return {ReceiveErrorAction}            Object for action.
  */
-export function receiveError( error = {}, replace = true ) {
+export function receiveError(
+	error: ResponseError | null = null,
+	replace = true
+): ReceiveErrorAction {
 	return {
 		type: replace ? types.REPLACE_ERRORS : types.RECEIVE_ERROR,
 		error,
@@ -47,10 +87,10 @@ export function receiveError( error = {}, replace = true ) {
 /**
  * Returns an action object used to track when a coupon is applying.
  *
- * @param {string} [couponCode] Coupon being added.
- * @return {Object} Object for action.
+ * @param  {string} [couponCode] Coupon being added.
+ * @return {CouponCodeAction}   Object for action.
  */
-export function receiveApplyingCoupon( couponCode ) {
+export function receiveApplyingCoupon( couponCode: string ): CouponCodeAction {
 	return {
 		type: types.APPLYING_COUPON,
 		couponCode,
@@ -60,10 +100,10 @@ export function receiveApplyingCoupon( couponCode ) {
 /**
  * Returns an action object used to track when a coupon is removing.
  *
- * @param {string} [couponCode] Coupon being removed.
- * @return {Object} Object for action.
+ * @param   {string} [couponCode] Coupon being removed.
+ * @return  {CouponCodeAction}              Object for action.
  */
-export function receiveRemovingCoupon( couponCode ) {
+export function receiveRemovingCoupon( couponCode: string ): CouponCodeAction {
 	return {
 		type: types.REMOVING_COUPON,
 		couponCode,
@@ -73,10 +113,12 @@ export function receiveRemovingCoupon( couponCode ) {
 /**
  * Returns an action object for updating a single cart item in the store.
  *
- * @param {Object}   [response={}]    A cart item API response.
- * @return {Object} Object for action.
+ * @param  {CartResponseItem} [response=null] A cart item API response.
+ * @return {ResponseCartItemAction}            Object for action.
  */
-export function receiveCartItem( response = {} ) {
+export function receiveCartItem(
+	response: CartResponseItem | null = null
+): ResponseCartItemAction {
 	return {
 		type: types.RECEIVE_CART_ITEM,
 		cartItem: response,
@@ -84,15 +126,18 @@ export function receiveCartItem( response = {} ) {
 }
 
 /**
- * Returns an action object to indicate if the specified cart item
- * quantity is being updated.
+ * Returns an action object to indicate if the specified cart item quantity is
+ * being updated.
  *
- * @param {string} cartItemKey Cart item being updated.
- * @param {boolean} isPendingQuantity Flag for update state; true if API request
- * is pending.
- * @return {Object} Object for action.
+ * @param   {string}  cartItemKey              Cart item being updated.
+ * @param   {boolean} [isPendingQuantity=true] Flag for update state; true if API
+ *                                             request is pending.
+ * @return {{type: string, cartItemKey: string, isPendingQuantity: boolean}} Object for action.
  */
-export function itemIsPendingQuantity( cartItemKey, isPendingQuantity = true ) {
+export function itemIsPendingQuantity(
+	cartItemKey: string,
+	isPendingQuantity = true
+): { type: string; cartItemKey: string; isPendingQuantity: boolean } {
 	return {
 		type: types.ITEM_PENDING_QUANTITY,
 		cartItemKey,
@@ -103,12 +148,15 @@ export function itemIsPendingQuantity( cartItemKey, isPendingQuantity = true ) {
 /**
  * Returns an action object to remove a cart item from the store.
  *
- * @param {string} cartItemKey Cart item to remove.
- * @param {boolean} isPendingDelete Flag for update state; true if API request
- *  is pending.
- * @return {Object} Object for action.
+ * @param   {string}  cartItemKey            Cart item to remove.
+ * @param   {boolean} [isPendingDelete=true] Flag for update state; true if API
+ *                                           request is pending.
+ * @return {{type: string, cartItemKey: string, isPendingDelete:boolean}} Object for action.
  */
-export function itemIsPendingDelete( cartItemKey, isPendingDelete = true ) {
+export function itemIsPendingDelete(
+	cartItemKey: string,
+	isPendingDelete = true
+): { type: string; cartItemKey: string; isPendingDelete: boolean } {
 	return {
 		type: types.RECEIVE_REMOVED_ITEM,
 		cartItemKey,
@@ -117,12 +165,15 @@ export function itemIsPendingDelete( cartItemKey, isPendingDelete = true ) {
 }
 
 /**
- * Returns an action object used to track when customer data is being updated (billing and/or shipping).
+ * Returns an action object used to track when customer data is being updated
+ * (billing and/or shipping).
  *
- * @param {boolean} isResolving if we're updating customer data or not.
- * @return {Object} Object for action.
+ * @param  {boolean} isResolving If we're updating customer data or not.
+ * @return {ResolvingActionType}              Object for action.
  */
-export function updatingCustomerData( isResolving ) {
+export function updatingCustomerData(
+	isResolving: boolean
+): ResolvingActionType {
 	return {
 		type: types.UPDATING_CUSTOMER_DATA,
 		isResolving,
@@ -133,11 +184,12 @@ export function updatingCustomerData( isResolving ) {
  * Returns an action object used to track whether the shipping rate is being
  * selected or not.
  *
- * @param {boolean} isResolving True if shipping rate is being selected.
- *
- * @return {Object} Action object.
+ * @param  {boolean} isResolving True if shipping rate is being selected.
+ * @return {ResolvingActionType}              Action object.
  */
-export function shippingRatesBeingSelected( isResolving ) {
+export function shippingRatesBeingSelected(
+	isResolving: boolean
+): ResolvingActionType {
 	return {
 		type: types.UPDATING_SELECTED_SHIPPING_RATE,
 		isResolving,
@@ -148,10 +200,12 @@ export function shippingRatesBeingSelected( isResolving ) {
  * Applies a coupon code and either invalidates caches, or receives an error if
  * the coupon cannot be applied.
  *
- * @throws Will throw an error if there is an API problem.
- * @param {string} couponCode The coupon code to apply to the cart.
+ * @param  {string} couponCode The coupon code to apply to the cart.
+ * @throws            Will throw an error if there is an API problem.
  */
-export function* applyCoupon( couponCode ) {
+export function* applyCoupon(
+	couponCode: string
+): Generator< unknown, boolean, { response: CartResponse } > {
 	yield receiveApplyingCoupon( couponCode );
 
 	try {
@@ -186,10 +240,12 @@ export function* applyCoupon( couponCode ) {
  * Removes a coupon code and either invalidates caches, or receives an error if
  * the coupon cannot be removed.
  *
- * @throws Will throw an error if there is an API problem.
- * @param {string} couponCode The coupon code to remove from the cart.
+ * @param  {string} couponCode The coupon code to remove from the cart.
+ * @throws            Will throw an error if there is an API problem.
  */
-export function* removeCoupon( couponCode ) {
+export function* removeCoupon(
+	couponCode: string
+): Generator< unknown, boolean, { response: CartResponse } > {
 	yield receiveRemovingCoupon( couponCode );
 
 	try {
@@ -226,11 +282,14 @@ export function* removeCoupon( couponCode ) {
  * - If successful, yields action to add item from store.
  * - If error, yields action to store error.
  *
- * @throws Will throw an error if there is an API problem.
- * @param {number} productId Product ID to add to cart.
- * @param {number} quantity Number of product ID being added to cart.
+ * @param  {number} productId    Product ID to add to cart.
+ * @param  {number} [quantity=1] Number of product ID being added to cart.
+ * @throws           Will throw an error if there is an API problem.
  */
-export function* addItemToCart( productId, quantity = 1 ) {
+export function* addItemToCart(
+	productId: number,
+	quantity = 1
+): Generator< unknown, void, { response: CartResponse } > {
 	try {
 		const { response } = yield apiFetchWithHeaders( {
 			path: `/wc/store/cart/add-item`,
@@ -254,8 +313,6 @@ export function* addItemToCart( productId, quantity = 1 ) {
 		// Re-throw the error.
 		throw error;
 	}
-
-	return true;
 }
 
 /**
@@ -267,7 +324,9 @@ export function* addItemToCart( productId, quantity = 1 ) {
  *
  * @param {string} cartItemKey Cart item being updated.
  */
-export function* removeItemFromCart( cartItemKey ) {
+export function* removeItemFromCart(
+	cartItemKey: string
+): Generator< unknown, void, { response: CartResponse } > {
 	yield itemIsPendingDelete( cartItemKey );
 
 	try {
@@ -296,9 +355,13 @@ export function* removeItemFromCart( cartItemKey ) {
  * - If error, yields action to store error.
  *
  * @param {string} cartItemKey Cart item being updated.
- * @param {number} quantity Specified (new) quantity.
+ * @param {number} quantity    Specified (new) quantity.
  */
-export function* changeCartItemQuantity( cartItemKey, quantity ) {
+export function* changeCartItemQuantity(
+	cartItemKey: string,
+	quantity: number
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- unclear how to represent multiple different yields as type
+): Generator< unknown, void, any > {
 	const cartItem = yield select( CART_STORE_KEY, 'getCartItem', cartItemKey );
 	yield itemIsPendingQuantity( cartItemKey );
 
@@ -331,10 +394,14 @@ export function* changeCartItemQuantity( cartItemKey, quantity ) {
 /**
  * Selects a shipping rate.
  *
- * @param {string} rateId the id of the rate being selected.
- * @param {number|string} [packageId] the key of the packages that we will select within.
+ * @param {string}          rateId      The id of the rate being selected.
+ * @param {number | string} [packageId] The key of the packages that we will
+ *   select within.
  */
-export function* selectShippingRate( rateId, packageId = 0 ) {
+export function* selectShippingRate(
+	rateId: string,
+	packageId = 0
+): Generator< unknown, boolean, { response: CartResponse } > {
 	try {
 		yield shippingRatesBeingSelected( true );
 		const { response } = yield apiFetchWithHeaders( {
@@ -364,12 +431,23 @@ export function* selectShippingRate( rateId, packageId = 0 ) {
 	return true;
 }
 
+type BillingAddressShippingAddress = {
+	// eslint-disable-next-line camelcase
+	billing_address: CartBillingAddress;
+	// eslint-disable-next-line camelcase
+	shipping_address: CartShippingAddress;
+};
+
 /**
- * Updates the shipping and/or billing address for the customer and returns an updated cart.
+ * Updates the shipping and/or billing address for the customer and returns an
+ * updated cart.
  *
- * @param {Object} customerData Address data to be updated; can contain both billing_address and shipping_address.
+ * @param {BillingAddressShippingAddress} customerData Address data to be updated; can contain both
+ *   billing_address and shipping_address.
  */
-export function* updateCustomerData( customerData ) {
+export function* updateCustomerData(
+	customerData: BillingAddressShippingAddress
+): Generator< unknown, boolean, { response: CartResponse } > {
 	yield updatingCustomerData( true );
 
 	try {
