@@ -17,6 +17,8 @@ import { controls } from '../shared-controls';
 registerStore( STORE_KEY, {
 	reducer,
 	actions,
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore -- not sure how to resolve the type issues here.
 	controls: { ...dataControls, ...controls },
 	selectors,
 	resolvers,
