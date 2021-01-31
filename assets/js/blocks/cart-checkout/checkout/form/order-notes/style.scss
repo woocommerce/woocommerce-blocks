@@ -1,7 +1,6 @@
 .wc-block-checkout__add-note {
 	padding: $gap $gap 0 9px;
 	margin-bottom: $gap;
-	@include with-translucent-border(1px 0);
 }
 
 .wc-block-checkout__add-note .wc-block-components-textarea {
