@@ -5,9 +5,11 @@
  * External dependencies
  */
 import classnames from 'classnames';
+import deprecated from '@wordpress/deprecated';
 import {
 	createSlotFill,
-	__experimentalUseSlot as useSlot,
+	__experimentalUseSlot,
+	useSlot as _useSlot,
 } from 'wordpress-components';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
 import { Children, cloneElement } from '@wordpress/element';
@@ -21,6 +23,22 @@ import BlockErrorBoundary from '../error-boundary';
 const slotName = '__experimentalOrderShippingPackages';
 const { Fill, Slot: OrderShippingPackagesSlot } = createSlotFill( slotName );
 
+const mockedUseSlot = () => {
+	deprecated( '__experimentalUseSlot', {
+		plugin: 'woocommerce-gutenberg-products-block',
+	} );
+	// We're going to moke its value
+	return {
+		fills: new Array( 2 ),
+	};
+};
+const useSlot =
+	// eslint-disable-next-line no-nested-ternary
+	typeof _useSlot === 'function'
+		? _useSlot
+		: typeof __experimentalUseSlot === 'function'
+		? __experimentalUseSlot
+		: mockedUseSlot;
 function ExperimentalOrderShippingPackages( { children } ) {
 	return (
 		<Fill>
