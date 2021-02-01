@@ -65,7 +65,7 @@ class Assets {
 			'wc-blocks-middleware',
 			"
 			var wcStoreApiNonce = '" . esc_js( wp_create_nonce( 'wc_store_api' ) ) . "';
-			var wcStoreApiNonceTimestamp = '" . esc_js( microtime() ) . "';
+			var wcStoreApiNonceTimestamp = '" . esc_js( time() ) . "';
 			",
 			'before'
 		);
