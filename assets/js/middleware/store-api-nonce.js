@@ -63,7 +63,7 @@ const updateNonce = ( nonce, timestamp ) => {
 	}
 
 	currentNonce = nonce;
-	currentTimestamp = timestamp || Date.now();
+	currentTimestamp = timestamp || Date.now() / 1000;
 
 	// Update the persisted values.
 	window.localStorage.setItem(
