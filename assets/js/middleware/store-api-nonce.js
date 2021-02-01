@@ -63,7 +63,7 @@ const updateNonce = ( nonce, timestamp ) => {
 	}
 
 	currentNonce = nonce;
-	currentTimestamp = timestamp || Date.now() / 1000;
+	currentTimestamp = timestamp || Date.now() / 1000; // Convert ms to seconds to match php time()
 
 	// Update the persisted values.
 	window.localStorage.setItem(
