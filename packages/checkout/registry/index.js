@@ -17,12 +17,14 @@ const getCheckoutFilters = ( filterName ) => {
 export const __experimentalApplyCheckoutFilter = (
 	filterName,
 	defaultValue,
-	args
+	args = {},
+	validate = () => true
 ) => {
 	const filters = getCheckoutFilters( filterName );
 	let value = defaultValue;
 	filters.forEach( ( filter ) => {
-		value = filter( value, args );
+		const newValue = filter( value, args );
+		value = validate( newValue ) ? newValue : value;
 	} );
 	return value;
 };
