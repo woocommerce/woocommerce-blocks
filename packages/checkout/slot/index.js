@@ -1,7 +1,4 @@
 /**
- * @todo Create guards against __experimentalUseSlot use.
- */
-/**
  * External dependencies
  */
 import deprecated from '@wordpress/deprecated';
