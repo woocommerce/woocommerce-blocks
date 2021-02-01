@@ -6,7 +6,10 @@ import {
 	registerPaymentMethod,
 	__experimentalDeRegisterPaymentMethod,
 } from '@woocommerce/blocks-registry';
-import { PaymentMethodDataProvider, usePaymentMethodDataContext } from '@woocommerce/base-context';
+import {
+	PaymentMethodDataProvider,
+	usePaymentMethodDataContext,
+} from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -20,12 +23,14 @@ jest.mock( '../saved-payment-method-options', () => ( { onChange } ) => {
 			<button onClick={ () => onChange( '0' ) }>Select saved</button>
 		</>
 	);
- } );
+} );
 
 jest.mock( '../../radio-control-accordion', () => ( { onChange } ) => (
 	<>
 		<span>Payment method options</span>
-		<button onClick={ () => onChange( 'stripe' ) }>Select new payment</button>
+		<button onClick={ () => onChange( 'stripe' ) }>
+			Select new payment
+		</button>
 	</>
 ) );
 
@@ -74,11 +79,16 @@ describe( 'PaymentMethods', () => {
 
 	test( 'selecting new payment method', async () => {
 		const ShowActivePaymentMethod = () => {
-			const { activePaymentMethod, activeSavedToken } = usePaymentMethodDataContext();
+			const {
+				activePaymentMethod,
+				activeSavedToken,
+			} = usePaymentMethodDataContext();
 			return (
 				<>
-					<div>{ 'Active Payment Method: ' + activePaymentMethod }</div>
-					<div>{ 'Active Saved Token: ' +  activeSavedToken }</div>
+					<div>
+						{ 'Active Payment Method: ' + activePaymentMethod }
+					</div>
+					<div>{ 'Active Saved Token: ' + activeSavedToken }</div>
 				</>
 			);
 		};
