@@ -4,9 +4,17 @@
 import apiFetch from '@wordpress/api-fetch';
 
 // Stores the current nonce for the middleware.
-let currentNonce = window.localStorage.getItem( 'storeApiCurrentNonce' ) || '';
-let previousNonce =
-	window.localStorage.getItem( 'storeApiPreviousNonce' ) || '';
+let currentNonce = '';
+let currentTimestamp = 0;
+
+try {
+	const storedNonceValue = window.localStorage.getItem( 'storeApiNonce' );
+	const storedNonce = storedNonceValue ? JSON.parse( storedNonceValue ) : {};
+	currentNonce = storedNonce?.nonce || '';
+	currentTimestamp = storedNonce?.timestamp || 0;
+} catch {
+	// We can ignore an error from JSON parse.
+}
 
 /**
  * Returns whether or not this is a non GET wc/store API request.
@@ -29,27 +37,42 @@ const isStoreApiGetRequest = ( options ) => {
  * @param {Object} headers Headers object.
  */
 const setNonce = ( headers ) => {
-	const newNonce = headers?.get( 'X-WC-Store-API-Nonce' );
-	updateNonce( newNonce );
+	const nonce = headers?.get( 'X-WC-Store-API-Nonce' ) || '';
+	const timestamp = headers?.get( 'X-WC-Store-API-Nonce-Timestamp' ) || 0;
+
+	if ( nonce ) {
+		updateNonce( nonce, timestamp );
+	}
 };
 
 /**
- * Updates the stored nonce and localStorage so it is persisted between page loads.
+ * Updates the stored nonce within localStorage so it is persisted between page loads.
  *
- * @param {string} newNonce Incoming nonce string.
+ * @param {string} nonce Incoming nonce string.
+ * @param {number} timestamp Timestamp from server of nonce.
  */
-const updateNonce = ( newNonce ) => {
-	// If the "new" nonce matches the current or previous nonces, we don't need to update. It might be unchanged, or it might be coming from cache.
-	if ( newNonce === currentNonce || newNonce === previousNonce ) {
+const updateNonce = ( nonce, timestamp ) => {
+	// If the "new" nonce matches the current nonce, we don't need to update.
+	if ( nonce === currentNonce ) {
 		return;
 	}
 
-	previousNonce = currentNonce;
-	currentNonce = newNonce;
+	// Only update the nonce if newer. It might be coming from cache.
+	if ( currentTimestamp && timestamp < currentTimestamp ) {
+		return;
+	}
+
+	currentNonce = nonce;
+	currentTimestamp = timestamp || Date.now();
 
 	// Update the persisted values.
-	window.localStorage.setItem( 'storeApiCurrentNonce', currentNonce );
-	window.localStorage.setItem( 'storeApiPreviousNonce', previousNonce );
+	window.localStorage.setItem(
+		'storeApiNonce',
+		JSON.stringify( {
+			nonce: currentNonce,
+			timestamp: currentTimestamp,
+		} )
+	);
 };
 
 /**
@@ -75,4 +98,5 @@ apiFetch.use( storeNonceMiddleware );
 apiFetch.setNonce = setNonce;
 
 // @ts-ignore wcStoreApiNonce is window global cache for the initial nonce initialized from hydration.
-updateNonce( wcStoreApiNonce );
+// @ts-ignore wcStoreApiNonceTimestamp is window global cache for the initial nonce initialized from hydration.
+updateNonce( wcStoreApiNonce, wcStoreApiNonceTimestamp );
