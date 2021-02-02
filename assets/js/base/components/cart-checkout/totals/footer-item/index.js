@@ -11,6 +11,7 @@ import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-mone
 import PropTypes from 'prop-types';
 import {
 	__experimentalApplyCheckoutFilter,
+	validatedElementOrString,
 	TotalsItem,
 } from '@woocommerce/blocks-checkout';
 import { useStoreCart } from '@woocommerce/base-hooks';
