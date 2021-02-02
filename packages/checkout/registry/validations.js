@@ -3,7 +3,7 @@
  */
 import { isValidElement } from '@wordpress/element';
 
-export const validateElementOrString = ( value ) => {
+export const __experimentalValidateElementOrString = ( value ) => {
 	return (
 		value === null || isValidElement( value ) || typeof value === 'string'
 	);
