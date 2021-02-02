@@ -28,7 +28,7 @@ const getCheckoutFilters = ( filterName ) => {
 };
 
 /**
- * Register a regular payment method.
+ * Apply a filter.
  *
  * @param {string} filterName   Name of the filter to apply.
  * @param {any}    defaultValue Default value to filter.
