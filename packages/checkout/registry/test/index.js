@@ -5,7 +5,7 @@ import {
 	__experimentalRegisterCheckoutFilters,
 	__experimentalApplyCheckoutFilter,
 } from '../';
-import { validateElementOrString } from '../validations';
+import { __experimentalValidateElementOrString } from '../validations';
 
 describe( 'Checkout registry', () => {
 	const filterName = 'loremIpsum';
@@ -46,7 +46,7 @@ describe( 'Checkout registry', () => {
 	} );
 
 	describe( 'validations', () => {
-		test( 'validateElementOrString should invalidate if filtered value is not an element or string', () => {
+		test( '__experimentalValidateElementOrString should invalidate if filtered value is not an element or string', () => {
 			__experimentalRegisterCheckoutFilters( filterName, {
 				[ filterName ]: ( val ) => {
 					if ( val === 'Hello World' ) {
@@ -59,7 +59,7 @@ describe( 'Checkout registry', () => {
 				filterName,
 				'Hello World',
 				{},
-				validateElementOrString
+				__experimentalValidateElementOrString
 			);
 
 			expect( validValue ).toBe( 'Valid value' );
@@ -68,7 +68,7 @@ describe( 'Checkout registry', () => {
 				filterName,
 				'Hello Earth',
 				{},
-				validateElementOrString
+				__experimentalValidateElementOrString
 			);
 
 			expect( invalidValue ).toBe( 'Hello Earth' );
