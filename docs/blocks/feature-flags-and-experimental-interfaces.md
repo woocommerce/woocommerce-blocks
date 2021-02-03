@@ -52,6 +52,7 @@ We also have individual features or code blocks behind a feature flag, this is a
 
 ## Usages of `__experimental` prefix
 
+-   `__experimental_woocommerce_blocks_payment_gateway_features_list` hook that allows modification of the features supported by PayPal Standard. ([experimental hook](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/src/Payments/Integrations/PayPal.php#L86)).
 -   `__experimental_woocommerce_blocks_checkout_update_order_meta` hook when the draft order has been created or updated from the cart and is now ready for extensions to modify the metadata ([experimental hook](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3686/files#diff-af2c90fa556cc086b780c8fad99b68373d87fd6007e6e2ff1b4c68ebe9ccb551R377-R393)).
 -   `__experimental_woocommerce_blocks_checkout_order_processed` hook when order has completed processing and is ready for payment ([experimental hook](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/accd1bbf402e043b9fc322f118ab614ba7437c92/src/StoreApi/Routes/Checkout.php#L237)).
 -   `__experimentalDeRegisterPaymentMethod` function used to deregister a payment method, only used in tests ([experimental function](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b07883b8b76feeb439d655b255507b24fc59e091/assets/js/blocks-registry/payment-methods/registry.js#L70)).
