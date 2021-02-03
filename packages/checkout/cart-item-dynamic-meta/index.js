@@ -13,12 +13,12 @@ import BlockErrorBoundary from '../error-boundary';
 const components = [];
 
 function CartItemDynamicMeta( { FillComponent } ) {
-	useEffect(() => {
+	useEffect( () => {
 		console.log( 'create CartItemDynamicMeta' );
 		return () => {
 			console.log( 'destroy CartItemDynamicMeta' );
 		};
-	  }, []);
+	}, [] );
 	return (
 		<FillComponent>
 			{ ( fillProps ) => {
@@ -40,7 +40,7 @@ function CartItemDynamicMeta( { FillComponent } ) {
 }
 
 function SlotProvider( { SlotComponent, className, extensions } ) {
-	console.log('slot');
+	console.log( 'slot' );
 	return (
 		<SlotComponent
 			bubblesVirtually
@@ -54,7 +54,7 @@ function SlotProvider( { SlotComponent, className, extensions } ) {
 }
 
 export function ExperimentalCartItemMeta( { children } ) {
-	useEffect(() => {
+	useEffect( () => {
 		if ( Array.isArray( children ) ) {
 			components.push( ...children );
 		} else {
@@ -65,26 +65,31 @@ export function ExperimentalCartItemMeta( { children } ) {
 			components.length = 0;
 			console.log( 'destroy' );
 		};
-	  }, []);
+	}, [] );
 	return null;
 }
 
-const ExperimentalCartItemDynamicMeta = ( { slotName, extensions, className = '' } ) => {
+const ExperimentalCartItemDynamicMeta = ( {
+	slotName,
+	extensions,
+	className = '',
+} ) => {
 	if ( slotName === '' ) {
 		return null;
 	}
-	console.log( {slotName, extensions});
+	console.log( { slotName, extensions } );
 	const { Fill, Slot } = createSlotFill( slotName );
 
 	return (
 		<>
-			<CartItemDynamicMeta FillComponent={ Fill }/>
-			<SlotProvider 
+			<CartItemDynamicMeta FillComponent={ Fill } />
+			<SlotProvider
 				className={ className }
 				SlotComponent={ Slot }
-				extensions={ extensions }/>
+				extensions={ extensions }
+			/>
 		</>
-	)
-}
+	);
+};
 
 export default ExperimentalCartItemDynamicMeta;
