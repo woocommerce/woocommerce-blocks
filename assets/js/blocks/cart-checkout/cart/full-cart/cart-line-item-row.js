@@ -15,7 +15,10 @@ import {
 	ProductMetadata,
 	ProductSaleBadge,
 } from '@woocommerce/base-components/cart-checkout';
-import { getCurrency } from '@woocommerce/blocks-checkout';
+import {
+	ExperimentalCartItemDynamicMeta,
+	getCurrency
+} from '@woocommerce/blocks-checkout';
 import Dinero from 'dinero.js';
 
 /**
@@ -71,8 +74,8 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 				sale_price: '0',
 			},
 		},
+		extensions = {},
 	} = lineItem;
-
 	const {
 		quantity,
 		changeQuantity,
@@ -156,6 +159,9 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 						currency
 					) }
 				/>
+
+				{ /* My Upgrade/Downgrade/CrossGrade badges go here */}
+				<ExperimentalCartItemDynamicMeta slotName={name} extensions={ extensions }/>
 
 				<ProductMetadata
 					shortDescription={ shortDescription }
