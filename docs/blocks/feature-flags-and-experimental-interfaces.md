@@ -45,7 +45,7 @@ We also have individual features or code blocks behind a feature flag, this is a
 ## Processes and commands that use a flag
 
 -   `npm run build:deploy` uses the feature plugin flag ([env flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c0de18ec0a798c072420c67a689e4cc4d3ac77c9/package.json#L28)).
--   travis uses the experimental flag when running tests ([env flags](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/d6a506c19056d42d40743ae0126153fb81004672/.travis.yml#L68-L143)).
+-   GitHub actions uses the experimental flag when running automated tests ([env flags](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/.github/workflows/php-js-e2e-tests.yml)).
 -   webpack creates a `blocks.ini` when running ([env flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/bin/webpack-configs.js#L95-L102)).
 -   webpack filters out experimental blocks when building. ([env flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/bin/webpack-entries.js#L61-L66)).
 -   certain e2e tests are skipped if the environment is not met ([env flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/50e7411aee51afb3fbfa8561e297085ee44e40c0/tests/e2e-tests/specs/backend/cart.test.js#L18)).
