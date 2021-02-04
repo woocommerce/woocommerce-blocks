@@ -3,3 +3,5 @@
 *       @woocommerce/rubik
 package.json renovate-approve
 package-lock.json renovate-approve
+composer.json renovate-approve
+composer-lock.json renovate-approve
