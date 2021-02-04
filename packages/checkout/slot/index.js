@@ -75,6 +75,9 @@ export const createSlotFill = ( slotName ) => {
 			{ ( fillProps ) =>
 				Children.map( children, ( fill ) => (
 					<BlockErrorBoundary
+						/* Returning null would trigger the default error display.
+						 * Returning () => null would render nothing.
+						 */
 						renderError={
 							CURRENT_USER_IS_ADMIN ? null : () => null
 						}
