@@ -1,6 +1,28 @@
 .wc-block-components-shipping-rates-control__package {
+	@include with-translucent-border(1px 0 0);
+
+	.wc-blocks-components-panel__button {
+		margin-bottom: 0;
+		margin-top: 0;
+		padding-bottom: em($gap-small);
+		padding-top: em($gap-small);
+	}
+
 	.wc-block-components-shipping-rates-control__package-title {
+		@include text-heading();
+		font-weight: bold;
 		margin: 0;
+	}
+
+	// Remove panel padding. In the next ruleset we are already adding a margin
+	// to the last option, so it works when it's inside a panel and when it's
+	// rendered directly.
+	.wc-blocks-components-panel__content {
+		padding-bottom: 0;
+	}
+
+	.wc-block-components-radio-control__option:last-child {
+		margin-bottom: em($gap);
 	}
 }
 
@@ -25,11 +47,5 @@
 }
 
 .wc-block-checkout__shipping-option .wc-block-components-shipping-rates-control__no-results-notice {
-	margin-bottom: 0;
-}
-
-.wc-block-components-shipping-rates-control {
-	.wc-blocks-components-panel__content {
-		padding-bottom: 0;
-	}
+	margin: em($gap) 0 0;
 }

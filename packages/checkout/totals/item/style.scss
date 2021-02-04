@@ -1,12 +1,8 @@
 .wc-block-components-totals-item {
 	display: flex;
 	flex-wrap: wrap;
-	padding: em($gap-small) 0;
+	margin: em($gap-small) 0;
 	width: 100%;
-
-	&:not(:first-of-type):not(:last-of-type) {
-		@include with-translucent-border(1px 0 0);
-	}
 }
 
 .wc-block-components-totals-item__label {
