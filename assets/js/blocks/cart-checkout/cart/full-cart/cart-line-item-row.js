@@ -160,7 +160,6 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 					) }
 				/>
 
-				{ /* My Upgrade/Downgrade/CrossGrade badges go here */ }
 				<ExperimentalCartItemDynamicMeta
 					slotName={ name }
 					extensions={ extensions }
