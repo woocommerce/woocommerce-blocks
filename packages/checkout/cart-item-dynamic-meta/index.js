@@ -25,7 +25,7 @@ function getAllComponentsFromRegistry() {
 
 /**
  * Component responsible for registering the 3rd party integration components.
- * 
+ *
  * @param {Array[Object]|Object} children Items to render inside the slot.
  */
 const ExperimentalCartItemMeta = ( { children } ) => {
@@ -39,18 +39,18 @@ const ExperimentalCartItemMeta = ( { children } ) => {
 		return () => {
 			componentsRegistry[ id ].length = 0;
 		};
-	}, [] );
+	}, [ id, children ] );
 	return null;
 };
 
 /**
  * This component is used as a child of ExperimentalCartItemMeta.
  * It is the only component type that will be allowed to render.
- * 
+ *
  * It functions using a badgeCallback that receives all the remaining props.
  * The callback needs to return an object that has className to style the badge
  * and the text that will be used to display the text inside the badge.
- * 
+ *
  */
 const BadgeGenerator = ( { badgeCallback, ...props } ) => {
 	if ( ! ( typeof badgeCallback === 'function' ) ) {
@@ -76,17 +76,11 @@ ExperimentalCartItemMeta.BadgeGenerator = BadgeGenerator;
  * inside the componentsRegistry. Each instance will pass to the components distinct set of props. This allows
  * to components to render different information for each ExperimentalCartItemDynamicMeta instance.
  * This pattern allows dynamic instantiation of multiple dynamic slot fills.
- *  
+ *
  */
-const ExperimentalCartItemDynamicMeta = ( {
-	slotName,
-	extensions,
-	className = '',
-} ) => {
-	if ( slotName === '' ) {
-		return null;
-	}
-	const { Fill, Slot } = createSlotFill( slotName );
+const ExperimentalCartItemDynamicMeta = ( { extensions, className = '' } ) => {
+	const [ id ] = useState( uniqueId( 'cart-item-meta-' ) );
+	const { Fill, Slot } = createSlotFill( id );
 	return (
 		<div
 			className={ classnames(

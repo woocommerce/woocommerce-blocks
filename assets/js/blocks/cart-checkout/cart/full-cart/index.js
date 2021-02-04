@@ -150,7 +150,6 @@ const Cart = ( { attributes } ) => {
 					values={ cartTotals }
 				/>
 				<ExperimentalOrderMeta.Slot />
-				<ExperimentalOrderMeta.Slot />
 				<div className="wc-block-cart__payment-options">
 					{ cartNeedsPayment && <CartExpressPayment /> }
 					<CheckoutButton

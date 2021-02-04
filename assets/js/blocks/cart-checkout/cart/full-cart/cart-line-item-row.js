@@ -160,10 +160,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 					) }
 				/>
 
-				<ExperimentalCartItemDynamicMeta
-					slotName={ name }
-					extensions={ extensions }
-				/>
+				<ExperimentalCartItemDynamicMeta extensions={ extensions } />
 
 				<ProductMetadata
 					shortDescription={ shortDescription }
