@@ -29,14 +29,16 @@ function getAllComponentsFromRegistry() {
  * @param {Array[Object]|Object} children Items to render inside the slot.
  */
 const ExperimentalCartItemMeta = ( { children } ) => {
+	console.log( children )
 	const [ id ] = useState( uniqueId( 'cart-item-meta-' ) );
 	useEffect( () => {
 		if ( Array.isArray( children ) ) {
-			componentsRegistry[ id ] = children;
+			componentsRegistry[ id ] = [ ...children ];
 		} else {
 			componentsRegistry[ id ] = [ children ];
 		}
 		return () => {
+			console.log( componentsRegistry );
 			componentsRegistry[ id ].length = 0;
 		};
 	}, [ id, children ] );
