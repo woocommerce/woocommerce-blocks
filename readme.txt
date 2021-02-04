@@ -85,6 +85,10 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 4.4.1 - 2021-02-04 =
+
+- Update package for WooCommerce core inclusion.
+
 = 4.4.0 - 2021-02-02 =
 
 #### Enhancements
