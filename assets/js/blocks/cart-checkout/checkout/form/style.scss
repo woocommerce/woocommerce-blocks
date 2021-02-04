@@ -8,21 +8,14 @@
 }
 
 .wc-block-checkout__shipping-option {
-	.wc-block-components-shipping-rates-control__package:not(:first-of-type) {
-		margin-top: $gap-larger;
-	}
-
 	.wc-block-components-radio-control__option {
 		@include with-translucent-border( 0 0 1px );
 		margin: 0;
 		padding: em($gap-small) 0 em($gap-small) em($gap-largest);
+	}
 
-		&:first-child {
-			// We can't remove the top padding because the radio input is vertically
-			// centered, so we apply a negative top margin which undoes the top
-			// padding.
-			margin-top: em(-$gap-small);
-		}
+	.wc-block-components-shipping-rates-control__no-results-notice {
+		margin: em($gap-small) 0;
 	}
 }
 

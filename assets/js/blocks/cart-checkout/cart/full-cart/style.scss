@@ -89,6 +89,10 @@ table.wc-block-cart-items {
 	}
 }
 
+.wc-block-cart .wc-block-components-shipping-rates-control__package {
+	@include with-translucent-border(1px 0 0);
+}
+
 // Loading placeholder state.
 .wc-block-cart--is-loading {
 	th span,
