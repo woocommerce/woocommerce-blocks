@@ -36,10 +36,10 @@ export default class ExpressPaymentMethodConfig {
 				'The paymentMethodId property for the payment method must be a string or undefined (in which case it will be the value of the name property).'
 			);
 		}
-		if ( 
+		if (
 			typeof config.supports?.features !== 'undefined' &&
 			! Array.isArray( config.supports?.features )
-			) {
+		) {
 			throw new Error(
 				'The features property for the payment method must be an array or undefined.'
 			);
