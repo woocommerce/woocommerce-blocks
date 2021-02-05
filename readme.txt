@@ -85,7 +85,15 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 4.4.2 - 2021-02-05 =
+
+#### Bug Fixes
+
+- Adds a default "features" array for payment methods which do not define supported features. Fixes conflicts with 3rd Party payment method integrations.
+
 = 4.4.1 - 2021-02-04 =
+
+#### Bug Fixes
 
 - Update package for WooCommerce core inclusion.
 
