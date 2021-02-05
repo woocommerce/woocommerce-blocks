@@ -18,6 +18,8 @@ export const __experimentalRegisterCheckoutFilters = ( namespace, filters ) => {
  * Get all filters with a specific name.
  *
  * @param {string} filterName   Name of the filter to search for.
+ * @return {Function[]} Array of functions that are registered for that filter
+ *                      name.
  */
 const getCheckoutFilters = ( filterName ) => {
 	const namespaces = Object.keys( checkoutFilters );
@@ -30,12 +32,13 @@ const getCheckoutFilters = ( filterName ) => {
 /**
  * Apply a filter.
  *
- * @param {string} filterName   Name of the filter to apply.
- * @param {any}    defaultValue Default value to filter.
- * @param {any}    args         Arguments to pass to registered functions.
- * @param {any}    [validate]   Function that needs to return true when the
- *                              filtered value is passed in order for the filter
- *                              to be applied.
+ * @param {string}   filterName   Name of the filter to apply.
+ * @param {any}      defaultValue Default value to filter.
+ * @param {Object}   [args]       Arguments to pass to registered functions.
+ * @param {Function} [validate]   Function that needs to return true when the
+ *                                filtered value is passed in order for the
+ *                                filter to be applied.
+ * @return {any} Filtered value.
  */
 export const __experimentalApplyCheckoutFilter = (
 	filterName,
