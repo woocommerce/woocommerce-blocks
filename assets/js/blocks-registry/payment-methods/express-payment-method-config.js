@@ -13,7 +13,7 @@ export default class ExpressPaymentMethodConfig {
 		this.edit = config.edit;
 		this.paymentMethodId = config.paymentMethodId || this.name;
 		this.supports = {
-			features: config?.supports?.features || [],
+			features: config?.supports?.features || [ 'products' ],
 		};
 		this.canMakePayment = canMakePaymentWithFeaturesCheck(
 			config.canMakePayment,
