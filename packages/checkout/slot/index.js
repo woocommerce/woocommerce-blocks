@@ -42,12 +42,14 @@ const mockedUseSlot = () => {
  * @param {string} slotName The slot name to be hooked into.
  * @return {Object} slot data.
  */
-let useSlot = mockedUseSlot;
+let useSlot;
 
 if ( typeof __useSlot === 'function' ) {
 	useSlot = __useSlot;
 } else if ( typeof __experimentalUseSlot === 'function' ) {
 	useSlot = __experimentalUseSlot;
+} else {
+	useSlot = mockedUseSlot;
 }
 
 export { useSlot };
@@ -56,11 +58,12 @@ export { useSlot };
  * Abstracts @wordpress/components createSlotFill, wraps Fill in an error boundary and passes down fillProps.
  *
  * @param {string} slotName The generated slotName, based down to createSlotFill.
+ * @param {null|function(Element):Element} [onError] Returns an element to display the error if the current use is an admin.
  *
  * @return {Object} Returns a newly wrapped Fill and Slot.
  */
-export const createSlotFill = ( slotName ) => {
-	const { Fill: BaseFill, Slot } = baseCreateSlotFill( slotName );
+export const createSlotFill = ( slotName, onError = null ) => {
+	const { Fill: BaseFill, Slot: BaseSlot } = baseCreateSlotFill( slotName );
 
 	/**
 	 * A Fill that will get rendered inside associate slot.
@@ -79,7 +82,7 @@ export const createSlotFill = ( slotName ) => {
 						 * Returning () => null would render nothing.
 						 */
 						renderError={
-							CURRENT_USER_IS_ADMIN ? null : () => null
+							CURRENT_USER_IS_ADMIN ? onError : () => null
 						}
 					>
 						{ cloneElement( fill, fillProps ) }
@@ -88,6 +91,19 @@ export const createSlotFill = ( slotName ) => {
 			}
 		</BaseFill>
 	);
+
+	/**
+	 * A Slot that will get rendered inside our tree.
+	 * This forces Slot to use the Portal implementation that allows events to be bubbled to react tree instead of dom tree.
+	 *
+	 * @param {Object}         [props] Slot props.
+	 * @param {string}         props.className Class name to be used on slot.
+	 * @param {Object}         props.fillProps Props to be passed to fills.
+	 * @param {Element|string} props.as Element used to render the slot, defaults to div.
+	 *
+	 */
+	const Slot = ( props ) => <BaseSlot { ...props } bubblesVirtually />;
+
 	return {
 		Fill,
 		Slot,

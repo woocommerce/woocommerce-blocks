@@ -23,7 +23,6 @@ const Slot = ( { className, collapsible, noResultsMessage, renderOption } ) => {
 	const hasMultiplePackages = fills.length > 1;
 	return (
 		<OrderShippingPackagesSlot
-			bubblesVirtually
 			className={ classnames(
 				'wc-block-components-shipping-rates-control',
 				className

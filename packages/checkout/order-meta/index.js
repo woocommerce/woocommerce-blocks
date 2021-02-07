@@ -21,7 +21,6 @@ const Slot = ( { className } ) => {
 	const { extensions, receiveCart, ...cart } = useStoreCart();
 	return (
 		<OrderMetaSlot
-			bubblesVirtually
 			className={ classnames(
 				className,
 				'wc-block-components-order-meta'
