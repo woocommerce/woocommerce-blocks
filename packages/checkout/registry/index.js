@@ -35,7 +35,9 @@ const getCheckoutFilters = ( filterName ) => {
  * @param {Object}   o              Object of arguments.
  * @param {string}   o.filterName   Name of the filter to apply.
  * @param {any}      o.defaultValue Default value to filter.
- * @param {Object}   [o.args]       Arguments to pass to registered functions.
+ * @param {any}      [o.args]       Argument to pass to registered functions. If
+ *                                  several arguments need to be passed, use an
+ *                                  object.
  * @param {Function} [o.validate]   Function that needs to return true when the
  *                                  filtered value is passed in order for the
  *                                  filter to be applied.
