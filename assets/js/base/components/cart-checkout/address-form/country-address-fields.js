@@ -19,9 +19,7 @@ const coreLocale = getSetting( 'countryLocale', {} );
 /**
  * Get supported props from the core locale and map to the correct format.
  *
- * Notes:
- * 	Ignores "class", "type", "placeholder", and "autocomplete"--blocks handles these visual elements.
- * 	Core "priority" goes up in increments of 10, but blocks expects 1, 2, 3 etc.
+ * Ignores "class", "type", "placeholder", and "autocomplete"--blocks handles these visual elements.
  *
  * @param {Object} localeField Locale fields from WooCommerce.
  * @return {Object} Supported locale fields.
