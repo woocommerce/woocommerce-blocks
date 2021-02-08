@@ -2,6 +2,8 @@
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
 
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
+use Automattic\WooCommerce\Blocks\StoreApi\Schemas\AbstractSchema;
+use Automattic\WooCommerce\Blocks\StoreApi\Schemas\CartSchema;
 
 /**
  * Abstract Cart Route
@@ -9,6 +11,32 @@ use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
  * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 abstract class AbstractCartRoute extends AbstractRoute {
+	/**
+	 * Schema class for this route's response.
+	 *
+	 * @var AbstractSchema|CartSchema
+	 */
+	protected $schema;
+
+	/**
+	 * Schema class for the cart.
+	 *
+	 * @var CartSchema
+	 */
+	protected $cart_schema;
+
+	/**
+	 * Constructor accepts two types of schema; for for the item being returned, and one for the cart as a whole. These
+	 * may be the same depending on the route.
+	 *
+	 * @param CartSchema     $cart_schema Schema class for the cart.
+	 * @param AbstractSchema $item_schema Schema class for this route's items if it differs from the cart schema.
+	 */
+	public function __construct( CartSchema $cart_schema, AbstractSchema $item_schema = null ) {
+		$this->schema      = is_null( $item_schema ) ? $cart_schema : $item_schema;
+		$this->cart_schema = $cart_schema;
+	}
+
 	/**
 	 * Get the route response based on the type of request.
 	 *
@@ -69,7 +97,7 @@ abstract class AbstractCartRoute extends AbstractRoute {
 						$additional_data,
 						[
 							'status' => $http_status_code,
-							'cart'   => $this->schema->get_item_response( $cart ),
+							'cart'   => $this->cart_schema->get_item_response( $cart ),
 						]
 					)
 				);
