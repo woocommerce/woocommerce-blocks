@@ -46,7 +46,37 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	public function get_response( \WP_REST_Request $request ) {
 		$this->maybe_load_cart();
 		$this->calculate_totals();
-		return parent::get_response( $request );
+
+		try {
+			if ( $this->requires_nonce( $request ) ) {
+				$this->check_nonce( $request );
+			}
+			$response = parent::get_response( $request );
+		} catch ( RouteException $error ) {
+			$response = $this->get_route_error_response( $error->getErrorCode(), $error->getMessage(), $error->getCode(), $error->getAdditionalData() );
+		} catch ( \Exception $error ) {
+			$response = $this->get_route_error_response( 'unknown_server_error', $error->getMessage(), 500 );
+		}
+
+		if ( is_wp_error( $response ) ) {
+			$response = $this->error_to_response( $response );
+		}
+
+		$response->header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
+		$response->header( 'X-WC-Store-API-Nonce-Timestamp', time() );
+		$response->header( 'X-WC-Store-API-User', get_current_user_id() );
+
+		return $response;
+	}
+
+	/**
+	 * Checks if a nonce is required for the route.
+	 *
+	 * @param \WP_REST_Request $request Request.
+	 * @return bool
+	 */
+	protected function requires_nonce( \WP_REST_Request $request ) {
+		return 'GET' !== $request->get_method();
 	}
 
 	/**
@@ -72,6 +102,34 @@ abstract class AbstractCartRoute extends AbstractRoute {
 		}
 
 		wc_release_stock_for_order( $draft_order );
+	}
+
+	/**
+	 * For non-GET endpoints, require and validate a nonce to prevent CSRF attacks.
+	 *
+	 * Nonces will mismatch if the logged in session cookie is different! If using a client to test, set this cookie
+	 * to match the logged in cookie in your browser.
+	 *
+	 * @throws RouteException On error.
+	 *
+	 * @param \WP_REST_Request $request Request object.
+	 */
+	protected function check_nonce( \WP_REST_Request $request ) {
+		$nonce = $request->get_header( 'X-WC-Store-API-Nonce' );
+
+		if ( apply_filters( 'woocommerce_store_api_disable_nonce_check', false ) ) {
+			return;
+		}
+
+		if ( null === $nonce ) {
+			throw new RouteException( 'woocommerce_rest_missing_nonce', __( 'Missing the X-WC-Store-API-Nonce header. This endpoint requires a valid nonce.', 'woo-gutenberg-products-block' ), 401 );
+		}
+
+		$valid_nonce = wp_verify_nonce( $nonce, 'wc_store_api' );
+
+		if ( ! $valid_nonce ) {
+			throw new RouteException( 'woocommerce_rest_invalid_nonce', __( 'X-WC-Store-API-Nonce is invalid.', 'woo-gutenberg-products-block' ), 403 );
+		}
 	}
 
 	/**
@@ -103,5 +161,16 @@ abstract class AbstractCartRoute extends AbstractRoute {
 				);
 		}
 		return new \WP_Error( $error_code, $error_message, [ 'status' => $http_status_code ] );
+	}
+
+	/**
+	 * Makes the cart and sessions available to a route by loading them from core.
+	 */
+	protected function maybe_load_cart() {
+		if ( ! did_action( 'woocommerce_load_cart_from_session' ) && function_exists( 'wc_load_cart' ) ) {
+			include_once WC_ABSPATH . 'includes/wc-cart-functions.php';
+			include_once WC_ABSPATH . 'includes/wc-notice-functions.php';
+			wc_load_cart();
+		}
 	}
 }

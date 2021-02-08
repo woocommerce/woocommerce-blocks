@@ -79,7 +79,7 @@ class RoutesController {
 			'cart-select-shipping-rate' => new Routes\CartSelectShippingRate( $this->schemas->get( 'cart' ) ),
 			'cart-update-item'          => new Routes\CartUpdateItem( $this->schemas->get( 'cart' ) ),
 			'cart-update-customer'      => new Routes\CartUpdateCustomer( $this->schemas->get( 'cart' ) ),
-			'checkout'                  => new Routes\Checkout( $this->schemas->get( 'checkout' ) ),
+			'checkout'                  => new Routes\Checkout( $this->schemas->get( 'cart' ), $this->schemas->get( 'checkout' ) ),
 			'product-attributes'        => new Routes\ProductAttributes( $this->schemas->get( 'product-attribute' ) ),
 			'product-attributes-by-id'  => new Routes\ProductAttributesById( $this->schemas->get( 'product-attribute' ) ),
 			'product-attribute-terms'   => new Routes\ProductAttributeTerms( $this->schemas->get( 'term' ) ),
