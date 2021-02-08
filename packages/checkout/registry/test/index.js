@@ -61,21 +61,19 @@ describe( 'Checkout registry', () => {
 					return [ 'invalid-value' ];
 				},
 			} );
-			const validValue = __experimentalApplyCheckoutFilter(
+			const validValue = __experimentalApplyCheckoutFilter( {
 				filterName,
-				'Hello World',
-				{},
-				__experimentalValidateElementOrString
-			);
+				defaultValue: 'Hello World',
+				validate: __experimentalValidateElementOrString,
+			} );
 
 			expect( validValue ).toBe( 'Valid value' );
 
-			const invalidValue = __experimentalApplyCheckoutFilter(
+			const invalidValue = __experimentalApplyCheckoutFilter( {
 				filterName,
-				'Hello Earth',
-				{},
-				__experimentalValidateElementOrString
-			);
+				defaultValue: 'Hello Earth',
+				validate: __experimentalValidateElementOrString,
+			} );
 
 			expect( invalidValue ).toBe( 'Hello Earth' );
 		} );
