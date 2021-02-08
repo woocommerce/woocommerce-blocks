@@ -11,7 +11,6 @@ import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-mone
 import PropTypes from 'prop-types';
 import {
 	__experimentalApplyCheckoutFilter,
-	__experimentalValidateElementOrString,
 	TotalsItem,
 } from '@woocommerce/blocks-checkout';
 import { useStoreCart } from '@woocommerce/base-hooks';
@@ -32,7 +31,8 @@ const TotalsFooterItem = ( { currency, values } ) => {
 		args: {
 			extensions,
 		},
-		validate: __experimentalValidateElementOrString,
+		// Only accept strings.
+		validate: ( value ) => typeof value === 'string',
 	} );
 
 	return (
