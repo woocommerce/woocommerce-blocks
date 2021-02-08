@@ -52,8 +52,13 @@ export const __experimentalApplyCheckoutFilter = ( {
 	const filters = getCheckoutFilters( filterName );
 	let value = defaultValue;
 	filters.forEach( ( filter ) => {
-		const newValue = filter( value, args );
-		value = validate( newValue ) ? newValue : value;
+		try {
+			const newValue = filter( value, args );
+			value = validate( newValue ) ? newValue : value;
+		} catch ( e ) {
+			// eslint-disable-next-line no-console
+			console.log( e );
+		}
 	} );
 	return value;
 };
