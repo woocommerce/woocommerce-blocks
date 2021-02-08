@@ -26,14 +26,14 @@ const SHOW_TAXES = TAXES_ENABLED && DISPLAY_CART_PRICES_INCLUDING_TAX;
 const TotalsFooterItem = ( { currency, values } ) => {
 	const { total_price: totalPrice, total_tax: totalTax } = values;
 	const { extensions } = useStoreCart();
-	const label = __experimentalApplyCheckoutFilter(
-		'totalLabel',
-		__( 'Total', 'woo-gutenberg-products-block' ),
-		{
+	const label = __experimentalApplyCheckoutFilter( {
+		filterName: 'totalLabel',
+		defaultValue: __( 'Total', 'woo-gutenberg-products-block' ),
+		args: {
 			extensions,
 		},
-		__experimentalValidateElementOrString
-	);
+		validate: __experimentalValidateElementOrString,
+	} );
 
 	return (
 		<TotalsItem

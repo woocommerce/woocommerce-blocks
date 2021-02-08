@@ -12,7 +12,10 @@ describe( 'Checkout registry', () => {
 
 	test( 'should return default value if there are no filters', () => {
 		const value = 'Hello World';
-		const newValue = __experimentalApplyCheckoutFilter( filterName, value );
+		const newValue = __experimentalApplyCheckoutFilter( {
+			filterName,
+			defaultValue: value,
+		} );
 
 		expect( newValue ).toBe( value );
 	} );
@@ -23,8 +26,12 @@ describe( 'Checkout registry', () => {
 			[ filterName ]: ( val, args ) =>
 				val.toUpperCase() + args.punctuationSign,
 		} );
-		const newValue = __experimentalApplyCheckoutFilter( filterName, value, {
-			punctuationSign: '!',
+		const newValue = __experimentalApplyCheckoutFilter( {
+			filterName,
+			defaultValue: value,
+			args: {
+				punctuationSign: '!',
+			},
 		} );
 
 		expect( newValue ).toBe( 'HELLO WORLD!' );
@@ -35,12 +42,11 @@ describe( 'Checkout registry', () => {
 		__experimentalRegisterCheckoutFilters( filterName, {
 			[ filterName ]: ( val ) => val.toUpperCase(),
 		} );
-		const newValue = __experimentalApplyCheckoutFilter(
+		const newValue = __experimentalApplyCheckoutFilter( {
 			filterName,
-			value,
-			{},
-			( val ) => ! val.includes( 'HELLO' )
-		);
+			defaultValue: value,
+			validate: ( val ) => ! val.includes( 'HELLO' ),
+		} );
 
 		expect( newValue ).toBe( value );
 	} );
@@ -55,21 +61,19 @@ describe( 'Checkout registry', () => {
 					return [ 'invalid-value' ];
 				},
 			} );
-			const validValue = __experimentalApplyCheckoutFilter(
+			const validValue = __experimentalApplyCheckoutFilter( {
 				filterName,
-				'Hello World',
-				{},
-				__experimentalValidateElementOrString
-			);
+				defaultValue: 'Hello World',
+				validate: __experimentalValidateElementOrString,
+			} );
 
 			expect( validValue ).toBe( 'Valid value' );
 
-			const invalidValue = __experimentalApplyCheckoutFilter(
+			const invalidValue = __experimentalApplyCheckoutFilter( {
 				filterName,
-				'Hello Earth',
-				{},
-				__experimentalValidateElementOrString
-			);
+				defaultValue: 'Hello Earth',
+				validate: __experimentalValidateElementOrString,
+			} );
 
 			expect( invalidValue ).toBe( 'Hello Earth' );
 		} );

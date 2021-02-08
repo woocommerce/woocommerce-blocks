@@ -32,20 +32,21 @@ const getCheckoutFilters = ( filterName ) => {
 /**
  * Apply a filter.
  *
- * @param {string}   filterName   Name of the filter to apply.
- * @param {any}      defaultValue Default value to filter.
- * @param {Object}   [args]       Arguments to pass to registered functions.
- * @param {Function} [validate]   Function that needs to return true when the
- *                                filtered value is passed in order for the
- *                                filter to be applied.
+ * @param {Object}   o              Object of arguments.
+ * @param {string}   o.filterName   Name of the filter to apply.
+ * @param {any}      o.defaultValue Default value to filter.
+ * @param {Object}   [o.args]       Arguments to pass to registered functions.
+ * @param {Function} [o.validate]   Function that needs to return true when the
+ *                                  filtered value is passed in order for the
+ *                                  filter to be applied.
  * @return {any} Filtered value.
  */
-export const __experimentalApplyCheckoutFilter = (
+export const __experimentalApplyCheckoutFilter = ( {
 	filterName,
 	defaultValue,
 	args = {},
-	validate = () => true
-) => {
+	validate = () => true,
+} ) => {
 	const filters = getCheckoutFilters( filterName );
 	let value = defaultValue;
 	filters.forEach( ( filter ) => {
