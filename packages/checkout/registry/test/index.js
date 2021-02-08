@@ -28,7 +28,7 @@ describe( 'Checkout registry', () => {
 		const newValue = __experimentalApplyCheckoutFilter( {
 			filterName,
 			defaultValue: value,
-			args: {
+			arg: {
 				punctuationSign: '!',
 			},
 		} );
@@ -44,7 +44,7 @@ describe( 'Checkout registry', () => {
 		const newValue = __experimentalApplyCheckoutFilter( {
 			filterName,
 			defaultValue: value,
-			validate: ( val ) => ! val.includes( 'HELLO' ),
+			validation: ( val ) => ! val.includes( 'HELLO' ),
 		} );
 
 		expect( newValue ).toBe( value );

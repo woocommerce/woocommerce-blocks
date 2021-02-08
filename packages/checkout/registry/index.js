@@ -35,10 +35,10 @@ const getCheckoutFilters = ( filterName ) => {
  * @param {Object}   o              Object of arguments.
  * @param {string}   o.filterName   Name of the filter to apply.
  * @param {any}      o.defaultValue Default value to filter.
- * @param {any}      [o.args]       Argument to pass to registered functions. If
+ * @param {any}      [o.arg]        Argument to pass to registered functions. If
  *                                  several arguments need to be passed, use an
  *                                  object.
- * @param {Function} [o.validate]   Function that needs to return true when the
+ * @param {Function} [o.validation] Function that needs to return true when the
  *                                  filtered value is passed in order for the
  *                                  filter to be applied.
  * @return {any} Filtered value.
@@ -46,15 +46,15 @@ const getCheckoutFilters = ( filterName ) => {
 export const __experimentalApplyCheckoutFilter = ( {
 	filterName,
 	defaultValue,
-	args = {},
-	validate = () => true,
+	arg = null,
+	validation = () => true,
 } ) => {
 	const filters = getCheckoutFilters( filterName );
 	let value = defaultValue;
 	filters.forEach( ( filter ) => {
 		try {
-			const newValue = filter( value, args );
-			value = validate( newValue ) ? newValue : value;
+			const newValue = filter( value, arg );
+			value = validation( newValue ) ? newValue : value;
 		} catch ( e ) {
 			// eslint-disable-next-line no-console
 			console.log( e );
