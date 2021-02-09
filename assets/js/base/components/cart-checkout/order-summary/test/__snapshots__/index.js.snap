@@ -1,0 +1,165 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OrderSummaryItem should not render a suffix if the filter to change it isn't registered 1`] = `
+<div
+  className="wc-block-components-order-summary-item"
+>
+  <div
+    className="wc-block-components-order-summary-item__image"
+  >
+    <div
+      className="wc-block-components-order-summary-item__quantity"
+    >
+      <span
+        aria-hidden="true"
+      >
+        1
+      </span>
+      <span
+        className="screen-reader-text"
+      >
+        1 items
+      </span>
+    </div>
+    <img
+      alt=""
+      src=""
+    />
+  </div>
+  <div
+    className="wc-block-components-order-summary-item__description"
+  >
+    <span
+      className="wc-block-components-product-name"
+    >
+      Test item
+    </span>
+    <span
+      className="wc-block-components-order-summary-item__individual-prices price wc-block-components-product-price"
+    >
+      <span
+        className="screen-reader-text"
+      >
+        Previous price:
+      </span>
+      <del
+        className="wc-block-components-product-price__regular wc-block-components-order-summary-item__regular-individual-price"
+      >
+        &#36;614.00
+      </del>
+      <span
+        className="screen-reader-text"
+      >
+        Discounted price:
+      </span>
+      <ins
+        className="wc-block-components-product-price__value is-discounted wc-block-components-order-summary-item__individual-price"
+      >
+        &#36;50.00
+      </ins>
+      
+      
+    </span>
+    <div
+      className="wc-block-components-product-metadata"
+    />
+  </div>
+  <div
+    className="wc-block-components-order-summary-item__total-price"
+  >
+    <span
+      className="price wc-block-components-product-price"
+    >
+      <span
+        className="wc-block-formatted-money-amount wc-block-components-formatted-money-amount wc-block-components-product-price__value"
+      >
+        &#36;50.00
+      </span>
+      
+      
+    </span>
+  </div>
+</div>
+`;
+
+exports[`OrderSummaryItem should render a suffix if one is added by a filter 1`] = `
+<div
+  className="wc-block-components-order-summary-item"
+>
+  <div
+    className="wc-block-components-order-summary-item__image"
+  >
+    <div
+      className="wc-block-components-order-summary-item__quantity"
+    >
+      <span
+        aria-hidden="true"
+      >
+        1
+      </span>
+      <span
+        className="screen-reader-text"
+      >
+        1 items
+      </span>
+    </div>
+    <img
+      alt=""
+      src=""
+    />
+  </div>
+  <div
+    className="wc-block-components-order-summary-item__description"
+  >
+    <span
+      className="wc-block-components-product-name"
+    >
+      Test item
+    </span>
+    <span
+      className="wc-block-components-order-summary-item__individual-prices price wc-block-components-product-price"
+    >
+      <span
+        className="screen-reader-text"
+      >
+        Previous price:
+      </span>
+      <del
+        className="wc-block-components-product-price__regular wc-block-components-order-summary-item__regular-individual-price"
+      >
+        &#36;614.00
+      </del>
+      <span
+        className="screen-reader-text"
+      >
+        Discounted price:
+      </span>
+      <ins
+        className="wc-block-components-product-price__value is-discounted wc-block-components-order-summary-item__individual-price"
+      >
+        &#36;50.00
+      </ins>
+       
+      test suffix
+    </span>
+    <div
+      className="wc-block-components-product-metadata"
+    />
+  </div>
+  <div
+    className="wc-block-components-order-summary-item__total-price"
+  >
+    <span
+      className="price wc-block-components-product-price"
+    >
+      <span
+        className="wc-block-formatted-money-amount wc-block-components-formatted-money-amount wc-block-components-product-price__value"
+      >
+        &#36;50.00
+      </span>
+      
+      
+    </span>
+  </div>
+</div>
+`;

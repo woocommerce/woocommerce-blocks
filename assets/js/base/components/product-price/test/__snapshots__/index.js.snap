@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProductName should append any suffix if one is not provided 1`] = `
+<span
+  className="price wc-block-components-product-price"
+>
+  <span
+    className="screen-reader-text"
+  >
+    Previous price:
+  </span>
+  <del
+    className="wc-block-components-product-price__regular"
+  >
+    £1.00
+  </del>
+  <span
+    className="screen-reader-text"
+  >
+    Discounted price:
+  </span>
+  <ins
+    className="wc-block-components-product-price__value is-discounted"
+  >
+    £0.50
+  </ins>
+  
+  
+</span>
+`;
+
+exports[`ProductName should append the suffix if one is provided 1`] = `
+<span
+  className="price wc-block-components-product-price"
+>
+  <span
+    className="screen-reader-text"
+  >
+    Previous price:
+  </span>
+  <del
+    className="wc-block-components-product-price__regular"
+  >
+    £1.00
+  </del>
+  <span
+    className="screen-reader-text"
+  >
+    Discounted price:
+  </span>
+  <ins
+    className="wc-block-components-product-price__value is-discounted"
+  >
+    £0.50
+  </ins>
+   
+  Test suffix
+</span>
+`;
