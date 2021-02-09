@@ -17,6 +17,7 @@ import {
 } from '@woocommerce/base-components/cart-checkout';
 import { getCurrency } from '@woocommerce/price-format';
 import Dinero from 'dinero.js';
+import { __experimentalApplyCheckoutFilter } from '@woocommerce/blocks-checkout';
 
 /**
  * @typedef {import('@woocommerce/type-defs/cart').CartItem} CartItem
@@ -99,6 +100,25 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 	const isProductHiddenFromCatalog =
 		catalogVisibility === 'hidden' || catalogVisibility === 'search';
 
+	const subtotalSuffix = __experimentalApplyCheckoutFilter( {
+		filterName: 'subtotalSuffix',
+		defaultValue: '',
+		arg: {
+			lineItem,
+		},
+		// Only accept strings.
+		validation: ( value ) => typeof value === 'string',
+	} );
+	const saleBadgeSuffix = __experimentalApplyCheckoutFilter( {
+		filterName: 'saleBadgeSuffix',
+		defaultValue: '',
+		arg: {
+			lineItem,
+		},
+		// Only accept strings.
+		validation: ( value ) => typeof value === 'string',
+	} );
+
 	return (
 		<tr
 			className={ classnames( 'wc-block-cart-items__row', {
@@ -146,6 +166,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 							purchaseAmountSingle,
 							currency
 						) }
+						suffix={ subtotalSuffix }
 					/>
 				</div>
 
@@ -155,6 +176,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 						saleAmountSingle,
 						currency
 					) }
+					suffix={ saleBadgeSuffix }
 				/>
 
 				<ProductMetadata
@@ -194,6 +216,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 							saleAmount,
 							currency
 						) }
+						suffix={ saleBadgeSuffix }
 					/>
 				) }
 			</td>
