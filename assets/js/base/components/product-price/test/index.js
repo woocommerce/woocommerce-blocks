@@ -8,7 +8,7 @@ import TestRenderer from 'react-test-renderer';
  */
 import ProductPrice from '../index';
 
-describe( 'ProductName', () => {
+describe( 'ProductPrice', () => {
 	const currency = {
 		code: 'GBP',
 		currency_code: 'GBP',
