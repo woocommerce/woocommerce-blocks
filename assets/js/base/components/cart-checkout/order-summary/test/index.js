@@ -36,11 +36,14 @@ describe( 'OrderSummaryItem', () => {
 		expect( component.toJSON() ).toMatchSnapshot();
 	} );
 	test( 'should render a suffix if one is added by a filter', () => {
-		__experimentalRegisterCheckoutFilters( 'woocommerce-subscriptions', {
-			subtotalSuffix: () => {
-				return 'test suffix';
-			},
-		} );
+		__experimentalRegisterCheckoutFilters(
+			'woocommerce-gutenberg-products-block',
+			{
+				subtotalSuffix: () => {
+					return 'test suffix';
+				},
+			}
+		);
 
 		const component = TestRenderer.create(
 			<OrderSummaryItem
