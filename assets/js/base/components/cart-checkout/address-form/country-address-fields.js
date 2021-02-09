@@ -58,8 +58,8 @@ const getSupportedProps = ( localeField ) => {
 	return fields;
 };
 
-const coreAddressFieldConfig = Object.fromEntries(
-	Object.entries( coreLocale ).map( ( [ country, countryLocale ] ) => [
+const coreAddressFieldConfig = Object.entries( coreLocale )
+	.map( ( [ country, countryLocale ] ) => [
 		country,
 		Object.fromEntries(
 			Object.entries(
@@ -70,6 +70,9 @@ const coreAddressFieldConfig = Object.fromEntries(
 			] )
 		),
 	] )
-);
+	.reduce( ( obj, [ key, val ] ) => {
+		obj[ key ] = val;
+		return obj;
+	}, {} );
 
 export default coreAddressFieldConfig;
