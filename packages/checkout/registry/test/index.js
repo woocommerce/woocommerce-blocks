@@ -49,4 +49,27 @@ describe( 'Checkout registry', () => {
 
 		expect( newValue ).toBe( value );
 	} );
+
+	test( 'should catch filter errors if user is not an admin', () => {
+		const spy = {};
+		spy.console = jest
+			.spyOn( console, 'error' )
+			.mockImplementation( () => {} );
+
+		const error = new Error( 'test error' );
+		const value = 'Hello World';
+		__experimentalRegisterCheckoutFilters( filterName, {
+			[ filterName ]: () => {
+				throw error;
+			},
+		} );
+		const newValue = __experimentalApplyCheckoutFilter( {
+			filterName,
+			defaultValue: value,
+		} );
+
+		expect( spy.console ).toHaveBeenCalledWith( error );
+		expect( newValue ).toBe( value );
+		spy.console.mockRestore();
+	} );
 } );
