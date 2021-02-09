@@ -17,10 +17,10 @@ import ProductBadge from '../product-badge';
  * @param {Object} props            Incoming props.
  * @param {Object} props.currency   Currency object.
  * @param {number} props.saleAmount Discounted amount.
- *
+ * @param {string} [props.suffix]   String to add after price. Will be separated from the price by a space.
  * @return {*} The component.
  */
-const ProductSaleBadge = ( { currency, saleAmount } ) => {
+const ProductSaleBadge = ( { currency, saleAmount, suffix = '' } ) => {
 	if ( ! saleAmount || saleAmount <= 0 ) {
 		return null;
 	}
@@ -38,6 +38,8 @@ const ProductSaleBadge = ( { currency, saleAmount } ) => {
 					),
 				}
 			) }
+			{ suffix && ' ' }
+			{ suffix }
 		</ProductBadge>
 	);
 };
@@ -45,6 +47,7 @@ const ProductSaleBadge = ( { currency, saleAmount } ) => {
 ProductSaleBadge.propTypes = {
 	currency: PropTypes.object,
 	saleAmount: PropTypes.number,
+	suffix: PropTypes.string,
 };
 
 export default ProductSaleBadge;

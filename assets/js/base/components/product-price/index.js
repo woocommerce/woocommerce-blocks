@@ -18,6 +18,7 @@ const PriceRange = ( {
 	minPrice,
 	priceClassName,
 	priceStyle,
+	suffix = '',
 } ) => {
 	return (
 		<span className={ className }>
@@ -40,6 +41,8 @@ const PriceRange = ( {
 				value={ maxPrice }
 				style={ priceStyle }
 			/>
+			{ suffix && ' ' }
+			{ suffix }
 		</span>
 	);
 };
@@ -53,6 +56,7 @@ const SalePrice = ( {
 	priceClassName,
 	priceStyle,
 	price,
+	suffix = '',
 } ) => {
 	return (
 		<span className={ className }>
@@ -93,6 +97,8 @@ const SalePrice = ( {
 				) }
 				value={ price }
 			/>
+			{ suffix && ' ' }
+			{ suffix }
 		</span>
 	);
 };
@@ -109,6 +115,7 @@ const ProductPrice = ( {
 	regularPrice,
 	regularPriceClassName,
 	regularPriceStyle,
+	suffix = '',
 } ) => {
 	const wrapperClassName = classNames(
 		className,
@@ -123,29 +130,35 @@ const ProductPrice = ( {
 
 	if ( isDiscounted ) {
 		return (
-			<SalePrice
-				className={ wrapperClassName }
-				currency={ currency }
-				price={ price }
-				priceClassName={ priceClassName }
-				priceStyle={ priceStyle }
-				regularPrice={ regularPrice }
-				regularPriceClassName={ regularPriceClassName }
-				regularPriceStyle={ regularPriceStyle }
-			/>
+			<>
+				<SalePrice
+					className={ wrapperClassName }
+					currency={ currency }
+					price={ price }
+					priceClassName={ priceClassName }
+					priceStyle={ priceStyle }
+					regularPrice={ regularPrice }
+					regularPriceClassName={ regularPriceClassName }
+					regularPriceStyle={ regularPriceStyle }
+					suffix={ suffix }
+				/>
+			</>
 		);
 	}
 
 	if ( minPrice !== null && maxPrice !== null ) {
 		return (
-			<PriceRange
-				className={ wrapperClassName }
-				currency={ currency }
-				maxPrice={ maxPrice }
-				minPrice={ minPrice }
-				priceClassName={ priceClassName }
-				priceStyle={ priceStyle }
-			/>
+			<>
+				<PriceRange
+					className={ wrapperClassName }
+					currency={ currency }
+					maxPrice={ maxPrice }
+					minPrice={ minPrice }
+					priceClassName={ priceClassName }
+					priceStyle={ priceStyle }
+					suffix={ suffix }
+				/>
+			</>
 		);
 	}
 
@@ -161,6 +174,8 @@ const ProductPrice = ( {
 					value={ price }
 					style={ priceStyle }
 				/>
+				{ suffix && ' ' }
+				{ suffix }
 			</span>
 		);
 	}
@@ -191,6 +206,8 @@ ProductPrice.propTypes = {
 	regularPrice: PropTypes.oneOfType( [ PropTypes.number, PropTypes.string ] ),
 	regularPriceClassName: PropTypes.string,
 	regularPriceStyle: PropTypes.object,
+	// Used to add info at the end of a price, for example "per day" will be appended with a space before it.
+	suffix: PropTypes.string,
 };
 
 export default ProductPrice;
