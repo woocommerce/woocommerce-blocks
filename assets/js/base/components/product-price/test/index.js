@@ -36,7 +36,7 @@ describe( 'ProductPrice', () => {
 		thousandSeparator: ',',
 	};
 
-	test( 'should append any suffix if one is not provided', () => {
+	test( 'should use default price if no format is provided', () => {
 		const component = TestRenderer.create(
 			<ProductPrice
 				price={ 50 }
@@ -48,13 +48,13 @@ describe( 'ProductPrice', () => {
 		expect( component.toJSON() ).toMatchSnapshot();
 	} );
 
-	test( 'should append the suffix if one is provided', () => {
+	test( 'should apply the format if one is provided', () => {
 		const component = TestRenderer.create(
 			<ProductPrice
 				price={ 50 }
 				regularPrice={ 100 }
 				currency={ currency }
-				suffix="Test suffix"
+				format="pre price <price/> Test format"
 			/>
 		);
 
