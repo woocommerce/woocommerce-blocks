@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { createInterpolateElement } from 'wordpress-element';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import PropTypes from 'prop-types';
 
@@ -17,29 +17,35 @@ import ProductBadge from '../product-badge';
  * @param {Object} props            Incoming props.
  * @param {Object} props.currency   Currency object.
  * @param {number} props.saleAmount Discounted amount.
- * @param {string} [props.suffix]   String to add after price. Will be separated from the price by a space.
+ * @param {string} [props.format]   Format to change the price.
  * @return {*} The component.
  */
-const ProductSaleBadge = ( { currency, saleAmount, suffix = '' } ) => {
+const ProductSaleBadge = ( { currency, saleAmount, format = '<price/>' } ) => {
 	if ( ! saleAmount || saleAmount <= 0 ) {
 		return null;
 	}
+	if ( ! format.includes( '<price/>' ) ) {
+		format = '<price/>';
+		// eslint-disable-next-line no-console
+		console.error( 'Price formats need to include the `<price/>` tag.' );
+	}
+
+	const formattedMessage = sprintf(
+		/* translators: %s will be replaced by the discount amount */
+		__( `Save %s`, 'woo-gutenberg-products-block' ),
+		format
+	);
+
 	return (
 		<ProductBadge className="wc-block-components-sale-badge">
-			{ createInterpolateElement(
-				/* translators: <price/> will be replaced by the discount amount */
-				__( 'Save <price/>', 'woo-gutenberg-products-block' ),
-				{
-					price: (
-						<FormattedMonetaryAmount
-							currency={ currency }
-							value={ saleAmount }
-						/>
-					),
-				}
-			) }
-			{ suffix && ' ' }
-			{ suffix }
+			{ createInterpolateElement( formattedMessage, {
+				price: (
+					<FormattedMonetaryAmount
+						currency={ currency }
+						value={ saleAmount }
+					/>
+				),
+			} ) }
 		</ProductBadge>
 	);
 };
@@ -47,7 +53,6 @@ const ProductSaleBadge = ( { currency, saleAmount, suffix = '' } ) => {
 ProductSaleBadge.propTypes = {
 	currency: PropTypes.object,
 	saleAmount: PropTypes.number,
-	suffix: PropTypes.string,
 };
 
 export default ProductSaleBadge;
