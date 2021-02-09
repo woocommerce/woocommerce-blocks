@@ -16,10 +16,7 @@ import {
 	ProductSaleBadge,
 } from '@woocommerce/base-components/cart-checkout';
 import { getCurrency } from '@woocommerce/price-format';
-import {
-	__experimentalIsValidString,
-	__experimentalApplyCheckoutFilter,
-} from '@woocommerce/blocks-checkout';
+import { __experimentalApplyCheckoutFilter } from '@woocommerce/blocks-checkout';
 import Dinero from 'dinero.js';
 
 /**
@@ -85,15 +82,15 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 		isPendingDelete,
 	} = useStoreCartItemQuantity( lineItem );
 
-	const name = __experimentalApplyCheckoutFilter(
-		'itemName',
-		initialName,
-		{
+	const name = __experimentalApplyCheckoutFilter( {
+		filterName: 'itemName',
+		defaultValue: initialName,
+		arg: {
 			extensions,
 			context: 'cart',
 		},
-		__experimentalIsValidString
-	);
+		validation: ( value ) => typeof value === 'string',
+	} );
 	const currency = getCurrency( prices );
 	const regularAmountSingle = Dinero( {
 		amount: parseInt( prices.raw_prices.regular_price, 10 ),
