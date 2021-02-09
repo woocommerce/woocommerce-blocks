@@ -6,10 +6,7 @@ import Label from '@woocommerce/base-components/label';
 import ProductPrice from '@woocommerce/base-components/product-price';
 import ProductName from '@woocommerce/base-components/product-name';
 import { getCurrency } from '@woocommerce/price-format';
-import {
-	__experimentalApplyCheckoutFilter,
-	__experimentalIsValidString,
-} from '@woocommerce/blocks-checkout';
+import { __experimentalApplyCheckoutFilter } from '@woocommerce/blocks-checkout';
 import PropTypes from 'prop-types';
 import Dinero from 'dinero.js';
 
@@ -37,15 +34,15 @@ const OrderSummaryItem = ( { cartItem } ) => {
 		extensions,
 	} = cartItem;
 
-	const name = __experimentalApplyCheckoutFilter(
-		'itemName',
-		initialName,
-		{
+	const name = __experimentalApplyCheckoutFilter( {
+		filterName: 'itemName',
+		defaultValue: initialName,
+		arg: {
 			extensions,
 			context: 'summary',
 		},
-		__experimentalIsValidString
-	);
+		validation: ( value ) => typeof value === 'string',
+	} );
 
 	const currency = getCurrency( prices );
 	const regularPriceSingle = Dinero( {
