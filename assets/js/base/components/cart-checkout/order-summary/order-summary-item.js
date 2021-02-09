@@ -51,8 +51,8 @@ const OrderSummaryItem = ( { cartItem } ) => {
 		.multiply( quantity )
 		.convertPrecision( currency.minorUnit )
 		.getAmount();
-	const subtotalSuffix = __experimentalApplyCheckoutFilter( {
-		filterName: 'subtotalSuffix',
+	const subtotalPriceFormat = __experimentalApplyCheckoutFilter( {
+		filterName: 'subtotalPriceFormat',
 		defaultValue: '',
 		arg: {
 			lineItem: cartItem,
@@ -89,7 +89,7 @@ const OrderSummaryItem = ( { cartItem } ) => {
 					className="wc-block-components-order-summary-item__individual-prices"
 					priceClassName="wc-block-components-order-summary-item__individual-price"
 					regularPriceClassName="wc-block-components-order-summary-item__regular-individual-price"
-					suffix={ subtotalSuffix }
+					format={ subtotalPriceFormat }
 				/>
 				{ showBackorderBadge ? (
 					<ProductBackorderBadge />

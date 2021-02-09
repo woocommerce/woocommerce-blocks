@@ -100,23 +100,25 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 	const isProductHiddenFromCatalog =
 		catalogVisibility === 'hidden' || catalogVisibility === 'search';
 
-	const subtotalSuffix = __experimentalApplyCheckoutFilter( {
-		filterName: 'subtotalSuffix',
-		defaultValue: '',
+	const subtotalPriceFormat = __experimentalApplyCheckoutFilter( {
+		filterName: 'subtotalPriceFormat',
+		defaultValue: '<price/>',
 		arg: {
 			lineItem,
 		},
 		// Only accept strings.
-		validation: ( value ) => typeof value === 'string',
+		validation: ( value ) =>
+			typeof value === 'string' && value.includes( '<price/>' ),
 	} );
-	const saleBadgeSuffix = __experimentalApplyCheckoutFilter( {
-		filterName: 'saleBadgeSuffix',
-		defaultValue: '',
+	const saleBadgePriceFormat = __experimentalApplyCheckoutFilter( {
+		filterName: 'saleBadgePriceFormat',
+		defaultValue: '<price/>',
 		arg: {
 			lineItem,
 		},
 		// Only accept strings.
-		validation: ( value ) => typeof value === 'string',
+		validation: ( value ) =>
+			typeof value === 'string' && value.includes( '<price/>' ),
 	} );
 
 	return (
@@ -166,7 +168,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 							purchaseAmountSingle,
 							currency
 						) }
-						suffix={ subtotalSuffix }
+						format={ subtotalPriceFormat }
 					/>
 				</div>
 
@@ -176,7 +178,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 						saleAmountSingle,
 						currency
 					) }
-					suffix={ saleBadgeSuffix }
+					format={ saleBadgePriceFormat }
 				/>
 
 				<ProductMetadata
@@ -216,7 +218,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 							saleAmount,
 							currency
 						) }
-						suffix={ saleBadgeSuffix }
+						format={ saleBadgePriceFormat }
 					/>
 				) }
 			</td>

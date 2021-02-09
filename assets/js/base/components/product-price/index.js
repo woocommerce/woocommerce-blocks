@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { createInterpolateElement } from 'wordpress-element';
 
 /**
  * Internal dependencies
@@ -12,16 +13,14 @@ import PropTypes from 'prop-types';
 import './style.scss';
 
 const PriceRange = ( {
-	className,
 	currency,
 	maxPrice,
 	minPrice,
 	priceClassName,
 	priceStyle,
-	suffix = '',
 } ) => {
 	return (
-		<span className={ className }>
+		<>
 			<FormattedMonetaryAmount
 				className={ classNames(
 					'wc-block-components-product-price__value',
@@ -41,14 +40,11 @@ const PriceRange = ( {
 				value={ maxPrice }
 				style={ priceStyle }
 			/>
-			{ suffix && ' ' }
-			{ suffix }
-		</span>
+		</>
 	);
 };
 
 const SalePrice = ( {
-	className,
 	currency,
 	regularPriceClassName,
 	regularPriceStyle,
@@ -56,10 +52,9 @@ const SalePrice = ( {
 	priceClassName,
 	priceStyle,
 	price,
-	suffix = '',
 } ) => {
 	return (
-		<span className={ className }>
+		<>
 			<span className="screen-reader-text">
 				{ __( 'Previous price:', 'woo-gutenberg-products-block' ) }
 			</span>
@@ -97,9 +92,7 @@ const SalePrice = ( {
 				) }
 				value={ price }
 			/>
-			{ suffix && ' ' }
-			{ suffix }
-		</span>
+		</>
 	);
 };
 
@@ -107,6 +100,7 @@ const ProductPrice = ( {
 	align,
 	className,
 	currency,
+	format = '<price/>',
 	maxPrice = null,
 	minPrice = null,
 	price = null,
@@ -115,7 +109,6 @@ const ProductPrice = ( {
 	regularPrice,
 	regularPriceClassName,
 	regularPriceStyle,
-	suffix = '',
 } ) => {
 	const wrapperClassName = classNames(
 		className,
@@ -126,68 +119,68 @@ const ProductPrice = ( {
 		}
 	);
 
+	if ( ! format.includes( '<price/>' ) ) {
+		format = '<price/>';
+		// eslint-disable-next-line no-console
+		console.error( 'Price formats need to include the `<price/>` tag.' );
+	}
+
 	const isDiscounted = regularPrice && price !== regularPrice;
 
+	let priceComponent = (
+		<span
+			className={ classNames(
+				'wc-block-components-product-price__value',
+				priceClassName
+			) }
+		/>
+	);
+
 	if ( isDiscounted ) {
-		return (
-			<>
-				<SalePrice
-					className={ wrapperClassName }
-					currency={ currency }
-					price={ price }
-					priceClassName={ priceClassName }
-					priceStyle={ priceStyle }
-					regularPrice={ regularPrice }
-					regularPriceClassName={ regularPriceClassName }
-					regularPriceStyle={ regularPriceStyle }
-					suffix={ suffix }
-				/>
-			</>
+		priceComponent = (
+			<SalePrice
+				currency={ currency }
+				price={ price }
+				priceClassName={ priceClassName }
+				priceStyle={ priceStyle }
+				regularPrice={ regularPrice }
+				regularPriceClassName={ regularPriceClassName }
+				regularPriceStyle={ regularPriceStyle }
+			/>
 		);
 	}
 
 	if ( minPrice !== null && maxPrice !== null ) {
-		return (
-			<>
-				<PriceRange
-					className={ wrapperClassName }
-					currency={ currency }
-					maxPrice={ maxPrice }
-					minPrice={ minPrice }
-					priceClassName={ priceClassName }
-					priceStyle={ priceStyle }
-					suffix={ suffix }
-				/>
-			</>
+		priceComponent = (
+			<PriceRange
+				currency={ currency }
+				maxPrice={ maxPrice }
+				minPrice={ minPrice }
+				priceClassName={ priceClassName }
+				priceStyle={ priceStyle }
+			/>
 		);
 	}
 
 	if ( price !== null ) {
-		return (
-			<span className={ wrapperClassName }>
-				<FormattedMonetaryAmount
-					className={ classNames(
-						'wc-block-components-product-price__value',
-						priceClassName
-					) }
-					currency={ currency }
-					value={ price }
-					style={ priceStyle }
-				/>
-				{ suffix && ' ' }
-				{ suffix }
-			</span>
+		priceComponent = (
+			<FormattedMonetaryAmount
+				className={ classNames(
+					'wc-block-components-product-price__value',
+					priceClassName
+				) }
+				currency={ currency }
+				value={ price }
+				style={ priceStyle }
+			/>
 		);
 	}
 
 	return (
 		<span className={ wrapperClassName }>
-			<span
-				className={ classNames(
-					'wc-block-components-product-price__value',
-					priceClassName
-				) }
-			/>
+			{ createInterpolateElement( format, {
+				price: priceComponent,
+			} ) }
 		</span>
 	);
 };
@@ -196,6 +189,7 @@ ProductPrice.propTypes = {
 	align: PropTypes.oneOf( [ 'left', 'center', 'right' ] ),
 	className: PropTypes.string,
 	currency: PropTypes.object,
+	format: PropTypes.string,
 	price: PropTypes.oneOfType( [ PropTypes.number, PropTypes.string ] ),
 	priceClassName: PropTypes.string,
 	priceStyle: PropTypes.object,
@@ -206,8 +200,6 @@ ProductPrice.propTypes = {
 	regularPrice: PropTypes.oneOfType( [ PropTypes.number, PropTypes.string ] ),
 	regularPriceClassName: PropTypes.string,
 	regularPriceStyle: PropTypes.object,
-	// Used to add info at the end of a price, for example "per day" will be appended with a space before it.
-	suffix: PropTypes.string,
 };
 
 export default ProductPrice;
