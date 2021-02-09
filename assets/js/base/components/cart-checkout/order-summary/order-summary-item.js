@@ -8,6 +8,7 @@ import ProductName from '@woocommerce/base-components/product-name';
 import { getCurrency } from '@woocommerce/price-format';
 import PropTypes from 'prop-types';
 import Dinero from 'dinero.js';
+import { __experimentalApplyCheckoutFilter } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
@@ -50,6 +51,15 @@ const OrderSummaryItem = ( { cartItem } ) => {
 		.multiply( quantity )
 		.convertPrecision( currency.minorUnit )
 		.getAmount();
+	const subtotalSuffix = __experimentalApplyCheckoutFilter( {
+		filterName: 'subtotalSuffix',
+		defaultValue: '',
+		arg: {
+			lineItem: cartItem,
+		},
+		// Only accept strings.
+		validation: ( value ) => typeof value === 'string',
+	} );
 
 	return (
 		<div className="wc-block-components-order-summary-item">
@@ -79,6 +89,7 @@ const OrderSummaryItem = ( { cartItem } ) => {
 					className="wc-block-components-order-summary-item__individual-prices"
 					priceClassName="wc-block-components-order-summary-item__individual-price"
 					regularPriceClassName="wc-block-components-order-summary-item__regular-individual-price"
+					suffix={ subtotalSuffix }
 				/>
 				{ showBackorderBadge ? (
 					<ProductBackorderBadge />
