@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ProductName should append any suffix if one is not provided 1`] = `
+exports[`ProductPrice should append any suffix if one is not provided 1`] = `
 <span
   className="price wc-block-components-product-price"
 >
@@ -29,7 +29,7 @@ exports[`ProductName should append any suffix if one is not provided 1`] = `
 </span>
 `;
 
-exports[`ProductName should append the suffix if one is provided 1`] = `
+exports[`ProductPrice should append the suffix if one is provided 1`] = `
 <span
   className="price wc-block-components-product-price"
 >
