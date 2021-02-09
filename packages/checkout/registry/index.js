@@ -1,3 +1,8 @@
+/**
+ * External dependencies
+ */
+import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
+
 let checkoutFilters = {};
 
 /**
@@ -56,8 +61,12 @@ export const __experimentalApplyCheckoutFilter = ( {
 			const newValue = filter( value, arg );
 			value = validation( newValue ) ? newValue : value;
 		} catch ( e ) {
-			// eslint-disable-next-line no-console
-			console.log( e );
+			if ( CURRENT_USER_IS_ADMIN ) {
+				throw e;
+			} else {
+				// eslint-disable-next-line no-console
+				console.error( e );
+			}
 		}
 	} );
 	return value;
