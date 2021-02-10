@@ -52,7 +52,7 @@ class Assets {
 		self::register_style( 'wc-block-style', plugins_url( $asset_api->get_block_asset_build_path( 'style', 'css' ), __DIR__ ), array( 'wc-block-vendors-style' ) );
 		wp_style_add_data( 'wc-block-style', 'rtl', 'replace' );
 
-		// Shared libraries and components across all blocks.
+		// Shared libraries and components across multiple blocks.
 		$asset_api->register_script( 'wc-blocks-middleware', 'build/wc-blocks-middleware.js', [], false );
 		$asset_api->register_script( 'wc-blocks-data-store', 'build/wc-blocks-data.js', [ 'wc-blocks-middleware' ], false );
 		$asset_api->register_script( 'wc-blocks', $asset_api->get_block_asset_build_path( 'blocks' ), [], false );
@@ -60,6 +60,11 @@ class Assets {
 		$asset_api->register_script( 'wc-blocks-registry', 'build/wc-blocks-registry.js', [], false );
 		$asset_api->register_script( 'wc-shared-context', 'build/wc-shared-context.js', [], false );
 		$asset_api->register_script( 'wc-shared-hocs', 'build/wc-shared-hocs.js', [], false );
+		$asset_api->register_script( 'wc-price-format', 'build/price-format.js', [], false );
+
+		if ( Package::feature()->is_feature_plugin_build() ) {
+			$asset_api->register_script( 'wc-blocks-checkout', 'build/blocks-checkout.js', [], false );
+		}
 
 		// Inline data.
 		wp_add_inline_script(
@@ -71,7 +76,8 @@ class Assets {
 			'before'
 		);
 
-		// Individual blocks.
+		// Individual blocks
+		// @todo move script registration to block type classes. This also happens on init.
 		$block_dependencies = array( 'wc-vendors', 'wc-blocks' );
 
 		$asset_api->register_script( 'wc-handpicked-products', $asset_api->get_block_asset_build_path( 'handpicked-products' ), $block_dependencies );
@@ -97,11 +103,8 @@ class Assets {
 		if ( Package::feature()->is_experimental_build() ) {
 			$asset_api->register_script( 'wc-single-product-block', $asset_api->get_block_asset_build_path( 'single-product' ), $block_dependencies );
 		}
-		$asset_api->register_script( 'wc-price-format', 'build/price-format.js', [], false );
 
 		if ( Package::feature()->is_feature_plugin_build() ) {
-			$asset_api->register_script( 'wc-blocks-checkout', 'build/blocks-checkout.js', [], false );
-			$asset_api->register_script( 'wc-checkout-block', $asset_api->get_block_asset_build_path( 'checkout' ), $block_dependencies );
 			$asset_api->register_script( 'wc-cart-block', $asset_api->get_block_asset_build_path( 'cart' ), $block_dependencies );
 		}
 	}

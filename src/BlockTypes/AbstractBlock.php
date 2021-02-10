@@ -1,6 +1,10 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
+use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
+use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
+
 /**
  * AbstractBlock class.
  */
@@ -14,7 +18,7 @@ abstract class AbstractBlock {
 	protected $namespace = 'woocommerce';
 
 	/**
-	 * Block namespace.
+	 * Block name within this namespace.
 	 *
 	 * @var string
 	 */
@@ -28,15 +32,56 @@ abstract class AbstractBlock {
 	protected $enqueued_assets = false;
 
 	/**
-	 * Constructor
+	 * Instance of the asset API.
 	 *
-	 * @param string $block_name Optional set block name during construct.
+	 * @var AssetApi
 	 */
-	public function __construct( $block_name = '' ) {
-		if ( $block_name ) {
-			$this->block_name = $block_name;
+	protected $asset_api;
+
+	/**
+	 * Instance of the asset data registry.
+	 *
+	 * @var AssetDataRegistry
+	 */
+	protected $asset_data_registry;
+
+	/**
+	 * Instance of the integration registry.
+	 *
+	 * @var IntegrationRegistry
+	 */
+	protected $integration_registry;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param AssetApi            $asset_api Instance of the asset API.
+	 * @param AssetDataRegistry   $asset_data_registry Instance of the asset data registry.
+	 * @param IntegrationRegistry $integration_registry Instance of the integration registry.
+	 * @param string              $block_name Optionally set block name during construct.
+	 */
+	public function __construct( AssetApi $asset_api, AssetDataRegistry $asset_data_registry, IntegrationRegistry $integration_registry, $block_name = '' ) {
+		$this->asset_api            = $asset_api;
+		$this->asset_data_registry  = $asset_data_registry;
+		$this->integration_registry = $integration_registry;
+		$this->block_name           = $block_name ? $block_name : $this->block_name;
+		$this->initialize();
+	}
+
+	/**
+	 * Initialize this block type.
+	 *
+	 * - Hook into WP lifecycle.
+	 * - Register the block with WordPress.
+	 */
+	public function initialize() {
+		if ( empty( $this->block_name ) ) {
+			_doing_it_wrong( __METHOD__, esc_html( __( 'Block name is required.', 'woo-gutenberg-products-block' ) ), '4.5.0' );
+			return false;
 		}
 		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_editor_assets' ] );
+		$this->integration_registry->initialize( $this->block_name );
+		$this->register_block_type();
 	}
 
 	/**
@@ -133,7 +178,13 @@ abstract class AbstractBlock {
 	 *                           not in the post content on editor load.
 	 */
 	protected function enqueue_data( array $attributes = [] ) {
-		// noop. Child classes should override this if needed.
+		$registered_script_data = $this->integration_registry->get_all_registered_script_data();
+
+		foreach ( $registered_script_data as $asset_data_key => $asset_data_value ) {
+			if ( ! $this->asset_data_registry->exists( $asset_data_key ) ) {
+				$this->asset_data_registry->add( $asset_data_key, $asset_data_value );
+			}
+		}
 	}
 
 	/**

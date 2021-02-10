@@ -20,20 +20,17 @@ class IntegrationRegistry {
 	protected $registered_integrations = [];
 
 	/**
-	 * Integration Registry Constructor.
+	 * Initializes all registered integrations.
+	 *
+	 * Integration identifier is used to construct hook names and is given when the integration registry is initialized.
 	 *
 	 * @param string $registry_identifier Identifier for this registry.
 	 */
-	public function __construct( $registry_identifier = '' ) {
+	public function initialize( $registry_identifier = '' ) {
 		if ( $registry_identifier ) {
 			$this->registry_identifier = $registry_identifier;
 		}
-	}
 
-	/**
-	 * Initializes all registered integrations.
-	 */
-	public function initialize() {
 		if ( empty( $this->registry_identifier ) ) {
 			_doing_it_wrong( __METHOD__, esc_html( __( 'Integration registry requires an identifier.', 'woo-gutenberg-products-block' ) ) );
 			return false;
