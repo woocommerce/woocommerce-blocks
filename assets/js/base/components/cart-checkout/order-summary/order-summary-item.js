@@ -2,12 +2,11 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { applyFilters } from '@wordpress/hooks';
 import Label from '@woocommerce/base-components/label';
 import ProductPrice from '@woocommerce/base-components/product-price';
 import ProductName from '@woocommerce/base-components/product-name';
 import { getCurrency } from '@woocommerce/price-format';
-import { __EXPERIMENTAL_CART_ITEM_PRICE_FILTER } from '@woocommerce/blocks-checkout';
+import { __experimentalApplyCheckoutFilter } from '@woocommerce/blocks-checkout';
 import PropTypes from 'prop-types';
 import Dinero from 'dinero.js';
 
@@ -56,12 +55,16 @@ const OrderSummaryItem = ( { cartItem } ) => {
 		.getAmount();
 
 	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
-	const productPriceFormat = applyFilters(
-		__EXPERIMENTAL_CART_ITEM_PRICE_FILTER,
-		'<price/>',
-		cartItem,
-		'checkout'
-	);
+	const productPriceFormat = __experimentalApplyCheckoutFilter( {
+		filterName: 'cartItemPrice',
+		defaultValue: '<price/>',
+		arg: {
+			cartItem,
+			block: 'checkout',
+		},
+		validation: ( value ) =>
+			typeof value === 'string' && value.includes( '<price/>' ),
+	} );
 
 	return (
 		<div className="wc-block-components-order-summary-item">
