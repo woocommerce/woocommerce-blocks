@@ -53,7 +53,7 @@ const OrderSummaryItem = ( { cartItem } ) => {
 		.getAmount();
 	const subtotalPriceFormat = __experimentalApplyCheckoutFilter( {
 		filterName: 'subtotalPriceFormat',
-		defaultValue: '',
+		defaultValue: '<price/>',
 		arg: {
 			lineItem: cartItem,
 		},
