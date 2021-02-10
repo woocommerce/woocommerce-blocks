@@ -58,7 +58,8 @@ const OrderSummaryItem = ( { cartItem } ) => {
 			lineItem: cartItem,
 		},
 		// Only accept strings.
-		validation: ( value ) => typeof value === 'string',
+		validation: ( value ) =>
+			typeof value === 'string' && value.includes( '<price/>' ),
 	} );
 
 	return (
