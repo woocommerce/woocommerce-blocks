@@ -3,6 +3,7 @@ namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;
 
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
 use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
+use WP_Error;
 
 
 /**
@@ -396,8 +397,8 @@ class CartSchema extends AbstractSchema {
 	protected function get_cart_errors( $cart ) {
 		$controller    = new CartController();
 		$item_errors   = array_filter(
-			[ $controller->get_cart_item_errors() ],
-			function( \WP_Error  $error ) {
+			$controller->get_cart_item_errors(),
+			function ( WP_Error $error ) {
 				return $error->has_errors();
 			}
 		);
