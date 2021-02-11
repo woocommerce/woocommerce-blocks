@@ -485,7 +485,6 @@ class CartController {
 		}
 
 		if ( $product->is_sold_individually() && $cart_item['quantity'] > 1 ) {
-			WC()->cart->set_quantity( $cart_item['key'], 1, false );
 			throw new TooManyInCartException(
 				'woocommerce_rest_cart_product_sold_individually',
 				$product->get_name()
@@ -493,7 +492,6 @@ class CartController {
 		}
 
 		if ( ! $product->is_in_stock() ) {
-			WC()->cart->remove_cart_item( $cart_item['key'] );
 			throw new OutOfStockException(
 				'woocommerce_rest_cart_product_no_stock',
 				$product->get_name()
@@ -505,8 +503,6 @@ class CartController {
 			$qty_in_cart   = $this->get_product_quantity_in_cart( $product );
 
 			if ( $qty_remaining < $qty_in_cart ) {
-
-				WC()->cart->set_quantity( $cart_item['key'], $qty_remaining, false );
 				throw new PartialOutOfStockException(
 					'woocommerce_rest_cart_product_partially_no_stock',
 					$product->get_name()
