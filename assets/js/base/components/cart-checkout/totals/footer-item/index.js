@@ -6,7 +6,7 @@ import {
 	TAXES_ENABLED,
 	DISPLAY_CART_PRICES_INCLUDING_TAX,
 } from '@woocommerce/block-settings';
-import { createInterpolateElement } from 'wordpress-element';
+import { createInterpolateElement, useMemo } from 'wordpress-element';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import PropTypes from 'prop-types';
 import {
@@ -25,30 +25,34 @@ const SHOW_TAXES = TAXES_ENABLED && DISPLAY_CART_PRICES_INCLUDING_TAX;
 const TotalsFooterItem = ( { currency, values } ) => {
 	const { total_price: totalPrice, total_tax: totalTax } = values;
 	const { extensions } = useStoreCart();
-	const label = __experimentalApplyCheckoutFilter( {
-		filterName: 'totalLabel',
-		defaultValue: __( 'Total', 'woo-gutenberg-products-block' ),
-		arg: {
-			extensions,
-		},
-		// Only accept strings.
-		validation: ( value ) => {
-			if ( typeof value !== 'string' ) {
-				throw Error(
-					sprintf(
-						// translators: %s is type of value passed
-						__(
-							'Returned value must be a string, you passed %s',
-							'woo-gutenberg-products-block'
-						),
-						typeof value
-					)
-				);
-			}
+	const label = useMemo(
+		() =>
+			__experimentalApplyCheckoutFilter( {
+				filterName: 'totalLabel',
+				defaultValue: __( 'Total', 'woo-gutenberg-products-block' ),
+				arg: {
+					extensions,
+				},
+				// Only accept strings.
+				validation: ( value ) => {
+					if ( typeof value !== 'string' ) {
+						throw Error(
+							sprintf(
+								// translators: %s is type of value passed
+								__(
+									'Returned value must be a string, you passed %s',
+									'woo-gutenberg-products-block'
+								),
+								typeof value
+							)
+						);
+					}
 
-			return true;
-		},
-	} );
+					return true;
+				},
+			} ),
+		[ extensions ]
+	);
 
 	return (
 		<TotalsItem

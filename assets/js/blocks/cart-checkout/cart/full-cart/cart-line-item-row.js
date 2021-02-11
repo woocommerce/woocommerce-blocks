@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { useMemo } from '@wordpress/element';
 import classnames from 'classnames';
 import { sprintf, __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
@@ -96,29 +97,33 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 
 	const priceCurrency = getCurrency( prices );
 
-	const name = __experimentalApplyCheckoutFilter( {
-		filterName: 'itemName',
-		defaultValue: initialName,
-		arg: {
-			extensions,
-			context: 'cart',
-		},
-		validation: ( value ) => {
-			if ( typeof value !== 'string' ) {
-				throw Error(
-					sprintf(
-						// translators: %s is type of value passed
-						__(
-							'Returned value must be a string, you passed %s',
-							'woo-gutenberg-products-block'
-						),
-						typeof value
-					)
-				);
-			}
-			return true;
-		},
-	} );
+	const name = useMemo(
+		() =>
+			__experimentalApplyCheckoutFilter( {
+				filterName: 'itemName',
+				defaultValue: initialName,
+				arg: {
+					extensions,
+					context: 'cart',
+				},
+				validation: ( value ) => {
+					if ( typeof value !== 'string' ) {
+						throw Error(
+							sprintf(
+								// translators: %s is type of value passed
+								__(
+									'Returned value must be a string, you passed %s',
+									'woo-gutenberg-products-block'
+								),
+								typeof value
+							)
+						);
+					}
+					return true;
+				},
+			} ),
+		[ initialName, extensions ]
+	);
 
 	const regularAmountSingle = Dinero( {
 		amount: parseInt( prices.raw_prices.regular_price, 10 ),
@@ -146,116 +151,128 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 		catalogVisibility === 'hidden' || catalogVisibility === 'search';
 
 	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
-	const productPriceFormat = __experimentalApplyCheckoutFilter( {
-		filterName: 'cartItemPrice',
-		defaultValue: '<price/>',
-		arg: {
-			cartItem: lineItem,
-			block: 'cart',
-		},
-		validation: ( value ) => {
-			if ( typeof value !== 'string' ) {
-				throw Error(
-					sprintf(
-						// translators: %s is type of value passed
-						__(
-							'Returned value must be a string, you passed %s',
-							'woo-gutenberg-products-block'
-						),
-						typeof value
-					)
-				);
-			}
+	const productPriceFormat = useMemo(
+		() =>
+			__experimentalApplyCheckoutFilter( {
+				filterName: 'cartItemPrice',
+				defaultValue: '<price/>',
+				arg: {
+					cartItem: lineItem,
+					block: 'cart',
+				},
+				validation: ( value ) => {
+					if ( typeof value !== 'string' ) {
+						throw Error(
+							sprintf(
+								// translators: %s is type of value passed
+								__(
+									'Returned value must be a string, you passed %s',
+									'woo-gutenberg-products-block'
+								),
+								typeof value
+							)
+						);
+					}
 
-			if ( ! value.includes( '<price/>' ) ) {
-				throw Error(
-					sprintf(
-						// translators: %s value passed to filter.
-						__(
-							'Returned value must include <price/>, you passed %s',
-							'woo-gutenberg-products-block'
-						),
-						value
-					)
-				);
-			}
-			return true;
-		},
-	} );
+					if ( ! value.includes( '<price/>' ) ) {
+						throw Error(
+							sprintf(
+								// translators: %s value passed to filter.
+								__(
+									'Returned value must include <price/>, you passed %s',
+									'woo-gutenberg-products-block'
+								),
+								value
+							)
+						);
+					}
+					return true;
+				},
+			} ),
+		[ lineItem ]
+	);
 
-	const subtotalPriceFormat = __experimentalApplyCheckoutFilter( {
-		filterName: 'subtotalPriceFormat',
-		defaultValue: '<price/>',
-		arg: {
-			lineItem,
-		},
-		// Only accept strings.
-		validation: ( value ) => {
-			if ( typeof value !== 'string' ) {
-				throw Error(
-					sprintf(
-						// translators: %s is type of value passed
-						__(
-							'Returned value must be a string, you passed %s',
-							'woo-gutenberg-products-block'
-						),
-						typeof value
-					)
-				);
-			}
+	const subtotalPriceFormat = useMemo(
+		() =>
+			__experimentalApplyCheckoutFilter( {
+				filterName: 'subtotalPriceFormat',
+				defaultValue: '<price/>',
+				arg: {
+					lineItem,
+				},
+				// Only accept strings.
+				validation: ( value ) => {
+					if ( typeof value !== 'string' ) {
+						throw Error(
+							sprintf(
+								// translators: %s is type of value passed
+								__(
+									'Returned value must be a string, you passed %s',
+									'woo-gutenberg-products-block'
+								),
+								typeof value
+							)
+						);
+					}
 
-			if ( ! value.includes( '<price/>' ) ) {
-				throw Error(
-					sprintf(
-						// translators: %s value passed to filter.
-						__(
-							'Returned value must include <price/>, you passed %s',
-							'woo-gutenberg-products-block'
-						),
-						value
-					)
-				);
-			}
-			return true;
-		},
-	} );
+					if ( ! value.includes( '<price/>' ) ) {
+						throw Error(
+							sprintf(
+								// translators: %s value passed to filter.
+								__(
+									'Returned value must include <price/>, you passed %s',
+									'woo-gutenberg-products-block'
+								),
+								value
+							)
+						);
+					}
+					return true;
+				},
+			} ),
+		[ lineItem ]
+	);
 
-	const saleBadgePriceFormat = __experimentalApplyCheckoutFilter( {
-		filterName: 'saleBadgePriceFormat',
-		defaultValue: '<price/>',
-		arg: {
-			lineItem,
-		},
-		// Only accept strings.
-		validation: ( value ) => {
-			if ( typeof value !== 'string' ) {
-				throw Error(
-					sprintf(
-						// translators: %s is type of value passed
-						__(
-							'Returned value must be a string, you passed %s',
-							'woo-gutenberg-products-block'
-						),
-						typeof value
-					)
-				);
-			}
+	const saleBadgePriceFormat = useMemo(
+		() =>
+			__experimentalApplyCheckoutFilter( {
+				filterName: 'saleBadgePriceFormat',
+				defaultValue: '<price/>',
+				arg: {
+					lineItem,
+				},
+				// Only accept strings.
+				validation: ( value ) => {
+					if ( typeof value !== 'string' ) {
+						throw Error(
+							sprintf(
+								// translators: %s is type of value passed
+								__(
+									'Returned value must be a string, you passed %s',
+									'woo-gutenberg-products-block'
+								),
+								typeof value
+							)
+						);
+					}
 
-			if ( ! value.includes( '<price/>' ) ) {
-				throw Error(
-					sprintf(
-						// translators: %s value passed to filter.
-						__(
-							'Returned value must include <price/>, you passed %s',
-							'woo-gutenberg-products-block'
-						),
-						value
-					)
-				);
-			}
-			return true;
-		},
-	} );
+					if ( ! value.includes( '<price/>' ) ) {
+						throw Error(
+							sprintf(
+								// translators: %s value passed to filter.
+								__(
+									'Returned value must include <price/>, you passed %s',
+									'woo-gutenberg-products-block'
+								),
+								value
+							)
+						);
+					}
+					return true;
+				},
+			} ),
+		[ lineItem ]
+	);
 
 	return (
 		<tr

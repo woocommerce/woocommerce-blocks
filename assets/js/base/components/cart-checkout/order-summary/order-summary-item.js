@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
+import { useMemo } from '@wordpress/element';
 import Label from '@woocommerce/base-components/label';
 import ProductPrice from '@woocommerce/base-components/product-price';
 import ProductName from '@woocommerce/base-components/product-name';
@@ -38,30 +39,34 @@ const OrderSummaryItem = ( { cartItem } ) => {
 
 	const priceCurrency = getCurrency( prices );
 
-	const name = __experimentalApplyCheckoutFilter( {
-		filterName: 'itemName',
-		defaultValue: initialName,
-		arg: {
-			extensions,
-			context: 'summary',
-		},
-		validation: ( value ) => {
-			if ( typeof value !== 'string' ) {
-				throw Error(
-					sprintf(
-						// translators: %s is type of value passed
-						__(
-							'Returned value must be a string, you passed %s',
-							'woo-gutenberg-products-block'
-						),
-						typeof value
-					)
-				);
-			}
+	const name = useMemo(
+		() =>
+			__experimentalApplyCheckoutFilter( {
+				filterName: 'itemName',
+				defaultValue: initialName,
+				arg: {
+					extensions,
+					context: 'summary',
+				},
+				validation: ( value ) => {
+					if ( typeof value !== 'string' ) {
+						throw Error(
+							sprintf(
+								// translators: %s is type of value passed
+								__(
+									'Returned value must be a string, you passed %s',
+									'woo-gutenberg-products-block'
+								),
+								typeof value
+							)
+						);
+					}
 
-			return true;
-		},
-	} );
+					return true;
+				},
+			} ),
+		[ initialName, extensions ]
+	);
 
 	const regularPriceSingle = Dinero( {
 		amount: parseInt( prices.raw_prices.regular_price, 10 ),
@@ -86,80 +91,88 @@ const OrderSummaryItem = ( { cartItem } ) => {
 	} )
 		.convertPrecision( totals.currency_minor_unit )
 		.getAmount();
-	const subtotalPriceFormat = __experimentalApplyCheckoutFilter( {
-		filterName: 'subtotalPriceFormat',
-		defaultValue: '<price/>',
-		arg: {
-			lineItem: cartItem,
-		},
-		// Only accept strings.
-		validation: ( value ) => {
-			if ( typeof value !== 'string' ) {
-				throw Error(
-					sprintf(
-						// translators: %s is type of value passed
-						__(
-							'Returned value must be a string, you passed %s',
-							'woo-gutenberg-products-block'
-						),
-						typeof value
-					)
-				);
-			}
+	const subtotalPriceFormat = useMemo(
+		() =>
+			__experimentalApplyCheckoutFilter( {
+				filterName: 'subtotalPriceFormat',
+				defaultValue: '<price/>',
+				arg: {
+					lineItem: cartItem,
+				},
+				// Only accept strings.
+				validation: ( value ) => {
+					if ( typeof value !== 'string' ) {
+						throw Error(
+							sprintf(
+								// translators: %s is type of value passed
+								__(
+									'Returned value must be a string, you passed %s',
+									'woo-gutenberg-products-block'
+								),
+								typeof value
+							)
+						);
+					}
 
-			if ( ! value.includes( '<price/>' ) ) {
-				throw Error(
-					sprintf(
-						// translators: %s value passed to filter.
-						__(
-							'Returned value must include <price/>, you passed %s',
-							'woo-gutenberg-products-block'
-						),
-						value
-					)
-				);
-			}
-			return true;
-		},
-	} );
+					if ( ! value.includes( '<price/>' ) ) {
+						throw Error(
+							sprintf(
+								// translators: %s value passed to filter.
+								__(
+									'Returned value must include <price/>, you passed %s',
+									'woo-gutenberg-products-block'
+								),
+								value
+							)
+						);
+					}
+					return true;
+				},
+			} ),
+		[ cartItem ]
+	);
 
 	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
-	const productPriceFormat = __experimentalApplyCheckoutFilter( {
-		filterName: 'cartItemPrice',
-		defaultValue: '<price/>',
-		arg: {
-			cartItem,
-			block: 'checkout',
-		},
-		validation: ( value ) => {
-			if ( typeof value !== 'string' ) {
-				throw Error(
-					sprintf(
-						// translators: %s is type of value passed
-						__(
-							'Returned value must be a string, you passed %s',
-							'woo-gutenberg-products-block'
-						),
-						typeof value
-					)
-				);
-			}
+	const productPriceFormat = useMemo(
+		() =>
+			__experimentalApplyCheckoutFilter( {
+				filterName: 'cartItemPrice',
+				defaultValue: '<price/>',
+				arg: {
+					cartItem,
+					block: 'checkout',
+				},
+				validation: ( value ) => {
+					if ( typeof value !== 'string' ) {
+						throw Error(
+							sprintf(
+								// translators: %s is type of value passed
+								__(
+									'Returned value must be a string, you passed %s',
+									'woo-gutenberg-products-block'
+								),
+								typeof value
+							)
+						);
+					}
 
-			if ( ! value.includes( '<price/>' ) ) {
-				throw Error(
-					sprintf(
-						// translators: %s value passed to filter.
-						__(
-							'Returned value must include <price/>, you passed %s',
-							'woo-gutenberg-products-block'
-						),
-						value
-					)
-				);
-			}
-			return true;
-		},
-	} );
+					if ( ! value.includes( '<price/>' ) ) {
+						throw Error(
+							sprintf(
+								// translators: %s value passed to filter.
+								__(
+									'Returned value must include <price/>, you passed %s',
+									'woo-gutenberg-products-block'
+								),
+								value
+							)
+						);
+					}
+					return true;
+				},
+			} ),
+		[ cartItem ]
+	);
 
 	return (
 		<div className="wc-block-components-order-summary-item">
