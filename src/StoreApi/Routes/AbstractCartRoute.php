@@ -26,7 +26,7 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	protected $cart_schema;
 
 	/**
-	 * Constructor accepts two types of schema; for for the item being returned, and one for the cart as a whole. These
+	 * Constructor accepts two types of schema; one for the item being returned, and one for the cart as a whole. These
 	 * may be the same depending on the route.
 	 *
 	 * @param CartSchema     $cart_schema Schema class for the cart.
