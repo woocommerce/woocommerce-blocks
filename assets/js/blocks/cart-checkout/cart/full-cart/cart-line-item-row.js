@@ -125,7 +125,6 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 	const isProductHiddenFromCatalog =
 		catalogVisibility === 'hidden' || catalogVisibility === 'search';
 
-
 	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
 	const productPriceFormat = __experimentalApplyCheckoutFilter( {
 		filterName: 'cartItemPrice',
@@ -134,6 +133,9 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 			cartItem: lineItem,
 			block: 'cart',
 		},
+		validation: ( value ) =>
+			typeof value === 'string' && value.includes( '<price/>' ),
+	} );
 
 	const subtotalPriceFormat = __experimentalApplyCheckoutFilter( {
 		filterName: 'subtotalPriceFormat',

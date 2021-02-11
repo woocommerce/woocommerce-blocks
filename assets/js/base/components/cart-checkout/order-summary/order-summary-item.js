@@ -32,7 +32,7 @@ const OrderSummaryItem = ( { cartItem } ) => {
 		item_data: itemData = [],
 		variation,
 		totals,
-    extensions,
+		extensions,
 	} = cartItem;
 
 	const priceCurrency = getCurrency( prices );
