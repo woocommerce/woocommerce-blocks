@@ -334,16 +334,8 @@ class CartController {
 		$error = new WP_Error();
 
 		if ( count( $out_of_stock_products ) > 0 ) {
-			// translators: %s: product names.
-			$singular_error = __(
-				'%s is out of stock and cannot be purchased. It has been removed from your cart.',
-				'woo-gutenberg-products-block'
-			);
-			// translators: %s: product names.
-			$plural_error = __(
-				'%s are out of stock and cannot be purchased. They have been removed from your cart.',
-				'woo-gutenberg-products-block'
-			);
+			$singular_error = $this->get_error_message_for_stock_exception_type( 'out_of_stock', 'singular' );
+			$plural_error   = $this->get_error_message_for_stock_exception_type( 'out_of_stock', 'plural' );
 
 			$error->add(
 				409,
@@ -352,16 +344,8 @@ class CartController {
 		}
 
 		if ( count( $not_purchasable_products ) > 0 ) {
-			// translators: %s: product names.
-			$singular_error = __(
-				'%s cannot be purchased. It has been removed from your cart.',
-				'woo-gutenberg-products-block'
-			);
-			// translators: %s: product names.
-			$plural_error = __(
-				'%s cannot be purchased. They have been removed from your cart.',
-				'woo-gutenberg-products-block'
-			);
+			$singular_error = $this->get_error_message_for_stock_exception_type( 'not_purchasable', 'singular' );
+			$plural_error   = $this->get_error_message_for_stock_exception_type( 'not_purchasable', 'plural' );
 
 			$error->add(
 				409,
@@ -370,16 +354,8 @@ class CartController {
 		}
 
 		if ( count( $too_many_in_cart_products ) > 0 ) {
-			// translators: %s: product names.
-			$singular_error = __(
-				'There are too many %s in the cart. Only 1 can be purchased. The quantity in your cart has been reduced.',
-				'woo-gutenberg-products-block'
-			);
-			// translators: %s: product names.
-			$plural_error = __(
-				'There are too many %s in the cart. Only 1 of each can be purchased. The quantities in your cart have been reduced.',
-				'woo-gutenberg-products-block'
-			);
+			$singular_error = $this->get_error_message_for_stock_exception_type( 'too_many_in_cart', 'singular' );
+			$plural_error   = $this->get_error_message_for_stock_exception_type( 'too_many_in_cart', 'plural' );
 
 			$error->add(
 				409,
@@ -388,16 +364,8 @@ class CartController {
 		}
 
 		if ( count( $partial_out_of_stock_products ) > 0 ) {
-			// translators: %s: product names.
-			$singular_error = __(
-				'There is not enough %s in stock. The quantity in your cart has been reduced.',
-				'woo-gutenberg-products-block'
-			);
-			// translators: %s: product names.
-			$plural_error = __(
-				'There are not enough %s in stock. The quantities in your cart have been reduced.',
-				'woo-gutenberg-products-block'
-			);
+			$singular_error = $this->get_error_message_for_stock_exception_type( 'partial_out_of_stock', 'singular' );
+			$plural_error   = $this->get_error_message_for_stock_exception_type( 'partial_out_of_stock', 'plural' );
 
 			$error->add(
 				409,
