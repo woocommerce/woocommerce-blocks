@@ -85,6 +85,10 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 4.4.3 - 2021-02-11 =
+
+- Update Jetpack Autoloader to 2.9.1.
+
 = 4.4.2 - 2021-02-05 =
 
 #### Bug Fixes
