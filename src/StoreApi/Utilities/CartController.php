@@ -233,6 +233,77 @@ class CartController {
 	}
 
 	/**
+	 * Takes a string describing the type of stock extension, whether there is a single product or multiple products
+	 * causing this exception and returns an appropriate error message.
+	 *
+	 * @param string $exception_type     The type of exception encountered.
+	 * @param string $singular_or_plural Whether to get the error message for a single product or multiple.
+	 *
+	 * @return string
+	 */
+	private function get_error_message_for_stock_exception_type( $exception_type, $singular_or_plural ) {
+		$stock_error_messages = [
+			'out_of_stock'         => [
+				// translators: %s: product name.
+				'singular' => __(
+					'%s is out of stock and cannot be purchased. Please remove it from your cart.',
+					'woo-gutenberg-products-block'
+				),
+				// translators: %s: product names.
+				'plural'   => __(
+					'%s are out of stock and cannot be purchased. Please remove them from your cart.',
+					'woo-gutenberg-products-block'
+				),
+			],
+			'not_purchasable'      => [
+				// translators: %s: product name.
+				'singular' => __(
+					'%s cannot be purchased.  Please remove it from your cart.',
+					'woo-gutenberg-products-block'
+				),
+				// translators: %s: product names.
+				'plural'   => __(
+					'%s cannot be purchased. Please remove them from your cart.',
+					'woo-gutenberg-products-block'
+				),
+			],
+			'too_many_in_cart'     => [
+				// translators: %s: product names.
+				'singular' => __(
+					'There are too many %s in the cart. Only 1 can be purchased. Please reduce the quantity in your cart.',
+					'woo-gutenberg-products-block'
+				),
+				// translators: %s: product names.
+				'plural'   => __(
+					'There are too many %s in the cart. Only 1 of each can be purchased. Please reduce the quantities in your cart.',
+					'woo-gutenberg-products-block'
+				),
+			],
+			'partial_out_of_stock' => [
+				// translators: %s: product names.
+				'singular' => __(
+					'There is not enough %s in stock. Please reduce the quantity in your cart.',
+					'woo-gutenberg-products-block'
+				),
+				// translators: %s: product names.
+				'plural'   => __(
+					'There are not enough %s in stock. Please reduce the quantities in your cart.',
+					'woo-gutenberg-products-block'
+				),
+			],
+		];
+
+		if (
+			isset( $stock_error_messages[ $exception_type ] ) &&
+			isset( $stock_error_messages[ $exception_type ][ $singular_or_plural ] )
+		) {
+			return $stock_error_messages[ $exception_type ][ $singular_or_plural ];
+		}
+
+		return __( 'There was an error with an item in your cart.', 'woo-gutenberg-products-block' );
+	}
+
+	/**
 	 * Validate all items in the cart and check for errors.
 	 *
 	 * @throws InvalidStockLevelsInCartException Exception if invalid data is detected due to insufficient stock levels.
