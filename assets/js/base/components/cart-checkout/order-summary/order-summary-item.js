@@ -7,7 +7,11 @@ import Label from '@woocommerce/base-components/label';
 import ProductPrice from '@woocommerce/base-components/product-price';
 import ProductName from '@woocommerce/base-components/product-name';
 import { getCurrency } from '@woocommerce/price-format';
-import { __experimentalApplyCheckoutFilter } from '@woocommerce/blocks-checkout';
+import {
+	__experimentalApplyCheckoutFilter,
+	mustBeString,
+	mustContain,
+} from '@woocommerce/blocks-checkout';
 import PropTypes from 'prop-types';
 import Dinero from 'dinero.js';
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
@@ -48,22 +52,7 @@ const OrderSummaryItem = ( { cartItem } ) => {
 				arg: {
 					context: 'summary',
 				},
-				validation: ( value ) => {
-					if ( typeof value !== 'string' ) {
-						throw Error(
-							sprintf(
-								// translators: %s is type of value passed
-								__(
-									'Returned value must be a string, you passed %s',
-									'woo-gutenberg-products-block'
-								),
-								typeof value
-							)
-						);
-					}
-
-					return true;
-				},
+				validation: ( value ) => mustBeString( value ),
 			} ),
 		[ initialName, extensions ]
 	);
@@ -101,34 +90,8 @@ const OrderSummaryItem = ( { cartItem } ) => {
 					lineItem: cartItem,
 				},
 				// Only accept strings.
-				validation: ( value ) => {
-					if ( typeof value !== 'string' ) {
-						throw Error(
-							sprintf(
-								// translators: %s is type of value passed
-								__(
-									'Returned value must be a string, you passed %s',
-									'woo-gutenberg-products-block'
-								),
-								typeof value
-							)
-						);
-					}
-
-					if ( ! value.includes( '<price/>' ) ) {
-						throw Error(
-							sprintf(
-								// translators: %s value passed to filter.
-								__(
-									'Returned value must include <price/>, you passed %s',
-									'woo-gutenberg-products-block'
-								),
-								value
-							)
-						);
-					}
-					return true;
-				},
+				validation: ( value ) =>
+					mustBeString( value ) && mustContain( value, '<price/>' ),
 			} ),
 		[ cartItem, extensions ]
 	);
@@ -144,34 +107,8 @@ const OrderSummaryItem = ( { cartItem } ) => {
 					lineItem: cartItem,
 					context: 'checkout',
 				},
-				validation: ( value ) => {
-					if ( typeof value !== 'string' ) {
-						throw Error(
-							sprintf(
-								// translators: %s is type of value passed
-								__(
-									'Returned value must be a string, you passed %s',
-									'woo-gutenberg-products-block'
-								),
-								typeof value
-							)
-						);
-					}
-
-					if ( ! value.includes( '<price/>' ) ) {
-						throw Error(
-							sprintf(
-								// translators: %s value passed to filter.
-								__(
-									'Returned value must include <price/>, you passed %s',
-									'woo-gutenberg-products-block'
-								),
-								value
-							)
-						);
-					}
-					return true;
-				},
+				validation: ( value ) =>
+					mustBeString( value ) && mustContain( value, '<price/>' ),
 			} ),
 		[ cartItem, extensions ]
 	);

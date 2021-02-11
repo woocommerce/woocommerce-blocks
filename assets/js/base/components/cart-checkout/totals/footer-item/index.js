@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { sprintf, __ } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import {
 	TAXES_ENABLED,
 	DISPLAY_CART_PRICES_INCLUDING_TAX,
@@ -11,6 +11,7 @@ import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-mone
 import PropTypes from 'prop-types';
 import {
 	__experimentalApplyCheckoutFilter,
+	mustBeString,
 	TotalsItem,
 } from '@woocommerce/blocks-checkout';
 import { useStoreCart } from '@woocommerce/base-hooks';
@@ -32,22 +33,7 @@ const TotalsFooterItem = ( { currency, values } ) => {
 				defaultValue: __( 'Total', 'woo-gutenberg-products-block' ),
 				extensions,
 				// Only accept strings.
-				validation: ( value ) => {
-					if ( typeof value !== 'string' ) {
-						throw Error(
-							sprintf(
-								// translators: %s is type of value passed
-								__(
-									'Returned value must be a string, you passed %s',
-									'woo-gutenberg-products-block'
-								),
-								typeof value
-							)
-						);
-					}
-
-					return true;
-				},
+				validation: ( value ) => mustBeString( value ),
 			} ),
 		[ extensions ]
 	);
