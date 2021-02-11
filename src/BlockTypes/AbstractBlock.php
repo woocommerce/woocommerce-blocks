@@ -106,7 +106,7 @@ abstract class AbstractBlock {
 			_doing_it_wrong( __METHOD__, esc_html( __( 'Block name is required.', 'woo-gutenberg-products-block' ) ), '4.5.0' );
 			return false;
 		}
-		$this->integration_registry->initialize( $this->block_name );
+		$this->integration_registry->initialize( $this->block_name . '_block' );
 		$this->register_block_type_assets();
 		$this->register_block_type();
 		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_editor_assets' ] );
