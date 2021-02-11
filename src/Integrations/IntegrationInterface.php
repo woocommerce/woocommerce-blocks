@@ -15,7 +15,7 @@ interface IntegrationInterface {
 	public function get_name();
 
 	/**
-	 * When called invokes any initialization/setup for the payment method type instance.
+	 * When called invokes any initialization/setup for the integration.
 	 */
 	public function initialize();
 
@@ -27,11 +27,11 @@ interface IntegrationInterface {
 	public function get_script_handles();
 
 	/**
-	 * Returns an array of script handles to enqueue in the admin context.
+	 * Returns an array of script handles to enqueue in the editor context.
 	 *
 	 * @return string[]
 	 */
-	public function get_admin_script_handles();
+	public function get_editor_script_handles();
 
 	/**
 	 * An array of key, value pairs of data made available to the block on the client side.

@@ -35,7 +35,7 @@ final class PaymentMethodRegistry extends IntegrationRegistry {
 	 *
 	 * @return string[]
 	 */
-	public function get_all_registered_script_handles() {
+	public function get_all_active_payment_method_script_dependencies() {
 		$script_handles  = [];
 		$payment_methods = $this->get_all_active_registered();
 

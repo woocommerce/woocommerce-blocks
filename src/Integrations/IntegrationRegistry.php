@@ -128,6 +128,25 @@ class IntegrationRegistry {
 	 *
 	 * @return string[]
 	 */
+	public function get_all_registered_editor_script_handles() {
+		$script_handles          = [];
+		$registered_integrations = $this->get_all_registered();
+
+		foreach ( $registered_integrations as $registered_integration ) {
+			$script_handles = array_merge(
+				$script_handles,
+				$registered_integration->get_editor_script_handles()
+			);
+		}
+
+		return array_unique( array_filter( $script_handles ) );
+	}
+
+	/**
+	 * Gets an array of all registered integration's script handles.
+	 *
+	 * @return string[]
+	 */
 	public function get_all_registered_script_handles() {
 		$script_handles          = [];
 		$registered_integrations = $this->get_all_registered();
@@ -135,7 +154,7 @@ class IntegrationRegistry {
 		foreach ( $registered_integrations as $registered_integration ) {
 			$script_handles = array_merge(
 				$script_handles,
-				is_admin() ? $registered_integration->get_admin_script_handles() : $registered_integration->get_script_handles()
+				$registered_integration->get_script_handles()
 			);
 		}
 
