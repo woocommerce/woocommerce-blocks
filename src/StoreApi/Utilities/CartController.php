@@ -398,89 +398,66 @@ class CartController {
 	/**
 	 * This method will take arrays of exceptions relating to stock, and will convert them to a WP_Error object.
 	 *
-	 * @param $too_many_in_cart_products TooManyInCartException[] Array of TooManyInCartExceptions
-	 * @param $not_purchasable_products NotPurchasableException[] Array of NotPurchasableExceptions
-	 * @param $partial_out_of_stock_products PartialOutOfStockException[] Array of PartialOutOfStockExceptions
-	 * @param $out_of_stock_products OutOfStockException[] Array of OutOfStockExceptions
+	 * @param TooManyInCartException[]     $too_many_in_cart_products         Array of TooManyInCartExceptions.
+	 * @param NotPurchasableException[]    $not_purchasable_products         Array of NotPurchasableExceptions.
+	 * @param PartialOutOfStockException[] $partial_out_of_stock_products Array of PartialOutOfStockExceptions.
+	 * @param OutOfStockException[]        $out_of_stock_products                Array of OutOfStockExceptions.
 	 *
-	 * @return WP_Error The WP_Error object returned. Will have errors if any exceptions were in the args. It will be empty if they do not.
+	 * @return WP_Error[] The WP_Error object returned. Will have errors if any exceptions were in the args. It will be empty if they do not.
 	 */
-	private function stock_exceptions_to_wp_error( $too_many_in_cart_products, $not_purchasable_products, $partial_out_of_stock_products, $out_of_stock_products ) {
-		$error = new WP_Error();
+	private function stock_exceptions_to_wp_errors( $too_many_in_cart_products, $not_purchasable_products, $partial_out_of_stock_products, $out_of_stock_products ) {
+		$too_many_in_cart_error     = new WP_Error();
+		$out_of_stock_error         = new WP_Error();
+		$partial_out_of_stock_error = new WP_Error();
+		$not_purchasable_error      = new WP_Error();
 
 		if ( count( $out_of_stock_products ) > 0 ) {
-			// translators: %s: product names.
-			$singular_error = __(
-				'%s is out of stock and cannot be purchased. It has been removed from your cart.',
-				'woo-gutenberg-products-block'
-			);
-			// translators: %s: product names.
-			$plural_error = __(
-				'%s are out of stock and cannot be purchased. They have been removed from your cart.',
-				'woo-gutenberg-products-block'
-			);
 
-			$error->add(
-				409,
+			$singular_error = $this->get_error_message_for_stock_exception_type( 'out_of_stock', 'singular' );
+			$plural_error   = $this->get_error_message_for_stock_exception_type( 'out_of_stock', 'plural' );
+
+			$out_of_stock_error->add(
+				'woocommerce-blocks-product-out_of_stock',
 				$this->add_product_names_to_message( $singular_error, $plural_error, $out_of_stock_products )
 			);
 		}
 
 		if ( count( $not_purchasable_products ) > 0 ) {
-			// translators: %s: product names.
-			$singular_error = __(
-				'%s cannot be purchased. It has been removed from your cart.',
-				'woo-gutenberg-products-block'
-			);
-			// translators: %s: product names.
-			$plural_error = __(
-				'%s cannot be purchased. They have been removed from your cart.',
-				'woo-gutenberg-products-block'
-			);
+			$singular_error = $this->get_error_message_for_stock_exception_type( 'not_purchasable', 'singular' );
+			$plural_error   = $this->get_error_message_for_stock_exception_type( 'not_purchasable', 'plural' );
 
-			$error->add(
-				409,
+			$not_purchasable_error->add(
+				'woocommerce-blocks-product-not-purchasable',
 				$this->add_product_names_to_message( $singular_error, $plural_error, $not_purchasable_products )
 			);
 		}
 
 		if ( count( $too_many_in_cart_products ) > 0 ) {
-			// translators: %s: product names.
-			$singular_error = __(
-				'There are too many %s in the cart. Only 1 can be purchased. The quantity in your cart has been reduced.',
-				'woo-gutenberg-products-block'
-			);
-			// translators: %s: product names.
-			$plural_error = __(
-				'There are too many %s in the cart. Only 1 of each can be purchased. The quantities in your cart have been reduced.',
-				'woo-gutenberg-products-block'
-			);
+			$singular_error = $this->get_error_message_for_stock_exception_type( 'too_many_in_cart', 'singular' );
+			$plural_error   = $this->get_error_message_for_stock_exception_type( 'too_many_in_cart', 'plural' );
 
-			$error->add(
-				409,
+			$too_many_in_cart_error->add(
+				'woocommerce-blocks-too-many-of-product-in-cart',
 				$this->add_product_names_to_message( $singular_error, $plural_error, $too_many_in_cart_products )
 			);
 		}
 
 		if ( count( $partial_out_of_stock_products ) > 0 ) {
-			// translators: %s: product names.
-			$singular_error = __(
-				'There is not enough %s in stock. The quantity in your cart has been reduced.',
-				'woo-gutenberg-products-block'
-			);
-			// translators: %s: product names.
-			$plural_error = __(
-				'There are not enough %s in stock. The quantities in your cart have been reduced.',
-				'woo-gutenberg-products-block'
-			);
+			$singular_error = $this->get_error_message_for_stock_exception_type( 'partial_out_of_stock', 'singular' );
+			$plural_error   = $this->get_error_message_for_stock_exception_type( 'partial_out_of_stock', 'plural' );
 
-			$error->add(
-				409,
+			$partial_out_of_stock_error->add(
+				'woocommerce-blocks-product-partially-out_of_stock',
 				$this->add_product_names_to_message( $singular_error, $plural_error, $partial_out_of_stock_products )
 			);
 		}
 
-		return $error;
+		return [
+			$too_many_in_cart_error,
+			$partial_out_of_stock_error,
+			$out_of_stock_error,
+			$not_purchasable_error,
+		];
 	}
 
 	/**
