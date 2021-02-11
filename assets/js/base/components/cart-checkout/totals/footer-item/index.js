@@ -30,9 +30,7 @@ const TotalsFooterItem = ( { currency, values } ) => {
 			__experimentalApplyCheckoutFilter( {
 				filterName: 'totalLabel',
 				defaultValue: __( 'Total', 'woo-gutenberg-products-block' ),
-				arg: {
-					extensions,
-				},
+				extensions,
 				// Only accept strings.
 				validation: ( value ) => {
 					if ( typeof value !== 'string' ) {
