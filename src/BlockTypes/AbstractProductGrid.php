@@ -34,7 +34,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 *
 	 * @return array List of block attributes with type and defaults.
 	 */
-	protected function get_attributes() {
+	protected function get_block_type_attributes() {
 		return array(
 			'className'         => $this->get_schema_string(),
 			'columns'           => $this->get_schema_number( wc_get_theme_support( 'product_blocks::default_columns', 3 ) ),

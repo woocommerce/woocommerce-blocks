@@ -31,9 +31,9 @@ class ProductCategories extends AbstractDynamicBlock {
 	 *
 	 * @return array
 	 */
-	protected function get_attributes() {
+	protected function get_block_type_attributes() {
 		return array_merge(
-			parent::get_attributes(),
+			parent::get_block_type_attributes(),
 			array(
 				'align'          => $this->get_schema_align(),
 				'className'      => $this->get_schema_string(),
