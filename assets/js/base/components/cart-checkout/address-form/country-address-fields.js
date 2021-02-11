@@ -61,14 +61,15 @@ const getSupportedProps = ( localeField ) => {
 const coreAddressFieldConfig = Object.entries( coreLocale )
 	.map( ( [ country, countryLocale ] ) => [
 		country,
-		Object.fromEntries(
-			Object.entries(
-				countryLocale
-			).map( ( [ localeFieldKey, localeField ] ) => [
+		Object.entries( countryLocale )
+			.map( ( [ localeFieldKey, localeField ] ) => [
 				localeFieldKey,
 				getSupportedProps( localeField ),
 			] )
-		),
+			.reduce( ( obj, [ key, val ] ) => {
+				obj[ key ] = val;
+				return obj;
+			}, {} ),
 	] )
 	.reduce( ( obj, [ key, val ] ) => {
 		obj[ key ] = val;
