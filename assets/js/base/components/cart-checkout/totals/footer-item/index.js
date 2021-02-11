@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { sprintf, __ } from '@wordpress/i18n';
 import {
 	TAXES_ENABLED,
 	DISPLAY_CART_PRICES_INCLUDING_TAX,
@@ -32,7 +32,22 @@ const TotalsFooterItem = ( { currency, values } ) => {
 			extensions,
 		},
 		// Only accept strings.
-		validation: ( value ) => typeof value === 'string',
+		validation: ( value ) => {
+			if ( typeof value !== 'string' ) {
+				throw Error(
+					sprintf(
+						// translators: %s is type of value passed
+						__(
+							'Returned value must be a string, you passed %s',
+							'woo-gutenberg-products-block'
+						),
+						typeof value
+					)
+				);
+			}
+
+			return true;
+		},
 	} );
 
 	return (
