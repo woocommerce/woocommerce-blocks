@@ -7,7 +7,6 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
  * @internal
  */
 class Checkout extends AbstractBlock {
-
 	/**
 	 * Block name.
 	 *
@@ -16,53 +15,60 @@ class Checkout extends AbstractBlock {
 	protected $block_name = 'checkout';
 
 	/**
-	 * Registers the block type with WordPress. This is ran during init.
+	 * Get the editor script handle for this block type.
 	 *
-	 * @see Automattic\WooCommerce\Blocks\Library::register_blocks
+	 * @param string $key Data to get, or default to everything.
+	 * @return array|string;
 	 */
-	public function register_block_type() {
-		// Register the block script.
-		$this->asset_api->register_script(
-			'wc-' . $this->block_name . '-block',
-			$this->asset_api->get_block_asset_build_path( $this->block_name ),
-			array_merge(
-				[ 'wc-vendors', 'wc-blocks', 'wc-blocks-checkout', 'wc-price-format' ],
-				$this->integration_registry->get_all_registered_script_handles()
-			)
-		);
+	protected function get_block_type_editor_script( $key = null ) {
+		$script = [
+			'handle'       => 'wc-' . $this->block_name . '-block',
+			'path'         => $this->asset_api->get_block_asset_build_path( $this->block_name ),
+			'dependencies' => [ 'wc-vendors', 'wc-blocks' ],
+		];
+		return $key ? $script[ $key ] : $script;
+	}
 
-		// Register the block type with WordPress.
-		register_block_type(
-			$this->namespace . '/' . $this->block_name,
-			array(
-				'render_callback' => array( $this, 'render' ),
-				'editor_script'   => 'wc-' . $this->block_name . '-block',
-				'editor_style'    => 'wc-block-editor',
-				'style'           => 'wc-block-style',
-				'script'          => 'wc-' . $this->block_name . '-block-frontend',
-				'supports'        => [],
-			)
-		);
+	/**
+	 * Get the frontend script handle for this block type.
+	 *
+	 * @see $this->register_block_type()
+	 * @param string $key Data to get, or default to everything.
+	 * @return array|string
+	 */
+	protected function get_block_type_script( $key = null ) {
+		$script = [
+			'handle'       => 'wc-' . $this->block_name . '-block-frontend',
+			'path'         => $this->asset_api->get_block_asset_build_path( $this->block_name . '-frontend' ),
+			'dependencies' => [],
+		];
+		return $key ? $script[ $key ] : $script;
+	}
+
+	/**
+	 * Enqueue frontend assets for this block, just in time for rendering.
+	 *
+	 * @param array $attributes  Any attributes that currently are available from the block.
+	 */
+	protected function enqueue_assets( array $attributes ) {
+		do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before' );
+		parent::enqueue_assets( $attributes );
+		do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_after' );
 	}
 
 	/**
 	 * Append frontend scripts when rendering the block.
 	 *
-	 * @param array|\WP_Block $attributes Block attributes, or an instance of a WP_Block. Defaults to an empty array.
-	 * @param string          $content    Block content. Default empty string.
+	 * @param array  $attributes Block attributes.
+	 * @param string $content    Block content.
 	 * @return string Rendered block type output.
 	 */
-	public function render( $attributes = array(), $content = '' ) {
+	protected function render( $attributes, $content ) {
 		if ( $this->is_checkout_endpoint() ) {
 			// Note: Currently the block only takes care of the main checkout form -- if an endpoint is set, refer to the
 			// legacy shortcode instead and do not render block.
 			return '[woocommerce_checkout]';
 		}
-		$block_attributes = is_a( $attributes, '\WP_Block' ) ? $attributes->attributes : $attributes;
-
-		do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before' );
-		$this->enqueue_assets( $block_attributes );
-		do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_after' );
 
 		// Deregister core checkout scripts and styles.
 		wp_deregister_script( 'wc-checkout' );
@@ -70,7 +76,7 @@ class Checkout extends AbstractBlock {
 		wp_deregister_script( 'selectWoo' );
 		wp_deregister_style( 'select2' );
 
-		return $this->inject_html_data_attributes( $content . $this->get_skeleton(), $block_attributes );
+		return $this->inject_html_data_attributes( $content . $this->get_skeleton(), $attributes );
 	}
 
 	/**
@@ -164,17 +170,6 @@ class Checkout extends AbstractBlock {
 		$array_without_accents = array_map( 'remove_accents', array_map( 'wc_strtolower', array_map( 'html_entity_decode', $array ) ) );
 		asort( $array_without_accents );
 		return array_replace( $array_without_accents, $array );
-	}
-
-	/**
-	 * Register/enqueue scripts used for this block.
-	 *
-	 * @param array $attributes  Any attributes that currently are available from the block.
-	 *                           Note, this will be empty in the editor context when the block is
-	 *                           not in the post content on editor load.
-	 */
-	protected function enqueue_scripts( array $attributes = [] ) {
-		$this->asset_api->register_block_script( $this->block_name . '-frontend', $this->block_name . '-block-frontend', [] );
 	}
 
 	/**

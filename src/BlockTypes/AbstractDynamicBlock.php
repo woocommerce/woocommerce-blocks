@@ -6,6 +6,16 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
  */
 abstract class AbstractDynamicBlock extends AbstractBlock {
 	/**
+	 * Get the frontend script handle for this block type.
+	 *
+	 * @param string $key Data to get, or default to everything.
+	 * @return null
+	 */
+	protected function get_block_type_script( $key = null ) {
+		return null;
+	}
+
+	/**
 	 * Get block attributes.
 	 *
 	 * @return array

@@ -58,7 +58,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 * @param string $content    Block content. Default empty string.
 	 * @return string Rendered block type output.
 	 */
-	public function render( $attributes = array(), $content = '' ) {
+	protected function render( $attributes = array(), $content = '' ) {
 		$this->attributes = $this->parse_attributes( $attributes );
 		$this->content    = $content;
 		$this->query_args = $this->parse_query_args();
@@ -308,7 +308,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 * @param int $id Product ID.
 	 * @return string Rendered product output.
 	 */
-	public function render_product( $id ) {
+	protected function render_product( $id ) {
 		$product = wc_get_product( $id );
 
 		if ( ! $product ) {
