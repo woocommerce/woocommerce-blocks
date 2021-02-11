@@ -551,20 +551,24 @@ class CartController {
 		foreach ( $cart_items as $cart_item_key => $cart_item ) {
 			try {
 				$this->validate_cart_item( $cart_item );
-				} catch ( RouteException $error ) {
-					$errors[] = new WP_Error( $error->getErrorCode(), $error->getMessage() );
-				} catch ( TooManyInCartException $error ) {
-					$too_many_in_cart_products[] = $error;
-				} catch ( NotPurchasableException $error ) {
-					$not_purchasable_products[] = $error;
-				} catch ( PartialOutOfStockException $error ) {
-					$partial_out_of_stock_products[] = $error;
-				} catch ( OutOfStockException $error ) {
-					$out_of_stock_products[] = $error;
-				}
+			} catch ( RouteException $error ) {
+				$errors[] = new WP_Error( $error->getErrorCode(), $error->getMessage() );
+			} catch ( TooManyInCartException $error ) {
+				$too_many_in_cart_products[] = $error;
+			} catch ( NotPurchasableException $error ) {
+				$not_purchasable_products[] = $error;
+			} catch ( PartialOutOfStockException $error ) {
+				$partial_out_of_stock_products[] = $error;
+			} catch ( OutOfStockException $error ) {
+				$out_of_stock_products[] = $error;
+			}
 		}
 
-		return $this->stock_exceptions_to_wp_error( $too_many_in_cart_products, $not_purchasable_products, $partial_out_of_stock_products, $out_of_stock_products );
+		if ( count( $errors ) > 0 ) {
+			return $errors;
+		}
+
+		return $this->stock_exceptions_to_wp_errors( $too_many_in_cart_products, $not_purchasable_products, $partial_out_of_stock_products, $out_of_stock_products );
 	}
 
 	/**
