@@ -26,7 +26,6 @@ table.wc-block-cart-items td {
 
 .editor-styles-wrapper table.wc-block-cart-items,
 table.wc-block-cart-items {
-	table-layout: fixed;
 	width: 100%;
 
 	.wc-block-cart-items__header {
@@ -38,10 +37,6 @@ table.wc-block-cart-items {
 		}
 		.wc-block-cart-items__header-product {
 			visibility: hidden;
-			min-width: 300px;
-		}
-		.wc-block-cart-items__header-quantity {
-			width: 116px;
 		}
 		.wc-block-cart-items__header-total {
 			width: 100px;

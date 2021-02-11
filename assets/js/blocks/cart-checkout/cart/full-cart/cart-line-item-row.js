@@ -42,7 +42,7 @@ const getAmountFromRawPrice = ( priceObject, currency ) => {
  */
 const CartLineItemRow = ( { lineItem = {} } ) => {
 	const {
-		name = '',
+		name: initialName = '',
 		catalog_visibility: catalogVisibility = '',
 		short_description: shortDescription = '',
 		description: fullDescription = '',
@@ -82,6 +82,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 			currency_thousand_separator: ',',
 			line_total: '0',
 		},
+		extensions,
 	} = lineItem;
 
 	const {
@@ -92,6 +93,17 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 	} = useStoreCartItemQuantity( lineItem );
 
 	const priceCurrency = getCurrency( prices );
+
+	const name = __experimentalApplyCheckoutFilter( {
+		filterName: 'itemName',
+		defaultValue: initialName,
+		arg: {
+			extensions,
+			context: 'cart',
+		},
+		validation: ( value ) => typeof value === 'string',
+	} );
+
 	const regularAmountSingle = Dinero( {
 		amount: parseInt( prices.raw_prices.regular_price, 10 ),
 		precision: parseInt( prices.raw_prices.precision, 10 ),
@@ -113,6 +125,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 	const isProductHiddenFromCatalog =
 		catalogVisibility === 'hidden' || catalogVisibility === 'search';
 
+
 	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
 	const productPriceFormat = __experimentalApplyCheckoutFilter( {
 		filterName: 'cartItemPrice',
@@ -121,6 +134,25 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 			cartItem: lineItem,
 			block: 'cart',
 		},
+
+	const subtotalPriceFormat = __experimentalApplyCheckoutFilter( {
+		filterName: 'subtotalPriceFormat',
+		defaultValue: '<price/>',
+		arg: {
+			lineItem,
+		},
+		// Only accept strings.
+		validation: ( value ) =>
+			typeof value === 'string' && value.includes( '<price/>' ),
+	} );
+
+	const saleBadgePriceFormat = __experimentalApplyCheckoutFilter( {
+		filterName: 'saleBadgePriceFormat',
+		defaultValue: '<price/>',
+		arg: {
+			lineItem,
+		},
+		// Only accept strings.
 		validation: ( value ) =>
 			typeof value === 'string' && value.includes( '<price/>' ),
 	} );
@@ -172,6 +204,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 							purchaseAmountSingle,
 							priceCurrency
 						) }
+						format={ subtotalPriceFormat }
 					/>
 				</div>
 
@@ -181,6 +214,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 						saleAmountSingle,
 						priceCurrency
 					) }
+					format={ saleBadgePriceFormat }
 				/>
 
 				<ProductMetadata
@@ -224,6 +258,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 							saleAmount,
 							priceCurrency
 						) }
+						format={ saleBadgePriceFormat }
 					/>
 				) }
 			</td>

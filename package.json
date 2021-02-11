@@ -65,7 +65,7 @@
 		"wp-env:config": "./bin/wp-env-pre-config.sh"
 	},
 	"devDependencies": {
-		"@automattic/color-studio": "2.3.1",
+		"@automattic/color-studio": "2.4.0",
 		"@babel/cli": "7.12.13",
 		"@babel/core": "7.12.13",
 		"@babel/plugin-proposal-class-properties": "7.12.13",
@@ -85,7 +85,7 @@
 		"@testing-library/react": "11.2.5",
 		"@testing-library/user-event": "12.6.3",
 		"@types/jest": "26.0.20",
-		"@types/react": "16.14.2",
+		"@types/react": "16.14.3",
 		"@types/wordpress__data": "4.6.9",
 		"@types/wordpress__element": "2.4.1",
 		"@woocommerce/eslint-plugin": "1.1.0",
@@ -157,7 +157,7 @@
 	},
 	"dependencies": {
 		"@stripe/react-stripe-js": "1.2.2",
-		"@stripe/stripe-js": "1.11.0",
+		"@stripe/stripe-js": "1.12.1",
 		"@woocommerce/components": "5.1.2",
 		"@wordpress/autop": "2.9.0",
 		"@wordpress/deprecated": "2.9.0",

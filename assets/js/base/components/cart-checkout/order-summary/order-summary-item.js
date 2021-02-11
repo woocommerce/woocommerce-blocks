@@ -23,7 +23,7 @@ const OrderSummaryItem = ( { cartItem } ) => {
 		images,
 		low_stock_remaining: lowStockRemaining = null,
 		show_backorder_badge: showBackorderBadge = false,
-		name,
+		name: initialName,
 		permalink,
 		prices,
 		quantity,
@@ -32,9 +32,21 @@ const OrderSummaryItem = ( { cartItem } ) => {
 		item_data: itemData = [],
 		variation,
 		totals,
+    extensions,
 	} = cartItem;
 
 	const priceCurrency = getCurrency( prices );
+
+	const name = __experimentalApplyCheckoutFilter( {
+		filterName: 'itemName',
+		defaultValue: initialName,
+		arg: {
+			extensions,
+			context: 'summary',
+		},
+		validation: ( value ) => typeof value === 'string',
+	} );
+
 	const regularPriceSingle = Dinero( {
 		amount: parseInt( prices.raw_prices.regular_price, 10 ),
 		precision: parseInt( prices.raw_prices.precision, 10 ),
@@ -53,6 +65,16 @@ const OrderSummaryItem = ( { cartItem } ) => {
 	} )
 		.convertPrecision( totals.currency_minor_unit )
 		.getAmount();
+	const subtotalPriceFormat = __experimentalApplyCheckoutFilter( {
+		filterName: 'subtotalPriceFormat',
+		defaultValue: '<price/>',
+		arg: {
+			lineItem: cartItem,
+		},
+		// Only accept strings.
+		validation: ( value ) =>
+			typeof value === 'string' && value.includes( '<price/>' ),
+	} );
 
 	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
 	const productPriceFormat = __experimentalApplyCheckoutFilter( {
@@ -94,6 +116,7 @@ const OrderSummaryItem = ( { cartItem } ) => {
 					className="wc-block-components-order-summary-item__individual-prices"
 					priceClassName="wc-block-components-order-summary-item__individual-price"
 					regularPriceClassName="wc-block-components-order-summary-item__regular-individual-price"
+					format={ subtotalPriceFormat }
 				/>
 				{ showBackorderBadge ? (
 					<ProductBackorderBadge />
