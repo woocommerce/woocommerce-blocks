@@ -537,7 +537,7 @@ class CartController {
 	/**
 	 * Validate all items in the cart and get a list of errors.
 	 *
-	 * @throws RouteException Exception if invalid data is detected.
+	 * @return WP_Error[] An array of WP_Errors describing the cart's error state.
 	 */
 	public function get_cart_item_errors() {
 		$errors     = [];
