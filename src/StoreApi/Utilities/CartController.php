@@ -452,12 +452,17 @@ class CartController {
 			);
 		}
 
-		return [
-			$too_many_in_cart_error,
-			$partial_out_of_stock_error,
-			$out_of_stock_error,
-			$not_purchasable_error,
-		];
+		return array_filter(
+			[
+				$too_many_in_cart_error,
+				$partial_out_of_stock_error,
+				$out_of_stock_error,
+				$not_purchasable_error,
+			],
+			function( $error ) {
+				return $error->has_errors();
+			}
+		);
 	}
 
 	/**
