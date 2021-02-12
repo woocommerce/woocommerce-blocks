@@ -38,7 +38,7 @@ class OrderControllerTests extends TestCase {
 		$not_purchasable_product = ProductHelper::create_simple_product();
 		wc()->cart->add_to_cart( $not_purchasable_product->get_id(), 2 );
 
-		// This function will force the $product->is_pruchasable() function to return false for our $not_purchasable_product
+		// This function will force the $product->is_purchasable() function to return false for our $not_purchasable_product
 		add_filter( 'woocommerce_is_purchasable', function( $is_purchasable, $product ) use ( $not_purchasable_product ) {
 			if ( $product->get_id() === $not_purchasable_product->get_id() ) {
 				return false;
