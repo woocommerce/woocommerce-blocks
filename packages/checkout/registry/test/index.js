@@ -22,7 +22,7 @@ describe( 'Checkout registry', () => {
 	test( 'should return filtered value when a filter is registered', () => {
 		const value = 'Hello World';
 		__experimentalRegisterCheckoutFilters( filterName, {
-			[ filterName ]: ( val, args ) =>
+			[ filterName ]: ( val, extensions, args ) =>
 				val.toUpperCase() + args.punctuationSign,
 		} );
 		const newValue = __experimentalApplyCheckoutFilter( {

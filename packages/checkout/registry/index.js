@@ -40,7 +40,7 @@ const getCheckoutFilters = ( filterName ) => {
  * @param {Object} o              Object of arguments.
  * @param {string} o.filterName   Name of the filter to apply.
  * @param {any}    o.defaultValue Default value to filter.
- * @param {Object} o.extensions   Values extend to REST API response.
+ * @param {Object} [o.extensions]   Values extend to REST API response.
  * @param {any}    [o.arg]        Argument to pass to registered functions. If
  * several arguments need to be passed, use an
  * object.
@@ -52,7 +52,7 @@ const getCheckoutFilters = ( filterName ) => {
 export const __experimentalApplyCheckoutFilter = ( {
 	filterName,
 	defaultValue,
-	extensions,
+	extensions = {},
 	arg = null,
 	validation = () => true,
 } ) => {
