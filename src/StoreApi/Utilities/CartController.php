@@ -417,7 +417,7 @@ class CartController {
 			$plural_error   = $this->get_error_message_for_stock_exception_type( 'out_of_stock', 'plural' );
 
 			$out_of_stock_error->add(
-				'woocommerce-blocks-product-out_of_stock',
+				'woocommerce-blocks-product-out-of-stock',
 				$this->add_product_names_to_message( $singular_error, $plural_error, $out_of_stock_products )
 			);
 		}
@@ -447,7 +447,7 @@ class CartController {
 			$plural_error   = $this->get_error_message_for_stock_exception_type( 'partial_out_of_stock', 'plural' );
 
 			$partial_out_of_stock_error->add(
-				'woocommerce-blocks-product-partially-out_of_stock',
+				'woocommerce-blocks-product-partially-out-of-stock',
 				$this->add_product_names_to_message( $singular_error, $plural_error, $partial_out_of_stock_products )
 			);
 		}
