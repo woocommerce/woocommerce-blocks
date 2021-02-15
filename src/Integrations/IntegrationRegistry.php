@@ -63,7 +63,7 @@ class IntegrationRegistry {
 		$name = $integration->get_name();
 
 		if ( $this->is_registered( $name ) ) {
-			/* translators: %s: Class name. */
+			/* translators: %s: Integration name. */
 			_doing_it_wrong( __METHOD__, esc_html( sprintf( __( '"%s" is already registered.', 'woo-gutenberg-products-block' ), $name ) ) );
 			return false;
 		}
