@@ -165,6 +165,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 				extensions,
 				arg: {
 					lineItem,
+					context: 'cart',
 				},
 				// Only accept strings.
 				validation: ( value ) =>
@@ -181,6 +182,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 				extensions,
 				arg: {
 					lineItem,
+					context: 'cart',
 				},
 				// Only accept strings.
 				validation: ( value ) =>

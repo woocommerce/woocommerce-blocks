@@ -88,6 +88,7 @@ const OrderSummaryItem = ( { cartItem } ) => {
 				extensions,
 				arg: {
 					lineItem: cartItem,
+					context: 'summary',
 				},
 				// Only accept strings.
 				validation: ( value ) =>
@@ -105,7 +106,7 @@ const OrderSummaryItem = ( { cartItem } ) => {
 				extensions,
 				arg: {
 					lineItem: cartItem,
-					context: 'checkout',
+					context: 'summary',
 				},
 				validation: ( value ) =>
 					mustBeString( value ) && mustContain( value, '<price/>' ),

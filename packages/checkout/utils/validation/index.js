@@ -38,12 +38,13 @@ export const mustContain = ( value, label ) => {
 	if ( ! value.includes( label ) ) {
 		throw Error(
 			sprintf(
-				// translators: %s value passed to filter.
+				// translators: %1$s value passed to filter, %2$s : value that must be included..
 				__(
-					'Returned value must include <price/>, you passed "%s"',
+					'Returned value must include %1$s, you passed "%2$s"',
 					'woo-gutenberg-products-block'
 				),
-				value
+				value,
+				label
 			)
 		);
 	}
