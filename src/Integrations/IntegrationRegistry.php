@@ -124,7 +124,7 @@ class IntegrationRegistry {
 	}
 
 	/**
-	 * Gets an array of all registered integration's script handles.
+	 * Gets an array of all registered integration's script handles for the editor.
 	 *
 	 * @return string[]
 	 */
