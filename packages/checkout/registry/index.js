@@ -50,7 +50,7 @@ const getCheckoutFilters = ( filterName ) => {
  *                                  the filter to be applied.
  * @return {any} Filtered value.
  */
-export const useApplyCheckoutFilter = ( {
+export const __experimentalApplyCheckoutFilter = ( {
 	filterName,
 	defaultValue,
 	extensions = {},

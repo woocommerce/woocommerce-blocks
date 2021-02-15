@@ -7,7 +7,7 @@ import { renderHook } from '@testing-library/react-hooks';
  */
 import {
 	__experimentalRegisterCheckoutFilters,
-	useApplyCheckoutFilter,
+	__experimentalApplyCheckoutFilter,
 } from '../';
 
 jest.mock( '@woocommerce/block-settings', () => {
@@ -30,7 +30,7 @@ describe( 'Checkout registry (as admin user)', () => {
 		} );
 
 		const { result } = renderHook( () =>
-			useApplyCheckoutFilter( {
+			__experimentalApplyCheckoutFilter( {
 				filterName,
 				defaultValue: value,
 			} )
@@ -45,7 +45,7 @@ describe( 'Checkout registry (as admin user)', () => {
 			[ filterName ]: ( val ) => val,
 		} );
 		const { result } = renderHook( () =>
-			useApplyCheckoutFilter( {
+			__experimentalApplyCheckoutFilter( {
 				filterName,
 				defaultValue: value,
 				validation: () => {
