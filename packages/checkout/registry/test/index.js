@@ -1,9 +1,13 @@
 /**
+ * External dependencies
+ */
+import { renderHook } from '@testing-library/react-hooks';
+/**
  * Internal dependencies
  */
 import {
 	__experimentalRegisterCheckoutFilters,
-	__experimentalApplyCheckoutFilter,
+	useApplyCheckoutFilter,
 } from '../';
 
 describe( 'Checkout registry', () => {
@@ -11,12 +15,13 @@ describe( 'Checkout registry', () => {
 
 	test( 'should return default value if there are no filters', () => {
 		const value = 'Hello World';
-		const newValue = __experimentalApplyCheckoutFilter( {
-			filterName,
-			defaultValue: value,
-		} );
-
-		expect( newValue ).toBe( value );
+		const { result: newValue } = renderHook( () =>
+			useApplyCheckoutFilter( {
+				filterName,
+				defaultValue: value,
+			} )
+		);
+		expect( newValue.current ).toBe( value );
 	} );
 
 	test( 'should return filtered value when a filter is registered', () => {
@@ -25,15 +30,17 @@ describe( 'Checkout registry', () => {
 			[ filterName ]: ( val, extensions, args ) =>
 				val.toUpperCase() + args.punctuationSign,
 		} );
-		const newValue = __experimentalApplyCheckoutFilter( {
-			filterName,
-			defaultValue: value,
-			arg: {
-				punctuationSign: '!',
-			},
-		} );
+		const { result: newValue } = renderHook( () =>
+			useApplyCheckoutFilter( {
+				filterName,
+				defaultValue: value,
+				arg: {
+					punctuationSign: '!',
+				},
+			} )
+		);
 
-		expect( newValue ).toBe( 'HELLO WORLD!' );
+		expect( newValue.current ).toBe( 'HELLO WORLD!' );
 	} );
 
 	test( 'should not return filtered value if validation failed', () => {
@@ -41,13 +48,15 @@ describe( 'Checkout registry', () => {
 		__experimentalRegisterCheckoutFilters( filterName, {
 			[ filterName ]: ( val ) => val.toUpperCase(),
 		} );
-		const newValue = __experimentalApplyCheckoutFilter( {
-			filterName,
-			defaultValue: value,
-			validation: ( val ) => ! val.includes( 'HELLO' ),
-		} );
+		const { result: newValue } = renderHook( () =>
+			useApplyCheckoutFilter( {
+				filterName,
+				defaultValue: value,
+				validation: ( val ) => ! val.includes( 'HELLO' ),
+			} )
+		);
 
-		expect( newValue ).toBe( value );
+		expect( newValue.current ).toBe( value );
 	} );
 
 	test( 'should catch filter errors if user is not an admin', () => {
@@ -63,13 +72,15 @@ describe( 'Checkout registry', () => {
 				throw error;
 			},
 		} );
-		const newValue = __experimentalApplyCheckoutFilter( {
-			filterName,
-			defaultValue: value,
-		} );
+		const { result: newValue } = renderHook( () =>
+			useApplyCheckoutFilter( {
+				filterName,
+				defaultValue: value,
+			} )
+		);
 
 		expect( spy.console ).toHaveBeenCalledWith( error );
-		expect( newValue ).toBe( value );
+		expect( newValue.current ).toBe( value );
 		spy.console.mockRestore();
 	} );
 } );

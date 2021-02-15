@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { useMemo } from '@wordpress/element';
 import Label from '@woocommerce/base-components/label';
 import ProductPrice from '@woocommerce/base-components/product-price';
 import ProductName from '@woocommerce/base-components/product-name';
@@ -43,19 +42,15 @@ const OrderSummaryItem = ( { cartItem } ) => {
 
 	const priceCurrency = getCurrency( prices );
 
-	const name = useMemo(
-		() =>
-			__experimentalApplyCheckoutFilter( {
-				filterName: 'itemName',
-				defaultValue: initialName,
-				extensions,
-				arg: {
-					context: 'summary',
-				},
-				validation: ( value ) => mustBeString( value ),
-			} ),
-		[ initialName, extensions ]
-	);
+	const name = __experimentalApplyCheckoutFilter( {
+		filterName: 'itemName',
+		defaultValue: initialName,
+		extensions,
+		arg: {
+			context: 'summary',
+		},
+		validation: ( value ) => mustBeString( value ),
+	} );
 
 	const regularPriceSingle = Dinero( {
 		amount: parseInt( prices.raw_prices.regular_price, 10 ),
@@ -80,39 +75,31 @@ const OrderSummaryItem = ( { cartItem } ) => {
 	} )
 		.convertPrecision( totals.currency_minor_unit )
 		.getAmount();
-	const subtotalPriceFormat = useMemo(
-		() =>
-			__experimentalApplyCheckoutFilter( {
-				filterName: 'subtotalPriceFormat',
-				defaultValue: '<price/>',
-				extensions,
-				arg: {
-					lineItem: cartItem,
-					context: 'summary',
-				},
-				// Only accept strings.
-				validation: ( value ) =>
-					mustBeString( value ) && mustContain( value, '<price/>' ),
-			} ),
-		[ cartItem, extensions ]
-	);
+	const subtotalPriceFormat = __experimentalApplyCheckoutFilter( {
+		filterName: 'subtotalPriceFormat',
+		defaultValue: '<price/>',
+		extensions,
+		arg: {
+			lineItem: cartItem,
+			context: 'summary',
+		},
+		// Only accept strings.
+		validation: ( value ) =>
+			mustBeString( value ) && mustContain( value, '<price/>' ),
+	} );
 
 	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
-	const productPriceFormat = useMemo(
-		() =>
-			__experimentalApplyCheckoutFilter( {
-				filterName: 'cartItemPrice',
-				defaultValue: '<price/>',
-				extensions,
-				arg: {
-					lineItem: cartItem,
-					context: 'summary',
-				},
-				validation: ( value ) =>
-					mustBeString( value ) && mustContain( value, '<price/>' ),
-			} ),
-		[ cartItem, extensions ]
-	);
+	const productPriceFormat = __experimentalApplyCheckoutFilter( {
+		filterName: 'cartItemPrice',
+		defaultValue: '<price/>',
+		extensions,
+		arg: {
+			lineItem: cartItem,
+			context: 'summary',
+		},
+		validation: ( value ) =>
+			mustBeString( value ) && mustContain( value, '<price/>' ),
+	} );
 
 	return (
 		<div className="wc-block-components-order-summary-item">

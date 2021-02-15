@@ -1,8 +1,9 @@
 /**
  * External dependencies
  */
+import { useMemo, useCallback, useRef } from '@wordpress/element';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
-
+import { isShallowEqualObjects } from '@wordpress/is-shallow-equal';
 let checkoutFilters = {};
 
 /**
@@ -49,27 +50,59 @@ const getCheckoutFilters = ( filterName ) => {
  *                                  the filter to be applied.
  * @return {any} Filtered value.
  */
-export const __experimentalApplyCheckoutFilter = ( {
+export const useApplyCheckoutFilter = ( {
 	filterName,
 	defaultValue,
 	extensions = {},
-	arg = null,
-	validation = () => true,
+	arg: _arg = null,
+	validation: _validation = () => true,
 } ) => {
 	const filters = getCheckoutFilters( filterName );
-	let value = defaultValue;
-	filters.forEach( ( filter ) => {
-		try {
-			const newValue = filter( value, extensions, arg );
-			value = validation( newValue ) ? newValue : value;
-		} catch ( e ) {
-			if ( CURRENT_USER_IS_ADMIN ) {
-				throw e;
-			} else {
-				// eslint-disable-next-line no-console
-				console.error( e );
-			}
+
+	/* validation is a pure function, so we know that it won't change
+	 * and it has no deps.
+	 */
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	const validation = useCallback( ( value ) => _validation( value ), [] );
+
+	/* arg is a custom object that changes a lot, passing it directly to
+	 * the main useMemo would cause it to reload each render calc. We
+	 * wrap it in its own useMemo with special comparison.
+	 * We do this by saving previous value in a ref, and only passing in
+	 * a new value when the old and new one are not the same.
+	 */
+	const previousArg = useRef( _arg );
+	const arg = useMemo( () => {
+		if (
+			typeof previousArg.current === 'object' &&
+			typeof _arg === 'object' &&
+			! isShallowEqualObjects( previousArg.current, _arg )
+		) {
+			return _arg;
 		}
-	} );
-	return value;
+		return previousArg.current;
+	}, [ _arg ] );
+
+	/**
+	 * Calling filter can be costly because it's a third party code that
+	 * might be expensive or effectful, that's why we wrap this in a memo
+	 * and only update it when we need to.
+	 */
+	return useMemo( () => {
+		let value = defaultValue;
+		filters.forEach( ( filter ) => {
+			try {
+				const newValue = filter( value, extensions, arg );
+				value = validation( newValue ) ? newValue : value;
+			} catch ( e ) {
+				if ( CURRENT_USER_IS_ADMIN ) {
+					throw e;
+				} else {
+					// eslint-disable-next-line no-console
+					console.error( e );
+				}
+			}
+		} );
+		return value;
+	}, [ defaultValue, filters, validation, arg, extensions ] );
 };

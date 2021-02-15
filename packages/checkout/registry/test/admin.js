@@ -1,9 +1,13 @@
 /**
+ * External dependencies
+ */
+import { renderHook } from '@testing-library/react-hooks';
+/**
  * Internal dependencies
  */
 import {
 	__experimentalRegisterCheckoutFilters,
-	__experimentalApplyCheckoutFilter,
+	useApplyCheckoutFilter,
 } from '../';
 
 jest.mock( '@woocommerce/block-settings', () => {
@@ -17,7 +21,7 @@ jest.mock( '@woocommerce/block-settings', () => {
 
 describe( 'Checkout registry (as admin user)', () => {
 	test( 'should throw if the filter throws and user is an admin', () => {
-		const filterName = 'loremIpsum';
+		const filterName = 'ErrorTestFilter';
 		const value = 'Hello World';
 		__experimentalRegisterCheckoutFilters( filterName, {
 			[ filterName ]: () => {
@@ -25,11 +29,30 @@ describe( 'Checkout registry (as admin user)', () => {
 			},
 		} );
 
-		expect( () => {
-			__experimentalApplyCheckoutFilter( {
+		const { result } = renderHook( () =>
+			useApplyCheckoutFilter( {
 				filterName,
 				defaultValue: value,
-			} );
-		} ).toThrow();
+			} )
+		);
+		expect( result.error ).toEqual( Error( 'test error' ) );
+	} );
+
+	test( 'should throw if validation throws and user is an admin', () => {
+		const filterName = 'ValidationTestFilter';
+		const value = 'Hello World';
+		__experimentalRegisterCheckoutFilters( filterName, {
+			[ filterName ]: ( val ) => val,
+		} );
+		const { result } = renderHook( () =>
+			useApplyCheckoutFilter( {
+				filterName,
+				defaultValue: value,
+				validation: () => {
+					throw Error( 'validation error' );
+				},
+			} )
+		);
+		expect( result.error ).toEqual( Error( 'validation error' ) );
 	} );
 } );

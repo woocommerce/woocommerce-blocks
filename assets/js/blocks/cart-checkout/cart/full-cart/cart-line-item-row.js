@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { useMemo } from '@wordpress/element';
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
@@ -101,19 +100,15 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 
 	const priceCurrency = getCurrency( prices );
 
-	const name = useMemo(
-		() =>
-			__experimentalApplyCheckoutFilter( {
-				filterName: 'itemName',
-				defaultValue: initialName,
-				extensions,
-				arg: {
-					context: 'cart',
-				},
-				validation: ( value ) => mustBeString( value ),
-			} ),
-		[ initialName, extensions ]
-	);
+	const name = __experimentalApplyCheckoutFilter( {
+		filterName: 'itemName',
+		defaultValue: initialName,
+		extensions,
+		arg: {
+			context: 'cart',
+		},
+		validation: ( value ) => mustBeString( value ),
+	} );
 
 	const regularAmountSingle = Dinero( {
 		amount: parseInt( prices.raw_prices.regular_price, 10 ),
@@ -141,55 +136,43 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 		catalogVisibility === 'hidden' || catalogVisibility === 'search';
 
 	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
-	const productPriceFormat = useMemo(
-		() =>
-			__experimentalApplyCheckoutFilter( {
-				filterName: 'cartItemPrice',
-				defaultValue: '<price/>',
-				extensions,
-				arg: {
-					cartItem: lineItem,
-					context: 'cart',
-				},
-				validation: ( value ) =>
-					mustBeString( value ) && mustContain( value, '<price/>' ),
-			} ),
-		[ lineItem, extensions ]
-	);
+	const productPriceFormat = __experimentalApplyCheckoutFilter( {
+		filterName: 'cartItemPrice',
+		defaultValue: '<price/>',
+		extensions,
+		arg: {
+			cartItem: lineItem,
+			context: 'cart',
+		},
+		validation: ( value ) =>
+			mustBeString( value ) && mustContain( value, '<price/>' ),
+	} );
 
-	const subtotalPriceFormat = useMemo(
-		() =>
-			__experimentalApplyCheckoutFilter( {
-				filterName: 'subtotalPriceFormat',
-				defaultValue: '<price/>',
-				extensions,
-				arg: {
-					lineItem,
-					context: 'cart',
-				},
-				// Only accept strings.
-				validation: ( value ) =>
-					mustBeString( value ) && mustContain( value, '<price/>' ),
-			} ),
-		[ lineItem, extensions ]
-	);
+	const subtotalPriceFormat = __experimentalApplyCheckoutFilter( {
+		filterName: 'subtotalPriceFormat',
+		defaultValue: '<price/>',
+		extensions,
+		arg: {
+			lineItem,
+			context: 'cart',
+		},
+		// Only accept strings.
+		validation: ( value ) =>
+			mustBeString( value ) && mustContain( value, '<price/>' ),
+	} );
 
-	const saleBadgePriceFormat = useMemo(
-		() =>
-			__experimentalApplyCheckoutFilter( {
-				filterName: 'saleBadgePriceFormat',
-				defaultValue: '<price/>',
-				extensions,
-				arg: {
-					lineItem,
-					context: 'cart',
-				},
-				// Only accept strings.
-				validation: ( value ) =>
-					mustBeString( value ) && mustContain( value, '<price/>' ),
-			} ),
-		[ lineItem, extensions ]
-	);
+	const saleBadgePriceFormat = __experimentalApplyCheckoutFilter( {
+		filterName: 'saleBadgePriceFormat',
+		defaultValue: '<price/>',
+		extensions,
+		arg: {
+			lineItem,
+			context: 'cart',
+		},
+		// Only accept strings.
+		validation: ( value ) =>
+			mustBeString( value ) && mustContain( value, '<price/>' ),
+	} );
 
 	return (
 		<tr
