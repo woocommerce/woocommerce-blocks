@@ -1,14 +1,13 @@
 /**
  * External dependencies
  */
-import type { CartItem, CartResponseItem, Cart } from '@woocommerce/types';
+import type { CartItem } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
 import { ACTION_TYPES as types } from './action-types';
 import { defaultCartState, CartState } from '../default-states';
-import type { ResponseError } from '../types';
 import type { CartAction } from './actions';
 
 /**
