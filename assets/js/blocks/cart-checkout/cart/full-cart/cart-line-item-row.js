@@ -22,8 +22,12 @@ import {
 	mustContain,
 } from '@woocommerce/blocks-checkout';
 import Dinero from 'dinero.js';
+<<<<<<< HEAD
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 
+=======
+import { useCallback, useMemo } from '@wordpress/element';
+>>>>>>> refactor filter function so memozation is done inside components
 /**
  * @typedef {import('@woocommerce/type-defs/cart').CartItem} CartItem
  */
@@ -98,16 +102,24 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 		isPendingDelete,
 	} = useStoreCartItemQuantity( lineItem );
 
+	const productPriceValidation = useCallback(
+		( value ) => mustBeString( value ) && mustContain( value, '<price/>' ),
+		[]
+	);
+	const arg = useMemo(
+		() => ( {
+			context: 'cart',
+			cartItem: lineItem,
+		} ),
+		[ lineItem ]
+	);
 	const priceCurrency = getCurrency( prices );
-
 	const name = __experimentalApplyCheckoutFilter( {
 		filterName: 'itemName',
 		defaultValue: initialName,
 		extensions,
-		arg: {
-			context: 'cart',
-		},
-		validation: ( value ) => mustBeString( value ),
+		arg,
+		validation: mustBeString,
 	} );
 
 	const regularAmountSingle = Dinero( {
@@ -136,42 +148,29 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 		catalogVisibility === 'hidden' || catalogVisibility === 'search';
 
 	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
+
 	const productPriceFormat = __experimentalApplyCheckoutFilter( {
 		filterName: 'cartItemPrice',
 		defaultValue: '<price/>',
 		extensions,
-		arg: {
-			cartItem: lineItem,
-			context: 'cart',
-		},
-		validation: ( value ) =>
-			mustBeString( value ) && mustContain( value, '<price/>' ),
+		arg,
+		validation: productPriceValidation,
 	} );
 
 	const subtotalPriceFormat = __experimentalApplyCheckoutFilter( {
 		filterName: 'subtotalPriceFormat',
 		defaultValue: '<price/>',
 		extensions,
-		arg: {
-			lineItem,
-			context: 'cart',
-		},
-		// Only accept strings.
-		validation: ( value ) =>
-			mustBeString( value ) && mustContain( value, '<price/>' ),
+		arg,
+		validation: productPriceValidation,
 	} );
 
 	const saleBadgePriceFormat = __experimentalApplyCheckoutFilter( {
 		filterName: 'saleBadgePriceFormat',
 		defaultValue: '<price/>',
 		extensions,
-		arg: {
-			lineItem,
-			context: 'cart',
-		},
-		// Only accept strings.
-		validation: ( value ) =>
-			mustBeString( value ) && mustContain( value, '<price/>' ),
+		arg,
+		validation: productPriceValidation,
 	} );
 
 	return (

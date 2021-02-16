@@ -31,7 +31,7 @@ const TotalsFooterItem = ( { currency, values } ) => {
 		defaultValue: __( 'Total', 'woo-gutenberg-products-block' ),
 		extensions,
 		// Only accept strings.
-		validation: ( value ) => mustBeString( value ),
+		validation: mustBeString,
 	} );
 
 	return (

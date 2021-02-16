@@ -1,9 +1,8 @@
 /**
  * External dependencies
  */
-import { useMemo, useCallback, useRef } from '@wordpress/element';
+import { useMemo } from '@wordpress/element';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
-import { isShallowEqualObjects } from '@wordpress/is-shallow-equal';
 let checkoutFilters = {};
 
 /**
@@ -53,45 +52,13 @@ const getCheckoutFilters = ( filterName ) => {
 export const __experimentalApplyCheckoutFilter = ( {
 	filterName,
 	defaultValue,
-	extensions = {},
-	arg: _arg = null,
-	validation: _validation = () => true,
+	extensions,
+	arg = null,
+	validation = () => true,
 } ) => {
-	// getCheckoutFilters returns a new array each time, invalidating the memozation.
-	const filters = useMemo( () => getCheckoutFilters( filterName ), [
-		filterName,
-	] );
-
-	/* validation is a pure function, so we know that it won't change
-	 * and it has no deps.
-	 */
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	const validation = useCallback( ( value ) => _validation( value ), [] );
-
-	/* arg is a custom object that changes a lot, passing it directly to
-	 * the main useMemo would cause it to reload each render calc. We
-	 * wrap it in its own useMemo with special comparison.
-	 * We do this by saving previous value in a ref, and only passing in
-	 * a new value when the old and new one are not the same.
-	 */
-	const previousArg = useRef( _arg );
-	const arg = useMemo( () => {
-		if (
-			typeof previousArg.current === 'object' &&
-			typeof _arg === 'object' &&
-			! isShallowEqualObjects( previousArg.current, _arg )
-		) {
-			return _arg;
-		}
-		return previousArg.current;
-	}, [ _arg ] );
-
-	/**
-	 * Calling filter can be costly because it's a third party code that
-	 * might be expensive or effectful, that's why we wrap this in a memo
-	 * and only update it when we need to.
-	 */
 	return useMemo( () => {
+		const filters = getCheckoutFilters( filterName );
+
 		let value = defaultValue;
 		filters.forEach( ( filter ) => {
 			try {
@@ -107,5 +74,5 @@ export const __experimentalApplyCheckoutFilter = ( {
 			}
 		} );
 		return value;
-	}, [ defaultValue, filters, validation, arg, extensions ] );
+	}, [ filterName, defaultValue, extensions, arg, validation ] );
 };

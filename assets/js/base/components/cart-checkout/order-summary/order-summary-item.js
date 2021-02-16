@@ -14,6 +14,7 @@ import {
 import PropTypes from 'prop-types';
 import Dinero from 'dinero.js';
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
+import { useCallback, useMemo } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -40,16 +41,27 @@ const OrderSummaryItem = ( { cartItem } ) => {
 		extensions,
 	} = cartItem;
 
+	const productPriceValidation = useCallback(
+		( value ) => mustBeString( value ) && mustContain( value, '<price/>' ),
+		[]
+	);
+
+	const arg = useMemo(
+		() => ( {
+			context: 'summary',
+			cartItem,
+		} ),
+		[ cartItem ]
+	);
+
 	const priceCurrency = getCurrency( prices );
 
 	const name = __experimentalApplyCheckoutFilter( {
 		filterName: 'itemName',
 		defaultValue: initialName,
 		extensions,
-		arg: {
-			context: 'summary',
-		},
-		validation: ( value ) => mustBeString( value ),
+		arg,
+		validation: mustBeString,
 	} );
 
 	const regularPriceSingle = Dinero( {
@@ -79,13 +91,8 @@ const OrderSummaryItem = ( { cartItem } ) => {
 		filterName: 'subtotalPriceFormat',
 		defaultValue: '<price/>',
 		extensions,
-		arg: {
-			lineItem: cartItem,
-			context: 'summary',
-		},
-		// Only accept strings.
-		validation: ( value ) =>
-			mustBeString( value ) && mustContain( value, '<price/>' ),
+		arg,
+		validation: productPriceValidation,
 	} );
 
 	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
@@ -93,12 +100,8 @@ const OrderSummaryItem = ( { cartItem } ) => {
 		filterName: 'cartItemPrice',
 		defaultValue: '<price/>',
 		extensions,
-		arg: {
-			lineItem: cartItem,
-			context: 'summary',
-		},
-		validation: ( value ) =>
-			mustBeString( value ) && mustContain( value, '<price/>' ),
+		arg,
+		validation: productPriceValidation,
 	} );
 
 	return (
