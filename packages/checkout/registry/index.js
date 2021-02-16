@@ -57,7 +57,10 @@ export const __experimentalApplyCheckoutFilter = ( {
 	arg: _arg = null,
 	validation: _validation = () => true,
 } ) => {
-	const filters = getCheckoutFilters( filterName );
+	// getCheckoutFilters returns a new array each time, invalidating the memozation.
+	const filters = useMemo( () => getCheckoutFilters( filterName ), [
+		filterName,
+	] );
 
 	/* validation is a pure function, so we know that it won't change
 	 * and it has no deps.
