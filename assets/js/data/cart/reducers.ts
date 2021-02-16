@@ -9,28 +9,17 @@ import type { CartItem, CartResponseItem, Cart } from '@woocommerce/types';
 import { ACTION_TYPES as types } from './action-types';
 import { defaultCartState, CartState } from '../default-states';
 import type { ResponseError } from '../types';
-
-type AnyCartAction = {
-	type: string;
-	error?: ResponseError | null;
-	response?: Cart;
-	couponCode?: string;
-	cartItem?: CartResponseItem | null;
-	cartItemKey?: string;
-	isResolving?: boolean;
-	isPendingQuantity?: boolean;
-	isPendingDelete?: boolean;
-};
+import type { CartAction } from './actions';
 
 /**
  * Sub-reducer for cart items array.
  *
  * @param   {Array<CartItem>}  state   cartData.items state slice.
- * @param   {AnyCartAction}  action  Action object.
+ * @param   {CartAction}  action  Action object.
  */
 const cartItemsReducer = (
 	state: Array< CartItem > = [],
-	action: AnyCartAction
+	action: CartAction
 ) => {
 	switch ( action.type ) {
 		case types.RECEIVE_CART_ITEM:
@@ -49,13 +38,13 @@ const cartItemsReducer = (
  * Reducer for receiving items related to the cart.
  *
  * @param   {CartState}  state   The current state in the store.
- * @param   {AnyCartAction}  action  Action object.
+ * @param   {CartAction}  action  Action object.
  *
  * @return  {CartState}          New or existing state.
  */
 const reducer = (
 	state: CartState = defaultCartState,
-	action: AnyCartAction
+	action: CartAction
 ): CartState => {
 	switch ( action.type ) {
 		case types.RECEIVE_ERROR:

@@ -431,3 +431,15 @@ export function* updateCustomerData(
 	yield updatingCustomerData( false );
 	return true;
 }
+
+export type CartAction = ReturnType<
+	| typeof receiveCart
+	| typeof receiveError
+	| typeof receiveApplyingCoupon
+	| typeof receiveRemovingCoupon
+	| typeof receiveCartItem
+	| typeof itemIsPendingQuantity
+	| typeof itemIsPendingDelete
+	| typeof updatingCustomerData
+	| typeof shippingRatesBeingSelected
+>;
