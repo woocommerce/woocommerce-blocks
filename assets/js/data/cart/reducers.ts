@@ -10,7 +10,7 @@ import { ACTION_TYPES as types } from './action-types';
 import { defaultCartState, CartState } from '../default-states';
 import type { ResponseError } from '../types';
 
-type AnyAction = {
+type AnyCartAction = {
 	type: string;
 	error?: ResponseError | null;
 	response?: Cart;
@@ -18,18 +18,19 @@ type AnyAction = {
 	cartItem?: CartResponseItem | null;
 	cartItemKey?: string;
 	isResolving?: boolean;
-	[ key: string ]: unknown;
+	isPendingQuantity?: boolean;
+	isPendingDelete?: boolean;
 };
 
 /**
  * Sub-reducer for cart items array.
  *
  * @param   {Array<CartItem>}  state   cartData.items state slice.
- * @param   {AnyAction}  action  Action object.
+ * @param   {AnyCartAction}  action  Action object.
  */
 const cartItemsReducer = (
 	state: Array< CartItem > = [],
-	action: AnyAction
+	action: AnyCartAction
 ) => {
 	switch ( action.type ) {
 		case types.RECEIVE_CART_ITEM:
@@ -48,13 +49,13 @@ const cartItemsReducer = (
  * Reducer for receiving items related to the cart.
  *
  * @param   {CartState}  state   The current state in the store.
- * @param   {AnyAction}  action  Action object.
+ * @param   {AnyCartAction}  action  Action object.
  *
  * @return  {CartState}          New or existing state.
  */
 const reducer = (
 	state: CartState = defaultCartState,
-	action: AnyAction
+	action: AnyCartAction
 ): CartState => {
 	switch ( action.type ) {
 		case types.RECEIVE_ERROR:
