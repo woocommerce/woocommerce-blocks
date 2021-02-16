@@ -80,6 +80,7 @@ module.exports = {
 				'@typescript-eslint/no-explicit-any': 'error',
 				'no-use-before-define': 'off',
 				'@typescript-eslint/no-use-before-define': [ 'error' ],
+				'jsdoc/require-param': 'off',
 			},
 		},
 	],

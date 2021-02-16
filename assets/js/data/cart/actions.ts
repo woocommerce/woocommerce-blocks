@@ -19,33 +19,6 @@ import { STORE_KEY as CART_STORE_KEY } from './constants';
 import { apiFetchWithHeaders } from '../shared-controls';
 import type { ResponseError } from '../types';
 
-/** Additional types and interfaces. */
-
-export type ReceiveCartAction = {
-	type: string;
-	response: Cart;
-};
-
-export type ReceiveErrorAction = {
-	type: string;
-	error: ResponseError | null;
-};
-
-export type CouponCodeAction = {
-	type: string;
-	couponCode: string;
-};
-
-export type ResponseCartItemAction = {
-	type: string;
-	cartItem: CartResponseItem | null;
-};
-
-export type ResolvingActionType = {
-	type: string;
-	isResolving: boolean;
-};
-
 /**
  * Returns an action object used in updating the store with the provided items
  * retrieved from a request using the given querystring.
@@ -53,16 +26,15 @@ export type ResolvingActionType = {
  * This is a generic response action.
  *
  * @param  {CartResponse}      response
- * @return {ReceiveCartAction}          Action object.
  */
-export function receiveCart( response: CartResponse ): ReceiveCartAction {
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore -- unclear how to type a transform from one type to another here.
-	const cart: Cart = mapKeys( response, ( _, key ) => camelCase( key ) );
+export function receiveCart( response: CartResponse ) {
+	const cart = ( mapKeys( response, ( _, key ) =>
+		camelCase( key )
+	) as unknown ) as Cart;
 	return {
 		type: types.RECEIVE_CART,
 		response: cart,
-	};
+	} as const;
 }
 
 /**
@@ -72,57 +44,51 @@ export function receiveCart( response: CartResponse ): ReceiveCartAction {
  *                                         message and response code.
  * @param   {boolean}       [replace=true] Should existing errors be replaced,
  *                                         or should the error be appended.
- * @return {ReceiveErrorAction}            Object for action.
  */
 export function receiveError(
 	error: ResponseError | null = null,
 	replace = true
-): ReceiveErrorAction {
+) {
 	return {
 		type: replace ? types.REPLACE_ERRORS : types.RECEIVE_ERROR,
 		error,
-	};
+	} as const;
 }
 
 /**
  * Returns an action object used to track when a coupon is applying.
  *
  * @param  {string} [couponCode] Coupon being added.
- * @return {CouponCodeAction}   Object for action.
  */
-export function receiveApplyingCoupon( couponCode: string ): CouponCodeAction {
+export function receiveApplyingCoupon( couponCode: string ) {
 	return {
 		type: types.APPLYING_COUPON,
 		couponCode,
-	};
+	} as const;
 }
 
 /**
  * Returns an action object used to track when a coupon is removing.
  *
- * @param   {string} [couponCode] Coupon being removed.
- * @return  {CouponCodeAction}              Object for action.
+ * @param   {string} [couponCode] Coupon being removed..
  */
-export function receiveRemovingCoupon( couponCode: string ): CouponCodeAction {
+export function receiveRemovingCoupon( couponCode: string ) {
 	return {
 		type: types.REMOVING_COUPON,
 		couponCode,
-	};
+	} as const;
 }
 
 /**
  * Returns an action object for updating a single cart item in the store.
  *
  * @param  {CartResponseItem} [response=null] A cart item API response.
- * @return {ResponseCartItemAction}            Object for action.
  */
-export function receiveCartItem(
-	response: CartResponseItem | null = null
-): ResponseCartItemAction {
+export function receiveCartItem( response: CartResponseItem | null = null ) {
 	return {
 		type: types.RECEIVE_CART_ITEM,
 		cartItem: response,
-	};
+	} as const;
 }
 
 /**
@@ -132,17 +98,16 @@ export function receiveCartItem(
  * @param   {string}  cartItemKey              Cart item being updated.
  * @param   {boolean} [isPendingQuantity=true] Flag for update state; true if API
  *                                             request is pending.
- * @return {{type: string, cartItemKey: string, isPendingQuantity: boolean}} Object for action.
  */
 export function itemIsPendingQuantity(
 	cartItemKey: string,
 	isPendingQuantity = true
-): { type: string; cartItemKey: string; isPendingQuantity: boolean } {
+) {
 	return {
 		type: types.ITEM_PENDING_QUANTITY,
 		cartItemKey,
 		isPendingQuantity,
-	};
+	} as const;
 }
 
 /**
@@ -151,33 +116,27 @@ export function itemIsPendingQuantity(
  * @param   {string}  cartItemKey            Cart item to remove.
  * @param   {boolean} [isPendingDelete=true] Flag for update state; true if API
  *                                           request is pending.
- * @return {{type: string, cartItemKey: string, isPendingDelete:boolean}} Object for action.
  */
 export function itemIsPendingDelete(
 	cartItemKey: string,
 	isPendingDelete = true
-): { type: string; cartItemKey: string; isPendingDelete: boolean } {
+) {
 	return {
 		type: types.RECEIVE_REMOVED_ITEM,
 		cartItemKey,
 		isPendingDelete,
-	};
+	} as const;
 }
 
 /**
  * Returns an action object used to track when customer data is being updated
  * (billing and/or shipping).
- *
- * @param  {boolean} isResolving If we're updating customer data or not.
- * @return {ResolvingActionType}              Object for action.
  */
-export function updatingCustomerData(
-	isResolving: boolean
-): ResolvingActionType {
+export function updatingCustomerData( isResolving: boolean ) {
 	return {
 		type: types.UPDATING_CUSTOMER_DATA,
 		isResolving,
-	};
+	} as const;
 }
 
 /**
@@ -185,15 +144,12 @@ export function updatingCustomerData(
  * selected or not.
  *
  * @param  {boolean} isResolving True if shipping rate is being selected.
- * @return {ResolvingActionType}              Action object.
  */
-export function shippingRatesBeingSelected(
-	isResolving: boolean
-): ResolvingActionType {
+export function shippingRatesBeingSelected( isResolving: boolean ) {
 	return {
 		type: types.UPDATING_SELECTED_SHIPPING_RATE,
 		isResolving,
-	};
+	} as const;
 }
 
 /**
