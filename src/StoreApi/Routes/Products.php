@@ -308,15 +308,15 @@ class Products extends AbstractRoute {
 		);
 
 		$params['stock_status'] = array(
-			'description'       => __( 'Limit result set to products with specified stock status.', 'woo-gutenberg-products-block' ),
-			'type'              => 'array',
-			'items'             => array(
-				'type' => 'string',
+			'description' => __( 'Limit result set to products with specified stock status.', 'woo-gutenberg-products-block' ),
+			'type'        => 'array',
+			'items'       => array(
+				'type'              => 'string',
+				'enum'              => array_keys( wc_get_product_stock_status_options() ),
+				'sanitize_callback' => 'sanitize_text_field',
+				'validate_callback' => 'rest_validate_request_arg',
 			),
-			'default'           => [],
-			'sanitize_callback' => 'sanitize_text_field',
-			'validate_callback' => 'rest_validate_request_arg',
-
+			'default'     => [],
 		);
 
 		$params['attributes'] = array(
