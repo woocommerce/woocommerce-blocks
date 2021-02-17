@@ -222,7 +222,9 @@ class AssetDataRegistry {
 		if ( wp_script_is( $this->handle, 'enqueued' ) ) {
 			$this->initialize_core_data();
 			$this->execute_lazy_data();
-			$data = rawurlencode( wp_json_encode( $this->data ) );
+			$data = array_merge( $this->data, isset( $this->data['commonBlockData'] ) ? $this->data['commonBlockData'] : [] );
+			unset( $data['commonBlockData'] );
+			$data = rawurlencode( wp_json_encode( $data ) );
 			wp_add_inline_script(
 				$this->handle,
 				"var wcSettings = wcSettings || JSON.parse( decodeURIComponent( '"

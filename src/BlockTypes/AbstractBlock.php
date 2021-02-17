@@ -2,9 +2,11 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use WP_Block;
+use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
+use Automattic\WooCommerce\Blocks\RestApi;
 
 /**
  * AbstractBlock class.
@@ -328,6 +330,11 @@ abstract class AbstractBlock {
 	 *                           not in the post content on editor load.
 	 */
 	protected function enqueue_data( array $attributes = [] ) {
+		// Enqueue common data.
+		if ( ! $this->asset_data_registry->exists( 'commonBlockData' ) ) {
+			$this->asset_data_registry->add( 'commonBlockData', [ self::class, 'get_wc_block_data' ] );
+		}
+
 		$registered_script_data = $this->integration_registry->get_all_registered_script_data();
 
 		foreach ( $registered_script_data as $asset_data_key => $asset_data_value ) {
@@ -335,6 +342,116 @@ abstract class AbstractBlock {
 				$this->asset_data_registry->add( $asset_data_key, $asset_data_value );
 			}
 		}
+	}
+
+	/**
+	 * Returns block-related data for enqueued wc-block-settings script.
+	 *
+	 * This is used to map site settings & data into JS-accessible variables.
+	 *
+	 *
+	 * @since 2.4.0
+	 * @since 2.5.0 returned merged data along with incoming $settings
+	 */
+	public static function get_wc_block_data() {
+		$tag_count      = wp_count_terms( 'product_tag' );
+		$product_counts = wp_count_posts( 'product' );
+		$page_ids       = [
+			'myaccount' => wc_get_page_id( 'myaccount' ),
+			'shop'      => wc_get_page_id( 'shop' ),
+			'cart'      => wc_get_page_id( 'cart' ),
+			'checkout'  => wc_get_page_id( 'checkout' ),
+			'privacy'   => wc_privacy_policy_page_id(),
+			'terms'     => wc_terms_and_conditions_page_id(),
+		];
+		$checkout       = WC()->checkout();
+
+		// Global settings used in each block.
+		return [
+			'currentUserIsAdmin'            => is_user_logged_in() && current_user_can( 'manage_woocommerce' ),
+			'min_columns'                   => wc_get_theme_support( 'product_blocks::min_columns', 1 ),
+			'max_columns'                   => wc_get_theme_support( 'product_blocks::max_columns', 6 ),
+			'default_columns'               => wc_get_theme_support( 'product_blocks::default_columns', 3 ),
+			'min_rows'                      => wc_get_theme_support( 'product_blocks::min_rows', 1 ),
+			'max_rows'                      => wc_get_theme_support( 'product_blocks::max_rows', 6 ),
+			'default_rows'                  => wc_get_theme_support( 'product_blocks::default_rows', 3 ),
+			'thumbnail_size'                => wc_get_theme_support( 'thumbnail_image_width', 300 ),
+			'placeholderImgSrc'             => wc_placeholder_img_src(),
+			'min_height'                    => wc_get_theme_support( 'featured_block::min_height', 500 ),
+			'default_height'                => wc_get_theme_support( 'featured_block::default_height', 500 ),
+			'isLargeCatalog'                => $product_counts->publish > 100,
+			'limitTags'                     => $tag_count > 100,
+			'hasTags'                       => $tag_count > 0,
+			'taxesEnabled'                  => wc_tax_enabled(),
+			'couponsEnabled'                => wc_coupons_enabled(),
+			'shippingEnabled'               => wc_shipping_enabled(),
+			'displayItemizedTaxes'          => 'itemized' === get_option( 'woocommerce_tax_total_display' ),
+			'displayShopPricesIncludingTax' => 'incl' === get_option( 'woocommerce_tax_display_shop' ),
+			'displayCartPricesIncludingTax' => 'incl' === get_option( 'woocommerce_tax_display_cart' ),
+			'checkoutShowLoginReminder'     => 'yes' === get_option( 'woocommerce_enable_checkout_login_reminder' ),
+			'showAvatars'                   => '1' === get_option( 'show_avatars' ),
+			'reviewRatingsEnabled'          => wc_review_ratings_enabled(),
+			'productCount'                  => array_sum( (array) $product_counts ),
+			'attributes'                    => array_values( wc_get_attribute_taxonomies() ),
+			'isShippingCalculatorEnabled'   => filter_var( get_option( 'woocommerce_enable_shipping_calc' ), FILTER_VALIDATE_BOOLEAN ),
+			'wcBlocksAssetUrl'              => plugins_url( 'assets/', __DIR__ ),
+			'wcBlocksBuildUrl'              => plugins_url( 'build/', __DIR__ ),
+			'restApiRoutes'                 => [
+				'/wc/store' => array_keys( Package::container()->get( RestApi::class )->get_routes_from_namespace( 'wc/store' ) ),
+			],
+			'homeUrl'                       => esc_url( home_url( '/' ) ),
+			'storePages'                    => [
+				'myaccount' => self::format_page_resource( $page_ids['myaccount'] ),
+				'shop'      => self::format_page_resource( $page_ids['shop'] ),
+				'cart'      => self::format_page_resource( $page_ids['cart'] ),
+				'checkout'  => self::format_page_resource( $page_ids['checkout'] ),
+				'privacy'   => self::format_page_resource( $page_ids['privacy'] ),
+				'terms'     => self::format_page_resource( $page_ids['terms'] ),
+			],
+			'checkoutAllowsGuest'           => $checkout instanceof \WC_Checkout && false === filter_var(
+				$checkout->is_registration_required(),
+				FILTER_VALIDATE_BOOLEAN
+			),
+			'checkoutAllowsSignup'          => $checkout instanceof \WC_Checkout && filter_var(
+				$checkout->is_registration_enabled(),
+				FILTER_VALIDATE_BOOLEAN
+			),
+			'baseLocation'                  => wc_get_base_location(),
+			'woocommerceBlocksPhase'        => Package::feature()->get_flag(),
+			'hasDarkEditorStyleSupport'     => current_theme_supports( 'dark-editor-style' ),
+			'loginUrl'                      => wp_login_url(),
+
+			/*
+				* translators: If your word count is based on single characters (e.g. East Asian characters),
+				* enter 'characters_excluding_spaces' or 'characters_including_spaces'. Otherwise, enter 'words'.
+				* Do not translate into your own language.
+				*/
+			'wordCountType'                 => _x( 'words', 'Word count type. Do not translate!', 'woo-gutenberg-products-block' ),
+		];
+	}
+
+	/**
+	 * Format a page object into a standard array of data.
+	 *
+	 * @param WP_Post|int $page Page object or ID.
+	 * @return array
+	 */
+	public static function format_page_resource( $page ) {
+		if ( is_numeric( $page ) && $page > 0 ) {
+			$page = get_post( $page );
+		}
+		if ( ! is_a( $page, '\WP_Post' ) || 'publish' !== $page->post_status ) {
+			return [
+				'id'        => 0,
+				'title'     => '',
+				'permalink' => false,
+			];
+		}
+		return [
+			'id'        => $page->ID,
+			'title'     => $page->post_title,
+			'permalink' => get_permalink( $page->ID ),
+		];
 	}
 
 	/**
