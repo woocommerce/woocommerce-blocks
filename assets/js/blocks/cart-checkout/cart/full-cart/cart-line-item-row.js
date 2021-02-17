@@ -22,12 +22,9 @@ import {
 	mustContain,
 } from '@woocommerce/blocks-checkout';
 import Dinero from 'dinero.js';
-<<<<<<< HEAD
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
-
-=======
 import { useCallback, useMemo } from '@wordpress/element';
->>>>>>> refactor filter function so memozation is done inside components
+
 /**
  * @typedef {import('@woocommerce/type-defs/cart').CartItem} CartItem
  */
