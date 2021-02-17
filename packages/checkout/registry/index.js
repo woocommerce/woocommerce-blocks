@@ -3,6 +3,12 @@
  */
 import { useMemo } from '@wordpress/element';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
+
+/**
+ * Internal dependencies
+ */
+import { returnTrue } from '../';
+
 let checkoutFilters = {};
 
 /**
@@ -54,7 +60,7 @@ export const __experimentalApplyCheckoutFilter = ( {
 	defaultValue,
 	extensions,
 	arg = null,
-	validation = () => true,
+	validation = returnTrue,
 } ) => {
 	return useMemo( () => {
 		const filters = getCheckoutFilters( filterName );

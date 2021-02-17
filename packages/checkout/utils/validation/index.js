@@ -50,3 +50,13 @@ export const mustContain = ( value, label ) => {
 	}
 	return true;
 };
+
+/**
+ * A function that always return true.
+ * We need to have a single instance of this function so it doesn't
+ * invalidate our memo comparison.
+ *
+ *
+ * @return {true} Returns true.
+ */
+export const returnTrue = () => true;
