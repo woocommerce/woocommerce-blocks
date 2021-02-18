@@ -331,8 +331,8 @@ abstract class AbstractBlock {
 	 */
 	protected function enqueue_data( array $attributes = [] ) {
 		// Enqueue common data.
-		if ( ! $this->asset_data_registry->exists( 'commonBlockData' ) ) {
-			$this->asset_data_registry->add( 'commonBlockData', [ self::class, 'get_wc_block_data' ] );
+		if ( ! $this->asset_data_registry->exists( 'block_constants' ) ) {
+			$this->asset_data_registry->add( 'block_constants', [ self::class, 'get_wc_block_data' ] );
 		}
 
 		$registered_script_data = $this->integration_registry->get_all_registered_script_data();

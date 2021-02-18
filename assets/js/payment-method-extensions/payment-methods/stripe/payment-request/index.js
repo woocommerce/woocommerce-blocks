@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { getSetting } from '@woocommerce/settings';
+import { BASE_LOCATION } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -47,7 +47,7 @@ function paymentRequestAvailable( { currencyCode, totalPrice } ) {
 				amount: totalPrice,
 				pending: true,
 			},
-			country: getSetting( 'baseLocation', {} )?.country,
+			country: BASE_LOCATION?.country,
 			currency: currencyCode,
 		} );
 		return paymentRequest.canMakePayment().then( ( result ) => {
