@@ -3,7 +3,7 @@
  */
 import { useEffect, useState, useRef, useCallback } from '@wordpress/element';
 import { useStripe } from '@stripe/react-stripe-js';
-import { getSetting } from '@woocommerce/settings';
+import { BASE_LOCATION } from '@woocommerce/block-settings';
 import { __ } from '@wordpress/i18n';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 
@@ -70,7 +70,7 @@ export const useInitialization = ( {
 		const pr = getPaymentRequest( {
 			total: billing.cartTotal,
 			currencyCode: billing.currency.code.toLowerCase(),
-			countryCode: getSetting( 'baseLocation', {} )?.country,
+			countryCode: BASE_LOCATION?.country,
 			shippingRequired: shippingData.needsShipping,
 			cartTotalItems: billing.cartTotalItems,
 			stripe,
