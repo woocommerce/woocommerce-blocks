@@ -44,3 +44,17 @@ protected function enqueue_data( array $attributes = [] ) {
     $data_registry->add( 'some-asset-data', 'data-value' );
 }
 ```
+
+## woocommerce_shared_settings deprecated filter
+
+This filter was used as a workaround. Currently the best way to achieve data registration comes from using AssetsDataRegistry:
+```php
+	Automattic\WooCommerce\Blocks\Package::container()
+		->get( Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry::class )
+		->add( $key, $value );
+```
+
+On the client side the value will be available via:
+```js
+    wc.wcSettings.getSetting( 'key' );
+```

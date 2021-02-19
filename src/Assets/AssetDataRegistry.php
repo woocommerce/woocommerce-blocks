@@ -127,10 +127,12 @@ class AssetDataRegistry {
 		 *     ->get( Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry::class )
 		 *     ->add( $key, $value )
 		 */
-		$settings = apply_filters(
-			'woocommerce_shared_settings',
-			$this->data
+		$message = __(
+			'The filter should not be used for assets registration. Please read woocommerce-gutenberg-products-block/docs/contributors/block-assets.md for more information on how to proceed.',
+			'woo-gutenberg-products-block'
 		);
+
+		$settings = apply_filters_deprecated( 'woocommerce_shared_settings', [ $this->data ], '4.6.0', '', $message );
 
 		// note this WILL wipe any data already registered to these keys because
 		// they are protected.

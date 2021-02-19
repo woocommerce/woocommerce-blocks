@@ -349,9 +349,9 @@ abstract class AbstractBlock {
 	 *
 	 * This is used to map site settings & data into JS-accessible variables.
 	 *
-	 *
 	 * @since 2.4.0
 	 * @since 2.5.0 returned merged data along with incoming $settings
+	 * @since 4.6.0 moved to Abstract block.
 	 */
 	public static function get_wc_block_data() {
 		$tag_count      = wp_count_terms( 'product_tag' );
