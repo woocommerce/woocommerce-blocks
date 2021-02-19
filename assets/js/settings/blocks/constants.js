@@ -90,3 +90,4 @@ export const BASE_LOCATION = blockConstants.baseLocation || {
 };
 
 export const REST_API_ROUTES = blockConstants.restApiRoutes || {};
+export const HIDE_OUT_OF_STOCK_ITEMS = blockConstants.woocommerce_hide_out_of_stock_items || false;

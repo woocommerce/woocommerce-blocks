@@ -427,6 +427,7 @@ abstract class AbstractBlock {
 				* Do not translate into your own language.
 				*/
 			'wordCountType'                 => _x( 'words', 'Word count type. Do not translate!', 'woo-gutenberg-products-block' ),
+			'hideOutOfStockItems'           => 'yes' === get_option( 'woocommerce_hide_out_of_stock_items' ),
 		];
 	}
 

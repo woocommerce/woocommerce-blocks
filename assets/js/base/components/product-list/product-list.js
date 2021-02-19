@@ -18,6 +18,7 @@ import {
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import { useInnerBlockLayoutContext } from '@woocommerce/shared-context';
 import { speak } from '@wordpress/a11y';
+import { HIDE_OUT_OF_STOCK_ITEMS } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -50,11 +51,15 @@ const generateQuery = ( { sortValue, currentPage, attributes } ) => {
 				};
 		}
 	};
+
 	return {
 		...getSortArgs( sortValue ),
 		catalog_visibility: 'catalog',
 		per_page: columns * rows,
 		page: currentPage,
+		...( HIDE_OUT_OF_STOCK_ITEMS && {
+			stock_status: [ 'instock', 'onbackorder' ],
+		} ),
 	};
 };
 
@@ -83,7 +88,7 @@ const announceLoadingCompletion = ( totalProducts ) => {
 	} else {
 		speak(
 			sprintf(
-				// translators: %s is an integer higher than 0 (1, 2, 3...)
+				/* translators: %s is an integer higher than 0 (1, 2, 3...) */
 				_n(
 					'%d product found',
 					'%d products found',
