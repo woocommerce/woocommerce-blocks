@@ -69,7 +69,7 @@ const CheckboxList = ( {
 						) }
 					>
 						{ sprintf(
-							// translators: %s number of options to reveal.
+							/* translators: %s number of options to reveal. */
 							_n(
 								'Show %s more',
 								'Show %s more',

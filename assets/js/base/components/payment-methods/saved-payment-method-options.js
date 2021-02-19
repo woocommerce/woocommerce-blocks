@@ -67,7 +67,7 @@ const getDefaultPaymentMethodOptions = (
 	return {
 		value: tokenId + '',
 		label: sprintf(
-			// translators: %s is the name of the payment method gateway.
+			/* translators: %s is the name of the payment method gateway. */
 			__( 'Saved token for %s', 'woo-gutenberg-products-block' ),
 			method.gateway
 		),
