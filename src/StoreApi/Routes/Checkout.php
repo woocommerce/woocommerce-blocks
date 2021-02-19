@@ -602,8 +602,6 @@ class Checkout extends AbstractCartRoute {
 	 *
 	 * @internal CreateAccount class includes feature gating logic (i.e. this may not create an account depending on build).
 	 * @internal Checkout signup is feature gated to WooCommerce 4.7 and newer; Because it requires updated my-account/lost-password screen in 4.7+ for setting initial password.
-
-	 * @todo OrderController (and CartController) should be injected into Checkout Route Class.
 	 *
 	 * @throws RouteException API error object with error details.
 	 * @param WP_REST_Request $request Request object.
