@@ -772,7 +772,7 @@ class CartController {
 			throw new RouteException(
 				'woocommerce_rest_cart_coupon_error',
 				sprintf(
-					/* Translators: %s coupon code */
+					/* translators: %s coupon code */
 					__( '"%s" is an invalid coupon code.', 'woo-gutenberg-products-block' ),
 					esc_html( $coupon_code )
 				),
@@ -784,7 +784,7 @@ class CartController {
 			throw new RouteException(
 				'woocommerce_rest_cart_coupon_error',
 				sprintf(
-					/* Translators: %s coupon code */
+					/* translators: %s coupon code */
 					__( 'Coupon code "%s" has already been applied.', 'woo-gutenberg-products-block' ),
 					esc_html( $coupon_code )
 				),
