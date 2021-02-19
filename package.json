@@ -24,7 +24,7 @@
 	},
 	"license": "GPL-3.0+",
 	"scripts": {
-		"build": "rimraf build/* && cross-env BABEL_ENV=default NODE_ENV=production webpack",
+		"build": "rimraf build/* && cross-env BABEL_ENV=default NODE_ENV=production tsc --build && webpack",
 		"build:deploy": "rimraf vendor/* && cross-env WOOCOMMERCE_BLOCKS_PHASE=2 composer install --no-dev && cross-env WOOCOMMERCE_BLOCKS_PHASE=2 npm run build --loglevel error",
 		"build:e2e-test": "npm run build",
 		"build:map": "cross-env BABEL_ENV=default NODE_ENV=production FORCE_MAP=true webpack",
