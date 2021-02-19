@@ -12,10 +12,10 @@
 	// Preserve JSX, allows compatibility with wp-element jsx babel transforms
 	"jsx": "preserve",
 	"target": "esnext",
-	"allowJs": false,
+	"allowJs": true,
 	"moduleResolution": "node",
 	"lib": [ "dom", "esnext" ],
-	"checkJs": false,
+	"checkJs": true,
 	"strict": true,
 	"strictNullChecks": true,
 	"allowSyntheticDefaultImports": true,

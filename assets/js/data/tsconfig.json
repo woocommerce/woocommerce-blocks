@@ -1,9 +1,6 @@
 {
   "extends": "../../../tsconfig.base.json",
-  "compilerOptions": {
-	"checkJs": false,
-	"allowJs": false
-  },
+  "compilerOptions": {},
   "include": [ ".", "../type-defs" ],
   "exclude": [ "**/test/**" ]
 }
