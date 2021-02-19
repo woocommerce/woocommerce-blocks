@@ -28,7 +28,7 @@ abstract class AbstractCartRoute extends AbstractRoute {
 	/**
 	 * Cart controller class instance.
 	 *
-	 * @var CartSchema
+	 * @var CartController
 	 */
 	protected $cart_controller;
 
