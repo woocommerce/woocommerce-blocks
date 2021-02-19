@@ -380,8 +380,7 @@ class Checkout extends AbstractCartRoute {
 	 * @throws RouteException On error.
 	 */
 	private function create_or_update_draft_order() {
-		$reserve_stock = new ReserveStock();
-		$this->order   = $this->get_draft_order_id() ? wc_get_order( $this->get_draft_order_id() ) : null;
+		$this->order = $this->get_draft_order_id() ? wc_get_order( $this->get_draft_order_id() ) : null;
 
 		if ( ! $this->is_valid_draft_order( $this->order ) ) {
 			$this->order = $this->order_controller->create_order_from_cart();
@@ -420,6 +419,7 @@ class Checkout extends AbstractCartRoute {
 
 		// Try to reserve stock for 10 mins, if available.
 		try {
+			$reserve_stock = new ReserveStock();
 			$reserve_stock->reserve_stock_for_order( $this->order, 10 );
 		} catch ( ReserveStockException $e ) {
 			$error_data = $e->getErrorData();
