@@ -245,7 +245,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			$this->attributes['limit'] = intval( $this->attributes['columns'] ) * intval( $this->attributes['rows'] );
 		}
 
-		$limit = apply_filters( 'wc_block_grid_produt_limit', $this->attributes['limit'] );
+		$limit = apply_filters( 'wc_block_grid_product_limit', $this->attributes['limit'] );
 
 		return intval( $limit );
 	}
@@ -302,7 +302,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			$classes[] = $this->attributes['className'];
 		}
 
-		$classes = apply_filters( 'wc_block_grid_clsses', $classes );
+		$classes = apply_filters( 'wc_block_grid_classes', $classes );
 
 		return implode( ' ', $classes );
 	}
@@ -410,7 +410,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		}
 		return sprintf(
 			'<div class="wc-block-grid__product-price price">%s</div>',
-			apply_filters( 'wc_block_grid_produt_price_html', $product->get_price_html(), $product )
+			apply_filters( 'wc_block_grid_product_price_html', $product->get_price_html(), $product )
 		);
 	}
 
