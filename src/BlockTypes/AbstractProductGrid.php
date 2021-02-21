@@ -429,10 +429,12 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			return;
 		}
 
-		return apply_filters( 'wc_block_grid_sale_badge_html', '<div class="wc-block-grid__product-onsale">
+		$sale_badge = '<div class="wc-block-grid__product-onsale">
 			<span aria-hidden="true">' . esc_html__( 'Sale', 'woo-gutenberg-products-block' ) . '</span>
 			<span class="screen-reader-text">' . esc_html__( 'Product on sale', 'woo-gutenberg-products-block' ) . '</span>
-		</div>', $product );
+		</div>';
+
+		return apply_filters( 'wc_block_grid_sale_badge_html', $sale_badge, $product );
 	}
 
 	/**
