@@ -458,7 +458,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 */
 	protected function get_add_to_cart( $product ) {
 		$attributes = array(
-			'aria-label'       => $product->add_to_cart_description(), // filter woocommerce_product_add_to_cart_description applyed by default
+			'aria-label'       => $product->add_to_cart_description(),
 			'data-quantity'    => apply_filters( 'wc_block_grid_add_to_cart_quantity', '1', $product ),
 			'data-product_id'  => $product->get_id(),
 			'data-product_sku' => $product->get_sku(),
