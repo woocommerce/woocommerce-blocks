@@ -223,7 +223,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		$product_visibility_terms  = wc_get_product_visibility_term_ids();
 		$product_visibility_not_in = array( $product_visibility_terms['exclude-from-catalog'] );
 
-		if ( 'yes' === get_option( 'woocommerce_hide_out_of_stock_items' ) ) {
+		if ( 'yes' === apply_filters( 'wc_block_grid_hide_out_of_stock_items', get_option( 'woocommerce_hide_out_of_stock_items' ) ) ) {
 			$product_visibility_not_in[] = $product_visibility_terms['outofstock'];
 		}
 
@@ -244,7 +244,10 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		if ( isset( $this->attributes['rows'], $this->attributes['columns'] ) && ! empty( $this->attributes['rows'] ) ) {
 			$this->attributes['limit'] = intval( $this->attributes['columns'] ) * intval( $this->attributes['rows'] );
 		}
-		return intval( $this->attributes['limit'] );
+
+		$limit = apply_filters( 'wc_block_grid_produt_limit', $this->attributes['limit'] );
+
+		return intval( $limit );
 	}
 
 	/**
@@ -299,6 +302,8 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			$classes[] = $this->attributes['className'];
 		}
 
+		$classes = apply_filters( 'wc_block_grid_clsses', $classes );
+
 		return implode( ' ', $classes );
 	}
 
@@ -349,7 +354,9 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 * @return string
 	 */
 	protected function get_image_html( $product ) {
-		return '<div class="wc-block-grid__product-image">' . $product->get_image( 'woocommerce_thumbnail' ) . '</div>';
+		$image_size = apply_filters( 'wc_block_grid_image_size', 'woocommerce_thumbnail', $product );
+
+		return '<div class="wc-block-grid__product-image">' . $product->get_image( $image_size ) . '</div>';
 	}
 
 	/**
@@ -362,7 +369,10 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		if ( empty( $this->attributes['contentVisibility']['title'] ) ) {
 			return '';
 		}
-		return '<div class="wc-block-grid__product-title">' . $product->get_title() . '</div>';
+
+		$title = apply_filters( 'wc_block_grid_product_title', $product->get_title(), $product );
+
+		return '<div class="wc-block-grid__product-title">' . $title . '</div>';
 	}
 
 	/**
@@ -382,7 +392,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		if ( $rating_count > 0 ) {
 			return sprintf(
 				'<div class="wc-block-grid__product-rating">%s</div>',
-				wc_get_rating_html( $average, $rating_count )
+				apply_filters( 'wc_block_grid_rating_html', wc_get_rating_html( $average, $rating_count ), $product, $average, $rating_count )
 			);
 		}
 		return '';
@@ -400,7 +410,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		}
 		return sprintf(
 			'<div class="wc-block-grid__product-price price">%s</div>',
-			$product->get_price_html()
+			apply_filters( 'wc_block_grid_produt_price_html', $product->get_price_html(), $product )
 		);
 	}
 
@@ -419,10 +429,10 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			return;
 		}
 
-		return '<div class="wc-block-grid__product-onsale">
+		return apply_filters( 'wc_block_grid_sale_badge_html', '<div class="wc-block-grid__product-onsale">
 			<span aria-hidden="true">' . esc_html__( 'Sale', 'woo-gutenberg-products-block' ) . '</span>
 			<span class="screen-reader-text">' . esc_html__( 'Product on sale', 'woo-gutenberg-products-block' ) . '</span>
-		</div>';
+		</div>', $product );
 	}
 
 	/**
@@ -435,7 +445,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		if ( empty( $this->attributes['contentVisibility']['button'] ) ) {
 			return '';
 		}
-		return '<div class="wp-block-button wc-block-grid__product-add-to-cart">' . $this->get_add_to_cart( $product ) . '</div>';
+		return apply_filters( 'wc_block_grid_button_html', '<div class="wp-block-button wc-block-grid__product-add-to-cart">' . $this->get_add_to_cart( $product ) . '</div>', $product );
 	}
 
 	/**
@@ -446,12 +456,12 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 */
 	protected function get_add_to_cart( $product ) {
 		$attributes = array(
-			'aria-label'       => $product->add_to_cart_description(),
-			'data-quantity'    => '1',
+			'aria-label'       => $product->add_to_cart_description(), // filter woocommerce_product_add_to_cart_description applyed by default
+			'data-quantity'    => apply_filters( 'wc_block_grid_add_to_cart_quantity', '1', $product ),
 			'data-product_id'  => $product->get_id(),
 			'data-product_sku' => $product->get_sku(),
 			'rel'              => 'nofollow',
-			'class'            => 'wp-block-button__link add_to_cart_button',
+			'class'            => apply_filters( 'wc_block_grid_add_to_cart_class', 'wp-block-button__link add_to_cart_button', $product ),
 		);
 
 		if ( $product->supports( 'ajax_add_to_cart' ) ) {
