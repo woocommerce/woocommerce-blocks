@@ -5,6 +5,8 @@ import { useState, useEffect, useRef } from '@wordpress/element';
 import { useDispatch } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { decodeEntities } from '@wordpress/html-entities';
+import DataLoader from 'dataloader';
+import triggerFetch from '@wordpress/api-fetch';
 
 /**
  * Internal dependencies
@@ -24,9 +26,40 @@ import { useStoreCart } from './cart';
  * @return {number} Quantity in the cart.
  */
 const getQuantityFromCartItems = ( cartItems, productId ) => {
-	const productItem = cartItems.find( ( { id } ) => id === productId );
+	return cartItems.find( ( { id } ) => id === productId )?.quantity || 0;
+};
 
-	return productItem ? productItem.quantity : 0;
+const batchAddItemToCartLoader = new DataLoader(
+	async ( items ) => {
+		const response = await triggerFetch( {
+			path: `/wc/store/batch`,
+			method: 'POST',
+			data: {
+				requests: items.map( ( { id, quantity } ) => ( {
+					path: `/wc/store/cart/add-item`,
+					method: 'POST',
+					body: {
+						id,
+						quantity,
+					},
+				} ) ),
+			},
+			cache: 'no-store',
+		} );
+		return response.responses;
+	},
+	{
+		batchScheduleFn: ( callback ) => setTimeout( callback, 100 ),
+		cache: false,
+		maxBatchSize: 25,
+	}
+);
+
+const batchAddItemToCart = async ( id, quantity ) => {
+	return await batchAddItemToCartLoader.load( {
+		id,
+		quantity,
+	} );
 };
 
 /**
@@ -40,22 +73,27 @@ const getQuantityFromCartItems = ( cartItems, productId ) => {
  *                                  to add to cart functionality.
  */
 export const useStoreAddToCart = ( productId ) => {
-	const { addItemToCart } = useDispatch( storeKey );
 	const { cartItems, cartIsLoading } = useStoreCart();
 	const { addErrorNotice, removeNotice } = useStoreNotices();
-
 	const [ addingToCart, setAddingToCart ] = useState( false );
+	const { receiveCart } = useDispatch( storeKey );
 	const currentCartItemQuantity = useRef(
 		getQuantityFromCartItems( cartItems, productId )
 	);
 
 	const addToCart = ( quantity = 1 ) => {
 		setAddingToCart( true );
-		addItemToCart( productId, quantity )
-			.then( ( result ) => {
-				if ( result === true ) {
-					removeNotice( 'add-to-cart' );
+		removeNotice( 'add-to-cart' );
+		batchAddItemToCart( productId, quantity )
+			.then( ( { body, headers, status } ) => {
+				triggerFetch.setNonce( headers );
+
+				// If non 2xx error code, rethrow error.
+				if ( status > 299 ) {
+					throw body;
 				}
+
+				receiveCart( body );
 			} )
 			.catch( ( error ) => {
 				addErrorNotice( decodeEntities( error.message ), {
