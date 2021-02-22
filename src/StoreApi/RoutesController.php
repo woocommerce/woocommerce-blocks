@@ -72,6 +72,7 @@ class RoutesController {
 		$order_controller = new OrderController();
 
 		$this->routes = [
+			'batch'                     => new Routes\Batch(),
 			'cart'                      => new Routes\Cart( $this->schemas->get( 'cart' ), null, $cart_controller ),
 			'cart-add-item'             => new Routes\CartAddItem( $this->schemas->get( 'cart' ), null, $cart_controller ),
 			'cart-apply-coupon'         => new Routes\CartApplyCoupon( $this->schemas->get( 'cart' ), null, $cart_controller ),

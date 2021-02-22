@@ -182,7 +182,7 @@ class CartController {
 					'woocommerce_rest_cart_product_no_stock',
 					sprintf(
 						/* translators: 1: product name 2: quantity in stock */
-						__( 'You cannot add that amount of &quot;%1$s&quot; to the cart because there is not enough stock (%2$s remaining).', 'woo-gutenberg-products-block' ),
+						__( 'You cannot add &quot;%1$s&quot; to the cart because there is not enough stock (%2$s remaining).', 'woo-gutenberg-products-block' ),
 						$product->get_name(),
 						wc_format_stock_quantity_for_display( $qty_remaining, $product )
 					),
