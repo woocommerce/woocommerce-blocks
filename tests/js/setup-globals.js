@@ -11,7 +11,19 @@ global.wcSettings = {
 		precision: 2,
 		symbol: '&#36;',
 	},
-	currentUserIsAdmin: false,
+	block_constants: {
+		currentUserIsAdmin: false,
+		shippingCountries: {
+			AT: 'Austria',
+			CA: 'Canada',
+			GB: 'United Kingdom (UK)',
+		},
+		shippingStates: {
+			CA: {
+				ON: 'Ontario',
+			},
+		},
+	},
 	date: {
 		dow: 0,
 	},
@@ -28,16 +40,6 @@ global.wcSettings = {
 		siteLocale: 'en_US',
 		userLocale: 'en_US',
 		weekdaysShort: [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
-	},
-	shippingCountries: {
-		AT: 'Austria',
-		CA: 'Canada',
-		GB: 'United Kingdom (UK)',
-	},
-	shippingStates: {
-		CA: {
-			ON: 'Ontario',
-		},
 	},
 	countryLocale: {
 		GB: {
