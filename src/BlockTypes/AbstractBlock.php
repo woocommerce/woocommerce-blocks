@@ -95,6 +95,7 @@ abstract class AbstractBlock {
 			return;
 		}
 		$this->enqueue_data();
+		$this->enqueue_integrations_data();
 	}
 
 	/**
@@ -285,6 +286,7 @@ abstract class AbstractBlock {
 			return;
 		}
 		$this->enqueue_data( $attributes );
+		$this->enqueue_integrations_data();
 		$this->enqueue_scripts( $attributes );
 		$this->enqueued_assets = true;
 	}
@@ -334,7 +336,12 @@ abstract class AbstractBlock {
 		if ( ! $this->asset_data_registry->exists( 'block_constants' ) ) {
 			$this->asset_data_registry->add( 'block_constants', [ self::class, 'get_wc_block_data' ] );
 		}
+	}
 
+	/**
+	 * Extra data coming form the block integrations.
+	 */
+	protected function enqueue_integrations_data() {
 		$registered_script_data = $this->integration_registry->get_all_registered_script_data();
 
 		foreach ( $registered_script_data as $asset_data_key => $asset_data_value ) {
