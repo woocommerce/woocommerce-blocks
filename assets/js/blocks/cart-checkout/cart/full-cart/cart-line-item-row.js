@@ -138,6 +138,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 	}
 	const totalsPrice = Dinero( {
 		amount: lineTotal,
+		precision: totalsCurrency.minorUnit,
 	} );
 
 	const firstImage = images.length ? images[ 0 ] : {};
@@ -258,10 +259,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 				<ProductPrice
 					currency={ totalsCurrency }
 					format={ productPriceFormat }
-					price={ getAmountFromRawPrice(
-						totalsPrice,
-						totalsCurrency
-					) }
+					price={ totalsPrice.getAmount() }
 				/>
 
 				{ quantity > 1 && (

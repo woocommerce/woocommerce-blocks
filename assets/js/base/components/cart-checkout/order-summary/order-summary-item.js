@@ -84,9 +84,8 @@ const OrderSummaryItem = ( { cartItem } ) => {
 	}
 	const totalsPrice = Dinero( {
 		amount: lineTotal,
-	} )
-		.convertPrecision( totals.currency_minor_unit )
-		.getAmount();
+		precision: totalsCurrency.minorUnit,
+	} ).getAmount();
 	const subtotalPriceFormat = __experimentalApplyCheckoutFilter( {
 		filterName: 'subtotalPriceFormat',
 		defaultValue: '<price/>',
