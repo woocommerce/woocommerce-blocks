@@ -7,6 +7,7 @@ use Automattic\WooCommerce\Blocks\Assets\Api;
 use Automattic\WooCommerce\Blocks\Tests\Mocks\AssetDataRegistryMock;
 use Automattic\WooCommerce\Blocks\Package;
 use InvalidArgumentException;
+use PHPUnit\Framework\Error\Deprecated;
 
 /**
  * Tests for the AssetDataRegistry class.
@@ -63,17 +64,22 @@ class AssetDataRegistry extends WP_UnitTestCase {
 	/**
 	 * This tests the 'woocommerce_shared_settings' filter.
 	 * A reminder this filter is only temporary but just using this as for
-	 * testing with.
+	 * testing with
+	 * @since 4.6.0 The filter has been deprecated. We disable user deprecated reporting
+	 * so PHPUnit does not converts the Error to Exception and the normal flow can continue.
+	 * We test the deprecation notice trigger in test_woocommerce_filter_deprecation_notice.
 	 * @group newTest
 	 */
 	public function test_woocommerce_filter_with_protected_data() {
-		$this->registry->initialize_core_data();
+		$error_reporting = error_reporting();
+		error_reporting($error_reporting & ~E_USER_DEPRECATED);
 		$original_data = $this->registry->get();
 		add_filter( 'woocommerce_shared_settings', [ self::class, 'pdatcallback' ] );
 		$data = $this->registry->get();
 		$this->registry->initialize_core_data();
 		$this->assertEquals( $original_data, $data );
 		remove_filter( 'woocommerce_shared_settings', [ self::class, 'pdatcallback' ] );
+		error_reporting( $error_reporting );
 	}
 
 	public static function pdatcallback( $existing_data ) {
@@ -87,6 +93,8 @@ class AssetDataRegistry extends WP_UnitTestCase {
 	}
 
 	public function test_woocommerce_filter_with_new_data() {
+		$error_reporting = error_reporting();
+		error_reporting($error_reporting & ~E_USER_DEPRECATED);
 		$this->registry->initialize_core_data();
 		$original_data = $this->registry->get();
 		add_filter( 'woocommerce_shared_settings', [ self::class, 'ndcallback' ] );
@@ -95,5 +103,15 @@ class AssetDataRegistry extends WP_UnitTestCase {
 		$original_data['cheeseburger'] = 'fries';
 		$this->assertEquals( $original_data, $data );
 		remove_filter( 'woocommerce_shared_settings', [ self::class, 'ndcallback' ] );
+		error_reporting( $error_reporting );
+	}
+
+	 /**
+	 * Expect deprecation notice from the usage of the filter.
+	 * @group newTest
+	 */
+	public function test_woocommerce_filter_deprecation_notice() {
+		$this->expectException(Deprecated::class);
+		$this->registry->initialize_core_data();
 	}
 }
