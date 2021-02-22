@@ -69,9 +69,9 @@ describe( 'Testing cart', () => {
 	it( 'renders correct cart line subtotal when currency has 0 decimals', async () => {
 		fetchMock.mockResponse( ( req ) => {
 			if ( req.url.match( /wc\/store\/cart/ ) ) {
-				// Make it so there is only one item to simplify things.
 				const cart = {
 					...previewCart,
+					// Make it so there is only one item to simplify things.
 					items: [
 						{
 							...previewCart.items[ 0 ],
