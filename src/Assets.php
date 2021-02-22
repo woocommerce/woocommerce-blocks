@@ -35,5 +35,4 @@ class Assets {
 		$asset_api = Package::container()->get( AssetApi::class );
 		$asset_api->register_block_script( $script_name, $handle, $dependencies );
 	}
-
 }

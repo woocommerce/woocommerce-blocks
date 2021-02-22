@@ -1,7 +1,6 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\Domain;
 
-use Automattic\WooCommerce\Blocks\Package as NewPackage;
 use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 
 /**
