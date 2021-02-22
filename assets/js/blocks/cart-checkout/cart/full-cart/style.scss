@@ -150,6 +150,14 @@ table.wc-block-cart-items {
 	display: flex;
 }
 
+.is-small {
+	.wc-block-cart-item__total {
+		.wc-block-components-sale-badge {
+			display: none;
+		}
+	}
+}
+
 .is-medium,
 .is-small,
 .is-mobile {
@@ -201,10 +209,6 @@ table.wc-block-cart-items {
 
 				.wc-block-components-formatted-money-amount {
 					display: inline-block;
-				}
-
-				.wc-block-components-sale-badge {
-					display: none;
 				}
 			}
 		}
