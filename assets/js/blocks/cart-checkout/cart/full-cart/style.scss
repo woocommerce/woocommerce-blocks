@@ -150,6 +150,16 @@ table.wc-block-cart-items {
 	display: flex;
 }
 
+.wc-block-cart-item__total-price-and-sale-badge {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+
+	.wc-block-components-sale-badge {
+		margin-top: $gap-smallest;
+	}
+}
+
 .is-small {
 	.wc-block-cart-item__total {
 		.wc-block-components-sale-badge {
