@@ -2,6 +2,7 @@
 namespace Automattic\WooCommerce\Blocks\Domain;
 
 use Automattic\WooCommerce\Blocks\Assets as BlockAssets;
+use Automattic\WooCommerce\Blocks\Domain\AssetsInitialization;
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 use Automattic\WooCommerce\Blocks\Library;
@@ -79,6 +80,7 @@ class Bootstrap {
 		if ( ! $is_rest ) {
 			$this->add_build_notice();
 			$this->container->get( AssetDataRegistry::class );
+			$this->container->get( AssetsInitialization::class );
 			$this->container->get( Installer::class );
 			BlockAssets::init();
 		}
@@ -154,6 +156,13 @@ class Bootstrap {
 			function( Container $container ) {
 				$asset_api = $container->get( AssetApi::class );
 					return new AssetDataRegistry( $asset_api );
+			}
+		);
+		$this->container->register(
+			AssetsInitialization::class,
+			function( Container $container ) {
+				$asset_api = $container->get( AssetApi::class );
+					return new AssetsInitialization( $asset_api );
 			}
 		);
 		$this->container->register(
