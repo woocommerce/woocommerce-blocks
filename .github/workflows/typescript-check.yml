@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 1
-      - run: npm install
+      - run: npm ci
       - run: npm run ts:check-all
         
   typescript-check-projects:
@@ -53,5 +53,5 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 1
-      - run: npm install
+      - run: npm ci
       - run: npm run ts:check
