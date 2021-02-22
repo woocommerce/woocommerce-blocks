@@ -1,6 +1,6 @@
 {
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {},
-  "include": [ ".", "../type-defs" ],
+  "include": [ "." ],
   "exclude": [ "**/test/**" ]
 }
