@@ -72,7 +72,7 @@ const reducer = (
 			}
 			break;
 		case types.APPLYING_COUPON:
-			if ( action.couponCode ) {
+			if ( action.couponCode || action.couponCode === '' ) {
 				state = {
 					...state,
 					metaData: {
@@ -83,7 +83,7 @@ const reducer = (
 			}
 			break;
 		case types.REMOVING_COUPON:
-			if ( action.couponCode ) {
+			if ( action.couponCode || action.couponCode === '' ) {
 				state = {
 					...state,
 					metaData: {
