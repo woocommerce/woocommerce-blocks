@@ -256,7 +256,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 				</div>
 			</td>
 			<td className="wc-block-cart-item__total">
-				<div className="wc-block-cart-item__total-price-and-sale-wrapper">
+				<div className="wc-block-cart-item__total-price-and-sale-badge-wrapper">
 					<ProductPrice
 						currency={ totalsCurrency }
 						format={ productPriceFormat }
