@@ -160,7 +160,8 @@ table.wc-block-cart-items {
 	}
 }
 
-.is-small {
+.is-small,
+.is-mobile {
 	.wc-block-cart-item__total {
 		.wc-block-components-sale-badge {
 			display: none;
