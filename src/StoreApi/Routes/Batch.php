@@ -32,9 +32,10 @@ class Batch extends AbstractRoute implements RouteInterface {
 	 */
 	public function get_args() {
 		return array(
-			'callback' => [ $this, 'get_response' ],
-			'methods'  => 'POST',
-			'args'     => array(
+			'callback'            => [ $this, 'get_response' ],
+			'methods'             => 'POST',
+			'permission_callback' => '__return_true',
+			'args'                => array(
 				'validation' => array(
 					'type'    => 'string',
 					'enum'    => array( 'require-all-validate', 'normal' ),
