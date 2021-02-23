@@ -7,6 +7,7 @@ import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { decodeEntities } from '@wordpress/html-entities';
 import DataLoader from 'dataloader';
 import triggerFetch from '@wordpress/api-fetch';
+import { triggerFragmentRefresh } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
@@ -31,7 +32,7 @@ const getQuantityFromCartItems = ( cartItems, productId ) => {
 
 const batchAddItemToCartLoader = new DataLoader(
 	async ( items ) => {
-		const response = await triggerFetch( {
+		return await triggerFetch( {
 			path: `/wc/store/batch`,
 			method: 'POST',
 			data: {
@@ -45,11 +46,13 @@ const batchAddItemToCartLoader = new DataLoader(
 				} ) ),
 			},
 			cache: 'no-store',
+		} ).then( ( response ) => {
+			triggerFragmentRefresh();
+			return response.responses;
 		} );
-		return response.responses;
 	},
 	{
-		batchScheduleFn: ( callback ) => setTimeout( callback, 100 ),
+		batchScheduleFn: ( callback ) => setTimeout( callback, 300 ),
 		cache: false,
 		maxBatchSize: 25,
 	}
