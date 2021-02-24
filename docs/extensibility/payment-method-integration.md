@@ -2,13 +2,11 @@
 
 The checkout block has an API interface for payment methods to integrate that consists of both a server side and client side implementation.
 
-> **Note:** This API is fairly stable, but we're still really early in the checkout block release plan so it _is_ possible this might slightly change as more payment methods are integrated and we discover areas needing improvement. So monitoring this API will be needed.
-
 ## Table of Contents <!-- omit in toc -->
 
 - [Client Side integration](#client-side-integration)
-  - [Express payment methods - `registerExpressPaymentMethod( options )`](#express-payment-methods---registerexpresspaymentmethod-paymentmethodcreator-)
-  - [Payment Methods - `registerPaymentMethod( options )`](#payment-methods---registerpaymentmethod-paymentmethodcreator-)
+  - [Express payment methods - `registerExpressPaymentMethod( options )`](#express-payment-methods---registerexpresspaymentmethod-options-)
+  - [Payment Methods - `registerPaymentMethod( options )`](#payment-methods---registerpaymentmethod-options-)
   - [Props Fed to Payment Method Nodes](#props-fed-to-payment-method-nodes)
 - [Server Side Integration](#server-side-integration)
   - [Processing Payment](#processing-payment)
@@ -16,9 +14,11 @@ The checkout block has an API interface for payment methods to integrate that co
 
 ## Client Side integration
 
-The client side integration consists of an API for registering both _express_ payment methods (those that consist of a one button payment process initiated by the shopper such as Stripe ApplePay or GooglePay), and payment methods such as _cheque_, Paypal Standard, or Stripe Credit Card.
+The client side integration consists of an API for registering both _express_ payment methods (those that consist of a one button payment process initiated by the shopper such as Stripe ApplePay or GooglePay), and payment methods such as _cheque_, PayPal Standard, or Stripe Credit Card.
 
-In both cases, the client side integration is done using registration methods exposed on the `blocks-registry` API. You can access this via the `wc` global in a WooCommerce environment (`wc.wcBlocksRegistry`). You'll see that we also Webpack configured in the blocks repository to expose this API on `@woocommerce/blocks-registry` which you can implement in your own build process as well.
+In both cases, the client side integration is done using registration methods exposed on the `blocks-registry` API. You can access this via the `wc` global in a WooCommerce environment (`wc.wcBlocksRegistry`).
+
+> Note: In your build process, you could do something similar to what is done in the blocks repository which [aliases this API as an external on `@woocommerce/blocks-registry`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/e089ae17043fa525e8397d605f0f470959f2ae95/bin/webpack-helpers.js#L16-L35).
 
 ### Express payment methods - `registerExpressPaymentMethod( options )`
 
@@ -48,10 +48,10 @@ The options you feed the configuration instance should be an object in this shap
 
 ```js
 const options = {
-	name: 'my_payment_method',
-	content: <div>A react node</div>,
-	edit: <div> A react node </div>,
-	canMakePayment: () => true,
+  name: 'my_payment_method',
+  content: <div>A React node</div>,
+  edit: <div>A React node</div>,
+  canMakePayment: () => true,
   paymentMethodId: 'new_payment_method',
   supports = {
       features: [],
@@ -62,15 +62,15 @@ const options = {
 Here's some more details on the configuration options:
 
 -   `name` (required): This should be a unique string (wise to try to pick something unique for your gateway that wouldn't be used by another implementation) that is used as the identifier for the gateway client side. If `paymentMethodId` is not provided, `name` is used for `paymentMethodId` as well.
--   `content` (required): This should be a react node that will output in the express payment method area when the block is rendered in the frontend. It will be cloned in the rendering process. When cloned, this react node will receive props from the payment method interface to checkout that will allow your component to interact with checkout data (more on this later).
--   `edit` (required): This should be a react node that will be output in the express payment method area when the block is rendered in the editor. It will be cloned in the rendering process. When cloned, this react node will receive props from the payment method interface to checkout (but they will contain preview data).
--   `canMakePayment` (required): A callback to determine whether the payment method should be available as an option for the shopper. The function will be passed an object containing data about the current order. Return a boolean value - true if payment method is available for use. If your gateway needs to perform async initialisation to determine availability, you can return a promise (resolving to boolean). This allows a payment method to be hidden based on the cart, e.g. if the cart has physical/shippable products (example: `Cash on delivery`); or for payment methods to control whether they are available depending on other conditions. Keep in mind this function could be invoked multiple times in the lifecycle of the checkout and thus any expensive logic in the callback provided on this property should be memoized.
+-   `content` (required): This should be a React node that will output in the express payment method area when the block is rendered in the frontend. It will be cloned in the rendering process. When cloned, this React node will receive props from the payment method interface to checkout that will allow your component to interact with checkout data (more on this later).
+-   `edit` (required): This should be a React node that will be output in the express payment method area when the block is rendered in the editor. It will be cloned in the rendering process. When cloned, this React node will receive props from the payment method interface to checkout (but they will contain preview data).
+-   `canMakePayment` (required): A callback to determine whether the payment method should be available as an option for the shopper. The function will be passed an object containing data about the current order. Return a boolean value - true if payment method is available for use. If your gateway needs to perform async initialization to determine availability, you can return a promise (resolving to boolean). This allows a payment method to be hidden based on the cart, e.g. if the cart has physical/shippable products (example: [`Cash on delivery`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/e089ae17043fa525e8397d605f0f470959f2ae95/assets/js/payment-method-extensions/payment-methods/cod/index.js#L48-L70)); or for payment methods to control whether they are available depending on other conditions. **Keep in mind this function could be invoked multiple times in the lifecycle of the checkout and thus any expensive logic in the callback provided on this property should be memoized.**
 -   `paymentMethodId`: This is the only optional configuration object. The value of this property is what will accompany the checkout processing request to the server and used to identify what payment method gateway class to load for processing the payment (if the shopper selected the gateway). So for instance if this is `stripe`, then `WC_Gateway_Stripe::process_payment` will be invoked for processing the payment.
--   `supports:features`: This is an array of payment features supported by the gateway. It is used to crosscheck if the payment method can be used for the content of the cart. By default payment methods should support at least `products` feature. If no value is provided then this assumes that ['products'] are supported.
+-   `supports:features`: This is an array of payment features supported by the gateway. It is used to crosscheck if the payment method can be used for the content of the cart. By default payment methods should support at least `products` feature. If no value is provided then this assumes that `['products']` are supported.
 
 ### Payment Methods - `registerPaymentMethod( options )`
 
-![Payment Method Area](https://user-images.githubusercontent.com/1429108/79565774-5d230700-807f-11ea-9335-0111ec306a47.png)
+![Image 2021-02-24 at 4 24 05 PM](https://user-images.githubusercontent.com/1429108/109067640-c7073680-76bc-11eb-98e5-f04d35ddef99.jpg)
 
 To register a payment method, you use the `registerPaymentMethod` function from the blocks registry. An example of importing this for use in your JavaScript file is:
 
@@ -94,9 +94,9 @@ registerPaymentMethod( options );
 
 The options you feed the configuration instance are the same as those for express payment methods with the following additions:
 
--   `label`: This should be a react node that will be used to output the label for the tab in the payment methods are. For example it might be `<strong>Credit/Debit Cart</strong>` or you might output images.
+-   `label`: This should be a React node that will be used to output the label for the tab in the payment methods are. For example it might be `<strong>Credit/Debit Cart</strong>` or you might output images.
 -   `ariaLabel`: This is the label that will be read out via screen-readers when the payment method is selected.
--   `placeOrderButtonLabel`: This is an optional label which will change the default "Place Order" button text to something else when the payment method is selected.
+-   `placeOrderButtonLabel`: This is an optional label which will change the default "Place Order" button text to something else when the payment method is selected. As an example, the PayPal Standard payment method [changes the text of the button to "Proceed to PayPal"](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/e089ae17043fa525e8397d605f0f470959f2ae95/assets/js/payment-method-extensions/payment-methods/paypal/index.js#L37-L40) when it is selected as the payment method for checkout because the payment method takes the shopper offsite to PayPal for completing the payment.
 -   `supports`: This is an object containing information about what features your payment method supports. The following keys are valid here:
     - `showSavedCards`: This value will determine whether saved cards associated with your payment method are shown to the customer.
     - `showSaveOption`: This value will control whether to show the checkbox which allows customers to save their payment method for future payments.
@@ -111,12 +111,10 @@ A big part of the payment method integration is the interface that is exposed fo
 -   `shippingData`: This object contains all shipping related data (outside of status) - `shippingRates`, `shippingRatesLoading`, `selectedRates`, `setSelectedRates`, `isSelectingRate`, `shippingAddress`, `setShippingAddress`, and `needsShipping`.
 -   `billing`: This object contains everything related to billing - `billingData`, `cartTotal`, `currency`, `cartTotalItems`, `displayPricesIncludingTax`, `appliedCoupons`, `customerId`
 -   `eventRegistration`: This object contains all the checkout event emitter registration functions. These are functions the payment method can register observers on to interact with various points in the checkout flow (see [this doc](./checkout-flow-and-events.md) for more info). The following properties are available - `onCheckoutBeforeProcessing`, `onCheckoutAfterProcessingWithSuccess`, `onCheckoutAfterProcessingWithError`, `onPaymentProcessing`, `onShippingRateSuccess`, `onShippingRateFail`, `onShippingRateSelectSuccess`, `onShippingRateSelectFail`
--   `components`: The properties on this object are exposed components that can be implemented by your payment method for various common interface elements used by payment methods. Currently the available components on this property are: `ValidationInputError` (a container for holding validation errors which typically you'll include after any inputs), and `CheckboxControl`(which is usually used for indicating to save the payment method). **Note: this last one is subject to change**
+-   `components`: The properties on this object are exposed components that can be implemented by your payment method for various common interface elements used by payment methods. Currently the available components on this property are: `ValidationInputError` (a container for holding validation errors which typically you'll include after any inputs), [`PaymentMethodLabel`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/e089ae17043fa525e8397d605f0f470959f2ae95/assets/js/payment-method-extensions/payment-methods/paypal/index.js#L37-L40) (use this component for the payment method label, including an optional icon)
 -   `setExpressPaymentError`: This function receives a string and allows express payment methods to set an error notice for the express payment area on demand. This can be necessary because some express payment method processing might happen outside of checkout events.
 
 ## Server Side Integration
-
-> **Note:** This portion of the doc is still in development and there could be changes to the API here.
 
 ### Processing Payment
 
