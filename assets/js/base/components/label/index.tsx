@@ -1,8 +1,7 @@
 /**
  * External dependencies
  */
-import PropTypes from 'prop-types';
-import { FC, Fragment, HTMLAttributes } from 'react';
+import { Fragment, HTMLAttributes } from 'react';
 import classNames from 'classnames';
 
 /**
