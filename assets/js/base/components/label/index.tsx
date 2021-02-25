@@ -2,7 +2,7 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import { Fragment } from 'react';
+import { FC, Fragment, HTMLAttributes } from 'react';
 import classNames from 'classnames';
 
 /**
@@ -21,6 +21,11 @@ const Label = ( {
 	screenReaderLabel,
 	wrapperElement,
 	wrapperProps = {},
+}: {
+	label?: string;
+	screenReaderLabel?: string;
+	wrapperElement?: string;
+	wrapperProps?: HTMLAttributes< HTMLElement >;
 } ) => {
 	let Wrapper;
 
@@ -55,13 +60,6 @@ const Label = ( {
 	}
 
 	return <Wrapper { ...wrapperProps }>{ label }</Wrapper>;
-};
-
-Label.propTypes = {
-	label: PropTypes.node,
-	screenReaderLabel: PropTypes.node,
-	wrapperElement: PropTypes.elementType,
-	wrapperProps: PropTypes.object,
 };
 
 export default Label;
