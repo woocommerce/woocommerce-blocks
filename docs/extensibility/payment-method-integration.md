@@ -11,6 +11,8 @@ The checkout block has an API interface for payment methods to integrate that co
 - [Server Side Integration](#server-side-integration)
   - [Processing Payment](#processing-payment)
   - [Registering Assets](#registering-assets)
+  - [Hooking into the Checkout processing by the Store API.](#hooking-into-the-checkout-processing-by-the-store-api)
+  - [Putting it all together](#putting-it-all-together)
 
 ## Client Side integration
 
@@ -122,22 +124,24 @@ Currently, the checkout block has legacy handling for payment processing (by con
 
 ### Registering Assets
 
-Since implementing the correct loading of your client side asset registration is tricky with the variables around the block loading process, there is an API for ensuring you can register any assets and data to pass along to your client side payment method from the server.
+Since implementing the correct loading of your client side asset registration is tricky with some dependencies on how related assets load in the request, there is an API for ensuring you can register any assets and data to pass along to your client side payment method from the server.
 
 First, you create a class that extends `Automattic\WooCommerce\Blocks\Payments\Integration\AbstractPaymentMethodType` (or you can implement the `Automattic\WooCommerce\Blocks\Payments\PaymentMethodTypeInterface`, but you get some functionality for free via the abstract class).
 
 In your class:
 
 -   Define a `name` property (which is a string used to reference your payment method).
--   Define an `initialize` function. This function will get called during the server side initialization process and is a good place to put any settings population etc. Basically anything you need to do to initialize your gateway. Note, this will be called on every request so don't put anything expensive here.
+-   Define an `initialize` function. This function will get called during the server side initialization process and is a good place to put any settings population etc. Basically anything you need to do to initialize your gateway. **Note, this will be called on every request so don't put anything expensive here.**
 -   Define an `is_active` function. This should return whether the payment method is active or not.
 -   Define a `get_payment_method_script_handles` function. In this function you should register your payment method scripts (using `wp_register_script`) and then return the script handles you registered with. This will be used to add your payment method as a dependency of the checkout script and thus take sure of loading it correctly.
 -   Define a `get_payment_method_script_handles_for_admin` function. Include this if your payment method has a script you _only_ want to load in the editor context for the checkout block.
 -   Define a `get_payment_method_data` function. You can return from this function an associative array of data you want to be exposed for your payment method client side. This data will be available client side via `wc.wcSettings.getSetting`. So for instance if you assigned `stripe` as the value of the `name` property for this class, client side you can access any data via: `wc.wcSettings.getSetting( 'stripe_data' )`. That would return an object matching the shape of the associative array you returned from this function.
 
-There is also a [hook you can implement to hook into the server side processing of the order](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/308e968c700028180cab391f2223eb0a43dd2d4d/src/RestApi/StoreApi/Routes/Checkout.php#L350-L361). **Note:** a good place to register your callback on this hook is in the `initialize` method of the payment method class you created from the above instructions.
+### Hooking into the Checkout processing by the Store API.
 
-This hook is the required place to hook in your payment processing and if you set a status on the provided `PaymentResult` object, then the legacy processing will be ignored for your payment method. Hook callbacks will receive:
+There may be some cases where the fallback legacy processing of Checkout requests from the StoreAPI mentioned earlier doesn't work for your existing payment method integration. For these cases, there is also an [action hook you can implement to hook into the server side processing of the order](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/308e968c700028180cab391f2223eb0a43dd2d4d/src/RestApi/StoreApi/Routes/Checkout.php#L350-L361). **Note:** a good place to register your callback on this hook is in the `initialize` method of the payment method class you created from the above instructions.
+
+This hook is the *preferred* place to hook in your payment processing and if you set a status on the provided `PaymentResult` object, then the legacy processing will be ignored for your payment method. Hook callbacks will receive:
 
 [`Automattic\WooCommerce\Blocks\Payments\PaymentContext`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/src/Payments/PaymentContext.php)
 
@@ -150,3 +154,31 @@ This contains various details about the payment result returned to the client an
 -   set the status to return for the payment method (one of `success`, `failure`, `pending`, `error`).
 -   set a redirect url.
 -   set any additional payment details (in case you need to return something for your client to further process with).
+
+### Putting it all together
+
+So you've created a class extending `Automattic\WooCommerce\Blocks\Payments\Integration\AbstractPaymentMethodType`, but you still need to *register* this with the server side handling of payment methods. In order to do this you need to register a callback on the `woocommerce_blocks_payment_method_type_registration` action. Your callback will receive an instance of `Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry` which has a `register` method for registering an instance of the class you created. It's also recommended that you register your callback on this action within the context of a callback on the `woocommerce_blocks_loaded` action.
+
+> Note: With Cart and Checkout Blocks currently only available in the WooCommerce Blocks Feature plugin, you will want to make sure you check for the availability of the `Automattic\WooCommerce\Blocks\Payments\Integration\AbstractPaymentMethodType` class before registering your payment method integration server side.
+
+So for example, assuming your class that extends `Automattic\WooCommerce\Blocks\Payments\Integration\AbstractPaymentMethodType` is named `MyPaymentMethod`. You would have this somewhere in your extension's bootstrap:
+
+```php
+use MyPlugin\MyPaymentMethod;
+use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
+
+add_action( 'woocommerce_blocks_loaded', 'my_extension_woocommerce_blocks_support' );
+
+function my_extension_woocommerce_blocks_support() {
+  if ( class_exists( 'Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' ) ) {
+    add_action(
+      'woocommerce_blocks_payment_method_type_registration',
+      function( PaymentMethodRegistry $payment_method_registry ) {
+        $payment_method_registry->register( new MyPaymentMethod );
+      }
+    );
+  }
+}
+```
+
+As an example, you can see how the Stripe extension adds it's integration in this [pull request](https://github.com/woocommerce/woocommerce-gateway-stripe/pull/1467/files).
