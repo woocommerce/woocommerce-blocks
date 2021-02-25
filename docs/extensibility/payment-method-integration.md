@@ -118,7 +118,7 @@ A big part of the payment method integration is the interface that is exposed fo
 
 ### Processing Payment
 
-Currently, the checkout block has legacy handling for payment processing (by converting incoming `payment_data` provided by the client side payment method to `$_POST` and calling the payment gateway's `process_payment` function ). So unless your payment method hooks into the core checkout `process_checkout` function in any way, this will take care of processing your payment for you.
+Currently, the checkout block has legacy handling for payment processing (by converting incoming `payment_data` provided by the client side payment method to `$_POST` and calling the payment gateway's `process_payment` function ). So unless your payment method hooks into the core checkout `process_checkout` function in any way, this will take care of processing your payment for you server side if you already have a WooCommerce Payment method extension integrated with the existing shortcode checkout flow.
 
 ### Registering Assets
 
