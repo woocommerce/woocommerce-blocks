@@ -84,6 +84,8 @@ export const createSlotFill = ( slotName, onError = null ) => {
 						renderError={
 							CURRENT_USER_IS_ADMIN ? onError : () => null
 						}
+						sendToHost={true}
+						origin={"checkout"}
 					>
 						{ cloneElement( fill, fillProps ) }
 					</BlockErrorBoundary>
