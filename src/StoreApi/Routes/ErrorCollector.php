@@ -56,6 +56,54 @@ class ErrorCollector extends AbstractRoute {
 	 */
 	public function __construct() {
 		$this->provider = new WhichBrowser();
+		// Add option to enable or disable debug log.
+		add_filter( 'woocommerce_get_sections_advanced', [ $this, 'add_errors_section_link' ], 10, 1 );
+		add_filter( 'woocommerce_get_settings_advanced', [ $this, 'add_errors_settings_section' ], 10, 2 );
+	}
+
+	/**
+	 * Inject Blocks Settings section.
+	 *
+	 * @param array $sections Already added sections.
+	 *
+	 * @return array
+	 */
+	public function add_errors_section_link( $sections ) {
+		$sections['woocommerce-blocks'] = __( 'WooCommerce Blocks', 'woo-gutenberg-products-block' );
+		return $sections;
+	}
+
+	/**
+	 * Get settings array for WooCommerce Blocks
+	 *
+	 * @param array  $settings Settings array.
+	 * @param string $current_section Current section slug.
+	 *
+	 * @return array
+	 */
+	public function add_errors_settings_section( $settings, $current_section ) {
+		if ( 'woocommerce-blocks' === $current_section ) {
+			$settings = array(
+				array(
+					'title' => 'WooCommerce Blocks Debug Settings',
+					'type'  => 'title',
+					'desc'  => '',
+					'id'    => 'woocommerce_blocks_options',
+				),
+				array(
+					'title'   => __( 'Blocks Debug', 'woo-gutenberg-products-block' ),
+					'desc'    => __( 'Enable debug logging for WooCommerce Blocks', 'woo-gutenberg-products-block' ),
+					'id'      => 'woocommerce_blocks_debug_enabled',
+					'type'    => 'checkbox',
+					'default' => 'no',
+				),
+				array(
+					'type' => 'sectionend',
+					'id'   => 'woocommerce_blocks_options',
+				),
+			);
+		}
+		return $settings;
 	}
 
 	/**
@@ -96,20 +144,23 @@ class ErrorCollector extends AbstractRoute {
 	 * @param \WP_REST_Request $request Request object.
 	 */
 	protected function get_route_post_response( \WP_REST_Request $request ) {
+		$logger = wc_get_logger();
+
 		//phpcs:disable
-		error_log( "In {$request['origin']}: {$request['content']}" );
+		$message = 'In ' . $request['origin'] . ' : ' . $request['content'];
 		try {
 			$user_agent = $this->provider->parse( $request->get_header( 'user_agent' ) );
 		} catch ( NoResultFoundException $e ) {
 			// We skip if parsing failed.
 		} finally {
 			$is_user_logged = is_user_logged_in() ? 'Yes' : 'No';
-			error_log( "Is user guest: {$is_user_logged}" );
-			error_log( "Browser: {$user_agent->getBrowser()->getName()} {$user_agent->getBrowser()->getVersion()->getComplete()}" );
-			error_log( "System: {$user_agent->getOperatingSystem()->getName()}" );
+			$message .= "\nIs user guest: {$is_user_logged}";
+			$message .= "\nBrowser: {$user_agent->getBrowser()->getName()} {$user_agent->getBrowser()->getVersion()->getComplete()}";
+			$message .= "\nSystem: {$user_agent->getOperatingSystem()->getName()}";
 		}
 		//phpcs:enable
-		return rest_ensure_response( $request->get_headers() );
+		$logger->error( $message, array( 'source' => 'woocommerce-blocks' ) );
+		return rest_ensure_response( 'OK' );
 	}
 
 	/**

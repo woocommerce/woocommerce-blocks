@@ -92,6 +92,7 @@ class AssetDataRegistry {
 			'orderStatuses' => $this->get_order_statuses( wc_get_order_statuses() ),
 			'siteTitle'     => get_bloginfo( 'name ' ),
 			'wcAssetUrl'    => plugins_url( 'assets/', WC_PLUGIN_FILE ),
+			'debugEnabled'  => 'yes' === get_option( 'woocommerce_blocks_debug_enabled' ),
 		];
 	}
 

@@ -9,6 +9,7 @@ import {
 } from 'wordpress-components';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
 import { Children, cloneElement } from '@wordpress/element';
+import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -84,7 +85,7 @@ export const createSlotFill = ( slotName, onError = null ) => {
 						renderError={
 							CURRENT_USER_IS_ADMIN ? onError : () => null
 						}
-						sendToHost={ true }
+						sendToHost={ getSetting( 'debugEnabled', false ) }
 						origin={ 'checkout' }
 					>
 						{ cloneElement( fill, fillProps ) }

@@ -5,6 +5,7 @@ import { PluginArea } from '@wordpress/plugins';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import { SlotFillProvider } from '@woocommerce/blocks-checkout';
+import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -46,7 +47,10 @@ export const CheckoutProvider = ( {
 								renderError={
 									CURRENT_USER_IS_ADMIN ? null : () => null
 								}
-								sendToHost={ true }
+								sendToHost={ getSetting(
+									'debugEnabled',
+									false
+								) }
 								origin={ 'pluginArea' }
 							>
 								<PluginArea />
