@@ -1,17 +1,32 @@
 /**
  * External dependencies
  */
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { isValidElement } from '@wordpress/element';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
+import type { ReactNode } from 'react';
+import type { Currency } from '@woocommerce/price-format';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
 
-const TotalsItem = ( { className, currency, label, value, description } ) => {
+interface TotalsItemProps {
+	className?: string;
+	currency?: Currency;
+	label: string;
+	value?: number | ReactNode;
+	description?: ReactNode;
+}
+
+const TotalsItem = ( {
+	className,
+	currency,
+	label,
+	value,
+	description,
+}: TotalsItemProps ): JSX.Element => {
 	return (
 		<div
 			className={ classnames(
@@ -39,14 +54,6 @@ const TotalsItem = ( { className, currency, label, value, description } ) => {
 			</div>
 		</div>
 	);
-};
-
-TotalsItem.propTypes = {
-	currency: PropTypes.object,
-	label: PropTypes.string.isRequired,
-	value: PropTypes.oneOfType( [ PropTypes.number, PropTypes.node ] ),
-	className: PropTypes.string,
-	description: PropTypes.node,
 };
 
 export default TotalsItem;

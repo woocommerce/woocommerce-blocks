@@ -3,18 +3,40 @@
  */
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
-import PropTypes from 'prop-types';
 import {
 	TAXES_ENABLED,
 	DISPLAY_ITEMIZED_TAXES,
 } from '@woocommerce/block-settings';
+import type { Currency } from '@woocommerce/price-format';
 
 /**
  * Internal dependencies
  */
 import TotalsItem from '../item';
 
-const TotalsTaxes = ( { currency, values, className } ) => {
+interface TaxLine {
+	name: string;
+	price: string;
+}
+
+interface Values {
+	// eslint-disable-next-line camelcase
+	tax_lines: TaxLine[];
+	// eslint-disable-next-line camelcase
+	total_tax: string;
+}
+
+interface TotalsTaxesProps {
+	className?: string;
+	currency: Currency;
+	values: Values;
+}
+
+const TotalsTaxes = ( {
+	currency,
+	values,
+	className,
+}: TotalsTaxesProps ): JSX.Element | null => {
 	const { total_tax: totalTax, tax_lines: taxLines } = values;
 
 	if ( ! TAXES_ENABLED ) {
@@ -48,14 +70,6 @@ const TotalsTaxes = ( { currency, values, className } ) => {
 			) ) }{ ' ' }
 		</>
 	);
-};
-
-TotalsTaxes.propTypes = {
-	currency: PropTypes.object.isRequired,
-	values: PropTypes.shape( {
-		total_tax: PropTypes.string,
-	} ).isRequired,
-	className: PropTypes.string,
 };
 
 export default TotalsTaxes;
