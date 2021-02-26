@@ -4,14 +4,36 @@
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
-import PropTypes from 'prop-types';
+import type { Currency } from '@woocommerce/price-format';
 
 /**
  * Internal dependencies
  */
 import TotalsItem from '../item';
 
-const TotalsFees = ( { currency, cartFees, className } ) => {
+interface Totals {
+	total: string;
+	// eslint-disable-next-line camelcase
+	total_tax: string;
+}
+
+interface CartFee {
+	id: string;
+	name: string;
+	totals: Totals;
+}
+
+interface TotalsFeesProps {
+	currency: Currency;
+	cartFees: CartFee[];
+	className?: string;
+}
+
+const TotalsFees = ( {
+	currency,
+	cartFees,
+	className,
+}: TotalsFeesProps ): JSX.Element => {
 	return (
 		<>
 			{ cartFees.map( ( { id, name, totals } ) => {
@@ -44,12 +66,6 @@ const TotalsFees = ( { currency, cartFees, className } ) => {
 			} ) }
 		</>
 	);
-};
-
-TotalsFees.propTypes = {
-	currency: PropTypes.object.isRequired,
-	cartFees: PropTypes.array.isRequired,
-	className: PropTypes.string,
 };
 
 export default TotalsFees;
