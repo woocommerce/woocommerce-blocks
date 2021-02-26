@@ -2,9 +2,10 @@
  * External dependencies
  */
 import { Component } from 'react';
+import triggerFetch from '@wordpress/api-fetch';
 
 class CheckoutSlotErrorBoundary extends Component {
-	state = { errorMessage: '', hasError: false };
+	state = { errorMessage: '', hasError: false, stack: '' };
 
 	static getDerivedStateFromError( error ) {
 		if (
@@ -22,14 +23,35 @@ class CheckoutSlotErrorBoundary extends Component {
 			};
 		}
 
-		return { errorMessage: error.message, hasError: true };
+		return {
+			errorMessage: error.message,
+			stack: error.stack,
+			hasError: true,
+		};
+	}
+
+	sendErrorToHost( origin, content, stack ) {
+		triggerFetch( {
+			path: '/wc/store/error',
+			method: 'POST',
+			data: {
+				origin,
+				content,
+				stack,
+			},
+			cache: 'no-store',
+			parse: false,
+		} );
 	}
 
 	render() {
-		const { renderError } = this.props;
-		const { errorMessage, hasError } = this.state;
+		const { renderError, origin = '', sendToHost = false } = this.props;
+		const { errorMessage, hasError, stack } = this.state;
 
 		if ( hasError ) {
+			if ( sendToHost ) {
+				this.sendErrorToHost( origin, errorMessage, stack );
+			}
 			if ( typeof renderError === 'function' ) {
 				return renderError( errorMessage );
 			}
