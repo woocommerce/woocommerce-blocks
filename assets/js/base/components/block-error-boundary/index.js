@@ -3,6 +3,7 @@
  */
 import PropTypes from 'prop-types';
 import { Component } from 'react';
+import triggerFetch from '@wordpress/api-fetch';
 
 /**
  * Internal dependencies
@@ -32,6 +33,19 @@ class BlockErrorBoundary extends Component {
 		return { errorMessage: error.message, hasError: true };
 	}
 
+	sendErrorToHost( origin, content ) {
+		triggerFetch( {
+			path: '/wc/store/error',
+			method: 'POST',
+			data: {
+				origin,
+				content,
+			},
+			cache: 'no-store',
+			parse: false,
+		} );
+	}
+
 	render() {
 		const {
 			header,
@@ -40,10 +54,15 @@ class BlockErrorBoundary extends Component {
 			text,
 			errorMessagePrefix,
 			renderError,
+			origin = '',
+			sendToHost = false,
 		} = this.props;
 		const { errorMessage, hasError } = this.state;
 
 		if ( hasError ) {
+			if ( sendToHost ) {
+				this.sendErrorToHost( origin, errorMessage );
+			}
 			if ( typeof renderError === 'function' ) {
 				return renderError( { errorMessage } );
 			}

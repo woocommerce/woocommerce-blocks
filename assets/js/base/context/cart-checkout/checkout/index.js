@@ -46,6 +46,8 @@ export const CheckoutProvider = ( {
 								renderError={
 									CURRENT_USER_IS_ADMIN ? null : () => null
 								}
+								sendToHost={ true }
+								origin={ 'pluginArea' }
 							>
 								<PluginArea />
 							</BlockErrorBoundary>
