@@ -16,7 +16,7 @@ The checkout block has an API interface for payment methods to integrate that co
 
 ## Client Side integration
 
-The client side integration consists of an API for registering both _express_ payment methods (those that consist of a one button payment process initiated by the shopper such as Stripe ApplePay or GooglePay), and payment methods such as _cheque_, PayPal Standard, or Stripe Credit Card.
+The client side integration consists of an API for registering both _express_ payment methods (those that consist of a one-button payment process initiated by the shopper such as Stripe, ApplePay, or GooglePay), and payment methods such as _cheque_, PayPal Standard, or Stripe Credit Card.
 
 In both cases, the client side integration is done using registration methods exposed on the `blocks-registry` API. You can access this via the `wc` global in a WooCommerce environment (`wc.wcBlocksRegistry`).
 
