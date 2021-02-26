@@ -2,6 +2,8 @@
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
 
 use UAParser\Parser;
+use Automattic\WooCommerce\Blocks\ErrorInboxMessage;
+use ErrorException;
 
 /**
  * ErrorCollector route.
@@ -149,6 +151,7 @@ class ErrorCollector extends AbstractRoute {
 		$message .= "\nSystem: {$user_agent->os->toString()}";
 		$logger->error( $message, array( 'source' => 'woocommerce-blocks' ) );
 		$event_hash = md5( $request['origin'] . $request['content'] . $request['file'] . $request['location'] );
+		ErrorInboxMessage::possibly_add_note();
 		return rest_ensure_response( 'OK' );
 	}
 
