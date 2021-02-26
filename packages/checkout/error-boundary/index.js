@@ -34,6 +34,12 @@ class BlockErrorBoundary extends Component {
 		};
 	}
 	componentDidCatch( error ) {
+		const errorFile = error.stack.split( '\n' )[ 1 ].trim();
+		const errorLocation = errorFile
+			.split( ':' )
+			.slice( -2 )
+			.join( ':' )
+			.replace( /[^0-9:]/g, '' );
 		if ( this.props.sendToHost ) {
 			triggerFetch( {
 				path: '/wc/store/error',
@@ -41,6 +47,8 @@ class BlockErrorBoundary extends Component {
 				data: {
 					origin: this.props.origin,
 					content: error.message,
+					file: errorFile,
+					location: errorLocation,
 				},
 				cache: 'no-store',
 				parse: false,

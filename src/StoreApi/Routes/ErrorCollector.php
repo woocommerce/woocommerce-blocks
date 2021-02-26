@@ -137,7 +137,8 @@ class ErrorCollector extends AbstractRoute {
 	protected function get_route_post_response( \WP_REST_Request $request ) {
 		$logger = wc_get_logger();
 
-		$message = 'In ' . $request['origin'] . ' : ' . $request['content'];
+		$message  = 'In ' . $request['origin'] . ' : ' . $request['content'];
+		$message .= "\nFile {$request['file']}";
 
 		$parser         = Parser::create();
 		$user_agent     = $parser->parse( $request->get_header( 'user_agent' ) );
@@ -147,6 +148,7 @@ class ErrorCollector extends AbstractRoute {
 		$message .= "\nBrowser: {$user_agent->ua->toString()}";
 		$message .= "\nSystem: {$user_agent->os->toString()}";
 		$logger->error( $message, array( 'source' => 'woocommerce-blocks' ) );
+		$event_hash = md5( $request['origin'] . $request['content'] . $request['file'] . $request['location'] );
 		return rest_ensure_response( 'OK' );
 	}
 
