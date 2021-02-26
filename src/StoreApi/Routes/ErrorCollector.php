@@ -1,12 +1,22 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
 
+use UserAgentParser\Exception\NoResultFoundException;
+use UserAgentParser\Provider\WhichBrowser;
+
 /**
  * ErrorCollector route.
  *
  * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 class ErrorCollector extends AbstractRoute {
+
+	/**
+	 * Parse provider
+	 *
+	 * @var WhichBrowser
+	 */
+	private $provider;
 	/**
 	 * Get the path of this REST route.
 	 *
@@ -45,6 +55,7 @@ class ErrorCollector extends AbstractRoute {
 	 * Constructor.
 	 */
 	public function __construct() {
+		$this->provider = new WhichBrowser();
 	}
 
 	/**
@@ -85,8 +96,20 @@ class ErrorCollector extends AbstractRoute {
 	 * @param \WP_REST_Request $request Request object.
 	 */
 	protected function get_route_post_response( \WP_REST_Request $request ) {
-		error_log( 'In ' . $request['origin'] . ' : ' . $request['content'] ); // phpcs:ignore
-		return rest_ensure_response( 'OK' );
+		//phpcs:disable
+		error_log( "In {$request['origin']}: {$request['content']}" );
+		try {
+			$user_agent = $this->provider->parse( $request->get_header( 'user_agent' ) );
+		} catch ( NoResultFoundException $e ) {
+			// We skip if parsing failed.
+		} finally {
+			$is_user_logged = is_user_logged_in() ? 'Yes' : 'No';
+			error_log( "Is user guest: {$is_user_logged}" );
+			error_log( "Browser: {$user_agent->getBrowser()->getName()} {$user_agent->getBrowser()->getVersion()->getComplete()}" );
+			error_log( "System: {$user_agent->getOperatingSystem()->getName()}" );
+		}
+		//phpcs:enable
+		return rest_ensure_response( $request->get_headers() );
 	}
 
 	/**
