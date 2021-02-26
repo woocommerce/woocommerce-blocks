@@ -45,6 +45,54 @@ class ErrorCollector extends AbstractRoute {
 	 * Constructor.
 	 */
 	public function __construct() {
+		// Add option to enable or disable debug log.
+		add_filter( 'woocommerce_get_sections_advanced', [ $this, 'add_errors_section_link' ], 10, 1 );
+		add_filter( 'woocommerce_get_settings_advanced', [ $this, 'add_errors_settings_section' ], 10, 2 );
+	}
+
+	/**
+	 * Inject Blocks Settings section.
+	 *
+	 * @param array $sections Already added sections.
+	 *
+	 * @return array
+	 */
+	public function add_errors_section_link( $sections ) {
+		$sections['woocommerce-blocks'] = __( 'WooCommerce Blocks', 'woo-gutenberg-products-block' );
+		return $sections;
+	}
+
+	/**
+	 * Get settings array for WooCommerce Blocks
+	 *
+	 * @param array  $settings Settings array.
+	 * @param string $current_section Current section slug.
+	 *
+	 * @return array
+	 */
+	public function add_errors_settings_section( $settings, $current_section ) {
+		if ( 'woocommerce-blocks' === $current_section ) {
+			$settings = array(
+				array(
+					'title' => 'WooCommerce Blocks Debug Settings',
+					'type'  => 'title',
+					'desc'  => '',
+					'id'    => 'woocommerce_blocks_options',
+				),
+				array(
+					'title'   => __( 'Blocks Debug', 'woo-gutenberg-products-block' ),
+					'desc'    => __( 'Enable debug logging for WooCommerce Blocks', 'woo-gutenberg-products-block' ),
+					'id'      => 'woocommerce_blocks_debug_enabled',
+					'type'    => 'checkbox',
+					'default' => 'no',
+				),
+				array(
+					'type' => 'sectionend',
+					'id'   => 'woocommerce_blocks_options',
+				),
+			);
+		}
+		return $settings;
 	}
 
 	/**
@@ -85,7 +133,9 @@ class ErrorCollector extends AbstractRoute {
 	 * @param \WP_REST_Request $request Request object.
 	 */
 	protected function get_route_post_response( \WP_REST_Request $request ) {
-		error_log( 'In ' . $request['origin'] . ' : ' . $request['content'] ); // phpcs:ignore
+		$message = 'In ' . $request['origin'] . ' : ' . $request['content'];
+		$logger  = wc_get_logger();
+		$logger->error( $message, array( 'source' => 'woocommerce-blocks' ) );
 		return rest_ensure_response( 'OK' );
 	}
 
