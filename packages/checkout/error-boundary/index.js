@@ -4,7 +4,12 @@
 import { Component } from 'react';
 import triggerFetch from '@wordpress/api-fetch';
 
-class CheckoutSlotErrorBoundary extends Component {
+/**
+ * Internal dependencies
+ */
+import BlockError from './block-error';
+import './style.scss';
+class BlockErrorBoundary extends Component {
 	state = { errorMessage: '', hasError: false };
 
 	static getDerivedStateFromError( error ) {
@@ -44,17 +49,32 @@ class CheckoutSlotErrorBoundary extends Component {
 	}
 
 	render() {
-		const { renderError } = this.props;
+		const {
+			header,
+			imageUrl,
+			showErrorMessage,
+			text,
+			errorMessagePrefix,
+			renderError,
+		} = this.props;
 		const { errorMessage, hasError } = this.state;
 		if ( hasError ) {
 			if ( typeof renderError === 'function' ) {
-				return renderError( errorMessage );
+				return renderError( { errorMessage } );
 			}
-			return <p>{ errorMessage }</p>;
+			return (
+				<BlockError
+					errorMessage={ showErrorMessage ? errorMessage : null }
+					header={ header }
+					imageUrl={ imageUrl }
+					text={ text }
+					errorMessagePrefix={ errorMessagePrefix }
+				/>
+			);
 		}
 
 		return this.props.children;
 	}
 }
 
-export default CheckoutSlotErrorBoundary;
+export default BlockErrorBoundary;

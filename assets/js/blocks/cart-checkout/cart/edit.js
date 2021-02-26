@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 import ViewSwitcher from '@woocommerce/editor-components/view-switcher';
 import PageSelector from '@woocommerce/editor-components/page-selector';
 import { SHIPPING_ENABLED, CART_PAGE_ID } from '@woocommerce/block-settings';
-import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
+import { BlockErrorBoundary } from '@woocommerce/blocks-checkout';
 import {
 	EditorProvider,
 	useEditorContext,

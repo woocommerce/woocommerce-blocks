@@ -14,8 +14,7 @@
 	"require": {
 		"composer/installers": "^1.7.0",
 		"automattic/jetpack-autoloader": "^2.9.1",
-		"thadafinser/user-agent-parser": "^2.0",
-		"whichbrowser/parser": "^2.1"
+		"ua-parser/uap-php": "^3.9"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "6.5.14",

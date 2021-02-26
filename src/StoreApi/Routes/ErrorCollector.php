@@ -1,8 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\StoreApi\Routes;
 
-use UserAgentParser\Exception\NoResultFoundException;
-use UserAgentParser\Provider\WhichBrowser;
+use UAParser\Parser;
 
 /**
  * ErrorCollector route.
@@ -10,13 +9,6 @@ use UserAgentParser\Provider\WhichBrowser;
  * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 class ErrorCollector extends AbstractRoute {
-
-	/**
-	 * Parse provider
-	 *
-	 * @var WhichBrowser
-	 */
-	private $provider;
 	/**
 	 * Get the path of this REST route.
 	 *
@@ -55,7 +47,6 @@ class ErrorCollector extends AbstractRoute {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->provider = new WhichBrowser();
 		// Add option to enable or disable debug log.
 		add_filter( 'woocommerce_get_sections_advanced', [ $this, 'add_errors_section_link' ], 10, 1 );
 		add_filter( 'woocommerce_get_settings_advanced', [ $this, 'add_errors_settings_section' ], 10, 2 );
@@ -146,19 +137,15 @@ class ErrorCollector extends AbstractRoute {
 	protected function get_route_post_response( \WP_REST_Request $request ) {
 		$logger = wc_get_logger();
 
-		//phpcs:disable
 		$message = 'In ' . $request['origin'] . ' : ' . $request['content'];
-		try {
-			$user_agent = $this->provider->parse( $request->get_header( 'user_agent' ) );
-		} catch ( NoResultFoundException $e ) {
-			// We skip if parsing failed.
-		} finally {
-			$is_user_logged = is_user_logged_in() ? 'Yes' : 'No';
-			$message .= "\nIs user guest: {$is_user_logged}";
-			$message .= "\nBrowser: {$user_agent->getBrowser()->getName()} {$user_agent->getBrowser()->getVersion()->getComplete()}";
-			$message .= "\nSystem: {$user_agent->getOperatingSystem()->getName()}";
-		}
-		//phpcs:enable
+
+		$parser         = Parser::create();
+		$user_agent     = $parser->parse( $request->get_header( 'user_agent' ) );
+		$is_user_logged = is_user_logged_in() ? 'Yes' : 'No';
+
+		$message .= "\nIs user guest: {$is_user_logged}";
+		$message .= "\nBrowser: {$user_agent->ua->toString()}";
+		$message .= "\nSystem: {$user_agent->os->toString()}";
 		$logger->error( $message, array( 'source' => 'woocommerce-blocks' ) );
 		return rest_ensure_response( 'OK' );
 	}

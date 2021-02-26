@@ -12,7 +12,7 @@ import {
 	Notice,
 	Disabled,
 } from '@wordpress/components';
-import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
+import { BlockErrorBoundary } from '@woocommerce/blocks-checkout';
 import {
 	PRIVACY_URL,
 	TERMS_URL,
