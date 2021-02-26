@@ -96,7 +96,7 @@ registerPaymentMethod( options );
 
 The options you feed the configuration instance are the same as those for express payment methods with the following additions:
 
--   `label`: This should be a React node that will be used to output the label for the tab in the payment methods are. For example it might be `<strong>Credit/Debit Cart</strong>` or you might output images.
+-   `label`: This should be a React node that will be used to output the label for the option where the payment methods are. For example it might be `<strong>Credit/Debit Cart</strong>` or you might output images.
 -   `ariaLabel`: This is the label that will be read out via screen-readers when the payment method is selected.
 -   `placeOrderButtonLabel`: This is an optional label which will change the default "Place Order" button text to something else when the payment method is selected. As an example, the PayPal Standard payment method [changes the text of the button to "Proceed to PayPal"](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/e089ae17043fa525e8397d605f0f470959f2ae95/assets/js/payment-method-extensions/payment-methods/paypal/index.js#L37-L40) when it is selected as the payment method for checkout because the payment method takes the shopper offsite to PayPal for completing the payment.
 -   `supports`: This is an object containing information about what features your payment method supports. The following keys are valid here:
