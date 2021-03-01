@@ -2,11 +2,12 @@
  * External dependencies
  */
 import { CURRENCY } from '@woocommerce/settings';
+import type { CurrencyResponseInfo } from '@woocommerce/type-defs/cart-response';
 
 /**
  * Internal dependencies
  */
-import type { Currency, CurrencyData } from '../types';
+import type { Currency } from '../types';
 
 type SymbolPosition = 'left' | 'left_space' | 'right' | 'right_space';
 

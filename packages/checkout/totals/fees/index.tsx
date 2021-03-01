@@ -5,27 +5,16 @@ import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 import type { Currency } from '@woocommerce/price-format';
+import type { CartFeeItem } from '@woocommerce/type-defs/cart';
 
 /**
  * Internal dependencies
  */
 import TotalsItem from '../item';
 
-interface Totals {
-	total: string;
-	// eslint-disable-next-line camelcase
-	total_tax: string;
-}
-
-interface CartFee {
-	id: string;
-	name: string;
-	totals: Totals;
-}
-
 interface TotalsFeesProps {
 	currency: Currency;
-	cartFees: CartFee[];
+	cartFees: CartFeeItem[];
 	className?: string;
 }
 
