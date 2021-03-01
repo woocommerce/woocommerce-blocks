@@ -8,20 +8,16 @@ import {
 	DISPLAY_ITEMIZED_TAXES,
 } from '@woocommerce/block-settings';
 import type { Currency } from '@woocommerce/price-format';
+import type { CartTotalsTaxLineItem } from '@woocommerce/type-defs/cart';
 
 /**
  * Internal dependencies
  */
 import TotalsItem from '../item';
 
-interface TaxLine {
-	name: string;
-	price: string;
-}
-
 interface Values {
 	// eslint-disable-next-line camelcase
-	tax_lines: TaxLine[];
+	tax_lines: CartTotalsTaxLineItem[];
 	// eslint-disable-next-line camelcase
 	total_tax: string;
 }
