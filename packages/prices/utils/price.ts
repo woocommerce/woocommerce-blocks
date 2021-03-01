@@ -65,7 +65,7 @@ const siteCurrencySettings: Currency = {
  */
 export const getCurrencyFromPriceResponse = (
 	// Currency data object, for example an API response containing currency formatting data.
-	currencyData: CurrencyData
+	currencyData: CurrencyResponseInfo | Record< string, never >
 ): Currency => {
 	if ( ! currencyData || typeof currencyData !== 'object' ) {
 		return siteCurrencySettings;
