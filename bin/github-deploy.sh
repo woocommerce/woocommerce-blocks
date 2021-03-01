@@ -1,6 +1,6 @@
 #!/bin/sh
 
-RELEASER_PATH=$(pwd)
+RELEASER_PATH="$(pwd)"
 IS_PRE_RELEASE=false
 
 # Functions
