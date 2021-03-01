@@ -42,7 +42,10 @@ const invalidJsonError = {
 
 const checkStatus = ( response: ApiResponse ) => {
 	if ( response.status >= 200 && response.status < 300 ) {
-		return response;
+		return {
+			response: response.body,
+			headers: response.headers,
+		};
 	}
 	throw response;
 };
