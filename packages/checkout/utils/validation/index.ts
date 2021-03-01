@@ -25,7 +25,7 @@ export const mustBeString = ( value: unknown ): true | Error => {
 /**
  * Checks if value passed contain passed label.
  */
-export const mustContain = ( value: string, label: string ) => {
+export const mustContain = ( value: string, label: string ): true | Error => {
 	if ( ! value.includes( label ) ) {
 		throw Error(
 			sprintf(
