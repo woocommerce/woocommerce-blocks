@@ -4,12 +4,21 @@
 import { CURRENCY } from '@woocommerce/settings';
 
 /**
- * Get currency prefix.
- *
- * @param {string} symbol Currency symbol.
- * @param {string} symbolPosition Position of currency symbol from settings.
+ * Internal dependencies
  */
-const getPrefix = ( symbol, symbolPosition ) => {
+import type { Currency, CurrencyData } from '../types';
+
+type SymbolPosition = 'left' | 'left_space' | 'right' | 'right_space';
+
+/**
+ * Get currency prefix.
+ */
+const getPrefix = (
+	// Currency symbol.
+	symbol: string,
+	// Position of currency symbol from settings.
+	symbolPosition: SymbolPosition
+): string => {
 	const prefixes = {
 		left: symbol,
 		left_space: ' ' + symbol,
@@ -21,11 +30,13 @@ const getPrefix = ( symbol, symbolPosition ) => {
 
 /**
  * Get currency suffix.
- *
- * @param {string} symbol Currency symbol.
- * @param {string} symbolPosition Position of currency symbol from settings.
  */
-const getSuffix = ( symbol, symbolPosition ) => {
+const getSuffix = (
+	// Currency symbol.
+	symbol: string,
+	// Position of currency symbol from settings.
+	symbolPosition: SymbolPosition
+): string => {
 	const suffixes = {
 		left: '',
 		left_space: '',
@@ -38,7 +49,7 @@ const getSuffix = ( symbol, symbolPosition ) => {
 /**
  * Currency information in normalized format from server settings.
  */
-const siteCurrencySettings = {
+const siteCurrencySettings: Currency = {
 	code: CURRENCY.code,
 	symbol: CURRENCY.symbol,
 	thousandSeparator: CURRENCY.thousandSeparator,
@@ -50,11 +61,11 @@ const siteCurrencySettings = {
 
 /**
  * Gets currency information in normalized format from an API response or the server.
- *
- * @param {Object} currencyData Currency data object, for example an API response containing currency formatting data.
- * @return {Object} Normalized currency info.
  */
-export const getCurrencyFromPriceResponse = ( currencyData ) => {
+export const getCurrencyFromPriceResponse = (
+	// Currency data object, for example an API response containing currency formatting data.
+	currencyData: CurrencyData
+): Currency => {
 	if ( ! currencyData || typeof currencyData !== 'object' ) {
 		return siteCurrencySettings;
 	}
@@ -84,11 +95,10 @@ export const getCurrencyFromPriceResponse = ( currencyData ) => {
 
 /**
  * Gets currency information in normalized format, allowing overrides.
- *
- * @param {Object} currencyData Currency data object.
- * @return {Object} Normalized currency info.
  */
-export const getCurrency = ( currencyData = {} ) => {
+export const getCurrency = (
+	currencyData: Partial< Currency > = {}
+): Currency => {
 	return {
 		...siteCurrencySettings,
 		...currencyData,
@@ -98,24 +108,27 @@ export const getCurrency = ( currencyData = {} ) => {
 /**
  * Format a price, provided using the smallest unit of the currency, as a
  * decimal complete with currency symbols using current store settings.
- *
- * @param {number|string} price Price in minor unit, e.g. cents.
- * @param {Object} currencyData Currency data object.
  */
-export const formatPrice = ( price, currencyData ) => {
+export const formatPrice = (
+	// Price in minor unit, e.g. cents.
+	price: number | string,
+	currencyData: Currency
+): string => {
 	if ( price === '' || price === undefined ) {
 		return '';
 	}
 
-	const priceInt = parseInt( price, 10 );
+	const priceInt: number =
+		typeof price === 'number' ? price : parseInt( price, 10 );
 
 	if ( ! Number.isFinite( priceInt ) ) {
 		return '';
 	}
 
-	const currency = getCurrency( currencyData );
-	const formattedPrice = priceInt / 10 ** currency.minorUnit;
-	const formattedValue = currency.prefix + formattedPrice + currency.suffix;
+	const currency: Currency = getCurrency( currencyData );
+	const formattedPrice: number = priceInt / 10 ** currency.minorUnit;
+	const formattedValue: string =
+		currency.prefix + formattedPrice + currency.suffix;
 
 	// This uses a textarea to magically decode HTML currency symbols.
 	const txt = document.createElement( 'textarea' );
