@@ -17,10 +17,16 @@ export interface ApiFetchWithHeadersAction {
 	options: APIFetchOptions;
 }
 
+export interface ApiResponse {
+	body: Record< string, unknown >;
+	headers: Headers;
+	status: number;
+}
+
 export function assertBatchResponseIsValid(
 	response: unknown
 ): asserts response is {
-	responses: Record< string, unknown >;
+	responses: ApiResponse[];
 	headers: Headers;
 } {
 	if (
@@ -35,11 +41,7 @@ export function assertBatchResponseIsValid(
 
 export function assertResponseIsValid(
 	response: unknown
-): asserts response is {
-	body: Record< string, unknown >;
-	headers: Headers;
-	status?: number;
-} {
+): asserts response is ApiResponse {
 	if (
 		typeof response === 'object' &&
 		response !== null &&

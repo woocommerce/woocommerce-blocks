@@ -12,6 +12,7 @@ import {
 	ApiFetchWithHeadersAction,
 	assertBatchResponseIsValid,
 	assertResponseIsValid,
+	ApiResponse,
 } from './types';
 
 /**
@@ -37,6 +38,13 @@ const invalidJsonError = {
 		'The response is not a valid JSON response.',
 		'woo-gutenberg-products-block'
 	),
+};
+
+const checkStatus = ( response: ApiResponse ) => {
+	if ( response.status >= 200 && response.status < 300 ) {
+		return response;
+	}
+	throw response;
 };
 
 const setNonceOnFetch = ( headers: Headers ): void => {
@@ -154,20 +162,7 @@ export const controls = {
 					.then( ( response: unknown ) => {
 						assertResponseIsValid( response );
 						setNonceOnFetch( response.headers );
-
-						// If non 207 error code, rethrow error.
-						if (
-							! response.status ||
-							response.status < 200 ||
-							response.status > 299
-						) {
-							throw response.body;
-						}
-
-						resolve( {
-							response: response.body,
-							headers: response.headers,
-						} );
+						resolve( checkStatus( response ) );
 					} )
 					.catch( ( error: { message?: string } ) => {
 						reject( error?.message || error );
