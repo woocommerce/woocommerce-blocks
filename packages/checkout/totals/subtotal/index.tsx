@@ -20,7 +20,7 @@ interface Values {
 interface SubtotalProps {
 	className?: string;
 	currency: Currency;
-	values: Values;
+	values: Values | Record< string, never >;
 }
 
 const Subtotal = ( {

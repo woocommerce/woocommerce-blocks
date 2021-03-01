@@ -25,7 +25,7 @@ interface Values {
 interface TotalsTaxesProps {
 	className?: string;
 	currency: Currency;
-	values: Values;
+	values: Values | Record< string, never >;
 }
 
 const TotalsTaxes = ( {
