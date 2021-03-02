@@ -38,6 +38,12 @@ export const useStoreCartItemQuantity = ( cartItem ) => {
 	// Store quantity in hook state. This is used to keep the UI
 	// updated while server request is updated.
 	const [ quantity, changeQuantity ] = useState( cartItemQuantity );
+	// Quantity can be updated from somewhere else, this is to keep it in sync.
+	useEffect( () => {
+		if ( cartItemQuantity !== quantity ) {
+			changeQuantity( cartItemQuantity );
+		}
+	}, [ cartItemQuantity, quantity ] );
 	const [ debouncedQuantity ] = useDebounce( quantity, 400 );
 	const previousDebouncedQuantity = usePrevious( debouncedQuantity );
 	const { removeItemFromCart, changeCartItemQuantity } = useDispatch(
