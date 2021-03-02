@@ -26,6 +26,8 @@ import { useShippingDataContext } from '../shipping';
 import { useCustomerDataContext } from '../customer';
 import type {
 	PaymentMethodsDispatcher,
+	PaymentMethods,
+	ExpressPaymentMethods,
 	PaymentMethodConfig,
 	ExpressPaymentMethodConfig,
 } from './types';
@@ -51,7 +53,7 @@ import type {
  */
 const usePaymentMethodRegistration = (
 	dispatcher: PaymentMethodsDispatcher,
-	registeredPaymentMethods: Record< string, PaymentMethodConfig >,
+	registeredPaymentMethods: PaymentMethods | ExpressPaymentMethods,
 	paymentMethodsSortOrder: string[],
 	noticeContext: string
 ) => {
@@ -98,7 +100,7 @@ const usePaymentMethodRegistration = (
 		let availablePaymentMethods = {};
 
 		const addAvailablePaymentMethod = (
-			paymentMethod: PaymentMethodConfig
+			paymentMethod: PaymentMethodConfig | ExpressPaymentMethodConfig
 		) => {
 			availablePaymentMethods = {
 				...availablePaymentMethods,
@@ -118,10 +120,16 @@ const usePaymentMethodRegistration = (
 				const canPay = await Promise.resolve(
 					paymentMethod.canMakePayment( canPayArgument.current )
 				);
-				if ( canPay ) {
-					if ( canPay.error ) {
+
+				if ( !! canPay ) {
+					if (
+						typeof canPay === 'object' &&
+						canPay !== null &&
+						canPay.error
+					) {
 						throw new Error( canPay.error.message );
 					}
+
 					addAvailablePaymentMethod( paymentMethod );
 				}
 			} catch ( e ) {
@@ -183,10 +191,7 @@ const usePaymentMethodRegistration = (
 export const usePaymentMethods = (
 	dispatcher: PaymentMethodsDispatcher
 ): boolean => {
-	const standardMethods: Record<
-		string,
-		PaymentMethodConfig
-	> = getPaymentMethods();
+	const standardMethods: PaymentMethods = getPaymentMethods();
 	const { noticeContexts } = useEmitResponse();
 	// Ensure all methods are present in order.
 	// Some payment methods may not be present in PAYMENT_GATEWAY_SORT_ORDER if they
@@ -213,10 +218,7 @@ export const usePaymentMethods = (
 export const useExpressPaymentMethods = (
 	dispatcher: PaymentMethodsDispatcher
 ): boolean => {
-	const expressMethods: Record<
-		string,
-		ExpressPaymentMethodConfig
-	> = getExpressPaymentMethods();
+	const expressMethods: ExpressPaymentMethods = getExpressPaymentMethods();
 	const { noticeContexts } = useEmitResponse();
 	return usePaymentMethodRegistration(
 		dispatcher,
