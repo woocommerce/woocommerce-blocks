@@ -105,7 +105,7 @@ final class ExtendRestApi {
 
 		if ( isset( $args['data_type'] ) && ! in_array( $args['data_type'], [ ARRAY_N, ARRAY_A ], true ) ) {
 			$this->throw_exception(
-				sprintf( 'Data type must be either ARRAY_N for a numeric array or ARRAY_A for an object like array. You provided %1$s.', $args['endpoint'] )
+				sprintf( 'Data type must be either ARRAY_N for a numeric array or ARRAY_A for an object like array. You provided %1$s.', $args['data_type'] )
 			);
 		}
 
