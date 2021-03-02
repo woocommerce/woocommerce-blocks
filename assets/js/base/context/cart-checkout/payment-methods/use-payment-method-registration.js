@@ -23,6 +23,7 @@ import {
  */
 import { useEditorContext } from '../../editor';
 import { useShippingDataContext } from '../shipping';
+import { useCustomerDataContext } from '../customer';
 
 /**
  * This hook handles initializing registered payment methods and exposing all
@@ -51,7 +52,8 @@ const usePaymentMethodRegistration = (
 ) => {
 	const [ isInitialized, setIsInitialized ] = useState( false );
 	const { isEditor } = useEditorContext();
-	const { selectedRates, shippingAddress } = useShippingDataContext();
+	const { selectedRates } = useShippingDataContext();
+	const { billingData, shippingAddress } = useCustomerDataContext();
 	const selectedShippingMethods = useShallowEqual( selectedRates );
 	const paymentMethodsOrder = useShallowEqual( paymentMethodsSortOrder );
 	const {
@@ -62,6 +64,7 @@ const usePaymentMethodRegistration = (
 	const canPayArgument = useRef( {
 		cartTotals,
 		cartNeedsShipping,
+		billingData,
 		shippingAddress,
 		selectedShippingMethods,
 		paymentRequirements,
@@ -72,6 +75,7 @@ const usePaymentMethodRegistration = (
 		canPayArgument.current = {
 			cartTotals,
 			cartNeedsShipping,
+			billingData,
 			shippingAddress,
 			selectedShippingMethods,
 			paymentRequirements,
@@ -79,6 +83,7 @@ const usePaymentMethodRegistration = (
 	}, [
 		cartTotals,
 		cartNeedsShipping,
+		billingData,
 		shippingAddress,
 		selectedShippingMethods,
 		paymentRequirements,
