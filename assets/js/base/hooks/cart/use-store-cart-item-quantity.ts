@@ -2,12 +2,12 @@
  * External dependencies
  */
 import { useSelect, useDispatch } from '@wordpress/data';
-import { useState, useEffect, useCallback } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useDebounce } from 'use-debounce';
 import { useCheckoutContext } from '@woocommerce/base-context';
 import { triggerFragmentRefresh } from '@woocommerce/base-utils';
-
+import type { CartItem, StoreCartItemQuantity } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
@@ -30,23 +30,17 @@ import { usePrevious } from '../use-previous';
  * @return {StoreCartItemQuantity} An object exposing data and actions relating
  *                                 to cart items.
  */
-export const useStoreCartItemQuantity = ( cartItem ) => {
+export const useStoreCartItemQuantity = (
+	cartItem: CartItem
+): StoreCartItemQuantity => {
 	const { key: cartItemKey = '', quantity: cartItemQuantity = 1 } = cartItem;
 	const { cartErrors } = useStoreCart();
 	const { dispatchActions } = useCheckoutContext();
 
 	// Store quantity in hook state. This is used to keep the UI
 	// updated while server request is updated.
-	const [ quantity, changeQuantity ] = useState( cartItemQuantity );
-	// Quantity can be updated from somewhere else, this is to keep it in sync.
-	useEffect( () => {
-		changeQuantity( ( currentQuantity ) =>
-			cartItemQuantity !== currentQuantity
-				? cartItemQuantity
-				: currentQuantity
-		);
-	}, [ cartItemQuantity ] );
-	const [ debouncedQuantity ] = useDebounce( quantity, 400 );
+	const [ quantity, changeQuantity ] = useState< number >( cartItemQuantity );
+	const [ debouncedQuantity ] = useDebounce< number >( quantity, 400 );
 	const previousDebouncedQuantity = usePrevious( debouncedQuantity );
 	const { removeItemFromCart, changeCartItemQuantity } = useDispatch(
 		storeKey
@@ -78,13 +72,13 @@ export const useStoreCartItemQuantity = ( cartItem ) => {
 	);
 	const previousIsPendingDelete = usePrevious( isPendingDelete );
 
-	const removeItem = useCallback( () => {
+	const removeItem = () => {
 		return cartItemKey
-			? removeItemFromCart( cartItemKey ).then( () => {
+			? removeItemFromCart< Promise< void > >( cartItemKey ).then( () => {
 					triggerFragmentRefresh();
 			  } )
 			: false;
-	}, [ cartItemKey, removeItemFromCart ] );
+	};
 
 	// Observe debounced quantity value, fire action to update server on change.
 	useEffect( () => {
@@ -93,9 +87,10 @@ export const useStoreCartItemQuantity = ( cartItem ) => {
 			Number.isFinite( previousDebouncedQuantity ) &&
 			previousDebouncedQuantity !== debouncedQuantity
 		) {
-			changeCartItemQuantity( cartItemKey, debouncedQuantity ).then(
-				triggerFragmentRefresh
-			);
+			changeCartItemQuantity< Promise< void > >(
+				cartItemKey,
+				debouncedQuantity
+			).then( triggerFragmentRefresh );
 		}
 	}, [
 		cartItemKey,

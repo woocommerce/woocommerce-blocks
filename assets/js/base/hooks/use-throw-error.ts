@@ -10,16 +10,12 @@ import { useState, useCallback } from '@wordpress/element';
  *
  * @return {function(Object)} A function receiving the error that will be thrown.
  */
-export const useThrowError = () => {
+export const useThrowError = (): ( ( error: Error ) => void ) => {
 	const [ , setState ] = useState();
-
-	const throwError = useCallback(
-		( error ) =>
-			setState( () => {
-				throw error;
-			} ),
-		[]
-	);
-
+	const throwError = useCallback( ( error: Error ): void => {
+		setState( () => {
+			throw error;
+		} );
+	}, [] );
 	return throwError;
 };

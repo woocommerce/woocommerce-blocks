@@ -16,10 +16,10 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
  * @return {*} The previous cached instance of the value if the current has
  *                 shallow equality with it.
  */
-export const useShallowEqual = ( value ) => {
-	const ref = useRef();
+export function useShallowEqual< T >( value: T ): T | undefined {
+	const ref = useRef< T >();
 	if ( ! isShallowEqual( value, ref.current ) ) {
 		ref.current = value;
 	}
 	return ref.current;
-};
+}
