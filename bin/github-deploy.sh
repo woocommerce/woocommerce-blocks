@@ -128,7 +128,7 @@ fi
 
 # Version changes
 output 2 "Updating version numbers in files and regenerating php autoload classmap (note pre-releases will not have the readme.txt stable tag updated)..."
-source $RELEASER_PATH/bin/version-changes.sh
+source "$RELEASER_PATH/bin/version-changes.sh"
 
 composer dump-autoload
 
