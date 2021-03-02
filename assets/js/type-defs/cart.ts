@@ -123,6 +123,7 @@ export interface CartItem {
 	variation: Array< CartVariationItem >;
 	prices: CartItemPrices;
 	totals: CartItemTotals;
+	extensions: ExtensionsData;
 }
 
 export interface CartTotalsTaxLineItem {
@@ -160,9 +161,7 @@ export interface CartErrorItem {
 	message: string;
 }
 
-export interface CartExtensionItem {
-	[ key: string ]: unknown;
-}
+export type ExtensionsData = Record< string, unknown >;
 export interface Cart {
 	coupons: Array< CartCouponItem >;
 	shippingRates: Array< CartShippingRateItem >;
@@ -178,7 +177,7 @@ export interface Cart {
 	totals: CartTotals;
 	errors: Array< CartErrorItem >;
 	paymentRequirements: Array< unknown >;
-	extensions: Array< CartExtensionItem >;
+	extensions: ExtensionsData;
 }
 export interface CartMeta {
 	updatingCustomerData: boolean;
