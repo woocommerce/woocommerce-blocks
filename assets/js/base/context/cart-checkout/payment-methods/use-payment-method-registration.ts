@@ -24,6 +24,11 @@ import {
 import { useEditorContext } from '../../editor';
 import { useShippingDataContext } from '../shipping';
 import { useCustomerDataContext } from '../customer';
+import type {
+	PaymentMethodsDispatcher,
+	PaymentMethodConfig,
+	ExpressPaymentMethodConfig,
+} from './types';
 
 /**
  * This hook handles initializing registered payment methods and exposing all
@@ -45,10 +50,10 @@ import { useCustomerDataContext } from '../customer';
  *                   methods have been initialized.
  */
 const usePaymentMethodRegistration = (
-	dispatcher,
-	registeredPaymentMethods,
-	paymentMethodsSortOrder,
-	noticeContext
+	dispatcher: PaymentMethodsDispatcher,
+	registeredPaymentMethods: Record< string, PaymentMethodConfig >,
+	paymentMethodsSortOrder: string[],
+	noticeContext: string
 ) => {
 	const [ isInitialized, setIsInitialized ] = useState( false );
 	const { isEditor } = useEditorContext();
@@ -92,7 +97,9 @@ const usePaymentMethodRegistration = (
 	const refreshCanMakePayments = useCallback( async () => {
 		let availablePaymentMethods = {};
 
-		const addAvailablePaymentMethod = ( paymentMethod ) => {
+		const addAvailablePaymentMethod = (
+			paymentMethod: PaymentMethodConfig
+		) => {
 			availablePaymentMethods = {
 				...availablePaymentMethods,
 				[ paymentMethod.name ]: paymentMethod,
@@ -140,7 +147,7 @@ const usePaymentMethodRegistration = (
 
 		// Note: some payment methods use the `canMakePayment` callback to initialize / setup.
 		// Example: Stripe CC, Stripe Payment Request.
-		// That's why we track "is initialised" state here.
+		// That's why we track "is initialized" state here.
 		setIsInitialized( true );
 	}, [
 		addErrorNotice,
@@ -173,8 +180,13 @@ const usePaymentMethodRegistration = (
  *
  * @return {boolean} True when standard payment methods have been initialized.
  */
-export const usePaymentMethods = ( dispatcher ) => {
-	const standardMethods = getPaymentMethods();
+export const usePaymentMethods = (
+	dispatcher: PaymentMethodsDispatcher
+): boolean => {
+	const standardMethods: Record<
+		string,
+		PaymentMethodConfig
+	> = getPaymentMethods();
 	const { noticeContexts } = useEmitResponse();
 	// Ensure all methods are present in order.
 	// Some payment methods may not be present in PAYMENT_GATEWAY_SORT_ORDER if they
@@ -198,8 +210,13 @@ export const usePaymentMethods = ( dispatcher ) => {
  *
  * @return {boolean} True when express payment methods have been initialized.
  */
-export const useExpressPaymentMethods = ( dispatcher ) => {
-	const expressMethods = getExpressPaymentMethods();
+export const useExpressPaymentMethods = (
+	dispatcher: PaymentMethodsDispatcher
+): boolean => {
+	const expressMethods: Record<
+		string,
+		ExpressPaymentMethodConfig
+	> = getExpressPaymentMethods();
 	const { noticeContexts } = useEmitResponse();
 	return usePaymentMethodRegistration(
 		dispatcher,

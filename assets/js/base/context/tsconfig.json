@@ -1,6 +1,11 @@
 {
 	"extends": "../../../../tsconfig.base.json",
 	"compilerOptions": {},
-	"include": [ "." ],
+	"include": [
+		".",
+		"../../blocks-registry/index.js",
+		"../../settings/shared/index.js",
+		"../../settings/blocks/index.js"
+	],
 	"exclude": [ "**/test/**" ]
 }
