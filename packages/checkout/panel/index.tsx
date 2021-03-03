@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { useState } from '@wordpress/element';
-import type { ReactChildren, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import classNames from 'classnames';
 import { Icon, chevronUp, chevronDown } from '@woocommerce/icons';
 
@@ -12,7 +12,7 @@ import { Icon, chevronUp, chevronDown } from '@woocommerce/icons';
 import './style.scss';
 
 interface PanelProps {
-	children?: ReactChildren;
+	children?: ReactNode;
 	className?: string;
 	initialOpen?: boolean;
 	hasBorder?: boolean;
