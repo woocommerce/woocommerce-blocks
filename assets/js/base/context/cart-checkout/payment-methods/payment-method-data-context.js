@@ -67,14 +67,14 @@ const {
 	SUCCESS,
 } = STATUS;
 
-const PaymentMethodDataContext = createContext(DEFAULT_PAYMENT_METHOD_DATA);
+const PaymentMethodDataContext = createContext( DEFAULT_PAYMENT_METHOD_DATA );
 
 /**
  * @return {PaymentMethodDataContext} The data and functions exposed by the
  *                                    payment method context provider.
  */
 export const usePaymentMethodDataContext = () => {
-	return useContext(PaymentMethodDataContext);
+	return useContext( PaymentMethodDataContext );
 };
 
 /**
@@ -85,24 +85,24 @@ export const usePaymentMethodDataContext = () => {
  * @return {Object} Object containing the payment methods saved for a specific
  *                  user which are available.
  */
-const getCustomerPaymentMethods = (availablePaymentMethods = {}) => {
-	const customerPaymentMethods = getSetting('customerPaymentMethods', {});
-	const paymentMethodKeys = Object.keys(customerPaymentMethods);
+const getCustomerPaymentMethods = ( availablePaymentMethods = {} ) => {
+	const customerPaymentMethods = getSetting( 'customerPaymentMethods', {} );
+	const paymentMethodKeys = Object.keys( customerPaymentMethods );
 	const enabledCustomerPaymentMethods = {};
-	paymentMethodKeys.forEach((type) => {
-		const methods = customerPaymentMethods[type].filter(
-			({ method: { gateway } }) => {
+	paymentMethodKeys.forEach( ( type ) => {
+		const methods = customerPaymentMethods[ type ].filter(
+			( { method: { gateway } } ) => {
 				const isAvailable = gateway in availablePaymentMethods;
 				return (
 					isAvailable &&
-					availablePaymentMethods[gateway].supports?.showSavedCards
+					availablePaymentMethods[ gateway ].supports?.showSavedCards
 				);
 			}
 		);
-		if (methods.length) {
-			enabledCustomerPaymentMethods[type] = methods;
+		if ( methods.length ) {
+			enabledCustomerPaymentMethods[ type ] = methods;
 		}
-	});
+	} );
 	return enabledCustomerPaymentMethods;
 };
 
@@ -117,7 +117,7 @@ const getCustomerPaymentMethods = (availablePaymentMethods = {}) => {
  * @param {Object} props.children            The wrapped components in this
  *                                           provider.
  */
-export const PaymentMethodDataProvider = ({ children }) => {
+export const PaymentMethodDataProvider = ( { children } ) => {
 	const { setBillingData } = useCustomerDataContext();
 	const {
 		isProcessing: checkoutIsProcessing,
@@ -132,33 +132,36 @@ export const PaymentMethodDataProvider = ({ children }) => {
 		noticeContexts,
 	} = useEmitResponse();
 	// The active payment method - e.g. Stripe CC or BACS.
-	const [activePaymentMethod, setActive] = useState('');
+	const [ activePaymentMethod, setActive ] = useState( '' );
 	// If a previously saved payment method is active, the token for that method.
 	// For example, a for a Stripe CC card saved to user account.
-	const [activeSavedToken, setActiveSavedToken] = useState('');
-	const [observers, subscriber] = useReducer(emitReducer, {});
-	const currentObservers = useRef(observers);
+	const [ activeSavedToken, setActiveSavedToken ] = useState( '' );
+	const [ observers, subscriber ] = useReducer( emitReducer, {} );
+	const currentObservers = useRef( observers );
 
 	const { isEditor, previewData } = useEditorContext();
-	const [paymentData, dispatch] = useReducer(reducer, DEFAULT_PAYMENT_DATA);
+	const [ paymentData, dispatch ] = useReducer(
+		reducer,
+		DEFAULT_PAYMENT_DATA
+	);
 	const setActivePaymentMethod = useCallback(
-		(paymentMethodSlug) => {
-			setActive(paymentMethodSlug);
-			dispatch(statusOnly(PRISTINE));
+		( paymentMethodSlug ) => {
+			setActive( paymentMethodSlug );
+			dispatch( statusOnly( PRISTINE ) );
 		},
-		[setActive, dispatch]
+		[ setActive, dispatch ]
 	);
 	const paymentMethodsDispatcher = useCallback(
-		(paymentMethods) => {
-			dispatch(setRegisteredPaymentMethods(paymentMethods));
+		( paymentMethods ) => {
+			dispatch( setRegisteredPaymentMethods( paymentMethods ) );
 		},
-		[dispatch]
+		[ dispatch ]
 	);
 	const expressPaymentMethodsDispatcher = useCallback(
-		(paymentMethods) => {
-			dispatch(setRegisteredExpressPaymentMethods(paymentMethods));
+		( paymentMethods ) => {
+			dispatch( setRegisteredExpressPaymentMethods( paymentMethods ) );
 		},
-		[dispatch]
+		[ dispatch ]
 	);
 	const paymentMethodsInitialized = usePaymentMethods(
 		paymentMethodsDispatcher
@@ -170,37 +173,37 @@ export const PaymentMethodDataProvider = ({ children }) => {
 	const { addErrorNotice, removeNotice } = useStoreNotices();
 	const { setShippingAddress } = useShippingDataContext();
 	const setShouldSavePayment = useCallback(
-		(shouldSave) => {
-			dispatch(setShouldSavePaymentMethod(shouldSave));
+		( shouldSave ) => {
+			dispatch( setShouldSavePaymentMethod( shouldSave ) );
 		},
-		[dispatch]
+		[ dispatch ]
 	);
 
-	const customerPaymentMethods = useMemo(() => {
-		if (isEditor && previewData.previewSavedPaymentMethods) {
+	const customerPaymentMethods = useMemo( () => {
+		if ( isEditor && previewData.previewSavedPaymentMethods ) {
 			return previewData.previewSavedPaymentMethods;
 		}
 		if (
-			!paymentMethodsInitialized ||
-			Object.keys(paymentData.paymentMethods).length === 0
+			! paymentMethodsInitialized ||
+			Object.keys( paymentData.paymentMethods ).length === 0
 		) {
 			return {};
 		}
-		return getCustomerPaymentMethods(paymentData.paymentMethods);
+		return getCustomerPaymentMethods( paymentData.paymentMethods );
 	}, [
 		isEditor,
 		previewData.previewSavedPaymentMethods,
 		paymentMethodsInitialized,
 		paymentData.paymentMethods,
-	]);
+	] );
 
 	const setExpressPaymentError = useCallback(
-		(message) => {
-			if (message) {
-				addErrorNotice(message, {
+		( message ) => {
+			if ( message ) {
+				addErrorNotice( message, {
 					id: 'wc-express-payment-error',
 					context: noticeContexts.EXPRESS_PAYMENTS,
-				});
+				} );
 			} else {
 				removeNotice(
 					'wc-express-payment-error',
@@ -208,44 +211,44 @@ export const PaymentMethodDataProvider = ({ children }) => {
 				);
 			}
 		},
-		[addErrorNotice, noticeContexts.EXPRESS_PAYMENTS, removeNotice]
+		[ addErrorNotice, noticeContexts.EXPRESS_PAYMENTS, removeNotice ]
 	);
 	// ensure observers are always current.
-	useEffect(() => {
+	useEffect( () => {
 		currentObservers.current = observers;
-	}, [observers]);
+	}, [ observers ] );
 	const onPaymentProcessing = useMemo(
-		() => emitterSubscribers(subscriber).onPaymentProcessing,
-		[subscriber]
+		() => emitterSubscribers( subscriber ).onPaymentProcessing,
+		[ subscriber ]
 	);
 
 	const currentStatus = useMemo(
-		() => ({
+		() => ( {
 			isPristine: paymentData.currentStatus === PRISTINE,
 			isStarted: paymentData.currentStatus === STARTED,
 			isProcessing: paymentData.currentStatus === PROCESSING,
-			isFinished: [ERROR, FAILED, SUCCESS].includes(
+			isFinished: [ ERROR, FAILED, SUCCESS ].includes(
 				paymentData.currentStatus
 			),
 			hasError: paymentData.currentStatus === ERROR,
 			hasFailed: paymentData.currentStatus === FAILED,
 			isSuccessful: paymentData.currentStatus === SUCCESS,
-		}),
-		[paymentData.currentStatus]
+		} ),
+		[ paymentData.currentStatus ]
 	);
 
 	/**
 	 * @type {PaymentStatusDispatch}
 	 */
 	const setPaymentStatus = useCallback(
-		() => ({
-			started: () => dispatch(statusOnly(STARTED)),
-			processing: () => dispatch(statusOnly(PROCESSING)),
-			completed: () => dispatch(statusOnly(COMPLETE)),
+		() => ( {
+			started: () => dispatch( statusOnly( STARTED ) ),
+			processing: () => dispatch( statusOnly( PROCESSING ) ),
+			completed: () => dispatch( statusOnly( COMPLETE ) ),
 			/**
 			 * @param {string} errorMessage An error message
 			 */
-			error: (errorMessage) => dispatch(error(errorMessage)),
+			error: ( errorMessage ) => dispatch( error( errorMessage ) ),
 			/**
 			 * @param {string}           errorMessage      An error message
 			 * @param {Object}           paymentMethodData Arbitrary payment method data to
@@ -253,15 +256,15 @@ export const PaymentMethodDataProvider = ({ children }) => {
 			 * @param {BillingData|null} [billingData]     The billing data accompanying the
 			 *                                             payment method.
 			 */
-			failed: (errorMessage, paymentMethodData, billingData = null) => {
-				if (billingData) {
-					setBillingData(billingData);
+			failed: ( errorMessage, paymentMethodData, billingData = null ) => {
+				if ( billingData ) {
+					setBillingData( billingData );
 				}
 				dispatch(
-					failed({
+					failed( {
 						errorMessage,
 						paymentMethodData,
-					})
+					} )
 				);
 			},
 			/**
@@ -277,30 +280,30 @@ export const PaymentMethodDataProvider = ({ children }) => {
 				billingData = null,
 				shippingData = null
 			) => {
-				if (billingData) {
-					setBillingData(billingData);
+				if ( billingData ) {
+					setBillingData( billingData );
 				}
-				if (shippingData !== null && shippingData?.address) {
-					setShippingAddress(shippingData.address);
+				if ( shippingData !== null && shippingData?.address ) {
+					setShippingAddress( shippingData.address );
 				}
 				dispatch(
-					success({
+					success( {
 						paymentMethodData,
-					})
+					} )
 				);
 			},
-		}),
-		[dispatch, setBillingData, setShippingAddress]
+		} ),
+		[ dispatch, setBillingData, setShippingAddress ]
 	);
 
 	// flip payment to processing if checkout processing is complete, there are
 	// no errors, and payment status is started.
-	useEffect(() => {
+	useEffect( () => {
 		if (
 			checkoutIsProcessing &&
-			!checkoutHasError &&
-			!checkoutIsCalculating &&
-			!currentStatus.isFinished
+			! checkoutHasError &&
+			! checkoutIsCalculating &&
+			! currentStatus.isFinished
 		) {
 			setPaymentStatus().processing();
 		}
@@ -310,118 +313,118 @@ export const PaymentMethodDataProvider = ({ children }) => {
 		checkoutIsCalculating,
 		currentStatus.isFinished,
 		setPaymentStatus,
-	]);
+	] );
 
 	// When checkout is returned to idle, set payment status to pristine
 	// but only if payment status is already not finished.
-	useEffect(() => {
-		if (checkoutIsIdle && !currentStatus.isSuccessful) {
-			dispatch(statusOnly(PRISTINE));
+	useEffect( () => {
+		if ( checkoutIsIdle && ! currentStatus.isSuccessful ) {
+			dispatch( statusOnly( PRISTINE ) );
 		}
-	}, [checkoutIsIdle, currentStatus.isSuccessful]);
+	}, [ checkoutIsIdle, currentStatus.isSuccessful ] );
 
 	// if checkout has an error and payment is not being made with a saved token
 	// and payment status is success, then let's sync payment status back to
 	// pristine.
-	useEffect(() => {
+	useEffect( () => {
 		if (
 			checkoutHasError &&
 			currentStatus.isSuccessful &&
-			!paymentData.hasSavedToken
+			! paymentData.hasSavedToken
 		) {
-			dispatch(statusOnly(PRISTINE));
+			dispatch( statusOnly( PRISTINE ) );
 		}
 	}, [
 		checkoutHasError,
 		currentStatus.isSuccessful,
 		paymentData.hasSavedToken,
-	]);
+	] );
 
 	// Set active (selected) payment method as needed.
-	useEffect(() => {
-		const paymentMethodKeys = Object.keys(paymentData.paymentMethods);
+	useEffect( () => {
+		const paymentMethodKeys = Object.keys( paymentData.paymentMethods );
 		const allPaymentMethodKeys = [
 			...paymentMethodKeys,
-			...Object.keys(paymentData.expressPaymentMethods),
+			...Object.keys( paymentData.expressPaymentMethods ),
 		];
-		if (!paymentMethodsInitialized || !paymentMethodKeys.length) {
+		if ( ! paymentMethodsInitialized || ! paymentMethodKeys.length ) {
 			return;
 		}
 
-		setActive((currentActivePaymentMethod) => {
+		setActive( ( currentActivePaymentMethod ) => {
 			// If there's no active payment method, or the active payment method has
 			// been removed (e.g. COD vs shipping methods), set one as active.
 			// Note: It's possible that the active payment method might be an
 			// express payment method. So registered express payment methods are
 			// included in the check here.
 			if (
-				!currentActivePaymentMethod ||
-				!allPaymentMethodKeys.includes(currentActivePaymentMethod)
+				! currentActivePaymentMethod ||
+				! allPaymentMethodKeys.includes( currentActivePaymentMethod )
 			) {
-				dispatch(statusOnly(PRISTINE));
-				return Object.keys(paymentData.paymentMethods)[0];
+				dispatch( statusOnly( PRISTINE ) );
+				return Object.keys( paymentData.paymentMethods )[ 0 ];
 			}
 			return currentActivePaymentMethod;
-		});
+		} );
 	}, [
 		paymentMethodsInitialized,
 		paymentData.paymentMethods,
 		paymentData.expressPaymentMethods,
 		setActive,
-	]);
+	] );
 
 	// emit events.
-	useEffect(() => {
+	useEffect( () => {
 		// Note: the nature of this event emitter is that it will bail on any
 		// observer that returns a response that !== true. However, this still
 		// allows for other observers that return true for continuing through
 		// to the next observer (or bailing if there's a problem).
-		if (currentStatus.isProcessing) {
-			removeNotice('wc-payment-error', noticeContexts.PAYMENTS);
+		if ( currentStatus.isProcessing ) {
+			removeNotice( 'wc-payment-error', noticeContexts.PAYMENTS );
 			emitEventWithAbort(
 				currentObservers.current,
 				EMIT_TYPES.PAYMENT_PROCESSING,
 				{}
-			).then((response) => {
-				if (isSuccessResponse(response)) {
+			).then( ( response ) => {
+				if ( isSuccessResponse( response ) ) {
 					setPaymentStatus().success(
 						response?.meta?.paymentMethodData,
 						response?.meta?.billingData,
 						response?.meta?.shippingData
 					);
-				} else if (isFailResponse(response)) {
-					if (response.message && response.message.length) {
-						addErrorNotice(response.message, {
+				} else if ( isFailResponse( response ) ) {
+					if ( response.message && response.message.length ) {
+						addErrorNotice( response.message, {
 							id: 'wc-payment-error',
 							isDismissible: false,
 							context:
 								response?.messageContext ||
 								noticeContexts.PAYMENTS,
-						});
+						} );
 					}
 					setPaymentStatus().failed(
 						response?.message,
 						response?.meta?.paymentMethodData,
 						response?.meta?.billingData
 					);
-				} else if (isErrorResponse(response)) {
-					if (response.message && response.message.length) {
-						addErrorNotice(response.message, {
+				} else if ( isErrorResponse( response ) ) {
+					if ( response.message && response.message.length ) {
+						addErrorNotice( response.message, {
 							id: 'wc-payment-error',
 							isDismissible: false,
 							context:
 								response?.messageContext ||
 								noticeContexts.PAYMENTS,
-						});
+						} );
 					}
-					setPaymentStatus().error(response.message);
-					setValidationErrors(response?.validationErrors);
+					setPaymentStatus().error( response.message );
+					setValidationErrors( response?.validationErrors );
 				} else {
 					// otherwise there are no payment methods doing anything so
 					// just consider success
 					setPaymentStatus().success();
 				}
-			});
+			} );
 		}
 	}, [
 		currentStatus.isProcessing,
@@ -433,7 +436,7 @@ export const PaymentMethodDataProvider = ({ children }) => {
 		isFailResponse,
 		isErrorResponse,
 		addErrorNotice,
-	]);
+	] );
 
 	/**
 	 * @type {PaymentMethodDataContext}
@@ -459,8 +462,8 @@ export const PaymentMethodDataProvider = ({ children }) => {
 		setShouldSavePayment,
 	};
 	return (
-		<PaymentMethodDataContext.Provider value={paymentContextData}>
-			{children}
+		<PaymentMethodDataContext.Provider value={ paymentContextData }>
+			{ children }
 		</PaymentMethodDataContext.Provider>
 	);
 };
