@@ -1,8 +1,13 @@
 /**
  * External dependencies
  */
-import NumberFormat from 'react-number-format';
+import NumberFormat, {
+	NumberFormatValues,
+	NumberFormatProps,
+} from 'react-number-format';
 import classNames from 'classnames';
+import type { Currency } from '@woocommerce/price-format';
+import type { ReactElement } from 'react';
 
 /**
  * Internal dependencies
@@ -15,7 +20,7 @@ import './style.scss';
  * @param {Object} currency Currency data.
  * @return {Object} Formatted props for NumberFormat.
  */
-const currencyToNumberFormat = ( currency ) => {
+const currencyToNumberFormat = ( currency: Currency ) => {
 	return {
 		thousandSeparator: currency.thousandSeparator,
 		decimalSeparator: currency.decimalSeparator,
@@ -26,6 +31,13 @@ const currencyToNumberFormat = ( currency ) => {
 		isNumericString: true,
 	};
 };
+
+interface FormattedMonetaryAmountProps {
+	className?: string;
+	value: '-' | number;
+	currency: Currency;
+	onValueChange?: ( unit: number ) => void;
+}
 
 /**
  * Formatted price component.
@@ -45,7 +57,7 @@ const FormattedMonetaryAmount = ( {
 	currency,
 	onValueChange,
 	...props
-} ) => {
+}: FormattedMonetaryAmountProps ): ReactElement | null => {
 	if ( value === '-' ) {
 		return null;
 	}
@@ -62,7 +74,7 @@ const FormattedMonetaryAmount = ( {
 		className
 	);
 	const numberFormatProps = {
-		displayType: 'text',
+		displayType: 'text' as NumberFormatProps[ 'displayType' ],
 		...props,
 		...currencyToNumberFormat( currency ),
 		value: undefined,
@@ -72,11 +84,15 @@ const FormattedMonetaryAmount = ( {
 
 	// Wrapper for NumberFormat onValueChange which handles subunit conversion.
 	const onValueChangeWrapper = onValueChange
-		? ( values ) => {
-				const minorUnitValue = values.value * 10 ** currency.minorUnit;
+		? ( values: NumberFormatValues ) => {
+				const minorUnitValue =
+					( ( values.value as unknown ) as number ) *
+					10 ** currency.minorUnit;
 				onValueChange( minorUnitValue );
 		  }
-		: () => {};
+		: () => {
+				/* not used */
+		  };
 
 	return (
 		<NumberFormat
