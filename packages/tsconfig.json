@@ -1,6 +1,13 @@
 {
 	"extends": "../tsconfig.base.json",
 	"compilerOptions": {},
-	"include": [ "." ],
+	"include": [
+		".",
+		"../assets/js/base/components",
+		"../assets/js/base/hooks",
+		"../settings/shared/index.js",
+		"../settings/blocks/index.js",
+		"../type-defs"
+	],
 	"exclude": [ "**/test/**" ]
 }
