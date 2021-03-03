@@ -33,34 +33,3 @@ export interface PackageRateOption {
 	secondaryDescription?: string;
 	id?: string;
 }
-
-interface PackageItem {
-	name: string;
-	key: string;
-	quantity: number;
-}
-
-interface Destination {
-	address_1: string;
-	address_2: string;
-	city: string;
-	state: string;
-	postcode: string;
-	country: string;
-}
-
-export interface PackageProps {
-	packageId: string;
-	renderOption: ( option: Rate ) => PackageRateOption;
-	collapse: boolean;
-	packageData: {
-		destination: Destination;
-		name: string;
-		shipping_rates: Rate[];
-		items: PackageItem[];
-	};
-	className?: string;
-	collapsible?: boolean;
-	noResultsMessage: ReactElement;
-	showItems: boolean;
-}

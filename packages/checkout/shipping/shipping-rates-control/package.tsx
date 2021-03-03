@@ -8,13 +8,48 @@ import Label from '@woocommerce/base-components/label';
 import Title from '@woocommerce/base-components/title';
 import { useSelectShippingRate } from '@woocommerce/base-hooks';
 import type { ReactElement } from 'react';
-import type { PackageProps } from '@woocommerce/type-defs/shipping';
+import type { Rate, PackageRateOption } from '@woocommerce/type-defs/shipping';
+
 /**
  * Internal dependencies
  */
 import Panel from '../../panel';
 import PackageRates from './package-rates';
 import './style.scss';
+
+interface PackageItem {
+	name: string;
+	key: string;
+	quantity: number;
+}
+
+interface Destination {
+	// eslint-disable-next-line camelcase
+	address_1: string;
+	// eslint-disable-next-line camelcase
+	address_2: string;
+	city: string;
+	state: string;
+	postcode: string;
+	country: string;
+}
+
+interface PackageProps {
+	packageId: string;
+	renderOption: ( option: Rate ) => PackageRateOption;
+	collapse: boolean;
+	packageData: {
+		destination: Destination;
+		name: string;
+		// eslint-disable-next-line camelcase
+		shipping_rates: Rate[];
+		items: PackageItem[];
+	};
+	className?: string;
+	collapsible?: boolean;
+	noResultsMessage: ReactElement;
+	showItems: boolean;
+}
 
 const Package = ( {
 	packageId,
