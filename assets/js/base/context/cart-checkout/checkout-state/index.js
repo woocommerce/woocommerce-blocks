@@ -97,7 +97,7 @@ export const CheckoutStateProvider = ( {
 	// the redirectUrl for when checkout is reset to PRISTINE state.
 	DEFAULT_STATE.redirectUrl = redirectUrl;
 	const [ checkoutState, dispatch ] = useReducer( reducer, DEFAULT_STATE );
-	const [ observers, subscriber ] = useReducer( emitReducer, {} );
+	const [ observers, observerDispatch ] = useReducer( emitReducer, {} );
 	const currentObservers = useRef( observers );
 	const { setValidationErrors } = useValidationContext();
 	const { addErrorNotice, removeNotices } = useStoreNotices();
@@ -120,18 +120,19 @@ export const CheckoutStateProvider = ( {
 	}, [ observers ] );
 	const onCheckoutAfterProcessingWithSuccess = useMemo(
 		() =>
-			emitterSubscribers( subscriber )
+			emitterSubscribers( observerDispatch )
 				.onCheckoutAfterProcessingWithSuccess,
-		[ subscriber ]
+		[ observerDispatch ]
 	);
 	const onCheckoutAfterProcessingWithError = useMemo(
 		() =>
-			emitterSubscribers( subscriber ).onCheckoutAfterProcessingWithError,
-		[ subscriber ]
+			emitterSubscribers( observerDispatch )
+				.onCheckoutAfterProcessingWithError,
+		[ observerDispatch ]
 	);
 	const onCheckoutBeforeProcessing = useMemo(
-		() => emitterSubscribers( subscriber ).onCheckoutBeforeProcessing,
-		[ subscriber ]
+		() => emitterSubscribers( observerDispatch ).onCheckoutBeforeProcessing,
+		[ observerDispatch ]
 	);
 
 	/**

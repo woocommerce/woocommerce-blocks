@@ -64,18 +64,19 @@ export const ShippingDataProvider = ( { children } ) => {
 		errorStatusReducer,
 		NONE
 	);
-	const [ observers, subscriber ] = useReducer( emitReducer, {} );
+	const [ observers, observerDispatch ] = useReducer( emitReducer, {} );
 	const currentObservers = useRef( observers );
 	const eventSubscribers = useMemo(
 		() => ( {
-			onShippingRateSuccess: emitterSubscribers( subscriber ).onSuccess,
-			onShippingRateFail: emitterSubscribers( subscriber ).onFail,
-			onShippingRateSelectSuccess: emitterSubscribers( subscriber )
+			onShippingRateSuccess: emitterSubscribers( observerDispatch )
+				.onSuccess,
+			onShippingRateFail: emitterSubscribers( observerDispatch ).onFail,
+			onShippingRateSelectSuccess: emitterSubscribers( observerDispatch )
 				.onSelectSuccess,
-			onShippingRateSelectFail: emitterSubscribers( subscriber )
+			onShippingRateSelectFail: emitterSubscribers( observerDispatch )
 				.onSelectFail,
 		} ),
-		[ subscriber ]
+		[ observerDispatch ]
 	);
 
 	// set observers on ref so it's always current.

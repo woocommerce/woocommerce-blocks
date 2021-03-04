@@ -5,7 +5,8 @@
 		".",
 		"../../blocks-registry/index.js",
 		"../../settings/shared/index.js",
-		"../../settings/blocks/index.js"
+		"../../settings/blocks/index.js",
+		"../../type-defs"
 	],
 	"exclude": [ "**/test/**" ]
 }

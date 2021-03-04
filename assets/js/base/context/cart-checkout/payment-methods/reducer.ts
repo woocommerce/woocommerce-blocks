@@ -1,7 +1,13 @@
 /**
  * Internal dependencies
  */
-import { ACTION_TYPES, DEFAULT_PAYMENT_DATA } from './constants';
+import {
+	ACTION_TYPES,
+	STATUS,
+	DEFAULT_PAYMENT_DATA_CONTEXT_STATE,
+} from './constants';
+import type { PaymentMethodDataContextState } from './types';
+import type { ActionType } from './actions';
 const {
 	STARTED,
 	ERROR,
@@ -10,12 +16,16 @@ const {
 	PROCESSING,
 	PRISTINE,
 	COMPLETE,
+} = STATUS;
+const {
 	SET_REGISTERED_PAYMENT_METHODS,
 	SET_REGISTERED_EXPRESS_PAYMENT_METHODS,
 	SET_SHOULD_SAVE_PAYMENT_METHOD,
 } = ACTION_TYPES;
 
-const hasSavedPaymentToken = ( paymentMethodData ) => {
+const hasSavedPaymentToken = (
+	paymentMethodData: Record< string, unknown >
+): boolean => {
 	return !! (
 		typeof paymentMethodData === 'object' && paymentMethodData.isSavedToken
 	);
@@ -23,25 +33,17 @@ const hasSavedPaymentToken = ( paymentMethodData ) => {
 
 /**
  * Reducer for payment data state
- *
- * @param {Object} state  Current state.
- * @param {Object} action Current action.
- * @param {string} action.type Action type.
- * @param {Object} action.paymentMethodData Payment method data payload.
- * @param {boolean} action.shouldSavePaymentMethod Should save payment method flag.
- * @param {string} action.errorMessage Error message to store in state.
- * @param {Object} action.paymentMethods Registered payment methods.
  */
 const reducer = (
-	state = DEFAULT_PAYMENT_DATA,
+	state = DEFAULT_PAYMENT_DATA_CONTEXT_STATE,
 	{
 		type,
-		paymentMethodData,
-		shouldSavePaymentMethod,
-		errorMessage,
-		paymentMethods,
-	}
-) => {
+		paymentMethodData = {},
+		shouldSavePaymentMethod = false,
+		errorMessage = '',
+		paymentMethods = {},
+	}: ActionType
+): PaymentMethodDataContextState => {
 	switch ( type ) {
 		case STARTED:
 			return state.currentStatus !== STARTED
@@ -98,7 +100,7 @@ const reducer = (
 
 		case PRISTINE:
 			return {
-				...DEFAULT_PAYMENT_DATA,
+				...DEFAULT_PAYMENT_DATA_CONTEXT_STATE,
 				currentStatus: PRISTINE,
 				// keep payment method registration state
 				paymentMethods: {
@@ -125,7 +127,6 @@ const reducer = (
 				shouldSavePaymentMethod,
 			};
 	}
-	return state;
 };
 
 export default reducer;

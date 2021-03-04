@@ -25,7 +25,7 @@ import { useEditorContext } from '../../editor';
 import { useShippingDataContext } from '../shipping';
 import { useCustomerDataContext } from '../customer';
 import type {
-	PaymentMethodsDispatcher,
+	PaymentMethodsDispatcherType,
 	PaymentMethods,
 	ExpressPaymentMethods,
 	PaymentMethodConfig,
@@ -37,22 +37,15 @@ import type {
  * registered payment methods that can be used in the current environment (via
  * the payment method's `canMakePayment` property).
  *
- * @param  {function(Object):undefined} dispatcher               A dispatcher for setting registered
- *                                                               payment methods to an external
- *                                                               state.
- * @param  {Object}                     registeredPaymentMethods Registered payment methods to
- *                                                               process.
- * @param  {Array}                      paymentMethodsSortOrder  Array of payment method names to
- *                                                               sort by. This should match keys of
- *                                                               registeredPaymentMethods.
- * @param  {string}                     noticeContext            Id of the context to append
- *                                                               notices to.
+ * @param  {function(Object):undefined} dispatcher               A dispatcher for setting registered payment methods to an external state.
+ * @param  {Object}                     registeredPaymentMethods Registered payment methods to process.
+ * @param  {Array}                      paymentMethodsSortOrder  Array of payment method names to sort by. This should match keys of registeredPaymentMethods.
+ * @param  {string}                     noticeContext            Id of the context to append notices to.
  *
- * @return {boolean} Whether the payment methods have been initialized or not. True when all payment
- *                   methods have been initialized.
+ * @return {boolean} Whether the payment methods have been initialized or not. True when all payment methods have been initialized.
  */
 const usePaymentMethodRegistration = (
-	dispatcher: PaymentMethodsDispatcher,
+	dispatcher: PaymentMethodsDispatcherType,
 	registeredPaymentMethods: PaymentMethods | ExpressPaymentMethods,
 	paymentMethodsSortOrder: string[],
 	noticeContext: string
@@ -189,9 +182,9 @@ const usePaymentMethodRegistration = (
  * @return {boolean} True when standard payment methods have been initialized.
  */
 export const usePaymentMethods = (
-	dispatcher: PaymentMethodsDispatcher
+	dispatcher: PaymentMethodsDispatcherType
 ): boolean => {
-	const standardMethods: PaymentMethods = getPaymentMethods();
+	const standardMethods: PaymentMethods = getPaymentMethods() as PaymentMethods;
 	const { noticeContexts } = useEmitResponse();
 	// Ensure all methods are present in order.
 	// Some payment methods may not be present in PAYMENT_GATEWAY_SORT_ORDER if they
@@ -216,9 +209,9 @@ export const usePaymentMethods = (
  * @return {boolean} True when express payment methods have been initialized.
  */
 export const useExpressPaymentMethods = (
-	dispatcher: PaymentMethodsDispatcher
+	dispatcher: PaymentMethodsDispatcherType
 ): boolean => {
-	const expressMethods: ExpressPaymentMethods = getExpressPaymentMethods();
+	const expressMethods: ExpressPaymentMethods = getExpressPaymentMethods() as ExpressPaymentMethods;
 	const { noticeContexts } = useEmitResponse();
 	return usePaymentMethodRegistration(
 		dispatcher,

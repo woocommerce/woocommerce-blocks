@@ -99,7 +99,7 @@ export const AddToCartFormStateContextProvider = ( {
 		reducer,
 		DEFAULT_STATE
 	);
-	const [ observers, subscriber ] = useReducer( emitReducer, {} );
+	const [ observers, observerDispatch ] = useReducer( emitReducer, {} );
 	const currentObservers = useShallowEqual( observers );
 	const { addErrorNotice, removeNotices } = useStoreNotices();
 	const { setValidationErrors } = useValidationContext();
@@ -115,15 +115,15 @@ export const AddToCartFormStateContextProvider = ( {
 	const eventRegistration = useMemo(
 		() => ( {
 			onAddToCartAfterProcessingWithSuccess: emitterSubscribers(
-				subscriber
+				observerDispatch
 			).onAddToCartAfterProcessingWithSuccess,
 			onAddToCartAfterProcessingWithError: emitterSubscribers(
-				subscriber
+				observerDispatch
 			).onAddToCartAfterProcessingWithError,
-			onAddToCartBeforeProcessing: emitterSubscribers( subscriber )
+			onAddToCartBeforeProcessing: emitterSubscribers( observerDispatch )
 				.onAddToCartBeforeProcessing,
 		} ),
-		[ subscriber ]
+		[ observerDispatch ]
 	);
 
 	/**
