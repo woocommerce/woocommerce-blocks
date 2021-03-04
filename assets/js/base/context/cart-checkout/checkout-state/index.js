@@ -26,7 +26,7 @@ import { reducer, prepareResponseData } from './reducer';
 import { DEFAULT_STATE, STATUS } from './constants';
 import {
 	EMIT_TYPES,
-	emitterSubscribers,
+	emitterObservers,
 	emitEvent,
 	emitEventWithAbort,
 	reducer as emitReducer,
@@ -120,18 +120,18 @@ export const CheckoutStateProvider = ( {
 	}, [ observers ] );
 	const onCheckoutAfterProcessingWithSuccess = useMemo(
 		() =>
-			emitterSubscribers( observerDispatch )
+			emitterObservers( observerDispatch )
 				.onCheckoutAfterProcessingWithSuccess,
 		[ observerDispatch ]
 	);
 	const onCheckoutAfterProcessingWithError = useMemo(
 		() =>
-			emitterSubscribers( observerDispatch )
+			emitterObservers( observerDispatch )
 				.onCheckoutAfterProcessingWithError,
 		[ observerDispatch ]
 	);
 	const onCheckoutBeforeProcessing = useMemo(
-		() => emitterSubscribers( observerDispatch ).onCheckoutBeforeProcessing,
+		() => emitterObservers( observerDispatch ).onCheckoutBeforeProcessing,
 		[ observerDispatch ]
 	);
 
