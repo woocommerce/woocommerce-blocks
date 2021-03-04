@@ -52,6 +52,7 @@ class Api {
 		add_action( 'woocommerce_blocks_cart_enqueue_data', array( $this, 'add_payment_method_script_data' ) );
 		add_action( 'woocommerce_blocks_payment_method_type_registration', array( $this, 'register_payment_method_integrations' ) );
 		add_action( 'woocommerce_rest_checkout_process_payment_with_context', array( $this, 'process_legacy_payment' ), 999, 2 );
+		add_action( 'wp_print_scripts', array( $this, 'verify_payment_methods_dependencies' ), 1 );
 	}
 
 	/**
@@ -173,5 +174,59 @@ class Api {
 		// set payment_details from result.
 		$result->set_payment_details( array_merge( $result->payment_details, $gateway_result ) );
 		$result->set_redirect_url( $gateway_result['redirect'] );
+	}
+
+	/**
+	 * Verify all dependencies of registered payment methods have been registered.
+	 * If not, remove that payment method script from the list of dependencies
+	 * of Cart and Checkout block scripts so it doesn't break the blocks and show
+	 * an error in the admin.
+	 */
+	public function verify_payment_methods_dependencies() {
+		global $wp_scripts;
+		$payment_method_scripts = $this->payment_method_registry->get_all_active_payment_method_script_dependencies();
+
+		foreach ( $payment_method_scripts as $payment_method_script ) {
+			$deps = $wp_scripts->registered[ $payment_method_script ]->deps;
+			foreach ( $deps as $dep ) {
+				if ( ! wp_script_is( $dep, 'registered' ) ) {
+					// Log and show errors.
+					error_log(  // phpcs:ignore
+						sprintf(
+							/* translators: 1: handle of the payment gateway. 2: handle of the dependency that is missing. */
+							esc_html__( 'Payment gateway with handle %1$s has been deactivated because its dependency %2$s is not registered.', 'woo-gutenberg-products-block' ),
+							esc_html( $payment_method_script ),
+							esc_html( $dep )
+						)
+					);
+					add_action(
+						'admin_notices',
+						function() use ( $payment_method_script, $dep ) {
+							echo '<div class="error"><p>';
+							printf(
+								/* translators: 1: handle of the payment gateway. 2: handle of the dependency that is missing. */
+								esc_html__( 'Payment gateway with handle %1$s has been deactivated because its dependency %2$s is not registered.', 'woo-gutenberg-products-block' ),
+								esc_html( $payment_method_script ),
+								'<code>' . esc_html( $dep ) . '</code>'
+							);
+							if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+								/* translators: Text printed inside a link. */
+								echo ' <a href="https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/extensibility/payment-method-integration.md#registering-assets">' . esc_html__( 'Read the docs about registering assets for payment methods.', 'woo-gutenberg-products-block' ) . '</a>';
+							}
+							echo '</p></div>';
+						}
+					);
+
+					$cart_checkout_scripts = [ 'wc-cart-block', 'wc-cart-block-frontend', 'wc-checkout-block', 'wc-checkout-block-frontend' ];
+					foreach ( $cart_checkout_scripts as $script_handle ) {
+						// Remove payment method script from dependencies.
+						$wp_scripts->registered[ $script_handle ]->deps = array_diff(
+							$wp_scripts->registered[ $script_handle ]->deps,
+							[ $payment_method_script ]
+						);
+					}
+				}
+			}
+		}
 	}
 }
