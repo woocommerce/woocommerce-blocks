@@ -5,6 +5,8 @@ import {
 	insertBlock,
 	getAllBlocks,
 	switchUserToAdmin,
+	pressKeyTimes,
+	clickBlockToolbarButton,
 } from '@wordpress/e2e-test-utils';
 
 import { visitBlockPage } from '@woocommerce/blocks-test-utils';
@@ -62,6 +64,9 @@ describe( `${ block.name } Block`, () => {
 	it( 'can be inserted more than once', async () => {
 		await insertBlock( block.name );
 		expect( await getAllBlocks() ).toHaveLength( 2 );
+		await page.keyboard.down( 'Shift' );
+		await page.keyboard.press( 'Tab' );
+		await page.keyboard.up( 'Shift' );
 		await clickOnBlockSettingsMenuRemoveBlockButton();
 		expect( await getAllBlocks() ).toHaveLength( 1 );
 	} );
