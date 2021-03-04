@@ -166,6 +166,7 @@ jobs:
       - name: Npm install and build
         run: |
           npm ci
+          npm install @wordpress/e2e-test-utils@latest
           FORCE_REDUCED_MOTION=true npm run build:e2e-test
 
       - name: blocks.ini setup
@@ -201,7 +202,6 @@ jobs:
           npm run wp-env start
           npm run wp-env clean all
           npm run wp-env run tests-cli "wp plugin install gutenberg --activate"
-          npm install @wordpress/e2e-test-utils@latest
           npm run test:e2e
 
   JSE2ETestsWP56:
