@@ -9,7 +9,8 @@ import type { ReactNode } from 'react';
 import type { emitterCallback } from '../../shared/event-emit';
 import { STATUS } from './constants';
 
-export type EmptyObjectType = Record< string, never >;
+type ObjectType = Record< string, unknown >;
+type EmptyObjectType = Record< string, never >;
 
 export interface PaymentMethodConfig {
 	// A unique string to identify the payment method client side.
@@ -20,14 +21,14 @@ export interface PaymentMethodConfig {
 	edit: ReactNode;
 	// A callback to determine whether the payment method should be shown in the checkout.
 	canMakePayment: (
-		cartData: Record< string, unknown >
+		cartData: ObjectType
 	) => Promise< boolean | { error: { message: string } } >;
 	// A unique string to represent the payment method server side. If not provided, defaults to name.
 	paymentMethodId?: string;
 	// Object that describes various features provided by the payment method.
-	supports: Record< string, unknown >;
+	supports: ObjectType;
 	// Array of card types (brands) supported by the payment method. (See stripe/credit-card for example.)
-	icons: Record< string, unknown >;
+	icons: ObjectType;
 	// A react node that will be used as a label for the payment method in the checkout.
 	label: ReactNode;
 	// An accessibility label. Screen readers will output this label when the payment method is selected.
@@ -55,7 +56,7 @@ export interface CustomerPaymentMethod {
 	// eslint-disable-next-line camelcase
 	is_default: boolean;
 	tokenId: number;
-	actions: Record< string, unknown >;
+	actions: ObjectType;
 }
 export type CustomerPaymentMethods =
 	| Record< string, CustomerPaymentMethod >
@@ -72,20 +73,20 @@ export interface PaymentStatusDispatchers {
 	error: ( error: string ) => void;
 	failed: (
 		error?: string,
-		paymentMethodData?: Partial< Record< string, unknown > >,
-		billingData?: Partial< Record< string, unknown > >
+		paymentMethodData?: ObjectType | EmptyObjectType,
+		billingData?: ObjectType | EmptyObjectType
 	) => void;
 	success: (
-		paymentMethodData?: Partial< Record< string, unknown > >,
-		billingData?: Partial< Record< string, unknown > >,
-		shippingData?: Partial< Record< string, unknown > >
+		paymentMethodData?: ObjectType | EmptyObjectType,
+		billingData?: ObjectType | EmptyObjectType,
+		shippingData?: ObjectType | EmptyObjectType
 	) => void;
 }
 
 export interface PaymentMethodDataContextState {
 	currentStatus: STATUS;
 	shouldSavePaymentMethod: boolean;
-	paymentMethodData: Partial< Record< string, unknown > >;
+	paymentMethodData: ObjectType | EmptyObjectType;
 	hasSavedToken: boolean;
 	errorMessage: string;
 	paymentMethods: PaymentMethods;
@@ -115,9 +116,9 @@ export type PaymentMethodDataContextType = {
 	// The current payment status.
 	currentStatus: PaymentMethodCurrentStatusType;
 	// An object of payment status constants.
-	paymentStatuses: Record< string, unknown >;
+	paymentStatuses: ObjectType;
 	// Arbitrary data to be passed along for processing by the payment method on the server.
-	paymentMethodData: Partial< Record< string, unknown > >;
+	paymentMethodData: ObjectType | EmptyObjectType;
 	// An error message provided by the payment method if there is an error.
 	errorMessage: string;
 	// The active payment method slug.

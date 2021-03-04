@@ -16,7 +16,7 @@ export enum STATUS {
 	COMPLETE = 'complete',
 }
 
-export enum ACTION_TYPES {
+export enum ACTION {
 	SET_REGISTERED_PAYMENT_METHODS = 'set_registered_payment_methods',
 	SET_REGISTERED_EXPRESS_PAYMENT_METHODS = 'set_registered_express_payment_methods',
 	SET_SHOULD_SAVE_PAYMENT_METHOD = 'set_should_save_payment_method',

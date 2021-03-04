@@ -7,7 +7,7 @@ import { uniqueId } from 'lodash';
  * Internal dependencies
  */
 import {
-	ACTION_TYPES,
+	ACTION,
 	ActionType,
 	ActionCallbackType,
 	EventObserversType,
@@ -21,7 +21,7 @@ export const actions = {
 	): ActionType => {
 		return {
 			id: uniqueId(),
-			type: ACTION_TYPES.ADD_EVENT_CALLBACK,
+			type: ACTION.ADD_EVENT_CALLBACK,
 			eventType,
 			callback,
 			priority,
@@ -30,7 +30,7 @@ export const actions = {
 	removeEventCallback: ( eventType: string, id: string ): ActionType => {
 		return {
 			id,
-			type: ACTION_TYPES.REMOVE_EVENT_CALLBACK,
+			type: ACTION.REMOVE_EVENT_CALLBACK,
 			eventType,
 		};
 	},
@@ -49,13 +49,13 @@ export const reducer = (
 		? new Map( state[ eventType ] )
 		: new Map();
 	switch ( type ) {
-		case ACTION_TYPES.ADD_EVENT_CALLBACK:
+		case ACTION.ADD_EVENT_CALLBACK:
 			newEvents.set( id, { priority, callback } );
 			return {
 				...state,
 				[ eventType ]: newEvents,
 			};
-		case ACTION_TYPES.REMOVE_EVENT_CALLBACK:
+		case ACTION.REMOVE_EVENT_CALLBACK:
 			newEvents.delete( id );
 			return {
 				...state,

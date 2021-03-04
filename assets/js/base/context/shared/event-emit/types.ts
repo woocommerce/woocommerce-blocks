@@ -1,4 +1,4 @@
-export enum ACTION_TYPES {
+export enum ACTION {
 	ADD_EVENT_CALLBACK = 'add_event_callback',
 	REMOVE_EVENT_CALLBACK = 'remove_event_callback',
 }
@@ -6,7 +6,7 @@ export enum ACTION_TYPES {
 export type ActionCallbackType = ( ...args: unknown[] ) => unknown;
 
 export type ActionType = {
-	type: ACTION_TYPES;
+	type: ACTION;
 	eventType: string;
 	id: string;
 	callback?: ActionCallbackType;

@@ -1,17 +1,11 @@
 /**
  * Internal dependencies
  */
-import { ACTION_TYPES, STATUS } from './constants';
-const { ERROR, FAILED, SUCCESS } = STATUS;
-const {
-	SET_REGISTERED_PAYMENT_METHODS,
-	SET_REGISTERED_EXPRESS_PAYMENT_METHODS,
-	SET_SHOULD_SAVE_PAYMENT_METHOD,
-} = ACTION_TYPES;
+import { ACTION, STATUS } from './constants';
 import type { PaymentMethods } from './types';
 
 export interface ActionType {
-	type: ACTION_TYPES | STATUS;
+	type: ACTION | STATUS;
 	errorMessage?: string;
 	paymentMethodData?: Record< string, unknown >;
 	paymentMethods?: PaymentMethods;
@@ -30,7 +24,7 @@ export const statusOnly = ( type: STATUS ): { type: STATUS } => ( { type } );
  * @return {ActionType} The action object.
  */
 export const error = ( errorMessage: string ): ActionType => ( {
-	type: ERROR,
+	type: STATUS.ERROR,
 	errorMessage,
 } );
 
@@ -44,7 +38,7 @@ export const failed = ( {
 	errorMessage: string;
 	paymentMethodData: Record< string, unknown >;
 } ): ActionType => ( {
-	type: FAILED,
+	type: STATUS.FAILED,
 	errorMessage,
 	paymentMethodData,
 } );
@@ -57,7 +51,7 @@ export const success = ( {
 }: {
 	paymentMethodData: Record< string, unknown >;
 } ): ActionType => ( {
-	type: SUCCESS,
+	type: STATUS.SUCCESS,
 	paymentMethodData,
 } );
 
@@ -70,7 +64,7 @@ export const success = ( {
 export const setRegisteredPaymentMethods = (
 	paymentMethods: PaymentMethods
 ): ActionType => ( {
-	type: SET_REGISTERED_PAYMENT_METHODS,
+	type: ACTION.SET_REGISTERED_PAYMENT_METHODS,
 	paymentMethods,
 } );
 
@@ -83,7 +77,7 @@ export const setRegisteredPaymentMethods = (
 export const setRegisteredExpressPaymentMethods = (
 	paymentMethods: PaymentMethods
 ): ActionType => ( {
-	type: SET_REGISTERED_EXPRESS_PAYMENT_METHODS,
+	type: ACTION.SET_REGISTERED_EXPRESS_PAYMENT_METHODS,
 	paymentMethods,
 } );
 
@@ -96,6 +90,6 @@ export const setRegisteredExpressPaymentMethods = (
 export const setShouldSavePaymentMethod = (
 	shouldSavePaymentMethod: boolean
 ): ActionType => ( {
-	type: SET_SHOULD_SAVE_PAYMENT_METHOD,
+	type: ACTION.SET_SHOULD_SAVE_PAYMENT_METHOD,
 	shouldSavePaymentMethod,
 } );

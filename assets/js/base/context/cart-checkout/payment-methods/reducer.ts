@@ -2,26 +2,12 @@
  * Internal dependencies
  */
 import {
-	ACTION_TYPES,
+	ACTION,
 	STATUS,
 	DEFAULT_PAYMENT_DATA_CONTEXT_STATE,
 } from './constants';
 import type { PaymentMethodDataContextState } from './types';
 import type { ActionType } from './actions';
-const {
-	STARTED,
-	ERROR,
-	FAILED,
-	SUCCESS,
-	PROCESSING,
-	PRISTINE,
-	COMPLETE,
-} = STATUS;
-const {
-	SET_REGISTERED_PAYMENT_METHODS,
-	SET_REGISTERED_EXPRESS_PAYMENT_METHODS,
-	SET_SHOULD_SAVE_PAYMENT_METHOD,
-} = ACTION_TYPES;
 
 const hasSavedPaymentToken = (
 	paymentMethodData: Record< string, unknown >
@@ -45,36 +31,36 @@ const reducer = (
 	}: ActionType
 ): PaymentMethodDataContextState => {
 	switch ( type ) {
-		case STARTED:
-			return state.currentStatus !== STARTED
+		case STATUS.STARTED:
+			return state.currentStatus !== STATUS.STARTED
 				? {
 						...state,
-						currentStatus: STARTED,
+						currentStatus: STATUS.STARTED,
 				  }
 				: state;
-		case ERROR:
-			return state.currentStatus !== ERROR
+		case STATUS.ERROR:
+			return state.currentStatus !== STATUS.ERROR
 				? {
 						...state,
-						currentStatus: ERROR,
+						currentStatus: STATUS.ERROR,
 						errorMessage: errorMessage || state.errorMessage,
 				  }
 				: state;
-		case FAILED:
-			return state.currentStatus !== FAILED
+		case STATUS.FAILED:
+			return state.currentStatus !== STATUS.FAILED
 				? {
 						...state,
-						currentStatus: FAILED,
+						currentStatus: STATUS.FAILED,
 						paymentMethodData:
 							paymentMethodData || state.paymentMethodData,
 						errorMessage: errorMessage || state.errorMessage,
 				  }
 				: state;
-		case SUCCESS:
-			return state.currentStatus !== SUCCESS
+		case STATUS.SUCCESS:
+			return state.currentStatus !== STATUS.SUCCESS
 				? {
 						...state,
-						currentStatus: SUCCESS,
+						currentStatus: STATUS.SUCCESS,
 						paymentMethodData:
 							paymentMethodData || state.paymentMethodData,
 						hasSavedToken: hasSavedPaymentToken(
@@ -82,26 +68,26 @@ const reducer = (
 						),
 				  }
 				: state;
-		case PROCESSING:
-			return state.currentStatus !== PROCESSING
+		case STATUS.PROCESSING:
+			return state.currentStatus !== STATUS.PROCESSING
 				? {
 						...state,
-						currentStatus: PROCESSING,
+						currentStatus: STATUS.PROCESSING,
 						errorMessage: '',
 				  }
 				: state;
-		case COMPLETE:
-			return state.currentStatus !== COMPLETE
+		case STATUS.COMPLETE:
+			return state.currentStatus !== STATUS.COMPLETE
 				? {
 						...state,
-						currentStatus: COMPLETE,
+						currentStatus: STATUS.COMPLETE,
 				  }
 				: state;
 
-		case PRISTINE:
+		case STATUS.PRISTINE:
 			return {
 				...DEFAULT_PAYMENT_DATA_CONTEXT_STATE,
-				currentStatus: PRISTINE,
+				currentStatus: STATUS.PRISTINE,
 				// keep payment method registration state
 				paymentMethods: {
 					...state.paymentMethods,
@@ -111,17 +97,17 @@ const reducer = (
 				},
 				shouldSavePaymentMethod: state.shouldSavePaymentMethod,
 			};
-		case SET_REGISTERED_PAYMENT_METHODS:
+		case ACTION.SET_REGISTERED_PAYMENT_METHODS:
 			return {
 				...state,
 				paymentMethods,
 			};
-		case SET_REGISTERED_EXPRESS_PAYMENT_METHODS:
+		case ACTION.SET_REGISTERED_EXPRESS_PAYMENT_METHODS:
 			return {
 				...state,
 				expressPaymentMethods: paymentMethods,
 			};
-		case SET_SHOULD_SAVE_PAYMENT_METHOD:
+		case ACTION.SET_SHOULD_SAVE_PAYMENT_METHOD:
 			return {
 				...state,
 				shouldSavePaymentMethod,
