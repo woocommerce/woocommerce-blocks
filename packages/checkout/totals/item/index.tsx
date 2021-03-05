@@ -4,7 +4,7 @@
 import classnames from 'classnames';
 import { isValidElement } from '@wordpress/element';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
-import type { ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import type { Currency } from '@woocommerce/price-format';
 
 /**
@@ -14,11 +14,34 @@ import './style.scss';
 
 interface TotalsItemProps {
 	className?: string;
-	currency?: Currency;
+	currency: Currency;
 	label: string;
-	value?: number | ReactNode;
+	// Value may be a number, or react node. Numbers are passed to FormattedMonetaryAmount.
+	value: number | ReactNode;
 	description?: ReactNode;
 }
+
+const TotalsItemValue = ( {
+	value,
+	currency,
+}: Partial< TotalsItemProps > ): ReactElement | null => {
+	if ( isValidElement( value ) ) {
+		return (
+			<div className="wc-block-components-totals-item__value">
+				{ value }
+			</div>
+		);
+	}
+
+	return Number.isFinite( value ) ? (
+		<FormattedMonetaryAmount
+			className="wc-block-components-totals-item__value"
+			currency={ currency || {} }
+			displayType="text"
+			value={ value as number }
+		/>
+	) : null;
+};
 
 const TotalsItem = ( {
 	className,
@@ -26,7 +49,7 @@ const TotalsItem = ( {
 	label,
 	value,
 	description,
-}: TotalsItemProps ): JSX.Element => {
+}: TotalsItemProps ): ReactElement => {
 	return (
 		<div
 			className={ classnames(
@@ -37,18 +60,7 @@ const TotalsItem = ( {
 			<span className="wc-block-components-totals-item__label">
 				{ label }
 			</span>
-			{ isValidElement( value ) ? (
-				<div className="wc-block-components-totals-item__value">
-					{ value }
-				</div>
-			) : (
-				<FormattedMonetaryAmount
-					className="wc-block-components-totals-item__value"
-					currency={ currency }
-					displayType="text"
-					value={ value }
-				/>
-			) }
+			<TotalsItemValue value={ value } currency={ currency } />
 			<div className="wc-block-components-totals-item__description">
 				{ description }
 			</div>

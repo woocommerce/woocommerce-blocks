@@ -6,6 +6,7 @@ import { __ } from '@wordpress/i18n';
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 import type { Currency } from '@woocommerce/price-format';
 import type { CartFeeItem } from '@woocommerce/type-defs/cart';
+import type { ReactElement } from 'react';
 
 /**
  * Internal dependencies
@@ -22,7 +23,7 @@ const TotalsFees = ( {
 	currency,
 	cartFees,
 	className,
-}: TotalsFeesProps ): JSX.Element => {
+}: TotalsFeesProps ): ReactElement | null => {
 	return (
 		<>
 			{ cartFees.map( ( { id, name, totals } ) => {

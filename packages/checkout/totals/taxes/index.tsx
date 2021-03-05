@@ -9,6 +9,7 @@ import {
 } from '@woocommerce/block-settings';
 import type { Currency } from '@woocommerce/price-format';
 import type { CartTotalsTaxLineItem } from '@woocommerce/type-defs/cart';
+import { ReactElement } from 'react';
 
 /**
  * Internal dependencies
@@ -32,7 +33,7 @@ const TotalsTaxes = ( {
 	currency,
 	values,
 	className,
-}: TotalsTaxesProps ): JSX.Element | null => {
+}: TotalsTaxesProps ): ReactElement | null => {
 	const { total_tax: totalTax, tax_lines: taxLines } = values;
 
 	if ( ! TAXES_ENABLED ) {

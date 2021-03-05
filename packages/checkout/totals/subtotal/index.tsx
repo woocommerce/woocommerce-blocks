@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 import type { Currency } from '@woocommerce/price-format';
+import type { ReactElement } from 'react';
 
 /**
  * Internal dependencies
@@ -27,7 +28,7 @@ const Subtotal = ( {
 	currency,
 	values,
 	className,
-}: SubtotalProps ): JSX.Element => {
+}: SubtotalProps ): ReactElement => {
 	const { total_items: totalItems, total_items_tax: totalItemsTax } = values;
 	const itemsValue = parseInt( totalItems, 10 );
 	const itemsTaxValue = parseInt( totalItemsTax, 10 );
