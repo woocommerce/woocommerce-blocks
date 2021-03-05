@@ -1,30 +1,24 @@
 /**
  * External dependencies
  */
-import { useState } from '@wordpress/element';
 import { Guide } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { createInterpolateElement, useEffect } from 'wordpress-element';
+import { createInterpolateElement } from 'wordpress-element';
+import type { ReactElement } from 'react';
+import { useLocalStorageState } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
  */
 import WooImage from './woo-image';
 
-const useLocalStorageState = ( key, initialState = '' ) => {
-	const [ state, setState ] = useState( () => {
-		const valueInLocalStorage = window.localStorage.getItem( key );
-		return valueInLocalStorage
-			? JSON.parse( valueInLocalStorage )
-			: initialState;
-	} );
-	useEffect( () => {
-		window.localStorage.setItem( key, JSON.stringify( state ) || '' );
-	}, [ key, state ] );
-	return [ state, setState ];
-};
+interface CompatibilityNoticeProps {
+	blockName: string;
+}
 
-export default function CompatibilityNotice( { blockName } ) {
+export default function CompatibilityNotice( {
+	blockName,
+}: CompatibilityNoticeProps ): ReactElement | null {
 	const [ isOpen, setIsOpen ] = useLocalStorageState(
 		`wc-blocks_${ blockName }_compatibility_notice`,
 		true
