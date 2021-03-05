@@ -13,12 +13,6 @@ import type { CartItem, StoreCartItemQuantity } from '@woocommerce/types';
  */
 import { useStoreCart } from './use-store-cart';
 import { usePrevious } from '../use-previous';
-
-/**
- * @typedef {import('@woocommerce/type-defs/hooks').StoreCartItemQuantity} StoreCartItemQuantity
- * @typedef {import('@woocommerce/type-defs/cart').CartItem} CartItem
- */
-
 /**
  * This is a custom hook for loading the Store API /cart/ endpoint and
  * actions for removing or changing item quantity.
