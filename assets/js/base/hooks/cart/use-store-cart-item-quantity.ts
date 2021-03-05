@@ -67,11 +67,8 @@ export const useStoreCartItemQuantity = (
 	const previousIsPendingDelete = usePrevious( isPendingDelete );
 
 	const removeItem = () => {
-		const removeItemPromise = ( removeItemFromCart(
-			cartItemKey
-		) as unknown ) as Promise< void >;
 		return cartItemKey
-			? removeItemPromise.then( () => {
+			? removeItemFromCart< Promise< void > >( cartItemKey ).then( () => {
 					triggerFragmentRefresh();
 			  } )
 			: false;
@@ -84,12 +81,10 @@ export const useStoreCartItemQuantity = (
 			Number.isFinite( previousDebouncedQuantity ) &&
 			previousDebouncedQuantity !== debouncedQuantity
 		) {
-			const changeCartItemQuantityPromise = ( changeCartItemQuantity(
+			changeCartItemQuantity< Promise< void > >(
 				cartItemKey,
 				debouncedQuantity
-			) as unknown ) as Promise< void >;
-
-			changeCartItemQuantityPromise.then( triggerFragmentRefresh );
+			).then( triggerFragmentRefresh );
 		}
 	}, [
 		cartItemKey,
