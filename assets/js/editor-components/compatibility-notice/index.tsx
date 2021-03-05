@@ -50,25 +50,25 @@ export default function CompatibilityNotice( {
 							<p className="edit-post-welcome-guide__text">
 								{ createInterpolateElement(
 									__(
-										'<b>This block is in beta</b> and may not be compatible with all checkout extensions and integrations.',
+										'This block may not be compatible with <em>all</em> checkout extensions and integrations.',
 										'woo-gutenberg-products-block'
 									),
 									{
-										b: <b />,
+										em: <em />,
 									}
 								) }
 							</p>
 							<p className="edit-post-welcome-guide__text">
 								{ createInterpolateElement(
 									__(
-										'We recommend reviewing our <a>expanding list</a> of compatible extensions prior to using this block on a live store. Thanks for checkout out the beta.',
+										'We recommend reviewing our <a>expanding list</a> of compatible extensions prior to using this block on a live store.',
 										'woo-gutenberg-products-block'
 									),
 									{
 										a: (
 											// eslint-disable-next-line jsx-a11y/anchor-has-content
 											<a
-												href="https://woocommerce.com"
+												href="https://docs.woocommerce.com/document/cart-checkout-blocks-support-status/"
 												target="_blank"
 												rel="noopener noreferrer"
 											/>
