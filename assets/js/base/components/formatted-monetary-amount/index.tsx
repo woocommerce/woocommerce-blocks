@@ -34,7 +34,7 @@ const currencyToNumberFormat = ( currency: Currency ) => {
 
 interface FormattedMonetaryAmountProps {
 	className?: string;
-	value: '-' | number;
+	value: number;
 	currency: Currency;
 	onValueChange?: ( unit: number ) => void;
 }
@@ -58,7 +58,7 @@ const FormattedMonetaryAmount = ( {
 	onValueChange,
 	...props
 }: FormattedMonetaryAmountProps ): ReactElement | null => {
-	if ( value === '-' ) {
+	if ( ! Number.isFinite( value ) ) {
 		return null;
 	}
 
