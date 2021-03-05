@@ -1,6 +1,11 @@
 {
 	"extends": "../tsconfig.base.json",
 	"compilerOptions": {},
-	"include": [ ".", "../assets/js/icons" ],
+	"include": [
+		".",
+		"../assets/js/icons",
+		"../assets/js/settings",
+		"../assets/js/type-defs"
+	],
 	"exclude": [ "**/test/**" ]
 }

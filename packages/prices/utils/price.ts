@@ -56,8 +56,14 @@ const siteCurrencySettings: Currency = {
 	thousandSeparator: CURRENCY.thousandSeparator,
 	decimalSeparator: CURRENCY.decimalSeparator,
 	minorUnit: CURRENCY.precision,
-	prefix: getPrefix( CURRENCY.symbol, CURRENCY.symbolPosition ),
-	suffix: getSuffix( CURRENCY.symbol, CURRENCY.symbolPosition ),
+	prefix: getPrefix(
+		CURRENCY.symbol,
+		CURRENCY.symbolPosition as SymbolPosition
+	),
+	suffix: getSuffix(
+		CURRENCY.symbol,
+		CURRENCY.symbolPosition as SymbolPosition
+	),
 };
 
 /**
