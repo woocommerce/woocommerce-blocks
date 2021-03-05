@@ -18,7 +18,7 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
  */
 export function useShallowEqual< T >( value: T ): T | undefined {
 	const ref = useRef< T >();
-	if ( ! isShallowEqual( value, ref.current ) ) {
+	if ( ref.current === undefined || ! isShallowEqual( value, ref.current ) ) {
 		ref.current = value;
 	}
 	return ref.current;
