@@ -20,9 +20,12 @@ export default function CompatibilityNotice() {
 	return (
 		<Guide
 			className="edit-post-welcome-guide"
-			contentLabel={ __( 'Compatibility notice' ) }
+			contentLabel={ __(
+				'Compatibility notice',
+				'woo-gutenberg-products-block'
+			) }
 			onFinish={ () => setIsOpen( false ) }
-			finishButtonText={ __( 'Got it!' ) }
+			finishButtonText={ __( 'Got it!', 'woo-gutenberg-products-block' ) }
 			pages={ [
 				{
 					image: <WooImage />,
