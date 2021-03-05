@@ -211,7 +211,7 @@ const CartEditor = ( { className, attributes, setAttributes } ) => {
 					</BlockErrorBoundary>
 				) }
 			/>
-			<CompatibilityNotice />
+			<CompatibilityNotice blockName="cart" />
 		</div>
 	);
 };

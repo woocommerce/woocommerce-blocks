@@ -364,7 +364,7 @@ const CheckoutEditor = ( { attributes, setAttributes } ) => {
 					</BlockErrorBoundary>
 				</div>
 			</EditorProvider>
-			<CompatibilityNotice />
+			<CompatibilityNotice blockName="checkout" />
 		</>
 	);
 };

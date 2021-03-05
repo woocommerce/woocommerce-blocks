@@ -4,15 +4,31 @@
 import { useState } from '@wordpress/element';
 import { Guide } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { createInterpolateElement } from 'wordpress-element';
+import { createInterpolateElement, useEffect } from 'wordpress-element';
 
 /**
  * Internal dependencies
  */
 import WooImage from './woo-image';
 
-export default function CompatibilityNotice() {
-	const [ isOpen, setIsOpen ] = useState( true );
+const useLocalStorageState = ( key, initialState = '' ) => {
+	const [ state, setState ] = useState( () => {
+		const valueInLocalStorage = window.localStorage.getItem( key );
+		return valueInLocalStorage
+			? JSON.parse( valueInLocalStorage )
+			: initialState;
+	} );
+	useEffect( () => {
+		window.localStorage.setItem( key, JSON.stringify( state ) || '' );
+	}, [ key, state ] );
+	return [ state, setState ];
+};
+
+export default function CompatibilityNotice( { blockName } ) {
+	const [ isOpen, setIsOpen ] = useLocalStorageState(
+		`wc-blocks_${ blockName }_compatibility_notice`,
+		true
+	);
 	if ( ! isOpen ) {
 		return null;
 	}
