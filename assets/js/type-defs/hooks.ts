@@ -17,7 +17,7 @@ export interface StoreCartItemQuantity {
 	isPendingDelete: boolean;
 	quantity: number;
 	changeQuantity: ( quantity: number ) => void;
-	removeItem: () => boolean;
+	removeItem: () => Promise< void > | false;
 	cartItemQuantityErrors: Array< CartResponseErrorItem >;
 }
 
