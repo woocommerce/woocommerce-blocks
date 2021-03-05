@@ -50,7 +50,18 @@ export default function CompatibilityNotice( {
 							<p className="edit-post-welcome-guide__text">
 								{ createInterpolateElement(
 									__(
-										'<b>This block is in beta</b> and may not be compatible with all checkout extensions and integrations.<br />We recommend reviewing our <a>expanding list</a> of compatible extensions prior to using this block on a live store. Thanks for checkout out the beta.',
+										'<b>This block is in beta</b> and may not be compatible with all checkout extensions and integrations.',
+										'woo-gutenberg-products-block'
+									),
+									{
+										b: <b />,
+									}
+								) }
+							</p>
+							<p className="edit-post-welcome-guide__text">
+								{ createInterpolateElement(
+									__(
+										'We recommend reviewing our <a>expanding list</a> of compatible extensions prior to using this block on a live store. Thanks for checkout out the beta.',
 										'woo-gutenberg-products-block'
 									),
 									{
@@ -62,8 +73,6 @@ export default function CompatibilityNotice( {
 												rel="noopener noreferrer"
 											/>
 										),
-										b: <b />,
-										br: <br />,
 									}
 								) }
 							</p>
