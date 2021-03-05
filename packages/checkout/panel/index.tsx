@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { useState } from '@wordpress/element';
-import type { ReactChildren, ReactNode } from 'react';
+import type { ReactChildren, ReactNode, ReactElement } from 'react';
 import classNames from 'classnames';
 import { Icon, chevronUp, chevronDown } from '@woocommerce/icons';
 
@@ -27,7 +27,7 @@ const Panel = ( {
 	hasBorder = false,
 	title,
 	titleTag: TitleTag = 'div',
-}: PanelProps ) => {
+}: PanelProps ): ReactElement => {
 	const [ isOpen, setIsOpen ] = useState< boolean >( initialOpen );
 
 	return (

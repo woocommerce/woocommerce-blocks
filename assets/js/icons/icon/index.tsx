@@ -7,9 +7,14 @@ import type { ReactElement } from 'react';
 interface IconProps {
 	srcElement?: ReactElement;
 	size?: number;
+	className?: string;
 }
 
-function Icon( { srcElement, size = 24, ...props }: IconProps ) {
+function Icon( {
+	srcElement,
+	size = 24,
+	...props
+}: IconProps ): ReactElement | null {
 	if ( ! isValidElement( srcElement ) ) {
 		return null;
 	}

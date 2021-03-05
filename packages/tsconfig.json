@@ -1,6 +1,6 @@
 {
 	"extends": "../tsconfig.base.json",
 	"compilerOptions": {},
-	"include": [ "." ],
+	"include": [ ".", "../assets/js/icons" ],
 	"exclude": [ "**/test/**" ]
 }
