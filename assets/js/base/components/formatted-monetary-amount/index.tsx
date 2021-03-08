@@ -14,13 +14,20 @@ import type { ReactElement } from 'react';
  */
 import './style.scss';
 
+interface FormattedMonetaryAmountProps {
+	className?: string;
+	displayType?: NumberFormatProps[ 'displayType' ];
+	value: number; // Value of money amount.
+	currency: Currency | Record< string, never >; //Currency configuration object.
+	onValueChange?: ( unit: number ) => void; //Function to call when value changes.
+}
+
 /**
  * Formats currency data into the expected format for NumberFormat.
- *
- * @param {Object} currency Currency data.
- * @return {Object} Formatted props for NumberFormat.
  */
-const currencyToNumberFormat = ( currency: Currency ) => {
+const currencyToNumberFormat = (
+	currency: FormattedMonetaryAmountProps[ 'currency' ]
+) => {
 	return {
 		thousandSeparator: currency.thousandSeparator,
 		decimalSeparator: currency.decimalSeparator,
@@ -32,30 +39,17 @@ const currencyToNumberFormat = ( currency: Currency ) => {
 	};
 };
 
-interface FormattedMonetaryAmountProps {
-	className?: string;
-	value: number;
-	currency: Currency;
-	onValueChange?: ( unit: number ) => void;
-}
-
 /**
- * Formatted price component.
+ * FormattedMonetaryAmount component.
  *
  * Takes a price and returns a formatted price using the NumberFormat component.
- *
- * @param {Object} props Component props.
- * @param {string} props.className CSS class used.
- * @param {number} props.value Value of money amount.
- * @param {Object} props.currency Currency configuration object.
- * @param {function():any} props.onValueChange Function to call when value changes.
- * @param {Object} props.props Rest of props passed into component.
  */
 const FormattedMonetaryAmount = ( {
 	className,
 	value,
 	currency,
 	onValueChange,
+	displayType = 'text',
 	...props
 }: FormattedMonetaryAmountProps ): ReactElement | null => {
 	if ( ! Number.isFinite( value ) ) {
@@ -74,7 +68,6 @@ const FormattedMonetaryAmount = ( {
 		className
 	);
 	const numberFormatProps = {
-		displayType: 'text' as NumberFormatProps[ 'displayType' ],
 		...props,
 		...currencyToNumberFormat( currency ),
 		value: undefined,
@@ -97,6 +90,7 @@ const FormattedMonetaryAmount = ( {
 	return (
 		<NumberFormat
 			className={ classes }
+			displayType={ displayType }
 			{ ...numberFormatProps }
 			value={ priceValue }
 			onValueChange={ onValueChangeWrapper }
