@@ -230,7 +230,7 @@ export const PaymentMethodDataProvider = ( {
 				paymentMethodData,
 				billingData = undefined
 			) => {
-				if ( typeof billingData !== undefined ) {
+				if ( billingData ) {
 					setBillingData( billingData );
 				}
 				dispatch(
@@ -245,7 +245,7 @@ export const PaymentMethodDataProvider = ( {
 				billingData = undefined,
 				shippingData = undefined
 			) => {
-				if ( typeof billingData !== undefined ) {
+				if ( billingData ) {
 					setBillingData( billingData );
 				}
 				if (
