@@ -3,6 +3,7 @@
  */
 import { Guide } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
+import { useEffect, useState } from '@wordpress/element';
 import { createInterpolateElement } from 'wordpress-element';
 import { useLocalStorageState } from '@woocommerce/base-hooks';
 import type { ReactElement } from 'react';
@@ -23,7 +24,15 @@ export default function CompatibilityNotice( {
 		`wc-blocks_${ blockName }_compatibility_notice`,
 		true
 	);
-	if ( ! isOpen ) {
+	const [ shouldRender, setShouldRender ] = useState( false );
+
+	// This ensures the modal is not loaded on first render. This is required so
+	// Gutenberg doesn't steal the focus from the Guide and focuses the block.
+	useEffect( () => {
+		setShouldRender( isOpen );
+	}, [ isOpen ] );
+
+	if ( ! shouldRender ) {
 		return null;
 	}
 
