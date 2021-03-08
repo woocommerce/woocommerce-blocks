@@ -196,25 +196,22 @@ class Api {
 			$deps = $wp_scripts->registered[ $payment_method_script ]->deps;
 			foreach ( $deps as $dep ) {
 				if ( ! wp_script_is( $dep, 'registered' ) ) {
-					// Log and show errors.
-					error_log(  // phpcs:ignore
-						sprintf(
-							'Payment gateway with handle %1$s has been deactivated because its dependency %2$s is not registered. Read the docs about registering assets for payment methods: https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/extensibility/payment-method-integration.md#registering-assets',
-							esc_html( $payment_method_script ),
-							esc_html( $dep )
-						)
+					$error_handle  = $dep . '-dependency-error';
+					$error_message = sprintf(
+						'Payment gateway with handle \'%1$s\' has been deactivated because its dependency \'%2$s\' is not registered. Read the docs about registering assets for payment methods: https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/extensibility/payment-method-integration.md#registering-assets',
+						esc_html( $payment_method_script ),
+						esc_html( $dep )
 					);
-					add_action(
-						'admin_notices',
-						function() use ( $payment_method_script, $dep ) {
-							echo '<div class="error"><p>';
-							printf(
-								'Payment gateway with handle %1$s has been deactivated because its dependency %2$s is not registered. Read the docs about registering assets for payment methods: https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/extensibility/payment-method-integration.md#registering-assets',
-								esc_html( $payment_method_script ),
-								'<code>' . esc_html( $dep ) . '</code>'
-							);
-							echo '</p></div>';
-						}
+
+					// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+					error_log( $error_message );
+
+					// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter,WordPress.WP.EnqueuedResourceParameters.MissingVersion
+					wp_register_script( $error_handle, '' );
+					wp_enqueue_script( $error_handle );
+					wp_add_inline_script(
+						$error_handle,
+						sprintf( 'console.error( "%s" );', $error_message )
 					);
 
 					$cart_checkout_scripts = [ 'wc-cart-block', 'wc-cart-block-frontend', 'wc-checkout-block', 'wc-checkout-block-frontend' ];
