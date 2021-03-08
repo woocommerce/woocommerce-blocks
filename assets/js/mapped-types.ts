@@ -16,6 +16,9 @@ export type ReturnOrGeneratorYieldUnion<
  *
  * @template A Selector map, usually from `import * as actions from './my-store/actions';`
  */
+// Todo: This is a temporary implementation of what exists in @automattic/data-stores
+//  already: https://github.com/Automattic/wp-calypso/blob/0ba7f5a91571b3ba6a84be7db021c7eab247e434/packages/data-stores/src/mapped-types.ts
+//  We will need to remove this when @automattic/data-stores is updated on NPM.
 export type DispatchFromMap<
 	A extends Record< string, ( ...args: any[] ) => any >
 > = {
@@ -29,6 +32,9 @@ export type DispatchFromMap<
 /**
  * Obtain the type finally returned by the generator when it's done iterating.
  */
+// Todo: This is a temporary implementation of what exists in @automattic/data-stores
+//  already: https://github.com/Automattic/wp-calypso/blob/0ba7f5a91571b3ba6a84be7db021c7eab247e434/packages/data-stores/src/mapped-types.ts
+//  We will need to remove this when @automattic/data-stores is updated on NPM.
 export type GeneratorReturnType<
 	T extends ( ...args: any[] ) => Generator
 > = T extends ( ...args: any ) => Generator< any, infer R, any > ? R : never;
