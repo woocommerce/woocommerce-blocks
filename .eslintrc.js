@@ -85,5 +85,12 @@ module.exports = {
 				'@typescript-eslint/no-shadow': [ 'error' ],
 			},
 		},
+		{
+			files: [ './assets/js/mapped-types.ts' ],
+			rules: {
+				'@typescript-eslint/no-explicit-any': 'off',
+				'no-shadow': 'off',
+			},
+		},
 	],
 };
