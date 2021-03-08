@@ -14,7 +14,7 @@ export const useLocalStorageState = < T >(
 			: initialValue;
 	} );
 	useEffect( () => {
-		window.localStorage.setItem( key, JSON.stringify( state ) || '' );
+		window.localStorage.setItem( key, JSON.stringify( state ) );
 	}, [ key, state ] );
 
 	return [ state, setState ];
