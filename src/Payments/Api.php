@@ -183,7 +183,7 @@ class Api {
 	 * an error in the admin.
 	 */
 	public function verify_payment_methods_dependencies() {
-		global $wp_scripts;
+		$wp_scripts             = wp_scripts();
 		$payment_method_scripts = $this->payment_method_registry->get_all_active_payment_method_script_dependencies();
 
 		foreach ( $payment_method_scripts as $payment_method_script ) {
