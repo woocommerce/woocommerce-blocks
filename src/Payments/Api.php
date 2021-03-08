@@ -193,8 +193,7 @@ class Api {
 					// Log and show errors.
 					error_log(  // phpcs:ignore
 						sprintf(
-							/* translators: 1: handle of the payment gateway. 2: handle of the dependency that is missing. */
-							esc_html__( 'Payment gateway with handle %1$s has been deactivated because its dependency %2$s is not registered.', 'woo-gutenberg-products-block' ),
+							'Payment gateway with handle %1$s has been deactivated because its dependency %2$s is not registered. Read the docs about registering assets for payment methods: https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/extensibility/payment-method-integration.md#registering-assets',
 							esc_html( $payment_method_script ),
 							esc_html( $dep )
 						)
@@ -204,15 +203,10 @@ class Api {
 						function() use ( $payment_method_script, $dep ) {
 							echo '<div class="error"><p>';
 							printf(
-								/* translators: 1: handle of the payment gateway. 2: handle of the dependency that is missing. */
-								esc_html__( 'Payment gateway with handle %1$s has been deactivated because its dependency %2$s is not registered.', 'woo-gutenberg-products-block' ),
+								'Payment gateway with handle %1$s has been deactivated because its dependency %2$s is not registered. Read the docs about registering assets for payment methods: https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/extensibility/payment-method-integration.md#registering-assets',
 								esc_html( $payment_method_script ),
 								'<code>' . esc_html( $dep ) . '</code>'
 							);
-							if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-								/* translators: Text printed inside a link. */
-								echo ' <a href="https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/extensibility/payment-method-integration.md#registering-assets">' . esc_html__( 'Read the docs about registering assets for payment methods.', 'woo-gutenberg-products-block' ) . '</a>';
-							}
 							echo '</p></div>';
 						}
 					);
