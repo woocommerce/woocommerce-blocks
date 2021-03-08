@@ -60,7 +60,7 @@ export const useStoreAddToCart = ( productId: number ): StoreAddToCart => {
 
 	const addToCart = ( quantity = 1 ) => {
 		setAddingToCart( true );
-		addItemToCart< Promise< boolean > >( productId, quantity )
+		addItemToCart( productId, quantity )
 			.then( ( result ) => {
 				if ( result === true ) {
 					removeNotice( 'add-to-cart' );
