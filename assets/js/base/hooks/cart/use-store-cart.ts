@@ -14,6 +14,7 @@ import type {
 	CartResponseBillingAddress,
 	CartResponseShippingAddress,
 } from '@woocommerce/types';
+import { fromEntriesPolyfill } from '@woocommerce/base-utils';
 
 declare module '@wordpress/html-entities' {
 	// eslint-disable-next-line no-shadow
@@ -60,14 +61,13 @@ const defaultCartTotals: CartResponseTotals = {
 
 const decodeValues = (
 	object: Record< string, unknown >
-): Record< string, unknown > => {
-	return Object.fromEntries(
+): Record< string, unknown > =>
+	fromEntriesPolyfill(
 		Object.entries( object ).map( ( [ key, value ] ) => [
 			key,
 			decodeEntities( value ),
 		] )
 	);
-};
 
 /**
  * @constant
