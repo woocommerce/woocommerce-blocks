@@ -30,47 +30,83 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 )
 describe( `${ block.name } Block`, () => {
 	beforeAll( async () => {
 		await switchUserToAdmin();
-		await visitBlockPage( `${ block.name } Block` );
 	} );
 
-	it( 'can only be inserted once', async () => {
-		await insertBlockDontWaitForInsertClose( block.name );
-		await closeInserter();
-		expect( await getAllBlocks() ).toHaveLength( 1 );
+	afterEach( async () => {
+		await page.evaluate( () => {
+			localStorage.removeItem( 'wc-blocks_cart_compatibility_notice' );
+		} );
 	} );
 
-	it( 'renders without crashing', async () => {
-		await expect( page ).toRenderBlock( block );
-	} );
-
-	describe( 'attributes', () => {
+	describe( 'before compatibility notice is dismissed', () => {
 		beforeEach( async () => {
+			await page.evaluate( () => {
+				localStorage.setItem(
+					'wc-blocks_cart_compatibility_notice',
+					'true'
+				);
+			} );
+			await visitBlockPage( `${ block.name } Block` );
+		} );
+
+		it( 'shows compatibility notice', async () => {
+			const compatibilityNoticeTitle = await page.$x(
+				`//h1[contains(text(), 'Compatibility notice')]`
+			);
+			expect( compatibilityNoticeTitle.length ).toBe( 1 );
+		} );
+	} );
+
+	describe( 'once compatibility notice is dismissed', () => {
+		beforeEach( async () => {
+			await page.evaluate( () => {
+				localStorage.setItem(
+					'wc-blocks_cart_compatibility_notice',
+					'false'
+				);
+			} );
+			await visitBlockPage( `${ block.name } Block` );
+		} );
+
+		it( 'can only be inserted once', async () => {
+			await insertBlockDontWaitForInsertClose( block.name );
+			await closeInserter();
+			expect( await getAllBlocks() ).toHaveLength( 1 );
+		} );
+
+		it( 'renders without crashing', async () => {
+			await expect( page ).toRenderBlock( block );
+		} );
+
+		describe( 'attributes', () => {
+			beforeEach( async () => {
+				await openDocumentSettingsSidebar();
+				await page.click( block.class );
+			} );
+
+			it( 'can toggle Shipping calculator', async () => {
+				const selector = `${ block.class } .wc-block-components-totals-shipping__change-address-button`;
+				const toggleLabel = await findLabelWithText(
+					'Shipping calculator'
+				);
+				await expect( toggleLabel ).toToggleElement( selector );
+			} );
+		} );
+
+		it( 'shows empty cart when changing the view', async () => {
 			await openDocumentSettingsSidebar();
 			await page.click( block.class );
-		} );
-
-		it( 'can toggle Shipping calculator', async () => {
-			const selector = `${ block.class } .wc-block-components-totals-shipping__change-address-button`;
-			const toggleLabel = await findLabelWithText(
-				'Shipping calculator'
+			await expect( page ).toMatchElement(
+				'[hidden] .wc-block-cart__empty-cart__title'
 			);
-			await expect( toggleLabel ).toToggleElement( selector );
+			await clickButton( 'Empty Cart' );
+			await expect( page ).not.toMatchElement(
+				'[hidden] .wc-block-cart__empty-cart__title'
+			);
+			await clickButton( 'Full Cart' );
+			await expect( page ).toMatchElement(
+				'[hidden] .wc-block-cart__empty-cart__title'
+			);
 		} );
-	} );
-
-	it( 'shows empty cart when changing the view', async () => {
-		await openDocumentSettingsSidebar();
-		await page.click( block.class );
-		await expect( page ).toMatchElement(
-			'[hidden] .wc-block-cart__empty-cart__title'
-		);
-		await clickButton( 'Empty Cart' );
-		await expect( page ).not.toMatchElement(
-			'[hidden] .wc-block-cart__empty-cart__title'
-		);
-		await clickButton( 'Full Cart' );
-		await expect( page ).toMatchElement(
-			'[hidden] .wc-block-cart__empty-cart__title'
-		);
 	} );
 } );
