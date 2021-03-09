@@ -18,7 +18,7 @@ interface FormattedMonetaryAmountProps {
 	className?: string;
 	displayType?: NumberFormatProps[ 'displayType' ];
 	value: number; // Value of money amount.
-	currency: Currency | Record< string, never >; //Currency configuration object.
+	currency: Currency | Record< string, never >; // Currency configuration object.
 	onValueChange?: ( unit: number ) => void; //Function to call when value changes.
 }
 
