@@ -12,10 +12,9 @@ import { useState, useCallback } from '@wordpress/element';
  */
 export const useThrowError = (): ( ( error: Error ) => void ) => {
 	const [ , setState ] = useState();
-	const throwError = useCallback( ( error: Error ): void => {
+	return useCallback( ( error: Error ): void => {
 		setState( () => {
 			throw error;
 		} );
 	}, [] );
-	return throwError;
 };

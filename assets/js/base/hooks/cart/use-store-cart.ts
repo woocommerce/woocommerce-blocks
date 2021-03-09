@@ -17,7 +17,7 @@ import type {
 import { fromEntriesPolyfill } from '@woocommerce/base-utils';
 
 declare module '@wordpress/html-entities' {
-	// eslint-disable-next-line no-shadow
+	// eslint-disable-next-line @typescript-eslint/no-shadow
 	export function decodeEntities< T >( coupon: T ): T;
 }
 const defaultShippingAddress: CartResponseShippingAddress = {

@@ -13,7 +13,7 @@ import type {
 } from '@woocommerce/types';
 
 declare type CustomerData = {
-	billingAddress: CartResponseBillingAddress;
+	billingData: CartResponseBillingAddress;
 	shippingAddress: CartResponseShippingAddress;
 };
 /**
@@ -39,11 +39,13 @@ export const useCustomerData = (): {
 	const {
 		billingAddress: initialBillingAddress,
 		shippingAddress: initialShippingAddress,
-	}: CustomerData = useStoreCart();
+	}: Omit< CustomerData, 'billingData' > & {
+		billingAddress: CartResponseBillingAddress;
+	} = useStoreCart();
 
 	// State of customer data is tracked here from this point, using the initial values from the useStoreCart hook.
 	const [ customerData, setCustomerData ] = useState< CustomerData >( {
-		billingAddress: initialBillingAddress,
+		billingData: initialBillingAddress,
 		shippingAddress: initialShippingAddress,
 	} );
 
@@ -55,10 +57,7 @@ export const useCustomerData = (): {
 		// Default equalityFn is prevData === newData.
 		equalityFn: ( prevData, newData ) => {
 			return (
-				isShallowEqual(
-					prevData.billingAddress,
-					newData.billingAddress
-				) &&
+				isShallowEqual( prevData.billingData, newData.billingData ) &&
 				isShallowEqual(
 					prevData.shippingAddress,
 					newData.shippingAddress
@@ -76,8 +75,8 @@ export const useCustomerData = (): {
 		setCustomerData( ( prevState ) => {
 			return {
 				...prevState,
-				billingAddress: {
-					...prevState.billingAddress,
+				billingData: {
+					...prevState.billingData,
 					...newData,
 				},
 			};
@@ -101,8 +100,8 @@ export const useCustomerData = (): {
 		// Only push updates when enough fields are populated.
 		if (
 			! shouldUpdateAddressStore(
-				previousCustomerData.current.billingAddress,
-				debouncedCustomerData.billingAddress
+				previousCustomerData.current.billingData,
+				debouncedCustomerData.billingData
 			) &&
 			! shouldUpdateAddressStore(
 				previousCustomerData.current.shippingAddress,
@@ -113,7 +112,7 @@ export const useCustomerData = (): {
 		}
 		previousCustomerData.current = debouncedCustomerData;
 		updateCustomerData( {
-			billing_address: debouncedCustomerData.billingAddress,
+			billing_address: debouncedCustomerData.billingData,
 			shipping_address: debouncedCustomerData.shippingAddress,
 		} )
 			.then( () => {
@@ -131,7 +130,7 @@ export const useCustomerData = (): {
 		updateCustomerData,
 	] );
 	return {
-		billingData: customerData.billingAddress,
+		billingData: customerData.billingData,
 		shippingAddress: customerData.shippingAddress,
 		setBillingData,
 		setShippingAddress,
