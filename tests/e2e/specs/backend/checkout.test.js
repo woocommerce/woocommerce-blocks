@@ -39,24 +39,26 @@ describe( `${ block.name } Block`, () => {
 		} );
 	} );
 
-	describe( 'before compatibility notice is dismissed', () => {
-		beforeEach( async () => {
-			await page.evaluate( () => {
-				localStorage.setItem(
-					'wc-blocks_checkout_compatibility_notice',
-					'true'
-				);
+	if ( process.env.WP_VERSION > 5.4 ) {
+		describe( 'before compatibility notice is dismissed', () => {
+			beforeEach( async () => {
+				await page.evaluate( () => {
+					localStorage.setItem(
+						'wc-blocks_checkout_compatibility_notice',
+						'true'
+					);
+				} );
+				await visitBlockPage( `${ block.name } Block` );
 			} );
-			await visitBlockPage( `${ block.name } Block` );
-		} );
 
-		it( 'shows compatibility notice', async () => {
-			const compatibilityNoticeTitle = await page.$x(
-				`//h1[contains(text(), 'Compatibility notice')]`
-			);
-			expect( compatibilityNoticeTitle.length ).toBe( 1 );
+			it( 'shows compatibility notice', async () => {
+				const compatibilityNoticeTitle = await page.$x(
+					`//h1[contains(text(), 'Compatibility notice')]`
+				);
+				expect( compatibilityNoticeTitle.length ).toBe( 1 );
+			} );
 		} );
-	} );
+	}
 
 	describe( 'once compatibility notice is dismissed', () => {
 		beforeEach( async () => {

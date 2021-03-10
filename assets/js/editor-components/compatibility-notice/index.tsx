@@ -6,6 +6,7 @@ import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
 import { createInterpolateElement } from 'wordpress-element';
 import { useLocalStorageState } from '@woocommerce/base-hooks';
+import { isWpVersion } from '@woocommerce/settings';
 import type { ReactElement } from 'react';
 
 /**
@@ -32,7 +33,7 @@ export default function CompatibilityNotice( {
 		setShouldRender( isOpen );
 	}, [ isOpen ] );
 
-	if ( ! shouldRender ) {
+	if ( isWpVersion( '5.4', '<=' ) || ! shouldRender ) {
 		return null;
 	}
 
