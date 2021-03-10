@@ -4,7 +4,6 @@
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
-import PropTypes from 'prop-types';
 import { useState } from '@wordpress/element';
 import { useStoreCart } from '@woocommerce/base-hooks';
 import {
@@ -13,7 +12,8 @@ import {
 } from '@woocommerce/base-components/cart-checkout';
 import { TotalsItem } from '@woocommerce/blocks-checkout';
 import { getSetting } from '@woocommerce/settings';
-
+import type { Currency } from '@woocommerce/price-format';
+import type { ReactElement } from 'react';
 /**
  * Internal dependencies
  */
@@ -21,25 +21,110 @@ import ShippingRateSelector from './shipping-rate-selector';
 import hasShippingRate from './has-shipping-rate';
 import './style.scss';
 
-/** @typedef {import('react')} React */
+interface CalculatorButtonProps {
+	label?: string;
+	isShippingCalculatorOpen: boolean;
+	setIsShippingCalculatorOpen: ( isShippingCalculatorOpen: boolean ) => void;
+}
 
-/**
- * Renders the shipping totals row, rates, and calculator if enabled.
- *
- * @param {Object} props Incoming props for the component.
- * @param {Object} props.currency Currency information.
- * @param {Object} props.values Values in use.
- * @param {boolean} props.showRateSelector Whether to display the rate selector below the shipping total.
- * @param {boolean} props.showCalculator Whether to show shipping calculator or not.
- * @param {string} props.className CSS Class supplied by consumer.
- */
+const CalculatorButton = ( {
+	label = __( 'Calculate', 'woo-gutenberg-products-block' ),
+	isShippingCalculatorOpen,
+	setIsShippingCalculatorOpen,
+}: CalculatorButtonProps ): ReactElement => {
+	return (
+		<button
+			className="wc-block-components-totals-shipping__change-address-button"
+			onClick={ () => {
+				setIsShippingCalculatorOpen( ! isShippingCalculatorOpen );
+			} }
+			aria-expanded={ isShippingCalculatorOpen }
+		>
+			{ label }
+		</button>
+	);
+};
+
+interface ShippingAddressProps {
+	showCalculator: boolean;
+	isShippingCalculatorOpen: boolean;
+	setIsShippingCalculatorOpen: CalculatorButtonProps[ 'setIsShippingCalculatorOpen' ];
+	shippingAddress: Record< string, unknown >;
+}
+
+const ShippingAddress = ( {
+	showCalculator,
+	isShippingCalculatorOpen,
+	setIsShippingCalculatorOpen,
+	shippingAddress,
+}: ShippingAddressProps ): ReactElement | null => {
+	return (
+		<>
+			<ShippingLocation address={ shippingAddress } />
+			{ showCalculator && (
+				<CalculatorButton
+					label={ __(
+						'(change address)',
+						'woo-gutenberg-products-block'
+					) }
+					isShippingCalculatorOpen={ isShippingCalculatorOpen }
+					setIsShippingCalculatorOpen={ setIsShippingCalculatorOpen }
+				/>
+			) }
+		</>
+	);
+};
+
+interface NoShippingPlaceholderProps {
+	showCalculator: boolean;
+	isShippingCalculatorOpen: boolean;
+	setIsShippingCalculatorOpen: CalculatorButtonProps[ 'setIsShippingCalculatorOpen' ];
+}
+
+const NoShippingPlaceholder = ( {
+	showCalculator,
+	isShippingCalculatorOpen,
+	setIsShippingCalculatorOpen,
+}: NoShippingPlaceholderProps ): ReactElement => {
+	if ( ! showCalculator ) {
+		return (
+			<em>
+				{ __(
+					'Calculated during checkout',
+					'woo-gutenberg-products-block'
+				) }
+			</em>
+		);
+	}
+
+	return (
+		<CalculatorButton
+			isShippingCalculatorOpen={ isShippingCalculatorOpen }
+			setIsShippingCalculatorOpen={ setIsShippingCalculatorOpen }
+		/>
+	);
+};
+
+interface TotalShippingProps {
+	currency: Currency;
+	values: {
+		// eslint-disable-next-line camelcase
+		total_shipping: string;
+		// eslint-disable-next-line camelcase
+		total_shipping_tax: string;
+	}; // Values in use
+	showCalculator?: boolean; //Whether to display the rate selector below the shipping total.
+	showRateSelector?: boolean; // Whether to show shipping calculator or not.
+	className?: string;
+}
+
 const TotalsShipping = ( {
 	currency,
 	values,
 	showCalculator = true,
 	showRateSelector = true,
 	className,
-} ) => {
+}: TotalShippingProps ): ReactElement => {
 	const [ isShippingCalculatorOpen, setIsShippingCalculatorOpen ] = useState(
 		false
 	);
@@ -118,82 +203,6 @@ const TotalsShipping = ( {
 				) }
 		</div>
 	);
-};
-
-const ShippingAddress = ( {
-	showCalculator,
-	isShippingCalculatorOpen,
-	setIsShippingCalculatorOpen,
-	shippingAddress,
-} ) => {
-	return (
-		<>
-			<ShippingLocation address={ shippingAddress } />
-			{ showCalculator && (
-				<CalculatorButton
-					label={ __(
-						'(change address)',
-						'woo-gutenberg-products-block'
-					) }
-					isShippingCalculatorOpen={ isShippingCalculatorOpen }
-					setIsShippingCalculatorOpen={ setIsShippingCalculatorOpen }
-				/>
-			) }
-		</>
-	);
-};
-
-const NoShippingPlaceholder = ( {
-	showCalculator,
-	isShippingCalculatorOpen,
-	setIsShippingCalculatorOpen,
-} ) => {
-	if ( ! showCalculator ) {
-		return (
-			<em>
-				{ __(
-					'Calculated during checkout',
-					'woo-gutenberg-products-block'
-				) }
-			</em>
-		);
-	}
-
-	return (
-		<CalculatorButton
-			isShippingCalculatorOpen={ isShippingCalculatorOpen }
-			setIsShippingCalculatorOpen={ setIsShippingCalculatorOpen }
-		/>
-	);
-};
-
-const CalculatorButton = ( {
-	label = __( 'Calculate', 'woo-gutenberg-products-block' ),
-	isShippingCalculatorOpen,
-	setIsShippingCalculatorOpen,
-} ) => {
-	return (
-		<button
-			className="wc-block-components-totals-shipping__change-address-button"
-			onClick={ () => {
-				setIsShippingCalculatorOpen( ! isShippingCalculatorOpen );
-			} }
-			aria-expanded={ isShippingCalculatorOpen }
-		>
-			{ label }
-		</button>
-	);
-};
-
-TotalsShipping.propTypes = {
-	currency: PropTypes.object.isRequired,
-	values: PropTypes.shape( {
-		total_shipping: PropTypes.string,
-		total_shipping_tax: PropTypes.string,
-	} ).isRequired,
-	showRateSelector: PropTypes.bool,
-	showCalculator: PropTypes.bool,
-	className: PropTypes.string,
 };
 
 export default TotalsShipping;

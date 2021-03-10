@@ -43,15 +43,13 @@ const ShippingLocation = ( { address } ) => {
 	const formattedLocation = addressParts.filter( Boolean ).join( ', ' );
 
 	return (
-		formattedLocation && (
-			<span className="wc-block-components-shipping-address">
-				{ sprintf(
-					/* translators: %s location. */
-					__( 'Shipping to %s', 'woo-gutenberg-products-block' ),
-					formattedLocation
-				) + ' ' }
-			</span>
-		)
+		<span className="wc-block-components-shipping-address">
+			{ sprintf(
+				/* translators: %s location. */
+				__( 'Shipping to %s', 'woo-gutenberg-products-block' ),
+				formattedLocation
+			) + ' ' }
+		</span>
 	);
 };
 
