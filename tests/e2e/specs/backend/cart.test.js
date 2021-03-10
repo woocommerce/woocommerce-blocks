@@ -107,6 +107,13 @@ describe( `${ block.name } Block`, () => {
 			await expect( page ).not.toMatchElement(
 				'[hidden] .wc-block-cart__empty-cart__title'
 			);
+			// Simulate user scrolling up so the block toolbar doesn't cover
+			// the `Full Cart` button.
+			page.evaluate( () => {
+				document
+					.querySelector( '.wc-block-view-switch-control' )
+					.scrollIntoView( { block: 'center', inline: 'center' } );
+			} );
 			await clickButton( 'Full Cart' );
 			await expect( page ).toMatchElement(
 				'[hidden] .wc-block-cart__empty-cart__title'
