@@ -161,7 +161,7 @@ export interface CartErrorItem {
 	message: string;
 }
 
-export type ExtensionsData = Record< string, unknown >;
+export type ExtensionsData = Record< string, unknown > | Record< string, never >;
 export interface Cart {
 	coupons: Array< CartCouponItem >;
 	shippingRates: Array< CartShippingRateItem >;
