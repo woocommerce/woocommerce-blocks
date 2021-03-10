@@ -14,6 +14,7 @@ import {
 import {
 	insertBlockDontWaitForInsertClose,
 	closeInserter,
+	conditionalDescribe,
 } from '../../utils.js';
 
 const block = {
@@ -39,8 +40,9 @@ describe( `${ block.name } Block`, () => {
 		} );
 	} );
 
-	if ( process.env.WP_VERSION > 5.4 ) {
-		describe( 'before compatibility notice is dismissed', () => {
+	conditionalDescribe( process.env.WP_VERSION > 5.4 )(
+		'before compatibility notice is dismissed',
+		() => {
 			beforeEach( async () => {
 				await page.evaluate( () => {
 					localStorage.setItem(
@@ -57,8 +59,8 @@ describe( `${ block.name } Block`, () => {
 				);
 				expect( compatibilityNoticeTitle.length ).toBe( 1 );
 			} );
-		} );
-	}
+		}
+	);
 
 	describe( 'once compatibility notice is dismissed', () => {
 		beforeEach( async () => {
