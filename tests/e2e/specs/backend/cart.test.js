@@ -98,7 +98,6 @@ describe( `${ block.name } Block`, () => {
 		} );
 
 		it( 'shows empty cart when changing the view', async () => {
-			await openDocumentSettingsSidebar();
 			await page.click( block.class );
 			await expect( page ).toMatchElement(
 				'[hidden] .wc-block-cart__empty-cart__title'
