@@ -12,6 +12,7 @@ import {
 	ShippingLocation,
 } from '@woocommerce/base-components/cart-checkout';
 import { TotalsItem } from '@woocommerce/blocks-checkout';
+import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -58,6 +59,12 @@ const TotalsShipping = ( {
 		isShippingCalculatorOpen,
 		setIsShippingCalculatorOpen,
 	};
+	// used for the editor logic as an extra check
+	// because previewData.cartHasCalculatedShipping is always true and shipping is always showed
+	const shippingCostRequiresAddress = getSetting(
+		'shippingCostRequiresAddress',
+		false
+	);
 
 	return (
 		<div
@@ -69,7 +76,8 @@ const TotalsShipping = ( {
 			<TotalsItem
 				label={ __( 'Shipping', 'woo-gutenberg-products-block' ) }
 				value={
-					cartHasCalculatedShipping ? (
+					cartHasCalculatedShipping &&
+					! shippingCostRequiresAddress ? (
 						totalShippingValue
 					) : (
 						<NoShippingPlaceholder
@@ -80,13 +88,14 @@ const TotalsShipping = ( {
 				}
 				description={
 					<>
-						{ cartHasCalculatedShipping && (
-							<ShippingAddress
-								shippingAddress={ shippingAddress }
-								showCalculator={ showCalculator }
-								{ ...calculatorButtonProps }
-							/>
-						) }
+						{ cartHasCalculatedShipping &&
+							! shippingCostRequiresAddress && (
+								<ShippingAddress
+									shippingAddress={ shippingAddress }
+									showCalculator={ showCalculator }
+									{ ...calculatorButtonProps }
+								/>
+							) }
 					</>
 				}
 				currency={ currency }
@@ -98,13 +107,15 @@ const TotalsShipping = ( {
 					} }
 				/>
 			) }
-			{ showRateSelector && cartHasCalculatedShipping && (
-				<ShippingRateSelector
-					hasRates={ hasRates }
-					shippingRates={ shippingRates }
-					shippingRatesLoading={ shippingRatesLoading }
-				/>
-			) }
+			{ showRateSelector &&
+				cartHasCalculatedShipping &&
+				! shippingCostRequiresAddress && (
+					<ShippingRateSelector
+						hasRates={ hasRates }
+						shippingRates={ shippingRates }
+						shippingRatesLoading={ shippingRatesLoading }
+					/>
+				) }
 		</div>
 	);
 };
