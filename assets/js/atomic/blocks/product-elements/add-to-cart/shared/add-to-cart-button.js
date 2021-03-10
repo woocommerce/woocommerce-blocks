@@ -24,7 +24,7 @@ const AddToCartButton = () => {
 		hasError,
 		dispatchActions,
 	} = useAddToCartFormContext();
-	const { cartQuantity } = useStoreAddToCart( product.id || 0 );
+	const { cartQuantity } = useStoreAddToCart( product.id );
 	const [ addedToCart, setAddedToCart ] = useState( false );
 	const addToCartButtonData = product.add_to_cart || {
 		url: '',

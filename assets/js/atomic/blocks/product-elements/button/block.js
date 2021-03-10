@@ -54,7 +54,6 @@ const AddToCartButton = ( { product } ) => {
 	const firstMount = useRef( true );
 
 	const {
-		id,
 		permalink,
 		add_to_cart: productCartDetails,
 		has_options: hasOptions,
@@ -62,7 +61,9 @@ const AddToCartButton = ( { product } ) => {
 		is_in_stock: isInStock,
 	} = product;
 
-	const { cartQuantity, addingToCart, addToCart } = useStoreAddToCart( id );
+	const { cartQuantity, addingToCart, addToCart } = useStoreAddToCart(
+		product.id
+	);
 
 	useEffect( () => {
 		// Avoid running on first mount when cart quantity is first set.

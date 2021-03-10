@@ -35,7 +35,7 @@ const ShippingLocation = ( { address } ) => {
 
 	const addressParts = [];
 
-	addressParts.push( address.postcode.toUpperCase() );
+	addressParts.push( ( address.postcode || '' ).toUpperCase() );
 	addressParts.push( address.city );
 	addressParts.push( formattedState );
 	addressParts.push( formattedCountry );
