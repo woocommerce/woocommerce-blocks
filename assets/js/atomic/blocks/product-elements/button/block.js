@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { useEffect, useRef } from '@wordpress/element';
-import { useStoreAddToCart } from '@woocommerce/base-hooks';
+import { useStoreAddToCart, useStoreEvents } from '@woocommerce/base-hooks';
 import { decodeEntities } from '@wordpress/html-entities';
 import { triggerFragmentRefresh } from '@woocommerce/base-utils';
 import {
@@ -52,7 +52,6 @@ const Block = ( { className } ) => {
 
 const AddToCartButton = ( { product } ) => {
 	const firstMount = useRef( true );
-
 	const {
 		permalink,
 		add_to_cart: productCartDetails,
@@ -60,7 +59,7 @@ const AddToCartButton = ( { product } ) => {
 		is_purchasable: isPurchasable,
 		is_in_stock: isInStock,
 	} = product;
-
+	const { dispatchEvent } = useStoreEvents();
 	const { cartQuantity, addingToCart, addToCart } = useStoreAddToCart(
 		product.id
 	);
@@ -103,7 +102,12 @@ const AddToCartButton = ( { product } ) => {
 		buttonProps.rel = 'nofollow';
 	} else {
 		buttonProps.onClick = () => {
-			addToCart();
+			addToCart( 1 ).then( () =>
+				dispatchEvent( 'add-to-cart', {
+					product,
+					quantity: 1,
+				} )
+			);
 		};
 	}
 
