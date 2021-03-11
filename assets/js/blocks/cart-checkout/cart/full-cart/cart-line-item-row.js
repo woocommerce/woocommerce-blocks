@@ -249,9 +249,9 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 						maximum={ quantityLimit }
 						onChange={ ( newQuantity ) => {
 							setItemQuantity( newQuantity );
-							dispatchEvent( 'change-cart-item-quantity', {
+							dispatchEvent( 'set-cart-item-quantity', {
 								product: lineItem,
-								newQuantity,
+								quantity: newQuantity,
 							} );
 						} }
 						itemName={ name }
@@ -259,13 +259,10 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 					<button
 						className="wc-block-cart-item__remove-link"
 						onClick={ () => {
-							removeItem().then( ( result ) => {
-								if ( result ) {
-									dispatchEvent( 'remove-cart-item', {
-										product: lineItem,
-										quantity,
-									} );
-								}
+							removeItem();
+							dispatchEvent( 'remove-cart-item', {
+								product: lineItem,
+								quantity,
 							} );
 						} }
 						disabled={ isPendingDelete }

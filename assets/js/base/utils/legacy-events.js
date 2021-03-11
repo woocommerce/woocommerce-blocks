@@ -13,7 +13,7 @@ const Event = window.Event || null;
  * @param {HTMLNode}  [options.element]    Element that dispatches the event. By
  *                                         default, the body.
  */
-export const dispatchEvent = (
+export const dispatchNativeEvent = (
 	name,
 	{ bubbles = false, cancelable = false, element }
 ) => {
@@ -38,7 +38,10 @@ export const dispatchEvent = (
 // that relies on the store, see
 // https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1247
 export const triggerFragmentRefresh = () => {
-	dispatchEvent( 'wc_fragment_refresh', { bubbles: true, cancelable: true } );
+	dispatchNativeEvent( 'wc_fragment_refresh', {
+		bubbles: true,
+		cancelable: true,
+	} );
 };
 
 /**
@@ -65,7 +68,7 @@ export const translateJQueryEventToNative = (
 	}
 
 	const eventDispatcher = () => {
-		dispatchEvent( nativeEventName, { bubbles, cancelable } );
+		dispatchNativeEvent( nativeEventName, { bubbles, cancelable } );
 	};
 
 	// @ts-ignore -- jQuery is window global

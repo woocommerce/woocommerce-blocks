@@ -102,12 +102,10 @@ const AddToCartButton = ( { product } ) => {
 		buttonProps.rel = 'nofollow';
 	} else {
 		buttonProps.onClick = () => {
-			addToCart( 1 ).then( () =>
-				dispatchEvent( 'add-to-cart', {
-					product,
-					quantity: 1,
-				} )
-			);
+			addToCart();
+			dispatchEvent( 'add-cart-item', {
+				product,
+			} );
 		};
 	}
 
