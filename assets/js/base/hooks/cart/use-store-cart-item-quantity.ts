@@ -29,13 +29,14 @@ export const useStoreCartItemQuantity = (
 	const { key: cartItemKey = '', quantity: cartItemQuantity = 1 } = cartItem;
 	const { cartErrors } = useStoreCart();
 	const { dispatchActions } = useCheckoutContext();
-	const { removeItemFromCart, changeCartItemQuantity } = useDispatch(
-		storeKey
-	);
+
 	// Store quantity in hook state. This is used to keep the UI updated while server request is updated.
 	const [ quantity, setQuantity ] = useState< number >( cartItemQuantity );
 	const [ debouncedQuantity ] = useDebounce< number >( quantity, 400 );
 	const previousDebouncedQuantity = usePrevious( debouncedQuantity );
+	const { removeItemFromCart, changeCartItemQuantity } = useDispatch(
+		storeKey
+	);
 
 	// Track when things are already pending updates.
 	const isPending = useSelect(

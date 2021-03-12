@@ -101,7 +101,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 		removeItem,
 		isPendingDelete,
 	} = useStoreCartItemQuantity( lineItem );
-	const { dispatchEvent } = useStoreEvents();
+	const { dispatchStoreEvent } = useStoreEvents();
 
 	const productPriceValidation = useCallback(
 		( value ) => mustBeString( value ) && mustContain( value, '<price/>' ),
@@ -249,7 +249,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 						maximum={ quantityLimit }
 						onChange={ ( newQuantity ) => {
 							setItemQuantity( newQuantity );
-							dispatchEvent( 'set-cart-item-quantity', {
+							dispatchStoreEvent( 'set-cart-item-quantity', {
 								product: lineItem,
 								quantity: newQuantity,
 							} );
@@ -260,7 +260,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 						className="wc-block-cart-item__remove-link"
 						onClick={ () => {
 							removeItem();
-							dispatchEvent( 'remove-cart-item', {
+							dispatchStoreEvent( 'remove-cart-item', {
 								product: lineItem,
 								quantity,
 							} );

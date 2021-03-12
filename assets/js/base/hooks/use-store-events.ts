@@ -10,16 +10,12 @@ import { useCallback } from '@wordpress/element';
 export const useStoreEvents = (
 	namespace = 'experimental__woocommerce_blocks'
 ): {
-	dispatchEvent: (
-		eventName: string,
-		eventParams: Partial< Record< string, unknown > >
-	) => void;
-	dispatchEventOnce: (
+	dispatchStoreEvent: (
 		eventName: string,
 		eventParams: Partial< Record< string, unknown > >
 	) => void;
 } => {
-	const dispatchEvent = useCallback(
+	const dispatchStoreEvent = useCallback(
 		(
 			eventName: string,
 			eventParams: Partial< Record< string, unknown > >
@@ -35,6 +31,6 @@ export const useStoreEvents = (
 	);
 
 	return {
-		dispatchEvent,
+		dispatchStoreEvent,
 	};
 };

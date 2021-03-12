@@ -8,7 +8,7 @@ import { useEffect, RawHTML } from '@wordpress/element';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
 import { ValidationContextProvider } from '@woocommerce/base-context';
 import {
-	dispatchNativeEvent,
+	dispatchEvent,
 	translateJQueryEventToNative,
 } from '@woocommerce/base-utils';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
@@ -20,7 +20,7 @@ import FullCart from './full-cart';
 
 const EmptyCart = ( { content } ) => {
 	useEffect( () => {
-		dispatchNativeEvent( 'wc-blocks_render_blocks_frontend', {
+		dispatchEvent( 'wc-blocks_render_blocks_frontend', {
 			element: document.body.querySelector(
 				'.wp-block-woocommerce-cart'
 			),
