@@ -38,10 +38,7 @@ export const dispatchEvent = (
 // that relies on the store, see
 // https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/1247
 export const triggerFragmentRefresh = () => {
-	dispatchEvent( 'wc_fragment_refresh', {
-		bubbles: true,
-		cancelable: true,
-	} );
+	dispatchEvent( 'wc_fragment_refresh', { bubbles: true, cancelable: true } );
 };
 
 /**
