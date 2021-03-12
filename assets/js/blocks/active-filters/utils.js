@@ -111,6 +111,7 @@ export const renderRemovableListItem = ( {
 								ry="8"
 								transform="rotate(-180 8 8)"
 								fill="currentColor"
+								fillOpacity="0.7"
 							/>
 							<rect
 								x="10.636"
