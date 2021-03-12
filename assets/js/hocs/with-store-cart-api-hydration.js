@@ -4,7 +4,8 @@
 import { useRef } from '@wordpress/element';
 import { getSetting } from '@woocommerce/settings';
 import { CART_STORE_KEY } from '@woocommerce/block-data';
-import { useSelect } from '@wordpress/data';
+import { useSelect, useDispatch } from '@wordpress/data';
+import { useEffect } from 'react';
 
 /**
  * Hydrate Cart API data.
@@ -13,6 +14,26 @@ import { useSelect } from '@wordpress/data';
  */
 const useStoreCartApiHydration = () => {
 	const cartData = useRef( getSetting( 'cartData' ) );
+	const { getCartFromApi } = useDispatch( CART_STORE_KEY );
+
+	useEffect( () => {
+		if ( ! cartData.current ) {
+			return;
+		}
+
+		const lastCartUpdateRaw = window.localStorage.getItem(
+			'lastCartUpdate'
+		);
+		const lastCartUpdate =
+			lastCartUpdateRaw === null ? null : JSON.parse( lastCartUpdateRaw );
+
+		const needsUpdateFromAPI =
+			lastCartUpdate.timestamp > cartData.current?.generated_timestamp;
+
+		if ( needsUpdateFromAPI ) {
+			// This is where we should call getCartFromApi action
+		}
+	}, [] );
 
 	useSelect( ( select, registry ) => {
 		if ( ! cartData.current ) {
