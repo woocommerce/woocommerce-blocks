@@ -425,6 +425,39 @@ export function* updateCustomerData(
 	return true;
 }
 
+/**
+ * Gets the cart from the API.
+ */
+export function* getCartFromApi(): Generator<
+	unknown,
+	boolean,
+	{ response: CartResponse }
+> {
+	yield true;
+
+	try {
+		const { response } = yield apiFetchWithHeaders( {
+			path: '/wc/store/cart/',
+			method: 'GET',
+			cache: 'no-store',
+		} );
+
+		yield receiveCart( response );
+	} catch ( error ) {
+		yield receiveError( error );
+		yield updatingCustomerData( false );
+
+		// If updated cart state was returned, also update that.
+		if ( error.data?.cart ) {
+			yield receiveCart( error.data.cart );
+		}
+
+		// rethrow error.
+		throw error;
+	}
+	return true;
+}
+
 export type CartAction = ReturnOrGeneratorYieldUnion<
 	| typeof receiveCart
 	| typeof receiveError
@@ -435,6 +468,7 @@ export type CartAction = ReturnOrGeneratorYieldUnion<
 	| typeof itemIsPendingDelete
 	| typeof updatingCustomerData
 	| typeof shippingRatesBeingSelected
+	| typeof getCartFromApi
 	| typeof updateCustomerData
 	| typeof removeItemFromCart
 	| typeof changeCartItemQuantity
