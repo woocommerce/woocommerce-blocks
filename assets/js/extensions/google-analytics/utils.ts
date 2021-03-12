@@ -18,11 +18,15 @@ export const getProductFieldObject = (
 	quantity: number | undefined
 ): Gtag.Item => {
 	const productIdentifier = product.sku ? product.sku : '#' + product.id;
+	const productCategory =
+		'categories' in product && product.categories.length
+			? product.categories[ 0 ].name
+			: '';
 	return {
 		id: productIdentifier,
 		name: product.name,
 		quantity,
-
+		category: productCategory,
 		price:
 			parseInt( product.prices.price, 10 ) /
 			10 ** product.prices.currency_minor_unit,
@@ -35,15 +39,18 @@ export const getProductFieldObject = (
  * @see https://developers.google.com/analytics/devguides/collection/gtagjs/enhanced-ecommerce#impression-data
  */
 export const getProductImpressionObject = (
-	product: ProductResponseItem | CartResponseItem,
+	product: ProductResponseItem,
 	listName: string
 ): ImpressionItem => {
 	const productIdentifier = product.sku ? product.sku : '#' + product.id;
+	const productCategory = product.categories.length
+		? product.categories[ 0 ].name
+		: '';
 	return {
 		id: productIdentifier,
 		name: product.name,
 		list_name: listName,
-
+		category: productCategory,
 		price:
 			parseInt( product.prices.price, 10 ) /
 			10 ** product.prices.currency_minor_unit,

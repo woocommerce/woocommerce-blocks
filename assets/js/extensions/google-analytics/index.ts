@@ -25,9 +25,10 @@ const trackListProducts = ( {
 	trackEvent( 'view_item_list', {
 		event_category: 'engagement',
 		event_label: __( 'Viewing products', 'woo-gutenberg-products-block' ),
-		items: products.map( ( product ) =>
-			getProductImpressionObject( product, listName )
-		),
+		items: products.map( ( product, index ) => ( {
+			...getProductImpressionObject( product, listName ),
+			list_position: index + 1,
+		} ) ),
 	} );
 };
 
