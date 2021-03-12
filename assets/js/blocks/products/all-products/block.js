@@ -8,6 +8,11 @@ import { InnerBlockLayoutContextProvider } from '@woocommerce/shared-context';
 import { gridBlockPreview } from '@woocommerce/resource-previews';
 
 /**
+ * Internal dependencies
+ */
+import { blockSettings } from './index';
+
+/**
  * The All Products Block.
  */
 class Block extends Component {
@@ -39,6 +44,7 @@ class Block extends Component {
 				<ProductListContainer
 					attributes={ attributes }
 					urlParameterSuffix={ urlParameterSuffix }
+					listType={ blockSettings.title }
 				/>
 			</InnerBlockLayoutContextProvider>
 		);

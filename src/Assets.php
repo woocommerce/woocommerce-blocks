@@ -105,7 +105,7 @@ class Assets {
 				window.dataLayer = window.dataLayer || [];
 				function gtag(){dataLayer.push(arguments);}
 				gtag('js', new Date());
-				gtag('config', '" . esc_js( $settings['ga_id'] ) . "', { 'send_page_view': false });"
+				gtag('config', '" . esc_js( $settings['ga_id'] ) . "', { send_page_view: false });"
 			);
 		}
 

@@ -9,7 +9,27 @@ import type { ProductResponseItem, CartResponseItem } from '@woocommerce/types';
  * Internal dependencies
  */
 import { namespace, actionPrefix } from './constants';
-import { getProductFieldObject, trackEvent } from './utils';
+import {
+	getProductFieldObject,
+	getProductImpressionObject,
+	trackEvent,
+} from './utils';
+
+const trackListProducts = ( {
+	products,
+	listName = __( 'Product List', 'woo-gutenberg-products-block' ),
+}: {
+	products: Array< ProductResponseItem >;
+	listName: string;
+} ): void => {
+	trackEvent( 'view_item_list', {
+		event_category: 'engagement',
+		event_label: __( 'Viewing products', 'woo-gutenberg-products-block' ),
+		items: products.map( ( product ) =>
+			getProductImpressionObject( product, listName )
+		),
+	} );
+};
 
 const trackAddToCart = ( {
 	product,
@@ -59,6 +79,11 @@ const trackChangeCartItemQuantity = ( {
 function initialize() {
 	// eslint-disable-next-line no-console
 	console.log( `Tracking initialized` );
+	addAction(
+		`${ actionPrefix }-list-products`,
+		namespace,
+		trackListProducts
+	);
 	addAction( `${ actionPrefix }-add-cart-item`, namespace, trackAddToCart );
 	addAction(
 		`${ actionPrefix }-set-cart-item-quantity`,
