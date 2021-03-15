@@ -9,12 +9,27 @@ export const useLocalStorageState = < T >(
 ): [ T, ( arg0: T ) => void ] => {
 	const [ state, setState ] = useState< T >( () => {
 		const valueInLocalStorage = window.localStorage.getItem( key );
-		return valueInLocalStorage
-			? JSON.parse( valueInLocalStorage )
-			: initialValue;
+		if ( valueInLocalStorage ) {
+			try {
+				return JSON.parse( valueInLocalStorage );
+			} catch {
+				// eslint-disable-next-line no-console
+				console.error(
+					`Value for key '${ key }' could not be retrieved from localStorage because it can't be parsed.`
+				);
+			}
+		}
+		return initialValue;
 	} );
 	useEffect( () => {
-		window.localStorage.setItem( key, JSON.stringify( state ) );
+		try {
+			window.localStorage.setItem( key, JSON.stringify( state ) );
+		} catch {
+			// eslint-disable-next-line no-console
+			console.error(
+				`Value for key '${ key }' could not be saved in localStorage because it can't be converted into a string.`
+			);
+		}
 	}, [ key, state ] );
 
 	return [ state, setState ];
