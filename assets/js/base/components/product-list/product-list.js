@@ -116,7 +116,6 @@ const ProductList = ( {
 	onSortChange,
 	sortValue,
 	scrollToTop,
-	listType,
 } ) => {
 	const [ queryState ] = useSynchronizedQueryState(
 		generateQuery( {
@@ -128,7 +127,7 @@ const ProductList = ( {
 	const { products, totalProducts, productsLoading } = useStoreProducts(
 		queryState
 	);
-	const { parentClassName } = useInnerBlockLayoutContext();
+	const { parentClassName, parentName } = useInnerBlockLayoutContext();
 	const totalQuery = extractPaginationAndSortAttributes( queryState );
 	const { dispatchStoreEvent } = useStoreEvents();
 
@@ -151,10 +150,10 @@ const ProductList = ( {
 		if ( products.length > 0 ) {
 			dispatchStoreEvent( 'list-products', {
 				products,
-				listName: listType,
+				listName: parentName,
 			} );
 		}
-	}, [ products, listType, dispatchStoreEvent ] );
+	}, [ products, parentName, dispatchStoreEvent ] );
 
 	// If query state (excluding pagination/sorting attributes) changed, reset pagination to the first page.
 	useEffect( () => {

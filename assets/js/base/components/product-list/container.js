@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
  */
 import ProductList from './product-list';
 
-const ProductListContainer = ( { attributes, listType = '' } ) => {
+const ProductListContainer = ( { attributes } ) => {
 	const [ currentPage, setPage ] = useState( 1 );
 	const [ currentSort, setSort ] = useState( attributes.orderby );
 	useEffect( () => {
@@ -32,7 +32,6 @@ const ProductListContainer = ( { attributes, listType = '' } ) => {
 			onPageChange={ onPageChange }
 			onSortChange={ onSortChange }
 			sortValue={ currentSort }
-			listType={ listType }
 		/>
 	);
 };
