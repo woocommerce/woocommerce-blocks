@@ -20,12 +20,19 @@ export const useStoreEvents = (
 			eventName: string,
 			eventParams: Partial< Record< string, unknown > >
 		) => {
-			doAction( `${ namespace }-${ eventName }`, eventParams );
 			// eslint-disable-next-line no-console
 			console.log( {
 				event: `${ namespace }-${ eventName }`,
 				eventParams,
 			} );
+
+			try {
+				doAction( `${ namespace }-${ eventName }`, eventParams );
+			} catch ( e ) {
+				// We don't handle thrown errors but just console.log for troubleshooting.
+				// eslint-disable-next-line no-console
+				console.error( e );
+			}
 		},
 		[ namespace ]
 	);
