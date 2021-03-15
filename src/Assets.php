@@ -98,14 +98,15 @@ class Assets {
 		}
 
 		if ( ! wp_script_is( 'google-tag-manager', 'registered' ) ) {
-			wp_register_script( 'google-tag-manager', 'https://www.googletagmanager.com/gtag/js?id=' . $settings['ga_id'], [], Package::get_version(), false );
+			// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+			wp_register_script( 'google-tag-manager', 'https://www.googletagmanager.com/gtag/js?id=' . $settings['ga_id'], [], null, false );
 			wp_add_inline_script(
 				'google-tag-manager',
 				"
-				window.dataLayer = window.dataLayer || [];
-				function gtag(){dataLayer.push(arguments);}
-				gtag('js', new Date());
-				gtag('config', '" . esc_js( $settings['ga_id'] ) . "', { send_page_view: false });"
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', '" . esc_js( $settings['ga_id'] ) . "', { 'send_page_view': false });"
 			);
 		}
 
@@ -343,6 +344,6 @@ class Assets {
 		if ( did_action( 'woocommerce_gtag_snippet' ) ) {
 			return '';
 		}
-		return str_replace( '<script', '<script async', $tag );
+		return str_replace( '<script src', '<script async src', $tag );
 	}
 }

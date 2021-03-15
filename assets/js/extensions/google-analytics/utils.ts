@@ -27,9 +27,10 @@ export const getProductFieldObject = (
 		name: product.name,
 		quantity,
 		category: productCategory,
-		price:
+		price: (
 			parseInt( product.prices.price, 10 ) /
-			10 ** product.prices.currency_minor_unit,
+			10 ** product.prices.currency_minor_unit
+		).toString(),
 	};
 };
 
@@ -51,9 +52,10 @@ export const getProductImpressionObject = (
 		name: product.name,
 		list_name: listName,
 		category: productCategory,
-		price:
+		price: (
 			parseInt( product.prices.price, 10 ) /
-			10 ** product.prices.currency_minor_unit,
+			10 ** product.prices.currency_minor_unit
+		).toString(),
 	};
 };
 
@@ -69,5 +71,5 @@ export const trackEvent = (
 	}
 	// eslint-disable-next-line no-console
 	console.log( `Tracking event ${ eventName }` );
-	gtag( 'event', eventName, eventParams );
+	window.gtag( 'event', eventName, eventParams );
 };
