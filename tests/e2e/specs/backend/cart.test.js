@@ -35,7 +35,9 @@ describe( `${ block.name } Block`, () => {
 
 	afterEach( async () => {
 		await page.evaluate( () => {
-			localStorage.removeItem( 'wc-blocks_cart_compatibility_notice' );
+			localStorage.removeItem(
+				'wc-blocks_dismissed_compatibility_notices'
+			);
 		} );
 	} );
 
@@ -45,8 +47,8 @@ describe( `${ block.name } Block`, () => {
 			beforeEach( async () => {
 				await page.evaluate( () => {
 					localStorage.setItem(
-						'wc-blocks_cart_compatibility_notice',
-						'true'
+						'wc-blocks_dismissed_compatibility_notices',
+						'[]'
 					);
 				} );
 				await visitBlockPage( `${ block.name } Block` );
@@ -65,8 +67,8 @@ describe( `${ block.name } Block`, () => {
 		beforeEach( async () => {
 			await page.evaluate( () => {
 				localStorage.setItem(
-					'wc-blocks_cart_compatibility_notice',
-					'false'
+					'wc-blocks_dismissed_compatibility_notices',
+					'["cart"]'
 				);
 			} );
 			await visitBlockPage( `${ block.name } Block` );

@@ -28,7 +28,7 @@ import {
 } from '@woocommerce/base-context';
 import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import PageSelector from '@woocommerce/editor-components/page-selector';
-import CartCheckoutCompatibilityNotice from '@woocommerce/editor-components/cart-checkout-compatibility-notice';
+import { CartCheckoutCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices';
 import {
 	previewCart,
 	previewSavedPaymentMethods,

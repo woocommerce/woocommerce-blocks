@@ -3,37 +3,26 @@
  */
 import { Guide } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { useEffect, useState } from '@wordpress/element';
 import { createInterpolateElement } from 'wordpress-element';
-import { useLocalStorageState } from '@woocommerce/base-hooks';
 import { isWpVersion } from '@woocommerce/settings';
 import type { ReactElement } from 'react';
 
 /**
  * Internal dependencies
  */
+import { useCompatibilityNotice } from './use-compatibility-notice';
 import WooImage from './woo-image';
 
 interface CartCheckoutCompatibilityNoticeProps {
 	blockName: 'cart' | 'checkout';
 }
 
-export default function CartCheckoutCompatibilityNotice( {
+export function CartCheckoutCompatibilityNotice( {
 	blockName,
 }: CartCheckoutCompatibilityNoticeProps ): ReactElement | null {
-	const [ isOpen, setIsOpen ] = useLocalStorageState(
-		`wc-blocks_${ blockName }_compatibility_notice`,
-		true
-	);
-	const [ shouldRender, setShouldRender ] = useState( false );
+	const [ isVisible, dismissNotice ] = useCompatibilityNotice( blockName );
 
-	// This ensures the modal is not loaded on first render. This is required so
-	// Gutenberg doesn't steal the focus from the Guide and focuses the block.
-	useEffect( () => {
-		setShouldRender( isOpen );
-	}, [ isOpen ] );
-
-	if ( isWpVersion( '5.4', '<=' ) || ! shouldRender ) {
+	if ( isWpVersion( '5.4', '<=' ) || ! isVisible ) {
 		return null;
 	}
 
@@ -44,7 +33,7 @@ export default function CartCheckoutCompatibilityNotice( {
 				'Compatibility notice',
 				'woo-gutenberg-products-block'
 			) }
-			onFinish={ () => setIsOpen( false ) }
+			onFinish={ () => dismissNotice() }
 			finishButtonText={ __( 'Got it!', 'woo-gutenberg-products-block' ) }
 			pages={ [
 				{

@@ -12,7 +12,7 @@ import {
 	Notice,
 } from '@wordpress/components';
 import PropTypes from 'prop-types';
-import CartCheckoutCompatibilityNotice from '@woocommerce/editor-components/cart-checkout-compatibility-notice';
+import { CartCheckoutCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices';
 import ViewSwitcher from '@woocommerce/editor-components/view-switcher';
 import PageSelector from '@woocommerce/editor-components/page-selector';
 import { SHIPPING_ENABLED, CART_PAGE_ID } from '@woocommerce/block-settings';
