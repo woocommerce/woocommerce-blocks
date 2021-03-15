@@ -165,6 +165,7 @@ export const previewCart: CartResponse = {
 	needs_payment: true,
 	needs_shipping: SHIPPING_ENABLED,
 	has_calculated_shipping: true,
+	extensions: {},
 	shipping_address: {
 		first_name: '',
 		last_name: '',

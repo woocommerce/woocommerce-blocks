@@ -3,7 +3,11 @@
 /**
  * Internal dependencies
  */
-import { MetaKeyValue, ShippingRateItemItem } from './cart-response';
+import {
+	MetaKeyValue,
+	ShippingRateItemItem,
+	ExtensionsData,
+} from './cart-response';
 export interface CurrencyInfo {
 	currency_code: string;
 	currency_symbol: string;
@@ -161,7 +165,6 @@ export interface CartErrorItem {
 	message: string;
 }
 
-export type ExtensionsData = Record< string, unknown > | Record< string, never >;
 export interface Cart {
 	coupons: Array< CartCouponItem >;
 	shippingRates: Array< CartShippingRateItem >;
