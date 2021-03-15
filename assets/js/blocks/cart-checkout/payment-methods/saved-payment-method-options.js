@@ -164,6 +164,7 @@ const SavedPaymentMethodOptions = () => {
 	] );
 
 	const savedPaymentMethodHandler =
+		!! activeSavedToken &&
 		paymentMethods[ activePaymentMethod ] &&
 		paymentMethods[ activePaymentMethod ]?.savedTokenComponent
 			? cloneElement(
