@@ -14,13 +14,13 @@ import type { ReactElement } from 'react';
  */
 import WooImage from './woo-image';
 
-interface CompatibilityNoticeProps {
-	blockName: string;
+interface CartCheckoutCompatibilityNoticeProps {
+	blockName: 'cart' | 'checkout';
 }
 
-export default function CompatibilityNotice( {
+export default function CartCheckoutCompatibilityNotice( {
 	blockName,
-}: CompatibilityNoticeProps ): ReactElement | null {
+}: CartCheckoutCompatibilityNoticeProps ): ReactElement | null {
 	const [ isOpen, setIsOpen ] = useLocalStorageState(
 		`wc-blocks_${ blockName }_compatibility_notice`,
 		true

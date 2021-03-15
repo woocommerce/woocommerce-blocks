@@ -28,7 +28,7 @@ import {
 } from '@woocommerce/base-context';
 import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import PageSelector from '@woocommerce/editor-components/page-selector';
-import CompatibilityNotice from '@woocommerce/editor-components/compatibility-notice';
+import CartCheckoutCompatibilityNotice from '@woocommerce/editor-components/cart-checkout-compatibility-notice';
 import {
 	previewCart,
 	previewSavedPaymentMethods,
@@ -364,7 +364,7 @@ const CheckoutEditor = ( { attributes, setAttributes } ) => {
 					</BlockErrorBoundary>
 				</div>
 			</EditorProvider>
-			<CompatibilityNotice blockName="checkout" />
+			<CartCheckoutCompatibilityNotice blockName="checkout" />
 		</>
 	);
 };

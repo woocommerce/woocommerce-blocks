@@ -12,7 +12,7 @@ import {
 	Notice,
 } from '@wordpress/components';
 import PropTypes from 'prop-types';
-import CompatibilityNotice from '@woocommerce/editor-components/compatibility-notice';
+import CartCheckoutCompatibilityNotice from '@woocommerce/editor-components/cart-checkout-compatibility-notice';
 import ViewSwitcher from '@woocommerce/editor-components/view-switcher';
 import PageSelector from '@woocommerce/editor-components/page-selector';
 import { SHIPPING_ENABLED, CART_PAGE_ID } from '@woocommerce/block-settings';
@@ -210,7 +210,7 @@ const CartEditor = ( { className, attributes, setAttributes } ) => {
 					</BlockErrorBoundary>
 				) }
 			/>
-			<CompatibilityNotice blockName="cart" />
+			<CartCheckoutCompatibilityNotice blockName="cart" />
 		</div>
 	);
 };
