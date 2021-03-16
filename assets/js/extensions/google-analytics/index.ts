@@ -79,7 +79,7 @@ const trackChangeCartItemQuantity = ( {
 
 function initialize() {
 	// eslint-disable-next-line no-console
-	console.log( `Tracking initialized` );
+	console.log( `Google Analytics Tracking initialized` );
 	addAction(
 		`${ actionPrefix }-list-products`,
 		namespace,
