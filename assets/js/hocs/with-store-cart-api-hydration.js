@@ -5,7 +5,6 @@ import { useRef } from '@wordpress/element';
 import { getSetting } from '@woocommerce/settings';
 import { CART_STORE_KEY } from '@woocommerce/block-data';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { useEffect } from 'react';
 
 /**
  * Hydrate Cart API data.
@@ -14,33 +13,36 @@ import { useEffect } from 'react';
  */
 const useStoreCartApiHydration = () => {
 	const cartData = useRef( getSetting( 'cartData' ) );
-	const { getCartFromApi } = useDispatch( CART_STORE_KEY );
-
-	useEffect( () => {
-		if ( ! cartData.current ) {
-			return;
-		}
-
-		const lastCartUpdateRaw = window.localStorage.getItem(
-			'lastCartUpdate'
-		);
-		const lastCartUpdate =
-			lastCartUpdateRaw === null ? null : JSON.parse( lastCartUpdateRaw );
-
-		const needsUpdateFromAPI =
-			lastCartUpdate.timestamp > cartData.current?.generated_timestamp;
-
-		if ( needsUpdateFromAPI ) {
-			// This is where we should call getCartFromApi action
-		}
-	}, [] );
+	const { cartDataIsStale } = useDispatch( CART_STORE_KEY );
 
 	useSelect( ( select, registry ) => {
 		if ( ! cartData.current ) {
 			return;
 		}
+		const { isResolving, hasFinishedResolution, isCartDataStale } = select(
+			CART_STORE_KEY
+		);
+		if (
+			! isCartDataStale() &&
+			! isResolving( 'getCartData' ) &&
+			! hasFinishedResolution( 'getCartData', [] )
+		) {
+			const lastCartUpdateRaw = window.localStorage.getItem(
+				'lastCartUpdate'
+			);
+			const lastCartUpdate =
+				lastCartUpdateRaw === null
+					? null
+					: JSON.parse( lastCartUpdateRaw );
 
-		const { isResolving, hasFinishedResolution } = select( CART_STORE_KEY );
+			const needsUpdateFromAPI =
+				lastCartUpdate.timestamp >
+				cartData.current?.generated_timestamp;
+
+			if ( needsUpdateFromAPI ) {
+				cartDataIsStale();
+			}
+		}
 		const {
 			receiveCart,
 			receiveError,
@@ -49,6 +51,7 @@ const useStoreCartApiHydration = () => {
 		} = registry.dispatch( CART_STORE_KEY );
 
 		if (
+			! isCartDataStale() &&
 			! isResolving( 'getCartData', [] ) &&
 			! hasFinishedResolution( 'getCartData', [] )
 		) {
