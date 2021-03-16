@@ -22,6 +22,13 @@ const useStoreCartApiHydration = () => {
 		const { isResolving, hasFinishedResolution, isCartDataStale } = select(
 			CART_STORE_KEY
 		);
+
+		/**
+		 * This should only execute once. When the code further down the file executes
+		 * then the condition directly below this comment should never evaluate to true
+		 * on subsequent executions. Because of this localStorage.getItem won't be
+		 * called multiple times.
+		 */
 		if (
 			! isCartDataStale() &&
 			! isResolving( 'getCartData' ) &&
