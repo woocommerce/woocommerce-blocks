@@ -27,6 +27,7 @@ use Automattic\WooCommerce\Blocks\StoreApi\Formatters\HtmlFormatter;
 use Automattic\WooCommerce\Blocks\StoreApi\Formatters\CurrencyFormatter;
 use Automattic\WooCommerce\Blocks\StoreApi\RoutesController;
 use Automattic\WooCommerce\Blocks\StoreApi\SchemaController;
+use Automattic\WooCommerce\Blocks\Domain\Services\GoogleAnalytics;
 
 /**
  * Takes care of bootstrapping the plugin.
@@ -88,6 +89,7 @@ class Bootstrap {
 		$this->container->get( ExtendRestApi::class );
 		$this->container->get( PaymentsApi::class );
 		$this->container->get( RestApi::class );
+		$this->container->get( GoogleAnalytics::class );
 		Library::init();
 	}
 
@@ -225,6 +227,12 @@ class Bootstrap {
 			ExtendRestApi::class,
 			function( Container $container ) {
 				return new ExtendRestApi( $container->get( Package::class ), $container->get( Formatters::class ) );
+			}
+		);
+		$this->container->register(
+			GoogleAnalytics::class,
+			function( Container $container ) {
+				return new GoogleAnalytics();
 			}
 		);
 	}

@@ -78,9 +78,22 @@ abstract class AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	public function render_callback( $attributes = [], $content = '' ) {
-		$render_callback_attributes = $this->parse_render_callback_attributes( $attributes );
-		$this->enqueue_assets( $render_callback_attributes );
-		return $this->render( $render_callback_attributes, $content );
+		$render_attributes = $this->parse_render_callback_attributes( $attributes );
+
+		$this->enqueue_assets( $render_attributes );
+
+		/**
+		 * Hook: experimental__BLOCKNAME__render_callback
+		 *
+		 * Runs before the block is rendered.
+		 *
+		 * @param array|WP_Block $attributes Block attributes, or an instance of a WP_Block. Defaults to an empty array.
+		 * @param array $render_attributes Parsed block attributes.
+		 * @param string $content   Block content.
+		 */
+		do_action( 'experimental__' . $this->block_name . '_render_callback', $attributes, $render_attributes, $content );
+
+		return $this->render( $render_attributes, $content );
 	}
 
 	/**
