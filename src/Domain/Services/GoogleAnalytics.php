@@ -16,8 +16,38 @@ class GoogleAnalytics {
 			return;
 		}
 		add_action( 'init', array( $this, 'register_assets' ) );
+		add_action( 'init', array( $this, 'inline_block_tracking' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_filter( 'script_loader_tag', array( $this, 'async_script_loader_tags' ), 10, 3 );
+	}
+
+	/**
+	 * Inline tracking events for blocks which are server side rendered, or saved to the post.
+	 */
+	public function inline_block_tracking() {
+		add_action(
+			'experimental__product-search_render_callback',
+			function() {
+				wp_add_inline_script(
+					'wc-blocks-google-analytics',
+					"
+					const forms = document.querySelectorAll( '.wc-block-product-search form' );
+
+					for ( const form of forms ) {
+						form.addEventListener( 'submit', () => {
+							const field = form.querySelector( '.wc-block-product-search__field' );
+
+							if ( field && field.value ) {
+								gtag( 'event', 'search', {
+									search_term: field.value
+								} );
+							}
+						} );
+					}
+					"
+				);
+			}
+		);
 	}
 
 	/**
