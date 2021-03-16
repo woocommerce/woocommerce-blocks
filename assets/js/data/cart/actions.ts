@@ -122,6 +122,18 @@ export const itemIsPendingDelete = (
 		cartItemKey,
 		isPendingDelete,
 	} as const );
+/**
+ * Returns an action object to remove a cart item from the store.
+ *
+ * @param   {boolean} [isCartDataStale=true] Flag to mark cart data as stake; true if
+ * 											 lastCartUpdate timestamp is newer than the
+ * 											 one in wcSettings.
+ */
+export const cartDataIsStale = ( isCartDataStale = true ) =>
+	( {
+		type: types.CART_DATA_STALE,
+		isCartDataStale,
+	} as const );
 
 /**
  * Returns an action object used to track when customer data is being updated
@@ -425,39 +437,6 @@ export function* updateCustomerData(
 	return true;
 }
 
-/**
- * Gets the cart from the API.
- */
-export function* getCartFromApi(): Generator<
-	unknown,
-	boolean,
-	{ response: CartResponse }
-> {
-	yield true;
-
-	try {
-		const { response } = yield apiFetchWithHeaders( {
-			path: '/wc/store/cart/',
-			method: 'GET',
-			cache: 'no-store',
-		} );
-
-		yield receiveCart( response );
-	} catch ( error ) {
-		yield receiveError( error );
-		yield updatingCustomerData( false );
-
-		// If updated cart state was returned, also update that.
-		if ( error.data?.cart ) {
-			yield receiveCart( error.data.cart );
-		}
-
-		// rethrow error.
-		throw error;
-	}
-	return true;
-}
-
 export type CartAction = ReturnOrGeneratorYieldUnion<
 	| typeof receiveCart
 	| typeof receiveError
@@ -468,7 +447,7 @@ export type CartAction = ReturnOrGeneratorYieldUnion<
 	| typeof itemIsPendingDelete
 	| typeof updatingCustomerData
 	| typeof shippingRatesBeingSelected
-	| typeof getCartFromApi
+	| typeof cartDataIsStale
 	| typeof updateCustomerData
 	| typeof removeItemFromCart
 	| typeof changeCartItemQuantity
