@@ -54,7 +54,10 @@ class Assets {
 		$asset_api->register_script( 'wc-shared-context', 'build/wc-shared-context.js', [], false );
 		$asset_api->register_script( 'wc-shared-hocs', 'build/wc-shared-hocs.js', [], false );
 		$asset_api->register_script( 'wc-price-format', 'build/price-format.js', [], false );
-		$asset_api->register_script( 'wc-blocks-google-analytics', 'build/wc-blocks-google-analytics.js', [ 'google-tag-manager' ] );
+
+		if ( Package::feature()->is_experimental_build() ) {
+			$asset_api->register_script( 'wc-blocks-google-analytics', 'build/wc-blocks-google-analytics.js', [ 'google-tag-manager' ] );
+		}
 
 		if ( Package::feature()->is_feature_plugin_build() ) {
 			$asset_api->register_script( 'wc-blocks-checkout', 'build/blocks-checkout.js', [], false );
