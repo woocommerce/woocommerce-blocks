@@ -77,6 +77,12 @@ const trackChangeCartItemQuantity = ( {
 	} );
 };
 
+const trackSearch = ( { searchTerm }: { searchTerm: string } ): void => {
+	trackEvent( 'search', {
+		search_term: searchTerm,
+	} );
+};
+
 function initialize() {
 	// eslint-disable-next-line no-console
 	console.log( `Google Analytics Tracking initialized` );
@@ -96,6 +102,7 @@ function initialize() {
 		namespace,
 		trackRemoveCartItem
 	);
+	addAction( `${ actionPrefix }-product-search`, namespace, trackSearch );
 }
 
 initialize();

@@ -8,6 +8,14 @@ use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
  * Service class to integrate Blocks with the Google Analytics extension,
  */
 class GoogleAnalytics {
+
+	/**
+	 * Stores a record of inline scripts already enqueued.
+	 *
+	 * @var array
+	 */
+	private $inline_scripts = [];
+
 	/**
 	 * Constructor
 	 */
@@ -28,7 +36,7 @@ class GoogleAnalytics {
 		add_action(
 			'experimental__product-search_render_callback',
 			function() {
-				wp_add_inline_script(
+				$this->add_inline_script(
 					'wc-blocks-google-analytics',
 					"
 					const forms = document.querySelectorAll( '.wc-block-product-search form' );
@@ -38,9 +46,7 @@ class GoogleAnalytics {
 							const field = form.querySelector( '.wc-block-product-search__field' );
 
 							if ( field && field.value ) {
-								gtag( 'event', 'search', {
-									search_term: field.value
-								} );
+								wp.hooks.doAction( 'experimental__woocommerce_blocks-product-search', { searchTerm: field.value } );
 							}
 						} );
 					}
@@ -85,6 +91,26 @@ class GoogleAnalytics {
 		}
 
 		wp_enqueue_script( 'wc-blocks-google-analytics' );
+	}
+
+	/**
+	 * Adds an inline script, once.
+	 *
+	 * @param string $handle Script handle.
+	 * @param string $script Script contents.
+	 */
+	private function add_inline_script( $handle, $script ) {
+		if ( ! empty( $this->inline_scripts[ $handle ] ) && in_array( $script, $this->inline_scripts[ $handle ], true ) ) {
+			return;
+		}
+
+		wp_add_inline_script( $handle, $script );
+
+		if ( isset( $this->inline_scripts[ $handle ] ) ) {
+			$this->inline_scripts[ $handle ][] = $script;
+		} else {
+			$this->inline_scripts[ $handle ] = array( $script );
+		}
 	}
 
 	/**
