@@ -60,7 +60,7 @@ const AddToCartButton = ( { product } ) => {
 		is_purchasable: isPurchasable,
 		is_in_stock: isInStock,
 	} = product;
-	const { dispatchStoreEvent } = useStoreEvents();
+	const dispatchStoreEvent = useStoreEvents();
 	const { cartQuantity, addingToCart, addToCart } = useStoreAddToCart( id );
 
 	useEffect( () => {

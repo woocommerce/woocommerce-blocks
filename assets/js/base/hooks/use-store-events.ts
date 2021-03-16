@@ -4,17 +4,17 @@
 import { doAction } from '@wordpress/hooks';
 import { useCallback } from '@wordpress/element';
 
+type DispatchStoreEvent = (
+	eventName: string,
+	eventParams: Partial< Record< string, unknown > >
+) => void;
+
 /**
  * Abstraction on top of @wordpress/hooks for dispatching events via doAction for 3rd parties to hook into.
  */
 export const useStoreEvents = (
 	namespace = 'experimental__woocommerce_blocks'
-): {
-	dispatchStoreEvent: (
-		eventName: string,
-		eventParams: Partial< Record< string, unknown > >
-	) => void;
-} => {
+): DispatchStoreEvent => {
 	const dispatchStoreEvent = useCallback(
 		(
 			eventName: string,
@@ -37,7 +37,5 @@ export const useStoreEvents = (
 		[ namespace ]
 	);
 
-	return {
-		dispatchStoreEvent,
-	};
+	return dispatchStoreEvent;
 };

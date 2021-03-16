@@ -101,7 +101,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 		removeItem,
 		isPendingDelete,
 	} = useStoreCartItemQuantity( lineItem );
-	const { dispatchStoreEvent } = useStoreEvents();
+	const dispatchStoreEvent = useStoreEvents();
 
 	const productPriceValidation = useCallback(
 		( value ) => mustBeString( value ) && mustContain( value, '<price/>' ),

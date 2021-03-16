@@ -77,6 +77,18 @@ const trackChangeCartItemQuantity = ( {
 	} );
 };
 
+const trackViewProduct = ( {
+	product,
+	listName,
+}: {
+	product: ProductResponseItem;
+	listName: string;
+} ): void => {
+	trackEvent( 'view_item', {
+		items: [ getProductImpressionObject( product, listName ) ],
+	} );
+};
+
 const trackSearch = ( { searchTerm }: { searchTerm: string } ): void => {
 	trackEvent( 'search', {
 		search_term: searchTerm,
@@ -102,6 +114,7 @@ function initialize() {
 		namespace,
 		trackRemoveCartItem
 	);
+	addAction( `${ actionPrefix }-view-product`, namespace, trackViewProduct );
 	addAction( `${ actionPrefix }-product-search`, namespace, trackSearch );
 }
 
