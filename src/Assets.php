@@ -129,7 +129,10 @@ class Assets {
 			$block_style_dependencies = array();
 		}
 		self::register_style( 'wc-block-vendors-style', plugins_url( $asset_api->get_block_asset_build_path( 'vendors-style', 'css' ), __DIR__ ), $block_style_dependencies );
-		self::maybe_enqueue_google_analytics( $asset_api );
+
+		if ( Package::feature()->is_experimental_build() ) {
+			self::maybe_enqueue_google_analytics( $asset_api );
+		}
 	}
 
 	/**
