@@ -123,9 +123,9 @@ export const itemIsPendingDelete = (
 		isPendingDelete,
 	} as const );
 /**
- * Returns an action object to remove a cart item from the store.
+ * Returns an action object to mark the cart data in the store as stale.
  *
- * @param   {boolean} [isCartDataStale=true] Flag to mark cart data as stake; true if
+ * @param   {boolean} [isCartDataStale=true] Flag to mark cart data as stale; true if
  * 											 lastCartUpdate timestamp is newer than the
  * 											 one in wcSettings.
  */
