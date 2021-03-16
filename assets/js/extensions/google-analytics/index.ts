@@ -95,6 +95,19 @@ const trackSearch = ( { searchTerm }: { searchTerm: string } ): void => {
 	} );
 };
 
+const selectProductContent = ( {
+	product,
+	listName,
+}: {
+	product: ProductResponseItem;
+	listName: string;
+} ): void => {
+	trackEvent( 'select_content', {
+		content_type: 'product',
+		items: [ getProductImpressionObject( product, listName ) ],
+	} );
+};
+
 function initialize() {
 	// eslint-disable-next-line no-console
 	console.log( `Google Analytics Tracking initialized` );
@@ -115,6 +128,11 @@ function initialize() {
 		trackRemoveCartItem
 	);
 	addAction( `${ actionPrefix }-view-product`, namespace, trackViewProduct );
+	addAction(
+		`${ actionPrefix }-click-product-link`,
+		namespace,
+		selectProductContent
+	);
 	addAction( `${ actionPrefix }-product-search`, namespace, trackSearch );
 }
 
