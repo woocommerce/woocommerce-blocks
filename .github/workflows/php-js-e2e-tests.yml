@@ -138,7 +138,7 @@ jobs:
           npm run test
 
 
-  JSE2ETestsWP56Gutenberg:
+  JSE2ETestsWP57Gutenberg:
     name: JavaScipt E2E Tests (WP 5.7 with Gutenberg plugin)
     needs: Setup
     runs-on: ubuntu-latest
@@ -203,7 +203,7 @@ jobs:
           npm run wp-env run tests-cli "wp plugin install gutenberg --activate"
           npm run test:e2e
 
-  JSE2ETestsWP56:
+  JSE2ETestsWP57:
     name: JavaScipt E2E Tests (WP 5.7)
     needs: Setup
     runs-on: ubuntu-latest
