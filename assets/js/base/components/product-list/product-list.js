@@ -129,7 +129,7 @@ const ProductList = ( {
 	);
 	const { parentClassName, parentName } = useInnerBlockLayoutContext();
 	const totalQuery = extractPaginationAndSortAttributes( queryState );
-	const dispatchStoreEvent = useStoreEvents();
+	const { dispatchStoreEvent } = useStoreEvents();
 
 	// These are possible filters.
 	const [ productAttributes, setProductAttributes ] = useQueryStateByKey(

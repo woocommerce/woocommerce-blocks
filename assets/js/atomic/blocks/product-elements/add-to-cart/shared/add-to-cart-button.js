@@ -26,7 +26,7 @@ const AddToCartButton = () => {
 		dispatchActions,
 	} = useAddToCartFormContext();
 	const { parentName } = useInnerBlockLayoutContext();
-	const dispatchStoreEvent = useStoreEvents();
+	const { dispatchStoreEvent } = useStoreEvents();
 	const { cartQuantity } = useStoreAddToCart( product.id || 0 );
 	const [ addedToCart, setAddedToCart ] = useState( false );
 	const addToCartButtonData = product.add_to_cart || {

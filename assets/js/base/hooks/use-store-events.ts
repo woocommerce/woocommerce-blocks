@@ -4,9 +4,15 @@
 import { doAction } from '@wordpress/hooks';
 import { useCallback } from '@wordpress/element';
 
-type DispatchStoreEvent = (
+/**
+ * Internal dependencies
+ */
+import { useStoreCart } from './cart/use-store-cart';
+import { useCheckoutContext } from '../context/cart-checkout/checkout-state';
+
+type StoreEvent = (
 	eventName: string,
-	eventParams: Partial< Record< string, unknown > >
+	eventParams?: Partial< Record< string, unknown > >
 ) => void;
 
 /**
@@ -14,12 +20,15 @@ type DispatchStoreEvent = (
  */
 export const useStoreEvents = (
 	namespace = 'experimental__woocommerce_blocks'
-): DispatchStoreEvent => {
+): {
+	dispatchStoreEvent: StoreEvent;
+	dispatchCheckoutEvent: StoreEvent;
+} => {
+	const storeCart = useStoreCart();
+	const checkoutData = useCheckoutContext();
+
 	const dispatchStoreEvent = useCallback(
-		(
-			eventName: string,
-			eventParams: Partial< Record< string, unknown > >
-		) => {
+		( eventName, eventParams = {} ) => {
 			// eslint-disable-next-line no-console
 			console.log( {
 				event: `${ namespace }-${ eventName }`,
@@ -37,5 +46,32 @@ export const useStoreEvents = (
 		[ namespace ]
 	);
 
-	return dispatchStoreEvent;
+	const dispatchCheckoutEvent = useCallback(
+		( eventName, eventParams = {} ) => {
+			// eslint-disable-next-line no-console
+			console.log( {
+				event: `${ namespace }-checkout-${ eventName }`,
+				eventParams: {
+					...eventParams,
+					storeCart,
+					checkoutData,
+				},
+			} );
+
+			try {
+				doAction( `${ namespace }-checkout-${ eventName }`, {
+					...eventParams,
+					storeCart,
+					checkoutData,
+				} );
+			} catch ( e ) {
+				// We don't handle thrown errors but just console.log for troubleshooting.
+				// eslint-disable-next-line no-console
+				console.error( e );
+			}
+		},
+		[ namespace, storeCart, checkoutData ]
+	);
+
+	return { dispatchStoreEvent, dispatchCheckoutEvent };
 };
