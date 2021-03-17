@@ -198,9 +198,11 @@ jobs:
           WOOCOMMERCE_BLOCKS_PHASE: 3
           WP_VERSION: 5.7-branch
         run: |
+          chmod -R 767 ./ #needed for permissions issues
+          JSON='{"plugins": ["https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip","https://github.com/WP-API/Basic-Auth/archive/master.zip","https://downloads.wordpress.org/plugin/gutenberg.latest-stable.zip", "."] }'
+          echo $JSON > .wp-env.override.json
           npm run wp-env start
           npm run wp-env clean all
-          npm run wp-env run tests-cli "wp plugin install gutenberg --activate"
           npm run test:e2e
 
   JSE2ETestsWP57:
