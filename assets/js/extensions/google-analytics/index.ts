@@ -109,14 +109,16 @@ const selectProductContent = ( {
 };
 
 function initialize() {
-	// eslint-disable-next-line no-console
-	console.log( `Google Analytics Tracking initialized` );
 	addAction(
-		`${ actionPrefix }-list-products`,
+		`${ actionPrefix }-render-product-list`,
 		namespace,
 		trackListProducts
 	);
-	addAction( `${ actionPrefix }-add-cart-item`, namespace, trackAddToCart );
+	addAction(
+		`${ actionPrefix }-add-product-to-cart`,
+		namespace,
+		trackAddToCart
+	);
 	addAction(
 		`${ actionPrefix }-set-cart-item-quantity`,
 		namespace,
@@ -127,13 +129,17 @@ function initialize() {
 		namespace,
 		trackRemoveCartItem
 	);
-	addAction( `${ actionPrefix }-view-product`, namespace, trackViewProduct );
 	addAction(
-		`${ actionPrefix }-click-product-link`,
+		`${ actionPrefix }-render-product`,
+		namespace,
+		trackViewProduct
+	);
+	addAction(
+		`${ actionPrefix }-view-product`,
 		namespace,
 		selectProductContent
 	);
-	addAction( `${ actionPrefix }-product-search`, namespace, trackSearch );
+	addAction( `${ actionPrefix }-search-for-product`, namespace, trackSearch );
 }
 
 initialize();

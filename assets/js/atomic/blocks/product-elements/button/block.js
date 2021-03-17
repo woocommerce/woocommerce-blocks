@@ -100,14 +100,14 @@ const AddToCartButton = ( { product } ) => {
 		buttonProps.href = permalink;
 		buttonProps.rel = 'nofollow';
 		buttonProps.onClick = () => {
-			dispatchStoreEvent( 'click-product-link', {
+			dispatchStoreEvent( 'view-product', {
 				product,
 			} );
 		};
 	} else {
 		buttonProps.onClick = () => {
 			addToCart();
-			dispatchStoreEvent( 'add-cart-item', {
+			dispatchStoreEvent( 'add-product-to-cart', {
 				product,
 			} );
 		};

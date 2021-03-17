@@ -46,7 +46,7 @@ class GoogleAnalytics {
 							const field = form.querySelector( '.wc-block-product-search__field' );
 
 							if ( field && field.value ) {
-								wp.hooks.doAction( 'experimental__woocommerce_blocks-product-search', { searchTerm: field.value } );
+								wp.hooks.doAction( 'experimental__woocommerce_blocks-search-for-product', { searchTerm: field.value } );
 							}
 						} );
 					}

@@ -32,7 +32,7 @@ const Block = ( { isLoading, product, children } ) => {
 
 	useEffect( () => {
 		if ( product ) {
-			dispatchStoreEvent( 'view-product', {
+			dispatchStoreEvent( 'render-product', {
 				product,
 				listName: BLOCK_NAME,
 			} );

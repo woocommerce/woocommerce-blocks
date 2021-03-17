@@ -74,7 +74,7 @@ const AddToCartButton = () => {
 			isDone={ addedToCart }
 			onClick={ () => {
 				dispatchActions.submitForm();
-				dispatchStoreEvent( 'add-cart-item', {
+				dispatchStoreEvent( 'add-product-to-cart', {
 					product,
 					listName: parentName,
 				} );
@@ -89,7 +89,7 @@ const AddToCartButton = () => {
 				__( 'View Product', 'woo-gutenberg-products-block' )
 			}
 			onClick={ () => {
-				dispatchStoreEvent( 'click-product-link', {
+				dispatchStoreEvent( 'view-product', {
 					product,
 					listName: parentName,
 				} );
