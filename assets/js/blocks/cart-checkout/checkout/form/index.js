@@ -2,12 +2,12 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import { useMemo } from '@wordpress/element';
+import { useEffect, useMemo } from '@wordpress/element';
 import {
 	useCheckoutContext,
 	useShippingDataContext,
 } from '@woocommerce/base-context';
-import { useCheckoutAddress } from '@woocommerce/base-hooks';
+import { useCheckoutAddress, useStoreEvents } from '@woocommerce/base-hooks';
 import { AddressForm } from '@woocommerce/base-components/cart-checkout';
 import Form from '@woocommerce/base-components/form';
 
@@ -46,6 +46,7 @@ const CheckoutForm = ( {
 		showBillingFields,
 	} = useCheckoutAddress();
 	const { needsShipping } = useShippingDataContext();
+	const { dispatchCheckoutEvent } = useStoreEvents();
 
 	const addressFieldsConfig = useMemo( () => {
 		return {
@@ -59,12 +60,24 @@ const CheckoutForm = ( {
 		};
 	}, [ showCompanyField, requireCompanyField, showApartmentField ] );
 
+	// Only ran on first mount.
+	useEffect( () => {
+		dispatchCheckoutEvent( 'step', {
+			step: 0,
+		} );
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [] );
+
 	return (
 		<Form className="wc-block-checkout__form" onSubmit={ onSubmit }>
 			<ContactFieldsStep
 				emailValue={ billingFields.email }
 				onChangeEmail={ ( value ) => {
 					setEmail( value );
+					dispatchCheckoutEvent( 'step', {
+						step: 1,
+						field: 'email',
+					} );
 				} }
 				allowCreateAccount={ allowCreateAccount }
 			/>
@@ -78,6 +91,10 @@ const CheckoutForm = ( {
 						type="shipping"
 						onChange={ ( values ) => {
 							setShippingFields( values );
+							dispatchCheckoutEvent( 'step', {
+								step: 2,
+								field: 'shipping-address',
+							} );
 						} }
 						values={ shippingFields }
 						fields={ Object.keys( defaultAddressFields ) }
@@ -89,6 +106,10 @@ const CheckoutForm = ( {
 							value={ billingFields.phone }
 							onChange={ ( value ) => {
 								setPhone( value );
+								dispatchCheckoutEvent( 'step', {
+									step: 2,
+									field: 'phone-number',
+								} );
 							} }
 						/>
 					) }
@@ -101,6 +122,10 @@ const CheckoutForm = ( {
 						type="billing"
 						onChange={ ( values ) => {
 							setBillingFields( values );
+							dispatchCheckoutEvent( 'step', {
+								step: 3,
+								field: 'billing-address',
+							} );
 						} }
 						values={ billingFields }
 						fields={ Object.keys( defaultAddressFields ) }
@@ -112,6 +137,10 @@ const CheckoutForm = ( {
 							value={ billingFields.phone }
 							onChange={ ( value ) => {
 								setPhone( value );
+								dispatchCheckoutEvent( 'step', {
+									step: 3,
+									field: 'phone-number',
+								} );
 							} }
 						/>
 					) }
