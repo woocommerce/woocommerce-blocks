@@ -79,6 +79,9 @@ addAction(
 		} )();
 	}
 );
+addAction( `${ actionPrefix }-checkout-submit`, namespace, (): void => {
+	trackEvent( 'add_payment_info' );
+} );
 
 /**
  * Cart Events.
