@@ -26,12 +26,6 @@ export const useStoreEvents = (): {
 	const checkoutData = useCheckoutContext();
 
 	const dispatchStoreEvent = useCallback( ( eventName, eventParams = {} ) => {
-		// eslint-disable-next-line no-console
-		console.log( {
-			event: `experimental__woocommerce_blocks-${ eventName }`,
-			eventParams,
-		} );
-
 		try {
 			doAction(
 				`experimental__woocommerce_blocks-${ eventName }`,
@@ -46,16 +40,6 @@ export const useStoreEvents = (): {
 
 	const dispatchCheckoutEvent = useCallback(
 		( eventName, eventParams = {} ) => {
-			// eslint-disable-next-line no-console
-			console.log( {
-				event: `experimental__woocommerce_blocks-checkout-${ eventName }`,
-				eventParams: {
-					...eventParams,
-					storeCart,
-					checkoutData,
-				},
-			} );
-
 			try {
 				doAction(
 					`experimental__woocommerce_blocks-checkout-${ eventName }`,
