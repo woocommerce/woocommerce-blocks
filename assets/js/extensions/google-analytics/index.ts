@@ -212,3 +212,19 @@ addAction(
 		} );
 	}
 );
+
+/**
+ * Exception events.
+ */
+addAction(
+	`${ actionPrefix }-create-notice`,
+	namespace,
+	( { status, content }: { status: string; content: string } ): void => {
+		if ( status === 'error' ) {
+			trackEvent( 'exception', {
+				description: content,
+				fatal: false,
+			} );
+		}
+	}
+);
