@@ -31,12 +31,10 @@ const Block = ( { isLoading, product, children } ) => {
 	const noticeContext = `woocommerce/single-product/${ product?.id || 0 }`;
 
 	useEffect( () => {
-		if ( product ) {
-			dispatchStoreEvent( 'render-product', {
-				product,
-				listName: BLOCK_NAME,
-			} );
-		}
+		dispatchStoreEvent( 'render-single-product', {
+			product,
+			listName: BLOCK_NAME,
+		} );
 	}, [ product, dispatchStoreEvent ] );
 
 	return (

@@ -60,11 +60,9 @@ const CheckoutForm = ( {
 		};
 	}, [ showCompanyField, requireCompanyField, showApartmentField ] );
 
-	// Only ran on first mount.
+	// Ignore changes to dispatchCheckoutEvent callback so this is ran on first mount only.
 	useEffect( () => {
-		dispatchCheckoutEvent( 'step', {
-			step: 0,
-		} );
+		dispatchCheckoutEvent( 'render-checkout-form' );
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [] );
 
@@ -74,10 +72,7 @@ const CheckoutForm = ( {
 				emailValue={ billingFields.email }
 				onChangeEmail={ ( value ) => {
 					setEmail( value );
-					dispatchCheckoutEvent( 'step', {
-						step: 1,
-						field: 'email',
-					} );
+					dispatchCheckoutEvent( 'set-email-address' );
 				} }
 				allowCreateAccount={ allowCreateAccount }
 			/>
@@ -91,10 +86,7 @@ const CheckoutForm = ( {
 						type="shipping"
 						onChange={ ( values ) => {
 							setShippingFields( values );
-							dispatchCheckoutEvent( 'step', {
-								step: 2,
-								field: 'shipping-address',
-							} );
+							dispatchCheckoutEvent( 'set-shipping-address' );
 						} }
 						values={ shippingFields }
 						fields={ Object.keys( defaultAddressFields ) }
@@ -106,9 +98,8 @@ const CheckoutForm = ( {
 							value={ billingFields.phone }
 							onChange={ ( value ) => {
 								setPhone( value );
-								dispatchCheckoutEvent( 'step', {
-									step: 2,
-									field: 'phone-number',
+								dispatchCheckoutEvent( 'set-phone-number', {
+									step: 'shipping',
 								} );
 							} }
 						/>
@@ -122,10 +113,7 @@ const CheckoutForm = ( {
 						type="billing"
 						onChange={ ( values ) => {
 							setBillingFields( values );
-							dispatchCheckoutEvent( 'step', {
-								step: 3,
-								field: 'billing-address',
-							} );
+							dispatchCheckoutEvent( 'set-billing-address' );
 						} }
 						values={ billingFields }
 						fields={ Object.keys( defaultAddressFields ) }
@@ -137,9 +125,8 @@ const CheckoutForm = ( {
 							value={ billingFields.phone }
 							onChange={ ( value ) => {
 								setPhone( value );
-								dispatchCheckoutEvent( 'step', {
-									step: 3,
-									field: 'phone-number',
+								dispatchCheckoutEvent( 'set-phone-number', {
+									step: 'billing',
 								} );
 							} }
 						/>
