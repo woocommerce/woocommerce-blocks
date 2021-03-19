@@ -8,7 +8,6 @@ import { useCallback } from '@wordpress/element';
  * Internal dependencies
  */
 import { useStoreCart } from './cart/use-store-cart';
-import { useCheckoutContext } from '../context/cart-checkout/checkout-state';
 
 type StoreEvent = (
 	eventName: string,
@@ -23,7 +22,6 @@ export const useStoreEvents = (): {
 	dispatchCheckoutEvent: StoreEvent;
 } => {
 	const storeCart = useStoreCart();
-	const checkoutData = useCheckoutContext();
 
 	const dispatchStoreEvent = useCallback( ( eventName, eventParams = {} ) => {
 		try {
@@ -46,7 +44,6 @@ export const useStoreEvents = (): {
 					{
 						...eventParams,
 						storeCart,
-						checkoutData,
 					}
 				);
 			} catch ( e ) {
@@ -55,7 +52,7 @@ export const useStoreEvents = (): {
 				console.error( e );
 			}
 		},
-		[ storeCart, checkoutData ]
+		[ storeCart ]
 	);
 
 	return { dispatchStoreEvent, dispatchCheckoutEvent };
