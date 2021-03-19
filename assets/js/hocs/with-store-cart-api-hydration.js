@@ -42,6 +42,10 @@ const useStoreCartApiHydration = () => {
 					? null
 					: JSON.parse( lastCartUpdateRaw );
 
+			if ( lastCartUpdate?.timestamp === undefined ) {
+				return;
+			}
+
 			const needsUpdateFromAPI =
 				lastCartUpdate.timestamp >
 				cartData.current?.generated_timestamp;
