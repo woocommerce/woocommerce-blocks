@@ -85,6 +85,7 @@ class Checkout extends AbstractCartRoute {
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => [ $this, 'get_response' ],
 				'permission_callback' => '__return_true',
+				'validate_callback'   => [ $this, 'validate_callback' ],
 				'args'                => [
 					'context' => $this->get_context_param( [ 'default' => 'view' ] ),
 				],
@@ -93,6 +94,7 @@ class Checkout extends AbstractCartRoute {
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => [ $this, 'get_response' ],
 				'permission_callback' => '__return_true',
+				'validate_callback'   => [ $this, 'validate_callback' ],
 				'args'                => array_merge(
 					[
 						'payment_data' => [
@@ -118,6 +120,7 @@ class Checkout extends AbstractCartRoute {
 				'methods'             => WP_REST_Server::EDITABLE,
 				'callback'            => array( $this, 'get_response' ),
 				'permission_callback' => '__return_true',
+				'validate_callback'   => [ $this, 'validate_callback' ],
 				'args'                => $this->schema->get_endpoint_args_for_item_schema( WP_REST_Server::EDITABLE ),
 			],
 			'schema'      => [ $this->schema, 'get_public_item_schema' ],
