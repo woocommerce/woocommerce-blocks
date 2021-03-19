@@ -4,7 +4,6 @@
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { useEffect, useRef } from '@wordpress/element';
 import {
 	useStoreEvents,
 	useStoreAddToCart,
