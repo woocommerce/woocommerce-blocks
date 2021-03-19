@@ -44,7 +44,7 @@ export const DEFAULT_STATE: CheckoutStateContextState = {
 };
 
 export const DEFAULT_CHECKOUT_STATE_DATA: CheckoutStateContextType = {
-	checkoutStateDispatch: () => void {},
+	dispatch: () => void {},
 	isComplete: false,
 	isIdle: false,
 	isCalculating: false,

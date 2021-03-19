@@ -48,7 +48,9 @@ export type CheckoutStateContextState = {
 
 export type CheckoutStateContextType = {
 	// Checkout state provider dispatch function.
-	checkoutStateDispatch: React.Dispatch< ActionType >;
+	dispatch: React.Dispatch< ActionType >;
+	// Submits the checkout and begins processing.
+	onSubmit: () => void;
 	// True when checkout is complete and ready for redirect.
 	isComplete: boolean;
 	// True when the checkout state has changed and checkout has no activity.

@@ -17,11 +17,16 @@ import { formatStoreApiErrorMessage } from '@woocommerce/base-utils';
  * Internal dependencies
  */
 import { preparePaymentData } from './utils';
-import { useCheckoutContext } from '../../checkout-state';
 import { useShippingDataContext } from '../../shipping';
 import { useCustomerDataContext } from '../../customer';
 import { usePaymentMethodDataContext } from '../../payment-methods';
 import { useValidationContext } from '../../../shared';
+import {
+	useCheckoutContext,
+	setHasError,
+	setCustomerId,
+	setAfterProcessing,
+} from '../../checkout-state';
 
 /**
  * CheckoutProcessor component.
@@ -34,7 +39,7 @@ const CheckoutProcessor = () => {
 	const {
 		hasError: checkoutHasError,
 		onCheckoutBeforeProcessing,
-		dispatchActions,
+		dispatch: checkoutContextDispatch,
 		redirectUrl,
 		isProcessing: checkoutIsProcessing,
 		isBeforeProcessing: checkoutIsBeforeProcessing,
@@ -84,7 +89,7 @@ const CheckoutProcessor = () => {
 			( checkoutIsProcessing || checkoutIsBeforeProcessing ) &&
 			! expressPaymentMethodActive
 		) {
-			dispatchActions.setHasError( checkoutWillHaveError );
+			setHasError( checkoutContextDispatch, checkoutWillHaveError );
 		}
 	}, [
 		checkoutWillHaveError,
@@ -92,7 +97,7 @@ const CheckoutProcessor = () => {
 		checkoutIsProcessing,
 		checkoutIsBeforeProcessing,
 		expressPaymentMethodActive,
-		dispatchActions,
+		checkoutContextDispatch,
 	] );
 
 	const paidAndWithoutErrors =
@@ -191,8 +196,12 @@ const CheckoutProcessor = () => {
 				triggerFetch.setNonce( fetchResponse.headers );
 
 				// Update user using headers.
-				dispatchActions.setCustomerId(
-					fetchResponse.headers.get( 'X-WC-Store-API-User' )
+				setCustomerId(
+					checkoutContextDispatch,
+					parseInt(
+						fetchResponse.headers.get( 'X-WC-Store-API-User' ),
+						10
+					)
 				);
 
 				// Handle response.
@@ -205,9 +214,9 @@ const CheckoutProcessor = () => {
 								id: 'checkout',
 							}
 						);
-						dispatchActions.setHasError();
+						setHasError( checkoutContextDispatch );
 					}
-					dispatchActions.setAfterProcessing( response );
+					setAfterProcessing( checkoutContextDispatch, response );
 					setIsProcessingOrder( false );
 				} );
 			} )
@@ -217,8 +226,12 @@ const CheckoutProcessor = () => {
 
 				// If new customer ID returned, update the store.
 				if ( errorResponse.headers?.get( 'X-WC-Store-API-User' ) ) {
-					dispatchActions.setCustomerId(
-						errorResponse.headers.get( 'X-WC-Store-API-User' )
+					setCustomerId(
+						checkoutContextDispatch,
+						parseInt(
+							errorResponse.headers.get( 'X-WC-Store-API-User' ),
+							10
+						)
 					);
 				}
 
@@ -239,8 +252,8 @@ const CheckoutProcessor = () => {
 						}
 					);
 
-					dispatchActions.setHasError();
-					dispatchActions.setAfterProcessing( response );
+					setHasError( checkoutContextDispatch );
+					setAfterProcessing( checkoutContextDispatch, response );
 					setIsProcessingOrder( false );
 				} );
 			} );
@@ -253,7 +266,7 @@ const CheckoutProcessor = () => {
 		shouldSavePayment,
 		cartNeedsPayment,
 		receiveCart,
-		dispatchActions,
+		checkoutContextDispatch,
 		orderNotes,
 		shouldCreateAccount,
 	] );

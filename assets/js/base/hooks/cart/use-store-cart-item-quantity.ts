@@ -5,9 +5,13 @@ import { useSelect, useDispatch } from '@wordpress/data';
 import { useState, useEffect } from '@wordpress/element';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useDebounce } from 'use-debounce';
-import { useCheckoutContext } from '@woocommerce/base-context';
 import { triggerFragmentRefresh } from '@woocommerce/base-utils';
 import type { CartItem, StoreCartItemQuantity } from '@woocommerce/types';
+import {
+	useCheckoutContext,
+	incrementCalculating,
+	decrementCalculating,
+} from '@woocommerce/base-context/cart-checkout/checkout-state';
 
 /**
  * Internal dependencies
@@ -28,7 +32,7 @@ export const useStoreCartItemQuantity = (
 ): StoreCartItemQuantity => {
 	const { key: cartItemKey = '', quantity: cartItemQuantity = 1 } = cartItem;
 	const { cartErrors } = useStoreCart();
-	const { dispatchActions } = useCheckoutContext();
+	const { dispatch: checkoutContextDispatch } = useCheckoutContext();
 
 	// Store quantity in hook state. This is used to keep the UI updated while server request is updated.
 	const [ quantity, setQuantity ] = useState< number >( cartItemQuantity );
@@ -90,27 +94,27 @@ export const useStoreCartItemQuantity = (
 		}
 		if ( previousIsPending.quantity !== isPending.quantity ) {
 			if ( isPending.quantity ) {
-				dispatchActions.incrementCalculating();
+				incrementCalculating( checkoutContextDispatch );
 			} else {
-				dispatchActions.decrementCalculating();
+				decrementCalculating( checkoutContextDispatch );
 			}
 		}
 		if ( previousIsPending.delete !== isPending.delete ) {
 			if ( isPending.delete ) {
-				dispatchActions.incrementCalculating();
+				incrementCalculating( checkoutContextDispatch );
 			} else {
-				dispatchActions.decrementCalculating();
+				decrementCalculating( checkoutContextDispatch );
 			}
 		}
 		return () => {
 			if ( isPending.quantity ) {
-				dispatchActions.decrementCalculating();
+				incrementCalculating( checkoutContextDispatch );
 			}
 			if ( isPending.delete ) {
-				dispatchActions.decrementCalculating();
+				decrementCalculating( checkoutContextDispatch );
 			}
 		};
-	}, [ dispatchActions, isPending, previousIsPending ] );
+	}, [ checkoutContextDispatch, isPending, previousIsPending ] );
 
 	return {
 		isPendingDelete: isPending.delete,

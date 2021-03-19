@@ -49,6 +49,53 @@ export const useCheckoutContext = (): CheckoutStateContextType => {
 };
 
 /**
+ * Prepares the payment_result data from the server checkout endpoint response.
+ */
+const preparePaymentResult = (
+	response: CheckoutResponse
+): PaymentResultDataType => {
+	const paymentResult = {
+		message: 'message' in response ? response.message : '',
+		paymentStatus:
+			'payment_result' in response
+				? response.payment_result.payment_status
+				: '',
+		paymentDetails:
+			'payment_result' in response &&
+			Array.isArray( response.payment_result.payment_details )
+				? ( fromEntriesPolyfill(
+						response.payment_result.payment_details.map(
+							( { key, value } ) => [
+								key,
+								decodeEntities( value ),
+							]
+						)
+				  ) as Record< string, string > )
+				: {},
+		redirectUrl:
+			'payment_result' in response &&
+			'redirect_url' in response.payment_result
+				? response.payment_result.redirect_url
+				: '',
+	};
+
+	// If there was an error code but no message, set a default message.
+	if (
+		'data' in response &&
+		'status' in response.data &&
+		response.data.status > 299 &&
+		! paymentResult.message
+	) {
+		paymentResult.message = __(
+			'Something went wrong. Please contact us to get assistance.',
+			'woo-gutenberg-products-block'
+		);
+	}
+
+	return paymentResult;
+};
+
+/**
  * Dispatches an action that submits the checkout form.
  */
 export const submitCheckout = (
@@ -81,7 +128,7 @@ export const setRedirectUrl = (
  */
 export const setHasError = (
 	dispatch: React.Dispatch< ActionType >,
-	hasError: boolean
+	hasError = true
 ): void => {
 	dispatch( actions.setHasError( hasError ) );
 };
@@ -142,53 +189,6 @@ export const setShouldCreateAccount = (
 	value: boolean
 ): void => {
 	dispatch( actions.setShouldCreateAccount( value ) );
-};
-
-/**
- * Prepares the payment_result data from the server checkout endpoint response.
- */
-const preparePaymentResult = (
-	response: CheckoutResponse
-): PaymentResultDataType => {
-	const paymentResult = {
-		message: 'message' in response ? response.message : '',
-		paymentStatus:
-			'payment_result' in response
-				? response.payment_result.payment_status
-				: '',
-		paymentDetails:
-			'payment_result' in response &&
-			Array.isArray( response.payment_result.payment_details )
-				? ( fromEntriesPolyfill(
-						response.payment_result.payment_details.map(
-							( { key, value } ) => [
-								key,
-								decodeEntities( value ),
-							]
-						)
-				  ) as Record< string, string > )
-				: {},
-		redirectUrl:
-			'payment_result' in response &&
-			'redirect_url' in response.payment_result
-				? response.payment_result.redirect_url
-				: '',
-	};
-
-	// If there was an error code but no message, set a default message.
-	if (
-		'data' in response &&
-		'status' in response.data &&
-		response.data.status > 299 &&
-		! paymentResult.message
-	) {
-		paymentResult.message = __(
-			'Something went wrong. Please contact us to get assistance.',
-			'woo-gutenberg-products-block'
-		);
-	}
-
-	return paymentResult;
 };
 
 /**
@@ -411,7 +411,8 @@ export const CheckoutStateProvider = ( {
 	] );
 
 	const checkoutData: CheckoutStateContextType = {
-		checkoutStateDispatch: dispatch,
+		dispatch,
+		onSubmit: () => submitCheckout( dispatch ),
 		isComplete: checkoutState.status === STATUS.COMPLETE,
 		isIdle: checkoutState.status === STATUS.IDLE,
 		isCalculating,

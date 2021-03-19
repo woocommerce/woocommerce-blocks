@@ -3,15 +3,16 @@
 This document gives an overview of some of the major architectural components/APIs for the checkout block. If you haven't already, you may also want to read about the [Checkout Flow and Events](../../extensibility/checkout-flow-and-events.md).
 
 ## Table of Contents <!-- omit in toc -->
-- [Checkout Block API overview](#checkout-block-api-overview)
-    - [Contexts](#contexts)
-      - [Notices Context](#notices-context)
-      - [Billing Data Context](#billing-data-context)
-      - [Shipping Method Data context](#shipping-method-data-context)
-      - [Payment Method Data Context](#payment-method-data-context)
-      - [Checkout Context](#checkout-context)
-  - [Hooks](#hooks)
-    - [`usePaymentMethodInterface`](#usepaymentmethodinterface)
+
+-   [Checkout Block API overview](#checkout-block-api-overview)
+    -   [Contexts](#contexts)
+        -   [Notices Context](#notices-context)
+        -   [Billing Data Context](#billing-data-context)
+        -   [Shipping Method Data context](#shipping-method-data-context)
+        -   [Payment Method Data Context](#payment-method-data-context)
+        -   [Checkout Context](#checkout-context)
+    -   [Hooks](#hooks)
+        -   [`usePaymentMethodInterface`](#usepaymentmethodinterface)
 
 ### Contexts
 
@@ -91,7 +92,6 @@ The provider receives the following props:
 
 Via `useCheckoutContext`, the following are exposed:
 
--   `onSubmit`: This is a callback to be invoked either by submitting the checkout button, or by express payment methods to start checkout processing after they have finished their initialization process when their button has been clicked.
 -   `isComplete`: True when checkout has finished processing and the subscribed checkout processing callbacks have all been invoked along with a successful processing of the checkout by the server.
 -   `isIdle`: When the checkout status is `IDLE` this flag is true. Checkout will be this status after any change to checkout state after the block is loaded. It will also be this status when retrying a purchase is possible after processing happens with an error.
 -   `isBeforeProcessing`: When the checkout status is `BEFORE_PROCESSING` this flag is true. Checkout will be this status when the user submits checkout for processing.
@@ -104,7 +104,6 @@ Via `useCheckoutContext`, the following are exposed:
 -   `onCheckoutAfterProcessingWithSuccess`: Used to register observers that will be invoked after checkout has been processed by the server successfully.
 -   `onCheckoutAfterProcessingWithError`: Used to register observers that will be invoked after checkout has been processed by the server and there was an error.
 -   `onCheckoutBeforeProcessing`: Used to register observers that will be invoked after the checkout has been submitted but before the processing request is sent to the server.
--   `dispatchActions`: This is an object with various functions for dispatching status in the checkout. It is not exposed to extensions but is for internal use only.
 -   `orderId`: The order id for the order attached to the current checkout.
 -   `isCart`: This is true if the cart is being viewed. Note: usage of `CheckoutProvider` will automatically set this to false. There is also a `CartProvider` that wraps children in the `ShippingDataProvider` and exposes the same api as checkout context. The `CartProvider` automatically sets `isCart` to true. This allows components that implement `useCheckoutContext` to use the same api in either the cart or checkout context but still have specific behaviour to whether `isCart` is true or not.
 -   `hasOrder`: This is true when orderId is truthy.

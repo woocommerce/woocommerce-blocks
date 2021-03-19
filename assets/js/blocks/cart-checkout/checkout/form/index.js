@@ -2,7 +2,7 @@
  * External dependencies
  */
 import Form from '@woocommerce/base-components/form';
-import { useCheckoutContext } from '@woocommerce/base-context';
+import { useCheckoutSubmit } from '@woocommerce/base-hooks';
 import PropTypes from 'prop-types';
 
 /**
@@ -23,7 +23,7 @@ const CheckoutForm = ( {
 	showPhoneField,
 	allowCreateAccount,
 } ) => {
-	const { onSubmit } = useCheckoutContext();
+	const { onSubmit } = useCheckoutSubmit();
 
 	return (
 		<Form className="wc-block-checkout__form" onSubmit={ onSubmit }>
