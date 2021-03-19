@@ -6,9 +6,7 @@ import {
 	useContext,
 	useReducer,
 	useRef,
-	useMemo,
 	useEffect,
-	useCallback,
 } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import {
@@ -17,88 +15,214 @@ import {
 	useEmitResponse,
 	usePrevious,
 } from '@woocommerce/base-hooks';
+import { decodeEntities } from '@wordpress/html-entities';
+import { fromEntriesPolyfill } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
-import { actions } from './actions';
-import { reducer, prepareResponseData } from './reducer';
-import { DEFAULT_STATE, STATUS } from './constants';
+import { actions, ActionType } from './actions';
+import type {
+	PaymentResultDataType,
+	CheckoutStateContextType,
+	CheckoutResponse,
+} from './types';
+import { reducer } from './reducer';
+import {
+	DEFAULT_STATE,
+	STATUS,
+	DEFAULT_CHECKOUT_STATE_DATA,
+} from './constants';
 import {
 	EMIT_TYPES,
-	emitterObservers,
+	useEventEmitters,
 	emitEvent,
 	emitEventWithAbort,
 	reducer as emitReducer,
 } from './event-emit';
 import { useValidationContext } from '../../shared/validation';
 
-/**
- * @typedef {import('@woocommerce/type-defs/checkout').CheckoutDispatchActions} CheckoutDispatchActions
- * @typedef {import('@woocommerce/type-defs/contexts').CheckoutDataContext} CheckoutDataContext
- */
+const CheckoutContext = createContext( DEFAULT_CHECKOUT_STATE_DATA );
 
-const CheckoutContext = createContext( {
-	isComplete: false,
-	isIdle: false,
-	isCalculating: false,
-	isProcessing: false,
-	isBeforeProcessing: false,
-	isAfterProcessing: false,
-	hasError: false,
-	redirectUrl: '',
-	orderId: 0,
-	orderNotes: '',
-	customerId: 0,
-	onSubmit: () => void null,
-	onCheckoutAfterProcessingWithSuccess: ( callback ) => void callback,
-	onCheckoutAfterProcessingWithError: ( callback ) => void callback,
-	onCheckoutBeforeProcessing: ( callback ) => void callback,
-	dispatchActions: {
-		resetCheckout: () => void null,
-		setRedirectUrl: ( url ) => void url,
-		setHasError: ( hasError ) => void hasError,
-		setAfterProcessing: ( response ) => void response,
-		incrementCalculating: () => void null,
-		decrementCalculating: () => void null,
-		setCustomerId: ( id ) => void id,
-		setOrderId: ( id ) => void id,
-		setOrderNotes: ( orderNotes ) => void orderNotes,
-	},
-	hasOrder: false,
-	isCart: false,
-	shouldCreateAccount: false,
-	setShouldCreateAccount: ( value ) => void value,
-} );
-
-/**
- * @return {CheckoutDataContext} Returns the checkout data context value
- */
-export const useCheckoutContext = () => {
+export const useCheckoutContext = (): CheckoutStateContextType => {
 	return useContext( CheckoutContext );
 };
 
 /**
+ * Dispatches an action that submits the checkout form.
+ */
+export const submitCheckout = (
+	dispatch: React.Dispatch< ActionType >
+): void => {
+	dispatch( actions.setBeforeProcessing() );
+};
+
+/**
+ * Dispatches an action that resets the checkout to a pristine state.
+ */
+export const resetCheckout = (
+	dispatch: React.Dispatch< ActionType >
+): void => {
+	dispatch( actions.setPristine() );
+};
+
+/**
+ * Dispatches an action that sets the redirectUrl.
+ */
+export const setRedirectUrl = (
+	dispatch: React.Dispatch< ActionType >,
+	url: string
+): void => {
+	dispatch( actions.setRedirectUrl( url ) );
+};
+
+/**
+ * Dispatches an action that sets the checkout status to having an error.
+ */
+export const setHasError = (
+	dispatch: React.Dispatch< ActionType >,
+	hasError: boolean
+): void => {
+	dispatch( actions.setHasError( hasError ) );
+};
+
+/**
+ * Dispatches an action that increments  the calculating state for checkout by one.
+ */
+export const incrementCalculating = (
+	dispatch: React.Dispatch< ActionType >
+): void => {
+	dispatch( actions.incrementCalculating() );
+};
+
+/**
+ * Dispatches an action that decrements the calculating state for checkout by one.
+ */
+export const decrementCalculating = (
+	dispatch: React.Dispatch< ActionType >
+): void => {
+	dispatch( actions.decrementCalculating() );
+};
+
+/**
+ * Dispatches an action that stores the customer ID.
+ */
+export const setCustomerId = (
+	dispatch: React.Dispatch< ActionType >,
+	id: number
+): void => {
+	dispatch( actions.setCustomerId( id ) );
+};
+
+/**
+ * Dispatches an action that stores the draft order ID and key.
+ */
+export const setOrderId = (
+	dispatch: React.Dispatch< ActionType >,
+	id: number
+): void => {
+	dispatch( actions.setOrderId( id ) );
+};
+
+/**
+ * Dispatches an action that sets the order notes.
+ */
+export const setOrderNotes = (
+	dispatch: React.Dispatch< ActionType >,
+	orderNotes: string
+): void => {
+	dispatch( actions.setOrderNotes( orderNotes ) );
+};
+
+/**
+ * Function to update the shouldCreateAccount property.
+ */
+export const setShouldCreateAccount = (
+	dispatch: React.Dispatch< ActionType >,
+	value: boolean
+): void => {
+	dispatch( actions.setShouldCreateAccount( value ) );
+};
+
+/**
+ * Prepares the payment_result data from the server checkout endpoint response.
+ */
+const preparePaymentResult = (
+	response: CheckoutResponse
+): PaymentResultDataType => {
+	const paymentResult = {
+		message: 'message' in response ? response.message : '',
+		paymentStatus:
+			'payment_result' in response
+				? response.payment_result.payment_status
+				: '',
+		paymentDetails:
+			'payment_result' in response &&
+			Array.isArray( response.payment_result.payment_details )
+				? ( fromEntriesPolyfill(
+						response.payment_result.payment_details.map(
+							( { key, value } ) => [
+								key,
+								decodeEntities( value ),
+							]
+						)
+				  ) as Record< string, string > )
+				: {},
+		redirectUrl:
+			'payment_result' in response &&
+			'redirect_url' in response.payment_result
+				? response.payment_result.redirect_url
+				: '',
+	};
+
+	// If there was an error code but no message, set a default message.
+	if (
+		'data' in response &&
+		'status' in response.data &&
+		response.data.status > 299 &&
+		! paymentResult.message
+	) {
+		paymentResult.message = __(
+			'Something went wrong. Please contact us to get assistance.',
+			'woo-gutenberg-products-block'
+		);
+	}
+
+	return paymentResult;
+};
+
+/**
+ * Dispatches an action that sets the checkout status to after processing and also sets the response data accordingly.
+ */
+export const setAfterProcessing = (
+	dispatch: React.Dispatch< ActionType >,
+	response: CheckoutResponse
+): void => {
+	const paymentResult = preparePaymentResult( response );
+
+	if ( paymentResult.redirectUrl ) {
+		setRedirectUrl( dispatch, paymentResult.redirectUrl );
+	}
+	dispatch( actions.setProcessingResponse( paymentResult ) );
+	dispatch( actions.setAfterProcessing() );
+};
+
+/**
  * Checkout state provider
- * This provides provides an api interface exposing checkout state for use with
- * cart or checkout blocks.
- *
- * @param {Object}  props                     Incoming props for the provider.
- * @param {Object}  props.children            The children being wrapped.
- * @param {string}  props.redirectUrl         Initialize what the checkout will redirect to after successful submit.
- * @param {boolean} props.isCart              If context provider is being used in cart context.
+ * This provides provides an api interface exposing checkout state for use with cart or checkout blocks.
  */
 export const CheckoutStateProvider = ( {
 	children,
 	redirectUrl,
 	isCart = false,
-} ) => {
-	// note, this is done intentionally so that the default state now has
-	// the redirectUrl for when checkout is reset to PRISTINE state.
+}: {
+	children: React.ReactChildren;
+	redirectUrl: string;
+	isCart: boolean;
+} ): JSX.Element => {
+	// note, this is done intentionally so that the default state now has the redirectUrl for when checkout is reset to PRISTINE state.
 	DEFAULT_STATE.redirectUrl = redirectUrl;
 	const [ checkoutState, dispatch ] = useReducer( reducer, DEFAULT_STATE );
-	const [ observers, observerDispatch ] = useReducer( emitReducer, {} );
-	const currentObservers = useRef( observers );
 	const { setValidationErrors } = useValidationContext();
 	const { addErrorNotice, removeNotices } = useStoreNotices();
 	const isCalculating = checkoutState.calculatingCount > 0;
@@ -114,81 +238,18 @@ export const CheckoutStateProvider = ( {
 		expressPaymentNotices,
 	} = useCheckoutNotices();
 
-	// set observers on ref so it's always current.
+	const [ observers, observerDispatch ] = useReducer( emitReducer, {} );
+	const currentObservers = useRef( observers );
+	const {
+		onCheckoutAfterProcessingWithSuccess,
+		onCheckoutAfterProcessingWithError,
+		onCheckoutBeforeProcessing,
+	} = useEventEmitters( observerDispatch );
+
 	useEffect( () => {
+		// ensure observers are always current.
 		currentObservers.current = observers;
 	}, [ observers ] );
-	const onCheckoutAfterProcessingWithSuccess = useMemo(
-		() =>
-			emitterObservers( observerDispatch )
-				.onCheckoutAfterProcessingWithSuccess,
-		[ observerDispatch ]
-	);
-	const onCheckoutAfterProcessingWithError = useMemo(
-		() =>
-			emitterObservers( observerDispatch )
-				.onCheckoutAfterProcessingWithError,
-		[ observerDispatch ]
-	);
-	const onCheckoutBeforeProcessing = useMemo(
-		() => emitterObservers( observerDispatch ).onCheckoutBeforeProcessing,
-		[ observerDispatch ]
-	);
-
-	/**
-	 * @type {CheckoutDispatchActions}
-	 */
-	const dispatchActions = useMemo(
-		() => ( {
-			resetCheckout: () => void dispatch( actions.setPristine() ),
-			setRedirectUrl: ( url ) =>
-				void dispatch( actions.setRedirectUrl( url ) ),
-			setHasError: ( hasError ) =>
-				void dispatch( actions.setHasError( hasError ) ),
-			incrementCalculating: () =>
-				void dispatch( actions.incrementCalculating() ),
-			decrementCalculating: () =>
-				void dispatch( actions.decrementCalculating() ),
-			setCustomerId: ( id ) =>
-				void dispatch( actions.setCustomerId( id ) ),
-			setOrderId: ( orderId ) =>
-				void dispatch( actions.setOrderId( orderId ) ),
-			setOrderNotes: ( orderNotes ) =>
-				void dispatch( actions.setOrderNotes( orderNotes ) ),
-			setAfterProcessing: ( response ) => {
-				// capture general error message if this is an error response.
-				if (
-					! response.payment_result &&
-					response.message &&
-					response?.data?.status !== 200
-				) {
-					response.payment_result = {
-						...response.payment_result,
-						message: response.message,
-					};
-				}
-				if ( response.payment_result ) {
-					if (
-						// eslint-disable-next-line camelcase
-						response.payment_result?.redirect_url
-					) {
-						dispatch(
-							actions.setRedirectUrl(
-								response.payment_result.redirect_url
-							)
-						);
-					}
-					dispatch(
-						actions.setProcessingResponse(
-							prepareResponseData( response.payment_result )
-						)
-					);
-				}
-				void dispatch( actions.setAfterProcessing() );
-			},
-		} ),
-		[]
-	);
 
 	// emit events.
 	useEffect( () => {
@@ -238,7 +299,7 @@ export const CheckoutStateProvider = ( {
 				redirectUrl: checkoutState.redirectUrl,
 				orderId: checkoutState.orderId,
 				customerId: checkoutState.customerId,
-				customerNote: checkoutState.customerNote,
+				orderNotes: checkoutState.orderNotes,
 				processingResponse: checkoutState.processingResponse,
 			};
 			if ( checkoutState.hasError ) {
@@ -248,17 +309,16 @@ export const CheckoutStateProvider = ( {
 					currentObservers.current,
 					EMIT_TYPES.CHECKOUT_AFTER_PROCESSING_WITH_ERROR,
 					data
-				).then( ( response ) => {
+				).then( ( response: Record< string, unknown > ) => {
 					if (
 						isErrorResponse( response ) ||
 						isFailResponse( response )
 					) {
 						if ( response.message ) {
-							const errorOptions = {
-								id: response?.messageContext,
-								context: response?.messageContext,
-							};
-							addErrorNotice( response.message, errorOptions );
+							addErrorNotice( response.message, {
+								id: response?.messageContext || '',
+								context: response?.messageContext || '',
+							} );
 						}
 						// irrecoverable error so set complete
 						if ( ! shouldRetry( response ) ) {
@@ -269,13 +329,16 @@ export const CheckoutStateProvider = ( {
 					} else {
 						const hasErrorNotices =
 							checkoutNotices.some(
-								( notice ) => notice.status === 'error'
+								( notice: { status: string } ) =>
+									notice.status === 'error'
 							) ||
 							expressPaymentNotices.some(
-								( notice ) => notice.status === 'error'
+								( notice: { status: string } ) =>
+									notice.status === 'error'
 							) ||
 							paymentNotices.some(
-								( notice ) => notice.status === 'error'
+								( notice: { status: string } ) =>
+									notice.status === 'error'
 							);
 						if ( ! hasErrorNotices ) {
 							// no error handling in place by anything so let's fall
@@ -299,7 +362,7 @@ export const CheckoutStateProvider = ( {
 					currentObservers.current,
 					EMIT_TYPES.CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS,
 					data
-				).then( ( response ) => {
+				).then( ( response: Record< string, unknown > ) => {
 					if ( isSuccessResponse( response ) ) {
 						dispatch( actions.setComplete( response ) );
 					} else if (
@@ -321,8 +384,7 @@ export const CheckoutStateProvider = ( {
 							dispatch( actions.setHasError( true ) );
 						}
 					} else {
-						// nothing hooked in had any response type so let's just
-						// consider successful
+						// nothing hooked in had any response type so let's just consider successful
 						dispatch( actions.setComplete() );
 					}
 				} );
@@ -334,11 +396,10 @@ export const CheckoutStateProvider = ( {
 		checkoutState.redirectUrl,
 		checkoutState.orderId,
 		checkoutState.customerId,
-		checkoutState.customerNote,
+		checkoutState.orderNotes,
 		checkoutState.processingResponse,
 		previousStatus,
 		previousHasError,
-		dispatchActions,
 		addErrorNotice,
 		isErrorResponse,
 		isFailResponse,
@@ -349,15 +410,8 @@ export const CheckoutStateProvider = ( {
 		paymentNotices,
 	] );
 
-	const onSubmit = useCallback( () => {
-		dispatch( actions.setBeforeProcessing() );
-	}, [] );
-
-	/**
-	 * @type {CheckoutDataContext}
-	 */
-	const checkoutData = {
-		onSubmit,
+	const checkoutData: CheckoutStateContextType = {
+		checkoutStateDispatch: dispatch,
 		isComplete: checkoutState.status === STATUS.COMPLETE,
 		isIdle: checkoutState.status === STATUS.IDLE,
 		isCalculating,
@@ -369,16 +423,14 @@ export const CheckoutStateProvider = ( {
 		onCheckoutAfterProcessingWithSuccess,
 		onCheckoutAfterProcessingWithError,
 		onCheckoutBeforeProcessing,
-		dispatchActions,
 		isCart,
 		orderId: checkoutState.orderId,
 		hasOrder: !! checkoutState.orderId,
 		customerId: checkoutState.customerId,
 		orderNotes: checkoutState.orderNotes,
 		shouldCreateAccount: checkoutState.shouldCreateAccount,
-		setShouldCreateAccount: ( value ) =>
-			dispatch( actions.setShouldCreateAccount( value ) ),
 	};
+
 	return (
 		<CheckoutContext.Provider value={ checkoutData }>
 			{ children }
