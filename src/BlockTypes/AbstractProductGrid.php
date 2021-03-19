@@ -68,10 +68,27 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 			return '';
 		}
 
-		$classes = $this->get_container_classes();
-		$output  = implode( '', array_map( array( $this, 'render_product' ), $products ) );
-
-		return sprintf( '<div class="%s"><ul class="wc-block-grid__products">%s</ul></div>', esc_attr( $classes ), $output );
+		/**
+		 * Hook: experimental__woocommerce_blocks_product_grid_render_products
+		 *
+		 * Filters the output of the rendered products.
+		 *
+		 * @param string $content    Rendered content.
+		 * @param string $block_name Block name.
+		 * @param array  $products   Array of product objects.
+		 * @param array  $attributes Block attributes.
+		 */
+		return apply_filters(
+			'experimental__woocommerce_blocks_product_grid_render_products',
+			sprintf(
+				'<div class="%s"><ul class="wc-block-grid__products">%s</ul></div>',
+				esc_attr( $this->get_container_classes() ),
+				implode( '', array_map( array( $this, 'render_product' ), $products ) )
+			),
+			$this->block_name,
+			$products,
+			$attributes
+		);
 	}
 
 	/**

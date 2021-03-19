@@ -33,6 +33,47 @@ class GoogleAnalytics {
 	 * Inline tracking events for blocks which are server side rendered, or saved to the post.
 	 */
 	public function inline_block_tracking() {
+		add_filter(
+			'experimental__woocommerce_blocks_product_grid_render_products',
+			function( $content, $block_name, $products, $attributes ) {
+				$product_impression_objects = array_map(
+					function( $product_id ) {
+						$product = wc_get_product( $product_id );
+						$cats    = get_the_terms( $product->get_id(), 'product_category' );
+						return (object) [
+							'id'        => $product->get_sku() ? $product->get_sku() : '#' . $product->get_id(),
+							'name'      => $product->get_title(),
+							'list_name' => $block_name,
+							'category'  => $cats && ! is_wp_error( $cats ) ? current( $cats )->term_name : '',
+							'price'     => $product->get_price(),
+						];
+					},
+					$products
+				);
+				$this->add_inline_script(
+					'wc-blocks-google-analytics',
+					"
+					gtag(
+						'event',
+						'view_item_list',
+						{
+							event_category: 'engagement',
+                            event_label: '" . esc_js(
+						__(
+							'Viewing products',
+							'woo-gutenberg-products-block'
+						)
+					) . "',
+							items: JSON.parse( decodeURIComponent( '" . rawurlencode( wp_json_encode( $product_impression_objects ) ) . "' ) ),
+						}
+					);
+                    "
+				);
+				return $content;
+			},
+			10,
+			4
+		);
 		add_action(
 			'experimental__product-search_render_callback',
 			function() {
