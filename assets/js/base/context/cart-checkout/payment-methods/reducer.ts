@@ -36,6 +36,11 @@ const reducer = (
 				? {
 						...state,
 						currentStatus: STATUS.STARTED,
+						paymentMethodData:
+							paymentMethodData || state.paymentMethodData,
+						hasSavedToken: hasSavedPaymentToken(
+							paymentMethodData || state.paymentMethodData
+						),
 				  }
 				: state;
 		case STATUS.ERROR:
@@ -64,7 +69,7 @@ const reducer = (
 						paymentMethodData:
 							paymentMethodData || state.paymentMethodData,
 						hasSavedToken: hasSavedPaymentToken(
-							paymentMethodData
+							paymentMethodData || state.paymentMethodData
 						),
 				  }
 				: state;
