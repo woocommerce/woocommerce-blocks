@@ -248,7 +248,7 @@ export const PaymentMethodDataProvider = ( {
 				);
 			},
 			success: (
-				paymentMethodData = {},
+				paymentMethodData,
 				billingData = undefined,
 				shippingData = undefined
 			) => {
