@@ -24,7 +24,7 @@ const reducer = (
 	state = DEFAULT_PAYMENT_DATA_CONTEXT_STATE,
 	{
 		type,
-		paymentMethodData = undefined,
+		paymentMethodData,
 		shouldSavePaymentMethod = false,
 		errorMessage = '',
 		paymentMethods = {},
