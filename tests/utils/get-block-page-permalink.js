@@ -4,7 +4,6 @@
 import {
 	ensureSidebarOpened,
 	findSidebarPanelToggleButtonWithTitle,
-	findSidebarPanelWithTitle,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -24,17 +23,23 @@ export async function getBlockPagePermalink( blockPage ) {
 	const panelButton = await findSidebarPanelToggleButtonWithTitle(
 		'Permalink'
 	);
-	//check if the panel is closed
-	const panelClosed =
-		( await page.$( '.edit-post-post-link__link' ) ) === null;
-	if ( panelClosed ) {
-		await panelButton.click();
-	}
+
+	const ensureLinkClickable = async ( page ) => {
+		let linkVisible =
+			( await page.$( '.edit-post-post-link__link' ) ) !== null;
+		do {
+			if ( ! linkVisible ) {
+				await panelButton.click( 'button' );
+			}
+			linkVisible =
+				( await page.$( '.edit-post-post-link__link' ) ) !== null;
+		} while ( ! linkVisible );
+	};
+
+	await ensureLinkClickable( page );
+
 	await page.waitForSelector( '.edit-post-post-link__link' );
-	const panelTitleBar = await findSidebarPanelWithTitle( 'Permalink' );
-	// Get the actual panel that contains the link
-	const panel = ( await panelTitleBar.$x( '..' ) )[ 0 ];
-	return await panel.$eval( '.edit-post-post-link__link', ( el ) =>
+	return await page.$eval( '.edit-post-post-link__link', ( el ) =>
 		el.getAttribute( 'href' )
 	);
 }
