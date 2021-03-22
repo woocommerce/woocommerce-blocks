@@ -43,6 +43,7 @@ const useStoreCartApiHydration = () => {
 					: JSON.parse( lastCartUpdateRaw );
 
 			if ( lastCartUpdate?.timestamp === undefined ) {
+				cartDataIsStale( false );
 				return;
 			}
 
@@ -52,7 +53,9 @@ const useStoreCartApiHydration = () => {
 
 			if ( needsUpdateFromAPI ) {
 				cartDataIsStale();
+				return;
 			}
+			cartDataIsStale( false );
 		}
 		const {
 			receiveCart,
