@@ -3,6 +3,7 @@
  */
 import TestRenderer, { act } from 'react-test-renderer';
 import { createRegistry, RegistryProvider } from '@wordpress/data';
+import { setRedirectUrl as checkoutStateSetRedirectUrl } from '@woocommerce/base-context/cart-checkout/checkout-state';
 
 /**
  * Internal dependencies
@@ -12,12 +13,13 @@ import { useCheckoutRedirectUrl } from '../use-checkout-redirect-url';
 const mockRedirectUrl = 'https://www.example.com/mock-check-out';
 const mockUseCheckoutContext = {
 	redirectUrl: mockRedirectUrl,
-	dispatchActions: {
-		setRedirectUrl: jest.fn(),
-	},
+	dispatch: jest.fn(),
 };
-jest.mock( '@woocommerce/base-context', () => ( {
+
+jest.mock( '@woocommerce/base-context/cart-checkout/checkout-state', () => ( {
+	__esModule: true,
 	useCheckoutContext: () => mockUseCheckoutContext,
+	setRedirectUrl: jest.fn(),
 } ) );
 
 describe( 'useCheckoutRedirectUrl', () => {
@@ -67,8 +69,10 @@ describe( 'useCheckoutRedirectUrl', () => {
 
 		setRedirectUrl( checkoutUrl );
 
-		expect(
-			mockUseCheckoutContext.dispatchActions.setRedirectUrl
-		).toHaveBeenCalledWith( checkoutUrl );
+		expect( checkoutStateSetRedirectUrl ).toHaveBeenCalled();
+		expect( checkoutStateSetRedirectUrl ).toHaveBeenCalledWith(
+			mockUseCheckoutContext.dispatch,
+			checkoutUrl
+		);
 	} );
 } );

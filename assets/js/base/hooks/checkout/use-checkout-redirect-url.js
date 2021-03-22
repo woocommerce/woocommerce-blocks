@@ -11,9 +11,11 @@ import {
  */
 export const useCheckoutRedirectUrl = () => {
 	const { redirectUrl, dispatch } = useCheckoutContext();
+
 	const setCheckoutRedirectUrl = ( url ) => {
 		setRedirectUrl( dispatch, url );
 	};
+
 	return {
 		redirectUrl,
 		setRedirectUrl: setCheckoutRedirectUrl,
