@@ -16,7 +16,7 @@ import {
 	usePrevious,
 } from '@woocommerce/base-hooks';
 import { decodeEntities } from '@wordpress/html-entities';
-import { fromEntriesPolyfill } from '@woocommerce/base-utils';
+import { fromEntriesPolyfill, isObject } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
@@ -303,16 +303,16 @@ export const CheckoutStateProvider = ( {
 				processingResponse: checkoutState.processingResponse,
 			};
 			if ( checkoutState.hasError ) {
-				// allow payment methods or other things to customize the error
-				// with a fallback if nothing customizes it.
+				// allow payment methods or other things to customize the error with a fallback if nothing customizes it.
 				emitEventWithAbort(
 					currentObservers.current,
 					EMIT_TYPES.CHECKOUT_AFTER_PROCESSING_WITH_ERROR,
 					data
-				).then( ( response: Record< string, unknown > ) => {
+				).then( ( response: unknown ) => {
 					if (
-						isErrorResponse( response ) ||
-						isFailResponse( response )
+						isObject( response ) &&
+						( isErrorResponse( response ) ||
+							isFailResponse( response ) )
 					) {
 						if ( response.message ) {
 							addErrorNotice( response.message, {
@@ -322,7 +322,11 @@ export const CheckoutStateProvider = ( {
 						}
 						// irrecoverable error so set complete
 						if ( ! shouldRetry( response ) ) {
-							dispatch( actions.setComplete( response ) );
+							dispatch(
+								actions.setComplete(
+									response as Record< string, unknown >
+								)
+							);
 						} else {
 							dispatch( actions.setIdle() );
 						}
@@ -362,12 +366,17 @@ export const CheckoutStateProvider = ( {
 					currentObservers.current,
 					EMIT_TYPES.CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS,
 					data
-				).then( ( response: Record< string, unknown > ) => {
+				).then( ( response: unknown ) => {
 					if ( isSuccessResponse( response ) ) {
-						dispatch( actions.setComplete( response ) );
+						dispatch(
+							actions.setComplete(
+								response as Record< string, unknown >
+							)
+						);
 					} else if (
-						isErrorResponse( response ) ||
-						isFailResponse( response )
+						isObject( response ) &&
+						( isErrorResponse( response ) ||
+							isFailResponse( response ) )
 					) {
 						if ( response.message ) {
 							const errorOptions = response.messageContext

@@ -39,7 +39,9 @@ export const emitEvent = async (
 			console.error( e );
 		}
 	}
-	return observerResponses.length ? observerResponses : true;
+	return Promise.resolve(
+		observerResponses.length ? observerResponses : true
+	);
 };
 
 /**
@@ -75,8 +77,8 @@ export const emitEventWithAbort = async (
 			// We don't handle thrown errors but just console.log for troubleshooting.
 			// eslint-disable-next-line no-console
 			console.error( e );
-			return { type: 'error' };
+			return Promise.resolve( { type: 'error' } );
 		}
 	}
-	return true;
+	return Promise.resolve( true );
 };
