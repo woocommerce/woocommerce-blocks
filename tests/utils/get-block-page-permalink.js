@@ -24,7 +24,13 @@ export async function getBlockPagePermalink( blockPage ) {
 	const panelButton = await findSidebarPanelToggleButtonWithTitle(
 		'Permalink'
 	);
-	await panelButton.click();
+	//check if the panel is closed
+	const panelClosed =
+		( await page.$( '.edit-post-post-link__link' ) ) === null;
+	if ( panelClosed ) {
+		await panelButton.click();
+	}
+	await page.waitForSelector( '.edit-post-post-link__link' );
 	const panelTitleBar = await findSidebarPanelWithTitle( 'Permalink' );
 	// Get the actual panel that contains the link
 	const panel = ( await panelTitleBar.$x( '..' ) )[ 0 ];

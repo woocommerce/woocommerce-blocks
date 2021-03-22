@@ -5,6 +5,7 @@
  * @return {Promise<string>} The permalink of the page.
  */
 export async function getNormalPagePermalink() {
+	await page.waitForSelector( '#sample-permalink a' );
 	return await page.$eval( '#sample-permalink a', ( el ) =>
 		el.getAttribute( 'href' )
 	);
