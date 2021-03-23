@@ -27,6 +27,7 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 )
 
 describe( `${ block.name } Block`, () => {
 	beforeAll( async () => {
+		await page.evaluate(() => localStorage.clear());
 		await switchUserToAdmin();
 	} );
 
@@ -37,13 +38,10 @@ describe( `${ block.name } Block`, () => {
 		page.on( 'console', ( log ) => console.log( log._text ) );
 		await visitPostOfType( 'Woo Single #1', 'product' );
 		const productPermalink = await getNormalPagePermalink();
-		console.log( 'about to visit', productPermalink );
 		await page.goto( productPermalink );
 		await shopper.addToCart();
 		await page.goto( cartBlockPermalink );
-		console.log( 'navigated to', cartBlockPermalink );
 		await page.waitForFunction( () => {
-			console.log( 'evaluating on page' );
 			const wcCartStore = wp.data.select( 'wc/store/cart' );
 			return (
 				! wcCartStore.isResolving( 'getCartData' ) &&
@@ -64,11 +62,8 @@ describe( `${ block.name } Block`, () => {
 		expect( selectedValue ).toBeGreaterThan( 1 );
 
 		await page.click( '.wc-block-cart__submit-button' );
-		console.log( 'waiting for block checkout' );
 		await page.waitForSelector( '.wc-block-checkout' );
 		await page.goBack( { waitUntil: 'networkidle0' } );
-
-		console.log( 'went back, waiting for store to evaluate' );
 
 		// We need this to check if the block is done loading.
 		await page.waitForFunction( () => {
@@ -81,6 +76,7 @@ describe( `${ block.name } Block`, () => {
 
 		// Then we check to ensure the stale cart action has been emitted, so it'll fetch the cart from the API.
 		await page.waitForFunction( () => {
+			console.log(window.localStorage.getItem('lastCartUpdate'))
 			const wcCartStore = wp.data.select( 'wc/store/cart' );
 			return wcCartStore.isCartDataStale() === true;
 		} );
@@ -92,5 +88,5 @@ describe( `${ block.name } Block`, () => {
 			)
 		);
 		expect( value ).toBe( selectedValue );
-	}, 60000 );
+	} );
 } );
