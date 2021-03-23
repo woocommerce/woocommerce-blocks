@@ -38,6 +38,7 @@ export async function getBlockPagePermalink( blockPage ) {
 	const link = await page.$eval( '.edit-post-post-link__link', ( el ) => {
 		return el.getAttribute( 'href' );
 	} );
+	console.log( 'got link', link );
 	return link;
 }
 

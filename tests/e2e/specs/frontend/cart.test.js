@@ -34,12 +34,16 @@ describe( `${ block.name } Block`, () => {
 		const cartBlockPermalink = await getBlockPagePermalink(
 			`${ block.name } Block`
 		);
+		page.on( 'console', ( log ) => console[ log._type ]( log._text ) );
 		await visitPostOfType( 'Woo Single #1', 'product' );
 		const productPermalink = await getNormalPagePermalink();
+		console.log('about to visit', productPermalink)
 		await page.goto( productPermalink );
 		await shopper.addToCart();
 		await page.goto( cartBlockPermalink );
+		console.log('navigated to', cartBlockPermalink)
 		await page.waitForFunction( () => {
+			console.log('evaluating on page');
 			const wcCartStore = wp.data.select( 'wc/store/cart' );
 			return (
 				! wcCartStore.isResolving( 'getCartData' ) &&
