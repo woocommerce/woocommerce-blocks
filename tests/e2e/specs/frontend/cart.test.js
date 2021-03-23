@@ -27,7 +27,7 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 )
 
 describe( `${ block.name } Block`, () => {
 	beforeAll( async () => {
-		await page.evaluate(() => localStorage.clear());
+		await page.evaluate( () => localStorage.clear() );
 		await switchUserToAdmin();
 	} );
 
@@ -35,7 +35,6 @@ describe( `${ block.name } Block`, () => {
 		const cartBlockPermalink = await getBlockPagePermalink(
 			`${ block.name } Block`
 		);
-		page.on( 'console', ( log ) => console.log( log._text ) );
 		await visitPostOfType( 'Woo Single #1', 'product' );
 		const productPermalink = await getNormalPagePermalink();
 		await page.goto( productPermalink );
@@ -51,6 +50,7 @@ describe( `${ block.name } Block`, () => {
 		await page.click(
 			'.wc-block-cart__main .wc-block-components-quantity-selector__button--plus'
 		);
+
 		const selectedValue = parseInt(
 			await page.$eval(
 				'.wc-block-cart__main .wc-block-components-quantity-selector__input',
@@ -65,6 +65,16 @@ describe( `${ block.name } Block`, () => {
 		await page.waitForSelector( '.wc-block-checkout' );
 		await page.goBack( { waitUntil: 'networkidle0' } );
 
+		await page.waitForFunction( () => {
+			const timeStamp = window.localStorage.getItem( 'lastCartUpdate' );
+			return typeof timeStamp === 'string' && timeStamp;
+		} );
+
+		const timestamp = await page.evaluate( () => {
+			return window.localStorage.getItem( 'lastCartUpdate' );
+		} );
+		expect( timestamp ).not.toBeNull();
+
 		// We need this to check if the block is done loading.
 		await page.waitForFunction( () => {
 			const wcCartStore = wp.data.select( 'wc/store/cart' );
@@ -76,7 +86,7 @@ describe( `${ block.name } Block`, () => {
 
 		// Then we check to ensure the stale cart action has been emitted, so it'll fetch the cart from the API.
 		await page.waitForFunction( () => {
-			console.log(window.localStorage.getItem('lastCartUpdate'))
+			console.log( window.localStorage.getItem( 'lastCartUpdate' ) );
 			const wcCartStore = wp.data.select( 'wc/store/cart' );
 			return wcCartStore.isCartDataStale() === true;
 		} );
