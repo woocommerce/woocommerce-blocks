@@ -30,18 +30,18 @@ describe( `${ block.name } Block`, () => {
 	let productPermalink;
 
 	beforeAll( async () => {
+		await page.evaluate( () => window.localStorage.clear() );
 		await switchUserToAdmin();
 		cartBlockPermalink = await getBlockPagePermalink(
 			`${ block.name } Block`
 		);
 		await visitPostOfType( 'Woo Single #1', 'product' );
 		productPermalink = await getNormalPagePermalink();
+		await page.goto( productPermalink );
+		await shopper.addToCart();
 	} );
 
 	it( 'Adds a timestamp to localstorage when the cart is updated', async () => {
-		await page.evaluate( () => window.localStorage.clear() );
-		await page.goto( productPermalink );
-		await shopper.addToCart();
 		await page.goto( cartBlockPermalink );
 		await page.waitForFunction( () => {
 			const wcCartStore = wp.data.select( 'wc/store/cart' );
@@ -61,12 +61,9 @@ describe( `${ block.name } Block`, () => {
 			return window.localStorage.getItem( 'lastCartUpdate' );
 		} );
 		expect( timestamp ).not.toBeNull();
-
-	});
+	} );
 
 	it( 'Shows the freshest cart data when using browser navigation buttons', async () => {
-		await page.goto( productPermalink );
-		await shopper.addToCart();
 		await page.goto( cartBlockPermalink );
 		await page.waitForFunction( () => {
 			const wcCartStore = wp.data.select( 'wc/store/cart' );
@@ -78,6 +75,8 @@ describe( `${ block.name } Block`, () => {
 		await page.click(
 			'.wc-block-cart__main .wc-block-components-quantity-selector__button--plus'
 		);
+
+		await page.waitForResponse( ( response ) => response.url().includes( '/wc/store/cart/update-item' ) && response.status() === 200 )
 
 		const selectedValue = parseInt(
 			await page.$eval(
