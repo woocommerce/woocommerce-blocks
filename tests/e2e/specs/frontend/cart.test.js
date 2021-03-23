@@ -76,7 +76,11 @@ describe( `${ block.name } Block`, () => {
 			'.wc-block-cart__main .wc-block-components-quantity-selector__button--plus'
 		);
 
-		await page.waitForResponse( ( response ) => response.url().includes( '/wc/store/cart/update-item' ) && response.status() === 200 )
+		await page.waitForResponse(
+			( response ) =>
+				response.url().includes( '/wc/store/cart/update-item' ) &&
+				response.status() === 200
+		);
 
 		const selectedValue = parseInt(
 			await page.$eval(
