@@ -34,7 +34,7 @@ describe( `${ block.name } Block`, () => {
 		const cartBlockPermalink = await getBlockPagePermalink(
 			`${ block.name } Block`
 		);
-		page.on( 'console', ( log ) => console[ log._type ]( log._text ) );
+		page.on( 'console', ( log ) => console.log( log._text ) );
 		await visitPostOfType( 'Woo Single #1', 'product' );
 		const productPermalink = await getNormalPagePermalink();
 		console.log( 'about to visit', productPermalink );
@@ -64,11 +64,11 @@ describe( `${ block.name } Block`, () => {
 		expect( selectedValue ).toBeGreaterThan( 1 );
 
 		await page.click( '.wc-block-cart__submit-button' );
-		console.log('waiting for block checkout')
+		console.log( 'waiting for block checkout' );
 		await page.waitForSelector( '.wc-block-checkout' );
 		await page.goBack();
 
-		console.log('went back, waiting for store to evaluate')
+		console.log( 'went back, waiting for store to evaluate' );
 
 		// We need this to check if the block is done loading.
 		await page.waitForFunction( () => {
