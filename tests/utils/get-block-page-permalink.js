@@ -23,25 +23,22 @@ export async function getBlockPagePermalink( blockPage ) {
 	const panelButton = await findSidebarPanelToggleButtonWithTitle(
 		'Permalink'
 	);
-
 	const ensureLinkClickable = async ( page ) => {
 		let linkVisible =
 			( await page.$( '.edit-post-post-link__link' ) ) !== null;
-		do {
-			if ( ! linkVisible ) {
-				await panelButton.click( 'button' );
-			}
+		while ( ! linkVisible ) {
+			await panelButton.click( 'button' );
+			page.waitForTimeout( 300 );
 			linkVisible =
 				( await page.$( '.edit-post-post-link__link' ) ) !== null;
-		} while ( ! linkVisible );
+		}
 	};
 
 	await ensureLinkClickable( page );
-
-	await page.waitForSelector( '.edit-post-post-link__link' );
-	return await page.$eval( '.edit-post-post-link__link', ( el ) =>
-		el.getAttribute( 'href' )
-	);
+	const link = await page.$eval( '.edit-post-post-link__link', ( el ) => {
+		return el.getAttribute( 'href' );
+	} );
+	return link;
 }
 
 export default getBlockPagePermalink;

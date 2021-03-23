@@ -11,4 +11,4 @@ export async function getNormalPagePermalink() {
 	);
 }
 
-export default getNormalPagePermalink();
+export default getNormalPagePermalink;
