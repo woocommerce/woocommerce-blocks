@@ -37,13 +37,13 @@ describe( `${ block.name } Block`, () => {
 		page.on( 'console', ( log ) => console[ log._type ]( log._text ) );
 		await visitPostOfType( 'Woo Single #1', 'product' );
 		const productPermalink = await getNormalPagePermalink();
-		console.log('about to visit', productPermalink)
+		console.log( 'about to visit', productPermalink );
 		await page.goto( productPermalink );
 		await shopper.addToCart();
 		await page.goto( cartBlockPermalink );
-		console.log('navigated to', cartBlockPermalink)
+		console.log( 'navigated to', cartBlockPermalink );
 		await page.waitForFunction( () => {
-			console.log('evaluating on page');
+			console.log( 'evaluating on page' );
 			const wcCartStore = wp.data.select( 'wc/store/cart' );
 			return (
 				! wcCartStore.isResolving( 'getCartData' ) &&
@@ -64,8 +64,11 @@ describe( `${ block.name } Block`, () => {
 		expect( selectedValue ).toBeGreaterThan( 1 );
 
 		await page.click( '.wc-block-cart__submit-button' );
+		console.log('waiting for block checkout')
 		await page.waitForSelector( '.wc-block-checkout' );
 		await page.goBack();
+
+		console.log('went back, waiting for store to evaluate')
 
 		// We need this to check if the block is done loading.
 		await page.waitForFunction( () => {
