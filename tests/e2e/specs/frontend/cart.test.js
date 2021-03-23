@@ -92,5 +92,5 @@ describe( `${ block.name } Block`, () => {
 			)
 		);
 		expect( value ).toBe( selectedValue );
-	} );
+	}, 60000 );
 } );
