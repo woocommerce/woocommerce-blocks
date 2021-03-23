@@ -26,17 +26,45 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 )
 	test.only( `skipping ${ block.name } tests`, () => {} );
 
 describe( `${ block.name } Block`, () => {
-	beforeAll( async () => {
-		await page.evaluate( () => localStorage.clear() );
-		await switchUserToAdmin();
-	} );
+	let cartBlockPermalink;
+	let productPermalink;
 
-	it( 'Shows the freshest cart data when using browser navigation buttons', async () => {
-		const cartBlockPermalink = await getBlockPagePermalink(
+	beforeAll( async () => {
+		await switchUserToAdmin();
+		cartBlockPermalink = await getBlockPagePermalink(
 			`${ block.name } Block`
 		);
 		await visitPostOfType( 'Woo Single #1', 'product' );
-		const productPermalink = await getNormalPagePermalink();
+		productPermalink = await getNormalPagePermalink();
+	} );
+
+	it( 'Adds a timestamp to localstorage when the cart is updated', async () => {
+		await page.evaluate( () => window.localStorage.clear() );
+		await page.goto( productPermalink );
+		await shopper.addToCart();
+		await page.goto( cartBlockPermalink );
+		await page.waitForFunction( () => {
+			const wcCartStore = wp.data.select( 'wc/store/cart' );
+			return (
+				! wcCartStore.isResolving( 'getCartData' ) &&
+				wcCartStore.hasFinishedResolution( 'getCartData', [] )
+			);
+		} );
+		await page.click(
+			'.wc-block-cart__main .wc-block-components-quantity-selector__button--plus'
+		);
+		await page.waitForFunction( () => {
+			const timeStamp = window.localStorage.getItem( 'lastCartUpdate' );
+			return typeof timeStamp === 'string' && timeStamp;
+		} );
+		const timestamp = await page.evaluate( () => {
+			return window.localStorage.getItem( 'lastCartUpdate' );
+		} );
+		expect( timestamp ).not.toBeNull();
+
+	});
+
+	it( 'Shows the freshest cart data when using browser navigation buttons', async () => {
 		await page.goto( productPermalink );
 		await shopper.addToCart();
 		await page.goto( cartBlockPermalink );
