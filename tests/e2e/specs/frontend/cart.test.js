@@ -66,7 +66,7 @@ describe( `${ block.name } Block`, () => {
 		await page.click( '.wc-block-cart__submit-button' );
 		console.log( 'waiting for block checkout' );
 		await page.waitForSelector( '.wc-block-checkout' );
-		await page.goBack();
+		await page.goBack( { waitUntil: 'networkidle0' } );
 
 		console.log( 'went back, waiting for store to evaluate' );
 
