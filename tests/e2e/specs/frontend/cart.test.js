@@ -15,6 +15,7 @@ import { shopper } from '@woocommerce/e2e-utils';
  */
 import { visitPostOfType } from '../../../utils/visit-block-page';
 import { getBlockPagePermalink, getNormalPagePermalink } from '../../../utils';
+import { LAST_CART_UPDATE_TIMESTAMP_KEY } from '../../../../assets/js/data/cart/constants';
 const block = {
 	name: 'Cart',
 	slug: 'woocommerce/cart',
@@ -55,11 +56,15 @@ describe( `${ block.name } Block`, () => {
 			'.wc-block-cart__main .wc-block-components-quantity-selector__button--plus'
 		);
 		await page.waitForFunction( () => {
-			const timeStamp = window.localStorage.getItem( 'lastCartUpdate' );
+			const timeStamp = window.localStorage.getItem(
+				LAST_CART_UPDATE_TIMESTAMP_KEY
+			);
 			return typeof timeStamp === 'string' && timeStamp;
 		} );
 		const timestamp = await page.evaluate( () => {
-			return window.localStorage.getItem( 'lastCartUpdate' );
+			return window.localStorage.getItem(
+				LAST_CART_UPDATE_TIMESTAMP_KEY
+			);
 		} );
 		expect( timestamp ).not.toBeNull();
 	} );
@@ -104,7 +109,9 @@ describe( `${ block.name } Block`, () => {
 		} );
 
 		const timestamp = await page.evaluate( () => {
-			return window.localStorage.getItem( 'lastCartUpdate' );
+			return window.localStorage.getItem(
+				LAST_CART_UPDATE_TIMESTAMP_KEY
+			);
 		} );
 		expect( timestamp ).not.toBeNull();
 
@@ -119,7 +126,6 @@ describe( `${ block.name } Block`, () => {
 
 		// Then we check to ensure the stale cart action has been emitted, so it'll fetch the cart from the API.
 		await page.waitForFunction( () => {
-			console.log( window.localStorage.getItem( 'lastCartUpdate' ) );
 			const wcCartStore = wp.data.select( 'wc/store/cart' );
 			return wcCartStore.isCartDataStale() === true;
 		} );
