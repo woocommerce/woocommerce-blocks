@@ -42,6 +42,7 @@ describe( `${ block.name } Block`, () => {
 	} );
 
 	it( 'Adds a timestamp to localstorage when the cart is updated', async () => {
+		await jest.setTimeout( 60000 );
 		await page.goto( cartBlockPermalink );
 		await page.waitForFunction( () => {
 			const wcCartStore = wp.data.select( 'wc/store/cart' );
@@ -64,6 +65,7 @@ describe( `${ block.name } Block`, () => {
 	} );
 
 	it( 'Shows the freshest cart data when using browser navigation buttons', async () => {
+		await jest.setTimeout( 60000 );
 		await page.goto( cartBlockPermalink );
 		await page.waitForFunction( () => {
 			const wcCartStore = wp.data.select( 'wc/store/cart' );
