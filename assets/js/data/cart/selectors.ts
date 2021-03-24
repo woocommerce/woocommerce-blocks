@@ -60,7 +60,7 @@ export const isApplyingCoupon = ( state: CartState ): boolean => {
 };
 
 /**
- * Returns true if cart is stale, false if it is not, and undefined if the check is not complete.
+ * Returns true if cart is stale, false if it is not.
  *
  * @param {CartState} state The current state.
  * @return {boolean} True if the cart data is stale.
