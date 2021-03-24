@@ -15,7 +15,7 @@ import { shopper } from '@woocommerce/e2e-utils';
  */
 import { visitPostOfType } from '../../../utils/visit-block-page';
 import { getBlockPagePermalink, getNormalPagePermalink } from '../../../utils';
-import { LAST_CART_UPDATE_TIMESTAMP_KEY } from '../../../../assets/js/data/cart/constants';
+
 const block = {
 	name: 'Cart',
 	slug: 'woocommerce/cart',
@@ -57,13 +57,13 @@ describe( `${ block.name } Block`, () => {
 		);
 		await page.waitForFunction( () => {
 			const timeStamp = window.localStorage.getItem(
-				LAST_CART_UPDATE_TIMESTAMP_KEY
+				'wc-blocks_cart_update_timestamp'
 			);
 			return typeof timeStamp === 'string' && timeStamp;
 		} );
 		const timestamp = await page.evaluate( () => {
 			return window.localStorage.getItem(
-				LAST_CART_UPDATE_TIMESTAMP_KEY
+				'wc-blocks_cart_update_timestamp'
 			);
 		} );
 		expect( timestamp ).not.toBeNull();
@@ -104,13 +104,15 @@ describe( `${ block.name } Block`, () => {
 		await page.goBack( { waitUntil: 'networkidle0' } );
 
 		await page.waitForFunction( () => {
-			const timeStamp = window.localStorage.getItem( 'lastCartUpdate' );
+			const timeStamp = window.localStorage.getItem(
+				'wc-blocks_cart_update_timestamp'
+			);
 			return typeof timeStamp === 'string' && timeStamp;
 		} );
 
 		const timestamp = await page.evaluate( () => {
 			return window.localStorage.getItem(
-				LAST_CART_UPDATE_TIMESTAMP_KEY
+				'wc-blocks_cart_update_timestamp'
 			);
 		} );
 		expect( timestamp ).not.toBeNull();
