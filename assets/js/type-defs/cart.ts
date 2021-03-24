@@ -185,7 +185,7 @@ export interface Cart {
 export interface CartMeta {
 	updatingCustomerData: boolean;
 	updatingSelectedRate: boolean;
-	cartDataIsStale: boolean;
+	isCartDataStale: boolean;
 	applyingCoupon: string;
 	removingCoupon: string;
 }
