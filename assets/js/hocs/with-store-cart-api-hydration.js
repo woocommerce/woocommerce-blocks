@@ -39,22 +39,24 @@ const useStoreCartApiHydration = () => {
 			! isResolving( 'getCartData' ) &&
 			! hasFinishedResolution( 'getCartData', [] )
 		) {
-			const lastCartUpdateRaw =
-				window.localStorage.getItem( LAST_CART_UPDATE_TIMESTAMP_KEY ) ||
-				'';
-
-			const lastCartUpdate = parseFloat( lastCartUpdateRaw );
-			const cartGeneratedTimestamp = parseFloat(
-				cartData.current.generated_timestamp
+			const lastCartUpdateRaw = window.localStorage.getItem(
+				LAST_CART_UPDATE_TIMESTAMP_KEY
 			);
 
-			const needsUpdateFromAPI =
-				! isNaN( cartGeneratedTimestamp ) &&
-				! isNaN( lastCartUpdate ) &&
-				lastCartUpdate > cartGeneratedTimestamp;
+			if ( lastCartUpdateRaw ) {
+				const lastCartUpdate = parseFloat( lastCartUpdateRaw );
+				const cartGeneratedTimestamp = parseFloat(
+					cartData.current.generated_timestamp
+				);
 
-			if ( needsUpdateFromAPI ) {
-				setIsCartDataStale();
+				const needsUpdateFromAPI =
+					! isNaN( cartGeneratedTimestamp ) &&
+					! isNaN( lastCartUpdate ) &&
+					lastCartUpdate > cartGeneratedTimestamp;
+
+				if ( needsUpdateFromAPI ) {
+					setIsCartDataStale();
+				}
 			}
 		}
 		const {
