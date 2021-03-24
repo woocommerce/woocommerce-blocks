@@ -106,6 +106,12 @@ const TotalsCoupon = ( {
 						propertyName="coupon"
 						elementId={ textInputId }
 					/>
+					{ /* prevent layout shift caused the by error message */ }
+					{ ! validationError && (
+						<div className="wc-block-components-validation-error">
+							<p></p>
+						</div>
+					) }
 				</div>
 			</LoadingMask>
 		</Panel>
