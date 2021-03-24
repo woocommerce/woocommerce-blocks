@@ -155,7 +155,7 @@ const reducer: Reducer< CartState > = (
 				...state,
 				metaData: {
 					...state.metaData,
-					isCartDataStale: !! action.isCartDataStale,
+					isCartDataStale: action.isCartDataStale,
 				},
 			};
 			break;
