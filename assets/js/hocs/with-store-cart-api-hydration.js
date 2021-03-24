@@ -18,7 +18,7 @@ import { LAST_CART_UPDATE_TIMESTAMP_KEY } from '../data/cart/constants';
  */
 const useStoreCartApiHydration = () => {
 	const cartData = useRef( getSetting( 'cartData' ) );
-	const { cartDataIsStale } = useDispatch( CART_STORE_KEY );
+	const { setIsCartDataStale } = useDispatch( CART_STORE_KEY );
 
 	useSelect( ( select, registry ) => {
 		if ( ! cartData.current ) {
@@ -39,28 +39,23 @@ const useStoreCartApiHydration = () => {
 			! isResolving( 'getCartData' ) &&
 			! hasFinishedResolution( 'getCartData', [] )
 		) {
-			const lastCartUpdateRaw = window.localStorage.getItem(
-				LAST_CART_UPDATE_TIMESTAMP_KEY
-			);
-			const lastCartUpdate =
-				lastCartUpdateRaw === null
-					? null
-					: JSON.parse( lastCartUpdateRaw );
+			const lastCartUpdateRaw =
+				window.localStorage.getItem( LAST_CART_UPDATE_TIMESTAMP_KEY ) ||
+				'';
 
-			if ( lastCartUpdate?.timestamp === undefined ) {
-				cartDataIsStale( false );
-				return;
-			}
+			const lastCartUpdate = parseFloat( lastCartUpdateRaw );
+			const cartGeneratedTimestamp = parseFloat(
+				cartData.current.generated_timestamp
+			);
 
 			const needsUpdateFromAPI =
-				lastCartUpdate.timestamp >
-				cartData.current?.generated_timestamp;
+				! isNaN( cartGeneratedTimestamp ) &&
+				! isNaN( lastCartUpdate ) &&
+				lastCartUpdate > cartGeneratedTimestamp;
 
 			if ( needsUpdateFromAPI ) {
-				cartDataIsStale();
-				return;
+				setIsCartDataStale();
 			}
-			cartDataIsStale( false );
 		}
 		const {
 			receiveCart,
