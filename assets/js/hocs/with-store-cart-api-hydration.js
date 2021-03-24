@@ -7,6 +7,11 @@ import { CART_STORE_KEY } from '@woocommerce/block-data';
 import { useSelect, useDispatch } from '@wordpress/data';
 
 /**
+ * Internal dependencies
+ */
+import { LAST_CART_UPDATE_TIMESTAMP_KEY } from '../data/cart/constants';
+
+/**
  * Hydrate Cart API data.
  *
  * Makes cart data available without an API request to wc/store/cart/.
@@ -35,7 +40,7 @@ const useStoreCartApiHydration = () => {
 			! hasFinishedResolution( 'getCartData', [] )
 		) {
 			const lastCartUpdateRaw = window.localStorage.getItem(
-				'lastCartUpdate'
+				LAST_CART_UPDATE_TIMESTAMP_KEY
 			);
 			const lastCartUpdate =
 				lastCartUpdateRaw === null

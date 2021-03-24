@@ -4,6 +4,11 @@
 import apiFetch, { APIFetchOptions } from '@wordpress/api-fetch';
 
 /**
+ * Internal dependencies
+ */
+import { LAST_CART_UPDATE_TIMESTAMP_KEY } from '../data/cart/constants';
+
+/**
  * Checks if this request is a POST to the wc/store/cart endpoint.
  */
 const isCartUpdatePostRequest = ( options: APIFetchOptions ) => {
@@ -30,10 +35,8 @@ const cartUpdateMiddleware = (
 ) => {
 	if ( isCartUpdatePostRequest( options ) ) {
 		window.localStorage.setItem(
-			'lastCartUpdate',
-			JSON.stringify( {
-				timestamp: Date.now() / 1000,
-			} )
+			LAST_CART_UPDATE_TIMESTAMP_KEY,
+			( Date.now() / 1000 ).toString()
 		);
 	}
 	return next( options, next );
