@@ -150,12 +150,12 @@ const reducer: Reducer< CartState > = (
 				},
 			};
 			break;
-		case types.CART_DATA_STALE:
+		case types.SET_IS_CART_DATA_STALE:
 			state = {
 				...state,
 				metaData: {
 					...state.metaData,
-					cartDataIsStale: !! action.isCartDataStale,
+					isCartDataStale: !! action.isCartDataStale,
 				},
 			};
 			break;

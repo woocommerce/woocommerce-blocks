@@ -129,9 +129,9 @@ export const itemIsPendingDelete = (
  * 											 lastCartUpdate timestamp is newer than the
  * 											 one in wcSettings.
  */
-export const cartDataIsStale = ( isCartDataStale = true ) =>
+export const setIsCartDataStale = ( isCartDataStale = true ) =>
 	( {
-		type: types.CART_DATA_STALE,
+		type: types.SET_IS_CART_DATA_STALE,
 		isCartDataStale,
 	} as const );
 
