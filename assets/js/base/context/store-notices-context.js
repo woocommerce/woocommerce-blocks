@@ -74,7 +74,7 @@ export const StoreNoticesProvider = ( {
 				...options,
 				context: options.context || context,
 			} );
-			dispatchStoreEvent( 'create-notice', {
+			dispatchStoreEvent( 'store-notice-create', {
 				status,
 				content,
 				options,

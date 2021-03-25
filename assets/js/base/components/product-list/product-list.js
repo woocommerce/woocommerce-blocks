@@ -147,7 +147,7 @@ const ProductList = ( {
 
 	// If the product list changes, trigger an event.
 	useEffect( () => {
-		dispatchStoreEvent( 'render-product-list', {
+		dispatchStoreEvent( 'product-list-render', {
 			products,
 			listName: parentName,
 		} );

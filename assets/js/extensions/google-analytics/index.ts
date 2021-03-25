@@ -22,13 +22,15 @@ import {
 } from './utils';
 
 /**
- * Track customer progress through steps of the checkout. Triggers the event when the step changes.
+ * Track customer progress through steps of the checkout. Triggers the event when the step changes:
+ * 	1 - Contact information
+ * 	2 - Shipping address
+ * 	3 - Billing address
+ * 	4 - Shipping options
+ * 	5 - Payment options
  *
- * 1 - Contact information
- * 2 - Shipping address
- * 3 - Billing address
- * 4 - Shipping options
- * 5 - Payment options
+ * @summary Track checkout progress with begin_checkout and checkout_progress
+ * @see https://developers.google.com/analytics/devguides/collection/gtagjs/enhanced-ecommerce#1_measure_checkout_steps
  */
 addAction(
 	`${ actionPrefix }-checkout-render-checkout-form`,
@@ -108,10 +110,15 @@ addAction( `${ actionPrefix }-checkout-submit`, namespace, (): void => {
 } );
 
 /**
- * Cart Events.
+ * Add to cart.
+ *
+ * This event signifies that an item was added to a cart for purchase.
+ *
+ * @summary Track the add_to_cart event
+ * @see https://developers.google.com/gtagjs/reference/ga4-events#add_to_cart
  */
 addAction(
-	`${ actionPrefix }-add-product-to-cart`,
+	`${ actionPrefix }-cart-add-item`,
 	namespace,
 	( {
 		product,
@@ -127,28 +134,15 @@ addAction(
 		} );
 	}
 );
+
+/**
+ * Remove item from the cart
+ *
+ * @summary Track the remove_from_cart event
+ * @see https://developers.google.com/gtagjs/reference/ga4-events#remove_from_cart
+ */
 addAction(
-	`${ actionPrefix }-set-cart-item-quantity`,
-	namespace,
-	( {
-		product,
-		quantity = 1,
-	}: {
-		product: CartResponseItem;
-		quantity: number;
-	} ): void => {
-		trackEvent( 'change_cart_quantity', {
-			event_category: 'ecommerce',
-			event_label: __(
-				'Change Cart Item Quantity',
-				'woo-gutenberg-products-block'
-			),
-			items: [ getProductFieldObject( product, quantity ) ],
-		} );
-	}
-);
-addAction(
-	`${ actionPrefix }-remove-cart-item`,
+	`${ actionPrefix }-cart-remove-item`,
 	namespace,
 	( {
 		product,
@@ -169,10 +163,39 @@ addAction(
 );
 
 /**
- * Product Events.
+ * Change cart item quantities
+ *
+ * @summary Custom change_cart_quantity event.
  */
 addAction(
-	`${ actionPrefix }-render-product-list`,
+	`${ actionPrefix }-cart-set-item-quantity`,
+	namespace,
+	( {
+		product,
+		quantity = 1,
+	}: {
+		product: CartResponseItem;
+		quantity: number;
+	} ): void => {
+		trackEvent( 'change_cart_quantity', {
+			event_category: 'ecommerce',
+			event_label: __(
+				'Change Cart Item Quantity',
+				'woo-gutenberg-products-block'
+			),
+			items: [ getProductFieldObject( product, quantity ) ],
+		} );
+	}
+);
+
+/**
+ * Product List View
+ *
+ * @summary Track the view_item_list event
+ * @see https://developers.google.com/gtagjs/reference/ga4-events#view_item_list
+ */
+addAction(
+	`${ actionPrefix }-product-list-render`,
 	namespace,
 	( {
 		products,
@@ -197,8 +220,54 @@ addAction(
 		} );
 	}
 );
+
+/**
+ * Product View Link Clicked
+ *
+ * @summary Track the select_content event
+ * @see https://developers.google.com/gtagjs/reference/ga4-events#select_content
+ */
 addAction(
-	`${ actionPrefix }-render-single-product`,
+	`${ actionPrefix }-product-view-link`,
+	namespace,
+	( {
+		product,
+		listName,
+	}: {
+		product: ProductResponseItem;
+		listName: string;
+	} ): void => {
+		trackEvent( 'select_content', {
+			content_type: 'product',
+			items: [ getProductImpressionObject( product, listName ) ],
+		} );
+	}
+);
+
+/**
+ * Product Search
+ *
+ * @summary Track the search event
+ * @see https://developers.google.com/gtagjs/reference/ga4-events#search
+ */
+addAction(
+	`${ actionPrefix }-product-search`,
+	namespace,
+	( { searchTerm }: { searchTerm: string } ): void => {
+		trackEvent( 'search', {
+			search_term: searchTerm,
+		} );
+	}
+);
+
+/**
+ * Single Product View
+ *
+ * @summary Track the view_item event
+ * @see https://developers.google.com/gtagjs/reference/ga4-events#view_item
+ */
+addAction(
+	`${ actionPrefix }-product-render`,
 	namespace,
 	( {
 		product,
@@ -214,37 +283,15 @@ addAction(
 		}
 	}
 );
-addAction(
-	`${ actionPrefix }-view-product`,
-	namespace,
-	( {
-		product,
-		listName,
-	}: {
-		product: ProductResponseItem;
-		listName: string;
-	} ): void => {
-		trackEvent( 'select_content', {
-			content_type: 'product',
-			items: [ getProductImpressionObject( product, listName ) ],
-		} );
-	}
-);
-addAction(
-	`${ actionPrefix }-search-for-product`,
-	namespace,
-	( { searchTerm }: { searchTerm: string } ): void => {
-		trackEvent( 'search', {
-			search_term: searchTerm,
-		} );
-	}
-);
 
 /**
- * Exception events.
+ * Track notices as Exception events.
+ *
+ * @summary Track the exception event
+ * @see https://developers.google.com/analytics/devguides/collection/gtagjs/exceptions
  */
 addAction(
-	`${ actionPrefix }-create-notice`,
+	`${ actionPrefix }-store-notice-create`,
 	namespace,
 	( { status, content }: { status: string; content: string } ): void => {
 		if ( status === 'error' ) {
