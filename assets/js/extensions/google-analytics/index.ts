@@ -57,6 +57,13 @@ addAction(
 		trackCheckoutStep( step === 'shipping' ? 2 : 3 )( rest );
 	}
 );
+
+/**
+ * Choose a shipping rate
+ *
+ * @summary Track the shipping rate being set using set_checkout_option
+ * @see https://developers.google.com/analytics/devguides/collection/gtagjs/enhanced-ecommerce#2_measure_checkout_options
+ */
 addAction(
 	`${ actionPrefix }-checkout-set-selected-shipping-rate`,
 	namespace,
@@ -68,6 +75,13 @@ addAction(
 		} )();
 	}
 );
+
+/**
+ * Choose a payment method
+ *
+ * @summary Track the payment method being set using set_checkout_option
+ * @see https://developers.google.com/analytics/devguides/collection/gtagjs/enhanced-ecommerce#2_measure_checkout_options
+ */
 addAction(
 	`${ actionPrefix }-checkout-set-active-payment-method`,
 	namespace,
@@ -79,6 +93,16 @@ addAction(
 		} )();
 	}
 );
+
+/**
+ * Add Payment Information
+ *
+ * This event signifies a user has submitted their payment information. Note, this is used to indicate checkout
+ * submission, not `purchase` which is triggered on the thanks page.
+ *
+ * @summary Track the add_payment_info event
+ * @see https://developers.google.com/gtagjs/reference/ga4-events#add_payment_info
+ */
 addAction( `${ actionPrefix }-checkout-submit`, namespace, (): void => {
 	trackEvent( 'add_payment_info' );
 } );
