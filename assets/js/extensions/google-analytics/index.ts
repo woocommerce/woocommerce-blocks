@@ -87,7 +87,7 @@ addAction(
 	namespace,
 	( { paymentMethodSlug }: { paymentMethodSlug: string } ): void => {
 		trackCheckoutOption( {
-			step: 6,
+			step: 5,
 			option: __( 'Payment Method', 'woo-gutenberg-products-block' ),
 			value: paymentMethodSlug,
 		} )();
