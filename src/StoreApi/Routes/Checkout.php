@@ -384,6 +384,10 @@ class Checkout extends AbstractCartRoute {
 	 */
 	public function validate_terms_and_conditions( \WP_REST_Request $request ) {
 		$terms_and_conditions_accepted = $request['terms_and_conditions_accepted'];
+		// If the Checkout block does not have the requireTermsAndConditions attribute set to true
+		// then the checkbox will not be present, and this value will not be sent to the API.
+		// The only time this can be explicitly false is if somehow the customer manages to submit
+		// the form to the point of it making an API request without ticking the checkbox.
 		if ( false === $terms_and_conditions_accepted ) {
 			throw new RouteException(
 				'woocommerce_rest_cart_error',
