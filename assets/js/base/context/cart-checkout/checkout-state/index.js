@@ -64,10 +64,13 @@ const CheckoutContext = createContext( {
 		setCustomerId: ( id ) => void id,
 		setOrderId: ( id ) => void id,
 		setOrderNotes: ( orderNotes ) => void orderNotes,
+		setTermsAcceptedCheckboxPristine: ( termsAcceptedCheckboxPristine ) =>
+			void termsAcceptedCheckboxPristine,
 	},
 	hasOrder: false,
 	isCart: false,
 	shouldCreateAccount: false,
+	isTermsAcceptedCheckboxPristine: true,
 	setShouldCreateAccount: ( value ) => void value,
 } );
 
@@ -155,6 +158,10 @@ export const CheckoutStateProvider = ( {
 				void dispatch( actions.setOrderId( orderId ) ),
 			setOrderNotes: ( orderNotes ) =>
 				void dispatch( actions.setOrderNotes( orderNotes ) ),
+			setIsTermsAcceptedCheckboxPristine: () =>
+				void dispatch(
+					actions.setIsTermsAcceptedCheckboxPristine( false )
+				),
 			setAfterProcessing: ( response ) => {
 				// capture general error message if this is an error response.
 				if (
@@ -336,6 +343,7 @@ export const CheckoutStateProvider = ( {
 		checkoutState.customerId,
 		checkoutState.customerNote,
 		checkoutState.processingResponse,
+		checkoutState.isTermsAcceptedCheckboxPristine,
 		previousStatus,
 		previousHasError,
 		dispatchActions,
@@ -350,9 +358,9 @@ export const CheckoutStateProvider = ( {
 	] );
 
 	const onSubmit = useCallback( () => {
+		dispatch( actions.setIsTermsAcceptedCheckboxPristine( false ) );
 		dispatch( actions.setBeforeProcessing() );
 	}, [] );
-
 	/**
 	 * @type {CheckoutDataContext}
 	 */
@@ -378,6 +386,8 @@ export const CheckoutStateProvider = ( {
 		shouldCreateAccount: checkoutState.shouldCreateAccount,
 		setShouldCreateAccount: ( value ) =>
 			dispatch( actions.setShouldCreateAccount( value ) ),
+		isTermsAcceptedCheckboxPristine:
+			checkoutState.isTermsAcceptedCheckboxPristine,
 	};
 	return (
 		<CheckoutContext.Provider value={ checkoutData }>

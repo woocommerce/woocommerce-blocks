@@ -30,6 +30,7 @@ export const DEFAULT_STATE = {
 	customerId: checkoutData.customer_id,
 	shouldCreateAccount: false,
 	processingResponse: null,
+	isTermsAcceptedCheckboxPristine: true,
 };
 
 export const TYPES = {
@@ -48,4 +49,6 @@ export const TYPES = {
 	SET_ORDER_NOTES: 'set_checkout_order_notes',
 	INCREMENT_CALCULATING: 'increment_calculating',
 	DECREMENT_CALCULATING: 'decrement_calculating',
+	SET_IS_TERMS_ACCEPTED_CHECKBOX_PRISTINE:
+		'set_is_terms_accepted_checkbox_pristine',
 };

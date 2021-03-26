@@ -20,6 +20,7 @@ const {
 	SET_ORDER_ID,
 	SET_SHOULD_CREATE_ACCOUNT,
 	SET_ORDER_NOTES,
+	SET_IS_TERMS_ACCEPTED_CHECKBOX_PRISTINE,
 } = TYPES;
 
 /**
@@ -79,4 +80,10 @@ export const actions = {
 		type: SET_ORDER_NOTES,
 		orderNotes,
 	} ),
+	setIsTermsAcceptedCheckboxPristine: ( isTermsAcceptedCheckboxPristine ) => {
+		return {
+			type: SET_IS_TERMS_ACCEPTED_CHECKBOX_PRISTINE,
+			isTermsAcceptedCheckboxPristine,
+		};
+	},
 };

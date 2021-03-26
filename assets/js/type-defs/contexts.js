@@ -145,6 +145,9 @@
  * @property {boolean}                      shouldCreateAccount                  Should a user account be created?
  * @property {function(boolean)}            setShouldCreateAccount               Function to update the
  *                                                                               shouldCreateAccount property.
+ * @property {boolean}						isTermsAcceptedCheckboxPristine		 Whether the checkbox to accept terms
+ * 																				 and conditions has been previously
+ * 																				 modified.
  */
 
 /**

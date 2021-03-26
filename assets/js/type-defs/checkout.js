@@ -1,15 +1,16 @@
 /**
  * @typedef {Object} CheckoutDispatchActions
  *
- * @property {function():void}              resetCheckout        Dispatches an action that resets the checkout to a pristine state.
- * @property {function(string):void}        setRedirectUrl       Dispatches an action that sets the redirectUrl.
- * @property {function(boolean=):void}      setHasError          Dispatches an action that sets the checkout status to having an error.
- * @property {function(Object):void}        setAfterProcessing   Dispatches an action that sets the checkout status to after processing and also sets the response data accordingly.
- * @property {function():void}              incrementCalculating Dispatches an action that increments  the calculating state for checkout by one.
- * @property {function():void}              decrementCalculating Dispatches an action that decrements the calculating state for checkout by one.
- * @property {function(number|string):void} setOrderId           Dispatches an action that stores the draft order ID and key.
- * @property {function(string):void}        setOrderNotes        Dispatches an action that sets the order notes.
- * @property {function(number):void}        setCustomerId        Dispatches an action that stores the customer ID.
+ * @property {function():void}              resetCheckout       				Dispatches an action that resets the checkout to a pristine state.
+ * @property {function(string):void}        setRedirectUrl       				 Dispatches an action that sets the redirectUrl.
+ * @property {function(boolean=):void}      setHasError          				 Dispatches an action that sets the checkout status to having an error.
+ * @property {function(Object):void}        setAfterProcessing   				 Dispatches an action that sets the checkout status to after processing and also sets the response data accordingly.
+ * @property {function():void}              incrementCalculating 				 Dispatches an action that increments  the calculating state for checkout by one.
+ * @property {function():void}              decrementCalculating 				 Dispatches an action that decrements the calculating state for checkout by one.
+ * @property {function(number|string):void} setOrderId           				 Dispatches an action that stores the draft order ID and key.
+ * @property {function(string):void}        setOrderNotes        				 Dispatches an action that sets the order notes.
+ * @property {function(number):void}        setCustomerId        				 Dispatches an action that stores the customer ID.
+ * @property {function(boolean):void}		setIsTermsAcceptedCheckboxPristine	 Dispatches an action that sets whether the terms and conditions checkbox is pristine.
  */
 
 /**

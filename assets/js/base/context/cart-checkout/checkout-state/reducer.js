@@ -25,6 +25,7 @@ const {
 	SET_ORDER_ID,
 	SET_ORDER_NOTES,
 	SET_SHOULD_CREATE_ACCOUNT,
+	SET_IS_TERMS_ACCEPTED_CHECKBOX_PRISTINE,
 } = TYPES;
 
 const {
@@ -78,10 +79,20 @@ export const prepareResponseData = ( data ) => {
  * @param {Array} action.orderNotes Order notes.
  * @param {boolean} action.shouldCreateAccount True if shopper has requested a user account (signup checkbox).
  * @param {Object} action.data Other action payload.
+ * @param {boolean} action.isTermsAcceptedCheckboxPristine False if terms and conditions checkbox has been modified.
  */
 export const reducer = (
 	state = DEFAULT_STATE,
-	{ url, type, customerId, orderId, orderNotes, shouldCreateAccount, data }
+	{
+		url,
+		type,
+		customerId,
+		orderId,
+		orderNotes,
+		shouldCreateAccount,
+		data,
+		isTermsAcceptedCheckboxPristine,
+	}
 ) => {
 	let newState = state;
 	switch ( type ) {
@@ -218,6 +229,17 @@ export const reducer = (
 				newState = {
 					...state,
 					orderNotes,
+				};
+			}
+			break;
+		case SET_IS_TERMS_ACCEPTED_CHECKBOX_PRISTINE:
+			if (
+				state.isTermsAcceptedCheckboxPristine !==
+				isTermsAcceptedCheckboxPristine
+			) {
+				newState = {
+					...state,
+					isTermsAcceptedCheckboxPristine,
 				};
 			}
 			break;
