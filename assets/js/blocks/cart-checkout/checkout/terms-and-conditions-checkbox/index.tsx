@@ -59,7 +59,19 @@ export const TermsAndConditionsCheckbox = (): ReactElement => {
 		} );
 	};
 
+	// Set a validation error as soon as the block loads. This will be hidden however, because the checkbox is pristine.
 	useEffect( setValidationError, [ setValidationErrors ] );
+
+	let terms = <>{ __( 'Terms and Conditions.', 'woocommerce' ) }</>;
+
+	if ( TERMS_URL && TERMS_PAGE_NAME ) {
+		terms = (
+			<a href={ TERMS_URL } target="_blank" rel="noreferrer">
+				{ TERMS_PAGE_NAME }
+			</a>
+		);
+	}
+
 	return (
 		<FormStep
 			id="terms-and-conditions"
@@ -87,15 +99,7 @@ export const TermsAndConditionsCheckbox = (): ReactElement => {
 						// translators: <termsLink> is a link to the terms and conditions page of the site. The link text is the page's name.
 						termsAndConditionsText,
 						{
-							terms: (
-								<a
-									href={ TERMS_URL }
-									target="_blank"
-									rel="noreferrer"
-								>
-									{ TERMS_PAGE_NAME }
-								</a>
-							),
+							terms,
 						}
 					) }
 					aria-invalid={ isCheckboxInvalid }
