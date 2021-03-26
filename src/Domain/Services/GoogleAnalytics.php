@@ -112,9 +112,16 @@ class GoogleAnalytics {
 	 */
 	public function enqueue_scripts( $asset_api ) {
 		$asset_api = Package::container()->get( AssetApi::class );
-		$settings  = $this->get_google_analytics_settings();
 
-		if ( is_admin() || ! stristr( $settings['ga_id'], 'G-' ) || apply_filters( 'woocommerce_ga_disable_tracking', ! wc_string_to_bool( $settings['ga_event_tracking_enabled'] ) ) ) {
+		// Require Google Analytics Integration to be activated.
+		if ( ! class_exists( 'WC_Google_Analytics_Integration' ) ) {
+			return;
+		}
+
+		$settings = $this->get_google_analytics_settings();
+
+		// Require tracking to be enabled with a valid GA ID.
+		if ( ! stristr( $settings['ga_id'], 'G-' ) || apply_filters( 'woocommerce_ga_disable_tracking', ! wc_string_to_bool( $settings['ga_event_tracking_enabled'] ) ) ) {
 			return;
 		}
 
