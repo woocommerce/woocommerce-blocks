@@ -550,6 +550,23 @@ class CartController {
 	}
 
 	/**
+	 * Validate the terms and conditions is true, or unset. If unset then the checkout block was not configured to
+	 * require the customer to agree to the terms and conditions.
+	 *
+	 * @param \WP_REST_Request $request The request with the posted data.
+	 * @throws RouteException           Throws if terms and conditions is false.
+	 */
+	public function validate_terms_and_conditions( \WP_REST_Request $request ) {
+		$terms_and_conditions_accepted = $request['terms_and_conditions_accepted'];
+		if ( false === $terms_and_conditions_accepted ) {
+			throw new RouteException(
+				'woocommerce_rest_cart_error',
+				__( 'You must accept the terms and conditions to place your order.', 'woo-gutenberg-products-block' )
+			);
+		}
+	}
+
+	/**
 	 * Validate all items in the cart and get a list of errors.
 	 *
 	 * @return WP_Error[] An array of WP_Errors describing the cart's error state.
