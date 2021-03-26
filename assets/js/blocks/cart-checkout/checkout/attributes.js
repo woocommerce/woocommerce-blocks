@@ -53,6 +53,10 @@ const blockAttributes = {
 		type: 'boolean',
 		default: HAS_DARK_EDITOR_STYLE_SUPPORT,
 	},
+	requireTermsAndConditions: {
+		type: 'boolean',
+		default: false,
+	},
 };
 
 export default blockAttributes;

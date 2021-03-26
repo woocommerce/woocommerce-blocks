@@ -53,6 +53,7 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 		showReturnToCart,
 		cartPageId,
 		hasDarkControls,
+		requireTermsAndConditions,
 	} = attributes;
 	const { currentPostId } = useEditorContext();
 	const { current: savedCartPageId } = useRef( cartPageId );
@@ -276,6 +277,42 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 						} )
 					}
 				/>
+			</PanelBody>
+			<PanelBody title={ __( 'Terms and Conditions', 'woocommerce' ) }>
+				<ToggleControl
+					label={ __( 'Terms and conditions acceptance required' ) }
+					help={ __(
+						"Require users to agree to your site's terms and conditions before completing the checkout process."
+					) }
+					checked={ requireTermsAndConditions }
+					onChange={ () =>
+						setAttributes( {
+							requireTermsAndConditions: ! requireTermsAndConditions,
+						} )
+					}
+				/>
+				<Notice
+					className="wc-block-base-control-notice"
+					isDismissible={ false }
+				>
+					{ createInterpolateElement(
+						__(
+							'The text used to label this checkbox can be modified in the <strong>WooCommerce</strong> > <strong>Checkout</strong> section of the <a>Customizer</a>.',
+							'woo-gutenberg-products-block'
+						),
+						{
+							a: (
+								// eslint-disable-next-line jsx-a11y/anchor-has-content
+								<a
+									href={ getAdminLink( 'customize.php' ) }
+									target="_blank"
+									rel="noopener noreferrer"
+								/>
+							),
+							strong: <strong />,
+						}
+					) }
+				</Notice>
 			</PanelBody>
 			{ showReturnToCart &&
 				! (
