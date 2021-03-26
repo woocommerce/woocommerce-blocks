@@ -98,9 +98,13 @@ export const TermsAndConditionsCheckbox = (): ReactElement => {
 							),
 						}
 					) }
+					aria-invalid={ isCheckboxInvalid }
 				/>
 				{ isCheckboxInvalid && (
-					<div className="wc-block-components-validation-error wc-block-components__terms-and-conditions-checkbox__validation-error">
+					<div
+						aria-live="polite"
+						className="wc-block-components-validation-error wc-block-components__terms-and-conditions-checkbox__validation-error"
+					>
 						<p>
 							{ __(
 								'You must agree to the terms and conditions to continue.',
