@@ -13,6 +13,7 @@ import OrderNotesStep from './order-notes-step';
 import PaymentMethodStep from './payment-method-step';
 import ShippingOptionsStep from './shipping-options-step';
 import './style.scss';
+import { TermsAndConditionsCheckbox } from '../terms-and-conditions-checkbox';
 
 const CheckoutForm = ( {
 	requireCompanyField,
@@ -22,6 +23,7 @@ const CheckoutForm = ( {
 	showOrderNotes,
 	showPhoneField,
 	allowCreateAccount,
+	requireTermsAndConditions,
 } ) => {
 	const { onSubmit } = useCheckoutContext();
 
@@ -37,6 +39,7 @@ const CheckoutForm = ( {
 			/>
 			<ShippingOptionsStep />
 			<PaymentMethodStep />
+			{ requireTermsAndConditions && <TermsAndConditionsCheckbox /> }
 			{ showOrderNotes && <OrderNotesStep /> }
 		</Form>
 	);

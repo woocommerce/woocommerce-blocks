@@ -139,6 +139,9 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 						requireCompanyField={ attributes.requireCompanyField }
 						requirePhoneField={ attributes.requirePhoneField }
 						allowCreateAccount={ allowCreateAccount }
+						requireTermsAndConditions={
+							attributes.requireTermsAndConditions
+						}
 					/>
 					<div className="wc-block-checkout__actions">
 						{ attributes.showReturnToCart && (
