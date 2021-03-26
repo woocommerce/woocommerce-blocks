@@ -42,7 +42,7 @@ const CheckoutProcessor = () => {
 		orderNotes,
 		shouldCreateAccount,
 	} = useCheckoutContext();
-	const { hasValidationErrors } = useValidationContext();
+	const { hasValidationErrors, getValidationError } = useValidationContext();
 	const { shippingErrorStatus } = useShippingDataContext();
 	const { billingData, shippingAddress } = useCustomerDataContext();
 	const { cartNeedsPayment, receiveCart } = useStoreCart();
@@ -62,7 +62,6 @@ const CheckoutProcessor = () => {
 	const expressPaymentMethodActive = Object.keys(
 		expressPaymentMethods
 	).includes( activePaymentMethod );
-
 	const paymentMethodId = useMemo( () => {
 		const merged = { ...expressPaymentMethods, ...paymentMethods };
 		return merged?.[ activePaymentMethod ]?.paymentMethodId;
@@ -167,6 +166,8 @@ const CheckoutProcessor = () => {
 			shipping_address: currentShippingAddress.current,
 			customer_note: orderNotes,
 			should_create_account: shouldCreateAccount,
+			terms_and_conditions_accepted:
+				getValidationError( 'terms_and_conditions' ) === undefined,
 		};
 		if ( cartNeedsPayment ) {
 			data = {
@@ -245,17 +246,18 @@ const CheckoutProcessor = () => {
 				} );
 			} );
 	}, [
-		addErrorNotice,
 		removeNotice,
-		paymentMethodId,
-		activePaymentMethod,
-		paymentMethodData,
-		shouldSavePayment,
-		cartNeedsPayment,
-		receiveCart,
-		dispatchActions,
 		orderNotes,
 		shouldCreateAccount,
+		getValidationError,
+		cartNeedsPayment,
+		paymentMethodId,
+		paymentMethodData,
+		shouldSavePayment,
+		activePaymentMethod,
+		dispatchActions,
+		addErrorNotice,
+		receiveCart,
 	] );
 	// redirect when checkout is complete and there is a redirect url.
 	useEffect( () => {
