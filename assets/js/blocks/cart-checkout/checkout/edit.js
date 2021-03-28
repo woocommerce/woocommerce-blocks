@@ -9,6 +9,7 @@ import {
 	ToggleControl,
 	CheckboxControl,
 	Notice,
+	TextControl,
 	Disabled,
 } from '@wordpress/components';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
@@ -54,6 +55,7 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 		cartPageId,
 		hasDarkControls,
 		requireTermsAndConditions,
+		termsAndConditionsText,
 	} = attributes;
 	const { currentPostId } = useEditorContext();
 	const { current: savedCartPageId } = useRef( cartPageId );
@@ -291,28 +293,24 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 						} )
 					}
 				/>
-				<Notice
-					className="wc-block-base-control-notice"
-					isDismissible={ false }
-				>
-					{ createInterpolateElement(
-						__(
-							'The text used to label this checkbox can be modified in the <strong>WooCommerce</strong> > <strong>Checkout</strong> section of the <a>Customizer</a>.',
-							'woo-gutenberg-products-block'
-						),
-						{
-							a: (
-								// eslint-disable-next-line jsx-a11y/anchor-has-content
-								<a
-									href={ getAdminLink( 'customize.php' ) }
-									target="_blank"
-									rel="noopener noreferrer"
-								/>
-							),
-							strong: <strong />,
-						}
-					) }
-				</Notice>
+				{ attributes.requireTermsAndConditions && (
+					<TextControl
+						label={ __(
+							'The text to accompany the checkbox',
+							'woocommerce'
+						) }
+						value={ termsAndConditionsText }
+						onChange={ ( value ) => {
+							setAttributes( {
+								termsAndConditionsText: value,
+							} );
+						} }
+						help={ __(
+							'Use the tag [terms] in this box to include a link to your terms and conditions page. If left blank, a default message will be shown.',
+							'woocommerce'
+						) }
+					/>
+				) }
 			</PanelBody>
 			{ showReturnToCart &&
 				! (
