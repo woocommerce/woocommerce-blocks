@@ -14,8 +14,15 @@ import { getSetting } from '@woocommerce/settings';
  * Internal dependencies
  */
 import { useValidationContext } from '../../../../base/context/shared';
+import blockAttributes from '../attributes';
 
-export const TermsAndConditionsCheckbox = (): ReactElement => {
+interface TermsAndConditionsCheckboxProps {
+	text: string;
+}
+
+export const TermsAndConditionsCheckbox = ( {
+	text,
+}: TermsAndConditionsCheckboxProps ): ReactElement => {
 	const {
 		isProcessing: checkoutIsProcessing,
 		isTermsAcceptedCheckboxPristine,
@@ -28,12 +35,18 @@ export const TermsAndConditionsCheckbox = (): ReactElement => {
 		getValidationError,
 	} = useValidationContext();
 
+	const defaultTermsAndConditionsText =
+		blockAttributes.termsAndConditionsText.default;
+
 	const [ termsAndConditionsText, setTermsAndConditionsText ] = useState<
 		string
 	>( getSetting( 'terms_and_conditions_text' ) );
 
 	useEffect( () => {
-		let termsText = getSetting( 'terms_and_conditions_text' );
+		let termsText = text;
+		if ( text === '' ) {
+			termsText = defaultTermsAndConditionsText;
+		}
 		if (
 			typeof termsText === 'string' &&
 			termsText.includes( '[terms]' )
@@ -41,7 +54,7 @@ export const TermsAndConditionsCheckbox = (): ReactElement => {
 			termsText = termsText.replace( /\[terms\]/, '<terms/>' );
 		}
 		setTermsAndConditionsText( termsText );
-	}, [ getSetting ] );
+	}, [ getSetting, text ] );
 
 	const isCheckboxInvalid =
 		! isTermsAcceptedCheckboxPristine &&
