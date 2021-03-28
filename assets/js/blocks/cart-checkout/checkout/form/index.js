@@ -23,6 +23,7 @@ const CheckoutForm = ( {
 	showOrderNotes,
 	showPhoneField,
 	allowCreateAccount,
+	termsAndConditionsText,
 	requireTermsAndConditions,
 } ) => {
 	const { onSubmit } = useCheckoutContext();
@@ -39,7 +40,9 @@ const CheckoutForm = ( {
 			/>
 			<ShippingOptionsStep />
 			<PaymentMethodStep />
-			{ requireTermsAndConditions && <TermsAndConditionsCheckbox /> }
+			{ requireTermsAndConditions && (
+				<TermsAndConditionsCheckbox text={ termsAndConditionsText } />
+			) }
 			{ showOrderNotes && <OrderNotesStep /> }
 		</Form>
 	);

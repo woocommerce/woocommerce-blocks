@@ -139,6 +139,9 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 						requireCompanyField={ attributes.requireCompanyField }
 						requirePhoneField={ attributes.requirePhoneField }
 						allowCreateAccount={ allowCreateAccount }
+						termsAndConditionsText={
+							attributes.termsAndConditionsText
+						}
 						requireTermsAndConditions={
 							attributes.requireTermsAndConditions
 						}
