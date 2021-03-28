@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { HAS_DARK_EDITOR_STYLE_SUPPORT } from '@woocommerce/block-settings';
 
 const blockAttributes = {
@@ -56,6 +57,14 @@ const blockAttributes = {
 	requireTermsAndConditions: {
 		type: 'boolean',
 		default: false,
+	},
+	termsAndConditionsText: {
+		type: 'string',
+		// translators: [terms] is the link to the Terms and Conditions page.
+		default: __(
+			'I have read and agree to the website [terms].',
+			'woocommerce'
+		),
 	},
 };
 
