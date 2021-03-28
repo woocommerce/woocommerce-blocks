@@ -40,7 +40,7 @@ export const TermsAndConditionsCheckbox = ( {
 
 	const [ termsAndConditionsText, setTermsAndConditionsText ] = useState<
 		string
-	>( getSetting( 'terms_and_conditions_text' ) );
+	>( defaultTermsAndConditionsText );
 
 	useEffect( () => {
 		let termsText = text;
