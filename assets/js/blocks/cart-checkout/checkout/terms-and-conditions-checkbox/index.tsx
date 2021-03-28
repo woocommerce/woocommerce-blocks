@@ -43,8 +43,8 @@ export const TermsAndConditionsCheckbox = ( {
 	>( defaultTermsAndConditionsText );
 
 	useEffect( () => {
-		let termsText = text;
-		if ( text === '' ) {
+		let termsText = text?.trim();
+		if ( ! termsText ) {
 			termsText = defaultTermsAndConditionsText;
 		}
 		if (
