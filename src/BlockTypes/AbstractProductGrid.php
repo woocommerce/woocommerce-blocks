@@ -2,6 +2,8 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use Automattic\WooCommerce\Blocks\Utils\BlocksWpQuery;
+use Automattic\WooCommerce\Blocks\StoreApi\SchemaController;
+use Automattic\WooCommerce\Blocks\Package;
 
 /**
  * AbstractProductGrid class.
@@ -62,32 +64,41 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		$this->attributes = $this->parse_attributes( $attributes );
 		$this->content    = $content;
 		$this->query_args = $this->parse_query_args();
-		$products         = $this->get_products();
+		$products         = array_filter( array_map( 'wc_get_product', $this->get_products() ) );
 
 		if ( ! $products ) {
 			return '';
 		}
 
 		/**
-		 * Hook: experimental__woocommerce_blocks_product_grid_render_products
-		 *
-		 * Filters the output of the rendered products.
-		 *
-		 * @param string $content    Rendered content.
-		 * @param string $block_name Block name.
-		 * @param array  $products   Array of product objects.
-		 * @param array  $attributes Block attributes.
+		 * Inline product data dispatched to JavaScript events. Uses same schema as the Store API.
 		 */
-		return apply_filters(
-			'experimental__woocommerce_blocks_product_grid_render_products',
-			sprintf(
-				'<div class="%s"><ul class="wc-block-grid__products">%s</ul></div>',
-				esc_attr( $this->get_container_classes() ),
-				implode( '', array_map( array( $this, 'render_product' ), $products ) )
-			),
-			$this->block_name,
-			$products,
-			$attributes
+		$product_schema_controller = Package::container()->get( SchemaController::class )->get( 'product' );
+		$inline_product_data       = array_map(
+			[ $product_schema_controller, 'get_item_response' ],
+			$products
+		);
+
+		wp_add_inline_script(
+			'wp-hooks',
+			'
+			window.addEventListener( "DOMContentLoaded", () => {
+				wp.hooks.doAction(
+					"experimental__woocommerce_blocks-product-list-render",
+					{
+						products: JSON.parse( decodeURIComponent( "' . esc_js( rawurlencode( wp_json_encode( $inline_product_data ) ) ) . '" ) ),
+						listName: "' . esc_js( $this->block_name ) . '"
+					}
+				);
+			} );
+			',
+			'after'
+		);
+
+		return sprintf(
+			'<div class="%s"><ul class="wc-block-grid__products">%s</ul></div>',
+			esc_attr( $this->get_container_classes() ),
+			implode( '', array_map( array( $this, 'render_product' ), $products ) )
 		);
 	}
 
@@ -322,16 +333,10 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	/**
 	 * Render a single products.
 	 *
-	 * @param int $id Product ID.
+	 * @param \WC_Product $product Product object.
 	 * @return string Rendered product output.
 	 */
-	protected function render_product( $id ) {
-		$product = wc_get_product( $id );
-
-		if ( ! $product ) {
-			return '';
-		}
-
+	protected function render_product( $product ) {
 		$data = (object) array(
 			'permalink' => esc_url( $product->get_permalink() ),
 			'image'     => $this->get_image_html( $product ),
