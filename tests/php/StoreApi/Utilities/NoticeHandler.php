@@ -14,8 +14,8 @@ use \WC_Helper_Product as ProductHelper;
 class NoticeHandlerTests extends TestCase {
 
 	public function test_convert_notices_to_exceptions() {
-		$this->expectException(RouteException::class);
-		$this->expectExceptionMessage('This is an error message with Some HTML in it.');
+		$this->expectException( RouteException::class );
+		$this->expectExceptionMessage( 'This is an error message with Some HTML in it.' );
 		wc_add_notice( '<strong>This is an error message with <a href="#">Some HTML in it</a>.', 'error' );
 		$errors = NoticeHandler::convert_notices_to_exceptions( 'test_error' );
 	}
