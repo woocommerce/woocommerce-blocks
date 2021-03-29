@@ -7,6 +7,15 @@ import { defaultAddressFields, getSetting } from '@woocommerce/settings';
 import { __, sprintf } from '@wordpress/i18n';
 
 /**
+ * Internal dependencies
+ */
+import {
+	AddressField,
+	AddressFields,
+} from './default-address-fields';
+import countryAddressFields from './country-address-fields';
+
+/**
  * This is locale data from WooCommerce countries class. This doesn't match the shape of the new field data blocks uses,
  * but we can import part of it to set which fields are required.
  *
@@ -82,7 +91,11 @@ const countryAddressFields = Object.entries( coreLocale )
  * @param {string} addressCountry Address country code. If unknown, locale fields will not be merged.
  * @return {CountryAddressFields} Object containing address fields.
  */
-const prepareAddressFields = ( fields, fieldConfigs, addressCountry = '' ) => {
+const prepareAddressFields = (
+	fields: ( keyof AddressFields )[],
+	fieldConfigs: Record< string, unknown >,
+	addressCountry = ''
+) => {
 	const localeConfigs =
 		addressCountry && countryAddressFields[ addressCountry ] !== undefined
 			? countryAddressFields[ addressCountry ]
@@ -90,9 +103,10 @@ const prepareAddressFields = ( fields, fieldConfigs, addressCountry = '' ) => {
 
 	return fields
 		.map( ( field ) => {
-			const defaultConfig = defaultAddressFields[ field ] || {};
-			const localeConfig = localeConfigs[ field ] || {};
-			const fieldConfig = fieldConfigs[ field ] || {};
+			const defaultConfig =
+				defaultAddressFields[ field ] || Object.assign( {} );
+			const localeConfig = localeConfigs[ field ] || Object.assign( {} );
+			const fieldConfig = fieldConfigs[ field ] || Object.assign( {} );
 
 			return {
 				key: field,
