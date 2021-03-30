@@ -83,7 +83,7 @@ const AddressForm = ( {
 	>;
 	instanceId: number;
 	onChange: ( address: Address ) => void;
-	type: string;
+	type: 'shipping' | 'billing';
 	values: Address;
 } ) => {
 	const {
@@ -132,7 +132,8 @@ const AddressForm = ( {
 			values.postcode,
 			values.country,
 			setValidationErrors,
-			clearValidationError
+			clearValidationError,
+			type
 		);
 	}, [
 		values.postcode,
@@ -215,6 +216,20 @@ const AddressForm = ( {
 					);
 				}
 
+				let customValidationProps = {};
+				if ( field.key === 'postcode' ) {
+					customValidationProps = {
+						customValidation: ( value: string ) =>
+							validatePostcode(
+								value,
+								values.country,
+								setValidationErrors,
+								clearValidationError,
+								type
+							),
+					};
+				}
+
 				return (
 					<ValidatedTextInput
 						key={ field.key }
@@ -234,6 +249,7 @@ const AddressForm = ( {
 						}
 						errorMessage={ field.errorMessage }
 						required={ field.required }
+						{ ...customValidationProps }
 					/>
 				);
 			} ) }
