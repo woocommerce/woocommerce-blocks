@@ -3,14 +3,6 @@
  */
 import PropTypes from 'prop-types';
 import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
-import {
-	BillingCountryInput,
-	ShippingCountryInput,
-} from '@woocommerce/base-components/country-input';
-import {
-	BillingStateInput,
-	ShippingStateInput,
-} from '@woocommerce/base-components/state-input';
 import { useValidationContext } from '@woocommerce/base-context';
 import { useEffect, useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -22,14 +14,22 @@ import { defaultAddressFields } from '@woocommerce/settings';
  * Internal dependencies
  */
 import prepareAddressFields from './prepare-address-fields';
+import { validatePostcode } from './validate-postcode';
+import type {
+	Address,
+	AddressFieldConfiguration,
+	AddressFields,
+} from '../../../../type-defs/customer';
+import { BillingCountryInput, ShippingCountryInput } from '../../country-input';
+import { BillingStateInput, ShippingStateInput } from '../../state-input';
 
 // If it's the shipping address form and the user starts entering address
 // values without having set the country first, show an error.
 const validateShippingCountry = (
-	values,
-	setValidationErrors,
-	clearValidationError,
-	hasValidationError
+	values: Address,
+	setValidationErrors: ( errors: Record< string, unknown > ) => void,
+	clearValidationError: ( error: string ) => void,
+	hasValidationError: boolean
 ) => {
 	if (
 		! hasValidationError &&
@@ -65,12 +65,26 @@ const validateShippingCountry = (
  */
 const AddressForm = ( {
 	id,
-	fields = Object.keys( defaultAddressFields ),
-	fieldConfig = {},
+	fields = Object.keys( defaultAddressFields ) as ( keyof AddressFields )[],
+	fieldConfig = {} as Record<
+		keyof AddressFields,
+		Partial< AddressFieldConfiguration >
+	>,
 	instanceId,
 	onChange,
 	type = 'shipping',
 	values,
+}: {
+	id: string | number;
+	fields: ( keyof AddressFields )[];
+	fieldConfig: Record<
+		keyof AddressFields,
+		Partial< AddressFieldConfiguration >
+	>;
+	instanceId: number;
+	onChange: ( address: Address ) => void;
+	type: string;
+	values: Address;
 } ) => {
 	const {
 		getValidationError,
@@ -80,8 +94,9 @@ const AddressForm = ( {
 
 	const currentFields = useShallowEqual( fields );
 
-	const countryValidationError =
-		getValidationError( 'shipping-missing-country' ) || {};
+	const countryValidationError = ( getValidationError(
+		'shipping-missing-country'
+	) || {} ) as { message: string; hidden: boolean };
 
 	const addressFormFields = useMemo( () => {
 		return prepareAddressFields(
@@ -97,8 +112,10 @@ const AddressForm = ( {
 				values,
 				setValidationErrors,
 				clearValidationError,
-				countryValidationError.message &&
+				!! (
+					countryValidationError.message &&
 					! countryValidationError.hidden
+				)
 			);
 		}
 	}, [
@@ -110,7 +127,21 @@ const AddressForm = ( {
 		type,
 	] );
 
-	id = id || instanceId;
+	useEffect( () => {
+		validatePostcode(
+			values.postcode,
+			values.country,
+			setValidationErrors,
+			clearValidationError
+		);
+	}, [
+		values.postcode,
+		values.country,
+		setValidationErrors,
+		clearValidationError,
+	] );
+
+	id = ( id || instanceId ).toString();
 
 	return (
 		<div id={ id } className="wc-block-components-address-form">
@@ -195,7 +226,7 @@ const AddressForm = ( {
 						value={ values[ field.key ] }
 						autoCapitalize={ field.autocapitalize }
 						autoComplete={ field.autocomplete }
-						onChange={ ( newValue ) =>
+						onChange={ ( newValue: string ) =>
 							onChange( {
 								...values,
 								[ field.key ]: newValue,
