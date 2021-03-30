@@ -9,12 +9,12 @@ import { getSetting } from '@woocommerce/settings';
  */
 import type {
 	AddressFields,
-	AddressField,
+	AddressFieldConfiguration,
 } from '../../../../type-defs/customer';
 
 type CoreLocaleSettings = Record<
 	string,
-	Record< keyof AddressFields, AddressField >
+	Record< keyof AddressFields, AddressFieldConfiguration >
 >;
 
 /**
@@ -34,9 +34,9 @@ const coreLocale: CoreLocaleSettings = getSetting( 'countryLocale', {} );
  * @return {Object} Supported locale fields.
  */
 const getSupportedProps = (
-	localeField: AddressField
-): Partial< AddressField > => {
-	const fields: Partial< AddressField > = {};
+	localeField: AddressFieldConfiguration
+): Partial< AddressFieldConfiguration > => {
+	const fields: Partial< AddressFieldConfiguration > = {};
 
 	if ( localeField.label !== undefined ) {
 		fields.label = localeField.label;
@@ -75,12 +75,14 @@ const getSupportedProps = (
 const coreAddressFieldConfig = Object.entries( coreLocale )
 	.map( ( [ country, countryLocale ] ) => [
 		country,
-		Object.entries< AddressField >( countryLocale )
-			.map( ( [ localeFieldKey, localeField ] ) => [
-				localeFieldKey,
-				getSupportedProps( localeField ),
-			] )
-			.reduce< AddressField >( ( obj, [ key, val ] ) => {
+		Object.entries( countryLocale )
+			.map( ( [ localeFieldKey, localeField ] ) => {
+				return [ localeFieldKey, getSupportedProps( localeField ) ] as [
+					keyof AddressFieldConfiguration,
+					AddressFieldConfiguration
+				];
+			} )
+			.reduce( ( obj, [ key, val ] ) => {
 				obj[ key ] = val;
 				return obj;
 			}, Object.assign( {} ) ),

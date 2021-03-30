@@ -8,21 +8,21 @@ import { __ } from '@wordpress/i18n';
  */
 import type {
 	AddressFields as AddressFieldsType,
-	AddressField,
+	AddressFieldConfiguration,
 } from '../../../../type-defs/customer';
 
 /**
  * Default address field properties.
  *
- * @property {AddressField} first_name Customer first name.
- * @property {AddressField} last_name  Customer last name.
- * @property {AddressField} company    Company name.
- * @property {AddressField} address_1  Street address.
- * @property {AddressField} address_2  Second line of address.
- * @property {AddressField} country    Country code.
- * @property {AddressField} city       City name.
- * @property {AddressField} state      State name or code.
- * @property {AddressField} postcode   Postal code.
+ * @property {AddressFieldConfiguration} first_name Customer first name.
+ * @property {AddressFieldConfiguration} last_name  Customer last name.
+ * @property {AddressFieldConfiguration} company    Company name.
+ * @property {AddressFieldConfiguration} address_1  Street address.
+ * @property {AddressFieldConfiguration} address_2  Second line of address.
+ * @property {AddressFieldConfiguration} country    Country code.
+ * @property {AddressFieldConfiguration} city       City name.
+ * @property {AddressFieldConfiguration} state      State name or code.
+ * @property {AddressFieldConfiguration} postcode   Postal code.
  */
 const AddressFields: AddressFieldsType = {
 	first_name: {

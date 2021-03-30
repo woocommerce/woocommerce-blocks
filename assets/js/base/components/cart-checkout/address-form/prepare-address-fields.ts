@@ -9,11 +9,12 @@ import { __, sprintf } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import countryAddressFields from './country-address-fields';
 import {
 	AddressField,
 	AddressFields,
-} from './default-address-fields';
-import countryAddressFields from './country-address-fields';
+	KeyedAddressFieldConfiguration,
+} from '../../../../type-defs/customer';
 
 /**
  * This is locale data from WooCommerce countries class. This doesn't match the shape of the new field data blocks uses,
@@ -89,17 +90,23 @@ const countryAddressFields = Object.entries( coreLocale )
  * @param {Array} fields List of field keys--only address fields matching these will be returned.
  * @param {Object} fieldConfigs Fields config contains field specific overrides at block level which may, for example, hide a field.
  * @param {string} addressCountry Address country code. If unknown, locale fields will not be merged.
- * @return {CountryAddressFields} Object containing address fields.
  */
 const prepareAddressFields = (
-	fields: ( keyof AddressFields )[],
-	fieldConfigs: Record< string, unknown >,
+	fields: ( keyof AddressFields )[] | undefined,
+	fieldConfigs: Record<
+		keyof AddressFields,
+		Partial< AddressFieldConfiguration >
+	>,
 	addressCountry = ''
-) => {
+): KeyedAddressFieldConfiguration[] => {
 	const localeConfigs =
 		addressCountry && countryAddressFields[ addressCountry ] !== undefined
 			? countryAddressFields[ addressCountry ]
 			: {};
+
+	if ( fields === undefined ) {
+		return [];
+	}
 
 	return fields
 		.map( ( field ) => {
