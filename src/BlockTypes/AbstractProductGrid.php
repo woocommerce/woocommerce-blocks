@@ -71,22 +71,31 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		}
 
 		/**
-		 * Inline product data dispatched to JavaScript events. Uses same schema as the Store API.
+		 * Product List Render event.
+		 *
+		 * Fires a WP Hook named `experimental__woocommerce_blocks-product-list-render` on render so that the client
+		 * can add event handling when certain products are displayed. This can be used by tracking extensions such
+		 * as Google Analytics to track impressions.
+		 *
+		 * Provides the list of product data (shaped like the Store API responses) and the block name.
 		 */
-		$product_schema_controller = Package::container()->get( SchemaController::class )->get( 'product' );
-		$inline_product_data       = array_map(
-			[ $product_schema_controller, 'get_item_response' ],
-			$products
-		);
-
-		wp_add_inline_script(
+		$this->asset_api->add_inline_script(
 			'wp-hooks',
 			'
 			window.addEventListener( "DOMContentLoaded", () => {
 				wp.hooks.doAction(
 					"experimental__woocommerce_blocks-product-list-render",
 					{
-						products: JSON.parse( decodeURIComponent( "' . esc_js( rawurlencode( wp_json_encode( $inline_product_data ) ) ) . '" ) ),
+						products: JSON.parse( decodeURIComponent( "' . esc_js(
+				rawurlencode(
+					wp_json_encode(
+						array_map(
+							[ Package::container()->get( SchemaController::class )->get( 'product' ), 'get_item_response' ],
+							$products
+						)
+					)
+				)
+			) . '" ) ),
 						listName: "' . esc_js( $this->block_name ) . '"
 					}
 				);
