@@ -78,9 +78,9 @@ abstract class AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	public function render_callback( $attributes = [], $content = '' ) {
-		$render_attributes = $this->parse_render_callback_attributes( $attributes );
-		$this->enqueue_assets( $render_attributes );
-		return $this->render( $render_attributes, $content );
+		$render_callback_attributes = $this->parse_render_callback_attributes( $attributes );
+		$this->enqueue_assets( $render_callback_attributes );
+		return $this->render( $render_callback_attributes, $content );
 	}
 
 	/**
