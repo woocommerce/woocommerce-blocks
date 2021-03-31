@@ -11,11 +11,8 @@ import {
 	useRef,
 	useMemo,
 } from '@wordpress/element';
-import {
-	useStoreNotices,
-	useEmitResponse,
-	useStoreEvents,
-} from '@woocommerce/base-hooks';
+import { useEmitResponse, useStoreEvents } from '@woocommerce/base-hooks';
+import { useStoreNotices } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies

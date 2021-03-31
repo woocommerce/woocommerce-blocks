@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { SnackbarList } from 'wordpress-components';
-import { useStoreNotices } from '@woocommerce/base-hooks';
+import { useStoreNotices } from '@woocommerce/base-context/hooks';
 import { useEditorContext } from '@woocommerce/base-context';
 
 const NoticesContainer = () => {

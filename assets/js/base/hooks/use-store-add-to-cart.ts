@@ -6,10 +6,11 @@ import { useDispatch } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { decodeEntities } from '@wordpress/html-entities';
 import type { CartItem } from '@woocommerce/types';
+import { useStoreNotices } from '@woocommerce/base-context/hooks';
+
 /**
  * Internal dependencies
  */
-import { useStoreNotices } from './use-store-notices';
 import { useStoreCart } from './cart';
 
 /**

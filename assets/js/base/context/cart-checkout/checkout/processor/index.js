@@ -10,8 +10,9 @@ import {
 	useState,
 	useMemo,
 } from '@wordpress/element';
-import { useStoreCart, useStoreNotices } from '@woocommerce/base-hooks';
+import { useStoreCart } from '@woocommerce/base-hooks';
 import { formatStoreApiErrorMessage } from '@woocommerce/base-utils';
+import { useStoreNotices } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies

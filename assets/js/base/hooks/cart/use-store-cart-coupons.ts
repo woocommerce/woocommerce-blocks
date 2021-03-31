@@ -9,11 +9,12 @@ import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useValidationContext } from '@woocommerce/base-context';
 import { decodeEntities } from '@wordpress/html-entities';
 import type { StoreCartCoupon } from '@woocommerce/types';
+import { useStoreNotices } from '@woocommerce/base-context/hooks';
+
 /**
  * Internal dependencies
  */
 import { useStoreCart } from './use-store-cart';
-import { useStoreNotices } from '../use-store-notices';
 
 /**
  * This is a custom hook for loading the Store API /cart/coupons endpoint and an

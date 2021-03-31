@@ -1,8 +1,12 @@
 /**
  * External dependencies
  */
-import { useStoreNoticesContext } from '@woocommerce/base-context';
 import { useMemo, useRef, useEffect } from '@wordpress/element';
+
+/**
+ * Internal dependencies
+ */
+import { useStoreNoticesContext } from '../store-notices-context';
 
 export const useStoreNotices = () => {
 	const {

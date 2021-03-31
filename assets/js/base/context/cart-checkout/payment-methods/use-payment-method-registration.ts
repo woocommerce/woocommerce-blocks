@@ -11,8 +11,8 @@ import {
 	useEmitResponse,
 	useShallowEqual,
 	useStoreCart,
-	useStoreNotices,
 } from '@woocommerce/base-hooks';
+import { useStoreNotices } from '@woocommerce/base-context/hooks';
 import {
 	CURRENT_USER_IS_ADMIN,
 	PAYMENT_GATEWAY_SORT_ORDER,

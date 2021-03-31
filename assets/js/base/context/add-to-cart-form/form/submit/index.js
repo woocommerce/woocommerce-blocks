@@ -4,7 +4,8 @@
 import { __ } from '@wordpress/i18n';
 import triggerFetch from '@wordpress/api-fetch';
 import { useEffect, useCallback, useState } from '@wordpress/element';
-import { useStoreCart, useStoreNotices } from '@woocommerce/base-hooks';
+import { useStoreCart } from '@woocommerce/base-hooks';
+import { useStoreNotices } from '@woocommerce/base-context/hooks';
 import { decodeEntities } from '@wordpress/html-entities';
 import { triggerFragmentRefresh } from '@woocommerce/base-utils';
 

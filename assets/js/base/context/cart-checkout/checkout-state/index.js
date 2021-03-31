@@ -13,11 +13,11 @@ import {
 import { __ } from '@wordpress/i18n';
 import {
 	useCheckoutNotices,
-	useStoreNotices,
 	useEmitResponse,
 	usePrevious,
 	useStoreEvents,
 } from '@woocommerce/base-hooks';
+import { useStoreNotices } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies

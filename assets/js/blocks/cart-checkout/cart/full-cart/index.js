@@ -22,11 +22,8 @@ import {
 	COUPONS_ENABLED,
 	DISPLAY_CART_PRICES_INCLUDING_TAX,
 } from '@woocommerce/block-settings';
-import {
-	useStoreCartCoupons,
-	useStoreCart,
-	useStoreNotices,
-} from '@woocommerce/base-hooks';
+import { useStoreCartCoupons, useStoreCart } from '@woocommerce/base-hooks';
+import { useStoreNotices } from '@woocommerce/base-context/hooks';
 import classnames from 'classnames';
 import {
 	Sidebar,
