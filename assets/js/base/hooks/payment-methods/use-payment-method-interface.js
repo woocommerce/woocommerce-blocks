@@ -16,11 +16,15 @@ import {
 	PaymentMethodIcons,
 	PaymentMethodLabel,
 } from '@woocommerce/base-components/cart-checkout';
+import {
+	useStoreCart,
+	useStoreCartCoupons,
+} from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
  */
-import { useStoreCartCoupons, useStoreCart, useEmitResponse } from '..';
+import { useEmitResponse } from '..';
 
 /**
  * @typedef {import('@woocommerce/type-defs/registered-payment-method-props').RegisteredPaymentMethodProps} RegisteredPaymentMethodProps

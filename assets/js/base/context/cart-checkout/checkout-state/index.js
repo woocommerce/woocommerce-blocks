@@ -32,7 +32,7 @@ import {
 	emitEventWithAbort,
 	reducer as emitReducer,
 } from './event-emit';
-import { useValidationContext } from '../../shared/validation';
+import { useValidationContext } from '../../validation';
 
 /**
  * @typedef {import('@woocommerce/type-defs/checkout').CheckoutDispatchActions} CheckoutDispatchActions

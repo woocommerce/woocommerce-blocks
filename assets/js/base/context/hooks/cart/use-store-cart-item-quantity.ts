@@ -5,7 +5,7 @@ import { useSelect, useDispatch } from '@wordpress/data';
 import { useState, useEffect } from '@wordpress/element';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useDebounce } from 'use-debounce';
-import { useCheckoutContext } from '@woocommerce/base-context';
+import { usePrevious } from '@woocommerce/base-hooks';
 import { triggerFragmentRefresh } from '@woocommerce/base-utils';
 import type { CartItem, StoreCartItemQuantity } from '@woocommerce/types';
 
@@ -13,7 +13,7 @@ import type { CartItem, StoreCartItemQuantity } from '@woocommerce/types';
  * Internal dependencies
  */
 import { useStoreCart } from './use-store-cart';
-import { usePrevious } from '../use-previous';
+import { useCheckoutContext } from '../../cart-checkout';
 
 /**
  * This is a custom hook for loading the Store API /cart/ endpoint and actions for removing or changing item quantity.

@@ -5,3 +5,4 @@ export * from './store-notices-context';
 export * from './editor';
 export * from './add-to-cart-form';
 export * from './shared';
+export * from './validation';

@@ -7,7 +7,6 @@ import { isEqual } from 'lodash';
 import { useRef } from '@wordpress/element';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
-import { useEditorContext } from '@woocommerce/base-context';
 import { decodeEntities } from '@wordpress/html-entities';
 import type {
 	StoreCart,
@@ -17,6 +16,11 @@ import type {
 	CartResponseShippingAddress,
 } from '@woocommerce/types';
 import { fromEntriesPolyfill } from '@woocommerce/base-utils';
+
+/**
+ * Internal dependencies
+ */
+import { useEditorContext } from '../../editor';
 
 declare module '@wordpress/html-entities' {
 	// eslint-disable-next-line @typescript-eslint/no-shadow

@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { useStoreCart } from '@woocommerce/base-hooks';
+import { useStoreCart } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies

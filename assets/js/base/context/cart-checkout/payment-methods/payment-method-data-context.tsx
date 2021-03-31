@@ -47,7 +47,7 @@ import {
 	emitEventWithAbort,
 	reducer as emitReducer,
 } from './event-emit';
-import { useValidationContext } from '../../shared/validation';
+import { useValidationContext } from '../../validation';
 
 import type {
 	PaymentStatusDispatchers,

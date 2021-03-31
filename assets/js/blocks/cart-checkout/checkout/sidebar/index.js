@@ -20,7 +20,7 @@ import {
 	COUPONS_ENABLED,
 	DISPLAY_CART_PRICES_INCLUDING_TAX,
 } from '@woocommerce/block-settings';
-import { useStoreCartCoupons } from '@woocommerce/base-hooks';
+import { useStoreCartCoupons } from '@woocommerce/base-context/hooks';
 
 const CheckoutSidebar = ( {
 	cartCoupons = [],

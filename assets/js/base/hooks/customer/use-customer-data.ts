@@ -16,13 +16,12 @@ declare type CustomerData = {
 	billingData: CartResponseBillingAddress;
 	shippingAddress: CartResponseShippingAddress;
 };
-import { useStoreNotices } from '@woocommerce/base-context/hooks';
+import { useStoreCart, useStoreNotices } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
  */
 import { shouldUpdateAddressStore } from './utils';
-import { useStoreCart } from '../cart';
 
 /**
  * This is a custom hook for syncing customer address data (billing and shipping) with the server.

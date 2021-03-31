@@ -7,12 +7,8 @@ import {
 	getExpressPaymentMethods,
 } from '@woocommerce/blocks-registry';
 import { useState, useEffect, useRef, useCallback } from '@wordpress/element';
-import {
-	useEmitResponse,
-	useShallowEqual,
-	useStoreCart,
-} from '@woocommerce/base-hooks';
-import { useStoreNotices } from '@woocommerce/base-context/hooks';
+import { useEmitResponse, useShallowEqual } from '@woocommerce/base-hooks';
+import { useStoreCart, useStoreNotices } from '@woocommerce/base-context/hooks';
 import {
 	CURRENT_USER_IS_ADMIN,
 	PAYMENT_GATEWAY_SORT_ORDER,
