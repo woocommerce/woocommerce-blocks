@@ -5,12 +5,12 @@ import { useState, useEffect, useMemo } from '@wordpress/element';
 import { useQueryStateContext } from '@woocommerce/base-context';
 import { useDebounce } from 'use-debounce';
 import { sortBy } from 'lodash';
+import { useShallowEqual } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
  */
-import { useShallowEqual } from './use-shallow-equal';
-import { useQueryStateByContext, useQueryStateByKey } from './use-query-state';
+import { useQueryStateByContext, useQueryStateByKey } from '../use-query-state';
 import { useCollection } from './use-collection';
 
 const buildCollectionDataQuery = ( collectionDataQueryState ) => {

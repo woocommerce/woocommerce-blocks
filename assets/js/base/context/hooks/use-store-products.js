@@ -1,8 +1,7 @@
 /**
  * Internal dependencies
  */
-import { useCollection } from './use-collection';
-import { useCollectionHeader } from './use-collection-header';
+import { useCollectionHeader, useCollection } from './collections';
 
 /**
  * This is a custom hook that is wired up to the `wc/store/collections` data
