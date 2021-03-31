@@ -13,7 +13,7 @@ import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
  * Internal dependencies
  */
 import { ValidationInputError } from '../validation';
-import Select from './index';
+import Select from './select';
 import './style.scss';
 
 const ValidatedSelect = ( {
