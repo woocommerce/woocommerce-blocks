@@ -6,10 +6,8 @@ import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { useEffect, useRef } from '@wordpress/element';
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 import { ValidationInputError } from '@woocommerce/base-components/validation';
-import {
-	PaymentMethodIcons,
-	PaymentMethodLabel,
-} from '@woocommerce/base-components/cart-checkout';
+import PaymentMethodLabel from '@woocommerce/base-components/cart-checkout/payment-method-label';
+import PaymentMethodIcons from '@woocommerce/base-components/cart-checkout/payment-method-icons';
 
 /**
  * Internal dependencies
