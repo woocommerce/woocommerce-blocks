@@ -4,7 +4,6 @@
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Notice } from 'wordpress-components';
-import { useStoreNoticesContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -24,8 +23,7 @@ const getWooClassName = ( { status = 'default' } ) => {
 	return '';
 };
 
-const StoreNoticesContainer = ( { className, notices } ) => {
-	const { removeNotice } = useStoreNoticesContext();
+const StoreNoticesContainer = ( { className, notices, removeNotice } ) => {
 	const regularNotices = notices.filter(
 		( notice ) => notice.type !== 'snackbar'
 	);

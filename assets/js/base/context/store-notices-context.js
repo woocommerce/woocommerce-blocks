@@ -18,6 +18,7 @@ import {
  * Internal dependencies
  */
 import { useStoreEvents } from './hooks/use-store-events';
+import { useEditorContext } from './editor';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').NoticeContext} NoticeContext
@@ -67,6 +68,7 @@ export const StoreNoticesProvider = ( {
 	const { createNotice, removeNotice } = useDispatch( 'core/notices' );
 	const [ isSuppressed, setIsSuppressed ] = useState( false );
 	const { dispatchStoreEvent } = useStoreEvents();
+	const { isEditor } = useEditorContext();
 
 	const createNoticeWithContext = useCallback(
 		( status = 'default', content = '', options = {} ) => {
@@ -122,11 +124,17 @@ export const StoreNoticesProvider = ( {
 		<StoreNoticesContainer
 			className={ className }
 			notices={ contextValue.notices }
+			removeNotice={ contextValue.removeNotice }
+			isEditor={ isEditor }
 		/>
 	);
 
 	const snackbarNoticeOutput = isSuppressed ? null : (
-		<SnackbarNoticesContainer />
+		<SnackbarNoticesContainer
+			notices={ contextValue.notices }
+			removeNotice={ contextValue.removeNotice }
+			isEditor={ isEditor }
+		/>
 	);
 
 	return (

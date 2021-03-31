@@ -2,13 +2,9 @@
  * External dependencies
  */
 import { SnackbarList } from 'wordpress-components';
-import { useStoreNotices } from '@woocommerce/base-context/hooks';
-import { useEditorContext } from '@woocommerce/base-context';
+import classnames from 'classnames';
 
-const NoticesContainer = () => {
-	const { isEditor } = useEditorContext();
-	const { notices, removeNotice } = useStoreNotices();
-
+const NoticesContainer = ( { className, notices, removeNotice, isEditor } ) => {
 	if ( isEditor ) {
 		return null;
 	}
@@ -17,10 +13,15 @@ const NoticesContainer = () => {
 		( notice ) => notice.type === 'snackbar'
 	);
 
+	const wrapperClass = classnames(
+		className,
+		'wc-block-components-notices__snackbar'
+	);
+
 	return (
 		<SnackbarList
 			notices={ snackbarNotices }
-			className={ 'wc-block-components-notices__snackbar' }
+			className={ wrapperClass }
 			onRemove={ removeNotice }
 		/>
 	);
