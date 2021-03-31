@@ -8,11 +8,11 @@ import { useShallowEqual } from '@woocommerce/base-hooks';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
+import ValidationInputError from '@woocommerce/base-context/components';
 
 /**
  * Internal dependencies
  */
-import { ValidationInputError } from '../validation';
 import Select from './select';
 import './style.scss';
 

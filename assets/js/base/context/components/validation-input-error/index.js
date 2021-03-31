@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { useValidationContext } from '@woocommerce/base-context';
 import PropTypes from 'prop-types';
 
 /**
  * Internal dependencies
  */
+import { useValidationContext } from '../../validation';
 import './style.scss';
 
 export const ValidationInputError = ( {
@@ -36,3 +36,5 @@ ValidationInputError.propTypes = {
 	propertyName: PropTypes.string,
 	elementId: PropTypes.string,
 };
+
+export default ValidationInputError;

@@ -6,7 +6,7 @@ import { useCallback, useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useValidationContext } from '@woocommerce/base-context';
-import { ValidationInputError } from '@woocommerce/base-components/validation';
+import ValidationInputError from '@woocommerce/base-context/components';
 import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
 
 /**

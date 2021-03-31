@@ -7,7 +7,7 @@ import { SelectControl } from '@wordpress/components';
 import { useValidationContext } from '@woocommerce/base-context';
 import { useEffect } from 'react';
 import classnames from 'classnames';
-import { ValidationInputError } from '@woocommerce/base-components/validation';
+import ValidationInputError from '@woocommerce/base-context/components';
 
 // Default option for select boxes.
 const selectAnOption = {
