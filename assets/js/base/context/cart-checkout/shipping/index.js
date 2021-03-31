@@ -9,8 +9,10 @@ import {
 	useMemo,
 	useRef,
 } from '@wordpress/element';
-import { useSelectShippingRates } from '@woocommerce/base-hooks';
-import { useStoreCart } from '@woocommerce/base-context/hooks';
+import {
+	useStoreCart,
+	useSelectShippingRates,
+} from '@woocommerce/base-context/hooks';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { deriveSelectedShippingRates } from '@woocommerce/base-utils';
 

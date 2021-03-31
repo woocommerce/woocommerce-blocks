@@ -6,7 +6,7 @@ import { _n, sprintf } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
 import Label from '@woocommerce/base-components/label';
 import Title from '@woocommerce/base-components/title';
-import { useSelectShippingRate } from '@woocommerce/base-hooks';
+import { useSelectShippingRate } from '@woocommerce/base-context/hooks';
 import type { ReactElement } from 'react';
 import type { Rate, PackageRateOption } from '@woocommerce/type-defs/shipping';
 

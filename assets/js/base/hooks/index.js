@@ -1,6 +1,5 @@
 export * from './checkout';
 export * from './payment-methods';
-export * from './shipping';
 export * from './use-container-queries';
 export * from './use-local-storage-state';
 export * from './use-position-relative-to-viewport';
