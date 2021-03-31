@@ -11,14 +11,12 @@ import {
 	useCallback,
 } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import {
-	useCheckoutNotices,
-	useEmitResponse,
-	usePrevious,
-} from '@woocommerce/base-hooks';
+import { usePrevious } from '@woocommerce/base-hooks';
 import {
 	useStoreEvents,
 	useStoreNotices,
+	useCheckoutNotices,
+	useEmitResponse,
 } from '@woocommerce/base-context/hooks';
 
 /**

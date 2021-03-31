@@ -7,8 +7,11 @@ import {
 	useCheckoutContext,
 	StoreNoticesProvider,
 } from '@woocommerce/base-context';
-import { useEmitResponse, usePaymentMethods } from '@woocommerce/base-hooks';
-import { useStoreCart } from '@woocommerce/base-context/hooks';
+import {
+	useStoreCart,
+	useEmitResponse,
+	usePaymentMethods,
+} from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies

@@ -1,12 +1,6 @@
 /**
  * External dependencies
  */
-import {
-	useCheckoutContext,
-	usePaymentMethodDataContext,
-	useShippingDataContext,
-	useCustomerDataContext,
-} from '@woocommerce/base-context';
 import { __ } from '@wordpress/i18n';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { useEffect, useRef } from '@wordpress/element';
@@ -16,15 +10,18 @@ import {
 	PaymentMethodIcons,
 	PaymentMethodLabel,
 } from '@woocommerce/base-components/cart-checkout';
-import {
-	useStoreCart,
-	useStoreCartCoupons,
-} from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
  */
-import { useEmitResponse } from '..';
+import { useStoreCart, useStoreCartCoupons } from '../cart';
+import { useEmitResponse } from '../checkout';
+import {
+	useCheckoutContext,
+	usePaymentMethodDataContext,
+	useShippingDataContext,
+	useCustomerDataContext,
+} from '../../';
 
 /**
  * @typedef {import('@woocommerce/type-defs/registered-payment-method-props').RegisteredPaymentMethodProps} RegisteredPaymentMethodProps

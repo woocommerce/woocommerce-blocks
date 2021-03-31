@@ -11,10 +11,10 @@ import {
 	useRef,
 	useMemo,
 } from '@wordpress/element';
-import { useEmitResponse } from '@woocommerce/base-hooks';
 import {
 	useStoreNotices,
 	useStoreEvents,
+	useEmitResponse,
 } from '@woocommerce/base-context/hooks';
 
 /**

@@ -3,11 +3,15 @@
  */
 import { defaultAddressFields } from '@woocommerce/base-components/cart-checkout';
 import { useState, useEffect, useCallback, useRef } from '@wordpress/element';
+
+/**
+ * Internal dependencies
+ */
 import {
 	useShippingDataContext,
 	useCustomerDataContext,
 	useCheckoutContext,
-} from '@woocommerce/base-context';
+} from '../../cart-checkout';
 
 /**
  * Compare two addresses and see if they are the same.

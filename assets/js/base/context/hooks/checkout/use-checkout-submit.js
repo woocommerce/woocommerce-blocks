@@ -2,14 +2,14 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	useCheckoutContext,
-	usePaymentMethodDataContext,
-} from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
  */
+import {
+	useCheckoutContext,
+	usePaymentMethodDataContext,
+} from '../../cart-checkout';
 import { usePaymentMethods } from '../payment-methods';
 
 /**

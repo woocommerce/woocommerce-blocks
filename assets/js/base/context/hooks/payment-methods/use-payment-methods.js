@@ -1,7 +1,7 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
-import { usePaymentMethodDataContext } from '@woocommerce/base-context';
+import { usePaymentMethodDataContext } from '../../cart-checkout/payment-methods';
 
 const usePaymentMethodState = ( express = false ) => {
 	const {

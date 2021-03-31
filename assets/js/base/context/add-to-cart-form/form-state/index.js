@@ -9,8 +9,11 @@ import {
 	useEffect,
 } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { useEmitResponse, useShallowEqual } from '@woocommerce/base-hooks';
-import { useStoreNotices } from '@woocommerce/base-context/hooks';
+import { useShallowEqual } from '@woocommerce/base-hooks';
+import {
+	useStoreNotices,
+	useEmitResponse,
+} from '@woocommerce/base-context/hooks';
 import {
 	productIsPurchasable,
 	productSupportsAddToCartForm,

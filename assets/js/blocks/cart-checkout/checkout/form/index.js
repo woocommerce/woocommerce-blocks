@@ -7,8 +7,10 @@ import {
 	useCheckoutContext,
 	useShippingDataContext,
 } from '@woocommerce/base-context';
-import { useCheckoutAddress } from '@woocommerce/base-hooks';
-import { useStoreEvents } from '@woocommerce/base-context/hooks';
+import {
+	useStoreEvents,
+	useCheckoutAddress,
+} from '@woocommerce/base-context/hooks';
 import { AddressForm } from '@woocommerce/base-components/cart-checkout';
 import Form from '@woocommerce/base-components/form';
 

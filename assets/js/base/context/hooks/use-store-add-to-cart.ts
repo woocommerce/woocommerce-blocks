@@ -10,7 +10,7 @@ import type { CartItem } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
-import { useStoreCart } from './cart';
+import { useStoreCart } from './cart/use-store-cart';
 import { useStoreNotices } from './use-store-notices';
 
 /**

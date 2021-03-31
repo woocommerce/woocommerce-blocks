@@ -19,7 +19,12 @@ declare type CustomerData = {
 	billingData: CartResponseBillingAddress;
 	shippingAddress: CartResponseShippingAddress;
 };
-import { useStoreCart, useStoreNotices } from '@woocommerce/base-context/hooks';
+
+/**
+ * Internal dependencies
+ */
+import { useStoreCart } from './cart/use-store-cart';
+import { useStoreNotices } from './use-store-notices';
 
 /**
  * Does a shallow compare of important address data to determine if the cart needs updating.
