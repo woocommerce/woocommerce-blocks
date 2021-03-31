@@ -9,12 +9,29 @@ use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
  */
 class GoogleAnalytics {
 	/**
-	 * Constructor
+	 * Instance of the asset API.
+	 *
+	 * @var AssetApi
 	 */
-	public function __construct() {
+	protected $asset_api;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param AssetApi $asset_api Instance of the asset API.
+	 */
+	public function __construct( AssetApi $asset_api ) {
 		if ( ! Package::feature()->is_experimental_build() ) {
 			return;
 		}
+		$this->asset_api = $asset_api;
+		$this->init();
+	}
+
+	/**
+	 * Hook into WP.
+	 */
+	protected function init() {
 		add_action( 'init', array( $this, 'register_assets' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_filter( 'script_loader_tag', array( $this, 'async_script_loader_tags' ), 10, 3 );
@@ -24,23 +41,13 @@ class GoogleAnalytics {
 	 * Register scripts.
 	 */
 	public function register_assets() {
-		$asset_api = Package::container()->get( AssetApi::class );
-		$asset_api->register_script( 'wc-blocks-google-analytics', 'build/wc-blocks-google-analytics.js', [ 'google-tag-manager' ] );
+		$this->asset_api->register_script( 'wc-blocks-google-analytics', 'build/wc-blocks-google-analytics.js', [ 'google-tag-manager' ] );
 	}
 
 	/**
 	 * Enqueue the Google Tag Manager script if prerequisites are met.
-	 *
-	 * @param AssetApi $asset_api Asset API class Instance.
 	 */
-	public function enqueue_scripts( $asset_api ) {
-		$asset_api = Package::container()->get( AssetApi::class );
-
-		// Require Google Analytics Integration to be activated.
-		if ( ! class_exists( 'WC_Google_Analytics_Integration' ) ) {
-			return;
-		}
-
+	public function enqueue_scripts() {
 		$settings = $this->get_google_analytics_settings();
 
 		// Require tracking to be enabled with a valid GA ID.
