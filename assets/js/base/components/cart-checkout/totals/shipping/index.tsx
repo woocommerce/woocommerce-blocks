@@ -6,18 +6,17 @@ import { __ } from '@wordpress/i18n';
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 import { useState } from '@wordpress/element';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
-import {
-	ShippingCalculator,
-	ShippingLocation,
-} from '@woocommerce/base-components/cart-checkout';
 import { TotalsItem } from '@woocommerce/blocks-checkout';
 import type { Currency } from '@woocommerce/price-format';
 import type { ReactElement } from 'react';
+
 /**
  * Internal dependencies
  */
 import ShippingRateSelector from './shipping-rate-selector';
 import hasShippingRate from './has-shipping-rate';
+import ShippingCalculator from '../../shipping-calculator';
+import ShippingLocation from '../../shipping-location';
 import './style.scss';
 
 interface CalculatorButtonProps {
