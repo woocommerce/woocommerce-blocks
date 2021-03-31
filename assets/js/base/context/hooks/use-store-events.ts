@@ -7,7 +7,7 @@ import { useCallback } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { useStoreCart } from './cart';
+import { useStoreCart } from './cart/use-store-cart';
 
 type StoreEvent = (
 	eventName: string,

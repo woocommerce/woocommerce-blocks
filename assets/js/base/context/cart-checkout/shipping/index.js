@@ -9,10 +9,6 @@ import {
 	useMemo,
 	useRef,
 } from '@wordpress/element';
-import {
-	useStoreCart,
-	useSelectShippingRates,
-} from '@woocommerce/base-context/hooks';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { deriveSelectedShippingRates } from '@woocommerce/base-utils';
 
@@ -30,6 +26,7 @@ import {
 } from './event-emit';
 import { useCheckoutContext } from '../checkout-state';
 import { useCustomerDataContext } from '../customer';
+import { useStoreCart, useSelectShippingRates } from '../../hooks';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').ShippingDataContext} ShippingDataContext

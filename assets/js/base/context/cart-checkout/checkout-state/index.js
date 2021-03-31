@@ -12,12 +12,6 @@ import {
 } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { usePrevious } from '@woocommerce/base-hooks';
-import {
-	useStoreEvents,
-	useStoreNotices,
-	useCheckoutNotices,
-	useEmitResponse,
-} from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
@@ -33,6 +27,12 @@ import {
 	reducer as emitReducer,
 } from './event-emit';
 import { useValidationContext } from '../../validation';
+import {
+	useStoreEvents,
+	useStoreNotices,
+	useCheckoutNotices,
+	useEmitResponse,
+} from '../../hooks';
 
 /**
  * @typedef {import('@woocommerce/type-defs/checkout').CheckoutDispatchActions} CheckoutDispatchActions

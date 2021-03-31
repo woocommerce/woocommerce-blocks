@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import triggerFetch from '@wordpress/api-fetch';
 import { useEffect, useCallback, useState } from '@wordpress/element';
-import { useStoreCart, useStoreNotices } from '@woocommerce/base-context/hooks';
 import { decodeEntities } from '@wordpress/html-entities';
 import { triggerFragmentRefresh } from '@woocommerce/base-utils';
 
@@ -13,6 +12,7 @@ import { triggerFragmentRefresh } from '@woocommerce/base-utils';
  */
 import { useAddToCartFormContext } from '../../form-state';
 import { useValidationContext } from '../../../validation';
+import { useStoreCart, useStoreNotices } from '../../../hooks';
 
 /**
  * FormSubmit.

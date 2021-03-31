@@ -11,7 +11,6 @@ import {
 	useMemo,
 } from '@wordpress/element';
 import { formatStoreApiErrorMessage } from '@woocommerce/base-utils';
-import { useStoreCart, useStoreNotices } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
@@ -22,6 +21,7 @@ import { useShippingDataContext } from '../../shipping';
 import { useCustomerDataContext } from '../../customer';
 import { usePaymentMethodDataContext } from '../../payment-methods';
 import { useValidationContext } from '../../../validation';
+import { useStoreCart, useStoreNotices } from '../../../hooks';
 
 /**
  * CheckoutProcessor component.

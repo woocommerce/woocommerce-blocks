@@ -11,11 +11,6 @@ import {
 	useRef,
 	useMemo,
 } from '@wordpress/element';
-import {
-	useStoreNotices,
-	useStoreEvents,
-	useEmitResponse,
-} from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
@@ -51,6 +46,7 @@ import {
 	reducer as emitReducer,
 } from './event-emit';
 import { useValidationContext } from '../../validation';
+import { useStoreNotices, useStoreEvents, useEmitResponse } from '../../hooks';
 
 import type {
 	PaymentStatusDispatchers,

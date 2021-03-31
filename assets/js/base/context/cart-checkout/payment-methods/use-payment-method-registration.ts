@@ -9,11 +9,6 @@ import {
 import { useState, useEffect, useRef, useCallback } from '@wordpress/element';
 import { useShallowEqual } from '@woocommerce/base-hooks';
 import {
-	useStoreCart,
-	useStoreNotices,
-	useEmitResponse,
-} from '@woocommerce/base-context/hooks';
-import {
 	CURRENT_USER_IS_ADMIN,
 	PAYMENT_GATEWAY_SORT_ORDER,
 } from '@woocommerce/block-settings';
@@ -31,6 +26,7 @@ import type {
 	PaymentMethodConfig,
 	ExpressPaymentMethodConfig,
 } from './types';
+import { useStoreCart, useStoreNotices, useEmitResponse } from '../../hooks';
 
 /**
  * This hook handles initializing registered payment methods and exposing all

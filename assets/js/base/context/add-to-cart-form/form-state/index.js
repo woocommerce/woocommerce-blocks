@@ -11,10 +11,6 @@ import {
 import { __ } from '@wordpress/i18n';
 import { useShallowEqual } from '@woocommerce/base-hooks';
 import {
-	useStoreNotices,
-	useEmitResponse,
-} from '@woocommerce/base-context/hooks';
-import {
 	productIsPurchasable,
 	productSupportsAddToCartForm,
 } from '@woocommerce/base-utils';
@@ -33,6 +29,7 @@ import {
 	reducer as emitReducer,
 } from './event-emit';
 import { useValidationContext } from '../../validation';
+import { useStoreNotices, useEmitResponse } from '../../hooks';
 
 /**
  * @typedef {import('@woocommerce/type-defs/add-to-cart-form').AddToCartFormDispatchActions} AddToCartFormDispatchActions
