@@ -1,5 +1,4 @@
 export * from './checkout';
-export * from './customer';
 export * from './payment-methods';
 export * from './shipping';
 export * from './use-container-queries';

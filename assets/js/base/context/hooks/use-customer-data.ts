@@ -6,7 +6,10 @@ import { useEffect, useState, useCallback, useRef } from '@wordpress/element';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useDebounce } from 'use-debounce';
 import isShallowEqual from '@wordpress/is-shallow-equal';
-import { formatStoreApiErrorMessage } from '@woocommerce/base-utils';
+import {
+	formatStoreApiErrorMessage,
+	pluckAddress,
+} from '@woocommerce/base-utils';
 import type {
 	CartResponseBillingAddress,
 	CartResponseShippingAddress,
@@ -19,9 +22,27 @@ declare type CustomerData = {
 import { useStoreCart, useStoreNotices } from '@woocommerce/base-context/hooks';
 
 /**
- * Internal dependencies
+ * Does a shallow compare of important address data to determine if the cart needs updating.
+ *
+ * @param {Object} previousAddress An object containing all previous address information
+ * @param {Object} address An object containing all address information
+ *
+ * @return {boolean} True if the store needs updating due to changed data.
  */
-import { shouldUpdateAddressStore } from './utils';
+const shouldUpdateAddressStore = <
+	T extends CartResponseBillingAddress | CartResponseShippingAddress
+>(
+	previousAddress: T,
+	address: T
+): boolean => {
+	if ( ! address.country ) {
+		return false;
+	}
+	return ! isShallowEqual(
+		pluckAddress( previousAddress ),
+		pluckAddress( address )
+	);
+};
 
 /**
  * This is a custom hook for syncing customer address data (billing and shipping) with the server.

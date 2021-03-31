@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { createContext, useContext } from '@wordpress/element';
-import { useCustomerData } from '@woocommerce/base-hooks';
+
+/**
+ * Internal dependencies
+ */
+import { useCustomerData } from '../../hooks';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').CustomerDataContext} CustomerDataContext
