@@ -9,6 +9,8 @@ import compareVersions from 'compare-versions';
 import { getSetting } from './get-setting';
 
 export * from './default-constants';
+export { default as defaultAddressFields } from './default-address-fields';
+export { default as countryAddressFields } from './country-address-fields';
 import '../../filters/exclude-draft-status-from-analytics';
 
 /**

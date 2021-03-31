@@ -1,10 +1,12 @@
 /** @typedef { import('@woocommerce/type-defs/address-fields').CountryAddressFields } CountryAddressFields */
 
 /**
- * Internal dependencies
+ * External dependencies
  */
-import defaultAddressFields from './default-address-fields';
-import countryAddressFields from './country-address-fields';
+import {
+	defaultAddressFields,
+	countryAddressFields,
+} from '@woocommerce/settings';
 
 /**
  * Combines address fields, including fields from the locale, and sorts them by index.
