@@ -17,7 +17,7 @@ import {
 /**
  * Internal dependencies
  */
-import { useStoreEvents } from '../hooks/use-store-events';
+import { useStoreEvents } from './hooks/use-store-events';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').NoticeContext} NoticeContext

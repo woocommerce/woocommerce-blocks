@@ -4,12 +4,12 @@
 import { useState, useEffect, useRef, useCallback } from '@wordpress/element';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { Rate } from '@woocommerce/type-defs/shipping';
+import { useStoreEvents } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
  */
 import { useSelectShippingRates } from './use-select-shipping-rates';
-import { useStoreEvents } from '../use-store-events';
 
 /**
  * Selected rates are derived by looping over the shipping rates.

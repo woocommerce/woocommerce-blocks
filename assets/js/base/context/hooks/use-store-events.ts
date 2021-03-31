@@ -3,7 +3,11 @@
  */
 import { doAction } from '@wordpress/hooks';
 import { useCallback } from '@wordpress/element';
-import { useStoreCart } from '@woocommerce/base-context/hooks';
+
+/**
+ * Internal dependencies
+ */
+import { useStoreCart } from './cart';
 
 type StoreEvent = (
 	eventName: string,

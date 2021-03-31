@@ -15,9 +15,11 @@ import {
 	useCheckoutNotices,
 	useEmitResponse,
 	usePrevious,
-	useStoreEvents,
 } from '@woocommerce/base-hooks';
-import { useStoreNotices } from '@woocommerce/base-context/hooks';
+import {
+	useStoreEvents,
+	useStoreNotices,
+} from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
