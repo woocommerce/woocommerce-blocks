@@ -14,7 +14,7 @@ import type { StoreCartCoupon } from '@woocommerce/types';
  */
 import { useStoreCart } from './use-store-cart';
 import { useStoreNotices } from '../use-store-notices';
-import { useValidationContext } from '../../validation';
+import { useValidationContext } from '../../providers/validation';
 
 /**
  * This is a custom hook for loading the Store API /cart/coupons endpoint and an

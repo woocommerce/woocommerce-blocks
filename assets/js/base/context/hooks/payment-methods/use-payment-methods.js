@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { usePaymentMethodDataContext } from '../../cart-checkout/payment-methods';
+import { usePaymentMethodDataContext } from '../../providers/cart-checkout/payment-methods';
 
 const usePaymentMethodState = ( express = false ) => {
 	const {

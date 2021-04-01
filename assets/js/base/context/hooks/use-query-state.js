@@ -11,7 +11,7 @@ import { useShallowEqual, usePrevious } from '@woocommerce/base-hooks';
  * Internal dependencies
  */
 
-import { useQueryStateContext } from '../query-state-context';
+import { useQueryStateContext } from '../providers/query-state-context';
 
 /**
  * A custom hook that exposes the current query state and a setter for the query

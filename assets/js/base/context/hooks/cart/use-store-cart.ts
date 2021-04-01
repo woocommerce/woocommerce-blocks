@@ -20,7 +20,7 @@ import { fromEntriesPolyfill } from '@woocommerce/base-utils';
 /**
  * Internal dependencies
  */
-import { useEditorContext } from '../../editor';
+import { useEditorContext } from '../../providers/editor-context';
 
 declare module '@wordpress/html-entities' {
 	// eslint-disable-next-line @typescript-eslint/no-shadow

@@ -11,7 +11,7 @@ import { useShallowEqual } from '@woocommerce/base-hooks';
  */
 import { useQueryStateByContext, useQueryStateByKey } from '../use-query-state';
 import { useCollection } from './use-collection';
-import { useQueryStateContext } from '../../query-state-context';
+import { useQueryStateContext } from '../../providers/query-state-context';
 
 const buildCollectionDataQuery = ( collectionDataQueryState ) => {
 	const query = collectionDataQueryState;

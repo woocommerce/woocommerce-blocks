@@ -6,7 +6,7 @@ import { useMemo, useRef, useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { useStoreNoticesContext } from '../store-notices/context';
+import { useStoreNoticesContext } from '../providers/store-notices/context';
 
 export const useStoreNotices = () => {
 	const {

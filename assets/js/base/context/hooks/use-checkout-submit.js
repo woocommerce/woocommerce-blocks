@@ -6,8 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { useCheckoutContext } from '../cart-checkout/checkout-state';
-import { usePaymentMethodDataContext } from '../cart-checkout/payment-methods';
+import { useCheckoutContext } from '../providers/cart-checkout/checkout-state';
+import { usePaymentMethodDataContext } from '../providers/cart-checkout/payment-methods';
 import { usePaymentMethods } from './payment-methods/use-payment-methods';
 
 /**

@@ -11,7 +11,7 @@ import {
 	useShippingDataContext,
 	useCustomerDataContext,
 	useCheckoutContext,
-} from '../cart-checkout';
+} from '../providers/cart-checkout';
 
 /**
  * Compare two addresses and see if they are the same.

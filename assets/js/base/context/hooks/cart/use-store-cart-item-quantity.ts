@@ -13,7 +13,7 @@ import type { CartItem, StoreCartItemQuantity } from '@woocommerce/types';
  * Internal dependencies
  */
 import { useStoreCart } from './use-store-cart';
-import { useCheckoutContext } from '../../cart-checkout';
+import { useCheckoutContext } from '../../providers/cart-checkout';
 
 /**
  * This is a custom hook for loading the Store API /cart/ endpoint and actions for removing or changing item quantity.
