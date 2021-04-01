@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import { useValidationContext } from '../../validation';
+import { useValidationContext } from '../../context';
 import './style.scss';
 
 export const ValidationInputError = ( {

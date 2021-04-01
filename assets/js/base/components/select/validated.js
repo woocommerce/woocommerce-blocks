@@ -3,12 +3,14 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useEffect } from 'react';
-import { useValidationContext } from '@woocommerce/base-context';
 import { useShallowEqual } from '@woocommerce/base-hooks';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
-import ValidationInputError from '@woocommerce/base-context/components';
+import {
+	ValidationInputError,
+	useValidationContext,
+} from '@woocommerce/base-context';
 
 /**
  * Internal dependencies

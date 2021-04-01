@@ -11,7 +11,7 @@ import PaymentMethodIcons from '@woocommerce/base-components/cart-checkout/payme
 /**
  * Internal dependencies
  */
-import ValidationInputError from '../../components/validation-input-error';
+import { ValidationInputError } from '../../validation';
 import { useStoreCart, useStoreCartCoupons } from '../cart';
 import { useEmitResponse } from '../checkout';
 import {

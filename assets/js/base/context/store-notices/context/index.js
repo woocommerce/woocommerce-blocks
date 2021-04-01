@@ -9,16 +9,14 @@ import {
 	useState,
 } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
-import {
-	StoreNoticesContainer,
-	SnackbarNoticesContainer,
-} from '@woocommerce/base-components/store-notices-container';
 
 /**
  * Internal dependencies
  */
-import { useStoreEvents } from './hooks/use-store-events';
-import { useEditorContext } from './editor';
+import { useStoreEvents } from '../../hooks/use-store-events';
+import { useEditorContext } from '../../editor';
+import StoreNoticesContainer from '../components/store-notices-container';
+import SnackbarNoticesContainer from '../components/snackbar-notices-container';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').NoticeContext} NoticeContext

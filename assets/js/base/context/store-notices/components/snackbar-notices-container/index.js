@@ -4,7 +4,12 @@
 import { SnackbarList } from 'wordpress-components';
 import classnames from 'classnames';
 
-const NoticesContainer = ( { className, notices, removeNotice, isEditor } ) => {
+const SnackbarNoticesContainer = ( {
+	className,
+	notices,
+	removeNotice,
+	isEditor,
+} ) => {
 	if ( isEditor ) {
 		return null;
 	}
@@ -27,4 +32,4 @@ const NoticesContainer = ( { className, notices, removeNotice, isEditor } ) => {
 	);
 };
 
-export default NoticesContainer;
+export default SnackbarNoticesContainer;
