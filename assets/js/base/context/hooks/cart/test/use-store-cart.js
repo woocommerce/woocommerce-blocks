@@ -3,7 +3,6 @@
  */
 import TestRenderer, { act } from 'react-test-renderer';
 import { createRegistry, RegistryProvider } from '@wordpress/data';
-import * as mockBaseContext from '@woocommerce/base-context';
 import { previewCart } from '@woocommerce/resource-previews';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 
@@ -11,8 +10,9 @@ import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
  * Internal dependencies
  */
 import { defaultCartData, useStoreCart } from '../use-store-cart';
+import { useEditorContext } from '../../../providers/editor-context';
 
-jest.mock( '@woocommerce/base-context', () => ( {
+jest.mock( '../../../providers/editor-context', () => ( {
 	useEditorContext: jest.fn(),
 } ) );
 
@@ -150,12 +150,12 @@ describe( 'useStoreCart', () => {
 	} );
 
 	afterEach( () => {
-		mockBaseContext.useEditorContext.mockReset();
+		useEditorContext.mockReset();
 	} );
 
 	describe( 'in frontend', () => {
 		beforeEach( () => {
-			mockBaseContext.useEditorContext.mockReturnValue( {
+			useEditorContext.mockReturnValue( {
 				isEditor: false,
 			} );
 		} );
@@ -200,7 +200,7 @@ describe( 'useStoreCart', () => {
 
 	describe( 'in editor', () => {
 		beforeEach( () => {
-			mockBaseContext.useEditorContext.mockReturnValue( {
+			useEditorContext.mockReturnValue( {
 				isEditor: true,
 				previewData: {
 					previewCart: {

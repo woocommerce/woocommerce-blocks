@@ -13,8 +13,12 @@ const mockUseCheckoutContext = {
 	onSubmit: jest.fn(),
 };
 const mockUsePaymentMethodDataContext = {};
-jest.mock( '@woocommerce/base-context', () => ( {
+
+jest.mock( '../../providers/cart-checkout/checkout-state', () => ( {
 	useCheckoutContext: () => mockUseCheckoutContext,
+} ) );
+
+jest.mock( '../../providers/cart-checkout/payment-methods', () => ( {
 	usePaymentMethodDataContext: () => mockUsePaymentMethodDataContext,
 } ) );
 
