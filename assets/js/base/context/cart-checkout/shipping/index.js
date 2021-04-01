@@ -26,7 +26,8 @@ import {
 } from './event-emit';
 import { useCheckoutContext } from '../checkout-state';
 import { useCustomerDataContext } from '../customer';
-import { useStoreCart, useSelectShippingRates } from '../../hooks';
+import { useStoreCart } from '../../hooks/cart/use-store-cart';
+import { useSelectShippingRates } from '../../hooks/shipping/use-select-shipping-rates';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').ShippingDataContext} ShippingDataContext

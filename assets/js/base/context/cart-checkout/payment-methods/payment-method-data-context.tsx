@@ -46,7 +46,9 @@ import {
 	reducer as emitReducer,
 } from './event-emit';
 import { useValidationContext } from '../../validation';
-import { useStoreNotices, useStoreEvents, useEmitResponse } from '../../hooks';
+import { useStoreEvents } from '../../hooks/use-store-events';
+import { useStoreNotices } from '../../hooks/use-store-notices';
+import { useEmitResponse } from '../../hooks/use-emit-response';
 
 import type {
 	PaymentStatusDispatchers,

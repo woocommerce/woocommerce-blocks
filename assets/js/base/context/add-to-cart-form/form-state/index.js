@@ -29,7 +29,8 @@ import {
 	reducer as emitReducer,
 } from './event-emit';
 import { useValidationContext } from '../../validation';
-import { useStoreNotices, useEmitResponse } from '../../hooks';
+import { useStoreNotices } from '../../hooks/use-store-notices';
+import { useEmitResponse } from '../../hooks/use-emit-response';
 
 /**
  * @typedef {import('@woocommerce/type-defs/add-to-cart-form').AddToCartFormDispatchActions} AddToCartFormDispatchActions

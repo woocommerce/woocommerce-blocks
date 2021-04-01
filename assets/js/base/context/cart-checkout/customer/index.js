@@ -6,7 +6,7 @@ import { createContext, useContext } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { useCustomerData } from '../../hooks';
+import { useCustomerData } from '../../hooks/use-customer-data';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').CustomerDataContext} CustomerDataContext

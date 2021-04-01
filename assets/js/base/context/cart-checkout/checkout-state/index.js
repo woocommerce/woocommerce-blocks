@@ -27,12 +27,10 @@ import {
 	reducer as emitReducer,
 } from './event-emit';
 import { useValidationContext } from '../../validation';
-import {
-	useStoreEvents,
-	useStoreNotices,
-	useCheckoutNotices,
-	useEmitResponse,
-} from '../../hooks';
+import { useStoreNotices } from '../../hooks/use-store-notices';
+import { useStoreEvents } from '../../hooks/use-store-events';
+import { useCheckoutNotices } from '../../hooks/use-checkout-notices';
+import { useEmitResponse } from '../../hooks/use-emit-response';
 
 /**
  * @typedef {import('@woocommerce/type-defs/checkout').CheckoutDispatchActions} CheckoutDispatchActions

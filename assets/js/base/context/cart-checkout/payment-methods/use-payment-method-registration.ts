@@ -26,7 +26,9 @@ import type {
 	PaymentMethodConfig,
 	ExpressPaymentMethodConfig,
 } from './types';
-import { useStoreCart, useStoreNotices, useEmitResponse } from '../../hooks';
+import { useStoreCart } from '../../hooks/cart/use-store-cart';
+import { useStoreNotices } from '../../hooks/use-store-notices';
+import { useEmitResponse } from '../../hooks/use-emit-response';
 
 /**
  * This hook handles initializing registered payment methods and exposing all

@@ -21,7 +21,8 @@ import { useShippingDataContext } from '../../shipping';
 import { useCustomerDataContext } from '../../customer';
 import { usePaymentMethodDataContext } from '../../payment-methods';
 import { useValidationContext } from '../../../validation';
-import { useStoreCart, useStoreNotices } from '../../../hooks';
+import { useStoreCart } from '../../../hooks/cart/use-store-cart';
+import { useStoreNotices } from '../../../hooks/use-store-notices';
 
 /**
  * CheckoutProcessor component.

@@ -12,7 +12,8 @@ import { triggerFragmentRefresh } from '@woocommerce/base-utils';
  */
 import { useAddToCartFormContext } from '../../form-state';
 import { useValidationContext } from '../../../validation';
-import { useStoreCart, useStoreNotices } from '../../../hooks';
+import { useStoreCart } from '../../../hooks/cart/use-store-cart';
+import { useStoreNotices } from '../../../hooks/use-store-notices';
 
 /**
  * FormSubmit.

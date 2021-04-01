@@ -12,14 +12,13 @@ import PaymentMethodIcons from '@woocommerce/base-components/cart-checkout/payme
  * Internal dependencies
  */
 import { ValidationInputError } from '../../validation';
-import { useStoreCart, useStoreCartCoupons } from '../cart';
-import { useEmitResponse } from '../checkout';
-import {
-	useCheckoutContext,
-	usePaymentMethodDataContext,
-	useShippingDataContext,
-	useCustomerDataContext,
-} from '../../';
+import { useStoreCart } from '../cart/use-store-cart';
+import { useStoreCartCoupons } from '../cart/use-store-cart-coupons';
+import { useEmitResponse } from '../use-emit-response';
+import { useCheckoutContext } from '../../cart-checkout/checkout-state';
+import { usePaymentMethodDataContext } from '../../cart-checkout/payment-methods';
+import { useShippingDataContext } from '../../cart-checkout/shipping';
+import { useCustomerDataContext } from '../../cart-checkout/customer';
 
 /**
  * @typedef {import('@woocommerce/type-defs/registered-payment-method-props').RegisteredPaymentMethodProps} RegisteredPaymentMethodProps

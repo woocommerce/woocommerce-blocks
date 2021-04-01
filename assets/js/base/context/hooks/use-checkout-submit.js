@@ -6,11 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import {
-	useCheckoutContext,
-	usePaymentMethodDataContext,
-} from '../../cart-checkout';
-import { usePaymentMethods } from '../payment-methods';
+import { useCheckoutContext } from '../cart-checkout/checkout-state';
+import { usePaymentMethodDataContext } from '../cart-checkout/payment-methods';
+import { usePaymentMethods } from './payment-methods/use-payment-methods';
 
 /**
  * Returns the submitButtonText, onSubmit interface from the checkout context,
