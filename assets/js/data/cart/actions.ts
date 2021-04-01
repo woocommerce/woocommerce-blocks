@@ -447,7 +447,7 @@ export type CartAction = ReturnOrGeneratorYieldUnion<
 	| typeof itemIsPendingDelete
 	| typeof updatingCustomerData
 	| typeof shippingRatesBeingSelected
-	| typeof cartDataIsStale
+	| typeof setIsCartDataStale
 	| typeof updateCustomerData
 	| typeof removeItemFromCart
 	| typeof changeCartItemQuantity
