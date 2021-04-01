@@ -6,7 +6,11 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { getSetting } from '@woocommerce/settings';
+
+/**
+ * Internal dependencies
+ */
+import { getSetting } from './get-setting';
 
 /**
  * This is locale data from WooCommerce countries class. This doesn't match the shape of the new field data blocks uses,

@@ -13,10 +13,10 @@ import { useSelect, useDispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { useStoreEvents } from '../../../hooks/use-store-events';
-import { useEditorContext } from '../../editor-context';
-import StoreNoticesContainer from '../components/store-notices-container';
-import SnackbarNoticesContainer from '../components/snackbar-notices-container';
+import { useStoreEvents } from '../../hooks/use-store-events';
+import { useEditorContext } from '../editor-context';
+import StoreNoticesContainer from './components/store-notices-container';
+import SnackbarNoticesContainer from './components/snackbar-notices-container';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').NoticeContext} NoticeContext
