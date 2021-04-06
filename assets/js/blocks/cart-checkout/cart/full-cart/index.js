@@ -160,7 +160,7 @@ const Cart = ( { attributes } ) => {
 						currency={ totalsCurrency }
 						values={ cartTotals }
 					/>
-					<ExperimentalOrderMeta.Slot />
+					<ExperimentalOrderMeta.Slot useStoreCart={ useStoreCart } />
 					<div className="wc-block-cart__payment-options">
 						{ cartNeedsPayment && <CartExpressPayment /> }
 						<CheckoutButton

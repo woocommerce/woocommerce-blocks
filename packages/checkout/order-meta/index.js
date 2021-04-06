@@ -2,7 +2,6 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { useStoreCart } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
@@ -15,7 +14,7 @@ const { Fill: ExperimentalOrderMeta, Slot: OrderMetaSlot } = createSlotFill(
 	slotName
 );
 
-const Slot = ( { className } ) => {
+const Slot = ( { className, useStoreCart } ) => {
 	// We need to pluck out receiveCart.
 	// eslint-disable-next-line no-unused-vars
 	const { extensions, receiveCart, ...cart } = useStoreCart();

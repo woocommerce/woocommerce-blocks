@@ -6,7 +6,6 @@ import { _n, sprintf } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
 import Label from '@woocommerce/base-components/label';
 import Title from '@woocommerce/base-components/title';
-import { useSelectShippingRate } from '@woocommerce/base-context/hooks';
 import type { ReactElement } from 'react';
 import type { Rate, PackageRateOption } from '@woocommerce/type-defs/shipping';
 
@@ -49,6 +48,13 @@ interface PackageProps {
 	collapsible?: boolean;
 	noResultsMessage: ReactElement;
 	showItems: boolean;
+	useSelectShippingRate: (
+		packageId: string,
+		shippingRates: Rate[]
+	) => {
+		selectShippingRate: ( rate: string ) => void;
+		selectedShippingRate: string;
+	};
 }
 
 const Package = ( {
@@ -60,6 +66,7 @@ const Package = ( {
 	collapsible = false,
 	collapse = false,
 	showItems = false,
+	useSelectShippingRate,
 }: PackageProps ): ReactElement => {
 	const { selectShippingRate, selectedShippingRate } = useSelectShippingRate(
 		packageId,
