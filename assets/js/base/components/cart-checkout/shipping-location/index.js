@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { __, sprintf } from '@wordpress/i18n';
 import { getSetting } from '@woocommerce/settings';
 import { decodeEntities } from '@wordpress/html-entities';
+import { emptyHiddenAddressFields } from '@woocommerce/base-utils';
 
 /**
  * Shows a formatted shipping location.
@@ -17,6 +18,8 @@ const ShippingLocation = ( { address } ) => {
 	if ( Object.values( address ).length === 0 ) {
 		return null;
 	}
+
+	address = emptyHiddenAddressFields( address );
 	const shippingCountries = getSetting( 'shippingCountries', {} );
 	const shippingStates = getSetting( 'shippingStates', {} );
 	const formattedCountry =
