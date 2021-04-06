@@ -12,7 +12,7 @@ import {
 } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { usePrevious } from '@woocommerce/base-hooks';
-
+import deprecated from '@wordpress/deprecated';
 /**
  * Internal dependencies
  */
@@ -50,9 +50,11 @@ const CheckoutContext = createContext( {
 	orderNotes: '',
 	customerId: 0,
 	onSubmit: () => void null,
+	// deprecated for onCheckoutValidationBeforeProcessing
+	onCheckoutBeforeProcessing: ( callback ) => void callback,
+	onCheckoutValidationBeforeProcessing: ( callback ) => void callback,
 	onCheckoutAfterProcessingWithSuccess: ( callback ) => void callback,
 	onCheckoutAfterProcessingWithError: ( callback ) => void callback,
-	onCheckoutBeforeProcessing: ( callback ) => void callback,
 	dispatchActions: {
 		resetCheckout: () => void null,
 		setRedirectUrl: ( url ) => void url,
@@ -118,6 +120,21 @@ export const CheckoutStateProvider = ( {
 	useEffect( () => {
 		currentObservers.current = observers;
 	}, [ observers ] );
+	const onCheckoutBeforeProcessing = useMemo( () => {
+		deprecated( 'onCheckoutBeforeProcessing', {
+			alternative: 'onCheckoutValidationBeforeProcessing',
+			plugin: 'WooCommerce Blocks',
+		} );
+
+		return emitterObservers( observerDispatch )
+			.onCheckoutValidationBeforeProcessing;
+	}, [ observerDispatch ] );
+	const onCheckoutValidationBeforeProcessing = useMemo(
+		() =>
+			emitterObservers( observerDispatch )
+				.onCheckoutValidationBeforeProcessing,
+		[ observerDispatch ]
+	);
 	const onCheckoutAfterProcessingWithSuccess = useMemo(
 		() =>
 			emitterObservers( observerDispatch )
@@ -128,10 +145,6 @@ export const CheckoutStateProvider = ( {
 		() =>
 			emitterObservers( observerDispatch )
 				.onCheckoutAfterProcessingWithError,
-		[ observerDispatch ]
-	);
-	const onCheckoutBeforeProcessing = useMemo(
-		() => emitterObservers( observerDispatch ).onCheckoutBeforeProcessing,
 		[ observerDispatch ]
 	);
 
@@ -197,7 +210,7 @@ export const CheckoutStateProvider = ( {
 			removeNotices( 'error' );
 			emitEvent(
 				currentObservers.current,
-				EMIT_TYPES.CHECKOUT_BEFORE_PROCESSING,
+				EMIT_TYPES.CHECKOUT_VALIDATION_BEFORE_PROCESSING,
 				{}
 			).then( ( response ) => {
 				if ( response !== true ) {
@@ -367,9 +380,10 @@ export const CheckoutStateProvider = ( {
 		isAfterProcessing: checkoutState.status === STATUS.AFTER_PROCESSING,
 		hasError: checkoutState.hasError,
 		redirectUrl: checkoutState.redirectUrl,
+		onCheckoutBeforeProcessing,
+		onCheckoutValidationBeforeProcessing,
 		onCheckoutAfterProcessingWithSuccess,
 		onCheckoutAfterProcessingWithError,
-		onCheckoutBeforeProcessing,
 		dispatchActions,
 		isCart,
 		orderId: checkoutState.orderId,
