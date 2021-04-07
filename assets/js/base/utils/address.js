@@ -29,20 +29,18 @@ export const pluckAddress = ( {
 } );
 
 /**
- * Removes fields from an address if they are hidden by the field config from core.
+ * Sets fields to an empty string in an address if they are hidden by the settings in countryLocale.
  *
- * @param {Object} address The address to remove fields from.
- * @return {Object} The address with hidden fields removed.
+ * @param {Object} address The address to empty fields from.
+ * @return {Object} The address with hidden fields values removed.
  */
 export const emptyHiddenAddressFields = ( address ) => {
 	const fields = Object.keys( defaultAddressFields );
 	const addressFields = prepareAddressFields( fields, {}, address.country );
 	const newAddress = {};
-	addressFields
-		.filter( ( field ) => ! field.hidden )
-		.forEach( ( field ) => {
-			newAddress[ field.key ] = address[ field.key ];
-		} );
+	addressFields.forEach( ( field ) => {
+		newAddress[ field.key ] = field.hidden ? '' : address[ field.key ];
+	} );
 
 	return newAddress;
 };
