@@ -19,12 +19,10 @@ const Slot = ( {
 	collapsible,
 	noResultsMessage,
 	renderOption,
-	useStoreCart,
-	useSelectShippingRate,
+	extensions,
+	cart,
+	components,
 } ) => {
-	// We need to pluck out receiveCart.
-	// eslint-disable-next-line no-unused-vars
-	const { extensions, receiveCart, ...cart } = useStoreCart();
 	const { fills } = useSlot( slotName );
 	const hasMultiplePackages = fills.length > 1;
 	return (
@@ -41,7 +39,7 @@ const Slot = ( {
 				renderOption,
 				extensions,
 				cart,
-				useSelectShippingRate,
+				components,
 			} }
 		/>
 	);

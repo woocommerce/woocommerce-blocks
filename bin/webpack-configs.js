@@ -30,6 +30,12 @@ const dashIconReplacementModule = path.resolve(
 	'../assets/js/module_replacements/dashicon.js'
 );
 
+const CircularDependencyPluginConfig = {
+	exclude: /node_modules/,
+	cwd: process.cwd(),
+	failOnError: 'warn',
+};
+
 const getProgressBarPluginConfig = ( name, fileSuffix ) => {
 	const isLegacy = fileSuffix && fileSuffix === 'legacy';
 	const progressBarPrefix = isLegacy ? 'Legacy ' : '';
@@ -105,11 +111,7 @@ const getCoreConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			new CircularDependencyPlugin( {
-				exclude: /a\.js|node_modules/,
-				cwd: process.cwd(),
-				failOnError: 'warn',
-			} ),
+			new CircularDependencyPlugin( CircularDependencyPluginConfig ),
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Core', options.fileSuffix )
 			),
@@ -206,11 +208,7 @@ const getMainConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			new CircularDependencyPlugin( {
-				exclude: /a\.js|node_modules/,
-				cwd: process.cwd(),
-				failOnError: 'warn',
-			} ),
+			new CircularDependencyPlugin( CircularDependencyPluginConfig ),
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Main', options.fileSuffix )
 			),
@@ -314,11 +312,7 @@ const getFrontConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			new CircularDependencyPlugin( {
-				exclude: /a\.js|node_modules/,
-				cwd: process.cwd(),
-				failOnError: 'warn',
-			} ),
+			new CircularDependencyPlugin( CircularDependencyPluginConfig ),
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Frontend', options.fileSuffix )
 			),
@@ -420,11 +414,7 @@ const getPaymentsConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			new CircularDependencyPlugin( {
-				exclude: /a\.js|node_modules/,
-				cwd: process.cwd(),
-				failOnError: 'warn',
-			} ),
+			new CircularDependencyPlugin( CircularDependencyPluginConfig ),
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig(
 					'Payment Method Extensions',
@@ -515,11 +505,7 @@ const getExtensionsConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			new CircularDependencyPlugin( {
-				exclude: /a\.js|node_modules/,
-				cwd: process.cwd(),
-				failOnError: 'warn',
-			} ),
+			new CircularDependencyPlugin( CircularDependencyPluginConfig ),
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig(
 					'Experimental Extensions',
@@ -679,11 +665,7 @@ const getStylingConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			new CircularDependencyPlugin( {
-				exclude: /a\.js|node_modules/,
-				cwd: process.cwd(),
-				failOnError: 'warn',
-			} ),
+			new CircularDependencyPlugin( CircularDependencyPluginConfig ),
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Styles', options.fileSuffix )
 			),

@@ -11,15 +11,13 @@ import {
 	getShippingRatesPackageCount,
 	getShippingRatesRateCount,
 } from '@woocommerce/base-utils';
-import {
-	useSelectShippingRate,
-	useStoreCart,
-} from '@woocommerce/base-context/hooks';
+import { useStoreCart } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
  */
 import Packages from './packages';
+import ShippingRatesControlPackage from '../shipping-rates-control-package';
 
 /**
  * @typedef {import('react')} React
@@ -90,6 +88,22 @@ const ShippingRatesControl = ( {
 		}
 	}, [ shippingRatesLoading, shippingRates ] );
 
+	// Prepare props to pass to the ExperimentalOrderShippingPackages slot fill.
+	// We need to pluck out receiveCart.
+	// eslint-disable-next-line no-unused-vars
+	const { extensions, receiveCart, ...cart } = useStoreCart();
+	const slotFillProps = {
+		className,
+		collapsible,
+		noResultsMessage,
+		renderOption,
+		extensions,
+		cart,
+		components: {
+			ShippingRatesControlPackage,
+		},
+	};
+
 	return (
 		<LoadingMask
 			isLoading={ shippingRatesLoading }
@@ -99,20 +113,12 @@ const ShippingRatesControl = ( {
 			) }
 			showSpinner={ true }
 		>
-			<ExperimentalOrderShippingPackages.Slot
-				className={ className }
-				collapsible={ collapsible }
-				noResultsMessage={ noResultsMessage }
-				renderOption={ renderOption }
-				useStoreCart={ useStoreCart }
-				useSelectShippingRate={ useSelectShippingRate }
-			/>
+			<ExperimentalOrderShippingPackages.Slot { ...slotFillProps } />
 			<ExperimentalOrderShippingPackages>
 				<Packages
 					packages={ shippingRates }
 					noResultsMessage={ noResultsMessage }
 					renderOption={ renderOption }
-					useSelectShippingRate={ useSelectShippingRate }
 				/>
 			</ExperimentalOrderShippingPackages>
 		</LoadingMask>

@@ -8,11 +8,12 @@ import Label from '@woocommerce/base-components/label';
 import Title from '@woocommerce/base-components/title';
 import type { ReactElement } from 'react';
 import type { Rate, PackageRateOption } from '@woocommerce/type-defs/shipping';
+import { Panel } from '@woocommerce/blocks-checkout';
+import { useSelectShippingRate } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
  */
-import Panel from '../../panel';
 import PackageRates from './package-rates';
 import './style.scss';
 
@@ -48,16 +49,9 @@ interface PackageProps {
 	collapsible?: boolean;
 	noResultsMessage: ReactElement;
 	showItems: boolean;
-	useSelectShippingRate: (
-		packageId: string,
-		shippingRates: Rate[]
-	) => {
-		selectShippingRate: ( rate: string ) => void;
-		selectedShippingRate: string;
-	};
 }
 
-const Package = ( {
+export const ShippingRatesControlPackage = ( {
 	packageId,
 	className,
 	noResultsMessage,
@@ -66,7 +60,6 @@ const Package = ( {
 	collapsible = false,
 	collapse = false,
 	showItems = false,
-	useSelectShippingRate,
 }: PackageProps ): ReactElement => {
 	const { selectShippingRate, selectedShippingRate } = useSelectShippingRate(
 		packageId,
@@ -152,4 +145,4 @@ const Package = ( {
 	);
 };
 
-export default Package;
+export default ShippingRatesControlPackage;

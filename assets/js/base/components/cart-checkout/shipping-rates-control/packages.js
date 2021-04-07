@@ -1,7 +1,7 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
-import { ShippingRatesControlPackage } from '@woocommerce/blocks-checkout';
+import ShippingRatesControlPackage from '../shipping-rates-control-package';
 
 /**
  * @typedef {import('react')} React
@@ -19,8 +19,7 @@ import { ShippingRatesControlPackage } from '@woocommerce/blocks-checkout';
  * only works if collapsible is true.
  * @param {boolean} props.showItems If we should items below the package name.
  * @param {Function} [props.renderOption] Function to render a shipping rate.
- * @param {Function} props.useSelectShippingRate useSelectShippingRate hook.
- * @return {React.ReactElement|Array|null} Rendered components.
+ * @return {React.ReactElement|null} Rendered components.
  */
 const Packages = ( {
 	packages,
@@ -29,26 +28,28 @@ const Packages = ( {
 	collapsible,
 	noResultsMessage,
 	renderOption,
-	useSelectShippingRate,
 } ) => {
 	// If there are no packages, return nothing.
 	if ( ! packages.length ) {
 		return null;
 	}
 
-	return packages.map( ( { package_id: packageId, ...packageData } ) => (
-		<ShippingRatesControlPackage
-			key={ packageId }
-			packageId={ packageId }
-			packageData={ packageData }
-			collapsible={ collapsible }
-			collapse={ collapse }
-			showItems={ showItems }
-			noResultsMessage={ noResultsMessage }
-			renderOption={ renderOption }
-			useSelectShippingRate={ useSelectShippingRate }
-		/>
-	) );
+	return (
+		<>
+			{ packages.map( ( { package_id: packageId, ...packageData } ) => (
+				<ShippingRatesControlPackage
+					key={ packageId }
+					packageId={ packageId }
+					packageData={ packageData }
+					collapsible={ collapsible }
+					collapse={ collapse }
+					showItems={ showItems }
+					noResultsMessage={ noResultsMessage }
+					renderOption={ renderOption }
+				/>
+			) ) }
+		</>
+	);
 };
 
 export default Packages;
