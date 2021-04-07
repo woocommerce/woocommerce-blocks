@@ -20,6 +20,7 @@ const CircularDependencyPlugin = require( 'circular-dependency-plugin' );
 const { getEntryConfig } = require( './webpack-entries' );
 const {
 	NODE_ENV,
+	CIRCULAR_DEPS,
 	requestToExternal,
 	requestToHandle,
 	findModuleMatch,
@@ -30,11 +31,20 @@ const dashIconReplacementModule = path.resolve(
 	'../assets/js/module_replacements/dashicon.js'
 );
 
-const CircularDependencyPluginConfig = {
-	exclude: /node_modules/,
-	cwd: process.cwd(),
-	failOnError: 'warn',
-};
+const sharedPlugins = [
+	CIRCULAR_DEPS === 'true'
+		? new CircularDependencyPlugin( {
+				exclude: /node_modules/,
+				cwd: process.cwd(),
+				failOnError: 'warn',
+		  } )
+		: false,
+	new DependencyExtractionWebpackPlugin( {
+		injectPolyfill: true,
+		requestToExternal,
+		requestToHandle,
+	} ),
+].filter( Boolean );
 
 const getProgressBarPluginConfig = ( name, fileSuffix ) => {
 	const isLegacy = fileSuffix && fileSuffix === 'legacy';
@@ -111,15 +121,10 @@ const getCoreConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			new CircularDependencyPlugin( CircularDependencyPluginConfig ),
+			...sharedPlugins,
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Core', options.fileSuffix )
 			),
-			new DependencyExtractionWebpackPlugin( {
-				injectPolyfill: true,
-				requestToExternal,
-				requestToHandle,
-			} ),
 			new CreateFileWebpack( {
 				path: './',
 				// file name
@@ -208,15 +213,10 @@ const getMainConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			new CircularDependencyPlugin( CircularDependencyPluginConfig ),
+			...sharedPlugins,
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Main', options.fileSuffix )
 			),
-			new DependencyExtractionWebpackPlugin( {
-				injectPolyfill: true,
-				requestToExternal,
-				requestToHandle,
-			} ),
 			new NormalModuleReplacementPlugin(
 				/dashicon/,
 				( result ) => ( result.resource = dashIconReplacementModule )
@@ -312,15 +312,10 @@ const getFrontConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			new CircularDependencyPlugin( CircularDependencyPluginConfig ),
+			...sharedPlugins,
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Frontend', options.fileSuffix )
 			),
-			new DependencyExtractionWebpackPlugin( {
-				injectPolyfill: true,
-				requestToExternal,
-				requestToHandle,
-			} ),
 			new NormalModuleReplacementPlugin(
 				/dashicon/,
 				( result ) => ( result.resource = dashIconReplacementModule )
@@ -414,18 +409,13 @@ const getPaymentsConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			new CircularDependencyPlugin( CircularDependencyPluginConfig ),
+			...sharedPlugins,
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig(
 					'Payment Method Extensions',
 					options.fileSuffix
 				)
 			),
-			new DependencyExtractionWebpackPlugin( {
-				injectPolyfill: true,
-				requestToExternal,
-				requestToHandle,
-			} ),
 			new NormalModuleReplacementPlugin(
 				/dashicon/,
 				( result ) => ( result.resource = dashIconReplacementModule )
@@ -505,18 +495,13 @@ const getExtensionsConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			new CircularDependencyPlugin( CircularDependencyPluginConfig ),
+			...sharedPlugins,
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig(
 					'Experimental Extensions',
 					options.fileSuffix
 				)
 			),
-			new DependencyExtractionWebpackPlugin( {
-				injectPolyfill: true,
-				requestToExternal,
-				requestToHandle,
-			} ),
 		],
 		resolve: {
 			...resolve,
@@ -665,7 +650,6 @@ const getStylingConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			new CircularDependencyPlugin( CircularDependencyPluginConfig ),
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Styles', options.fileSuffix )
 			),
