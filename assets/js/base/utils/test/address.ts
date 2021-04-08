@@ -19,6 +19,6 @@ describe( 'emptyHiddenAddressFields', () => {
 			phone: '',
 		};
 		const filteredAddress = emptyHiddenAddressFields( address );
-		expect( filteredAddress ).not.toHaveProperty( 'state' );
+		expect( filteredAddress ).toHaveProperty( 'state', '' );
 	} );
 } );
