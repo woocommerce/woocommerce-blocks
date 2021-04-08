@@ -20,7 +20,7 @@ const CircularDependencyPlugin = require( 'circular-dependency-plugin' );
 const { getEntryConfig } = require( './webpack-entries' );
 const {
 	NODE_ENV,
-	CIRCULAR_DEPS,
+	CHECK_CIRCULAR_DEPS,
 	requestToExternal,
 	requestToHandle,
 	findModuleMatch,
@@ -32,7 +32,7 @@ const dashIconReplacementModule = path.resolve(
 );
 
 const sharedPlugins = [
-	CIRCULAR_DEPS === 'true'
+	CHECK_CIRCULAR_DEPS === 'true'
 		? new CircularDependencyPlugin( {
 				exclude: /node_modules/,
 				cwd: process.cwd(),
