@@ -92,7 +92,7 @@ You need to bump the test version, so
 
 ```yml
   JSE2ETestsWP54:
-    name: JavaScript E2E Tests (WP 5.4)
+    name: JavaScipt E2E Tests (WP 5.4)
       ...
       - name: E2E Tests (WP 5.4)
         env:
@@ -110,7 +110,7 @@ Would become
 
 ```yml
   JSE2ETestsWP55:
-    name: JavaScript E2E Tests (WP 5.5)
+    name: JavaScipt E2E Tests (WP 5.5)
       ...
       - name: E2E Tests (WP 5.5)
         env:
