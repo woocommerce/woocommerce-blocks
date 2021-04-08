@@ -7,7 +7,6 @@ const RemoveFilesPlugin = require( './remove-files-webpack-plugin' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const ProgressBarPlugin = require( 'progress-bar-webpack-plugin' );
 const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
-const { NormalModuleReplacementPlugin } = require( 'webpack' );
 const WebpackRTLPlugin = require( 'webpack-rtl-plugin' );
 const chalk = require( 'chalk' );
 const { kebabCase } = require( 'lodash' );
@@ -25,11 +24,6 @@ const {
 	requestToHandle,
 	findModuleMatch,
 } = require( './webpack-helpers' );
-
-const dashIconReplacementModule = path.resolve(
-	__dirname,
-	'../assets/js/module_replacements/dashicon.js'
-);
 
 const sharedPlugins = [
 	CHECK_CIRCULAR_DEPS === 'true'
@@ -217,10 +211,6 @@ const getMainConfig = ( options = {} ) => {
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Main', options.fileSuffix )
 			),
-			new NormalModuleReplacementPlugin(
-				/dashicon/,
-				( result ) => ( result.resource = dashIconReplacementModule )
-			),
 		],
 		resolve: {
 			...resolve,
@@ -315,10 +305,6 @@ const getFrontConfig = ( options = {} ) => {
 			...sharedPlugins,
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Frontend', options.fileSuffix )
-			),
-			new NormalModuleReplacementPlugin(
-				/dashicon/,
-				( result ) => ( result.resource = dashIconReplacementModule )
 			),
 		],
 		resolve: {
@@ -415,10 +401,6 @@ const getPaymentsConfig = ( options = {} ) => {
 					'Payment Method Extensions',
 					options.fileSuffix
 				)
-			),
-			new NormalModuleReplacementPlugin(
-				/dashicon/,
-				( result ) => ( result.resource = dashIconReplacementModule )
 			),
 		],
 		resolve: {
