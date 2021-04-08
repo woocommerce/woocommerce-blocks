@@ -9,20 +9,23 @@ import { __, sprintf } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import countryAddressFields from './country-address-fields';
 import {
-	AddressField,
+	AddressFieldConfiguration,
 	AddressFields,
 	KeyedAddressFieldConfiguration,
 } from '../../../../type-defs/customer';
 
+type CoreLocaleSettings = Record<
+	string,
+	Record< keyof AddressFields, AddressFieldConfiguration >
+>;
 /**
  * This is locale data from WooCommerce countries class. This doesn't match the shape of the new field data blocks uses,
  * but we can import part of it to set which fields are required.
  *
  * This supports new properties such as optionalLabel which are not used by core (yet).
  */
-const coreLocale = getSetting( 'countryLocale', {} );
+const coreLocale: CoreLocaleSettings = getSetting( 'countryLocale', {} );
 
 /**
  * Gets props from the core locale, then maps them to the shape we require in the client.
@@ -32,8 +35,10 @@ const coreLocale = getSetting( 'countryLocale', {} );
  * @param {Object} localeField Locale fields from WooCommerce.
  * @return {Object} Supported locale fields.
  */
-const getSupportedCoreLocaleProps = ( localeField ) => {
-	const fields = {};
+const getSupportedCoreLocaleProps = (
+	localeField: AddressFieldConfiguration
+) => {
+	const fields: Partial< AddressFieldConfiguration > = {};
 
 	if ( localeField.label !== undefined ) {
 		fields.label = localeField.label;
@@ -56,7 +61,12 @@ const getSupportedCoreLocaleProps = ( localeField ) => {
 	}
 
 	if ( localeField.priority ) {
-		fields.index = parseInt( localeField.priority, 10 );
+		if ( typeof localeField.priority === 'string' ) {
+			fields.index = parseInt( localeField.priority, 10 );
+		}
+		if ( typeof localeField.priority === 'number' ) {
+			fields.index = localeField.priority;
+		}
 	}
 
 	if ( localeField.hidden === true ) {
@@ -70,19 +80,24 @@ const countryAddressFields = Object.entries( coreLocale )
 	.map( ( [ country, countryLocale ] ) => [
 		country,
 		Object.entries( countryLocale )
-			.map( ( [ localeFieldKey, localeField ] ) => [
-				localeFieldKey,
-				getSupportedCoreLocaleProps( localeField ),
-			] )
+			.map( ( [ localeFieldKey, localeField ] ) => {
+				return [
+					localeFieldKey,
+					getSupportedCoreLocaleProps( localeField ),
+				] as [
+					keyof AddressFieldConfiguration,
+					AddressFieldConfiguration
+				];
+			} )
 			.reduce( ( obj, [ key, val ] ) => {
 				obj[ key ] = val;
 				return obj;
-			}, {} ),
+			}, Object.assign( {} ) ),
 	] )
 	.reduce( ( obj, [ key, val ] ) => {
 		obj[ key ] = val;
 		return obj;
-	}, {} );
+	}, Object.assign( {} ) );
 
 /**
  * Combines address fields, including fields from the locale, and sorts them by index.
