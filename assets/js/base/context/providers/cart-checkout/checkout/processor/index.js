@@ -10,7 +10,10 @@ import {
 	useState,
 	useMemo,
 } from '@wordpress/element';
-import { formatStoreApiErrorMessage } from '@woocommerce/base-utils';
+import {
+	emptyHiddenAddressFields,
+	formatStoreApiErrorMessage,
+} from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
