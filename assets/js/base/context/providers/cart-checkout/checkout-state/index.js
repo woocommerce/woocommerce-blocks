@@ -120,6 +120,9 @@ export const CheckoutStateProvider = ( {
 	useEffect( () => {
 		currentObservers.current = observers;
 	}, [ observers ] );
+	/**
+	 * @deprecated use onCheckoutValidationBeforeProcessing instead
+	 */
 	const onCheckoutBeforeProcessing = useMemo( () => {
 		deprecated( 'onCheckoutBeforeProcessing', {
 			alternative: 'onCheckoutValidationBeforeProcessing',
