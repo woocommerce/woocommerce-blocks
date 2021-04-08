@@ -132,6 +132,14 @@ describe( `${ block.name } Block (frontend)`, () => {
 			twoProductPrice
 		);
 
+		await page.evaluate( () => {
+			// Disable smooth scrolling so it scrolls instantly.
+			document.querySelector( 'html' ).style.scrollBehavior = 'auto';
+			document
+				.querySelector( '.wc-block-components-radio-control__input' )
+				.scrollIntoView( { block: 'center', inline: 'center' } );
+		} );
+
 		await expect( page ).toClick(
 			'.wc-block-components-payment-method-label',
 			{
