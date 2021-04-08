@@ -7,11 +7,10 @@ import compareVersions from 'compare-versions';
  * Internal dependencies
  */
 import { getSetting } from './get-setting';
+import '../../filters/exclude-draft-status-from-analytics';
 
 export * from './default-constants';
-export { default as defaultAddressFields } from './default-address-fields';
-export { default as countryAddressFields } from './country-address-fields';
-import '../../filters/exclude-draft-status-from-analytics';
+export * from './default-address-fields';
 
 /**
  * Note: this attempts to coerce the wpVersion to a semver for comparison

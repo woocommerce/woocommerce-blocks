@@ -18,7 +18,7 @@ import { __ } from '@wordpress/i18n';
  * @property {AddressField} state      State name or code.
  * @property {AddressField} postcode   Postal code.
  */
-const AddressFields = {
+export const defaultAddressFields = {
 	first_name: {
 		label: __( 'First name', 'woo-gutenberg-products-block' ),
 		optionalLabel: __(
@@ -125,4 +125,4 @@ const AddressFields = {
 	},
 };
 
-export default AddressFields;
+export default defaultAddressFields;
