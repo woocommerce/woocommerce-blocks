@@ -159,14 +159,11 @@ export const shippingRatesBeingSelected = ( isResolving: boolean ) =>
 
 /**
  * Returns an action object for updating legacy cart fragments.
- *
- * @return {Object} Action object.
  */
-export function updateCartFragments() {
-	return {
+export const updateCartFragments = () =>
+	( {
 		type: types.UPDATE_LEGACY_CART_FRAGMENTS,
-	} as const;
-}
+	} as const );
 
 /**
  * Applies a coupon code and either invalidates caches, or receives an error if
