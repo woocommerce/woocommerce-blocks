@@ -98,10 +98,18 @@ const triggerBatchFetch = ( keys: readonly APIFetchOptions[] ) => {
 };
 
 /**
+ * In ms, how long we should wait for requests to batch.
+ *
+ * DataLoader collects all requests over this window of time (and as a consequence, adds 100ms of latency).
+ */
+const triggerBatchFetchDelay = 200;
+
+/**
  * DataLoader instance for triggerBatchFetch.
  */
 const triggerBatchFetchLoader = new DataLoader( triggerBatchFetch, {
-	batchScheduleFn: ( callback ) => setTimeout( callback, 3000 ),
+	batchScheduleFn: ( callback: () => void ) =>
+		setTimeout( callback, triggerBatchFetchDelay ),
 	cache: false,
 	maxBatchSize: 25,
 } );
