@@ -98,41 +98,55 @@ class Checkout extends AbstractBlock {
 	protected function enqueue_data( array $attributes = [] ) {
 		parent::enqueue_data( $attributes );
 
-		if ( ! $this->asset_data_registry->exists( 'allowedCountries' ) ) {
-			$this->asset_data_registry->add( 'allowedCountries', $this->deep_sort_with_accents( WC()->countries->get_allowed_countries() ) );
-		}
+		$this->asset_data_registry->add(
+			'allowedCountries',
+			function() {
+				return $this->deep_sort_with_accents( WC()->countries->get_allowed_countries() );
+			},
+			true
+		);
+		$this->asset_data_registry->add(
+			'allowedStates',
+			function() {
+				return $this->deep_sort_with_accents( WC()->countries->get_allowed_country_states() );
+			},
+			true
+		);
+		$this->asset_data_registry->add(
+			'shippingCountries',
+			function() {
+				return $this->deep_sort_with_accents( WC()->countries->get_shipping_countries() );
+			},
+			true
+		);
+		$this->asset_data_registry->add(
+			'shippingStates',
+			function() {
+				return $this->deep_sort_with_accents( WC()->countries->get_shipping_country_states() );
+			},
+			true
+		);
+		$this->asset_data_registry->add(
+			'countryLocale',
+			function() {
+				// Merge country and state data to work around https://github.com/woocommerce/woocommerce/issues/28944.
+				$country_locale = wc()->countries->get_country_locale();
+				$states         = wc()->countries->get_states();
 
-		if ( ! $this->asset_data_registry->exists( 'allowedStates' ) ) {
-			$this->asset_data_registry->add( 'allowedStates', $this->deep_sort_with_accents( WC()->countries->get_allowed_country_states() ) );
-		}
-
-		if ( ! $this->asset_data_registry->exists( 'shippingCountries' ) ) {
-			$this->asset_data_registry->add( 'shippingCountries', $this->deep_sort_with_accents( WC()->countries->get_shipping_countries() ) );
-		}
-
-		if ( ! $this->asset_data_registry->exists( 'shippingStates' ) ) {
-			$this->asset_data_registry->add( 'shippingStates', $this->deep_sort_with_accents( WC()->countries->get_shipping_country_states() ) );
-		}
-
-		if ( ! $this->asset_data_registry->exists( 'countryLocale' ) ) {
-			// Merge country and state data to work around https://github.com/woocommerce/woocommerce/issues/28944.
-			$country_locale = wc()->countries->get_country_locale();
-			$states         = wc()->countries->get_states();
-
-			foreach ( $states as $country => $states ) {
-				if ( empty( $states ) ) {
-					$country_locale[ $country ]['state']['required'] = false;
-					$country_locale[ $country ]['state']['hidden']   = true;
+				foreach ( $states as $country => $states ) {
+					if ( empty( $states ) ) {
+						$country_locale[ $country ]['state']['required'] = false;
+						$country_locale[ $country ]['state']['hidden']   = true;
+					}
 				}
-			}
-			$this->asset_data_registry->add( 'countryLocale', $country_locale );
-		}
-
-		$permalink = ! empty( $attributes['cartPageId'] ) ? get_permalink( $attributes['cartPageId'] ) : false;
-
-		if ( $permalink && ! $this->asset_data_registry->exists( 'page-' . $attributes['cartPageId'] ) ) {
-			$this->asset_data_registry->add( 'page-' . $attributes['cartPageId'], $permalink );
-		}
+				return $country_locale;
+			},
+			true
+		);
+		$this->asset_data_registry->add( 'checkoutAllowsGuest', WC()->checkout()->is_registration_required(), true );
+		$this->asset_data_registry->add( 'checkoutAllowsSignup', WC()->checkout()->is_registration_enabled(), true );
+		$this->asset_data_registry->add( 'checkoutShowLoginReminder', 'yes' === get_option( 'woocommerce_enable_checkout_login_reminder' ), true );
+		$this->asset_data_registry->register_page_id( $attributes['cartPageId'] );
 
 		// Hydrate the following data depending on admin or frontend context.
 		if ( is_admin() && function_exists( 'get_current_screen' ) ) {
