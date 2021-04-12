@@ -30,10 +30,6 @@ export const DISPLAY_ITEMIZED_TAXES = getSetting(
 	'displayItemizedTaxes',
 	false
 );
-export const DISPLAY_CART_PRICES_INCLUDING_TAX = getSetting(
-	'displayCartPricesIncludingTax',
-	false
-);
 export const PRODUCT_COUNT = getSetting( 'productCount', 0 );
 export const ATTRIBUTES = getSetting( 'attributes', [] );
 // used for the editor logic as an extra check

@@ -16,14 +16,17 @@ import {
 } from '@woocommerce/blocks-checkout';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { useShippingDataContext } from '@woocommerce/base-context';
-import {
-	COUPONS_ENABLED,
-	DISPLAY_CART_PRICES_INCLUDING_TAX,
-} from '@woocommerce/block-settings';
+import { COUPONS_ENABLED } from '@woocommerce/block-settings';
 import {
 	useStoreCartCoupons,
 	useStoreCart,
 } from '@woocommerce/base-context/hooks';
+import { getSetting } from '@woocommerce/settings';
+
+const DISPLAY_CART_PRICES_INCLUDING_TAX = getSetting(
+	'displayCartPricesIncludingTax',
+	false
+);
 
 const CheckoutSidebar = ( {
 	cartCoupons = [],

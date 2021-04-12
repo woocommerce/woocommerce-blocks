@@ -25,8 +25,13 @@ import {
 	mustContain,
 } from '@woocommerce/blocks-checkout';
 import Dinero from 'dinero.js';
-import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 import { useCallback, useMemo } from '@wordpress/element';
+import { getSetting } from '@woocommerce/settings';
+
+const DISPLAY_CART_PRICES_INCLUDING_TAX = getSetting(
+	'displayCartPricesIncludingTax',
+	false
+);
 
 /**
  * @typedef {import('@woocommerce/type-defs/cart').CartItem} CartItem
