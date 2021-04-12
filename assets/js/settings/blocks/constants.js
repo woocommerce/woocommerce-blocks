@@ -30,20 +30,12 @@ export const DISPLAY_ITEMIZED_TAXES = getSetting(
 	'displayItemizedTaxes',
 	false
 );
-export const HAS_DARK_EDITOR_STYLE_SUPPORT = getSetting(
-	'hasDarkEditorStyleSupport',
-	false
-);
 export const DISPLAY_CART_PRICES_INCLUDING_TAX = getSetting(
 	'displayCartPricesIncludingTax',
 	false
 );
 export const PRODUCT_COUNT = getSetting( 'productCount', 0 );
 export const ATTRIBUTES = getSetting( 'attributes', [] );
-export const IS_SHIPPING_CALCULATOR_ENABLED = getSetting(
-	'isShippingCalculatorEnabled',
-	true
-);
 // used for the editor logic as an extra check
 export const SHIPPING_COST_REQUIRES_ADDRESS = getSetting(
 	'shippingCostRequiresAddress',
