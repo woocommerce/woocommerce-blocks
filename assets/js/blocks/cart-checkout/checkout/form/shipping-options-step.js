@@ -18,14 +18,19 @@ import {
 	useShippingDataContext,
 } from '@woocommerce/base-context';
 import { decodeEntities } from '@wordpress/html-entities';
-import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 import { Notice } from 'wordpress-components';
 import classnames from 'classnames';
+import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
  */
 import NoShippingPlaceholder from './no-shipping-placeholder';
+
+const DISPLAY_CART_PRICES_INCLUDING_TAX = getSetting(
+	'displayCartPricesIncludingTax',
+	false
+);
 
 /**
  * Renders a shipping rate control option.

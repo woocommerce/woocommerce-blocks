@@ -2,10 +2,15 @@
  * External dependencies
  */
 import { decodeEntities } from '@wordpress/html-entities';
-import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import type { Rate, PackageRateOption } from '@woocommerce/type-defs/shipping';
+import { getSetting } from '@woocommerce/settings';
+
+const DISPLAY_CART_PRICES_INCLUDING_TAX = getSetting(
+	'displayCartPricesIncludingTax',
+	false
+);
 
 /**
  * Default render function for package rate options.

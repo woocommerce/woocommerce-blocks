@@ -2,14 +2,19 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
 import type { Currency } from '@woocommerce/price-format';
 import type { ReactElement } from 'react';
+import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
  */
 import TotalsItem from '../item';
+
+const DISPLAY_CART_PRICES_INCLUDING_TAX = getSetting(
+	'displayCartPricesIncludingTax',
+	false
+);
 
 interface Values {
 	// eslint-disable-next-line camelcase

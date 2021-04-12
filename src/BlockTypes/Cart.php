@@ -119,6 +119,7 @@ class Cart extends AbstractBlock {
 			true
 		);
 		$this->asset_data_registry->add( 'isShippingCalculatorEnabled', filter_var( get_option( 'woocommerce_enable_shipping_calc' ), FILTER_VALIDATE_BOOLEAN ), true );
+		$this->asset_data_registry->add( 'displayCartPricesIncludingTax', 'incl' === get_option( 'woocommerce_tax_display_cart' ), true );
 		$this->asset_data_registry->register_page_id( $attributes['checkoutPageId'] );
 
 		// Hydrate the following data depending on admin or frontend context.

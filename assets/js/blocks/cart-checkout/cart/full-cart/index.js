@@ -18,10 +18,7 @@ import {
 } from '@woocommerce/blocks-checkout';
 
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
-import {
-	COUPONS_ENABLED,
-	DISPLAY_CART_PRICES_INCLUDING_TAX,
-} from '@woocommerce/block-settings';
+import { COUPONS_ENABLED } from '@woocommerce/block-settings';
 import {
 	useStoreCartCoupons,
 	useStoreCart,
@@ -48,6 +45,11 @@ import CartLineItemsTable from './cart-line-items-table';
 import { CartExpressPayment } from '../../payment-methods';
 
 import './style.scss';
+
+const DISPLAY_CART_PRICES_INCLUDING_TAX = getSetting(
+	'displayCartPricesIncludingTax',
+	false
+);
 
 const Block = ( props ) => {
 	return (
