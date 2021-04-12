@@ -18,7 +18,6 @@ export const DEFAULT_ROWS = getSetting( 'default_rows', 3 );
 export const MIN_HEIGHT = getSetting( 'min_height', 500 );
 export const DEFAULT_HEIGHT = getSetting( 'default_height', 500 );
 export const PLACEHOLDER_IMG_SRC = getSetting( 'placeholderImgSrc', '' );
-export const THUMBNAIL_SIZE = getSetting( 'thumbnail_size', 300 );
 export const IS_LARGE_CATALOG = getSetting( 'isLargeCatalog' );
 export const LIMIT_TAGS = getSetting( 'limitTags' );
 export const HAS_PRODUCTS = getSetting( 'hasProducts', true );
@@ -35,10 +34,6 @@ export const HAS_DARK_EDITOR_STYLE_SUPPORT = getSetting(
 	'hasDarkEditorStyleSupport',
 	false
 );
-export const DISPLAY_SHOP_PRICES_INCLUDING_TAX = getSetting(
-	'displayShopPricesIncludingTax',
-	false
-);
 export const DISPLAY_CART_PRICES_INCLUDING_TAX = getSetting(
 	'displayCartPricesIncludingTax',
 	false
@@ -52,10 +47,6 @@ export const IS_SHIPPING_CALCULATOR_ENABLED = getSetting(
 // used for the editor logic as an extra check
 export const SHIPPING_COST_REQUIRES_ADDRESS = getSetting(
 	'shippingCostRequiresAddress',
-	false
-);
-export const IS_SHIPPING_COST_HIDDEN = getSetting(
-	'isShippingCostHidden',
 	false
 );
 export const WOOCOMMERCE_BLOCKS_PHASE = getSetting(
