@@ -129,7 +129,6 @@ class Assets {
 			'privacy'   => wc_privacy_policy_page_id(),
 			'terms'     => wc_terms_and_conditions_page_id(),
 		];
-		$checkout       = WC()->checkout();
 
 		// Global settings used in each block.
 		return array_merge(
@@ -153,7 +152,6 @@ class Assets {
 				'shippingEnabled'               => wc_shipping_enabled(),
 				'displayItemizedTaxes'          => 'itemized' === get_option( 'woocommerce_tax_total_display' ),
 				'displayCartPricesIncludingTax' => 'incl' === get_option( 'woocommerce_tax_display_cart' ),
-				'checkoutShowLoginReminder'     => 'yes' === get_option( 'woocommerce_enable_checkout_login_reminder' ),
 				'showAvatars'                   => '1' === get_option( 'show_avatars' ),
 				'reviewRatingsEnabled'          => wc_review_ratings_enabled(),
 				'productCount'                  => array_sum( (array) $product_counts ),
@@ -174,14 +172,6 @@ class Assets {
 					'privacy'   => self::format_page_resource( $page_ids['privacy'] ),
 					'terms'     => self::format_page_resource( $page_ids['terms'] ),
 				],
-				'checkoutAllowsGuest'           => $checkout instanceof \WC_Checkout && false === filter_var(
-					$checkout->is_registration_required(),
-					FILTER_VALIDATE_BOOLEAN
-				),
-				'checkoutAllowsSignup'          => $checkout instanceof \WC_Checkout && filter_var(
-					$checkout->is_registration_enabled(),
-					FILTER_VALIDATE_BOOLEAN
-				),
 				'baseLocation'                  => wc_get_base_location(),
 				'woocommerceBlocksPhase'        => Package::feature()->get_flag(),
 				'hasDarkEditorStyleSupport'     => current_theme_supports( 'dark-editor-style' ),
