@@ -37,7 +37,7 @@ export const pluckAddress = ( {
 export const emptyHiddenAddressFields = ( address ) => {
 	const fields = Object.keys( defaultAddressFields );
 	const addressFields = prepareAddressFields( fields, {}, address.country );
-	const newAddress = {};
+	const newAddress = Object.assign( {}, address );
 	addressFields.forEach( ( field ) => {
 		newAddress[ field.key ] = field.hidden ? '' : address[ field.key ];
 	} );
