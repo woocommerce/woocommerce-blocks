@@ -63,7 +63,7 @@ class AssetDataRegistry {
 	}
 
 	/**
-	 * Exposes core asset data
+	 * Exposes core data via the wcSettings global. This data is shared throughout the client.
 	 *
 	 * @return array  An array containing core data.
 	 */
@@ -174,17 +174,21 @@ class AssetDataRegistry {
 	/**
 	 * Interface for adding data to the registry.
 	 *
-	 * @param string $key  The key used to reference the data being registered.
-	 *                     You can only register data that is not already in the
-	 *                     registry identified by the given key.
-	 * @param mixed  $data If not a function, registered to the registry as is.
-	 *                     If a function, then the callback is invoked right
-	 *                     before output to the screen.
+	 * You can only register data that is not already in the registry identified by the given key. If there is a
+	 * duplicate found, unless $ignore_duplicates is true, an exception will be thrown.
 	 *
-	 * @throws InvalidArgumentException  Only throws when site is in debug mode.
-	 *                                   Always logs the error.
+	 * @param string  $key               The key used to reference the data being registered.
+	 * @param mixed   $data              If not a function, registered to the registry as is. If a function, then the
+	 *                                   callback is invoked right before output to the screen.
+	 * @param boolean $check_key_exists If set to true, duplicate data will be ignored if the key exists.
+	 *                                  If false, duplicate data will cause an exception.
+	 *
+	 * @throws InvalidArgumentException  Only throws when site is in debug mode. Always logs the error.
 	 */
-	public function add( $key, $data ) {
+	public function add( $key, $data, $check_key_exists = false ) {
+		if ( $check_key_exists && $this->exists( $key ) ) {
+			return;
+		}
 		try {
 			$this->add_data( $key, $data );
 		} catch ( Exception $e ) {
@@ -193,6 +197,19 @@ class AssetDataRegistry {
 				throw $e;
 			}
 			wc_caught_exception( $e, __METHOD__, [ $key, $data ] );
+		}
+	}
+
+	/**
+	 * Adds a page permalink to the data registry.
+	 *
+	 * @param integer $page_id Page ID to add to the registry.
+	 */
+	public function register_page_id( $page_id ) {
+		$permalink = $page_id ? get_permalink( $page_id ) : false;
+
+		if ( $permalink ) {
+			$this->data[ 'page-' . $page_id ] = $permalink;
 		}
 	}
 
