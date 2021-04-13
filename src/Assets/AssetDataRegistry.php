@@ -147,10 +147,6 @@ class AssetDataRegistry {
 			'default_rows'                => wc_get_theme_support( 'product_blocks::default_rows', 3 ),
 			'placeholderImgSrc'           => wc_placeholder_img_src(),
 
-			// @todo Move reviewRatingsEnabled and showAvatars to reviews blocktype.
-			'reviewRatingsEnabled'        => wc_review_ratings_enabled(),
-			'showAvatars'                 => '1' === get_option( 'show_avatars' ),
-
 			// @todo Review shippingCostRequiresAddress which is used in sample data but might not be required.
 			'shippingCostRequiresAddress' => filter_var( get_option( 'woocommerce_shipping_cost_requires_address' ), FILTER_VALIDATE_BOOLEAN ),
 
