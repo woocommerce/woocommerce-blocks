@@ -118,8 +118,12 @@ class Cart extends AbstractBlock {
 			},
 			true
 		);
+		$this->asset_data_registry->add( 'baseLocation', wc_get_base_location(), true );
 		$this->asset_data_registry->add( 'isShippingCalculatorEnabled', filter_var( get_option( 'woocommerce_enable_shipping_calc' ), FILTER_VALIDATE_BOOLEAN ), true );
 		$this->asset_data_registry->add( 'displayCartPricesIncludingTax', 'incl' === get_option( 'woocommerce_tax_display_cart' ), true );
+		$this->asset_data_registry->add( 'taxesEnabled', wc_tax_enabled(), true );
+		$this->asset_data_registry->add( 'couponsEnabled', wc_coupons_enabled(), true );
+		$this->asset_data_registry->add( 'shippingEnabled', wc_shipping_enabled(), true );
 		$this->asset_data_registry->register_page_id( $attributes['checkoutPageId'] );
 
 		// Hydrate the following data depending on admin or frontend context.

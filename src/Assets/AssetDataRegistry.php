@@ -65,17 +65,29 @@ class AssetDataRegistry {
 	/**
 	 * Exposes core data via the wcSettings global. This data is shared throughout the client.
 	 *
+	 * Settings that are used by various components or multiple blocks should be added here. Note, that settings here are
+	 * global so be sure not to add anything heavy if possible.
+	 *
 	 * @return array  An array containing core data.
 	 */
 	protected function get_core_data() {
 		global $wp_locale;
-		$currency = get_woocommerce_currency();
+		$currency       = get_woocommerce_currency();
+		$tag_count      = wp_count_terms( 'product_tag' );
+		$product_counts = wp_count_posts( 'product' );
+		$page_ids       = [
+			'myaccount' => wc_get_page_id( 'myaccount' ),
+			'shop'      => wc_get_page_id( 'shop' ),
+			'cart'      => wc_get_page_id( 'cart' ),
+			'checkout'  => wc_get_page_id( 'checkout' ),
+			'privacy'   => wc_privacy_policy_page_id(),
+			'terms'     => wc_terms_and_conditions_page_id(),
+		];
+
 		return [
-			'wpVersion'     => get_bloginfo( 'version' ),
-			'wcVersion'     => defined( 'WC_VERSION' ) ? WC_VERSION : '',
-			'adminUrl'      => admin_url(),
-			'countries'     => WC()->countries->get_countries(),
-			'currency'      => [
+			'adminUrl'                    => admin_url(),
+			'countries'                   => WC()->countries->get_countries(),
+			'currency'                    => [
 				'code'              => $currency,
 				'precision'         => wc_get_price_decimals(),
 				'symbol'            => html_entity_decode( get_woocommerce_currency_symbol( $currency ) ),
@@ -84,14 +96,98 @@ class AssetDataRegistry {
 				'thousandSeparator' => wc_get_price_thousand_separator(),
 				'priceFormat'       => html_entity_decode( get_woocommerce_price_format() ),
 			],
-			'locale'        => [
+			'currentUserIsAdmin'          => is_user_logged_in() && current_user_can( 'manage_woocommerce' ),
+			'hasDarkEditorStyleSupport'   => current_theme_supports( 'dark-editor-style' ),
+			'hideOutOfStockItems'         => 'yes' === get_option( 'woocommerce_hide_out_of_stock_items' ),
+			'homeUrl'                     => esc_url( home_url( '/' ) ),
+			'isLargeCatalog'              => $product_counts->publish > 100,
+			'locale'                      => [
 				'siteLocale'    => get_locale(),
 				'userLocale'    => get_user_locale(),
 				'weekdaysShort' => array_values( $wp_locale->weekday_abbrev ),
 			],
-			'orderStatuses' => $this->get_order_statuses( wc_get_order_statuses() ),
-			'siteTitle'     => get_bloginfo( 'name ' ),
-			'wcAssetUrl'    => plugins_url( 'assets/', WC_PLUGIN_FILE ),
+			'loginUrl'                    => wp_login_url(),
+			'orderStatuses'               => $this->get_order_statuses( wc_get_order_statuses() ),
+
+			'restApiRoutes'               => [
+				'/wc/store' => array_keys( Package::container()->get( RestApi::class )->get_routes_from_namespace( 'wc/store' ) ),
+			],
+			'siteTitle'                   => get_bloginfo( 'name' ),
+			'storePages'                  => [
+				'myaccount' => $this->format_page_resource( $page_ids['myaccount'] ),
+				'shop'      => $this->format_page_resource( $page_ids['shop'] ),
+				'cart'      => $this->format_page_resource( $page_ids['cart'] ),
+				'checkout'  => $this->format_page_resource( $page_ids['checkout'] ),
+				'privacy'   => $this->format_page_resource( $page_ids['privacy'] ),
+				'terms'     => $this->format_page_resource( $page_ids['terms'] ),
+			],
+			'wcAssetUrl'                  => plugins_url( 'assets/', WC_PLUGIN_FILE ),
+			'wcBlocksAssetUrl'            => plugins_url( 'assets/', dirname( __DIR__ ) ),
+			'wcBlocksBuildUrl'            => plugins_url( 'build/', dirname( __DIR__ ) ),
+			'wcBlocksPhase'               => Automattic\WooCommerce\Blocks\Package::feature()->get_flag(),
+			'wcVersion'                   => defined( 'WC_VERSION' ) ? WC_VERSION : '',
+
+			/*
+			 * translators: If your word count is based on single characters (e.g. East Asian characters),
+			 * enter 'characters_excluding_spaces' or 'characters_including_spaces'. Otherwise, enter 'words'.
+			 * Do not translate into your own language.
+			 */
+			'wordCountType'               => _x( 'words', 'Word count type. Do not translate!', 'woo-gutenberg-products-block' ),
+			'wpVersion'                   => get_bloginfo( 'version' ),
+
+			// @todo See if grid settings can be moved to product blocktypes.
+			'min_columns'                 => wc_get_theme_support( 'product_blocks::min_columns', 1 ),
+			'max_columns'                 => wc_get_theme_support( 'product_blocks::max_columns', 6 ),
+			'default_columns'             => wc_get_theme_support( 'product_blocks::default_columns', 3 ),
+			'min_rows'                    => wc_get_theme_support( 'product_blocks::min_rows', 1 ),
+			'max_rows'                    => wc_get_theme_support( 'product_blocks::max_rows', 6 ),
+			'default_rows'                => wc_get_theme_support( 'product_blocks::default_rows', 3 ),
+			'placeholderImgSrc'           => wc_placeholder_img_src(),
+
+			// @todo Move reviewRatingsEnabled and showAvatars to reviews blocktype.
+			'reviewRatingsEnabled'        => wc_review_ratings_enabled(),
+			'showAvatars'                 => '1' === get_option( 'show_avatars' ),
+
+			// @todo Review shippingCostRequiresAddress which is used in sample data but might not be required.
+			'shippingCostRequiresAddress' => filter_var( get_option( 'woocommerce_shipping_cost_requires_address' ), FILTER_VALIDATE_BOOLEAN ),
+
+			// @todo Move limitTags and hasTags to product tag block.
+			'limitTags'                   => $tag_count > 100,
+			'hasTags'                     => $tag_count > 0,
+
+			// @todo move productCount to price filter block.
+			'productCount'                => array_sum( (array) $product_counts ),
+
+			// @todo Move attributes to attribute filter block.
+			'attributes'                  => array_values( wc_get_attribute_taxonomies() ),
+
+			// @todo Move min_height and default_height to featured product/cat blocktype.
+			'min_height'                  => wc_get_theme_support( 'featured_block::min_height', 500 ),
+			'default_height'              => wc_get_theme_support( 'featured_block::default_height', 500 ),
+		];
+	}
+
+	/**
+	 * Format a page object into a standard array of data.
+	 *
+	 * @param WP_Post|int $page Page object or ID.
+	 * @return array
+	 */
+	protected function format_page_resource( $page ) {
+		if ( is_numeric( $page ) && $page > 0 ) {
+			$page = get_post( $page );
+		}
+		if ( ! is_a( $page, '\WP_Post' ) || 'publish' !== $page->post_status ) {
+			return [
+				'id'        => 0,
+				'title'     => '',
+				'permalink' => false,
+			];
+		}
+		return [
+			'id'        => $page->ID,
+			'title'     => $page->post_title,
+			'permalink' => get_permalink( $page->ID ),
 		];
 	}
 
