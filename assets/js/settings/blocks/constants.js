@@ -37,10 +37,7 @@ export const SHIPPING_COST_REQUIRES_ADDRESS = getSetting(
 	'shippingCostRequiresAddress',
 	false
 );
-export const WOOCOMMERCE_BLOCKS_PHASE = getSetting(
-	'woocommerceBlocksPhase',
-	1
-);
+export const WOOCOMMERCE_BLOCKS_PHASE = getSetting( 'wcBlocksPhase', 1 );
 export const WC_BLOCKS_ASSET_URL = getSetting( 'wcBlocksAssetUrl', '' );
 export const WC_BLOCKS_BUILD_URL = getSetting( 'wcBlocksBuildUrl', '' );
 export const SHIPPING_COUNTRIES = getSetting( 'shippingCountries', {} );
