@@ -150,10 +150,6 @@ class AssetDataRegistry {
 			// @todo Review shippingCostRequiresAddress which is used in sample data but might not be required.
 			'shippingCostRequiresAddress' => filter_var( get_option( 'woocommerce_shipping_cost_requires_address' ), FILTER_VALIDATE_BOOLEAN ),
 
-			// @todo Move limitTags and hasTags to product tag block.
-			'limitTags'                   => $tag_count > 100,
-			'hasTags'                     => $tag_count > 0,
-
 			// @todo move productCount to price filter block.
 			'productCount'                => array_sum( (array) $product_counts ),
 
