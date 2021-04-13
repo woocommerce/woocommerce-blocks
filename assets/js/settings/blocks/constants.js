@@ -9,8 +9,6 @@ export const REVIEW_RATINGS_ENABLED = getSetting(
 	true
 );
 export const SHOW_AVATARS = getSetting( 'showAvatars', true );
-export const DEFAULT_COLUMNS = getSetting( 'default_columns', 3 );
-export const DEFAULT_ROWS = getSetting( 'default_rows', 3 );
 export const MIN_HEIGHT = getSetting( 'min_height', 500 );
 export const DEFAULT_HEIGHT = getSetting( 'default_height', 500 );
 export const PLACEHOLDER_IMG_SRC = getSetting( 'placeholderImgSrc', '' );
