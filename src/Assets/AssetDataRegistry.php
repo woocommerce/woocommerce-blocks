@@ -110,6 +110,7 @@ class AssetDataRegistry {
 			],
 			'loginUrl'                  => wp_login_url(),
 			'orderStatuses'             => $this->get_order_statuses( wc_get_order_statuses() ),
+			'placeholderImgSrc'         => wc_placeholder_img_src(),
 			'productCount'              => array_sum( (array) $product_counts ),
 			'restApiRoutes'             => [
 				'/wc/store' => array_keys( Package::container()->get( RestApi::class )->get_routes_from_namespace( 'wc/store' ) ),
@@ -123,15 +124,6 @@ class AssetDataRegistry {
 			'wcVersion'                 => defined( 'WC_VERSION' ) ? WC_VERSION : '',
 			'wordCountType'             => $word_count_type,
 			'wpVersion'                 => get_bloginfo( 'version' ),
-
-			// @todo See if grid settings can be moved to product blocktypes.
-			'min_columns'               => wc_get_theme_support( 'product_blocks::min_columns', 1 ),
-			'max_columns'               => wc_get_theme_support( 'product_blocks::max_columns', 6 ),
-			'default_columns'           => wc_get_theme_support( 'product_blocks::default_columns', 3 ),
-			'min_rows'                  => wc_get_theme_support( 'product_blocks::min_rows', 1 ),
-			'max_rows'                  => wc_get_theme_support( 'product_blocks::max_rows', 6 ),
-			'default_rows'              => wc_get_theme_support( 'product_blocks::default_rows', 3 ),
-			'placeholderImgSrc'         => wc_placeholder_img_src(),
 		];
 	}
 
