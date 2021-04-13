@@ -30,6 +30,7 @@ import {
 } from '@woocommerce/shared-context';
 import { getBlockMap } from '@woocommerce/atomic-utils';
 import { previewProducts } from '@woocommerce/resource-previews';
+import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -119,6 +120,10 @@ class Editor extends Component {
 						rows={ rows }
 						alignButtons={ alignButtons }
 						setAttributes={ setAttributes }
+						minColumns={ getSetting( 'min_columns', 1 ) }
+						maxColumns={ getSetting( 'max_columns', 6 ) }
+						minRows={ getSetting( 'min_rows', 1 ) }
+						maxRows={ getSetting( 'max_rows', 6 ) }
 					/>
 				</PanelBody>
 				<PanelBody

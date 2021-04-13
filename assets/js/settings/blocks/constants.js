@@ -9,11 +9,7 @@ export const REVIEW_RATINGS_ENABLED = getSetting(
 	true
 );
 export const SHOW_AVATARS = getSetting( 'showAvatars', true );
-export const MAX_COLUMNS = getSetting( 'max_columns', 6 );
-export const MIN_COLUMNS = getSetting( 'min_columns', 1 );
 export const DEFAULT_COLUMNS = getSetting( 'default_columns', 3 );
-export const MAX_ROWS = getSetting( 'max_rows', 6 );
-export const MIN_ROWS = getSetting( 'min_rows', 1 );
 export const DEFAULT_ROWS = getSetting( 'default_rows', 3 );
 export const MIN_HEIGHT = getSetting( 'min_height', 500 );
 export const DEFAULT_HEIGHT = getSetting( 'default_height', 500 );
