@@ -14,6 +14,7 @@ import {
  */
 import {
 	getNormalPagePermalink,
+	scrollTo,
 	shopper,
 	visitPostOfType,
 } from '../../../utils';
@@ -133,13 +134,7 @@ describe( `${ block.name } Block (frontend)`, () => {
 			twoProductPrice
 		);
 
-		await page.evaluate( () => {
-			// Disable smooth scrolling so it scrolls instantly.
-			document.querySelector( 'html' ).style.scrollBehavior = 'auto';
-			document
-				.querySelector( '.wc-block-components-radio-control__input' )
-				.scrollIntoView( { block: 'center', inline: 'center' } );
-		} );
+		await scrollTo( '.wc-block-components-radio-control__input' );
 
 		await expect( page ).toClick(
 			'.wc-block-components-payment-method-label',
