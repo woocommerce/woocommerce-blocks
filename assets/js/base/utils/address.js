@@ -43,5 +43,5 @@ export const emptyHiddenAddressFields = ( address ) => {
 			newAddress[ field.key ] = '';
 		}
 	} );
-	return address;
+	return newAddress;
 };
