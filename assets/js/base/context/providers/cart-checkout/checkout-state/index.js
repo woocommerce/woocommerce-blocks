@@ -124,14 +124,19 @@ export const CheckoutStateProvider = ( {
 	 * @deprecated use onCheckoutValidationBeforeProcessing instead
 	 */
 	const onCheckoutBeforeProcessing = useMemo( () => {
-		deprecated( 'onCheckoutBeforeProcessing', {
-			alternative: 'onCheckoutValidationBeforeProcessing',
-			plugin: 'WooCommerce Blocks',
-		} );
-
-		return emitterObservers( observerDispatch )
+		const callback = emitterObservers( observerDispatch )
 			.onCheckoutValidationBeforeProcessing;
+
+		return function ( ...args ) {
+			deprecated( 'onCheckoutBeforeProcessing', {
+				alternative: 'onCheckoutValidationBeforeProcessing',
+				plugin: 'WooCommerce Blocks',
+			} );
+
+			return callback( ...args );
+		};
 	}, [ observerDispatch ] );
+
 	const onCheckoutValidationBeforeProcessing = useMemo(
 		() =>
 			emitterObservers( observerDispatch )
