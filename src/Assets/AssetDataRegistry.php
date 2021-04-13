@@ -78,14 +78,6 @@ class AssetDataRegistry {
 		$currency       = get_woocommerce_currency();
 		$tag_count      = wp_count_terms( 'product_tag' );
 		$product_counts = wp_count_posts( 'product' );
-		$page_ids       = [
-			'myaccount' => wc_get_page_id( 'myaccount' ),
-			'shop'      => wc_get_page_id( 'shop' ),
-			'cart'      => wc_get_page_id( 'cart' ),
-			'checkout'  => wc_get_page_id( 'checkout' ),
-			'privacy'   => wc_privacy_policy_page_id(),
-			'terms'     => wc_terms_and_conditions_page_id(),
-		];
 
 		return [
 			'adminUrl'                    => admin_url(),
@@ -116,14 +108,7 @@ class AssetDataRegistry {
 				'/wc/store' => array_keys( Package::container()->get( RestApi::class )->get_routes_from_namespace( 'wc/store' ) ),
 			],
 			'siteTitle'                   => get_bloginfo( 'name' ),
-			'storePages'                  => [
-				'myaccount' => $this->format_page_resource( $page_ids['myaccount'] ),
-				'shop'      => $this->format_page_resource( $page_ids['shop'] ),
-				'cart'      => $this->format_page_resource( $page_ids['cart'] ),
-				'checkout'  => $this->format_page_resource( $page_ids['checkout'] ),
-				'privacy'   => $this->format_page_resource( $page_ids['privacy'] ),
-				'terms'     => $this->format_page_resource( $page_ids['terms'] ),
-			],
+			'storePages'                  => $this->get_store_pages(),
 			'wcAssetUrl'                  => plugins_url( 'assets/', WC_PLUGIN_FILE ),
 			'wcBlocksAssetUrl'            => plugins_url( 'assets/', dirname( __DIR__ ) ),
 			'wcBlocksBuildUrl'            => plugins_url( 'build/', dirname( __DIR__ ) ),
@@ -153,6 +138,25 @@ class AssetDataRegistry {
 			// @todo Move attributes to attribute filter block.
 			'attributes'                  => array_values( wc_get_attribute_taxonomies() ),
 		];
+	}
+
+	/**
+	 * Get store pages to include in settings.
+	 *
+	 * @return array
+	 */
+	protected function get_store_pages() {
+		return array_map(
+			[ $this, 'format_page_resource' ],
+			[
+				'myaccount' => wc_get_page_id( 'myaccount' ),
+				'shop'      => wc_get_page_id( 'shop' ),
+				'cart'      => wc_get_page_id( 'cart' ),
+				'checkout'  => wc_get_page_id( 'checkout' ),
+				'privacy'   => wc_privacy_policy_page_id(),
+				'terms'     => wc_terms_and_conditions_page_id(),
+			]
+		);
 	}
 
 	/**
