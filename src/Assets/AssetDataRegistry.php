@@ -111,7 +111,7 @@ class AssetDataRegistry {
 			],
 			'loginUrl'                    => wp_login_url(),
 			'orderStatuses'               => $this->get_order_statuses( wc_get_order_statuses() ),
-
+			'productCount'                => array_sum( (array) $product_counts ),
 			'restApiRoutes'               => [
 				'/wc/store' => array_keys( Package::container()->get( RestApi::class )->get_routes_from_namespace( 'wc/store' ) ),
 			],
@@ -149,9 +149,6 @@ class AssetDataRegistry {
 
 			// @todo Review shippingCostRequiresAddress which is used in sample data but might not be required.
 			'shippingCostRequiresAddress' => filter_var( get_option( 'woocommerce_shipping_cost_requires_address' ), FILTER_VALIDATE_BOOLEAN ),
-
-			// @todo move productCount to price filter block.
-			'productCount'                => array_sum( (array) $product_counts ),
 
 			// @todo Move attributes to attribute filter block.
 			'attributes'                  => array_values( wc_get_attribute_taxonomies() ),
