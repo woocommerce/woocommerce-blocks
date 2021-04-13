@@ -152,10 +152,6 @@ class AssetDataRegistry {
 
 			// @todo Move attributes to attribute filter block.
 			'attributes'                  => array_values( wc_get_attribute_taxonomies() ),
-
-			// @todo Move min_height and default_height to featured product/cat blocktype.
-			'min_height'                  => wc_get_theme_support( 'featured_block::min_height', 500 ),
-			'default_height'              => wc_get_theme_support( 'featured_block::default_height', 500 ),
 		];
 	}
 
