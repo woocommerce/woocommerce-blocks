@@ -75,9 +75,16 @@ class AssetDataRegistry {
 	 */
 	protected function get_core_data() {
 		global $wp_locale;
+
 		$currency       = get_woocommerce_currency();
-		$tag_count      = wp_count_terms( 'product_tag' );
 		$product_counts = wp_count_posts( 'product' );
+
+		/*
+		 * translators: If your word count is based on single characters (e.g. East Asian characters),
+		 * enter 'characters_excluding_spaces' or 'characters_including_spaces'. Otherwise, enter 'words'.
+		 * Do not translate into your own language.
+		 */
+		$word_count_type = _x( 'words', 'Word count type. Do not translate!', 'woo-gutenberg-products-block' );
 
 		return [
 			'adminUrl'                    => admin_url(),
@@ -114,13 +121,7 @@ class AssetDataRegistry {
 			'wcBlocksBuildUrl'            => plugins_url( 'build/', dirname( __DIR__ ) ),
 			'wcBlocksPhase'               => Package::feature()->get_flag(),
 			'wcVersion'                   => defined( 'WC_VERSION' ) ? WC_VERSION : '',
-
-			/*
-			 * translators: If your word count is based on single characters (e.g. East Asian characters),
-			 * enter 'characters_excluding_spaces' or 'characters_including_spaces'. Otherwise, enter 'words'.
-			 * Do not translate into your own language.
-			 */
-			'wordCountType'               => _x( 'words', 'Word count type. Do not translate!', 'woo-gutenberg-products-block' ),
+			'wordCountType'               => $word_count_type,
 			'wpVersion'                   => get_bloginfo( 'version' ),
 
 			// @todo See if grid settings can be moved to product blocktypes.
