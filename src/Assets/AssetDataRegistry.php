@@ -134,9 +134,6 @@ class AssetDataRegistry {
 
 			// @todo Review shippingCostRequiresAddress which is used in sample data but might not be required.
 			'shippingCostRequiresAddress' => filter_var( get_option( 'woocommerce_shipping_cost_requires_address' ), FILTER_VALIDATE_BOOLEAN ),
-
-			// @todo Move attributes to attribute filter block.
-			'attributes'                  => array_values( wc_get_attribute_taxonomies() ),
 		];
 	}
 
