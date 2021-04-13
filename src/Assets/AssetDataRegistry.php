@@ -1,6 +1,9 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\Assets;
 
+use Automattic\WooCommerce\Blocks\Package;
+use Automattic\WooCommerce\Blocks\RestApi;
+
 use Exception;
 use InvalidArgumentException;
 
@@ -124,7 +127,7 @@ class AssetDataRegistry {
 			'wcAssetUrl'                  => plugins_url( 'assets/', WC_PLUGIN_FILE ),
 			'wcBlocksAssetUrl'            => plugins_url( 'assets/', dirname( __DIR__ ) ),
 			'wcBlocksBuildUrl'            => plugins_url( 'build/', dirname( __DIR__ ) ),
-			'wcBlocksPhase'               => Automattic\WooCommerce\Blocks\Package::feature()->get_flag(),
+			'wcBlocksPhase'               => Package::feature()->get_flag(),
 			'wcVersion'                   => defined( 'WC_VERSION' ) ? WC_VERSION : '',
 
 			/*

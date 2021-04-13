@@ -152,7 +152,7 @@ class Checkout extends AbstractBlock {
 		$this->asset_data_registry->add( 'taxesEnabled', wc_tax_enabled(), true );
 		$this->asset_data_registry->add( 'couponsEnabled', wc_coupons_enabled(), true );
 		$this->asset_data_registry->add( 'shippingEnabled', wc_shipping_enabled(), true );
-		$this->asset_data_registry->register_page_id( $attributes['cartPageId'] );
+		$this->asset_data_registry->register_page_id( isset( $attributes['cartPageId'] ) ? $attributes['cartPageId'] : 0 );
 
 		// Hydrate the following data depending on admin or frontend context.
 		if ( is_admin() && function_exists( 'get_current_screen' ) ) {
