@@ -85,6 +85,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 4.7.1 - 2021-04-13 =
+
+#### Bug Fixes
+
+- Check if Cart and Checkout are registered before removing payment methods. ([4056](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4056))
+
 = 4.7.0 - 2021-03-16 =
 
 #### Enhancements
