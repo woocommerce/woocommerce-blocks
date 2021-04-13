@@ -22,9 +22,10 @@ const block = {
 	name: 'Checkout',
 };
 
+const productPrice = 21.99;
 const simpleProductName = 'Woo Single #1';
-const singleProductPrice = '$21.99';
-const twoProductPrice = '$43.98';
+const singleProductPrice = `$${ productPrice }`;
+const twoProductPrice = `$${ productPrice * 2 }`;
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 )
 	// eslint-disable-next-line jest/no-focused-tests
