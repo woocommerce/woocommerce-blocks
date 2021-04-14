@@ -15,7 +15,14 @@ export const LOCALE = allSettings.locale;
 export const ORDER_STATUSES = allSettings.orderStatuses;
 export const PLACEHOLDER_IMG_SRC = allSettings.placeholderImgSrc;
 export const SITE_TITLE = allSettings.siteTitle;
-export const STORE_PAGES = allSettings.storePages;
+export const STORE_PAGES = allSettings.storePages as Record<
+	string,
+	{
+		id: 0;
+		title: '';
+		permalink: '';
+	}
+>;
 export const WC_ASSET_URL = allSettings.wcAssetUrl;
 export const WC_VERSION = allSettings.wcVersion;
 export const WP_LOGIN_URL = allSettings.wpLoginUrl;

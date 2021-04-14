@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { getSetting } from '@woocommerce/settings';
+import { getSetting, STORE_PAGES } from '@woocommerce/settings';
 
 /**
  * Settings defined globally for all blocks are exported here, as well as constants derived from core settings.
@@ -26,6 +26,19 @@ export {
 	WORD_COUNT_TYPE,
 };
 
+export const SHOP_URL = STORE_PAGES.shop.permalink;
+export const CHECKOUT_PAGE_ID = STORE_PAGES.checkout.id;
+export const CHECKOUT_URL = STORE_PAGES.checkout.permalink;
+export const PRIVACY_URL = STORE_PAGES.privacy.permalink;
+export const PRIVACY_PAGE_NAME = STORE_PAGES.privacy.title;
+export const TERMS_URL = STORE_PAGES.terms.permalink;
+export const TERMS_PAGE_NAME = STORE_PAGES.terms.title;
+export const CART_PAGE_ID = STORE_PAGES.cart.id;
+export const CART_URL = STORE_PAGES.cart.permalink;
+export const LOGIN_URL = STORE_PAGES.myaccount.permalink
+	? STORE_PAGES.myaccount.permalink
+	: getSetting( 'wpLoginUrl', '/wp-login.php' );
+
 export const ATTRIBUTES = getSetting( 'attributes', [] );
 export const ALLOWED_COUNTRIES = getSetting( 'allowedCountries', {} );
 export const ALLOWED_STATES = getSetting( 'allowedStates', {} );
@@ -33,50 +46,16 @@ export const SHIPPING_METHODS_EXIST = getSetting(
 	'shippingMethodsExist',
 	false
 );
-
 export const PAYMENT_GATEWAY_SORT_ORDER = getSetting(
 	'paymentGatewaySortOrder',
 	[]
 );
-
 export const CHECKOUT_SHOW_LOGIN_REMINDER = getSetting(
 	'checkoutShowLoginReminder',
 	true
 );
-
-const defaultPage = {
-	id: 0,
-	title: '',
-	permalink: '',
-};
-const storePages = getSetting( 'storePages', {
-	myaccount: defaultPage,
-	shop: defaultPage,
-	cart: defaultPage,
-	checkout: defaultPage,
-	privacy: defaultPage,
-	terms: defaultPage,
-} );
-export const SHOP_URL = storePages.shop.permalink;
-
-export const CHECKOUT_PAGE_ID = storePages.checkout.id;
-export const CHECKOUT_URL = storePages.checkout.permalink;
-
-export const PRIVACY_URL = storePages.privacy.permalink;
-export const PRIVACY_PAGE_NAME = storePages.privacy.title;
-
-export const TERMS_URL = storePages.terms.permalink;
-export const TERMS_PAGE_NAME = storePages.terms.title;
-
-export const CART_PAGE_ID = storePages.cart.id;
-export const CART_URL = storePages.cart.permalink;
-
 export const CHECKOUT_ALLOWS_GUEST = getSetting( 'checkoutAllowsGuest', false );
 export const CHECKOUT_ALLOWS_SIGNUP = getSetting(
 	'checkoutAllowsSignup',
 	false
 );
-
-export const LOGIN_URL = storePages.myaccount.permalink
-	? storePages.myaccount.permalink
-	: getSetting( 'wpLoginUrl', '/wp-login.php' );
