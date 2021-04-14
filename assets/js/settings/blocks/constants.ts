@@ -23,7 +23,6 @@ export {
 	WORD_COUNT_TYPE,
 };
 
-export const LIMIT_TAGS = getSetting( 'limitTags' );
 export const HAS_PRODUCTS = getSetting( 'hasProducts', true );
 export const HAS_TAGS = getSetting( 'hasTags', true );
 export const HOME_URL = getSetting( 'homeUrl', '' );
