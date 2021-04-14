@@ -27,9 +27,7 @@ export {
 };
 
 export const ATTRIBUTES = getSetting( 'attributes', [] );
-export const SHIPPING_COUNTRIES = getSetting( 'shippingCountries', {} );
 export const ALLOWED_COUNTRIES = getSetting( 'allowedCountries', {} );
-export const SHIPPING_STATES = getSetting( 'shippingStates', {} );
 export const ALLOWED_STATES = getSetting( 'allowedStates', {} );
 export const SHIPPING_METHODS_EXIST = getSetting(
 	'shippingMethodsExist',
