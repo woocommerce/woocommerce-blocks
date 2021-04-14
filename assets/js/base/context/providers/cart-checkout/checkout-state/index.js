@@ -122,6 +122,11 @@ export const CheckoutStateProvider = ( {
 	}, [ observers ] );
 	/**
 	 * @deprecated use onCheckoutValidationBeforeProcessing instead
+	 *
+	 * To prevent the deprecation message to be shown at render time
+	 * we need an extra function between useMemo and emitterObservers
+	 * so that the deprecated message gets shown only at invocation time.
+	 * (useMemo calls the passed function at render time)
 	 */
 	const onCheckoutBeforeProcessing = useMemo( () => {
 		const callback = emitterObservers( observerDispatch )
