@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import {
-	SHIPPING_COST_REQUIRES_ADDRESS,
 	SHIPPING_METHODS_EXIST,
 	WC_BLOCKS_ASSET_URL,
 } from '@woocommerce/block-settings';

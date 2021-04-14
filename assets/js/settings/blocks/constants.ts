@@ -27,12 +27,6 @@ export {
 };
 
 export const ATTRIBUTES = getSetting( 'attributes', [] );
-// used for the editor logic as an extra check
-export const SHIPPING_COST_REQUIRES_ADDRESS = getSetting(
-	'shippingCostRequiresAddress',
-	false
-);
-
 export const SHIPPING_COUNTRIES = getSetting( 'shippingCountries', {} );
 export const ALLOWED_COUNTRIES = getSetting( 'allowedCountries', {} );
 export const SHIPPING_STATES = getSetting( 'shippingStates', {} );
