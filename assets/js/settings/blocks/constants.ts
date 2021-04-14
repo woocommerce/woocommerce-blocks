@@ -40,8 +40,3 @@ export const LOGIN_URL = STORE_PAGES.myaccount.permalink
 	: getSetting( 'wpLoginUrl', '/wp-login.php' );
 
 export const ATTRIBUTES = getSetting( 'attributes', [] );
-export const CHECKOUT_ALLOWS_GUEST = getSetting( 'checkoutAllowsGuest', false );
-export const CHECKOUT_ALLOWS_SIGNUP = getSetting(
-	'checkoutAllowsSignup',
-	false
-);
