@@ -24,7 +24,6 @@ export {
 };
 
 export const HAS_TAGS = getSetting( 'hasTags', true );
-export const HOME_URL = getSetting( 'homeUrl', '' );
 export const COUPONS_ENABLED = getSetting( 'couponsEnabled', true );
 export const SHIPPING_ENABLED = getSetting( 'shippingEnabled', true );
 export const TAXES_ENABLED = getSetting( 'taxesEnabled', true );
