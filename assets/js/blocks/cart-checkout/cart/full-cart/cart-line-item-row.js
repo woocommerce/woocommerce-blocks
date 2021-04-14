@@ -28,11 +28,6 @@ import Dinero from 'dinero.js';
 import { useCallback, useMemo } from '@wordpress/element';
 import { getSetting } from '@woocommerce/settings';
 
-const DISPLAY_CART_PRICES_INCLUDING_TAX = getSetting(
-	'displayCartPricesIncludingTax',
-	false
-);
-
 /**
  * @typedef {import('@woocommerce/type-defs/cart').CartItem} CartItem
  */
@@ -142,7 +137,7 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 	const saleAmount = saleAmountSingle.multiply( quantity );
 	const totalsCurrency = getCurrencyFromPriceResponse( totals );
 	let lineSubtotal = parseInt( totals.line_subtotal, 10 );
-	if ( DISPLAY_CART_PRICES_INCLUDING_TAX ) {
+	if ( getSetting( 'displayCartPricesIncludingTax', false ) ) {
 		lineSubtotal += parseInt( totals.line_subtotal_tax, 10 );
 	}
 	const subtotalPrice = Dinero( {
