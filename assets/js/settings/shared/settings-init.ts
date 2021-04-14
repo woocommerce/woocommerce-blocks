@@ -4,7 +4,7 @@ declare global {
 	}
 }
 
-interface WooCommerceSiteCurrency {
+export interface WooCommerceSiteCurrency {
 	// The ISO code for the currency.
 	code: string;
 	// The precision (decimal places).
@@ -21,7 +21,7 @@ interface WooCommerceSiteCurrency {
 	priceFormat: string;
 }
 
-interface WooCommerceSiteLocale {
+export interface WooCommerceSiteLocale {
 	// The locale string for the current site.
 	siteLocale: string;
 	// The locale string for the current user.
@@ -30,7 +30,7 @@ interface WooCommerceSiteLocale {
 	weekdaysShort: string[];
 }
 
-interface WooCommerceSharedSettings {
+export interface WooCommerceSharedSettings {
 	adminUrl: string;
 	countries: Record< string, string > | never[];
 	currency: WooCommerceSiteCurrency;
@@ -80,19 +80,19 @@ const globalSharedSettings =
 	typeof window.wcSettings === 'object' ? window.wcSettings : {};
 
 // Use defaults or global settings, depending on what is set.
-const allSettings: WooCommerceSharedSettings = {
+const allSettings: Record< string, unknown > = {
 	...defaults,
 	...globalSharedSettings,
 };
 
 allSettings.currency = {
 	...defaults.currency,
-	...allSettings.currency,
+	...( allSettings.currency as Record< string, unknown > ),
 };
 
 allSettings.locale = {
 	...defaults.locale,
-	...allSettings.locale,
+	...( allSettings.locale as Record< string, unknown > ),
 };
 
 export { allSettings };

@@ -7,9 +7,15 @@ export const WC_BLOCKS_ASSET_URL =
 	getSetting( 'wcBlocksPluginUrl', '' ) + '/assets';
 export const WC_BLOCKS_BUILD_URL =
 	getSetting( 'wcBlocksPluginUrl', '' ) + '/build';
-export const WOOCOMMERCE_BLOCKS_PHASE = getSetting( 'wcBlocksPhase', 1 );
+export const WOOCOMMERCE_BLOCKS_PHASE = getSetting(
+	'wcBlocksPhase',
+	1
+) as number;
 
-export const CURRENT_USER_IS_ADMIN = getSetting( 'currentUserIsAdmin', false );
+export const CURRENT_USER_IS_ADMIN = getSetting(
+	'currentUserIsAdmin',
+	false
+) as boolean;
 export const REVIEW_RATINGS_ENABLED = getSetting(
 	'reviewRatingsEnabled',
 	true
