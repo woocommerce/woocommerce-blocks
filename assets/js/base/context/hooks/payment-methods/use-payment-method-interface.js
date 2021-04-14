@@ -20,11 +20,6 @@ import { usePaymentMethodDataContext } from '../../providers/cart-checkout/payme
 import { useShippingDataContext } from '../../providers/cart-checkout/shipping';
 import { useCustomerDataContext } from '../../providers/cart-checkout/customer';
 
-const DISPLAY_CART_PRICES_INCLUDING_TAX = getSetting(
-	'displayCartPricesIncludingTax',
-	false
-);
-
 /**
  * @typedef {import('@woocommerce/type-defs/registered-payment-method-props').RegisteredPaymentMethodProps} RegisteredPaymentMethodProps
  * @typedef {import('@woocommerce/type-defs/cart').CartTotalItem} CartTotalItem
@@ -172,7 +167,10 @@ export const usePaymentMethodInterface = () => {
 			cartTotal: currentCartTotal.current,
 			currency: getCurrencyFromPriceResponse( cartTotals ),
 			cartTotalItems: currentCartTotals.current,
-			displayPricesIncludingTax: DISPLAY_CART_PRICES_INCLUDING_TAX,
+			displayPricesIncludingTax: getSetting(
+				'displayCartPricesIncludingTax',
+				false
+			),
 			appliedCoupons,
 			customerId,
 		},

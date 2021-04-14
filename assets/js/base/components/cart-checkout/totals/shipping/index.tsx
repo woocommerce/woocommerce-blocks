@@ -19,11 +19,6 @@ import ShippingCalculator from '../../shipping-calculator';
 import ShippingLocation from '../../shipping-location';
 import './style.scss';
 
-const DISPLAY_CART_PRICES_INCLUDING_TAX = getSetting(
-	'displayCartPricesIncludingTax',
-	false
-);
-
 interface CalculatorButtonProps {
 	label?: string;
 	isShippingCalculatorOpen: boolean;
@@ -138,7 +133,10 @@ const TotalsShipping = ( {
 		shippingRatesLoading,
 	} = useStoreCart();
 
-	const totalShippingValue = DISPLAY_CART_PRICES_INCLUDING_TAX
+	const totalShippingValue = getSetting(
+		'displayCartPricesIncludingTax',
+		false
+	)
 		? parseInt( values.total_shipping, 10 ) +
 		  parseInt( values.total_shipping_tax, 10 )
 		: parseInt( values.total_shipping, 10 );

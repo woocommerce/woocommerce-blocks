@@ -8,11 +8,6 @@ import PropTypes from 'prop-types';
 import { TotalsItem } from '@woocommerce/blocks-checkout';
 import { getSetting } from '@woocommerce/settings';
 
-const DISPLAY_CART_PRICES_INCLUDING_TAX = getSetting(
-	'displayCartPricesIncludingTax',
-	false
-);
-
 /**
  * Internal dependencies
  */
@@ -36,7 +31,10 @@ const TotalsDiscount = ( {
 	}
 
 	const discountTaxValue = parseInt( totalDiscountTax, 10 );
-	const discountTotalValue = DISPLAY_CART_PRICES_INCLUDING_TAX
+	const discountTotalValue = getSetting(
+		'displayCartPricesIncludingTax',
+		false
+	)
 		? discountValue + discountTaxValue
 		: discountValue;
 

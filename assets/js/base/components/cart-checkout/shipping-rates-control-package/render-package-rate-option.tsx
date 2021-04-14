@@ -7,18 +7,16 @@ import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-mone
 import type { Rate, PackageRateOption } from '@woocommerce/type-defs/shipping';
 import { getSetting } from '@woocommerce/settings';
 
-const DISPLAY_CART_PRICES_INCLUDING_TAX = getSetting(
-	'displayCartPricesIncludingTax',
-	false
-);
-
 /**
  * Default render function for package rate options.
  *
  * @param {Object} rate Rate data.
  */
 export const renderPackageRateOption = ( rate: Rate ): PackageRateOption => {
-	const priceWithTaxes: number = DISPLAY_CART_PRICES_INCLUDING_TAX
+	const priceWithTaxes: number = getSetting(
+		'displayCartPricesIncludingTax',
+		false
+	)
 		? parseInt( rate.price, 10 ) + parseInt( rate.taxes, 10 )
 		: parseInt( rate.price, 10 );
 

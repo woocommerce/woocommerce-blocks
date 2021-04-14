@@ -11,11 +11,6 @@ import { getSetting } from '@woocommerce/settings';
  */
 import TotalsItem from '../item';
 
-const DISPLAY_CART_PRICES_INCLUDING_TAX = getSetting(
-	'displayCartPricesIncludingTax',
-	false
-);
-
 interface Values {
 	// eslint-disable-next-line camelcase
 	total_items: string;
@@ -44,7 +39,7 @@ const Subtotal = ( {
 			currency={ currency }
 			label={ __( 'Subtotal', 'woo-gutenberg-products-block' ) }
 			value={
-				DISPLAY_CART_PRICES_INCLUDING_TAX
+				getSetting( 'displayCartPricesIncludingTax', false )
 					? itemsValue + itemsTaxValue
 					: itemsValue
 			}

@@ -45,11 +45,6 @@ import { CartExpressPayment } from '../../payment-methods';
 
 import './style.scss';
 
-const DISPLAY_CART_PRICES_INCLUDING_TAX = getSetting(
-	'displayCartPricesIncludingTax',
-	false
-);
-
 const Block = ( props ) => {
 	return (
 		<CartProvider>
@@ -154,7 +149,10 @@ const Cart = ( { attributes } ) => {
 							currency={ totalsCurrency }
 						/>
 					) }
-					{ ! DISPLAY_CART_PRICES_INCLUDING_TAX && (
+					{ ! getSetting(
+						'displayCartPricesIncludingTax',
+						false
+					) && (
 						<TotalsTaxes
 							currency={ totalsCurrency }
 							values={ cartTotals }

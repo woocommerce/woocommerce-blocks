@@ -22,11 +22,6 @@ import {
 } from '@woocommerce/base-context/hooks';
 import { getSetting } from '@woocommerce/settings';
 
-const DISPLAY_CART_PRICES_INCLUDING_TAX = getSetting(
-	'displayCartPricesIncludingTax',
-	false
-);
-
 const CheckoutSidebar = ( {
 	cartCoupons = [],
 	cartItems = [],
@@ -72,7 +67,7 @@ const CheckoutSidebar = ( {
 					currency={ totalsCurrency }
 				/>
 			) }
-			{ ! DISPLAY_CART_PRICES_INCLUDING_TAX && (
+			{ ! getSetting( 'displayCartPricesIncludingTax', false ) && (
 				<TotalsTaxes
 					currency={ totalsCurrency }
 					values={ cartTotals }

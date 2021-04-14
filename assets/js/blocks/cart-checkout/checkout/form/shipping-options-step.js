@@ -27,18 +27,13 @@ import { getSetting } from '@woocommerce/settings';
  */
 import NoShippingPlaceholder from './no-shipping-placeholder';
 
-const DISPLAY_CART_PRICES_INCLUDING_TAX = getSetting(
-	'displayCartPricesIncludingTax',
-	false
-);
-
 /**
  * Renders a shipping rate control option.
  *
  * @param {Object} option Shipping Rate.
  */
 const renderShippingRatesControlOption = ( option ) => {
-	const priceWithTaxes = DISPLAY_CART_PRICES_INCLUDING_TAX
+	const priceWithTaxes = getSetting( 'displayCartPricesIncludingTax', false )
 		? parseInt( option.price, 10 ) + parseInt( option.taxes, 10 )
 		: parseInt( option.price, 10 );
 	return {
