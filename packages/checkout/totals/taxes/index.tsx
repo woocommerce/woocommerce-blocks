@@ -3,7 +3,6 @@
  */
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
-import { DISPLAY_ITEMIZED_TAXES } from '@woocommerce/block-settings';
 import { getSetting } from '@woocommerce/settings';
 import type { Currency } from '@woocommerce/price-format';
 import type { CartTotalsTaxLineItem } from '@woocommerce/type-defs/cart';
@@ -38,7 +37,7 @@ const TotalsTaxes = ( {
 		return null;
 	}
 
-	if ( ! DISPLAY_ITEMIZED_TAXES ) {
+	if ( ! getSetting( 'displayItemizedTaxes', false ) ) {
 		return (
 			<TotalsItem
 				className={ classnames(

@@ -26,11 +26,6 @@ export {
 	WORD_COUNT_TYPE,
 };
 
-export const DISPLAY_ITEMIZED_TAXES = getSetting(
-	'displayItemizedTaxes',
-	false
-);
-
 export const ATTRIBUTES = getSetting( 'attributes', [] );
 // used for the editor logic as an extra check
 export const SHIPPING_COST_REQUIRES_ADDRESS = getSetting(
