@@ -21,11 +21,6 @@ export {
 	REST_API_ROUTES,
 };
 
-export const REVIEW_RATINGS_ENABLED = getSetting(
-	'reviewRatingsEnabled',
-	true
-);
-export const SHOW_AVATARS = getSetting( 'showAvatars', true );
 export const MIN_HEIGHT = getSetting( 'min_height', 500 );
 export const DEFAULT_HEIGHT = getSetting( 'default_height', 500 );
 export const PLACEHOLDER_IMG_SRC = getSetting( 'placeholderImgSrc', '' );
