@@ -6,9 +6,9 @@ import {
 	SHIPPING_COST_REQUIRES_ADDRESS,
 	SHIPPING_METHODS_EXIST,
 	WC_BLOCKS_ASSET_URL,
-	SHIPPING_ENABLED,
 } from '@woocommerce/block-settings';
 import { CartResponse } from '@woocommerce/types';
+import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -164,7 +164,7 @@ export const previewCart: CartResponse = {
 	items_count: 3,
 	items_weight: 0,
 	needs_payment: true,
-	needs_shipping: SHIPPING_ENABLED,
+	needs_shipping: getSetting( 'shippingEnabled', true ),
 	has_calculated_shipping: true,
 	extensions: {},
 	shipping_address: {
