@@ -63,7 +63,7 @@ class Assets {
 		// Pass in settings specific to blocks.
 		$product_counts = wp_count_posts( 'product' );
 
-		$asset_data_registry->add( 'wcBlocksPluginUrl', plugins_url( '/', dirname( __DIR__ ) ) );
+		$asset_data_registry->add( 'wcBlocksPluginUrl', plugins_url( '/', __DIR__ ) );
 		$asset_data_registry->add( 'wcBlocksPhase', Package::feature()->get_flag() );
 
 		/*

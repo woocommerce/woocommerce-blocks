@@ -10,8 +10,8 @@ const IS_LARGE_CATALOG = getSetting( 'isLargeCatalog' );
 const PLACEHOLDER_IMG_SRC = getSetting( 'placeholderImgSrc', '' );
 const PRODUCT_COUNT = getSetting( 'productCount', 0 );
 const REST_API_ROUTES = getSetting( 'restApiRoutes' );
-const WC_BLOCKS_ASSET_URL = getSetting( 'wcBlocksPluginUrl', '' ) + '/assets';
-const WC_BLOCKS_BUILD_URL = getSetting( 'wcBlocksPluginUrl', '' ) + '/build';
+const WC_BLOCKS_ASSET_URL = getSetting( 'wcBlocksPluginUrl', '' ) + '/assets/';
+const WC_BLOCKS_BUILD_URL = getSetting( 'wcBlocksPluginUrl', '' ) + '/build/';
 const WOOCOMMERCE_BLOCKS_PHASE = getSetting( 'wcBlocksPhase', 1 ) as number;
 const WORD_COUNT_TYPE = getSetting( 'wordCountType', 'words' );
 
