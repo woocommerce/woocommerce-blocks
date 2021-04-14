@@ -26,7 +26,6 @@ export {
 	WORD_COUNT_TYPE,
 };
 
-export const COUPONS_ENABLED = getSetting( 'couponsEnabled', true );
 export const SHIPPING_ENABLED = getSetting( 'shippingEnabled', true );
 export const TAXES_ENABLED = getSetting( 'taxesEnabled', true );
 export const DISPLAY_ITEMIZED_TAXES = getSetting(

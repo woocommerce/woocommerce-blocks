@@ -16,7 +16,6 @@ import {
 } from '@woocommerce/blocks-checkout';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { useShippingDataContext } from '@woocommerce/base-context';
-import { COUPONS_ENABLED } from '@woocommerce/block-settings';
 import {
 	useStoreCartCoupons,
 	useStoreCart,
@@ -79,7 +78,7 @@ const CheckoutSidebar = ( {
 					values={ cartTotals }
 				/>
 			) }
-			{ COUPONS_ENABLED && (
+			{ getSetting( 'couponsEnabled', true ) && (
 				<TotalsCoupon
 					onSubmit={ applyCoupon }
 					initialOpen={ false }
