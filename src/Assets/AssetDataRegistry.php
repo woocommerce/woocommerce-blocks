@@ -87,9 +87,9 @@ class AssetDataRegistry {
 		$word_count_type = _x( 'words', 'Word count type. Do not translate!', 'woo-gutenberg-products-block' );
 
 		return [
-			'adminUrl'            => admin_url(),
-			'countries'           => WC()->countries->get_countries(),
-			'currency'            => [
+			'adminUrl'           => admin_url(),
+			'countries'          => WC()->countries->get_countries(),
+			'currency'           => [
 				'code'              => $currency,
 				'precision'         => wc_get_price_decimals(),
 				'symbol'            => html_entity_decode( get_woocommerce_currency_symbol( $currency ) ),
@@ -98,31 +98,27 @@ class AssetDataRegistry {
 				'thousandSeparator' => wc_get_price_thousand_separator(),
 				'priceFormat'       => html_entity_decode( get_woocommerce_price_format() ),
 			],
-			'currentUserIsAdmin'  => is_user_logged_in() && current_user_can( 'manage_woocommerce' ),
-			'hideOutOfStockItems' => 'yes' === get_option( 'woocommerce_hide_out_of_stock_items' ),
-			'homeUrl'             => esc_url( home_url( '/' ) ),
-			'isLargeCatalog'      => $product_counts->publish > 100,
-			'locale'              => [
+			'currentUserIsAdmin' => is_user_logged_in() && current_user_can( 'manage_woocommerce' ),
+			'homeUrl'            => esc_url( home_url( '/' ) ),
+			'isLargeCatalog'     => $product_counts->publish > 100,
+			'locale'             => [
 				'siteLocale'    => get_locale(),
 				'userLocale'    => get_user_locale(),
 				'weekdaysShort' => array_values( $wp_locale->weekday_abbrev ),
 			],
-			'loginUrl'            => wp_login_url(),
-			'orderStatuses'       => $this->get_order_statuses( wc_get_order_statuses() ),
-			'placeholderImgSrc'   => wc_placeholder_img_src(),
-			'productCount'        => array_sum( (array) $product_counts ),
-			'restApiRoutes'       => [
+			'loginUrl'           => wp_login_url(),
+			'orderStatuses'      => $this->get_order_statuses( wc_get_order_statuses() ),
+			'placeholderImgSrc'  => wc_placeholder_img_src(),
+			'productCount'       => array_sum( (array) $product_counts ),
+			'restApiRoutes'      => [
 				'/wc/store' => array_keys( Package::container()->get( RestApi::class )->get_routes_from_namespace( 'wc/store' ) ),
 			],
-			'siteTitle'           => get_bloginfo( 'name' ),
-			'storePages'          => $this->get_store_pages(),
-			'wcAssetUrl'          => plugins_url( 'assets/', WC_PLUGIN_FILE ),
-			'wcBlocksAssetUrl'    => plugins_url( 'assets/', dirname( __DIR__ ) ),
-			'wcBlocksBuildUrl'    => plugins_url( 'build/', dirname( __DIR__ ) ),
-			'wcBlocksPhase'       => Package::feature()->get_flag(),
-			'wcVersion'           => defined( 'WC_VERSION' ) ? WC_VERSION : '',
-			'wordCountType'       => $word_count_type,
-			'wpVersion'           => get_bloginfo( 'version' ),
+			'siteTitle'          => get_bloginfo( 'name' ),
+			'storePages'         => $this->get_store_pages(),
+			'wcAssetUrl'         => plugins_url( 'assets/', WC_PLUGIN_FILE ),
+			'wcVersion'          => defined( 'WC_VERSION' ) ? WC_VERSION : '',
+			'wordCountType'      => $word_count_type,
+			'wpVersion'          => get_bloginfo( 'version' ),
 		];
 	}
 
