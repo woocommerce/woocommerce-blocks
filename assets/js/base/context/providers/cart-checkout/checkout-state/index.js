@@ -127,6 +127,7 @@ export const CheckoutStateProvider = ( {
 	 * we need an extra function between useMemo and emitterObservers
 	 * so that the deprecated message gets shown only at invocation time.
 	 * (useMemo calls the passed function at render time)
+	 * See: https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4039/commits/a502d1be8828848270993264c64220731b0ae181
 	 */
 	const onCheckoutBeforeProcessing = useMemo( () => {
 		const callback = emitterObservers( observerDispatch )
