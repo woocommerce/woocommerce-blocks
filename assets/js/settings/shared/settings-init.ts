@@ -36,11 +36,9 @@ interface WooCommerceSharedSettings {
 	currency: WooCommerceSiteCurrency;
 	currentUserIsAdmin: boolean;
 	homeUrl: string;
-	isLargeCatalog: boolean;
 	locale: WooCommerceSiteLocale;
 	orderStatuses: Record< string, string > | never[];
 	placeholderImgSrc: string;
-	productCount: number;
 	siteTitle: string;
 	storePages: Record< string, string > | never[];
 	wcAssetUrl: string;
@@ -63,7 +61,6 @@ const defaults: WooCommerceSharedSettings = {
 	},
 	currentUserIsAdmin: false,
 	homeUrl: '',
-	isLargeCatalog: false,
 	locale: {
 		siteLocale: 'en_US',
 		userLocale: 'en_US',
@@ -71,7 +68,6 @@ const defaults: WooCommerceSharedSettings = {
 	},
 	orderStatuses: [],
 	placeholderImgSrc: '',
-	productCount: 0,
 	siteTitle: '',
 	storePages: [],
 	wcAssetUrl: '',

@@ -73,40 +73,55 @@ class AssetDataRegistry {
 	 * @return array  An array containing core data.
 	 */
 	protected function get_core_data() {
-		global $wp_locale;
-
-		$currency       = get_woocommerce_currency();
-		$product_counts = wp_count_posts( 'product' );
-
 		return [
 			'adminUrl'           => admin_url(),
 			'countries'          => WC()->countries->get_countries(),
-			'currency'           => [
-				'code'              => $currency,
-				'precision'         => wc_get_price_decimals(),
-				'symbol'            => html_entity_decode( get_woocommerce_currency_symbol( $currency ) ),
-				'symbolPosition'    => get_option( 'woocommerce_currency_pos' ),
-				'decimalSeparator'  => wc_get_price_decimal_separator(),
-				'thousandSeparator' => wc_get_price_thousand_separator(),
-				'priceFormat'       => html_entity_decode( get_woocommerce_price_format() ),
-			],
-			'currentUserIsAdmin' => is_user_logged_in() && current_user_can( 'manage_woocommerce' ),
-			'homeUrl'            => esc_url( home_url( '/' ) ),
-			'isLargeCatalog'     => $product_counts->publish > 100,
-			'locale'             => [
-				'siteLocale'    => get_locale(),
-				'userLocale'    => get_user_locale(),
-				'weekdaysShort' => array_values( $wp_locale->weekday_abbrev ),
-			],
-			'orderStatuses'      => $this->get_order_statuses( wc_get_order_statuses() ),
+			'currency'           => $this->get_currency_data(),
+			'currentUserIsAdmin' => current_user_can( 'manage_woocommerce' ),
+			'homeUrl'            => home_url( '/' ),
+			'locale'             => $this->get_locale_data(),
+			'orderStatuses'      => $this->get_order_statuses(),
 			'placeholderImgSrc'  => wc_placeholder_img_src(),
-			'productCount'       => array_sum( (array) $product_counts ),
 			'siteTitle'          => get_bloginfo( 'name' ),
 			'storePages'         => $this->get_store_pages(),
 			'wcAssetUrl'         => plugins_url( 'assets/', WC_PLUGIN_FILE ),
 			'wcVersion'          => defined( 'WC_VERSION' ) ? WC_VERSION : '',
 			'wpLoginUrl'         => wp_login_url(),
 			'wpVersion'          => get_bloginfo( 'version' ),
+		];
+	}
+
+	/**
+	 * Get currency data to include in settings.
+	 *
+	 * @return array
+	 */
+	protected function get_currency_data() {
+		$currency = get_woocommerce_currency();
+
+		return [
+			'code'              => $currency,
+			'precision'         => wc_get_price_decimals(),
+			'symbol'            => html_entity_decode( get_woocommerce_currency_symbol( $currency ) ),
+			'symbolPosition'    => get_option( 'woocommerce_currency_pos' ),
+			'decimalSeparator'  => wc_get_price_decimal_separator(),
+			'thousandSeparator' => wc_get_price_thousand_separator(),
+			'priceFormat'       => html_entity_decode( get_woocommerce_price_format() ),
+		];
+	}
+
+	/**
+	 * Get locale data to include in settings.
+	 *
+	 * @return array
+	 */
+	protected function get_locale_data() {
+		global $wp_locale;
+
+		return [
+			'siteLocale'    => get_locale(),
+			'userLocale'    => get_user_locale(),
+			'weekdaysShort' => array_values( $wp_locale->weekday_abbrev ),
 		];
 	}
 
@@ -157,12 +172,11 @@ class AssetDataRegistry {
 	 * Returns block-related data for enqueued wc-settings script.
 	 * Format order statuses by removing a leading 'wc-' if present.
 	 *
-	 * @param array $statuses Order statuses.
 	 * @return array formatted statuses.
 	 */
-	protected function get_order_statuses( $statuses ) {
+	protected function get_order_statuses() {
 		$formatted_statuses = array();
-		foreach ( $statuses as $key => $value ) {
+		foreach ( wc_get_order_statuses() as $key => $value ) {
 			$formatted_key                        = preg_replace( '/^wc-/', '', $key );
 			$formatted_statuses[ $formatted_key ] = $value;
 		}
