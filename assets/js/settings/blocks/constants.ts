@@ -21,7 +21,6 @@ export {
 	REST_API_ROUTES,
 };
 
-export const MIN_HEIGHT = getSetting( 'min_height', 500 );
 export const DEFAULT_HEIGHT = getSetting( 'default_height', 500 );
 export const PLACEHOLDER_IMG_SRC = getSetting( 'placeholderImgSrc', '' );
 
