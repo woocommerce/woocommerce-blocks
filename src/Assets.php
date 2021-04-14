@@ -61,12 +61,8 @@ class Assets {
 		}
 
 		// Pass in settings specific to blocks.
-		$asset_data_registry->add(
-			'restApiRoutes',
-			[
-				'/wc/store' => array_keys( Package::container()->get( RestApi::class )->get_routes_from_namespace( 'wc/store' ) ),
-			]
-		);
+		$product_counts = wp_count_posts( 'product' );
+
 		$asset_data_registry->add( 'wcBlocksPluginUrl', plugins_url( '/', dirname( __DIR__ ) ) );
 		$asset_data_registry->add( 'wcBlocksPhase', Package::feature()->get_flag() );
 
@@ -76,10 +72,14 @@ class Assets {
 		 * Do not translate into your own language.
 		 */
 		$asset_data_registry->add( 'wordCountType', _x( 'words', 'Word count type. Do not translate!', 'woo-gutenberg-products-block' ) );
-
-		$product_counts = wp_count_posts( 'product' );
 		$asset_data_registry->add( 'isLargeCatalog', $product_counts->publish > 100 );
 		$asset_data_registry->add( 'productCount', array_sum( (array) $product_counts ) );
+		$asset_data_registry->add(
+			'restApiRoutes',
+			[
+				'/wc/store' => array_keys( Package::container()->get( RestApi::class )->get_routes_from_namespace( 'wc/store' ) ),
+			]
+		);
 
 		// Pass in globals to the blocks middleware script. This sets the default nonce values from the server.
 		wp_add_inline_script(
