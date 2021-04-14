@@ -14,7 +14,6 @@ import {
 } from '@wordpress/components';
 import { Component } from '@wordpress/element';
 import PropTypes from 'prop-types';
-import { HAS_TAGS } from '@woocommerce/block-settings';
 import GridContentControl from '@woocommerce/editor-components/grid-content-control';
 import GridLayoutControl from '@woocommerce/editor-components/grid-layout-control';
 import ProductTagControl from '@woocommerce/editor-components/product-tag-control';
@@ -265,7 +264,7 @@ class ProductsByTagBlock extends Component {
 			return gridBlockPreview;
 		}
 
-		return HAS_TAGS ? (
+		return getSetting( 'hasTags', true ) ? (
 			<>
 				<BlockControls>
 					<ToolbarGroup

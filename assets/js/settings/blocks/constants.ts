@@ -3,6 +3,9 @@
  */
 import { getSetting } from '@woocommerce/settings';
 
+/**
+ * Settings defined globally for all blocks are exported here, as well as constants derived from core settings.
+ */
 const IS_LARGE_CATALOG = getSetting( 'isLargeCatalog' );
 const PLACEHOLDER_IMG_SRC = getSetting( 'placeholderImgSrc', '' );
 const PRODUCT_COUNT = getSetting( 'productCount', 0 );
@@ -23,7 +26,6 @@ export {
 	WORD_COUNT_TYPE,
 };
 
-export const HAS_TAGS = getSetting( 'hasTags', true );
 export const COUPONS_ENABLED = getSetting( 'couponsEnabled', true );
 export const SHIPPING_ENABLED = getSetting( 'shippingEnabled', true );
 export const TAXES_ENABLED = getSetting( 'taxesEnabled', true );
