@@ -3,14 +3,23 @@
  */
 import { getSetting } from '@woocommerce/settings';
 
-export const WC_BLOCKS_ASSET_URL =
-	getSetting( 'wcBlocksPluginUrl', '' ) + '/assets';
-export const WC_BLOCKS_BUILD_URL =
-	getSetting( 'wcBlocksPluginUrl', '' ) + '/build';
-export const WOOCOMMERCE_BLOCKS_PHASE = getSetting(
-	'wcBlocksPhase',
-	1
-) as number;
+const WC_BLOCKS_ASSET_URL = getSetting( 'wcBlocksPluginUrl', '' ) + '/assets';
+const WC_BLOCKS_BUILD_URL = getSetting( 'wcBlocksPluginUrl', '' ) + '/build';
+const WOOCOMMERCE_BLOCKS_PHASE = getSetting( 'wcBlocksPhase', 1 ) as number;
+const WORD_COUNT_TYPE = getSetting( 'wordCountType', 'words' );
+const IS_LARGE_CATALOG = getSetting( 'isLargeCatalog' );
+const PRODUCT_COUNT = getSetting( 'productCount', 0 );
+const REST_API_ROUTES = getSetting( 'restApiRoutes' );
+
+export {
+	WC_BLOCKS_ASSET_URL,
+	WC_BLOCKS_BUILD_URL,
+	WOOCOMMERCE_BLOCKS_PHASE,
+	WORD_COUNT_TYPE,
+	IS_LARGE_CATALOG,
+	PRODUCT_COUNT,
+	REST_API_ROUTES,
+};
 
 export const REVIEW_RATINGS_ENABLED = getSetting(
 	'reviewRatingsEnabled',
@@ -20,7 +29,7 @@ export const SHOW_AVATARS = getSetting( 'showAvatars', true );
 export const MIN_HEIGHT = getSetting( 'min_height', 500 );
 export const DEFAULT_HEIGHT = getSetting( 'default_height', 500 );
 export const PLACEHOLDER_IMG_SRC = getSetting( 'placeholderImgSrc', '' );
-export const IS_LARGE_CATALOG = getSetting( 'isLargeCatalog' );
+
 export const LIMIT_TAGS = getSetting( 'limitTags' );
 export const HAS_PRODUCTS = getSetting( 'hasProducts', true );
 export const HAS_TAGS = getSetting( 'hasTags', true );
@@ -32,7 +41,7 @@ export const DISPLAY_ITEMIZED_TAXES = getSetting(
 	'displayItemizedTaxes',
 	false
 );
-export const PRODUCT_COUNT = getSetting( 'productCount', 0 );
+
 export const ATTRIBUTES = getSetting( 'attributes', [] );
 // used for the editor logic as an extra check
 export const SHIPPING_COST_REQUIRES_ADDRESS = getSetting(
