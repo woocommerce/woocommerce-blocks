@@ -78,13 +78,6 @@ class AssetDataRegistry {
 		$currency       = get_woocommerce_currency();
 		$product_counts = wp_count_posts( 'product' );
 
-		/*
-		 * translators: If your word count is based on single characters (e.g. East Asian characters),
-		 * enter 'characters_excluding_spaces' or 'characters_including_spaces'. Otherwise, enter 'words'.
-		 * Do not translate into your own language.
-		 */
-		$word_count_type = _x( 'words', 'Word count type. Do not translate!', 'woo-gutenberg-products-block' );
-
 		return [
 			'adminUrl'           => admin_url(),
 			'countries'          => WC()->countries->get_countries(),
@@ -112,7 +105,6 @@ class AssetDataRegistry {
 			'storePages'         => $this->get_store_pages(),
 			'wcAssetUrl'         => plugins_url( 'assets/', WC_PLUGIN_FILE ),
 			'wcVersion'          => defined( 'WC_VERSION' ) ? WC_VERSION : '',
-			'wordCountType'      => $word_count_type,
 			'wpLoginUrl'         => wp_login_url(),
 			'wpVersion'          => get_bloginfo( 'version' ),
 		];

@@ -70,6 +70,13 @@ class Assets {
 		$asset_data_registry->add( 'wcBlocksPluginUrl', plugins_url( '/', dirname( __DIR__ ) ) );
 		$asset_data_registry->add( 'wcBlocksPhase', Package::feature()->get_flag() );
 
+		/*
+		 * translators: If your word count is based on single characters (e.g. East Asian characters),
+		 * enter 'characters_excluding_spaces' or 'characters_including_spaces'. Otherwise, enter 'words'.
+		 * Do not translate into your own language.
+		 */
+		$asset_data_registry->add( 'wordCountType', _x( 'words', 'Word count type. Do not translate!', 'woo-gutenberg-products-block' ) );
+
 		// Pass in globals to the blocks middleware script. This sets the default nonce values from the server.
 		wp_add_inline_script(
 			'wc-blocks-middleware',

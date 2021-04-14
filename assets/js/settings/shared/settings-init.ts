@@ -45,10 +45,6 @@ interface WooCommerceSharedSettings {
 	storePages: Record< string, string > | never[];
 	wcAssetUrl: string;
 	wcVersion: string;
-	wordCountType:
-		| 'characters_excluding_spaces'
-		| 'characters_including_spaces'
-		| 'words';
 	wpLoginUrl: string;
 	wpVersion: string;
 }
@@ -80,7 +76,6 @@ const defaults: WooCommerceSharedSettings = {
 	storePages: [],
 	wcAssetUrl: '',
 	wcVersion: '',
-	wordCountType: 'words',
 	wpLoginUrl: '',
 	wpVersion: '',
 };

@@ -20,6 +20,5 @@ export const SITE_TITLE = allSettings.siteTitle;
 export const STORE_PAGES = allSettings.storePages;
 export const WC_ASSET_URL = allSettings.wcAssetUrl;
 export const WC_VERSION = allSettings.wcVersion;
-export const WORD_COUNT_TYPE = allSettings.wordCountType;
 export const WP_LOGIN_URL = allSettings.wpLoginUrl;
 export const WP_VERSION = allSettings.wpVersion;
