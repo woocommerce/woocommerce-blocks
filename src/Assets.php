@@ -57,6 +57,17 @@ class Assets {
 			$asset_api->register_script( 'wc-blocks-checkout', 'build/blocks-checkout.js', [] );
 		}
 
+		// Pass in globals to the wc blocks script. This sets build directory paths from the server.
+		wp_add_inline_script(
+			'wc-blocks',
+			"
+			var wcBlocksPluginUrl = '" . esc_js( plugins_url( '/', dirname( __DIR__ ) ) ) . "';
+			var wcBlocksPhase = '" . esc_js( Package::feature()->get_flag() ) . "';
+			",
+			'before'
+		);
+
+		// Pass in globals to the blocks middleware script. This sets the default nonce values from the server.
 		wp_add_inline_script(
 			'wc-blocks-middleware',
 			"

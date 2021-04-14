@@ -3,6 +3,13 @@
  */
 import { getSetting } from '@woocommerce/settings';
 
+// @ts-ignore wcBlocksPluginUrl is a window global injected by the server.
+export const WC_BLOCKS_ASSET_URL = wcBlocksPluginUrl + '/assets';
+// @ts-ignore wcBlocksPluginUrl is a window global injected by the server.
+export const WC_BLOCKS_BUILD_URL = wcBlocksPluginUrl + '/build';
+// @ts-ignore wcBlocksPhase is a window global injected by the server.
+export const WOOCOMMERCE_BLOCKS_PHASE = wcBlocksPhase || 1;
+
 export const CURRENT_USER_IS_ADMIN = getSetting( 'currentUserIsAdmin', false );
 export const REVIEW_RATINGS_ENABLED = getSetting(
 	'reviewRatingsEnabled',
@@ -31,9 +38,7 @@ export const SHIPPING_COST_REQUIRES_ADDRESS = getSetting(
 	'shippingCostRequiresAddress',
 	false
 );
-export const WOOCOMMERCE_BLOCKS_PHASE = getSetting( 'wcBlocksPhase', 1 );
-export const WC_BLOCKS_ASSET_URL = getSetting( 'wcBlocksAssetUrl', '' );
-export const WC_BLOCKS_BUILD_URL = getSetting( 'wcBlocksBuildUrl', '' );
+
 export const SHIPPING_COUNTRIES = getSetting( 'shippingCountries', {} );
 export const ALLOWED_COUNTRIES = getSetting( 'allowedCountries', {} );
 export const SHIPPING_STATES = getSetting( 'shippingStates', {} );
