@@ -23,7 +23,6 @@ import { compose } from '@wordpress/compose';
 import PropTypes from 'prop-types';
 import { Icon, grid } from '@woocommerce/icons';
 import GridLayoutControl from '@woocommerce/editor-components/grid-layout-control';
-import { HAS_PRODUCTS } from '@woocommerce/block-settings';
 import {
 	InnerBlockLayoutContextProvider,
 	ProductDataContextProvider,
@@ -284,7 +283,7 @@ class Editor extends Component {
 		const blockTitle = this.getTitle();
 		const blockIcon = this.getIcon();
 
-		if ( ! HAS_PRODUCTS ) {
+		if ( ! getSetting( 'hasProducts', true ) ) {
 			return renderNoProductsPlaceholder( blockTitle, blockIcon );
 		}
 
