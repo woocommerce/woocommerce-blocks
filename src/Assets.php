@@ -3,6 +3,8 @@ namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
+use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry as AssetDataRegistry;
+use Automattic\WooCommerce\Blocks\RestApi;
 
 /**
  * Assets class.
@@ -35,7 +37,8 @@ class Assets {
 	 * Moved data related enqueuing to new AssetDataRegistry class as part of ongoing refactoring.
 	 */
 	public static function register_assets() {
-		$asset_api = Package::container()->get( AssetApi::class );
+		$asset_api           = Package::container()->get( AssetApi::class );
+		$asset_data_registry = Package::container()->get( AssetDataRegistry::class );
 
 		self::register_style( 'wc-block-editor', plugins_url( $asset_api->get_block_asset_build_path( 'editor', 'css' ), __DIR__ ), array( 'wp-edit-blocks' ) );
 		self::register_style( 'wc-block-style', plugins_url( $asset_api->get_block_asset_build_path( 'style', 'css' ), __DIR__ ), array( 'wc-block-vendors-style' ) );
@@ -57,15 +60,15 @@ class Assets {
 			$asset_api->register_script( 'wc-blocks-checkout', 'build/blocks-checkout.js', [] );
 		}
 
-		// Pass in globals to the wc blocks script. This sets build directory paths from the server.
-		wp_add_inline_script(
-			'wc-blocks',
-			"
-			var wcBlocksPluginUrl = '" . esc_js( plugins_url( '/', dirname( __DIR__ ) ) ) . "';
-			var wcBlocksPhase = '" . esc_js( Package::feature()->get_flag() ) . "';
-			",
-			'before'
+		// Pass in settings specific to blocks.
+		$asset_data_registry->add(
+			'restApiRoutes',
+			[
+				'/wc/store' => array_keys( Package::container()->get( RestApi::class )->get_routes_from_namespace( 'wc/store' ) ),
+			]
 		);
+		$asset_data_registry->add( 'wcBlocksPluginUrl', plugins_url( '/', dirname( __DIR__ ) ) );
+		$asset_data_registry->add( 'wcBlocksPhase', Package::feature()->get_flag() );
 
 		// Pass in globals to the blocks middleware script. This sets the default nonce values from the server.
 		wp_add_inline_script(

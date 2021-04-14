@@ -2,7 +2,6 @@
 namespace Automattic\WooCommerce\Blocks\Assets;
 
 use Automattic\WooCommerce\Blocks\Package;
-use Automattic\WooCommerce\Blocks\RestApi;
 
 use Exception;
 use InvalidArgumentException;
@@ -110,9 +109,6 @@ class AssetDataRegistry {
 			'orderStatuses'      => $this->get_order_statuses( wc_get_order_statuses() ),
 			'placeholderImgSrc'  => wc_placeholder_img_src(),
 			'productCount'       => array_sum( (array) $product_counts ),
-			'restApiRoutes'      => [
-				'/wc/store' => array_keys( Package::container()->get( RestApi::class )->get_routes_from_namespace( 'wc/store' ) ),
-			],
 			'siteTitle'          => get_bloginfo( 'name' ),
 			'storePages'         => $this->get_store_pages(),
 			'wcAssetUrl'         => plugins_url( 'assets/', WC_PLUGIN_FILE ),

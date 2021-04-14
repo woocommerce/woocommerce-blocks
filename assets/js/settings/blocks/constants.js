@@ -3,12 +3,11 @@
  */
 import { getSetting } from '@woocommerce/settings';
 
-// @ts-ignore wcBlocksPluginUrl is a window global injected by the server.
-export const WC_BLOCKS_ASSET_URL = wcBlocksPluginUrl + '/assets';
-// @ts-ignore wcBlocksPluginUrl is a window global injected by the server.
-export const WC_BLOCKS_BUILD_URL = wcBlocksPluginUrl + '/build';
-// @ts-ignore wcBlocksPhase is a window global injected by the server.
-export const WOOCOMMERCE_BLOCKS_PHASE = wcBlocksPhase || 1;
+export const WC_BLOCKS_ASSET_URL =
+	getSetting( 'wcBlocksPluginUrl', '' ) + '/assets';
+export const WC_BLOCKS_BUILD_URL =
+	getSetting( 'wcBlocksPluginUrl', '' ) + '/build';
+export const WOOCOMMERCE_BLOCKS_PHASE = getSetting( 'wcBlocksPhase', 1 );
 
 export const CURRENT_USER_IS_ADMIN = getSetting( 'currentUserIsAdmin', false );
 export const REVIEW_RATINGS_ENABLED = getSetting(
