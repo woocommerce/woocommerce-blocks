@@ -92,4 +92,4 @@ export const CHECKOUT_ALLOWS_SIGNUP = getSetting(
 
 export const LOGIN_URL = storePages.myaccount.permalink
 	? storePages.myaccount.permalink
-	: getSetting( 'loginUrl', '/wp-login.php' );
+	: getSetting( 'wpLoginUrl', '/wp-login.php' );

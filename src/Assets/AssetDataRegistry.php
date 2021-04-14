@@ -105,7 +105,6 @@ class AssetDataRegistry {
 				'userLocale'    => get_user_locale(),
 				'weekdaysShort' => array_values( $wp_locale->weekday_abbrev ),
 			],
-			'loginUrl'           => wp_login_url(),
 			'orderStatuses'      => $this->get_order_statuses( wc_get_order_statuses() ),
 			'placeholderImgSrc'  => wc_placeholder_img_src(),
 			'productCount'       => array_sum( (array) $product_counts ),
@@ -114,6 +113,7 @@ class AssetDataRegistry {
 			'wcAssetUrl'         => plugins_url( 'assets/', WC_PLUGIN_FILE ),
 			'wcVersion'          => defined( 'WC_VERSION' ) ? WC_VERSION : '',
 			'wordCountType'      => $word_count_type,
+			'wpLoginUrl'         => wp_login_url(),
 			'wpVersion'          => get_bloginfo( 'version' ),
 		];
 	}
