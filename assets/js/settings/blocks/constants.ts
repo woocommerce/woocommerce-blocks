@@ -40,10 +40,6 @@ export const LOGIN_URL = STORE_PAGES.myaccount.permalink
 	: getSetting( 'wpLoginUrl', '/wp-login.php' );
 
 export const ATTRIBUTES = getSetting( 'attributes', [] );
-export const SHIPPING_METHODS_EXIST = getSetting(
-	'shippingMethodsExist',
-	false
-);
 export const PAYMENT_GATEWAY_SORT_ORDER = getSetting(
 	'paymentGatewaySortOrder',
 	[]

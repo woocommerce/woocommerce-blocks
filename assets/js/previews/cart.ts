@@ -2,10 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	SHIPPING_METHODS_EXIST,
-	WC_BLOCKS_ASSET_URL,
-} from '@woocommerce/block-settings';
+import { WC_BLOCKS_ASSET_URL } from '@woocommerce/block-settings';
 import { CartResponse } from '@woocommerce/types';
 import { getSetting } from '@woocommerce/settings';
 
@@ -19,7 +16,9 @@ import { previewShippingRates } from './shipping-rates';
 // https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/trunk/src/RestApi/StoreApi#cart-api
 export const previewCart: CartResponse = {
 	coupons: [],
-	shipping_rates: SHIPPING_METHODS_EXIST ? previewShippingRates : [],
+	shipping_rates: getSetting( 'shippingMethodsExist', false )
+		? previewShippingRates
+		: [],
 	items: [
 		{
 			key: '1',
