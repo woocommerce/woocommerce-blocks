@@ -3,25 +3,25 @@
  */
 import { getSetting } from '@woocommerce/settings';
 
+const IS_LARGE_CATALOG = getSetting( 'isLargeCatalog' );
+const PLACEHOLDER_IMG_SRC = getSetting( 'placeholderImgSrc', '' );
+const PRODUCT_COUNT = getSetting( 'productCount', 0 );
+const REST_API_ROUTES = getSetting( 'restApiRoutes' );
 const WC_BLOCKS_ASSET_URL = getSetting( 'wcBlocksPluginUrl', '' ) + '/assets';
 const WC_BLOCKS_BUILD_URL = getSetting( 'wcBlocksPluginUrl', '' ) + '/build';
 const WOOCOMMERCE_BLOCKS_PHASE = getSetting( 'wcBlocksPhase', 1 ) as number;
 const WORD_COUNT_TYPE = getSetting( 'wordCountType', 'words' );
-const IS_LARGE_CATALOG = getSetting( 'isLargeCatalog' );
-const PRODUCT_COUNT = getSetting( 'productCount', 0 );
-const REST_API_ROUTES = getSetting( 'restApiRoutes' );
 
 export {
+	IS_LARGE_CATALOG,
+	PLACEHOLDER_IMG_SRC,
+	PRODUCT_COUNT,
+	REST_API_ROUTES,
 	WC_BLOCKS_ASSET_URL,
 	WC_BLOCKS_BUILD_URL,
 	WOOCOMMERCE_BLOCKS_PHASE,
 	WORD_COUNT_TYPE,
-	IS_LARGE_CATALOG,
-	PRODUCT_COUNT,
-	REST_API_ROUTES,
 };
-
-export const PLACEHOLDER_IMG_SRC = getSetting( 'placeholderImgSrc', '' );
 
 export const LIMIT_TAGS = getSetting( 'limitTags' );
 export const HAS_PRODUCTS = getSetting( 'hasProducts', true );

@@ -38,7 +38,6 @@ export interface WooCommerceSharedSettings {
 	homeUrl: string;
 	locale: WooCommerceSiteLocale;
 	orderStatuses: Record< string, string > | never[];
-	placeholderImgSrc: string;
 	siteTitle: string;
 	storePages: Record< string, string > | never[];
 	wcAssetUrl: string;
@@ -67,7 +66,6 @@ const defaults: WooCommerceSharedSettings = {
 		weekdaysShort: [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
 	},
 	orderStatuses: [],
-	placeholderImgSrc: '',
 	siteTitle: '',
 	storePages: [],
 	wcAssetUrl: '',
