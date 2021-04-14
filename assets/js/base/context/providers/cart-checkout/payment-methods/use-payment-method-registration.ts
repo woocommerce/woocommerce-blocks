@@ -8,10 +8,8 @@ import {
 } from '@woocommerce/blocks-registry';
 import { useState, useEffect, useRef, useCallback } from '@wordpress/element';
 import { useShallowEqual } from '@woocommerce/base-hooks';
-import {
-	CURRENT_USER_IS_ADMIN,
-	PAYMENT_GATEWAY_SORT_ORDER,
-} from '@woocommerce/block-settings';
+import { PAYMENT_GATEWAY_SORT_ORDER } from '@woocommerce/block-settings';
+import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
 
 /**
  * Internal dependencies

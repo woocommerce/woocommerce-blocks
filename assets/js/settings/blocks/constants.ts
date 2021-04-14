@@ -12,10 +12,6 @@ export const WOOCOMMERCE_BLOCKS_PHASE = getSetting(
 	1
 ) as number;
 
-export const CURRENT_USER_IS_ADMIN = getSetting(
-	'currentUserIsAdmin',
-	false
-) as boolean;
 export const REVIEW_RATINGS_ENABLED = getSetting(
 	'reviewRatingsEnabled',
 	true
