@@ -80,7 +80,6 @@ class Assets {
 					'wc/store': JSON.parse( decodeURIComponent( '" . esc_js( rawurlencode( wp_json_encode( array_keys( Package::container()->get( RestApi::class )->get_routes_from_namespace( 'wc/store' ) ) ) ) ) . "' ) )
 				}
 			};
-			console.log( wcSharedHocsConfig );
 			",
 			'before'
 		);
