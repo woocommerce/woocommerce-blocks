@@ -81,15 +81,17 @@ class Assets {
 			]
 		);
 
-		// Passes build and required params from server to client.
 		wp_localize_script(
 			'wc-blocks-config',
 			'wcBlocksConfig',
 			[
-				'wcBlocksPluginUrl' => plugins_url( '/', __DIR__ ),
-				'wcBlocksPhase'     => Package::feature()->get_flag(),
+				'pluginUrl'  => plugins_url( '/', __DIR__ ),
+				'buildPhase' => Package::feature()->get_flag(),
 			]
 		);
+
+		// Blocks config is available globally for all blocks scripts.
+		wp_enqueue_script( 'wc-blocks-config' );
 	}
 
 	/**

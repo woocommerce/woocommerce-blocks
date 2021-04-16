@@ -6,24 +6,15 @@ import { getSetting, STORE_PAGES } from '@woocommerce/settings';
 declare global {
 	interface Window {
 		wcBlocksConfig: {
-			wcBlocksPluginUrl: string;
-			wcBlocksPhase: number;
+			pluginUrl: string;
+			buildPhase: number;
 		};
 	}
 }
 
-const blocksConfig =
-	typeof window.wcBlocksConfig === 'object'
-		? window.wcBlocksConfig
-		: {
-				wcBlocksPluginUrl: '',
-				wcBlocksPhase: 1,
-		  };
-
-export const WC_BLOCKS_ASSET_URL = blocksConfig.wcBlocksPluginUrl + '/assets/';
-export const WC_BLOCKS_BUILD_URL = blocksConfig.wcBlocksPluginUrl + '/build/';
-export const WC_BLOCKS_PHASE = blocksConfig.wcBlocksPhase;
-
+export const WC_BLOCKS_ASSET_URL = window.wcBlocksConfig.pluginUrl + 'assets/';
+export const WC_BLOCKS_BUILD_URL = window.wcBlocksConfig.pluginUrl + 'build/';
+export const WC_BLOCKS_PHASE = window.wcBlocksConfig.buildPhase;
 export const SHOP_URL = STORE_PAGES.shop.permalink;
 export const CHECKOUT_PAGE_ID = STORE_PAGES.checkout.id;
 export const CHECKOUT_URL = STORE_PAGES.checkout.permalink;
