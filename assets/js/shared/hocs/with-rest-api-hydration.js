@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { useRef } from '@wordpress/element';
-import { REST_API_ROUTES } from '@woocommerce/block-settings';
 import { SCHEMA_STORE_KEY } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
 
@@ -10,7 +9,10 @@ import { useSelect } from '@wordpress/data';
  * Hydrate Rest API data from settings to reduce the number of API requests needed.
  */
 const useRestApiHydration = () => {
-	const restApiRoutes = useRef( REST_API_ROUTES );
+	const restApiRoutes = useRef(
+		// @ts-ignore
+		wcSharedHocsConfig.restApiRoutes || {}
+	);
 
 	useSelect( ( select, registry ) => {
 		if ( ! restApiRoutes.current ) {

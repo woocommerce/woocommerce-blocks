@@ -60,6 +60,16 @@ class Assets {
 			$asset_api->register_script( 'wc-blocks-checkout', 'build/blocks-checkout.js', [] );
 		}
 
+		wp_localize_script(
+			'wc-shared-hocs',
+			'wcSharedHocsConfig',
+			[
+				'restApiRoutes' => [
+					'/wc/store' => array_keys( Package::container()->get( RestApi::class )->get_routes_from_namespace( 'wc/store' ) ),
+				],
+			]
+		);
+
 		// Passes build and required params from server to client.
 		wp_localize_script(
 			'wc-blocks',
@@ -81,12 +91,6 @@ class Assets {
 		$asset_data_registry->add( 'wordCountType', _x( 'words', 'Word count type. Do not translate!', 'woo-gutenberg-products-block' ) );
 		$asset_data_registry->add( 'isLargeCatalog', $product_counts->publish > 100 );
 		$asset_data_registry->add( 'productCount', array_sum( (array) $product_counts ) );
-		$asset_data_registry->add(
-			'restApiRoutes',
-			[
-				'/wc/store' => array_keys( Package::container()->get( RestApi::class )->get_routes_from_namespace( 'wc/store' ) ),
-			]
-		);
 
 		// Pass in globals to the blocks middleware script. This sets the default nonce values from the server.
 		wp_add_inline_script(
