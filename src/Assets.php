@@ -47,6 +47,7 @@ class Assets {
 		wp_style_add_data( 'wc-block-style', 'rtl', 'replace' );
 
 		// Shared libraries and components across multiple blocks.
+		$asset_api->register_script( 'wc-blocks-config', '', [], false );
 		$asset_api->register_script( 'wc-blocks-middleware', 'build/wc-blocks-middleware.js', [], false );
 		$asset_api->register_script( 'wc-blocks-data-store', 'build/wc-blocks-data.js', [ 'wc-blocks-middleware' ] );
 		$asset_api->register_script( 'wc-blocks', $asset_api->get_block_asset_build_path( 'blocks' ), [], false );
@@ -72,7 +73,7 @@ class Assets {
 
 		// Passes build and required params from server to client.
 		wp_localize_script(
-			'wc-blocks',
+			'wc-blocks-config',
 			'wcBlocksConfig',
 			[
 				'wcBlocksPluginUrl' => plugins_url( '/', __DIR__ ),
@@ -83,12 +84,6 @@ class Assets {
 		// Pass in settings specific to blocks.
 		$product_counts = wp_count_posts( 'product' );
 
-		/*
-		 * translators: If your word count is based on single characters (e.g. East Asian characters),
-		 * enter 'characters_excluding_spaces' or 'characters_including_spaces'. Otherwise, enter 'words'.
-		 * Do not translate into your own language.
-		 */
-		$asset_data_registry->add( 'wordCountType', _x( 'words', 'Word count type. Do not translate!', 'woo-gutenberg-products-block' ) );
 		$asset_data_registry->add( 'isLargeCatalog', $product_counts->publish > 100 );
 		$asset_data_registry->add( 'productCount', array_sum( (array) $product_counts ) );
 
