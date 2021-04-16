@@ -5,7 +5,7 @@ import { Component } from '@wordpress/element';
 import { debounce } from 'lodash';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import PropTypes from 'prop-types';
-import { IS_LARGE_CATALOG } from '@woocommerce/block-settings';
+import { getSetting } from '@woocommerce/settings';
 import { getProducts } from '@woocommerce/editor-components/utils';
 
 /**
@@ -80,7 +80,7 @@ const withSearchedProducts = createHigherOrderComponent(
 						products={ list }
 						isLoading={ loading }
 						onSearch={
-							IS_LARGE_CATALOG
+							getSetting( 'productCount', 0 ) > 100
 								? ( search ) => {
 										this.setState( { loading: true } );
 										this.debouncedOnSearch( search );

@@ -5,7 +5,6 @@
 import { addQueryArgs } from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
 import { flatten, uniqBy } from 'lodash';
-import { IS_LARGE_CATALOG } from '@woocommerce/block-settings';
 import { getSetting } from '@woocommerce/settings';
 
 /**
@@ -21,8 +20,9 @@ const getProductsRequests = ( {
 	search = '',
 	queryArgs = [],
 } ) => {
+	const isLargeCatalog = getSetting( 'productCount', 0 ) > 100;
 	const defaultArgs = {
-		per_page: IS_LARGE_CATALOG ? 100 : 0,
+		per_page: isLargeCatalog ? 100 : 0,
 		catalog_visibility: 'any',
 		search,
 		orderby: 'title',
@@ -33,7 +33,7 @@ const getProductsRequests = ( {
 	];
 
 	// If we have a large catalog, we might not get all selected products in the first page.
-	if ( IS_LARGE_CATALOG && selected.length ) {
+	if ( isLargeCatalog && selected.length ) {
 		requests.push(
 			addQueryArgs( '/wc/store/products', {
 				catalog_visibility: 'any',

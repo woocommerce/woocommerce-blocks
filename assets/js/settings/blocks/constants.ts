@@ -24,14 +24,6 @@ export const WC_BLOCKS_ASSET_URL = blocksConfig.wcBlocksPluginUrl + '/assets/';
 export const WC_BLOCKS_BUILD_URL = blocksConfig.wcBlocksPluginUrl + '/build/';
 export const WC_BLOCKS_PHASE = blocksConfig.wcBlocksPhase;
 
-/**
- * Settings defined globally for all blocks are exported here, as well as constants derived from core settings.
- */
-const IS_LARGE_CATALOG = getSetting( 'isLargeCatalog' );
-const PRODUCT_COUNT = getSetting( 'productCount', 0 );
-
-export { IS_LARGE_CATALOG, PRODUCT_COUNT };
-
 export const SHOP_URL = STORE_PAGES.shop.permalink;
 export const CHECKOUT_PAGE_ID = STORE_PAGES.checkout.id;
 export const CHECKOUT_URL = STORE_PAGES.checkout.permalink;

@@ -344,6 +344,11 @@ abstract class AbstractBlock {
 			*/
 			$this->asset_data_registry->add( 'wordCountType', _x( 'words', 'Word count type. Do not translate!', 'woo-gutenberg-products-block' ), true );
 		}
+
+		if ( ! $this->asset_data_registry->exists( 'productCount' ) ) {
+			$product_counts = wp_count_posts( 'product' );
+			$this->asset_data_registry->add( 'productCount', array_sum( (array) $product_counts ) );
+		}
 	}
 
 	/**

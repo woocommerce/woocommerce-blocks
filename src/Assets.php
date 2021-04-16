@@ -61,6 +61,7 @@ class Assets {
 			$asset_api->register_script( 'wc-blocks-checkout', 'build/blocks-checkout.js', [] );
 		}
 
+		// Uses WP Localize Script to pass extra data to the client from the server, based on script handle.
 		wp_localize_script(
 			'wc-shared-hocs',
 			'wcSharedHocsConfig',
@@ -68,6 +69,15 @@ class Assets {
 				'restApiRoutes' => [
 					'/wc/store' => array_keys( Package::container()->get( RestApi::class )->get_routes_from_namespace( 'wc/store' ) ),
 				],
+			]
+		);
+
+		wp_localize_script(
+			'wc-blocks-middleware',
+			'wcBlocksMiddlewareConfig',
+			[
+				'storeApiNonce'          => wp_create_nonce( 'wc_store_api' ),
+				'storeApiNonceTimestamp' => time(),
 			]
 		);
 
@@ -79,22 +89,6 @@ class Assets {
 				'wcBlocksPluginUrl' => plugins_url( '/', __DIR__ ),
 				'wcBlocksPhase'     => Package::feature()->get_flag(),
 			]
-		);
-
-		// Pass in settings specific to blocks.
-		$product_counts = wp_count_posts( 'product' );
-
-		$asset_data_registry->add( 'isLargeCatalog', $product_counts->publish > 100 );
-		$asset_data_registry->add( 'productCount', array_sum( (array) $product_counts ) );
-
-		// Pass in globals to the blocks middleware script. This sets the default nonce values from the server.
-		wp_add_inline_script(
-			'wc-blocks-middleware',
-			"
-			var wcStoreApiNonce = '" . esc_js( wp_create_nonce( 'wc_store_api' ) ) . "';
-			var wcStoreApiNonceTimestamp = '" . esc_js( time() ) . "';
-			",
-			'before'
 		);
 	}
 
