@@ -55,6 +55,7 @@ const messages = {
 const ProductControl = ( {
 	expandedProduct,
 	error,
+	isCompact,
 	isLoading,
 	onChange,
 	onSearch,
@@ -192,6 +193,7 @@ const ProductControl = ( {
 		<SearchListControl
 			className="woocommerce-products"
 			list={ currentList }
+			isCompact={ isCompact }
 			isLoading={ isLoading }
 			isSingle
 			selected={ currentList.filter( ( { id } ) =>
@@ -211,6 +213,7 @@ ProductControl.propTypes = {
 	 * Callback to update the selected products.
 	 */
 	onChange: PropTypes.func.isRequired,
+	isCompact: PropTypes.bool,
 	/**
 	 * The ID of the currently expanded product.
 	 */
@@ -238,6 +241,7 @@ ProductControl.propTypes = {
 };
 
 ProductControl.defaultProps = {
+	isCompact: false,
 	expandedProduct: null,
 	selected: [],
 	showVariations: false,

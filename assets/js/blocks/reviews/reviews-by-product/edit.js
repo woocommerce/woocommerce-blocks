@@ -86,6 +86,7 @@ const ReviewsByProductEditor = ( {
 							setAttributes( { productId: id } );
 						} }
 						renderItem={ renderProductControlItem }
+						isCompact={ true }
 					/>
 				</PanelBody>
 				<PanelBody

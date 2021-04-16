@@ -89,6 +89,7 @@ const ReviewsByCategoryEditor = ( {
 							setAttributes( { categoryIds: ids } );
 						} }
 						renderItem={ renderCategoryControlItem }
+						isCompact={ true }
 					/>
 				</PanelBody>
 				<PanelBody
