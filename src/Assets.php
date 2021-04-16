@@ -79,7 +79,6 @@ class Assets {
 		 * Do not translate into your own language.
 		 */
 		$asset_data_registry->add( 'wordCountType', _x( 'words', 'Word count type. Do not translate!', 'woo-gutenberg-products-block' ) );
-		$asset_data_registry->add( 'placeholderImgSrc', wc_placeholder_img_src() );
 		$asset_data_registry->add( 'isLargeCatalog', $product_counts->publish > 100 );
 		$asset_data_registry->add( 'productCount', array_sum( (array) $product_counts ) );
 		$asset_data_registry->add(

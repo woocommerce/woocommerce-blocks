@@ -81,6 +81,7 @@ class AssetDataRegistry {
 			'homeUrl'            => home_url( '/' ),
 			'locale'             => $this->get_locale_data(),
 			'orderStatuses'      => $this->get_order_statuses(),
+			'placeholderImgSrc'  => wc_placeholder_img_src(),
 			'siteTitle'          => get_bloginfo( 'name' ),
 			'storePages'         => $this->get_store_pages(),
 			'wcAssetUrl'         => plugins_url( 'assets/', WC_PLUGIN_FILE ),
