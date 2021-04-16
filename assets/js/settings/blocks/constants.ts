@@ -29,9 +29,8 @@ export const WC_BLOCKS_PHASE = blocksConfig.wcBlocksPhase;
  */
 const IS_LARGE_CATALOG = getSetting( 'isLargeCatalog' );
 const PRODUCT_COUNT = getSetting( 'productCount', 0 );
-const WORD_COUNT_TYPE = getSetting( 'wordCountType', 'words' );
 
-export { IS_LARGE_CATALOG, PRODUCT_COUNT, WORD_COUNT_TYPE };
+export { IS_LARGE_CATALOG, PRODUCT_COUNT };
 
 export const SHOP_URL = STORE_PAGES.shop.permalink;
 export const CHECKOUT_PAGE_ID = STORE_PAGES.checkout.id;
