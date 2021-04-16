@@ -61,33 +61,40 @@ class Assets {
 			$asset_api->register_script( 'wc-blocks-checkout', 'build/blocks-checkout.js', [] );
 		}
 
-		// Uses WP Localize Script to pass extra data to the client from the server, based on script handle.
-		wp_localize_script(
-			'wc-shared-hocs',
-			'wcSharedHocsConfig',
-			[
-				'restApiRoutes' => [
-					'/wc/store' => array_keys( Package::container()->get( RestApi::class )->get_routes_from_namespace( 'wc/store' ) ),
-				],
-			]
-		);
-
-		wp_localize_script(
-			'wc-blocks-middleware',
-			'wcBlocksMiddlewareConfig',
-			[
-				'storeApiNonce'          => wp_create_nonce( 'wc_store_api' ),
-				'storeApiNonceTimestamp' => time(),
-			]
-		);
-
-		wp_localize_script(
+		// Pass extra data to the client from the server, based on script handle.
+		wp_add_inline_script(
 			'wc-blocks-config',
-			'wcBlocksConfig',
-			[
-				'pluginUrl'  => plugins_url( '/', __DIR__ ),
-				'buildPhase' => Package::feature()->get_flag(),
-			]
+			"
+			var wcBlocksConfig = {
+				pluginUrl: '" . esc_js( plugins_url( '/', __DIR__ ) ) . "',
+				buildPhase: '" . esc_js( Package::feature()->get_flag() ) . "'
+			};
+			",
+			'before'
+		);
+
+		wp_add_inline_script(
+			'wc-shared-hocs',
+			"
+			var wcSharedHocsConfig = {
+				restApiRoutes: {
+					'wc/store': JSON.parse( decodeURIComponent( '" . esc_js( rawurlencode( wp_json_encode( array_keys( Package::container()->get( RestApi::class )->get_routes_from_namespace( 'wc/store' ) ) ) ) ) . "' ) )
+				}
+			};
+			console.log( wcSharedHocsConfig );
+			",
+			'before'
+		);
+
+		wp_add_inline_script(
+			'wc-blocks-middleware',
+			"
+			var wcBlocksMiddlewareConfig = {
+				storeApiNonce: '" . esc_js( wp_create_nonce( 'wc_store_api' ) ) . "',
+				wcStoreApiNonceTimestamp: '" . esc_js( time() ) . "'
+			};
+			",
+			'before'
 		);
 
 		// Blocks config is available globally for all blocks scripts.

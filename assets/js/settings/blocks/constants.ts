@@ -12,10 +12,18 @@ declare global {
 	}
 }
 
-export const WC_BLOCKS_ASSET_URL = window.wcBlocksConfig.pluginUrl + 'assets/';
-export const WC_BLOCKS_BUILD_URL = window.wcBlocksConfig.pluginUrl + 'build/';
-export const WC_BLOCKS_PHASE = window.wcBlocksConfig.buildPhase;
-export const SHOP_URL = STORE_PAGES.shop.permalink;
+const blocksConfig =
+	typeof window.wcBlocksConfig === 'object'
+		? window.wcBlocksConfig
+		: {
+				pluginUrl: '',
+				buildPhase: 1,
+		  };
+
+export const WC_BLOCKS_ASSET_URL = blocksConfig.pluginUrl + 'assets/';
+export const WC_BLOCKS_BUILD_URL = blocksConfig.pluginUrl + 'build/';
+export const WC_BLOCKS_PHASE = blocksConfig.buildPhase;
+export const SHOP_URL = STORE_PAGES.shop?.permalink;
 export const CHECKOUT_PAGE_ID = STORE_PAGES.checkout.id;
 export const CHECKOUT_URL = STORE_PAGES.checkout.permalink;
 export const PRIVACY_URL = STORE_PAGES.privacy.permalink;
