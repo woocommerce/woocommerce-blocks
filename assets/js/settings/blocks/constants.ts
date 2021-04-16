@@ -3,6 +3,27 @@
  */
 import { getSetting, STORE_PAGES } from '@woocommerce/settings';
 
+declare global {
+	interface Window {
+		wcBlocksConfig: {
+			wcBlocksPluginUrl: string;
+			wcBlocksPhase: number;
+		};
+	}
+}
+
+const blocksConfig =
+	typeof window.wcBlocksConfig === 'object'
+		? window.wcBlocksConfig
+		: {
+				wcBlocksPluginUrl: '',
+				wcBlocksPhase: 1,
+		  };
+
+export const WC_BLOCKS_ASSET_URL = blocksConfig.wcBlocksPluginUrl + '/assets/';
+export const WC_BLOCKS_BUILD_URL = blocksConfig.wcBlocksPluginUrl + '/build/';
+export const WC_BLOCKS_PHASE = blocksConfig.wcBlocksPhase;
+
 /**
  * Settings defined globally for all blocks are exported here, as well as constants derived from core settings.
  */

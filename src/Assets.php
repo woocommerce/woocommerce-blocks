@@ -60,11 +60,18 @@ class Assets {
 			$asset_api->register_script( 'wc-blocks-checkout', 'build/blocks-checkout.js', [] );
 		}
 
+		// Passes build and required params from server to client.
+		wp_localize_script(
+			'wc-blocks',
+			'wcBlocksConfig',
+			[
+				'wcBlocksPluginUrl' => plugins_url( '/', __DIR__ ),
+				'wcBlocksPhase'     => Package::feature()->get_flag(),
+			]
+		);
+
 		// Pass in settings specific to blocks.
 		$product_counts = wp_count_posts( 'product' );
-
-		$asset_data_registry->add( 'wcBlocksPluginUrl', plugins_url( '/', __DIR__ ) );
-		$asset_data_registry->add( 'wcBlocksPhase', Package::feature()->get_flag() );
 
 		/*
 		 * translators: If your word count is based on single characters (e.g. East Asian characters),
