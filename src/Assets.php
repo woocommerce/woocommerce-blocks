@@ -37,8 +37,7 @@ class Assets {
 	 * Moved data related enqueuing to new AssetDataRegistry class as part of ongoing refactoring.
 	 */
 	public static function register_assets() {
-		$asset_api           = Package::container()->get( AssetApi::class );
-		$asset_data_registry = Package::container()->get( AssetDataRegistry::class );
+		$asset_api = Package::container()->get( AssetApi::class );
 
 		self::register_style( 'wc-block-editor', plugins_url( $asset_api->get_block_asset_build_path( 'editor', 'css' ), __DIR__ ), array( 'wp-edit-blocks' ) );
 		self::register_style( 'wc-block-style', plugins_url( $asset_api->get_block_asset_build_path( 'style', 'css' ), __DIR__ ), array( 'wc-block-vendors-style' ) );
