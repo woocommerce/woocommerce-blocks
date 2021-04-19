@@ -2,10 +2,9 @@
  * External dependencies
  */
 import { _n, sprintf } from '@wordpress/i18n';
-import PropTypes from 'prop-types';
 import Title from '@woocommerce/base-components/title';
 
-const CartLineItemsTitle = ( { itemCount = 1 } ) => {
+const CartLineItemsTitle = ( { itemCount = 1 }: { itemCount: number } ) => {
 	return (
 		<Title headingLevel="2">
 			{ sprintf(
@@ -20,10 +19,6 @@ const CartLineItemsTitle = ( { itemCount = 1 } ) => {
 			) }
 		</Title>
 	);
-};
-
-CartLineItemsTitle.propTypes = {
-	itemCount: PropTypes.number,
 };
 
 export default CartLineItemsTitle;
