@@ -40,16 +40,6 @@ const invalidJsonError = {
 	),
 };
 
-const checkStatus = ( response: ApiResponse ) => {
-	if ( response.status >= 200 && response.status < 300 ) {
-		return {
-			response: response.body,
-			headers: response.headers,
-		};
-	}
-	throw response;
-};
-
 const setNonceOnFetch = ( headers: Headers ): void => {
 	if (
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -100,9 +90,9 @@ const triggerBatchFetch = ( keys: readonly APIFetchOptions[] ) => {
 /**
  * In ms, how long we should wait for requests to batch.
  *
- * DataLoader collects all requests over this window of time (and as a consequence, adds 100ms of latency).
+ * DataLoader collects all requests over this window of time (and as a consequence, adds this amount of latency).
  */
-const triggerBatchFetchDelay = 200;
+const triggerBatchFetchDelay = 300;
 
 /**
  * DataLoader instance for triggerBatchFetch.
@@ -176,13 +166,29 @@ export const controls = {
 					} );
 			} else {
 				batchFetch( options )
-					.then( ( response: unknown ) => {
+					.then( ( response: ApiResponse ) => {
 						assertResponseIsValid( response );
-						setNonceOnFetch( response.headers );
-						resolve( checkStatus( response ) );
+
+						if ( response.status >= 200 && response.status < 300 ) {
+							resolve( {
+								response: response.body,
+								headers: response.headers,
+							} );
+							setNonceOnFetch( response.headers );
+						}
+
+						// Status code indicates error.
+						throw response;
 					} )
-					.catch( ( error: { message?: string } ) => {
-						reject( error?.message || error );
+					.catch( ( errorResponse: ApiResponse ) => {
+						if ( errorResponse.headers ) {
+							setNonceOnFetch( errorResponse.headers );
+						}
+						if ( errorResponse.body ) {
+							reject( errorResponse.body );
+						} else {
+							reject();
+						}
 					} );
 			}
 		} );
