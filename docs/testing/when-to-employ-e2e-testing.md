@@ -1,6 +1,6 @@
 ### When to employ end to end (E2E) testing
 
-We use Puppeteer to run tests in a real browser, these are called End to End tests. These tests are fairly expensive to run and often fail randomly due to flaky browser behaviour, with this in mind, we should be careful about when we use them.
+We use [Puppeteer](https://pptr.dev/) to run tests in a real browser, these are called End to End tests. These tests are fairly expensive to run and often fail randomly due to flaky browser behaviour, with this in mind, we should be careful about when we use them.
 
 Ultimately, the front-end is a representation of our application's state, and in most cases we will be able
 to reliably determine that it is behaving the way we want it to without setting up a full browser environment
@@ -15,7 +15,9 @@ setting it up as an E2E test would be a good way to check your code is working a
 is testing how our blocks behave in the Gutenberg block editor. It would be too difficult to mock all of the
 interfaces of Gutenberg that would be required to test our blocks.
 
-If the functionality you're testing doesn't rely on a browser function (e.g. the browser back/forward buttons, or local storage) then you may be able to forego using an E2E test and instead write a unit test or integration test using React Testing Library.
+If the functionality you're testing doesn't rely on a browser function (e.g. the browser back/forward buttons,
+or local storage) then you may be able to forego using an E2E test and instead write a unit test or integration
+test using [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/).
 
 An example of things that _should_ be tested with E2E tests:
 
@@ -24,3 +26,8 @@ An example of things that _should_ be tested with E2E tests:
 2.   Fresh cart data is fetched when using the browser's back buttons. Reason: **We need to emulate the behaviour of a
     browser when the back button is pressed and this can't be done in unit tests.**
 3.   The compatability notice is shown when first adding the checkout block. Reason: **same as 1**
+
+
+**React testing library documentation:** https://testing-library.com/docs/react-testing-library/intro/
+
+**Puppeteer documentation**: https://pptr.dev/ 
