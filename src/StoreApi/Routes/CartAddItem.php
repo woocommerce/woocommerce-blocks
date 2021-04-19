@@ -27,7 +27,6 @@ class CartAddItem extends AbstractCartRoute {
 				'methods'             => \WP_REST_Server::CREATABLE,
 				'callback'            => [ $this, 'get_response' ],
 				'permission_callback' => '__return_true',
-				'validate_callback'   => [ $this, 'validate_callback' ],
 				'args'                => [
 					'id'        => [
 						'description' => __( 'The cart item product or variation ID.', 'woo-gutenberg-products-block' ),

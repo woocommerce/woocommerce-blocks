@@ -303,7 +303,10 @@ export function* removeItemFromCart(
 
 	try {
 		const { response } = yield apiFetchWithHeaders( {
-			path: `/wc/store/cart/remove-item/?key=${ cartItemKey }`,
+			path: `/wc/store/cart/remove-item`,
+			data: {
+				key: cartItemKey,
+			},
 			method: 'POST',
 			cache: 'no-store',
 		} );

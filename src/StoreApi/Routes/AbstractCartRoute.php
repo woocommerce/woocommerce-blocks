@@ -56,6 +56,14 @@ abstract class AbstractCartRoute extends AbstractRoute {
 		$this->cart_controller->load_cart();
 		$this->calculate_totals();
 
+		if ( $this->requires_nonce( $request ) ) {
+			$nonce_check = $this->check_nonce( $request );
+
+			if ( is_wp_error( $nonce_check ) ) {
+				return $this->add_nonce_headers( $this->error_to_response( $nonce_check ) );
+			}
+		}
+
 		try {
 			$response = parent::get_response( $request );
 		} catch ( RouteException $error ) {
@@ -68,24 +76,20 @@ abstract class AbstractCartRoute extends AbstractRoute {
 			$response = $this->error_to_response( $response );
 		}
 
-		$response->header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
-		$response->header( 'X-WC-Store-API-Nonce-Timestamp', time() );
-		$response->header( 'X-WC-Store-API-User', get_current_user_id() );
-
-		return $response;
+		return $this->add_nonce_headers( $response );
 	}
 
 	/**
-	 * Validation before the route returns a response.
+	 * Add nonce headers to a response object.
 	 *
-	 * @param \WP_REST_Request $request Request.
-	 * @return \WP_Error|bool
+	 * @param \WP_REST_Response $response The response object.
+	 * @return \WP_REST_Response
 	 */
-	public function validate_callback( \WP_REST_Request $request ) {
-		if ( $this->requires_nonce( $request ) ) {
-			return $this->check_nonce( $request );
-		}
-		return true;
+	protected function add_nonce_headers( \WP_REST_Response $response ) {
+		$response->header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
+		$response->header( 'X-WC-Store-API-Nonce-Timestamp', time() );
+		$response->header( 'X-WC-Store-API-User', get_current_user_id() );
+		return $response;
 	}
 
 	/**
