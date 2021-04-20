@@ -15,7 +15,7 @@ import './style.scss';
 import { isNumber } from '../../utils/type-guards';
 
 interface QuantitySelectorProps {
-	className: string;
+	className?: string;
 	quantity?: number;
 	minimum?: number;
 	maximum: number;
