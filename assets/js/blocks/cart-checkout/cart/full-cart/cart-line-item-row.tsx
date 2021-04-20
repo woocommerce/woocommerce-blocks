@@ -26,7 +26,14 @@ import {
 } from '@woocommerce/blocks-checkout';
 import Dinero from 'dinero.js';
 import { useCallback, useMemo } from '@wordpress/element';
+import type { CartItem } from '@woocommerce/type-defs/cart';
 import { getSetting } from '@woocommerce/settings';
+
+/**
+ * Internal dependencies
+ */
+import { Currency } from '../../../../../../packages/prices/types';
+import { objectHasProp } from '../../../../base/utils/type-guards';
 
 /**
  * @typedef {import('@woocommerce/type-defs/cart').CartItem} CartItem
@@ -39,7 +46,10 @@ import { getSetting } from '@woocommerce/settings';
  * @param {Object} currency    Currency data.
  * @return {number} Amount with new minor unit precision.
  */
-const getAmountFromRawPrice = ( priceObject, currency ) => {
+const getAmountFromRawPrice = (
+	priceObject: Dinero.Dinero,
+	currency: Currency
+) => {
 	return priceObject.convertPrecision( currency.minorUnit ).getAmount();
 };
 
@@ -49,10 +59,14 @@ const getAmountFromRawPrice = ( priceObject, currency ) => {
  * @param {Object} props
  * @param {CartItem|Object} props.lineItem
  */
-const CartLineItemRow = ( { lineItem = {} } ) => {
+const CartLineItemRow = ( {
+	lineItem,
+}: {
+	lineItem: CartItem | Record< string, never >;
+} ) => {
 	const {
 		name: initialName = '',
-		catalog_visibility: catalogVisibility = '',
+		catalog_visibility: catalogVisibility = 'visible',
 		short_description: shortDescription = '',
 		description: fullDescription = '',
 		low_stock_remaining: lowStockRemaining = null,
@@ -184,7 +198,11 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 			{ /* If the image has no alt text, this link is unnecessary and can be hidden. */ }
 			<td
 				className="wc-block-cart-item__image"
-				aria-hidden={ ! firstImage.alt }
+				aria-hidden={
+					( objectHasProp( firstImage, 'alt' ) &&
+						! firstImage.alt ) ||
+					true
+				}
 			>
 				{ /* We don't need to make it focusable, because product name has the same link. */ }
 				{ isProductHiddenFromCatalog ? (
@@ -294,9 +312,4 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 		</tr>
 	);
 };
-
-CartLineItemRow.propTypes = {
-	lineItem: PropTypes.object,
-};
-
 export default CartLineItemRow;
