@@ -34,7 +34,6 @@ const isCartUpdatePostRequest = ( options: APIFetchOptions ) => {
 		const requests = options?.data?.requests || [];
 
 		return requests.some( ( request: { path: string } ) => {
-
 			const requestUrl = request.path || '';
 
 			return cartRegExp.exec( requestUrl ) !== null;
