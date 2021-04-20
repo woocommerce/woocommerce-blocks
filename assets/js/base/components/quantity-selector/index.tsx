@@ -12,16 +12,29 @@ import { DOWN, UP } from '@wordpress/keycodes';
  * Internal dependencies
  */
 import './style.scss';
+import { isNumber } from '../../utils/type-guards';
+
+interface QuantitySelectorProps {
+	className: string;
+	quantity?: number;
+	minimum?: number;
+	maximum: number;
+	onChange: ( newQuantity: number ) => void;
+	itemName?: string;
+	disabled: boolean;
+}
 
 const QuantitySelector = ( {
 	className,
 	quantity = 1,
 	minimum = 1,
 	maximum,
-	onChange = () => null,
+	onChange = () => {
+		/* Do nothing. */
+	},
 	itemName = '',
 	disabled,
-} ) => {
+}: QuantitySelectorProps ) => {
 	const classes = classNames(
 		'wc-block-components-quantity-selector',
 		className
@@ -72,7 +85,7 @@ const QuantitySelector = ( {
 				onKeyDown={ quantityInputOnKeyDown }
 				onChange={ ( event ) => {
 					let value =
-						isNaN( event.target.value ) || ! event.target.value
+						! isNumber( event.target.value ) || ! event.target.value
 							? 0
 							: parseInt( event.target.value, 10 );
 					if ( hasMaximum ) {
