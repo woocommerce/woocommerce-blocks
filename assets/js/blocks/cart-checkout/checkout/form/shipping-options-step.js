@@ -19,7 +19,7 @@ import {
 } from '@woocommerce/base-context';
 import { decodeEntities } from '@wordpress/html-entities';
 import { DISPLAY_CART_PRICES_INCLUDING_TAX } from '@woocommerce/block-settings';
-import { Notice } from 'wordpress-components';
+import { Notice } from '@wordpress/components';
 import classnames from 'classnames';
 
 /**

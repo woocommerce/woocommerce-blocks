@@ -82,11 +82,11 @@ const entries = {
 	styling: {
 		// @wordpress/components styles
 		'custom-select-control-style':
-			'./node_modules/wordpress-components/src/custom-select-control/style.scss',
+			'./node_modules/@wordpress/components/src/custom-select-control/style.scss',
 		'spinner-style':
-			'./node_modules/wordpress-components/src/spinner/style.scss',
+			'./node_modules/@wordpress/components/src/spinner/style.scss',
 		'snackbar-notice-style':
-			'./node_modules/wordpress-components/src/snackbar/style.scss',
+			'./node_modules/@wordpress/components/src/snackbar/style.scss',
 
 		'general-style': glob.sync( './assets/**/*.scss', {
 			ignore: [

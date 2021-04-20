@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { SnackbarList } from 'wordpress-components';
+import { SnackbarList } from '@wordpress/components';
 import classnames from 'classnames';
 
 const SnackbarNoticesContainer = ( {

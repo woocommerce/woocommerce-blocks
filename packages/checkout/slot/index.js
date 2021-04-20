@@ -2,13 +2,14 @@
  * External dependencies
  */
 import deprecated from '@wordpress/deprecated';
-import {
-	createSlotFill as baseCreateSlotFill,
-	__experimentalUseSlot,
-	useSlot as __useSlot,
-} from 'wordpress-components';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/block-settings';
 import { Children, cloneElement } from '@wordpress/element';
+import {
+	createSlotFill as baseCreateSlotFill,
+	useSlot as __useSlot,
+	/* eslint-disable-next-line @wordpress/no-unsafe-wp-apis */
+	__experimentalUseSlot,
+} from '@wordpress/components';
 
 /**
  * Internal dependencies
