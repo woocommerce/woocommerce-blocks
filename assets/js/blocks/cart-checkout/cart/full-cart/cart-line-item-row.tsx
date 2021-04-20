@@ -125,11 +125,11 @@ const CartLineItemRow = ( { lineItem = {} } ) => {
 
 	const regularAmountSingle = Dinero( {
 		amount: parseInt( prices.raw_prices.regular_price, 10 ),
-		precision: parseInt( prices.raw_prices.precision, 10 ),
+		precision: prices.raw_prices.precision,
 	} );
 	const purchaseAmountSingle = Dinero( {
 		amount: parseInt( prices.raw_prices.price, 10 ),
-		precision: parseInt( prices.raw_prices.precision, 10 ),
+		precision: prices.raw_prices.precision,
 	} );
 	const saleAmountSingle = regularAmountSingle.subtract(
 		purchaseAmountSingle
