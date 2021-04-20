@@ -16,6 +16,7 @@ export const blocksConfig = getSetting( 'wcBlocksConfig', {
 	productCount: 0,
 	wordCountType: 'words',
 } ) as WcBlocksConfig;
+
 export const WC_BLOCKS_ASSET_URL = blocksConfig.pluginUrl + 'assets/';
 export const WC_BLOCKS_BUILD_URL = blocksConfig.pluginUrl + 'build/';
 export const WC_BLOCKS_PHASE = blocksConfig.buildPhase;
