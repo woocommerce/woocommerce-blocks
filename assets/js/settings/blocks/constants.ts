@@ -3,23 +3,19 @@
  */
 import { getSetting, STORE_PAGES } from '@woocommerce/settings';
 
-declare global {
-	interface Window {
-		wcBlocksConfig: {
-			pluginUrl: string;
-			buildPhase: number;
-		};
-	}
+interface WcBlocksConfig {
+	buildPhase: number;
+	pluginUrl: string;
+	productCount: number;
+	wordCountType: string;
 }
 
-const blocksConfig =
-	typeof window.wcBlocksConfig === 'object'
-		? window.wcBlocksConfig
-		: {
-				pluginUrl: '',
-				buildPhase: 1,
-		  };
-
+export const blocksConfig = getSetting( 'wcBlocksConfig', {
+	buildPhase: 1,
+	pluginUrl: '',
+	productCount: 0,
+	wordCountType: 'words',
+} ) as WcBlocksConfig;
 export const WC_BLOCKS_ASSET_URL = blocksConfig.pluginUrl + 'assets/';
 export const WC_BLOCKS_BUILD_URL = blocksConfig.pluginUrl + 'build/';
 export const WC_BLOCKS_PHASE = blocksConfig.buildPhase;

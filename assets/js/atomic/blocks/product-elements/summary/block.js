@@ -4,7 +4,7 @@
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Summary from '@woocommerce/base-components/summary';
-import { getSetting } from '@woocommerce/settings';
+import { blocksConfig } from '@woocommerce/block-settings';
 import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
@@ -60,7 +60,7 @@ const Block = ( { className } ) => {
 			) }
 			source={ source }
 			maxLength={ 150 }
-			countType={ getSetting( 'wordCountType', 'words' ) }
+			countType={ blocksConfig.wordCountType || 'words' }
 		/>
 	);
 };

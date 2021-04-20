@@ -2,6 +2,7 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use WP_Block;
+use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
@@ -336,18 +337,22 @@ abstract class AbstractBlock {
 			}
 		}
 
-		if ( ! $this->asset_data_registry->exists( 'wordCountType' ) ) {
-			/*
-			* translators: If your word count is based on single characters (e.g. East Asian characters),
-			* enter 'characters_excluding_spaces' or 'characters_including_spaces'. Otherwise, enter 'words'.
-			* Do not translate into your own language.
-			*/
-			$this->asset_data_registry->add( 'wordCountType', _x( 'words', 'Word count type. Do not translate!', 'woo-gutenberg-products-block' ), true );
-		}
+		if ( ! $this->asset_data_registry->exists( 'wcBlocksConfig' ) ) {
+			$this->asset_data_registry->add(
+				'wcBlocksConfig',
+				[
+					'buildPhase'    => Package::feature()->get_flag(),
+					'pluginUrl'     => plugins_url( '/', dirname( __DIR__ ) ),
+					'productCount'  => array_sum( (array) wp_count_posts( 'product' ) ),
 
-		if ( ! $this->asset_data_registry->exists( 'productCount' ) ) {
-			$product_counts = wp_count_posts( 'product' );
-			$this->asset_data_registry->add( 'productCount', array_sum( (array) $product_counts ) );
+					/*
+					 * translators: If your word count is based on single characters (e.g. East Asian characters),
+					 * enter 'characters_excluding_spaces' or 'characters_including_spaces'. Otherwise, enter 'words'.
+					 * Do not translate into your own language.
+					 */
+					'wordCountType' => _x( 'words', 'Word count type. Do not translate!', 'woo-gutenberg-products-block' ),
+				]
+			);
 		}
 	}
 

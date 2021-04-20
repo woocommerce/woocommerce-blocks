@@ -46,7 +46,6 @@ class Assets {
 		wp_style_add_data( 'wc-block-style', 'rtl', 'replace' );
 
 		// Shared libraries and components across multiple blocks.
-		$asset_api->register_script( 'wc-blocks-config', '', [], false );
 		$asset_api->register_script( 'wc-blocks-middleware', 'build/wc-blocks-middleware.js', [], false );
 		$asset_api->register_script( 'wc-blocks-data-store', 'build/wc-blocks-data.js', [ 'wc-blocks-middleware' ] );
 		$asset_api->register_script( 'wc-blocks', $asset_api->get_block_asset_build_path( 'blocks' ), [], false );
@@ -59,18 +58,6 @@ class Assets {
 		if ( Package::feature()->is_feature_plugin_build() ) {
 			$asset_api->register_script( 'wc-blocks-checkout', 'build/blocks-checkout.js', [] );
 		}
-
-		// Pass extra data to the client from the server, based on script handle.
-		wp_add_inline_script(
-			'wc-blocks-config',
-			"
-			var wcBlocksConfig = {
-				pluginUrl: '" . esc_js( plugins_url( '/', __DIR__ ) ) . "',
-				buildPhase: '" . esc_js( Package::feature()->get_flag() ) . "'
-			};
-			",
-			'before'
-		);
 
 		wp_add_inline_script(
 			'wc-shared-hocs',
@@ -94,9 +81,6 @@ class Assets {
 			",
 			'before'
 		);
-
-		// Blocks config is available globally for all blocks scripts.
-		wp_enqueue_script( 'wc-blocks-config' );
 	}
 
 	/**
