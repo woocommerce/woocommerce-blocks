@@ -33,7 +33,8 @@ const isCartUpdatePostRequest = ( options: APIFetchOptions ) => {
 	if ( isBatch ) {
 		const requests = options?.data?.requests || [];
 
-		return requests.some( ( request ) => {
+		return requests.some( ( request: { path: string } ) => {
+
 			const requestUrl = request.path || '';
 
 			return cartRegExp.exec( requestUrl ) !== null;
