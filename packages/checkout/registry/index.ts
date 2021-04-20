@@ -57,7 +57,7 @@ const getCheckoutFilters = ( filterName: string ): CheckoutFilterFunction[] => {
 /**
  * Apply a filter.
  */
-export const __experimentalApplyCheckoutFilter = ( {
+export const __experimentalApplyCheckoutFilter = < T >( {
 	filterName,
 	defaultValue,
 	extensions,
@@ -67,14 +67,14 @@ export const __experimentalApplyCheckoutFilter = ( {
 	/** Name of the filter to apply. */
 	filterName: string;
 	/** Default value to filter. */
-	defaultValue: unknown;
+	defaultValue: T;
 	/** Values extend to REST API response. */
 	extensions: Record< string, unknown >;
 	/** Object containing arguments for the filter function. */
 	arg: CheckoutFilterArguments;
 	/** Function that needs to return true when the filtered value is passed in order for the filter to be applied. */
 	validation: ( value: unknown ) => true | Error;
-} ): unknown => {
+} ): T => {
 	return useMemo( () => {
 		const filters = getCheckoutFilters( filterName );
 
