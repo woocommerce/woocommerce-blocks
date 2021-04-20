@@ -2,6 +2,14 @@ export const isNull = < T >( term: T | null ): term is null => {
 	return term === null;
 };
 
+export const isNumber = < U >( term: number | U ): term is number => {
+	return typeof term === 'number';
+};
+
+export const isString = < U >( term: string | U ): term is string => {
+	return typeof term === 'string';
+};
+
 export const isObject = < T extends Record< string, unknown >, U >(
 	term: T | U
 ): term is NonNullable< T > => {
