@@ -13,9 +13,13 @@ import ProductBadge from '../product-badge';
  * Returns a low stock badge.
  *
  * @param {Object}  props                   Incoming props for the component.
- * @param {boolean} props.lowStockRemaining Whether or not there is low stock remaining.
+ * @param {number} props.lowStockRemaining Whether or not there is low stock remaining.
  */
-const ProductLowStockBadge = ( { lowStockRemaining } ) => {
+const ProductLowStockBadge = ( {
+	lowStockRemaining,
+}: {
+	lowStockRemaining: number;
+} ) => {
 	if ( ! lowStockRemaining ) {
 		return null;
 	}
