@@ -26,8 +26,3 @@ An example of things that _should_ be tested with E2E tests:
 2.   Fresh cart data is fetched when using the browser's back buttons. Reason: **We need to emulate the behaviour of a
     browser when the back button is pressed and this can't be done in unit tests.**
 3.   The compatability notice is shown when first adding the checkout block. Reason: **same as 1**
-
-
-**React testing library documentation:** https://testing-library.com/docs/react-testing-library/intro/
-
-**Puppeteer documentation**: https://pptr.dev/ 
