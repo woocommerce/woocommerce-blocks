@@ -77,7 +77,6 @@ describe( `${ block.name } Block (frontend)`, () => {
 	} );
 
 	it( 'Shows the freshest cart data when using browser navigation buttons', async () => {
-		//await jest.setTimeout( 60000 );
 		await page.goto( cartBlockPermalink );
 
 		await page
