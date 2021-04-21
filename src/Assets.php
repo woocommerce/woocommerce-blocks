@@ -4,7 +4,6 @@ namespace Automattic\WooCommerce\Blocks;
 use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry as AssetDataRegistry;
-use Automattic\WooCommerce\Blocks\RestApi;
 
 /**
  * Assets class.
@@ -58,18 +57,6 @@ class Assets {
 		if ( Package::feature()->is_feature_plugin_build() ) {
 			$asset_api->register_script( 'wc-blocks-checkout', 'build/blocks-checkout.js', [] );
 		}
-
-		wp_add_inline_script(
-			'wc-shared-hocs',
-			"
-			var wcSharedHocsConfig = {
-				restApiRoutes: {
-					'wc/store': JSON.parse( decodeURIComponent( '" . esc_js( rawurlencode( wp_json_encode( array_keys( Package::container()->get( RestApi::class )->get_routes_from_namespace( 'wc/store' ) ) ) ) ) . "' ) )
-				}
-			};
-			",
-			'before'
-		);
 
 		wp_add_inline_script(
 			'wc-blocks-middleware',

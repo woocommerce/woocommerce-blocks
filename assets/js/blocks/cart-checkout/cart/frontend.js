@@ -1,8 +1,10 @@
 /**
  * External dependencies
  */
-import { withStoreCartApiHydration } from '@woocommerce/block-hocs';
-import { withRestApiHydration } from '@woocommerce/shared-hocs';
+import {
+	withStoreCartApiHydration,
+	withRestApiHydration,
+} from '@woocommerce/block-hocs';
 import { __ } from '@wordpress/i18n';
 import { StoreNoticesProvider } from '@woocommerce/base-context';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';

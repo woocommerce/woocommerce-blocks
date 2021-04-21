@@ -6,6 +6,7 @@ use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
+use Automattic\WooCommerce\Blocks\RestApi;
 
 /**
  * AbstractBlock class.
@@ -344,6 +345,9 @@ abstract class AbstractBlock {
 					'buildPhase'    => Package::feature()->get_flag(),
 					'pluginUrl'     => plugins_url( '/', dirname( __DIR__ ) ),
 					'productCount'  => array_sum( (array) wp_count_posts( 'product' ) ),
+					'restApiRoutes' => [
+						'/wc/store' => array_keys( Package::container()->get( RestApi::class )->get_routes_from_namespace( 'wc/store' ) ),
+					],
 
 					/*
 					 * translators: If your word count is based on single characters (e.g. East Asian characters),

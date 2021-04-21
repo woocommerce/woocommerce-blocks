@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { withRestApiHydration } from '@woocommerce/shared-hocs';
+import { withRestApiHydration } from '@woocommerce/block-hocs';
 import { StoreNoticesProvider } from '@woocommerce/base-context';
 import { renderFrontend } from '@woocommerce/base-utils';
 

@@ -2,8 +2,10 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { withStoreCartApiHydration } from '@woocommerce/block-hocs';
-import { withRestApiHydration } from '@woocommerce/shared-hocs';
+import {
+	withStoreCartApiHydration,
+	withRestApiHydration,
+} from '@woocommerce/block-hocs';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 import {
 	StoreNoticesProvider,
