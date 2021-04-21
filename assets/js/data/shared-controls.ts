@@ -128,7 +128,7 @@ export const controls = {
 			if (
 				! options.method ||
 				options.method === 'GET' ||
-				isWpVersion( '5.5', '<=' )
+				isWpVersion( '5.6', '<' )
 			) {
 				// Parse is disabled here to avoid returning just the body--we also need headers.
 				triggerFetch( {
