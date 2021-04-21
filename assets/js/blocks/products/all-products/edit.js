@@ -30,6 +30,7 @@ import {
 import { getBlockMap } from '@woocommerce/atomic-utils';
 import { previewProducts } from '@woocommerce/resource-previews';
 import { getSetting } from '@woocommerce/settings';
+import { blocksConfig } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -283,7 +284,7 @@ class Editor extends Component {
 		const blockTitle = this.getTitle();
 		const blockIcon = this.getIcon();
 
-		if ( getSetting( 'productCount', 0 ) === 0 ) {
+		if ( blocksConfig.productCount === 0 ) {
 			return renderNoProductsPlaceholder( blockTitle, blockIcon );
 		}
 

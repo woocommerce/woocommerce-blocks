@@ -6,6 +6,7 @@ import { addQueryArgs } from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
 import { flatten, uniqBy } from 'lodash';
 import { getSetting } from '@woocommerce/settings';
+import { blocksConfig } from '@woocommerce/block-settings';
 
 /**
  * Get product query requests for the Store API.
@@ -20,7 +21,7 @@ const getProductsRequests = ( {
 	search = '',
 	queryArgs = [],
 } ) => {
-	const isLargeCatalog = getSetting( 'productCount', 0 ) > 100;
+	const isLargeCatalog = blocksConfig.productCount > 100;
 	const defaultArgs = {
 		per_page: isLargeCatalog ? 100 : 0,
 		catalog_visibility: 'any',
