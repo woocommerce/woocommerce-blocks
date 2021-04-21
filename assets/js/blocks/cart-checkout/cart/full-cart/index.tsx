@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * External dependencies
  */
@@ -45,21 +44,23 @@ import { CartExpressPayment } from '../../payment-methods';
 
 import './style.scss';
 
-const Block = ( props ) => {
-	return (
-		<CartProvider>
-			<Cart { ...props } />
-		</CartProvider>
-	);
-};
+interface CartAttributes {
+	hasDarkControls: boolean;
+	isShippingCalculatorEnabled: boolean;
+	checkoutPageId: number;
+	isPreview: boolean;
+}
 
+interface CartProps {
+	attributes: CartAttributes;
+}
 /**
  * Component that renders the Cart block when user has something in cart aka "full".
  *
  * @param {Object} props Incoming props for the component.
  * @param {Object} props.attributes Incoming attributes for block.
  */
-const Cart = ( { attributes } ) => {
+const Cart = ( { attributes }: CartProps ) => {
 	const { isShippingCalculatorEnabled, hasDarkControls } = attributes;
 
 	const {
@@ -184,8 +185,12 @@ const Cart = ( { attributes } ) => {
 	);
 };
 
-Cart.propTypes = {
-	attributes: PropTypes.object.isRequired,
+const Block = ( props: CartProps ) => {
+	return (
+		<CartProvider>
+			<Cart { ...props } />
+		</CartProvider>
+	);
 };
 
 export default Block;
