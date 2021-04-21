@@ -5,7 +5,6 @@ module.exports = {
 	],
 	globals: {
 		wcBlocksMiddlewareConfig: 'readonly',
-		wcSharedHocsConfig: 'readonly',
 		fetchMock: true,
 		jQuery: 'readonly',
 		IntersectionObserver: 'readonly',
