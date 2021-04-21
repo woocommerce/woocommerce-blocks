@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
+import { CartResponseItem } from '@woocommerce/type-defs/cart-response';
 
 /**
  * Internal dependencies
@@ -10,10 +11,18 @@ import PropTypes from 'prop-types';
 import CartLineItemRow from './cart-line-item-row';
 
 const placeholderRows = [ ...Array( 3 ) ].map( ( _x, i ) => (
-	<CartLineItemRow key={ i } />
+	<CartLineItemRow lineItem={ {} } key={ i } />
 ) );
 
-const CartLineItemsTable = ( { lineItems = [], isLoading = false } ) => {
+interface CartLineItemsTableProps {
+	lineItems: CartResponseItem[];
+	isLoading: boolean;
+}
+
+const CartLineItemsTable = ( {
+	lineItems = [],
+	isLoading = false,
+}: CartLineItemsTableProps ) => {
 	const products = isLoading
 		? placeholderRows
 		: lineItems.map( ( lineItem ) => {
