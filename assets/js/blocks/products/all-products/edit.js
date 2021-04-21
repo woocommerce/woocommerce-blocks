@@ -283,7 +283,7 @@ class Editor extends Component {
 		const blockTitle = this.getTitle();
 		const blockIcon = this.getIcon();
 
-		if ( ! getSetting( 'hasProducts', true ) ) {
+		if ( getSetting( 'productCount', 0 ) === 0 ) {
 			return renderNoProductsPlaceholder( blockTitle, blockIcon );
 		}
 
