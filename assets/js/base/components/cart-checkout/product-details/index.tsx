@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import PropTypes from 'prop-types';
 import { kebabCase } from 'lodash';
 import { decodeEntities } from '@wordpress/html-entities';
 
@@ -10,8 +9,18 @@ import { decodeEntities } from '@wordpress/html-entities';
  */
 import './style.scss';
 
+interface ProductDetail {
+	name: string;
+	value: string;
+	display?: string;
+	hidden?: boolean;
+}
+
+interface ProductDetailsProps {
+	details: ProductDetail[];
+}
 // Component to display cart item data and variations.
-const ProductDetails = ( { details = [] } ) => {
+const ProductDetails = ( { details = [] }: ProductDetailsProps ) => {
 	if ( ! Array.isArray( details ) ) {
 		return null;
 	}
@@ -50,16 +59,6 @@ const ProductDetails = ( { details = [] } ) => {
 			} ) }
 		</ul>
 	);
-};
-
-ProductDetails.propTypes = {
-	details: PropTypes.arrayOf(
-		PropTypes.shape( {
-			display: PropTypes.string,
-			name: PropTypes.string,
-			value: PropTypes.string.isRequired,
-		} )
-	),
 };
 
 export default ProductDetails;
