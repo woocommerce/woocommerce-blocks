@@ -282,7 +282,7 @@ class AssetDataRegistry {
 			$this->data['preloadedApiRequests'] = [];
 		}
 		if ( ! isset( $this->data['preloadedApiRequests'][ $path ] ) ) {
-			rest_preload_api_request( $this->data['preloadedApiRequests'], $path );
+			$this->data['preloadedApiRequests'] = rest_preload_api_request( $this->data['preloadedApiRequests'], $path );
 		}
 	}
 
