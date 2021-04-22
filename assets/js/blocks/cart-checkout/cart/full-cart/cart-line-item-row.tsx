@@ -56,7 +56,7 @@ const CartLineItemRow = ( {
 	lineItem,
 }: {
 	lineItem: CartItem | Record< string, never >;
-} ) => {
+} ): ReactNode => {
 	const {
 		name: initialName = '',
 		catalog_visibility: catalogVisibility = 'visible',
