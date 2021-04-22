@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import PropTypes from 'prop-types';
 import { CartResponseItem } from '@woocommerce/type-defs/cart-response';
 
 /**
@@ -58,15 +57,6 @@ const CartLineItemsTable = ( {
 			<tbody>{ products }</tbody>
 		</table>
 	);
-};
-
-CartLineItemsTable.propTypes = {
-	lineItems: PropTypes.arrayOf(
-		PropTypes.shape( {
-			key: PropTypes.string.isRequired,
-		} )
-	),
-	isLoading: PropTypes.bool,
 };
 
 export default CartLineItemsTable;
