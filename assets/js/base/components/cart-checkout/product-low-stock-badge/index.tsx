@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import type { ReactNode } from 'react';
 
 /**
  * Internal dependencies
