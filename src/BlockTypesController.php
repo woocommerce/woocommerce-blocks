@@ -8,45 +8,70 @@ use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
 
 /**
- * Library class.
- * Initializes blocks in WordPress.
+ * BlockTypesController class.
  *
  * @internal
  */
-class Library {
+class BlockTypesController {
 
 	/**
-	 * Initialize block library features.
+	 * Instance of the asset API.
+	 *
+	 * @var AssetApi
 	 */
-	public static function init() {
-		add_action( 'init', array( __CLASS__, 'register_blocks' ) );
-		add_action( 'init', array( __CLASS__, 'define_tables' ) );
+	protected $asset_api;
+
+	/**
+	 * Instance of the asset data registry.
+	 *
+	 * @var AssetDataRegistry
+	 */
+	protected $asset_data_registry;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param AssetApi          $asset_api Instance of the asset API.
+	 * @param AssetDataRegistry $asset_data_registry Instance of the asset data registry.
+	 */
+	public function __construct( AssetApi $asset_api, AssetDataRegistry $asset_data_registry ) {
+		$this->asset_api           = $asset_api;
+		$this->asset_data_registry = $asset_data_registry;
+		$this->init();
 	}
 
 	/**
-	 * Register custom tables within $wpdb object.
+	 * Initialize class features.
 	 */
-	public static function define_tables() {
-		global $wpdb;
-
-		// List of tables without prefixes.
-		$tables = array(
-			'wc_reserved_stock' => 'wc_reserved_stock',
-		);
-
-		foreach ( $tables as $name => $table ) {
-			$wpdb->$name    = $wpdb->prefix . $table;
-			$wpdb->tables[] = $table;
-		}
+	protected function init() {
+		add_action( 'init', array( $this, 'register_blocks' ) );
 	}
 
 	/**
 	 * Register blocks, hooking up assets and render functions as needed.
 	 */
-	public static function register_blocks() {
+	public function register_blocks() {
+		$block_types = $this->get_block_types();
+
+		foreach ( $block_types as $block_type ) {
+			$block_type_class    = __NAMESPACE__ . '\\BlockTypes\\' . $block_type;
+			$block_type_instance = new $block_type_class( $this->asset_api, $this->asset_data_registry, new IntegrationRegistry() );
+		}
+
+		foreach ( self::get_atomic_blocks() as $block_type ) {
+			$block_type_instance = new AtomicBlock( $this->asset_api, $this->asset_data_registry, new IntegrationRegistry(), $block_type );
+		}
+	}
+
+	/**
+	 * Get list of block types.
+	 *
+	 * @return array
+	 */
+	protected function get_block_types() {
 		global $wp_version, $pagenow;
 
-		$blocks = [
+		$block_types = [
 			'AllReviews',
 			'FeaturedCategory',
 			'FeaturedProduct',
@@ -69,20 +94,20 @@ class Library {
 		];
 
 		if ( Package::feature()->is_feature_plugin_build() ) {
-			$blocks[] = 'Checkout';
-			$blocks[] = 'Cart';
+			$block_types[] = 'Checkout';
+			$block_types[] = 'Cart';
 		}
 
 		if ( Package::feature()->is_experimental_build() ) {
-			$blocks[] = 'SingleProduct';
+			$block_types[] = 'SingleProduct';
 		}
 
 		/**
 		 * This disables specific blocks in Widget Areas by not registering them.
 		 */
 		if ( 'themes.php' === $pagenow ) {
-			$blocks = array_diff(
-				$blocks,
+			$block_types = array_diff(
+				$block_types,
 				[
 					'AllProducts',
 					'PriceFilter',
@@ -92,18 +117,7 @@ class Library {
 			);
 		}
 
-		// Provide block types access to assets, data registry, and integration registry.
-		$asset_api     = Package::container()->get( AssetApi::class );
-		$data_registry = Package::container()->get( AssetDataRegistry::class );
-
-		foreach ( $blocks as $block_type ) {
-			$block_type_class    = __NAMESPACE__ . '\\BlockTypes\\' . $block_type;
-			$block_type_instance = new $block_type_class( $asset_api, $data_registry, new IntegrationRegistry() );
-		}
-
-		foreach ( self::get_atomic_blocks() as $block_type ) {
-			$block_type_instance = new AtomicBlock( $asset_api, $data_registry, new IntegrationRegistry(), $block_type );
-		}
+		return $block_types;
 	}
 
 	/**
@@ -111,7 +125,7 @@ class Library {
 	 *
 	 * @return array
 	 */
-	protected static function get_atomic_blocks() {
+	protected function get_atomic_blocks() {
 		return [
 			'product-title',
 			'product-button',
