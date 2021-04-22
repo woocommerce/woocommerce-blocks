@@ -3,7 +3,6 @@
  */
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
-import PropTypes from 'prop-types';
 import QuantitySelector from '@woocommerce/base-components/quantity-selector';
 import ProductPrice from '@woocommerce/base-components/product-price';
 import ProductName from '@woocommerce/base-components/product-name';
@@ -18,7 +17,10 @@ import {
 	ProductMetadata,
 	ProductSaleBadge,
 } from '@woocommerce/base-components/cart-checkout';
-import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
+import {
+	getCurrencyFromPriceResponse,
+	Currency,
+} from '@woocommerce/price-format';
 import {
 	__experimentalApplyCheckoutFilter,
 	mustBeString,
@@ -27,17 +29,8 @@ import {
 import Dinero from 'dinero.js';
 import { useCallback, useMemo } from '@wordpress/element';
 import type { CartItem } from '@woocommerce/type-defs/cart';
+import { objectHasProp } from '@woocommerce/base-utils';
 import { getSetting } from '@woocommerce/settings';
-
-/**
- * Internal dependencies
- */
-import { Currency } from '../../../../../../packages/prices/types';
-import { objectHasProp } from '../../../../base/utils/type-guards';
-
-/**
- * @typedef {import('@woocommerce/type-defs/cart').CartItem} CartItem
- */
 
 /**
  * Convert a Dinero object with precision to store currency minor unit.
