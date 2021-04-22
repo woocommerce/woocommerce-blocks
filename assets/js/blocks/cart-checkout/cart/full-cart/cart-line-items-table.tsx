@@ -22,7 +22,7 @@ interface CartLineItemsTableProps {
 const CartLineItemsTable = ( {
 	lineItems = [],
 	isLoading = false,
-}: CartLineItemsTableProps ) => {
+}: CartLineItemsTableProps ): JSX.Element => {
 	const products = isLoading
 		? placeholderRows
 		: lineItems.map( ( lineItem ) => {

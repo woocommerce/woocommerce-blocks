@@ -3,11 +3,9 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useCallback } from '@wordpress/element';
 import { DOWN, UP } from '@wordpress/keycodes';
-import type { ReactNode } from 'react';
 
 /**
  * Internal dependencies
@@ -35,7 +33,7 @@ const QuantitySelector = ( {
 	},
 	itemName = '',
 	disabled,
-}: QuantitySelectorProps ): ReactNode => {
+}: QuantitySelectorProps ): JSX.Element => {
 	const classes = classNames(
 		'wc-block-components-quantity-selector',
 		className

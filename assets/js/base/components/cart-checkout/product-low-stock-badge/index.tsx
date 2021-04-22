@@ -19,7 +19,7 @@ const ProductLowStockBadge = ( {
 	lowStockRemaining,
 }: {
 	lowStockRemaining: number;
-} ): ReactNode => {
+} ): JSX.Element | null => {
 	if ( ! lowStockRemaining ) {
 		return null;
 	}
