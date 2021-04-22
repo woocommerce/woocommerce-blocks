@@ -9,15 +9,8 @@ import { decodeEntities } from '@wordpress/html-entities';
  */
 import './style.scss';
 
-interface ProductDetail {
-	name: string;
-	value: string;
-	display?: string;
-	hidden?: boolean;
-}
-
 interface ProductDetailsProps {
-	details: ProductDetail[];
+	details: ProductResponseItemData[];
 }
 // Component to display cart item data and variations.
 const ProductDetails = ( { details = [] }: ProductDetailsProps ) => {
