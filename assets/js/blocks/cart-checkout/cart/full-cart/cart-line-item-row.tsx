@@ -199,9 +199,7 @@ const CartLineItemRow = ( {
 			<td
 				className="wc-block-cart-item__image"
 				aria-hidden={
-					( objectHasProp( firstImage, 'alt' ) &&
-						! firstImage.alt ) ||
-					true
+					! objectHasProp( firstImage, 'alt' ) || ! firstImage.alt
 				}
 			>
 				{ /* We don't need to make it focusable, because product name has the same link. */ }
