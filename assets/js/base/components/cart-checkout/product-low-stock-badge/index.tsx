@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import PropTypes from 'prop-types';
+import type { ReactNode } from 'react';
 
 /**
  * Internal dependencies
@@ -19,7 +19,7 @@ const ProductLowStockBadge = ( {
 	lowStockRemaining,
 }: {
 	lowStockRemaining: number;
-} ) => {
+} ): ReactNode => {
 	if ( ! lowStockRemaining ) {
 		return null;
 	}
@@ -33,10 +33,6 @@ const ProductLowStockBadge = ( {
 			) }
 		</ProductBadge>
 	);
-};
-
-ProductLowStockBadge.propTypes = {
-	lowStockRemaining: PropTypes.number,
 };
 
 export default ProductLowStockBadge;

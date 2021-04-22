@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useCallback } from '@wordpress/element';
 import { DOWN, UP } from '@wordpress/keycodes';
+import type { ReactNode } from 'react';
 
 /**
  * Internal dependencies
@@ -34,7 +35,7 @@ const QuantitySelector = ( {
 	},
 	itemName = '',
 	disabled,
-}: QuantitySelectorProps ) => {
+}: QuantitySelectorProps ): ReactNode => {
 	const classes = classNames(
 		'wc-block-components-quantity-selector',
 		className
@@ -155,16 +156,6 @@ const QuantitySelector = ( {
 			</button>
 		</div>
 	);
-};
-
-QuantitySelector.propTypes = {
-	className: PropTypes.string,
-	quantity: PropTypes.number,
-	minimum: PropTypes.number,
-	maximum: PropTypes.number,
-	onChange: PropTypes.func,
-	itemName: PropTypes.string,
-	disabled: PropTypes.bool,
 };
 
 export default QuantitySelector;
