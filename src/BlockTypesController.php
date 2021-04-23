@@ -10,6 +10,7 @@ use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
 /**
  * BlockTypesController class.
  *
+ * @since $VID:$
  * @internal
  */
 class BlockTypesController {

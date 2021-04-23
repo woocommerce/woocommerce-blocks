@@ -8,6 +8,7 @@ use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry as AssetDataRegistry;
 /**
  * AssetsController class.
  *
+ * @since $VID:$
  * @internal
  */
 class AssetsController {
