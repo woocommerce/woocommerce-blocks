@@ -13,7 +13,7 @@ use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
  * @since $VID:$
  * @internal
  */
-class BlockTypesController {
+final class BlockTypesController {
 
 	/**
 	 * Instance of the asset API.
@@ -46,6 +46,7 @@ class BlockTypesController {
 	 */
 	protected function init() {
 		add_action( 'init', array( $this, 'register_blocks' ) );
+		add_action( 'woocommerce_login_form_end', array( $this, 'redirect_to_field' ) );
 	}
 
 	/**
@@ -62,6 +63,17 @@ class BlockTypesController {
 		foreach ( self::get_atomic_blocks() as $block_type ) {
 			$block_type_instance = new AtomicBlock( $this->asset_api, $this->asset_data_registry, new IntegrationRegistry(), $block_type );
 		}
+	}
+
+	/**
+	 * Adds a redirect field to the login form so blocks can redirect users after login.
+	 */
+	public function redirect_to_field() {
+		// phpcs:ignore WordPress.Security.NonceVerification
+		if ( empty( $_GET['redirect_to'] ) ) {
+			return;
+		}
+		echo '<input type="hidden" name="redirect" value="' . esc_attr( esc_url_raw( wp_unslash( $_GET['redirect_to'] ) ) ) . '" />'; // phpcs:ignore WordPress.Security.NonceVerification
 	}
 
 	/**

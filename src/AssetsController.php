@@ -37,7 +37,6 @@ final class AssetsController {
 		add_action( 'init', array( $this, 'register_assets' ) );
 		add_action( 'body_class', array( $this, 'add_theme_body_class' ), 1 );
 		add_action( 'admin_body_class', array( $this, 'add_theme_body_class' ), 1 );
-		add_action( 'woocommerce_login_form_end', array( $this, 'redirect_to_field' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 	}
@@ -104,17 +103,6 @@ final class AssetsController {
 		}
 
 		return $classes;
-	}
-
-	/**
-	 * Adds a redirect field to the login form so blocks can redirect users after login.
-	 */
-	public function redirect_to_field() {
-		// phpcs:ignore WordPress.Security.NonceVerification
-		if ( empty( $_GET['redirect_to'] ) ) {
-			return;
-		}
-		echo '<input type="hidden" name="redirect" value="' . esc_attr( esc_url_raw( wp_unslash( $_GET['redirect_to'] ) ) ) . '" />'; // phpcs:ignore WordPress.Security.NonceVerification
 	}
 
 	/**
