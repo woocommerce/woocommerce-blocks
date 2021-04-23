@@ -4,62 +4,16 @@
 import { __, _n, sprintf } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import { SearchListControl, SearchListItem } from '@woocommerce/components';
-import { SelectControl, Spinner } from '@wordpress/components';
+import { SelectControl } from '@wordpress/components';
 import { withAttributes } from '@woocommerce/block-hocs';
 import ErrorMessage from '@woocommerce/editor-components/error-placeholder/error-message.js';
 import classNames from 'classnames';
+import ExpandableSearchListItem from '@woocommerce/editor-components/expandable-search-list-item/expandable-search-list-item.tsx';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
-
-const ExpandableSearchListItem = ( {
-	className,
-	item,
-	isSelected,
-	termsAreLoading,
-	onChange,
-	onExpandAttribute,
-	...rest
-} ) => {
-	const onSelectAttribute = ( { id } ) => {
-		return () => {
-			onChange( [] );
-			onExpandAttribute( id );
-		};
-	};
-
-	return (
-		<>
-			<SearchListItem
-				{ ...rest }
-				key={ `attr-${ item.id }` }
-				className={ className }
-				isSelected={ isSelected }
-				item={ item }
-				onSelect={ onSelectAttribute }
-				isSingle
-				disabled={ item.count === '0' }
-				name="depth-0"
-			/>
-			{ isSelected && termsAreLoading && (
-				<div
-					key="loading"
-					className={ classNames(
-						'woocommerce-search-list__item',
-						'woocommerce-product-attributes__item',
-						'depth-1',
-						'is-loading',
-						'is-not-active'
-					) }
-				>
-					<Spinner />
-				</div>
-			) }
-		</>
-	);
-};
 
 const ProductAttributeTermControl = ( {
 	attributes,
@@ -96,9 +50,15 @@ const ProductAttributeTermControl = ( {
 					} ) }
 					isSelected={ isSelected }
 					item={ item }
-					onChange={ onChange }
-					onExpandAttribute={ onExpandAttribute }
-					termsAreLoading={ termsAreLoading }
+					isLoading={ termsAreLoading }
+					disabled={ item.count === '0' }
+					onSelect={ ( { id } ) => {
+						return () => {
+							onChange( [] );
+							onExpandAttribute( id );
+						};
+					} }
+					name="attributes"
 					aria-label={ sprintf(
 						/* translators: %1$s is the item name, %2$d is the count of terms for the item. */
 						_n(
@@ -117,6 +77,7 @@ const ProductAttributeTermControl = ( {
 		return (
 			<SearchListItem
 				{ ...args }
+				name="terms"
 				className={ classNames( ...classes, 'has-count' ) }
 				aria-label={ `${ item.breadcrumbs[ 0 ] }: ${ item.name }` }
 			/>
