@@ -44,9 +44,6 @@ class AssetsController {
 
 	/**
 	 * Register block scripts & styles.
-	 *
-	 * @since 2.5.0
-	 * Moved data related enqueuing to new AssetDataRegistry class as part of ongoing refactoring.
 	 */
 	public function register_assets() {
 		$this->register_style( 'wc-block-editor', plugins_url( $this->api->get_block_asset_build_path( 'editor', 'css' ), __DIR__ ), array( 'wp-edit-blocks' ) );
@@ -135,8 +132,6 @@ class AssetsController {
 
 	/**
 	 * Registers a style according to `wp_register_style`.
-	 *
-	 * @since 2.0.0
 	 *
 	 * @param string $handle Name of the stylesheet. Should be unique.
 	 * @param string $src    Full URL of the stylesheet, or path of the stylesheet relative to the WordPress root directory.
