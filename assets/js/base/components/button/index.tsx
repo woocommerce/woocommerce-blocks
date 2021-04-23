@@ -9,7 +9,7 @@ import classNames from 'classnames';
  */
 import './style.scss';
 
-interface ButtonProps extends WPButton.BaseProps {
+interface ButtonProps extends WPButton.ButtonProps {
 	className?: string;
 	showSpinner?: boolean;
 	children?: ReactNode;
