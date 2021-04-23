@@ -35,7 +35,7 @@ interface Destination {
 }
 
 interface PackageProps {
-	packageId: string;
+	packageId: string | number;
 	renderOption: ( option: Rate ) => PackageRateOption;
 	collapse: boolean;
 	packageData: {

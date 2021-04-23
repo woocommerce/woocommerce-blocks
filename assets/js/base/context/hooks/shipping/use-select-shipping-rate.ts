@@ -33,7 +33,7 @@ const deriveSelectedRateId = ( shippingRates: Rate[] ) =>
  *		- isSelectingRate: True when rates are being resolved to the API.
  */
 export const useSelectShippingRate = (
-	packageId: string,
+	packageId: string | number,
 	shippingRates: Rate[]
 ): {
 	selectShippingRate: ( newShippingRateId: string ) => unknown;
