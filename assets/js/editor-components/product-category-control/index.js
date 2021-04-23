@@ -7,6 +7,7 @@ import { SearchListControl, SearchListItem } from '@woocommerce/components';
 import { SelectControl } from '@wordpress/components';
 import { withCategories } from '@woocommerce/block-hocs';
 import ErrorMessage from '@woocommerce/editor-components/error-placeholder/error-message.js';
+import classNames from 'classnames';
 
 /**
  * Internal dependencies
@@ -27,13 +28,6 @@ const ProductCategoryControl = ( {
 } ) => {
 	const renderItem = ( args ) => {
 		const { item, search, depth = 0 } = args;
-		const classes = [ 'woocommerce-product-categories__item' ];
-		if ( search.length ) {
-			classes.push( 'is-searching' );
-		}
-		if ( depth === 0 && item.parent !== 0 ) {
-			classes.push( 'is-skip-level' );
-		}
 
 		const accessibleName = ! item.breadcrumbs.length
 			? item.name
@@ -86,9 +80,15 @@ const ProductCategoryControl = ( {
 			  );
 		return (
 			<SearchListItem
-				className={ classes.join( ' ' ) }
+				className={ classNames(
+					'woocommerce-product-categories__item',
+					'has-count',
+					{
+						'is-searching': search.length > 0,
+						'is-skip-level': depth === 0 && item.parent !== 0,
+					}
+				) }
 				{ ...args }
-				showCount
 				countLabel={ listItemCountLabel }
 				aria-label={ listItemAriaLabel }
 			/>

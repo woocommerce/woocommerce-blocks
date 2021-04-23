@@ -76,6 +76,7 @@ const ProductControl = ( {
 			'woocommerce-search-product__item',
 			'woocommerce-search-list__item',
 			`depth-${ depth }`,
+			'has-count',
 			{
 				'is-searching': search.length > 0,
 				'is-skip-level': depth === 0 && item.parent !== 0,

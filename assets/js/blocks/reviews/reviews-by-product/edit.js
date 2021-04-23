@@ -56,7 +56,6 @@ const ReviewsByProductEditor = ( {
 					),
 					item.review_count
 				) }
-				showCount
 				aria-label={ sprintf(
 					/* translators: %1$s is the item name, and %2$d is the number of reviews for the item. */
 					_n(
