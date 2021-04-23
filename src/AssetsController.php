@@ -11,7 +11,7 @@ use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry as AssetDataRegistry;
  * @since $VID:$
  * @internal
  */
-class AssetsController {
+final class AssetsController {
 
 	/**
 	 * Asset API interface for various asset registration.
