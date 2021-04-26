@@ -4,6 +4,7 @@
 import { useState, useEffect, useRef, useCallback } from '@wordpress/element';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { Rate } from '@woocommerce/type-defs/shipping';
+import { CartShippingRateItemShippingRate } from '@woocommerce/type-defs/cart';
 
 /**
  * Internal dependencies
@@ -18,8 +19,9 @@ import { useStoreEvents } from '../use-store-events';
  * @return {string} Selected rate id.
  */
 // This will find the selected rate ID in an array of shipping rates.
-const deriveSelectedRateId = ( shippingRates: Rate[] ) =>
-	shippingRates.find( ( rate ) => rate.selected )?.rate_id;
+const deriveSelectedRateId = (
+	shippingRates: CartShippingRateItemShippingRate[]
+) => shippingRates.find( ( rate ) => rate.selected )?.rate_id;
 
 /**
  * This is a custom hook for tracking selected shipping rates for a package and selecting a rate. State is used so
@@ -34,7 +36,7 @@ const deriveSelectedRateId = ( shippingRates: Rate[] ) =>
  */
 export const useSelectShippingRate = (
 	packageId: string | number,
-	shippingRates: Rate[]
+	shippingRates: CartShippingRateItemShippingRate[]
 ): {
 	selectShippingRate: ( newShippingRateId: string ) => unknown;
 	selectedShippingRate: string | undefined;
