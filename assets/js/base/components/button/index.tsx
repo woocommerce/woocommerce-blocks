@@ -24,7 +24,7 @@ const Button = ( {
 	showSpinner = false,
 	children,
 	...props
-}: ButtonProps ) => {
+}: ButtonProps ): JSX.Element => {
 	const buttonClassName = classNames(
 		'wc-block-components-button',
 		className,
