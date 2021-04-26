@@ -7,7 +7,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 import Label from '@woocommerce/base-components/label';
 import Title from '@woocommerce/base-components/title';
 import type { ReactElement } from 'react';
-import type { Rate, PackageRateOption } from '@woocommerce/type-defs/shipping';
+import type { PackageRateOption } from '@woocommerce/type-defs/shipping';
 import { Panel } from '@woocommerce/blocks-checkout';
 import { useSelectShippingRate } from '@woocommerce/base-context/hooks';
 import type { CartShippingRateItemShippingRate } from '@woocommerce/type-defs/cart';

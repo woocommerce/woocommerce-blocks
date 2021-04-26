@@ -3,7 +3,6 @@
  */
 import { useState, useEffect, useRef, useCallback } from '@wordpress/element';
 import isShallowEqual from '@wordpress/is-shallow-equal';
-import { Rate } from '@woocommerce/type-defs/shipping';
 import { CartShippingRateItemShippingRate } from '@woocommerce/type-defs/cart';
 
 /**

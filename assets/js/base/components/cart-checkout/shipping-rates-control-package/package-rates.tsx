@@ -4,7 +4,7 @@
 import RadioControl, {
 	RadioControlOptionLayout,
 } from '@woocommerce/base-components/radio-control';
-import type { Rate, PackageRateOption } from '@woocommerce/type-defs/shipping';
+import type { PackageRateOption } from '@woocommerce/type-defs/shipping';
 import type { ReactElement } from 'react';
 import type { CartShippingRateItemShippingRate } from '@woocommerce/type-defs/cart';
 
