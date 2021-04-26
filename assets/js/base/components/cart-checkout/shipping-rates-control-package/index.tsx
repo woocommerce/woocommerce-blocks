@@ -10,6 +10,7 @@ import type { ReactElement } from 'react';
 import type { Rate, PackageRateOption } from '@woocommerce/type-defs/shipping';
 import { Panel } from '@woocommerce/blocks-checkout';
 import { useSelectShippingRate } from '@woocommerce/base-context/hooks';
+import type { CartShippingRateItemShippingRate } from '@woocommerce/type-defs/cart';
 
 /**
  * Internal dependencies
@@ -34,21 +35,28 @@ interface Destination {
 	country: string;
 }
 
+export interface PackageData {
+	destination: Destination;
+	name: string;
+	// eslint-disable-next-line camelcase
+	shipping_rates: CartShippingRateItemShippingRate[];
+	items: PackageItem[];
+}
+
+export type PackageRateRenderOption = (
+	option: CartShippingRateItemShippingRate
+) => PackageRateOption;
+
 interface PackageProps {
+	/* PackageId can be a string, WooCommerce Subscriptions uses strings for example, but WooCommerce core uses numbers */
 	packageId: string | number;
-	renderOption: ( option: Rate ) => PackageRateOption;
-	collapse: boolean;
-	packageData: {
-		destination: Destination;
-		name: string;
-		// eslint-disable-next-line camelcase
-		shipping_rates: Rate[];
-		items: PackageItem[];
-	};
+	renderOption: PackageRateRenderOption;
+	collapse?: boolean;
+	packageData: PackageData;
 	className?: string;
 	collapsible?: boolean;
 	noResultsMessage: ReactElement;
-	showItems: boolean;
+	showItems?: boolean;
 }
 
 export const ShippingRatesControlPackage = ( {
