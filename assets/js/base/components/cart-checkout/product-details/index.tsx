@@ -14,7 +14,9 @@ interface ProductDetailsProps {
 	details: ProductResponseItemData[];
 }
 // Component to display cart item data and variations.
-const ProductDetails = ( { details = [] }: ProductDetailsProps ) => {
+const ProductDetails = ( {
+	details = [],
+}: ProductDetailsProps ): JSX.Element => {
 	if ( ! Array.isArray( details ) ) {
 		return null;
 	}

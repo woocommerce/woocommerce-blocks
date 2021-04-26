@@ -13,7 +13,7 @@ interface ProductImageProps {
  * @param {Object} props       Incoming props for the component.
  * @param {Object} props.image Image properties.
  */
-const ProductImage = ( { image = {} }: ProductImageProps ) => {
+const ProductImage = ( { image = {} }: ProductImageProps ): JSX.Element => {
 	const imageProps = {
 		src: image.thumbnail || PLACEHOLDER_IMG_SRC,
 		alt: decodeEntities( image.alt ) || '',

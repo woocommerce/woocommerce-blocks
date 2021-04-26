@@ -13,7 +13,10 @@ interface ProductBadgeProps {
 	children?: ReactNode;
 	className?: string;
 }
-const ProductBadge = ( { children, className }: ProductBadgeProps ) => {
+const ProductBadge = ( {
+	children,
+	className,
+}: ProductBadgeProps ): JSX.Element => {
 	return (
 		<div
 			className={ classNames(
