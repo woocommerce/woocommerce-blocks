@@ -21,6 +21,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 import { Notice } from 'wordpress-components';
 import classnames from 'classnames';
 import { getSetting } from '@woocommerce/settings';
+import { PackageRateOption, Rate } from '@woocommerce/type-defs/shipping';
 
 /**
  * Internal dependencies
@@ -32,7 +33,9 @@ import NoShippingPlaceholder from './no-shipping-placeholder';
  *
  * @param {Object} option Shipping Rate.
  */
-const renderShippingRatesControlOption = ( option ) => {
+const renderShippingRatesControlOption = (
+	option: Rate
+): PackageRateOption => {
 	const priceWithTaxes = getSetting( 'displayCartPricesIncludingTax', false )
 		? parseInt( option.price, 10 ) + parseInt( option.taxes, 10 )
 		: parseInt( option.price, 10 );
@@ -50,7 +53,7 @@ const renderShippingRatesControlOption = ( option ) => {
 	};
 };
 
-const ShippingOptionsStep = () => {
+const ShippingOptionsStep = (): JSX.Element | null => {
 	const { isProcessing: checkoutIsProcessing } = useCheckoutContext();
 	const { isEditor } = useEditorContext();
 	const {
