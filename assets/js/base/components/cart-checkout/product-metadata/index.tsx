@@ -15,7 +15,7 @@ interface ProductMetadataProps {
 	shortDescription?: string;
 	fullDescription?: string;
 	itemData: ProductResponseItemData[];
-	variation?: CartVariationItem;
+	variation?: CartVariationItem[];
 }
 
 const ProductMetadata = ( {
@@ -23,7 +23,7 @@ const ProductMetadata = ( {
 	fullDescription = '',
 	itemData = [],
 	variation = [],
-} ) => {
+}: ProductMetadataProps ) => {
 	return (
 		<div className="wc-block-components-product-metadata">
 			<ProductSummary

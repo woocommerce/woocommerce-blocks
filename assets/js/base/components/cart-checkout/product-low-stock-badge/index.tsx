@@ -19,9 +19,7 @@ interface ProductLowStockBadgeProps {
  */
 const ProductLowStockBadge = ( {
 	lowStockRemaining,
-}: {
-	lowStockRemaining: number;
-} ): JSX.Element | null => {
+}: ProductLowStockBadgeProps ): JSX.Element | null => {
 	if ( ! lowStockRemaining ) {
 		return null;
 	}
