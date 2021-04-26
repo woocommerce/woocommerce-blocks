@@ -75,7 +75,8 @@ export interface CartResponseShippingRateItemShippingRate
 }
 
 export interface CartResponseShippingRateItem {
-	package_id: number;
+	/* PackageId can be a string, WooCommerce Subscriptions uses strings for example, but WooCommerce core uses numbers */
+	package_id: number | string;
 	name: string;
 	destination: ResponseBaseAddress;
 	items: Array< ShippingRateItemItem >;
