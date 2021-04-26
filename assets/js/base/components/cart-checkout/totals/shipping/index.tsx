@@ -9,6 +9,7 @@ import { TotalsItem } from '@woocommerce/blocks-checkout';
 import type { Currency } from '@woocommerce/price-format';
 import type { ReactElement } from 'react';
 import { getSetting } from '@woocommerce/settings';
+import type { Address } from '@woocommerce/type-defs/customer';
 
 /**
  * Internal dependencies
@@ -47,7 +48,7 @@ interface ShippingAddressProps {
 	showCalculator: boolean;
 	isShippingCalculatorOpen: boolean;
 	setIsShippingCalculatorOpen: CalculatorButtonProps[ 'setIsShippingCalculatorOpen' ];
-	shippingAddress: Record< string, unknown >;
+	shippingAddress: Address;
 }
 
 const ShippingAddress = ( {
