@@ -3,7 +3,6 @@
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { useEffect } from '@wordpress/element';
-import PropTypes from 'prop-types';
 import { speak } from '@wordpress/a11y';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
 import { ExperimentalOrderShippingPackages } from '@woocommerce/blocks-checkout';
@@ -12,16 +11,78 @@ import {
 	getShippingRatesRateCount,
 } from '@woocommerce/base-utils';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
+import { CartResponseShippingRateItem } from '@woocommerce/type-defs/cart-response';
+import { ReactElement } from 'react';
 
 /**
  * Internal dependencies
  */
-import ShippingRatesControlPackage from '../shipping-rates-control-package';
+import ShippingRatesControlPackage, {
+	PackageRateRenderOption,
+} from '../shipping-rates-control-package';
+
+interface PackagesProps {
+	// eslint-disable-next-line camelcase
+	packages: CartResponseShippingRateItem[];
+	collapse?: boolean;
+	collapsible?: boolean;
+	showItems?: boolean;
+	noResultsMessage: ReactElement;
+	renderOption: PackageRateRenderOption;
+}
 
 /**
- * @typedef {import('react')} React
+ * Renders multiple packages within the slotfill.
+ *
+ * @param {Object} props Incoming props.
+ * @param {Array} props.packages Array of packages.
+ * @param {boolean} props.collapsible If the package should be rendered as a
+ * @param {ReactElement} props.noResultsMessage Rendered when there are no rates in a package.
+ * collapsible panel.
+ * @param {boolean} props.collapse If the panel should be collapsed by default,
+ * only works if collapsible is true.
+ * @param {boolean} props.showItems If we should items below the package name.
+ * @param {Function} [props.renderOption] Function to render a shipping rate.
+ * @return {JSX.Element|null} Rendered components.
  */
+const Packages = ( {
+	packages,
+	collapse,
+	showItems,
+	collapsible,
+	noResultsMessage,
+	renderOption,
+}: PackagesProps ): JSX.Element | null => {
+	// If there are no packages, return nothing.
+	if ( ! packages.length ) {
+		return null;
+	}
+	return (
+		<>
+			{ packages.map( ( { package_id: packageId, ...packageData } ) => (
+				<ShippingRatesControlPackage
+					key={ packageId }
+					packageId={ packageId }
+					packageData={ packageData }
+					collapsible={ collapsible }
+					collapse={ collapse }
+					showItems={ showItems }
+					noResultsMessage={ noResultsMessage }
+					renderOption={ renderOption }
+				/>
+			) ) }
+		</>
+	);
+};
 
+interface ShippingRatesControlProps {
+	collapsible?: boolean;
+	shippingRates: CartResponseShippingRateItem[];
+	className?: string;
+	shippingRatesLoading: boolean;
+	noResultsMessage: ReactElement;
+	renderOption: PackageRateRenderOption;
+}
 /**
  * Renders the shipping rates control element.
  *
@@ -30,7 +91,7 @@ import ShippingRatesControlPackage from '../shipping-rates-control-package';
  * @param {boolean} props.shippingRatesLoading True when rates are being loaded.
  * @param {string} props.className Class name for package rates.
  * @param {boolean} [props.collapsible] If true, when multiple packages are rendered they can be toggled open and closed.
- * @param {React.ReactElement} props.noResultsMessage Rendered when there are no packages.
+ * @param {ReactElement} props.noResultsMessage Rendered when there are no packages.
  * @param {Function} [props.renderOption] Function to render a shipping rate.
  */
 const ShippingRatesControl = ( {
@@ -40,7 +101,7 @@ const ShippingRatesControl = ( {
 	collapsible = false,
 	noResultsMessage,
 	renderOption,
-} ) => {
+}: ShippingRatesControlProps ) => {
 	useEffect( () => {
 		if ( shippingRatesLoading ) {
 			return;
@@ -122,60 +183,6 @@ const ShippingRatesControl = ( {
 			</ExperimentalOrderShippingPackages>
 		</LoadingMask>
 	);
-};
-
-/**
- * Renders multiple packages within the slotfill.
- *
- * @param {Object} props Incoming props.
- * @param {Array} props.packages Array of packages.
- * @param {React.ReactElement} props.noResultsMessage Rendered when there are no rates in a package.
- * @param {boolean} props.collapsible If the package should be rendered as a
- * collapsible panel.
- * @param {boolean} props.collapse If the panel should be collapsed by default,
- * only works if collapsible is true.
- * @param {boolean} props.showItems If we should items below the package name.
- * @param {Function} [props.renderOption] Function to render a shipping rate.
- * @return {React.ReactElement|null} Rendered components.
- */
-const Packages = ( {
-	packages,
-	collapse,
-	showItems,
-	collapsible,
-	noResultsMessage,
-	renderOption,
-} ) => {
-	// If there are no packages, return nothing.
-	if ( ! packages.length ) {
-		return null;
-	}
-
-	return (
-		<>
-			{ packages.map( ( { package_id: packageId, ...packageData } ) => (
-				<ShippingRatesControlPackage
-					key={ packageId }
-					packageId={ packageId }
-					packageData={ packageData }
-					collapsible={ collapsible }
-					collapse={ collapse }
-					showItems={ showItems }
-					noResultsMessage={ noResultsMessage }
-					renderOption={ renderOption }
-				/>
-			) ) }
-		</>
-	);
-};
-
-ShippingRatesControl.propTypes = {
-	noResultsMessage: PropTypes.node.isRequired,
-	renderOption: PropTypes.func,
-	className: PropTypes.string,
-	collapsible: PropTypes.bool,
-	shippingRates: PropTypes.array,
-	shippingRatesLoading: PropTypes.bool,
 };
 
 export default ShippingRatesControl;
