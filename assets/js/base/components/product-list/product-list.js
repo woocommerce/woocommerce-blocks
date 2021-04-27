@@ -57,14 +57,33 @@ const generateQuery = ( {
 		}
 	};
 
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const [ productStockStatus, setProductStockStatus ] = useQueryStateByKey(
+		'stock_status',
+		[]
+	);
+	if ( hideOutOfStockItems ) {
+		let newStockStatus = [];
+		if ( productStockStatus.length > 0 ) {
+			if ( productStockStatus.includes( 'outofstock' ) ) {
+				newStockStatus = productStockStatus.filter(
+					( slug ) => slug !== 'outofstock'
+				);
+			} else {
+				newStockStatus = productStockStatus;
+			}
+		} else {
+			newStockStatus = [ 'instock', 'onbackorder' ];
+		}
+		setProductStockStatus( newStockStatus );
+	}
+
 	return {
 		...getSortArgs( sortValue ),
 		catalog_visibility: 'catalog',
 		per_page: columns * rows,
 		page: currentPage,
-		...( hideOutOfStockItems && {
-			stock_status: [ 'instock', 'onbackorder' ],
-		} ),
+		stock_status: productStockStatus,
 	};
 };
 
@@ -140,6 +159,10 @@ const ProductList = ( {
 		'attributes',
 		[]
 	);
+	const [ productStockStatus, setProductStockStatus ] = useQueryStateByKey(
+		'stock_status',
+		[]
+	);
 	const [ minPrice, setMinPrice ] = useQueryStateByKey( 'min_price' );
 	const [ maxPrice, setMaxPrice ] = useQueryStateByKey( 'max_price' );
 
@@ -209,6 +232,7 @@ const ProductList = ( {
 	const hasProducts = products.length !== 0 || productsLoading;
 	const hasFilters =
 		productAttributes.length > 0 ||
+		productStockStatus.length > 0 ||
 		Number.isFinite( minPrice ) ||
 		Number.isFinite( maxPrice );
 
@@ -224,6 +248,7 @@ const ProductList = ( {
 				<NoMatchingProducts
 					resetCallback={ () => {
 						setProductAttributes( [] );
+						setProductStockStatus( [] );
 						setMinPrice( null );
 						setMaxPrice( null );
 					} }
