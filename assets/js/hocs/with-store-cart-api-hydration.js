@@ -23,8 +23,7 @@ const useStoreCartApiHydration = () => {
 	const { setIsCartDataStale } = useDispatch( CART_STORE_KEY );
 
 	useSelect( ( select, registry ) => {
-		const cartData =
-			preloadedApiRequests.current[ '/wc/store/cart' ]?.body || false;
+		const cartData = preloadedApiRequests.current[ '/wc/store/cart' ]?.body;
 
 		if ( ! cartData ) {
 			return;
