@@ -1,5 +1,3 @@
-/** @typedef { import('@woocommerce/type-defs/address-fields').AddressField } AddressField */
-
 /**
  * External dependencies
  */
@@ -37,6 +35,11 @@ export interface AddressFields {
 	state: AddressField;
 	postcode: AddressField;
 }
+export type KeyedAddressField = AddressField & {
+	key: keyof AddressFields;
+};
+export type ShippingAddress = AddressFields;
+export type BillingAddress = AddressFields;
 
 /**
  * Default address field properties.
