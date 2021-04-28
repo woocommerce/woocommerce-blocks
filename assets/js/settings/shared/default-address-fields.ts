@@ -35,11 +35,29 @@ export interface AddressFields {
 	state: AddressField;
 	postcode: AddressField;
 }
+
+export interface EnteredAddress {
+	// eslint-disable-next-line camelcase
+	first_name: string;
+	// eslint-disable-next-line camelcase
+	last_name: string;
+	company: string;
+	// eslint-disable-next-line camelcase
+	address_1: string;
+	// eslint-disable-next-line camelcase
+	address_2: string;
+	country: string;
+	city: string;
+	state: string;
+	postcode: string;
+}
+
 export type KeyedAddressField = AddressField & {
 	key: keyof AddressFields;
 };
-export type ShippingAddress = AddressFields;
-export type BillingAddress = AddressFields;
+export type ShippingAddress = EnteredAddress;
+export type BillingAddress = EnteredAddress;
+export type CountryAddressFields = Record< string, AddressFields >;
 
 /**
  * Default address field properties.

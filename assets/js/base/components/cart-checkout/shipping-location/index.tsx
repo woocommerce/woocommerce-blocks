@@ -2,12 +2,11 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { getSetting } from '@woocommerce/settings';
+import { EnteredAddress, getSetting } from '@woocommerce/settings';
 import { decodeEntities } from '@wordpress/html-entities';
-import { Address } from '@woocommerce/type-defs/customer';
 
 interface ShippingLocationProps {
-	address: Address;
+	address: EnteredAddress;
 }
 
 /**
