@@ -12,7 +12,6 @@ import {
 } from '@wordpress/components';
 import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
 import BlockTitle from '@woocommerce/editor-components/block-title';
-// import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies

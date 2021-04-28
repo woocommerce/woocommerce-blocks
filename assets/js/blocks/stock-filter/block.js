@@ -79,7 +79,7 @@ const StockStatusFilterBlock = ( {
 	);
 
 	/**
-	 * Compare intersection of all stock stauses and filtered counts to get a list of options to display.
+	 * Compare intersection of all stock statuses and filtered counts to get a list of options to display.
 	 */
 	useEffect( () => {
 		/**
@@ -137,6 +137,18 @@ const StockStatusFilterBlock = ( {
 		queryState.stock_status,
 	] );
 
+	const onSubmit = useCallback(
+		( isChecked ) => {
+			if ( isEditor ) {
+				return;
+			}
+			if ( isChecked ) {
+				setProductStockStatusQuery( checked );
+			}
+		},
+		[ isEditor, setProductStockStatusQuery, checked ]
+	);
+
 	// Track checked STATE changes - if state changes, update the query.
 	useEffect( () => {
 		if ( ! blockAttributes.showFilterButton ) {
@@ -159,18 +171,6 @@ const StockStatusFilterBlock = ( {
 			setChecked( currentCheckedQuery );
 		}
 	}, [ checked, currentCheckedQuery, previousCheckedQuery ] );
-
-	const onSubmit = useCallback(
-		( isChecked ) => {
-			if ( isEditor ) {
-				return;
-			}
-			if ( isChecked ) {
-				setProductStockStatusQuery( checked );
-			}
-		},
-		[ isEditor, setProductStockStatusQuery, checked ]
-	);
 
 	/**
 	 * When a checkbox in the list changes, update state.

@@ -62,18 +62,16 @@ const generateQuery = ( {
 		'stock_status',
 		[]
 	);
+	// @todo Find way to exclude "outofstock" from existing product filters.
 	if ( hideOutOfStockItems ) {
-		let newStockStatus = [];
+		let newStockStatus = [ 'instock', 'onbackorder' ];
 		if ( productStockStatus.length > 0 ) {
+			newStockStatus = productStockStatus;
 			if ( productStockStatus.includes( 'outofstock' ) ) {
 				newStockStatus = productStockStatus.filter(
 					( slug ) => slug !== 'outofstock'
 				);
-			} else {
-				newStockStatus = productStockStatus;
 			}
-		} else {
-			newStockStatus = [ 'instock', 'onbackorder' ];
 		}
 		setProductStockStatus( newStockStatus );
 	}
