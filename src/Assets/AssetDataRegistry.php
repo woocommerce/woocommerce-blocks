@@ -202,10 +202,7 @@ class AssetDataRegistry {
 		// Surface a deprecation warning in the error console.
 		if ( has_filter( 'woocommerce_shared_settings' ) ) {
 			$error_handle  = 'deprecated-shared-settings-error';
-			$error_message = __(
-				'`woocommerce_shared_settings` filter in Blocks is deprecated. See https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/contributors/block-assets.md',
-				'woo-gutenberg-products-block'
-			);
+			$error_message = '`woocommerce_shared_settings` filter in Blocks is deprecated. See https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/contributors/block-assets.md';
 			// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter,WordPress.WP.EnqueuedResourceParameters.MissingVersion
 			wp_register_script( $error_handle, '' );
 			wp_enqueue_script( $error_handle );
