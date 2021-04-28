@@ -42,7 +42,7 @@ interface PackagesProps {
  * @param {boolean} props.collapse If the panel should be collapsed by default,
  * only works if collapsible is true.
  * @param {boolean} props.showItems If we should items below the package name.
- * @param {Function} [props.renderOption] Function to render a shipping rate.
+ * @param {PackageRateRenderOption} [props.renderOption] Function to render a shipping rate.
  * @return {JSX.Element|null} Rendered components.
  */
 const Packages = ( {
