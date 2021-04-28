@@ -101,7 +101,7 @@ const ShippingRatesControl = ( {
 	collapsible = false,
 	noResultsMessage,
 	renderOption,
-}: ShippingRatesControlProps ) => {
+}: ShippingRatesControlProps ): JSX.Element => {
 	useEffect( () => {
 		if ( shippingRatesLoading ) {
 			return;

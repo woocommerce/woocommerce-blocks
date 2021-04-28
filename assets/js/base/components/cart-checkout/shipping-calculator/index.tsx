@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import PropTypes from 'prop-types';
 import { useShippingDataContext } from '@woocommerce/base-context';
 import type { Address } from '@woocommerce/type-defs/customer';
 
@@ -21,7 +20,7 @@ const ShippingCalculator = ( {
 		/* Do nothing */
 	},
 	addressFields = [ 'country', 'state', 'city', 'postcode' ],
-}: ShippingCalculatorProps ) => {
+}: ShippingCalculatorProps ): JSX.Element => {
 	const { shippingAddress, setShippingAddress } = useShippingDataContext();
 	return (
 		<div className="wc-block-components-shipping-calculator">

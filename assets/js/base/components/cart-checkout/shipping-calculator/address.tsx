@@ -23,7 +23,7 @@ const ShippingCalculatorAddress = ( {
 	address: initialAddress,
 	onUpdate,
 	addressFields,
-}: ShippingCalculatorAddressProps ) => {
+}: ShippingCalculatorAddressProps ): JSX.Element => {
 	const [ address, setAddress ] = useState( initialAddress );
 	const {
 		hasValidationErrors,

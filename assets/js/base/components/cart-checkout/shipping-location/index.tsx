@@ -16,7 +16,9 @@ interface ShippingLocationProps {
  * @param {Object} props Incoming props for the component.
  * @param {Object} props.address Incoming address information.
  */
-const ShippingLocation = ( { address }: ShippingLocationProps ) => {
+const ShippingLocation = ( {
+	address,
+}: ShippingLocationProps ): JSX.Element | null => {
 	// we bail early if we don't have an address.
 	if ( Object.values( address ).length === 0 ) {
 		return null;
