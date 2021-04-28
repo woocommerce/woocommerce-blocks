@@ -155,7 +155,7 @@ class Checkout extends AbstractBlock {
 		$this->asset_data_registry->add(
 			'checkoutAllowsSignup',
 			filter_var(
-				$checkout->is_registration_enabled(),
+				WC()->checkout()->is_registration_enabled(),
 				FILTER_VALIDATE_BOOLEAN
 			),
 			true
