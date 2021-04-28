@@ -8,8 +8,7 @@ import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { TotalsItem } from '@woocommerce/blocks-checkout';
 import type { Currency } from '@woocommerce/price-format';
 import type { ReactElement } from 'react';
-import { getSetting } from '@woocommerce/settings';
-import type { Address } from '@woocommerce/type-defs/customer';
+import { getSetting, EnteredAddress } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -48,7 +47,7 @@ interface ShippingAddressProps {
 	showCalculator: boolean;
 	isShippingCalculatorOpen: boolean;
 	setIsShippingCalculatorOpen: CalculatorButtonProps[ 'setIsShippingCalculatorOpen' ];
-	shippingAddress: Address;
+	shippingAddress: EnteredAddress;
 }
 
 const ShippingAddress = ( {
