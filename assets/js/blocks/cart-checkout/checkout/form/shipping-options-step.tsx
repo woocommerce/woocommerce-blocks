@@ -22,7 +22,7 @@ import { Notice } from 'wordpress-components';
 import classnames from 'classnames';
 import { getSetting } from '@woocommerce/settings';
 import type { PackageRateOption } from '@woocommerce/type-defs/shipping';
-import type { CartShippingRateItemShippingRate } from '@woocommerce/type-defs/cart';
+import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
 
 /**
  * Internal dependencies
@@ -35,7 +35,7 @@ import NoShippingPlaceholder from './no-shipping-placeholder';
  * @param {Object} option Shipping Rate.
  */
 const renderShippingRatesControlOption = (
-	option: CartShippingRateItemShippingRate
+	option: CartShippingPackageShippingRate
 ): PackageRateOption => {
 	const priceWithTaxes = getSetting( 'displayCartPricesIncludingTax', false )
 		? parseInt( option.price, 10 ) + parseInt( option.taxes, 10 )

@@ -10,7 +10,7 @@ import type { ReactElement } from 'react';
 import type { PackageRateOption } from '@woocommerce/type-defs/shipping';
 import { Panel } from '@woocommerce/blocks-checkout';
 import { useSelectShippingRate } from '@woocommerce/base-context/hooks';
-import type { CartShippingRateItemShippingRate } from '@woocommerce/type-defs/cart';
+import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
 
 /**
  * Internal dependencies
@@ -39,12 +39,12 @@ export interface PackageData {
 	destination: Destination;
 	name: string;
 	// eslint-disable-next-line camelcase
-	shipping_rates: CartShippingRateItemShippingRate[];
+	shipping_rates: CartShippingPackageShippingRate[];
 	items: PackageItem[];
 }
 
 export type PackageRateRenderOption = (
-	option: CartShippingRateItemShippingRate
+	option: CartShippingPackageShippingRate
 ) => PackageRateOption;
 
 interface PackageProps {

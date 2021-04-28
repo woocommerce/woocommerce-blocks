@@ -6,7 +6,7 @@ import RadioControl, {
 } from '@woocommerce/base-components/radio-control';
 import type { PackageRateOption } from '@woocommerce/type-defs/shipping';
 import type { ReactElement } from 'react';
-import type { CartShippingRateItemShippingRate } from '@woocommerce/type-defs/cart';
+import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
 
 /**
  * Internal dependencies
@@ -15,9 +15,9 @@ import { renderPackageRateOption } from './render-package-rate-option';
 
 interface PackageRates {
 	onSelectRate: ( selectedRateId: string ) => void;
-	rates: CartShippingRateItemShippingRate[];
+	rates: CartShippingPackageShippingRate[];
 	renderOption?: (
-		option: CartShippingRateItemShippingRate
+		option: CartShippingPackageShippingRate
 	) => PackageRateOption;
 	className?: string;
 	noResultsMessage: ReactElement;

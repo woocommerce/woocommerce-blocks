@@ -3,7 +3,7 @@
  */
 import { CURRENCY } from '@woocommerce/settings';
 import type { CurrencyResponseInfo } from '@woocommerce/type-defs/cart-response';
-import type { CartShippingRateItemShippingRate } from '@woocommerce/type-defs/cart';
+import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
 
 /**
  * Internal dependencies
@@ -75,7 +75,7 @@ export const getCurrencyFromPriceResponse = (
 	currencyData:
 		| CurrencyResponseInfo
 		| Record< string, never >
-		| CartShippingRateItemShippingRate
+		| CartShippingPackageShippingRate
 ): Currency => {
 	if ( ! currencyData || typeof currencyData !== 'object' ) {
 		return siteCurrencySettings;

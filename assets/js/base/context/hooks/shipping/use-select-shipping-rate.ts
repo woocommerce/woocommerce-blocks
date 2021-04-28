@@ -3,7 +3,7 @@
  */
 import { useState, useEffect, useRef, useCallback } from '@wordpress/element';
 import isShallowEqual from '@wordpress/is-shallow-equal';
-import { CartShippingRateItemShippingRate } from '@woocommerce/type-defs/cart';
+import { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
 
 /**
  * Internal dependencies
@@ -19,7 +19,7 @@ import { useStoreEvents } from '../use-store-events';
  */
 // This will find the selected rate ID in an array of shipping rates.
 const deriveSelectedRateId = (
-	shippingRates: CartShippingRateItemShippingRate[]
+	shippingRates: CartShippingPackageShippingRate[]
 ) => shippingRates.find( ( rate ) => rate.selected )?.rate_id;
 
 /**
@@ -35,7 +35,7 @@ const deriveSelectedRateId = (
  */
 export const useSelectShippingRate = (
 	packageId: string | number,
-	shippingRates: CartShippingRateItemShippingRate[]
+	shippingRates: CartShippingPackageShippingRate[]
 ): {
 	selectShippingRate: ( newShippingRateId: string ) => unknown;
 	selectedShippingRate: string | undefined;

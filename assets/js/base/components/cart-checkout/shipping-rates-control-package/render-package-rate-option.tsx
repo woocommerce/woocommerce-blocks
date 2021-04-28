@@ -6,7 +6,7 @@ import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
 import type { PackageRateOption } from '@woocommerce/type-defs/shipping';
 import { getSetting } from '@woocommerce/settings';
-import { CartShippingRateItemShippingRate } from '@woocommerce/type-defs/cart';
+import { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
 
 /**
  * Default render function for package rate options.
@@ -14,7 +14,7 @@ import { CartShippingRateItemShippingRate } from '@woocommerce/type-defs/cart';
  * @param {Object} rate Rate data.
  */
 export const renderPackageRateOption = (
-	rate: CartShippingRateItemShippingRate
+	rate: CartShippingPackageShippingRate
 ): PackageRateOption => {
 	const priceWithTaxes: number = getSetting(
 		'displayCartPricesIncludingTax',
