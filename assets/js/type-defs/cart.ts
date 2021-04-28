@@ -5,7 +5,7 @@
  */
 import {
 	MetaKeyValue,
-	ShippingRateItemItem,
+	ShippingRateItem,
 	ExtensionsData,
 } from './cart-response';
 export interface CurrencyInfo {
@@ -60,7 +60,7 @@ export interface CartShippingRateItem {
 	package_id: number;
 	name: string;
 	destination: BaseAddress;
-	items: Array< ShippingRateItemItem >;
+	items: Array< ShippingRateItem >;
 	shipping_rates: Array< CartShippingRateItemShippingRate >;
 }
 
