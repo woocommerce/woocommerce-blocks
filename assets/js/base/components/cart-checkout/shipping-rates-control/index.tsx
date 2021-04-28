@@ -22,7 +22,6 @@ import ShippingRatesControlPackage, {
 } from '../shipping-rates-control-package';
 
 interface PackagesProps {
-	// eslint-disable-next-line camelcase
 	packages: CartResponseShippingRateItem[];
 	collapse?: boolean;
 	collapsible?: boolean;
