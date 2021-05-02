@@ -88,9 +88,9 @@ export const useCheckoutAddress = () => {
 				setBillingData( shippingAddress );
 			} else {
 				setBillingData( {
-					...previousBillingData.current,
 					email: undefined,
 					phone: undefined,
+					...previousBillingData.current,
 				} );
 			}
 			currentShippingAsBilling.current = shippingAsBilling;
