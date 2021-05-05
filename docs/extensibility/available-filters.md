@@ -83,7 +83,7 @@ The word 'Total' that precedes the amount due, present in both the Cart _and_ Ch
 
 | Filter name  | Description | Return type  |
 |---|---|---|
-| `totalLabel`  | This is the label for the car total. It defaults to 'Total' (or the word for 'Total' if using translations). | `string`
+| `totalLabel`  | This is the label for the cart total. It defaults to 'Total' (or the word for 'Total' if using translations). | `string`
 
 There are no additional arguments passed to this filter.
 
