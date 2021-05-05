@@ -87,10 +87,16 @@ export const useCheckoutAddress = () => {
 				previousBillingData.current = billingData;
 				setBillingData( shippingAddress );
 			} else {
+				const {
+					// We need to pluck out email and phone from previous billing data because they can be empty, causing the current email and phone to get emptied.
+					/* eslint-disable no-unused-vars */
+					email,
+					phone,
+					/* eslint-enable no-unused-vars */
+					...billingAddress
+				} = previousBillingData.current;
 				setBillingData( {
-					email: undefined,
-					phone: undefined,
-					...previousBillingData.current,
+					...billingAddress,
 				} );
 			}
 			currentShippingAsBilling.current = shippingAsBilling;
