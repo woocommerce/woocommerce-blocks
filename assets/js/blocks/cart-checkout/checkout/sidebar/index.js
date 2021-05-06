@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+
 import {
 	OrderSummary,
 	TotalsCoupon,
@@ -14,6 +15,7 @@ import {
 	TotalsTaxes,
 	ExperimentalOrderMeta,
 } from '@woocommerce/blocks-checkout';
+
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { useShippingDataContext } from '@woocommerce/base-context';
 import {

@@ -141,6 +141,12 @@ const Cart = ( { attributes }: CartProps ) => {
 						removeCoupon={ removeCoupon }
 						values={ cartTotals }
 					/>
+					{ getSetting( 'couponsEnabled', true ) && (
+						<TotalsCoupon
+							onSubmit={ applyCoupon }
+							isLoading={ isApplyingCoupon }
+						/>
+					) }
 					{ cartNeedsShipping && (
 						<TotalsShipping
 							showCalculator={ isShippingCalculatorEnabled }
@@ -158,12 +164,7 @@ const Cart = ( { attributes }: CartProps ) => {
 							values={ cartTotals }
 						/>
 					) }
-					{ getSetting( 'couponsEnabled', true ) && (
-						<TotalsCoupon
-							onSubmit={ applyCoupon }
-							isLoading={ isApplyingCoupon }
-						/>
-					) }
+
 					<TotalsFooterItem
 						currency={ totalsCurrency }
 						values={ cartTotals }
