@@ -61,6 +61,13 @@ const CheckoutSidebar = ( {
 				removeCoupon={ removeCoupon }
 				values={ cartTotals }
 			/>
+			{ getSetting( 'couponsEnabled', true ) && (
+				<TotalsCoupon
+					onSubmit={ applyCoupon }
+					initialOpen={ false }
+					isLoading={ isApplyingCoupon }
+				/>
+			) }
 			{ needsShipping && (
 				<TotalsShipping
 					showCalculator={ false }
@@ -73,13 +80,6 @@ const CheckoutSidebar = ( {
 				<TotalsTaxes
 					currency={ totalsCurrency }
 					values={ cartTotals }
-				/>
-			) }
-			{ getSetting( 'couponsEnabled', true ) && (
-				<TotalsCoupon
-					onSubmit={ applyCoupon }
-					initialOpen={ false }
-					isLoading={ isApplyingCoupon }
 				/>
 			) }
 			<TotalsFooterItem
