@@ -8,6 +8,7 @@ import { useSelect } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { decodeEntities } from '@wordpress/html-entities';
 import type { StoreCartCoupon } from '@woocommerce/types';
+import { useState } from 'wordpress-element';
 
 /**
  * Internal dependencies
@@ -28,6 +29,10 @@ export const useStoreCartCoupons = (): StoreCartCoupon => {
 	const { cartCoupons, cartIsLoading } = useStoreCart();
 	const { addErrorNotice, addSnackbarNotice } = useStoreNotices();
 	const { setValidationErrors } = useValidationContext();
+	const [
+		isCouponAddedSuccessfully,
+		setIsCouponAddedSuccessfully,
+	] = useState( false );
 
 	const results: Pick<
 		StoreCartCoupon,
@@ -63,6 +68,12 @@ export const useStoreCartCoupons = (): StoreCartCoupon => {
 								{
 									id: 'coupon-form',
 								}
+							);
+
+							setIsCouponAddedSuccessfully( true );
+							setTimeout(
+								() => setIsCouponAddedSuccessfully( false ),
+								4000
 							);
 						}
 					} )
@@ -113,12 +124,13 @@ export const useStoreCartCoupons = (): StoreCartCoupon => {
 				isRemovingCoupon,
 			};
 		},
-		[ addErrorNotice, addSnackbarNotice ]
+		[ addErrorNotice, addSnackbarNotice, isCouponAddedSuccessfully ]
 	);
 
 	return {
 		appliedCoupons: cartCoupons,
 		isLoading: cartIsLoading,
+		isCouponAddedSuccessfully,
 		...results,
 	};
 };
