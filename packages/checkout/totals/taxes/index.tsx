@@ -12,6 +12,7 @@ import { ReactElement } from 'react';
  * Internal dependencies
  */
 import TotalsItem from '../item';
+import './style.scss';
 
 interface Values {
 	// eslint-disable-next-line camelcase
@@ -37,8 +38,25 @@ const TotalsTaxes = ( {
 		return null;
 	}
 
-	if ( ! getSetting( 'displayItemizedTaxes', false ) ) {
-		return (
+	const itemisedTaxItems: ReactElement | null = getSetting(
+		'displayItemizedTaxes',
+		false
+	) ? (
+		<>
+			{ taxLines.map( ( { name, price, rate }, i ) => (
+				<TotalsItem
+					key={ `tax-line-${ i }` }
+					className="wc-block-components-totals-taxes__tax-line"
+					currency={ currency }
+					label={ `${ name } ${ rate }` }
+					value={ parseInt( price, 10 ) }
+				/>
+			) ) }{ ' ' }
+		</>
+	) : null;
+
+	return (
+		<>
 			<TotalsItem
 				className={ classnames(
 					'wc-block-components-totals-taxes',
@@ -47,21 +65,8 @@ const TotalsTaxes = ( {
 				currency={ currency }
 				label={ __( 'Taxes', 'woo-gutenberg-products-block' ) }
 				value={ parseInt( totalTax, 10 ) }
+				description={ itemisedTaxItems }
 			/>
-		);
-	}
-
-	return (
-		<>
-			{ taxLines.map( ( { name, price }, i ) => (
-				<TotalsItem
-					key={ `tax-line-${ i }` }
-					className="wc-block-components-totals-taxes"
-					currency={ currency }
-					label={ name }
-					value={ parseInt( price, 10 ) }
-				/>
-			) ) }{ ' ' }
 		</>
 	);
 };
