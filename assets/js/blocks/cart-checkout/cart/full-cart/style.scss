@@ -85,6 +85,10 @@ table.wc-block-cart-items {
 		margin: 0;
 		padding: em($gap-small) 0;
 	}
+
+	.wc-block-components-totals-footer-item {
+		@include with-translucent-border(1px 0);
+	}
 }
 
 // Loading placeholder state.
