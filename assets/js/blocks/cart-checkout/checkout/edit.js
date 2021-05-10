@@ -306,7 +306,7 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 					>
 						<ToggleControl
 							label={ __(
-								'Tax rates',
+								'Show rate after tax name',
 								'woo-gutenberg-products-block'
 							) }
 							help={ __(
