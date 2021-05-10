@@ -24,6 +24,7 @@ interface Values {
 interface TotalsTaxesProps {
 	className?: string;
 	currency: Currency;
+	showRateAfterTaxName: boolean;
 	values: Values | Record< string, never >;
 }
 
@@ -31,6 +32,7 @@ const TotalsTaxes = ( {
 	currency,
 	values,
 	className,
+	showRateAfterTaxName,
 }: TotalsTaxesProps ): ReactElement | null => {
 	const { total_tax: totalTax, tax_lines: taxLines } = values;
 
@@ -43,15 +45,20 @@ const TotalsTaxes = ( {
 		false
 	) ? (
 		<>
-			{ taxLines.map( ( { name, price, rate }, i ) => (
-				<TotalsItem
-					key={ `tax-line-${ i }` }
-					className="wc-block-components-totals-taxes__tax-line"
-					currency={ currency }
-					label={ `${ name } ${ rate }` }
-					value={ parseInt( price, 10 ) }
-				/>
-			) ) }{ ' ' }
+			{ taxLines.map( ( { name, price, rate }, i ) => {
+				const label = `${ name }${
+					showRateAfterTaxName ? ` ${ rate }` : ''
+				}`;
+				return (
+					<TotalsItem
+						key={ `tax-line-${ i }` }
+						className="wc-block-components-totals-taxes__tax-line"
+						currency={ currency }
+						label={ label }
+						value={ parseInt( price, 10 ) }
+					/>
+				);
+			} ) }{ ' ' }
 		</>
 	) : null;
 
