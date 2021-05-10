@@ -29,6 +29,7 @@ const CheckoutSidebar = ( {
 	cartItems = [],
 	cartFees = [],
 	cartTotals = {},
+	showRateAfterTaxName = false,
 } ) => {
 	const {
 		applyCoupon,
@@ -81,6 +82,7 @@ const CheckoutSidebar = ( {
 			{ ! getSetting( 'displayCartPricesIncludingTax', false ) && (
 				<TotalsTaxes
 					currency={ totalsCurrency }
+					showRateAfterTaxName={ showRateAfterTaxName }
 					values={ cartTotals }
 				/>
 			) }
