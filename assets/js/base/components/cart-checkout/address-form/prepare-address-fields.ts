@@ -3,21 +3,18 @@
 /**
  * External dependencies
  */
-import { defaultAddressFields, getSetting } from '@woocommerce/settings';
-import { __, sprintf } from '@wordpress/i18n';
-
-/**
- * Internal dependencies
- */
 import {
-	AddressFieldConfiguration,
+	defaultAddressFields,
+	getSetting,
+	AddressField,
 	AddressFields,
-	KeyedAddressFieldConfiguration,
-} from '../../../../type-defs/customer';
+	KeyedAddressField,
+} from '@woocommerce/settings';
+import { __, sprintf } from '@wordpress/i18n';
 
 type CoreLocaleSettings = Record<
 	string,
-	Record< keyof AddressFields, AddressFieldConfiguration >
+	Record< keyof AddressFields, AddressField >
 >;
 /**
  * This is locale data from WooCommerce countries class. This doesn't match the shape of the new field data blocks uses,
@@ -25,7 +22,10 @@ type CoreLocaleSettings = Record<
  *
  * This supports new properties such as optionalLabel which are not used by core (yet).
  */
-const coreLocale: CoreLocaleSettings = getSetting( 'countryLocale', {} );
+const coreLocale: CoreLocaleSettings = getSetting(
+	'countryLocale',
+	{}
+) as CoreLocaleSettings;
 
 /**
  * Gets props from the core locale, then maps them to the shape we require in the client.
@@ -35,10 +35,8 @@ const coreLocale: CoreLocaleSettings = getSetting( 'countryLocale', {} );
  * @param {Object} localeField Locale fields from WooCommerce.
  * @return {Object} Supported locale fields.
  */
-const getSupportedCoreLocaleProps = (
-	localeField: AddressFieldConfiguration
-) => {
-	const fields: Partial< AddressFieldConfiguration > = {};
+const getSupportedCoreLocaleProps = ( localeField: AddressField ) => {
+	const fields: Partial< AddressField > = {};
 
 	if ( localeField.label !== undefined ) {
 		fields.label = localeField.label;
@@ -84,10 +82,7 @@ const countryAddressFields = Object.entries( coreLocale )
 				return [
 					localeFieldKey,
 					getSupportedCoreLocaleProps( localeField ),
-				] as [
-					keyof AddressFieldConfiguration,
-					AddressFieldConfiguration
-				];
+				] as [ keyof AddressField, AddressField ];
 			} )
 			.reduce( ( obj, [ key, val ] ) => {
 				obj[ key ] = val;
@@ -108,12 +103,9 @@ const countryAddressFields = Object.entries( coreLocale )
  */
 const prepareAddressFields = (
 	fields: ( keyof AddressFields )[] | undefined,
-	fieldConfigs: Record<
-		keyof AddressFields,
-		Partial< AddressFieldConfiguration >
-	>,
+	fieldConfigs: Record< keyof AddressFields, Partial< AddressField > >,
 	addressCountry = ''
-): KeyedAddressFieldConfiguration[] => {
+): KeyedAddressField[] => {
 	const localeConfigs =
 		addressCountry && countryAddressFields[ addressCountry ] !== undefined
 			? countryAddressFields[ addressCountry ]
