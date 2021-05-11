@@ -39,3 +39,7 @@ export const CART_URL = STORE_PAGES.cart.permalink;
 export const LOGIN_URL = STORE_PAGES.myaccount.permalink
 	? STORE_PAGES.myaccount.permalink
 	: getSetting( 'wpLoginUrl', '/wp-login.php' );
+export const SHIPPING_COUNTRIES = getSetting(
+	'shippingCountries',
+	{}
+) as Record< string, string >;

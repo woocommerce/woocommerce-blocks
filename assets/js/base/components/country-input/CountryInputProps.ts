@@ -11,5 +11,5 @@ export interface CountryInputProps {
 }
 
 export type CountryInputWithCountriesProps = CountryInputProps & {
-	countries: Record< string, Record< string, string > >;
+	countries: Record< string, string >;
 };
