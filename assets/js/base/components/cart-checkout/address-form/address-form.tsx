@@ -251,14 +251,4 @@ const AddressForm = ( {
 	);
 };
 
-AddressForm.propTypes = {
-	onChange: PropTypes.func.isRequired,
-	values: PropTypes.object.isRequired,
-	fields: PropTypes.arrayOf(
-		PropTypes.oneOf( Object.keys( defaultAddressFields ) )
-	),
-	fieldConfig: PropTypes.object,
-	type: PropTypes.oneOf( [ 'billing', 'shipping' ] ),
-};
-
 export default withInstanceId( AddressForm );
