@@ -28,11 +28,11 @@ const TotalsFooterItem = ( { currency, values } ) => {
 	// Prepare props to pass to the __experimentalApplyCheckoutFilter filter.
 	// We need to pluck out receiveCart.
 	// eslint-disable-next-line no-unused-vars
-	const { extensions, receiveCart, ...cart } = useStoreCart();
+	const { receiveCart, ...cart } = useStoreCart();
 	const label = __experimentalApplyCheckoutFilter( {
 		filterName: 'totalLabel',
 		defaultValue: __( 'Total', 'woo-gutenberg-products-block' ),
-		extensions,
+		extensions: cart.extensions,
 		arg: { cart },
 		// Only accept strings.
 		validation: mustBeString,
