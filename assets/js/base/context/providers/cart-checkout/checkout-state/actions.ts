@@ -1,82 +1,78 @@
 /**
  * Internal dependencies
  */
-import { TYPES } from './constants';
+import { ACTION } from './constants';
+import type { PaymentResultDataType } from './types';
 
-const {
-	SET_PRISTINE,
-	SET_IDLE,
-	SET_PROCESSING,
-	SET_BEFORE_PROCESSING,
-	SET_AFTER_PROCESSING,
-	SET_PROCESSING_RESPONSE,
-	SET_REDIRECT_URL,
-	SET_COMPLETE,
-	SET_HAS_ERROR,
-	SET_NO_ERROR,
-	INCREMENT_CALCULATING,
-	DECREMENT_CALCULATING,
-	SET_CUSTOMER_ID,
-	SET_ORDER_ID,
-	SET_SHOULD_CREATE_ACCOUNT,
-	SET_ORDER_NOTES,
-} = TYPES;
+export interface ActionType {
+	type: ACTION;
+	data?:
+		| Record< string, unknown >
+		| Record< string, never >
+		| PaymentResultDataType;
+	url?: string;
+	customerId?: number;
+	orderId?: number;
+	shouldCreateAccount?: boolean;
+	hasError?: boolean;
+	orderNotes?: string;
+}
 
 /**
  * All the actions that can be dispatched for the checkout.
  */
 export const actions = {
-	setPristine: () => ( {
-		type: SET_PRISTINE,
+	setPristine: (): ActionType => ( {
+		type: ACTION.SET_PRISTINE,
 	} ),
-	setIdle: () => ( {
-		type: SET_IDLE,
+	setIdle: (): ActionType => ( {
+		type: ACTION.SET_IDLE,
 	} ),
-	setProcessing: () => ( {
-		type: SET_PROCESSING,
+	setProcessing: (): ActionType => ( {
+		type: ACTION.SET_PROCESSING,
 	} ),
-	setRedirectUrl: ( url ) => ( {
-		type: SET_REDIRECT_URL,
+	setRedirectUrl: ( url: string ): ActionType => ( {
+		type: ACTION.SET_REDIRECT_URL,
 		url,
 	} ),
-	setProcessingResponse: ( data ) => ( {
-		type: SET_PROCESSING_RESPONSE,
+	setProcessingResponse: ( data: PaymentResultDataType ): ActionType => ( {
+		type: ACTION.SET_PROCESSING_RESPONSE,
 		data,
 	} ),
-	setComplete: ( data ) => ( {
-		type: SET_COMPLETE,
+	setComplete: ( data: Record< string, unknown > = {} ): ActionType => ( {
+		type: ACTION.SET_COMPLETE,
 		data,
 	} ),
-	setBeforeProcessing: () => ( {
-		type: SET_BEFORE_PROCESSING,
+	setBeforeProcessing: (): ActionType => ( {
+		type: ACTION.SET_BEFORE_PROCESSING,
 	} ),
-	setAfterProcessing: () => ( {
-		type: SET_AFTER_PROCESSING,
+	setAfterProcessing: (): ActionType => ( {
+		type: ACTION.SET_AFTER_PROCESSING,
 	} ),
-	setHasError: ( hasError = true ) => {
-		const type = hasError ? SET_HAS_ERROR : SET_NO_ERROR;
+	setHasError: ( hasError = true ): ActionType => {
+		const type = hasError ? ACTION.SET_HAS_ERROR : ACTION.SET_NO_ERROR;
 		return { type };
 	},
-	incrementCalculating: () => ( {
-		type: INCREMENT_CALCULATING,
+	incrementCalculating: (): ActionType => ( {
+		type: ACTION.INCREMENT_CALCULATING,
 	} ),
-	decrementCalculating: () => ( {
-		type: DECREMENT_CALCULATING,
+	decrementCalculating: (): ActionType => ( {
+		type: ACTION.DECREMENT_CALCULATING,
 	} ),
-	setCustomerId: ( customerId ) => ( {
-		type: SET_CUSTOMER_ID,
+	setCustomerId: ( customerId: number ): ActionType => ( {
+		type: ACTION.SET_CUSTOMER_ID,
 		customerId,
 	} ),
-	setOrderId: ( orderId ) => ( {
-		type: SET_ORDER_ID,
+	setOrderId: ( orderId: number ): ActionType => ( {
+		type: ACTION.SET_ORDER_ID,
 		orderId,
 	} ),
-	setShouldCreateAccount: ( shouldCreateAccount ) => ( {
-		type: SET_SHOULD_CREATE_ACCOUNT,
+	setShouldCreateAccount: ( shouldCreateAccount: boolean ): ActionType => ( {
+		type: ACTION.SET_SHOULD_CREATE_ACCOUNT,
 		shouldCreateAccount,
 	} ),
-	setOrderNotes: ( orderNotes ) => ( {
-		type: SET_ORDER_NOTES,
+	setOrderNotes: ( orderNotes: string ): ActionType => ( {
+		type: ACTION.SET_ORDER_NOTES,
 		orderNotes,
 	} ),
 };
