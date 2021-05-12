@@ -6,6 +6,7 @@ export interface StateInputProps {
 	value: string;
 	country: string;
 	onChange: ( value: string ) => void;
+	onBlur?: ( value: string ) => void;
 	required?: boolean;
 	errorMessage?: string;
 }

@@ -26,6 +26,7 @@ const ValidatedTextInput = ( {
 	validateOnMount = true,
 	focusOnMount = false,
 	onChange,
+	onBlur = () => {},
 	showError = true,
 	customValidation = null,
 	...rest
@@ -124,8 +125,9 @@ const ValidatedTextInput = ( {
 				'has-error': hasError,
 			} ) }
 			id={ textInputId }
-			onBlur={ () => {
+			onBlur={ ( value ) => {
 				validateInput( false );
+				onBlur( value );
 			} }
 			feedback={
 				showError && <ValidationInputError propertyName={ errorId } />
