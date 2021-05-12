@@ -4,7 +4,7 @@
 import { STATUS } from './constants';
 import type { emitterCallback } from '../../../event-emit';
 
-interface ErrorResponse {
+export interface CheckoutResponseError {
 	code: string;
 	message: string;
 	data: {
@@ -12,7 +12,7 @@ interface ErrorResponse {
 	};
 }
 
-interface SuccessResponse {
+export interface CheckoutResponseSuccess {
 	// eslint-disable-next-line camelcase
 	payment_result: {
 		// eslint-disable-next-line camelcase
@@ -24,7 +24,7 @@ interface SuccessResponse {
 	};
 }
 
-export type CheckoutResponse = SuccessResponse | ErrorResponse;
+export type CheckoutResponse = CheckoutResponseSuccess | CheckoutResponseError;
 
 export interface PaymentResultDataType {
 	message: string;

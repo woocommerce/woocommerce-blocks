@@ -13,71 +13,46 @@ import type { PaymentResultDataType, CheckoutResponse } from './types';
 /**
  * Prepares the payment_result data from the server checkout endpoint response.
  */
-export const prepareResponseData = ( data: {
-	message?: string;
-	// eslint-disable-next-line camelcase
-	payment_status: string;
-	// eslint-disable-next-line camelcase
-	redirect_url: string;
-	// eslint-disable-next-line camelcase
-	payment_details?: Record< string, string >;
-} ): PaymentResultDataType => {
-	const responseData = {
-		message: data?.message || '',
-		paymentStatus: data.payment_status,
-		redirectUrl: data.redirect_url,
-		paymentDetails: {},
-	} as PaymentResultDataType;
-	if (
-		data.hasOwnProperty( 'payment_details' ) &&
-		Array.isArray( data.payment_details )
-	) {
-		data.payment_details.forEach(
-			( { key, value }: { key: string; value: string } ) => {
-				responseData.paymentDetails[ key ] = decodeEntities( value );
-			}
-		);
-	}
-	return responseData;
-};
-
-/**
- * Prepares the payment_result data from the server checkout endpoint response.
- */
-export const preparePaymentResult = (
+export const getPaymentResultFromCheckoutResponse = (
 	response: CheckoutResponse
 ): PaymentResultDataType => {
 	const paymentResult = {
-		message: 'message' in response ? response.message : '',
-		paymentStatus:
-			'payment_result' in response
-				? response.payment_result.payment_status
-				: '',
-		paymentDetails:
-			'payment_result' in response &&
+		message: '',
+		paymentStatus: '',
+		redirectUrl: '',
+		paymentDetails: {},
+	} as PaymentResultDataType;
+
+	// payment_result is present in successful responses.
+	if ( 'payment_result' in response ) {
+		paymentResult.paymentStatus = response.payment_result.payment_status;
+		paymentResult.redirectUrl = response.payment_result.redirect_url;
+
+		if (
+			response.payment_result.hasOwnProperty( 'payment_details' ) &&
 			Array.isArray( response.payment_result.payment_details )
-				? ( fromEntriesPolyfill(
-						response.payment_result.payment_details.map(
-							( { key, value } ) => [
-								key,
-								decodeEntities( value ),
-							]
-						)
-				  ) as Record< string, string > )
-				: {},
-		redirectUrl:
-			'payment_result' in response &&
-			'redirect_url' in response.payment_result
-				? response.payment_result.redirect_url
-				: '',
-	};
+		) {
+			response.payment_result.payment_details.forEach(
+				( { key, value }: { key: string; value: string } ) => {
+					paymentResult.paymentDetails[ key ] = decodeEntities(
+						value
+					);
+				}
+			);
+		}
+	}
+
+	// message is present in error responses.
+	if ( 'message' in response ) {
+		paymentResult.message = decodeEntities( response.message );
+	}
 
 	// If there was an error code but no message, set a default message.
 	if (
+		! paymentResult.message &&
 		'data' in response &&
 		'status' in response.data &&
-		response.data.status > 299 &&
-		! paymentResult.message
+		response.data.status > 299
 	) {
 		paymentResult.message = __(
 			'Something went wrong. Please contact us to get assistance.',

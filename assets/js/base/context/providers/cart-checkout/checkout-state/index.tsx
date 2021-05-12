@@ -19,7 +19,7 @@ import deprecated from '@wordpress/deprecated';
  */
 import { actions } from './actions';
 import { reducer } from './reducer';
-import { preparePaymentResult } from './utils';
+import { getPaymentResultFromCheckoutResponse } from './utils';
 import {
 	DEFAULT_STATE,
 	STATUS,
@@ -144,7 +144,9 @@ export const CheckoutStateProvider = ( {
 			setOrderNotes: ( orderNotes ) =>
 				void dispatch( actions.setOrderNotes( orderNotes ) ),
 			setAfterProcessing: ( response ) => {
-				const paymentResult = preparePaymentResult( response );
+				const paymentResult = getPaymentResultFromCheckoutResponse(
+					response
+				);
 
 				if ( paymentResult.redirectUrl ) {
 					dispatch(
