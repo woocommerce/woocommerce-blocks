@@ -10,11 +10,6 @@ import type {
 } from '@woocommerce/types';
 
 /**
- * Internal dependencies
- */
-import { fromEntriesPolyfill } from './from-entries-polyfill';
-
-/**
  * pluckAddress takes a full address object and returns relevant fields for calculating
  * shipping, so we can track when one of them change to update rates.
  *
@@ -56,6 +51,16 @@ export const pluckEmail = ( {
 	isEmail( email ) ? email.trim() : '';
 
 /**
+ * Type-guard.
+ */
+const isValidAddressKey = (
+	key: string,
+	address: CartResponseBillingAddress | CartResponseShippingAddress
+): key is keyof typeof address => {
+	return key in address;
+};
+
+/**
  * Sets fields to an empty string in an address if they are hidden by the settings in countryLocale.
  *
  * @param {Object} address The address to empty fields from.
@@ -68,18 +73,13 @@ export const emptyHiddenAddressFields = <
 ): T => {
 	const fields = Object.keys( defaultAddressFields );
 	const addressFields = prepareAddressFields( fields, {}, address.country );
+	const newAddress = Object.assign( {}, address ) as T;
 
-	return fromEntriesPolyfill(
-		Object.entries( address ).reduce( ( result, [ key, value ] ) => {
-			const addressField = addressFields.find(
-				( field: { hidden: boolean; key: string } ) => field.key === key
-			);
+	addressFields.forEach( ( { key = '', hidden = false } ) => {
+		if ( hidden && isValidAddressKey( key, address ) ) {
+			newAddress[ key ] = '';
+		}
+	} );
 
-			if ( addressField === undefined || ! addressField.hidden ) {
-				result.push( [ key, value ] );
-			}
-
-			return result;
-		} )
-	) as T;
+	return newAddress;
 };
