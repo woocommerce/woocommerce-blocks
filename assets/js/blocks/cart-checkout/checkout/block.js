@@ -15,7 +15,6 @@ import {
 	useEditorContext,
 	useValidationContext,
 } from '@woocommerce/base-context';
-import Title from '@woocommerce/base-components/title';
 import { useStoreCart, useStoreNotices } from '@woocommerce/base-context/hooks';
 import {
 	Sidebar,
@@ -151,15 +150,6 @@ const Checkout = ( { attributes, scrollToTop } ) => {
 					{ attributes.showPolicyLinks && <Policies /> }
 				</Main>
 				<Sidebar className="wc-block-checkout__sidebar">
-					<Title
-						headingLevel="2"
-						className="wc-block-checkout__sidebar-title"
-					>
-						{ __(
-							'Order summary',
-							'woo-gutenberg-products-block'
-						) }
-					</Title>
 					<CheckoutSidebar
 						cartCoupons={ cartCoupons }
 						cartItems={ cartItems }
