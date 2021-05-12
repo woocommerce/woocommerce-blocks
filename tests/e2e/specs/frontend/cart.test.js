@@ -36,6 +36,7 @@ describe( `${ block.name } Block (frontend)`, () => {
 
 	beforeAll( async () => {
 		await page.evaluate( () => window.localStorage.clear() );
+		//prevent CartCheckoutCompatibilityNotice from appearing
 		await page.evaluate( () => {
 			localStorage.removeItem(
 				'wc-blocks_dismissed_compatibility_notices'
@@ -130,11 +131,8 @@ describe( `${ block.name } Block (frontend)`, () => {
 
 		// This is to ensure we've clicked the right cart button.
 		expect( selectedValue ).toBeGreaterThan( 1 );
-		await scrollTo( '.wc-block-cart__submit-button' );
-		await Promise.all( [
-			page.waitForNavigation(),
-			page.click( '.wc-block-cart__submit-button' ),
-		] );
+
+		await page.$eval( '.wc-block-cart__submit-button', ( e ) => e.click() );
 		await page.waitForSelector( '.wc-block-checkout' );
 		await page.goBack( { waitUntil: 'networkidle0' } );
 
