@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import PropTypes from 'prop-types';
 import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
 import { useValidationContext } from '@woocommerce/base-context';
 import { useEffect, useMemo } from '@wordpress/element';
@@ -14,6 +13,11 @@ import {
 	AddressField,
 	AddressFields,
 } from '@woocommerce/settings';
+import { __experimentalApplyValidationFunctionsForField } from '@woocommerce/base-components/cart-checkout/address-form/registry';
+import {
+	BillingStateInput,
+	ShippingStateInput,
+} from '@woocommerce/base-components/state-input';
 
 /**
  * Internal dependencies
@@ -21,7 +25,6 @@ import {
 import prepareAddressFields from './prepare-address-fields';
 import { validatePostcode } from './validate-postcode';
 import { BillingCountryInput, ShippingCountryInput } from '../../country-input';
-import { BillingStateInput, ShippingStateInput } from '../../state-input';
 
 // If it's the shipping address form and the user starts entering address
 // values without having set the country first, show an error.
@@ -161,15 +164,28 @@ const AddressForm = ( {
 							}
 							value={ values.country }
 							autoComplete={ field.autocomplete }
-							onChange={ ( newValue ) =>
+							onChange={ ( newValue ) => {
 								onChange( {
 									...values,
 									country: newValue,
 									state: '',
 									city: '',
 									postcode: '',
-								} )
-							}
+								} );
+							} }
+							onBlur={ ( value ) => {
+								clearValidationError(
+									`${ id }-${ field.key }`
+								);
+								__experimentalApplyValidationFunctionsForField(
+									value,
+									field.key,
+									values,
+									type,
+									`${ id }-${ field.key }`,
+									setValidationErrors
+								);
+							} }
 							errorId={
 								type === 'shipping'
 									? 'shipping-missing-country'
@@ -204,6 +220,19 @@ const AddressForm = ( {
 									state: newValue,
 								} )
 							}
+							onBlur={ ( value ) => {
+								clearValidationError(
+									`${ id }-${ field.key }`
+								);
+								__experimentalApplyValidationFunctionsForField(
+									value,
+									field.key,
+									values,
+									type,
+									`${ id }-${ field.key }`,
+									setValidationErrors
+								);
+							} }
 							errorMessage={ field.errorMessage }
 							required={ field.required }
 						/>
@@ -241,6 +270,17 @@ const AddressForm = ( {
 								[ field.key ]: newValue,
 							} )
 						}
+						onBlur={ ( value: string ) => {
+							clearValidationError( `${ id }-${ field.key }` );
+							__experimentalApplyValidationFunctionsForField(
+								value,
+								field.key,
+								values,
+								type,
+								`${ id }-${ field.key }`,
+								setValidationErrors
+							);
+						} }
 						errorMessage={ field.errorMessage }
 						required={ field.required }
 						{ ...customValidationProps }
