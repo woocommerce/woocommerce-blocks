@@ -3,6 +3,16 @@
  */
 import { defaultAddressFields } from '@woocommerce/settings';
 import prepareAddressFields from '@woocommerce/base-components/cart-checkout/address-form/prepare-address-fields';
+import { isEmail } from '@wordpress/url';
+import type {
+	CartResponseBillingAddress,
+	CartResponseShippingAddress,
+} from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import { fromEntriesPolyfill } from './from-entries-polyfill';
 
 /**
  * pluckAddress takes a full address object and returns relevant fields for calculating
@@ -21,7 +31,12 @@ export const pluckAddress = ( {
 	state = '',
 	city = '',
 	postcode = '',
-} ) => ( {
+}: CartResponseBillingAddress | CartResponseShippingAddress ): {
+	country: string;
+	state: string;
+	city: string;
+	postcode: string;
+} => ( {
 	country: country.trim(),
 	state: state.trim(),
 	city: city.trim(),
@@ -29,19 +44,42 @@ export const pluckAddress = ( {
 } );
 
 /**
+ * pluckEmail takes a full address object and returns only the email address, if set and valid. Otherwise returns an empty string.
+ *
+ * @param {Object} address       An object containing all address information
+ * @param {string} address.email The email address.
+ * @return {string} The email address.
+ */
+export const pluckEmail = ( {
+	email = '',
+}: CartResponseBillingAddress ): string =>
+	isEmail( email ) ? email.trim() : '';
+
+/**
  * Sets fields to an empty string in an address if they are hidden by the settings in countryLocale.
  *
  * @param {Object} address The address to empty fields from.
  * @return {Object} The address with hidden fields values removed.
  */
-export const emptyHiddenAddressFields = ( address ) => {
+export const emptyHiddenAddressFields = <
+	T extends CartResponseBillingAddress | CartResponseShippingAddress
+>(
+	address: T
+): T => {
 	const fields = Object.keys( defaultAddressFields );
 	const addressFields = prepareAddressFields( fields, {}, address.country );
-	const newAddress = Object.assign( {}, address );
-	addressFields.forEach( ( field ) => {
-		if ( field.hidden ) {
-			newAddress[ field.key ] = '';
-		}
-	} );
-	return newAddress;
+
+	return fromEntriesPolyfill(
+		Object.entries( address ).reduce( ( result, [ key, value ] ) => {
+			const addressField = addressFields.find(
+				( field: { hidden: boolean; key: string } ) => field.key === key
+			);
+
+			if ( addressField === undefined || ! addressField.hidden ) {
+				result.push( [ key, value ] );
+			}
+
+			return result;
+		} )
+	) as T;
 };
