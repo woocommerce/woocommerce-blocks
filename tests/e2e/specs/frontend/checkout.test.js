@@ -36,6 +36,7 @@ describe( `${ block.name } Block (frontend)`, () => {
 	let productPermalink;
 
 	beforeAll( async () => {
+		//prevent CartCheckoutCompatibilityNotice from appearing
 		await page.evaluate( () => {
 			localStorage.removeItem(
 				'wc-blocks_dismissed_compatibility_notices'
@@ -129,7 +130,7 @@ describe( `${ block.name } Block (frontend)`, () => {
 		} );
 	} );
 
-	it.skip( 'should display cart items in order summary', async () => {
+	it( 'should display cart items in order summary', async () => {
 		await page.goto( productPermalink );
 		await shopper.addToCart();
 		await shopper.goToCheckoutBlock();
