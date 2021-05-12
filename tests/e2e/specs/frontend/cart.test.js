@@ -130,10 +130,11 @@ describe( `${ block.name } Block (frontend)`, () => {
 
 		// This is to ensure we've clicked the right cart button.
 		expect( selectedValue ).toBeGreaterThan( 1 );
-
 		await scrollTo( '.wc-block-cart__submit-button' );
-		await page.click( '.wc-block-cart__submit-button' );
-		await page.waitForNavigation();
+		await Promise.all( [
+			page.waitForNavigation(),
+			page.click( '.wc-block-cart__submit-button' ),
+		] );
 		await page.waitForSelector( '.wc-block-checkout' );
 		await page.goBack( { waitUntil: 'networkidle0' } );
 
