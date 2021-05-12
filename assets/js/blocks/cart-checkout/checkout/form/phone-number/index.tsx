@@ -20,7 +20,7 @@ const PhoneNumber = ( {
 	onBlur = () => {
 		/* Do nothing */
 	},
-}: PhoneNumberProps ) => {
+}: PhoneNumberProps ): JSX.Element => {
 	return (
 		<ValidatedTextInput
 			id="phone"
