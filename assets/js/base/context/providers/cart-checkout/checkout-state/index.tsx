@@ -284,26 +284,47 @@ export const CheckoutStateProvider = ( {
 					currentObservers.current,
 					EMIT_TYPES.CHECKOUT_AFTER_PROCESSING_WITH_SUCCESS,
 					data
-				).then( ( response: unknown ) => {
-					if ( isSuccessResponse( response ) ) {
-						dispatch(
-							actions.setComplete(
-								response as Record< string, unknown >
-							)
-						);
-					} else if (
-						isObject( response ) &&
-						( isErrorResponse( response ) ||
-							isFailResponse( response ) )
-					) {
-						if ( response.message ) {
-							const errorOptions = response.messageContext
-								? { context: response.messageContext }
-								: undefined;
-							addErrorNotice( response.message, errorOptions );
+				).then( ( observerResponses: unknown[] ) => {
+					let successResponse = null as null | Record<
+						string,
+						unknown
+					>;
+					let errorResponse = null as null | Record<
+						string,
+						unknown
+					>;
+
+					observerResponses.forEach( ( response ) => {
+						if (
+							isObject( response ) &&
+							isSuccessResponse( response )
+						) {
+							// the last observer response always "wins" for success.
+							successResponse = response;
 						}
-						if ( ! shouldRetry( response ) ) {
-							dispatch( actions.setComplete( response ) );
+						if (
+							isObject( response ) &&
+							( isErrorResponse( response ) ||
+								isFailResponse( response ) )
+						) {
+							errorResponse = response;
+						}
+					} );
+
+					if ( successResponse && ! errorResponse ) {
+						dispatch( actions.setComplete( successResponse ) );
+					} else if ( isObject( errorResponse ) ) {
+						if ( errorResponse.message ) {
+							const errorOptions = errorResponse.messageContext
+								? { context: errorResponse.messageContext }
+								: undefined;
+							addErrorNotice(
+								errorResponse.message,
+								errorOptions
+							);
+						}
+						if ( ! shouldRetry( errorResponse ) ) {
+							dispatch( actions.setComplete( errorResponse ) );
 						} else {
 							// this will set an error which will end up
 							// triggering the onCheckoutAfterProcessingWithError emitter.
@@ -311,7 +332,8 @@ export const CheckoutStateProvider = ( {
 							dispatch( actions.setHasError( true ) );
 						}
 					} else {
-						// nothing hooked in had any response type so let's just consider successful
+						// nothing hooked in had any response type so let's just
+						// consider successful
 						dispatch( actions.setComplete() );
 					}
 				} );
