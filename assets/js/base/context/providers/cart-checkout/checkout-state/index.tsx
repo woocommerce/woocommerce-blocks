@@ -129,9 +129,9 @@ export const CheckoutStateProvider = ( {
 	const dispatchActions = useMemo(
 		(): CheckoutStateDispatchActions => ( {
 			resetCheckout: () => void dispatch( actions.setPristine() ),
-			setRedirectUrl: ( url: string ) =>
+			setRedirectUrl: ( url ) =>
 				void dispatch( actions.setRedirectUrl( url ) ),
-			setHasError: ( hasError: boolean ) =>
+			setHasError: ( hasError ) =>
 				void dispatch( actions.setHasError( hasError ) ),
 			incrementCalculating: () =>
 				void dispatch( actions.incrementCalculating() ),
