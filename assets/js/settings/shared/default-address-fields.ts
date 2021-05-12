@@ -60,6 +60,7 @@ export type KeyedAddressField = AddressField & {
 export type ShippingAddress = EnteredAddress;
 export type BillingAddress = EnteredAddress;
 export type CountryAddressFields = Record< string, AddressFields >;
+export type AddressType = 'billing' | 'shipping';
 
 /**
  * Default address field properties.
