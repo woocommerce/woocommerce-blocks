@@ -133,6 +133,7 @@ describe( `${ block.name } Block (frontend)`, () => {
 
 		await scrollTo( '.wc-block-cart__submit-button' );
 		await page.click( '.wc-block-cart__submit-button' );
+		await page.waitForNavigation();
 		await page.waitForSelector( '.wc-block-checkout' );
 		await page.goBack( { waitUntil: 'networkidle0' } );
 
