@@ -36,6 +36,17 @@ describe( `${ block.name } Block (frontend)`, () => {
 
 	beforeAll( async () => {
 		await page.evaluate( () => window.localStorage.clear() );
+		await page.evaluate( () => {
+			localStorage.removeItem(
+				'wc-blocks_dismissed_compatibility_notices'
+			);
+		} );
+		await page.evaluate( () => {
+			localStorage.setItem(
+				'wc-blocks_dismissed_compatibility_notices',
+				'["checkout","cart"]'
+			);
+		} );
 		await switchUserToAdmin();
 		cartBlockPermalink = await getBlockPagePermalink(
 			`${ block.name } Block`
@@ -48,6 +59,11 @@ describe( `${ block.name } Block (frontend)`, () => {
 
 	afterAll( async () => {
 		await shopper.removeFromCart( 'Woo Single #1' );
+		await page.evaluate( () => {
+			localStorage.removeItem(
+				'wc-blocks_dismissed_compatibility_notices'
+			);
+		} );
 	} );
 
 	it( 'Adds a timestamp to localstorage when the cart is updated', async () => {
