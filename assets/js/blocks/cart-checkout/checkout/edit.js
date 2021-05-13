@@ -299,7 +299,8 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 						} }
 					/>
 				) }
-			{ getSetting( 'displayItemizedTaxes', false ) &&
+			{ getSetting( 'taxesEnabled' ) &&
+				getSetting( 'displayItemizedTaxes', false ) &&
 				! getSetting( 'displayCartPricesIncludingTax', false ) && (
 					<PanelBody
 						title={ __( 'Taxes', 'woo-gutenberg-products-block' ) }
