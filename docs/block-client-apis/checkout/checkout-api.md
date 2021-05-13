@@ -92,6 +92,7 @@ The provider receives the following props:
 
 Via `useCheckoutContext`, the following are exposed:
 
+-   `dispatch`: Exposes the checkout state provider dispatch function.
 -   `onSubmit`: This is a callback to be invoked either by submitting the checkout button, or by express payment methods to start checkout processing after they have finished their initialization process when their button has been clicked.
 -   `isComplete`: True when checkout has finished processing and the subscribed checkout processing callbacks have all been invoked along with a successful processing of the checkout by the server.
 -   `isIdle`: When the checkout status is `IDLE` this flag is true. Checkout will be this status after any change to checkout state after the block is loaded. It will also be this status when retrying a purchase is possible after processing happens with an error.
@@ -105,7 +106,6 @@ Via `useCheckoutContext`, the following are exposed:
 -   `onCheckoutValidationBeforeProcessing`: Used to register observers that will be invoked at validation time, after the checkout has been submitted but before the processing request is sent to the server.
 -   `onCheckoutAfterProcessingWithSuccess`: Used to register observers that will be invoked after checkout has been processed by the server successfully.
 -   `onCheckoutAfterProcessingWithError`: Used to register observers that will be invoked after checkout has been processed by the server and there was an error.
--   `dispatchActions`: This is an object with various functions for dispatching status in the checkout. It is not exposed to extensions but is for internal use only.
 -   `orderId`: The order id for the order attached to the current checkout.
 -   `isCart`: This is true if the cart is being viewed. Note: usage of `CheckoutProvider` will automatically set this to false. There is also a `CartProvider` that wraps children in the `ShippingDataProvider` and exposes the same api as checkout context. The `CartProvider` automatically sets `isCart` to true. This allows components that implement `useCheckoutContext` to use the same api in either the cart or checkout context but still have specific behaviour to whether `isCart` is true or not.
 -   `hasOrder`: This is true when orderId is truthy.

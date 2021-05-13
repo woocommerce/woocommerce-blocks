@@ -13,7 +13,11 @@ import type { CartItem, StoreCartItemQuantity } from '@woocommerce/types';
  * Internal dependencies
  */
 import { useStoreCart } from './use-store-cart';
-import { useCheckoutContext } from '../../providers/cart-checkout';
+import {
+	useCheckoutContext,
+	incrementCalculating,
+	decrementCalculating,
+} from '../../providers/cart-checkout/checkout-state';
 import {
 	isNumber,
 	isObject,
@@ -55,7 +59,7 @@ export const useStoreCartItemQuantity = (
 		quantity: cartItemQuantity = 1,
 	} = verifiedCartItem;
 	const { cartErrors } = useStoreCart();
-	const { dispatchActions } = useCheckoutContext();
+	const { dispatch: checkoutContextDispatch } = useCheckoutContext();
 
 	// Store quantity in hook state. This is used to keep the UI updated while server request is updated.
 	const [ quantity, setQuantity ] = useState< number >( cartItemQuantity );
@@ -116,27 +120,27 @@ export const useStoreCartItemQuantity = (
 		}
 		if ( previousIsPending.quantity !== isPending.quantity ) {
 			if ( isPending.quantity ) {
-				dispatchActions.incrementCalculating();
+				incrementCalculating( checkoutContextDispatch );
 			} else {
-				dispatchActions.decrementCalculating();
+				decrementCalculating( checkoutContextDispatch );
 			}
 		}
 		if ( previousIsPending.delete !== isPending.delete ) {
 			if ( isPending.delete ) {
-				dispatchActions.incrementCalculating();
+				incrementCalculating( checkoutContextDispatch );
 			} else {
-				dispatchActions.decrementCalculating();
+				decrementCalculating( checkoutContextDispatch );
 			}
 		}
 		return () => {
 			if ( isPending.quantity ) {
-				dispatchActions.decrementCalculating();
+				decrementCalculating( checkoutContextDispatch );
 			}
 			if ( isPending.delete ) {
-				dispatchActions.decrementCalculating();
+				decrementCalculating( checkoutContextDispatch );
 			}
 		};
-	}, [ dispatchActions, isPending, previousIsPending ] );
+	}, [ checkoutContextDispatch, isPending, previousIsPending ] );
 
 	return {
 		isPendingDelete: isPending.delete,

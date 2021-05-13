@@ -4,7 +4,10 @@
 import { __ } from '@wordpress/i18n';
 import { FormStep } from '@woocommerce/base-components/cart-checkout';
 import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
-import { useCheckoutContext } from '@woocommerce/base-context';
+import {
+	useCheckoutContext,
+	setShouldCreateAccount,
+} from '@woocommerce/base-context/providers/cart-checkout/checkout-state';
 import { getSetting } from '@woocommerce/settings';
 import CheckboxControl from '@woocommerce/base-components/checkbox-control';
 
@@ -21,7 +24,7 @@ const ContactFieldsStep = ( {
 		isProcessing: checkoutIsProcessing,
 		customerId,
 		shouldCreateAccount,
-		setShouldCreateAccount,
+		dispatch,
 	} = useCheckoutContext();
 
 	const createAccountUI = ! customerId &&
@@ -35,7 +38,9 @@ const ContactFieldsStep = ( {
 					'woo-gutenberg-products-block'
 				) }
 				checked={ shouldCreateAccount }
-				onChange={ ( value ) => setShouldCreateAccount( value ) }
+				onChange={ ( value ) =>
+					setShouldCreateAccount( dispatch, value )
+				}
 			/>
 		);
 	return (

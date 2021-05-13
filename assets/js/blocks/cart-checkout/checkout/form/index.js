@@ -3,13 +3,11 @@
  */
 import PropTypes from 'prop-types';
 import { useEffect, useMemo } from '@wordpress/element';
-import {
-	useCheckoutContext,
-	useShippingDataContext,
-} from '@woocommerce/base-context';
+import { useShippingDataContext } from '@woocommerce/base-context';
 import {
 	useStoreEvents,
 	useCheckoutAddress,
+	useCheckoutSubmit,
 } from '@woocommerce/base-context/hooks';
 import { AddressForm } from '@woocommerce/base-components/cart-checkout';
 import Form from '@woocommerce/base-components/form';
@@ -35,7 +33,7 @@ const CheckoutForm = ( {
 	showPhoneField,
 	allowCreateAccount,
 } ) => {
-	const { onSubmit } = useCheckoutContext();
+	const { onSubmit } = useCheckoutSubmit();
 	const {
 		defaultAddressFields,
 		billingFields,

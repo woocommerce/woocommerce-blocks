@@ -38,17 +38,7 @@ const checkoutData = {
 };
 
 export const DEFAULT_CHECKOUT_STATE_DATA: CheckoutStateContextType = {
-	dispatchActions: {
-		resetCheckout: () => void null,
-		setRedirectUrl: ( url ) => void url,
-		setHasError: ( hasError ) => void hasError,
-		setAfterProcessing: ( response ) => void response,
-		incrementCalculating: () => void null,
-		decrementCalculating: () => void null,
-		setCustomerId: ( id ) => void id,
-		setOrderId: ( id ) => void id,
-		setOrderNotes: ( orderNotes ) => void orderNotes,
-	},
+	dispatch: () => void {},
 	onSubmit: () => void null,
 	isComplete: false,
 	isIdle: false,

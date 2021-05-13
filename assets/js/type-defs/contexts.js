@@ -3,7 +3,6 @@
  * @typedef {import('./cart').CartShippingOption} CartShippingOption
  * @typedef {import('./shipping').ShippingAddress} CartShippingAddress
  * @typedef {import('./cart').CartData} CartData
- * @typedef {import('./checkout').CheckoutDispatchActions} CheckoutDispatchActions
  * @typedef {import('./add-to-cart-form').AddToCartFormDispatchActions} AddToCartFormDispatchActions
  * @typedef {import('./add-to-cart-form').AddToCartFormEventRegistration} AddToCartFormEventRegistration
  */
@@ -91,60 +90,6 @@
 
 /**
  * @typedef {function():PaymentStatusDispatchers} PaymentStatusDispatch
- */
-
-/**
- * @typedef {Object} CheckoutDataContext
- *
- * @property {function()}                   onSubmit                             The callback to register with the
- *                                                                               checkout submit button.
- * @property {boolean}                      isComplete                           True when checkout is complete and
- *                                                                               ready for redirect.
- * @property {boolean}                      isBeforeProcessing                   True during any observers executing
- *                                                                               logic before checkout processing
- *                                                                               (eg. validation).
- * @property {boolean}                      isAfterProcessing                    True when checkout status is
- *                                                                               AFTER_PROCESSING.
- * @property {boolean}                      isIdle                               True when the checkout state has
- *                                                                               changed and checkout has no activity.
- * @property {boolean}                      isProcessing                         True when checkout has been submitted
- *                                                                               and is being processed. Note, payment
- *                                                                               related processing happens during this
- *                                                                               state. When payment status is success,
- *                                                                               processing happens on the server.
- * @property {boolean}                      isCalculating                        True when something in the checkout is
- *                                                                               resulting in totals being calculated.
- * @property {boolean}                      hasError                             True when the checkout is in an error
- *                                                                               state. Whatever caused the error
- *                                                                               (validation/payment method) will likely
- *                                                                               have triggered a notice.
- * @property {string}                       redirectUrl                          This is the url that checkout will
- *                                                                               redirect to when it's ready.
- * @property {function(function(),number=)} onCheckoutValidationBeforeProcessing Used to register a callback that will
- *                                                                               fire when the validation of the submitted checkout
- *                                                                               data happens, before it's sent off to the
- *                                                                               server.
- * @property {function(function(),number=)} onCheckoutAfterProcessingWithSuccess Used to register a callback that will
- *                                                                               fire after checkout has been processed
- *                                                                               and there are no errors.
- * @property {function(function(),number=)} onCheckoutAfterProcessingWithError   Used to register a callback that will
- *                                                                               fire when the checkout has been
- *                                                                               processed and has an error.
- * @property {CheckoutDispatchActions}      dispatchActions                      Various actions that can be dispatched
- *                                                                               for the checkout context data.
- * @property {number}                       orderId                              This is the ID for the draft order if
- *                                                                               one exists.
- * @property {number}                       orderNotes                           Order notes introduced by the user in
- *                                                                               the checkout form.
- * @property {boolean}                      hasOrder                             True when the checkout has a draft
- *                                                                               order from the API.
- * @property {boolean}                      isCart                               When true, means the provider is
- *                                                                               providing data for the cart.
- * @property {number}                       customerId                           This is the ID of the customer the
- *                                                                               draft order belongs to.
- * @property {boolean}                      shouldCreateAccount                  Should a user account be created?
- * @property {function(boolean)}            setShouldCreateAccount               Function to update the
- *                                                                               shouldCreateAccount property.
  */
 
 /**

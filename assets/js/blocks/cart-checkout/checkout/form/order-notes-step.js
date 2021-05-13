@@ -3,10 +3,11 @@
  */
 import { __ } from '@wordpress/i18n';
 import { FormStep } from '@woocommerce/base-components/cart-checkout';
+import { useShippingDataContext } from '@woocommerce/base-context';
 import {
 	useCheckoutContext,
-	useShippingDataContext,
-} from '@woocommerce/base-context';
+	setOrderNotes,
+} from '@woocommerce/base-context/providers/cart-checkout/checkout-state';
 
 /**
  * Internal dependencies
@@ -18,9 +19,8 @@ const OrderNotesStep = () => {
 	const {
 		isProcessing: checkoutIsProcessing,
 		orderNotes,
-		dispatchActions,
+		dispatch,
 	} = useCheckoutContext();
-	const { setOrderNotes } = dispatchActions;
 
 	return (
 		<FormStep
@@ -31,7 +31,9 @@ const OrderNotesStep = () => {
 		>
 			<CheckoutOrderNotes
 				disabled={ checkoutIsProcessing }
-				onChange={ setOrderNotes }
+				onChange={ ( value ) => {
+					setOrderNotes( dispatch, value );
+				} }
 				placeholder={
 					needsShipping
 						? __(

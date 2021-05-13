@@ -3,6 +3,7 @@
  */
 import { STATUS } from './constants';
 import type { emitterCallback } from '../../../event-emit';
+import type { ActionType } from './actions';
 
 export interface CheckoutResponseError {
 	code: string;
@@ -45,21 +46,9 @@ export type CheckoutStateContextState = {
 	processingResponse: PaymentResultDataType | null;
 };
 
-export type CheckoutStateDispatchActions = {
-	resetCheckout: () => void;
-	setRedirectUrl: ( url: string ) => void;
-	setHasError: ( hasError: boolean ) => void;
-	setAfterProcessing: ( response: CheckoutResponse ) => void;
-	incrementCalculating: () => void;
-	decrementCalculating: () => void;
-	setCustomerId: ( id: number ) => void;
-	setOrderId: ( id: number ) => void;
-	setOrderNotes: ( orderNotes: string ) => void;
-};
-
 export type CheckoutStateContextType = {
-	// Dispatch actions to the checkout provider.
-	dispatchActions: CheckoutStateDispatchActions;
+	// Checkout state provider dispatch function.
+	dispatch: React.Dispatch< ActionType >;
 	// Submits the checkout and begins processing.
 	onSubmit: () => void;
 	// True when checkout is complete and ready for redirect.

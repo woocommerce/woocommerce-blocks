@@ -19,13 +19,18 @@ import {
  * Internal dependencies
  */
 import { preparePaymentData } from './utils';
-import { useCheckoutContext } from '../../checkout-state';
 import { useShippingDataContext } from '../../shipping';
 import { useCustomerDataContext } from '../../customer';
 import { usePaymentMethodDataContext } from '../../payment-methods';
 import { useValidationContext } from '../../../validation';
 import { useStoreCart } from '../../../../hooks/cart/use-store-cart';
 import { useStoreNotices } from '../../../../hooks/use-store-notices';
+import {
+	useCheckoutContext,
+	setHasError,
+	setCustomerId,
+	setAfterProcessing,
+} from '../../checkout-state';
 
 /**
  * CheckoutProcessor component.
@@ -38,7 +43,7 @@ const CheckoutProcessor = () => {
 	const {
 		hasError: checkoutHasError,
 		onCheckoutValidationBeforeProcessing,
-		dispatchActions,
+		dispatch: checkoutContextDispatch,
 		redirectUrl,
 		isProcessing: checkoutIsProcessing,
 		isBeforeProcessing: checkoutIsBeforeProcessing,
@@ -88,7 +93,7 @@ const CheckoutProcessor = () => {
 			( checkoutIsProcessing || checkoutIsBeforeProcessing ) &&
 			! expressPaymentMethodActive
 		) {
-			dispatchActions.setHasError( checkoutWillHaveError );
+			setHasError( checkoutContextDispatch, checkoutWillHaveError );
 		}
 	}, [
 		checkoutWillHaveError,
@@ -96,7 +101,7 @@ const CheckoutProcessor = () => {
 		checkoutIsProcessing,
 		checkoutIsBeforeProcessing,
 		expressPaymentMethodActive,
-		dispatchActions,
+		checkoutContextDispatch,
 	] );
 
 	const paidAndWithoutErrors =
@@ -145,7 +150,8 @@ const CheckoutProcessor = () => {
 	] );
 
 	useEffect( () => {
-		let unsubscribeProcessing;
+		let unsubscribeProcessing = () => {};
+
 		if ( ! expressPaymentMethodActive ) {
 			unsubscribeProcessing = onCheckoutValidationBeforeProcessing(
 				checkValidation,
@@ -199,7 +205,8 @@ const CheckoutProcessor = () => {
 				triggerFetch.setNonce( fetchResponse.headers );
 
 				// Update user using headers.
-				dispatchActions.setCustomerId(
+				setCustomerId(
+					checkoutContextDispatch,
 					fetchResponse.headers.get( 'X-WC-Store-API-User' )
 				);
 
@@ -213,9 +220,9 @@ const CheckoutProcessor = () => {
 								id: 'checkout',
 							}
 						);
-						dispatchActions.setHasError();
+						setHasError( checkoutContextDispatch );
 					}
-					dispatchActions.setAfterProcessing( response );
+					setAfterProcessing( checkoutContextDispatch, response );
 					setIsProcessingOrder( false );
 				} );
 			} )
@@ -225,7 +232,8 @@ const CheckoutProcessor = () => {
 
 				// If new customer ID returned, update the store.
 				if ( errorResponse.headers?.get( 'X-WC-Store-API-User' ) ) {
-					dispatchActions.setCustomerId(
+					setCustomerId(
+						checkoutContextDispatch,
 						errorResponse.headers.get( 'X-WC-Store-API-User' )
 					);
 				}
@@ -247,8 +255,8 @@ const CheckoutProcessor = () => {
 						}
 					);
 
-					dispatchActions.setHasError();
-					dispatchActions.setAfterProcessing( response );
+					setHasError( checkoutContextDispatch );
+					setAfterProcessing( checkoutContextDispatch, response );
 					setIsProcessingOrder( false );
 				} );
 			} );
@@ -261,7 +269,7 @@ const CheckoutProcessor = () => {
 		shouldSavePayment,
 		cartNeedsPayment,
 		receiveCart,
-		dispatchActions,
+		checkoutContextDispatch,
 		orderNotes,
 		shouldCreateAccount,
 	] );

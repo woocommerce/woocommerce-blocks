@@ -24,7 +24,11 @@ import {
 	reducer as emitReducer,
 	emitEvent,
 } from './event-emit';
-import { useCheckoutContext } from '../checkout-state';
+import {
+	useCheckoutContext,
+	incrementCalculating,
+	decrementCalculating,
+} from '../checkout-state';
 import { useCustomerDataContext } from '../customer';
 import { useStoreCart } from '../../../hooks/cart/use-store-cart';
 import { useSelectShippingRates } from '../../../hooks/shipping/use-select-shipping-rates';
@@ -51,7 +55,7 @@ export const useShippingDataContext = () => {
  * @param {React.ReactElement} props.children
  */
 export const ShippingDataProvider = ( { children } ) => {
-	const { dispatchActions } = useCheckoutContext();
+	const { dispatch: checkoutContextDispatch } = useCheckoutContext();
 	const { shippingAddress, setShippingAddress } = useCustomerDataContext();
 	const {
 		cartNeedsShipping: needsShipping,
@@ -101,20 +105,20 @@ export const ShippingDataProvider = ( { children } ) => {
 	// increment/decrement checkout calculating counts when shipping is loading.
 	useEffect( () => {
 		if ( shippingRatesLoading ) {
-			dispatchActions.incrementCalculating();
+			incrementCalculating( checkoutContextDispatch );
 		} else {
-			dispatchActions.decrementCalculating();
+			decrementCalculating( checkoutContextDispatch );
 		}
-	}, [ shippingRatesLoading, dispatchActions ] );
+	}, [ shippingRatesLoading, checkoutContextDispatch ] );
 
 	// increment/decrement checkout calculating counts when shipping rates are being selected.
 	useEffect( () => {
 		if ( isSelectingRate ) {
-			dispatchActions.incrementCalculating();
+			incrementCalculating( checkoutContextDispatch );
 		} else {
-			dispatchActions.decrementCalculating();
+			decrementCalculating( checkoutContextDispatch );
 		}
-	}, [ isSelectingRate, dispatchActions ] );
+	}, [ isSelectingRate, checkoutContextDispatch ] );
 
 	// set shipping error status if there are shipping error codes
 	useEffect( () => {

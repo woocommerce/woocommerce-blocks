@@ -17,7 +17,7 @@ import deprecated from '@wordpress/deprecated';
 /**
  * Internal dependencies
  */
-import { actions } from './actions';
+import { actions, ActionType } from './actions';
 import { reducer } from './reducer';
 import { getPaymentResultFromCheckoutResponse } from './utils';
 import {
@@ -25,10 +25,7 @@ import {
 	STATUS,
 	DEFAULT_CHECKOUT_STATE_DATA,
 } from './constants';
-import type {
-	CheckoutStateDispatchActions,
-	CheckoutStateContextType,
-} from './types';
+import type { CheckoutStateContextType, CheckoutResponse } from './types';
 import {
 	EMIT_TYPES,
 	useEventEmitters,
@@ -43,14 +40,122 @@ import { useCheckoutNotices } from '../../../hooks/use-checkout-notices';
 import { useEmitResponse } from '../../../hooks/use-emit-response';
 import { isObject } from '../../../../utils/type-guards';
 
-/**
- * @typedef {import('@woocommerce/type-defs/contexts').CheckoutDataContext} CheckoutDataContext
- */
-
 const CheckoutContext = createContext( DEFAULT_CHECKOUT_STATE_DATA );
 
 export const useCheckoutContext = (): CheckoutStateContextType => {
 	return useContext( CheckoutContext );
+};
+
+/**
+ * Dispatches an action that submits the checkout form.
+ */
+export const submitCheckout = (
+	dispatch: React.Dispatch< ActionType >
+): void => {
+	dispatch( actions.setBeforeProcessing() );
+};
+
+/**
+ * Dispatches an action that resets the checkout to a pristine state.
+ */
+export const resetCheckout = (
+	dispatch: React.Dispatch< ActionType >
+): void => {
+	dispatch( actions.setPristine() );
+};
+
+/**
+ * Dispatches an action that sets the redirectUrl.
+ */
+export const setRedirectUrl = (
+	dispatch: React.Dispatch< ActionType >,
+	url: string
+): void => {
+	dispatch( actions.setRedirectUrl( url ) );
+};
+
+/**
+ * Dispatches an action that sets the checkout status to having an error.
+ */
+export const setHasError = (
+	dispatch: React.Dispatch< ActionType >,
+	hasError = true
+): void => {
+	dispatch( actions.setHasError( hasError ) );
+};
+
+/**
+ * Dispatches an action that increments  the calculating state for checkout by one.
+ */
+export const incrementCalculating = (
+	dispatch: React.Dispatch< ActionType >
+): void => {
+	dispatch( actions.incrementCalculating() );
+};
+
+/**
+ * Dispatches an action that decrements the calculating state for checkout by one.
+ */
+export const decrementCalculating = (
+	dispatch: React.Dispatch< ActionType >
+): void => {
+	dispatch( actions.decrementCalculating() );
+};
+
+/**
+ * Dispatches an action that stores the customer ID.
+ */
+export const setCustomerId = (
+	dispatch: React.Dispatch< ActionType >,
+	id: number
+): void => {
+	dispatch( actions.setCustomerId( id ) );
+};
+
+/**
+ * Dispatches an action that stores the draft order ID and key.
+ */
+export const setOrderId = (
+	dispatch: React.Dispatch< ActionType >,
+	id: number
+): void => {
+	dispatch( actions.setOrderId( id ) );
+};
+
+/**
+ * Dispatches an action that sets the order notes.
+ */
+export const setOrderNotes = (
+	dispatch: React.Dispatch< ActionType >,
+	orderNotes: string
+): void => {
+	dispatch( actions.setOrderNotes( orderNotes ) );
+};
+
+/**
+ * Function to update the shouldCreateAccount property.
+ */
+export const setShouldCreateAccount = (
+	dispatch: React.Dispatch< ActionType >,
+	value: boolean
+): void => {
+	dispatch( actions.setShouldCreateAccount( value ) );
+};
+
+/**
+ * Dispatches an action that sets the checkout status to after processing and also sets the response data accordingly.
+ */
+export const setAfterProcessing = (
+	dispatch: React.Dispatch< ActionType >,
+	response: CheckoutResponse
+): void => {
+	const paymentResult = getPaymentResultFromCheckoutResponse( response );
+
+	if ( paymentResult.redirectUrl ) {
+		setRedirectUrl( dispatch, paymentResult.redirectUrl );
+	}
+	dispatch( actions.setProcessingResponse( paymentResult ) );
+	dispatch( actions.setAfterProcessing() );
 };
 
 /**
@@ -125,40 +230,6 @@ export const CheckoutStateProvider = ( {
 			return onCheckoutValidationBeforeProcessing( ...args );
 		};
 	}, [ onCheckoutValidationBeforeProcessing ] );
-
-	const dispatchActions = useMemo(
-		(): CheckoutStateDispatchActions => ( {
-			resetCheckout: () => void dispatch( actions.setPristine() ),
-			setRedirectUrl: ( url ) =>
-				void dispatch( actions.setRedirectUrl( url ) ),
-			setHasError: ( hasError ) =>
-				void dispatch( actions.setHasError( hasError ) ),
-			incrementCalculating: () =>
-				void dispatch( actions.incrementCalculating() ),
-			decrementCalculating: () =>
-				void dispatch( actions.decrementCalculating() ),
-			setCustomerId: ( id ) =>
-				void dispatch( actions.setCustomerId( id ) ),
-			setOrderId: ( orderId ) =>
-				void dispatch( actions.setOrderId( orderId ) ),
-			setOrderNotes: ( orderNotes ) =>
-				void dispatch( actions.setOrderNotes( orderNotes ) ),
-			setAfterProcessing: ( response ) => {
-				const paymentResult = getPaymentResultFromCheckoutResponse(
-					response
-				);
-
-				if ( paymentResult.redirectUrl ) {
-					dispatch(
-						actions.setRedirectUrl( paymentResult.redirectUrl )
-					);
-				}
-				dispatch( actions.setProcessingResponse( paymentResult ) );
-				dispatch( actions.setAfterProcessing() );
-			},
-		} ),
-		[]
-	);
 
 	// emit events.
 	useEffect( () => {
@@ -346,7 +417,6 @@ export const CheckoutStateProvider = ( {
 		checkoutState.processingResponse,
 		previousStatus,
 		previousHasError,
-		dispatchActions,
 		addErrorNotice,
 		isErrorResponse,
 		isFailResponse,
@@ -363,6 +433,7 @@ export const CheckoutStateProvider = ( {
 	}, [ dispatchCheckoutEvent ] );
 
 	const checkoutData: CheckoutStateContextType = {
+		dispatch,
 		onSubmit,
 		isComplete: checkoutState.status === STATUS.COMPLETE,
 		isIdle: checkoutState.status === STATUS.IDLE,
@@ -376,7 +447,6 @@ export const CheckoutStateProvider = ( {
 		onCheckoutValidationBeforeProcessing,
 		onCheckoutAfterProcessingWithSuccess,
 		onCheckoutAfterProcessingWithError,
-		dispatchActions,
 		isCart,
 		orderId: checkoutState.orderId,
 		hasOrder: !! checkoutState.orderId,
