@@ -36,7 +36,6 @@ const CheckoutSidebar = ( {
 		removeCoupon,
 		isApplyingCoupon,
 		isRemovingCoupon,
-		isCouponAddedSuccessfully,
 	} = useStoreCartCoupons();
 
 	const { needsShipping } = useShippingDataContext();
@@ -68,7 +67,6 @@ const CheckoutSidebar = ( {
 					onSubmit={ applyCoupon }
 					initialOpen={ false }
 					isLoading={ isApplyingCoupon }
-					isCouponAddedSuccessfully={ isCouponAddedSuccessfully }
 				/>
 			) }
 			{ needsShipping && (

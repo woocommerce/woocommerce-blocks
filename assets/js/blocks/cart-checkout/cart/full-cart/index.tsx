@@ -84,7 +84,6 @@ const Cart = ( { attributes }: CartProps ) => {
 		isApplyingCoupon,
 		isRemovingCoupon,
 		appliedCoupons,
-		isCouponAddedSuccessfully,
 	} = useStoreCartCoupons();
 
 	const { addErrorNotice } = useStoreNotices();
@@ -151,9 +150,6 @@ const Cart = ( { attributes }: CartProps ) => {
 						<TotalsCoupon
 							onSubmit={ applyCoupon }
 							isLoading={ isApplyingCoupon }
-							isCouponAddedSuccessfully={
-								isCouponAddedSuccessfully
-							}
 						/>
 					) }
 					{ cartNeedsShipping && (

@@ -25,7 +25,6 @@ const TotalsCoupon = ( {
 	isLoading = false,
 	initialOpen = false,
 	onSubmit = () => {},
-	isCouponAddedSuccessfully = false,
 } ) => {
 	const [ couponValue, setCouponValue ] = useState( '' );
 	const currentIsLoading = useRef( false );
@@ -109,14 +108,6 @@ const TotalsCoupon = ( {
 						propertyName="coupon"
 						elementId={ textInputId }
 					/>
-					{ isCouponAddedSuccessfully && (
-						<div className="wc-block-components-totals-coupon__success-notice">
-							{ __(
-								'Discount applied successfully!',
-								'woo-gutenberg-products-block'
-							) }
-						</div>
-					) }
 				</div>
 			</LoadingMask>
 		</Panel>

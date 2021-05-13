@@ -28,7 +28,6 @@ export interface StoreCartCoupon {
 	removeCoupon: ( coupon: string ) => void;
 	isApplyingCoupon: boolean;
 	isRemovingCoupon: boolean;
-	isCouponAddedSuccessfully: boolean;
 }
 
 export interface StoreCart {

@@ -29,10 +29,6 @@ export const useStoreCartCoupons = (): StoreCartCoupon => {
 	const { cartCoupons, cartIsLoading } = useStoreCart();
 	const { addErrorNotice, addSnackbarNotice } = useStoreNotices();
 	const { setValidationErrors } = useValidationContext();
-	const [
-		isCouponAddedSuccessfully,
-		setIsCouponAddedSuccessfully,
-	] = useState( false );
 
 	const results: Pick<
 		StoreCartCoupon,
@@ -68,12 +64,6 @@ export const useStoreCartCoupons = (): StoreCartCoupon => {
 								{
 									id: 'coupon-form',
 								}
-							);
-
-							setIsCouponAddedSuccessfully( true );
-							setTimeout(
-								() => setIsCouponAddedSuccessfully( false ),
-								4000
 							);
 						}
 					} )
@@ -124,13 +114,12 @@ export const useStoreCartCoupons = (): StoreCartCoupon => {
 				isRemovingCoupon,
 			};
 		},
-		[ addErrorNotice, addSnackbarNotice, isCouponAddedSuccessfully ]
+		[ addErrorNotice, addSnackbarNotice ]
 	);
 
 	return {
 		appliedCoupons: cartCoupons,
 		isLoading: cartIsLoading,
-		isCouponAddedSuccessfully,
 		...results,
 	};
 };
