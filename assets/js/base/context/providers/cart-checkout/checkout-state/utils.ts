@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
-import { fromEntriesPolyfill } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
