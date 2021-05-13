@@ -59,10 +59,6 @@ module.exports = {
 		'react-hooks/exhaustive-deps': 'error',
 		'react/jsx-fragments': [ 'error', 'syntax' ],
 		'@wordpress/no-global-active-element': 'warn',
-		'@typescript-eslint/no-unused-vars': [
-			'error',
-			{ ignoreRestSiblings: true },
-		],
 	},
 	overrides: [
 		{
@@ -86,6 +82,10 @@ module.exports = {
 				'jsdoc/require-param': 'off',
 				'no-shadow': 'off',
 				'@typescript-eslint/no-shadow': [ 'error' ],
+				'@typescript-eslint/no-unused-vars': [
+					'error',
+					{ ignoreRestSiblings: true },
+				],
 			},
 		},
 		{
