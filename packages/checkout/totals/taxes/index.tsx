@@ -55,7 +55,7 @@ const TotalsTaxes = ( {
 						className="wc-block-components-totals-taxes__tax-line"
 						currency={ currency }
 						label={ label }
-						value={ parseInt( price, 10 ) }
+						value={ null }
 					/>
 				);
 			} ) }{ ' ' }
