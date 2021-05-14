@@ -133,10 +133,6 @@ describe( `${ block.name } Block (frontend)`, () => {
 		expect( selectedValue ).toBeGreaterThan( 1 );
 		await scrollTo( '.wc-block-cart__submit-button' );
 
-		page.on( 'error', ( err ) => {
-			console.log( 'error: ', err );
-		} );
-
 		await Promise.all( [
 			page.waitForNavigation(),
 			page.click( '.wc-block-cart__submit-button' ),
@@ -145,7 +141,8 @@ describe( `${ block.name } Block (frontend)`, () => {
 		await page.waitForSelector( 'h1' );
 		let element = await page.$( 'h1' );
 		let title = await page.evaluate( ( el ) => el.textContent, element );
-		expect( title ).toBe( 'Checkout Block' );
+		expect( title ).toContain( 'Checkout' );
+		expect( page.url() ).toContain( '/checkout-block2' );
 
 		await page.goBack( { waitUntil: 'networkidle0' } );
 
