@@ -170,7 +170,7 @@ function observeConsoleLogging() {
 			return;
 		}
 
-		const logFunction = OBSERVED_CONSOLE_MESSAGE_TYPES[ type ];
+		// const logFunction = OBSERVED_CONSOLE_MESSAGE_TYPES[ type ];
 
 		// As of Puppeteer 1.6.1, `message.text()` wrongly returns an object of
 		// type JSHandle for error logging, instead of the expected string.
@@ -195,7 +195,7 @@ function observeConsoleLogging() {
 		// failure.
 
 		// eslint-disable-next-line no-console
-		console[ logFunction ]( text );
+		// console[ logFunction ]( text );
 	} );
 }
 
