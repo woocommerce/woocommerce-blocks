@@ -136,7 +136,11 @@ describe( `${ block.name } Block (frontend)`, () => {
 			page.waitForNavigation(),
 			page.click( '.wc-block-cart__submit-button' ),
 		] );
-		await page.evaluate( () => window.find( 'Checkout Block' ) );
+		const isTitleCorrect = await page.evaluate( () =>
+			window.find( 'Checkout Block' )
+		);
+		expect( isTitleCorrect ).toBe( true );
+
 		await page.goBack( { waitUntil: 'networkidle0' } );
 
 		await page
