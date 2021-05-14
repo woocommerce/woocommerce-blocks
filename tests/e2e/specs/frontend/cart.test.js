@@ -131,19 +131,21 @@ describe( `${ block.name } Block (frontend)`, () => {
 
 		// This is to ensure we've clicked the right cart button.
 		expect( selectedValue ).toBeGreaterThan( 1 );
-		await scrollTo( '.wc-block-cart__submit-button' );
 
+		await scrollTo( '.wc-block-cart__submit-button' );
 		await Promise.all( [
 			page.waitForNavigation(),
 			page.click( '.wc-block-cart__submit-button' ),
 		] );
 
+		// go to checkout page
 		await page.waitForSelector( 'h1' );
 		let element = await page.$( 'h1' );
 		let title = await page.evaluate( ( el ) => el.textContent, element );
+		// shortcode checkout on CI / block on local env
 		expect( title ).toContain( 'Checkout' );
-		expect( page.url() ).toContain( '/checkout-block2' );
 
+		// navigate back to cart block page
 		await page.goBack( { waitUntil: 'networkidle0' } );
 
 		await page
