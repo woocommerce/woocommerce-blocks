@@ -1,0 +1,31 @@
+# Available endpoints to extend with ExtendRestAPI
+
+To see how to add your data to Store API using ExtendRestAPI, [check this document](./extend-rest-api-add-data.md).
+
+This is a list of Available endpoints that you can extend, if you want to add a new endpoint, [check this document](./extend-rest-api-new-endpoint.md).
+
+## `wc/store/cart`
+
+The main cart endpoint is exntesible via ExtendRestAPI, the data is available on `exntesions` key in the response.
+
+### Passes Parameters:
+
+- `data_callback`: none.
+- `schema_callback`: none.
+
+### Key:
+
+- `CartSchema::IDENTIFIER`
+
+## `wc/store/cart/items`
+
+The items endpoint, which is also available on `wc/store/cart` inside the `items` key. The data would be avalaible inside each item of the `items` array.
+
+### Passed Parameters:
+
+- `data_callback`: `$cart_item`.
+- `schema_callback` none.
+
+### Key:
+
+- `CartItemSchema::IDENTIFIER`
