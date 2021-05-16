@@ -110,9 +110,6 @@ const requestToExternalInsideGB = ( request ) => {
 	if ( request === 'wordpress-components' ) {
 		return [ 'wp', 'components' ];
 	}
-	if ( request === '@woocommerce/blocks-checkout' ) {
-		return [ 'wc', 'blocksCheckoutEditor' ];
-	}
 	return requestToExternal( request );
 };
 
@@ -128,9 +125,6 @@ const requestToHandle = ( request ) => {
 const requestToHandleInsideGB = ( request ) => {
 	if ( request === 'wordpress-components' ) {
 		return 'wp-components';
-	}
-	if ( request === '@woocommerce/blocks-checkout' ) {
-		return 'wc-blocks-checkout-editor';
 	}
 	return requestToHandle( request );
 };

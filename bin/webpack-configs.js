@@ -164,7 +164,7 @@ const getCoreEditorConfig = ( options = {} ) => {
 				return `${ kebabCase( chunkData.chunk.name ) }-editor.js`;
 			},
 			path: path.resolve( __dirname, '../build/' ),
-			library: [ 'wc', '[name]-editor' ],
+			library: [ 'wc', '[name]' ],
 			libraryTarget: 'this',
 			// This fixes an issue with multiple webpack projects using chunking
 			// overwriting each other's chunk loader function.
