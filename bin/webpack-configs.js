@@ -153,6 +153,7 @@ woocommerce_blocks_env = ${ NODE_ENV }
 	};
 };
 
+// This is meant to fix issue #3839 in which we have two instances of SlotFillProvider context. Should be deleted once wordpress/gutenberg#27462.
 const getCoreEditorConfig = ( options = {} ) => {
 	return {
 		...getCoreConfig( options ),
@@ -259,7 +260,7 @@ const getMainConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			...mainBlocksPlugins,
+			...sharedPlugins,
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Main', options.fileSuffix )
 			),
