@@ -61,6 +61,7 @@ final class AssetsController {
 
 		if ( Package::feature()->is_feature_plugin_build() ) {
 			$this->api->register_script( 'wc-blocks-checkout', 'build/blocks-checkout.js', [] );
+			$this->api->register_script( 'wc-blocks-checkout-editor', 'build/blocks-checkout-editor.js', [] );
 		}
 
 		wp_add_inline_script(
