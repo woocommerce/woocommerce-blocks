@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import { ACTION, DEFAULT_STATE, STATUS } from './constants';
-import type { ActionType } from './actions';
+import { DEFAULT_STATE, STATUS } from './constants';
+import { ActionType, ACTION } from './actions';
 import type { CheckoutStateContextState, PaymentResultDataType } from './types';
 
 /**

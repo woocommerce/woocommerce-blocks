@@ -11,25 +11,6 @@ import type {
 	CheckoutStateContextState,
 } from './types';
 
-export enum ACTION {
-	SET_IDLE = 'set_idle',
-	SET_PRISTINE = 'set_pristine',
-	SET_REDIRECT_URL = 'set_redirect_url',
-	SET_COMPLETE = 'set_checkout_complete',
-	SET_BEFORE_PROCESSING = 'set_before_processing',
-	SET_AFTER_PROCESSING = 'set_after_processing',
-	SET_PROCESSING_RESPONSE = 'set_processing_response',
-	SET_PROCESSING = 'set_checkout_is_processing',
-	SET_HAS_ERROR = 'set_checkout_has_error',
-	SET_NO_ERROR = 'set_checkout_no_error',
-	SET_CUSTOMER_ID = 'set_checkout_customer_id',
-	SET_ORDER_ID = 'set_checkout_order_id',
-	SET_ORDER_NOTES = 'set_checkout_order_notes',
-	INCREMENT_CALCULATING = 'increment_calculating',
-	DECREMENT_CALCULATING = 'decrement_calculating',
-	SET_SHOULD_CREATE_ACCOUNT = 'set_should_create_account',
-}
-
 export enum STATUS {
 	// Checkout is in it's initialized state.
 	PRISTINE = 'pristine',
