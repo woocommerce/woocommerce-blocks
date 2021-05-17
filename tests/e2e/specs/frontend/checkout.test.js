@@ -119,11 +119,10 @@ describe( `${ block.name } Block (frontend)`, () => {
 
 		await merchant.logout();
 	} );
-	beforeEach( async () => {
-		await jestPuppeteer.resetBrowser();
-	} );
+
 	afterAll( async () => {
-		await shopper.emptyCart();
+		await shopper.goToCart();
+		await shopper.removeFromCart( 'Woo Single #1' );
 		await page.evaluate( () => {
 			localStorage.removeItem(
 				'wc-blocks_dismissed_compatibility_notices'
