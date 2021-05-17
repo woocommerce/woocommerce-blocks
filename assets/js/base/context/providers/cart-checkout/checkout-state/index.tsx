@@ -208,9 +208,8 @@ export const CheckoutStateProvider = ( {
 			let errorResponse = null;
 			observerResponses.forEach( ( response ) => {
 				if (
-					isObject( response ) &&
-					( isErrorResponse( response ) ||
-						isFailResponse( response ) )
+					isErrorResponse( response ) ||
+					isFailResponse( response )
 				) {
 					if ( response.message ) {
 						const errorOptions = response.messageContext
@@ -297,17 +296,13 @@ export const CheckoutStateProvider = ( {
 					>;
 
 					observerResponses.forEach( ( response ) => {
-						if (
-							isObject( response ) &&
-							isSuccessResponse( response )
-						) {
+						if ( isSuccessResponse( response ) ) {
 							// the last observer response always "wins" for success.
 							successResponse = response;
 						}
 						if (
-							isObject( response ) &&
-							( isErrorResponse( response ) ||
-								isFailResponse( response ) )
+							isErrorResponse( response ) ||
+							isFailResponse( response )
 						) {
 							errorResponse = response;
 						}
