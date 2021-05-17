@@ -130,7 +130,12 @@ describe( `${ block.name } Block (frontend)`, () => {
 		} );
 	} );
 
-	it( 'should display cart items in order summary', async () => {
+	it( 'should display an empty cart message when cart is empty', async () => {
+		await shopper.goToCheckoutBlock();
+		await page.waitForSelector( 'strong', { text: 'Your cart is empty!' } );
+	} );
+
+	it( 'allows customer to choose available payment methods', async () => {
 		await page.goto( productPermalink );
 		await shopper.addToCart();
 		await shopper.goToCheckoutBlock();
@@ -140,13 +145,9 @@ describe( `${ block.name } Block (frontend)`, () => {
 			`1`,
 			singleProductPrice
 		);
-	} );
-
-	it( 'allows customer to choose available payment methods', async () => {
-		await page.goto( productPermalink );
+		await page.goBack( { waitUntil: 'networkidle2' } );
 		await shopper.addToCart();
 		await shopper.goToCheckoutBlock();
-
 		await shopper.productIsInCheckoutBlock(
 			simpleProductName,
 			`2`,
