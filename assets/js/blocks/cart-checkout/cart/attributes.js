@@ -23,7 +23,7 @@ const blockAttributes = {
 	},
 	showRateAfterTaxName: {
 		type: 'boolean',
-		default: getSetting( 'displayCartPricesIncludingTax', false ),
+		default: true,
 	},
 };
 
