@@ -3,9 +3,8 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect, useRef } from '@wordpress/element';
-import { Button, Panel } from '@woocommerce/blocks-checkout';
+import { Button, Panel, Label } from '@woocommerce/blocks-checkout';
 import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
-import Label from '@woocommerce/base-components/label';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
 import PropTypes from 'prop-types';
 import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
