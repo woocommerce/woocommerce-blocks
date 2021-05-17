@@ -212,7 +212,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 					) }
 					initialOpen={ false }
 				>
-					{ renderAttributeControl() }
+					{ renderAttributeControl( { isCompact: true } ) }
 				</PanelBody>
 			</InspectorControls>
 		);
@@ -294,7 +294,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 		} );
 	};
 
-	const renderAttributeControl = () => {
+	const renderAttributeControl = ( { isCompact } ) => {
 		const messages = {
 			clear: __(
 				'Clear selected attribute',
@@ -346,6 +346,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 				onChange={ onChange }
 				messages={ messages }
 				isSingle
+				isCompact={ isCompact }
 			/>
 		);
 	};
