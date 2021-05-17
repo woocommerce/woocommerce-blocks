@@ -67,23 +67,6 @@ const ProductControl = ( {
 			}
 		);
 
-		const itemArgs = Object.assign( {}, args );
-		delete itemArgs.isSingle;
-
-		const a11yProps = {
-			role: 'menuitemradio',
-		};
-
-		if ( item.breadcrumbs.length ) {
-			a11yProps[
-				'aria-label'
-			] = `${ item.breadcrumbs[ 0 ] }: ${ item.name }`;
-		}
-
-		if ( variationsCount ) {
-			a11yProps[ 'aria-expanded' ] = item.id === expandedProduct;
-		}
-
 		// Top level items custom rendering based on SearchListItem.
 		if ( ! item.breadcrumbs.length ) {
 			return (
@@ -128,14 +111,20 @@ const ProductControl = ( {
 			);
 		}
 
-		if ( ! isEmpty( item.variation ) ) {
-			item.name = item.variation;
-		}
+		const itemArgs = isEmpty( item.variation )
+			? args
+			: {
+					...args,
+					item: {
+						...args.item,
+						name: item.variation,
+					},
+					'aria-label': `${ item.breadcrumbs[ 0 ] }: ${ item.variation }`,
+			  };
 
 		return (
 			<SearchListItem
-				{ ...args }
-				{ ...a11yProps }
+				{ ...itemArgs }
 				className={ classes }
 				name="variations"
 			/>
