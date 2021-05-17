@@ -14,7 +14,6 @@ import {
  * Internal dependencies
  */
 import {
-	getBlockPagePermalink,
 	getNormalPagePermalink,
 	scrollTo,
 	shopper,
@@ -42,11 +41,9 @@ describe( `${ block.name } Block (frontend)`, () => {
 		await page.evaluate( () => {
 			localStorage.setItem(
 				'wc-blocks_dismissed_compatibility_notices',
-				'["checkout","cart"]'
+				'["checkout"]'
 			);
 		} );
-		await switchUserToAdmin();
-
 		await merchant.login();
 
 		// Go to general settings page
@@ -121,6 +118,7 @@ describe( `${ block.name } Block (frontend)`, () => {
 	} );
 
 	afterAll( async () => {
+		// empty cart from shortcode page
 		await shopper.goToCart();
 		await shopper.removeFromCart( 'Woo Single #1' );
 		await page.evaluate( () => {
@@ -131,7 +129,6 @@ describe( `${ block.name } Block (frontend)`, () => {
 	} );
 
 	it( 'should display an empty cart message when cart is empty', async () => {
-		// empty cart
 		await shopper.goToCheckoutBlock();
 		const html = await page.content();
 

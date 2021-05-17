@@ -52,6 +52,7 @@ describe( `${ block.name } Block (frontend)`, () => {
 		await shopper.addToCart();
 	} );
 	afterAll( async () => {
+		// empty cart from shortcode page
 		await shopper.goToCart();
 		await shopper.removeFromCart( 'Woo Single #1' );
 		await page.evaluate( () => {
