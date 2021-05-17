@@ -473,7 +473,15 @@ exports[`Testing cart Contains a Taxes section if Core options are set to show i
           </span>
           <div
             class="wc-block-components-totals-item__description"
-          />
+          >
+            <div
+              class="wc-block-components-totals-item__description wc-block-components-totals-shipping__via"
+            >
+              via
+               
+              Free shipping
+            </div>
+          </div>
         </div>
         <fieldset
           class="wc-block-components-totals-shipping__fieldset"
@@ -1156,7 +1164,15 @@ exports[`Testing cart Shows individual tax lines if the store is set to do so 1`
           </span>
           <div
             class="wc-block-components-totals-item__description"
-          />
+          >
+            <div
+              class="wc-block-components-totals-item__description wc-block-components-totals-shipping__via"
+            >
+              via
+               
+              Free shipping
+            </div>
+          </div>
         </div>
         <fieldset
           class="wc-block-components-totals-shipping__fieldset"
@@ -1318,11 +1334,6 @@ exports[`Testing cart Shows individual tax lines if the store is set to do so 1`
               class="wc-block-components-totals-item__label"
             >
               Sales tax
-            </span>
-            <span
-              class="wc-block-formatted-money-amount wc-block-components-formatted-money-amount wc-block-components-totals-item__value"
-            >
-              $6.00
             </span>
             <div
               class="wc-block-components-totals-item__description"
@@ -1858,7 +1869,15 @@ exports[`Testing cart Shows rate percentages after tax lines if the block is set
           </span>
           <div
             class="wc-block-components-totals-item__description"
-          />
+          >
+            <div
+              class="wc-block-components-totals-item__description wc-block-components-totals-shipping__via"
+            >
+              via
+               
+              Free shipping
+            </div>
+          </div>
         </div>
         <fieldset
           class="wc-block-components-totals-shipping__fieldset"
@@ -2020,11 +2039,6 @@ exports[`Testing cart Shows rate percentages after tax lines if the block is set
               class="wc-block-components-totals-item__label"
             >
               Sales tax 20%
-            </span>
-            <span
-              class="wc-block-formatted-money-amount wc-block-components-formatted-money-amount wc-block-components-totals-item__value"
-            >
-              $6.00
             </span>
             <div
               class="wc-block-components-totals-item__description"
