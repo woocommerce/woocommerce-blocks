@@ -56,7 +56,7 @@ export const reducer = (
 		case ACTION.SET_PROCESSING_RESPONSE:
 			newState = {
 				...state,
-				processingResponse: ( data as PaymentResultDataType ) || null,
+				processingResponse: data as PaymentResultDataType,
 			};
 			break;
 
