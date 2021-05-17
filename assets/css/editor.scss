@@ -50,6 +50,7 @@
 
 // Selectors with extra specificity to override some editor styles.
 .woocommerce-search-list__list.woocommerce-search-list__list {
+	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
 }
