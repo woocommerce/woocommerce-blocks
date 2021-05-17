@@ -51,9 +51,11 @@ describe( `${ block.name } Block (frontend)`, () => {
 		await page.goto( productPermalink );
 		await shopper.addToCart();
 	} );
-
+	// beforeEach( async () => {
+	// 	await jestPuppeteer.resetBrowser();
+	// } );
 	afterAll( async () => {
-		await shopper.removeFromCart( 'Woo Single #1' );
+		await shopper.emptyCart();
 		await page.evaluate( () => {
 			localStorage.removeItem(
 				'wc-blocks_dismissed_compatibility_notices'

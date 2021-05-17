@@ -36,7 +36,6 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 )
 
 describe( `${ block.name } Block (frontend)`, () => {
 	let productPermalink;
-	let cartBlockPermalink;
 
 	beforeAll( async () => {
 		// prevent CartCheckoutCompatibilityNotice from appearing
@@ -47,7 +46,6 @@ describe( `${ block.name } Block (frontend)`, () => {
 			);
 		} );
 		await switchUserToAdmin();
-		cartBlockPermalink = await getBlockPagePermalink( 'Cart Block' );
 
 		await merchant.login();
 
@@ -121,9 +119,11 @@ describe( `${ block.name } Block (frontend)`, () => {
 
 		await merchant.logout();
 	} );
-
+	// beforeEach( async () => {
+	// 	await jestPuppeteer.resetBrowser();
+	// } );
 	afterAll( async () => {
-		await shopper.removeFromCart( simpleProductName );
+		await shopper.emptyCart();
 		await page.evaluate( () => {
 			localStorage.removeItem(
 				'wc-blocks_dismissed_compatibility_notices'
@@ -133,21 +133,6 @@ describe( `${ block.name } Block (frontend)`, () => {
 
 	it( 'should display an empty cart message when cart is empty', async () => {
 		// empty cart
-		await page.goto( cartBlockPermalink );
-		console.log(
-			'process.env.PUPPETEER_HEADLESS',
-			process.env.PUPPETEER_HEADLESS
-		);
-
-		const [ emptyCartButton ] = await page.$x(
-			"//button[contains(text(), 'Empty cart')]"
-		);
-		if ( emptyCartButton ) {
-			await emptyCartButton.click();
-			await page.waitForSelector( 'h2', {
-				text: 'Your cart is currently empty!',
-			} );
-		}
 		await shopper.goToCheckoutBlock();
 		const html = await page.content();
 
