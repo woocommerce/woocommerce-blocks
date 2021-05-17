@@ -68,7 +68,8 @@ export const reducer = (
 							status: STATUS.COMPLETE,
 							redirectUrl:
 								data !== undefined &&
-								typeof data.redirectUrl === 'string'
+								typeof data.redirectUrl === 'string' &&
+								data.redirectUrl
 									? data.redirectUrl
 									: state.redirectUrl,
 					  }
