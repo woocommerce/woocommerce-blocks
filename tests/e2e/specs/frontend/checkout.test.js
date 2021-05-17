@@ -36,12 +36,7 @@ describe( `${ block.name } Block (frontend)`, () => {
 	let productPermalink;
 
 	beforeAll( async () => {
-		//prevent CartCheckoutCompatibilityNotice from appearing
-		await page.evaluate( () => {
-			localStorage.removeItem(
-				'wc-blocks_dismissed_compatibility_notices'
-			);
-		} );
+		// prevent CartCheckoutCompatibilityNotice from appearing
 		await page.evaluate( () => {
 			localStorage.setItem(
 				'wc-blocks_dismissed_compatibility_notices',
