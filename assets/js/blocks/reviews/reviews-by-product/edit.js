@@ -49,8 +49,8 @@ const ReviewsByProductEditor = ( {
 				countLabel={ sprintf(
 					/* translators: %d is the review count. */
 					_n(
-						'%d Review',
-						'%d Reviews',
+						'%d review',
+						'%d reviews',
 						item.review_count,
 						'woo-gutenberg-products-block'
 					),

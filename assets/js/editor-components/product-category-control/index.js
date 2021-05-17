@@ -61,8 +61,8 @@ const ProductCategoryControl = ( {
 			? sprintf(
 					/* translators: %d is the count of reviews. */
 					_n(
-						'%d Review',
-						'%d Reviews',
+						'%d review',
+						'%d reviews',
 						item.review_count,
 						'woo-gutenberg-products-block'
 					),
@@ -71,8 +71,8 @@ const ProductCategoryControl = ( {
 			: sprintf(
 					/* translators: %d is the count of products. */
 					_n(
-						'%d Product',
-						'%d Products',
+						'%d product',
+						'%d products',
 						item.count,
 						'woo-gutenberg-products-block'
 					),

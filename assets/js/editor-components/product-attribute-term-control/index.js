@@ -94,8 +94,8 @@ const ProductAttributeTermControl = ( {
 				countLabel={ sprintf(
 					/* translators: %d is the count of products. */
 					_n(
-						'%d Product',
-						'%d Products',
+						'%d product',
+						'%d products',
 						item.count,
 						'woo-gutenberg-products-block'
 					),
