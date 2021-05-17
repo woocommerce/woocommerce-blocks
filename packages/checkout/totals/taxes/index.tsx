@@ -45,7 +45,7 @@ const TotalsTaxes = ( {
 		false
 	) ? (
 		<>
-			{ taxLines.map( ( { name, price, rate }, i ) => {
+			{ taxLines.map( ( { name, rate }, i ) => {
 				const label = `${ name }${
 					showRateAfterTaxName ? ` ${ rate }` : ''
 				}`;

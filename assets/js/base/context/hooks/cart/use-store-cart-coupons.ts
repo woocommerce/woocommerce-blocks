@@ -8,7 +8,6 @@ import { useSelect } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { decodeEntities } from '@wordpress/html-entities';
 import type { StoreCartCoupon } from '@woocommerce/types';
-import { useState } from 'wordpress-element';
 
 /**
  * Internal dependencies
