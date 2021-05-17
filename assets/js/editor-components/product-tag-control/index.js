@@ -138,7 +138,7 @@ class ProductTagControl extends Component {
 					list={ list }
 					isLoading={ loading }
 					selected={ selected
-						.map( ( { id } ) =>
+						.map( ( id ) =>
 							list.find( ( listItem ) => listItem.id === id )
 						)
 						.filter( Boolean ) }
