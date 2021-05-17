@@ -16,7 +16,9 @@ export const shopper = {
 			`Checkout Block`
 		);
 
-		await page.goto( checkoutBlockPermalink );
+		await page.goto( checkoutBlockPermalink, {
+			waitUntil: 'networkidle0',
+		} );
 		await page.waitForSelector( 'h1', { text: 'Checkout' } );
 	},
 
