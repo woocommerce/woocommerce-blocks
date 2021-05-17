@@ -52,25 +52,15 @@ export const shouldRetry = ( response: unknown ): boolean => {
 	);
 };
 
-interface EmitResponseApi {
-	responseTypes: typeof responseTypes;
-	noticeContexts: typeof noticeContexts;
-	shouldRetry: typeof shouldRetry;
-	isSuccessResponse: typeof isSuccessResponse;
-	isErrorResponse: typeof isErrorResponse;
-	isFailResponse: typeof isFailResponse;
-}
-
 /**
  * A custom hook exposing response utilities for emitters.
  */
-export const useEmitResponse = (): EmitResponseApi => {
-	return {
+export const useEmitResponse = () =>
+	( {
 		responseTypes,
 		noticeContexts,
 		shouldRetry,
 		isSuccessResponse,
 		isErrorResponse,
 		isFailResponse,
-	};
-};
+	} as const );
