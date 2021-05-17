@@ -59,6 +59,16 @@ const ProductAttributeTermControl = ( {
 						};
 					} }
 					name="attributes"
+					countLabel={ sprintf(
+						/* translators: %d is the count of terms. */
+						_n(
+							'%d term',
+							'%d terms',
+							item.count,
+							'woo-gutenberg-products-block'
+						),
+						item.count
+					) }
 					aria-label={ sprintf(
 						/* translators: %1$s is the item name, %2$d is the count of terms for the item. */
 						_n(
@@ -74,12 +84,34 @@ const ProductAttributeTermControl = ( {
 			);
 		}
 
+		const itemName = `${ item.breadcrumbs[ 0 ] }: ${ item.name }`;
+
 		return (
 			<SearchListItem
 				{ ...args }
 				name="terms"
 				className={ classNames( ...classes, 'has-count' ) }
-				aria-label={ `${ item.breadcrumbs[ 0 ] }: ${ item.name }` }
+				countLabel={ sprintf(
+					/* translators: %d is the count of products. */
+					_n(
+						'%d Product',
+						'%d Products',
+						item.count,
+						'woo-gutenberg-products-block'
+					),
+					item.count
+				) }
+				aria-label={ sprintf(
+					/* translators: %1$s is the attribute name, %2$d is the count of products for that attribute. */
+					_n(
+						'%1$s, has %2$d product',
+						'%1$s, has %2$d products',
+						item.count,
+						'woo-gutenberg-products-block'
+					),
+					itemName,
+					item.count
+				) }
 			/>
 		);
 	};
