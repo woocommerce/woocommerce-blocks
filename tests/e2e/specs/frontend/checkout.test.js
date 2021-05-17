@@ -7,12 +7,14 @@ import {
 	setCheckbox,
 	settingsPageSaveChanges,
 	verifyCheckboxIsSet,
+	switchUserToAdmin,
 } from '@woocommerce/e2e-utils';
 
 /**
  * Internal dependencies
  */
 import {
+	getBlockPagePermalink,
 	getNormalPagePermalink,
 	scrollTo,
 	shopper,
@@ -34,15 +36,19 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 )
 
 describe( `${ block.name } Block (frontend)`, () => {
 	let productPermalink;
+	let cartBlockPermalink;
 
 	beforeAll( async () => {
 		// prevent CartCheckoutCompatibilityNotice from appearing
 		await page.evaluate( () => {
 			localStorage.setItem(
 				'wc-blocks_dismissed_compatibility_notices',
-				'["checkout"]'
+				'["checkout","cart"]'
 			);
 		} );
+		await switchUserToAdmin();
+		cartBlockPermalink = await getBlockPagePermalink( 'Cart Block' );
+
 		await merchant.login();
 
 		// Go to general settings page
@@ -126,9 +132,25 @@ describe( `${ block.name } Block (frontend)`, () => {
 	} );
 
 	it( 'should display an empty cart message when cart is empty', async () => {
+		// empty cart
+		await page.goto( cartBlockPermalink );
+		console.log(
+			'process.env.PUPPETEER_HEADLESS',
+			process.env.PUPPETEER_HEADLESS
+		);
+
+		const [ emptyCartButton ] = await page.$x(
+			"//button[contains(text(), 'Empty cart')]"
+		);
+		if ( emptyCartButton ) {
+			await emptyCartButton.click();
+			await page.waitForSelector( 'h2', {
+				text: 'Your cart is currently empty!',
+			} );
+		}
 		await shopper.goToCheckoutBlock();
 		const html = await page.content();
-		console.log( html );
+
 		await page.waitForSelector( 'h1', { text: 'Checkout block' } );
 		await page.waitForSelector( 'strong', { text: 'Your cart is empty!' } );
 	} );
