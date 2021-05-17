@@ -51,9 +51,9 @@ describe( `${ block.name } Block (frontend)`, () => {
 		await page.goto( productPermalink );
 		await shopper.addToCart();
 	} );
-	// beforeEach( async () => {
-	// 	await jestPuppeteer.resetBrowser();
-	// } );
+	beforeEach( async () => {
+		await jestPuppeteer.resetBrowser();
+	} );
 	afterAll( async () => {
 		await shopper.emptyCart();
 		await page.evaluate( () => {

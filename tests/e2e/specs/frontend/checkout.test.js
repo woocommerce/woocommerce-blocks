@@ -119,9 +119,9 @@ describe( `${ block.name } Block (frontend)`, () => {
 
 		await merchant.logout();
 	} );
-	// beforeEach( async () => {
-	// 	await jestPuppeteer.resetBrowser();
-	// } );
+	beforeEach( async () => {
+		await jestPuppeteer.resetBrowser();
+	} );
 	afterAll( async () => {
 		await shopper.emptyCart();
 		await page.evaluate( () => {
