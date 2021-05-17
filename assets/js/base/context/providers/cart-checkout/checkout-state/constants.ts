@@ -80,10 +80,10 @@ export const DEFAULT_CHECKOUT_STATE_DATA: CheckoutStateContextType = {
 	orderId: 0,
 	orderNotes: '',
 	customerId: 0,
-	onCheckoutAfterProcessingWithSuccess: () => () => () => void null,
-	onCheckoutAfterProcessingWithError: () => () => () => void null,
-	onCheckoutBeforeProcessing: () => () => () => void null, // deprecated for onCheckoutValidationBeforeProcessing
-	onCheckoutValidationBeforeProcessing: () => () => () => void null,
+	onCheckoutAfterProcessingWithSuccess: () => () => void null,
+	onCheckoutAfterProcessingWithError: () => () => void null,
+	onCheckoutBeforeProcessing: () => () => void null, // deprecated for onCheckoutValidationBeforeProcessing
+	onCheckoutValidationBeforeProcessing: () => () => void null,
 	hasOrder: false,
 	isCart: false,
 	shouldCreateAccount: false,
