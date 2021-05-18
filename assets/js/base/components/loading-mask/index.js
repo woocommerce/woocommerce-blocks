@@ -4,12 +4,12 @@
 import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Spinner } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+import Spinner from '../spinner';
 
 const LoadingMask = ( {
 	children,

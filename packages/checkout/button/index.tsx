@@ -4,12 +4,12 @@
 import { Button as WPButton } from 'wordpress-components';
 import type { ReactNode } from 'react';
 import classNames from 'classnames';
+import Spinner from '@woocommerce/base-components/spinner';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
-import Spinner from '../spinner';
 
 interface ButtonProps extends WPButton.ButtonProps {
 	className?: string;
