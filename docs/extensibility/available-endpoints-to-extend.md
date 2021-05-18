@@ -6,7 +6,7 @@ This is a list of available endpoints that you can extend. If you want to add a 
 
 ## `wc/store/cart`
 
-The main cart endpoint is exntesible via ExtendRestAPI, the data is available on `exntesions` key in the response.
+The main cart endpoint is extensible via ExtendRestAPI. The data is available via the `extensions` key in the response.
 
 ### Passes Parameters:
 
