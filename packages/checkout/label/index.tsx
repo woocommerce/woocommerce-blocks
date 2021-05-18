@@ -5,7 +5,7 @@ import { Fragment } from '@wordpress/element';
 import classNames from 'classnames';
 import type { ReactElement, HTMLProps } from 'react';
 
-interface LabelProps extends HTMLProps< HTMLLabelElement > {
+interface LabelProps extends HTMLProps< HTMLElement > {
 	label?: string;
 	screenReaderLabel?: string;
 	wrapperElement?: string;
