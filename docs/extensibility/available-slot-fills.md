@@ -12,7 +12,7 @@ This Slot renders below the Checkout summary section and above the "Proceed to C
 ### Passed parameters
 
 - `cart`: `wc/store/cart` data but in `camelCase` instead of `snake_case`. [Object breakdown.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L172-L188)
-- `extensions`: external data registered by third-party developers using `ExtendRestAPI`. If you used `ExntedRestAPI` on `wc/store/cart` you would find your data under your namespace here.
+- `extensions`: external data registered by third-party developers using `ExtendRestAPI`. If you used `ExtendRestAPI` on `wc/store/cart` you would find your data under your namespace here.
 
 ## ExperimentalOrderShippingPackages
 This slot renders inside the shipping step of Checkout and inside the shipping options in Cart.
@@ -28,9 +28,9 @@ Checkout:
 ### Passed parameters
 
 - `collapsible`: `Boolean` If a shipping package panel should be collapsible or not, this is false in Checkout and true in Cart.
-- `collapse`: `Boolean` If a panel should be collapsed by default, this is true if there's more than 1 fill registred (Core Shipping options are registered as a fill and they're counted).
-- `showItems`: `Boolean` If we should the content of each package, this is true if there's more than 1 fill registred (Core Shipping options are registered as a fill and they're counted).
-- `noResultsMessage`: A react element that you can render if there're no shipping.
+- `collapse`: `Boolean` If a panel should be collapsed by default, this is true if there's more than 1 fill registered (Core Shipping options are registered as a fill and they're counted).
+- `showItems`: `Boolean` If we should show the content of each package, this is true if there's more than 1 fill registered (Core Shipping options are registered as a fill and they're counted).
+- `noResultsMessage`: A React element that you can render if there are no shipping options.
 - `renderOption`: a render function that takes a rate object and returns a render option.
 - `cart`: `wc/store/cart` data but in `camelCase` instead of `snake_case`. [Object breakdown.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L172-L188)
 - `extensions`: external data registered by third-party developers using `ExtendRestAPI`, if you used `ExtendRestAPI` on `wc/store/cart` you would find your data under your namespace here.

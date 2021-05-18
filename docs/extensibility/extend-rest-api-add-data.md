@@ -6,11 +6,11 @@ You don't want to create your own endpoints or Ajax actions. You want to piggyba
 
 ## Solution
 ExtendRestAPI offers the possibility to add contextual custom data to Store API endpoints, like `wc/store/cart` and `wc/store/cart/items` endpoints.
-That data is namespaced to your plugin and protected from other plugins malfunctioning.
+That data is namespaced to your plugin and protected from other plugins causing it to malfunction.
 The data is available on all frontend filters and slotFills for you to consume.
 
 ## Basic usage
-You can use ExtendRestAPI by registering a couple of functions, `schema_callback` and `data_callback` on a specific endpoint namespace. Those functions are going to be called at execution time and are going to be passed relevant data.
+You can use ExtendRestAPI by registering a couple of functions, `schema_callback` and `data_callback` on a specific endpoint namespace. ExtendRestAPI will call them at execution time and will pass them relevant data as well.
 
 ```PHP
 

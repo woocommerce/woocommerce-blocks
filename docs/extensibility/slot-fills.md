@@ -11,7 +11,7 @@ A Slot is a place in the Cart and Checkout that can render an indefinite number 
 
 A Fill is the component provided by third-party developers to render inside a Slot.
 
-Slots and Fills uses WordPress's API, [so you can expand more on its API there.](https://github.com/WordPress/gutenberg/tree/trunk/packages/components/src/slot-fill).
+Slot and Fill use WordPress' API, and you can learn more about how they work in [the Slot Fill documentation.](https://github.com/WordPress/gutenberg/tree/trunk/packages/components/src/slot-fill).
 
 ## Basic Usage
 
