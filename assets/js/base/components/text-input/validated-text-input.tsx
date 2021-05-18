@@ -138,7 +138,9 @@ const ValidatedTextInput = ( {
 				validateInput( false );
 			} }
 			feedback={
-				showError && <ValidationInputError propertyName={ errorId } />
+				showError && (
+					<ValidationInputError propertyName={ errorIdString } />
+				)
 			}
 			ref={ inputRef }
 			onChange={ ( val ) => {
