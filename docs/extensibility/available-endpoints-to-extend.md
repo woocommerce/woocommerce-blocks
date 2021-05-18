@@ -2,7 +2,7 @@
 
 To see how to add your data to Store API using ExtendRestAPI, [check this document](./extend-rest-api-add-data.md).
 
-This is a list of Available endpoints that you can extend, if you want to add a new endpoint, [check this document](./extend-rest-api-new-endpoint.md).
+This is a list of available endpoints that you can extend. If you want to add a new endpoint, [check this document](./extend-rest-api-new-endpoint.md).
 
 ## `wc/store/cart`
 
