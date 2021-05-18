@@ -1,6 +1,7 @@
 .wc-block-components-loading-mask {
 	position: relative;
 	min-height: 18px + $gap;
+	pointer-events: none;
 
 	.components-spinner {
 		position: absolute;
@@ -12,5 +13,5 @@
 }
 
 .wc-block-components-loading-mask__children {
-	opacity: 0.5;
+	opacity: 0.25;
 }
