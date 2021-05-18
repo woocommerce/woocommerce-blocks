@@ -2,17 +2,17 @@
 
 To see how to use a slotFill, [check this document](./slot-fills.md).
 
-This is a list of available slots that you can use, if you want to add a new slotFill, [check this document](../../pacakges/checkout/slot/README.md).
+This is a list of available slots that you can use. If you want to add a new slotFill, [check this document](../../pacakges/checkout/slot/README.md).
 
 ## ExperimentalOrderMeta
-This Slot renders below Checkouy summary section and above the "Continue to Checkout" in Cart.
+This Slot renders below the Checkout summary section and above the "Proceed to Checkout" button in the Cart.
 
 <img width="1135" alt="image" src="https://user-images.githubusercontent.com/6165348/118398683-a0202700-b651-11eb-8a4f-cd8b6ebff53f.png">
 
 ### Passed parameters
 
-- `cart`: `wc/store/cart` data but in `camelCase` instead of `snake_case`. [Object breakdown.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L172-L188);
-- `extensions`: external data registered by third-party developers using `ExtendRestAPI`, if you used `ExntedRestAPI` on `wc/store/cart` you would find your data here under your namespace.
+- `cart`: `wc/store/cart` data but in `camelCase` instead of `snake_case`. [Object breakdown.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L172-L188)
+- `extensions`: external data registered by third-party developers using `ExtendRestAPI`. If you used `ExntedRestAPI` on `wc/store/cart` you would find your data under your namespace here.
 
 ## ExperimentalOrderShippingPackages
 This slot renders inside the shipping step of Checkout and inside the shipping options in Cart.
@@ -32,6 +32,6 @@ Checkout:
 - `showItems`: `Boolean` If we should the content of each package, this is true if there's more than 1 fill registred (Core Shipping options are registered as a fill and they're counted).
 - `noResultsMessage`: A react element that you can render if there're no shipping.
 - `renderOption`: a render function that takes a rate object and returns a render option.
-- `cart`: `wc/store/cart` data but in `camelCase` instead of `snake_case`. [Object breakdown.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L172-L188);
-- `extensions`: external data registered by third-party developers using `ExtendRestAPI`, if you used `ExntedRestAPI` on `wc/store/cart` you would find your data here under your namespace.
+- `cart`: `wc/store/cart` data but in `camelCase` instead of `snake_case`. [Object breakdown.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L172-L188)
+- `extensions`: external data registered by third-party developers using `ExtendRestAPI`, if you used `ExtendRestAPI` on `wc/store/cart` you would find your data under your namespace here.
 - `components`: an object containing components you can use to render your own shipping rates, it contains `ShippingRatesControlPackage`.

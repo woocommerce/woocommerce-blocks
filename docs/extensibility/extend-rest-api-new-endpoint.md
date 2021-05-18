@@ -1,8 +1,8 @@
 # Adding an endpoint to ExtendRestAPI
 
-## Exnteding `GET` endpoints in Store API.
+## Extending `GET` endpoints in Store API.
 
-ExtendRestAPI needs to expose to each endpoint Individually, meaning if you want to expose a new endpoint, you have to follow those steps:
+ExtendRestAPI needs to expose each endpoint individually. If you want to expose a new endpoint, you have to follow these steps:
 
 1- In `ExtendRestApi` class, add your endpoint `IDENTIFIER` to the `$endpoints` variable.
 
@@ -36,4 +36,4 @@ self::EXTENDING_KEY    => $this->get_extended_data( self::IDENTIFIER, $cart_item
 
 That's it, your endpoint would now contain `extensions` in your endpoint, and you can consume it in the frontend.
 
-Extending a new endpoint is usally half the work, you will need to recvieve this data in frontend and pass it to any other extensiblity point (Slot, Filter, Event).
+Extending a new endpoint is usually half the work, you will need to receive this data in the frontend and pass it to any other extensibility point (Slot, Filter, Event).

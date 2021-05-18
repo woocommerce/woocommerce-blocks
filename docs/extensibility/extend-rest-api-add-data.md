@@ -1,4 +1,4 @@
-# Exposing your data in Store API.
+# Exposing your data in the Store API.
 
 ## The problem
 You want to extend the Cart and Checkout blocks, but you want to use some custom data not available on Store API or the context.
@@ -74,11 +74,11 @@ function my_cart_item_callback( $cart_item ) {
 
 | Attribute | Type | Required | Description |
 | :-------- | :----- | :------: | :------------------------------------ |
-| `endpoint` | string | Yes | The endpoint you're trying to extend, it is suggested that you use `::IDENTIFIER` Available on the route Schema class to avoid typos. |
+| `endpoint` | string | Yes | The endpoint you're trying to extend. It is suggested that you use the `::IDENTIFIER` available on the route Schema class to avoid typos. |
 | `namespace` | string | Yes | Your plugin namespace, the data will be available under this namespace in the StoreAPI response. |
 | `data_callback` | callback | Yes | A callback that returns an array with your data. |
 | `schema_callback` | callback | Yes | A callback that returns the shape of your data. |
-| `data_type` | string | No (default: `ARRAY_A` ) | The type of your data, if you're adding an object (key => values), it should be `ARRAY_A`, you're adding a list of items, it should be `ARRAY_N`. |
+| `data_type` | string | No (default: `ARRAY_A` ) | The type of your data. If you're adding an object (key => values), it should be `ARRAY_A`. If you're adding a list of items, it should be `ARRAY_N`. |
 
 ## Putting it all together
 
