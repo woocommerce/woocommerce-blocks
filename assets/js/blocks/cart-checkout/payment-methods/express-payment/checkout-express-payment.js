@@ -22,7 +22,14 @@ import ExpressPaymentMethods from '../express-payment-methods';
 import './style.scss';
 
 const CheckoutExpressPayment = () => {
-	const { isCalculating, isProcessing } = useCheckoutContext();
+	const {
+		isCalculating,
+		isProcessing,
+		isAfterProcessing,
+		isBeforeProcessing,
+		isComplete,
+		hasError,
+	} = useCheckoutContext();
 	const { paymentMethods, isInitialized } = useExpressPaymentMethods();
 	const { isEditor } = useEditorContext();
 	const { noticeContexts } = useEmitResponse();
@@ -43,11 +50,17 @@ const CheckoutExpressPayment = () => {
 		return null;
 	}
 
+	const waitingForProcessing =
+		isProcessing || isAfterProcessing || isBeforeProcessing;
+	const waitingForRedirect = isComplete && ! hasError;
+
 	return (
 		<>
 			<LoadingMask
-				showSpinner={ true }
-				isLoading={ isCalculating || isProcessing }
+				showSpinner={ isCalculating || waitingForProcessing }
+				isLoading={
+					isCalculating || waitingForProcessing || waitingForRedirect
+				}
 			>
 				<div className="wc-block-components-express-payment wc-block-components-express-payment--checkout">
 					<div className="wc-block-components-express-payment__title-container">
