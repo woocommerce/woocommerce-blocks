@@ -17,6 +17,29 @@ import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
 import TextInput from './text-input';
 import './style.scss';
 
+interface ValidatedTextInputPropsWithId {
+	instanceId?: string;
+	id: string;
+}
+
+interface ValidatedTextInputPropsWithInstanceId {
+	instanceId: string;
+	id?: string;
+}
+
+type ValidatedTextInputProps = (
+	| ValidatedTextInputPropsWithId
+	| ValidatedTextInputPropsWithInstanceId
+ ) & {
+	className?: string;
+	ariaDescribedBy?: string;
+	errorId?: string;
+	validateOnMount?: boolean;
+	focusOnMount?: boolean;
+	showError?: boolean;
+	onChange: ( newValue: string ) => void;
+};
+
 const ValidatedTextInput = ( {
 	className,
 	instanceId,
@@ -28,9 +51,9 @@ const ValidatedTextInput = ( {
 	onChange,
 	showError = true,
 	...rest
-} ) => {
+}: ValidatedTextInputProps ) => {
 	const [ isPristine, setIsPristine ] = useState( true );
-	const inputRef = useRef();
+	const inputRef = useRef< HTMLInputElement >( null );
 	const {
 		getValidationError,
 		hideValidationError,
@@ -39,8 +62,8 @@ const ValidatedTextInput = ( {
 		getValidationErrorId,
 	} = useValidationContext();
 
-	const textInputId = id || 'textinput-' + instanceId;
-	errorId = errorId || textInputId;
+	const textInputId = id !== undefined ? id : 'textinput-' + instanceId;
+	const errorIdString = errorId !== undefined ? errorId : textInputId;
 
 	const validateInput = useCallback(
 		( errorsHidden = true ) => {
@@ -52,10 +75,10 @@ const ValidatedTextInput = ( {
 			inputObject.value = inputObject.value.trim();
 			const inputIsValid = inputObject.checkValidity();
 			if ( inputIsValid ) {
-				clearValidationError( errorId );
+				clearValidationError( errorIdString );
 			} else {
 				setValidationErrors( {
-					[ errorId ]: {
+					[ errorIdString ]: {
 						message:
 							inputObject.validationMessage ||
 							__(
@@ -67,13 +90,13 @@ const ValidatedTextInput = ( {
 				} );
 			}
 		},
-		[ clearValidationError, errorId, setValidationErrors ]
+		[ clearValidationError, errorIdString, setValidationErrors ]
 	);
 
 	useEffect( () => {
 		if ( isPristine ) {
 			if ( focusOnMount ) {
-				inputRef.current.focus();
+				inputRef.current?.focus();
 			}
 			setIsPristine( false );
 		}
@@ -91,15 +114,19 @@ const ValidatedTextInput = ( {
 	// Remove validation errors when unmounted.
 	useEffect( () => {
 		return () => {
-			clearValidationError( errorId );
+			clearValidationError( errorIdString );
 		};
-	}, [ clearValidationError, errorId ] );
+	}, [ clearValidationError, errorIdString ] );
 
-	const errorMessage = getValidationError( errorId ) || {};
+	// TODO - When useValidationContext is converted to TypeScript, remove this cast and use the correct type.
+	const errorMessage = ( getValidationError( errorIdString ) || {} ) as {
+		message?: string;
+		hidden?: boolean;
+	};
 	const hasError = errorMessage.message && ! errorMessage.hidden;
 	const describedBy =
-		showError && hasError && getValidationErrorId( errorId )
-			? getValidationErrorId( errorId )
+		showError && hasError && getValidationErrorId( errorIdString )
+			? getValidationErrorId( errorIdString )
 			: ariaDescribedBy;
 
 	return (
@@ -116,7 +143,7 @@ const ValidatedTextInput = ( {
 			}
 			ref={ inputRef }
 			onChange={ ( val ) => {
-				hideValidationError( errorId );
+				hideValidationError( errorIdString );
 				onChange( val );
 			} }
 			ariaDescribedBy={ describedBy }
