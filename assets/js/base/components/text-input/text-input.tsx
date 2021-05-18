@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { forwardRef, InputHTMLAttributes } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useState } from '@wordpress/element';
 import { Label } from '@woocommerce/blocks-checkout';
@@ -111,20 +110,5 @@ const TextInput = forwardRef< HTMLInputElement, TextInputProps >(
 		);
 	}
 );
-
-TextInput.propTypes = {
-	id: PropTypes.string.isRequired,
-	onChange: PropTypes.func.isRequired,
-	value: PropTypes.string,
-	ariaLabel: PropTypes.string,
-	ariaDescribedBy: PropTypes.string,
-	label: PropTypes.string,
-	screenReaderLabel: PropTypes.string,
-	disabled: PropTypes.bool,
-	help: PropTypes.string,
-	autoCapitalize: PropTypes.string,
-	autoComplete: PropTypes.string,
-	required: PropTypes.bool,
-};
 
 export default TextInput;

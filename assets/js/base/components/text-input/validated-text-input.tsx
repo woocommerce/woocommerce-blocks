@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useCallback, useRef, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import {
 	ValidationInputError,
@@ -150,17 +149,6 @@ const ValidatedTextInput = ( {
 			{ ...rest }
 		/>
 	);
-};
-
-ValidatedTextInput.propTypes = {
-	onChange: PropTypes.func.isRequired,
-	id: PropTypes.string,
-	value: PropTypes.string,
-	ariaDescribedBy: PropTypes.string,
-	errorId: PropTypes.string,
-	validateOnMount: PropTypes.bool,
-	focusOnMount: PropTypes.bool,
-	showError: PropTypes.bool,
 };
 
 export default withInstanceId( ValidatedTextInput );
