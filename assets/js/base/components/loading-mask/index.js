@@ -18,29 +18,29 @@ const LoadingMask = ( {
 	showSpinner = false,
 	isLoading = true,
 } ) => {
-	// If nothing is loading, just pass through the children.
-	if ( ! isLoading ) {
-		return children;
-	}
-
 	return (
 		<div
 			className={ classNames(
 				className,
-				'wc-block-components-loading-mask'
+				'wc-block-components-loading-mask',
+				{
+					'is-loading': isLoading,
+				}
 			) }
 		>
-			{ showSpinner && <Spinner /> }
+			{ isLoading && showSpinner && <Spinner /> }
 			<div
 				className="wc-block-components-loading-mask__children"
-				aria-hidden={ true }
+				aria-hidden={ isLoading }
 			>
 				{ children }
 			</div>
-			<span className="screen-reader-text">
-				{ screenReaderLabel ||
-					__( 'Loading…', 'woo-gutenberg-products-block' ) }
-			</span>
+			{ isLoading && (
+				<span className="screen-reader-text">
+					{ screenReaderLabel ||
+						__( 'Loading…', 'woo-gutenberg-products-block' ) }
+				</span>
+			) }
 		</div>
 	);
 };

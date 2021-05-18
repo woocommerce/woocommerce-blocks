@@ -1,4 +1,4 @@
-.wc-block-components-loading-mask {
+.wc-block-components-loading-mask.is-loading {
 	position: relative;
 	min-height: 18px + $gap;
 	pointer-events: none;
@@ -10,8 +10,8 @@
 		left: 50%;
 		transform: translate(-50%, -50%);
 	}
-}
 
-.wc-block-components-loading-mask__children {
-	opacity: 0.25;
+	.wc-block-components-loading-mask__children {
+		opacity: 0.25;
+	}
 }
