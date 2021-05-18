@@ -8,9 +8,11 @@ import {
 } from '@woocommerce/base-context/hooks';
 import {
 	StoreNoticesProvider,
+	useCheckoutContext,
 	useEditorContext,
 } from '@woocommerce/base-context';
 import Title from '@woocommerce/base-components/title';
+import LoadingMask from '@woocommerce/base-components/loading-mask';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
 
 /**
@@ -20,6 +22,7 @@ import ExpressPaymentMethods from '../express-payment-methods';
 import './style.scss';
 
 const CheckoutExpressPayment = () => {
+	const { isCalculating, isProcessing } = useCheckoutContext();
 	const { paymentMethods, isInitialized } = useExpressPaymentMethods();
 	const { isEditor } = useEditorContext();
 	const { noticeContexts } = useEmitResponse();
@@ -42,32 +45,37 @@ const CheckoutExpressPayment = () => {
 
 	return (
 		<>
-			<div className="wc-block-components-express-payment wc-block-components-express-payment--checkout">
-				<div className="wc-block-components-express-payment__title-container">
-					<Title
-						className="wc-block-components-express-payment__title"
-						headingLevel="2"
-					>
-						{ __(
-							'Express checkout',
-							'woo-gutenberg-products-block'
-						) }
-					</Title>
-				</div>
-				<div className="wc-block-components-express-payment__content">
-					<StoreNoticesProvider
-						context={ noticeContexts.EXPRESS_PAYMENTS }
-					>
-						<p>
+			<LoadingMask
+				showSpinner={ true }
+				isLoading={ isCalculating || isProcessing }
+			>
+				<div className="wc-block-components-express-payment wc-block-components-express-payment--checkout">
+					<div className="wc-block-components-express-payment__title-container">
+						<Title
+							className="wc-block-components-express-payment__title"
+							headingLevel="2"
+						>
 							{ __(
-								'In a hurry? Use one of our express checkout options below:',
+								'Express checkout',
 								'woo-gutenberg-products-block'
 							) }
-						</p>
-						<ExpressPaymentMethods />
-					</StoreNoticesProvider>
+						</Title>
+					</div>
+					<div className="wc-block-components-express-payment__content">
+						<StoreNoticesProvider
+							context={ noticeContexts.EXPRESS_PAYMENTS }
+						>
+							<p>
+								{ __(
+									'In a hurry? Use one of our express checkout options below:',
+									'woo-gutenberg-products-block'
+								) }
+							</p>
+							<ExpressPaymentMethods />
+						</StoreNoticesProvider>
+					</div>
 				</div>
-			</div>
+			</LoadingMask>
 			<div className="wc-block-components-express-payment-continue-rule wc-block-components-express-payment-continue-rule--checkout">
 				{ __( 'Or continue below', 'woo-gutenberg-products-block' ) }
 			</div>
