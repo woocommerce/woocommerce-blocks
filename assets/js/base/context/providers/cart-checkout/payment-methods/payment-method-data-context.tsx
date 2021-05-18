@@ -129,32 +129,26 @@ export const PaymentMethodDataProvider = ( {
 				paymentMethodSlug,
 			} );
 		},
-		[ setActive, dispatch, dispatchCheckoutEvent ]
+		[ dispatchCheckoutEvent ]
 	);
 
 	const paymentMethodsDispatcher = useCallback<
 		PaymentMethodsDispatcherType
-	>(
-		( paymentMethods ) => {
-			dispatch(
-				setRegisteredPaymentMethods( paymentMethods as PaymentMethods )
-			);
-		},
-		[ dispatch ]
-	);
+	>( ( paymentMethods ) => {
+		dispatch(
+			setRegisteredPaymentMethods( paymentMethods as PaymentMethods )
+		);
+	}, [] );
 
 	const expressPaymentMethodsDispatcher = useCallback<
 		PaymentMethodsDispatcherType
-	>(
-		( paymentMethods ) => {
-			dispatch(
-				setRegisteredExpressPaymentMethods(
-					paymentMethods as PaymentMethods
-				)
-			);
-		},
-		[ dispatch ]
-	);
+	>( ( paymentMethods ) => {
+		dispatch(
+			setRegisteredExpressPaymentMethods(
+				paymentMethods as PaymentMethods
+			)
+		);
+	}, [] );
 
 	const paymentMethodsInitialized = usePaymentMethods(
 		paymentMethodsDispatcher
@@ -167,12 +161,9 @@ export const PaymentMethodDataProvider = ( {
 	const { setValidationErrors } = useValidationContext();
 	const { addErrorNotice, removeNotice } = useStoreNotices();
 	const { setShippingAddress } = useShippingDataContext();
-	const setShouldSavePayment = useCallback(
-		( shouldSave ) => {
-			dispatch( setShouldSavePaymentMethod( shouldSave ) );
-		},
-		[ dispatch ]
-	);
+	const setShouldSavePayment = useCallback( ( shouldSave ) => {
+		dispatch( setShouldSavePaymentMethod( shouldSave ) );
+	}, [] );
 
 	const customerPaymentMethods = useMemo( (): CustomerPaymentMethods => {
 		if ( isEditor ) {
