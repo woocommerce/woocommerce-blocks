@@ -3,6 +3,7 @@
  */
 import {
 	enablePageDialogAccept,
+	isOfflineMode,
 	setBrowserViewport,
 	switchUserToAdmin,
 	switchUserToTest,
@@ -37,13 +38,15 @@ const pageEvents = [];
  *
  * @type {Object<string,string>}
  */
-
+const OBSERVED_CONSOLE_MESSAGE_TYPES = {
+	error: 'error',
+};
 async function setupBrowser() {
 	await setBrowserViewport( 'large' );
 }
 
 /**
- * Navigates to woocommerce import page and imports sample products.
+ * Navigates to WooCommerce's import page and imports sample products.
  *
  * @return {Promise} Promise resolving once products have been imported.
  */
@@ -102,12 +105,50 @@ function removePageEvents() {
 	} );
 }
 
+/**
+ * Adds a page event handler to emit uncaught exception to process if one of
+ * the observed console logging types is encountered.
+ */
+function observeConsoleLogging() {
+	page.on( 'console', ( message ) => {
+		const type = message.type();
+		if ( ! OBSERVED_CONSOLE_MESSAGE_TYPES.hasOwnProperty( type ) ) {
+			return;
+		}
+		const text = message.text();
+
+		// Viewing posts on the front end can result in this error, which
+		// has nothing to do with Gutenberg.
+		if ( text.includes( 'net::ERR_UNKNOWN_URL_SCHEME' ) ) {
+			return;
+		}
+
+		// Network errors are ignored only if we are intentionally testing
+		// offline mode.
+		if (
+			text.includes( 'net::ERR_INTERNET_DISCONNECTED' ) &&
+			isOfflineMode()
+		) {
+			return;
+		}
+
+		const logFunction = OBSERVED_CONSOLE_MESSAGE_TYPES[ type ];
+
+		// Disable reason: We intentionally bubble up console error messages
+		// for debugging reasons. If you need to test explicitly the logging,
+		// use  @wordpress/jest-console
+		// eslint-disable-next-line no-console
+		console[ logFunction ]( text );
+	} );
+}
+
 // Before every test suite run, delete all content created by the test. This ensures
 // other posts/comments/etc. aren't dirtying tests and tests don't depend on
 // each other's side-effects.
 beforeAll( async () => {
 	capturePageEventsForTearDown();
 	enablePageDialogAccept();
+	observeConsoleLogging();
 	await setupBrowser();
 	await importSampleProducts();
 } );
