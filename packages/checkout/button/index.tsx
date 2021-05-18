@@ -4,10 +4,12 @@
 import { Button as WPButton } from 'wordpress-components';
 import type { ReactNode } from 'react';
 import classNames from 'classnames';
+
 /**
  * Internal dependencies
  */
 import './style.scss';
+import Spinner from '../spinner';
 
 interface ButtonProps extends WPButton.ButtonProps {
 	className?: string;
@@ -35,12 +37,7 @@ const Button = ( {
 
 	return (
 		<WPButton className={ buttonClassName } { ...props }>
-			{ showSpinner && (
-				<span
-					className="wc-block-components-button__spinner"
-					aria-hidden="true"
-				/>
-			) }
+			{ showSpinner && <Spinner /> }
 			<span className="wc-block-components-button__text">
 				{ children }
 			</span>
