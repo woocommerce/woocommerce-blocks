@@ -19,7 +19,7 @@ The main cart endpoint is extensible via ExtendRestAPI. The data is available vi
 
 ## `wc/store/cart/items`
 
-The items endpoint, which is also available on `wc/store/cart` inside the `items` key. The data would be avalaible inside each item of the `items` array.
+The items endpoint, which is also available on `wc/store/cart` inside the `items` key. The data would be available inside each item of the `items` array.
 
 ### Passed Parameters:
 
