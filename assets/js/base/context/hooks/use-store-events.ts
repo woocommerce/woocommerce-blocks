@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { doAction } from '@wordpress/hooks';
-import { useCallback } from '@wordpress/element';
+import { useCallback, useRef, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -22,6 +22,11 @@ export const useStoreEvents = (): {
 	dispatchCheckoutEvent: StoreEvent;
 } => {
 	const storeCart = useStoreCart();
+	const currentStoreCart = useRef( storeCart );
+
+	useEffect( () => {
+		currentStoreCart.current = storeCart;
+	}, [ storeCart ] );
 
 	const dispatchStoreEvent = useCallback( ( eventName, eventParams = {} ) => {
 		try {
@@ -39,11 +44,13 @@ export const useStoreEvents = (): {
 	const dispatchCheckoutEvent = useCallback(
 		( eventName, eventParams = {} ) => {
 			try {
+				const cartParam = currentStoreCart.current;
+
 				doAction(
 					`experimental__woocommerce_blocks-checkout-${ eventName }`,
 					{
 						...eventParams,
-						storeCart,
+						cartParam,
 					}
 				);
 			} catch ( e ) {
@@ -52,7 +59,7 @@ export const useStoreEvents = (): {
 				console.error( e );
 			}
 		},
-		[ storeCart ]
+		[]
 	);
 
 	return { dispatchStoreEvent, dispatchCheckoutEvent };
