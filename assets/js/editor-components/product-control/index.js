@@ -5,6 +5,7 @@ import { __, _n, sprintf } from '@wordpress/i18n';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import { SearchListControl, SearchListItem } from '@woocommerce/components';
+import { withInstanceId } from '@wordpress/compose';
 import {
 	withProductVariations,
 	withSearchedProducts,
@@ -38,6 +39,7 @@ const messages = {
 const ProductControl = ( {
 	expandedProduct,
 	error,
+	instanceId,
 	isCompact,
 	isLoading,
 	onChange,
@@ -95,7 +97,7 @@ const ProductControl = ( {
 							  )
 							: null
 					}
-					name="products"
+					name={ `products-${ instanceId }` }
 					aria-label={ sprintf(
 						/* translators: %1$s is the product name, %2$d is the number of variations of that product. */
 						_n(
@@ -126,7 +128,7 @@ const ProductControl = ( {
 			<SearchListItem
 				{ ...itemArgs }
 				className={ classes }
-				name="variations"
+				name={ `variations-${ instanceId }` }
 			/>
 		);
 	};
@@ -209,5 +211,7 @@ ProductControl.defaultProps = {
 };
 
 export default withTransformSingleSelectToMultipleSelect(
-	withSearchedProducts( withProductVariations( ProductControl ) )
+	withSearchedProducts(
+		withProductVariations( withInstanceId( ProductControl ) )
+	)
 );

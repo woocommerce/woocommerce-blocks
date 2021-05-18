@@ -5,6 +5,7 @@ import { __, _n, sprintf } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import { SearchListControl, SearchListItem } from '@woocommerce/components';
 import { SelectControl } from '@wordpress/components';
+import { withInstanceId } from '@wordpress/compose';
 import { withAttributes } from '@woocommerce/block-hocs';
 import ErrorMessage from '@woocommerce/editor-components/error-placeholder/error-message.js';
 import classNames from 'classnames';
@@ -22,6 +23,7 @@ const ProductAttributeTermControl = ( {
 	onChange,
 	onExpandAttribute,
 	onOperatorChange,
+	instanceId,
 	isCompact,
 	isLoading,
 	operator,
@@ -58,7 +60,7 @@ const ProductAttributeTermControl = ( {
 							onExpandAttribute( id );
 						};
 					} }
-					name="attributes"
+					name={ `attributes-${ instanceId }` }
 					countLabel={ sprintf(
 						/* translators: %d is the count of terms. */
 						_n(
@@ -89,7 +91,7 @@ const ProductAttributeTermControl = ( {
 		return (
 			<SearchListItem
 				{ ...args }
-				name="terms"
+				name={ `terms-${ instanceId }` }
 				className={ classNames( ...classes, 'has-count' ) }
 				countLabel={ sprintf(
 					/* translators: %d is the count of products. */
@@ -247,4 +249,4 @@ ProductAttributeTermControl.defaultProps = {
 	operator: 'any',
 };
 
-export default withAttributes( ProductAttributeTermControl );
+export default withAttributes( withInstanceId( ProductAttributeTermControl ) );
