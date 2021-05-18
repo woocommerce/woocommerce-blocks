@@ -1,8 +1,7 @@
 /**
  * External dependencies
  */
-import { useEffect, useRef } from '@wordpress/element';
-import isShallowEqual from '@wordpress/is-shallow-equal';
+import { useShallowEqual } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -17,48 +16,25 @@ const usePaymentMethodState = ( express = false ) => {
 		expressPaymentMethodsInitialized,
 	} = usePaymentMethodDataContext();
 
-	const currentState = useRef( {
-		paymentMethods,
-		isInitialized: paymentMethodsInitialized,
-	} );
+	const currentPaymentMethods = useShallowEqual( paymentMethods );
+	const currentExpressPaymentMethods = useShallowEqual(
+		expressPaymentMethods
+	);
+	const currentPaymentMethodsInitialized = useShallowEqual(
+		paymentMethodsInitialized
+	);
+	const currentExpressPaymentMethodsInitialized = useShallowEqual(
+		expressPaymentMethodsInitialized
+	);
 
-	const currentExpressState = useRef( {
-		paymentMethods: expressPaymentMethods,
-		isInitialized: expressPaymentMethodsInitialized,
-	} );
-
-	useEffect( () => {
-		if (
-			paymentMethodsInitialized !== currentState.current.isInitialized ||
-			! isShallowEqual(
-				paymentMethods,
-				currentState.current.paymentMethods
-			)
-		) {
-			currentState.current = {
-				paymentMethods,
-				isInitialized: paymentMethodsInitialized,
-			};
-		}
-	}, [ paymentMethods, paymentMethodsInitialized ] );
-
-	useEffect( () => {
-		if (
-			expressPaymentMethodsInitialized !==
-				currentExpressState.current.isInitialized ||
-			! isShallowEqual(
-				expressPaymentMethods,
-				currentExpressState.current.paymentMethods
-			)
-		) {
-			currentExpressState.current = {
-				paymentMethods: expressPaymentMethods,
-				isInitialized: expressPaymentMethodsInitialized,
-			};
-		}
-	}, [ expressPaymentMethods, expressPaymentMethodsInitialized ] );
-
-	return express ? currentExpressState.current : currentState.current;
+	return {
+		paymentMethods: express
+			? currentExpressPaymentMethods
+			: currentPaymentMethods,
+		isInitialized: express
+			? currentExpressPaymentMethodsInitialized
+			: currentPaymentMethodsInitialized,
+	};
 };
 
 export const usePaymentMethods = () => usePaymentMethodState();
