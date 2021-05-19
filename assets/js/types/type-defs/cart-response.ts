@@ -10,7 +10,7 @@ import {
 	CatalogVisibility,
 } from '@woocommerce/type-defs/cart';
 
-export interface CurrencyResponseInfo {
+export interface CurrencyResponseInfo extends Record< string, unknown > {
 	currency_code: string;
 	currency_symbol: string;
 	currency_minor_unit: number;
