@@ -116,6 +116,11 @@ const CartLineItemRow = ( {
 		[]
 	);
 
+	const cartItemClassNameValidation = useCallback(
+		( value ) => mustBeString( value ),
+		[]
+	);
+
 	// Prepare props to pass to the __experimentalApplyCheckoutFilter filter.
 	// We need to pluck out receiveCart.
 	// eslint-disable-next-line no-unused-vars
@@ -163,6 +168,16 @@ const CartLineItemRow = ( {
 	const isProductHiddenFromCatalog =
 		catalogVisibility === 'hidden' || catalogVisibility === 'search';
 
+	// Allow extensions to add extra cart item classes.
+
+	const cartItemClassNameFilter = __experimentalApplyCheckoutFilter( {
+		filterName: 'cartItemClass',
+		defaultValue: '',
+		extensions,
+		arg,
+		validation: cartItemClassNameValidation,
+	} );
+
 	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
 
 	const productPriceFormat = __experimentalApplyCheckoutFilter( {
@@ -191,8 +206,8 @@ const CartLineItemRow = ( {
 
 	return (
 		<tr
-			className={ classnames( 'wc-block-cart-items__row', {
-				'is-disabled': isPendingDelete,
+			className={ classnames( 'wc-block-cart-items__row', cartItemClassNameFilter, {
+				'is-disabled': isPendingDelete
 			} ) }
 		>
 			{ /* If the image has no alt text, this link is unnecessary and can be hidden. */ }
