@@ -61,7 +61,8 @@ const ValidatedTextInput = ( {
 		getValidationErrorId,
 	} = useValidationContext();
 
-	const textInputId = typeof id !== 'undefined' ? id : 'textinput-' + instanceId;
+	const textInputId =
+		typeof id !== 'undefined' ? id : 'textinput-' + instanceId;
 	const errorIdString = errorId !== undefined ? errorId : textInputId;
 
 	const validateInput = useCallback(
