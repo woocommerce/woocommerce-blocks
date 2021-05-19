@@ -65,7 +65,9 @@ const CartLineItemRow = ( {
 		description: fullDescription = '',
 		low_stock_remaining: lowStockRemaining = null,
 		show_backorder_badge: showBackorderBadge = false,
+		quantity_min: quantityMin = 1,
 		quantity_limit: quantityLimit = 99,
+		quantity_step: quantityStep = 1,
 		permalink = '',
 		images = [],
 		variation = [],
@@ -293,6 +295,8 @@ const CartLineItemRow = ( {
 					<QuantitySelector
 						disabled={ isPendingDelete }
 						quantity={ quantity }
+						step={ quantityStep }
+						minimum={ quantityMin }
 						maximum={ quantityLimit }
 						onChange={ ( newQuantity ) => {
 							setItemQuantity( newQuantity );
