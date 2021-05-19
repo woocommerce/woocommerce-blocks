@@ -22,13 +22,9 @@ import { useCustomerDataContext } from '../../providers/cart-checkout/customer';
 import { prepareTotalItems } from './utils';
 
 /**
- * @typedef {import('@woocommerce/type-defs/registered-payment-method-props').RegisteredPaymentMethodProps} RegisteredPaymentMethodProps
+ * Returns am interface to use as payment method props.
  */
-
-/**
- * @return {RegisteredPaymentMethodProps} Interface to use as payment method props.
- */
-export const usePaymentMethodInterface = () => {
+export const usePaymentMethodInterface = (): Record< string, unknown > => {
 	const {
 		isCalculating,
 		isComplete,
@@ -56,7 +52,6 @@ export const usePaymentMethodInterface = () => {
 		selectedRates,
 		setSelectedRates,
 		isSelectingRate,
-
 		onShippingRateSuccess,
 		onShippingRateFail,
 		onShippingRateSelectSuccess,
@@ -91,27 +86,7 @@ export const usePaymentMethodInterface = () => {
 	}, [ cartTotals, needsShipping ] );
 
 	return {
-		checkoutStatus: {
-			isCalculating,
-			isComplete,
-			isIdle,
-			isProcessing,
-		},
-		paymentStatus: currentStatus,
-		shippingStatus: {
-			shippingErrorStatus,
-			shippingErrorTypes,
-		},
-		shippingData: {
-			shippingRates,
-			shippingRatesLoading,
-			selectedRates,
-			setSelectedRates,
-			isSelectingRate,
-			shippingAddress,
-			setShippingAddress,
-			needsShipping,
-		},
+		activePaymentMethod,
 		billing: {
 			billingData,
 			cartTotal: currentCartTotal.current,
@@ -120,9 +95,24 @@ export const usePaymentMethodInterface = () => {
 			displayPricesIncludingTax: getSetting(
 				'displayCartPricesIncludingTax',
 				false
-			),
+			) as boolean,
 			appliedCoupons,
 			customerId,
+		},
+		checkoutStatus: {
+			isCalculating,
+			isComplete,
+			isIdle,
+			isProcessing,
+		},
+		components: {
+			ValidationInputError,
+			PaymentMethodIcons,
+			PaymentMethodLabel,
+		},
+		emitResponse: {
+			noticeContexts,
+			responseTypes,
 		},
 		eventRegistration: {
 			onCheckoutBeforeProcessing,
@@ -135,18 +125,23 @@ export const usePaymentMethodInterface = () => {
 			onShippingRateSelectFail,
 			onPaymentProcessing,
 		},
-		components: {
-			ValidationInputError,
-			PaymentMethodIcons,
-			PaymentMethodLabel,
-		},
-		emitResponse: {
-			noticeContexts,
-			responseTypes,
-		},
 		onSubmit,
-		activePaymentMethod,
+		paymentStatus: currentStatus,
 		setExpressPaymentError,
+		shippingData: {
+			shippingRates,
+			shippingRatesLoading,
+			selectedRates,
+			setSelectedRates,
+			isSelectingRate,
+			shippingAddress,
+			setShippingAddress,
+			needsShipping,
+		},
+		shippingStatus: {
+			shippingErrorStatus,
+			shippingErrorTypes,
+		},
 		shouldSavePayment,
 	};
 };
