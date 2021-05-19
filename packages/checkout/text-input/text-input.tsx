@@ -95,7 +95,7 @@ const TextInput = forwardRef<
 					'wc-block-components-text-input',
 					className,
 					{
-						'is-active': isActive || value,
+						'is-active': isActive || value || value === 0,
 					}
 				) }
 			>
