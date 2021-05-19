@@ -4,12 +4,12 @@
 import { forwardRef, InputHTMLAttributes } from 'react';
 import classnames from 'classnames';
 import { useState } from '@wordpress/element';
-import { Label } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+import Label from '../label';
 
 interface TextInputProps
 	extends Omit<
