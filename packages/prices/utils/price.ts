@@ -2,13 +2,11 @@
  * External dependencies
  */
 import { CURRENCY } from '@woocommerce/settings';
-import type { CurrencyResponseInfo } from '@woocommerce/type-defs/cart-response';
-import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
-
-/**
- * Internal dependencies
- */
-import type { Currency } from '../types';
+import type {
+	Currency,
+	CurrencyResponse,
+	CartShippingPackageShippingRate,
+} from '@woocommerce/types';
 
 type SymbolPosition = 'left' | 'left_space' | 'right' | 'right_space';
 
@@ -73,7 +71,7 @@ const siteCurrencySettings: Currency = {
 export const getCurrencyFromPriceResponse = (
 	// Currency data object, for example an API response containing currency formatting data.
 	currencyData:
-		| CurrencyResponseInfo
+		| CurrencyResponse
 		| Record< string, never >
 		| CartShippingPackageShippingRate
 ): Currency => {
