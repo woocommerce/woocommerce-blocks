@@ -47,7 +47,11 @@ const getAmountFromRawPrice = (
 	return priceObject.convertPrecision( currency.minorUnit ).getAmount();
 };
 
-const productPriceValidation = ( value ) => mustContain( value, '<price/>' );
+const productPriceValidation = ( value: string ): true | Error =>
+	mustContain( value, '<price/>' );
+
+const productNameValidation = ( value: string ): true | Error =>
+	mustContain( value, '<name/>' );
 
 interface CartLineItemRowProps {
 	lineItem: CartItem | Record< string, never >;
@@ -162,8 +166,15 @@ const CartLineItemRow = forwardRef< HTMLTableRowElement, CartLineItemRowProps >(
 		const isProductHiddenFromCatalog =
 			catalogVisibility === 'hidden' || catalogVisibility === 'search';
 
-		// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
+		const productNameFormat = __experimentalApplyCheckoutFilter( {
+			filterName: 'productNameFormat',
+			defaultValue: '<name/>',
+			extensions,
+			arg,
+			validation: productNameValidation,
+		} );
 
+		// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
 		const productPriceFormat = __experimentalApplyCheckoutFilter( {
 			filterName: 'cartItemPrice',
 			defaultValue: '<price/>',
@@ -219,6 +230,7 @@ const CartLineItemRow = forwardRef< HTMLTableRowElement, CartLineItemRowProps >(
 						}
 						name={ name }
 						permalink={ permalink }
+						format={ productNameFormat }
 					/>
 					{ showBackorderBadge ? (
 						<ProductBackorderBadge />

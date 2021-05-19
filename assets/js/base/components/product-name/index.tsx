@@ -14,6 +14,7 @@ interface ProductNameProps extends AnchorHTMLAttributes< HTMLAnchorElement > {
 	disabled?: boolean;
 	name: string;
 	permalink?: string;
+	format?: string;
 	onClick?: () => void;
 }
 
@@ -30,9 +31,20 @@ export default ( {
 	rel,
 	style,
 	onClick,
+	format = '<name/>',
 	...props
 }: ProductNameProps ): JSX.Element => {
 	const classes = classnames( 'wc-block-components-product-name', className );
+	if ( ! format.includes( '<name/>' ) ) {
+		format = '<name/>';
+		// eslint-disable-next-line no-console
+		console.error(
+			'Product name formats need to include the `<name/>` tag.'
+		);
+	}
+
+	const formattedName = format.replace( '<name/>', name );
+
 	if ( disabled ) {
 		// Cast the props as type HTMLSpanElement.
 		const disabledProps = props as HTMLAttributes< HTMLSpanElement >;
@@ -41,7 +53,7 @@ export default ( {
 				className={ classes }
 				{ ...disabledProps }
 				dangerouslySetInnerHTML={ {
-					__html: decodeEntities( name ),
+					__html: decodeEntities( formattedName ),
 				} }
 			/>
 		);
@@ -53,7 +65,7 @@ export default ( {
 			rel={ rel }
 			{ ...props }
 			dangerouslySetInnerHTML={ {
-				__html: decodeEntities( name ),
+				__html: decodeEntities( formattedName ),
 			} }
 		/>
 	);

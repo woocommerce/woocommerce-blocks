@@ -28,6 +28,7 @@ import ProductLowStockBadge from '../product-low-stock-badge';
 import ProductMetadata from '../product-metadata';
 
 const productPriceValidation = ( value ) => mustContain( value, '<price/>' );
+const productNameValidation = ( value ) => mustContain( value, '<name/>' );
 
 const OrderSummaryItem = ( { cartItem } ) => {
 	const {
@@ -108,6 +109,15 @@ const OrderSummaryItem = ( { cartItem } ) => {
 		validation: productPriceValidation,
 	} );
 
+	// Allow extensions to filter and format product names.
+	const productNameFormat = __experimentalApplyCheckoutFilter( {
+		filterName: 'productNameFormat',
+		defaultValue: '<name/>',
+		extensions,
+		arg,
+		validation: productNameValidation,
+	} );
+
 	return (
 		<div className="wc-block-components-order-summary-item">
 			<div className="wc-block-components-order-summary-item__image">
@@ -133,6 +143,7 @@ const OrderSummaryItem = ( { cartItem } ) => {
 					disabled={ true }
 					name={ name }
 					permalink={ permalink }
+					format={ productNameFormat }
 				/>
 				<ProductPrice
 					currency={ priceCurrency }
