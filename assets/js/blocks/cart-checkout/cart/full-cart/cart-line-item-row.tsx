@@ -247,6 +247,9 @@ const CartLineItemRow = ( {
 				) }
 			</td>
 			<td className="wc-block-cart-item__product">
+				<div
+					className={ classnames( 'wc-block-cart-item__wrap' ) }
+				>
 				<ProductName
 					disabled={ isPendingDelete || isProductHiddenFromCatalog }
 					name={ name }
@@ -324,6 +327,7 @@ const CartLineItemRow = ( {
 					>
 						{ __( 'Remove item', 'woo-gutenberg-products-block' ) }
 					</button>
+				</div>
 				</div>
 			</td>
 			<td className="wc-block-cart-item__total">
