@@ -116,6 +116,11 @@ const CartLineItemRow = ( {
 		[]
 	);
 
+	const productNameValidation = useCallback(
+		( value ) => mustBeString( value ) && mustContain( value, '<name/>' ),
+		[]
+	);
+
 	const cartItemClassNameValidation = useCallback(
 		( value ) => mustBeString( value ),
 		[]
@@ -204,6 +209,16 @@ const CartLineItemRow = ( {
 		validation: productPriceValidation,
 	} );
 
+	// Allow extensions to filter and format product names.
+
+	const productNameFormat = __experimentalApplyCheckoutFilter( {
+		filterName: 'productNameFormat',
+		defaultValue: '<name/>',
+		extensions,
+		arg,
+		validation: productNameValidation,
+	} );
+
 	return (
 		<tr
 			className={ classnames( 'wc-block-cart-items__row', cartItemClassNameFilter, {
@@ -231,6 +246,7 @@ const CartLineItemRow = ( {
 					disabled={ isPendingDelete || isProductHiddenFromCatalog }
 					name={ name }
 					permalink={ permalink }
+					format={ productNameFormat }
 				/>
 				{ showBackorderBadge ? (
 					<ProductBackorderBadge />
