@@ -9,6 +9,7 @@ import {
 } from '@woocommerce/types';
 
 export interface CartTotalItem {
+	key: string;
 	label: string;
 	value: number;
 	valueWithTax: number;
@@ -39,6 +40,7 @@ export const prepareTotalItems = (
 				? parseInt( totals[ taxProperty ] as string, 10 )
 				: 0;
 		return {
+			key: property,
 			label,
 			value,
 			valueWithTax: value + tax,
@@ -64,6 +66,7 @@ export const prepareTotalItems = (
 	);
 
 	newTotals.push( {
+		key: 'taxes',
 		label: __( 'Taxes:', 'woo-gutenberg-products-block' ),
 		value: parseInt( totals.total_tax, 10 ),
 		valueWithTax: parseInt( totals.total_tax, 10 ),
