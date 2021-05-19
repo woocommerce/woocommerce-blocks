@@ -66,7 +66,7 @@ export const prepareTotalItems = (
 	);
 
 	newTotals.push( {
-		key: 'taxes',
+		key: 'total_tax',
 		label: __( 'Taxes:', 'woo-gutenberg-products-block' ),
 		value: parseInt( totals.total_tax, 10 ),
 		valueWithTax: parseInt( totals.total_tax, 10 ),
