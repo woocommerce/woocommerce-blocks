@@ -65,6 +65,7 @@ const CartLineItemRow = ( {
 		description: fullDescription = '',
 		low_stock_remaining: lowStockRemaining = null,
 		show_backorder_badge: showBackorderBadge = false,
+		quantity = 1,
 		quantity_min: quantityMin = 1,
 		quantity_limit: quantityLimit = 99,
 		quantity_step: quantityStep = 1,
@@ -106,7 +107,9 @@ const CartLineItemRow = ( {
 	} = lineItem;
 
 	const {
-		quantity,
+		quantity: itemQuantity,
+		isUpdatingItemQuantity,
+		setUpdatingItemQuantity,
 		setItemQuantity,
 		removeItem,
 		isPendingDelete,
@@ -160,7 +163,7 @@ const CartLineItemRow = ( {
 	const saleAmountSingle = regularAmountSingle.subtract(
 		purchaseAmountSingle
 	);
-	const saleAmount = saleAmountSingle.multiply( quantity );
+	const saleAmount = saleAmountSingle.multiply( itemQuantity );
 	const totalsCurrency = getCurrencyFromPriceResponse( totals );
 	let lineSubtotal = parseInt( totals.line_subtotal, 10 );
 	if ( getSetting( 'displayCartPricesIncludingTax', false ) ) {
@@ -294,11 +297,12 @@ const CartLineItemRow = ( {
 				<div className="wc-block-cart-item__quantity">
 					<QuantitySelector
 						disabled={ isPendingDelete }
-						quantity={ quantity }
+						quantity={ isUpdatingItemQuantity ? itemQuantity : quantity }
 						step={ quantityStep }
 						minimum={ quantityMin }
 						maximum={ quantityLimit }
 						onChange={ ( newQuantity ) => {
+							setUpdatingItemQuantity( true );
 							setItemQuantity( newQuantity );
 							dispatchStoreEvent( 'cart-set-item-quantity', {
 								product: lineItem,
@@ -313,7 +317,7 @@ const CartLineItemRow = ( {
 							removeItem();
 							dispatchStoreEvent( 'cart-remove-item', {
 								product: lineItem,
-								quantity,
+								quantity: itemQuantity,
 							} );
 						} }
 						disabled={ isPendingDelete }
@@ -330,7 +334,7 @@ const CartLineItemRow = ( {
 						price={ subtotalPrice.getAmount() }
 					/>
 
-					{ quantity > 1 && (
+					{ itemQuantity > 1 && (
 						<ProductSaleBadge
 							currency={ priceCurrency }
 							saleAmount={ getAmountFromRawPrice(

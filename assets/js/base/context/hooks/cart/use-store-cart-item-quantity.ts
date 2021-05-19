@@ -58,6 +58,7 @@ export const useStoreCartItemQuantity = (
 	const { dispatchActions } = useCheckoutContext();
 
 	// Store quantity in hook state. This is used to keep the UI updated while server request is updated.
+	const [ updating, setUpdating ] = useState< boolean >( false );
 	const [ quantity, setQuantity ] = useState< number >( cartItemQuantity );
 	const [ debouncedQuantity ] = useDebounce< number >( quantity, 400 );
 	const previousDebouncedQuantity = usePrevious( debouncedQuantity );
@@ -139,6 +140,8 @@ export const useStoreCartItemQuantity = (
 	}, [ dispatchActions, isPending, previousIsPending ] );
 
 	return {
+		setUpdatingItemQuantity: setUpdating,
+		isUpdatingItemQuantity: updating || isPending.quantity,
 		isPendingDelete: isPending.delete,
 		quantity,
 		setItemQuantity: setQuantity,
