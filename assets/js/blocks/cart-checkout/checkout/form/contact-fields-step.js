@@ -3,8 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { FormStep } from '@woocommerce/base-components/cart-checkout';
-import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
-import { useCheckoutContext } from '@woocommerce/base-context';
+import { ValidatedTextInput } from '@woocommerce/blocks-checkout';
+import {
+	useCheckoutContext,
+	useValidationContext,
+	ValidationInputError,
+} from '@woocommerce/base-context';
 import { getSetting } from '@woocommerce/settings';
 import CheckboxControl from '@woocommerce/base-components/checkbox-control';
 
@@ -23,6 +27,22 @@ const ContactFieldsStep = ( {
 		shouldCreateAccount,
 		setShouldCreateAccount,
 	} = useCheckoutContext();
+	const {
+		getValidationError,
+		getValidationErrorId,
+		setValidationErrors,
+		clearValidationError,
+		hideValidationError,
+	} = useValidationContext();
+
+	const textInputValidationFunctions = {
+		getValidationError,
+		getValidationErrorId,
+		setValidationErrors,
+		clearValidationError,
+		hideValidationError,
+		validationInputError: ValidationInputError,
+	};
 
 	const createAccountUI = ! customerId &&
 		allowCreateAccount &&
@@ -61,6 +81,7 @@ const ContactFieldsStep = ( {
 				autoComplete="email"
 				onChange={ onChangeEmail }
 				required={ true }
+				{ ...textInputValidationFunctions }
 			/>
 			{ createAccountUI }
 		</FormStep>
