@@ -117,7 +117,7 @@ const ValidatedTextInput = ( {
 		};
 	}, [ clearValidationError, errorIdString ] );
 
-	// TODO - When useValidationContext is converted to TypeScript, remove this cast and use the correct type.
+	// @todo - When useValidationContext is converted to TypeScript, remove this cast and use the correct type.
 	const errorMessage = ( getValidationError( errorIdString ) || {} ) as {
 		message?: string;
 		hidden?: boolean;
