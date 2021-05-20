@@ -44,6 +44,7 @@ const TotalsCoupon = ( {
 		setValidationErrors,
 		clearValidationError,
 		hideValidationError,
+		validationInputError: ValidationInputError,
 	};
 
 	const validationError = getValidationError( 'coupon' );
@@ -106,7 +107,6 @@ const TotalsCoupon = ( {
 							validateOnMount={ false }
 							focusOnMount={ true }
 							showError={ false }
-							inputErrorComponent={ ValidationInputError }
 							{ ...textInputValidationFunctions }
 						/>
 						<Button
