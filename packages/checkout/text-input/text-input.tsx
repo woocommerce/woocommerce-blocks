@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { forwardRef, InputHTMLAttributes } from 'react';
+import { forwardRef, HTMLProps, InputHTMLAttributes } from 'react';
 import classnames from 'classnames';
 import { useState } from '@wordpress/element';
 
@@ -26,6 +26,10 @@ interface TextInputProps
 	autoComplete?: string;
 	onChange: ( newValue: string ) => void;
 	onBlur?: ( newValue: string ) => void;
+	inputProps?: Omit<
+		HTMLProps< HTMLInputElement >,
+		'onChange' | 'onBlur' | 'ref'
+	>;
 }
 
 const TextInput = forwardRef< HTMLInputElement, TextInputProps >(
@@ -49,7 +53,7 @@ const TextInput = forwardRef< HTMLInputElement, TextInputProps >(
 				/* Do nothing */
 			},
 			feedback,
-			...rest
+			inputProps,
 		},
 		ref
 	) => {
@@ -90,7 +94,7 @@ const TextInput = forwardRef< HTMLInputElement, TextInputProps >(
 							: ariaDescribedBy
 					}
 					required={ required }
-					{ ...rest }
+					{ ...inputProps }
 				/>
 				<Label
 					label={ label }
