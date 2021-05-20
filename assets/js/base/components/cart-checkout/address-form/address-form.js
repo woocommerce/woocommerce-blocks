@@ -201,7 +201,6 @@ const AddressForm = ( {
 								[ field.key ]: newValue,
 							} )
 						}
-						errorMessage={ field.errorMessage }
 						required={ field.required }
 					/>
 				);
