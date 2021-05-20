@@ -32,7 +32,6 @@ const PhoneNumber = ( { isRequired = false, value = '', onChange } ) => {
 		setValidationErrors,
 		clearValidationError,
 		hideValidationError,
-		validationInputError: ValidationInputError,
 	};
 	return (
 		<ValidatedTextInput
@@ -47,6 +46,7 @@ const PhoneNumber = ( { isRequired = false, value = '', onChange } ) => {
 			}
 			value={ value }
 			onChange={ onChange }
+			inputErrorComponent={ ValidationInputError }
 			{ ...textInputValidationFunctions }
 		/>
 	);
