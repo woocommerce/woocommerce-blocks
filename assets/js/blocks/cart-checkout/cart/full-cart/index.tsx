@@ -13,8 +13,8 @@ import {
 	TotalsFees,
 	TotalsTaxes,
 	ExperimentalOrderMeta,
+	ExperimentalDiscountsMeta,
 } from '@woocommerce/blocks-checkout';
-
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import {
 	useStoreCartCoupons,
@@ -31,7 +31,7 @@ import Title from '@woocommerce/base-components/title';
 import { getSetting } from '@woocommerce/settings';
 import { useEffect } from '@wordpress/element';
 import { decodeEntities } from '@wordpress/html-entities';
-import { CartProvider } from '@woocommerce/base-context';
+import { CartProvider, ValidationInputError } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
@@ -40,8 +40,8 @@ import CheckoutButton from '../checkout-button';
 import CartLineItemsTitle from './cart-line-items-title';
 import CartLineItemsTable from './cart-line-items-table';
 import { CartExpressPayment } from '../../payment-methods';
-
 import './style.scss';
+import { useValidationContext } from '../../../../base/context/providers';
 
 interface CartAttributes {
 	hasDarkControls: boolean;
@@ -114,6 +114,18 @@ const Cart = ( { attributes }: CartProps ) => {
 		cart,
 	};
 
+	const discountsSlotFillProps = {
+		extensions,
+		cart,
+		contexts: {
+			validation: useValidationContext(),
+			storeCart: useStoreCart(),
+		},
+		components: {
+			ValidationInputError,
+		},
+	};
+
 	return (
 		<>
 			<CartLineItemsTitle itemCount={ cartItemsCount } />
@@ -152,6 +164,10 @@ const Cart = ( { attributes }: CartProps ) => {
 							isLoading={ isApplyingCoupon }
 						/>
 					) }
+					<ExperimentalDiscountsMeta.Slot
+						{ ...discountsSlotFillProps }
+					/>
+
 					{ cartNeedsShipping && (
 						<TotalsShipping
 							showCalculator={ isShippingCalculatorEnabled }
