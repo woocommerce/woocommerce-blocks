@@ -214,7 +214,6 @@ const AddressForm = ( {
 								[ field.key ]: newValue,
 							} )
 						}
-						errorMessage={ field.errorMessage }
 						required={ field.required }
 						inputErrorComponent={ ValidationInputError }
 						{ ...textInputValidationFunctions }
