@@ -89,7 +89,6 @@ const AddressForm = ( {
 		setValidationErrors,
 		clearValidationError,
 		hideValidationError,
-		validationInputError: ValidationInputError,
 	};
 
 	const currentFields = useShallowEqual( fields );
@@ -217,6 +216,7 @@ const AddressForm = ( {
 						}
 						errorMessage={ field.errorMessage }
 						required={ field.required }
+						inputErrorComponent={ ValidationInputError }
 						{ ...textInputValidationFunctions }
 					/>
 				);
