@@ -44,7 +44,7 @@ type ValidatedTextInputProps = (
 	setValidationErrors: ( errors: Record< string, unknown > ) => void;
 	clearValidationError: ( errorId: string ) => void;
 	getValidationErrorId: ( errorId: string ) => string;
-	validationInputError: typeof Component;
+	inputErrorComponent: typeof Component;
 };
 
 const ValidatedTextInput = ( {
@@ -62,7 +62,7 @@ const ValidatedTextInput = ( {
 	setValidationErrors,
 	clearValidationError,
 	getValidationErrorId,
-	validationInputError: ValidationInputError,
+	inputErrorComponent: ValidationInputError,
 	...rest
 }: ValidatedTextInputProps ) => {
 	const [ isPristine, setIsPristine ] = useState( true );
