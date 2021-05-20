@@ -2,14 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	useCallback,
-	useRef,
-	useEffect,
-	useState,
-	Component,
-	HTMLProps,
-} from 'react';
+import { useCallback, useRef, useEffect, useState, Component } from 'react';
 import classnames from 'classnames';
 import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
 
@@ -52,10 +45,6 @@ type ValidatedTextInputProps = (
 	clearValidationError: ( errorId: string ) => void;
 	getValidationErrorId: ( errorId: string ) => string;
 	validationInputError: typeof Component;
-	inputProps?: Omit<
-		HTMLProps< HTMLInputElement >,
-		'onChange' | 'onBlur' | 'ref'
-	>;
 };
 
 const ValidatedTextInput = ( {
@@ -74,7 +63,6 @@ const ValidatedTextInput = ( {
 	clearValidationError,
 	getValidationErrorId,
 	validationInputError: ValidationInputError,
-	inputProps,
 	...rest
 }: ValidatedTextInputProps ) => {
 	const [ isPristine, setIsPristine ] = useState( true );
@@ -167,7 +155,6 @@ const ValidatedTextInput = ( {
 				onChange( val );
 			} }
 			ariaDescribedBy={ describedBy }
-			inputProps={ inputProps }
 			{ ...rest }
 		/>
 	);
