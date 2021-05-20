@@ -43,7 +43,6 @@ const StateInput = ( {
 		setValidationErrors,
 		clearValidationError,
 		hideValidationError,
-		validationInputError: ValidationInputError,
 	};
 
 	const countryStates = states[ country ];
@@ -129,6 +128,7 @@ const StateInput = ( {
 			autoComplete={ autoComplete }
 			value={ value }
 			required={ required }
+			inputErrorComponent={ ValidationInputError }
 			{ ...textInputValidationFunctions }
 		/>
 	);

@@ -41,7 +41,6 @@ const ContactFieldsStep = ( {
 		setValidationErrors,
 		clearValidationError,
 		hideValidationError,
-		validationInputError: ValidationInputError,
 	};
 
 	const createAccountUI = ! customerId &&
@@ -81,6 +80,7 @@ const ContactFieldsStep = ( {
 				autoComplete="email"
 				onChange={ onChangeEmail }
 				required={ true }
+				inputErrorComponent={ ValidationInputError }
 				{ ...textInputValidationFunctions }
 			/>
 			{ createAccountUI }
