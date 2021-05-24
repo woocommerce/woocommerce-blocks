@@ -18,11 +18,11 @@ import { getSetting } from '@woocommerce/settings';
  */
 import './style.scss';
 
-const SHOW_TAXES =
-	getSetting( 'taxesEnabled', true ) &&
-	getSetting( 'displayCartPricesIncludingTax', false );
-
 const TotalsFooterItem = ( { currency, values } ) => {
+	const SHOW_TAXES =
+		getSetting( 'taxesEnabled', true ) &&
+		getSetting( 'displayCartPricesIncludingTax', false );
+
 	const { total_price: totalPrice, total_tax: totalTax } = values;
 
 	// Prepare props to pass to the __experimentalApplyCheckoutFilter filter.
