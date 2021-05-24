@@ -168,6 +168,7 @@ final class BlockTypesController {
 			'product-tag-list',
 			'product-stock-indicator',
 			'product-add-to-cart',
+<<<<<<< HEAD
 			'checkout-fields-block',
 			'checkout-totals-block',
 			'checkout-billing-address-block',
@@ -180,6 +181,11 @@ final class BlockTypesController {
 			'checkout-shipping-methods-block',
 			'checkout-express-payment-block',
 			'checkout-newsletter-block',
+=======
+			'checkout-form-step',
+			'checkout-shipping-address',
+			'checkout-contact-information',
+>>>>>>> 239cb9c2 (Setup atomic blocks)
 		];
 	}
 }
