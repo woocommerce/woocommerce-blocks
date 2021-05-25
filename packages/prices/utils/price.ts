@@ -6,9 +6,8 @@ import type {
 	Currency,
 	CurrencyResponse,
 	CartShippingPackageShippingRate,
+	SymbolPosition,
 } from '@woocommerce/types';
-
-type SymbolPosition = 'left' | 'left_space' | 'right' | 'right_space';
 
 /**
  * Get currency prefix.

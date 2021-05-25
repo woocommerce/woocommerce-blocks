@@ -18,3 +18,5 @@ export interface CurrencyResponse {
 	currency_prefix: string;
 	currency_suffix: string;
 }
+
+export type SymbolPosition = 'left' | 'left_space' | 'right' | 'right_space';
