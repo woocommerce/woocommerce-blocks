@@ -8,7 +8,7 @@ This is a list of available endpoints that you can extend. If you want to add a 
 
 The main cart endpoint is extensible via ExtendRestAPI. The data is available via the `extensions` key in the response.
 
-### Passes Parameters:
+### Passed Parameters:
 
 - `data_callback`: none.
 - `schema_callback`: none.
