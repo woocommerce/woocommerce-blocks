@@ -4,6 +4,9 @@ To see how to use a slotFill, [check this document](./slot-fills.md).
 
 This is a list of available slots that you can use. If you want to add a new slotFill, [check this document](../../pacakges/checkout/slot/README.md).
 
+**Note About Naming:** Slots that are prefixed with `Experminetal` are, as they say, exprimental and not final, they're are subject to change or remove, once they graduate from expermintal, the naming would change so you should be aware of that.
+Check the [Feature Gating document](../blocks/feature-flags-and-experimental-interfaces.md) from more information.
+
 ## ExperimentalOrderMeta
 This Slot renders below the Checkout summary section and above the "Proceed to Checkout" button in the Cart.
 
