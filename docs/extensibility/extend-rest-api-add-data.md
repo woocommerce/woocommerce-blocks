@@ -19,8 +19,8 @@ use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
 use Automattic\WooCommerce\Blocks\StoreApi\Schemas\CartSchema;
 
 add_action('woocommerce_blocks_loaded', function() {
- // ExtendRestApi relies on a Singleton that is shared between the API and consumers.
- // You shouldn't initiate your own ExtendRestApi using new ExtendRestApi but should always get it from Package dependecy injection manager.
+ // ExtendRestApi is stored in the container as a shared instance between the API and consumers.
+ // You shouldn't initiate your own ExtendRestApi instance using `new ExtendRestApi` but should always use the shared instance from the Package dependency injection container.
  $extend = Package::container()->get( ExtendRestApi::class );
 
  $extend->register_endpoint_data(
