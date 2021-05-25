@@ -1,5 +1,7 @@
 # Adding an endpoint to ExtendRestAPI
 
+This document is intended for contrubtors to WooCommerce Blocks plugin, if you feel like a new endpoint should be added, feel free to open an issue or a PR detailing why.
+
 ## Extending `GET` endpoints in Store API.
 
 ExtendRestAPI needs to expose each endpoint individually. If you want to expose a new endpoint, you have to follow these steps:
