@@ -32,6 +32,7 @@ import { getSetting } from '@woocommerce/settings';
 import { useEffect } from '@wordpress/element';
 import { decodeEntities } from '@wordpress/html-entities';
 import { CartProvider } from '@woocommerce/base-context';
+import TotalsWrapper from '@woocommerce/base-components/cart-checkout/totals/wrapper';
 
 /**
  * Internal dependencies
@@ -135,21 +136,23 @@ const Cart = ( { attributes }: CartProps ) => {
 					>
 						{ __( 'Cart totals', 'woo-gutenberg-products-block' ) }
 					</Title>
-					<Subtotal
-						currency={ totalsCurrency }
-						values={ cartTotals }
-					/>
-					<TotalsFees
-						currency={ totalsCurrency }
-						cartFees={ cartFees }
-					/>
-					<TotalsDiscount
-						cartCoupons={ appliedCoupons }
-						currency={ totalsCurrency }
-						isRemovingCoupon={ isRemovingCoupon }
-						removeCoupon={ removeCoupon }
-						values={ cartTotals }
-					/>
+					<TotalsWrapper>
+						<Subtotal
+							currency={ totalsCurrency }
+							values={ cartTotals }
+						/>
+						<TotalsFees
+							currency={ totalsCurrency }
+							cartFees={ cartFees }
+						/>
+						<TotalsDiscount
+							cartCoupons={ appliedCoupons }
+							currency={ totalsCurrency }
+							isRemovingCoupon={ isRemovingCoupon }
+							removeCoupon={ removeCoupon }
+							values={ cartTotals }
+						/>
+					</TotalsWrapper>
 					{ getSetting( 'couponsEnabled', true ) && (
 						<TotalsCoupon
 							onSubmit={ applyCoupon }
