@@ -261,7 +261,6 @@ table.wc-block-cart-items {
 	}
 
 	.wc-block-cart__totals-title {
-		@include with-translucent-border(0 0 1px);
 		@include text-heading();
 		@include font-size(smaller);
 		display: block;

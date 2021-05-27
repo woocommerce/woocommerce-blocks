@@ -1,6 +1,6 @@
 .wc-block-components-totals-wrapper {
 	@include with-translucent-border( 1px 0 0 );
-	padding: $gap-smallest 0;
+	padding: $gap 0;
 
 	&:first-child {
 		&::after {
