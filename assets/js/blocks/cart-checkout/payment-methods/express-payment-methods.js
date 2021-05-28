@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
 import {
 	useExpressPaymentMethods,
 	usePaymentMethodInterface,
@@ -10,8 +11,6 @@ import {
 	isValidElement,
 	useCallback,
 	useRef,
-	useMemo,
-	useEffect,
 } from '@wordpress/element';
 import {
 	useEditorContext,
@@ -35,11 +34,6 @@ const ExpressPaymentMethods = () => {
 	const { paymentMethods } = useExpressPaymentMethods();
 	const previousActivePaymentMethod = useRef( activePaymentMethod );
 	const previousPaymentMethodData = useRef( paymentMethodData );
-	const currentPaymentMethodInterface = useRef( paymentMethodInterface );
-
-	useEffect( () => {
-		currentPaymentMethodInterface.current = paymentMethodInterface;
-	}, [ paymentMethodInterface ] );
 
 	const onExpressPaymentClick = useCallback(
 		( paymentMethodId ) => () => {
@@ -63,33 +57,38 @@ const ExpressPaymentMethods = () => {
 		}
 	}, [ setActivePaymentMethod, setPaymentStatus ] );
 
-	const content = useMemo( () => {
-		const entries = Object.entries( paymentMethods );
-
-		if ( ! entries.length ) {
-			return <li key="noneRegistered">No registered Payment Methods</li>;
-		}
-
-		return entries.map( ( [ id, paymentMethod ] ) => {
-			const expressPaymentMethod = isEditor
-				? paymentMethod.edit
-				: paymentMethod.content;
-			return isValidElement( expressPaymentMethod ) ? (
-				<li key={ id } id={ `express-payment-method-${ id }` }>
-					{ cloneElement( expressPaymentMethod, {
-						...currentPaymentMethodInterface.current,
-						onClick: onExpressPaymentClick( id ),
-						onClose: onExpressPaymentClose,
-					} ) }
-				</li>
-			) : null;
-		} );
-	}, [
-		paymentMethods,
-		isEditor,
-		onExpressPaymentClick,
-		onExpressPaymentClose,
-	] );
+	/**
+	 * @todo Find a way to Memorize Express Payment Method Content
+	 *
+	 * Payment method content could potentially become a bottleneck if lots of logic is ran in the content component. It
+	 * Currently re-renders excessively but is not easy to useMemo because paymentMethodInterface could become stale.
+	 * paymentMethodInterface itself also updates on most renders.
+	 */
+	const entries = Object.entries( paymentMethods );
+	const content =
+		entries.length > 0 ? (
+			entries.map( ( [ id, paymentMethod ] ) => {
+				const expressPaymentMethod = isEditor
+					? paymentMethod.edit
+					: paymentMethod.content;
+				return isValidElement( expressPaymentMethod ) ? (
+					<li key={ id } id={ `express-payment-method-${ id }` }>
+						{ cloneElement( expressPaymentMethod, {
+							...paymentMethodInterface,
+							onClick: onExpressPaymentClick( id ),
+							onClose: onExpressPaymentClose,
+						} ) }
+					</li>
+				) : null;
+			} )
+		) : (
+			<li key="noneRegistered">
+				{ __(
+					'No registered Payment Methods',
+					'woo-gutenberg-products-block'
+				) }
+			</li>
+		);
 
 	return (
 		<PaymentMethodErrorBoundary isEditor={ isEditor }>
