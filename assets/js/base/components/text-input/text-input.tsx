@@ -49,6 +49,7 @@ const TextInput = forwardRef< HTMLInputElement, TextInputProps >(
 				/* Do nothing */
 			},
 			feedback,
+			...rest
 		},
 		ref
 	) => {
@@ -87,6 +88,7 @@ const TextInput = forwardRef< HTMLInputElement, TextInputProps >(
 							: ariaDescribedBy
 					}
 					required={ required }
+					{ ...rest }
 				/>
 				<Label
 					label={ label }
