@@ -86,12 +86,20 @@ const QuantitySelector = ( {
 				value={ quantity }
 				onKeyDown={ quantityInputOnKeyDown }
 				onChange={ ( event ) => {
-
-					let valueIsNumber = event.target.value && ( isNumber( event.target.value ) || parseInt( event.target.value, 10 ).toString() === event.target.value );
-					let value         = ! valueIsNumber ? quantity : parseInt( event.target.value, 10 );
+					const valueIsNumber =
+						event.target.value &&
+						( isNumber( event.target.value ) ||
+							parseInt( event.target.value, 10 ).toString() ===
+								event.target.value );
+					let value = ! valueIsNumber
+						? quantity
+						: parseInt( event.target.value, 10 );
 
 					if ( hasMaximum ) {
-						value = Math.min( value, Math.floor( maximum / step ) * step );
+						value = Math.min(
+							value,
+							Math.floor( maximum / step ) * step
+						);
 					}
 
 					if ( hasStep ) {

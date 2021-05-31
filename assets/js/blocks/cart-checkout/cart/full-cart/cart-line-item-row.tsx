@@ -26,6 +26,7 @@ import {
 	__experimentalApplyCheckoutFilter,
 	mustBeString,
 	mustContain,
+	mustContainPreivousValues,
 } from '@woocommerce/blocks-checkout';
 import Dinero from 'dinero.js';
 import { useCallback, useMemo } from '@wordpress/element';
@@ -126,11 +127,6 @@ const CartLineItemRow = ( {
 		[]
 	);
 
-	const cartItemClassNameValidation = useCallback(
-		( value ) => mustBeString( value ),
-		[]
-	);
-
 	// Prepare props to pass to the __experimentalApplyCheckoutFilter filter.
 	// We need to pluck out receiveCart.
 	// eslint-disable-next-line no-unused-vars
@@ -180,17 +176,20 @@ const CartLineItemRow = ( {
 
 	// Allow extensions to add extra cart item classes.
 
-	const cartItemClassNameFilter = __experimentalApplyCheckoutFilter( {
+	const cartItemClassNameFilter = __experimentalApplyCheckoutFilter<
+		Array< string >
+	>( {
 		filterName: 'cartItemClass',
-		defaultValue: '',
+		defaultValue: [],
 		extensions,
 		arg,
-		validation: cartItemClassNameValidation,
+		validation: ( value, previousValue ) =>
+			mustContainPreivousValues< string >( value, previousValue ),
 	} );
 
 	// Allow extensions to filter how the price is displayed. Ie: prepending or appending some values.
 
-	const productPriceFormat = __experimentalApplyCheckoutFilter( {
+	const productPriceFormat = __experimentalApplyCheckoutFilter< string >( {
 		filterName: 'cartItemPrice',
 		defaultValue: '<price/>',
 		extensions,
@@ -198,7 +197,7 @@ const CartLineItemRow = ( {
 		validation: productPriceValidation,
 	} );
 
-	const subtotalPriceFormat = __experimentalApplyCheckoutFilter( {
+	const subtotalPriceFormat = __experimentalApplyCheckoutFilter< string >( {
 		filterName: 'subtotalPriceFormat',
 		defaultValue: '<price/>',
 		extensions,
@@ -206,7 +205,7 @@ const CartLineItemRow = ( {
 		validation: productPriceValidation,
 	} );
 
-	const saleBadgePriceFormat = __experimentalApplyCheckoutFilter( {
+	const saleBadgePriceFormat = __experimentalApplyCheckoutFilter< string >( {
 		filterName: 'saleBadgePriceFormat',
 		defaultValue: '<price/>',
 		extensions,
@@ -216,7 +215,7 @@ const CartLineItemRow = ( {
 
 	// Allow extensions to filter and format product names.
 
-	const productNameFormat = __experimentalApplyCheckoutFilter( {
+	const productNameFormat = __experimentalApplyCheckoutFilter< string >( {
 		filterName: 'productNameFormat',
 		defaultValue: '<name/>',
 		extensions,
@@ -226,9 +225,13 @@ const CartLineItemRow = ( {
 
 	return (
 		<tr
-			className={ classnames( 'wc-block-cart-items__row', cartItemClassNameFilter, {
-				'is-disabled': isPendingDelete
-			} ) }
+			className={ classnames(
+				'wc-block-cart-items__row',
+				cartItemClassNameFilter,
+				{
+					'is-disabled': isPendingDelete,
+				}
+			) }
 		>
 			{ /* If the image has no alt text, this link is unnecessary and can be hidden. */ }
 			<td
@@ -247,11 +250,11 @@ const CartLineItemRow = ( {
 				) }
 			</td>
 			<td className="wc-block-cart-item__product">
-				<div
-					className={ classnames( 'wc-block-cart-item__wrap' ) }
-				>
+				<div className={ classnames( 'wc-block-cart-item__wrap' ) }>
 					<ProductName
-						disabled={ isPendingDelete || isProductHiddenFromCatalog }
+						disabled={
+							isPendingDelete || isProductHiddenFromCatalog
+						}
 						name={ name }
 						permalink={ permalink }
 						format={ productNameFormat }
@@ -300,7 +303,9 @@ const CartLineItemRow = ( {
 					<div className="wc-block-cart-item__quantity">
 						<QuantitySelector
 							disabled={ isPendingDelete }
-							quantity={ isUpdatingItemQuantity ? itemQuantity : quantity }
+							quantity={
+								isUpdatingItemQuantity ? itemQuantity : quantity
+							}
 							step={ quantityStep }
 							minimum={ quantityMin }
 							maximum={ quantityLimit }
@@ -325,7 +330,10 @@ const CartLineItemRow = ( {
 							} }
 							disabled={ isPendingDelete }
 						>
-							{ __( 'Remove item', 'woo-gutenberg-products-block' ) }
+							{ __(
+								'Remove item',
+								'woo-gutenberg-products-block'
+							) }
 						</button>
 					</div>
 				</div>

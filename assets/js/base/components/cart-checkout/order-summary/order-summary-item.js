@@ -144,7 +144,7 @@ const OrderSummaryItem = ( { cartItem } ) => {
 					disabled={ true }
 					name={ name }
 					permalink={ permalink }
-					format= { productNameFormat }
+					format={ productNameFormat }
 				/>
 				<ProductPrice
 					currency={ priceCurrency }
