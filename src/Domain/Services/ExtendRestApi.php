@@ -63,6 +63,13 @@ final class ExtendRestApi {
 	private $extend_data = [];
 
 	/**
+	 * Data to be extended
+	 *
+	 * @var array
+	 */
+	private $callback_methods = [];
+
+	/**
 	 * Array of payment requirements
 	 *
 	 * @var array
@@ -117,6 +124,66 @@ final class ExtendRestApi {
 		];
 
 		return true;
+	}
+
+	/**
+	 * Add callback functions that can be executed by the cart/extensions endpoint.
+	 *
+	 * @param array $args {
+	 *     An array of elements that make up the callback configuration.
+	 *
+	 *     @type string   $endpoint The endpoint to extend.
+	 *     @type string   $namespace Plugin namespace.
+	 *     @type callable $callback_function The function/callable to execute.
+	 * }
+	 *
+	 * @throws Exception On failure to register.
+	 * @returns boolean True on success.
+	 */
+	public function register_update_callback( $args ) {
+		if ( ! is_string( $args['namespace'] ) ) {
+			$this->throw_exception( 'You must provide a plugin namespace when extending a Store REST endpoint.' );
+		}
+
+		if ( ! is_string( $args['endpoint'] ) || ! in_array( $args['endpoint'], $this->endpoints, true ) ) {
+			$this->throw_exception(
+				sprintf( 'You must provide a valid Store REST endpoint to extend, valid endpoints are: %1$s. You provided %2$s.', implode( ', ', $this->endpoints ), $args['endpoint'] )
+			);
+		}
+
+		$this->callback_methods[ $args['endpoint'] ][ $args['namespace'] ] = [
+			'callback_function' => $args['callback_function'],
+		];
+		return true;
+	}
+
+	/**
+	 * Get callback for a specific endpoint and namespace.
+	 *
+	 * @param string $endpoint The endpoint to get callbacks for.
+	 * @param string $namespace The namespace to get callbacks for.
+	 *
+	 * @return callable The callback registered by the extension.
+	 * @throws Exception When callback is not callable or parameters are incorrect.
+	 */
+	public function get_update_callback( $endpoint, $namespace ) {
+		if ( ! is_string( $namespace ) ) {
+			$this->throw_exception( 'You must provide a plugin namespace when extending a Store REST endpoint.' );
+		}
+
+		if ( ! is_string( $endpoint ) || ! in_array( $endpoint, $this->endpoints, true ) ) {
+			$this->throw_exception(
+				sprintf( 'You must provide a valid Store REST endpoint to extend, valid endpoints are: %1$s. You provided %2$s.', implode( ', ', $this->endpoints ), $endpoint )
+			);
+		}
+
+		$method = $this->callback_methods[ $endpoint ][ $namespace ]['callback_function'];
+		if ( ! is_callable( $method ) ) {
+			$this->throw_exception(
+				sprintf( 'There is no valid callback registered for: %1$s on the %2$s endpoint.', $namespace, $endpoint )
+			);
+		}
+		return $method;
 	}
 
 	/**
