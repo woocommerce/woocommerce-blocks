@@ -62,6 +62,11 @@ registerBlockType( 'woocommerce/all-reviews', {
 				transform: ( { instance } ) =>
 					createBlock( 'woocommerce/all-reviews', {
 						reviewsOnPageLoad: instance.raw.number,
+						imageType: 'product',
+						showLoadMore: false,
+						showOrderby: false,
+						showReviewDate: false,
+						showReviewContent: false,
 					} ),
 			},
 		],
