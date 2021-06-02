@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import apiFetch, { APIFetchOptions } from '@wordpress/api-fetch';
 import { dispatch } from '@wordpress/data';
 import { CartResponse } from '@woocommerce/type-defs/cart-response';
 
@@ -16,17 +15,8 @@ import { STORE_KEY } from '../../../assets/js/data/cart/constants';
  * and that it needs to be reloaded in the client.
  */
 export const extensionCartUpdate = (
-	args: APIFetchOptions
-): Promise< void > => {
-	const { receiveCart } = dispatch( STORE_KEY );
-	return new Promise( ( resolve, reject ) => {
-		apiFetch( args )
-			.then( ( cartData: unknown ) => {
-				receiveCart( cartData as CartResponse );
-				resolve();
-			} )
-			.catch( ( err ) => {
-				reject( err );
-			} );
-	} );
+	args: Record< string, unknown >
+): Promise< CartResponse > => {
+	const { applyExtensionCartUpdate } = dispatch( STORE_KEY );
+	return applyExtensionCartUpdate( args );
 };
