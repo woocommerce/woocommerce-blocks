@@ -97,14 +97,7 @@ class SchemaController {
 			$this->schemas[ ErrorSchema::IDENTIFIER ]
 		);
 		$this->schemas[ CartExtensionsSchema::IDENTIFIER ]   = new CartExtensionsSchema(
-			$this->extend,
-			$this->schemas[ CartItemSchema::IDENTIFIER ],
-			$this->schemas[ CartCouponSchema::IDENTIFIER ],
-			$this->schemas[ CartFeeSchema::IDENTIFIER ],
-			$this->schemas[ CartShippingRateSchema::IDENTIFIER ],
-			$this->schemas[ ShippingAddressSchema::IDENTIFIER ],
-			$this->schemas[ BillingAddressSchema::IDENTIFIER ],
-			$this->schemas[ ErrorSchema::IDENTIFIER ]
+			$this->extend
 		);
 		$this->schemas[ CheckoutSchema::IDENTIFIER ]         = new CheckoutSchema(
 			$this->extend,
