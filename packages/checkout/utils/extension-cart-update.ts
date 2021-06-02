@@ -11,9 +11,10 @@ import { ExtensionCartUpdateArgs } from '@woocommerce/types';
 import { STORE_KEY } from '../../../assets/js/data/cart/constants';
 
 /**
- * When executed, this will invalidate the getCartData selector, causing a request to be made
- * to the API. This is in place to allow extensions to signal that they have modified the cart,
- * and that it needs to be reloaded in the client.
+ * When executed, this will call the cart/extensions endpoint.
+ * The args contains a namespace, so if that extension has registered an update
+ * callback, it will be executed server-side and the new cart will be returned.
+ * The new cart is then received into the client-side store.
  */
 export const extensionCartUpdate = (
 	args: ExtensionCartUpdateArgs
