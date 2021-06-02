@@ -51,6 +51,10 @@ class CartExtensions extends AbstractCartRoute {
 	 * @return \WP_REST_Response
 	 */
 	protected function get_route_post_response( \WP_REST_Request $request ) {
-		return $this->schema->get_item_response( $request );
+		try {
+			return $this->schema->get_item_response( $request );
+		} catch ( Exception $error ) {
+			throw new RouteException( $error->getCode(), $error->getMessage(), 500 );
+		}
 	}
 }
