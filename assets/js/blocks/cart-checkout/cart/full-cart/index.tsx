@@ -117,9 +117,6 @@ const Cart = ( { attributes }: CartProps ) => {
 	const discountsSlotFillProps = {
 		extensions,
 		cart,
-		contexts: {
-			storeCart: useStoreCart(),
-		},
 		components: {
 			ValidatedTextInput,
 		},
