@@ -144,6 +144,31 @@ class CartController {
 				400
 			);
 		}
+
+		if ( isset( $cart_item['quantity_min'] ) && $quantity > $cart_item['quantity_min'] ) {
+			throw new RouteException(
+				'woocommerce_rest_cart_invalid_quantity_min',
+				sprintf(
+					/* translators: %d: product min quantity */
+					__( 'Cart item quantity must be higher than %d.', 'woo-gutenberg-products-block' ),
+					$cart_item['quantity_min']
+				),
+				404
+			);
+		}
+
+		if ( isset( $cart_item['quantity_step'] ) && $quantity % $cart_item['quantity_step'] > 0 ) {
+			throw new RouteException(
+				'woocommerce_rest_cart_invalid_quantity_step',
+				sprintf(
+					/* translators: %d: product quantity step*/
+					__( 'Cart item quantity must be a multiple of %d.', 'woo-gutenberg-products-block' ),
+					$cart_item['quantity_step']
+				),
+				404
+			);
+		}
+
 		$cart = $this->get_cart_instance();
 		$cart->set_quantity( $item_id, $quantity );
 	}
