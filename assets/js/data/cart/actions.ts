@@ -168,6 +168,38 @@ export const updateCartFragments = () =>
 	} as const );
 
 /**
+ * POSTs to the /cart/extensions endpoint with the data supplied by the extension.
+ *
+ * @param {Object} args The data to be posted to the endpoint
+ */
+export function* applyExtensionCartUpdate(
+	args: Record< string, unknown >
+): Generator< unknown, CartResponse, { response: CartResponse } > {
+	try {
+		const { response } = yield apiFetchWithHeaders( {
+			path: '/wc/store/cart/extensions',
+			method: 'POST',
+			data: args,
+			cache: 'no-store',
+		} );
+
+		yield receiveCart( response );
+		yield updateCartFragments();
+		return response;
+	} catch ( error ) {
+		yield receiveError( error );
+
+		// If updated cart state was returned, also update that.
+		if ( error.data?.cart ) {
+			yield receiveCart( error.data.cart );
+		}
+
+		// Re-throw the error.
+		throw error;
+	}
+}
+
+/**
  * Applies a coupon code and either invalidates caches, or receives an error if
  * the coupon cannot be applied.
  *
