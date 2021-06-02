@@ -94,10 +94,10 @@ registerBlockType( 'woocommerce/product-categories', {
 					!! instance?.raw,
 				transform: ( { instance } ) =>
 					createBlock( 'woocommerce/product-categories', {
-						hasCount: instance.raw.count,
+						hasCount: !! instance.raw.count,
 						hasEmpty: ! instance.raw.hide_empty,
-						isDropdown: instance.raw.dropdown,
-						isHierarchical: instance.raw.hierarchical,
+						isDropdown: !! instance.raw.dropdown,
+						isHierarchical: !! instance.raw.hierarchical,
 					} ),
 			},
 		],
