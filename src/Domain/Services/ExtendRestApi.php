@@ -53,7 +53,7 @@ final class ExtendRestApi {
 	 *
 	 * @var array
 	 */
-	private $endpoints = [ CartItemSchema::IDENTIFIER, CartSchema::IDENTIFIER, CartExtensionsSchema::IDENTIFIER ];
+	private $endpoints = [ CartItemSchema::IDENTIFIER, CartSchema::IDENTIFIER ];
 
 	/**
 	 * Data to be extended
@@ -145,13 +145,7 @@ final class ExtendRestApi {
 			$this->throw_exception( 'You must provide a plugin namespace when extending a Store REST endpoint.' );
 		}
 
-		if ( ! is_string( $args['endpoint'] ) || ! in_array( $args['endpoint'], $this->endpoints, true ) ) {
-			$this->throw_exception(
-				sprintf( 'You must provide a valid Store REST endpoint to extend, valid endpoints are: %1$s. You provided %2$s.', implode( ', ', $this->endpoints ), $args['endpoint'] )
-			);
-		}
-
-		$this->callback_methods[ $args['endpoint'] ][ $args['namespace'] ] = [
+		$this->callback_methods[ $args['namespace'] ] = [
 			'callback_function' => $args['callback_function'],
 		];
 		return true;
@@ -160,27 +154,20 @@ final class ExtendRestApi {
 	/**
 	 * Get callback for a specific endpoint and namespace.
 	 *
-	 * @param string $endpoint The endpoint to get callbacks for.
 	 * @param string $namespace The namespace to get callbacks for.
 	 *
 	 * @return callable The callback registered by the extension.
 	 * @throws Exception When callback is not callable or parameters are incorrect.
 	 */
-	public function get_update_callback( $endpoint, $namespace ) {
+	public function get_update_callback( $namespace ) {
 		if ( ! is_string( $namespace ) ) {
 			$this->throw_exception( 'You must provide a plugin namespace when extending a Store REST endpoint.' );
 		}
 
-		if ( ! is_string( $endpoint ) || ! in_array( $endpoint, $this->endpoints, true ) ) {
-			$this->throw_exception(
-				sprintf( 'You must provide a valid Store REST endpoint to extend, valid endpoints are: %1$s. You provided %2$s.', implode( ', ', $this->endpoints ), $endpoint )
-			);
-		}
-
-		$method = $this->callback_methods[ $endpoint ][ $namespace ]['callback_function'];
+		$method = $this->callback_methods[ $namespace ]['callback_function'];
 		if ( ! is_callable( $method ) ) {
 			$this->throw_exception(
-				sprintf( 'There is no valid callback registered for: %1$s on the %2$s endpoint.', $namespace, $endpoint )
+				sprintf( 'There is no valid callback registered for: %1$s.', $namespace )
 			);
 		}
 		return $method;

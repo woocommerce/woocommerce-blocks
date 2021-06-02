@@ -1,8 +1,6 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas;
 
-use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
-
 /**
  * Class CartExtensionsSchema
  *
@@ -31,7 +29,7 @@ class CartExtensionsSchema extends AbstractSchema {
 	 * @return array
 	 */
 	public function get_item_response( $request = null ) {
-		$callback = $this->extend->get_update_callback( self::IDENTIFIER, $request['namespace'] );
+		$callback = $this->extend->get_update_callback( $request['namespace'] );
 		$callback( $request['data'] );
 		return rest_ensure_response( wc()->api->get_endpoint_data( '/wc/store/cart' ) );
 	}
