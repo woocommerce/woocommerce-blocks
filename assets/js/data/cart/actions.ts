@@ -8,6 +8,7 @@ import type {
 	CartResponseItem,
 	CartBillingAddress,
 	CartShippingAddress,
+	ExtensionCartUpdateArgs,
 } from '@woocommerce/types';
 import { ReturnOrGeneratorYieldUnion } from '@automattic/data-stores';
 import { camelCase, mapKeys } from 'lodash';
@@ -173,20 +174,25 @@ export const updateCartFragments = () =>
  * @param {Object} args The data to be posted to the endpoint
  */
 export function* applyExtensionCartUpdate(
-	args: Record< string, unknown >
+	args: ExtensionCartUpdateArgs
 ): Generator< unknown, CartResponse, { response: CartResponse } > {
 	try {
 		const { response } = yield apiFetchWithHeaders( {
 			path: '/wc/store/cart/extensions',
 			method: 'POST',
-			data: args,
+			data: { namespace: args.namespace, data: args.data },
 			cache: 'no-store',
 		} );
-
+		if ( typeof args.success === 'function' ) {
+			yield args.success( response );
+		}
 		yield receiveCart( response );
 		yield updateCartFragments();
 		return response;
 	} catch ( error ) {
+		if ( typeof args.error === 'function' ) {
+			yield args.error( error );
+		}
 		yield receiveError( error );
 
 		// If updated cart state was returned, also update that.

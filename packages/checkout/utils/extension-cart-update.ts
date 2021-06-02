@@ -3,6 +3,7 @@
  */
 import { dispatch } from '@wordpress/data';
 import { CartResponse } from '@woocommerce/type-defs/cart-response';
+import { ExtensionCartUpdateArgs } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -15,7 +16,7 @@ import { STORE_KEY } from '../../../assets/js/data/cart/constants';
  * and that it needs to be reloaded in the client.
  */
 export const extensionCartUpdate = (
-	args: Record< string, unknown >
+	args: ExtensionCartUpdateArgs
 ): Promise< CartResponse > => {
 	const { applyExtensionCartUpdate } = dispatch( STORE_KEY );
 	return applyExtensionCartUpdate( args );
