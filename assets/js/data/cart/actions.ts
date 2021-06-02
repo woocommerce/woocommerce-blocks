@@ -183,18 +183,11 @@ export function* applyExtensionCartUpdate(
 			data: { namespace: args.namespace, data: args.data },
 			cache: 'no-store',
 		} );
-		if ( typeof args.success === 'function' ) {
-			yield args.success( response );
-		}
 		yield receiveCart( response );
 		yield updateCartFragments();
 		return response;
 	} catch ( error ) {
-		if ( typeof args.error === 'function' ) {
-			yield args.error( error );
-		}
 		yield receiveError( error );
-
 		// If updated cart state was returned, also update that.
 		if ( error.data?.cart ) {
 			yield receiveCart( error.data.cart );

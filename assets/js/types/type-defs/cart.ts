@@ -7,7 +7,6 @@ import {
 	MetaKeyValue,
 	ShippingRateItem,
 	ExtensionsData,
-	CartResponse,
 } from './cart-response';
 export interface CurrencyInfo {
 	currency_code: string;
@@ -198,6 +197,4 @@ export interface CartMeta {
 export interface ExtensionCartUpdateArgs {
 	data: Record< string, unknown >;
 	namespace: string;
-	success?: ( result: CartResponse ) => void;
-	error?: ( error: unknown ) => void;
 }
