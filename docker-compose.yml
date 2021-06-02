@@ -18,6 +18,8 @@ services:
       - db
     build:
       context: ./tests/bin
+      args:
+        WOO_INSTALL_VERSION: ${WOO_VERSION}
     ports:
       - 8085:80
     restart: on-failure
