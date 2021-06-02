@@ -109,12 +109,14 @@ const CartLineItemRow = ( {
 
 	const {
 		quantity: itemQuantity,
-		isUpdatingItemQuantity,
-		setUpdatingItemQuantity,
 		setItemQuantity,
-		removeItem,
+		inputQuantity,
+		setItemInputQuantity,
+		isPendingItemQuantity,
 		isPendingDelete,
+		removeItem,
 	} = useStoreCartItemQuantity( lineItem );
+
 	const { dispatchStoreEvent } = useStoreEvents();
 
 	const productPriceValidation = useCallback(
@@ -303,14 +305,18 @@ const CartLineItemRow = ( {
 					<div className="wc-block-cart-item__quantity">
 						<QuantitySelector
 							disabled={ isPendingDelete }
+							resetQuantity={ quantity }
 							quantity={
-								isUpdatingItemQuantity ? itemQuantity : quantity
+								isPendingItemQuantity ? ( inputQuantity ? inputQuantity : itemQuantity ) : quantity
 							}
 							step={ quantityStep }
 							minimum={ quantityMin }
 							maximum={ quantityLimit }
+							onInput={ ( newQuantity ) => {
+								setItemInputQuantity( newQuantity );
+							} }
 							onChange={ ( newQuantity ) => {
-								setUpdatingItemQuantity( true );
+								setItemInputQuantity( newQuantity );
 								setItemQuantity( newQuantity );
 								dispatchStoreEvent( 'cart-set-item-quantity', {
 									product: lineItem,

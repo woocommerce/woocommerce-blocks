@@ -16,10 +16,12 @@ import './style.scss';
 interface QuantitySelectorProps {
 	className?: string;
 	quantity?: number;
+	resetQuantity?: number;
 	step?: number;
 	minimum?: number;
 	maximum: number;
 	onChange: ( newQuantity: number ) => void;
+	onInput: ( newQuantity: number ) => void;
 	itemName?: string;
 	disabled: boolean;
 }
@@ -27,21 +29,44 @@ interface QuantitySelectorProps {
 const QuantitySelector = ( {
 	className,
 	quantity = 1,
+	resetQuantity = 1,
 	step = 1,
 	minimum = 1,
 	maximum,
 	onChange = () => {
 		/* Do nothing. */
 	},
+	onInput = () => {
+		/* Do nothing. */
+	},
 	itemName = '',
 	disabled,
 }: QuantitySelectorProps ): JSX.Element => {
+
 	const classes = classNames(
 		'wc-block-components-quantity-selector',
 		className
 	);
 
-	const hasStep = step > 1;
+	// Step must be gte 1.
+	step = Math.max( 1, step );
+	// Minimum must be gte 1.
+	minimum = Math.max( 1, minimum );
+	// Minimum must be gte step.
+	minimum = Math.max( minimum, step );
+
+	// Now, assuming we can trust min and step to be valid:
+
+	// Make sure that the maximum value is gte minimum.
+	maximum = Math.max( minimum, maximum );
+
+	// Make sure that maximum is a multiple of step and gte step.
+	if ( maximum > step ) {
+		step = Math.min( step, Math.floor( maximum / step ) * step );
+	} else if ( maximum < step ) {
+		maximum = step;
+	}
+
 	const hasMaximum = typeof maximum !== 'undefined';
 	const canDecrease = quantity - step >= minimum;
 	const canIncrease = ! hasMaximum || quantity + step <= maximum;
@@ -86,31 +111,40 @@ const QuantitySelector = ( {
 				value={ quantity }
 				onKeyDown={ quantityInputOnKeyDown }
 				onChange={ ( event ) => {
-					const valueIsNumber =
-						event.target.value &&
-						( isNumber( event.target.value ) ||
-							parseInt( event.target.value, 10 ).toString() ===
-								event.target.value );
-					let value = ! valueIsNumber
+
+					let value = ! event.target.value
 						? quantity
 						: parseInt( event.target.value, 10 );
 
+					value = isNaN( value )
+						? quantity
+						: value;
+
+					if ( value !== quantity ) {
+						onInput( value );
+					}
+				} }
+				onBlur={ ( event ) => {
+
+					let value = ! event.target.value
+						? resetQuantity
+						: parseInt( event.target.value, 10 );
+
+					value = isNaN( value )
+						? resetQuantity
+						: value;
+
 					if ( hasMaximum ) {
-						value = Math.min(
-							value,
-							Math.floor( maximum / step ) * step
-						);
+						value = Math.min( value, maximum );
 					}
 
-					if ( hasStep ) {
-						value = value % step ? quantity : value;
+					if ( step > 1 ) {
+						value = value % step ? resetQuantity : value;
 					}
 
 					value = Math.max( value, minimum );
 
-					if ( value !== quantity ) {
-						onChange( value );
-					}
+					onChange( value );
 				} }
 				aria-label={ sprintf(
 					/* translators: %s refers to the item name in the cart. */
