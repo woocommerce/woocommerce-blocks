@@ -3,11 +3,12 @@
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { Component } from '@wordpress/element';
-import { debounce, find } from 'lodash';
+import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
 import { SearchListControl, SearchListItem } from '@woocommerce/components';
 import { SelectControl } from '@wordpress/components';
 import { getSetting } from '@woocommerce/settings';
+import classNames from 'classnames';
 
 /**
  * Internal dependencies
@@ -56,13 +57,6 @@ class ProductTagControl extends Component {
 
 	renderItem( args ) {
 		const { item, search, depth = 0 } = args;
-		const classes = [ 'woocommerce-product-tags__item' ];
-		if ( search.length ) {
-			classes.push( 'is-searching' );
-		}
-		if ( depth === 0 && item.parent !== 0 ) {
-			classes.push( 'is-skip-level' );
-		}
 
 		const accessibleName = ! item.breadcrumbs.length
 			? item.name
@@ -70,9 +64,15 @@ class ProductTagControl extends Component {
 
 		return (
 			<SearchListItem
-				className={ classes.join( ' ' ) }
+				className={ classNames(
+					'woocommerce-product-tags__item',
+					'has-count',
+					{
+						'is-searching': search.length > 0,
+						'is-skip-level': depth === 0 && item.parent !== 0,
+					}
+				) }
 				{ ...args }
-				showCount
 				aria-label={ sprintf(
 					/* translators: %1$d is the count of products, %2$s is the name of the tag. */
 					_n(
@@ -90,7 +90,13 @@ class ProductTagControl extends Component {
 
 	render() {
 		const { list, loading } = this.state;
-		const { onChange, onOperatorChange, operator, selected } = this.props;
+		const {
+			isCompact,
+			onChange,
+			onOperatorChange,
+			operator,
+			selected,
+		} = this.props;
 
 		const messages = {
 			clear: __(
@@ -132,12 +138,15 @@ class ProductTagControl extends Component {
 					list={ list }
 					isLoading={ loading }
 					selected={ selected
-						.map( ( id ) => find( list, { id } ) )
+						.map( ( id ) =>
+							list.find( ( listItem ) => listItem.id === id )
+						)
 						.filter( Boolean ) }
 					onChange={ onChange }
 					onSearch={ limitTags ? this.debouncedOnSearch : null }
 					renderItem={ this.renderItem }
 					messages={ messages }
+					isCompact={ isCompact }
 					isHierarchical
 				/>
 				{ !! onOperatorChange && (
@@ -199,9 +208,11 @@ ProductTagControl.propTypes = {
 	 * The list of currently selected tags.
 	 */
 	selected: PropTypes.array.isRequired,
+	isCompact: PropTypes.bool,
 };
 
 ProductTagControl.defaultProps = {
+	isCompact: false,
 	operator: 'any',
 };
 

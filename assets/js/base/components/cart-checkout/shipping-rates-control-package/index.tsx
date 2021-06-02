@@ -4,12 +4,11 @@
 import classNames from 'classnames';
 import { _n, sprintf } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
-import Label from '@woocommerce/base-components/label';
-import Title from '@woocommerce/base-components/title';
 import type { ReactElement } from 'react';
-import type { Rate, PackageRateOption } from '@woocommerce/type-defs/shipping';
-import { Panel } from '@woocommerce/blocks-checkout';
+import type { PackageRateOption } from '@woocommerce/type-defs/shipping';
+import { Panel, Label } from '@woocommerce/blocks-checkout';
 import { useSelectShippingRate } from '@woocommerce/base-context/hooks';
+import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
 
 /**
  * Internal dependencies
@@ -34,21 +33,28 @@ interface Destination {
 	country: string;
 }
 
+export interface PackageData {
+	destination: Destination;
+	name: string;
+	// eslint-disable-next-line camelcase
+	shipping_rates: CartShippingPackageShippingRate[];
+	items: PackageItem[];
+}
+
+export type PackageRateRenderOption = (
+	option: CartShippingPackageShippingRate
+) => PackageRateOption;
+
 interface PackageProps {
-	packageId: string;
-	renderOption: ( option: Rate ) => PackageRateOption;
-	collapse: boolean;
-	packageData: {
-		destination: Destination;
-		name: string;
-		// eslint-disable-next-line camelcase
-		shipping_rates: Rate[];
-		items: PackageItem[];
-	};
+	/* PackageId can be a string, WooCommerce Subscriptions uses strings for example, but WooCommerce core uses numbers */
+	packageId: string | number;
+	renderOption: PackageRateRenderOption;
+	collapse?: boolean;
+	packageData: PackageData;
 	className?: string;
 	collapsible?: boolean;
 	noResultsMessage: ReactElement;
-	showItems: boolean;
+	showItems?: boolean;
 }
 
 export const ShippingRatesControlPackage = ( {
@@ -69,12 +75,9 @@ export const ShippingRatesControlPackage = ( {
 	const header = (
 		<>
 			{ ( showItems || collapsible ) && (
-				<Title
-					className="wc-block-components-shipping-rates-control__package-title"
-					headingLevel="3"
-				>
+				<div className="wc-block-components-shipping-rates-control__package-title">
 					{ packageData.name }
-				</Title>
+				</div>
 			) }
 			{ showItems && (
 				<ul className="wc-block-components-shipping-rates-control__package-items">

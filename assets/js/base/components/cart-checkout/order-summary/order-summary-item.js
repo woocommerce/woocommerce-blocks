@@ -2,19 +2,19 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import Label from '@woocommerce/base-components/label';
 import ProductPrice from '@woocommerce/base-components/product-price';
 import ProductName from '@woocommerce/base-components/product-name';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import {
 	__experimentalApplyCheckoutFilter,
-	mustBeString,
 	mustContain,
+	Label,
 } from '@woocommerce/blocks-checkout';
 import PropTypes from 'prop-types';
 import Dinero from 'dinero.js';
 import { getSetting } from '@woocommerce/settings';
 import { useCallback, useMemo } from '@wordpress/element';
+import { useStoreCart } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
@@ -41,8 +41,13 @@ const OrderSummaryItem = ( { cartItem } ) => {
 		extensions = {},
 	} = cartItem;
 
+	// Prepare props to pass to the __experimentalApplyCheckoutFilter filter.
+	// We need to pluck out receiveCart.
+	// eslint-disable-next-line no-unused-vars
+	const { receiveCart, ...cart } = useStoreCart();
+
 	const productPriceValidation = useCallback(
-		( value ) => mustBeString( value ) && mustContain( value, '<price/>' ),
+		( value ) => mustContain( value, '<price/>' ),
 		[]
 	);
 
@@ -50,8 +55,9 @@ const OrderSummaryItem = ( { cartItem } ) => {
 		() => ( {
 			context: 'summary',
 			cartItem,
+			cart,
 		} ),
-		[ cartItem ]
+		[ cartItem, cart ]
 	);
 
 	const priceCurrency = getCurrencyFromPriceResponse( prices );
@@ -61,7 +67,6 @@ const OrderSummaryItem = ( { cartItem } ) => {
 		defaultValue: initialName,
 		extensions,
 		arg,
-		validation: mustBeString,
 	} );
 
 	const regularPriceSingle = Dinero( {

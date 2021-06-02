@@ -20,7 +20,7 @@
 		"composite": true,
 		"rootDir": ".",
 		"typeRoots": [ "./node_modules/@types" ],
-		"types": [],
+		"types": ["jest"],
 		"paths": {
 			"@woocommerce/atomic-blocks": [ "assets/js/base/atomic/blocks" ],
 			"@woocommerce/atomic-blocks/*": [
@@ -52,8 +52,8 @@
 			"@woocommerce/knobs": [ "storybook/knobs" ],
 			"@woocommerce/settings": [ "assets/js/settings/shared" ],
 			"@woocommerce/shared-context": [ "assets/js/shared/context" ],
-			"@woocommerce/type-defs/*": [ "assets/js/type-defs/*" ],
-			"@woocommerce/types": [ "assets/js/type-defs" ]
+			"@woocommerce/type-defs/*": [ "assets/js/types/type-defs/*" ],
+			"@woocommerce/types": [ "assets/js/types" ]
 		}
 	}
 }

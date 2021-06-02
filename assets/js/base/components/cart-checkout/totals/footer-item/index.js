@@ -7,7 +7,6 @@ import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-mone
 import PropTypes from 'prop-types';
 import {
 	__experimentalApplyCheckoutFilter,
-	mustBeString,
 	TotalsItem,
 } from '@woocommerce/blocks-checkout';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
@@ -18,20 +17,25 @@ import { getSetting } from '@woocommerce/settings';
  */
 import './style.scss';
 
-const SHOW_TAXES =
-	getSetting( 'taxesEnabled', true ) &&
-	getSetting( 'displayCartPricesIncludingTax', false );
-
 const TotalsFooterItem = ( { currency, values } ) => {
+	const SHOW_TAXES =
+		getSetting( 'taxesEnabled', true ) &&
+		getSetting( 'displayCartPricesIncludingTax', false );
+
 	const { total_price: totalPrice, total_tax: totalTax } = values;
-	const { extensions } = useStoreCart();
+
+	// Prepare props to pass to the __experimentalApplyCheckoutFilter filter.
+	// We need to pluck out receiveCart.
+	// eslint-disable-next-line no-unused-vars
+	const { receiveCart, ...cart } = useStoreCart();
 	const label = __experimentalApplyCheckoutFilter( {
 		filterName: 'totalLabel',
 		defaultValue: __( 'Total', 'woo-gutenberg-products-block' ),
-		extensions,
-		// Only accept strings.
-		validation: mustBeString,
+		extensions: cart.extensions,
+		arg: { cart },
 	} );
+
+	const parsedTaxValue = parseInt( totalTax, 10 );
 
 	return (
 		<TotalsItem
@@ -40,7 +44,8 @@ const TotalsFooterItem = ( { currency, values } ) => {
 			label={ label }
 			value={ parseInt( totalPrice, 10 ) }
 			description={
-				SHOW_TAXES && (
+				SHOW_TAXES &&
+				parsedTaxValue !== 0 && (
 					<p className="wc-block-components-totals-footer-item-tax">
 						{ createInterpolateElement(
 							__(
@@ -52,7 +57,7 @@ const TotalsFooterItem = ( { currency, values } ) => {
 									<FormattedMonetaryAmount
 										className="wc-block-components-totals-footer-item-tax-value"
 										currency={ currency }
-										value={ parseInt( totalTax, 10 ) }
+										value={ parsedTaxValue }
 									/>
 								),
 							}

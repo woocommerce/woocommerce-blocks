@@ -7,6 +7,7 @@ import {
 	setCheckbox,
 	settingsPageSaveChanges,
 	verifyCheckboxIsSet,
+	switchUserToAdmin,
 } from '@woocommerce/e2e-utils';
 
 /**
@@ -36,6 +37,13 @@ describe( `${ block.name } Block (frontend)`, () => {
 	let productPermalink;
 
 	beforeAll( async () => {
+		// prevent CartCheckoutCompatibilityNotice from appearing
+		await page.evaluate( () => {
+			localStorage.setItem(
+				'wc-blocks_dismissed_compatibility_notices',
+				'["checkout"]'
+			);
+		} );
 		await merchant.login();
 
 		// Go to general settings page
@@ -110,22 +118,35 @@ describe( `${ block.name } Block (frontend)`, () => {
 	} );
 
 	afterAll( async () => {
-		await shopper.removeFromCart( simpleProductName );
+		// empty cart from shortcode page
+		await shopper.goToCart();
+		await shopper.removeFromCart( 'Woo Single #1' );
+		await page.evaluate( () => {
+			localStorage.removeItem(
+				'wc-blocks_dismissed_compatibility_notices'
+			);
+		} );
 	} );
 
-	it( 'should display cart items in order summary', async () => {
+	it( 'should display an empty cart message when cart is empty', async () => {
+		await shopper.goToCheckoutBlock();
+		const html = await page.content();
+
+		await page.waitForSelector( 'h1', { text: 'Checkout block' } );
+		await page.waitForSelector( 'strong', { text: 'Your cart is empty!' } );
+	} );
+
+	it( 'allows customer to choose available payment methods', async () => {
 		await page.goto( productPermalink );
 		await shopper.addToCart();
 		await shopper.goToCheckoutBlock();
+
 		await shopper.productIsInCheckoutBlock(
 			simpleProductName,
 			`1`,
 			singleProductPrice
 		);
-	} );
-
-	it( 'allows customer to choose available payment methods', async () => {
-		await page.goto( productPermalink );
+		await page.goBack( { waitUntil: 'networkidle2' } );
 		await shopper.addToCart();
 		await shopper.goToCheckoutBlock();
 		await shopper.productIsInCheckoutBlock(

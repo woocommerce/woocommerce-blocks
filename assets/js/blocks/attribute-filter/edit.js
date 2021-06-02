@@ -15,7 +15,7 @@ import {
 } from '@wordpress/components';
 import { Icon, server, external } from '@woocommerce/icons';
 import { SearchListControl } from '@woocommerce/components';
-import { mapValues, toArray, sortBy, find } from 'lodash';
+import { mapValues, toArray, sortBy } from 'lodash';
 import { getAdminLink, getSetting } from '@woocommerce/settings';
 import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
 import BlockTitle from '@woocommerce/editor-components/block-title';
@@ -212,7 +212,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 					) }
 					initialOpen={ false }
 				>
-					{ renderAttributeControl() }
+					{ renderAttributeControl( { isCompact: true } ) }
 				</PanelBody>
 			</InspectorControls>
 		);
@@ -274,10 +274,9 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 		}
 
 		const selectedId = selected[ 0 ].id;
-		const productAttribute = find( ATTRIBUTES, [
-			'attribute_id',
-			selectedId.toString(),
-		] );
+		const productAttribute = ATTRIBUTES.find(
+			( attribute ) => attribute.attribute_id === selectedId.toString()
+		);
 
 		if ( ! productAttribute || attributeId === selectedId ) {
 			return;
@@ -295,7 +294,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 		} );
 	};
 
-	const renderAttributeControl = () => {
+	const renderAttributeControl = ( { isCompact } ) => {
 		const messages = {
 			clear: __(
 				'Clear selected attribute',
@@ -347,6 +346,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 				onChange={ onChange }
 				messages={ messages }
 				isSingle
+				isCompact={ isCompact }
 			/>
 		);
 	};
@@ -366,7 +366,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 				) }
 			>
 				<div className="wc-block-attribute-filter__selection">
-					{ renderAttributeControl() }
+					{ renderAttributeControl( { isCompact: false } ) }
 					<Button isPrimary onClick={ onDone }>
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }
 					</Button>

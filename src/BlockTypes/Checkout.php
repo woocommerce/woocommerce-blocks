@@ -144,9 +144,23 @@ class Checkout extends AbstractBlock {
 			true
 		);
 		$this->asset_data_registry->add( 'baseLocation', wc_get_base_location(), true );
-		$this->asset_data_registry->add( 'checkoutAllowsGuest', WC()->checkout()->is_registration_required(), true );
-		$this->asset_data_registry->add( 'checkoutAllowsSignup', WC()->checkout()->is_registration_enabled(), true );
-		$this->asset_data_registry->add( 'checkoutShowLoginReminder', 'yes' === get_option( 'woocommerce_enable_checkout_login_reminder' ), true );
+		$this->asset_data_registry->add(
+			'checkoutAllowsGuest',
+			false === filter_var(
+				WC()->checkout()->is_registration_required(),
+				FILTER_VALIDATE_BOOLEAN
+			),
+			true
+		);
+		$this->asset_data_registry->add(
+			'checkoutAllowsSignup',
+			filter_var(
+				WC()->checkout()->is_registration_enabled(),
+				FILTER_VALIDATE_BOOLEAN
+			),
+			true
+		);
+		$this->asset_data_registry->add( 'checkoutShowLoginReminder', filter_var( get_option( 'woocommerce_enable_checkout_login_reminder' ), FILTER_VALIDATE_BOOLEAN ), true );
 		$this->asset_data_registry->add( 'displayCartPricesIncludingTax', 'incl' === get_option( 'woocommerce_tax_display_cart' ), true );
 		$this->asset_data_registry->add( 'displayItemizedTaxes', 'itemized' === get_option( 'woocommerce_tax_total_display' ), true );
 		$this->asset_data_registry->add( 'taxesEnabled', wc_tax_enabled(), true );
@@ -216,14 +230,10 @@ class Checkout extends AbstractBlock {
 		// Controller and converted to exceptions.
 		wc_print_notices();
 
-		if ( ! $this->asset_data_registry->exists( 'cartData' ) ) {
-			$this->asset_data_registry->add( 'cartData', WC()->api->get_endpoint_data( '/wc/store/cart' ) );
-		}
-		if ( ! $this->asset_data_registry->exists( 'checkoutData' ) ) {
-			add_filter( 'woocommerce_store_api_disable_nonce_check', '__return_true' );
-			$this->asset_data_registry->add( 'checkoutData', WC()->api->get_endpoint_data( '/wc/store/checkout' ) );
-			remove_filter( 'woocommerce_store_api_disable_nonce_check', '__return_true' );
-		}
+		add_filter( 'woocommerce_store_api_disable_nonce_check', '__return_true' );
+		$this->asset_data_registry->hydrate_api_request( '/wc/store/cart' );
+		$this->asset_data_registry->hydrate_api_request( '/wc/store/checkout' );
+		remove_filter( 'woocommerce_store_api_disable_nonce_check', '__return_true' );
 	}
 
 	/**

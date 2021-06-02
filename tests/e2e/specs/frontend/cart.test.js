@@ -36,6 +36,12 @@ describe( `${ block.name } Block (frontend)`, () => {
 
 	beforeAll( async () => {
 		await page.evaluate( () => window.localStorage.clear() );
+		await page.evaluate( () => {
+			localStorage.setItem(
+				'wc-blocks_dismissed_compatibility_notices',
+				'["checkout","cart"]'
+			);
+		} );
 		await switchUserToAdmin();
 		cartBlockPermalink = await getBlockPagePermalink(
 			`${ block.name } Block`
@@ -45,9 +51,15 @@ describe( `${ block.name } Block (frontend)`, () => {
 		await page.goto( productPermalink );
 		await shopper.addToCart();
 	} );
-
 	afterAll( async () => {
+		// empty cart from shortcode page
+		await shopper.goToCart();
 		await shopper.removeFromCart( 'Woo Single #1' );
+		await page.evaluate( () => {
+			localStorage.removeItem(
+				'wc-blocks_dismissed_compatibility_notices'
+			);
+		} );
 	} );
 
 	it( 'Adds a timestamp to localstorage when the cart is updated', async () => {
@@ -116,8 +128,16 @@ describe( `${ block.name } Block (frontend)`, () => {
 		expect( selectedValue ).toBeGreaterThan( 1 );
 
 		await scrollTo( '.wc-block-cart__submit-button' );
-		await page.click( '.wc-block-cart__submit-button' );
-		await page.waitForSelector( '.wc-block-checkout' );
+		await Promise.all( [
+			page.waitForNavigation(),
+			page.click( '.wc-block-cart__submit-button' ),
+		] );
+
+		// go to checkout page
+		// note: shortcode checkout on CI / block on local env
+		await page.waitForSelector( 'h1', { text: 'Checkout' } );
+
+		// navigate back to cart block page
 		await page.goBack( { waitUntil: 'networkidle0' } );
 
 		await page
