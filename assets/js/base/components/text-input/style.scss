@@ -73,6 +73,16 @@
 		}
 	}
 
+	input[type="number"] {
+		-moz-appearance: textfield;
+
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button {
+			appearance: none;
+			margin: 0;
+		}
+	}
+
 	&.is-active input[type="tel"],
 	&.is-active input[type="url"],
 	&.is-active input[type="text"],
