@@ -6,6 +6,7 @@ import { renderParentBlock } from '@woocommerce/atomic-utils';
 /**
  * Internal dependencies
  */
+import './style.scss';
 import Block from './block';
 import blockAttributes from './attributes';
 import { renderStandaloneBlocks } from './render-standalone-blocks';
