@@ -32,7 +32,6 @@ import { getSetting } from '@woocommerce/settings';
 import { useEffect } from '@wordpress/element';
 import { decodeEntities } from '@wordpress/html-entities';
 import { CartProvider } from '@woocommerce/base-context';
-import ValidatedTextInput from '@woocommerce/base-components/text-input/validated-text-input';
 
 /**
  * Internal dependencies
@@ -117,9 +116,6 @@ const Cart = ( { attributes }: CartProps ) => {
 	const discountsSlotFillProps = {
 		extensions,
 		cart,
-		components: {
-			ValidatedTextInput,
-		},
 	};
 
 	return (
