@@ -15,14 +15,14 @@ const {
 	Slot: DiscountsMetaSlot,
 } = createSlotFill( slotName );
 
-const Slot = ( { className, extensions, cart, components, contexts } ) => {
+const Slot = ( { className, extensions, cart, components } ) => {
 	return (
 		<DiscountsMetaSlot
 			className={ classnames(
 				className,
 				'wc-block-components-discounts-meta'
 			) }
-			fillProps={ { extensions, cart, components, contexts } }
+			fillProps={ { extensions, cart, components } }
 		/>
 	);
 };
