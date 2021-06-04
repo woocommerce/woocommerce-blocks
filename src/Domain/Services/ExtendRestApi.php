@@ -135,19 +135,31 @@ final class ExtendRestApi {
 	 *
 	 *     @type string   $endpoint The endpoint to extend.
 	 *     @type string   $namespace Plugin namespace.
-	 *     @type callable $callback_function The function/callable to execute.
+	 *     @type callable $callback The function/callable to execute.
 	 * }
 	 *
-	 * @throws Exception On failure to register.
+	 * @throws RouteException On failure to register.
 	 * @returns boolean True on success.
 	 */
 	public function register_update_callback( $args ) {
-		if ( ! is_string( $args['namespace'] ) ) {
-			$this->throw_exception( 'You must provide a plugin namespace when extending a Store REST endpoint.' );
+		if ( ! array_key_exists( 'namespace', $args ) || ! is_string( $args['namespace'] ) ) {
+			throw new RouteException(
+				'woocommerce_rest_cart_extensions_error',
+				'You must provide a plugin namespace when extending a Store REST endpoint.',
+				400
+			);
+		}
+
+		if ( ! array_key_exists( 'callback', $args ) || ! is_callable( $args['callback'] ) ) {
+			throw new RouteException(
+				'woocommerce_rest_cart_extensions_error',
+				'There is no valid callback supplied to register_update_callback.',
+				400
+			);
 		}
 
 		$this->callback_methods[ $args['namespace'] ] = [
-			'callback_function' => $args['callback_function'],
+			'callback' => $args['callback'],
 		];
 		return true;
 	}
@@ -178,15 +190,14 @@ final class ExtendRestApi {
 			);
 		}
 
-		$method = $this->callback_methods[ $namespace ]['callback_function'];
-		if ( ! is_callable( $method ) ) {
+		if ( ! array_key_exists( 'callback', $this->callback_methods[ $namespace ] ) || ! is_callable( $this->callback_methods[ $namespace ]['callback'] ) ) {
 			throw new RouteException(
 				'woocommerce_rest_cart_extensions_error',
 				sprintf( 'There is no valid callback registered for: %1$s.', $namespace ),
 				400
 			);
 		}
-		return $method;
+		return $this->callback_methods[ $namespace ]['callback'];
 	}
 
 	/**
