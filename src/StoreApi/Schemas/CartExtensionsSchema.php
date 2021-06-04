@@ -25,6 +25,15 @@ class CartExtensionsSchema extends AbstractSchema {
 	const IDENTIFIER = 'cart-extensions';
 
 	/**
+	 * Cart extensions schema properties.
+	 *
+	 * @return array
+	 */
+	public function get_properties() {
+		return [];
+	}
+
+	/**
 	 * Handle the request and return a valid response for this endpoint.
 	 *
 	 * @param \WP_REST_Request $request Request containing data for the extension callback.
