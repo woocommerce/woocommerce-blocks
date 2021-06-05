@@ -175,8 +175,16 @@ export const useStoreCart = (
 				decodeValues( fee )
 			);
 
+			// Add a text property to the coupon to allow extensions to modify
+			// the text used to display the coupon, without affecting the
+			// functionality when it comes to removing the coupon.
+			const cartCoupons = cartData.coupons.map( ( coupon ) => ( {
+				...coupon,
+				text: coupon.code,
+			} ) );
+
 			return {
-				cartCoupons: cartData.coupons,
+				cartCoupons,
 				cartItems: cartData.items || [],
 				cartFees,
 				cartItemsCount: cartData.itemsCount,
