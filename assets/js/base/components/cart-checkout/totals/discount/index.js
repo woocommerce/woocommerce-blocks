@@ -69,14 +69,14 @@ const TotalsDiscount = ( {
 									<RemovableChip
 										key={ 'coupon-' + cartCoupon.code }
 										className="wc-block-components-totals-discount__coupon-list-item"
-										text={ cartCoupon.code }
+										text={ cartCoupon.text }
 										screenReaderText={ sprintf(
 											/* translators: %s Coupon code. */
 											__(
 												'Coupon: %s',
 												'woo-gutenberg-products-block'
 											),
-											cartCoupon.code
+											cartCoupon.text
 										) }
 										disabled={ isRemovingCoupon }
 										onRemove={ () => {
@@ -89,7 +89,7 @@ const TotalsDiscount = ( {
 												'Remove coupon "%s"',
 												'woo-gutenberg-products-block'
 											),
-											cartCoupon.code
+											cartCoupon.text
 										) }
 									/>
 								);
