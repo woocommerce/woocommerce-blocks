@@ -2,9 +2,9 @@
  * External dependencies
  */
 import { __, _x } from '@wordpress/i18n';
-import type { CartResponseShippingRate } from '@woocommerce/types';
+import type { CartShippingRate } from '@woocommerce/types';
 
-export const previewShippingRates: CartResponseShippingRate[] = [
+export const previewShippingRates: CartShippingRate[] = [
 	{
 		destination: {
 			address_1: '',
@@ -14,7 +14,7 @@ export const previewShippingRates: CartResponseShippingRate[] = [
 			postcode: '',
 			country: '',
 		},
-		package_id: 0,
+		packageId: 0,
 		name: __( 'Shipping', 'woo-gutenberg-products-block' ),
 		items: [
 			{
@@ -36,7 +36,7 @@ export const previewShippingRates: CartResponseShippingRate[] = [
 				quantity: 1,
 			},
 		],
-		shipping_rates: [
+		shippingRates: [
 			{
 				currency_code: 'USD',
 				currency_symbol: '$',
