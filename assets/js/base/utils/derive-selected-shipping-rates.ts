@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { CartShippingRate } from '@woocommerce/type-defs/cart';
+
+/**
  * Internal dependencies
  */
 import { fromEntriesPolyfill } from './from-entries-polyfill';
@@ -9,12 +14,15 @@ import { fromEntriesPolyfill } from './from-entries-polyfill';
  * @param {Array} shippingRates Array of shipping rates.
  * @return {Object} Object containing the package IDs and selected rates in the format: { [packageId:string]: rateId:string }
  */
-export const deriveSelectedShippingRates = ( shippingRates ) =>
+export const deriveSelectedShippingRates = (
+	shippingRates: CartShippingRate[]
+) =>
 	fromEntriesPolyfill(
-		shippingRates.map(
-			( { package_id: packageId, shipping_rates: packageRates } ) => [
-				packageId,
-				packageRates.find( ( rate ) => rate.selected )?.rate_id,
-			]
-		)
+		shippingRates.map( ( { packageId, shippingRates: packageRates } ): [
+			string,
+			unknown
+		] => [
+			packageId.toString(),
+			packageRates.find( ( rate ) => rate.selected )?.rate_id,
+		] )
 	);
