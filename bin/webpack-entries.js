@@ -115,11 +115,11 @@ const entries = {
 		blocks: './assets/js/index.js',
 
 		// Blocks
-		...getBlockEntries( 'index.js' ),
+		...getBlockEntries( 'index.{t,j}s{,x}' ),
 	},
 	frontend: {
 		reviews: './assets/js/blocks/reviews/frontend.js',
-		...getBlockEntries( 'frontend.js' ),
+		...getBlockEntries( 'frontend.{t,j}s{,x}' ),
 	},
 	payments: {
 		'wc-payment-method-stripe':
