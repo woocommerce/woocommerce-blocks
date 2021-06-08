@@ -49,9 +49,9 @@ final class AssetsController {
 
 		$this->api->register_script( 'wc-blocks-middleware', 'build/wc-blocks-middleware.js', [], false );
 		$this->api->register_script( 'wc-blocks-data-store', 'build/wc-blocks-data.js', [ 'wc-blocks-middleware' ] );
-		$this->api->register_script( 'wc-blocks-vendors', $this->api->get_block_asset_build_path( 'vendors' ), [], false );
+		$this->api->register_script( 'wc-blocks-vendors', $this->api->get_block_asset_build_path( 'wc-blocks-vendors' ), [], false );
 		$this->api->register_script( 'wc-blocks-registry', 'build/wc-blocks-registry.js', [], false );
-		$this->api->register_script( 'wc-blocks', $this->api->get_block_asset_build_path( 'blocks' ), [ 'wc-blocks-vendors' ], false );
+		$this->api->register_script( 'wc-blocks', $this->api->get_block_asset_build_path( 'wc-blocks' ), [ 'wc-blocks-vendors' ], false );
 		$this->api->register_script( 'wc-blocks-shared-context', 'build/wc-blocks-shared-context.js', [] );
 		$this->api->register_script( 'wc-blocks-shared-hocs', 'build/wc-blocks-shared-hocs.js', [], false );
 

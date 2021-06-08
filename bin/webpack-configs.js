@@ -222,7 +222,7 @@ const getMainConfig = ( options = {} ) => {
 				cacheGroups: {
 					commons: {
 						test: /[\\/]node_modules[\\/]/,
-						name: 'vendors',
+						name: 'wc-blocks-vendors',
 						chunks: 'all',
 						enforce: true,
 					},

@@ -112,7 +112,7 @@ const entries = {
 	},
 	main: {
 		// Shared blocks code
-		blocks: './assets/js/index.js',
+		wcBlocks: './assets/js/index.js',
 
 		// Blocks
 		...getBlockEntries( 'index.{t,j}s{,x}' ),
