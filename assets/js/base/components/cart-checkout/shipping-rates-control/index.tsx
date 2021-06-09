@@ -11,8 +11,8 @@ import {
 	getShippingRatesRateCount,
 } from '@woocommerce/base-utils';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
-import { CartResponseShippingRate } from '@woocommerce/type-defs/cart-response';
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import type { CartShippingRate } from '@woocommerce/type-defs/cart';
 
 /**
  * Internal dependencies
@@ -22,7 +22,7 @@ import ShippingRatesControlPackage, {
 } from '../shipping-rates-control-package';
 
 interface PackagesProps {
-	packages: CartResponseShippingRate[];
+	packages: CartShippingRate[];
 	collapse?: boolean;
 	collapsible?: boolean;
 	showItems?: boolean;
@@ -77,7 +77,7 @@ const Packages = ( {
 
 interface ShippingRatesControlProps {
 	collapsible?: boolean;
-	shippingRates: CartResponseShippingRate[];
+	shippingRates: CartShippingRate[];
 	className?: string;
 	shippingRatesLoading: boolean;
 	noResultsMessage: ReactElement;
