@@ -14,6 +14,8 @@ import type {
 	CartResponseFeeItem,
 	CartResponseBillingAddress,
 	CartResponseShippingAddress,
+	CartResponseShippingRate,
+	CartShippingRate,
 } from '@woocommerce/types';
 import {
 	emptyHiddenAddressFields,
@@ -24,6 +26,7 @@ import {
  * Internal dependencies
  */
 import { useEditorContext } from '../../providers/editor-context';
+import mapKeysToCamelCase from '../../../../utils/map-keys-to-camel-case';
 
 declare module '@wordpress/html-entities' {
 	// eslint-disable-next-line @typescript-eslint/no-shadow
@@ -104,6 +107,12 @@ export const defaultCartData: StoreCart = {
 	extensions: {},
 };
 
+const convertShippingRates = ( shippingRate: CartResponseShippingRate ) => {
+	return mapKeysToCamelCase< CartResponseShippingRate, CartShippingRate >(
+		shippingRate
+	);
+};
+
 /**
  * This is a custom hook that is wired up to the `wc/store/cart` data
  * store.
@@ -174,6 +183,8 @@ export const useStoreCart = (
 			const cartFees = cartData.fees.map( ( fee: CartResponseFeeItem ) =>
 				decodeValues( fee )
 			);
+			const shippingRates =
+				cartData.shippingRates.map( convertShippingRates ) || [];
 
 			return {
 				cartCoupons: cartData.coupons,
@@ -190,7 +201,7 @@ export const useStoreCart = (
 				billingAddress: emptyHiddenAddressFields( billingAddress ),
 				shippingAddress: emptyHiddenAddressFields( shippingAddress ),
 				extensions: cartData.extensions || {},
-				shippingRates: cartData.shippingRates || [],
+				shippingRates,
 				shippingRatesLoading,
 				cartHasCalculatedShipping: cartData.hasCalculatedShipping,
 				paymentRequirements: cartData.paymentRequirements || [],
