@@ -155,7 +155,7 @@ export const useStoreCart = (
 					billingAddress: defaultBillingAddress,
 					shippingAddress: defaultShippingAddress,
 					extensions: {},
-					shippingRates: previewCart.shipping_rates,
+					shippingRates: previewCart.shippingRates,
 					shippingRatesLoading: false,
 					cartHasCalculatedShipping:
 						previewCart.has_calculated_shipping,

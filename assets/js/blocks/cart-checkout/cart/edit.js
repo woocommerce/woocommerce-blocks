@@ -33,6 +33,7 @@ import { previewCart } from '@woocommerce/resource-previews';
 import Block from './block.js';
 import EmptyCartEdit from './empty-cart-edit';
 import './editor.scss';
+import mapKeysToCamelCase from '../../../utils/map-keys-to-camel-case';
 
 const BlockSettings = ( { attributes, setAttributes } ) => {
 	const {
@@ -177,6 +178,15 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
  * @param {function(any):any} props.setAttributes Setter for attributes.
  */
 const CartEditor = ( { className, attributes, setAttributes } ) => {
+	// @todo - when the entire previewCart has been transformed to use camelCase we no longer need to spread preview cart and then delete keys.
+	const transformedPreviewCart = {
+		...previewCart,
+		shippingRates: previewCart.shipping_rates.map( ( rate ) =>
+			mapKeysToCamelCase( rate )
+		),
+	};
+	delete transformedPreviewCart.shipping_rates;
+
 	return (
 		<div
 			className={ classnames( className, 'wp-block-woocommerce-cart', {
@@ -217,7 +227,11 @@ const CartEditor = ( { className, attributes, setAttributes } ) => {
 					>
 						{ currentView === 'full' && (
 							<>
-								<EditorProvider previewData={ { previewCart } }>
+								<EditorProvider
+									previewData={ {
+										previewCart: transformedPreviewCart,
+									} }
+								>
 									<BlockSettings
 										attributes={ attributes }
 										setAttributes={ setAttributes }
