@@ -20,7 +20,7 @@ import { useStoreEvents } from '../use-store-events';
 // This will find the selected rate ID in an array of shipping rates.
 const deriveSelectedRateId = (
 	shippingRates: CartShippingPackageShippingRate[]
-) => shippingRates.find( ( rate ) => rate.selected )?.rate_id;
+) => shippingRates.find( ( rate ) => rate.selected )?.rateId;
 
 /**
  * This is a custom hook for tracking selected shipping rates for a package and selecting a rate. State is used so

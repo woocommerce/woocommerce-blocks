@@ -23,6 +23,6 @@ export const deriveSelectedShippingRates = (
 			unknown
 		] => [
 			packageId.toString(),
-			packageRates.find( ( rate ) => rate.selected )?.rate_id,
+			packageRates.find( ( rate ) => rate.selected )?.rateId,
 		] )
 	);

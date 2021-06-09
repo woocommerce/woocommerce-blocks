@@ -25,7 +25,7 @@ export const renderPackageRateOption = (
 
 	return {
 		label: decodeEntities( rate.name ),
-		value: rate.rate_id,
+		value: rate.rateId,
 		description: (
 			<>
 				{ Number.isFinite( priceWithTaxes ) && (

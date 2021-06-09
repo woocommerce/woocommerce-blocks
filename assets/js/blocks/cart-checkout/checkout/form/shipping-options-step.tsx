@@ -42,7 +42,7 @@ const renderShippingRatesControlOption = (
 		: parseInt( option.price, 10 );
 	return {
 		label: decodeEntities( option.name ),
-		value: option.rate_id,
+		value: option.rateId,
 		description: decodeEntities( option.description ),
 		secondaryLabel: (
 			<FormattedMonetaryAmount
