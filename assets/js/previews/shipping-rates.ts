@@ -36,7 +36,7 @@ export const previewShippingRates: CartShippingRate[] = [
 				quantity: 1,
 			},
 		],
-		shippingRates: [
+		shipping_rates: [
 			{
 				currency_code: 'USD',
 				currency_symbol: '$',

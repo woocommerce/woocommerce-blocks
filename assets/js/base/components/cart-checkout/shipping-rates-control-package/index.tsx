@@ -37,7 +37,7 @@ export interface PackageData {
 	destination: Destination;
 	name: string;
 	// eslint-disable-next-line camelcase
-	shipping_rates: CartShippingPackageShippingRate[];
+	shippingRates: CartShippingPackageShippingRate[];
 	items: PackageItem[];
 }
 
@@ -69,7 +69,7 @@ export const ShippingRatesControlPackage = ( {
 }: PackageProps ): ReactElement => {
 	const { selectShippingRate, selectedShippingRate } = useSelectShippingRate(
 		packageId,
-		packageData.shipping_rates
+		packageData.shippingRates
 	);
 
 	const header = (
@@ -118,7 +118,7 @@ export const ShippingRatesControlPackage = ( {
 		<PackageRates
 			className={ className }
 			noResultsMessage={ noResultsMessage }
-			rates={ packageData.shipping_rates }
+			rates={ packageData.shippingRates }
 			onSelectRate={ selectShippingRate }
 			selected={ selectedShippingRate }
 			renderOption={ renderOption }

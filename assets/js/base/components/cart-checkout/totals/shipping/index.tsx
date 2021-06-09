@@ -149,7 +149,7 @@ const TotalsShipping = ( {
 
 	const selectedShippingRates = shippingRates.flatMap(
 		( shippingPackage ) => {
-			return shippingPackage.shipping_rates
+			return shippingPackage.shippingRates
 				.filter( ( rate ) => rate.selected )
 				.flatMap( ( rate ) => rate.name );
 		}
