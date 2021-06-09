@@ -16,6 +16,12 @@ export const isObject = < T extends Record< string, unknown >, U >(
 	return ! isNull( term ) && typeof term === 'object';
 };
 
+export const isPlainObject = (
+	o: unknown
+): o is NonNullable< Record< string | number | symbol, unknown > > => {
+	return ! isNull( o ) && typeof o === 'object' && o?.constructor === Object;
+};
+
 export function objectHasProp< P extends PropertyKey >(
 	target: unknown,
 	property: P
