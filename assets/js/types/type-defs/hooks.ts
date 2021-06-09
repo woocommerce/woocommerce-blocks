@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { CartShippingRate } from '@woocommerce/type-defs/cart';
+
+/**
  * Internal dependencies
  */
 import type {
@@ -9,7 +14,6 @@ import type {
 	CartResponseTotals,
 	CartResponseShippingAddress,
 	CartResponseBillingAddress,
-	CartResponseShippingRate,
 	CartResponse,
 } from './cart-response';
 import type { ResponseError } from '../../data/types';
@@ -44,7 +48,7 @@ export interface StoreCart {
 	cartErrors: Array< ResponseError >;
 	billingAddress: CartResponseBillingAddress;
 	shippingAddress: CartResponseShippingAddress;
-	shippingRates: Array< CartResponseShippingRate >;
+	shippingRates: Array< CartShippingRate >;
 	extensions: Record< string, unknown >;
 	shippingRatesLoading: boolean;
 	cartHasCalculatedShipping: boolean;
