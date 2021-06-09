@@ -56,9 +56,10 @@ const Packages = ( {
 	if ( ! packages.length ) {
 		return null;
 	}
+
 	return (
 		<>
-			{ packages.map( ( { package_id: packageId, ...packageData } ) => (
+			{ packages.map( ( { packageId, ...packageData } ) => (
 				<ShippingRatesControlPackage
 					key={ packageId }
 					packageId={ packageId }

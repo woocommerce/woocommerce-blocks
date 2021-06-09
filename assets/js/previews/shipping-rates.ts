@@ -14,7 +14,7 @@ export const previewShippingRates: CartShippingRate[] = [
 			postcode: '',
 			country: '',
 		},
-		packageId: 0,
+		package_id: 0,
 		name: __( 'Shipping', 'woo-gutenberg-products-block' ),
 		items: [
 			{
