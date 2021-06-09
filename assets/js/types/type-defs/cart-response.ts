@@ -2,11 +2,9 @@
 /**
  * Internal dependencies
  */
-import { CurrencyResponse } from './currency';
-import {
+import type { CurrencyResponse } from './currency';
+import type {
 	CartImageItem,
-	CartItemPrices,
-	CartItemTotals,
 	CartVariationItem,
 	CatalogVisibility,
 } from './cart';
@@ -139,15 +137,15 @@ export interface CartResponseItem {
 	permalink: string;
 	images: Array< CartImageItem >;
 	variation: Array< CartVariationItem >;
-	prices: CartItemPrices;
-	totals: CartItemTotals;
+	prices: CartResponseItemPrices;
+	totals: CartResponseItemTotals;
 	extensions: ExtensionsData;
 	item_data: Record< string, unknown >[];
 }
 
 export interface CartResponseTotalsTaxLineItem {
 	name: string;
-	price: string;
+	price: string | number;
 	rate: string;
 }
 
