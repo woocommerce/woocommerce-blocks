@@ -9,34 +9,34 @@ import {
 	ExtensionsData,
 } from './cart-response';
 export interface CurrencyInfo {
-	currency_code: string;
-	currency_symbol: string;
-	currency_minor_unit: number;
-	currency_decimal_separator: string;
-	currency_thousand_separator: string;
-	currency_prefix: string;
-	currency_suffix: string;
+	currencyCode: string;
+	currencySymbol: string;
+	currencyMinorUnit: number;
+	currencyDecimalSeparator: string;
+	currencyThousandSeparator: string;
+	currencyPrefix: string;
+	currencySuffix: string;
 }
 
 export interface CartTotalsItem extends CurrencyInfo {
-	total_discount: string;
-	total_discount_tax: string;
+	totalDiscount: string;
+	totalDiscountTax: string;
 }
 
 export interface CartCouponItem {
 	code: string;
-	discount_type: string;
+	discountType: string;
 	totals: CartTotalsItem;
 }
 
 export interface FirstNameLastName {
-	first_name: string;
-	last_name: string;
+	firstName: string;
+	lastName: string;
 }
 
 export interface BaseAddress {
-	address_1: string;
-	address_2: string;
+	address1: string;
+	address2: string;
 	city: string;
 	state: string;
 	postcode: string;
@@ -44,24 +44,24 @@ export interface BaseAddress {
 }
 
 export interface CartShippingPackageShippingRate extends CurrencyInfo {
-	rate_id: string;
+	rateId: string;
 	name: string;
 	description: string;
-	delivery_time: string;
+	deliveryTime: string;
 	price: string;
 	taxes: string;
-	instance_id: number;
-	method_id: string;
-	meta_data: Array< MetaKeyValue >;
+	instanceId: number;
+	methodId: string;
+	metaData: Array< MetaKeyValue >;
 	selected: boolean;
 }
 
 export interface CartShippingRate {
-	package_id: number;
+	packageId: number;
 	name: string;
 	destination: BaseAddress;
 	items: Array< ShippingRateItem >;
-	shipping_rates: Array< CartShippingPackageShippingRate >;
+	shippingRates: Array< CartShippingPackageShippingRate >;
 }
 
 export interface CartShippingAddress extends BaseAddress, FirstNameLastName {
@@ -90,22 +90,22 @@ export interface CartVariationItem {
 
 export interface CartItemPrices extends CurrencyInfo {
 	price: string;
-	regular_price: string;
-	sale_price: string;
-	price_range: null | { min_amount: string; max_amount: string };
-	raw_prices: {
+	regularPrice: string;
+	salePrice: string;
+	priceRange: null | { minAmount: string; maxAmount: string };
+	rawPrices: {
 		precision: number;
 		price: string;
-		regular_price: string;
-		sale_price: string;
+		regularPrice: string;
+		salePrice: string;
 	};
 }
 
 export interface CartItemTotals extends CurrencyInfo {
-	line_subtotal: string;
-	line_subtotal_tax: string;
-	line_total: string;
-	line_total_tax: string;
+	lineSubtotal: string;
+	lineSubtotalTax: string;
+	lineTotal: string;
+	lineTotalTax: string;
 }
 
 export type CatalogVisibility = 'catalog' | 'hidden' | 'search' | 'visible';
@@ -114,35 +114,35 @@ export interface CartItem {
 	key: string;
 	id: number;
 	quantity: number;
-	catalog_visibility: CatalogVisibility;
-	quantity_limit: number;
+	catalogVisibility: CatalogVisibility;
+	quantityLimit: number;
 	name: string;
 	summary: string;
-	short_description: string;
+	shortDescription: string;
 	description: string;
 	sku: string;
-	low_stock_remaining: null | number;
-	backorders_allowed: boolean;
-	show_backorder_badge: boolean;
-	sold_individually: boolean;
+	lowStockRemaining: null | number;
+	backordersAllowed: boolean;
+	showBackorderBadge: boolean;
+	soldIndividually: boolean;
 	permalink: string;
 	images: Array< CartImageItem >;
 	variation: Array< CartVariationItem >;
 	prices: CartItemPrices;
 	totals: CartItemTotals;
 	extensions: ExtensionsData;
-	item_data: Record< string, unknown >[];
+	itemData: Record< string, unknown >[];
 }
 
 export interface CartTotalsTaxLineItem {
 	name: string;
-	price: string;
+	price: string | number;
 	rate: string;
 }
 
 export interface CartFeeItemTotals extends CurrencyInfo {
 	total: string;
-	total_tax: string;
+	totalTax: string;
 }
 
 export interface CartFeeItem {
@@ -152,17 +152,17 @@ export interface CartFeeItem {
 }
 
 export interface CartTotals extends CurrencyInfo {
-	total_items: string;
-	total_items_tax: string;
-	total_fees: string;
-	total_fees_tax: string;
-	total_discount: string;
-	total_discount_tax: string;
-	total_shipping: string;
-	total_shipping_tax: string;
-	total_price: string;
-	total_tax: string;
-	tax_lines: Array< CartTotalsTaxLineItem >;
+	totalItems: string;
+	totalItemsTax: string;
+	totalFees: string;
+	totalFeesTax: string;
+	totalDiscount: string;
+	totalDiscountTax: string;
+	totalShipping: string;
+	totalShippingTax: string;
+	totalPrice: string;
+	totalTax: string;
+	taxLines: Array< CartTotalsTaxLineItem >;
 }
 
 export interface CartErrorItem {
