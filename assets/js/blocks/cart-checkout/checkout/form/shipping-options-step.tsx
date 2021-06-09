@@ -50,7 +50,7 @@ const renderShippingRatesControlOption = (
 				value={ priceWithTaxes }
 			/>
 		),
-		secondaryDescription: decodeEntities( option.delivery_time ),
+		secondaryDescription: decodeEntities( option.deliveryTime ),
 	};
 };
 

@@ -34,10 +34,10 @@ export const renderPackageRateOption = (
 						value={ priceWithTaxes }
 					/>
 				) }
-				{ Number.isFinite( priceWithTaxes ) && rate.delivery_time
+				{ Number.isFinite( priceWithTaxes ) && rate.deliveryTime
 					? ' — '
 					: null }
-				{ decodeEntities( rate.delivery_time ) }
+				{ decodeEntities( rate.deliveryTime ) }
 			</>
 		),
 	};
