@@ -17,6 +17,8 @@ const displayWithTax = getSetting( 'displayCartPricesIncludingTax', false );
 // https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/trunk/src/RestApi/StoreApi#cart-api
 export const previewCart: CartResponse = {
 	coupons: [],
+	errors: [],
+	payment_requirements: [],
 	shipping_rates: getSetting( 'shippingMethodsExist', false )
 		? previewShippingRates
 		: [],
@@ -38,6 +40,10 @@ export const previewCart: CartResponse = {
 			backorders_allowed: false,
 			show_backorder_badge: false,
 			sold_individually: false,
+			catalog_visibility: 'visible',
+			quantity_limit: 0,
+			item_data: [],
+			summary: '',
 			images: [
 				{
 					id: 10,
@@ -70,6 +76,7 @@ export const previewCart: CartResponse = {
 				price: displayWithTax ? '800' : '640',
 				regular_price: displayWithTax ? '800' : '640',
 				sale_price: displayWithTax ? '800' : '640',
+				price_range: null,
 				raw_prices: {
 					precision: 6,
 					price: displayWithTax ? '8000000' : '6400000',
@@ -108,6 +115,11 @@ export const previewCart: CartResponse = {
 			backorders_allowed: false,
 			show_backorder_badge: false,
 			sold_individually: false,
+			catalog_visibility: 'visible',
+			quantity_limit: 0,
+			low_stock_remaining: null,
+			item_data: [],
+			summary: '',
 			images: [
 				{
 					id: 11,
@@ -136,6 +148,7 @@ export const previewCart: CartResponse = {
 				price: displayWithTax ? '1400' : '1120',
 				regular_price: displayWithTax ? '1600' : '1280',
 				sale_price: displayWithTax ? '1400' : '1120',
+				price_range: null,
 				raw_prices: {
 					precision: 6,
 					price: displayWithTax ? '14000000' : '11200000',
