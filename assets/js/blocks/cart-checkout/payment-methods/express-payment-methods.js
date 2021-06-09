@@ -26,6 +26,7 @@ const ExpressPaymentMethods = () => {
 	const { isEditor } = useEditorContext();
 	const {
 		setActivePaymentMethod,
+		setExpressPaymentError,
 		activePaymentMethod,
 		paymentMethodData,
 		setPaymentStatus,
@@ -35,6 +36,11 @@ const ExpressPaymentMethods = () => {
 	const previousActivePaymentMethod = useRef( activePaymentMethod );
 	const previousPaymentMethodData = useRef( paymentMethodData );
 
+	/**
+	 * onExpressPaymentClick should be triggered when the express payment button is clicked.
+	 *
+	 * This will store the previous active payment method, set the express method as active, and set the payment status to started.
+	 */
 	const onExpressPaymentClick = useCallback(
 		( paymentMethodId ) => () => {
 			previousActivePaymentMethod.current = activePaymentMethod;
@@ -50,12 +56,35 @@ const ExpressPaymentMethods = () => {
 		]
 	);
 
+	/**
+	 * onExpressPaymentClose should be triggered when the express payment process is cancelled or closed.
+	 *
+	 * This restores the active method and returns the state to pristine.
+	 */
 	const onExpressPaymentClose = useCallback( () => {
+		setPaymentStatus().pristine();
 		setActivePaymentMethod( previousActivePaymentMethod.current );
 		if ( previousPaymentMethodData.current.isSavedToken ) {
 			setPaymentStatus().started( previousPaymentMethodData.current );
 		}
 	}, [ setActivePaymentMethod, setPaymentStatus ] );
+
+	/**
+	 * onExpressPaymentError should be triggered when the express payment process errors.
+	 *
+	 * This shows an error message then restores the active method and returns the state to pristine.
+	 */
+	const onExpressPaymentError = useCallback(
+		( errorMessage ) => {
+			setPaymentStatus().error( errorMessage );
+			setExpressPaymentError( errorMessage );
+			setActivePaymentMethod( previousActivePaymentMethod.current );
+			if ( previousPaymentMethodData.current.isSavedToken ) {
+				setPaymentStatus().started( previousPaymentMethodData.current );
+			}
+		},
+		[ setActivePaymentMethod, setPaymentStatus, setExpressPaymentError ]
+	);
 
 	/**
 	 * @todo Find a way to Memorize Express Payment Method Content
@@ -77,6 +106,7 @@ const ExpressPaymentMethods = () => {
 							...paymentMethodInterface,
 							onClick: onExpressPaymentClick( id ),
 							onClose: onExpressPaymentClose,
+							onError: onExpressPaymentError,
 						} ) }
 					</li>
 				) : null;

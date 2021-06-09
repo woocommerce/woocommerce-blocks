@@ -9,6 +9,7 @@ import {
 import {
 	StoreNoticesProvider,
 	useCheckoutContext,
+	usePaymentMethodDataContext,
 	useEditorContext,
 } from '@woocommerce/base-context';
 import Title from '@woocommerce/base-components/title';
@@ -30,6 +31,7 @@ const CheckoutExpressPayment = () => {
 		isComplete,
 		hasError,
 	} = useCheckoutContext();
+	const { currentStatus: paymentStatus } = usePaymentMethodDataContext();
 	const { paymentMethods, isInitialized } = useExpressPaymentMethods();
 	const { isEditor } = useEditorContext();
 	const { noticeContexts } = useEmitResponse();
@@ -50,16 +52,21 @@ const CheckoutExpressPayment = () => {
 		return null;
 	}
 
-	const waitingForProcessing =
-		isProcessing || isAfterProcessing || isBeforeProcessing;
-	const waitingForRedirect = isComplete && ! hasError;
+	// Set loading state for express payment methods when payment or checkout is in progress.
+	const paymentProcessing =
+		paymentStatus.isStarted || paymentStatus.isProcessing;
+	const checkoutProcessing =
+		isProcessing ||
+		isAfterProcessing ||
+		isBeforeProcessing ||
+		( isComplete && ! hasError );
 
 	return (
 		<>
 			<LoadingMask
-				showSpinner={ isCalculating || waitingForProcessing }
+				showSpinner={ paymentStatus.isProcessing }
 				isLoading={
-					isCalculating || waitingForProcessing || waitingForRedirect
+					isCalculating || paymentProcessing || checkoutProcessing
 				}
 			>
 				<div className="wc-block-components-express-payment wc-block-components-express-payment--checkout">

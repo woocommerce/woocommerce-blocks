@@ -113,6 +113,7 @@ export const PaymentMethodDataProvider = ( {
 		reducer,
 		DEFAULT_PAYMENT_DATA_CONTEXT_STATE
 	);
+
 	const currentObservers = useRef( observers );
 	const { onPaymentProcessing } = useEventEmitters( observerDispatch );
 
@@ -124,7 +125,6 @@ export const PaymentMethodDataProvider = ( {
 	const setActivePaymentMethod = useCallback(
 		( paymentMethodSlug ) => {
 			setActive( paymentMethodSlug );
-			dispatch( statusOnly( PRISTINE ) );
 			dispatchCheckoutEvent( 'set-active-payment-method', {
 				paymentMethodSlug,
 			} );
@@ -219,6 +219,7 @@ export const PaymentMethodDataProvider = ( {
 
 	const setPaymentStatus = useCallback(
 		(): PaymentStatusDispatchers => ( {
+			pristine: () => dispatch( statusOnly( PRISTINE ) ),
 			started: ( paymentMethodData ) => {
 				dispatch(
 					started( {
@@ -308,16 +309,16 @@ export const PaymentMethodDataProvider = ( {
 		paymentData.hasSavedToken,
 	] );
 
-	// Set active (selected) payment method as needed.
+	// Update the active (selected) payment method when it is empty, or invalid.
 	useEffect( () => {
-		const paymentMethodKeys = Object.keys( paymentData.paymentMethods );
-		const allPaymentMethodKeys = [
-			...paymentMethodKeys,
-			...Object.keys( paymentData.expressPaymentMethods ),
-		];
-		if ( ! paymentMethodsInitialized || ! paymentMethodKeys.length ) {
+		if ( ! paymentMethodsInitialized ) {
 			return;
 		}
+
+		const allPaymentMethodKeys = [
+			...Object.keys( paymentData.paymentMethods ),
+			...Object.keys( paymentData.expressPaymentMethods ),
+		];
 
 		setActive( ( currentActivePaymentMethod ) => {
 			// If there's no active payment method, or the active payment method has
@@ -329,8 +330,12 @@ export const PaymentMethodDataProvider = ( {
 				! currentActivePaymentMethod ||
 				! allPaymentMethodKeys.includes( currentActivePaymentMethod )
 			) {
+				const paymentMethodKeys = Object.keys(
+					paymentData.paymentMethods
+				);
+
 				dispatch( statusOnly( PRISTINE ) );
-				return Object.keys( paymentData.paymentMethods )[ 0 ];
+				return paymentMethodKeys.length ? paymentMethodKeys[ 0 ] : '';
 			}
 			return currentActivePaymentMethod;
 		} );
@@ -338,7 +343,6 @@ export const PaymentMethodDataProvider = ( {
 		paymentMethodsInitialized,
 		paymentData.paymentMethods,
 		paymentData.expressPaymentMethods,
-		setActive,
 	] );
 
 	// emit events.

@@ -67,6 +67,7 @@ export type PaymentMethodsDispatcherType = (
 ) => void;
 
 export interface PaymentStatusDispatchers {
+	pristine: () => void;
 	started: ( paymentMethodData?: ObjectType | EmptyObjectType ) => void;
 	processing: () => void;
 	completed: () => void;
