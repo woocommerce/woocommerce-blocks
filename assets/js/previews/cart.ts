@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { WC_BLOCKS_ASSET_URL } from '@woocommerce/block-settings';
-import { CartResponse } from '@woocommerce/types';
+import { PreviewCart } from '@woocommerce/types';
 import { getSetting } from '@woocommerce/settings';
 
 /**
@@ -16,7 +16,7 @@ const displayWithTax = getSetting( 'displayCartPricesIncludingTax', false );
 // Sample data for cart block.
 // This closely resembles the data returned from the Store API /cart endpoint.
 // https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/trunk/src/RestApi/StoreApi#cart-api
-export const previewCart: CartResponse = {
+export const previewCart: PreviewCart = {
 	coupons: [],
 	errors: [],
 	payment_requirements: [],
@@ -42,8 +42,7 @@ export const previewCart: CartResponse = {
 			showBackorderBadge: false,
 			soldIndividually: false,
 			catalogVisibility: 'visible',
-			quantity_limit: 0,
-			item_data: [],
+			itemData: [],
 			summary: '',
 			images: [
 				{
@@ -69,7 +68,7 @@ export const previewCart: CartResponse = {
 			prices: {
 				currencyCode: 'USD',
 				currencySymbol: '$',
-				currencyMinor_unit: 2,
+				currencyMinorUnit: 2,
 				currencyDecimalSeparator: '.',
 				currencyThousandSeparator: ',',
 				currencyPrefix: '$',
@@ -105,7 +104,7 @@ export const previewCart: CartResponse = {
 			id: 2,
 			quantity: 1,
 			name: __( 'Cap', 'woo-gutenberg-products-block' ),
-			short_description: __(
+			shortDescription: __(
 				'Lightweight baseball cap',
 				'woo-gutenberg-products-block'
 			),
@@ -117,7 +116,6 @@ export const previewCart: CartResponse = {
 			showBackorderBadge: false,
 			soldIndividually: false,
 			catalogVisibility: 'visible',
-			quantityLimit: 0,
 			lowStockRemaining: null,
 			itemData: [],
 			summary: '',
