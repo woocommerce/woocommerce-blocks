@@ -115,7 +115,7 @@ export interface CartItem {
 	id: number;
 	quantity: number;
 	catalogVisibility: CatalogVisibility;
-	quantityLimit: number;
+	quantityLimit?: number;
 	name: string;
 	summary: string;
 	shortDescription: string;
