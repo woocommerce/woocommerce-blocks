@@ -14,8 +14,6 @@ import type {
 	CartResponseFeeItem,
 	CartResponseBillingAddress,
 	CartResponseShippingAddress,
-	CartResponseShippingRate,
-	CartShippingRate,
 } from '@woocommerce/types';
 import {
 	emptyHiddenAddressFields,
@@ -107,12 +105,6 @@ export const defaultCartData: StoreCart = {
 	extensions: {},
 };
 
-const convertShippingRates = ( shippingRate: CartResponseShippingRate ) => {
-	return mapKeysToCamelCase< CartResponseShippingRate, CartShippingRate >(
-		shippingRate
-	);
-};
-
 /**
  * This is a custom hook that is wired up to the `wc/store/cart` data
  * store.
@@ -170,7 +162,7 @@ export const useStoreCart = (
 			const store = select( storeKey );
 			const cartData = store.getCartData();
 			const cartErrors = store.getCartErrors();
-			const cartTotals = store.getCartTotals();
+			const cartTotals = mapKeysToCamelCase( store.getCartTotals() );
 			const cartIsLoading = ! store.hasFinishedResolution(
 				'getCartData'
 			);
@@ -184,11 +176,12 @@ export const useStoreCart = (
 				decodeValues( fee )
 			);
 			const shippingRates =
-				cartData.shippingRates.map( convertShippingRates ) || [];
+				cartData.shippingRates.map( mapKeysToCamelCase ) || [];
+			const cartItems = cartData.items.map( mapKeysToCamelCase ) || [];
 
 			return {
 				cartCoupons: cartData.coupons,
-				cartItems: cartData.items || [],
+				cartItems,
 				cartFees,
 				cartItemsCount: cartData.itemsCount,
 				cartItemsWeight: cartData.itemsWeight,
