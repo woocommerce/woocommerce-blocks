@@ -27,11 +27,11 @@ describe( 'Order Summary', () => {
 						totals: {
 							...previewCart.items[ 0 ].totals,
 							// Change price format so there are no decimals.
-							currency_minor_unit: 0,
-							currency_prefix: '',
-							currency_suffix: '€',
-							line_subtotal: '16',
-							line_total: '18',
+							currencyMinorUnit: 0,
+							currencyPrefix: '',
+							currencySuffix: '€',
+							lineSubtotal: '16',
+							lineTotal: '18',
 						},
 					},
 				] }

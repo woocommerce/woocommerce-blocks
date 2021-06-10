@@ -62,7 +62,7 @@ describe( 'useStoreCart', () => {
 			postcode: '',
 			country: '',
 		},
-		shippingRates: previewCart.shipping_rates,
+		shippingRates: previewCart.shippingRates,
 		extensions: {},
 		shippingRatesLoading: false,
 		cartHasCalculatedShipping: true,
@@ -88,7 +88,7 @@ describe( 'useStoreCart', () => {
 		errors: [],
 	};
 	const mockCartTotals = {
-		currency_code: 'USD',
+		currencyCode: 'USD',
 	};
 	const mockCartIsLoading = false;
 	const mockCartErrors = [];
