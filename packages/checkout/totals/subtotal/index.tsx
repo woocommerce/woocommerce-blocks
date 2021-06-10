@@ -13,9 +13,9 @@ import TotalsItem from '../item';
 
 interface Values {
 	// eslint-disable-next-line camelcase
-	total_items: string;
+	totalItems: string;
 	// eslint-disable-next-line camelcase
-	total_items_tax: string;
+	totalItemsTax: string;
 }
 
 interface SubtotalProps {
@@ -29,7 +29,7 @@ const Subtotal = ( {
 	values,
 	className,
 }: SubtotalProps ): ReactElement => {
-	const { total_items: totalItems, total_items_tax: totalItemsTax } = values;
+	const { totalItems: totalItems, totalItemsTax: totalItemsTax } = values;
 	const itemsValue = parseInt( totalItems, 10 );
 	const itemsTaxValue = parseInt( totalItemsTax, 10 );
 

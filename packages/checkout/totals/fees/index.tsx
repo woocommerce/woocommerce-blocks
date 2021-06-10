@@ -33,7 +33,7 @@ const TotalsFees = ( {
 					return null;
 				}
 
-				const feesTaxValue = parseInt( totals.total_tax, 10 );
+				const feesTaxValue = parseInt( totals.totalTax, 10 );
 
 				return (
 					<TotalsItem

@@ -16,9 +16,9 @@ import './style.scss';
 
 interface Values {
 	// eslint-disable-next-line camelcase
-	tax_lines: CartTotalsTaxLineItem[];
+	taxLines: CartTotalsTaxLineItem[];
 	// eslint-disable-next-line camelcase
-	total_tax: string;
+	totalTax: string;
 }
 
 interface TotalsTaxesProps {
@@ -34,7 +34,7 @@ const TotalsTaxes = ( {
 	className,
 	showRateAfterTaxName,
 }: TotalsTaxesProps ): ReactElement | null => {
-	const { total_tax: totalTax, tax_lines: taxLines } = values;
+	const { totalTax: totalTax, taxLines: taxLines } = values;
 
 	if ( ! getSetting( 'taxesEnabled', true ) ) {
 		return null;
