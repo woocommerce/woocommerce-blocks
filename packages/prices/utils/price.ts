@@ -2,11 +2,12 @@
  * External dependencies
  */
 import { CURRENCY } from '@woocommerce/settings';
-import type {
+import {
 	Currency,
 	CurrencyResponse,
 	CartShippingPackageShippingRate,
 	SymbolPosition,
+	isObject,
 } from '@woocommerce/types';
 
 /**
@@ -66,6 +67,8 @@ const siteCurrencySettings: Currency = {
 
 /**
  * Gets currency information in normalized format from an API response or the server.
+ * The API Response would have been previously transformed to have the currency
+ * information in camelCase rather than snakeCase.
  */
 export const getCurrencyFromPriceResponse = (
 	// Currency data object, for example an API response containing currency formatting data.
@@ -74,18 +77,21 @@ export const getCurrencyFromPriceResponse = (
 		| Record< string, never >
 		| CartShippingPackageShippingRate
 ): Currency => {
-	if ( ! currencyData || typeof currencyData !== 'object' ) {
+	if (
+		! isObject( currencyData ) ||
+		Object.keys( currencyData ).length === 0
+	) {
 		return siteCurrencySettings;
 	}
 
 	const {
-		currency_code: code,
-		currency_symbol: symbol,
-		currency_thousand_separator: thousandSeparator,
-		currency_decimal_separator: decimalSeparator,
-		currency_minor_unit: minorUnit,
-		currency_prefix: prefix,
-		currency_suffix: suffix,
+		currencyCode: code,
+		currencySymbol: symbol,
+		currencyThousandSeparator: thousandSeparator,
+		currencyDecimalSeparator: decimalSeparator,
+		currencyMinorUnit: minorUnit,
+		currencyPrefix: prefix,
+		currencySuffix: suffix,
 	} = currencyData;
 
 	return {
