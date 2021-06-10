@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import type { Currency, SymbolPosition } from '@woocommerce/type-defs/currency';
+
+/**
  * Internal dependencies
  */
 import { allSettings } from './settings-init';
@@ -8,7 +13,10 @@ import { allSettings } from './settings-init';
  */
 export const ADMIN_URL = allSettings.adminUrl;
 export const COUNTRIES = allSettings.countries;
-export const CURRENCY = allSettings.currency;
+export const CURRENCY = allSettings.currency as Currency & {
+	precision: number;
+	symbolPosition: SymbolPosition;
+};
 export const CURRENT_USER_IS_ADMIN = allSettings.currentUserIsAdmin;
 export const HOME_URL = allSettings.homeUrl;
 export const LOCALE = allSettings.locale;
