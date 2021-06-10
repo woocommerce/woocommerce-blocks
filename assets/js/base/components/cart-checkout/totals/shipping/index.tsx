@@ -108,9 +108,9 @@ interface TotalShippingProps {
 	currency: Currency;
 	values: {
 		// eslint-disable-next-line camelcase
-		total_shipping: string;
+		totalShipping: string;
 		// eslint-disable-next-line camelcase
-		total_shipping_tax: string;
+		totalShippingTax: string;
 	}; // Values in use
 	showCalculator?: boolean; //Whether to display the rate selector below the shipping total.
 	showRateSelector?: boolean; // Whether to show shipping calculator or not.
@@ -138,9 +138,9 @@ const TotalsShipping = ( {
 		'displayCartPricesIncludingTax',
 		false
 	)
-		? parseInt( values.total_shipping, 10 ) +
-		  parseInt( values.total_shipping_tax, 10 )
-		: parseInt( values.total_shipping, 10 );
+		? parseInt( values.totalShipping, 10 ) +
+		  parseInt( values.totalShippingTax, 10 )
+		: parseInt( values.totalShipping, 10 );
 	const hasRates = hasShippingRate( shippingRates ) || totalShippingValue;
 	const calculatorButtonProps = {
 		isShippingCalculatorOpen,

@@ -22,7 +22,7 @@ const TotalsFooterItem = ( { currency, values } ) => {
 		getSetting( 'taxesEnabled', true ) &&
 		getSetting( 'displayCartPricesIncludingTax', false );
 
-	const { total_price: totalPrice, total_tax: totalTax } = values;
+	const { totalPrice: totalPrice, totalTax: totalTax } = values;
 
 	// Prepare props to pass to the __experimentalApplyCheckoutFilter filter.
 	// We need to pluck out receiveCart.
@@ -72,8 +72,8 @@ const TotalsFooterItem = ( { currency, values } ) => {
 TotalsFooterItem.propTypes = {
 	currency: PropTypes.object.isRequired,
 	values: PropTypes.shape( {
-		total_price: PropTypes.string,
-		total_tax: PropTypes.string,
+		totalPrice: PropTypes.string,
+		totalTax: PropTypes.string,
 	} ).isRequired,
 };
 

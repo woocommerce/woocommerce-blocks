@@ -24,8 +24,8 @@ const TotalsDiscount = ( {
 	values,
 } ) => {
 	const {
-		total_discount: totalDiscount,
-		total_discount_tax: totalDiscountTax,
+		totalDiscount: totalDiscount,
+		totalDiscountTax: totalDiscountTax,
 	} = values;
 	const discountValue = parseInt( totalDiscount, 10 );
 
@@ -121,8 +121,8 @@ TotalsDiscount.propTypes = {
 	isRemovingCoupon: PropTypes.bool.isRequired,
 	removeCoupon: PropTypes.func.isRequired,
 	values: PropTypes.shape( {
-		total_discount: PropTypes.string,
-		total_discount_tax: PropTypes.string,
+		totalDiscount: PropTypes.string,
+		totalDiscountTax: PropTypes.string,
 	} ).isRequired,
 };
 
