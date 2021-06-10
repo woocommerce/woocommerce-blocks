@@ -40,6 +40,7 @@
 	width: #{$gap-large * 2};
 	padding-bottom: $gap;
 	position: relative;
+	min-width: 48px;
 
 	> img {
 		width: #{$gap-large * 2};
