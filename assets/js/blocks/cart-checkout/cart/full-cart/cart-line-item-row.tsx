@@ -59,45 +59,45 @@ const CartLineItemRow = ( {
 } ): JSX.Element => {
 	const {
 		name: initialName = '',
-		catalog_visibility: catalogVisibility = 'visible',
-		short_description: shortDescription = '',
+		catalogVisibility: catalogVisibility = 'visible',
+		shortDescription: shortDescription = '',
 		description: fullDescription = '',
-		low_stock_remaining: lowStockRemaining = null,
-		show_backorder_badge: showBackorderBadge = false,
-		quantity_limit: quantityLimit = 99,
+		lowStockRemaining: lowStockRemaining = null,
+		showBackorderBadge: showBackorderBadge = false,
+		quantityLimit: quantityLimit = 99,
 		permalink = '',
 		images = [],
 		variation = [],
-		item_data: itemData = [],
+		itemData: itemData = [],
 		prices = {
-			currency_code: 'USD',
-			currency_minor_unit: 2,
-			currency_symbol: '$',
-			currency_prefix: '$',
-			currency_suffix: '',
-			currency_decimal_separator: '.',
-			currency_thousand_separator: ',',
+			currencyCode: 'USD',
+			currencyMinorUnit: 2,
+			currencySymbol: '$',
+			currencyPrefix: '$',
+			currencySuffix: '',
+			currencyDecimalSeparator: '.',
+			currencyThousandSeparator: ',',
 			price: '0',
-			regular_price: '0',
-			sale_price: '0',
-			price_range: null,
-			raw_prices: {
+			regularPrice: '0',
+			salePrice: '0',
+			priceRange: null,
+			rawPrices: {
 				precision: 6,
 				price: '0',
-				regular_price: '0',
-				sale_price: '0',
+				regularPrice: '0',
+				salePrice: '0',
 			},
 		},
 		totals = {
-			currency_code: 'USD',
-			currency_minor_unit: 2,
-			currency_symbol: '$',
-			currency_prefix: '$',
-			currency_suffix: '',
-			currency_decimal_separator: '.',
-			currency_thousand_separator: ',',
-			line_subtotal: '0',
-			line_subtotal_tax: '0',
+			currencyCode: 'USD',
+			currencyMinorUnit: 2,
+			currencySymbol: '$',
+			currencyPrefix: '$',
+			currencySuffix: '',
+			currencyDecimalSeparator: '.',
+			currencyThousandSeparator: ',',
+			lineSubtotal: '0',
+			lineSubtotalTax: '0',
 		},
 		extensions = {},
 	} = lineItem;
@@ -136,21 +136,21 @@ const CartLineItemRow = ( {
 	} );
 
 	const regularAmountSingle = Dinero( {
-		amount: parseInt( prices.raw_prices.regular_price, 10 ),
-		precision: prices.raw_prices.precision,
+		amount: parseInt( prices.rawPrices.regularPrice, 10 ),
+		precision: prices.rawPrices.precision,
 	} );
 	const purchaseAmountSingle = Dinero( {
-		amount: parseInt( prices.raw_prices.price, 10 ),
-		precision: prices.raw_prices.precision,
+		amount: parseInt( prices.rawPrices.price, 10 ),
+		precision: prices.rawPrices.precision,
 	} );
 	const saleAmountSingle = regularAmountSingle.subtract(
 		purchaseAmountSingle
 	);
 	const saleAmount = saleAmountSingle.multiply( quantity );
 	const totalsCurrency = getCurrencyFromPriceResponse( totals );
-	let lineSubtotal = parseInt( totals.line_subtotal, 10 );
+	let lineSubtotal = parseInt( totals.lineSubtotal, 10 );
 	if ( getSetting( 'displayCartPricesIncludingTax', false ) ) {
-		lineSubtotal += parseInt( totals.line_subtotal_tax, 10 );
+		lineSubtotal += parseInt( totals.lineSubtotalTax, 10 );
 	}
 	const subtotalPrice = Dinero( {
 		amount: lineSubtotal,
