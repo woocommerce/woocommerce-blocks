@@ -27,15 +27,15 @@ import ProductMetadata from '../product-metadata';
 const OrderSummaryItem = ( { cartItem } ) => {
 	const {
 		images,
-		low_stock_remaining: lowStockRemaining = null,
-		show_backorder_badge: showBackorderBadge = false,
+		lowStockRemaining: lowStockRemaining = null,
+		showBackorderBadge: showBackorderBadge = false,
 		name: initialName,
 		permalink,
 		prices,
 		quantity,
-		short_description: shortDescription,
+		shortDescription: shortDescription,
 		description: fullDescription,
-		item_data: itemData = [],
+		itemData: itemData = [],
 		variation,
 		totals,
 		extensions = {},
@@ -70,22 +70,22 @@ const OrderSummaryItem = ( { cartItem } ) => {
 	} );
 
 	const regularPriceSingle = Dinero( {
-		amount: parseInt( prices.raw_prices.regular_price, 10 ),
-		precision: parseInt( prices.raw_prices.precision, 10 ),
+		amount: parseInt( prices.rawPrices.regularPrice, 10 ),
+		precision: parseInt( prices.rawPrices.precision, 10 ),
 	} )
 		.convertPrecision( priceCurrency.minorUnit )
 		.getAmount();
 	const priceSingle = Dinero( {
-		amount: parseInt( prices.raw_prices.price, 10 ),
-		precision: parseInt( prices.raw_prices.precision, 10 ),
+		amount: parseInt( prices.rawPrices.price, 10 ),
+		precision: parseInt( prices.rawPrices.precision, 10 ),
 	} )
 		.convertPrecision( priceCurrency.minorUnit )
 		.getAmount();
 	const totalsCurrency = getCurrencyFromPriceResponse( totals );
 
-	let lineSubtotal = parseInt( totals.line_subtotal, 10 );
+	let lineSubtotal = parseInt( totals.lineSubtotal, 10 );
 	if ( getSetting( 'displayCartPricesIncludingTax', false ) ) {
-		lineSubtotal += parseInt( totals.line_subtotal_tax, 10 );
+		lineSubtotal += parseInt( totals.lineSubtotalTax, 10 );
 	}
 	const subtotalPrice = Dinero( {
 		amount: lineSubtotal,
@@ -168,12 +168,12 @@ const OrderSummaryItem = ( { cartItem } ) => {
 OrderSummaryItem.propTypes = {
 	cartItems: PropTypes.shape( {
 		images: PropTypes.array,
-		low_stock_remaining: PropTypes.number,
+		lowStockRemaining: PropTypes.number,
 		name: PropTypes.string.isRequired,
 		permalink: PropTypes.string,
 		prices: PropTypes.shape( {
 			price: PropTypes.string,
-			regular_price: PropTypes.string,
+			regularPrice: PropTypes.string,
 		} ),
 		quantity: PropTypes.number,
 		summary: PropTypes.string,
