@@ -37,6 +37,7 @@ export const DEFAULT_PAYMENT_DATA_CONTEXT_STATE: PaymentMethodDataContextState =
 
 export const DEFAULT_PAYMENT_METHOD_DATA: PaymentMethodDataContextType = {
 	setPaymentStatus: () => ( {
+		pristine: () => void null,
 		started: () => void null,
 		processing: () => void null,
 		completed: () => void null,
@@ -54,6 +55,7 @@ export const DEFAULT_PAYMENT_METHOD_DATA: PaymentMethodDataContextType = {
 		hasError: false,
 		hasFailed: false,
 		isSuccessful: false,
+		isDoingExpressPayment: false,
 	},
 	paymentStatuses: STATUS,
 	paymentMethodData: {},
