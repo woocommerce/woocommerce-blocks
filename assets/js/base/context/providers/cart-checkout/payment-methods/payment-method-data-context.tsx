@@ -6,6 +6,7 @@ import {
 	useContext,
 	useReducer,
 	useCallback,
+	useRef,
 	useEffect,
 	useMemo,
 } from '@wordpress/element';
@@ -38,7 +39,6 @@ import {
 	reducer as emitReducer,
 } from './event-emit';
 import { useValidationContext } from '../../validation';
-import { usePrevious } from '../../../../hooks/use-previous';
 import { useStoreNotices } from '../../../hooks/use-store-notices';
 import { useEmitResponse } from '../../../hooks/use-emit-response';
 import { getCustomerPaymentMethods } from './utils';
@@ -79,7 +79,12 @@ export const PaymentMethodDataProvider = ( {
 	} = useEmitResponse();
 	const [ observers, observerDispatch ] = useReducer( emitReducer, {} );
 	const { onPaymentProcessing } = useEventEmitters( observerDispatch );
-	const currentObservers = usePrevious( observers );
+	const currentObservers = useRef( observers );
+
+	// ensure observers are always current.
+	useEffect( () => {
+		currentObservers.current = observers;
+	}, [ observers ] );
 
 	const [ paymentData, dispatch ] = useReducer(
 		reducer,
@@ -157,7 +162,11 @@ export const PaymentMethodDataProvider = ( {
 					activePaymentMethod
 				),
 		} ),
-		[ paymentData.currentStatus, activePaymentMethod ]
+		[
+			paymentData.currentStatus,
+			paymentData.expressPaymentMethods,
+			activePaymentMethod,
+		]
 	);
 
 	// flip payment to processing if checkout processing is complete, there are no errors, and payment status is started.
@@ -209,7 +218,7 @@ export const PaymentMethodDataProvider = ( {
 		if ( currentStatus.isProcessing ) {
 			removeNotice( 'wc-payment-error', noticeContexts.PAYMENTS );
 			emitEventWithAbort(
-				currentObservers,
+				currentObservers.current,
 				EMIT_TYPES.PAYMENT_PROCESSING,
 				{}
 			).then( ( observerResponses ) => {
@@ -273,7 +282,6 @@ export const PaymentMethodDataProvider = ( {
 			} );
 		}
 	}, [
-		currentObservers,
 		currentStatus.isProcessing,
 		setValidationErrors,
 		setPaymentStatus,
