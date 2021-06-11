@@ -13,8 +13,11 @@ interface Validation< T > {
  * @param {Function} [validation] Function that needs to validate for the value
  *                                to be updated.
  */
-export function usePrevious< T >( value: T, validation?: Validation< T > ): T {
-	const ref = useRef< T >( value );
+export function usePrevious< T >(
+	value: T,
+	validation?: Validation< T >
+): T | undefined {
+	const ref = useRef< T >();
 
 	useEffect( () => {
 		if (
