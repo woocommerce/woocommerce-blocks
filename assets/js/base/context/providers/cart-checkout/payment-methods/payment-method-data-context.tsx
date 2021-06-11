@@ -151,40 +151,14 @@ export const PaymentMethodDataProvider = ( {
 			hasError: paymentData.currentStatus === STATUS.ERROR,
 			hasFailed: paymentData.currentStatus === STATUS.FAILED,
 			isSuccessful: paymentData.currentStatus === STATUS.SUCCESS,
+			isDoingExpressPayment:
+				paymentData.currentStatus !== STATUS.PRISTINE &&
+				Object.keys( paymentData.expressPaymentMethods ).includes(
+					activePaymentMethod
+				),
 		} ),
-		[ paymentData.currentStatus ]
+		[ paymentData.currentStatus, activePaymentMethod ]
 	);
-
-	// Update the active (selected) payment method when it is empty, or invalid.
-	useEffect( () => {
-		if ( ! paymentMethodsInitialized ) {
-			return;
-		}
-
-		const paymentMethodKeys = Object.keys( paymentData.paymentMethods );
-		const allPaymentMethodKeys = [
-			...paymentMethodKeys,
-			...Object.keys( paymentData.expressPaymentMethods ),
-		];
-		const defaultPaymentMethodKey = paymentMethodKeys.length
-			? paymentMethodKeys[ 0 ]
-			: '';
-
-		if (
-			! allPaymentMethodKeys.includes( activePaymentMethod ) &&
-			activePaymentMethod !== defaultPaymentMethodKey
-		) {
-			setPaymentStatus().pristine();
-			setActivePaymentMethod( defaultPaymentMethodKey );
-		}
-	}, [
-		paymentMethodsInitialized,
-		activePaymentMethod,
-		setActivePaymentMethod,
-		setPaymentStatus,
-		paymentData.paymentMethods,
-		paymentData.expressPaymentMethods,
-	] );
 
 	// flip payment to processing if checkout processing is complete, there are no errors, and payment status is started.
 	useEffect( () => {

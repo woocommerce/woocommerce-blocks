@@ -53,8 +53,6 @@ const CheckoutExpressPayment = () => {
 	}
 
 	// Set loading state for express payment methods when payment or checkout is in progress.
-	const paymentProcessing =
-		paymentStatus.isStarted || paymentStatus.isProcessing;
 	const checkoutProcessing =
 		isProcessing ||
 		isAfterProcessing ||
@@ -64,9 +62,10 @@ const CheckoutExpressPayment = () => {
 	return (
 		<>
 			<LoadingMask
-				showSpinner={ paymentStatus.isProcessing }
 				isLoading={
-					isCalculating || paymentProcessing || checkoutProcessing
+					isCalculating ||
+					checkoutProcessing ||
+					paymentStatus.isDoingExpressPayment
 				}
 			>
 				<div className="wc-block-components-express-payment wc-block-components-express-payment--checkout">
