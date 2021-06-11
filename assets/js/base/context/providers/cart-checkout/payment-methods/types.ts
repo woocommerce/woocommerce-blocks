@@ -62,9 +62,13 @@ export type CustomerPaymentMethods =
 	| Record< string, CustomerPaymentMethod >
 	| EmptyObjectType;
 
-export type PaymentMethodsDispatcherType = (
-	paymentMethods: PaymentMethods | ExpressPaymentMethods
-) => void;
+export type PaymentMethodDispatchers = {
+	setRegisteredPaymentMethods: ( paymentMethods: PaymentMethods ) => void;
+	setRegisteredExpressPaymentMethods: (
+		paymentMethods: ExpressPaymentMethods
+	) => void;
+	setShouldSavePayment: ( shouldSave: boolean ) => void;
+};
 
 export interface PaymentStatusDispatchers {
 	pristine: () => void;
