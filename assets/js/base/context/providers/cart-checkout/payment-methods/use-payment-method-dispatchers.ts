@@ -39,7 +39,7 @@ export const usePaymentMethodDataDispatchers = (
 					actions.setShouldSavePaymentMethod( shouldSave )
 				),
 		} ),
-		[]
+		[ dispatch ]
 	);
 
 	const setPaymentStatus = useCallback(
