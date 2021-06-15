@@ -7,6 +7,7 @@ import { useEffect, useRef } from '@wordpress/element';
 import PaymentMethodLabel from '@woocommerce/base-components/cart-checkout/payment-method-label';
 import PaymentMethodIcons from '@woocommerce/base-components/cart-checkout/payment-method-icons';
 import { getSetting } from '@woocommerce/settings';
+import deprecated from '@wordpress/deprecated';
 
 /**
  * Internal dependencies
@@ -127,7 +128,18 @@ export const usePaymentMethodInterface = (): Record< string, unknown > => {
 		},
 		onSubmit,
 		paymentStatus: currentStatus,
-		setExpressPaymentError,
+		setExpressPaymentError: ( errorMessage = '' ) => {
+			deprecated(
+				'setExpressPaymentError should only be used by Express Payment Methods (using the provided onError handler).',
+				{
+					alternative: '',
+					plugin: 'woocommerce-gutenberg-products-block',
+					link:
+						'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4228',
+				}
+			);
+			setExpressPaymentError( errorMessage );
+		},
 		shippingData: {
 			shippingRates,
 			shippingRatesLoading,

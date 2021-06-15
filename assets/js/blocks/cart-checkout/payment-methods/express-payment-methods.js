@@ -16,6 +16,7 @@ import {
 	useEditorContext,
 	usePaymentMethodDataContext,
 } from '@woocommerce/base-context';
+import deprecated from '@wordpress/deprecated';
 
 /**
  * Internal dependencies
@@ -107,6 +108,19 @@ const ExpressPaymentMethods = () => {
 							onClick: onExpressPaymentClick( id ),
 							onClose: onExpressPaymentClose,
 							onError: onExpressPaymentError,
+							setExpressPaymentError: ( errorMessage = '' ) => {
+								deprecated(
+									'Express Payment Methods should use the provided onError handler instead.',
+									{
+										alternative: 'onError',
+										plugin:
+											'woocommerce-gutenberg-products-block',
+										link:
+											'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4228',
+									}
+								);
+								onExpressPaymentError( errorMessage );
+							},
 						} ) }
 					</li>
 				) : null;
