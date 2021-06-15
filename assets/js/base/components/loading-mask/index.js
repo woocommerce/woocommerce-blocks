@@ -11,6 +11,7 @@ import classNames from 'classnames';
 import './style.scss';
 import Spinner from '../spinner';
 
+// @todo Find a way to block buttons/form components when LoadingMask isLoading
 const LoadingMask = ( {
 	children,
 	className,
