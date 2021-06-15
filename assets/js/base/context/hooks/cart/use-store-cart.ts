@@ -173,7 +173,7 @@ export const useStoreCart = (
 				? decodeValues( cartData.shippingAddress )
 				: billingAddress;
 			const cartFees = cartData.fees.map( ( fee: CartResponseFeeItem ) =>
-				decodeValues( fee )
+				mapKeysToCamelCase( decodeValues( fee ) )
 			);
 			const shippingRates =
 				cartData.shippingRates.map( mapKeysToCamelCase ) || [];
