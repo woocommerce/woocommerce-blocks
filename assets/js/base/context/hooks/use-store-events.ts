@@ -24,6 +24,8 @@ export const useStoreEvents = (): {
 	const storeCart = useStoreCart();
 	const currentStoreCart = useRef( storeCart );
 
+	// Track the latest version of the cart so we can use the current value in our callback function below without triggering
+	// other useEffect hooks using dispatchCheckoutEvent as a dependency.
 	useEffect( () => {
 		currentStoreCart.current = storeCart;
 	}, [ storeCart ] );
@@ -44,13 +46,11 @@ export const useStoreEvents = (): {
 	const dispatchCheckoutEvent = useCallback(
 		( eventName, eventParams = {} ) => {
 			try {
-				const cartParam = currentStoreCart.current;
-
 				doAction(
 					`experimental__woocommerce_blocks-checkout-${ eventName }`,
 					{
 						...eventParams,
-						cartParam,
+						storeCart: currentStoreCart.current,
 					}
 				);
 			} catch ( e ) {
