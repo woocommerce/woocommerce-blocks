@@ -119,7 +119,11 @@ const ExpressPaymentMethods = () => {
 											'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4228',
 									}
 								);
-								onExpressPaymentError( errorMessage );
+								if ( errorMessage ) {
+									onExpressPaymentError( errorMessage );
+								} else {
+									setExpressPaymentError( '' );
+								}
 							},
 						} ) }
 					</li>
