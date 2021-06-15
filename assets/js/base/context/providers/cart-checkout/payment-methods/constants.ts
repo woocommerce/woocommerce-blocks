@@ -71,6 +71,7 @@ export const DEFAULT_PAYMENT_METHOD_DATA: PaymentMethodDataContextType = {
 	expressPaymentMethodsInitialized: false,
 	onPaymentProcessing: () => () => () => void null,
 	setExpressPaymentError: () => void null,
+	isExpressPaymentMethodActive: false,
 	setShouldSavePayment: () => void null,
 	shouldSavePayment: false,
 };

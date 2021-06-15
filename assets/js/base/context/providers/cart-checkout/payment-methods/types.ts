@@ -152,6 +152,8 @@ export type PaymentMethodDataContextType = {
 	onPaymentProcessing: ReturnType< typeof emitterCallback >;
 	// A function used by express payment methods to indicate an error for checkout to handle. It receives an error message string. Does not change payment status.
 	setExpressPaymentError: ( error: string ) => void;
+	// True if an express payment method is active.
+	isExpressPaymentMethodActive: boolean;
 	// A function used to set the shouldSavePayment value.
 	setShouldSavePayment: ( shouldSavePayment: boolean ) => void;
 	// True means that the configured payment method option is saved for the customer.

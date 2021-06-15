@@ -143,6 +143,10 @@ export const PaymentMethodDataProvider = ( {
 		[ addErrorNotice, noticeContexts.EXPRESS_PAYMENTS, removeNotice ]
 	);
 
+	const isExpressPaymentMethodActive = Object.keys(
+		paymentData.expressPaymentMethods
+	).includes( activePaymentMethod );
+
 	const currentStatus = useMemo(
 		() => ( {
 			isPristine: paymentData.currentStatus === STATUS.PRISTINE,
@@ -158,15 +162,9 @@ export const PaymentMethodDataProvider = ( {
 			isSuccessful: paymentData.currentStatus === STATUS.SUCCESS,
 			isDoingExpressPayment:
 				paymentData.currentStatus !== STATUS.PRISTINE &&
-				Object.keys( paymentData.expressPaymentMethods ).includes(
-					activePaymentMethod
-				),
+				isExpressPaymentMethodActive,
 		} ),
-		[
-			paymentData.currentStatus,
-			paymentData.expressPaymentMethods,
-			activePaymentMethod,
-		]
+		[ paymentData.currentStatus, isExpressPaymentMethodActive ]
 	);
 
 	// Update the active (selected) payment method when it is empty, or invalid.
@@ -344,6 +342,7 @@ export const PaymentMethodDataProvider = ( {
 		paymentMethodsInitialized,
 		expressPaymentMethodsInitialized,
 		setExpressPaymentError,
+		isExpressPaymentMethodActive,
 		shouldSavePayment: paymentData.shouldSavePaymentMethod,
 		setShouldSavePayment: dispatchActions.setShouldSavePayment,
 	};
