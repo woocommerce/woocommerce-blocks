@@ -87,7 +87,7 @@ const ExpressPaymentMethods = () => {
 	);
 
 	/**
-	 * @todo Find a way to Memorize Express Payment Method Content
+	 * @todo Find a way to Memoize Express Payment Method Content
 	 *
 	 * Payment method content could potentially become a bottleneck if lots of logic is ran in the content component. It
 	 * Currently re-renders excessively but is not easy to useMemo because paymentMethodInterface could become stale.
