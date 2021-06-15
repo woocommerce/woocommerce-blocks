@@ -20,20 +20,14 @@ const usePaymentMethodState = ( express = false ) => {
 	const currentExpressPaymentMethods = useShallowEqual(
 		expressPaymentMethods
 	);
-	const currentPaymentMethodsInitialized = useShallowEqual(
-		paymentMethodsInitialized
-	);
-	const currentExpressPaymentMethodsInitialized = useShallowEqual(
-		expressPaymentMethodsInitialized
-	);
 
 	return {
 		paymentMethods: express
 			? currentExpressPaymentMethods
 			: currentPaymentMethods,
 		isInitialized: express
-			? currentExpressPaymentMethodsInitialized
-			: currentPaymentMethodsInitialized,
+			? expressPaymentMethodsInitialized
+			: paymentMethodsInitialized,
 	};
 };
 
