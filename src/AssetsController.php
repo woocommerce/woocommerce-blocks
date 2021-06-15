@@ -127,7 +127,7 @@ final class AssetsController {
 	 */
 	public function update_block_style_dependencies() {
 		$wp_styles = wp_styles();
-		$style     = $wp_styles->query( 'wc-blocks-style', 'registered' );
+		$style     = $wp_styles->query( 'wc-block-style', 'registered' );
 
 		if ( ! $style ) {
 			return;
