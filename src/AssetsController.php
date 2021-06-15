@@ -37,6 +37,7 @@ final class AssetsController {
 		add_action( 'init', array( $this, 'register_assets' ) );
 		add_action( 'body_class', array( $this, 'add_theme_body_class' ), 1 );
 		add_action( 'admin_body_class', array( $this, 'add_theme_body_class' ), 1 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'update_block_style_dependencies' ), 20 );
 	}
 
 	/**
@@ -119,5 +120,28 @@ final class AssetsController {
 		$filename = str_replace( plugins_url( '/', __DIR__ ), '', $src );
 		$ver      = self::get_file_version( $filename );
 		wp_register_style( $handle, $src, $deps, $ver, $media );
+	}
+
+	/**
+	 * Update block style dependencies after they have been registered.
+	 */
+	public function update_block_style_dependencies() {
+		$wp_styles = wp_styles();
+		$style     = $wp_styles->query( 'wc-blocks-style', 'registered' );
+
+		if ( ! $style ) {
+			return;
+		}
+
+		// In WC < 5.5, `woocommerce-general` is not registered in block editor
+		// screens, so we don't add it as a dependency if it's not registered.
+		// In WC >= 5.5, `woocommerce-general` is registered on `admin_enqueue_scripts`,
+		// so we need to check if it's registered here instead of on `init`.
+		if (
+			wp_style_is( 'woocommerce-general', 'registered' ) &&
+			! in_array( 'woocommerce-general', $style->deps, true )
+		) {
+			$style->deps[] = 'woocommerce-general';
+		}
 	}
 }
