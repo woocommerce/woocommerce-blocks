@@ -67,7 +67,7 @@ const Pagination = ( {
 					disabled={ currentPage <= 1 }
 				>
 					<Label
-						label="<"
+						label="&larr;"
 						screenReaderLabel={ __(
 							'Previous page',
 							'woo-gutenberg-products-block'
@@ -181,7 +181,7 @@ const Pagination = ( {
 					disabled={ currentPage >= totalPages }
 				>
 					<Label
-						label=">"
+						label="&rarr;"
 						screenReaderLabel={ __(
 							'Next page',
 							'woo-gutenberg-products-block'
