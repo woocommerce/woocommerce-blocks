@@ -88,6 +88,29 @@ const ExpressPaymentMethods = () => {
 	);
 
 	/**
+	 * Calling setExpressPaymentError directly is deprecated.
+	 */
+	const deprecatedSetExpressPaymentError = useCallback(
+		( errorMessage = '' ) => {
+			deprecated(
+				'Express Payment Methods should use the provided onError handler instead.',
+				{
+					alternative: 'onError',
+					plugin: 'woocommerce-gutenberg-products-block',
+					link:
+						'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4228',
+				}
+			);
+			if ( errorMessage ) {
+				onExpressPaymentError( errorMessage );
+			} else {
+				setExpressPaymentError( '' );
+			}
+		},
+		[ setExpressPaymentError, onExpressPaymentError ]
+	);
+
+	/**
 	 * @todo Find a way to Memoize Express Payment Method Content
 	 *
 	 * Payment method content could potentially become a bottleneck if lots of logic is ran in the content component. It
@@ -108,23 +131,7 @@ const ExpressPaymentMethods = () => {
 							onClick: onExpressPaymentClick( id ),
 							onClose: onExpressPaymentClose,
 							onError: onExpressPaymentError,
-							setExpressPaymentError: ( errorMessage = '' ) => {
-								deprecated(
-									'Express Payment Methods should use the provided onError handler instead.',
-									{
-										alternative: 'onError',
-										plugin:
-											'woocommerce-gutenberg-products-block',
-										link:
-											'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4228',
-									}
-								);
-								if ( errorMessage ) {
-									onExpressPaymentError( errorMessage );
-								} else {
-									setExpressPaymentError( '' );
-								}
-							},
+							setExpressPaymentError: deprecatedSetExpressPaymentError,
 						} ) }
 					</li>
 				) : null;
