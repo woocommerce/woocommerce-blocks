@@ -156,15 +156,15 @@ const AddressForm = ( {
 							}
 							value={ values.country }
 							autoComplete={ field.autocomplete }
-							onChange={ ( newValue ) => {
+							onChange={ ( newValue ) =>
 								onChange( {
 									...values,
 									country: newValue,
 									state: '',
 									city: '',
 									postcode: '',
-								} );
-							} }
+								} )
+							}
 							errorId={
 								type === 'shipping'
 									? 'shipping-missing-country'
