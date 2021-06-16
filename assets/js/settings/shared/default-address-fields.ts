@@ -20,6 +20,10 @@ export interface AddressField {
 	index: number;
 }
 
+export interface LocaleSpecificAddressField extends AddressField {
+	priority: number;
+}
+
 export interface AddressFields {
 	// eslint-disable-next-line camelcase
 	first_name: AddressField;
