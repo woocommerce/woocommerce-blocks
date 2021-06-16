@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import PropTypes from 'prop-types';
 import { decodeEntities } from '@wordpress/html-entities';
 import { useCallback, useMemo } from '@wordpress/element';
 import classnames from 'classnames';
@@ -25,7 +24,7 @@ const StateInput = ( {
 	autoComplete = 'off',
 	value = '',
 	required = false,
-}: StateInputWithStatesProps ) => {
+}: StateInputWithStatesProps ): JSX.Element => {
 	const countryStates = states[ country ];
 	const options = useMemo(
 		() =>

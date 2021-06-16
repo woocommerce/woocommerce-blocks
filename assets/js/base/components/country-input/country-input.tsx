@@ -27,7 +27,7 @@ const CountryInput = ( {
 		'Please select a country.',
 		'woo-gutenberg-products-block'
 	),
-}: CountryInputWithCountriesProps ) => {
+}: CountryInputWithCountriesProps ): JSX.Element => {
 	const options = useMemo(
 		() =>
 			Object.keys( countries ).map( ( key ) => ( {
