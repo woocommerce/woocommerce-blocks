@@ -67,7 +67,9 @@ const ProductsControl = ( {
 		<SearchListControl
 			className="woocommerce-products"
 			list={ products.map( ( product ) => {
-				const formattedSku = product.sku ? ' (' + product.sku + ')' : '';
+				const formattedSku = product.sku
+					? ' (' + product.sku + ')'
+					: '';
 				return {
 					...product,
 					name: `${ product.name }${ formattedSku }`,
