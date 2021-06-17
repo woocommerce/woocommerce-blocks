@@ -202,7 +202,7 @@
 		"use-debounce": "3.4.3",
 		"wordpress-components": "npm:@wordpress/components@11.1.5",
 		"wordpress-compose": "npm:@wordpress/compose@3.23.1",
-		"wordpress-element": "npm:@wordpress/element@2.18.0"
+		"@types/wordpress-components": "npm:@types/wordpress__components@9.8.6"
 	},
 	"husky": {
 		"hooks": {
