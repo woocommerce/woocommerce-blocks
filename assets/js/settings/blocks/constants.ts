@@ -44,7 +44,7 @@ export const SHIPPING_COUNTRIES = getSetting< Record< string, string > >(
 	{}
 );
 export const ALLOWED_COUNTRIES = getSetting< Record< string, string > >(
-	'AllowedCountries',
+	'allowedCountries',
 	{}
 );
 export const SHIPPING_STATES = getSetting<
