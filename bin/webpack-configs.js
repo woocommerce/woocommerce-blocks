@@ -8,6 +8,7 @@ const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const ProgressBarPlugin = require( 'progress-bar-webpack-plugin' );
 const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
 const WebpackRTLPlugin = require( 'webpack-rtl-plugin' );
+const TerserPlugin = require( 'terser-webpack-plugin' );
 const CreateFileWebpack = require( 'create-file-webpack' );
 const CircularDependencyPlugin = require( 'circular-dependency-plugin' );
 
@@ -26,23 +27,54 @@ const {
 	getProgressBarPluginConfig,
 } = require( './webpack-helpers' );
 
+const isProduction = NODE_ENV === 'production';
+
 /**
- * Plugins that are used by all build configs, with the exception the CSS style build and the temporary getCoreEditorConfig.
+ * Shared config for all script builds.
  */
-const sharedPlugins = [
-	CHECK_CIRCULAR_DEPS === 'true'
-		? new CircularDependencyPlugin( {
-				exclude: /node_modules/,
-				cwd: process.cwd(),
-				failOnError: 'warn',
-		  } )
-		: false,
-	new DependencyExtractionWebpackPlugin( {
-		injectPolyfill: true,
-		requestToExternal,
-		requestToHandle,
-	} ),
-].filter( Boolean );
+const sharedConfig = {
+	plugins: [
+		CHECK_CIRCULAR_DEPS === 'true'
+			? new CircularDependencyPlugin( {
+					exclude: /node_modules/,
+					cwd: process.cwd(),
+					failOnError: 'warn',
+			  } )
+			: false,
+		new DependencyExtractionWebpackPlugin( {
+			injectPolyfill: true,
+			requestToExternal,
+			requestToHandle,
+		} ),
+	].filter( Boolean ),
+	optimization: {
+		splitChunks: {
+			automaticNameDelimiter: '--',
+		},
+		minimizer: [
+			new TerserPlugin( {
+				cache: true,
+				parallel: true,
+				sourceMap: ! isProduction,
+				terserOptions: {
+					output: {
+						comments: /translators:/i,
+					},
+					compress: {
+						passes: 2,
+					},
+					mangle: {
+						reserved: [ '__', '_n', '_nx', '_x' ],
+					},
+				},
+				extractComments: false,
+			} ),
+		],
+	},
+	resolve: {
+		extensions: [ '.js', '.jsx', '.ts', '.tsx' ],
+	},
+};
 
 /**
  * Build config for core packages.
@@ -50,16 +82,9 @@ const sharedPlugins = [
  * @param {Object} options Build options.
  */
 const getCoreConfig = ( options = {} ) => {
-	const { alias, resolvePlugins = [] } = options;
-	const resolve = alias
-		? {
-				alias,
-				plugins: resolvePlugins,
-		  }
-		: {
-				plugins: resolvePlugins,
-		  };
+	const { alias = {}, resolvePlugins = [] } = options;
 	return {
+		...sharedConfig,
 		entry: getEntryConfig( 'core', options.exclude || [] ),
 		output: {
 			filename: ( chunkData ) => {
@@ -72,11 +97,6 @@ const getCoreConfig = ( options = {} ) => {
 			// overwriting each other's chunk loader function.
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
 			jsonpFunction: 'webpackWcBlocksJsonp',
-		},
-		optimization: {
-			splitChunks: {
-				automaticNameDelimiter: '--',
-			},
 		},
 		module: {
 			rules: [
@@ -104,7 +124,7 @@ const getCoreConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			...sharedPlugins,
+			...sharedConfig.plugins,
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Core', options.fileSuffix )
 			),
@@ -120,8 +140,9 @@ woocommerce_blocks_env = ${ NODE_ENV }
 			} ),
 		],
 		resolve: {
-			...resolve,
-			extensions: [ '.js', '.ts', '.tsx' ],
+			...sharedConfig.resolve,
+			alias,
+			plugins: resolvePlugins,
 		},
 	};
 };
@@ -191,15 +212,8 @@ const getMainConfig = ( options = {} ) => {
 	let { fileSuffix } = options;
 	const { alias, resolvePlugins = [] } = options;
 	fileSuffix = fileSuffix ? `-${ fileSuffix }` : '';
-	const resolve = alias
-		? {
-				alias,
-				plugins: resolvePlugins,
-		  }
-		: {
-				plugins: resolvePlugins,
-		  };
 	return {
+		...sharedConfig,
 		entry: getEntryConfig( 'main', options.exclude || [] ),
 		output: {
 			devtoolNamespace: 'wc',
@@ -213,6 +227,7 @@ const getMainConfig = ( options = {} ) => {
 			jsonpFunction: 'webpackWcBlocksJsonp',
 		},
 		optimization: {
+			...sharedConfig.optimization,
 			splitChunks: {
 				minSize: 0,
 				automaticNameDelimiter: '--',
@@ -236,7 +251,7 @@ const getMainConfig = ( options = {} ) => {
 						options: {
 							presets: [ '@wordpress/babel-preset-default' ],
 							plugins: [
-								NODE_ENV === 'production'
+								isProduction
 									? require.resolve(
 											'babel-plugin-transform-react-remove-prop-types'
 									  )
@@ -257,14 +272,15 @@ const getMainConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			...sharedPlugins,
+			...sharedConfig.plugins,
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Main', options.fileSuffix )
 			),
 		],
 		resolve: {
-			...resolve,
-			extensions: [ '.js', '.jsx', '.ts', '.tsx' ],
+			...sharedConfig.resolve,
+			alias,
+			plugins: resolvePlugins,
 		},
 	};
 };
@@ -278,15 +294,8 @@ const getFrontConfig = ( options = {} ) => {
 	let { fileSuffix } = options;
 	const { alias, resolvePlugins = [] } = options;
 	fileSuffix = fileSuffix ? `-${ fileSuffix }` : '';
-	const resolve = alias
-		? {
-				alias,
-				plugins: resolvePlugins,
-		  }
-		: {
-				plugins: resolvePlugins,
-		  };
 	return {
+		...sharedConfig,
 		entry: getEntryConfig( 'frontend', options.exclude || [] ),
 		output: {
 			devtoolNamespace: 'wc',
@@ -296,11 +305,6 @@ const getFrontConfig = ( options = {} ) => {
 			// overwriting each other's chunk loader function.
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
 			jsonpFunction: 'webpackWcBlocksJsonp',
-		},
-		optimization: {
-			splitChunks: {
-				automaticNameDelimiter: '--',
-			},
 		},
 		module: {
 			rules: [
@@ -339,7 +343,7 @@ const getFrontConfig = ( options = {} ) => {
 								require.resolve(
 									'@babel/plugin-proposal-class-properties'
 								),
-								NODE_ENV === 'production'
+								isProduction
 									? require.resolve(
 											'babel-plugin-transform-react-remove-prop-types'
 									  )
@@ -357,14 +361,15 @@ const getFrontConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			...sharedPlugins,
+			...sharedConfig.plugins,
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Frontend', options.fileSuffix )
 			),
 		],
 		resolve: {
-			...resolve,
-			extensions: [ '.js', '.ts', '.tsx' ],
+			...sharedConfig.resolve,
+			alias,
+			plugins: resolvePlugins,
 		},
 	};
 };
@@ -376,15 +381,8 @@ const getFrontConfig = ( options = {} ) => {
  */
 const getPaymentsConfig = ( options = {} ) => {
 	const { alias, resolvePlugins = [] } = options;
-	const resolve = alias
-		? {
-				alias,
-				plugins: resolvePlugins,
-		  }
-		: {
-				plugins: resolvePlugins,
-		  };
 	return {
+		...sharedConfig,
 		entry: getEntryConfig( 'payments', options.exclude || [] ),
 		output: {
 			devtoolNamespace: 'wc',
@@ -394,11 +392,6 @@ const getPaymentsConfig = ( options = {} ) => {
 			// overwriting each other's chunk loader function.
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
 			jsonpFunction: 'webpackWcBlocksPaymentMethodExtensionJsonp',
-		},
-		optimization: {
-			splitChunks: {
-				automaticNameDelimiter: '--',
-			},
 		},
 		module: {
 			rules: [
@@ -437,7 +430,7 @@ const getPaymentsConfig = ( options = {} ) => {
 								require.resolve(
 									'@babel/plugin-proposal-class-properties'
 								),
-								NODE_ENV === 'production'
+								isProduction
 									? require.resolve(
 											'babel-plugin-transform-react-remove-prop-types'
 									  )
@@ -455,7 +448,7 @@ const getPaymentsConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			...sharedPlugins,
+			...sharedConfig.plugins,
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig(
 					'Payment Method Extensions',
@@ -464,8 +457,9 @@ const getPaymentsConfig = ( options = {} ) => {
 			),
 		],
 		resolve: {
-			...resolve,
-			extensions: [ '.js', '.ts', '.tsx' ],
+			...sharedConfig.resolve,
+			alias,
+			plugins: resolvePlugins,
 		},
 	};
 };
@@ -477,15 +471,8 @@ const getPaymentsConfig = ( options = {} ) => {
  */
 const getExtensionsConfig = ( options = {} ) => {
 	const { alias, resolvePlugins = [] } = options;
-	const resolve = alias
-		? {
-				alias,
-				plugins: resolvePlugins,
-		  }
-		: {
-				plugins: resolvePlugins,
-		  };
 	return {
+		...sharedConfig,
 		entry: getEntryConfig( 'extensions', options.exclude || [] ),
 		output: {
 			devtoolNamespace: 'wc',
@@ -530,7 +517,7 @@ const getExtensionsConfig = ( options = {} ) => {
 								require.resolve(
 									'@babel/plugin-proposal-class-properties'
 								),
-								NODE_ENV === 'production'
+								isProduction
 									? require.resolve(
 											'babel-plugin-transform-react-remove-prop-types'
 									  )
@@ -542,7 +529,7 @@ const getExtensionsConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			...sharedPlugins,
+			...sharedConfig.plugins,
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig(
 					'Experimental Extensions',
@@ -551,8 +538,9 @@ const getExtensionsConfig = ( options = {} ) => {
 			),
 		],
 		resolve: {
-			...resolve,
-			extensions: [ '.js', '.ts' ],
+			...sharedConfig.resolve,
+			alias,
+			plugins: resolvePlugins,
 		},
 	};
 };
@@ -566,14 +554,6 @@ const getStylingConfig = ( options = {} ) => {
 	let { fileSuffix } = options;
 	const { alias, resolvePlugins = [] } = options;
 	fileSuffix = fileSuffix ? `-${ fileSuffix }` : '';
-	const resolve = alias
-		? {
-				alias,
-				plugins: resolvePlugins,
-		  }
-		: {
-				plugins: resolvePlugins,
-		  };
 	return {
 		entry: getEntryConfig( 'styling', options.exclude || [] ),
 		output: {
@@ -717,7 +697,8 @@ const getStylingConfig = ( options = {} ) => {
 			new RemoveFilesPlugin( `./build/*style${ fileSuffix }.js` ),
 		],
 		resolve: {
-			...resolve,
+			alias,
+			plugins: resolvePlugins,
 			extensions: [ '.js', '.ts', '.tsx' ],
 		},
 	};
