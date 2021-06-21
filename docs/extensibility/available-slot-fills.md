@@ -38,3 +38,16 @@ Checkout:
 - `cart`: `wc/store/cart` data but in `camelCase` instead of `snake_case`. [Object breakdown.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L172-L188)
 - `extensions`: external data registered by third-party developers using `ExtendRestAPI`, if you used `ExtendRestAPI` on `wc/store/cart` you would find your data under your namespace here.
 - `components`: an object containing components you can use to render your own shipping rates, it contains `ShippingRatesControlPackage`.
+
+## ExperimentalDiscountsMeta
+This slot renders below the `CouponCode` input 
+
+Cart:
+<img alt="Cart showing ExperimentalDiscountsMeta location" src="https://user-images.githubusercontent.com/5656702/122774218-ea27a880-d2a0-11eb-9450-11f119567f26.png" />
+
+Checkout:
+<img alt="Checkout showing ExperimentalDiscountsMeta location" src="https://user-images.githubusercontent.com/5656702/122774626-425eaa80-d2a1-11eb-8f50-6363eaed09f8.png" />
+
+### Passed paramters
+- `cart`: `wc/store/cart` data but in `camelCase` instead of `snake_case`. [Object breakdown.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L172-L188)
+- `extensions`: external data registered by third-party developers using `ExtendRestAPI`, if you used `ExtendRestAPI` on `wc/store/cart` you would find your data under your namespace here.
