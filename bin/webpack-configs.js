@@ -1,15 +1,13 @@
-/* eslint-disable no-console */
 /**
  * External dependencies
  */
 const path = require( 'path' );
+const { kebabCase } = require( 'lodash' );
 const RemoveFilesPlugin = require( './remove-files-webpack-plugin' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const ProgressBarPlugin = require( 'progress-bar-webpack-plugin' );
 const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
 const WebpackRTLPlugin = require( 'webpack-rtl-plugin' );
-const chalk = require( 'chalk' );
-const { kebabCase } = require( 'lodash' );
 const CreateFileWebpack = require( 'create-file-webpack' );
 const CircularDependencyPlugin = require( 'circular-dependency-plugin' );
 
@@ -25,8 +23,12 @@ const {
 	requestToExternalInsideGB,
 	requestToHandleInsideGB,
 	findModuleMatch,
+	getProgressBarPluginConfig,
 } = require( './webpack-helpers' );
 
+/**
+ * Plugins that are used by all build configs, with the exception the CSS style build and the temporary getCoreEditorConfig.
+ */
 const sharedPlugins = [
 	CHECK_CIRCULAR_DEPS === 'true'
 		? new CircularDependencyPlugin( {
@@ -42,40 +44,11 @@ const sharedPlugins = [
 	} ),
 ].filter( Boolean );
 
-const mainBlocksPlugins = [
-	CHECK_CIRCULAR_DEPS === 'true'
-		? new CircularDependencyPlugin( {
-				exclude: /node_modules/,
-				cwd: process.cwd(),
-				failOnError: 'warn',
-		  } )
-		: false,
-	new DependencyExtractionWebpackPlugin( {
-		injectPolyfill: true,
-		requestToExternal: requestToExternalInsideGB,
-		requestToHandle: requestToHandleInsideGB,
-	} ),
-].filter( Boolean );
-const getProgressBarPluginConfig = ( name, fileSuffix ) => {
-	const isLegacy = fileSuffix && fileSuffix === 'legacy';
-	const progressBarPrefix = isLegacy ? 'Legacy ' : '';
-	return {
-		format:
-			chalk.blue( `Building ${ progressBarPrefix }${ name }` ) +
-			' [:bar] ' +
-			chalk.green( ':percent' ) +
-			' :msg (:elapsed seconds)',
-		summary: false,
-		customSummary: ( time ) => {
-			console.log(
-				chalk.green.bold(
-					`${ progressBarPrefix }${ name } assets build completed (${ time })`
-				)
-			);
-		},
-	};
-};
-
+/**
+ * Build config for core packages.
+ *
+ * @param {Object} options Build options.
+ */
 const getCoreConfig = ( options = {} ) => {
 	const { alias, resolvePlugins = [] } = options;
 	const resolve = alias
@@ -152,8 +125,15 @@ woocommerce_blocks_env = ${ NODE_ENV }
 		},
 	};
 };
-// @todo delete getCoreEditorConfig when wordpress/gutenberg#27462 or rquivalent is merged.
-// This is meant to fix issue #3839 in which we have two instances of SlotFillProvider context. Should be deleted once wordpress/gutenberg#27462.
+
+/**
+ * Build config for core packages, in the editor context.
+ *
+ * This is meant to fix issue #3839 in which we have two instances of SlotFillProvider context. Should be deleted once wordpress/gutenberg#27462.
+ *
+ * @todo delete getCoreEditorConfig when wordpress/gutenberg#27462 or equivalent is merged.
+ * @param {Object} options Build options.
+ */
 const getCoreEditorConfig = ( options = {} ) => {
 	return {
 		...getCoreConfig( options ),
@@ -173,7 +153,18 @@ const getCoreEditorConfig = ( options = {} ) => {
 			jsonpFunction: 'webpackWcBlocksJsonp',
 		},
 		plugins: [
-			...mainBlocksPlugins,
+			CHECK_CIRCULAR_DEPS === 'true'
+				? new CircularDependencyPlugin( {
+						exclude: /node_modules/,
+						cwd: process.cwd(),
+						failOnError: 'warn',
+				  } )
+				: false,
+			new DependencyExtractionWebpackPlugin( {
+				injectPolyfill: true,
+				requestToExternal: requestToExternalInsideGB,
+				requestToHandle: requestToHandleInsideGB,
+			} ),
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Core', options.fileSuffix )
 			),
@@ -187,9 +178,15 @@ woocommerce_blocks_phase = ${ process.env.WOOCOMMERCE_BLOCKS_PHASE || 3 }
 woocommerce_blocks_env = ${ NODE_ENV }
 `.trim(),
 			} ),
-		],
+		].filter( Boolean ),
 	};
 };
+
+/**
+ * Build config for Blocks in the editor context.
+ *
+ * @param {Object} options Build options.
+ */
 const getMainConfig = ( options = {} ) => {
 	let { fileSuffix } = options;
 	const { alias, resolvePlugins = [] } = options;
@@ -272,6 +269,11 @@ const getMainConfig = ( options = {} ) => {
 	};
 };
 
+/**
+ * Build config for Blocks in the frontend context.
+ *
+ * @param {Object} options Build options.
+ */
 const getFrontConfig = ( options = {} ) => {
 	let { fileSuffix } = options;
 	const { alias, resolvePlugins = [] } = options;
@@ -367,6 +369,11 @@ const getFrontConfig = ( options = {} ) => {
 	};
 };
 
+/**
+ * Build config for built-in payment gateway integrations.
+ *
+ * @param {Object} options Build options.
+ */
 const getPaymentsConfig = ( options = {} ) => {
 	const { alias, resolvePlugins = [] } = options;
 	const resolve = alias
@@ -463,6 +470,11 @@ const getPaymentsConfig = ( options = {} ) => {
 	};
 };
 
+/**
+ * Build config for extension integrations.
+ *
+ * @param {Object} options Build options.
+ */
 const getExtensionsConfig = ( options = {} ) => {
 	const { alias, resolvePlugins = [] } = options;
 	const resolve = alias
@@ -545,6 +557,11 @@ const getExtensionsConfig = ( options = {} ) => {
 	};
 };
 
+/**
+ * Build config for CSS Styles.
+ *
+ * @param {Object} options Build options.
+ */
 const getStylingConfig = ( options = {} ) => {
 	let { fileSuffix } = options;
 	const { alias, resolvePlugins = [] } = options;
