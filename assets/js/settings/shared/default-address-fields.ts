@@ -25,7 +25,6 @@ export interface LocaleSpecificAddressField extends AddressField {
 }
 
 export interface AddressFields {
-	// eslint-disable-next-line camelcase
 	first_name: AddressField;
 	// eslint-disable-next-line camelcase
 	last_name: AddressField;
