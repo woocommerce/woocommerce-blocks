@@ -1,8 +1,10 @@
 .wc-block-components-error {
 	display: flex;
 	background-color: $gray-100;
-	border-left: 4px solid $gray-300;
-	padding: $gap-larger $gap;
+	border: 2px solid $gray-300;
+	border-left-width: 4px;
+	padding: $gap-largest*2 $gap-largest;
+	margin: 0 0 $gap 0;
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
@@ -16,13 +18,14 @@
 }
 
 .wc-block-components-error__image {
-	max-width: 25%;
+	width: 25%;
+	fill: $gray-700;
 }
 .wc-block-components-error__text {
-	margin: 0;
+	margin: 0.5em 0 0 0;
 }
 .wc-block-components-error__message {
-	margin: 1em 0 0 0;
+	margin: 0.5em 0 0 0;
 	font-style: italic;
 }
 
@@ -32,6 +35,6 @@
 	}
 
 	.wc-block-components-error__image + .wc-block-components-error__content {
-		margin-left: $gap-large;
+		margin-left: $gap-largest;
 	}
 }

@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { WC_BLOCKS_ASSET_URL } from '@woocommerce/block-settings';
 import PropTypes from 'prop-types';
+import { warning, Icon } from '@wordpress/icons';
 
 const BlockError = ( {
-	imageUrl = `${ WC_BLOCKS_ASSET_URL }img/block-error.svg`,
+	imageUrl = '',
 	header = __( 'Oops!', 'woo-gutenberg-products-block' ),
 	text = __(
 		'There was an error loading the content.',
@@ -17,11 +17,17 @@ const BlockError = ( {
 } ) => {
 	return (
 		<div className="wc-block-error wc-block-components-error">
-			{ imageUrl && (
+			{ imageUrl ? (
 				<img
 					className="wc-block-error__image wc-block-components-error__image"
 					src={ imageUrl }
 					alt=""
+				/>
+			) : (
+				<Icon
+					className="wc-block-error__image wc-block-components-error__image"
+					icon={ warning }
+					size={ 100 }
 				/>
 			) }
 			<div className="wc-block-error__content wc-block-components-error__content">
