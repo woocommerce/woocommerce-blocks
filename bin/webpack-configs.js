@@ -152,10 +152,10 @@ woocommerce_blocks_env = ${ NODE_ENV }
  *
  * This is meant to fix issue #3839 in which we have two instances of SlotFillProvider context. Should be deleted once wordpress/gutenberg#27462.
  *
- * @todo delete getCoreEditorConfig when wordpress/gutenberg#27462 or equivalent is merged.
  * @param {Object} options Build options.
  */
 const getCoreEditorConfig = ( options = {} ) => {
+	// @todo delete getCoreEditorConfig when wordpress/gutenberg#27462 or equivalent is merged.
 	return {
 		...getCoreConfig( options ),
 		entry: {
