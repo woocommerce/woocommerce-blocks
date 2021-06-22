@@ -12,6 +12,9 @@ interface WcBlocksConfig {
 	buildPhase: number;
 	pluginUrl: string;
 	productCount: number;
+	previewData: {
+		defaultAvatar: string;
+	};
 	restApiRoutes: Record< string, string[] >;
 	wordCountType: WordCountType;
 }
@@ -20,6 +23,9 @@ export const blocksConfig = getSetting( 'wcBlocksConfig', {
 	buildPhase: 1,
 	pluginUrl: '',
 	productCount: 0,
+	previewData: {
+		defaultAvatar: '',
+	},
 	restApiRoutes: {},
 	wordCountType: 'words',
 } ) as WcBlocksConfig;
