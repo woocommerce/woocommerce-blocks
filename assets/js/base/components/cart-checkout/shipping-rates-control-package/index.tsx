@@ -23,9 +23,7 @@ interface PackageItem {
 }
 
 interface Destination {
-	// eslint-disable-next-line camelcase
 	address_1: string;
-	// eslint-disable-next-line camelcase
 	address_2: string;
 	city: string;
 	state: string;
@@ -36,7 +34,6 @@ interface Destination {
 export interface PackageData {
 	destination: Destination;
 	name: string;
-	// eslint-disable-next-line camelcase
 	shipping_rates: CartShippingPackageShippingRate[];
 	items: PackageItem[];
 }
