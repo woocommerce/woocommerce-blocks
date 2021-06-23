@@ -3,19 +3,17 @@
 ## The problem
 You are an extension developer, and to allow users to interact with your extension on the client-side, you have written
 some CSS and JavaScript that you would like to be included on the page. Your JavaScript also relies on some server-side
-data, and you'd somehow like this to be available to your scripts.
+data, and you'd like this to be available to your scripts.
 
 ## The solution
 You may use the `IntegrationRegistry` to register an `IntegrationInterface` this will be a class that will handle the
 enqueuing of scripts, styles, and data. You may have a different `IntegrationInterface` for both the Cart and Checkout
 blocks, or you may use the same one, it is entirely dependent on your use case.
 
-You should use the hooks: `woocommerce_blocks_cart_block_registration` and `woocommerce_blocks_checkout_block_registration`
-
-These hooks both pass an instance of [`IntegrationRegistry`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/src/Integrations/IntegrationRegistry.php) to the callback.
+You should use the hooks: `woocommerce_blocks_cart_block_registration` and
+`woocommerce_blocks_checkout_block_registration`. These hooks both pass an instance of [`IntegrationRegistry`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/src/Integrations/IntegrationRegistry.php) to the callback.
 
 You may then use the `register` method on this object to register your `IntegrationInterface`.
-
 
 ## `IntegrationInterface` methods
 To begin, we'll need to create our integration class, our `IntegrationInterface`. This will be a class that implements
@@ -23,25 +21,27 @@ WooCommerce Blocks' interface named [`IntegrationInterface`](https://github.com/
 
 In this section, we will step through the interface's members and discuss what they are used for.
 
-### get_name()
+### `get_name()`
 This is the `IntegrationInterface`'s way of namespacing your integration. The name chosen here should be unique to your 
 extension. This method should return a string.
 
-### initialize()
+### `initialize()`
 This is where any setup, or initialization for your integration should be placed. For example, you could register the
 scripts and styles your extension needs here. This method should not return anything.
 
-### get_script_handles()
+### `get_script_handles()`
 This is where the handles of any scripts you want to be enqueued on the client-side in the frontend context should be
 placed. This method should return an array of strings.
 
-### get_editor_script_handles()
+### `get_editor_script_handles()`
 This is where the handles of any scripts you want to be enqueued on the client-side in the editor context should be
 placed. This method should return an array of strings.
 
-### get_script_data()
+### `get_script_data()`
 This is where you can set values you want to be available to your scripts on the frontend. This method should return an
-associative array, the keys of which will be used to get the data using the JavaScript function `getSetting`.  
+associative array, the keys of which will be used to get the data using the JavaScript function `getSetting`.
+
+The keys and values of this array should all be serializable.
 
 ## Usage example
 Let's suppose we're the author of an extension: `WooCommerce Example Plugin`. We want to enqueue scripts, styles,
@@ -191,5 +191,5 @@ In the `@woocommerce/settings` package there is a method you can import called `
 string. The name of the setting containing the data added in `get_script_data` is the name of your integration
 (i.e. the value returned by `get_name`) suffixed with `_data`. In our example it would be: `woocommerce-example-plugin_data`.
 
-The value returned here is an object containing 
- 
+The value returned here is a plain old JavaScript object, keyed by the keys of the array returned by `get_script_data`,
+the values will serialized. 
