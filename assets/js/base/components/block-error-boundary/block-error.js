@@ -3,10 +3,10 @@
  */
 import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
-import { warning, Icon } from '@wordpress/icons';
+import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
 
 const BlockError = ( {
-	imageUrl = '',
+	imageUrl = `${ WC_BLOCKS_IMAGE_URL }/block-error.svg`,
 	header = __( 'Oops!', 'woo-gutenberg-products-block' ),
 	text = __(
 		'There was an error loading the content.',
@@ -14,20 +14,15 @@ const BlockError = ( {
 	),
 	errorMessage,
 	errorMessagePrefix = __( 'Error:', 'woo-gutenberg-products-block' ),
+	button,
 } ) => {
 	return (
 		<div className="wc-block-error wc-block-components-error">
-			{ imageUrl ? (
+			{ imageUrl && (
 				<img
 					className="wc-block-error__image wc-block-components-error__image"
 					src={ imageUrl }
 					alt=""
-				/>
-			) : (
-				<Icon
-					className="wc-block-error__image wc-block-components-error__image"
-					icon={ warning }
-					size={ 100 }
 				/>
 			) }
 			<div className="wc-block-error__content wc-block-components-error__content">
@@ -45,6 +40,11 @@ const BlockError = ( {
 					<p className="wc-block-error__message wc-block-components-error__message">
 						{ errorMessagePrefix ? errorMessagePrefix + ' ' : '' }
 						{ errorMessage }
+					</p>
+				) }
+				{ button && (
+					<p className="wc-block-error__button wc-block-components-error__button">
+						{ button }
 					</p>
 				) }
 			</div>
@@ -79,6 +79,10 @@ BlockError.propTypes = {
 	 * Text preceeding the error message.
 	 */
 	errorMessagePrefix: PropTypes.string,
+	/**
+	 * Button cta.
+	 */
+	button: PropTypes.node,
 };
 
 export default BlockError;
