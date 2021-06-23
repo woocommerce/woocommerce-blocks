@@ -23,6 +23,11 @@ registerFeaturePluginBlockType(
 			align: false,
 			html: false,
 			multiple: false,
+			reusable: false,
+			lock: {
+				move: false,
+				remove: false,
+			},
 		},
 		parent: [ 'woocommerce/checkout-fields-block' ],
 		attributes,

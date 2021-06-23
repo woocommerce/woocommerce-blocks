@@ -21,6 +21,9 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-actions-block', {
 		align: false,
 		html: false,
 		multiple: false,
+		lock: {
+			remove: true,
+		},
 	},
 	parent: [ 'woocommerce/checkout-fields-block' ],
 	attributes,

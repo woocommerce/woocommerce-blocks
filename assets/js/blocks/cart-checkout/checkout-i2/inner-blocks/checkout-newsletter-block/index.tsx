@@ -32,7 +32,6 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-newsletter-block', {
 			default: 'Subscribe to our newsletter',
 		},
 	},
-	apiVersion: 2,
 	edit: Edit,
 	save: Save,
 } );

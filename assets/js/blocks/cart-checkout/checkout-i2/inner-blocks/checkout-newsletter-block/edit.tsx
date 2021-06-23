@@ -1,11 +1,7 @@
 /**
  * External dependencies
  */
-import {
-	useBlockProps,
-	PlainText,
-	InspectorControls,
-} from '@wordpress/block-editor';
+import { InspectorControls } from '@wordpress/block-editor';
 import CheckboxControl from '@woocommerce/base-components/checkbox-control';
 import { PanelBody, ToggleControl } from '@wordpress/components';
 
@@ -20,9 +16,8 @@ export const Edit = ( {
 	attributes: { description: string; optOut: boolean };
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 } ): JSX.Element => {
-	const blockProps = useBlockProps();
 	return (
-		<div { ...blockProps }>
+		<div>
 			<InspectorControls>
 				<PanelBody title={ 'Default state' }>
 					<ToggleControl
@@ -39,16 +34,10 @@ export const Edit = ( {
 			<div className="wc-blocks-newsletter">
 				<CheckboxControl
 					id="newsletter"
+					label={ description }
 					checked={ optOut }
 					onChange={ () => setAttributes( { optOut: ! optOut } ) }
 					className="components-base-control--nested"
-				/>
-				<PlainText
-					className={ '' }
-					value={ description }
-					onChange={ ( value ) =>
-						setAttributes( { description: value } )
-					}
 				/>
 			</div>
 		</div>
@@ -56,5 +45,5 @@ export const Edit = ( {
 };
 
 export const Save = (): JSX.Element => {
-	return <div { ...useBlockProps.save() } />;
+	return <div />;
 };
