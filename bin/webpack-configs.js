@@ -32,49 +32,20 @@ const isProduction = NODE_ENV === 'production';
 /**
  * Shared config for all script builds.
  */
-const sharedConfig = {
-	plugins: [
-		CHECK_CIRCULAR_DEPS === 'true'
-			? new CircularDependencyPlugin( {
-					exclude: /node_modules/,
-					cwd: process.cwd(),
-					failOnError: 'warn',
-			  } )
-			: false,
-		new DependencyExtractionWebpackPlugin( {
-			injectPolyfill: true,
-			requestToExternal,
-			requestToHandle,
-		} ),
-	].filter( Boolean ),
-	optimization: {
-		splitChunks: {
-			automaticNameDelimiter: '--',
-		},
-		minimizer: [
-			new TerserPlugin( {
-				cache: true,
-				parallel: true,
-				sourceMap: ! isProduction,
-				terserOptions: {
-					output: {
-						comments: /translators:/i,
-					},
-					compress: {
-						passes: 2,
-					},
-					mangle: {
-						reserved: [ '__', '_n', '_nx', '_x' ],
-					},
-				},
-				extractComments: false,
-			} ),
-		],
-	},
-	resolve: {
-		extensions: [ '.js', '.jsx', '.ts', '.tsx' ],
-	},
-};
+const sharedPlugins = [
+	CHECK_CIRCULAR_DEPS === 'true'
+		? new CircularDependencyPlugin( {
+				exclude: /node_modules/,
+				cwd: process.cwd(),
+				failOnError: 'warn',
+		  } )
+		: false,
+	new DependencyExtractionWebpackPlugin( {
+		injectPolyfill: true,
+		requestToExternal,
+		requestToHandle,
+	} ),
+].filter( Boolean );
 
 /**
  * Build config for core packages.
@@ -92,7 +63,6 @@ const getCoreConfig = ( options = {} ) => {
 				plugins: resolvePlugins,
 		  };
 	return {
-		...sharedConfig,
 		entry: getEntryConfig( 'core', options.exclude || [] ),
 		output: {
 			filename: ( chunkData ) => {
@@ -132,7 +102,7 @@ const getCoreConfig = ( options = {} ) => {
 			],
 		},
 		plugins: [
-			...sharedConfig.plugins,
+			...sharedPlugins,
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Core', options.fileSuffix )
 			),
@@ -147,9 +117,33 @@ woocommerce_blocks_env = ${ NODE_ENV }
 `.trim(),
 			} ),
 		],
+		optimization: {
+			splitChunks: {
+				automaticNameDelimiter: '--',
+			},
+			minimizer: [
+				new TerserPlugin( {
+					cache: true,
+					parallel: true,
+					sourceMap: ! isProduction,
+					terserOptions: {
+						output: {
+							comments: /translators:/i,
+						},
+						compress: {
+							passes: 2,
+						},
+						mangle: {
+							reserved: [ '__', '_n', '_nx', '_x' ],
+						},
+					},
+					extractComments: false,
+				} ),
+			],
+		},
 		resolve: {
 			...resolve,
-			...sharedConfig.resolve,
+			extensions: [ '.js', '.ts', '.tsx' ],
 		},
 	};
 };
@@ -181,13 +175,6 @@ const getCoreEditorConfig = ( options = {} ) => {
 			jsonpFunction: 'webpackWcBlocksJsonp',
 		},
 		plugins: [
-			CHECK_CIRCULAR_DEPS === 'true'
-				? new CircularDependencyPlugin( {
-						exclude: /node_modules/,
-						cwd: process.cwd(),
-						failOnError: 'warn',
-				  } )
-				: false,
 			new DependencyExtractionWebpackPlugin( {
 				injectPolyfill: true,
 				requestToExternal: requestToExternalInsideGB,
@@ -206,7 +193,7 @@ woocommerce_blocks_phase = ${ process.env.WOOCOMMERCE_BLOCKS_PHASE || 3 }
 woocommerce_blocks_env = ${ NODE_ENV }
 `.trim(),
 			} ),
-		].filter( Boolean ),
+		],
 	};
 };
 
@@ -218,6 +205,7 @@ woocommerce_blocks_env = ${ NODE_ENV }
 const getMainConfig = ( options = {} ) => {
 	let { fileSuffix } = options;
 	const { alias, resolvePlugins = [] } = options;
+	fileSuffix = fileSuffix ? `-${ fileSuffix }` : '';
 	const resolve = alias
 		? {
 				alias,
@@ -226,9 +214,7 @@ const getMainConfig = ( options = {} ) => {
 		: {
 				plugins: resolvePlugins,
 		  };
-	fileSuffix = fileSuffix ? `-${ fileSuffix }` : '';
 	return {
-		...sharedConfig,
 		entry: getEntryConfig( 'main', options.exclude || [] ),
 		output: {
 			devtoolNamespace: 'wc',
@@ -240,21 +226,6 @@ const getMainConfig = ( options = {} ) => {
 			// overwriting each other's chunk loader function.
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
 			jsonpFunction: 'webpackWcBlocksJsonp',
-		},
-		optimization: {
-			...sharedConfig.optimization,
-			splitChunks: {
-				minSize: 0,
-				automaticNameDelimiter: '--',
-				cacheGroups: {
-					commons: {
-						test: /[\\/]node_modules[\\/]/,
-						name: 'wc-blocks-vendors',
-						chunks: 'all',
-						enforce: true,
-					},
-				},
-			},
 		},
 		module: {
 			rules: [
@@ -286,15 +257,49 @@ const getMainConfig = ( options = {} ) => {
 				},
 			],
 		},
+		optimization: {
+			splitChunks: {
+				minSize: 0,
+				automaticNameDelimiter: '--',
+				cacheGroups: {
+					commons: {
+						test: /[\\/]node_modules[\\/]/,
+						name: 'wc-blocks-vendors',
+						chunks: 'all',
+						enforce: true,
+					},
+				},
+			},
+			minimizer: [
+				new TerserPlugin( {
+					cache: true,
+					parallel: true,
+					sourceMap: ! isProduction,
+					terserOptions: {
+						output: {
+							comments: /translators:/i,
+						},
+						compress: {
+							passes: 2,
+						},
+						mangle: {
+							reserved: [ '__', '_n', '_nx', '_x' ],
+						},
+					},
+					extractComments: false,
+				} ),
+			],
+		},
 		plugins: [
-			...sharedConfig.plugins,
+			...sharedPlugins,
+			,
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Main', options.fileSuffix )
 			),
 		],
 		resolve: {
 			...resolve,
-			...sharedConfig.resolve,
+			extensions: [ '.js', '.ts', '.tsx' ],
 		},
 	};
 };
@@ -307,6 +312,7 @@ const getMainConfig = ( options = {} ) => {
 const getFrontConfig = ( options = {} ) => {
 	let { fileSuffix } = options;
 	const { alias, resolvePlugins = [] } = options;
+	fileSuffix = fileSuffix ? `-${ fileSuffix }` : '';
 	const resolve = alias
 		? {
 				alias,
@@ -315,9 +321,7 @@ const getFrontConfig = ( options = {} ) => {
 		: {
 				plugins: resolvePlugins,
 		  };
-	fileSuffix = fileSuffix ? `-${ fileSuffix }` : '';
 	return {
-		...sharedConfig,
 		entry: getEntryConfig( 'frontend', options.exclude || [] ),
 		output: {
 			devtoolNamespace: 'wc',
@@ -382,15 +386,39 @@ const getFrontConfig = ( options = {} ) => {
 				},
 			],
 		},
+		optimization: {
+			splitChunks: {
+				automaticNameDelimiter: '--',
+			},
+			minimizer: [
+				new TerserPlugin( {
+					cache: true,
+					parallel: true,
+					sourceMap: ! isProduction,
+					terserOptions: {
+						output: {
+							comments: /translators:/i,
+						},
+						compress: {
+							passes: 2,
+						},
+						mangle: {
+							reserved: [ '__', '_n', '_nx', '_x' ],
+						},
+					},
+					extractComments: false,
+				} ),
+			],
+		},
 		plugins: [
-			...sharedConfig.plugins,
+			...sharedPlugins,
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Frontend', options.fileSuffix )
 			),
 		],
 		resolve: {
 			...resolve,
-			...sharedConfig.resolve,
+			extensions: [ '.js', '.ts', '.tsx' ],
 		},
 	};
 };
@@ -411,7 +439,6 @@ const getPaymentsConfig = ( options = {} ) => {
 				plugins: resolvePlugins,
 		  };
 	return {
-		...sharedConfig,
 		entry: getEntryConfig( 'payments', options.exclude || [] ),
 		output: {
 			devtoolNamespace: 'wc',
@@ -476,8 +503,32 @@ const getPaymentsConfig = ( options = {} ) => {
 				},
 			],
 		},
+		optimization: {
+			splitChunks: {
+				automaticNameDelimiter: '--',
+			},
+			minimizer: [
+				new TerserPlugin( {
+					cache: true,
+					parallel: true,
+					sourceMap: ! isProduction,
+					terserOptions: {
+						output: {
+							comments: /translators:/i,
+						},
+						compress: {
+							passes: 2,
+						},
+						mangle: {
+							reserved: [ '__', '_n', '_nx', '_x' ],
+						},
+					},
+					extractComments: false,
+				} ),
+			],
+		},
 		plugins: [
-			...sharedConfig.plugins,
+			...sharedPlugins,
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig(
 					'Payment Method Extensions',
@@ -486,8 +537,8 @@ const getPaymentsConfig = ( options = {} ) => {
 			),
 		],
 		resolve: {
-			...sharedConfig.resolve,
 			...resolve,
+			extensions: [ '.js', '.ts', '.tsx' ],
 		},
 	};
 };
@@ -508,7 +559,6 @@ const getExtensionsConfig = ( options = {} ) => {
 				plugins: resolvePlugins,
 		  };
 	return {
-		...sharedConfig,
 		entry: getEntryConfig( 'extensions', options.exclude || [] ),
 		output: {
 			devtoolNamespace: 'wc',
@@ -564,8 +614,32 @@ const getExtensionsConfig = ( options = {} ) => {
 				},
 			],
 		},
+		optimization: {
+			splitChunks: {
+				automaticNameDelimiter: '--',
+			},
+			minimizer: [
+				new TerserPlugin( {
+					cache: true,
+					parallel: true,
+					sourceMap: ! isProduction,
+					terserOptions: {
+						output: {
+							comments: /translators:/i,
+						},
+						compress: {
+							passes: 2,
+						},
+						mangle: {
+							reserved: [ '__', '_n', '_nx', '_x' ],
+						},
+					},
+					extractComments: false,
+				} ),
+			],
+		},
 		plugins: [
-			...sharedConfig.plugins,
+			...sharedPlugins,
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig(
 					'Experimental Extensions',
@@ -574,8 +648,8 @@ const getExtensionsConfig = ( options = {} ) => {
 			),
 		],
 		resolve: {
-			...sharedConfig.resolve,
 			...resolve,
+			extensions: [ '.js', '.ts', '.tsx' ],
 		},
 	};
 };
@@ -588,6 +662,7 @@ const getExtensionsConfig = ( options = {} ) => {
 const getStylingConfig = ( options = {} ) => {
 	let { fileSuffix } = options;
 	const { alias, resolvePlugins = [] } = options;
+	fileSuffix = fileSuffix ? `-${ fileSuffix }` : '';
 	const resolve = alias
 		? {
 				alias,
@@ -596,7 +671,6 @@ const getStylingConfig = ( options = {} ) => {
 		: {
 				plugins: resolvePlugins,
 		  };
-	fileSuffix = fileSuffix ? `-${ fileSuffix }` : '';
 	return {
 		entry: getEntryConfig( 'styling', options.exclude || [] ),
 		output: {
@@ -740,8 +814,8 @@ const getStylingConfig = ( options = {} ) => {
 			new RemoveFilesPlugin( `./build/*style${ fileSuffix }.js` ),
 		],
 		resolve: {
-			...sharedConfig.resolve,
 			...resolve,
+			extensions: [ '.js', '.ts', '.tsx' ],
 		},
 	};
 };
