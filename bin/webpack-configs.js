@@ -292,7 +292,6 @@ const getMainConfig = ( options = {} ) => {
 		},
 		plugins: [
 			...sharedPlugins,
-			,
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Main', options.fileSuffix )
 			),
