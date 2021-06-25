@@ -82,7 +82,15 @@ const sharedConfig = {
  * @param {Object} options Build options.
  */
 const getCoreConfig = ( options = {} ) => {
-	const { alias = {}, resolvePlugins = [] } = options;
+	const { alias, resolvePlugins = [] } = options;
+	const resolve = alias
+		? {
+				alias,
+				plugins: resolvePlugins,
+		  }
+		: {
+				plugins: resolvePlugins,
+		  };
 	return {
 		...sharedConfig,
 		entry: getEntryConfig( 'core', options.exclude || [] ),
@@ -140,9 +148,8 @@ woocommerce_blocks_env = ${ NODE_ENV }
 			} ),
 		],
 		resolve: {
+			...resolve,
 			...sharedConfig.resolve,
-			alias,
-			plugins: resolvePlugins,
 		},
 	};
 };
@@ -211,6 +218,14 @@ woocommerce_blocks_env = ${ NODE_ENV }
 const getMainConfig = ( options = {} ) => {
 	let { fileSuffix } = options;
 	const { alias, resolvePlugins = [] } = options;
+	const resolve = alias
+		? {
+				alias,
+				plugins: resolvePlugins,
+		  }
+		: {
+				plugins: resolvePlugins,
+		  };
 	fileSuffix = fileSuffix ? `-${ fileSuffix }` : '';
 	return {
 		...sharedConfig,
@@ -278,9 +293,8 @@ const getMainConfig = ( options = {} ) => {
 			),
 		],
 		resolve: {
+			...resolve,
 			...sharedConfig.resolve,
-			alias,
-			plugins: resolvePlugins,
 		},
 	};
 };
@@ -293,6 +307,14 @@ const getMainConfig = ( options = {} ) => {
 const getFrontConfig = ( options = {} ) => {
 	let { fileSuffix } = options;
 	const { alias, resolvePlugins = [] } = options;
+	const resolve = alias
+		? {
+				alias,
+				plugins: resolvePlugins,
+		  }
+		: {
+				plugins: resolvePlugins,
+		  };
 	fileSuffix = fileSuffix ? `-${ fileSuffix }` : '';
 	return {
 		...sharedConfig,
@@ -367,9 +389,8 @@ const getFrontConfig = ( options = {} ) => {
 			),
 		],
 		resolve: {
+			...resolve,
 			...sharedConfig.resolve,
-			alias,
-			plugins: resolvePlugins,
 		},
 	};
 };
@@ -381,6 +402,14 @@ const getFrontConfig = ( options = {} ) => {
  */
 const getPaymentsConfig = ( options = {} ) => {
 	const { alias, resolvePlugins = [] } = options;
+	const resolve = alias
+		? {
+				alias,
+				plugins: resolvePlugins,
+		  }
+		: {
+				plugins: resolvePlugins,
+		  };
 	return {
 		...sharedConfig,
 		entry: getEntryConfig( 'payments', options.exclude || [] ),
@@ -458,8 +487,7 @@ const getPaymentsConfig = ( options = {} ) => {
 		],
 		resolve: {
 			...sharedConfig.resolve,
-			alias,
-			plugins: resolvePlugins,
+			...resolve,
 		},
 	};
 };
@@ -471,6 +499,14 @@ const getPaymentsConfig = ( options = {} ) => {
  */
 const getExtensionsConfig = ( options = {} ) => {
 	const { alias, resolvePlugins = [] } = options;
+	const resolve = alias
+		? {
+				alias,
+				plugins: resolvePlugins,
+		  }
+		: {
+				plugins: resolvePlugins,
+		  };
 	return {
 		...sharedConfig,
 		entry: getEntryConfig( 'extensions', options.exclude || [] ),
@@ -539,8 +575,7 @@ const getExtensionsConfig = ( options = {} ) => {
 		],
 		resolve: {
 			...sharedConfig.resolve,
-			alias,
-			plugins: resolvePlugins,
+			...resolve,
 		},
 	};
 };
@@ -553,6 +588,14 @@ const getExtensionsConfig = ( options = {} ) => {
 const getStylingConfig = ( options = {} ) => {
 	let { fileSuffix } = options;
 	const { alias, resolvePlugins = [] } = options;
+	const resolve = alias
+		? {
+				alias,
+				plugins: resolvePlugins,
+		  }
+		: {
+				plugins: resolvePlugins,
+		  };
 	fileSuffix = fileSuffix ? `-${ fileSuffix }` : '';
 	return {
 		entry: getEntryConfig( 'styling', options.exclude || [] ),
@@ -697,9 +740,8 @@ const getStylingConfig = ( options = {} ) => {
 			new RemoveFilesPlugin( `./build/*style${ fileSuffix }.js` ),
 		],
 		resolve: {
-			alias,
-			plugins: resolvePlugins,
-			extensions: [ '.js', '.ts', '.tsx' ],
+			...sharedConfig.resolve,
+			...resolve,
 		},
 	};
 };
