@@ -3,7 +3,6 @@
  */
 import { SnackbarList } from 'wordpress-components';
 import classnames from 'classnames';
-import { __experimentalApplyCheckoutFilter } from '@woocommerce/blocks-checkout';
 
 const SnackbarNoticesContainer = ( {
 	className,
@@ -19,11 +18,6 @@ const SnackbarNoticesContainer = ( {
 		( notice ) => notice.type === 'snackbar'
 	);
 
-	const filteredNotices = __experimentalApplyCheckoutFilter( {
-		filterName: 'snackbarNotices',
-		defaultValue: snackbarNotices,
-	} );
-
 	const wrapperClass = classnames(
 		className,
 		'wc-block-components-notices__snackbar'
@@ -31,7 +25,7 @@ const SnackbarNoticesContainer = ( {
 
 	return (
 		<SnackbarList
-			notices={ filteredNotices }
+			notices={ snackbarNotices }
 			className={ wrapperClass }
 			onRemove={ removeNotice }
 		/>
