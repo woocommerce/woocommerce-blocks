@@ -13,7 +13,7 @@ import type { StoreCartCoupon } from '@woocommerce/types';
  * Internal dependencies
  */
 import { useStoreCart } from './use-store-cart';
-import { useStoreNotices } from '../use-store-notices';
+import { useStoreNoticesWithSnackbar } from '../use-store-notices-with-snackbar';
 import { useValidationContext } from '../../providers/validation';
 
 /**
@@ -26,7 +26,7 @@ import { useValidationContext } from '../../providers/validation';
  */
 export const useStoreCartCoupons = (): StoreCartCoupon => {
 	const { cartCoupons, cartIsLoading } = useStoreCart();
-	const { addErrorNotice, addSnackbarNotice } = useStoreNotices();
+	const { addErrorNotice, addSnackbarNotice } = useStoreNoticesWithSnackbar();
 	const { setValidationErrors } = useValidationContext();
 
 	const results: Pick<
