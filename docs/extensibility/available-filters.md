@@ -106,6 +106,7 @@ The additional argument supplied to this filter is: `{ context: 'summary' }`. A 
 ```typescript
 CartCoupon {
   code: string
+  label: string
   discount_type: string
   totals: {
     currency_code: string
@@ -204,6 +205,39 @@ __experimentalRegisterCheckoutFilters( 'my-hypothetical-price-plugin', {
 | Before | After |
 |---|---|
 | <img src="https://user-images.githubusercontent.com/5656702/117035086-d5488300-acfb-11eb-9954-feb326916168.png" width=400 /> | <img src="https://user-images.githubusercontent.com/5656702/117035616-70415d00-acfc-11eb-98d3-6c8096817e5b.png" width=400 /> |
+
+### Change the name of a coupon
+Let's say we're the author of an extension that automatically creates coupons for users, and applies them to the cart
+when certain items are bought in combination.
+
+Due to the internal workings of our extension, our automatically generated coupons are named something like
+`autocoupon_2020_06_29` - this doesn't look fantastic, so we want to change this to look a bit nicer.
+
+Our filtering function may look like this:
+
+```typescript
+const filterCoupons = ( coupons ) => {
+  return coupons.map( ( coupon ) => {
+  	// Regex to match autocoupon then unlimited undersores and numbers
+    if ( ! coupon.text.match( /autocoupon(?:_\d+)+/ ) ) {
+      return coupon;
+    }
+    return {
+      ...coupon,
+      text: sprintf(
+        /* translators: %s is the custom label for points, e.g. coins, tokens etc. */
+        __( '%s redemption', 'woocommerce-points-and-rewards' ),
+        pointsLabelPlural
+      ),
+    };
+  } );
+};
+```
+
+| Before | After |
+|---|---|
+| <img src="https://user-images.githubusercontent.com/5656702/123768988-bc55eb80-d8c0-11eb-9262-5d629837706d.png" /> | * |
+
 
 ## Troubleshooting
 If you are logged in to the store as an administrator, you should be shown an error like this if your filter is not
