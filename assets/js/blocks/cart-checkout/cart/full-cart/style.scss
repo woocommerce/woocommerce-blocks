@@ -81,13 +81,12 @@ table.wc-block-cart-items {
 .wc-block-cart {
 	.wc-block-components-totals-taxes,
 	.wc-block-components-totals-footer-item {
-		@include with-translucent-border(1px 0 0);
 		margin: 0;
-		padding: em($gap-small) 0;
+		padding-bottom: em($gap);
 	}
 
 	.wc-block-components-totals-footer-item {
-		@include with-translucent-border(1px 0);
+		@include with-translucent-border( 0 0 1px 0 );
 	}
 }
 
