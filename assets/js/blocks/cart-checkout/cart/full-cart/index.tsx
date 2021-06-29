@@ -12,6 +12,7 @@ import {
 	Subtotal,
 	TotalsFees,
 	TotalsTaxes,
+	TotalsWrapper,
 	ExperimentalOrderMeta,
 	ExperimentalDiscountsMeta,
 } from '@woocommerce/blocks-checkout';
@@ -32,7 +33,6 @@ import { getSetting } from '@woocommerce/settings';
 import { useEffect } from '@wordpress/element';
 import { decodeEntities } from '@wordpress/html-entities';
 import { CartProvider } from '@woocommerce/base-context';
-import TotalsWrapper from '@woocommerce/base-components/cart-checkout/totals/wrapper';
 
 /**
  * Internal dependencies
@@ -153,40 +153,48 @@ const Cart = ( { attributes }: CartProps ) => {
 							values={ cartTotals }
 						/>
 					</TotalsWrapper>
-					{ getSetting( 'couponsEnabled', true ) && (
-						<TotalsCoupon
-							onSubmit={ applyCoupon }
-							isLoading={ isApplyingCoupon }
-						/>
-					) }
+					<TotalsWrapper borderSize="small">
+						{ getSetting( 'couponsEnabled', true ) && (
+							<TotalsCoupon
+								onSubmit={ applyCoupon }
+								isLoading={ isApplyingCoupon }
+							/>
+						) }
+					</TotalsWrapper>
 					<ExperimentalDiscountsMeta.Slot
 						{ ...discountsSlotFillProps }
 					/>
-
-					{ cartNeedsShipping && (
-						<TotalsShipping
-							showCalculator={ isShippingCalculatorEnabled }
-							showRateSelector={ true }
-							values={ cartTotals }
-							currency={ totalsCurrency }
-						/>
-					) }
+					<TotalsWrapper>
+						{ cartNeedsShipping && (
+							<TotalsShipping
+								showCalculator={ isShippingCalculatorEnabled }
+								showRateSelector={ true }
+								values={ cartTotals }
+								currency={ totalsCurrency }
+							/>
+						) }
+					</TotalsWrapper>
 					{ ! getSetting(
 						'displayCartPricesIncludingTax',
 						false
 					) && (
-						<TotalsTaxes
-							showRateAfterTaxName={ showRateAfterTaxName }
+						<TotalsWrapper>
+							<TotalsTaxes
+								showRateAfterTaxName={ showRateAfterTaxName }
+								currency={ totalsCurrency }
+								values={ cartTotals }
+							/>
+						</TotalsWrapper>
+					) }
+					<TotalsWrapper borderSize="small">
+						<TotalsFooterItem
 							currency={ totalsCurrency }
 							values={ cartTotals }
 						/>
-					) }
+					</TotalsWrapper>
 
-					<TotalsFooterItem
-						currency={ totalsCurrency }
-						values={ cartTotals }
-					/>
 					<ExperimentalOrderMeta.Slot { ...slotFillProps } />
+
 					<div className="wc-block-cart__payment-options">
 						{ cartNeedsPayment && <CartExpressPayment /> }
 						<CheckoutButton
