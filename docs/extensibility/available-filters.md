@@ -91,7 +91,7 @@ There are no additional arguments passed to this filter.
 
 The current functionality is to display the coupon codes in the Cart and Checkout sidebars. This could be undesirable
 if you dynamically generate a coupon code that is not user-friendly. It may, therefore, be desirable to change the way
-this code is displayed. To do this, the filter `couponName` exists.
+this code is displayed. To do this, the filter `coupons` exists.
 
 This filter could also be used to show or hide coupons.
 
