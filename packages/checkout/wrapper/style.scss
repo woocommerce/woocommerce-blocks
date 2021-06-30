@@ -14,9 +14,9 @@
 		padding: $gap-small 0;
 	}
 
-	&:first-child {
+	&.has-bottom-border {
 		&::after {
-			border-top-width: 0;
+			border-bottom-width: 1px;
 		}
 	}
 }

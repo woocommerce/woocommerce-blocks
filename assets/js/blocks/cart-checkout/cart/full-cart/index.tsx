@@ -186,7 +186,7 @@ const Cart = ( { attributes }: CartProps ) => {
 							/>
 						</TotalsWrapper>
 					) }
-					<TotalsWrapper borderSize="small">
+					<TotalsWrapper borderSize="small" hasBottomBorder={ true }>
 						<TotalsFooterItem
 							currency={ totalsCurrency }
 							values={ cartTotals }
