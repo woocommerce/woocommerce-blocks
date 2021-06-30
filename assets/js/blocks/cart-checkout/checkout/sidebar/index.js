@@ -102,7 +102,7 @@ const CheckoutSidebar = ( {
 					/>
 				</TotalsWrapper>
 			) }
-			<TotalsWrapper hasBottomBorder={ true }>
+			<TotalsWrapper>
 				<TotalsFooterItem
 					currency={ totalsCurrency }
 					values={ cartTotals }

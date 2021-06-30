@@ -10,19 +10,18 @@ import './style.scss';
 
 interface TotalsWrapperProps {
 	children: ReactNode;
-	borderSize?: 'small' | 'normal' | 'large';
-	hasBottomBorder?: boolean;
+	/* If this TotalsWrapper is being used to wrap a Slot */
+	slotWrapper?: boolean;
 }
 
 const TotalsWrapper = ( {
 	children,
-	borderSize = 'normal',
-	hasBottomBorder = false,
+	slotWrapper = false,
 }: TotalsWrapperProps ): JSX.Element | null => {
 	return Children.count( children ) ? (
 		<div
-			className={ `wc-block-components-totals-wrapper border-${ borderSize }${
-				hasBottomBorder ? ' has-bottom-border' : ''
+			className={ `wc-block-components-totals-wrapper${
+				slotWrapper ? ' slot-wrapper' : ''
 			}` }
 		>
 			{ children }

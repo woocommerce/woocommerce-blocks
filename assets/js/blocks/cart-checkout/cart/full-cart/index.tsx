@@ -153,27 +153,27 @@ const Cart = ( { attributes }: CartProps ) => {
 							values={ cartTotals }
 						/>
 					</TotalsWrapper>
-					<TotalsWrapper borderSize="small">
-						{ getSetting( 'couponsEnabled', true ) && (
+					{ getSetting( 'couponsEnabled', true ) && (
+						<TotalsWrapper>
 							<TotalsCoupon
 								onSubmit={ applyCoupon }
 								isLoading={ isApplyingCoupon }
 							/>
-						) }
-					</TotalsWrapper>
+						</TotalsWrapper>
+					) }
 					<ExperimentalDiscountsMeta.Slot
 						{ ...discountsSlotFillProps }
 					/>
-					<TotalsWrapper>
-						{ cartNeedsShipping && (
+					{ cartNeedsShipping && (
+						<TotalsWrapper>
 							<TotalsShipping
 								showCalculator={ isShippingCalculatorEnabled }
 								showRateSelector={ true }
 								values={ cartTotals }
 								currency={ totalsCurrency }
 							/>
-						) }
-					</TotalsWrapper>
+						</TotalsWrapper>
+					) }
 					{ ! getSetting(
 						'displayCartPricesIncludingTax',
 						false
@@ -186,7 +186,7 @@ const Cart = ( { attributes }: CartProps ) => {
 							/>
 						</TotalsWrapper>
 					) }
-					<TotalsWrapper borderSize="small" hasBottomBorder={ true }>
+					<TotalsWrapper>
 						<TotalsFooterItem
 							currency={ totalsCurrency }
 							values={ cartTotals }
