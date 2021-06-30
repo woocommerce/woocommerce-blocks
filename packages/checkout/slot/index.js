@@ -43,7 +43,7 @@ const mockedUseSlot = () => {
  * @return {boolean} True if this slot contains any valid fills.
  */
 export const hasValidFills = ( fills ) =>
-	Array.isArray( fills ) && fills.filter( Boolean );
+	Array.isArray( fills ) && fills.filter( Boolean ).length > 0;
 
 /**
  * A hook that is used inside a slotFillProvider to return information on the a slot.
