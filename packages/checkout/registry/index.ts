@@ -37,12 +37,15 @@ export const __experimentalRegisterCheckoutFilters = (
 ): void => {
 	/**
 	 * Let developers know snackbarNotices is no longer available as a filter.
+	 *
+	 * See: https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4417
 	 */
 	if ( Object.keys( filters ).includes( 'couponName' ) ) {
 		deprecated( 'snackbarNotices', {
 			alternative: 'snackbarNoticeVisibility',
 			plugin: 'WooCommerce Blocks',
-			link: '',
+			link:
+				'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4417',
 		} );
 	}
 
