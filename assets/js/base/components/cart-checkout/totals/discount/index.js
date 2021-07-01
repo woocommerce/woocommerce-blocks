@@ -89,7 +89,7 @@ const TotalsDiscount = ( {
 												'Remove coupon "%s"',
 												'woo-gutenberg-products-block'
 											),
-											cartCoupon.text
+											cartCoupon.label
 										) }
 									/>
 								);
