@@ -219,16 +219,12 @@ Our filtering function may look like this:
 const filterCoupons = ( coupons ) => {
   return coupons.map( ( coupon ) => {
   	// Regex to match autocoupon then unlimited undersores and numbers
-    if ( ! coupon.text.match( /autocoupon(?:_\d+)+/ ) ) {
+    if ( ! coupon.label.match( /autocoupon(?:_\d+)+/ ) ) {
       return coupon;
     }
     return {
       ...coupon,
-      text: sprintf(
-        /* translators: %s is the custom label for points, e.g. coins, tokens etc. */
-        __( '%s redemption', 'woocommerce-points-and-rewards' ),
-        pointsLabelPlural
-      ),
+      label: 'Automatic coupon'
     };
   } );
 };
@@ -236,7 +232,7 @@ const filterCoupons = ( coupons ) => {
 
 | Before | After |
 |---|---|
-| <img src="https://user-images.githubusercontent.com/5656702/123768988-bc55eb80-d8c0-11eb-9262-5d629837706d.png" /> | * |
+| <img src="https://user-images.githubusercontent.com/5656702/123768988-bc55eb80-d8c0-11eb-9262-5d629837706d.png" /> | ![image](https://user-images.githubusercontent.com/5656702/124126048-2c57a380-da72-11eb-9b45-b2cae0cffc37.png) |
 
 
 ## Troubleshooting
