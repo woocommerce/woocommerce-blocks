@@ -36,6 +36,17 @@ export const __experimentalRegisterCheckoutFilters = (
 	filters: Record< string, CheckoutFilterFunction >
 ): void => {
 	/**
+	 * Let developers know snackbarNotices is no longer available as a filter.
+	 */
+	if ( Object.keys( filters ).includes( 'couponName' ) ) {
+		deprecated( 'snackbarNotices', {
+			alternative: 'snackbarNoticeVisibility',
+			plugin: 'WooCommerce Blocks',
+			link: '',
+		} );
+	}
+
+	/**
 	 * Let the user know couponName is no longer available as a filter.
 	 *
 	 * See https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4312
