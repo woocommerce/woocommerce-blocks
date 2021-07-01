@@ -230,6 +230,15 @@ const filterCoupons = ( coupons ) => {
 };
 ```
 
+We'd register our filter like this:
+```typescript
+import { __experimentalRegisterCheckoutFilters } from '@woocommerce/blocks-checkout';
+
+__experimentalRegisterCheckoutFilters( 'automatic-coupon-extension', {
+	coupons: filterCoupons,
+} );
+```
+
 | Before | After |
 |---|---|
 | <img src="https://user-images.githubusercontent.com/5656702/123768988-bc55eb80-d8c0-11eb-9262-5d629837706d.png" /> | ![image](https://user-images.githubusercontent.com/5656702/124126048-2c57a380-da72-11eb-9b45-b2cae0cffc37.png) |
