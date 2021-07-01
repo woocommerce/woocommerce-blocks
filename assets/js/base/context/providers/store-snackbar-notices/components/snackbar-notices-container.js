@@ -29,7 +29,7 @@ const SnackbarNoticesContainer = ( {
 		defaultValue: noticeVisibility,
 	} );
 
-	const noticesToDisplay = snackbarNotices.filter(
+	const visibleNotices = snackbarNotices.filter(
 		( notice ) => filteredNotices[ notice.content ] === true
 	);
 
@@ -40,7 +40,7 @@ const SnackbarNoticesContainer = ( {
 
 	return (
 		<SnackbarList
-			notices={ noticesToDisplay }
+			notices={ visibleNotices }
 			className={ wrapperClass }
 			onRemove={ removeNotice }
 		/>
