@@ -174,18 +174,18 @@ const Cart = ( { attributes }: CartProps ) => {
 							/>
 						</TotalsWrapper>
 					) }
-					{ ! getSetting(
-						'displayCartPricesIncludingTax',
-						false
-					) && (
-						<TotalsWrapper>
-							<TotalsTaxes
-								showRateAfterTaxName={ showRateAfterTaxName }
-								currency={ totalsCurrency }
-								values={ cartTotals }
-							/>
-						</TotalsWrapper>
-					) }
+					{ ! getSetting( 'displayCartPricesIncludingTax', false ) &&
+						parseInt( cartTotals.total_tax, 10 ) > 0 && (
+							<TotalsWrapper>
+								<TotalsTaxes
+									showRateAfterTaxName={
+										showRateAfterTaxName
+									}
+									currency={ totalsCurrency }
+									values={ cartTotals }
+								/>
+							</TotalsWrapper>
+						) }
 					<TotalsWrapper>
 						<TotalsFooterItem
 							currency={ totalsCurrency }
