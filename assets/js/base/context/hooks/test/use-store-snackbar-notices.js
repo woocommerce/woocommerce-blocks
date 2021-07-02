@@ -7,7 +7,7 @@ import { StoreNoticesWithSnackbarProvider } from '@woocommerce/base-context/prov
 /**
  * Internal dependencies
  */
-import { useStoreNoticesWithSnackbar } from '../use-store-notices-with-snackbar';
+import { useStoreNoticesWithSnackbar } from '../use-store-snackbar-notices';
 
 describe( 'useStoreNoticesWithSnackbar', () => {
 	function setup() {
