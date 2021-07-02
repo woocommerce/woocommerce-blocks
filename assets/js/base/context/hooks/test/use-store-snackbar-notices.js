@@ -2,27 +2,27 @@
  * External dependencies
  */
 import { render, act } from '@testing-library/react';
-import { StoreNoticesWithSnackbarProvider } from '@woocommerce/base-context/providers';
+import { StoreSnackbarNoticesProvider } from '@woocommerce/base-context/providers';
 
 /**
  * Internal dependencies
  */
-import { useStoreNoticesWithSnackbar } from '../use-store-snackbar-notices';
+import { useStoreSnackbarNotices } from '../use-store-snackbar-notices';
 
 describe( 'useStoreNoticesWithSnackbar', () => {
 	function setup() {
 		const returnVal = {};
 
 		function TestComponent() {
-			Object.assign( returnVal, useStoreNoticesWithSnackbar() );
+			Object.assign( returnVal, useStoreSnackbarNotices() );
 
 			return null;
 		}
 
 		render(
-			<StoreNoticesWithSnackbarProvider>
+			<StoreSnackbarNoticesProvider>
 				<TestComponent />
-			</StoreNoticesWithSnackbarProvider>
+			</StoreSnackbarNoticesProvider>
 		);
 
 		return returnVal;
@@ -33,35 +33,13 @@ describe( 'useStoreNoticesWithSnackbar', () => {
 
 		// Assert initial state.
 		expect( storeNoticesData.notices ).toEqual( [] );
-		expect( storeNoticesData.hasNoticesOfType( 'default' ) ).toBe( false );
-		expect( storeNoticesData.hasNoticesOfType( 'snackbar' ) ).toBe( false );
-
-		// Add error notice.
-		act( () => {
-			storeNoticesData.addErrorNotice( 'Error notice' );
-		} );
-
-		expect( storeNoticesData.notices.length ).toBe( 1 );
-		expect( storeNoticesData.hasNoticesOfType( 'default' ) ).toBe( true );
-		expect( storeNoticesData.hasNoticesOfType( 'snackbar' ) ).toBe( false );
 
 		// Add snackbar notice.
 		act( () => {
 			storeNoticesData.addSnackbarNotice( 'Snackbar notice' );
 		} );
 
-		expect( storeNoticesData.notices.length ).toBe( 2 );
-		expect( storeNoticesData.hasNoticesOfType( 'default' ) ).toBe( true );
-		expect( storeNoticesData.hasNoticesOfType( 'snackbar' ) ).toBe( true );
-
-		// Remove error notice.
-		act( () => {
-			storeNoticesData.removeNotices( 'error' );
-		} );
-
 		expect( storeNoticesData.notices.length ).toBe( 1 );
-		expect( storeNoticesData.hasNoticesOfType( 'default' ) ).toBe( false );
-		expect( storeNoticesData.hasNoticesOfType( 'snackbar' ) ).toBe( true );
 
 		// Remove all remaining notices.
 		act( () => {
@@ -69,7 +47,5 @@ describe( 'useStoreNoticesWithSnackbar', () => {
 		} );
 
 		expect( storeNoticesData.notices.length ).toBe( 0 );
-		expect( storeNoticesData.hasNoticesOfType( 'default' ) ).toBe( false );
-		expect( storeNoticesData.hasNoticesOfType( 'snackbar' ) ).toBe( false );
 	} );
 } );
