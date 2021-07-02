@@ -9,25 +9,23 @@ import {
 	useState,
 } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
-import SnackbarNoticesContainer from '@woocommerce/base-context/providers/store-notices-with-snackbar/components/snackbar-notices-container';
+import SnackbarNoticesContainer from '@woocommerce/base-context/providers/store-snackbar-notices/components/snackbar-notices-container';
 
 /**
  * Internal dependencies
  */
 import { useStoreEvents } from '../../hooks/use-store-events';
 import { useEditorContext } from '../editor-context';
-import StoreNoticesContainer from '../store-notices/components/store-notices-container';
 
 /**
  * @typedef {import('@woocommerce/type-defs/contexts').NoticeContext} NoticeContext
  * @typedef {import('react')} React
  */
 
-const StoreNoticesWithSnackbarContext = createContext( {
+const StoreSnackbarNoticesContext = createContext( {
 	notices: [],
-	createNotice: ( status, text, props ) => void { status, text, props },
 	createSnackbarNotice: ( content, options ) => void { content, options },
-	removeNotice: ( id, ctxt ) => void { id, ctxt },
+	removeSnackbarNotice: ( id, ctxt ) => void { id, ctxt },
 	setIsSuppressed: ( val ) => void { val },
 	context: 'wc/core',
 } );
@@ -37,8 +35,8 @@ const StoreNoticesWithSnackbarContext = createContext( {
  *
  * @return {NoticeContext} The notice context value from the notice context.
  */
-export const useStoreNoticesWithSnackbarContext = () => {
-	return useContext( StoreNoticesWithSnackbarContext );
+export const useStoreSnackbarNoticesContext = () => {
+	return useContext( StoreSnackbarNoticesContext );
 };
 
 /**
@@ -53,14 +51,10 @@ export const useStoreNoticesWithSnackbarContext = () => {
  *
  * @param {Object} props Incoming props for the component.
  * @param {React.ReactChildren} props.children The Elements wrapped by this component.
- * @param {string} props.className CSS class used.
- * @param {boolean} props.createNoticeContainer Whether to create a notice container or not.
  * @param {string} props.context The notice context for notices being rendered.
  */
-export const StoreNoticesWithSnackbarProvider = ( {
+export const StoreSnackbarNoticesProvider = ( {
 	children,
-	className = '',
-	createNoticeContainer = true,
 	context = 'wc/core',
 } ) => {
 	const { createNotice, removeNotice } = useDispatch( 'core/notices' );
@@ -68,14 +62,15 @@ export const StoreNoticesWithSnackbarProvider = ( {
 	const { dispatchStoreEvent } = useStoreEvents();
 	const { isEditor } = useEditorContext();
 
-	const createNoticeWithContext = useCallback(
-		( status = 'default', content = '', options = {} ) => {
-			createNotice( status, content, {
+	const createSnackbarNotice = useCallback(
+		( content = '', options = {} ) => {
+			createNotice( 'default', content, {
 				...options,
+				type: 'snackbar',
 				context: options.context || context,
 			} );
 			dispatchStoreEvent( 'store-notice-create', {
-				status,
+				status: 'default',
 				content,
 				options,
 			} );
@@ -83,21 +78,11 @@ export const StoreNoticesWithSnackbarProvider = ( {
 		[ createNotice, dispatchStoreEvent, context ]
 	);
 
-	const removeNoticeWithContext = useCallback(
+	const removeSnackbarNotice = useCallback(
 		( id, ctxt = context ) => {
 			removeNotice( id, ctxt );
 		},
 		[ removeNotice, context ]
-	);
-
-	const createSnackbarNotice = useCallback(
-		( content = '', options = {} ) => {
-			createNoticeWithContext( 'default', content, {
-				...options,
-				type: 'snackbar',
-			} );
-		},
-		[ createNoticeWithContext ]
 	);
 
 	const { notices } = useSelect(
@@ -111,42 +96,30 @@ export const StoreNoticesWithSnackbarProvider = ( {
 
 	const contextValue = {
 		notices,
-		createNotice: createNoticeWithContext,
 		createSnackbarNotice,
-		removeNotice: removeNoticeWithContext,
+		removeSnackbarNotice,
 		context,
 		setIsSuppressed,
 	};
 
-	const noticeOutput = isSuppressed ? null : (
-		<StoreNoticesContainer
-			className={ className }
-			notices={ contextValue.notices }
-			removeNotice={ contextValue.removeNotice }
-			isEditor={ isEditor }
-		/>
-	);
-
 	const snackbarNoticeOutput = isSuppressed ? null : (
 		<SnackbarNoticesContainer
 			notices={ contextValue.notices }
-			removeNotice={ contextValue.removeNotice }
+			removeNotice={ contextValue.removeSnackbarNotice }
 			isEditor={ isEditor }
 		/>
 	);
 
 	return (
-		<StoreNoticesWithSnackbarContext.Provider value={ contextValue }>
-			{ createNoticeContainer && noticeOutput }
+		<StoreSnackbarNoticesContext.Provider value={ contextValue }>
 			{ children }
 			{ snackbarNoticeOutput }
-		</StoreNoticesWithSnackbarContext.Provider>
+		</StoreSnackbarNoticesContext.Provider>
 	);
 };
 
-StoreNoticesWithSnackbarProvider.propTypes = {
+StoreSnackbarNoticesProvider.propTypes = {
 	className: PropTypes.string,
-	createNoticeContainer: PropTypes.bool,
 	children: PropTypes.node,
 	context: PropTypes.string,
 };
