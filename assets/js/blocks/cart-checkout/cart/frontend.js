@@ -6,7 +6,10 @@ import {
 	withRestApiHydration,
 } from '@woocommerce/block-hocs';
 import { __ } from '@wordpress/i18n';
-import { StoreNoticesWithSnackbarProvider } from '@woocommerce/base-context/providers';
+import {
+	StoreNoticesProvider,
+	StoreSnackbarNoticesProvider,
+} from '@woocommerce/base-context/providers';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
 import {
 	renderFrontend,
@@ -26,9 +29,11 @@ const reloadPage = () => void window.location.reload( true );
  */
 const CartFrontend = ( props ) => {
 	return (
-		<StoreNoticesWithSnackbarProvider context="wc/cart">
-			<Block { ...props } />
-		</StoreNoticesWithSnackbarProvider>
+		<StoreSnackbarNoticesProvider context="wc/cart">
+			<StoreNoticesProvider context="wc/cart">
+				<Block { ...props } />
+			</StoreNoticesProvider>
+		</StoreSnackbarNoticesProvider>
 	);
 };
 
