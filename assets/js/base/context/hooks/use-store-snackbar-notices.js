@@ -8,7 +8,7 @@ export const useStoreSnackbarNotices = () => {
 	const {
 		notices,
 		createSnackbarNotice,
-		removeNotice,
+		removeSnackbarNotice,
 		setIsSuppressed,
 	} = useStoreSnackbarNoticesContext();
 	// Added to a ref so the surface for notices doesn't change frequently
@@ -25,13 +25,13 @@ export const useStoreSnackbarNotices = () => {
 			removeNotices: ( status = null ) => {
 				currentNotices.current.forEach( ( notice ) => {
 					if ( status === null || notice.status === status ) {
-						removeNotice( notice.id );
+						removeSnackbarNotice( notice.id );
 					}
 				} );
 			},
-			removeNotice,
+			removeSnackbarNotice,
 		} ),
-		[ removeNotice ]
+		[ removeSnackbarNotice ]
 	);
 
 	const noticeCreators = useMemo(
