@@ -56,13 +56,13 @@ const CheckoutFrontend = ( props ) => {
 				<EmptyCart />
 			) : (
 				<BlockErrorBoundary { ...errorBoundaryProps }>
-					<StoreNoticesProvider context="wc/checkout">
-						<StoreSnackbarNoticesProvider>
+					<StoreSnackbarNoticesProvider context="wc/checkout">
+						<StoreNoticesProvider context="wc/checkout">
 							<ValidationContextProvider>
 								<Block { ...props } />
 							</ValidationContextProvider>
-						</StoreSnackbarNoticesProvider>
-					</StoreNoticesProvider>
+						</StoreNoticesProvider>
+					</StoreSnackbarNoticesProvider>
 				</BlockErrorBoundary>
 			) }
 		</>
