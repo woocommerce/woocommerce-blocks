@@ -1,15 +1,19 @@
 .wc-block-components-payment-method-icons {
-	display: block;
 	text-align: center;
 	margin: 0 0 #{$gap - 2px};
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
 
 	.wc-block-components-payment-method-icon {
 		display: inline-block;
 		margin: 0 4px 2px;
 		padding: 0;
 		width: auto;
+		max-width: 38px;
 		height: 24px;
-		vertical-align: middle;
+		max-height: 24px;
 	}
 
 	&--align-left {
