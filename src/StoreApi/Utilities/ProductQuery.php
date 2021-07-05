@@ -40,7 +40,6 @@ class ProductQuery {
 		if ( ! empty( $request['sku'] ) ) {
 			$args['post_type'] = [ 'product', 'product_variation' ];
 		}
-		
 		// Taxonomy query to filter products by type, category, tag, shipping class, and attribute.
 		$tax_query = [];
 
