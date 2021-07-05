@@ -1,5 +1,4 @@
 .wc-block-components-payment-method-icons {
-	text-align: center;
 	margin: 0 0 #{$gap - 2px};
 	display: flex;
 	flex-direction: row;
@@ -17,7 +16,7 @@
 	}
 
 	&--align-left {
-		text-align: left;
+		justify-content: flex-start;
 
 		.wc-block-components-payment-method-icon {
 			margin-left: 0;
@@ -26,7 +25,7 @@
 	}
 
 	&--align-right {
-		text-align: right;
+		justify-content: flex-end;
 
 		.wc-block-components-payment-method-icon {
 			margin-right: 0;
