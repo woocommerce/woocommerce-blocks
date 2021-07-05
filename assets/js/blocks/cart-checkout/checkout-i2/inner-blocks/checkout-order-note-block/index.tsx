@@ -19,6 +19,7 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-order-note-block', {
 		multiple: false,
 		lock: {
 			remove: true,
+			move: true,
 		},
 	},
 	parent: [ 'woocommerce/checkout-fields-block' ],

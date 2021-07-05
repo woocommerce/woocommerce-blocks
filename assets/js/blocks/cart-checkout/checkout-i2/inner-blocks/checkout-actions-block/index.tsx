@@ -23,6 +23,7 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-actions-block', {
 		multiple: false,
 		lock: {
 			remove: true,
+			move: true,
 		},
 	},
 	parent: [ 'woocommerce/checkout-fields-block' ],

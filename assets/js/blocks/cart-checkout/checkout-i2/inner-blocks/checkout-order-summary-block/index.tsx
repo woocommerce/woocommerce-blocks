@@ -22,6 +22,7 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-order-summary-block', {
 		multiple: false,
 		lock: {
 			remove: true,
+			move: true,
 		},
 	},
 	parent: [ 'woocommerce/checkout-totals-block' ],
