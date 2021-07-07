@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockVariation } from '@wordpress/blocks';
 import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
 /**
  * Internal dependencies
@@ -33,27 +32,31 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-terms-block', {
 			required: true,
 		},
 	},
+	variations: [
+		{
+			name: 'terms-consent',
+			title: 'Terms Consent',
+			isDefault: true,
+			attributes: {
+				checkbox: false,
+				text: termsConsentDefaultText,
+			},
+			scope: [ 'inserter', 'block', 'transform' ],
+			isActive: ( blockAttributes: Record< string, unknown > ) =>
+				blockAttributes.checkbox === false,
+		},
+		{
+			name: 'terms-checkbox',
+			title: 'Terms Checkbox',
+			attributes: {
+				checkbox: true,
+				text: termsCheckboxDefaultText,
+			},
+			scope: [ 'inserter', 'block', 'transform' ],
+			isActive: ( blockAttributes: Record< string, unknown > ) =>
+				blockAttributes.checkbox === true,
+		},
+	],
 	edit: Edit,
 	save: Save,
-} );
-
-registerBlockVariation( 'woocommerce/checkout-terms-block', {
-	name: 'terms-consent',
-	title: 'Terms Consent',
-	isDefault: true,
-	attributes: {
-		checkbox: false,
-		text: termsConsentDefaultText,
-	},
-	scope: [ 'inserter', 'block', 'transform' ],
-} );
-
-registerBlockVariation( 'woocommerce/checkout-terms-block', {
-	name: 'terms-checkbox',
-	title: 'Terms Checkbox',
-	attributes: {
-		checkbox: true,
-		text: termsCheckboxDefaultText,
-	},
-	scope: [ 'inserter', 'block', 'transform' ],
 } );
