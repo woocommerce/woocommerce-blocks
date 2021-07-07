@@ -8,6 +8,7 @@ import {
 	ToggleControl,
 	Disabled,
 	CheckboxControl,
+	Notice,
 } from '@wordpress/components';
 
 /**
@@ -15,6 +16,7 @@ import {
  */
 import { FormStepBlock } from '../../form-step';
 import Block from './block';
+import blockAttributes from './attributes';
 
 export const Edit = ( {
 	attributes: {
@@ -39,6 +41,12 @@ export const Edit = ( {
 	};
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 } ): JSX.Element => {
+	const isDefaultConfig =
+		showCompanyField === blockAttributes.showCompanyField.default &&
+		showApartmentField === blockAttributes.showApartmentField.default &&
+		showPhoneField === blockAttributes.showPhoneField.default &&
+		requireCompanyField === blockAttributes.requireCompanyField.default &&
+		requirePhoneField === blockAttributes.requirePhoneField.default;
 	return (
 		<FormStepBlock
 			setAttributes={ setAttributes }
@@ -48,13 +56,13 @@ export const Edit = ( {
 			<InspectorControls>
 				<PanelBody
 					title={ __(
-						'Address options',
+						'Additional Fields',
 						'woo-gutenberg-products-block'
 					) }
 				>
 					<p className="wc-block-checkout__controls-text">
 						{ __(
-							'Include additional address fields in the checkout form.',
+							'Show or hide additional fields in the billing address form.',
 							'woo-gutenberg-products-block'
 						) }
 					</p>
@@ -121,6 +129,18 @@ export const Edit = ( {
 							className="components-base-control--nested"
 						/>
 					) }
+					{ ! isDefaultConfig && (
+						<Notice
+							className="wc-block-checkout__address-fields-notice"
+							isDismissible={ false }
+							status="warning"
+						>
+							{ __(
+								'Changing the default fields may affect conversion. Customers will be shown both the billing and shipping forms if the fields do not match.',
+								'woo-gutenberg-products-block'
+							) }
+						</Notice>
+					) }
 				</PanelBody>
 			</InspectorControls>
 			<Disabled>
@@ -129,6 +149,7 @@ export const Edit = ( {
 					showApartmentField={ showApartmentField }
 					requireCompanyField={ requireCompanyField }
 					showPhoneField={ showPhoneField }
+					requirePhoneField={ requirePhoneField }
 				/>
 			</Disabled>
 		</FormStepBlock>

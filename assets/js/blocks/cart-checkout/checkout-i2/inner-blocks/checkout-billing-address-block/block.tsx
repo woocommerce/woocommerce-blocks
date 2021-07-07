@@ -22,9 +22,9 @@ const Block = ( {
 }: {
 	showCompanyField: boolean;
 	showApartmentField: boolean;
-	showPhoneField?: boolean;
+	showPhoneField: boolean;
 	requireCompanyField: boolean;
-	requirePhoneField?: boolean;
+	requirePhoneField: boolean;
 } ): JSX.Element => {
 	const {
 		defaultAddressFields,
