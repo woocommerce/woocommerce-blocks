@@ -21,6 +21,8 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-shipping-methods-block', {
 		align: false,
 		html: false,
 		multiple: false,
+		reusable: false,
+		inserter: false,
 		lock: {
 			remove: true,
 			move: true,

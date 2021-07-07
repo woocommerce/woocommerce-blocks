@@ -21,6 +21,8 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-billing-address-block', {
 		align: false,
 		html: false,
 		multiple: false,
+		reusable: false,
+		inserter: false,
 		lock: {
 			remove: true,
 			move: true,

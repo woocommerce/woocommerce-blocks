@@ -20,6 +20,7 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-terms-block', {
 		align: false,
 		html: false,
 		multiple: false,
+		reusable: false,
 	},
 	parent: [ 'woocommerce/checkout-fields-block' ],
 	attributes: {
