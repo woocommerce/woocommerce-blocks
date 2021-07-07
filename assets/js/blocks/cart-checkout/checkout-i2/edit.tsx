@@ -37,7 +37,7 @@ export const Edit = (): JSX.Element => {
 						<InnerBlocks
 							allowedBlocks={ ALLOWED_BLOCKS }
 							template={ TEMPLATE }
-							templateLock={ 'inset' }
+							templateLock="insert"
 						/>
 					</SidebarLayout>
 				</Columns>

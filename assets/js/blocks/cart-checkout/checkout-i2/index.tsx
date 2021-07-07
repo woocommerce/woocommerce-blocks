@@ -14,7 +14,7 @@ import './inner-blocks';
 import './editor.scss';
 
 const settings = {
-	title: __( 'Checkout', 'woo-gutenberg-products-block' ),
+	title: __( 'Checkout i2', 'woo-gutenberg-products-block' ),
 	icon: {
 		src: <Icon srcElement={ card } />,
 		foreground: '#96588a',

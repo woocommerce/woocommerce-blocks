@@ -1,4 +1,3 @@
-/* eslint-disable */
 /**
  * External dependencies
  */
@@ -49,4 +48,4 @@ const settings = {
 	},
 };
 
-//registerFeaturePluginBlockType( 'woocommerce/checkout', settings );
+registerFeaturePluginBlockType( 'woocommerce/checkout', settings );
