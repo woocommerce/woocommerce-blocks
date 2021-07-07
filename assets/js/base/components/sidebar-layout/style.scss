@@ -50,6 +50,16 @@
 			padding-right: $gap;
 		}
 	}
+
+
+	.wc-block-components-sidebar {
+		.wc-block-components-panel {
+			.wc-block-components-totals-item {
+				padding-left: 0;
+				padding-right: 0;
+			}
+		}
+	}
 }
 
 .wc-block-components-sidebar .wc-block-components-panel > h2 {
