@@ -44,7 +44,7 @@ export const Edit = ( {
 			setAttributes={ setAttributes }
 		>
 			<InspectorControls>
-				{ globalShippingMethods.length && (
+				{ globalShippingMethods.length > 0 && (
 					<PanelBody
 						title={ __(
 							'Methods',
