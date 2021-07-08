@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
-import { useEffect } from '@wordpress/element';
+import { useEffect, createInterpolateElement } from '@wordpress/element';
 import { useStoreCart, useStoreNotices } from '@woocommerce/base-context/hooks';
 import {
 	CheckoutProvider,
@@ -13,7 +13,6 @@ import {
 	ValidationContextProvider,
 } from '@woocommerce/base-context';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
-import { createInterpolateElement } from 'wordpress-element';
 import { SidebarLayout } from '@woocommerce/base-components/sidebar-layout';
 import {
 	CURRENT_USER_IS_ADMIN,
