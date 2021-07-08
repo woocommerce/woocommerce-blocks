@@ -8,6 +8,7 @@ import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
  * Internal dependencies
  */
 import { Edit, Save } from './edit';
+import attributes from './attributes';
 
 registerFeaturePluginBlockType( 'woocommerce/checkout-fields-block', {
 	title: __( 'Checkout Fields Block', 'woo-gutenberg-products-block' ),
@@ -22,8 +23,15 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-fields-block', {
 		multiple: false,
 	},
 	parent: [ 'woocommerce/checkout-i2' ],
-	attributes: {},
+	attributes,
 	apiVersion: 2,
 	edit: Edit,
 	save: Save,
+	providesContext: {
+		'woocommerce/showCompanyField': 'showCompanyField',
+		'woocommerce/requireCompanyField': 'requireCompanyField',
+		'woocommerce/showApartmentField': 'showApartmentField',
+		'woocommerce/showPhoneField': 'showPhoneField',
+		'woocommerce/requirePhoneField': 'requirePhoneField',
+	},
 } );
