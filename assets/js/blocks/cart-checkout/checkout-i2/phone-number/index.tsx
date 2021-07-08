@@ -8,17 +8,21 @@ import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
  * Renders a phone number input.
  */
 const PhoneNumber = ( {
+	id = 'phone',
 	isRequired = false,
 	value = '',
 	onChange,
+	readonly = false,
 }: {
+	id?: string;
 	isRequired: boolean;
 	value: string;
 	onChange: ( value: string ) => void;
+	readonly: boolean;
 } ): JSX.Element => {
 	return (
 		<ValidatedTextInput
-			id="phone"
+			id={ id }
 			type="tel"
 			autoComplete="tel"
 			required={ isRequired }
@@ -29,6 +33,7 @@ const PhoneNumber = ( {
 			}
 			value={ value }
 			onChange={ onChange }
+			readonly={ readonly }
 		/>
 	);
 };
