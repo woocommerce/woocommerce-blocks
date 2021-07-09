@@ -27,7 +27,7 @@ import { BACKSPACE, DELETE } from '@wordpress/keycodes';
 export const addClassToBody = (): void => {
 	subscribe( () => {
 		const { getSelectedBlock } = _select( blockEditorStore );
-		if ( getSelectedBlock() ) {
+		if ( ! getSelectedBlock() ) {
 			return;
 		}
 		const { getBlockType } = _select( blocksStore );
