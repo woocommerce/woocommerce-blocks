@@ -179,10 +179,6 @@ final class BlockTypesController {
 			'checkout-shipping-address-block',
 			'checkout-shipping-methods-block',
 			'checkout-express-payment-block',
-			'checkout-newsletter-block',
-			'checkout-form-step',
-			'checkout-shipping-address',
-			'checkout-contact-information',
 			'checkout-terms-block',
 		];
 	}
