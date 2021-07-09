@@ -26,7 +26,7 @@ export const Edit = (): JSX.Element => {
 				<InnerBlocks
 					allowedBlocks={ ALLOWED_BLOCKS }
 					template={ TEMPLATE }
-					templateLock={ 'all' }
+					templateLock={ false }
 				/>
 			</div>
 		</Sidebar>
