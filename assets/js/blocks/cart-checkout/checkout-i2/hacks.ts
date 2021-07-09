@@ -6,7 +6,7 @@ import {
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import { store as blocksStore } from '@wordpress/blocks';
-import { useSelect } from '@wordpress/data';
+import { useSelect, subscribe, select as _select } from '@wordpress/data';
 import { useEffect, useRef } from '@wordpress/element';
 import { MutableRefObject } from 'react';
 import { BACKSPACE, DELETE } from '@wordpress/keycodes';
@@ -24,16 +24,16 @@ import { BACKSPACE, DELETE } from '@wordpress/keycodes';
  *
  * We use a component so we can react to changes in the store.
  */
-export const AddCurrentlySelectedBlockClass = (): null => {
-	const selectedBlockType = useSelect( ( select ) => {
-		const { getSelectedBlock } = select( blockEditorStore );
-		const { getBlockType } = select( blocksStore );
+export const addClassToBody = (): void => {
+	subscribe( () => {
+		const { getSelectedBlock } = _select( blockEditorStore );
 		if ( getSelectedBlock() ) {
-			return getBlockType( getSelectedBlock().name );
+			return;
 		}
-	}, [] );
-	useEffect( () => {
-		if ( selectedBlockType && selectedBlockType?.supports?.lock?.remove ) {
+		const { getBlockType } = _select( blocksStore );
+		const selectedBlockType = getBlockType( getSelectedBlock().name );
+
+		if ( selectedBlockType?.supports?.lock?.remove ) {
 			window.document.body.classList.add(
 				'wc-lock-selected-block-from-remove'
 			);
@@ -43,7 +43,7 @@ export const AddCurrentlySelectedBlockClass = (): null => {
 			);
 		}
 
-		if ( selectedBlockType && selectedBlockType?.supports?.lock?.move ) {
+		if ( selectedBlockType?.supports?.lock?.move ) {
 			window.document.body.classList.add(
 				'wc-lock-selected-block-from-move'
 			);
@@ -52,8 +52,7 @@ export const AddCurrentlySelectedBlockClass = (): null => {
 				'wc-lock-selected-block-from-move'
 			);
 		}
-	}, [ selectedBlockType ] );
-	return null;
+	} );
 };
 
 /**

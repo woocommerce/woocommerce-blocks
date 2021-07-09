@@ -12,7 +12,10 @@ import {
  * Internal dependencies
  */
 import { Columns } from './columns';
-import { AddCurrentlySelectedBlockClass } from './hacks';
+import { addClassToBody } from './hacks';
+
+// This is adds a class to body to signal if the selected block is locked
+addClassToBody();
 
 // Array of allowed block names.
 const ALLOWED_BLOCKS: string[] = [
@@ -29,24 +32,21 @@ const TEMPLATE = [
 // @todo templateLock all prevents load after saving content for some reason.
 export const Edit = (): JSX.Element => {
 	return (
-		<>
-			<AddCurrentlySelectedBlockClass />
-			<EditorProvider
-				previewData={ { previewCart, previewSavedPaymentMethods } }
-			>
-				<CheckoutProvider>
-					<Columns>
-						<SidebarLayout className={ 'wc-block-checkout' }>
-							<InnerBlocks
-								allowedBlocks={ ALLOWED_BLOCKS }
-								template={ TEMPLATE }
-								templateLock="insert"
-							/>
-						</SidebarLayout>
-					</Columns>
-				</CheckoutProvider>
-			</EditorProvider>
-		</>
+		<EditorProvider
+			previewData={ { previewCart, previewSavedPaymentMethods } }
+		>
+			<CheckoutProvider>
+				<Columns>
+					<SidebarLayout className={ 'wc-block-checkout' }>
+						<InnerBlocks
+							allowedBlocks={ ALLOWED_BLOCKS }
+							template={ TEMPLATE }
+							templateLock="insert"
+						/>
+					</SidebarLayout>
+				</Columns>
+			</CheckoutProvider>
+		</EditorProvider>
 	);
 };
 
