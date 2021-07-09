@@ -30,11 +30,12 @@ class can be used to format a monetary value using the store settings. The store
 options to this formatter's `format` method.
 
 ### Arguments
-- `$value` - `number` - The number you want to format into a monetary vaue
-- `$options` - `array`
-  - `decimals` - `integer` - Used to control how many decimal places should be displayed in the monetary value. Defaults
-  to the store setting.
-  - `rounding_mode` - `integer` - Used to determine how to round the monetary value. This should be one of the PHP
+| Argument | Type | Description |
+|---|---|---|
+| `$value` | `number` | The number you want to format into a monetary value |
+| `$options` | `array` | Should contain two keys, `decimals` which should be an `integer`, 
+| `$options['decimals']` | `number` | Used to control how many decimal places should be displayed in the monetary value. Defaults to the store setting. |
+| `$options['rounding_mode']` |  `number` |  Used to determine how to round the monetary value. This should be one of the PHP |
   rounding modes described in the
   [PHP round() documentation](https://www.php.net/manual/en/function.round.php). Defaults to `PHP_ROUND_HALF_UP`
   
@@ -50,13 +51,16 @@ returns `1044`
 ## CurrencyFormatter
 This formatter takes an array of prices, and returns the same array but with currency data added. The currency data
 added is:
-- `currency_code` - The string representation of the currency, e.g. GPB or USD            
-- `currency_symbol` - The symbol of the currency, e.g. &pound; or &dollar;           
-- `currency_minor_unit` - How many decimal places will be shown in the currency       
-- `currency_decimal_separator` - The string used to separate the whole value and the decimal value in the currency.
-- `currency_thousand_separator` - The string used to separate thousands in the currency, for example: &pound;10,000 or &euro;10.000
-- `currency_prefix` - A string that should appear before the value.
-- `currency_suffix` - A string that should appear after the value.
+
+| Key | Type | Description |
+|---|---|---|
+| `currency_code` | `string` | The string representation of the currency, e.g. GPB or USD |            
+| `currency_symbol` | `string` | The symbol of the currency, e.g. &pound; or &dollar; |           
+| `currency_minor_unit` | `number` | How many decimal places will be shown in the currency |       
+| `currency_decimal_separator` | `string` | The string used to separate the whole value and the decimal value in the currency. |
+| `currency_thousand_separator` | `string` | The string used to separate thousands in the currency, for example: &pound;10,000 or &euro;10.000 |
+| `currency_prefix` | `string` | A string that should appear before the currency value. |
+| `currency_suffix` | `string` | A string that should appear after the currency value. |
 
 ### Arguments
 `$value` - `number[]` - An array of prices that you want to merge with the store's currency settings
@@ -72,17 +76,17 @@ get_formatter( 'currency' )->format( [
 ```
 returns
 ```
-  'price' => '1800' (length=4)
-  'regular_price' => '1800' (length=4)
-  'sale_price' => '1800' (length=4)
+  'price' => '1800'
+  'regular_price' => '1800'
+  'sale_price' => '1800'
   'price_range' => null
-  'currency_code' => 'GBP' (length=3)
-  'currency_symbol' => '£' (length=2)
+  'currency_code' => 'GBP'
+  'currency_symbol' => '£'
   'currency_minor_unit' => 2
-  'currency_decimal_separator' => '.' (length=1)
-  'currency_thousand_separator' => ',' (length=1)
-  'currency_prefix' => '£' (length=2)
-  'currency_suffix' => '' (length=0)
+  'currency_decimal_separator' => '.' 
+  'currency_thousand_separator' => ',' 
+  'currency_prefix' => '£'
+  'currency_suffix' => ''
   ```
 
 ## HtmlFormatter
