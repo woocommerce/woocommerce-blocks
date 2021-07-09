@@ -3,18 +3,14 @@
  */
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
-import {
-	PlainText,
-	useBlockProps,
-	InspectorControls,
-} from '@wordpress/block-editor';
+import { PlainText, InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import FormStepHeading from './form-step-heading';
-
+import { useBlockPropsWithLocking } from '../hacks';
 export interface FormStepBlockProps {
 	attributes: { title: string; description: string; showStepNumber: boolean };
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
@@ -31,7 +27,7 @@ export const FormStepBlock = ( {
 	className = '',
 	children,
 }: FormStepBlockProps ): JSX.Element => {
-	const blockProps = useBlockProps( {
+	const blockProps = useBlockPropsWithLocking( {
 		className: classnames( 'wc-block-components-checkout-step', className, {
 			'wc-block-components-checkout-step--with-step-number': showStepNumber,
 		} ),

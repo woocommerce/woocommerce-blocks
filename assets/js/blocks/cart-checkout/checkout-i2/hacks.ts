@@ -113,9 +113,11 @@ const useLockBlock = ( {
 /**
  * This hook is a light wrapper to useBlockProps, it wraps that hook plus useLockBlock to pass data between them.
  */
-export const useBlockPropsWithLocking = (): Record< string, unknown > => {
+export const useBlockPropsWithLocking = (
+	props?: Record< string, unknown > = {}
+): Record< string, unknown > => {
 	const ref = useRef< Element >();
-	const blockProps = useBlockProps( { ref } );
+	const blockProps = useBlockProps( { ref, ...props } );
 	useLockBlock( {
 		ref,
 		type: blockProps[ 'data-type' ],
