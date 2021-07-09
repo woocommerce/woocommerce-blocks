@@ -17,7 +17,7 @@ signalled to do so by the client-side Cart or Checkout.
 WooCommerce Blocks also provides a front-end function called `extensionCartUpdate` which can be called by client-side
 code, this will send data (specified by you when calling `extensionCartUpdate`) to  the `cart/extensions` endpoint.
 When this endpoint gets hit, any relevant (based on the namespace provided to `extensionCartUpdate`) callbacks get
-executed, and the latest server-side cart data gets returned.
+executed, and the latest server-side cart data gets returned and the block is updated with this new data.
 
 ## Basic usage
 In your extension's server-side integration code: 
@@ -44,7 +44,7 @@ import { extensionCartUpdate } from '@woocommerce/blocks-checkout';
 
 extensionCartUpdate(
   {
-    namespace: 'extensions-unique-namespace',
+    namespace: 'extension-unique-namespace',
     data: {
       key: 'value',
       another_key: 100,
@@ -64,7 +64,7 @@ cart. As mentioned, extensions are not permitted to update the client-side cart'
 would cause the entire block to break, preventing the user from continuing their checkout. Instead you _must_ do this
 through the `extensionCartUpdate` function.
 
-### Only one callback for a given namespace may be registered.
+### Only one callback for a given namespace may be registered
 With this in mind, if your extension has several client-side interactions that result in different code paths being
 executed on the server-side, you may wish to pass additional data through in `extensionsCartUpdate`. For example
 if you have two actions the user can take, one to _add_ a discount, and the other to _remove_ it, you may wish to pass
@@ -91,7 +91,7 @@ add_action('woocommerce_blocks_loaded', function() {
  $extend = Package::container()->get( ExtendRestApi::class );
  $extend->register_update_callback(
    [
-    'namespace' => 'extensions-unique-namespace',
+    'namespace' => 'extension-unique-namespace',
     'callback'  => function( $data ) {
       if ( $data['action'] === 'add' ) {
           add_discount( );
