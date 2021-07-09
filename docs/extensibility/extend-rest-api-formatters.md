@@ -35,9 +35,7 @@ options to this formatter's `format` method.
 | `$value` | `number` | The number you want to format into a monetary value |
 | `$options` | `array` | Should contain two keys, `decimals` which should be an `integer`, 
 | `$options['decimals']` | `number` | Used to control how many decimal places should be displayed in the monetary value. Defaults to the store setting. |
-| `$options['rounding_mode']` |  `number` |  Used to determine how to round the monetary value. This should be one of the PHP |
-  rounding modes described in the
-  [PHP round() documentation](https://www.php.net/manual/en/function.round.php). Defaults to `PHP_ROUND_HALF_UP`
+| `$options['rounding_mode']` |  `number` |  Used to determine how to round the monetary value. This should be one of the PHP rounding modes described in the [PHP round() documentation](https://www.php.net/manual/en/function.round.php). Defaults to `PHP_ROUND_HALF_UP`.
   
 ### Example use and returned value
 ```php
@@ -63,8 +61,10 @@ added is:
 | `currency_suffix` | `string` | A string that should appear after the currency value. |
 
 ### Arguments
-`$value` - `number[]` - An array of prices that you want to merge with the store's currency settings
-`$options` - There are no options that change the way this formatter behaves.
+
+| Argument | Type | Description |
+|---|---|---|
+`$value` | `number[]` | An array of prices that you want to merge with the store's currency settings
 
 ### Example use and returned value
 ```php
@@ -97,7 +97,11 @@ before returning it. The purpose of this formatter is to make HTML "safe" (in te
 `wp_kses_post` will ensure only HTML tags allowed in the context of a `post` are present in the string.
 
 ### Arguments
-`$value` - `string` - The string you want to format into "safe" HTML.
+
+
+| Argument | Type | Description |
+|---|---|---|
+`$value` | `string` | The string you want to format into "safe" HTML.
 
 ### Example use and returned value
 ```php
