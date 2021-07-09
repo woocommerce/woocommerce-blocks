@@ -5,6 +5,7 @@ import {
 	useBlockProps,
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
+import { isTextField } from '@wordpress/dom';
 import { store as blocksStore } from '@wordpress/blocks';
 import { useSelect, subscribe, select as _select } from '@wordpress/data';
 import { useEffect, useRef } from '@wordpress/element';
@@ -91,7 +92,7 @@ const useLockBlock = ( {
 				return;
 			}
 
-			if ( target !== node ) {
+			if ( target !== node || isTextField( target ) ) {
 				return;
 			}
 
