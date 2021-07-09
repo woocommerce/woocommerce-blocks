@@ -10,6 +10,12 @@ so that they are compatible with the StoreAPI, values such as money, currency, o
 To get a formatter, you can use the `get_formatter` method of the `ExtendRestApi` class. This method accepts a string,
 which is the name of the formatter you want to use, e.g. (money, html, currency).
 
+```php
+get_formatter('money'); // For the MoneyFormatter
+get_formatter('html'); // For the HtmlFormatter
+get_formatter('currency'); // CurrencyFormatter
+```
+
 This returns a `FormatterInterface` which has the `format` method.
 
 The `format` method signature is:
