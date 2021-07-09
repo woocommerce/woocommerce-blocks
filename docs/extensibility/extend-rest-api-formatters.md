@@ -2,6 +2,10 @@
 As part of ExtendRestAPI, we introduced `Formatters`, these are utility classes that allow you to format values to
 so that they are compatible with the StoreAPI, values such as money, currency, or HTML.
 
+- [MoneyFormatter](#MoneyFormatter)
+- [CurrencyFormatter](#CurrencyFormatter)
+- [HtmlFormatter](#HtmlFormatter)
+
 ## How to use them
 To get a formatter, you can use the `get_formatter` method of the `ExtendRestApi` class. This method accepts a string,
 which is the name of the formatter you want to use, e.g. (money, html, currency).
@@ -21,7 +25,7 @@ options to this formatter's `format` method.
 
 ### Arguments
 - `$value` - `number` - The number you want to format into a monetary vaue
-- `$options` - `Array`
+- `$options` - `array`
   - `decimals` - `integer` - Used to control how many decimal places should be displayed in the monetary value. Defaults
   to the store setting.
   - `rounding_mode` - `integer` - Used to determine how to round the monetary value. This should be one of the PHP
