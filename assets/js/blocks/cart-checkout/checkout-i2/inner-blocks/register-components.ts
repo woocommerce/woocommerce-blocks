@@ -19,10 +19,10 @@ registerBlockComponent( {
 } );
 
 registerBlockComponent( {
-	blockName: 'woocommerce/checkout-newsletter-block',
+	blockName: 'woocommerce/checkout-terms-block',
 	component: lazy( () =>
 		import(
-			/* webpackChunkName: "checkout-blocks/newsletter" */ './checkout-newsletter-block/block'
+			/* webpackChunkName: "checkout-blocks/terms" */ './checkout-terms-block/frontend'
 		)
 	),
 } );
