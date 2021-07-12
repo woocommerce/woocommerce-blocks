@@ -7,6 +7,7 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
+import { termsConsentDefaultText, termsCheckboxDefaultText } from './constants';
 
 const FrontendBlock = ( {
 	text,
@@ -22,13 +23,17 @@ const FrontendBlock = ( {
 				<>
 					<CheckboxControl
 						id="terms-condition"
-						label={ text }
+						label={ text || termsCheckboxDefaultText }
 						checked={ checked }
 						onChange={ () => setChecked( ( value ) => ! value ) }
 					/>
 				</>
 			) : (
-				<span dangerouslySetInnerHTML={ { __html: text } } />
+				<span
+					dangerouslySetInnerHTML={ {
+						__html: text || termsConsentDefaultText,
+					} }
+				/>
 			) }
 		</div>
 	);

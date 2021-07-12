@@ -155,7 +155,7 @@ export const Edit = ( {
 						<InnerBlocks
 							allowedBlocks={ ALLOWED_BLOCKS }
 							template={ TEMPLATE }
-							templateLock={ 'all' }
+							templateLock={ false }
 						/>
 					</CheckoutFieldsBlockContext.Provider>
 				</form>

@@ -6,7 +6,6 @@ import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
 /**
  * Internal dependencies
  */
-import { termsConsentDefaultText, termsCheckboxDefaultText } from './constants';
 import { Edit, Save } from './edit';
 
 registerFeaturePluginBlockType( 'woocommerce/checkout-terms-block', {
@@ -30,7 +29,7 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-terms-block', {
 		},
 		text: {
 			type: 'string',
-			required: true,
+			required: false,
 		},
 	},
 	variations: [
@@ -40,7 +39,6 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-terms-block', {
 			isDefault: true,
 			attributes: {
 				checkbox: false,
-				text: termsConsentDefaultText,
 			},
 			scope: [ 'inserter', 'block', 'transform' ],
 			isActive: ( blockAttributes: Record< string, unknown > ) =>
@@ -51,7 +49,6 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-terms-block', {
 			title: 'Terms Checkbox',
 			attributes: {
 				checkbox: true,
-				text: termsCheckboxDefaultText,
 			},
 			scope: [ 'inserter', 'block', 'transform' ],
 			isActive: ( blockAttributes: Record< string, unknown > ) =>

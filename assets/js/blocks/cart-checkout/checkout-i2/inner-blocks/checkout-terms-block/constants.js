@@ -1,37 +1,39 @@
 /**
  * External dependencies
  */
-import {
-	PRIVACY_URL,
-	TERMS_URL,
-	PRIVACY_PAGE_NAME,
-	TERMS_PAGE_NAME,
-} from '@woocommerce/block-settings';
+import { __, sprintf } from '@wordpress/i18n';
+import { PRIVACY_URL, TERMS_URL } from '@woocommerce/block-settings';
 
-export const termsConsentDefaultText = `By proceeding with your purchase you agree to our ${
-	TERMS_URL
-		? `<a href="${ TERMS_URL }">
-			${ TERMS_PAGE_NAME || 'Terms and Conditions' }
-		</a>`
-		: 'Terms and Conditions'
-} and ${
-	PRIVACY_URL
-		? `<a href="${ PRIVACY_URL }">
-			${ PRIVACY_PAGE_NAME || 'Privacy Policy.' }
-		</a>`
-		: 'Privacy Policy.'
-}`;
+const termsPageLink = TERMS_URL
+	? `<a href="${ TERMS_URL }">${ __(
+			'Terms and Conditions',
+			'woo-gutenberg-product-blocks'
+	  ) }</a>`
+	: __( 'Terms and Conditions', 'woo-gutenberg-product-blocks' );
 
-export const termsCheckboxDefaultText = `You must agree to our ${
-	TERMS_URL
-		? `<a href="${ TERMS_URL }">
-			${ TERMS_PAGE_NAME || 'Terms and Conditions' }
-		</a>`
-		: 'Terms and Conditions'
-} and ${
-	PRIVACY_URL
-		? `<a href="${ PRIVACY_URL }">
-			${ PRIVACY_PAGE_NAME || 'Privacy Policy' }
-		</a>`
-		: 'Privacy Policy'
-} to continue with your purchase`;
+const privacyPageLink = PRIVACY_URL
+	? `<a href="${ PRIVACY_URL }">${ __(
+			'Privacy Policy',
+			'woo-gutenberg-product-blocks'
+	  ) }</a>`
+	: __( 'Privacy Policy', 'woo-gutenberg-product-blocks' );
+
+export const termsConsentDefaultText = sprintf(
+	/* translators: %1$s terms page link, %2$s privacy page link. */
+	__(
+		'By proceeding with your purchase you agree to our %1$s and %2$s',
+		'woo-gutenberg-product-blocks'
+	),
+	termsPageLink,
+	privacyPageLink
+);
+
+export const termsCheckboxDefaultText = sprintf(
+	/* translators: %1$s terms page link, %2$s privacy page link. */
+	__(
+		'You must accept our %1$s and %2$s to continue with your purchase.',
+		'woo-gutenberg-product-blocks'
+	),
+	termsPageLink,
+	privacyPageLink
+);

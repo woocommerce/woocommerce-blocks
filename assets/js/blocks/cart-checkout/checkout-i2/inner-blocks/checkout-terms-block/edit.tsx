@@ -7,6 +7,7 @@ import CheckboxControl from '@woocommerce/base-components/checkbox-control';
 /**
  * Internal dependencies
  */
+import { termsConsentDefaultText, termsCheckboxDefaultText } from './constants';
 
 export const Edit = ( {
 	attributes: { checkbox, text },
@@ -21,7 +22,7 @@ export const Edit = ( {
 				<>
 					<CheckboxControl id="terms-condition" checked={ false } />
 					<RichText
-						value={ text }
+						value={ text || termsCheckboxDefaultText }
 						onChange={ ( value ) =>
 							setAttributes( { text: value } )
 						}
@@ -30,7 +31,7 @@ export const Edit = ( {
 			) : (
 				<RichText
 					tagName="span"
-					value={ text }
+					value={ text || termsConsentDefaultText }
 					onChange={ ( value ) => setAttributes( { text: value } ) }
 				/>
 			) }
