@@ -12,6 +12,10 @@ import {
  * Internal dependencies
  */
 import { Columns } from './columns';
+import { addClassToBody } from './hacks';
+
+// This is adds a class to body to signal if the selected block is locked
+addClassToBody();
 
 // Array of allowed block names.
 const ALLOWED_BLOCKS: string[] = [
