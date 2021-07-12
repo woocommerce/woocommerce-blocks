@@ -94,7 +94,7 @@ Whether notices are suppressed. If true, it will hide the notices from the front
 
 ## StoreNoticesProvider
 
-The `StoreNoticesProvider` allows managing notices in the frontend. Notices are rendered on top of the children.
+The `StoreNoticesProvider` allows managing notices in the frontend. Notices are rendered before React Children.
 
 Internally, it uses the `StoreNoticesContext` which relies on the [`notices` package](https://github.com/WordPress/gutenberg/tree/master/packages/notices) from Gutenberg.
 
