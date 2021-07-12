@@ -1,16 +1,10 @@
 /**
  * HACKS
  *
+ * @todo Checkout i2: Remove custom locking support when supported natively in WordPress (5.9)
+ *
  * This file contains functionality to "lock" blocks i.e. to prevent blocks being moved or deleted. This needs to be
  * kept in place until native support for locking is available in WordPress (estimated WordPress 5.9).
- */
-
-/**
- * @todo Checkout i2: Remove custom locking support when supported natively in WordPress (5.9)
- */
-
-/**
- * @todo Checkout i2: Disable custom locking support if native support is detected.
  */
 
 /**
@@ -85,6 +79,8 @@ export const addClassToBody = (): void => {
 /**
  * This is a hook we use in conjunction with useBlockProps. Its goal is to check if a block is locked (move or remove)
  * and will stop the keydown event from propagating to stop it from being deleted via the keyboard.
+ *
+ * @todo Checkout i2: Disable custom locking support if native support is detected.
  */
 const useLockBlock = ( {
 	clientId,
