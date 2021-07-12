@@ -1,4 +1,13 @@
 /**
+ * HACKS
+ *
+ * This file contains functionality to "lock" blocks i.e. to prevent blocks being moved or deleted. This needs to be
+ * kept in place until native support for locking is available in WordPress (estimated WordPress 5.9).
+ *
+ * @todo Remove custom Block locking support when supported natively in WordPress (5.9)
+ */
+
+/**
  * External dependencies
  */
 import {
@@ -13,15 +22,25 @@ import { MutableRefObject } from 'react';
 import { BACKSPACE, DELETE } from '@wordpress/keycodes';
 
 /**
- * @todo Delete hacks file when we support WP 5.9
- * This file contains hacks to lock blocks, it should be kept until we support WordPress 5.9.
+ * Toggle class on body.
  *
+ * @param {string} className CSS Class name.
+ * @param {boolean} add True to add, false to remove.
  */
+const toggleBodyClass = ( className: string, add = true ) => {
+	if ( add ) {
+		window.document.body.classList.add( className );
+	} else {
+		window.document.body.classList.remove( className );
+	}
+};
 
 /**
- * This components watchs for the currenctly selected block and adds a block to the body if that block is locked.
- * If the current block is not locked, it would remove that class.
- * We use that class in CSS to hide some UI elements that prevents the block from being deleted.
+ * addClassToBody
+ *
+ * This components watches the current selected block and adds a class name to the body if that block is locked. If the
+ * current block is not locked, it removes the class name. The appended body class is used to hide UI elements to prevent
+ * the block from being deleted.
  *
  * We use a component so we can react to changes in the store.
  */
@@ -34,31 +53,20 @@ export const addClassToBody = (): void => {
 		const { getBlockType } = _select( blocksStore );
 		const selectedBlockType = getBlockType( getSelectedBlock().name );
 
-		if ( selectedBlockType?.supports?.lock?.remove ) {
-			window.document.body.classList.add(
-				'wc-lock-selected-block-from-remove'
-			);
-		} else {
-			window.document.body.classList.remove(
-				'wc-lock-selected-block-from-remove'
-			);
-		}
-
-		if ( selectedBlockType?.supports?.lock?.move ) {
-			window.document.body.classList.add(
-				'wc-lock-selected-block-from-move'
-			);
-		} else {
-			window.document.body.classList.remove(
-				'wc-lock-selected-block-from-move'
-			);
-		}
+		toggleBodyClass(
+			'wc-lock-selected-block--remove',
+			!! selectedBlockType?.supports?.lock?.remove
+		);
+		toggleBodyClass(
+			'wc-lock-selected-block--move',
+			!! selectedBlockType?.supports?.lock?.move
+		);
 	} );
 };
 
 /**
- * This is a hook we use in conjection with useBlockProps. Its goal is to check if a block is locked (move or remove) and would stop the keydown event from propagating to stop it from being deleted via the keyboard.
- *
+ * This is a hook we use in conjunction with useBlockProps. Its goal is to check if a block is locked (move or remove)
+ * and will stop the keydown event from propagating to stop it from being deleted via the keyboard.
  */
 const useLockBlock = ( {
 	clientId,
