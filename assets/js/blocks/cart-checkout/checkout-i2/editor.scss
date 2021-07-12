@@ -27,7 +27,8 @@
 
 body.wc-lock-selected-block--move {
 	.block-editor-block-mover__move-button-container,
-	.block-editor-block-mover {
+	.block-editor-block-mover,
+	.block-editor-block-settings-menu {
 		display: none;
 	}
 }
