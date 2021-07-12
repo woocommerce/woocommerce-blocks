@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { useBlockProps } from '@wordpress/block-editor';
-import { Disabled } from '@wordpress/components';
 import { useContext } from '@wordpress/element';
 
 /**
@@ -41,23 +40,17 @@ export const Edit = ( {
 			className="wc-block-checkout__shipping-fields"
 		>
 			<FieldControls />
-			<Disabled>
-				<Block
-					showCompanyField={
-						context[ 'woocommerce/showCompanyField' ]
-					}
-					showApartmentField={
-						context[ 'woocommerce/showApartmentField' ]
-					}
-					requireCompanyField={
-						context[ 'woocommerce/requireCompanyField' ]
-					}
-					showPhoneField={ context[ 'woocommerce/showPhoneField' ] }
-					requirePhoneField={
-						context[ 'woocommerce/requirePhoneField' ]
-					}
-				/>
-			</Disabled>
+			<Block
+				showCompanyField={ context[ 'woocommerce/showCompanyField' ] }
+				showApartmentField={
+					context[ 'woocommerce/showApartmentField' ]
+				}
+				requireCompanyField={
+					context[ 'woocommerce/requireCompanyField' ]
+				}
+				showPhoneField={ context[ 'woocommerce/showPhoneField' ] }
+				requirePhoneField={ context[ 'woocommerce/requirePhoneField' ] }
+			/>
 		</FormStepBlock>
 	);
 };
