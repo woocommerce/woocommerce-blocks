@@ -90,8 +90,9 @@ const useLockBlock = ( {
 	);
 
 	const node = ref.current;
+
 	return useEffect( () => {
-		if ( ! isSelected ) {
+		if ( ! isSelected || ! node ) {
 			return;
 		}
 		function onKeyDown( event: KeyboardEvent ) {
