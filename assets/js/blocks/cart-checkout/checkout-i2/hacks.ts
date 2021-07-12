@@ -4,7 +4,8 @@
  * This file contains functionality to "lock" blocks i.e. to prevent blocks being moved or deleted. This needs to be
  * kept in place until native support for locking is available in WordPress (estimated WordPress 5.9).
  *
- * @todo Remove custom Block locking support when supported natively in WordPress (5.9)
+ * @todo Checkout i2: Remove custom Block locking support when supported natively in WordPress (5.9) and minimum supported version allows
+ * @todo Checkout i2: Disable custom Block locking if native locking support is detected.
  */
 
 /**
@@ -46,17 +47,29 @@ const toggleBodyClass = ( className: string, add = true ) => {
  */
 export const addClassToBody = (): void => {
 	subscribe( () => {
-		const { getSelectedBlock } = _select( blockEditorStore );
-		if ( ! getSelectedBlock() ) {
+		const blockEditorSelect = _select( blockEditorStore );
+
+		if ( ! blockEditorSelect ) {
 			return;
 		}
-		const { getBlockType } = _select( blocksStore );
-		const selectedBlockType = getBlockType( getSelectedBlock().name );
+
+		const selectedBlock = blockEditorSelect.getSelectedBlock();
+
+		if ( ! selectedBlock ) {
+			return;
+		}
+
+		const blockSelect = _select( blocksStore );
+
+		const selectedBlockType = blockSelect.getBlockType(
+			selectedBlock.name
+		);
 
 		toggleBodyClass(
 			'wc-lock-selected-block--remove',
 			!! selectedBlockType?.supports?.lock?.remove
 		);
+
 		toggleBodyClass(
 			'wc-lock-selected-block--move',
 			!! selectedBlockType?.supports?.lock?.move
