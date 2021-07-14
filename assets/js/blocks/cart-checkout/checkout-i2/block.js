@@ -21,6 +21,7 @@ import {
 } from '@woocommerce/settings';
 import { LOGIN_URL } from '@woocommerce/block-settings';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
+import { SlotFillProvider } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
@@ -66,7 +67,9 @@ const Block = ( { ...props } ) => {
 					<StoreNoticesProvider context="wc/checkout">
 						<ValidationContextProvider>
 							<CheckoutProvider>
-								<Checkout { ...props } />
+								<SlotFillProvider>
+									<Checkout { ...props } />
+								</SlotFillProvider>
 							</CheckoutProvider>
 						</ValidationContextProvider>
 					</StoreNoticesProvider>
