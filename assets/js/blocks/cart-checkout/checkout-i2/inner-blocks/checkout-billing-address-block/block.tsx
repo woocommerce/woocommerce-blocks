@@ -1,11 +1,13 @@
 /**
  * External dependencies
  */
-import { useMemo, useEffect } from '@wordpress/element';
+import { useMemo, useEffect, Fragment } from '@wordpress/element';
+import { Disabled } from '@wordpress/components';
 import {
-	useStoreEvents,
 	useCheckoutAddress,
-} from '@woocommerce/base-context/hooks';
+	useStoreEvents,
+	useEditorContext,
+} from '@woocommerce/base-context';
 import { AddressForm } from '@woocommerce/base-components/cart-checkout';
 
 /**
@@ -33,6 +35,7 @@ const Block = ( {
 		setPhone,
 	} = useCheckoutAddress();
 	const { dispatchCheckoutEvent } = useStoreEvents();
+	const { isEditor } = useEditorContext();
 
 	// Clears data if fields are hidden.
 	useEffect( () => {
@@ -53,8 +56,10 @@ const Block = ( {
 		};
 	}, [ showCompanyField, requireCompanyField, showApartmentField ] );
 
+	const AddressFormWrapperComponent = isEditor ? Disabled : Fragment;
+
 	return (
-		<>
+		<AddressFormWrapperComponent>
 			<AddressForm
 				id="billing"
 				type="billing"
@@ -79,7 +84,7 @@ const Block = ( {
 					} }
 				/>
 			) }
-		</>
+		</AddressFormWrapperComponent>
 	);
 };
 
