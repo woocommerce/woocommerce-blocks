@@ -2,8 +2,8 @@
  * External dependencies
  */
 import { useBlockProps } from '@wordpress/block-editor';
-import { Disabled } from '@wordpress/components';
 import { useContext } from '@wordpress/element';
+import { useCheckoutAddress } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
@@ -30,10 +30,16 @@ export const Edit = ( {
 		'woocommerce/requirePhoneField': boolean;
 	};
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
-} ): JSX.Element => {
+} ): JSX.Element | null => {
 	const { controls: FieldControls } = useContext(
 		CheckoutFieldsBlockContext
 	);
+	const { showBillingFields } = useCheckoutAddress();
+
+	if ( ! showBillingFields ) {
+		return null;
+	}
+
 	return (
 		<FormStepBlock
 			setAttributes={ setAttributes }
@@ -41,23 +47,17 @@ export const Edit = ( {
 			className="wc-block-checkout__billing-fields"
 		>
 			<FieldControls />
-			<Disabled>
-				<Block
-					showCompanyField={
-						context[ 'woocommerce/showCompanyField' ]
-					}
-					showApartmentField={
-						context[ 'woocommerce/showApartmentField' ]
-					}
-					requireCompanyField={
-						context[ 'woocommerce/requireCompanyField' ]
-					}
-					showPhoneField={ context[ 'woocommerce/showPhoneField' ] }
-					requirePhoneField={
-						context[ 'woocommerce/requirePhoneField' ]
-					}
-				/>
-			</Disabled>
+			<Block
+				showCompanyField={ context[ 'woocommerce/showCompanyField' ] }
+				showApartmentField={
+					context[ 'woocommerce/showApartmentField' ]
+				}
+				requireCompanyField={
+					context[ 'woocommerce/requireCompanyField' ]
+				}
+				showPhoneField={ context[ 'woocommerce/showPhoneField' ] }
+				requirePhoneField={ context[ 'woocommerce/requirePhoneField' ] }
+			/>
 		</FormStepBlock>
 	);
 };
