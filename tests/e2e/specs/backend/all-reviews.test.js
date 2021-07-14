@@ -22,8 +22,9 @@ describe( `${ block.name } Block`, () => {
 	} );
 
 	it( 'shows reviews', async () => {
+		await page.waitForSelector( '.wc-block-all-reviews' );
 		const list = await page.$eval(
-			'.wc-block-components-review-list',
+			'.wc-block-all-reviews',
 			( e ) => e.innerHTML
 		);
 		console.log( list );
