@@ -27,11 +27,7 @@ import ProductSortSelect from './product-sort-select';
 import ProductListItem from './product-list-item';
 import './style.scss';
 
-const generateQuery = ( {
-	sortValue,
-	currentPage,
-	attributes,
-} ) => {
+const generateQuery = ( { sortValue, currentPage, attributes } ) => {
 	const { columns, rows } = attributes;
 	const getSortArgs = ( orderName ) => {
 		switch ( orderName ) {
