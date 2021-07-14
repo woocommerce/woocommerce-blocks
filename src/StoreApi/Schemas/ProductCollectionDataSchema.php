@@ -108,7 +108,7 @@ class ProductCollectionDataSchema extends AbstractSchema {
 					'properties' => [
 						'status' => [
 							'description' => __( 'Status', 'woo-gutenberg-products-block' ),
-							'type'        => 'integer',
+							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
 						],

@@ -13,24 +13,29 @@ import { getSetting } from '@woocommerce/settings';
 import { useCallback, useEffect, useState, useMemo } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
 import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
+import Label from '@woocommerce/base-components/filter-element-label';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Internal dependencies
  */
-import Label from './label';
 import { previewOptions } from './preview';
 import './style.scss';
 
-const STOCK_STATUS_OPTIONS = getSetting( 'stockStatusOptions', [] );
 const hideOutOfStockItems = getSetting( 'hideOutOfStockItems', false );
-if ( hideOutOfStockItems ) {
-	delete STOCK_STATUS_OPTIONS.outofstock;
-}
-const initialOptions = Object.entries(
-	STOCK_STATUS_OPTIONS
-).map( ( [ slug, name ] ) => ( { slug, name } ) );
+const { outofstock, ...otherStockStatusOptions } = getSetting(
+	'stockStatusOptions',
+	{}
+);
+const STOCK_STATUS_OPTIONS = hideOutOfStockItems
+	? otherStockStatusOptions
+	: { outofstock, ...otherStockStatusOptions };
+// filter added to handle if there are slugs without a corresponding name defined.
+const initialOptions = Object.entries( STOCK_STATUS_OPTIONS )
+	.map( ( [ slug, name ] ) => ( { slug, name } ) )
+	.filter( ( status ) => !! status.name )
+	.sort( ( a, b ) => a.slug.localeCompare( b.slug ) );
 
 /**
  * Component displaying an stock status filter.
@@ -165,8 +170,8 @@ const StockStatusFilterBlock = ( {
 	// Track Stock query changes so the block reflects current filters.
 	useEffect( () => {
 		if (
-			! isShallowEqual( previousCheckedQuery, currentCheckedQuery ) && // checked query changed
-			! isShallowEqual( checked, currentCheckedQuery ) // checked query doesn't match the UI
+			! isShallowEqual( previousCheckedQuery, currentCheckedQuery ) && // Checked query changed.
+			! isShallowEqual( checked, currentCheckedQuery ) // Checked query doesn't match the UI.
 		) {
 			setChecked( currentCheckedQuery );
 		}
@@ -192,19 +197,7 @@ const StockStatusFilterBlock = ( {
 				const filterRemovedName = filterRemoved
 					? getFilterNameFromValue( filterRemoved )
 					: null;
-				if ( filterAddedName && filterRemovedName ) {
-					speak(
-						sprintf(
-							/* translators: %1$s and %2$s are stock statuses (for example: 'instock'...). */
-							__(
-								'%1$s filter replaced with %2$s.',
-								'woo-gutenberg-products-block'
-							),
-							filterAddedName,
-							filterRemovedName
-						)
-					);
-				} else if ( filterAddedName ) {
+				if ( filterAddedName ) {
 					speak(
 						sprintf(
 							/* translators: %s stock statuses (for example: 'instock'...) */
