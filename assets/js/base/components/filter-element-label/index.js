@@ -10,7 +10,7 @@ import { Label } from '@woocommerce/blocks-checkout';
 import './style.scss';
 
 /**
- * The label for an stock status filter.
+ * The label for an filter elements.
  *
  * @param {Object} props Incoming props for the component.
  * @param {string} props.name The name for the label.
