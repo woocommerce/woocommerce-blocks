@@ -22,6 +22,11 @@ describe( `${ block.name } Block`, () => {
 	} );
 
 	it( 'shows reviews', async () => {
+		const list = await page.$eval(
+			'.wc-block-components-review-list',
+			( e ) => e.innerHTML
+		);
+		console.log( list );
 		await page.waitForSelector(
 			'.wc-block-components-review-list .wc-block-components-review-list-item__item:not(.is-loading)'
 		);
