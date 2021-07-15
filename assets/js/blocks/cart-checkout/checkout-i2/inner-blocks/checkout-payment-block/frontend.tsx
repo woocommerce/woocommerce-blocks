@@ -19,10 +19,12 @@ const FrontendBlock = ( {
 	title,
 	description,
 	showStepNumber,
+	children,
 }: {
 	title: string;
 	description: string;
 	showStepNumber: boolean;
+	children: JSX.Element;
 } ) => {
 	const { isProcessing: checkoutIsProcessing } = useCheckoutContext();
 	const { cartNeedsPayment } = useStoreCart();
@@ -43,6 +45,7 @@ const FrontendBlock = ( {
 			<StoreNoticesProvider context={ noticeContexts.PAYMENTS }>
 				<Block />
 			</StoreNoticesProvider>
+			{ children }
 		</FormStep>
 	);
 };

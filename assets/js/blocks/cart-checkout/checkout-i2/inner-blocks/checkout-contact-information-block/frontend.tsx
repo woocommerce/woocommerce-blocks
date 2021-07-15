@@ -17,11 +17,13 @@ const FrontendBlock = ( {
 	description,
 	allowCreateAccount,
 	showStepNumber,
+	children,
 }: {
 	title: string;
 	description: string;
 	allowCreateAccount: boolean;
 	showStepNumber: boolean;
+	children: JSX.Element;
 } ) => {
 	const { isProcessing: checkoutIsProcessing } = useCheckoutContext();
 
@@ -36,6 +38,7 @@ const FrontendBlock = ( {
 			stepHeadingContent={ () => <LoginPrompt /> }
 		>
 			<Block allowCreateAccount={ allowCreateAccount } />
+			{ children }
 		</FormStep>
 	);
 };

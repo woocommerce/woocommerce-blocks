@@ -10,7 +10,11 @@ import ExternalLinkCard from '@woocommerce/editor-components/external-link-card'
 /**
  * Internal dependencies
  */
-import { FormStepBlock } from '../../form-step';
+import {
+	FormStepBlock,
+	AdditionalFields,
+	AdditionalFieldsContent,
+} from '../../form-step';
 import Block from './block';
 
 type shippingAdminLink = {
@@ -111,10 +115,15 @@ export const Edit = ( {
 			<Disabled>
 				<Block />
 			</Disabled>
+			<AdditionalFields area="shippingMethods" />
 		</FormStepBlock>
 	);
 };
 
 export const Save = (): JSX.Element => {
-	return <div { ...useBlockProps.save() } />;
+	return (
+		<div { ...useBlockProps.save() }>
+			<AdditionalFieldsContent />
+		</div>
+	);
 };

@@ -8,7 +8,11 @@ import { PanelBody, ToggleControl, Disabled } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import { FormStepBlock } from '../../form-step';
+import {
+	FormStepBlock,
+	AdditionalFields,
+	AdditionalFieldsContent,
+} from '../../form-step';
 import Block from './block';
 
 export const Edit = ( {
@@ -54,10 +58,15 @@ export const Edit = ( {
 			<Disabled>
 				<Block allowCreateAccount={ allowCreateAccount } />
 			</Disabled>
+			<AdditionalFields area="contactInformation" />
 		</FormStepBlock>
 	);
 };
 
 export const Save = (): JSX.Element => {
-	return <div { ...useBlockProps.save() } />;
+	return (
+		<div { ...useBlockProps.save() }>
+			<AdditionalFieldsContent />
+		</div>
+	);
 };

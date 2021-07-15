@@ -7,7 +7,7 @@ import { registerBlockComponent } from '@woocommerce/blocks-registry';
 /**
  * List of block areas where blocks can be registered for use. Keyed by area name.
  */
-type RegisteredBlocks = {
+export type RegisteredBlocks = {
 	totals: Array< string >;
 	fields: Array< string >;
 	contactInformation: Array< string >;
@@ -20,11 +20,11 @@ type RegisteredBlocks = {
 let registeredBlocks: RegisteredBlocks = {
 	totals: [],
 	fields: [],
-	contactInformation: [],
-	shippingAddress: [],
-	billingAddress: [],
-	shippingMethods: [],
-	paymentMethods: [],
+	contactInformation: [ 'core/paragraph' ],
+	shippingAddress: [ 'core/paragraph' ],
+	billingAddress: [ 'core/paragraph' ],
+	shippingMethods: [ 'core/paragraph' ],
+	paymentMethods: [ 'core/paragraph' ],
 };
 
 /**

@@ -7,7 +7,11 @@ import { useContext } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { FormStepBlock } from '../../form-step';
+import {
+	FormStepBlock,
+	AdditionalFields,
+	AdditionalFieldsContent,
+} from '../../form-step';
 import { CheckoutFieldsBlockContext } from '../checkout-fields-block/edit';
 import Block from './block';
 
@@ -51,10 +55,15 @@ export const Edit = ( {
 				showPhoneField={ context[ 'woocommerce/showPhoneField' ] }
 				requirePhoneField={ context[ 'woocommerce/requirePhoneField' ] }
 			/>
+			<AdditionalFields area="shippingAddress" />
 		</FormStepBlock>
 	);
 };
 
 export const Save = (): JSX.Element => {
-	return <div { ...useBlockProps.save() } />;
+	return (
+		<div { ...useBlockProps.save() }>
+			<AdditionalFieldsContent />
+		</div>
+	);
 };

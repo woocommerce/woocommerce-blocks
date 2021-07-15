@@ -21,6 +21,7 @@ const FrontendBlock = ( {
 	showPhoneField,
 	requirePhoneField,
 	showStepNumber,
+	children,
 }: {
 	title: string;
 	description: string;
@@ -30,6 +31,7 @@ const FrontendBlock = ( {
 	showPhoneField: boolean;
 	requirePhoneField: boolean;
 	showStepNumber: boolean;
+	children: JSX.Element;
 } ): JSX.Element | null => {
 	const { isProcessing: checkoutIsProcessing } = useCheckoutContext();
 	const { showBillingFields } = useCheckoutAddress();
@@ -54,6 +56,7 @@ const FrontendBlock = ( {
 				showPhoneField={ showPhoneField }
 				requirePhoneField={ requirePhoneField }
 			/>
+			{ children }
 		</FormStep>
 	);
 };
