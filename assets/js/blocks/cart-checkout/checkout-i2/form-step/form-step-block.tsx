@@ -44,7 +44,7 @@ export const FormStepBlock = ( {
 				>
 					<ToggleControl
 						label={ __(
-							'Show step number?',
+							'Show step number',
 							'woo-gutenberg-products-block'
 						) }
 						checked={ showStepNumber }
