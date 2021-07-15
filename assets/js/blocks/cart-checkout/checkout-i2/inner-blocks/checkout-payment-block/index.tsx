@@ -12,10 +12,10 @@ import { Edit, Save } from './edit';
 import attributes from './attributes';
 
 registerFeaturePluginBlockType( 'woocommerce/checkout-payment-block', {
-	title: __( 'Payment Method', 'woo-gutenberg-products-block' ),
+	title: __( 'Payment Options', 'woo-gutenberg-products-block' ),
 	category: 'woocommerce',
 	description: __(
-		'Manage your connected payment options.',
+		'Manage your payment options.',
 		'woo-gutenberg-products-block'
 	),
 	icon: {

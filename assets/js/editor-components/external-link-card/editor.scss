@@ -5,11 +5,11 @@
 	text-decoration: none;
 	margin: $gap-large 0;
 	color: inherit;
+	align-items: flex-start;
 
 	& + .wc-block-editor-components-external-link-card {
 		margin-top: -($gap-large - $gap);
 	}
-
 	.wc-block-editor-components-external-link-card__content {
 		flex: 1 1 0;
 		padding-right: $gap;
@@ -26,6 +26,7 @@
 	}
 	.wc-block-editor-components-external-link-card__icon {
 		flex: 0 0 24px;
+		margin: 0;
 		text-align: right;
 		color: inherit;
 		vertical-align: top;

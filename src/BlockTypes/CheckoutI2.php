@@ -218,6 +218,25 @@ class CheckoutI2 extends AbstractBlock {
 			$this->asset_data_registry->add( 'activeShippingZones', $formatted_shipping_zones );
 		}
 
+		if ( $is_block_editor && ! $this->asset_data_registry->exists( 'globalPaymentMethods' ) ) {
+			$payment_methods           = WC()->payment_gateways->payment_gateways();
+			$formatted_payment_methods = array_reduce(
+				$payment_methods,
+				function( $acc, $method ) {
+					if ( 'yes' === $method->enabled ) {
+						$acc[] = [
+							'id'          => $method->id,
+							'title'       => $method->method_title,
+							'description' => $method->method_description,
+						];
+					}
+					return $acc;
+				},
+				[]
+			);
+			$this->asset_data_registry->add( 'globalPaymentMethods', $formatted_payment_methods );
+		}
+
 		if ( ! is_admin() && ! WC()->is_rest_api_request() ) {
 			$this->hydrate_from_api();
 			$this->hydrate_customer_payment_methods();
