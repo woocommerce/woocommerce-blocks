@@ -31,6 +31,9 @@ const ALLOWED_BLOCKS = [
 	'woocommerce/checkout-order-note-block',
 	'woocommerce/checkout-actions-block',
 	'woocommerce/checkout-terms-block',
+	'core/paragraph',
+	'core/heading',
+	'core/separator',
 	...getRegisteredBlocks( 'fields' ),
 ];
 const TEMPLATE: InnerBlockTemplate[] = [

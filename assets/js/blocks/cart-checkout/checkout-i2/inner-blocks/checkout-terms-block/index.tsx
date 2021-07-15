@@ -37,29 +37,6 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-terms-block', {
 			required: false,
 		},
 	},
-	variations: [
-		{
-			name: 'terms-consent',
-			title: 'Terms Consent',
-			isDefault: true,
-			attributes: {
-				checkbox: false,
-			},
-			scope: [ 'inserter', 'block', 'transform' ],
-			isActive: ( blockAttributes: Record< string, unknown > ) =>
-				blockAttributes.checkbox === false,
-		},
-		{
-			name: 'terms-checkbox',
-			title: 'Terms Checkbox',
-			attributes: {
-				checkbox: true,
-			},
-			scope: [ 'inserter', 'block', 'transform' ],
-			isActive: ( blockAttributes: Record< string, unknown > ) =>
-				blockAttributes.checkbox === true,
-		},
-	],
 	edit: Edit,
 	save: Save,
 } );

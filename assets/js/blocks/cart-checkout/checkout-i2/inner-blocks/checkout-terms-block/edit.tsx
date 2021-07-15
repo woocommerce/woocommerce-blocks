@@ -2,9 +2,13 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useBlockProps, RichText } from '@wordpress/block-editor';
+import {
+	useBlockProps,
+	RichText,
+	InspectorControls,
+} from '@wordpress/block-editor';
 import CheckboxControl from '@woocommerce/base-components/checkbox-control';
-import { Notice } from '@wordpress/components';
+import { PanelBody, ToggleControl, Notice } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -24,6 +28,27 @@ export const Edit = ( {
 
 	return (
 		<>
+			<InspectorControls>
+				<PanelBody
+					title={ __(
+						'Display options',
+						'woo-gutenberg-products-block'
+					) }
+				>
+					<ToggleControl
+						label={ __(
+							'Require checkbox',
+							'woo-gutenberg-products-block'
+						) }
+						checked={ checkbox }
+						onChange={ () =>
+							setAttributes( {
+								checkbox: ! checkbox,
+							} )
+						}
+					/>
+				</PanelBody>
+			</InspectorControls>
 			<div className="wc-block-checkout__terms">
 				{ checkbox ? (
 					<>
