@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { Icon, notes } from '@woocommerce/icons';
 import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
 
 /**
@@ -12,7 +13,14 @@ import { Edit, Save } from './edit';
 registerFeaturePluginBlockType( 'woocommerce/checkout-order-note-block', {
 	title: __( 'Order note', 'woo-gutenberg-products-block' ),
 	category: 'woocommerce',
-	description: __( 'Checkout order note.', 'woo-gutenberg-products-block' ),
+	description: __(
+		'Allow customers to add a note to their order.',
+		'woo-gutenberg-products-block'
+	),
+	icon: {
+		src: <Icon srcElement={ notes } />,
+		foreground: '#874FB9',
+	},
 	supports: {
 		align: false,
 		html: false,

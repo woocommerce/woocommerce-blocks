@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { Icon, asterisk } from '@woocommerce/icons';
 import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
 /**
  * Internal dependencies
@@ -12,9 +13,13 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-terms-block', {
 	title: __( 'Terms and Conditions', 'woo-gutenberg-products-block' ),
 	category: 'woocommerce',
 	description: __(
-		'A checkbox for people to agree to the terms and conditions',
+		'Ensure customers agree to your terms and conditions and privacy policy.',
 		'woo-gutenberg-products-block'
 	),
+	icon: {
+		src: <Icon srcElement={ asterisk } />,
+		foreground: '#874FB9',
+	},
 	supports: {
 		align: false,
 		html: false,

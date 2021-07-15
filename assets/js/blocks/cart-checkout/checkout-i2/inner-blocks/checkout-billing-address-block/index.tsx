@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { Icon, address } from '@woocommerce/icons';
 import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
 
 /**
@@ -14,9 +15,13 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-billing-address-block', {
 	title: __( 'Billing Address', 'woo-gutenberg-products-block' ),
 	category: 'woocommerce',
 	description: __(
-		'Checkout billing address step.',
+		'Manage your address requirements.',
 		'woo-gutenberg-products-block'
 	),
+	icon: {
+		src: <Icon srcElement={ address } />,
+		foreground: '#874FB9',
+	},
 	supports: {
 		align: false,
 		html: false,

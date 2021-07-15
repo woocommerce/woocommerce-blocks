@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { Icon, card } from '@woocommerce/icons';
 import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
 
 /**
@@ -13,9 +14,13 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-express-payment-block', {
 	title: __( 'Express Checkout', 'woo-gutenberg-products-block' ),
 	category: 'woocommerce',
 	description: __(
-		'Checkout express payment methods block',
+		'Provide an express payment option for your customers.',
 		'woo-gutenberg-products-block'
 	),
+	icon: {
+		src: <Icon srcElement={ card } />,
+		foreground: '#874FB9',
+	},
 	supports: {
 		align: false,
 		html: false,

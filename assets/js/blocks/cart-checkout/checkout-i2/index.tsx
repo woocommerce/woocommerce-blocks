@@ -17,7 +17,7 @@ const settings = {
 	title: __( 'Checkout i2', 'woo-gutenberg-products-block' ),
 	icon: {
 		src: <Icon srcElement={ card } />,
-		foreground: '#96588a',
+		foreground: '#874FB9',
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],

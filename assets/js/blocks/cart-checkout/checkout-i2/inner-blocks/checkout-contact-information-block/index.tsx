@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { Icon, contact } from '@woocommerce/icons';
 import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
 
 /**
@@ -16,9 +17,13 @@ registerFeaturePluginBlockType(
 		title: __( 'Contact Information', 'woo-gutenberg-products-block' ),
 		category: 'woocommerce',
 		description: __(
-			'Checkout contact information step.',
+			"Get your customer's contact email.",
 			'woo-gutenberg-products-block'
 		),
+		icon: {
+			src: <Icon srcElement={ contact } />,
+			foreground: '#874FB9',
+		},
 		supports: {
 			align: false,
 			html: false,

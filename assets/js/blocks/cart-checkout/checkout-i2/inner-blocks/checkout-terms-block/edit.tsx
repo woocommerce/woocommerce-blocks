@@ -8,6 +8,7 @@ import CheckboxControl from '@woocommerce/base-components/checkbox-control';
  * Internal dependencies
  */
 import { termsConsentDefaultText, termsCheckboxDefaultText } from './constants';
+import './editor.scss';
 
 export const Edit = ( {
 	attributes: { checkbox, text },

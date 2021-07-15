@@ -8,7 +8,9 @@ import { Disabled } from '@wordpress/components';
  * Internal dependencies
  */
 import Block from './block';
+import './editor.scss';
 import { useBlockPropsWithLocking } from '../../hacks';
+
 export const Edit = (): JSX.Element => {
 	const blockProps = useBlockPropsWithLocking();
 	return (

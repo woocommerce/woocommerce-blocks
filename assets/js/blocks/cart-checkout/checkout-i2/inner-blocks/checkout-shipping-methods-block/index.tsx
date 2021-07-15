@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { Icon, truck } from '@woocommerce/icons';
 import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
 
 /**
@@ -14,9 +15,13 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-shipping-methods-block', {
 	title: __( 'Shipping Methods', 'woo-gutenberg-products-block' ),
 	category: 'woocommerce',
 	description: __(
-		'Checkout Shipping Methods Block',
+		'Shipping options for your store.',
 		'woo-gutenberg-products-block'
 	),
+	icon: {
+		src: <Icon srcElement={ truck } />,
+		foreground: '#874FB9',
+	},
 	supports: {
 		align: false,
 		html: false,

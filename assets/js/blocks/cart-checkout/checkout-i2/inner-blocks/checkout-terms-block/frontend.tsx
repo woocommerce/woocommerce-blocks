@@ -8,6 +8,7 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import { termsConsentDefaultText, termsCheckboxDefaultText } from './constants';
+import './style.scss';
 
 const FrontendBlock = ( {
 	text,

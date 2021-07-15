@@ -2,10 +2,12 @@
  * External dependencies
  */
 import { useBlockProps } from '@wordpress/block-editor';
+
 /**
  * Internal dependencies
  */
 import Block from './block';
+import './editor.scss';
 import { useBlockPropsWithLocking } from '../../hacks';
 
 export const Edit = (): JSX.Element => {
