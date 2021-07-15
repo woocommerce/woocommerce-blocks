@@ -51,7 +51,8 @@ module.exports = async ( globalConfig ) => {
 		 * Create fixture reviews data for each product.
 		 */
 		products.forEach( async ( productId ) => {
-			await createReviews( productId );
+			const review = await createReviews( productId );
+			console.log( '>>>>>>>>', review );
 		} );
 
 		global.fixtureData = {
