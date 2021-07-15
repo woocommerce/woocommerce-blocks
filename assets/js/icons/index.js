@@ -1,7 +1,9 @@
 export { default as Icon } from './icon';
 
+export { default as address } from './library/address';
 export { default as arrowBack } from './library/arrow-back';
 export { default as arrowDownAlt2 } from './library/arrow-down-alt2';
+export { default as asterisk } from './library/asterisk';
 export { default as atom } from './library/atom';
 export { default as bank } from './library/bank';
 export { default as barcode } from './library/barcode';
@@ -15,6 +17,7 @@ export { default as chevronDown } from './library/chevron-down';
 export { default as chevronUp } from './library/chevron-up';
 export { default as chevronRight } from './library/chevron-right';
 export { default as comment } from './library/comment';
+export { default as contact } from './library/contact';
 export { default as done } from './library/done';
 export { default as discussion } from './library/discussion';
 export { default as exclamation } from './library/exclamation';
