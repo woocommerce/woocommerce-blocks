@@ -41,6 +41,7 @@ const TEMPLATE: InnerBlockTemplate[] = [
 	[ 'woocommerce/checkout-shipping-methods-block', {}, [] ],
 	[ 'woocommerce/checkout-payment-block', {}, [] ],
 	[ 'woocommerce/checkout-order-note-block', {}, [] ],
+	[ 'woocommerce/checkout-terms-block', {}, [] ],
 	[ 'woocommerce/checkout-actions-block', {}, [] ],
 ];
 

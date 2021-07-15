@@ -11,7 +11,7 @@ import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
 import { Edit, Save } from './edit';
 
 registerFeaturePluginBlockType( 'woocommerce/checkout-order-note-block', {
-	title: __( 'Order note', 'woo-gutenberg-products-block' ),
+	title: __( 'Order Note', 'woo-gutenberg-products-block' ),
 	category: 'woocommerce',
 	description: __(
 		'Allow customers to add a note to their order.',
