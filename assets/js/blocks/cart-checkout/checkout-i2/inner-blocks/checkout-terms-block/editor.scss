@@ -6,3 +6,11 @@
 	display: flex;
 	align-items: flex-start;
 }
+
+.wc-block-checkout__terms_notice {
+	margin-left: 9px;
+
+	.components-notice__action {
+		margin-left: 0;
+	}
+}
