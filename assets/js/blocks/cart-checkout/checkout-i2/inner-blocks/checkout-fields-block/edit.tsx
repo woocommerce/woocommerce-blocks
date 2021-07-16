@@ -52,7 +52,6 @@ export const CheckoutFieldsBlockContext = createContext( {
 	controls: () => null as JSX.Element | null,
 } );
 
-// @todo templateLock all prevents load after saving content for some reason.
 export const Edit = ( {
 	attributes: {
 		showCompanyField,
