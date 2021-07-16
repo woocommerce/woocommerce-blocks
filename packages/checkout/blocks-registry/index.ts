@@ -5,6 +5,7 @@ import { BlockConfiguration } from '@wordpress/blocks';
 import { registerBlockComponent } from '@woocommerce/blocks-registry';
 import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
 import type { LazyExoticComponent } from 'react';
+import { isObject } from '@woocommerce/types';
 
 /**
  * List of block areas where blocks can be registered for use. Keyed by area name.
@@ -101,6 +102,34 @@ const assertOption = (
 };
 
 /**
+ * Asserts that an option is a valid react element or lazy callback. Otherwise, throws an error.
+ *
+ * @throws Will throw an error if the type of the option doesn't match the expected type.
+ */
+const assertBlockComponent = (
+	options: Record< string, unknown >,
+	optionName: string
+) => {
+	const optionValue = options[ optionName ];
+
+	if ( optionValue ) {
+		if ( typeof optionValue === 'function' ) {
+			return;
+		}
+		if (
+			isObject( optionValue ) &&
+			optionValue.$$typeof &&
+			optionValue.$$typeof === Symbol.for( 'react.lazy' )
+		) {
+			return;
+		}
+	}
+	throw new Error(
+		`Incorrect value for the ${ optionName } argument when registering a block component. Component must be a valid React Element or Lazy callback.`
+	);
+};
+
+/**
  * Adds a block (block name) to an area, if the area exists. If the area does not exist, an error is thrown.
  */
 const registerBlockForArea = (
@@ -144,7 +173,7 @@ export const registerCheckoutBlock = (
 ): void => {
 	assertBlockName( blockName );
 	assertOption( options, 'areas', 'array' );
-	assertOption( options, 'component', 'function' );
+	assertBlockComponent( options, 'component' );
 
 	if ( options?.configuration ) {
 		assertOption( options, 'configuration', 'object' );
