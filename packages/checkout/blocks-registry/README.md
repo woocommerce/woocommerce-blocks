@@ -51,7 +51,7 @@ Here's some more details on the _configuration_ options:
 
 This is a React component that should replace the Block on the frontend. It will be fed any attributes from the Block and have access to any public context providers in the Checkout context.
 
-You should provide either a _React Component_, a `null` object, or a `React.lazy()` component if you wish to lazy load for performance reasons.
+You should provide either a _React Component_ or a `React.lazy()` component if you wish to lazy load for performance reasons.
 
 ### `areas` (required)
 

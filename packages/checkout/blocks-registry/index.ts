@@ -10,8 +10,8 @@ import type { LazyExoticComponent } from 'react';
  * List of block areas where blocks can be registered for use. Keyed by area name.
  */
 export type RegisteredBlocks = {
-	totals: Array< string >;
 	fields: Array< string >;
+	totals: Array< string >;
 	contactInformation: Array< string >;
 	shippingAddress: Array< string >;
 	billingAddress: Array< string >;
@@ -20,8 +20,8 @@ export type RegisteredBlocks = {
 };
 
 let registeredBlocks: RegisteredBlocks = {
-	totals: [],
 	fields: [],
+	totals: [],
 	contactInformation: [ 'core/paragraph' ],
 	shippingAddress: [ 'core/paragraph' ],
 	billingAddress: [ 'core/paragraph' ],
@@ -30,10 +30,74 @@ let registeredBlocks: RegisteredBlocks = {
 };
 
 /**
+ * Asserts that an option is of the given type. Otherwise, throws an error.
+ *
+ * @throws Will throw an error if the type of the option doesn't match the expected type.
+ */
+const assertType = (
+	optionName: string,
+	option: unknown,
+	expectedType: unknown
+): void => {
+	const actualType = typeof option;
+	if ( actualType !== expectedType ) {
+		throw new Error(
+			`Incorrect value for the ${ optionName } argument when registering a checkout block. It was a ${ actualType }, but must be a ${ expectedType }.`
+		);
+	}
+};
+
+/**
  * Validation to ensure an area exists.
  */
-const isValidArea = ( area: string ): boolean => {
-	return registeredBlocks.hasOwnProperty( area );
+const assertValidArea = ( area: string ): void => {
+	if ( ! registeredBlocks.hasOwnProperty( area ) ) {
+		throw new Error(
+			`Incorrect value for the "area" argument. It was a ${ area }, but must be one of ${ Object.keys(
+				registeredBlocks
+			).join( ', ' ) }.`
+		);
+	}
+};
+
+/**
+ * Validate the block name.
+ *
+ * @throws Will throw an error if the blockname is invalid.
+ */
+const assertBlockName = ( blockName: string ): void => {
+	assertType( 'blockName', blockName, 'string' );
+
+	if ( ! blockName ) {
+		throw new Error(
+			`Value for the blockName argument must not be empty.`
+		);
+	}
+};
+
+/**
+ * Asserts that an option is of the given type. Otherwise, throws an error.
+ *
+ * @throws Will throw an error if the type of the option doesn't match the expected type.
+ */
+const assertOption = (
+	options: Record< string, unknown >,
+	optionName: string,
+	expectedType: string
+): void => {
+	const actualType = typeof options[ optionName ];
+
+	if ( expectedType === 'array' ) {
+		if ( ! Array.isArray( options[ optionName ] ) ) {
+			throw new Error(
+				`Incorrect value for the ${ optionName } argument when registering a checkout block component. It was a ${ actualType }, but must be an array.`
+			);
+		}
+	} else if ( actualType !== expectedType ) {
+		throw new Error(
+			`Incorrect value for the ${ optionName } argument when registering a checkout block component. It was a ${ actualType }, but must be a ${ expectedType }.`
+		);
+	}
 };
 
 /**
@@ -43,13 +107,7 @@ const registerBlockForArea = (
 	area: keyof RegisteredBlocks,
 	blockName: string
 ): void | Error => {
-	if ( ! isValidArea( area ) ) {
-		throw new Error(
-			`Incorrect value for the "area" argument when registering the checkout block. It was a ${ area }, but must be one of ${ Object.keys(
-				registeredBlocks
-			).join( ', ' ) }.`
-		);
-	}
+	assertValidArea( area );
 	registeredBlocks = {
 		...registeredBlocks,
 		[ area ]: [ ...registeredBlocks[ area ], blockName ],
@@ -62,13 +120,7 @@ const registerBlockForArea = (
 export const getRegisteredBlocks = (
 	area: keyof RegisteredBlocks
 ): Array< string > => {
-	if ( ! isValidArea( area ) ) {
-		throw new Error(
-			`Incorrect value for the "area" argument. It was a ${ area }, but must be one of ${ Object.keys(
-				registeredBlocks
-			).join( ', ' ) }.`
-		);
-	}
+	assertValidArea( area );
 	return registeredBlocks[ area ];
 };
 
@@ -76,10 +128,9 @@ export type CheckoutBlockOptions = {
 	// This is a component to render on the frontend in place of this block, when used.
 	component:
 		| LazyExoticComponent< React.ComponentType< unknown > >
-		| JSX.Element
-		| null;
+		| JSX.Element;
 	// Area(s) to add the block to. This can be a single area (string) or an array of areas.
-	areas: keyof RegisteredBlocks | Array< keyof RegisteredBlocks >;
+	areas: Array< keyof RegisteredBlocks >;
 	// Standard block configuration object. If not passed, the block will not be registered with WordPress and must be done manually.
 	configuration?: BlockConfiguration;
 };
@@ -89,23 +140,26 @@ export type CheckoutBlockOptions = {
  */
 export const registerCheckoutBlock = (
 	blockName: string,
-	{ component = null, areas = [], configuration }: CheckoutBlockOptions
+	options: CheckoutBlockOptions
 ): void => {
-	if ( configuration ) {
+	assertBlockName( blockName );
+	assertOption( options, 'areas', 'array' );
+	assertOption( options, 'component', 'function' );
+
+	if ( options?.configuration ) {
+		assertOption( options, 'configuration', 'object' );
 		registerFeaturePluginBlockType( blockName, {
-			...configuration,
+			...options.configuration,
 			category: 'woocommerce',
 		} );
 	}
 
-	if ( Array.isArray( areas ) ) {
-		areas.forEach( ( area ) => registerBlockForArea( area, blockName ) );
-	} else {
-		registerBlockForArea( areas, blockName );
-	}
+	options.areas.forEach( ( area ) =>
+		registerBlockForArea( area, blockName )
+	);
 
 	registerBlockComponent( {
 		blockName,
-		component,
+		component: options.component,
 	} );
 };
