@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { Icon, card } from '@woocommerce/icons';
 import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
+import { createBlock } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -34,6 +35,28 @@ const settings = {
 	apiVersion: 2,
 	edit: Edit,
 	save: Save,
+	transforms: {
+		to: [
+			{
+				type: 'block',
+				blocks: [ 'woocommerce/checkout' ],
+				transform: ( attributes ) => {
+					return createBlock( 'woocommerce/checkout', {
+						attributes,
+					} );
+				},
+			},
+		],
+		from: [
+			{
+				type: 'block',
+				blocks: [ 'woocommerce/checkout-i2' ],
+				transform: ( attributes ) => {
+					return createBlock( 'woocommerce/checkout-i2', attributes );
+				},
+			},
+		],
+	},
 };
 
 registerFeaturePluginBlockType( blockName, settings );
