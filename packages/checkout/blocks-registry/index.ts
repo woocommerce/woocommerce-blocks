@@ -1,8 +1,10 @@
 /**
  * External dependencies
  */
-import { registerBlockType, BlockConfiguration } from '@wordpress/blocks';
+import { BlockConfiguration } from '@wordpress/blocks';
 import { registerBlockComponent } from '@woocommerce/blocks-registry';
+import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
+import type { LazyExoticComponent } from 'react';
 
 /**
  * List of block areas where blocks can be registered for use. Keyed by area name.
@@ -70,36 +72,40 @@ export const getRegisteredBlocks = (
 	return registeredBlocks[ area ];
 };
 
+export type CheckoutBlockOptions = {
+	// This is a component to render on the frontend in place of this block, when used.
+	component:
+		| LazyExoticComponent< React.ComponentType< unknown > >
+		| JSX.Element
+		| null;
+	// Area(s) to add the block to. This can be a single area (string) or an array of areas.
+	areas: keyof RegisteredBlocks | Array< keyof RegisteredBlocks >;
+	// Standard block configuration object. If not passed, the block will not be registered with WordPress and must be done manually.
+	configuration?: BlockConfiguration;
+};
+
 /**
  * Main API for registering a new checkout block within areas.
  */
 export const registerCheckoutBlock = (
-	// Name of the block e.g. woocommerce/sample-block
 	blockName: string,
-	// This is a component to render on the frontend in place of this block, when used.
-	blockComponent: JSX.Element,
-	// Area(s) to add the block to. This can be a single area (string) or an array of areas.
-	blockAreas: keyof RegisteredBlocks | Array< keyof RegisteredBlocks >,
-	// Standard block configuration object. If not passed, the block will not be registered with WordPress and must be done manually.
-	blockConfiguration?: BlockConfiguration
+	{ component = null, areas = [], configuration }: CheckoutBlockOptions
 ): void => {
-	if ( blockConfiguration ) {
-		registerBlockType( blockName, {
-			...blockConfiguration,
+	if ( configuration ) {
+		registerFeaturePluginBlockType( blockName, {
+			...configuration,
 			category: 'woocommerce',
 		} );
 	}
 
-	if ( Array.isArray( blockAreas ) ) {
-		blockAreas.forEach( ( area ) =>
-			registerBlockForArea( area, blockName )
-		);
+	if ( Array.isArray( areas ) ) {
+		areas.forEach( ( area ) => registerBlockForArea( area, blockName ) );
 	} else {
-		registerBlockForArea( blockAreas, blockName );
+		registerBlockForArea( areas, blockName );
 	}
 
 	registerBlockComponent( {
 		blockName,
-		component: blockComponent,
+		component,
 	} );
 };

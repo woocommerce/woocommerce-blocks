@@ -15,7 +15,6 @@ import { PanelBody, ToggleControl, Notice } from '@wordpress/components';
  */
 import './editor.scss';
 import { termsConsentDefaultText, termsCheckboxDefaultText } from './constants';
-import './editor.scss';
 
 export const Edit = ( {
 	attributes: { checkbox, text },
