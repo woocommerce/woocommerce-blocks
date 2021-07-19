@@ -11,11 +11,11 @@ import { useCheckoutContext } from '@woocommerce/base-context';
 import Block from './block';
 import attributes from './attributes';
 import LoginPrompt from './login-prompt';
+import { useCheckoutBlockContext } from '../../context';
 
 const FrontendBlock = ( {
 	title,
 	description,
-	allowCreateAccount,
 	showStepNumber,
 	children,
 }: {
@@ -26,6 +26,7 @@ const FrontendBlock = ( {
 	children: JSX.Element;
 } ) => {
 	const { isProcessing: checkoutIsProcessing } = useCheckoutContext();
+	const { allowCreateAccount } = useCheckoutBlockContext();
 
 	return (
 		<FormStep

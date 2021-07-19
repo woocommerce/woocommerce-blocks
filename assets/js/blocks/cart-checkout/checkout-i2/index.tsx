@@ -12,7 +12,6 @@ import { createBlock } from '@wordpress/blocks';
 import { Edit, Save } from './edit';
 import { blockName, blockAttributes } from './attributes';
 import './inner-blocks';
-import './editor.scss';
 
 const settings = {
 	title: __( 'Checkout i2', 'woo-gutenberg-products-block' ),

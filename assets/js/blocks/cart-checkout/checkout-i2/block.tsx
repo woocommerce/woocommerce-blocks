@@ -3,152 +3,138 @@
  */
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
-import { useEffect, createInterpolateElement } from '@wordpress/element';
-import { useStoreCart, useStoreNotices } from '@woocommerce/base-context/hooks';
+import { createInterpolateElement } from '@wordpress/element';
+import { useStoreCart } from '@woocommerce/base-context/hooks';
 import {
 	CheckoutProvider,
 	useCheckoutContext,
-	useValidationContext,
-	StoreNoticesProvider,
-	ValidationContextProvider,
 } from '@woocommerce/base-context';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import { SidebarLayout } from '@woocommerce/base-components/sidebar-layout';
-import {
-	CURRENT_USER_IS_ADMIN,
-	isWcVersion,
-	getSetting,
-} from '@woocommerce/settings';
-import { LOGIN_URL } from '@woocommerce/block-settings';
-import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
+import { CURRENT_USER_IS_ADMIN, getSetting } from '@woocommerce/settings';
 import { SlotFillProvider } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
  */
-import './style.scss';
+import './styles/style.scss';
 import EmptyCart from './empty-cart';
 import CheckoutOrderError from './checkout-order-error';
+import CheckoutValidation from './validation';
+import { LOGIN_TO_CHECKOUT_URL, isLoginRequired, reloadPage } from './utils';
+import type { Attributes } from './types';
+import { CheckoutBlockContext } from './context';
 
-export const LOGIN_TO_CHECKOUT_URL = `${ LOGIN_URL }?redirect_to=${ encodeURIComponent(
-	window.location.href
-) }`;
-
-const reloadPage = () => void window.location.reload( true );
+const LoginPrompt = () => {
+	return (
+		<>
+			{ __(
+				'You must be logged in to checkout. ',
+				'woo-gutenberg-products-block'
+			) }
+			<a href={ LOGIN_TO_CHECKOUT_URL }>
+				{ __(
+					'Click here to log in.',
+					'woo-gutenberg-products-block'
+				) }
+			</a>
+		</>
+	);
+};
 
 const Checkout = ( {
 	attributes,
-	scrollToTop,
 	children,
 }: {
-	attributes: Record< string, unknown >;
-	scrollToTop: ( props: Record< string, unknown > ) => void;
+	attributes: Attributes;
 	children: React.ReactChildren;
-} ) => {
+} ): JSX.Element => {
+	const { hasOrder, customerId } = useCheckoutContext();
+	const { cartItems, cartIsLoading } = useStoreCart();
+
 	const {
-		hasOrder,
-		hasError: checkoutHasError,
-		isIdle: checkoutIsIdle,
-		customerId,
-	} = useCheckoutContext();
-	const {
-		hasValidationErrors,
-		showAllValidationErrors,
-	} = useValidationContext();
-	const { hasNoticesOfType } = useStoreNotices();
+		allowCreateAccount,
+		showCompanyField,
+		requireCompanyField,
+		showApartmentField,
+		showPhoneField,
+		requirePhoneField,
+	} = attributes;
 
-	const hasErrorsToDisplay =
-		checkoutIsIdle &&
-		checkoutHasError &&
-		( hasValidationErrors || hasNoticesOfType( 'default' ) );
-
-	// Checkout signup is feature gated to WooCommerce 4.7 and newer; uses updated my-account/lost-password screen from 4.7+ for setting initial password.
-	const allowCreateAccount =
-		attributes.allowCreateAccount && isWcVersion( '4.7.0', '>=' );
-
-	useEffect( () => {
-		if ( hasErrorsToDisplay ) {
-			showAllValidationErrors();
-			scrollToTop( { focusableSelector: 'input:invalid' } );
-		}
-	}, [ hasErrorsToDisplay, scrollToTop, showAllValidationErrors ] );
+	if ( ! cartIsLoading && cartItems.length === 0 ) {
+		return <EmptyCart />;
+	}
 
 	if ( ! hasOrder ) {
 		return <CheckoutOrderError />;
 	}
 
 	if (
-		! customerId &&
-		! getSetting( 'checkoutAllowsGuest', false ) &&
-		! ( allowCreateAccount && getSetting( 'checkoutAllowsSignup', false ) )
+		isLoginRequired( customerId ) &&
+		allowCreateAccount &&
+		getSetting( 'checkoutAllowsSignup', false )
 	) {
-		return (
-			<>
-				{ __(
-					'You must be logged in to checkout. ',
-					'woo-gutenberg-products-block'
-				) }
-				<a href={ LOGIN_TO_CHECKOUT_URL }>
-					{ __(
-						'Click here to log in.',
-						'woo-gutenberg-products-block'
-					) }
-				</a>
-			</>
-		);
+		<LoginPrompt />;
 	}
-	const checkoutClassName = classnames( 'wc-block-checkout', {
-		'has-dark-controls': attributes.hasDarkControls,
-	} );
 
 	return (
-		<SidebarLayout className={ checkoutClassName }>
+		<CheckoutBlockContext.Provider
+			value={ {
+				allowCreateAccount,
+				showCompanyField,
+				requireCompanyField,
+				showApartmentField,
+				showPhoneField,
+				requirePhoneField,
+			} }
+		>
 			{ children }
-		</SidebarLayout>
+		</CheckoutBlockContext.Provider>
 	);
 };
 
-const Block = ( { ...props } ): JSX.Element => {
-	const { cartItems, cartIsLoading } = useStoreCart();
-	return (
-		<>
-			{ ! cartIsLoading && cartItems.length === 0 ? (
-				<EmptyCart />
-			) : (
-				<BlockErrorBoundary
-					header={ __(
-						'Something went wrong…',
-						'woo-gutenberg-products-block'
-					) }
-					text={ createInterpolateElement(
-						__(
-							'The checkout has encountered an unexpected error. <button>Try reloading the page</button>. If the error persists, please get in touch with us so we can assist.',
-							'woo-gutenberg-products-block'
-						),
-						{
-							button: (
-								<button
-									className="wc-block-link-button"
-									onClick={ reloadPage }
-								/>
-							),
-						}
-					) }
-					showErrorMessage={ CURRENT_USER_IS_ADMIN }
-				>
-					<StoreNoticesProvider context="wc/checkout">
-						<ValidationContextProvider>
-							<CheckoutProvider>
-								<SlotFillProvider>
-									<Checkout { ...props } />
-								</SlotFillProvider>
-							</CheckoutProvider>
-						</ValidationContextProvider>
-					</StoreNoticesProvider>
-				</BlockErrorBoundary>
-			) }
-		</>
-	);
-};
+const Block = ( {
+	attributes,
+	children,
+}: {
+	attributes: Attributes;
+	scrollToTop: ( props: Record< string, unknown > ) => void;
+	children: React.ReactChildren;
+} ): JSX.Element => (
+	<BlockErrorBoundary
+		header={ __( 'Something went wrong…', 'woo-gutenberg-products-block' ) }
+		text={ createInterpolateElement(
+			__(
+				'The checkout has encountered an unexpected error. <button>Try reloading the page</button>. If the error persists, please get in touch with us so we can assist.',
+				'woo-gutenberg-products-block'
+			),
+			{
+				button: (
+					<button
+						className="wc-block-link-button"
+						onClick={ reloadPage }
+					/>
+				),
+			}
+		) }
+		showErrorMessage={ CURRENT_USER_IS_ADMIN }
+	>
+		<CheckoutValidation>
+			<CheckoutProvider>
+				<SlotFillProvider>
+					<SidebarLayout
+						className={ classnames( 'wc-block-checkout', {
+							'has-dark-controls': attributes.hasDarkControls,
+						} ) }
+					>
+						<Checkout attributes={ attributes }>
+							{ children }
+						</Checkout>
+					</SidebarLayout>
+				</SlotFillProvider>
+			</CheckoutProvider>
+		</CheckoutValidation>
+	</BlockErrorBoundary>
+);
 
-export default withScrollToTop( Block );
+export default Block;

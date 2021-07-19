@@ -28,10 +28,11 @@ import { getSetting } from '@woocommerce/settings';
  * Internal dependencies
  */
 
-const Block = (): JSX.Element => {
-	// @todo move to attributes.
-	const showRateAfterTaxName = true;
-
+const Block = ( {
+	showRateAfterTaxName = false,
+}: {
+	showRateAfterTaxName: boolean;
+} ): JSX.Element => {
 	const { cartItems, cartTotals, cartCoupons, cartFees } = useStoreCart();
 	const {
 		applyCoupon,

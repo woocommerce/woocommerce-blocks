@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { useBlockProps } from '@wordpress/block-editor';
-import { useContext } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -12,12 +11,14 @@ import {
 	AdditionalFields,
 	AdditionalFieldsContent,
 } from '../../form-step';
-import { CheckoutFieldsBlockContext } from '../checkout-fields-block/edit';
+import {
+	useCheckoutBlockContext,
+	useCheckoutBlockControlsContext,
+} from '../../context';
 import Block from './block';
 
 export const Edit = ( {
 	attributes,
-	context,
 	setAttributes,
 }: {
 	attributes: {
@@ -25,35 +26,31 @@ export const Edit = ( {
 		description: string;
 		showStepNumber: boolean;
 	};
-	context: {
-		'woocommerce/showCompanyField': boolean;
-		'woocommerce/showApartmentField': boolean;
-		'woocommerce/requireCompanyField': boolean;
-		'woocommerce/showPhoneField': boolean;
-		'woocommerce/requirePhoneField': boolean;
-	};
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 } ): JSX.Element => {
-	const { controls: FieldControls } = useContext(
-		CheckoutFieldsBlockContext
-	);
+	const {
+		showCompanyField,
+		showApartmentField,
+		requireCompanyField,
+		showPhoneField,
+		requirePhoneField,
+	} = useCheckoutBlockContext();
+	const {
+		addressFieldControls: Controls,
+	} = useCheckoutBlockControlsContext();
 	return (
 		<FormStepBlock
 			setAttributes={ setAttributes }
 			attributes={ attributes }
 			className="wc-block-checkout__shipping-fields"
 		>
-			<FieldControls />
+			<Controls />
 			<Block
-				showCompanyField={ context[ 'woocommerce/showCompanyField' ] }
-				showApartmentField={
-					context[ 'woocommerce/showApartmentField' ]
-				}
-				requireCompanyField={
-					context[ 'woocommerce/requireCompanyField' ]
-				}
-				showPhoneField={ context[ 'woocommerce/showPhoneField' ] }
-				requirePhoneField={ context[ 'woocommerce/requirePhoneField' ] }
+				showCompanyField={ showCompanyField }
+				showApartmentField={ showApartmentField }
+				requireCompanyField={ requireCompanyField }
+				showPhoneField={ showPhoneField }
+				requirePhoneField={ requirePhoneField }
 			/>
 			<AdditionalFields area="shippingAddress" />
 		</FormStepBlock>

@@ -28,26 +28,12 @@ class AtomicBlock extends AbstractBlock {
 		register_block_type(
 			$this->get_block_type(),
 			array(
-				'render_callback'  => $this->get_block_type_render_callback(),
-				'editor_script'    => $this->get_block_type_editor_script( 'handle' ),
-				'editor_style'     => $this->get_block_type_editor_style(),
-				'style'            => $this->get_block_type_style(),
-				'attributes'       => $this->get_block_type_attributes(),
-				'supports'         => $this->get_block_type_supports(),
-				'provides_context' => [
-					'woocommerce/showCompanyField'    => 'showCompanyField',
-					'woocommerce/requireCompanyField' => 'requireCompanyField',
-					'woocommerce/showApartmentField'  => 'showApartmentField',
-					'woocommerce/showPhoneField'      => 'showPhoneField',
-					'woocommerce/requirePhoneField'   => 'requirePhoneField',
-				],
-				'uses_context'     => [
-					'woocommerce/showCompanyField',
-					'woocommerce/requireCompanyField',
-					'woocommerce/showApartmentField',
-					'woocommerce/showPhoneField',
-					'woocommerce/requirePhoneField',
-				],
+				'render_callback' => $this->get_block_type_render_callback(),
+				'editor_script'   => $this->get_block_type_editor_script( 'handle' ),
+				'editor_style'    => $this->get_block_type_editor_style(),
+				'style'           => $this->get_block_type_style(),
+				'attributes'      => $this->get_block_type_attributes(),
+				'supports'        => $this->get_block_type_supports(),
 			)
 		);
 	}

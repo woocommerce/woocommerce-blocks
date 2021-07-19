@@ -38,11 +38,4 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-shipping-address-block', {
 	apiVersion: 2,
 	edit: Edit,
 	save: Save,
-	usesContext: [
-		'woocommerce/showCompanyField',
-		'woocommerce/requireCompanyField',
-		'woocommerce/showApartmentField',
-		'woocommerce/showPhoneField',
-		'woocommerce/requirePhoneField',
-	],
 } );

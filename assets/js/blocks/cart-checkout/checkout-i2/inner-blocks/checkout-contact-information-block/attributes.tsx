@@ -19,8 +19,4 @@ export default {
 			'woo-gutenberg-products-block'
 		),
 	} ),
-	allowCreateAccount: {
-		type: 'boolean',
-		default: false,
-	},
 };

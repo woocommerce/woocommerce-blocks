@@ -1,9 +1,8 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
-import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { PanelBody, ToggleControl, Disabled } from '@wordpress/components';
+import { useBlockProps } from '@wordpress/block-editor';
+import { Disabled } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -14,6 +13,10 @@ import {
 	AdditionalFieldsContent,
 } from '../../form-step';
 import Block from './block';
+import {
+	useCheckoutBlockContext,
+	useCheckoutBlockControlsContext,
+} from '../../context';
 
 export const Edit = ( {
 	attributes,
@@ -23,38 +26,17 @@ export const Edit = ( {
 		title: string;
 		description: string;
 		showStepNumber: boolean;
-		allowCreateAccount: boolean;
 	};
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 } ): JSX.Element => {
-	const { allowCreateAccount = true } = attributes;
-
+	const { allowCreateAccount } = useCheckoutBlockContext();
+	const { accountControls: Controls } = useCheckoutBlockControlsContext();
 	return (
 		<FormStepBlock
 			attributes={ attributes }
 			setAttributes={ setAttributes }
 		>
-			<InspectorControls>
-				<PanelBody
-					title={ __(
-						'Account options',
-						'woo-gutenberg-products-block'
-					) }
-				>
-					<ToggleControl
-						label={ __(
-							'Allow shoppers to sign up for a user account during checkout',
-							'woo-gutenberg-products-block'
-						) }
-						checked={ allowCreateAccount }
-						onChange={ () =>
-							setAttributes( {
-								allowCreateAccount: ! allowCreateAccount,
-							} )
-						}
-					/>
-				</PanelBody>
-			</InspectorControls>
+			<Controls />
 			<Disabled>
 				<Block allowCreateAccount={ allowCreateAccount } />
 			</Disabled>

@@ -8,6 +8,7 @@ import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
  * Internal dependencies
  */
 import { Edit, Save } from './edit';
+import attributes from './attributes';
 
 registerFeaturePluginBlockType( 'woocommerce/checkout-order-summary-block', {
 	title: __( 'Order Summary', 'woo-gutenberg-products-block' ),
@@ -28,24 +29,7 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-order-summary-block', {
 		},
 	},
 	parent: [ 'woocommerce/checkout-totals-block' ],
-	attributes: {
-		showCompanyField: {
-			type: 'boolean',
-			default: false,
-		},
-		requireCompanyField: {
-			type: 'boolean',
-			default: false,
-		},
-		allowCreateAccount: {
-			type: 'boolean',
-			default: false,
-		},
-		showApartmentField: {
-			type: 'boolean',
-			default: true,
-		},
-	},
+	attributes,
 	apiVersion: 2,
 	edit: Edit,
 	save: Save,

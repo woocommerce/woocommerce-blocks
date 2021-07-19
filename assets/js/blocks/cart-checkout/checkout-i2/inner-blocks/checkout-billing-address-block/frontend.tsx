@@ -11,30 +11,28 @@ import { useCheckoutAddress } from '@woocommerce/base-context/hooks';
  */
 import Block from './block';
 import attributes from './attributes';
+import { useCheckoutBlockContext } from '../../context';
 
 const FrontendBlock = ( {
 	title,
 	description,
-	requireCompanyField,
-	showApartmentField,
-	showCompanyField,
-	showPhoneField,
-	requirePhoneField,
 	showStepNumber,
 	children,
 }: {
 	title: string;
 	description: string;
-	requireCompanyField: boolean;
-	showApartmentField: boolean;
-	showCompanyField: boolean;
-	showPhoneField: boolean;
-	requirePhoneField: boolean;
 	showStepNumber: boolean;
 	children: JSX.Element;
 } ): JSX.Element | null => {
 	const { isProcessing: checkoutIsProcessing } = useCheckoutContext();
 	const { showBillingFields } = useCheckoutAddress();
+	const {
+		requireCompanyField,
+		requirePhoneField,
+		showApartmentField,
+		showCompanyField,
+		showPhoneField,
+	} = useCheckoutBlockContext();
 
 	if ( ! showBillingFields ) {
 		return null;

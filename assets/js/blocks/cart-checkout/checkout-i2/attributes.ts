@@ -10,6 +10,10 @@ export const blockAttributes = {
 		default: false,
 		save: false,
 	},
+	hasDarkControls: {
+		type: 'boolean',
+		default: getSetting( 'hasDarkEditorStyleSupport', false ),
+	},
 	showCompanyField: {
 		type: 'boolean',
 		default: false,
@@ -34,6 +38,7 @@ export const blockAttributes = {
 		type: 'boolean',
 		default: false,
 	},
+	// Deprecated - here for v1 migration support
 	showOrderNotes: {
 		type: 'boolean',
 		default: true,
@@ -49,10 +54,6 @@ export const blockAttributes = {
 	cartPageId: {
 		type: 'number',
 		default: 0,
-	},
-	hasDarkControls: {
-		type: 'boolean',
-		default: getSetting( 'hasDarkEditorStyleSupport', false ),
 	},
 	showRateAfterTaxName: {
 		type: 'boolean',

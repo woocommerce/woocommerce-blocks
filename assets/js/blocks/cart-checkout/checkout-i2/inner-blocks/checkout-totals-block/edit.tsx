@@ -27,7 +27,6 @@ export const Edit = (): JSX.Element => {
 					allowedBlocks={ ALLOWED_BLOCKS }
 					template={ TEMPLATE }
 					templateLock={ false }
-					renderAppender={ InnerBlocks.ButtonBlockAppender }
 				/>
 			</div>
 		</Sidebar>
