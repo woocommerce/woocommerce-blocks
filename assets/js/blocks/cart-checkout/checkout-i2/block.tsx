@@ -36,50 +36,15 @@ export const LOGIN_TO_CHECKOUT_URL = `${ LOGIN_URL }?redirect_to=${ encodeURICom
 
 const reloadPage = () => void window.location.reload( true );
 
-const Block = ( { ...props } ) => {
-	const { cartItems, cartIsLoading } = useStoreCart();
-	return (
-		<>
-			{ ! cartIsLoading && cartItems.length === 0 ? (
-				<EmptyCart />
-			) : (
-				<BlockErrorBoundary
-					header={ __(
-						'Something went wrong…',
-						'woo-gutenberg-products-block'
-					) }
-					text={ createInterpolateElement(
-						__(
-							'The checkout has encountered an unexpected error. <button>Try reloading the page</button>. If the error persists, please get in touch with us so we can assist.',
-							'woo-gutenberg-products-block'
-						),
-						{
-							button: (
-								<button
-									className="wc-block-link-button"
-									onClick={ reloadPage }
-								/>
-							),
-						}
-					) }
-					showErrorMessage={ CURRENT_USER_IS_ADMIN }
-				>
-					<StoreNoticesProvider context="wc/checkout">
-						<ValidationContextProvider>
-							<CheckoutProvider>
-								<SlotFillProvider>
-									<Checkout { ...props } />
-								</SlotFillProvider>
-							</CheckoutProvider>
-						</ValidationContextProvider>
-					</StoreNoticesProvider>
-				</BlockErrorBoundary>
-			) }
-		</>
-	);
-};
-
-const Checkout = ( { attributes, scrollToTop, children } ) => {
+const Checkout = ( {
+	attributes,
+	scrollToTop,
+	children,
+}: {
+	attributes: Record< string, unknown >;
+	scrollToTop: ( props: Record< string, unknown > ) => void;
+	children: React.ReactChildren;
+} ) => {
 	const {
 		hasOrder,
 		hasError: checkoutHasError,
@@ -140,6 +105,49 @@ const Checkout = ( { attributes, scrollToTop, children } ) => {
 		<SidebarLayout className={ checkoutClassName }>
 			{ children }
 		</SidebarLayout>
+	);
+};
+
+const Block = ( { ...props } ): JSX.Element => {
+	const { cartItems, cartIsLoading } = useStoreCart();
+	return (
+		<>
+			{ ! cartIsLoading && cartItems.length === 0 ? (
+				<EmptyCart />
+			) : (
+				<BlockErrorBoundary
+					header={ __(
+						'Something went wrong…',
+						'woo-gutenberg-products-block'
+					) }
+					text={ createInterpolateElement(
+						__(
+							'The checkout has encountered an unexpected error. <button>Try reloading the page</button>. If the error persists, please get in touch with us so we can assist.',
+							'woo-gutenberg-products-block'
+						),
+						{
+							button: (
+								<button
+									className="wc-block-link-button"
+									onClick={ reloadPage }
+								/>
+							),
+						}
+					) }
+					showErrorMessage={ CURRENT_USER_IS_ADMIN }
+				>
+					<StoreNoticesProvider context="wc/checkout">
+						<ValidationContextProvider>
+							<CheckoutProvider>
+								<SlotFillProvider>
+									<Checkout { ...props } />
+								</SlotFillProvider>
+							</CheckoutProvider>
+						</ValidationContextProvider>
+					</StoreNoticesProvider>
+				</BlockErrorBoundary>
+			) }
+		</>
 	);
 };
 

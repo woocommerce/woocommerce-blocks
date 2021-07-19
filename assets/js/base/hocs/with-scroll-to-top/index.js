@@ -1,12 +1,68 @@
 /**
  * External dependencies
  */
-import { Component, createRef } from 'react';
+import { useRef, useCallback } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+
+const WithScrollToTopComponent = ( { OriginalComponent, ...props } ) => {
+	const scrollPointRef = useRef( null );
+
+	const scrollToTopIfNeeded = useCallback( () => {
+		if ( scrollPointRef.current === null ) {
+			return;
+		}
+		const scrollPointRefYPosition = scrollPointRef.current.getBoundingClientRect()
+			.bottom;
+		const isScrollPointRefVisible =
+			scrollPointRefYPosition >= 0 &&
+			scrollPointRefYPosition <= window.innerHeight;
+		if ( ! isScrollPointRefVisible ) {
+			scrollPointRef.current.scrollIntoView();
+		}
+	}, [] );
+
+	const moveFocusToTop = useCallback( ( focusableSelector ) => {
+		if ( scrollPointRef.current === null ) {
+			return;
+		}
+		const focusableElements = scrollPointRef.current.parentElement.querySelectorAll(
+			focusableSelector
+		);
+		if ( focusableElements.length ) {
+			focusableElements[ 0 ].focus();
+		}
+	}, [] );
+
+	const scrollToTop = useCallback(
+		( args ) => {
+			if ( ! window || ! Number.isFinite( window.innerHeight ) ) {
+				return;
+			}
+
+			scrollToTopIfNeeded();
+
+			if ( args && args.focusableSelector ) {
+				moveFocusToTop( args.focusableSelector );
+			}
+		},
+		[ scrollToTopIfNeeded, moveFocusToTop ]
+	);
+
+	return (
+		<>
+			<div
+				className="with-scroll-to-top__scroll-point"
+				ref={ scrollPointRef }
+				aria-hidden
+			/>
+			<OriginalComponent { ...props } scrollToTop={ scrollToTop } />
+		</>
+	);
+};
 
 /**
  * HOC that provides a function to scroll to the top of the component.
@@ -14,64 +70,14 @@ import './style.scss';
  * @param {Function} OriginalComponent Component being wrapped.
  */
 const withScrollToTop = ( OriginalComponent ) => {
-	class WrappedComponent extends Component {
-		constructor() {
-			super();
-
-			this.scrollPointRef = createRef();
-		}
-
-		scrollToTopIfNeeded = () => {
-			const scrollPointRefYPosition = this.scrollPointRef.current.getBoundingClientRect()
-				.bottom;
-			const isScrollPointRefVisible =
-				scrollPointRefYPosition >= 0 &&
-				scrollPointRefYPosition <= window.innerHeight;
-			if ( ! isScrollPointRefVisible ) {
-				this.scrollPointRef.current.scrollIntoView();
-			}
-		};
-
-		moveFocusToTop = ( focusableSelector ) => {
-			const focusableElements = this.scrollPointRef.current.parentElement.querySelectorAll(
-				focusableSelector
-			);
-			if ( focusableElements.length ) {
-				focusableElements[ 0 ].focus();
-			}
-		};
-
-		scrollToTop = ( args ) => {
-			if ( ! window || ! Number.isFinite( window.innerHeight ) ) {
-				return;
-			}
-
-			this.scrollToTopIfNeeded();
-			if ( args && args.focusableSelector ) {
-				this.moveFocusToTop( args.focusableSelector );
-			}
-		};
-
-		render() {
-			return (
-				<>
-					<div
-						className="with-scroll-to-top__scroll-point"
-						ref={ this.scrollPointRef }
-						aria-hidden
-					/>
-					<OriginalComponent
-						{ ...this.props }
-						scrollToTop={ this.scrollToTop }
-					/>
-				</>
-			);
-		}
-	}
-
-	WrappedComponent.displayName = 'withScrollToTop';
-
-	return WrappedComponent;
+	return ( props ) => {
+		return (
+			<WithScrollToTopComponent
+				{ ...props }
+				OriginalComponent={ OriginalComponent }
+			/>
+		);
+	};
 };
 
 export default withScrollToTop;
