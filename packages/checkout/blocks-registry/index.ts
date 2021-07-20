@@ -3,7 +3,7 @@
  */
 import { BlockConfiguration } from '@wordpress/blocks';
 import { registerBlockComponent } from '@woocommerce/blocks-registry';
-import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
+import { registerExperimentalBlockType } from '@woocommerce/block-settings';
 import type { LazyExoticComponent } from 'react';
 import { isObject } from '@woocommerce/types';
 
@@ -177,7 +177,7 @@ export const registerCheckoutBlock = (
 
 	if ( options?.configuration ) {
 		assertOption( options, 'configuration', 'object' );
-		registerFeaturePluginBlockType( blockName, {
+		registerExperimentalBlockType( blockName, {
 			...options.configuration,
 			category: 'woocommerce',
 		} );

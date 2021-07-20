@@ -16,6 +16,7 @@ __webpack_public_path__ = WC_BLOCKS_BUILD_URL;
  */
 import { Edit, Save } from './edit';
 
+// @todo Sample block should only be visible in correct areas, not top level.
 registerCheckoutBlock( 'woocommerce/checkout-sample-block', {
 	component: lazy( () =>
 		import( /* webpackChunkName: "checkout-blocks/sample" */ './frontend' )
