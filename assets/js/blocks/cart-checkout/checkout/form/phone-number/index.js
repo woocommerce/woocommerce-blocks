@@ -11,15 +11,9 @@ import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
  * @param {boolean} props.isRequired Is the phone number required or optional.
  * @param {Function} props.onChange Event fired when the input changes.
  * @param {string} props.value Value of the input.
- * @param {boolean} props.readonly Is the input readonly?
  * @return {*} The component.
  */
-const PhoneNumber = ( {
-	isRequired = false,
-	value = '',
-	onChange,
-	readonly = false,
-} ) => {
+const PhoneNumber = ( { isRequired = false, value = '', onChange } ) => {
 	return (
 		<ValidatedTextInput
 			id="phone"
@@ -33,7 +27,6 @@ const PhoneNumber = ( {
 			}
 			value={ value }
 			onChange={ onChange }
-			readonly={ readonly }
 		/>
 	);
 };

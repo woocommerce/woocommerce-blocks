@@ -8,7 +8,6 @@ export interface CountryInputProps {
 	required?: boolean;
 	errorMessage?: string;
 	errorId: null | 'shipping-missing-country';
-	readonly?: boolean;
 }
 
 export type CountryInputWithCountriesProps = CountryInputProps & {

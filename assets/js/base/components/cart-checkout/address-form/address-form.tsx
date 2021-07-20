@@ -172,7 +172,6 @@ const AddressForm = ( {
 							}
 							errorMessage={ field.errorMessage }
 							required={ field.required }
-							readonly={ field.readonly }
 						/>
 					);
 				}
@@ -202,7 +201,6 @@ const AddressForm = ( {
 							}
 							errorMessage={ field.errorMessage }
 							required={ field.required }
-							readonly={ field.readonly }
 						/>
 					);
 				}
@@ -226,7 +224,6 @@ const AddressForm = ( {
 						}
 						errorMessage={ field.errorMessage }
 						required={ field.required }
-						readonly={ field.readonly }
 					/>
 				);
 			} ) }

@@ -12,13 +12,11 @@ const PhoneNumber = ( {
 	isRequired = false,
 	value = '',
 	onChange,
-	readonly = false,
 }: {
 	id?: string;
 	isRequired: boolean;
 	value: string;
 	onChange: ( value: string ) => void;
-	readonly?: boolean;
 } ): JSX.Element => {
 	return (
 		<ValidatedTextInput
@@ -33,7 +31,6 @@ const PhoneNumber = ( {
 			}
 			value={ value }
 			onChange={ onChange }
-			readonly={ readonly }
 		/>
 	);
 };
