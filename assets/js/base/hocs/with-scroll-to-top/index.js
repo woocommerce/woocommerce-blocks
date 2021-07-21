@@ -8,7 +8,7 @@ import { useRef, useCallback } from '@wordpress/element';
  */
 import './style.scss';
 
-const WithScrollToTopComponent = ( { OriginalComponent, ...props } ) => {
+const ScrollToTopComponent = ( { OriginalComponent, ...props } ) => {
 	const scrollPointRef = useRef( null );
 
 	const scrollToTopIfNeeded = useCallback( () => {
@@ -72,7 +72,7 @@ const WithScrollToTopComponent = ( { OriginalComponent, ...props } ) => {
 const withScrollToTop = ( OriginalComponent ) => {
 	return ( props ) => {
 		return (
-			<WithScrollToTopComponent
+			<ScrollToTopComponent
 				{ ...props }
 				OriginalComponent={ OriginalComponent }
 			/>
