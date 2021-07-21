@@ -66,7 +66,7 @@ export const useCheckoutAddress = () => {
 				setBillingData( shippingAddress );
 			} else {
 				const {
-					// We need to pluck out email from previous billing data because they can be empty, causing the current email and phone to get emptied. See issue #4155
+					// We need to pluck out email from previous billing data because they can be empty, causing the current email to get emptied. See issue #4155
 					/* eslint-disable no-unused-vars */
 					email,
 					/* eslint-enable no-unused-vars */
