@@ -5,6 +5,12 @@
 	padding-bottom: 4px;
 	display: flex;
 	align-items: flex-start;
+
+	.block-editor-rich-text__editable {
+		padding-left: $gap;
+		vertical-align: middle;
+		line-height: em(24px);
+	}
 }
 
 .wc-block-checkout__terms_notice {
