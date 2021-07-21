@@ -39,7 +39,7 @@ The options you feed the configuration instance should be an object in this shap
 
 ```js
 const options = {
-	component: () => <div>A Functional Component</div>,
+	component: () => <div>A Function Component</div>,
 	areas: [ 'areaName' ],
 	configuration: {},
 };
