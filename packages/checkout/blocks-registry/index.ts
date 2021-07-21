@@ -84,7 +84,7 @@ const assertBlockName = ( blockName: string ): void => {
 const assertOption = (
 	options: Record< string, unknown >,
 	optionName: string,
-	expectedType: string
+	expectedType: 'array' | 'object' | 'string' | 'boolean' | 'number'
 ): void => {
 	const actualType = typeof options[ optionName ];
 
