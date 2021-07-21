@@ -1,10 +1,12 @@
 /**
  * HACKS
  *
- * @todo Remove custom locking support when supported natively in WordPress (5.9)
- *
  * This file contains functionality to "lock" blocks i.e. to prevent blocks being moved or deleted. This needs to be
  * kept in place until native support for locking is available in WordPress (estimated WordPress 5.9).
+ */
+
+/**
+ * @todo Remove custom block locking (requires native WordPress support)
  */
 
 /**

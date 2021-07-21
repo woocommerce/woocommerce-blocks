@@ -120,7 +120,7 @@ class CartUpdateCustomer extends AbstractCartRoute {
 
 		$shipping_phone_value = isset( $shipping['phone'] ) ? $shipping['phone'] : null;
 
-		// @todo When WooCommerce min version support is 5.6+, remove custom shipping phone handling
+		// @todo Remove custom shipping_phone handling (requires WC 5.6+)
 		if ( is_callable( [ wc()->customer, 'set_shipping_phone' ] ) ) {
 			wc()->customer->set_shipping_phone( $shipping_phone_value );
 		} else {
