@@ -98,7 +98,6 @@ const Block = ( {
 	children,
 }: {
 	attributes: Attributes;
-	scrollToTop: ( props: Record< string, unknown > ) => void;
 	children: React.ReactChildren;
 } ): JSX.Element => (
 	<BlockErrorBoundary
