@@ -37,18 +37,14 @@ type NoticeCreator = ( text: string, noticeProps: NoticeOptions ) => void;
 
 export const useStoreNotices = (): {
 	notices: WPNotice[];
-	noticesApi: {
-		hasNoticesOfType: ( type: string ) => boolean;
-		removeNotices: ( status: string | null ) => void;
-		removeNotice: ( id: string, context: string ) => void;
-	};
-	noticeCreators: {
-		addDefaultNotice: NoticeCreator;
-		addErrorNotice: NoticeCreator;
-		addWarningNotice: NoticeCreator;
-		addInfoNotice: NoticeCreator;
-		addSuccessNotice: NoticeCreator;
-	};
+	hasNoticesOfType: ( type: string ) => boolean;
+	removeNotices: ( status: string | null ) => void;
+	removeNotice: ( id: string, context: string ) => void;
+	addDefaultNotice: NoticeCreator;
+	addErrorNotice: NoticeCreator;
+	addWarningNotice: NoticeCreator;
+	addInfoNotice: NoticeCreator;
+	addSuccessNotice: NoticeCreator;
 	setIsSuppressed: ( isSuppressed: boolean ) => void;
 } => {
 	const {
