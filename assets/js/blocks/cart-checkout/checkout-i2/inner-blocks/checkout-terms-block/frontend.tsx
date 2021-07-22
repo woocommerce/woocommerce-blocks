@@ -25,6 +25,8 @@ const FrontendBlock = ( {
 	instanceId: string;
 } ): JSX.Element => {
 	const [ checked, setChecked ] = useState( false );
+
+	// @todo Checkout i2: Pass validation context to Inner Blocks to avoid exporting in a public package.
 	const { isDisabled } = useCheckoutSubmit();
 	const {
 		getValidationError,
@@ -60,25 +62,6 @@ const FrontendBlock = ( {
 		clearValidationError,
 		setValidationErrors,
 	] );
-
-	/* Throw an error on submit. This code is not needed here but it shows as an example how to do it.
-	const { onCheckoutValidationBeforeProcessing } = useCheckoutContext();
-
-	useEffect( () => {
-		const unsubscribe = onCheckoutValidationBeforeProcessing( () => {
-			if ( ! checked ) {
-				return {
-					errorMessage: __(
-						'Please read and accept the terms and conditions to proceed with your order.',
-						'woo-gutenberg-products-block'
-					),
-				};
-			}
-		} );
-		return () => {
-			unsubscribe();
-		};
-	}, [ onCheckoutValidationBeforeProcessing, checked ] );*/
 
 	return (
 		<div
