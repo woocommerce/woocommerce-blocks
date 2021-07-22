@@ -26,7 +26,7 @@ const FrontendBlock = ( {
 } ): JSX.Element => {
 	const [ checked, setChecked ] = useState( false );
 
-	// @todo Checkout i2: Pass validation context to Inner Blocks to avoid exporting in a public package.
+	// @todo Checkout i2 - Pass validation context to Inner Blocks to avoid exporting in a public package.
 	const { isDisabled } = useCheckoutSubmit();
 	const {
 		getValidationError,
