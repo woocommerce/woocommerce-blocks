@@ -150,7 +150,7 @@ export const getRegisteredBlocks = (
 	area: keyof RegisteredBlocks
 ): Array< string > => {
 	assertValidArea( area );
-	return registeredBlocks[ area ];
+	return [ ...registeredBlocks[ area ] ];
 };
 
 export type CheckoutBlockOptions = {
