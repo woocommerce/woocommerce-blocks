@@ -58,7 +58,10 @@ const withScrollToTop = (
 		const scrollPointRef = useRef< HTMLDivElement >( null );
 		const scrollToTop = ( args: ScrollToTopProps ) => {
 			if ( scrollPointRef.current !== null ) {
-				scrollToHTMLElement( scrollPointRef.current, args );
+				// Scroll after a short timeout to allow a re-render. This will allow focusableSelector to match updated components.
+				setTimeout( () => {
+					scrollToHTMLElement( scrollPointRef.current, args );
+				}, 50 );
 			}
 		};
 		return (
