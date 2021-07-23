@@ -40,6 +40,9 @@ const FrontendBlock = ( {
 
 	// Track validation errors for this input.
 	useEffect( () => {
+		if ( ! checkbox ) {
+			return;
+		}
 		if ( checked ) {
 			clearValidationError( validationErrorId );
 		} else {
@@ -57,6 +60,7 @@ const FrontendBlock = ( {
 			clearValidationError( validationErrorId );
 		};
 	}, [
+		checkbox,
 		checked,
 		validationErrorId,
 		clearValidationError,
