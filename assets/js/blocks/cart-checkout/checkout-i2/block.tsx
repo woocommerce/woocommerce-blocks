@@ -157,8 +157,9 @@ const Block = ( {
 		<StoreSnackbarNoticesProvider context="wc/checkout">
 			<StoreNoticesProvider context="wc/checkout">
 				<ValidationContextProvider>
-					<CheckoutProvider>
-						<SlotFillProvider>
+					{ /* SlotFillProvider need to be defined before CheckoutProvider so fills have the SlotFill context ready when they mount. */ }
+					<SlotFillProvider>
+						<CheckoutProvider>
 							<SidebarLayout
 								className={ classnames( 'wc-block-checkout', {
 									'has-dark-controls':
@@ -170,8 +171,8 @@ const Block = ( {
 								</Checkout>
 								<ScrollOnError scrollToTop={ scrollToTop } />
 							</SidebarLayout>
-						</SlotFillProvider>
-					</CheckoutProvider>
+						</CheckoutProvider>
+					</SlotFillProvider>
 				</ValidationContextProvider>
 			</StoreNoticesProvider>
 		</StoreSnackbarNoticesProvider>
