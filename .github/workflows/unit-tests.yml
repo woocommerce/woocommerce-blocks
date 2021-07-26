@@ -95,7 +95,7 @@ jobs:
 
       - name: Run PHP Unit tests
         env:
-          WOO_VERSION: 5.5.1
+          WOO_VERSION: 5.5.2
         run: |
           npm run phpunit
 
