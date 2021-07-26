@@ -105,7 +105,7 @@ class Bootstrap {
 			$plugin_data = \get_file_data(
 				$this->package->get_path( 'woocommerce-gutenberg-products-block.php' ),
 				[
-					'RequiredWCVersion' => \WC_Plugin_Updates::VERSION_REQUIRED_HEADER,
+					'RequiredWCVersion' => 'WC requires at least',
 				]
 			);
 			if ( isset( $plugin_data['RequiredWCVersion'] ) && version_compare( \WC()->version, $plugin_data['RequiredWCVersion'], '<' ) ) {
