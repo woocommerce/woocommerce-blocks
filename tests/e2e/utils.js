@@ -4,6 +4,8 @@
 import {
 	openGlobalBlockInserter,
 	pressKeyWithModifier,
+	focusSelectedBlock,
+	waitForInserterCloseAndContentFocus,
 } from '@wordpress/e2e-test-utils';
 
 const INSERTER_SEARCH_SELECTOR =
@@ -16,12 +18,29 @@ const INSERTER_SEARCH_SELECTOR =
  *
  * @param {string} searchTerm The text to search the inserter for.
  */
-async function searchForBlock( searchTerm ) {
+export async function searchForBlock( searchTerm ) {
 	await openGlobalBlockInserter();
 	await page.waitForSelector( INSERTER_SEARCH_SELECTOR );
 	await page.focus( INSERTER_SEARCH_SELECTOR );
 	await pressKeyWithModifier( 'primary', 'a' );
 	await page.keyboard.type( searchTerm );
+}
+
+/**
+ * Opens the inserter, searches for the given term, then selects the first
+ * result that appears. It then waits briefly for the block list to update.
+ *
+ * @param {string} searchTerm The text to search the inserter for.
+ */
+export async function insertBlock( searchTerm ) {
+	await searchForBlock( searchTerm );
+	const insertButton = await page.waitForXPath(
+		`//button//span[contains(text(), '${ searchTerm }')]`
+	);
+	await insertButton.click();
+	await focusSelectedBlock();
+	// We should wait until the inserter closes and the focus moves to the content.
+	await waitForInserterCloseAndContentFocus();
 }
 
 /**
