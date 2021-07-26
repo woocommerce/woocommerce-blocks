@@ -39,7 +39,7 @@ If you want to see what we're working on for future versions, or want to help ou
 
 We release a new version of WooCommerce Blocks onto WordPress.org every few weeks, which can be used as an easier way to preview the features.
 
-> Note: The plugin follows a policy of supporting the "L0" strategy for version support. What this means is that the plugin will require the most recent version of WordPress, and the most recent version of WooCommerce core at the time of a release.
+> Note: The plugin follows a policy of supporting the "L0" strategy for version support. What this means is that the plugin will require the most recent version of WordPress, and the most recent version of WooCommerce core at the time of a release. You can read more about [this policy here](https://developer.woocommerce.com/?p=9998)
 >
 
 1. Make sure you have the latest available versions of WordPress and WooCommerce on your site.
