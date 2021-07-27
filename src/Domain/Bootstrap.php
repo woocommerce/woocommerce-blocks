@@ -100,7 +100,7 @@ class Bootstrap {
 	 * @return boolean
 	 */
 	protected function has_core_dependencies() {
-		$has_needed_dependencies = class_exists( 'WooCommerce' ) && function_exists( 'register_block_type' );
+		$has_needed_dependencies = class_exists( 'WooCommerce' );
 		if ( $has_needed_dependencies ) {
 			$plugin_data = \get_file_data(
 				$this->package->get_path( 'woocommerce-gutenberg-products-block.php' ),
