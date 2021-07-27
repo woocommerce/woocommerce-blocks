@@ -127,7 +127,7 @@ There is a snackbar at the bottom of the page used to display notices to the cus
 
 <img src="https://user-images.githubusercontent.com/5656702/120882329-d573c100-c5ce-11eb-901b-d7f206f74a66.png" width=300 />
 
-It may be desirable to hide this if there's a notice you don't want the shopper to see.
+It may be desirable to hide this if there's a notice that should not be displayed to the shopper.
 
 | Filter name  | Description | Return type  |
 |---|---|---|
@@ -242,9 +242,9 @@ __experimentalRegisterCheckoutFilters( 'automatic-coupon-extension', {
 | <img src="https://user-images.githubusercontent.com/5656702/123768988-bc55eb80-d8c0-11eb-9262-5d629837706d.png" /> | ![image](https://user-images.githubusercontent.com/5656702/124126048-2c57a380-da72-11eb-9b45-b2cae0cffc37.png) |
 
 ### Hide a snackbar notice containing a certain string
-Let's say we want to hide all notices that contain the string `auto-generated-coupon`.
-
-We would do this by setting the value of the `snackbarNoticeVisibility` to false for the notices we want to hide.
+Hiding notices that contain a string can be achieved by using this filter. For example: To hide all notices that contain
+the string `auto-generated-coupon`, the value in the object returned by the `snackbarNoticeVisibility` filter needs to
+be set to false for the notices that should be hidden.
 
 ```typescript
 import { __experimentalRegisterCheckoutFilters } from '@woocommerce/blocks-checkout';
