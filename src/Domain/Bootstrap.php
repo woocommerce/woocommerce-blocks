@@ -115,7 +115,7 @@ class Bootstrap {
 					function() {
 						if ( should_display_compatibility_notices() ) {
 							?>
-							<div class="notice notice-error is-dismissible">
+							<div class="notice notice-error">
 								<p><?php esc_html_e( 'WooCommerce Blocks requires a more recent version of WooCommerce and has been paused. Please update WooCommerce to the latest version to continue enjoying WooCommerce Blocks.', 'woo-gutenberg-products-block' ); ?></p>
 							</div>
 							<?php
