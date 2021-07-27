@@ -18,7 +18,7 @@ interface dependencyData {
 }
 
 // eslint-disable-next-line @wordpress/no-global-event-listener
-document.addEventListener( 'DOMContentLoaded', () => {
+window.onload = () => {
 	const miniCartBlocks = document.querySelectorAll( '.wc-blocks-mini-cart' );
 
 	if ( miniCartBlocks.length === 0 ) {
@@ -76,4 +76,4 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		miniCartButton.addEventListener( 'focus', showContents );
 		miniCartButton.addEventListener( 'blur', hideContents );
 	} );
-} );
+};
