@@ -31,7 +31,7 @@ const { outofstock, ...otherStockStatusOptions } = getSetting(
 const STOCK_STATUS_OPTIONS = hideOutOfStockItems
 	? otherStockStatusOptions
 	: { outofstock, ...otherStockStatusOptions };
-// filter added to handle if there are slugs without a corresponding name defined.
+// Filter added to handle if there are slugs without a corresponding name defined.
 const initialOptions = Object.entries( STOCK_STATUS_OPTIONS )
 	.map( ( [ slug, name ] ) => ( { slug, name } ) )
 	.filter( ( status ) => !! status.name )
