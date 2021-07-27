@@ -58,8 +58,8 @@ jobs:
         run: |
           composer install
 
-  JSE2ETestsWP58Gutenberg:
-    name: JavaScipt E2E Tests (WP 5.8 with Gutenberg plugin)
+  JSE2EWithGutenberg:
+    name: JavaScript E2E Tests (WP latest with Gutenberg plugin)
     needs: Setup
     runs-on: ubuntu-latest
     steps:
@@ -113,10 +113,9 @@ jobs:
         run: |
           composer install
 
-      - name: E2E Tests (WP 5.8 with Gutenberg plugin)
+      - name: E2E Tests (WP latest with Gutenberg plugin)
         env:
           WOOCOMMERCE_BLOCKS_PHASE: 3
-          WP_VERSION: 5.8-branch
         run: |
           chmod -R 767 ./ #needed for permissions issues
           JSON='{"plugins": ["https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip","https://github.com/WP-API/Basic-Auth/archive/master.zip","https://downloads.wordpress.org/plugin/gutenberg.latest-stable.zip", "."] }'
@@ -125,8 +124,8 @@ jobs:
           npm run wp-env clean all
           npm run test:e2e
 
-  JSE2ETestsWP58:
-    name: JavaScipt E2E Tests (WP 5.8)
+  JSE2ETests:
+    name: JavaScript E2E Tests (latest)
     needs: Setup
     runs-on: ubuntu-latest
     steps:
@@ -180,10 +179,9 @@ jobs:
         run: |
           composer install
 
-      - name: E2E Tests (WP 5.8)
+      - name: E2E Tests (WP latest)
         env:
           WOOCOMMERCE_BLOCKS_PHASE: 3
-          WP_VERSION: 5.8-branch
         run: |
           npm run wp-env start
           npm run wp-env clean all
