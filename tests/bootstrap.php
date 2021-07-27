@@ -114,29 +114,6 @@ function wc_blocks_initialize_dependency_injection() {
 	$GLOBALS['wc_container'] = $inner_container;
 }
 
-/**
- * Register autoloader for the files in the 'tests/tools' directory, for the root namespace 'Automattic\WooCommerce\Testing\Tools'.
- */
-function wc_blocks_register_autoloader_for_testing_tools() {
-	return spl_autoload_register(
-		function ( $class ) {
-			$prefix   = 'Automattic\\WooCommerce\\Testing\\Tools\\';
-			$base_dir = dirname( dirname( __FILE__ ) ) . '/Tools/';
-			$len      = strlen( $prefix );
-			if ( strncmp( $prefix, $class, $len ) !== 0 ) {
-				// no, move to the next registered autoloader.
-				return;
-			}
-			$relative_class = substr( $class, $len );
-			$file           = $base_dir . str_replace( '\\', '/', $relative_class ) . '.php';
-			if ( ! file_exists( $file ) ) {
-				throw new \Exception( 'Autoloader for unit tests: file not found: ' . $file );
-			}
-			require $file;
-		}
-	);
-}
-
 function wc_load_core() {
 	define( 'WC_TAX_ROUNDING_MODE', 'auto' );
 	define( 'WC_USE_TRANSACTIONS', false );
@@ -172,6 +149,5 @@ tests_add_filter( 'setup_theme', 'wc_install_core' );
 
 // Start up the WP testing environment.
 require $_tests_dir . '/includes/bootstrap.php';
-wc_blocks_register_autoloader_for_testing_tools();
 wc_test_includes();
 wc_blocks_initialize_dependency_injection();
