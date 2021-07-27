@@ -3,13 +3,14 @@ The release pull request has been created! This checklist is a guide to follow f
 * [ ] Checkout the release branch locally.
 
 ## Initial Preparation
-
 * [ ] Add the changelog to `readme.txt`
   * [ ] Add the version and date to the changelog section within `readme.txt`, e.g. `= {{version}} - YYYY-MM-DD =`
   * [ ] Copy the changelog from the pull request description above into this new section
 * [ ] Update compatibility sections (if applicable). __Note:__ Do not change the stable tag or plugin version; this is automated.
   * [ ] Update _Requires at least_, _Tested up to_, and _Requires PHP_ sections at the top of `readme.txt`. Note, this should also be the latest WordPress version available at time of release.
   * [ ] Update _Requires at least_, _Requires PHP_, _WC requires at least_, and _WC tested up to_ at the top of `woocommerce-gutenberg-products-block.php`. Note, this should include requiring the latest WP and WC versions at the time of the plugin release.
+  * [ ] If necessary, update the value of `$minimum_wp_version` at the top of the `woocommerce-gutenberg-products-block.php` file to the latest available version of WordPress.
+  * [ ] If necessary, update the `phpcs.xml` file to reference the minimum WP version supported by **WooCommerce Core**. It would be this line: `<config name="minimum_supported_wp_version" value="5.6" />`.
 * [ ] Push above changes to the release branch.
 
 ## Write Testing Notes
