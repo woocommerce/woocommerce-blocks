@@ -20,7 +20,7 @@ class InboxNotifications {
 		'mailchimp-for-woocommerce',
 		'mailpoet',
 		// phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-		// 'woo-gutenberg-products-block', // Disallow the notification if the store is using the feature plugin already.
+		// 'woocommerce-gutenberg-products-block', // Disallow the notification if the store is using the feature plugin already.
 		'woocommerce-bookings',
 		'woocommerce-box-office',
 		'woocommerce-cart-add-ons',
@@ -108,7 +108,7 @@ class InboxNotifications {
 		);
 		$note->set_content(
 			__(
-				'WooCommerce Blocks cart and checkout blocks surfacing copy... Lorem ipsum dolor sit amet.',
+				'Increase your stores revenue with the conversion optimized Cart & Checkout WooCommerce blocks available in the WooCommerce Blocks extension.',
 				'woo-gutenberg-products-block'
 			)
 		);
