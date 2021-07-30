@@ -87,9 +87,10 @@ class CartAddItem extends AbstractCartRoute {
 		$cart   = $this->cart_controller->get_cart_instance();
 		$result = $this->cart_controller->add_to_cart(
 			[
-				'id'        => $request['id'],
-				'quantity'  => $request['quantity'],
-				'variation' => $request['variation'],
+				'id'             => $request['id'],
+				'quantity'       => $request['quantity'],
+				'variation'      => $request['variation'],
+				'cart_item_data' => $request['cart_item_data'],
 			]
 		);
 
