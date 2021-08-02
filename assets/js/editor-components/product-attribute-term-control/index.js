@@ -176,11 +176,7 @@ const ProductAttributeTermControl = ( {
 				isHierarchical
 			/>
 			{ !! onOperatorChange && (
-				<div
-					className={
-						selected.length < 2 ? 'hidden' : ''
-					}
-				>
+				<div className={ selected.length < 2 ? 'hidden' : '' }>
 					<SelectControl
 						className="woocommerce-product-attributes__operator"
 						label={ __(
