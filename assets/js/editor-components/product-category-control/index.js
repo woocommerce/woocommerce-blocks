@@ -151,7 +151,7 @@ const ProductCategoryControl = ( {
 			{ !! onOperatorChange && (
 				<div
 					className={
-						selected.length < 2 ? 'screen-reader-text' : ''
+						selected.length < 2 ? 'hidden' : ''
 					}
 				>
 					<SelectControl
