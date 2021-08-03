@@ -27,7 +27,7 @@ const withSearchedProducts = (
 		const [ productsList, setProductsList ] = useState<
 			ProductResponseItem[]
 		>( [] );
-		const isLargeCatalog = blocksConfig.productCount > 10;
+		const isLargeCatalog = blocksConfig.productCount > 100;
 
 		const setErrorState = async ( e: {
 			message: string;

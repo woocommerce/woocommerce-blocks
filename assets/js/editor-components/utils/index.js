@@ -39,6 +39,7 @@ const getProductsRequests = ( {
 			addQueryArgs( '/wc/store/products', {
 				catalog_visibility: 'any',
 				include: selected,
+				per_page: 0,
 			} )
 		);
 	}
