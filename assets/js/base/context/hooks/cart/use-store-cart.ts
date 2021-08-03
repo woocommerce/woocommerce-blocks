@@ -8,6 +8,7 @@ import { useRef } from '@wordpress/element';
 import {
 	CART_STORE_KEY as storeKey,
 	EMPTY_ARRAY,
+	EMPTY_OBJECT,
 } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
 import { decodeEntities } from '@wordpress/html-entities';
@@ -63,7 +64,7 @@ const defaultCartTotals: CartResponseTotals = {
 	total_shipping_tax: '',
 	total_price: '',
 	total_tax: '',
-	tax_lines: [],
+	tax_lines: EMPTY_ARRAY,
 	currency_code: '',
 	currency_symbol: '',
 	currency_minor_unit: 2,
@@ -88,25 +89,25 @@ const decodeValues = (
  * @type  {StoreCart} Object containing cart data.
  */
 export const defaultCartData: StoreCart = {
-	cartCoupons: [],
-	cartItems: [],
-	cartFees: [],
+	cartCoupons: EMPTY_ARRAY,
+	cartItems: EMPTY_ARRAY,
+	cartFees: EMPTY_ARRAY,
 	cartItemsCount: 0,
 	cartItemsWeight: 0,
 	cartNeedsPayment: true,
 	cartNeedsShipping: true,
-	cartItemErrors: [],
+	cartItemErrors: EMPTY_ARRAY,
 	cartTotals: defaultCartTotals,
 	cartIsLoading: true,
 	cartErrors: EMPTY_ARRAY,
 	billingAddress: defaultBillingAddress,
 	shippingAddress: defaultShippingAddress,
-	shippingRates: [],
+	shippingRates: EMPTY_ARRAY,
 	shippingRatesLoading: false,
 	cartHasCalculatedShipping: false,
-	paymentRequirements: [],
+	paymentRequirements: EMPTY_ARRAY,
 	receiveCart: () => undefined,
-	extensions: {},
+	extensions: EMPTY_OBJECT,
 };
 
 /**
@@ -125,7 +126,7 @@ export const useStoreCart = (
 	options: { shouldSelect: boolean } = { shouldSelect: true }
 ): StoreCart => {
 	const { isEditor, previewData } = useEditorContext();
-	const previewCart = previewData?.previewCart || {};
+	const previewCart = previewData?.previewCart || EMPTY_OBJECT;
 	const { shouldSelect } = options;
 	const currentResults = useRef();
 
@@ -144,13 +145,13 @@ export const useStoreCart = (
 					cartItemsWeight: previewCart.items_weight,
 					cartNeedsPayment: previewCart.needs_payment,
 					cartNeedsShipping: previewCart.needs_shipping,
-					cartItemErrors: [],
+					cartItemErrors: EMPTY_ARRAY,
 					cartTotals: previewCart.totals,
 					cartIsLoading: false,
 					cartErrors: EMPTY_ARRAY,
 					billingAddress: defaultBillingAddress,
 					shippingAddress: defaultShippingAddress,
-					extensions: {},
+					extensions: EMPTY_OBJECT,
 					shippingRates: previewCart.shipping_rates,
 					shippingRatesLoading: false,
 					cartHasCalculatedShipping:
@@ -192,23 +193,24 @@ export const useStoreCart = (
 
 			return {
 				cartCoupons,
-				cartItems: cartData.items || [],
+				cartItems: cartData.items || EMPTY_ARRAY,
 				cartFees,
 				cartItemsCount: cartData.itemsCount,
 				cartItemsWeight: cartData.itemsWeight,
 				cartNeedsPayment: cartData.needsPayment,
 				cartNeedsShipping: cartData.needsShipping,
-				cartItemErrors: cartData.errors || [],
+				cartItemErrors: cartData.errors || EMPTY_ARRAY,
 				cartTotals,
 				cartIsLoading,
 				cartErrors,
 				billingAddress: emptyHiddenAddressFields( billingAddress ),
 				shippingAddress: emptyHiddenAddressFields( shippingAddress ),
-				extensions: cartData.extensions || {},
-				shippingRates: cartData.shippingRates || [],
+				extensions: cartData.extensions || EMPTY_OBJECT,
+				shippingRates: cartData.shippingRates || EMPTY_ARRAY,
 				shippingRatesLoading,
 				cartHasCalculatedShipping: cartData.hasCalculatedShipping,
-				paymentRequirements: cartData.paymentRequirements || [],
+				paymentRequirements:
+					cartData.paymentRequirements || EMPTY_ARRAY,
 				receiveCart,
 			};
 		},

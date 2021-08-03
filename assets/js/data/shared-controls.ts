@@ -14,6 +14,7 @@ import {
 	assertResponseIsValid,
 	ApiResponse,
 } from './types';
+import { EMPTY_OBJECT } from './constants';
 
 /**
  * Dispatched a control action for triggering an api fetch call with no parsing.
@@ -26,8 +27,6 @@ export const apiFetchWithHeaders = ( options: APIFetchOptions ) =>
 		type: 'API_FETCH_WITH_HEADERS',
 		options,
 	} as const );
-
-const EMPTY_OBJECT = {};
 
 /**
  * Error thrown when JSON cannot be parsed.

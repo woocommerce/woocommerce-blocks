@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import { getStateForContext } from './utils';
+import { EMPTY_OBJECT } from '../constants';
 
 /**
  * Selector for retrieving a specific query-state for the given context.
@@ -18,7 +19,7 @@ export const getValueForQueryKey = (
 	state,
 	context,
 	queryKey,
-	defaultValue = {}
+	defaultValue = EMPTY_OBJECT
 ) => {
 	let stateContext = getStateForContext( state, context );
 	if ( stateContext === null ) {
@@ -44,7 +45,7 @@ export const getValueForQueryKey = (
 export const getValueForQueryContext = (
 	state,
 	context,
-	defaultValue = {}
+	defaultValue = EMPTY_OBJECT
 ) => {
 	const stateContext = getStateForContext( state, context );
 	return stateContext === null ? defaultValue : JSON.parse( stateContext );

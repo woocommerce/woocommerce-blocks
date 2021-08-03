@@ -6,6 +6,7 @@ import type { Cart, CartMeta } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
+import { EMPTY_ARRAY, EMPTY_OBJECT } from './constants';
 import type { ResponseError } from './types';
 
 export interface CartState {
@@ -17,11 +18,11 @@ export interface CartState {
 }
 
 export const defaultCartState: CartState = {
-	cartItemsPendingQuantity: [],
-	cartItemsPendingDelete: [],
+	cartItemsPendingQuantity: EMPTY_ARRAY,
+	cartItemsPendingDelete: EMPTY_ARRAY,
 	cartData: {
-		coupons: [],
-		shippingRates: [],
+		coupons: EMPTY_ARRAY,
+		shippingRates: EMPTY_ARRAY,
 		shippingAddress: {
 			first_name: '',
 			last_name: '',
@@ -47,13 +48,13 @@ export const defaultCartState: CartState = {
 			phone: '',
 			email: '',
 		},
-		items: [],
+		items: EMPTY_ARRAY,
 		itemsCount: 0,
 		itemsWeight: 0,
 		needsShipping: true,
 		needsPayment: false,
 		hasCalculatedShipping: true,
-		fees: [],
+		fees: EMPTY_ARRAY,
 		totals: {
 			currency_code: '',
 			currency_symbol: '',
@@ -72,11 +73,11 @@ export const defaultCartState: CartState = {
 			total_shipping_tax: '0',
 			total_price: '0',
 			total_tax: '0',
-			tax_lines: [],
+			tax_lines: EMPTY_ARRAY,
 		},
-		errors: [],
-		paymentRequirements: [],
-		extensions: {},
+		errors: EMPTY_ARRAY,
+		paymentRequirements: EMPTY_ARRAY,
+		extensions: EMPTY_OBJECT,
 	},
 	metaData: {
 		updatingCustomerData: false,
@@ -85,5 +86,5 @@ export const defaultCartState: CartState = {
 		removingCoupon: '',
 		isCartDataStale: false,
 	},
-	errors: [],
+	errors: EMPTY_ARRAY,
 };
