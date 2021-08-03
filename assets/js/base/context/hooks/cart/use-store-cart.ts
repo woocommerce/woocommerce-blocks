@@ -5,7 +5,10 @@
  */
 import { isEqual } from 'lodash';
 import { useRef } from '@wordpress/element';
-import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
+import {
+	CART_STORE_KEY as storeKey,
+	EMPTY_ARRAY,
+} from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
 import { decodeEntities } from '@wordpress/html-entities';
 import type {
@@ -95,7 +98,7 @@ export const defaultCartData: StoreCart = {
 	cartItemErrors: [],
 	cartTotals: defaultCartTotals,
 	cartIsLoading: true,
-	cartErrors: [],
+	cartErrors: EMPTY_ARRAY,
 	billingAddress: defaultBillingAddress,
 	shippingAddress: defaultShippingAddress,
 	shippingRates: [],
@@ -144,7 +147,7 @@ export const useStoreCart = (
 					cartItemErrors: [],
 					cartTotals: previewCart.totals,
 					cartIsLoading: false,
-					cartErrors: [],
+					cartErrors: EMPTY_ARRAY,
 					billingAddress: defaultBillingAddress,
 					shippingAddress: defaultShippingAddress,
 					extensions: {},
