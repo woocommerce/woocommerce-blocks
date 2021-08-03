@@ -120,6 +120,7 @@
 		"@wordpress/dom": "3.2.1",
 		"@wordpress/e2e-test-utils": "5.4.1",
 		"@wordpress/element": "3.1.0",
+		"@wordpress/env": "4.0.3",
 		"@wordpress/html-entities": "3.2.1",
 		"@wordpress/i18n": "4.2.1",
 		"@wordpress/is-shallow-equal": "4.2.0",
