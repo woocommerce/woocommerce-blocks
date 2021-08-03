@@ -149,7 +149,7 @@ const ProductCategoryControl = ( {
 				isSingle={ isSingle }
 			/>
 			{ !! onOperatorChange && (
-				<div className={ selected.length < 2 ? 'hidden' : '' }>
+				<div hidden={ selected.length < 2 }>
 					<SelectControl
 						className="woocommerce-product-categories__operator"
 						label={ __(
