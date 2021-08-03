@@ -3,7 +3,7 @@
  */
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { CustomSelectControl } from 'wordpress-components';
+import { CustomSelectControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
