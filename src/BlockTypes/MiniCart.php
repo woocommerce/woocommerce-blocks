@@ -174,7 +174,7 @@ class MiniCart extends AbstractBlock {
 	 * @return string The HTML markup.
 	 */
 	protected function get_markup() {
-		if ( is_admin() ) {
+		if ( is_admin() || WC()->is_rest_api_request() ) {
 			// In the editor we will display the placeholder, so no need to load
 			// real cart data and to print the markup.
 			return '';
