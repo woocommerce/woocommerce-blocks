@@ -84,6 +84,27 @@ const decodeValues = (
 		] )
 	);
 
+// If the value passed is not an object or it's an empty object, return
+// `EMPTY_OBJECT`, otherwise, return the value.
+const getObjectOrEmptyConstant = (
+	val: Record< string, unknown >
+): Record< string, unknown > => {
+	if ( typeof val === 'object' && Object.keys( val ).length > 0 ) {
+		return val;
+	}
+	return EMPTY_OBJECT;
+};
+
+// If the value passed is not an array or it's an empty array, return
+// `EMPTY_ARRAY`, otherwise, return the value.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getArrayOrEmptyConstant = ( val: any[] ): any[] => {
+	if ( Array.isArray( val ) && val.length > 0 ) {
+		return val;
+	}
+	return EMPTY_ARRAY;
+};
+
 /**
  * @constant
  * @type  {StoreCart} Object containing cart data.
@@ -178,7 +199,7 @@ export const useStoreCart = (
 				? decodeValues( cartData.shippingAddress )
 				: billingAddress;
 			const cartFees =
-				cartData?.fees?.length > 0
+				getArrayOrEmptyConstant( cartData.fees ).length > 0
 					? cartData.fees.map( ( fee: CartResponseFeeItem ) =>
 							decodeValues( fee )
 					  )
@@ -188,7 +209,7 @@ export const useStoreCart = (
 			// the text used to display the coupon, without affecting the
 			// functionality when it comes to removing the coupon.
 			const cartCoupons: CartResponseCouponItemWithLabel[] =
-				cartData?.coupons?.length > 0
+				getArrayOrEmptyConstant( cartData.coupons ).length > 0
 					? cartData.coupons.map(
 							( coupon: CartResponseCouponItem ) => ( {
 								...coupon,
@@ -199,27 +220,27 @@ export const useStoreCart = (
 
 			return {
 				cartCoupons,
-				cartItems: cartData.items || EMPTY_ARRAY,
+				cartItems: getArrayOrEmptyConstant( cartData.items ),
 				cartFees,
 				cartItemsCount: cartData.itemsCount,
 				cartItemsWeight: cartData.itemsWeight,
 				cartNeedsPayment: cartData.needsPayment,
 				cartNeedsShipping: cartData.needsShipping,
-				cartItemErrors:
-					cartData?.errors?.length > 0
-						? cartData.errors
-						: EMPTY_ARRAY,
+				cartItemErrors: getArrayOrEmptyConstant( cartData.errors ),
 				cartTotals,
 				cartIsLoading,
 				cartErrors,
 				billingAddress: emptyHiddenAddressFields( billingAddress ),
 				shippingAddress: emptyHiddenAddressFields( shippingAddress ),
-				extensions: cartData.extensions || EMPTY_OBJECT,
-				shippingRates: cartData.shippingRates || EMPTY_ARRAY,
+				extensions: getObjectOrEmptyConstant( cartData.extensions ),
+				shippingRates: getArrayOrEmptyConstant(
+					cartData.shippingRates
+				),
 				shippingRatesLoading,
 				cartHasCalculatedShipping: cartData.hasCalculatedShipping,
-				paymentRequirements:
-					cartData.paymentRequirements || EMPTY_ARRAY,
+				paymentRequirements: getArrayOrEmptyConstant(
+					cartData.paymentRequirements
+				),
 				receiveCart,
 			};
 		},
