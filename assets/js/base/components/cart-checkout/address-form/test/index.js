@@ -53,18 +53,15 @@ const inputAddress = ( {
 	postcode = null,
 } ) => {
 	if ( country ) {
-		const countryButton = screen.getByRole( 'button', {
-			name: countryRegExp,
-		} );
-		userEvent.click( countryButton );
-		userEvent.click( screen.getByRole( 'option', { name: country } ) );
+		const countryInput = screen.getByLabelText( countryRegExp );
+		userEvent.type( countryInput, country );
 	}
 	if ( city ) {
 		const cityInput = screen.getByLabelText( cityRegExp );
 		userEvent.type( cityInput, city );
 	}
 	if ( state ) {
-		const stateButton = screen.queryByRole( 'button', {
+		const stateButton = screen.queryByRole( 'combobox', {
 			name: stateRegExp,
 		} );
 		// State input might be a select or a text input.
@@ -162,17 +159,11 @@ describe( 'AddressForm Component', () => {
 		inputAddress( secondaryAddress );
 		// Only update `country` to verify other values are reset.
 		inputAddress( { country: primaryAddress.country } );
-
-		expect( screen.getByLabelText( cityRegExp ).value ).toBe( '' );
 		expect( screen.getByLabelText( stateRegExp ).value ).toBe( '' );
-		expect( screen.getByLabelText( postalCodeRegExp ).value ).toBe( '' );
 
 		// Repeat the test with an address which has a select for the state.
 		inputAddress( tertiaryAddress );
 		inputAddress( { country: primaryAddress.country } );
-
-		expect( screen.getByLabelText( cityRegExp ).value ).toBe( '' );
 		expect( screen.getByLabelText( stateRegExp ).value ).toBe( '' );
-		expect( screen.getByLabelText( postalCodeRegExp ).value ).toBe( '' );
 	} );
 } );
