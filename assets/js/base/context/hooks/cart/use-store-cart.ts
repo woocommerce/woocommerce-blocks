@@ -177,19 +177,25 @@ export const useStoreCart = (
 			const shippingAddress = cartData.needsShipping
 				? decodeValues( cartData.shippingAddress )
 				: billingAddress;
-			const cartFees = cartData.fees.map( ( fee: CartResponseFeeItem ) =>
-				decodeValues( fee )
-			);
+			const cartFees =
+				cartData?.fees?.length > 0
+					? cartData.fees.map( ( fee: CartResponseFeeItem ) =>
+							decodeValues( fee )
+					  )
+					: EMPTY_ARRAY;
 
 			// Add a text property to the coupon to allow extensions to modify
 			// the text used to display the coupon, without affecting the
 			// functionality when it comes to removing the coupon.
-			const cartCoupons: CartResponseCouponItemWithLabel[] = cartData.coupons.map(
-				( coupon: CartResponseCouponItem ) => ( {
-					...coupon,
-					label: coupon.code,
-				} )
-			);
+			const cartCoupons: CartResponseCouponItemWithLabel[] =
+				cartData?.coupons?.length > 0
+					? cartData.coupons.map(
+							( coupon: CartResponseCouponItem ) => ( {
+								...coupon,
+								label: coupon.code,
+							} )
+					  )
+					: EMPTY_ARRAY;
 
 			return {
 				cartCoupons,
@@ -199,7 +205,10 @@ export const useStoreCart = (
 				cartItemsWeight: cartData.itemsWeight,
 				cartNeedsPayment: cartData.needsPayment,
 				cartNeedsShipping: cartData.needsShipping,
-				cartItemErrors: cartData.errors || EMPTY_ARRAY,
+				cartItemErrors:
+					cartData?.errors?.length > 0
+						? cartData.errors
+						: EMPTY_ARRAY,
 				cartTotals,
 				cartIsLoading,
 				cartErrors,
