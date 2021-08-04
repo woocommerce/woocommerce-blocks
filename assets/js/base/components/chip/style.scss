@@ -51,6 +51,20 @@
 	}
 }
 
+.theme-twentytwentyone {
+	// Adjust removable chip background color.
+	// @see https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/4404
+	.wc-block-components-chip,
+	.wc-block-components-chip:active,
+	.wc-block-components-chip:focus,
+	.wc-block-components-chip:hover {
+		background: #fff;
+		button.wc-block-components-chip__remove:not(:hover):not(:active):not(.has-background) {
+			background: transparent;
+		}
+	}
+}
+
 button.wc-block-components-chip:hover > .wc-block-components-chip__remove,
 button.wc-block-components-chip:focus > .wc-block-components-chip__remove,
 .wc-block-components-chip__remove:hover,
