@@ -60,3 +60,24 @@
 	margin: 0;
 	padding: 0;
 }
+
+.theme-twentytwenty {
+	.wp-block {
+		h2.wc-block-grid__product-title,
+		div[data-type$="-filter"] h3,
+		div[data-type$="-filters"] h3 {
+			@include font-size(large);
+		}
+
+		.wc-block-grid__product-price {
+			@include font-size(regular);
+		}
+
+		.wc-block-grid__product-add-to-cart.wp-block-button {
+			.wp-block-button__link {
+				@include font-size(small);
+				padding: em($gap-small);
+			}
+		}
+	}
+}
