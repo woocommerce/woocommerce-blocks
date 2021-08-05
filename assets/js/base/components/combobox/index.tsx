@@ -4,8 +4,8 @@
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
 import { useEffect } from '@wordpress/element';
+import { withInstanceId } from '@wordpress/compose';
 import { ComboboxControl } from 'wordpress-components';
-import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
 import {
 	ValidationInputError,
 	useValidationContext,
