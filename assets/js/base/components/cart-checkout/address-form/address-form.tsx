@@ -112,6 +112,18 @@ const AddressForm = ( {
 		);
 	}, [ currentFields, fieldConfig, values.country ] );
 
+	// Clear values for hidden fields.
+	useEffect( () => {
+		addressFormFields.forEach( ( field ) => {
+			if ( field.hidden && values[ field.key ] ) {
+				onChange( {
+					...values,
+					[ field.key ]: '',
+				} );
+			}
+		} );
+	}, [ addressFormFields, onChange, values ] );
+
 	useEffect( () => {
 		if ( type === 'shipping' ) {
 			validateShippingCountry(
@@ -137,13 +149,6 @@ const AddressForm = ( {
 		<div id={ id } className="wc-block-components-address-form">
 			{ addressFormFields.map( ( field ) => {
 				if ( field.hidden ) {
-					// clear hidden field value.
-					if ( values[ field.key ] ) {
-						onChange( {
-							...values,
-							[ field.key ]: '',
-						} );
-					}
 					return null;
 				}
 
