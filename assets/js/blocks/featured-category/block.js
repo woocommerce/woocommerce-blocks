@@ -21,6 +21,7 @@ import {
 	ResizableBox,
 	Spinner,
 	ToggleControl,
+	ToolbarGroup,
 	withSpokenMessages,
 } from '@wordpress/components';
 import classnames from 'classnames';
@@ -101,6 +102,17 @@ const FeaturedCategory = ( {
 						} );
 					} }
 					allowedTypes={ [ 'image' ] }
+				/>
+				<ToolbarGroup
+					controls={ [
+						{
+							icon: 'edit',
+							title: __( 'Edit' ),
+							onClick: () =>
+								setAttributes( { editMode: ! editMode } ),
+							isActive: editMode,
+						},
+					] }
 				/>
 			</BlockControls>
 		);
