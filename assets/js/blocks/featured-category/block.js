@@ -59,7 +59,7 @@ import { withCategory } from '../../hocs';
  * @param {Object} props.overlayColor Overlay color object for content.
  * @param {function(any):any} props.setOverlayColor Setter for overlay color.
  * @param {function(any):any} props.debouncedSpeak Function for delayed speak.
- * @param {function(any):any} props.triggerUrlUpdate Function to update Shop now button Url.
+ * @param {function():void} props.triggerUrlUpdate Function to update Shop now button Url.
  */
 const FeaturedCategory = ( {
 	attributes,
