@@ -65,7 +65,7 @@ const ValidatedTextInput = ( {
 		getValidationErrorId,
 	} = useValidationContext();
 
-	const { onCheckoutValidationBeforeProcessing } = useCheckoutContext();
+	const { isBeforeProcessing } = useCheckoutContext();
 
 	const textInputId =
 		typeof id !== 'undefined' ? id : 'textinput-' + instanceId;
@@ -118,10 +118,10 @@ const ValidatedTextInput = ( {
 	}, [ isPristine, setIsPristine, validateOnMount, validateInput ] );
 
 	useEffect( () => {
-		const unsubscribe = onCheckoutValidationBeforeProcessing( () => validateInput() );
-		return unsubscribe;
-	}, [ onCheckoutValidationBeforeProcessing, validateInput ] );
-
+		if ( isBeforeProcessing ) {
+			validateInput();
+		}
+	}, [ isBeforeProcessing, validateInput ] );
 	// Remove validation errors when unmounted.
 	useEffect( () => {
 		return () => {
