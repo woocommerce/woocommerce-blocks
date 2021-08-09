@@ -339,26 +339,52 @@ abstract class AbstractBlock {
 		}
 
 		if ( ! $this->asset_data_registry->exists( 'wcBlocksConfig' ) ) {
+			/**
+			 * This is a list of lazy-loaded frontend files that have translations we need to handle dynamically with the format name => file.
+			 *
+			 * The chunk name in this context is the build file (relative to build/) with no file suffix. See addRequireChunkTranslationsHandler.
+			 */
+			$file_prefix = WC_BLOCKS_IS_FEATURE_PLUGIN ? 'build/' : 'packages/woocommerce-blocks/build/';
+			$domain      = WC_BLOCKS_IS_FEATURE_PLUGIN ? 'woo-gutenberg-products-block' : 'woocommerce';
+			$locale      = get_locale();
+
+			$translated_chunks = array(
+				'atomic-block-components/add-to-cart-frontend' => $file_prefix . 'atomic-block-components/add-to-cart-frontend.js',
+				'atomic-block-components/button-frontend'  => $file_prefix . 'atomic-block-components/button-frontend.js',
+				'atomic-block-components/category-list-frontend' => $file_prefix . 'atomic-block-components/category-list-frontend.js',
+				'atomic-block-components/image-frontend'   => $file_prefix . 'atomic-block-components/image-frontend.js',
+				'atomic-block-components/price-frontend'   => $file_prefix . 'atomic-block-components/price-frontend.js',
+				'atomic-block-components/rating-frontend'  => $file_prefix . 'atomic-block-components/rating-frontend.js',
+				'atomic-block-components/sale-badge-frontend' => $file_prefix . 'atomic-block-components/sale-badge-frontend.js',
+				'atomic-block-components/sku-frontend'     => $file_prefix . 'atomic-block-components/sku-frontend.js',
+				'atomic-block-components/stock-indicator-frontend' => $file_prefix . 'atomic-block-components/stock-indicator-frontend.js',
+				'atomic-block-components/summary-frontend' => $file_prefix . 'atomic-block-components/summary-frontend.js',
+				'atomic-block-components/tag-list-frontend' => $file_prefix . 'atomic-block-components/tag-list-frontend.js',
+				'atomic-block-components/title-frontend'   => $file_prefix . 'atomic-block-components/title-frontend.js',
+			);
+			$chunk_hashes      = implode( ',', array_map( 'md5', $translated_chunks ) );
+
 			$this->asset_data_registry->add(
 				'wcBlocksConfig',
 				[
-					'buildPhase'       => Package::feature()->get_flag(),
-					'pluginUrl'        => plugins_url( '/', dirname( __DIR__ ) ),
-					'productCount'     => array_sum( (array) wp_count_posts( 'product' ) ),
-					'restApiRoutes'    => [
+					'buildPhase'           => Package::feature()->get_flag(),
+					'pluginUrl'            => plugins_url( '/', dirname( __DIR__ ) ),
+					'productCount'         => array_sum( (array) wp_count_posts( 'product' ) ),
+					'restApiRoutes'        => [
 						'/wc/store' => array_keys( Package::container()->get( RestApi::class )->get_routes_from_namespace( 'wc/store' ) ),
 					],
-					'defaultAvatar'    => get_avatar_url( 0, [ 'force_default' => true ] ),
-					'locale'           => determine_locale(),
-					'languageUrl'      => str_replace( ABSPATH, site_url( '/' ), WP_LANG_DIR ) . '/plugins',
-					'translatedChunks' => array_map( 'basename', glob( WP_LANG_DIR . '/plugins/woo-gutenberg-products-block-' . get_locale() . '*.json' ) ),
+					'defaultAvatar'        => get_avatar_url( 0, [ 'force_default' => true ] ),
+					'locale'               => determine_locale(),
+					'languageUrl'          => str_replace( ABSPATH, site_url( '/' ), WP_LANG_DIR ) . '/plugins',
+					'translatedChunkNames' => array_keys( $translated_chunks ),
+					'translatedChunks'     => array_map( 'basename', glob( WP_LANG_DIR . "/plugins/{$domain}-{$locale}-{{$chunk_hashes}}*.json", GLOB_BRACE ) ),
 
 					/*
 					 * translators: If your word count is based on single characters (e.g. East Asian characters),
 					 * enter 'characters_excluding_spaces' or 'characters_including_spaces'. Otherwise, enter 'words'.
 					 * Do not translate into your own language.
 					 */
-					'wordCountType'    => _x( 'words', 'Word count type. Do not translate!', 'woo-gutenberg-products-block' ),
+					'wordCountType'        => _x( 'words', 'Word count type. Do not translate!', 'woo-gutenberg-products-block' ),
 				]
 			);
 		}

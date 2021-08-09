@@ -17,6 +17,7 @@ interface WcBlocksConfig {
 	wordCountType: WordCountType;
 	languageUrl: string;
 	locale: string;
+	translatedChunkNames: string[];
 	translatedChunks: string[];
 }
 
@@ -29,6 +30,7 @@ export const blocksConfig = getSetting( 'wcBlocksConfig', {
 	wordCountType: 'words',
 	languageUrl: '',
 	locale: '',
+	translatedChunkNames: [],
 	translatedChunks: [],
 } ) as WcBlocksConfig;
 

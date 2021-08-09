@@ -38,19 +38,7 @@ if ( blocksConfig.locale !== 'en_US' ) {
 			}
 			return false;
 		},
-		translatedChunks: [
-			'atomic-block-components/price-frontend',
-			'atomic-block-components/image-frontend',
-			'atomic-block-components/rating-frontend',
-			'atomic-block-components/button-frontend',
-			'atomic-block-components/summary-frontend',
-			'atomic-block-components/sale-badge-frontend',
-			'atomic-block-components/sku-frontend',
-			'atomic-block-components/category-list-frontend',
-			'atomic-block-components/tag-list-frontend',
-			'atomic-block-components/stock-indicator-frontend',
-			'atomic-block-components/add-to-cart-frontend',
-		],
+		translatedChunks: blocksConfig.translatedChunkNames,
 	} );
 }
 
