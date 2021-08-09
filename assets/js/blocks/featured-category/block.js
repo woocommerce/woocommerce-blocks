@@ -25,7 +25,9 @@ import {
 	withSpokenMessages,
 } from '@wordpress/components';
 import classnames from 'classnames';
-import { compose } from '@wordpress/compose';
+import { Component } from '@wordpress/element';
+import { withSelect } from '@wordpress/data';
+import { compose, createHigherOrderComponent } from '@wordpress/compose';
 import PropTypes from 'prop-types';
 import { getSetting } from '@woocommerce/settings';
 import { Icon, folderStarred } from '@woocommerce/icons';
@@ -57,6 +59,7 @@ import { withCategory } from '../../hocs';
  * @param {Object} props.overlayColor Overlay color object for content.
  * @param {function(any):any} props.setOverlayColor Setter for overlay color.
  * @param {function(any):any} props.debouncedSpeak Function for delayed speak.
+ * @param {function(any):any} props.triggerUrlUpdate Function to update Shop now button Url.
  */
 const FeaturedCategory = ( {
 	attributes,
@@ -69,6 +72,7 @@ const FeaturedCategory = ( {
 	overlayColor,
 	setOverlayColor,
 	debouncedSpeak,
+	triggerUrlUpdate = () => void null,
 } ) => {
 	const renderApiError = () => (
 		<ErrorPlaceholder
@@ -220,6 +224,7 @@ const FeaturedCategory = ( {
 								mediaId: 0,
 								mediaSrc: '',
 							} );
+							triggerUrlUpdate();
 						} }
 						isSingle
 					/>
@@ -410,10 +415,66 @@ FeaturedCategory.propTypes = {
 	setOverlayColor: PropTypes.func.isRequired,
 	// from withSpokenMessages
 	debouncedSpeak: PropTypes.func.isRequired,
+	triggerUrlUpdate: PropTypes.func,
 };
 
 export default compose( [
 	withCategory,
 	withColors( { overlayColor: 'background-color' } ),
 	withSpokenMessages,
+	withSelect( ( select, { clientId }, { dispatch } ) => {
+		const Block = select( 'core/block-editor' ).getBlock( clientId );
+		const buttonBlockId = Block?.innerBlocks[ 0 ]?.clientId || '';
+		const currentButtonAttributes =
+			Block?.innerBlocks[ 0 ]?.attributes || {};
+		const updateBlockAttributes = ( attributes ) => {
+			if ( buttonBlockId ) {
+				dispatch( 'core/block-editor' ).updateBlockAttributes(
+					buttonBlockId,
+					attributes
+				);
+			}
+		};
+		return { updateBlockAttributes, currentButtonAttributes };
+	} ),
+	createHigherOrderComponent( ( ProductComponent ) => {
+		class WrappedComponent extends Component {
+			state = {
+				doUrlUpdate: false,
+			};
+			componentDidUpdate() {
+				const {
+					attributes,
+					updateBlockAttributes,
+					currentButtonAttributes,
+					category,
+				} = this.props;
+				if (
+					this.state.doUrlUpdate &&
+					! attributes.editMode &&
+					category?.permalink &&
+					currentButtonAttributes?.url &&
+					category.permalink !== currentButtonAttributes.url
+				) {
+					updateBlockAttributes( {
+						...currentButtonAttributes,
+						url: category.permalink,
+					} );
+					this.setState( { doUrlUpdate: false } );
+				}
+			}
+			triggerUrlUpdate = () => {
+				this.setState( { doUrlUpdate: true } );
+			};
+			render() {
+				return (
+					<ProductComponent
+						triggerUrlUpdate={ this.triggerUrlUpdate }
+						{ ...this.props }
+					/>
+				);
+			}
+		}
+		return WrappedComponent;
+	}, 'withUpdateButtonAttributes' ),
 ] )( FeaturedCategory );
