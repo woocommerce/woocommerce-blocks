@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /**
  * External dependencies
  */
@@ -82,6 +81,7 @@ export const addRequireChunkTranslationsHandler = (
 				}
 			)
 			.catch( ( error: { message: string } ) => {
+				// eslint-disable-next-line no-console
 				console.log( error.message );
 			} );
 
