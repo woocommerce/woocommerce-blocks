@@ -16,9 +16,7 @@ import { queries, getDocument } from 'pptr-testing-library';
 /**
  * Internal dependencies
  */
-import {
-	insertBlockDontWaitForInsertClose,
-} from '../../utils.js';
+import { insertBlockDontWaitForInsertClose } from '../../utils.js';
 
 const block = {
 	name: 'Filter Products by Price',
@@ -27,7 +25,6 @@ const block = {
 };
 
 describe( `${ block.name } Block`, () => {
-
 	describe( 'after compatibility notice is dismissed', () => {
 		beforeAll( async () => {
 			await switchUserToAdmin();
@@ -88,7 +85,10 @@ describe( `${ block.name } Block`, () => {
 
 			const { getByLabelText } = queries;
 			const document = await getDocument( page );
-			const showGoButton = await getByLabelText( document, /Filter button/i );
+			const showGoButton = await getByLabelText(
+				document,
+				/Filter button/i
+			);
 			await showGoButton.click();
 			await expect( page ).toMatchElement(
 				'button.wc-block-filter-submit-button.wc-block-price-filter__button'
