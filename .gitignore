@@ -55,4 +55,3 @@ blocks.ini
 /.wp-env.override.json
 /eslint_report.json
 /storybook/dist
-bin/woocommerce/
