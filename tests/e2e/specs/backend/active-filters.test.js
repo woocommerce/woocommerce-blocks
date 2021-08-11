@@ -66,7 +66,7 @@ describe( `${ block.name } Block`, () => {
 		);
 	} );
 
-	it( 'Display style to change', async () => {
+	it( 'allows changing the Display Style', async () => {
 		await openDocumentSettingsSidebar();
 		await page.click( 'button[aria-label="Display Style: Chips"]' );
 		await expect( page ).toMatchElement(

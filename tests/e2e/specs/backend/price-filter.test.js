@@ -70,7 +70,7 @@ describe( `${ block.name } Block`, () => {
 			);
 		} );
 
-		it( 'allows display style to change', async () => {
+		it( 'allows changing the Display Style', async () => {
 			await openDocumentSettingsSidebar();
 
 			await page.click( 'button[aria-label="Price Range: Text"]' );
