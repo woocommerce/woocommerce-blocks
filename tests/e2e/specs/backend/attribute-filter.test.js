@@ -44,9 +44,7 @@ if ( process.env.WP_VERSION < 5.3 )
 describe( `${ block.name } Block`, () => {
 	beforeAll( async () => {
 		await switchUserToAdmin();
-		await visitBlockPage(
-			`${ block.name } Block`
-		);
+		await visitBlockPage( `${ block.name } Block` );
 
 		await page.type(
 			'.wc-block-attribute-filter__selection .components-text-control__input',
@@ -55,9 +53,7 @@ describe( `${ block.name } Block`, () => {
 		await page.click(
 			'.woocommerce-search-list__list label:first-of-type'
 		);
-		await page.click(
-			'.wc-block-attribute-filter__selection > button'
-		);
+		await page.click( '.wc-block-attribute-filter__selection > button' );
 	} );
 
 	it( 'renders without crashing', async () => {
