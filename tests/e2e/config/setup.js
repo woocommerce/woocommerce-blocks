@@ -8,7 +8,6 @@ import { setup as setupPuppeteer } from 'jest-environment-puppeteer';
  */
 import {
 	setupSettings,
-	setupPageSettings,
 	createTaxes,
 	createCoupons,
 	createProducts,
@@ -17,6 +16,8 @@ import {
 	createShippingZones,
 	createBlockPages,
 	enablePaymentGateways,
+	createProductAttributes,
+	ensureCleanAttributes,
 } from '../fixtures/fixture-loaders';
 
 module.exports = async ( globalConfig ) => {
@@ -28,6 +29,7 @@ module.exports = async ( globalConfig ) => {
 		// to be configured before the others are executed.
 		await setupSettings();
 		const pages = await createBlockPages();
+		await ensureCleanAttributes();
 
 		/**
 		 * Promise.all will return an array of all promises resolved values.
@@ -39,14 +41,19 @@ module.exports = async ( globalConfig ) => {
 			createCoupons(),
 			createCategories(),
 			createShippingZones(),
+			createProductAttributes(),
 			enablePaymentGateways(),
-			setupPageSettings(),
 		] );
-		const [ taxes, coupons, categories, shippingZones ] = results;
-
+		const [
+			taxes,
+			coupons,
+			categories,
+			shippingZones,
+			attributes,
+		] = results;
 		// Create products after categories.
-		const products = await createProducts( categories );
 
+		const products = await createProducts( categories, attributes );
 		/**
 		 * Create fixture reviews data for each product.
 		 */
@@ -60,6 +67,7 @@ module.exports = async ( globalConfig ) => {
 			products,
 			shippingZones,
 			pages,
+			attributes,
 		};
 	} catch ( e ) {
 		console.log( e );
