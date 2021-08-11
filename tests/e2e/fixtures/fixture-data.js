@@ -154,6 +154,48 @@ const Products = () => [
 		categories: [ 'Music' ],
 	},
 	{
+		name: '128GB USB Stick',
+		type: 'simple',
+		regular_price: '2.99',
+		virtual: false,
+		downloadable: false,
+		images: [
+			{
+				src:
+					'http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/cd_4_angle.jpg',
+			},
+		],
+		attributes: [
+			{
+				name: 'Capacity',
+				position: 0,
+				visible: true,
+				options: [ '128gb' ],
+			},
+		],
+	},
+	{
+		name: '32GB USB Stick',
+		type: 'simple',
+		regular_price: '1.99',
+		virtual: false,
+		downloadable: false,
+		images: [
+			{
+				src:
+					'http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/cd_4_angle.jpg',
+			},
+		],
+		attributes: [
+			{
+				name: 'Capacity',
+				position: 0,
+				visible: true,
+				options: [ '32gb' ],
+			},
+		],
+	},
+	{
 		name: 'Woo Single #2',
 		type: 'simple',
 		regular_price: '25.99',
