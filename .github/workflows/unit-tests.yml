@@ -87,6 +87,8 @@ jobs:
             - name: Install WordPress
               run: |
                   chmod -R 767 ./ #TODO: Might get implemented in wp-env
+                  JSON='{"phpVersion": "7.0"}'
+                  echo $JSON > .wp-env.override.json
                   npm run wp-env start
             - name: Run PHP Unit tests
               run: npm run test:php
@@ -95,7 +97,7 @@ jobs:
                   npm run wp-env stop
                   JSON='{"phpVersion": "7.0"}'
                   echo $JSON > .wp-env.override.json
-                  sudo npm run wp-env start
+                  npm run wp-env start
                   npm run test:php
     JSUnitTests:
         name: JS Unit Tests
