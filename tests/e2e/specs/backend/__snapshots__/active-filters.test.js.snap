@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Active Product Filters Block allows title can be manipulated 1`] = `
+"<!-- wp:woocommerce/active-filters {\\"heading\\":\\"Active filtersNew Title\\",\\"headingLevel\\":6} -->
+<div class=\\"wp-block-woocommerce-active-filters is-loading\\" data-display-style=\\"list\\" data-heading=\\"Active filtersNew Title\\" data-heading-level=\\"6\\"><span aria-hidden=\\"true\\" class=\\"wc-block-active-product-filters__placeholder\\"></span></div>
+<!-- /wp:woocommerce/active-filters -->"
+`;
