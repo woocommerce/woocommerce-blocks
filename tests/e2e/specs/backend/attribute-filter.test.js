@@ -60,7 +60,7 @@ describe( `${ block.name } Block`, () => {
 		await expect( page ).toRenderBlock( block );
 	} );
 
-	it( 'allows title to be manipulated', async () => {
+	it( "allows changing the block's title", async () => {
 		await openDocumentSettingsSidebar();
 
 		await clearAndFillInput(

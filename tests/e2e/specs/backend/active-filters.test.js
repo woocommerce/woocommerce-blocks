@@ -40,7 +40,7 @@ describe( `${ block.name } Block`, () => {
 		await expect( page ).toRenderBlock( block );
 	} );
 
-	it( 'allows title can be manipulated', async () => {
+	it( "allows changing the block's title", async () => {
 		await openDocumentSettingsSidebar();
 		await clearAndFillInput(
 			'.wp-block[data-type="woocommerce/active-filters"] textarea.wc-block-editor-components-title',

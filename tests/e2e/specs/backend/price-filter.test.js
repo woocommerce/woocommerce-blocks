@@ -40,7 +40,7 @@ describe( `${ block.name } Block`, () => {
 			await expect( page ).toRenderBlock( block );
 		} );
 
-		it( 'allows title to be manipulated', async () => {
+		it( "allows changing the block's title", async () => {
 			// we focus on the block
 			await page.click( block.class );
 			await openDocumentSettingsSidebar();
