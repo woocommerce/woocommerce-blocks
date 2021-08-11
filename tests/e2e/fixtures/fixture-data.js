@@ -87,6 +87,9 @@ const Categories = () => [
 	{
 		name: 'Music',
 	},
+	{
+		name: 'Top 40 Singles',
+	},
 ];
 
 /**
@@ -114,7 +117,7 @@ const Products = () => [
 					'http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/cd_4_angle.jpg',
 			},
 		],
-		categories: [ 'Music' ],
+		categories: [ 'Music', 'Top 40 Singles' ],
 	},
 	{
 		name: 'Woo Single #2',

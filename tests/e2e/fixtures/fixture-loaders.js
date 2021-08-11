@@ -120,10 +120,12 @@ const deleteCoupons = ( ids ) =>
  * @return {Promise} a promise that resolves to an array of newly created categories,
  * or rejects if the request failed.
  */
-const createCategories = ( fixture = fixtures.Categories() ) =>
-	WooCommerce.post( 'products/categories/batch', {
+const createCategories = async ( fixture = fixtures.Categories() ) => {
+	await ensureCleanCategories();
+	return WooCommerce.post( 'products/categories/batch', {
 		create: fixture,
 	} ).then( ( response ) => response.data.create );
+};
 
 /**
  * Delete Product Categories.
@@ -139,6 +141,18 @@ const deleteCategories = ( categories ) => {
 	return WooCommerce.post( 'products/categories/batch', {
 		delete: ids,
 	} );
+};
+
+/**
+ * Ensure categories are removed from the site before setting up. This exists in case
+ * the teardown didn't happen properly for any reason. This function exists mostly as a
+ * dev-ex improvement tool while working on tests.
+ *
+ * @return {Promise<void>}
+ */
+const ensureCleanCategories = async () => {
+	const categories = await WooCommerce.get( 'products/categories' );
+	await deleteCategories( categories.data );
 };
 
 /**
