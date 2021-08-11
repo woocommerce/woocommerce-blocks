@@ -95,7 +95,7 @@ jobs:
                   npm run wp-env stop
                   JSON='{"phpVersion": "7.0"}'
                   echo $JSON > .wp-env.override.json
-                  npm run wp-env start
+                  sudo npm run wp-env start
                   npm run test:php
     JSUnitTests:
         name: JS Unit Tests
