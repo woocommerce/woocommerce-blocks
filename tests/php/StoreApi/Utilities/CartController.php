@@ -7,7 +7,7 @@ namespace Automattic\WooCommerce\Blocks\Tests\StoreApi\Utilities;
 
 use Automattic\WooCommerce\Blocks\Tests\Helpers\FixtureData;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
-use PHPUnit\Framework\TestCase;
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 class OrderControllerTests extends TestCase {
 

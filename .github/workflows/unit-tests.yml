@@ -90,7 +90,14 @@ jobs:
                   npm run wp-env start
             - name: Run PHP Unit tests
               run: npm run test:php
-
+            - name: Run PHP Unit tests (PHP 7.0)
+              run: |
+                  chmod -R 767 ./ #needed for permissions issues
+                  npm run wp-env stop
+                  JSON='{"phpVersion": "7.0"}'
+                  echo $JSON > .wp-env.override.json
+                  npm run wp-env start
+                  npm run test:php
     JSUnitTests:
         name: JS Unit Tests
         needs: Setup
