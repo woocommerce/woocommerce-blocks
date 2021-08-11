@@ -5,6 +5,43 @@
  */
 
 /**
+ * Product attributes fixture data, using the create attribute and batch create terms.
+ *
+ * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#create-a-product-attribute|Create a product attribute}
+ * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#batch-update-attribute-terms|Batch update attribute terms}
+ */
+const Attributes = () => [
+	{
+		attribute: { name: 'Capacity' },
+		terms: [
+			{
+				name: '32gb',
+			},
+			{
+				name: '64gb',
+			},
+			{
+				name: '128gb',
+			},
+		],
+	},
+	{
+		attribute: { name: 'Shade' },
+		terms: [
+			{
+				name: 'Red',
+			},
+			{
+				name: 'Blue',
+			},
+			{
+				name: 'Black',
+			},
+		],
+	},
+];
+
+/**
  * Coupons fixture data, using the create batch endpoint
  *
  * @see {@link https://woocommerce.github.io/woocommerce-rest-api-docs/#batch-update-coupons|Batch update coupons}
@@ -283,6 +320,7 @@ const Taxes = () => [
 ];
 
 module.exports = {
+	Attributes,
 	Coupons,
 	ReviewsInProduct,
 	Categories,
