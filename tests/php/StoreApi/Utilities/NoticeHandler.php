@@ -9,7 +9,6 @@ use Automattic\WooCommerce\Blocks\StoreApi\Routes\RouteException;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\NoticeHandler;
 use PHPUnit\Framework\TestCase;
-use \WC_Helper_Product as ProductHelper;
 
 class NoticeHandlerTests extends TestCase {
 

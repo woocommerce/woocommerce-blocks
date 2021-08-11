@@ -5,10 +5,7 @@
 
 namespace Automattic\WooCommerce\Blocks\Tests\StoreApi\Controllers;
 
-use \WP_REST_Request;
-use \WC_REST_Unit_Test_Case as TestCase;
-use \WC_Helper_Product as ProductHelper;
-use \WC_Helper_Coupon as CouponHelper;
+use Automattic\WooCommerce\Blocks\Tests\Helpers\FixtureData;
 use Automattic\WooCommerce\Blocks\Tests\Helpers\ValidateSchema;
 use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
 use Automattic\WooCommerce\Blocks\Package;
@@ -23,7 +20,7 @@ use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 /**
  * Cart Coupons Controller Tests.
  */
-class CartCoupons extends TestCase {
+class CartCoupons extends \WP_Test_REST_TestCase {
 
 	private $mock_extend;
 
@@ -33,6 +30,11 @@ class CartCoupons extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
+		/** @var WP_REST_Server $wp_rest_server */
+		global $wp_rest_server;
+		$wp_rest_server = new \Spy_REST_Server;
+		do_action( 'rest_api_init', $wp_rest_server );
+
 		wp_set_current_user( 0 );
 
 		$formatters = new Formatters();
@@ -40,8 +42,14 @@ class CartCoupons extends TestCase {
 		$formatters->register( 'html', HtmlFormatter::class );
 		$formatters->register( 'currency', CurrencyFormatter::class );
 		$this->mock_extend = new ExtendRestApi( new DomainPackage( '', '', new FeatureGating( 2 ) ), $formatters );
-		$this->product = ProductHelper::create_simple_product( false );
-		$this->coupon  = CouponHelper::create_coupon();
+
+		$fixtures = new FixtureData();
+
+		$this->product = $fixtures->get_simple_product( [
+			'name' => 'Test Product 1',
+			'regular_price' => 10,
+		] );
+		$this->coupon  = $fixtures->get_coupon( ['code' => 'test_coupon'] );
 
 		wc_empty_cart();
 
@@ -50,10 +58,20 @@ class CartCoupons extends TestCase {
 	}
 
 	/**
+	 * Tear down the above.
+	 */
+	public function tearDown() {
+		parent::tearDown();
+		/** @var WP_REST_Server $wp_rest_server */
+		global $wp_rest_server;
+		$wp_rest_server = null;
+	}
+
+	/**
 	 * Test route registration.
 	 */
 	public function test_register_routes() {
-		$routes = $this->server->get_routes();
+		$routes = rest_get_server()->get_routes();
 		$this->assertArrayHasKey( '/wc/store/cart/coupons', $routes );
 		$this->assertArrayHasKey( '/wc/store/cart/coupons/(?P<code>[\w-]+)', $routes );
 	}
@@ -62,7 +80,7 @@ class CartCoupons extends TestCase {
 	 * Test getting cart.
 	 */
 	public function test_get_items() {
-		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/cart/coupons' ) );
+		$response = rest_get_server()->dispatch( new \WP_REST_Request( 'GET', '/wc/store/cart/coupons' ) );
 		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
@@ -73,7 +91,7 @@ class CartCoupons extends TestCase {
 	 * Test getting cart item by key.
 	 */
 	public function test_get_item() {
-		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/cart/coupons/' . $this->coupon->get_code() ) );
+		$response = rest_get_server()->dispatch( new \WP_REST_Request( 'GET', '/wc/store/cart/coupons/' . $this->coupon->get_code() ) );
 		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
@@ -88,14 +106,14 @@ class CartCoupons extends TestCase {
 	public function test_create_item() {
 		wc()->cart->remove_coupons();
 
-		$request = new WP_REST_Request( 'POST', '/wc/store/cart/coupons' );
+		$request = new \WP_REST_Request( 'POST', '/wc/store/cart/coupons' );
 		$request->set_header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
 		$request->set_body_params(
 			array(
 				'code' => $this->coupon->get_code(),
 			)
 		);
-		$response = $this->server->dispatch( $request );
+		$response = rest_get_server()->dispatch( $request );
 		$data     = $response->get_data();
 
 		$this->assertEquals( 201, $response->get_status() );
@@ -108,14 +126,14 @@ class CartCoupons extends TestCase {
 	public function test_invalid_create_item() {
 		wc()->cart->remove_coupons();
 
-		$request = new WP_REST_Request( 'POST', '/wc/store/cart/coupons' );
+		$request = new \WP_REST_Request( 'POST', '/wc/store/cart/coupons' );
 		$request->set_header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
 		$request->set_body_params(
 			array(
 				'code' => 'IDONOTEXIST',
 			)
 		);
-		$response = $this->server->dispatch( $request );
+		$response = rest_get_server()->dispatch( $request );
 		$data     = $response->get_data();
 
 		$this->assertEquals( 400, $response->get_status() );
@@ -125,24 +143,24 @@ class CartCoupons extends TestCase {
 	 * Test delete item.
 	 */
 	public function test_delete_item() {
-		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/coupons/' . $this->coupon->get_code() );
+		$request  = new \WP_REST_Request( 'DELETE', '/wc/store/cart/coupons/' . $this->coupon->get_code() );
 		$request->set_header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
-		$response = $this->server->dispatch( $request );
+		$response = rest_get_server()->dispatch( $request );
 		$data     = $response->get_data();
 
 		$this->assertEquals( 204, $response->get_status() );
 		$this->assertEmpty( $data );
 
-		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/coupons/' . $this->coupon->get_code() );
+		$request  = new \WP_REST_Request( 'DELETE', '/wc/store/cart/coupons/' . $this->coupon->get_code() );
 		$request->set_header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
-		$response = $this->server->dispatch( $request );
+		$response = rest_get_server()->dispatch( $request );
 		$data     = $response->get_data();
 
 		$this->assertEquals( 404, $response->get_status() );
 
-		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/coupons/i-do-not-exist' );
+		$request  = new \WP_REST_Request( 'DELETE', '/wc/store/cart/coupons/i-do-not-exist' );
 		$request->set_header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
-		$response = $this->server->dispatch( $request );
+		$response = rest_get_server()->dispatch( $request );
 		$data     = $response->get_data();
 
 		$this->assertEquals( 404, $response->get_status() );
@@ -152,15 +170,15 @@ class CartCoupons extends TestCase {
 	 * Test delete all items.
 	 */
 	public function test_delete_items() {
-		$request  = new WP_REST_Request( 'DELETE', '/wc/store/cart/coupons' );
+		$request  = new \WP_REST_Request( 'DELETE', '/wc/store/cart/coupons' );
 		$request->set_header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
-		$response = $this->server->dispatch( $request );
+		$response = rest_get_server()->dispatch( $request );
 		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( [], $data );
 
-		$response = $this->server->dispatch( new WP_REST_Request( 'GET', '/wc/store/cart/coupons' ) );
+		$response = rest_get_server()->dispatch( new \WP_REST_Request( 'GET', '/wc/store/cart/coupons' ) );
 		$data     = $response->get_data();
 
 		$this->assertEquals( 200, $response->get_status() );
@@ -170,7 +188,7 @@ class CartCoupons extends TestCase {
 	/**
 	 * Test conversion of cart item to rest response.
 	 */
-	public function test_prepare_item_for_response() {
+	public function test_prepare_item() {
 		$routes     = new \Automattic\WooCommerce\Blocks\StoreApi\RoutesController( new \Automattic\WooCommerce\Blocks\StoreApi\SchemaController( $this->mock_extend ) );
 		$controller = $routes->get( 'cart-coupons' );
 
@@ -184,7 +202,7 @@ class CartCoupons extends TestCase {
 	/**
 	 * Test schema matches responses.
 	 */
-	public function test_schema_matches_response() {
+	public function test_get_item_schema() {
 		$routes     = new \Automattic\WooCommerce\Blocks\StoreApi\RoutesController( new \Automattic\WooCommerce\Blocks\StoreApi\SchemaController( $this->mock_extend ) );
 		$controller = $routes->get( 'cart-coupons' );
 		$schema     = $controller->get_item_schema();

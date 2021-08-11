@@ -5,11 +5,7 @@
 
 namespace Automattic\WooCommerce\Blocks\Tests\StoreApi\Controllers;
 
-use \WP_REST_Request;
-use \WC_REST_Unit_Test_Case as TestCase;
-use \WC_Helper_Product as ProductHelper;
-use \WC_Helper_Coupon as CouponHelper;
-use \WC_Helper_Shipping;
+use Automattic\WooCommerce\Blocks\Tests\Helpers\FixtureData;
 use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
 use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Domain\Package as DomainPackage;
@@ -23,7 +19,7 @@ use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 /**
  * Batch Controller Tests.
  */
-class Batch extends TestCase {
+class Batch extends \WP_Test_REST_TestCase {
 
 	private $mock_extend;
 
@@ -33,38 +29,49 @@ class Batch extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
+		/** @var \WP_REST_Server $wp_rest_server */
+		global $wp_rest_server;
+		$wp_rest_server = new \Spy_REST_Server;
+		do_action( 'rest_api_init', $wp_rest_server );
+
 		wp_set_current_user( 0 );
 		update_option( 'woocommerce_weight_unit', 'g' );
 
-		$this->products = [];
 		$formatters = new Formatters();
 		$formatters->register( 'money', MoneyFormatter::class );
 		$formatters->register( 'html', HtmlFormatter::class );
 		$formatters->register( 'currency', CurrencyFormatter::class );
 		$this->mock_extend = new ExtendRestApi( new DomainPackage( '', '', new FeatureGating( 2 ) ), $formatters );
 
-		// Create some test products.
-		$this->products[0] = ProductHelper::create_simple_product( false );
-		$this->products[0]->set_weight( 10 );
-		$this->products[0]->set_regular_price( 10 );
-		$this->products[0]->save();
+		$fixtures = new FixtureData();
 
-		$this->products[1] = ProductHelper::create_simple_product( false );
-		$this->products[1]->set_weight( 10 );
-		$this->products[1]->set_regular_price( 10 );
-		$this->products[1]->save();
+		$this->products = [
+			$fixtures->get_simple_product( [
+				'name' => 'Test Product 1',
+				'regular_price' => 10,
+			] ),
+			$fixtures->get_simple_product( [
+				'name' => 'Test Product 2',
+				'regular_price' => 10,
+			] ),
+		];
+	}
 
-		$this->coupon = CouponHelper::create_coupon();
-
-		WC_Helper_Shipping::create_simple_flat_rate();
-		wc_empty_cart();
+	/**
+	 * Tear down the above.
+	 */
+	public function tearDown() {
+		parent::tearDown();
+		/** @var \WP_REST_Server $wp_rest_server */
+		global $wp_rest_server;
+		$wp_rest_server = null;
 	}
 
 	/**
 	 * Test route registration.
 	 */
 	public function test_register_routes() {
-		$routes = $this->server->get_routes();
+		$routes = rest_get_server()->get_routes();
 		$this->assertArrayHasKey( '/wc/store/batch', $routes );
 	}
 
@@ -72,7 +79,7 @@ class Batch extends TestCase {
 	 * Test that a batch of requests are successful.
 	 */
 	public function test_success_cart_route_batch() {
-		$request  = new WP_REST_Request( 'POST', '/wc/store/batch' );
+		$request  = new \WP_REST_Request( 'POST', '/wc/store/batch' );
 		$request->set_header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
 		$request->set_body_params(
 			array(
@@ -102,7 +109,7 @@ class Batch extends TestCase {
 				),
 			)
 		);
-		$response      = $this->server->dispatch( $request );
+		$response      = rest_get_server()->dispatch( $request );
 		$response_data = $response->get_data();
 
 		// Assert that there were 2 successful results from the batch.
@@ -115,7 +122,7 @@ class Batch extends TestCase {
 	 * Test for a mixture of successful and non-successful requests in a batch.
 	 */
 	public function test_mix_cart_route_batch() {
-		$request  = new WP_REST_Request( 'POST', '/wc/store/batch' );
+		$request  = new \WP_REST_Request( 'POST', '/wc/store/batch' );
 		$request->set_header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
 		$request->set_body_params(
 			array(
@@ -145,7 +152,7 @@ class Batch extends TestCase {
 				),
 			)
 		);
-		$response      = $this->server->dispatch( $request );
+		$response      = rest_get_server()->dispatch( $request );
 		$response_data = $response->get_data();
 
 		$this->assertEquals( 2, count( $response_data['responses'] ) );
@@ -157,7 +164,7 @@ class Batch extends TestCase {
 	 * Get Requests not supported by batch.
 	 */
 	public function test_get_cart_route_batch() {
-		$request  = new WP_REST_Request( 'POST', '/wc/store/batch' );
+		$request  = new \WP_REST_Request( 'POST', '/wc/store/batch' );
 		$request->set_header( 'X-WC-Store-API-Nonce', wp_create_nonce( 'wc_store_api' ) );
 		$request->set_body_params(
 			array(
@@ -173,7 +180,7 @@ class Batch extends TestCase {
 				),
 			)
 		);
-		$response      = $this->server->dispatch( $request );
+		$response      = rest_get_server()->dispatch( $request );
 		$response_data = $response->get_data();
 
 		$this->assertEquals( 'rest_invalid_param', $response_data['code'], print_r( $response_data, true ) );
