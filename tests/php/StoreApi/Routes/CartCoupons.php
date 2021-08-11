@@ -3,45 +3,22 @@
  * Controller Tests.
  */
 
-namespace Automattic\WooCommerce\Blocks\Tests\StoreApi\Controllers;
+namespace Automattic\WooCommerce\Blocks\Tests\StoreApi\Routes;
 
+use Automattic\WooCommerce\Blocks\Tests\StoreApi\Routes\ControllerTestCase;
 use Automattic\WooCommerce\Blocks\Tests\Helpers\FixtureData;
 use Automattic\WooCommerce\Blocks\Tests\Helpers\ValidateSchema;
-use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
-use Automattic\WooCommerce\Blocks\Package;
-use Automattic\WooCommerce\Blocks\Domain\Package as DomainPackage;
-use Automattic\WooCommerce\Blocks\StoreApi\Formatters;
-use Automattic\WooCommerce\Blocks\StoreApi\Formatters\MoneyFormatter;
-use Automattic\WooCommerce\Blocks\StoreApi\Formatters\HtmlFormatter;
-use Automattic\WooCommerce\Blocks\StoreApi\Formatters\CurrencyFormatter;
-use Automattic\WooCommerce\Blocks\Registry\Container;
-use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 
 /**
  * Cart Coupons Controller Tests.
  */
-class CartCoupons extends \WP_Test_REST_TestCase {
-
-	private $mock_extend;
+class CartCoupons extends ControllerTestCase {
 
 	/**
 	 * Setup test products data. Called before every test.
 	 */
 	public function setUp() {
 		parent::setUp();
-
-		/** @var WP_REST_Server $wp_rest_server */
-		global $wp_rest_server;
-		$wp_rest_server = new \Spy_REST_Server;
-		do_action( 'rest_api_init', $wp_rest_server );
-
-		wp_set_current_user( 0 );
-
-		$formatters = new Formatters();
-		$formatters->register( 'money', MoneyFormatter::class );
-		$formatters->register( 'html', HtmlFormatter::class );
-		$formatters->register( 'currency', CurrencyFormatter::class );
-		$this->mock_extend = new ExtendRestApi( new DomainPackage( '', '', new FeatureGating( 2 ) ), $formatters );
 
 		$fixtures = new FixtureData();
 
@@ -55,16 +32,6 @@ class CartCoupons extends \WP_Test_REST_TestCase {
 
 		wc()->cart->add_to_cart( $this->product->get_id(), 2 );
 		wc()->cart->apply_coupon( $this->coupon->get_code() );
-	}
-
-	/**
-	 * Tear down the above.
-	 */
-	public function tearDown() {
-		parent::tearDown();
-		/** @var WP_REST_Server $wp_rest_server */
-		global $wp_rest_server;
-		$wp_rest_server = null;
 	}
 
 	/**

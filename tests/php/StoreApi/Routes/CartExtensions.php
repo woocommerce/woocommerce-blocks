@@ -3,48 +3,16 @@
  * Cart extensions route tests.
  */
 
-namespace Automattic\WooCommerce\Blocks\Tests\StoreApi\Controllers;
+namespace Automattic\WooCommerce\Blocks\Tests\StoreApi\Routes;
 
+use Automattic\WooCommerce\Blocks\Tests\StoreApi\Routes\ControllerTestCase;
 use Automattic\WooCommerce\Blocks\StoreApi\Routes\RouteException;
 use Automattic\WooCommerce\Blocks\Tests\Helpers\ValidateSchema;
-use Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi;
-use Automattic\WooCommerce\Blocks\Package;
-use Automattic\WooCommerce\Blocks\Domain\Package as DomainPackage;
-use Automattic\WooCommerce\Blocks\StoreApi\Formatters;
-use Automattic\WooCommerce\Blocks\StoreApi\Formatters\MoneyFormatter;
-use Automattic\WooCommerce\Blocks\StoreApi\Formatters\HtmlFormatter;
-use Automattic\WooCommerce\Blocks\StoreApi\Formatters\CurrencyFormatter;
-use Automattic\WooCommerce\Blocks\Registry\Container;
-use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 
 /**
  * Cart Controller Tests.
  */
-class CartExtensions extends \WP_Test_REST_TestCase {
-
-	private $mock_extend;
-
-	/**
-	 * Setup test products data. Called before every test.
-	 */
-	public function setUp() {
-		parent::setUp();
-
-		/** @var \WP_REST_Server $wp_rest_server */
-		global $wp_rest_server;
-		$wp_rest_server = new \Spy_REST_Server;
-		do_action( 'rest_api_init', $wp_rest_server );
-	}
-
-	/**
-	 * Tear down the above.
-	 */
-	public function tearDown() {
-		parent::tearDown();
-		/** @var \WP_REST_Server $wp_rest_server */
-		global $wp_rest_server;
-		$wp_rest_server = null;
-	}
+class CartExtensions extends ControllerTestCase {
 
 	/**
 	 * Test route registration.
