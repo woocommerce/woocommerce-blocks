@@ -21,7 +21,7 @@ const renderInCheckoutProvider = ( ui, options = {} ) => {
 // Countries used in testing addresses must be in the wcSettings global.
 // See: tests/js/setup-globals.js
 const primaryAddress = {
-	country: 'United Kingdom (UK)',
+	country: 'United Kingdom',
 	countryKey: 'GB',
 	city: 'London',
 	state: 'Greater London',
@@ -46,7 +46,7 @@ const cityRegExp = /city/i;
 const stateRegExp = /county|province|state/i;
 const postalCodeRegExp = /postal code|postcode|zip/i;
 
-const inputAddress = ( {
+const inputAddress = async ( {
 	country = null,
 	city = null,
 	state = null,
@@ -54,7 +54,7 @@ const inputAddress = ( {
 } ) => {
 	if ( country ) {
 		const countryInput = screen.getByLabelText( countryRegExp );
-		userEvent.type( countryInput, country );
+		userEvent.type( countryInput, country + '{arrowdown}{enter}' );
 	}
 	if ( city ) {
 		const cityInput = screen.getByLabelText( cityRegExp );
