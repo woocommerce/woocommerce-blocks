@@ -3,13 +3,14 @@
  */
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
-import { useEffect } from '@wordpress/element';
+import { useEffect, useRef } from '@wordpress/element';
 import { withInstanceId } from '@wordpress/compose';
 import { ComboboxControl } from 'wordpress-components';
 import {
 	ValidationInputError,
 	useValidationContext,
 } from '@woocommerce/base-context';
+import { isObject } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -58,6 +59,7 @@ const Combobox = ( {
 		clearValidationError,
 	} = useValidationContext();
 
+	const controlRef = useRef< HTMLDivElement >( null );
 	const controlId = id || 'control-' + instanceId;
 	const errorId = incomingErrorId || controlId;
 	const error = ( getValidationError( errorId ) || {
@@ -98,6 +100,7 @@ const Combobox = ( {
 				'is-active': value,
 				'has-error': error.message && ! error.hidden,
 			} ) }
+			ref={ controlRef }
 		>
 			<ComboboxControl
 				className={ 'wc-block-components-combobox-control' }
@@ -105,7 +108,20 @@ const Combobox = ( {
 				onChange={ onChange }
 				onFilterValueChange={ ( filterValue: string ) => {
 					if ( filterValue.length ) {
-						// If we have a value, this could be from browser autofill. Try to match.
+						// If we have a value and the combobox is not focussed, this could be from browser autofill.
+						const activeElement = isObject( controlRef.current )
+							? controlRef.current.ownerDocument.activeElement
+							: undefined;
+
+						if (
+							activeElement &&
+							isObject( controlRef.current ) &&
+							controlRef.current.contains( activeElement )
+						) {
+							return;
+						}
+
+						// Try to match.
 						const normalizedFilterValue = filterValue.toLocaleUpperCase();
 						const foundOption = options.find(
 							( option ) =>
