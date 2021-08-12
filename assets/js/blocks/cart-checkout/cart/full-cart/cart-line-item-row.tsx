@@ -305,4 +305,5 @@ const CartLineItemRow = ( {
 		</tr>
 	);
 };
+
 export default CartLineItemRow;
