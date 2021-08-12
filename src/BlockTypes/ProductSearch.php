@@ -79,8 +79,7 @@ class ProductSearch extends AbstractBlock {
 					array_filter(
 						[
 							'wc-block-product-search',
-							$attributes['align'] ? 'align' + $attributes['align'] : '',
-							$attributes['className'],
+							$attributes['align'] ? 'align' . $attributes['align'] : '',
 						]
 					)
 				),
