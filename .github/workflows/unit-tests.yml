@@ -90,9 +90,9 @@ jobs:
                   npm run wp-env start
             - name: Run PHPUnit tests
               run: npm run test:php
-            - name: Run PHPUnit tests (WC 5.5)
+            - name: Run PHPUnit tests (WooCommerce Development Version)
               run: |
-                  JSON='{"plugins": [".","https://downloads.wordpress.org/plugin/woocommerce.5.5.0.zip"]}'
+                  JSON='{"plugins": [".","https://downloads.wordpress.org/plugin/woocommerce.zip"]}'
                   echo $JSON > .wp-env.override.json
                   npm run wp-env start
                   npm run test:php
