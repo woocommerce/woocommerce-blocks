@@ -2,7 +2,6 @@
  * External dependencies
  */
 import {
-	insertBlock,
 	getEditedPostContent,
 	getAllBlocks,
 	switchUserToAdmin,
@@ -13,6 +12,11 @@ import {
 	visitBlockPage,
 	clearAndFillInput,
 } from '@woocommerce/blocks-test-utils';
+import { getDocument, queries } from 'pptr-testing-library';
+
+/**
+ * Internal dependencies
+ */
 import { insertBlockDontWaitForInsertClose } from '../../utils';
 
 const block = {
@@ -41,14 +45,19 @@ describe( `${ block.name } Block`, () => {
 	} );
 
 	it( "allows changing the block's title", async () => {
+		const document = await getDocument( page );
 		await openDocumentSettingsSidebar();
 		await clearAndFillInput(
 			'.wp-block[data-type="woocommerce/active-filters"] textarea.wc-block-editor-components-title',
 			'New Title'
 		);
-		await page.click(
-			'.components-toolbar button[aria-label="Heading 6"]'
+		// Convert the title to H6.
+		const heading6Button = await queries.getByLabelText(
+			document,
+			/Heading 6/i,
+			{ selector: '.components-toolbar button' }
 		);
+		await heading6Button.click();
 		await expect(
 			page
 		).toMatchElement(
@@ -61,17 +70,37 @@ describe( `${ block.name } Block`, () => {
 			'.wp-block[data-type="woocommerce/active-filters"] textarea.wc-block-editor-components-title',
 			'Active filters'
 		);
-		await page.click(
-			'.components-toolbar button[aria-label="Heading 3"]'
+		// Convert the title back to H3.
+		const heading3Button = await queries.getByLabelText(
+			document,
+			/Heading 3/i,
+			{ selector: '.components-toolbar button' }
 		);
+		await heading3Button.click();
 	} );
 
 	it( 'allows changing the Display Style', async () => {
+		const document = await getDocument( page );
 		await openDocumentSettingsSidebar();
-		await page.click( 'button[aria-label="Display Style: Chips"]' );
+
+		// Click the button to convert the display style to Chips.
+		const chipStyleButton = await queries.getByLabelText(
+			document,
+			/Display Style: Chips/i
+		);
+		await chipStyleButton.click();
 		await expect( page ).toMatchElement(
 			'.wc-block-active-filters__list.wc-block-active-filters__list--chips'
 		);
-		await page.click( 'button[aria-label="Display Style: List"]' );
+
+		// Click the button to convert the display style to List.
+		const listStyleButton = await queries.getByLabelText(
+			document,
+			/Display Style: List/i
+		);
+		await listStyleButton.click();
+		await expect( page ).not.toMatchElement(
+			'.wc-block-active-filters__list.wc-block-active-filters__list--chips'
+		);
 	} );
 } );
