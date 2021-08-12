@@ -27,7 +27,7 @@ import {
 	mustContain,
 } from '@woocommerce/blocks-checkout';
 import Dinero from 'dinero.js';
-import { useCallback, useMemo } from '@wordpress/element';
+import { useMemo } from '@wordpress/element';
 import type { CartItem } from '@woocommerce/type-defs/cart';
 import { objectHasProp } from '@woocommerce/types';
 import { getSetting } from '@woocommerce/settings';
@@ -45,6 +45,8 @@ const getAmountFromRawPrice = (
 ) => {
 	return priceObject.convertPrecision( currency.minorUnit ).getAmount();
 };
+
+const productPriceValidation = ( value ) => mustContain( value, '<price/>' );
 
 /**
  * Cart line item table row component.
@@ -109,11 +111,6 @@ const CartLineItemRow = ( {
 		isPendingDelete,
 	} = useStoreCartItemQuantity( lineItem );
 	const { dispatchStoreEvent } = useStoreEvents();
-
-	const productPriceValidation = useCallback(
-		( value ) => mustContain( value, '<price/>' ),
-		[]
-	);
 
 	// Prepare props to pass to the __experimentalApplyCheckoutFilter filter.
 	// We need to pluck out receiveCart.

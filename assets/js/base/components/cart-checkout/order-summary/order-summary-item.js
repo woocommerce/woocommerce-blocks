@@ -13,7 +13,7 @@ import {
 import PropTypes from 'prop-types';
 import Dinero from 'dinero.js';
 import { getSetting } from '@woocommerce/settings';
-import { useCallback, useMemo } from '@wordpress/element';
+import { useMemo } from '@wordpress/element';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 
 /**
@@ -23,6 +23,8 @@ import ProductBackorderBadge from '../product-backorder-badge';
 import ProductImage from '../product-image';
 import ProductLowStockBadge from '../product-low-stock-badge';
 import ProductMetadata from '../product-metadata';
+
+const productPriceValidation = ( value ) => mustContain( value, '<price/>' );
 
 const OrderSummaryItem = ( { cartItem } ) => {
 	const {
@@ -45,11 +47,6 @@ const OrderSummaryItem = ( { cartItem } ) => {
 	// We need to pluck out receiveCart.
 	// eslint-disable-next-line no-unused-vars
 	const { receiveCart, ...cart } = useStoreCart();
-
-	const productPriceValidation = useCallback(
-		( value ) => mustContain( value, '<price/>' ),
-		[]
-	);
 
 	const arg = useMemo(
 		() => ( {
