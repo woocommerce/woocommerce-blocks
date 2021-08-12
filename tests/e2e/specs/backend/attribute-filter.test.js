@@ -2,35 +2,17 @@
  * External dependencies
  */
 import {
-	getEditedPostContent,
 	switchUserToAdmin,
 	openDocumentSettingsSidebar,
-	publishPost,
 } from '@wordpress/e2e-test-utils';
 import { getDocument, queries } from 'pptr-testing-library';
 
 import {
 	visitBlockPage,
 	clearAndFillInput,
+	saveOrPublish,
 } from '@woocommerce/blocks-test-utils';
 
-async function saveOrPublish() {
-	const link = await page.evaluate( () =>
-		wp.data.select( 'core/editor' ).getPermalink()
-	);
-	if ( link.match( 'auto-draft' ) ) {
-		await publishPost();
-	} else {
-		const publishButton = await page.$(
-			'.editor-post-publish-button.editor-post-publish-button__button:not([aria-disabled="true"])'
-		);
-		if ( publishButton ) {
-			await publishButton.click();
-			// A success notice should show up
-			await page.waitForSelector( '.components-snackbar' );
-		}
-	}
-}
 const block = {
 	name: 'Filter Products by Attribute',
 	slug: 'woocommerce/attribute-filter',
@@ -45,15 +27,20 @@ describe( `${ block.name } Block`, () => {
 	beforeAll( async () => {
 		await switchUserToAdmin();
 		await visitBlockPage( `${ block.name } Block` );
+		const document = await getDocument( page );
 
+		// Search for the capacity attribute.
 		await page.type(
 			'.wc-block-attribute-filter__selection .components-text-control__input',
 			'Capacity'
 		);
-		await page.click(
-			'.woocommerce-search-list__list label:first-of-type'
-		);
-		await page.click( '.wc-block-attribute-filter__selection > button' );
+		const capacityInput = await queries.getByText( document, /Capacity/i );
+		await capacityInput.click();
+
+		const doneButton = await queries.getByText( document, /Done/i, {
+			selector: '.wc-block-attribute-filter__selection button',
+		} );
+		await doneButton.click();
 	} );
 
 	it( 'renders without crashing', async () => {
@@ -87,8 +74,6 @@ describe( `${ block.name } Block`, () => {
 	} );
 
 	it( 'renders correctly', async () => {
-		// await page.click('.wc-block-attribute-filter');
-		// await page.click('.block-editor-block-toolbar__slot button[aria-label="Edit"]')
 		expect(
 			await page.$$eval(
 				'.wc-block-attribute-filter-list li',
