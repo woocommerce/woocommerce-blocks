@@ -29,18 +29,18 @@ const productPriceValidation = ( value ) => mustContain( value, '<price/>' );
 const OrderSummaryItem = ( { cartItem } ) => {
 	const {
 		images,
-		low_stock_remaining: lowStockRemaining = null,
-		show_backorder_badge: showBackorderBadge = false,
+		low_stock_remaining: lowStockRemaining,
+		show_backorder_badge: showBackorderBadge,
 		name: initialName,
 		permalink,
 		prices,
 		quantity,
 		short_description: shortDescription,
 		description: fullDescription,
-		item_data: itemData = [],
+		item_data: itemData,
 		variation,
 		totals,
-		extensions = {},
+		extensions,
 	} = cartItem;
 
 	// Prepare props to pass to the __experimentalApplyCheckoutFilter filter.
