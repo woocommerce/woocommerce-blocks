@@ -93,6 +93,7 @@ const Combobox = ( {
 		setValidationErrors,
 	] );
 
+	// @todo Remove patch for ComboboxControl once https://github.com/WordPress/gutenberg/pull/33928 is released
 	return (
 		<div
 			id={ controlId }
