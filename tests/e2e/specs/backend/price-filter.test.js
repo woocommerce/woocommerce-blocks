@@ -41,6 +41,7 @@ describe( `${ block.name } Block`, () => {
 		} );
 
 		it( "allows changing the block's title", async () => {
+			const document = await getDocument( page );
 			// we focus on the block
 			await page.click( block.class );
 			await openDocumentSettingsSidebar();
@@ -49,9 +50,13 @@ describe( `${ block.name } Block`, () => {
 				'New Title'
 			);
 			await page.click( block.class );
-			await page.click(
-				'.components-toolbar button[aria-label="Heading 6"]'
+
+			// Change title to h6.
+			const heading6Button = await queries.getByLabelText(
+				document,
+				/Heading 6/i
 			);
+			await heading6Button.click();
 			await expect(
 				page
 			).toMatchElement(
@@ -64,20 +69,44 @@ describe( `${ block.name } Block`, () => {
 				'.wp-block[data-type="woocommerce/price-filter"] textarea.wc-block-editor-components-title',
 				'Filter by price'
 			);
-
-			await page.click(
-				'.components-toolbar button[aria-label="Heading 3"]'
+			// Change title to h3.
+			const heading3Button = await queries.getByLabelText(
+				document,
+				/Heading 3/i
+			);
+			await heading3Button.click();
+			await expect(
+				page
+			).not.toMatchElement(
+				'.wp-block[data-type="woocommerce/price-filter"] h6 textarea',
+				{ text: 'New Title' }
 			);
 		} );
 
 		it( 'allows changing the Display Style', async () => {
 			await openDocumentSettingsSidebar();
+			const document = await getDocument( page );
 
-			await page.click( 'button[aria-label="Price Range: Text"]' );
+			// Turn the display style to Price Range: Text
+			const priceRangeTextButton = await queries.getByLabelText(
+				document,
+				/Price Range: Text/i
+			);
+			await priceRangeTextButton.click();
+
 			await expect( page ).toMatchElement(
 				'.wc-block-price-filter__range-text'
 			);
-			await page.click( 'button[aria-label="Price Range: Editable"]' );
+			// Turn the display style to Price Range: Text
+			const priceRangeEditableButton = await queries.getByLabelText(
+				document,
+				/Price Range: Editable/i
+			);
+			await priceRangeEditableButton.click();
+
+			await expect( page ).not.toMatchElement(
+				'.wc-block-price-filter__range-text'
+			);
 		} );
 
 		it( 'allows you to toggle go button', async () => {
