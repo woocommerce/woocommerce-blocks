@@ -7,8 +7,15 @@ import { isEqual } from 'lodash';
 import { useRef } from '@wordpress/element';
 import {
 	CART_STORE_KEY as storeKey,
-	EMPTY_ARRAY,
-	EMPTY_OBJECT,
+	EMPTY_CART_COUPONS,
+	EMPTY_CART_ITEMS,
+	EMPTY_CART_FEES,
+	EMPTY_CART_ITEM_ERRORS,
+	EMPTY_CART_ERRORS,
+	EMPTY_SHIPPING_RATES,
+	EMPTY_TAX_LINES,
+	EMPTY_PAYMENT_REQUIREMENTS,
+	EMPTY_EXTENSIONS,
 } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
 import { decodeEntities } from '@wordpress/html-entities';
@@ -64,7 +71,7 @@ const defaultCartTotals: CartResponseTotals = {
 	total_shipping_tax: '',
 	total_price: '',
 	total_tax: '',
-	tax_lines: EMPTY_ARRAY,
+	tax_lines: EMPTY_TAX_LINES,
 	currency_code: '',
 	currency_symbol: '',
 	currency_minor_unit: 2,
@@ -84,51 +91,30 @@ const decodeValues = (
 		] )
 	);
 
-// If the value passed is not an object or it's an empty object, return
-// `EMPTY_OBJECT`, otherwise, return the value.
-const getObjectOrEmptyConstant = (
-	val: Record< string, unknown >
-): Record< string, unknown > => {
-	if ( typeof val === 'object' && Object.keys( val ).length > 0 ) {
-		return val;
-	}
-	return EMPTY_OBJECT;
-};
-
-// If the value passed is not an array or it's an empty array, return
-// `EMPTY_ARRAY`, otherwise, return the value.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const getArrayOrEmptyConstant = ( val: any[] ): any[] => {
-	if ( Array.isArray( val ) && val.length > 0 ) {
-		return val;
-	}
-	return EMPTY_ARRAY;
-};
-
 /**
  * @constant
  * @type  {StoreCart} Object containing cart data.
  */
 export const defaultCartData: StoreCart = {
-	cartCoupons: EMPTY_ARRAY,
-	cartItems: EMPTY_ARRAY,
-	cartFees: EMPTY_ARRAY,
+	cartCoupons: EMPTY_CART_COUPONS,
+	cartItems: EMPTY_CART_ITEMS,
+	cartFees: EMPTY_CART_FEES,
 	cartItemsCount: 0,
 	cartItemsWeight: 0,
 	cartNeedsPayment: true,
 	cartNeedsShipping: true,
-	cartItemErrors: EMPTY_ARRAY,
+	cartItemErrors: EMPTY_CART_ITEM_ERRORS,
 	cartTotals: defaultCartTotals,
 	cartIsLoading: true,
-	cartErrors: EMPTY_ARRAY,
+	cartErrors: EMPTY_CART_ERRORS,
 	billingAddress: defaultBillingAddress,
 	shippingAddress: defaultShippingAddress,
-	shippingRates: EMPTY_ARRAY,
+	shippingRates: EMPTY_SHIPPING_RATES,
 	shippingRatesLoading: false,
 	cartHasCalculatedShipping: false,
-	paymentRequirements: EMPTY_ARRAY,
+	paymentRequirements: EMPTY_PAYMENT_REQUIREMENTS,
 	receiveCart: () => undefined,
-	extensions: EMPTY_OBJECT,
+	extensions: EMPTY_EXTENSIONS,
 };
 
 /**
@@ -147,7 +133,7 @@ export const useStoreCart = (
 	options: { shouldSelect: boolean } = { shouldSelect: true }
 ): StoreCart => {
 	const { isEditor, previewData } = useEditorContext();
-	const previewCart = previewData?.previewCart || EMPTY_OBJECT;
+	const previewCart = previewData?.previewCart;
 	const { shouldSelect } = options;
 	const currentResults = useRef();
 
@@ -166,13 +152,13 @@ export const useStoreCart = (
 					cartItemsWeight: previewCart.items_weight,
 					cartNeedsPayment: previewCart.needs_payment,
 					cartNeedsShipping: previewCart.needs_shipping,
-					cartItemErrors: EMPTY_ARRAY,
+					cartItemErrors: EMPTY_CART_ITEM_ERRORS,
 					cartTotals: previewCart.totals,
 					cartIsLoading: false,
-					cartErrors: EMPTY_ARRAY,
+					cartErrors: EMPTY_CART_ERRORS,
 					billingAddress: defaultBillingAddress,
 					shippingAddress: defaultShippingAddress,
-					extensions: EMPTY_OBJECT,
+					extensions: EMPTY_EXTENSIONS,
 					shippingRates: previewCart.shipping_rates,
 					shippingRatesLoading: false,
 					cartHasCalculatedShipping:
@@ -199,48 +185,44 @@ export const useStoreCart = (
 				? decodeValues( cartData.shippingAddress )
 				: billingAddress;
 			const cartFees =
-				getArrayOrEmptyConstant( cartData.fees ).length > 0
+				cartData.fees.length > 0
 					? cartData.fees.map( ( fee: CartResponseFeeItem ) =>
 							decodeValues( fee )
 					  )
-					: EMPTY_ARRAY;
+					: EMPTY_CART_FEES;
 
 			// Add a text property to the coupon to allow extensions to modify
 			// the text used to display the coupon, without affecting the
 			// functionality when it comes to removing the coupon.
 			const cartCoupons: CartResponseCouponItemWithLabel[] =
-				getArrayOrEmptyConstant( cartData.coupons ).length > 0
+				cartData.coupons.length > 0
 					? cartData.coupons.map(
 							( coupon: CartResponseCouponItem ) => ( {
 								...coupon,
 								label: coupon.code,
 							} )
 					  )
-					: EMPTY_ARRAY;
+					: EMPTY_CART_COUPONS;
 
 			return {
 				cartCoupons,
-				cartItems: getArrayOrEmptyConstant( cartData.items ),
+				cartItems: cartData.items,
 				cartFees,
 				cartItemsCount: cartData.itemsCount,
 				cartItemsWeight: cartData.itemsWeight,
 				cartNeedsPayment: cartData.needsPayment,
 				cartNeedsShipping: cartData.needsShipping,
-				cartItemErrors: getArrayOrEmptyConstant( cartData.errors ),
+				cartItemErrors: cartData.errors,
 				cartTotals,
 				cartIsLoading,
 				cartErrors,
 				billingAddress: emptyHiddenAddressFields( billingAddress ),
 				shippingAddress: emptyHiddenAddressFields( shippingAddress ),
-				extensions: getObjectOrEmptyConstant( cartData.extensions ),
-				shippingRates: getArrayOrEmptyConstant(
-					cartData.shippingRates
-				),
+				extensions: cartData.extensions,
+				shippingRates: cartData.shippingRates,
 				shippingRatesLoading,
 				cartHasCalculatedShipping: cartData.hasCalculatedShipping,
-				paymentRequirements: getArrayOrEmptyConstant(
-					cartData.paymentRequirements
-				),
+				paymentRequirements: cartData.paymentRequirements,
 				receiveCart,
 			};
 		},

@@ -88,6 +88,8 @@ describe( 'useStoreCart', () => {
 		hasCalculatedShipping: true,
 		extensions: {},
 		errors: [],
+		receiveCart: undefined,
+		paymentRequirements: [],
 	};
 	const mockCartTotals = {
 		currency_code: 'USD',

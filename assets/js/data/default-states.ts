@@ -6,7 +6,17 @@ import type { Cart, CartMeta } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
-import { EMPTY_ARRAY, EMPTY_OBJECT } from './constants';
+import {
+	EMPTY_CART_COUPONS,
+	EMPTY_CART_ITEMS,
+	EMPTY_CART_FEES,
+	EMPTY_CART_ITEM_ERRORS,
+	EMPTY_CART_ERRORS,
+	EMPTY_SHIPPING_RATES,
+	EMPTY_TAX_LINES,
+	EMPTY_PAYMENT_REQUIREMENTS,
+	EMPTY_EXTENSIONS,
+} from './constants';
 import type { ResponseError } from './types';
 
 export interface CartState {
@@ -17,12 +27,15 @@ export interface CartState {
 	errors: Array< ResponseError >;
 }
 
+export const EMPTY_PENDING_QUANTITY = [];
+export const EMPTY_PENDING_DELETE = [];
+
 export const defaultCartState: CartState = {
-	cartItemsPendingQuantity: EMPTY_ARRAY,
-	cartItemsPendingDelete: EMPTY_ARRAY,
+	cartItemsPendingQuantity: EMPTY_PENDING_QUANTITY,
+	cartItemsPendingDelete: EMPTY_PENDING_DELETE,
 	cartData: {
-		coupons: EMPTY_ARRAY,
-		shippingRates: EMPTY_ARRAY,
+		coupons: EMPTY_CART_COUPONS,
+		shippingRates: EMPTY_SHIPPING_RATES,
 		shippingAddress: {
 			first_name: '',
 			last_name: '',
@@ -48,13 +61,13 @@ export const defaultCartState: CartState = {
 			phone: '',
 			email: '',
 		},
-		items: EMPTY_ARRAY,
+		items: EMPTY_CART_ITEMS,
 		itemsCount: 0,
 		itemsWeight: 0,
 		needsShipping: true,
 		needsPayment: false,
 		hasCalculatedShipping: true,
-		fees: EMPTY_ARRAY,
+		fees: EMPTY_CART_FEES,
 		totals: {
 			currency_code: '',
 			currency_symbol: '',
@@ -73,11 +86,11 @@ export const defaultCartState: CartState = {
 			total_shipping_tax: '0',
 			total_price: '0',
 			total_tax: '0',
-			tax_lines: EMPTY_ARRAY,
+			tax_lines: EMPTY_TAX_LINES,
 		},
-		errors: EMPTY_ARRAY,
-		paymentRequirements: EMPTY_ARRAY,
-		extensions: EMPTY_OBJECT,
+		errors: EMPTY_CART_ITEM_ERRORS,
+		paymentRequirements: EMPTY_PAYMENT_REQUIREMENTS,
+		extensions: EMPTY_EXTENSIONS,
 	},
 	metaData: {
 		updatingCustomerData: false,
@@ -86,5 +99,5 @@ export const defaultCartState: CartState = {
 		removingCoupon: '',
 		isCartDataStale: false,
 	},
-	errors: EMPTY_ARRAY,
+	errors: EMPTY_CART_ERRORS,
 };
