@@ -32,6 +32,7 @@ module.exports = {
 		'<rootDir>/tests/e2e/config/custom-matchers/index.js',
 		'<rootDir>/tests/e2e/config/jest.setup.js',
 		'expect-puppeteer',
+		'puppeteer-testing-library/extend-expect',
 	],
 
 	transformIgnorePatterns: [ 'node_modules/(?!(woocommerce)/)' ],
