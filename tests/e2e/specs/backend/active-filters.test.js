@@ -7,6 +7,7 @@ import {
 	switchUserToAdmin,
 	openDocumentSettingsSidebar,
 } from '@wordpress/e2e-test-utils';
+import { find, configure } from 'puppeteer-testing-library';
 
 import {
 	visitBlockPage,
@@ -45,17 +46,19 @@ describe( `${ block.name } Block`, () => {
 	} );
 
 	it( "allows changing the block's title", async () => {
-		const document = await getDocument( page );
+		const document = getDocument( page );
 		await openDocumentSettingsSidebar();
 		await clearAndFillInput(
 			'.wp-block[data-type="woocommerce/active-filters"] textarea.wc-block-editor-components-title',
 			'New Title'
 		);
+
 		// Convert the title to H6.
-		const heading6Button = await queries.getByLabelText(
-			document,
-			/Heading 6/i,
-			{ selector: '.components-toolbar button' }
+		const heading6Button = await find(
+			{
+				name: 'Heading 6',
+			},
+			{ page }
 		);
 		await heading6Button.click();
 		await expect(
