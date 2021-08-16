@@ -117,6 +117,9 @@ const ValidatedTextInput = ( {
 		}
 	}, [ isPristine, setIsPristine, validateOnMount, validateInput ] );
 
+	/**
+	 * @todo Remove extra validation call after refactoring the validation system.
+	 */
 	useEffect( () => {
 		if ( isBeforeProcessing ) {
 			validateInput();
