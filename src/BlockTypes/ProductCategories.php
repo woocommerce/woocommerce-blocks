@@ -313,7 +313,7 @@ class ProductCategories extends AbstractDynamicBlock {
 			';
 		}
 
-		return $output;
+		return preg_replace( '/\r|\n/', '', $output );
 	}
 
 	/**
