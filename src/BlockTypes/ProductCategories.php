@@ -305,7 +305,7 @@ class ProductCategories extends AbstractDynamicBlock {
 			$output .= '
 				<li class="wc-block-product-categories-list-item">
 					<a href="' . esc_attr( get_term_link( $category->term_id, 'product_cat' ) ) . '">' . $this->get_image_html( $category, $attributes ) . esc_html( $category->name ) . '</a>
-					(' . $this->getCount( $category, $attributes ) . ')
+					' . $this->getCount( $category, $attributes ) . '
 					' . ( ! empty( $category->children ) ? $this->renderList( $category->children, $attributes, $uid, $depth + 1 ) : '' ) . '
 				</li>
 			';
