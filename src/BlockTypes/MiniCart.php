@@ -209,49 +209,40 @@ class MiniCart extends AbstractBlock {
 	 * @return string The HTML markup.
 	 */
 	protected function get_cart_contents_markup( $cart_contents ) {
-		if ( count( $cart_contents ) > 0 ) {
-			return '<table class="wc-block-cart-items">
-				<thead>
-					<tr class="wc-block-cart-items__header">
-						<th class="wc-block-cart-items__header-image"><span>' . __( 'Product', 'woo-gutenberg-products-block' ) . '</span></th>
-						<th class="wc-block-cart-items__header-product"><span>' . __( 'Details', 'woo-gutenberg-products-block' ) . '</span></th>
-						<th class="wc-block-cart-items__header-total"><span>' . __( 'Total', 'woo-gutenberg-products-block' ) . '</span></th>
-					</tr>
-				</thead>
-				<tbody>' . implode( array_map( array( $this, 'get_cart_item_markup' ), $cart_contents ) ) . '</tbody>
-			</table>';
-		}
-
-		return __( 'Cart is empty', 'woo-gutenberg-products-block' );
+		return '<table class="wc-block-cart-items wc-block-mini-cart-items--is-loading" aria-hidden="true">
+			<thead>
+				<tr class="wc-block-cart-items__header">
+					<th class="wc-block-cart-items__header-image"><span /></th>
+					<th class="wc-block-cart-items__header-product"><span /></th>
+					<th class="wc-block-cart-items__header-total"><span /></th>
+				</tr>
+			</thead>
+			<tbody>' . implode( array_map( array( $this, 'get_cart_item_markup' ), $cart_contents ) ) . '</tbody>
+		</table>';
 	}
 
 	/**
-	 * Render the markup of a Cart item.
+	 * Render the skeleton of a Cart item.
 	 *
-	 * @param array $cart_item Item in the cart.
-	 *
-	 * @return string The HTML markup.
+	 * @return string The skeleton HTML markup.
 	 */
-	protected function get_cart_item_markup( $cart_item ) {
-		$cart_controller = new CartController();
-		$cart            = $cart_controller->get_cart_instance();
-
+	protected function get_cart_item_markup() {
 		return '<tr class="wc-block-cart-items__row">
-			<td class="wc-block-cart-item__image" aria-hidden="true">
-				<a href="' . esc_url( $cart_item['data']->get_permalink() ) . '" tabindex="-1"><img src="' . esc_url( wp_get_attachment_image_url( $cart_item['data']->get_image_id(), 'woocommerce_thumbnail' ) ) . '" alt=""></a>
+			<td class="wc-block-cart-item__image">
+				<div><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=" width="1" height="1" /></div>
 			</td>
-			<td class="wc-block-cart-item__product"><a class="wc-block-components-product-name" href="' . esc_url( $cart_item['data']->get_permalink() ) . '">' . wp_kses_post( $cart_item['data']->get_title() ) . '</a>
-				<div class="wc-block-cart-item__prices"><span class="price wc-block-components-product-price">' . $cart->get_product_price( $cart_item['data'] ) . '</span>
+			<td class="wc-block-cart-item__product">
+				<div class="wc-block-cart-item__product-name"></div>
+				<div class="wc-block-cart-item__individual-price"></div>
+				<div class="wc-block-cart-item__product-metadata"></div>
+				<div class="wc-block-components-quantity-selector">
+					<input class="wc-block-components-quantity-selector__input" type="number" step="1" min="0" value="1" />
+					<button class="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--minus">－</button>
+					<button class="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--plus">＋</button>
 				</div>
-				<div class="wc-block-components-product-metadata">
-					<div class="wc-block-components-product-metadata__description"><p>' . wp_kses_post( $cart_item['data']->get_short_description() ) . '</p></div>
-				</div>
-				<div class="wc-block-cart-item__quantity">
-					<div class="wc-block-components-quantity-selector"><input disabled class="wc-block-components-quantity-selector__input" type="number" step="1" min="0" value="' . esc_attr( $cart_item['quantity'] ) . '"><button disabled aria-label="' . esc_attr__( 'Reduce quantity', 'woo-gutenberg-products-block' ) . '" class="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--minus">－</button><button disabled aria-label="' . esc_attr__( 'Increase quantity', 'woo-gutenberg-products-block' ) . '" class="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--plus">＋</button></div><button disabled class="wc-block-cart-item__remove-link">' . esc_attr__( 'Remove item', 'woo-gutenberg-products-block' ) . '</button></div>
 			</td>
 			<td class="wc-block-cart-item__total">
-				<div class="wc-block-cart-item__total-price-and-sale-badge-wrapper"><span class="price wc-block-components-product-price"><span class="wc-block-formatted-money-amount wc-block-components-formatted-money-amount wc-block-components-product-price__value">' . $cart->get_product_subtotal( $cart_item['data'], $cart_item['quantity'] ) . '</span></span>
-				</div>
+				<div class="wc-block-cart-item__price"></div>
 			</td>
 		</tr>';
 	}
