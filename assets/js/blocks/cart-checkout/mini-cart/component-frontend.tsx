@@ -12,7 +12,7 @@ import {
 /**
  * Internal dependencies
  */
-import CartLineItemsTable from '../cart-checkout/cart/full-cart/cart-line-items-table';
+import CartLineItemsTable from '../cart/full-cart/cart-line-items-table';
 
 const MiniCartContents = () => {
 	const { cartItems, cartIsLoading } = useStoreCart();
