@@ -59,7 +59,7 @@ export const addClassToBody = (): void => {
 			if ( ! selectedBlock ) {
 				return;
 			}
-
+			console.log( selectedBlock );
 			toggleBodyClass(
 				'wc-lock-selected-block--remove',
 				!! selectedBlock?.attributes?.lock?.remove

@@ -4,7 +4,7 @@
 import { useLayoutEffect, useRef } from '@wordpress/element';
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { createBlock } from '@wordpress/blocks';
+import { createBlock, getBlockType } from '@wordpress/blocks';
 import { Main } from '@woocommerce/base-components/sidebar-layout';
 import { getRegisteredBlocks } from '@woocommerce/blocks-checkout';
 
@@ -45,7 +45,6 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 		},
 		[ clientId ]
 	);
-
 	/**
 	 * If the current inner blocks differ from the registered blocks, push the differences.
 	 *
@@ -60,7 +59,10 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 
 		// Missing check to see if registered block is 'forced'
 		currentRegisteredBlocks.current.forEach( ( blockName: string ) => {
+			const block = getBlockType( blockName );
+			console.log( block );
 			if (
+				block.force &&
 				! innerBlocks.find(
 					( { name }: { name: string } ) => name === blockName
 				)
