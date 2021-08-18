@@ -14,7 +14,8 @@ import type { CheckoutStateContextState, PaymentResultDataType } from './types';
  * @param {string} action.type Type of action.
  * @param {string} action.customerId Customer ID.
  * @param {string} action.orderId Order ID.
- * @param {Array} action.orderNotes Order notes.
+ * @param {string} action.orderNotes Order notes.
+ * @param {Record<string, unknown>} action.customData Custom order data.
  * @param {boolean} action.shouldCreateAccount True if shopper has requested a user account (sign-up checkbox).
  * @param {Object} action.data Other action payload.
  */
@@ -26,6 +27,7 @@ export const reducer = (
 		customerId,
 		orderId,
 		orderNotes,
+		customData,
 		shouldCreateAccount,
 		data,
 	}: ActionType
@@ -180,6 +182,14 @@ export const reducer = (
 				newState = {
 					...state,
 					orderNotes,
+				};
+			}
+			break;
+		case ACTION.SET_CUSTOM_DATA:
+			if ( customData !== undefined && state.customData !== customData ) {
+				newState = {
+					...state,
+					customData,
 				};
 			}
 			break;

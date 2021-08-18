@@ -2,13 +2,21 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
-import { useCheckoutSubmit } from '@woocommerce/base-context/hooks';
+import { useEffect, useState } from '@wordpress/element';
+import {
+	useCheckoutSubmit,
+	useCheckoutData,
+} from '@woocommerce/base-context/hooks';
 import CheckboxControl from '@woocommerce/base-components/checkbox-control';
 
 const Block = (): JSX.Element => {
 	const [ checked, setChecked ] = useState( false );
 	const { isDisabled } = useCheckoutSubmit();
+	const { setCustomData } = useCheckoutData();
+
+	useEffect( () => {
+		setCustomData( 'newsletter', checked );
+	}, [ checked, setCustomData ] );
 
 	return (
 		<CheckboxControl

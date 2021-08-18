@@ -142,6 +142,8 @@ export const CheckoutStateProvider = ( {
 				void dispatch( actions.setOrderId( orderId ) ),
 			setOrderNotes: ( orderNotes ) =>
 				void dispatch( actions.setOrderNotes( orderNotes ) ),
+			setCustomData: ( customData ) =>
+				void dispatch( actions.setCustomData( customData ) ),
 			setAfterProcessing: ( response ) => {
 				const paymentResult = getPaymentResultFromCheckoutResponse(
 					response
@@ -385,6 +387,7 @@ export const CheckoutStateProvider = ( {
 		shouldCreateAccount: checkoutState.shouldCreateAccount,
 		setShouldCreateAccount: ( value ) =>
 			dispatch( actions.setShouldCreateAccount( value ) ),
+		customData: checkoutState.customData,
 	};
 	return (
 		<CheckoutContext.Provider value={ checkoutData }>

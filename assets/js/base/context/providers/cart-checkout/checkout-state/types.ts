@@ -43,6 +43,7 @@ export type CheckoutStateContextState = {
 	customerId: number;
 	shouldCreateAccount: boolean;
 	processingResponse: PaymentResultDataType | null;
+	customData: Record< string, unknown > | Record< string, never >;
 };
 
 export type CheckoutStateDispatchActions = {
@@ -55,6 +56,7 @@ export type CheckoutStateDispatchActions = {
 	setCustomerId: ( id: number ) => void;
 	setOrderId: ( id: number ) => void;
 	setOrderNotes: ( orderNotes: string ) => void;
+	setCustomData: ( customData: Record< string, unknown > ) => void;
 };
 
 export type CheckoutStateContextType = {
@@ -100,4 +102,6 @@ export type CheckoutStateContextType = {
 	shouldCreateAccount: boolean;
 	// Set if user account should be created.
 	setShouldCreateAccount: ( shouldCreateAccount: boolean ) => void;
+	// Custom checkout data passed to the store API on processing.
+	customData: Record< string, unknown > | Record< string, never >;
 };

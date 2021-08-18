@@ -48,6 +48,7 @@ export const DEFAULT_CHECKOUT_STATE_DATA: CheckoutStateContextType = {
 		setCustomerId: ( id ) => void id,
 		setOrderId: ( id ) => void id,
 		setOrderNotes: ( orderNotes ) => void orderNotes,
+		setCustomData: ( customData ) => void customData,
 	},
 	onSubmit: () => void null,
 	isComplete: false,
@@ -81,4 +82,5 @@ export const DEFAULT_STATE: CheckoutStateContextState = {
 	customerId: checkoutData.customer_id,
 	shouldCreateAccount: false,
 	processingResponse: null,
+	customData: {},
 };

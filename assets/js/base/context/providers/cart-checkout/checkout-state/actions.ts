@@ -20,6 +20,7 @@ export enum ACTION {
 	INCREMENT_CALCULATING = 'increment_calculating',
 	DECREMENT_CALCULATING = 'decrement_calculating',
 	SET_SHOULD_CREATE_ACCOUNT = 'set_should_create_account',
+	SET_CUSTOM_DATA = 'set_custom_data',
 }
 
 export interface ActionType {
@@ -34,6 +35,7 @@ export interface ActionType {
 	shouldCreateAccount?: boolean;
 	hasError?: boolean;
 	orderNotes?: string;
+	customData?: Record< string, unknown > | Record< string, never >;
 }
 
 /**
@@ -106,5 +108,10 @@ export const actions = {
 		( {
 			type: ACTION.SET_ORDER_NOTES,
 			orderNotes,
+		} as const ),
+	setCustomData: ( customData: Record< string, unknown > ) =>
+		( {
+			type: ACTION.SET_CUSTOM_DATA,
+			customData,
 		} as const ),
 };
