@@ -60,7 +60,6 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 		// Missing check to see if registered block is 'forced'
 		currentRegisteredBlocks.current.forEach( ( blockName: string ) => {
 			const block = getBlockType( blockName );
-			console.log( block );
 			if (
 				block.force &&
 				! innerBlocks.find(
