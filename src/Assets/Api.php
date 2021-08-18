@@ -60,7 +60,6 @@ class Api {
 		return $this->package->get_url( $relative_path );
 	}
 
-
 	/**
 	 * Get src, version and dependencies given a script relative src.
 	 *

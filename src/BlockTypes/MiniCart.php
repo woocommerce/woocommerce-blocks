@@ -7,7 +7,7 @@ use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 use Automattic\WooCommerce\Blocks\StoreApi\Utilities\CartController;
 
 /**
- * MiniCart class.
+ * Mini Cart class.
  *
  * @internal
  */
@@ -158,10 +158,11 @@ class MiniCart extends AbstractBlock {
 	}
 
 	/**
-	 * Append frontend scripts when rendering the MiniCart block.
+	 * Append frontend scripts when rendering the Mini Cart block.
 	 *
 	 * @param array  $attributes Block attributes.
 	 * @param string $content    Block content.
+	 *
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content ) {
@@ -169,7 +170,7 @@ class MiniCart extends AbstractBlock {
 	}
 
 	/**
-	 * Render the markup for the MiniCart block.
+	 * Render the markup for the Mini Cart block.
 	 *
 	 * @return string The HTML markup.
 	 */
