@@ -182,6 +182,7 @@ final class BlockTypesController {
 			'checkout-shipping-methods-block',
 			'checkout-express-payment-block',
 			'checkout-terms-block',
+			'checkout-newsletter-subscription-block',
 		];
 	}
 }
