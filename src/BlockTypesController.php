@@ -122,12 +122,12 @@ final class BlockTypesController {
 		if ( Package::feature()->is_feature_plugin_build() ) {
 			$block_types[] = 'Checkout';
 			$block_types[] = 'Cart';
-			$block_types[] = 'MiniCart';
 		}
 
 		if ( Package::feature()->is_experimental_build() ) {
 			$block_types[] = 'SingleProduct';
 			$block_types[] = 'CheckoutI2';
+			$block_types[] = 'MiniCart';
 		}
 
 		/**
