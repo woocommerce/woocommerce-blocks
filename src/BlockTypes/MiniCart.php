@@ -88,7 +88,7 @@ class MiniCart extends AbstractBlock {
 			}
 		}
 
-		$this->scripts_to_lazy_load['wc-blocks-mini-cart-component-frontend'] = array(
+		$this->scripts_to_lazy_load['wc-block-mini-cart-component-frontend'] = array(
 			'src'     => $script_data['src'],
 			'version' => $script_data['version'],
 		);
@@ -186,8 +186,8 @@ class MiniCart extends AbstractBlock {
 		$cart_contents       = $cart->get_cart();
 
 		// Force mobile styles.
-		return '<div class="wc-blocks-mini-cart is-mobile">
-			<button class="wc-blocks-mini-cart-button">' .
+		return '<div class="wc-block-mini-cart is-mobile">
+			<button class="wc-block-mini-cart__button">' .
 				sprintf(
 					/* translators: %d is the number of products in the cart. */
 					_n(
@@ -198,7 +198,7 @@ class MiniCart extends AbstractBlock {
 					),
 					$cart_contents_count
 				) . '</button>
-			<div class="wc-blocks-mini-cart-contents" hidden>' . $this->get_cart_contents_markup( $cart_contents ) . '</div>
+			<div class="wc-block-mini-cart__contents" hidden>' . $this->get_cart_contents_markup( $cart_contents ) . '</div>
 		</div>';
 	}
 

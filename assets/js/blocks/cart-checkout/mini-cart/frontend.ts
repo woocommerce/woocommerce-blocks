@@ -19,7 +19,7 @@ interface dependencyData {
 
 // eslint-disable-next-line @wordpress/no-global-event-listener
 window.onload = () => {
-	const miniCartBlocks = document.querySelectorAll( '.wc-blocks-mini-cart' );
+	const miniCartBlocks = document.querySelectorAll( '.wc-block-mini-cart' );
 
 	if ( miniCartBlocks.length === 0 ) {
 		return;
@@ -41,10 +41,10 @@ window.onload = () => {
 
 	miniCartBlocks.forEach( ( miniCartBlock ) => {
 		const miniCartButton = miniCartBlock.querySelector(
-			'.wc-blocks-mini-cart-button'
+			'.wc-block-mini-cart__button'
 		);
 		const miniCartContents = miniCartBlock.querySelector(
-			'.wc-blocks-mini-cart-contents'
+			'.wc-block-mini-cart__contents'
 		);
 
 		if ( ! miniCartButton || ! miniCartContents ) {

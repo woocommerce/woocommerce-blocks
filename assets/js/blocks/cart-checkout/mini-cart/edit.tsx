@@ -7,14 +7,14 @@ import type { ReactElement } from 'react';
 
 const MiniCartBlock = (): ReactElement => {
 	const blockProps = useBlockProps( {
-		className: 'wc-blocks-mini-cart',
+		className: 'wc-block-mini-cart',
 	} );
 
 	const productCount = 0;
 
 	return (
 		<div { ...blockProps }>
-			<button className="wc-blocks-mini-cart-button">
+			<button className="wc-block-mini-cart__button">
 				{ sprintf(
 					/* translators: %d is the number of products in the cart. */
 					_n(

@@ -30,7 +30,7 @@ const MiniCartContents = () => {
 };
 
 renderFrontend( {
-	selector: '.wc-blocks-mini-cart-contents',
+	selector: '.wc-block-mini-cart__contents',
 	Block: withStoreCartApiHydration(
 		withRestApiHydration( MiniCartContents )
 	),
