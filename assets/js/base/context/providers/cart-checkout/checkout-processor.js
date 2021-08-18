@@ -19,18 +19,16 @@ import {
  * Internal dependencies
  */
 import { preparePaymentData } from './utils';
-import { useCheckoutContext } from '../../checkout-state';
-import { useShippingDataContext } from '../../shipping';
-import { useCustomerDataContext } from '../../customer';
-import { usePaymentMethodDataContext } from '../../payment-methods';
-import { useValidationContext } from '../../../validation';
-import { useStoreCart } from '../../../../hooks/cart/use-store-cart';
-import { useStoreNotices } from '../../../../hooks/use-store-notices';
+import { useCheckoutContext } from './checkout-state';
+import { useShippingDataContext } from './shipping';
+import { useCustomerDataContext } from './customer';
+import { usePaymentMethodDataContext } from './payment-methods';
+import { useValidationContext } from '../validation';
+import { useStoreCart } from '../../hooks/cart/use-store-cart';
+import { useStoreNotices } from '../../hooks/use-store-notices';
 
 /**
  * CheckoutProcessor component.
- *
- * @todo Needs to consume all contexts.
  *
  * Subscribes to checkout context and triggers processing via the API.
  */
