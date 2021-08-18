@@ -160,8 +160,6 @@ export type CheckoutBlockOptions = {
 		| ( () => JSX.Element );
 	// Area(s) to add the block to. This can be a single area (string) or an array of areas.
 	areas: Array< keyof RegisteredBlocks >;
-	// If to force a block to be inserted into an/all areas.
-	force?: boolean;
 	// Standard block configuration object. If not passed, the block will not be registered with WordPress and must be done manually.
 	configuration?: BlockConfiguration;
 };
