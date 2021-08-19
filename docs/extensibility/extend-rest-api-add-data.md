@@ -37,7 +37,7 @@ add_action('woocommerce_blocks_loaded', function() {
 		'namespace' => 'plugin_namespace',
 		'data_callback' => 'my_data_callback',
 		'schema_callback' => 'my_schema_callback',
-		'data_type' => ARRAY_A,
+		'schema_type' => ARRAY_A,
 		)
 	);
 });
@@ -117,7 +117,7 @@ To reduce the chances of breaking your client code or passing the wrong type, an
 | `namespace`       | string   |           Yes            | Your plugin namespace, the data will be available under this namespace in the StoreAPI response.                                                     |
 | `data_callback`   | callback |           Yes            | A callback that returns an array with your data.                                                                                                     |
 | `schema_callback` | callback |           Yes            | A callback that returns the shape of your data.                                                                                                      |
-| `data_type`       | string   | No (default: `ARRAY_A` ) | The type of your data. If you're adding an object (key => values), it should be `ARRAY_A`. If you're adding a list of items, it should be `ARRAY_N`. |
+| `schema_type`     | string   | No (default: `ARRAY_A` ) | The type of your data. If you're adding an object (key => values), it should be `ARRAY_A`. If you're adding a list of items, it should be `ARRAY_N`. |
 
 ## Putting it all together
 
@@ -189,7 +189,7 @@ class WC_Subscriptions_Extend_Store_Endpoint {
 				'namespace'       => self::IDENTIFIER,
 				'data_callback'   => array( 'WC_Subscriptions_Extend_Store_Endpoint', 'extend_cart_item_data' ),
 				'schema_callback' => array( 'WC_Subscriptions_Extend_Store_Endpoint', 'extend_cart_item_schema' ),
-				'data_type'       => ARRAY_A,
+				'schema_type'       => ARRAY_A,
 			)
 		);
 	}

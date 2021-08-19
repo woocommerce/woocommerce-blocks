@@ -88,7 +88,7 @@ final class ExtendRestApi {
 	 *     @type string   $namespace Plugin namespace.
 	 *     @type callable $schema_callback Callback executed to add schema data.
 	 *     @type callable $data_callback Callback executed to add endpoint data.
-	 *     @type string   $data_type The type of data, object or array.
+	 *     @type string   $schema_type The type of data, object or array.
 	 * }
 	 *
 	 * @throws Exception On failure to register.
@@ -113,16 +113,16 @@ final class ExtendRestApi {
 			$this->throw_exception( '$data_callback must be a callable function.' );
 		}
 
-		if ( isset( $args['data_type'] ) && ! in_array( $args['data_type'], [ ARRAY_N, ARRAY_A ], true ) ) {
+		if ( isset( $args['schema_type'] ) && ! in_array( $args['schema_type'], [ ARRAY_N, ARRAY_A ], true ) ) {
 			$this->throw_exception(
-				sprintf( 'Data type must be either ARRAY_N for a numeric array or ARRAY_A for an object like array. You provided %1$s.', $args['data_type'] )
+				sprintf( 'Data type must be either ARRAY_N for a numeric array or ARRAY_A for an object like array. You provided %1$s.', $args['schema_type'] )
 			);
 		}
 
 		$this->extend_data[ $args['endpoint'] ][ $args['namespace'] ] = [
 			'schema_callback' => isset( $args['schema_callback'] ) ? $args['schema_callback'] : null,
 			'data_callback'   => isset( $args['data_callback'] ) ? $args['data_callback'] : null,
-			'data_type'       => isset( $args['data_type'] ) ? $args['data_type'] : ARRAY_A,
+			'schema_type'     => isset( $args['schema_type'] ) ? $args['schema_type'] : ARRAY_A,
 		];
 
 		return true;
@@ -269,7 +269,7 @@ final class ExtendRestApi {
 				continue;
 			}
 
-			$schema = $this->format_extensions_properties( $namespace, $schema, $callbacks['data_type'] );
+			$schema = $this->format_extensions_properties( $namespace, $schema, $callbacks['schema_type'] );
 
 			$registered_schema[ $namespace ] = $schema;
 		}
@@ -354,27 +354,25 @@ final class ExtendRestApi {
 	 *
 	 * @param string $namespace Error message or Exception.
 	 * @param array  $schema An error to throw if we have debug enabled and user is admin.
-	 * @param string $data_type How should data be shaped.
+	 * @param string $schema_type How should data be shaped.
 	 *
 	 * @return array Formatted schema.
 	 */
-	private function format_extensions_properties( $namespace, $schema, $data_type ) {
-		if ( ARRAY_N === $data_type ) {
+	private function format_extensions_properties( $namespace, $schema, $schema_type ) {
+		if ( ARRAY_N === $schema_type ) {
 			return [
 				/* translators: %s: extension namespace */
 				'description' => sprintf( __( 'Extension data registered by %s', 'woo-gutenberg-products-block' ), $namespace ),
-				'type'        => [ 'array', 'null' ],
+				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
 				'items'       => $schema,
 			];
 		}
 		return [
 			/* translators: %s: extension namespace */
 			'description' => sprintf( __( 'Extension data registered by %s', 'woo-gutenberg-products-block' ), $namespace ),
-			'type'        => [ 'object', 'null' ],
+			'type'        => 'object',
 			'context'     => [ 'view', 'edit' ],
-			'readonly'    => true,
 			'properties'  => $schema,
 		];
 	}
