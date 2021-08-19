@@ -43,7 +43,7 @@ const CheckoutProcessor = () => {
 		isComplete: checkoutIsComplete,
 		orderNotes,
 		shouldCreateAccount,
-		customData,
+		extensionData,
 	} = useCheckoutContext();
 	const { hasValidationErrors } = useValidationContext();
 	const { shippingErrorStatus } = useShippingDataContext();
@@ -163,23 +163,12 @@ const CheckoutProcessor = () => {
 		}
 	}, [ checkoutIsComplete ] );
 
-	const processOrder = useCallback( () => {
+	const processOrder = useCallback( async () => {
 		if ( isProcessingOrder ) {
 			return;
 		}
 		setIsProcessingOrder( true );
 		removeNotice( 'checkout' );
-
-		const customerData = {
-			billing_address: emptyHiddenAddressFields(
-				currentBillingData.current
-			),
-			shipping_address: emptyHiddenAddressFields(
-				currentShippingAddress.current
-			),
-			customer_note: orderNotes,
-			should_create_account: shouldCreateAccount,
-		};
 
 		const paymentData = cartNeedsPayment
 			? {
@@ -193,9 +182,16 @@ const CheckoutProcessor = () => {
 			: {};
 
 		const data = {
-			...customerData,
+			billing_address: emptyHiddenAddressFields(
+				currentBillingData.current
+			),
+			shipping_address: emptyHiddenAddressFields(
+				currentShippingAddress.current
+			),
+			customer_note: orderNotes,
+			should_create_account: shouldCreateAccount,
 			...paymentData,
-			...customData,
+			extensions: { ...extensionData },
 		};
 
 		triggerFetch( {
@@ -217,6 +213,7 @@ const CheckoutProcessor = () => {
 			} )
 			.then( ( response ) => {
 				dispatchActions.setAfterProcessing( response );
+				setIsProcessingOrder( false );
 			} )
 			.catch( ( fetchResponse ) => {
 				processCheckoutResponseHeaders(
@@ -240,10 +237,8 @@ const CheckoutProcessor = () => {
 					);
 					dispatchActions.setHasError( true );
 					dispatchActions.setAfterProcessing( response );
+					setIsProcessingOrder( false );
 				} );
-			} )
-			.finally( () => {
-				setIsProcessingOrder( false );
 			} );
 	}, [
 		isProcessingOrder,
@@ -255,7 +250,7 @@ const CheckoutProcessor = () => {
 		paymentMethodData,
 		shouldSavePayment,
 		activePaymentMethod,
-		customData,
+		extensionData,
 		dispatchActions,
 		addErrorNotice,
 		receiveCart,
@@ -263,10 +258,10 @@ const CheckoutProcessor = () => {
 
 	// process order if conditions are good.
 	useEffect( () => {
-		if ( paidAndWithoutErrors ) {
+		if ( paidAndWithoutErrors && ! isProcessingOrder ) {
 			processOrder();
 		}
-	}, [ processOrder, paidAndWithoutErrors ] );
+	}, [ processOrder, paidAndWithoutErrors, isProcessingOrder ] );
 
 	return null;
 };

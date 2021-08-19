@@ -5,18 +5,18 @@ import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
 import {
 	useCheckoutSubmit,
-	useCheckoutData,
+	useCheckoutExtensionData,
 } from '@woocommerce/base-context/hooks';
 import CheckboxControl from '@woocommerce/base-components/checkbox-control';
 
 const Block = (): JSX.Element => {
 	const [ checked, setChecked ] = useState( false );
 	const { isDisabled } = useCheckoutSubmit();
-	const { setCustomData } = useCheckoutData();
+	const { setExtensionData } = useCheckoutExtensionData();
 
 	useEffect( () => {
-		setCustomData( 'newsletter', checked );
-	}, [ checked, setCustomData ] );
+		setExtensionData( 'newsletter-extension', 'newsletter', checked );
+	}, [ checked, setExtensionData ] );
 
 	return (
 		<CheckboxControl

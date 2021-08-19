@@ -7,27 +7,16 @@ import type { CheckoutStateContextState, PaymentResultDataType } from './types';
 
 /**
  * Reducer for the checkout state
- *
- * @param {Object} state  Current state.
- * @param {Object} action Incoming action object.
- * @param {string} action.url URL passed in.
- * @param {string} action.type Type of action.
- * @param {string} action.customerId Customer ID.
- * @param {string} action.orderId Order ID.
- * @param {string} action.orderNotes Order notes.
- * @param {Record<string, unknown>} action.customData Custom order data.
- * @param {boolean} action.shouldCreateAccount True if shopper has requested a user account (sign-up checkbox).
- * @param {Object} action.data Other action payload.
  */
 export const reducer = (
 	state = DEFAULT_STATE,
 	{
-		url,
+		redirectUrl,
 		type,
 		customerId,
 		orderId,
 		orderNotes,
-		customData,
+		extensionData,
 		shouldCreateAccount,
 		data,
 	}: ActionType
@@ -48,10 +37,10 @@ export const reducer = (
 			break;
 		case ACTION.SET_REDIRECT_URL:
 			newState =
-				url !== undefined && url !== state.redirectUrl
+				redirectUrl !== undefined && redirectUrl !== state.redirectUrl
 					? {
 							...state,
-							redirectUrl: url,
+							redirectUrl,
 					  }
 					: state;
 			break;
@@ -186,10 +175,13 @@ export const reducer = (
 			}
 			break;
 		case ACTION.SET_CUSTOM_DATA:
-			if ( customData !== undefined && state.customData !== customData ) {
+			if (
+				extensionData !== undefined &&
+				state.extensionData !== extensionData
+			) {
 				newState = {
 					...state,
-					customData,
+					extensionData,
 				};
 			}
 			break;
