@@ -43,8 +43,14 @@ registerCheckoutBlock( 'woocommerce/checkout-sample-block', {
 			multiple: true,
 			reusable: false,
 		},
-		force: true,
-		attributes: {},
+		attributes: {
+			lock: {
+				type: 'object',
+				default: {
+					remove: true,
+				},
+			},
+		},
 		edit: Edit,
 		save: Save,
 	},
