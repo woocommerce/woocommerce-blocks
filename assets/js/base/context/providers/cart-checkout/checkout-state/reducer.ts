@@ -174,7 +174,7 @@ export const reducer = (
 				};
 			}
 			break;
-		case ACTION.SET_CUSTOM_DATA:
+		case ACTION.SET_EXTENSION_DATA:
 			if (
 				extensionData !== undefined &&
 				state.extensionData !== extensionData

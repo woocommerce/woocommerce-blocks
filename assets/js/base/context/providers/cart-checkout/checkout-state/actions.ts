@@ -20,7 +20,7 @@ export enum ACTION {
 	INCREMENT_CALCULATING = 'increment_calculating',
 	DECREMENT_CALCULATING = 'decrement_calculating',
 	SET_SHOULD_CREATE_ACCOUNT = 'set_should_create_account',
-	SET_CUSTOM_DATA = 'set_custom_data',
+	SET_EXTENSION_DATA = 'set_extension_data',
 }
 
 export interface ActionType extends Partial< CheckoutStateContextState > {
@@ -106,7 +106,7 @@ export const actions = {
 		extensionData: Record< string, Record< string, unknown > >
 	) =>
 		( {
-			type: ACTION.SET_CUSTOM_DATA,
+			type: ACTION.SET_EXTENSION_DATA,
 			extensionData,
 		} as const ),
 };
