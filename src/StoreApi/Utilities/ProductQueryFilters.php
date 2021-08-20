@@ -56,7 +56,7 @@ class ProductQueryFilters {
 	public function get_stock_status_counts( $request ) {
 		global $wpdb;
 		$product_query         = new ProductQuery();
-		$stock_status_options  = array( 'instock', 'outofstock', 'onbackorder' );
+		$stock_status_options  = array_map( 'esc_sql', array_keys( wc_get_product_stock_status_options() ) );
 		$hide_outofstock_items = get_option( 'woocommerce_hide_out_of_stock_items' );
 		if ( 'yes' === $hide_outofstock_items ) {
 			unset( $stock_status_options['outofstock'] );
