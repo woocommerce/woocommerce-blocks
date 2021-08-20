@@ -53,21 +53,21 @@ window.onload = () => {
 		const miniCartButton = miniCartBlock.querySelector(
 			'.wc-block-mini-cart__button'
 		);
-		const miniCartOverlay = miniCartBlock.querySelector(
+		const miniCartDrawerPlaceholder = miniCartBlock.querySelector(
 			'.wc-block-components-drawer'
 		);
 
-		if ( ! miniCartButton || ! miniCartOverlay ) {
+		if ( ! miniCartButton || ! miniCartDrawerPlaceholder ) {
 			// Markup is not correct, abort.
 			return;
 		}
 
 		const showContents = () => {
 			miniCartBlock.dataset.isPlaceholderOpen = 'true';
-			miniCartOverlay.classList.add(
+			miniCartDrawerPlaceholder.classList.add(
 				'wc-block-components-drawer--with-slide-in'
 			);
-			miniCartOverlay.classList.remove(
+			miniCartDrawerPlaceholder.classList.remove(
 				'wc-block-components-drawer--is-hidden'
 			);
 		};
