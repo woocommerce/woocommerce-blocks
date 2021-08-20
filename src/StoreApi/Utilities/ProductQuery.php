@@ -28,7 +28,7 @@ class ProductQuery {
 			'posts_per_page'      => $request['per_page'] ? $request['per_page'] : -1,
 			'post_parent__in'     => $request['parent'],
 			'post_parent__not_in' => $request['parent_exclude'],
-			's'                   => $request['search'],
+			'search'              => $request['search'], // This uses search rather than s intentionally to handle searches internally.
 			'fields'              => 'ids',
 			'ignore_sticky_posts' => true,
 			'post_status'         => 'publish',
@@ -40,6 +40,9 @@ class ProductQuery {
 		if ( ! empty( $request['sku'] ) ) {
 			$args['post_type'] = [ 'product', 'product_variation' ];
 		}
+
+		// Taxonomy query to filter products by type, category, tag, shipping class, and attribute.
+		$tax_query = [];
 
 		// Filter product type by slug.
 		if ( ! empty( $request['type'] ) ) {
@@ -87,9 +90,6 @@ class ProductQuery {
 				$args[ $key ] = $request[ $key ];
 			}
 		}
-
-		// Taxonomy query to filter products by type, category, tag, shipping class, and attribute.
-		$tax_query = [];
 
 		$operator_mapping = [
 			'in'     => 'IN',
@@ -298,10 +298,12 @@ class ProductQuery {
 		global $wpdb;
 
 		if ( $wp_query->get( 'search' ) ) {
-			$search         = "'%" . $wpdb->esc_like( $wp_query->get( 'search' ) ) . "%'";
+			$search         = '%' . $wpdb->esc_like( $wp_query->get( 'search' ) ) . '%';
+			$search_query   = wc_product_sku_enabled()
+				? $wpdb->prepare( " AND ( $wpdb->posts.post_title LIKE %s OR wc_product_meta_lookup.sku LIKE %s ) ", $search, $search )
+				: $wpdb->prepare( " AND $wpdb->posts.post_title LIKE %s ", $search );
+			$args['where'] .= $search_query;
 			$args['join']   = $this->append_product_sorting_table_join( $args['join'] );
-			$args['where'] .= " AND ({$wpdb->posts}.post_title LIKE {$search}";
-			$args['where'] .= wc_product_sku_enabled() ? ' OR wc_product_meta_lookup.sku LIKE ' . $search . ')' : ')';
 		}
 
 		if ( $wp_query->get( 'sku' ) ) {

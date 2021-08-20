@@ -55,6 +55,11 @@
 	list-style: none;
 }
 
+// Increased specificity necessary as Gutenberg's generic reset overrides box sizing
+.wc-block-grid__product.wc-block-grid__product {
+	box-sizing: border-box;
+}
+
 .theme-twentytwenty .wc-block-grid,
 .wc-block-grid {
 	&.has-aligned-buttons {

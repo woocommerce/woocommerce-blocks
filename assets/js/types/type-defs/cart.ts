@@ -1,5 +1,3 @@
-/* eslint-disable camelcase -- API responses have camelcase properties */
-
 /**
  * Internal dependencies
  */
@@ -25,6 +23,7 @@ export interface CartTotalsItem extends CurrencyInfo {
 
 export interface CartCouponItem {
 	code: string;
+	label: string;
 	discount_type: string;
 	totals: CartTotalsItem;
 }
@@ -66,10 +65,10 @@ export interface CartShippingRate {
 
 export interface CartShippingAddress extends BaseAddress, FirstNameLastName {
 	company: string;
+	phone: string;
 }
 
 export interface CartBillingAddress extends CartShippingAddress {
-	phone: string;
 	email: string;
 }
 
@@ -193,4 +192,8 @@ export interface CartMeta {
 	isCartDataStale: boolean;
 	applyingCoupon: string;
 	removingCoupon: string;
+}
+export interface ExtensionCartUpdateArgs {
+	data: Record< string, unknown >;
+	namespace: string;
 }

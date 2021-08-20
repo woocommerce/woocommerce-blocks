@@ -11,10 +11,12 @@
 /**
  * @typedef {Object} CustomerDataContext
  *
- * @property {BillingData}          billingData        The current billing data, including address and email.
- * @property {CartShippingAddress}  shippingAddress    The current set address for shipping.
- * @property {function()}           setBillingData     A function for setting billing data.
- * @property {function()}           setShippingAddress A function for setting shipping address.
+ * @property {BillingData}          billingData          The current billing data, including address and email.
+ * @property {CartShippingAddress}  shippingAddress      The current set address for shipping.
+ * @property {Function}             setBillingData       A function for setting billing data.
+ * @property {Function}             setShippingAddress   A function for setting shipping address.
+ * @property {boolean}              shippingAsBilling    A boolean which tracks if the customer is using the same billing and shipping address.
+ * @property {Function}             setShippingAsBilling A function for toggling shipping as billing.
  */
 
 /**
@@ -30,7 +32,7 @@
  * @property {function()}           setSelectedRates            Function for setting the selected rates.
  * @property {boolean}              isSelectingRate             True when rate is being selected.
  * @property {CartShippingAddress}  shippingAddress             The current set address for shipping.
- * @property {function()}           setShippingAddress          Function for setting the shipping address.
+ * @property {function(Object)}     setShippingAddress          Function for setting the shipping address.
  * @property {function()}           onShippingRateSuccess       Used to register a callback to be invoked when shipping
  *                                                              rates are retrieved.
  * @property {function()}           onShippingRateSelectSuccess Used to register a callback to be invoked when shipping
@@ -188,9 +190,18 @@
  */
 
 /**
+ * @typedef {Object} ValidationContextError
+ *
+ * @property {number} id Error ID.
+ * @property {string} message Error message.
+ * @property {boolean} hidden Error visibility.
+ *
+ */
+
+/**
  * @typedef {Object} ValidationContext
  *
- * @property {function(string):Object}  getValidationError       Return validation error for the given property.
+ * @property {(id:string)=>ValidationContextError} getValidationError     Return validation error for the given property.
  * @property {function(Object)}         setValidationErrors      Receive an object of properties and  error messages as
  *                                                               strings and adds to the validation error state.
  * @property {function(string)}         clearValidationError     Clears a validation error for the given property name.

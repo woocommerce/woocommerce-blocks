@@ -4,11 +4,11 @@
 import { forwardRef, InputHTMLAttributes } from 'react';
 import classnames from 'classnames';
 import { useState } from '@wordpress/element';
-import { Label } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
  */
+import Label from '../label';
 import './style.scss';
 
 interface TextInputProps
@@ -49,6 +49,7 @@ const TextInput = forwardRef< HTMLInputElement, TextInputProps >(
 				/* Do nothing */
 			},
 			feedback,
+			...rest
 		},
 		ref
 	) => {
@@ -87,6 +88,7 @@ const TextInput = forwardRef< HTMLInputElement, TextInputProps >(
 							: ariaDescribedBy
 					}
 					required={ required }
+					{ ...rest }
 				/>
 				<Label
 					label={ label }

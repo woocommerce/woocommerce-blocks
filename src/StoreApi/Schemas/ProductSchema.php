@@ -441,7 +441,7 @@ class ProductSchema extends AbstractSchema {
 			'on_sale'             => $product->is_on_sale(),
 			'prices'              => (object) $this->prepare_product_price_response( $product ),
 			'price_html'          => $this->prepare_html_response( $product->get_price_html() ),
-			'average_rating'      => $product->get_average_rating(),
+			'average_rating'      => (string) $product->get_average_rating(),
 			'review_count'        => $product->get_review_count(),
 			'images'              => $this->get_images( $product ),
 			'categories'          => $this->get_term_list( $product, 'product_cat' ),
@@ -556,7 +556,12 @@ class ProductSchema extends AbstractSchema {
 		}
 		global $wpdb;
 
-		$variation_ids               = $product->get_visible_children();
+		$variation_ids = $product->get_visible_children();
+
+		if ( ! count( $variation_ids ) ) {
+			return [];
+		}
+
 		$attributes                  = array_filter( $product->get_attributes(), [ $this, 'filter_variation_attribute' ] );
 		$default_variation_meta_data = array_reduce(
 			$attributes,

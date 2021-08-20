@@ -16,6 +16,10 @@ import { getSetting } from '@woocommerce/settings';
  */
 import './style.scss';
 
+const filteredCartCouponsFilterArg = {
+	context: 'summary',
+};
+
 const TotalsDiscount = ( {
 	cartCoupons = [],
 	currency,
@@ -41,12 +45,18 @@ const TotalsDiscount = ( {
 		? discountValue + discountTaxValue
 		: discountValue;
 
+	const filteredCartCoupons = __experimentalApplyCheckoutFilter( {
+		arg: filteredCartCouponsFilterArg,
+		filterName: 'coupons',
+		defaultValue: cartCoupons,
+	} );
+
 	return (
 		<TotalsItem
 			className="wc-block-components-totals-discount"
 			currency={ currency }
 			description={
-				cartCoupons.length !== 0 && (
+				filteredCartCoupons.length !== 0 && (
 					<LoadingMask
 						screenReaderLabel={ __(
 							'Removing coupon…',
@@ -56,30 +66,19 @@ const TotalsDiscount = ( {
 						showSpinner={ false }
 					>
 						<ul className="wc-block-components-totals-discount__coupon-list">
-							{ cartCoupons.map( ( cartCoupon ) => {
-								const filteredCouponCode = __experimentalApplyCheckoutFilter(
-									{
-										arg: {
-											context: 'summary',
-											coupon: cartCoupon,
-										},
-										filterName: 'couponName',
-										defaultValue: cartCoupon.code,
-									}
-								);
-
+							{ filteredCartCoupons.map( ( cartCoupon ) => {
 								return (
 									<RemovableChip
 										key={ 'coupon-' + cartCoupon.code }
 										className="wc-block-components-totals-discount__coupon-list-item"
-										text={ filteredCouponCode }
+										text={ cartCoupon.label }
 										screenReaderText={ sprintf(
 											/* translators: %s Coupon code. */
 											__(
 												'Coupon: %s',
 												'woo-gutenberg-products-block'
 											),
-											filteredCouponCode
+											cartCoupon.label
 										) }
 										disabled={ isRemovingCoupon }
 										onRemove={ () => {
@@ -92,7 +91,7 @@ const TotalsDiscount = ( {
 												'Remove coupon "%s"',
 												'woo-gutenberg-products-block'
 											),
-											filteredCouponCode
+											cartCoupon.label
 										) }
 									/>
 								);

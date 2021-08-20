@@ -8,6 +8,9 @@ This documentation assumes knowledge of REST concepts.
 
 This API is used internally by Blocks--it is still in flux and may be subject to revisions. There is currently no versioning system, and this API should therefore be used at your own risk. Eventually, it will be moved to the main WooCommerce REST API at which point it will be versioned and safe to use in other projects.
 
+## Extensibility
+
+Store API offers the possibility to extend endpoints using `ExtendRestAPI`. You can read more about extending Store API in the [Extensibility in WooCommerce Blocks](https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/trunk/docs/extensibility) section.
 ## Basic usage
 
 Example of a valid API request using cURL:
@@ -88,13 +91,13 @@ Available resources in the Store API are listed below, with links to more detail
 | Resource                                                     | Available endpoints                                                                   |
 | :----------------------------------------------------------- | :------------------------------------------------------------------------------------ |
 | [`Cart`](docs/cart.md)                                       | [`/wc/store/cart`](docs/cart.md#get-cart)                                             |
-|                                                              | [`/wc/store/cart/add-item`](#add-item)                                                |
-|                                                              | [`/wc/store/cart/remove-item`](#remove-item)                                          |
-|                                                              | [`/wc/store/cart/update-item`](#update-item)                                          |
-|                                                              | [`/wc/store/cart/apply-coupon`](#apply-coupon)                                        |
-|                                                              | [`/wc/store/cart/remove-coupon`](#remove-coupon)                                      |
-|                                                              | [`/wc/store/cart/update-customer`](#update-customer)                                  |
-|                                                              | [`/wc/store/cart/select-shipping-rate`](#select-shipping-rate)                        |
+|                                                              | [`/wc/store/cart/add-item`](docs/cart.md#add-item)                                    |
+|                                                              | [`/wc/store/cart/remove-item`](docs/cart.md#remove-item)                              |
+|                                                              | [`/wc/store/cart/update-item`](docs/cart.md#update-item)                              |
+|                                                              | [`/wc/store/cart/apply-coupon`](docs/cart.md#apply-coupon)                            |
+|                                                              | [`/wc/store/cart/remove-coupon`](docs/cart.md#remove-coupon)                          |
+|                                                              | [`/wc/store/cart/update-customer`](docs/cart.md#update-customer)                      |
+|                                                              | [`/wc/store/cart/select-shipping-rate`](docs/cart.md#select-shipping-rate)            |
 | [`Cart Items`](docs/cart-items.md)                           | [`/wc/store/cart/items`](docs/cart-items.md#list-cart-items)                          |
 | [`Cart Coupons`](docs/cart-coupons.md)                       | [`/wc/store/cart/coupons`](docs/cart-coupons.md#list-cart-coupons)                    |
 | [`Checkout`](docs/checkout.md)                               | [`/wc/store/checkout`](docs/checkout.md)                                              |
