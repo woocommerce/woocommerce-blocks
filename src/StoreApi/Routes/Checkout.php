@@ -127,23 +127,16 @@ class Checkout extends AbstractCartRoute {
 	 * @return \WP_REST_Response $response Response data.
 	 */
 	public function prepare_item_for_response( $item, \WP_REST_Request $request ) {
-		$response = parent::prepare_item_for_response( $item, $request );
+		$response     = parent::prepare_item_for_response( $item, $request );
+		$status_codes = [
+			'success' => 200,
+			'pending' => 202,
+			'failure' => 400,
+			'error'   => 500,
+		];
 
 		if ( isset( $item->payment_result ) && $item->payment_result instanceof PaymentResult ) {
-			switch ( $item->payment_result->status ) {
-				case 'success':
-					$response->set_status( 200 );
-					break;
-				case 'pending':
-					$response->set_status( 202 );
-					break;
-				case 'failure':
-					$response->set_status( 400 );
-					break;
-				case 'error':
-					$response->set_status( 500 );
-					break;
-			}
+			$response->set_status( $status_codes[ $item->payment_result->status ] ?? 500 );
 		}
 
 		return $response;
@@ -289,10 +282,9 @@ class Checkout extends AbstractCartRoute {
 			$error_code,
 			$error_message
 		);
-		switch ( $http_status_code ) {
-			case 409:
-				// 409 is when there was a conflict, so we return the cart so the client can resolve it.
-				return $this->add_data_to_error_object( $error_from_message, $additional_data, $http_status_code, true );
+		// 409 is when there was a conflict, so we return the cart so the client can resolve it.
+		if ( 409 === $http_status_code ) {
+			return $this->add_data_to_error_object( $error_from_message, $additional_data, $http_status_code, true );
 		}
 		return $this->add_data_to_error_object( $error_from_message, $additional_data, $http_status_code );
 	}
@@ -306,10 +298,9 @@ class Checkout extends AbstractCartRoute {
 	 * @return \WP_Error WP Error object.
 	 */
 	protected function get_route_error_response_from_object( $error_object, $http_status_code = 500, $additional_data = [] ) {
-		switch ( $http_status_code ) {
-			case 409:
-				// 409 is when there was a conflict, so we return the cart so the client can resolve it.
-				return $this->add_data_to_error_object( $error_object, $additional_data, $http_status_code, true );
+		// 409 is when there was a conflict, so we return the cart so the client can resolve it.
+		if ( 409 === $http_status_code ) {
+			return $this->add_data_to_error_object( $error_object, $additional_data, $http_status_code, true );
 		}
 		return $this->add_data_to_error_object( $error_object, $additional_data, $http_status_code );
 	}
@@ -539,9 +530,7 @@ class Checkout extends AbstractCartRoute {
 	 * @return string
 	 */
 	private function get_request_payment_method_id( \WP_REST_Request $request ) {
-		$payment_method_id = isset( $request['payment_method'] )
-			? wc_clean( wp_unslash( $request['payment_method'] ) )
-			: '';
+		$payment_method_id = wc_clean( wp_unslash( $request['payment_method'] ?? '' ) );
 
 		if ( empty( $payment_method_id ) ) {
 			throw new RouteException(
