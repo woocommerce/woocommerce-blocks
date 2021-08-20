@@ -10,7 +10,7 @@ This API is used internally by Blocks--it is still in flux and may be subject to
 
 ## Extensibility
 
-Store API offers the possibility to extend endpoints using ExtendRestAPI. You can read more about extending Store API in the [Extensibility in WooCommerce Blocks](https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/trunk/docs/extensibility) section.
+Store API offers the possibility to extend endpoints using `ExtendRestAPI`. You can read more about extending Store API in the [Extensibility in WooCommerce Blocks](https://github.com/woocommerce/woocommerce-gutenberg-products-block/tree/trunk/docs/extensibility) section.
 ## Basic usage
 
 Example of a valid API request using cURL:
