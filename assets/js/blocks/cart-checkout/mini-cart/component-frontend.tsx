@@ -17,15 +17,17 @@ import {
 import CartLineItemsTable from '../cart/full-cart/cart-line-items-table';
 import './style.scss';
 
-const MiniCartBlock = () => {
+interface MiniCartBlock {
+	isPlaceholderOpen?: boolean;
+}
+
+const MiniCartBlock = ( { isPlaceholderOpen = false } ): JSX.Element => {
 	const { cartItems, cartItemsCount, cartIsLoading } = useStoreCart();
-	const [ isOpen, setIsOpen ] = useState< boolean >(
-		window.wcBlocksMiniCartDrawerOpen
-	);
+	const [ isOpen, setIsOpen ] = useState< boolean >( isPlaceholderOpen );
 	// We already rendered the HTML drawer placeholder, so we want to skip the
 	// slide in animation.
 	const [ skipSlideIn, setSkipSlideIn ] = useState< boolean >(
-		window.wcBlocksMiniCartDrawerOpen
+		isPlaceholderOpen
 	);
 
 	const contents =
@@ -83,9 +85,14 @@ const MiniCartBlock = () => {
 	);
 };
 
+const getProps = ( el: HTMLElement ) => ( {
+	isPlaceholderOpen: el.dataset.isPlaceholderOpen,
+} );
+
 renderFrontend( {
 	selector: '.wc-block-mini-cart',
 	Block: withStoreCartApiHydration( withRestApiHydration( MiniCartBlock ) ),
+	getProps,
 } );
 
 document.querySelectorAll( '.wc-block-mini-cart' ).forEach( ( miniCartEl ) => {

@@ -13,8 +13,6 @@ interface dependencyData {
 	translations?: string;
 }
 
-window.wcBlocksMiniCartDrawerOpen = false;
-
 // eslint-disable-next-line @wordpress/no-global-event-listener
 window.onload = () => {
 	const miniCartBlocks = document.querySelectorAll( '.wc-block-mini-cart' );
@@ -48,6 +46,10 @@ window.onload = () => {
 	};
 
 	miniCartBlocks.forEach( ( miniCartBlock ) => {
+		if ( ! ( miniCartBlock instanceof HTMLElement ) ) {
+			return;
+		}
+
 		const miniCartButton = miniCartBlock.querySelector(
 			'.wc-block-mini-cart__button'
 		);
@@ -60,14 +62,14 @@ window.onload = () => {
 			return;
 		}
 
-		const showContents = async () => {
+		const showContents = () => {
+			miniCartBlock.dataset.isPlaceholderOpen = 'true';
 			miniCartOverlay.classList.add(
 				'wc-block-components-drawer--with-slide-in'
 			);
 			miniCartOverlay.classList.remove(
 				'wc-block-components-drawer--is-hidden'
 			);
-			window.wcBlocksMiniCartDrawerOpen = true;
 		};
 
 		miniCartButton.addEventListener( 'mouseover', loadScripts );
