@@ -34,7 +34,7 @@ require_once $_tests_dir . '/includes/functions.php';
  */
 function manually_load_plugins() {
 	require dirname( dirname( __DIR__ ) ) . '/woocommerce/woocommerce.php';
-    require dirname( __DIR__ ) . '/woocommerce-gutenberg-products-block.php';
+	require dirname( __DIR__ ) . '/woocommerce-gutenberg-products-block.php';
 }
 
 tests_add_filter( 'muplugins_loaded', __NAMESPACE__ . '\\manually_load_plugins' );
