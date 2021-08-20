@@ -102,7 +102,7 @@ class ProductQueryFilters {
 			return false;
 		}
 		global $wpdb;
-
+		$status = esc_sql( $status );
 		return "
 			SELECT COUNT( DISTINCT posts.ID ) as status_count
 			FROM {$wpdb->posts} as posts
