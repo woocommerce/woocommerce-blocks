@@ -7,8 +7,10 @@ import classnames from 'classnames';
 import {
 	ValidationInputError,
 	useValidationContext,
+	useCheckoutContext,
 } from '@woocommerce/base-context';
-import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
+import { withInstanceId } from '@wordpress/compose';
+import { isString } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -36,6 +38,7 @@ type ValidatedTextInputProps = (
 	validateOnMount?: boolean;
 	focusOnMount?: boolean;
 	showError?: boolean;
+	errorMessage?: string;
 	onChange: ( newValue: string ) => void;
 };
 
@@ -49,6 +52,7 @@ const ValidatedTextInput = ( {
 	focusOnMount = false,
 	onChange,
 	showError = true,
+	errorMessage: passedErrorMessage = '',
 	...rest
 }: ValidatedTextInputProps ) => {
 	const [ isPristine, setIsPristine ] = useState( true );
@@ -60,6 +64,8 @@ const ValidatedTextInput = ( {
 		clearValidationError,
 		getValidationErrorId,
 	} = useValidationContext();
+
+	const { isBeforeProcessing } = useCheckoutContext();
 
 	const textInputId =
 		typeof id !== 'undefined' ? id : 'textinput-' + instanceId;
@@ -111,6 +117,14 @@ const ValidatedTextInput = ( {
 		}
 	}, [ isPristine, setIsPristine, validateOnMount, validateInput ] );
 
+	/**
+	 * @todo Remove extra validation call after refactoring the validation system.
+	 */
+	useEffect( () => {
+		if ( isBeforeProcessing ) {
+			validateInput();
+		}
+	}, [ isBeforeProcessing, validateInput ] );
 	// Remove validation errors when unmounted.
 	useEffect( () => {
 		return () => {
@@ -123,6 +137,9 @@ const ValidatedTextInput = ( {
 		message?: string;
 		hidden?: boolean;
 	};
+	if ( isString( passedErrorMessage ) && passedErrorMessage !== '' ) {
+		errorMessage.message = passedErrorMessage;
+	}
 	const hasError = errorMessage.message && ! errorMessage.hidden;
 	const describedBy =
 		showError && hasError && getValidationErrorId( errorIdString )
@@ -140,7 +157,10 @@ const ValidatedTextInput = ( {
 			} }
 			feedback={
 				showError && (
-					<ValidationInputError propertyName={ errorIdString } />
+					<ValidationInputError
+						errorMessage={ passedErrorMessage }
+						propertyName={ errorIdString }
+					/>
 				)
 			}
 			ref={ inputRef }

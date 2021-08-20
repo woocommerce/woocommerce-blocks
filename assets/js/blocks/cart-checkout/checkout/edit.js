@@ -18,12 +18,12 @@ import {
 	CHECKOUT_PAGE_ID,
 } from '@woocommerce/block-settings';
 import { isWcVersion, getAdminLink, getSetting } from '@woocommerce/settings';
-import { createInterpolateElement } from 'wordpress-element';
-import { useRef } from '@wordpress/element';
+import { createInterpolateElement, useRef } from '@wordpress/element';
 import {
 	EditorProvider,
 	useEditorContext,
 	StoreNoticesProvider,
+	CheckoutProvider,
 } from '@woocommerce/base-context';
 import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import PageSelector from '@woocommerce/editor-components/page-selector';
@@ -383,7 +383,9 @@ const CheckoutEditor = ( { attributes, setAttributes } ) => {
 					>
 						<StoreNoticesProvider context="wc/checkout">
 							<Disabled>
-								<Block attributes={ attributes } />
+								<CheckoutProvider>
+									<Block attributes={ attributes } />
+								</CheckoutProvider>
 							</Disabled>
 						</StoreNoticesProvider>
 					</BlockErrorBoundary>

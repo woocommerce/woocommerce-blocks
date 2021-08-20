@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { useSelect, useDispatch } from '@wordpress/data';
-import { useState, useEffect } from '@wordpress/element';
+import { useCallback, useState, useEffect } from '@wordpress/element';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useDebounce } from 'use-debounce';
 import { usePrevious } from '@woocommerce/base-hooks';
@@ -83,16 +83,15 @@ export const useStoreCartItemQuantity = (
 		},
 		[ cartItemKey ]
 	);
-	const previousIsPending = usePrevious( isPending );
 
-	const removeItem = () => {
+	const removeItem = useCallback( () => {
 		return cartItemKey
 			? removeItemFromCart( cartItemKey ).then( () => {
 					triggerFragmentRefresh();
 					return true;
 			  } )
 			: Promise.resolve( false );
-	};
+	}, [ cartItemKey, removeItemFromCart ] );
 
 	// Observe debounced quantity value, fire action to update server on change.
 	useEffect( () => {
@@ -112,32 +111,30 @@ export const useStoreCartItemQuantity = (
 	] );
 
 	useEffect( () => {
-		if ( typeof previousIsPending === 'undefined' ) {
-			return;
-		}
-		if ( previousIsPending.quantity !== isPending.quantity ) {
-			if ( isPending.quantity ) {
-				dispatchActions.incrementCalculating();
-			} else {
-				dispatchActions.decrementCalculating();
-			}
-		}
-		if ( previousIsPending.delete !== isPending.delete ) {
-			if ( isPending.delete ) {
-				dispatchActions.incrementCalculating();
-			} else {
-				dispatchActions.decrementCalculating();
-			}
+		if ( isPending.delete ) {
+			dispatchActions.incrementCalculating();
+		} else {
+			dispatchActions.decrementCalculating();
 		}
 		return () => {
-			if ( isPending.quantity ) {
-				dispatchActions.decrementCalculating();
-			}
 			if ( isPending.delete ) {
 				dispatchActions.decrementCalculating();
 			}
 		};
-	}, [ dispatchActions, isPending, previousIsPending ] );
+	}, [ dispatchActions, isPending.delete ] );
+
+	useEffect( () => {
+		if ( isPending.quantity || debouncedQuantity !== quantity ) {
+			dispatchActions.incrementCalculating();
+		} else {
+			dispatchActions.decrementCalculating();
+		}
+		return () => {
+			if ( isPending.quantity || debouncedQuantity !== quantity ) {
+				dispatchActions.decrementCalculating();
+			}
+		};
+	}, [ dispatchActions, isPending.quantity, debouncedQuantity, quantity ] );
 
 	return {
 		isPendingDelete: isPending.delete,

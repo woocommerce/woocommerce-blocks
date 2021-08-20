@@ -1,8 +1,9 @@
+/* eslint-disable no-console */
 /**
  * External dependencies
  */
 const path = require( 'path' );
-
+const chalk = require( 'chalk' );
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const FORCE_MAP = process.env.FORCE_MAP || false;
 const CHECK_CIRCULAR_DEPS = process.env.CHECK_CIRCULAR_DEPS || false;
@@ -15,8 +16,8 @@ const wcDepMap = {
 	'@woocommerce/blocks-registry': [ 'wc', 'wcBlocksRegistry' ],
 	'@woocommerce/settings': [ 'wc', 'wcSettings' ],
 	'@woocommerce/block-data': [ 'wc', 'wcBlocksData' ],
-	'@woocommerce/shared-context': [ 'wc', 'wcSharedContext' ],
-	'@woocommerce/shared-hocs': [ 'wc', 'wcSharedHocs' ],
+	'@woocommerce/shared-context': [ 'wc', 'wcBlocksSharedContext' ],
+	'@woocommerce/shared-hocs': [ 'wc', 'wcBlocksSharedHocs' ],
 	'@woocommerce/price-format': [ 'wc', 'priceFormat' ],
 	'@woocommerce/blocks-checkout': [ 'wc', 'blocksCheckout' ],
 };
@@ -26,8 +27,8 @@ const wcHandleMap = {
 	'@woocommerce/settings': 'wc-settings',
 	'@woocommerce/block-settings': 'wc-settings',
 	'@woocommerce/block-data': 'wc-blocks-data-store',
-	'@woocommerce/shared-context': 'wc-shared-context',
-	'@woocommerce/shared-hocs': 'wc-shared-hocs',
+	'@woocommerce/shared-context': 'wc-blocks-shared-context',
+	'@woocommerce/shared-hocs': 'wc-blocks-shared-hocs',
 	'@woocommerce/price-format': 'wc-price-format',
 	'@woocommerce/blocks-checkout': 'wc-blocks-checkout',
 };
@@ -107,13 +108,6 @@ const requestToExternal = ( request ) => {
 	}
 };
 
-const requestToExternalInsideGB = ( request ) => {
-	if ( request === 'wordpress-components' ) {
-		return [ 'wp', 'components' ];
-	}
-	return requestToExternal( request );
-};
-
 const requestToHandle = ( request ) => {
 	if ( requiredPackagesInWPLegacy.includes( request ) ) {
 		return false;
@@ -123,11 +117,24 @@ const requestToHandle = ( request ) => {
 	}
 };
 
-const requestToHandleInsideGB = ( request ) => {
-	if ( request === 'wordpress-components' ) {
-		return 'wp-components';
-	}
-	return requestToHandle( request );
+const getProgressBarPluginConfig = ( name, fileSuffix ) => {
+	const isLegacy = fileSuffix && fileSuffix === 'legacy';
+	const progressBarPrefix = isLegacy ? 'Legacy ' : '';
+	return {
+		format:
+			chalk.blue( `Building ${ progressBarPrefix }${ name }` ) +
+			' [:bar] ' +
+			chalk.green( ':percent' ) +
+			' :msg (:elapsed seconds)',
+		summary: false,
+		customSummary: ( time ) => {
+			console.log(
+				chalk.green.bold(
+					`${ progressBarPrefix }${ name } assets build completed (${ time })`
+				)
+			);
+		},
+	};
 };
 
 module.exports = {
@@ -138,6 +145,5 @@ module.exports = {
 	findModuleMatch,
 	requestToHandle,
 	requestToExternal,
-	requestToHandleInsideGB,
-	requestToExternalInsideGB,
+	getProgressBarPluginConfig,
 };
