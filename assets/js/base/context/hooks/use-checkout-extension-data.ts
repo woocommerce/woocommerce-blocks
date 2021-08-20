@@ -9,6 +9,7 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
  */
 import { useCheckoutContext } from '../providers/cart-checkout/checkout-state';
 import type { CheckoutStateContextState } from '../providers/cart-checkout/checkout-state/types';
+
 /**
  * Custom hook for setting custom checkout data which is passed to the wc/store/checkout endpoint when processing orders.
  */

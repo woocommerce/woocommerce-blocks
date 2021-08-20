@@ -33,6 +33,10 @@ export interface PaymentResultDataType {
 	redirectUrl: string;
 }
 
+type extensionDataNamespace = string;
+type extensionDataItem = Record< string, unknown >;
+export type extensionData = Record< extensionDataNamespace, extensionDataItem >;
+
 export interface CheckoutStateContextState {
 	redirectUrl: string;
 	status: STATUS;
@@ -43,9 +47,7 @@ export interface CheckoutStateContextState {
 	customerId: number;
 	shouldCreateAccount: boolean;
 	processingResponse: PaymentResultDataType | null;
-	extensionData:
-		| Record< string, Record< string, unknown > >
-		| Record< string, never >;
+	extensionData: extensionData;
 }
 
 export type CheckoutStateDispatchActions = {
@@ -58,9 +60,7 @@ export type CheckoutStateDispatchActions = {
 	setCustomerId: ( id: number ) => void;
 	setOrderId: ( id: number ) => void;
 	setOrderNotes: ( orderNotes: string ) => void;
-	setExtensionData: (
-		extensionData: Record< string, Record< string, unknown > >
-	) => void;
+	setExtensionData: ( extensionData: extensionData ) => void;
 };
 
 export type CheckoutStateContextType = {
