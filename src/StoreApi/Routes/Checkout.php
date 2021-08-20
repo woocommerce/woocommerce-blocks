@@ -608,34 +608,29 @@ class Checkout extends AbstractCartRoute {
 	 * Creates a customer account as needed (based on request & store settings) and  updates the order with the new customer ID.
 	 * Updates the order with user details (e.g. address).
 	 *
-	 * @internal CreateAccount class includes feature gating logic (i.e. this may not create an account depending on build).
-	 * @internal Checkout signup is feature gated to WooCommerce 4.7 and newer; Because it requires updated my-account/lost-password screen in 4.7+ for setting initial password.
-	 *
 	 * @throws RouteException API error object with error details.
 	 * @param WP_REST_Request $request Request object.
 	 */
 	private function process_customer( WP_REST_Request $request ) {
-		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '4.7', '>=' ) ) {
-			try {
-				$create_account = Package::container()->get( CreateAccount::class );
-				$create_account->from_order_request( $request );
-				$this->order->set_customer_id( get_current_user_id() );
-				$this->order->save();
-			} catch ( Exception $error ) {
-				switch ( $error->getMessage() ) {
-					case 'registration-error-invalid-email':
-						throw new RouteException(
-							'registration-error-invalid-email',
-							__( 'Please provide a valid email address.', 'woo-gutenberg-products-block' ),
-							400
-						);
-					case 'registration-error-email-exists':
-						throw new RouteException(
-							'registration-error-email-exists',
-							__( 'An account is already registered with your email address. Please log in before proceeding.', 'woo-gutenberg-products-block' ),
-							400
-						);
-				}
+		try {
+			$create_account = Package::container()->get( CreateAccount::class );
+			$create_account->from_order_request( $request );
+			$this->order->set_customer_id( get_current_user_id() );
+			$this->order->save();
+		} catch ( Exception $error ) {
+			switch ( $error->getMessage() ) {
+				case 'registration-error-invalid-email':
+					throw new RouteException(
+						'registration-error-invalid-email',
+						__( 'Please provide a valid email address.', 'woo-gutenberg-products-block' ),
+						400
+					);
+				case 'registration-error-email-exists':
+					throw new RouteException(
+						'registration-error-email-exists',
+						__( 'An account is already registered with your email address. Please log in before proceeding.', 'woo-gutenberg-products-block' ),
+						400
+					);
 			}
 		}
 
