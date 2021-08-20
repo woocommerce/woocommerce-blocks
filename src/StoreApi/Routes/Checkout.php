@@ -136,7 +136,7 @@ class Checkout extends AbstractCartRoute {
 		];
 
 		if ( isset( $item->payment_result ) && $item->payment_result instanceof PaymentResult ) {
-			$response->set_status( $status_codes[ $item->payment_result->status ] ?? 500 );
+			$response->set_status( $status_codes[ $item->payment_result->status ] ?? 200 );
 		}
 
 		return $response;
