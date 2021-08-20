@@ -460,10 +460,22 @@ class Checkout extends AbstractCartRoute {
 	 * @param \WP_REST_Request $request Full details about the request.
 	 */
 	private function update_order_from_request( \WP_REST_Request $request ) {
-		if ( isset( $request['customer_note'] ) ) {
-			$this->order->set_customer_note( $request['customer_note'] );
-		}
+		$this->order->set_customer_note( $request['customer_note'] ?? '' );
 		$this->order->set_payment_method( $this->order->needs_payment() ? $this->get_request_payment_method( $request ) : '' );
+
+		/**
+		 * WooCommerce Blocks Checkout Update Order From Request (experimental).
+		 *
+		 * This hook gives extensions the chance to update orders based on the data in the request. This can be used in
+		 * conjunction with the ExtendRestAPI class to post custom data and then process it.
+		 *
+		 * @internal This Hook is experimental and may change or be removed.
+		 *
+		 * @param \WC_Order $order Order object.
+		 * @param \WP_REST_Request $request Full details about the request.
+		 */
+		do_action( '__experimental_woocommerce_blocks_checkout_update_order_from_request', $this->order, $request );
+
 		$this->order->save();
 	}
 
