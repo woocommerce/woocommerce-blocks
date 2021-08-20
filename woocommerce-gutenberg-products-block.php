@@ -246,6 +246,7 @@ function woocommerce_blocks_get_php_translation_from_core( $translation, $text, 
 
 add_filter( 'gettext', 'woocommerce_blocks_get_php_translation_from_core', 10, 3 );
 
+// @todo Move Newsletter field POC integration to suitable extension.
 if ( \Automattic\WooCommerce\Blocks\Package::feature()->is_experimental_build() ) {
 	/**
 	 * Newsletter field integration (temporary home until moved to extensions)
