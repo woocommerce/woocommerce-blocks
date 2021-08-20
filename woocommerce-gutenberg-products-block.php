@@ -246,32 +246,34 @@ function woocommerce_blocks_get_php_translation_from_core( $translation, $text, 
 
 add_filter( 'gettext', 'woocommerce_blocks_get_php_translation_from_core', 10, 3 );
 
-// @todo Move Newsletter field POC integration to suitable extension.
-if ( \Automattic\WooCommerce\Blocks\Package::feature()->is_experimental_build() ) {
-	/**
-	 * Newsletter field integration (temporary home until moved to extensions)
-	 */
-	add_action(
-		'woocommerce_blocks_loaded',
-		function() {
-			$extend = \Automattic\WooCommerce\Blocks\Package::container()->get(
-				\Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi::class
-			);
-			$extend->register_endpoint_data(
-				array(
-					'endpoint'        => \Automattic\WooCommerce\Blocks\StoreApi\Schemas\CheckoutSchema::IDENTIFIER,
-					'namespace'       => 'newsletter-extension',
-					'schema_callback' => function() {
-						return array(
-							'newsletter' => array(
-								'description' => __( 'Subscribe to newsletter opt-in.', 'woo-gutenberg-products-block' ),
-								'type'        => 'boolean',
-								'context'     => array(),
-							),
-						);
-					},
-				)
-			);
+/**
+ * Newsletter field integration (temporary home until moved to extensions)
+ *
+ * @todo Move Newsletter field POC integration to suitable extension.
+ */
+add_action(
+	'woocommerce_blocks_loaded',
+	function() {
+		if ( ! \Automattic\WooCommerce\Blocks\Package::feature()->is_experimental_build() ) {
+			return;
 		}
-	);
-}
+		$extend = \Automattic\WooCommerce\Blocks\Package::container()->get(
+			\Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi::class
+		);
+		$extend->register_endpoint_data(
+			array(
+				'endpoint'        => \Automattic\WooCommerce\Blocks\StoreApi\Schemas\CheckoutSchema::IDENTIFIER,
+				'namespace'       => 'newsletter-extension',
+				'schema_callback' => function() {
+					return array(
+						'newsletter' => array(
+							'description' => __( 'Subscribe to newsletter opt-in.', 'woo-gutenberg-products-block' ),
+							'type'        => 'boolean',
+							'context'     => array(),
+						),
+					);
+				},
+			)
+		);
+	}
+);
