@@ -13,6 +13,8 @@ interface dependencyData {
 	translations?: string;
 }
 
+window.wcBlocksMiniCartDrawerOpen = false;
+
 // eslint-disable-next-line @wordpress/no-global-event-listener
 window.onload = () => {
 	const miniCartBlocks = document.querySelectorAll( '.wc-block-mini-cart' );
@@ -35,41 +37,41 @@ window.onload = () => {
 		} );
 	}
 
+	const loadScripts = async () => {
+		for ( const dependencyHandle in dependencies ) {
+			const dependency = dependencies[ dependencyHandle ];
+			await lazyLoadScript( {
+				handle: dependencyHandle,
+				...dependency,
+			} );
+		}
+	};
+
 	miniCartBlocks.forEach( ( miniCartBlock ) => {
 		const miniCartButton = miniCartBlock.querySelector(
 			'.wc-block-mini-cart__button'
 		);
-		const miniCartContents = miniCartBlock.querySelector(
-			'.wc-block-mini-cart__contents'
+		const miniCartOverlay = miniCartBlock.querySelector(
+			'.wc-block-components-drawer'
 		);
 
-		if ( ! miniCartButton || ! miniCartContents ) {
+		if ( ! miniCartButton || ! miniCartOverlay ) {
 			// Markup is not correct, abort.
 			return;
 		}
 
 		const showContents = async () => {
-			miniCartContents.removeAttribute( 'hidden' );
-
-			// Load scripts
-			for ( const dependencyHandle in dependencies ) {
-				const dependency = dependencies[ dependencyHandle ];
-				await lazyLoadScript( {
-					handle: dependencyHandle,
-					...dependency,
-				} );
-			}
+			miniCartOverlay.classList.add(
+				'wc-block-components-drawer--with-slide-in'
+			);
+			miniCartOverlay.classList.remove(
+				'wc-block-components-drawer--is-hidden'
+			);
+			window.wcBlocksMiniCartDrawerOpen = true;
 		};
-		const hideContents = () =>
-			miniCartContents.setAttribute( 'hidden', 'true' );
 
-		miniCartButton.addEventListener( 'mouseover', showContents );
-		miniCartButton.addEventListener( 'mouseleave', hideContents );
-
-		miniCartContents.addEventListener( 'mouseover', showContents );
-		miniCartContents.addEventListener( 'mouseleave', hideContents );
-
-		miniCartButton.addEventListener( 'focus', showContents );
-		miniCartButton.addEventListener( 'blur', hideContents );
+		miniCartButton.addEventListener( 'mouseover', loadScripts );
+		miniCartButton.addEventListener( 'focus', loadScripts );
+		miniCartButton.addEventListener( 'click', showContents );
 	} );
 };
