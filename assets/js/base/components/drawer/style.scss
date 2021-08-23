@@ -107,6 +107,7 @@ $drawer-width: 480px;
 // Same styles as `Title` component.
 .wc-block-components-drawer .components-modal__header-heading {
 	@include reset-box();
-	@include font-size(large);
+	// We need the font size to be in rem so it doesn't change depending on the parent element.
+	@include font-size(large, 1rem);
 	word-break: break-word;
 }

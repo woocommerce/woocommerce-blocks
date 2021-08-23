@@ -7,8 +7,8 @@ $fontSizes: (
 );
 
 // Maps a named font-size to its em equivalent.
-@mixin font-size($sizeName) {
-	font-size: map-get($fontSizes, $sizeName) * 1em;
+@mixin font-size($sizeName, $multiplier: 1em) {
+	font-size: map-get($fontSizes, $sizeName) * $multiplier;
 }
 
 @keyframes loading-fade {
