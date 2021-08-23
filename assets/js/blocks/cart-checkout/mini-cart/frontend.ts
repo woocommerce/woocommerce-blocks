@@ -2,12 +2,8 @@
  * External dependencies
  */
 import { getSetting } from '@woocommerce/settings';
-
-/**
- * Internal dependencies
- */
-import preloadScript from './preload-script';
-import lazyLoadScript from './lazy-load-script';
+import preloadScript from '@woocommerce/base-utils/preload-script';
+import lazyLoadScript from '@woocommerce/base-utils/lazy-load-script';
 
 interface dependencyData {
 	src: string;
