@@ -39,11 +39,16 @@ const Drawer = ( {
 			title={ title }
 			focusOnMount={ true }
 			onRequestClose={ onClose }
-			overlayClassName={ classNames( 'wc-block-components-drawer', {
+			className={ classNames( 'wc-block-components-drawer', {
 				'wc-block-components-drawer--with-slide-in': slideIn,
 				'wc-block-components-drawer--with-slide-out': slideOut,
-				'wc-block-components-drawer--is-hidden': ! isOpen,
 			} ) }
+			overlayClassName={ classNames(
+				'wc-block-components-drawer__screen-overlay',
+				{
+					'wc-block-components-drawer__screen-overlay--is-hidden': ! isOpen,
+				}
+			) }
 		>
 			{ children }
 		</Modal>

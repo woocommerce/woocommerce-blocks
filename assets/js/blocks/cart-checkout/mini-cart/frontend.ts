@@ -53,11 +53,18 @@ window.onload = () => {
 		const miniCartButton = miniCartBlock.querySelector(
 			'.wc-block-mini-cart__button'
 		);
+		const miniCartDrawerPlaceholderOverlay = miniCartBlock.querySelector(
+			'.wc-block-components-drawer__screen-overlay'
+		);
 		const miniCartDrawerPlaceholder = miniCartBlock.querySelector(
 			'.wc-block-components-drawer'
 		);
 
-		if ( ! miniCartButton || ! miniCartDrawerPlaceholder ) {
+		if (
+			! miniCartButton ||
+			! miniCartDrawerPlaceholderOverlay ||
+			! miniCartDrawerPlaceholder
+		) {
 			// Markup is not correct, abort.
 			return;
 		}
@@ -67,8 +74,8 @@ window.onload = () => {
 			miniCartDrawerPlaceholder.classList.add(
 				'wc-block-components-drawer--with-slide-in'
 			);
-			miniCartDrawerPlaceholder.classList.remove(
-				'wc-block-components-drawer--is-hidden'
+			miniCartDrawerPlaceholderOverlay.classList.remove(
+				'wc-block-components-drawer__screen-overlay--is-hidden'
 			);
 		};
 

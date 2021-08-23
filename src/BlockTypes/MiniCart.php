@@ -208,14 +208,16 @@ class MiniCart extends AbstractBlock {
 
 		return '<div class="wc-block-mini-cart wc-block-mini-cart--is-loading">
 			<button class="wc-block-mini-cart__button">' . $button_text . '</button>
-			<div class="wc-block-components-drawer wc-block-components-drawer--is-hidden" aria-hidden="true">
-				<div class="components-modal__content">
-					<div class="components-modal__header">
-						<div class="components-modal__header-heading-container">
-							<h1 id="components-modal-header-1" class="components-modal__header-heading">' . $title . '</h1>
+			<div class="wc-block-components-drawer__screen-overlay wc-block-components-drawer__screen-overlay--is-hidden" aria-hidden="true">
+				<div class="components-modal__frame wc-block-components-drawer">
+					<div class="components-modal__content">
+						<div class="components-modal__header">
+							<div class="components-modal__header-heading-container">
+								<h1 id="components-modal-header-1" class="components-modal__header-heading">' . $title . '</h1>
+							</div>
 						</div>
+						' . $this->get_cart_contents_markup( $cart_contents ) . '
 					</div>
-					' . $this->get_cart_contents_markup( $cart_contents ) . '
 				</div>
 			</div>
 		</div>';
