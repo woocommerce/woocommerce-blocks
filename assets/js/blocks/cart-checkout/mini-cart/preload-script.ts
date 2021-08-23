@@ -4,6 +4,10 @@ interface preloadScriptParams {
 	version?: string;
 }
 
+/**
+ * Appends a `<link>` tag to the document head to preload a script based on the
+ * src and handle parameters.
+ */
 const preloadScript = ( {
 	handle,
 	src,

@@ -7,6 +7,15 @@ interface lazyLoadScriptParams {
 	translations?: string;
 }
 
+/**
+ * Appends a `<script>` tag to the document body based on the src and handle
+ * parameters. In addition, it appends additional script tags to load the code
+ * needed for translations and any before and after inline scripts. See these
+ * documentation pages for more information:
+ *
+ * https://developer.wordpress.org/reference/functions/wp_set_script_translations/
+ * https://developer.wordpress.org/reference/functions/wp_add_inline_script/
+ */
 const lazyLoadScript = ( {
 	handle,
 	src,
@@ -16,7 +25,7 @@ const lazyLoadScript = ( {
 	translations,
 }: lazyLoadScriptParams ): Promise< void > => {
 	return new Promise( ( resolve, reject ) => {
-		// Translations
+		// Append script translations if they doesn't exist yet in the page.
 		if ( translations ) {
 			const handleTranslationsElements = document.querySelectorAll(
 				`#${ handle }-js-translations`
@@ -28,7 +37,7 @@ const lazyLoadScript = ( {
 				document.body.appendChild( handleTranslations );
 			}
 		}
-		// Before
+		// Append before inline script if it doesn't exist yet in the page.
 		if ( before ) {
 			const handleBeforeScriptElements = document.querySelectorAll(
 				`#${ handle }-js-before`
@@ -41,7 +50,7 @@ const lazyLoadScript = ( {
 			}
 		}
 
-		// Script
+		// Append script.
 		const handleScriptElements = document.querySelectorAll(
 			`#${ handle }-js`
 		);
@@ -53,7 +62,7 @@ const lazyLoadScript = ( {
 			handleScript.id = `${ handle }-js`;
 			handleScript.onerror = reject;
 			handleScript.onload = () => {
-				// After
+				// Append after inline script if it doesn't exist yet in the page.
 				if ( after ) {
 					const handleAfterScriptElements = document.querySelectorAll(
 						`#${ handle }-js-after`
