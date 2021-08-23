@@ -19,7 +19,7 @@ const lazyLoadScript = ( {
 		// Translations
 		if ( translations ) {
 			const handleTranslationsElements = document.querySelectorAll(
-				`#${ handle }-js-before`
+				`#${ handle }-js-translations`
 			);
 			if ( handleTranslationsElements.length === 0 ) {
 				const handleTranslations = document.createElement( 'script' );
