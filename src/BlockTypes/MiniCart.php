@@ -206,7 +206,7 @@ class MiniCart extends AbstractBlock {
 			$cart_contents_count
 		);
 
-		return '<div class="wc-block-mini-cart wc-block-mini-cart--is-loading">
+		return '<div class="wc-block-mini-cart is-loading">
 			<button class="wc-block-mini-cart__button">' . $button_text . '</button>
 			<div class="wc-block-components-drawer__screen-overlay wc-block-components-drawer__screen-overlay--is-hidden" aria-hidden="true">
 				<div class="components-modal__frame wc-block-components-drawer">

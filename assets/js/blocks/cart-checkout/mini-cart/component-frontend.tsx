@@ -123,13 +123,6 @@ const renderMiniCartFrontend = () => {
 			innerButton.focus();
 		}
 	}
-
-	// Remove is-loading class.
-	document
-		.querySelectorAll( '.wc-block-mini-cart' )
-		.forEach( ( miniCartEl ) => {
-			miniCartEl.classList.remove( 'wc-block-mini-cart--is-loading' );
-		} );
 };
 
 renderMiniCartFrontend();
