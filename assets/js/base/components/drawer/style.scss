@@ -34,6 +34,9 @@ $drawer-width: 480px;
 	transition: all 0.3s;
 }
 
+// We can't use transition for the slide-in animation because the element
+// doesn't exist in the DOM when not open. Instead, use an animation that
+// is triggered when the element is appended to the DOM.
 .wc-block-components-drawer--with-slide-in {
 	animation-duration: 0.3s;
 	animation-name: slidein;
