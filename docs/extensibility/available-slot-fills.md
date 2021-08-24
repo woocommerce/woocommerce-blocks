@@ -40,7 +40,7 @@ Checkout:
 - `components`: an object containing components you can use to render your own shipping rates, it contains `ShippingRatesControlPackage`.
 
 ## ExperimentalDiscountsMeta
-This slot renders below the `CouponCode` input 
+This slot renders below the `CouponCode` input. 
 
 Cart:
 <img alt="Cart showing ExperimentalDiscountsMeta location" src="https://user-images.githubusercontent.com/5656702/122774218-ea27a880-d2a0-11eb-9450-11f119567f26.png" />

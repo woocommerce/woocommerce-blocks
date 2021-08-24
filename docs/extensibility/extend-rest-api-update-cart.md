@@ -133,8 +133,7 @@ that will apply the redemption.
 
 Your extension adds these UI elements to the sidebar in the Cart and Checkout blocks using the [`DiscountsMeta`](./available-slot-fills.md) Slot.
 
-More information on how to use Slots is available in our [Slots and Fills documentation](./slot-fills.md), and thus we
-will not be demonstrating how to use them in _this_ document.
+More information on how to use Slots is available in our [Slots and Fills documentation](./slot-fills.md).
 
 Once implemented, the sidebar has a control added to it like this:
 
