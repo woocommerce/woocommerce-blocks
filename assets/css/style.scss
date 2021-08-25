@@ -293,27 +293,20 @@
 		z-index: 1;
 	}
 
-	// These styles adjust the font size of the filter block titles.
-	// @see https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/2630
 	.wp-block-woocommerce-active-filters h3,
 	.wp-block-woocommerce-price-filter h3,
 	.wp-block-woocommerce-attribute-filter h3 {
 		@include font-size(regular);
 	}
 
-	// These styles adjust the font size of the clear all link.
-	// @see https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/2630
 	.wc-block-active-filters .wc-block-active-filters__clear-all {
 		@include font-size(smaller);
 	}
 
-	// These styles adjust the font size of the filter add to cart buttons.
-	// @see https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/2630
 	.wc-block-grid__product-add-to-cart.wp-block-button .wp-block-button__link {
 		@include font-size(smaller);
 		padding: em($gap-smaller);
 	}
-
 
 	@media only screen and (min-width: 768px) {
 		.wc-block-grid__products .wc-block-grid__product-onsale {

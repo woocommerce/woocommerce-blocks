@@ -63,22 +63,16 @@
 
 .theme-twentytwenty {
 	.wp-block {
-		// These styles adjust the font size of the filter block titles.
-		// @see https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/2630
 		h2.wc-block-grid__product-title,
 		div[data-type$="-filter"] h3,
 		div[data-type$="-filters"] h3 {
 			@include font-size(large);
 		}
 
-		// These styles adjust the font size of the product price.
-		// @see https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/2630
 		.wc-block-grid__product-price {
 			@include font-size(regular);
 		}
 
-		// These styles adjust the font size of the add to cart buttons.
-		// @see https://github.com/woocommerce/woocommerce-gutenberg-products-block/issues/2630
 		.wc-block-grid__product-add-to-cart.wp-block-button {
 			.wp-block-button__link {
 				@include font-size(small);
