@@ -40,7 +40,7 @@ add_action('woocommerce_blocks_loaded', function() {
 
 and on the client side:
 ```typescript
-import { extensionCartUpdate } from '@woocommerce/blocks-checkout';
+const { extensionCartUpdate } = wc.blocksCheckout;
 
 extensionCartUpdate(
   {
