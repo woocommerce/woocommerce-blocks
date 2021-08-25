@@ -13,7 +13,6 @@ __webpack_public_path__ = WC_BLOCKS_BUILD_URL;
  * Internal dependencies
  */
 import './checkout-sample-block';
-import './checkout-newsletter-subscription-block'; // Register these blocks here so they load in editor and frontend contexts.
 
 registerBlockComponent( {
 	blockName: 'woocommerce/checkout-fields-block',
