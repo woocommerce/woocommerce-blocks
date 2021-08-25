@@ -56,7 +56,7 @@ describe( 'Product Image Block', () => {
 		test( 'should render an anchor with the product image', () => {
 			const component = render(
 				<ProductDataContextProvider product={ productWithImages }>
-					<Block showProductLink />
+					<Block showProductLink={ true } />
 				</ProductDataContextProvider>
 			);
 
@@ -80,7 +80,7 @@ describe( 'Product Image Block', () => {
 		test( 'should render an anchor with the placeholder image', () => {
 			const component = render(
 				<ProductDataContextProvider product={ productWithoutImages }>
-					<Block showProductLink />
+					<Block showProductLink={ true } />
 				</ProductDataContextProvider>
 			);
 
