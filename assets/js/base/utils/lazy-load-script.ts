@@ -42,8 +42,34 @@ const appendScript = ( attributes: appendScriptAttributesParam ): void => {
 	}
 	const scriptElement = document.createElement( 'script' );
 	for ( const attr in attributes ) {
+		// We could technically be iterating over inherited members here, so
+		// if this is the case we should skip it.
+		if ( ! attributes.hasOwnProperty( attr ) ) {
+			continue;
+		}
 		const key = attr as keyof appendScriptAttributesParam;
-		scriptElement[ key ] = attributes[ key ];
+
+		// Skip the keys that aren't strings, because TS can't be sure which
+		// key in the scriptElement object we're assigning to.
+		if ( key === 'onload' || key === 'onerror' ) {
+			continue;
+		}
+
+		// This assignment stops TS complaining about the value maybe being
+		// undefined following the isString check below.
+		const value = attributes[ key ];
+		if ( isString( value ) ) {
+			scriptElement[ key ] = value;
+		}
+	}
+
+	// Now we've assigned all the strings, we can explicitly assign to the
+	// function keys.
+	if ( typeof attributes.onload === 'function' ) {
+		scriptElement.onload = attributes.onload;
+	}
+	if ( typeof attributes.onerror === 'function' ) {
+		scriptElement.onerror = attributes.onerror;
 	}
 	document.body.appendChild( scriptElement );
 };
