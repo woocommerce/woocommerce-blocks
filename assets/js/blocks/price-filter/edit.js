@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import classNames from 'classnames';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import {
@@ -155,9 +156,15 @@ export default function ( { attributes, setAttributes } ) {
 			{ blocksConfig.productCount === 0 ? (
 				noProductsPlaceholder()
 			) : (
-				<div className={ className }>
+				<div
+					className={ classNames(
+						'wc-block-price-filter__fragment',
+						className
+					) }
+				>
 					{ getInspectorControls() }
 					<BlockTitle
+						className="wc-block-price-filter__title"
 						headingLevel={ headingLevel }
 						heading={ heading }
 						onChange={ ( value ) =>

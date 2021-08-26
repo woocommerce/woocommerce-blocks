@@ -64,12 +64,16 @@
 .theme-twentytwenty {
 	.wp-block {
 		h2.wc-block-grid__product-title,
-		div[data-type$="-filter"] h3,
-		div[data-type$="-filters"] h3 {
+		.wc-block-active-filter__fragment h3,
+		.wc-block-attribute-filter__fragment h3,
+		.wc-block-price-filter__fragment h3 {
 			@include font-size(large);
 		}
 
-		.wc-block-grid__product-price {
+		.wc-block-grid__product-price,
+		.wc-block-active-filter__title,
+		.wc-block-attribute-filter__title,
+		.wc-block-price-filter__title {
 			@include font-size(regular);
 		}
 
