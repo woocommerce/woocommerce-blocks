@@ -33,12 +33,14 @@ export function registerBlockComponent( options ) {
 	assertOption( options, 'blockName', 'string' );
 	assertBlockComponent( options, 'component' );
 
-	const { context, blockName, component } = options;
+	const { context, blockName, component, force = false } = options;
 
 	if ( ! registeredBlockComponents[ context ] ) {
 		registeredBlockComponents[ context ] = {};
 	}
 
+	// We attach the force attribute to the component.
+	component.force = force;
 	registeredBlockComponents[ context ][ blockName ] = component;
 }
 
