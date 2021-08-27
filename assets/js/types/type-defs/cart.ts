@@ -172,6 +172,7 @@ export interface CartErrorItem {
 export interface Cart {
 	coupons: Array< CartCouponItem >;
 	shippingRates: Array< CartShippingRate >;
+	packageItemCounts: Array< number >;
 	shippingAddress: CartShippingAddress;
 	billingAddress: CartBillingAddress;
 	items: Array< CartItem >;

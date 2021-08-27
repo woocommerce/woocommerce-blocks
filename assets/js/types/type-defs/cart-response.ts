@@ -192,6 +192,7 @@ export interface CartResponseExtensionItem {
 export interface CartResponse {
 	coupons: Array< CartResponseCouponItem >;
 	shipping_rates: Array< CartResponseShippingRate >;
+	package_item_counts: Array< number >;
 	shipping_address: CartResponseShippingAddress;
 	billing_address: CartResponseBillingAddress;
 	items: Array< CartResponseItem >;
