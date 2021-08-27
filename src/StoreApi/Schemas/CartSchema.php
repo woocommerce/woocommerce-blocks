@@ -394,7 +394,7 @@ class CartSchema extends AbstractSchema {
 	}
 
 	/**
-	 * Get packages and the number of items in each
+	 * Get number of items in each package.
 	 *
 	 * @param \WC_Cart $cart Cart class instance.
 	 * @return array
