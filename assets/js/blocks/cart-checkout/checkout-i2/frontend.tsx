@@ -4,10 +4,7 @@
 import { Children, cloneElement, isValidElement } from '@wordpress/element';
 import { getValidBlockAttributes } from '@woocommerce/base-utils';
 import { useStoreCart } from '@woocommerce/base-context';
-import {
-	useCheckoutSubmit,
-	useCheckoutExtensionData,
-} from '@woocommerce/base-context/hooks';
+import { useCheckoutExtensionData } from '@woocommerce/base-context/hooks';
 import { getRegisteredBlockComponents } from '@woocommerce/blocks-registry';
 import {
 	withStoreCartApiHydration,
@@ -40,7 +37,6 @@ const Wrapper = ( {
 	// we need to pluck out receiveCart.
 	// eslint-disable-next-line no-unused-vars
 	const { extensions, receiveCart, ...cart } = useStoreCart();
-	const checkoutSubmitData = useCheckoutSubmit();
 	const checkoutExtensionData = useCheckoutExtensionData();
 
 	return Children.map( children, ( child ) => {
@@ -48,7 +44,6 @@ const Wrapper = ( {
 			const componentProps = {
 				extensions,
 				cart,
-				checkoutSubmitData,
 				checkoutExtensionData,
 			};
 			return cloneElement( child, componentProps );
