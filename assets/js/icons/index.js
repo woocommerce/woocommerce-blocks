@@ -22,6 +22,7 @@ export { default as done } from './library/done';
 export { default as discussion } from './library/discussion';
 export { default as exclamation } from './library/exclamation';
 export { default as external } from './library/external';
+export { default as fields } from './library/fields';
 export { default as folderStarred } from './library/folder-starred';
 export { default as folder } from './library/folder';
 export { default as formStep } from './library/form-step';
