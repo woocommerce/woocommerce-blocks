@@ -12,14 +12,17 @@ import {
 	assertValidElementOrString,
 } from './assertions';
 
-import { canMakePaymentWithFeaturesCheck } from './payment-method-config-helper';
+import {
+	canMakePaymentWithFeaturesCheck,
+	canMakePaymentWithExtensions,
+} from './payment-method-config-helper';
 
 const NullComponent = () => {
 	return null;
 };
 
 export default class PaymentMethodConfig {
-	constructor( config ) {
+	constructor( config, extensionsConfig ) {
 		// validate config
 		PaymentMethodConfig.assertValidConfig( config );
 		this.name = config.name;
@@ -43,6 +46,15 @@ export default class PaymentMethodConfig {
 			config.canMakePayment,
 			this.supports.features
 		);
+
+		this.canMakePayment =
+			extensionsConfig.canMakePayment &&
+			extensionsConfig.canMakePayment[ this.paymentMethodId ]
+				? canMakePaymentWithExtensions(
+						this.canMakePayment,
+						extensionsConfig.canMakePayment[ this.paymentMethodId ]
+				  )
+				: this.canMakePayment;
 	}
 
 	static assertValidConfig = ( config ) => {
