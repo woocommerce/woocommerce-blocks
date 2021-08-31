@@ -30,19 +30,19 @@ class CartShippingRateSchema extends AbstractSchema {
 	 */
 	public function get_properties() {
 		return [
-			'package_id'     => [
+			'package_id'       => [
 				'description' => __( 'The ID of the package the shipping rates belong to.', 'woo-gutenberg-products-block' ),
 				'type'        => [ 'integer', 'string' ],
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'name'           => [
+			'name'             => [
 				'description' => __( 'Name of the package.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'destination'    => [
+			'destination'      => [
 				'description' => __( 'Shipping destination address.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
 				'context'     => [ 'view', 'edit' ],
@@ -86,7 +86,7 @@ class CartShippingRateSchema extends AbstractSchema {
 					],
 				],
 			],
-			'items'          => [
+			'items'            => [
 				'description' => __( 'List of cart items the returned shipping rates apply to.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
@@ -115,7 +115,13 @@ class CartShippingRateSchema extends AbstractSchema {
 					],
 				],
 			],
-			'shipping_rates' => [
+			'total_item_count' => [
+				'description' => __( 'Total number of items in this package.', 'woo-gutenberg-products-block' ),
+				'type'        => 'integer',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+			],
+			'shipping_rates'   => [
 				'description' => __( 'List of shipping rates.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
@@ -225,12 +231,29 @@ class CartShippingRateSchema extends AbstractSchema {
 	 */
 	public function get_item_response( $package ) {
 		return [
-			'package_id'     => $package['package_id'],
-			'name'           => $package['package_name'],
-			'destination'    => $this->prepare_package_destination_response( $package ),
-			'items'          => $this->prepare_package_items_response( $package ),
-			'shipping_rates' => $this->prepare_package_shipping_rates_response( $package ),
+			'package_id'       => $package['package_id'],
+			'name'             => $package['package_name'],
+			'destination'      => $this->prepare_package_destination_response( $package ),
+			'items'            => $this->prepare_package_items_response( $package ),
+			'total_item_count' => $this->prepare_total_item_count( $package ),
+			'shipping_rates'   => $this->prepare_package_shipping_rates_response( $package ),
 		];
+	}
+
+	/**
+	 * Get number of items in the shipping package.
+	 *
+	 * @param array $package Shipping package complete with rates from WooCommerce.
+	 * @return integer
+	 */
+	protected function prepare_total_item_count( $package ) {
+		return array_reduce(
+			$package['contents'],
+			function( $acc, $item ) {
+				return $acc + $item['quantity'];
+			},
+			0
+		);
 	}
 
 	/**
