@@ -47,8 +47,10 @@ const MiniCartBlock = ( { isPlaceholderOpen = false } ): JSX.Element => {
 			<button
 				className="wc-block-mini-cart__button"
 				onClick={ () => {
-					setIsOpen( true );
-					setSkipSlideIn( false );
+					if ( ! isOpen ) {
+						setIsOpen( true );
+						setSkipSlideIn( false );
+					}
 				} }
 			>
 				{ sprintf(
