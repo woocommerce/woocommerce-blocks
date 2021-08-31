@@ -39,14 +39,13 @@ const Drawer = ( {
 			title={ title }
 			focusOnMount={ true }
 			onRequestClose={ onClose }
-			className={ classNames( 'wc-block-components-drawer', {
-				'wc-block-components-drawer--with-slide-in': slideIn,
-				'wc-block-components-drawer--with-slide-out': slideOut,
-			} ) }
+			className="wc-block-components-drawer"
 			overlayClassName={ classNames(
 				'wc-block-components-drawer__screen-overlay',
 				{
 					'wc-block-components-drawer__screen-overlay--is-hidden': ! isOpen,
+					'wc-block-components-drawer__screen-overlay--with-slide-in': slideIn,
+					'wc-block-components-drawer__screen-overlay--with-slide-out': slideOut,
 				}
 			) }
 		>

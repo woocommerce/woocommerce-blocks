@@ -56,23 +56,16 @@ window.onload = () => {
 		const miniCartDrawerPlaceholderOverlay = miniCartBlock.querySelector(
 			'.wc-block-components-drawer__screen-overlay'
 		);
-		const miniCartDrawerPlaceholder = miniCartBlock.querySelector(
-			'.wc-block-components-drawer'
-		);
 
-		if (
-			! miniCartButton ||
-			! miniCartDrawerPlaceholderOverlay ||
-			! miniCartDrawerPlaceholder
-		) {
+		if ( ! miniCartButton || ! miniCartDrawerPlaceholderOverlay ) {
 			// Markup is not correct, abort.
 			return;
 		}
 
 		const showContents = () => {
 			miniCartBlock.dataset.isPlaceholderOpen = 'true';
-			miniCartDrawerPlaceholder.classList.add(
-				'wc-block-components-drawer--with-slide-in'
+			miniCartDrawerPlaceholderOverlay.classList.add(
+				'wc-block-components-drawer__screen-overlay--with-slide-in'
 			);
 			miniCartDrawerPlaceholderOverlay.classList.remove(
 				'wc-block-components-drawer__screen-overlay--is-hidden'
