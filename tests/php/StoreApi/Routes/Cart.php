@@ -74,6 +74,7 @@ class Cart extends ControllerTestCase {
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 3, $data['items_count'] );
+		$this->assertEquals( [ 3 ], $data['package_item_counts'] );
 		$this->assertEquals( 2, count( $data['items'] ) );
 		$this->assertEquals( true, $data['needs_payment'] );
 		$this->assertEquals( true, $data['needs_shipping'] );
