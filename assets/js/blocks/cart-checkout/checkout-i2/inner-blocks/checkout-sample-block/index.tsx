@@ -26,7 +26,6 @@ registerCheckoutBlock( 'woocommerce/checkout-sample-block', {
 		'contactInformation',
 		'fields',
 	],
-	force: true,
 	configuration: {
 		title: __( 'Sample Block', 'woo-gutenberg-products-block' ),
 		category: 'woocommerce',

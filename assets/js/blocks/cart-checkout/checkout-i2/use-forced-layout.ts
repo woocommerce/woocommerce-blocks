@@ -22,7 +22,7 @@ export const useForcedLayout = ( {
 }: {
 	clientId: string;
 	template: Array< string >;
-} ): void => {
+} ): Array< string > => {
 	const currentTemplate = useRef( template );
 	const { insertBlock } = useDispatch( 'core/block-editor' );
 	const { innerBlocks, templateTypes } = useSelect(
@@ -60,4 +60,6 @@ export const useForcedLayout = ( {
 			}
 		} );
 	}, [ clientId, innerBlocks, insertBlock, templateTypes ] );
+
+	return currentTemplate.current;
 };

@@ -6,7 +6,6 @@ import {
 	RegisteredBlocks,
 	getRegisteredBlocks,
 } from '@woocommerce/blocks-checkout';
-import { useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -21,12 +20,9 @@ export const AdditionalFields = ( {
 } ): JSX.Element => {
 	const registeredBlocks = getRegisteredBlocks( area );
 	const { 'data-block': clientId } = useBlockProps();
-	const { current: template = [] } = useRef< Array< string > >( [
-		...registeredBlocks,
-	] );
-	useForcedLayout( {
+	const template = useForcedLayout( {
 		clientId,
-		template,
+		template: registeredBlocks,
 	} );
 	return (
 		<div className="wc-block-checkout__additional_fields">
