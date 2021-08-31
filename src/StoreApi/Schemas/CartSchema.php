@@ -136,16 +136,6 @@ class CartSchema extends AbstractSchema {
 					'properties' => $this->force_schema_readonly( $this->shipping_rate_schema->get_properties() ),
 				],
 			],
-			'package_item_counts'     => [
-				'description' => __( 'Array of packages and the number of items in each one.', 'woo-gutenberg-products-block' ),
-				'type'        => 'array',
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
-				'items'       => [
-					'type'       => 'object',
-					'properties' => $this->force_schema_readonly( $this->shipping_rate_schema->get_properties() ),
-				],
-			],
 			'shipping_address'        => [
 				'description' => __( 'Current set shipping address for the customer.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
@@ -359,7 +349,6 @@ class CartSchema extends AbstractSchema {
 		return [
 			'coupons'                 => $this->get_item_responses_from_schema( $this->coupon_schema, $cart->get_applied_coupons() ),
 			'shipping_rates'          => $this->get_item_responses_from_schema( $this->shipping_rate_schema, $shipping_packages ),
-			'package_item_counts'     => $this->get_package_item_counts( $cart ),
 			'shipping_address'        => $this->shipping_address_schema->get_item_response( wc()->customer ),
 			'billing_address'         => $this->billing_address_schema->get_item_response( wc()->customer ),
 			'items'                   => $this->get_item_responses_from_schema( $this->item_schema, $cart->get_cart() ),
@@ -391,29 +380,6 @@ class CartSchema extends AbstractSchema {
 			'generated_timestamp'     => time(),
 			self::EXTENDING_KEY       => $this->get_extended_data( self::IDENTIFIER ),
 		];
-	}
-
-	/**
-	 * Get number of items in each package.
-	 *
-	 * @param \WC_Cart $cart Cart class instance.
-	 * @return array
-	 */
-	protected function get_package_item_counts( $cart ) {
-		$packages = $cart->get_shipping_packages();
-		return array_map(
-			function( $package ) {
-				$contents = $package['contents'];
-				return array_reduce(
-					$contents,
-					function( $acc, $item ) {
-						return $acc + $item['quantity'];
-					},
-					0
-				);
-			},
-			$packages
-		);
 	}
 
 	/**
