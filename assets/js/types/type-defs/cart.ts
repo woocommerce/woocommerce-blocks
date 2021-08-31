@@ -60,6 +60,7 @@ export interface CartShippingRate {
 	name: string;
 	destination: BaseAddress;
 	items: Array< ShippingRateItem >;
+	total_item_count: number;
 	shipping_rates: Array< CartShippingPackageShippingRate >;
 }
 
@@ -172,7 +173,6 @@ export interface CartErrorItem {
 export interface Cart {
 	coupons: Array< CartCouponItem >;
 	shippingRates: Array< CartShippingRate >;
-	packageItemCounts: Array< number >;
 	shippingAddress: CartShippingAddress;
 	billingAddress: CartBillingAddress;
 	items: Array< CartItem >;

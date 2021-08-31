@@ -75,6 +75,7 @@ export interface CartResponseShippingRate {
 	name: string;
 	destination: ResponseBaseAddress;
 	items: Array< ShippingRateItem >;
+	total_item_count: number;
 	shipping_rates: Array< CartResponseShippingPackageShippingRate >;
 }
 
@@ -192,7 +193,6 @@ export interface CartResponseExtensionItem {
 export interface CartResponse {
 	coupons: Array< CartResponseCouponItem >;
 	shipping_rates: Array< CartResponseShippingRate >;
-	package_item_counts: Array< number >;
 	shipping_address: CartResponseShippingAddress;
 	billing_address: CartResponseBillingAddress;
 	items: Array< CartResponseItem >;
