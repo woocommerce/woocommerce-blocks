@@ -16,6 +16,7 @@ import { default as ExpressPaymentMethodConfig } from './express-payment-method-
 
 const paymentMethods = {};
 const expressPaymentMethods = {};
+const canMakePaymentExtensionsCallbacks = {};
 
 /**
  * Register a regular payment method.
@@ -35,7 +36,13 @@ export const registerPaymentMethod = ( options ) => {
 				'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3404',
 		} );
 	} else {
-		paymentMethodConfig = new PaymentMethodConfig( options );
+		const extensionsOptions = {
+			canMakePayment: canMakePaymentExtensionsCallbacks,
+		};
+		paymentMethodConfig = new PaymentMethodConfig(
+			options,
+			extensionsOptions
+		);
 	}
 	if ( paymentMethodConfig instanceof PaymentMethodConfig ) {
 		paymentMethods[ paymentMethodConfig.name ] = paymentMethodConfig;
@@ -65,6 +72,30 @@ export const registerExpressPaymentMethod = ( options ) => {
 	if ( paymentMethodConfig instanceof ExpressPaymentMethodConfig ) {
 		expressPaymentMethods[ paymentMethodConfig.name ] = paymentMethodConfig;
 	}
+};
+
+/**
+ * Registers a callback for a specific payment method to be called by....
+ *
+ * @param {string} paymentMethodName A unique string to identify the payment method client side.
+ * @param {function():any } callBack Callback to be called additonally...
+ */
+export const registerPaymentMethodCanPay = ( paymentMethodName, callBack ) => {
+	if ( typeof callBack !== 'function' ) {
+		throw new Error(
+			'Callback provided to registerPaymentMethodCanPay must be a function'
+		);
+	}
+
+	if (
+		! Array.isArray(
+			canMakePaymentExtensionsCallbacks[ paymentMethodName ]
+		)
+	) {
+		canMakePaymentExtensionsCallbacks[ paymentMethodName ] = [];
+	}
+
+	canMakePaymentExtensionsCallbacks[ paymentMethodName ].push( callBack );
 };
 
 export const __experimentalDeRegisterPaymentMethod = ( paymentMethodName ) => {
