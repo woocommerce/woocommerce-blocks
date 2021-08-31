@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { Icon, totals } from '@woocommerce/icons';
 import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
 
 /**
@@ -17,6 +18,10 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-order-summary-block', {
 		'Displays the order summary and totals.',
 		'woo-gutenberg-products-block'
 	),
+	icon: {
+		src: <Icon srcElement={ totals } />,
+		foreground: '#874FB9',
+	},
 	supports: {
 		align: false,
 		html: false,
