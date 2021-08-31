@@ -74,7 +74,6 @@ class Cart extends ControllerTestCase {
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 3, $data['items_count'] );
-		$this->assertEquals( [ 3 ], $data['package_item_counts'] );
 		$this->assertEquals( 2, count( $data['items'] ) );
 		$this->assertEquals( true, $data['needs_payment'] );
 		$this->assertEquals( true, $data['needs_shipping'] );
@@ -92,6 +91,9 @@ class Cart extends ControllerTestCase {
 		$this->assertEquals( '0', $data['totals']->total_shipping_tax );
 		$this->assertEquals( '0', $data['totals']->total_tax );
 		$this->assertEquals( '2900', $data['totals']->total_price );
+
+		// Check the shipping rate total item count.
+		$this->assertEquals( 3, $data['shipping_rates'][0]['total_item_count'] );
 	}
 
 	/**
