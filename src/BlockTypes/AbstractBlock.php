@@ -253,10 +253,10 @@ abstract class AbstractBlock {
 	/**
 	 * Get block attributes.
 	 *
-	 * @return array|null;
+	 * @return array;
 	 */
 	protected function get_block_type_attributes() {
-		return null;
+		return [];
 	}
 
 	/**
