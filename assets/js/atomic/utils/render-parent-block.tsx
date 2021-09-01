@@ -30,11 +30,12 @@ interface renderInnerBlockProps extends renderBlockProps {
 
 // Temporary block map for areas.
 const temporaryForcedBlockComponents = {
-	shippingAddress: [
+	'woocommerce/checkout-shipping-address-block': [
+		'woocommerce/checkout-sample-block',
 		'woocommerce/checkout-sample-block',
 		'woocommerce/checkout-sample-block',
 	],
-	totals: [
+	'woocommerce/checkout-totals-block': [
 		'woocommerce/checkout-sample-block',
 		'woocommerce/checkout-sample-block',
 	],
@@ -72,7 +73,7 @@ const getInnerBlockComponent = (
  * Appends forced blocks which are missing from the template.
  */
 const renderForcedBlocks = (
-	innerBlockArea: string,
+	blockName: string,
 	blockMap: Record< string, React.ReactNode >,
 	blockChildren: HTMLCollection | null
 ) => {
@@ -87,7 +88,7 @@ const renderForcedBlocks = (
 		: [];
 
 	const forcedBlocks = (
-		temporaryForcedBlockComponents[ innerBlockArea ] || []
+		temporaryForcedBlockComponents[ blockName ] || []
 	).filter(
 		( forcedBlockName ) => ! currentBlocks.includes( forcedBlockName )
 	);
@@ -99,9 +100,7 @@ const renderForcedBlocks = (
 				blockMap
 			);
 			return ForcedComponent ? (
-				<ForcedComponent
-					key={ `${ innerBlockArea }_forced_${ index }` }
-				/>
+				<ForcedComponent key={ `${ blockName }_forced_${ index }` } />
 			) : null;
 		}
 	);
@@ -123,7 +122,7 @@ const renderInnerBlocks = ( {
 		return null;
 	}
 	return Array.from( children ).map( ( element: Element, index: number ) => {
-		const { blockName = '', innerBlockArea = '', ...componentProps } = {
+		const { blockName = '', ...componentProps } = {
 			key: `${ parentBlockName }_${ depth }_${ index }`,
 			...( element instanceof HTMLElement ? element.dataset : {} ),
 		};
@@ -152,12 +151,11 @@ const renderInnerBlocks = ( {
 							depth: depth + 1,
 							blockWrapper,
 						} ) }
-						{ innerBlockArea &&
-							renderForcedBlocks(
-								innerBlockArea,
-								blockMap,
-								element.children
-							) }
+						{ renderForcedBlocks(
+							blockName,
+							blockMap,
+							element.children
+						) }
 					</InnerBlockComponent>
 				</InnerBlockComponentWrapper>
 			</Suspense>
