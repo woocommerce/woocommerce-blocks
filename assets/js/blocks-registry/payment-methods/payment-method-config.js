@@ -16,13 +16,13 @@ import {
 	canMakePaymentWithFeaturesCheck,
 	canMakePaymentWithExtensions,
 } from './payment-method-config-helper';
-
+import { extensionsConfig } from './can-make-payment-extensions';
 const NullComponent = () => {
 	return null;
 };
 
 export default class PaymentMethodConfig {
-	constructor( config, extensionsConfig ) {
+	constructor( config ) {
 		// validate config
 		PaymentMethodConfig.assertValidConfig( config );
 		this.name = config.name;
@@ -42,19 +42,22 @@ export default class PaymentMethodConfig {
 			showSaveOption: config?.supports?.showSaveOption || false,
 			features: config?.supports?.features || [ 'products' ],
 		};
-		this.canMakePayment = canMakePaymentWithFeaturesCheck(
-			config.canMakePayment,
+		this.canMakePaymentFromConfig = config.canMakePayment;
+	}
+
+	get canMakePayment() {
+		const canPay = canMakePaymentWithFeaturesCheck(
+			this.canMakePaymentFromConfig,
 			this.supports.features
 		);
 
-		this.canMakePayment =
-			extensionsConfig.canMakePayment &&
-			extensionsConfig.canMakePayment[ this.paymentMethodId ]
-				? canMakePaymentWithExtensions(
-						this.canMakePayment,
-						extensionsConfig.canMakePayment[ this.paymentMethodId ]
-				  )
-				: this.canMakePayment;
+		return extensionsConfig.canMakePayment[ this.name ] &&
+			extensionsConfig.canMakePayment[ this.name ].length
+			? canMakePaymentWithExtensions(
+					canPay,
+					extensionsConfig.canMakePayment[ this.name ]
+			  )
+			: canPay;
 	}
 
 	static assertValidConfig = ( config ) => {

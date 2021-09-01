@@ -13,10 +13,9 @@ import deprecated from '@wordpress/deprecated';
  */
 import { default as PaymentMethodConfig } from './payment-method-config';
 import { default as ExpressPaymentMethodConfig } from './express-payment-method-config';
-
+import { canMakePaymentExtensionsCallbacks } from './can-make-payment-extensions';
 const paymentMethods = {};
 const expressPaymentMethods = {};
-const canMakePaymentExtensionsCallbacks = {};
 
 /**
  * Register a regular payment method.
@@ -36,13 +35,7 @@ export const registerPaymentMethod = ( options ) => {
 				'https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3404',
 		} );
 	} else {
-		const extensionsOptions = {
-			canMakePayment: canMakePaymentExtensionsCallbacks,
-		};
-		paymentMethodConfig = new PaymentMethodConfig(
-			options,
-			extensionsOptions
-		);
+		paymentMethodConfig = new PaymentMethodConfig( options );
 	}
 	if ( paymentMethodConfig instanceof PaymentMethodConfig ) {
 		paymentMethods[ paymentMethodConfig.name ] = paymentMethodConfig;
@@ -75,10 +68,10 @@ export const registerExpressPaymentMethod = ( options ) => {
 };
 
 /**
- * Registers a callback for a specific payment method to be called by....
+ * Registers a callback for a specific payment method to determine if it can make payments
  *
  * @param {string} paymentMethodName A unique string to identify the payment method client side.
- * @param {function():any } callBack Callback to be called additonally...
+ * @param {function():any } callBack Callback defined by extensions to determine if the payment method is supported.
  */
 export const registerPaymentMethodCanPay = ( paymentMethodName, callBack ) => {
 	if ( typeof callBack !== 'function' ) {
