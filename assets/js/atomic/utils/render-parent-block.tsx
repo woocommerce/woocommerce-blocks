@@ -16,7 +16,7 @@ interface renderBlockProps {
 	// Map of block names to block components for children.
 	blockMap: Record< string, React.ReactNode >;
 	// Wrapper for inner components.
-	blockWrapper?: React.ReactNode;
+	blockWrapper?: React.ElementType;
 }
 
 interface renderParentBlockProps extends renderBlockProps {
@@ -33,8 +33,56 @@ interface renderInnerBlockProps extends renderBlockProps {
 	depth?: number;
 }
 
+// Temporary block map for areas.
+const temporaryForcedBlockComponents = {
+	'woocommerce/checkout-fields-block': [
+		'woocommerce/checkout-sample-block',
+		'woocommerce/checkout-sample-block',
+		'woocommerce/checkout-sample-block',
+	],
+	'woocommerce/checkout-totals-block': [
+		'woocommerce/checkout-sample-block',
+		'woocommerce/checkout-sample-block',
+	],
+} as Record< string, string[] >;
+
+const getInnerBlockComponent = (
+	blockName: string,
+	blockMap: Record< string, React.ReactNode >
+): React.ElementType | null => {
+	return blockName && blockMap[ blockName ]
+		? ( blockMap[ blockName ] as React.ElementType )
+		: null;
+};
+
+const getMissingForcedBlocks = (
+	blockName: string,
+	blockMap: Record< string, React.ReactNode >,
+	currentBlocks: string[]
+) => {
+	const forcedBlocks = (
+		temporaryForcedBlockComponents[ blockName ] || []
+	).filter(
+		( forcedBlockName ) => ! currentBlocks.includes( forcedBlockName )
+	);
+
+	return forcedBlocks.map(
+		( forcedBlockName: string, index: number ): JSX.Element | null => {
+			const ForcedComponent = getInnerBlockComponent(
+				forcedBlockName,
+				blockMap
+			);
+			return ForcedComponent ? (
+				<ForcedComponent key={ `${ blockName }_forced_${ index }` } />
+			) : null;
+		}
+	);
+};
+
 /**
  * Replaces saved block HTML markup with Inner Block Components.
+ *
+ * This is called on the main parent block (e.g. woocommerce/checkout) and then works it's way through in the hierarchy.
  */
 const renderInnerBlocks = ( {
 	blockName: parentBlockName,
@@ -43,53 +91,68 @@ const renderInnerBlocks = ( {
 	depth = 1,
 	children,
 }: renderInnerBlockProps ): ( JSX.Element | null )[] | null => {
-	return Array.from( children ).map( ( el: Element, index: number ) => {
+	const innerBlockNames = Array.from( children )
+		.map( ( element: Element ) =>
+			element instanceof HTMLElement
+				? element?.dataset.blockName || null
+				: null
+		)
+		.filter( Boolean ) as string[];
+
+	return Array.from( children ).map( ( element: Element, index: number ) => {
 		const { blockName = '', ...componentProps } = {
 			key: `${ parentBlockName }_${ depth }_${ index }`,
-			...( el instanceof HTMLElement ? el.dataset : {} ),
+			...( element instanceof HTMLElement ? element.dataset : {} ),
 		};
 
-		const componentChildren =
-			el.children && el.children.length
+		const innerBlockChildren =
+			element.children && element.children.length
 				? renderInnerBlocks( {
-						children: el.children,
+						children: element.children,
 						blockName: parentBlockName,
 						blockMap,
 						depth: depth + 1,
 						blockWrapper,
 				  } )
+				: undefined;
+
+		const InnerBlockComponent = getInnerBlockComponent(
+			blockName,
+			blockMap
+		);
+
+		// If there is no inner block component to render, just return the children.
+		if ( ! InnerBlockComponent ) {
+			const elementOuterHtml = parse( element.outerHTML );
+
+			return isValidElement( elementOuterHtml )
+				? cloneElement(
+						elementOuterHtml,
+						componentProps,
+						innerBlockChildren
+				  )
 				: null;
-
-		const LayoutComponent =
-			blockName && blockMap[ blockName ]
-				? ( blockMap[ blockName ] as React.ElementType )
-				: null;
-
-		if ( ! LayoutComponent ) {
-			const element = parse( el.outerHTML );
-
-			if ( isValidElement( element ) ) {
-				return componentChildren
-					? cloneElement( element, componentProps, componentChildren )
-					: cloneElement( element, componentProps );
-			}
-			return null;
 		}
 
-		const LayoutComponentWrapper = ( blockWrapper
+		const InnerBlockComponentWrapper = blockWrapper
 			? blockWrapper
-			: Fragment ) as React.ElementType;
+			: Fragment;
 
 		return (
 			<Suspense
 				key={ `${ parentBlockName }_${ depth }_${ index }_suspense` }
 				fallback={ <div className="wc-block-placeholder" /> }
 			>
-				<LayoutComponentWrapper>
-					<LayoutComponent { ...componentProps }>
-						{ componentChildren }
-					</LayoutComponent>
-				</LayoutComponentWrapper>
+				<InnerBlockComponentWrapper>
+					<InnerBlockComponent { ...componentProps }>
+						{ innerBlockChildren }
+						{ getMissingForcedBlocks(
+							blockName,
+							blockMap,
+							innerBlockNames
+						) }
+					</InnerBlockComponent>
+				</InnerBlockComponentWrapper>
 			</Suspense>
 		);
 	} );
@@ -106,17 +169,17 @@ export const renderParentBlock = ( {
 	blockMap,
 	blockWrapper,
 }: renderParentBlockProps ): void => {
-	const getPropsWithChildren = ( el: Element, i: number ) => {
+	const getPropsWithChildren = ( element: Element, i: number ) => {
 		const children =
-			el.children && el.children.length
+			element.children && element.children.length
 				? renderInnerBlocks( {
 						blockName,
 						blockMap,
-						children: el.children,
+						children: element.children,
 						blockWrapper,
 				  } )
 				: null;
-		return { ...getProps( el, i ), children };
+		return { ...getProps( element, i ), children };
 	};
 	renderFrontend( {
 		Block,
