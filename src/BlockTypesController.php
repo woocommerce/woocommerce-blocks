@@ -2,7 +2,6 @@
 namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\BlockTypes\AtomicBlock;
-use Automattic\WooCommerce\Blocks\BlockTypes\CheckoutInnerBlock;
 use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
@@ -65,21 +64,6 @@ final class BlockTypesController {
 		foreach ( self::get_atomic_blocks() as $block_type ) {
 			$block_type_instance = new AtomicBlock( $this->asset_api, $this->asset_data_registry, new IntegrationRegistry(), $block_type );
 		}
-
-		// Register inner blocks for checkout.
-		new CheckoutInnerBlock( $this->asset_api, $this->asset_data_registry, new IntegrationRegistry(), 'checkout-fields-block', 'fields' );
-		new CheckoutInnerBlock( $this->asset_api, $this->asset_data_registry, new IntegrationRegistry(), 'checkout-totals-block', 'totals' );
-		new CheckoutInnerBlock( $this->asset_api, $this->asset_data_registry, new IntegrationRegistry(), 'checkout-billing-address-block', 'billingAddress' );
-		new CheckoutInnerBlock( $this->asset_api, $this->asset_data_registry, new IntegrationRegistry(), 'checkout-actions-block', '' );
-		new CheckoutInnerBlock( $this->asset_api, $this->asset_data_registry, new IntegrationRegistry(), 'checkout-contact-information-block', 'contactInformation' );
-		new CheckoutInnerBlock( $this->asset_api, $this->asset_data_registry, new IntegrationRegistry(), 'checkout-order-note-block', '' );
-		new CheckoutInnerBlock( $this->asset_api, $this->asset_data_registry, new IntegrationRegistry(), 'checkout-order-summary-block', '' );
-		new CheckoutInnerBlock( $this->asset_api, $this->asset_data_registry, new IntegrationRegistry(), 'checkout-payment-block', 'paymentMethods' );
-		new CheckoutInnerBlock( $this->asset_api, $this->asset_data_registry, new IntegrationRegistry(), 'checkout-shipping-address-block', 'shippingAddress' );
-		new CheckoutInnerBlock( $this->asset_api, $this->asset_data_registry, new IntegrationRegistry(), 'checkout-shipping-methods-block', 'shippingMethods' );
-		new CheckoutInnerBlock( $this->asset_api, $this->asset_data_registry, new IntegrationRegistry(), 'checkout-express-payment-block', '' );
-		new CheckoutInnerBlock( $this->asset_api, $this->asset_data_registry, new IntegrationRegistry(), 'checkout-terms-block', '' );
-		new CheckoutInnerBlock( $this->asset_api, $this->asset_data_registry, new IntegrationRegistry(), 'checkout-sample-block', '' );
 	}
 
 	/**
@@ -187,6 +171,19 @@ final class BlockTypesController {
 			'product-tag-list',
 			'product-stock-indicator',
 			'product-add-to-cart',
+			'checkout-fields-block',
+			'checkout-totals-block',
+			'checkout-billing-address-block',
+			'checkout-actions-block',
+			'checkout-contact-information-block',
+			'checkout-order-note-block',
+			'checkout-order-summary-block',
+			'checkout-payment-block',
+			'checkout-shipping-address-block',
+			'checkout-shipping-methods-block',
+			'checkout-express-payment-block',
+			'checkout-terms-block',
+			'checkout-sample-block',
 		];
 	}
 }

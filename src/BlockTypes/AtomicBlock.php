@@ -63,8 +63,7 @@ class AtomicBlock extends AbstractBlock {
 	 * @return string Rendered HTML attributes.
 	 */
 	protected function get_html_data_attributes( array $attributes ) {
-		$data  = parent::get_html_data_attributes( $attributes );
-		$data .= ' data-block-name="' . esc_attr( $this->namespace . '/' . $this->block_name ) . '"';
-		return $data;
+		$data = parent::get_html_data_attributes( $attributes );
+		return trim( $data . ' data-block-name="' . esc_attr( $this->namespace . '/' . $this->block_name ) . '"' );
 	}
 }
