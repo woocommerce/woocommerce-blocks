@@ -4,6 +4,10 @@
 import { renderFrontend } from '@woocommerce/base-utils';
 import { Fragment, Suspense, isValidElement } from '@wordpress/element';
 import parse from 'html-react-parser';
+import {
+	getRegisteredForcedComponents,
+	isInnerBlockArea,
+} from '@woocommerce/blocks-checkout';
 
 interface renderBlockProps {
 	// Parent Block Name. Used for inner block component mapping.
@@ -27,19 +31,6 @@ interface renderInnerBlockProps extends renderBlockProps {
 	children: HTMLCollection;
 	depth?: number;
 }
-
-// Temporary block map for areas.
-const temporaryForcedBlockComponents = {
-	'woocommerce/checkout-shipping-address-block': [
-		'woocommerce/checkout-sample-block',
-		'woocommerce/checkout-sample-block',
-		'woocommerce/checkout-sample-block',
-	],
-	'woocommerce/checkout-totals-block': [
-		'woocommerce/checkout-sample-block',
-		'woocommerce/checkout-sample-block',
-	],
-} as Record< string, string[] >;
 
 const getInnerBlockComponent = (
 	blockName: string,
@@ -77,6 +68,10 @@ const renderForcedBlocks = (
 	blockMap: Record< string, React.ReactNode >,
 	blockChildren: HTMLCollection | null
 ) => {
+	if ( ! isInnerBlockArea( blockName ) ) {
+		return null;
+	}
+
 	const currentBlocks = blockChildren
 		? ( Array.from( blockChildren )
 				.map( ( element: Element ) =>
@@ -87,9 +82,7 @@ const renderForcedBlocks = (
 				.filter( Boolean ) as string[] )
 		: [];
 
-	const forcedBlocks = (
-		temporaryForcedBlockComponents[ blockName ] || []
-	).filter(
+	const forcedBlocks = getRegisteredForcedComponents( blockName ).filter(
 		( forcedBlockName ) => ! currentBlocks.includes( forcedBlockName )
 	);
 

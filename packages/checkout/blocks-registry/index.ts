@@ -7,27 +7,43 @@ import { registerExperimentalBlockType } from '@woocommerce/block-settings';
 import type { LazyExoticComponent } from 'react';
 import { isObject } from '@woocommerce/types';
 
+export enum InnerBlockAreas {
+	CHECKOUT_FIELDS = 'woocommerce/checkout-fields-block',
+	CHECKOUT_TOTALS = 'woocommerce/checkout-totals-block',
+	CONTACT_INFORMATION = 'woocommerce/checkout-contact-information-block',
+	SHIPPING_ADDRESS = 'woocommerce/checkout-shipping-address-block',
+	BILLING_ADDRESS = 'woocommerce/checkout-billing-address-block',
+	SHIPPING_METHODS = 'woocommerce/checkout-shipping-methods-block',
+	PAYMENT_METHODS = 'woocommerce/checkout-payment-methods-block',
+}
+
 /**
  * List of block areas where blocks can be registered for use. Keyed by area name.
  */
-export type RegisteredBlocks = {
-	fields: Array< string >;
-	totals: Array< string >;
-	contactInformation: Array< string >;
-	shippingAddress: Array< string >;
-	billingAddress: Array< string >;
-	shippingMethods: Array< string >;
-	paymentMethods: Array< string >;
-};
+export type RegisteredBlocks = Record< InnerBlockAreas, Array< string > >;
+export type RegisteredForcedComponents = Record<
+	InnerBlockAreas,
+	Array< string >
+>;
 
 let registeredBlocks: RegisteredBlocks = {
-	fields: [],
-	totals: [],
-	contactInformation: [ 'core/paragraph' ],
-	shippingAddress: [ 'core/paragraph' ],
-	billingAddress: [ 'core/paragraph' ],
-	shippingMethods: [ 'core/paragraph' ],
-	paymentMethods: [ 'core/paragraph' ],
+	'woocommerce/checkout-fields-block': [],
+	'woocommerce/checkout-totals-block': [],
+	'woocommerce/checkout-contact-information-block': [ 'core/paragraph' ],
+	'woocommerce/checkout-shipping-address-block': [ 'core/paragraph' ],
+	'woocommerce/checkout-billing-address-block': [ 'core/paragraph' ],
+	'woocommerce/checkout-shipping-methods-block': [ 'core/paragraph' ],
+	'woocommerce/checkout-payment-methods-block': [ 'core/paragraph' ],
+};
+
+let registeredForcedComponents: RegisteredForcedComponents = {
+	'woocommerce/checkout-fields-block': [],
+	'woocommerce/checkout-totals-block': [],
+	'woocommerce/checkout-contact-information-block': [],
+	'woocommerce/checkout-shipping-address-block': [],
+	'woocommerce/checkout-billing-address-block': [],
+	'woocommerce/checkout-shipping-methods-block': [],
+	'woocommerce/checkout-payment-methods-block': [],
 };
 
 /**
@@ -52,7 +68,9 @@ const assertType = (
  * Validation to ensure an area exists.
  */
 const assertValidArea = ( area: string ): void => {
-	if ( ! registeredBlocks.hasOwnProperty( area ) ) {
+	if (
+		! Object.values( InnerBlockAreas ).includes( area as InnerBlockAreas )
+	) {
 		throw new Error(
 			`Incorrect value for the "area" argument. It was a ${ area }, but must be one of ${ Object.keys(
 				registeredBlocks
@@ -64,7 +82,7 @@ const assertValidArea = ( area: string ): void => {
 /**
  * Validate the block name.
  *
- * @throws Will throw an error if the blockname is invalid.
+ * @throws Will throw an error if the block name is invalid.
  */
 const assertBlockName = ( blockName: string ): void => {
 	assertType( 'blockName', blockName, 'string' );
@@ -133,7 +151,7 @@ const assertBlockComponent = (
  * Adds a block (block name) to an area, if the area exists. If the area does not exist, an error is thrown.
  */
 const registerBlockForArea = (
-	area: keyof RegisteredBlocks,
+	area: InnerBlockAreas,
 	blockName: string
 ): void | Error => {
 	assertValidArea( area );
@@ -144,13 +162,44 @@ const registerBlockForArea = (
 };
 
 /**
+ * Adds a component to an area, if the area exists. If the area does not exist, an error is thrown.
+ */
+const registerForcedComponent = (
+	area: InnerBlockAreas,
+	component: string
+): void | Error => {
+	assertValidArea( area );
+	registeredForcedComponents = {
+		...registeredForcedComponents,
+		[ area ]: [ ...registeredForcedComponents[ area ], component ],
+	};
+};
+
+/**
+ * Check area is valid.
+ */
+export const isInnerBlockArea = ( area: string ): area is InnerBlockAreas => {
+	return Object.values( InnerBlockAreas ).includes( area as InnerBlockAreas );
+};
+
+/**
  * Get a list of blocks available within a specific area.
  */
 export const getRegisteredBlocks = (
-	area: keyof RegisteredBlocks
+	area: InnerBlockAreas
 ): Array< string > => {
-	assertValidArea( area );
-	return [ ...registeredBlocks[ area ] ];
+	return isInnerBlockArea( area ) ? [ ...registeredBlocks[ area ] ] : [];
+};
+
+/**
+ * Get a list of blocks available within a specific area.
+ */
+export const getRegisteredForcedComponents = (
+	area: InnerBlockAreas
+): Array< string > => {
+	return isInnerBlockArea( area )
+		? [ ...registeredForcedComponents[ area ] ]
+		: [];
 };
 
 export type CheckoutBlockOptions = {
@@ -159,7 +208,9 @@ export type CheckoutBlockOptions = {
 		| LazyExoticComponent< React.ComponentType< unknown > >
 		| ( () => JSX.Element );
 	// Area(s) to add the block to. This can be a single area (string) or an array of areas.
-	areas: Array< keyof RegisteredBlocks >;
+	areas: Array< InnerBlockAreas >;
+	// Should this block be forced? If true, it cannot be removed from the editor interface, and will be rendered in defined areas automatically.
+	force?: boolean;
 	// Standard block configuration object. If not passed, the block will not be registered with WordPress and must be done manually.
 	configuration?: BlockConfiguration;
 };
@@ -176,12 +227,33 @@ export const registerCheckoutBlock = (
 	assertBlockComponent( options, 'component' );
 
 	/**
+	 * This ensures the frontend component for the checkout block is available.
+	 */
+	registerBlockComponent( {
+		blockName,
+		component: options.component,
+	} );
+
+	/**
 	 * If provided with a configuration object, this registers the block with WordPress.
 	 */
 	if ( options?.configuration ) {
 		assertOption( options, 'configuration', 'object' );
 		registerExperimentalBlockType( blockName, {
 			...options.configuration,
+			attributes: {
+				...( options.configuration?.attributes || {} ),
+				...( options.force
+					? {
+							lock: {
+								type: 'object',
+								default: {
+									remove: true,
+								},
+							},
+					  }
+					: {} ),
+			},
 			category: 'woocommerce',
 			parent: [],
 		} );
@@ -190,15 +262,8 @@ export const registerCheckoutBlock = (
 	/**
 	 * This enables the inner block within specific areas. See RegisteredBlocks.
 	 */
-	options.areas.forEach( ( area ) =>
-		registerBlockForArea( area, blockName )
-	);
-
-	/**
-	 * This ensures the frontend component for the checkout block is available.
-	 */
-	registerBlockComponent( {
-		blockName,
-		component: options.component,
+	options.areas.forEach( ( area ) => {
+		registerBlockForArea( area, blockName );
+		registerForcedComponent( area, blockName );
 	} );
 };
