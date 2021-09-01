@@ -35,7 +35,7 @@ interface renderInnerBlockProps extends renderBlockProps {
 
 // Temporary block map for areas.
 const temporaryForcedBlockComponents = {
-	'woocommerce/checkout-fields-block': [
+	'woocommerce/checkout-shipping-address-block': [
 		'woocommerce/checkout-sample-block',
 		'woocommerce/checkout-sample-block',
 		'woocommerce/checkout-sample-block',
@@ -58,8 +58,16 @@ const getInnerBlockComponent = (
 const getMissingForcedBlocks = (
 	blockName: string,
 	blockMap: Record< string, React.ReactNode >,
-	currentBlocks: string[]
+	blockChildren: HTMLCollection | null
 ) => {
+	const currentBlocks = Array.from( blockChildren )
+		.map( ( element: Element ) =>
+			element instanceof HTMLElement
+				? element?.dataset.blockName || null
+				: null
+		)
+		.filter( Boolean ) as string[];
+
 	const forcedBlocks = (
 		temporaryForcedBlockComponents[ blockName ] || []
 	).filter(
@@ -91,14 +99,6 @@ const renderInnerBlocks = ( {
 	depth = 1,
 	children,
 }: renderInnerBlockProps ): ( JSX.Element | null )[] | null => {
-	const innerBlockNames = Array.from( children )
-		.map( ( element: Element ) =>
-			element instanceof HTMLElement
-				? element?.dataset.blockName || null
-				: null
-		)
-		.filter( Boolean ) as string[];
-
 	return Array.from( children ).map( ( element: Element, index: number ) => {
 		const { blockName = '', ...componentProps } = {
 			key: `${ parentBlockName }_${ depth }_${ index }`,
@@ -149,7 +149,7 @@ const renderInnerBlocks = ( {
 						{ getMissingForcedBlocks(
 							blockName,
 							blockMap,
-							innerBlockNames
+							element.children
 						) }
 					</InnerBlockComponent>
 				</InnerBlockComponentWrapper>
