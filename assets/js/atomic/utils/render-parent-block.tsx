@@ -2,12 +2,7 @@
  * External dependencies
  */
 import { renderFrontend } from '@woocommerce/base-utils';
-import {
-	Fragment,
-	Suspense,
-	cloneElement,
-	isValidElement,
-} from '@wordpress/element';
+import { Fragment, Suspense, isValidElement } from '@wordpress/element';
 import parse from 'html-react-parser';
 
 interface renderBlockProps {
@@ -48,25 +43,49 @@ const temporaryForcedBlockComponents = {
 
 const getInnerBlockComponent = (
 	blockName: string,
-	blockMap: Record< string, React.ReactNode >
-): React.ElementType | null => {
-	return blockName && blockMap[ blockName ]
-		? ( blockMap[ blockName ] as React.ElementType )
-		: null;
+	blockMap: Record< string, React.ReactNode >,
+	element?: Element
+): React.ElementType => {
+	if ( blockName && blockMap[ blockName ] ) {
+		return blockMap[ blockName ] as React.ElementType;
+	}
+
+	const fallback = ( props: Record< string, unknown > ): JSX.Element => (
+		<div { ...props } />
+	);
+
+	if ( element ) {
+		const parsedElement = parse( element.outerHTML );
+		return isValidElement( parsedElement )
+			? ( props: Record< string, unknown > ): JSX.Element => (
+					<parsedElement.type
+						{ ...parsedElement.props }
+						{ ...props }
+					/>
+			  )
+			: fallback;
+	}
+
+	return fallback;
 };
 
-const getMissingForcedBlocks = (
+/**
+ * Appends forced blocks which are missing from the template.
+ */
+const renderForcedBlocks = (
 	blockName: string,
 	blockMap: Record< string, React.ReactNode >,
 	blockChildren: HTMLCollection | null
 ) => {
-	const currentBlocks = Array.from( blockChildren )
-		.map( ( element: Element ) =>
-			element instanceof HTMLElement
-				? element?.dataset.blockName || null
-				: null
-		)
-		.filter( Boolean ) as string[];
+	const currentBlocks = blockChildren
+		? ( Array.from( blockChildren )
+				.map( ( element: Element ) =>
+					element instanceof HTMLElement
+						? element?.dataset.blockName || null
+						: null
+				)
+				.filter( Boolean ) as string[] )
+		: [];
 
 	const forcedBlocks = (
 		temporaryForcedBlockComponents[ blockName ] || []
@@ -99,40 +118,20 @@ const renderInnerBlocks = ( {
 	depth = 1,
 	children,
 }: renderInnerBlockProps ): ( JSX.Element | null )[] | null => {
+	if ( ! children || children.length === 0 ) {
+		return null;
+	}
 	return Array.from( children ).map( ( element: Element, index: number ) => {
 		const { blockName = '', ...componentProps } = {
 			key: `${ parentBlockName }_${ depth }_${ index }`,
 			...( element instanceof HTMLElement ? element.dataset : {} ),
 		};
 
-		const innerBlockChildren =
-			element.children && element.children.length
-				? renderInnerBlocks( {
-						children: element.children,
-						blockName: parentBlockName,
-						blockMap,
-						depth: depth + 1,
-						blockWrapper,
-				  } )
-				: undefined;
-
 		const InnerBlockComponent = getInnerBlockComponent(
 			blockName,
-			blockMap
+			blockMap,
+			element
 		);
-
-		// If there is no inner block component to render, just return the children.
-		if ( ! InnerBlockComponent ) {
-			const elementOuterHtml = parse( element.outerHTML );
-
-			return isValidElement( elementOuterHtml )
-				? cloneElement(
-						elementOuterHtml,
-						componentProps,
-						innerBlockChildren
-				  )
-				: null;
-		}
 
 		const InnerBlockComponentWrapper = blockWrapper
 			? blockWrapper
@@ -145,8 +144,14 @@ const renderInnerBlocks = ( {
 			>
 				<InnerBlockComponentWrapper>
 					<InnerBlockComponent { ...componentProps }>
-						{ innerBlockChildren }
-						{ getMissingForcedBlocks(
+						{ renderInnerBlocks( {
+							children: element.children,
+							blockName: parentBlockName,
+							blockMap,
+							depth: depth + 1,
+							blockWrapper,
+						} ) }
+						{ renderForcedBlocks(
 							blockName,
 							blockMap,
 							element.children
