@@ -32,7 +32,7 @@ const isScriptTagInDOM = ( scriptId: string ): boolean => {
 };
 
 /**
- * Appends a script element to the document body if an script with the same id
+ * Appends a script element to the document body if a script with the same id
  * doesn't exist.
  */
 const appendScript = ( attributes: appendScriptAttributesParam ): void => {
