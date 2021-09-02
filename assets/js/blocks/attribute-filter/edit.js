@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import classNames from 'classnames';
 import { __, sprintf, _n } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
@@ -385,12 +384,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 			{ isEditing ? (
 				renderEditMode()
 			) : (
-				<div
-					className={ classNames(
-						'wc-block-attribute-filter__fragment',
-						className
-					) }
-				>
+				<div className={ className }>
 					<BlockTitle
 						className="wc-block-attribute-filter__title"
 						headingLevel={ headingLevel }

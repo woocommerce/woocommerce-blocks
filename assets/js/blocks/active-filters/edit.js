@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import classNames from 'classnames';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { Disabled, PanelBody, withSpokenMessages } from '@wordpress/components';
@@ -76,12 +75,7 @@ const Edit = ( { attributes, setAttributes } ) => {
 	};
 
 	return (
-		<div
-			className={ classNames(
-				'wc-block-active-filter__fragment',
-				className
-			) }
-		>
+		<div className={ className }>
 			{ getInspectorControls() }
 			<BlockTitle
 				className="wc-block-active-filter__title"
