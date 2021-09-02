@@ -63,7 +63,7 @@ const appendScript = ( attributes: appendScriptAttributesParam ): void => {
 		}
 	}
 
-	// Now we've assigned all the strings, we can explicitly assign to the
+	// Now that we've assigned all the strings, we can explicitly assign to the
 	// function keys.
 	if ( typeof attributes.onload === 'function' ) {
 		scriptElement.onload = attributes.onload;
