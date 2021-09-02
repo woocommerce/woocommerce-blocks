@@ -5,7 +5,7 @@ import { renderFrontend } from '@woocommerce/base-utils';
 import { Fragment, Suspense, isValidElement } from '@wordpress/element';
 import parse from 'html-react-parser';
 import {
-	getRegisteredForcedComponents,
+	getRegisteredBlocks,
 	isInnerBlockArea,
 } from '@woocommerce/blocks-checkout';
 
@@ -82,16 +82,16 @@ const renderForcedBlocks = (
 				.filter( Boolean ) as string[] )
 		: [];
 
-	const forcedBlocks = getRegisteredForcedComponents( blockName ).filter(
-		( forcedBlockName ) => ! currentBlocks.includes( forcedBlockName )
+	const forcedBlocks = getRegisteredBlocks( blockName ).filter(
+		( { block, force } ) =>
+			force === true && ! currentBlocks.includes( block )
 	);
 
 	return forcedBlocks.map(
-		( forcedBlockName: string, index: number ): JSX.Element | null => {
-			const ForcedComponent = getInnerBlockComponent(
-				forcedBlockName,
-				blockMap
-			);
+		( { block, component }, index: number ): JSX.Element | null => {
+			const ForcedComponent = component
+				? component
+				: getInnerBlockComponent( block, blockMap );
 			return ForcedComponent ? (
 				<ForcedComponent key={ `${ blockName }_forced_${ index }` } />
 			) : null;
