@@ -2,7 +2,8 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
+import { speak } from '@wordpress/a11y';
 import QuantitySelector from '@woocommerce/base-components/quantity-selector';
 import ProductPrice from '@woocommerce/base-components/product-price';
 import ProductName from '@woocommerce/base-components/product-name';
@@ -275,6 +276,16 @@ const CartLineItemRow = ( {
 								product: lineItem,
 								quantity,
 							} );
+							speak(
+								sprintf(
+									/* translators: %s refers to the item name in the cart. */
+									__(
+										'%s has been removed from your cart.',
+										'woo-gutenberg-products-block'
+									),
+									name
+								)
+							);
 						} }
 						disabled={ isPendingDelete }
 					>
