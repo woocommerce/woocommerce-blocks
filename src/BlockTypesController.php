@@ -46,6 +46,7 @@ final class BlockTypesController {
 	 */
 	protected function init() {
 		add_action( 'init', array( $this, 'register_blocks' ) );
+		add_filter( 'render_block', array( $this, 'add_block_data_attributes' ), 10, 2 );
 		add_action( 'woocommerce_login_form_end', array( $this, 'redirect_to_field' ) );
 		add_filter( 'widget_types_to_hide_from_legacy_widget_block', array( $this, 'hide_legacy_widgets_with_block_equivalent' ) );
 	}
@@ -64,6 +65,20 @@ final class BlockTypesController {
 		foreach ( self::get_atomic_blocks() as $block_type ) {
 			$block_type_instance = new AtomicBlock( $this->asset_api, $this->asset_data_registry, new IntegrationRegistry(), $block_type );
 		}
+	}
+
+	/**
+	 * Add data- attributes to blocks when rendered.
+	 *
+	 * @param string $content Block content.
+	 * @param array  $block Parsed block data.
+	 * @return string
+	 */
+	public function add_block_data_attributes( $content, $block ) {
+		if ( ! isset( $block['blockName'] ) ) {
+			return $content;
+		}
+		return preg_replace( '/^<div /', '<div data-block-name="' . esc_attr( $block['blockName'] ) . '" ', trim( $content ) );
 	}
 
 	/**
@@ -171,19 +186,6 @@ final class BlockTypesController {
 			'product-tag-list',
 			'product-stock-indicator',
 			'product-add-to-cart',
-			'checkout-fields-block',
-			'checkout-totals-block',
-			'checkout-billing-address-block',
-			'checkout-actions-block',
-			'checkout-contact-information-block',
-			'checkout-order-note-block',
-			'checkout-order-summary-block',
-			'checkout-payment-block',
-			'checkout-shipping-address-block',
-			'checkout-shipping-methods-block',
-			'checkout-express-payment-block',
-			'checkout-terms-block',
-			'checkout-sample-block',
 		];
 	}
 }
