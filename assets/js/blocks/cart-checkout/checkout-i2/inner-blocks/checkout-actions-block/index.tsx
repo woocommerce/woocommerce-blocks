@@ -15,7 +15,7 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-actions-block', {
 	title: __( 'Actions', 'woo-gutenberg-products-block' ),
 	category: 'woocommerce',
 	description: __(
-		'Contains the Place Order button and other actions.',
+		'Allow customers to place their order.',
 		'woo-gutenberg-products-block'
 	),
 	icon: {

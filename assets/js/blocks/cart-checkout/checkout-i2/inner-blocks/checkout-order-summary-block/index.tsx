@@ -15,7 +15,7 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-order-summary-block', {
 	title: __( 'Order Summary', 'woo-gutenberg-products-block' ),
 	category: 'woocommerce',
 	description: __(
-		'Displays the order summary and totals.',
+		'Show customers a summary of their order.',
 		'woo-gutenberg-products-block'
 	),
 	icon: {
