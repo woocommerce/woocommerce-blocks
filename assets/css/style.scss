@@ -293,9 +293,9 @@
 		z-index: 1;
 	}
 
-	.wp-block-woocommerce-active-filters h3,
-	.wp-block-woocommerce-price-filter h3,
-	.wp-block-woocommerce-attribute-filter h3 {
+	.wc-block-active-filters__title,
+	.wc-block-attribute-filter__title,
+	.wc-block-price-filter__title {
 		@include font-size(regular);
 	}
 

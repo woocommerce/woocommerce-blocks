@@ -13,15 +13,13 @@ import './editor.scss';
 const BlockTitle = ( { className, headingLevel, onChange, heading } ) => {
 	const TagName = `h${ headingLevel }`;
 	return (
-		<TagName>
-			<PlainText
-				className={ classnames(
-					'wc-block-editor-components-title',
-					className
-				) }
-				value={ heading }
-				onChange={ onChange }
-			/>
+		<TagName
+			className={ classnames(
+				'wc-block-editor-components-title',
+				className
+			) }
+		>
+			<PlainText value={ heading } onChange={ onChange } />
 		</TagName>
 	);
 };
