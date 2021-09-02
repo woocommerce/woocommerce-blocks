@@ -16,7 +16,7 @@ import {
 	canMakePaymentWithFeaturesCheck,
 	canMakePaymentWithExtensions,
 } from './payment-method-config-helper';
-import { extensionsConfig } from './can-make-payment-extensions';
+import { extensionsConfig } from './extensions-config';
 const NullComponent = () => {
 	return null;
 };

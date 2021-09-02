@@ -13,7 +13,7 @@ import deprecated from '@wordpress/deprecated';
  */
 import { default as PaymentMethodConfig } from './payment-method-config';
 import { default as ExpressPaymentMethodConfig } from './express-payment-method-config';
-import { canMakePaymentExtensionsCallbacks } from './can-make-payment-extensions';
+import { canMakePaymentExtensionsCallbacks } from './extensions-config';
 const paymentMethods = {};
 const expressPaymentMethods = {};
 
@@ -73,10 +73,13 @@ export const registerExpressPaymentMethod = ( options ) => {
  * @param {string} paymentMethodName A unique string to identify the payment method client side.
  * @param {function():any } callBack Callback defined by extensions to determine if the payment method is supported.
  */
-export const registerPaymentMethodCanPay = ( paymentMethodName, callBack ) => {
+export const registerPaymentMethodExtensionCallback = (
+	paymentMethodName,
+	callBack
+) => {
 	if ( typeof callBack !== 'function' ) {
 		throw new Error(
-			'Callback provided to registerPaymentMethodCanPay must be a function'
+			'Callback provided to registerPaymentMethodExtensionCallback must be a function'
 		);
 	}
 
