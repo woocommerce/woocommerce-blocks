@@ -27,7 +27,7 @@ const BlockTitle = ( {
 				className
 			) }
 		>
-      <label
+			<label
 				className="screen-reader-text"
 				htmlFor={ `block-title-${ instanceId }` }
 			>
