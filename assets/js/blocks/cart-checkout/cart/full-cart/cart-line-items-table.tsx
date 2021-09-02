@@ -29,6 +29,20 @@ const CartLineItemsTable = ( {
 					<CartLineItemRow
 						key={ lineItem.key }
 						lineItem={ lineItem }
+						onRemove={ ( removedRow: HTMLElement | null ) => {
+							if (
+								removedRow?.nextElementSibling instanceof
+								HTMLElement
+							) {
+								removedRow.nextElementSibling.focus();
+							} else if (
+								removedRow?.previousElementSibling instanceof
+								HTMLElement
+							) {
+								removedRow.previousElementSibling.focus();
+							}
+						} }
+						tabIndex={ -1 }
 					/>
 				);
 		  } );

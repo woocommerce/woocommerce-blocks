@@ -28,10 +28,11 @@ import {
 	mustContain,
 } from '@woocommerce/blocks-checkout';
 import Dinero from 'dinero.js';
-import { useMemo } from '@wordpress/element';
+import { useRef, useMemo } from '@wordpress/element';
 import type { CartItem } from '@woocommerce/type-defs/cart';
 import { objectHasProp } from '@woocommerce/types';
 import { getSetting } from '@woocommerce/settings';
+import type { TdHTMLAttributes } from 'react';
 
 /**
  * Convert a Dinero object with precision to store currency minor unit.
@@ -49,17 +50,20 @@ const getAmountFromRawPrice = (
 
 const productPriceValidation = ( value ) => mustContain( value, '<price/>' );
 
+interface CartLineItemRowProps
+	extends TdHTMLAttributes< HTMLTableDataCellElement > {
+	lineItem: CartItem | Record< string, never >;
+	onRemove?: ( removedRow: HTMLElement | null ) => void;
+}
+
 /**
  * Cart line item table row component.
- *
- * @param {Object} props
- * @param {CartItem|Object} props.lineItem
  */
 const CartLineItemRow = ( {
 	lineItem,
-}: {
-	lineItem: CartItem | Record< string, never >;
-} ): JSX.Element => {
+	onRemove = ( removedRow: HTMLElement | null ) => void removedRow,
+	...props
+}: CartLineItemRowProps ): JSX.Element => {
 	const {
 		name: initialName = '',
 		catalog_visibility: catalogVisibility = 'visible',
@@ -185,11 +189,15 @@ const CartLineItemRow = ( {
 		validation: productPriceValidation,
 	} );
 
+	const tableRowRef = useRef( null );
+
 	return (
 		<tr
 			className={ classnames( 'wc-block-cart-items__row', {
 				'is-disabled': isPendingDelete,
 			} ) }
+			ref={ tableRowRef }
+			{ ...props }
 		>
 			{ /* If the image has no alt text, this link is unnecessary and can be hidden. */ }
 			<td
@@ -271,6 +279,7 @@ const CartLineItemRow = ( {
 					<button
 						className="wc-block-cart-item__remove-link"
 						onClick={ () => {
+							onRemove( tableRowRef.current );
 							removeItem();
 							dispatchStoreEvent( 'cart-remove-item', {
 								product: lineItem,
