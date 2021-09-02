@@ -157,7 +157,7 @@ export type CheckoutBlockOptions = {
 	// This is a component to render on the frontend in place of this block, when used.
 	component:
 		| LazyExoticComponent< React.ComponentType< unknown > >
-		| JSX.Element;
+		| ( () => JSX.Element );
 	// Area(s) to add the block to. This can be a single area (string) or an array of areas.
 	areas: Array< keyof RegisteredBlocks >;
 	// Standard block configuration object. If not passed, the block will not be registered with WordPress and must be done manually.
@@ -175,18 +175,28 @@ export const registerCheckoutBlock = (
 	assertOption( options, 'areas', 'array' );
 	assertBlockComponent( options, 'component' );
 
+	/**
+	 * If provided with a configuration object, this registers the block with WordPress.
+	 */
 	if ( options?.configuration ) {
 		assertOption( options, 'configuration', 'object' );
 		registerExperimentalBlockType( blockName, {
 			...options.configuration,
 			category: 'woocommerce',
+			parent: [],
 		} );
 	}
 
+	/**
+	 * This enables the inner block within specific areas. See RegisteredBlocks.
+	 */
 	options.areas.forEach( ( area ) =>
 		registerBlockForArea( area, blockName )
 	);
 
+	/**
+	 * This ensures the frontend component for the checkout block is available.
+	 */
 	registerBlockComponent( {
 		blockName,
 		component: options.component,

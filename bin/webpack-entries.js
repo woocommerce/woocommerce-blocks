@@ -38,6 +38,7 @@ const blocks = {
 	},
 	'price-filter': {},
 	'attribute-filter': {},
+	'stock-filter': {},
 	'active-filters': {},
 	cart: {
 		customDir: 'cart-checkout/cart',
@@ -48,6 +49,9 @@ const blocks = {
 	'checkout-i2': {
 		customDir: 'cart-checkout/checkout-i2',
 		isExperimental: true,
+	},
+	'mini-cart': {
+		customDir: 'cart-checkout/mini-cart',
 	},
 	'single-product': {
 		isExperimental: true,
@@ -91,6 +95,8 @@ const entries = {
 			'./node_modules/wordpress-components/src/spinner/style.scss',
 		'snackbar-notice-style':
 			'./node_modules/wordpress-components/src/snackbar/style.scss',
+		'combobox-control-style':
+			'./node_modules/wordpress-components/src/combobox-control/style.scss',
 
 		'general-style': glob.sync( './assets/**/*.scss', {
 			ignore: [
@@ -107,7 +113,7 @@ const entries = {
 	core: {
 		wcBlocksRegistry: './assets/js/blocks-registry/index.js',
 		wcSettings: './assets/js/settings/shared/index.ts',
-		wcBlocksData: './assets/js/data/index.js',
+		wcBlocksData: './assets/js/data/index.ts',
 		wcBlocksMiddleware: './assets/js/middleware/index.js',
 		wcBlocksSharedContext: './assets/js/shared/context/index.js',
 		wcBlocksSharedHocs: './assets/js/shared/hocs/index.js',
@@ -124,6 +130,8 @@ const entries = {
 	frontend: {
 		reviews: './assets/js/blocks/reviews/frontend.js',
 		...getBlockEntries( 'frontend.{t,j}s{,x}' ),
+		'mini-cart-component':
+			'./assets/js/blocks/cart-checkout/mini-cart/component-frontend.tsx',
 	},
 	payments: {
 		'wc-payment-method-stripe':

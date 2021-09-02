@@ -14,7 +14,7 @@ import {
 import { useValidationContext } from '@woocommerce/base-context';
 import { useEffect, useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { withInstanceId } from '@woocommerce/base-hocs/with-instance-id';
+import { withInstanceId } from '@wordpress/compose';
 import { useShallowEqual } from '@woocommerce/base-hooks';
 import {
 	AddressField,
@@ -112,6 +112,18 @@ const AddressForm = ( {
 		);
 	}, [ currentFields, fieldConfig, values.country ] );
 
+	// Clear values for hidden fields.
+	useEffect( () => {
+		addressFormFields.forEach( ( field ) => {
+			if ( field.hidden && values[ field.key ] ) {
+				onChange( {
+					...values,
+					[ field.key ]: '',
+				} );
+			}
+		} );
+	}, [ addressFormFields, onChange, values ] );
+
 	useEffect( () => {
 		if ( type === 'shipping' ) {
 			validateShippingCountry(
@@ -161,8 +173,6 @@ const AddressForm = ( {
 									...values,
 									country: newValue,
 									state: '',
-									city: '',
-									postcode: '',
 								} )
 							}
 							errorId={
