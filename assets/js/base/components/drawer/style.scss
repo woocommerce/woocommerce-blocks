@@ -123,10 +123,6 @@ $drawer-width-mobile: 100vw;
 		// Increase clickable area.
 		padding: 1em;
 		margin: -1em;
-
-		> span {
-			@include visually-hidden();
-		}
 	}
 }
 
