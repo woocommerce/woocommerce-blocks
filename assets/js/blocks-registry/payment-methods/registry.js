@@ -71,13 +71,13 @@ export const registerExpressPaymentMethod = ( options ) => {
  * Registers a callback for a specific payment method to determine if it can make payments
  *
  * @param {string} paymentMethodName A unique string to identify the payment method client side.
- * @param {function():any } callBack Callback defined by extensions to determine if the payment method is supported.
+ * @param {function():any } callback Callback defined by extensions to determine if the payment method is supported.
  */
 export const registerPaymentMethodExtensionCallback = (
 	paymentMethodName,
-	callBack
+	callback
 ) => {
-	if ( typeof callBack !== 'function' ) {
+	if ( typeof callback !== 'function' ) {
 		throw new Error(
 			'Callback provided to registerPaymentMethodExtensionCallback must be a function'
 		);
@@ -91,7 +91,7 @@ export const registerPaymentMethodExtensionCallback = (
 		canMakePaymentExtensionsCallbacks[ paymentMethodName ] = [];
 	}
 
-	canMakePaymentExtensionsCallbacks[ paymentMethodName ].push( callBack );
+	canMakePaymentExtensionsCallbacks[ paymentMethodName ].push( callback );
 };
 
 export const __experimentalDeRegisterPaymentMethod = ( paymentMethodName ) => {
