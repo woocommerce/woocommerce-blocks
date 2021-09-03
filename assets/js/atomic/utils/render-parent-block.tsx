@@ -50,12 +50,12 @@ const getBlockComponentFromMap = (
  * @see registerCheckoutBlock
  */
 const renderForcedBlocks = (
-	blockName: string,
+	parentBlockName: string,
 	blockMap: Record< string, React.ReactNode >,
 	// Current children from the parent (siblings of the forced block)
 	blockChildren: HTMLCollection | null
 ) => {
-	if ( ! isInnerBlockArea( blockName ) ) {
+	if ( ! isInnerBlockArea( parentBlockName ) ) {
 		return null;
 	}
 
@@ -69,16 +69,16 @@ const renderForcedBlocks = (
 				.filter( Boolean ) as string[] )
 		: [];
 
-	const forcedBlocks = getRegisteredBlocks( blockName ).filter(
-		( { block, force } ) =>
-			force === true && ! currentBlocks.includes( block )
+	const forcedBlocks = getRegisteredBlocks( parentBlockName ).filter(
+		( { blockName, force } ) =>
+			force === true && ! currentBlocks.includes( blockName )
 	);
 
 	return forcedBlocks.map(
-		( { block, component }, index: number ): JSX.Element | null => {
+		( { blockName, component }, index: number ): JSX.Element | null => {
 			const ForcedComponent = component
 				? component
-				: getBlockComponentFromMap( block, blockMap );
+				: getBlockComponentFromMap( blockName, blockMap );
 			return ForcedComponent ? (
 				<ForcedComponent key={ `${ blockName }_forced_${ index }` } />
 			) : null;

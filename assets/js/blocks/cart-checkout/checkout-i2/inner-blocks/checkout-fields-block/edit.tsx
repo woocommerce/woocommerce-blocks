@@ -3,15 +3,14 @@
  */
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { Main } from '@woocommerce/base-components/sidebar-layout';
-import {
-	getRegisteredBlockTemplate,
-	innerBlockAreas,
-} from '@woocommerce/blocks-checkout';
+import { innerBlockAreas } from '@woocommerce/blocks-checkout';
+
 /**
  * Internal dependencies
  */
 import { useCheckoutBlockControlsContext } from '../../context';
 import { useForcedLayout } from '../../use-forced-layout';
+import { getRegisteredBlockNamesByParent } from '../../editor-utils';
 
 const ALLOWED_BLOCKS = [
 	'woocommerce/checkout-express-payment-block',
@@ -34,12 +33,15 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 	const {
 		addressFieldControls: Controls,
 	} = useCheckoutBlockControlsContext();
-	const registeredBlocks = getRegisteredBlockTemplate(
-		innerBlockAreas.CHECKOUT_FIELDS
-	);
+
 	const template = useForcedLayout( {
 		clientId,
-		template: [ ...ALLOWED_BLOCKS, ...registeredBlocks ],
+		template: [
+			...ALLOWED_BLOCKS,
+			...getRegisteredBlockNamesByParent(
+				innerBlockAreas.CHECKOUT_FIELDS
+			),
+		],
 	} );
 	return (
 		<Main className="wc-block-checkout__main">
