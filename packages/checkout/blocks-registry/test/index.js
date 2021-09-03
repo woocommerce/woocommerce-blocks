@@ -4,7 +4,7 @@
 import {
 	getRegisteredBlocks,
 	registerCheckoutBlock,
-	InnerBlockAreas,
+	innerBlockAreas,
 } from '../index';
 
 describe( 'checkout blocks registry', () => {
@@ -45,7 +45,7 @@ describe( 'checkout blocks registry', () => {
 	describe( 'getRegisteredBlocks', () => {
 		it( 'gets an empty array when checkout area has no registered blocks', () => {
 			expect(
-				getRegisteredBlocks( InnerBlockAreas.CHECKOUT_FIELDS )
+				getRegisteredBlocks( innerBlockAreas.CHECKOUT_FIELDS )
 			).toEqual( [] );
 		} );
 		it( 'gets an empty array when the area is not defined', () => {
@@ -53,11 +53,11 @@ describe( 'checkout blocks registry', () => {
 		} );
 		it( 'gets a block that was successfully registered', () => {
 			registerCheckoutBlock( 'test/block-name', {
-				areas: [ InnerBlockAreas.CHECKOUT_FIELDS ],
+				areas: [ innerBlockAreas.CHECKOUT_FIELDS ],
 				component,
 			} );
 			expect(
-				getRegisteredBlocks( InnerBlockAreas.CHECKOUT_FIELDS )
+				getRegisteredBlocks( innerBlockAreas.CHECKOUT_FIELDS )
 			).toEqual( [
 				{
 					block: 'test/block-name',

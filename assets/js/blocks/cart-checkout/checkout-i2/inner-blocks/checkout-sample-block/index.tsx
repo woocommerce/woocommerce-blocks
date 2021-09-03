@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { Icon, asterisk } from '@woocommerce/icons';
 import {
 	registerCheckoutBlock,
-	InnerBlockAreas,
+	innerBlockAreas,
 } from '@woocommerce/blocks-checkout';
 import { lazy } from '@wordpress/element';
 import { WC_BLOCKS_BUILD_URL } from '@woocommerce/block-settings';
@@ -24,11 +24,11 @@ registerCheckoutBlock( 'woocommerce/checkout-sample-block', {
 		import( /* webpackChunkName: "checkout-blocks/sample" */ './frontend' )
 	),
 	areas: [
-		InnerBlockAreas.SHIPPING_ADDRESS,
-		InnerBlockAreas.BILLING_ADDRESS,
-		InnerBlockAreas.CONTACT_INFORMATION,
-		InnerBlockAreas.CHECKOUT_FIELDS,
-		InnerBlockAreas.CHECKOUT_TOTALS,
+		innerBlockAreas.SHIPPING_ADDRESS,
+		innerBlockAreas.BILLING_ADDRESS,
+		innerBlockAreas.CONTACT_INFORMATION,
+		innerBlockAreas.CHECKOUT_FIELDS,
+		innerBlockAreas.CHECKOUT_TOTALS,
 	],
 	force: true,
 	configuration: {

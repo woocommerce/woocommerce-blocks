@@ -1,14 +1,14 @@
 /**
  * Internal dependencies
  */
-import { InnerBlockAreas, RegisteredBlock } from './types';
+import { innerBlockAreas, RegisteredBlock } from './types';
 import { registeredBlocks } from './registered-blocks';
 
 /**
  * Get a list of blocks available within a specific area.
  */
 export const getRegisteredBlocks = (
-	area: InnerBlockAreas
+	area: innerBlockAreas
 ): Array< RegisteredBlock > => {
 	return [ ...( registeredBlocks[ area ] || [] ) ];
 };
@@ -17,7 +17,7 @@ export const getRegisteredBlocks = (
  * Get a list of blocks names in inner block template format.
  */
 export const getRegisteredBlockTemplate = (
-	area: InnerBlockAreas
+	area: innerBlockAreas
 ): Array< string > =>
 	getRegisteredBlocks( area ).map(
 		( block: RegisteredBlock ) => block.block
@@ -26,6 +26,6 @@ export const getRegisteredBlockTemplate = (
 /**
  * Check area is valid.
  */
-export const isInnerBlockArea = ( area: string ): area is InnerBlockAreas => {
-	return Object.values( InnerBlockAreas ).includes( area as InnerBlockAreas );
+export const isInnerBlockArea = ( area: string ): area is innerBlockAreas => {
+	return Object.values( innerBlockAreas ).includes( area as innerBlockAreas );
 };

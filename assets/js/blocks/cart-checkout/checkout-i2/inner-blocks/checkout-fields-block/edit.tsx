@@ -5,7 +5,7 @@ import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { Main } from '@woocommerce/base-components/sidebar-layout';
 import {
 	getRegisteredBlockTemplate,
-	InnerBlockAreas,
+	innerBlockAreas,
 } from '@woocommerce/blocks-checkout';
 /**
  * Internal dependencies
@@ -35,7 +35,7 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 		addressFieldControls: Controls,
 	} = useCheckoutBlockControlsContext();
 	const registeredBlocks = getRegisteredBlockTemplate(
-		InnerBlockAreas.CHECKOUT_FIELDS
+		innerBlockAreas.CHECKOUT_FIELDS
 	);
 	const template = useForcedLayout( {
 		clientId,

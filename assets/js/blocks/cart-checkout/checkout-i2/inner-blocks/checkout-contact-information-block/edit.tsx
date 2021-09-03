@@ -3,7 +3,7 @@
  */
 import { useBlockProps } from '@wordpress/block-editor';
 import { Disabled } from '@wordpress/components';
-import { InnerBlockAreas } from '@woocommerce/blocks-checkout';
+import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
@@ -41,7 +41,7 @@ export const Edit = ( {
 			<Disabled>
 				<Block allowCreateAccount={ allowCreateAccount } />
 			</Disabled>
-			<AdditionalFields area={ InnerBlockAreas.CONTACT_INFORMATION } />
+			<AdditionalFields area={ innerBlockAreas.CONTACT_INFORMATION } />
 		</FormStepBlock>
 	);
 };

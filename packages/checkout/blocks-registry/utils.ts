@@ -6,7 +6,7 @@ import { isObject } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
-import { InnerBlockAreas } from './types';
+import { innerBlockAreas } from './types';
 
 /**
  * Asserts that an option is of the given type. Otherwise, throws an error.
@@ -31,11 +31,11 @@ export const assertType = (
  */
 export const assertValidArea = ( area: string ): void => {
 	if (
-		! Object.values( InnerBlockAreas ).includes( area as InnerBlockAreas )
+		! Object.values( innerBlockAreas ).includes( area as innerBlockAreas )
 	) {
 		throw new Error(
 			`Incorrect value for the "area" argument. It was a ${ area }, but must be one of ${ Object.values(
-				InnerBlockAreas
+				innerBlockAreas
 			).join( ', ' ) }.`
 		);
 	}

@@ -6,7 +6,7 @@ import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { PanelBody, Disabled, ExternalLink } from '@wordpress/components';
 import { ADMIN_URL, getSetting } from '@woocommerce/settings';
 import ExternalLinkCard from '@woocommerce/editor-components/external-link-card';
-import { InnerBlockAreas } from '@woocommerce/blocks-checkout';
+import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
@@ -73,7 +73,7 @@ export const Edit = ( props: FormStepBlockProps ): JSX.Element => {
 			<Disabled>
 				<Block />
 			</Disabled>
-			<AdditionalFields area={ InnerBlockAreas.PAYMENT_METHODS } />
+			<AdditionalFields area={ innerBlockAreas.PAYMENT_METHODS } />
 		</FormStepBlock>
 	);
 };
