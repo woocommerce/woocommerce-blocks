@@ -2,7 +2,12 @@
  * External dependencies
  */
 import { renderFrontend } from '@woocommerce/base-utils';
-import { Fragment, Suspense, isValidElement } from '@wordpress/element';
+import {
+	Fragment,
+	Suspense,
+	isValidElement,
+	cloneElement,
+} from '@wordpress/element';
 import parse from 'html-react-parser';
 import {
 	getRegisteredBlocks,
@@ -34,27 +39,11 @@ interface renderInnerBlockProps extends renderBlockProps {
 
 const getInnerBlockComponent = (
 	blockName: string,
-	blockMap: Record< string, React.ReactNode >,
-	element?: Element
-): React.ElementType => {
-	if ( blockName && blockMap[ blockName ] ) {
-		return blockMap[ blockName ] as React.ElementType;
-	}
-
-	const fallback = ( props: Record< string, unknown > ): JSX.Element => (
-		<div { ...props } />
-	);
-
-	if ( element ) {
-		const parsedElement = parse( element.outerHTML );
-		return isValidElement( parsedElement )
-			? (): JSX.Element => (
-					<parsedElement.type { ...parsedElement.props } />
-			  )
-			: fallback;
-	}
-
-	return fallback;
+	blockMap: Record< string, React.ReactNode >
+): React.ElementType | null => {
+	return blockName && blockMap[ blockName ]
+		? ( blockMap[ blockName ] as React.ElementType )
+		: null;
 };
 
 /**
@@ -119,9 +108,34 @@ const renderInnerBlocks = ( {
 
 		const InnerBlockComponent = getInnerBlockComponent(
 			blockName,
-			blockMap,
-			element
+			blockMap
 		);
+
+		// Nothing is mapped so return element found in the DOM or null.
+		if ( ! InnerBlockComponent ) {
+			const parsedElement = parse( element.outerHTML );
+
+			if ( isValidElement( parsedElement ) ) {
+				const elementChildren =
+					element.children && element.children.length
+						? renderInnerBlocks( {
+								children: element.children,
+								blockName: parentBlockName,
+								blockMap,
+								depth: depth + 1,
+								blockWrapper,
+						  } )
+						: null;
+				return elementChildren
+					? cloneElement(
+							parsedElement,
+							componentProps,
+							elementChildren
+					  )
+					: cloneElement( parsedElement, componentProps );
+			}
+			return null;
+		}
 
 		const InnerBlockComponentWrapper = blockWrapper
 			? blockWrapper
