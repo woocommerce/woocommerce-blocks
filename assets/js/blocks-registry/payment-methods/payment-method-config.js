@@ -50,12 +50,15 @@ export default class PaymentMethodConfig {
 			this.canMakePaymentFromConfig,
 			this.supports.features
 		);
-
-		return extensionsConfig.canMakePayment[ this.name ] &&
-			extensionsConfig.canMakePayment[ this.name ].length
+		return Object.values( extensionsConfig.canMakePayment ).some(
+			( callbacks ) =>
+				this.name in callbacks &&
+				typeof callbacks[ this.name ] === 'function'
+		)
 			? canMakePaymentWithExtensions(
 					canPay,
-					extensionsConfig.canMakePayment[ this.name ]
+					extensionsConfig.canMakePayment,
+					this.name
 			  )
 			: canPay;
 	}
