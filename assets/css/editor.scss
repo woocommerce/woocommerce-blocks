@@ -73,13 +73,5 @@
 		.wc-block-price-filter__title {
 			@include font-size(regular);
 		}
-
-		.wc-block-grid__product-add-to-cart.wp-block-button {
-			.wp-block-button__link {
-				@include font-size(small);
-				padding: em($gap-small);
-				text-decoration: none;
-			}
-		}
 	}
 }
