@@ -37,5 +37,5 @@ export type CheckoutBlockOptions = {
 	// Should this block be forced? If true, it cannot be removed from the editor interface, and will be rendered in defined areas automatically.
 	force?: boolean;
 	// Standard block configuration object. If not passed, the block will not be registered with WordPress and must be done manually.
-	configuration?: BlockConfiguration;
+	configuration?: Partial< BlockConfiguration >;
 };

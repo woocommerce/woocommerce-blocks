@@ -40,24 +40,28 @@ export const registerCheckoutBlock = (
 	 */
 	if ( options?.configuration ) {
 		assertOption( options, 'configuration', 'object' );
-		registerExperimentalBlockType( blockName, {
-			...options.configuration,
-			attributes: {
-				...( options.configuration?.attributes || {} ),
-				...( options.force
-					? {
-							lock: {
-								type: 'object',
-								default: {
-									remove: true,
-								},
-							},
-					  }
-					: {} ),
-			},
+
+		const blockConfiguration = {
 			category: 'woocommerce',
 			parent: [],
-		} );
+			...options.configuration,
+		};
+
+		if ( options.force ) {
+			blockConfiguration.attributes = {
+				...( options.configuration?.attributes || {} ),
+				lock: {
+					...( options.configuration?.attributes?.lock || {
+						type: 'object',
+						default: {
+							remove: true,
+						},
+					} ),
+				},
+			};
+		}
+
+		registerExperimentalBlockType( blockName, blockConfiguration );
 	}
 
 	/**
