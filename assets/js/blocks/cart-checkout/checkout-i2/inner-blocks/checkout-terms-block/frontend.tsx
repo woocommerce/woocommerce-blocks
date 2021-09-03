@@ -5,10 +5,9 @@ import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { useState, useEffect } from '@wordpress/element';
 import CheckboxControl from '@woocommerce/base-components/checkbox-control';
-import { useValidationContext } from '@woocommerce/base-context';
 import { useCheckoutSubmit } from '@woocommerce/base-context/hooks';
 import { withInstanceId } from '@wordpress/compose';
-
+import type { ValidationData } from '@woocommerce/type-defs/contexts';
 /**
  * Internal dependencies
  */
@@ -19,23 +18,25 @@ const FrontendBlock = ( {
 	text,
 	checkbox,
 	instanceId,
+	validation,
 }: {
 	text: string;
 	checkbox: boolean;
 	instanceId: string;
+	validation: ( validationErrorId: string ) => ValidationData;
 } ): JSX.Element => {
 	const [ checked, setChecked ] = useState( false );
-
 	// @todo Checkout i2 - Pass validation context to Inner Blocks to avoid exporting in a public package.
 	const { isDisabled } = useCheckoutSubmit();
-	const {
-		getValidationError,
-		setValidationErrors,
-		clearValidationError,
-	} = useValidationContext();
 
 	const validationErrorId = 'terms-and-conditions-' + instanceId;
-	const error = getValidationError( validationErrorId ) || {};
+	const {
+		getValidationError,
+		setValidationError,
+		clearValidationError,
+	} = validation( validationErrorId );
+
+	const error = getValidationError() || {};
 	const hasError = error.message && ! error.hidden;
 
 	// Track validation errors for this input.
@@ -44,27 +45,25 @@ const FrontendBlock = ( {
 			return;
 		}
 		if ( checked ) {
-			clearValidationError( validationErrorId );
+			clearValidationError();
 		} else {
-			setValidationErrors( {
-				[ validationErrorId ]: {
-					message: __(
-						'Please read and accept the terms and conditions.',
-						'woo-gutenberg-products-block'
-					),
-					hidden: true,
-				},
+			setValidationError( {
+				message: __(
+					'Please read and accept the terms and conditions.',
+					'woo-gutenberg-products-block'
+				),
+				hidden: true,
 			} );
 		}
 		return () => {
-			clearValidationError( validationErrorId );
+			clearValidationError();
 		};
 	}, [
 		checkbox,
 		checked,
 		validationErrorId,
 		clearValidationError,
-		setValidationErrors,
+		setValidationError,
 	] );
 
 	return (
