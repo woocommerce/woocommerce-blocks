@@ -48,11 +48,8 @@ const getInnerBlockComponent = (
 	if ( element ) {
 		const parsedElement = parse( element.outerHTML );
 		return isValidElement( parsedElement )
-			? ( props: Record< string, unknown > ): JSX.Element => (
-					<parsedElement.type
-						{ ...parsedElement.props }
-						{ ...props }
-					/>
+			? (): JSX.Element => (
+					<parsedElement.type { ...parsedElement.props } />
 			  )
 			: fallback;
 	}
