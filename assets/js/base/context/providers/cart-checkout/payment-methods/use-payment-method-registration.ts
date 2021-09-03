@@ -51,11 +51,8 @@ const usePaymentMethodRegistration = (
 	const { billingData, shippingAddress } = useCustomerDataContext();
 	const selectedShippingMethods = useShallowEqual( selectedRates );
 	const paymentMethodsOrder = useShallowEqual( paymentMethodsSortOrder );
-	const {
-		cartTotals,
-		cartNeedsShipping,
-		paymentRequirements,
-	} = useStoreCart();
+	const cart = useStoreCart();
+	const { cartTotals, cartNeedsShipping, paymentRequirements } = cart;
 	const canPayArgument = useRef( {
 		cartTotals,
 		cartNeedsShipping,
@@ -63,6 +60,7 @@ const usePaymentMethodRegistration = (
 		shippingAddress,
 		selectedShippingMethods,
 		paymentRequirements,
+		cart,
 	} );
 	const { addErrorNotice } = useStoreNotices();
 
@@ -74,6 +72,7 @@ const usePaymentMethodRegistration = (
 			shippingAddress,
 			selectedShippingMethods,
 			paymentRequirements,
+			cart,
 		};
 	}, [
 		cartTotals,
@@ -82,6 +81,7 @@ const usePaymentMethodRegistration = (
 		shippingAddress,
 		selectedShippingMethods,
 		paymentRequirements,
+		cart,
 	] );
 
 	const refreshCanMakePayments = useCallback( async () => {
