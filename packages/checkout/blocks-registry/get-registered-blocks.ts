@@ -10,18 +10,10 @@ import { registeredBlocks } from './registered-blocks';
 export const getRegisteredBlocks = (
 	area: innerBlockAreas
 ): Array< RegisteredBlock > => {
-	return [ ...( registeredBlocks[ area ] || [] ) ];
-};
-
-/**
- * Get a list of blocks names in inner block template format.
- */
-export const getRegisteredBlockTemplate = (
-	area: innerBlockAreas
-): Array< string > =>
-	getRegisteredBlocks( area ).map(
-		( block: RegisteredBlock ) => block.block
+	return Object.values( registeredBlocks ).filter( ( { metadata } ) =>
+		( metadata?.parent || [] ).includes( area )
 	);
+};
 
 /**
  * Check area is valid.

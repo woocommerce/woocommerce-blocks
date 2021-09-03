@@ -4,11 +4,6 @@
 import { isObject } from '@woocommerce/types';
 
 /**
- * Internal dependencies
- */
-import { innerBlockAreas } from './types';
-
-/**
  * Asserts that an option is of the given type. Otherwise, throws an error.
  *
  * @throws Will throw an error if the type of the option doesn't match the expected type.
@@ -22,21 +17,6 @@ export const assertType = (
 	if ( actualType !== expectedType ) {
 		throw new Error(
 			`Incorrect value for the ${ optionName } argument when registering a checkout block. It was a ${ actualType }, but must be a ${ expectedType }.`
-		);
-	}
-};
-
-/**
- * Validation to ensure an area exists.
- */
-export const assertValidArea = ( area: string ): void => {
-	if (
-		! Object.values( innerBlockAreas ).includes( area as innerBlockAreas )
-	) {
-		throw new Error(
-			`Incorrect value for the "area" argument. It was a ${ area }, but must be one of ${ Object.values(
-				innerBlockAreas
-			).join( ', ' ) }.`
 		);
 	}
 };
@@ -60,23 +40,22 @@ export const assertBlockName = ( blockName: string ): void => {
  * Asserts that an option is of the given type. Otherwise, throws an error.
  *
  * @throws Will throw an error if the type of the option doesn't match the expected type.
+ * @param {Object} options      Object containing the option to validate.
+ * @param {string} optionName   Name of the option to validate.
+ * @param {string} expectedType Type expected for the option.
  */
 export const assertOption = (
-	options: Record< string, unknown >,
+	options: unknown,
 	optionName: string,
-	expectedType: 'array' | 'object' | 'string' | 'boolean' | 'number'
+	expectedType: string
 ): void => {
+	if ( ! isObject( options ) ) {
+		return;
+	}
 	const actualType = typeof options[ optionName ];
-
-	if ( expectedType === 'array' ) {
-		if ( ! Array.isArray( options[ optionName ] ) ) {
-			throw new Error(
-				`Incorrect value for the ${ optionName } argument when registering a checkout block component. It was a ${ actualType }, but must be an array.`
-			);
-		}
-	} else if ( actualType !== expectedType ) {
+	if ( actualType !== expectedType ) {
 		throw new Error(
-			`Incorrect value for the ${ optionName } argument when registering a checkout block component. It was a ${ actualType }, but must be a ${ expectedType }.`
+			`Incorrect value for the ${ optionName } argument when registering a block component. It was a ${ actualType }, but must be a ${ expectedType }.`
 		);
 	}
 };
