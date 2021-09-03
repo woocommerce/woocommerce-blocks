@@ -34,31 +34,24 @@ const StockStatusFilterBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
 } ) => {
-	const hideOutOfStockItems = useMemo(
-		() => getSetting( 'hideOutOfStockItems', false ),
-		[]
+	const hideOutOfStockItems = getSetting( 'hideOutOfStockItems', false );
+	const { outofstock, ...otherStockStatusOptions } = getSetting(
+		'stockStatusOptions',
+		{}
 	);
-	const { outofstock, ...otherStockStatusOptions } = useMemo(
-		() => getSetting( 'stockStatusOptions', {} ),
-		[]
-	);
-	const STOCK_STATUS_OPTIONS = useMemo( () => {
-		return hideOutOfStockItems
-			? otherStockStatusOptions
-			: { outofstock, ...otherStockStatusOptions };
-	}, [ hideOutOfStockItems, otherStockStatusOptions, outofstock ] );
+	const STOCK_STATUS_OPTIONS = hideOutOfStockItems
+		? otherStockStatusOptions
+		: { outofstock, ...otherStockStatusOptions };
 
 	const [ checked, setChecked ] = useState( [] );
 	const [ displayedOptions, setDisplayedOptions ] = useState(
 		blockAttributes.isPreview ? previewOptions : []
 	);
 	// Filter added to handle if there are slugs without a corresponding name defined.
-	const initialOptions = useMemo( () => {
-		return Object.entries( STOCK_STATUS_OPTIONS )
-			.map( ( [ slug, name ] ) => ( { slug, name } ) )
-			.filter( ( status ) => !! status.name )
-			.sort( ( a, b ) => a.slug.localeCompare( b.slug ) );
-	}, [ STOCK_STATUS_OPTIONS ] );
+	const initialOptions = Object.entries( STOCK_STATUS_OPTIONS )
+		.map( ( [ slug, name ] ) => ( { slug, name } ) )
+		.filter( ( status ) => !! status.name )
+		.sort( ( a, b ) => a.slug.localeCompare( b.slug ) );
 
 	const [ queryState ] = useQueryStateByContext();
 	const [
