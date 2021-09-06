@@ -19,16 +19,26 @@ class InboxNotifications {
 		'automatewoo',
 		'mailchimp-for-woocommerce',
 		'mailpoet',
+		'klarna-payments-for-woocommerce',
+		'klarna-checkout-for-woocommerce',
+		// @todo Uncomment woocommerce-gutenberg-products-block before launch.
 		// phpcs:ignore Squiz.PHP.CommentedOutCode.Found
 		// 'woocommerce-gutenberg-products-block', // Disallow the notification if the store is using the feature plugin already.
+		'woocommerce-all-products-for-subscriptions',
 		'woocommerce-bookings',
 		'woocommerce-box-office',
 		'woocommerce-cart-add-ons',
 		'woocommerce-checkout-add-ons',
+		'woocommerce-checkout-field-editor',
 		'woocommerce-conditional-shipping-and-payments',
+		'woocommerce-dynamic-pricing',
 		'woocommerce-eu-vat-number',
+		'woocommerce-follow-up-emails',
 		'woocommerce-gateway-amazon-payments-advanced',
+		'woocommerce-gateway-authorize-net-cim',
+		'woocommerce-google-analytics-pro',
 		'woocommerce-memberships',
+		'woocommerce-paypal-payments',
 		'woocommerce-points-and-rewards',
 		'woocommerce-pre-orders',
 		'woocommerce-product-bundles',
@@ -67,6 +77,7 @@ class InboxNotifications {
 
 		$data_store = \WC_Data_Store::load( 'admin-note' );
 		$note_ids   = $data_store->get_notes_with_name( self::SURFACE_CART_CHECKOUT_NOTE_NAME );
+
 		foreach ( (array) $note_ids as $note_id ) {
 			$note         = Notes::get_note( $note_id );
 			$content_data = $note->get_content_data();
@@ -123,7 +134,7 @@ class InboxNotifications {
 		$note->add_action(
 			'learn_more',
 			'Learn More',
-			'https://woocommerce.com/woocommerce-checkout'
+			'https://woocommerce.com/checkout-blocks/'
 		);
 		$note->save();
 
