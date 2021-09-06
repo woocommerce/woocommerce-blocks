@@ -9,13 +9,13 @@ export const canMakePaymentWithFeaturesCheck = ( canMakePayment, features ) => (
 	return featuresSupportRequirements && canMakePayment( canPayArgument );
 };
 
-// Filter out payment methods by callbacks registered by extensions
+// Filter out payment methods by callbacks registered by extensions.
 export const canMakePaymentWithExtensions = (
 	canMakePayment,
 	extensionsCallbacks,
 	paymentMethodName
 ) => ( canPayArgument ) => {
-	// validate whether the payment method is available
+	// Validate whether the payment method is available.
 	let canPay = canMakePayment( canPayArgument );
 
 	if ( canPay ) {
