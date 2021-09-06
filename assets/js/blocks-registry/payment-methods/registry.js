@@ -68,30 +68,41 @@ export const registerExpressPaymentMethod = ( options ) => {
 };
 
 /**
- * Registers a callback for a specific payment method to determine if it can make payments
+ * Allows extension to register callbacks for specific payment methods to determine if they can make payments
  *
- * @param {string} paymentMethodName A unique string to identify the payment method client side.
- * @param {function():any } callback Callback defined by extensions to determine if the payment method is supported.
+ * @param {string} namespace A unique string to identify the extension registering payment method callbacks.
+ * @param {Record<string, function():any>} callbacks Example {stripe: () => {}, cheque: => {}}
  */
-export const registerPaymentMethodExtensionCallback = (
-	paymentMethodName,
-	callback
+export const registerPaymentMethodExtensionCallbacks = (
+	namespace,
+	callbacks
 ) => {
-	if ( typeof callback !== 'function' ) {
+	if (
+		Object.values( callbacks ).some(
+			( callback ) => typeof callback !== 'function'
+		)
+	) {
+		const nonFunctionCallbacks = Object.keys( callbacks ).filter(
+			( key ) => typeof callbacks[ key ] !== 'function'
+		);
+
 		throw new Error(
-			'Callback provided to registerPaymentMethodExtensionCallback must be a function'
+			`All callbacks provided to registerPaymentMethodExtensionCallbacks must be functions. The callbacks for :${ nonFunctionCallbacks.join(
+				', '
+			) } were not functions. Error occurred when trying to register callbacks for the ${ namespace } namespace.`
 		);
 	}
 
-	if (
-		! Array.isArray(
-			canMakePaymentExtensionsCallbacks[ paymentMethodName ]
-		)
-	) {
-		canMakePaymentExtensionsCallbacks[ paymentMethodName ] = [];
-	}
+	// Set namespace up as an empty object
+	canMakePaymentExtensionsCallbacks[ namespace ] = {};
 
-	canMakePaymentExtensionsCallbacks[ paymentMethodName ].push( callback );
+	Object.entries( callbacks ).forEach(
+		( [ paymentMethodName, callback ] ) => {
+			canMakePaymentExtensionsCallbacks[ namespace ][
+				paymentMethodName
+			] = callback;
+		}
+	);
 };
 
 export const __experimentalDeRegisterPaymentMethod = ( paymentMethodName ) => {

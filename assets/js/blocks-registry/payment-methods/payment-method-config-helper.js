@@ -9,18 +9,39 @@ export const canMakePaymentWithFeaturesCheck = ( canMakePayment, features ) => (
 	return featuresSupportRequirements && canMakePayment( canPayArgument );
 };
 
-// Filter out payment methods by callbacks registered by extensions.
+// Filter out payment methods by callbacks registered by extensions
 export const canMakePaymentWithExtensions = (
 	canMakePayment,
-	extensionsCallbacks
+	extensionsCallbacks,
+	paymentMethodName
 ) => ( canPayArgument ) => {
-	// Check whether the payment method is available.
+	// validate whether the payment method is available
 	let canPay = canMakePayment( canPayArgument );
 
 	if ( canPay ) {
-		canPay = extensionsCallbacks.every( ( canMakePaymentCallback ) =>
-			canMakePaymentCallback( canPayArgument )
+		const namespacedCallbacks = {};
+		Object.entries( extensionsCallbacks ).forEach(
+			( [ namespace, callbacks ] ) => {
+				if ( typeof callbacks[ paymentMethodName ] === 'function' ) {
+					namespacedCallbacks[ namespace ] =
+						callbacks[ paymentMethodName ];
+				}
+			}
 		);
+		canPay = Object.keys( namespacedCallbacks ).every( ( namespace ) => {
+			try {
+				return namespacedCallbacks[ namespace ]( canPayArgument );
+			} catch ( err ) {
+				// eslint-disable-next-line no-console
+				console.error(
+					`Error when executing callback for ${ paymentMethodName } in ${ namespace }`,
+					err
+				);
+				// every expects a return value at the end of every arrow function and
+				// this ensures that the error is ignored when computing the whole result
+				return true;
+			}
+		} );
 	}
 
 	return canPay;
