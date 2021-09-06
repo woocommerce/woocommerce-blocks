@@ -108,7 +108,7 @@ class InboxNotifications {
 		);
 		$note->set_content(
 			__(
-				'Increase your stores revenue with the conversion optimized Cart & Checkout WooCommerce blocks available in the WooCommerce Blocks extension.',
+				"Increase your store's revenue with the conversion optimized Cart & Checkout WooCommerce blocks available in the WooCommerce Blocks extension.",
 				'woo-gutenberg-products-block'
 			)
 		);
