@@ -52,12 +52,9 @@ const FrontendBlock = ( {
 					'Please read and accept the terms and conditions.',
 					'woo-gutenberg-products-block'
 				),
-				hidden: true,
+				hidden: false,
 			} );
 		}
-		return () => {
-			clearValidationError();
-		};
 	}, [
 		checkbox,
 		checked,
