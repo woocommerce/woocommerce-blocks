@@ -76,7 +76,7 @@ class Bootstrap {
 		$this->register_payment_methods();
 
 		add_action(
-			'woocommerce_init',
+			'admin_init',
 			function() {
 				InboxNotifications::create_surface_cart_checkout_blocks_notification();
 			},
