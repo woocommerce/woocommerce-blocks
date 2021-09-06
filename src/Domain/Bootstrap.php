@@ -74,7 +74,15 @@ class Bootstrap {
 		}
 		$this->register_dependencies();
 		$this->register_payment_methods();
-		InboxNotifications::create_surface_cart_checkout_blocks_notification();
+
+		add_action(
+			'woocommerce_init',
+			function() {
+				InboxNotifications::create_surface_cart_checkout_blocks_notification();
+			},
+			10,
+			0
+		);
 
 		$is_rest = wc()->is_rest_api_request();
 
