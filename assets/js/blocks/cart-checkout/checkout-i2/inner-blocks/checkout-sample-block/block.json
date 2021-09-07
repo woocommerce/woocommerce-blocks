@@ -25,6 +25,5 @@
 		"woocommerce/checkout-fields-block",
 		"woocommerce/checkout-totals-block"
 	],
-	"textdomain": "woo-gutenberg-products-block",
-	"editorScript": "file:../../../../../../../build/checkout-blocks/sample.js"
+	"textdomain": "woo-gutenberg-products-block"
 }
