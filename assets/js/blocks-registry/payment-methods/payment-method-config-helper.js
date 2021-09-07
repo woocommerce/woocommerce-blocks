@@ -38,7 +38,7 @@ export const canMakePaymentWithExtensions = (
 					err
 				);
 				// every expects a return value at the end of every arrow function and
-				// this ensures that the error is ignored when computing the whole result
+				// this ensures that the error is ignored when computing the whole result.
 				return true;
 			}
 		} );
