@@ -50,7 +50,7 @@ export default class PaymentMethodConfig {
 			this.canMakePaymentFromConfig,
 			this.supports.features
 		);
-
+// Loop through all calbacks to check if there are any registered for this payment method.
 		return Object.values( extensionsConfig.canMakePayment ).some(
 			( callbacks ) => this.name in callbacks
 		)
