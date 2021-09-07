@@ -15,7 +15,7 @@ export const canMakePaymentWithExtensions = (
 	extensionsCallbacks,
 	paymentMethodName
 ) => ( canPayArgument ) => {
-	// Validate whether the payment method is available.
+	// Validate whether the payment method is available based on its own criteria first.
 	let canPay = canMakePayment( canPayArgument );
 
 	if ( canPay ) {
