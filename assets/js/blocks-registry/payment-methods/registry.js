@@ -93,7 +93,7 @@ export const registerPaymentMethodExtensionCallbacks = (
 		);
 	}
 
-	// Set namespace up as an empty object
+	// Set namespace up as an empty object.
 	canMakePaymentExtensionsCallbacks[ namespace ] = {};
 
 	Object.entries( callbacks ).forEach(
