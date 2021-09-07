@@ -3,11 +3,22 @@
  */
 import { getBlockTypes } from '@wordpress/blocks';
 
-export const getRegisteredBlockNamesByParent = (
-	parentBlockName: string
-): string[] =>
-	getBlockTypes()
+// List of core block types to allow in inner block areas.
+const coreBlockTypes = [
+	'core/paragraph',
+	'core/paragraph',
+	'core/image',
+	'core/separator',
+];
+
+/**
+ * Gets a list of allowed blocks types under a specific parent block type.
+ */
+export const getAllowedBlocks = ( block: string ): string[] => [
+	...getBlockTypes()
 		.filter( ( blockType ) =>
-			( blockType?.parent || [] ).includes( parentBlockName )
+			( blockType?.parent || [] ).includes( block )
 		)
-		.map( ( { name } ) => name );
+		.map( ( { name } ) => name ),
+	...coreBlockTypes,
+];

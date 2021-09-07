@@ -8,17 +8,25 @@ import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
  */
 import './editor.scss';
 import { useForcedLayout } from '../use-forced-layout';
-import { getRegisteredBlockNamesByParent } from '../editor-utils';
+import { getAllowedBlocks } from '../editor-utils';
 
-export const AdditionalFields = ( { area }: { area: string } ): JSX.Element => {
+export const AdditionalFields = ( {
+	block,
+}: {
+	// Name of the parent block.
+	block: string;
+} ): JSX.Element => {
 	const { 'data-block': clientId } = useBlockProps();
-	const template = useForcedLayout( {
+	const allowedBlocks = getAllowedBlocks( block );
+
+	useForcedLayout( {
 		clientId,
-		template: getRegisteredBlockNamesByParent( area ),
+		template: allowedBlocks,
 	} );
+
 	return (
 		<div className="wc-block-checkout__additional_fields">
-			<InnerBlocks allowedBlocks={ template } />
+			<InnerBlocks allowedBlocks={ allowedBlocks } />
 		</div>
 	);
 };
