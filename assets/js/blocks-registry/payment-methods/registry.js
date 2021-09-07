@@ -87,7 +87,7 @@ export const registerPaymentMethodExtensionCallbacks = (
 		);
 
 		throw new Error(
-			`All callbacks provided to registerPaymentMethodExtensionCallbacks must be functions. The callbacks for :${ nonFunctionCallbacks.join(
+			`All callbacks provided to registerPaymentMethodExtensionCallbacks must be functions. The callbacks for: ${ nonFunctionCallbacks.join(
 				', '
 			) } were not functions. Error occurred when trying to register callbacks for the ${ namespace } namespace.`
 		);
