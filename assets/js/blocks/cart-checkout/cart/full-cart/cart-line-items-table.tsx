@@ -35,11 +35,6 @@ const CartLineItemsTable = ( {
 								HTMLElement
 							) {
 								removedRow.nextElementSibling.focus();
-							} else if (
-								removedRow?.previousElementSibling instanceof
-								HTMLElement
-							) {
-								removedRow.previousElementSibling.focus();
 							}
 						} }
 						tabIndex={ -1 }
