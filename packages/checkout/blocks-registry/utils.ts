@@ -4,6 +4,11 @@
 import { isObject } from '@woocommerce/types';
 
 /**
+ * Internal dependencies
+ */
+import { hasInnerBlocks } from './get-registered-blocks';
+
+/**
  * Asserts that an option is of the given type. Otherwise, throws an error.
  *
  * @throws Will throw an error if the type of the option doesn't match the expected type.
@@ -32,6 +37,34 @@ export const assertBlockName = ( blockName: string ): void => {
 	if ( ! blockName ) {
 		throw new Error(
 			`Value for the blockName argument must not be empty.`
+		);
+	}
+};
+
+/**
+ * Validate the block parent.
+ *
+ * @throws Will throw an error if the block name is invalid.
+ */
+export const assertBlockParent = ( blockParent: string | string[] ): void => {
+	if ( typeof blockParent !== 'string' && ! Array.isArray( blockParent ) ) {
+		throw new Error(
+			`Incorrect value for the parent argument when registering a checkout block. It was a ${ typeof blockParent }, but must be a string or array of strings.`
+		);
+	}
+
+	if ( typeof blockParent === 'string' && ! hasInnerBlocks( blockParent ) ) {
+		throw new Error(
+			`When registering a checkout block, the parent must be a valid inner block area.`
+		);
+	}
+
+	if (
+		Array.isArray( blockParent ) &&
+		! blockParent.some( ( parent ) => hasInnerBlocks( parent ) )
+	) {
+		throw new Error(
+			`When registering a checkout block, the parent must be a valid inner block area.`
 		);
 	}
 };

@@ -21,7 +21,6 @@
 	"parent": [
 		"woocommerce/checkout-shipping-address-block",
 		"woocommerce/checkout-billing-address-block",
-		"woocommerce/checkout-contact-information-block",
 		"woocommerce/checkout-fields-block",
 		"woocommerce/checkout-totals-block"
 	],

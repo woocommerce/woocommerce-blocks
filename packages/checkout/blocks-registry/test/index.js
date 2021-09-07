@@ -18,17 +18,63 @@ describe( 'checkout blocks registry', () => {
 		};
 		it( 'throws an error when registered block is missing `blockName`', () => {
 			expect(
-				invokeTest( { metadata: { name: null }, component } )
+				invokeTest( {
+					metadata: {
+						name: null,
+						parent: innerBlockAreas.CHECKOUT_FIELDS,
+					},
+					component,
+				} )
 			).toThrowError( /blockName/ );
 			expect(
-				invokeTest( { metadata: { name: '' }, component } )
+				invokeTest( {
+					metadata: {
+						name: '',
+						parent: innerBlockAreas.CHECKOUT_FIELDS,
+					},
+					component,
+				} )
 			).toThrowError( /blockName/ );
+		} );
+		it( 'throws an error when registered block is missing a valid parent', () => {
+			expect(
+				invokeTest( {
+					metadata: {
+						name: 'test/block-name',
+						parent: [],
+					},
+					component,
+				} )
+			).toThrowError( /parent/ );
+			expect(
+				invokeTest( {
+					metadata: {
+						name: 'test/block-name',
+						parent: 'invalid-parent',
+					},
+					component,
+				} )
+			).toThrowError( /parent/ );
+			expect(
+				invokeTest( {
+					metadata: {
+						name: 'test/block-name',
+						parent: [
+							'invalid-parent',
+							innerBlockAreas.CHECKOUT_FIELDS,
+						],
+					},
+					component,
+				} )
+			).not.toThrowError( /parent/ );
 		} );
 		it( 'throws an error when registered block is missing `component`', () => {
 			expect(
 				invokeTest( {
-					metadata: { name: 'test/block-name' },
-					component,
+					metadata: {
+						name: 'test/block-name',
+						parent: innerBlockAreas.CHECKOUT_FIELDS,
+					},
 				} )
 			).toThrowError( /component/ );
 		} );
@@ -37,7 +83,7 @@ describe( 'checkout blocks registry', () => {
 	describe( 'getRegisteredBlocks', () => {
 		it( 'gets an empty array when checkout area has no registered blocks', () => {
 			expect(
-				getRegisteredBlocks( innerBlockAreas.CHECKOUT_FIELDS )
+				getRegisteredBlocks( innerBlockAreas.CONTACT_INFORMATION )
 			).toEqual( [] );
 		} );
 		it( 'gets an empty array when the area is not defined', () => {

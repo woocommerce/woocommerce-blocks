@@ -7,7 +7,12 @@ import { registerBlockComponent } from '@woocommerce/blocks-registry';
  * Internal dependencies
  */
 import type { CheckoutBlockOptions } from './types';
-import { assertBlockName, assertOption, assertBlockComponent } from './utils';
+import {
+	assertBlockName,
+	assertBlockParent,
+	assertOption,
+	assertBlockComponent,
+} from './utils';
 import { registeredBlocks } from './registered-blocks';
 
 /**
@@ -18,6 +23,7 @@ export const registerCheckoutBlock = (
 ): void => {
 	assertOption( options, 'metadata', 'object' );
 	assertBlockName( options.metadata.name );
+	assertBlockParent( options.metadata.parent );
 	assertBlockComponent( options, 'component' );
 
 	/**
