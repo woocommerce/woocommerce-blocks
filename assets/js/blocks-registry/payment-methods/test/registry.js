@@ -9,16 +9,6 @@ import { registerPaymentMethodExtensionCallbacks } from '@woocommerce/blocks-reg
 import { canMakePaymentExtensionsCallbacks } from '../extensions-config';
 
 describe( 'registerPaymentMethodExtensionCallbacks', () => {
-	beforeAll( () => {
-		// eslint-disable-next-line no-console
-		console.error = jest.fn();
-	} );
-
-	beforeEach( () => {
-		// eslint-disable-next-line no-console
-		console.error.mockReset();
-	} );
-
 	it( 'Logs an error to console if namespace is already registered', () => {
 		registerPaymentMethodExtensionCallbacks(
 			'woocommerce-marketplace-extension',
@@ -26,14 +16,17 @@ describe( 'registerPaymentMethodExtensionCallbacks', () => {
 				cod: () => false,
 			}
 		);
+
 		// eslint-disable-next-line no-console
-		expect( console.error ).not.toBeCalled();
+		expect( console ).not.toHaveErrored();
 		registerPaymentMethodExtensionCallbacks(
 			'woocommerce-marketplace-extension',
 			{
 				cod: () => false,
 			}
 		);
+		expect( console ).toHaveErrored();
+
 		// eslint-disable-next-line no-console
 		expect( console.error ).toHaveBeenCalledTimes( 1 );
 	} );
@@ -46,8 +39,9 @@ describe( 'registerPaymentMethodExtensionCallbacks', () => {
 				cheque: () => true,
 			}
 		);
+
 		// eslint-disable-next-line no-console
-		expect( console.error ).toHaveBeenCalledTimes( 1 );
+		expect( console ).toHaveErrored();
 		expect( canMakePaymentExtensionsCallbacks ).toHaveProperty(
 			'other-woocommerce-marketplace-extension'
 		);
