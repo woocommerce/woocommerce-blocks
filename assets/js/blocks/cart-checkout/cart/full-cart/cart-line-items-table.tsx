@@ -35,6 +35,13 @@ const CartLineItemsTable = ( {
 								HTMLElement
 							) {
 								removedRow.nextElementSibling.focus();
+							} else {
+								const tableElement = removedRow?.closest(
+									'.wc-block-cart-items'
+								);
+								if ( tableElement instanceof HTMLElement ) {
+									tableElement.focus();
+								}
 							}
 						} }
 						tabIndex={ -1 }
@@ -43,7 +50,7 @@ const CartLineItemsTable = ( {
 		  } );
 
 	return (
-		<table className="wc-block-cart-items">
+		<table className="wc-block-cart-items" tabIndex={ -1 }>
 			<thead>
 				<tr className="wc-block-cart-items__header">
 					<th className="wc-block-cart-items__header-image">
