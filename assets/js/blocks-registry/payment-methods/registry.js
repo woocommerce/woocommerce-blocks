@@ -80,7 +80,7 @@ export const registerPaymentMethodExtensionCallbacks = (
 	if ( canMakePaymentExtensionsCallbacks[ namespace ] ) {
 		// eslint-disable-next-line no-console
 		console.error(
-			`The namespace provided to registerPaymentMethodExtensionCallbacks must be unique. Callbacks have already been registered for the ${ namespace } namespace .`
+			`The namespace provided to registerPaymentMethodExtensionCallbacks must be unique. Callbacks have already been registered for the ${ namespace } namespace.`
 		);
 	} else {
 		// Set namespace up as an empty object.
@@ -95,7 +95,7 @@ export const registerPaymentMethodExtensionCallbacks = (
 				} else {
 					// eslint-disable-next-line no-console
 					console.error(
-						`All callbacks provided to registerPaymentMethodExtensionCallbacks must be functions. The callback for the ${ paymentMethodName } payment method in the ${ namespace} namespace was not a function.`
+						`All callbacks provided to registerPaymentMethodExtensionCallbacks must be functions. The callback for the ${ paymentMethodName } payment method in the ${ namespace } namespace was not a function.`
 					);
 				}
 			}
