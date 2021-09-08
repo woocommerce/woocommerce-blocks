@@ -45,12 +45,13 @@ export default class PaymentMethodConfig {
 		this.canMakePaymentFromConfig = config.canMakePayment;
 	}
 
+	// canMakePayment is calculated each time based on data that modifies outside of the class (eg: cart data).
 	get canMakePayment() {
 		const canPay = canMakePaymentWithFeaturesCheck(
 			this.canMakePaymentFromConfig,
 			this.supports.features
 		);
-		// Loop through all calbacks to check if there are any registered for this payment method.
+		// Loop through all callbacks to check if there are any registered for this payment method.
 		return Object.values( extensionsConfig.canMakePayment ).some(
 			( callbacks ) => this.name in callbacks
 		)

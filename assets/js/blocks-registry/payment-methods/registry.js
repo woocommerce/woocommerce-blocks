@@ -77,32 +77,30 @@ export const registerPaymentMethodExtensionCallbacks = (
 	namespace,
 	callbacks
 ) => {
-	if (
-		Object.values( callbacks ).some(
-			( callback ) => typeof callback !== 'function'
-		)
-	) {
-		const nonFunctionCallbacks = Object.keys( callbacks ).filter(
-			( key ) => typeof callbacks[ key ] !== 'function'
+	if ( canMakePaymentExtensionsCallbacks[ namespace ] ) {
+		// eslint-disable-next-line no-console
+		console.error(
+			`The namespace provided to registerPaymentMethodExtensionCallbacks must be unique. Callbacks have already been registered for the ${ namespace } namespace .`
 		);
+	} else {
+		// Set namespace up as an empty object.
+		canMakePaymentExtensionsCallbacks[ namespace ] = {};
 
-		throw new Error(
-			`All callbacks provided to registerPaymentMethodExtensionCallbacks must be functions. The callbacks for: ${ nonFunctionCallbacks.join(
-				', '
-			) } were not functions. Error occurred when trying to register callbacks for the ${ namespace } namespace.`
+		Object.entries( callbacks ).forEach(
+			( [ paymentMethodName, callback ] ) => {
+				if ( typeof callback === 'function' ) {
+					canMakePaymentExtensionsCallbacks[ namespace ][
+						paymentMethodName
+					] = callback;
+				} else {
+					// eslint-disable-next-line no-console
+					console.error(
+						`All callbacks provided to registerPaymentMethodExtensionCallbacks must be functions. The callback for the ${ paymentMethodName } payment method was not a function. Error occurred when trying to register callbacks for the ${ namespace } namespace.`
+					);
+				}
+			}
 		);
 	}
-
-	// Set namespace up as an empty object.
-	canMakePaymentExtensionsCallbacks[ namespace ] = {};
-
-	Object.entries( callbacks ).forEach(
-		( [ paymentMethodName, callback ] ) => {
-			canMakePaymentExtensionsCallbacks[ namespace ][
-				paymentMethodName
-			] = callback;
-		}
-	);
 };
 
 export const __experimentalDeRegisterPaymentMethod = ( paymentMethodName ) => {
