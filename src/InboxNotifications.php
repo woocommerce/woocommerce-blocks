@@ -109,7 +109,6 @@ class InboxNotifications {
 
 		// At this point, the store meets all the criteria to be shown the notice! Woo!
 		$note = new Note();
-		$note->set_date_created( time() );
 		$note->set_title(
 			__(
 				'Introducing the Cart and Checkout blocks!',
@@ -120,11 +119,6 @@ class InboxNotifications {
 			__(
 				"Increase your store's revenue with the conversion optimized Cart & Checkout WooCommerce blocks available in the WooCommerce Blocks extension.",
 				'woo-gutenberg-products-block'
-			)
-		);
-		$note->set_content_data(
-			(object) array(
-				'getting_started' => true,
 			)
 		);
 		$note->set_type( Note::E_WC_ADMIN_NOTE_INFORMATIONAL );
