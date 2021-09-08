@@ -39,7 +39,6 @@ class InboxNotifications {
 		'woocommerce-google-analytics-pro',
 		'woocommerce-memberships',
 		'woocommerce-paypal-payments',
-		'woocommerce-points-and-rewards',
 		'woocommerce-pre-orders',
 		'woocommerce-product-bundles',
 		'woocommerce-shipping-fedex',
