@@ -95,7 +95,7 @@ export const registerPaymentMethodExtensionCallbacks = (
 				} else {
 					// eslint-disable-next-line no-console
 					console.error(
-						`All callbacks provided to registerPaymentMethodExtensionCallbacks must be functions. The callback for the ${ paymentMethodName } payment method was not a function. Error occurred when trying to register callbacks for the ${ namespace } namespace.`
+						`All callbacks provided to registerPaymentMethodExtensionCallbacks must be functions. The callback for the ${ paymentMethodName } payment method in the ${ namespace} namespace was not a function.`
 					);
 				}
 			}
