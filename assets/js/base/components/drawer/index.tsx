@@ -52,7 +52,7 @@ const Drawer = ( {
 				}
 			) }
 			closeButtonLabel={ __(
-				'Close mini cart.',
+				'Close mini cart',
 				'woo-gutenberg-products-block'
 			) }
 		>
