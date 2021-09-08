@@ -5,8 +5,10 @@ export type ValidationContextError = {
 
 export type ValidationData = {
 	hasValidationErrors: boolean;
-	getValidationError: () => ValidationContextError;
-	clearValidationError: () => void;
-	hideValidationError: () => void;
-	setValidationError: ( error: ValidationContextError ) => void;
+	getValidationError: ( validationErrorId: string ) => ValidationContextError;
+	clearValidationError: ( validationErrorId: string ) => void;
+	hideValidationError: ( validationErrorId: string ) => void;
+	setValidationErrors: (
+		errors: Record< string, ValidationContextError >
+	) => void;
 };

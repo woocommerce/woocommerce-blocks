@@ -23,7 +23,7 @@ const FrontendBlock = ( {
 	text: string;
 	checkbox: boolean;
 	instanceId: string;
-	validation: ( validationErrorId: string ) => ValidationData;
+	validation: ValidationData;
 } ): JSX.Element => {
 	const [ checked, setChecked ] = useState( false );
 	// @todo Checkout i2 - Pass validation context to Inner Blocks to avoid exporting in a public package.
@@ -32,11 +32,11 @@ const FrontendBlock = ( {
 	const validationErrorId = 'terms-and-conditions-' + instanceId;
 	const {
 		getValidationError,
-		setValidationError,
+		setValidationErrors,
 		clearValidationError,
-	} = validation( validationErrorId );
+	} = validation;
 
-	const error = getValidationError() || {};
+	const error = getValidationError( validationErrorId ) || {};
 	const hasError = error.message && ! error.hidden;
 
 	// Track validation errors for this input.
@@ -45,22 +45,27 @@ const FrontendBlock = ( {
 			return;
 		}
 		if ( checked ) {
-			clearValidationError();
+			clearValidationError( validationErrorId );
 		} else {
-			setValidationError( {
-				message: __(
-					'Please read and accept the terms and conditions.',
-					'woo-gutenberg-products-block'
-				),
-				hidden: false,
+			setValidationErrors( {
+				[ validationErrorId ]: {
+					message: __(
+						'Please read and accept the terms and conditions.',
+						'woo-gutenberg-products-block'
+					),
+					hidden: true,
+				},
 			} );
 		}
+		return () => {
+			clearValidationError( validationErrorId );
+		};
 	}, [
 		checkbox,
 		checked,
 		validationErrorId,
 		clearValidationError,
-		setValidationError,
+		setValidationErrors,
 	] );
 
 	return (
