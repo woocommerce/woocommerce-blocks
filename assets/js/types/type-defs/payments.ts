@@ -23,6 +23,11 @@ export interface Supports {
 	savePaymentInfo?: boolean;
 }
 
+// we assign a value in the class for supports.features
+export interface SupportsInConstructor extends Supports {
+	features: string[];
+}
+
 export interface CanMakePaymentArgument {
 	cartTotals: CartTotals;
 	cartNeedsShipping: boolean;
@@ -74,3 +79,26 @@ export type PaymentMethods =
 export type ExpressPaymentMethods =
 	| Record< string, ExpressPaymentMethodConfig >
 	| EmptyObjectType;
+
+export interface PaymentMethodConfigClass {
+	name: string;
+	content: ReactNode;
+	edit: ReactNode;
+	paymentMethodId?: string;
+	supports: SupportsInConstructor;
+	icons?: ObjectType;
+	label: ReactNode;
+	ariaLabel: string;
+	placeOrderButtonLabel?: string;
+	savedTokenComponent?: ReactNode;
+	canMakePaymentFromConfig: CanMakePayment;
+}
+
+export interface ExpressPaymentMethodConfigClass {
+	name: string;
+	content: ReactNode;
+	edit: ReactNode;
+	paymentMethodId?: string;
+	supports: SupportsInConstructor;
+	canMakePayment: CanMakePayment;
+}

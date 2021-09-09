@@ -6,9 +6,10 @@ import type { ReactNode } from 'react';
 import type {
 	PaymentMethodConfig as PaymentMethodConfigType,
 	ObjectType,
-	Supports,
+	SupportsInConstructor,
 	CanMakePayment,
 	CanMakePaymentArgument,
+	PaymentMethodConfigClass,
 } from '@woocommerce/type-defs/payments';
 
 /**
@@ -19,24 +20,6 @@ import {
 	canMakePaymentWithExtensions,
 } from './payment-method-config-helper';
 import { extensionsConfig, PaymentMethodName } from './extensions-config';
-
-// we assign a value in the class for supports.features
-interface SupportsConfig extends Supports {
-	features: string[];
-}
-export interface PaymentMethodConfigClass {
-	name: string;
-	content: ReactNode;
-	edit: ReactNode;
-	paymentMethodId?: string;
-	supports: SupportsConfig;
-	icons?: ObjectType;
-	label: ReactNode;
-	ariaLabel: string;
-	placeOrderButtonLabel?: string;
-	savedTokenComponent?: ReactNode;
-	canMakePaymentFromConfig: CanMakePayment;
-}
 /**
  * Internal dependencies
  */
@@ -55,7 +38,7 @@ export default class PaymentMethodConfig implements PaymentMethodConfigClass {
 	public content: ReactNode;
 	public edit: ReactNode;
 	public paymentMethodId?: string;
-	public supports: SupportsConfig;
+	public supports: SupportsInConstructor;
 	public icons?: ObjectType;
 	public label: ReactNode;
 	public ariaLabel: string;
