@@ -14,7 +14,7 @@ import './style.scss';
 
 interface PaymentMethodIconsProps {
 	icons: PaymentMethodIconType[];
-	align: string;
+	align?: 'left' | 'right' | 'center';
 }
 /**
  * For a given list of icons, render each as a list item, using common icons

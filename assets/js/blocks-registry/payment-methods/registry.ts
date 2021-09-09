@@ -1,29 +1,38 @@
 /**
- * @typedef {import('@woocommerce/type-defs/payments').PaymentMethodRegistrationOptions} PaymentMethodRegistrationOptions
- * @typedef {import('@woocommerce/type-defs/payments').ExpressPaymentMethodRegistrationOptions} ExpressPaymentMethodRegistrationOptions
- */
-
-/**
  * External dependencies
  */
 import deprecated from '@wordpress/deprecated';
+import type {
+	PaymentMethodConfig as PaymentMethodConfigType,
+	ExpressPaymentMethodConfig as ExpressPaymentMethodConfigType,
+	CanMakePayment,
+} from '@woocommerce/type-defs/payments';
 
 /**
  * Internal dependencies
  */
-import { default as PaymentMethodConfig } from './payment-method-config';
+import {
+	default as PaymentMethodConfig,
+	PaymentMethodConfigClass,
+} from './payment-method-config';
 import { default as ExpressPaymentMethodConfig } from './express-payment-method-config';
 import { canMakePaymentExtensionsCallbacks } from './extensions-config';
-const paymentMethods = {};
-const expressPaymentMethods = {};
+
+type LegacyRegisterPaymentMethodFunction = ( config: unknown ) => unknown;
+type LegacyRegisterExpessPaymentMethodFunction = ( config: unknown ) => unknown;
+type PaymentMethods = Record< string, PaymentMethodConfigClass >;
+type ExpressPaymentMethods = Record< string, unknown >; // unknown should be type of class
+
+const paymentMethods: PaymentMethods = {};
+const expressPaymentMethods: ExpressPaymentMethods = {};
 
 /**
  * Register a regular payment method.
- *
- * @param {PaymentMethodRegistrationOptions} options Configuration options for the payment method.
  */
-export const registerPaymentMethod = ( options ) => {
-	let paymentMethodConfig;
+export const registerPaymentMethod = (
+	options: PaymentMethodConfigType | LegacyRegisterPaymentMethodFunction
+): void => {
+	let paymentMethodConfig: PaymentMethodConfigClass | unknown;
 	if ( typeof options === 'function' ) {
 		// Legacy fallback for previous API, where client passes a function:
 		// registerPaymentMethod( ( Config ) => new Config( options ) );
@@ -44,10 +53,12 @@ export const registerPaymentMethod = ( options ) => {
 
 /**
  * Register an express payment method.
- *
- * @param {ExpressPaymentMethodRegistrationOptions} options Configuration options for the payment method.
  */
-export const registerExpressPaymentMethod = ( options ) => {
+export const registerExpressPaymentMethod = (
+	options:
+		| ExpressPaymentMethodConfigType
+		| LegacyRegisterExpessPaymentMethodFunction
+): void => {
 	let paymentMethodConfig;
 	if ( typeof options === 'function' ) {
 		// Legacy fallback for previous API, where client passes a function:
@@ -69,14 +80,11 @@ export const registerExpressPaymentMethod = ( options ) => {
 
 /**
  * Allows extension to register callbacks for specific payment methods to determine if they can make payments
- *
- * @param {string} namespace A unique string to identify the extension registering payment method callbacks.
- * @param {Record<string, function():any>} callbacks Example {stripe: () => {}, cheque: => {}}
  */
 export const registerPaymentMethodExtensionCallbacks = (
-	namespace,
-	callbacks
-) => {
+	namespace: string,
+	callbacks: Record< string, CanMakePayment >
+): void => {
 	if ( canMakePaymentExtensionsCallbacks[ namespace ] ) {
 		// eslint-disable-next-line no-console
 		console.error(
@@ -103,20 +111,22 @@ export const registerPaymentMethodExtensionCallbacks = (
 	}
 };
 
-export const __experimentalDeRegisterPaymentMethod = ( paymentMethodName ) => {
+export const __experimentalDeRegisterPaymentMethod = (
+	paymentMethodName: string
+): void => {
 	delete paymentMethods[ paymentMethodName ];
 };
 
 export const __experimentalDeRegisterExpressPaymentMethod = (
-	paymentMethodName
-) => {
+	paymentMethodName: string
+): void => {
 	delete expressPaymentMethods[ paymentMethodName ];
 };
 
-export const getPaymentMethods = () => {
+export const getPaymentMethods = (): PaymentMethods => {
 	return paymentMethods;
 };
 
-export const getExpressPaymentMethods = () => {
+export const getExpressPaymentMethods = (): ExpressPaymentMethods => {
 	return expressPaymentMethods;
 };
