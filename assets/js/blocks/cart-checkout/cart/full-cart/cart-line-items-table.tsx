@@ -3,7 +3,8 @@
  */
 import { __ } from '@wordpress/i18n';
 import { CartResponseItem } from '@woocommerce/type-defs/cart-response';
-import { useRef } from '@wordpress/element';
+import { createRef, useEffect, useRef } from '@wordpress/element';
+import type { RefObject } from 'react';
 
 /**
  * Internal dependencies
@@ -19,30 +20,47 @@ interface CartLineItemsTableProps {
 	isLoading: boolean;
 }
 
+const setRefs = ( lineItems: CartResponseItem[] ) => {
+	const refs = {} as Record< string, RefObject< HTMLTableRowElement > >;
+	lineItems.forEach( ( { key } ) => {
+		refs[ key ] = createRef();
+	} );
+	return refs;
+};
+
 const CartLineItemsTable = ( {
 	lineItems = [],
 	isLoading = false,
 }: CartLineItemsTableProps ): JSX.Element => {
 	const tableRef = useRef< HTMLTableElement | null >( null );
+	const rowRefs = useRef( setRefs( lineItems ) );
+	useEffect( () => {
+		rowRefs.current = setRefs( lineItems );
+	}, [ lineItems ] );
+
+	const onRemoveRow = ( nextItemKey: string | null ) => () => {
+		if (
+			rowRefs?.current &&
+			nextItemKey &&
+			rowRefs.current[ nextItemKey ].current instanceof HTMLElement
+		) {
+			( rowRefs.current[ nextItemKey ].current as HTMLElement ).focus();
+		} else if ( tableRef.current instanceof HTMLElement ) {
+			tableRef.current.focus();
+		}
+	};
+
 	const products = isLoading
 		? placeholderRows
-		: lineItems.map( ( lineItem ) => {
+		: lineItems.map( ( lineItem, i ) => {
+				const nextItemKey =
+					lineItems.length > i + 1 ? lineItems[ i + 1 ].key : null;
 				return (
 					<CartLineItemRow
 						key={ lineItem.key }
 						lineItem={ lineItem }
-						onRemove={ ( removedRow: HTMLElement | null ) => {
-							if (
-								removedRow?.nextElementSibling instanceof
-								HTMLElement
-							) {
-								removedRow.nextElementSibling.focus();
-							} else if (
-								tableRef.current instanceof HTMLElement
-							) {
-								tableRef.current.focus();
-							}
-						} }
+						onRemove={ onRemoveRow( nextItemKey ) }
+						ref={ rowRefs.current[ lineItem.key ] }
 						tabIndex={ -1 }
 					/>
 				);
