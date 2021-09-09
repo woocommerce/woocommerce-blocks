@@ -49,6 +49,10 @@ class MiniCart extends AbstractBlock {
 	 * @return array|string
 	 */
 	protected function get_block_type_script( $key = null ) {
+		if ( is_cart() || is_checkout() ) {
+			return;
+		}
+
 		$script = [
 			'handle'       => 'wc-' . $this->block_name . '-block-frontend',
 			'path'         => $this->asset_api->get_block_asset_build_path( $this->block_name . '-frontend' ),
@@ -65,6 +69,10 @@ class MiniCart extends AbstractBlock {
 	 *                           not in the post content on editor load.
 	 */
 	protected function enqueue_data( array $attributes = [] ) {
+		if ( is_cart() || is_checkout() ) {
+			return;
+		}
+
 		parent::enqueue_data( $attributes );
 
 		// Hydrate the following data depending on admin or frontend context.
@@ -185,20 +193,47 @@ class MiniCart extends AbstractBlock {
 		$cart_contents_count = $cart->get_cart_contents_count();
 		$cart_contents       = $cart->get_cart();
 
-		// Force mobile styles.
-		return '<div class="wc-block-mini-cart is-mobile">
-			<button class="wc-block-mini-cart__button">' .
-				sprintf(
-					/* translators: %d is the number of products in the cart. */
-					_n(
-						'%d product',
-						'%d products',
-						$cart_contents_count,
-						'woo-gutenberg-products-block'
-					),
-					$cart_contents_count
-				) . '</button>
-			<div class="wc-block-mini-cart__contents" hidden>' . $this->get_cart_contents_markup( $cart_contents ) . '</div>
+		$button_text = sprintf(
+			/* translators: %d is the number of products in the cart. */
+			_n(
+				'%d item',
+				'%d items',
+				$cart_contents_count,
+				'woo-gutenberg-products-block'
+			),
+			$cart_contents_count
+		);
+		$title = sprintf(
+			/* translators: %d is the count of items in the cart. */
+			_n(
+				'Your cart (%d item)',
+				'Your cart (%d items)',
+				$cart_contents_count,
+				'woo-gutenberg-products-block'
+			),
+			$cart_contents_count
+		);
+
+		if ( is_cart() || is_checkout() ) {
+			return '<div class="wc-block-mini-cart">
+				<button class="wc-block-mini-cart__button" disabled>' . $button_text . '</button>
+			</div>';
+		}
+
+		return '<div class="wc-block-mini-cart">
+			<button class="wc-block-mini-cart__button">' . $button_text . '</button>
+			<div class="wc-block-mini-cart__drawer is-loading is-mobile wc-block-components-drawer__screen-overlay wc-block-components-drawer__screen-overlay--is-hidden" aria-hidden="true">
+				<div class="components-modal__frame wc-block-components-drawer">
+					<div class="components-modal__content">
+						<div class="components-modal__header">
+							<div class="components-modal__header-heading-container">
+								<h1 id="components-modal-header-1" class="components-modal__header-heading">' . $title . '</h1>
+							</div>
+						</div>'
+						. $this->get_cart_contents_markup( $cart_contents ) .
+					'</div>
+				</div>
+			</div>
 		</div>';
 	}
 
@@ -210,7 +245,8 @@ class MiniCart extends AbstractBlock {
 	 * @return string The HTML markup.
 	 */
 	protected function get_cart_contents_markup( $cart_contents ) {
-		return '<table class="wc-block-cart-items wc-block-mini-cart-items--is-loading" aria-hidden="true">
+		// Force mobile styles.
+		return '<table class="wc-block-cart-items">
 			<thead>
 				<tr class="wc-block-cart-items__header">
 					<th class="wc-block-cart-items__header-image"><span /></th>
@@ -230,20 +266,25 @@ class MiniCart extends AbstractBlock {
 	protected function get_cart_item_markup() {
 		return '<tr class="wc-block-cart-items__row">
 			<td class="wc-block-cart-item__image">
-				<div><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=" width="1" height="1" /></div>
+				<a href=""><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=" width="1" height="1" /></a>
 			</td>
 			<td class="wc-block-cart-item__product">
-				<div class="wc-block-cart-item__product-name"></div>
-				<div class="wc-block-cart-item__individual-price"></div>
-				<div class="wc-block-cart-item__product-metadata"></div>
-				<div class="wc-block-components-quantity-selector">
-					<input class="wc-block-components-quantity-selector__input" type="number" step="1" min="0" value="1" />
-					<button class="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--minus">－</button>
-					<button class="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--plus">＋</button>
+				<div class="wc-block-components-product-name"></div>
+				<div class="wc-block-components-product-price"></div>
+				<div class="wc-block-components-product-metadata"></div>
+				<div class="wc-block-cart-item__quantity">
+					<div class="wc-block-components-quantity-selector">
+						<input class="wc-block-components-quantity-selector__input" type="number" step="1" min="0" value="1" />
+						<button class="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--minus">－</button>
+						<button class="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--plus">＋</button>
+					</div>
+					<button class="wc-block-cart-item__remove-link"></button>
 				</div>
 			</td>
 			<td class="wc-block-cart-item__total">
-				<div class="wc-block-cart-item__price"></div>
+				<div class="wc-block-cart-item__total-price-and-sale-badge-wrapper">
+					<div class="wc-block-components-product-price"></div>
+				</div>
 			</td>
 		</tr>';
 	}

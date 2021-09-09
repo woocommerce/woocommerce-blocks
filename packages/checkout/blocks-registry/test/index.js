@@ -1,7 +1,11 @@
 /**
  * Internal dependencies
  */
-import { getRegisteredBlocks, registerCheckoutBlock } from '../index';
+import {
+	getRegisteredBlocks,
+	registerCheckoutBlock,
+	innerBlockAreas,
+} from '../index';
 
 describe( 'checkout blocks registry', () => {
 	const component = () => {
@@ -14,48 +18,76 @@ describe( 'checkout blocks registry', () => {
 		};
 		it( 'throws an error when registered block is missing `blockName`', () => {
 			expect(
-				invokeTest( null, { areas: [ 'fields' ], component } )
-			).toThrowError( /blockName/ );
-			expect(
-				invokeTest( '', { areas: [ 'fields' ], component } )
-			).toThrowError( /blockName/ );
-		} );
-		it( 'throws an error when area is invalid', () => {
-			expect(
-				invokeTest( 'test/block-name', {
-					areas: [ 'invalid-area' ],
+				invokeTest( {
+					metadata: {
+						name: null,
+						parent: innerBlockAreas.CHECKOUT_FIELDS,
+					},
 					component,
 				} )
-			).toThrowError( /area/ );
+			).toThrowError( /blockName/ );
+			expect(
+				invokeTest( {
+					metadata: {
+						name: '',
+						parent: innerBlockAreas.CHECKOUT_FIELDS,
+					},
+					component,
+				} )
+			).toThrowError( /blockName/ );
+		} );
+		it( 'throws an error when registered block is missing a valid parent', () => {
+			expect(
+				invokeTest( {
+					metadata: {
+						name: 'test/block-name',
+						parent: [],
+					},
+					component,
+				} )
+			).toThrowError( /parent/ );
+			expect(
+				invokeTest( {
+					metadata: {
+						name: 'test/block-name',
+						parent: 'invalid-parent',
+					},
+					component,
+				} )
+			).toThrowError( /parent/ );
+			expect(
+				invokeTest( {
+					metadata: {
+						name: 'test/block-name',
+						parent: [
+							'invalid-parent',
+							innerBlockAreas.CHECKOUT_FIELDS,
+						],
+					},
+					component,
+				} )
+			).not.toThrowError( /parent/ );
 		} );
 		it( 'throws an error when registered block is missing `component`', () => {
 			expect(
-				invokeTest( 'test/block-name', {
-					areas: [ 'fields' ],
-					component: null,
+				invokeTest( {
+					metadata: {
+						name: 'test/block-name',
+						parent: innerBlockAreas.CHECKOUT_FIELDS,
+					},
 				} )
 			).toThrowError( /component/ );
 		} );
 	} );
 
 	describe( 'getRegisteredBlocks', () => {
-		const invokeTest = ( areas ) => () => {
-			return getRegisteredBlocks( areas );
-		};
 		it( 'gets an empty array when checkout area has no registered blocks', () => {
-			expect( getRegisteredBlocks( 'fields' ) ).toEqual( [] );
+			expect(
+				getRegisteredBlocks( innerBlockAreas.CONTACT_INFORMATION )
+			).toEqual( [] );
 		} );
-		it( 'throws an error if the area is not defined', () => {
-			expect( invokeTest( 'non-existent-area' ) ).toThrowError( /area/ );
-		} );
-		it( 'gets a block that was successfully registered', () => {
-			registerCheckoutBlock( 'test/block-name', {
-				areas: [ 'fields' ],
-				component,
-			} );
-			expect( getRegisteredBlocks( 'fields' ) ).toEqual( [
-				'test/block-name',
-			] );
+		it( 'gets an empty array when the area is not defined', () => {
+			expect( getRegisteredBlocks( 'not-defined' ) ).toEqual( [] );
 		} );
 	} );
 } );
