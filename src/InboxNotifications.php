@@ -78,11 +78,10 @@ class InboxNotifications {
 		$note_ids   = $data_store->get_notes_with_name( self::SURFACE_CART_CHECKOUT_NOTE_NAME );
 
 		foreach ( (array) $note_ids as $note_id ) {
-			$note         = Notes::get_note( $note_id );
-			$content_data = $note->get_content_data();
+			$note = Notes::get_note( $note_id );
 
 			// Return now because the note already exists.
-			if ( property_exists( $content_data, 'getting_started' ) ) {
+			if ( $note->get_name() === self::SURFACE_CART_CHECKOUT_NOTE_NAME ) {
 				return;
 			}
 		}
