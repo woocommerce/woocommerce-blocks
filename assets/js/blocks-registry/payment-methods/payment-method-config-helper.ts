@@ -31,7 +31,7 @@ export const canMakePaymentWithExtensions = (
 	canMakePayment: CanMakePayment,
 	extensionsCallbacks: CanMakePaymentExtensionsCallbacks,
 	paymentMethodName: ExtensionNamespace
-) => ( canPayArgument: CanMakePaymentArgument ) => {
+) => ( canPayArgument: CanMakePaymentArgument ): boolean => {
 	// Validate whether the payment method is available based on its own criteria first.
 	let canPay = canMakePayment( canPayArgument );
 

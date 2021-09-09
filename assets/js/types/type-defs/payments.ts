@@ -37,9 +37,7 @@ export interface CanMakePaymentArgument {
 	paymentRequirements: Array< string >;
 }
 
-export type CanMakePayment = (
-	cartData: CanMakePaymentArgument
-) => boolean | Promise< boolean | { error: { message: string } } >;
+export type CanMakePayment = ( cartData: CanMakePaymentArgument ) => boolean;
 
 export interface PaymentMethodConfig {
 	// A unique string to identify the payment method client side.
