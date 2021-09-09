@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { CartResponseItem } from '@woocommerce/type-defs/cart-response';
+import { useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -22,6 +23,7 @@ const CartLineItemsTable = ( {
 	lineItems = [],
 	isLoading = false,
 }: CartLineItemsTableProps ): JSX.Element => {
+	const tableRef = useRef< HTMLTableElement | null >( null );
 	const products = isLoading
 		? placeholderRows
 		: lineItems.map( ( lineItem ) => {
@@ -35,13 +37,10 @@ const CartLineItemsTable = ( {
 								HTMLElement
 							) {
 								removedRow.nextElementSibling.focus();
-							} else {
-								const tableElement = removedRow?.closest(
-									'.wc-block-cart-items'
-								);
-								if ( tableElement instanceof HTMLElement ) {
-									tableElement.focus();
-								}
+							} else if (
+								tableRef.current instanceof HTMLElement
+							) {
+								tableRef.current.focus();
 							}
 						} }
 						tabIndex={ -1 }
@@ -50,7 +49,7 @@ const CartLineItemsTable = ( {
 		  } );
 
 	return (
-		<table className="wc-block-cart-items" tabIndex={ -1 }>
+		<table className="wc-block-cart-items" ref={ tableRef } tabIndex={ -1 }>
 			<thead>
 				<tr className="wc-block-cart-items__header">
 					<th className="wc-block-cart-items__header-image">
