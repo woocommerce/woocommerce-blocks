@@ -161,6 +161,9 @@ class Api {
 		// Process Payment.
 		$gateway_result = $payment_method_object->process_payment( $context->order->get_id() );
 
+		// If errors were thrown while processing the payment, we need to abort as well.
+		NoticeHandler::convert_notices_to_exceptions( 'woocommerce_rest_payment_error' );
+
 		// Restore $_POST data.
 		$_POST = $post_data;
 
