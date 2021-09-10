@@ -35,7 +35,6 @@ registerBlockType( 'woocommerce/all-reviews', {
 		html: false,
 		color: {
 			background: false,
-			link: true,
 		},
 		typography: {
 			fontSize: true,

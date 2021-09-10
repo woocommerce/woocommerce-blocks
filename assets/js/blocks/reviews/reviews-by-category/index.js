@@ -33,7 +33,6 @@ registerBlockType( 'woocommerce/reviews-by-category', {
 		html: false,
 		color: {
 			background: false,
-			link: true,
 		},
 		typography: {
 			fontSize: true,
