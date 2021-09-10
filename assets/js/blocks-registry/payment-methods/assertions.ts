@@ -23,9 +23,9 @@ export const assertValidElement = (
 	element: ReactNode,
 	elementName: string
 ): void => {
-	if ( element !== null && ! isValidElement( element ) ) {
+	if ( element && ! isValidElement( element ) ) {
 		throw new TypeError(
-			`The ${ elementName } property for the payment method must be a React element or null.`
+			`When provided, the ${ elementName } property for the payment method must be a React element.`
 		);
 	}
 };
@@ -35,12 +35,12 @@ export const assertValidElementOrString = (
 	elementName: string
 ): void => {
 	if (
-		element !== null &&
+		element &&
 		! isValidElement( element ) &&
 		typeof element !== 'string'
 	) {
 		throw new TypeError(
-			`The ${ elementName } property for the payment method must be a React element, a string, or null.`
+			`When provided, the ${ elementName } property for the payment method must be a React element or a string.`
 		);
 	}
 };

@@ -29,10 +29,6 @@ import {
 	assertValidElementOrString,
 } from './assertions';
 
-const NullComponent = () => {
-	return null;
-};
-
 export default class PaymentMethodConfig implements PaymentMethodConfigClass {
 	public name: string;
 	public content: ReactNode;
@@ -54,7 +50,7 @@ export default class PaymentMethodConfig implements PaymentMethodConfigClass {
 		this.placeOrderButtonLabel = config.placeOrderButtonLabel;
 		this.ariaLabel = config.ariaLabel;
 		this.content = config.content;
-		this.savedTokenComponent = config.savedTokenComponent || NullComponent;
+		this.savedTokenComponent = config.savedTokenComponent;
 		this.icons = config.icons;
 		this.edit = config.edit;
 		this.paymentMethodId = config.paymentMethodId || this.name;
