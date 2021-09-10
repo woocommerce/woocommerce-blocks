@@ -5,11 +5,12 @@ import deprecated from '@wordpress/deprecated';
 import type { ReactNode } from 'react';
 import type {
 	PaymentMethodConfig as PaymentMethodConfigType,
-	ObjectType,
 	SupportsInConstructor,
 	CanMakePayment,
 	CanMakePaymentArgument,
+	CanMakePaymentReturnType,
 	PaymentMethodConfigClass,
+	PaymentMethodIcons,
 } from '@woocommerce/type-defs/payments';
 
 /**
@@ -35,7 +36,7 @@ export default class PaymentMethodConfig implements PaymentMethodConfigClass {
 	public edit: ReactNode;
 	public paymentMethodId?: string;
 	public supports: SupportsInConstructor;
-	public icons?: ObjectType;
+	public icons: null | PaymentMethodIcons;
 	public label: ReactNode;
 	public ariaLabel: string;
 	public placeOrderButtonLabel?: string;
@@ -51,7 +52,7 @@ export default class PaymentMethodConfig implements PaymentMethodConfigClass {
 		this.ariaLabel = config.ariaLabel;
 		this.content = config.content;
 		this.savedTokenComponent = config.savedTokenComponent;
-		this.icons = config.icons;
+		this.icons = config.icons || null;
 		this.edit = config.edit;
 		this.paymentMethodId = config.paymentMethodId || this.name;
 		this.supports = {
@@ -68,7 +69,7 @@ export default class PaymentMethodConfig implements PaymentMethodConfigClass {
 	// canMakePayment is calculated each time based on data that modifies outside of the class (eg: cart data).
 	get canMakePayment(): (
 		canPayArgument: CanMakePaymentArgument
-	) => boolean {
+	) => CanMakePaymentReturnType {
 		const canPay = canMakePaymentWithFeaturesCheck(
 			this.canMakePaymentFromConfig,
 			this.supports.features

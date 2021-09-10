@@ -37,7 +37,21 @@ export interface CanMakePaymentArgument {
 	paymentRequirements: Array< string >;
 }
 
-export type CanMakePayment = ( cartData: CanMakePaymentArgument ) => boolean;
+export type CanMakePaymentReturnType =
+	| boolean
+	| Promise< boolean | { error: { message: string } } >;
+
+export type CanMakePayment = (
+	cartData: CanMakePaymentArgument
+) => CanMakePaymentReturnType;
+
+export interface PaymentMethodIcon {
+	id: string;
+	src: string | null;
+	alt: string;
+}
+
+export type PaymentMethodIcons = ( PaymentMethodIcon | string )[];
 
 export interface PaymentMethodConfig {
 	// A unique string to identify the payment method client side.
@@ -53,7 +67,7 @@ export interface PaymentMethodConfig {
 	// Object that describes various features provided by the payment method.
 	supports: Supports;
 	// Array of card types (brands) supported by the payment method. (See stripe/credit-card for example.)
-	icons?: ObjectType;
+	icons?: null | PaymentMethodIcons;
 	// A react node that will be used as a label for the payment method in the checkout.
 	label: ReactNode;
 	// An accessibility label. Screen readers will output this label when the payment method is selected.
@@ -70,11 +84,11 @@ export type ExpressPaymentMethodConfig = Omit<
 >;
 
 export type PaymentMethods =
-	| Record< string, PaymentMethodConfig >
+	| Record< string, PaymentMethodConfigClass >
 	| EmptyObjectType;
 
 export type ExpressPaymentMethods =
-	| Record< string, ExpressPaymentMethodConfig >
+	| Record< string, ExpressPaymentMethodConfigClass >
 	| EmptyObjectType;
 
 export interface PaymentMethodConfigClass {
@@ -83,12 +97,13 @@ export interface PaymentMethodConfigClass {
 	edit: ReactNode;
 	paymentMethodId?: string;
 	supports: SupportsInConstructor;
-	icons?: ObjectType;
+	icons: null | PaymentMethodIcons;
 	label: ReactNode;
 	ariaLabel: string;
 	placeOrderButtonLabel?: string;
 	savedTokenComponent?: ReactNode;
 	canMakePaymentFromConfig: CanMakePayment;
+	canMakePayment: CanMakePayment;
 }
 
 export interface ExpressPaymentMethodConfigClass {

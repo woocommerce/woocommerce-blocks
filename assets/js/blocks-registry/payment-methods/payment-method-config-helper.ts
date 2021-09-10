@@ -4,6 +4,7 @@
 import type {
 	CanMakePaymentArgument,
 	CanMakePayment,
+	CanMakePaymentReturnType,
 } from '@woocommerce/type-defs/payments';
 
 /**
@@ -18,7 +19,7 @@ import type {
 export const canMakePaymentWithFeaturesCheck = (
 	canMakePayment: CanMakePayment,
 	features: string[]
-) => ( canPayArgument: CanMakePaymentArgument ): boolean => {
+) => ( canPayArgument: CanMakePaymentArgument ): CanMakePaymentReturnType => {
 	const requirements = canPayArgument.paymentRequirements || [];
 	const featuresSupportRequirements = requirements.every( ( requirement ) =>
 		features.includes( requirement )
@@ -31,7 +32,7 @@ export const canMakePaymentWithExtensions = (
 	canMakePayment: CanMakePayment,
 	extensionsCallbacks: CanMakePaymentExtensionsCallbacks,
 	paymentMethodName: ExtensionNamespace
-) => ( canPayArgument: CanMakePaymentArgument ): boolean => {
+) => ( canPayArgument: CanMakePaymentArgument ): CanMakePaymentReturnType => {
 	// Validate whether the payment method is available based on its own criteria first.
 	let canPay = canMakePayment( canPayArgument );
 

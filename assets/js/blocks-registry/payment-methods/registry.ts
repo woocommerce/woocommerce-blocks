@@ -7,7 +7,8 @@ import type {
 	ExpressPaymentMethodConfig as ExpressPaymentMethodConfigType,
 	CanMakePayment,
 	PaymentMethodConfigClass,
-	ExpressPaymentMethodConfigClass,
+	PaymentMethods,
+	ExpressPaymentMethods,
 } from '@woocommerce/type-defs/payments';
 
 /**
@@ -19,8 +20,6 @@ import { canMakePaymentExtensionsCallbacks } from './extensions-config';
 
 type LegacyRegisterPaymentMethodFunction = ( config: unknown ) => unknown;
 type LegacyRegisterExpessPaymentMethodFunction = ( config: unknown ) => unknown;
-type PaymentMethods = Record< string, PaymentMethodConfigClass >;
-type ExpressPaymentMethods = Record< string, ExpressPaymentMethodConfigClass >;
 
 const paymentMethods: PaymentMethods = {};
 const expressPaymentMethods: ExpressPaymentMethods = {};

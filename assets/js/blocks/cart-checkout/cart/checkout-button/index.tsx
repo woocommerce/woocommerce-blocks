@@ -9,7 +9,10 @@ import { CHECKOUT_URL } from '@woocommerce/block-settings';
 import { useCheckoutContext } from '@woocommerce/base-context';
 import { usePaymentMethods } from '@woocommerce/base-context/hooks';
 import { usePositionRelativeToViewport } from '@woocommerce/base-hooks';
-import type { PaymentMethodConfig } from '@woocommerce/type-defs/payments';
+import type {
+	PaymentMethods,
+	PaymentMethodIcons as PaymentMethodIconsType,
+} from '@woocommerce/type-defs/payments';
 
 /**
  * Internal dependencies
@@ -17,14 +20,14 @@ import type { PaymentMethodConfig } from '@woocommerce/type-defs/payments';
 import './style.scss';
 
 const getIconsFromPaymentMethods = (
-	paymentMethods: PaymentMethodConfig[]
-) => {
+	paymentMethods: PaymentMethods
+): PaymentMethodIconsType => {
 	return Object.values( paymentMethods ).reduce( ( acc, paymentMethod ) => {
 		if ( paymentMethod.icons !== null ) {
 			acc = acc.concat( paymentMethod.icons );
 		}
 		return acc;
-	}, [] );
+	}, [] as PaymentMethodIconsType );
 };
 
 /**
