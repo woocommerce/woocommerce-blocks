@@ -21,9 +21,7 @@ class InboxNotifications {
 		'mailpoet',
 		'klarna-payments-for-woocommerce',
 		'klarna-checkout-for-woocommerce',
-		// @todo Uncomment woocommerce-gutenberg-products-block before launch.
-		// phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-		// 'woocommerce-gutenberg-products-block', // Disallow the notification if the store is using the feature plugin already.
+		'woocommerce-gutenberg-products-block', // Disallow the notification if the store is using the feature plugin already.
 		'woocommerce-all-products-for-subscriptions',
 		'woocommerce-bookings',
 		'woocommerce-box-office',
@@ -61,9 +59,10 @@ class InboxNotifications {
 	 * Creates a notification letting merchants know about the Cart and Checkout Blocks.
 	 */
 	public static function create_surface_cart_checkout_blocks_notification() {
+
 		// If this is the feature plugin, then we don't need to do this. This should only show when Blocks is bundled
 		// with WooCommerce Core.
-		if ( false && Package::feature()->is_feature_plugin_build() ) {
+		if ( Package::feature()->is_feature_plugin_build() ) {
 			return;
 		}
 
