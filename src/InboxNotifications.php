@@ -49,6 +49,14 @@ class InboxNotifications {
 		'US',
 	];
 
+
+	/**
+	 * Deletes the note.
+	 */
+	public static function delete_surface_cart_checkout_blocks_notification() {
+		Notes::delete_notes_with_name( self::SURFACE_CART_CHECKOUT_NOTE_NAME );
+	}
+
 	/**
 	 * Creates a notification letting merchants know about the Cart and Checkout Blocks.
 	 */
