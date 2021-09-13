@@ -91,10 +91,6 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 - Add extensibility point for extensions to filter payment methods. ([4668](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4668))
 
-#### Bug Fixes
-
-- Twenty Twenty: Adjust font styles for filter and product grid blocks. ([4701](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4701))
-
 
 = 5.8.0 - 2021-08-31 =
 
