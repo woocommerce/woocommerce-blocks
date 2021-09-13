@@ -44,7 +44,7 @@ export default class PaymentMethodConfig implements PaymentMethodConfigClass {
 	public label: ReactNode;
 	public ariaLabel: string;
 	public placeOrderButtonLabel?: string;
-	public savedTokenComponent?: ReactNode;
+	public savedTokenComponent?: ReactNode | null;
 	public canMakePaymentFromConfig: CanMakePayment;
 
 	constructor( config: PaymentMethodConfigType ) {
@@ -55,7 +55,7 @@ export default class PaymentMethodConfig implements PaymentMethodConfigClass {
 		this.placeOrderButtonLabel = config.placeOrderButtonLabel;
 		this.ariaLabel = config.ariaLabel;
 		this.content = config.content;
-		this.savedTokenComponent = config.savedTokenComponent || NullComponent;
+		this.savedTokenComponent = config.savedTokenComponent;
 		this.icons = config.icons || null;
 		this.edit = config.edit;
 		this.paymentMethodId = config.paymentMethodId || this.name;
@@ -93,6 +93,10 @@ export default class PaymentMethodConfig implements PaymentMethodConfigClass {
 	}
 
 	static assertValidConfig = ( config: PaymentMethodConfigType ): void => {
+		// set default for optional
+		config.savedTokenComponent = config.savedTokenComponent || (
+			<NullComponent />
+		);
 		assertConfigHasProperties( config, [
 			'name',
 			'label',
