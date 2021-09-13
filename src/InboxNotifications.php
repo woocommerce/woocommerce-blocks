@@ -67,13 +67,6 @@ class InboxNotifications {
 			return;
 		}
 
-		// Pick a random number between 1 and 100 and add this to the wp_options table. This can then be used to target
-		// a percentage of users.
-		$existing_probability = get_option( self::SURFACE_CART_CHECKOUT_PROBABILITY_OPTION );
-		if ( false === $existing_probability ) {
-			$existing_probability = wp_rand( 0, 100 );
-			add_option( self::SURFACE_CART_CHECKOUT_PROBABILITY_OPTION, $existing_probability );
-		}
 		if ( ! class_exists( 'Automattic\WooCommerce\Admin\Notes\WC_Admin_Notes' ) ) {
 			return;
 		}
@@ -85,6 +78,18 @@ class InboxNotifications {
 		$data_store = \WC_Data_Store::load( 'admin-note' );
 		$note_ids   = $data_store->get_notes_with_name( self::SURFACE_CART_CHECKOUT_NOTE_NAME );
 
+		// Calculate store's eligibility to be shown the notice, starting with whether they have any plugins we know to
+		// be incompatible with Blocks. This check is done before checking if the note exists already because we want to
+		// delete the note if the merchant activates an ineligible plugin.
+		foreach ( self::INELIGIBLE_EXTENSIONS as $extension ) {
+			if ( is_plugin_active( $extension . '/' . $extension . '.php' ) ) {
+
+				// Delete the notification here, we shouldn't show it if it's not going to work with the merchant's site.
+				self::delete_surface_cart_checkout_blocks_notification();
+				return;
+			}
+		}
+
 		foreach ( (array) $note_ids as $note_id ) {
 			$note = Notes::get_note( $note_id );
 
@@ -94,19 +99,20 @@ class InboxNotifications {
 			}
 		}
 
-		// Calculate store's eligibility to be shown the notice, starting with whether they have any plugins we know to
-		// be incompatible with Blocks.
-		foreach ( self::INELIGIBLE_EXTENSIONS as $extension ) {
-			if ( is_plugin_active( $extension . '/' . $extension . '.php' ) ) {
-				return;
-			}
-		}
-
 		// Next check the store is located in one of the eligible countries.
 		$raw_country = get_option( 'woocommerce_default_country' );
 		$country     = explode( ':', $raw_country )[0];
 		if ( ! in_array( $country, self::ELIGIBLE_COUNTRIES, true ) ) {
 			return;
+		}
+
+		// Pick a random number between 1 and 100 and add this to the wp_options table. This can then be used to target
+		// a percentage of users. We do this here so we target a truer percentage of eligible users than if we did it
+		// before checking plugins/country.
+		$existing_probability = get_option( self::SURFACE_CART_CHECKOUT_PROBABILITY_OPTION );
+		if ( false === $existing_probability ) {
+			$existing_probability = wp_rand( 0, 100 );
+			add_option( self::SURFACE_CART_CHECKOUT_PROBABILITY_OPTION, $existing_probability );
 		}
 
 		// Finally, check if the store's generated % chance is below the % of users we want to surface this to.
