@@ -3,10 +3,10 @@
  */
 import deprecated from '@wordpress/deprecated';
 import type {
-	PaymentMethodConfig as PaymentMethodConfigType,
-	ExpressPaymentMethodConfig as ExpressPaymentMethodConfigType,
-	CanMakePayment,
-	PaymentMethodConfigClass,
+	PaymentMethodOptions,
+	ExpressPaymentMethodOptions,
+	CanMakePaymentCallback,
+	PaymentMethodConfigInstance,
 	PaymentMethods,
 	ExpressPaymentMethods,
 } from '@woocommerce/type-defs/payments';
@@ -28,9 +28,9 @@ const expressPaymentMethods: ExpressPaymentMethods = {};
  * Register a regular payment method.
  */
 export const registerPaymentMethod = (
-	options: PaymentMethodConfigType | LegacyRegisterPaymentMethodFunction
+	options: PaymentMethodOptions | LegacyRegisterPaymentMethodFunction
 ): void => {
-	let paymentMethodConfig: PaymentMethodConfigClass | unknown;
+	let paymentMethodConfig: PaymentMethodConfigInstance | unknown;
 	if ( typeof options === 'function' ) {
 		// Legacy fallback for previous API, where client passes a function:
 		// registerPaymentMethod( ( Config ) => new Config( options ) );
@@ -54,7 +54,7 @@ export const registerPaymentMethod = (
  */
 export const registerExpressPaymentMethod = (
 	options:
-		| ExpressPaymentMethodConfigType
+		| ExpressPaymentMethodOptions
 		| LegacyRegisterExpessPaymentMethodFunction
 ): void => {
 	let paymentMethodConfig;
@@ -81,7 +81,7 @@ export const registerExpressPaymentMethod = (
  */
 export const registerPaymentMethodExtensionCallbacks = (
 	namespace: string,
-	callbacks: Record< string, CanMakePayment >
+	callbacks: Record< string, CanMakePaymentCallback >
 ): void => {
 	if ( canMakePaymentExtensionsCallbacks[ namespace ] ) {
 		// eslint-disable-next-line no-console

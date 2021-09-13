@@ -3,10 +3,10 @@
  */
 import type { ReactNode } from 'react';
 import type {
-	ExpressPaymentMethodConfig as ExpressPaymentMethodConfigType,
+	ExpressPaymentMethodOptions,
 	SupportsInConstructor,
-	CanMakePayment,
-	ExpressPaymentMethodConfigClass,
+	CanMakePaymentCallback,
+	ExpressPaymentMethodConfigInstance,
 } from '@woocommerce/type-defs/payments';
 
 /**
@@ -16,15 +16,15 @@ import { canMakePaymentWithFeaturesCheck } from './payment-method-config-helper'
 import { assertConfigHasProperties, assertValidElement } from './assertions';
 
 export default class ExpressPaymentMethodConfig
-	implements ExpressPaymentMethodConfigClass {
+	implements ExpressPaymentMethodConfigInstance {
 	public name: string;
 	public content: ReactNode;
 	public edit: ReactNode;
 	public paymentMethodId?: string;
 	public supports: SupportsInConstructor;
-	public canMakePayment: CanMakePayment;
+	public canMakePayment: CanMakePaymentCallback;
 
-	constructor( config: ExpressPaymentMethodConfigType ) {
+	constructor( config: ExpressPaymentMethodOptions ) {
 		// validate config
 		ExpressPaymentMethodConfig.assertValidConfig( config );
 		this.name = config.name;
@@ -41,7 +41,7 @@ export default class ExpressPaymentMethodConfig
 	}
 
 	static assertValidConfig = (
-		config: ExpressPaymentMethodConfigType
+		config: ExpressPaymentMethodOptions
 	): void => {
 		assertConfigHasProperties( config, [ 'name', 'content', 'edit' ] );
 		if ( typeof config.name !== 'string' ) {

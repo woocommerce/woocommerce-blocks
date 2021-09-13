@@ -3,9 +3,6 @@
  */
 import type { ReactNode } from 'react';
 
-export type ObjectType = Record< string, unknown >;
-export type EmptyObjectType = Record< string, never >;
-
 /**
  * Internal dependencies
  */
@@ -14,6 +11,7 @@ import {
 	CartResponseBillingAddress,
 	CartResponseShippingAddress,
 } from './cart-response';
+import type { EmptyObjectType } from './objects';
 
 export interface Supports {
 	showSavedCards?: boolean;
@@ -41,7 +39,7 @@ export type CanMakePaymentReturnType =
 	| boolean
 	| Promise< boolean | { error: { message: string } } >;
 
-export type CanMakePayment = (
+export type CanMakePaymentCallback = (
 	cartData: CanMakePaymentArgument
 ) => CanMakePaymentReturnType;
 
@@ -53,7 +51,7 @@ export interface PaymentMethodIcon {
 
 export type PaymentMethodIcons = ( PaymentMethodIcon | string )[];
 
-export interface PaymentMethodConfig {
+export interface PaymentMethodOptions {
 	// A unique string to identify the payment method client side.
 	name: string;
 	// A react node for your payment method UI.
@@ -61,7 +59,7 @@ export interface PaymentMethodConfig {
 	// A react node to display a preview of your payment method in the editor.
 	edit: ReactNode;
 	// A callback to determine whether the payment method should be shown in the checkout.
-	canMakePayment: CanMakePayment;
+	canMakePayment: CanMakePaymentCallback;
 	// A unique string to represent the payment method server side. If not provided, defaults to name.
 	paymentMethodId?: string;
 	// Object that describes various features provided by the payment method.
@@ -75,23 +73,23 @@ export interface PaymentMethodConfig {
 	// Optionally customize the label text for the checkout submit (`Place Order`) button.
 	placeOrderButtonLabel?: string;
 	// A React node that contains logic handling any processing your payment method has to do with saved payment methods if your payment method supports them
-	savedTokenComponent?: ReactNode;
+	savedTokenComponent?: ReactNode | null;
 }
 
-export type ExpressPaymentMethodConfig = Omit<
-	PaymentMethodConfig,
+export type ExpressPaymentMethodOptions = Omit<
+	PaymentMethodOptions,
 	'icons' | 'label' | 'ariaLabel' | 'placeOrderButtonLabel'
 >;
 
 export type PaymentMethods =
-	| Record< string, PaymentMethodConfigClass >
+	| Record< string, PaymentMethodConfigInstance >
 	| EmptyObjectType;
 
 export type ExpressPaymentMethods =
-	| Record< string, ExpressPaymentMethodConfigClass >
+	| Record< string, ExpressPaymentMethodConfigInstance >
 	| EmptyObjectType;
 
-export interface PaymentMethodConfigClass {
+export interface PaymentMethodConfigInstance {
 	name: string;
 	content: ReactNode;
 	edit: ReactNode;
@@ -101,16 +99,16 @@ export interface PaymentMethodConfigClass {
 	label: ReactNode;
 	ariaLabel: string;
 	placeOrderButtonLabel?: string;
-	savedTokenComponent?: ReactNode;
-	canMakePaymentFromConfig: CanMakePayment;
-	canMakePayment: CanMakePayment;
+	savedTokenComponent?: ReactNode | null;
+	canMakePaymentFromConfig: CanMakePaymentCallback;
+	canMakePayment: CanMakePaymentCallback;
 }
 
-export interface ExpressPaymentMethodConfigClass {
+export interface ExpressPaymentMethodConfigInstance {
 	name: string;
 	content: ReactNode;
 	edit: ReactNode;
 	paymentMethodId?: string;
 	supports: SupportsInConstructor;
-	canMakePayment: CanMakePayment;
+	canMakePayment: CanMakePaymentCallback;
 }

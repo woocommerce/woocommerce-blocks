@@ -2,22 +2,22 @@
  * External dependencies
  */
 import {
-	PaymentMethodConfig,
+	PaymentMethodOptions,
 	PaymentMethods,
 	ExpressPaymentMethods,
 } from '@woocommerce/type-defs/payments';
-
+import type {
+	EmptyObjectType,
+	ObjectType,
+} from '@woocommerce/type-defs/objects';
 /**
  * Internal dependencies
  */
 import type { emitterCallback } from '../../../event-emit';
 import { STATUS } from './constants';
 
-type ObjectType = Record< string, unknown >;
-type EmptyObjectType = Record< string, never >;
-
 export interface CustomerPaymentMethod {
-	method: PaymentMethodConfig;
+	method: PaymentMethodOptions;
 	expires: string;
 	is_default: boolean;
 	tokenId: number;

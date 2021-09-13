@@ -2,28 +2,28 @@
  * External dependencies
  */
 import { useShallowEqual } from '@woocommerce/base-hooks';
-import {
+import type {
 	PaymentMethods,
 	ExpressPaymentMethods,
 } from '@woocommerce/type-defs/payments';
+
 /**
  * Internal dependencies
  */
 import { usePaymentMethodDataContext } from '../../providers/cart-checkout/payment-methods';
 
-export type EmptyObjectType = Record< string, never >;
-interface UsePaymentMethodStateReturnType {
-	paymentMethods: PaymentMethods | EmptyObjectType;
+interface PaymentMethodState {
+	paymentMethods: PaymentMethods;
 	isInitialized: boolean;
 }
-interface UseExpressPaymentMethodStateReturnType {
-	paymentMethods: ExpressPaymentMethods | EmptyObjectType;
+interface ExpressPaymentMethodState {
+	paymentMethods: ExpressPaymentMethods;
 	isInitialized: boolean;
 }
 
 const usePaymentMethodState = (
 	express = false
-): UsePaymentMethodStateReturnType => {
+): PaymentMethodState | ExpressPaymentMethodState => {
 	const {
 		paymentMethods,
 		expressPaymentMethods,
@@ -46,7 +46,8 @@ const usePaymentMethodState = (
 	};
 };
 
-export const usePaymentMethods = (): UsePaymentMethodStateReturnType =>
-	usePaymentMethodState();
-export const useExpressPaymentMethods = (): UseExpressPaymentMethodStateReturnType =>
+export const usePaymentMethods = ():
+	| PaymentMethodState
+	| ExpressPaymentMethodState => usePaymentMethodState( false );
+export const useExpressPaymentMethods = (): ExpressPaymentMethodState =>
 	usePaymentMethodState( true );

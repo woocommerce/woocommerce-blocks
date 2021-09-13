@@ -4,8 +4,8 @@
 import { isValidElement } from '@wordpress/element';
 import type { ReactNode } from 'react';
 import type {
-	PaymentMethodConfig as PaymentMethodConfigType,
-	ExpressPaymentMethodConfig as ExpressPaymentMethodConfigType,
+	PaymentMethodOptions,
+	ExpressPaymentMethodOptions,
 } from '@woocommerce/type-defs/payments';
 
 export const assertValidPaymentMethodComponent = (
@@ -46,7 +46,7 @@ export const assertValidElementOrString = (
 };
 
 export const assertConfigHasProperties = (
-	config: ExpressPaymentMethodConfigType | PaymentMethodConfigType,
+	config: ExpressPaymentMethodOptions | PaymentMethodOptions,
 	expectedProperties: string[] = []
 ): void => {
 	const missingProperties = expectedProperties.reduce(

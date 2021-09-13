@@ -4,3 +4,4 @@ export * from './cart';
 export * from './hooks';
 export * from './currency';
 export * from './payments';
+export * from './objects';

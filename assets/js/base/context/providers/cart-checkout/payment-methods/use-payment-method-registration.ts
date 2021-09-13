@@ -12,8 +12,8 @@ import { CURRENT_USER_IS_ADMIN, getSetting } from '@woocommerce/settings';
 import type {
 	PaymentMethods,
 	ExpressPaymentMethods,
-	PaymentMethodConfigClass,
-	ExpressPaymentMethodConfigClass,
+	PaymentMethodConfigInstance,
+	ExpressPaymentMethodConfigInstance,
 } from '@woocommerce/type-defs/payments';
 
 /**
@@ -89,8 +89,8 @@ const usePaymentMethodRegistration = (
 
 		const addAvailablePaymentMethod = (
 			paymentMethod:
-				| PaymentMethodConfigClass
-				| ExpressPaymentMethodConfigClass
+				| PaymentMethodConfigInstance
+				| ExpressPaymentMethodConfigInstance
 		) => {
 			availablePaymentMethods = {
 				...availablePaymentMethods,
