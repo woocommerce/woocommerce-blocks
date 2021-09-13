@@ -102,16 +102,21 @@ class ProductCategorySchema extends TermSchema {
 	protected function get_category_review_count( $term ) {
 		global $wpdb;
 
-		$term_children_ids = get_term_children( $term->term_id, 'product_cat' );
-		$term_ids          = array_map( 'intval', array_merge( array( $term->term_id ), $term_children_ids ) );
-		$term_ids_str      = implode( ',', $term_ids );
+		$children = get_term_children( $term->term_id, 'product_cat' );
+
+		if ( ! $children || is_wp_error( $children ) ) {
+			$terms_to_count_str = absint( $term->term_id );
+		} else {
+			$terms_to_count     = array_unique( array_map( 'absint', array_merge( array( $term->term_id ), $children ) ) );
+			$terms_to_count_str = implode( ',', $terms_to_count );
+		}
 
 		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$products_of_category_sql = $wpdb->prepare(
 			"SELECT SUM(comment_count) as review_count
 			FROM {$wpdb->posts} AS posts
 			INNER JOIN {$wpdb->term_relationships} AS term_relationships ON posts.ID = term_relationships.object_id
-			WHERE term_relationships.term_taxonomy_id IN ({$term_ids_str})"
+			WHERE term_relationships.term_taxonomy_id IN ({$terms_to_count_str})"
 		);
 		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
