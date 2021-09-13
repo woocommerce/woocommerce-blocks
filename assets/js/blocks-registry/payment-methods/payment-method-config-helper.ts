@@ -7,7 +7,8 @@ import type { CanMakePaymentCallback } from '@woocommerce/type-defs/payments';
  * Internal dependencies
  */
 import type {
-	CanMakePaymentExtensionsCallbacks,
+	NamespacedCanMakePaymentExtensionsCallbacks,
+	PaymentMethodName,
 	ExtensionNamespace,
 } from './extensions-config';
 
@@ -26,14 +27,14 @@ export const canMakePaymentWithFeaturesCheck = (
 // Filter out payment methods by callbacks registered by extensions.
 export const canMakePaymentWithExtensions = (
 	canMakePayment: CanMakePaymentCallback,
-	extensionsCallbacks: CanMakePaymentExtensionsCallbacks,
-	paymentMethodName: ExtensionNamespace
+	extensionsCallbacks: NamespacedCanMakePaymentExtensionsCallbacks,
+	paymentMethodName: PaymentMethodName
 ): CanMakePaymentCallback => ( canPayArgument ) => {
 	// Validate whether the payment method is available based on its own criteria first.
 	let canPay = canMakePayment( canPayArgument );
 
 	if ( canPay ) {
-		// Gather all callbacks for paymentMethodName
+		// Gather all callbacks for paymentMethodName.
 		const namespacedCallbacks: Record<
 			ExtensionNamespace,
 			CanMakePaymentCallback
