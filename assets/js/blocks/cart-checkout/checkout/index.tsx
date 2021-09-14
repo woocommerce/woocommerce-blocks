@@ -2,9 +2,9 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import classnames from 'classnames';
 import { Icon, fields } from '@woocommerce/icons';
 import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
-import { createBlock } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -14,7 +14,7 @@ import { blockName, blockAttributes } from './attributes';
 import './inner-blocks';
 
 const settings = {
-	title: __( 'Checkout i2', 'woo-gutenberg-products-block' ),
+	title: __( 'Checkout', 'woo-gutenberg-products-block' ),
 	icon: {
 		src: <Icon srcElement={ fields } />,
 		foreground: '#874FB9',
@@ -34,28 +34,22 @@ const settings = {
 	apiVersion: 2,
 	edit: Edit,
 	save: Save,
-	transforms: {
-		to: [
-			{
-				type: 'block',
-				blocks: [ 'woocommerce/checkout' ],
-				transform: ( attributes ) => {
-					return createBlock( 'woocommerce/checkout', {
-						attributes,
-					} );
-				},
+	// Migrates v1 to v2 checkout.
+	deprecated: [
+		{
+			attributes: blockAttributes,
+			save( { attributes }: { attributes: { className: string } } ) {
+				return (
+					<div
+						className={ classnames(
+							'is-loading',
+							attributes.className
+						) }
+					/>
+				);
 			},
-		],
-		from: [
-			{
-				type: 'block',
-				blocks: [ 'woocommerce/checkout-i2' ],
-				transform: ( attributes ) => {
-					return createBlock( 'woocommerce/checkout-i2', attributes );
-				},
-			},
-		],
-	},
+		},
+	],
 };
 
 registerFeaturePluginBlockType( blockName, settings );

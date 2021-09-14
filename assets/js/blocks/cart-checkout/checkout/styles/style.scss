@@ -1,6 +1,45 @@
-// Loading skeleton.
+.wp-block-woocommerce-checkout .with-scroll-to-top__scroll-point {
+	top: -96px;
+}
 
-.is-loading.wp-block-woocommerce-checkout-i2 {
+.wc-block-checkout__sidebar {
+	.wc-block-components-product-name {
+		display: block;
+		color: inherit;
+		flex-grow: 1;
+		// Required by IE11.
+		flex-basis: 0;
+	}
+	.wc-block-components-totals-taxes,
+	.wc-block-components-totals-footer-item {
+		margin: 0;
+		padding: 0;
+	}
+}
+
+.wc-block-checkout__actions {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	.wc-block-components-checkout-place-order-button {
+		width: 50%;
+		padding: 1em;
+		height: auto;
+
+		.wc-block-components-button__text {
+			line-height: 24px;
+
+			> svg {
+				fill: $white;
+				vertical-align: top;
+			}
+		}
+	}
+}
+
+// Loading skeleton.
+.is-loading.wp-block-woocommerce-checkout {
 	.wp-block-woocommerce-checkout-totals-block,
 	.wp-block-woocommerce-checkout-fields-block {
 		> div {
@@ -31,7 +70,7 @@
 	}
 
 	// @todo these styles replace the need for SidebarLayout styles. We define styles here so placeholder elements (loading state) for the checkout has the same sidebar type layout before JS loads.
-	&.wp-block-woocommerce-checkout-i2 {
+	&.wp-block-woocommerce-checkout {
 		display: flex;
 		flex-wrap: wrap;
 		margin: 0 auto $gap;
@@ -63,7 +102,7 @@
 	.is-medium,
 	.is-small,
 	.is-mobile {
-		&.wp-block-woocommerce-checkout-i2 {
+		&.wp-block-woocommerce-checkout {
 			flex-direction: column;
 			margin: 0 auto $gap;
 

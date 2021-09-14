@@ -59,7 +59,7 @@ const Wrapper = ( {
 renderParentBlock( {
 	Block: withStoreCartApiHydration( withRestApiHydration( Block ) ),
 	blockName,
-	selector: '.wp-block-woocommerce-checkout-i2',
+	selector: '.wp-block-woocommerce-checkout',
 	getProps,
 	blockMap: getRegisteredBlockComponents( blockName ) as Record<
 		string,

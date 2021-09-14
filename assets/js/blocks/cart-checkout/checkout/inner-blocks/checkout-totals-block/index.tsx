@@ -28,7 +28,7 @@ registerFeaturePluginBlockType( 'woocommerce/checkout-totals-block', {
 		reusable: false,
 		inserter: false,
 	},
-	parent: [ 'woocommerce/checkout-i2' ],
+	parent: [ 'woocommerce/checkout' ],
 	attributes: {},
 	apiVersion: 2,
 	edit: Edit,

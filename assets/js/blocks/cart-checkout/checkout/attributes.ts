@@ -3,7 +3,7 @@
  */
 import { getSetting } from '@woocommerce/settings';
 
-export const blockName = 'woocommerce/checkout-i2';
+export const blockName = 'woocommerce/checkout';
 export const blockAttributes = {
 	isPreview: {
 		type: 'boolean',
