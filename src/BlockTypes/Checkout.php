@@ -97,6 +97,16 @@ class Checkout extends AbstractBlock {
 		wp_dequeue_script( 'selectWoo' );
 		wp_dequeue_style( 'select2' );
 
+		// If the content is empty, we may have transformed from an older checkout block. Insert the default list of blocks.
+		$is_empty = strstr( $content, '<div class="wp-block-woocommerce-checkout is-loading"></div>' );
+
+		if ( $is_empty ) {
+			$content = '<div class="wp-block-woocommerce-checkout is-loading">
+				<div data-block-name="woocommerce/checkout-fields-block" class="wp-block-woocommerce-checkout-fields-block"></div>
+				<div data-block-name="woocommerce/checkout-totals-block" class="wp-block-woocommerce-checkout-totals-block"></div>
+			</div>';
+		}
+
 		return $this->inject_html_data_attributes( $content, $attributes );
 	}
 

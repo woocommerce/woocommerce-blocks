@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { Icon, address } from '@woocommerce/icons';
 import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
 
@@ -10,28 +9,14 @@ import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
  */
 import { Edit, Save } from './edit';
 import attributes from './attributes';
+import metadata from './block.json';
 
-registerFeaturePluginBlockType( 'woocommerce/checkout-billing-address-block', {
-	title: __( 'Billing Address', 'woo-gutenberg-products-block' ),
-	category: 'woocommerce',
-	description: __(
-		"Collect your customer's billing address.",
-		'woo-gutenberg-products-block'
-	),
+registerFeaturePluginBlockType( metadata, {
 	icon: {
 		src: <Icon srcElement={ address } />,
 		foreground: '#874FB9',
 	},
-	supports: {
-		align: false,
-		html: false,
-		multiple: false,
-		reusable: false,
-		inserter: false,
-	},
-	parent: [ 'woocommerce/checkout-fields-block' ],
 	attributes,
-	apiVersion: 2,
 	edit: Edit,
 	save: Save,
 } );

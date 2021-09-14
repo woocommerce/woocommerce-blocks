@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { lazy } from '@wordpress/element';
-import { registerBlockComponent } from '@woocommerce/blocks-registry';
 import { WC_BLOCKS_BUILD_URL } from '@woocommerce/block-settings';
 import { registerCheckoutBlock } from '@woocommerce/blocks-checkout';
 
@@ -13,10 +12,22 @@ __webpack_public_path__ = WC_BLOCKS_BUILD_URL;
 /**
  * Internal dependencies
  */
-import sampleBlockMetaData from './checkout-sample-block/block.json';
+import sampleBlockMetadata from './checkout-sample-block/block.json';
+import checkoutActionsMetadata from './checkout-actions-block/block.json';
+import checkoutBillingAddressMetadata from './checkout-billing-address-block/block.json';
+import checkoutContactInformationMetadata from './checkout-contact-information-block/block.json';
+import checkoutExpressPaymentMetadata from './checkout-express-payment-block/block.json';
+import checkoutFieldsMetadata from './checkout-fields-block/block.json';
+import checkoutOrderNoteMetadata from './checkout-order-note-block/block.json';
+import checkoutOrderSummaryMetadata from './checkout-order-summary-block/block.json';
+import checkoutPaymentMetadata from './checkout-payment-block/block.json';
+import checkoutShippingAddressMetadata from './checkout-shipping-address-block/block.json';
+import checkoutShippingMethodsMetadata from './checkout-shipping-methods-block/block.json';
+import checkoutTermsMetadata from './checkout-terms-block/block.json';
+import checkoutTotalsMetadata from './checkout-totals-block/block.json';
 
 registerCheckoutBlock( {
-	metadata: sampleBlockMetaData,
+	metadata: sampleBlockMetadata,
 	component: lazy( () =>
 		import(
 			/* webpackChunkName: "checkout-blocks/sample" */ './checkout-sample-block/frontend'
@@ -24,44 +35,8 @@ registerCheckoutBlock( {
 	),
 } );
 
-registerBlockComponent( {
-	blockName: 'woocommerce/checkout-fields-block',
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "checkout-blocks/fields" */ './checkout-fields-block/frontend'
-		)
-	),
-} );
-
-registerBlockComponent( {
-	blockName: 'woocommerce/checkout-terms-block',
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "checkout-blocks/terms" */ './checkout-terms-block/frontend'
-		)
-	),
-} );
-
-registerBlockComponent( {
-	blockName: 'woocommerce/checkout-totals-block',
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "checkout-blocks/totals" */ './checkout-totals-block/frontend'
-		)
-	),
-} );
-
-registerBlockComponent( {
-	blockName: 'woocommerce/checkout-billing-address-block',
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "checkout-blocks/billing-address" */ './checkout-billing-address-block/frontend'
-		)
-	),
-} );
-
-registerBlockComponent( {
-	blockName: 'woocommerce/checkout-actions-block',
+registerCheckoutBlock( {
+	metadata: checkoutActionsMetadata,
 	component: lazy( () =>
 		import(
 			/* webpackChunkName: "checkout-blocks/actions" */ './checkout-actions-block/frontend'
@@ -69,8 +44,17 @@ registerBlockComponent( {
 	),
 } );
 
-registerBlockComponent( {
-	blockName: 'woocommerce/checkout-contact-information-block',
+registerCheckoutBlock( {
+	metadata: checkoutBillingAddressMetadata,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "checkout-blocks/billing-address" */ './checkout-billing-address-block/frontend'
+		)
+	),
+} );
+
+registerCheckoutBlock( {
+	metadata: checkoutContactInformationMetadata,
 	component: lazy( () =>
 		import(
 			/* webpackChunkName: "checkout-blocks/contact-information" */ './checkout-contact-information-block/frontend'
@@ -78,44 +62,8 @@ registerBlockComponent( {
 	),
 } );
 
-registerBlockComponent( {
-	blockName: 'woocommerce/checkout-order-note-block',
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "checkout-blocks/order-note" */ './checkout-order-note-block/block'
-		)
-	),
-} );
-
-registerBlockComponent( {
-	blockName: 'woocommerce/checkout-order-summary-block',
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "checkout-blocks/order-summary" */ './checkout-order-summary-block/block'
-		)
-	),
-} );
-
-registerBlockComponent( {
-	blockName: 'woocommerce/checkout-payment-block',
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "checkout-blocks/payment" */ './checkout-payment-block/frontend'
-		)
-	),
-} );
-
-registerBlockComponent( {
-	blockName: 'woocommerce/checkout-shipping-address-block',
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "checkout-blocks/shipping-address" */ './checkout-shipping-address-block/frontend'
-		)
-	),
-} );
-
-registerBlockComponent( {
-	blockName: 'woocommerce/checkout-express-payment-block',
+registerCheckoutBlock( {
+	metadata: checkoutExpressPaymentMetadata,
 	component: lazy( () =>
 		import(
 			/* webpackChunkName: "checkout-blocks/express-payment" */ './checkout-express-payment-block/block'
@@ -123,11 +71,74 @@ registerBlockComponent( {
 	),
 } );
 
-registerBlockComponent( {
-	blockName: 'woocommerce/checkout-shipping-methods-block',
+registerCheckoutBlock( {
+	metadata: checkoutFieldsMetadata,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "checkout-blocks/fields" */ './checkout-fields-block/frontend'
+		)
+	),
+} );
+
+registerCheckoutBlock( {
+	metadata: checkoutOrderNoteMetadata,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "checkout-blocks/order-note" */ './checkout-order-note-block/block'
+		)
+	),
+} );
+
+registerCheckoutBlock( {
+	metadata: checkoutOrderSummaryMetadata,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "checkout-blocks/order-summary" */ './checkout-order-summary-block/block'
+		)
+	),
+} );
+
+registerCheckoutBlock( {
+	metadata: checkoutPaymentMetadata,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "checkout-blocks/payment" */ './checkout-payment-block/frontend'
+		)
+	),
+} );
+
+registerCheckoutBlock( {
+	metadata: checkoutShippingAddressMetadata,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "checkout-blocks/shipping-address" */ './checkout-shipping-address-block/frontend'
+		)
+	),
+} );
+
+registerCheckoutBlock( {
+	metadata: checkoutShippingMethodsMetadata,
 	component: lazy( () =>
 		import(
 			/* webpackChunkName: "checkout-blocks/shipping-methods" */ './checkout-shipping-methods-block/frontend'
+		)
+	),
+} );
+
+registerCheckoutBlock( {
+	metadata: checkoutTermsMetadata,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "checkout-blocks/terms" */ './checkout-terms-block/frontend'
+		)
+	),
+} );
+
+registerCheckoutBlock( {
+	metadata: checkoutTotalsMetadata,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "checkout-blocks/totals" */ './checkout-totals-block/frontend'
 		)
 	),
 } );

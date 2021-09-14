@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { Icon, column } from '@wordpress/icons';
 import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
 
@@ -9,27 +8,13 @@ import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
  * Internal dependencies
  */
 import { Edit, Save } from './edit';
+import metadata from './block.json';
 
-registerFeaturePluginBlockType( 'woocommerce/checkout-fields-block', {
-	title: __( 'Checkout Fields Block', 'woo-gutenberg-products-block' ),
-	category: 'woocommerce',
-	description: __(
-		'Column containing checkout address fields.',
-		'woo-gutenberg-products-block'
-	),
+registerFeaturePluginBlockType( metadata, {
 	icon: {
 		src: <Icon icon={ column } />,
 		foreground: '#874FB9',
 	},
-	supports: {
-		align: false,
-		html: false,
-		multiple: false,
-		reusable: false,
-		inserter: false,
-	},
-	parent: [ 'woocommerce/checkout' ],
-	apiVersion: 2,
 	edit: Edit,
 	save: Save,
 } );

@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { Icon, column } from '@wordpress/icons';
 import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
 
@@ -9,28 +8,13 @@ import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
  * Internal dependencies
  */
 import { Edit, Save } from './edit';
+import metadata from './block.json';
 
-registerFeaturePluginBlockType( 'woocommerce/checkout-totals-block', {
-	title: __( 'Checkout Totals Block', 'woo-gutenberg-products-block' ),
-	category: 'woocommerce',
-	description: __(
-		'Column containing the checkout totals.',
-		'woo-gutenberg-products-block'
-	),
+registerFeaturePluginBlockType( metadata, {
 	icon: {
 		src: <Icon icon={ column } />,
 		foreground: '#874FB9',
 	},
-	supports: {
-		align: false,
-		html: false,
-		multiple: false,
-		reusable: false,
-		inserter: false,
-	},
-	parent: [ 'woocommerce/checkout' ],
-	attributes: {},
-	apiVersion: 2,
 	edit: Edit,
 	save: Save,
 } );

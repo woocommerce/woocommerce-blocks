@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { Icon, button } from '@wordpress/icons';
 import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
 
@@ -10,28 +9,14 @@ import { registerFeaturePluginBlockType } from '@woocommerce/block-settings';
  */
 import attributes from './attributes';
 import { Edit, Save } from './edit';
+import metadata from './block.json';
 
-registerFeaturePluginBlockType( 'woocommerce/checkout-actions-block', {
-	title: __( 'Actions', 'woo-gutenberg-products-block' ),
-	category: 'woocommerce',
-	description: __(
-		'Allow customers to place their order.',
-		'woo-gutenberg-products-block'
-	),
+registerFeaturePluginBlockType( metadata, {
 	icon: {
 		src: <Icon icon={ button } />,
 		foreground: '#874FB9',
 	},
-	supports: {
-		align: false,
-		html: false,
-		multiple: false,
-		reusable: false,
-		inserter: false,
-	},
-	parent: [ 'woocommerce/checkout-fields-block' ],
 	attributes,
-	apiVersion: 2,
 	edit: Edit,
 	save: Save,
 } );
