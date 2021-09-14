@@ -85,11 +85,15 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
-== 5.9.0 - 2021-09-13 =
+== 5.9.0 - 2021-09-14 =
 
 #### Enhancements
 
 - Add extensibility point for extensions to filter payment methods. ([4668](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4668))
+
+#### Bug Fixes
+
+- Fix Product Search block displaying incorrectly ([4740](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4740))
 
 
 = 5.8.0 - 2021-08-31 =
