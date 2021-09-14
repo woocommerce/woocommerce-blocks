@@ -15,6 +15,27 @@ class Checkout extends AbstractBlock {
 	protected $block_name = 'checkout';
 
 	/**
+	 * Initialize this block type.
+	 *
+	 * - Hook into WP lifecycle.
+	 * - Register the block with WordPress.
+	 */
+	protected function initialize() {
+		if ( empty( $this->block_name ) ) {
+			_doing_it_wrong( __METHOD__, esc_html( __( 'Block name is required.', 'woo-gutenberg-products-block' ) ), '4.5.0' );
+			return false;
+		}
+
+		// Also init the main checkout block so i2 is compatible with existing integrations.
+		do_action( 'woocommerce_blocks_checkout_block_registration', $this->integration_registry );
+
+		$this->integration_registry->initialize( $this->block_name . '_block' );
+		$this->register_block_type_assets();
+		$this->register_block_type();
+		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_editor_assets' ] );
+	}
+
+	/**
 	 * Get the editor script handle for this block type.
 	 *
 	 * @param string $key Data to get, or default to everything.
@@ -76,7 +97,7 @@ class Checkout extends AbstractBlock {
 		wp_dequeue_script( 'selectWoo' );
 		wp_dequeue_style( 'select2' );
 
-		return $this->inject_html_data_attributes( $content . $this->get_skeleton(), $attributes );
+		return $this->inject_html_data_attributes( $content, $attributes );
 	}
 
 	/**
@@ -169,14 +190,72 @@ class Checkout extends AbstractBlock {
 		$this->asset_data_registry->add( 'hasDarkEditorStyleSupport', current_theme_supports( 'dark-editor-style' ), true );
 		$this->asset_data_registry->register_page_id( isset( $attributes['cartPageId'] ) ? $attributes['cartPageId'] : 0 );
 
-		// Hydrate the following data depending on admin or frontend context.
-		if ( is_admin() && function_exists( 'get_current_screen' ) ) {
-			$screen = get_current_screen();
+		$is_block_editor = $this->is_block_editor();
 
-			if ( $screen && $screen->is_block_editor() && ! $this->asset_data_registry->exists( 'shippingMethodsExist' ) ) {
-				$methods_exist = wc_get_shipping_method_count( false, true ) > 0;
-				$this->asset_data_registry->add( 'shippingMethodsExist', $methods_exist );
-			}
+		// Hydrate the following data depending on admin or frontend context.
+		if ( $is_block_editor && ! $this->asset_data_registry->exists( 'shippingMethodsExist' ) ) {
+			$methods_exist = wc_get_shipping_method_count( false, true ) > 0;
+			$this->asset_data_registry->add( 'shippingMethodsExist', $methods_exist );
+		}
+
+		if ( $is_block_editor && ! $this->asset_data_registry->exists( 'globalShippingMethods' ) ) {
+			$shipping_methods           = WC()->shipping()->get_shipping_methods();
+			$formatted_shipping_methods = array_reduce(
+				$shipping_methods,
+				function( $acc, $method ) {
+					if ( $method->supports( 'settings' ) ) {
+						$acc[] = [
+							'id'          => $method->id,
+							'title'       => $method->method_title,
+							'description' => $method->method_description,
+						];
+					}
+					return $acc;
+				},
+				[]
+			);
+			$this->asset_data_registry->add( 'globalShippingMethods', $formatted_shipping_methods );
+		}
+
+		if ( $is_block_editor && ! $this->asset_data_registry->exists( 'activeShippingZones' ) && class_exists( '\WC_Shipping_Zones' ) ) {
+			$shipping_zones             = \WC_Shipping_Zones::get_zones();
+			$formatted_shipping_zones   = array_reduce(
+				$shipping_zones,
+				function( $acc, $zone ) {
+					$acc[] = [
+						'id'          => $zone['id'],
+						'title'       => $zone['zone_name'],
+						'description' => $zone['formatted_zone_location'],
+					];
+					return $acc;
+				},
+				[]
+			);
+			$formatted_shipping_zones[] = [
+				'id'          => 0,
+				'title'       => __( 'International', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Locations outside all other zones', 'woo-gutenberg-products-block' ),
+			];
+			$this->asset_data_registry->add( 'activeShippingZones', $formatted_shipping_zones );
+		}
+
+		if ( $is_block_editor && ! $this->asset_data_registry->exists( 'globalPaymentMethods' ) ) {
+			$payment_methods           = WC()->payment_gateways->payment_gateways();
+			$formatted_payment_methods = array_reduce(
+				$payment_methods,
+				function( $acc, $method ) {
+					if ( 'yes' === $method->enabled ) {
+						$acc[] = [
+							'id'          => $method->id,
+							'title'       => $method->method_title,
+							'description' => $method->method_description,
+						];
+					}
+					return $acc;
+				},
+				[]
+			);
+			$this->asset_data_registry->add( 'globalPaymentMethods', $formatted_payment_methods );
 		}
 
 		if ( ! is_admin() && ! WC()->is_rest_api_request() ) {
@@ -185,6 +264,18 @@ class Checkout extends AbstractBlock {
 		}
 
 		do_action( 'woocommerce_blocks_checkout_enqueue_data' );
+	}
+
+	/**
+	 * Are we currently on the admin block editor screen?
+	 */
+	protected function is_block_editor() {
+		if ( ! is_admin() || ! function_exists( 'get_current_screen' ) ) {
+			return false;
+		}
+		$screen = get_current_screen();
+
+		return $screen && $screen->is_block_editor();
 	}
 
 	/**
@@ -234,70 +325,6 @@ class Checkout extends AbstractBlock {
 		$this->asset_data_registry->hydrate_api_request( '/wc/store/cart' );
 		$this->asset_data_registry->hydrate_api_request( '/wc/store/checkout' );
 		remove_filter( 'woocommerce_store_api_disable_nonce_check', '__return_true' );
-	}
-
-	/**
-	 * Render skeleton markup for the checkout block.
-	 */
-	protected function get_skeleton() {
-		return '
-			<div class="wc-block-skeleton wc-block-components-sidebar-layout wc-block-checkout wc-block-checkout--is-loading wc-block-checkout--skeleton hidden" aria-hidden="true">
-				<div class="wc-block-components-main wc-block-checkout__main">
-					<div class="wc-block-components-express-payment wc-block-components-express-payment--checkout"></div>
-					<div class="wc-block-components-express-payment-continue-rule wc-block-components-express-payment-continue-rule--checkout"><span></span></div>
-					<form class="wc-block-checkout__form">
-						<fieldset class="wc-block-checkout__contact-fields wc-block-components-checkout-step">
-							<div class="wc-block-components-checkout-step__heading">
-								<div class="wc-block-components-checkout-step__title"></div>
-							</div>
-							<div class="wc-block-components-checkout-step__container">
-								<div class="wc-block-components-checkout-step__content">
-									<span></span>
-								</div>
-							</div>
-						</fieldset>
-						<fieldset class="wc-block-checkout__contact-fields wc-block-components-checkout-step">
-							<div class="wc-block-components-checkout-step__heading">
-								<div class="wc-block-components-checkout-step__title"></div>
-							</div>
-							<div class="wc-block-components-checkout-step__container">
-								<div class="wc-block-components-checkout-step__content">
-									<span></span>
-								</div>
-							</div>
-						</fieldset>
-						<fieldset class="wc-block-checkout__contact-fields wc-block-components-checkout-step">
-							<div class="wc-block-components-checkout-step__heading">
-								<div class="wc-block-components-checkout-step__title"></div>
-							</div>
-							<div class="wc-block-components-checkout-step__container">
-								<div class="wc-block-components-checkout-step__content">
-									<span></span>
-								</div>
-							</div>
-						</fieldset>
-						<fieldset class="wc-block-checkout__contact-fields wc-block-components-checkout-step">
-							<div class="wc-block-components-checkout-step__heading">
-								<div class="wc-block-components-checkout-step__title"></div>
-							</div>
-							<div class="wc-block-components-checkout-step__container">
-								<div class="wc-block-components-checkout-step__content">
-									<span></span>
-								</div>
-							</div>
-						</fieldset>
-					</form>
-				</div>
-				<div class="wc-block-components-sidebar wc-block-checkout__sidebar">
-					<div class="components-card"></div>
-				</div>
-				<div class="wc-block-components-main wc-block-checkout__main-totals">
-					<div class="wc-block-checkout__actions">
-						<button class="components-button button wc-block-button wc-block-components-checkout-place-order-button">&nbsp;</button>
-					</div>
-				</div>
-			</div>
-		' . $this->get_skeleton_inline_script();
 	}
 
 	/**
