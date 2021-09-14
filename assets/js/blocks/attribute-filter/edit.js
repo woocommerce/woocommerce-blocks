@@ -386,6 +386,7 @@ const Edit = ( { attributes, setAttributes, debouncedSpeak } ) => {
 			) : (
 				<div className={ className }>
 					<BlockTitle
+						className="wc-block-attribute-filter__heading"
 						headingLevel={ headingLevel }
 						heading={ heading }
 						onChange={ ( value ) =>

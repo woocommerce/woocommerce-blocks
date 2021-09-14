@@ -21,7 +21,7 @@ const BlockTitle = ( {
 } ) => {
 	const TagName = `h${ headingLevel }`;
 	return (
-		<TagName>
+		<TagName className={ className }>
 			<label
 				className="screen-reader-text"
 				htmlFor={ `block-title-${ instanceId }` }
