@@ -11,7 +11,7 @@ import {
 /**
  * Internal dependencies
  */
-import CheckoutOrderNotes from '../../../checkout/form/order-notes';
+import CheckoutOrderNotes from '../../order-notes';
 
 const Block = (): JSX.Element => {
 	const { needsShipping } = useShippingDataContext();
