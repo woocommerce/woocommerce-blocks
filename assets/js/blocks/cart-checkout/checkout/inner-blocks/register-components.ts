@@ -26,38 +26,12 @@ import checkoutShippingMethodsMetadata from './checkout-shipping-methods-block/b
 import checkoutTermsMetadata from './checkout-terms-block/block.json';
 import checkoutTotalsMetadata from './checkout-totals-block/block.json';
 
+// @todo When forcing all blocks at once, they will append based on the order they are registered. Introduce formal sorting param.
 registerCheckoutBlock( {
-	metadata: sampleBlockMetadata,
+	metadata: checkoutFieldsMetadata,
 	component: lazy( () =>
 		import(
-			/* webpackChunkName: "checkout-blocks/sample" */ './checkout-sample-block/frontend'
-		)
-	),
-} );
-
-registerCheckoutBlock( {
-	metadata: checkoutActionsMetadata,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "checkout-blocks/actions" */ './checkout-actions-block/frontend'
-		)
-	),
-} );
-
-registerCheckoutBlock( {
-	metadata: checkoutBillingAddressMetadata,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "checkout-blocks/billing-address" */ './checkout-billing-address-block/frontend'
-		)
-	),
-} );
-
-registerCheckoutBlock( {
-	metadata: checkoutContactInformationMetadata,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "checkout-blocks/contact-information" */ './checkout-contact-information-block/frontend'
+			/* webpackChunkName: "checkout-blocks/fields" */ './checkout-fields-block/frontend'
 		)
 	),
 } );
@@ -72,37 +46,10 @@ registerCheckoutBlock( {
 } );
 
 registerCheckoutBlock( {
-	metadata: checkoutFieldsMetadata,
+	metadata: checkoutContactInformationMetadata,
 	component: lazy( () =>
 		import(
-			/* webpackChunkName: "checkout-blocks/fields" */ './checkout-fields-block/frontend'
-		)
-	),
-} );
-
-registerCheckoutBlock( {
-	metadata: checkoutOrderNoteMetadata,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "checkout-blocks/order-note" */ './checkout-order-note-block/block'
-		)
-	),
-} );
-
-registerCheckoutBlock( {
-	metadata: checkoutOrderSummaryMetadata,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "checkout-blocks/order-summary" */ './checkout-order-summary-block/block'
-		)
-	),
-} );
-
-registerCheckoutBlock( {
-	metadata: checkoutPaymentMetadata,
-	component: lazy( () =>
-		import(
-			/* webpackChunkName: "checkout-blocks/payment" */ './checkout-payment-block/frontend'
+			/* webpackChunkName: "checkout-blocks/contact-information" */ './checkout-contact-information-block/frontend'
 		)
 	),
 } );
@@ -117,10 +64,37 @@ registerCheckoutBlock( {
 } );
 
 registerCheckoutBlock( {
+	metadata: checkoutBillingAddressMetadata,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "checkout-blocks/billing-address" */ './checkout-billing-address-block/frontend'
+		)
+	),
+} );
+
+registerCheckoutBlock( {
 	metadata: checkoutShippingMethodsMetadata,
 	component: lazy( () =>
 		import(
 			/* webpackChunkName: "checkout-blocks/shipping-methods" */ './checkout-shipping-methods-block/frontend'
+		)
+	),
+} );
+
+registerCheckoutBlock( {
+	metadata: checkoutPaymentMetadata,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "checkout-blocks/payment" */ './checkout-payment-block/frontend'
+		)
+	),
+} );
+
+registerCheckoutBlock( {
+	metadata: checkoutOrderNoteMetadata,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "checkout-blocks/order-note" */ './checkout-order-note-block/block'
 		)
 	),
 } );
@@ -135,10 +109,37 @@ registerCheckoutBlock( {
 } );
 
 registerCheckoutBlock( {
+	metadata: checkoutActionsMetadata,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "checkout-blocks/actions" */ './checkout-actions-block/frontend'
+		)
+	),
+} );
+
+registerCheckoutBlock( {
 	metadata: checkoutTotalsMetadata,
 	component: lazy( () =>
 		import(
 			/* webpackChunkName: "checkout-blocks/totals" */ './checkout-totals-block/frontend'
+		)
+	),
+} );
+
+registerCheckoutBlock( {
+	metadata: checkoutOrderSummaryMetadata,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "checkout-blocks/order-summary" */ './checkout-order-summary-block/block'
+		)
+	),
+} );
+
+registerCheckoutBlock( {
+	metadata: sampleBlockMetadata,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "checkout-blocks/sample" */ './checkout-sample-block/frontend'
 		)
 	),
 } );
