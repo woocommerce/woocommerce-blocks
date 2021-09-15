@@ -52,11 +52,15 @@ We also have individual features or code blocks behind a feature flag, this is a
 -   ⚛️ Product Title new controls ([JS flag 1](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/title/attributes.js#L21-L40) | [JS flag 2-1](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/title/block.js#L70-L72) | [JS flag 2-2](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/title/block.js#L94-L95) | [JS flag 2-3](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/title/block.js#L104) | [JS flag 3-1](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/title/edit.js#L47-L54) | [JS flag 3-2](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/title/edit.js#L77-L107) | [JS flag 3-3](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/title/edit.js#L116-L129)).
 -   Utility function to pass styles to a block ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/9ebddbc5d21eb3cc67fedddbccbd86453313eb64/assets/js/atomic/utils/block-styling.js#L6-L12)).
 -   Feature to create an account from the Checkout block ([PHP flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/4cedb65367be0d1c4c1f9dd9c016e3b1325cf92e/src/Domain/Services/CreateAccount.php#L40)).
+-   Checkout package ([PHP Flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/6da64165025e7a2afc1782e4b278d72536e7b754/src/AssetsController.php#L62-L64)) which contains:
+    -   SlotFills used in Cart and Checkout.
+    -   Checkout Filters.
+    -   Inner Blocks registry for Cart & Checkout i2.
+    -   Components exposed to 3PD.
 
 ### Experimental plugin flag
 
 -   Inserting Product Element blocks globally from the inserter ([JS flag](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/b3a9753d8b7dae18b36025d09fbff835b8365de0/assets/js/atomic/blocks/product-elements/shared/config.js#L25-L27)).
--   Google Analytics scripts which are loaded when the Google Analytics Integration Extension is installed ([JS flag 1](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/4cedb65367be0d1c4c1f9dd9c016e3b1325cf92e/src/Assets.php#L58) | [JS flag 2](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/4cedb65367be0d1c4c1f9dd9c016e3b1325cf92e/src/Assets.php#L136)).
 
 ## Processes and commands that use a flag
 
