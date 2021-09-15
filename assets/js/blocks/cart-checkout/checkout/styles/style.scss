@@ -1,53 +1,34 @@
-.wp-block-woocommerce-checkout .with-scroll-to-top__scroll-point {
-	top: -96px;
-}
+.wp-block-woocommerce-checkout {
+	margin: 0;
 
-.wc-block-checkout__sidebar {
-	.wc-block-components-product-name {
-		display: block;
-		color: inherit;
-		flex-grow: 1;
-		// Required by IE11.
-		flex-basis: 0;
-	}
-	.wc-block-components-totals-taxes,
-	.wc-block-components-totals-footer-item {
-		margin: 0;
-		padding: 0;
+	.with-scroll-to-top__scroll-point {
+		top: -96px;
 	}
 }
 
-.wc-block-checkout__actions {
+.wp-block-woocommerce-checkout.is-loading {
 	display: flex;
-	justify-content: space-between;
-	align-items: center;
-
-	.wc-block-components-checkout-place-order-button {
-		width: 50%;
-		padding: 1em;
-		height: auto;
-
-		.wc-block-components-button__text {
-			line-height: 24px;
-
-			> svg {
-				fill: $white;
-				vertical-align: top;
-			}
-		}
+	flex-wrap: wrap;
+	margin: 0 auto $gap;
+	position: relative;
+	.wp-block-woocommerce-checkout-totals-block {
+		width: 35%;
+		padding-left: percentage(math.div($gap-large, 1060px));
 	}
-}
-
-// Loading skeleton.
-.is-loading.wp-block-woocommerce-checkout {
+	.wp-block-woocommerce-checkout-fields-block {
+		width: 65%;
+		padding-right: percentage(math.div($gap-largest, 1060px)); // ~1060px is the default width of the content area in Storefront.
+	}
 	.wp-block-woocommerce-checkout-totals-block,
 	.wp-block-woocommerce-checkout-fields-block {
+		box-sizing: border-box;
+		margin: 0;
+
 		> div {
 			@include placeholder();
 			margin: 0 0 1.5em 0;
 			display: none;
 		}
-
 		.wp-block-woocommerce-checkout-contact-information-block,
 		.wp-block-woocommerce-checkout-payment-block {
 			min-height: 10em;
@@ -67,193 +48,47 @@
 			min-height: 47em;
 			display: block;
 		}
+		.wc-block-components-panel > h2 {
+			@include font-size(regular);
+			@include reset-box();
+			@include reset-typography();
+			.wc-block-components-panel__button {
+				font-weight: 400;
+			}
+		}
+		.wc-block-components-totals-item,
+		.wc-block-components-panel {
+			padding-left: $gap;
+			padding-right: $gap;
+		}
 	}
-
-	&.wp-block-woocommerce-checkout {
-		display: flex;
-		flex-wrap: wrap;
+}
+// Skeleton is shown before mobile classes are appended.
+@media only screen and (max-width: 700px) {
+	.wp-block-woocommerce-checkout.is-loading {
+		flex-direction: column;
 		margin: 0 auto $gap;
-		position: relative;
 
 		.wp-block-woocommerce-checkout-fields-block {
-			box-sizing: border-box;
-			margin: 0;
-			padding-right: percentage(math.div($gap-largest, 1060px)); // ~1060px is the default width of the content area in Storefront.
-			width: 65%;
-		}
-		.wp-block-woocommerce-checkout-totals-block {
-			box-sizing: border-box;
-			margin: 0;
-			padding-left: percentage(math.div($gap-large, 1060px));
-			width: 35%;
-
-			.wc-block-components-panel > h2 {
-				@include font-size(regular);
-				@include reset-box();
-				@include reset-typography();
-				.wc-block-components-panel__button {
-					font-weight: 400;
-				}
-			}
-		}
-	}
-
-	.is-medium,
-	.is-small,
-	.is-mobile {
-		&.wp-block-woocommerce-checkout {
-			flex-direction: column;
-			margin: 0 auto $gap;
-
-			.wp-block-woocommerce-checkout-fields-block {
-				padding: 0;
-				width: 100%;
-			}
-			.wp-block-woocommerce-checkout-totals-block {
-				padding: 0;
-				width: 100%;
-			}
-		}
-	}
-
-	.is-large {
-		.wp-block-woocommerce-checkout-totals-block {
-			.wc-block-components-totals-item,
-			.wc-block-components-panel {
-				padding-left: $gap;
-				padding-right: $gap;
-			}
-		}
-	}
-
-	// For Twenty Twenty we need to increase specificity a bit more.
-	.theme-twentytwenty {
-		.wp-block-woocommerce-checkout-totals-block .wc-block-components-panel > h2 {
-			@include font-size(large);
-			@include reset-box();
-		}
-	}
-}
-
-.wc-block-checkout__form {
-	margin: 0;
-	max-width: 100%;
-}
-.wc-block-checkout__create-account,
-.wc-block-checkout__use-address-for-billing {
-	margin-top: em($gap-large);
-}
-
-.wc-block-checkout__shipping-option {
-	.wc-block-components-radio-control__option {
-		@include with-translucent-border( 0 0 1px );
-		margin: 0;
-		padding: em($gap-small) 0 em($gap-small) em($gap-largest);
-	}
-
-	.wc-block-components-shipping-rates-control__no-results-notice {
-		margin: em($gap-small) 0;
-	}
-}
-
-.is-small,
-.is-medium,
-.is-large {
-	.wc-block-checkout__billing-fields,
-	.wc-block-checkout__shipping-fields {
-		.wc-block-components-address-form {
-			margin-left: #{-$gap-small * 0.5};
-			margin-right: #{-$gap-small * 0.5};
-
-			&::after {
-				content: "";
-				clear: both;
-				display: block;
-			}
-
-			.wc-block-components-text-input,
-			.wc-block-components-country-input,
-			.wc-block-components-state-input {
-				float: left;
-				margin-left: #{$gap-small * 0.5};
-				margin-right: #{$gap-small * 0.5};
-				position: relative;
-				width: calc(50% - #{$gap-small});
-
-				&:nth-of-type(2),
-				&:first-of-type {
-					margin-top: 0;
-				}
-			}
-
-			.wc-block-components-address-form__company,
-			.wc-block-components-address-form__address_1,
-			.wc-block-components-address-form__address_2 {
-				width: calc(100% - #{$gap-small});
-			}
-
-			.wc-block-components-checkbox {
-				clear: both;
-			}
-
-		}
-	}
-}
-
-.wc-block-checkout-empty,
-.wc-block-checkout-error {
-	padding: $gap-largest;
-	text-align: center;
-	width: 100%;
-
-	.wc-block-checkout-empty__image,
-	.wc-block-checkout-error__image {
-		max-width: 150px;
-		margin: 0 auto 1em;
-		display: block;
-		color: inherit;
-	}
-	.wc-block-checkout-empty__title,
-	.wc-block-checkout-error__title {
-		display: block;
-		margin: 0;
-		font-weight: bold;
-	}
-	.wc-block-checkout-empty__description,
-	.wc-block-checkout-error__description {
-		display: block;
-		margin: 0.25em 0 1em 0;
-	}
-}
-
-.is-mobile {
-	.wc-block-checkout__actions {
-		.wc-block-components-checkout-return-to-cart-button {
-			display: none;
-		}
-
-		.wc-block-components-checkout-place-order-button {
+			padding: 0;
 			width: 100%;
 		}
+		.wp-block-woocommerce-checkout-totals-block {
+			padding: 0;
+			width: 100%;
+			.wc-block-components-totals-item,
+			.wc-block-components-panel {
+				padding-left: 0;
+				padding-right: 0;
+			}
+		}
 	}
 }
 
-.is-mobile,
-.is-small,
-.is-medium {
-	.wc-block-checkout__main {
-		order: 1;
-	}
-
-	.wc-block-checkout__sidebar {
-		margin-bottom: $gap-large;
-		order: 0;
-	}
-}
-
-.is-large {
-	.wc-block-checkout__actions {
-		@include with-translucent-border(1px 0 0);
-		padding-top: em($gap-large);
+// For Twenty Twenty we need to increase specificity a bit more.
+.theme-twentytwenty .wp-block-woocommerce-checkout.is-loading {
+	.wp-block-woocommerce-checkout-totals-block .wc-block-components-panel > h2 {
+		@include font-size(large);
+		@include reset-box();
 	}
 }

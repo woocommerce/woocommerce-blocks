@@ -8,6 +8,7 @@ import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 /**
  * Internal dependencies
  */
+import './style.scss';
 import { useForcedLayout } from '../../use-forced-layout';
 import { getAllowedBlocks } from '../../editor-utils';
 

@@ -3,6 +3,11 @@
  */
 import { Sidebar } from '@woocommerce/base-components/sidebar-layout';
 
+/**
+ * Internal dependencies
+ */
+import './style.scss';
+
 const FrontendBlock = ( {
 	children,
 }: {

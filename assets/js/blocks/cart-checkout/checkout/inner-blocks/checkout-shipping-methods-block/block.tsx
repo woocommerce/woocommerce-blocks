@@ -21,6 +21,7 @@ import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/car
  * Internal dependencies
  */
 import NoShippingPlaceholder from './no-shipping-placeholder';
+import './style.scss';
 
 /**
  * Renders a shipping rate control option.
