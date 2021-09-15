@@ -240,6 +240,24 @@ class ProductByCategoryBlock extends Component {
 		);
 	}
 
+	renderEmptyResponsePlaceholder() {
+		return (
+			<Placeholder
+				icon={ <Icon srcElement={ folder } /> }
+				label={ __(
+					'Products by Category',
+					'woo-gutenberg-products-block'
+				) }
+				className="wc-block-products-grid wc-block-products-category"
+			>
+				{ __(
+					'No products were found that matched your selection.',
+					'woo-gutenberg-products-block'
+				) }
+			</Placeholder>
+		);
+	}
+
 	renderViewMode() {
 		const { attributes, name } = this.props;
 		const hasCategories = attributes.categories.length;
@@ -250,21 +268,9 @@ class ProductByCategoryBlock extends Component {
 					<ServerSideRender
 						block={ name }
 						attributes={ attributes }
-						EmptyResponsePlaceholder={ () => (
-							<Placeholder
-								icon={ <Icon srcElement={ folder } /> }
-								label={ __(
-									'Products by Category',
-									'woo-gutenberg-products-block'
-								) }
-								className="wc-block-products-grid wc-block-products-category"
-							>
-								{ __(
-									'No products were found that matched your selection.',
-									'woo-gutenberg-products-block'
-								) }
-							</Placeholder>
-						) }
+						EmptyResponsePlaceholder={
+							this.renderEmptyResponsePlaceholder
+						}
 					/>
 				) : (
 					__(
