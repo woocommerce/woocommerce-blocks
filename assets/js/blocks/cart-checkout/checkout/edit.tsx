@@ -28,6 +28,7 @@ import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedb
 import { CHECKOUT_PAGE_ID } from '@woocommerce/block-settings';
 import { createInterpolateElement } from '@wordpress/element';
 import { getAdminLink } from '@woocommerce/settings';
+import { CartCheckoutCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices';
 
 /**
  * Internal dependencies
@@ -261,47 +262,50 @@ export const Edit = ( {
 	);
 
 	return (
-		<EditorProvider
-			previewData={ { previewCart, previewSavedPaymentMethods } }
-		>
-			<BlockSettings
-				attributes={ attributes }
-				setAttributes={ setAttributes }
-			/>
-			<CheckoutProvider>
-				<Columns>
-					<SidebarLayout
-						className={ classnames( 'wc-block-checkout', {
-							'has-dark-controls': attributes.hasDarkControls,
-						} ) }
-					>
-						<CheckoutBlockControlsContext.Provider
-							value={ {
-								addressFieldControls,
-								accountControls,
-							} }
+		<>
+			<EditorProvider
+				previewData={ { previewCart, previewSavedPaymentMethods } }
+			>
+				<BlockSettings
+					attributes={ attributes }
+					setAttributes={ setAttributes }
+				/>
+				<CheckoutProvider>
+					<Columns>
+						<SidebarLayout
+							className={ classnames( 'wc-block-checkout', {
+								'has-dark-controls': attributes.hasDarkControls,
+							} ) }
 						>
-							<CheckoutBlockContext.Provider
+							<CheckoutBlockControlsContext.Provider
 								value={ {
-									allowCreateAccount,
-									showCompanyField,
-									requireCompanyField,
-									showApartmentField,
-									showPhoneField,
-									requirePhoneField,
+									addressFieldControls,
+									accountControls,
 								} }
 							>
-								<InnerBlocks
-									allowedBlocks={ ALLOWED_BLOCKS }
-									template={ defaultInnerBlocksTemplate }
-									templateLock="insert"
-								/>
-							</CheckoutBlockContext.Provider>
-						</CheckoutBlockControlsContext.Provider>
-					</SidebarLayout>
-				</Columns>
-			</CheckoutProvider>
-		</EditorProvider>
+								<CheckoutBlockContext.Provider
+									value={ {
+										allowCreateAccount,
+										showCompanyField,
+										requireCompanyField,
+										showApartmentField,
+										showPhoneField,
+										requirePhoneField,
+									} }
+								>
+									<InnerBlocks
+										allowedBlocks={ ALLOWED_BLOCKS }
+										template={ defaultInnerBlocksTemplate }
+										templateLock="insert"
+									/>
+								</CheckoutBlockContext.Provider>
+							</CheckoutBlockControlsContext.Provider>
+						</SidebarLayout>
+					</Columns>
+				</CheckoutProvider>
+			</EditorProvider>
+			<CartCheckoutCompatibilityNotice blockName="checkout" />
+		</>
 	);
 };
 

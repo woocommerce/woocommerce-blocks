@@ -9,6 +9,7 @@ import {
 import {
 	findLabelWithText,
 	visitBlockPage,
+	selectBlockByName,
 } from '@woocommerce/blocks-test-utils';
 
 import {
@@ -79,11 +80,37 @@ describe( `${ block.name } Block`, () => {
 		describe( 'attributes', () => {
 			beforeEach( async () => {
 				await openDocumentSettingsSidebar();
-				await page.click( block.class );
+				await selectBlockByName( block.slug );
+			} );
+
+			it( 'can enable dark mode inputs', async () => {
+				const toggleLabel = await findLabelWithText(
+					'Dark mode inputs'
+				);
+				await toggleLabel.click();
+
+				await expect( page ).toMatchElement(
+					`.wc-block-checkout.has-dark-controls`
+				);
+
+				await toggleLabel.click();
+
+				await expect( page ).not.toMatchElement(
+					`.wc-block-checkout.has-dark-controls`
+				);
+			} );
+		} );
+
+		describe( 'shipping address block attributes', () => {
+			beforeEach( async () => {
+				await openDocumentSettingsSidebar();
+				await page.click(
+					'.wp-block-woocommerce-checkout-shipping-address-block'
+				);
 			} );
 
 			describe( 'Company input', () => {
-				const selector = `${ block.class } .wc-block-components-address-form__company input`;
+				const selector = `.wc-block-components-address-form__company input`;
 
 				it( 'visibility can be toggled', async () => {
 					const toggleLabel = await findLabelWithText( 'Company' );
@@ -106,7 +133,7 @@ describe( `${ block.name } Block`, () => {
 
 			describe( 'Apartment input', () => {
 				it( 'visibility can be toggled', async () => {
-					const selector = `${ block.class } .wc-block-components-address-form__address_2 input`;
+					const selector = `${ block.class }  #shipping-address_2`;
 					const toggleLabel = await findLabelWithText(
 						'Apartment, suite, etc.'
 					);
@@ -115,7 +142,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			describe( 'Phone input', () => {
-				const selector = `${ block.class } #phone`;
+				const selector = `${ block.class } #shipping-phone`;
 
 				it( 'visibility can be toggled', async () => {
 					const toggleLabel = await findLabelWithText( 'Phone' );
@@ -123,6 +150,9 @@ describe( `${ block.name } Block`, () => {
 				} );
 
 				it( 'required attribute can be toggled', async () => {
+					// Phone is disabled by default, so first we need to enable it.
+					const toggleLabel = await findLabelWithText( 'Phone' );
+					await toggleLabel.click();
 					const checkboxLabel = await findLabelWithText(
 						'Require phone number?'
 					);
@@ -131,25 +161,15 @@ describe( `${ block.name } Block`, () => {
 					);
 				} );
 			} );
+		} );
 
-			describe( 'Order notes checkbox', () => {
-				it( 'visibility can be toggled', async () => {
-					const selector = `${ block.class } .wc-block-checkout__add-note`;
-					const toggleLabel = await findLabelWithText(
-						'Allow shoppers to optionally add order notes'
-					);
-					await expect( toggleLabel ).toToggleElement( selector );
-				} );
-			} );
-
-			describe( 'Links to polices', () => {
-				it( 'visibility can be toggled', async () => {
-					const selector = `${ block.class } .wc-block-components-checkout-policies`;
-					const toggleLabel = await findLabelWithText(
-						'Show links to policies'
-					);
-					await expect( toggleLabel ).toToggleElement( selector );
-				} );
+		describe( 'action block attributes', () => {
+			beforeEach( async () => {
+				await openDocumentSettingsSidebar();
+				await page.click(
+					block.class +
+						' .wp-block-woocommerce-checkout-actions-block'
+				);
 			} );
 
 			describe( 'Return to cart link', () => {
@@ -160,25 +180,6 @@ describe( `${ block.name } Block`, () => {
 					);
 					await expect( toggleLabel ).toToggleElement( selector );
 				} );
-			} );
-
-			it( 'can enable dark mode inputs', async () => {
-				await openDocumentSettingsSidebar();
-				await page.click( block.class );
-				const toggleLabel = await findLabelWithText(
-					'Dark mode inputs'
-				);
-				await toggleLabel.click();
-
-				await expect( page ).toMatchElement(
-					`${ block.class }.has-dark-controls`
-				);
-
-				await toggleLabel.click();
-
-				await expect( page ).not.toMatchElement(
-					`${ block.class }.has-dark-controls`
-				);
 			} );
 		} );
 	} );
