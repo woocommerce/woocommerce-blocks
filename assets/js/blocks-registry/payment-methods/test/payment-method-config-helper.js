@@ -48,7 +48,7 @@ describe( 'canMakePaymentWithExtensions', () => {
 		falseCallback.mockClear();
 	} );
 
-	it( 'Returns false without executing the registered callbacks, if the payment method's canMakePayment callback returns false.', () => {
+	it( "Returns false without executing the registered callbacks, if the payment method's canMakePayment callback returns false.", () => {
 		const canMakePayment = () => false;
 		const canMakePaymentWithExtensionsResult = canMakePaymentWithExtensions(
 			canMakePayment,
