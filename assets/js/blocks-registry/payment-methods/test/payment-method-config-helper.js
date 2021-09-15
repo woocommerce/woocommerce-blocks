@@ -48,7 +48,7 @@ describe( 'canMakePaymentWithExtensions', () => {
 		falseCallback.mockClear();
 	} );
 
-	it( 'The function returned returns false if canMakePayment is false already and the callback is not executed', () => {
+	it( 'Returns false without executing the registered callbacks, if the payment method's canMakePayment callback returns false.', () => {
 		const canMakePayment = () => false;
 		const canMakePaymentWithExtensionsResult = canMakePaymentWithExtensions(
 			canMakePayment,
@@ -59,7 +59,7 @@ describe( 'canMakePaymentWithExtensions', () => {
 		expect( trueCallback ).not.toHaveBeenCalled();
 	} );
 
-	it( 'Does not unnecessarily execute additional callbacks from other namespaces if an earlier one returns false', () => {
+	it( 'Returns early when a registered callback returns false, without executing all the registered callbacks', () => {
 		canMakePaymentWithExtensions(
 			() => true,
 			canMakePaymentExtensionsCallbacks,
