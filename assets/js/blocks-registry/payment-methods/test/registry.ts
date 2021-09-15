@@ -9,11 +9,12 @@ import { registerPaymentMethodExtensionCallbacks } from '@woocommerce/blocks-reg
 import { canMakePaymentExtensionsCallbacks } from '../extensions-config';
 
 describe( 'registerPaymentMethodExtensionCallbacks', () => {
-	it( 'Logs an error to console if namespace is already registered', () => {
+	it( 'Logs an error to console if namespace is already registered and does not overwrite the first registered one', () => {
+		const firstCodCallback = jest.fn().mockReturnValue( false );
 		registerPaymentMethodExtensionCallbacks(
 			'woocommerce-marketplace-extension',
 			{
-				cod: () => false,
+				cod: firstCodCallback,
 			}
 		);
 
@@ -29,6 +30,12 @@ describe( 'registerPaymentMethodExtensionCallbacks', () => {
 
 		// eslint-disable-next-line no-console
 		expect( console.error ).toHaveBeenCalledTimes( 1 );
+
+		expect(
+			canMakePaymentExtensionsCallbacks[
+				'woocommerce-marketplace-extension'
+			].cod
+		).toEqual( firstCodCallback );
 	} );
 
 	it( 'Logs an error if a supplied callback is not a function and does not register the callback for that method', () => {
