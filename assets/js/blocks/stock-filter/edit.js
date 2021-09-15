@@ -112,6 +112,7 @@ const Edit = ( { attributes, setAttributes } ) => {
 			{
 				<div className={ className }>
 					<BlockTitle
+						className="wc-block-stock-filter__title"
 						headingLevel={ headingLevel }
 						heading={ heading }
 						onChange={ ( value ) =>
