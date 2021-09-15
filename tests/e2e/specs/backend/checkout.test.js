@@ -19,7 +19,7 @@ import {
 const block = {
 	name: 'Checkout',
 	slug: 'woocommerce/checkout',
-	class: '.wc-block-woocommerce-checkout',
+	class: '.wp-block-woocommerce-checkout',
 };
 
 if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
