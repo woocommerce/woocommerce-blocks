@@ -13,7 +13,7 @@ import {
 } from './cart-response';
 import type { EmptyObjectType } from './objects';
 
-export interface Supports {
+export interface SupportsConfiguration {
 	showSavedCards?: boolean;
 	showSaveOption?: boolean;
 	features?: string[];
@@ -22,7 +22,7 @@ export interface Supports {
 }
 
 // we assign a value in the class for supports.features
-export interface SupportsInConstructor extends Supports {
+export interface Supports extends SupportsConfiguration {
 	features: string[];
 }
 
@@ -51,7 +51,7 @@ export interface PaymentMethodIcon {
 
 export type PaymentMethodIcons = ( PaymentMethodIcon | string )[];
 
-export interface PaymentMethodOptions {
+export interface PaymentMethodConfiguration {
 	// A unique string to identify the payment method client side.
 	name: string;
 	// A react node for your payment method UI.
@@ -63,7 +63,7 @@ export interface PaymentMethodOptions {
 	// A unique string to represent the payment method server side. If not provided, defaults to name.
 	paymentMethodId?: string;
 	// Object that describes various features provided by the payment method.
-	supports: Supports;
+	supports: SupportsConfiguration;
 	// Array of card types (brands) supported by the payment method. (See stripe/credit-card for example.)
 	icons?: null | PaymentMethodIcons;
 	// A react node that will be used as a label for the payment method in the checkout.
@@ -76,8 +76,8 @@ export interface PaymentMethodOptions {
 	savedTokenComponent?: ReactNode | null;
 }
 
-export type ExpressPaymentMethodOptions = Omit<
-	PaymentMethodOptions,
+export type ExpressPaymentMethodConfiguration = Omit<
+	PaymentMethodConfiguration,
 	'icons' | 'label' | 'ariaLabel' | 'placeOrderButtonLabel'
 >;
 
@@ -94,7 +94,7 @@ export interface PaymentMethodConfigInstance {
 	content: ReactNode;
 	edit: ReactNode;
 	paymentMethodId?: string;
-	supports: SupportsInConstructor;
+	supports: Supports;
 	icons: null | PaymentMethodIcons;
 	label: ReactNode;
 	ariaLabel: string;
@@ -109,6 +109,6 @@ export interface ExpressPaymentMethodConfigInstance {
 	content: ReactNode;
 	edit: ReactNode;
 	paymentMethodId?: string;
-	supports: SupportsInConstructor;
+	supports: Supports;
 	canMakePayment: CanMakePaymentCallback;
 }

@@ -3,8 +3,8 @@
  */
 import deprecated from '@wordpress/deprecated';
 import type {
-	PaymentMethodOptions,
-	ExpressPaymentMethodOptions,
+	PaymentMethodConfiguration,
+	ExpressPaymentMethodConfiguration,
 	CanMakePaymentCallback,
 	PaymentMethodConfigInstance,
 	PaymentMethods,
@@ -28,7 +28,7 @@ const expressPaymentMethods: ExpressPaymentMethods = {};
  * Register a regular payment method.
  */
 export const registerPaymentMethod = (
-	options: PaymentMethodOptions | LegacyRegisterPaymentMethodFunction
+	options: PaymentMethodConfiguration | LegacyRegisterPaymentMethodFunction
 ): void => {
 	let paymentMethodConfig: PaymentMethodConfigInstance | unknown;
 	if ( typeof options === 'function' ) {
@@ -54,7 +54,7 @@ export const registerPaymentMethod = (
  */
 export const registerExpressPaymentMethod = (
 	options:
-		| ExpressPaymentMethodOptions
+		| ExpressPaymentMethodConfiguration
 		| LegacyRegisterExpessPaymentMethodFunction
 ): void => {
 	let paymentMethodConfig;

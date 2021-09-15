@@ -2,7 +2,7 @@
  * External dependencies
  */
 import {
-	PaymentMethodOptions,
+	PaymentMethodConfiguration,
 	PaymentMethods,
 	ExpressPaymentMethods,
 } from '@woocommerce/type-defs/payments';
@@ -17,7 +17,7 @@ import type { emitterCallback } from '../../../event-emit';
 import { STATUS } from './constants';
 
 export interface CustomerPaymentMethod {
-	method: PaymentMethodOptions;
+	method: PaymentMethodConfiguration;
 	expires: string;
 	is_default: boolean;
 	tokenId: number;

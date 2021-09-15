@@ -3,8 +3,8 @@
  */
 import type { ReactNode } from 'react';
 import type {
-	ExpressPaymentMethodOptions,
-	SupportsInConstructor,
+	ExpressPaymentMethodConfiguration,
+	Supports,
 	CanMakePaymentCallback,
 	ExpressPaymentMethodConfigInstance,
 } from '@woocommerce/type-defs/payments';
@@ -21,10 +21,10 @@ export default class ExpressPaymentMethodConfig
 	public content: ReactNode;
 	public edit: ReactNode;
 	public paymentMethodId?: string;
-	public supports: SupportsInConstructor;
+	public supports: Supports;
 	public canMakePayment: CanMakePaymentCallback;
 
-	constructor( config: ExpressPaymentMethodOptions ) {
+	constructor( config: ExpressPaymentMethodConfiguration ) {
 		// validate config
 		ExpressPaymentMethodConfig.assertValidConfig( config );
 		this.name = config.name;
@@ -41,7 +41,7 @@ export default class ExpressPaymentMethodConfig
 	}
 
 	static assertValidConfig = (
-		config: ExpressPaymentMethodOptions
+		config: ExpressPaymentMethodConfiguration
 	): void => {
 		assertConfigHasProperties( config, [ 'name', 'content', 'edit' ] );
 		if ( typeof config.name !== 'string' ) {

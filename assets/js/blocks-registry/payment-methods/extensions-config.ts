@@ -15,8 +15,8 @@ export type ExtensionNamespace = keyof NamespacedCanMakePaymentExtensionsCallbac
 export type PaymentMethodName = keyof CanMakePaymentExtensionCallbacks;
 
 // Keeps callbacks registered by extensions for different payment methods
-/* eslint prefer-const: 0 */
-export let canMakePaymentExtensionsCallbacks: NamespacedCanMakePaymentExtensionsCallbacks = {};
+//  eslint-disable-next-line prefer-const
+export const canMakePaymentExtensionsCallbacks: NamespacedCanMakePaymentExtensionsCallbacks = {};
 
 export const extensionsConfig = {
 	canMakePayment: canMakePaymentExtensionsCallbacks,

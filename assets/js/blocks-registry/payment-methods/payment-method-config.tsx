@@ -4,8 +4,8 @@
 import deprecated from '@wordpress/deprecated';
 import type { ReactNode } from 'react';
 import type {
-	PaymentMethodOptions,
-	SupportsInConstructor,
+	PaymentMethodConfiguration,
+	Supports,
 	CanMakePaymentCallback,
 	PaymentMethodConfigInstance,
 	PaymentMethodIcons,
@@ -35,7 +35,7 @@ export default class PaymentMethodConfig
 	public content: ReactNode;
 	public edit: ReactNode;
 	public paymentMethodId?: string;
-	public supports: SupportsInConstructor;
+	public supports: Supports;
 	public icons: null | PaymentMethodIcons;
 	public label: ReactNode;
 	public ariaLabel: string;
@@ -43,7 +43,7 @@ export default class PaymentMethodConfig
 	public savedTokenComponent?: ReactNode | null;
 	public canMakePaymentFromConfig: CanMakePaymentCallback;
 
-	constructor( config: PaymentMethodOptions ) {
+	constructor( config: PaymentMethodConfiguration ) {
 		// validate config
 		PaymentMethodConfig.assertValidConfig( config );
 		this.name = config.name;
@@ -86,7 +86,7 @@ export default class PaymentMethodConfig
 			: canPay;
 	}
 
-	static assertValidConfig = ( config: PaymentMethodOptions ): void => {
+	static assertValidConfig = ( config: PaymentMethodConfiguration ): void => {
 		// set default for optional
 		config.savedTokenComponent = config.savedTokenComponent || (
 			<NullComponent />
