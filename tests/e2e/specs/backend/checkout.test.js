@@ -110,34 +110,28 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			describe( 'Company input', () => {
-				const selector = `.wc-block-components-address-form__company input`;
+				const selector = `${ block.class } #shipping-company`;
 
 				it( 'visibility can be toggled', async () => {
-					const toggleLabel = await findLabelWithText( 'Company' );
-					await expect( toggleLabel ).toToggleElement( selector );
+					await expect( 'Company' ).toToggleElement( selector );
 				} );
 
 				it( 'required attribute can be toggled', async () => {
 					// Company is disabled by default, so first we need to enable it.
 					const toggleLabel = await findLabelWithText( 'Company' );
 					await toggleLabel.click();
-					const checkboxLabel = await findLabelWithText(
+					await expect(
 						'Require company name?'
-					);
-
-					await expect( checkboxLabel ).toToggleRequiredAttrOf(
-						selector
-					);
+					).toToggleRequiredAttrOf( selector );
 				} );
 			} );
 
 			describe( 'Apartment input', () => {
 				it( 'visibility can be toggled', async () => {
-					const selector = `${ block.class }  #shipping-address_2`;
-					const toggleLabel = await findLabelWithText(
-						'Apartment, suite, etc.'
+					const selector = `${ block.class } #shipping-address_2`;
+					await expect( 'Apartment, suite, etc.' ).toToggleElement(
+						selector
 					);
-					await expect( toggleLabel ).toToggleElement( selector );
 				} );
 			} );
 
@@ -145,20 +139,13 @@ describe( `${ block.name } Block`, () => {
 				const selector = `${ block.class } #shipping-phone`;
 
 				it( 'visibility can be toggled', async () => {
-					const toggleLabel = await findLabelWithText( 'Phone' );
-					await expect( toggleLabel ).toToggleElement( selector );
+					await expect( 'Phone' ).toToggleElement( selector );
 				} );
 
 				it( 'required attribute can be toggled', async () => {
-					// Phone is disabled by default, so first we need to enable it.
-					const toggleLabel = await findLabelWithText( 'Phone' );
-					await toggleLabel.click();
-					const checkboxLabel = await findLabelWithText(
+					await expect(
 						'Require phone number?'
-					);
-					await expect( checkboxLabel ).toToggleRequiredAttrOf(
-						selector
-					);
+					).toToggleRequiredAttrOf( selector );
 				} );
 			} );
 		} );
