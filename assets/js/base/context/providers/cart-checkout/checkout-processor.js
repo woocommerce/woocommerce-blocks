@@ -33,6 +33,12 @@ import { useStoreNotices } from '../../hooks/use-store-notices';
  * Subscribes to checkout context and triggers processing via the API.
  */
 const CheckoutProcessor = () => {
+	const controller = useRef(
+		typeof AbortController === 'undefined'
+			? undefined
+			: new AbortController()
+	);
+
 	const {
 		hasError: checkoutHasError,
 		onCheckoutValidationBeforeProcessing,
@@ -200,6 +206,7 @@ const CheckoutProcessor = () => {
 			data,
 			cache: 'no-store',
 			parse: false,
+			signal: controller.current?.signal,
 		} )
 			.then( ( response ) => {
 				processCheckoutResponseHeaders(
@@ -256,12 +263,20 @@ const CheckoutProcessor = () => {
 		receiveCart,
 	] );
 
-	// process order if conditions are good.
+	// Process order if conditions are good. If the component unmounts then let's cancel the request.
 	useEffect( () => {
 		if ( paidAndWithoutErrors && ! isProcessingOrder ) {
 			processOrder();
 		}
-	}, [ processOrder, paidAndWithoutErrors, isProcessingOrder ] );
+
+		// Have referenced the controller here to satisfy react-hooks/exhaustive-deps linting rule.
+		const abortController = controller.current;
+		return () => {
+			if ( isProcessingOrder ) {
+				abortController?.abort();
+			}
+		};
+	}, [ controller, processOrder, paidAndWithoutErrors, isProcessingOrder ] );
 
 	return null;
 };
