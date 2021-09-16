@@ -74,21 +74,21 @@ class AssetDataRegistry {
 	 */
 	protected function get_core_data() {
 		return [
-			'adminUrl'             => admin_url(),
-			'countries'            => WC()->countries->get_countries(),
-			'currency'             => $this->get_currency_data(),
-			'multiCurrencyEnabled' => class_exists( 'WC_Payments_Features' ) && \WC_Payments_Features::is_customer_multi_currency_enabled(),
-			'currentUserIsAdmin'   => current_user_can( 'manage_woocommerce' ),
-			'homeUrl'              => esc_url( home_url( '/' ) ),
-			'locale'               => $this->get_locale_data(),
-			'orderStatuses'        => $this->get_order_statuses(),
-			'placeholderImgSrc'    => wc_placeholder_img_src(),
-			'siteTitle'            => get_bloginfo( 'name' ),
-			'storePages'           => $this->get_store_pages(),
-			'wcAssetUrl'           => plugins_url( 'assets/', WC_PLUGIN_FILE ),
-			'wcVersion'            => defined( 'WC_VERSION' ) ? WC_VERSION : '',
-			'wpLoginUrl'           => wp_login_url(),
-			'wpVersion'            => get_bloginfo( 'version' ),
+			'adminUrl'           => admin_url(),
+			'countries'          => WC()->countries->get_countries(),
+			'currency'           => $this->get_currency_data(),
+			'showExplicitPrices' => $this->should_output_explicit_price(),
+			'currentUserIsAdmin' => current_user_can( 'manage_woocommerce' ),
+			'homeUrl'            => esc_url( home_url( '/' ) ),
+			'locale'             => $this->get_locale_data(),
+			'orderStatuses'      => $this->get_order_statuses(),
+			'placeholderImgSrc'  => wc_placeholder_img_src(),
+			'siteTitle'          => get_bloginfo( 'name' ),
+			'storePages'         => $this->get_store_pages(),
+			'wcAssetUrl'         => plugins_url( 'assets/', WC_PLUGIN_FILE ),
+			'wcVersion'          => defined( 'WC_VERSION' ) ? WC_VERSION : '',
+			'wpLoginUrl'         => wp_login_url(),
+			'wpVersion'          => get_bloginfo( 'version' ),
 		];
 	}
 
@@ -143,6 +143,20 @@ class AssetDataRegistry {
 				'terms'     => wc_terms_and_conditions_page_id(),
 			]
 		);
+	}
+
+	/**
+	 * Get if explicit formatting should be applied to total price displays
+	 *
+	 * @return boolean
+	 */
+	protected function should_output_explicit_price() {
+		if ( ! class_exists( 'WC_Payments_Explicit_Price_Formatter' ) ) {
+			return false;
+		}
+		// If frontend should display explicit prices, this should return
+		// with the store currency code appended.
+		return \WC_Payments_Explicit_Price_Formatter::get_explicit_price( '1.00' ) !== '1.00';
 	}
 
 	/**

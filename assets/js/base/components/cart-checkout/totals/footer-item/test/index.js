@@ -78,4 +78,12 @@ describe( 'TotalsFooterItem', () => {
 		);
 		expect( container ).toMatchSnapshot();
 	} );
+
+	it( 'Shows explicit price on total line if explicit prices are enabled', () => {
+		allSettings.showExplicitPrices = true;
+		const { container } = render(
+			<TotalsFooterItem currency={ currency } values={ values } />
+		);
+		expect( container ).toMatchSnapshot();
+	} );
 } );
