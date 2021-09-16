@@ -59,7 +59,7 @@
 
 .has-image {
 	.wc-block-components-review-list-item__info {
-		grid-template-columns: #{48px + $gap} 1fr;
+		grid-template-columns: calc(3em + #{$gap}) 1fr;
 	}
 	.wc-block-components-review-list-item__meta {
 		grid-column: 2;
@@ -69,19 +69,17 @@
 .wc-block-components-review-list-item__image {
 	align-items: center;
 	display: flex;
-	height: 48px;
+	height: 3em;
 	grid-column: 1;
 	grid-row: 1 / 3;
 	justify-content: center;
 	position: relative;
-	width: 48px;
+	width: 3em;
 
 	> img {
 		display: block;
-		height: auto;
 		max-height: 100%;
-		max-width: 100%;
-		width: auto;
+		object-fit: contain;
 	}
 }
 
