@@ -645,7 +645,7 @@ exports[`Testing cart Contains a Taxes section if Core options are set to show i
               <span
                 class="wc-block-formatted-money-amount wc-block-components-formatted-money-amount wc-block-components-totals-item__value"
               >
-                $30.00
+                $30.00 USD
               </span>
               <div
                 class="wc-block-components-totals-item__description"
@@ -1335,7 +1335,7 @@ exports[`Testing cart Shows individual tax lines if the store is set to do so 1`
               <span
                 class="wc-block-formatted-money-amount wc-block-components-formatted-money-amount wc-block-components-totals-item__value"
               >
-                $30.00
+                $30.00 USD
               </span>
               <div
                 class="wc-block-components-totals-item__description"
@@ -2025,7 +2025,7 @@ exports[`Testing cart Shows rate percentages after tax lines if the block is set
               <span
                 class="wc-block-formatted-money-amount wc-block-components-formatted-money-amount wc-block-components-totals-item__value"
               >
-                $30.00
+                $30.00 USD
               </span>
               <div
                 class="wc-block-components-totals-item__description"

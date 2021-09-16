@@ -43,6 +43,7 @@ const TotalsFooterItem = ( { currency, values } ) => {
 			currency={ currency }
 			label={ label }
 			value={ parseInt( totalPrice, 10 ) }
+			extended={ true }
 			description={
 				SHOW_TAXES &&
 				parsedTaxValue !== 0 && (

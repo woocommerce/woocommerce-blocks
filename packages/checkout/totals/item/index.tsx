@@ -19,6 +19,7 @@ interface TotalsItemProps {
 	// Value may be a number, or react node. Numbers are passed to FormattedMonetaryAmount.
 	value: number | ReactNode;
 	description?: ReactNode;
+	extended: boolean;
 }
 
 const TotalsItemValue = ( {
@@ -48,7 +49,18 @@ const TotalsItem = ( {
 	label,
 	value,
 	description,
+	extended = false,
 }: TotalsItemProps ): ReactElement => {
+	if (
+		currency &&
+		currency.code &&
+		currency.suffix.indexOf( currency.code ) < 0
+	) {
+		currency.suffix = extended
+			? currency.suffix + ' ' + currency.code
+			: currency.suffix;
+	}
+
 	return (
 		<div
 			className={ classnames(
