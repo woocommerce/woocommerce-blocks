@@ -104,8 +104,8 @@ describe( `${ block.name } Block`, () => {
 		describe( 'shipping address block attributes', () => {
 			beforeEach( async () => {
 				await openDocumentSettingsSidebar();
-				await page.click(
-					'.wp-block-woocommerce-checkout-shipping-address-block'
+				await selectBlockByName(
+					'woocommerce/checkout-shipping-address-block'
 				);
 			} );
 
@@ -153,10 +153,7 @@ describe( `${ block.name } Block`, () => {
 		describe( 'action block attributes', () => {
 			beforeEach( async () => {
 				await openDocumentSettingsSidebar();
-				await page.click(
-					block.class +
-						' .wp-block-woocommerce-checkout-actions-block'
-				);
+				await selectBlockByName( 'woocommerce/checkout-actions-block' );
 			} );
 
 			describe( 'Return to cart link', () => {
