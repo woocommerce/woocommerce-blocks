@@ -16,7 +16,7 @@ Different builds are generated depending on the variable `NODE_ENV`. It can have
 
 ## Babel
 
-Almost all our code is transpiled by Babel, this allows us to use the latest JavaScript technologies without having to worry about browser support.
+Most of our code is transpiled by Babel. This allows us to use the latest JavaScript technologies without affecting browser support.
 
 Some of the Babel plugins we use can be found in [`webpack-configs.js`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/bin/webpack-configs.js).
 
