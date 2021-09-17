@@ -15,6 +15,7 @@ import type {
 	PaymentMethodConfigInstance,
 	ExpressPaymentMethodConfigInstance,
 } from '@woocommerce/type-defs/payments';
+import { useDebounce } from 'use-debounce';
 
 /**
  * Internal dependencies
@@ -49,6 +50,9 @@ const usePaymentMethodRegistration = (
 	const { isEditor } = useEditorContext();
 	const { selectedRates } = useShippingDataContext();
 	const { billingData, shippingAddress } = useCustomerDataContext();
+
+	// Debouncing billingData to use as a dependency on refreshCanMakePayments and prevent excessive useEffect executions.
+	const [ debouncedBillingData ] = useDebounce( billingData, 750 );
 	const selectedShippingMethods = useShallowEqual( selectedRates );
 	const paymentMethodsOrder = useShallowEqual( paymentMethodsSortOrder );
 	const {
@@ -170,6 +174,7 @@ const usePaymentMethodRegistration = (
 		cartTotals,
 		selectedShippingMethods,
 		paymentRequirements,
+		debouncedBillingData,
 	] );
 
 	return isInitialized;
