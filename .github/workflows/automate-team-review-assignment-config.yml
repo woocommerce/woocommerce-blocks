@@ -6,5 +6,5 @@ jobs:
     steps:
       - uses: acq688/Request-Reviewer-For-Team-Action@v1.0
         with:
-          config: '.github/automate-team-review-assignment-config.yml'
+          config: ".github/automate-team-review-assignment-config.yml"
           GITHUB_TOKEN: ${{ secrets.PAT_FOR_ACTIONS }}
