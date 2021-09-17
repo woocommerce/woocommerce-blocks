@@ -4,7 +4,8 @@ jobs:
   add-reviews:
     runs-on: ubuntu-latest
     steps:
-      - uses: acq688/Request-Reviewer-For-Team-Action@v1.0
+      - name: Check config and assign reviews
+        uses: acq688/Request-Reviewer-For-Team-Action@v1.1
         with:
           config: ".github/automate-team-review-assignment-config.yml"
           GITHUB_TOKEN: ${{ secrets.PAT_FOR_ACTIONS }}
