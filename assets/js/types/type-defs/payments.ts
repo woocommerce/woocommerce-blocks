@@ -31,7 +31,7 @@ export interface CanMakePaymentArgument {
 	cartNeedsShipping: boolean;
 	billingData: CartResponseBillingAddress;
 	shippingAddress: CartResponseShippingAddress;
-	selectedShippingMethods: Array< unknown >;
+	selectedShippingMethods: Record< string, unknown >;
 	paymentRequirements: Array< string >;
 }
 
