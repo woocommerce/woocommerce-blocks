@@ -1,0 +1,13 @@
+when:
+  - author:
+      teamIs:
+        - rubik-fp-squad
+    assign:
+      teams:
+        - rubik-fp-squad
+  - author:
+      teamIs:
+        -rubik-fse-squad
+    assign:
+      teams:
+        -rubik-fse-squad
