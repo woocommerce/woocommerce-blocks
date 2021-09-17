@@ -4,7 +4,7 @@ jobs:
   add-reviews:
     runs-on: ubuntu-latest
     steps:
-      uses: acq688/Request-Reviewer-For-Team-Action@v1.0
-      with:
-        config: ".github/automate-team-review-assignment-config.yml"
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: acq688/Request-Reviewer-For-Team-Action@v1.0
+        with:
+          config: '.github/automate-team-review-assignment-config.yml'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
