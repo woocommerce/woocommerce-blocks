@@ -52,11 +52,13 @@ const usePaymentMethodRegistration = (
 	const selectedShippingMethods = useShallowEqual( selectedRates );
 	const paymentMethodsOrder = useShallowEqual( paymentMethodsSortOrder );
 	const {
+		cartCoupons,
 		cartTotals,
 		cartNeedsShipping,
 		paymentRequirements,
 	} = useStoreCart();
 	const canPayArgument = useRef( {
+		cartCoupons,
 		cartTotals,
 		cartNeedsShipping,
 		billingData,
@@ -68,6 +70,7 @@ const usePaymentMethodRegistration = (
 
 	useEffect( () => {
 		canPayArgument.current = {
+			cartCoupons,
 			cartTotals,
 			cartNeedsShipping,
 			billingData,
@@ -76,6 +79,7 @@ const usePaymentMethodRegistration = (
 			paymentRequirements,
 		};
 	}, [
+		cartCoupons,
 		cartTotals,
 		cartNeedsShipping,
 		billingData,

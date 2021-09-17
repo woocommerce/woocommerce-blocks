@@ -10,6 +10,7 @@ import type { CartTotals } from './cart';
 import {
 	CartResponseBillingAddress,
 	CartResponseShippingAddress,
+	CartResponseCoupons,
 } from './cart-response';
 import type { EmptyObjectType } from './objects';
 
@@ -27,6 +28,7 @@ export interface Supports extends SupportsConfiguration {
 }
 
 export interface CanMakePaymentArgument {
+	cartCoupons: CartResponseCoupons;
 	cartTotals: CartTotals;
 	cartNeedsShipping: boolean;
 	billingData: CartResponseBillingAddress;
