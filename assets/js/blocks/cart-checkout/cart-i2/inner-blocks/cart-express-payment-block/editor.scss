@@ -1,5 +1,5 @@
 // Adjust padding and margins in the editor to improve selected block outlines.
-.wp-block-woocommerce-checkout-express-payment-block {
+.wp-block-woocommerce-cart-express-payment-block {
 	margin: 14px 0 28px;
 
 	.components-placeholder__label svg {
@@ -10,7 +10,7 @@
 		margin-bottom: 0;
 	}
 
-	&.wp-block-woocommerce-checkout-express-payment-block--has-express-payment-methods {
+	&.wp-block-woocommerce-cart-express-payment-block--has-express-payment-methods {
 		padding: 14px 0;
 		margin: -14px 0 14px 0 !important;
 		position: relative;
