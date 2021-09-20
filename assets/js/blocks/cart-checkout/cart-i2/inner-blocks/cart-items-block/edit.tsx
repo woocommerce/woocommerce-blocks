@@ -2,33 +2,33 @@
  * External dependencies
  */
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
-import { Sidebar } from '@woocommerce/base-components/sidebar-layout';
+import { Main } from '@woocommerce/base-components/sidebar-layout';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
  */
-import './style.scss';
 import { useForcedLayout, getAllowedBlocks } from '../../../shared';
+import './style.scss';
 
 export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 	const blockProps = useBlockProps();
-	const allowedBlocks = getAllowedBlocks( innerBlockAreas.CHECKOUT_TOTALS );
+	const allowedBlocks = getAllowedBlocks( innerBlockAreas.CART_ITEMS );
 
 	useForcedLayout( {
 		clientId,
 		template: allowedBlocks,
 	} );
-
 	return (
-		<Sidebar className="wc-block-checkout__sidebar">
+		<Main className="wc-block-cart__main">
 			<div { ...blockProps }>
 				<InnerBlocks
 					allowedBlocks={ allowedBlocks }
 					templateLock={ false }
+					renderAppender={ InnerBlocks.ButtonBlockAppender }
 				/>
 			</div>
-		</Sidebar>
+		</Main>
 	);
 };
 
