@@ -29,12 +29,12 @@ import { CHECKOUT_PAGE_ID } from '@woocommerce/block-settings';
 import { createInterpolateElement } from '@wordpress/element';
 import { getAdminLink } from '@woocommerce/settings';
 import { CartCheckoutCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices';
-import { Columns } from '@woocommerce/editor-components/columns';
 
 /**
  * Internal dependencies
  */
 import './styles/editor.scss';
+import { Columns } from './columns';
 import { addClassToBody } from './hacks';
 import { CheckoutBlockContext, CheckoutBlockControlsContext } from './context';
 import type { Attributes } from './types';
