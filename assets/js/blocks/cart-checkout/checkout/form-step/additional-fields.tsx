@@ -7,7 +7,8 @@ import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import './editor.scss';
-import { useForcedLayout, getAllowedBlocks } from '../../shared';
+import { useForcedLayout } from '../use-forced-layout';
+import { getAllowedBlocks } from '../editor-utils';
 
 export const AdditionalFields = ( {
 	block,
