@@ -10,7 +10,7 @@ import { PanelBody, ToggleControl } from '@wordpress/components';
  * Internal dependencies
  */
 import FormStepHeading from './form-step-heading';
-import { useBlockPropsWithLocking } from '../../shared';
+import { useBlockPropsWithLocking } from '../hacks';
 export interface FormStepBlockProps {
 	attributes: { title: string; description: string; showStepNumber: boolean };
 	setAttributes: ( attributes: Record< string, unknown > ) => void;

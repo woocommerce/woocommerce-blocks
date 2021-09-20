@@ -14,7 +14,7 @@ import classnames from 'classnames';
  */
 import Block from './block';
 import './editor.scss';
-import { useBlockPropsWithLocking } from '../../../shared';
+import { useBlockPropsWithLocking } from '../../hacks';
 
 /**
  * Renders a placeholder in the editor.
