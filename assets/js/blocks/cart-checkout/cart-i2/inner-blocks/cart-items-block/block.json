@@ -1,8 +1,8 @@
 {
 	"name": "woocommerce/cart-items-block",
 	"version": "1.0.0",
-	"title": "Checkout Fields",
-	"description": "Column containing checkout address fields.",
+	"title": "Cart Items block",
+	"description": "Column containing cart items.",
 	"category": "woocommerce",
 	"supports": {
 		"align": false,
@@ -19,7 +19,7 @@
 			}
 		}
 	},
-	"parent": [ "woocommerce/checkout" ],
+	"parent": [ "woocommerce/cart-i2" ],
 	"textdomain": "woo-gutenberg-products-block",
 	"apiVersion": 2
 }
