@@ -9,7 +9,7 @@ import { Disabled } from '@wordpress/components';
  */
 import Block from './block';
 import './editor.scss';
-import { useBlockPropsWithLocking } from '../../hacks';
+import { useBlockPropsWithLocking } from '../../../shared';
 
 export const Edit = ( {
 	attributes,
