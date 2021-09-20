@@ -126,7 +126,6 @@ const CartEditor = ( { className, attributes, setAttributes } ) => {
 		'has-dark-controls': attributes.hasDarkControls,
 	} );
 	const defaultInnerBlocksTemplate = [
-<<<<<<< HEAD:assets/js/blocks/cart-checkout/cart-i2/edit.tsx
 		[
 			'woocommerce/cart-items-block',
 			{},
@@ -135,12 +134,11 @@ const CartEditor = ( { className, attributes, setAttributes } ) => {
 		[
 			'woocommerce/cart-totals-block',
 			{},
-			[ [ 'woocommerce/cart-order-summary-block', {}, [] ] ],
+			[
+				[ 'woocommerce/cart-express-payment-block', {}, [] ],
+				[ 'woocommerce/cart-order-summary-block', {}, [] ],
+			],
 		],
-=======
-		[ 'woocommerce/cart-items-block', {}, [] ],
-		[ 'woocommerce/cart-totals-block', {}, [] ],
->>>>>>> 73f9c4a8 (setup basic column blocks):assets/js/blocks/cart-checkout/cart-i2/edit.js
 	];
 	return (
 		<div
