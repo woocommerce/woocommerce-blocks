@@ -10,7 +10,7 @@ import { getSetting } from '@woocommerce/settings';
  * Internal dependencies
  */
 import Block from './block';
-import { useBlockPropsWithLocking } from '../../hacks';
+import { useBlockPropsWithLocking } from '../../../shared';
 
 export const Edit = ( {
 	attributes,
