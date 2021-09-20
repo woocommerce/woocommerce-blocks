@@ -6,7 +6,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import { useBlockPropsWithLocking } from '../../../shared';
+import { useBlockPropsWithLocking } from '../../hacks';
 
 import Block from './block';
 
