@@ -3,23 +3,12 @@
  */
 import { Main } from '@woocommerce/base-components/sidebar-layout';
 
-/**
- * Internal dependencies
- */
-import './style.scss';
-
 const FrontendBlock = ( {
 	children,
 }: {
 	children: JSX.Element;
 } ): JSX.Element => {
-	return (
-		<Main className="wc-block-checkout__main">
-			<form className="wc-block-components-form wc-block-checkout__form">
-				{ children }
-			</form>
-		</Main>
-	);
+	return <Main className="wc-block-cart__main">{ children }</Main>;
 };
 
 export default FrontendBlock;

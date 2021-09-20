@@ -13,9 +13,7 @@ const FrontendBlock = ( {
 }: {
 	children: JSX.Element;
 } ): JSX.Element => {
-	return (
-		<Sidebar className="wc-block-checkout__sidebar">{ children }</Sidebar>
-	);
+	return <Sidebar className="wc-block-cart__sidebar">{ children }</Sidebar>;
 };
 
 export default FrontendBlock;
