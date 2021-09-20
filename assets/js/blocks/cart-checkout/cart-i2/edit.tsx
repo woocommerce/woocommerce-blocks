@@ -22,12 +22,12 @@ import { createInterpolateElement, useRef } from '@wordpress/element';
 import { getAdminLink, getSetting } from '@woocommerce/settings';
 import { previewCart } from '@woocommerce/resource-previews';
 import { SidebarLayout } from '@woocommerce/base-components/sidebar-layout';
-import { Columns } from '@woocommerce/editor-components/columns';
 
 /**
  * Internal dependencies
  */
 import './editor.scss';
+import { Columns } from './columns';
 
 const BlockSettings = ( { attributes, setAttributes } ) => {
 	const {
