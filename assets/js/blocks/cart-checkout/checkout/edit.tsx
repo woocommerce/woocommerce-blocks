@@ -35,7 +35,7 @@ import { Columns } from '@woocommerce/editor-components/columns';
  * Internal dependencies
  */
 import './styles/editor.scss';
-import { addClassToBody } from '../shared';
+import { addClassToBody } from './hacks';
 import { CheckoutBlockContext, CheckoutBlockControlsContext } from './context';
 import type { Attributes } from './types';
 

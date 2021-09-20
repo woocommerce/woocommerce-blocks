@@ -12,7 +12,7 @@ import { CHECKOUT_PAGE_ID } from '@woocommerce/block-settings';
  * Internal dependencies
  */
 import Block from './block';
-import { useBlockPropsWithLocking } from '../../../shared';
+import { useBlockPropsWithLocking } from '../../hacks';
 export const Edit = ( {
 	attributes,
 	setAttributes,
