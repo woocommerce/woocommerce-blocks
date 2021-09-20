@@ -9,7 +9,8 @@ import { innerBlockAreas } from '@woocommerce/blocks-checkout';
  * Internal dependencies
  */
 import './style.scss';
-import { useForcedLayout, getAllowedBlocks } from '../../../shared';
+import { useForcedLayout } from '../../use-forced-layout';
+import { getAllowedBlocks } from '../../editor-utils';
 
 export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 	const blockProps = useBlockProps();
