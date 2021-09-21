@@ -80,7 +80,8 @@ describe( 'TotalsFooterItem', () => {
 	} );
 
 	it( 'Shows explicit price on total line if explicit prices are enabled', () => {
-		allSettings.showExplicitPrices = true;
+		// @ts-ignore
+		allSettings.currency.explicit = true;
 		const { container } = render(
 			<TotalsFooterItem currency={ currency } values={ values } />
 		);

@@ -21,8 +21,7 @@ const TotalsFooterItem = ( { currency, values } ) => {
 	const SHOW_TAXES =
 		getSetting( 'taxesEnabled', true ) &&
 		getSetting( 'displayCartPricesIncludingTax', false );
-	const SHOW_EXPLICIT_PRICES =
-		getSetting( 'currency' ).showExplicitPrice ?? false;
+	const SHOW_EXPLICIT_PRICES = getSetting( 'currency' ).explicit ?? false;
 
 	const { total_price: totalPrice, total_tax: totalTax } = values;
 
