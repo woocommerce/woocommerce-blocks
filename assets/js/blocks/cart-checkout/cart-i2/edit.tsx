@@ -135,8 +135,8 @@ const CartEditor = ( { className, attributes, setAttributes } ) => {
 			'woocommerce/cart-totals-block',
 			{},
 			[
-				[ 'woocommerce/cart-express-payment-block', {}, [] ],
 				[ 'woocommerce/cart-order-summary-block', {}, [] ],
+				[ 'woocommerce/cart-express-payment-block', {}, [] ],
 			],
 		],
 	];
