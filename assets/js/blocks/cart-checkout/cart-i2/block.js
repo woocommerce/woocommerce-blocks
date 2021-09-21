@@ -7,6 +7,7 @@ import { dispatch } from '@wordpress/data';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { useEffect } from '@wordpress/element';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
+import { SidebarLayout } from '@woocommerce/base-components/sidebar-layout';
 import { ValidationContextProvider } from '@woocommerce/base-context';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
