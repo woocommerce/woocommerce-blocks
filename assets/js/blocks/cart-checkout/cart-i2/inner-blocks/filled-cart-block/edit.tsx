@@ -3,12 +3,15 @@
  */
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
+import { SidebarLayout } from '@woocommerce/base-components/sidebar-layout';
 
 /**
  * Internal dependencies
  */
 import { useForcedLayout } from '../../use-forced-layout';
 import { getAllowedBlocks } from '../../editor-utils';
+import { Columns } from './../../columns';
+import './editor.scss';
 
 export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 	const blockProps = useBlockProps();
@@ -20,11 +23,14 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 	} );
 	return (
 		<div { ...blockProps }>
-			This is the empty cart block.
-			<InnerBlocks
-				allowedBlocks={ allowedBlocks }
-				templateLock={ false }
-			/>
+			<Columns>
+				<SidebarLayout className={ 'wc-block-cart' }>
+					<InnerBlocks
+						allowedBlocks={ allowedBlocks }
+						templateLock={ false }
+					/>
+				</SidebarLayout>
+			</Columns>
 		</div>
 	);
 };

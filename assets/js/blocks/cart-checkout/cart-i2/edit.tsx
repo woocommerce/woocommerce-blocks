@@ -12,7 +12,6 @@ import {
 } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl, Notice } from '@wordpress/components';
 import { CartCheckoutCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices';
-import ViewSwitcher from '@woocommerce/editor-components/view-switcher';
 import { CART_PAGE_ID } from '@woocommerce/block-settings';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import {
@@ -23,13 +22,11 @@ import {
 import { createInterpolateElement } from '@wordpress/element';
 import { getAdminLink, getSetting } from '@woocommerce/settings';
 import { previewCart } from '@woocommerce/resource-previews';
-import { SidebarLayout } from '@woocommerce/base-components/sidebar-layout';
 
 /**
  * Internal dependencies
  */
 import './editor.scss';
-import { Columns } from './columns';
 import { addClassToBody } from './hacks';
 import type { Attributes } from './types';
 
@@ -145,22 +142,28 @@ export const Edit = ( {
 	attributes: Attributes;
 	setAttributes: ( attributes: Record< string, unknown > ) => undefined;
 } ): JSX.Element => {
-	const cartClassName = classnames( 'wc-block-cart', {
+	const cartClassName = classnames( {
 		'has-dark-controls': attributes.hasDarkControls,
 	} );
 	const defaultInnerBlocksTemplate = [
 		[
-			'woocommerce/cart-items-block',
-			{},
-			[ [ 'woocommerce/cart-line-items-block', {}, [] ] ],
-		],
-		[
-			'woocommerce/cart-totals-block',
+			'woocommerce/filled-cart-block',
 			{},
 			[
-				[ 'woocommerce/cart-order-summary-block', {}, [] ],
-				[ 'woocommerce/cart-express-payment-block', {}, [] ],
-				[ 'woocommerce/proceed-to-checkout-block', {}, [] ],
+				[
+					'woocommerce/cart-items-block',
+					{},
+					[ [ 'woocommerce/cart-line-items-block', {}, [] ] ],
+				],
+				[
+					'woocommerce/cart-totals-block',
+					{},
+					[
+						[ 'woocommerce/cart-order-summary-block', {}, [] ],
+						[ 'woocommerce/cart-express-payment-block', {}, [] ],
+						[ 'woocommerce/proceed-to-checkout-block', {}, [] ],
+					],
+				],
 			],
 		],
 		[ 'woocommerce/empty-cart-block', {}, [] ],
@@ -171,68 +174,37 @@ export const Edit = ( {
 				'is-editor-preview': attributes.isPreview,
 			} ) }
 		>
-			<ViewSwitcher
-				label={ __( 'Edit', 'woo-gutenberg-products-block' ) }
-				views={ [
-					{
-						value: 'full',
-						name: __( 'Full Cart', 'woo-gutenberg-products-block' ),
-					},
-					{
-						value: 'empty',
-						name: __(
-							'Empty Cart',
-							'woo-gutenberg-products-block'
-						),
-					},
-				] }
-				defaultView={ 'full' }
-				render={ ( currentView ) => (
-					<BlockErrorBoundary
-						header={ __(
-							'Cart Block Error',
-							'woo-gutenberg-products-block'
-						) }
-						text={ __(
-							'There was an error whilst rendering the cart block. If this problem continues, try re-creating the block.',
-							'woo-gutenberg-products-block'
-						) }
-						showErrorMessage={ true }
-						errorMessagePrefix={ __(
-							'Error message:',
-							'woo-gutenberg-products-block'
-						) }
-					>
-						{ currentView === 'full' && (
-							<>
-								<EditorProvider previewData={ { previewCart } }>
-									<BlockSettings
-										attributes={ attributes }
-										setAttributes={ setAttributes }
-									/>
-									<CartProvider>
-										<Columns>
-											<SidebarLayout
-												className={ cartClassName }
-											>
-												<InnerBlocks
-													allowedBlocks={
-														ALLOWED_BLOCKS
-													}
-													template={
-														defaultInnerBlocksTemplate
-													}
-													templateLock="insert"
-												/>
-											</SidebarLayout>
-										</Columns>
-									</CartProvider>
-								</EditorProvider>
-							</>
-						) }
-					</BlockErrorBoundary>
+			<BlockErrorBoundary
+				header={ __(
+					'Cart Block Error',
+					'woo-gutenberg-products-block'
 				) }
-			/>
+				text={ __(
+					'There was an error whilst rendering the cart block. If this problem continues, try re-creating the block.',
+					'woo-gutenberg-products-block'
+				) }
+				showErrorMessage={ true }
+				errorMessagePrefix={ __(
+					'Error message:',
+					'woo-gutenberg-products-block'
+				) }
+			>
+				<EditorProvider previewData={ { previewCart } }>
+					<BlockSettings
+						attributes={ attributes }
+						setAttributes={ setAttributes }
+					/>
+					<CartProvider>
+						<div className={ cartClassName }>
+							<InnerBlocks
+								allowedBlocks={ ALLOWED_BLOCKS }
+								template={ defaultInnerBlocksTemplate }
+								templateLock="insert"
+							/>
+						</div>
+					</CartProvider>
+				</EditorProvider>
+			</BlockErrorBoundary>
 			<CartCheckoutCompatibilityNotice blockName="cart" />
 		</div>
 	);
