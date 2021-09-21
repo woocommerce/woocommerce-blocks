@@ -19,7 +19,7 @@ export const controls = {
 	TRIGGER_ADDING_TO_CART_EVENT() {
 		triggerAddingToCartEvent();
 	},
-	TRIGGER_ADDED_TO_CART_EVENT( invalidateCartData ) {
-		triggerAddedToCartEvent( invalidateCartData );
+	TRIGGER_ADDED_TO_CART_EVENT( preserveCartData ) {
+		triggerAddedToCartEvent( preserveCartData );
 	},
 };

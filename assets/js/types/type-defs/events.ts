@@ -1,4 +1,4 @@
 export interface AddToCartEventDetail {
-	// Whether cart data in the data store should be invalidated.
-	invalidateCartData?: boolean;
+	// Whether cart data in the data store should be preserved.
+	preserveCartData?: boolean;
 }

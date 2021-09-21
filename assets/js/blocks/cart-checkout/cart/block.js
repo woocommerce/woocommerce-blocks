@@ -35,7 +35,7 @@ const Block = ( { emptyCart, attributes, scrollToTop } ) => {
 	useEffect( () => {
 		const invalidateCartData = ( e ) => {
 			const eventDetail = e.detail;
-			if ( ! eventDetail || eventDetail.invalidateCartData !== false ) {
+			if ( ! eventDetail || ! eventDetail.preserveCartData ) {
 				dispatch( storeKey ).invalidateResolutionForStore();
 			}
 			scrollToTop();

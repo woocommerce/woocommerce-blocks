@@ -181,11 +181,11 @@ export const triggerAddingToCartEvent = () =>
  * Triggers an added to cart event so other blocks can update accordingly.
  */
 export const triggerAddedToCartEvent = ( {
-	invalidateCartData,
+	preserveCartData,
 }: AddToCartEventDetail ) =>
 	( {
 		type: types.TRIGGER_ADDED_TO_CART_EVENT,
-		invalidateCartData,
+		preserveCartData,
 	} as const );
 
 /**
@@ -327,7 +327,7 @@ export function* addItemToCart(
 		} );
 
 		yield receiveCart( response );
-		yield triggerAddedToCartEvent( { invalidateCartData: false } );
+		yield triggerAddedToCartEvent( { preserveCartData: true } );
 		yield updateCartFragments();
 	} catch ( error ) {
 		yield receiveError( error );

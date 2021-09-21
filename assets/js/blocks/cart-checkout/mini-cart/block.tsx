@@ -35,7 +35,7 @@ const MiniCartBlock = ( {
 	useEffect( () => {
 		const openMiniCartAndRefreshData = ( e ) => {
 			const eventDetail = e.detail;
-			if ( ! eventDetail || eventDetail.invalidateCartData !== false ) {
+			if ( ! eventDetail || ! eventDetail.preserveCartData ) {
 				dispatch( storeKey ).invalidateResolutionForStore();
 			}
 			setSkipSlideIn( false );
