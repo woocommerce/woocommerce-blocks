@@ -5,7 +5,11 @@
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
 import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
-import { InnerBlocks, InspectorControls } from '@wordpress/block-editor';
+import {
+	InnerBlocks,
+	useBlockProps,
+	InspectorControls,
+} from '@wordpress/block-editor';
 import { PanelBody, ToggleControl, Notice } from '@wordpress/components';
 import { CartCheckoutCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices';
 import ViewSwitcher from '@woocommerce/editor-components/view-switcher';
