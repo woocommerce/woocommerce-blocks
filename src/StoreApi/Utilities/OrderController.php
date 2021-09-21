@@ -426,7 +426,7 @@ class OrderController {
 			if ( false === $chosen_shipping_method ) {
 				throw new RouteException(
 					'woocommerce_rest_invalid_shipping_option',
-					__( 'Sorry, this order requires a shipping option', 'woo-gutenberg-products-block' ),
+					__( 'Sorry, this order requires a shipping option.', 'woo-gutenberg-products-block' ),
 					400,
 					[]
 				);
