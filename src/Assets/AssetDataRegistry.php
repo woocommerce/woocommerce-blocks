@@ -77,7 +77,6 @@ class AssetDataRegistry {
 			'adminUrl'           => admin_url(),
 			'countries'          => WC()->countries->get_countries(),
 			'currency'           => $this->get_currency_data(),
-			'showExplicitPrices' => $this->should_output_explicit_price(),
 			'currentUserIsAdmin' => current_user_can( 'manage_woocommerce' ),
 			'homeUrl'            => esc_url( home_url( '/' ) ),
 			'locale'             => $this->get_locale_data(),
@@ -108,6 +107,7 @@ class AssetDataRegistry {
 			'decimalSeparator'  => wc_get_price_decimal_separator(),
 			'thousandSeparator' => wc_get_price_thousand_separator(),
 			'priceFormat'       => html_entity_decode( get_woocommerce_price_format() ),
+			'showExplicitPrice' => apply_filters( 'wcpay_multi_currency_show_explicit_prices', false ),
 		];
 	}
 
@@ -143,20 +143,6 @@ class AssetDataRegistry {
 				'terms'     => wc_terms_and_conditions_page_id(),
 			]
 		);
-	}
-
-	/**
-	 * Get if explicit formatting should be applied to total price displays
-	 *
-	 * @return boolean
-	 */
-	protected function should_output_explicit_price() {
-		if ( ! class_exists( 'WC_Payments_Explicit_Price_Formatter' ) ) {
-			return false;
-		}
-		// If frontend should display explicit prices, this should return
-		// with the store currency code appended.
-		return \WC_Payments_Explicit_Price_Formatter::get_explicit_price( '1.00' ) !== '1.00';
 	}
 
 	/**
