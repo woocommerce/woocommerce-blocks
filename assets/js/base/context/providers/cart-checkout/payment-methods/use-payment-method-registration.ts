@@ -51,14 +51,10 @@ const usePaymentMethodRegistration = (
 	const { billingData, shippingAddress } = useCustomerDataContext();
 	const selectedShippingMethods = useShallowEqual( selectedRates );
 	const paymentMethodsOrder = useShallowEqual( paymentMethodsSortOrder );
-	const {
-		cartCoupons,
-		cartTotals,
-		cartNeedsShipping,
-		paymentRequirements,
-	} = useStoreCart();
+	const cart = useStoreCart();
+	const { cartTotals, cartNeedsShipping, paymentRequirements } = cart;
 	const canPayArgument = useRef( {
-		cartCoupons,
+		cart,
 		cartTotals,
 		cartNeedsShipping,
 		billingData,
@@ -70,7 +66,7 @@ const usePaymentMethodRegistration = (
 
 	useEffect( () => {
 		canPayArgument.current = {
-			cartCoupons,
+			cart,
 			cartTotals,
 			cartNeedsShipping,
 			billingData,
@@ -79,7 +75,7 @@ const usePaymentMethodRegistration = (
 			paymentRequirements,
 		};
 	}, [
-		cartCoupons,
+		cart,
 		cartTotals,
 		cartNeedsShipping,
 		billingData,
@@ -165,16 +161,11 @@ const usePaymentMethodRegistration = (
 	] );
 
 	// Determine which payment methods are available initially and whenever
-	// shipping methods or cart totals change.
+	// shipping methods, cart or the billing data change.
 	// Some payment methods (e.g. COD) can be disabled for specific shipping methods.
 	useEffect( () => {
 		refreshCanMakePayments();
-	}, [
-		refreshCanMakePayments,
-		cartTotals,
-		selectedShippingMethods,
-		paymentRequirements,
-	] );
+	}, [ refreshCanMakePayments, cart, selectedShippingMethods, billingData ] );
 
 	return isInitialized;
 };
