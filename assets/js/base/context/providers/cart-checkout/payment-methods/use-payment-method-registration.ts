@@ -15,6 +15,7 @@ import type {
 	PaymentMethodConfigInstance,
 	ExpressPaymentMethodConfigInstance,
 } from '@woocommerce/type-defs/payments';
+import { useDebouncedCallback } from 'use-debounce';
 
 /**
  * Internal dependencies
@@ -160,12 +161,22 @@ const usePaymentMethodRegistration = (
 		registeredPaymentMethods,
 	] );
 
+	const [ debouncedRefreshCanMakePayments ] = useDebouncedCallback(
+		refreshCanMakePayments,
+		500
+	);
+
 	// Determine which payment methods are available initially and whenever
 	// shipping methods, cart or the billing data change.
 	// Some payment methods (e.g. COD) can be disabled for specific shipping methods.
 	useEffect( () => {
-		refreshCanMakePayments();
-	}, [ refreshCanMakePayments, cart, selectedShippingMethods, billingData ] );
+		debouncedRefreshCanMakePayments();
+	}, [
+		debouncedRefreshCanMakePayments,
+		cart,
+		selectedShippingMethods,
+		billingData,
+	] );
 
 	return isInitialized;
 };
