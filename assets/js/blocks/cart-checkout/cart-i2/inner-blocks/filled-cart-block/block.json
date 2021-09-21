@@ -1,8 +1,8 @@
 {
-	"name": "woocommerce/cart-items-block",
+	"name": "woocommerce/filled-cart-block",
 	"version": "1.0.0",
-	"title": "Cart Items block",
-	"description": "Column containing cart items.",
+	"title": "Filled Cart",
+	"description": "Contains blocks that are displayed when the cart contains products.",
 	"category": "woocommerce",
 	"supports": {
 		"align": false,
@@ -20,7 +20,7 @@
 			}
 		}
 	},
-	"parent": [ "woocommerce/filled-cart-block" ],
+	"parent": [ "woocommerce/cart-i2" ],
 	"textdomain": "woo-gutenberg-products-block",
 	"apiVersion": 2
 }

@@ -7,7 +7,6 @@ import { __ } from '@wordpress/i18n';
 import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import { InnerBlocks, InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl, Notice } from '@wordpress/components';
-import PropTypes from 'prop-types';
 import { CartCheckoutCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices';
 import ViewSwitcher from '@woocommerce/editor-components/view-switcher';
 import { CART_PAGE_ID } from '@woocommerce/block-settings';
@@ -27,8 +26,25 @@ import { SidebarLayout } from '@woocommerce/base-components/sidebar-layout';
  */
 import './editor.scss';
 import { Columns } from './columns';
+import { addClassToBody } from './hacks';
+import type { Attributes } from './types';
 
-const BlockSettings = ( { attributes, setAttributes } ) => {
+// This is adds a class to body to signal if the selected block is locked
+addClassToBody();
+
+// Array of allowed block names.
+const ALLOWED_BLOCKS: string[] = [
+	'woocommerce/filled-cart-block',
+	'woocommerce/empty-cart-block',
+];
+
+const BlockSettings = ( {
+	attributes,
+	setAttributes,
+}: {
+	attributes: Attributes;
+	setAttributes: ( attributes: Record< string, unknown > ) => undefined;
+} ): JSX.Element => {
 	const { isShippingCalculatorEnabled, showRateAfterTaxName } = attributes;
 	const { currentPostId } = useEditorContext();
 	return (
@@ -113,24 +129,18 @@ const BlockSettings = ( { attributes, setAttributes } ) => {
 	);
 };
 
-const ALLOWED_BLOCKS: string[] = [
-	'woocommerce/cart-items-block',
-	'woocommerce/cart-totals-block',
-];
 /**
  * Component to handle edit mode of "Cart Block".
- *
- * Note: We need to always render `<InnerBlocks>` in the editor. Otherwise,
- *       if the user saves the page without having triggered the 'Empty Cart'
- *       view, inner blocks would not be saved and they wouldn't be visible
- *       in the frontend.
- *
- * @param {Object} props Incoming props for the component.
- * @param {string} props.className CSS class used.
- * @param {Object} props.attributes Attributes available.
- * @param {function(any):any} props.setAttributes Setter for attributes.
  */
-const CartEditor = ( { className, attributes, setAttributes } ) => {
+export const Edit = ( {
+	className,
+	attributes,
+	setAttributes,
+}: {
+	className: string;
+	attributes: Attributes;
+	setAttributes: ( attributes: Record< string, unknown > ) => undefined;
+} ): JSX.Element => {
 	const cartClassName = classnames( 'wc-block-cart', {
 		'has-dark-controls': attributes.hasDarkControls,
 	} );
@@ -149,6 +159,7 @@ const CartEditor = ( { className, attributes, setAttributes } ) => {
 				[ 'woocommerce/proceed-to-checkout-block', {}, [] ],
 			],
 		],
+		[ 'woocommerce/empty-cart-block', {}, [] ],
 	];
 	return (
 		<div
@@ -223,8 +234,14 @@ const CartEditor = ( { className, attributes, setAttributes } ) => {
 	);
 };
 
-CartEditor.propTypes = {
-	className: PropTypes.string,
+export const Save = (): JSX.Element => {
+	return (
+		<div
+			{ ...useBlockProps.save( {
+				className: 'wc-block-cart is-loading',
+			} ) }
+		>
+			<InnerBlocks.Content />
+		</div>
+	);
 };
-
-export default CartEditor;
