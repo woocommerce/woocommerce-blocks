@@ -5,7 +5,10 @@ import { __, sprintf } from '@wordpress/i18n';
 import Label from '@woocommerce/base-components/label';
 import ProductPrice from '@woocommerce/base-components/product-price';
 import ProductName from '@woocommerce/base-components/product-name';
-import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
+import {
+	getCurrencyFromPriceResponse,
+	formatPrice,
+} from '@woocommerce/price-format';
 import {
 	__experimentalApplyCheckoutFilter,
 	mustContain,
@@ -121,11 +124,27 @@ const OrderSummaryItem = ( { cartItem } ) => {
 				<ProductImage image={ images.length ? images[ 0 ] : {} } />
 			</div>
 			<div className="wc-block-components-order-summary-item__description">
+				<span className="screen-reader-text" tabIndex={ 0 }>
+					{ sprintf(
+						/* translators: %d items of product %s */
+						__( '%1$d %2$s', 'woo-gutenberg-products-block' ),
+						quantity,
+						name
+					) }
+				</span>
 				<ProductName
 					disabled={ true }
 					name={ name }
 					permalink={ permalink }
 				/>
+
+				<span className="screen-reader-text" tabIndex={ 0 }>
+					{ sprintf(
+						/* translators: Unit Price %s */
+						__( 'Unit Price: %s', 'woo-gutenberg-products-block' ),
+						formatPrice( priceSingle, priceCurrency )
+					) }
+				</span>
 				<ProductPrice
 					currency={ priceCurrency }
 					price={ priceSingle }
@@ -151,6 +170,17 @@ const OrderSummaryItem = ( { cartItem } ) => {
 					variation={ variation }
 				/>
 			</div>
+			<span className="screen-reader-text" tabIndex={ 0 }>
+				{ sprintf(
+					/* translators: Total Price for %d quantity items: %s */
+					__(
+						'Total Price for %1$d items: %2$s',
+						'woo-gutenberg-products-block'
+					),
+					quantity,
+					formatPrice( subtotalPrice, totalsCurrency )
+				) }
+			</span>
 			<div className="wc-block-components-order-summary-item__total-price">
 				<ProductPrice
 					currency={ totalsCurrency }
