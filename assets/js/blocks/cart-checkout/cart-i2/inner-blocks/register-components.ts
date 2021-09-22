@@ -38,6 +38,14 @@ registerCheckoutBlock( {
 	),
 } );
 registerCheckoutBlock( {
+	metadata: filledCartMetadata,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "cart-blocks/filled-cart" */ './filled-cart-block/frontend'
+		)
+	),
+} );
+registerCheckoutBlock( {
 	metadata: cartItemsMetadata,
 	component: lazy( () =>
 		import(
