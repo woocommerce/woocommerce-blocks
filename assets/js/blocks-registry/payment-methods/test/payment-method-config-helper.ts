@@ -69,10 +69,12 @@ const canMakePaymentArgument = {
 describe( 'payment-method-config-helper', () => {
 	const trueCallback = jest.fn().mockReturnValue( true );
 	const falseCallback = jest.fn().mockReturnValue( false );
+	const bacsCallback = jest.fn().mockReturnValue( false );
 	const throwsCallback = jest.fn().mockImplementation( () => {
 		throw new Error();
 	} );
 	beforeAll( () => {
+		// Register extension callbacks for two payment methods.
 		registerPaymentMethodExtensionCallbacks(
 			'woocommerce-marketplace-extension',
 			{
@@ -81,7 +83,7 @@ describe( 'payment-method-config-helper', () => {
 				// cheque: returns true only if arg.billingData.postcode is 12345.
 				cheque: ( arg ) => arg.billingData.postcode === '12345',
 				// bacs: both extensions return false.
-				bacs: falseCallback,
+				bacs: bacsCallback,
 				// woopay: both extensions return true.
 				woopay: trueCallback,
 				// testpay: one callback errors, one returns true
@@ -92,9 +94,9 @@ describe( 'payment-method-config-helper', () => {
 			'other-woocommerce-marketplace-extension',
 			{
 				cod: falseCallback,
-				bacs: falseCallback,
 				woopay: trueCallback,
 				testpay: trueCallback,
+				bacs: bacsCallback,
 			}
 		);
 	} );
@@ -103,9 +105,11 @@ describe( 'payment-method-config-helper', () => {
 		trueCallback.mockClear();
 		throwsCallback.mockClear();
 		falseCallback.mockClear();
+		bacsCallback.mockClear();
 	} );
 	describe( 'getCanMakePayment', () => {
 		it( 'returns callback canMakePaymentWithFeaturesCheck if no extension callback is detected', () => {
+			// Define arguments from a payment method ('missing-payment-method') with no registered extension callbacks.
 			const args = {
 				canMakePayment: jest.fn().mockImplementation( () => true ),
 				features: [ 'products' ],
@@ -117,9 +121,14 @@ describe( 'payment-method-config-helper', () => {
 				args.features,
 				args.paymentMethodName
 			)( canMakePaymentArgument );
+
+			// Expect that the result of getCanMakePayment is the result of
+			// the payment method's own canMakePayment, as no extension callbacks are called.
 			expect( canMakePayment ).toEqual( args.canMakePayment() );
 		} );
+
 		it( 'returns callbacks from the extensions when they are defined', () => {
+			// Define arguments from a payment method (bacs) with registered extension callbacks.
 			const args = {
 				canMakePaymentConfiguration: jest
 					.fn()
@@ -133,7 +142,11 @@ describe( 'payment-method-config-helper', () => {
 				args.features,
 				args.paymentMethodName
 			)( canMakePaymentArgument );
-			expect( canMakePayment ).toBe( falseCallback() );
+
+			// Expect that the result of getCanMakePayment is not the result of
+			// the payment method's own canMakePayment (args.canMakePaymentConfiguration),
+			// but of the registered bacsCallback.
+			expect( canMakePayment ).toBe( bacsCallback() );
 		} );
 	} );
 
@@ -155,7 +168,7 @@ describe( 'payment-method-config-helper', () => {
 				canMakePaymentExtensionsCallbacks,
 				'bacs'
 			)( canMakePaymentArgument );
-			expect( falseCallback ).toHaveBeenCalledTimes( 1 );
+			expect( bacsCallback ).toHaveBeenCalledTimes( 1 );
 		} );
 
 		it( 'Returns true if all extension callbacks return true', () => {
