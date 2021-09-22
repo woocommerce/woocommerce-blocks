@@ -2,13 +2,11 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import classnames from 'classnames';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { dispatch } from '@wordpress/data';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { useEffect } from '@wordpress/element';
 import LoadingMask from '@woocommerce/base-components/loading-mask';
-import { SidebarLayout } from '@woocommerce/base-components/sidebar-layout';
 import { ValidationContextProvider } from '@woocommerce/base-context';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
 import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
@@ -98,14 +96,8 @@ const Block = ( { attributes, children, scrollToTop } ) => (
 			<StoreNoticesProvider context="wc/cart">
 				<SlotFillProvider>
 					<CartProvider>
-						<SidebarLayout
-							className={ classnames( 'wc-block-cart', {
-								'has-dark-controls': attributes.hasDarkControls,
-							} ) }
-						>
-							<Cart attributes={ attributes }>{ children }</Cart>
-							<ScrollOnError scrollToTop={ scrollToTop } />
-						</SidebarLayout>
+						<Cart attributes={ attributes }>{ children }</Cart>
+						<ScrollOnError scrollToTop={ scrollToTop } />
 					</CartProvider>
 				</SlotFillProvider>
 			</StoreNoticesProvider>

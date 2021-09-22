@@ -12,6 +12,7 @@ __webpack_public_path__ = WC_BLOCKS_BUILD_URL;
 /**
  * Internal dependencies
  */
+import filledCartMetadata from './filled-cart-block/block.json';
 import cartItemsMetadata from './cart-items-block/block.json';
 import cartExpressPaymentMetadata from './cart-express-payment-block/block.json';
 import cartLineItemsMetadata from './cart-line-items-block/block.json';
@@ -20,6 +21,14 @@ import cartTotalsMetadata from './cart-totals-block/block.json';
 import cartProceedToCheckoutMetadata from './proceed-to-checkout-block/block.json';
 
 // @todo When forcing all blocks at once, they will append based on the order they are registered. Introduce formal sorting param.
+registerCheckoutBlock( {
+	metadata: filledCartMetadata,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "cart-blocks/filled-cart" */ './filled-cart-block/frontend'
+		)
+	),
+} );
 registerCheckoutBlock( {
 	metadata: cartItemsMetadata,
 	component: lazy( () =>
