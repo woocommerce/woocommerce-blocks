@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { sprintf, _n } from '@wordpress/i18n';
 import Label from '@woocommerce/base-components/label';
 import ProductPrice from '@woocommerce/base-components/product-price';
 import ProductName from '@woocommerce/base-components/product-name';
@@ -116,7 +116,12 @@ const OrderSummaryItem = ( { cartItem } ) => {
 						label={ quantity }
 						screenReaderLabel={ sprintf(
 							/* translators: %d number of products of the same type in the cart */
-							__( '%d items', 'woo-gutenberg-products-block' ),
+							_n(
+								'%d item',
+								'%d items',
+								quantity,
+								'woo-gutenberg-products-block'
+							),
 							quantity
 						) }
 					/>
@@ -124,27 +129,11 @@ const OrderSummaryItem = ( { cartItem } ) => {
 				<ProductImage image={ images.length ? images[ 0 ] : {} } />
 			</div>
 			<div className="wc-block-components-order-summary-item__description">
-				<span className="screen-reader-text" tabIndex={ 0 }>
-					{ sprintf(
-						/* translators: %d items of product %s */
-						__( '%1$d %2$s', 'woo-gutenberg-products-block' ),
-						quantity,
-						name
-					) }
-				</span>
 				<ProductName
 					disabled={ true }
 					name={ name }
 					permalink={ permalink }
 				/>
-
-				<span className="screen-reader-text" tabIndex={ 0 }>
-					{ sprintf(
-						/* translators: Unit Price %s */
-						__( 'Unit Price: %s', 'woo-gutenberg-products-block' ),
-						formatPrice( priceSingle, priceCurrency )
-					) }
-				</span>
 				<ProductPrice
 					currency={ priceCurrency }
 					price={ priceSingle }
@@ -170,15 +159,18 @@ const OrderSummaryItem = ( { cartItem } ) => {
 					variation={ variation }
 				/>
 			</div>
-			<span className="screen-reader-text" tabIndex={ 0 }>
+			<span className="screen-reader-text">
 				{ sprintf(
-					/* translators: Total Price for %d quantity items: %s */
-					__(
-						'Total Price for %1$d items: %2$s',
+					/* translators: %1$d is the number of items, %2$s is the total price including the currency symbol and %3$s is the item name. */
+					_n(
+						'Total price for %1$d %3$s item: %2$s',
+						'Total price for %1$d %3$s items: %2$s',
+						quantity,
 						'woo-gutenberg-products-block'
 					),
 					quantity,
-					formatPrice( subtotalPrice, totalsCurrency )
+					formatPrice( subtotalPrice, totalsCurrency ),
+					name
 				) }
 			</span>
 			<div className="wc-block-components-order-summary-item__total-price">
