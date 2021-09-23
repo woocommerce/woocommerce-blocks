@@ -84,6 +84,13 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 5.7.2 - 2021-09-23 =
+
+#### Bug Fixes
+
+- Fix infinite recursion when removing an attribute filter from the Active filters block. #4816
+- Fix Product Search block displaying incorrectly. #4740
+
 = 5.7.1 - 2021-08-30 =
 
 #### Bug Fixes
