@@ -13,6 +13,7 @@ __webpack_public_path__ = WC_BLOCKS_BUILD_URL;
  * Internal dependencies
  */
 import filledCartMetadata from './filled-cart-block/block.json';
+import emptyCartMetadata from './empty-cart-block/block.json';
 import cartItemsMetadata from './cart-items-block/block.json';
 import cartExpressPaymentMetadata from './cart-express-payment-block/block.json';
 import cartLineItemsMetadata from './cart-line-items-block/block.json';
@@ -26,6 +27,14 @@ registerCheckoutBlock( {
 	component: lazy( () =>
 		import(
 			/* webpackChunkName: "cart-blocks/filled-cart" */ './filled-cart-block/frontend'
+		)
+	),
+} );
+registerCheckoutBlock( {
+	metadata: emptyCartMetadata,
+	component: lazy( () =>
+		import(
+			/* webpackChunkName: "cart-blocks/empty-cart" */ './empty-cart-block/frontend'
 		)
 	),
 } );
