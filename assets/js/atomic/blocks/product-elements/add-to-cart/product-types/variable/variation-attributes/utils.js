@@ -206,3 +206,19 @@ export const getActiveSelectControlOptions = (
 
 	return options;
 };
+
+export const getDefaultAttributes = ( attributes ) => {
+	const attributeNames = Object.keys( attributes );
+	const defaultsToSet = {};
+	attributeNames.forEach( ( attributeName ) => {
+		const currentAttribute = attributes[ attributeName ];
+		const defaultValue = currentAttribute.terms.filter(
+			( term ) => term.default
+		);
+		if ( defaultValue.length > 0 ) {
+			defaultsToSet[ currentAttribute.name ] = defaultValue[ 0 ]?.slug;
+		}
+	} );
+
+	return defaultsToSet;
+};

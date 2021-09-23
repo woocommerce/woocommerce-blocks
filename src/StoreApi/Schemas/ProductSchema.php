@@ -288,21 +288,27 @@ class ProductSchema extends AbstractSchema {
 							'items'       => [
 								'type'       => 'object',
 								'properties' => [
-									'id'   => [
+									'id'      => [
 										'description' => __( 'The term ID, or 0 if the attribute is not a global attribute.', 'woo-gutenberg-products-block' ),
 										'type'        => 'integer',
 										'context'     => [ 'view', 'edit' ],
 										'readonly'    => true,
 									],
-									'name' => [
+									'name'    => [
 										'description' => __( 'The term name.', 'woo-gutenberg-products-block' ),
 										'type'        => 'string',
 										'context'     => [ 'view', 'edit' ],
 										'readonly'    => true,
 									],
-									'slug' => [
+									'slug'    => [
 										'description' => __( 'The term slug.', 'woo-gutenberg-products-block' ),
 										'type'        => 'string',
+										'context'     => [ 'view', 'edit' ],
+										'readonly'    => true,
+									],
+									'default' => [
+										'description' => __( 'If this is a default attribute', 'woo-gutenberg-products-block' ),
+										'type'        => 'boolean',
 										'context'     => [ 'view', 'edit' ],
 										'readonly'    => true,
 									],
@@ -623,20 +629,30 @@ class ProductSchema extends AbstractSchema {
 	 * @return array
 	 */
 	protected function get_attributes( \WC_Product $product ) {
-		$attributes = array_filter( $product->get_attributes(), [ $this, 'filter_valid_attribute' ] );
-		$return     = [];
+		$attributes         = array_filter( $product->get_attributes(), [ $this, 'filter_valid_attribute' ] );
+		$default_attributes = $product->get_default_attributes();
+		$return             = [];
 
 		foreach ( $attributes as $attribute_slug => $attribute ) {
 			// Only visible and variation attributes will be exposed by this API.
 			if ( ! $attribute->get_visible() || ! $attribute->get_variation() ) {
 				continue;
 			}
+
+			$terms = $attribute->is_taxonomy() ? array_map( [ $this, 'prepare_product_attribute_taxonomy_value' ], $attribute->get_terms() ) : array_map( [ $this, 'prepare_product_attribute_value' ], $attribute->get_options() );
+
+			if ( $attribute->is_taxonomy() && array_key_exists( $attribute->get_name(), $default_attributes ) ) {
+				foreach ( $terms as $term ) {
+					$term->default = $term->slug === $default_attributes[ $attribute->get_name() ];
+				}
+			}
+
 			$return[] = (object) [
 				'id'             => $attribute->get_id(),
 				'name'           => wc_attribute_label( $attribute->get_name(), $product ),
 				'taxonomy'       => $attribute->is_taxonomy() ? $attribute->get_name() : null,
 				'has_variations' => true === $attribute->get_variation(),
-				'terms'          => $attribute->is_taxonomy() ? array_map( [ $this, 'prepare_product_attribute_taxonomy_value' ], $attribute->get_terms() ) : array_map( [ $this, 'prepare_product_attribute_value' ], $attribute->get_options() ),
+				'terms'          => $terms,
 			];
 		}
 

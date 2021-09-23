@@ -13,9 +13,11 @@ import { getAttributes, getVariationAttributes } from './utils';
  * @param {Object} props.dispatchers An object where values are dispatching functions.
  */
 const VariationAttributes = ( { product, dispatchers } ) => {
-	const attributes = getAttributes( product.attributes );
+	const attributes = getAttributes(
+		product.attributes,
+		product.default_attributes
+	);
 	const variationAttributes = getVariationAttributes( product.variations );
-
 	if (
 		Object.keys( attributes ).length === 0 ||
 		variationAttributes.length === 0
