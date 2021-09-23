@@ -43,6 +43,10 @@ export type CanMakePaymentCallback = (
 	cartData: CanMakePaymentArgument
 ) => CanMakePaymentReturnType;
 
+export type CanMakePaymentExtensionCallback = (
+	cartData: CanMakePaymentArgument
+) => boolean;
+
 export interface PaymentMethodIcon {
 	id: string;
 	src: string | null;
