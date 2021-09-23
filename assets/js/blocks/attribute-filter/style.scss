@@ -1,8 +1,11 @@
 .wc-block-attribute-filter {
 	margin-bottom: $gap-large;
+	display: flex;
+	flex-wrap: wrap;
 
 	.wc-block-attribute-filter-list {
 		margin: 0;
+		width: 100%;
 
 		li {
 			text-decoration: underline;
@@ -23,7 +26,7 @@
 		opacity: 0.6;
 	}
 
-	.wc-block-attribute-filter__button {
-		margin-top: $gap-smaller;
+	.wc-block-components-dropdown-selector__input-wrapper {
+		height: 100%;
 	}
 }
