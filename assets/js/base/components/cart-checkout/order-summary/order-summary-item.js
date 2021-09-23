@@ -161,19 +161,22 @@ const OrderSummaryItem = ( { cartItem } ) => {
 			</div>
 			<span className="screen-reader-text">
 				{ sprintf(
-					/* translators: %1$d is the number of items, %2$s is the total price including the currency symbol and %3$s is the item name. */
+					/* translators: %1$d is the number of items, %2$s is the item name and %3$s is the total price including the currency symbol. */
 					_n(
-						'Total price for %1$d %3$s item: %2$s',
-						'Total price for %1$d %3$s items: %2$s',
+						'Total price for %1$d %2$s item: %3$s',
+						'Total price for %1$d %2$s items: %3$s',
 						quantity,
 						'woo-gutenberg-products-block'
 					),
 					quantity,
-					formatPrice( subtotalPrice, totalsCurrency ),
-					name
+					name,
+					formatPrice( subtotalPrice, totalsCurrency )
 				) }
 			</span>
-			<div className="wc-block-components-order-summary-item__total-price">
+			<div
+				className="wc-block-components-order-summary-item__total-price"
+				aria-hidden="true"
+			>
 				<ProductPrice
 					currency={ totalsCurrency }
 					format={ productPriceFormat }
