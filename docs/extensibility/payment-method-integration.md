@@ -88,7 +88,6 @@ A callback to determine whether the payment method should be available as an opt
 ```
 canMakePayment( {
     cart: Cart,
-    cartCoupons: CartCoupons,
     cartTotals: CartTotals,
     cartNeedsShipping: boolean,
     shippingAddress: CartShippingAddress,
