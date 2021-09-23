@@ -10,7 +10,7 @@ const FrontendBlock = ( {
 } ): JSX.Element | null => {
 	const { cartItems, cartIsLoading } = useStoreCart();
 	if ( ! cartIsLoading && cartItems.length === 0 ) {
-		return <div>{ children }</div>;
+		return <>{ children }</>;
 	}
 	return null;
 };
