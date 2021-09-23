@@ -141,24 +141,29 @@ export const Edit = ( {
 	className,
 	attributes,
 	setAttributes,
+	clientId,
 }: {
 	className: string;
 	attributes: Attributes;
 	setAttributes: ( attributes: Record< string, unknown > ) => undefined;
+	clientId: string;
 } ): JSX.Element => {
-	const { currentView, component: ViewSwitcherComponent } = useViewSwitcher( [
-		{
-			view: 'emptyCart',
-			label: __( 'Empty Cart', 'woo-gutenberg-products-block' ),
-			icon: <Icon srcElement={ removeCart } />,
-		},
-		{
-			view: 'filledCart',
-			label: __( 'Filled Cart', 'woo-gutenberg-products-block' ),
-			icon: <Icon srcElement={ filledCart } />,
-			default: true,
-		},
-	] );
+	const { currentView, component: ViewSwitcherComponent } = useViewSwitcher(
+		clientId,
+		[
+			{
+				view: 'emptyCart',
+				label: __( 'Empty Cart', 'woo-gutenberg-products-block' ),
+				icon: <Icon srcElement={ removeCart } />,
+			},
+			{
+				view: 'filledCart',
+				label: __( 'Filled Cart', 'woo-gutenberg-products-block' ),
+				icon: <Icon srcElement={ filledCart } />,
+				default: true,
+			},
+		]
+	);
 	const cartClassName = classnames( {
 		'has-dark-controls': attributes.hasDarkControls,
 	} );

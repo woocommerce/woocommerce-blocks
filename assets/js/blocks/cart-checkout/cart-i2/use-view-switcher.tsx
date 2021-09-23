@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
+import { useDispatch } from '@wordpress/data';
 import { Toolbar, ToolbarDropdownMenu } from '@wordpress/components';
 import { Icon, eye } from '@woocommerce/icons';
 
@@ -14,6 +15,7 @@ interface View {
 }
 
 export const useViewSwitcher = (
+	clientId: string,
 	views: View[]
 ): {
 	currentView: string;
@@ -22,6 +24,7 @@ export const useViewSwitcher = (
 	const initialView =
 		views?.find( ( view ) => view.default === true ) || views[ 0 ];
 	const [ currentView, setCurrentView ] = useState( initialView );
+	const { selectBlock } = useDispatch( 'core/block-editor' );
 
 	const ViewSwitcherComponent = () => (
 		<Toolbar>
@@ -34,7 +37,10 @@ export const useViewSwitcher = (
 				controls={ views.map( ( view ) => ( {
 					...view,
 					title: view.label,
-					onClick: () => setCurrentView( view ),
+					onClick: () => {
+						setCurrentView( view );
+						selectBlock( clientId );
+					},
 				} ) ) }
 			/>
 		</Toolbar>
