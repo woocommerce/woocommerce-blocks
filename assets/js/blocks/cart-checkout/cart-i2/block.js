@@ -25,13 +25,9 @@ const Cart = ( { children } ) => {
 	const { cartIsLoading } = useStoreCart();
 
 	return (
-		<>
-			<LoadingMask showSpinner={ true } isLoading={ cartIsLoading }>
-				<ValidationContextProvider>
-					{ children }
-				</ValidationContextProvider>
-			</LoadingMask>
-		</>
+		<LoadingMask showSpinner={ true } isLoading={ cartIsLoading }>
+			<ValidationContextProvider>{ children }</ValidationContextProvider>
+		</LoadingMask>
 	);
 };
 
