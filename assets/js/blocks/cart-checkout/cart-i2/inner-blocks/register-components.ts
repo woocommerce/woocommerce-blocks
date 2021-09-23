@@ -21,7 +21,6 @@ import cartOrderSummaryMetadata from './cart-order-summary-block/block.json';
 import cartTotalsMetadata from './cart-totals-block/block.json';
 import cartProceedToCheckoutMetadata from './proceed-to-checkout-block/block.json';
 
-// @todo When forcing all blocks at once, they will append based on the order they are registered. Introduce formal sorting param.
 registerCheckoutBlock( {
 	metadata: filledCartMetadata,
 	component: lazy( () =>
