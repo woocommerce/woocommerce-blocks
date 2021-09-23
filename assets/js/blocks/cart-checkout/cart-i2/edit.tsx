@@ -6,9 +6,10 @@ import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
 import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import {
-	InnerBlocks,
 	useBlockProps,
+	InnerBlocks,
 	InspectorControls,
+	BlockControls,
 } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl, Notice } from '@wordpress/components';
 import { CartCheckoutCompatibilityNotice } from '@woocommerce/editor-components/compatibility-notices';
@@ -31,7 +32,7 @@ import './editor.scss';
 import { addClassToBody, useBlockPropsWithLocking } from './hacks';
 import { useViewSwitcher } from './use-view-switcher';
 import type { Attributes } from './types';
-import { CartBlockControlsContext } from './context';
+import { CartBlockContext } from './context';
 
 // This is adds a class to body to signal if the selected block is locked
 addClassToBody();
@@ -212,13 +213,12 @@ export const Edit = ( {
 						attributes={ attributes }
 						setAttributes={ setAttributes }
 					/>
-					<ViewSwitcherComponent />
-					<CartBlockControlsContext.Provider
+					<BlockControls __experimentalShareWithChildBlocks>
+						<ViewSwitcherComponent />
+					</BlockControls>
+					<CartBlockContext.Provider
 						value={ {
-							viewSwitcher: {
-								component: ViewSwitcherComponent,
-								currentView,
-							},
+							currentView,
 						} }
 					>
 						<CartProvider>
@@ -230,7 +230,7 @@ export const Edit = ( {
 								/>
 							</div>
 						</CartProvider>
-					</CartBlockControlsContext.Provider>
+					</CartBlockContext.Provider>
 				</EditorProvider>
 			</BlockErrorBoundary>
 			<CartCheckoutCompatibilityNotice blockName="cart" />

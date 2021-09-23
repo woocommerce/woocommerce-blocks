@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import { Toolbar, ToolbarDropdownMenu } from '@wordpress/components';
-import { BlockControls } from '@wordpress/block-editor';
 import { Icon, eye } from '@woocommerce/icons';
 
 interface View {
@@ -25,28 +24,20 @@ export const useViewSwitcher = (
 	const [ currentView, setCurrentView ] = useState( initialView );
 
 	const ViewSwitcherComponent = () => (
-		<BlockControls>
-			<Toolbar>
-				<ToolbarDropdownMenu
-					label={ __(
-						'Switch view',
-						'woo-gutenberg-products-block'
-					) }
-					text={ currentView.label }
-					icon={
-						<Icon
-							srcElement={ eye }
-							style={ { marginRight: '8px' } }
-						/>
-					}
-					controls={ views.map( ( view ) => ( {
-						...view,
-						title: view.label,
-						onClick: () => setCurrentView( view ),
-					} ) ) }
-				/>
-			</Toolbar>
-		</BlockControls>
+		<Toolbar>
+			<ToolbarDropdownMenu
+				label={ __( 'Switch view', 'woo-gutenberg-products-block' ) }
+				text={ currentView.label }
+				icon={
+					<Icon srcElement={ eye } style={ { marginRight: '8px' } } />
+				}
+				controls={ views.map( ( view ) => ( {
+					...view,
+					title: view.label,
+					onClick: () => setCurrentView( view ),
+				} ) ) }
+			/>
+		</Toolbar>
 	);
 
 	return {

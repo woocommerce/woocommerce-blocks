@@ -9,20 +9,17 @@ import { innerBlockAreas } from '@woocommerce/blocks-checkout';
  */
 import { useForcedLayout } from '../../use-forced-layout';
 import { getAllowedBlocks } from '../../editor-utils';
-import { useCartBlockControlsContext } from '../../context';
+import { useCartBlockContext } from '../../context';
 
 export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 	const blockProps = useBlockProps();
+	const { currentView } = useCartBlockContext();
 	const allowedBlocks = getAllowedBlocks( innerBlockAreas.EMPTY_CART );
 
 	useForcedLayout( {
 		clientId,
 		template: allowedBlocks,
 	} );
-
-	const {
-		viewSwitcher: { currentView, component: ViewSwitcherComponent },
-	} = useCartBlockControlsContext();
 
 	return (
 		<div { ...blockProps } hidden={ currentView !== 'emptyCart' }>
@@ -31,7 +28,6 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 				allowedBlocks={ allowedBlocks }
 				templateLock={ false }
 			/>
-			<ViewSwitcherComponent />
 		</div>
 	);
 };
