@@ -26,12 +26,12 @@ const { registerPaymentMethodExtensionCallbacks } = wc.wcBlocksRegistry;
 
 | Parameter   | Description                                                                                                         | Type                                              |
 | ----------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| `name`      | Unique string to identify your extension. Choose something that eliminates a name collision with another extension. | `string`                                          |
+| `namespace` | Unique string to identify your extension. Choose something that eliminates a name collision with another extension. | `string`                                          |
 | `callbacks` | An object containing callbacks registered for different payment methods                                             | Record< string, CanMakePaymentExtensionCallback > |
 
 Read more below about [callbacks](#callbacks-registered-for-payment-methods).
 
-### Extension name collision
+### Extension namespace collision
 
 When trying to register callbacks under an extension namespace already used with `registerPaymentMethodExtensionCallbacks`, the registration will be aborted and you will be notified that you are not using a unique namespace. This will be shown in the JavaScript console.
 
@@ -49,6 +49,14 @@ registerPaymentMethodExtensionCallbacks( 'my-hypothetical-extension', {
 ```
 
 ## Callbacks registered for payment methods
+
+Extensions can register only one callback per payment method:
+
+```
+payment_method_name: ( arg ) => {...}
+```
+
+`payment_method_name` is the value of the [name](payment-method-integration.md#name-required) property used when the payment method was registered with WooCommerce Blocks.
 
 The registered callbacks are used to determine whether the corresponding payment method should be available as an option for the shopper. The function will be passed an object containing data about the current order.
 
