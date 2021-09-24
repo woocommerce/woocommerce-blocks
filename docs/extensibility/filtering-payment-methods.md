@@ -33,7 +33,7 @@ Read more below about [callbacks](#callbacks-registered-for-payment-methods).
 
 ### Extension name collision
 
-When trying to register callbacks under an extension namespace already used with `registerPaymentMethodExtensionCallbacks`, the registration will be aborted and you will be noticed that you are not using a unique namespace.
+When trying to register callbacks under an extension namespace already used with `registerPaymentMethodExtensionCallbacks`, the registration will be aborted and you will be notified that you are not using a unique namespace. This will be shown in the JavaScript console.
 
 ## Usage example
 
