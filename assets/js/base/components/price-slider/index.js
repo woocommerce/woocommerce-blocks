@@ -322,7 +322,6 @@ const PriceSlider = ( {
 								'Filter products by minimum price',
 								'woo-gutenberg-products-block'
 							) }
-							aria-valuetext={ ariaReadableMinPrice }
 							onValueChange={ ( value ) => {
 								if ( value === minPriceInput ) {
 									return;
@@ -341,7 +340,6 @@ const PriceSlider = ( {
 								'Filter products by maximum price',
 								'woo-gutenberg-products-block'
 							) }
-							aria-valuetext={ ariaReadableMaxPrice }
 							onValueChange={ ( value ) => {
 								if ( value === maxPriceInput ) {
 									return;
