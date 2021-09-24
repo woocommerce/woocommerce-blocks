@@ -152,12 +152,12 @@ export const Edit = ( {
 		clientId,
 		[
 			{
-				view: 'filledCart',
+				view: 'woocommerce/filled-cart-block',
 				label: __( 'Filled Cart', 'woo-gutenberg-products-block' ),
 				icon: <Icon srcElement={ filledCart } />,
 			},
 			{
-				view: 'emptyCart',
+				view: 'woocommerce/empty-cart-block',
 				label: __( 'Empty Cart', 'woo-gutenberg-products-block' ),
 				icon: <Icon srcElement={ removeCart } />,
 			},

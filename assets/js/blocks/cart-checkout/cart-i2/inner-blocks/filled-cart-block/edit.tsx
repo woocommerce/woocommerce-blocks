@@ -24,7 +24,10 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 		template: allowedBlocks,
 	} );
 	return (
-		<div { ...blockProps } hidden={ currentView !== 'filledCart' }>
+		<div
+			{ ...blockProps }
+			hidden={ currentView !== 'woocommerce/filled-cart-block' }
+		>
 			<Columns>
 				<SidebarLayout className={ 'wc-block-cart' }>
 					<InnerBlocks

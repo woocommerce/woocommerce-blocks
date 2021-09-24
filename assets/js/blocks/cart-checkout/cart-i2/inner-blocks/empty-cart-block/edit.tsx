@@ -22,7 +22,10 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 	} );
 
 	return (
-		<div { ...blockProps } hidden={ currentView !== 'emptyCart' }>
+		<div
+			{ ...blockProps }
+			hidden={ currentView !== 'woocommerce/empty-cart-block' }
+		>
 			This is the empty cart block.
 			<InnerBlocks
 				allowedBlocks={ allowedBlocks }
