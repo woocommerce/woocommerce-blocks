@@ -11,7 +11,6 @@ interface View {
 	view: string;
 	label: string;
 	icon: string | JSX.Element;
-	default?: boolean;
 }
 
 export const useViewSwitcher = (
@@ -21,8 +20,7 @@ export const useViewSwitcher = (
 	currentView: string;
 	component: () => JSX.Element;
 } => {
-	const initialView =
-		views?.find( ( view ) => view.default === true ) || views[ 0 ];
+	const initialView = views[ 0 ];
 	const [ currentView, setCurrentView ] = useState( initialView );
 	const { selectBlock } = useDispatch( 'core/block-editor' );
 

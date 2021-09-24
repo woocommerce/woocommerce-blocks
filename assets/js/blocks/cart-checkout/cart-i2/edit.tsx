@@ -155,7 +155,6 @@ export const Edit = ( {
 				view: 'filledCart',
 				label: __( 'Filled Cart', 'woo-gutenberg-products-block' ),
 				icon: <Icon srcElement={ filledCart } />,
-				default: true,
 			},
 			{
 				view: 'emptyCart',
