@@ -140,28 +140,34 @@ const renderInnerBlocks = ( {
 			const parsedElement = parse(
 				element?.outerHTML || element?.textContent || ''
 			);
-			if ( isValidElement( parsedElement ) ) {
-				const elementChildren = renderInnerBlocks( {
-					block,
-					blockMap,
-					children: element.childNodes || [],
-					depth: depth + 1,
-					blockWrapper,
-				} );
-				return elementChildren
-					? cloneElement(
-							parsedElement,
-							componentProps,
-							elementChildren
-					  )
-					: cloneElement( parsedElement, componentProps );
-			}
 
-			if ( typeof parsedElement === 'string' ) {
+			// Returns text nodes without manipulation.
+			if ( typeof parsedElement === 'string' && !! parsedElement ) {
 				return parsedElement;
 			}
 
-			return null;
+			// Do not render invalid elements.
+			if ( ! isValidElement( parsedElement ) ) {
+				return null;
+			}
+
+			const renderedChildren = element.childNodes.length
+				? renderInnerBlocks( {
+						block,
+						blockMap,
+						children: element.childNodes,
+						depth: depth + 1,
+						blockWrapper,
+				  } )
+				: undefined;
+
+			return renderedChildren
+				? cloneElement(
+						parsedElement,
+						componentProps,
+						renderedChildren
+				  )
+				: cloneElement( parsedElement, componentProps );
 		}
 
 		// This will wrap inner blocks with the provided wrapper. If no wrapper is provided, we default to Fragment.
