@@ -62,7 +62,7 @@ const AttributeFilterBlock = ( {
 	} = useCollection( {
 		namespace: '/wc/store',
 		resourceName: 'products/attributes/terms',
-		resourceValues: [ attributeObject.id ],
+		resourceValues: [ attributeObject?.id || 0 ],
 		shouldSelect: blockAttributes.attributeId > 0,
 	} );
 
@@ -74,7 +74,7 @@ const AttributeFilterBlock = ( {
 		isLoading: filteredCountsLoading,
 	} = useCollectionData( {
 		queryAttribute: {
-			taxonomy: attributeObject.taxonomy,
+			taxonomy: attributeObject?.taxonomy,
 			queryType: blockAttributes.queryType,
 		},
 		queryState: {
@@ -152,7 +152,7 @@ const AttributeFilterBlock = ( {
 
 		setDisplayedOptions( newOptions );
 	}, [
-		attributeObject.taxonomy,
+		attributeObject?.taxonomy,
 		attributeTerms,
 		attributeTermsLoading,
 		blockAttributes.showCounts,
@@ -165,10 +165,10 @@ const AttributeFilterBlock = ( {
 	const checkedQuery = useMemo( () => {
 		return productAttributesQuery
 			.filter(
-				( { attribute } ) => attribute === attributeObject.taxonomy
+				( { attribute } ) => attribute === attributeObject?.taxonomy
 			)
 			.flatMap( ( { slug } ) => slug );
-	}, [ productAttributesQuery, attributeObject.taxonomy ] );
+	}, [ productAttributesQuery, attributeObject?.taxonomy ] );
 
 	const currentCheckedQuery = useShallowEqual( checkedQuery );
 	const previousCheckedQuery = usePrevious( currentCheckedQuery );
