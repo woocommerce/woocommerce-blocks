@@ -17,6 +17,7 @@ import Label from '@woocommerce/base-components/filter-element-label';
 import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
+import { Notice } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -315,6 +316,23 @@ const AttributeFilterBlock = ( {
 		},
 		[ checked, displayedOptions, multiple ]
 	);
+
+	// Short-circuit if no attribute is selected.
+	if ( ! attributeObject ) {
+		if ( isEditor ) {
+			return (
+				<Notice status="warning" isDismissible={ false }>
+					<p>
+						{ __(
+							'Please select an attribute to use this filter!',
+							'woo-gutenberg-products-block'
+						) }
+					</p>
+				</Notice>
+			);
+		}
+		return null;
+	}
 
 	if ( displayedOptions.length === 0 && ! attributeTermsLoading ) {
 		return null;
