@@ -340,7 +340,7 @@ const AttributeFilterBlock = ( {
 				<Notice status="warning" isDismissible={ false }>
 					<p>
 						{ __(
-							'The selected attribute does not have hany term assigned to products.',
+							'The selected attribute does not have any term assigned to products.',
 							'woo-gutenberg-products-block'
 						) }
 					</p>
