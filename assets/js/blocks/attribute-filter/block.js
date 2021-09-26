@@ -335,6 +335,18 @@ const AttributeFilterBlock = ( {
 	}
 
 	if ( displayedOptions.length === 0 && ! attributeTermsLoading ) {
+		if ( isEditor ) {
+			return (
+				<Notice status="warning" isDismissible={ false }>
+					<p>
+						{ __(
+							'The selected attribute does not have hany term assigned to products.',
+							'woo-gutenberg-products-block'
+						) }
+					</p>
+				</Notice>
+			);
+		}
 		return null;
 	}
 
