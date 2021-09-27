@@ -88,7 +88,7 @@ The following snippet explains how the WooCommerce Blocks repository is structur
     │
     ├── assets/js/atomic
     │   The atomic components such as product title, product rating, product
-    │   image, etc. These atomic components are used by various blocks.
+    │   image, etc. These atomic components are used by the product blocks.
     │
     ├── assets/js/base
     │   Functionality to ensure that the frontend does not get too bloated.
