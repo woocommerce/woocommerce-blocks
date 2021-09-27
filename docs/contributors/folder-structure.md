@@ -159,7 +159,7 @@ The following snippet explains how the WooCommerce Blocks repository is structur
     │    - Development tools available on npm.
     │
     ├── patches
-    │   The patches of the WooCommerce Blocks plugin.
+    │   Patches for 3rd party scripts applied when installing dependencies.
     │
     ├── src
     │   The core PHP files of the WooCommerce Blocks plugin.
