@@ -54,8 +54,7 @@ The following snippet explains how the WooCommerce Blocks repository is structur
     │
     ├── composer.lock
     ├── composer.json
-    │   Handling of PHP dependencies. Essentially used for development tools.
-    │   The production code don't use external PHP dependencies.
+    │   Handling of PHP dependencies. Used for development tools and autoloading.
     │
     ├── package-lock.json
     ├── package.json
