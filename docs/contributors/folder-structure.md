@@ -91,7 +91,9 @@ The following snippet explains how the WooCommerce Blocks repository is structur
     │   image, etc. These atomic components are used by the product blocks.
     │
     ├── assets/js/base
-    │   Functionality to ensure that the frontend does not get too bloated.
+    │   Base contains components specific to the frontend of the store.
+    │   Components placed here avoid loading larger Gutenberg dependencies to
+    │   keep client script sizes to a minimum.
     │
     ├── assets/js/blocks-registry
     │   Files that allows developers to connect their extensions to this plugin.
