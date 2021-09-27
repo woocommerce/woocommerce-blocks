@@ -117,7 +117,7 @@ The following snippet explains how the WooCommerce Blocks repository is structur
     │   The Higher Order Components of the WooCommerce Blocks plugin.
     │
     ├── assets/js/icons
-    │   The SVG icons of the WooCommerce Blocks plugin.
+    │   The WooCommerce Blocks Icon library.
     │
     ├── assets/js/legacy
     │   The legacy code of the WooCommerce Blocks plugin.
