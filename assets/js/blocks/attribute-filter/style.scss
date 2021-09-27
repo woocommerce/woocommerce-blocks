@@ -1,7 +1,10 @@
 .wc-block-attribute-filter {
 	margin-bottom: $gap-large;
-	display: flex;
-	flex-wrap: wrap;
+
+	&.style-dropdown {
+		display: flex;
+		gap: $gap;
+	}
 
 	.wc-block-attribute-filter-list {
 		margin: 0;
@@ -19,6 +22,11 @@
 				display: inline-block;
 			}
 		}
+	}
+
+	.wc-block-attribute-filter-dropdown {
+		flex-grow: 1;
+		max-width: unset;
 	}
 
 	.is-single .wc-block-attribute-filter-list-count,
