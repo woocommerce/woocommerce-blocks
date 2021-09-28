@@ -27,8 +27,12 @@ export const Edit = ( {
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 } ): JSX.Element => {
 	const blockProps = useBlockProps();
-	const currentText =
-		text || checkbox ? termsCheckboxDefaultText : termsConsentDefaultText;
+
+	const defaultText = checkbox
+		? termsCheckboxDefaultText
+		: termsConsentDefaultText;
+
+	const currentText = text || defaultText;
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
