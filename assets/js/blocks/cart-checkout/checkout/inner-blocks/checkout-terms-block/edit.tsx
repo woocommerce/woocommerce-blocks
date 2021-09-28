@@ -11,6 +11,7 @@ import CheckboxControl from '@woocommerce/base-components/checkbox-control';
 import { PanelBody, ToggleControl, Notice } from '@wordpress/components';
 import { PRIVACY_URL, TERMS_URL } from '@woocommerce/block-settings';
 import { ADMIN_URL } from '@woocommerce/settings';
+import { Icon, external } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -83,10 +84,21 @@ export const Edit = ( {
 					isDismissible={ false }
 					actions={ [
 						! TERMS_URL && {
-							label: __(
-								'Setup a Terms and Conditions page',
-								'woo-gutenberg-products-block'
+							className: 'wc-block-checkout__terms_notice-button',
+							label: (
+								<>
+									{ __(
+										'Setup a Terms and Conditions page',
+										'woo-gutenberg-products-block'
+									) }
+									<Icon
+										icon={ external }
+										size={ 16 }
+										className="wc-block-checkout__terms_notice-button__icon"
+									/>
+								</>
 							),
+
 							onClick: () =>
 								window.open(
 									`${ ADMIN_URL }admin.php?page=wc-settings&tab=advanced`,
@@ -94,9 +106,19 @@ export const Edit = ( {
 								),
 						},
 						! PRIVACY_URL && {
-							label: __(
-								'Setup a Privacy Policy page',
-								'woo-gutenberg-products-block'
+							className: 'wc-block-checkout__terms_notice-button',
+							label: (
+								<>
+									{ __(
+										'Setup a Privacy Policy page',
+										'woo-gutenberg-products-block'
+									) }
+									<Icon
+										size={ 16 }
+										icon={ external }
+										className="wc-block-checkout__terms_notice-button__icon"
+									/>
+								</>
 							),
 							onClick: () =>
 								window.open(
