@@ -192,7 +192,7 @@ class MiniCart extends AbstractBlock {
 		$cart                = $cart_controller->get_cart_instance();
 		$cart_contents_count = $cart->get_cart_contents_count();
 		$cart_contents       = $cart->get_cart();
-		$cart_contents_total = $cart->get_cart_contents_total();
+		$cart_contents_total = $cart->get_cart_subtotal();
 
 		$button_text = sprintf(
 			/* translators: %d is the number of products in the cart. */

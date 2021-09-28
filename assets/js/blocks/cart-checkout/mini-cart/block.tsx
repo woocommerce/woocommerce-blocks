@@ -9,7 +9,10 @@ import { translateJQueryEventToNative } from '@woocommerce/base-utils';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 import Drawer from '@woocommerce/base-components/drawer';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
-import { formatPrice } from '@woocommerce/price-format';
+import {
+	formatPrice,
+	getCurrencyFromPriceResponse,
+} from '@woocommerce/price-format';
 
 /**
  * Internal dependencies
@@ -88,7 +91,10 @@ const MiniCartBlock = ( {
 			'woo-gutenberg-products-block'
 		),
 		cartItemsCount,
-		formatPrice( cartTotals.total_items )
+		formatPrice(
+			cartTotals.total_price,
+			getCurrencyFromPriceResponse( cartTotals )
+		)
 	);
 
 	const contents =
