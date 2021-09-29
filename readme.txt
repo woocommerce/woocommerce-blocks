@@ -111,7 +111,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 - Add documentation for registerPaymentMethodExtensionCallbacks. ([4834](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4834))
 
-#### dependencies
+#### Performance
 
 - Removed `wp-blocks` dependency from several frontend scripts. ([4767](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4767))
 
