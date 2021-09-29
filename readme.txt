@@ -85,13 +85,13 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
-= 6.0.1 - 2021-10-29 =
+= 6.0.1 - 2021-09-29 =
 
 #### Bug Fixes
 
 - Support custom classes and alignment when updating Checkout block.
 
-= 6.0.0 - 2021-10-28 =
+= 6.0.0 - 2021-09-28 =
 
 #### Enhancements
 
