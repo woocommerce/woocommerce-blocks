@@ -82,10 +82,9 @@ class Checkout extends AbstractBlock {
 		$is_empty = preg_match( $regex_for_empty_block, $content );
 
 		if ( $is_empty ) {
-			$content = '<div class="wp-block-woocommerce-checkout is-loading">
-				<div data-block-name="woocommerce/checkout-fields-block" class="wp-block-woocommerce-checkout-fields-block"></div>
-				<div data-block-name="woocommerce/checkout-totals-block" class="wp-block-woocommerce-checkout-totals-block"></div>
-			</div>';
+			$inner_blocks_html = '<div data-block-name="woocommerce/checkout-fields-block" class="wp-block-woocommerce-checkout-fields-block"></div><div data-block-name="woocommerce/checkout-totals-block" class="wp-block-woocommerce-checkout-totals-block"></div>';
+
+			$content = str_replace( '</div>', $inner_blocks_html . '</div>', $content );
 		}
 
 		return $this->inject_html_data_attributes( $content, $attributes );
