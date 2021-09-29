@@ -77,7 +77,9 @@ class Checkout extends AbstractBlock {
 		wp_dequeue_style( 'select2' );
 
 		// If the content is empty, we may have transformed from an older checkout block. Insert the default list of blocks.
-		$is_empty = strstr( $content, '<div class="wp-block-woocommerce-checkout is-loading"></div>' );
+		$regex_for_empty_block = '/<div class="wp-block-woocommerce-checkout[a-zA-Z0-9_\- ]*"><\/div>/mi';
+
+		$is_empty = preg_match( $regex_for_empty_block, $content );
 
 		if ( $is_empty ) {
 			$content = '<div class="wp-block-woocommerce-checkout is-loading">
