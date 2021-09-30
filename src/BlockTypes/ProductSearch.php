@@ -117,11 +117,14 @@ class ProductSearch extends AbstractBlock {
 			</div>
 		';
 
-		return sprintf(
-			'<div %s><form role="search" method="get" action="%s">%s</form></div>',
-			$wrapper_attributes,
-			esc_url( home_url( '/' ) ),
-			$label_markup . $field_markup
+		return apply_filters(
+			'get_product_search_form',
+			sprintf(
+				'<div %s><form role="search" method="get" action="%s">%s</form></div>',
+				$wrapper_attributes,
+				esc_url( home_url( '/' ) ),
+				$label_markup . $field_markup
+			)
 		);
 	}
 }
