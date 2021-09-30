@@ -13,6 +13,7 @@ import {
 	formatPrice,
 	getCurrencyFromPriceResponse,
 } from '@woocommerce/price-format';
+import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -82,6 +83,11 @@ const MiniCartBlock = ( {
 		}
 	}, [ isOpen, cartIsLoading, cartItems.length, emptyCartRef ] );
 
+	const subTotal = getSetting( 'displayCartPricesIncludingTax', false )
+		? parseInt( cartTotals.total_items, 10 ) +
+		  parseInt( cartTotals.total_items_tax, 10 )
+		: cartTotals.total_items;
+
 	const ariaLabel = sprintf(
 		/* translators: %1$d is the number of products in the cart. %2$s is the cart total */
 		_n(
@@ -91,10 +97,7 @@ const MiniCartBlock = ( {
 			'woo-gutenberg-products-block'
 		),
 		cartItemsCount,
-		formatPrice(
-			cartTotals.total_price,
-			getCurrencyFromPriceResponse( cartTotals )
-		)
+		formatPrice( subTotal, getCurrencyFromPriceResponse( cartTotals ) )
 	);
 
 	const contents =

@@ -107,6 +107,12 @@ class MiniCart extends AbstractBlock {
 			true
 		);
 
+		$this->asset_data_registry->add(
+			'displayCartPricesIncludingTax',
+			'incl' === get_option( 'woocommerce_tax_display_cart' ),
+			true
+		);
+
 		do_action( 'woocommerce_blocks_cart_enqueue_data' );
 	}
 
@@ -192,7 +198,11 @@ class MiniCart extends AbstractBlock {
 		$cart                = $cart_controller->get_cart_instance();
 		$cart_contents_count = $cart->get_cart_contents_count();
 		$cart_contents       = $cart->get_cart();
-		$cart_contents_total = $cart->get_cart_subtotal();
+		$cart_contents_total = $cart->get_subtotal();
+
+		if ( $cart->display_prices_including_tax() ) {
+			$cart_contents_total += $cart->get_subtotal_tax();
+		}
 
 		$button_text = sprintf(
 			/* translators: %d is the number of products in the cart. */
