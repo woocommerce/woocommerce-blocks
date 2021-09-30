@@ -85,6 +85,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 6.0.2 - 2021-09-30 =
+
+#### Bug Fixes
+
+- Fix fatal error when loading WooCommerce Blocks and one of its integration on an earlier version of WooCommerce Core.
+
 = 6.0.1 - 2021-09-29 =
 
 #### Bug Fixes

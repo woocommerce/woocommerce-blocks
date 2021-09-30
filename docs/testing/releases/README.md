@@ -46,4 +46,5 @@ Every release includes specific testing instructions for new features and bug fi
     -   [5.9.1](./591.md)
 -   [6.0.0](./600.md)
     -   [6.0.1](./601.md)
+    -   [6.0.2](./602.md)
 
