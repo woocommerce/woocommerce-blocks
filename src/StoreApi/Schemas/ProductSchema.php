@@ -639,11 +639,12 @@ class ProductSchema extends AbstractSchema {
 				continue;
 			}
 
-			$terms = $attribute->is_taxonomy() ? array_map( [ $this, 'prepare_product_attribute_taxonomy_value' ], $attribute->get_terms() ) : array_map( [ $this, 'prepare_product_attribute_value' ], $attribute->get_options() );
+			$terms                    = $attribute->is_taxonomy() ? array_map( [ $this, 'prepare_product_attribute_taxonomy_value' ], $attribute->get_terms() ) : array_map( [ $this, 'prepare_product_attribute_value' ], $attribute->get_options() );
+			$sanitized_attribute_name = sanitize_key( $attribute->get_name() );
 
-			if ( $attribute->is_taxonomy() && array_key_exists( $attribute->get_name(), $default_attributes ) ) {
+			if ( array_key_exists( $sanitized_attribute_name, $default_attributes ) ) {
 				foreach ( $terms as $term ) {
-					$term->default = $term->slug === $default_attributes[ $attribute->get_name() ];
+					$term->default = $term->slug === $default_attributes[ $sanitized_attribute_name ];
 				}
 			}
 
