@@ -238,7 +238,7 @@ class MiniCart extends AbstractBlock {
 
 		if ( is_cart() || is_checkout() ) {
 			return '<div class="wc-block-mini-cart">
-				<button class="wc-block-mini-cart__button" disabled>' . $button_text . '</button>
+				<button class="wc-block-mini-cart__button" aria-label="' . $aria_label . '" disabled>' . $button_text . '</button>
 			</div>';
 		}
 
