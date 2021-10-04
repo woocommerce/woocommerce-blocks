@@ -2,7 +2,12 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Disabled, PanelBody, ToggleControl } from '@wordpress/components';
+import {
+	ColorPalette,
+	Disabled,
+	PanelBody,
+	ToggleControl,
+} from '@wordpress/components';
 import { compose } from '@wordpress/compose';
 import {
 	InspectorControls,
@@ -15,6 +20,7 @@ import {
 } from '@wordpress/block-editor';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
+import type { ReactElement } from 'react';
 
 /**
  * Internal dependencies
@@ -23,6 +29,23 @@ import Block from './block';
 import withProductSelector from '../shared/with-product-selector';
 import { BLOCK_TITLE, BLOCK_ICON } from './constants';
 
+interface Attributes {
+	headingLevel: number;
+	showProductLink: boolean;
+	align: string;
+}
+
+interface Props {
+	color: ColorPalette.Color;
+	fontSize: {
+		size: number | undefined;
+	};
+	setFontSize: ( size: number ) => undefined;
+	setColor: ( color: ColorPalette.Color ) => undefined;
+	attributes: Attributes;
+	setAttributes: ( attributes: Record< string, unknown > ) => undefined;
+}
+
 const TitleEdit = ( {
 	color,
 	fontSize,
@@ -30,7 +53,7 @@ const TitleEdit = ( {
 	setColor,
 	attributes,
 	setAttributes,
-} ) => {
+}: Props ): ReactElement => {
 	const { headingLevel, showProductLink, align } = attributes;
 	return (
 		<>
@@ -40,7 +63,7 @@ const TitleEdit = ( {
 					minLevel={ 1 }
 					maxLevel={ 7 }
 					selectedLevel={ headingLevel }
-					onChange={ ( newLevel ) =>
+					onChange={ ( newLevel: number ) =>
 						setAttributes( { headingLevel: newLevel } )
 					}
 				/>
@@ -94,7 +117,7 @@ const TitleEdit = ( {
 							) }
 							colorSettings={ [
 								{
-									value: color.color,
+									value: color,
 									onChange: setColor,
 									label: __(
 										'Text color',
@@ -113,7 +136,7 @@ const TitleEdit = ( {
 	);
 };
 
-const Title = isFeaturePluginBuild()
+const Title: ReactElement = isFeaturePluginBuild()
 	? compose( [
 			withFontSizes( 'fontSize' ),
 			withColors( 'color', { textColor: 'color' } ),
