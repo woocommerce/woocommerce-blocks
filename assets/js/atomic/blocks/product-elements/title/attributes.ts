@@ -3,7 +3,7 @@
  */
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 
-let blockAttributes: Record< string, unknown > = {
+let blockAttributes: Record< string, Record< string, unknown > > = {
 	headingLevel: {
 		type: 'number',
 		default: 2,
