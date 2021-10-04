@@ -4,7 +4,6 @@ The filter registry allows callbacks to be registered to manipulate certain valu
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Available Filters](#available-filters)
 - [\_\_experimentalRegisterCheckoutFilters](#__experimentalregistercheckoutfilters)
   - [Usage](#usage)
   - [Options](#options)
@@ -18,10 +17,7 @@ The filter registry allows callbacks to be registered to manipulate certain valu
     - [`extensions`](#extensions)
     - [`arg (object)`](#arg-object)
     - [`validation (function)`](#validation-function)
-
-## Available Filters
-
-Filters are implemented throughout the Cart and Checkout Blocks, as well as some components. For a list of filters, [see this document](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/extensibility/available-filters.md). You can also search for [usage of `__experimentalApplyCheckoutFilter` within the source code](https://github.com/woocommerce/woocommerce-gutenberg-products-block/search?q=__experimentalApplyCheckoutFilter).
+- [Available Filters](#available-filters)
 
 ## \_\_experimentalRegisterCheckoutFilters
 
@@ -128,7 +124,11 @@ Object containing arguments for the filter function.
 
 #### `validation (function)`
 
-Function that needs to return true when the filtered value is passed in order for the filter to be applied.
+A function that needs to return true when the filtered value is passed in order for the filter to be applied.
+
+## Available Filters
+
+Filters are implemented throughout the Cart and Checkout Blocks, as well as some components. For a list of filters, [see this document](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/extensibility/available-filters.md). You can also search for [usage of `__experimentalApplyCheckoutFilter` within the source code](https://github.com/woocommerce/woocommerce-gutenberg-products-block/search?q=__experimentalApplyCheckoutFilter).
 
 <br/><br/><p align="center">
 <a href="https://woocommerce.com/">
