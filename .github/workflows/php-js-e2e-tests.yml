@@ -179,7 +179,6 @@ jobs:
               env:
                   WOOCOMMERCE_BLOCKS_PHASE: 3
               run: |
-                  chmod -R 767 ./ #needed for permissions issues
                   npm run wp-env start
                   npm run wp-env clean all
                   npm run test:e2e
