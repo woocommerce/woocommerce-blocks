@@ -1,6 +1,13 @@
-# Checkout
+# Checkout <!-- omit in toc -->
 
 Components and utilities making it possible to integrate with the WooCommerce Cart and Checkout Blocks.
+
+## Table of Contents <!-- omit in toc -->
+
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Aliased imports](#aliased-imports)
+- [Folder Structure Overview](#folder-structure-overview)
 
 ## Installation
 
@@ -11,8 +18,10 @@ This package is available as an external when the [WooCommerce Blocks Feature Pl
 Package components can be accessed via the `wc` global:
 
 ```js
-const { registerCheckoutBlock } = wc.blocksCheckout;
+const { ... } = wc.blocksCheckout;
 ```
+
+### Aliased imports
 
 Alternatively, you can map this to external to a custom alias using the [WordPress Dependency Extraction Webpack Plugin](https://github.com/WordPress/gutenberg/tree/trunk/packages/dependency-extraction-webpack-plugin):
 
