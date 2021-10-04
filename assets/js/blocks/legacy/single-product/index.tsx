@@ -11,7 +11,6 @@ const Edit = ( { name } ) => {
 		</div>
 	);
 };
-console.log( metadata );
 registerFeaturePluginBlockType( metadata, {
 	title: metadata.title,
 	edit: Edit,
