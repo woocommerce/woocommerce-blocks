@@ -2,6 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
+import { HTMLAttributes } from 'react';
 import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
@@ -29,7 +30,7 @@ interface BlockProps {
 	customFontSize: string;
 }
 
-interface TagNameProps extends React.HTMLAttributes< HTMLHeadingElement > {
+interface TagNameProps extends HTMLAttributes< HTMLHeadingElement > {
 	headingLevel: number;
 	elementType?: keyof JSX.IntrinsicElements;
 }
