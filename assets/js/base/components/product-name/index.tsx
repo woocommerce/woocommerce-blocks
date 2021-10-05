@@ -3,19 +3,17 @@
  */
 import { decodeEntities } from '@wordpress/html-entities';
 import classnames from 'classnames';
+import { AnchorHTMLAttributes, HTMLAttributes } from 'react';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
 
-interface ProductNameProps {
-	className?: string;
+interface ProductNameProps extends AnchorHTMLAttributes< HTMLAnchorElement > {
 	disabled?: boolean;
 	name: string;
 	permalink?: string;
-	rel?: string | null;
-	style?: Record< string, unknown >;
 	onClick?: () => void;
 }
 
@@ -35,15 +33,20 @@ export default ( {
 	...props
 }: ProductNameProps ): JSX.Element => {
 	const classes = classnames( 'wc-block-components-product-name', className );
-	return disabled ? (
-		<span
-			className={ classes }
-			{ ...props }
-			dangerouslySetInnerHTML={ {
-				__html: decodeEntities( name ),
-			} }
-		/>
-	) : (
+	if ( disabled ) {
+		// Cast the props as type HTMLSpanElement.
+		const disabledProps = props as HTMLAttributes< HTMLSpanElement >;
+		return (
+			<span
+				className={ classes }
+				{ ...disabledProps }
+				dangerouslySetInnerHTML={ {
+					__html: decodeEntities( name ),
+				} }
+			/>
+		);
+	}
+	return (
 		<a
 			className={ classes }
 			href={ permalink }

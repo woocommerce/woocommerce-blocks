@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import {
 	useInnerBlockLayoutContext,
@@ -27,7 +26,7 @@ interface BlockProps {
 	color: string;
 	customColor: string;
 	fontSize: string;
-	customFontSize: number;
+	customFontSize: string;
 }
 
 interface TagNameProps extends React.HTMLAttributes< HTMLHeadingElement > {
@@ -120,7 +119,7 @@ export const Block = ( {
 				disabled={ ! showProductLink }
 				name={ product.name }
 				permalink={ product.permalink }
-				rel={ showProductLink ? 'nofollow' : null }
+				rel={ showProductLink ? 'nofollow' : '' }
 				style={ gatedStyledText( {
 					color: customColor,
 					fontSize: customFontSize,
@@ -133,17 +132,6 @@ export const Block = ( {
 			/>
 		</TagName>
 	);
-};
-
-Block.propTypes = {
-	className: PropTypes.string,
-	headingLevel: PropTypes.number,
-	showProductLink: PropTypes.bool,
-	align: PropTypes.string,
-	color: PropTypes.string,
-	customColor: PropTypes.string,
-	fontSize: PropTypes.string,
-	customFontSize: PropTypes.number,
 };
 
 export default withProductDataContext( Block );
