@@ -40,7 +40,7 @@ const TagName = ( {
 	headingLevel,
 	elementType: ElementType = `h${ headingLevel }` as keyof JSX.IntrinsicElements,
 	...props
-}: TagNameProps ): JSX.Element => {
+}: TagNameProps & HTMLAttributes< HTMLOrSVGElement > ): JSX.Element => {
 	return <ElementType { ...props }>{ children }</ElementType>;
 };
 
