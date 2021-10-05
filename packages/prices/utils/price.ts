@@ -62,6 +62,7 @@ const siteCurrencySettings: Currency = {
 		CURRENCY.symbol,
 		CURRENCY.symbolPosition as SymbolPosition
 	),
+	explicit: CURRENCY.explicit,
 };
 
 /**
@@ -86,6 +87,7 @@ export const getCurrencyFromPriceResponse = (
 		currency_minor_unit: minorUnit,
 		currency_prefix: prefix,
 		currency_suffix: suffix,
+		explicit: explicit,
 	} = currencyData;
 
 	return {
@@ -98,6 +100,7 @@ export const getCurrencyFromPriceResponse = (
 		minorUnit: Number.isFinite( minorUnit ) ? minorUnit : 2,
 		prefix: typeof prefix === 'string' ? prefix : '$',
 		suffix: typeof suffix === 'string' ? suffix : '',
+		explicit: typeof explicit === 'boolean' ? explicit : false,
 	};
 };
 

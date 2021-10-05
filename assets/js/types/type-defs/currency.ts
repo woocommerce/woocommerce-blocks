@@ -6,6 +6,7 @@ export interface Currency {
 	suffix: string;
 	symbol: string;
 	thousandSeparator: string;
+	explicit: boolean;
 }
 
 export interface CurrencyResponse {
@@ -16,6 +17,7 @@ export interface CurrencyResponse {
 	currency_thousand_separator: string;
 	currency_prefix: string;
 	currency_suffix: string;
+	explicit: boolean;
 }
 
 export type SymbolPosition = 'left' | 'left_space' | 'right' | 'right_space';
