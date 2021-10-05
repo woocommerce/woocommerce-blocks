@@ -126,7 +126,7 @@ jobs:
               uses: actions/upload-artifact@v2
               with:
                 name: e2e-with-gutenberg-test-report
-                path: reports/e2e/index.html
+                path: reports/e2e
 
     JSE2ETests:
         name: JavaScript E2E Tests (latest)
@@ -195,4 +195,4 @@ jobs:
               uses: actions/upload-artifact@v2
               with:
                 name: e2e-test-report
-                path: reports/e2e/index.html
+                path: reports/e2e
