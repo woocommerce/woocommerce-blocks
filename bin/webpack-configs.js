@@ -178,6 +178,11 @@ const getMainConfig = ( options = {} ) => {
 			// overwriting each other's chunk loader function.
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
 			jsonpFunction: 'webpackWcBlocksJsonp',
+			// Putting a cache buster in the query string is not documented, but confirmed by the author of Webpack.
+			// `But better use the hash in filename and use no query parameter.`
+			// The reason probably is because it's not the best way to do cache busting.
+			// More information: https://github.com/webpack/webpack/issues/2329
+			chunkFilename: `[name].chunk.js?ver=[contenthash]`,
 		},
 		module: {
 			rules: [
@@ -285,6 +290,11 @@ const getFrontConfig = ( options = {} ) => {
 			// overwriting each other's chunk loader function.
 			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
 			jsonpFunction: 'webpackWcBlocksJsonp',
+			// Putting a cache buster in the query string is not documented, but confirmed by the author of Webpack.
+			// `But better use the hash in filename and use no query parameter.`
+			// The reason probably is because it's not the best way to do cache busting.
+			// More information: https://github.com/webpack/webpack/issues/2329
+			chunkFilename: `[name]-frontend.chunk.js?ver=[contenthash]`,
 		},
 		module: {
 			rules: [
