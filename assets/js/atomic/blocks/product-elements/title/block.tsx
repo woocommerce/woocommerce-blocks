@@ -19,6 +19,21 @@ import { useStoreEvents } from '@woocommerce/base-context/hooks';
  */
 import './style.scss';
 
+interface BlockProps {
+	className: string;
+	headingLevel: number;
+	showProductLink: boolean;
+	align: string;
+	color: string;
+	customColor: string;
+	fontSize: string;
+	customFontSize: number;
+}
+
+interface TagNameProps extends React.HTMLAttributes< HTMLHeadingElement > {
+	elementType?: keyof JSX.IntrinsicElements;
+}
+
 /**
  * Product Title Block Component.
  *
@@ -43,11 +58,10 @@ export const Block = ( {
 	customColor,
 	fontSize,
 	customFontSize,
-} ) => {
+}: BlockProps ): JSX.Element => {
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
 	const { dispatchStoreEvent } = useStoreEvents();
-	const TagName = `h${ headingLevel }`;
 
 	const colorClass = getColorClassName( 'color', color );
 	const fontSizeClass = getFontSizeClass( fontSize );
@@ -59,10 +73,16 @@ export const Block = ( {
 		[ fontSizeClass ]: fontSizeClass,
 	} );
 
+	const TagName = ( {
+		children,
+		elementType: ElementType = `h${ headingLevel }` as keyof JSX.IntrinsicElements,
+	}: TagNameProps ): JSX.Element => {
+		return <ElementType>{ children }</ElementType>;
+	};
+
 	if ( ! product.id ) {
 		return (
 			<TagName
-				// @ts-ignore
 				className={ classnames(
 					className,
 					'wc-block-components-product-title',
@@ -82,7 +102,6 @@ export const Block = ( {
 	}
 
 	return (
-		// @ts-ignore
 		<TagName
 			className={ classnames(
 				className,
