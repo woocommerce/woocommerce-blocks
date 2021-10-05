@@ -50,6 +50,7 @@ export default ( {
 		<a
 			className={ classes }
 			href={ permalink }
+			rel={ rel }
 			{ ...props }
 			dangerouslySetInnerHTML={ {
 				__html: decodeEntities( name ),
