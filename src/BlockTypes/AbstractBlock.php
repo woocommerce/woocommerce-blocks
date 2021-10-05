@@ -158,17 +158,18 @@ abstract class AbstractBlock {
 	 * The chunk names are defined when creating lazy loaded components using webpackChunkName. The '.chunk'
 	 * suffix comes from our webpack-config where chunkFilename is defined.
 	 *
-	 * A random temporary script handle is generated to load translations, and then they are inserted inline before the
-	 * main script handle.
-	 *
 	 * @param string[] $chunks Array of chunk names.
 	 */
 	protected function register_chunk_translations( $chunks ) {
 		foreach ( $chunks as $chunk ) {
-			$chunk_name = $chunk . '.chunk';
-			$this->asset_api->register_script( $chunk_name, $this->asset_api->get_block_asset_build_path( $chunk_name ), [], true );
-			wp_add_inline_script( $this->get_block_type_script( 'handle' ), wp_scripts()->print_translations( $chunk_name, false ), 'before' );
-			wp_deregister_script( $chunk_name );
+			$handle = 'wc-blocks-' . $chunk . '-chunk';
+			$this->asset_api->register_script( $handle, $this->asset_api->get_block_asset_build_path( $chunk . '.chunk' ), [], true );
+			wp_add_inline_script(
+				$this->get_block_type_script( 'handle' ),
+				wp_scripts()->print_translations( $handle, false ),
+				'before'
+			);
+			wp_deregister_script( $handle );
 		}
 	}
 
