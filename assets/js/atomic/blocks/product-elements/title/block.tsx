@@ -30,8 +30,17 @@ interface BlockProps {
 }
 
 interface TagNameProps extends React.HTMLAttributes< HTMLHeadingElement > {
+	headingLevel: number;
 	elementType?: keyof JSX.IntrinsicElements;
 }
+
+const TagName = ( {
+	children,
+	headingLevel,
+	elementType: ElementType = `h${ headingLevel }` as keyof JSX.IntrinsicElements,
+}: TagNameProps ): JSX.Element => {
+	return <ElementType>{ children }</ElementType>;
+};
 
 /**
  * Product Title Block Component.
@@ -72,16 +81,10 @@ export const Block = ( {
 		[ fontSizeClass ]: fontSizeClass,
 	} );
 
-	const TagName = ( {
-		children,
-		elementType: ElementType = `h${ headingLevel }` as keyof JSX.IntrinsicElements,
-	}: TagNameProps ): JSX.Element => {
-		return <ElementType>{ children }</ElementType>;
-	};
-
 	if ( ! product.id ) {
 		return (
 			<TagName
+				headingLevel={ headingLevel }
 				className={ classnames(
 					className,
 					'wc-block-components-product-title',
@@ -102,6 +105,7 @@ export const Block = ( {
 
 	return (
 		<TagName
+			headingLevel={ headingLevel }
 			className={ classnames(
 				className,
 				'wc-block-components-product-title',
