@@ -44,8 +44,7 @@ describe( `${ block.name } Block`, () => {
 			const compatibilityNoticeTitle = await page.$x(
 				`//h1[contains(text(), 'Compatibility notice')]`
 			);
-			expect( compatibilityNoticeTitle.length ).not.toBe( 1 );
-			expect( compatibilityNoticeTitle.length ).not.toBe( 1 );
+			expect( compatibilityNoticeTitle.length ).toBe( 1 );
 		} );
 	} );
 
