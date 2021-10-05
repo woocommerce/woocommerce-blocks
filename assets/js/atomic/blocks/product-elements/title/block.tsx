@@ -30,7 +30,7 @@ interface BlockProps {
 	customFontSize: string;
 }
 
-interface TagNameProps extends HTMLAttributes< HTMLHeadingElement > {
+interface TagNameProps extends HTMLAttributes< HTMLOrSVGElement > {
 	headingLevel: number;
 	elementType?: keyof JSX.IntrinsicElements;
 }
@@ -40,7 +40,7 @@ const TagName = ( {
 	headingLevel,
 	elementType: ElementType = `h${ headingLevel }` as keyof JSX.IntrinsicElements,
 	...props
-}: TagNameProps & HTMLAttributes< HTMLOrSVGElement > ): JSX.Element => {
+}: TagNameProps ): JSX.Element => {
 	return <ElementType { ...props }>{ children }</ElementType>;
 };
 
