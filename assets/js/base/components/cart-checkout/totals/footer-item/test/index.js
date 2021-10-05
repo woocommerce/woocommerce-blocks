@@ -22,6 +22,7 @@ describe( 'TotalsFooterItem', () => {
 		suffix: '',
 		symbol: '£',
 		thousandSeparator: ',',
+		explicit: false,
 	};
 
 	const values = {
@@ -80,8 +81,7 @@ describe( 'TotalsFooterItem', () => {
 	} );
 
 	it( 'Shows explicit price on total line if explicit prices are enabled', () => {
-		// @ts-ignore
-		allSettings.currency.explicit = true;
+		currency.explicit = true;
 		const { container } = render(
 			<TotalsFooterItem currency={ currency } values={ values } />
 		);

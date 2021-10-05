@@ -35,5 +35,6 @@ class TestCurrencyFormatter extends \WP_UnitTestCase {
 		$this->assertArrayHasKey( 'currency_thousand_separator', $value );
 		$this->assertArrayHasKey( 'currency_prefix', $value );
 		$this->assertArrayHasKey( 'currency_suffix', $value );
+		$this->assertArrayHasKey( 'explicit', $value );
 	}
 }

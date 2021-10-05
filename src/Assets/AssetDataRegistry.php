@@ -107,7 +107,6 @@ class AssetDataRegistry {
 			'decimalSeparator'  => wc_get_price_decimal_separator(),
 			'thousandSeparator' => wc_get_price_thousand_separator(),
 			'priceFormat'       => html_entity_decode( get_woocommerce_price_format() ),
-			'explicit'          => 0 < strpos( apply_filters( 'woocommerce_cart_total', 1 ), $currency ),
 		];
 	}
 

@@ -325,6 +325,12 @@ abstract class AbstractSchema {
 				'context'     => array( 'view', 'edit' ),
 				'readonly'    => true,
 			),
+			'explicit'                    => array(
+				'description' => __( 'Whether the total prices are shown in explicit formats (have currency codes appended)', 'woo-gutenberg-products-block' ),
+				'type'        => 'boolean',
+				'context'     => array( 'view', 'edit' ),
+				'readonly'    => true,
+			),
 		];
 	}
 

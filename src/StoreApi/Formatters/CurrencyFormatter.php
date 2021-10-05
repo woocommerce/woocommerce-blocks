@@ -47,6 +47,7 @@ class CurrencyFormatter implements FormatterInterface {
 				'currency_thousand_separator' => wc_get_price_thousand_separator(),
 				'currency_prefix'             => $prefix,
 				'currency_suffix'             => $suffix,
+				'explicit'                    => function_exists( 'wc_supports_explicit_format' ) ? wc_supports_explicit_format() : false,
 			]
 		);
 	}
