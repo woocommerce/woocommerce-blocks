@@ -20,7 +20,6 @@ import {
 } from '@wordpress/block-editor';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
-import type { ReactElement } from 'react';
 
 /**
  * Internal dependencies
@@ -53,7 +52,7 @@ const TitleEdit = ( {
 	setColor,
 	attributes,
 	setAttributes,
-}: Props ): ReactElement => {
+}: Props ): JSX.Element => {
 	const { headingLevel, showProductLink, align } = attributes;
 	return (
 		<>
@@ -136,7 +135,7 @@ const TitleEdit = ( {
 	);
 };
 
-const Title: ReactElement = isFeaturePluginBuild()
+const Title = isFeaturePluginBuild()
 	? compose( [
 			withFontSizes( 'fontSize' ),
 			withColors( 'color', { textColor: 'color' } ),
