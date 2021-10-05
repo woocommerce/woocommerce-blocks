@@ -9,6 +9,16 @@ import classnames from 'classnames';
  */
 import './style.scss';
 
+interface ProductNameProps {
+	className?: string;
+	disabled?: boolean;
+	name: string;
+	permalink?: string;
+	rel?: string | null;
+	style?: Record< string, unknown >;
+	onClick?: () => void;
+}
+
 /**
  * Render the Product name.
  *
@@ -19,13 +29,11 @@ export default ( {
 	disabled = false,
 	name,
 	permalink = '',
+	rel,
+	style,
+	onClick,
 	...props
-}: {
-	className?: string;
-	disabled?: boolean;
-	name: string;
-	permalink?: string;
-} ): JSX.Element => {
+}: ProductNameProps ): JSX.Element => {
 	const classes = classnames( 'wc-block-components-product-name', className );
 	return disabled ? (
 		<span
