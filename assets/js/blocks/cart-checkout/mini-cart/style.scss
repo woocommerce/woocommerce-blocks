@@ -1,3 +1,48 @@
+.wc-block-mini-cart__button {
+	background: transparent;
+	padding-left: 0;
+	padding-right: 0;
+	font-weight: 400;
+	width: 100%;
+	display: flex;
+	align-items: baseline;
+
+	&:hover {
+		background: transparent;
+		opacity: 0.6;
+	}
+
+	.amount {
+		margin-right: $gap-smaller;
+		display: none;
+	}
+
+	.count {
+		opacity: 0.5;
+		font-size: 0.875em;
+		display: none;
+	}
+
+	.quantity-badge {
+		margin-left: auto;
+	}
+
+	@media screen and (min-width: 768px) {
+		.count,
+		.amount {
+			display: initial;
+		}
+
+		.quantity-badge {
+			margin-right: 0;
+
+			.badge {
+				display: none;
+			}
+		}
+	}
+}
+
 .modal-open .wc-block-mini-cart__button {
 	pointer-events: none;
 }

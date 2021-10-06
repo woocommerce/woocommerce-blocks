@@ -19,6 +19,7 @@ import { getSetting } from '@woocommerce/settings';
  * Internal dependencies
  */
 import CartLineItemsTable from '../cart/full-cart/cart-line-items-table';
+import QuantityBadge from './quantity-badge';
 import './style.scss';
 
 interface MiniCartBlockProps {
@@ -128,16 +129,25 @@ const MiniCartBlock = ( {
 				} }
 				aria-label={ ariaLabel }
 			>
-				{ sprintf(
-					/* translators: %d is the count of items in the cart. */
-					_n(
-						'%d item',
-						'%d items',
-						cartItemsCount,
-						'woo-gutenberg-products-block'
-					),
-					cartItemsCount
-				) }
+				<span className="amount">
+					{ formatPrice(
+						subTotal,
+						getCurrencyFromPriceResponse( cartTotals )
+					) }
+				</span>
+				<span className="count">
+					{ sprintf(
+						/* translators: %d is the count of items in the cart. */
+						_n(
+							'%d item',
+							'%d items',
+							cartItemsCount,
+							'woo-gutenberg-products-block'
+						),
+						cartItemsCount
+					) }
+				</span>
+				<QuantityBadge count={ cartItems.length } />
 			</button>
 			<Drawer
 				className={ classNames(
