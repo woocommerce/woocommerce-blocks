@@ -11,7 +11,7 @@ import Block from './block';
 import withProductSelector from '../shared/with-product-selector';
 import { BLOCK_TITLE, BLOCK_ICON } from './constants';
 
-const Edit = ( { attributes } ) => {
+const Edit = ( { attributes }: Record< string, unknown > ): JSX.Element => {
 	return (
 		<>
 			<EditProductLink />

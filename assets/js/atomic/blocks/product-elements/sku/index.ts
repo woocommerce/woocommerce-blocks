@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { BlockConfiguration } from '@wordpress/blocks';
 import { registerExperimentalBlockType } from '@woocommerce/block-settings';
 
 /**
@@ -15,7 +16,8 @@ import {
 	BLOCK_DESCRIPTION as description,
 } from './constants';
 
-const blockConfig = {
+const blockConfig: BlockConfiguration = {
+	...sharedConfig,
 	title,
 	description,
 	icon: {
@@ -26,7 +28,4 @@ const blockConfig = {
 	edit,
 };
 
-registerExperimentalBlockType( 'woocommerce/product-sku', {
-	...sharedConfig,
-	...blockConfig,
-} );
+registerExperimentalBlockType( 'woocommerce/product-sku', blockConfig );
