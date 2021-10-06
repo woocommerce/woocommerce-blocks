@@ -1,3 +1,3 @@
-export interface Attributes extends HTMLElement {
+export interface Attributes {
 	productId: number;
 }
