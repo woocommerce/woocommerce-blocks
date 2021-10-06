@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { Icon, grid } from '@woocommerce/icons';
 import { isExperimentalBuild } from '@woocommerce/block-settings';
-import { BlockConfiguration } from '@wordpress/blocks';
+import type { BlockConfiguration } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
