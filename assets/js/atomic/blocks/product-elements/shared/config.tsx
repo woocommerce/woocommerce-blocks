@@ -27,7 +27,14 @@ const sharedConfig: Omit< BlockConfiguration, 'attributes' | 'title' > = {
 		? undefined
 		: [ '@woocommerce/all-products', '@woocommerce/single-product' ],
 	save,
-	deprecated: [],
+	deprecated: [
+		{
+			attributes: {},
+			save(): null {
+				return null;
+			},
+		},
+	],
 };
 
 export default sharedConfig;
