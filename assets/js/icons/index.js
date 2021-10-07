@@ -12,6 +12,7 @@ export { default as bookmark } from './library/bookmark';
 export { default as box } from './library/box';
 export { default as card } from './library/card';
 export { default as cart } from './library/cart';
+export { default as cartAlt } from './library/cart-alt';
 export { default as checkPayment } from './library/check-payment';
 export { default as chevronDown } from './library/chevron-down';
 export { default as chevronUp } from './library/chevron-up';

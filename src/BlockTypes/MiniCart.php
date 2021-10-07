@@ -235,7 +235,7 @@ class MiniCart extends AbstractBlock {
 			),
 			$cart_contents_count
 		);
-		$icon        = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+		$icon        = '<svg class="wc-block-mini-cart__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<g clip-path="url(#clip0)">
 				<path d="M7.50008 18.3332C7.96032 18.3332 8.33341 17.9601 8.33341 17.4998C8.33341 17.0396 7.96032 16.6665 7.50008 16.6665C7.03984 16.6665 6.66675 17.0396 6.66675 17.4998C6.66675 17.9601 7.03984 18.3332 7.50008 18.3332Z" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 				<path d="M16.6666 18.3332C17.1268 18.3332 17.4999 17.9601 17.4999 17.4998C17.4999 17.0396 17.1268 16.6665 16.6666 16.6665C16.2063 16.6665 15.8333 17.0396 15.8333 17.4998C15.8333 17.9601 16.2063 18.3332 16.6666 18.3332Z" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -247,10 +247,10 @@ class MiniCart extends AbstractBlock {
 				</clipPath>
 			</defs>
 		</svg>';
-		$button_html = '<span class="amount">' . wp_strip_all_tags( wc_price( $cart_contents_total ) ) . '</span>
-		<span class="count">' . $button_text . '</span>
-		<span class="quantity-badge">
-			<span class="badge">' . $cart_contents_count . '</span>
+		$button_html = '<span class="wc-block-mini-cart__amount">' . wp_strip_all_tags( wc_price( $cart_contents_total ) ) . '</span>
+		<span class="wc-block-mini-cart__count">' . $button_text . '</span>
+		<span class="wc-block-mini-cart__quantity-badge">
+			<span class="wc-block-mini-cart__badge">' . $cart_contents_count . '</span>
 			' . $icon . '
 		</span>';
 

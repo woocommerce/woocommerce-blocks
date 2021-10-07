@@ -129,13 +129,13 @@ const MiniCartBlock = ( {
 				} }
 				aria-label={ ariaLabel }
 			>
-				<span className="amount">
+				<span className="wc-block-mini-cart__amount">
 					{ formatPrice(
 						subTotal,
 						getCurrencyFromPriceResponse( cartTotals )
 					) }
 				</span>
-				<span className="count">
+				<span className="wc-block-mini-cart__count">
 					{ sprintf(
 						/* translators: %d is the count of items in the cart. */
 						_n(
