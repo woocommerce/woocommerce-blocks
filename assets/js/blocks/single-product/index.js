@@ -21,7 +21,7 @@ const settings = {
 	title: BLOCK_TITLE,
 	icon: {
 		src: BLOCK_ICON,
-		foreground: '#96588a',
+		foreground: '#7F54B3',
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],

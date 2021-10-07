@@ -15,7 +15,7 @@ registerBlockType( 'woocommerce/stock-filter', {
 	title: __( 'Filter Products by Stock', 'woo-gutenberg-products-block' ),
 	icon: {
 		src: <Icon srcElement={ server } />,
-		foreground: '#96588a',
+		foreground: '#7F54B3',
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
