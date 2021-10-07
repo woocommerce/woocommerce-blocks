@@ -101,7 +101,7 @@
 		"@types/jest": "26.0.24",
 		"@types/jquery": "3.5.6",
 		"@types/lodash": "4.14.175",
-		"@types/react": "16.14.15",
+		"@types/react": "16.14.16",
 		"@types/wordpress__block-editor": "2.2.9",
 		"@types/wordpress__data": "4.6.10",
 		"@types/wordpress__data-controls": "1.0.5",
@@ -130,7 +130,7 @@
 		"@wordpress/i18n": "4.2.1",
 		"@wordpress/is-shallow-equal": "4.2.0",
 		"@wordpress/scripts": "13.0.1",
-		"autoprefixer": "10.3.6",
+		"autoprefixer": "10.3.7",
 		"axios": "0.21.4",
 		"babel-plugin-transform-async-generator-functions": "6.24.1",
 		"babel-plugin-transform-object-rest-spread": "6.26.0",
@@ -182,8 +182,8 @@
 		"zenhub-api": "0.2.0"
 	},
 	"engines": {
-		"node": "12.22.6",
-		"npm": "6.14.14"
+		"node": ">=12.0.0",
+		"npm": ">=6.14.0 <7"
 	},
 	"dependencies": {
 		"@stripe/react-stripe-js": "1.4.1",
