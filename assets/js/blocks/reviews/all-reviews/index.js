@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { createBlock, registerBlockType } from '@wordpress/blocks';
-import { Icon, toggle } from '@woocommerce/icons';
+import { Icon, discussion } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
@@ -22,7 +22,7 @@ registerBlockType( 'woocommerce/all-reviews', {
 	apiVersion: 2,
 	title: __( 'All Reviews', 'woo-gutenberg-products-block' ),
 	icon: {
-		src: <Icon srcElement={ toggle } />,
+		src: <Icon srcElement={ discussion } />,
 		foreground: '#7F54B3',
 	},
 	category: 'woocommerce',
