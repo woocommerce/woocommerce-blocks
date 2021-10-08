@@ -37,6 +37,10 @@ registerBlockType( 'woocommerce/product-best-sellers', {
 	},
 	attributes: {
 		...sharedAttributes,
+		daysLimit: {
+			type: 'number',
+			default: 0,
+		},
 	},
 
 	transforms: {

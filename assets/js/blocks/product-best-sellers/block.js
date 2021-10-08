@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Component } from '@wordpress/element';
-import { Disabled, PanelBody } from '@wordpress/components';
+import { Disabled, PanelBody, RangeControl } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 import PropTypes from 'prop-types';
@@ -24,6 +24,7 @@ class ProductBestSellersBlock extends Component {
 			catOperator,
 			columns,
 			contentVisibility,
+			daysLimit,
 			rows,
 			alignButtons,
 		} = attributes;
@@ -53,6 +54,27 @@ class ProductBestSellersBlock extends Component {
 						settings={ contentVisibility }
 						onChange={ ( value ) =>
 							setAttributes( { contentVisibility: value } )
+						}
+					/>
+				</PanelBody>
+				<PanelBody
+					title={ __( 'Timerange', 'woo-gutenberg-products-block' ) }
+					initialOpen
+				>
+					<RangeControl
+						label={ __(
+							'How many past days to include for calculations:',
+							'woo-gutenberg-products-block'
+						) }
+						help={ __(
+							'Use 0 as value to set no time limit',
+							'woo-gutenberg-products-block'
+						) }
+						min={ 0 }
+						max={ 365 }
+						value={ daysLimit || 0 }
+						onChange={ ( value ) =>
+							setAttributes( { daysLimit: value } )
 						}
 					/>
 				</PanelBody>
