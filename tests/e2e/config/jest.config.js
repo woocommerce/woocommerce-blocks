@@ -15,7 +15,7 @@ module.exports = {
 		'default',
 		[
 			'jest-html-reporters',
-			{ publicPath: '<rootDir>/reports/e2e', filename: 'index.html' },
+			{ publicPath: './reports/e2e', filename: 'index.html' },
 		],
 	],
 
