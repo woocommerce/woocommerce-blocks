@@ -18,7 +18,7 @@ registerBlockType( 'woocommerce/product-best-sellers', {
 	title: __( 'Best Selling Products', 'woo-gutenberg-products-block' ),
 	icon: {
 		src: <Icon srcElement={ stonks } />,
-		foreground: '#7F54B3',
+		foreground: '#7f54b3',
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
