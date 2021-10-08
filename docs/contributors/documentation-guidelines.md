@@ -60,7 +60,7 @@ Correct H1-H6 headings must be used. Each document can only have one H1 heading.
 
 ## Use semantically correct markup
 
-The markup must be used semantically correct, e.g. a list items must be formatted as list.
+The markup used must be semantically correct, e.g. list markup must only be used to display a list.
 
 ## Use correct spelling
 
