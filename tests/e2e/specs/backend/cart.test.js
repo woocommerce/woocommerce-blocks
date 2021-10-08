@@ -70,7 +70,7 @@ describe( `${ block.name } Block`, () => {
 
 		it( 'can only be inserted once', async () => {
 			await insertBlockDontWaitForInsertClose( block.name );
-			expect( await getAllBlocks() ).toHaveLength( 2 );
+			expect( await getAllBlocks() ).toHaveLength( 3 );
 		} );
 
 		it( 'renders without crashing', async () => {
