@@ -51,7 +51,7 @@ The filename of the document must match the title.
 
 ## Use correct heading hierarchy
 
-Correct H1-H6 headings must be used. Each document can only have one H1 heading. An H3 heading can only be used within an H2 heading, an H4 heading can only be used within an H3 heading, etc. Headings must not use articles.
+Correct H1-H6 headings must be used. Each document can only have one H1 heading. An H3 heading can only be used within an H2 heading, an H4 heading can only be used within an H3 heading, etc. If possible, avoid using articles in headings.
 
 **Example**
 
