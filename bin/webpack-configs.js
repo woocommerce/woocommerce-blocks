@@ -182,7 +182,7 @@ const getMainConfig = ( options = {} ) => {
 			// `But better use the hash in filename and use no query parameter.`
 			// The reason probably is because it's not the best way to do cache busting.
 			// More information: https://github.com/webpack/webpack/issues/2329
-			chunkFilename: `[name].chunk.js?ver=[contenthash]`,
+			chunkFilename: `[name]${ fileSuffix }.chunk.js?ver=[contenthash]`,
 		},
 		module: {
 			rules: [
@@ -294,7 +294,7 @@ const getFrontConfig = ( options = {} ) => {
 			// `But better use the hash in filename and use no query parameter.`
 			// The reason probably is because it's not the best way to do cache busting.
 			// More information: https://github.com/webpack/webpack/issues/2329
-			chunkFilename: `[name]-frontend.chunk.js?ver=[contenthash]`,
+			chunkFilename: `[name]-frontend${ fileSuffix }.chunk.js?ver=[contenthash]`,
 		},
 		module: {
 			rules: [
