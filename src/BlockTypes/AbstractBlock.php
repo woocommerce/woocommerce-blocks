@@ -155,15 +155,14 @@ abstract class AbstractBlock {
 	/**
 	 * Injects Chunk Translations into the page so translations work for lazy loaded components.
 	 *
-	 * The chunk names are defined when creating lazy loaded components using webpackChunkName. The '.chunk'
-	 * suffix comes from our webpack-config where chunkFilename is defined.
+	 * The chunk names are defined when creating lazy loaded components using webpackChunkName.
 	 *
 	 * @param string[] $chunks Array of chunk names.
 	 */
 	protected function register_chunk_translations( $chunks ) {
 		foreach ( $chunks as $chunk ) {
 			$handle = 'wc-blocks-' . $chunk . '-chunk';
-			$this->asset_api->register_script( $handle, $this->asset_api->get_block_asset_build_path( $chunk . '.chunk' ), [], true );
+			$this->asset_api->register_script( $handle, $this->asset_api->get_block_asset_build_path( $chunk ), [], true );
 			wp_add_inline_script(
 				$this->get_block_type_script( 'handle' ),
 				wp_scripts()->print_translations( $handle, false ),
