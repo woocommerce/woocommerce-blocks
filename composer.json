@@ -39,6 +39,11 @@
 			"phpcbf -p"
 		]
 	},
+	"config": {
+		"platform": {
+			"php": "7.4.24"
+		}
+	},
 	"extra": {
 		"scripts-description": {
 			"phpcs": "Analyze code against the WordPress coding standards with PHP_CodeSniffer",
