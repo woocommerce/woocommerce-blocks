@@ -87,10 +87,6 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 = 6.1.0 - 2021-10-12 =
 
-#### Enhancements
-
-- AttributePicker: Set default values if they exist. ([4815](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4815))
-
 #### Bug Fixes
 
 - Fix the dropdown list in Product Category List Block for nested categories ([4920](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4920))
