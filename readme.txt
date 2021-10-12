@@ -85,6 +85,19 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 6.1.0 - 2021-10-12 =
+
+#### Enhancements
+
+- AttributePicker: Set default values if they exist. ([4815](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4815))
+
+#### Bug Fixes
+
+- Fixed string translations within the All Products Block. ([4897](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4897))
+- Filter By Price: Update aria values to be more representative of the actual values presented. ([4839](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4839))
+- Fixed: Filter button from Filter Products by Attribute block is not aligned with the input field. ([4814](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4814))
+- Remove IntersectionObserver shim in favor of dropping IE11 support. ([4808](https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/4808))
+
 = 6.0.0 - 2021-09-28 =
 
 #### Enhancements
