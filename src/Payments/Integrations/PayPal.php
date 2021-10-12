@@ -87,6 +87,8 @@ final class PayPal extends AbstractPaymentMethodType {
 		/**
 		 * Filter to control what features are available for each payment gateway.
 		 *
+		 * @example See docs/examples/payment-gateways-features-list.md
+		 *
 		 * @param array $features List of supported features.
 		 * @param string $name Gateway name.
 		 * @return array Updated list of supported features.

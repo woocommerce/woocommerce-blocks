@@ -50,6 +50,10 @@
                 "long_description": "",
                 "tags": [
                     {
+                        "name": "example",
+                        "content": "docs/examples/payment-gateways-features-list.md"
+                    },
+                    {
                         "name": "param",
                         "content": "List of supported features.",
                         "types": [
