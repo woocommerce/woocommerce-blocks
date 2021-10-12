@@ -431,7 +431,7 @@ class CartController {
 		remove_action( 'woocommerce_check_cart_items', array( $cart, 'check_cart_coupons' ), 1 );
 
 		/**
-		 * Hook: woocommerce_check_cart_items
+		 * Fires when cart items are being validated.
 		 *
 		 * Allow 3rd parties to validate cart items. This is a legacy hook from Woo core.
 		 * This filter will be deprecated because it encourages usage of wc_add_notice. For the API we need to capture
@@ -871,7 +871,7 @@ class CartController {
 			 * @param boolean $apply_with_individual_use_coupon Defaults to false.
 			 * @param \WC_Coupon $coupon Coupon object applied to the cart.
 			 * @param \WC_Coupon $individual_use_coupon Individual use coupon already applied to the cart.
-			 * @param array Array of applied coupons already applied to the cart.
+			 * @param array $applied_coupons Array of applied coupons already applied to the cart.
 			 * @return boolean
 			 */
 			if ( false === apply_filters( 'woocommerce_apply_with_individual_use_coupon', false, $coupon, $individual_use_coupon, $applied_coupons ) ) {
@@ -893,7 +893,7 @@ class CartController {
 			 *
 			 * @param array $coupons Array of coupons to remove from the cart.
 			 * @param \WC_Coupon $coupon Coupon object applied to the cart.
-			 * @param array Array of applied coupons already applied to the cart.
+			 * @param array $applied_coupons Array of applied coupons already applied to the cart.
 			 * @return array
 			 */
 			$coupons_to_remove = array_diff( $applied_coupons, apply_filters( 'woocommerce_apply_individual_use_coupon', array(), $coupon, $applied_coupons ) );

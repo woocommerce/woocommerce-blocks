@@ -9,7 +9,13 @@ const chalk = require( 'chalk' );
 /**
  * Internal dependencies
  */
-const { params, returns, example, related } = require( '../format-hook-doc' );
+const {
+	params,
+	exceptions,
+	returns,
+	example,
+	related,
+} = require( '../format-hook-doc' );
 const {
 	createDocs,
 	generateHookName,
@@ -23,6 +29,11 @@ const generate = ( hooks ) => {
 	console.log( chalk.blue( 'Generating Action Docs...' ) );
 
 	const jsonDocs = [
+		{ html: '<!-- DO NOT UPDATE THIS DOC DIRECTLY -->' },
+		{
+			html:
+				'<!-- Use `npm run build:docs` to automatically build hook documentation -->',
+		},
 		{ h1: 'Actions' },
 		{ h2: 'Table of Contents' },
 		...generateToc( hooks ),
@@ -38,6 +49,7 @@ const generate = ( hooks ) => {
 					'Description'
 				),
 				...sectionWithHeading( params( hookDocs ), 'Parameters' ),
+				...sectionWithHeading( exceptions( hookDocs ), 'Exceptions' ),
 				...sectionWithHeading( returns( hookDocs ), 'Returns' ),
 				...sectionWithHeading( example( hookDocs ), 'Example' ),
 				...sectionWithHeading( related( hookDocs ), 'Related' ),
@@ -47,7 +59,7 @@ const generate = ( hooks ) => {
 			].filter( Boolean );
 		} ),
 	];
-	createDocs( 'docs/actions.md', jsonDocs );
+	createDocs( 'docs/extensibility/actions.md', jsonDocs );
 	console.log( chalk.green( 'Done!' ) );
 };
 

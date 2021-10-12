@@ -32,8 +32,11 @@ const generateIntroduction = ( hook ) => {
 		return `${ formattedType } ${ formattedVariable }`;
 	} );
 
+	const hookParamPrefix = hookFunction.includes( 'ref_array' ) ? '[ ' : '';
+	const hookParamSuffix = hookFunction.includes( 'ref_array' ) ? ' ]' : '';
+
 	const formattedHookParams = hookParams.length
-		? ', ' + hookParams.join( ', ' )
+		? ', ' + hookParamPrefix + hookParams.join( ', ' ) + hookParamSuffix
 		: '';
 
 	return [

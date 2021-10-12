@@ -195,9 +195,10 @@ class AssetDataRegistry {
 		 *
 		 * Low level hook for registration of new data late in the cycle. This is deprecated.
 		 * Instead, use the data api:
-		 * Automattic\WooCommerce\Blocks\Package::container()
-		 *     ->get( Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry::class )
-		 *     ->add( $key, $value )
+		 *
+		 * ```php
+		 * Automattic\WooCommerce\Blocks\Package::container()->get( Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry::class )->add( $key, $value )
+		 * ```
 		 *
 		 * @deprecated
 		 * @param array $data Settings data.

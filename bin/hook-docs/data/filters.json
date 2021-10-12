@@ -172,9 +172,33 @@
             "file": "StoreApi/Utilities/CartController.php",
             "type": "filter",
             "doc": {
-                "description": "",
+                "description": "Filters the item being added to the cart.",
                 "long_description": "",
-                "tags": [],
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "Array of cart item data being added to the cart.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$cart_item_data"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Id of the item in the cart.",
+                        "types": [
+                            "string"
+                        ],
+                        "variable": "$cart_id"
+                    },
+                    {
+                        "name": "return",
+                        "content": "Updated cart item data.",
+                        "types": [
+                            "array"
+                        ]
+                    }
+                ],
                 "long_description_html": ""
             }
         },
@@ -183,9 +207,49 @@
             "file": "StoreApi/Utilities/CartController.php",
             "type": "filter",
             "doc": {
-                "description": "",
+                "description": "Filter cart item data for add to cart requests.",
                 "long_description": "",
-                "tags": [],
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "Array of other cart item data.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$cart_item_data"
+                    },
+                    {
+                        "name": "param",
+                        "content": "ID of the product added to the cart.",
+                        "types": [
+                            "integer"
+                        ],
+                        "variable": "$product_id"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Variation ID of the product added to the cart.",
+                        "types": [
+                            "integer"
+                        ],
+                        "variable": "$variation_id"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Quantity of the item added to the cart.",
+                        "types": [
+                            "integer"
+                        ],
+                        "variable": "$quantity"
+                    },
+                    {
+                        "name": "return",
+                        "content": "",
+                        "types": [
+                            "array"
+                        ]
+                    }
+                ],
                 "long_description_html": ""
             }
         },
@@ -194,9 +258,57 @@
             "file": "StoreApi/Utilities/CartController.php",
             "type": "filter",
             "doc": {
-                "description": "",
+                "description": "Filter sold individually quantity for add to cart requests.",
                 "long_description": "",
-                "tags": [],
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "Defaults to 1.",
+                        "types": [
+                            "integer"
+                        ],
+                        "variable": "$sold_individually_quantity"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Quantity of the item added to the cart.",
+                        "types": [
+                            "integer"
+                        ],
+                        "variable": "$quantity"
+                    },
+                    {
+                        "name": "param",
+                        "content": "ID of the product added to the cart.",
+                        "types": [
+                            "integer"
+                        ],
+                        "variable": "$product_id"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Variation ID of the product added to the cart.",
+                        "types": [
+                            "integer"
+                        ],
+                        "variable": "$variation_id"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Array of other cart item data.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$cart_item_data"
+                    },
+                    {
+                        "name": "return",
+                        "content": "",
+                        "types": [
+                            "integer"
+                        ]
+                    }
+                ],
                 "long_description_html": ""
             }
         },
@@ -205,9 +317,61 @@
             "file": "StoreApi/Utilities/CartController.php",
             "type": "filter",
             "doc": {
-                "description": "Hook: woocommerce_add_to_cart_validation (legacy).",
+                "description": "Filters if an item being added to the cart passed validation checks.",
                 "long_description": "Allow 3rd parties to validate if an item can be added to the cart. This is a legacy hook from Woo core. This filter will be deprecated because it encourages usage of wc_add_notice. For the API we need to capture notices and convert to exceptions instead.",
-                "tags": [],
+                "tags": [
+                    {
+                        "name": "deprecated",
+                        "content": ""
+                    },
+                    {
+                        "name": "param",
+                        "content": "True if the item passed validation.",
+                        "types": [
+                            "boolean"
+                        ],
+                        "variable": "$passed_validation"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Product ID being validated.",
+                        "types": [
+                            "integer"
+                        ],
+                        "variable": "$product_id"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Quantity added to the cart.",
+                        "types": [
+                            "integer"
+                        ],
+                        "variable": "$quantity"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Variation ID being added to the cart.",
+                        "types": [
+                            "integer"
+                        ],
+                        "variable": "$variation_id"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Variation data.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$variation"
+                    },
+                    {
+                        "name": "return",
+                        "content": "",
+                        "types": [
+                            "boolean"
+                        ]
+                    }
+                ],
                 "long_description_html": "<p>Allow 3rd parties to validate if an item can be added to the cart. This is a legacy hook from Woo core. This filter will be deprecated because it encourages usage of wc_add_notice. For the API we need to capture notices and convert to exceptions instead.</p>"
             }
         },
@@ -216,10 +380,26 @@
             "file": "StoreApi/Utilities/ProductQuery.php",
             "type": "filter",
             "doc": {
-                "description": "",
-                "long_description": "",
-                "tags": [],
-                "long_description_html": ""
+                "description": "Filters if taxes should be removed from locations outside the store base location.",
+                "long_description": "The woocommerce_adjust_non_base_location_prices filter can stop base taxes being taken off when dealing with out of base locations. e.g. If a product costs 10 including tax, all users will pay 10 regardless of location and taxes.",
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "True by default.",
+                        "types": [
+                            "boolean"
+                        ],
+                        "variable": "$adjust_non_base_location_prices"
+                    },
+                    {
+                        "name": "return",
+                        "content": "",
+                        "types": [
+                            "boolean"
+                        ]
+                    }
+                ],
+                "long_description_html": "<p>The woocommerce_adjust_non_base_location_prices filter can stop base taxes being taken off when dealing with out of base locations. e.g. If a product costs 10 including tax, all users will pay 10 regardless of location and taxes.</p>"
             }
         },
         {
@@ -227,9 +407,41 @@
             "file": "StoreApi/Utilities/CartController.php",
             "type": "filter",
             "doc": {
-                "description": "",
+                "description": "Filter coupons to remove when applying an individual use coupon.",
                 "long_description": "",
-                "tags": [],
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "Array of coupons to remove from the cart.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$coupons"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Coupon object applied to the cart.",
+                        "types": [
+                            "\\WC_Coupon"
+                        ],
+                        "variable": "$coupon"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Array of applied coupons already applied to the cart.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$applied_coupons"
+                    },
+                    {
+                        "name": "return",
+                        "content": "",
+                        "types": [
+                            "array"
+                        ]
+                    }
+                ],
                 "long_description_html": ""
             }
         },
@@ -238,9 +450,49 @@
             "file": "StoreApi/Utilities/CartController.php",
             "type": "filter",
             "doc": {
-                "description": "",
+                "description": "Filters if a coupon can be applied alongside other individual use coupons.",
                 "long_description": "",
-                "tags": [],
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "Defaults to false.",
+                        "types": [
+                            "boolean"
+                        ],
+                        "variable": "$apply_with_individual_use_coupon"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Coupon object applied to the cart.",
+                        "types": [
+                            "\\WC_Coupon"
+                        ],
+                        "variable": "$coupon"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Individual use coupon already applied to the cart.",
+                        "types": [
+                            "\\WC_Coupon"
+                        ],
+                        "variable": "$individual_use_coupon"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Array of applied coupons already applied to the cart.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$applied_coupons"
+                    },
+                    {
+                        "name": "return",
+                        "content": "",
+                        "types": [
+                            "boolean"
+                        ]
+                    }
+                ],
                 "long_description_html": ""
             }
         },
@@ -362,9 +614,25 @@
             "file": "StoreApi/Utilities/CartController.php",
             "type": "filter",
             "doc": {
-                "description": "",
+                "description": "Filters the entire cart contents when the cart changes.",
                 "long_description": "",
-                "tags": [],
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "Array of all cart items.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$cart_contents"
+                    },
+                    {
+                        "name": "return",
+                        "content": "Updated array of all cart items.",
+                        "types": [
+                            "array"
+                        ]
+                    }
+                ],
                 "long_description_html": ""
             }
         },
@@ -393,10 +661,34 @@
             "file": "StoreApi/Schemas/CartItemSchema.php",
             "type": "filter",
             "doc": {
-                "description": "",
-                "long_description": "",
-                "tags": [],
-                "long_description_html": ""
+                "description": "Filters cart item data.",
+                "long_description": "Filters the variation option name for custom option slugs.",
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "Cart item data. Empty by default.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$item_data"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Cart item array.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$cart_item"
+                    },
+                    {
+                        "name": "return",
+                        "content": "",
+                        "types": [
+                            "array"
+                        ]
+                    }
+                ],
+                "long_description_html": "<p>Filters the variation option name for custom option slugs.</p>"
             }
         },
         {
@@ -475,7 +767,7 @@
             "type": "filter",
             "doc": {
                 "description": "Filters the array of shared settings.",
-                "long_description": "Low level hook for registration of new data late in the cycle. This is deprecated. Instead, use the data api: Automattic\\WooCommerce\\Blocks\\Package::container()     ->get( Automattic\\WooCommerce\\Blocks\\Assets\\AssetDataRegistry::class )     ->add( $key, $value )",
+                "long_description": "Low level hook for registration of new data late in the cycle. This is deprecated. Instead, use the data api:\n ```php Automattic\\WooCommerce\\Blocks\\Package::container()->get( Automattic\\WooCommerce\\Blocks\\Assets\\AssetDataRegistry::class )->add( $key, $value ) ```",
                 "tags": [
                     {
                         "name": "deprecated",
@@ -497,7 +789,7 @@
                         ]
                     }
                 ],
-                "long_description_html": "<p>Low level hook for registration of new data late in the cycle. This is deprecated. Instead, use the data api: Automattic\\WooCommerce\\Blocks\\Package::container() -&gt;get( Automattic\\WooCommerce\\Blocks\\Assets\\AssetDataRegistry::class ) -&gt;add( $key, $value )</p>"
+                "long_description_html": "<p>Low level hook for registration of new data late in the cycle. This is deprecated. Instead, use the data api:</p> <pre><code class=\"language-php\">Automattic\\WooCommerce\\Blocks\\Package::container()-&gt;get( Automattic\\WooCommerce\\Blocks\\Assets\\AssetDataRegistry::class )-&gt;add( $key, $value )</code></pre>"
             }
         },
         {
@@ -505,9 +797,41 @@
             "file": "StoreApi/Utilities/CartController.php",
             "type": "filter",
             "doc": {
-                "description": "",
+                "description": "Filters the shipping package name.",
                 "long_description": "",
-                "tags": [],
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "Shipping package name.",
+                        "types": [
+                            "string"
+                        ],
+                        "variable": "$shipping_package_name"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Shipping package ID.",
+                        "types": [
+                            "string"
+                        ],
+                        "variable": "$package_id"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Shipping package from WooCommerce.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$package"
+                    },
+                    {
+                        "name": "return",
+                        "content": "Shipping package name.",
+                        "types": [
+                            "string"
+                        ]
+                    }
+                ],
                 "long_description_html": ""
             }
         },
@@ -543,10 +867,34 @@
             "file": "StoreApi/Schemas/ProductSchema.php",
             "type": "filter",
             "doc": {
-                "description": "",
-                "long_description": "",
-                "tags": [],
-                "long_description_html": ""
+                "description": "Filters the quantity limit for a product being added to the cart via the Store API.",
+                "long_description": "Filters the variation option name for custom option slugs.",
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "Quantity limit which defaults to 99 unless sold individually.",
+                        "types": [
+                            "integer"
+                        ],
+                        "variable": "$quantity_limit"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Product instance.",
+                        "types": [
+                            "\\WC_Product"
+                        ],
+                        "variable": "$product"
+                    },
+                    {
+                        "name": "return",
+                        "content": "",
+                        "types": [
+                            "integer"
+                        ]
+                    }
+                ],
+                "long_description_html": "<p>Filters the variation option name for custom option slugs.</p>"
             }
         },
         {
@@ -554,10 +902,50 @@
             "file": "StoreApi/Schemas/CartItemSchema.php",
             "type": "filter",
             "doc": {
-                "description": "",
-                "long_description": "",
-                "tags": [],
-                "long_description_html": ""
+                "description": "Filters the variation option name.",
+                "long_description": "Filters the variation option name for custom option slugs.",
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "The name to display.",
+                        "types": [
+                            "string"
+                        ],
+                        "variable": "$value"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Unused because this is not a variation taxonomy.",
+                        "types": [
+                            "null"
+                        ],
+                        "variable": "$unused"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Taxonomy or product attribute name.",
+                        "types": [
+                            "string"
+                        ],
+                        "variable": "$taxonomy"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Product data.",
+                        "types": [
+                            "\\WC_Product"
+                        ],
+                        "variable": "$product"
+                    },
+                    {
+                        "name": "return",
+                        "content": "",
+                        "types": [
+                            "string"
+                        ]
+                    }
+                ],
+                "long_description_html": "<p>Filters the variation option name for custom option slugs.</p>"
             }
         }
     ]

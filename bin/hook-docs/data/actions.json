@@ -321,7 +321,7 @@
             "file": "StoreApi/Utilities/CartController.php",
             "type": "action",
             "doc": {
-                "description": "Hook: woocommerce_check_cart_items",
+                "description": "Fires when cart items are being validated.",
                 "long_description": "Allow 3rd parties to validate cart items. This is a legacy hook from Woo core. This filter will be deprecated because it encourages usage of wc_add_notice. For the API we need to capture notices and convert to exceptions instead.",
                 "tags": [],
                 "long_description_html": "<p>Allow 3rd parties to validate cart items. This is a legacy hook from Woo core. This filter will be deprecated because it encourages usage of wc_add_notice. For the API we need to capture notices and convert to exceptions instead.</p>"
