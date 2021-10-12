@@ -82,7 +82,6 @@
 		"@babel/polyfill": "7.12.1",
 		"@babel/preset-env": "7.14.9",
 		"@babel/preset-typescript": "7.14.5",
-		"@johnbillion/wp-hooks": "^0.6.1",
 		"@octokit/graphql": "4.6.4",
 		"@storybook/addon-a11y": "6.3.10",
 		"@storybook/addon-actions": "6.3.10",
