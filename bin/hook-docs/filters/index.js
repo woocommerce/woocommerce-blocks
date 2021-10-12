@@ -15,6 +15,7 @@ const {
 	generateHookName,
 	generateIntroduction,
 	sectionWithHeading,
+	contentWithHeading,
 	generateToc,
 } = require( '../utilities' );
 
@@ -32,8 +33,8 @@ const generate = ( hooks ) => {
 			return [
 				...generateHookName( hook ),
 				...generateIntroduction( hook ),
-				...sectionWithHeading(
-					{ html: `${ hook.doc.long_description_html }` },
+				...contentWithHeading(
+					hook.doc.long_description_html,
 					'Description'
 				),
 				...sectionWithHeading( params( hookDocs ), 'Parameters' ),

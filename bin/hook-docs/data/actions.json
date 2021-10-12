@@ -6,7 +6,7 @@
             "file": "StoreApi/Routes/Checkout.php",
             "type": "action",
             "doc": {
-                "description": "WooCommerce Blocks Checkout Order Processed (experimental).",
+                "description": "Fires before an order is processed by the Checkout Block/Store API.",
                 "long_description": "This hook informs extensions that $order has completed processing and is ready for payment.\n This is similar to existing core hook woocommerce_checkout_order_processed. We're using a new action: - To keep the interface focused (only pass $order, not passing request data). - This also explicitly indicates these orders are from checkout block/StoreAPI.",
                 "tags": [
                     {
@@ -39,7 +39,7 @@
             "file": "StoreApi/Routes/Checkout.php",
             "type": "action",
             "doc": {
-                "description": "WooCommerce Blocks Checkout Update Order From Request (experimental).",
+                "description": "Fires when the Checkout Block/Store API updates an order's from the API request data.",
                 "long_description": "This hook gives extensions the chance to update orders based on the data in the request. This can be used in conjunction with the ExtendRestAPI class to post custom data and then process it.",
                 "tags": [
                     {
@@ -71,7 +71,7 @@
             "file": "StoreApi/Routes/Checkout.php",
             "type": "action",
             "doc": {
-                "description": "WooCommerce Blocks Checkout Update Order Meta (experimental).",
+                "description": "Fires when the Checkout Block/Store API updates an order's meta data.",
                 "long_description": "This hook gives extensions the chance to add or update meta data on the $order.\n This is similar to existing core hook woocommerce_checkout_update_order_meta. We're using a new action: - To keep the interface focused (only pass $order, not passing request data). - This also explicitly indicates these orders are from checkout block/StoreAPI.",
                 "tags": [
                     {
@@ -100,10 +100,59 @@
             "file": "StoreApi/Utilities/CartController.php",
             "type": "action",
             "doc": {
-                "description": "",
-                "long_description": "",
-                "tags": [],
-                "long_description_html": ""
+                "description": "Fires when an item is added to the cart.",
+                "long_description": "This hook fires when an item is added to the cart. This is triggered from the Store API in this context, but WooCommerce core add to cart events trigger the same hook.",
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "ID of the item in the cart.",
+                        "types": [
+                            "string"
+                        ],
+                        "variable": "$cart_id"
+                    },
+                    {
+                        "name": "param",
+                        "content": "ID of the product added to the cart.",
+                        "types": [
+                            "integer"
+                        ],
+                        "variable": "$product_id"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Quantity of the item added to the cart.",
+                        "types": [
+                            "integer"
+                        ],
+                        "variable": "$quantity"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Variation ID of the product added to the cart.",
+                        "types": [
+                            "integer"
+                        ],
+                        "variable": "$variation_id"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Array of variation data.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$variation"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Array of other cart item data.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$cart_item_data"
+                    }
+                ],
+                "long_description_html": "<p>This hook fires when an item is added to the cart. This is triggered from the Store API in this context, but WooCommerce core add to cart events trigger the same hook.</p>"
             }
         },
         {
@@ -111,9 +160,18 @@
             "file": "StoreApi/Utilities/CartController.php",
             "type": "action",
             "doc": {
-                "description": "",
+                "description": "Fires after a coupon has been applied to the cart.",
                 "long_description": "",
-                "tags": [],
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "The coupon code that was applied.",
+                        "types": [
+                            "string"
+                        ],
+                        "variable": "$coupon_code"
+                    }
+                ],
                 "long_description_html": ""
             }
         },
@@ -122,7 +180,7 @@
             "file": "BlockTypes/MiniCart.php",
             "type": "action",
             "doc": {
-                "description": "",
+                "description": "Fires after cart block data is registered.",
                 "long_description": "",
                 "tags": [],
                 "long_description_html": ""
@@ -133,7 +191,7 @@
             "file": "BlockTypes/Cart.php",
             "type": "action",
             "doc": {
-                "description": "",
+                "description": "Fires after cart block data is registered.",
                 "long_description": "",
                 "tags": [],
                 "long_description_html": ""
@@ -144,7 +202,7 @@
             "file": "BlockTypes/CartI2.php",
             "type": "action",
             "doc": {
-                "description": "",
+                "description": "Fires after cart block data is registered.",
                 "long_description": "",
                 "tags": [],
                 "long_description_html": ""
@@ -155,7 +213,7 @@
             "file": "BlockTypes/Checkout.php",
             "type": "action",
             "doc": {
-                "description": "",
+                "description": "Fires after checkout block data is registered.",
                 "long_description": "",
                 "tags": [],
                 "long_description_html": ""
@@ -166,7 +224,7 @@
             "file": "BlockTypes/Cart.php",
             "type": "action",
             "doc": {
-                "description": "",
+                "description": "Fires after cart block scripts are enqueued.",
                 "long_description": "",
                 "tags": [],
                 "long_description_html": ""
@@ -177,7 +235,7 @@
             "file": "BlockTypes/CartI2.php",
             "type": "action",
             "doc": {
-                "description": "",
+                "description": "Fires after cart block scripts are enqueued.",
                 "long_description": "",
                 "tags": [],
                 "long_description_html": ""
@@ -188,7 +246,7 @@
             "file": "BlockTypes/Cart.php",
             "type": "action",
             "doc": {
-                "description": "",
+                "description": "Fires before cart block scripts are enqueued.",
                 "long_description": "",
                 "tags": [],
                 "long_description_html": ""
@@ -199,7 +257,7 @@
             "file": "BlockTypes/CartI2.php",
             "type": "action",
             "doc": {
-                "description": "",
+                "description": "Fires before cart block scripts are enqueued.",
                 "long_description": "",
                 "tags": [],
                 "long_description_html": ""
@@ -210,7 +268,7 @@
             "file": "BlockTypes/Checkout.php",
             "type": "action",
             "doc": {
-                "description": "",
+                "description": "Fires after checkout block scripts are enqueued.",
                 "long_description": "",
                 "tags": [],
                 "long_description_html": ""
@@ -221,7 +279,7 @@
             "file": "BlockTypes/Checkout.php",
             "type": "action",
             "doc": {
-                "description": "",
+                "description": "Fires before checkout block scripts are enqueued.",
                 "long_description": "",
                 "tags": [],
                 "long_description_html": ""
@@ -232,10 +290,10 @@
             "file": "Domain/Bootstrap.php",
             "type": "action",
             "doc": {
-                "description": "Usable as a safe event hook for when the plugin has been loaded.",
-                "long_description": "",
+                "description": "Fires after WooCommerce Blocks plugin has loaded.",
+                "long_description": "This hook is intended to be used as a safe event hook for when the plugin has been loaded, and all dependency requirements have been met.",
                 "tags": [],
-                "long_description_html": ""
+                "long_description_html": "<p>This hook is intended to be used as a safe event hook for when the plugin has been loaded, and all dependency requirements have been met.</p>"
             }
         },
         {
@@ -243,7 +301,7 @@
             "file": "Integrations/IntegrationRegistry.php",
             "type": "action",
             "doc": {
-                "description": "Hook: integration_registration.",
+                "description": "Fires when and IntegrationRegistry is initialized.",
                 "long_description": "Runs before integrations are initialized allowing new integration to be registered for use. This should be used as the primary hook for integrations to include their scripts, styles, and other code extending the blocks.",
                 "tags": [
                     {
@@ -274,10 +332,35 @@
             "file": "Domain/Services/CreateAccount.php",
             "type": "action",
             "doc": {
-                "description": "",
-                "long_description": "",
-                "tags": [],
-                "long_description_html": ""
+                "description": "Fires after a customer account has been registered.",
+                "long_description": "This hook fires after customer accounts are created and passes the customer data.",
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "New customer (user) ID.",
+                        "types": [
+                            "integer"
+                        ],
+                        "variable": "$customer_id"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Array of customer (user) data.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$new_customer_data"
+                    },
+                    {
+                        "name": "param",
+                        "content": "The generated password for the account.",
+                        "types": [
+                            "string"
+                        ],
+                        "variable": "$password_generated"
+                    }
+                ],
+                "long_description_html": "<p>This hook fires after customer accounts are created and passes the customer data.</p>"
             }
         },
         {
@@ -285,10 +368,35 @@
             "file": "Domain/Services/CreateAccount.php",
             "type": "action",
             "doc": {
-                "description": "",
-                "long_description": "",
-                "tags": [],
-                "long_description_html": ""
+                "description": "Fires before a customer account is registered.",
+                "long_description": "This hook fires before customer accounts are created and passes the form data (username, email) and an array of errors.\n This could be used to add extra validation logic and append errors to the array.",
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "Customer username.",
+                        "types": [
+                            "string"
+                        ],
+                        "variable": "$username"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Customer email address.",
+                        "types": [
+                            "string"
+                        ],
+                        "variable": "$user_email"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Error object.",
+                        "types": [
+                            "\\WP_Error"
+                        ],
+                        "variable": "$errors"
+                    }
+                ],
+                "long_description_html": "<p>This hook fires before customer accounts are created and passes the form data (username, email) and an array of errors.</p> <p>This could be used to add extra validation logic and append errors to the array.</p>"
             }
         },
         {
@@ -335,8 +443,8 @@
             "file": "StoreApi/Utilities/CartController.php",
             "type": "action",
             "doc": {
-                "description": "Fire action to validate add to cart. Functions hooking into this should throw an \\Exception to prevent add to cart from occuring.",
-                "long_description": "",
+                "description": "Fires during validation when adding an item to the cart via the Store API.",
+                "long_description": "Fire action to validate add to cart. Functions hooking into this should throw an \\Exception to prevent add to cart from happening.",
                 "tags": [
                     {
                         "name": "param",
@@ -355,7 +463,7 @@
                         "variable": "$request"
                     }
                 ],
-                "long_description_html": ""
+                "long_description_html": "<p>Fire action to validate add to cart. Functions hooking into this should throw an \\Exception to prevent add to cart from happening.</p>"
             }
         },
         {

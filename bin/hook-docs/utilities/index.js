@@ -3,6 +3,7 @@ const { generateHookName } = require( './generate-hook-name' );
 const { generateIntroduction } = require( './generate-introduction' );
 const { json2md } = require( './json2md' );
 const { sectionWithHeading } = require( './section-with-heading' );
+const { contentWithHeading } = require( './content-with-heading' );
 const { generateToc } = require( './generate-toc' );
 
 module.exports = {
@@ -11,5 +12,6 @@ module.exports = {
 	generateIntroduction,
 	json2md,
 	sectionWithHeading,
+	contentWithHeading,
 	generateToc,
 };

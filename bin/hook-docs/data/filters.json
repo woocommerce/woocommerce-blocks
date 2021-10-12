@@ -6,7 +6,7 @@
             "file": "BlockTypesController.php",
             "type": "filter",
             "doc": {
-                "description": "WooCommerce Blocks Block Names",
+                "description": "Filters the list of allowed Block Names",
                 "long_description": "This hook defines which block names should have block name and attribute data- attributes appended on render.",
                 "tags": [
                     {
@@ -26,8 +26,8 @@
             "file": "BlockTypesController.php",
             "type": "filter",
             "doc": {
-                "description": "WooCommerce Blocks Namespaces",
-                "long_description": "This hook defines which block namespaces should have block name and attribute data- attributes appended on render.",
+                "description": "Filters the list of allowed block namespaces.",
+                "long_description": "This hook defines which block namespaces should have block name and attribute `data-` attributes appended on render.",
                 "tags": [
                     {
                         "name": "param",
@@ -38,7 +38,7 @@
                         "variable": "$allowed_namespaces"
                     }
                 ],
-                "long_description_html": "<p>This hook defines which block namespaces should have block name and attribute data- attributes appended on render.</p>"
+                "long_description_html": "<p>This hook defines which block namespaces should have block name and attribute <code>data-</code> attributes appended on render.</p>"
             }
         },
         {
@@ -46,9 +46,33 @@
             "file": "Payments/Integrations/PayPal.php",
             "type": "filter",
             "doc": {
-                "description": "",
+                "description": "Filter to control what features are available for each payment gateway.",
                 "long_description": "",
-                "tags": [],
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "List of supported features.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$features"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Gateway name.",
+                        "types": [
+                            "string"
+                        ],
+                        "variable": "$name"
+                    },
+                    {
+                        "name": "return",
+                        "content": "Updated list of supported features.",
+                        "types": [
+                            "array"
+                        ]
+                    }
+                ],
                 "long_description_html": ""
             }
         },
@@ -57,9 +81,25 @@
             "file": "Payments/Integrations/Stripe.php",
             "type": "filter",
             "doc": {
-                "description": "",
+                "description": "Filters if prepaid cards are supported by Stripe.",
                 "long_description": "",
-                "tags": [],
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "True if prepaid cards are allowed.",
+                        "types": [
+                            "boolean"
+                        ],
+                        "variable": "$allow_prepaid_card"
+                    },
+                    {
+                        "name": "return",
+                        "content": "",
+                        "types": [
+                            "boolean"
+                        ]
+                    }
+                ],
                 "long_description_html": ""
             }
         },
@@ -68,10 +108,36 @@
             "file": "Payments/Integrations/Stripe.php",
             "type": "filter",
             "doc": {
-                "description": "",
-                "long_description": "",
-                "tags": [],
-                "long_description_html": ""
+                "description": "Filters if the save payment method checkbox is shown for Stripe.",
+                "long_description": "This assumes that Stripe supports `tokenization` - currently this is true, based on https://github.com/woocommerce/woocommerce-gateway-stripe/blob/master/includes/class-wc-gateway-stripe.php#L95",
+                "tags": [
+                    {
+                        "name": "see",
+                        "content": "",
+                        "refers": "https://github.com/woocommerce/woocommerce-gateway-stripe/blob/ad19168b63df86176cbe35c3e95203a245687640/includes/class-wc-gateway-stripe.php#L271"
+                    },
+                    {
+                        "name": "see",
+                        "content": "",
+                        "refers": "https://github.com/woocommerce/woocommerce/wiki/Payment-Token-API"
+                    },
+                    {
+                        "name": "param",
+                        "content": "True if saved cards functionality is enabled.",
+                        "types": [
+                            "boolean"
+                        ],
+                        "variable": "$saved_cards"
+                    },
+                    {
+                        "name": "return",
+                        "content": "",
+                        "types": [
+                            "boolean"
+                        ]
+                    }
+                ],
+                "long_description_html": "<p>This assumes that Stripe supports <code>tokenization</code> - currently this is true, based on <a href=\"https://github.com/woocommerce/woocommerce-gateway-stripe/blob/master/includes/class-wc-gateway-stripe.php#L95\">https://github.com/woocommerce/woocommerce-gateway-stripe/blob/master/includes/class-wc-gateway-stripe.php#L95</a></p>"
             }
         },
         {
@@ -79,9 +145,25 @@
             "file": "Payments/Integrations/Stripe.php",
             "type": "filter",
             "doc": {
-                "description": "",
+                "description": "Filters the payment request button locale.",
                 "long_description": "",
-                "tags": [],
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "Current locale. Defaults to en_US.",
+                        "types": [
+                            "string"
+                        ],
+                        "variable": "$locale"
+                    },
+                    {
+                        "name": "return",
+                        "content": "",
+                        "types": [
+                            "string"
+                        ]
+                    }
+                ],
                 "long_description_html": ""
             }
         },
@@ -167,10 +249,34 @@
             "file": "BlockTypes/AbstractProductGrid.php",
             "type": "filter",
             "doc": {
-                "description": "Product List Render event.",
-                "long_description": "Fires a WP Hook named `experimental__woocommerce_blocks-product-list-render` on render so that the client can add event handling when certain products are displayed. This can be used by tracking extensions such as Google Analytics to track impressions.\n Provides the list of product data (shaped like the Store API responses) and the block name.",
-                "tags": [],
-                "long_description_html": "<p>Fires a WP Hook named <code>experimental__woocommerce_blocks-product-list-render</code> on render so that the client can add event handling when certain products are displayed. This can be used by tracking extensions such as Google Analytics to track impressions.</p> <p>Provides the list of product data (shaped like the Store API responses) and the block name.</p>"
+                "description": "Filters whether or not the product grid is cacheable.",
+                "long_description": "",
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "The list of script dependencies.",
+                        "types": [
+                            "boolean"
+                        ],
+                        "variable": "$is_cacheable"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Query args for the products query passed to BlocksWpQuery.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$query_args"
+                    },
+                    {
+                        "name": "return",
+                        "content": "True to enable cache, false to disable cache.",
+                        "types": [
+                            "array"
+                        ]
+                    }
+                ],
+                "long_description_html": ""
             }
         },
         {
@@ -178,9 +284,41 @@
             "file": "BlockTypes/AbstractProductGrid.php",
             "type": "filter",
             "doc": {
-                "description": "",
+                "description": "Filters the HTML for products in the grid.",
                 "long_description": "",
-                "tags": [],
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "Product grid item HTML.",
+                        "types": [
+                            "string"
+                        ],
+                        "variable": "$html"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Product data passed to the template.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$data"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Product object.",
+                        "types": [
+                            "\\WC_Product"
+                        ],
+                        "variable": "$product"
+                    },
+                    {
+                        "name": "return",
+                        "content": "Updated product grid item HTML.",
+                        "types": [
+                            "string"
+                        ]
+                    }
+                ],
                 "long_description_html": ""
             }
         },
@@ -189,9 +327,33 @@
             "file": "Assets/Api.php",
             "type": "filter",
             "doc": {
-                "description": "",
+                "description": "Filters the list of script dependencies.",
                 "long_description": "",
-                "tags": [],
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "The list of script dependencies.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$dependencies"
+                    },
+                    {
+                        "name": "param",
+                        "content": "The script's handle.",
+                        "types": [
+                            "string"
+                        ],
+                        "variable": "$handle"
+                    },
+                    {
+                        "name": "return",
+                        "content": "",
+                        "types": [
+                            "array"
+                        ]
+                    }
+                ],
                 "long_description_html": ""
             }
         },
@@ -211,9 +373,18 @@
             "file": "Domain/Services/GoogleAnalytics.php",
             "type": "filter",
             "doc": {
-                "description": "",
+                "description": "Filter to disable Google Analytics tracking.",
                 "long_description": "",
-                "tags": [],
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "If true, tracking will be disabled.",
+                        "types": [
+                            "boolean"
+                        ],
+                        "variable": "$disable_tracking"
+                    }
+                ],
                 "long_description_html": ""
             }
         },
@@ -233,10 +404,26 @@
             "file": "Domain/Services/CreateAccount.php",
             "type": "filter",
             "doc": {
-                "description": "",
-                "long_description": "",
-                "tags": [],
-                "long_description_html": ""
+                "description": "Filters customer data before a customer account is registered.",
+                "long_description": "This hook filters customer data. It allows user data to be changed, for example, username, password, email, first name, last name, and role.",
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "An array of customer (user) data.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$customer_data"
+                    },
+                    {
+                        "name": "return",
+                        "content": "",
+                        "types": [
+                            "array"
+                        ]
+                    }
+                ],
+                "long_description_html": "<p>This hook filters customer data. It allows user data to be changed, for example, username, password, email, first name, last name, and role.</p>"
             }
         },
         {
@@ -244,10 +431,42 @@
             "file": "Domain/Services/CreateAccount.php",
             "type": "filter",
             "doc": {
-                "description": "",
-                "long_description": "",
-                "tags": [],
-                "long_description_html": ""
+                "description": "Filters registration errors before a customer account is registered.",
+                "long_description": "This hook filters registration errors. This can be used to manipulate the array of errors before they are displayed.",
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "Error object.",
+                        "types": [
+                            "\\WP_Error"
+                        ],
+                        "variable": "$errors"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Customer username.",
+                        "types": [
+                            "string"
+                        ],
+                        "variable": "$username"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Customer email address.",
+                        "types": [
+                            "string"
+                        ],
+                        "variable": "$user_email"
+                    },
+                    {
+                        "name": "return",
+                        "content": "",
+                        "types": [
+                            "\\WP_Error"
+                        ]
+                    }
+                ],
+                "long_description_html": "<p>This hook filters registration errors. This can be used to manipulate the array of errors before they are displayed.</p>"
             }
         },
         {
@@ -255,10 +474,30 @@
             "file": "Assets/AssetDataRegistry.php",
             "type": "filter",
             "doc": {
-                "description": "Low level hook for registration of new data late in the cycle. This is deprecated.",
-                "long_description": "Instead, use the data api: Automattic\\WooCommerce\\Blocks\\Package::container()     ->get( Automattic\\WooCommerce\\Blocks\\Assets\\AssetDataRegistry::class )     ->add( $key, $value )",
-                "tags": [],
-                "long_description_html": "<p>Instead, use the data api: Automattic\\WooCommerce\\Blocks\\Package::container() -&gt;get( Automattic\\WooCommerce\\Blocks\\Assets\\AssetDataRegistry::class ) -&gt;add( $key, $value )</p>"
+                "description": "Filters the array of shared settings.",
+                "long_description": "Low level hook for registration of new data late in the cycle. This is deprecated. Instead, use the data api: Automattic\\WooCommerce\\Blocks\\Package::container()     ->get( Automattic\\WooCommerce\\Blocks\\Assets\\AssetDataRegistry::class )     ->add( $key, $value )",
+                "tags": [
+                    {
+                        "name": "deprecated",
+                        "content": ""
+                    },
+                    {
+                        "name": "param",
+                        "content": "Settings data.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$data"
+                    },
+                    {
+                        "name": "return",
+                        "content": "",
+                        "types": [
+                            "array"
+                        ]
+                    }
+                ],
+                "long_description_html": "<p>Low level hook for registration of new data late in the cycle. This is deprecated. Instead, use the data api: Automattic\\WooCommerce\\Blocks\\Package::container() -&gt;get( Automattic\\WooCommerce\\Blocks\\Assets\\AssetDataRegistry::class ) -&gt;add( $key, $value )</p>"
             }
         },
         {
@@ -277,10 +516,26 @@
             "file": "StoreApi/Routes/AbstractCartRoute.php",
             "type": "filter",
             "doc": {
-                "description": "",
-                "long_description": "",
-                "tags": [],
-                "long_description_html": ""
+                "description": "Filters the Store API nonce check.",
+                "long_description": "This can be used to disable the nonce check when testing API endpoints via a REST API client.",
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "If true, nonce checks will be disabled.",
+                        "types": [
+                            "boolean"
+                        ],
+                        "variable": "$disable_nonce_check"
+                    },
+                    {
+                        "name": "return",
+                        "content": "",
+                        "types": [
+                            "boolean"
+                        ]
+                    }
+                ],
+                "long_description_html": "<p>This can be used to disable the nonce check when testing API endpoints via a REST API client.</p>"
             }
         },
         {
