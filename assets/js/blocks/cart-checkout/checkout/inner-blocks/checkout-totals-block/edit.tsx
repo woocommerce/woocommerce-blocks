@@ -11,10 +11,22 @@ import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import './style.scss';
 import { useForcedLayout } from '../../use-forced-layout';
 import { getAllowedBlocks } from '../../editor-utils';
+import { useCheckoutBlockContext } from '../../context';
 
 export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 	const blockProps = useBlockProps();
+	const { showRateAfterTaxName } = useCheckoutBlockContext();
 	const allowedBlocks = getAllowedBlocks( innerBlockAreas.CHECKOUT_TOTALS );
+
+	const defaultTemplate = [
+		[
+			'woocommerce/checkout-order-summary-block',
+			{
+				showRateAfterTaxName,
+			},
+			[],
+		],
+	];
 
 	useForcedLayout( {
 		clientId,
@@ -28,6 +40,7 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 				<InnerBlocks
 					allowedBlocks={ allowedBlocks }
 					templateLock={ false }
+					template={ defaultTemplate }
 				/>
 			</div>
 		</Sidebar>
