@@ -3,7 +3,7 @@
  */
 import { SVG } from 'wordpress-components';
 
-const cartAlt = (
+const miniCart = (
 	<SVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none">
 		<g clipPath="url(#clip0)">
 			<path
@@ -36,4 +36,4 @@ const cartAlt = (
 	</SVG>
 );
 
-export default cartAlt;
+export default miniCart;

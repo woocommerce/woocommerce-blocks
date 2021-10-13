@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { Icon, cartAlt } from '@woocommerce/icons';
+import { Icon, miniCart } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
@@ -14,7 +14,7 @@ const QuantityBadge = ( { count }: { count: number } ): JSX.Element => (
 		<Icon
 			className="wc-block-mini-cart__icon"
 			size={ 20 }
-			srcElement={ cartAlt }
+			srcElement={ miniCart }
 		/>
 	</span>
 );
