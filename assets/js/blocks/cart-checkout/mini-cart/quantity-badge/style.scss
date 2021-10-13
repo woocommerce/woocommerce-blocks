@@ -1,8 +1,8 @@
 .wc-block-mini-cart__quantity-badge {
-	position: relative;
 	display: inline-block;
-	margin-right: 10px;
 	margin-left: 10px;
+	margin-right: 10px;
+	position: relative;
 }
 
 .wc-block-mini-cart__badge {
@@ -11,18 +11,18 @@
 	border-radius: 999px;
 	color: #fff;
 	display: flex;
+	font-size: 0.875em;
+	justify-content: center;
 	line-height: 1;
 	min-height: 20px;
+	min-width: 20px;
 	padding: 0 $gap-smallest;
 	position: absolute;
-	justify-content: center;
-	min-width: 20px;
 	right: 0;
 	top: 2px;
 	transform: translate(50%, -50%);
 	white-space: nowrap;
 	z-index: 1;
-	font-size: 0.875em;
 }
 
 .wc-block-mini-cart__icon {

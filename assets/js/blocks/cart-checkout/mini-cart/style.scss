@@ -1,12 +1,12 @@
 .wc-block-mini-cart__button {
+	align-items: baseline;
 	background: transparent;
+	border: none;
+	display: flex;
+	font-weight: 400;
 	padding-left: 0;
 	padding-right: 0;
-	font-weight: 400;
 	width: 100%;
-	display: flex;
-	align-items: baseline;
-	border: none;
 
 	&:hover {
 		background: transparent;
@@ -15,14 +15,14 @@
 }
 
 .wc-block-mini-cart__amount {
-	margin-right: $gap-smaller;
 	display: none;
+	margin-right: $gap-smaller;
 }
 
 .wc-block-mini-cart__count {
-	opacity: 0.5;
-	font-size: 0.875em;
 	display: none;
+	font-size: 0.875em;
+	opacity: 0.5;
 }
 
 .wc-block-mini-cart__quantity-badge {
