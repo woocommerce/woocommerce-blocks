@@ -23,7 +23,8 @@ export const Edit = ( { clientId }: { clientId: string } ): JSX.Element => {
 
 	useForcedLayout( {
 		clientId,
-		template: allowedBlocks,
+		registeredBlocks: allowedBlocks,
+		defaultTemplate,
 	} );
 	return (
 		<Main className="wc-block-checkout__main">
