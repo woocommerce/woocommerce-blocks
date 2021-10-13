@@ -147,7 +147,7 @@ const MiniCartBlock = ( {
 						cartItemsCount
 					) }
 				</span>
-				<QuantityBadge count={ cartItems.length } />
+				<QuantityBadge count={ cartItemsCount } />
 			</button>
 			<Drawer
 				className={ classNames(
