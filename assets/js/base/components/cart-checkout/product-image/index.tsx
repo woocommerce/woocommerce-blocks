@@ -24,12 +24,15 @@ const ProductImage = ( { image = {} }: ProductImageProps ): JSX.Element => {
 		alt: decodeEntities( image.alt ) || '',
 	};
 
-	return  <img className={ classnames( 'block-order-summary-product-image', {
+	return (
+		<img
+			className={ classnames( 'block-order-summary-product-image', {
 				'product-image-placeholder': ! image.thumbnail,
 			} ) }
 			{ ...imageProps }
 			alt={ imageProps.alt }
-			/>
+		/>
+	);
 };
 
 export default ProductImage;

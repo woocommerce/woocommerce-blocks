@@ -48,9 +48,6 @@ table.wc-block-cart-items {
 			width: 100%;
 			margin: 0;
 		}
-		.wc-block-cart-item__image--placeholder img {
-			border: 1px solid #f2f2f2;
-		}
 		.wc-block-cart-item__quantity {
 			.wc-block-cart-item__remove-link {
 				@include link-button;
