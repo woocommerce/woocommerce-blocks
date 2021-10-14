@@ -90,7 +90,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 				rawurlencode(
 					wp_json_encode(
 						array_map(
-							[ Package::container()->get( SchemaController::class )->get( 'product' ), 'get_item_response' ],
+							array( Package::container()->get( SchemaController::class )->get( 'product' ), 'get_item_response' ),
 							$products
 						)
 					)
@@ -395,7 +395,12 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 * @return string
 	 */
 	protected function get_image_html( $product ) {
-		return '<div class="wc-block-grid__product-image">' . $product->get_image( 'woocommerce_thumbnail' ) . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+		$placeholder_class = '';
+		if ( ! $product->get_image_id() ) {
+			$placeholder_class = 'wc-block-grid__product-image--placeholder';
+		}
+		return '<div class="wc-block-grid__product-image ' . $placeholder_class . '">' . $product->get_image( 'woocommerce_thumbnail' ) . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -523,7 +528,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 *                           Note, this will be empty in the editor context when the block is
 	 *                           not in the post content on editor load.
 	 */
-	protected function enqueue_data( array $attributes = [] ) {
+	protected function enqueue_data( array $attributes = array() ) {
 		parent::enqueue_data( $attributes );
 		$this->asset_data_registry->add( 'min_columns', wc_get_theme_support( 'product_blocks::min_columns', 1 ), true );
 		$this->asset_data_registry->add( 'max_columns', wc_get_theme_support( 'product_blocks::max_columns', 6 ), true );

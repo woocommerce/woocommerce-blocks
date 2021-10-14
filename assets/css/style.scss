@@ -172,6 +172,12 @@
 	.wc-block-grid__product-onsale {
 		margin: 0 auto $gap-small;
 	}
+
+	.wc-block-grid__product-image--placeholder {
+		img {
+			border: 1px solid #f2f2f2;
+		}
+	}
 }
 
 .theme-twentysixteen {
